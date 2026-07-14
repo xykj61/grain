@@ -17,21 +17,25 @@ Every row is a proposal, not a fact. Nothing here is renamed in the tree yet. Ke
 |---|---|---|
 | **Glow** | the fused Rye-Hoon language | **Accepted** by Keaton `20260713.225658` |
 | **Glow OS** | the umbrella system (was "Rye OS") | **Decided** `20260713.235455`; mass rename of 1,474 "Rye" references deferred, cheapest-first, on word |
+| **Neth** | settlement-layer vane (N after Maze's M) | **Confirmed** `20260714.002123` — Nethermind collision seen and consciously accepted |
+| **Reya** | OS variant | **Confirmed** `20260714.002123` — double collision seen and accepted |
+| **Maze** | nursery / proving-ground namespace | **Confirmed** `20260714.002123` — as the nursery, not a permanent bucket |
+| **Rish / Rishi** | the shell | **Confirmed** `20260714.002123` — Rish (reference), Rishi (tutorials); Dojo *not* adopted |
+| **Module names vs. Urbit vane names** | the whole naming strategy | **Decided** `20260714.002123` — keep our names in code, use Urbit names as documented roles; no mass rename, no directory re-nest. See [`20260714-002123_naming-decisions-and-role-nesting.md`](20260714-002123_naming-decisions-and-role-nesting.md) |
 
 ## Awaiting Confirm or Deny
 
+Reya, Maze, Neth, the shell name (Rish/Rishi), and the whole module-vs-vane naming strategy were **settled `20260714.002123`** — see the Settled table above and [`20260714-002123_naming-decisions-and-role-nesting.md`](20260714-002123_naming-decisions-and-role-nesting.md). What remains open:
+
 | Name | Role | Open question |
 |---|---|---|
-| **Reya** | one of four OS variants | Double collision: ReyaChain (a live Ethereum DeFi project) **and** this fork's own retired "Reya 2" voice identity. Confirm as-is, or pick a replacement? |
-| **Riyo** | one of four OS variants | Quiet in collision research. Confirm? |
+| **Riyo** | one of four OS variants | Quiet in collision research. Confirm? (Reya's diverse-redundant twin) |
 | **Trey** | one of four OS variants | Quiet in collision research. Confirm? |
 | **Triz** | one of four OS variants (replaced "Tera") | Low-stakes soft collision with TRIZ (the innovation methodology). Confirm? |
-| **Riyo/Reya + Trey/Triz pairing** | diverse redundancy | Riyo/Reya are named as a diverse-redundant pair. Do Trey/Triz mirror that? And does "diverse redundancy" mean two independent codebases, or one codebase with two independently-verified paths? |
-| **Rishi → Dojo?** | the shell | Keep "Rishi," adopt Urbit's own "Dojo," or coin a new Glow-OS shell name? |
-| **Module → vane parallels** | Comlink≈Ames, Mantra≈Clay, Caravan≈Gall, Aurora≈Vere, Bron≈noun-level, Brix≈Ford | Are these *literal* renames (Comlink becomes "Ames") or Glow-flavored variants keeping their own names in a vane *role*? Which modules actually rename at all? |
+| **Trey/Triz pairing** | diverse redundancy | Riyo/Reya are the confirmed diverse-redundant pair. Do Trey/Triz mirror that? And does "diverse redundancy" mean two independent codebases, or one codebase with two independently-verified paths? |
 | **Kumara** | identity seam | Adopt Azimuth-style point/planet/star tier naming for its own identity tiers, or keep Kumara as-is? |
-| **Maze** | proposed new bundle/nursery namespace | New `20260713` — see the dedicated section below and my opinion. Confirm, deny, or refine? |
-| **Neth** (N-vane, after Maze's M) | settlement-layer sequencer — a Glow-TigerBeetle replicated state machine evolved from the existing WOV/MALA money work | New `20260714` — **real close-domain collision** with Nethermind (top-two Ethereum client; `spaceneth`/`NethDev` shorthand), which bites hardest because Neth's own purpose is Ethereum interop. Options: keep **Neth**; use **Neith** (the weaver goddess — beautiful, ties to the Weave, but five letters); or pick another four-letter N-name. My lean is Neith or another name over Neth. Full reasoning + the whole L1/L2 architecture: [`../../external-research/20260714-001017_neth-mala-settlement-l1-l2-design.md`](../../external-research/20260714-001017_neth-mala-settlement-l1-l2-design.md). |
+
+The Maze proposal and my opinion are kept below for the record, now that Maze is confirmed.
 
 ## The Maze Proposal, and My Opinion
 
