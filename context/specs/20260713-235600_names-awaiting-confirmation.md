@@ -22,19 +22,20 @@ Every row is a proposal, not a fact. Nothing here is renamed in the tree yet. Ke
 | **Maze** | nursery / proving-ground namespace | **Confirmed** `20260714.002123` — as the nursery, not a permanent bucket |
 | **Rish / Rishi** | the shell | **Confirmed** `20260714.002123` — Rish (reference), Rishi (tutorials); Dojo *not* adopted |
 | **Module names vs. Urbit vane names** | the whole naming strategy | **Decided** `20260714.002123` — keep our names in code, use Urbit names as documented roles; no mass rename, no directory re-nest. See [`20260714-002123_naming-decisions-and-role-nesting.md`](20260714-002123_naming-decisions-and-role-nesting.md) |
+| **Ojjo** | benchmarking **O-vane** (safety/performance) | **Confirmed** `20260714.034900` — palindrome symmetric-yardstick discipline; O follows Neth's N; quiet in collision research. Design [`20260714-025200_ojjo-benchmarking-vane-design.md`](../../external-research/20260714-025200_ojjo-benchmarking-vane-design.md). Build is now-or-horizon (nothing to measure until Glow runs a program) — a *separate* build-timing question from the name, still open below |
 
 ## Awaiting Confirm or Deny
 
-Reya, Maze, Neth, the shell name (Rish/Rishi), and the whole module-vs-vane naming strategy were **settled `20260714.002123`** — see the Settled table above and [`20260714-002123_naming-decisions-and-role-nesting.md`](20260714-002123_naming-decisions-and-role-nesting.md). What remains open:
+Reya, Maze, Neth, the shell name (Rish/Rishi), the module-vs-vane naming strategy, and **Ojjo** (`20260714.034900`) are settled — see the Settled table above. What remains open:
 
 | Name | Role | Open question |
 |---|---|---|
-| **Ojjo** | benchmarking **O-vane** (safety/performance) | Palindrome (symmetric-yardstick discipline); four letters; O follows Neth's N in the vane sequence. Quiet in collision research (only OjjO Software / Ojoo / Xojo — none in domain). Confirm? Now-or-horizon (nothing to measure until Glow runs a program) — design [`20260714-025200_ojjo-benchmarking-vane-design.md`](../../external-research/20260714-025200_ojjo-benchmarking-vane-design.md) |
 | **Riyo** | one of four OS variants | Quiet in collision research. Confirm? (Reya's diverse-redundant twin) |
 | **Trey** | one of four OS variants | Quiet in collision research. Confirm? |
 | **Triz** | one of four OS variants (replaced "Tera") | Low-stakes soft collision with TRIZ (the innovation methodology). Confirm? |
 | **Trey/Triz pairing** | diverse redundancy | Riyo/Reya are the confirmed diverse-redundant pair. Do Trey/Triz mirror that? And does "diverse redundancy" mean two independent codebases, or one codebase with two independently-verified paths? |
 | **Kumara** | identity seam | Adopt Azimuth-style point/planet/star tier naming for its own identity tiers, or keep Kumara as-is? |
+| **Ojjo — build timing** | the now-or-horizon question (name is confirmed) | Seat Ojjo as a *named horizon vane* now and build it correctness-first when Glow's first program exists, or defer the seat entirely until then? Ojjo has nothing to measure until Glow runs a program either way |
 
 The Maze proposal and my opinion are kept below for the record, now that Maze is confirmed.
 
