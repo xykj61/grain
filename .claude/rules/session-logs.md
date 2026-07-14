@@ -32,8 +32,9 @@ Minimum shape (`format session-log-v1`):
 format session-log-v1
 stamp YYYYMMDD.HHMMSS
 editor Cursor
-model Cursor Grok 4.5
+model Cursor Sonnet 5 1M Medium
 voice Rio 3
+host macOS 26.6 arm64 (Apple M2) — see context/specs/20260713-211800_local-host-system-hardware-anonymized.md
 title short title
 prompt what Kaeden asked
 think step of reasoning
@@ -43,11 +44,14 @@ file path why-one-line
 recommend keep-going|check-in what and why
 ```
 
-- **editor** / **model** / **voice** — which editor and model produced this log (Reya 2 when Kaeden restores that voice).
+- **editor** / **model** / **voice** — which editor and model produced this log (Reya 2 when Kaeden restores that voice). On this local macOS clone (`~/urbit`), `model` defaults to `Cursor Sonnet 5 1M Medium` until Kaeden names a change; the prior Linux-host default (`Cursor Grok 4.5`) stays correct in dated logs written on that host and is never rewritten.
+- **host** — optional; names the editor/OS/chip combination for this specific machine, anonymized (no serial, hardware UUID, hostname, or username — see `context/specs/20260713-211800_local-host-system-hardware-anonymized.md` for what stays out and why). Omit on hosts where this has never mattered; add it wherever a log's meaning depends on knowing which machine produced it (a sandbox-adaptation session, a hardware-specific witness).
 - **think** — repeatable; step-by-step reasoning.
 - **obs** — decisions and trade-offs.
 - **file** — repeatable; `path` then why.
 - **recommend** — one close line: `keep-going …` when mechanical and policy-written; `check-in …` when seams, Rishi/value-model, unruled design, or horizon facts.
+
+**Stamp timezone, on this local clone.** `context/specs/20260627-102012_one-clock-naming-law.md` names no timezone, and "Stamps come from Kaeden, verbatim" still governs. On this specific macOS clone, Kaeden's clock is Pacific Time (Reno, NV — PDT in summer, PST in winter), seated explicitly in `context/specs/20260713-201910_pacific-time-local-clone-convention.md`. Existing dated stamps from other hosts are never rewritten to match; this note governs stamps written **from here forward** on this clone only.
 
 ## Archive fold
 
