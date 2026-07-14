@@ -64,8 +64,8 @@ The one caution:
 
 ## Open Questions (for Keaton's word)
 
-- **Confirm the name Ojjo**, and confirm it as the O-vane in the proposed sequence.
-- **Now or horizon?** Ojjo cannot measure anything until Glow can run a program. Is it seated as a named horizon vane now, and built when Glow's first program exists — or deferred entirely until then?
+- **The name Ojjo is confirmed** (`20260714.034900`), as the O-vane in the proposed vane sequence — recorded in [`../context/specs/20260713-235600_names-awaiting-confirmation.md`](../context/specs/20260713-235600_names-awaiting-confirmation.md) and `../context/LEXICON.md`.
+- **Now or horizon? (still open)** Ojjo cannot measure anything until Glow can run a program. Is it seated as a named horizon vane now, and built when Glow's first program exists — or deferred entirely until then?
 - **Where does it live** — as a vane proposal in the Maze nursery until Glow is real, or directly named as the O-vane now?
 - **Correctness-first laps** — is the lap-1-conformance / lap-2-timing split the right shape, or should timing come sooner?
 
