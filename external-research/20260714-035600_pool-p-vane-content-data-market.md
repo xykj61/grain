@@ -76,8 +76,8 @@ The ambiguity named plainly:
 
 ## Open Questions (for Keaton's word)
 
-- **Confirm the name Pool**, and confirm it as the P-vane.
-- **Whole application vane, or market-specialized?** Is Pool Glow's full Gall-role (hosting all userspace, market as flagship), or specifically the market host with a separate general application vane elsewhere?
+- **The name Pool is confirmed** (`20260714.042545`), as the P-vane — recorded in [`../context/specs/20260713-235600_names-awaiting-confirmation.md`](../context/specs/20260713-235600_names-awaiting-confirmation.md) and `../context/LEXICON.md`. The questions below are now *build* questions, not name gates.
+- **Whole application vane, or market-specialized? (still open)** Is Pool Glow's full Gall-role (hosting all userspace, market as flagship), or specifically the market host with a separate general application vane elsewhere?
 - **Now or horizon?** Like Ojjo, Pool has little to host until Glow can run an agent; is it seated as a named horizon vane now, or deferred until the agent runtime exists?
 - **Relationship to Linengrow and the market surfaces** — confirm that Granary, Mandi, Open Asks, and Linengrow are agents *in* Pool rather than peers beside it.
 
