@@ -1,0 +1,13 @@
+format session-log-v1
+stamp 20260714.084100
+editor Cursor
+model Cursor Sonnet 5 1M Medium
+voice Rio 3
+title gh CLI blocked by --harden-home's own design, not a bug
+prompt Keaton asked for all three public keys printed plainly, and for the agent to try uploading the SSH key to GitHub via gh from inside this jailed window while he pastes the Codeberg one manually himself.
+think printed all three keys directly (SSH github, SSH codeberg, GPG armored block plus fingerprint), reading each fresh from the jail-local files and the .gnupg-rye keyring rather than reusing anything from memory or the earlier screenshot.
+think tried gh auth status and gh --version inside this hardened window -- both failed identically: "failed to read configuration: open /Users/bhagavan851c05a/.config/gh/config.yml: operation not permitted". This is --harden-home's own ~/.config/gh deny rule doing exactly what it was built to do last session; gh's real auth token lives there, and SOURCE.md's own Step 8d already named that exact concern before today's hardening existed.
+think named the real workaround (copy ~/.config/gh into a repo-local ./.gh from an outside terminal, point GH_CONFIG_DIR at it) rather than silently doing it, because it reintroduces a real, full-scope personal GitHub token into the jail's reach -- undoing part of what --harden-home was built to prevent. Presented it as an option with its trade-off named, not a default action, and recommended the same manual paste Keaton is already doing for Codeberg as the option that keeps the security posture consistent across both forges.
+obs this is a small, honest confirmation that the hardening built two turns ago is already doing real work: it just refused the agent's own attempt to reach a credential store, exactly as designed, on the very first thing asked of it that would have needed that store.
+file session-logs/20260714-084100_gh_cli_blocked_by_design.bron -- this log
+recommend keep-going -- waiting on Keaton's choice (manual GitHub paste, matching Codeberg, or the GH_CONFIG_DIR workaround with its trade-off accepted) before the next push/signing retest; either path is mechanical once chosen.
