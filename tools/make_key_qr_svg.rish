@@ -1,0 +1,69 @@
+# make_key_qr_svg.rish — render the three key-card QR codes as standalone,
+# fully textual SVG files, alongside the existing raster card.
+#
+# The composited landscape/portrait cards (tools/make_key_card_macos.sh)
+# stay PNG -- their ImageMagick pipeline draws a diamond, places raster
+# QR tiles, and burns in captions, and rebuilding that whole compositor
+# in SVG is a real, separate project, not a tidying pass. What is a
+# tidying pass: qrencode already emits SVG directly (-t SVG), so the
+# three QR codes themselves can exist as plain, checkable, diffable text
+# next to the PNG card -- no binary blob, greppable, closer to how this
+# tree already treats everything else it keeps.
+#
+#   rishi/bin/rishi run tools/make_key_qr_svg.rish
+#
+# Reads the same tools/key-card.conf as the PNG generator (copy
+# tools/key-card.conf.example first if you have not already). Writes
+# three files at the repo root: keys_<handle>_ssh_codeberg.svg,
+# keys_<handle>_ssh_github.svg, keys_<handle>_openpgp.svg.
+
+let conf_check = run ["test" "-f" "tools/key-card.conf"]
+assert conf_check.ok else "no tools/key-card.conf -- copy tools/key-card.conf.example and fill it in first"
+
+let qrencode_check = run ["sh" "-c" "command -v qrencode"]
+assert qrencode_check.ok else "qrencode not found -- install it: brew install qrencode"
+
+# Rish string literals have no \" escape (a real, named language gap --
+# see cursor_jail_macos.rish's own note on the same fixture), so each
+# shell one-liner below is built by joining fragments around a literal
+# double-quote read from a one-byte fixture, rather than escaping inside
+# the string. Without this, an embedded \" passes through to the shell
+# as two literal characters (backslash, quote) instead of a real quote,
+# and every field below would come back wrapped in stray quote marks.
+let dq = read-file "tools/fixtures/dquote.txt"
+
+let handle_cmd = join ["source tools/key-card.conf && printf '%s' " dq "$HANDLE" dq] ""
+let handle_run = run ["sh" "-c" handle_cmd]
+let handle = trim handle_run.out
+assert (handle != "") else "HANDLE is empty in tools/key-card.conf"
+
+let cb_cmd = join ["source tools/key-card.conf && printf '%s' " dq "$FP_SSH_CODEBERG" dq] ""
+let cb_run = run ["sh" "-c" cb_cmd]
+let cb_fpr = trim cb_run.out
+let gh_cmd = join ["source tools/key-card.conf && printf '%s' " dq "$FP_SSH_GITHUB" dq] ""
+let gh_run = run ["sh" "-c" gh_cmd]
+let gh_fpr = trim gh_run.out
+let pgp_cmd = join ["source tools/key-card.conf && printf '%s' " dq "$FP_OPENPGP" dq] ""
+let pgp_run = run ["sh" "-c" pgp_cmd]
+let pgp_fpr = trim pgp_run.out
+
+assert (cb_fpr != "") else "FP_SSH_CODEBERG is empty in tools/key-card.conf"
+assert (gh_fpr != "") else "FP_SSH_GITHUB is empty in tools/key-card.conf"
+assert (pgp_fpr != "") else "FP_OPENPGP is empty in tools/key-card.conf"
+
+let cb_path = "keys_${handle}_ssh_codeberg.svg"
+let gh_path = "keys_${handle}_ssh_github.svg"
+let pgp_path = "keys_${handle}_openpgp.svg"
+
+let cb_gen = run ["qrencode" "-t" "SVG" "-o" cb_path "-m" "2" "-l" "M" cb_fpr]
+assert cb_gen.ok else "qrencode failed for the Codeberg SSH fingerprint"
+let gh_gen = run ["qrencode" "-t" "SVG" "-o" gh_path "-m" "2" "-l" "M" gh_fpr]
+assert gh_gen.ok else "qrencode failed for the GitHub SSH fingerprint"
+let pgp_gen = run ["qrencode" "-t" "SVG" "-o" pgp_path "-m" "2" "-l" "M" pgp_fpr]
+assert pgp_gen.ok else "qrencode failed for the OpenPGP fingerprint"
+
+say "wrote three textual SVG QR codes:"
+say "  ${cb_path}"
+say "  ${gh_path}"
+say "  ${pgp_path}"
+say "The composited PNG card (tools/make_key_card_macos.sh) is unchanged and still the one to print."
