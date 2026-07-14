@@ -36,7 +36,11 @@ fi
 
 REPO="${REPO:-$REPO_ROOT}"
 CURSOR_STATE="${CURSOR_STATE:-$REPO/.cursor-state}"
-CURSOR_BIN="${CURSOR_BIN:-cursor}"
+# The .app binary directly -- NOT the `cursor` CLI wrapper. The wrapper
+# (ELECTRON_RUN_AS_NODE + cli.js) spawns the real app in a detached dance
+# that dies silently under Seatbelt (bootstrap_check_in "Permission
+# denied"), exits 0, and launches nothing. Confirmed on this host 20260714.
+CURSOR_BIN="${CURSOR_BIN:-/Applications/Cursor.app/Contents/MacOS/Cursor}"
 ALLOW_NETWORK=true
 PRINT_ONLY=false
 
@@ -77,12 +81,13 @@ if ! command -v sandbox-exec >/dev/null 2>&1; then
   exit 1
 fi
 
-if ! command -v "$CURSOR_BIN" >/dev/null 2>&1; then
+if [ ! -x "$CURSOR_BIN" ] && ! command -v "$CURSOR_BIN" >/dev/null 2>&1; then
   cat <<EOF >&2
-cursor-jail-macos: '$CURSOR_BIN' not found on PATH.
+cursor-jail-macos: '$CURSOR_BIN' not found.
 
-Install the Cursor CLI (ships with the Cursor.app on macOS; confirm with
-'which cursor'), or set CURSOR_BIN in tools/enclosure.conf.
+Install Cursor.app to /Applications, or set CURSOR_BIN in
+tools/enclosure.conf to the app's real binary
+(.../Cursor.app/Contents/MacOS/Cursor -- not the CLI wrapper).
 EOF
   exit 1
 fi
@@ -110,26 +115,45 @@ PROFILE="$(cat <<SBPL
   (subpath "/private/tmp")
   (subpath "/private/var/folders"))
 
-; /dev/null (and its siblings) are not paths under the write fence above, and
-; the deny-default denies them too -- but Cursor's own CLI wrapper writes to
-; /dev/null on startup (redirecting output while it resolves its app path),
-; so without this the wrapper itself fails before Cursor ever launches. This
-; is not a write anyone can read data back from or escalate through -- it is
-; the standard "discard" device -- so allowing it plainly does not weaken the
-; fence above.
-(allow file-write-data (literal "/dev/null"))
+; /dev/null is not a path under the write fence above, and the deny-default
+; denies it too -- but Electron writes to it constantly from startup on.
+; A write-only discard device; nothing to read back or escalate through,
+; so allowing it plainly does not weaken the fence above.
+(allow file-write* (literal "/dev/null"))
 
 ; Process exec/fork -- Cursor spawns helper processes, extension hosts,
 ; language servers, and shells; all of that stays inside this same profile
 ; since a child inherits its parent's sandbox on macOS.
 (allow process-exec)
 (allow process-fork)
-
-; Signals, sysctl reads, and mach lookups Cursor's own Electron/Chromium
-; base and helper processes routinely need to start up at all.
-(allow signal (target self))
+(allow process-info* (target same-sandbox))
+(allow signal)
 (allow sysctl-read)
+
+; Mach and POSIX IPC -- Electron registers a MachPortRendezvousServer at
+; startup (bootstrap_check_in), aborting outright without mach-register;
+; mach-task-name covers its codesign self-check (task_name_for_pid); the
+; rest follows upstream ai-jail's own proven macOS static section (see
+; gratitude/ai-jail/).
 (allow mach-lookup)
+(allow mach-register)
+(allow mach-host*)
+(allow mach-task-name)
+(allow ipc-posix-shm-read-data)
+(allow ipc-posix-shm-write-data)
+(allow ipc-posix-shm-read-metadata)
+(allow ipc-posix-shm-write-create)
+(allow ipc-posix-sem)
+
+; Pseudo-terminals (integrated terminal) and standard devices.
+(allow pseudo-tty)
+(allow file-ioctl)
+(allow file-read* file-write* (literal "/dev/ptmx"))
+(allow file-read* file-write* (regex #"^/dev/ttys[0-9]+"))
+(allow file-write* (literal "/dev/zero"))
+(allow file-write* (literal "/dev/random"))
+(allow file-write* (literal "/dev/urandom"))
+
 (allow iokit-open)
 
 $net_rule
@@ -145,7 +169,18 @@ PROFILE_FILE="$(mktemp -t cursor-jail-macos)"
 trap 'rm -f "$PROFILE_FILE"' EXIT
 printf '%s\n' "$PROFILE" > "$PROFILE_FILE"
 
+# --no-sandbox: Chromium's own internal sandbox cannot nest inside
+# Seatbelt -- its GPU and network helpers abort and take the whole app
+# down ("GPU process isn't usable. Goodbye."). Same law SOURCE.md Step 9
+# names for Linux (Chromium's sandbox cannot nest inside bwrap either);
+# the real boundary here is Seatbelt. Confirmed on this host 20260714.
+#
+# --new-window as belt-and-suspenders: with a distinct user-data-dir the
+# app is its own instance anyway, but this guards against any forwarding
+# to an already-running unsandboxed Cursor.
 exec sandbox-exec -f "$PROFILE_FILE" -- "$CURSOR_BIN" \
+  --no-sandbox \
   --user-data-dir="$CURSOR_STATE/user-data" \
   --extensions-dir="$CURSOR_STATE/extensions" \
+  --new-window \
   "$REPO"

@@ -1,0 +1,89 @@
+stamp: 20260714.070500
+zone: PDT (Reno, NV convention)
+model: Fable 5 1M Max (switched 20260714.063900, recorded in GLOW_PROFILE.bron)
+voice: Rio 3
+
+what: >
+  The macOS jailed-Cursor launch actually works now, end to end, verified
+  by process table past 35 seconds. The earlier launcher reported success
+  while launching nothing -- three stacked silent traps, each found and
+  fixed on this host. Also: upstream ai-jail went multi-OS since our
+  enclosure study, and is now installed and witnessed here.
+
+the_three_traps:
+  - trap_1_cli_wrapper: >
+      The `cursor` CLI wrapper (ELECTRON_RUN_AS_NODE + cli.js) spawns the
+      real app in a detached dance that dies under Seatbelt with
+      bootstrap_check_in "Permission denied" -- while the wrapper exits 0.
+      Fix: exec /Applications/Cursor.app/Contents/MacOS/Cursor directly.
+  - trap_2_nested_sandbox: >
+      Chromium's own internal sandbox cannot nest inside Seatbelt: GPU and
+      network helpers abort ("GPU process isn't usable. Goodbye."). Same
+      law SOURCE.md Step 9 names for bwrap on Linux. Fix: --no-sandbox;
+      the real boundary is the outer Seatbelt jail.
+  - trap_3_stdio_sigpipe: >
+      A spawned child inherits stdio pipes that die with the launching
+      script; Electron logs constantly, so the app booted, then took a
+      SIGPIPE and vanished (alive at 12s, gone by 20s, observed). Fix:
+      one host seam -- exec nohup ... >/dev/null 2>&1 </dev/null.
+
+profile_growth: >
+  The SBPL profile's Mach/IPC/pty/devices section now follows the static
+  section of upstream ai-jail's own macOS seatbelt backend: mach-register
+  (Electron's MachPortRendezvousServer aborts without it), mach-host*,
+  mach-task-name (codesign self-check), ipc-posix-shm family, ipc-posix-sem,
+  pseudo-tty, file-ioctl, ptmx/ttys, /dev/zero|random|urandom. Write fence
+  unchanged: repo + /tmp + /private/tmp + /private/var/folders, deny default.
+
+witness_hygiene: >
+  tools/cursor_jail_macos_witness.rish now tests the launcher's own
+  --print-profile output instead of building a drifting copy -- one source
+  of truth. Both witnesses green after every profile change this session.
+
+mystery_resolved: >
+  The "logged-out window" Keaton saw earlier came from an unsandboxed
+  control test (same fresh state dir, hence signed out, but unfenced).
+  The sandboxed path had never actually launched until today's fixes.
+  Signed-out first boot is the isolation working: the normal login lives
+  in ~/Library/Application Support/Cursor, outside the fence; signing in
+  once inside the jail persists in .cursor-state/ (gitignored).
+
+upstream_ai_jail: >
+  akitaonrails/ai-jail went multi-OS (native sandbox-exec backend,
+  src/sandbox/seatbelt.rs) since our 20260713.202929 study assumed
+  Linux-only. Installed v1.13.0 from the macOS aarch64 release artifact
+  (the brew tap clones over SSH and needs a key; curl is the documented
+  path). Witnessed: inside-write OK, $HOME write denied. Division of
+  labor: upstream jails CLI agents/shells; our launcher jails the Cursor
+  GUI app, which upstream does not aim at. Gratitude note at
+  gratitude/20260714-070200_ai-jail-macos-backend.md (gratitude root, not
+  inside gratitude/ai-jail/ -- that is the upstream submodule itself).
+
+files:
+  - tools/cursor_jail_macos.rish (direct binary, --no-sandbox, nohup seam, full Mach/IPC section)
+  - tools/cursor-jail-macos.sh (same policy, CURSOR_BIN now defaults to the app binary)
+  - tools/cursor_jail_macos_witness.rish (tests the launcher's emitted profile)
+  - manual/guides/macos-ai-jail-setup.md (rewritten: both paths, three launch facts, signed-out note)
+  - gratitude/20260714-070200_ai-jail-macos-backend.md (new)
+  - work-in-progress/TASKS.md (three new rows under the macOS ai-jail thread)
+  - GLOW_PROFILE.bron (model -> Fable 5 1M Max, 20260714.063900)
+
+witness: |
+  $ rishi/bin/rishi run tools/cursor_jail_macos_witness.rish
+  → PASS inside write; PASS outside denied; GREEN both hold.
+  $ rishi/bin/rishi run tools/cursor_jail_macos.rish
+  → 5 jailed processes at t=15s, still 5 at t=35s (survives launcher exit)
+  $ ai-jail bash -c '...'   # upstream v1.13.0
+  → inside write: OK; outside write: DENIED (Operation not permitted)
+
+named_gaps: >
+  Egress filtering still allow-all/deny-all only; no private-$HOME for the
+  GUI launcher (upstream covers it for CLI agents); Zed-in-Seatbelt guide
+  not yet written. Cold-start from Terminal.app now expected to work (the
+  wrapper trap explained the earlier cold failures) -- Keaton to confirm
+  on his own screen, the one check this session cannot make for itself.
+
+next: >
+  Keaton confirms the jailed window opens from a plain Terminal.app run,
+  signs in once inside the jail if he wants the agent logged in. Then back
+  to the Neth ladder (two-posture root install is the next lap).
