@@ -29,6 +29,7 @@ Reya, Maze, Neth, the shell name (Rish/Rishi), and the whole module-vs-vane nami
 
 | Name | Role | Open question |
 |---|---|---|
+| **Ojjo** | benchmarking **O-vane** (safety/performance) | Palindrome (symmetric-yardstick discipline); four letters; O follows Neth's N in the vane sequence. Quiet in collision research (only OjjO Software / Ojoo / Xojo — none in domain). Confirm? Now-or-horizon (nothing to measure until Glow runs a program) — design [`20260714-025200_ojjo-benchmarking-vane-design.md`](../../external-research/20260714-025200_ojjo-benchmarking-vane-design.md) |
 | **Riyo** | one of four OS variants | Quiet in collision research. Confirm? (Reya's diverse-redundant twin) |
 | **Trey** | one of four OS variants | Quiet in collision research. Confirm? |
 | **Triz** | one of four OS variants (replaced "Tera") | Low-stakes soft collision with TRIZ (the innovation methodology). Confirm? |
