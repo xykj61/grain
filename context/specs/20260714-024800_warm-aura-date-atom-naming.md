@@ -52,6 +52,17 @@ The sweep, then, is a **naming-alignment** pass, not a file-move pass:
 2. Any *new* fold a directory makes on a closed day creates a `YYYYMMDD` folder, never a slugged or counted one.
 3. Reviving keeps its own naming discipline unchanged (`active-reviving/`): a revival is born with its Glow name and its own stamp; the elder keeps its name and stamp. Nothing about reviving conflicts with this atom — it *uses* it.
 
+## Sweep Status — Where We Stand (`20260714.044428`)
+
+The date-format sweep is **not an open pile of work; it is a confirmed state with two compliant conventions**, named here so no reader has to wonder again:
+
+- **Dated artifacts** (session logs, dated specs, design briefs, prompts) carry the warm-aura stamp in filename (`YYYYMMDD-HHMMSS_slug`) and header (`stamp`/`Version YYYYMMDD.HHMMSS`). This has been the one-clock law for weeks; compliance is the norm, and `chrono_version_scan` is the existing witness.
+- **Living documents** (`README.md`, `ROADMAP.md`, `TASKS.md`, `LEXICON.md`, the discipline files) carry **`Last updated: YYYY-MM-DD` prose**, not a stamp — this is the one-clock law's own deliberate two-tier rule (living docs evolve in place; only dated artifacts take the stamp). An ISO `Last updated` line is therefore **correct, not a miss** — it is not the same field as a dated artifact's stamp.
+- **Living-doc `Version` stamps** (the few living guides that carry a `Version`, like `SOURCE.md`) use the dot form `YYYYMMDD.HHMMSS`. `SOURCE.md` was the one such stamp left stale after an on-touch edit; it is now bumped to `20260714.044428`. No other living-doc `Version` drift is known.
+- **Dated folders** are bare `YYYYMMDD` (confirmed on metal: `session-logs/archive/` is the reference; `work-in-progress/archive/` holds flat dated files — both valid).
+
+**Conclusion: the format is seated, the two conventions are both honest, and the tree is in compliance** — the "sweep" is a naming-alignment already done, not a backlog. Future drift is caught on-touch (bump a living `Version` when you edit its doc) and by `chrono_version_scan` for dated artifacts. Nothing here asks for a bulk re-stamp.
+
 ## What This Does Not Do
 
 - It moves no files and folds no days — it names the format the sweep and every future fold align to.

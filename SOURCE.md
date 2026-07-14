@@ -1,10 +1,10 @@
 # SOURCE — From Nothing to a Signed, Sandboxed Home
 
 **Language:** EN
-**Version:** `20260629.090912` (Rye chronological stamp)
+**Version:** `20260714.044428` (Glow warm-aura date atom — chronological, later-is-larger)
 **Style:** Radiant (see `context/RADIANT_STYLE.md`)
-**By:** Reya 2, in the radiant voice, with **Kaeden Reyklah** as coauthor
-**Status:** Living guide
+**By:** Rio 3, in the radiant voice, with **Keaton Dunsford** as coauthor
+**Status:** Living guide — last touched `20260714.044428` (macOS key-card path added; version + byline synced on-touch)
 
 ---
 
