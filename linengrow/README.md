@@ -45,7 +45,7 @@ Linengrow serves makers with tools that are theirs: free tools for music, for fa
 
 ## The SLC Ladder
 
-The full vision — a public benefit corporation, a computational data market, state-currency circulation, investor rounds — is the horizon. We grow toward it one lovable, complete lap at a time.
+The full vision — a public benefit corporation, a computational data market, state-currency circulation, investor rounds — is the horizon. We grow toward it one lovable, complete lap at a time. That computational data market has since been named as its own vane: **Pool** (the Gall-expanded P-vane), where Linengrow runs as one values-specific flagship agent and the market mechanism itself is described secularly for any maker — [`../external-research/20260714-035600_pool-p-vane-content-data-market.md`](../external-research/20260714-035600_pool-p-vane-content-data-market.md). Linengrow stays the vision; Pool is the market fabric beneath it.
 
 | Lap | What | Grows from |
 |------|------|-----------|
