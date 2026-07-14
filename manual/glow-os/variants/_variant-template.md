@@ -18,7 +18,7 @@
 
 ## Its Pair and Its Difference
 
-- **Diverse-redundancy pair:** `{{VARIANT}}` is paired with its twin for safety — the same design implemented independently, so one implementation fault cannot fell both. *(The exact pairing — whether Trey/Triz mirror Riyo/Reya — is awaiting Keaton's confirmation.)*
+- **Diverse-redundancy pair:** `{{VARIANT}}` is paired with its twin for safety — the same design implemented independently, so one implementation fault cannot fell both. The two pairs are confirmed (`20260714.035600`): **Riyo/Reya** and **Trey/Triz**. What remains a build-time choice is the *shape* of the redundancy — two separate codebases from one spec, or one codebase with two independently-verified paths.
 - **What differs:** the twins agree on all external behavior and may differ only in internal implementation detail. A shared witness suite that both twins must pass identically is what keeps "diverse" from becoming "divergent."
 
 ## Booting `{{VARIANT}}`
