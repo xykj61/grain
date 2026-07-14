@@ -126,7 +126,8 @@ Full loop bounds: [`work-in-progress/ready-to-ask-claude.md`](../work-in-progres
 | Name | One line | Provenance gloss |
 |------|----------|------------------|
 | **Dexter** | Input — keyboard and pointer events into the fold, on both display backends | Dexterity, the skillful acting hand; an echo of one who texts; family memory after a grandfather's enterprise (Zendex, Robert Sealy Livermore) |
-| **Kumara** | Identity — the keypair that signs a fact before it enters Weave | The eternal, ever-pure sage-children of the Bhagavata, Sanat-kumara among them |
+| **Kumara** | Identity — the keypair that signs a fact before it enters Weave. **Elder of Rhyz** (`20260714.044428`): the Ed25519 seam Rhyz revives; keeps its `tally/kumara.rye` home and green witnesses until proven-supersede | The eternal, ever-pure sage-children of the Bhagavata, Sanat-kumara among them |
+| **Rhyz** | **Confirmed** (`20260714.044428`) — identity **R-vane**, revives Kumara; named for the *rhizome* (identity connects any-to-any, entered anywhere, broken nowhere fatally) wearing an Azimuth-style point/planet/star *tiered name* for legibility; Ed25519 root from Kumara; code migration deferred to proven-supersede — [`../external-research/20260714-044428_rhyz-r-vane-identity-reviving-kumara.md`](../external-research/20260714-044428_rhyz-r-vane-identity-reviving-kumara.md) · gratitude [`../gratitude/RhizomeTimenergy.md`](../gratitude/RhizomeTimenergy.md) |
 | **Bookie** | The borrow discipline — who may change a value and who may only witness it | A turf accountant keeping the ledger straight; watches ownership, not value shape |
 
 ## Open (named, not yet shaped)
