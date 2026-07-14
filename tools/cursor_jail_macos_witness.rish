@@ -1,11 +1,12 @@
-# cursor_jail_macos_witness.rish — proves the sandbox-exec profile in
-# tools/cursor_jail_macos.rish actually fences writes to the project
+# cursor_jail_macos_witness.rish — proves the sandbox-exec profile emitted
+# by tools/cursor_jail_macos.rish actually fences writes to the project
 # directory, on this host.
 #
 # The Rish-native primary witness, reviving tools/cursor_jail_macos_witness.sh
-# (its bash elder, kept beside this one). Builds its own copy of the profile
-# rather than depend on cross-process stdout capture, so the witness stays
-# simple to read and does not lean on --print-profile's own output shape.
+# (its bash elder, kept beside this one). The profile under test is the
+# launcher's own --print-profile output -- one source of truth, no drifting
+# copy -- captured through a shell redirect because run's captured .out
+# escapes real newlines to literal backslash-n text (a named Rishi gap).
 #
 # Refuse witness: a write outside the project must be denied.
 # Permit witness: a write inside the project must succeed.
@@ -22,31 +23,9 @@ let home = env "HOME"
 let build_mk = run ["mkdir" "-p" "${repo}/tools/.build"]
 assert build_mk.ok else "could not create tools/.build/"
 
-let dq = read-file "tools/fixtures/dquote.txt"
-let nl = read-file "tools/fixtures/newline.txt"
-
-let line_a = "(version 1)"
-let line_b = "(deny default)"
-let line_c = "(allow file-read*)"
-let line_d = "(allow file-write*"
-let line_e = join ["  (subpath " dq repo dq ")"] ""
-let line_f = join ["  (subpath " dq "/tmp" dq ")"] ""
-let line_g = join ["  (subpath " dq "/private/tmp" dq ")"] ""
-let line_h = join ["  (subpath " dq "/private/var/folders" dq "))"] ""
-let line_i = join ["(allow file-write-data (literal " dq "/dev/null" dq "))"] ""
-let line_j = "(allow process-exec)"
-let line_k = "(allow process-fork)"
-let line_l = "(allow signal (target self))"
-let line_m = "(allow sysctl-read)"
-let line_n = "(allow mach-lookup)"
-let line_o = "(allow iokit-open)"
-let line_p = "(allow network*)"
-
-let profile_lines = [line_a line_b line_c line_d line_e line_f line_g line_h line_i line_j line_k line_l line_m line_n line_o line_p]
-let profile = join profile_lines nl
-
 let profile_path = "tools/.build/cursor_jail_macos_witness_profile.sbpl"
-write-file profile_path profile
+let emit = run ["sh" "-c" "rishi/bin/rishi run tools/cursor_jail_macos.rish --print-profile > ${profile_path}"]
+assert emit.ok else "could not emit the launcher's profile via --print-profile"
 
 say "== permit witness: write inside the project =="
 let inside_path = "${repo}/tools/.cursor_jail_macos_witness.tmp"

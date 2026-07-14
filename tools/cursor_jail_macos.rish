@@ -1,29 +1,51 @@
-# cursor_jail_macos.rish — start Cursor (native macOS .app/CLI) inside a
+# cursor_jail_macos.rish — start Cursor (native macOS .app) inside a
 # sandbox-exec (Seatbelt) enclosure, with project-local state.
 #
 # The Rish-native primary launcher, reviving tools/cursor-jail-macos.sh (its
 # bash elder, kept beside this one for reference and for anyone without
-# Rishi built yet). Same profile, same fence, same /dev/null fix -- built
-# with Rish's own string joins instead of a heredoc.
+# Rishi built yet). Same profile, same fence -- built with Rish's own string
+# joins instead of a heredoc.
 #
 #   rishi/bin/rishi run tools/cursor_jail_macos.rish
 #   rishi/bin/rishi run tools/cursor_jail_macos.rish --no-network
 #   rishi/bin/rishi run tools/cursor_jail_macos.rish --print-profile
 #
-# What this gives you, and what it does not (unchanged from the bash elder):
+# Three hard-won launch facts, each proven on this host 20260714 (the full
+# forensic trail lives in the session logs and the guide):
+#
+#   1. Exec the app binary directly, never the `cursor` CLI wrapper. The
+#      wrapper (ELECTRON_RUN_AS_NODE + cli.js) spawns the real app in a
+#      detached dance that dies silently under Seatbelt (bootstrap_check_in
+#      "Permission denied"), exits 0, and launches nothing.
+#   2. Pass --no-sandbox. Chromium's own internal sandbox cannot nest
+#      inside Seatbelt -- the GPU and network helpers abort and take the
+#      app down ("GPU process isn't usable. Goodbye."). This is the same
+#      law SOURCE.md Step 9 already names for Linux, where Chromium's
+#      sandbox cannot nest inside bwrap either. Seatbelt is the boundary.
+#   3. The Mach/IPC/pty allowances below follow the static profile section
+#      of upstream ai-jail's own macOS seatbelt backend (see
+#      gratitude/ai-jail/) -- Electron aborts at bootstrap_check_in of its
+#      MachPortRendezvousServer without mach-register.
+#
+# What this gives you, and what it does not:
 #   - Writes are fenced to the project directory and its own state dirs.
 #   - Reads stay open everywhere (the write fence is the real boundary).
 #   - Network is allowed by default; --no-network denies it outright.
 #   - There is no macOS equivalent of --private-home: reads of your real
 #     $HOME stay open inside the sandbox.
+#   - First launch opens signed out: your normal login lives in the
+#     default profile (~/Library/Application Support/Cursor), outside this
+#     fence. Sign in once inside the jail; that state persists in
+#     .cursor-state/ (gitignored), inside the fence.
 #
 # See: manual/guides/macos-ai-jail-setup.md, SOURCE.md Step 6/9.
 
 let sandbox_check = run ["sh" "-c" "command -v sandbox-exec"]
 assert sandbox_check.ok else "sandbox-exec not found -- this script is macOS-only."
 
-let cursor_check = run ["sh" "-c" "command -v cursor"]
-assert cursor_check.ok else "'cursor' not found on PATH -- install the Cursor CLI (ships with Cursor.app; confirm with 'which cursor')."
+let app_bin = "/Applications/Cursor.app/Contents/MacOS/Cursor"
+let app_check = run ["test" "-x" app_bin]
+assert app_check.ok else "Cursor.app not found at /Applications/Cursor.app -- install Cursor, or launch via the bash elder with CURSOR_BIN set in tools/enclosure.conf."
 
 let pwd_run = run ["pwd"]
 let repo = trim pwd_run.out
@@ -58,20 +80,40 @@ let line_k = join ["  (subpath " dq "/tmp" dq ")"] ""
 let line_l = join ["  (subpath " dq "/private/tmp" dq ")"] ""
 let line_m = join ["  (subpath " dq "/private/var/folders" dq "))"] ""
 let line_n = ""
-let line_o = "; /dev/null needs an explicit write allow -- Cursor's own CLI"
-let line_p = "; wrapper writes to it on startup while resolving its app path"
-let line_q = "; (a write-only discard device; nothing to read back or escalate through)."
-let line_r = join ["(allow file-write-data (literal " dq "/dev/null" dq "))"] ""
-let line_s = ""
-let line_t = "(allow process-exec)"
-let line_u = "(allow process-fork)"
-let line_v = "(allow signal (target self))"
-let line_w = "(allow sysctl-read)"
-let line_x = "(allow mach-lookup)"
-let line_y = "(allow iokit-open)"
-let line_z = ""
+let line_o = "; Process operations."
+let line_p = "(allow process-exec)"
+let line_q = "(allow process-fork)"
+let line_r = "(allow process-info* (target same-sandbox))"
+let line_s = "(allow signal)"
+let line_t = "(allow sysctl-read)"
+let line_u = ""
+let line_v = "; Mach and POSIX IPC -- Electron registers a MachPortRendezvousServer at"
+let line_w = "; startup (bootstrap_check_in), aborting outright without mach-register;"
+let line_x = "; the rest follows upstream ai-jail's own proven macOS static section."
+let line_y = "(allow mach-lookup)"
+let line_z = "(allow mach-register)"
+let line_aa = "(allow mach-host*)"
+let line_ab = "(allow mach-task-name)"
+let line_ac = "(allow ipc-posix-shm-read-data)"
+let line_ad = "(allow ipc-posix-shm-write-data)"
+let line_ae = "(allow ipc-posix-shm-read-metadata)"
+let line_af = "(allow ipc-posix-shm-write-create)"
+let line_ag = "(allow ipc-posix-sem)"
+let line_ah = ""
+let line_ai = "; Pseudo-terminals (integrated terminal) and standard devices."
+let line_aj = "(allow pseudo-tty)"
+let line_ak = "(allow file-ioctl)"
+let line_al = join ["(allow file-read* file-write* (literal " dq "/dev/ptmx" dq "))"] ""
+let line_am = join ["(allow file-read* file-write* (regex #" dq "^/dev/ttys[0-9]+" dq "))"] ""
+let line_an = join ["(allow file-write* (literal " dq "/dev/null" dq "))"] ""
+let line_ao = join ["(allow file-write* (literal " dq "/dev/zero" dq "))"] ""
+let line_ap = join ["(allow file-write* (literal " dq "/dev/random" dq "))"] ""
+let line_aq = join ["(allow file-write* (literal " dq "/dev/urandom" dq "))"] ""
+let line_ar = ""
+let line_as = "(allow iokit-open)"
+let line_at = ""
 
-let profile_lines = [line_a line_b line_c line_d line_e line_f line_g line_h line_i line_j line_k line_l line_m line_n line_o line_p line_q line_r line_s line_t line_u line_v line_w line_x line_y line_z net_line]
+let profile_lines = [line_a line_b line_c line_d line_e line_f line_g line_h line_i line_j line_k line_l line_m line_n line_o line_p line_q line_r line_s line_t line_u line_v line_w line_x line_y line_z line_aa line_ab line_ac line_ad line_ae line_af line_ag line_ah line_ai line_aj line_ak line_al line_am line_an line_ao line_ap line_aq line_ar line_as line_at net_line]
 let profile = join profile_lines nl
 
 if print_only then say profile
@@ -80,10 +122,22 @@ if print_only then exit exit-ok
 let profile_path = "tools/.build/cursor_jail_macos_profile.sbpl"
 write-file profile_path profile
 
-let launch = spawn ["sandbox-exec" "-f" profile_path "--" "cursor" "--user-data-dir=${repo}/.cursor-state/user-data" "--extensions-dir=${repo}/.cursor-state/extensions" repo]
+# --new-window stays as belt-and-suspenders: with a distinct user-data-dir
+# the app is its own instance anyway, but this guards against any future
+# wrapper-style forwarding to an already-running unsandboxed Cursor.
+#
+# The one-line host seam below exists for stdio survival: a spawned child
+# inherits pipes for stdout/stderr that die when this script exits, and
+# Electron logs constantly -- the app boots, then takes a SIGPIPE a few
+# seconds in and dies (observed on this host: alive at 12s, gone by 20s).
+# exec + /dev/null redirects + nohup make the jailed app independent of
+# both this script's lifetime and the launching terminal's.
+let launch = spawn ["sh" "-c" "exec nohup sandbox-exec -f ${profile_path} -- ${app_bin} --no-sandbox --user-data-dir=${repo}/.cursor-state/user-data --extensions-dir=${repo}/.cursor-state/extensions --new-window ${repo} >/dev/null 2>&1 </dev/null"]
 
 say "cursor-jail-macos: launched inside the sandbox-exec enclosure."
 say "  project: ${repo}"
 say "  state:   ${repo}/.cursor-state/"
 if no_network then say "  network: denied" else say "  network: allowed"
+say "First run opens signed out (your normal login lives outside the fence);"
+say "sign in once inside the jail and it persists in .cursor-state/."
 say "This script returns immediately; Cursor keeps running on its own."
