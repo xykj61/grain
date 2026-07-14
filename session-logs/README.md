@@ -18,6 +18,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 | Stamp | Log | Meaning |
 |-------|-----|---------|
+| 20260714.000347 | [Keaton name transition, Glow OS umbrella, doc-pipeline fusion, prompt components, docs scaffold, Maze opinion](20260714-000347_keaton-glow-os-direction.bron) | Keaton sealed as real name (Kaeden pseudonym) · Glow OS umbrella · Scribble/Brix/Mantra fusion · Glow docs scaffold · Maze = nursery, confirm-with-refinement |
 | 20260713.234049 | [Model switch to Opus 4.8; clean stray READMEs, sync TASKS/ROADMAP, populate Cursor to-dos](20260713-234049_opus-switch-todo-sync.bron) | restored 2 stray READMEs · synced both planning docs · Cursor to-do snapshot mirrors the fork thread |
 | 20260713.233147 | [Grain lineage cloned whole to gratitude, siloed to plain module-named use](20260713-233147_grain-lineage-cloned-and-siloed.bron) | six documents held whole in gratitude · six secular module-named silos in external-research · originals never edited |
 | 20260713.230602 | [Cold/warm atoms are real Hoon terms — my earlier correction was wrong](20260713-230602_cold-warm-atom-correction.bron) | Kaeden was right; fixed the Glow supplement doc to ground cold/warm atoms correctly beside auras |
