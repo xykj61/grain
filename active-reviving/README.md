@@ -39,7 +39,7 @@ These are already underway, now recognized as revivals rather than one-off desig
 
 | Revival | Elder(s) it re-grows | Design home | Status |
 |---|---|---|---|
-| **Neth** | the retired WOV-TigerBeetle pin + TigerBeetle's replicated-state-machine shape | [`../external-research/20260714-001017_neth-mala-settlement-l1-l2-design.md`](../external-research/20260714-001017_neth-mala-settlement-l1-l2-design.md) | name confirmed; minimal-witness first lap proposed |
+| **Neth** | the retired WOV-TigerBeetle pin + TigerBeetle's replicated-state-machine shape | [`../external-research/20260714-001017_neth-mala-settlement-l1-l2-design.md`](../external-research/20260714-001017_neth-mala-settlement-l1-l2-design.md); real infra cost/cluster plan: [`../external-research/20260714-012125_neth-vps-cost-and-cluster-plan.md`](../external-research/20260714-012125_neth-vps-cost-and-cluster-plan.md) | name confirmed; minimal-witness first lap proposed ($0, local); real 6-replica + star/planet cluster costed at ~$66.50/mo single-provider or ~$60-125/mo three-provider |
 | **The doc pipeline** | Scribble, Brix, and Mantra toward their Clay/Ford roles in Glow | [`../external-research/20260713-235700_glow-doc-fusion-scribble-brix-mantra.md`](../external-research/20260713-235700_glow-doc-fusion-scribble-brix-mantra.md) | design; round-trip witness proposed |
 | **Glow itself** | Rye + Hoon | [`../external-research/20260713-214400_nock-interpreter-and-rye-hoon-fusion-scoping.md`](../external-research/20260713-214400_nock-interpreter-and-rye-hoon-fusion-scoping.md) | scoped |
 | **Pond** (precedent, already landed) | ai-jail | (the supersede pattern this whole concept generalizes) | superseded on word |
