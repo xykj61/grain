@@ -51,6 +51,10 @@ Read the sections below when you wonder where a new file belongs. When a season'
 
 **`vendor/`** — third-party source the build leans on, local and unmodified.
 
+**`old/`** — this fork's own predecessor material, kept whole rather than discarded: the original `urbit/urbit` tree this fork's `.git` history descends from, plus a legacy personal collection (`nockchain`, `urbit.org`) that predated the fork. Each subfolder keeps its own original `README.md` untouched; [`old/FORK_NOTES.md`](old/FORK_NOTES.md) names what sits here and why. See [`context/specs/20260713-222416_new-journey-identity-marker.md`](context/specs/20260713-222416_new-journey-identity-marker.md) for the fork's own identity seam.
+
+**`vere/`** — the `urbit/vere` runtime, forked the same way as the top-level project: `vere/old/` holds the original tree, and `vere/`'s own `.git` history now lives outside this project at `~/.git-vere-backup/` rather than inside it, per this fork's own chosen variant for that module.
+
 **Module homes** — [`rye/README.md`](rye/README.md) · [`rishi/README.md`](rishi/README.md) · [`tally/README.md`](tally/README.md) · [`caravan/README.md`](caravan/README.md) · [`mantra/README.md`](mantra/README.md) · [`comlink/README.md`](comlink/README.md) · [`pond/README.md`](pond/README.md) · [`aurora/README.md`](aurora/README.md) · [`brushstroke/`](brushstroke/) · [`linengrow/`](linengrow/) (vision until graduation), and the rest: each grows a seed toward a running whole.
 
 **`tools/`** — gates, witnesses, launch scripts, and the strict checks that keep the tree honest. Some `.sh` scripts are POSIX seams (QEMU backgrounding, cold-start bootstrap, external interpreters) and stay `.sh` by design — see [`context/TAME_GUIDANCE.md`](context/TAME_GUIDANCE.md) · counsel [`counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md`](counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md).
