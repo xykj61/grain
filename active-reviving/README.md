@@ -1,0 +1,56 @@
+# Active Reviving — Re-Growing the Elders into Glow
+
+**Language:** EN
+**Version:** `20260714.004428` (Pacific)
+**Style:** Radiant (see `../context/RADIANT_STYLE.md`)
+**Voice:** Rio 3
+**Status:** Living — the home for revivals in motion, sibling to `active-designing/`
+
+---
+
+## What Reviving Is
+
+Reviving is how Glow OS grows: not by renaming what exists, but by **re-growing an existing working thing into the Glow direction as a new artifact beside the elder.** A revival takes something real — an Urbit vane resting in `old/`, a Rye OS module already running, a retired seam like the WOV-TigerBeetle pin — and rewrites its proven essence in Glow, under TAME, born with its Glow-direction name. The elder keeps its name and its green witnesses and keeps running. The revival supersedes it only once it is proven, and never before.
+
+This resolves the rename tension at its root. We were weighing whether to rename our modules to Urbit's vane names (huge reference churn, un-reviewable diffs) or keep our own (less legible to Urbit). Reviving dissolves the choice: **we never rename.** A revived module is a new thing, so it is simply *born* with whichever name fits the Glow direction — while the elder it grew from stays exactly as it was until the revival earns the right to replace it.
+
+## Reviving vs. Designing — the Sibling Distinction
+
+`active-designing/` and `active-reviving/` are siblings, and the line between them is clean:
+
+- **`active-designing/`** plans something **new** — a module, a lap, a surface that did not exist. Forward-looking; no required ancestor.
+- **`active-reviving/`** re-grows something that **already exists** — it always names its elder (the `old/` vane, the running module, the retired seam) and carries that elder's working essence forward into Glow. Backward-rooted, forward-growing.
+
+If a brief has no ancestor it is reviving from, it belongs in `active-designing/`. If it is rewriting a real, working thing into Glow, it belongs here.
+
+## The Discipline of a Revival
+
+Every revival keeps five rules, each drawn from a law this project already lives by:
+
+1. **Name the elder.** A revival states exactly what it re-grows — a path in `old/`, a module, a retired seam. No named source means it is designing, not reviving.
+2. **Grow beside; never break** (accrete-never-break). The elder keeps its name, its home, and its green witnesses, and keeps running throughout. The revival grows here as design, then lands as a new artifact in its own home when ready.
+3. **Born with its Glow name.** Because a revival is a new artifact, it carries its Glow-direction name from birth. This is the whole point: renaming is replaced by naming-at-birth, so no reference ever churns.
+4. **Supersede only when proven** (the Pond-supersedes-ai-jail pattern). The revival replaces the elder only after passing the elder's own witnesses, with an explicit supersede word. Until then, both coexist honestly.
+5. **May shelter in Maze.** A revival still earning its shape may live in the Maze nursery until it graduates to a canonical name and home.
+
+## Revivals in Motion (the index)
+
+These are already underway, now recognized as revivals rather than one-off designs:
+
+| Revival | Elder(s) it re-grows | Design home | Status |
+|---|---|---|---|
+| **Neth** | the retired WOV-TigerBeetle pin + TigerBeetle's replicated-state-machine shape | [`../external-research/20260714-001017_neth-mala-settlement-l1-l2-design.md`](../external-research/20260714-001017_neth-mala-settlement-l1-l2-design.md) | name confirmed; minimal-witness first lap proposed |
+| **The doc pipeline** | Scribble, Brix, and Mantra toward their Clay/Ford roles in Glow | [`../external-research/20260713-235700_glow-doc-fusion-scribble-brix-mantra.md`](../external-research/20260713-235700_glow-doc-fusion-scribble-brix-mantra.md) | design; round-trip witness proposed |
+| **Glow itself** | Rye + Hoon | [`../external-research/20260713-214400_nock-interpreter-and-rye-hoon-fusion-scoping.md`](../external-research/20260713-214400_nock-interpreter-and-rye-hoon-fusion-scoping.md) | scoped |
+| **Pond** (precedent, already landed) | ai-jail | (the supersede pattern this whole concept generalizes) | superseded on word |
+
+## Why This Is the Right Shape
+
+- It is Gall's Law made into a folder: a complex Glow OS grows from the simpler elders that already worked, one revival at a time, each proven before it supersedes.
+- It keeps every review small and human-checkable — the elder never churns, the revival is a fresh, self-contained artifact.
+- It keeps every pitch legible — a revival can be pitched as "our Glow-native Clay," born with that name, without ever having renamed Mantra.
+- It is honest — the elder stays visible and running until the revival truly earns its place.
+
+---
+
+*May we revive rather than rename, grow rather than break, and let each new thing earn the place of the old before it takes it.*

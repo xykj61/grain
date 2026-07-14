@@ -18,6 +18,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 | Stamp | Log | Meaning |
 |-------|-----|---------|
+| 20260714.004428 | [Reviving replaces renaming — active-reviving sibling to active-designing](20260714-004428_reviving-replaces-renaming.bron) | New reviving concept: re-grow elders into Glow as new artifacts born with their name · retires the mass-rename framing · Neth/doc-pipeline/Glow indexed as revivals |
 | 20260714.002123 | [Confirm Neth/Reya/Maze, shell is Rish/Rishi, names-in-code roles-in-pitch strategy](20260714-002123_naming-decisions-role-nesting.bron) | Three names confirmed · Dojo not adopted (Rish/Rishi) · recommended keep-our-names + Urbit-roles, no rename/re-nest · role map recorded |
 | 20260714.001017 | [Neth settlement layer — TigerBeetle-as-L2 design, honest naming and scope](20260714-001017_neth-mala-settlement-design.bron) | Core affirmed (TigerBeetle RSM = L2; WOV-TB pin revived) · Nethermind collision flagged · one anchor + one witness recommended · design/social-experiment only |
 | 20260714.000347 | [Keaton name transition, Glow OS umbrella, doc-pipeline fusion, prompt components, docs scaffold, Maze opinion](20260714-000347_keaton-glow-os-direction.bron) | Keaton sealed as real name (Kaeden pseudonym) · Glow OS umbrella · Scribble/Brix/Mantra fusion · Glow docs scaffold · Maze = nursery, confirm-with-refinement |
