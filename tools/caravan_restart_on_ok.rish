@@ -1,0 +1,16 @@
+# caravan_restart_on_ok.rish — exit-code ring: restart on cycle_ok, stop on reserved code.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/caravan_restart_on_ok.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/restart-on-ok"
+
+let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/restart_on_ok.rye -femit-bin=${bin}"]
+assert build.ok else "restart_on_ok build failed"
+
+let run = run ["sh" "-c" "${bin} 2>&1"]
+assert run.ok else "restart_on_ok supervisor exited non-zero"
+assert run.out contains "GREEN" else "restart_on_ok not GREEN"
+
+say "GREEN: Caravan restart-on-ok witness passed (cycle_ok restarts, stop code halts)."

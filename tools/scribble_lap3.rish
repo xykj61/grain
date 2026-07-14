@@ -1,0 +1,19 @@
+# scribble_lap3.rish — Scribble lap 2: rish_fence snippet extraction witness.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/scribble_lap3.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "scribble/bin/scribble"
+
+let build = run ["sh" "-c" "mkdir -p scribble/bin && env RYE_ZIG=${zig} rye/bin/rye build scribble/scribble.rye -femit-bin=${bin}"]
+assert build.ok else "Scribble lap 2 build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "Scribble selftest exited non-zero"
+assert selftest.out contains "GREEN" else "Scribble selftest not GREEN"
+assert selftest.out contains "rye snippets extracted" else "Scribble missing rye snippet extraction"
+assert selftest.out contains "rish snippets extracted" else "Scribble missing rish snippet extraction"
+assert selftest.out contains "rish snippet overflow refused" else "Scribble missing rish overflow unwelcome"
+
+say "GREEN: Scribble lap 2 — rish_fence training snippets from session fixture."

@@ -1,0 +1,11 @@
+# amber_manifest_tilak.rish — I6: Amber manifest hygiene (three-field Tilak line).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/amber_manifest_tilak.rish
+
+let result = run ["sh" "tools/fixtures/amber_manifest_tilak_witness.sh"]
+say result.out
+assert result.ok else "amber manifest tilak witness failed"
+assert result.out contains "GREEN" else "amber manifest tilak witness not GREEN"
+
+say "GREEN: amber manifest Tilak witness passed (legacy + tilak goldens)."

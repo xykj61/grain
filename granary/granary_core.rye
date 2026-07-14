@@ -1,0 +1,526 @@
+//! granary/granary_core.rye — Granary: name-facts, resolve, resin fold, Scribble, write gate, mirror.
+//!
+//! Four doors open through Exchange listing; WOV settlement waits; Mandi is its own room.
+//!
+//! Ground: [`../context/specs/20260710-163043_granary-name-seated.md`](../context/specs/20260710-163043_granary-name-seated.md)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const kumara = @import("kumara.rye");
+const tally_copy = @import("tally_copy.rye");
+const scribble = @import("scribble_core.rye");
+const Sha3_256 = std.crypto.hash.sha3.Sha3_256;
+
+pub const granary_version = "20260710.164944";
+
+pub const max_facts: u32 = 16;
+pub const max_person: u32 = 32;
+pub const max_weave: u32 = 32;
+pub const max_stamp: u32 = 32;
+pub const max_fact_len: u32 = 2048;
+pub const max_log_bytes: u32 = 8192;
+pub const max_resin_bytes: u32 = 4096;
+pub const max_resins: u32 = 8;
+pub const max_frame_lines: u32 = 32;
+pub const max_frame_line: u32 = 128;
+pub const digest_hex_len: u32 = 64;
+pub const stamp_sig_hex_len: u32 = kumara.signature_length * 2;
+
+/// Publisher witness seed — distinct from vessel 0x62, seal 0x63, delivery 0x64.
+const publisher_seed: [kumara.seed_length]u8 = .{0x65} ** kumara.seed_length;
+
+pub const fixture_front_page = "granary/fixtures/front_page.md";
+
+pub const NameFactError = error{
+    InvalidFact,
+    BadHex,
+    Overflow,
+    VerifyFailed,
+    UnknownName,
+    NotPublished,
+    DigestMismatch,
+    ResinMissing,
+    StoreFull,
+    FrameOverflow,
+    PathBad,
+    DuplicateFact,
+    LogOverflow,
+};
+
+pub const NameFact = struct {
+    stamp: []const u8,
+    person: []const u8,
+    weave: []const u8,
+    resin_digest: []const u8,
+    stamp_sig: []const u8,
+};
+
+const StoredFact = struct {
+    stamp: [max_stamp]u8 = .{0} ** max_stamp,
+    stamp_len: u32 = 0,
+    person: [max_person]u8 = .{0} ** max_person,
+    person_len: u32 = 0,
+    weave: [max_weave]u8 = .{0} ** max_weave,
+    weave_len: u32 = 0,
+    resin_digest: [digest_hex_len]u8 = .{0} ** digest_hex_len,
+    stamp_sig: [stamp_sig_hex_len]u8 = .{0} ** stamp_sig_hex_len,
+
+    fn as_view(self: *const StoredFact) NameFact {
+        return .{
+            .stamp = self.stamp[0..self.stamp_len],
+            .person = self.person[0..self.person_len],
+            .weave = self.weave[0..self.weave_len],
+            .resin_digest = &self.resin_digest,
+            .stamp_sig = &self.stamp_sig,
+        };
+    }
+};
+
+const StoredResin = struct {
+    digest_hex: [digest_hex_len]u8 = .{0} ** digest_hex_len,
+    bytes: [max_resin_bytes]u8 = .{0} ** max_resin_bytes,
+    bytes_len: u32 = 0,
+};
+
+pub const FrameLine = struct {
+    text: [max_frame_line]u8 = .{0} ** max_frame_line,
+    text_len: u32 = 0,
+
+    pub fn slice(self: *const FrameLine) []const u8 {
+        return self.text[0..self.text_len];
+    }
+};
+
+pub const Frame = struct {
+    lines: [max_frame_lines]FrameLine = undefined,
+    line_count: u32 = 0,
+};
+
+/// Invariant: fact_count <= max_facts; every stored fact verified at append.
+pub const Registry = struct {
+    facts: [max_facts]StoredFact = undefined,
+    fact_count: u32 = 0,
+
+    pub fn empty() Registry {
+        return .{ .facts = undefined, .fact_count = 0 };
+    }
+};
+
+/// Invariant: resin_count <= max_resins; digest matches bytes at put.
+pub const ResinStore = struct {
+    resins: [max_resins]StoredResin = undefined,
+    resin_count: u32 = 0,
+
+    pub fn empty() ResinStore {
+        return .{ .resins = undefined, .resin_count = 0 };
+    }
+};
+
+pub fn publisher_keypair() kumara.KeyPair {
+    return kumara.keypair_from_seed(&publisher_seed);
+}
+
+fn trim_line(line: []const u8) []const u8 {
+    return std.mem.trim(u8, line, " \t\r\n");
+}
+
+fn is_lower_hex(c: u8) bool {
+    return (c >= '0' and c <= '9') or (c >= 'a' and c <= 'f');
+}
+
+fn require_lower_hex(value: []const u8, want_len: u32) NameFactError!void {
+    if (value.len != want_len) return error.InvalidFact;
+    var i: u32 = 0;
+    while (i < value.len) : (i += 1) {
+        if (!is_lower_hex(value[i])) return error.InvalidFact;
+    }
+}
+
+fn write_hex(bytes: []const u8, out: []u8) void {
+    assert(out.len >= bytes.len * 2);
+    var i: u32 = 0;
+    while (i < bytes.len) : (i += 1) {
+        _ = std.fmt.bufPrint(out[i * 2 ..][0..2], "{x:0>2}", .{bytes[i]}) catch unreachable;
+    }
+}
+
+fn decode_hex_lower(hex: []const u8, out: []u8) NameFactError!void {
+    if (hex.len != out.len * 2) return error.BadHex;
+    var i: u32 = 0;
+    while (i < out.len) : (i += 1) {
+        const hi = hex[i * 2];
+        const lo = hex[i * 2 + 1];
+        if (!is_lower_hex(hi) or !is_lower_hex(lo)) return error.BadHex;
+        const hv: u8 = if (hi <= '9') hi - '0' else hi - 'a' + 10;
+        const lv: u8 = if (lo <= '9') lo - '0' else lo - 'a' + 10;
+        out[i] = (hv << 4) | lv;
+    }
+}
+
+fn append_kv(out: []u8, off: *u32, key: []const u8, value: []const u8) NameFactError!void {
+    const need = key.len + 1 + value.len + 1;
+    if (off.* + need > out.len) return error.Overflow;
+    tally_copy.copy_disjoint(u8, out[off.*..][0..key.len], key);
+    off.* += @intCast(key.len);
+    out[off.*] = ' ';
+    off.* += 1;
+    tally_copy.copy_disjoint(u8, out[off.*..][0..value.len], value);
+    off.* += @intCast(value.len);
+    out[off.*] = '\n';
+    off.* += 1;
+}
+
+fn copy_field(dst: []u8, len: *u32, src: []const u8) NameFactError!void {
+    if (src.len > dst.len) return error.Overflow;
+    tally_copy.copy_disjoint(u8, dst[0..src.len], src);
+    len.* = @intCast(src.len);
+}
+
+pub fn digest_hex_of(content: []const u8, out: *[digest_hex_len]u8) void {
+    var digest: [32]u8 = undefined;
+    Sha3_256.hash(content, &digest, .{});
+    write_hex(&digest, out);
+}
+
+pub fn parse_name_fact(text: []const u8, out: *NameFact) NameFactError!void {
+    var stamp: ?[]const u8 = null;
+    var person: ?[]const u8 = null;
+    var weave: ?[]const u8 = null;
+    var resin_digest: ?[]const u8 = null;
+    var stamp_sig: ?[]const u8 = null;
+    var format: ?[]const u8 = null;
+
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    while (lines.next()) |raw| {
+        const line = trim_line(raw);
+        if (line.len == 0 or line[0] == '#') continue;
+        const space = std.mem.indexOfScalar(u8, line, ' ') orelse return error.InvalidFact;
+        const key = line[0..space];
+        const value = trim_line(line[space + 1 ..]);
+        if (value.len == 0) return error.InvalidFact;
+        if (std.mem.eql(u8, key, "format")) {
+            format = value;
+        } else if (std.mem.eql(u8, key, "stamp")) {
+            stamp = value;
+        } else if (std.mem.eql(u8, key, "person")) {
+            person = value;
+        } else if (std.mem.eql(u8, key, "weave")) {
+            weave = value;
+        } else if (std.mem.eql(u8, key, "resin_digest")) {
+            try require_lower_hex(value, digest_hex_len);
+            resin_digest = value;
+        } else if (std.mem.eql(u8, key, "stamp_sig")) {
+            try require_lower_hex(value, stamp_sig_hex_len);
+            stamp_sig = value;
+        } else return error.InvalidFact;
+    }
+    if (format == null or stamp == null or person == null) return error.InvalidFact;
+    if (weave == null or resin_digest == null or stamp_sig == null) return error.InvalidFact;
+    if (!std.mem.eql(u8, format.?, "name-fact-v1")) return error.InvalidFact;
+    if (person.?.len > max_person or weave.?.len > max_weave) return error.Overflow;
+    if (stamp.?.len > max_stamp) return error.Overflow;
+    out.* = .{
+        .stamp = stamp.?,
+        .person = person.?,
+        .weave = weave.?,
+        .resin_digest = resin_digest.?,
+        .stamp_sig = stamp_sig.?,
+    };
+}
+
+pub fn write_canonical(fact: NameFact, out: []u8) NameFactError!u32 {
+    var off: u32 = 0;
+    try append_kv(out, &off, "format", "name-fact-v1");
+    try append_kv(out, &off, "stamp", fact.stamp);
+    try append_kv(out, &off, "person", fact.person);
+    try append_kv(out, &off, "weave", fact.weave);
+    try append_kv(out, &off, "resin_digest", fact.resin_digest);
+    return off;
+}
+
+pub fn verify_name_fact(text: []const u8) NameFactError!void {
+    var fields: NameFact = undefined;
+    try parse_name_fact(text, &fields);
+    var canonical: [max_fact_len]u8 = undefined;
+    const canon_len = try write_canonical(fields, &canonical);
+    var sig_bytes: [kumara.signature_length]u8 = undefined;
+    try decode_hex_lower(fields.stamp_sig, &sig_bytes);
+    kumara.verify_bytes(canonical[0..canon_len], &sig_bytes, publisher_keypair().public_key) catch return error.VerifyFailed;
+}
+
+pub fn sign_name_fact(
+    stamp: []const u8,
+    person: []const u8,
+    weave: []const u8,
+    resin_digest: []const u8,
+    out: []u8,
+) NameFactError!u32 {
+    try require_lower_hex(resin_digest, digest_hex_len);
+    if (stamp.len > max_stamp or person.len > max_person or weave.len > max_weave) return error.Overflow;
+    const draft = NameFact{
+        .stamp = stamp,
+        .person = person,
+        .weave = weave,
+        .resin_digest = resin_digest,
+        .stamp_sig = "",
+    };
+    var canonical: [max_fact_len]u8 = undefined;
+    const canon_len = try write_canonical(draft, &canonical);
+    const sig = kumara.sign(canonical[0..canon_len], publisher_keypair(), null);
+    const sig_bytes = sig.toBytes();
+    var sig_hex: [stamp_sig_hex_len]u8 = undefined;
+    write_hex(&sig_bytes, &sig_hex);
+
+    var off: u32 = 0;
+    try append_kv(out, &off, "format", "name-fact-v1");
+    try append_kv(out, &off, "stamp", stamp);
+    try append_kv(out, &off, "person", person);
+    try append_kv(out, &off, "weave", weave);
+    try append_kv(out, &off, "resin_digest", resin_digest);
+    try append_kv(out, &off, "stamp_sig", &sig_hex);
+    try verify_name_fact(out[0..off]);
+    return off;
+}
+
+pub fn append_fact(reg: *Registry, text: []const u8) NameFactError!void {
+    try verify_name_fact(text);
+    if (reg.fact_count >= max_facts) return error.Overflow;
+    var fields: NameFact = undefined;
+    try parse_name_fact(text, &fields);
+    if (find_by_sig(reg, fields.stamp_sig) != null) return error.DuplicateFact;
+    var stored: StoredFact = .{};
+    try copy_field(&stored.stamp, &stored.stamp_len, fields.stamp);
+    try copy_field(&stored.person, &stored.person_len, fields.person);
+    try copy_field(&stored.weave, &stored.weave_len, fields.weave);
+    tally_copy.copy_disjoint(u8, &stored.resin_digest, fields.resin_digest);
+    tally_copy.copy_disjoint(u8, &stored.stamp_sig, fields.stamp_sig);
+    reg.facts[reg.fact_count] = stored;
+    reg.fact_count += 1;
+}
+
+fn find_by_sig(reg: *const Registry, stamp_sig: []const u8) ?*const StoredFact {
+    var i: u32 = 0;
+    while (i < reg.fact_count) : (i += 1) {
+        if (std.mem.eql(u8, &reg.facts[i].stamp_sig, stamp_sig)) return &reg.facts[i];
+    }
+    return null;
+}
+
+/// Resolve `person/weave` — latest matching name-fact wins (accrete-never-break).
+pub fn resolve(reg: *const Registry, path: []const u8) NameFactError!NameFact {
+    const slash = std.mem.indexOfScalar(u8, path, '/') orelse return error.PathBad;
+    if (slash == 0 or slash + 1 >= path.len) return error.PathBad;
+    if (std.mem.indexOfScalar(u8, path[slash + 1 ..], '/') != null) return error.PathBad;
+    const person = path[0..slash];
+    const weave = path[slash + 1 ..];
+    var found: ?u32 = null;
+    var i: u32 = 0;
+    while (i < reg.fact_count) : (i += 1) {
+        const f = &reg.facts[i];
+        if (std.mem.eql(u8, f.person[0..f.person_len], person) and std.mem.eql(u8, f.weave[0..f.weave_len], weave)) {
+            found = i;
+        }
+    }
+    if (found) |idx| return reg.facts[idx].as_view();
+    return error.UnknownName;
+}
+
+/// Append a verified name-fact to the durable log buffer, then to the registry.
+/// Write gate: verify signature before any mutation; refuse exact replay.
+pub fn publish(reg: *Registry, log: []u8, log_len: *u32, fact_text: []const u8) NameFactError!void {
+    try verify_name_fact(fact_text);
+    var fields: NameFact = undefined;
+    try parse_name_fact(fact_text, &fields);
+    if (find_by_sig(reg, fields.stamp_sig) != null) return error.DuplicateFact;
+    if (reg.fact_count >= max_facts) return error.Overflow;
+
+    const sep: []const u8 = if (log_len.* == 0) "" else "---\n";
+    const need_nl: u32 = if (fact_text.len == 0 or fact_text[fact_text.len - 1] != '\n') 1 else 0;
+    const need = sep.len + fact_text.len + need_nl;
+    if (log_len.* + need > log.len) return error.LogOverflow;
+    if (sep.len > 0) {
+        tally_copy.copy_disjoint(u8, log[log_len.*..][0..sep.len], sep);
+        log_len.* += @intCast(sep.len);
+    }
+    tally_copy.copy_disjoint(u8, log[log_len.*..][0..fact_text.len], fact_text);
+    log_len.* += @intCast(fact_text.len);
+    if (need_nl == 1) {
+        log[log_len.*] = '\n';
+        log_len.* += 1;
+    }
+
+    try append_fact(reg, fact_text);
+}
+
+/// Load an append-only registry log (`---` separated name-facts). Each fact verified.
+pub fn load_log(reg: *Registry, text: []const u8) NameFactError!void {
+    var blocks = std.mem.splitSequence(u8, text, "---\n");
+    while (blocks.next()) |raw| {
+        const block = std.mem.trim(u8, raw, " \t\r\n");
+        if (block.len == 0) continue;
+        var with_nl: [max_fact_len]u8 = undefined;
+        if (block.len + 1 > with_nl.len) return error.Overflow;
+        tally_copy.copy_disjoint(u8, with_nl[0..block.len], block);
+        with_nl[block.len] = '\n';
+        try append_fact(reg, with_nl[0 .. block.len + 1]);
+    }
+}
+
+pub fn put_resin(store: *ResinStore, content: []const u8) NameFactError![digest_hex_len]u8 {
+    if (content.len > max_resin_bytes) return error.Overflow;
+    if (store.resin_count >= max_resins) return error.StoreFull;
+    var digest: [digest_hex_len]u8 = undefined;
+    digest_hex_of(content, &digest);
+    var slot: StoredResin = .{};
+    slot.digest_hex = digest;
+    tally_copy.copy_disjoint(u8, slot.bytes[0..content.len], content);
+    slot.bytes_len = @intCast(content.len);
+    store.resins[store.resin_count] = slot;
+    store.resin_count += 1;
+    return digest;
+}
+
+fn find_resin(store: *const ResinStore, digest_hex: []const u8) ?*const StoredResin {
+    var i: u32 = 0;
+    while (i < store.resin_count) : (i += 1) {
+        if (std.mem.eql(u8, &store.resins[i].digest_hex, digest_hex)) return &store.resins[i];
+    }
+    return null;
+}
+
+fn find_resin_mut(store: *ResinStore, digest_hex: []const u8) ?*StoredResin {
+    var i: u32 = 0;
+    while (i < store.resin_count) : (i += 1) {
+        if (std.mem.eql(u8, &store.resins[i].digest_hex, digest_hex)) return &store.resins[i];
+    }
+    return null;
+}
+
+pub fn has_resin(store: *const ResinStore, digest_hex: []const u8) bool {
+    return find_resin(store, digest_hex) != null;
+}
+
+/// Host serves: copy verified resin bytes for a digest.
+pub fn serve_resin(host: *const ResinStore, digest_hex: []const u8, out: []u8) NameFactError!u32 {
+    return clone_resin(host, digest_hex, out);
+}
+
+/// A digest is published when some verified name-fact in the registry names it.
+/// Precondition: digest_hex.len == digest_hex_len (asserted).
+pub fn digest_is_published(reg: *const Registry, digest_hex: []const u8) bool {
+    assert(digest_hex.len == digest_hex_len);
+    var i: u32 = 0;
+    while (i < reg.fact_count) : (i += 1) {
+        if (std.mem.eql(u8, reg.facts[i].resin_digest[0..], digest_hex)) return true;
+    }
+    return false;
+}
+
+/// Network-facing serve: a digest is an address for verifying content, never a
+/// capability for reaching it. Refuse any digest no published name-fact names,
+/// so an unpublished resin sharing a store with published ones stays private
+/// even from a requester who has learned its digest.
+pub fn serve_resin_published(
+    host: *const ResinStore,
+    reg: *const Registry,
+    digest_hex: []const u8,
+    out: []u8,
+) NameFactError!u32 {
+    if (!digest_is_published(reg, digest_hex)) return error.NotPublished;
+    return clone_resin(host, digest_hex, out);
+}
+
+/// Report from mirroring one weave's resin from host to guest.
+pub const MirrorReport = struct {
+    had_already: bool,
+    bytes_copied: u32,
+};
+
+/// Sharing door: resolve path, serve resin from host if guest lacks it, fold into guest.
+/// Mirrors equal when both hold the same digest-verified bytes.
+pub fn mirror_weave(
+    guest: *ResinStore,
+    host: *const ResinStore,
+    reg: *const Registry,
+    path: []const u8,
+) NameFactError!MirrorReport {
+    const fact = try resolve(reg, path);
+    if (has_resin(guest, fact.resin_digest)) {
+        // Guest already holds — prove host agrees (equal mirrors).
+        var guest_buf: [max_resin_bytes]u8 = undefined;
+        var host_buf: [max_resin_bytes]u8 = undefined;
+        const gl = try clone_resin(guest, fact.resin_digest, &guest_buf);
+        const hl = try serve_resin(host, fact.resin_digest, &host_buf);
+        if (gl != hl or !std.mem.eql(u8, guest_buf[0..gl], host_buf[0..hl])) return error.DigestMismatch;
+        return .{ .had_already = true, .bytes_copied = 0 };
+    }
+    var buf: [max_resin_bytes]u8 = undefined;
+    const len = try serve_resin(host, fact.resin_digest, &buf);
+    const put_digest = try put_resin(guest, buf[0..len]);
+    if (!std.mem.eql(u8, &put_digest, fact.resin_digest)) return error.DigestMismatch;
+    return .{ .had_already = false, .bytes_copied = len };
+}
+
+/// Witness-only: corrupt hosted bytes so digest no longer matches (unwelcome path).
+pub fn tamper_resin_for_witness(store: *ResinStore, digest_hex: []const u8) NameFactError!void {
+    const resin = find_resin_mut(store, digest_hex) orelse return error.ResinMissing;
+    if (resin.bytes_len == 0) return error.ResinMissing;
+    resin.bytes[0] ^= 0xff;
+}
+
+/// Clone by folding: verify digest, then copy resin bytes into `out`.
+pub fn clone_resin(store: *const ResinStore, digest_hex: []const u8, out: []u8) NameFactError!u32 {
+    try require_lower_hex(digest_hex, digest_hex_len);
+    const resin = find_resin(store, digest_hex) orelse return error.ResinMissing;
+    var check: [digest_hex_len]u8 = undefined;
+    digest_hex_of(resin.bytes[0..resin.bytes_len], &check);
+    if (!std.mem.eql(u8, &check, digest_hex)) return error.DigestMismatch;
+    if (resin.bytes_len > out.len) return error.Overflow;
+    tally_copy.copy_disjoint(u8, out[0..resin.bytes_len], resin.bytes[0..resin.bytes_len]);
+    return resin.bytes_len;
+}
+
+fn push_frame_line(frame: *Frame, text: []const u8) NameFactError!void {
+    if (frame.line_count >= max_frame_lines) return error.FrameOverflow;
+    const trimmed = if (text.len > max_frame_line) text[0..max_frame_line] else text;
+    var line: FrameLine = .{};
+    tally_copy.copy_disjoint(u8, line.text[0..trimmed.len], trimmed);
+    line.text_len = @intCast(trimmed.len);
+    frame.lines[frame.line_count] = line;
+    frame.line_count += 1;
+}
+
+/// Fold Scribble blocks into a drawn frame (text lines — citizen's window).
+pub fn render_front_page(markdown: []const u8, frame: *Frame) NameFactError!void {
+    frame.* = .{};
+    var blocks: [scribble.max_blocks]scribble.Block = undefined;
+    const n = scribble.parse_markdown(markdown, &blocks) catch return error.InvalidFact;
+    try push_frame_line(frame, "── granary front page ──");
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        const b = &blocks[i];
+        var buf: [max_frame_line]u8 = undefined;
+        const line: []const u8 = switch (b.kind) {
+            .heading => blk: {
+                const depth = if (b.depth > 6) 6 else b.depth;
+                var j: u32 = 0;
+                while (j < depth) : (j += 1) buf[j] = '#';
+                if (depth + 1 + b.text_len > max_frame_line) {
+                    const take = max_frame_line - depth - 1;
+                    buf[depth] = ' ';
+                    tally_copy.copy_disjoint(u8, buf[depth + 1 ..][0..take], b.text[0..take]);
+                    break :blk buf[0 .. depth + 1 + take];
+                }
+                buf[depth] = ' ';
+                tally_copy.copy_disjoint(u8, buf[depth + 1 ..][0..b.text_len], b.text_slice());
+                break :blk buf[0 .. depth + 1 + b.text_len];
+            },
+            .paragraph => b.text_slice(),
+            .rye_fence => "[rye fence]",
+            .rish_fence => "[rish fence]",
+            .code_fence => "[code fence]",
+        };
+        try push_frame_line(frame, line);
+    }
+    try push_frame_line(frame, "── end ──");
+}

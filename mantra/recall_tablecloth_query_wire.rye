@@ -1,0 +1,242 @@
+//! mantra/recall_tablecloth_query_wire.rye — Tablecloth query over one sealed datagram.
+//!
+//! Compact filter request + name-list response (no resin bytes). Fits max_message 340.
+//! Scope: [`active-designing/20260710-140500_comlink-view-filter-not-graphql.md`](../active-designing/20260710-140500_comlink-view-filter-not-graphql.md)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const ns = @import("recall_lap1.rye");
+const tcq = @import("recall_tablecloth_query.rye");
+const tally_copy = @import("tally_copy.rye");
+
+pub const query_wire_version = "20260710.140500";
+
+const kind_request: u8 = 0x11;
+const kind_response: u8 = 0x12;
+
+const flag_peer: u8 = 1 << 0;
+const flag_bolt: u8 = 1 << 1;
+const flag_revision: u8 = 1 << 2;
+const flag_tilak: u8 = 1 << 3;
+const flag_path: u8 = 1 << 4;
+
+pub const max_wire_hits: u32 = 8;
+pub const max_wire_payload: u32 = 340;
+
+pub const WireError = error{
+    BadKind,
+    Overflow,
+    Truncated,
+};
+
+pub const QueryWireRequest = struct {
+    peer: ?[]const u8 = null,
+    bolt: ?[]const u8 = null,
+    revision: ?u32 = null,
+    tilak: ?[]const u8 = null,
+    path_hint: ?[]const u8 = null,
+};
+
+pub const QueryWireHit = struct {
+    peer: []const u8,
+    bolt: []const u8,
+    revision: u32,
+    path: []const u8,
+};
+
+pub const QueryWireResponse = struct {
+    hit_count: u32,
+    hits: [max_wire_hits]QueryWireHit,
+};
+
+fn write_len_bytes(out: []u8, off: *u32, bytes: []const u8) WireError!void {
+    if (bytes.len > 255) return error.Overflow;
+    if (off.* + 1 + bytes.len > out.len) return error.Overflow;
+    out[off.*] = @intCast(bytes.len);
+    off.* += 1;
+    tally_copy.copy_disjoint(u8, out[off.*..][0..bytes.len], bytes);
+    off.* += @intCast(bytes.len);
+}
+
+fn read_len_bytes(payload: []const u8, off: *u32) WireError![]const u8 {
+    if (off.* >= payload.len) return error.Truncated;
+    const n: u32 = payload[off.*];
+    off.* += 1;
+    if (off.* + n > payload.len) return error.Truncated;
+    const slice = payload[off.*..][0..n];
+    off.* += n;
+    return slice;
+}
+
+pub fn encode_request(req: QueryWireRequest, out: []u8) WireError!u32 {
+    if (out.len < 2) return error.Overflow;
+    var flags: u8 = 0;
+    if (req.peer != null) flags |= flag_peer;
+    if (req.bolt != null) flags |= flag_bolt;
+    if (req.revision != null) flags |= flag_revision;
+    if (req.tilak != null) flags |= flag_tilak;
+    if (req.path_hint != null) flags |= flag_path;
+
+    var off: u32 = 0;
+    out[off] = kind_request;
+    off += 1;
+    out[off] = flags;
+    off += 1;
+
+    if (req.peer) |peer| {
+        if (peer.len > 16) return error.Overflow;
+        try write_len_bytes(out, &off, peer);
+    }
+    if (req.bolt) |bolt| {
+        if (bolt.len > 32) return error.Overflow;
+        try write_len_bytes(out, &off, bolt);
+    }
+    if (req.revision) |revision| {
+        if (off + 4 > out.len) return error.Overflow;
+        std.mem.writeInt(u32, out[off..][0..4], revision, .little);
+        off += 4;
+    }
+    if (req.tilak) |tilak| {
+        if (tilak.len > ns.max_tilak) return error.Overflow;
+        try write_len_bytes(out, &off, tilak);
+    }
+    if (req.path_hint) |path| {
+        if (path.len > ns.max_path) return error.Overflow;
+        try write_len_bytes(out, &off, path);
+    }
+    assert(off <= max_wire_payload);
+    return off;
+}
+
+pub fn decode_request(payload: []const u8, out: *QueryWireRequest) WireError!void {
+    if (payload.len < 2 or payload[0] != kind_request) return error.BadKind;
+    var off: u32 = 1;
+    const flags = payload[off];
+    off += 1;
+    out.* = .{};
+    if ((flags & flag_peer) != 0) out.peer = try read_len_bytes(payload, &off);
+    if ((flags & flag_bolt) != 0) out.bolt = try read_len_bytes(payload, &off);
+    if ((flags & flag_revision) != 0) {
+        if (off + 4 > payload.len) return error.Truncated;
+        out.revision = std.mem.readInt(u32, payload[off..][0..4], .little);
+        off += 4;
+    }
+    if ((flags & flag_tilak) != 0) out.tilak = try read_len_bytes(payload, &off);
+    if ((flags & flag_path) != 0) out.path_hint = try read_len_bytes(payload, &off);
+}
+
+pub fn to_tablecloth_query(req: QueryWireRequest) tcq.TableclothQuery {
+    return .{
+        .peer = req.peer,
+        .bolt = req.bolt,
+        .revision = req.revision,
+        .tilak = req.tilak,
+        .path_hint = req.path_hint,
+    };
+}
+
+pub fn build_response(catalog: *const ns.BoltCatalog, req: QueryWireRequest, out: *QueryWireResponse) WireError!void {
+    var names: [max_wire_hits]ns.Name = undefined;
+    const count = tcq.query_tablecloth(catalog, to_tablecloth_query(req), &names) catch return error.Overflow;
+    out.hit_count = count;
+    var i: u32 = 0;
+    while (i < count) : (i += 1) {
+        out.hits[i] = .{
+            .peer = names[i].peer,
+            .bolt = names[i].bolt,
+            .revision = names[i].revision,
+            .path = names[i].path,
+        };
+    }
+}
+
+pub fn encode_response(resp: QueryWireResponse, out: []u8) WireError!u32 {
+    if (resp.hit_count > max_wire_hits) return error.Overflow;
+    if (out.len < 2) return error.Overflow;
+    var off: u32 = 0;
+    out[off] = kind_response;
+    off += 1;
+    out[off] = @intCast(resp.hit_count);
+    off += 1;
+    var i: u32 = 0;
+    while (i < resp.hit_count) : (i += 1) {
+        const hit = resp.hits[i];
+        try write_len_bytes(out, &off, hit.peer);
+        try write_len_bytes(out, &off, hit.bolt);
+        if (off + 4 > out.len) return error.Overflow;
+        std.mem.writeInt(u32, out[off..][0..4], hit.revision, .little);
+        off += 4;
+        try write_len_bytes(out, &off, hit.path);
+    }
+    assert(off <= max_wire_payload);
+    return off;
+}
+
+pub fn decode_response(payload: []const u8, out: *QueryWireResponse) WireError!void {
+    if (payload.len < 2 or payload[0] != kind_response) return error.BadKind;
+    var off: u32 = 1;
+    out.hit_count = payload[off];
+    off += 1;
+    if (out.hit_count > max_wire_hits) return error.Overflow;
+    var i: u32 = 0;
+    while (i < out.hit_count) : (i += 1) {
+        const peer = try read_len_bytes(payload, &off);
+        const bolt = try read_len_bytes(payload, &off);
+        if (off + 4 > payload.len) return error.Truncated;
+        const revision = std.mem.readInt(u32, payload[off..][0..4], .little);
+        off += 4;
+        const path = try read_len_bytes(payload, &off);
+        out.hits[i] = .{
+            .peer = peer,
+            .bolt = bolt,
+            .revision = revision,
+            .path = path,
+        };
+    }
+}
+
+fn run_selftest(_: std.Io) !u8 {
+    var cat: ns.BoltCatalog = .empty();
+    try cat.append_leaf("peerB", "b", 1, "notes.txt", "alpha", "plain-text");
+    try cat.append_leaf("peerB", "b", 2, "notes.txt", "alpha2", "plain-text");
+    try cat.append_leaf("peerB", "c", 1, "other.txt", "beta", "plain-bytes");
+
+    var req_buf: [max_wire_payload]u8 = undefined;
+    const req_len = try encode_request(.{ .peer = "peerB", .bolt = "b" }, &req_buf);
+    var decoded_req: QueryWireRequest = undefined;
+    try decode_request(req_buf[0..req_len], &decoded_req);
+    assert(decoded_req.peer != null);
+    assert(std.mem.eql(u8, decoded_req.peer.?, "peerB"));
+    assert(decoded_req.bolt != null);
+    assert(std.mem.eql(u8, decoded_req.bolt.?, "b"));
+    assert(decoded_req.revision == null);
+
+    var resp: QueryWireResponse = undefined;
+    try build_response(&cat, decoded_req, &resp);
+    assert(resp.hit_count == 2);
+
+    var resp_buf: [max_wire_payload]u8 = undefined;
+    const resp_len = try encode_response(resp, &resp_buf);
+    var decoded_resp: QueryWireResponse = undefined;
+    try decode_response(resp_buf[0..resp_len], &decoded_resp);
+    assert(decoded_resp.hit_count == 2);
+    assert(std.mem.eql(u8, decoded_resp.hits[0].path, "notes.txt"));
+    assert(decoded_resp.hits[0].revision == 1);
+    assert(decoded_resp.hits[1].revision == 2);
+
+    var empty_resp: QueryWireResponse = undefined;
+    try build_response(&cat, .{ .tilak = "missing-mark" }, &empty_resp);
+    assert(empty_resp.hit_count == 0);
+
+    const bad = decode_request(&[_]u8{0x01}, &decoded_req);
+    assert(bad == error.BadKind);
+
+    std.debug.print("ns-tcqw: version {s}\n", .{query_wire_version});
+    std.debug.print("GREEN: Tablecloth query wire — encode, filter, empty, unwelcome kind.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init.arena.allocator();
+    return run_selftest(init.io);
+}

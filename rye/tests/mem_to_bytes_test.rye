@@ -1,0 +1,19 @@
+//! Rye test: std.mem.toBytes — pass 9923.
+//!
+//! Value to byte array copy; pairs with asBytes (9925) and bytesToValue.
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    const x: u32 = 0xAABBCCDD;
+    const bytes = mem.toBytes(x);
+    std.debug.assert(bytes.len == 4);
+    std.debug.assert(mem.eql(u8, &bytes, mem.asBytes(&x)[0..]));
+
+    const pair = struct { a: u8, b: u8 }{ .a = 0x11, .b = 0x22 };
+    const pair_bytes = mem.toBytes(pair);
+    std.debug.assert(pair_bytes.len == 2);
+
+    std.debug.print("rye: mem.toBytes assertions confirmed.\n", .{});
+}

@@ -1,0 +1,7 @@
+# Lantern lap 14 fixture — err_stop request pin on the contract.
+model_hash sha3-256-rye-forge-lap0
+err_stop 1
+tokens_in 8
+tokens_out 4
+stopped_reason err_stop
+text refuse incomplete ask

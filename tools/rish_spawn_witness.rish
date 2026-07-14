@@ -1,0 +1,15 @@
+# rish_spawn_witness.rish — Rishi spawn builtin witness.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/rish_spawn_witness.rish
+
+let h = spawn ["sh" "-c" "printf 'spawn witness stdout\\n'; exit 0"]
+assert h.id == 1 else "spawn should return handle id 1 on a fresh script"
+
+let result = wait-for h
+assert result.ok else "spawn witness must exit zero"
+assert result.code == 0 else "spawn witness code must be zero"
+assert result.out contains "spawn witness stdout" else "spawn witness must capture stdout"
+assert result.err == "" else "spawn witness must leave stderr empty"
+
+say "GREEN: Rishi spawn — start child, wait-for, capture stdout."

@@ -1,0 +1,83 @@
+# proven_seat_signed_kumara.rish — jailed TCG serial: both GREEN lines.
+#
+# Mirrors proven_seat_g1.rish. On green, guest_grade flips to signed-Kumara.
+# G1 stays closed at digest beside it — the ladder accretes.
+#
+#   rishi/bin/rishi run tools/proven_seat_signed_kumara.rish
+
+let cache = "tools/.cache/proven-seat"
+let guest = "${cache}/signed-kumara-verify"
+let pin = "active-designing/20260712-214200_proven-seat-signed-kumara-monocypher.md"
+let build = "${cache}/genode-build-x86_64"
+let tools = "${cache}/host-tools"
+let log = "${cache}/signed-kumara-serial-run.log"
+let expect_bin = "${tools}/usr/bin/expect"
+let run_tool = "vendor/genode/tool/run/run"
+let grade_meta = "${cache}/signed-kumara-grade-meta.txt"
+
+say "signed-Kumara: requiring lap pin…"
+let have_pin = run ["test" "-f" pin]
+assert have_pin.ok else "missing ${pin}"
+
+say "signed-Kumara: looking for guest binary…"
+let have_guest = run ["test" "-x" guest]
+assert have_guest.ok else "missing ${guest} — run proven_seat_signed_kumara_build_guest.rish first"
+
+say "signed-Kumara: resolving CROSS_DEV_PREFIX…"
+let find_cxx = run ["sh" "-c" "find ${cache}/genode-toolchain -type f -name genode-x86-g++ 2>/dev/null | head -1"]
+assert find_cxx.ok else "find genode-x86-g++ failed"
+assert find_cxx.out != "" else "toolchain missing"
+let cxx_rel = trim find_cxx.out
+let abs_cxx = run ["realpath" cxx_rel]
+assert abs_cxx.ok else "realpath failed"
+let cxx = trim abs_cxx.out
+let bin_dir = run ["sh" "-c" "dirname ${cxx}"]
+assert bin_dir.ok else "dirname failed"
+let abs_bin = trim bin_dir.out
+let cross = "${abs_bin}/genode-x86-"
+
+say "signed-Kumara: ensuring cache expect…"
+let have_expect = run ["test" "-x" expect_bin]
+assert have_expect.ok else "missing ${expect_bin}"
+let have_run = run ["test" "-f" run_tool]
+assert have_run.ok else "missing ${run_tool}"
+let abs_expect = run ["realpath" expect_bin]
+assert abs_expect.ok else "realpath expect failed"
+let expect_abs = trim abs_expect.out
+let abs_src = run ["realpath" "vendor/genode"]
+assert abs_src.ok else "realpath vendor/genode failed"
+let src_abs = trim abs_src.out
+let abs_run = run ["realpath" run_tool]
+assert abs_run.ok else "realpath run tool failed"
+let run_abs = trim abs_run.out
+
+say "signed-Kumara: jailed TCG serial — make run/signed_kumara_verify KERNEL=nova…"
+let abs_log_run = run ["realpath" "-m" log]
+assert abs_log_run.ok else "realpath log failed"
+let log_path = trim abs_log_run.out
+let abs_tools_run = run ["realpath" tools]
+assert abs_tools_run.ok else "realpath host-tools failed"
+let tools_abs = trim abs_tools_run.out
+let abs_build_run = run ["realpath" build]
+assert abs_build_run.ok else "realpath builddir failed"
+let build_abs = trim abs_build_run.out
+let serial = run ["sh" "-c" "trap 'git -C ${src_abs} checkout -- tool/run/run' EXIT; printf '%s\n' '#!${expect_abs}' > ${run_abs}.new; tail -n +2 ${run_abs} >> ${run_abs}.new; mv ${run_abs}.new ${run_abs}; chmod +x ${run_abs}; export PATH=${tools_abs}/usr/bin:/usr/bin:/bin LD_LIBRARY_PATH=${tools_abs}/usr/lib/x86_64-linux-gnu BISON_PKGDATADIR=${tools_abs}/usr/share/bison M4=${tools_abs}/usr/bin/m4; cd ${build_abs}; make run/signed_kumara_verify KERNEL=nova BOARD=pc CROSS_DEV_PREFIX=${cross} > ${log_path} 2>&1; status=\$?; exit \$status"]
+let log_text = read-file log
+assert log_text contains "GREEN: signed-Kumara — signature holds; seat verifies" else "serial missing verify GREEN — see ${log}"
+assert log_text contains "GREEN: signed-Kumara — tampered signature refused; seat stands guard" else "serial missing refuse GREEN — see ${log}"
+assert log_text contains "Run script execution successful" else "run script did not report success — see ${log}"
+say "signed-Kumara: both serial GREEN lines matched"
+
+say "signed-Kumara: writing grade meta…"
+let clear = run ["rm" "-f" grade_meta]
+assert clear.ok
+let g1 = run ["sh" "-c" "echo guest_grade signed-Kumara > ${grade_meta}"]
+assert g1.ok
+let g2 = run ["sh" "-c" "echo g1_grade digest-fixture >> ${grade_meta}"]
+assert g2.ok
+let g3 = run ["sh" "-c" "echo pair verify+refuse >> ${grade_meta}"]
+assert g3.ok
+let g4 = run ["sh" "-c" "echo seed never-crossed >> ${grade_meta}"]
+assert g4.ok
+
+say "GREEN: signed-Kumara — jailed TCG serial; signature holds; seat verifies; tampered refused; grade signed-Kumara"

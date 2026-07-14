@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260712.123200
+editor Cursor
+model Cursor Grok 4.5
+voice Rio 3
+title kg on-path — blocked · no kvm in ai-sandbox
+prompt kg
+product_nib 430
+suite_nib 432
+git_nib ab72314
+think Kaeden kg on the seated next climb: lane_kvm on-path G0-complete + same-sitting parity.
+think This enclosure is still hostname ai-sandbox; /dev/kvm absent; LANE_KVM=false in enclosure.conf.
+think Re-verified refuse floor GREEN (lane_kvm_refuse.rish). run_with_lane_kvm while off exits 2 with REFUSE. Did not flip LANE_KVM or reopen D-Bus escape.
+obs On-path green cannot land inside this jail. Word remains seated 121518; recipe unchanged for Framework host.
+file session-logs/20260712-123200_kg-onpath-blocked-no-kvm.bron this log
+file session-logs/README.md index
+recommend keep-going host one-shot outside ai-jail when Framework grants /dev/kvm — mechanical; then go for commit of greens

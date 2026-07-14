@@ -1,0 +1,98 @@
+//! Markdown section find / replace / insert.
+
+const std = @import("std");
+const constants = @import("constants.rye");
+
+pub fn find_section_start(text: []const u8, title: []const u8) ?usize {
+    var line_start: usize = 0;
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    while (lines.next()) |line| {
+        if (std.mem.startsWith(u8, line, "## ")) {
+            const rest = line[3..];
+            if (std.mem.startsWith(u8, rest, title)) {
+                if (rest.len == title.len or rest[title.len] == ' ' or rest[title.len] == '(') return line_start;
+            }
+        }
+        line_start += line.len + 1;
+    }
+    return null;
+}
+
+pub fn has_section(text: []const u8, title: []const u8) bool {
+    return find_section_start(text, title) != null;
+}
+
+pub fn extract_section(text: []const u8, title: []const u8) []const u8 {
+    const idx = find_section_start(text, title) orelse return "";
+    const rest = text[idx..];
+    const next = std.mem.indexOf(u8, rest, "\n## ");
+    if (next) |n| return rest[0..n];
+    return rest;
+}
+
+fn remove_section(a: std.mem.Allocator, text: []const u8, title: []const u8) ![]const u8 {
+    const idx = find_section_start(text, title) orelse return try a.dupe(u8, text);
+    const rest = text[idx..];
+    const next = std.mem.indexOf(u8, rest, "\n## ");
+    if (next) |n| return try std.mem.concat(a, u8, &.{ text[0..idx], rest[n + 1 ..] });
+    const trimmed = std.mem.trim(u8, text[0..idx], " \t\n");
+    return try std.fmt.allocPrint(a, "{s}\n", .{trimmed});
+}
+
+fn insert_after(a: std.mem.Allocator, text: []const u8, after: []const u8, body: []const u8) ![]const u8 {
+    const idx = find_section_start(text, after) orelse return try std.fmt.allocPrint(a, "{s}\n\n{s}", .{ text, body });
+    const rest = text[idx..];
+    const next = std.mem.indexOf(u8, rest, "\n## ");
+    if (next) |n| {
+        const end = idx + n;
+        return try std.fmt.allocPrint(a, "{s}\n\n{s}{s}", .{ text[0..end], body, text[end..] });
+    }
+    return try std.fmt.allocPrint(a, "{s}\n\n{s}", .{ text, body });
+}
+
+pub fn replace_or_insert_section(a: std.mem.Allocator, text: []const u8, title: []const u8, body: []const u8) ![]const u8 {
+    var work = text;
+    var owned: ?[]const u8 = null;
+    defer if (owned) |o| a.free(o);
+    if (std.mem.eql(u8, title, constants.usize_explicit_section)) {
+        owned = try remove_section(a, work, title);
+        work = owned.?;
+    }
+    if (find_section_start(work, title)) |idx| {
+        const rest = work[idx..];
+        const next = std.mem.indexOf(u8, rest, "\n## ");
+        const trimmed = std.mem.trim(u8, body, " \t\n");
+        if (next) |n| return try std.fmt.allocPrint(a, "{s}{s}\n\n{s}", .{ work[0..idx], trimmed, rest[n + 1 ..] });
+        return try std.fmt.allocPrint(a, "{s}{s}\n", .{ work[0..idx], trimmed });
+    }
+    if (std.mem.eql(u8, title, constants.usize_explicit_section) and has_section(work, "Width notes"))
+        return insert_after(a, work, "Width notes", body);
+    const markers = [_][]const u8{
+        "\n## Width audit (affected files)\n", "\n## Width audit\n", "\n## Audited surfaces\n",
+        "\n## Postconditions\n", "\n## Postcondition\n", "\n## What the test asserts\n",
+        "\n## Design notes\n", "\n## What we built\n", "\n---\n\n## What grows",
+    };
+    for (markers) |m| {
+        if (std.mem.indexOf(u8, work, m)) |pos| return try std.fmt.allocPrint(a, "{s}\n{s}{s}", .{ work[0..pos], body, work[pos..] });
+    }
+    return try std.fmt.allocPrint(a, "{s}\n{s}", .{ work, body });
+}
+
+pub fn has_width_audit_section(text: []const u8) bool {
+    return find_section_start(text, "Width audit") != null;
+}
+
+pub fn pass_width_audit_done(text: []const u8) bool {
+    if (!has_width_audit_section(text)) return false;
+    const section = extract_section(text, "Width audit");
+    if (std.mem.indexOf(u8, section, "| pending |") != null) return false;
+    return std.mem.indexOf(u8, section, "done") != null or std.mem.indexOf(u8, section, "unchanged") != null;
+}
+
+pub fn usize_explicit_audit_done(text: []const u8) bool {
+    if (!has_section(text, constants.usize_explicit_section)) return false;
+    const section = extract_section(text, constants.usize_explicit_section);
+    if (std.mem.indexOf(u8, section, "| pending |") != null) return false;
+    if (std.mem.indexOf(u8, section, "| fail |") != null) return false;
+    return std.mem.indexOf(u8, section, "| done |") != null;
+}

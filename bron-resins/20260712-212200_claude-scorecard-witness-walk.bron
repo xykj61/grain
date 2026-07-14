@@ -1,0 +1,80 @@
+# Combined Bron handoff for Claude — scorecard witness · second walk
+# Paste-ready: values only.
+format chat-printout-v1
+kind claude-handoff
+stamp 20260712.212200
+voice Rio 3
+editor Cursor
+model Cursor Grok 4.5
+git_nib a7a2ec6
+product_nib 430
+suite_nib 432
+parity_host_repin GREEN
+g1_status closed-digest-grade
+pond_sixbar GREEN
+pond_scorecard_witness GREEN
+pond_exit_card complete
+pond_N six-over-seven
+audience Claude
+sitting Framework-evening-scorecard-witness-go
+
+section pins
+pin product_nib 430
+pin suite_nib 432
+pin parity_host_repin 20260712.193958 GREEN
+pin git_before_this_go 40673e0
+pin git_nib a7a2ec6
+pin remotes pushed-four tip a7a2ec6
+pin teacher_ai_jail v1.12.0
+pin genode_home vendor/genode @ 492a510
+pin pond_sixbar GREEN · scorecard_witness GREEN
+pin scorecard two-column 210800
+pin exit_card 210800 · N 211400 six-over-seven
+pin living_witness tools/pond_enclosure_scorecard.rish
+pin column_one GREEN
+pin column_two NOT_YET · gap_bus open · gap_gpu_lane_customs open
+pin supersede_season closed
+pin silo_counsel keep-active-not-yonder 211800
+pin signed_kumara parked
+pin route_two parked
+
+section arc
+title What landed since tip 40673e0
+p Kaeden asked silo — counsel: keep exit/scorecard active-designing; do not yonder season-governing docs.
+p Kg landed pond_enclosure_scorecard.rish — column one re-runs sixbar GREEN; column two names gaps; asserts supersede season closed.
+p Measured tonight: bus_env=set · bus_socket=present · bus_netns=shared · gap_bus open.
+p This go pushes the living measure for Claude second walk of scorecard + exit card.
+
+section docs_to_walk
+doc active-designing/20260712-210800_pond-enclosure-scorecard-two-column.md
+doc active-designing/20260712-210800_pond-supersede-exit-criteria.md
+doc active-designing/20260712-210800_pond-sixbar-claude-shape-exit.md
+witness tools/pond_enclosure_scorecard.rish
+witness tools/pond_enclosure_sixbar.rish
+
+section host_printouts
+printout scorecard
+p GREEN: pond enclosure scorecard — column one GREEN; column two gaps named; supersede season closed
+p column_two NOT_YET
+p gap_bus open
+p bus_env set · bus_socket present · bus_netns shared
+p gap_gpu_lane_customs open
+
+section commits_this_go
+title Commits oldest → newest
+commit 1b69e45 Land the living two-column Pond enclosure scorecard witness.
+commit a7a2ec6 Record Claude handoff for the scorecard-witness second walk.
+push remotes origin github gp36-codeberg gp36-github
+
+section open_now
+next Claude second walk — any rewrite before freeze · softening hinge · column-two landing vs hold
+park signed_kumara fresh morning
+park route_two
+courtesy forge GPG upload rye_signing_DBF853.pub.asc
+
+section ask_claude
+ask Second walk — any rewrite before scorecard + exit card freeze harder?
+ask Softening hinge — wrappers-free as default now, or keep enforcing-code-resets until solo-bench bite?
+ask After walk: open column-two probe landing as next kg, or hold until a named supersede build word?
+
+benediction May the living measure stay honest. May the second walk steady the freeze. May the sixth green sitting still arrive on a cold and ordinary morning.

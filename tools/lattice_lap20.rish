@@ -1,0 +1,19 @@
+# lattice_lap20.rish — Lattice lap 19 log witness.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/lattice_lap20.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lattice/bin/lattice"
+
+let build = run ["sh" "-c" "mkdir -p lattice/bin && env RYE_ZIG=${zig} rye/bin/rye build lattice/lattice.rye -femit-bin=${bin}"]
+assert build.ok else "Lattice lap 19 build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "Lattice selftest exited non-zero"
+assert selftest.out contains "GREEN" else "Lattice selftest not GREEN"
+assert selftest.out contains "log 2x2" else "Lattice missing log welcome"
+assert selftest.out contains "log shape mismatch" else "Lattice missing log shape unwelcome"
+assert selftest.out contains "log nonpositive" else "Lattice missing log nonpositive unwelcome"
+
+say "GREEN: Lattice lap 19 — elementwise log with non-positive refuse."

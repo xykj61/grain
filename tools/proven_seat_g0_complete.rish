@@ -1,0 +1,41 @@
+# proven_seat_g0_complete.rish — Legacy G0-complete artifact check (004012 glass).
+#
+# Living path is lane_kvm (counsel 20260712.090512): refuse
+# tools/lane_kvm_refuse.rish · on-path tools/proven_seat_g0_complete_jailed.rish.
+# D-Bus/systemd host escape retired — active-designing/20260712-113900_lane-kvm-retire-dbus-escape.md.
+# This file keeps asserting the historical Leitzentrale glass + host-ping cache.
+#
+#   rishi/bin/rishi run tools/proven_seat_g0_complete.rish
+
+let cache = "tools/.cache/proven-seat"
+let img = "${cache}/sculpt-26-04.img"
+let expected = "241b916ab9e3ed25a089c27119aac98f80fe4d3e67101936b4e69d7f1c708f14"
+let glass = "${cache}/g0c-leitzentrale-witness.png"
+let serial = "${cache}/g0c-serial.log"
+let host_kvm = "${cache}/host-ping.txt"
+
+say "proven-seat G0-complete: checking Sculpt 26.04 image…"
+let have = run ["sh" "-c" "test -f ${img}"]
+assert have.ok else "missing ${img} — fetch https://genode.org/files/sculpt/sculpt-26-04.img into ${cache}/"
+
+let hash = run ["sh" "-c" "sha256sum ${img} | cut -d' ' -f1"]
+assert hash.ok else "sha256sum failed"
+assert hash.out contains expected else "sculpt-26-04.img sha256 mismatch (want ${expected})"
+say "proven-seat G0-complete: image sha256 matches pinned ${expected}"
+
+say "proven-seat G0-complete: host KVM probe (outside ai-jail)…"
+let kvm = run ["sh" "-c" "test -f ${host_kvm} && grep -q KVM ${host_kvm}"]
+assert kvm.ok else "missing host KVM probe ${host_kvm} — run host qemu once from Framework outside the jail"
+
+say "proven-seat G0-complete: Leitzentrale glass artifact…"
+let glass_ok = run ["sh" "-c" "test -f tools/.cache/proven-seat/g0c-leitzentrale-witness.png && test -s tools/.cache/proven-seat/g0c-leitzentrale-witness.png"]
+assert glass_ok.ok else "missing or empty tools/.cache/proven-seat/g0c-leitzentrale-witness.png — capture screendump while Leitzentrale Components graph is visible under -accel kvm -cpu host"
+let glass_sz = run ["sh" "-c" "wc -c < tools/.cache/proven-seat/g0c-leitzentrale-witness.png | tr -d ' \\n'"]
+assert glass_sz.ok else "glass size read failed"
+say "proven-seat G0-complete: glass artifact ${glass_sz.out} bytes"
+
+say "proven-seat G0-complete: serial floor (SeaBIOS → GRUB)…"
+let ser = run ["sh" "-c" "test -f ${serial} && rg -q 'GRUB loading' ${serial}"]
+assert ser.ok else "serial log missing GRUB loading — see ${serial}"
+
+say "GREEN: proven-seat G0-complete — Sculpt 26.04 pinned; host KVM used; Leitzentrale glass artifact present; serial reaches GRUB. Eyes on the Components graph belong in the session log. G1 waits. Pond has not yet superseded ai-jail."

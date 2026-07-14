@@ -1,0 +1,24 @@
+# mantra_recall_subscribe_poll_wire.rish — outer subscribe poll wire witness (hosted + device).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/mantra_recall_subscribe_poll_wire.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mantra/bin/recall-subscribe-poll-delivery"
+
+let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/recall_subscribe_poll_delivery.rye -lc -femit-bin=${bin}"]
+assert build.ok else "subscribe poll wire delivery build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "subscribe poll wire selftest exited non-zero"
+assert selftest.out contains "GREEN" else "subscribe poll wire selftest not GREEN"
+
+let demo = run ["sh" "-c" "${bin} demo 2>&1"]
+assert demo.ok else "subscribe poll wire demo exited non-zero"
+assert demo.out contains "GREEN" else "subscribe poll wire demo not GREEN"
+
+let device = run ["sh" "comlink/run_recall_subscribe_poll_wire_lab.sh"]
+assert device.ok else "subscribe poll device wire lab failed"
+assert device.out contains "GREEN" else "subscribe poll device wire lab not GREEN"
+
+say "GREEN: outer subscribe poll wire witness passed (hosted + device)."

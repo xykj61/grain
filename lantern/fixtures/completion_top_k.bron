@@ -1,0 +1,7 @@
+# Lantern lap 26 fixture — pinned top_k on the request contract.
+model_hash sha3-256-rye-forge-lap0
+top_k 40
+tokens_in 5
+tokens_out 3
+stopped_reason eos
+text topk pin done

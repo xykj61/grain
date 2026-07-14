@@ -1,0 +1,49 @@
+//! Rye test: std.process.run — pass 9981.
+//!
+//! Rishi's `run` builtin and parity.rish orchestration spawn children through
+//! process.run. This test exercises exit status, captured stdout, and stream
+//! limits so the gate confirms strengthened postconditions hold on both arms.
+
+const std = @import("std");
+
+pub fn main(init: std.process.Init) !u8 {
+    const io = init.io;
+    const gpa = std.heap.page_allocator;
+
+    // invariant: a zero-status command yields empty captured streams
+    const quiet = try std.process.run(gpa, io, .{ .argv = &.{ "true" } });
+    defer gpa.free(quiet.stdout);
+    defer gpa.free(quiet.stderr);
+    const quiet_code: u8 = switch (quiet.term) {
+        .exited => |c| c,
+        else => return error.UnexpectedTermination,
+    };
+    std.debug.assert(quiet_code == 0);
+    std.debug.assert(quiet.stdout.len == 0);
+    std.debug.assert(quiet.stderr.len == 0);
+
+    // invariant: stdout is captured and the child exit code is returned
+    const echoed = try std.process.run(gpa, io, .{ .argv = &.{ "echo", "rye-process-run" } });
+    defer gpa.free(echoed.stdout);
+    defer gpa.free(echoed.stderr);
+    const echo_code: u8 = switch (echoed.term) {
+        .exited => |c| c,
+        else => return error.UnexpectedTermination,
+    };
+    std.debug.assert(echo_code == 0);
+    std.debug.assert(std.mem.eql(u8, echoed.stdout, "rye-process-run\n"));
+    std.debug.assert(echoed.stderr.len == 0);
+
+    // postcondition: captured stdout length respects the stated limit
+    const bounded = try std.process.run(gpa, io, .{
+        .argv = &.{ "echo", "limit-check" },
+        .stdout_limit = .limited(32),
+    });
+    defer gpa.free(bounded.stdout);
+    defer gpa.free(bounded.stderr);
+    std.debug.assert(bounded.stdout.len <= 32);
+    std.debug.assert(std.mem.eql(u8, bounded.stdout, "limit-check\n"));
+
+    std.debug.print("rye: process.run assertions confirmed.\n", .{});
+    return 0;
+}

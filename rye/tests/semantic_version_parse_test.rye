@@ -1,0 +1,25 @@
+//! Rye test: std.SemanticVersion.parse — pass 9947.
+//!
+//! Pairs with SemanticVersion.order (9948); parse feeds capability bounds.
+
+const std = @import("std");
+const SemVer = std.SemanticVersion;
+
+pub fn main() void {
+    const release = SemVer.parse("1.2.3") catch unreachable;
+    std.debug.assert(release.major == 1 and release.minor == 2 and release.patch == 3);
+    std.debug.assert(release.pre == null and release.build == null);
+
+    const pre = SemVer.parse("1.0.0-alpha.1") catch unreachable;
+    std.debug.assert(std.mem.eql(u8, pre.pre.?, "alpha.1"));
+
+    const build = SemVer.parse("2.0.1+build.meta") catch unreachable;
+    std.debug.assert(build.major == 2);
+    std.debug.assert(std.mem.eql(u8, build.build.?, "build.meta"));
+
+    const both = SemVer.parse("1.0.0-rc.1+20260620") catch unreachable;
+    std.debug.assert(std.mem.eql(u8, both.pre.?, "rc.1"));
+    std.debug.assert(std.mem.eql(u8, both.build.?, "20260620"));
+
+    std.debug.print("rye: SemanticVersion.parse assertions confirmed.\n", .{});
+}

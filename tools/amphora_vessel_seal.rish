@@ -1,0 +1,28 @@
+# amphora_vessel_seal.rish — Amphora Amber AEAD vessel seal (seal_* on cargo).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/amphora_vessel_seal.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let vessel_bin = "amphora/bin/vessel-core"
+let seal_bin = "amphora/bin/vessel-seal"
+
+say "amphora-seal: build vessel-core + vessel-seal..."
+let build_v = run ["sh" "-c" "mkdir -p amphora/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_core.rye -femit-bin=${vessel_bin}"]
+assert build_v.ok else "amphora vessel_core build failed for seal lap"
+let build_s = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_seal.rye -femit-bin=${seal_bin}"]
+assert build_s.ok else "amphora vessel_seal build failed"
+
+let selftest = run ["sh" "-c" "${seal_bin} selftest 2>&1"]
+assert selftest.ok else "amphora vessel seal selftest exited non-zero"
+assert selftest.out contains "GREEN" else "amphora vessel seal selftest not GREEN"
+assert selftest.out contains "AEAD" else "amphora vessel seal selftest missing AEAD"
+
+say "amphora-seal: pour sealed vessel + scrub open-check..."
+let witness = run ["sh" "tools/fixtures/amphora_vessel_seal_witness.sh"]
+assert witness.ok else "Amphora vessel seal witness failed"
+assert witness.out contains "GREEN" else "Amphora vessel seal did not report GREEN"
+assert witness.out contains "SEAL ok" else "Amphora vessel seal missing SEAL ok"
+assert witness.out contains "TAMPER refused" else "Amphora vessel seal missing tamper refusal"
+
+say "GREEN: Amphora vessel seal — Amber AEAD on pour, opened on scrub."

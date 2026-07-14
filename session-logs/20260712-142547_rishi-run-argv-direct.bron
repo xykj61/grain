@@ -1,0 +1,14 @@
+format session-log-v1
+stamp 20260712.142547
+editor Cursor
+model Cursor Grok 4.5
+voice Rio 3
+title Rishi run is argv-direct not shell
+prompt do we have to use sh at all? is that our Linux syscall path? can Rishi/Rye/Zig do it directly?
+product_nib 430
+suite_nib 432
+think Kaeden asked whether sh is required as the Linux seam. Read do_run: std.process.run with argv — execve lineage, no shell. README documents run/spawn/file I/O/env. sh -c is a convenience for env-prefix, pipes, redirects, compounds. Tree already has shell-free pattern: run ["env" "RYE_ZIG=…" rye …] in parity_ch01 witnesses map. Gaps: no child-environ on run yet; count idiom still shells; mkdir&&build compounds.
+obs Direct path is already law; shrinking sh -c is growth of Rishi surface or argv-only composition, not a syscall rewrite.
+recommend keep-going pin RYE_ZIG via run ["env" "RYE_ZIG=…" …] without sh — mechanical; Claude before new run-environ or mkdir builtins
+file rishi/src/main.rye · do_run already argv-direct
+file session-logs/20260712-142547_rishi-run-argv-direct.bron · this log

@@ -1,0 +1,364 @@
+//! mantra/recall_beaded.rye — local append and recall, transparent to size.
+//!
+//! recall_lap1 already holds a resin whole, up to max_resin_bytes, in one leaf. Beading
+//! already splits a resin into content-addressed beads and reassembles them whole. This
+//! file composes the two: append_leaf_beaded stores small content directly and large
+//! content as beads, and recall_beaded returns the very same bytes either way, so a
+//! caller never needs to know which path a given resin took. Composing rather than
+//! extending: recall_lap1.rye and beading.rye are both imported and left standing.
+//!
+//! The payoff beading brings here is not size — a resin still tops out at
+//! max_resin_bytes, whole or beaded — it is dedup at bead granularity across revisions.
+//! A bolt that carries many similar large resins over its history, one revision editing
+//! the last, deposits only the beads that changed; the beads that stayed the same across
+//! the edit are recognized and moved not at all, the very dividend beading's content-
+//! defined ring proved. Two catalog leaves, both bead-indices, can share a bead store and
+//! share every bead their content still has in common.
+//!
+//! One deliberate scope line: recall_beaded reports the Tilak `bead-index` for a beaded
+//! resin, rather than recovering whatever semantic Tilak the caller first offered. This
+//! keeps Tilak doing the one job resin_batch.rye already asks of it — marking the layout
+//! of the stored bytes, not a deeper content type — and it costs nothing structural: no
+//! change to the seated bead-index format, no new field, no new name. A caller wanting
+//! richer Tilak fidelity through beading is a fair ask for its own later round.
+//!
+//!   rye build mantra/recall_beaded.rye -femit-bin=mantra/bin/recall-beaded
+//!   mantra/bin/recall-beaded selftest
+//!
+//! Scope: active-designing/20260706-023912_the-referential-namespace.md
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const recall_lap1 = @import("recall_lap1.rye");
+const beading = @import("beading.rye");
+const tally_copy = @import("tally_copy.rye");
+
+pub const recall_beaded_version = "20260706.180712";
+
+// At or below one bead's worth of bytes, a resin has nowhere to dedup beyond the
+// whole-resin match appendLeaf already gives for free, so beading buys nothing yet
+// costs an index. Above it, content-defined beading earns its keep across revisions.
+pub const bead_threshold: u32 = beading.max_bead_bytes;
+
+/// Append content of any size up to recall_lap1.max_resin_bytes. Content at or below
+/// bead_threshold is stored directly under small_tilak, exactly as recall_lap1.append_leaf
+/// already stores any resin. Content above the threshold is beaded by content-defined
+/// boundaries; the bead-index is stored at the name under the seated bead-index Tilak,
+/// and every bead is deposited in bead_store, shared across every call using this store.
+/// Returns null when stored directly, or the beading report when beaded, so a caller can
+/// see the dedup dividend at the moment it happens.
+pub fn append_leaf_beaded(
+    catalog: *recall_lap1.BoltCatalog,
+    bead_store: *beading.BeadStore,
+    peer: []const u8,
+    bolt: []const u8,
+    revision: u32,
+    path: []const u8,
+    content: []const u8,
+    small_tilak: []const u8,
+) !?beading.BeadReport {
+    if (content.len <= bead_threshold) {
+        try catalog.append_leaf(peer, bolt, revision, path, content, small_tilak);
+        return null;
+    }
+    var index_buf: [recall_lap1.max_resin_bytes]u8 = undefined;
+    const built = try beading.bead_content_defined(bead_store, content, &index_buf);
+    try catalog.append_leaf(
+        peer,
+        bolt,
+        revision,
+        path,
+        index_buf[0..built.len],
+        beading.tilak_bead_index,
+    );
+    // Derived-path convention (counsel 180712): each bead also lands as a catalog leaf at
+    // `{path}.b{ordinal}` under plain-bytes so resin_batch carries beads unchanged.
+    const bead_count = std.mem.readInt(u16, index_buf[34..36], .little);
+    var b: u32 = 0;
+    while (b < bead_count) : (b += 1) {
+        const dig_off: u32 = 36 + b * 32;
+        var bd: [32]u8 = undefined;
+        tally_copy.copy_disjoint(u8, std.mem.asBytes(&bd), index_buf[dig_off..][0..32]);
+        const bytes = bead_store.get(&bd) orelse return error.StoreMissing;
+        var path_buf: [recall_lap1.max_path]u8 = undefined;
+        const derived = std.fmt.bufPrint(&path_buf, "{s}.b{d}", .{ path, b }) catch return error.Overflow;
+        try catalog.append_leaf(peer, bolt, revision, derived, bytes, beading.tilak_plain_bytes);
+    }
+    return built.report;
+}
+
+/// Recall a resin regardless of how it was appended. A direct entry returns exactly as
+/// recall_lap1.BoltCatalog.recall already returns it, Tilak included. A bead-index entry
+/// is reassembled from bead_store, proven at two layers before a byte is trusted: the
+/// catalog's own digest check on the stored index bytes, already recall_lap1's guarantee,
+/// and beading's digest check on every bead and the reassembled whole, already beading's
+/// guarantee. Either failure refuses the whole recall. An absent name returns its
+/// not_yet or never outcome unchanged, exactly as a direct recall would.
+pub fn recall_beaded(
+    catalog: *const recall_lap1.BoltCatalog,
+    bead_store: *const beading.BeadStore,
+    name: recall_lap1.Name,
+    out: []u8,
+) !recall_lap1.RecallResult {
+    var index_buf: [recall_lap1.max_resin_bytes]u8 = undefined;
+    const direct = try catalog.recall(name, &index_buf);
+    if (direct.outcome != .here) return direct; // not_yet / never: nothing to reassemble
+
+    if (!std.mem.eql(u8, direct.tilak, beading.tilak_bead_index)) {
+        if (direct.len > out.len) return error.Overflow;
+        tally_copy.copy_disjoint(u8, out[0..direct.len], index_buf[0..direct.len]);
+        return direct;
+    }
+
+    const re = try beading.reassemble(
+        bead_store,
+        beading.tilak_bead_index,
+        index_buf[0..direct.len],
+        out,
+    );
+    return .{ .outcome = .here, .len = re.len, .tilak = beading.tilak_bead_index };
+}
+
+/// After a resin-batch crossing, derived `{path}.b{N}` leaves sit in the catalog.
+/// This hydrates bead_store from those leaves so recall_beaded can reassemble the
+/// bead-index at `index_path`.
+pub fn hydrate_bead_store_from_catalog(
+    catalog: *const recall_lap1.BoltCatalog,
+    store: *beading.BeadStore,
+    peer: []const u8,
+    bolt: []const u8,
+    revision: u32,
+    index_path: []const u8,
+) beading.BeadError!void {
+    var index_buf: [recall_lap1.max_resin_bytes]u8 = undefined;
+    const index_name = recall_lap1.Name{
+        .peer = peer,
+        .bolt = bolt,
+        .revision = revision,
+        .path = index_path,
+    };
+    const direct = catalog.recall(index_name, &index_buf) catch return error.StoreMissing;
+    if (direct.outcome != .here) return error.StoreMissing;
+    if (!std.mem.eql(u8, direct.tilak, beading.tilak_bead_index)) return error.UnknownTilak;
+    const bead_count = std.mem.readInt(u16, index_buf[34..36], .little);
+    var b: u32 = 0;
+    while (b < bead_count) : (b += 1) {
+        const dig_off: u32 = 36 + b * 32;
+        var bd: [32]u8 = undefined;
+        tally_copy.copy_disjoint(u8, std.mem.asBytes(&bd), index_buf[dig_off..][0..32]);
+        var path_buf: [recall_lap1.max_path]u8 = undefined;
+        const derived = std.fmt.bufPrint(&path_buf, "{s}.b{d}", .{ index_path, b }) catch return error.Overflow;
+        const bead_name = recall_lap1.Name{
+            .peer = peer,
+            .bolt = bolt,
+            .revision = revision,
+            .path = derived,
+        };
+        var bead_buf: [beading.max_bead_bytes]u8 = undefined;
+        const br = catalog.recall(bead_name, &bead_buf) catch return error.StoreMissing;
+        if (br.outcome != .here) return error.StoreMissing;
+        _ = try store.deposit(&bd, bead_buf[0..br.len]);
+    }
+}
+
+fn pattern_fill(buf: []u8, seed: u32) void {
+    var x: u32 = seed;
+    var i: u32 = 0;
+    while (i < buf.len) : (i += 1) {
+        x = x *% 1664525 +% 1013904223;
+        buf[i] = @intCast((x >> 24) & 0xFF);
+    }
+}
+
+fn selftest_direct_and_beaded_round_trip(
+    cat: *recall_lap1.BoltCatalog,
+    beads: *beading.BeadStore,
+) !struct { content_v1: [400]u8, rep_v1: beading.BeadReport, r_large: recall_lap1.RecallResult } {
+    // Direct path: small content stores and recalls unchanged, under the caller's own
+    // Tilak. Beading never enters, and append_leaf_beaded returns null to say so.
+    const n_small = recall_lap1.Name{
+        .peer = "local",
+        .bolt = "notes",
+        .revision = 1,
+        .path = "short.txt",
+    };
+    const direct_report = try append_leaf_beaded(
+        cat,
+        beads,
+        "local",
+        "notes",
+        1,
+        "short.txt",
+        "a short resin",
+        "plain-text",
+    );
+    assert(direct_report == null);
+    var out_small: [128]u8 = undefined;
+    const r_small = try recall_beaded(cat, beads, n_small, &out_small);
+    assert(r_small.outcome == .here);
+    assert(std.mem.eql(u8, out_small[0..r_small.len], "a short resin"));
+    assert(std.mem.eql(u8, r_small.tilak, "plain-text")); // the caller's own Tilak, unchanged
+
+    // Beaded path: large content beads, and recall returns the very same bytes. Tilak
+    // reports bead-index, the deliberate scope line this file states plainly.
+    var content_v1: [400]u8 = undefined;
+    pattern_fill(content_v1[0..], 20260706);
+    const n_large = recall_lap1.Name{
+        .peer = "local",
+        .bolt = "notes",
+        .revision = 1,
+        .path = "large.bin",
+    };
+    const rep_v1 = (try append_leaf_beaded(
+        cat,
+        beads,
+        "local",
+        "notes",
+        1,
+        "large.bin",
+        content_v1[0..],
+        "plain-bytes",
+    )) orelse return error.Overflow;
+    assert(rep_v1.bead_count >= 2);
+    var out_large: [recall_lap1.max_resin_bytes]u8 = undefined;
+    const r_large = try recall_beaded(cat, beads, n_large, &out_large);
+    assert(r_large.outcome == .here);
+    assert(std.mem.eql(u8, out_large[0..r_large.len], content_v1[0..]));
+    assert(std.mem.eql(u8, r_large.tilak, beading.tilak_bead_index));
+    return .{ .content_v1 = content_v1, .rep_v1 = rep_v1, .r_large = r_large };
+}
+
+fn selftest_beaded_revision_dedup(
+    cat: *recall_lap1.BoltCatalog,
+    beads: *beading.BeadStore,
+    content_v1: *const [400]u8,
+    n_large: recall_lap1.Name,
+) !beading.BeadReport {
+    // Dedup across revisions: revision 2 edits a handful of bytes near the front. The
+    // long tail is unchanged, so content-defined beading re-syncs it, and the second
+    // append deposits only the beads the edit actually touched.
+    var content_v2: [403]u8 = undefined;
+    tally_copy.copy_disjoint(u8, content_v2[0..30], content_v1[0..30]);
+    content_v2[30] = 'X';
+    content_v2[31] = 'Y';
+    content_v2[32] = 'Z';
+    tally_copy.copy_disjoint(u8, content_v2[33..403], content_v1[30..400]);
+    const n_large_r2 = recall_lap1.Name{
+        .peer = "local",
+        .bolt = "notes",
+        .revision = 2,
+        .path = "large.bin",
+    };
+    const rep_v2 = (try append_leaf_beaded(
+        cat,
+        beads,
+        "local",
+        "notes",
+        2,
+        "large.bin",
+        content_v2[0..],
+        "plain-bytes",
+    )) orelse return error.Overflow;
+    assert(rep_v2.beads_deduped >= 1); // the unchanged tail's beads were already held
+    assert(rep_v2.beads_deposited >= 1); // the edited region's beads are new
+    var out_v2: [recall_lap1.max_resin_bytes]u8 = undefined;
+    const r_v2 = try recall_beaded(cat, beads, n_large_r2, &out_v2);
+    assert(std.mem.eql(u8, out_v2[0..r_v2.len], content_v2[0..]));
+
+    // Revision 1 still recalls to its own bytes, untouched by revision 2 — accrete, not
+    // overwrite, holds across the beaded path exactly as it holds across the direct one.
+    var out_large: [recall_lap1.max_resin_bytes]u8 = undefined;
+    const r_v1_again = try recall_beaded(cat, beads, n_large, &out_large);
+    assert(std.mem.eql(u8, out_large[0..r_v1_again.len], content_v1[0..]));
+    return rep_v2;
+}
+
+fn selftest_unwelcome_paths(content_v1: *const [400]u8, cat: *recall_lap1.BoltCatalog, beads: *beading.BeadStore) !void {
+    // Unwelcome: a corrupted bead is a failure the catalog's own digest check cannot
+    // see, because that check covers only the index bytes, which are untouched. Beading's
+    // own digest check, the second layer, catches it and refuses the whole recall.
+    {
+        var cat_t: recall_lap1.BoltCatalog = .empty();
+        var beads_t: beading.BeadStore = .empty();
+        const n_t = recall_lap1.Name{
+            .peer = "local",
+            .bolt = "t",
+            .revision = 1,
+            .path = "large.bin",
+        };
+        _ = (try append_leaf_beaded(
+            &cat_t,
+            &beads_t,
+            "local",
+            "t",
+            1,
+            "large.bin",
+            content_v1[0..],
+            "plain-bytes",
+        )) orelse return error.Overflow;
+        beads_t.beads[0].bytes[0] +%= 1; // corrupt a bead's bytes in the store directly
+        var scratch: [recall_lap1.max_resin_bytes]u8 = undefined;
+        if (recall_beaded(&cat_t, &beads_t, n_t, &scratch)) |_| {
+            return error.DigestMismatch;
+        } else |err| {
+            assert(err == error.DigestMismatch);
+        }
+    }
+
+    // Unwelcome: a name never appended returns its outcome unchanged, rather than
+    // erroring — recall_beaded changes no outcome semantics recall_lap1 already promised.
+    {
+        const absent = recall_lap1.Name{
+            .peer = "local",
+            .bolt = "notes",
+            .revision = 1,
+            .path = "missing.bin",
+        };
+        var out_large: [recall_lap1.max_resin_bytes]u8 = undefined;
+        const r_absent = try recall_beaded(cat, beads, absent, &out_large);
+        assert(r_absent.outcome == .never);
+    }
+}
+
+fn run_selftest(_: std.Io) !u8 {
+    var cat: recall_lap1.BoltCatalog = .empty();
+    var beads: beading.BeadStore = .empty();
+
+    const welcome = try selftest_direct_and_beaded_round_trip(&cat, &beads);
+    const n_large = recall_lap1.Name{
+        .peer = "local",
+        .bolt = "notes",
+        .revision = 1,
+        .path = "large.bin",
+    };
+    const rep_v2 = try selftest_beaded_revision_dedup(&cat, &beads, &welcome.content_v1, n_large);
+    try selftest_unwelcome_paths(&welcome.content_v1, &cat, &beads);
+
+    print("recall_beaded: direct path round-trips under the caller's own Tilak GREEN\n", .{});
+    print("recall_beaded: beaded path round-trips {d} bytes across {d} beads GREEN\n", .{
+        welcome.r_large.len,
+        welcome.rep_v1.bead_count,
+    });
+    print("recall_beaded: revision 2 deduped {d} beads, deposited {d} new GREEN\n", .{
+        rep_v2.beads_deduped,
+        rep_v2.beads_deposited,
+    });
+    print("recall_beaded: revision 1 recalls unchanged after revision 2 landed GREEN\n", .{});
+    print("recall_beaded: a corrupted bead refused whole at the second layer GREEN\n", .{});
+    print("recall_beaded: an absent name returned never rather than erroring GREEN\n", .{});
+    print("recall_beaded: version {s}\n", .{recall_beaded_version});
+    print("GREEN: NS-L3 recall_beaded; a resin recalls the same bytes at any size.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(init.arena.allocator());
+    if (args.len >= 2) {
+        if (std.mem.eql(u8, args[1], "selftest") or std.mem.eql(u8, args[1], "beaded")) {
+            return run_selftest(io);
+        }
+    }
+    return run_selftest(io);
+}

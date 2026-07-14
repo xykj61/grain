@@ -1,0 +1,22 @@
+//! Rye test: std.mem host endian conversions — pass 9889.
+//!
+//! littleToNative / bigToNative / toNative / nativeTo round-trips; pairs with readInt (9909).
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    const v: u32 = 0xAABBCCDD;
+
+    std.debug.assert(mem.nativeToLittle(u32, mem.littleToNative(u32, v)) == v);
+    std.debug.assert(mem.littleToNative(u32, mem.nativeToLittle(u32, v)) == v);
+    std.debug.assert(mem.nativeToBig(u32, mem.bigToNative(u32, v)) == v);
+    std.debug.assert(mem.bigToNative(u32, mem.nativeToBig(u32, v)) == v);
+    std.debug.assert(mem.nativeTo(u32, mem.toNative(u32, v, .little), .little) == v);
+    std.debug.assert(mem.toNative(u32, mem.nativeTo(u32, v, .big), .big) == v);
+
+    const i: i16 = -0x1234;
+    std.debug.assert(mem.nativeTo(i16, mem.toNative(i16, i, .big), .big) == i);
+
+    std.debug.print("rye: mem host-endian conversion assertions confirmed.\n", .{});
+}

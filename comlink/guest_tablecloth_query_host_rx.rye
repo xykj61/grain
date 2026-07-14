@@ -1,0 +1,62 @@
+//! comlink/guest_tablecloth_query_host_rx.rye — Tablecloth query device: host RX (open filter request).
+
+const std = @import("std");
+const vn = @import("virtio_net.rye");
+const wf = @import("wire_format.rye");
+const qw = @import("recall_tablecloth_query_wire.rye");
+
+var rx: vn.RxQueue = undefined;
+
+export fn _start() linksection(".text.init") callconv(.naked) noreturn {
+    asm volatile (
+        \\ li sp, 0x80100000
+        \\ j kmain
+    );
+}
+
+export fn kmain() callconv(.c) noreturn {
+    vn.init_device();
+    rx.init();
+    vn.driver_ok();
+    rx.kick();
+
+    const n = rx.wait_frame();
+    if (n == 0) {
+        vn.write_str("tablecloth query device: FAIL — host RX timeout\n");
+        vn.finish_fail();
+    }
+    const poff = vn.virtio_net_hdr_len + vn.eth_header_len;
+    if (n <= poff) {
+        vn.write_str("tablecloth query device: FAIL — frame too short\n");
+        vn.finish_fail();
+    }
+    const buf = rx.frame();
+    const datagram = buf[poff..n];
+
+    var opened: [@intCast(wf.max_message)]u8 = undefined;
+    const opened_len = wf.open_datagram(datagram, &opened) catch {
+        vn.write_str("tablecloth query device: FAIL — open refused\n");
+        vn.finish_fail();
+    };
+
+    var req: qw.QueryWireRequest = undefined;
+    qw.decode_request(opened[0..@intCast(opened_len)], &req) catch {
+        vn.write_str("tablecloth query device: FAIL — request decode\n");
+        vn.finish_fail();
+    };
+
+    if (req.peer == null or !std.mem.eql(u8, req.peer.?, "peerB")) {
+        vn.write_str("tablecloth query device: FAIL — peer mismatch\n");
+        vn.finish_fail();
+    }
+    if (req.bolt == null or !std.mem.eql(u8, req.bolt.?, "b")) {
+        vn.write_str("tablecloth query device: FAIL — bolt mismatch\n");
+        vn.finish_fail();
+    }
+    if (req.revision != null or req.tilak != null or req.path_hint != null) {
+        vn.write_str("tablecloth query device: FAIL — unexpected filter fields\n");
+        vn.finish_fail();
+    }
+    vn.write_str("tablecloth query device: sealed filter request GREEN — verify passed\n");
+    vn.finish_pass();
+}

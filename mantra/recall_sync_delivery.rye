@@ -1,0 +1,308 @@
+//! mantra/recall_sync_delivery.rye — NS-L3 wire lap 1: hosted sync over Comlink sealed datagrams.
+//!
+//!   rye build mantra/recall_sync_delivery.rye -lc -femit-bin=mantra/bin/recall-sync-delivery
+//!   mantra/bin/recall-sync-delivery selftest
+//!   mantra/bin/recall-sync-delivery demo
+//!
+//! Scope: [`active-designing/20260706-023912_the-referential-namespace.md`](../active-designing/20260706-023912_the-referential-namespace.md)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const c = std.c;
+const ns = @import("recall_lap1.rye");
+const sw = @import("recall_sync_wire.rye");
+const wf = @import("wire_format.rye");
+const tally_copy = @import("tally_copy.rye");
+
+const nsw_version = "20260706.041512";
+
+const AF_INET: c_uint = 2;
+const SOCK_DGRAM: c_uint = 2;
+const SOL_SOCKET: c_int = 1;
+const SO_REUSEADDR: c_int = 2;
+
+const fetcher_port: u16 = 38478;
+const source_port: u16 = 38479;
+
+const sockaddr_in = extern struct {
+    sin_family: c_ushort = AF_INET,
+    sin_port: c_ushort,
+    sin_addr: [4]u8 = .{ 127, 0, 0, 1 },
+    sin_zero: [8]u8 = .{0} ** 8,
+};
+
+fn localhost_addr(port: u16) sockaddr_in {
+    return .{
+        .sin_port = std.mem.nativeToBig(u16, port),
+    };
+}
+
+fn open_socket() !c.fd_t {
+    const fd = c.socket(AF_INET, SOCK_DGRAM, 0);
+    if (fd < 0) return error.SocketFailed;
+    const yes: c_int = 1;
+    _ = c.setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &yes, @sizeOf(c_int));
+    return fd;
+}
+
+fn send_wire(port: u16, wire: []const u8) !void {
+    const fd = try open_socket();
+    defer _ = c.close(fd);
+    const dest = localhost_addr(port);
+    const sent = c.sendto(fd, wire.ptr, @intCast(wire.len), 0, @ptrCast(&dest), @sizeOf(sockaddr_in));
+    if (sent < 0 or @as(usize, @intCast(sent)) != wire.len) return error.SendFailed;
+}
+
+fn recv_wire(port: u16, wire: []u8) !u64 {
+    const fd = try open_socket();
+    defer _ = c.close(fd);
+    var bind_addr = localhost_addr(port);
+    if (c.bind(fd, @ptrCast(&bind_addr), @sizeOf(sockaddr_in)) < 0) return error.BindFailed;
+    var from: sockaddr_in = undefined;
+    var from_len: c.socklen_t = @sizeOf(sockaddr_in);
+    const n = c.recvfrom(fd, wire.ptr, @intCast(wire.len), 0, @ptrCast(&from), &from_len);
+    if (n < 0) return error.RecvFailed;
+    return @intCast(n);
+}
+
+fn seal_payload(payload: []const u8, wire: *[@intCast(wf.wire_capacity)]u8) !u64 {
+    return try wf.seal_message(payload, wire);
+}
+
+fn open_wire(wire: []const u8, opened: *[@intCast(wf.max_message)]u8) !u64 {
+    return try wf.open_datagram(wire, opened);
+}
+
+fn digest_hex_of(content: []const u8, out: *[64]u8) void {
+    var digest: [32]u8 = undefined;
+    std.crypto.hash.sha3.Sha3_256.hash(content, &digest, .{});
+    var i: u32 = 0;
+    while (i < 32) : (i += 1) {
+        _ = std.fmt.bufPrint(out[i * 2 ..][0..2], "{x:0>2}", .{digest[i]}) catch unreachable;
+    }
+}
+
+fn init_witness_source(cat: *ns.BoltCatalog) !void {
+    cat.* = .empty();
+    try cat.append_leaf("peerB", "b", 1, "a.txt", "alpha", "plain-text");
+    try cat.append_leaf("peerB", "b", 1, "b.txt", "beta", "plain-text");
+}
+
+fn init_witness_fetcher(cat: *ns.BoltCatalog) !void {
+    cat.* = .empty();
+    try cat.append_leaf("peerA", "seed", 1, "x", "alpha", "plain-text");
+}
+
+fn build_held_request(fetcher: *const ns.BoltCatalog) sw.WireError!sw.SyncRequest {
+    _ = fetcher;
+    var req: sw.SyncRequest = .{
+        .peer = "peerB",
+        .bolt = "b",
+        .revision = 1,
+        .held_count = 1,
+        .held_digests = undefined,
+    };
+    var alpha_digest: [64]u8 = undefined;
+    digest_hex_of("alpha", &alpha_digest);
+    tally_copy.copy_disjoint(u8, req.held_digests[0][0..64], alpha_digest[0..64]);
+    return req;
+}
+
+fn run_selftest(_: std.Io) !u8 {
+    var src: ns.BoltCatalog = undefined;
+    try init_witness_source(&src);
+    var fetcher: ns.BoltCatalog = undefined;
+    try init_witness_fetcher(&fetcher);
+
+    const req = try build_held_request(&fetcher);
+    var req_buf: [sw.max_wire_payload]u8 = undefined;
+    const req_len = try sw.encode_request(req, &req_buf);
+
+    var wire_resp: sw.SyncResponse = undefined;
+    try sw.build_response(&src, &req, &wire_resp);
+    var resp_buf: [sw.max_wire_payload]u8 = undefined;
+    const resp_len = try sw.encode_response(&wire_resp, &resp_buf);
+
+    assert(req_len < wf.max_message);
+    assert(resp_len < wf.max_message);
+
+    var req_wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const req_wire_len = try seal_payload(req_buf[0..req_len], &req_wire);
+    var req_opened: [@intCast(wf.max_message)]u8 = undefined;
+    const req_opened_len = try open_wire(req_wire[0..@intCast(req_wire_len)], &req_opened);
+
+    var decoded_req: sw.SyncRequest = undefined;
+    try sw.decode_request(req_opened[0..@intCast(req_opened_len)], &decoded_req);
+    assert(std.mem.eql(u8, decoded_req.peer, "peerB"));
+
+    var built_resp: sw.SyncResponse = undefined;
+    try sw.build_response(&src, &decoded_req, &built_resp);
+    var resp_wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const resp_wire_len = try seal_payload(resp_buf[0..resp_len], &resp_wire);
+    var resp_opened: [@intCast(wf.max_message)]u8 = undefined;
+    const resp_opened_len = try open_wire(resp_wire[0..@intCast(resp_wire_len)], &resp_opened);
+
+    var decoded_resp: sw.SyncResponse = undefined;
+    try sw.decode_response(resp_opened[0..@intCast(resp_opened_len)], &decoded_resp);
+
+    const report = try sw.apply_sync_response(&fetcher, &decoded_resp);
+    assert(report.total == 2);
+    assert(report.had_already == 1);
+    assert(report.needed == 1);
+
+    const na = ns.Name{ .peer = "peerB", .bolt = "b", .revision = 1, .path = "a.txt" };
+    const nb = ns.Name{ .peer = "peerB", .bolt = "b", .revision = 1, .path = "b.txt" };
+    var da: [128]u8 = undefined;
+    var db: [128]u8 = undefined;
+    var sa: [128]u8 = undefined;
+    var sb: [128]u8 = undefined;
+    const ra = try fetcher.recall(na, &da);
+    const rb = try fetcher.recall(nb, &db);
+    const src_ra = try src.recall(na, &sa);
+    const src_rb = try src.recall(nb, &sb);
+    assert(std.mem.eql(u8, da[0..ra.len], sa[0..src_ra.len]));
+    assert(std.mem.eql(u8, db[0..rb.len], sb[0..src_rb.len]));
+
+    // Unwelcome: tampered resin in response refuses whole.
+    var bad_resp = decoded_resp;
+    bad_resp.entries[1].digest_hex[0] = if (bad_resp.entries[1].digest_hex[0] == 'a') 'b' else 'a';
+    var dest_bad: ns.BoltCatalog = .empty();
+    try init_witness_fetcher(&dest_bad);
+    if (sw.apply_sync_response(&dest_bad, &bad_resp)) |_| {
+        return error.DigestMismatch;
+    } else |err| {
+        assert(err == error.DigestMismatch);
+    }
+    assert(dest_bad.leaf_count == 1); // only seed leaf remains
+
+    // Unwelcome: bad Comlink seal refuses whole.
+    var corrupt_wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    tally_copy.copy_disjoint(u8, corrupt_wire[0..@intCast(resp_wire_len)], resp_wire[0..@intCast(resp_wire_len)]);
+    corrupt_wire[@intCast(resp_wire_len - 1)] ^= 0xff;
+    var junk: [@intCast(wf.max_message)]u8 = undefined;
+    if (open_wire(corrupt_wire[0..@intCast(resp_wire_len)], &junk)) |_| {
+        return error.VerifyFailed;
+    } else |_| {
+        print("nsw1: bad Comlink seal refused — GREEN unwelcome path\n", .{});
+    }
+
+    print("nsw1: bolt synced over wire — had-already {d}, need-resin {d}; recall identical on both peers\n", .{ report.had_already, report.needed });
+    print("nsw1: tampered resin refused whole — GREEN unwelcome path\n", .{});
+    print("nsw1: version {s} sync_wire {s} wire_format {s}\n", .{ nsw_version, sw.sync_wire_version, wf.wire_format_version });
+    print("GREEN: NS-L3 wire lap 1 — hosted sync request/response under Comlink seal.\n", .{});
+    return 0;
+}
+
+fn run_source(_: std.Io) !u8 {
+    var src: ns.BoltCatalog = undefined;
+    try init_witness_source(&src);
+
+    var wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const wire_len = try recv_wire(source_port, &wire);
+    if (wire_len < wf.off_cipher or wire_len > wf.wire_capacity) return error.RecvFailed;
+
+    var opened: [@intCast(wf.max_message)]u8 = undefined;
+    const opened_len = try open_wire(wire[0..@intCast(wire_len)], &opened);
+
+    var req: sw.SyncRequest = undefined;
+    try sw.decode_request(opened[0..@intCast(opened_len)], &req);
+
+    var resp: sw.SyncResponse = undefined;
+    try sw.build_response(&src, &req, &resp);
+    var payload: [sw.max_wire_payload]u8 = undefined;
+    const payload_len = try sw.encode_response(&resp, &payload);
+
+    var out_wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const out_wire_len = try seal_payload(payload[0..payload_len], &out_wire);
+    try send_wire(fetcher_port, out_wire[0..@intCast(out_wire_len)]);
+
+    print("nsw1: source answered sync request with manifest and missing resins\n", .{});
+    return 0;
+}
+
+fn run_fetcher(_: std.Io) !u8 {
+    var fetcher: ns.BoltCatalog = undefined;
+    try init_witness_fetcher(&fetcher);
+
+    const req = try build_held_request(&fetcher);
+    var payload: [sw.max_wire_payload]u8 = undefined;
+    const payload_len = try sw.encode_request(req, &payload);
+    var wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const wire_len = try seal_payload(payload[0..payload_len], &wire);
+    try send_wire(source_port, wire[0..@intCast(wire_len)]);
+
+    var recv_buf: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const recv_len = try recv_wire(fetcher_port, &recv_buf);
+    if (recv_len < wf.off_cipher or recv_len > wf.wire_capacity) return error.RecvFailed;
+
+    var opened: [@intCast(wf.max_message)]u8 = undefined;
+    const opened_len = try open_wire(recv_buf[0..@intCast(recv_len)], &opened);
+
+    var resp: sw.SyncResponse = undefined;
+    try sw.decode_response(opened[0..@intCast(opened_len)], &resp);
+    const report = try sw.apply_sync_response(&fetcher, &resp);
+    if (report.total != 2 or report.had_already != 1 or report.needed != 1) return error.SyncFailed;
+
+    const na = ns.Name{ .peer = "peerB", .bolt = "b", .revision = 1, .path = "b.txt" };
+    var buf: [128]u8 = undefined;
+    const r = try fetcher.recall(na, &buf);
+    if (!std.mem.eql(u8, buf[0..r.len], "beta")) return error.SyncFailed;
+
+    print("nsw1: fetcher synced revision — recall matches source GREEN\n", .{});
+    return 0;
+}
+
+fn run_demo(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) !u8 {
+    const source_argv = try allocator.alloc([]const u8, 2);
+    source_argv[0] = self_path;
+    source_argv[1] = "source";
+
+    var source_child = try std.process.spawn(io, .{ .argv = source_argv });
+    var pause = c.timespec{ .sec = 0, .nsec = 50_000_000 };
+    _ = c.nanosleep(&pause, null);
+
+    const fetcher_argv = try allocator.alloc([]const u8, 2);
+    fetcher_argv[0] = self_path;
+    fetcher_argv[1] = "fetcher";
+
+    var fetcher_child = try std.process.spawn(io, .{ .argv = fetcher_argv });
+
+    const source_term = try source_child.wait(io);
+    const fetcher_term = try fetcher_child.wait(io);
+
+    const source_code: u8 = switch (source_term) {
+        .exited => |code| code,
+        else => 255,
+    };
+    const fetcher_code: u8 = switch (fetcher_term) {
+        .exited => |code| code,
+        else => 255,
+    };
+
+    assert(source_code == 0);
+    assert(fetcher_code == 0);
+
+    print("nsw1: demo GREEN — sync crossed localhost under Comlink seal\n", .{});
+    print("nsw1: version {s} wire_format {s}\n", .{ nsw_version, wf.wire_format_version });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(garden);
+
+    if (args.len >= 2) {
+        if (std.mem.eql(u8, args[1], "source")) return run_source(io);
+        if (std.mem.eql(u8, args[1], "fetcher")) return run_fetcher(io);
+        if (std.mem.eql(u8, args[1], "selftest")) return run_selftest(io);
+        if (std.mem.eql(u8, args[1], "demo")) {
+            assert(args.len >= 1);
+            return run_demo(garden, io, args[0]);
+        }
+    }
+
+    if (args.len >= 1) return run_selftest(io);
+    return 1;
+}

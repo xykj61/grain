@@ -1,0 +1,12 @@
+# amber_first_ring.rish — Amber lap 1: export, openssl golden, restore, tamper fails.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/amber_first_ring.rish
+
+say "amber first lap: export → verify (openssl golden) → restore → tamper must fail…"
+
+let result = run ["sh" "tools/fixtures/amber_ring1_witness.sh"]
+say result.out
+
+assert result.ok else "amber first lap witness failed"
+say "GREEN: amber first lap witness passed."

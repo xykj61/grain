@@ -1,0 +1,47 @@
+# comlink_snapshot_export_wire_lab.rish — I2 snapshot device-wire QEMU lab (spawn / wait-for).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/comlink_snapshot_export_wire_lab.rish
+#
+# Replaces the background-orchestration half of comlink/run_snapshot_export_wire_lab.sh;
+# the shell entry point delegates here so stable paths and citations hold.
+
+let zig = "vendor/zig-toolchain/zig"
+let build_dir = "comlink/.build"
+let port_request_raw = env "COMLINK_SNAPSHOT_LAB_PORT"
+if port_request_raw == "" then let port_request = "15567" else let port_request = port_request_raw
+let port_response_raw = env "COMLINK_SNAPSHOT_RESP_LAB_PORT"
+if port_response_raw == "" then let port_response = "15568" else let port_response = port_response_raw
+let sock_request = "127.0.0.1:${port_request}"
+let sock_response = "127.0.0.1:${port_response}"
+
+let prep = run ["sh" "-c" "mkdir -p ${build_dir}"]
+assert prep.ok else "snapshot export wire lab mkdir failed"
+
+let build_source_rx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_snapshot_source_rx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/snapshot-source-rx.elf"]
+assert build_source_rx.ok else "snapshot source rx guest build failed"
+
+let build_fetcher_tx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_snapshot_fetcher_tx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/snapshot-fetcher-tx.elf"]
+assert build_fetcher_tx.ok else "snapshot fetcher tx guest build failed"
+
+let build_fetcher_rx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_snapshot_fetcher_rx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/snapshot-fetcher-rx.elf"]
+assert build_fetcher_rx.ok else "snapshot fetcher rx guest build failed"
+
+let build_source_tx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_snapshot_source_tx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/snapshot-source-tx.elf"]
+assert build_source_tx.ok else "snapshot source tx guest build failed"
+
+let request_rx = spawn ["timeout" "60" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,listen=${sock_request}" "-kernel" "${build_dir}/snapshot-source-rx.elf"]
+let request_pause = run ["sleep" "1"]
+assert request_pause.ok else "snapshot request sleep failed"
+let request_tx = run ["timeout" "30" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,connect=${sock_request}" "-kernel" "${build_dir}/snapshot-fetcher-tx.elf"]
+let request_rx_done = wait-for request_rx
+assert request_rx_done.out contains "sealed snapshot batch request GREEN" else "snapshot request hop RED"
+
+let response_rx = spawn ["timeout" "60" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,listen=${sock_response}" "-kernel" "${build_dir}/snapshot-fetcher-rx.elf"]
+let response_pause = run ["sleep" "1"]
+assert response_pause.ok else "snapshot response sleep failed"
+let response_tx = run ["timeout" "30" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,connect=${sock_response}" "-kernel" "${build_dir}/snapshot-source-tx.elf"]
+let response_rx_done = wait-for response_rx
+assert response_rx_done.out contains "sealed snapshot batch response GREEN" else "snapshot response hop RED"
+
+say "sed device wire lab: GREEN (snapshot revision batch)"

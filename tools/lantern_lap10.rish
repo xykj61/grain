@@ -1,0 +1,18 @@
+# lantern_lap10.rish — Lantern lap 10: response text pin on the completion contract.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/lantern_lap10.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lantern/bin/lantern"
+
+let build = run ["sh" "-c" "mkdir -p lantern/bin && env RYE_ZIG=${zig} rye/bin/rye build lantern/lantern.rye -femit-bin=${bin}"]
+assert build.ok else "Lantern lap 10 build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "Lantern selftest exited non-zero"
+assert selftest.out contains "GREEN" else "Lantern selftest not GREEN"
+assert selftest.out contains "text pin completion" else "Lantern missing text pin welcome"
+assert selftest.out contains "text mismatch" else "Lantern missing text mismatch"
+
+say "GREEN: Lantern lap 10 — text pin on the bounded completion contract."

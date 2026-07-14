@@ -1,0 +1,34 @@
+# amphora_resin_chunk.rish — Amphora large-resin chunking beyond one datagram.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/amphora_resin_chunk.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let wire_bin = "amphora/bin/vessel-fetch-wire"
+let delivery_bin = "amphora/bin/vessel-fetch-delivery"
+
+say "amphora-chunk: build vessel fetch wire..."
+let build_wire = run ["sh" "-c" "mkdir -p amphora/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_fetch_wire.rye -femit-bin=${wire_bin}"]
+assert build_wire.ok else "amphora vessel_fetch_wire build failed for chunk lap"
+
+let wire = run ["sh" "-c" "${wire_bin} selftest 2>&1"]
+assert wire.ok else "amphora vessel_fetch_wire selftest exited non-zero"
+assert wire.out contains "GREEN" else "amphora vessel_fetch_wire not GREEN"
+assert wire.out contains "chunk" else "amphora vessel_fetch_wire missing chunk claim"
+
+say "amphora-chunk: build vessel fetch delivery..."
+let build_delivery = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_fetch_delivery.rye -lc -femit-bin=${delivery_bin}"]
+assert build_delivery.ok else "amphora vessel_fetch_delivery build failed for chunk lap"
+
+let chunkdemo = run ["sh" "-c" "${delivery_bin} chunkdemo 2>&1"]
+assert chunkdemo.ok else "amphora chunkdemo exited non-zero"
+assert chunkdemo.out contains "GREEN" else "amphora chunkdemo not GREEN"
+assert chunkdemo.out contains "400" else "amphora chunkdemo missing 400 B claim"
+
+say "amphora-chunk: pour → chunked fetch → scrub..."
+let witness = run ["sh" "tools/fixtures/amphora_chunk_witness.sh"]
+assert witness.ok else "Amphora resin chunk witness failed"
+assert witness.out contains "GREEN" else "Amphora resin chunk did not report GREEN"
+assert witness.out contains "SCRUB ok" else "Amphora resin chunk missing cold scrub"
+
+say "GREEN: Amphora resin chunk — large cargo crosses in sealed datagrams."

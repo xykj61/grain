@@ -1,0 +1,19 @@
+# inference_anvil_corpus_rye_prefix_view.rish — Anvil rye + pond/ → Skate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/inference_anvil_corpus_rye_prefix_view.rish
+
+let bin = "pond/bin/drawn-terminal"
+
+say "build: Anvil corpus rye prefix view — drawn-terminal compile"
+let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+assert build.ok else "drawn_terminal build failed for corpus rye prefix view"
+assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
+
+let corpus = run ["sh" "-c" "${bin} corpusryeprefixviewtest 2>&1"]
+assert corpus.ok else "drawn terminal corpusryeprefixviewtest exited non-zero"
+assert corpus.out contains "corpus rye prefix view" else "corpus rye prefix view missing expected output"
+assert corpus.out contains "GREEN" else "Anvil corpus rye prefix view not GREEN"
+assert corpus.out contains "lines=5" else "corpus rye prefix view missing five-line frame"
+
+say "GREEN: Anvil corpus rye prefix view — rye under pond/ composes a Skate frame."

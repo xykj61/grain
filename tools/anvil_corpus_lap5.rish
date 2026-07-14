@@ -1,0 +1,17 @@
+# anvil_corpus_lap5.rish — Anvil corpus lap 2 sum_lines fold witness.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/anvil_corpus_lap5.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "anvil/bin/anvil"
+
+let build = run ["sh" "-c" "mkdir -p anvil/bin && env RYE_ZIG=${zig} rye/bin/rye build anvil/anvil.rye -femit-bin=${bin}"]
+assert build.ok else "Anvil corpus lap 5 build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "Anvil selftest exited non-zero"
+assert selftest.out contains "GREEN" else "Anvil selftest not GREEN"
+assert selftest.out contains "sum_lines fold" else "Anvil missing sum_lines welcome"
+
+say "GREEN: Anvil corpus lap 5 — sum_lines fold over matching chunks."

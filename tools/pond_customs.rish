@@ -1,0 +1,27 @@
+# pond_customs.rish — Pond's first policy lap: customs at receipt per Tilak mark.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/pond_customs.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let customs_bin = "pond/bin/customs"
+
+say "pond-customs: build..."
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/customs.rye -femit-bin=${customs_bin}"]
+assert build.ok else "pond customs build failed"
+
+let selftest = run ["sh" "-c" "${customs_bin} selftest 2>&1"]
+assert selftest.ok else "pond customs selftest exited non-zero"
+assert selftest.out contains "GREEN" else "pond customs selftest not GREEN"
+assert selftest.out contains "place" else "pond customs selftest missing place"
+
+say "pond-customs: admit / hold / refuse + Amphora receipt..."
+let witness = run ["sh" "tools/fixtures/pond_customs_witness.sh"]
+assert witness.ok else "Pond customs witness failed"
+assert witness.out contains "GREEN" else "Pond customs did not report GREEN"
+assert witness.out contains "ADMIT ok" else "Pond customs missing ADMIT"
+assert witness.out contains "HOLD ok" else "Pond customs missing HOLD"
+assert witness.out contains "REFUSE ok" else "Pond customs missing REFUSE"
+assert witness.out contains "RECEIPT ok" else "Pond customs missing Amphora receipt gate"
+
+say "GREEN: Pond customs — first policy lap; Amphora receipt gated."

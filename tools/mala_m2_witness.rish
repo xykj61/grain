@@ -1,0 +1,34 @@
+# mala_m2_witness.rish — MALA M2 mailable Comlink (hosted) witness.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/mala_m2_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let mala = "linengrow/bin/mala"
+let delivery = "linengrow/bin/mala-delivery"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/mala.rye -femit-bin=${mala} && env RYE_ZIG=${zig} rye/bin/rye build linengrow/mala_delivery.rye -lc -femit-bin=${delivery}"]
+
+assert build.ok else "MALA M2 build failed"
+
+let m1 = run ["sh" "-c" "${mala} selftest 2>&1"]
+assert m1.ok else "MALA M1 selftest exited non-zero after core extract"
+assert m1.out contains "GREEN" else "MALA M1 selftest not GREEN"
+
+let selftest = run ["sh" "-c" "${delivery} selftest 2>&1"]
+assert selftest.ok else "MALA M2 selftest exited non-zero"
+assert selftest.out contains "GREEN" else "MALA M2 selftest not GREEN"
+assert selftest.out contains "tampered wire refused" else "MALA M2 missing tamper unwelcome"
+assert selftest.out contains "forged mint signature refused" else "MALA M2 missing forged-sig unwelcome"
+
+let demo = run ["sh" "-c" "${delivery} demo 2>&1"]
+assert demo.ok else "MALA M2 demo exited non-zero"
+assert demo.out contains "GREEN" else "MALA M2 demo not GREEN"
+assert demo.out contains "receipt crossed back" else "MALA M2 demo missing receipt-back"
+
+let device = run ["sh" "comlink/run_mala_wire_lab.sh"]
+assert device.ok else "MALA M2b device wire lab failed"
+assert device.out contains "GREEN" else "MALA M2b device wire lab not GREEN"
+assert device.out contains "mint + receipt" else "MALA M2b missing mint+receipt banner"
+
+say "GREEN: MALA M2 mailable Comlink witness passed (hosted + device wire)."

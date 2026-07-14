@@ -1,0 +1,85 @@
+# proven_seat_g1_fetch_sources.rish — ensure Genode 26.05 at vendor/genode.
+#
+# Claude 204549: permanent home is vendor/genode (submodule). Cache stays the
+# workbench for builddirs and port downloads. Fetch = submodule update --init;
+# assert HEAD equals the pinned commit. ignore=untracked on the submodule keeps
+# contrib droppings out of porcelain. AGPL teacher; never ship-linked.
+#
+#   rishi/bin/rishi run tools/proven_seat_g1_fetch_sources.rish
+
+let cache = "tools/.cache/proven-seat"
+let root = "vendor/genode"
+let toolchain_stamp = "25.05"
+let sources_stamp = "26.05"
+let ground = "Sculpt 26.04"
+let remote = "https://codeberg.org/genodelabs/genode.git"
+let pinned = "492a51024217fe74ccee1ebdfb81be97046b43eb"
+let meta = "${cache}/g1-sources-meta.txt"
+let trio = "${cache}/g1-toolchain-meta.txt"
+
+say "proven-seat G1 sources: preparing cache shelf (workbench)…"
+let mkdir = run ["mkdir" "-p" cache]
+assert mkdir.ok else "could not create ${cache}"
+
+say "proven-seat G1 sources: git submodule update --init ${root}…"
+let sub = run ["git" "submodule" "update" "--init" root]
+assert sub.ok else "git submodule update --init failed for ${root}"
+
+say "proven-seat G1 sources: asserting HEAD equals pinned commit…"
+let head = run ["git" "-C" root "rev-parse" "HEAD"]
+assert head.ok else "git rev-parse HEAD failed"
+assert head.out contains pinned else "sources HEAD mismatch (want ${pinned})"
+say "proven-seat G1 sources: HEAD matches pinned ${pinned}"
+
+say "proven-seat G1 sources: checking VERSION · repos/base · repos/libports · prepare_port…"
+let ver_file = read-file "${root}/VERSION"
+assert ver_file contains sources_stamp else "VERSION must contain ${sources_stamp}"
+let have_base = run ["test" "-d" "${root}/repos/base"]
+assert have_base.ok else "missing ${root}/repos/base"
+let have_libports = run ["test" "-d" "${root}/repos/libports"]
+assert have_libports.ok else "missing ${root}/repos/libports"
+let have_prep = run ["test" "-f" "${root}/tool/ports/prepare_port"]
+assert have_prep.ok else "missing ${root}/tool/ports/prepare_port"
+say "proven-seat G1 sources: VERSION ${sources_stamp}; repos/base + repos/libports + prepare_port present"
+
+say "proven-seat G1 sources: trying git verify-tag ${sources_stamp} (record only)…"
+let verify = run ["git" "-C" root "verify-tag" sources_stamp]
+let verify_note = "unsigned-or-unverified"
+if verify.ok then say "proven-seat G1 sources: verify-tag ${sources_stamp} — signature accepted"
+if verify.ok then let verify_note = "verified"
+if verify.ok == false then say "proven-seat G1 sources: verify-tag ${sources_stamp} — no usable signature (commit pin remains the floor)"
+
+say "proven-seat G1 sources: writing ${meta}…"
+let clear_meta = run ["rm" "-f" meta]
+assert clear_meta.ok else "could not clear ${meta}"
+let w1 = run ["sh" "-c" "echo toolchain ${toolchain_stamp} > ${meta}"]
+assert w1.ok else "meta write toolchain failed"
+let w2 = run ["sh" "-c" "echo sources ${sources_stamp} >> ${meta}"]
+assert w2.ok else "meta write sources failed"
+let w3 = run ["sh" "-c" "echo sources_commit ${pinned} >> ${meta}"]
+assert w3.ok else "meta write sources_commit failed"
+let w4 = run ["sh" "-c" "echo ground ${ground} >> ${meta}"]
+assert w4.ok else "meta write ground failed"
+let w5 = run ["sh" "-c" "echo forge codeberg.org/genodelabs/genode >> ${meta}"]
+assert w5.ok else "meta write forge failed"
+let w6 = run ["sh" "-c" "echo remote ${remote} >> ${meta}"]
+assert w6.ok else "meta write remote failed"
+let w7 = run ["sh" "-c" "echo home vendor/genode >> ${meta}"]
+assert w7.ok else "meta write home failed"
+let w8 = run ["sh" "-c" "echo tag_verify ${verify_note} >> ${meta}"]
+assert w8.ok else "meta write tag_verify failed"
+let w9 = run ["sh" "-c" "echo root ${root} >> ${meta}"]
+assert w9.ok else "meta write root failed"
+let w10 = run ["sh" "-c" "echo prepare_port ${root}/tool/ports/prepare_port >> ${meta}"]
+assert w10.ok else "meta write prepare_port failed"
+let w11 = run ["sh" "-c" "echo workbench ${cache} >> ${meta}"]
+assert w11.ok else "meta write workbench failed"
+
+say "proven-seat G1 sources: refreshing META trio on ${trio}…"
+let have_trio = run ["test" "-f" trio]
+if have_trio.ok == false then let seed = run ["sh" "-c" "echo toolchain ${toolchain_stamp} > ${trio}"]
+if have_trio.ok == false then assert seed.ok
+let refresh = run ["sh" "-c" "grep -v '^sources ' ${trio} | grep -v '^sources_commit ' | grep -v '^sources_root ' | grep -v '^sources_sha256 ' | grep -v '^ground ' | grep -v '^home ' > ${trio}.tmp && echo sources ${sources_stamp} >> ${trio}.tmp && echo sources_commit ${pinned} >> ${trio}.tmp && echo sources_root ${root} >> ${trio}.tmp && echo home vendor/genode >> ${trio}.tmp && echo ground ${ground} >> ${trio}.tmp && mv ${trio}.tmp ${trio}"]
+assert refresh.ok else "could not refresh META trio on ${trio}"
+
+say "GREEN: proven-seat G1 sources — Genode ${sources_stamp} @ ${pinned} home ${root}; workbench ${cache}; META trio toolchain=${toolchain_stamp} sources=${sources_stamp} ground=${ground}"

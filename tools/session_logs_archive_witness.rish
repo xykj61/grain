@@ -1,0 +1,20 @@
+# session_logs_archive_witness.rish — proves archive fold on fixture sandboxes.
+#
+# Builds the core, runs selftest (preview, fold, link rewrite, idempotency).
+# Run from the repository root:
+#   rishi/bin/rishi run tools/session_logs_archive_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let rye = "rye/bin/rye"
+let tool = "tools/session_logs_archive.rye"
+let bin = "tools/.build/session_logs_archive"
+
+let build = run ["sh" "-c" "mkdir -p tools/.build && env RYE_ZIG=${zig} ${rye} build ${tool} -femit-bin=${bin}"]
+assert build.ok else "session_logs_archive build failed"
+
+say "session-logs archive witness: running selftest on fixture sandbox..."
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "session_logs_archive selftest failed"
+say selftest.out
+assert selftest.out contains "GREEN" else "selftest must report GREEN"
+say "GREEN: session-logs archive — preview, fold, link rewrite, and idempotency hold on fixtures."

@@ -1,0 +1,28 @@
+# session_logs_archive.rish — fold prior days' session logs into archive/YYYYMMDD/.
+#
+# Convention (ORGANIZING.md): the working day stays flat; earlier days live under
+# session-logs/archive/<YYYYMMDD>/.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/session_logs_archive.rish
+#
+# Read-only count first:
+#   rishi/bin/rishi run tools/session_logs_archive_preview.rish
+#
+# Core: tools/session_logs_archive.rye · witness: session_logs_archive_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let rye = "rye/bin/rye"
+let tool = "tools/session_logs_archive.rye"
+let bin = "tools/.build/session_logs_archive"
+
+let build = run ["sh" "-c" "mkdir -p tools/.build && env RYE_ZIG=${zig} ${rye} build ${tool} -femit-bin=${bin}"]
+assert build.ok else "session_logs_archive build failed"
+
+let today = run ["sh" "-c" "date +%Y%m%d"]
+say "archive fold: keeping day ${today.out} flat; moving earlier days beneath archive/."
+
+let cmd = run ["sh" "-c" "${bin} fold 2>&1"]
+assert cmd.ok else "session logs archive fold failed"
+say cmd.out
+assert cmd.out contains "GREEN"

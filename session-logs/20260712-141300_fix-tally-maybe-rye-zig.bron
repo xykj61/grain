@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260712.141300
+editor Cursor
+model Cursor Grok 4.5
+voice Rio 3
+title Fix tally_maybe RYE_ZIG pin — parity ch1 RED at maybe
+prompt parity chapter 1 failed at Tally maybe; blank nested output
+product_nib 430
+suite_nib 432
+git_nib 0d75c1b
+think Host log stopped at Tally maybe with empty nested stdout — assert lived on stderr. Root: tally_maybe (and siblings) built without RYE_ZIG=vendor/zig-toolchain/zig; narrow PATH → FileNotFound zig.
+think Pinned RYE_ZIG in tally_maybe, tally_no_padding, tally_parse_int; nested 2>&1 in parity_ch01; surface build.out on fail. Verified maybe GREEN under PATH=/usr/bin:/bin.
+obs Host: git pull; tee parity again. Second red parks.
+file tools/tally_maybe.rish · tally_no_padding.rish · tally_parse_int.rish
+file tools/parity_ch01.rish nested 2>&1 for three tally witnesses
+file session-logs/20260712-141300_fix-tally-maybe-rye-zig.bron this log
+file session-logs/README.md index
+recommend keep-going host git pull then tee parity — mechanical

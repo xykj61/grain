@@ -1,0 +1,47 @@
+//! Rye test: SHA3-512 across the block boundary — a guard for our strengthening.
+//!
+//! Our first divergence in substance (strengthening-compiler/9998_sha3_512.md) added TAME
+//! assertions to SHA3-512 in Rye's own `std`, stating the sponge's invariant
+//! that its cursor stays within one block: `offset <= rate`. The interesting
+//! case is the one that rests the cursor *exactly* on the boundary —
+//! `offset == rate` — which a single full block produces. That is precisely
+//! where a too-strict `offset < rate` would have been wrong.
+//!
+//! So this test sweeps input lengths around the rate (72 bytes for Sha3_512),
+//! including its exact multiples, with the assertions live. It passes when no
+//! invariant fires and the empty-string known answer holds — proving the bound
+//! is right and the strengthening is sound for inputs the parity test (three
+//! bytes) never reaches.
+
+const std = @import("std");
+const Sha3_512 = std.crypto.hash.sha3.Sha3_512;
+
+pub fn main() void {
+    var buf: [256]u8 = undefined;
+    for (&buf) |*b| b.* = 'a';
+
+    // The rate is one block; lengths that are exact multiples leave the absorb
+    // cursor at offset == rate, the boundary the strengthened bound allows.
+    const rate = Sha3_512.block_length;
+    const lengths = [_]usize{ 0, 1, rate - 1, rate, rate + 1, 2 * rate, 2 * rate + 1, 256 };
+
+    // Fold each digest into a sink so the compiler cannot elide the work; the
+    // point is that hashing these lengths runs the live assertions without panic.
+    var sink: u8 = 0;
+    for (lengths) |n| {
+        var digest: [Sha3_512.digest_length]u8 = undefined;
+        Sha3_512.hash(buf[0..n], &digest, .{});
+        sink ^= digest[0];
+    }
+
+    // A known answer anchors correctness, not just absence of panic: SHA3-512
+    // of the empty string begins a6 9f 73 cc.
+    var empty: [Sha3_512.digest_length]u8 = undefined;
+    Sha3_512.hash("", &empty, .{});
+    std.debug.assert(empty[0] == 0xa6 and empty[1] == 0x9f and empty[2] == 0x73 and empty[3] == 0xcc);
+
+    std.debug.print(
+        "rye: SHA3-512 boundary sweep + empty-vector confirmed (rate={d}, sink={d}).\n",
+        .{ rate, sink },
+    );
+}

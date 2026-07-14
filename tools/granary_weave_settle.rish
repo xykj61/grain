@@ -1,0 +1,26 @@
+# granary_weave_settle.rish — Granary lap 6: settle weave listing (MALA + WOV in-process).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/granary_weave_settle.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "granary/bin/weave-settle"
+
+let build = run ["sh" "-c" "mkdir -p granary/bin && env RYE_ZIG=${zig} rye/bin/rye build granary/weave_settle.rye -femit-bin=${bin}"]
+assert build.ok else "Granary weave settle build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "Granary weave settle selftest exited non-zero"
+assert selftest.out contains "GREEN" else "Granary weave settle selftest not GREEN"
+assert selftest.out contains "settled" else "Granary weave settle missing settle claim"
+assert selftest.out contains "100 mala" else "Granary weave settle missing price claim"
+assert selftest.out contains "zero amount refused" else "Granary weave settle missing zero refuse"
+assert selftest.out contains "lying settle refused" else "Granary weave settle missing lying refuse"
+assert selftest.out contains "listing receipt mismatch refused" else "Granary weave settle missing listing mismatch refuse"
+assert selftest.out contains "payment digest mismatch refused" else "Granary weave settle missing payment mismatch refuse"
+assert selftest.out contains "price mismatch refused" else "Granary weave settle missing price mismatch refuse"
+assert selftest.out contains "mala fold refused" else "Granary weave settle missing mala refuse"
+assert selftest.out contains "wov insufficient refused" else "Granary weave settle missing wov refuse"
+assert selftest.out contains "double settle refused" else "Granary weave settle missing double settle refuse"
+
+say "GREEN: Granary lap 6 — weave settle binds MALA send + WOV transfer; no identities."

@@ -1,0 +1,126 @@
+//! comlink/device_wire.rye — sealed datagram over virtio-net between guests.
+//!
+//! Sub-lap 1 (hosted selftest): virtio descriptor algebra on fixtures plus the
+//! shared wire format seal/open — no live link yet. Sub-lap 2 runs freestanding
+//! guests via comlink/run_device_wire_lab.sh. Sub-lap 3 carries the sealed
+//! datagram across the same link.
+//!
+//! Usage:
+//!   device_wire selftest   Fixture virtio validation + wire_format round-trip
+//!
+//! Build:
+//!   rye build comlink/device_wire.rye -lc -femit-bin=comlink/bin/device-wire
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const wf = @import("wire_format.rye");
+const vn = @import("virtio_net.rye");
+const no_padding = @import("tally_no_padding.rye").no_padding;
+
+/// Explicit subject — every queue depth and buffer bound stated up front.
+pub const WireSubject = struct {
+    mmio_base: u64,
+    queue_depth: u32,
+    max_frame: u32,
+    datagram: *[@intCast(wf.wire_capacity)]u8,
+};
+
+fn assert_mmio_offset(offset: u32, width: u32) void {
+    assert(offset % width == 0);
+    assert(offset < 0x100);
+}
+
+fn validate_descriptor(desc: *const vn.VqDesc, subject: *const WireSubject) !void {
+    if (desc.len == 0) return error.EmptyDescriptor;
+    if (desc.len > subject.max_frame) return error.OutOfBounds;
+    if (desc.addr == 0) return error.NullGuestAddr;
+}
+
+fn validate_chain(subject: *const WireSubject, ring: []const vn.VqDesc) !u32 {
+    var idx: u16 = 0;
+    var total: u32 = 0;
+    var hops: u32 = 0;
+    const max_hops = subject.queue_depth;
+    while (true) : (hops += 1) {
+        if (hops > max_hops) return error.ChainTooLong;
+        const desc = &ring[@intCast(idx)];
+        try validate_descriptor(desc, subject);
+        total +%= desc.len;
+        if ((desc.flags & vn.vq_desc_f_next) == 0) return total;
+        idx = desc.next;
+        if (@as(u32, idx) >= subject.queue_depth) return error.BadNextIndex;
+    }
+}
+
+fn selftest_descriptor_fixture() !void {
+    var ring: [4]vn.VqDesc = undefined;
+    var payload: [64]u8 = undefined;
+    @memset(&payload, vn.link_pattern_fill);
+
+    ring[0] = .{
+        .addr = @intFromPtr(&payload),
+        .len = vn.virtio_net_hdr_len,
+        .flags = vn.vq_desc_f_next,
+        .next = 1,
+    };
+    ring[1] = .{
+        .addr = @intFromPtr(&payload) + vn.virtio_net_hdr_len,
+        .len = vn.link_pattern_len,
+        .flags = 0,
+        .next = 0,
+    };
+
+    var subject = WireSubject{
+        .mmio_base = vn.mmio_base,
+        .queue_depth = vn.queue_depth,
+        .max_frame = vn.max_frame,
+        .datagram = undefined,
+    };
+
+    const offered: u64 = vn.feat_mac | vn.feat_version_1;
+    const accepted = vn.negotiate_features(offered);
+    assert(accepted == vn.feat_mac | vn.feat_version_1);
+
+    const total = try validate_chain(&subject, &ring);
+    assert(total == vn.virtio_net_hdr_len + vn.link_pattern_len);
+}
+
+fn selftest_wire_format_round_trip() !void {
+    var buf: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const len = wf.seal_datagram(&buf);
+    var opened: [@intCast(wf.max_message)]u8 = undefined;
+    const msg_len = try wf.open_datagram(buf[0..@intCast(len)], &opened);
+    if (!std.mem.eql(u8, opened[0..@intCast(msg_len)], wf.expected_message)) return error.MessageWrong;
+}
+
+/// Every hand-designed virtio structure lays out exactly as written — no
+/// compiler-inserted gap between fields, none after the last one. The virtio
+/// device on the other end of this wire reads these bytes literally; a hidden
+/// padding byte here is not a style question, it is a guest that cannot speak
+/// to its host.
+fn selftest_layout_proof() !u8 {
+    comptime assert(no_padding(vn.VirtioNetHdr));
+    comptime assert(no_padding(vn.VqDesc));
+    comptime assert(no_padding(vn.VqAvail));
+    comptime assert(no_padding(vn.VqUsedElem));
+    comptime assert(no_padding(vn.VqUsed));
+    print("comlink device wire: five virtio structures proved padding-free at compile time\n", .{});
+    return 0;
+}
+
+fn run_selftest() !u8 {
+    _ = try selftest_layout_proof();
+    try selftest_descriptor_fixture();
+    try selftest_wire_format_round_trip();
+    print("comlink device wire: selftest GREEN — sub-lap 1 descriptor algebra and seal/open on fixture\n", .{});
+    print("comlink device wire: wire_format {s}\n", .{wf.wire_format_version});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) return run_selftest();
+    return run_selftest();
+}

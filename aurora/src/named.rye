@@ -1,0 +1,53 @@
+//! aurora/src/named.rye — content-naming on the bare hart.
+//!
+//! A freestanding RISC-V program that names a message by its SHA3-512 content
+//! hash — the hash we strengthened first, run with no operating system beneath
+//! it — and speaks the name over the console. This is where Aurora's bare-metal
+//! reach meets Mantra's content-addressing: the cryptography our network leans
+//! on, proven to run freestanding on RISC-V. The seal and the full encrypted
+//! datagram grow from here (active-designing/993; external-research/yonder/20260618-212112_content-centric-messaging.md, /985).
+//!
+//! Build and run with `../run.sh named`. Same machine as the seed and relay:
+//! QEMU's `virt`, UART at 0x1000_0000, test finisher at 0x10_0000.
+
+const std = @import("std");
+const Sha3_512 = std.crypto.hash.sha3.Sha3_512;
+
+const uart_tx: *volatile u8 = @ptrFromInt(0x1000_0000);
+const test_finisher: *volatile u32 = @ptrFromInt(0x0010_0000);
+const finisher_pass: u32 = 0x5555;
+
+export fn _start() linksection(".text.init") callconv(.naked) noreturn {
+    asm volatile (
+        \\ li sp, 0x80100000
+        \\ j kmain
+    );
+}
+
+export fn kmain() callconv(.c) noreturn {
+    const message = "named on the bare hart";
+
+    // Name the message by its content — the strengthened hash, freestanding.
+    var digest: [Sha3_512.digest_length]u8 = undefined;
+    Sha3_512.hash(message, &digest, .{});
+
+    write_str("Aurora: content-named on the bare hart.\n");
+    write_str("  message = ");
+    write_str(message);
+    write_str("\n  name = ");
+    for (digest[0..16]) |b| write_hex_byte(b);
+    write_str("...\n");
+
+    test_finisher.* = finisher_pass;
+    while (true) {}
+}
+
+fn write_str(text: []const u8) void {
+    for (text) |byte| uart_tx.* = byte;
+}
+
+fn write_hex_byte(byte: u8) void {
+    const hex = "0123456789abcdef";
+    uart_tx.* = hex[byte >> 4];
+    uart_tx.* = hex[byte & 0x0f];
+}

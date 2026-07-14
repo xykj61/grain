@@ -1,0 +1,16 @@
+# SUPERSEDED 20260711.055800 — WOV TB pin presence retired from the living suite.
+# Kaeden approved Claude counsel 055112: keep pure-Rye WOV core; retire the optional
+# TigerBeetle cross-check seam to dated record. Kept; never deleted. Not run from parity.
+# Living WOV coverage: tools/wov_exit_honesty.rish · tools/wov_dual_monarch.rish
+#
+# wov_tb_pin.rish — WOV lap 2a: TigerBeetle pin presence (no client link).
+#
+# Run from the repository root (manual / dated record only):
+#   rishi/bin/rishi run tools/wov_tb_pin.rish
+
+let check = run ["rishi/bin/rishi" "run" "tools/fixtures/wov_tb_pin_check.rish"]
+assert check.ok else "WOV TigerBeetle pin check failed"
+say check.out
+assert check.out contains "WOV-TB-PIN-GREEN" else "WOV TB pin must reach green verdict"
+
+say "GREEN: WOV TigerBeetle pin presence — rev 59f2b99 held; no Rye client link yet."

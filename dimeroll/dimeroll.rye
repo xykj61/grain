@@ -1,0 +1,254 @@
+//! dimeroll/dimeroll.rye — Dimeroll selftest (lap 1–2 fold/reports + lap 4 filters).
+//!
+//!   rye build dimeroll/dimeroll.rye -femit-bin=dimeroll/bin/dimeroll
+//!   dimeroll/bin/dimeroll selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const Dir = std.Io.Dir;
+const gc = @import("dimeroll_core.rye");
+
+const dimeroll_version = "20260710.230433";
+
+fn welcome_path() !void {
+    var entries: [gc.max_entries]gc.Entry = undefined;
+    var count: u32 = 0;
+    try gc.parse_journal(gc.welcome_journal, &entries, &count);
+    assert(count == 2);
+    const tb = try gc.fold_journal(entries[0..count]);
+    assert(tb.conservation() == 0);
+    assert(tb.nets[@intFromEnum(gc.Account.cash)] == 800);
+    assert(tb.nets[@intFromEnum(gc.Account.revenue)] == -1000);
+    assert(tb.nets[@intFromEnum(gc.Account.expense)] == 200);
+    assert(tb.nets[@intFromEnum(gc.Account.equity)] == 0);
+    print("dimeroll lap1: cash {d}, revenue {d}, expense {d} — conservation 0\n", .{
+        tb.nets[@intFromEnum(gc.Account.cash)],
+        tb.nets[@intFromEnum(gc.Account.revenue)],
+        tb.nets[@intFromEnum(gc.Account.expense)],
+    });
+}
+
+fn check_fixture(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [2048]u8 = undefined;
+    const text = try cwd.readFile(io, gc.fixture_path, &buf);
+    var entries: [gc.max_entries]gc.Entry = undefined;
+    var count: u32 = 0;
+    try gc.parse_journal(text, &entries, &count);
+    assert(count == 2);
+    const tb = try gc.fold_journal(entries[0..count]);
+    assert(tb.conservation() == 0);
+    assert(tb.nets[@intFromEnum(gc.Account.cash)] == 800);
+}
+
+fn unwelcome_unknown_account() !void {
+    var entry: gc.Entry = undefined;
+    const bad =
+        \\debit cash
+        \\credit notanaccount
+        \\amount 10
+        \\memo x
+        \\stamp 20260710.125953
+        \\
+    ;
+    if (gc.parse_entry(bad, &entry)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.UnknownAccount);
+    }
+    print("dimeroll: unknown account refused\n", .{});
+}
+
+fn unwelcome_bad_amount() !void {
+    var entry: gc.Entry = undefined;
+    const bad =
+        \\debit cash
+        \\credit revenue
+        \\amount 0
+        \\memo x
+        \\stamp 20260710.125953
+        \\
+    ;
+    if (gc.parse_entry(bad, &entry)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.BadAmount);
+    }
+    print("dimeroll: zero amount refused\n", .{});
+}
+
+fn unwelcome_same_account() !void {
+    var tb: gc.TrialBalance = .{};
+    const e = gc.Entry{
+        .debit = .cash,
+        .credit = .cash,
+        .amount = 50,
+        .memo = "loop",
+        .stamp = "20260710.125953",
+    };
+    if (gc.post_entry(&tb, e)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.SameAccount);
+    }
+    print("dimeroll: same-account entry refused\n", .{});
+}
+
+fn reports_path() !void {
+    var entries: [gc.max_entries]gc.Entry = undefined;
+    var count: u32 = 0;
+    try gc.parse_journal(gc.welcome_journal, &entries, &count);
+    const tb = try gc.fold_journal(entries[0..count]);
+    const is = gc.fold_income_statement(tb);
+    assert(is.revenue == 1000);
+    assert(is.expense == 200);
+    assert(is.net_income == 800);
+    const bs = gc.fold_balance_sheet(tb);
+    assert(bs.cash == 800);
+    assert(bs.equity_booked == 0);
+    assert(bs.retained == 800);
+    assert(bs.balances());
+    print("dimeroll lap2: P&L revenue {d} expense {d} net {d}; BS cash {d} retained {d}\n", .{
+        is.revenue,
+        is.expense,
+        is.net_income,
+        bs.cash,
+        bs.retained,
+    });
+}
+
+fn exception_queue_path() !void {
+    const drafts = [_][]const u8{
+        \\debit cash
+        \\credit notanaccount
+        \\amount 10
+        \\memo bad
+        \\stamp 20260710.131212
+        \\
+        ,
+        \\debit cash
+        \\credit revenue
+        \\amount 0
+        \\memo zero
+        \\stamp 20260710.131212
+        \\
+        ,
+        \\debit cash
+        \\credit revenue
+        \\amount 50
+        \\memo welcome
+        \\stamp 20260710.131212
+        \\
+        ,
+    };
+    var out: [gc.max_exceptions]gc.Exception = undefined;
+    var count: u32 = 0;
+    gc.collect_exceptions(&drafts, &out, &count);
+    assert(count == 2);
+    assert(std.mem.eql(u8, out[0].reason, "unknown account"));
+    assert(std.mem.eql(u8, out[1].reason, "bad amount"));
+    print("dimeroll lap2: exception queue held {d} drafts\n", .{count});
+}
+
+fn welcome_account_filter() !void {
+    var entries: [gc.max_entries]gc.Entry = undefined;
+    var count: u32 = 0;
+    try gc.parse_journal(gc.welcome_journal, &entries, &count);
+    var hits: [gc.max_entries]u32 = undefined;
+
+    const n_cash = try gc.filter_by_account(entries[0..count], .cash, hits[0..]);
+    assert(n_cash == 2);
+
+    const n_revenue = try gc.filter_by_account(entries[0..count], .revenue, hits[0..]);
+    assert(n_revenue == 1);
+    assert(std.mem.eql(u8, entries[hits[0]].memo, "stipend received"));
+
+    const n_equity = try gc.filter_by_account(entries[0..count], .equity, hits[0..]);
+    assert(n_equity == 0);
+
+    print("dimeroll lap4: account filter — cash={d} revenue={d} equity={d}\n", .{ n_cash, n_revenue, n_equity });
+}
+
+fn welcome_memo_prefix() !void {
+    var entries: [gc.max_entries]gc.Entry = undefined;
+    var count: u32 = 0;
+    try gc.parse_journal(gc.welcome_journal, &entries, &count);
+    var hits: [gc.max_entries]u32 = undefined;
+
+    const n_stipend = try gc.filter_by_memo_prefix(entries[0..count], "stipend", hits[0..]);
+    assert(n_stipend == 1);
+    assert(entries[hits[0]].amount == 1000);
+
+    const n_sup = try gc.filter_by_memo_prefix(entries[0..count], "sup", hits[0..]);
+    assert(n_sup == 1);
+    assert(std.mem.eql(u8, entries[hits[0]].memo, "supplies"));
+
+    const n_none = try gc.filter_by_memo_prefix(entries[0..count], "tax", hits[0..]);
+    assert(n_none == 0);
+
+    print("dimeroll lap4: memo prefix — stipend={d} sup={d}\n", .{ n_stipend, n_sup });
+}
+
+fn welcome_cash_flow() !void {
+    var entries: [gc.max_entries]gc.Entry = undefined;
+    var count: u32 = 0;
+    try gc.parse_journal(gc.welcome_journal, &entries, &count);
+    const cf = gc.fold_cash_flow(entries[0..count]);
+    assert(cf.inflow == 1000);
+    assert(cf.outflow == 200);
+    assert(cf.net() == 800);
+    print("dimeroll lap4: cash flow — in={d} out={d} net={d}\n", .{ cf.inflow, cf.outflow, cf.net() });
+}
+
+fn welcome_sum_amounts() !void {
+    var entries: [gc.max_entries]gc.Entry = undefined;
+    var count: u32 = 0;
+    try gc.parse_journal(gc.welcome_journal, &entries, &count);
+    const sum = gc.sum_amounts(entries[0..count]);
+    assert(sum == 1200);
+
+    var hits: [gc.max_entries]u32 = undefined;
+    const n = try gc.filter_by_account(entries[0..count], .revenue, hits[0..]);
+    assert(n == 1);
+    const sum_rev = gc.sum_amounts(entries[hits[0] .. hits[0] + 1]);
+    assert(sum_rev == 1000);
+
+    print("dimeroll lap4: sum amounts — all={d} revenue={d}\n", .{ sum, sum_rev });
+}
+
+fn unwelcome_filter_overflow() !void {
+    var entries: [gc.max_entries]gc.Entry = undefined;
+    var count: u32 = 0;
+    try gc.parse_journal(gc.welcome_journal, &entries, &count);
+    var tiny: [1]u32 = undefined;
+    if (gc.filter_by_account(entries[0..count], .cash, &tiny)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ResultOverflow);
+    }
+    print("dimeroll lap4: account filter overflow refused\n", .{});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(garden);
+    _ = args;
+
+    print("dimeroll {s}\n", .{dimeroll_version});
+    try welcome_path();
+    try check_fixture(io);
+    try unwelcome_unknown_account();
+    try unwelcome_bad_amount();
+    try unwelcome_same_account();
+    try reports_path();
+    try exception_queue_path();
+    try welcome_account_filter();
+    try welcome_memo_prefix();
+    try welcome_cash_flow();
+    try welcome_sum_amounts();
+    try unwelcome_filter_overflow();
+    print("GREEN: dimeroll — books fold, reports, exception queue, lap4 filters\n", .{});
+    return 0;
+}

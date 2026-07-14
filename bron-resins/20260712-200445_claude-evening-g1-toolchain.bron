@@ -1,0 +1,77 @@
+# Combined Bron handoff for Claude — evening: parity GREEN · G1 open · toolchain fetch GREEN
+# Paste-ready: values only.
+format chat-printout-v1
+kind claude-handoff
+stamp 20260712.200445
+voice Rio 3
+editor Cursor
+model Cursor Grok 4.5
+git_nib b790881
+product_nib 430
+suite_nib 432
+parity_host_repin GREEN
+g1_status crossing-named · toolchain-fetched · serial-ahead
+audience Claude
+sitting Framework-evening-g1-fetch
+
+section pins
+pin product_nib 430
+pin suite_nib 432
+pin parity_host_repin 20260712.193958 GREEN
+pin git_nib b790881
+pin git_before_this_go 9f1c911
+pin remotes will-push-four
+pin lane_kvm onpath GREEN 140403
+pin enclosure_pair refuse-jail · permit-Framework
+pin teacher_ai_jail v1.12.0
+pin genode_toolchain 25.05 ubuntu-24.04 sha256 6cab8e5f4490399a296a73b01695d5fb055a40f6ac04d61a3f7a7344003eb739
+pin cxx genode-x86-g++ GCC 14.2.0 under tools/.cache/proven-seat/genode-toolchain/
+pin route_two parked graduation-trigger holds
+
+section arc_since_afternoon_handoff
+title What landed after the afternoon Claude printout
+p Host metal parity re-pin GREEN 193958 at 826bcea — both chapters · full suite under Env ceiling. Go ee1c37f.
+p Claude day-close 182752 · fresh sitting opened · check-in before G1 completed.
+p Claude 195155 G1 counsel — open SLC spike · seed stays seat changes · crossing first. Kaeden go+open+kg.
+p Crossing pin named Genode toolchain + posix/libc; refuse host Zig-alone. Probe GREEN. Skeleton RED until guest binary.
+p Fetch witness written; Framework host ran it GREEN — sha256 matched · extract · genode-x86-g++ 14.2.0 · meta CROSS_DEV_PREFIX. Note: paste line with hash-comment broke git pull (zsh); fetch still ran.
+
+section commits_this_evening_arc
+title Commits oldest → newest through fetch go
+commit ee1c37f Pin host metal parity GREEN from the fresh Framework sitting.
+commit 826bcea Record Claude day-close and open the fresh parity-first sitting.
+commit e460d3d Seat Claude afternoon four asks and close the doorway Status park.
+commit 434755b Open proven-seat G1 with a named Genode crossing spike.
+commit 9f1c911 Record git nib 434755b on the TASKS living header.
+commit b790881 Seat G1 toolchain fetch witness and evening Claude handoff.
+push remotes origin github gp36-codeberg gp36-github
+
+section host_printouts
+title What the Framework printed
+printout parity
+p GREEN: parity chapter 1/2 passed.
+p GREEN: parity chapter 2/2 passed.
+p GREEN: full witness suite — 2 chapters under Env binding ceiling.
+printout g1_fetch
+p proven-seat G1 fetch: sha256 matches pinned 6cab8e5f4490399a296a73b01695d5fb055a40f6ac04d61a3f7a7344003eb739
+p proven-seat G1 fetch: genode-x86-g++ (GCC) 14.2.0
+p GREEN: proven-seat G1 fetch — Genode toolchain 25.05 (ubuntu-24.04) in tools/.cache/proven-seat/genode-toolchain
+printout meta
+p stamp 25.05
+p distro ubuntu-24.04
+p cross_dev_prefix tools/.cache/proven-seat/genode-toolchain/usr/local/genode/tool/25.05/bin/
+p cxx …/genode-x86-g++
+
+section open_now
+next build receipt_core as posix/libc guest with CROSS_DEV_PREFIX from meta
+next wire proven_seat_g1.rish for jailed TCG serial one GREEN
+park route_two behind graduation trigger
+park karpathy-gist ai-memory for Kaeden word
+park genode module-home/name until Claude word
+
+section ask_claude
+ask Affirm toolchain 25.05 Ubuntu fetch as the right teacher beside Sculpt 26.04 ground — or name a Goa/version mismatch to park on.
+ask Affirm next kg = posix/libc receipt guest build under cache CROSS_DEV_PREFIX · then serial GREEN — any reorder?
+ask Module home for Genode study clone still parked — keep park?
+
+benediction May the toolchain rest in the cache without claiming the seat. May the next GREEN be the guest's own serial line.

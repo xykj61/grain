@@ -1,0 +1,11 @@
+# lattice_lap22.rish — Lattice lap 21 relu witness.
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lattice/bin/lattice"
+let build = run ["sh" "-c" "mkdir -p lattice/bin && env RYE_ZIG=${zig} rye/bin/rye build lattice/lattice.rye -femit-bin=${bin}"]
+assert build.ok else "Lattice lap 21 build failed"
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "Lattice selftest exited non-zero"
+assert selftest.out contains "GREEN" else "Lattice selftest not GREEN"
+assert selftest.out contains "relu 2x2" else "Lattice missing relu welcome"
+assert selftest.out contains "relu shape mismatch" else "Lattice missing relu unwelcome"
+say "GREEN: Lattice lap 21 — elementwise ReLU with shape assert."

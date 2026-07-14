@@ -1,0 +1,24 @@
+# mantra_recall_lap3_wire.rish — NS-L3 wire lap 1 hosted sync witness.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/mantra_recall_lap3_wire.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mantra/bin/recall-sync-delivery"
+
+let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/recall_sync_delivery.rye -lc -femit-bin=${bin}"]
+assert build.ok else "NS-L3 wire delivery build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "NS-L3 wire delivery selftest exited non-zero"
+assert selftest.out contains "GREEN" else "NS-L3 wire delivery selftest not GREEN"
+
+let demo = run ["sh" "-c" "${bin} demo 2>&1"]
+assert demo.ok else "NS-L3 wire delivery demo exited non-zero"
+assert demo.out contains "GREEN" else "NS-L3 wire delivery demo not GREEN"
+
+let device = run ["sh" "comlink/run_recall_sync_wire_lab.sh"]
+assert device.ok else "NS-L3 wire device lab failed"
+assert device.out contains "GREEN" else "NS-L3 wire device lab not GREEN"
+
+say "GREEN: NS-L3 wire lap 1 hosted + lap 2 device sync witness passed."

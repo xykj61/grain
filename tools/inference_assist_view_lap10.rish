@@ -1,0 +1,13 @@
+# inference_assist_view_lap10.rish — Assist view: first exception reason on assist fold.
+let bin = "pond/bin/drawn-terminal"
+say "build: inference assist view lap 10 — drawn-terminal compile"
+let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+assert build.ok else "drawn_terminal build failed for assist view lap 10"
+assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
+let assist = run ["sh" "-c" "${bin} assistviewtest 2>&1"]
+assert assist.ok else "drawn terminal assistviewtest exited non-zero"
+assert assist.out contains "exceptions=2" else "assist view missing exceptions=2"
+assert assist.out contains "ex=unknown" else "assist view missing ex=unknown"
+assert assist.out contains "GREEN" else "Inference assist view lap 10 not GREEN"
+assert assist.out contains "lines=8" else "assist view missing eight-line frame"
+say "GREEN: Assist view lap 10 — first exception reason on the assist fold."

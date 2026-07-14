@@ -1,0 +1,70 @@
+//! brushstroke/seed.rye — the first running Brushstroke: a frame drawn from values.
+//!
+//! Brushstroke is the display surface of the Rye family: immediate-mode rendering
+//! where each frame is a pure function of current values — no retained widget
+//! tree that can drift from the truth. This seed is the smallest version that
+//! runs on hosted Linux: build a Frame value, redraw it to stdout, assert the
+//! invariants, and exit. Wayland and GPU backends grow from this through the
+//! seam described in active-designing/20260619-072600_brushstroke.md.
+//!
+//! Build and run:
+//!   mkdir -p brushstroke/bin
+//!   export RYE_ZIG="$PWD/vendor/zig-toolchain/zig"
+//!   rye/bin/rye build brushstroke/seed.rye -femit-bin=brushstroke/bin/brushstroke-seed
+//!   brushstroke/bin/brushstroke-seed
+//!
+//! Expected output: three lines of frame text, then:
+//!   brushstroke seed: frame drawn from values
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const brushstroke_seed_version = "20260620.021212";
+
+/// One line of text in a frame. Grows toward styled runs (Skate grid cells).
+const Line = struct {
+    text: []const u8,
+};
+
+/// A frame is a value: the whole interface state for one redraw pass.
+/// Invariant: lines.len <= max_lines (stated at construction).
+const Frame = struct {
+    lines: []const Line,
+
+    fn init(lines: []const Line) Frame {
+        assert(lines.len <= max_lines);
+        return .{ .lines = lines };
+    }
+};
+
+const max_lines = 8;
+
+/// Redraw: pure pass from values to the surface. Hosted seed uses stdout.
+fn redraw(frame: Frame, io: std.Io) !void {
+    const stdout = std.Io.File.stdout();
+    for (frame.lines) |line| {
+        assert(line.text.len > 0);
+        try stdout.writeStreamingAll(io, line.text);
+        try stdout.writeStreamingAll(io, "\n");
+    }
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+
+    // Build frame from values — immediate mode: compute fresh each call.
+    const lines = try garden.alloc(Line, 3);
+    lines[0] = .{ .text = "brushstroke seed" };
+    lines[1] = .{ .text = "frame drawn from values" };
+    lines[2] = .{ .text = brushstroke_seed_version };
+
+    const frame = Frame.init(lines);
+    assert(frame.lines.len == 3);
+
+    try redraw(frame, io);
+
+    try std.Io.File.stdout().writeStreamingAll(io, "brushstroke seed: frame drawn from values\n");
+    return 0;
+}

@@ -1,0 +1,20 @@
+//! Rye test: std.mem.findDiff — pass 9949.
+//!
+//! First inequality index pairs with mem.eql (9996) and mem.order (9953).
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    std.debug.assert(mem.findDiff(u8, "one", "one") == null);
+    std.debug.assert(mem.findDiff(u8, "one two", "one").? == 3);
+    std.debug.assert(mem.findDiff(u8, "one", "one two").? == 3);
+    std.debug.assert(mem.findDiff(u8, "one twx", "one two").? == 6);
+    std.debug.assert(mem.findDiff(u8, "xne", "one").? == 0);
+
+    const s: []const u8 = "abc";
+    std.debug.assert(mem.findDiff(u8, s, s) == null);
+    std.debug.assert(mem.findDiff(u8, s[0..2], s).? == 2);
+
+    std.debug.print("rye: findDiff assertions confirmed.\n", .{});
+}

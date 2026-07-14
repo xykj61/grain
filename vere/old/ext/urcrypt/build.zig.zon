@@ -1,0 +1,23 @@
+.{
+    .name = .urcrypt,
+    .fingerprint = 0x590576beb64ce5db,
+    .version = "0.0.1",
+    .dependencies = .{
+        .nettle = .{
+            .path = "../nettle",
+        },
+        .secp256k1 = .{
+            .url = "https://github.com/bitcoin-core/secp256k1/archive/refs/tags/v0.5.1.tar.gz",
+            .hash = "N-V-__8AAJ4DSwC7aDpt90TmGPWKAI6q4-titwp4M0zsZ2vY",
+        },
+        // openssl-free urcrypt: depends on nettle, with libaes_siv vendored
+        // under aes_siv
+        .urcrypt = .{
+            .url = "https://github.com/urbit/urcrypt/archive/a4c229e9380636ace36325b6c8fe04eaee32a2ef.tar.gz",
+            .hash = "N-V-__8AAFJ8TACpTWfH-dcjaICx9KJRA2pZhQ1A7VtF968Z",
+        },
+    },
+    .paths = .{
+        "",
+    },
+}

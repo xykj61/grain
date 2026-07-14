@@ -1,0 +1,12 @@
+# amphora_device_wire.rish — Amphora lap 3b: vessel fetch over Comlink device wire (virtio).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/amphora_device_wire.rish
+
+say "amphora-device-wire: virtio fetch-by-digest lab..."
+let lab = run ["sh" "comlink/run_vessel_fetch_wire_lab.sh"]
+assert lab.ok else "Amphora vessel fetch device wire lab failed"
+assert lab.out contains "GREEN" else "Amphora device wire lab not GREEN"
+assert lab.out contains "request + response" else "Amphora device wire missing two-hop banner"
+
+say "GREEN: Amphora device wire — vessel cargo fetch under virtio Comlink seal."

@@ -1,0 +1,92 @@
+//! aurora/src/sealed.rye — a sealed datagram, sealed and opened on the bare hart.
+//!
+//! The named hart proved the hash runs freestanding; this proves the whole
+//! sealed message does. With no operating system beneath it, one bare-metal hart
+//! plays both sides: Alice seals a message to Bob — key agreement (X25519, from
+//! their Kumara identities), the seal (AEAD), the content-name (SHA3-512), the
+//! attestation (identity signature) — and Bob verifies, checks the name, derives the same
+//! secret, and opens it. The opened message is spoken over the console. This is
+//! the sealed message of the hosted test (`../../rye/tests/sealed_message_test.rye`),
+//! now running on bare metal — the value the encrypted datagram will one day
+//! carry between two harts (active-designing/993; external-research/yonder/20260618-212112_content-centric-messaging.md, /985).
+//!
+//! Build and run with `../run.sh sealed`. QEMU virt; UART 0x1000_0000; finisher 0x10_0000.
+
+const std = @import("std");
+const kumara = @import("kumara.rye");
+const X25519 = std.crypto.dh.X25519;
+const ChaCha20Poly1305 = std.crypto.aead.chacha_poly.ChaCha20Poly1305;
+const Sha3_512 = std.crypto.hash.sha3.Sha3_512;
+
+const uart_tx: *volatile u8 = @ptrFromInt(0x1000_0000);
+const test_finisher: *volatile u32 = @ptrFromInt(0x0010_0000);
+const finisher_pass: u32 = 0x5555;
+
+const seed_alice = [_]u8{0xA1} ** kumara.seed_length;
+const seed_bob = [_]u8{0xB0} ** kumara.seed_length;
+
+export fn _start() linksection(".text.init") callconv(.naked) noreturn {
+    asm volatile (
+        \\ li sp, 0x80100000
+        \\ j kmain
+    );
+}
+
+/// Derive the symmetric seal key from a shared secret, through the strengthened hash.
+fn seal_key(shared: [32]u8) [ChaCha20Poly1305.key_length]u8 {
+    var digest: [Sha3_512.digest_length]u8 = undefined;
+    Sha3_512.hash(&shared, &digest, .{});
+    return digest[0..ChaCha20Poly1305.key_length].*;
+}
+
+export fn kmain() callconv(.c) noreturn {
+    // Two identities, each one owner seed (994: one root, derived keys).
+    const alice_id = kumara.keypair_from_seed(&seed_alice);
+    const bob_id = kumara.keypair_from_seed(&seed_bob);
+    const alice_x = X25519.KeyPair.fromEd25519(alice_id) catch unreachable;
+    const bob_x = X25519.KeyPair.fromEd25519(bob_id) catch unreachable;
+
+    const message = "Meet me where the rye grows.";
+    const nonce = [_]u8{0x01} ** ChaCha20Poly1305.nonce_length;
+
+    // Alice seals to Bob.
+    const shared_a = X25519.scalarmult(alice_x.secret_key, bob_x.public_key) catch unreachable;
+    const key_a = seal_key(shared_a);
+    var ciphertext: [message.len]u8 = undefined;
+    var tag: [ChaCha20Poly1305.tag_length]u8 = undefined;
+    ChaCha20Poly1305.encrypt(&ciphertext, &tag, message, "", nonce, key_a);
+    var name: [Sha3_512.digest_length]u8 = undefined;
+    Sha3_512.hash(&ciphertext, &name, .{});
+    const sig = kumara.sign(&name, alice_id, null);
+
+    // Bob opens it, verifying as he goes.
+    kumara.verify(&name, sig, alice_id.public_key) catch unreachable;
+    var check: [Sha3_512.digest_length]u8 = undefined;
+    Sha3_512.hash(&ciphertext, &check, .{});
+    const name_ok = std.mem.eql(u8, &name, &check);
+    const shared_b = X25519.scalarmult(bob_x.secret_key, alice_x.public_key) catch unreachable;
+    const key_b = seal_key(shared_b);
+    var opened: [message.len]u8 = undefined;
+    ChaCha20Poly1305.decrypt(&opened, &ciphertext, tag, "", nonce, key_b) catch unreachable;
+
+    write_str("Aurora: a sealed datagram, opened on the bare hart.\n");
+    write_str(if (name_ok) "  attestation verified, content-name matches.\n" else "  content-name MISMATCH.\n");
+    write_str("  opened = ");
+    write_str(&opened);
+    write_str("\n  name = ");
+    for (name[0..16]) |b| write_hex_byte(b);
+    write_str("...\n");
+
+    test_finisher.* = finisher_pass;
+    while (true) {}
+}
+
+fn write_str(text: []const u8) void {
+    for (text) |byte| uart_tx.* = byte;
+}
+
+fn write_hex_byte(byte: u8) void {
+    const hex = "0123456789abcdef";
+    uart_tx.* = hex[byte >> 4];
+    uart_tx.* = hex[byte & 0x0f];
+}

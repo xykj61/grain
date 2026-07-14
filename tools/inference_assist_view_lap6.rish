@@ -1,0 +1,21 @@
+# inference_assist_view_lap6.rish — Assist view: chart joins journal on the assist fold.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/inference_assist_view_lap6.rish
+
+let bin = "pond/bin/drawn-terminal"
+
+say "build: inference assist view lap 6 — drawn-terminal compile"
+let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+assert build.ok else "drawn_terminal build failed for assist view lap 6"
+assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
+
+let assist = run ["sh" "-c" "${bin} assistviewtest 2>&1"]
+assert assist.ok else "drawn terminal assistviewtest exited non-zero"
+assert assist.out contains "assist view" else "assist view missing expected output"
+assert assist.out contains "journal=2" else "assist view missing journal entry count"
+assert assist.out contains "chart=4" else "assist view missing chart account count"
+assert assist.out contains "GREEN" else "Inference assist view lap 6 not GREEN"
+assert assist.out contains "lines=8" else "assist view missing eight-line frame"
+
+say "GREEN: Assist view lap 6 — chart of accounts joins journal on the assist fold."

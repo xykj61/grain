@@ -1,0 +1,18 @@
+# scribble_lap4.rish — Scribble lap 3: heading extract witness.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/scribble_lap4.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "scribble/bin/scribble"
+
+let build = run ["sh" "-c" "mkdir -p scribble/bin && env RYE_ZIG=${zig} rye/bin/rye build scribble/scribble.rye -femit-bin=${bin}"]
+assert build.ok else "Scribble lap 3 build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "Scribble selftest exited non-zero"
+assert selftest.out contains "GREEN" else "Scribble selftest not GREEN"
+assert selftest.out contains "headings extracted" else "Scribble missing heading extract"
+assert selftest.out contains "heading overflow refused" else "Scribble missing heading overflow"
+
+say "GREEN: Scribble lap 3 — heading extract from outline fixture."

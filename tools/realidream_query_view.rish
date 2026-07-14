@@ -1,0 +1,21 @@
+# realidream_query_view.rish — Realidream query view: Tablecloth query-wire hits → Skate.
+#
+# Folds the hosted filter's answer shape (fixture) through SLC-2a drawn terminal.
+# No new input, no Pond policy, no Dexter graduation — thin-view exception family.
+# Run from the repository root:
+#   rishi/bin/rishi run tools/realidream_query_view.rish
+
+let bin = "pond/bin/drawn-terminal"
+
+say "build: Realidream query view — drawn-terminal compile"
+let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+assert build.ok else "drawn_terminal build failed for query view witness"
+assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
+
+let query = run ["sh" "-c" "${bin} queryviewtest 2>&1"]
+assert query.ok else "drawn terminal queryviewtest exited non-zero"
+assert query.out contains "query view" else "query view witness missing expected output"
+assert query.out contains "GREEN" else "Realidream query view witness not GREEN"
+assert query.out contains "lines=6" else "query view missing six-line frame"
+
+say "GREEN: Realidream query view — Tablecloth query-wire hits compose a Skate frame."

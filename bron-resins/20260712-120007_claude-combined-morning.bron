@@ -1,0 +1,53 @@
+# Combined Bron handoff for Claude — morning-fold essay + session-log Bron migration
+# Paste-ready: values only. Combines 115753 essay resin with 120007 law change.
+format chat-printout-v1
+kind claude-handoff
+stamp 20260712.120007
+voice Rio 3
+editor Cursor
+model Cursor Grok 4.5
+tip e45d846
+product_tip 430
+suite_tip 432
+parity_green 324
+audience Claude
+
+section pins
+pin product 430
+pin suite 432
+pin parity 324
+pin tip_pre_this_fold e45d846
+pin lane_kvm refuse-green
+pin encrypt_to_identity horizon-park
+pin doorway green
+pin session_logs living-bron
+pin md_archive folded-by-day
+
+section from_essay_115753
+title The wall that named its door
+p This morning the house did three honest things in order. It chaptered the parity suite so Env[256] could breathe again. It named the KVM hole as lane_kvm and closed the D-Bus escape that had pretended to be a doorway. It kept a teacher capability from VetKeys — encrypt-to-a-future-identity — and declined the live quorum that would have fought custody law.
+p Chaptering was the right cut: fresh Env per chapter, tip 432 / 430 held, 324 GREEN say-lines without raising the ceiling. Raising Env would have been a patch; chaptering was a grain cut.
+p Counsel 090512: an unnamed hole is thinner than a jail with one named device lane. Escape became refuse-assert. lane_kvm off by default; /dev/kvm only when on; ai-jail untouched; refuse GREEN in ai-sandbox; on-path waits for host kvm grant; -display none -nic none.
+p VetKeys: keep encrypt-to-future-identity beside T3/OCapN; decline threshold derivation quorum — same refusal shape as Azimuth.
+p Compass walked: foundations → grain → two rooms → active-designing → TASKS → ROADMAP. Doorway GREEN after Checkable-room Status on the retire note. Todos rewritten to match TASKS Now.
+
+section from_migration_120007
+title Session logs are Bron now
+p Kaeden word: archive and organize all session-log .md files by date, then write new logs as .bron in session-logs/, update Cursor and Claude rules, commit and push.
+p Fold moved 207 prior-day Markdown logs under session-logs/archive/YYYYMMDD/. All 43 of day 20260712 Markdown logs moved under archive/20260712/. README links rewritten. Flat living shelf holds README.md plus new .bron logs only.
+p Rules updated in lockstep: .cursor/rules/session-logs.mdc · .claude/rules/session-logs.md · CLAUDE.md · ORGANIZING.md · .cursor/rules/rio3.mdc · session-logs/README.md. Living format session-log-v1. align_session_logs remains Markdown-era hygiene for the archive.
+p First living Bron session log: session-logs/20260712-120007_session-logs-bron-law.bron. Essay resin remains bron-resins/20260712-115753_morning-fold-thoughts.bron.
+
+section open_now
+next host-onpath-g0c-when-kvm LANE_KVM=true plus /dev/kvm one-shot run_with_lane_kvm.sh
+next g1-on-word receipt_core under Genode POSIX jailed serial
+next pond-sixbar-on-word enclosure witness vs ai-jail baseline
+next brushstroke-tokens-on-word after palette seat
+park encrypt-to-future-identity beside T3 OCapN
+park spritely T3 NLnet bare-metal-USB own mornings
+
+section ask_claude
+ask Affirm Bron session-log law and archive fold as seated, or name any hygiene gap before G1/Pond word.
+ask Ordered next remains host on-path then G1/Pond on word — any reorder?
+
+benediction May every hole become a named door or a closed one. May the record keep its values as Bron. May Pond earn the jail by out-refusing it.

@@ -1,0 +1,25 @@
+# index_of.rish — tests for the `index-of` string builtin.
+
+# comparisons without extra parentheses — parser splits == before index-of
+assert "hello world" index-of "world" == 6 else "index-of: basic failed"
+assert "hello world" index-of "hello" == 0 else "index-of: at start failed"
+assert "abcabc" index-of "bc" == 1 else "index-of: first match failed"
+
+# not found
+assert "xyz" index-of "abc" == -1 else "index-of: missing failed"
+
+# empty needle matches at index 0 (std.mem.indexOf semantics)
+assert "abc" index-of "" == 0 else "index-of: empty needle failed"
+
+# compose with slice: extract after a marker
+let line = "+added line"
+let pos = line index-of "+"
+let body = slice line (pos + 1) (length line)
+assert body == "added line" else "index-of+slice compose failed"
+
+# gate output parsing
+let out = run ["echo" "parity gate: GREEN"]
+let mark = out.out index-of "GREEN"
+assert mark != -1 else "index-of: run output failed"
+
+say "index-of held."

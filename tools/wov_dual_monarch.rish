@@ -1,0 +1,20 @@
+# wov_dual_monarch.rish — WOV dual-monarch D1 (twin log lines) witness.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/wov_dual_monarch.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/wov"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/wov_core.rye -femit-bin=${bin}"]
+assert build.ok else "WOV dual-monarch build failed"
+
+let dual = run ["sh" "-c" "${bin} selftest-dual 2>&1"]
+assert dual.ok else "WOV dual-monarch selftest exited non-zero"
+assert dual.out contains "GREEN" else "WOV dual-monarch selftest not GREEN"
+assert dual.out contains "twin-line root verified" else "WOV dual missing twin-line welcome"
+assert dual.out contains "holder A balance 700 proven" else "WOV dual missing balance proof"
+assert dual.out contains "holder A exit accepted" else "WOV dual missing exit accept"
+assert dual.out contains "solo root refused under dual config" else "WOV dual missing solo-refuse unwelcome"
+
+say "GREEN: WOV dual monarch D1 — twin lines, prove, exit, refuse solo."

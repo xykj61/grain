@@ -1,0 +1,186 @@
+//! aurora/src/deciding.rye — Aurora's deciding stage: the boot that chooses.
+//!
+//! The relay (`relay.rye`) proved that stages can hand named values along a
+//! line — wake, prove, rest. This grows it by one true step: a stage that
+//! reads the machine state and **chooses** what comes next, constructing a
+//! new value that names the decision. This is the seed of a boot that
+//! selects which system to load.
+//!
+//! Four stages:
+//!   1. Wake   — read the machine's identity (hart, ISA)
+//!   2. Prove  — assert the identity is sound
+//!   3. Decide — read the ISA, choose a configuration path, name the choice
+//!   4. Rest   — announce the decision and power down
+//!
+//! Build and run with `aurora/run.sh deciding`.
+
+const uart_tx: *volatile u8 = @ptrFromInt(0x1000_0000);
+const test_finisher: *volatile u32 = @ptrFromInt(0x0010_0000);
+const finisher_pass: u32 = 0x5555;
+
+const isa_base_integer: usize = 1 << ('I' - 'A');
+const isa_compressed: usize = 1 << ('C' - 'A');
+const isa_atomic: usize = 1 << ('A' - 'A');
+const isa_multiply: usize = 1 << ('M' - 'A');
+
+/// The machine's identity — what stage one learned.
+/// usize here is XLEN on rv64: the honest width for CSR values (hartid, misa).
+const Machine = struct {
+    hartid: usize,
+    isa: usize,
+};
+
+/// The boot decision — what stage three chose.
+/// A real boot would name a kernel image hash here; this seed names a
+/// configuration path so the concept is proven without the full machinery.
+const Decision = struct {
+    machine: Machine,
+    path: Path,
+    /// A stand-in for a content hash — in the full Aurora, this would be the
+    /// SHA3-256 digest of the next stage's verified image.
+    config_tag: u32,
+};
+
+const Path = enum {
+    /// Full ISA: atomics, multiply, compressed — the capable machine.
+    full,
+    /// Minimal ISA: base integer only — the constrained machine.
+    minimal,
+};
+
+// =========================================================================
+// § Entry
+// =========================================================================
+
+export fn _start() linksection(".text.init") callconv(.naked) noreturn {
+    asm volatile (
+        \\ li sp, 0x80100000
+        \\ j stage_wake
+    );
+}
+
+// =========================================================================
+// § Stage 1: Wake — read the machine
+// =========================================================================
+
+export fn stage_wake() callconv(.c) noreturn {
+    const machine = Machine{
+        .hartid = read_csr("mhartid"),
+        .isa = read_csr("misa"),
+    };
+    stage_prove(machine);
+}
+
+// =========================================================================
+// § Stage 2: Prove — assert the identity
+// =========================================================================
+
+fn stage_prove(machine: Machine) noreturn {
+    // invariant: base integer ISA present — this code could not run otherwise
+    assert((machine.isa & isa_base_integer) != 0);
+    stage_decide(machine);
+}
+
+// =========================================================================
+// § Stage 3: Decide — choose what runs next
+// =========================================================================
+
+/// The deciding stage. Reads the machine's ISA extensions and chooses a
+/// configuration path. A full boot would select a kernel image by content
+/// hash; this seed chooses between two named paths so the concept — a stage
+/// that creates a value it chose, rather than passing one through — is proven.
+fn stage_decide(machine: Machine) noreturn {
+    // Read the ISA extensions the machine offers.
+    const has_atomics = (machine.isa & isa_atomic) != 0;
+    const has_multiply = (machine.isa & isa_multiply) != 0;
+    const has_compressed = (machine.isa & isa_compressed) != 0;
+
+    // Decide: if the machine has all three extensions, take the full path.
+    // Otherwise, take the minimal path. The decision is a value.
+    const path: Path = if (has_atomics and has_multiply and has_compressed)
+        .full
+    else
+        .minimal;
+
+    // Tag: a stand-in for the content hash of the next stage.
+    // Full path gets one tag; minimal gets another.
+    const config_tag: u32 = switch (path) {
+        .full => 0xCAFE_F001,    // the capable machine
+        .minimal => 0xBEEF_0001, // the constrained machine
+    };
+
+    const decision = Decision{
+        .machine = machine,
+        .path = path,
+        .config_tag = config_tag,
+    };
+
+    stage_announce(decision);
+}
+
+// =========================================================================
+// § Stage 4: Announce and rest
+// =========================================================================
+
+fn stage_announce(decision: Decision) noreturn {
+    write_str("Aurora deciding:\n");
+    write_str("  stage 1 -> woke hart ");
+    write_dec(decision.machine.hartid);
+    write_str("\n  stage 2 -> proved base integer ISA\n");
+    write_str("  stage 3 -> decided: path ");
+    switch (decision.path) {
+        .full => write_str("full (atomics + multiply + compressed)"),
+        .minimal => write_str("minimal (base integer only)"),
+    }
+    write_str("\n             config tag ");
+    write_hex(decision.config_tag);
+    write_str("\n  stage 4 -> resting.\n");
+
+    test_finisher.* = finisher_pass;
+    while (true) {}
+}
+
+// =========================================================================
+// § Console helpers (bare metal — no std beneath us)
+// =========================================================================
+
+fn read_csr(comptime name: []const u8) usize {
+    // Register return is XLEN-wide; usize is the machine word on rv64.
+    return asm volatile ("csrr %[out], " ++ name
+        : [out] "=r" (-> usize),
+    );
+}
+
+fn write_str(text: []const u8) void {
+    for (text) |byte| uart_tx.* = byte;
+}
+
+fn write_dec(value: usize) void {
+    var buf: [20]u8 = undefined;
+    var i: usize = buf.len;
+    var v = value;
+    while (true) {
+        i -= 1;
+        buf[i] = @as(u8, '0') + @as(u8, @intCast(v % 10));
+        v /= 10;
+        if (v == 0) break;
+    }
+    write_str(buf[i..]);
+}
+
+fn write_hex(value: u32) void {
+    const hex = "0123456789abcdef";
+    var buf: [8]u8 = undefined;
+    var i: usize = 8;
+    var v = value;
+    while (i > 0) {
+        i -= 1;
+        buf[i] = hex[@as(u4, @intCast(v & 0xf))];
+        v >>= 4;
+    }
+    write_str(&buf);
+}
+
+fn assert(ok: bool) void {
+    if (!ok) unreachable;
+}

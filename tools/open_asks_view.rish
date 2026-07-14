@@ -1,0 +1,20 @@
+# open_asks_view.rish — Open Asks view: closed ask loop on Skate (tip 426).
+#
+# Golden: drawn terminal open asks view: ref=9cdb9aaf stipend=100 posted=1 applied=1 accepted=1 completed=1 memo=completion … — GREEN
+# Run from the repository root:
+#   rishi/bin/rishi run tools/open_asks_view.rish
+
+let bin = "pond/bin/drawn-terminal"
+
+say "build: open asks view — drawn-terminal compile"
+let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+assert build.ok else "drawn_terminal build failed for open asks view"
+assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
+
+let view = run ["sh" "-c" "${bin} openasksviewtest 2>&1"]
+assert view.ok else "drawn terminal openasksviewtest exited non-zero"
+assert view.out contains "GREEN" else "Open Asks view witness not GREEN"
+assert view.out contains "drawn terminal open asks view: ref=9cdb9aaf stipend=100 posted=1 applied=1 accepted=1 completed=1 memo=completion" else "Open Asks view missing golden finale"
+assert view.out contains "lines=8" else "Open Asks view missing eight-line frame"
+
+say "GREEN: Open Asks view — closed ask loop on one Skate frame (tip 426)."

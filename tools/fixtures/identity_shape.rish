@@ -1,0 +1,50 @@
+# identity_shape.rish — one verdict for the identity witness, three worlds handled.
+#
+# Native repoint of identity_shape.sh — PGP lines matched by shape (ten
+# four-hex groups); SSH lines by starts-with SHA256: at column zero.
+# Reads root PUBKEYS.md when present, else context/PUBKEYS.md (shell cat seam).
+# Run from the repository root:
+#   rishi/bin/rishi run tools/fixtures/identity_shape.rish
+
+let template = run ["sh" "-c" "test -f PUBKEYS.template.md"]
+assert template.ok else "template missing"
+
+let has_root = run ["sh" "-c" "test -f PUBKEYS.md"]
+let has_context = run ["sh" "-c" "test -f context/PUBKEYS.md"]
+if (has_root.ok == false) then if (has_context.ok == false) then say "No PUBKEYS.md at root or context/ — forks begin from PUBKEYS.template.md."
+if (has_root.ok == false) then if (has_context.ok == false) then say "IDENTITY-GREEN (template-only)"
+if (has_root.ok == false) then if (has_context.ok == false) then exit 0
+
+let raw = run ["sh" "-c" "if test -f PUBKEYS.md; then cat PUBKEYS.md; else cat context/PUBKEYS.md; fi"]
+let all_lines = lines raw.out
+
+let ssh_lines = where all_lines as ln: ln starts-with "SHA256:"
+
+let scanned = map all_lines as ln0: { text: ln0, parts: length (split ln0 " ") }
+
+let tens = where scanned as row: row.parts == 10
+
+let shaped = map tens as row: { text: row.text, g0: length ((split row.text " ")[0]), g1: length ((split row.text " ")[1]), g2: length ((split row.text " ")[2]), g3: length ((split row.text " ")[3]), g4: length ((split row.text " ")[4]), g5: length ((split row.text " ")[5]), g6: length ((split row.text " ")[6]), g7: length ((split row.text " ")[7]), g8: length ((split row.text " ")[8]), g9: length ((split row.text " ")[9]), n: length row.text }
+
+let pass1 = where shaped as row: row.g0 == 4
+let pass2 = where pass1 as row: row.g1 == 4
+let pass3 = where pass2 as row: row.g2 == 4
+let pass4 = where pass3 as row: row.g3 == 4
+let pass5 = where pass4 as row: row.g4 == 4
+let pass6 = where pass5 as row: row.g5 == 4
+let pass7 = where pass6 as row: row.g6 == 4
+let pass8 = where pass7 as row: row.g7 == 4
+let pass9 = where pass8 as row: row.g8 == 4
+let pass10 = where pass9 as row: row.g9 == 4
+let pgp_rows = where pass10 as row: row.n == 49
+
+for-each ssh_lines as ln do say ln
+for-each pgp_rows as row do say row.text
+
+let ssh_n = length ssh_lines
+let pgp_n = length pgp_rows
+
+if (ssh_n == 3) then if (pgp_n == 2) then say "IDENTITY-GREEN ssh=${ssh_n} pgp=${pgp_n}" else say "IDENTITY-RED ssh=${ssh_n} pgp=${pgp_n}"
+if (ssh_n != 3) then say "IDENTITY-RED ssh=${ssh_n} pgp=${pgp_n}"
+if (ssh_n == 3) then if (pgp_n != 2) then exit 1
+if (ssh_n != 3) then exit 1

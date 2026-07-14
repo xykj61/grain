@@ -1,0 +1,79 @@
+# Combined Bron handoff for Claude — signed-Kumara GREEN
+# Paste-ready: values only.
+format chat-printout-v1
+kind claude-handoff
+stamp 20260712.220000
+voice Rio 3
+editor Cursor
+model Cursor Grok 4.5
+git_nib 5e12876
+product_nib 430
+suite_nib 432
+parity_host_repin GREEN
+g1_status closed-digest-grade
+signed_kumara GREEN
+pond_master_seal rests
+audience Claude
+sitting Framework-evening-signed-kumara-go
+
+section pins
+pin product_nib 430
+pin suite_nib 432
+pin parity_host_repin 20260712.193958 GREEN
+pin git_before_this_go d7a4049
+pin git_nib 5e12876
+pin remotes pushed-four tip 5e12876
+pin teacher_ai_jail v1.12.0
+pin genode_home vendor/genode @ 492a510
+pin monocypher_home vendor/monocypher @ 4.0.3 ab2b16d
+pin guest_grade signed-Kumara
+pin g1_grade digest-fixture stays
+pin seed never-crossed
+pin pair verify+refuse
+pin fetch_witness GREEN · red_avoid GREEN · fixture GREEN
+pin serial both GREEN lines
+pin supersede_season closed measured · held
+pin living_docs_lint thrice-earned next alt
+
+section arc
+title What landed since tip d7a4049
+p Claude open word — guest is a pair; generator states honesty in the first line; HOLDs flip; serial closes the loop.
+p Host generator through tally/kumara — labeled test seed signed-kumara-fixture-seed-v1; G1 receipt bytes; tamper byte 7.
+p Guest signed-kumara-verify — crypto_ed25519_check good and tampered; monocypher SRC_C include-path only.
+p Fetch three asserts GREEN. Build guest. Jailed TCG both serial GREEN. Grade flips signed-Kumara; G1 digest stays.
+
+section docs_to_walk
+doc active-designing/20260712-214200_proven-seat-signed-kumara-monocypher.md
+doc active-designing/20260712-195339_proven-seat-g1-crossing-pin.md
+witness tools/proven_seat_signed_kumara_fetch.rish
+witness tools/proven_seat_signed_kumara_build_guest.rish
+witness tools/proven_seat_signed_kumara.rish
+
+section host_printouts
+printout serial
+p [init -> signed-kumara-verify] GREEN: signed-Kumara — signature holds; seat verifies (amount 100)
+p [init -> signed-kumara-verify] GREEN: signed-Kumara — tampered signature refused; seat stands guard
+p Run script execution successful.
+printout grade
+p guest_grade signed-Kumara
+p g1_grade digest-fixture
+p seed never-crossed
+
+section commits_this_go
+title Commits oldest → newest
+commit a44f2c7 Land signed-Kumara: host fixture, guest pair, and jailed TCG green.
+commit acc961f Record Claude handoff for signed-Kumara GREEN.
+push remotes origin github gp36-codeberg gp36-github
+
+section open_now
+next Affirm signed-Kumara grade resting
+next Alt morning — living-docs lint · karpathy/ai-memory · forge courtesy
+next Hold supersede season — named build word only
+park libsodium genode-world
+park route_two
+
+section ask_claude
+ask Affirm signed-Kumara as resting — any one-line before the ladder sleeps for the night?
+ask Next morning: living-docs lint naming, or another light kg?
+
+benediction May the pair keep both sides of the door. May the seed stay honest. May the whole day keep — folded, nibbed, sealed, and green.

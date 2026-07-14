@@ -1,0 +1,65 @@
+//! aurora/src/wire.rye — two harts, one wire (shared memory).
+//!
+//! The simplest transport there is: two RISC-V harts on one machine pass a value
+//! across shared RAM. Hart 0 writes a message into a mailbox and raises a ready
+//! flag; hart 1 waits on the flag, reads the message, and speaks it. A memory
+//! fence on each side keeps the order honest — the buffer is published before the
+//! flag, and read after it. This is the smallest "wire": the mailbox a sealed
+//! datagram will one day ride between two harts, and later between two machines,
+//! where Comlink truly begins (active-designing/993; external-research/yonder/20260618-195512_encrypted-networking-riscv.md, /982).
+//!
+//! Run with `RYE_SMP=2 ../run.sh wire`.
+
+const uart_tx: *volatile u8 = @ptrFromInt(0x1000_0000);
+const test_finisher: *volatile u32 = @ptrFromInt(0x0010_0000);
+const finisher_pass: u32 = 0x5555;
+
+// The mailbox lives in shared RAM, above both the code and the harts' stacks.
+const ready: *volatile u32 = @ptrFromInt(0x8020_0000);
+const mailbox_len: *volatile u32 = @ptrFromInt(0x8020_0010);
+const mailbox: [*]volatile u8 = @ptrFromInt(0x8020_0040);
+
+export fn _start() linksection(".text.init") callconv(.naked) noreturn {
+    // Every hart wakes here. Each gives itself its own stack — hart 0 highest,
+    // each later hart one 64 KiB step below — then passes its id to kmain.
+    asm volatile (
+        \\ csrr t0, mhartid
+        \\ li   sp, 0x80180000
+        \\ slli t1, t0, 16
+        \\ sub  sp, sp, t1
+        \\ mv   a0, t0
+        \\ j    kmain
+    );
+}
+
+export fn kmain(hartid: usize) callconv(.c) noreturn {
+    if (hartid == 0) sender() else receiver();
+}
+
+/// Hart 0: write the message, publish it, then rest (never powering the machine
+/// off — that is hart 1's call, once it has read).
+fn sender() noreturn {
+    const message = "a word from hart zero";
+    for (message, 0..) |byte, i| mailbox[i] = byte;
+    mailbox_len.* = message.len;
+    asm volatile ("fence" ::: .{ .memory = true }); // publish the buffer before the flag
+    ready.* = 1;
+    while (true) asm volatile ("wfi");
+}
+
+/// Hart 1: wait for the flag, read the message after it, speak it, and rest.
+fn receiver() noreturn {
+    while (ready.* == 0) {}
+    asm volatile ("fence" ::: .{ .memory = true }); // read the buffer only after the flag
+    const len = mailbox_len.*;
+    write_str("Aurora wire: hart 1 received from hart 0, across shared memory:\n  \"");
+    var i: u32 = 0;
+    while (i < len) : (i += 1) uart_tx.* = mailbox[i];
+    write_str("\"\n");
+    test_finisher.* = finisher_pass; // hart 1 powers the machine down
+    while (true) {}
+}
+
+fn write_str(text: []const u8) void {
+    for (text) |byte| uart_tx.* = byte;
+}

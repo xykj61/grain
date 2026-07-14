@@ -1,0 +1,16 @@
+# width_check_th3.rish — TH-3 witness: Mantra module zero authored usize.
+#
+# Gates mantra/src/* only — global width-check stays RED until Rishi and
+# Comlink migrate; width-check remains outside parity until corpus is clean.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/width_check_th3.rish
+
+let files = ["mantra/src/diff.rye" "mantra/src/main.rye" "mantra/src/store.rye" "mantra/src/weave.rye"]
+
+let results = map files as path: { file: path, scan: run ["sh" "-c" "grep 'usize' ${path} 2>/dev/null | grep -v '@intCast' | grep -v '@as(usize' | wc -l"] }
+
+let violations = where results as r: trim r.scan.out != "0"
+assert length violations == 0 else "Mantra must carry zero authored usize after TH-3"
+
+say "GREEN: TH-3 — Mantra reads zero authored usize; seam policy in TAME_GUIDANCE."

@@ -1,0 +1,18 @@
+//! Rye test: std.mem.findScalarLast — pass 9975.
+//!
+//! Last-index scalar search backs path.extension and path.stem; Rishi splits
+//! on '=' and newline boundaries with the forward sibling findScalar.
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    std.debug.assert(mem.lastIndexOfScalar(u8, "hello", 'l').? == 3);
+    std.debug.assert(mem.lastIndexOfScalar(u8, "hello", 'o').? == 4);
+    std.debug.assert(mem.lastIndexOfScalar(u8, "aaa", 'a').? == 2);
+    std.debug.assert(mem.lastIndexOfScalar(u8, "abc", 'z') == null);
+    std.debug.assert(mem.lastIndexOfScalar(u8, "", 'a') == null);
+    std.debug.assert(mem.lastIndexOfScalar(u8, "path/to/file.rye", '.').? == 12);
+
+    std.debug.print("rye: findScalarLast assertions confirmed.\n", .{});
+}

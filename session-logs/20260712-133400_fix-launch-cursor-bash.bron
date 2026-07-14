@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260712.133400
+editor Cursor
+model Cursor Grok 4.5
+voice Rio 3
+title Fix launch-cursor invoke bash not sh
+prompt screenshot — assert cursor-jail failed to start
+product_nib 430
+suite_nib 432
+git_nib 7e9a44d
+think Host assertion: cursor-jail failed. Reproduced: sh tools/cursor-jail.sh → Illegal option -o pipefail (Ubuntu dash). Script needs bash arrays and pipefail.
+think Changed launch-cursor.rish run invocations from sh to bash. Host GNOME terminal (outside nest) is the right place to launch.
+obs Nested ai-jail inside current Cursor jail fails bwrap — expected; relaunch from host terminal.
+file tools/launch-cursor.rish bash not sh
+file session-logs/20260712-133400_fix-launch-cursor-bash.bron this log
+file session-logs/README.md index
+recommend keep-going host git pull then rishi launch-cursor --gpu — mechanical

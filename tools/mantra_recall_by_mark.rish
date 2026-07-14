@@ -1,0 +1,17 @@
+# mantra_recall_by_mark.rish — marks-on-read witness (recall by Tilak).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/mantra_recall_by_mark.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mantra/bin/recall-by-mark"
+
+let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/recall_by_mark.rye -femit-bin=${bin}"]
+
+assert build.ok else "recall_by_mark build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "recall_by_mark selftest exited non-zero"
+assert selftest.out contains "GREEN" else "recall_by_mark selftest not GREEN"
+
+say "GREEN: marks-on-read witness passed (recall by Tilak)."

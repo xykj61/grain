@@ -1,0 +1,21 @@
+# comlink_hosted_wire.rish — Comlink sealed datagram over localhost UDP witness.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/comlink_hosted_wire.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "comlink/bin/hosted-wire"
+
+let build = run ["sh" "-c" "mkdir -p comlink/bin && env RYE_ZIG=${zig} rye/bin/rye build comlink/hosted_wire.rye -lc -femit-bin=${bin}"]
+
+assert build.ok else "comlink hosted wire build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "comlink hosted wire selftest exited non-zero"
+assert selftest.out contains "GREEN" else "comlink hosted wire selftest not GREEN"
+
+let demo = run ["sh" "-c" "${bin} demo 2>&1"]
+assert demo.ok else "comlink hosted wire demo exited non-zero"
+assert demo.out contains "GREEN" else "comlink hosted wire demo not GREEN"
+
+say "GREEN: Comlink hosted wire witness passed."

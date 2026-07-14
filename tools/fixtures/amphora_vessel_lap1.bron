@@ -1,0 +1,8 @@
+# amphora vessel lap 1 — Amber ring-1 season poured for crossing
+format amphora-v1
+stamp 20260710.143500
+shoulder amber-ring1-season
+parent 8ffb113abd0b51216cc5062d34687fd8a64ae5d2d3c8f91bcb7f019c43c656ff
+cargo plain-bytes cd416bd6cae889877c353fc9abe39daaff1668666049a8fd10974248d99d23ab hello.txt
+cargo plain-bytes 7cab931ab9048ca077cd8005ec20ace63e4466340ff9d70cb8099c3d93e26308 nested/leaf.txt
+stamp_sig e4a65358eba46e81e32aa8bb838fa31e939ef3b8c9d26d0f7bc86fe907f12621e663d33e0e072800d65207f92f50525efbf22fbaba7fd9440ed41d202d6a6701

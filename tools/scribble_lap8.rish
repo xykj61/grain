@@ -1,0 +1,17 @@
+# scribble_lap8.rish — Scribble lap 7: heading depth filter witness.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/scribble_lap8.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "scribble/bin/scribble"
+
+let build = run ["sh" "-c" "mkdir -p scribble/bin && env RYE_ZIG=${zig} rye/bin/rye build scribble/scribble.rye -femit-bin=${bin}"]
+assert build.ok else "Scribble lap 7 build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "Scribble selftest exited non-zero"
+assert selftest.out contains "GREEN" else "Scribble selftest not GREEN"
+assert selftest.out contains "headings at depth" else "Scribble missing depth filter welcome"
+
+say "GREEN: Scribble lap 7 — heading depth filter for h1/h2 outline folds."

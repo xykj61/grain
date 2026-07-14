@@ -1,0 +1,89 @@
+//! tally/bud.rye — Curve25519 Pedersen commitment (amount·G + dew·H).
+//!
+//! Warm name **bud** for the commitment; **dew** for the blinding scalar;
+//! **bloom** is the prose for opening. Inherited teacher name: Pedersen.
+//! H is derived once via Edwards25519.fromUniform on a pinned domain hash.
+//! Used by SLC-L4 fixed-tier mudra (inherited name: Sigma protocol).
+//!
+//! Pinned: h_domain, pinned_h_bytes, and pedersen_version's value never change.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const Edwards25519 = std.crypto.ecc.Edwards25519;
+const Sha3_256 = std.crypto.hash.sha3.Sha3_256;
+
+/// Same stamp string as the first published pedersen seat — pinned means pinned.
+pub const pedersen_version = "20260709.194437";
+pub const bud_version = pedersen_version;
+
+/// Domain separation for the second generator H — bytes hashed, then fromUniform.
+pub const h_domain = "veganreyklah2/slcl4/pedersen-H/v1";
+
+pub const point_len: u32 = 32;
+pub const scalar_len: u32 = 32;
+
+/// Pinned H compressed bytes — asserted equal to derive_h() at startup.
+pub const pinned_h_bytes: [point_len]u8 = .{
+    0x9c, 0xf8, 0x58, 0x7f, 0x8f, 0x72, 0xd4, 0x10,
+    0xbb, 0x4b, 0x87, 0xef, 0x20, 0xcf, 0x0a, 0xff,
+    0xb7, 0xd2, 0xc8, 0xd8, 0xe8, 0x37, 0xe2, 0xa5,
+    0x6c, 0xac, 0x21, 0xc1, 0x55, 0x34, 0xb7, 0x09,
+};
+
+pub fn scalar_from_u64(n: u64) [scalar_len]u8 {
+    var s: [scalar_len]u8 = .{0} ** scalar_len;
+    std.mem.writeInt(u64, s[0..8], n, .little);
+    return Edwards25519.scalar.reduce(s);
+}
+
+pub fn derive_h() Edwards25519 {
+    var hash: [Sha3_256.digest_length]u8 = undefined;
+    Sha3_256.hash(h_domain, &hash, .{});
+    return Edwards25519.fromUniform(hash);
+}
+
+pub fn assert_pinned_h() !void {
+    const h = derive_h();
+    const bytes = h.toBytes();
+    if (!std.mem.eql(u8, &bytes, &pinned_h_bytes)) return error.HMismatch;
+}
+
+/// Bud: C = amount·G + dew·H (variable-time public mul — witness data).
+pub fn commit(amount: u64, dew: *const [scalar_len]u8) !Edwards25519 {
+    const h = derive_h();
+    const amt = scalar_from_u64(amount);
+    return try Edwards25519.mulDoubleBasePublic(Edwards25519.basePoint, amt, h, dew.*);
+}
+
+pub fn point_to_hex(p: Edwards25519, out: *[point_len * 2]u8) void {
+    const bytes = p.toBytes();
+    var i: u32 = 0;
+    while (i < point_len) : (i += 1) {
+        _ = std.fmt.bufPrint(out[i * 2 ..][0..2], "{x:0>2}", .{bytes[i]}) catch unreachable;
+    }
+}
+
+fn run_selftest(_: std.Io) !u8 {
+    try assert_pinned_h();
+
+    const dew = [_]u8{0x11} ** scalar_len;
+    const c1 = try commit(1000, &dew);
+    const c2 = try commit(1000, &dew);
+    assert(std.mem.eql(u8, &c1.toBytes(), &c2.toBytes()));
+
+    const c3 = try commit(5000, &dew);
+    assert(!std.mem.eql(u8, &c1.toBytes(), &c3.toBytes()));
+
+    print("tally bud: pinned H matches derive_h — GREEN\n", .{});
+    print("tally bud: version {s}\n", .{bud_version});
+    print("GREEN: tally bud — amount·G + dew·H.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(init.arena.allocator());
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) return run_selftest(io);
+    return run_selftest(io);
+}

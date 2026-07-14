@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en-us" data-mode="sepia"><head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <base target="_blank">
+  <style type="text/css" id="ftp">html[data-mode="light"] {
+    color-scheme: light;
+    --fg: #222;
+    --bd: #222;
+    --bg: whitesmoke;
+  }
+  html[data-mode="dark"] {
+    color-scheme: dark;
+    --fg: #eee;
+    --bd: #eee;
+    --bg: #333;
+  }
+  html[data-mode="sepia"] {
+    color-scheme: light;
+    --fg: #5b4636;
+    --bd: #5b4636;
+    --bg: #f4ecd8;
+  }
+  html[data-mode="solarized-light"] {
+    color-scheme: light;
+    --fg: #586e75;
+    --bd: #586e75;
+    --bg: #fdf6e3;
+  }
+  html[data-mode="nord-light"] {
+    color-scheme: light;
+    --fg: #2e3440;
+    --bd: #2e3440;
+    --bg: #e5e9f0;
+  }
+  html[data-mode="groove-dark"] {
+    color-scheme: dark;
+    --fg: #cec4ac;
+    --bd: #cec4ac;
+    --bg: #282828
+  }
+  html[data-mode="solarized-dark"] {
+    color-scheme: dark;
+    --fg: #839496;
+    --bd: #839496;
+    --bg: #002b36;
+  }
+  html[data-mode="nord-dark"] {
+    color-scheme: dark;
+    --fg: #e5e9f0;
+    --bd: #e5e9f0;
+    --bg: #2e3440;
+  }</style>
+  <style>
+    /* latin */
+    @font-face {
+      font-family: 'Comic Neue';
+      font-style: normal;
+      font-weight: 400;
+      src: url(fonts/4UaHrEJDsxBrF37olUeD96rp57F2IwM.woff2) format('woff2');
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    }
+    /* latin */
+    @font-face {
+      font-family: 'Lexend Deca';
+      font-style: normal;
+      font-weight: 400;
+      src: url(fonts/K2FifZFYk-dHSE0UPPuwQ7CrD94i-NCKm-U48M1wqxnDirZPl3v-.woff2) format('woff2');
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    }
+    /* latin */
+    @font-face {
+      font-family: 'Poppins';
+      font-style: normal;
+      font-weight: 400;
+      src: url(fonts/pxiEyp8kv8JHgFVrJJfecnFHGPc.woff2) format('woff2');
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    }
+
+    :root {
+      --fg: #000; /* foreground  */
+      --bg: #fff; /* background  */
+      --bd: #000; /* border  */
+      --lk: #006fa5; /* link */
+      --lkv: #d33bf0; /* link visited */
+      --hg: #ffff81; /* highlight  */
+    }
+    html {
+      overflow: overlay;
+      scrollbar-color: var(--fg) var(--bg);
+    }
+    html[data-mode$="dark"] {
+      --lk: #0096de;
+    }
+    body {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      margin: 30px auto 0 auto;
+      padding: 10px;
+      position: relative;
+
+      color: var(--fg);
+      border-color: var(--bd);
+      background-color: var(--bg);
+    }
+
+
+    @media print {
+      html[data-mode] {
+        --fg: #000;
+        --bd: #000;
+        --bg: #fff;
+
+        width: unset;
+        padding: 0;
+        margin: 0;
+      }
+    }
+    iframe,
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+    img:not([width])[src$=".svg"] {
+      max-width: 100px;
+    }
+    body[data-images=false] canvas,
+    body[data-images=false] svg,
+    body[data-images=false] img {
+      display: none;
+    }
+    svg:not([width]):not([height]) {
+      max-width: 25vmin;
+    }
+    a {
+      color: var(--lk);
+      text-decoration: none;
+    }
+    a:visited {
+      color: var(--lkv);
+    }
+
+    hr {
+      background-color: var(--bd);
+      height: 1px;
+      border: 0;
+    }
+    #reader-domain {
+      display: inline-flex;
+      align-items: anchor-center;
+      gap: 5px;
+      font-family: Helvetica, Arial, sans-serif;
+      text-decoration: none;
+      border-bottom-color: currentcolor;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 100%;
+      direction: ltr;
+    }
+    #reader-domain > span:nth-of-type(1) {
+      font-size: 1.1em;
+    }
+    #reader-domain > span:nth-of-type(2) {
+      font-size: 0.8em;
+    }
+    #reader-domain[data-mode="compact"] > span:nth-of-type(3) {
+      display: none
+    }
+    #reader-domain:not([data-mode="compact"]) > span:nth-of-type(1),
+    #reader-domain:not([data-mode="compact"]) > span:nth-of-type(2) {
+      display: none;
+    }
+
+    #reader-title {
+      font-size: 1.6em;
+      line-height: 1.25em;
+      width: 100%;
+      margin: 20px 0;
+      padding: 0;
+    }
+    #reader-credits,
+    #doi,
+    #published-time,
+    #reader-estimated-time {
+      font-size: 0.85em;
+      line-height: 1.48em;
+      margin: 0 0 10px 0;
+      padding: 0;
+    }
+    #reader-credits:not(:empty)::after {
+      content: ' ⋮ ';
+    }
+    #published-time:not(:empty)::before {
+      content: ' ⋮ ';
+    }
+    #doi-json {
+      overflow: hidden;
+    }
+    #doi-json code {
+      overflow: auto;
+      max-height: 400px;
+    }
+    #published-time:empty,
+    #reader-credits:empty {
+      display: none;
+    }
+    mark.hghlght {
+      background-color: var(--hg);
+    }
+    body:not([data-columns="1"]) .page :is(h1, h2) {
+      column-span: all;
+      background-color: rgba(125, 125, 125, 0.1);
+      padding: 10px;
+    }
+    .hidden {
+      display: none;
+    }
+    .page-separator {
+      background-color: rgba(125, 125, 125, 0.1);
+      padding-block: 2ch;
+      text-align: center;
+      font-size: medium;
+    }
+  </style>
+  <style id="user-css">body {
+  padding-bottom: 64px;
+}
+pre {
+  white-space: pre-wrap;
+}
+pre code {
+  background-color: #eff0f1;
+  color: #393318;
+  font-family: monospace;
+  display: block;
+  padding: 5px 10px;
+  overflow: hidden;
+}
+blockquote {
+  padding: 0;
+  padding-inline-start: 2ch;
+  border-inline-start: 2px solid var(--bd);
+}
+aside {
+  color: color-mix(in srgb, var(--fg), var(--bg) 20%);
+}
+body[data-mode="dark"] pre code {
+  background-color: #eff0f1;
+  color: #393318;
+}
+
+/* CSS for sans-serif fonts */
+body[data-font=sans-serif] {}
+/* CSS for serif fonts */
+body[data-font=serif] {}
+
+/* CSS for "sepia" theme */
+html[data-mode=sepia] body {}
+/* CSS for "light" theme */
+html[data-mode=light] body {}
+/* CSS for "dark" theme */
+html[data-mode=dark] body {}</style>
+<title>Your customers hate MVPs. Make a SLC instead.</title><title>Your customers hate MVPs. Make a SLC instead. :: Reader View</title></head>
+<body tabindex="1" data-images="true" data-font="serif" data-columns="1">
+  <span></span> <!-- for IntersectionObserver -->
+  <a id="reader-domain" data-mode="compact" href="https://longform.asmartbear.com/slc/"><button id="qr-button" style="border: none; background: transparent; padding: 0px; cursor: pointer;"><svg viewBox="0 0 256 256" style="width: 24px; fill: var(--fg); pointer-events: none;"><rect height="80" rx="16" width="80" x="40" y="40"></rect><rect height="80" rx="16" width="80" x="40" y="136"></rect><rect height="80" rx="16" width="80" x="136" y="40"></rect><path d="M144,184a8,8,0,0,0,8-8V144a8,8,0,0,0-16,0v32A8,8,0,0,0,144,184Z"></path><path d="M208,152H184v-8a8,8,0,0,0-16,0v56H144a8,8,0,0,0,0,16h32a8,8,0,0,0,8-8V168h24a8,8,0,0,0,0-16Z"></path><path d="M208,184a8,8,0,0,0-8,8v16a8,8,0,0,0,16,0V192A8,8,0,0,0,208,184Z"></path></svg></button>
+    <span>longform.asmartbear.com</span>
+    <span>/slc/</span>
+    <span>https://longform.asmartbear.com/slc/</span>
+  </a>
+  <h1 dir="auto" id="reader-title">Your customers hate MVPs. Make a SLC instead.</h1>
+  <span dir="auto" id="reader-credits">Jason Cohen</span>
+  <span dir="auto" id="reader-estimated-time">13-16 minutes</span>
+  <span dir="auto" id="published-time">8/21/2017</span>
+  <hr>
+  <div id="readability-page-1" class="page"><div><p>
+“MVP” implies a selfish process, abusing customers so you can “learn”. Instead, make the first version SLC: Simple, Lovable, and Complete".
+</p><figure>
+<div><picture>
+<source type="image/webp" media="screen" srcset="https://longform.asmartbear.com/slc/l-easy-follow-rules-more-difficult-implement-than-youd-think-864w.webp 864w,https://longform.asmartbear.com/slc/l-easy-follow-rules-more-difficult-implement-than-youd-think-1172w.webp 1172w" sizes="(max-width: 38rem) min(36.625rem,100vw),(max-width: 47rem) min(36.625rem,calc(100vw - 2rem)),(max-width: 60rem) min(36.625rem,45rem),(max-width: 67rem) min(36.625rem,calc(100vw - 22rem)),min(36.625rem,45rem)">
+<img alt="easy follow rules more difficult implement than youd think" loading="eager" src="https://longform.asmartbear.com/slc/l-easy-follow-rules-more-difficult-implement-than-youd-think-1172w.jpg"></picture></div>
+<figcaption>
+
+</figcaption>
+</figure><h2 id="disillusioned-with-mvp">Disillusioned with MVP <a href="#disillusioned-with-mvp"></a>
+</h2><p>Product teams have been repeating the
+<a href="https://en.wikipedia.org/wiki/Minimum_viable_product" target="_blank">MVP</a> (Minimum Viable Product) mantra for a decade now, without re-evaluating whether it’s the right way to maximize learning while pleasing the customer.</p><p>Well, it’s not the best system. It’s selfish and it hurts customers. We don’t build MVPs at WP Engine.</p><p>The motivation behind the MVP is still valid:</p><ol>
+<li>Build something small, because small things are quick and inexpensive to test.</li>
+<li>Get it into the market quickly, because real learning occurs only when real customers are using a real product.</li>
+<li>Trash it or hard-pivot if it’s a <a href="https://longform.asmartbear.com/fail/" data-title="Stop saying “fail”" data-desc="Language shapes our perception of setbacks. Use words other than “failure” to describe situations and to suggest the next step." data-image-src1="https://longform.asmartbear.com/fail/thumbnail-1200w_hu_aa8619b9abd71d07.webp" data-image-src2="https://longform.asmartbear.com/fail/thumbnail-1200w_hu_cd353fd7b4575aad.webp">failure</a>, or invest if it’s a seedling with potential.</li>
+</ol><p>MVPs are great for startups and product teams because they maximize so-called “validated learning” as quickly as possible. And while <a href="https://longform.asmartbear.com/customer-development/" data-title="The Iterative-Hypothesis customer development method" data-desc="A simple but effective system, used to vet what is now a Unicorn, for generating insights about how your potential customers think, what they need, and what they’ll buy." data-image-src1="https://longform.asmartbear.com/customer-development/thumbnail-1200w_hu_433b7d9f004c7a65.webp" data-image-src2="https://longform.asmartbear.com/customer-development/thumbnail-1200w_hu_80b6d2903f3e8ec3.webp">customer interviews</a> are useful, you learn new things when a customer actually uses the product. But MVPs are a selfish act.</p><p><b>The problem is: Customers hate MVPs.</b> Startups are encouraged by the great
+<a href="https://twitter.com/reidhoffman" target="_blank">Reid Hoffman</a> to “launch early enough that you’re embarrassed by your v1.0 release.” But no customer wants to use an unfinished product that the creators are embarrassed by. Customers want <i>great</i> products they can use <i>now</i>.</p><p>MVPs are too M and rarely V. Customers see that, and hate it. It might be great for the product team, but it’s bad for customers. And ultimately, what’s bad for customers is bad for the company.</p><p><b>Fortunately, there’s a better way to build and validate products.</b> The insight comes from honoring the utility of MVPs (listed above) while giving just as much consideration to the customer’s experience.</p><h2 id="slc-simple-lovable-complete">SLC: Simple, Lovable, Complete <a href="#slc-simple-lovable-complete"></a>
+</h2><p>In order for the product to be small and delivered quickly, it has to be <b>simple</b>. Customers accept simple products every day. Even if it doesn’t do everything needed, as long as the product never <i>claimed</i> to do more than it does, customers are forgiving. For example, it was okay that early versions Google Docs had only 3% of the features of Microsoft Word, because Docs did a great job at what it was primarily designed for, which is simplicity and real-time collaboration.</p><p>Google Docs was simple, but also <b>complete</b>. This is decidedly different from the classic MVP, which by definition isn’t complete (in fact, it’s “embarrassing”). “Simple” is good, “incomplete” is not. The customer should have a genuine desire to use the product, <i>as-is</i>. Not because it’s version 0.1 of something complex, but because it’s version 1.0 of something simple.</p><p>It is not contradictory for products to be simple as well as complete. Examples include the first versions of WhatsApp, Snapchat, Stripe, Twilio, Twitter, and Slack. Some of those later expanded to add complexity (Snapchat, Stripe, Slack), whereas some kept it simple as a permanent value (Twitter, WhatsApp). Virgin Air and Southwest Airlines both started with just one route. Southwest Airlines is the most profitable US airline in history. Small, but complete.</p><p>The final ingredient, and the one most unlike MVP, is for the product to be <b>lovable</b>. People have to <i>want</i> to use it. Products that do less but are loved, are more successful than products which have more features and are disliked. The original, very-low-feature, very-highly-loved, hyper-successful early versions of all the products listed in the previous paragraph are examples. The <a href="https://longform.asmartbear.com/going-viral/" data-title="Darwinian advice for “Going Viral”" data-desc="Some of my articles have “gone viral.” While you can’t force it to happen, this is my Darwinian Theory of how to “go viral.”" data-image-src1="https://longform.asmartbear.com/going-viral/thumbnail-1200w_hu_e14e85d6e633b3ea.webp" data-image-src2="https://longform.asmartbear.com/going-viral/thumbnail-1200w_hu_55b57cc3e87f96c5.webp">Darwinian success loop</a> of a product is a function of love, not of features.</p><p>There are many ways to generate love. “Minimum” and “viable” are definitely <i>not</i> among those ways. The current-in-vogue way is through design: Elegant UX combined with delightful UI. But there are other ways. The attitude and culture of the company itself can generate love, such as
+<a href="https://blog.bufferapp.com/?utm_source=longform.asmartbear.com&amp;utm_campaign=longform.asmartbear.com&amp;utm_medium=post" target="_blank">Buffer’s blog</a> with its delightfully shocking transparency (including open salaries and corporate metrics) or
+<a href="https://meetedgar.com/blog/?utm_source=longform.asmartbear.com&amp;utm_campaign=longform.asmartbear.com&amp;utm_medium=post" target="_blank">MeetEdgar’s blog</a> genuinely helping entrepreneurs or
+<a href="https://blog.hubspot.com/?utm_source=longform.asmartbear.com&amp;utm_campaign=longform.asmartbear.com&amp;utm_medium=post" target="_blank">HubSpot’s blog</a> which early on was at least as instrumental to their customers’ success as the actual product. Another way is through a deep connection to the psyche of customers, like Heroku who broke with marketing tradition by filling the homepage with command-line examples instead of benefit-statements, thereby connecting instantly with their geeky target customer:</p><figure>
+<div><picture>
+<source type="image/webp" media="screen" srcset="https://longform.asmartbear.com/slc/l-screenshot-heroku-home-page-with-command-line-commands-976w.webp 976w" sizes="(max-width: 38rem) min(30.5rem,100vw),(max-width: 47rem) min(30.5rem,calc(100vw - 2rem)),(max-width: 60rem) min(30.5rem,45rem),(max-width: 67rem) min(30.5rem,calc(100vw - 22rem)),min(30.5rem,45rem)">
+<img alt="Screenshot of Heroku home page with command-line commands" loading="lazy" src="https://longform.asmartbear.com/slc/l-screenshot-heroku-home-page-with-command-line-commands-976w.png"></picture></div>
+<figcaption>
+<p><strong>Figure 1</strong></p>
+</figcaption>
+</figure><p><a href="https://longform.asmartbear.com/willingness-to-pay/" data-title="Willingness-to-pay: Creating permanent competitive advantage for the right reasons" data-desc="This fresh take on “Willingness-to-Pay” analyzes three types of customer motivation, leading to superior strategies for growth that also better the world." data-image-src1="https://longform.asmartbear.com/willingness-to-pay/thumbnail-1200w_hu_74d00c87b63e566e.webp" data-image-src2="https://longform.asmartbear.com/willingness-to-pay/thumbnail-1200w_hu_31e3f8dcc62f7f73.webp">Read about “WTP”</a> for many more examples of how to generate love.</p><p>From this reasoning, years ago I named what I believe is the correct alternative to the MVP: Simple, Lovable and Complete (<b>SLC</b>). We pronounce it “Slick.” As in: “What’s the ‘Slick’ version of your idea?”</p><h3 id="slc-summary">SLC Summary <a href="#slc-summary"></a>
+</h3><p><b><u>S</u>imple</b>, because complex things can’t be built quickly, and you must ship quickly so you can learn quickly so you can create the right product before you run out of money and willpower.</p><p><b><u>L</u>ovable</b>, because crappy products are insulting, and you didn’t start this company to make crappy products. The love overpowers the fact that the product is buggy and feature-poor. There are many <a href="https://longform.asmartbear.com/willingness-to-pay/" data-title="Willingness-to-pay: Creating permanent competitive advantage for the right reasons" data-desc="This fresh take on “Willingness-to-Pay” analyzes three types of customer motivation, leading to superior strategies for growth that also better the world." data-image-src1="https://longform.asmartbear.com/willingness-to-pay/thumbnail-1200w_hu_74d00c87b63e566e.webp" data-image-src2="https://longform.asmartbear.com/willingness-to-pay/thumbnail-1200w_hu_31e3f8dcc62f7f73.webp">wonderful, powerful, competitively-defensible forms of “Love.”</a> Pick some.</p><p><b><u>C</u>omplete</b>, because products are supposed to accomplish a job. Customers want to use a v1 of something simple, not v0.1 of something broken.</p><h2 id="life-after-slc">Life after SLC <a href="#life-after-slc"></a>
+</h2><p>Another benefit of SLC becomes apparent when you consider the next version of the product.</p><p>A SLC product does not require on-going development. It is possible that v1 should evolve for years into a v4, but you also have the option of <i>not</i> investing further, yet the product still creates value. An MVP that never gets additional investment is just a bad product. A SLC that never gets additional investment is a good, if modest product.</p><p>Many of the most successful software products in the world started as SLC, then grew in complexity, including examples we’ve already given (Google Docs and Snapchat).</p><p>The first iteration of Snapchat was a screen where tapping anywhere took a picture, that you could then send to someone else, at which time it disappeared. No video, no filters, no social networking, no commenting and no storage⁠—Simple, yet Lovable and Complete, as evidenced by its rapid adoption. The insight of “no storage” was critical, but many people have theorized that the simplicity of the interface was also critical. The very fact that it was simple, while not sacrificing love-ability or completeness, caused its success.</p><p>Later they added lots of stuff⁠—video, filters, timelines, “stories”, even video cameras inside sunglasses. It’s OK for products to become complex. Starting out SLC does not preclude becoming complex later.</p><p>WhatsApp was similar; it started with just a status message. Not a “post”, not a “chat”, no “timelines”, no “history”. Just “What’s up?”, hence the name of the app. They found people abusing the system to communicate with each other without paying for SMS messages, so they added chat. Dropbox started with just one folder that would (eventually!) sync across devices. Twitter had only the 140-character messages; things like replies and re-tweets were invented by users, implemented by convention, and only later folded back into the platform as built-in features. The examples go on and on.</p><h2 id="slc-breaks-maslows-product-hierarchy-needs">SLC breaks Maslow’s Product Hierarchy of Needs <a href="#slc-breaks-maslows-product-hierarchy-needs"></a>
+</h2><p>People erroneously believe that product development should work like Abraham Maslow’s Hierarchy of Needs:</p><figure>
+<div><picture>
+<source type="image/webp" media="screen" srcset="https://longform.asmartbear.com/slc/l-maslows-hierarchy-needs-864w.webp 864w,https://longform.asmartbear.com/slc/l-maslows-hierarchy-needs-1346w.webp 1346w" sizes="(max-width: 38rem) min(42.0625rem,100vw),(max-width: 47rem) min(42.0625rem,calc(100vw - 2rem)),(max-width: 60rem) min(42.0625rem,45rem),(max-width: 67rem) min(42.0625rem,calc(100vw - 22rem)),min(42.0625rem,45rem)">
+<img alt="Maslow's Hierarchy of Needs" loading="lazy" src="https://longform.asmartbear.com/slc/l-maslows-hierarchy-needs-1345w.png"></picture></div>
+<figcaption>
+<p><strong>Figure 2</strong>: Maslow’s Hierarchy of Needs</p>
+</figcaption>
+</figure><p>His insight is that you cannot achieve higher levels if you haven’t at least satisfied the lower levels: If you don’t know where your next meal is coming from, you’re not able to “creatively discover your true self.”</p><p>The framework is wrong, though this hasn’t stopped people from writing books and blog posts about it. “At the time of its original publication in 1943, there was no empirical evidence to support the theory.” “In a 1976 review of Maslow’s hierarchy of needs, little evidence was found for the specific ranking of needs that Maslow described or for the existence of a definite hierarchy at all.” <i>(
+<a href="https://en.wikipedia.org/wiki/Maslow%27s_hierarchy_of_needs" target="_blank">From Wikipedia</a>, with its own references.)</i></p><p>It’s wrong for Product also, but we act like it’s true.</p><p>If we roughly parallel Maslow, the Product Hierarchy looks something like (Figure 3), defining the levels as:</p><dl>
+<dt><b>Meaningful</b></dt>
+<dd>Identity, belonging, higher purpose. “Larger than myself.” Impact. <a href="https://longform.asmartbear.com/legacy/" data-title="Legacy" data-desc="Humans have always tried to live forever. Maybe you can, but not in the way you imagine." data-image-src1="https://longform.asmartbear.com/legacy/thumbnail-1200w_hu_b36d1546bfffe6d2.webp" data-image-src2="https://longform.asmartbear.com/legacy/thumbnail-1200w_hu_a05bc25c895da375.webp">Legacy</a>.</dd>
+<dt><b>Delightful</b></dt>
+<dd>Exceptionally wonderful to use, eliciting a strong positive emotion. It goes beyond being visually appealing or sensibly designed. It is at least extreme; it is likely surprising, because so few products delight us, especially in the business world. Perhaps a low bar makes delight easier to achieve, if we try.</dd>
+<dt><b>Easy to use</b></dt>
+<dd>Effortless and intuitive. Makes tech support obsolete.</dd>
+<dt><b>Reliable</b></dt>
+<dd>Always works as promised.</dd>
+<dt><b>Useful</b></dt>
+<dd>Fulfills a need; solves a problem.</dd>
+</dl><figure>
+<div><picture>
+<source type="image/webp" media="screen" srcset="https://longform.asmartbear.com/slc/d-pseudo-maslow-product-hierarchy-536w.webp 536w" sizes="(max-width: 38rem) min(16.75rem,100vw),(max-width: 47rem) min(16.75rem,calc(100vw - 2rem)),(max-width: 60rem) min(16.75rem,45rem),(max-width: 67rem) min(16.75rem,calc(100vw - 22rem)),min(16.75rem,45rem)">
+<img alt="Pseudo-Maslow Product Hierarchy" loading="lazy" src="https://longform.asmartbear.com/slc/d-pseudo-maslow-product-hierarchy-536w.png"></picture></div>
+<figcaption>
+<p><strong>Figure 3</strong>: Pseudo-Maslow Product Hierarchy</p>
+</figcaption>
+</figure><p>Following Maslow, we might say that if a product isn’t Useful then it doesn’t matter if it works all the time (Reliable) or is pretty to look at (Delightful), therefore “being useful” is the mandatory first “rung” of the ladder. No reason to do anything else, if you’re not useful.</p><p>Indeed, that’s what traditional MVPs do: be minimally useful, disregarding all other levels as irrelevant until the first level is satisfied:</p><figure>
+<div><picture>
+<source type="image/webp" media="screen" srcset="https://longform.asmartbear.com/slc/d-typical-mvp-minimally-useful-only-perhaps-easy-try-534w.webp 534w" sizes="(max-width: 38rem) min(16.6875rem,100vw),(max-width: 47rem) min(16.6875rem,calc(100vw - 2rem)),(max-width: 60rem) min(16.6875rem,45rem),(max-width: 67rem) min(16.6875rem,calc(100vw - 22rem)),min(16.6875rem,45rem)">
+<img alt="The typical MVP is minimally useful only, perhaps also being easy to try." loading="lazy" src="https://longform.asmartbear.com/slc/d-typical-mvp-minimally-useful-only-perhaps-easy-try-534w.png"></picture></div>
+<figcaption>
+<p><strong>Figure 4</strong>: <b>The typical MVP</b> is minimally useful only, perhaps also being easy to try.</p>
+</figcaption>
+</figure><p>This MVP attitude is further justified by projecting its future. We can map the behavior of mature products, especially in so-called “Enterprise Software” where the person who chooses to buy it isn’t the person who is forced to use it, and therefore the bottom of the pyramid is valued and the top is not:</p><figure>
+<div><picture>
+<source type="image/webp" media="screen" srcset="https://longform.asmartbear.com/slc/d-mature-products-maximize-utility-layers-do-their-users-love-it-making-an-internal-case-w-532w.webp 532w" sizes="(max-width: 38rem) min(16.625rem,100vw),(max-width: 47rem) min(16.625rem,calc(100vw - 2rem)),(max-width: 60rem) min(16.625rem,45rem),(max-width: 67rem) min(16.625rem,calc(100vw - 22rem)),min(16.625rem,45rem)">
+<img alt="Mature products maximize the utility layers; do their users love it, or are they making an internal case for why it should be replaced with a more pleasant competitor?" loading="lazy" src="https://longform.asmartbear.com/slc/d-mature-products-maximize-utility-layers-do-their-users-love-it-making-an-internal-case-w-532w.png"></picture></div>
+<figcaption>
+<p><strong>Figure 5</strong>: <b>Mature products</b> maximize the utility layers; do their users love it, or are they making an internal case for why it should be replaced with a more pleasant competitor?</p>
+</figcaption>
+</figure><p>The SLC attitude is different. It agrees that we can’t fill much of any layer, because we need to ship it quickly and start getting feedback. But it emphasizes different layers:</p><figure>
+<div><picture>
+<source type="image/webp" media="screen" srcset="https://longform.asmartbear.com/slc/d-slc-initially-uses-delight-win-hearts-customers-even-product-isnt-as-useful-reliable-as-530w.webp 530w" sizes="(max-width: 38rem) min(16.5625rem,100vw),(max-width: 47rem) min(16.5625rem,calc(100vw - 2rem)),(max-width: 60rem) min(16.5625rem,45rem),(max-width: 67rem) min(16.5625rem,calc(100vw - 22rem)),min(16.5625rem,45rem)">
+<img alt="SLC initially uses Delight to win the hearts of customers even though the product isn't as useful or reliable as it will eventually be." loading="lazy" src="https://longform.asmartbear.com/slc/d-slc-initially-uses-delight-win-hearts-customers-even-product-isnt-as-useful-reliable-as-530w.png"></picture></div>
+<figcaption>
+<p><strong>Figure 6</strong>: <b>SLC initially</b> uses Delight to win the hearts of customers even though the product isn’t as useful or reliable as it will eventually be.</p>
+</figcaption>
+</figure><p>An SLC product evolves, already-happy customers are rewarded with additional features:</p><figure>
+<div><picture>
+<source type="image/webp" media="screen" srcset="https://longform.asmartbear.com/slc/d-slc-evolves-fundamentally-different-creating-differentiation-beyond-feature-bullet-point-538w.webp 538w" sizes="(max-width: 38rem) min(16.8125rem,100vw),(max-width: 47rem) min(16.8125rem,calc(100vw - 2rem)),(max-width: 60rem) min(16.8125rem,45rem),(max-width: 67rem) min(16.8125rem,calc(100vw - 22rem)),min(16.8125rem,45rem)">
+<img alt="SLC evolves in a fundamentally different way, creating differentiation beyond feature-bullet-points." loading="lazy" src="https://longform.asmartbear.com/slc/d-slc-evolves-fundamentally-different-creating-differentiation-beyond-feature-bullet-point-537w.png"></picture></div>
+<figcaption>
+<p><strong>Figure 7</strong>: <i>SLC evolves</i> in a fundamentally different way, creating differentiation beyond feature-bullet-points.</p>
+</figcaption>
+</figure><p>Perhaps a better way to look at it, is that SLC is both Delightful <i>and Useful</i> on day one, albeit with a <i>scope</i> of “Useful” that is small enough to be “Complete”:</p><figure>
+<div><picture>
+<source type="image/webp" media="screen" srcset="https://longform.asmartbear.com/slc/d-slc-as-complete-according-narrow-scope-left-lacking-features-relative-scope-mature-produ-889w.webp 889w" sizes="(max-width: 38rem) min(27.8125rem,100vw),(max-width: 47rem) min(27.8125rem,calc(100vw - 2rem)),(max-width: 60rem) min(27.8125rem,45rem),(max-width: 67rem) min(27.8125rem,calc(100vw - 22rem)),min(27.8125rem,45rem)">
+<img alt="SLC as complete according to a narrow scope (left), but lacking features relative to the scope of a mature product (right)." loading="lazy" src="https://longform.asmartbear.com/slc/d-slc-as-complete-according-narrow-scope-left-lacking-features-relative-scope-mature-produ-889w.png"></picture></div>
+<figcaption>
+<p><strong>Figure 8</strong>: <b>SLC as complete</b> according to a narrow scope (left), but lacking features relative to the scope of a mature product (right).</p>
+</figcaption>
+</figure><p>Finally, a product that from inception is trying to “delight customers” is one that might actually deliver on the top of the pyramid: Meaning, personal identity, a higher purpose. You see this in products where people tie their identity to owning or using the product, not just in consumer brands where this is obvious, but in the way that people love Linear because it honors the developer (instead of the project manager), or the way they love Basecamp because they support the culture and attitudes of 37signals, or the way they whip out Moleskine notebooks because it connects them to a romantic ideal of the brooding writer, or proudly wear Patagonia gear as a badge of their environmental consciousness, or the way they argue over Vim vs Emacs as a badge of geekery.</p><p>Almost no company cares about creating meaning for their customers. Here’s how I know: <a href="https://longform.asmartbear.com/product-metrics/" data-title="Selecting the right product metrics (KPIs)" data-desc="A novel system for selecting and presenting product KPIs, satisfying not only the product team, but also stakeholders, executives, and customers." data-image-src1="https://longform.asmartbear.com/product-metrics/thumbnail-1200w_hu_33d16c5847a87b5c.webp" data-image-src2="https://longform.asmartbear.com/product-metrics/thumbnail-1200w_hu_d1211acbeb4f46f6.webp">What metric are they tracking</a>⁠—let alone optimizing for⁠—that measures meaning? If none, then it’s out of sight, out of mind. Clearly, you can build large and even great companies like this; most do. But if you did care about that, SLC is the right way to start the adventure.</p><p>Why don’t more products prioritize delight? Utility is more obvious. Utility is what the customer’s budget is allocated to obtain. Delight requires insight and great design, not back-end optimization and a keen mathematical mind. It is a rare person who possess all of these abilities, or even values them in others. It is a <i>decision</i> to prioritize Delight over Utility; it is easier not to.</p><p>The “pyramid” is useful for mapping out where you’re going to spend your time, but we need not traverse it from bottom to top. Products that prioritize delight win over products that don’t.</p><p>It’s really another way of prioritizing the customer⁠—the human being, not just their “job to be done.”</p><hr><p>With SLC, the outcomes are better and your options for next steps are better. It might fail; both SLCs and MVPs sometimes produce that result because you’re running an <a href="https://longform.asmartbear.com/fail/" data-title="Stop saying “fail”" data-desc="Language shapes our perception of setbacks. Use words other than “failure” to describe situations and to suggest the next step." data-image-src1="https://longform.asmartbear.com/fail/thumbnail-1200w_hu_aa8619b9abd71d07.webp" data-image-src2="https://longform.asmartbear.com/fail/thumbnail-1200w_hu_cd353fd7b4575aad.webp">experiment</a>. But if a SLC succeeds, you’ve already delivered real value to customers and you have multiple futures available to you, none of which are urgent. You could build a v2, and because you’re already generating value, you have more time to decide what that should look like. You could even query existing customers to determine exactly what v2 should entail, instead of a set of alpha-testers who just want to know “when are you going to fix this broken thing?”</p><p>Or, you can decide not to work on it. Not every product has to become complex. Not every product needs new major versions every two quarters. Some things can just remain simple, lovable, and complete.</p><p>Ask your customers. They’ll agree.</p><hr><p><i>Many thanks to
+<a href="https://www.threads.net/@lucid_voyager/post/DAMOUqCyB3J" target="_blank">Devan Stormont</a>,
+<a href="https://www.threads.net/@kathyqian/post/DAMSqhTS6KD" target="_blank">Kathy Qian</a>, and
+<a href="https://www.threads.net/@khurrum.carpediem/post/DAMRiiFOTjl" target="_blank">Khurrum Mahmood</a> for feedback on this article.</i></p><div><p>
+Printed from: <i>A Smart Bear</i><br>
+<a href="https://longform.asmartbear.com/slc/" area-label="Canonical link">https://longform.asmartbear.com/slc/</a><br>
+© 2007-2026 Jason Cohen
+&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://longform.asmartbear.com/images/twitter.png" alt="Twitter" loading="lazy"> <a href="https://twitter.com/intent/user?screen_name=asmartbear" target="_blank">@asmartbear</a></p></div></div></div>
+  <span></span> <!-- for IntersectionObserver -->
+  
+  
+  
+  
+
+
+<style id="note-styling">
+    .note {
+      position: absolute;
+      z-index: 10;
+      border: none;
+      outline: none;
+      font-family: inherit;
+      font-size: inherit;
+      padding: 5px;
+      min-width: 32px;
+      min-height: 32px;
+    }
+    .note:focus {
+      z-index: 11;
+    }
+    .note[type="0"] {
+      background-color: #fff740;
+      color: #2c2c2d;
+    }
+    .note[type="0"]::placeholder {
+      color: #868226;
+    }
+    .note[type="1"] {
+      background-color: #feff9c;
+      color: #2c2c2d;
+    }
+    .note[type="1"]::placeholder {
+      color: #6d6d3d;
+    }
+    .note[type="2"] {
+      background-color: #ff65a3;
+      color: #2c2c2d;
+    }
+    .note[type="2"]::placeholder {
+      color: #65263f;
+    }
+    .note[type="3"] {
+      background-color: #ff7eb9;
+      color: #2c2c2d;
+    }
+    .note[type="3"]::placeholder {
+      color: #562b3f;
+    }
+    .note[type="4"] {
+      background-color: #7afcff;
+      color: #295c5d;
+    }
+    .note[type="4"]::placeholder {
+      color: #377677;
+    }</style><div id="chapters-container">
+      <style>
+        #chapters {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          margin: 2ch 0;
+        }
+        #chapters a {
+          cursor: pointer;
+        }
+        #chapters a[href=""] {
+          opacity: 0.5;
+          pointer-events: none;
+          color: inherit;
+        }
+        #chapters a:first-child {
+          justify-self: start;
+        }
+        #chapters a:last-child {
+          justify-self: end;
+        }
+      </style>
+      <hr>
+      <div id="chapters">
+        <a href="" title="move to the previous chapter (Ctrl/Command + PageUp)">Previous Chapter</a>
+        <a href="https://longform.asmartbear.com/fail/" title="move to the next chapter (Ctrl/Command + PageDown)">Next Chapter</a>
+      </div>
+    </div></body><style>body {
+      font-size:  26px;
+      font-family: Georgia, 'Times New Roman', serif;
+      width: min(100% - 2rem, 700px);
+    }
+    p {
+      text-align: justify
+    }
+    .page {
+      line-height: 39.0px;
+      column-count: unset;
+    }
+    h1, h2, h3 {
+      line-height: initial;
+    }</style></html>

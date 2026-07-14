@@ -1,0 +1,53 @@
+# std-overlay-guard.rish — guard against accidental re-fork of rye/lib/std.
+#
+# 1) Assert rye/lib/std is a symlink to the pinned toolchain (not a copied tree).
+# 2) Shadow-copy vendor lib, tamper sha3.zig, prove a witness sees the change.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/parity-selftest.rish
+
+let rye       = "rye/bin/rye"
+let zig       = "vendor/zig-toolchain/zig"
+let baseline  = "vendor/zig-toolchain/lib"
+let std_link  = "rye/lib/std"
+let shadow    = "rishi/bin/selftest-shadow"
+let prog_src  = "rye/tests/sha3_512_test.rye"
+
+say "std-overlay-guard: checking rye/lib/std is a symlink…"
+
+let link_check = run ["test" "-L" std_link]
+assert link_check.ok else "rye/lib/std is not a symlink — re-fork detected. Restore pristine overlay per work-in-progress/archive/20260628-044300_std-refork-plan.md"
+
+let readlink = run ["readlink" "-f" std_link]
+assert readlink.ok else "could not readlink rye/lib/std"
+let vendor_std = run ["readlink" "-f" "vendor/zig-toolchain/lib/std"]
+assert vendor_std.ok else "could not readlink vendor std"
+assert readlink.out == vendor_std.out else "rye/lib/std does not point at pinned vendor std"
+
+say "std-overlay-guard: building tampered shadow lib (vendor copy)…"
+
+let clean = run ["rm" "-rf" shadow]
+assert clean.ok else "could not remove old shadow"
+let copy = run ["cp" "-r" baseline shadow]
+assert copy.ok else "could not copy vendor lib to shadow"
+
+let tamper = run ["sed" "-i" "s/0x06, 24/0x07, 24/g" "${shadow}/std/crypto/sha3.zig"]
+assert tamper.ok else "could not tamper sha3.zig in shadow"
+
+let same_check = run ["cmp" "-s" "${baseline}/std/crypto/sha3.zig" "${shadow}/std/crypto/sha3.zig"]
+assert same_check.ok == false else "tamper was a no-op — sha3.zig shape may have changed; guard is INCONCLUSIVE"
+
+say "std-overlay-guard: running sha3_512_test.rye against baseline vs tampered shadow…"
+
+let base_run = run ["env" "RYE_ZIG=${zig}" "RYE_LIB=${baseline}" rye "run" prog_src]
+let tamp_run = run ["env" "RYE_ZIG=${zig}" "RYE_LIB=${shadow}" rye "run" prog_src]
+
+let base_view = "${base_run.code}|${base_run.out}${base_run.err}"
+let tamp_view = "${tamp_run.code}|${tamp_run.out}${tamp_run.err}"
+
+say "baseline : ${base_run.out}"
+say "tampered : ${tamp_run.out}"
+say "---"
+
+assert base_view != tamp_view else "tampered std produced identical output — witnesses may be blind to std changes"
+say "GREEN: std overlay is symlinked; tamper on a copied tree is caught by witnesses."

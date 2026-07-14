@@ -1,0 +1,32 @@
+# tame_usize_audit.rish — proves surfaceAuditOk's welcome and unwelcome space.
+#
+# tame_usize_audit.rye is a pure library with no main and no file I/O; this
+# witness builds a small fixture that calls its exported surface directly and
+# asserts the three cases that matter: no rows, all done, and one fail among
+# many done.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/tame_usize_audit.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let zig_ver = run [zig "version"]
+assert zig_ver.ok else "pinned ziglang toolchain missing at vendor/zig-toolchain"
+
+let mkdir = run ["mkdir" "-p" "tools/bin"]
+assert mkdir.ok else "could not create tools/bin"
+let build = run ["env" "RYE_ZIG=${zig}" "rye/bin/rye" "build" "tools/fixtures/tame_usize_audit_test.rye" "-femit-bin=tools/bin/tame-usize-audit-test"]
+if build.ok == false then say "tame_usize_audit build stdout:"
+if build.ok == false then say build.out
+if build.ok == false then say "tame_usize_audit build stderr:"
+if build.ok == false then say build.err
+assert build.ok else "tame_usize_audit_test build failed"
+
+let result = run ["tools/bin/tame-usize-audit-test"]
+if result.ok == false then say "tame_usize_audit selftest stdout:"
+if result.ok == false then say result.out
+if result.ok == false then say "tame_usize_audit selftest stderr:"
+if result.ok == false then say result.err
+assert result.ok else "tame_usize_audit_test exited non-zero"
+assert result.err contains "GREEN" else "tame_usize_audit_test did not report GREEN"
+
+say "GREEN: tame_usize_audit — surfaceAuditOk proven on its welcome and unwelcome space."

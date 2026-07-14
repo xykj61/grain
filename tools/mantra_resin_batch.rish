@@ -1,0 +1,16 @@
+# mantra_resin_batch.rish — NS-L3 3w-3a resin-batch frame witness.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/mantra_resin_batch.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mantra/bin/resin-batch"
+
+let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/resin_batch.rye -femit-bin=${bin}"]
+assert build.ok else "resin-batch build failed"
+
+let batch = run ["sh" "-c" "${bin} batch 2>&1"]
+assert batch.ok else "resin-batch selftest exited non-zero"
+assert batch.out contains "GREEN" else "resin-batch selftest not GREEN"
+
+say "GREEN: NS-L3 3w-3a resin-batch frame witness passed."

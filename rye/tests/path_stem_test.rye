@@ -1,0 +1,19 @@
+//! Rye test: std.fs.path.stem — pass 9976.
+//!
+//! Stem is basename without extension. Mantra and Brix will name artifacts
+//! from path components; stem names the file without its suffix.
+
+const std = @import("std");
+
+pub fn main() void {
+    const path = std.fs.path;
+
+    std.debug.assert(std.mem.eql(u8, path.stem("hello/world/lib.tar.gz"), "lib.tar"));
+    std.debug.assert(std.mem.eql(u8, path.stem("foo.rye"), "foo"));
+    std.debug.assert(std.mem.eql(u8, path.stem("noext"), "noext"));
+    std.debug.assert(std.mem.eql(u8, path.stem(".gitignore"), ".gitignore"));
+    std.debug.assert(std.mem.eql(u8, path.stem("archive.tar.gz"), "archive.tar"));
+    std.debug.assert(path.stem("").len == 0);
+
+    std.debug.print("rye: path.stem assertions confirmed.\n", .{});
+}

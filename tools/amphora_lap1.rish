@@ -1,0 +1,24 @@
+# amphora_lap1.rish — Amphora lap 1: manifest entry + vessel parse.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/amphora_lap1.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let entry_bin = "amphora/bin/manifest-entry"
+let vessel_bin = "amphora/bin/vessel-core"
+
+let build_entry = run ["sh" "-c" "mkdir -p amphora/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/manifest_entry.rye -femit-bin=${entry_bin}"]
+assert build_entry.ok else "amphora manifest_entry build failed"
+
+let entry = run ["sh" "-c" "${entry_bin} selftest 2>&1"]
+assert entry.ok else "amphora manifest_entry selftest exited non-zero"
+assert entry.out contains "GREEN" else "amphora manifest_entry not GREEN"
+
+let build_vessel = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_core.rye -femit-bin=${vessel_bin}"]
+assert build_vessel.ok else "amphora vessel_core build failed"
+
+let vessel = run ["sh" "-c" "${vessel_bin} selftest 2>&1"]
+assert vessel.ok else "amphora vessel_core selftest exited non-zero"
+assert vessel.out contains "GREEN" else "amphora vessel_core not GREEN"
+
+say "GREEN: Amphora lap 1 — manifest entry + vessel seated."

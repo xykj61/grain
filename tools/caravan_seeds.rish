@@ -1,0 +1,33 @@
+# caravan_seeds.rish — Caravan seed → bounded → twin → chain supervision witnesses.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/caravan_seeds.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin_dir = "caravan/bin"
+
+let build = run ["sh" "-c" "mkdir -p ${bin_dir} && env RYE_ZIG=${zig} rye/bin/rye build caravan/seed.rye -femit-bin=${bin_dir}/seed && env RYE_ZIG=${zig} rye/bin/rye build caravan/bounded.rye -femit-bin=${bin_dir}/bounded && env RYE_ZIG=${zig} rye/bin/rye build caravan/twin.rye -femit-bin=${bin_dir}/twin && env RYE_ZIG=${zig} rye/bin/rye build caravan/chain.rye -femit-bin=${bin_dir}/chain && env RYE_ZIG=${zig} rye/bin/rye build caravan/service.rye -femit-bin=${bin_dir}/service"]
+
+assert build.ok else "caravan seeds build failed"
+
+let seed = run ["sh" "-c" "${bin_dir}/seed 2>&1"]
+assert seed.ok else "caravan seed supervisor exited non-zero"
+assert seed.out contains "GREEN" else "caravan seed missing GREEN"
+
+let bounded = run ["sh" "-c" "${bin_dir}/bounded 2>&1"]
+assert bounded.ok else "caravan bounded supervisor exited non-zero"
+assert bounded.out contains "GREEN" else "caravan bounded missing GREEN"
+
+let twin = run ["sh" "-c" "${bin_dir}/twin 2>&1"]
+assert twin.ok else "caravan twin supervisor exited non-zero"
+assert twin.out contains "green" else "caravan twin missing green"
+
+let chain = run ["sh" "-c" "${bin_dir}/chain 2>&1"]
+assert chain.ok else "caravan chain supervisor exited non-zero"
+assert chain.out contains "chain complete" else "caravan chain missing completion line"
+
+let service = run ["sh" "-c" "${bin_dir}/service 2>&1"]
+assert service.ok else "caravan service supervisor exited non-zero"
+assert service.out contains "GREEN" else "caravan service missing GREEN"
+
+say "GREEN: Caravan supervision seeds witness passed."

@@ -1,0 +1,19 @@
+# granary_exchange_view.rish — Granary Exchange view: weave listing → Skate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/granary_exchange_view.rish
+
+let bin = "pond/bin/drawn-terminal"
+
+say "build: Granary Exchange view — drawn-terminal compile"
+let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+assert build.ok else "drawn_terminal build failed for granary exchange view witness"
+assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
+
+let view = run ["sh" "-c" "${bin} exchangeviewtest 2>&1"]
+assert view.ok else "drawn terminal exchangeviewtest exited non-zero"
+assert view.out contains "granary exchange view" else "granary exchange view witness missing expected output"
+assert view.out contains "GREEN" else "Granary Exchange view witness not GREEN"
+assert view.out contains "lines=6" else "granary exchange view missing six-line frame"
+
+say "GREEN: Granary Exchange view — weave listing priced in MALA on a Skate frame."

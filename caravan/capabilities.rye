@@ -1,0 +1,230 @@
+//! Caravan capabilities — a bounded table naming what each dependent may do.
+//!
+//! Chain proved startup as ordered stages. This program proves the next
+//! accretion step toward the microkernel: a small Rye data structure that
+//! names each supervised dependent's rights over named resources. The table is
+//! pure policy — hosted ground, no kernel yet — asserted and witnessed.
+//!
+//! Usage:
+//!   capabilities          Run the self-test (default)
+//!   capabilities selftest Same as default
+
+const std = @import("std");
+const assert = std.debug.assert;
+const tally_copy = @import("tally_copy.rye");
+const print = std.debug.print;
+
+const caravan_capabilities_version = "20260630.042012";
+
+/// Maximum supervised dependents in one table. Bounded on purpose.
+const max_dependents: u32 = 4;
+
+/// Maximum capabilities per dependent.
+const max_caps_per_dependent: u32 = 8;
+
+/// Maximum bytes in a dependent label or resource name.
+const max_name_len: u32 = 48;
+
+fn buf_len_u32(buf: []const u8) u32 {
+    assert(buf.len <= std.math.maxInt(u32));
+    return @intCast(buf.len);
+}
+
+// =========================================================================
+// § Rights — what a capability grants
+// =========================================================================
+
+const right_read: u8 = 1 << 0;
+const right_write: u8 = 1 << 1;
+const right_exec: u8 = 1 << 2;
+const right_net: u8 = 1 << 3;
+const right_device: u8 = 1 << 4;
+
+const Rights = struct {
+    fn contains(have: u8, need: u8) bool {
+        return (have & need) == need;
+    }
+};
+
+// =========================================================================
+// § Capability — one resource and the rights to it
+// =========================================================================
+
+// Invariant: name_len <= max_name_len; rights_mask uses only known bits.
+const Capability = struct {
+    name: [max_name_len]u8 = undefined,
+    name_len: u32 = 0,
+    rights_mask: u8 = 0,
+
+    fn init(name: []const u8, rights_mask: u8) Capability {
+        assert(name.len <= max_name_len);
+        var cap: Capability = .{};
+        cap.name_len = buf_len_u32(name);
+        tally_copy.copy_disjoint(u8, cap.name[0..name.len], name);
+        cap.rights_mask = rights_mask;
+        assert(cap.name_len <= max_name_len);
+        return cap;
+    }
+
+    fn name_slice(self: *const Capability) []const u8 {
+        assert(self.name_len <= max_name_len);
+        const n: usize = @intCast(self.name_len);
+        assert(n <= self.name.len);
+        return self.name[0..n];
+    }
+};
+
+// =========================================================================
+// § Dependent slot — one supervised process and its capability list
+// =========================================================================
+
+// Invariant: cap_count <= max_caps_per_dependent when active.
+const DependentSlot = struct {
+    label: [max_name_len]u8 = undefined,
+    label_len: u32 = 0,
+    caps: [max_caps_per_dependent]Capability = undefined,
+    cap_count: u32 = 0,
+    active: bool = false,
+
+    fn init(label: []const u8) DependentSlot {
+        assert(label.len <= max_name_len);
+        var slot: DependentSlot = .{};
+        slot.label_len = buf_len_u32(label);
+        tally_copy.copy_disjoint(u8, slot.label[0..label.len], label);
+        slot.active = true;
+        assert(slot.cap_count == 0);
+        return slot;
+    }
+
+    fn label_slice(self: *const DependentSlot) []const u8 {
+        assert(self.label_len <= max_name_len);
+        const n: usize = @intCast(self.label_len);
+        return self.label[0..n];
+    }
+
+    fn grant(self: *DependentSlot, cap: Capability) error{TableFull}!void {
+        assert(self.active);
+        assert(self.cap_count <= max_caps_per_dependent);
+        if (self.cap_count >= max_caps_per_dependent) return error.TableFull;
+        self.caps[self.cap_count] = cap;
+        self.cap_count += 1;
+        assert(self.cap_count <= max_caps_per_dependent);
+    }
+};
+
+// =========================================================================
+// § Capability table — names what each dependent may do
+// =========================================================================
+
+// Invariant: dependent_count <= max_dependents.
+const CapabilityTable = struct {
+    dependents: [max_dependents]DependentSlot = undefined,
+    dependent_count: u32 = 0,
+
+    fn add_dependent(self: *CapabilityTable, label: []const u8) error{TableFull}!*DependentSlot {
+        assert(self.dependent_count <= max_dependents);
+        if (self.dependent_count >= max_dependents) return error.TableFull;
+        self.dependents[self.dependent_count] = DependentSlot.init(label);
+        const slot = &self.dependents[self.dependent_count];
+        self.dependent_count += 1;
+        assert(self.dependent_count <= max_dependents);
+        return slot;
+    }
+
+    fn find_dependent(self: *const CapabilityTable, label: []const u8) ?*const DependentSlot {
+        var i: u32 = 0;
+        while (i < self.dependent_count) : (i += 1) {
+            assert(i < max_dependents);
+            const slot = &self.dependents[i];
+            if (slot.active and std.mem.eql(u8, slot.label_slice(), label)) return slot;
+        }
+        return null;
+    }
+
+    /// Returns true when the named dependent holds a capability for the resource
+    /// that includes every requested right bit.
+    fn allows(self: *const CapabilityTable, dependent_label: []const u8, resource: []const u8, need: u8) bool {
+        const slot = self.find_dependent(dependent_label) orelse return false;
+        assert(slot.cap_count <= max_caps_per_dependent);
+        var i: u32 = 0;
+        while (i < slot.cap_count) : (i += 1) {
+            assert(i < max_caps_per_dependent);
+            const cap = &slot.caps[i];
+            if (std.mem.eql(u8, cap.name_slice(), resource)) {
+                return Rights.contains(cap.rights_mask, need);
+            }
+        }
+        return false;
+    }
+};
+
+// =========================================================================
+// § Demo table — mirrors the microkernel brief's example services
+// =========================================================================
+
+fn demo_table() !CapabilityTable {
+    var table: CapabilityTable = .{};
+
+    const vfs = try table.add_dependent("vfs");
+    try vfs.grant(Capability.init("/usr", right_read));
+    try vfs.grant(Capability.init("/lib", right_read));
+
+    const display = try table.add_dependent("display");
+    try display.grant(Capability.init("gpu0", right_read | right_device));
+
+    const repl = try table.add_dependent("repl");
+    try repl.grant(Capability.init("/home/xy/veganreyklah2", right_read));
+    try repl.grant(Capability.init("here", right_read | right_write));
+
+    assert(table.dependent_count == 3);
+    return table;
+}
+
+// =========================================================================
+// § Self-test — assert the table enforces named boundaries
+// =========================================================================
+
+fn run_self_test() u8 {
+    const table = demo_table() catch {
+        print("capabilities: demo table build failed\n", .{});
+        return 1;
+    };
+
+    // VFS may read system paths, not write them.
+    assert(table.allows("vfs", "/usr", right_read));
+    assert(table.allows("vfs", "/lib", right_read));
+    assert(!table.allows("vfs", "/usr", right_write));
+    assert(!table.allows("vfs", "/etc", right_read));
+
+    // Display holds device access to the GPU, not arbitrary write.
+    assert(table.allows("display", "gpu0", right_device));
+    assert(table.allows("display", "gpu0", right_read | right_device));
+    assert(!table.allows("display", "gpu0", right_write));
+    assert(!table.allows("display", "gpu1", right_device));
+
+    // REPL pond: read home, write here, no network right granted.
+    assert(table.allows("repl", "/home/xy/veganreyklah2", right_read));
+    assert(table.allows("repl", "here", right_write));
+    assert(table.allows("repl", "here", right_read | right_write));
+    assert(!table.allows("repl", "here", right_net));
+    assert(!table.allows("repl", "/tmp", right_write));
+
+    // Unknown dependent is denied by absence of a slot.
+    assert(!table.allows("unknown", "/usr", right_read));
+
+    print("capabilities: version {s}\n", .{caravan_capabilities_version});
+    print("capabilities: {d} dependents, boundaries asserted — GREEN.\n", .{table.dependent_count});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const allocator = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(allocator);
+
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_self_test();
+    }
+
+    if (args.len >= 2) return 1;
+    return run_self_test();
+}

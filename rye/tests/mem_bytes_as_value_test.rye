@@ -1,0 +1,21 @@
+//! Rye test: std.mem.bytesAsValue — pass 9922.
+//!
+//! Byte buffer to typed pointer; pairs with asBytes (9925) and toBytes (9923).
+
+const std = @import("std");
+const mem = std.mem;
+
+const Pair = struct { a: u8, b: u8 };
+
+pub fn main() void {
+    var word: u32 = 0xAABBCCDD;
+    const view = mem.asBytes(&word);
+    std.debug.assert(mem.bytesAsValue(u32, view[0..]).* == word);
+
+    var pair_val = Pair{ .a = 0x11, .b = 0x22 };
+    const pair_back = mem.bytesAsValue(Pair, mem.asBytes(&pair_val)[0..]).*;
+    std.debug.assert(pair_back.a == pair_val.a);
+    std.debug.assert(pair_back.b == pair_val.b);
+
+    std.debug.print("rye: mem.bytesAsValue assertions confirmed.\n", .{});
+}

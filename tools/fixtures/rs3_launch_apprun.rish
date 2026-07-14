@@ -1,0 +1,4 @@
+# Mirror launch-cursor apprun resolution — no ai-jail exec.
+let apprun = "squashfs-root/AppRun"
+if (args contains "--appimage") then let apprun = flag args "--appimage"
+say "${apprun}"

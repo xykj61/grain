@@ -1,0 +1,79 @@
+# Combined Bron handoff for Claude — Monocypher pin rests
+# Paste-ready: values only.
+format chat-printout-v1
+kind claude-handoff
+stamp 20260712.215100
+voice Rio 3
+editor Cursor
+model Cursor Grok 4.5
+git_nib 6b550b6
+product_nib 430
+suite_nib 432
+parity_host_repin GREEN
+g1_status closed-digest-grade
+pond_master_seal rests
+crypto_teacher Monocypher
+monocypher_pin 4.0.3
+monocypher_commit ab2b16dd619ad5f6979a4fbe69cfa324a6fcc35f
+audience Claude
+sitting Framework-evening-monocypher-pin-go
+
+section pins
+pin product_nib 430
+pin suite_nib 432
+pin parity_host_repin 20260712.193958 GREEN
+pin git_before_this_go 85c79ef
+pin git_nib 6b550b6
+pin remotes pushed-four tip 6b550b6
+pin teacher_ai_jail v1.12.0
+pin genode_home vendor/genode @ 492a510
+pin monocypher_home vendor/monocypher
+pin monocypher_tag 4.0.3
+pin monocypher_commit ab2b16dd619ad5f6979a4fbe69cfa324a6fcc35f
+pin monocypher_forge https://github.com/LoupVaillant/Monocypher.git
+pin monocypher_seam monocypher-ed25519 · crypto_ed25519_check · RFC8032 SHA-512
+pin fetch_witness tools/proven_seat_signed_kumara_fetch.rish GREEN
+pin red_avoid HOLD until tools/proven_seat_signed_kumara_guest
+pin fixture HOLD until host generator
+pin gratitude CC0 · BSD dual
+pin supersede_season closed measured · held
+pin signed_kumara awaits morning open · guest+fixture
+pin living_docs_lint thrice-earned alt
+pin route_two parked
+pin libsodium_park second-guest-crypto or Sculpt-and-Goa
+
+section arc
+title What landed since tip 85c79ef
+p Claude ask one resting — nothing more before morning.
+p Ask two: vendor/monocypher submodule pinned live from forge at 4.0.3 / ab2b16d.
+p Fetch witness three asserts — pin GREEN · red-avoid HOLD · fixture HOLD.
+p Guest include surface named — monocypher.{c,h} · optional/monocypher-ed25519.{c,h}; teacher byte-pristine.
+p Gratitude CC0/BSD dual noted in system table and agent rules.
+
+section docs_to_walk
+doc active-designing/20260712-214900_signed-kumara-monocypher-pin.md
+doc active-designing/20260712-214200_proven-seat-signed-kumara-monocypher.md
+witness tools/proven_seat_signed_kumara_fetch.rish
+
+section host_printouts
+printout fetch
+p GREEN: signed-Kumara fetch — pin 4.0.3 @ ab2b16d…; red_avoid=HOLD; fixture=HOLD
+
+section commits_this_go
+title Commits oldest → newest
+commit 82be9b0 Pin Monocypher 4.0.3 for signed-Kumara and shape its three-assert fetch.
+commit e94fca7 Record Claude handoff for the Monocypher 4.0.3 pin.
+push remotes origin github gp36-codeberg gp36-github
+
+section open_now
+next Hold supersede season — named build word only
+next Morning kg — open signed-Kumara guest + Kumara fixture generator · red-avoid GREEN · serial signature holds; seat verifies
+alt living-docs lint · karpathy/ai-memory · forge courtesy
+park libsodium genode-world
+park route_two
+
+section ask_claude
+ask Affirm the pin and three-assert shape as resting — any one-line before morning guest?
+ask Morning open: any guest-tree or fixture-generator rewrite before first compile?
+
+benediction May the pin hold to the commit. May the morning find the seat ready to verify. May the whole day keep — folded, nibbed, sealed, and green.

@@ -1,0 +1,18 @@
+# crossing_manifest_seed.rish — Amphora cargo-line parse (graduated to amphora/).
+#
+# Elder parity path **151**; module home is now amphora/manifest_entry.rye.
+# Run from the repository root:
+#   rishi/bin/rishi run tools/crossing_manifest_seed.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "amphora/bin/manifest-entry"
+
+say "crossing-manifest: Amphora manifest entry on metal..."
+let build = run ["sh" "-c" "mkdir -p amphora/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/manifest_entry.rye -femit-bin=${bin}"]
+assert build.ok else "amphora manifest_entry build failed"
+
+let result = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert result.ok else "crossing manifest / amphora entry run failed"
+assert result.out contains "GREEN" else "crossing manifest / amphora entry did not report GREEN"
+
+say "GREEN: crossing manifest seed — well-formed line parses; damaged line refused whole (Amphora home)."

@@ -1,0 +1,22 @@
+# rs1_args.rish — RS-1 witness: scripts read their own arguments.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/rs1_args.rish
+
+let empty = run ["rishi/bin/rishi" "run" "tools/fixtures/rs1_args_empty.rish"]
+assert empty.ok else "empty args script must pass"
+assert empty.out contains "RS-1 empty args ok" else "empty args script must report ok"
+
+let three = run ["rishi/bin/rishi" "run" "tools/fixtures/rs1_args_three.rish" "a" "b" "c"]
+assert three.ok else "three-arg script must pass"
+assert three.out contains "RS-1 three args ok" else "three-arg script must report ok"
+
+let oob = run ["rishi/bin/rishi" "run" "tools/fixtures/rs1_args_oob.rish" "only"]
+assert (oob.ok == false) else "out-of-range index must fail"
+assert oob.err contains "out of range" else "out-of-range must print a friendly message"
+
+let many = run ["rishi/bin/rishi" "run" "tools/fixtures/rs1_args_max.rish"]
+assert (many.ok == false) else "more than max_args must fail"
+assert many.out contains "too many arguments" else "max_args must fail friendly"
+
+say "GREEN: RS-1 — args pre-bound as .list of .string; .len and [n] work."

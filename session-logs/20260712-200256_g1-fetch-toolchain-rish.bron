@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260712.200256
+editor Cursor
+model Cursor Grok 4.5
+voice Rio 3
+title G1 fetch-toolchain Rishi witness
+prompt can you write a rishi script for this for me?
+product_nib 430
+suite_nib 432
+git_nib 9f1c911
+think Wrote proven_seat_g1_fetch_toolchain.rish — curl Ubuntu 24.04 tarball 25.05 · sha256 from genode.org · extract to cache without sudo · locate genode-x86-g++ · write meta CROSS_DEV_PREFIX. Updated crossing pin recipe.
+obs ~220 MB download — run on Framework host. Not executed full fetch this turn.
+recommend keep-going host run the fetch witness — mechanical; Claude before Genode module home
+file tools/proven_seat_g1_fetch_toolchain.rish · fetch + verify + extract
+file active-designing/20260712-195339_proven-seat-g1-crossing-pin.md · recipe points at witness
+file session-logs/20260712-200256_g1-fetch-toolchain-rish.bron · this log
+file session-logs/README.md · index

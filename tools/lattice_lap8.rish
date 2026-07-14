@@ -1,0 +1,17 @@
+# lattice_lap8.rish — Lattice lap 7 fill witness.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/lattice_lap8.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lattice/bin/lattice"
+
+let build = run ["sh" "-c" "mkdir -p lattice/bin && env RYE_ZIG=${zig} rye/bin/rye build lattice/lattice.rye -femit-bin=${bin}"]
+assert build.ok else "Lattice lap 7 build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "Lattice selftest exited non-zero"
+assert selftest.out contains "GREEN" else "Lattice selftest not GREEN"
+assert selftest.out contains "fill 2x2" else "Lattice missing fill welcome"
+
+say "GREEN: Lattice lap 7 — fill with constant value."

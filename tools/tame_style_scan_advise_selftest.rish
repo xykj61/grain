@@ -1,0 +1,20 @@
+# tame_style_scan_advise_selftest.rish — native advise matches legacy shell counts.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/tame_style_scan_advise_selftest.rish
+
+let native = run ["rishi/bin/rishi" "run" "tools/tame_style_scan_advise.rish"]
+assert native.ok else "native advise failed"
+
+let legacy = run ["sh" "tools/fixtures/tame_style_scan.sh" "advise-legacy"]
+assert legacy.ok else "legacy advise failed"
+
+assert native.out contains "ratchet: @memcpy application sites = 0" else "native memcpy ratchet mismatch"
+assert legacy.out contains "ratchet: @memcpy application sites = 0" else "legacy memcpy ratchet mismatch"
+assert native.out contains "ratchet: camelCase fn declarations = 0" else "native camelCase ratchet mismatch"
+assert native.out contains "ratchet: parseInt( application sites = 0" else "native parseInt ratchet mismatch"
+assert native.out contains "ratchet: Ed25519 application sites = 0" else "native Ed25519 ratchet mismatch"
+assert legacy.out contains "ratchet: Ed25519 application sites = 0" else "legacy Ed25519 ratchet mismatch"
+assert native.out contains "ratchet: zero assert( files remaining = 0" else "native zero-assert ratchet mismatch"
+
+say "GREEN: tame_style_scan_advise matches legacy ratchet lines on clean tree."

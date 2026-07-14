@@ -1,0 +1,22 @@
+# lap_vocabulary_sweep.rish — forward-facing ring→lap vocabulary sweep (word boundaries).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/lap_vocabulary_sweep.rish
+#
+# Dry-run (list paths that would change):
+#   rishi/bin/rishi run tools/lap_vocabulary_sweep.rish --dry-run
+
+if args contains "--dry-run" then let sweep = run ["sh" "tools/fixtures/lap_vocabulary_sweep.sh" "dry"] else let sweep = run ["sh" "tools/fixtures/lap_vocabulary_sweep.sh"]
+assert sweep.ok else "lap vocabulary sweep script failed"
+say sweep.out
+
+if args contains "--dry-run" then say "LAP VOCAB SWEEP: dry-run only — no files written." else say "LAP VOCAB SWEEP: prose pass complete."
+
+if args contains "--dry-run" then let audit_skip = true else let audit = run ["bash" "tools/fixtures/lap_vocabulary_audit.sh"]
+if args contains "--dry-run" then let audit_ok = true else let audit_ok = audit.ok
+if args contains "--dry-run" then let audit_out = "" else let audit_out = audit.out
+if audit_out != "" then say audit_out
+assert audit_ok else "lap vocabulary audit RED — ring still in forward-facing prose"
+
+if args contains "--dry-run" then let done_msg = "dry-run complete" else let done_msg = "GREEN: lap vocabulary sweep and audit passed."
+if done_msg contains "GREEN" then say done_msg

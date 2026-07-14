@@ -1,0 +1,26 @@
+//! Rye test: SplitIterator.rest via splitScalar — pass 9968.
+//!
+//! Mantra calls rest() after next() when walking tab fields and lines.
+//! Completes the split iterator family beside next (9993) and peek (9969).
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    var it = mem.splitScalar(u8, "a|b|c", '|');
+    _ = it.first();
+    std.debug.assert(mem.eql(u8, it.rest(), "b|c"));
+    _ = it.next();
+    std.debug.assert(mem.eql(u8, it.rest(), "c"));
+    _ = it.next();
+    std.debug.assert(it.rest().len == 0);
+
+    var fresh = mem.splitScalar(u8, "whole", '|');
+    std.debug.assert(mem.eql(u8, fresh.rest(), "whole"));
+
+    var fields = mem.splitScalar(u8, "gen\tpos\ttext", '\t');
+    std.debug.assert(mem.eql(u8, fields.next().?, "gen"));
+    std.debug.assert(mem.eql(u8, fields.rest(), "pos\ttext"));
+
+    std.debug.print("rye: SplitIterator.rest assertions confirmed.\n", .{});
+}

@@ -1,0 +1,17 @@
+# rish_wait_for_witness.rish — Rishi wait-for ordering witness.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/rish_wait_for_witness.rish
+
+let slow = spawn ["sh" "-c" "sleep 0.2; printf slow"]
+let fast = spawn ["sh" "-c" "printf fast"]
+
+let fast_result = wait-for fast
+assert fast_result.ok else "fast child must exit zero"
+assert fast_result.out contains "fast" else "fast child stdout mismatch"
+
+let slow_result = wait-for slow
+assert slow_result.ok else "slow child must exit zero"
+assert slow_result.out contains "slow" else "slow child stdout mismatch"
+
+say "GREEN: Rishi wait-for — independent handles, out-of-order wait."

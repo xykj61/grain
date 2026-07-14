@@ -1,0 +1,11 @@
+# width_check_th5.rish — TH-5 witness: Rishi module zero authored usize.
+#
+# Gates rishi/src/main.rye only — Comlink wire widths gated by TH-6.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/width_check_th5.rish
+
+let result = run ["sh" "-c" "grep 'usize' rishi/src/main.rye 2>/dev/null | grep -v '@intCast' | grep -v '@as(usize' | wc -l"]
+assert trim result.out == "0" else "Rishi must carry zero authored usize after TH-5"
+
+say "GREEN: TH-5 — Rishi reads zero authored usize under the seam policy."

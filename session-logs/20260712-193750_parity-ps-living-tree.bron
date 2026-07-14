@@ -1,0 +1,15 @@
+format session-log-v1
+stamp 20260712.193750
+editor Cursor
+model Cursor Grok 4.5
+voice Rio 3
+title Host ps shows living parity tree
+prompt screenshot ps aux grep rishi — five processes
+product_nib 430
+suite_nib 432
+git_nib 826bcea
+think Host pts/5 tree: parent rishi 19:07 + tee · ch02 child 19:21 · nested witness rishi 19:37. Also stale rishi on pts/0 from 13:36. No qemu right now = hosted stretch of ch02. ps truncates rishi to rih/riu — use ps auxww. Not stuck — leave pts/5 alone.
+obs Chapter 1 GREEN held; chapter 2 still buffering under nested run.
+recommend keep-going leave host tee until chapter 2 finishes — mechanical wait
+file session-logs/20260712-193750_parity-ps-living-tree.bron · this note
+file session-logs/README.md · index

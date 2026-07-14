@@ -1,0 +1,19 @@
+//! Rye test: std.fs.path.extension — pass 9977.
+//!
+//! Pairs with basename (9978) and dirname (9980). Mantra and Pond policy
+//! will compose paths from named components; extension names the suffix.
+
+const std = @import("std");
+
+pub fn main() void {
+    const path = std.fs.path;
+
+    std.debug.assert(std.mem.eql(u8, path.extension("foo.rye"), ".rye"));
+    std.debug.assert(std.mem.eql(u8, path.extension("archive.tar.gz"), ".gz"));
+    std.debug.assert(std.mem.eql(u8, path.extension("noext"), ""));
+    std.debug.assert(std.mem.eql(u8, path.extension(".hidden"), ""));
+    std.debug.assert(std.mem.eql(u8, path.extension("dir/file.ext"), ".ext"));
+    std.debug.assert(path.extension("").len == 0);
+
+    std.debug.print("rye: path.extension assertions confirmed.\n", .{});
+}

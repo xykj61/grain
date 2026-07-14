@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260712.121719
+editor Cursor
+model Cursor Grok 4.5
+voice Rio 3
+title Seat nib — retire forward tip
+prompt rename tip to nib in lexicon and claude cursor rules; commit push; full bron for Claude
+product_nib 430
+suite_nib 432
+think Seated Nib in LEXICON with product/suite/git forms; retired tip forward-facing.
+think Added vocabulary-nib rules for Cursor and Claude; synced radiant-style, rio3, reya2, CLAUDE.md, session-logs rules, TASKS Now.
+think Wrote Claude handoff bron; historical dated tip prose left immutable.
+obs Pen-nib metaphor fits Brushstroke/Radiant house; no mass rewrite of archive.
+file context/LEXICON.md Nib row · tip retired · living tip→nib
+file .cursor/rules/vocabulary-nib.mdc always-on Cursor law
+file .claude/rules/vocabulary-nib.md always-on Claude law
+file .cursor/rules/radiant-style.mdc · .claude/rules/radiant-style.md nib note
+file .cursor/rules/rio3.mdc · .claude/rules/reya2.md · CLAUDE.md vocabulary
+file .cursor/rules/session-logs.mdc · .claude/rules/session-logs.md bron field names
+file work-in-progress/TASKS.md Now uses nib
+file bron-resins/20260712-121719_claude-nib-seated.bron Claude handoff
+file session-logs/20260712-121719_seat-nib-retire-tip.bron this log
+recommend keep-going host on-path when kvm granted — mechanical; nib vocabulary is seated

@@ -1,0 +1,80 @@
+//! comlink/guest_open_asks_completion_tx.rye — OA-L5 device wire completion TX guest.
+
+const std = @import("std");
+const vn = @import("virtio_net.rye");
+const tally_copy = @import("tally_copy.rye");
+const wf = @import("wire_format.rye");
+const oa = @import("open_asks.rye");
+const rc = @import("receipt_core.rye");
+const kumara = @import("kumara.rye");
+
+var tx: vn.TxQueue = undefined;
+
+fn pubkey_hex(kp: kumara.KeyPair, out: *[64]u8) void {
+    const bytes = kp.public_key.toBytes();
+    var i: u32 = 0;
+    while (i < 32) : (i += 1) {
+        _ = std.fmt.bufPrint(out[i * 2 ..][0..2], "{x:0>2}", .{bytes[i]}) catch unreachable;
+    }
+}
+
+export fn _start() linksection(".text.init") callconv(.naked) noreturn {
+    asm volatile (
+        \\ li sp, 0x80100000
+        \\ j kmain
+    );
+}
+
+export fn kmain() callconv(.c) noreturn {
+    vn.init_device();
+    tx.init();
+    vn.driver_ok();
+
+    const poster_kp = kumara.keypair_from_seed(&oa.poster_seed);
+    const applicant_kp = kumara.keypair_from_seed(&oa.applicant_seed);
+    var poster_hex: [64]u8 = undefined;
+    var applicant_hex: [64]u8 = undefined;
+    pubkey_hex(poster_kp, &poster_hex);
+    pubkey_hex(applicant_kp, &applicant_hex);
+
+    var memo_buf: [128]u8 = undefined;
+    var mi: u32 = 0;
+    const prefix = oa.completion_memo_prefix;
+    while (mi < prefix.len) : (mi += 1) memo_buf[mi] = prefix[mi];
+    var ri: u32 = 0;
+    while (ri < oa.ref_hex_len) : (ri += 1) memo_buf[mi + ri] = oa.witness_request_ref[ri];
+    const memo_len = mi + ri;
+
+    const completion_fields = rc.FactFields{
+        .from = poster_hex[0..64],
+        .to = applicant_hex[0..64],
+        .amount = "100",
+        .memo = memo_buf[0..memo_len],
+        .stamp = "20260706.003200",
+    };
+    var canonical: [oa.max_oa_fact]u8 = undefined;
+    const canonical_len = rc.write_canonical_fact(completion_fields, &canonical) catch unreachable;
+    const sig = kumara.sign(canonical[0..canonical_len], poster_kp, null);
+
+    var payload: [oa.oa2_payload_header + oa.max_oa_fact]u8 = undefined;
+    const payload_len = oa.encode_compact_payload(sig, canonical[0..canonical_len], &payload) catch unreachable;
+
+    var scratch: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const dg_len: u32 = @intCast(wf.seal_message(payload[0..payload_len], &scratch) catch unreachable);
+
+    const buf = tx.frame();
+    @memset(buf[0..vn.virtio_net_hdr_len], 0);
+    const eoff = vn.virtio_net_hdr_len;
+    var i: u32 = 0;
+    while (i < 6) : (i += 1) buf[eoff + i] = 0xff;
+    while (i < 12) : (i += 1) buf[eoff + i] = 0x00;
+    buf[eoff + 12] = @truncate(vn.lab_ethertype >> 8);
+    buf[eoff + 13] = @truncate(vn.lab_ethertype);
+    const poff = eoff + vn.eth_header_len;
+    tally_copy.copy_disjoint(u8, buf[poff..][0..dg_len], scratch[0..dg_len]);
+    const total: u32 = poff + dg_len;
+
+    tx.send(total);
+    vn.write_str("oal5 device wire: sealed completion TX sent\n");
+    vn.finish_pass();
+}

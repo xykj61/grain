@@ -1,0 +1,20 @@
+//! Rye test: std.mem.cutLast and cutScalarLast — pass 9958.
+//!
+//! Split once on last needle occurrence; pairs with cut/cutScalar (9959).
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    std.debug.assert(mem.cutLast(u8, "a b c", "B") == null);
+    const seq = mem.cutLast(u8, "a be c be d", "be") orelse unreachable;
+    std.debug.assert(mem.eql(u8, seq[0], "a be c "));
+    std.debug.assert(mem.eql(u8, seq[1], " d"));
+
+    std.debug.assert(mem.cutScalarLast(u8, "a b c", 'B') == null);
+    const scal = mem.cutScalarLast(u8, "a b c b d", 'b') orelse unreachable;
+    std.debug.assert(mem.eql(u8, scal[0], "a b c "));
+    std.debug.assert(mem.eql(u8, scal[1], " d"));
+
+    std.debug.print("rye: cutLast/cutScalarLast assertions confirmed.\n", .{});
+}

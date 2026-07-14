@@ -1,0 +1,21 @@
+# realidream_thin_view.rish — Realidream thin view: local MALA/WOV fixtures → Skate frame.
+#
+# Re-scopes the TASKS thin-demo exception after chain-read removal: render
+# already-on-disk fact fixtures through SLC-2a's drawn terminal surface.
+# Run from the repository root:
+#   rishi/bin/rishi run tools/realidream_thin_view.rish
+
+let bin = "pond/bin/drawn-terminal"
+
+say "build: Realidream thin view — drawn-terminal compile"
+let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+assert build.ok else "drawn_terminal build failed for thin view witness"
+assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
+
+let thin = run ["sh" "-c" "${bin} thinviewtest 2>&1"]
+assert thin.ok else "drawn terminal thinviewtest exited non-zero"
+assert thin.out contains "thin view" else "thin view witness missing expected output"
+assert thin.out contains "GREEN" else "Realidream thin view witness not GREEN"
+assert thin.out contains "lines=5" else "thin view missing five-line frame"
+
+say "GREEN: Realidream thin view — local MALA/WOV fixtures compose a Skate frame."

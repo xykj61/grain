@@ -1,0 +1,32 @@
+# mantra_recall_batch_wire.rish — NS-L3 lap 3w-4 resin-batch wire witness (hosted + device).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/mantra_recall_batch_wire.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mantra/bin/recall-batch-delivery"
+
+let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/recall_batch_delivery.rye -lc -femit-bin=${bin}"]
+assert build.ok else "recall batch delivery build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "recall batch delivery selftest exited non-zero"
+assert selftest.out contains "GREEN" else "recall batch delivery selftest not GREEN"
+
+let demo = run ["sh" "-c" "${bin} demo 2>&1"]
+assert demo.ok else "recall batch delivery demo exited non-zero"
+assert demo.out contains "GREEN" else "recall batch delivery demo not GREEN"
+
+let chunkdemo = run ["sh" "-c" "${bin} chunkdemo 2>&1"]
+assert chunkdemo.ok else "recall batch chunk demo exited non-zero"
+assert chunkdemo.out contains "GREEN" else "recall batch chunk demo not GREEN"
+
+let beadeddemo = run ["sh" "-c" "${bin} beadeddemo 2>&1"]
+assert beadeddemo.ok else "recall batch beaded demo exited non-zero"
+assert beadeddemo.out contains "GREEN" else "recall batch beaded demo not GREEN"
+
+let device = run ["sh" "comlink/run_recall_batch_wire_lab.sh"]
+assert device.ok else "recall batch device wire lab failed"
+assert device.out contains "GREEN" else "recall batch device wire lab not GREEN"
+
+say "GREEN: NS-L3 lap 3w-4/3w-5 resin-batch wire witness passed (hosted + device, chunk + beaded)."

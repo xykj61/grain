@@ -1,0 +1,25 @@
+# realidream_forge_unified_view.rish — Realidream forge unified: pour + device → Skate.
+#
+# Pours hosted forge bundle, then folds hosted pour + device fetch on one frame.
+# Run from the repository root:
+#   rishi/bin/rishi run tools/realidream_forge_unified_view.rish
+
+let bin = "pond/bin/drawn-terminal"
+
+say "pour: forge unified view bundle from Amphora pour..."
+let pour = run ["sh" "tools/fixtures/forge_view_pour.sh"]
+assert pour.ok else "forge unified view pour failed"
+assert pour.out contains "FORGE_POUR ok" else "forge unified view pour missing ok line"
+
+say "build: Realidream forge unified view — drawn-terminal compile"
+let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+assert build.ok else "drawn_terminal build failed for forge unified view witness"
+assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
+
+let forge = run ["sh" "-c" "${bin} forgeunifiedviewtest 2>&1"]
+assert forge.ok else "drawn terminal forgeunifiedviewtest exited non-zero"
+assert forge.out contains "forge unified view" else "forge unified view witness missing expected output"
+assert forge.out contains "GREEN" else "Realidream forge unified view witness not GREEN"
+assert forge.out contains "lines=8" else "forge unified view missing eight-line frame"
+
+say "GREEN: Realidream forge unified view — hosted pour and device fetch on one Skate frame."

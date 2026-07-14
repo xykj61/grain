@@ -1,0 +1,25 @@
+//! Rye test: std.fs.path.dirname — pass 9980.
+//!
+//! The rye bridge resolves sibling imports with dirname on the entry path.
+//! This test exercises nested paths, roots, and bare filenames.
+
+const std = @import("std");
+
+pub fn main() void {
+    const path = std.fs.path;
+
+    const nested = path.dirname("home/xy/veganreyklah2/rye/tests/foo.rye") orelse unreachable;
+    std.debug.assert(std.mem.eql(u8, nested, "home/xy/veganreyklah2/rye/tests"));
+
+    const parent = path.dirname("a/b/c") orelse unreachable;
+    std.debug.assert(std.mem.eql(u8, parent, "a/b"));
+
+    const root_child = path.dirname("/a") orelse unreachable;
+    std.debug.assert(std.mem.eql(u8, root_child, "/"));
+
+    std.debug.assert(path.dirname("solo.rye") == null);
+    std.debug.assert(path.dirname("") == null);
+    std.debug.assert(path.dirname("/") == null);
+
+    std.debug.print("rye: path.dirname assertions confirmed.\n", .{});
+}

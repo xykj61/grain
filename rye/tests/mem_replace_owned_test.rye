@@ -1,0 +1,21 @@
+//! Rye test: mem.replaceOwned — pass 9915.
+//!
+//! Allocating replace; pairs with replacementSize (9916) and replace (9917).
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    const gpa = std.heap.page_allocator;
+
+    const base = mem.replaceOwned(u8, gpa, "All your base are belong to us", "base", "Zig") catch unreachable;
+    defer gpa.free(base);
+    std.debug.assert(mem.eql(u8, base, "All your Zig are belong to us"));
+    std.debug.assert(base.len == 29);
+
+    const zen = mem.replaceOwned(u8, gpa, "Favor reading code over writing code.", " code", "") catch unreachable;
+    defer gpa.free(zen);
+    std.debug.assert(mem.eql(u8, zen, "Favor reading over writing."));
+
+    std.debug.print("rye: mem.replaceOwned assertions confirmed.\n", .{});
+}

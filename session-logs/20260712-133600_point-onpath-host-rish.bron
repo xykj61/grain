@@ -1,0 +1,16 @@
+format session-log-v1
+stamp 20260712.133600
+editor Cursor
+model Cursor Grok 4.5
+voice Rio 3
+title Point host to lane_kvm_onpath_host.rish one-shot
+prompt first rishi block worked; now what one-shot and where?
+product_nib 430
+suite_nib 432
+git_nib cf0558a
+think Kaeden relaunched Cursor via launch-cursor.rish --gpu successfully. Next is Framework host on-path G0-complete.
+think Script: tools/lane_kvm_onpath_host.rish. Where: GNOME terminal on host OUTSIDE Cursor/ai-jail, with /dev/kvm. Optional --parity.
+obs Image already staged. Conf stays LANE_KVM=false; env one-shot inside the rish.
+file session-logs/20260712-133600_point-onpath-host-rish.bron this log
+file session-logs/README.md index
+recommend keep-going host terminal lane_kvm_onpath_host.rish — mechanical

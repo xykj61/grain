@@ -1,0 +1,30 @@
+# rw1_shell_collab.rish — RW-1 collaboration: the shell against a stub history store.
+#
+# The asker (Rishi REPL) runs against tools/fixtures/rw1_stub_mantra/, which
+# speaks only the contract and records every call. Run from the repository root:
+#   rishi/bin/rishi run tools/rw1_shell_collab.rish
+
+let stub = "RISHI_MANTRA=tools/fixtures/rw1_stub_mantra/mantra"
+
+let empty = run ["sh" "-c" "rm -rf .mantra && ${stub} rishi/bin/rishi repl < tools/fixtures/rw1_collab_empty.input 2>&1"]
+assert empty.ok else "repl must survive :history on an empty session"
+assert empty.out contains "no history yet" else ":history on empty session must answer kindly"
+
+let one = run ["sh" "-c" "rm -rf .mantra && ${stub} rishi/bin/rishi repl < tools/fixtures/rw1_collab_one_line.input 2>&1"]
+assert one.ok else "repl must survive :history and :recall after one line"
+assert one.out contains "1" else ":history must number the entry"
+assert one.out contains "let x = 1" else ":recall 1 must carry the prior line"
+
+let ver = run ["sh" "-c" "rm -rf .mantra && ${stub} rishi/bin/rishi repl < tools/fixtures/rw1_collab_version.input 2>&1"]
+assert ver.ok else "repl must survive :version against the stub store"
+let calls = run ["sh" "-c" "cat .mantra/rw1_stub_calls.log 2>/dev/null"]
+assert calls.out contains "add" else ":version must invoke the store's add path (stub records the call)"
+
+let bad = run ["sh" "-c" "rm -rf .mantra && ${stub} rishi/bin/rishi repl < tools/fixtures/rw1_collab_recall_bad.input 2>&1"]
+assert bad.ok else "repl must survive :recall out of range"
+assert bad.out contains "out of range" else "out-of-range :recall must answer kindly"
+
+let clean = run ["sh" "-c" "rm -rf .mantra"]
+assert clean.ok else "collaboration scratch must clear"
+
+say "GREEN: RW-1 collaboration — the shell asks the contract and survives every answer."

@@ -1,0 +1,6 @@
+# Three script arguments — args[0..2] read back the words passed on the command line.
+assert (args.len == 3) else "expected args.len == 3"
+assert (args[0] == "a") else "expected args[0] == a"
+assert (args[1] == "b") else "expected args[1] == b"
+assert (args[2] == "c") else "expected args[2] == c"
+say "RS-1 three args ok"

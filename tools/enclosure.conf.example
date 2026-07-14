@@ -1,0 +1,55 @@
+# enclosure.conf — paths and handle for tools/cursor-jail.sh and launch-zed.sh.
+#
+# Copy to tools/enclosure.conf and fill in YOUR values. The real enclosure.conf
+# is gitignored; only this .example is committed, so SOURCE.md and the spec
+# work for anyone who clones the repo.
+#
+# See: context/specs/enclosure-editors.md
+
+HANDLE="youruser"                          # forge handle; labels state dirs mentally
+REPO="$HOME/yourrepo"                      # absolute path to the project root
+
+# Editor binaries (adjust after install)
+CURSOR_APPRUN="$REPO/squashfs-root/AppRun" # from: ./tools/cursor-jail.sh --extract ./Cursor-3.9.16-x86_64.AppImage
+ZED_BIN="zed"                              # optional hint; script also checks ~/.local/bin/zed
+# ZED_APP="$HOME/.local/zed.app"           # optional; used if ZED_BIN is unset
+
+# Project-local state (kept inside ai-jail's durable tree)
+CURSOR_STATE="$REPO/.cursor-state"
+ZED_STATE="$REPO/.zed-state"
+
+# ai-jail flags (space-separated; default matches SOURCE.md)
+AIJAIL_FLAGS="--private-home --no-docker"
+# AIJAIL_BIN="/home/youruser/.local/bin/ai-jail"  # optional; avoids ./ai-jail source dir on PATH
+# Preferred pin (gitignored cache — survives jail $HOME reset):
+#   mkdir -p tools/.cache/bin && cd tools/.cache/bin
+#   curl -fsSLO https://github.com/akitaonrails/ai-jail/releases/download/v1.12.0/ai-jail-linux-x86_64.tar.gz
+#   echo "91458f153c7b0a87d79aae9014b558a0cfc4b160b7e390008a00c1adfc3edc21  ai-jail-linux-x86_64.tar.gz" | sha256sum -c -
+#   tar -xzf ai-jail-linux-x86_64.tar.gz && rm ai-jail-linux-x86_64.tar.gz
+# AIJAIL_BIN="$REPO/tools/.cache/bin/ai-jail"   # seated v1.12.0 · Claude pin 20260712.131200
+
+# Zed on GNOME Wayland needs GPU passthrough (/dev/dri). Cursor can stay false.
+USE_GPU=true
+
+# KVM device lane (counsel 20260712.090512 A-narrow). Off by default.
+# When true, tools/lane_kvm.sh authorizes /dev/kvm only — no D-Bus, no systemd
+# host escapes, no session buses. Teacher ai-jail stays unmodified. Proven-seat
+# on-path: tools/proven_seat_g0_complete_jailed.rish; refuse: lane_kvm_refuse.rish.
+# One-shot from a host that already has /dev/kvm: tools/run_with_lane_kvm.sh
+# One-shot without editing conf (caller export wins over this file):
+#   LANE_KVM=true ./tools/run_with_lane_kvm.sh -- ./tools/proven_seat_g0c_lane_kvm.sh
+#   rishi/bin/rishi run tools/lane_kvm_onpath_host.rish
+#   rishi/bin/rishi run tools/lane_kvm_onpath_host.rish --parity
+LANE_KVM=false
+
+# Enclosure selector (Claude 212412 retreat · 213600 master-seal).
+# Default ai-jail. Flip to pond only after bron-resins/pond-supersede-exit.bron
+# is present-with-content AND master-signed (.bron.asc · fpr 0646 2132…).
+# Helper: tools/pond_exit_bron_master_seal.sh. Both ENCLOSURE values stay live
+# one full season past the flip.
+ENCLOSURE=ai-jail
+
+# Anthropic API key for Zed's Claude Agent — copy and fill in (gitignored):
+#   cp tools/secrets.env.example tools/secrets.env
+# launch-zed.sh sources tools/secrets.env automatically.
+# Or export in your shell before launch (does not persist across terminals).

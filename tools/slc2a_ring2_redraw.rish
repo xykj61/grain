@@ -1,0 +1,18 @@
+# slc2a_ring2_redraw.rish — SLC-2a Lap 2: redraw on change, content-signature witness.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/slc2a_ring2_redraw.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "brushstroke/bin/brushstroke-wayland-seed"
+
+let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/wayland_seed.rye brushstroke/xdg-shell-protocol.c -Ibrushstroke -lc -lwayland-client -lxkbcommon -lrt -femit-bin=${bin}"]
+
+assert build.ok else "wayland_seed build failed for Lap 2 witness"
+
+let redraw = run ["${bin}" "redrawtest"]
+assert redraw.ok else "viewer redraw witness exited non-zero"
+assert redraw.out contains "viewer redraw witness" else "redraw witness missing expected output"
+assert redraw.out contains "GREEN" else "viewer redraw witness not GREEN"
+
+say "GREEN: SLC-2a Lap 2 redraw witness passed."

@@ -1,0 +1,20 @@
+# rw2_app_collab.rish — RW-2 collaboration: drawn terminal sessionLines → contentSignature.
+#
+# The asker (pond/apps/drawn_terminal) rebuilds frame lines on each session change;
+# signatures must move when content moves and hold when content holds.
+# Run from the repository root:
+#   rishi/bin/rishi run tools/rw2_app_collab.rish
+
+let bin = "pond/bin/drawn-terminal"
+
+say "build: RW-2 app collaboration — drawn-terminal compile"
+let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+assert build.ok else "drawn_terminal build failed for RW-2 collaboration witness"
+assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
+
+let collab = run ["sh" "-c" "${bin} rw2collabtest 2>&1"]
+assert collab.ok else "drawn terminal rw2collabtest exited non-zero"
+assert collab.out contains "rw2 collaboration" else "RW-2 collaboration witness missing expected output"
+assert collab.out contains "GREEN" else "RW-2 app collaboration witness not GREEN"
+
+say "GREEN: RW-2 collaboration — the app rebuilds frames and signatures track the session."

@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260712.140200
+editor Cursor
+model Cursor Grok 4.5
+voice Rio 3
+title Fix GRUB check — grep not rg under Rishi PATH
+prompt host phase A had GRUB in log but script RED missing GRUB
+product_nib 430
+suite_nib 432
+git_nib 4dd8c99
+think Serial log had GRUB loading (178 bytes) yet script said missing. env -i PATH=/usr/bin:/bin → rg not found (127). Rishi PATH lacks cargo rg; if ! rg looked like a miss.
+think Switched to grep -aFq. Poll and kill qemu on GRUB instead of full 90s timeout. Fixed jailed rish serial check the same way.
+obs Host pull + re-run should GREEN phase A in a few seconds then phase B glass.
+file tools/proven_seat_g0c_lane_kvm.sh grep -aF + early kill
+file tools/proven_seat_g0_complete_jailed.rish grep -aF
+file session-logs/20260712-140200_fix-grub-grep-not-rg.bron this log
+file session-logs/README.md index
+recommend keep-going host git pull then lane_kvm_onpath_host.rish — mechanical

@@ -1,0 +1,87 @@
+# Combined Bron handoff for Claude — freeze affirmed · master-seal
+# Paste-ready: values only.
+format chat-printout-v1
+kind claude-handoff
+stamp 20260712.213800
+voice Rio 3
+editor Cursor
+model Cursor Grok 4.5
+git_nib af1ec0e
+product_nib 430
+suite_nib 432
+parity_host_repin GREEN
+g1_status closed-digest-grade
+pond_sixbar GREEN
+pond_scorecard_witness GREEN
+pond_col2_probes GREEN
+pond_exit_card freeze-affirmed
+pond_master_seal landed
+pond_N six-over-seven
+audience Claude
+sitting Framework-evening-freeze-affirmed-go
+
+section pins
+pin product_nib 430
+pin suite_nib 432
+pin parity_host_repin 20260712.193958 GREEN
+pin git_before_this_go ca7cca8
+pin git_nib af1ec0e
+pin remotes pushed-four tip af1ec0e
+pin teacher_ai_jail v1.12.0
+pin genode_home vendor/genode @ 492a510
+pin pond_sixbar GREEN · scorecard_witness GREEN · col2_probes GREEN
+pin exit_card freeze-affirmed 213600 · N six-over-seven
+pin master_seal tools/pond_exit_bron_master_seal.sh
+pin exit_bron_path bron-resins/pond-supersede-exit.bron · ABSENT
+pin exit_asc_path bron-resins/pond-supersede-exit.bron.asc · ABSENT
+pin master_fpr 06462132D3E63B834F976E03A81D720B9235FA7A
+pin master_pub context/keys/gpg_signing_06462132.pub.asc
+pin ENCLOSURE ai-jail default · pond requires master VALIDSIG
+pin soak_start_nib required on soak-start log and exit bron
+pin supersede_season closed measured · held for named build word
+pin silo_counsel keep-active-not-yonder
+pin signed_kumara next-kg-pick · awaits crypto-teacher word
+pin route_two parked
+
+section arc
+title What landed since tip ca7cca8
+p Claude affirmed the freeze with one custody line: exit bron counts only when master-signed.
+p Helper pond_exit_bron_master_seal.sh — season-closed asserts bron and .asc absent; --require demands VALIDSIG from master 0646 2132 alone in a pubkey-only keyring.
+p Wrappers and scorecard share the helper. Proven: absent refuses; presence-without-asc refuses; sandbox-signed .asc refuses.
+p Ask two: hold supersede season for Kaeden named build word — no clock. Next kg menu: signed-Kumara (pick) · living-docs lint · karpathy/ai-memory · forge courtesy.
+
+section docs_to_walk
+doc active-designing/20260712-213600_pond-freeze-affirm-master-seal.md
+doc active-designing/20260712-210800_pond-supersede-exit-criteria.md
+doc active-designing/20260712-210800_pond-enclosure-scorecard-two-column.md
+witness tools/pond_exit_bron_master_seal.sh
+witness tools/pond_enclosure_scorecard.rish
+witness tools/pond_enclosure_col2_probes.rish
+
+section host_printouts
+printout scorecard
+p GREEN: pond enclosure scorecard — column one GREEN; column two gaps named; season closed measured
+printout master_seal
+p OK: season closed measured — exit bron and .asc absent
+p REFUSE: sandbox-signed .asc — only cold master opens the season
+printout refuse_pond
+p REFUSE: ENCLOSURE=pond while exit bron absent — season still closed
+
+section commits_this_go
+title Commits oldest → newest
+commit 3bfd04e Affirm the Pond exit freeze with a master-signed sentinel gate.
+commit ed316f8 Record Claude handoff for freeze-affirmed master-seal custody.
+push remotes origin github gp36-codeberg gp36-github
+
+section open_now
+next Hold supersede season — named build word only
+next Morning kg — signed-Kumara after crypto-teacher word (Monocypher · or libsodium)
+alt living-docs lint · karpathy/ai-memory dispositions · forge courtesy
+park route_two
+courtesy forge GPG upload rye_signing_DBF853.pub.asc
+
+section ask_claude
+ask Affirm master-seal as seated — any one-line rewrite before the custody latch rests?
+ask Crypto-teacher for signed-Kumara: Monocypher, or libsodium port in genode-world — when Kaeden opens that morning?
+
+benediction May the master's seal be the season's only key. May the morning kg find the bench rested. May the whole day keep — folded, nibbed, and green.

@@ -1,0 +1,315 @@
+//! linengrow/open_asks_escrow_delivery.rye — OA-L3 lap 2: escrow hold + release under Comlink seal.
+//!
+//!   rye build linengrow/open_asks_escrow_delivery.rye -lc -femit-bin=linengrow/bin/open-asks-escrow-delivery
+//!   linengrow/bin/open-asks-escrow-delivery selftest
+//!   linengrow/bin/open-asks-escrow-delivery demo
+//!
+//! Scope: [`active-designing/20260706-013012_open-asks-escrow-hammock.md`](../active-designing/20260706-013012_open-asks-escrow-hammock.md)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const kumara = @import("kumara.rye");
+const print = std.debug.print;
+const c = std.c;
+const oa = @import("open_asks.rye");
+const rc = @import("receipt_core.rye");
+const wf = @import("wire_format.rye");
+
+const oa3l2_version = "20260709.192631";
+
+const AF_INET: c_uint = 2;
+const SOCK_DGRAM: c_uint = 2;
+const SOL_SOCKET: c_int = 1;
+const SO_REUSEADDR: c_int = 2;
+
+const hold_port: u16 = 38476;
+const release_port: u16 = 38477;
+
+const witness_stipend = "100";
+const witness_hold_stamp = "20260706.003200";
+const witness_release_stamp = "20260706.003300";
+
+const sockaddr_in = extern struct {
+    sin_family: c_ushort = AF_INET,
+    sin_port: c_ushort,
+    sin_addr: [4]u8 = .{ 127, 0, 0, 1 },
+    sin_zero: [8]u8 = .{0} ** 8,
+};
+
+fn localhost_addr(port: u16) sockaddr_in {
+    return .{
+        .sin_port = std.mem.nativeToBig(u16, port),
+    };
+}
+
+fn open_socket() !c.fd_t {
+    const fd = c.socket(AF_INET, SOCK_DGRAM, 0);
+    if (fd < 0) return error.SocketFailed;
+    const yes: c_int = 1;
+    _ = c.setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &yes, @sizeOf(c_int));
+    return fd;
+}
+
+fn send_wire(port: u16, wire: []const u8) !void {
+    const fd = try open_socket();
+    defer _ = c.close(fd);
+    const dest = localhost_addr(port);
+    const sent = c.sendto(fd, wire.ptr, @intCast(wire.len), 0, @ptrCast(&dest), @sizeOf(sockaddr_in));
+    if (sent < 0 or @as(usize, @intCast(sent)) != wire.len) return error.SendFailed;
+}
+
+/// Bind before any peer send — UDP has no listener queue across close/rebind.
+fn bind_socket(port: u16) !c.fd_t {
+    const fd = try open_socket();
+    var bind_addr = localhost_addr(port);
+    if (c.bind(fd, @ptrCast(&bind_addr), @sizeOf(sockaddr_in)) < 0) {
+        _ = c.close(fd);
+        return error.BindFailed;
+    }
+    return fd;
+}
+
+fn recv_on(fd: c.fd_t, wire: []u8) !u64 {
+    var from: sockaddr_in = undefined;
+    var from_len: c.socklen_t = @sizeOf(sockaddr_in);
+    const n = c.recvfrom(fd, wire.ptr, @intCast(wire.len), 0, @ptrCast(&from), &from_len);
+    if (n < 0) return error.RecvFailed;
+    return @intCast(n);
+}
+
+fn recv_wire(port: u16, wire: []u8) !u64 {
+    const fd = try bind_socket(port);
+    defer _ = c.close(fd);
+    return recv_on(fd, wire);
+}
+
+fn seal_payload(payload: []const u8, wire: *[@intCast(wf.wire_capacity)]u8) !u64 {
+    return try wf.seal_message(payload, wire);
+}
+
+fn open_wire(wire: []const u8, opened: *[@intCast(wf.max_message)]u8) !u64 {
+    return try wf.open_datagram(wire, opened);
+}
+
+fn hex_of_key(pk: kumara.PublicKey, out: *[64]u8) void {
+    const bytes = pk.toBytes();
+    var i: u32 = 0;
+    while (i < 32) : (i += 1) {
+        _ = std.fmt.bufPrint(out[i * 2 ..][0..2], "{x:0>2}", .{bytes[i]}) catch unreachable;
+    }
+}
+
+fn sign_escrow(
+    poster_kp: kumara.KeyPair,
+    role: oa.EscrowRole,
+    from_hex: []const u8,
+    to_hex: []const u8,
+    stamp: []const u8,
+) !struct { sig: kumara.Signature, canonical: [oa.max_oa_fact]u8, canonical_len: u32 } {
+    var canonical: [oa.max_oa_fact]u8 = undefined;
+    const clen = try oa.write_escrow_payment_canonical(
+        role,
+        from_hex,
+        to_hex,
+        witness_stipend,
+        oa.witness_request_ref,
+        stamp,
+        &canonical,
+    );
+    const sig = poster_kp.sign(canonical[0..clen], null) catch unreachable;
+    return .{ .sig = sig, .canonical = canonical, .canonical_len = clen };
+}
+
+fn verify_escrow_payload(
+    payload: []const u8,
+    poster_pk: kumara.PublicKey,
+    role: oa.EscrowRole,
+    poster_hex: []const u8,
+    escrow_hex: []const u8,
+    applicant_hex: []const u8,
+    fact_out: []u8,
+) !u32 {
+    var sig_buf: [kumara.signature_length]u8 = undefined;
+    const decoded = try oa.decode_compact_payload(payload, &sig_buf, fact_out);
+    const fact = fact_out[0..decoded.fact_len];
+    try rc.verify_record(sig_buf[0..kumara.signature_length], fact, poster_pk);
+    const kind = try oa.classify_fact(fact);
+    if (kind != .completion) return error.InvalidFact;
+    var fields: rc.FactFields = undefined;
+    try rc.parse_fact_fields(fact, &fields);
+    const prefix = if (role == .hold) oa.escrow_hold_prefix else oa.escrow_release_prefix;
+    if (!std.mem.startsWith(u8, fields.memo, prefix)) return error.InvalidFact;
+    const memo_ref = fields.memo[prefix.len..];
+    if (!std.mem.eql(u8, memo_ref, oa.witness_request_ref)) return error.FoldFailed;
+    const amount = try rc.parse_amount_signed(fields.amount);
+    if (amount != 100) return error.FoldFailed;
+    switch (role) {
+        .hold => {
+            if (!std.mem.eql(u8, fields.from, poster_hex)) return error.FoldFailed;
+            if (!std.mem.eql(u8, fields.to, escrow_hex)) return error.FoldFailed;
+        },
+        .release => {
+            if (!std.mem.eql(u8, fields.from, escrow_hex)) return error.FoldFailed;
+            if (!std.mem.eql(u8, fields.to, applicant_hex)) return error.FoldFailed;
+        },
+    }
+    return decoded.fact_len;
+}
+
+fn run_selftest(_: std.Io) !u8 {
+    const poster_kp = kumara.keypair_from_seed(&oa.poster_seed);
+    const escrow_kp = kumara.keypair_from_seed(&oa.escrow_seed);
+    const applicant_kp = kumara.keypair_from_seed(&oa.applicant_seed);
+    const poster_pk = poster_kp.public_key;
+
+    var poster_hex: [64]u8 = undefined;
+    var escrow_hex: [64]u8 = undefined;
+    var applicant_hex: [64]u8 = undefined;
+    hex_of_key(poster_pk, &poster_hex);
+    hex_of_key(escrow_kp.public_key, &escrow_hex);
+    hex_of_key(applicant_kp.public_key, &applicant_hex);
+
+    const signed_hold = try sign_escrow(poster_kp, .hold, poster_hex[0..64], escrow_hex[0..64], witness_hold_stamp);
+    var hold_payload: [oa.oa2_payload_header + oa.max_oa_fact]u8 = undefined;
+    const hold_payload_len = try oa.encode_compact_payload(signed_hold.sig, signed_hold.canonical[0..signed_hold.canonical_len], &hold_payload);
+    var hold_wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const hold_wire_len = try seal_payload(hold_payload[0..hold_payload_len], &hold_wire);
+    var hold_opened: [@intCast(wf.max_message)]u8 = undefined;
+    const hold_opened_len = try open_wire(hold_wire[0..@intCast(hold_wire_len)], &hold_opened);
+    var hold_fact: [oa.max_oa_fact]u8 = undefined;
+    _ = try verify_escrow_payload(hold_opened[0..@intCast(hold_opened_len)], poster_pk, .hold, poster_hex[0..64], escrow_hex[0..64], applicant_hex[0..64], &hold_fact);
+
+    const signed_release = try sign_escrow(poster_kp, .release, escrow_hex[0..64], applicant_hex[0..64], witness_release_stamp);
+    var release_payload: [oa.oa2_payload_header + oa.max_oa_fact]u8 = undefined;
+    const release_payload_len = try oa.encode_compact_payload(signed_release.sig, signed_release.canonical[0..signed_release.canonical_len], &release_payload);
+    var release_wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const release_wire_len = try seal_payload(release_payload[0..release_payload_len], &release_wire);
+    var release_opened: [@intCast(wf.max_message)]u8 = undefined;
+    const release_opened_len = try open_wire(release_wire[0..@intCast(release_wire_len)], &release_opened);
+    var release_fact: [oa.max_oa_fact]u8 = undefined;
+    _ = try verify_escrow_payload(release_opened[0..@intCast(release_opened_len)], poster_pk, .release, poster_hex[0..64], escrow_hex[0..64], applicant_hex[0..64], &release_fact);
+
+    print("oal3l2: selftest GREEN — seal, open, verify hold and release in one process\n", .{});
+    print("oal3l2: version {s} wire_format {s}\n", .{ oa3l2_version, wf.wire_format_version });
+    print("GREEN: OA-L3 lap 2 — escrow hold and release under Comlink seal.\n", .{});
+    return 0;
+}
+
+fn run_applicant(_: std.Io) !u8 {
+    const poster_kp = kumara.keypair_from_seed(&oa.poster_seed);
+    const escrow_kp = kumara.keypair_from_seed(&oa.escrow_seed);
+    const applicant_kp = kumara.keypair_from_seed(&oa.applicant_seed);
+    const poster_pk = poster_kp.public_key;
+
+    var poster_hex: [64]u8 = undefined;
+    var escrow_hex: [64]u8 = undefined;
+    var applicant_hex: [64]u8 = undefined;
+    hex_of_key(poster_pk, &poster_hex);
+    hex_of_key(escrow_kp.public_key, &escrow_hex);
+    hex_of_key(applicant_kp.public_key, &applicant_hex);
+
+    // Bind hold and release before the poster sends — poster emits both
+    // datagrams back-to-back; a late release bind drops the second under load.
+    const hold_fd = try bind_socket(hold_port);
+    defer _ = c.close(hold_fd);
+    const release_fd = try bind_socket(release_port);
+    defer _ = c.close(release_fd);
+
+    var wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const hold_len = try recv_on(hold_fd, &wire);
+    if (hold_len < wf.off_cipher or hold_len > wf.wire_capacity) return error.RecvFailed;
+    var opened: [@intCast(wf.max_message)]u8 = undefined;
+    const hold_opened_len = try open_wire(wire[0..@intCast(hold_len)], &opened);
+    var hold_fact: [oa.max_oa_fact]u8 = undefined;
+    _ = try verify_escrow_payload(opened[0..@intCast(hold_opened_len)], poster_pk, .hold, poster_hex[0..64], escrow_hex[0..64], applicant_hex[0..64], &hold_fact);
+
+    const release_len = try recv_on(release_fd, &wire);
+    if (release_len < wf.off_cipher or release_len > wf.wire_capacity) return error.RecvFailed;
+    const release_opened_len = try open_wire(wire[0..@intCast(release_len)], &opened);
+    var release_fact: [oa.max_oa_fact]u8 = undefined;
+    _ = try verify_escrow_payload(opened[0..@intCast(release_opened_len)], poster_pk, .release, poster_hex[0..64], escrow_hex[0..64], applicant_hex[0..64], &release_fact);
+
+    print("oal3l2: applicant opened hold and release — carriage GREEN\n", .{});
+    return 0;
+}
+
+fn run_poster(_: std.Io) !u8 {
+    const poster_kp = kumara.keypair_from_seed(&oa.poster_seed);
+    const escrow_kp = kumara.keypair_from_seed(&oa.escrow_seed);
+    const applicant_kp = kumara.keypair_from_seed(&oa.applicant_seed);
+
+    var poster_hex: [64]u8 = undefined;
+    var escrow_hex: [64]u8 = undefined;
+    var applicant_hex: [64]u8 = undefined;
+    hex_of_key(poster_kp.public_key, &poster_hex);
+    hex_of_key(escrow_kp.public_key, &escrow_hex);
+    hex_of_key(applicant_kp.public_key, &applicant_hex);
+
+    const signed_hold = try sign_escrow(poster_kp, .hold, poster_hex[0..64], escrow_hex[0..64], witness_hold_stamp);
+    var hold_payload: [oa.oa2_payload_header + oa.max_oa_fact]u8 = undefined;
+    const hold_payload_len = try oa.encode_compact_payload(signed_hold.sig, signed_hold.canonical[0..signed_hold.canonical_len], &hold_payload);
+    var hold_wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const hold_wire_len = try seal_payload(hold_payload[0..hold_payload_len], &hold_wire);
+    try send_wire(hold_port, hold_wire[0..@intCast(hold_wire_len)]);
+
+    const signed_release = try sign_escrow(poster_kp, .release, escrow_hex[0..64], applicant_hex[0..64], witness_release_stamp);
+    var release_payload: [oa.oa2_payload_header + oa.max_oa_fact]u8 = undefined;
+    const release_payload_len = try oa.encode_compact_payload(signed_release.sig, signed_release.canonical[0..signed_release.canonical_len], &release_payload);
+    var release_wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const release_wire_len = try seal_payload(release_payload[0..release_payload_len], &release_wire);
+    try send_wire(release_port, release_wire[0..@intCast(release_wire_len)]);
+
+    print("oal3l2: poster sent sealed hold and release\n", .{});
+    return 0;
+}
+
+fn run_demo(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) !u8 {
+    const applicant_argv = try allocator.alloc([]const u8, 2);
+    applicant_argv[0] = self_path;
+    applicant_argv[1] = "applicant";
+
+    var applicant_child = try std.process.spawn(io, .{ .argv = applicant_argv });
+    var pause = c.timespec{ .sec = 0, .nsec = 50_000_000 };
+    _ = c.nanosleep(&pause, null);
+
+    const poster_argv = try allocator.alloc([]const u8, 2);
+    poster_argv[0] = self_path;
+    poster_argv[1] = "poster";
+
+    var poster_child = try std.process.spawn(io, .{ .argv = poster_argv });
+
+    const applicant_term = try applicant_child.wait(io);
+    const poster_term = try poster_child.wait(io);
+
+    const applicant_code: u8 = switch (applicant_term) {
+        .exited => |code| code,
+        else => 255,
+    };
+    const poster_code: u8 = switch (poster_term) {
+        .exited => |code| code,
+        else => 255,
+    };
+
+    assert(applicant_code == 0);
+    assert(poster_code == 0);
+
+    print("oal3l2: demo GREEN — hold and release crossed localhost under Comlink seal\n", .{});
+    print("oal3l2: version {s} wire_format {s}\n", .{ oa3l2_version, wf.wire_format_version });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(garden);
+
+    if (args.len >= 2) {
+        if (std.mem.eql(u8, args[1], "applicant")) return run_applicant(io);
+        if (std.mem.eql(u8, args[1], "poster")) return run_poster(io);
+        if (std.mem.eql(u8, args[1], "selftest")) return run_selftest(io);
+        if (std.mem.eql(u8, args[1], "demo")) return run_demo(garden, io, args[0]);
+    }
+
+    if (args.len >= 1) return run_selftest(io);
+    return 1;
+}

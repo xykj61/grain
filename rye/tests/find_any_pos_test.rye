@@ -1,0 +1,20 @@
+//! Rye test: std.mem.findAnyPos and findAny — pass 9967.
+//!
+//! Any-of-scalars search backs splitAny delimiter scans. Pairs with the
+//! findScalar family (9974–9975, 9996).
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    std.debug.assert(mem.indexOfAnyPos(u8, "a=b:c", 0, "=:").? == 1);
+    std.debug.assert(mem.indexOfAnyPos(u8, "a=b:c", 2, "=:").? == 3);
+    std.debug.assert(mem.indexOfAnyPos(u8, "a=b:c", 4, "=:") == null);
+    std.debug.assert(mem.indexOfAnyPos(u8, "trim me", 0, " \t").? == 4);
+    std.debug.assert(mem.indexOfAnyPos(u8, "trim me", 5, " \t") == null);
+
+    std.debug.assert(mem.indexOfAny(u8, "hello", "aeiou").? == 1);
+    std.debug.assert(mem.indexOfAny(u8, "hello", "xyz") == null);
+
+    std.debug.print("rye: findAnyPos assertions confirmed.\n", .{});
+}

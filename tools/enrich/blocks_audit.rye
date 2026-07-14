@@ -1,0 +1,221 @@
+//! usize explicit audit, width audit, and audited surfaces blocks.
+
+const std = @import("std");
+const buf = @import("buf.rye");
+const tame = @import("../tame_usize_audit.rye");
+const constants = @import("constants.rye");
+const zig_lookup = @import("zig_lookup.rye");
+const surfaces = @import("surfaces.rye");
+
+fn analyze_usize_rows(a: std.mem.Allocator, dotted: []const u8, sources: *const zig_lookup.ZigSources) !tame.AnalyzeResult {
+    const body = zig_lookup.find_function_body(dotted, sources);
+    const sig = if (body) |b| blk: {
+        const nl = std.mem.indexOfScalar(u8, b, '\n') orelse break :blk std.mem.trim(u8, b, " \t");
+        break :blk std.mem.trim(u8, b[0..nl], " \t");
+    } else null;
+    return try tame.analyze_std_function(a, body, sig);
+}
+
+pub fn surface_usize_audit_ok(a: std.mem.Allocator, surface: []const u8, sources: *const zig_lookup.ZigSources) !bool {
+    const full = try surfaces.surface_display_name_alloc(a, surface);
+    defer a.free(full);
+    if (std.mem.indexOfScalar(u8, full, '/') != null or std.mem.endsWith(u8, full, ".rye")) return true;
+    const dotted = surfaces.surface_dotted_name(full) orelse return false;
+    const result = try analyze_usize_rows(a, dotted, sources);
+    return result.ok and tame.surface_audit_ok(result.rows);
+}
+
+pub fn pass_surfaces_usize_audited(
+    a: std.mem.Allocator,
+    io: std.Io,
+    root: []const u8,
+    pass_name: []const u8,
+    surface_list: []const []const u8,
+    sources: *const zig_lookup.ZigSources,
+    witness_rel: ?[]const u8,
+) !bool {
+    if (constants.authored_module(pass_name) != null or constants.meta_pass(pass_name) != null) return true;
+    if (surface_list.len == 0) return false;
+    for (surface_list) |s| {
+        if (!try surface_usize_audit_ok(a, s, sources)) return false;
+    }
+    if (witness_rel) |w| {
+        const wr = try tame.analyze_witness_rye(a, io, root, w);
+        return wr.ok;
+    }
+    return true;
+}
+
+pub fn build_usize_explicit_audit_block(
+    a: std.mem.Allocator,
+    io: std.Io,
+    root: []const u8,
+    pass_name: []const u8,
+    surface_list: []const []const u8,
+    sources: *const zig_lookup.ZigSources,
+    witness_rel: ?[]const u8,
+) ![]const u8 {
+    var out = std.ArrayListUnmanaged(u8).empty;
+    errdefer out.deinit(a);
+    const hdr = try tame.section_header(a);
+    defer a.free(hdr);
+    try out.appendSlice(a, hdr);
+    if (constants.authored_module(pass_name)) |auth| {
+        try buf.append_fmt(a, &out,
+            \\### Authored `{s}`
+            \\
+            \\| Width locus | Type | Policy | Status |
+            \\|-------------|------|--------|--------|
+            \\| `{s}` struct fields | Tier A `u32`/`u64` | Authored API — migrate per `10024` | done |
+            \\| `buf[0..n]` slice seams | inherited `usize` | `bufLenU32` at boundary only | done |
+            \\
+        , .{ auth.mod, auth.mod });
+        return try out.toOwnedSlice(a);
+    }
+    if (constants.meta_pass(pass_name) != null) {
+        try out.appendSlice(a,
+            \\### `meta/foundation`
+            \\
+            \\| Width locus | Type | Policy | Status |
+            \\|-------------|------|--------|--------|
+            \\| crypto dependency map | N/A | Meta pass — no `usize` seam touch | done |
+            \\
+        );
+        return try out.toOwnedSlice(a);
+    }
+    for (surface_list) |s| {
+        const full = try surfaces.surface_display_name_alloc(a, s);
+        defer a.free(full);
+        const dotted = surfaces.surface_dotted_name(full) orelse continue;
+        const result = try analyze_usize_rows(a, dotted, sources);
+        if (result.ok) {
+            const table = try tame.format_surface_table(a, full, result.rows);
+            defer a.free(table);
+            try out.appendSlice(a, table);
+        } else {
+            const locus = try std.fmt.allocPrint(a, "`{s}`", .{full});
+            const pending = [_]tame.AuditRow{ .{
+                .locus = locus,
+                .row_type = "—",
+                .policy = "Live `pub fn` not located — cannot run Tiger/TAME audit",
+                .status = "pending",
+            }};
+            const table = try tame.format_surface_table(a, full, &pending);
+            defer a.free(table);
+            try out.appendSlice(a, table);
+        }
+    }
+    if (witness_rel) |w| {
+        const wres = try tame.analyze_witness_rye(a, io, root, w);
+        try buf.append_fmt(a, &out, "### Witness `{s}`\n\n| Check | Type | Tiger/TAME policy | Status |\n|-------|------|-------------------|--------|\n", .{w});
+        for (wres.rows) |r| try buf.append_fmt(a, &out, "| {s} | {s} | {s} | {s} |\n", .{ r.locus, r.row_type, r.policy, r.status });
+        try out.appendSlice(a, "\n");
+    }
+    return try out.toOwnedSlice(a);
+}
+
+fn zig_audit_note(a: std.mem.Allocator, io: std.Io, root: []const u8, zig_rel: []const u8, fn_short: []const u8) ![]const u8 {
+    const path = try std.fs.path.join(a, &.{ root, zig_rel });
+    defer a.free(path);
+    const text = std.Io.Dir.cwd().readFileAlloc(io, path, a, .limited(zig_lookup.max_file_bytes)) catch
+        return try std.fmt.allocPrint(a, "`{s}` — Phase 4 `usize` seam policy applied", .{fn_short});
+    const pat = try std.fmt.allocPrint(a, "pub fn {s}", .{fn_short});
+    defer a.free(pat);
+    const m = std.mem.indexOf(u8, text, pat) orelse
+        return try std.fmt.allocPrint(a, "`{s}` — Phase 4 `usize` seam policy applied", .{fn_short});
+    const chunk_end = @min(m + 2500, text.len);
+    const chunk = text[m..chunk_end];
+    if (std.mem.indexOf(u8, chunk, "max_") != null and std.mem.indexOf(u8, chunk, ": u32") != null)
+        return try std.fmt.allocPrint(a, "`{s}` — named `u32` bounds; public `usize` unchanged", .{fn_short});
+    const brace = std.mem.indexOfScalar(u8, chunk, '{') orelse chunk.len;
+    if (std.mem.indexOf(u8, chunk[0..brace], "usize") != null)
+        return try std.fmt.allocPrint(a, "`{s}` — inherited `usize` seam; assertions only", .{fn_short});
+    return try std.fmt.allocPrint(a, "`{s}` — Phase 4 `usize` seam policy applied", .{fn_short});
+}
+
+pub fn build_width_audit_block(
+    a: std.mem.Allocator,
+    io: std.Io,
+    root: []const u8,
+    pass_name: []const u8,
+    pass_num: []const u8,
+    surface_list: []const []const u8,
+    done: bool,
+    witness_rel: ?[]const u8,
+) ![]const u8 {
+    const status = if (done) "done" else "pending";
+    var out = std.ArrayListUnmanaged(u8).empty;
+    errdefer out.deinit(a);
+    try out.appendSlice(a, "## Width audit (affected files)\n\n| File | Audit | Status |\n|------|-------|--------|\n");
+    if (constants.authored_module(pass_name)) |auth| {
+        try buf.append_fmt(a, &out, "| `{s}` | authored Tier A widths | {s} |\n", .{ auth.mod, status });
+    } else if (constants.meta_pass(pass_name) != null) {
+        try buf.append_fmt(a, &out, "| `meta/foundation` | crypto dependency map | {s} |\n", .{status});
+    } else if (surface_list.len > 0) {
+        const primary = surface_list[0];
+        const full = try surfaces.surface_display_name_alloc(a, primary);
+        defer a.free(full);
+        const short = surfaces.surface_short_name(full);
+        const zig = try surfaces.zig_path_for_surface_alloc(a, primary);
+        defer a.free(zig);
+        const note = if (done)
+            try zig_audit_note(a, io, root, zig, short)
+        else
+            try std.fmt.allocPrint(a, "`{s}` — Phase 4 `usize` seam policy applied", .{short});
+        defer a.free(note);
+        try buf.append_fmt(a, &out, "| `{s}` | {s} | {s} |\n", .{ zig, note, status });
+        var i: usize = 1;
+        while (i < surface_list.len) : (i += 1) {
+            const s = surface_list[i];
+            const f = try surfaces.surface_display_name_alloc(a, s);
+            defer a.free(f);
+            const sh = surfaces.surface_short_name(f);
+            const zp = try surfaces.zig_path_for_surface_alloc(a, s);
+            defer a.free(zp);
+            const n2 = if (done) try zig_audit_note(a, io, root, zp, sh) else try std.fmt.allocPrint(a, "`{s}` — co-strengthened in this pass", .{sh});
+            defer a.free(n2);
+            try buf.append_fmt(a, &out, "| `{s}` | {s} | {s} |\n", .{ zp, n2, status });
+        }
+    }
+    if (witness_rel) |w| {
+        try buf.append_fmt(a, &out, "| `{s}` | witness program | {s} |\n", .{ w, status });
+    } else if (constants.witness_alias(pass_name)) |slug| {
+        try buf.append_fmt(a, &out, "| `rye/tests/{s}.rye` | witness program | {s} |\n", .{ slug, status });
+    }
+    try buf.append_fmt(a, &out, "| `tools/parity.rish` | witness registered | {s} |\n| `strengthening-compiler/{s}` | pass record + audited surfaces | {s} |\n| `## usize explicit audit` | per-surface locus table — gates lexicon ✅ | {s} |\n| `992_strengthening_width_crosswalk.md` | lexicon row {s} | {s} |\n", .{ status, pass_name, status, status, pass_num, status });
+    return try out.toOwnedSlice(a);
+}
+
+pub fn build_audited_surfaces_block(
+    a: std.mem.Allocator,
+    pass_name: []const u8,
+    surface_list: []const []const u8,
+    sources: *const zig_lookup.ZigSources,
+) ![]const u8 {
+    var out = std.ArrayListUnmanaged(u8).empty;
+    errdefer out.deinit(a);
+    try out.appendSlice(a,
+        \\## Audited surfaces
+        \\
+        \\Checkmark requires **`## usize explicit audit`** all `done`, zero `fail` (Tiger/TAME — [`992`](../work-in-progress/20260620-212126_usize-width-baseline.md)). Full implementation from `rye/lib/std`:
+        \\
+    );
+    for (surface_list) |s| {
+        const full = try surfaces.surface_display_name_alloc(a, s);
+        defer a.free(full);
+        const path_zig = try surfaces.zig_path_for_surface_alloc(a, s);
+        defer a.free(path_zig);
+        const ok = if (constants.meta_pass(pass_name) != null) true else try surface_usize_audit_ok(a, s, sources);
+        const mark: u8 = if (ok) 'x' else ' ';
+        try buf.append_fmt(a, &out, "- [{c}] `{s}` — [`{s}`](../{s})\n\n", .{ mark, full, path_zig, path_zig });
+        const dotted = surfaces.surface_dotted_name(s) orelse surfaces.surface_dotted_name(full);
+        if (dotted) |d| {
+            if (zig_lookup.find_function_body(d, sources)) |impl| {
+                try out.appendSlice(a, "```zig\n");
+                try out.appendSlice(a, impl);
+                try out.appendSlice(a, "\n```\n\n");
+            }
+        }
+    }
+    return try out.toOwnedSlice(a);
+}

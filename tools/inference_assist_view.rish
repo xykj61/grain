@@ -1,0 +1,19 @@
+# inference_assist_view.rish — Inference assist Skate frame witness.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/inference_assist_view.rish
+
+let bin = "pond/bin/drawn-terminal"
+
+say "build: inference assist view — drawn-terminal compile"
+let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+assert build.ok else "drawn_terminal build failed for assist view witness"
+assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
+
+let assist = run ["sh" "-c" "${bin} assistviewtest 2>&1"]
+assert assist.ok else "drawn terminal assistviewtest exited non-zero"
+assert assist.out contains "assist view" else "assist view witness missing expected output"
+assert assist.out contains "GREEN" else "Inference assist view witness not GREEN"
+assert assist.out contains "lines=8" else "assist view missing eight-line frame"
+
+say "GREEN: Inference assist view — corpus, lantern, lattice, and books on one Skate frame."

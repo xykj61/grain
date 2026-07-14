@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260712.201802
+editor Cursor
+model Cursor Grok 4.5
+voice Rio 3
+title Seat + kg — G1 sources Codeberg 26.05 GREEN
+prompt Claude revise pin sources 26.05 Codeberg commit over tarball
+product_nib 430
+suite_nib 432
+think Seated Claude Codeberg revise. Retargeted proven_seat_g1_fetch_sources to shallow-clone codeberg.org/genodelabs/genode --branch 26.05 · assert HEAD 492a5102… · verify-tag record-only. META trio toolchain 25.05 · sources 26.05 @ commit · ground Sculpt 26.04. Ran witness GREEN. Updated pin TASKS RTAC expanding prompt.
+obs 25.05 GitHub archive superseded; TOOL_CHAIN_VERSION at 26.05 still 25.05 so cached toolchain stands. Tag unsigned — commit pin is the floor.
+recommend keep-going prepare_port libc under genode-sources 26.05 — next named unroll step
+file tools/proven_seat_g1_fetch_sources.rish · Codeberg commit-pin witness
+file tools/proven_seat_g1_fetch_toolchain.rish · sources owned by fetch_sources
+file active-designing/20260712-201802_proven-seat-g1-claude-sources-codeberg-26.05.md · counsel
+file active-designing/20260712-195339_proven-seat-g1-crossing-pin.md · META + recipe
+file work-in-progress/TASKS.md · next prepare_port
+file work-in-progress/ready-to-ask-claude.md · 201802 row
+file expanding-prompts/20260712-195339_proven-seat-g1-open.md · pins
+file session-logs/20260712-201802_g1-sources-codeberg-26.05.bron · this log
+file session-logs/README.md · index

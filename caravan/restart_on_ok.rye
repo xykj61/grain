@@ -1,0 +1,113 @@
+//! caravan/restart_on_ok.rye — ring D: restart on ordinary zero, stop on reserved code.
+//!
+//! Proves the exit-code convention counsel `20260707.014212` ordered before any
+//! wire or delivery work: zero means "this cycle was ordinary, spawn again";
+//! stop_requested means "stop supervising." Falls still restart.
+//!
+//!   rye build caravan/restart_on_ok.rye -femit-bin=caravan/bin/restart-on-ok
+//!   caravan/bin/restart-on-ok
+//!
+//! Counsel: [`counsel/20260707-014212_claude-counsel-graceful-stop-reframed.md`](../counsel/20260707-014212_claude-counsel-graceful-stop-reframed.md)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const se = @import("supervisor_exit.rye");
+
+const restart_on_ok_version = "20260707.015312";
+
+const ordinary_cycles_before_stop: u32 = 3;
+const max_fall_restarts: u32 = 5;
+
+pub fn main(init: std.process.Init) !u8 {
+    const io = init.io;
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "worker")) {
+        const stop = args.len >= 3 and std.mem.eql(u8, args[2], "stop");
+        const fail = args.len >= 3 and std.mem.eql(u8, args[2], "fail");
+        return run_worker(stop, fail);
+    }
+
+    return run_supervisor(garden, io, args);
+}
+
+fn run_worker(stop: bool, fail: bool) u8 {
+    if (fail) {
+        print("caravan restart-on-ok: worker fell — restart expected\n", .{});
+        return 1;
+    }
+    if (stop) {
+        print("caravan restart-on-ok: worker stop boundary — stop code\n", .{});
+        return se.stop_requested;
+    }
+    print("caravan restart-on-ok: ordinary cycle — cycle_ok\n", .{});
+    return se.cycle_ok;
+}
+
+fn run_supervisor(allocator: std.mem.Allocator, io: std.Io, args: []const [:0]const u8) !u8 {
+    assert(args.len >= 1);
+    const self_path = args[0];
+
+    print("caravan restart-on-ok: supervisor alive. ordinary cycles before stop: {d}\n", .{
+        ordinary_cycles_before_stop,
+    });
+
+    var ordinary_seen: u32 = 0;
+    var fall_restarts: u32 = 0;
+    const inject_fail_before_third = true;
+
+    while (true) {
+        const want_stop = ordinary_seen >= ordinary_cycles_before_stop;
+        const want_fail = inject_fail_before_third and ordinary_seen == 1 and fall_restarts == 0;
+
+        const worker_argv = if (want_stop)
+            try allocator.alloc([]const u8, 3)
+        else if (want_fail)
+            try allocator.alloc([]const u8, 3)
+        else
+            try allocator.alloc([]const u8, 2);
+        worker_argv[0] = self_path;
+        worker_argv[1] = "worker";
+        if (want_stop) {
+            worker_argv[2] = "stop";
+        } else if (want_fail) {
+            worker_argv[2] = "fail";
+        }
+
+        var dependent = try std.process.spawn(io, .{ .argv = worker_argv });
+        const term = try dependent.wait(io);
+        const code: u8 = switch (term) {
+            .exited => |c| c,
+            else => 255,
+        };
+
+        if (se.supervisor_stops(code)) {
+            print("caravan restart-on-ok: stop code after {d} ordinary cycle(s), {d} fall restart(s)\n", .{
+                ordinary_seen, fall_restarts,
+            });
+            break;
+        }
+
+        if (code == se.cycle_ok) {
+            ordinary_seen += 1;
+            continue;
+        }
+
+        if (se.supervisor_restarts_after_fall(code)) {
+            fall_restarts += 1;
+            print("caravan restart-on-ok: fall restart {d}/{d}\n", .{ fall_restarts, max_fall_restarts });
+            if (fall_restarts >= max_fall_restarts) return 1;
+            continue;
+        }
+
+        return code;
+    }
+
+    assert(ordinary_seen == ordinary_cycles_before_stop);
+    assert(fall_restarts == 1);
+    print("caravan restart-on-ok: restart on cycle_ok, stop on reserved code — GREEN.\n", .{});
+    print("caravan restart-on-ok: version {s} exit {s}\n", .{ restart_on_ok_version, se.supervisor_exit_version });
+    return 0;
+}

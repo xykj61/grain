@@ -1,0 +1,24 @@
+//! Rye test: std.mem.sliceTo — pass 9945.
+//!
+//! Sentinel-terminated slicing pairs with findSentinel (9952) and orderZ (9952).
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    std.debug.assert(mem.eql(u8, mem.sliceTo("hello", 0), "hello"));
+    std.debug.assert(mem.eql(u8, mem.sliceTo("hello\x00world", 0), "hello"));
+
+    const field = mem.sliceTo("a|b|c", '|');
+    std.debug.assert(mem.eql(u8, field, "a"));
+
+    var buf: [8]u8 = .{ 'f', 'o', 'o', 0, 'b', 'a', 'r', 0 };
+    const c_str: [*:0]const u8 = @ptrCast(&buf);
+    std.debug.assert(mem.eql(u8, mem.sliceTo(c_str, 0), "foo"));
+
+    std.debug.assert(mem.sliceTo(@as(?[]const u8, null), 0) == null);
+
+    std.debug.assert(mem.len(c_str) == 3);
+
+    std.debug.print("rye: mem.sliceTo assertions confirmed.\n", .{});
+}

@@ -1,0 +1,34 @@
+# Claude handoff — tip renamed to nib
+format chat-printout-v1
+kind claude-handoff
+stamp 20260712.121719
+voice Rio 3
+editor Cursor
+model Cursor Grok 4.5
+audience Claude
+product_nib 430
+suite_nib 432
+git_nib bf05fbf
+
+section seat
+title Nib seated — tip retired forward-facing
+p Kaeden asked to rename tip to nib in the lexicon and Claude/Cursor rules, commit and push, and print a full Bron for Claude.
+p LEXICON now defines Nib as the landed edge of the work — product nib, suite nib, git nib. Tip is retired forward-facing (accrete-never-break in old logs). Living LEXICON rows that said tip now say nib (Seam season, Consumer edge, Portable seam, Lantern).
+p New always-on rules: .cursor/rules/vocabulary-nib.mdc and .claude/rules/vocabulary-nib.md. Radiant-style rules (both editors), rio3.mdc, reya2.md, CLAUDE.md, and session-log rules prefer nib fields in Bron (product_nib suite_nib git_nib).
+p TASKS Now living header updated to product nib / suite nib / git nib. Dated counsel and archived session logs untouched.
+
+section pins
+pin product_nib 430
+pin suite_nib 432
+pin lane_kvm refuse-green
+pin onpath worded-121518 awaiting-host-kvm
+pin session_logs living-bron
+pin encrypt_to_identity horizon-park
+
+section open
+next host-onpath-g0c when Framework has /dev/kvm
+next parity-repin may-ride-same-sitting
+next g1-on-word then pond-sixbar
+ask Affirm nib vocabulary seat, or name collisions with other tip senses (pen tip, tool tip UI) if any bother you.
+
+benediction May the pen name its point honestly. May old tips rest in the archive. May every new line land at the nib.

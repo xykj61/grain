@@ -1,0 +1,22 @@
+.{
+    .name = .avahi,
+    .version = "0.0.1",
+    .fingerprint = 0xfc7bcfe41113f7c8,
+    .dependencies = .{
+        .avahi = .{
+            .url = "https://github.com/lathiat/avahi/releases/download/v0.8/avahi-0.8.tar.gz",
+            .hash = "N-V-__8AAOLVeQDfYsiL0A86OXqDtfyLSrZXiEu8RSplOJJ5",
+        },
+        .dbus = .{
+            .url = "https://dbus.freedesktop.org/releases/dbus/dbus-1.14.8.tar.xz",
+            .hash = "N-V-__8AAEB_jACD3zKb7YOxOD4R_51AA41kNzD31hDwAmCN",
+        },
+        .expat = .{
+            .url = "https://github.com/libexpat/libexpat/releases/download/R_2_5_0/expat-2.5.0.tar.xz",
+            .hash = "N-V-__8AABFoMgCxh01WjWFoh4nrLx8v4e0G9muwSAAA32Rc",
+        },
+    },
+    .paths = .{
+        "",
+    },
+}

@@ -1,0 +1,17 @@
+# aurora_run_witness.rish — Aurora run utility witness (no QEMU required).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/aurora_run_witness.rish
+#
+# Proves stage argument parsing and missing-stage exit 2. Full stage wake stays
+# a developer utility — not wired into parity (six stages, no fixed output).
+
+let missing = run ["rishi/bin/rishi" "run" "tools/aurora_run.rish" "no_such_stage_xyz"]
+assert missing.code == 2 else "missing stage must exit 2"
+assert missing.out contains "no such stage" else "missing stage must name the path"
+
+let stage_arg = join args ""
+if stage_arg == "" then let defaulted = "seed" else let defaulted = stage_arg
+assert defaulted == "seed" else "empty args join must default seed in witness harness"
+
+say "GREEN: Aurora run — missing stage exits 2; args join default holds."

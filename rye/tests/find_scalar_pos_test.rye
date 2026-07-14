@@ -1,0 +1,18 @@
+//! Rye test: std.mem.findScalarPos — pass 9974.
+//!
+//! Offset scalar search backs Rishi string interpolation (`$`, `}`) and
+//! `let` binding (`=`). Pairs with findScalar (9996) and findScalarLast (9975).
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    std.debug.assert(mem.indexOfScalarPos(u8, "hello", 0, 'l').? == 2);
+    std.debug.assert(mem.indexOfScalarPos(u8, "hello", 3, 'l').? == 3);
+    std.debug.assert(mem.indexOfScalarPos(u8, "hello", 4, 'l') == null);
+    std.debug.assert(mem.indexOfScalarPos(u8, "hello", 5, 'l') == null);
+    std.debug.assert(mem.indexOfScalarPos(u8, "${name}", 2, '}').? == 6);
+    std.debug.assert(mem.indexOfScalarPos(u8, "a=b", 0, '=').? == 1);
+
+    std.debug.print("rye: findScalarPos assertions confirmed.\n", .{});
+}

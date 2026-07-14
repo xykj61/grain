@@ -1,0 +1,29 @@
+# tools/fixtures/pond_metal_close_preflight.rish — automated checks before Kaeden's interactive metal close.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/fixtures/pond_metal_close_preflight.rish
+#
+# Written at the bench (20260702.180812), awaiting the host's first green run;
+# the .sh sibling retires to yonder only after this witness passes on metal.
+# The Wayland metalsmoke stays a separate step by design — Rishi keeps no
+# conditional yet, and the metalsmoke check belongs on GNOME:
+#   rishi/bin/rishi run tools/slc2a_ring3_metal.rish
+# Interactive remainder (Kaeden): type, idle ~1 min, fill past the ceiling, :quit.
+
+say "preflight: Language EN — metal close automated path."
+say "preflight: Style Radiant — build then headless session witness."
+say "preflight: Lens TAME — compile may run silent for minutes; wait for GREEN."
+
+say "preflight: building drawn-terminal (compile may run silent for minutes)..."
+let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+assert build.ok else "preflight build failed — see pond/README.md"
+say build.out
+
+say "preflight: headless session witness..."
+let session = run ["sh" "-c" "pond/bin/drawn-terminal sessiontest 2>&1"]
+assert session.ok else "drawn terminal sessiontest exited non-zero"
+assert session.out contains "GREEN" else "drawn terminal session witness not GREEN"
+
+say "PREFLIGHT GREEN: build and headless witness passed."
+say "Next, on GNOME: rishi/bin/rishi run tools/slc2a_ring3_metal.rish"
+say "Then the live close: pond/bin/drawn-terminal — see pond/README.md, five steps."

@@ -1,0 +1,18 @@
+# lattice_lap19.rish — Lattice lap 18 exp witness.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/lattice_lap19.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lattice/bin/lattice"
+
+let build = run ["sh" "-c" "mkdir -p lattice/bin && env RYE_ZIG=${zig} rye/bin/rye build lattice/lattice.rye -femit-bin=${bin}"]
+assert build.ok else "Lattice lap 18 build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "Lattice selftest exited non-zero"
+assert selftest.out contains "GREEN" else "Lattice selftest not GREEN"
+assert selftest.out contains "exp 2x2" else "Lattice missing exp welcome"
+assert selftest.out contains "exp shape mismatch" else "Lattice missing exp unwelcome"
+
+say "GREEN: Lattice lap 18 — elementwise exp with shape assert."

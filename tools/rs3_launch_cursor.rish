@@ -1,0 +1,24 @@
+# rs3_launch_cursor.rish — RS-3 witness: launch-cursor reads flags from args.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/rs3_launch_cursor.rish
+
+let default_run = run ["rishi/bin/rishi" "run" "tools/fixtures/rs3_launch_apprun.rish"]
+assert default_run.ok else "default apprun must resolve"
+assert default_run.out contains "squashfs-root/AppRun" else "default apprun path"
+
+let custom = run ["rishi/bin/rishi" "run" "tools/fixtures/rs3_launch_apprun.rish" "--appimage" "custom/AppRun"]
+assert custom.ok else "custom --appimage must resolve"
+assert custom.out contains "custom/AppRun" else "custom apprun path"
+
+let extract = run ["rishi/bin/rishi" "run" "tools/fixtures/rs3_launch_extract.rish" "--extract" "./Cursor-3.11.13-x86_64.AppImage" "--gpu"]
+assert extract.ok else "extract+gpu flags must resolve without UndefinedName"
+assert extract.out contains "extract:./Cursor-3.11.13-x86_64.AppImage" else "extract path"
+assert extract.out contains "gpu:yes" else "gpu flag"
+
+let gpu_only = run ["rishi/bin/rishi" "run" "tools/fixtures/rs3_launch_extract.rish" "--gpu"]
+assert gpu_only.ok else "--gpu alone must not UndefinedName on image"
+assert gpu_only.out contains "gpu:yes" else "gpu-only flag"
+assert gpu_only.out contains "apprun:squashfs-root/AppRun" else "gpu-only default apprun"
+
+say "GREEN: RS-3 — launch-cursor reads flags from args; shell takes positional APPRUN."

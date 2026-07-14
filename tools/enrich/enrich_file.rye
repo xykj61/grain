@@ -1,0 +1,66 @@
+//! enrich_file — add surface + width sections to pass docs missing them.
+
+const std = @import("std");
+const constants = @import("constants.rye");
+const blocks_surface = @import("blocks_surface.rye");
+const surfaces = @import("surfaces.rye");
+const zig_lookup = @import("zig_lookup.rye");
+
+pub fn enrich_file(
+    a: std.mem.Allocator,
+    io: std.Io,
+    path: []const u8,
+    name: []const u8,
+    stem: []const u8,
+    sources: *const zig_lookup.ZigSources,
+) !bool {
+    const text = try std.Io.Dir.cwd().readFileAlloc(io, path, a, .limited(zig_lookup.max_file_bytes));
+    if (std.mem.indexOf(u8, text, constants.surface_section) != null and std.mem.indexOf(u8, text, constants.width_section) != null)
+        return false;
+    const surface: []const u8 = blk: {
+        if (constants.authored_module(name)) |auth| {
+            break :blk try std.fmt.allocPrint(a,
+                \\{s}
+                \\
+                \\**Authored:** `{s}` — not an inherited `std` function. Width migration is Tier A in `992`.
+            , .{ constants.surface_section, auth.mod });
+        }
+        const names = try surfaces.extract_std_names(a, text);
+        defer a.free(names);
+        const guess = if (names.len == 0) try surfaces.filename_guess(a, stem) else names;
+        defer if (names.len == 0) a.free(guess);
+        break :blk try blocks_surface.build_surface_block(a, guess, sources);
+    };
+    defer a.free(surface);
+    const width: []const u8 = blk: {
+        if (constants.authored_module(name) != null) {
+            break :blk try std.fmt.allocPrint(a,
+                \\{s}
+                \\
+                \\Migrate struct fields and counters to `u32`/`u64` per `10024`; keep `usize` only at `buf[0..n]` slice seams with `bufLenU32` helpers.
+            , .{constants.width_section});
+        }
+        const names = try surfaces.extract_std_names(a, text);
+        defer a.free(names);
+        const guess = if (names.len == 0) try surfaces.filename_guess(a, stem) else names;
+        defer if (names.len == 0) a.free(guess);
+        break :blk try blocks_surface.build_width_block(a, guess, sources);
+    };
+    defer a.free(width);
+    const markers = [_][]const u8{
+        "\n## Postconditions\n", "\n## Postcondition\n", "\n## What the test asserts\n",
+        "\n## Design notes\n", "\n## What we built\n", "\n---\n\n## What grows",
+    };
+    var insert_at = text.len;
+    for (markers) |m| {
+        if (std.mem.indexOf(u8, text, m)) |idx| {
+            insert_at = idx;
+            break;
+        }
+    }
+    const block = try std.fmt.allocPrint(a, "\n{s}\n\n{s}", .{ surface, width });
+    defer a.free(block);
+    const new_text = try std.fmt.allocPrint(a, "{s}{s}{s}", .{ text[0..insert_at], block, text[insert_at..] });
+    try std.Io.Dir.cwd().writeFile(io, .{ .sub_path = path, .data = new_text });
+    return true;
+}

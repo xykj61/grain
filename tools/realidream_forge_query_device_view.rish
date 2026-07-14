@@ -1,0 +1,19 @@
+# realidream_forge_query_device_view.rish — Forge query device: device-wire hits → Skate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/realidream_forge_query_device_view.rish
+
+let bin = "pond/bin/drawn-terminal"
+
+say "build: Realidream forge query device view — drawn-terminal compile"
+let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+assert build.ok else "drawn_terminal build failed for forge query device view"
+assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
+
+let forge = run ["sh" "-c" "${bin} forgequerydeviceviewtest 2>&1"]
+assert forge.ok else "drawn terminal forgequerydeviceviewtest exited non-zero"
+assert forge.out contains "forge query device" else "forge query device view missing expected output"
+assert forge.out contains "GREEN" else "Realidream forge query device view not GREEN"
+assert forge.out contains "lines=6" else "forge query device view missing six-line frame"
+
+say "GREEN: Realidream forge query device view — device forge hits on one Skate frame."

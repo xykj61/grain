@@ -1,0 +1,3 @@
+# Missing flag — must fail friendly.
+let x = flag args "--missing"
+say "unreachable"

@@ -1,0 +1,20 @@
+//! Rye test: std.mem.cutPrefix and cutSuffix — pass 9960.
+//!
+//! Prefix/suffix stripping after startsWith/endsWith (9993).
+//! CLI-style flag parsing and path-like chops lean on these.
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    std.debug.assert(mem.eql(u8, mem.cutPrefix(u8, "--example=foo", "--example=").?, "foo"));
+    std.debug.assert(mem.cutPrefix(u8, "--example=foo", "-example=") == null);
+
+    std.debug.assert(mem.eql(u8, mem.cutSuffix(u8, "foobar", "bar").?, "foo"));
+    std.debug.assert(mem.cutSuffix(u8, "foobar", "baz") == null);
+
+    std.debug.assert(mem.eql(u8, mem.cutPrefix(u8, "prefix", "").?, "prefix"));
+    std.debug.assert(mem.eql(u8, mem.cutSuffix(u8, "suffix", "").?, "suffix"));
+
+    std.debug.print("rye: cutPrefix/cutSuffix assertions confirmed.\n", .{});
+}

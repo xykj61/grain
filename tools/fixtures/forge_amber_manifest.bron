@@ -1,0 +1,8 @@
+# amber ring-1 export manifest
+format amber-ring1-v2-tilak
+stamp 20260710.143000
+source amber_ring1_tree
+entry plain-bytes bbf9ee3fe69e96f0399d3aeafbb073de5b3ad525c8b3a85b29a36ae5f9829e91 blob.bin
+entry plain-bytes a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a empty.file
+entry plain-bytes cd416bd6cae889877c353fc9abe39daaff1668666049a8fd10974248d99d23ab hello.txt
+entry plain-bytes 7cab931ab9048ca077cd8005ec20ace63e4466340ff9d70cb8099c3d93e26308 nested/leaf.txt

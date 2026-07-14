@@ -1,0 +1,22 @@
+//! Rye test: std.mem.count and countScalar — pass 9951.
+//!
+//! Non-overlapping needle tally; scalar element count for single-byte needles.
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    std.debug.assert(mem.count(u8, "", "h") == 0);
+    std.debug.assert(mem.count(u8, "h", "h") == 1);
+    std.debug.assert(mem.count(u8, "hh", "h") == 2);
+    std.debug.assert(mem.count(u8, "hello world!", "hello") == 1);
+    std.debug.assert(mem.count(u8, "   abcabc   abc", "abc") == 3);
+    std.debug.assert(mem.count(u8, "foofoofoo", "foo") == 3);
+    std.debug.assert(mem.count(u8, "fffffff", "ff") == 3);
+
+    std.debug.assert(mem.countScalar(u8, "", 'h') == 0);
+    std.debug.assert(mem.countScalar(u8, "hh", 'h') == 2);
+    std.debug.assert(mem.countScalar(u8, "   abcabc   abc", 'b') == 3);
+
+    std.debug.print("rye: mem.count assertions confirmed.\n", .{});
+}

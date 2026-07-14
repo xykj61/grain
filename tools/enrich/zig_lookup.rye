@@ -1,0 +1,119 @@
+//! Load rye/lib/std zig sources and locate pub fn bodies.
+
+const std = @import("std");
+
+pub const max_zig_files: u32 = 4096;
+pub const max_file_bytes: u32 = 8 * 1024 * 1024;
+
+pub const ZigSources = std.StringHashMapUnmanaged([]const u8);
+
+pub fn load_zig_sources(a: std.mem.Allocator, io: std.Io, root: []const u8) !ZigSources {
+    var map: ZigSources = .empty;
+    errdefer map.deinit(a);
+    const std_root = try std.fs.path.join(a, &.{ root, "rye", "lib", "std" });
+    defer a.free(std_root);
+    const cwd = std.Io.Dir.cwd();
+    const dir = try cwd.openDir(io, std_root, .{ .iterate = true });
+    var walker = try dir.walk(a);
+    defer walker.deinit();
+    var count: u32 = 0;
+    while (try walker.next(io)) |entry| {
+        if (entry.kind != .file) continue;
+        if (!std.mem.endsWith(u8, entry.basename, ".zig")) continue;
+        std.debug.assert(count < max_zig_files);
+        count += 1;
+        const content = entry.dir.readFileAlloc(io, entry.basename, a, .limited(max_file_bytes)) catch continue;
+        const rel = try a.dupe(u8, entry.path);
+        try map.put(a, rel, content);
+    }
+    return map;
+}
+
+pub fn module_hints(parts: []const []const u8) []const u8 {
+    if (parts.len < 2) return "";
+    if (std.mem.eql(u8, parts[0], "mem")) return "mem.zig";
+    if (std.mem.eql(u8, parts[0], "crypto")) return "crypto";
+    if (std.mem.eql(u8, parts[0], "fs") and parts.len >= 3) return "fs/path.zig";
+    if (std.mem.eql(u8, parts[0], "process")) return "process.zig";
+    if (std.mem.eql(u8, parts[0], "SemanticVersion")) return "SemanticVersion.zig";
+    if (std.mem.eql(u8, parts[0], "Io")) return "Io";
+    if (std.mem.eql(u8, parts[0], "fmt")) return "fmt.zig";
+    if (std.mem.eql(u8, parts[0], "debug")) return "debug.zig";
+    return "";
+}
+
+fn hint_score(rel: []const u8, hint: []const u8) u32 {
+    if (hint.len == 0) return 1;
+    if (std.mem.indexOf(u8, rel, hint) != null) return 10;
+    return 0;
+}
+
+pub fn extract_pub_fn_body(text: []const u8, fn_name: []const u8) ?[]const u8 {
+    var search_from: usize = 0;
+    while (search_from < text.len) {
+        const idx = std.mem.indexOfPos(u8, text, search_from, "pub fn ") orelse break;
+        const name_start = idx + 7;
+        if (name_start + fn_name.len > text.len) {
+            search_from = idx + 1;
+            continue;
+        }
+        if (!std.mem.startsWith(u8, text[name_start..], fn_name)) {
+            search_from = idx + 1;
+            continue;
+        }
+        const after = name_start + fn_name.len;
+        if (after < text.len and (std.ascii.isAlphanumeric(text[after]) or text[after] == '_')) {
+            search_from = idx + 1;
+            continue;
+        }
+        const brace = std.mem.indexOfScalar(u8, text[after..], '{') orelse return std.mem.trim(u8, text[idx..after], " \t");
+        const open = after + brace;
+        var depth: u32 = 0;
+        var i = open;
+        while (i < text.len) : (i += 1) {
+            if (text[i] == '{') depth += 1;
+            if (text[i] == '}') {
+                depth -= 1;
+                if (depth == 0) return std.mem.trim(u8, text[idx .. i + 1], " \t");
+            }
+        }
+        return null;
+    }
+    return null;
+}
+
+pub fn find_function_body(name: []const u8, sources: *const ZigSources) ?[]const u8 {
+    var parts_buf: [16][]const u8 = undefined;
+    var parts_len: usize = 0;
+    var it = std.mem.splitScalar(u8, name, '.');
+    while (it.next()) |p| {
+        if (parts_len >= parts_buf.len) return null;
+        parts_buf[parts_len] = p;
+        parts_len += 1;
+    }
+    const parts = parts_buf[0..parts_len];
+    const fn_name = parts[parts_len - 1];
+    const hint = module_hints(parts);
+    var best_score: u32 = 0;
+    var best_body: ?[]const u8 = null;
+    var iter = sources.iterator();
+    while (iter.next()) |entry| {
+        const score = hint_score(entry.key_ptr.*, hint);
+        if (extract_pub_fn_body(entry.value_ptr.*, fn_name)) |b| {
+            if (best_body == null or score > best_score) {
+                best_score = score;
+                best_body = b;
+            }
+        }
+    }
+    if (hint.len > 0 and best_score == 0) return null;
+    return best_body;
+}
+
+pub fn find_signature(name: []const u8, sources: *const ZigSources) ?[]const u8 {
+    const body = find_function_body(name, sources) orelse return null;
+    const nl = std.mem.indexOfScalar(u8, body, '\n') orelse return std.mem.trim(u8, body, " \t");
+    var line = std.mem.trim(u8, body[0..nl], " \t");
+    if (std.mem.indexOfScalar(u8, line, '{')) |br| line = std.mem.trim(u8, line[0..br], " \t");
+    return line;
+}

@@ -1,0 +1,14 @@
+# inference_assist_sight_lap9.rish — Assist sight: second exception reason on carriage.
+let bin = "pond/bin/drawn-terminal"
+say "build: inference assist sight lap 9 — drawn-terminal compile"
+let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+assert build.ok else "drawn_terminal build failed for assist sight lap 9"
+assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
+let view = run ["sh" "-c" "${bin} assistviewsighttest 2>&1"]
+assert view.ok else "drawn terminal assistviewsighttest exited non-zero"
+assert view.out contains "exceptions=2" else "assist sight missing exceptions=2"
+assert view.out contains "ex=unknown" else "assist sight missing ex=unknown"
+assert view.out contains "ex2=bad" else "assist sight missing ex2=bad"
+assert view.out contains "GREEN" else "Assist sight lap 9 not GREEN"
+assert view.out contains "lines=8" else "assist sight missing eight-line frame"
+say "GREEN: Inference assist sight lap 9 — second exception reason on the carriage fold."

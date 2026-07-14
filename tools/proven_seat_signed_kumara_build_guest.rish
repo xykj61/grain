@@ -1,0 +1,82 @@
+# proven_seat_signed_kumara_build_guest.rish — build signed-kumara-verify guest.
+#
+# Mirrors proven_seat_g1_build_guest.rish. Reuses genode-build-x86_64.
+#
+#   rishi/bin/rishi run tools/proven_seat_signed_kumara_build_guest.rish
+
+let cache = "tools/.cache/proven-seat"
+let build = "${cache}/genode-build-x86_64"
+let guest_repo = "tools/proven_seat_signed_kumara_guest"
+let app = "signed-kumara-verify"
+let install = "${cache}/signed-kumara-verify"
+let meta = "${cache}/signed-kumara-guest-meta.txt"
+let conf = "${build}/etc/build.conf"
+let main_c = "${guest_repo}/src/app/${app}/main.c"
+let target_mk = "${guest_repo}/src/app/${app}/target.mk"
+let fixture = "${guest_repo}/src/app/${app}/fixture_receipt.h"
+
+say "signed-Kumara guest: checking builddir · guest sources · fixture…"
+let have_build = run ["test" "-f" conf]
+assert have_build.ok else "missing ${conf} — run proven_seat_g1_create_builddir.rish first"
+let have_main = run ["test" "-f" main_c]
+assert have_main.ok else "missing ${main_c}"
+let have_mk = run ["test" "-f" target_mk]
+assert have_mk.ok else "missing ${target_mk}"
+let have_fix = run ["test" "-f" fixture]
+assert have_fix.ok else "missing ${fixture} — run proven_seat_signed_kumara_gen first"
+
+say "signed-Kumara guest: ensuring REPOSITORIES points at guest repo…"
+let abs_repo = run ["realpath" guest_repo]
+assert abs_repo.ok else "realpath ${guest_repo} failed"
+let repo_path = trim abs_repo.out
+let have_repo_line = run ["sh" "-c" "grep -F 'REPOSITORIES += ${repo_path}' ${conf}"]
+if have_repo_line.ok == false then say "signed-Kumara guest: appending REPOSITORIES for ${repo_path}"
+if have_repo_line.ok == false then let a1 = run ["sh" "-c" "echo >> ${conf}"]
+if have_repo_line.ok == false then assert a1.ok
+if have_repo_line.ok == false then let a2 = run ["sh" "-c" "echo '# proven-seat signed-Kumara: guest repo' >> ${conf}"]
+if have_repo_line.ok == false then assert a2.ok
+if have_repo_line.ok == false then let a3 = run ["sh" "-c" "echo REPOSITORIES += ${repo_path} >> ${conf}"]
+if have_repo_line.ok == false then assert a3.ok
+
+say "signed-Kumara guest: resolving CROSS_DEV_PREFIX…"
+let find_cxx = run ["sh" "-c" "find ${cache}/genode-toolchain -type f -name genode-x86-g++ 2>/dev/null | head -1"]
+assert find_cxx.ok else "find genode-x86-g++ failed"
+assert find_cxx.out != "" else "genode-x86-g++ missing — run fetch_toolchain first"
+let cxx_rel = trim find_cxx.out
+let abs_cxx = run ["realpath" cxx_rel]
+assert abs_cxx.ok else "realpath ${cxx_rel} failed"
+let cxx = trim abs_cxx.out
+let bin_dir = run ["sh" "-c" "dirname ${cxx}"]
+assert bin_dir.ok else "dirname failed"
+let abs_bin = trim bin_dir.out
+let cross = "${abs_bin}/genode-x86-"
+say "signed-Kumara guest: CROSS_DEV_PREFIX=${cross}"
+
+say "signed-Kumara guest: make app/${app}…"
+let make = run ["sh" "-c" "cd ${build} && make app/${app} CROSS_DEV_PREFIX=${cross}"]
+assert make.ok else "make app/${app} failed"
+
+say "signed-Kumara guest: installing binary to ${install}…"
+let bin = run ["sh" "-c" "find ${build} -type f -name signed-kumara-verify 2>/dev/null | head -1"]
+assert bin.ok else "find signed-kumara-verify failed"
+assert bin.out != "" else "signed-kumara-verify binary not found under ${build} after make"
+let bin_path = trim bin.out
+say "signed-Kumara guest: built ${bin_path}"
+let cp = run ["cp" "-f" bin_path install]
+assert cp.ok else "could not install ${bin_path} → ${install}"
+let chmod = run ["chmod" "+x" install]
+assert chmod.ok else "chmod +x ${install} failed"
+
+say "signed-Kumara guest: writing ${meta}…"
+let clear_meta = run ["rm" "-f" meta]
+assert clear_meta.ok
+let w1 = run ["sh" "-c" "echo guest_repo ${repo_path} > ${meta}"]
+assert w1.ok
+let w2 = run ["sh" "-c" "echo binary ${install} >> ${meta}"]
+assert w2.ok
+let w3 = run ["sh" "-c" "echo built_from ${bin_path} >> ${meta}"]
+assert w3.ok
+let w4 = run ["sh" "-c" "echo grade signed-Kumara >> ${meta}"]
+assert w4.ok
+
+say "GREEN: signed-Kumara guest — binary at ${install}; jailed TCG serial next"

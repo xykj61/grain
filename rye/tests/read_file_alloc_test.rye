@@ -1,0 +1,37 @@
+//! Rye test: std.Io.Dir.readFileAlloc — pass 9984.
+//!
+//! The rye bridge and Rishi `read-file` path allocate file contents through
+//! readFileAlloc. This test writes a temp file, reads it back, and checks
+//! the strengthened limit postcondition.
+
+const std = @import("std");
+const Dir = std.Io.Dir;
+
+pub fn main(init: std.process.Init) !u8 {
+    const io = init.io;
+    const cwd = Dir.cwd();
+    const gpa = std.heap.page_allocator;
+
+    const tmp_path = "/tmp/rye_read_file_alloc_test.txt";
+    const expected = "Rye: readFileAlloc limit postcondition holds.\n";
+
+    try cwd.writeFile(io, .{ .sub_path = tmp_path, .data = expected });
+
+    const unlimited = try cwd.readFileAlloc(io, tmp_path, gpa, .unlimited);
+    std.debug.assert(std.mem.eql(u8, unlimited, expected));
+
+    const bounded = try cwd.readFileAlloc(io, tmp_path, gpa, .limited(expected.len + 8));
+    std.debug.assert(std.mem.eql(u8, bounded, expected));
+    std.debug.assert(bounded.len <= expected.len + 8);
+
+    const empty_path = "/tmp/rye_read_file_alloc_empty.txt";
+    try cwd.writeFile(io, .{ .sub_path = empty_path, .data = "" });
+    const empty = try cwd.readFileAlloc(io, empty_path, gpa, .unlimited);
+    std.debug.assert(empty.len == 0);
+
+    cwd.deleteFile(io, tmp_path) catch {};
+    cwd.deleteFile(io, empty_path) catch {};
+
+    std.debug.print("rye: readFileAlloc assertions confirmed.\n", .{});
+    return 0;
+}

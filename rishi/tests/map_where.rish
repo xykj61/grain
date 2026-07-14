@@ -1,0 +1,29 @@
+# map_where.rish — transforming and filtering lists with map and where.
+
+let nums = [1 2 3 2]
+
+# where keeps the elements whose predicate holds.
+let twos = where nums as n: n == 2
+assert twos == [2 2]
+
+# map transforms each element; here, into a boolean.
+let flags = map nums as n: n == 2
+assert flags == [false true false true]
+
+# map projects a field from a list of records.
+let people = [{ name: "rye", lang: true } { name: "silo", lang: true } { name: "guest", lang: false }]
+let names = map people as p: p.name
+assert names == ["rye" "silo" "guest"]
+
+# where filters records by a field; map then projects the survivors.
+let langs = where people as p: p.lang
+let kept = map langs as p: p.name
+assert kept == ["rye" "silo"]
+say "language-bearing: ${kept}"
+
+# map can run a command per element, collecting result records.
+let greets = map ["one" "two"] as w: run ["echo" w]
+let oks = map greets as g: g.ok
+assert oks == [true true]
+
+say "map and where held."

@@ -1,0 +1,32 @@
+//! Rye test: std.SemanticVersion.order — pass 9948.
+//!
+//! Semver ordering backs capability bounds and RyeVersion horizon work.
+
+const std = @import("std");
+const SemVer = std.SemanticVersion;
+
+pub fn main() void {
+    const v1 = SemVer.parse("1.0.0") catch unreachable;
+    const v2 = SemVer.parse("2.0.0") catch unreachable;
+    const alpha = SemVer.parse("1.0.0-alpha") catch unreachable;
+    const alpha1 = SemVer.parse("1.0.0-alpha.1") catch unreachable;
+    const beta = SemVer.parse("1.0.0-beta") catch unreachable;
+    const rc = SemVer.parse("1.0.0-rc.1") catch unreachable;
+
+    std.debug.assert(SemVer.order(v1, v2) == .lt);
+    std.debug.assert(SemVer.order(alpha, v1) == .lt);
+    std.debug.assert(SemVer.order(alpha, alpha1) == .lt);
+    std.debug.assert(SemVer.order(alpha, beta) == .lt);
+    std.debug.assert(SemVer.order(beta, rc) == .lt);
+    std.debug.assert(SemVer.order(rc, v1) == .lt);
+    std.debug.assert(SemVer.order(v1, v1) == .eq);
+
+    const range = SemVer.Range{ .min = v1, .max = v2 };
+    std.debug.assert(range.includesVersion(v1));
+    std.debug.assert(range.includesVersion(SemVer.parse("1.5.0") catch unreachable));
+    std.debug.assert(!range.includesVersion(SemVer.parse("0.9.0") catch unreachable));
+    std.debug.assert(range.isAtLeast(v1) == true);
+    std.debug.assert(range.isAtLeast(SemVer.parse("3.0.0") catch unreachable) == false);
+
+    std.debug.print("rye: SemanticVersion.order assertions confirmed.\n", .{});
+}

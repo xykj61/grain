@@ -1,0 +1,24 @@
+# rw2_surface_contract.rish — RW-2 contract: Brushstroke surface signature obligations.
+#
+# The answerer (wayland_seed) proves redraw signatures and refuses excess lines —
+# mirrored to the collaboration witness, no Pond app in the room.
+# Run from the repository root:
+#   rishi/bin/rishi run tools/rw2_surface_contract.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "brushstroke/bin/brushstroke-wayland-seed"
+
+let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/wayland_seed.rye brushstroke/xdg-shell-protocol.c -Ibrushstroke -lc -lwayland-client -lxkbcommon -lrt -femit-bin=${bin}"]
+assert build.ok else "wayland_seed build failed for RW-2 contract witness"
+
+let redraw = run ["${bin}" "redrawtest"]
+assert redraw.ok else "surface redrawtest exited non-zero"
+assert redraw.out contains "viewer redraw witness" else "RW-2 contract missing redraw output"
+assert redraw.out contains "GREEN" else "surface redrawtest not GREEN"
+
+let bounds = run ["${bin}" "boundstest"]
+assert bounds.ok else "surface boundstest exited non-zero"
+assert bounds.out contains "bounds witness" else "RW-2 contract missing bounds output"
+assert bounds.out contains "GREEN" else "surface boundstest not GREEN"
+
+say "GREEN: RW-2 contract — the surface answers every signature question, welcome and unwelcome."

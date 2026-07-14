@@ -1,0 +1,11 @@
+# living_docs_lint_keeps.txt — lawful exemptions for duty 1 (retired words).
+#
+# Ruling: landed rows in living ledgers keep historical wording by accrete-never-break
+# and nib vocabulary (product tip · suite tip · git tip → nib in new prose only).
+# See context/LEXICON.md · context/specs/20260707-053212_radiant-vocabulary-pass.md
+#
+# Format: path<TAB>regex (applied per line; word-boundary patterns preferred)
+
+active-designing/seam-season-hammock.md	\bproduct tip\b
+active-designing/seam-season-hammock.md	\bsuite tip\b
+active-designing/seam-season-hammock.md	\btip \*\*43

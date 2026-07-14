@@ -1,0 +1,19 @@
+# mandi_floor_view.rish — Mandi floor view: vessel listing → Skate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/mandi_floor_view.rish
+
+let bin = "pond/bin/drawn-terminal"
+
+say "build: Mandi floor view — drawn-terminal compile"
+let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+assert build.ok else "drawn_terminal build failed for mandi floor view witness"
+assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
+
+let view = run ["sh" "-c" "${bin} mandiviewtest 2>&1"]
+assert view.ok else "drawn terminal mandiviewtest exited non-zero"
+assert view.out contains "mandi floor view" else "mandi floor view witness missing expected output"
+assert view.out contains "GREEN" else "Mandi floor view witness not GREEN"
+assert view.out contains "lines=5" else "mandi floor view missing five-line frame"
+
+say "GREEN: Mandi floor view — vessel listing priced in MALA on a Skate frame."

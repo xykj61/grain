@@ -1,0 +1,27 @@
+# tally_parse_int.rish — the strict-by-default parse law's own witness.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/tally_parse_int.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let zig_ver = run [zig "version"]
+assert zig_ver.ok else "pinned ziglang toolchain missing at vendor/zig-toolchain"
+
+let mkdir = run ["mkdir" "-p" "tally/bin"]
+assert mkdir.ok else "could not create tally/bin"
+let build = run ["env" "RYE_ZIG=${zig}" "rye/bin/rye" "build" "tally/parse_int.rye" "-femit-bin=tally/bin/parse-int"]
+if build.ok == false then say "tally parse_int build stdout:"
+if build.ok == false then say build.out
+if build.ok == false then say "tally parse_int build stderr:"
+if build.ok == false then say build.err
+assert build.ok else "tally parse_int build failed"
+
+let self = run ["tally/bin/parse-int" "selftest"]
+if self.ok == false then say "tally parse_int selftest stdout:"
+if self.ok == false then say self.out
+if self.ok == false then say "tally parse_int selftest stderr:"
+if self.ok == false then say self.err
+assert self.ok else "tally parse_int selftest exited non-zero"
+assert self.err contains "GREEN" else "tally parse_int selftest not GREEN"
+
+say "GREEN: tally parse_int witness passed."

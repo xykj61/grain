@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260712.132900
+editor Cursor
+model Cursor Grok 4.5
+voice Rio 3
+title Fix if-then-assert-else UnknownStatement in launch-cursor
+prompt screenshot — UnknownStatement on assert else inside if extract
+product_nib 430
+suite_nib 432
+git_nib 1988093
+think Rishi binds else to if, not assert. Bare string else is UnknownStatement. Use if then assert cond with no else; say carries the message.
+think Same trap fixed in lane_kvm_onpath_host --parity path. Parse fixture GREEN for --gpu and --extract.
+obs Host: git pull then launch-cursor --gpu with no hash-comment pastes.
+file tools/launch-cursor.rish · tools/lane_kvm_onpath_host.rish
+file session-logs/20260712-132900_fix-if-assert-else.bron this log
+file session-logs/README.md index
+recommend keep-going host git pull then rishi launch-cursor --gpu — mechanical

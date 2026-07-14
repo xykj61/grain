@@ -1,0 +1,16 @@
+# mantra_recall_beaded.rish — NS-L3 recall_beaded witness.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/mantra_recall_beaded.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mantra/bin/recall-beaded"
+
+let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/recall_beaded.rye -femit-bin=${bin}"]
+assert build.ok else "recall_beaded build failed"
+
+let beaded = run ["sh" "-c" "${bin} beaded 2>&1"]
+assert beaded.ok else "recall_beaded selftest exited non-zero"
+assert beaded.out contains "GREEN" else "recall_beaded selftest not GREEN"
+
+say "GREEN: NS-L3 recall_beaded witness passed."

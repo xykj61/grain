@@ -1,0 +1,30 @@
+//! Rye test: tokenize factories — pass 9932.
+//!
+//! tokenizeScalar, tokenizeAny, and tokenizeSequence begin at index zero
+//! (pairs with TokenIterator 9956–9957 and split factories 9934).
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    var scalar = mem.tokenizeScalar(u8, "  a b ", ' ');
+    std.debug.assert(mem.eql(u8, scalar.peek().?, "a"));
+    std.debug.assert(mem.eql(u8, scalar.rest(), "a b "));
+
+    var any = mem.tokenizeAny(u8, "a,b;c", ",;");
+    std.debug.assert(mem.eql(u8, any.peek().?, "a"));
+    std.debug.assert(mem.eql(u8, any.rest(), "a,b;c"));
+
+    var seq = mem.tokenizeSequence(u8, "<>a<>b", "<>");
+    std.debug.assert(mem.eql(u8, seq.peek().?, "a"));
+    std.debug.assert(mem.eql(u8, seq.rest(), "a<>b"));
+
+    var empty = mem.tokenizeScalar(u8, "", ' ');
+    std.debug.assert(empty.peek() == null);
+    std.debug.assert(empty.rest().len == 0);
+
+    var delims_only = mem.tokenizeScalar(u8, "|||", '|');
+    std.debug.assert(delims_only.peek() == null);
+
+    std.debug.print("rye: mem tokenize factory assertions confirmed.\n", .{});
+}

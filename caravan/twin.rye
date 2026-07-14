@@ -1,0 +1,205 @@
+//! Caravan twin — one parent, two dependents, separate gardens.
+//!
+//! The bounded seed proved supervision composed with one dependent's Tally
+//! garden. This program proves the next: two dependents, each with its own
+//! stack garden and stated budget, supervised independently. Dependent A may
+//! fall once and be restarted; dependent B runs clean on the first try. The
+//! parent asserts restart counts match the plan and that each garden held.
+//!
+//! Usage:
+//!   twin                     Run as supervisor (spawn self for each dependent)
+//!   twin dependent a ok          Dependent A within its 128-byte garden
+//!   twin dependent a fail        Dependent A exceeds its garden (intended fall)
+//!   twin dependent b ok          Dependent B within its 192-byte garden
+//!   twin dependent b fail        Dependent B exceeds its garden (intended fall)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const caravan_twin_version = "20260621.020512";
+
+fn buf_len_u32(buf: []const u8) u32 {
+    assert(buf.len <= std.math.maxInt(u32));
+    return @intCast(buf.len);
+}
+
+const Region = struct {
+    buf: []u8,
+    pos: u32,
+
+    fn init(buf: []u8) Region {
+        assert(buf.len > 0);
+        const r = Region{ .buf = buf, .pos = 0 };
+        assert(r.pos <= buf_len_u32(r.buf));
+        return r;
+    }
+
+    fn alloc(self: *Region, n: u32) error{OutOfBounds}![]u8 {
+        const cap = buf_len_u32(self.buf);
+        assert(self.pos <= cap);
+        if (n > cap - self.pos) return error.OutOfBounds;
+        const start: usize = @intCast(self.pos);
+        const end: usize = @intCast(self.pos + n);
+        assert(end <= self.buf.len);
+        const slice = self.buf[start..end];
+        self.pos += n;
+        assert(self.pos <= cap);
+        return slice;
+    }
+
+    fn clear(self: *Region) void {
+        self.pos = 0;
+        assert(self.pos <= buf_len_u32(self.buf));
+    }
+
+    fn remaining(self: *const Region) u32 {
+        return buf_len_u32(self.buf) - self.pos;
+    }
+};
+
+const DependentId = enum { a, b };
+
+const dependent_a_budget: u32 = 128;
+const dependent_b_budget: u32 = 192;
+const max_dependent_budget = @max(dependent_a_budget, dependent_b_budget);
+
+const planned_failures_a: u32 = 1;
+const planned_failures_b: u32 = 0;
+const max_restarts_per_dependent: u32 = 5;
+
+pub fn main(init: std.process.Init) !u8 {
+    const io = init.io;
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+
+    if (args.len >= 4 and std.mem.eql(u8, args[1], "dependent")) {
+        const id = parse_dependent_id(args[2]) orelse return 1;
+        const should_fail = std.mem.eql(u8, args[3], "fail");
+        return run_bounded_dependent(id, should_fail);
+    }
+
+    return run_supervisor(garden, io, args);
+}
+
+fn parse_dependent_id(name: []const u8) ?DependentId {
+    if (std.mem.eql(u8, name, "a")) return .a;
+    if (std.mem.eql(u8, name, "b")) return .b;
+    return null;
+}
+
+fn budget_for(dependent: DependentId) u32 {
+    return switch (dependent) {
+        .a => dependent_a_budget,
+        .b => dependent_b_budget,
+    };
+}
+
+fn run_bounded_dependent(dependent: DependentId, should_fail: bool) u8 {
+    const budget = budget_for(dependent);
+    var backing: [max_dependent_budget]u8 = undefined;
+    var region = Region.init(backing[0..budget]);
+
+    assert(region.remaining() == budget);
+
+    const work = region.alloc(32) catch {
+        print("twin dependent {s}: allocation failed unexpectedly\n", .{@tagName(dependent)});
+        return 1;
+    };
+    assert(work.len == 32);
+    assert(region.remaining() == budget - 32);
+
+    for (work) |*byte| byte.* = 0xBB;
+
+    if (should_fail) {
+        const too_much = region.remaining() + 1;
+        _ = region.alloc(too_much) catch {
+            print("twin dependent {s}: exceeded garden (intended failure)\n", .{@tagName(dependent)});
+            return 1;
+        };
+    }
+
+    const rest = region.alloc(region.remaining()) catch {
+        print("twin dependent {s}: edge allocation failed\n", .{@tagName(dependent)});
+        return 1;
+    };
+    assert(region.remaining() == 0);
+    assert(rest.len == budget - 32);
+
+    region.clear();
+    assert(region.remaining() == budget);
+
+    print("twin dependent {s}: garden held. budget {d}, cleared.\n", .{ @tagName(dependent), budget });
+    return 0;
+}
+
+fn run_supervisor(allocator: std.mem.Allocator, io: std.Io, args: []const [:0]const u8) !u8 {
+    assert(args.len >= 1);
+    const self_path = args[0];
+
+    print("caravan twin: supervisor alive. version {s}\n", .{caravan_twin_version});
+    print("caravan twin: dependent A budget {d}, dependent B budget {d}\n", .{ dependent_a_budget, dependent_b_budget });
+
+    const restarts_a = try supervise_dependent(allocator, io, self_path, .a, planned_failures_a);
+    const restarts_b = try supervise_dependent(allocator, io, self_path, .b, planned_failures_b);
+
+    assert(restarts_a == planned_failures_a);
+    assert(restarts_b == planned_failures_b);
+
+    print("caravan twin: both dependents green. A restarts {d}, B restarts {d}.\n", .{ restarts_a, restarts_b });
+    print("caravan twin: separate gardens proven. supervision tree grows.\n", .{});
+    return 0;
+}
+
+fn supervise_dependent(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    dependent: DependentId,
+    planned_failures: u32,
+) !u32 {
+    var restarts: u32 = 0;
+
+    while (true) {
+        assert(restarts <= max_restarts_per_dependent);
+
+        const dependent_arg: []const u8 = if (restarts < planned_failures) "fail" else "ok";
+        const tag = @tagName(dependent);
+
+        const argv = try allocator.alloc([]const u8, 4);
+        assert(argv.len == 4);
+        argv[0] = self_path;
+        argv[1] = "dependent";
+        argv[2] = tag;
+        argv[3] = dependent_arg;
+
+        var proc = std.process.spawn(io, .{ .argv = argv }) catch |err| {
+            print("caravan twin: could not start dependent {s} ({s})\n", .{ tag, @errorName(err) });
+            return error.SpawnFailed;
+        };
+
+        const term = try proc.wait(io);
+        const code: u8 = switch (term) {
+            .exited => |c| c,
+            else => 255,
+        };
+
+        if (code == 0) {
+            print("caravan twin: dependent {s} exited cleanly after {d} restart(s).\n", .{ tag, restarts });
+            break;
+        }
+
+        restarts += 1;
+        print("caravan twin: dependent {s} fell (code {d}), restart {d}/{d}\n", .{
+            tag, code, restarts, max_restarts_per_dependent,
+        });
+
+        if (restarts >= max_restarts_per_dependent) {
+            print("caravan twin: dependent {s} restart limit reached.\n", .{tag});
+            return error.RestartLimit;
+        }
+    }
+
+    assert(restarts == planned_failures);
+    return restarts;
+}

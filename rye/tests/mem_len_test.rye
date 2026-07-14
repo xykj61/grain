@@ -1,0 +1,24 @@
+//! Rye test: std.mem.len — pass 9942.
+//!
+//! Sentinel-terminated length; pairs with sliceTo (9945) and findSentinel (9952).
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    var array: [5]u16 = [_]u16{ 1, 2, 0, 4, 5 };
+    const ptr = @as([*:4]u16, array[0..3 :4]);
+    std.debug.assert(mem.len(ptr) == 3);
+
+    var buf: [8]u8 = .{ 'f', 'o', 'o', 0, 'b', 'a', 'r', 0 };
+    const c_str: [*:0]const u8 = @ptrCast(&buf);
+    std.debug.assert(mem.len(c_str) == 3);
+
+    const empty: [*:0]const u8 = @ptrCast(&[_:0]u8{0});
+    std.debug.assert(mem.len(empty) == 0);
+
+    const text: [*:0]const u8 = "Rye";
+    std.debug.assert(mem.len(text) == 3);
+
+    std.debug.print("rye: mem.len assertions confirmed.\n", .{});
+}

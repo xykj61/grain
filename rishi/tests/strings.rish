@@ -1,0 +1,22 @@
+# strings.rish — composing strings by interpolation.
+
+let dir = "rye/tests"
+let name = "sha3_512_test"
+
+# A `${…}` hole composes a value into the string, building a real value.
+let path = "${dir}/${name}.rye"
+assert path == "rye/tests/sha3_512_test.rye"
+
+# Integers and booleans render as they print.
+let n = 42
+assert "n is ${n}" == "n is 42"
+assert "flag ${true}" == "flag true"
+
+# A list renders in its bracket form.
+let xs = [1 2 3]
+assert "list: ${xs}" == "list: [1 2 3]"
+
+# A plain string, with no hole, stays itself.
+assert "plain" == "plain"
+
+say "strings held: ${path}"

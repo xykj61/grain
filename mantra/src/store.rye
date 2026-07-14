@@ -1,0 +1,110 @@
+//! mantra/src/store.rye — the content-addressed blob store.
+//!
+//! A blob's identity is its SHA3-256 digest, hex-encoded (64 characters). The
+//! store lives under `.mantra/blobs/` relative to the repository root. Blobs
+//! are write-once: if the name exists, the content is already there.
+//!
+//! HEAD holds the blob name of the current weave state — a single line of 64
+//! hex characters plus a newline. An absent HEAD means the repository is not
+//! yet initialized.
+//!
+//! Public surface:
+//!   Store.open(allocator, io, root_dir)  !Store
+//!   store.write_blob(io, data)            ![]const u8  (returns the name)
+//!   store.read_blob(allocator, io, name)  ![]const u8  (returns the content)
+//!   store.read_head(allocator, io)        !?[]const u8 (null if absent)
+//!   store.write_head(io, name)            !void
+
+const std  = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const Dir  = std.Io.Dir;
+const Sha3 = std.crypto.hash.sha3.Sha3_256;
+
+/// A hex encoding of a SHA3-256 digest — the name of every blob.
+pub const BlobName = [Sha3.digest_length * 2]u8;
+
+/// The blob store: a handle to the `.mantra/` directory tree.
+pub const Store = struct {
+    root:  Dir,  // the repository root (cwd at init time)
+    mantra_dir: Dir, // `.mantra/`
+    blobs_dir:  Dir, // `.mantra/blobs/`
+
+    /// Open (or create) the `.mantra/` tree under `root_dir`.
+    /// Idempotent: safe to call on an already-initialized repository.
+    pub fn open(io: std.Io, root_dir: Dir) !Store {
+        // Create .mantra/ and .mantra/blobs/ if they do not exist.
+        root_dir.createDir(io, ".mantra", .default_dir) catch |err| {
+            if (err != error.PathAlreadyExists) return err;
+        };
+        const mantra = try root_dir.openDir(io, ".mantra", .{});
+        mantra.createDir(io, "blobs", .default_dir) catch |err| {
+            if (err != error.PathAlreadyExists) return err;
+        };
+        const blobs = try mantra.openDir(io, "blobs", .{});
+        return .{ .root = root_dir, .mantra_dir = mantra, .blobs_dir = blobs };
+    }
+
+    /// Write `data` as a blob. Returns the blob name (64-char hex string,
+    /// allocated from `allocator`). If the blob already exists, a write is
+    /// skipped — content-addressing guarantees the existing content matches.
+    pub fn write_blob(self: *const Store, allocator: std.mem.Allocator, io: std.Io, data: []const u8) ![]const u8 {
+        assert(data.len > 0); // writing an empty blob is always a caller error
+
+        // Compute the SHA3-256 digest and hex-encode it as the name.
+        var digest: [Sha3.digest_length]u8 = undefined;
+        Sha3.hash(data, &digest, .{});
+        const name = try hex_encode(allocator, &digest);
+
+        // Write the blob only if the name is new (content-addressing guarantee).
+        self.blobs_dir.writeFile(io, .{ .sub_path = name, .data = data }) catch |err| {
+            if (err != error.PathAlreadyExists) return err;
+            // Already exists — content is identical by the hash guarantee.
+        };
+
+        return name;
+    }
+
+    /// Read a blob by its name. Returns the content, allocated from `allocator`.
+    pub fn read_blob(self: *const Store, allocator: std.mem.Allocator, io: std.Io, name: []const u8) ![]u8 {
+        assert(name.len == Sha3.digest_length * 2); // names are always 64 hex chars
+        // Allocate a read buffer sized to the maximum we expect for a single-file weave.
+        const buf = try allocator.alloc(u8, 1024 * 1024); // 1 MiB ceiling for seed
+        const content = try self.blobs_dir.readFile(io, name, buf);
+        return allocator.dupe(u8, content);
+    }
+
+    /// Read HEAD. Returns null if HEAD does not exist (uninitialised repo).
+    /// Returns the 64-char blob name, allocated from `allocator`, if present.
+    pub fn read_head(self: *const Store, allocator: std.mem.Allocator, io: std.Io) !?[]u8 {
+        var buf: [65]u8 = undefined; // 64 hex chars + optional newline
+        const content = self.mantra_dir.readFile(io, "HEAD", &buf) catch |err| {
+            if (err == error.FileNotFound) return null;
+            return err;
+        };
+        // Strip trailing newline if present.
+        const name = std.mem.trimRight(u8, content, "\n");
+        if (name.len != Sha3.digest_length * 2) return null; // corrupt HEAD
+        return allocator.dupe(u8, name);
+    }
+
+    /// Write a new HEAD, pointing to `name` (a 64-char hex blob name).
+    pub fn write_head(self: *const Store, io: std.Io, name: []const u8) !void {
+        assert(name.len == Sha3.digest_length * 2);
+        // Write "name\n" as HEAD.
+        var buf: [65]u8 = undefined;
+        const head_content = std.fmt.bufPrint(&buf, "{s}\n", .{name}) catch unreachable;
+        try self.mantra_dir.writeFile(io, .{ .sub_path = "HEAD", .data = head_content });
+    }
+};
+
+/// Hex-encode `bytes` into a freshly allocated string.
+fn hex_encode(allocator: std.mem.Allocator, bytes: []const u8) ![]u8 {
+    const out = try allocator.alloc(u8, bytes.len * 2);
+    const hex = "0123456789abcdef";
+    for (bytes, 0..) |b, i| {
+        out[i * 2]     = hex[b >> 4];
+        out[i * 2 + 1] = hex[b & 0x0f];
+    }
+    return out;
+}

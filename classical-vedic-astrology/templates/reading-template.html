@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A Birth-Chart Reading — Composable Template</title>
+<!--
+  A Birth-Chart Reading — the composable HTML template.
+  Stamp 20260701.232912 · Radiant Style · gentle register.
+  Written together by Kaeden and Reya 2; shaped with the outside
+  reading (Fable 5) at Kaeden's direction.
+
+  How this file serves: edit the one CHART object below, and the
+  wheel, the table, and the header all redraw themselves from it.
+  The sample data belongs to "Alice," a placeholder name over a
+  real, twice-verified sky. Prose sections carry slots; compose
+  them from the numbered study silos, in your own voice.
+-->
+<style>
+  /* Warm gold over deep indigo — a night sky that welcomes. */
+  :root {
+    --ink: #2a2440; --gold: #b8860b; --gold-soft: #d4af37;
+    --paper: #fdf9f0; --line: #e5dcc8; --accent: #5b4a8a;
+  }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: Georgia, "Times New Roman", serif;
+    line-height: 1.65;
+  }
+  main { max-width: 720px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+  h1 { font-size: 1.9rem; color: var(--accent); margin-bottom: .25rem; }
+  h2 { color: var(--gold); font-size: 1.25rem; margin-top: 2.2rem;
+       border-bottom: 1px solid var(--line); padding-bottom: .3rem; }
+  .meta { font-size: .95rem; color: #5a5470; }
+  .meta strong { color: var(--ink); }
+  figure { margin: 2rem auto; text-align: center; }
+  table { width: 100%; border-collapse: collapse; margin-top: 1rem;
+          font-size: .95rem; }
+  th, td { padding: .45rem .5rem; text-align: left;
+           border-bottom: 1px solid var(--line); }
+  th { color: var(--accent); font-weight: 600; }
+  .slot { background: #fffdf7; border-left: 3px solid var(--gold-soft);
+          padding: .75rem 1rem; margin: .75rem 0; font-style: italic;
+          color: #6a6480; }
+  .blessing { margin-top: 3rem; text-align: center; font-style: italic;
+              color: var(--accent); }
+  @media print { body { background: white; } .slot { border-color: #999; } }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1 id="title"></h1>
+    <p class="meta">
+      <strong>For:</strong> <span id="who"></span> ·
+      <strong>Born:</strong> <span id="born"></span><br>
+      <strong>System:</strong> tropical zodiac signs · sidereal nakshatras
+      (Lahiri) · whole-sign houses ·
+      <strong>Stamp:</strong> <span id="stamp"></span>
+    </p>
+  </header>
+
+  <!-- The wheel draws itself from the chart, houses rising in order. -->
+  <figure>
+    <svg id="wheel" viewBox="0 0 560 560" width="100%"
+         xmlns="http://www.w3.org/2000/svg" aria-label="natal chart wheel">
+    </svg>
+    <figcaption class="meta">The whole-sign wheel — the ascendant's sign
+      opens the first house at the left, and every house follows.</figcaption>
+  </figure>
+
+  <h2>Your chart, exactly as the sky drew it</h2>
+  <table id="grid">
+    <thead><tr><th>Light</th><th>Sign</th><th>Degree</th>
+      <th>Nakshatra</th><th>Pada</th><th>House</th></tr></thead>
+    <tbody></tbody>
+  </table>
+
+  <h2>The first lens — the rising sign and its star</h2>
+  <div class="slot">Compose here from the ascendant's silos: the rising
+    sign, its nakshatra, and any light standing in the first house.</div>
+
+  <h2>The second lens — the Moon, the steady heart</h2>
+  <div class="slot">Compose here from the Moon-sign silo, the birth-star
+    silo, and the lunar-day weave.</div>
+
+  <h2>The rest of the sky — the other lights, one at a time</h2>
+  <div class="slot">One warm paragraph per placement, each drawing its
+    depth from the matching numbered study. Weave, rather than paste.</div>
+
+  <p class="blessing" id="blessing"></p>
+</main>
+
+<script>
+/* ---------------------------------------------------------------
+   THE ONE PLACE TO EDIT.
+   Supply the person's placeholder name, the birth line, and the
+   ten placements exactly as cast_a_chart.rish prints them. Signs
+   are 0..11 from Aries; lon is the tropical longitude 0..360;
+   nak and pada come from the sidereal casting. The wheel, the
+   header, and the table all follow from these lines alone.
+---------------------------------------------------------------- */
+const CHART = {
+  who: "Alice",
+  born: "7 August 2004 · 1:11 PM (IST) · 23°02'N 72°35'E",
+  stamp: "20260701.232912",
+  ascSign: 7, // Scorpio rises; house one begins at 0° of this sign
+  bodies: [
+    { name:"Asc",     glyph:"As", lon:228.80, nak:"Vishakha",       pada:2 },
+    { name:"Sun",     glyph:"☉",  lon:135.13, nak:"Ashlesha",       pada:2 },
+    { name:"Moon",    glyph:"☽",  lon: 38.40, nak:"Bharani",        pada:1 },
+    { name:"Mercury", glyph:"☿",  lon:158.47, nak:"Purva Phalguni", pada:1 },
+    { name:"Venus",   glyph:"♀",  lon: 89.88, nak:"Mrigashirsha",   pada:4 },
+    { name:"Mars",    glyph:"♂",  lon:148.03, nak:"Magha",          pada:2 },
+    { name:"Jupiter", glyph:"♃",  lon:169.77, nak:"Purva Phalguni", pada:4 },
+    { name:"Saturn",  glyph:"♄",  lon:110.60, nak:"Punarvasu",      pada:3 },
+    { name:"Rahu",    glyph:"☊",  lon: 35.82, nak:"Ashvini",        pada:4, retro:true },
+    { name:"Ketu",    glyph:"☋",  lon:215.82, nak:"Swati",          pada:2, retro:true },
+  ],
+  blessing: "May this sky be read with kindness. May every star become " +
+            "a lamp rather than a label. And may the one who wears this " +
+            "chart walk their houses in joy, all the way home.",
+};
+
+/* The craft's fixed vocabulary — twelve signs, kept in order. */
+const SIGNS = ["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra",
+  "Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"];
+const GLYPHS = ["♈","♉","♊","♋","♌","♍","♎","♏","♐","♑","♒","♓"];
+
+/* Degrees within a sign, written the classical way. */
+const dms = lon => {
+  const inSign = lon % 30, d = Math.floor(inSign);
+  const m = Math.round((inSign - d) * 60);
+  return m === 60 ? `${d+1}°00'` : `${d}°${String(m).padStart(2,"0")}'`;
+};
+const houseOf = lon =>
+  ((Math.floor(lon/30) - CHART.ascSign + 12) % 12) + 1;
+
+/* The header speaks first. */
+document.getElementById("title").textContent =
+  `${CHART.who}'s Sky — A Friendly Reading of Your Birth Chart`;
+document.getElementById("who").textContent   = CHART.who;
+document.getElementById("born").textContent  = CHART.born;
+document.getElementById("stamp").textContent = CHART.stamp;
+document.getElementById("blessing").textContent = CHART.blessing;
+
+/* The table renders every light, house numbers found by the wheel rule. */
+const tbody = document.querySelector("#grid tbody");
+for (const b of CHART.bodies) {
+  const row = tbody.insertRow();
+  const sign = SIGNS[Math.floor(b.lon/30)] + (b.retro ? " ℞" : "");
+  for (const cell of [b.name, sign, dms(b.lon), b.nak, b.pada, houseOf(b.lon)])
+    row.insertCell().textContent = cell;
+}
+
+/* ----------------------- The wheel itself -----------------------
+   The ascendant's sign opens at the left, and longitude climbs
+   counterclockwise, so the twelve whole-sign houses ring the sky
+   in their natural order. One rule places everything.           */
+const svg = document.getElementById("wheel");
+const NS = "http://www.w3.org/2000/svg";
+const C = 280, R_OUT = 262, R_SIGN = 232, R_IN = 176, R_BODY = 205;
+
+const pt = (angleDeg, r) => {
+  const a = angleDeg * Math.PI / 180;
+  return [C + r * Math.cos(a), C - r * Math.sin(a)];
+};
+/* One rule: a longitude's angle on the page. */
+const angleOf = lon => 180 + (lon - CHART.ascSign * 30);
+
+const add = (tag, attrs, text) => {
+  const el = document.createElementNS(NS, tag);
+  for (const k in attrs) el.setAttribute(k, attrs[k]);
+  if (text !== undefined) el.textContent = text;
+  svg.appendChild(el);
+  return el;
+};
+
+/* Three calm rings hold the sky. */
+for (const r of [R_OUT, R_SIGN, R_IN])
+  add("circle", { cx:C, cy:C, r, fill: r===R_OUT ? "#fffdf7" : "none",
+                  stroke:"#b8860b", "stroke-width": r===R_OUT ? 2 : 1 });
+
+/* Twelve spokes, twelve signs, twelve gentle house numbers. */
+for (let i = 0; i < 12; i++) {
+  const a = 180 + i * 30;
+  const [x1,y1] = pt(a, R_IN), [x2,y2] = pt(a, R_OUT);
+  add("line", { x1,y1,x2,y2, stroke:"#d4af37", "stroke-width":1 });
+
+  const signIdx = (CHART.ascSign + i) % 12;
+  const [sx,sy] = pt(a + 15, (R_SIGN + R_OUT) / 2);
+  add("text", { x:sx, y:sy+7, "text-anchor":"middle", "font-size":20,
+                fill:"#5b4a8a" }, GLYPHS[signIdx]);
+
+  const [hx,hy] = pt(a + 15, R_IN - 18);
+  add("text", { x:hx, y:hy+5, "text-anchor":"middle", "font-size":13,
+                fill:"#9a8f6a", "font-family":"Georgia" }, String(i + 1));
+}
+
+/* Each light takes its exact degree; near neighbors step inward a
+   little, so every glyph stays readable beside its friends.      */
+const sorted = [...CHART.bodies].sort((a,b) => a.lon - b.lon);
+let prevLon = -99, bump = 0;
+for (const b of sorted) {
+  bump = (b.lon - prevLon < 7) ? bump + 1 : 0;
+  prevLon = b.lon;
+  const a = angleOf(b.lon);
+  const [tx1,ty1] = pt(a, R_IN), [tx2,ty2] = pt(a, R_IN + 10);
+  add("line", { x1:tx1, y1:ty1, x2:tx2, y2:ty2,
+                stroke:"#5b4a8a", "stroke-width":1.5 });
+  const [gx,gy] = pt(a, R_BODY - bump * 22);
+  add("text", { x:gx, y:gy+7, "text-anchor":"middle", "font-size":19,
+                fill:"#2a2440", "font-weight":"bold" }, b.glyph);
+  const [dx,dy] = pt(a, R_BODY - bump * 22 - 16);
+  add("text", { x:dx, y:dy+4, "text-anchor":"middle", "font-size":9.5,
+                fill:"#8a7f5a" }, dms(b.lon));
+}
+
+/* The ascendant's own degree earns a steady golden marker. */
+const ascA = angleOf(CHART.bodies[0].lon);
+const [ax1,ay1] = pt(ascA, R_IN), [ax2,ay2] = pt(ascA, R_OUT);
+add("line", { x1:ax1, y1:ay1, x2:ax2, y2:ay2,
+              stroke:"#b8860b", "stroke-width":2.5, "stroke-dasharray":"6 4" });
+
+/* May every chart drawn here be cast twice, written once,
+   and given with a whole heart. */
+</script>
+</body>
+</html>

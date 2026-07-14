@@ -1,0 +1,305 @@
+//! granary/resin_serve_delivery.rye — Granary lap 4: Comlink resin serve for Sharing.
+//!
+//! Reuses Amphora fetch-by-digest wire (0x31/0x32). Hosted ports: guest 38496 · host 38497.
+//! Device wire: ports 15573/15574 (virtio lab). Name-facts stay local; only resin bytes cross.
+//! WOV settlement waits.
+//!
+//!   rye build granary/resin_serve_delivery.rye -lc -femit-bin=granary/bin/resin-serve-delivery
+//!   granary/bin/resin-serve-delivery selftest
+//!   granary/bin/resin-serve-delivery demo
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const c = std.c;
+const vfw = @import("vessel_fetch_wire.rye");
+const wf = @import("wire_format.rye");
+const tally_copy = @import("tally_copy.rye");
+const gc = @import("granary_core.rye");
+
+const rsd_version = "20260710.164944";
+
+const AF_INET: c_uint = 2;
+const SOCK_DGRAM: c_uint = 2;
+const SOL_SOCKET: c_int = 1;
+const SO_REUSEADDR: c_int = 2;
+
+const guest_port: u16 = 38496;
+const host_port: u16 = 38497;
+
+const sockaddr_in = extern struct {
+    sin_family: c_ushort = AF_INET,
+    sin_port: c_ushort,
+    sin_addr: [4]u8 = .{ 127, 0, 0, 1 },
+    sin_zero: [8]u8 = .{0} ** 8,
+};
+
+fn localhost_addr(port: u16) sockaddr_in {
+    return .{ .sin_port = std.mem.nativeToBig(u16, port) };
+}
+
+fn open_socket() !c.fd_t {
+    const fd = c.socket(AF_INET, SOCK_DGRAM, 0);
+    if (fd < 0) return error.SocketFailed;
+    const yes: c_int = 1;
+    _ = c.setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &yes, @sizeOf(c_int));
+    return fd;
+}
+
+fn send_wire(port: u16, wire: []const u8) !void {
+    const fd = try open_socket();
+    defer _ = c.close(fd);
+    const dest = localhost_addr(port);
+    const sent = c.sendto(fd, wire.ptr, @intCast(wire.len), 0, @ptrCast(&dest), @sizeOf(sockaddr_in));
+    if (sent < 0 or @as(usize, @intCast(sent)) != wire.len) return error.SendFailed;
+}
+
+fn recv_wire(port: u16, wire: []u8) !u64 {
+    const fd = try open_socket();
+    defer _ = c.close(fd);
+    var bind_addr = localhost_addr(port);
+    if (c.bind(fd, @ptrCast(&bind_addr), @sizeOf(sockaddr_in)) < 0) return error.BindFailed;
+    var from: sockaddr_in = undefined;
+    var from_len: c.socklen_t = @sizeOf(sockaddr_in);
+    const n = c.recvfrom(fd, wire.ptr, @intCast(wire.len), 0, @ptrCast(&from), &from_len);
+    if (n < 0) return error.RecvFailed;
+    return @intCast(n);
+}
+
+fn seal_payload(payload: []const u8, wire: *[@intCast(wf.wire_capacity)]u8) !u64 {
+    return try wf.seal_message(payload, wire);
+}
+
+fn open_wire(wire: []const u8, opened: *[@intCast(wf.max_message)]u8) !u64 {
+    return try wf.open_datagram(wire, opened);
+}
+
+fn build_response_bytes(digest_hex: []const u8, bytes: []const u8, out: *vfw.FetchResponse) !void {
+    if (bytes.len > vfw.max_resin_bytes) return error.Overflow;
+    tally_copy.copy_disjoint(u8, out.digest_hex[0..], digest_hex[0..64]);
+    out.bytes_len = @intCast(bytes.len);
+    if (bytes.len > 0) {
+        tally_copy.copy_disjoint(u8, out.bytes[0..bytes.len], bytes);
+    }
+    try vfw.verify_resin(out.digest_hex[0..], out.bytes[0..out.bytes_len]);
+}
+
+fn send_resin_response(resp: *const vfw.FetchResponse) !void {
+    var payload: [vfw.max_wire_payload]u8 = undefined;
+    const payload_len = try vfw.encode_response(resp, &payload);
+    var wire_out: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const sealed_len = try seal_payload(payload[0..payload_len], &wire_out);
+    try send_wire(guest_port, wire_out[0..@intCast(sealed_len)]);
+}
+
+fn fetch_one(digest_hex: []const u8, out_bytes: *[vfw.max_resin_bytes]u8) !u32 {
+    var req: vfw.FetchRequest = .{ .digest_hex = undefined };
+    tally_copy.copy_disjoint(u8, req.digest_hex[0..], digest_hex[0..64]);
+    var payload: [vfw.max_wire_payload]u8 = undefined;
+    const payload_len = try vfw.encode_request(req, &payload);
+    var wire_out: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const sealed_len = try seal_payload(payload[0..payload_len], &wire_out);
+    try send_wire(host_port, wire_out[0..@intCast(sealed_len)]);
+
+    var asm_resin: vfw.ResinAssembler = .{};
+    var hops: u16 = 0;
+    while (hops < vfw.max_resin_chunks) : (hops += 1) {
+        var wire_in: [@intCast(wf.wire_capacity)]u8 = undefined;
+        const n = try recv_wire(guest_port, &wire_in);
+        var opened: [@intCast(wf.max_message)]u8 = undefined;
+        const opened_len = try open_wire(wire_in[0..n], &opened);
+        const state = try asm_resin.feed(opened[0..@intCast(opened_len)]);
+        if (state == .ready) break;
+    }
+    if (asm_resin.received == 0 or asm_resin.received < asm_resin.count) return error.Incomplete;
+    if (!std.mem.eql(u8, asm_resin.digest(), digest_hex[0..64])) return error.DigestMismatch;
+    const len = asm_resin.total;
+    tally_copy.copy_disjoint(u8, out_bytes[0..len], asm_resin.resin());
+    return len;
+}
+
+fn load_front_page(io: std.Io, buf: []u8) ![]const u8 {
+    return try std.Io.Dir.cwd().readFile(io, gc.fixture_front_page, buf);
+}
+
+fn run_selftest(io: std.Io) !u8 {
+    var md_buf: [gc.max_resin_bytes]u8 = undefined;
+    const markdown = try load_front_page(io, &md_buf);
+
+    var host = gc.ResinStore.empty();
+    const digest = try gc.put_resin(&host, markdown);
+    var fact: [gc.max_fact_len]u8 = undefined;
+    const n = try gc.sign_name_fact(gc.granary_version, "rio", "greeting", &digest, &fact);
+    var reg = gc.Registry.empty();
+    try gc.append_fact(&reg, fact[0..n]);
+
+    // Wire round-trip: encode request → seal → open → decode → encode response → seal → open → decode.
+    var req: vfw.FetchRequest = .{ .digest_hex = undefined };
+    tally_copy.copy_disjoint(u8, req.digest_hex[0..], digest[0..]);
+    var req_buf: [vfw.max_wire_payload]u8 = undefined;
+    const req_len = try vfw.encode_request(req, &req_buf);
+    var req_wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const req_wire_len = try seal_payload(req_buf[0..req_len], &req_wire);
+    var req_opened: [@intCast(wf.max_message)]u8 = undefined;
+    const req_opened_len = try open_wire(req_wire[0..@intCast(req_wire_len)], &req_opened);
+    var decoded_req: vfw.FetchRequest = undefined;
+    try vfw.decode_request(req_opened[0..@intCast(req_opened_len)], &decoded_req);
+
+    var served: [gc.max_resin_bytes]u8 = undefined;
+    const served_len = try gc.serve_resin_published(&host, &reg, decoded_req.digest_hex[0..], &served);
+    var resp: vfw.FetchResponse = undefined;
+    try build_response_bytes(decoded_req.digest_hex[0..], served[0..served_len], &resp);
+    var resp_buf: [vfw.max_wire_payload]u8 = undefined;
+    const resp_len = try vfw.encode_response(&resp, &resp_buf);
+    var resp_wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const resp_wire_len = try seal_payload(resp_buf[0..resp_len], &resp_wire);
+    var resp_opened: [@intCast(wf.max_message)]u8 = undefined;
+    const resp_opened_len = try open_wire(resp_wire[0..@intCast(resp_wire_len)], &resp_opened);
+    var decoded_resp: vfw.FetchResponse = undefined;
+    try vfw.decode_response(resp_opened[0..@intCast(resp_opened_len)], &decoded_resp);
+
+    var guest = gc.ResinStore.empty();
+    const put_d = try gc.put_resin(&guest, decoded_resp.bytes[0..decoded_resp.bytes_len]);
+    assert(std.mem.eql(u8, &put_d, &digest));
+    const report = try gc.mirror_weave(&guest, &host, &reg, "rio/greeting");
+    assert(report.had_already);
+    print("rsd: sealed resin round-trip + guest equals host — GREEN welcome\n", .{});
+
+    // Unwelcome: bad Comlink seal.
+    var corrupt = resp_wire;
+    corrupt[@intCast(resp_wire_len - 1)] ^= 0xff;
+    var junk: [@intCast(wf.max_message)]u8 = undefined;
+    if (open_wire(corrupt[0..@intCast(resp_wire_len)], &junk)) |_| {
+        return error.VerifyFailed;
+    } else |_| {}
+    print("rsd: bad seal refused — GREEN unwelcome\n", .{});
+
+    // Unwelcome: digest mismatch on encode.
+    var bad_resp = resp;
+    bad_resp.digest_hex[0] = if (bad_resp.digest_hex[0] == 'a') 'b' else 'a';
+    var bad_buf: [vfw.max_wire_payload]u8 = undefined;
+    if (vfw.encode_response(&bad_resp, &bad_buf)) |_| {
+        return error.DigestMismatch;
+    } else |_| {}
+    print("rsd: digest mismatch refused — GREEN unwelcome\n", .{});
+
+    // Unwelcome: an unpublished resin in the same store is refused over the wire.
+    // A digest is an address, never a capability — no name-fact, no serve.
+    const private_note = "draft: not yet published anywhere";
+    const private_digest = try gc.put_resin(&host, private_note);
+    assert(!gc.digest_is_published(&reg, private_digest[0..]));
+    var leak: [gc.max_resin_bytes]u8 = undefined;
+    if (gc.serve_resin_published(&host, &reg, private_digest[0..], &leak)) |_| {
+        return error.VerifyFailed;
+    } else |err| {
+        assert(err == error.NotPublished);
+    }
+    print("rsd: unpublished digest refused — GREEN unwelcome\n", .{});
+
+    print("rsd: version {s} granary {s} wire {s}\n", .{ rsd_version, gc.granary_version, vfw.vessel_fetch_wire_version });
+    print("GREEN: Granary lap 4 — resin serve under Comlink seal.\n", .{});
+    return 0;
+}
+
+fn run_demo_host(io: std.Io) !u8 {
+    var md_buf: [gc.max_resin_bytes]u8 = undefined;
+    const markdown = try load_front_page(io, &md_buf);
+    var host = gc.ResinStore.empty();
+    const digest = try gc.put_resin(&host, markdown);
+    var fact: [gc.max_fact_len]u8 = undefined;
+    const fact_len = try gc.sign_name_fact(gc.granary_version, "rio", "greeting", &digest, &fact);
+    var reg = gc.Registry.empty();
+    try gc.append_fact(&reg, fact[0..fact_len]);
+
+    var wire_in: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const n = try recv_wire(host_port, &wire_in);
+    var opened: [@intCast(wf.max_message)]u8 = undefined;
+    const opened_len = try open_wire(wire_in[0..n], &opened);
+    var req: vfw.FetchRequest = undefined;
+    try vfw.decode_request(opened[0..@intCast(opened_len)], &req);
+
+    // Published-set gate on the live wire: no name-fact, no serve.
+    var served: [gc.max_resin_bytes]u8 = undefined;
+    const served_len = try gc.serve_resin_published(&host, &reg, req.digest_hex[0..], &served);
+    var resp: vfw.FetchResponse = undefined;
+    try build_response_bytes(req.digest_hex[0..], served[0..served_len], &resp);
+    try send_resin_response(&resp);
+    print("rsd: demo host served rio/greeting resin\n", .{});
+    return 0;
+}
+
+fn run_demo_guest(io: std.Io) !u8 {
+    var md_buf: [gc.max_resin_bytes]u8 = undefined;
+    const markdown = try load_front_page(io, &md_buf);
+    var expect_digest: [gc.digest_hex_len]u8 = undefined;
+    gc.digest_hex_of(markdown, &expect_digest);
+
+    var bytes: [vfw.max_resin_bytes]u8 = undefined;
+    const len = try fetch_one(expect_digest[0..], &bytes);
+    if (!std.mem.eql(u8, bytes[0..len], markdown)) return error.DigestMismatch;
+
+    var guest = gc.ResinStore.empty();
+    const put_d = try gc.put_resin(&guest, bytes[0..len]);
+    assert(std.mem.eql(u8, &put_d, &expect_digest));
+
+    var fact: [gc.max_fact_len]u8 = undefined;
+    const n = try gc.sign_name_fact(gc.granary_version, "rio", "greeting", &expect_digest, &fact);
+    var reg = gc.Registry.empty();
+    try gc.append_fact(&reg, fact[0..n]);
+    const resolved = try gc.resolve(&reg, "rio/greeting");
+    assert(std.mem.eql(u8, resolved.resin_digest, &expect_digest));
+
+    var frame: gc.Frame = .{};
+    try gc.render_front_page(bytes[0..len], &frame);
+    assert(std.mem.indexOf(u8, frame.lines[1].slice(), "rio/greeting") != null);
+    print("rsd: demo guest mirrored front page — guest equals host\n", .{});
+    return 0;
+}
+
+fn run_demo(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) !u8 {
+    const host_argv = try allocator.alloc([]const u8, 2);
+    host_argv[0] = self_path;
+    host_argv[1] = "demo-host";
+    var host_child = try std.process.spawn(io, .{ .argv = host_argv });
+    var pause = c.timespec{ .sec = 0, .nsec = 50_000_000 };
+    _ = c.nanosleep(&pause, null);
+
+    const guest_argv = try allocator.alloc([]const u8, 2);
+    guest_argv[0] = self_path;
+    guest_argv[1] = "demo-guest";
+    var guest_child = try std.process.spawn(io, .{ .argv = guest_argv });
+
+    const host_term = try host_child.wait(io);
+    const guest_term = try guest_child.wait(io);
+    const host_code: u8 = switch (host_term) {
+        .exited => |code| code,
+        else => 255,
+    };
+    const guest_code: u8 = switch (guest_term) {
+        .exited => |code| code,
+        else => 255,
+    };
+    assert(host_code == 0);
+    assert(guest_code == 0);
+
+    print("rsd: demo GREEN — resin crossed localhost under Comlink seal\n", .{});
+    print("rsd: version {s} ports {d}/{d}\n", .{ rsd_version, guest_port, host_port });
+    print("GREEN: Granary lap 4 demo — Sharing over Comlink.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len < 2) {
+        print("usage: resin-serve-delivery selftest | demo | demo-host | demo-guest\n", .{});
+        return 1;
+    }
+    if (std.mem.eql(u8, args[1], "selftest")) return run_selftest(io);
+    if (std.mem.eql(u8, args[1], "demo")) return run_demo(garden, io, args[0]);
+    if (std.mem.eql(u8, args[1], "demo-host")) return run_demo_host(io);
+    if (std.mem.eql(u8, args[1], "demo-guest")) return run_demo_guest(io);
+    print("usage: resin-serve-delivery selftest | demo | demo-host | demo-guest\n", .{});
+    return 1;
+}
