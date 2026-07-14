@@ -1,10 +1,10 @@
 # SOURCE — From Nothing to a Signed, Sandboxed Home
 
 **Language:** EN
-**Version:** `20260714.085000` (Glow warm-aura date atom — chronological, later-is-larger)
+**Version:** `20260714.114000` (Glow warm-aura date atom — chronological, later-is-larger)
 **Style:** Radiant (see `context/RADIANT_STYLE.md`)
 **By:** Rio 3, in the radiant voice, with **Keaton Dunsford** as coauthor
-**Status:** Living guide — last touched `20260714.085000` (Step 8 jail-local keys now carry real identity from `GLOW_PROFILE.bron`, and Step 8d gives `gh` a scoped-token path that survives `--harden-home`)
+**Status:** Living guide — last touched `20260714.114000` (Step 4 gains the standalone SVG QR generator; a Radiant Style sweep found and fixed one real "but")
 
 ---
 
@@ -255,7 +255,7 @@ The GPG trustdb quirk named below still applies either way — `git log --show-s
 timeout 10 git --no-pager log --show-signature -1 | cat
 ```
 
-**A real, honest limit on self-testing.** `tools/cursor_jail_macos_harden_witness.rish` proves `--harden-home`'s read-deny logic — but only when run from a terminal that is not already inside a jail. Proven on this host: a *nested* `sandbox_apply` carrying an explicit `(deny ...)` rule fails outright, even though the identical profile applies cleanly as a first, non-nested call, and even though an allow-only nested profile (the plain write-fence witness) nests just fine. An agent already working inside a jailed window cannot fully self-certify `--harden-home` from within that same window — run its witness from Terminal.app instead.
+**A real, honest limit on self-testing.** `tools/cursor_jail_macos_harden_witness.rish` proves `--harden-home`'s read-deny logic, yet only when run from a terminal that is not already inside a jail. Proven on this host: a *nested* `sandbox_apply` carrying an explicit `(deny ...)` rule fails outright, even though the identical profile applies cleanly as a first, non-nested call, and even though an allow-only nested profile (the plain write-fence witness) nests just fine. An agent already working inside a jailed window cannot fully self-certify `--harden-home` from within that same window — run its witness from Terminal.app instead.
 
 **8a. An allow-listing `.gitignore`.** When a repo lives inside a sandbox home shared with the editor and your files, ignore everything by default and allow back only the project. This guarantees keys and tokens can never be committed by accident:
 
