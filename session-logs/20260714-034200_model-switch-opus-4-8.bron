@@ -1,0 +1,16 @@
+format session-log-v1
+stamp 20260714.034200
+editor Cursor
+model Opus 4.8 1M Max
+voice Rio 3
+host macOS 26.6 arm64 (Apple M2) — see context/specs/20260713-211800_local-host-system-hardware-anonymized.md
+title Note the model switch to Opus 4.8 1M Max
+prompt Keaton relayed that Fable 5 hit a safety filter and the conversation auto-switched to Opus 4.8; asked to note a switch to Opus 4.8 1M Max and continue where we left off.
+think Recorded the switch in the one place that is the source of truth (GLOW_PROFILE.bron's model field) and pointed both session-logs rules (.cursor/.mdc and .claude/.md) at it, so there is one canonical answer to "current model on this clone" rather than three drifting copies — the same single-source discipline root rule 9 asks of docs and code.
+think Kept the lineage honest rather than overwrite history: the rule now names the current model (Opus 4.8 1M Max) and the path that got here (a Fable 5 1M Max stretch today that hit a safety filter and auto-switched back), while stating plainly that earlier dated logs keep whatever model they recorded — Sonnet 5, Fable 5, or the Linux-host Grok 4.5 — and are never rewritten. This is accrete-never-break applied to the model field.
+think Migrated Kaeden to Keaton in the two rule sentences I was already editing, on-touch, per the name-transition marker; did not sweep the rest of those files.
+obs This is the second Opus 4.8 note in the record (the first was 20260713-234049, during the prior conversation); the difference worth capturing is that the model bounced through Fable 5 1M Max for most of today's downstream work before returning, so today's Fable-authored logs stay accurate as written.
+file GLOW_PROFILE.bron why: model field set to Opus 4.8 1M Max — the single source of truth for the current model
+file .cursor/rules/session-logs.mdc why: model convention updated to point at GLOW_PROFILE.bron and name the current model + lineage
+file .claude/rules/session-logs.md why: same update, mirrored
+recommend keep-going — a small metadata note; continuing with the deferred active-designing yonder pass next.
