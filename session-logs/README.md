@@ -18,6 +18,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 | Stamp | Log | Meaning |
 |-------|-----|---------|
+| 20260714.073900 | [macOS SSH multi-account fix, GPG trustdb quirk named, SOURCE synced](20260714-073900_macos-ssh-multi-account-gpg-trustdb-source-sync.bron) | Repo-local core.sshCommand override fixes a wrong-key Permission-denied collision · GPG trustdb-write hang on --show-signature named and guarded · SOURCE.md and the macOS guide cross-linked and brought current |
 | 20260714.072700 | [ai-jail write fence witnessed live from inside a jailed window](20260714-072700_ai-jail-write-fence-witnessed-live.bron) | Live mkdir/write to ~/treasure-chest denied even with Cursor's own sandbox wrapper bypassed · outer Seatbelt fence confirmed holding from inside a running agent · model field updated to Cursor Sonnet 5 1M Medium |
 | 20260714.012125 | [Neth's real infrastructure — VPS cost, TigerBeetle cluster size, roadmap](20260714-012125_neth-vps-cost-research.bron) | TigerBeetle needs exactly 6 replicas, 1 core each, separate disk+machine required · real pricing across 4 providers · 3 plans, $0 to ~$125/mo, all under budget |
 | 20260714.005658 | [The first native arm64 parity witness run — real build, real green, one real diagnosed gap](20260714-005658_first-native-arm64-parity-run.bron) | Pinned Zig 0.16.0 fetched + checksum-verified · rye/rishi built natively on this Mac · full pristine-std + SLC-1 GREEN · one Wayland-only gap fully diagnosed |

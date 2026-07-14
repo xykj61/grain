@@ -1,10 +1,10 @@
 # SOURCE — From Nothing to a Signed, Sandboxed Home
 
 **Language:** EN
-**Version:** `20260714.055737` (Glow warm-aura date atom — chronological, later-is-larger)
+**Version:** `20260714.073300` (Glow warm-aura date atom — chronological, later-is-larger)
 **Style:** Radiant (see `context/RADIANT_STYLE.md`)
 **By:** Rio 3, in the radiant voice, with **Keaton Dunsford** as coauthor
-**Status:** Living guide — last touched `20260714.055737` (Step 9c added: hardening the host, FileVault + Firewall)
+**Status:** Living guide — last touched `20260714.073300` (macOS cross-links added to Steps 6–8: native Seatbelt launcher, multi-account SSH fix, GPG trustdb quirk — all witnessed live from inside a jailed macOS window)
 
 ---
 
@@ -165,6 +165,8 @@ When you upgrade Cursor, extract the new AppImage the same way (or use `./tools/
 
 **NixOS (Framework and similar).** NixOS does not run generic dynamically linked executables out of the box — and that holds for the extracted `AppRun` as much as for the `.AppImage`. Enable AppImage support in system config with `programs.appimage.enable = true;` and `programs.appimage.binfmt = true;` (NixOS 24.05 and later), which lets a `.AppImage` run directly when you choose that path; the older route is `appimage-run` from nixpkgs. Because binfmt registration acts on the `.AppImage` file, the launcher's **extracted-`AppRun`** path may additionally want an FHS wrapper — `steam-run` or `nix-ld` — to supply the dynamic loader and libraries. On a tested Framework host, extract once, then `./tools/cursor-jail.sh` from the repo root is the working form; if `AppRun` fails with loader errors, wrap the launch with `steam-run` from nixpkgs. The full NixOS map lives in **`context/specs/enclosure-editors.md`**.
 
+**macOS.** There is no AppImage and no `bwrap` here; Cursor already ships as `Cursor.app`, and the enclosure is Apple's own Seatbelt (`sandbox-exec`), driven by this project's own launcher rather than `cargo install ai-jail`. Two tools share the work: upstream **ai-jail** grew a native macOS backend and is the right choice for jailing a **terminal agent or shell** (`ai-jail bash`, `ai-jail claude`); this project's own [`tools/cursor_jail_macos.rish`](tools/cursor_jail_macos.rish) (Rish-native) and [`tools/cursor-jail-macos.sh`](tools/cursor-jail-macos.sh) (bash elder) jail the **Cursor GUI app itself**, which upstream does not aim at. Both are witnessed live — a write inside the project succeeds, a write to the real `$HOME` is denied by the kernel, proven from inside a running jailed window, not just by a scripted witness. The full walkthrough, including three hard-won launch traps (never exec the `cursor` CLI wrapper; pass `--no-sandbox` since Chromium cannot nest inside Seatbelt any more than inside `bwrap`; detach stdio with `nohup` so the app survives the launching script exiting) is [`manual/guides/macos-ai-jail-setup.md`](manual/guides/macos-ai-jail-setup.md). One named gap carries forward from Linux's `--private-home`: the macOS GUI launcher has no private-`$HOME` substitute yet, so your real home directory stays *readable* inside the jail even though it stays *unwritable* — Steps 7 and 8 below say what that means in practice.
+
 ---
 
 ## Step 7 — Teaching the Tools Who You Are
@@ -204,11 +206,42 @@ Host codeberg.org
 
 With these in place, every commit you make on the host signs itself, and pushes find the right key.
 
+**macOS, when one host holds more than one Codeberg or GitHub identity.** `~/.ssh/config`'s `Host github.com` block matches by hostname alone, so if this same Mac already has a *different* `IdentityFile` set for `github.com` (an older personal key, say) from some earlier project, `IdentitiesOnly yes` forces that wrong key for this repo too — the push fails with `Permission denied (publickey)` even though the right key sits right there in `~/.ssh/`, already loaded in the agent. Since the macOS jail's write fence keeps `~/.ssh/config` unwritable from inside a jailed window (Step 6's named gap), fix it with a **repo-local override** instead of editing the global file — this lives in `.git/`, which git never tracks, so it needs no gitignore entry at all:
+
+```bash
+cat > .git/ssh_config_urbit <<'EOF'
+Host github.com
+  HostName github.com
+  User git
+  IdentityFile ~/.ssh/id_ed25519_urbit_github
+  IdentitiesOnly yes
+
+Host codeberg.org
+  HostName codeberg.org
+  User git
+  IdentityFile ~/.ssh/id_ed25519_urbit_codeberg
+  IdentitiesOnly yes
+EOF
+git config --local core.sshCommand "ssh -F $PWD/.git/ssh_config_urbit"
+ssh -F .git/ssh_config_urbit -T git@github.com     # expect: "You've successfully authenticated"
+ssh -F .git/ssh_config_urbit -T git@codeberg.org
+```
+
+`core.sshCommand` is per-repo (stored in `.git/config`, itself untracked), so this touches nothing global and nothing another project on the same Mac relies on.
+
 ---
 
 ## Step 8 — Signing Without Hands, Inside the Sandbox
 
 Here is the heart of it. The sandbox is sealed: with a private home, it cannot see your host's `~/.gnupg`, `~/.ssh`, or `~/.config/gh`. So to let the agent push and sign from **inside**, we keep a small, deliberate set of project-local materials — each one gitignored, each one safe.
+
+**macOS reads this step differently, for now.** The GUI launcher's named gap (Step 6) means there is no private `$HOME` yet — your real `~/.ssh` and `~/.gnupg` stay *readable* inside the jailed window, so **8b**'s and **8c**'s copy-into-the-project step is not required to make signing and pushing work at all: the agent can read your real keys directly, and Step 7's repo-local SSH override handles the multi-account case. What macOS's write fence *does* change is `gpg`'s behavior: `gpg --list-secret-keys` and `git log --show-signature` can hang or fail with `can't open '.../.gnupg/trustdb.gpg': Operation not permitted`, because those specific operations try to *update* the trust cache, and the jail denies that write. Plain signing (`gpg --sign`, and `git commit` itself) does not touch the trust cache the same way and works cleanly — proven by every signed commit in this repository's history made from inside this jail. When you do want to inspect a signature from inside the jail, guard the command so a trustdb hang cannot stall your session:
+
+```bash
+timeout 10 git --no-pager log --show-signature -1 | cat
+```
+
+If someone later wants the stricter Linux-style posture — a private `$HOME`, a dedicated sandbox-only signing key, keys copied and gitignored exactly as **8b**–**8c** describe — that is a real, nameable next step for the macOS launcher, not yet built. Until then, the working macOS path is: real keys, read-only, repo-local `core.sshCommand` for SSH, and the trustdb quirk above as its one known, harmless rough edge.
 
 **8a. An allow-listing `.gitignore`.** When a repo lives inside a sandbox home shared with the editor and your files, ignore everything by default and allow back only the project. This guarantees keys and tokens can never be committed by accident:
 
@@ -376,6 +409,8 @@ Inside the sandbox, ask your agent to make a small commit, then look:
 
 ```bash
 git log --show-signature -1     # expect: "Good signature from Your Name"
+                                 # on macOS, prefer: timeout 10 git --no-pager log --show-signature -1 | cat
+                                 # (Step 8's trustdb note — a hang here is cosmetic, not a signing failure)
 git push origin main            # to Codeberg
 git push github main            # to GitHub
 ```

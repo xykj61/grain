@@ -1,11 +1,11 @@
 # Setting Up the Sandbox on macOS
 
 **Language:** EN
-**Version:** `20260714.070500`
+**Version:** `20260714.073300`
 **Style:** Radiant (see `../../context/RADIANT_STYLE.md`)
 **Voice:** Rio 3
-**Status:** Guide for the task — witnessed on this fork's own macOS host, including a real jailed-GUI launch; the Rish scripts below are the primary path, with their bash elders kept beside them
-**Versions, all enduring:** `20260714.052900` first page (bash launcher) · `060500` Rish-native pair · `070500` the GUI launch actually proven (app binary direct, `--no-sandbox`, Mach/IPC section) and upstream ai-jail's own new macOS backend adopted for CLI agents
+**Status:** Guide for the task — witnessed on this fork's own macOS host, including a real jailed-GUI launch and a live write-fence probe from inside a running jailed agent window; the Rish scripts below are the primary path, with their bash elders kept beside them
+**Versions, all enduring:** `20260714.052900` first page (bash launcher) · `060500` Rish-native pair · `070500` the GUI launch actually proven (app binary direct, `--no-sandbox`, Mach/IPC section) and upstream ai-jail's own new macOS backend adopted for CLI agents · `073300` two more findings from a live agent session: the multi-account SSH `IdentitiesOnly` collision and the GPG trustdb quirk
 
 ---
 
@@ -85,6 +85,37 @@ Each of these cost a real debugging pass on this host (`20260714`, full trail in
 3. **Detach stdio.** A spawned child inherits pipes that die with the launching script, and Electron logs constantly — the app boots, then takes a `SIGPIPE` seconds later and vanishes (alive at 12s, gone by 20s, observed). The launcher's one host seam (`nohup … >/dev/null 2>&1 </dev/null`) makes the jailed app independent of both the script's lifetime and the terminal's.
 
 The profile's Mach/IPC/pty section follows the static section of upstream ai-jail's own macOS backend — the proven minimum for an Electron app to boot at all under `(deny default)` — with `mach-register` (Electron's `MachPortRendezvousServer` aborts without it) and `mach-task-name` (its codesign self-check) called out by name.
+
+## Two Findings From a Live Jailed Agent Session
+
+A running Cursor agent, working from inside the jail on this repo's own git remotes, hit two rough edges worth naming plainly — neither is a fence failure, both are ordinary tool behavior meeting a write-fenced `$HOME`.
+
+**SSH pushes fail with a wrong-key error, even though the right key exists.** If this Mac's `~/.ssh/config` already carries a `Host github.com` / `Host codeberg.org` block from an earlier, unrelated project — with `IdentitiesOnly yes` and a different `IdentityFile` — that global block wins for *every* repo on the host, this one included, and the push fails with `Permission denied (publickey)` even with the correct key sitting in `~/.ssh/` and already loaded in the agent. The global file is unwritable from inside the jail by design (Step 6's write fence), so fix it per-repo instead, entirely inside the fence:
+
+```bash
+cat > .git/ssh_config_urbit <<'EOF'
+Host github.com
+  HostName github.com
+  User git
+  IdentityFile ~/.ssh/id_ed25519_urbit_github
+  IdentitiesOnly yes
+
+Host codeberg.org
+  HostName codeberg.org
+  User git
+  IdentityFile ~/.ssh/id_ed25519_urbit_codeberg
+  IdentitiesOnly yes
+EOF
+git config --local core.sshCommand "ssh -F $PWD/.git/ssh_config_urbit"
+```
+
+`.git/` is never tracked, so this file and this config change need no gitignore entry — they simply never leave this one clone.
+
+**`git log --show-signature` and `gpg --list-secret-keys` can hang or fail, even though signing itself works.** Both operations try to update `~/.gnupg/trustdb.gpg`, and the jail's write fence denies that — sometimes as a fast `Operation not permitted`, sometimes as a hang waiting on `gpg-agent`. Plain `gpg --sign` and `git commit` do not hit the same path and complete normally; every signed commit made from inside this jail proves it. Guard any signature-inspecting command with `timeout` so a trustdb stall cannot block a session:
+
+```bash
+timeout 10 git --no-pager log --show-signature -1 | cat
+```
 
 ## When Something Goes Wrong
 
