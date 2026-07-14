@@ -142,10 +142,13 @@ Icon
 /.gnupg-rye/
 /.gnupg/
 /.ssh/
+/.gh/
+/tools/gh-token.secret
 /*.asc
 /*.gpg
 /*.sec
 /*.key
+/*.secret
 
 # --- Regenerated and local-only reference (added 20260627-191712) ----------
 tools/fixtures/rish_io/*.txt
