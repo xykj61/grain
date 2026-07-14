@@ -1,0 +1,89 @@
+# cursor_jail_macos.rish — start Cursor (native macOS .app/CLI) inside a
+# sandbox-exec (Seatbelt) enclosure, with project-local state.
+#
+# The Rish-native primary launcher, reviving tools/cursor-jail-macos.sh (its
+# bash elder, kept beside this one for reference and for anyone without
+# Rishi built yet). Same profile, same fence, same /dev/null fix -- built
+# with Rish's own string joins instead of a heredoc.
+#
+#   rishi/bin/rishi run tools/cursor_jail_macos.rish
+#   rishi/bin/rishi run tools/cursor_jail_macos.rish --no-network
+#   rishi/bin/rishi run tools/cursor_jail_macos.rish --print-profile
+#
+# What this gives you, and what it does not (unchanged from the bash elder):
+#   - Writes are fenced to the project directory and its own state dirs.
+#   - Reads stay open everywhere (the write fence is the real boundary).
+#   - Network is allowed by default; --no-network denies it outright.
+#   - There is no macOS equivalent of --private-home: reads of your real
+#     $HOME stay open inside the sandbox.
+#
+# See: manual/guides/macos-ai-jail-setup.md, SOURCE.md Step 6/9.
+
+let sandbox_check = run ["sh" "-c" "command -v sandbox-exec"]
+assert sandbox_check.ok else "sandbox-exec not found -- this script is macOS-only."
+
+let cursor_check = run ["sh" "-c" "command -v cursor"]
+assert cursor_check.ok else "'cursor' not found on PATH -- install the Cursor CLI (ships with Cursor.app; confirm with 'which cursor')."
+
+let pwd_run = run ["pwd"]
+let repo = trim pwd_run.out
+
+let state_mk = run ["mkdir" "-p" "${repo}/.cursor-state/user-data" "${repo}/.cursor-state/extensions" "${repo}/tools/.build"]
+assert state_mk.ok else "could not create .cursor-state/ or tools/.build/"
+
+let print_only = args contains "--print-profile"
+let no_network = args contains "--no-network"
+
+if no_network then let net_line = "(deny network*)" else let net_line = "(allow network*)"
+
+# A literal double quote, from a one-byte fixture -- Rish string literals
+# have no \" escape (named as a real language gap, same shape as the
+# newline fixture the WireGuard client script already relies on), so SBPL's
+# own quoted path syntax is built by joining fragments around this fixture
+# rather than by escaping inside a string literal.
+let dq = read-file "tools/fixtures/dquote.txt"
+let nl = read-file "tools/fixtures/newline.txt"
+
+let line_a = "(version 1)"
+let line_b = "(deny default)"
+let line_c = ""
+let line_d = "; Reads stay open everywhere -- enumerating every toolchain read path"
+let line_e = "; is a maintenance trap; the write fence below is the real boundary."
+let line_f = "(allow file-read*)"
+let line_g = ""
+let line_h = "; Writes fenced to the project directory and its own state."
+let line_i = "(allow file-write*"
+let line_j = join ["  (subpath " dq repo dq ")"] ""
+let line_k = join ["  (subpath " dq "/tmp" dq ")"] ""
+let line_l = join ["  (subpath " dq "/private/tmp" dq ")"] ""
+let line_m = join ["  (subpath " dq "/private/var/folders" dq "))"] ""
+let line_n = ""
+let line_o = "; /dev/null needs an explicit write allow -- Cursor's own CLI"
+let line_p = "; wrapper writes to it on startup while resolving its app path"
+let line_q = "; (a write-only discard device; nothing to read back or escalate through)."
+let line_r = join ["(allow file-write-data (literal " dq "/dev/null" dq "))"] ""
+let line_s = ""
+let line_t = "(allow process-exec)"
+let line_u = "(allow process-fork)"
+let line_v = "(allow signal (target self))"
+let line_w = "(allow sysctl-read)"
+let line_x = "(allow mach-lookup)"
+let line_y = "(allow iokit-open)"
+let line_z = ""
+
+let profile_lines = [line_a line_b line_c line_d line_e line_f line_g line_h line_i line_j line_k line_l line_m line_n line_o line_p line_q line_r line_s line_t line_u line_v line_w line_x line_y line_z net_line]
+let profile = join profile_lines nl
+
+if print_only then say profile
+if print_only then exit exit-ok
+
+let profile_path = "tools/.build/cursor_jail_macos_profile.sbpl"
+write-file profile_path profile
+
+let launch = spawn ["sandbox-exec" "-f" profile_path "--" "cursor" "--user-data-dir=${repo}/.cursor-state/user-data" "--extensions-dir=${repo}/.cursor-state/extensions" repo]
+
+say "cursor-jail-macos: launched inside the sandbox-exec enclosure."
+say "  project: ${repo}"
+say "  state:   ${repo}/.cursor-state/"
+if no_network then say "  network: denied" else say "  network: allowed"
+say "This script returns immediately; Cursor keeps running on its own."

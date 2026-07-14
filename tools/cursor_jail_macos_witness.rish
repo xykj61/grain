@@ -1,0 +1,71 @@
+# cursor_jail_macos_witness.rish — proves the sandbox-exec profile in
+# tools/cursor_jail_macos.rish actually fences writes to the project
+# directory, on this host.
+#
+# The Rish-native primary witness, reviving tools/cursor_jail_macos_witness.sh
+# (its bash elder, kept beside this one). Builds its own copy of the profile
+# rather than depend on cross-process stdout capture, so the witness stays
+# simple to read and does not lean on --print-profile's own output shape.
+#
+# Refuse witness: a write outside the project must be denied.
+# Permit witness: a write inside the project must succeed.
+#
+#   rishi/bin/rishi run tools/cursor_jail_macos_witness.rish
+
+let sandbox_check = run ["sh" "-c" "command -v sandbox-exec"]
+assert sandbox_check.ok else "sandbox-exec not found -- this witness is macOS-only."
+
+let pwd_run = run ["pwd"]
+let repo = trim pwd_run.out
+let home = env "HOME"
+
+let build_mk = run ["mkdir" "-p" "${repo}/tools/.build"]
+assert build_mk.ok else "could not create tools/.build/"
+
+let dq = read-file "tools/fixtures/dquote.txt"
+let nl = read-file "tools/fixtures/newline.txt"
+
+let line_a = "(version 1)"
+let line_b = "(deny default)"
+let line_c = "(allow file-read*)"
+let line_d = "(allow file-write*"
+let line_e = join ["  (subpath " dq repo dq ")"] ""
+let line_f = join ["  (subpath " dq "/tmp" dq ")"] ""
+let line_g = join ["  (subpath " dq "/private/tmp" dq ")"] ""
+let line_h = join ["  (subpath " dq "/private/var/folders" dq "))"] ""
+let line_i = join ["(allow file-write-data (literal " dq "/dev/null" dq "))"] ""
+let line_j = "(allow process-exec)"
+let line_k = "(allow process-fork)"
+let line_l = "(allow signal (target self))"
+let line_m = "(allow sysctl-read)"
+let line_n = "(allow mach-lookup)"
+let line_o = "(allow iokit-open)"
+let line_p = "(allow network*)"
+
+let profile_lines = [line_a line_b line_c line_d line_e line_f line_g line_h line_i line_j line_k line_l line_m line_n line_o line_p]
+let profile = join profile_lines nl
+
+let profile_path = "tools/.build/cursor_jail_macos_witness_profile.sbpl"
+write-file profile_path profile
+
+say "== permit witness: write inside the project =="
+let inside_path = "${repo}/tools/.cursor_jail_macos_witness.tmp"
+let cleanup_inside_before = run ["rm" "-f" inside_path]
+let permit = run ["sandbox-exec" "-f" profile_path "--" "sh" "-c" "echo witness > '${inside_path}'"]
+assert permit.ok else "FAIL: write inside the project was denied -- the profile is too strict"
+say "PASS: write inside the project succeeded"
+let cleanup_inside_after = run ["rm" "-f" inside_path]
+
+say "== refuse witness: write outside the project =="
+let outside_path = "${home}/.cursor_jail_macos_witness_escape.tmp"
+let cleanup_outside_before = run ["rm" "-f" outside_path]
+let refuse = run ["sandbox-exec" "-f" profile_path "--" "sh" "-c" "echo escape > '${outside_path}'"]
+if refuse.ok then say "FAIL: write outside the project succeeded -- the sandbox is not enforcing"
+assert (refuse.ok == false) else "FAIL: write outside the project succeeded -- the sandbox is not enforcing"
+say "PASS: write outside the project was denied"
+
+let escape_check = run ["test" "-e" outside_path]
+assert (escape_check.ok == false) else "FAIL: escape file exists despite denied write"
+
+say "== both witnesses green =="
+say "GREEN: cursor-jail-macos enclosure -- permit and refuse both hold."
