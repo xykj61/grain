@@ -8,8 +8,18 @@
 #
 #   rishi/bin/rishi run tools/cursor_jail_macos.rish
 #   rishi/bin/rishi run tools/cursor_jail_macos.rish --no-network
+#   rishi/bin/rishi run tools/cursor_jail_macos.rish --harden-home
 #   rishi/bin/rishi run tools/cursor_jail_macos.rish --print-profile
 #
+# --harden-home closes the read side of the "no private-$HOME yet" gap
+# for the credentials that actually matter: it denies reads to a named
+# list of real credential stores under $HOME (~/.ssh, ~/.gnupg, ~/.aws,
+# ~/.codeberg-token, and the rest -- see the harden_* lines below),
+# leaving every other read exactly as open as the default profile.
+# Before launching with this flag, generate and register dedicated
+# jail-local keys with tools/generate_jail_local_keys_macos.rish, run
+# from an ordinary terminal outside any jail -- see
+# manual/guides/macos-ai-jail-setup.md.
 # Three hard-won launch facts, each proven on this host 20260714 (the full
 # forensic trail lives in the session logs and the guide):
 #
@@ -29,10 +39,14 @@
 #
 # What this gives you, and what it does not:
 #   - Writes are fenced to the project directory and its own state dirs.
-#   - Reads stay open everywhere (the write fence is the real boundary).
+#   - Reads stay open everywhere (the write fence is the real boundary),
+#     unless --harden-home is passed, which denies reads to the named
+#     real credential stores (~/.ssh, ~/.gnupg, ~/.aws, and the rest)
+#     while leaving every other read exactly as open.
 #   - Network is allowed by default; --no-network denies it outright.
-#   - There is no macOS equivalent of --private-home: reads of your real
-#     $HOME stay open inside the sandbox.
+#   - There is no full macOS equivalent of --private-home: outside the
+#     --harden-home credential-store list, reads of your real $HOME stay
+#     open inside the sandbox.
 #   - First launch opens signed out: your normal login lives in the
 #     default profile (~/Library/Application Support/Cursor), outside this
 #     fence. Sign in once inside the jail; that state persists in
@@ -55,8 +69,11 @@ assert state_mk.ok else "could not create .cursor-state/ or tools/.build/"
 
 let print_only = args contains "--print-profile"
 let no_network = args contains "--no-network"
+let harden_home = args contains "--harden-home"
 
 if no_network then let net_line = "(deny network*)" else let net_line = "(allow network*)"
+
+let home = env "HOME"
 
 # A literal double quote, from a one-byte fixture -- Rish string literals
 # have no \" escape (named as a real language gap, same shape as the
@@ -65,6 +82,32 @@ if no_network then let net_line = "(deny network*)" else let net_line = "(allow 
 # rather than by escaping inside a string literal.
 let dq = read-file "tools/fixtures/dquote.txt"
 let nl = read-file "tools/fixtures/newline.txt"
+
+# Apple's Seatbelt resolves an overlapping allow/deny pair to deny,
+# regardless of which rule is written first or which is more specific
+# (proven on this host: an (allow file-read* (literal ...)) placed
+# *before* an overlapping (deny file-read* (regex ...)) still denies).
+# So this list names only the specific credential stores themselves --
+# no blanket dotfile deny, no allow-back needed, no risk of silently
+# also denying non-secret dotfiles (~/.gitconfig, shell rc) that a
+# normal terminal and git identity depend on.
+if harden_home then let harden_b = "; --harden-home: deny reads on the specific real credential stores" else let harden_b = ""
+if harden_home then let harden_c = "; under $HOME -- SSH/GPG private keys, cloud and forge tokens. Deny" else let harden_c = ""
+if harden_home then let harden_d = "; always wins an overlap on this host, so the list stays a deny-only," else let harden_d = ""
+if harden_home then let harden_e = "; named set rather than a blanket dotfile deny with an allow-back." else let harden_e = ""
+if harden_home then let harden_f = join ["(deny file-read* (subpath " dq home "/.ssh" dq "))"] "" else let harden_f = ""
+if harden_home then let harden_g = join ["(deny file-read* (subpath " dq home "/.gnupg" dq "))"] "" else let harden_g = ""
+if harden_home then let harden_h = join ["(deny file-read* (subpath " dq home "/.aws" dq "))"] "" else let harden_h = ""
+if harden_home then let harden_i = join ["(deny file-read* (subpath " dq home "/.config/gh" dq "))"] "" else let harden_i = ""
+if harden_home then let harden_j = join ["(deny file-read* (subpath " dq home "/.terraform.d" dq "))"] "" else let harden_j = ""
+if harden_home then let harden_k = join ["(deny file-read* (subpath " dq home "/.docker" dq "))"] "" else let harden_k = ""
+if harden_home then let harden_l = join ["(deny file-read* (subpath " dq home "/.kube" dq "))"] "" else let harden_l = ""
+if harden_home then let harden_m = join ["(deny file-read* (subpath " dq home "/.azure" dq "))"] "" else let harden_m = ""
+if harden_home then let harden_n = join ["(deny file-read* (subpath " dq home "/.gcloud" dq "))"] "" else let harden_n = ""
+if harden_home then let harden_o = join ["(deny file-read* (literal " dq home "/.codeberg-token" dq "))"] "" else let harden_o = ""
+if harden_home then let harden_p = join ["(deny file-read* (literal " dq home "/.netrc" dq "))"] "" else let harden_p = ""
+if harden_home then let harden_q = join ["(deny file-read* (literal " dq home "/.git-credentials" dq "))"] "" else let harden_q = ""
+if harden_home then let harden_r = join ["(deny file-read* (literal " dq home "/.npmrc" dq "))"] "" else let harden_r = ""
 
 let line_a = "(version 1)"
 let line_b = "(deny default)"
@@ -113,7 +156,7 @@ let line_ar = ""
 let line_as = "(allow iokit-open)"
 let line_at = ""
 
-let profile_lines = [line_a line_b line_c line_d line_e line_f line_g line_h line_i line_j line_k line_l line_m line_n line_o line_p line_q line_r line_s line_t line_u line_v line_w line_x line_y line_z line_aa line_ab line_ac line_ad line_ae line_af line_ag line_ah line_ai line_aj line_ak line_al line_am line_an line_ao line_ap line_aq line_ar line_as line_at net_line]
+let profile_lines = [line_a line_b line_c line_d line_e line_f harden_b harden_c harden_d harden_e harden_f harden_g harden_h harden_i harden_j harden_k harden_l harden_m harden_n harden_o harden_p harden_q harden_r line_g line_h line_i line_j line_k line_l line_m line_n line_o line_p line_q line_r line_s line_t line_u line_v line_w line_x line_y line_z line_aa line_ab line_ac line_ad line_ae line_af line_ag line_ah line_ai line_aj line_ak line_al line_am line_an line_ao line_ap line_aq line_ar line_as line_at net_line]
 let profile = join profile_lines nl
 
 if print_only then say profile
@@ -138,6 +181,8 @@ say "cursor-jail-macos: launched inside the sandbox-exec enclosure."
 say "  project: ${repo}"
 say "  state:   ${repo}/.cursor-state/"
 if no_network then say "  network: denied" else say "  network: allowed"
+if harden_home then say "  home:    hardened -- real ~/.ssh, ~/.gnupg, ~/.aws, and the other"
+if harden_home then say "           named credential stores are unreadable inside this window"
 say "First run opens signed out (your normal login lives outside the fence);"
 say "sign in once inside the jail and it persists in .cursor-state/."
 say "This script returns immediately; Cursor keeps running on its own."

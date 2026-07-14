@@ -1,0 +1,92 @@
+# generate_jail_local_keys_macos.rish — generate dedicated, jail-only SSH
+# and GPG signing keys that live only inside this repository (gitignored),
+# for use with tools/cursor_jail_macos.rish --harden-home.
+#
+#   rishi/bin/rishi run tools/generate_jail_local_keys_macos.rish
+#
+# RUN THIS FROM AN ORDINARY TERMINAL, OUTSIDE ANY JAIL. Its whole point is
+# to keep key *creation* off any agent-controlled process entirely -- a
+# dedicated, revocable key is a weaker promise if the agent that will use
+# it also generated it. Run it from Terminal.app (or any plain shell that
+# is not already inside tools/cursor_jail_macos.rish or ai-jail), before
+# you first launch with --harden-home.
+#
+# What it makes, all under this repo (gitignored, see .gitignore's "Local
+# key material" section):
+#   .ssh/id_ed25519_jail_github      -- dedicated SSH deploy key, github.com
+#   .ssh/id_ed25519_jail_codeberg    -- dedicated SSH deploy key, codeberg.org
+#   .gnupg-rye/                      -- dedicated GNUPGHOME, one signing-only
+#                                        GPG key, no passphrase (matches
+#                                        SOURCE.md Step 8c's own pattern)
+#
+# Both kinds are generated passphrase-free on purpose: once --harden-home
+# denies this jail's own read of your real ~/.gnupg (where gpg-agent and
+# pinentry already live), there is no reliable interactive prompt path
+# left inside the jail for a passphrase anyway. The trade is the same one
+# SOURCE.md Step 8c already names for the Linux launcher: never your
+# master identity, always revocable, always this one small scope.
+#
+# After this script finishes, it prints exactly what to paste where. You
+# still do the pasting -- registering a new key with a forge is a human
+# act, on purpose, and this script does not attempt it for you.
+
+let pwd_run = run ["pwd"]
+let repo = trim pwd_run.out
+
+let already_sandboxed = run ["sh" "-c" "sandbox-exec -p '(version 1)(allow default)' -- true 2>&1"]
+if (already_sandboxed.ok == false) then say "WARNING: sandbox_apply just failed for a no-op profile -- this terminal may already be inside a jail. Re-run from a plain, unsandboxed terminal for this script's own promise to hold."
+
+let ssh_mk = run ["mkdir" "-p" "${repo}/.ssh"]
+assert ssh_mk.ok else "could not create .ssh/ at the repo root"
+let ssh_chmod = run ["chmod" "700" "${repo}/.ssh"]
+assert ssh_chmod.ok else "could not chmod .ssh/ to 700"
+
+let gh_key_path = "${repo}/.ssh/id_ed25519_jail_github"
+let cb_key_path = "${repo}/.ssh/id_ed25519_jail_codeberg"
+
+let gh_exists = run ["test" "-f" gh_key_path]
+if gh_exists.ok then say "id_ed25519_jail_github already exists -- leaving it alone."
+if (gh_exists.ok == false) then let gh_gen = run ["ssh-keygen" "-t" "ed25519" "-N" "" "-C" "jail-only github (macOS Seatbelt, no master identity)" "-f" gh_key_path]
+if (gh_exists.ok == false) then assert gh_gen.ok else "ssh-keygen failed for the github jail key"
+
+let cb_exists = run ["test" "-f" cb_key_path]
+if cb_exists.ok then say "id_ed25519_jail_codeberg already exists -- leaving it alone."
+if (cb_exists.ok == false) then let cb_gen = run ["ssh-keygen" "-t" "ed25519" "-N" "" "-C" "jail-only codeberg (macOS Seatbelt, no master identity)" "-f" cb_key_path]
+if (cb_exists.ok == false) then assert cb_gen.ok else "ssh-keygen failed for the codeberg jail key"
+
+let gnupg_home = "${repo}/.gnupg-rye"
+let gnupg_mk = run ["mkdir" "-p" gnupg_home]
+assert gnupg_mk.ok else "could not create .gnupg-rye/"
+let gnupg_chmod = run ["chmod" "700" gnupg_home]
+assert gnupg_chmod.ok else "could not chmod .gnupg-rye/ to 700"
+
+let existing_keys = run ["sh" "-c" "GNUPGHOME='${gnupg_home}' gpg --list-secret-keys --with-colons 2>/dev/null | grep -c '^sec'"]
+let key_count = trim existing_keys.out
+
+if (key_count == "0") then let gpg_gen = run ["sh" "-c" "GNUPGHOME='${gnupg_home}' gpg --batch --pinentry-mode loopback --passphrase '' --quick-generate-key 'jail-only signing key (macOS Seatbelt)' ed25519 sign 2y"]
+if (key_count == "0") then assert gpg_gen.ok else "gpg key generation failed -- see gpg's own error above"
+if (key_count != "0") then say "A signing key already exists in .gnupg-rye/ -- leaving it alone."
+
+say ""
+say "== Done. Paste these into both forges before relaunching with --harden-home. =="
+say ""
+say "-- SSH deploy key for github.com (GitHub -> Settings -> SSH and GPG keys -> New SSH key) --"
+let gh_pub = run ["cat" "${gh_key_path}.pub"]
+let gh_pub_trimmed = trim gh_pub.out
+say gh_pub_trimmed
+say ""
+say "-- SSH deploy key for codeberg.org (Codeberg -> Settings -> SSH/GPG Keys -> Add Key) --"
+let cb_pub = run ["cat" "${cb_key_path}.pub"]
+let cb_pub_trimmed = trim cb_pub.out
+say cb_pub_trimmed
+say ""
+say "-- GPG signing key, both forges' GPG Keys section --"
+let fpr_run = run ["sh" "-c" "GNUPGHOME='${gnupg_home}' gpg --list-secret-keys --keyid-format=long"]
+let fpr_trimmed = trim fpr_run.out
+say fpr_trimmed
+let armor_run = run ["sh" "-c" "GNUPGHOME='${gnupg_home}' gpg --armor --export 'jail-only signing key (macOS Seatbelt)'"]
+let armor_trimmed = trim armor_run.out
+say armor_trimmed
+say ""
+say "Once both keys are pasted into both forges, tell the agent inside the jail to"
+say "wire git config to these files and relaunch with --harden-home."
