@@ -1,0 +1,12 @@
+format session-log-v1
+stamp 20260714.081600
+editor Cursor
+model Cursor Sonnet 5 1M Medium
+voice Rio 3
+title Handed Keaton the three-step launch sequence for --harden-home
+prompt Keaton asked plainly: what new ai-jail command do I run now to launch Cursor?
+think answered directly with the three-step sequence built last turn, in the order it actually needs to happen: generate-and-register keys outside any jail first, prove the fence with the witness (also outside any jail), then launch with the one new flag, --harden-home.
+think named the one thing this window cannot do for him: wiring git config inside the *next*, not-yet-launched jailed window to the new dedicated keys -- that has to happen from inside that fresh session, not this one, since it is a different process entirely. Pointed him at SOURCE.md Step 8's macOS section, which already has the exact commands, so he is not blocked waiting on anything.
+obs did not touch any files this turn -- a direct informational answer to a direct question, no task attached.
+file session-logs/20260714-081400_launch_command_for_harden_home.bron -- this log
+recommend keep-going -- next mechanical step is Keaton's own: run the key generator and witness from a real outside terminal, register the two forge keys, then launch with --harden-home and let the fresh jailed session wire git to the new keys.
