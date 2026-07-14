@@ -1,11 +1,11 @@
 # Setting Up the Sandbox on macOS
 
 **Language:** EN
-**Version:** `20260714.081500`
+**Version:** `20260714.085000`
 **Style:** Radiant (see `../../context/RADIANT_STYLE.md`)
 **Voice:** Rio 3
 **Status:** Guide for the task — witnessed on this fork's own macOS host, including a real jailed-GUI launch and a live write-fence probe from inside a running jailed agent window; the Rish scripts below are the primary path, with their bash elders kept beside them
-**Versions, all enduring:** `20260714.052900` first page (bash launcher) · `060500` Rish-native pair · `070500` the GUI launch actually proven (app binary direct, `--no-sandbox`, Mach/IPC section) and upstream ai-jail's own new macOS backend adopted for CLI agents · `073300` two more findings from a live agent session: the multi-account SSH `IdentitiesOnly` collision and the GPG trustdb quirk · `081500` `--harden-home` closes the read side of the private-`$HOME` gap for named credential stores, with a dedicated jail-local key generator and an honest limit on self-testing from inside an already-jailed window
+**Versions, all enduring:** `20260714.052900` first page (bash launcher) · `060500` Rish-native pair · `070500` the GUI launch actually proven (app binary direct, `--no-sandbox`, Mach/IPC section) and upstream ai-jail's own new macOS backend adopted for CLI agents · `073300` two more findings from a live agent session: the multi-account SSH `IdentitiesOnly` collision and the GPG trustdb quirk · `081500` `--harden-home` closes the read side of the private-`$HOME` gap for named credential stores, with a dedicated jail-local key generator and an honest limit on self-testing from inside an already-jailed window · `085000` jail-local keys carry real identity from `GLOW_PROFILE.bron`, and a scoped-`GH_TOKEN` path lets `gh` work under `--harden-home` without the real broad token
 
 ---
 
@@ -111,6 +111,23 @@ rishi/bin/rishi run tools/cursor_jail_macos_harden_witness.rish
 ```
 
 This is a real, named limit, not a convenience note: proven directly on this host, once a process is already `sandbox_apply`'d, a *second*, nested `sandbox_apply` carrying an explicit `(deny ...)` rule fails outright — `sandbox-exec: sandbox_apply: Operation not permitted` — even though the identical profile applies cleanly as a first, non-nested call, and even though an allow-only nested profile (the plain write-fence witness above) nests without issue. An agent already working inside a jailed window cannot fully self-certify `--harden-home` from within that same window; the witness says so plainly rather than reporting a false pass.
+
+## Using `gh` Inside the Hardened Jail
+
+`--harden-home` denies `~/.config/gh`, so the `gh` CLI cannot even start from inside — it reads that config directory before anything else and gets `operation not permitted` rather than a clean "not found," so it hard-fails. That is the fence doing its job: `~/.config/gh` holds a broad-scope account token, exactly the kind of credential the hardening exists to keep out.
+
+You do not lose `gh`, though — you point it at jail-local state and a **scoped** token instead of your real one:
+
+```bash
+export GH_CONFIG_DIR="$PWD/.gh"                  # gitignored; a fresh dir gh owns
+export GH_TOKEN="$(cat tools/gh-token.secret)"   # a fine-grained PAT, gitignored
+gh ssh-key add .ssh/id_ed25519_jail_github.pub --title "jail-only github"
+gh pr create --fill        # PRs, issues, CI checks, releases — all work
+```
+
+`GH_TOKEN` provides auth directly, so `gh` never touches the denied real config; `GH_CONFIG_DIR` gives it a jail-local place to keep its own settings. Create the token as a **fine-grained personal access token scoped to this one repository** with only the permissions the task needs (Contents and Administration read/write covers key uploads, pushes, and PRs), store it in the gitignored `tools/gh-token.secret`, and revoke it when the work is done. This keeps everything `--harden-home` bought: a compromised jail sees a single-repo, revocable token, never your whole GitHub account. Copying `~/.config/gh` wholesale still works but drags your real broad token inside the fence — the scoped `GH_TOKEN` is the better trade.
+
+What you genuinely lose by *not* setting this up at all: `gh`'s conveniences — opening PRs, triaging issues, watching CI runs, cutting releases, managing keys — all from the terminal. None of it is irreplaceable (the web UI and plain `git` cover the essentials, and key uploads are a one-time paste), so whether the scoped-token setup is worth it depends on how much of your workflow runs through `gh`. For a mostly-`git` workflow, manual key pastes and the web UI are enough; for heavy PR/issue work, the scoped token pays for itself quickly.
 
 ## Jail a Terminal Agent Instead (Upstream ai-jail)
 
