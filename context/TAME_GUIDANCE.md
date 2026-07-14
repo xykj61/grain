@@ -25,7 +25,7 @@ Three layers, one discipline — filenames follow TigerBeetle's `docs/TIGER_STYL
 
 Read the voiced canon (`external-research/TAME_GUIDANCE.md`) for philosophy and expert Tiger discipline. Read **this file** at the keyboard for what to assert, name, and bound. Organization prose lives in `active-designing/yonder/20260618-184912_growing-a-language.md`.
 
-Cursor and Claude rules (`.cursor/rules/tame-guidance.mdc`, `.claude/rules/tame-guidance.md`) point here.
+Cursor and Claude rules (`.cursor/rules/tame-guidance.mdc`, `.claude/rules/tame-guidance.md`) point here. Root rule **9** (docs and implementation stay synced) has its own always-on agent rule pair: `.cursor/rules/docs-implementation-sync.mdc`, `.claude/rules/docs-implementation-sync.md`.
 
 ---
 
@@ -108,6 +108,17 @@ Declare each variable at the smallest scope that serves it, and keep the number 
 ### 8. Explicit options at the call site
 
 Pass options to library functions explicitly, rather than leaning on their defaults. `@prefetch(a, .{ .cache = .data, .rw = .read, .locality = 3 })` reads more clearly than `@prefetch(a, .{})`, and it stays correct even if the library changes a default tomorrow.
+
+### 9. Docs and implementation stay synced — assert it, don't assume it
+
+A doc that describes behavior the code no longer has is not documentation; it is a stale claim wearing documentation's clothes. This rule extends **3. Say why** and **6. State invariants positively** to the boundary between prose and code, where the same discipline applies: state what currently holds, check it, and never let a claim outlive the thing it once described.
+
+- **A doc's claim about behavior is itself an assertable invariant.** When a README, manual page, or module doc states "X does Y," that sentence carries the same weight as `// invariant:` above a struct — it should be checkable, and it should be checked, not merely believed because it was true when written.
+- **The same change that alters behavior updates the doc that describes it, in the same commit.** Accrete-never-break (**4**) applies to docs exactly as it applies to code: when a doc's claim needs to change, change it beside the code change that caused the need, rather than leaving the doc to drift and hoping a later pass catches it.
+- **Before citing a doc's claim as still true, check it — read the file, run the witness, or grep the code path it names — rather than trust the doc's own age as evidence.** A doc from three days ago is not automatically current; only a fresh check is.
+- **File paths, function names, and witness names a doc cites are load-bearing, not decorative.** A doc that names `tools/foo.rish` as proof of a claim is making that path part of the claim itself — if the path moves or the witness changes shape, the doc's claim moves or changes shape with it, in the same commit.
+- **This is a ratchet, not a rewrite.** We do not sweep the whole tree for drift in one pass (per **4**, accretion beats a breaking sweep); we tighten it wherever a doc is already open for other reasons, and we let `living_docs_lint`'s roster (broken links, orphan pages, retired words, Status rooms, pin-string byte-match) keep catching the mechanical half of this while the discipline above catches the half no lint can see — whether the doc's *claim* is still honestly true.
+- **Two Rooms applies here too:** a doc's claim belongs in the checkable room only once a witness actually binds it (`../TWO_ROOMS.md`). A claim that has not yet earned a witness stays named as intent or horizon, not stated as settled fact.
 
 ---
 
