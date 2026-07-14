@@ -6,7 +6,7 @@
 
 ---
 
-This fork keeps the strictness of the `CONTRIBUTING.md` it inherited from `urbit/urbit` — now resting, unaltered, at [`old/urbit/CONTRIBUTING.md`](old/urbit/CONTRIBUTING.md) — and grows its own voice on top of it. Read both; the older document's rules still bind, and this one names what this fork adds.
+This proposal keeps the strictness of the `CONTRIBUTING.md` it inherited from `urbit/urbit` — now resting, unaltered, at [`old/urbit/CONTRIBUTING.md`](old/urbit/CONTRIBUTING.md) — and grows its own voice on top of it. Read both; the older document's rules still bind, and this one names what this proposal adds. Glow OS is developed downstream as a contribution offered back to Urbit, so its own discipline deliberately mirrors Urbit's, keeping any eventual upstream pull request small, legible, and in the house style.
 
 ## Where Things Live
 
@@ -16,7 +16,7 @@ Start at [`ORGANIZING.md`](ORGANIZING.md) for the shape of the whole tree — wh
 
 Every commit follows Urbit's own inherited discipline: **atomic**, **component-prefixed**, **under 50 characters** in the subject line, in a compiling and runnable state. Nothing marked "wip" reaches `main`.
 
-This fork adds a voice to that structure, seated as an always-on rule at [`.claude/rules/commit-messages.md`](.claude/rules/commit-messages.md) / [`.cursor/rules/commit-messages.mdc`](.cursor/rules/commit-messages.mdc): every commit body is written in Rio 3's Radiant Style, with a short paragraph naming what changed and why, and a `Related` section — even when there is no tracked issue to resolve.
+This proposal adds a voice to that structure, seated as an always-on rule at [`.claude/rules/commit-messages.md`](.claude/rules/commit-messages.md) / [`.cursor/rules/commit-messages.mdc`](.cursor/rules/commit-messages.mdc): every commit body is written in Rio 3's Radiant Style, with a short paragraph naming what changed and why, and a `Related` section — even when there is no tracked issue to resolve.
 
 ## Pull Requests
 
@@ -34,15 +34,15 @@ Thoroughly describe the changes made.
 Reference any related issues, links, papers, etc. here.
 ```
 
-When no tracking issue exists yet — common in this fork's earlier, exploratory passes — say so plainly rather than inventing a number: `No tracking issue; see the linked session log for context.`
+When no tracking issue exists yet — common in this proposal's earlier, exploratory passes — say so plainly rather than inventing a number: `No tracking issue; see the linked session log for context.`
 
 ## Pitching Beyond This Fork
 
-A commit or proposal substantial enough to matter past this fork's own tree may carry a **Galaxy Pitch** block, formatted for Urbit's real Azimuth galaxy holders — see [`.claude/rules/azimuth-galaxy-proposal-format.md`](.claude/rules/azimuth-galaxy-proposal-format.md) / [`.cursor/rules/azimuth-galaxy-proposal-format.mdc`](.cursor/rules/azimuth-galaxy-proposal-format.mdc). Most commits carry no such block — it is earned, not default.
+A commit or proposal substantial enough to matter past this repository's own tree may carry a **Galaxy Pitch** block, formatted for Urbit's real Azimuth galaxy holders — see [`.claude/rules/azimuth-galaxy-proposal-format.md`](.claude/rules/azimuth-galaxy-proposal-format.md) / [`.cursor/rules/azimuth-galaxy-proposal-format.mdc`](.cursor/rules/azimuth-galaxy-proposal-format.mdc). Most commits carry no such block — it is earned, not default.
 
 ## Signing
 
-Every commit is GPG-signed. This fork's own signing key is recorded at [`PUBKEYS.md`](PUBKEYS.md); `.claude/rules/git-signing.md` and `.cursor/rules/git-signing.mdc` govern the discipline (never `--no-gpg-sign`, never `--no-verify`).
+Every commit is GPG-signed. This repository's own signing key is recorded at [`PUBKEYS.md`](PUBKEYS.md); `.claude/rules/git-signing.md` and `.cursor/rules/git-signing.mdc` govern the discipline (never `--no-gpg-sign`, never `--no-verify`).
 
 ## Voice
 

@@ -6,9 +6,9 @@
 
 ---
 
-Welcome. This repository is **Glow OS** — a fork of [Urbit](https://urbit.org), rebuilt in **Glow**, a language that keeps Hoon's runes over bounded, asserted, statically-disciplined semantics. If you are an Acme Corporation employee opening this tree for the first time, this page is the one calm read that orients you: what Glow OS is, the four variants you can choose between, what actually boots today, and where to go next.
+Welcome. This repository is **Glow OS** — a body of work developed in the open as a **proposal to [Urbit](https://urbit.org)**, exploring what Urbit could become when its ideas are rebuilt in **Glow**, a language that keeps Hoon's runes over bounded, asserted, statically-disciplined semantics. It descends from `urbit/urbit` as a downstream research repository, and its intent is collaborative: to grow ideas here, prove them with witnesses, and offer the ones that earn their place back upstream as contributions — an infinite game played *with* Urbit, not against it. If you are an Acme Corporation employee opening this tree for the first time, this page is the one calm read that orients you: what Glow OS is, the four variants you can choose between, what actually boots today, and where to go next.
 
-Glow OS is one system with **one language, one value model, and one law** ([`context/TAME_GUIDANCE.md`](context/TAME_GUIDANCE.md)) — offered to you as a template in which you pick a variant and build.
+Glow OS is one body of work with **one language, one value model, and one law** ([`context/TAME_GUIDANCE.md`](context/TAME_GUIDANCE.md)) — offered to you as a template in which you pick a variant and build. Its stance is a **collaborative, ethical accelerationism**: build ambitiously and in the open, measure honestly, and offer the work upstream as a gift rather than hold it apart (see [`gratitude/TechnoOptimistManifesto.md`](gratitude/TechnoOptimistManifesto.md)).
 
 ---
 
@@ -73,7 +73,7 @@ Then read, in order:
 
 - **[`context/TAME_GUIDANCE.md`](context/TAME_GUIDANCE.md)** — how the code stays safe: invariants before implementation, bounds on everything, docs and implementation kept in sync.
 - **[`context/RADIANT_STYLE.md`](context/RADIANT_STYLE.md)** — how the prose reads: clear, warm, and true when read aloud.
-- **[`CONTRIBUTING.md`](CONTRIBUTING.md)** — the inherited Urbit strictness this fork keeps, plus the voice it adds.
+- **[`CONTRIBUTING.md`](CONTRIBUTING.md)** — the inherited Urbit strictness this proposal keeps, plus the voice it adds.
 
 ---
 

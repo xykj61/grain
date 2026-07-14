@@ -33,6 +33,10 @@ Every revival keeps five rules, each drawn from a law this project already lives
 4. **Supersede only when proven** (the Pond-supersedes-ai-jail pattern). The revival replaces the elder only after passing the elder's own witnesses, with an explicit supersede word. Until then, both coexist honestly.
 5. **May shelter in Maze.** A revival still earning its shape may live in the Maze nursery until it graduates to a canonical name and home.
 
+## The Clock a Revival Keeps
+
+A revival is born with its Glow name **and** its own warm-aura date-atom stamp (`YYYYMMDD.HHMMSS` in headers, `YYYYMMDD-HHMMSS_slug` in filenames), exactly as every dated artifact does — see [`../context/specs/20260714-024800_warm-aura-date-atom-naming.md`](../context/specs/20260714-024800_warm-aura-date-atom-naming.md). Reviving and archiving speak the same clock: the elder keeps its name and stamp, the revival is stamped fresh at its own birth, and later is always larger. Nothing about reviving invents a different dated shape.
+
 ## Revivals in Motion (the index)
 
 These are already underway, now recognized as revivals rather than one-off designs:

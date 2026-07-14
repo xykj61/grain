@@ -6,7 +6,7 @@
 
 ---
 
-This fork of Urbit — **Glow OS**, layered over the project formerly named Rye OS from `groupproject36/veganreyklah2` — carries its own identity forward from here. The record below is this identity's public face; the private halves stay home, exactly as `PUBKEYS.template.md` asks of every fork.
+This proposal to Urbit — **Glow OS**, a downstream research repository layered over the project formerly named Rye OS from `groupproject36/veganreyklah2` — carries its own identity forward from here. The record below is this identity's public face; the private halves stay home, exactly as `PUBKEYS.template.md` asks of every downstream clone.
 
 This is a **professional work project** under the maker's real name, intended in time to be proposed to Tlon Corporation as paid contract work. "Kaeden," which appears throughout the dated record, was a personal pseudonym; the real name is Keaton Dunsford. See [`context/specs/20260713-235455_keaton-name-and-glow-os-umbrella.md`](context/specs/20260713-235455_keaton-name-and-glow-os-umbrella.md).
 
