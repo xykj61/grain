@@ -34,7 +34,7 @@ Correctness by construction in the kernel becomes trust by construction in the p
 
 ## Local macOS fork (`20260713.201910`)
 
-*A parallel thread to the product roadmap below: this `~/urbit` clone now lives on Kaeden's Mac under a fresh `keatondun@gmail.com` / `xykj61` identity, layered over `urbit/urbit` and `urbit/vere` histories, diverging from the Urbit Foundation on purpose. Pass 1 (repo mechanics, backups, keys, Pacific-time stamp convention) is landed; Pass 2 (macOS ai-jail adaptation, QEMU-vs-Virtualization.framework, Azimuth/Comlink, vere issue migration) is a check-in item — granular boxes in [`TASKS.md`](TASKS.md).*
+*A parallel thread to the product roadmap below: this `~/urbit` clone now lives on Kaeden's Mac under a fresh `keatondun@gmail.com` / `xykj61` identity, layered over `urbit/urbit` and `urbit/vere` histories, diverging from the Urbit Foundation on purpose. **Landed:** Pass 1 repo mechanics + keys + Pacific-time convention; both forges pushed and signature-verified; the macOS ai-jail equivalent (`sandbox-exec` launcher, witnessed green) + setup guide; the design thread — **Glow** named as the fused Rye-Hoon language, four kernel variants (Riyo/Reya/Trey/Triz) proposed, Nock interpreter and Glow TAME supplement scoped, the grain lineage held whole and siloed. **Open (Kaeden's word):** Azimuth/Comlink integration, vere issue migration, the naming/rename decisions, seating the Glow supplement, the native-arm64 parity witness run, and host FileVault. Granular boxes in [`TASKS.md`](TASKS.md).*
 
 ## Now — Fresh sitting (`20260713`)
 

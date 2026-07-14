@@ -1,7 +1,7 @@
 # Tasks — The Granular Plan
 
 **Language:** EN
-**Last updated:** 2026-07-13 (compass align landed · git nib **5c06253**; local macOS fork Pass 1 `20260713.201910`)
+**Last updated:** 2026-07-13 (compass align landed · git nib **5c06253**; local macOS fork Pass 1 `20260713.201910`; Glow/naming/lineage design thread `20260713.233147`)
 
 ## Local macOS fork — Pass 1 landed `20260713.201910`, Pass 2 open
 
@@ -13,7 +13,7 @@
 - [x] Generate a clean `keatondun@gmail.com` ed25519 identity (2 SSH keys + 1 GPG signing key) and wire it into `~/urbit`'s **local** git config (not global — the global `~/.ssh/config` host aliases already belong to a different identity)
 - [x] Add macOS Finder/Spotlight/AppleDouble ignore family to `.gitignore` beside the existing Linux-host `.DS_Store` line; allow-list `old/` and `vere/`
 - [x] Seat a Pacific Time (Reno, NV) stamp convention for this local clone — [`context/specs/20260713-201910_pacific-time-local-clone-convention.md`](../context/specs/20260713-201910_pacific-time-local-clone-convention.md)
-- [ ] **gh CLI auth for `xykj61`** — device-flow login started; Kaeden completing the browser step
+- [x] **gh CLI auth for `xykj61`** — device flow completed; scope refreshed for `admin:public_key`/`write:gpg_key`; used to add keys and verified `gh auth status`
 - [x] Add new SSH/GPG public keys to the `xykj61` GitHub account (via `gh`) and Codeberg account (Kaeden, by hand) — both verified `20260713`–`20260714`
 - [x] Create `xykj61/urbit` on GitHub and Codeberg, point `~/urbit` remotes at them — pushed and signature-verified on both forges at commit `def0d3c7`
 - [x] **Pass 2, study 1** — macOS enclosure (Seatbelt/`sandbox-exec`) and QEMU-vs-`Virtualization.framework` — [`external-research/20260713-202929_macos-enclosure-and-qemu-vs-vz-study.md`](../external-research/20260713-202929_macos-enclosure-and-qemu-vs-vz-study.md); finding: keep QEMU + `-accel hvf` for the existing wire labs (lowest disruption, ARM64-native already), Pond's macOS enclosure wants its own Rye/Rishi SBPL-profile seam (real work, not a horizon) — study only, no lap opened
@@ -32,6 +32,33 @@
 - [ ] Extend `context/specs/enclosure-editors.md` with a macOS section alongside the existing Ubuntu/NixOS ones
 - [ ] Extend `SOURCE.md` Step 6 and Step 9 with a macOS variant path — the guide above stands alone for now; folding it into `SOURCE.md` itself is a small follow-up
 - Session log: [`session-logs/20260713-201910_local-fork-pass1-restructure.bron`](../session-logs/20260713-201910_local-fork-pass1-restructure.bron)
+
+### Glow, kernel-variant naming, and the grain lineage (design thread `20260713`)
+
+*Design and research only — no module renamed, no interpreter or language code written. Every item below is a proposal or a held study awaiting Kaeden's word before anything is seated or built.*
+
+- [x] **Urbit-parallel naming mapping** — every module mapped to a proposed vane / Gall-agent parallel with grep-counted inbound-reference costs; cheapest Skate (10), costliest Rye (1,474) — [`context/specs/20260713-214400_urbit-parallel-naming-mapping-proposal.md`](../context/specs/20260713-214400_urbit-parallel-naming-mapping-proposal.md). **No rename committed; Kaeden reviewing.**
+- [x] **Glow accepted as the fused Rye-Hoon language name** — carries the dormant Glow-Lang project's own mission forward under a TAME-strict implementation — [`context/specs/20260713-225658_glow-accepted-riyo-reya-trey-triz-amended.md`](../context/specs/20260713-225658_glow-accepted-riyo-reya-trey-triz-amended.md)
+- [x] **Four kernel variants named** — one language (Glow, one TAME document), four variants: **Riyo** + **Reya** (explicit diverse-redundant pair), **Trey** + **Triz** (Tera retired for collision). Collision research: Riyo/Trey quiet; Triz a low-stakes TRIZ soft-collision; Reya collides with ReyaChain and this fork's own retired Reya 2 voice.
+- [ ] **Open naming questions (Kaeden's word):** does Trey/Triz mirror Riyo/Reya's diverse redundancy? Does "diverse redundancy" mean two independent codebases or one codebase with two verified paths? Does Reya's double collision rule it out?
+- [x] **Nock interpreter + Glow fusion scoped** — full Nock 4K opcode spec, `%wock`/WASM-Nock bounties named as prior art, and the Hoon-recursion-vs-TAME-bounds tension named with three resolutions — [`external-research/20260713-214400_nock-interpreter-and-rye-hoon-fusion-scoping.md`](../external-research/20260713-214400_nock-interpreter-and-rye-hoon-fusion-scoping.md). **No interpreter code written.**
+- [x] **Glow TAME supplement scoped** — five surfaces (runes, auras, cold/warm atoms, jet witnesses, structs-as-molds, Hoon-grade linting) — [`external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md`](../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md). **Not yet seated into `context/TAME_GUIDANCE.md`.**
+- [ ] **Seat the Glow supplement into `context/TAME_GUIDANCE.md`** — gated on Kaeden's word (heavily-cited file; opens a language family member)
+- [x] **RISC-V/ARM64 shared-IR research** — finding: Zig's own backend already is the shared IR; the real open work is a native-arm64 parity witness run, not a new compiler component — [`external-research/20260713-215200_riscv-arm64-shared-ir-research.md`](../external-research/20260713-215200_riscv-arm64-shared-ir-research.md)
+- [ ] **Prove `parity.rish` green natively on this Mac's arm64** — the witness-run named above; ties to the Rye/Rishi-native macOS sandbox seed
+- [x] **Vere runtime read against TAME + proposed vanes** — `vere/old` C source read directly; Tally=road-allocator is the cleanest fusion candidate; hash-consing is a genuine gap; Dill/Eyre/Lick have no Rye OS analog — [`external-research/20260713-221512_vere-runtime-x-tame-x-proposed-vanes-fusion.md`](../external-research/20260713-221512_vere-runtime-x-tame-x-proposed-vanes-fusion.md)
+- [x] **grep/sed Rishi builtin grant proposals** — Urbit-grants-shaped, literal-string tier, staged into small PRs — [`expanding-prompts/20260713-222100_grep-sed-rishi-grant-proposals.md`](../expanding-prompts/20260713-222100_grep-sed-rishi-grant-proposals.md)
+- [x] **Grain lineage cloned whole + siloed** — six documents held whole in [`gratitude/grain-lineage/`](../gratitude/grain-lineage/README.md); secular module-named silo at [`external-research/grain-lineage-silo/`](../external-research/grain-lineage-silo/README.md)
+
+### Identity, rules, and safety seated this session
+
+- [x] **`PUBKEYS.md`** — fork identity recorded (xykj61 / Keaton Dunsford / keatondun); star `~bandun`, planet `~pacpet-solreb`
+- [x] **New-journey identity marker** — [`context/specs/20260713-222416_new-journey-identity-marker.md`](../context/specs/20260713-222416_new-journey-identity-marker.md)
+- [x] **Root `CONTRIBUTING.md`** — inherits old Urbit strictness, links to `ORGANIZING.md` and the fork's own rules
+- [x] **Always-on rules** — commit-messages (Rio 3 · CONTRIBUTING-style), acme-employee-voice, azimuth-galaxy-proposal-format, placeholder-ship-names (never `@p`-valid), session-logs (Sonnet 5 1M Medium default · host field · Pacific time)
+- [ ] **Kaeden/veganreyklah2 rename audit** — 1,104 files name Kaeden, 122 name veganreyklah2, nearly all in immutable dated docs; **recommendation: the new-journey marker seals history; do not rewrite the dated record.** Awaiting Kaeden's scope decision.
+- [ ] **Host security follow-ups (Kaeden, by hand):** turn on **FileVault** (highest-priority finding — SSH/GPG keys sit on an unencrypted disk); confirm the Application Firewall state — [`context/specs/20260713-211800_local-host-system-hardware-anonymized.md`](../context/specs/20260713-211800_local-host-system-hardware-anonymized.md)
+- [ ] **Self-hosted VPN (WireGuard)** — guide written; setup is Kaeden's own on-a-VPS work when wanted — [`external-research/20260713-212900_self-hosted-vpn-cto-credential-security.md`](../external-research/20260713-212900_self-hosted-vpn-cto-credential-security.md)
 
 ## Now — product nib **430** · suite nib **433** · proven-seat · enclosure A→B · `lane_kvm`
 
