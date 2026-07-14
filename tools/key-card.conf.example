@@ -1,0 +1,25 @@
+# key-card.conf — public identity details for tools/make-key-card.sh.
+#
+# Copy this file to tools/key-card.conf and fill in YOUR values. The real
+# tools/key-card.conf is gitignored; only this .example template is committed,
+# so the SOURCE.md walkthrough works for anyone who clones the repo.
+#
+# Find your fingerprints (see SOURCE.md):
+#   SSH:     ssh-keygen -lf ~/.ssh/your_key.pub     # copy the "SHA256:..." part
+#   OpenPGP: gpg --fingerprint you@example.com      # the spaced 40-hex string
+
+NAME="Your Name"
+HANDLE="youruser"                 # forge handle; shown on the card as @youruser
+EMAIL="you@example.com"
+
+FP_SSH_CODEBERG="SHA256:EXAMPLEexampleCODEBERGsshFINGERPRINTexample00"
+FP_SSH_GITHUB="SHA256:EXAMPLEexampleGITHUBsshFINGERPRINTexampleexa00"
+FP_OPENPGP="0000 0000 0000 0000 0000 0000 0000 0000 0000 0000"
+
+# --- Optional overrides (defaults shown) ---
+# BG="#FF7F00"
+# FG="#444400"
+# LABEL_1="SSH · Codeberg"
+# LABEL_2="SSH · GitHub"
+# LABEL_3="OpenPGP · sign"
+# FOOTER="three public keys · ed25519 ssh + openpgp"

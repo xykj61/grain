@@ -1,0 +1,21 @@
+# mantra_snapshot_wire.rish — I2 snapshot export lap 3: hosted + device Comlink crossing.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/mantra_snapshot_wire.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mantra/bin/snapshot-export-delivery"
+
+let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/snapshot_export_delivery.rye -lc -femit-bin=${bin}"]
+assert build.ok else "snapshot wire delivery build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "snapshot wire selftest exited non-zero"
+assert selftest.out contains "GREEN" else "snapshot wire selftest not GREEN"
+assert selftest.out contains "import and replay GREEN" else "snapshot wire import replay missing"
+
+let device = run ["sh" "comlink/run_snapshot_export_wire_lab.sh"]
+assert device.ok else "snapshot device wire lab failed"
+assert device.out contains "GREEN" else "snapshot device wire lab not GREEN"
+
+say "GREEN: I2 snapshot export lap 3 hosted + device Comlink crossing witness passed."

@@ -1,0 +1,25 @@
+# slcl2_receipt.rish — SLC-L2 sealed delivery witness.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/slcl2_receipt.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/delivery"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/delivery.rye -lc -femit-bin=${bin}"]
+
+assert build.ok else "SLC-L2 delivery build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "SLC-L2 delivery selftest exited non-zero"
+assert selftest.out contains "GREEN" else "SLC-L2 delivery selftest not GREEN"
+
+let demo = run ["sh" "-c" "${bin} demo 2>&1"]
+assert demo.ok else "SLC-L2 delivery demo exited non-zero"
+assert demo.out contains "GREEN" else "SLC-L2 delivery demo not GREEN"
+
+let device = run ["sh" "comlink/run_receipt_wire_lab.sh"]
+assert device.ok else "SLC-L2 device wire lab failed"
+assert device.out contains "GREEN" else "SLC-L2 device wire lab not GREEN"
+
+say "GREEN: SLC-L2 sealed delivery witness passed (hosted + device wire)."

@@ -1,0 +1,14 @@
+# inference_scribble_fence_heading_view.rish — Scribble fence+heading combo → Skate.
+let bin = "pond/bin/drawn-terminal"
+say "build: Scribble fence heading view — drawn-terminal compile"
+let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+assert build.ok else "drawn_terminal build failed for scribble fence heading view"
+assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
+let view = run ["sh" "-c" "${bin} scribblefenceheadingviewtest 2>&1"]
+assert view.ok else "drawn terminal scribblefenceheadingviewtest exited non-zero"
+assert view.out contains "scribble fence heading view" else "fence heading view missing expected output"
+assert view.out contains "GREEN" else "Scribble fence heading view not GREEN"
+assert view.out contains "lines=5" else "fence heading view missing five-line frame"
+assert view.out contains "headings=1" else "fence heading view missing headings=1"
+assert view.out contains "rye=1" else "fence heading view missing rye=1"
+say "GREEN: Scribble fence heading view — fences and heading on one Skate frame."

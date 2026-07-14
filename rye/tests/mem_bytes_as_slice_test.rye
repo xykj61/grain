@@ -1,0 +1,21 @@
+//! Rye test: std.mem.bytesAsSlice — pass 9924.
+//!
+//! Byte slice to typed view; inverse of sliceAsBytes (9926).
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    const bytes = [_]u8{ 0xDE, 0xAD, 0xBE, 0xEF };
+    const words = mem.bytesAsSlice(u16, bytes[0..]);
+    std.debug.assert(words.len == 2);
+    std.debug.assert(mem.sliceAsBytes(words).len == 4);
+    std.debug.assert(mem.eql(u8, mem.sliceAsBytes(words), bytes[0..]));
+
+    std.debug.assert(mem.bytesAsSlice(u16, &[_]u8{}).len == 0);
+
+    const Nothing = struct {};
+    std.debug.assert(mem.bytesAsSlice(Nothing, bytes[0..]).len == 0);
+
+    std.debug.print("rye: mem.bytesAsSlice assertions confirmed.\n", .{});
+}

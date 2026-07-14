@@ -1,0 +1,19 @@
+# inference_anvil_corpus_rish_view.rish — Anvil corpus rish-kind hits → Skate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/inference_anvil_corpus_rish_view.rish
+
+let bin = "pond/bin/drawn-terminal"
+
+say "build: Anvil corpus rish view — drawn-terminal compile"
+let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+assert build.ok else "drawn_terminal build failed for corpus rish view"
+assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
+
+let corpus = run ["sh" "-c" "${bin} corpusrishviewtest 2>&1"]
+assert corpus.ok else "drawn terminal corpusrishviewtest exited non-zero"
+assert corpus.out contains "corpus rish view" else "corpus rish view missing expected output"
+assert corpus.out contains "GREEN" else "Anvil corpus rish view not GREEN"
+assert corpus.out contains "lines=5" else "corpus rish view missing five-line frame"
+
+say "GREEN: Anvil corpus rish view — rish query hits compose a Skate frame."

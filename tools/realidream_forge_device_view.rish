@@ -1,0 +1,20 @@
+# realidream_forge_device_view.rish — Realidream forge device view: virtio fetch → Skate.
+#
+# Folds Amphora device-wire fetch shape (fixture) through SLC-2a. Thin-view family.
+# Run from the repository root:
+#   rishi/bin/rishi run tools/realidream_forge_device_view.rish
+
+let bin = "pond/bin/drawn-terminal"
+
+say "build: Realidream forge device view — drawn-terminal compile"
+let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+assert build.ok else "drawn_terminal build failed for forge device view witness"
+assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
+
+let forge = run ["sh" "-c" "${bin} forgedeviceviewtest 2>&1"]
+assert forge.ok else "drawn terminal forgedeviceviewtest exited non-zero"
+assert forge.out contains "forge device view" else "forge device view witness missing expected output"
+assert forge.out contains "GREEN" else "Realidream forge device view witness not GREEN"
+assert forge.out contains "lines=6" else "forge device view missing six-line frame"
+
+say "GREEN: Realidream forge device view — Amphora device-wire fetch composes a Skate frame."

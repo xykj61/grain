@@ -1,0 +1,89 @@
+# proven_seat_g1_fetch_toolchain.rish — fetch Genode toolchain into the proven-seat cache.
+#
+# Pins the Ubuntu 24.04 prebuilt from Genode's public download page (sha256 from
+# genode.org/download/tool-chain). Extracts under tools/.cache/proven-seat/
+# without sudo — Genode's default /usr/local path is remapped into the cache so
+# CROSS_DEV_PREFIX can point here later. AGPL teacher artifact; never ship-linked.
+#
+# Run from the repository root (Framework host preferred; ~220 MB download):
+#   rishi/bin/rishi run tools/proven_seat_g1_fetch_toolchain.rish
+
+let cache = "tools/.cache/proven-seat"
+let stamp = "25.05"
+let distro = "ubuntu-24.04"
+let ground = "Sculpt 26.04"
+let name = "genode-toolchain-${stamp}-${distro}.tar.xz"
+let url = "https://github.com/genodelabs/genode/releases/download/${stamp}/${name}"
+let expected = "6cab8e5f4490399a296a73b01695d5fb055a40f6ac04d61a3f7a7344003eb739"
+let tarball = "${cache}/${name}"
+let root = "${cache}/genode-toolchain"
+let meta = "${cache}/g1-toolchain-meta.txt"
+
+say "proven-seat G1 fetch: preparing cache…"
+let mkdir = run ["mkdir" "-p" cache]
+assert mkdir.ok else "could not create ${cache}"
+
+say "proven-seat G1 fetch: tarball ${name}…"
+let have_tar = run ["test" "-f" tarball]
+if have_tar.ok == false then say "proven-seat G1 fetch: downloading from GitHub release ${stamp}…"
+if have_tar.ok == false then let dl = run ["curl" "-fL" "--retry" "3" "-o" tarball url]
+if have_tar.ok == false then assert dl.ok
+if have_tar.ok then say "proven-seat G1 fetch: tarball already present — skipping download"
+let have_tar2 = run ["test" "-f" tarball]
+assert have_tar2.ok else "curl download failed — missing ${tarball} from ${url}"
+
+say "proven-seat G1 fetch: verifying sha256…"
+let hash = run ["sha256sum" tarball]
+assert hash.ok else "sha256sum failed"
+assert hash.out contains expected else "toolchain sha256 mismatch (want ${expected} from genode.org/download/tool-chain)"
+say "proven-seat G1 fetch: sha256 matches pinned ${expected}"
+
+say "proven-seat G1 fetch: extracting into ${root} (no sudo; leading / stripped)…"
+let clear = run ["rm" "-rf" root]
+assert clear.ok else "could not clear ${root}"
+let mkroot = run ["mkdir" "-p" root]
+assert mkroot.ok else "could not create ${root}"
+let extract = run ["tar" "-xJf" tarball "-C" root]
+assert extract.ok else "tar extract failed — see ${tarball}"
+
+say "proven-seat G1 fetch: locating genode-x86-g++…"
+let find_cxx = run ["bash" "-c" "find ${root} -type f -name 'genode-x86-g++' 2>/dev/null | head -1"]
+assert find_cxx.ok else "find genode-x86-g++ failed"
+assert find_cxx.out != "" else "genode-x86-g++ not found under ${root} after extract"
+let cxx = trim find_cxx.out
+let bin_dir_run = run ["bash" "-c" "dirname ${cxx}"]
+assert bin_dir_run.ok else "dirname failed"
+let bin_dir = trim bin_dir_run.out
+say "proven-seat G1 fetch: compiler ${cxx}"
+
+let ver = run [cxx "--version"]
+if ver.ok then say "proven-seat G1 fetch: ${ver.out}"
+if ver.ok == false then say "proven-seat G1 fetch: --version non-zero (recorded anyway)"
+
+say "proven-seat G1 fetch: writing ${meta}…"
+# META trio (Claude 201200): toolchain 25.05 · sources 25.05 · ground Sculpt 26.04
+# Prefer echo lines — bash -c with escaped quotes trips Rishi UndefinedName.
+let clear_meta = run ["rm" "-f" meta]
+assert clear_meta.ok else "could not clear ${meta}"
+let w1 = run ["sh" "-c" "echo toolchain ${stamp} > ${meta}"]
+assert w1.ok else "meta write toolchain failed"
+let w2 = run ["sh" "-c" "echo sources see-g1-sources-meta >> ${meta}"]
+assert w2.ok else "meta write sources failed"
+let w3 = run ["sh" "-c" "echo ground ${ground} >> ${meta}"]
+assert w3.ok else "meta write ground failed"
+let w4 = run ["sh" "-c" "echo stamp ${stamp} >> ${meta}"]
+assert w4.ok else "meta write stamp failed"
+let w5 = run ["sh" "-c" "echo distro ${distro} >> ${meta}"]
+assert w5.ok else "meta write distro failed"
+let w6 = run ["sh" "-c" "echo url ${url} >> ${meta}"]
+assert w6.ok else "meta write url failed"
+let w7 = run ["sh" "-c" "echo sha256 ${expected} >> ${meta}"]
+assert w7.ok else "meta write sha256 failed"
+let w8 = run ["sh" "-c" "echo root ${root} >> ${meta}"]
+assert w8.ok else "meta write root failed"
+let w9 = run ["sh" "-c" "echo cross_dev_prefix ${bin_dir}/ >> ${meta}"]
+assert w9.ok else "meta write cross_dev_prefix failed"
+let w10 = run ["sh" "-c" "echo cxx ${cxx} >> ${meta}"]
+assert w10.ok else "meta write cxx failed"
+
+say "GREEN: proven-seat G1 fetch — Genode toolchain ${stamp} (${distro}) in ${root}; CROSS_DEV_PREFIX=${bin_dir}/; META toolchain=${stamp} ground=${ground} (sources pin owned by fetch_sources)"

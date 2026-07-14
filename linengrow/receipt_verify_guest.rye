@@ -1,0 +1,84 @@
+//! linengrow/receipt_verify_guest.rye — Wasm guest for receipt-verify (Seam compile lap).
+//!
+//! Core wasm32-freestanding exports isomorphic to wit/receipt-verify.wit.
+//! Uses receipt_core pinned witness — no filesystem, no WASI.
+//!
+//!   rye build linengrow/receipt_verify_guest.rye -target wasm32-freestanding \
+//!     -fno-entry -rdynamic -OReleaseSmall -femit-bin=linengrow/bin/receipt-verify.wasm
+
+const std = @import("std");
+const assert = std.debug.assert;
+const kumara = @import("kumara.rye");
+const rc = @import("receipt_core.rye");
+const tally_copy = @import("tally_copy.rye");
+
+const guest_version = "20260712.063558";
+
+fn run_verify_witness() error{VerifyFailed, InvalidFact, Overflow, InvalidAmount, InvalidLine}!void {
+    const kp = kumara.keypair_from_seed(&rc.slcl1_seed);
+    var fields: rc.FactFields = undefined;
+    try rc.parse_fact_fields(rc.witness_canonical_fact, &fields);
+
+    var canonical: [rc.max_fact_len]u8 = undefined;
+    const canonical_len = try rc.write_canonical_fact(fields, &canonical);
+    assert(std.mem.eql(u8, canonical[0..canonical_len], rc.witness_canonical_fact));
+
+    const sig = kumara.sign(canonical[0..canonical_len], kp, null);
+
+    var line: [rc.max_line_len]u8 = undefined;
+    const line_len = try rc.format_log_line(sig, canonical[0..canonical_len], &line);
+
+    var log: [rc.max_log_len]u8 = undefined;
+    tally_copy.copy_disjoint(u8, log[0..line_len], line[0..line_len]);
+
+    var sig_buf: [kumara.signature_length]u8 = undefined;
+    var fact_out: [rc.max_fact_len]u8 = undefined;
+    const parsed = try rc.parse_log_line(log[0..line_len], &sig_buf, &fact_out);
+    assert(parsed.sig_len == kumara.signature_length);
+    assert(parsed.fact_len == canonical_len);
+
+    try rc.verify_record(sig_buf[0..parsed.sig_len], fact_out[0..parsed.fact_len], kp.public_key);
+
+    var balance: i64 = 0;
+    try rc.fold_balance_from_facts(fact_out[0..parsed.fact_len], &balance);
+    assert(balance == rc.witness_expected_balance);
+}
+
+/// WIT: verify-witness — 1 = green, 0 = fail.
+export fn verify_witness() i32 {
+    run_verify_witness() catch return 0;
+    return 1;
+}
+
+/// Built-in unwelcome isomorphic to verify-fact with tampered bytes.
+/// Signs the pinned fact, flips one fact byte, expects verify to refuse.
+/// Returns 1 when refuse holds, 0 if tamper wrongly verifies.
+export fn refuse_tampered() i32 {
+    const kp = kumara.keypair_from_seed(&rc.slcl1_seed);
+    var fields: rc.FactFields = undefined;
+    rc.parse_fact_fields(rc.witness_canonical_fact, &fields) catch return 0;
+
+    var canonical: [rc.max_fact_len]u8 = undefined;
+    const canonical_len = rc.write_canonical_fact(fields, &canonical) catch return 0;
+    const sig = kumara.sign(canonical[0..canonical_len], kp, null);
+    const sig_bytes = sig.toBytes();
+
+    var tampered: [rc.max_fact_len]u8 = undefined;
+    tally_copy.copy_disjoint(u8, tampered[0..canonical_len], canonical[0..canonical_len]);
+    // Flip a digit in the amount line — signature no longer matches.
+    var i: u32 = 0;
+    while (i < canonical_len) : (i += 1) {
+        if (tampered[i] == '1' and i + 1 < canonical_len and tampered[i + 1] == '0' and i + 2 < canonical_len and tampered[i + 2] == '0') {
+            tampered[i] = '2';
+            break;
+        }
+    }
+
+    rc.verify_record(&sig_bytes, tampered[0..canonical_len], kp.public_key) catch return 1;
+    return 0;
+}
+
+/// Version stamp bytes for host grepping (optional).
+export fn guest_stamp_len() i32 {
+    return @intCast(guest_version.len);
+}

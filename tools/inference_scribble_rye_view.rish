@@ -1,0 +1,19 @@
+# inference_scribble_rye_view.rish — Scribble rye snippets → Skate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/inference_scribble_rye_view.rish
+
+let bin = "pond/bin/drawn-terminal"
+
+say "build: Scribble rye snippets view — drawn-terminal compile"
+let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+assert build.ok else "drawn_terminal build failed for scribble rye view"
+assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
+
+let view = run ["sh" "-c" "${bin} scribbleryeviewtest 2>&1"]
+assert view.ok else "drawn terminal scribbleryeviewtest exited non-zero"
+assert view.out contains "rye snippets view" else "rye snippets view missing expected output"
+assert view.out contains "GREEN" else "Scribble rye snippets view not GREEN"
+assert view.out contains "lines=5" else "rye snippets view missing five-line frame"
+
+say "GREEN: Scribble rye snippets view — rye fences compose a Skate frame."

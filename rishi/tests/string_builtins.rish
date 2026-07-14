@@ -1,0 +1,22 @@
+# string_builtins.rish — length, trim, and slice.
+
+assert length "hello" == 5 else "length: string failed"
+assert length "" == 0 else "length: empty string failed"
+
+let items = ["a" "b" "c"]
+assert length items == 3 else "length: list failed"
+
+assert trim "  rye  " == "rye" else "trim: basic failed"
+assert trim "no-space" == "no-space" else "trim: no-op failed"
+
+let word = slice "Meet me where the rye grows." 5 7
+assert word == "me" else "slice: basic failed"
+assert slice "abc" 0 0 == "" else "slice: empty range failed"
+assert slice "abc" 1 3 == "bc" else "slice: tail failed"
+
+# compose: trim a slice from interpolated path
+let path = "  /home/xy/veganreyklah2  "
+let inner = trim slice path 2 (length path - 2)
+assert inner == "/home/xy/veganreyklah2" else "slice+trim compose failed"
+
+say "length, trim, and slice held."

@@ -1,0 +1,1994 @@
+//! The `rishi` command-line tool — the shell of the Rye ecosystem.
+//!
+//! Rishi is the shell of the Rye ecosystem: terse for the hand, typed for
+//! safety, a sibling of Rye that shares its value model. It reads a `.rish`
+//! script and runs it directly, supporting line comments; `let` bindings of
+//! strings, integers, booleans, lists, and records; string interpolation, where
+//! `"${expr}"` composes a value into text; `say` (to standard output); comparison
+//! with `==` and `!=`; list membership with `contains`; field access with
+//! `record.field`; running a command with `run`, whose result is a record;
+//! transforming and filtering lists with `map` and `where`; `assert` as a gate
+//! that stops the script and says why when a fact does not hold; integer
+//! arithmetic (`+`, `-`, `*`, `/`) with correct operator precedence;
+//! parenthesized expressions `(expr)` for grouping; and file I/O with
+//! `read-file` (returns file contents as a string), `write-file` (writes a
+//! value to a path), and `list-dir` (returns entry names as a list of strings);
+//! `env` to read the process environment by name (empty string when unset);
+//! pre-bound exit vocabulary (`exit-ok`, `exit-temporary`, `exit-permanent`,
+//! `exit-could-not-begin`) and an `exit` statement for scripts;
+//! `lines` to split a string into a list by newline; `starts-with` and `ends-with`
+//! to check whether a string begins or ends with a given affix; `length` for strings
+//! and lists; `trim` to remove surrounding whitespace; `slice` for bounded substring;
+//! `join` to compose a list of strings with a separator; `if/then/else` for
+//! conditional execution; and `for-each` for iteration with effects. For scripts run
+//! with `rishi run`, a pre-bound `args` list (`.list` of `.string`) holds the words
+//! after the script path, readable with `.len` and `[n]` — no new value kind.
+//! It is the shell that runs
+//! the gate trio (`tools/parity.rish`, `tools/parity-selftest.rish`,
+//! `tools/additive-gate.rish`) and grows toward `examples/pond.rish`
+//! (see `active-designing/20260622-235012_what-we-mean-by-seed.md`).
+//!
+//! Rishi is implemented in Rye and built against Rye's own standard library, so
+//! the language we are growing and the language we build it in are one and the
+//! same — and a value here is, in time, a value there.
+//!
+//! Commands:
+//!   rishi                  Start the interactive REPL (same as `rishi repl`).
+//!   rishi repl               Interactive loop — type, run, with bindings carried forward.
+//!   rishi version            Print the Rishi version.
+//!   rishi run <file.rish>    Read and run a single .rish script.
+
+const std = @import("std");
+const tally_copy = @import("tally_copy.rye");
+const tally_parse_int = @import("parse_int.rye");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+/// Rishi's version, stamped chronologically — YYYYMMDD.HHMMSS, where later is
+/// larger, the same clock Rye keeps. This is Rishi's founding stamp.
+const rishi_version = "20260621.062112";
+
+/// A Rishi value. The kinds — string, integer, boolean, list, record — are the
+/// seed of a model shared with Rye so a value can cross between them without a seam.
+/// One field of a record: a name and the value bound to it.
+const Field = struct { name: []const u8, value: Value };
+
+const Value = union(enum) {
+    string: []const u8,
+    int: i64,
+    boolean: bool,
+    list: []const Value,
+    record: []const Field,
+};
+
+/// Write a value to a file — the shared rendering used by `say`. Write errors
+/// are swallowed; if the file is broken there is nowhere to report them.
+fn write_value_to(value: Value, io: std.Io, file: std.Io.File) void {
+    switch (value) {
+        .string => |s| file.writeStreamingAll(io, s) catch {},
+        .int => |x| {
+            var buf: [24]u8 = undefined;
+            const text = std.fmt.bufPrint(&buf, "{d}", .{x}) catch return;
+            file.writeStreamingAll(io, text) catch {};
+        },
+        .boolean => |b| file.writeStreamingAll(io, if (b) "true" else "false") catch {},
+        .list => |items| {
+            file.writeStreamingAll(io, "[") catch {};
+            for (items, 0..) |item, idx| {
+                if (idx != 0) file.writeStreamingAll(io, " ") catch {};
+                write_value_to(item, io, file);
+            }
+            file.writeStreamingAll(io, "]") catch {};
+        },
+        .record => |fields| {
+            file.writeStreamingAll(io, "{") catch {};
+            for (fields, 0..) |f, idx| {
+                if (idx != 0) file.writeStreamingAll(io, ", ") catch {};
+                var buf: [512]u8 = undefined;
+                const label = std.fmt.bufPrint(&buf, "{s}: ", .{f.name}) catch return;
+                file.writeStreamingAll(io, label) catch {};
+                write_value_to(f.value, io, file);
+            }
+            file.writeStreamingAll(io, "}") catch {};
+        },
+    }
+}
+
+const Binding = struct { name: []const u8, value: Value };
+
+const max_spawn_handles: u32 = 8;
+
+const SpawnSlot = struct {
+    live: bool = false,
+    handle_id: u32 = 0,
+    child: std.process.Child = undefined,
+};
+
+const SpawnRegistry = struct {
+    slots: [max_spawn_handles]SpawnSlot = [_]SpawnSlot{.{}} ** max_spawn_handles,
+
+    fn alloc(self: *SpawnRegistry) !*SpawnSlot {
+        for (&self.slots) |*slot| {
+            if (!slot.live) return slot;
+        }
+        return error.TooManySpawnHandles;
+    }
+
+    fn find(self: *SpawnRegistry, id: u32) ?*SpawnSlot {
+        for (&self.slots) |*slot| {
+            if (slot.live and slot.handle_id == id) return slot;
+        }
+        return null;
+    }
+
+    fn release(slot: *SpawnSlot) void {
+        slot.live = false;
+        slot.handle_id = 0;
+    }
+};
+
+/// A bounded environment of name-to-value bindings. Bounded on purpose: the
+/// limit is stated, so a runaway script meets a clear edge rather than eating
+/// memory without end.
+const ExitSlot = struct {
+    code: ?u8 = null,
+};
+
+pub const Env = struct {
+    items: [256]Binding = undefined,
+    count: u32 = 0,
+    /// Process environment for the `env` builtin — set at REPL and script entry.
+    host_environ: ?*std.process.Environ.Map = null,
+    /// When set, an `exit` statement stores the script's chosen code here.
+    script_exit: ?*ExitSlot = null,
+    spawns: SpawnRegistry = .{},
+    next_spawn_id: u32 = 1,
+
+    fn bind(self: *Env, name: []const u8, value: Value) !void {
+        // invariant: count never exceeds capacity
+        assert(self.count <= self.items.len);
+        // invariant: a binding name is never empty
+        assert(name.len > 0);
+        if (self.count == self.items.len) return error.TooManyBindings;
+        self.items[@intCast(self.count)] = .{ .name = name, .value = value };
+        self.count += 1;
+    }
+
+    /// Look a name up, most-recent binding first, so a later `let` shadows an
+    /// earlier one of the same name.
+    fn lookup(self: *const Env, name: []const u8) ?Value {
+        var i = self.count;
+        while (i > 0) {
+            i -= 1;
+            if (std.mem.eql(u8, self.items[@intCast(i)].name, name)) return self.items[@intCast(i)].value;
+        }
+        return null;
+    }
+};
+
+const max_history: u32 = 50; // recent input lines kept for :history and (Step 3) :recall
+pub const max_transcript_bytes: u32 = 65536; // the session transcript's ceiling, in bytes
+const max_args: u32 = 64; // script argv bound — friendly error past this, not a crash
+const max_session_lines: u32 = 256; // session_lines row bound — named before any projection
+
+/// A bounded lap of the most recent input lines. Bounded on purpose: the
+/// limit is named, so a long session meets a clear edge rather than growing
+/// without end. The oldest line is released when the lap is full.
+pub const History = struct {
+    items: [max_history][]const u8 = undefined,
+    count: u32 = 0,
+
+    fn record(self: *History, line: []const u8) void {
+        assert(self.count <= max_history); // invariant: never past the ceiling
+        if (self.count == max_history) {
+            var i: u32 = 1;
+            while (i < max_history) : (i += 1) self.items[i - 1] = self.items[i];
+            self.items[max_history - 1] = line;
+        } else {
+            self.items[self.count] = line;
+            self.count += 1;
+        }
+        assert(self.count <= max_history); // invariant: still in range
+    }
+};
+
+/// The durable record the weave remembers: prompt, input, and caught errors,
+/// in order, bounded by a named ceiling. Held in memory until :version writes
+/// it whole to .mantra/session.log. Builtin stdout is horizon — not captured.
+///
+/// `full` is set at the first refused append and never cleared within a session,
+/// so a caller above Rishi can see that the ceiling was reached.
+pub const Transcript = struct {
+    bytes: [max_transcript_bytes]u8 = undefined,
+    len: u32 = 0,
+    full: bool = false,
+
+    /// Append text if it fits. Returns false at the edge — the caller then
+    /// invites a :version to checkpoint, rather than wrapping in silence.
+    fn append(self: *Transcript, text: []const u8) bool {
+        assert(self.len <= max_transcript_bytes);
+        assert(text.len <= std.math.maxInt(u32));
+        const add: u32 = @intCast(text.len);
+        if (add > max_transcript_bytes - self.len) return false; // bounded edge
+        const start: usize = @intCast(self.len);
+        const end: usize = @intCast(self.len + add);
+        tally_copy.copy_disjoint(u8, self.bytes[start..end], text);
+        self.len += add;
+        assert(self.len <= max_transcript_bytes);
+        return true;
+    }
+};
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len < 2) {
+        return run_repl(init);
+    }
+
+    const command = args[1];
+    if (std.mem.eql(u8, command, "version")) {
+        print("rishi {s}  (chronological: YYYYMMDD.HHMMSS, later is larger)\n", .{rishi_version});
+        return 0;
+    } else if (std.mem.eql(u8, command, "repl")) {
+        return run_repl(init);
+    } else if (std.mem.eql(u8, command, "run")) {
+        return run_file(init, args);
+    } else if (std.mem.eql(u8, command, "help") or std.mem.eql(u8, command, "--help")) {
+        print_usage();
+        return 0;
+    } else {
+        print("rishi: unknown command '{s}'\n\n", .{command});
+        print_usage();
+        return 2;
+    }
+}
+
+fn print_usage() void {
+    print(
+        \\rishi {s} — the shell of the Rye ecosystem (first version)
+        \\
+        \\usage:
+        \\  rishi                  start the interactive REPL
+        \\  rishi repl             start the interactive REPL
+        \\  rishi version          print the Rishi version
+        \\  rishi run <file.rish>  read and run a single .rish script
+        \\
+    , .{rishi_version});
+}
+
+fn transcript_invite_version() void {
+    print("rishi: session transcript near its bound — type :version to checkpoint\n", .{});
+}
+
+fn transcript_append(transcript: *Transcript, text: []const u8) void {
+    if (!transcript.append(text)) {
+        transcript.full = true;
+        transcript_invite_version();
+    }
+}
+
+fn transcript_append_prompt_line(transcript: *Transcript, line: []const u8) void {
+    transcript_append(transcript, "rishi> ");
+    transcript_append(transcript, line);
+    transcript_append(transcript, "\n");
+}
+
+fn transcript_append_error(transcript: *Transcript, err_name: []const u8) void {
+    transcript_append(transcript, "  error: ");
+    transcript_append(transcript, err_name);
+    transcript_append(transcript, "\n");
+}
+
+fn mantra_bin_path(init: std.process.Init) []const u8 {
+    // RISHI_MANTRA overrides; otherwise "mantra" on PATH (settled ruling).
+    return init.environ_map.get("RISHI_MANTRA") orelse "mantra";
+}
+
+fn run_mantra(garden: std.mem.Allocator, io: std.Io, init: std.process.Init, sub_args: []const []const u8) !std.process.RunResult {
+    const bin = mantra_bin_path(init);
+    const argv = try garden.alloc([]const u8, sub_args.len + 1);
+    argv[0] = bin;
+    for (sub_args, 0..) |arg, i| argv[i + 1] = arg;
+    return std.process.run(garden, io, .{ .argv = argv });
+}
+
+fn run_exited_ok(result: std.process.RunResult) bool {
+    return result.term == .exited and result.term.exited == 0;
+}
+
+fn ensure_mantra_store(garden: std.mem.Allocator, io: std.Io, init: std.process.Init, store_ready: *bool) !void {
+    if (store_ready.*) return;
+    const cwd = std.Io.Dir.cwd();
+    cwd.access(io, ".mantra", .{}) catch |err| switch (err) {
+        error.FileNotFound => {
+            const init_result = try run_mantra(garden, io, init, &.{"init"});
+            if (!run_exited_ok(init_result)) {
+                print("rishi: mantra init failed: {s}\n", .{init_result.stderr});
+                return error.CommandFailed;
+            }
+        },
+        else => return err,
+    };
+    store_ready.* = true;
+}
+
+fn do_version(garden: std.mem.Allocator, io: std.Io, init: std.process.Init, transcript: *const Transcript, store_ready: *bool) !void {
+    try ensure_mantra_store(garden, io, init, store_ready);
+    const cwd = std.Io.Dir.cwd();
+    const data = transcript.bytes[0..@as(usize, @intCast(transcript.len))];
+    try cwd.writeFile(io, .{ .sub_path = ".mantra/session.log", .data = data });
+    const add_result = try run_mantra(garden, io, init, &.{ "add", ".mantra/session.log" });
+    if (run_exited_ok(add_result)) {
+        print("{s}", .{add_result.stdout});
+    } else {
+        const code: i64 = switch (add_result.term) {
+            .exited => |c| @as(i64, c),
+            else => -1,
+        };
+        print("rishi: mantra add failed ({d}): {s}\n", .{ code, add_result.stderr });
+        return error.CommandFailed;
+    }
+}
+
+/// Run one ordinary input line as if freshly typed: record it to the
+/// transcript and the history lap, evaluate it, and report any error.
+/// The shared road for both the prompt and :recall.
+fn run_input_line(
+    garden: std.mem.Allocator,
+    io: std.Io,
+    env: *Env,
+    history: *History,
+    transcript: *Transcript,
+    line: []const u8,
+) !void {
+    transcript_append_prompt_line(transcript, line);
+    const kept = try garden.dupe(u8, line); // the line may point into reused memory; keep our own
+    history.record(kept);
+    eval_statement(garden, io, env, line) catch |err| {
+        if (err == error.AssertionFailed) {
+            // do_assert already named the broken fact.
+        } else if (err != error.ExitRequested) {
+            const err_name = @errorName(err);
+            print("rishi: {s}\n  {s}\n", .{ err_name, line });
+            transcript_append_error(transcript, err_name);
+        }
+    };
+}
+
+/// Re-run history entry *n* (1-based). User input is untrusted — empty lap,
+/// non-numeric, and out-of-range indices meet a friendly message and return.
+fn recall_by_index(
+    garden: std.mem.Allocator,
+    io: std.Io,
+    env: *Env,
+    history: *History,
+    transcript: *Transcript,
+    arg: []const u8,
+) !void {
+    if (history.count == 0) {
+        print("rishi: no history yet to recall\n", .{});
+        return;
+    }
+    const n = tally_parse_int.parse_int(u32, arg, .{}) catch {
+        print("rishi: usage — :recall <n>, where 1 <= n <= {d}\n", .{history.count});
+        return;
+    };
+    if (n < 1 or n > history.count) {
+        print("rishi: :recall out of range — choose 1 to {d}\n", .{history.count});
+        return;
+    }
+    // Capture before re-running: re-recording may shift the lap.
+    const target = history.items[n - 1];
+    try run_input_line(garden, io, env, history, transcript, target);
+}
+
+/// One step signal for a caller driving a session above Rishi.
+pub const StepSignal = enum { advance, quit };
+
+/// Run one input line whole — meta-commands, bang-recall, and plain evaluation.
+/// Returns whether the session should continue or quit cleanly.
+pub fn run_one_input(
+    garden: std.mem.Allocator,
+    io: std.Io,
+    init: std.process.Init,
+    env: *Env,
+    history: *History,
+    transcript: *Transcript,
+    store_ready: *bool,
+    line: []const u8,
+) !StepSignal {
+    if (line.len == 0) return .advance;
+
+    if (line[0] == '!') {
+        transcript_append_prompt_line(transcript, line);
+        const arg = std.mem.trim(u8, line[1..], " \t");
+        try recall_by_index(garden, io, env, history, transcript, arg);
+        return .advance;
+    }
+
+    if (line[0] == ':') {
+        transcript_append_prompt_line(transcript, line);
+        if (std.mem.eql(u8, line, ":quit") or std.mem.eql(u8, line, ":q")) return .quit;
+        if (std.mem.eql(u8, line, ":history")) {
+            if (history.count == 0) print("rishi: no history yet\n", .{});
+            var i: u32 = 0;
+            while (i < history.count) : (i += 1) {
+                print("  {d}  {s}\n", .{ i + 1, history.items[i] });
+            }
+            return .advance;
+        }
+        if (std.mem.eql(u8, line, ":version")) {
+            do_version(garden, io, init, transcript, store_ready) catch |err| {
+                print("rishi: {s}\n", .{@errorName(err)});
+                transcript_append_error(transcript, @errorName(err));
+            };
+            return .advance;
+        }
+        if (std.mem.startsWith(u8, line, ":recall ")) {
+            const arg = std.mem.trim(u8, line[":recall ".len..], " \t");
+            try recall_by_index(garden, io, env, history, transcript, arg);
+            return .advance;
+        }
+        print("rishi: unknown meta-command '{s}'\n", .{line});
+        return .advance;
+    }
+
+    try run_input_line(garden, io, env, history, transcript, line);
+    if (env.script_exit) |slot| {
+        if (slot.code != null) return .quit;
+    }
+    return .advance;
+}
+
+/// Return the trailing `rows` transcript lines as plain string slices, bounded by `rows`.
+pub fn session_lines(
+    transcript: *const Transcript,
+    allocator: std.mem.Allocator,
+    rows: u32,
+) ![][]const u8 {
+    assert(rows > 0);
+    assert(rows <= max_session_lines);
+    const data_len = transcript.len;
+    if (data_len == 0) return try allocator.alloc([]const u8, 0);
+
+    var temp: [max_session_lines][]const u8 = undefined;
+    var collected: u32 = 0;
+    var end: u32 = data_len;
+    while (end > 0 and collected < rows) {
+        var start: u32 = end;
+        while (start > 0 and transcript.bytes[start - 1] != '\n') start -= 1;
+        temp[rows - 1 - collected] = transcript.bytes[start..end];
+        collected += 1;
+        if (start == 0) break;
+        end = start - 1;
+    }
+
+    const out = try allocator.alloc([]const u8, collected);
+    var i: u32 = 0;
+    while (i < collected) : (i += 1) {
+        out[i] = temp[rows - collected + i];
+    }
+    return out;
+}
+
+/// Interactive loop — read a line, evaluate it, carry bindings forward. Meta-
+/// commands begin with `:`; `:quit` ends the session cleanly.
+fn run_repl(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+    var exit_slot: ExitSlot = .{};
+    var env = Env{ .host_environ = init.environ_map, .script_exit = &exit_slot };
+    try bind_exit_vocabulary(&env);
+    var history: History = .{};
+    var transcript: Transcript = .{};
+    var store_ready = false;
+    var stdin_buffer: [4096]u8 = undefined;
+    var file_reader = std.Io.File.Reader.initStreaming(std.Io.File.stdin(), io, &stdin_buffer);
+    const reader = &file_reader.interface;
+
+    while (true) {
+        print("rishi> ", .{});
+        const raw_line = reader.takeDelimiterInclusive('\n') catch |err| switch (err) {
+            error.EndOfStream => return 0,
+            else => return 1,
+        };
+        const line = std.mem.trim(u8, raw_line, " \t\r\n");
+        if (line.len == 0) continue;
+
+        const signal = try run_one_input(garden, io, init, &env, &history, &transcript, &store_ready, line);
+        if (signal == .quit) return exit_slot.code orelse 0;
+    }
+}
+
+fn run_file(init: std.process.Init, args: []const [:0]const u8) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+
+    if (args.len < 3) {
+        print("rishi run: expected a .rish file\n", .{});
+        return 2;
+    }
+    const path = args[2];
+
+    // A `.rish` script is required; reject the negative space plainly.
+    if (!std.mem.endsWith(u8, path, ".rish")) {
+        print("rishi run: script must end with .rish, got '{s}'\n", .{path});
+        return 2;
+    }
+
+    const dir = std.Io.Dir.cwd();
+    const source = dir.readFileAlloc(io, path, garden, .unlimited) catch |err| {
+        print("rishi run: could not read '{s}': {s}\n", .{ path, @errorName(err) });
+        return 1;
+    };
+
+    var exit_slot: ExitSlot = .{};
+    var env = Env{ .host_environ = init.environ_map, .script_exit = &exit_slot };
+    try bind_exit_vocabulary(&env);
+    bind_script_args(garden, &env, args[3..]) catch |err| switch (err) {
+        error.TooManyScriptArgs => {
+            print("rishi run: too many arguments (max {d})\n", .{max_args});
+            return 2;
+        },
+        else => return err,
+    };
+
+    return interpret(garden, io, &env, source);
+}
+
+/// Pre-bind `args` as a `.list` of `.string` — the words after the script path.
+/// Each argument is duped into the garden; the process argv seam uses assert +
+/// `@intCast` at the count boundary. RS-1 adds no new value kind.
+fn bind_script_args(allocator: std.mem.Allocator, env: *Env, script_args: []const [:0]const u8) !void {
+    assert(script_args.len <= std.math.maxInt(u32));
+    const count: u32 = @intCast(script_args.len);
+    if (count > max_args) return error.TooManyScriptArgs;
+    const items = try allocator.alloc(Value, count);
+    for (script_args, 0..) |arg, i| {
+        const owned = try allocator.dupe(u8, arg);
+        items[i] = .{ .string = owned };
+    }
+    try env.bind("args", .{ .list = items });
+}
+
+/// Pre-bind the Caravan-facing exit vocabulary — execline/s6 lineage values
+/// scripts may return through `exit`. Each name is an integer binding.
+fn bind_exit_vocabulary(env: *Env) !void {
+    try env.bind("exit-ok", .{ .int = 0 });
+    try env.bind("exit-temporary", .{ .int = 112 });
+    try env.bind("exit-permanent", .{ .int = 111 });
+    try env.bind("exit-could-not-begin", .{ .int = 125 });
+}
+
+/// Run a Rishi script, line by line. Returns 0 when the whole script runs, or 1
+/// at the first line that does not make sense — named with its line number, so
+/// the trouble is easy to find.
+fn interpret(allocator: std.mem.Allocator, io: std.Io, env: *Env, source: []const u8) u8 {
+    var line_no: u32 = 0;
+    var lines = std.mem.splitScalar(u8, source, '\n');
+    while (lines.next()) |raw| {
+        line_no += 1;
+        const line = std.mem.trim(u8, raw, " \t\r\n");
+        if (line.len == 0 or line[0] == '#') continue;
+        eval_statement(allocator, io, env, line) catch |err| {
+            if (err == error.ExitRequested) {
+                if (env.script_exit) |slot| return slot.code orelse 0;
+                return 0;
+            }
+            if (err == error.AssertionFailed) {
+                // do_assert already named the broken fact; add where it broke.
+                print("  at line {d}: {s}\n", .{ line_no, line });
+            } else if (err == error.ListIndexOutOfRange) {
+                print("rishi: list index out of range\n", .{});
+                print("  at line {d}: {s}\n", .{ line_no, line });
+            } else if (err == error.FlagNotFound) {
+                print("rishi: flag not found in args\n", .{});
+                print("  at line {d}: {s}\n", .{ line_no, line });
+            } else if (err == error.FlagNeedsValue) {
+                print("rishi: flag requires a value\n", .{});
+                print("  at line {d}: {s}\n", .{ line_no, line });
+            } else {
+                print("rishi: line {d}: {s}\n  {s}\n", .{ line_no, @errorName(err), line });
+            }
+            return 1;
+        };
+    }
+    return 0;
+}
+
+fn eval_statement(allocator: std.mem.Allocator, io: std.Io, env: *Env, line: []const u8) !void {
+    if (std.mem.startsWith(u8, line, "let ")) {
+        const rest = std.mem.trim(u8, line[4..], " \t");
+        const eq = std.mem.indexOfScalar(u8, rest, '=') orelse return error.LetNeedsEquals;
+        const name = std.mem.trim(u8, rest[0..eq], " \t");
+        const valstr = std.mem.trim(u8, rest[eq + 1 ..], " \t");
+        if (name.len == 0) return error.LetNeedsName;
+        try env.bind(name, try eval_expr(allocator, io, env, valstr));
+    } else if (std.mem.startsWith(u8, line, "say ")) {
+        try do_say(allocator, io, env, std.mem.trim(u8, line[4..], " \t"));
+    } else if (std.mem.startsWith(u8, line, "assert ")) {
+        try do_assert(allocator, io, env, std.mem.trim(u8, line[7..], " \t"));
+    } else if (std.mem.startsWith(u8, line, "write-file ")) {
+        try do_write_file(allocator, io, env, std.mem.trim(u8, line[11..], " \t"));
+    } else if (std.mem.startsWith(u8, line, "if ")) {
+        try do_if(allocator, io, env, std.mem.trim(u8, line[3..], " \t"));
+    } else if (std.mem.startsWith(u8, line, "for-each ")) {
+        try do_for_each(allocator, io, env, std.mem.trim(u8, line[9..], " \t"));
+    } else if (std.mem.startsWith(u8, line, "exit ")) {
+        try do_exit(allocator, io, env, std.mem.trim(u8, line[5..], " \t"));
+    } else {
+        return error.UnknownStatement;
+    }
+}
+
+/// The errors the evaluator can raise. Named explicitly so eval_operand and
+/// parse_list may call each other — a list holds values, and a value may be a
+/// list — without the compiler chasing an inferred error set around in a circle.
+const EvalError = error{
+    ExpectedValue,
+    UndefinedName,
+    ContainsNeedsListOrString,
+    ContainsNeedsString,
+    ListTooLong,
+    RecordTooLong,
+    FieldNeedsColon,
+    NoSuchField,
+    NotARecord,
+    RunNeedsList,
+    RunNeedsCommand,
+    RunArgsMustBeStrings,
+    CommandFailed,
+    PipelineNeedsAs,
+    PipelineNeedsColon,
+    PipelineNeedsName,
+    PipelineNeedsList,
+    WhereNeedsBool,
+    ArithNeedsInt,
+    DivisionByZero,
+    FilePathNeedsString,
+    EnvNeedsString,
+    ReadFileFailed,
+    ListDirFailed,
+    LinesNeedsString,
+    StartsWithNeedsString,
+    EndsWithNeedsString,
+    IndexOfNeedsString,
+    LengthNeedsStringOrList,
+    FlagNeedsList,
+    FlagNeedsName,
+    FlagNeedsString,
+    FlagNeedsStringElements,
+    FlagNotFound,
+    FlagNeedsValue,
+    TrimNeedsString,
+    SliceNeedsString,
+    SliceNeedsInt,
+    SliceOutOfRange,
+    JoinNeedsList,
+    JoinNeedsString,
+    JoinNeedsStringElements,
+    SplitNeedsString,
+    SplitEmptySeparator,
+    TooManyBindings,
+    TooManyScriptArgs,
+    ListIndexNeedsList,
+    ListIndexNeedsInt,
+    ListIndexOutOfRange,
+    StringTooLong,
+    UnterminatedInterpolation,
+    OutOfMemory,
+    ExitRequested,
+    ExitNeedsInt,
+    ExitOutOfRange,
+    TooManySpawnHandles,
+    WaitForUnknownHandle,
+};
+
+/// Evaluate an expression: an operand, two operands compared with `==`/`!=`, or a
+/// `<list> contains <value>` membership test — each comparison yielding a boolean.
+/// An operator is found outside any quoted string, so one woven into `"text"`
+/// stays text.
+fn eval_expr(allocator: std.mem.Allocator, io: std.Io, env: *Env, text: []const u8) EvalError!Value {
+    // `run <list>` executes a command and hands back its result as a record.
+    const trimmed = std.mem.trim(u8, text, " \t");
+    if (std.mem.startsWith(u8, trimmed, "spawn ")) {
+        return do_spawn(allocator, io, env, trimmed[6..]);
+    }
+    if (std.mem.startsWith(u8, trimmed, "wait-for ")) {
+        return do_wait_for(allocator, io, env, trimmed[9..]);
+    }
+    if (std.mem.startsWith(u8, trimmed, "run ")) {
+        return do_run(allocator, io, env, trimmed[4..]);
+    }
+    if (std.mem.startsWith(u8, trimmed, "env ")) {
+        return do_env(allocator, io, env, trimmed[4..]);
+    }
+    // File I/O expressions — each evaluates a path and returns a value.
+    if (std.mem.startsWith(u8, trimmed, "read-file ")) {
+        return do_read_file(allocator, io, env, trimmed[10..]);
+    }
+    if (std.mem.startsWith(u8, trimmed, "list-dir ")) {
+        return do_list_dir(allocator, io, env, trimmed[9..]);
+    }
+    // `map <list> as <name>: <expr>` transforms each element; `where … ` keeps the
+    // elements whose predicate holds. Checked before the operators below, so a
+    // comparison in the body stays part of the body.
+    if (std.mem.startsWith(u8, trimmed, "map ")) {
+        return do_pipeline(allocator, io, env, trimmed[4..], .transform);
+    }
+    if (std.mem.startsWith(u8, trimmed, "where ")) {
+        return do_pipeline(allocator, io, env, trimmed[6..], .filter);
+    }
+    // Top-level `==` / `!=` before infix word operators, so a needle never
+    // absorbs the comparison. Each arm recurses through eval_expr so infix
+    // builtins, prefix builtins, and arithmetic all parse on the same arm.
+    if (find_comparison(text)) |cmp| {
+        const left = try eval_expr(allocator, io, env, std.mem.trim(u8, cmp.left, " \t"));
+        const right = try eval_expr(allocator, io, env, std.mem.trim(u8, cmp.right, " \t"));
+        const equal = values_equal(left, right);
+        return .{ .boolean = if (cmp.op == .ne) !equal else equal };
+    }
+    // `<string> starts-with <prefix>` checks whether a string begins with a prefix.
+    if (find_word_op(text, " starts-with ")) |idx| {
+        const haystack = try eval_expr(allocator, io, env, text[0..@intCast(idx)]);
+        const needle = try eval_expr(allocator, io, env, text[@intCast(idx + 13)..]);
+        const str = switch (haystack) {
+            .string => |s| s,
+            else => return error.StartsWithNeedsString,
+        };
+        const prefix = switch (needle) {
+            .string => |s| s,
+            else => return error.StartsWithNeedsString,
+        };
+        return .{ .boolean = std.mem.startsWith(u8, str, prefix) };
+    }
+    // `<string> ends-with <suffix>` checks whether a string ends with a suffix.
+    if (find_word_op(text, " ends-with ")) |idx| {
+        const haystack = try eval_expr(allocator, io, env, text[0..@intCast(idx)]);
+        const needle = try eval_expr(allocator, io, env, text[@intCast(idx + 11)..]);
+        const str = switch (haystack) {
+            .string => |s| s,
+            else => return error.EndsWithNeedsString,
+        };
+        const suffix = switch (needle) {
+            .string => |s| s,
+            else => return error.EndsWithNeedsString,
+        };
+        return .{ .boolean = std.mem.endsWith(u8, str, suffix) };
+    }
+    // `<string> index-of <needle>` — first byte index, or -1 when absent.
+    if (find_word_op(text, " index-of ")) |idx| {
+        const haystack = try eval_expr(allocator, io, env, text[0..@intCast(idx)]);
+        const needle = try eval_expr(allocator, io, env, text[@intCast(idx + 10)..]);
+        const str = switch (haystack) {
+            .string => |s| s,
+            else => return error.IndexOfNeedsString,
+        };
+        const sub = switch (needle) {
+            .string => |s| s,
+            else => return error.IndexOfNeedsString,
+        };
+        const found = std.mem.indexOf(u8, str, sub) orelse return .{ .int = -1 };
+        return .{ .int = @intCast(found) };
+    }
+    // `<list> contains <value>` or `<string> contains <substring>` — membership test.
+    if (find_word_op(text, " contains ")) |idx| {
+        const haystack = try eval_expr(allocator, io, env, text[0..@intCast(idx)]);
+        const needle = try eval_expr(allocator, io, env, text[@intCast(idx + 10)..]);
+        return switch (haystack) {
+            .list => |items| {
+                for (items) |item| {
+                    if (values_equal(item, needle)) return .{ .boolean = true };
+                }
+                return .{ .boolean = false };
+            },
+            .string => |str| {
+                const sub = switch (needle) {
+                    .string => |s| s,
+                    else => return error.ContainsNeedsString,
+                };
+                return .{ .boolean = std.mem.indexOf(u8, str, sub) != null };
+            },
+            else => error.ContainsNeedsListOrString,
+        };
+    }
+    // Unary string builtins — after comparison and infix ops.
+    if (std.mem.startsWith(u8, trimmed, "lines ")) {
+        return do_lines(allocator, io, env, trimmed[6..]);
+    }
+    if (std.mem.startsWith(u8, trimmed, "length ")) {
+        return do_length(allocator, io, env, trimmed[7..]);
+    }
+    if (std.mem.startsWith(u8, trimmed, "flag ")) {
+        return do_flag(allocator, io, env, trimmed[5..]);
+    }
+    if (std.mem.startsWith(u8, trimmed, "trim ")) {
+        return do_trim(allocator, io, env, trimmed[5..]);
+    }
+    if (std.mem.startsWith(u8, trimmed, "slice ")) {
+        return do_slice(allocator, io, env, trimmed[6..]);
+    }
+    if (std.mem.startsWith(u8, trimmed, "join ")) {
+        return do_join(allocator, io, env, trimmed[5..]);
+    }
+    if (std.mem.startsWith(u8, trimmed, "split ")) {
+        return do_split(allocator, io, env, trimmed[6..]);
+    }
+    return eval_add_sub(allocator, io, env, text);
+}
+
+/// True when `c` is an ASCII letter — used to distinguish word hyphens from `-`.
+fn is_ident_letter(c: u8) bool {
+    return (c >= 'a' and c <= 'z') or (c >= 'A' and c <= 'Z');
+}
+
+/// True when `-` at `i` joins two letters (`index-of`, `starts-with`), not `3-5`.
+fn is_word_hyphen(text: []const u8, i: u32) bool {
+    if (i == 0 or i + 1 >= text.len or text[@intCast(i)] != '-') return false;
+    return is_ident_letter(text[@intCast(i - 1)]) and is_ident_letter(text[@intCast(i + 1)]);
+}
+
+/// Find the rightmost top-level `+` or `-` that is a binary operator — one
+/// with a non-empty, non-operator left operand. A leading `-` (negative number)
+/// is not a binary operator. Returns the index of the operator character.
+fn find_last_arith_add(text: []const u8) ?u32 {
+    var result: ?u32 = null;
+    var in_quote = false;
+    var depth: u32 = 0;
+    for (text, 0..) |c, i| {
+        if (c == '"') {
+            in_quote = !in_quote;
+        } else if (in_quote) {
+            // inside a string: ignore all structure
+        } else if (c == '[' or c == '{' or c == '(' or c == '(') {
+            depth += 1;
+        } else if ((c == ']' or c == '}' or c == ')' or c == ')') and depth > 0) {
+            depth -= 1;
+        } else if (depth == 0 and (c == '+' or c == '-')) {
+            // Hyphens inside word operators (`index-of`) are not subtraction.
+            if (c == '-' and is_word_hyphen(text, @intCast(i))) continue;
+            // Binary only when the trimmed left side is non-empty and ends
+            // with a value token, not another operator.
+            const before = std.mem.trimEnd(u8, text[0..i], " \t");
+            if (before.len > 0) {
+                const last = before[before.len - 1];
+                if (last != '+' and last != '-' and last != '*' and last != '/') {
+                    result = @intCast(i);
+                }
+            }
+        }
+    }
+    return result;
+}
+
+/// Find the rightmost top-level `*` or `/`. Every occurrence is binary.
+fn find_last_arith_mul(text: []const u8) ?u32 {
+    var result: ?u32 = null;
+    var in_quote = false;
+    var depth: u32 = 0;
+    for (text, 0..) |c, i| {
+        if (c == '"') {
+            in_quote = !in_quote;
+        } else if (in_quote) {
+        } else if (c == '[' or c == '{' or c == '(' or c == '(') {
+            depth += 1;
+        } else if ((c == ']' or c == '}' or c == ')' or c == ')') and depth > 0) {
+            depth -= 1;
+        } else if (depth == 0 and (c == '*' or c == '/')) {
+            result = @intCast(i);
+        }
+    }
+    return result;
+}
+
+/// Additive layer: handles `+` and `-` with lower precedence than `*`/`/`.
+/// Left-associative: scanning for the rightmost operator, left arm recurses
+/// through additive, right arm through multiplicative.
+fn eval_add_sub(allocator: std.mem.Allocator, io: std.Io, env: *Env, text: []const u8) EvalError!Value {
+    if (find_last_arith_add(text)) |idx| {
+        const op = text[@intCast(idx)];
+        const left = try eval_add_sub(allocator, io, env, text[0..@intCast(idx)]);
+        const right = try eval_mul_div(allocator, io, env, text[@intCast(idx + 1)..]);
+        const a = switch (left) {
+            .int => |x| x,
+            else => return error.ArithNeedsInt,
+        };
+        const b = switch (right) {
+            .int => |x| x,
+            else => return error.ArithNeedsInt,
+        };
+        return .{ .int = if (op == '+') a + b else a - b };
+    }
+    return eval_mul_div(allocator, io, env, text);
+}
+
+/// Multiplicative layer: handles `*` and `/` with higher precedence than `+`/`-`.
+fn eval_mul_div(allocator: std.mem.Allocator, io: std.Io, env: *Env, text: []const u8) EvalError!Value {
+    if (find_last_arith_mul(text)) |idx| {
+        const op = text[@intCast(idx)];
+        const left = try eval_mul_div(allocator, io, env, text[0..@intCast(idx)]);
+        const right = try eval_operand(allocator, io, env, text[@intCast(idx + 1)..]);
+        const a = switch (left) {
+            .int => |x| x,
+            else => return error.ArithNeedsInt,
+        };
+        const b = switch (right) {
+            .int => |x| x,
+            else => return error.ArithNeedsInt,
+        };
+        if (op == '/' and b == 0) return error.DivisionByZero;
+        return .{ .int = if (op == '*') a * b else @divTrunc(a, b) };
+    }
+    return eval_operand(allocator, io, env, text);
+}
+
+fn argv_from_list(allocator: std.mem.Allocator, items: []const Value) EvalError![]const []const u8 {
+    if (items.len == 0) return error.RunNeedsCommand;
+    const argv = try allocator.alloc([]const u8, items.len);
+    assert(argv.len == items.len);
+    for (items, 0..) |item, idx| {
+        argv[idx] = switch (item) {
+            .string => |s| s,
+            else => return error.RunArgsMustBeStrings,
+        };
+    }
+    return argv;
+}
+
+fn run_result_record(allocator: std.mem.Allocator, result: std.process.RunResult) EvalError!Value {
+    const code: i64 = switch (result.term) {
+        .exited => |c| @as(i64, c),
+        else => -1,
+    };
+    const fields = try allocator.alloc(Field, 4);
+    assert(fields.len == 4);
+    fields[0] = .{ .name = "out", .value = .{ .string = result.stdout } };
+    fields[1] = .{ .name = "err", .value = .{ .string = result.stderr } };
+    fields[2] = .{ .name = "code", .value = .{ .int = code } };
+    fields[3] = .{ .name = "ok", .value = .{ .boolean = code == 0 } };
+    return .{ .record = fields };
+}
+
+fn capture_running_child(allocator: std.mem.Allocator, io: std.Io, child: *std.process.Child) EvalError!std.process.RunResult {
+    const stdout_file = child.stdout orelse return error.CommandFailed;
+    const stderr_file = child.stderr orelse return error.CommandFailed;
+
+    var multi_reader_buffer: std.Io.File.MultiReader.Buffer(2) = undefined;
+    var multi_reader: std.Io.File.MultiReader = undefined;
+    multi_reader.init(allocator, io, multi_reader_buffer.toStreams(), &.{ stdout_file, stderr_file });
+    defer multi_reader.deinit();
+
+    while (multi_reader.fill(64, .none)) |_| {} else |err| switch (err) {
+        error.EndOfStream => {},
+        else => return error.CommandFailed,
+    }
+    multi_reader.checkAnyError() catch return error.CommandFailed;
+
+    const term = child.wait(io) catch return error.CommandFailed;
+
+    const stdout_slice = multi_reader.toOwnedSlice(0) catch return error.OutOfMemory;
+    errdefer allocator.free(stdout_slice);
+    const stderr_slice = multi_reader.toOwnedSlice(1) catch return error.OutOfMemory;
+    errdefer allocator.free(stderr_slice);
+
+    return .{ .term = term, .stdout = stdout_slice, .stderr = stderr_slice };
+}
+
+fn spawn_handle_id(handle_value: Value) EvalError!u32 {
+    return switch (handle_value) {
+        .int => |n| {
+            if (n < 0) return error.WaitForUnknownHandle;
+            return @intCast(n);
+        },
+        .record => |fields| {
+            const id_value = find_field(fields, "id") orelse return error.WaitForUnknownHandle;
+            return switch (id_value) {
+                .int => |n| {
+                    if (n < 0) return error.WaitForUnknownHandle;
+                    return @intCast(n);
+                },
+                else => error.WaitForUnknownHandle,
+            };
+        },
+        else => error.WaitForUnknownHandle,
+    };
+}
+
+/// `spawn <list>` starts a command without waiting — returns `{id, pid}`.
+fn do_spawn(allocator: std.mem.Allocator, io: std.Io, env: *Env, argv_text: []const u8) EvalError!Value {
+    const argv_value = try eval_expr(allocator, io, env, argv_text);
+    const items = switch (argv_value) {
+        .list => |l| l,
+        else => return error.RunNeedsList,
+    };
+    const argv = try argv_from_list(allocator, items);
+    const child = std.process.spawn(io, .{
+        .argv = argv,
+        .stdin = .ignore,
+        .stdout = .pipe,
+        .stderr = .pipe,
+    }) catch return error.CommandFailed;
+
+    const slot = try env.spawns.alloc();
+    const id = env.next_spawn_id;
+    env.next_spawn_id += 1;
+    slot.live = true;
+    slot.handle_id = id;
+    slot.child = child;
+
+    var pid_val: i64 = -1;
+    if (slot.child.id) |pid| pid_val = @intCast(pid);
+
+    const fields = try allocator.alloc(Field, 2);
+    assert(fields.len == 2);
+    fields[0] = .{ .name = "id", .value = .{ .int = @intCast(id) } };
+    fields[1] = .{ .name = "pid", .value = .{ .int = pid_val } };
+    return .{ .record = fields };
+}
+
+/// `wait-for <handle>` waits on a prior `spawn` handle and returns `{out, err, code, ok}`.
+fn do_wait_for(allocator: std.mem.Allocator, io: std.Io, env: *Env, handle_text: []const u8) EvalError!Value {
+    const handle_value = try eval_expr(allocator, io, env, handle_text);
+    const id = try spawn_handle_id(handle_value);
+    const slot = env.spawns.find(id) orelse return error.WaitForUnknownHandle;
+    const result = try capture_running_child(allocator, io, &slot.child);
+    SpawnRegistry.release(slot);
+    return run_result_record(allocator, result);
+}
+
+/// `run <list>` executes a command — the list's strings as argv — and returns a
+/// record of the result: `out` and `err` (the captured text), `code` (the exit
+/// status), and `ok` (true when the code is zero). A command that runs and exits
+/// non-zero is an ordinary result; only a command that cannot be spawned at all
+/// stops the script.
+fn do_run(allocator: std.mem.Allocator, io: std.Io, env: *Env, argv_text: []const u8) EvalError!Value {
+    const argv_value = try eval_expr(allocator, io, env, argv_text);
+    const items = switch (argv_value) {
+        .list => |l| l,
+        else => return error.RunNeedsList,
+    };
+    const argv = try argv_from_list(allocator, items);
+
+    const result = std.process.run(allocator, io, .{ .argv = argv }) catch return error.CommandFailed;
+    return run_result_record(allocator, result);
+}
+
+/// `env <name-expr>` reads one process environment variable by name. When the
+/// name is unset, the empty string is returned — the same honest absence a
+/// missing binding would show, without stopping the script.
+fn do_env(allocator: std.mem.Allocator, io: std.Io, env: *Env, arg: []const u8) EvalError!Value {
+    const name_value = try eval_expr(allocator, io, env, arg);
+    const name = switch (name_value) {
+        .string => |s| s,
+        else => return error.EnvNeedsString,
+    };
+    assert(name.len > 0);
+    if (env.host_environ) |environ| {
+        if (environ.get(name)) |val| {
+            const owned = try allocator.dupe(u8, val);
+            return .{ .string = owned };
+        }
+    }
+    return .{ .string = try allocator.dupe(u8, "") };
+}
+
+/// `read-file <path-expr>` reads a file and returns its contents as a string.
+/// The path is evaluated to a string; the file is read from the current working
+/// directory. A file that cannot be read stops the script with ReadFileFailed.
+fn do_read_file(allocator: std.mem.Allocator, io: std.Io, env: *Env, arg: []const u8) EvalError!Value {
+    const path_value = try eval_expr(allocator, io, env, arg);
+    const path = switch (path_value) {
+        .string => |s| s,
+        else => return error.FilePathNeedsString,
+    };
+    // invariant: a file path is never empty — empty paths are always a caller error
+    assert(path.len > 0);
+    // invariant: path is sentinel-terminated for the OS boundary
+    const z_path = std.fmt.allocPrint(allocator, "{s}", .{path}) catch return error.OutOfMemory;
+    const dir = std.Io.Dir.cwd();
+    const content = dir.readFileAlloc(io, z_path, allocator, .unlimited) catch return error.ReadFileFailed;
+    return .{ .string = content };
+}
+
+/// `list-dir <path-expr>` lists all entries in a directory and returns their
+/// names as a list of strings. The path is evaluated to a string; the directory
+/// is opened from the current working directory. Entry count is bounded at 256.
+fn do_list_dir(allocator: std.mem.Allocator, io: std.Io, env: *Env, arg: []const u8) EvalError!Value {
+    const path_value = try eval_expr(allocator, io, env, arg);
+    const path = switch (path_value) {
+        .string => |s| s,
+        else => return error.FilePathNeedsString,
+    };
+    // invariant: a directory path is never empty
+    assert(path.len > 0);
+    const z_path = std.fmt.allocPrint(allocator, "{s}", .{path}) catch return error.OutOfMemory;
+    const cwd = std.Io.Dir.cwd();
+    const dir = cwd.openDir(io, z_path, .{ .iterate = true }) catch return error.ListDirFailed;
+    var it = dir.iterate();
+    // invariant: at most 256 entries — bounded to prevent runaway iteration
+    var names: [256]Value = undefined;
+    var count: u32 = 0;
+    while (true) {
+        const maybe_entry = it.next(io) catch return error.ListDirFailed;
+        const entry = maybe_entry orelse break;
+        if (count == names.len) return error.ListTooLong;
+        // invariant: entry name from the OS is never empty (asserted in Dir.iterate)
+        assert(entry.name.len > 0);
+        names[@intCast(count)] = .{ .string = allocator.dupe(u8, entry.name) catch return error.OutOfMemory };
+        count += 1;
+    }
+    // postcondition: count is bounded by the static array
+    assert(count <= names.len);
+    return .{ .list = allocator.dupe(Value, names[0..@intCast(count)]) catch return error.OutOfMemory };
+}
+
+/// `write-file <path-expr> <value-expr>` writes a value to a file. The first
+/// operand is the path (a string); the rest is the content expression. The value
+/// is rendered to text (the same rendering `say` uses) and written to the file,
+/// creating or truncating it.
+fn do_write_file(allocator: std.mem.Allocator, io: std.Io, env: *Env, rest: []const u8) !void {
+    // First operand is the path; everything after is the content expression.
+    var tok = TokenIter{ .text = rest };
+    const path_token = tok.next() orelse return error.WriteFileNeedsPath;
+    const path_value = try eval_operand(allocator, io, env, path_token);
+    const path = switch (path_value) {
+        .string => |s| s,
+        else => return error.FilePathNeedsString,
+    };
+    // invariant: a file path is never empty
+    assert(path.len > 0);
+    // invariant: token iterator position is within the source
+    assert(tok.i <= @as(u32, @intCast(rest.len)));
+    const content_text = std.mem.trim(u8, rest[@intCast(tok.i)..], " \t");
+    if (content_text.len == 0) return error.WriteFileNeedsContent;
+    const content_value = try eval_expr(allocator, io, env, content_text);
+    // Render the value to a byte buffer.
+    var sb = StrBuf{};
+    try sb.append_value(content_value);
+    // postcondition: rendered content fits within the bounded buffer
+    assert(sb.len <= sb.bytes.len);
+    // invariant: path is sentinel-terminated for the OS boundary
+    const z_path = std.fmt.allocPrint(allocator, "{s}", .{path}) catch return error.OutOfMemory;
+    const dir = std.Io.Dir.cwd();
+    dir.writeFile(io, .{ .sub_path = z_path, .data = sb.bytes[0..@intCast(sb.len)] }) catch return error.WriteFileFailed;
+}
+
+/// `if <condition> then <statement>` — conditional execution.
+/// `if <condition> then <statement> else <statement>` — conditional with fallback.
+/// The condition must evaluate to a boolean. The then/else arms are full
+/// statements (let, say, assert, write-file, if, for-each). The `if` shares
+/// the parent's environment, so a `let` inside `if` is visible afterward.
+fn do_if(allocator: std.mem.Allocator, io: std.Io, env: *Env, rest: []const u8) anyerror!void {
+    const then_idx = find_word_op(rest, " then ") orelse return error.IfNeedsThen;
+    const condition_text = std.mem.trim(u8, rest[0..@intCast(then_idx)], " \t");
+    const then_rest = std.mem.trim(u8, rest[@intCast(then_idx + 6)..], " \t");
+
+    // invariant: condition text is non-empty
+    assert(condition_text.len > 0);
+
+    const cond_value = try eval_expr(allocator, io, env, condition_text);
+    const holds = switch (cond_value) {
+        .boolean => |b| b,
+        else => return error.IfNeedsBool,
+    };
+
+    // Check for an else arm — find " else " at the top level in the then_rest.
+    if (find_word_op(then_rest, " else ")) |else_idx| {
+        const then_stmt = std.mem.trim(u8, then_rest[0..@intCast(else_idx)], " \t");
+        const else_stmt = std.mem.trim(u8, then_rest[@intCast(else_idx + 6)..], " \t");
+        if (holds) {
+            try eval_statement(allocator, io, env, then_stmt);
+        } else {
+            try eval_statement(allocator, io, env, else_stmt);
+        }
+    } else {
+        if (holds) {
+            try eval_statement(allocator, io, env, then_rest);
+        }
+    }
+}
+
+/// `for-each <list-expr> as <name> do <statement>` — iterate with effects.
+/// Each element is bound to <name> in a child scope; the body runs once per
+/// element. The loop variable does not leak past the for-each.
+fn do_for_each(allocator: std.mem.Allocator, io: std.Io, env: *Env, rest: []const u8) anyerror!void {
+    const as_idx = find_word_op(rest, " as ") orelse return error.ForEachNeedsAs;
+    const list_text = rest[0..@intCast(as_idx)];
+    const after_as = rest[@intCast(as_idx + 4)..];
+    const do_idx = find_word_op(after_as, " do ") orelse return error.ForEachNeedsDo;
+    const var_name = std.mem.trim(u8, after_as[0..@intCast(do_idx)], " \t");
+    const body = std.mem.trim(u8, after_as[@intCast(do_idx + 4)..], " \t");
+
+    // invariant: loop variable name is non-empty
+    assert(var_name.len > 0);
+
+    const list_value = try eval_expr(allocator, io, env, list_text);
+    const items = switch (list_value) {
+        .list => |l| l,
+        else => return error.ForEachNeedsList,
+    };
+
+    for (items) |item| {
+        // Each iteration runs in a child scope — the loop variable does not leak.
+        var child = env.*;
+        try child.bind(var_name, item);
+        try eval_statement(allocator, io, &child, body);
+    }
+}
+
+/// `lines <expr>` splits a string by newline into a list of strings. Used for
+/// processing multi-line output from `run` or `read-file` — each line becomes
+/// an element. The list is allocated from the garden; no fixed-size stack buffer.
+fn do_lines(allocator: std.mem.Allocator, io: std.Io, env: *Env, arg: []const u8) EvalError!Value {
+    var tok = TokenIter{ .text = arg };
+    const operand = tok.next() orelse return error.LinesNeedsString;
+    const value = try eval_operand(allocator, io, env, operand);
+    const text = switch (value) {
+        .string => |s| s,
+        else => return error.LinesNeedsString,
+    };
+    // Count lines first, then allocate exactly.
+    var count: u32 = 0;
+    var counter = std.mem.splitScalar(u8, text, '\n');
+    while (counter.next() != null) count += 1;
+    const items = allocator.alloc(Value, @intCast(count)) catch return error.OutOfMemory;
+    // postcondition: items has exactly count slots
+    assert(items.len == count);
+    var it = std.mem.splitScalar(u8, text, '\n');
+    var i: u32 = 0;
+    while (it.next()) |line| {
+        items[@intCast(i)] = .{ .string = line };
+        i += 1;
+    }
+    // postcondition: filled exactly count items
+    assert(i == count);
+    return .{ .list = items };
+}
+
+/// `length <expr>` — byte length of a string, or element count of a list.
+fn do_length(allocator: std.mem.Allocator, io: std.Io, env: *Env, arg: []const u8) EvalError!Value {
+    var tok = TokenIter{ .text = arg };
+    const operand = tok.next() orelse return error.LengthNeedsStringOrList;
+    const value = try eval_operand(allocator, io, env, operand);
+    return switch (value) {
+        .string => |s| .{ .int = @intCast(s.len) },
+        .list => |items| .{ .int = @intCast(items.len) },
+        else => error.LengthNeedsStringOrList,
+    };
+}
+
+/// `flag <list> <name>` — scan a list of strings for an exact flag token and
+/// return the following string. RS-2 helper: scripts read `--name value` from `args`
+/// without a new value kind — same five shapes, one scan idiom beside `length`.
+fn do_flag(allocator: std.mem.Allocator, io: std.Io, env: *Env, rest: []const u8) EvalError!Value {
+    var tok = TokenIter{ .text = rest };
+    const list_token = tok.next() orelse return error.FlagNeedsList;
+    const name_token = tok.next() orelse return error.FlagNeedsName;
+    const list_value = try eval_operand(allocator, io, env, list_token);
+    const items = switch (list_value) {
+        .list => |l| l,
+        else => return error.FlagNeedsList,
+    };
+    const name_value = try eval_operand(allocator, io, env, name_token);
+    const flag_name = switch (name_value) {
+        .string => |s| s,
+        else => return error.FlagNeedsString,
+    };
+    var i: u32 = 0;
+    while (i < items.len) : (i += 1) {
+        const token = switch (items[@intCast(i)]) {
+            .string => |s| s,
+            else => return error.FlagNeedsStringElements,
+        };
+        if (std.mem.eql(u8, token, flag_name)) {
+            const next = i + 1;
+            if (next >= items.len) return error.FlagNeedsValue;
+            return items[@intCast(next)];
+        }
+    }
+    return error.FlagNotFound;
+}
+
+/// `trim <expr>` — remove leading and trailing ASCII whitespace.
+fn do_trim(allocator: std.mem.Allocator, io: std.Io, env: *Env, arg: []const u8) EvalError!Value {
+    const value = try eval_expr(allocator, io, env, arg);
+    const text = switch (value) {
+        .string => |s| s,
+        else => return error.TrimNeedsString,
+    };
+    const trimmed = std.mem.trim(u8, text, " \t\r\n");
+    const out = allocator.dupe(u8, trimmed) catch return error.OutOfMemory;
+    return .{ .string = out };
+}
+
+/// `slice <text> <start> <end>` — bounded substring; indices are half-open [start, end).
+fn do_slice(allocator: std.mem.Allocator, io: std.Io, env: *Env, rest: []const u8) EvalError!Value {
+    var tok = TokenIter{ .text = rest };
+    const text_token = tok.next() orelse return error.SliceNeedsString;
+    const start_token = tok.next() orelse return error.SliceNeedsInt;
+    const end_token = tok.next() orelse return error.SliceNeedsInt;
+
+    const text_value = try eval_operand(allocator, io, env, text_token);
+    const text = switch (text_value) {
+        .string => |s| s,
+        else => return error.SliceNeedsString,
+    };
+    const start_value = try eval_operand(allocator, io, env, start_token);
+    const end_value = try eval_operand(allocator, io, env, end_token);
+    const start = switch (start_value) {
+        .int => |x| x,
+        else => return error.SliceNeedsInt,
+    };
+    const end = switch (end_value) {
+        .int => |x| x,
+        else => return error.SliceNeedsInt,
+    };
+    if (start < 0 or end < start) return error.SliceOutOfRange;
+    const start_u: usize = @intCast(start);
+    const end_u: usize = @intCast(end);
+    if (end_u > text.len) return error.SliceOutOfRange;
+    const piece = text[start_u..end_u];
+    const out = allocator.dupe(u8, piece) catch return error.OutOfMemory;
+    return .{ .string = out };
+}
+
+/// `join <list> <sep>` — compose list elements into one string, separated by `sep`.
+fn do_join(allocator: std.mem.Allocator, io: std.Io, env: *Env, rest: []const u8) EvalError!Value {
+    var tok = TokenIter{ .text = rest };
+    const list_token = tok.next() orelse return error.JoinNeedsList;
+    const sep_token = tok.next() orelse return error.JoinNeedsString;
+
+    const list_value = try eval_operand(allocator, io, env, list_token);
+    const items = switch (list_value) {
+        .list => |l| l,
+        else => return error.JoinNeedsList,
+    };
+    const sep_value = try eval_operand(allocator, io, env, sep_token);
+    const sep = switch (sep_value) {
+        .string => |s| s,
+        else => return error.JoinNeedsString,
+    };
+
+    if (items.len == 0) {
+        const out = allocator.dupe(u8, "") catch return error.OutOfMemory;
+        return .{ .string = out };
+    }
+
+    var total: u32 = 0;
+    for (items, 0..) |item, idx| {
+        const s = switch (item) {
+            .string => |x| x,
+            else => return error.JoinNeedsStringElements,
+        };
+        assert(s.len <= std.math.maxInt(u32));
+        total += @intCast(s.len);
+        if (idx + 1 < items.len) {
+            assert(sep.len <= std.math.maxInt(u32));
+            total += @intCast(sep.len);
+        }
+    }
+
+    const out = allocator.alloc(u8, @intCast(total)) catch return error.OutOfMemory;
+    var pos: u32 = 0;
+    for (items, 0..) |item, idx| {
+        const s = switch (item) {
+            .string => |x| x,
+            else => return error.JoinNeedsStringElements,
+        };
+        assert(s.len <= std.math.maxInt(u32));
+        const slen: u32 = @intCast(s.len);
+        tally_copy.copy_disjoint(u8, out[@intCast(pos)..][0..@intCast(slen)], s);
+        pos += slen;
+        if (idx + 1 < items.len) {
+            assert(sep.len <= std.math.maxInt(u32));
+            const seplen: u32 = @intCast(sep.len);
+            tally_copy.copy_disjoint(u8, out[@intCast(pos)..][0..@intCast(seplen)], sep);
+            pos += seplen;
+        }
+    }
+    assert(pos == total);
+    return .{ .string = out };
+}
+
+/// `split <text> <sep>` — split a string on a separator into a list of strings.
+/// Composes with `join`: `join (split text sep) sep` recovers the original when
+/// separators are single occurrences. Uses `splitScalar` for one-byte separators
+/// and `splitSequence` for longer ones.
+fn do_split(allocator: std.mem.Allocator, io: std.Io, env: *Env, rest: []const u8) EvalError!Value {
+    var tok = TokenIter{ .text = rest };
+    const text_token = tok.next() orelse return error.SplitNeedsString;
+    const sep_token = tok.next() orelse return error.SplitNeedsString;
+
+    const text_value = try eval_operand(allocator, io, env, text_token);
+    const text = switch (text_value) {
+        .string => |s| s,
+        else => return error.SplitNeedsString,
+    };
+    const sep_value = try eval_operand(allocator, io, env, sep_token);
+    const sep = switch (sep_value) {
+        .string => |s| s,
+        else => return error.SplitNeedsString,
+    };
+    if (sep.len == 0) return error.SplitEmptySeparator;
+
+    var count: u32 = 0;
+    if (sep.len == 1) {
+        var counter = std.mem.splitScalar(u8, text, sep[0]);
+        while (counter.next() != null) count += 1;
+    } else {
+        var counter = std.mem.splitSequence(u8, text, sep);
+        while (counter.next() != null) count += 1;
+    }
+
+    const items = allocator.alloc(Value, @intCast(count)) catch return error.OutOfMemory;
+    assert(items.len == count);
+    var i: u32 = 0;
+    if (sep.len == 1) {
+        var it = std.mem.splitScalar(u8, text, sep[0]);
+        while (it.next()) |piece| {
+            items[@intCast(i)] = .{ .string = piece };
+            i += 1;
+        }
+    } else {
+        var it = std.mem.splitSequence(u8, text, sep);
+        while (it.next()) |piece| {
+            items[@intCast(i)] = .{ .string = piece };
+            i += 1;
+        }
+    }
+    assert(i == count);
+    return .{ .list = items };
+}
+
+/// `map <list> as <name>: <expr>` evaluates <expr> for each element with <name>
+/// bound to it, collecting the results into a new list. `where <list> as <name>:
+/// <pred>` keeps the elements whose boolean <pred> holds. The element binding
+/// lives in a child scope, so it never leaks past the pipeline.
+fn do_pipeline(allocator: std.mem.Allocator, io: std.Io, env: *Env, rest: []const u8, mode: enum { transform, filter }) EvalError!Value {
+    const as_idx = find_word_op(rest, " as ") orelse return error.PipelineNeedsAs;
+    const list_text = rest[0..@intCast(as_idx)];
+    const tail = rest[@intCast(as_idx + 4)..];
+    const colon = find_top_level(tail, ':') orelse return error.PipelineNeedsColon;
+    const var_name = std.mem.trim(u8, tail[0..@intCast(colon)], " \t");
+    const body = std.mem.trim(u8, tail[@intCast(colon + 1)..], " \t");
+    if (var_name.len == 0) return error.PipelineNeedsName;
+
+    const list_value = try eval_expr(allocator, io, env, list_text);
+    const items = switch (list_value) {
+        .list => |l| l,
+        else => return error.PipelineNeedsList,
+    };
+
+    var results: [256]Value = undefined;
+    var count: u32 = 0;
+    for (items) |item| {
+        // Each element is evaluated in a child scope carrying the loop binding.
+        var child = env.*;
+        try child.bind(var_name, item);
+        const value = try eval_expr(allocator, io, &child, body);
+        switch (mode) {
+            .transform => {
+                if (count == results.len) return error.ListTooLong;
+                results[@intCast(count)] = value;
+                count += 1;
+            },
+            .filter => {
+                const holds = switch (value) {
+                    .boolean => |b| b,
+                    else => return error.WhereNeedsBool,
+                };
+                if (holds) {
+                    if (count == results.len) return error.ListTooLong;
+                    results[@intCast(count)] = item;
+                    count += 1;
+                }
+            },
+        }
+    }
+    const out = try allocator.dupe(Value, results[0..@intCast(count)]);
+    return .{ .list = out };
+}
+
+/// Evaluate one operand: a double-quoted string, a boolean, a base-ten integer,
+/// or a bare name that refers to an earlier binding.
+fn eval_operand(allocator: std.mem.Allocator, io: std.Io, env: *Env, raw: []const u8) EvalError!Value {
+    const s = std.mem.trim(u8, raw, " \t");
+    if (s.len == 0) return error.ExpectedValue;
+    // A parenthesized expression `(expr)` groups its contents and recurses into
+    // eval_expr, so `(2 + 3) * 4` and `assert (xs contains y)` both parse correctly.
+    if (s[0] == '(') {
+        var depth2: u32 = 1;
+        var j: u32 = 1;
+        var in_q: bool = false;
+        while (j < @as(u32, @intCast(s.len)) and depth2 > 0) : (j += 1) {
+            if (s[@intCast(j)] == '"') in_q = !in_q;
+            if (!in_q) {
+                if (s[@intCast(j)] == '(') depth2 += 1 else if (s[@intCast(j)] == ')') depth2 -= 1;
+            }
+        }
+        // j is now one past the closing ')'; if it equals s.len the whole
+        // expression is wrapped in matching parens — recurse into the interior.
+        if (j == @as(u32, @intCast(s.len)) and depth2 == 0) {
+            return eval_expr(allocator, io, env, s[1 .. s.len - 1]);
+        }
+    }
+    if (s.len >= 2 and s[0] == '"' and s[s.len - 1] == '"') {
+        const inner = s[1 .. s.len - 1];
+        // A string with a `${…}` hole composes a new value; a plain one is itself.
+        if (std.mem.indexOf(u8, inner, "${")) |_| return interpolate(allocator, io, env, inner);
+        return .{ .string = inner };
+    }
+    if (s.len >= 2 and s[0] == '[' and s[s.len - 1] == ']') {
+        return parse_list(allocator, io, env, s[1 .. s.len - 1]);
+    }
+    if (s.len >= 2 and s[0] == '{' and s[s.len - 1] == '}') {
+        return parse_record(allocator, io, env, s[1 .. s.len - 1]);
+    }
+    if (std.mem.eql(u8, s, "true")) return .{ .boolean = true };
+    if (std.mem.eql(u8, s, "false")) return .{ .boolean = false };
+    if (tally_parse_int.parse_int(i64, s, .{})) |x| {
+        return .{ .int = x };
+    } else |_| {}
+    // Unary string builtins — reachable from comparison arms via eval_operand.
+    if (std.mem.startsWith(u8, s, "lines ")) {
+        return do_lines(allocator, io, env, s[6..]);
+    }
+    if (std.mem.startsWith(u8, s, "length ")) {
+        return do_length(allocator, io, env, s[7..]);
+    }
+    if (std.mem.startsWith(u8, s, "flag ")) {
+        return do_flag(allocator, io, env, s[5..]);
+    }
+    if (std.mem.startsWith(u8, s, "trim ")) {
+        return do_trim(allocator, io, env, s[5..]);
+    }
+    if (std.mem.startsWith(u8, s, "slice ")) {
+        return do_slice(allocator, io, env, s[6..]);
+    }
+    if (std.mem.startsWith(u8, s, "join ")) {
+        return do_join(allocator, io, env, s[5..]);
+    }
+    if (std.mem.startsWith(u8, s, "split ")) {
+        return do_split(allocator, io, env, s[6..]);
+    }
+    if (std.mem.startsWith(u8, s, "env ")) {
+        return do_env(allocator, io, env, s[4..]);
+    }
+    // `list[n]` — index a list; out-of-range is a friendly error, not a crash.
+    if (find_list_open_bracket(s)) |br| {
+        const close = find_closing_bracket(s, br) orelse return error.ExpectedValue;
+        if (close + 1 == @as(u32, @intCast(s.len))) {
+            const base_text = std.mem.trim(u8, s[0..@intCast(br)], " \t");
+            const index_text = std.mem.trim(u8, s[@intCast(br + 1)..@intCast(close)], " \t");
+            const base = try eval_operand(allocator, io, env, base_text);
+            const items = switch (base) {
+                .list => |l| l,
+                else => return error.ListIndexNeedsList,
+            };
+            const idx_val = try eval_expr(allocator, io, env, index_text);
+            const idx = switch (idx_val) {
+                .int => |x| x,
+                else => return error.ListIndexNeedsInt,
+            };
+            if (idx < 0) return error.ListIndexOutOfRange;
+            const uidx: u32 = @intCast(idx);
+            if (uidx >= items.len) return error.ListIndexOutOfRange;
+            return items[@intCast(uidx)];
+        }
+    }
+    // `base.field.field…` reads a field from a record, or `.len` on a list/string.
+    if (find_top_level(s, '.')) |dot| {
+        var value = try eval_operand(allocator, io, env, s[0..@intCast(dot)]);
+        var rest = s[@intCast(dot + 1)..];
+        while (true) {
+            const next_dot = find_top_level(rest, '.');
+            const field = std.mem.trim(u8, if (next_dot) |nd| rest[0..@intCast(nd)] else rest, " \t");
+            if (std.mem.eql(u8, field, "len")) {
+                value = switch (value) {
+                    .list => |items| .{ .int = @intCast(items.len) },
+                    .string => |str| .{ .int = @intCast(str.len) },
+                    else => return error.LengthNeedsStringOrList,
+                };
+            } else {
+                const fields = switch (value) {
+                    .record => |r| r,
+                    else => return error.NotARecord,
+                };
+                value = find_field(fields, field) orelse return error.NoSuchField;
+            }
+            if (next_dot) |nd| rest = rest[@intCast(nd + 1)..] else break;
+        }
+        return value;
+    }
+    return env.lookup(s) orelse error.UndefinedName;
+}
+
+/// Find the first `[` at bracket depth zero — not the same as find_top_level(s, '['),
+/// which treats `[` as opening depth before matching the target.
+fn find_list_open_bracket(text: []const u8) ?u32 {
+    var in_quote = false;
+    var depth: u32 = 0;
+    var i: u32 = 0;
+    while (i < @as(u32, @intCast(text.len))) : (i += 1) {
+        const c = text[@intCast(i)];
+        if (c == '"') {
+            in_quote = !in_quote;
+        } else if (in_quote) {
+        } else if (c == '[' and depth == 0) {
+            return i;
+        } else if (c == '[' or c == '{' or c == '(') {
+            depth += 1;
+        } else if ((c == ']' or c == '}' or c == ')') and depth > 0) {
+            depth -= 1;
+        }
+    }
+    return null;
+}
+
+/// Find the closing `]` that matches `[` at `open`, ignoring nested brackets.
+fn find_closing_bracket(text: []const u8, open: u32) ?u32 {
+    var depth: u32 = 1;
+    var i: u32 = open + 1;
+    while (i < @as(u32, @intCast(text.len))) : (i += 1) {
+        const c = text[@intCast(i)];
+        if (c == '[') {
+            depth += 1;
+        } else if (c == ']') {
+            depth -= 1;
+            if (depth == 0) return i;
+        }
+    }
+    return null;
+}
+
+/// Find a value among a record's fields by name, most-recent-wins on a duplicate.
+fn find_field(fields: []const Field, name: []const u8) ?Value {
+    var i = fields.len;
+    while (i > 0) {
+        i -= 1;
+        if (std.mem.eql(u8, fields[i].name, name)) return fields[i].value;
+    }
+    return null;
+}
+
+/// A bounded buffer for composing a string by interpolation. Bounded on purpose:
+/// a runaway composition meets a clear edge rather than growing without end.
+const StrBuf = struct {
+    bytes: [4096]u8 = undefined,
+    len: u32 = 0,
+
+    fn append(self: *StrBuf, text: []const u8) EvalError!void {
+        assert(text.len <= std.math.maxInt(u32));
+        const add: u32 = @intCast(text.len);
+        if (self.len + add > self.bytes.len) return error.StringTooLong;
+        const start: usize = @intCast(self.len);
+        const end: usize = @intCast(self.len + add);
+        tally_copy.copy_disjoint(u8, self.bytes[start..end], text);
+        self.len += add;
+    }
+
+    /// Render a value into the buffer — the same shapes `write` speaks to the console.
+    fn append_value(self: *StrBuf, value: Value) EvalError!void {
+        switch (value) {
+            .string => |s| try self.append(s),
+            .int => |x| {
+                var digits: [24]u8 = undefined;
+                const written = std.fmt.bufPrint(&digits, "{d}", .{x}) catch return error.StringTooLong;
+                try self.append(written);
+            },
+            .boolean => |b| try self.append(if (b) "true" else "false"),
+            .list => |items| {
+                try self.append("[");
+                for (items, 0..) |item, idx| {
+                    if (idx != 0) try self.append(" ");
+                    try self.append_value(item);
+                }
+                try self.append("]");
+            },
+            .record => |fields| {
+                try self.append("{");
+                for (fields, 0..) |f, idx| {
+                    if (idx != 0) try self.append(", ");
+                    try self.append(f.name);
+                    try self.append(": ");
+                    try self.append_value(f.value);
+                }
+                try self.append("}");
+            },
+        }
+    }
+};
+
+/// Compose a string from a literal woven with `${expr}` holes, each hole the
+/// rendered value of its expression. This is how a value becomes part of a larger
+/// string — a path, an argument, a sentence.
+fn interpolate(allocator: std.mem.Allocator, io: std.Io, env: *Env, inner: []const u8) EvalError!Value {
+    var sb = StrBuf{};
+    var i: u32 = 0;
+    while (i < @as(u32, @intCast(inner.len))) {
+        if (i + 1 < @as(u32, @intCast(inner.len)) and inner[@intCast(i)] == '$' and inner[@intCast(i + 1)] == '{') {
+            const close = std.mem.indexOfScalarPos(u8, inner, @intCast(i + 2), '}') orelse return error.UnterminatedInterpolation;
+            const expr = std.mem.trim(u8, inner[@intCast(i + 2) .. close], " \t");
+            try sb.append_value(try eval_operand(allocator, io, env, expr));
+            i = @intCast(close + 1);
+        } else {
+            // Copy the literal run up to the next '$' (or the end); a lone '$' steps once.
+            const next = std.mem.indexOfScalarPos(u8, inner, @intCast(i), '$') orelse inner.len;
+            const stop: u32 = if (next > @as(usize, @intCast(i))) @as(u32, @intCast(next)) else i + 1;
+            try sb.append(inner[@intCast(i)..@intCast(stop)]);
+            i = stop;
+        }
+    }
+    return .{ .string = try allocator.dupe(u8, sb.bytes[0..@intCast(sb.len)]) };
+}
+
+/// Parse a list literal's interior — space-separated operands, with spaces inside
+/// a quoted element kept whole. The element count is bounded, so a runaway literal
+/// meets a clear edge rather than eating memory without end.
+fn parse_list(allocator: std.mem.Allocator, io: std.Io, env: *Env, inner: []const u8) EvalError!Value {
+    var buffer: [256]Value = undefined;
+    var count: u32 = 0;
+    var it = TokenIter{ .text = inner };
+    while (it.next()) |token| {
+        if (count == buffer.len) return error.ListTooLong;
+        buffer[@intCast(count)] = try eval_operand(allocator, io, env, token);
+        count += 1;
+    }
+    const items = try allocator.dupe(Value, buffer[0..@intCast(count)]);
+    return .{ .list = items };
+}
+
+/// Walk space-separated tokens, treating a quoted string as one token even when
+/// it holds spaces of its own.
+const TokenIter = struct {
+    text: []const u8,
+    i: u32 = 0,
+
+    fn next(self: *TokenIter) ?[]const u8 {
+        while (self.i < @as(u32, @intCast(self.text.len)) and (self.text[@intCast(self.i)] == ' ' or self.text[@intCast(self.i)] == '\t')) self.i += 1;
+        if (self.i >= @as(u32, @intCast(self.text.len))) return null;
+        const start = self.i;
+        var in_quote = false;
+        var depth: u32 = 0;
+        while (self.i < @as(u32, @intCast(self.text.len))) : (self.i += 1) {
+            const c = self.text[@intCast(self.i)];
+            if (c == '"') {
+                in_quote = !in_quote;
+            } else if (in_quote) {
+                // within a string: ignore structure
+            } else if (c == '[' or c == '{' or c == '(') {
+                depth += 1;
+            } else if ((c == ']' or c == '}' or c == ')') and depth > 0) {
+                depth -= 1;
+            } else if (depth == 0 and (c == ' ' or c == '\t')) {
+                break;
+            }
+        }
+        return self.text[@intCast(start)..@intCast(self.i)];
+    }
+};
+
+/// Parse a record literal's interior — comma-separated `name: value` fields, with
+/// commas and colons inside nested lists, records, or strings kept whole. The
+/// field count is bounded, so a runaway literal meets a clear edge.
+fn parse_record(allocator: std.mem.Allocator, io: std.Io, env: *Env, inner: []const u8) EvalError!Value {
+    var buffer: [256]Field = undefined;
+    var count: u32 = 0;
+    var it = TopLevelSplit{ .text = inner, .delim = ',' };
+    while (it.next()) |field_text| {
+        const ft = std.mem.trim(u8, field_text, " \t");
+        if (ft.len == 0) continue; // tolerate a trailing comma or a blank field
+        const colon = find_top_level(ft, ':') orelse return error.FieldNeedsColon;
+        const name = std.mem.trim(u8, ft[0..@intCast(colon)], " \t");
+        const valtext = std.mem.trim(u8, ft[@intCast(colon + 1)..], " \t");
+        if (name.len == 0) return error.FieldNeedsColon;
+        if (count == buffer.len) return error.RecordTooLong;
+        buffer[@intCast(count)] = .{ .name = name, .value = try eval_expr(allocator, io, env, valtext) };
+        count += 1;
+    }
+    const fields = try allocator.dupe(Field, buffer[0..@intCast(count)]);
+    return .{ .record = fields };
+}
+
+/// Find a character at the top level — outside any quoted string and outside any
+/// nested `[]` or `{}` — or report its absence.
+fn find_top_level(text: []const u8, target: u8) ?u32 {
+    var in_quote = false;
+    var depth: u32 = 0;
+    var i: u32 = 0;
+    while (i < @as(u32, @intCast(text.len))) : (i += 1) {
+        const c = text[@intCast(i)];
+        if (c == '"') {
+            in_quote = !in_quote;
+        } else if (in_quote) {
+            // within a string: ignore structure
+        } else if (c == '[' or c == '{' or c == '(') {
+            depth += 1;
+        } else if ((c == ']' or c == '}' or c == ')') and depth > 0) {
+            depth -= 1;
+        } else if (c == target and depth == 0) {
+            return i;
+        }
+    }
+    return null;
+}
+
+/// Split a string on a delimiter at the top level, treating quoted strings and
+/// nested `[]`/`{}` as opaque. Each call returns the next field, or null at the end.
+const TopLevelSplit = struct {
+    text: []const u8,
+    delim: u8,
+    i: u32 = 0,
+
+    fn next(self: *TopLevelSplit) ?[]const u8 {
+        if (self.i > @as(u32, @intCast(self.text.len))) return null;
+        const start = self.i;
+        var in_quote = false;
+        var depth: u32 = 0;
+        while (self.i < @as(u32, @intCast(self.text.len))) : (self.i += 1) {
+            const c = self.text[@intCast(self.i)];
+            if (c == '"') {
+                in_quote = !in_quote;
+            } else if (in_quote) {
+                // within a string: ignore structure
+            } else if (c == '[' or c == '{' or c == '(') {
+                depth += 1;
+            } else if ((c == ']' or c == '}' or c == ')') and depth > 0) {
+                depth -= 1;
+            } else if (c == self.delim and depth == 0) {
+                const token = self.text[@intCast(start)..@intCast(self.i)];
+                self.i += 1;
+                return token;
+            }
+        }
+        const token = self.text[@intCast(start)..];
+        self.i = @as(u32, @intCast(self.text.len)) + 1;
+        return token;
+    }
+};
+
+const Comparison = struct { op: enum { eq, ne }, left: []const u8, right: []const u8 };
+
+/// Find a top-level `==` or `!=`, skipping anything inside a quoted string.
+fn find_comparison(text: []const u8) ?Comparison {
+    var in_quote = false;
+    var depth: u32 = 0;
+    var i: u32 = 0;
+    while (i + 1 < @as(u32, @intCast(text.len))) : (i += 1) {
+        const c = text[@intCast(i)];
+        if (c == '"') {
+            in_quote = !in_quote;
+        } else if (in_quote) {
+            // within a string: ignore structure
+        } else if (c == '[' or c == '{' or c == '(') {
+            depth += 1;
+        } else if ((c == ']' or c == '}' or c == ')') and depth > 0) {
+            depth -= 1;
+        } else if (depth == 0 and c == '=' and text[@intCast(i + 1)] == '=') {
+            return .{ .op = .eq, .left = text[0..@intCast(i)], .right = text[@intCast(i + 2)..] };
+        } else if (depth == 0 and c == '!' and text[@intCast(i + 1)] == '=') {
+            return .{ .op = .ne, .left = text[0..@intCast(i)], .right = text[@intCast(i + 2)..] };
+        }
+    }
+    return null;
+}
+
+/// Two values are equal when they share a kind and a content. Unlike kinds are
+/// never equal, so a string and an integer simply differ.
+fn values_equal(a: Value, b: Value) bool {
+    switch (a) {
+        .string => |x| return switch (b) {
+            .string => |y| std.mem.eql(u8, x, y),
+            else => false,
+        },
+        .int => |x| return switch (b) {
+            .int => |y| x == y,
+            else => false,
+        },
+        .boolean => |x| return switch (b) {
+            .boolean => |y| x == y,
+            else => false,
+        },
+        .list => |x| return switch (b) {
+            .list => |y| lists_equal(x, y),
+            else => false,
+        },
+        .record => |x| return switch (b) {
+            .record => |y| records_equal(x, y),
+            else => false,
+        },
+    }
+}
+
+/// Two lists are equal when they have the same length and equal elements in order.
+fn lists_equal(x: []const Value, y: []const Value) bool {
+    if (x.len != y.len) return false;
+    for (x, y) |xi, yi| {
+        if (!values_equal(xi, yi)) return false;
+    }
+    return true;
+}
+
+/// Two records are equal when they hold the same fields and values; order need not
+/// match, so `{a: 1, b: 2}` equals `{b: 2, a: 1}`.
+fn records_equal(x: []const Field, y: []const Field) bool {
+    if (x.len != y.len) return false;
+    for (x) |fx| {
+        const fy = find_field(y, fx.name) orelse return false;
+        if (!values_equal(fx.value, fy)) return false;
+    }
+    return true;
+}
+
+/// `exit EXPR` ends the script with an integer exit code — usually one of the
+/// pre-bound vocabulary names serving Caravan's restart policy.
+fn do_exit(allocator: std.mem.Allocator, io: std.Io, env: *Env, arg: []const u8) EvalError!void {
+    const value = try eval_expr(allocator, io, env, arg);
+    const code_i = switch (value) {
+        .int => |x| x,
+        else => return error.ExitNeedsInt,
+    };
+    if (code_i < 0 or code_i > 255) return error.ExitOutOfRange;
+    const code: u8 = @intCast(code_i);
+    if (env.script_exit) |slot| slot.code = code;
+    return error.ExitRequested;
+}
+
+/// `assert <expr>` makes a fact a gate: when the expression is a false boolean,
+/// the script stops and says why. An optional `else "message"` gives the reason
+/// to show; without it, the condition itself stands as the reason.
+fn do_assert(allocator: std.mem.Allocator, io: std.Io, env: *Env, arg: []const u8) !void {
+    var condition = arg;
+    var message: ?[]const u8 = null;
+    if (find_word_op(arg, " else ")) |idx| {
+        condition = std.mem.trim(u8, arg[0..@intCast(idx)], " \t");
+        const tail = std.mem.trim(u8, arg[@intCast(idx + 6)..], " \t");
+        message = if (tail.len >= 2 and tail[0] == '"' and tail[tail.len - 1] == '"')
+            tail[1 .. tail.len - 1]
+        else
+            tail;
+    }
+    const value = try eval_expr(allocator, io, env, condition);
+    const holds = switch (value) {
+        .boolean => |b| b,
+        else => return error.AssertNeedsCondition,
+    };
+    if (!holds) {
+        print("rishi: assertion failed — {s}\n", .{message orelse condition});
+        return error.AssertionFailed;
+    }
+}
+
+/// Find a word-operator like ` else ` or ` contains ` outside any quoted string,
+/// so the same word inside `"text"` stays part of the text.
+fn find_word_op(text: []const u8, word: []const u8) ?u32 {
+    var in_quote = false;
+    var depth: u32 = 0;
+    var i: u32 = 0;
+    while (i + @as(u32, @intCast(word.len)) <= @as(u32, @intCast(text.len))) : (i += 1) {
+        const c = text[@intCast(i)];
+        if (c == '"') {
+            in_quote = !in_quote;
+        } else if (in_quote) {
+            // within a string: ignore structure
+        } else if (c == '[' or c == '{' or c == '(') {
+            depth += 1;
+        } else if ((c == ']' or c == '}' or c == ')') and depth > 0) {
+            depth -= 1;
+        } else if (depth == 0 and std.mem.startsWith(u8, text[@intCast(i)..], word)) {
+            return i;
+        }
+    }
+    return null;
+}
+
+/// `say` writes a value to standard output, then a newline. A quoted string is
+/// interpolated; a bare name, field path, or literal speaks its value directly.
+fn do_say(allocator: std.mem.Allocator, io: std.Io, env: *Env, arg: []const u8) !void {
+    if (arg.len == 0) return error.SayNeedsArgument;
+    const value = try eval_operand(allocator, io, env, arg);
+    const stdout = std.Io.File.stdout();
+    write_value_to(value, io, stdout);
+    stdout.writeStreamingAll(io, "\n") catch {};
+}

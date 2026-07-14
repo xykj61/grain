@@ -1,0 +1,8 @@
+//! width-check TH-1 witness fixture — authored `usize` without seam markers.
+//! Not linked; scanned only by tools/width_check_th1.rish.
+
+const authored_debt: usize = 0;
+
+pub fn main() !void {
+    _ = authored_debt;
+}

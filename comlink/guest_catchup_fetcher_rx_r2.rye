@@ -1,0 +1,72 @@
+//! comlink/guest_catchup_fetcher_rx_r2.rye — catch-up device wire: fetcher RX (apply rev 2).
+
+const vn = @import("virtio_net.rye");
+const wf = @import("wire_format.rye");
+const sw = @import("recall_sync_wire.rye");
+const ns = @import("recall_lap1.rye");
+
+var rx: vn.RxQueue = undefined;
+
+export fn _start() linksection(".text.init") callconv(.naked) noreturn {
+    asm volatile (
+        \\ li sp, 0x80100000
+        \\ j kmain
+    );
+}
+
+export fn kmain() callconv(.c) noreturn {
+    vn.init_device();
+    rx.init();
+    vn.driver_ok();
+    rx.kick();
+
+    const n = rx.wait_frame();
+    if (n == 0) {
+        vn.write_str("ns-catchupw device: FAIL — fetcher RX timeout\n");
+        vn.finish_fail();
+    }
+    const poff = vn.virtio_net_hdr_len + vn.eth_header_len;
+    if (n <= poff) {
+        vn.write_str("ns-catchupw device: FAIL — fetcher frame too short\n");
+        vn.finish_fail();
+    }
+    const buf = rx.frame();
+    const datagram = buf[poff..n];
+
+    var opened: [@intCast(wf.max_message)]u8 = undefined;
+    const opened_len = wf.open_datagram(datagram, &opened) catch {
+        vn.write_str("ns-catchupw device: FAIL — fetcher open refused\n");
+        vn.finish_fail();
+    };
+
+    var resp: sw.SyncResponse = undefined;
+    sw.decode_response(opened[0..@intCast(opened_len)], &resp) catch {
+        vn.write_str("ns-catchupw device: FAIL — response decode\n");
+        vn.finish_fail();
+    };
+
+    var fetcher: ns.BoltCatalog = .empty();
+    ns.BoltCatalog.append_leaf(&fetcher, "peerB", "b", 1, "bolt.txt", "rev-one", "plain-text") catch unreachable;
+
+    const report = sw.apply_sync_response(&fetcher, &resp) catch {
+        vn.write_str("ns-catchupw device: FAIL — apply sync\n");
+        vn.finish_fail();
+    };
+    if (report.total != 1 or report.needed != 1) {
+        vn.write_str("ns-catchupw device: FAIL — rev 2 sync report\n");
+        vn.finish_fail();
+    }
+
+    const n2 = ns.Name{ .peer = "peerB", .bolt = "b", .revision = 2, .path = "bolt.txt" };
+    var out: [128]u8 = undefined;
+    const r = ns.BoltCatalog.recall(&fetcher, n2, &out) catch {
+        vn.write_str("ns-catchupw device: FAIL — recall rev 2\n");
+        vn.finish_fail();
+    };
+    if (r.len != 7 or out[0] != 'r' or out[6] != 'o') {
+        vn.write_str("ns-catchupw device: FAIL — rev-two bytes mismatch\n");
+        vn.finish_fail();
+    }
+    vn.write_str("ns-catchupw device: catch-up rev 2 GREEN — verify and recall passed\n");
+    vn.finish_pass();
+}

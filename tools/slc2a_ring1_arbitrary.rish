@@ -1,0 +1,19 @@
+# slc2a_ring1_arbitrary.rish — SLC-2a Lap 1: viewer draws an arbitrary value.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/slc2a_ring1_arbitrary.rish
+
+let root = "."
+let zig = "vendor/zig-toolchain/zig"
+let bin = "brushstroke/bin/brushstroke-wayland-seed"
+
+let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/wayland_seed.rye brushstroke/xdg-shell-protocol.c -Ibrushstroke -lc -lwayland-client -lxkbcommon -lrt -femit-bin=${bin}"]
+
+assert build.ok else "wayland_seed build failed for Lap 1 witness"
+
+let arbitrary = run ["${bin}" "arbitrary"]
+assert arbitrary.ok else "viewer arbitrary witness exited non-zero"
+assert arbitrary.out contains "viewer arbitrary value" else "arbitrary witness missing expected output"
+assert arbitrary.out contains "GREEN" else "viewer arbitrary witness not GREEN"
+
+say "GREEN: SLC-2a Lap 1 arbitrary-value viewer witness passed."

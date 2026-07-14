@@ -1,0 +1,46 @@
+//! Pass-doc constants: authored passes, meta, witness aliases, skip set.
+
+const std = @import("std");
+
+pub const skip_9999 = "9999_STRENGTHENING.md";
+pub const skip_lexicon = "0000_STRENGTHENING_LEXICON.md";
+pub const surface_section = "## Rye std surface";
+pub const width_section = "## Width notes";
+pub const usize_explicit_section = "usize explicit audit";
+pub const width_audit_section = "## Width audit";
+pub const audited_surfaces_section = "## Audited surfaces";
+pub const lexicon_stamp = "20260621.043312";
+
+pub fn should_skip(name: []const u8) bool {
+    return std.mem.eql(u8, name, skip_9999) or std.mem.eql(u8, name, skip_lexicon);
+}
+
+pub fn authored_module(name: []const u8) ?struct { mod: []const u8, witness: []const u8 } {
+    if (std.mem.eql(u8, name, "9989_tally_gardens.md")) return .{ .mod = "tally/gardens.rye", .witness = "tally_gardens_test" };
+    if (std.mem.eql(u8, name, "9990_mantra_seed.md")) return .{ .mod = "mantra/src/main.rye", .witness = "mantra_weave_test" };
+    return null;
+}
+
+pub fn meta_pass(name: []const u8) ?struct { path: []const u8, label: []const u8 } {
+    if (std.mem.eql(u8, name, "9995_crypto_foundation.md")) return .{ .path = "meta/foundation", .label = "crypto foundation map" };
+    return null;
+}
+
+pub fn witness_alias(name: []const u8) ?[]const u8 {
+    if (std.mem.eql(u8, name, "9982_alloc_print_trimend_strengthen.md")) return "alloc_print_test";
+    if (std.mem.eql(u8, name, "9987_allocator_alloc_skate_grid.md")) return "allocator_alloc_test";
+    if (std.mem.eql(u8, name, "9988_alloc_print_trimend.md")) return "alloc_print_test";
+    if (std.mem.eql(u8, name, "9993_mem_diff_primitives.md")) return "mem_diff_test";
+    if (std.mem.eql(u8, name, "9996_stdlib_call_paths.md")) return "call_paths_test";
+    if (std.mem.eql(u8, name, "9997_keccak_sponge.md")) return "sha3_512_test";
+    return null;
+}
+
+pub const cover_fn_skip = [_][]const u8{ "std", "u32", "u64", "usize", "comptime", "assert", "maybe", "isize" };
+
+pub fn cover_fn_skipped(name: []const u8) bool {
+    for (cover_fn_skip) |s| {
+        if (std.mem.eql(u8, s, name)) return true;
+    }
+    return false;
+}

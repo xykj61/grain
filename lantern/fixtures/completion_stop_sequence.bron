@@ -1,0 +1,7 @@
+# Lantern lap 6–7 fixture — pinned stop_sequence completion + request pin.
+model_hash sha3-256-rye-forge-lap0
+tokens_in 6
+tokens_out 3
+stopped_reason stop_sequence
+stop_sequence fence
+text halt at fence

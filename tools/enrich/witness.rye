@@ -1,0 +1,52 @@
+//! Witness slug/path resolution and parity checks.
+
+const std = @import("std");
+const constants = @import("constants.rye");
+
+pub fn witness_slug_for_pass_alloc(a: std.mem.Allocator, name: []const u8, stem: []const u8) !?[]const u8 {
+    if (constants.witness_alias(name)) |alias| return try a.dupe(u8, alias);
+    const us = std.mem.indexOfScalar(u8, stem, '_') orelse return null;
+    var slug = stem[us + 1 ..];
+    if (std.mem.endsWith(u8, slug, "_strengthen")) slug = slug[0 .. slug.len - "_strengthen".len];
+    return try std.fmt.allocPrint(a, "{s}_test", .{slug});
+}
+
+pub fn witness_path_for_pass(a: std.mem.Allocator, io: std.Io, root: []const u8, name: []const u8, stem: []const u8) !?[]const u8 {
+    const slug = try witness_slug_for_pass_alloc(a, name, stem) orelse return null;
+    defer a.free(slug);
+    const rel = try std.fmt.allocPrint(a, "rye/tests/{s}.rye", .{slug});
+    defer a.free(rel);
+    const full = try std.fs.path.join(a, &.{ root, rel });
+    defer a.free(full);
+    std.Io.Dir.cwd().access(io, full, .{}) catch return null;
+    return try a.dupe(u8, rel);
+}
+
+pub fn witness_slug_in_parity(slug: []const u8, parity: []const u8) bool {
+    if (std.mem.indexOf(u8, parity, slug) != null) return true;
+    var buf: [128]u8 = undefined;
+    const q1 = std.fmt.bufPrint(&buf, "\"{s}\"", .{slug}) catch return false;
+    if (std.mem.indexOf(u8, parity, q1) != null) return true;
+    const q2 = std.fmt.bufPrint(&buf, "\"{s}_test\"", .{slug}) catch return false;
+    return std.mem.indexOf(u8, parity, q2) != null;
+}
+
+pub fn pass_auditable(
+    a: std.mem.Allocator,
+    io: std.Io,
+    root: []const u8,
+    name: []const u8,
+    stem: []const u8,
+    parity: []const u8,
+) !bool {
+    if (constants.authored_module(name)) |auth| return witness_slug_in_parity(auth.witness, parity);
+    if (constants.meta_pass(name) != null) return witness_slug_in_parity("ed25519_sign_test", parity);
+    if (try witness_path_for_pass(a, io, root, name, stem)) |wp| {
+        defer a.free(wp);
+        const base = std.fs.path.basename(wp);
+        const no_ext = base[0 .. base.len - ".rye".len];
+        return witness_slug_in_parity(no_ext, parity);
+    }
+    if (constants.witness_alias(name)) |alias| return witness_slug_in_parity(alias, parity);
+    return false;
+}

@@ -1,0 +1,28 @@
+# foundation_seeds.rish — Tally and Brushstroke hosted seed witnesses.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/foundation_seeds.rish
+
+let zig = "vendor/zig-toolchain/zig"
+
+let build = run ["sh" "-c" "mkdir -p tally/bin brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build tally/seed.rye -femit-bin=tally/bin/tally-seed && env RYE_ZIG=${zig} rye/bin/rye build tally/gardens.rye -femit-bin=tally/bin/tally-gardens && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/seed.rye -femit-bin=brushstroke/bin/brushstroke-seed"]
+
+assert build.ok else "foundation seeds build failed"
+
+let tally = run ["tally/bin/tally-seed"]
+assert tally.ok else "tally seed exited non-zero"
+assert tally.out contains "all facts held" else "tally seed missing expected output"
+
+let gardens = run ["sh" "-c" "tally/bin/tally-gardens 2>&1"]
+assert gardens.ok else "tally gardens exited non-zero"
+assert gardens.out contains "all facts held" else "tally gardens missing expected output"
+
+let brush = run ["brushstroke/bin/brushstroke-seed"]
+assert brush.ok else "brushstroke seed exited non-zero"
+assert brush.out contains "frame drawn from values" else "brushstroke seed missing expected output"
+
+let skate = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye run brushstroke/skate_grid_test.rye 2>&1"]
+assert skate.ok else "skate grid test exited non-zero"
+assert skate.out contains "lit pixels" else "skate grid test missing expected output"
+
+say "GREEN: Tally and Brushstroke foundation seeds witness passed."

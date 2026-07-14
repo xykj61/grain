@@ -1,0 +1,31 @@
+//! Rye test: std.Io.File.writeStreamingAll — pass 9985.
+//!
+//! Rishi's `say`, Brushstroke seeds, and value printing all flush stdout
+//! through writeStreamingAll. This test writes to a temp file and reads back.
+
+const std = @import("std");
+const Dir = std.Io.Dir;
+
+pub fn main(init: std.process.Init) !u8 {
+    const io = init.io;
+    const cwd = Dir.cwd();
+
+    const tmp_path = "/tmp/rye_write_streaming_all_test.txt";
+    const expected = "Rye: writeStreamingAll postcondition holds.\n";
+
+    const f = try cwd.createFile(io, tmp_path, .{});
+    defer f.close(io);
+    try f.writeStreamingAll(io, expected);
+
+    // Empty write completes with index == 0.
+    try f.writeStreamingAll(io, "");
+
+    var buf: [64]u8 = undefined;
+    const got = try cwd.readFile(io, tmp_path, &buf);
+    std.debug.assert(std.mem.eql(u8, got, expected));
+
+    cwd.deleteFile(io, tmp_path) catch {};
+
+    std.debug.print("rye: writeStreamingAll assertions confirmed.\n", .{});
+    return 0;
+}

@@ -1,0 +1,3 @@
+# Flag without a value — must fail friendly.
+let x = flag args "--alone"
+say "unreachable"

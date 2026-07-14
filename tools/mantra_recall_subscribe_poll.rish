@@ -1,0 +1,16 @@
+# mantra_recall_subscribe_poll.rish — outer subscribe poll witness (in-process).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/mantra_recall_subscribe_poll.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mantra/bin/recall-subscribe-poll"
+
+let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/recall_subscribe_poll.rye -lc -femit-bin=${bin}"]
+assert build.ok else "recall_subscribe_poll build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "recall_subscribe_poll selftest exited non-zero"
+assert selftest.out contains "GREEN" else "recall_subscribe_poll selftest not GREEN"
+
+say "GREEN: outer subscribe poll witness passed (bounded cycles, host mirror pairs)."

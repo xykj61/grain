@@ -1,0 +1,26 @@
+//! Rye test: std.mem min/max and findMin/findMax/findMinMax — pass 9912.
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    std.debug.assert(mem.min(u8, "abcdefg") == 'a');
+    std.debug.assert(mem.min(u8, "bcdefga") == 'a');
+    std.debug.assert(mem.max(u8, "abcdefg") == 'g');
+    std.debug.assert(mem.max(u8, "gabcdef") == 'g');
+
+    const pair_min, const pair_max = mem.minMax(u8, "abcdefg");
+    std.debug.assert(pair_min == 'a');
+    std.debug.assert(pair_max == 'g');
+
+    std.debug.assert(mem.findMin(u8, "abcdefg") == 0);
+    std.debug.assert(mem.findMin(u8, "bcdefga") == 6);
+    std.debug.assert(mem.findMax(u8, "abcdefg") == 6);
+    std.debug.assert(mem.findMax(u8, "gabcdef") == 0);
+
+    const min_idx, const max_idx = mem.findMinMax(u8, "abcdefg");
+    std.debug.assert(min_idx == 0);
+    std.debug.assert(max_idx == 6);
+
+    std.debug.print("rye: mem.findMin/findMax assertions confirmed.\n", .{});
+}

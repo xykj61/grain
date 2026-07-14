@@ -1,0 +1,4 @@
+# flag args "--appimage" — return the path that follows the flag.
+let path = flag args "--appimage"
+assert (path == "/tmp/rs2-test") else "expected flag value /tmp/rs2-test"
+say "RS-2 flag parse ok"

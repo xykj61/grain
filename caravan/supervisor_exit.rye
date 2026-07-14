@@ -1,0 +1,21 @@
+//! caravan/supervisor_exit.rye — three-way exit vocabulary for supervised services.
+//!
+//! Ordinary cycle success is **cycle_ok** (0): the supervisor spawns again.
+//! **stop_requested** is the reserved deliberate stop — the supervisor exits its loop.
+//! Any other non-zero exit is a fall — restart the dependent, bounded by the caller.
+
+pub const supervisor_exit_version = "20260707.015312";
+
+/// One ordinary cycle completed; supervisor should spawn the next cycle.
+pub const cycle_ok: u8 = 0;
+
+/// Deliberate stop at a safe boundary; supervisor should not spawn again.
+pub const stop_requested: u8 = 8;
+
+pub fn supervisor_stops(exit_code: u8) bool {
+    return exit_code == stop_requested;
+}
+
+pub fn supervisor_restarts_after_fall(exit_code: u8) bool {
+    return exit_code != cycle_ok and exit_code != stop_requested;
+}

@@ -1,0 +1,23 @@
+//! Rye test: std.mem.absorbSentinel — pass 9897.
+//!
+//! Sentinel-terminated slice to plain slice; pairs with span (9942) and sliceAsBytes (9926).
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    var buffer: [3:0]u8 = .{ 1, 2, 3 };
+    const zslice: [:0]const u8 = &buffer;
+    const plain: []const u8 = &buffer;
+
+    const absorbed = mem.absorbSentinel(zslice);
+    std.debug.assert(absorbed.len == 4);
+    std.debug.assert(absorbed[0] == 1);
+    std.debug.assert(absorbed[3] == 0);
+
+    const unchanged = mem.absorbSentinel(plain);
+    std.debug.assert(unchanged.len == 3);
+    std.debug.assert(unchanged.ptr == plain.ptr);
+
+    std.debug.print("rye: mem.absorbSentinel assertions confirmed.\n", .{});
+}

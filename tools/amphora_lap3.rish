@@ -1,0 +1,38 @@
+# amphora_lap3.rish — Amphora lap 3: Comlink fetch-by-digest for vessel cargo.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/amphora_lap3.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let wire_bin = "amphora/bin/vessel-fetch-wire"
+let delivery_bin = "amphora/bin/vessel-fetch-delivery"
+
+say "amphora-lap3: build vessel fetch wire..."
+let build_wire = run ["sh" "-c" "mkdir -p amphora/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_fetch_wire.rye -femit-bin=${wire_bin}"]
+assert build_wire.ok else "amphora vessel_fetch_wire build failed"
+
+let wire = run ["sh" "-c" "${wire_bin} selftest 2>&1"]
+assert wire.ok else "amphora vessel_fetch_wire selftest exited non-zero"
+assert wire.out contains "GREEN" else "amphora vessel_fetch_wire not GREEN"
+
+say "amphora-lap3: build vessel fetch delivery..."
+let build_delivery = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_fetch_delivery.rye -lc -femit-bin=${delivery_bin}"]
+assert build_delivery.ok else "amphora vessel_fetch_delivery build failed"
+
+let selftest = run ["sh" "-c" "${delivery_bin} selftest 2>&1"]
+assert selftest.ok else "amphora vessel_fetch_delivery selftest exited non-zero"
+assert selftest.out contains "GREEN" else "amphora vessel_fetch_delivery selftest not GREEN"
+
+say "amphora-lap3: hosted UDP demo..."
+let demo = run ["sh" "-c" "${delivery_bin} demo 2>&1"]
+assert demo.ok else "amphora vessel_fetch_delivery demo exited non-zero"
+assert demo.out contains "GREEN" else "amphora vessel_fetch_delivery demo not GREEN"
+
+say "amphora-lap3: pour → fetch → scrub witness..."
+let witness = run ["sh" "tools/fixtures/amphora_lap3_witness.sh"]
+assert witness.ok else "Amphora lap 3 witness failed"
+assert witness.out contains "GREEN" else "Amphora lap 3 did not report GREEN"
+assert witness.out contains "fetch-by-digest" else "Amphora lap 3 missing fetch claim"
+assert witness.out contains "SCRUB ok" else "Amphora lap 3 missing cold scrub"
+
+say "GREEN: Amphora lap 3 — vessel cargo fetched over Comlink, scrubbed cold."

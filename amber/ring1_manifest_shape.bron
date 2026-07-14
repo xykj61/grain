@@ -1,0 +1,11 @@
+# amber ring-1 export manifest — shape on paper
+# Kumara signature seam named; live signing waits for a later ring.
+#
+# Legacy (v1): entry <relpath> <sha3-256-hex-64>
+# Tilak (v2, writer default since I6): entry plain-bytes <sha3-256-hex-64> <name>
+format amber-ring1-v2-tilak
+stamp YYYYMMDD.HHMMSS
+source amber_ring1_tree
+entry plain-bytes <sha3-256-hex-64> <name>
+# resins live beside this file under resins/<digest> — one file per unique content
+# manifest digest: openssl dgst -sha3-256 manifest.bron (pinned golden in witness)

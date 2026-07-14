@@ -1,0 +1,179 @@
+//! mantra/recall_batch_wire.rye — wire payloads for resin-batch sync (hosted lap 3w-4).
+//!
+//! Reuses sync request shape; response carries one sealed batch body (≤ max_wire_payload)
+//! or multiple chunk frames when the batch exceeds one datagram.
+//! Scope: active-designing/20260706-023912_the-referential-namespace.md
+
+const std = @import("std");
+const sw = @import("recall_sync_wire.rye");
+const rb = @import("resin_batch.rye");
+const kumara = @import("kumara.rye");
+const tally_copy = @import("tally_copy.rye");
+
+pub const batch_wire_version = "20260706.184512";
+
+const kind_response_batch: u8 = 0x03;
+const kind_response_batch_chunk: u8 = 0x04;
+
+pub const max_batch_wire: u32 = sw.max_wire_payload;
+pub const chunk_header_len: u32 = 9;
+pub const max_chunk_body: u32 = max_batch_wire - chunk_header_len;
+pub const max_batch_chunks: u16 = 16;
+
+pub const WireError = sw.WireError || error{
+    BadChunk,
+    ChunkMismatch,
+    Incomplete,
+};
+
+pub const BatchWireRequest = sw.SyncRequest;
+
+pub fn encode_request(req: BatchWireRequest, out: []u8) WireError!u32 {
+    return sw.encode_request(req, out);
+}
+
+pub fn decode_request(payload: []const u8, out: *BatchWireRequest) WireError!void {
+    return sw.decode_request(payload, out);
+}
+
+pub fn batch_chunk_count(batch_len: u32) WireError!u16 {
+    if (batch_len == 0) return error.Truncated;
+    if (batch_len > rb.max_batch_bytes) return error.Overflow;
+    if (batch_len <= max_batch_wire) return 1;
+    const n = (batch_len + max_chunk_body - 1) / max_chunk_body;
+    if (n > max_batch_chunks) return error.Overflow;
+    return @intCast(n);
+}
+
+pub fn encode_batch_response(batch: []const u8, out: []u8) WireError!u32 {
+    if (batch.len > max_batch_wire) return error.Overflow;
+    if (out.len < 1 + batch.len) return error.Overflow;
+    out[0] = kind_response_batch;
+    tally_copy.copy_disjoint(u8, out[1..][0..batch.len], batch);
+    return 1 + @as(u32, @intCast(batch.len));
+}
+
+pub fn encode_batch_chunk(batch: []const u8, chunk_index: u16, out: []u8) WireError!u32 {
+    const count = try batch_chunk_count(@intCast(batch.len));
+    if (chunk_index >= count) return error.BadChunk;
+    const off_body = @as(u32, chunk_index) * max_chunk_body;
+    const remain = batch.len - off_body;
+    const take = @min(remain, max_chunk_body);
+    if (out.len < chunk_header_len + take) return error.Overflow;
+    out[0] = kind_response_batch_chunk;
+    std.mem.writeInt(u16, out[1..][0..2], chunk_index, .little);
+    std.mem.writeInt(u16, out[3..][0..2], count, .little);
+    std.mem.writeInt(u32, out[5..][0..4], @intCast(batch.len), .little);
+    tally_copy.copy_disjoint(u8, out[chunk_header_len..][0..take], batch[off_body..][0..take]);
+    return chunk_header_len + @as(u32, @intCast(take));
+}
+
+pub fn decode_batch_response(payload: []const u8, out: []u8) WireError!u32 {
+    if (payload.len < 1 or payload[0] != kind_response_batch) return error.BadKind;
+    const body = payload[1..];
+    if (body.len > out.len) return error.Overflow;
+    tally_copy.copy_disjoint(u8, out[0..body.len], body);
+    return @intCast(body.len);
+}
+
+pub const BatchAssembler = struct {
+    buf: [rb.max_batch_bytes]u8 = undefined,
+    total: u32 = 0,
+    count: u16 = 0,
+    received: u16 = 0,
+    mask: u16 = 0,
+
+    pub fn reset(self: *BatchAssembler) void {
+        self.* = .{};
+    }
+
+    pub fn feed(self: *BatchAssembler, payload: []const u8) WireError!enum { need_more, ready } {
+        if (payload.len < 1) return error.Truncated;
+        if (payload[0] == kind_response_batch) {
+            const body = payload[1..];
+            if (body.len > self.buf.len) return error.Overflow;
+            tally_copy.copy_disjoint(u8, self.buf[0..body.len], body);
+            self.total = @intCast(body.len);
+            self.count = 1;
+            self.received = 1;
+            self.mask = 1;
+            return .ready;
+        }
+        if (payload[0] != kind_response_batch_chunk) return error.BadKind;
+        if (payload.len < chunk_header_len) return error.Truncated;
+        const index = std.mem.readInt(u16, payload[1..][0..2], .little);
+        const count = std.mem.readInt(u16, payload[3..][0..2], .little);
+        const total = std.mem.readInt(u32, payload[5..][0..4], .little);
+        if (count == 0 or count > max_batch_chunks) return error.BadChunk;
+        if (index >= count) return error.BadChunk;
+        if (total == 0 or total > rb.max_batch_bytes) return error.BadChunk;
+        const expected = try batch_chunk_count(total);
+        if (count != expected) return error.ChunkMismatch;
+        const body = payload[chunk_header_len..];
+        const off_body = @as(u32, index) * max_chunk_body;
+        if (off_body >= total) return error.BadChunk;
+        const remain = total - off_body;
+        const take = @min(remain, max_chunk_body);
+        if (body.len != take) return error.Truncated;
+        if (self.received == 0) {
+            self.total = total;
+            self.count = count;
+        } else if (self.total != total or self.count != count) {
+            return error.ChunkMismatch;
+        }
+        const bit: u16 = @as(u16, 1) << @intCast(index);
+        if (self.mask & bit != 0) return error.BadChunk;
+        tally_copy.copy_disjoint(u8, self.buf[off_body..][0..take], body);
+        self.mask |= bit;
+        self.received += 1;
+        if (self.received < self.count) return .need_more;
+        return .ready;
+    }
+
+    pub fn batch(self: *const BatchAssembler) []const u8 {
+        return self.buf[0..self.total];
+    }
+};
+
+pub fn run_chunk_wire_selftest() WireError!void {
+    const assert = std.debug.assert;
+    var batch: [rb.max_batch_bytes]u8 = undefined;
+    var i: u32 = 0;
+    while (i < 700) : (i += 1) {
+        batch[i] = @intCast(i % 251);
+    }
+    const batch_len: u32 = 700;
+    const count = try batch_chunk_count(batch_len);
+    assert(count >= 3);
+
+    var batch_asm: BatchAssembler = .{};
+    var c: u16 = 0;
+    while (c < count) : (c += 1) {
+        var frame: [max_batch_wire]u8 = undefined;
+        const flen = try encode_batch_chunk(batch[0..batch_len], c, &frame);
+        const state = try batch_asm.feed(frame[0..flen]);
+        if (c + 1 < count) {
+            assert(state == .need_more);
+        } else {
+            assert(state == .ready);
+        }
+    }
+    assert(std.mem.eql(u8, batch_asm.batch(), batch[0..batch_len]));
+
+    var single_out: [max_batch_wire]u8 = undefined;
+    const small = batch[0..200];
+    const slen = try encode_batch_response(small, &single_out);
+    var single_asm: BatchAssembler = .{};
+    const sstate = try single_asm.feed(single_out[0..slen]);
+    assert(sstate == .ready);
+    assert(std.mem.eql(u8, single_asm.batch(), small));
+}
+
+/// Apply a wire batch into dest using resin_batch invariants.
+pub fn apply_wire_batch(
+    dest: *@import("recall_lap1.rye").BoltCatalog,
+    batch: []const u8,
+    source_pk: kumara.PublicKey,
+) rb.BatchError!rb.BatchReport {
+    return rb.apply_batch(dest, batch, source_pk);
+}

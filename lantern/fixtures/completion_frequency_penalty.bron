@@ -1,0 +1,7 @@
+# Lantern lap 27 fixture — pinned frequency_penalty on the request contract.
+model_hash sha3-256-rye-forge-lap0
+frequency_penalty 0.5
+tokens_in 5
+tokens_out 3
+stopped_reason eos
+text freq pin done

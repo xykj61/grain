@@ -1,0 +1,595 @@
+//! lattice/lattice_core.rye — f32 tensors in Tally-shaped fixed gardens (lap 39).
+//!
+//! Parity-gated tensor ops before Lantern. Laps through hard_sigmoid · rsqrt · hardtanh · cube.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const math = std.math;
+
+pub const max_dim: u32 = 8;
+pub const max_elements: u32 = max_dim * max_dim;
+
+pub const Dtype = enum(u8) {
+    f32,
+};
+
+pub const TensorError = error{
+    ShapeMismatch,
+    DimOverflow,
+    EmptyMatrix,
+    DivideByZero,
+    NegativeInput,
+    NonPositiveInput,
+};
+
+pub const Matrix = struct {
+    rows: u32,
+    cols: u32,
+    data: [max_elements]f32 = .{0} ** max_elements,
+
+    pub fn init(rows: u32, cols: u32) TensorError!Matrix {
+        if (rows == 0 or cols == 0) return error.EmptyMatrix;
+        if (rows > max_dim or cols > max_dim) return error.DimOverflow;
+        return .{ .rows = rows, .cols = cols };
+    }
+
+    pub fn at(self: *const Matrix, row: u32, col: u32) f32 {
+        assert(row < self.rows);
+        assert(col < self.cols);
+        return self.data[row * self.cols + col];
+    }
+
+    pub fn set(self: *Matrix, row: u32, col: u32, value: f32) void {
+        assert(row < self.rows);
+        assert(col < self.cols);
+        self.data[row * self.cols + col] = value;
+    }
+
+    pub fn len(self: *const Matrix) u32 {
+        return self.rows * self.cols;
+    }
+};
+
+pub fn add(a: *const Matrix, b: *const Matrix, out: *Matrix) TensorError!void {
+    if (a.rows != b.rows or a.cols != b.cols) return error.ShapeMismatch;
+    if (out.rows != a.rows or out.cols != a.cols) return error.ShapeMismatch;
+    var r: u32 = 0;
+    while (r < a.rows) : (r += 1) {
+        var c: u32 = 0;
+        while (c < a.cols) : (c += 1) {
+            out.set(r, c, a.at(r, c) + b.at(r, c));
+        }
+    }
+}
+
+/// C = A × B — asserts inner dimension match and output shape at entry.
+pub fn matmul(a: *const Matrix, b: *const Matrix, out: *Matrix) TensorError!void {
+    if (a.cols != b.rows) return error.ShapeMismatch;
+    if (out.rows != a.rows or out.cols != b.cols) return error.ShapeMismatch;
+    var r: u32 = 0;
+    while (r < a.rows) : (r += 1) {
+        var c: u32 = 0;
+        while (c < b.cols) : (c += 1) {
+            var sum: f32 = 0;
+            var k: u32 = 0;
+            while (k < a.cols) : (k += 1) {
+                sum += a.at(r, k) * b.at(k, c);
+            }
+            out.set(r, c, sum);
+        }
+    }
+}
+
+/// Row-major reshape — element count must match; copies in held order.
+pub fn reshape(src: *const Matrix, out: *Matrix) TensorError!void {
+    if (src.len() != out.len()) return error.ShapeMismatch;
+    var i: u32 = 0;
+    while (i < src.len()) : (i += 1) {
+        const sr = i / src.cols;
+        const sc = i % src.cols;
+        const orow = i / out.cols;
+        const ocol = i % out.cols;
+        out.set(orow, ocol, src.at(sr, sc));
+    }
+}
+
+/// Full-matrix sum into a 1×1 — asserts output shape at entry.
+pub fn reduce_sum(src: *const Matrix, out: *Matrix) TensorError!void {
+    if (out.rows != 1 or out.cols != 1) return error.ShapeMismatch;
+    var sum: f32 = 0;
+    var i: u32 = 0;
+    while (i < src.len()) : (i += 1) {
+        const r = i / src.cols;
+        const c = i % src.cols;
+        sum += src.at(r, c);
+    }
+    out.set(0, 0, sum);
+}
+
+/// Full-matrix mean into a 1×1 — asserts output shape at entry.
+pub fn reduce_mean(src: *const Matrix, out: *Matrix) TensorError!void {
+    if (out.rows != 1 or out.cols != 1) return error.ShapeMismatch;
+    var sum: f32 = 0;
+    var i: u32 = 0;
+    while (i < src.len()) : (i += 1) {
+        const r = i / src.cols;
+        const c = i % src.cols;
+        sum += src.at(r, c);
+    }
+    out.set(0, 0, sum / @as(f32, @floatFromInt(src.len())));
+}
+
+/// Elementwise scale — out must match src shape; multiplies every element by `factor`.
+pub fn scale(src: *const Matrix, factor: f32, out: *Matrix) TensorError!void {
+    if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
+    var r: u32 = 0;
+    while (r < src.rows) : (r += 1) {
+        var c: u32 = 0;
+        while (c < src.cols) : (c += 1) {
+            out.set(r, c, src.at(r, c) * factor);
+        }
+    }
+}
+
+/// Transpose — out must be cols×rows of src; copies src[r,c] to out[c,r].
+pub fn transpose(src: *const Matrix, out: *Matrix) TensorError!void {
+    if (out.rows != src.cols or out.cols != src.rows) return error.ShapeMismatch;
+    var r: u32 = 0;
+    while (r < src.rows) : (r += 1) {
+        var c: u32 = 0;
+        while (c < src.cols) : (c += 1) {
+            out.set(c, r, src.at(r, c));
+        }
+    }
+}
+
+/// Elementwise multiply (Hadamard) — shapes must match; out[i] = a[i] * b[i].
+pub fn mul(a: *const Matrix, b: *const Matrix, out: *Matrix) TensorError!void {
+    if (a.rows != b.rows or a.cols != b.cols) return error.ShapeMismatch;
+    if (out.rows != a.rows or out.cols != a.cols) return error.ShapeMismatch;
+    var r: u32 = 0;
+    while (r < a.rows) : (r += 1) {
+        var c: u32 = 0;
+        while (c < a.cols) : (c += 1) {
+            out.set(r, c, a.at(r, c) * b.at(r, c));
+        }
+    }
+}
+
+/// Fill every element of `out` with `value` — shape already held by the matrix.
+pub fn fill(out: *Matrix, value: f32) void {
+    var r: u32 = 0;
+    while (r < out.rows) : (r += 1) {
+        var c: u32 = 0;
+        while (c < out.cols) : (c += 1) {
+            out.set(r, c, value);
+        }
+    }
+}
+
+/// Copy every element from `src` into `out` — shapes must match.
+pub fn copy(src: *const Matrix, out: *Matrix) TensorError!void {
+    if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
+    var r: u32 = 0;
+    while (r < src.rows) : (r += 1) {
+        var c: u32 = 0;
+        while (c < src.cols) : (c += 1) {
+            out.set(r, c, src.at(r, c));
+        }
+    }
+}
+
+/// Elementwise subtract — shapes must match.
+pub fn sub(a: *const Matrix, b: *const Matrix, out: *Matrix) TensorError!void {
+    if (a.rows != b.rows or a.cols != b.cols) return error.ShapeMismatch;
+    if (out.rows != a.rows or out.cols != a.cols) return error.ShapeMismatch;
+    var r: u32 = 0;
+    while (r < a.rows) : (r += 1) {
+        var c: u32 = 0;
+        while (c < a.cols) : (c += 1) {
+            out.set(r, c, a.at(r, c) - b.at(r, c));
+        }
+    }
+}
+
+/// Elementwise negate — shapes must match.
+pub fn neg(src: *const Matrix, out: *Matrix) TensorError!void {
+    if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
+    var r: u32 = 0;
+    while (r < src.rows) : (r += 1) {
+        var c: u32 = 0;
+        while (c < src.cols) : (c += 1) {
+            out.set(r, c, -src.at(r, c));
+        }
+    }
+}
+
+/// Elementwise divide — shapes must match; zero divisor refused.
+pub fn div(a: *const Matrix, b: *const Matrix, out: *Matrix) TensorError!void {
+    if (a.rows != b.rows or a.cols != b.cols) return error.ShapeMismatch;
+    if (out.rows != a.rows or out.cols != a.cols) return error.ShapeMismatch;
+    var r: u32 = 0;
+    while (r < a.rows) : (r += 1) {
+        var c: u32 = 0;
+        while (c < a.cols) : (c += 1) {
+            const denom = b.at(r, c);
+            if (denom == 0.0) return error.DivideByZero;
+            out.set(r, c, a.at(r, c) / denom);
+        }
+    }
+}
+
+/// Elementwise absolute value — shapes must match.
+pub fn abs(src: *const Matrix, out: *Matrix) TensorError!void {
+    if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
+    var r: u32 = 0;
+    while (r < src.rows) : (r += 1) {
+        var c: u32 = 0;
+        while (c < src.cols) : (c += 1) {
+            const v = src.at(r, c);
+            out.set(r, c, if (v < 0.0) -v else v);
+        }
+    }
+}
+
+/// Elementwise clamp into [lo, hi] — shapes must match.
+pub fn clamp(src: *const Matrix, lo: f32, hi: f32, out: *Matrix) TensorError!void {
+    if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
+    var r: u32 = 0;
+    while (r < src.rows) : (r += 1) {
+        var c: u32 = 0;
+        while (c < src.cols) : (c += 1) {
+            const v = src.at(r, c);
+            const clipped = if (v < lo) lo else if (v > hi) hi else v;
+            out.set(r, c, clipped);
+        }
+    }
+}
+
+/// Full-matrix max into a 1×1 — asserts output shape at entry.
+pub fn reduce_max(src: *const Matrix, out: *Matrix) TensorError!void {
+    if (out.rows != 1 or out.cols != 1) return error.ShapeMismatch;
+    var max_v: f32 = src.at(0, 0);
+    var i: u32 = 1;
+    while (i < src.len()) : (i += 1) {
+        const r = i / src.cols;
+        const c = i % src.cols;
+        const v = src.at(r, c);
+        if (v > max_v) max_v = v;
+    }
+    out.set(0, 0, max_v);
+}
+
+/// Full-matrix min into a 1×1 — asserts output shape at entry.
+pub fn reduce_min(src: *const Matrix, out: *Matrix) TensorError!void {
+    if (out.rows != 1 or out.cols != 1) return error.ShapeMismatch;
+    var min_v: f32 = src.at(0, 0);
+    var i: u32 = 1;
+    while (i < src.len()) : (i += 1) {
+        const r = i / src.cols;
+        const c = i % src.cols;
+        const v = src.at(r, c);
+        if (v < min_v) min_v = v;
+    }
+    out.set(0, 0, min_v);
+}
+
+/// Elementwise square root — shapes must match; negative input refused.
+pub fn sqrt(src: *const Matrix, out: *Matrix) TensorError!void {
+    if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
+    var r: u32 = 0;
+    while (r < src.rows) : (r += 1) {
+        var c: u32 = 0;
+        while (c < src.cols) : (c += 1) {
+            const v = src.at(r, c);
+            if (v < 0.0) return error.NegativeInput;
+            out.set(r, c, @sqrt(v));
+        }
+    }
+}
+
+/// Elementwise exp — shapes must match.
+pub fn exp(src: *const Matrix, out: *Matrix) TensorError!void {
+    if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
+    var r: u32 = 0;
+    while (r < src.rows) : (r += 1) {
+        var c: u32 = 0;
+        while (c < src.cols) : (c += 1) {
+            out.set(r, c, @exp(src.at(r, c)));
+        }
+    }
+}
+
+/// Elementwise natural log — shapes must match; non-positive input refused.
+pub fn log(src: *const Matrix, out: *Matrix) TensorError!void {
+    if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
+    var r: u32 = 0;
+    while (r < src.rows) : (r += 1) {
+        var c: u32 = 0;
+        while (c < src.cols) : (c += 1) {
+            const v = src.at(r, c);
+            if (v <= 0.0) return error.NonPositiveInput;
+            out.set(r, c, @log(v));
+        }
+    }
+}
+
+/// Elementwise power with scalar exponent — shapes must match; negative base refused.
+pub fn pow(src: *const Matrix, exponent: f32, out: *Matrix) TensorError!void {
+    if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
+    var r: u32 = 0;
+    while (r < src.rows) : (r += 1) {
+        var c: u32 = 0;
+        while (c < src.cols) : (c += 1) {
+            const v = src.at(r, c);
+            if (v < 0.0) return error.NegativeInput;
+            out.set(r, c, math.pow(f32, v, exponent));
+        }
+    }
+}
+
+/// Elementwise ReLU — shapes must match; max(0, v).
+pub fn relu(src: *const Matrix, out: *Matrix) TensorError!void {
+    if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
+    var r: u32 = 0;
+    while (r < src.rows) : (r += 1) {
+        var c: u32 = 0;
+        while (c < src.cols) : (c += 1) {
+            const v = src.at(r, c);
+            out.set(r, c, if (v > 0.0) v else 0.0);
+        }
+    }
+}
+
+/// Elementwise sigmoid — shapes must match; 1 / (1 + exp(-x)).
+pub fn sigmoid(src: *const Matrix, out: *Matrix) TensorError!void {
+    if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
+    var r: u32 = 0;
+    while (r < src.rows) : (r += 1) {
+        var c: u32 = 0;
+        while (c < src.cols) : (c += 1) {
+            const v = src.at(r, c);
+            out.set(r, c, 1.0 / (1.0 + @exp(-v)));
+        }
+    }
+}
+
+/// Row-wise softmax — shapes must match; each row sums to 1.
+pub fn softmax(src: *const Matrix, out: *Matrix) TensorError!void {
+    if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
+    var r: u32 = 0;
+    while (r < src.rows) : (r += 1) {
+        var max_v: f32 = src.at(r, 0);
+        var c: u32 = 1;
+        while (c < src.cols) : (c += 1) {
+            const v = src.at(r, c);
+            if (v > max_v) max_v = v;
+        }
+        var sum: f32 = 0;
+        c = 0;
+        while (c < src.cols) : (c += 1) {
+            const e = @exp(src.at(r, c) - max_v);
+            out.set(r, c, e);
+            sum += e;
+        }
+        c = 0;
+        while (c < src.cols) : (c += 1) {
+            out.set(r, c, out.at(r, c) / sum);
+        }
+    }
+}
+
+/// Elementwise tanh — shapes must match.
+pub fn tanh(src: *const Matrix, out: *Matrix) TensorError!void {
+    if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
+    var r: u32 = 0;
+    while (r < src.rows) : (r += 1) {
+        var c: u32 = 0;
+        while (c < src.cols) : (c += 1) {
+            out.set(r, c, math.tanh(src.at(r, c)));
+        }
+    }
+}
+
+/// Elementwise GELU (tanh approximation) — shapes must match; gelu(0) = 0.
+pub fn gelu(src: *const Matrix, out: *Matrix) TensorError!void {
+    if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
+    const k: f32 = 0.7978845608; // sqrt(2/pi)
+    var r: u32 = 0;
+    while (r < src.rows) : (r += 1) {
+        var c: u32 = 0;
+        while (c < src.cols) : (c += 1) {
+            const x = src.at(r, c);
+            const u = k * (x + 0.044715 * x * x * x);
+            out.set(r, c, 0.5 * x * (1.0 + math.tanh(u)));
+        }
+    }
+}
+
+/// Elementwise SiLU (swish) — x · σ(x); shapes must match; silu(0) = 0.
+pub fn silu(src: *const Matrix, out: *Matrix) TensorError!void {
+    if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
+    var r: u32 = 0;
+    while (r < src.rows) : (r += 1) {
+        var c: u32 = 0;
+        while (c < src.cols) : (c += 1) {
+            const x = src.at(r, c);
+            out.set(r, c, x / (1.0 + @exp(-x)));
+        }
+    }
+}
+
+/// Elementwise leaky ReLU — max(0,v) + α·min(0,v); shapes must match.
+pub fn leaky_relu(src: *const Matrix, alpha: f32, out: *Matrix) TensorError!void {
+    if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
+    var r: u32 = 0;
+    while (r < src.rows) : (r += 1) {
+        var c: u32 = 0;
+        while (c < src.cols) : (c += 1) {
+            const v = src.at(r, c);
+            out.set(r, c, if (v >= 0.0) v else alpha * v);
+        }
+    }
+}
+
+/// Elementwise softplus — log(1+exp(x)); shapes must match; softplus(0) ≈ ln(2).
+pub fn softplus(src: *const Matrix, out: *Matrix) TensorError!void {
+    if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
+    var r: u32 = 0;
+    while (r < src.rows) : (r += 1) {
+        var c: u32 = 0;
+        while (c < src.cols) : (c += 1) {
+            const x = src.at(r, c);
+            out.set(r, c, @log(1.0 + @exp(x)));
+        }
+    }
+}
+
+/// Elementwise maximum of two matrices — shapes must match.
+pub fn maximum(a: *const Matrix, b: *const Matrix, out: *Matrix) TensorError!void {
+    if (a.rows != b.rows or a.cols != b.cols) return error.ShapeMismatch;
+    if (out.rows != a.rows or out.cols != a.cols) return error.ShapeMismatch;
+    var r: u32 = 0;
+    while (r < a.rows) : (r += 1) {
+        var c: u32 = 0;
+        while (c < a.cols) : (c += 1) {
+            const av = a.at(r, c);
+            const bv = b.at(r, c);
+            out.set(r, c, if (av >= bv) av else bv);
+        }
+    }
+}
+
+/// Elementwise minimum of two matrices — shapes must match.
+pub fn minimum(a: *const Matrix, b: *const Matrix, out: *Matrix) TensorError!void {
+    if (a.rows != b.rows or a.cols != b.cols) return error.ShapeMismatch;
+    if (out.rows != a.rows or out.cols != a.cols) return error.ShapeMismatch;
+    var r: u32 = 0;
+    while (r < a.rows) : (r += 1) {
+        var c: u32 = 0;
+        while (c < a.cols) : (c += 1) {
+            const av = a.at(r, c);
+            const bv = b.at(r, c);
+            out.set(r, c, if (av <= bv) av else bv);
+        }
+    }
+}
+
+/// Elementwise ELU — v if v>=0 else α·(exp(v)-1); shapes must match; elu(0)=0.
+pub fn elu(src: *const Matrix, alpha: f32, out: *Matrix) TensorError!void {
+    if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
+    var r: u32 = 0;
+    while (r < src.rows) : (r += 1) {
+        var c: u32 = 0;
+        while (c < src.cols) : (c += 1) {
+            const v = src.at(r, c);
+            out.set(r, c, if (v >= 0.0) v else alpha * (@exp(v) - 1.0));
+        }
+    }
+}
+
+/// Elementwise softsign — v / (1 + |v|); softsign(0)=0; softsign(1)=0.5.
+pub fn softsign(src: *const Matrix, out: *Matrix) TensorError!void {
+    if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
+    var r: u32 = 0;
+    while (r < src.rows) : (r += 1) {
+        var c: u32 = 0;
+        while (c < src.cols) : (c += 1) {
+            const v = src.at(r, c);
+            out.set(r, c, v / (1.0 + @abs(v)));
+        }
+    }
+}
+
+/// Elementwise square — v·v; shapes must match.
+pub fn square(src: *const Matrix, out: *Matrix) TensorError!void {
+    if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
+    var r: u32 = 0;
+    while (r < src.rows) : (r += 1) {
+        var c: u32 = 0;
+        while (c < src.cols) : (c += 1) {
+            const v = src.at(r, c);
+            out.set(r, c, v * v);
+        }
+    }
+}
+
+/// Elementwise sign — −1 / 0 / +1; shapes must match.
+pub fn sign(src: *const Matrix, out: *Matrix) TensorError!void {
+    if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
+    var r: u32 = 0;
+    while (r < src.rows) : (r += 1) {
+        var c: u32 = 0;
+        while (c < src.cols) : (c += 1) {
+            const v = src.at(r, c);
+            out.set(r, c, if (v > 0.0) 1.0 else if (v < 0.0) -1.0 else 0.0);
+        }
+    }
+}
+
+/// Elementwise reciprocal — 1/v; zero refused; shapes must match.
+pub fn reciprocal(src: *const Matrix, out: *Matrix) TensorError!void {
+    if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
+    var r: u32 = 0;
+    while (r < src.rows) : (r += 1) {
+        var c: u32 = 0;
+        while (c < src.cols) : (c += 1) {
+            const v = src.at(r, c);
+            if (v == 0.0) return error.DivideByZero;
+            out.set(r, c, 1.0 / v);
+        }
+    }
+}
+
+/// Elementwise hard sigmoid — clamp(0.2·v + 0.5, 0, 1); shapes must match.
+pub fn hard_sigmoid(src: *const Matrix, out: *Matrix) TensorError!void {
+    if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
+    var r: u32 = 0;
+    while (r < src.rows) : (r += 1) {
+        var c: u32 = 0;
+        while (c < src.cols) : (c += 1) {
+            const v = 0.2 * src.at(r, c) + 0.5;
+            out.set(r, c, if (v < 0.0) 0.0 else if (v > 1.0) 1.0 else v);
+        }
+    }
+}
+
+/// Elementwise rsqrt — 1/√v; non-positive refused; shapes must match.
+pub fn rsqrt(src: *const Matrix, out: *Matrix) TensorError!void {
+    if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
+    var r: u32 = 0;
+    while (r < src.rows) : (r += 1) {
+        var c: u32 = 0;
+        while (c < src.cols) : (c += 1) {
+            const v = src.at(r, c);
+            if (v <= 0.0) return error.NonPositiveInput;
+            out.set(r, c, 1.0 / @sqrt(v));
+        }
+    }
+}
+
+/// Elementwise hardtanh — clamp(v, −1, 1); shapes must match.
+pub fn hardtanh(src: *const Matrix, out: *Matrix) TensorError!void {
+    if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
+    var r: u32 = 0;
+    while (r < src.rows) : (r += 1) {
+        var c: u32 = 0;
+        while (c < src.cols) : (c += 1) {
+            const v = src.at(r, c);
+            out.set(r, c, if (v < -1.0) -1.0 else if (v > 1.0) 1.0 else v);
+        }
+    }
+}
+
+/// Elementwise cube — v·v·v; shapes must match.
+pub fn cube(src: *const Matrix, out: *Matrix) TensorError!void {
+    if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
+    var r: u32 = 0;
+    while (r < src.rows) : (r += 1) {
+        var c: u32 = 0;
+        while (c < src.cols) : (c += 1) {
+            const v = src.at(r, c);
+            out.set(r, c, v * v * v);
+        }
+    }
+}

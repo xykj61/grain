@@ -1,0 +1,46 @@
+# comlink_recall_subscribe_poll_wire_lab.rish — poll wire device QEMU lab (spawn / wait-for).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/comlink_recall_subscribe_poll_wire_lab.rish
+#
+# Replaces the background-orchestration half of comlink/run_recall_subscribe_poll_wire_lab.sh;
+# the shell entry point delegates here so stable paths and citations hold.
+
+let zig = "vendor/zig-toolchain/zig"
+let build_dir = "comlink/.build"
+let port_request_raw = env "COMLINK_CATCHUP_LAB_PORT"
+if port_request_raw == "" then let port_request = "15565" else let port_request = port_request_raw
+let port_response_raw = env "COMLINK_CATCHUP_RESP_LAB_PORT"
+if port_response_raw == "" then let port_response = "15566" else let port_response = port_response_raw
+let sock_request = "127.0.0.1:${port_request}"
+let sock_response = "127.0.0.1:${port_response}"
+
+let prep = run ["sh" "-c" "mkdir -p ${build_dir}"]
+assert prep.ok else "subscribe poll wire lab mkdir failed"
+
+let build_source_rx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_catchup_source_rx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/catchup-source-rx.elf"]
+assert build_source_rx.ok else "catchup source rx build failed"
+
+let build_fetcher_tx_r2 = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_catchup_fetcher_tx_r2.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/catchup-fetcher-tx-r2.elf"]
+assert build_fetcher_tx_r2.ok else "catchup fetcher tx r2 build failed"
+
+let build_fetcher_rx_r2 = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_catchup_fetcher_rx_r2.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/catchup-fetcher-rx-r2.elf"]
+assert build_fetcher_rx_r2.ok else "catchup fetcher rx r2 build failed"
+
+let build_source_tx_r2 = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_catchup_source_tx_r2.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/catchup-source-tx-r2.elf"]
+assert build_source_tx_r2.ok else "catchup source tx r2 build failed"
+
+let request_rx = spawn ["timeout" "60" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,listen=${sock_request}" "-kernel" "${build_dir}/catchup-source-rx.elf"]
+let request_pause = run ["sleep" "1"]
+assert request_pause.ok else "poll request sleep failed"
+let request_tx = run ["timeout" "30" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,connect=${sock_request}" "-kernel" "${build_dir}/catchup-fetcher-tx-r2.elf"]
+let request_done = wait-for request_rx
+
+let response_rx = spawn ["timeout" "60" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,listen=${sock_response}" "-kernel" "${build_dir}/catchup-fetcher-rx-r2.elf"]
+let response_pause = run ["sleep" "1"]
+assert response_pause.ok else "poll response sleep failed"
+let response_tx = run ["timeout" "30" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,connect=${sock_response}" "-kernel" "${build_dir}/catchup-source-tx-r2.elf"]
+let response_done = wait-for response_rx
+assert response_done.out contains "catch-up rev 2 GREEN" else "poll cycle catch-up RED"
+
+say "ns-pollw device wire lab: GREEN (one poll-cycle catch-up body)"

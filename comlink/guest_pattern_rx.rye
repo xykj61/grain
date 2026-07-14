@@ -1,0 +1,30 @@
+//! comlink/guest_pattern_rx.rye — sub-lap 2 RX guest (freestanding RISC-V virt).
+//!
+//! Receives the fixed link pattern from the TX guest across virtio-net on the
+//! QEMU socket netdev lab. Build and run via comlink/run_device_wire_lab.sh.
+
+const vn = @import("virtio_net.rye");
+
+var rx_queue: vn.RxQueue = undefined;
+
+export fn _start() linksection(".text.init") callconv(.naked) noreturn {
+    asm volatile (
+        \\ li sp, 0x80100000
+        \\ j kmain
+    );
+}
+
+export fn kmain() callconv(.c) noreturn {
+    vn.init_device();
+    rx_queue.init();
+    vn.driver_ok();
+    rx_queue.kick(); // ring the RX doorbell once buffers are posted and the queue is live
+
+    if (!rx_queue.wait_pattern()) {
+        vn.write_str("comlink device wire: linktest FAIL — pattern mismatch or timeout\n");
+        vn.finish_fail();
+    }
+
+    vn.write_str("comlink device wire: linktest GREEN — sub-lap 2 pattern TX/RX\n");
+    vn.finish_pass();
+}

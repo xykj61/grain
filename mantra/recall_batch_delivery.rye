@@ -1,0 +1,609 @@
+//! mantra/recall_batch_delivery.rye — NS-L3 lap 3w-4: hosted resin-batch sync under Comlink seal.
+//!
+//!   rye build mantra/recall_batch_delivery.rye -lc -femit-bin=mantra/bin/recall-batch-delivery
+//!   mantra/bin/recall-batch-delivery selftest
+//!   mantra/bin/recall-batch-delivery demo
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const c = std.c;
+const kumara = @import("kumara.rye");
+const ns = @import("recall_lap1.rye");
+const rb = @import("resin_batch.rye");
+const bw = @import("recall_batch_wire.rye");
+const wf = @import("wire_format.rye");
+const rbd = @import("recall_beaded.rye");
+const bd = @import("beading.rye");
+const tally_copy = @import("tally_copy.rye");
+
+const rbw_version = "20260707.011412";
+
+const AF_INET: c_uint = 2;
+const SOCK_DGRAM: c_uint = 2;
+const SOL_SOCKET: c_int = 1;
+const SO_REUSEADDR: c_int = 2;
+const SO_RCVTIMEO: c_int = 20;
+
+const fetcher_port: u16 = 38480;
+const source_port: u16 = 38481;
+
+// Silent-peer guard on the chunk-assembly recv loop. A quiet peer yields RecvFailed
+// after this many seconds rather than an unbounded wait — the same class of fault
+// recall_catch_up_delivery's 20260707.002012 fix answered, mirrored here 20260707.011412.
+const batch_recv_timeout_sec: u32 = 2;
+
+const batch_signer_seed = [_]u8{0x61} ** kumara.seed_length;
+
+fn batch_signer() kumara.KeyPair {
+    return kumara.keypair_from_seed(&batch_signer_seed);
+}
+
+const sockaddr_in = extern struct {
+    sin_family: c_ushort = AF_INET,
+    sin_port: c_ushort,
+    sin_addr: [4]u8 = .{ 127, 0, 0, 1 },
+    sin_zero: [8]u8 = .{0} ** 8,
+};
+
+fn localhost_addr(port: u16) sockaddr_in {
+    return .{ .sin_port = std.mem.nativeToBig(u16, port) };
+}
+
+fn open_socket() !c.fd_t {
+    const fd = c.socket(AF_INET, SOCK_DGRAM, 0);
+    if (fd < 0) return error.SocketFailed;
+    const yes: c_int = 1;
+    _ = c.setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &yes, @sizeOf(c_int));
+    return fd;
+}
+
+fn send_wire(port: u16, wire: []const u8) !void {
+    const fd = try open_socket();
+    defer _ = c.close(fd);
+    const dest = localhost_addr(port);
+    const sent = c.sendto(fd, wire.ptr, @intCast(wire.len), 0, @ptrCast(&dest), @sizeOf(sockaddr_in));
+    if (sent < 0 or @as(usize, @intCast(sent)) != wire.len) return error.SendFailed;
+}
+
+fn recv_wire(port: u16, wire: []u8) !u64 {
+    return recv_wire_timeout(port, wire, 0);
+}
+
+fn recv_wire_timeout(port: u16, wire: []u8, timeout_sec: u32) !u64 {
+    const fd = try open_socket();
+    defer _ = c.close(fd);
+    if (timeout_sec > 0) {
+        var tv = c.timeval{ .sec = @intCast(timeout_sec), .usec = 0 };
+        _ = c.setsockopt(fd, SOL_SOCKET, SO_RCVTIMEO, &tv, @sizeOf(c.timeval));
+    }
+    var bind_addr = localhost_addr(port);
+    if (c.bind(fd, @ptrCast(&bind_addr), @sizeOf(sockaddr_in)) < 0) return error.BindFailed;
+    var from: sockaddr_in = undefined;
+    var from_len: c.socklen_t = @sizeOf(sockaddr_in);
+    const n = c.recvfrom(fd, wire.ptr, @intCast(wire.len), 0, @ptrCast(&from), &from_len);
+    if (n < 0) return error.RecvFailed;
+    return @intCast(n);
+}
+
+fn seal_payload(payload: []const u8, wire: *[@intCast(wf.wire_capacity)]u8) !u64 {
+    return try wf.seal_message(payload, wire);
+}
+
+fn open_wire(wire: []const u8, opened: *[@intCast(wf.max_message)]u8) !u64 {
+    return try wf.open_datagram(wire, opened);
+}
+
+fn digest_hex_of(content: []const u8, out: *[64]u8) void {
+    var digest: [32]u8 = undefined;
+    std.crypto.hash.sha3.Sha3_256.hash(content, &digest, .{});
+    var i: u32 = 0;
+    while (i < 32) : (i += 1) {
+        _ = std.fmt.bufPrint(out[i * 2 ..][0..2], "{x:0>2}", .{digest[i]}) catch unreachable;
+    }
+}
+
+fn init_witness_source(cat: *ns.BoltCatalog) !void {
+    cat.* = .empty();
+    try cat.append_leaf("peerB", "b", 1, "a.txt", "alpha", "plain-text");
+    try cat.append_leaf("peerB", "b", 1, "b.txt", "beta", "plain-text");
+}
+
+fn large_beta_bytes(out: *[400]u8) void {
+    var i: u32 = 0;
+    while (i < 400) : (i += 1) {
+        out[i] = 'B';
+    }
+}
+
+fn init_chunk_witness_source(cat: *ns.BoltCatalog) !void {
+    cat.* = .empty();
+    try cat.append_leaf("peerB", "b", 1, "a.txt", "alpha", "plain-text");
+    var big: [400]u8 = undefined;
+    large_beta_bytes(&big);
+    try cat.append_leaf("peerB", "b", 1, "b.txt", big[0..400], "plain-bytes");
+}
+
+fn witness_pattern_fill(buf: []u8, seed: u32) void {
+    var x: u32 = seed;
+    var i: u32 = 0;
+    while (i < buf.len) : (i += 1) {
+        x = x *% 1664525 +% 1013904223;
+        buf[i] = @intCast((x >> 24) & 0xFF);
+    }
+}
+
+fn init_beaded_witness_source(cat: *ns.BoltCatalog, beads: *bd.BeadStore) !void {
+    cat.* = .empty();
+    beads.* = .empty();
+    try cat.append_leaf("peerB", "b", 1, "a.txt", "alpha", "plain-text");
+    var content: [400]u8 = undefined;
+    witness_pattern_fill(&content, 20260706);
+    _ = try rbd.append_leaf_beaded(cat, beads, "peerB", "b", 1, "large.bin", content[0..], "plain-bytes");
+}
+
+fn init_witness_fetcher(cat: *ns.BoltCatalog) !void {
+    cat.* = .empty();
+    try cat.append_leaf("peerA", "seed", 1, "x", "alpha", "plain-text");
+}
+
+fn build_held_request() bw.WireError!bw.BatchWireRequest {
+    var req: bw.BatchWireRequest = .{
+        .peer = "peerB",
+        .bolt = "b",
+        .revision = 1,
+        .held_count = 1,
+        .held_digests = undefined,
+    };
+    digest_hex_of("alpha", &req.held_digests[0]);
+    return req;
+}
+
+fn send_batch_payload(port: u16, batch: []const u8) !void {
+    if (batch.len <= bw.max_batch_wire) {
+        var payload: [bw.max_batch_wire]u8 = undefined;
+        const payload_len = try bw.encode_batch_response(batch, &payload);
+        var out_wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+        const out_len = try seal_payload(payload[0..payload_len], &out_wire);
+        try send_wire(port, out_wire[0..@intCast(out_len)]);
+        return;
+    }
+    const count = try bw.batch_chunk_count(@intCast(batch.len));
+    var ci: u16 = 0;
+    while (ci < count) : (ci += 1) {
+        var payload: [bw.max_batch_wire]u8 = undefined;
+        const payload_len = try bw.encode_batch_chunk(batch, ci, &payload);
+        var out_wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+        const out_len = try seal_payload(payload[0..payload_len], &out_wire);
+        try send_wire(port, out_wire[0..@intCast(out_len)]);
+    }
+}
+
+// Invariant: one socket, bound once, receives every frame of one assembly. The prior
+// shape reopened and rebound per frame, and a chunk landing in that unbound window was
+// silently dropped — a race the multi-frame demos lost often enough to wait without
+// bound. Binding
+// once lets the kernel queue back-to-back frames; the timeout turns a silent peer into
+// error.RecvFailed rather than an unbounded wait (guard class per catch_up 20260707.002012).
+fn recv_batch_payload(port: u16, out: []u8) !u32 {
+    const fd = try open_socket();
+    defer _ = c.close(fd);
+    var tv = c.timeval{ .sec = @intCast(batch_recv_timeout_sec), .usec = 0 };
+    _ = c.setsockopt(fd, SOL_SOCKET, SO_RCVTIMEO, &tv, @sizeOf(c.timeval));
+    var bind_addr = localhost_addr(port);
+    if (c.bind(fd, @ptrCast(&bind_addr), @sizeOf(sockaddr_in)) < 0) return error.BindFailed;
+
+    var batch_asm: bw.BatchAssembler = .{};
+    while (true) {
+        var recv_buf: [@intCast(wf.wire_capacity)]u8 = undefined;
+        var from: sockaddr_in = undefined;
+        var from_len: c.socklen_t = @sizeOf(sockaddr_in);
+        const n = c.recvfrom(fd, &recv_buf, recv_buf.len, 0, @ptrCast(&from), &from_len);
+        if (n < 0) return error.RecvFailed;
+        const recv_len: u64 = @intCast(n);
+        var opened: [@intCast(wf.max_message)]u8 = undefined;
+        const opened_len = try open_wire(recv_buf[0..@intCast(recv_len)], &opened);
+        const state = try batch_asm.feed(opened[0..@intCast(opened_len)]);
+        if (state == .ready) {
+            const batch = batch_asm.batch();
+            if (batch.len > out.len) return error.Overflow;
+            tally_copy.copy_disjoint(u8, out[0..batch.len], batch);
+            return @intCast(batch.len);
+        }
+    }
+}
+
+fn run_selftest(_: std.Io) !u8 {
+    const signer = batch_signer();
+    var src: ns.BoltCatalog = undefined;
+    try init_witness_source(&src);
+    var fetcher: ns.BoltCatalog = undefined;
+    try init_witness_fetcher(&fetcher);
+
+    const req = try build_held_request();
+    var alpha_digest: [64]u8 = undefined;
+    digest_hex_of("alpha", &alpha_digest);
+    const held = [_][64]u8{alpha_digest};
+
+    var batch_buf: [rb.max_batch_bytes]u8 = undefined;
+    const built = try rb.build_batch(&src, "peerB", "b", 1, &held, signer, &batch_buf);
+    assert(built.report.total == 2);
+    assert(built.report.needed == 1);
+    assert(built.len <= bw.max_batch_wire);
+
+    var resp_payload: [bw.max_batch_wire]u8 = undefined;
+    const resp_len = try bw.encode_batch_response(batch_buf[0..built.len], &resp_payload);
+
+    var req_buf: [bw.max_batch_wire]u8 = undefined;
+    const req_len = try bw.encode_request(req, &req_buf);
+
+    var req_wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const req_wire_len = try seal_payload(req_buf[0..req_len], &req_wire);
+    var req_opened: [@intCast(wf.max_message)]u8 = undefined;
+    const req_opened_len = try open_wire(req_wire[0..@intCast(req_wire_len)], &req_opened);
+
+    var decoded_req: bw.BatchWireRequest = undefined;
+    try bw.decode_request(req_opened[0..@intCast(req_opened_len)], &decoded_req);
+
+    var rebuilt: [rb.max_batch_bytes]u8 = undefined;
+    const rebuilt_built = try rb.build_batch(&src, decoded_req.peer, decoded_req.bolt, decoded_req.revision, &held, signer, &rebuilt);
+    assert(rebuilt_built.len == built.len);
+
+    var resp_wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const resp_wire_len = try seal_payload(resp_payload[0..resp_len], &resp_wire);
+    var resp_opened: [@intCast(wf.max_message)]u8 = undefined;
+    const resp_opened_len = try open_wire(resp_wire[0..@intCast(resp_wire_len)], &resp_opened);
+
+    var opened_batch: [rb.max_batch_bytes]u8 = undefined;
+    const batch_len = try bw.decode_batch_response(resp_opened[0..@intCast(resp_opened_len)], &opened_batch);
+
+    const report = try bw.apply_wire_batch(&fetcher, opened_batch[0..batch_len], signer.public_key);
+    assert(report.had_already == 1);
+    assert(report.needed == 1);
+
+    const nb = ns.Name{ .peer = "peerB", .bolt = "b", .revision = 1, .path = "b.txt" };
+    var buf: [64]u8 = undefined;
+    const rb_out = try fetcher.recall(nb, &buf);
+    assert(std.mem.eql(u8, buf[0..rb_out.len], "beta"));
+
+    var corrupt: [@intCast(wf.wire_capacity)]u8 = undefined;
+    tally_copy.copy_disjoint(u8, corrupt[0..@intCast(resp_wire_len)], resp_wire[0..@intCast(resp_wire_len)]);
+    corrupt[@intCast(resp_wire_len - 1)] ^= 0xff;
+    var junk: [@intCast(wf.max_message)]u8 = undefined;
+    if (open_wire(corrupt[0..@intCast(resp_wire_len)], &junk)) |_| {
+        return error.VerifyFailed;
+    } else |_| {
+        print("rbw: bad Comlink seal refused — GREEN unwelcome path\n", .{});
+    }
+
+    print("rbw: batch {d} bytes under seal — had {d}, need {d}\n", .{
+        built.len,
+        report.had_already,
+        report.needed,
+    });
+    print("rbw: version {s} batch_wire {s}\n", .{ rbw_version, bw.batch_wire_version });
+    print("GREEN: NS-L3 lap 3w-4 hosted resin-batch sync under Comlink seal.\n", .{});
+
+    try bw.run_chunk_wire_selftest();
+    print("rbw: multi-frame chunk assembler — GREEN\n", .{});
+
+    var chunk_src: ns.BoltCatalog = undefined;
+    try init_chunk_witness_source(&chunk_src);
+    var chunk_fetcher: ns.BoltCatalog = undefined;
+    try init_witness_fetcher(&chunk_fetcher);
+    const chunk_held = [_][64]u8{alpha_digest};
+    var chunk_batch_buf: [rb.max_batch_bytes]u8 = undefined;
+    const chunk_built = try rb.build_batch(&chunk_src, "peerB", "b", 1, &chunk_held, signer, &chunk_batch_buf);
+    assert(chunk_built.len > bw.max_batch_wire);
+    assert((try bw.batch_chunk_count(chunk_built.len)) >= 2);
+
+    var chunk_asm: bw.BatchAssembler = .{};
+    const chunk_count = try bw.batch_chunk_count(chunk_built.len);
+    var cx: u16 = 0;
+    while (cx < chunk_count) : (cx += 1) {
+        var frame: [bw.max_batch_wire]u8 = undefined;
+        const flen = try bw.encode_batch_chunk(chunk_batch_buf[0..chunk_built.len], cx, &frame);
+        var frame_wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+        const frame_wire_len = try seal_payload(frame[0..flen], &frame_wire);
+        var frame_opened: [@intCast(wf.max_message)]u8 = undefined;
+        const frame_opened_len = try open_wire(frame_wire[0..@intCast(frame_wire_len)], &frame_opened);
+        const cstate = try chunk_asm.feed(frame_opened[0..@intCast(frame_opened_len)]);
+        if (cx + 1 < chunk_count) {
+            assert(cstate == .need_more);
+        } else {
+            assert(cstate == .ready);
+        }
+    }
+    const chunk_report = try bw.apply_wire_batch(&chunk_fetcher, chunk_asm.batch(), signer.public_key);
+    assert(chunk_report.had_already == 1);
+    assert(chunk_report.needed == 1);
+    var big_out: [512]u8 = undefined;
+    const nb_big = ns.Name{ .peer = "peerB", .bolt = "b", .revision = 1, .path = "b.txt" };
+    const rb_big = try chunk_fetcher.recall(nb_big, &big_out);
+    assert(rb_big.len == 400);
+    assert(big_out[0] == 'B');
+    assert(big_out[399] == 'B');
+    print("rbw: chunked batch {d} bytes over {d} frames — GREEN\n", .{ chunk_built.len, chunk_count });
+
+    var beaded_src: ns.BoltCatalog = undefined;
+    var beaded_store: bd.BeadStore = undefined;
+    try init_beaded_witness_source(&beaded_src, &beaded_store);
+    var beaded_fetcher: ns.BoltCatalog = undefined;
+    try init_witness_fetcher(&beaded_fetcher);
+    var beaded_fetch_store: bd.BeadStore = .empty();
+    const beaded_held = [_][64]u8{alpha_digest};
+    var beaded_batch_buf: [rb.max_batch_bytes]u8 = undefined;
+    const beaded_built = try rb.build_batch(&beaded_src, "peerB", "b", 1, &beaded_held, signer, &beaded_batch_buf);
+    assert(beaded_built.report.had_already == 1);
+    assert(beaded_built.report.needed >= 2);
+
+    var beaded_asm: bw.BatchAssembler = .{};
+    if (beaded_built.len <= bw.max_batch_wire) {
+        var frame: [bw.max_batch_wire]u8 = undefined;
+        const flen = try bw.encode_batch_response(beaded_batch_buf[0..beaded_built.len], &frame);
+        _ = try beaded_asm.feed(frame[0..flen]);
+    } else {
+        const bc = try bw.batch_chunk_count(beaded_built.len);
+        var bi: u16 = 0;
+        while (bi < bc) : (bi += 1) {
+            var frame: [bw.max_batch_wire]u8 = undefined;
+            const flen = try bw.encode_batch_chunk(beaded_batch_buf[0..beaded_built.len], bi, &frame);
+            const bstate = try beaded_asm.feed(frame[0..flen]);
+            if (bi + 1 < bc) assert(bstate == .need_more);
+        }
+    }
+    const beaded_report = try bw.apply_wire_batch(&beaded_fetcher, beaded_asm.batch(), signer.public_key);
+    assert(beaded_report.had_already == 1);
+    try rbd.hydrate_bead_store_from_catalog(&beaded_fetcher, &beaded_fetch_store, "peerB", "b", 1, "large.bin");
+    var beaded_out: [512]u8 = undefined;
+    const n_large = ns.Name{ .peer = "peerB", .bolt = "b", .revision = 1, .path = "large.bin" };
+    const r_large = try rbd.recall_beaded(&beaded_fetcher, &beaded_fetch_store, n_large, &beaded_out);
+    assert(r_large.outcome == .here);
+    assert(r_large.len == 400);
+    var expect: [400]u8 = undefined;
+    witness_pattern_fill(&expect, 20260706);
+    assert(std.mem.eql(u8, beaded_out[0..400], expect[0..400]));
+    print("rbw: beaded bolt batch {d} bytes — recallBeaded GREEN\n", .{beaded_built.len});
+    print("GREEN: NS-L3 lap 3w-4 multi-frame batch chunking under Comlink seal.\n", .{});
+    print("GREEN: NS-L3 lap 3w-5 beaded bolt batch wire (in-process).\n", .{});
+    return 0;
+}
+
+fn run_source(_: std.Io) !u8 {
+    const signer = batch_signer();
+    var src: ns.BoltCatalog = undefined;
+    try init_witness_source(&src);
+
+    var wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const wire_len = try recv_wire(source_port, &wire);
+    var opened: [@intCast(wf.max_message)]u8 = undefined;
+    const opened_len = try open_wire(wire[0..@intCast(wire_len)], &opened);
+
+    var req: bw.BatchWireRequest = undefined;
+    try bw.decode_request(opened[0..@intCast(opened_len)], &req);
+
+    var held: [1][64]u8 = undefined;
+    var i: u32 = 0;
+    while (i < req.held_count) : (i += 1) {
+        tally_copy.copy_disjoint(u8, held[i][0..64], req.held_digests[i][0..64]);
+    }
+    var batch_buf: [rb.max_batch_bytes]u8 = undefined;
+    const built = try rb.build_batch(&src, req.peer, req.bolt, req.revision, held[0..req.held_count], signer, &batch_buf);
+    try send_batch_payload(fetcher_port, batch_buf[0..built.len]);
+    print("rbw: source answered with sealed resin-batch\n", .{});
+    return 0;
+}
+
+fn run_fetcher(_: std.Io) !u8 {
+    const signer = batch_signer();
+    var fetcher: ns.BoltCatalog = undefined;
+    try init_witness_fetcher(&fetcher);
+
+    const req = try build_held_request();
+    var req_buf: [bw.max_batch_wire]u8 = undefined;
+    const req_len = try bw.encode_request(req, &req_buf);
+    var wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const wire_len = try seal_payload(req_buf[0..req_len], &wire);
+    try send_wire(source_port, wire[0..@intCast(wire_len)]);
+
+    var batch_buf: [rb.max_batch_bytes]u8 = undefined;
+    const batch_len = try recv_batch_payload(fetcher_port, &batch_buf);
+    const report = try bw.apply_wire_batch(&fetcher, batch_buf[0..batch_len], signer.public_key);
+    if (report.needed != 1 or report.had_already != 1) return error.BatchFailed;
+
+    print("rbw: fetcher applied batch — recall matches source GREEN\n", .{});
+    return 0;
+}
+
+fn run_chunk_demo(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) !u8 {
+    const source_argv = try allocator.alloc([]const u8, 2);
+    source_argv[0] = self_path;
+    source_argv[1] = "chunk-source";
+    var source_child = try std.process.spawn(io, .{ .argv = source_argv });
+    var pause = c.timespec{ .sec = 0, .nsec = 50_000_000 };
+    _ = c.nanosleep(&pause, null);
+
+    const fetcher_argv = try allocator.alloc([]const u8, 2);
+    fetcher_argv[0] = self_path;
+    fetcher_argv[1] = "chunk-fetcher";
+    var fetcher_child = try std.process.spawn(io, .{ .argv = fetcher_argv });
+
+    const sc = try source_child.wait(io);
+    const fc = try fetcher_child.wait(io);
+    const s_code: u8 = switch (sc) { .exited => |code| code, else => 255 };
+    const f_code: u8 = switch (fc) { .exited => |code| code, else => 255 };
+    assert(s_code == 0);
+    assert(f_code == 0);
+    print("rbw: chunk demo GREEN — multi-frame batch crossed localhost under Comlink seal\n", .{});
+    return 0;
+}
+
+fn run_chunk_source(_: std.Io) !u8 {
+    const signer = batch_signer();
+    var src: ns.BoltCatalog = undefined;
+    try init_chunk_witness_source(&src);
+
+    var wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const wire_len = try recv_wire(source_port, &wire);
+    var opened: [@intCast(wf.max_message)]u8 = undefined;
+    const opened_len = try open_wire(wire[0..@intCast(wire_len)], &opened);
+
+    var req: bw.BatchWireRequest = undefined;
+    try bw.decode_request(opened[0..@intCast(opened_len)], &req);
+
+    var held: [1][64]u8 = undefined;
+    var i: u32 = 0;
+    while (i < req.held_count) : (i += 1) {
+        tally_copy.copy_disjoint(u8, held[i][0..64], req.held_digests[i][0..64]);
+    }
+    var batch_buf: [rb.max_batch_bytes]u8 = undefined;
+    const built = try rb.build_batch(&src, req.peer, req.bolt, req.revision, held[0..req.held_count], signer, &batch_buf);
+    assert(built.len > bw.max_batch_wire);
+    try send_batch_payload(fetcher_port, batch_buf[0..built.len]);
+    print("rbw: chunk source answered with sealed multi-frame batch\n", .{});
+    return 0;
+}
+
+fn run_chunk_fetcher(_: std.Io) !u8 {
+    const signer = batch_signer();
+    var fetcher: ns.BoltCatalog = undefined;
+    try init_witness_fetcher(&fetcher);
+
+    const req = try build_held_request();
+    var req_buf: [bw.max_batch_wire]u8 = undefined;
+    const req_len = try bw.encode_request(req, &req_buf);
+    var wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const wire_len = try seal_payload(req_buf[0..req_len], &wire);
+    try send_wire(source_port, wire[0..@intCast(wire_len)]);
+
+    var batch_buf: [rb.max_batch_bytes]u8 = undefined;
+    const batch_len = try recv_batch_payload(fetcher_port, &batch_buf);
+    const report = try bw.apply_wire_batch(&fetcher, batch_buf[0..batch_len], signer.public_key);
+    if (report.needed != 1 or report.had_already != 1) return error.BatchFailed;
+
+    var big_out: [512]u8 = undefined;
+    const nb = ns.Name{ .peer = "peerB", .bolt = "b", .revision = 1, .path = "b.txt" };
+    const rb_out = try fetcher.recall(nb, &big_out);
+    if (rb_out.len != 400) return error.BatchFailed;
+
+    print("rbw: chunk fetcher applied multi-frame batch — recall matches source GREEN\n", .{});
+    return 0;
+}
+
+fn run_beaded_demo(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) !u8 {
+    const source_argv = try allocator.alloc([]const u8, 2);
+    source_argv[0] = self_path;
+    source_argv[1] = "beaded-source";
+    var source_child = try std.process.spawn(io, .{ .argv = source_argv });
+    var pause = c.timespec{ .sec = 0, .nsec = 50_000_000 };
+    _ = c.nanosleep(&pause, null);
+
+    const fetcher_argv = try allocator.alloc([]const u8, 2);
+    fetcher_argv[0] = self_path;
+    fetcher_argv[1] = "beaded-fetcher";
+    var fetcher_child = try std.process.spawn(io, .{ .argv = fetcher_argv });
+
+    const sc = try source_child.wait(io);
+    const fc = try fetcher_child.wait(io);
+    const s_code: u8 = switch (sc) { .exited => |code| code, else => 255 };
+    const f_code: u8 = switch (fc) { .exited => |code| code, else => 255 };
+    assert(s_code == 0);
+    assert(f_code == 0);
+    print("rbw: beaded demo GREEN — bead-index and beads crossed batch wire under Comlink seal\n", .{});
+    return 0;
+}
+
+fn run_beaded_source(_: std.Io) !u8 {
+    const signer = batch_signer();
+    var src: ns.BoltCatalog = undefined;
+    var beads: bd.BeadStore = undefined;
+    try init_beaded_witness_source(&src, &beads);
+
+    var wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const wire_len = try recv_wire(source_port, &wire);
+    var opened: [@intCast(wf.max_message)]u8 = undefined;
+    const opened_len = try open_wire(wire[0..@intCast(wire_len)], &opened);
+
+    var req: bw.BatchWireRequest = undefined;
+    try bw.decode_request(opened[0..@intCast(opened_len)], &req);
+
+    var held: [1][64]u8 = undefined;
+    var i: u32 = 0;
+    while (i < req.held_count) : (i += 1) {
+        tally_copy.copy_disjoint(u8, held[i][0..64], req.held_digests[i][0..64]);
+    }
+    var batch_buf: [rb.max_batch_bytes]u8 = undefined;
+    const built = try rb.build_batch(&src, req.peer, req.bolt, req.revision, held[0..req.held_count], signer, &batch_buf);
+    try send_batch_payload(fetcher_port, batch_buf[0..built.len]);
+    print("rbw: beaded source answered with sealed resin-batch\n", .{});
+    return 0;
+}
+
+fn run_beaded_fetcher(_: std.Io) !u8 {
+    const signer = batch_signer();
+    var fetcher: ns.BoltCatalog = undefined;
+    try init_witness_fetcher(&fetcher);
+    var fetch_beads: bd.BeadStore = .empty();
+
+    const req = try build_held_request();
+    var req_buf: [bw.max_batch_wire]u8 = undefined;
+    const req_len = try bw.encode_request(req, &req_buf);
+    var wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const wire_len = try seal_payload(req_buf[0..req_len], &wire);
+    try send_wire(source_port, wire[0..@intCast(wire_len)]);
+
+    var batch_buf: [rb.max_batch_bytes]u8 = undefined;
+    const batch_len = try recv_batch_payload(fetcher_port, &batch_buf);
+    _ = try bw.apply_wire_batch(&fetcher, batch_buf[0..batch_len], signer.public_key);
+    try rbd.hydrate_bead_store_from_catalog(&fetcher, &fetch_beads, "peerB", "b", 1, "large.bin");
+
+    var out: [512]u8 = undefined;
+    const n_large = ns.Name{ .peer = "peerB", .bolt = "b", .revision = 1, .path = "large.bin" };
+    const r = try rbd.recall_beaded(&fetcher, &fetch_beads, n_large, &out);
+    if (r.outcome != .here or r.len != 400) return error.BatchFailed;
+
+    print("rbw: beaded fetcher recallBeaded — GREEN\n", .{});
+    return 0;
+}
+
+fn run_demo(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) !u8 {
+    const source_argv = try allocator.alloc([]const u8, 2);
+    source_argv[0] = self_path;
+    source_argv[1] = "source";
+    var source_child = try std.process.spawn(io, .{ .argv = source_argv });
+    var pause = c.timespec{ .sec = 0, .nsec = 50_000_000 };
+    _ = c.nanosleep(&pause, null);
+
+    const fetcher_argv = try allocator.alloc([]const u8, 2);
+    fetcher_argv[0] = self_path;
+    fetcher_argv[1] = "fetcher";
+    var fetcher_child = try std.process.spawn(io, .{ .argv = fetcher_argv });
+
+    const sc = try source_child.wait(io);
+    const fc = try fetcher_child.wait(io);
+    const s_code: u8 = switch (sc) { .exited => |code| code, else => 255 };
+    const f_code: u8 = switch (fc) { .exited => |code| code, else => 255 };
+    assert(s_code == 0);
+    assert(f_code == 0);
+    print("rbw: demo GREEN — resin-batch crossed localhost under Comlink seal\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2) {
+        if (std.mem.eql(u8, args[1], "source")) return run_source(io);
+        if (std.mem.eql(u8, args[1], "fetcher")) return run_fetcher(io);
+        if (std.mem.eql(u8, args[1], "selftest")) return run_selftest(io);
+        if (std.mem.eql(u8, args[1], "demo")) return run_demo(garden, io, args[0]);
+        if (std.mem.eql(u8, args[1], "chunkdemo")) return run_chunk_demo(garden, io, args[0]);
+        if (std.mem.eql(u8, args[1], "chunk-source")) return run_chunk_source(io);
+        if (std.mem.eql(u8, args[1], "chunk-fetcher")) return run_chunk_fetcher(io);
+        if (std.mem.eql(u8, args[1], "beadeddemo")) return run_beaded_demo(garden, io, args[0]);
+        if (std.mem.eql(u8, args[1], "beaded-source")) return run_beaded_source(io);
+        if (std.mem.eql(u8, args[1], "beaded-fetcher")) return run_beaded_fetcher(io);
+    }
+    return run_selftest(io);
+}

@@ -1,0 +1,7 @@
+# Lantern lap 17 fixture — allow_count pin on complete_allowed.
+model_hash sha3-256-rye-forge-lap0
+allow_count 2
+tokens_in 6
+tokens_out 3
+stopped_reason eos
+text allow count ok

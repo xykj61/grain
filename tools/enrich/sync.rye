@@ -1,0 +1,172 @@
+//! Sync width audits, audit writings, and complete pending audits.
+
+const std = @import("std");
+const constants = @import("constants.rye");
+const blocks_audit = @import("blocks_audit.rye");
+const extract = @import("extract.rye");
+const sections = @import("sections.rye");
+const blocks_surface = @import("blocks_surface.rye");
+const scan_text = @import("scan_text.rye");
+const surfaces = @import("surfaces.rye");
+const witness = @import("witness.rye");
+const zig_lookup = @import("zig_lookup.rye");
+
+const PassDoc = struct { path: []const u8, name: []const u8, stem: []const u8 };
+
+pub fn list_pass_docs(a: std.mem.Allocator, io: std.Io, root: []const u8) ![]PassDoc {
+    const sc = try std.fs.path.join(a, &.{ root, "strengthening-compiler" });
+    defer a.free(sc);
+    const dir = try std.Io.Dir.cwd().openDir(io, sc, .{ .iterate = true });
+    var it = dir.iterate();
+    var out = std.ArrayListUnmanaged(PassDoc).empty;
+    errdefer out.deinit(a);
+    while (try it.next(io)) |entry| {
+        if (entry.kind != .file) continue;
+        if (!std.mem.endsWith(u8, entry.name, ".md")) continue;
+        if (constants.should_skip(entry.name)) continue;
+        const path = try std.fs.path.join(a, &.{ sc, entry.name });
+        const stem = entry.name[0 .. entry.name.len - ".md".len];
+        try out.append(a, .{ .path = path, .name = try a.dupe(u8, entry.name), .stem = try a.dupe(u8, stem) });
+    }
+    return try out.toOwnedSlice(a);
+}
+
+pub fn sync_width_audit_docs(a: std.mem.Allocator, io: std.Io, root: []const u8, sources: *const zig_lookup.ZigSources) !u32 {
+    const docs = try list_pass_docs(a, io, root);
+    defer {
+        for (docs) |d| {
+            a.free(d.path);
+            a.free(d.name);
+            a.free(d.stem);
+        }
+        a.free(docs);
+    }
+    var changed: u32 = 0;
+    for (docs) |doc| {
+        const text = try std.Io.Dir.cwd().readFileAlloc(io, doc.path, a, .limited(zig_lookup.max_file_bytes));
+        const pass_num = scan_text.pass_num_from_name(doc.name);
+        const surface_list = try extract.extract_surfaces_from_doc(a, text, doc.name, doc.stem, sources);
+        defer {
+            for (surface_list) |s| a.free(s);
+            a.free(surface_list);
+        }
+        if (surface_list.len == 0) continue;
+        if (sections.pass_width_audit_done(text)) continue;
+        const block = try blocks_audit.build_width_audit_block(a, io, root, doc.name, pass_num, surface_list, false, null);
+        defer a.free(block);
+        const new_text = try sections.replace_or_insert_section(a, text, "Width audit", block);
+        if (!std.mem.eql(u8, new_text, text)) {
+            try std.Io.Dir.cwd().writeFile(io, .{ .sub_path = doc.path, .data = new_text });
+            changed += 1;
+        }
+    }
+    return changed;
+}
+
+pub fn sync_pass_audit_writings(a: std.mem.Allocator, io: std.Io, root: []const u8, sources: *const zig_lookup.ZigSources) !u32 {
+    const docs = try list_pass_docs(a, io, root);
+    defer {
+        for (docs) |d| {
+            a.free(d.path);
+            a.free(d.name);
+            a.free(d.stem);
+        }
+        a.free(docs);
+    }
+    var changed: u32 = 0;
+    for (docs) |doc| {
+        const orig = try std.Io.Dir.cwd().readFileAlloc(io, doc.path, a, .limited(zig_lookup.max_file_bytes));
+        var text: []const u8 = orig;
+        const pass_num = scan_text.pass_num_from_name(doc.name);
+        const surface_list = try extract.extract_surfaces_from_doc(a, text, doc.name, doc.stem, sources);
+        defer {
+            for (surface_list) |s| a.free(s);
+            a.free(surface_list);
+        }
+        if (surface_list.len == 0 and constants.authored_module(doc.name) == null and constants.meta_pass(doc.name) == null) continue;
+        const witness_rel = try witness.witness_path_for_pass(a, io, root, doc.name, doc.stem);
+        defer if (witness_rel) |w| a.free(w);
+        const usize_ok = try blocks_audit.pass_surfaces_usize_audited(a, io, root, doc.name, surface_list, sources, witness_rel);
+        var names = std.ArrayListUnmanaged([]const u8).empty;
+        defer names.deinit(a);
+        for (surface_list) |s| {
+            const full = try surfaces.surface_display_name_alloc(a, s);
+            defer a.free(full);
+            if (surfaces.surface_dotted_name(full)) |d| try names.append(a, try a.dupe(u8, d));
+        }
+        if (names.items.len == 0) {
+            const guess = try surfaces.filename_guess(a, doc.stem);
+            defer a.free(guess);
+            try names.appendSlice(a, guess);
+        }
+        if (names.items.len > 0 and constants.authored_module(doc.name) == null and constants.meta_pass(doc.name) == null) {
+            const surf = try blocks_surface.build_surface_block(a, names.items, sources);
+            defer a.free(surf);
+            text = try sections.replace_or_insert_section(a, text, "Rye std surface", surf);
+        }
+        const usize_block = try blocks_audit.build_usize_explicit_audit_block(a, io, root, doc.name, surface_list, sources, witness_rel);
+        defer a.free(usize_block);
+        text = try sections.replace_or_insert_section(a, text, constants.usize_explicit_section, usize_block);
+        if (surface_list.len > 0) {
+            const wa = try blocks_audit.build_width_audit_block(a, io, root, doc.name, pass_num, surface_list, usize_ok, witness_rel);
+            defer a.free(wa);
+            text = try sections.replace_or_insert_section(a, text, "Width audit", wa);
+        }
+        const audit_surfaces = if (surface_list.len > 0) surface_list else names.items;
+        const ab = try blocks_audit.build_audited_surfaces_block(a, doc.name, audit_surfaces, sources);
+        defer a.free(ab);
+        const final_text = try sections.replace_or_insert_section(a, text, "Audited surfaces", ab);
+        if (!std.mem.eql(u8, final_text, orig)) {
+            try std.Io.Dir.cwd().writeFile(io, .{ .sub_path = doc.path, .data = final_text });
+            changed += 1;
+        }
+    }
+    return changed;
+}
+
+pub fn complete_pending_width_audits(a: std.mem.Allocator, io: std.Io, root: []const u8, parity: []const u8, sources: *const zig_lookup.ZigSources) !u32 {
+    const docs = try list_pass_docs(a, io, root);
+    defer {
+        for (docs) |d| {
+            a.free(d.path);
+            a.free(d.name);
+            a.free(d.stem);
+        }
+        a.free(docs);
+    }
+    var changed: u32 = 0;
+    for (docs) |doc| {
+        const text = try std.Io.Dir.cwd().readFileAlloc(io, doc.path, a, .limited(zig_lookup.max_file_bytes));
+        const pass_num = scan_text.pass_num_from_name(doc.name);
+        if (sections.pass_width_audit_done(text) and sections.usize_explicit_audit_done(text)) continue;
+        if (std.mem.indexOf(u8, text, "pending") == null and sections.usize_explicit_audit_done(text)) continue;
+        const surface_list = try extract.extract_surfaces_from_doc(a, text, doc.name, doc.stem, sources);
+        defer {
+            for (surface_list) |s| a.free(s);
+            a.free(surface_list);
+        }
+        if (surface_list.len == 0) continue;
+        if (!try witness.pass_auditable(a, io, root, doc.name, doc.stem, parity)) {
+            std.debug.print("audit skip (no witness): {s}\n", .{doc.name});
+            continue;
+        }
+        const witness_rel = try witness.witness_path_for_pass(a, io, root, doc.name, doc.stem);
+        defer if (witness_rel) |w| a.free(w);
+        const usize_ok = try blocks_audit.pass_surfaces_usize_audited(a, io, root, doc.name, surface_list, sources, witness_rel);
+        var new_text: []const u8 = text;
+        const wa = try blocks_audit.build_width_audit_block(a, io, root, doc.name, pass_num, surface_list, usize_ok, witness_rel);
+        defer a.free(wa);
+        new_text = try sections.replace_or_insert_section(a, new_text, "Width audit", wa);
+        const ab = try blocks_audit.build_audited_surfaces_block(a, doc.name, surface_list, sources);
+        defer a.free(ab);
+        new_text = try sections.replace_or_insert_section(a, new_text, "Audited surfaces", ab);
+        const ub = try blocks_audit.build_usize_explicit_audit_block(a, io, root, doc.name, surface_list, sources, witness_rel);
+        defer a.free(ub);
+        new_text = try sections.replace_or_insert_section(a, new_text, constants.usize_explicit_section, ub);
+        if (!std.mem.eql(u8, new_text, text)) {
+            try std.Io.Dir.cwd().writeFile(io, .{ .sub_path = doc.path, .data = new_text });
+            changed += 1;
+        }
+    }
+    return changed;
+}

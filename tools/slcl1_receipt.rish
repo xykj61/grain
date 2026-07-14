@@ -1,0 +1,17 @@
+# slcl1_receipt.rish — SLC-L1 verifiable receipt witness.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/slcl1_receipt.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/receipt"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/receipt.rye -femit-bin=${bin}"]
+
+assert build.ok else "SLC-L1 receipt build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "SLC-L1 receipt selftest exited non-zero"
+assert selftest.out contains "GREEN" else "SLC-L1 receipt selftest not GREEN"
+
+say "GREEN: SLC-L1 verifiable receipt witness passed."

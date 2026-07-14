@@ -1,0 +1,26 @@
+//! Rye test: std.mem.byteSwapAllFields — pass 9905.
+//!
+//! In-place endian swap on struct fields; pairs with byteSwapAllElements (9908).
+
+const std = @import("std");
+const mem = std.mem;
+
+const Wire = extern struct {
+    tag: u8,
+    len: u16,
+    value: u32,
+};
+
+pub fn main() void {
+    var s = Wire{
+        .tag = 0x12,
+        .len = 0x1234,
+        .value = 0x12345678,
+    };
+    mem.byteSwapAllFields(Wire, &s);
+    std.debug.assert(s.tag == 0x12);
+    std.debug.assert(s.len == 0x3412);
+    std.debug.assert(s.value == 0x78563412);
+
+    std.debug.print("rye: mem.byteSwapAllFields assertions confirmed.\n", .{});
+}

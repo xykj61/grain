@@ -1,0 +1,18 @@
+# designed_not_built_scan.rish — at most one functional spec in designed-not-built flight.
+#
+# Native repoint of designed_not_built_scan.sh — chained where per line (no inner map).
+# Run from the repository root:
+#   rishi/bin/rishi run tools/fixtures/designed_not_built_scan.rish
+
+let roster = run ["sh" "-c" "ls context/specs/*.md 2>/dev/null || true"]
+let files = where (lines roster.out) as p: p != ""
+
+let scanned = map files as f: { path: f, score: length (where (where (lines (read-file f)) as ln: ln contains "not yet built") as ln: ln contains "designed") + length (where (lines (read-file f)) as ln: ln contains "designed-not-yet-built") }
+
+let hits = where scanned as row: row.score != 0
+
+for-each hits as row do say "DESIGNED ${row.path}"
+
+if length hits == 0 then say "OK   count=0"
+if length hits == 1 then say "OK   count=1"
+if length hits != 0 then if length hits != 1 then say "FAIL count=${length hits}"

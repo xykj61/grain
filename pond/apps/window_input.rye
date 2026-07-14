@@ -1,0 +1,62 @@
+//! pond/apps/window_input.rye — Dexter line editor (keyboard → Rishi line).
+//!
+//! Composes key events into one submitted line for `runOneInput`. The Wayland
+//! seam in Brushstroke drains into these actions; this module stays pure so
+//! headless witnesses can replay the same path without a compositor.
+
+const std = @import("std");
+
+pub const max_line_len: u32 = 400;
+
+pub const Action = union(enum) {
+    char_: u8,
+    backspace,
+    submit,
+};
+
+pub const LineEditor = struct {
+    buf: [max_line_len]u8 = undefined,
+    len: u32 = 0,
+    pending_submit: bool = false,
+
+    pub fn reset(self: *LineEditor) void {
+        self.len = 0;
+        self.pending_submit = false;
+    }
+
+    pub fn push_char(self: *LineEditor, ch: u8) void {
+        if (self.len >= max_line_len) return;
+        self.buf[self.len] = ch;
+        self.len += 1;
+    }
+
+    pub fn backspace(self: *LineEditor) void {
+        if (self.len > 0) self.len -= 1;
+    }
+
+    pub fn submit(self: *LineEditor) void {
+        self.pending_submit = true;
+    }
+
+    pub fn prompt_slice(self: *const LineEditor) []const u8 {
+        return self.buf[0..self.len];
+    }
+
+    pub fn apply_action(self: *LineEditor, action: Action) void {
+        switch (action) {
+            .char_ => |ch| self.push_char(ch),
+            .backspace => self.backspace(),
+            .submit => self.submit(),
+        }
+    }
+
+    pub fn take_submitted_line(self: *LineEditor, garden: std.mem.Allocator) !?[]const u8 {
+        if (!self.pending_submit) return null;
+        self.pending_submit = false;
+        const raw = self.buf[0..self.len];
+        self.len = 0;
+        const trimmed = std.mem.trim(u8, raw, " \t\r\n");
+        if (trimmed.len == 0) return null;
+        return try garden.dupe(u8, trimmed);
+    }
+};

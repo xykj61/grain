@@ -1,0 +1,158 @@
+#!/usr/bin/env bash
+# launch-zed.sh — start Zed inside ai-jail with project-local state.
+#
+#   cp tools/launch-zed.sh.example tools/launch-zed.sh
+#   cp tools/enclosure.conf.example tools/enclosure.conf   # fill in
+#   curl -f https://zed.dev/install.sh | sh              # if zed is not installed yet
+#   cp tools/secrets.env.example tools/secrets.env   # fill in ANTHROPIC_API_KEY
+#   ./tools/launch-zed.sh
+#
+# See: context/specs/enclosure-editors.md
+
+set -euo pipefail
+
+REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+CONF="${ENCLOSURE_CONF:-$REPO_ROOT/tools/enclosure.conf}"
+
+[ -f "$CONF" ] || {
+  echo "No config at $CONF — copy tools/enclosure.conf.example and fill it in."
+  exit 1
+}
+
+# shellcheck source=/dev/null
+source "$CONF"
+
+SECRETS="${ENCLOSURE_SECRETS:-$REPO_ROOT/tools/secrets.env}"
+if [ -f "$SECRETS" ]; then
+  set -a
+  # shellcheck source=/dev/null
+  source "$SECRETS"
+  set +a
+elif [ -z "${ANTHROPIC_API_KEY:-}" ]; then
+  echo "Note: no $SECRETS and ANTHROPIC_API_KEY unset — Claude Agent may need /login." >&2
+fi
+
+: "${REPO:?set REPO in enclosure.conf}"
+: "${ZED_STATE:?set ZED_STATE in enclosure.conf}"
+: "${AIJAIL_FLAGS:?set AIJAIL_FLAGS in enclosure.conf}"
+ENCLOSURE="${ENCLOSURE:-ai-jail}"
+if [ "$ENCLOSURE" = "pond" ]; then
+  if ! bash "${REPO_ROOT}/tools/pond_exit_bron_master_seal.sh" --require; then
+    exit 1
+  fi
+elif [ "$ENCLOSURE" != "ai-jail" ]; then
+  echo "REFUSE: ENCLOSURE must be ai-jail or pond (got: ${ENCLOSURE})" >&2
+  exit 1
+fi
+
+resolve_aijail() {
+  local c
+  if [ -n "${AIJAIL_BIN:-}" ] && [ -f "$AIJAIL_BIN" ] && [ -x "$AIJAIL_BIN" ]; then
+    echo "$AIJAIL_BIN"
+    return 0
+  fi
+  if c="$(command -v ai-jail 2>/dev/null)" && [ -f "$c" ] && [ -x "$c" ]; then
+    echo "$c"
+    return 0
+  fi
+  for c in \
+    "$REPO/gratitude/ai-jail/target/release/ai-jail" \
+    "$HOME/.local/bin/ai-jail" \
+    /usr/local/bin/ai-jail \
+    /usr/bin/ai-jail; do
+    if [ -x "$c" ]; then
+      echo "$c"
+      return 0
+    fi
+  done
+  return 1
+}
+
+# Resolve Zed to an absolute path on the host.
+# tmpfs $HOME, so a bare "zed" on PATH inside the jail will not find
+# ~/.local/bin/zed unless we pass the real path (and ro-map the app tree).
+resolve_zed() {
+  local c
+  local candidates=()
+  [ -n "${ZED_BIN:-}" ] && candidates+=("$ZED_BIN")
+  [ -n "${ZED_APP:-}" ] && candidates+=("$ZED_APP/bin/zed")
+  candidates+=(
+    "$HOME/.local/zed.app/libexec/zed-editor"
+    "$HOME/.local/bin/zed"
+    "$HOME/.local/zed.app/bin/zed"
+    /usr/bin/zed
+    /usr/local/bin/zed
+  )
+  for c in "${candidates[@]}"; do
+    if [ -x "$c" ]; then
+      readlink -f "$c"
+      return 0
+    fi
+  done
+  return 1
+}
+
+if ! ZED_ABS="$(resolve_zed)"; then
+  cat <<'EOF' >&2
+Zed not found on this machine.
+
+Install (Ubuntu / most glibc distros):
+  curl -f https://zed.dev/install.sh | sh
+
+Then confirm:
+  ~/.local/bin/zed --version
+
+Or set ZED_BIN or ZED_APP in tools/enclosure.conf to your binary path.
+EOF
+  exit 1
+fi
+
+if ! AIJAIL_ABS="$(resolve_aijail)"; then
+  cat <<'EOF' >&2
+ai-jail not found.
+
+Install:
+  cargo install ai-jail
+  # or: nix profile install github:akitaonrails/ai-jail
+
+If a source directory named ai-jail sits in your PATH, set AIJAIL_BIN in tools/enclosure.conf.
+EOF
+  exit 1
+fi
+
+mkdir -p \
+  "$ZED_STATE/config" \
+  "$ZED_STATE/data" \
+  "$ZED_STATE/state" \
+  "$ZED_STATE/cache"
+
+# Zed on Wayland needs Vulkan/WebGPU → /dev/dri inside Landlock (--gpu).
+GPU_ARGS=()
+if [ "${USE_GPU:-true}" = true ]; then
+  GPU_ARGS=(--gpu)
+elif [ -n "${WAYLAND_DISPLAY:-}" ] || [ -n "${DISPLAY:-}" ]; then
+  echo "Note: USE_GPU=false — Zed may exit immediately on Wayland without --gpu." >&2
+fi
+
+# Zed installed under ~/.local/zed.app is outside the jail unless we --map it read-only.
+ZED_MAP_ARGS=()
+case "$ZED_ABS" in
+  /usr/* | /bin/*) ;;
+  *)
+    ZED_APP_DIR="$(cd "$(dirname "$ZED_ABS")/.." && pwd)"
+    if [ -d "$ZED_APP_DIR" ]; then
+      ZED_MAP_ARGS+=(--map "$ZED_APP_DIR")
+    fi
+    ;;
+esac
+
+# --no-save-config: do not merge this run into .ai-jail (which may hold Cursor defaults).
+# shellcheck disable=SC2086
+exec "$AIJAIL_ABS" --no-save-config $AIJAIL_FLAGS "${GPU_ARGS[@]}" "${ZED_MAP_ARGS[@]}" -- \
+  env \
+    XDG_CONFIG_HOME="$ZED_STATE/config" \
+    XDG_DATA_HOME="$ZED_STATE/data" \
+    XDG_STATE_HOME="$ZED_STATE/state" \
+    XDG_CACHE_HOME="$ZED_STATE/cache" \
+    ANTHROPIC_API_KEY="${ANTHROPIC_API_KEY:-}" \
+  "$ZED_ABS" "$REPO"

@@ -1,0 +1,179 @@
+//! anvil/anvil_core.rye — Rye corpus catalog for local forge (query + views).
+//!
+//! Chunks name paths in our tree — gratitude and vendor stay in their reading rooms.
+//! Lap 2 deepens filters: min_lines · max_lines · path_suffix · sum_lines fold.
+
+const std = @import("std");
+const assert = std.debug.assert;
+
+pub const max_chunks: u32 = 64;
+pub const max_path_len: u32 = 128;
+pub const max_kind_len: u32 = 16;
+
+pub const CorpusError = error{
+    ChunkOverflow,
+    BadChunk,
+    PathTooLong,
+    ResultOverflow,
+};
+
+pub const ChunkKind = enum(u8) {
+    rye,
+    rish,
+    other,
+
+    pub fn parse(text: []const u8) error{BadKind}!ChunkKind {
+        if (std.mem.eql(u8, text, "rye")) return .rye;
+        if (std.mem.eql(u8, text, "rish")) return .rish;
+        return .other;
+    }
+};
+
+pub const Chunk = struct {
+    path: [max_path_len]u8 = .{0} ** max_path_len,
+    path_len: u32 = 0,
+    kind: ChunkKind,
+    lines: u32,
+
+    pub fn path_slice(self: *const Chunk) []const u8 {
+        return self.path[0..self.path_len];
+    }
+};
+
+pub const CorpusQuery = struct {
+    kind: ?ChunkKind = null,
+    path_prefix: ?[]const u8 = null,
+    path_suffix: ?[]const u8 = null,
+    min_lines: ?u32 = null,
+    max_lines: ?u32 = null,
+};
+
+pub const Catalog = struct {
+    chunks: [max_chunks]Chunk = undefined,
+    count: u32 = 0,
+
+    pub fn count_kind(self: *const Catalog, kind: ChunkKind) u32 {
+        var n: u32 = 0;
+        var i: u32 = 0;
+        while (i < self.count) : (i += 1) {
+            if (self.chunks[i].kind == kind) n += 1;
+        }
+        return n;
+    }
+};
+
+fn chunk_matches(chunk: *const Chunk, query: CorpusQuery) bool {
+    if (query.kind) |kind| {
+        if (chunk.kind != kind) return false;
+    }
+    if (query.path_prefix) |prefix| {
+        if (!std.mem.startsWith(u8, chunk.path_slice(), prefix)) return false;
+    }
+    if (query.path_suffix) |suffix| {
+        if (!std.mem.endsWith(u8, chunk.path_slice(), suffix)) return false;
+    }
+    if (query.min_lines) |min_n| {
+        if (chunk.lines < min_n) return false;
+    }
+    if (query.max_lines) |max_n| {
+        if (chunk.lines > max_n) return false;
+    }
+    return true;
+}
+
+/// Filter the catalog once; write matching indices in held order (Tablecloth-query shape).
+pub fn query_corpus(
+    catalog: *const Catalog,
+    query: CorpusQuery,
+    out_indices: []u32,
+) CorpusError!u32 {
+    var count: u32 = 0;
+    var i: u32 = 0;
+    while (i < catalog.count) : (i += 1) {
+        if (!chunk_matches(&catalog.chunks[i], query)) continue;
+        if (count >= out_indices.len) return error.ResultOverflow;
+        out_indices[count] = i;
+        count += 1;
+    }
+    return count;
+}
+
+/// Sum `lines` across every chunk that matches the query (held order; no index buffer).
+pub fn sum_lines(catalog: *const Catalog, query: CorpusQuery) u32 {
+    var sum: u32 = 0;
+    var i: u32 = 0;
+    while (i < catalog.count) : (i += 1) {
+        if (!chunk_matches(&catalog.chunks[i], query)) continue;
+        sum += catalog.chunks[i].lines;
+    }
+    return sum;
+}
+
+fn field_value(text: []const u8, key: []const u8) ?[]const u8 {
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    while (lines.next()) |raw| {
+        const line = std.mem.trim(u8, raw, " \t\r\n");
+        if (line.len == 0 or line[0] == '#') continue;
+        if (!std.mem.startsWith(u8, line, key)) continue;
+        if (line.len == key.len) return "";
+        if (line[key.len] != ' ') continue;
+        return std.mem.trim(u8, line[key.len + 1 ..], " \t\r\n");
+    }
+    return null;
+}
+
+/// Parse a Bron-shaped corpus catalog (chunk blocks separated by blank lines after keys).
+pub fn parse_catalog(text: []const u8, out: *Catalog) CorpusError!void {
+    out.count = 0;
+    var path: ?[]const u8 = null;
+    var kind: ?[]const u8 = null;
+    var lines: ?[]const u8 = null;
+
+    const flush = struct {
+        fn run(cat: *Catalog, p: *?[]const u8, k: *?[]const u8, l: *?[]const u8) CorpusError!void {
+            const path_v = p.* orelse return;
+            const kind_v = k.* orelse return error.BadChunk;
+            const lines_v = l.* orelse return error.BadChunk;
+            if (path_v.len > max_path_len) return error.PathTooLong;
+            if (cat.count >= max_chunks) return error.ChunkOverflow;
+            const kind_parsed = ChunkKind.parse(kind_v) catch return error.BadChunk;
+            const line_n = std.fmt.parseInt(u32, lines_v, 10) catch return error.BadChunk;
+            var chunk: Chunk = .{ .kind = kind_parsed, .lines = line_n };
+            @memcpy(chunk.path[0..path_v.len], path_v);
+            chunk.path_len = @intCast(path_v.len);
+            cat.chunks[cat.count] = chunk;
+            cat.count += 1;
+            p.* = null;
+            k.* = null;
+            l.* = null;
+        }
+    }.run;
+
+    var rows = std.mem.splitScalar(u8, text, '\n');
+    while (rows.next()) |raw| {
+        const line = std.mem.trim(u8, raw, " \t\r\n");
+        if (line.len == 0) {
+            try flush(out, &path, &kind, &lines);
+            continue;
+        }
+        if (line[0] == '#') continue;
+        if (std.mem.eql(u8, line, "chunk")) {
+            try flush(out, &path, &kind, &lines);
+            continue;
+        }
+        if (std.mem.startsWith(u8, line, "path ")) {
+            path = std.mem.trim(u8, line[5..], " \t");
+            continue;
+        }
+        if (std.mem.startsWith(u8, line, "kind ")) {
+            kind = std.mem.trim(u8, line[5..], " \t");
+            continue;
+        }
+        if (std.mem.startsWith(u8, line, "lines ")) {
+            lines = std.mem.trim(u8, line[6..], " \t");
+            continue;
+        }
+        return error.BadChunk;
+    }
+    try flush(out, &path, &kind, &lines);
+}

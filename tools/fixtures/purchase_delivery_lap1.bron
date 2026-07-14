@@ -1,0 +1,10 @@
+# commerce delivery slip — purchased work bound to Amphora vessel parent
+format commerce-delivery-v1
+stamp 20260710.161358
+shoulder purchased-work
+vessel_parent 8ffb113abd0b51216cc5062d34687fd8a64ae5d2d3c8f91bcb7f019c43c656ff
+payment cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+buyer alice
+seller bob
+
+stamp_sig 66818bf86b344750fd67fc1292b4287e3aa428b6974193a91cbb4e95d22ff99a8f2b779a7aaca5ce525fa1f3b90c13473b68a7651f7bcf36efc51804cf630e09

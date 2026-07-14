@@ -1,0 +1,35 @@
+# proven_seat_g0.rish — Proven-seat G0: Sculpt image present + GRUB boot milestone.
+#
+# Teacher image stays under tools/.cache/proven-seat/ (gitignored).
+# TCG cloud path proves SeaBIOS → disk → "GRUB loading." Full Sculpt UI wants KVM.
+#
+#   rishi/bin/rishi run tools/proven_seat_g0.rish
+
+let cache = "tools/.cache/proven-seat"
+let img = "${cache}/sculpt-26-04.img"
+let work = "${cache}/sculpt-g0-work.img"
+let expected = "241b916ab9e3ed25a089c27119aac98f80fe4d3e67101936b4e69d7f1c708f14"
+
+say "proven-seat G0: checking Sculpt 26.04 image…"
+let have = run ["sh" "-c" "test -f ${img}"]
+assert have.ok else "missing ${img} — curl https://genode.org/files/sculpt/sculpt-26-04.img into tools/.cache/proven-seat/"
+
+let hash = run ["sh" "-c" "sha256sum ${img} | awk '{print $1}'"]
+assert hash.ok else "sha256sum failed"
+assert hash.out contains expected else "sculpt-26-04.img sha256 mismatch (want ${expected})"
+say "proven-seat G0: image sha256 matches pinned ${expected}"
+
+let qemu = run ["sh" "-c" "command -v qemu-system-x86_64 >/dev/null"]
+assert qemu.ok else "qemu-system-x86_64 not on PATH — install qemu-system-x86"
+let qver = run ["qemu-system-x86_64" "--version"]
+say "proven-seat G0: ${qver.out}"
+
+say "proven-seat G0: preparing writable work image…"
+let prep = run ["sh" "-c" "mkdir -p ${cache} && cp -f ${img} ${work}"]
+assert prep.ok else "failed to copy work image"
+
+say "proven-seat G0: headless QEMU to GRUB loading milestone (TCG)…"
+let boot = run ["sh" "-c" "rm -f ${cache}/g0-witness.log; timeout 30 qemu-system-x86_64 -nographic -cpu qemu64 -machine q35 -m 1024 -drive format=raw,file=${work},if=virtio -netdev user,id=net0 -device virtio-net-pci,netdev=net0 -boot order=c >${cache}/g0-witness.log 2>&1 || true; rg -q 'GRUB loading' ${cache}/g0-witness.log"]
+assert boot.ok else "G0 RED: serial log never reached GRUB loading — see tools/.cache/proven-seat/g0-witness.log"
+
+say "GREEN: proven-seat G0 — Sculpt 26.04 image pinned; QEMU reaches GRUB loading (TCG). Full Sculpt UI still wants KVM or a spare host."

@@ -1,0 +1,16 @@
+# rish_count_selftest.rish — accumulation idiom: map+join+sh sum, not for-each.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/rish_count_selftest.rish
+
+let items = [1 2 3]
+let total = 0
+for-each items as i do let total = total + i
+assert total == 0 else "for-each does not accumulate (expected 0, proved)"
+
+let per_str = map items as n: "${n}"
+let expr = join per_str " + "
+let sum = run ["sh" "-c" "echo $((${expr}))"]
+assert trim sum.out == "6" else "map+join+sh sum idiom failed"
+
+say "GREEN: Rishi count idiom — for-each cannot accumulate; map+join+sh sum can."

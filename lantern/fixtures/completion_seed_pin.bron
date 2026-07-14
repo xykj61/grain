@@ -1,0 +1,7 @@
+# Lantern lap 12 fixture — pinned seed on the request contract.
+model_hash sha3-256-rye-forge-lap0
+seed 42
+tokens_in 6
+tokens_out 3
+stopped_reason eos
+text seed pin done

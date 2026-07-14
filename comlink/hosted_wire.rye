@@ -1,0 +1,166 @@
+//! comlink/hosted_wire.rye — a sealed datagram over a real localhost socket.
+//!
+//! Aurora's posted.rye proved a sealed value on shared memory between harts.
+//! This seed proves the same datagram shape crosses a **hosted wire** — UDP
+//! on 127.0.0.1 — between two processes. One process sends; one receives,
+//! shape-casts, verifies, and opens. Comlink's next rung before virtio-net.
+//!
+//! Usage:
+//!   hosted_wire demo      Supervisor: spawn recv, then send; assert both green
+//!   hosted_wire send      Seal and post datagram to localhost
+//!   hosted_wire recv      Bind, receive one datagram, open it
+//!   hosted_wire selftest  Seal and open in one process (no socket)
+//!
+//! Build:
+//!   rye build comlink/hosted_wire.rye -lc -femit-bin=comlink/bin/hosted-wire
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const c = std.c;
+const wf = @import("wire_format.rye");
+
+const hosted_wire_version = "20260705.225412";
+
+const AF_INET: c_uint = 2;
+const SOCK_DGRAM: c_uint = 2;
+const SOL_SOCKET: c_int = 1;
+const SO_REUSEADDR: c_int = 2;
+
+const wire_port: u16 = 38472;
+
+const sockaddr_in = extern struct {
+    sin_family: c_ushort = AF_INET,
+    sin_port: c_ushort,
+    sin_addr: [4]u8 = .{ 127, 0, 0, 1 },
+    sin_zero: [8]u8 = .{0} ** 8,
+};
+
+fn localhost_addr(port: u16) sockaddr_in {
+    return .{
+        .sin_port = std.mem.nativeToBig(u16, port),
+    };
+}
+
+fn open_socket() !c.fd_t {
+    const fd = c.socket(AF_INET, SOCK_DGRAM, 0);
+    if (fd < 0) return error.SocketFailed;
+    const yes: c_int = 1;
+    _ = c.setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &yes, @sizeOf(c_int));
+    return fd;
+}
+
+fn run_selftest() !u8 {
+    var buf: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const len = wf.seal_datagram(&buf);
+    var opened: [@intCast(wf.max_message)]u8 = undefined;
+    const msg_len = try wf.open_datagram(buf[0..@intCast(len)], &opened);
+    if (!std.mem.eql(u8, opened[0..@intCast(msg_len)], wf.expected_message)) return error.MessageWrong;
+    print("comlink hosted wire: selftest GREEN — seal and open in one process\n", .{});
+    return 0;
+}
+
+fn run_send() !u8 {
+    const fd = try open_socket();
+    defer _ = c.close(fd);
+
+    var buf: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const len = wf.seal_datagram(&buf);
+
+    const dest = localhost_addr(wire_port);
+    const sent = c.sendto(fd, &buf, @intCast(len), 0, @ptrCast(&dest), @sizeOf(sockaddr_in));
+    if (sent < 0 or @as(usize, @intCast(sent)) != @as(usize, @intCast(len))) return error.SendFailed;
+
+    print("comlink hosted wire: datagram sent ({d} bytes)\n", .{len});
+    return 0;
+}
+
+fn run_recv() !u8 {
+    const fd = try open_socket();
+    defer _ = c.close(fd);
+
+    var bind_addr = localhost_addr(wire_port);
+    if (c.bind(fd, @ptrCast(&bind_addr), @sizeOf(sockaddr_in)) < 0) return error.BindFailed;
+
+    var buf: [@intCast(wf.wire_capacity)]u8 = undefined;
+    var from: sockaddr_in = undefined;
+    var from_len: c.socklen_t = @sizeOf(sockaddr_in);
+    const n = c.recvfrom(fd, &buf, @intCast(wf.wire_capacity), 0, @ptrCast(&from), &from_len);
+    if (n < 0) return error.RecvFailed;
+    const len: u64 = @intCast(n);
+
+    if (len < wf.off_cipher or len > wf.wire_capacity) {
+        print("comlink hosted wire: malformed datagram, refused at the edge\n", .{});
+        return 1;
+    }
+
+    var opened: [@intCast(wf.max_message)]u8 = undefined;
+    const msg_len = wf.open_datagram(buf[0..@intCast(len)], &opened) catch {
+        print("comlink hosted wire: open failed\n", .{});
+        return 1;
+    };
+
+    if (!std.mem.eql(u8, opened[0..@intCast(msg_len)], wf.expected_message)) {
+        print("comlink hosted wire: opened message mismatch\n", .{});
+        return 1;
+    }
+
+    print("comlink hosted wire: opened sealed datagram from localhost\n", .{});
+    print("  message = {s}\n", .{opened[0..@intCast(msg_len)]});
+    return 0;
+}
+
+fn run_demo(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) !u8 {
+    const recv_argv = try allocator.alloc([]const u8, 2);
+    recv_argv[0] = self_path;
+    recv_argv[1] = "recv";
+
+    var recv_child = try std.process.spawn(io, .{ .argv = recv_argv });
+    // Brief pause so recv binds before send.
+    var pause = c.timespec{ .sec = 0, .nsec = 50_000_000 };
+    _ = c.nanosleep(&pause, null);
+
+    const send_argv = try allocator.alloc([]const u8, 2);
+    send_argv[0] = self_path;
+    send_argv[1] = "send";
+
+    var send_child = try std.process.spawn(io, .{ .argv = send_argv });
+
+    const recv_term = try recv_child.wait(io);
+    const send_term = try send_child.wait(io);
+
+    const recv_code: u8 = switch (recv_term) {
+        .exited => |code| code,
+        else => 255,
+    };
+    const send_code: u8 = switch (send_term) {
+        .exited => |code| code,
+        else => 255,
+    };
+
+    assert(recv_code == 0);
+    assert(send_code == 0);
+
+    print("comlink hosted wire: demo GREEN — sealed datagram crossed localhost UDP\n", .{});
+    print("comlink hosted wire: version {s} wire_format {s}\n", .{ hosted_wire_version, wf.wire_format_version });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(garden);
+
+    if (args.len >= 2) {
+        if (std.mem.eql(u8, args[1], "send")) return run_send();
+        if (std.mem.eql(u8, args[1], "recv")) return run_recv();
+        if (std.mem.eql(u8, args[1], "selftest")) return run_selftest();
+        if (std.mem.eql(u8, args[1], "demo")) {
+            assert(args.len >= 1);
+            return run_demo(garden, io, args[0]);
+        }
+    }
+
+    if (args.len >= 1) return run_demo(garden, io, args[0]);
+    return 1;
+}

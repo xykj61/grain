@@ -1,0 +1,34 @@
+//! Rye test: std.mem.join — pass 9961.
+//!
+//! Rishi's join builtin and path-like composition lean on joinMaybeZ.
+//! Pairs with path.join (9983) for separator joining of slices.
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    const gpa = std.heap.page_allocator;
+
+    const multi = mem.join(gpa, ",", &.{ "a", "b", "c" }) catch unreachable;
+    defer gpa.free(multi);
+    std.debug.assert(mem.eql(u8, multi, "a,b,c"));
+    std.debug.assert(multi.len == 5);
+
+    const single = mem.join(gpa, ",", &.{"solo"}) catch unreachable;
+    defer gpa.free(single);
+    std.debug.assert(mem.eql(u8, single, "solo"));
+
+    const empties = mem.join(gpa, ",", &.{ "a", "", "b" }) catch unreachable;
+    defer gpa.free(empties);
+    std.debug.assert(mem.eql(u8, empties, "a,,b"));
+
+    const none = mem.join(gpa, ",", &.{}) catch unreachable;
+    std.debug.assert(none.len == 0);
+
+    const zed = mem.joinZ(gpa, "|", &.{ "x", "y" }) catch unreachable;
+    defer gpa.free(zed);
+    std.debug.assert(mem.eql(u8, zed, "x|y"));
+    std.debug.assert(zed[zed.len] == 0);
+
+    std.debug.print("rye: mem.join assertions confirmed.\n", .{});
+}

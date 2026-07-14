@@ -1,0 +1,52 @@
+//! Rye test: Dir.iterate — pass 9991.
+//!
+//! Iterator.next now carries three postcondition assertions:
+//!   entry.name.len > 0              — every directory entry has a name
+//!   entry.name.len <= max_name_bytes — the name fits the OS limit
+//!   it.reader.state == .finished    — null means iteration is complete
+//!
+//! This test creates a directory with exactly one known file, iterates
+//! it, asserts the entry invariants hold, and confirms the exhaustion
+//! assertion fires correctly when next returns null.
+
+const std = @import("std");
+const Dir = std.Io.Dir;
+
+pub fn main(init: std.process.Init) !u8 {
+    const io = init.io;
+    const cwd = Dir.cwd();
+
+    // Set up: fresh directory with exactly one file.
+    const tmp_dir = "/tmp/rye_dir_iterate_test";
+    const tmp_file = "rye_seed.txt";
+    cwd.deleteTree(io, tmp_dir) catch {};
+    try cwd.createDir(io, tmp_dir, .default_dir);
+    const dir = try cwd.openDir(io, tmp_dir, .{ .iterate = true });
+    defer dir.close(io);
+    try dir.writeFile(io, .{ .sub_path = tmp_file, .data = "Rye" });
+
+    // Iterate: expect exactly one entry.
+    var it = dir.iterate();
+
+    const entry = (try it.next(io)) orelse {
+        std.debug.print("rye: dir_iterate_test: expected one entry, got none.\n", .{});
+        return 1;
+    };
+
+    // The name invariants are now asserted inside Iterator.next.
+    // Re-state them here as test assertions to document what we proved.
+    std.debug.assert(entry.name.len > 0);
+    std.debug.assert(entry.name.len <= Dir.max_name_bytes);
+    std.debug.assert(std.mem.eql(u8, entry.name, tmp_file));
+
+    // Second call: directory exhausted — null returned, state asserted .finished.
+    const done = try it.next(io);
+    std.debug.assert(done == null);
+    std.debug.assert(it.reader.state == .finished);
+
+    // Clean up.
+    cwd.deleteTree(io, tmp_dir) catch {};
+
+    std.debug.print("rye: Dir.iterate assertions confirmed (name invariants, exhaustion state).\n", .{});
+    return 0;
+}

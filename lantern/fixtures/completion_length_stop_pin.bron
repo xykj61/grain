@@ -1,0 +1,7 @@
+# Lantern lap 15 fixture — length_stop request pin on the contract.
+model_hash sha3-256-rye-forge-lap0
+length_stop 1
+tokens_in 4
+tokens_out 2
+stopped_reason length
+text cut short

@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# launch-cursor.sh — personal copy; gitignored. Prefer the tracked driver:
+#
+#   ./tools/cursor-jail.sh
+#   rishi/bin/rishi run tools/launch-cursor.rish
+#
+# This example delegates to cursor-jail.sh so personal enclosure.conf still applies.
+#
+#   cp tools/launch-cursor.sh.example tools/launch-cursor.sh
+#   chmod +x tools/launch-cursor.sh
+#   ./tools/launch-cursor.sh
+#
+# See: SOURCE.md Step 9 and context/specs/enclosure-editors.md
+
+set -euo pipefail
+REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+exec "$REPO_ROOT/tools/cursor-jail.sh" "$@"

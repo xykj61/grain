@@ -1,0 +1,1 @@
+../../vendor/zig-toolchain/lib/fuzzer.zig

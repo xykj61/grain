@@ -1,0 +1,46 @@
+//! Rye test: SHA3-256 across the block boundary — a guard for pass 9994.
+//!
+//! SHA3-256 absorbs in blocks of 136 bytes (rate = (1600 - 256*2) / 8),
+//! not the 72 bytes of SHA3-512. The Keccak generic's TAME assertions —
+//! that the cursor stays within one block, `offset <= block_length` —
+//! were proven for SHA3-512 in pass 9998. This sweep confirms those same
+//! assertions hold for SHA3-256's wider block, including the boundary
+//! case where an exact multiple of 136 bytes leaves the cursor at
+//! `offset == block_length`.
+//!
+//! A known answer for the empty string anchors correctness alongside
+//! absence of panic.
+
+const std = @import("std");
+const Sha3_256 = std.crypto.hash.sha3.Sha3_256;
+
+pub fn main() void {
+    var buf: [512]u8 = undefined;
+    for (&buf) |*b| b.* = 'a';
+
+    // The rate for SHA3-256 is 136 bytes per block.
+    // Lengths at exact multiples leave the absorb cursor at offset == block_length,
+    // the boundary the strengthened bound allows.
+    const rate = Sha3_256.block_length;
+    const lengths = [_]usize{ 0, 1, rate - 1, rate, rate + 1, 2 * rate, 2 * rate + 1, 512 };
+
+    // Fold each digest into a sink so the compiler cannot elide the work; the
+    // point is that hashing these lengths runs the live assertions without panic.
+    var sink: u8 = 0;
+    for (lengths) |n| {
+        var digest: [Sha3_256.digest_length]u8 = undefined;
+        Sha3_256.hash(buf[0..n], &digest, .{});
+        sink ^= digest[0];
+    }
+
+    // A known answer anchors correctness, not just absence of panic: SHA3-256
+    // of the empty string begins a7 ff c6 f8.
+    var empty: [Sha3_256.digest_length]u8 = undefined;
+    Sha3_256.hash("", &empty, .{});
+    std.debug.assert(empty[0] == 0xa7 and empty[1] == 0xff and empty[2] == 0xc6 and empty[3] == 0xf8);
+
+    std.debug.print(
+        "rye: SHA3-256 boundary sweep + empty-vector confirmed (rate={d}, sink={d}).\n",
+        .{ rate, sink },
+    );
+}

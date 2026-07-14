@@ -1,0 +1,26 @@
+//! Rye test: SHA3 Shake buffered @memcpy — pass 9935.
+//!
+//! ShakeLike keeps a rate-sized buffer between squeeze calls; these copies sit
+//! above keccak_p (9936) on Aurora's XOF path.
+
+const std = @import("std");
+const Shake128 = std.crypto.hash.sha3.Shake128;
+
+pub fn main() void {
+    var input: [80]u8 = undefined;
+    for (&input, 0..) |*b, i| b.* = @intCast(i);
+
+    var out: [200]u8 = undefined;
+    var shaker = Shake128.init(.{});
+    shaker.update(input[0..40]);
+    shaker.update(input[40..]);
+    shaker.squeeze(out[0..37]);
+    shaker.squeeze(out[37..100]);
+    shaker.squeeze(out[100..]);
+
+    var one_shot: [200]u8 = undefined;
+    Shake128.hash(&input, &one_shot, .{});
+    std.debug.assert(std.mem.eql(u8, out[0..100], one_shot[0..100]));
+
+    std.debug.print("rye: SHA3 Shake buffered @memcpy boundaries confirmed.\n", .{});
+}

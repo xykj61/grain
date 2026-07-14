@@ -1,0 +1,31 @@
+//! Rye test: std.mem.trim — pass 9930.
+//!
+//! Rishi trims both ends on nearly every parsed line. trim completes the
+//! strengthened trim family beside trimStart (9979) and trimEnd (9988).
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    const both = mem.trim(u8, " \tfoo\n ", " \t\n");
+    std.debug.assert(mem.eql(u8, both, "foo"));
+
+    const none = mem.trim(u8, "hello", " \t");
+    std.debug.assert(mem.eql(u8, none, "hello"));
+
+    const empty = mem.trim(u8, "", " \t");
+    std.debug.assert(empty.len == 0);
+
+    const input = "  data  ";
+    const trimmed = mem.trim(u8, input, " ");
+    std.debug.assert(trimmed.len <= input.len);
+    std.debug.assert(mem.eql(u8, trimmed, "data"));
+
+    const leading_only = mem.trim(u8, "  hello", " ");
+    std.debug.assert(mem.eql(u8, leading_only, "hello"));
+
+    const trailing_only = mem.trim(u8, "hello  ", " ");
+    std.debug.assert(mem.eql(u8, trailing_only, "hello"));
+
+    std.debug.print("rye: mem.trim assertions confirmed.\n", .{});
+}

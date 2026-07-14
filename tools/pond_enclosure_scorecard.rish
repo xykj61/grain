@@ -1,0 +1,107 @@
+# pond_enclosure_scorecard.rish — two-column scorecard living measure.
+#
+# Claude 210800 · 212412 · 213600: column one = incumbent (sixbar); column two
+# = gaps. Proves column one GREEN, records column-two gap rows, asserts exit
+# bron and .asc absent (master-seal policy ready) and ENCLOSURE=ai-jail in the
+# example — season-closed is measured. Exit bron counts only when master-signed.
+#
+#   rishi/bin/rishi run tools/pond_enclosure_scorecard.rish
+
+let cache = "tools/.cache/pond-enclosure"
+let meta = "${cache}/scorecard-meta.txt"
+let scorecard = "active-designing/20260712-210800_pond-enclosure-scorecard-two-column.md"
+let exit_card = "active-designing/20260712-210800_pond-supersede-exit-criteria.md"
+let exit_bron = "bron-resins/pond-supersede-exit.bron"
+let example = "tools/enclosure.conf.example"
+let master_seal = "tools/pond_exit_bron_master_seal.sh"
+
+say "pond scorecard: requiring two-column doc · exit card…"
+let have_sc = run ["test" "-f" scorecard]
+assert have_sc.ok else "missing ${scorecard}"
+let have_ex = run ["test" "-f" exit_card]
+assert have_ex.ok else "missing ${exit_card}"
+let sc_text = read-file scorecard
+assert sc_text contains "Incumbent-measured" else "scorecard must name incumbent-measured column"
+assert sc_text contains "Pond-required" else "scorecard must name pond-required column"
+
+say "pond scorecard: season-closed measured — master-seal helper · bron and .asc absent…"
+let have_seal = run ["test" "-x" master_seal]
+assert have_seal.ok else "missing executable ${master_seal}"
+let seal_closed = run ["bash" master_seal "--season-closed"]
+assert seal_closed.ok else "master-seal --season-closed failed"
+assert seal_closed.out contains "season closed measured" else "master-seal missing season-closed OK"
+let card_text = read-file exit_card
+assert card_text contains "master-signed" else "exit card must name master-signed custody"
+assert card_text contains "pond-supersede-exit.bron.asc" else "exit card must name detached .asc"
+say "pond scorecard: ${exit_bron} and .asc absent — season sleeps · master-seal policy ready"
+
+say "pond scorecard: retreat flag greppable on example…"
+let have_example = run ["test" "-f" example]
+assert have_example.ok else "missing ${example}"
+let ex_text = read-file example
+assert ex_text contains "ENCLOSURE=ai-jail" else "example must default ENCLOSURE=ai-jail"
+
+say "pond scorecard: column one — run sixbar baseline…"
+let col1 = run ["rishi/bin/rishi" "run" "tools/pond_enclosure_sixbar.rish"]
+assert col1.ok else "column one failed — sixbar must be GREEN"
+assert col1.out contains "GREEN: pond enclosure sixbar" else "column one missing sixbar GREEN"
+say "GREEN: pond scorecard column one — incumbent sixbar holds"
+
+say "pond scorecard: refreshing three-door bus measure…"
+let doors = run ["bash" "tools/fixtures/pond_sixbar_bus_doors.sh" "--write-dir" cache]
+assert doors.ok else "bus doors probe failed"
+let bus_env_raw = read-file "${cache}/bus_env"
+let bus_sock_raw = read-file "${cache}/bus_socket"
+let bus_net_raw = read-file "${cache}/bus_netns"
+let bus_env = trim bus_env_raw
+let bus_sock = trim bus_sock_raw
+let bus_net = trim bus_net_raw
+say "pond scorecard: bus_env=${bus_env} · bus_socket=${bus_sock} · bus_netns=${bus_net}"
+
+say "pond scorecard: column two — pond-required cells (record gaps; do not claim)…"
+let gap_r = run ["sh" "-c" "e=$(cat ${cache}/bus_env); s=$(cat ${cache}/bus_socket); n=$(cat ${cache}/bus_netns); if [ \"$e\" = empty ] && [ \"$s\" = absent ] && [ \"$n\" = unshared ]; then echo closed; else echo open; fi"]
+assert gap_r.ok else "gap_bus compute failed"
+let gap_bus = trim gap_r.out
+if gap_bus == "open" then say "pond scorecard column two: GAP bus three-door still open (unreachable is the floor)"
+if gap_bus == "closed" then say "pond scorecard column two: bus three-door closed — still need customs · daily-driver · N soak for exit"
+
+say "pond scorecard column two: GAP gpu-lane-customs — present-when-granted / absent-when-not not yet Pond policy"
+# Finest line (Claude 212412): refuse false supersede green on the incumbent.
+assert gap_bus == "open" else "column two bus already closed on this host — re-read exit card; do not claim supersede from this witness alone"
+say "pond scorecard: supersede season remains closed (exit bron absent · master-seal required · measured)"
+
+say "pond scorecard: writing ${meta}…"
+let mkdir = run ["mkdir" "-p" cache]
+assert mkdir.ok
+let clear = run ["rm" "-f" meta]
+assert clear.ok
+let w1 = run ["sh" "-c" "echo column_one GREEN > ${meta}"]
+assert w1.ok
+let w2 = run ["sh" "-c" "echo column_two NOT_YET >> ${meta}"]
+assert w2.ok
+let w3 = run ["sh" "-c" "echo gap_bus ${gap_bus} >> ${meta}"]
+assert w3.ok
+let w4 = run ["sh" "-c" "echo bus_env ${bus_env} >> ${meta}"]
+assert w4.ok
+let w5 = run ["sh" "-c" "echo bus_socket ${bus_sock} >> ${meta}"]
+assert w5.ok
+let w6 = run ["sh" "-c" "echo bus_netns ${bus_net} >> ${meta}"]
+assert w6.ok
+let w7 = run ["sh" "-c" "echo gap_gpu_lane_customs open >> ${meta}"]
+assert w7.ok
+let w8 = run ["sh" "-c" "echo supersede_season closed >> ${meta}"]
+assert w8.ok
+let w8b = run ["sh" "-c" "echo exit_bron absent ${exit_bron} >> ${meta}"]
+assert w8b.ok
+let w8c = run ["sh" "-c" "echo enclosure_default ai-jail >> ${meta}"]
+assert w8c.ok
+let w8d = run ["sh" "-c" "echo master_seal required 06462132 >> ${meta}"]
+assert w8d.ok
+let w9 = run ["sh" "-c" "echo N six-over-seven >> ${meta}"]
+assert w9.ok
+let w10 = run ["sh" "-c" "echo scorecard ${scorecard} >> ${meta}"]
+assert w10.ok
+let w11 = run ["sh" "-c" "echo exit_card ${exit_card} >> ${meta}"]
+assert w11.ok
+
+say "GREEN: pond enclosure scorecard — column one GREEN; column two gaps named; season closed measured"

@@ -1,0 +1,138 @@
+# proven_seat_g1_prepare_libc.rish — prepare Genode ports under the cache workbench.
+#
+# Claude 201200 unroll step 2 · Claude 204549 vendor home. Sources at
+# vendor/genode. Ensures host flex/bison/m4, then prepare_port libc (+ nova +
+# grub2 for KERNEL=nova serial). CONTRIB_DIR stays under tools/.cache so the
+# submodule stays byte-pristine. Cache claims no seat.
+#
+#   rishi/bin/rishi run tools/proven_seat_g1_prepare_libc.rish
+
+let cache = "tools/.cache/proven-seat"
+let src = "vendor/genode"
+let tools = "${cache}/host-tools"
+let debs = "${tools}/debs"
+let contrib = "${cache}/genode-contrib"
+let meta = "${cache}/g1-prepare-libc-meta.txt"
+let expected_hash = "d6a3665f0d2778ce8928c66302f1694cdc0d8480"
+let port_dir = "${contrib}/libc-${expected_hash}"
+let hash_file = "${src}/repos/libports/ports/libc.hash"
+let ubuntu = "http://archive.ubuntu.com/ubuntu"
+
+say "proven-seat G1 prepare-libc: checking sources tree…"
+let have_src = run ["test" "-d" src]
+assert have_src.ok else "missing ${src} — run proven_seat_g1_fetch_sources.rish first"
+let have_prep = run ["test" "-f" "${src}/tool/ports/prepare_port"]
+assert have_prep.ok else "missing prepare_port under ${src}"
+let pin_hash = read-file hash_file
+assert pin_hash contains expected_hash else "libc.hash pin drift (want ${expected_hash})"
+
+say "proven-seat G1 prepare-libc: ensuring flex · bison · m4 in ${tools}…"
+let mkdir_tools = run ["mkdir" "-p" debs]
+assert mkdir_tools.ok else "could not create ${debs}"
+let have_flex = run ["test" "-x" "${tools}/usr/bin/flex"]
+if have_flex.ok == false then say "proven-seat G1 prepare-libc: fetching Ubuntu noble flex/bison/m4/libfl2 debs…"
+if have_flex.ok == false then let get_pkg = run ["sh" "-c" "cd ${debs} && /usr/bin/curl -fsSL -o Packages.gz ${ubuntu}/dists/noble/main/binary-amd64/Packages.gz && /bin/gzip -dc Packages.gz | /usr/bin/awk '/^Package: (flex|bison|m4|libfl2)$/{pkg=$2;keep=1} keep && /^Filename:/{print pkg, $2; keep=0}' > urls.txt && while read -r pkg path; do /usr/bin/curl -fL --retry 3 -o ${debs}/${pkg}.deb ${ubuntu}/${path}; done < urls.txt && for deb in ${debs}/*.deb; do /usr/bin/dpkg-deb -x $deb ${tools}; done"]
+if have_flex.ok == false then assert get_pkg.ok
+let have_flex2 = run ["test" "-x" "${tools}/usr/bin/flex"]
+assert have_flex2.ok else "flex missing — install via host-tools extract into ${tools}"
+let have_bison = run ["test" "-x" "${tools}/usr/bin/bison"]
+assert have_bison.ok else "bison missing after host-tools extract"
+let have_m4 = run ["test" "-x" "${tools}/usr/bin/m4"]
+assert have_m4.ok else "m4 missing after host-tools extract"
+let have_rpcgen = run ["test" "-x" "/usr/bin/rpcgen"]
+assert have_rpcgen.ok else "rpcgen missing on host PATH (/usr/bin/rpcgen)"
+
+say "proven-seat G1 prepare-libc: running prepare_port libc…"
+let mkdir_contrib = run ["mkdir" "-p" contrib]
+assert mkdir_contrib.ok else "could not create ${contrib}"
+# Prefer already-prepared contrib — skip rebuild when hash dir exists (idempotent GREEN).
+let already = run ["test" "-f" "${port_dir}/libc.hash"]
+# One-time migrate from the retired cache clone workbench if present.
+let legacy = run ["test" "-d" "${cache}/genode-sources/contrib/libc-${expected_hash}"]
+if already.ok == false then if legacy.ok then say "proven-seat G1 prepare-libc: migrating legacy contrib into workbench…"
+if already.ok == false then if legacy.ok then let migrate = run ["sh" "-c" "cp -a ${cache}/genode-sources/contrib/libc-${expected_hash} ${contrib}/"]
+if already.ok == false then if legacy.ok then assert migrate.ok
+let already2 = run ["test" "-f" "${port_dir}/libc.hash"]
+if already2.ok then say "proven-seat G1 prepare-libc: contrib already prepared — skipping make"
+if already2.ok == false then say "proven-seat G1 prepare-libc: prepare_port with CONTRIB_DIR=${contrib}"
+if already2.ok == false then let abs_contrib = run ["realpath" contrib]
+if already2.ok == false then assert abs_contrib.ok
+if already2.ok == false then let abs_contrib_path = trim abs_contrib.out
+if already2.ok == false then let prep = run ["sh" "-c" "cd ${src} && PATH=${tools}/usr/bin:/usr/bin:/bin LD_LIBRARY_PATH=${tools}/usr/lib/x86_64-linux-gnu CONTRIB_DIR=${abs_contrib_path} make -f tool/ports/prepare_port libc"]
+if already2.ok == false then assert prep.ok
+if already2.ok == false then say "proven-seat G1 prepare-libc: make finished"
+
+say "proven-seat G1 prepare-libc: asserting contrib port dir…"
+let have_port = run ["test" "-d" port_dir]
+assert have_port.ok else "missing prepared port ${port_dir}"
+let have_port_hash = run ["test" "-f" "${port_dir}/libc.hash"]
+assert have_port_hash.ok else "missing ${port_dir}/libc.hash"
+let port_hash = read-file "${port_dir}/libc.hash"
+assert port_hash contains expected_hash else "prepared libc.hash mismatch (want ${expected_hash})"
+say "proven-seat G1 prepare-libc: contrib libc-${expected_hash} present; hash matches pin"
+
+say "proven-seat G1 prepare-libc: ensuring nova port for KERNEL=nova…"
+let nova_hash = "b9b1ca154cb14ae6892365a028180694290efbd4"
+let nova_dir = "${contrib}/nova-${nova_hash}"
+let nova_already = run ["test" "-d" nova_dir]
+let nova_legacy = run ["test" "-d" "${cache}/genode-sources/contrib/nova-${nova_hash}"]
+if nova_already.ok == false then if nova_legacy.ok then say "proven-seat G1 prepare-libc: migrating legacy nova into workbench…"
+if nova_already.ok == false then if nova_legacy.ok then let nova_mig = run ["sh" "-c" "cp -a ${cache}/genode-sources/contrib/nova-${nova_hash} ${contrib}/"]
+if nova_already.ok == false then if nova_legacy.ok then assert nova_mig.ok
+let nova_already2 = run ["test" "-d" nova_dir]
+if nova_already2.ok then say "proven-seat G1 prepare-libc: nova contrib already prepared — skipping make"
+if nova_already2.ok == false then let abs_contrib2 = run ["realpath" contrib]
+if nova_already2.ok == false then assert abs_contrib2.ok
+if nova_already2.ok == false then let abs_contrib2_path = trim abs_contrib2.out
+if nova_already2.ok == false then say "proven-seat G1 prepare-libc: prepare_port nova with CONTRIB_DIR=${contrib}"
+if nova_already2.ok == false then let prep_nova = run ["sh" "-c" "cd ${src} && PATH=${tools}/usr/bin:/usr/bin:/bin LD_LIBRARY_PATH=${tools}/usr/lib/x86_64-linux-gnu CONTRIB_DIR=${abs_contrib2_path} make -f tool/ports/prepare_port nova"]
+if nova_already2.ok == false then assert prep_nova.ok
+let have_nova = run ["test" "-d" nova_dir]
+assert have_nova.ok else "missing prepared nova port ${nova_dir}"
+say "proven-seat G1 prepare-libc: contrib nova-${nova_hash} present"
+
+say "proven-seat G1 prepare-libc: ensuring grub2 port for bootloader…"
+let grub_hash = "eb7172dee270fbd9f1bc862d46725fd1fb21d1ea"
+let grub_dir = "${contrib}/grub2-${grub_hash}"
+let grub_already = run ["test" "-d" grub_dir]
+let grub_legacy = run ["test" "-d" "${cache}/genode-sources/contrib/grub2-${grub_hash}"]
+if grub_already.ok == false then if grub_legacy.ok then say "proven-seat G1 prepare-libc: migrating legacy grub2 into workbench…"
+if grub_already.ok == false then if grub_legacy.ok then let grub_mig = run ["sh" "-c" "cp -a ${cache}/genode-sources/contrib/grub2-${grub_hash} ${contrib}/"]
+if grub_already.ok == false then if grub_legacy.ok then assert grub_mig.ok
+let grub_already2 = run ["test" "-d" grub_dir]
+if grub_already2.ok then say "proven-seat G1 prepare-libc: grub2 contrib already prepared — skipping make"
+if grub_already2.ok == false then let abs_contrib3 = run ["realpath" contrib]
+if grub_already2.ok == false then assert abs_contrib3.ok
+if grub_already2.ok == false then let abs_contrib3_path = trim abs_contrib3.out
+if grub_already2.ok == false then say "proven-seat G1 prepare-libc: prepare_port grub2 with CONTRIB_DIR=${contrib}"
+if grub_already2.ok == false then let prep_grub = run ["sh" "-c" "cd ${src} && PATH=${tools}/usr/bin:/usr/bin:/bin LD_LIBRARY_PATH=${tools}/usr/lib/x86_64-linux-gnu CONTRIB_DIR=${abs_contrib3_path} make -f tool/ports/prepare_port grub2"]
+if grub_already2.ok == false then assert prep_grub.ok
+let have_grub = run ["test" "-d" grub_dir]
+assert have_grub.ok else "missing prepared grub2 port ${grub_dir}"
+say "proven-seat G1 prepare-libc: contrib grub2-${grub_hash} present"
+
+say "proven-seat G1 prepare-libc: writing ${meta}…"
+let clear_meta = run ["rm" "-f" meta]
+assert clear_meta.ok else "could not clear ${meta}"
+let w1 = run ["sh" "-c" "echo port libc > ${meta}"]
+assert w1.ok else "meta write failed"
+let w2 = run ["sh" "-c" "echo libc_hash ${expected_hash} >> ${meta}"]
+assert w2.ok else "meta write failed"
+let w3 = run ["sh" "-c" "echo port_dir ${port_dir} >> ${meta}"]
+assert w3.ok else "meta write failed"
+let w3b = run ["sh" "-c" "echo nova_hash ${nova_hash} >> ${meta}"]
+assert w3b.ok else "meta write failed"
+let w3c = run ["sh" "-c" "echo nova_dir ${nova_dir} >> ${meta}"]
+assert w3c.ok else "meta write failed"
+let w3d = run ["sh" "-c" "echo grub2_hash ${grub_hash} >> ${meta}"]
+assert w3d.ok else "meta write failed"
+let w3e = run ["sh" "-c" "echo grub2_dir ${grub_dir} >> ${meta}"]
+assert w3e.ok else "meta write failed"
+let w4 = run ["sh" "-c" "echo sources ${src} >> ${meta}"]
+assert w4.ok else "meta write failed"
+let w5 = run ["sh" "-c" "echo host_tools ${tools} >> ${meta}"]
+assert w5.ok else "meta write failed"
+let w6 = run ["sh" "-c" "echo contrib ${contrib} >> ${meta}"]
+assert w6.ok else "meta write failed"
+
+say "GREEN: proven-seat G1 prepare-libc — libc + nova + grub2 ports at ${contrib}; create_builddir next"

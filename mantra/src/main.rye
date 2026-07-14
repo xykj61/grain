@@ -1,0 +1,678 @@
+//! mantra/src/main.rye — Mantra: the living history of a text stream.
+//!
+//! Mantra is the version-control layer of the Rye family. It holds the full
+//! history of a text file as a weave — a list of lines each carrying a stable
+//! position and a generation count that names whether the line is present or
+//! gone. Every state is content-named by its SHA3-256 digest; the store never
+//! loses a blob once written.
+//!
+//! This is the seed: one file, three commands, one weave.
+//!
+//! Commands:
+//!   mantra init           Create .mantra/ in the current directory.
+//!   mantra add <file>     Weave the file's current content into the history.
+//!   mantra status <file>  Show what has changed since the last weave.
+//!   mantra version        Print the Mantra version.
+//!
+//! Build:
+//!   RYE_ZIG=$PWD/vendor/zig-toolchain/zig \
+//!   rye/bin/rye build mantra/src/main.rye -femit-bin=mantra/bin/mantra
+//!
+//! Architecture (three sections, one file for the seed):
+//!   § Weave   — the data model: Line, Diff, Weave
+//!   § Diff    — pure diff computation over line equality (LCS)
+//!   § Store   — SHA3-256 content-addressed blob store under .mantra/
+//!   § Main    — CLI: init / add / status
+
+const std  = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const tally_parse_int = @import("parse_int.rye");
+const Dir  = std.Io.Dir;
+const Sha3 = std.crypto.hash.sha3.Sha3_256;
+
+const mantra_version = "20260619.213800";
+
+// =========================================================================
+// § Weave — the data model
+// =========================================================================
+//
+// A Weave is a list of Lines. Each Line carries its text, a generation count
+// (odd = present, even = gone), and a stable position that never changes once
+// assigned. Generations never decrease. These two facts together mean the weave
+// remembers every line ever seen — its full history.
+//
+// Invariants held by every Weave operation:
+//   line.gen >= 1         (zero is reserved; new lines start at gen 1)
+//   line.gen odd          ⟺  line is currently present
+//   line.pos < next_pos   (positions are assigned monotonically)
+
+/// A single line in the weave. Once added, its position is permanent.
+const Line = struct {
+    text: []const u8,
+    gen:  u32,
+    pos:  u32,
+};
+
+/// An edit to a weave: new line texts to insert and positions to delete.
+const Diff = struct {
+    inserts: []const []const u8, // text of new lines, in order
+    deletes: []const u32,        // stable positions of lines to remove
+};
+
+/// The weave: a living history of a text stream.
+const Weave = struct {
+    lines:    std.ArrayListUnmanaged(Line),
+    next_pos: u32,
+
+    /// An empty weave — no history yet.
+    fn empty() Weave {
+        return .{ .lines = std.ArrayListUnmanaged(Line).empty, .next_pos = 0 };
+    }
+
+    /// Advance the weave by one diff. Deletes toggle lines to even (gone);
+    /// inserts append new lines at generation 1 (first appearance, present).
+    ///
+    /// Precondition:  every delete position exists in the weave and is present.
+    /// Postcondition: inserted lines carry gen == 1; deleted lines carry even gen.
+    fn apply(self: *Weave, allocator: std.mem.Allocator, d: Diff) !void {
+        for (d.deletes) |target_pos| {
+            var found = false;
+            for (self.lines.items) |*line| {
+                if (line.pos == target_pos) {
+                    assert(line.gen % 2 == 1); // must be present to delete
+                    line.gen += 1;                        // odd → even: mark gone
+                    found = true;
+                    break;
+                }
+            }
+            assert(found); // deleting an absent position is a caller error
+        }
+        for (d.inserts) |text| {
+            const new_line = Line{ .text = text, .gen = 1, .pos = self.next_pos };
+            assert(new_line.gen % 2 == 1); // new lines always present
+            try self.lines.append(allocator, new_line);
+            self.next_pos += 1;
+        }
+        // Postcondition: every line has a valid position.
+        for (self.lines.items) |line| {
+            assert(line.gen >= 1);
+            assert(line.pos < self.next_pos);
+        }
+    }
+
+    /// Return the lines currently present (odd gen), sorted by position.
+    /// The caller owns the returned slice.
+    fn current(self: *const Weave, allocator: std.mem.Allocator) ![]const Line {
+        var out = std.ArrayListUnmanaged(Line).empty;
+        for (self.lines.items) |line| {
+            if (line.gen % 2 == 1) try out.append(allocator, line);
+        }
+        const result = try out.toOwnedSlice(allocator);
+        std.mem.sort(Line, result, {}, struct {
+            fn less_than(_: void, a: Line, b: Line) bool { return a.pos < b.pos; }
+        }.less_than);
+        // Postcondition: sorted, all present.
+        for (result) |line| assert(line.gen % 2 == 1);
+        for (result, 0..) |_, i| {
+            if (i + 1 < result.len) assert(result[i].pos < result[i + 1].pos);
+        }
+        return result;
+    }
+};
+
+// =========================================================================
+// § Diff — pure diff computation (LCS over line text equality)
+// =========================================================================
+
+/// Compute the diff between `old_lines` (the weave's current view) and
+/// `new_text` (the desired lines). Pure: same inputs → same Diff, every time.
+///
+/// Postcondition: applying the Diff to a weave whose current() == old_lines
+///   will produce a weave whose current() == new_text.
+fn compute_diff(
+    allocator: std.mem.Allocator,
+    old_lines: []const Line,
+    new_text:  []const []const u8,
+) !Diff {
+    const m = old_lines.len;
+    const n = new_text.len;
+
+    // LCS table: lcs[i*(n+1)+j] = LCS length of old[0..i] and new[0..j].
+    const table = try allocator.alloc(u32, (m + 1) * (n + 1));
+    defer allocator.free(table);
+    @memset(table, 0);
+
+    for (1..m + 1) |i| {
+        for (1..n + 1) |j| {
+            if (std.mem.eql(u8, old_lines[i - 1].text, new_text[j - 1])) {
+                table[i * (n + 1) + j] = table[(i-1) * (n+1) + (j-1)] + 1;
+            } else {
+                const up   = table[(i-1) * (n+1) + j];
+                const left = table[i * (n+1) + (j-1)];
+                table[i * (n+1) + j] = if (up >= left) up else left;
+            }
+        }
+    }
+
+    // Back-track: mark which old lines and new lines are in the LCS.
+    const kept_old = try allocator.alloc(bool, m);
+    const kept_new = try allocator.alloc(bool, n);
+    defer allocator.free(kept_old);
+    defer allocator.free(kept_new);
+    @memset(kept_old, false);
+    @memset(kept_new, false);
+
+    var i: u32 = @intCast(m);
+    var j: u32 = @intCast(n);
+    while (i > 0 and j > 0) {
+        if (std.mem.eql(u8, old_lines[@intCast(i - 1)].text, new_text[@intCast(j - 1)])) {
+            kept_old[@intCast(i - 1)] = true;
+            kept_new[@intCast(j - 1)] = true;
+            i -= 1; j -= 1;
+        } else if (table[@intCast((i - 1) * (@as(u32, @intCast(n)) + 1) + j)] >= table[@intCast(i * (@as(u32, @intCast(n)) + 1) + (j - 1))]) {
+            i -= 1;
+        } else {
+            j -= 1;
+        }
+    }
+
+    // Collect deletes (old lines not in LCS) and inserts (new lines not in LCS).
+    var deletes = std.ArrayListUnmanaged(u32).empty;
+    for (old_lines, 0..) |line, idx| {
+        if (!kept_old[idx]) try deletes.append(allocator, line.pos);
+    }
+    var inserts = std.ArrayListUnmanaged([]const u8).empty;
+    for (new_text, 0..) |text, idx| {
+        if (!kept_new[idx]) try inserts.append(allocator, text);
+    }
+
+    const result = Diff{
+        .inserts = try inserts.toOwnedSlice(allocator),
+        .deletes = try deletes.toOwnedSlice(allocator),
+    };
+    assert(result.inserts.len <= n);
+    assert(result.deletes.len <= m);
+    return result;
+}
+
+/// Split `text` into lines on '\n'. A trailing newline produces no empty
+/// trailing entry — the common case for text files.
+fn split_lines(allocator: std.mem.Allocator, text: []const u8) ![]const []const u8 {
+    var lines = std.ArrayListUnmanaged([]const u8).empty;
+    var it = std.mem.splitScalar(u8, text, '\n');
+    while (it.next()) |line| {
+        if (line.len == 0 and it.rest().len == 0) break; // trailing newline
+        try lines.append(allocator, line);
+    }
+    return lines.toOwnedSlice(allocator);
+}
+
+// =========================================================================
+// § Store — SHA3-256 content-addressed blob store
+// =========================================================================
+//
+// Layout under the repository root:
+//   .mantra/
+//     HEAD          — 64-char hex blob name of the current weave, + \n
+//     blobs/
+//       <64-hex>    — one file per blob, named by its SHA3-256 digest
+
+const Store = struct {
+    root:       Dir,
+    mantra_dir: Dir,
+    blobs_dir:  Dir,
+
+    /// Open (or create) the .mantra/ tree under `root_dir`. Idempotent.
+    fn open(io: std.Io, root_dir: Dir) !Store {
+        root_dir.createDir(io, ".mantra", .default_dir) catch |err| {
+            if (err != error.PathAlreadyExists) return err;
+        };
+        const mantra = try root_dir.openDir(io, ".mantra", .{});
+        mantra.createDir(io, "blobs", .default_dir) catch |err| {
+            if (err != error.PathAlreadyExists) return err;
+        };
+        const blobs = try mantra.openDir(io, "blobs", .{});
+        return .{ .root = root_dir, .mantra_dir = mantra, .blobs_dir = blobs };
+    }
+
+    /// Write `data` as a blob. Returns the 64-char hex name. Write-once:
+    /// if the blob already exists, the content is identical by hash guarantee.
+    fn write_blob(self: *const Store, allocator: std.mem.Allocator, io: std.Io, data: []const u8) ![]const u8 {
+        assert(data.len > 0);
+        var digest: [Sha3.digest_length]u8 = undefined;
+        Sha3.hash(data, &digest, .{});
+        const name = try hex_encode(allocator, &digest);
+        self.blobs_dir.writeFile(io, .{ .sub_path = name, .data = data }) catch |err| {
+            if (err != error.PathAlreadyExists) return err;
+        };
+        return name;
+    }
+
+    /// Read a blob by its 64-char hex name. Returns the content.
+    fn read_blob(self: *const Store, allocator: std.mem.Allocator, io: std.Io, name: []const u8) ![]u8 {
+        assert(name.len == Sha3.digest_length * 2);
+        const buf = try allocator.alloc(u8, 4 * 1024 * 1024); // 4 MiB ceiling
+        const content = try self.blobs_dir.readFile(io, name, buf);
+        return try allocator.dupe(u8, content);
+    }
+
+    /// Read HEAD. Returns null if absent (uninitialized repo).
+    fn read_head(self: *const Store, allocator: std.mem.Allocator, io: std.Io) !?[]u8 {
+        var buf: [66]u8 = undefined;
+        const content = self.mantra_dir.readFile(io, "HEAD", &buf) catch |err| {
+            if (err == error.FileNotFound) return null;
+            return err;
+        };
+        const name = std.mem.trim(u8, content, "\n");
+        if (name.len != Sha3.digest_length * 2) return null;
+        return try allocator.dupe(u8, name);
+    }
+
+    /// Write HEAD, pointing at the given 64-char blob name.
+    fn write_head(self: *const Store, io: std.Io, name: []const u8) !void {
+        assert(name.len == Sha3.digest_length * 2);
+        var buf: [66]u8 = undefined;
+        const head_content = std.fmt.bufPrint(&buf, "{s}\n", .{name}) catch unreachable;
+        try self.mantra_dir.writeFile(io, .{ .sub_path = "HEAD", .data = head_content });
+    }
+};
+
+fn hex_encode(allocator: std.mem.Allocator, bytes: []const u8) ![]u8 {
+    // invariant: input is non-empty — hashing nothing is a caller error
+    assert(bytes.len > 0);
+    const out = try allocator.alloc(u8, bytes.len * 2);
+    // postcondition: output is exactly twice the input length
+    assert(out.len == bytes.len * 2);
+    const hex = "0123456789abcdef";
+    for (bytes, 0..) |b, i| {
+        out[i * 2]     = hex[b >> 4];
+        out[i * 2 + 1] = hex[b & 0x0f];
+    }
+    return out;
+}
+
+// =========================================================================
+// § Weave serialization
+// =========================================================================
+//
+// Format: a text blob.
+//   Line 0:  "mantra-weave-v1\n"
+//   Lines 1+: "{gen}\t{pos}\t{text}\n"
+//
+// The seed format uses tab as the field separator. Line text must not contain
+// tabs or embedded newlines — asserted at serialization. A future pass will
+// lift this with a length-prefix encoding.
+
+fn serialize_weave(allocator: std.mem.Allocator, w: *const Weave) ![]const u8 {
+    var out = std.ArrayListUnmanaged(u8).empty;
+    try out.appendSlice(allocator, "mantra-weave-v1\n");
+    for (w.lines.items) |line| {
+        assert(std.mem.indexOfScalar(u8, line.text, '\t') == null);
+        assert(std.mem.indexOfScalar(u8, line.text, '\n') == null);
+        var field_buf: [64]u8 = undefined;
+        const prefix = try std.fmt.bufPrint(&field_buf, "{d}\t{d}\t", .{ line.gen, line.pos });
+        try out.appendSlice(allocator, prefix);
+        try out.appendSlice(allocator, line.text);
+        try out.append(allocator, '\n');
+    }
+    return out.toOwnedSlice(allocator);
+}
+
+fn deserialize_weave(allocator: std.mem.Allocator, blob: []const u8) !Weave {
+    var w = Weave.empty();
+    var it = std.mem.splitScalar(u8, blob, '\n');
+    const header = it.next() orelse return error.InvalidFormat;
+    if (!std.mem.eql(u8, header, "mantra-weave-v1")) return error.InvalidFormat;
+    var max_pos: u32 = 0;
+    while (it.next()) |row| {
+        if (row.len == 0) continue;
+        var fields = std.mem.splitScalar(u8, row, '\t');
+        const gen_str  = fields.next() orelse return error.InvalidFormat;
+        const pos_str  = fields.next() orelse return error.InvalidFormat;
+        const text_str = fields.rest();
+        const gen = try tally_parse_int.parse_int(u32, gen_str, .{});
+        const pos = try tally_parse_int.parse_int(u32, pos_str, .{});
+        assert(gen >= 1);
+        const text = try allocator.dupe(u8, text_str);
+        try w.lines.append(allocator, Line{ .text = text, .gen = gen, .pos = pos });
+        if (pos >= max_pos) max_pos = pos + 1;
+    }
+    w.next_pos = max_pos;
+    return w;
+}
+
+// =========================================================================
+// § Commit — the chain link
+// =========================================================================
+//
+// A commit blob names a weave blob and points to its parent commit.
+// Format:
+//   mantra-commit-v1\n
+//   parent <64-hex|none>\n
+//   weave <64-hex>\n
+//
+// HEAD always points to the most recent commit blob.
+// Legacy HEAD values (v0: HEAD → weave blob directly) are handled in
+// load_weave for backwards compatibility.
+
+const CommitRecord = struct {
+    parent:     ?[]const u8, // null for the first commit
+    weave_name: []const u8,
+};
+
+fn serialize_commit(allocator: std.mem.Allocator, commit: CommitRecord) ![]const u8 {
+    var out = std.ArrayListUnmanaged(u8).empty;
+    try out.appendSlice(allocator, "mantra-commit-v1\n");
+    if (commit.parent) |p| {
+        assert(p.len == Sha3.digest_length * 2);
+        const line = try std.fmt.allocPrint(allocator, "parent {s}\n", .{p});
+        try out.appendSlice(allocator, line);
+    } else {
+        try out.appendSlice(allocator, "parent none\n");
+    }
+    assert(commit.weave_name.len == Sha3.digest_length * 2);
+    const line = try std.fmt.allocPrint(allocator, "weave {s}\n", .{commit.weave_name});
+    try out.appendSlice(allocator, line);
+    return out.toOwnedSlice(allocator);
+}
+
+fn deserialize_commit(allocator: std.mem.Allocator, blob: []const u8) !CommitRecord {
+    // invariant: a commit blob is never empty
+    assert(blob.len > 0);
+    var it = std.mem.splitScalar(u8, blob, '\n');
+    const header = it.next() orelse return error.InvalidFormat;
+    if (!std.mem.eql(u8, header, "mantra-commit-v1")) return error.InvalidFormat;
+    var parent_val: ?[]const u8 = null;
+    var weave_val:  ?[]const u8 = null;
+    while (it.next()) |row| {
+        if (row.len == 0) continue;
+        const sep = std.mem.indexOfScalar(u8, row, ' ') orelse continue;
+        const key = row[0..sep];
+        const val = std.mem.trim(u8, row[sep + 1..], " \t\r");
+        if (std.mem.eql(u8, key, "parent")) {
+            if (std.mem.eql(u8, val, "none")) {
+                parent_val = null;
+            } else {
+                parent_val = try allocator.dupe(u8, val);
+            }
+        } else if (std.mem.eql(u8, key, "weave")) {
+            weave_val = try allocator.dupe(u8, val);
+        }
+    }
+    const w = weave_val orelse return error.InvalidFormat;
+    // postcondition: weave name is exactly 64 hex chars
+    assert(w.len == Sha3.digest_length * 2);
+    // postcondition: parent is null or exactly 64 hex chars
+    if (parent_val) |p| assert(p.len == Sha3.digest_length * 2);
+    return CommitRecord{ .parent = parent_val, .weave_name = w };
+}
+
+// =========================================================================
+// § Brix — .brix course descriptor
+// =========================================================================
+//
+// A .brix descriptor names a project and the bricks (source files) Mantra
+// tracks. Format: one key-value pair per line, space-separated. Lines
+// starting with '#' are comments; blank lines are ignored.
+//
+//   name     — the project name (one value)
+//   version  — descriptor version (Rye chronological stamp)
+//   file     — one tracked brick/source file (multiple allowed, in order)
+//
+// Tablecloth (the content-addressed store) holds blobs; Brix (the composing
+// language) describes what the system is made of. A .brix descriptor is
+// a course: an ordered list of bricks, declared plainly.
+
+const BrixConfig = struct {
+    name:    []const u8,
+    version: []const u8,
+    files:   []const []const u8,
+};
+
+/// Read and parse .brix from `dir`. Returns null if .brix is absent.
+fn read_brix(allocator: std.mem.Allocator, io: std.Io, dir: Dir) !?BrixConfig {
+    var buf: [8192]u8 = undefined;
+    const content = dir.readFile(io, ".brix", &buf) catch |err| {
+        if (err == error.FileNotFound) return null;
+        return err;
+    };
+    var name_val:    []const u8 = "";
+    var version_val: []const u8 = "";
+    var files = std.ArrayListUnmanaged([]const u8).empty;
+    var lines_it = std.mem.splitScalar(u8, content, '\n');
+    while (lines_it.next()) |line| {
+        const trimmed = std.mem.trim(u8, line, " \t\r");
+        if (trimmed.len == 0 or trimmed[0] == '#') continue;
+        const sep = std.mem.indexOfScalar(u8, trimmed, ' ') orelse continue;
+        const key = trimmed[0..sep];
+        const val = std.mem.trim(u8, trimmed[sep..], " \t");
+        if (std.mem.eql(u8, key, "name")) {
+            name_val = try allocator.dupe(u8, val);
+        } else if (std.mem.eql(u8, key, "version")) {
+            version_val = try allocator.dupe(u8, val);
+        } else if (std.mem.eql(u8, key, "file")) {
+            assert(val.len > 0);
+            try files.append(allocator, try allocator.dupe(u8, val));
+        }
+    }
+    return BrixConfig{
+        .name    = name_val,
+        .version = version_val,
+        .files   = try files.toOwnedSlice(allocator),
+    };
+}
+
+fn load_weave(allocator: std.mem.Allocator, store: *const Store, io: std.Io) !Weave {
+    const head_name = try store.read_head(allocator, io);
+    if (head_name == null) return Weave.empty();
+    const blob = try store.read_blob(allocator, io, head_name.?);
+    // v1: HEAD → commit blob → weave blob. Legacy v0: HEAD → weave blob.
+    if (std.mem.startsWith(u8, blob, "mantra-commit-v1")) {
+        const commit = try deserialize_commit(allocator, blob);
+        const weave_blob = try store.read_blob(allocator, io, commit.weave_name);
+        return deserialize_weave(allocator, weave_blob);
+    }
+    return deserialize_weave(allocator, blob);
+}
+
+// =========================================================================
+// § Main — CLI
+// =========================================================================
+
+pub fn main(init: std.process.Init) !u8 {
+    const allocator = init.arena.allocator();
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(allocator);
+
+    if (args.len < 2) { print_usage(); return 2; }
+
+    const cmd = args[1];
+    if (std.mem.eql(u8, cmd, "init")) {
+        return cmd_init(allocator, io);
+    } else if (std.mem.eql(u8, cmd, "brix")) {
+        return cmd_brix(allocator, io);
+    } else if (std.mem.eql(u8, cmd, "add")) {
+        if (args.len >= 3) {
+            return cmd_add(allocator, io, args[2]);
+        } else {
+            return cmd_add_all(allocator, io);
+        }
+    } else if (std.mem.eql(u8, cmd, "log")) {
+        return cmd_log(allocator, io);
+    } else if (std.mem.eql(u8, cmd, "status")) {
+        if (args.len < 3) {
+            print("mantra: status requires a file path\n", .{});
+            return 2;
+        }
+        return cmd_status(allocator, io, args[2]);
+    } else if (std.mem.eql(u8, cmd, "version")) {
+        print("mantra {s}\n", .{mantra_version});
+        return 0;
+    } else {
+        print("mantra: unknown command '{s}'\n\n", .{cmd});
+        print_usage();
+        return 2;
+    }
+}
+
+fn print_usage() void {
+    print(
+        \\mantra — the living history of the Rye family
+        \\
+        \\usage:
+        \\  mantra init           create .mantra/ in the current directory
+        \\  mantra brix           print the .brix course descriptor
+        \\  mantra add            weave all .brix files into the history
+        \\  mantra add <file>     weave one file's current text into the history
+        \\  mantra log            show the commit chain
+        \\  mantra status <file>  show what has changed since the last weave
+        \\  mantra version        print the Mantra version
+        \\
+    , .{});
+}
+
+fn cmd_init(allocator: std.mem.Allocator, io: std.Io) !u8 {
+    var store = Store.open(io, Dir.cwd()) catch |err| {
+        print("mantra init: could not create .mantra/: {}\n", .{err});
+        return 1;
+    };
+    _ = &store;
+    const maybe_brix = try read_brix(allocator, io, Dir.cwd());
+    if (maybe_brix) |s| {
+        print("mantra: initialized .mantra/ — project '{s}' ({d} tracked file(s)).\n", .{
+            s.name, s.files.len,
+        });
+    } else {
+        print("mantra: initialized .mantra/ in the current directory.\n", .{});
+    }
+    return 0;
+}
+
+fn cmd_brix(allocator: std.mem.Allocator, io: std.Io) !u8 {
+    const maybe_brix = try read_brix(allocator, io, Dir.cwd());
+    if (maybe_brix == null) {
+        print("mantra: no .brix found in the current directory.\n", .{});
+        return 1;
+    }
+    const s = maybe_brix.?;
+    print("brix: {s}  version {s}  ({d} file(s))\n", .{ s.name, s.version, s.files.len });
+    for (s.files) |f| print("  file {s}\n", .{f});
+    return 0;
+}
+
+fn cmd_add(allocator: std.mem.Allocator, io: std.Io, file_path: []const u8) !u8 {
+    assert(file_path.len > 0);
+    const cwd = Dir.cwd();
+    var store = Store.open(io, cwd) catch |err| {
+        print("mantra add: cannot open .mantra/ ({}) — run `mantra init` first\n", .{err});
+        return 1;
+    };
+    const file_buf = try allocator.alloc(u8, 4 * 1024 * 1024);
+    const file_content = cwd.readFile(io, file_path, file_buf) catch |err| {
+        print("mantra add: cannot read '{s}': {}\n", .{ file_path, err });
+        return 1;
+    };
+    // Record the current HEAD as parent before the new commit.
+    const parent_name = try store.read_head(allocator, io);
+    var w             = try load_weave(allocator, &store, io);
+    const old         = try w.current(allocator);
+    const new         = try split_lines(allocator, file_content);
+    const d           = try compute_diff(allocator, old, new);
+    try w.apply(allocator, d);
+    const weave_blob  = try serialize_weave(allocator, &w);
+    const weave_name  = try store.write_blob(allocator, io, weave_blob);
+    const commit_blob = try serialize_commit(allocator, .{ .parent = parent_name, .weave_name = weave_name });
+    const commit_name = try store.write_blob(allocator, io, commit_blob);
+    try store.write_head(io, commit_name);
+    print("mantra: wove '{s}' — +{d} -{d} lines. HEAD → {s}\n", .{
+        file_path, d.inserts.len, d.deletes.len, commit_name[0..12],
+    });
+    return 0;
+}
+
+fn cmd_add_all(allocator: std.mem.Allocator, io: std.Io) !u8 {
+    const maybe_brix = try read_brix(allocator, io, Dir.cwd());
+    if (maybe_brix == null) {
+        print("mantra add: no .brix found — either specify a file or create .brix\n", .{});
+        return 1;
+    }
+    const brix = maybe_brix.?;
+    print("mantra: adding {d} file(s) from .brix ({s})\n", .{ brix.files.len, brix.name });
+    var added: u32 = 0;
+    for (brix.files) |file_path| {
+        const rc = try cmd_add(allocator, io, file_path);
+        if (rc == 0) added += 1;
+    }
+    print("mantra: wove {d}/{d} file(s).\n", .{ added, brix.files.len });
+    return if (added == brix.files.len) 0 else 1;
+}
+
+fn cmd_log(allocator: std.mem.Allocator, io: std.Io) !u8 {
+    const cwd = Dir.cwd();
+    var store = Store.open(io, cwd) catch |err| {
+        print("mantra log: cannot open .mantra/ ({}) — run `mantra init` first\n", .{err});
+        return 1;
+    };
+    var head: ?[]const u8 = try store.read_head(allocator, io);
+    if (head == null) {
+        print("mantra: no commits yet — run `mantra add` to weave the first line.\n", .{});
+        return 0;
+    }
+    const max_log_depth: u32 = 1000; // bounded to prevent runaway chain walks
+    var depth: u32 = 0;
+    while (head) |commit_name| {
+        // invariant: depth stays within the stated bound
+        assert(depth <= max_log_depth);
+        const blob = try store.read_blob(allocator, io, commit_name);
+        if (!std.mem.startsWith(u8, blob, "mantra-commit-v1")) {
+            // Legacy v0: HEAD pointed directly to a weave blob.
+            print("  {s}  (weave, legacy)\n", .{commit_name[0..12]});
+            break;
+        }
+        const commit = try deserialize_commit(allocator, blob);
+        print("  commit {s}  weave {s}\n", .{
+            commit_name[0..12], commit.weave_name[0..12],
+        });
+        head = commit.parent;
+        depth += 1;
+        if (depth > max_log_depth) {
+            print("  ... (depth limit — stopping)\n", .{});
+            break;
+        }
+    }
+    print("({d} commit(s))\n", .{depth});
+    return 0;
+}
+
+fn cmd_status(allocator: std.mem.Allocator, io: std.Io, file_path: []const u8) !u8 {
+    assert(file_path.len > 0);
+    const cwd = Dir.cwd();
+    var store = Store.open(io, cwd) catch |err| {
+        print("mantra status: cannot open .mantra/ ({}) — run `mantra init` first\n", .{err});
+        return 1;
+    };
+    const file_buf = try allocator.alloc(u8, 4 * 1024 * 1024);
+    const file_content = cwd.readFile(io, file_path, file_buf) catch |err| {
+        print("mantra status: cannot read '{s}': {}\n", .{ file_path, err });
+        return 1;
+    };
+    var w       = try load_weave(allocator, &store, io);
+    const old   = try w.current(allocator);
+    const new   = try split_lines(allocator, file_content);
+    const d     = try compute_diff(allocator, old, new);
+    if (d.inserts.len == 0 and d.deletes.len == 0) {
+        print("mantra status: '{s}' — clean\n", .{file_path});
+        return 0;
+    }
+    print("mantra status: '{s}' — {d} added, {d} removed\n", .{
+        file_path, d.inserts.len, d.deletes.len,
+    });
+    for (d.inserts) |line| print("+ {s}\n", .{line});
+    for (d.deletes) |pos| {
+        for (old) |line| {
+            if (line.pos == pos) { print("- {s}\n", .{line.text}); break; }
+        }
+    }
+    return 0;
+}

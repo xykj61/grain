@@ -1,0 +1,5 @@
+let mark = "ACCEPT-OK"
+say "${mark}"
+:version
+:recall 2
+:quit

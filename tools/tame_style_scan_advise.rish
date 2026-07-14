@@ -1,0 +1,58 @@
+# tame_style_scan_advise.rish — TAME ratchet advisories over the scan roster.
+#
+# Counts use map + length + join + shell arithmetic (for-each cannot accumulate).
+# camelCase uses grep seam; >70-line ledger via tame_style_long_fn.rish orchestration.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/tame_style_scan_advise.rish
+
+let roster = run ["sh" "-c" "find mantra caravan linengrow comlink rishi/src tally aurora pond brushstroke rye/src -name '*.rye' ! -type l 2>/dev/null | sort"]
+assert roster.ok else "tame_style_scan_advise: find roster failed"
+
+let file_lines = lines roster.out
+let files = where file_lines as f: f != ""
+
+let per_memcpy = map files as f: length (where (lines (read-file f)) as ln: ln contains "@memcpy(")
+let per_memcpy_str = map per_memcpy as n: "${n}"
+let memcpy_expr = join per_memcpy_str " + "
+let memcpy_canonical = length (where (lines (read-file "tally/copy.rye")) as ln: ln contains "@memcpy(")
+let memcpy_app_run = run ["sh" "-c" "echo $((${memcpy_expr} - ${memcpy_canonical}))"]
+let memcpy_app = memcpy_app_run.out
+
+let camel_run = run ["sh" "-c" "grep -hE '^( *)?(pub )?fn [a-z]+[A-Z]' $(find mantra caravan linengrow comlink rishi/src tally aurora pond brushstroke rye/src -name '*.rye' ! -type l 2>/dev/null) 2>/dev/null | wc -l | tr -d ' '"]
+
+let per_parseint = map files as f: length (where (lines (read-file f)) as ln: ln contains "parseInt(")
+let per_parseint_str = map per_parseint as n: "${n}"
+let parseint_expr = join per_parseint_str " + "
+let parseint_canonical = length (where (lines (read-file "tally/parse_int.rye")) as ln: ln contains "parseInt(")
+let parseint_app_run = run ["sh" "-c" "echo $((${parseint_expr} - ${parseint_canonical}))"]
+let parseint_app = parseint_app_run.out
+
+let per_ed25519 = map files as f: length (where (where (where (lines (read-file f)) as ln: ln contains "Ed25519") as ln2: ln2 contains "fromEd25519" == false) as ln3: ln3 contains "FromEd25519" == false)
+let per_ed25519_str = map per_ed25519 as n: "${n}"
+let ed25519_expr = join per_ed25519_str " + "
+let ed25519_canonical = length (where (lines (read-file "tally/kumara.rye")) as ln: ln contains "Ed25519")
+let ed25519_app_run = run ["sh" "-c" "echo $((${ed25519_expr} - ${ed25519_canonical}))"]
+let ed25519_app = ed25519_app_run.out
+
+say "ratchet: @memcpy application sites = ${trim memcpy_app} (migrate to copy_disjoint on touch)"
+say "ratchet: @memcpy canonical in tally/copy.rye = 1 (intentional inside copy_disjoint)"
+say "ratchet: camelCase fn declarations = ${trim camel_run.out} (snake_case on touch)"
+say "ratchet: parseInt( application sites = ${trim parseint_app} (migrate to tally/parse_int.rye on touch; leading-zero footgun otherwise silent)"
+say "ratchet: Ed25519 application sites = ${trim ed25519_app} (migrate to tally/kumara.rye on touch; identity at the seam)"
+say "ratchet: Ed25519 canonical in tally/kumara.rye = ${ed25519_canonical} (intentional inside kumara seam)"
+say "ratchet: functions past 70 lines —"
+
+let za1 = where files as f: (read-file f) contains "assert(" == false
+let za2 = where za1 as f: f starts-with "comlink/guest_" == false
+let za3 = where za2 as f: f starts-with "aurora/src/" == false
+let za4 = where za3 as f: f == "brushstroke/font8x8_data.rye" == false
+let za5 = where za4 as f: f == "caravan/supervisor_signal.rye" == false
+let za6 = where za5 as f: f == "caravan/supervisor_exit.rye" == false
+let za7 = where za6 as f: f == "pond/apps/window_input.rye" == false
+let za8 = where za7 as f: f == "tally/maybe.rye" == false
+for-each za8 as f do say "  ${f} (zero assert — review on touch)"
+say "ratchet: zero assert( files remaining = ${length za8} (honest exempt: virtio guests, aurora freestanding, signal handler, font table, thin line editor, exit constants, the dual-of-assert mark itself)"
+
+let long_fn = run ["rishi/bin/rishi" "run" "tools/fixtures/tame_style_long_fn.rish"]
+say long_fn.out

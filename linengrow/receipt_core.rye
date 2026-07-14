@@ -1,0 +1,183 @@
+//! linengrow/receipt_core.rye — shared sign, parse, fold, and compact wire payload.
+//!
+//! Imported by SLC-L1 (`receipt.rye`) and SLC-L2 (`delivery.rye`).
+
+const std = @import("std");
+const assert = std.debug.assert;
+const tally_parse_int = @import("parse_int.rye");
+const kumara = @import("kumara.rye");
+const Sha3_256 = std.crypto.hash.sha3.Sha3_256;
+const tally_copy = @import("tally_copy.rye");
+
+pub const slcl1_seed = [_]u8{0x42} ** kumara.seed_length;
+pub const sig_hex_len: u32 = kumara.signature_length * 2;
+pub const max_fact_len: u32 = 512;
+pub const max_line_len: u32 = sig_hex_len + 1 + max_fact_len * 2;
+pub const max_log_len: u32 = 4096;
+
+/// Compact sealed payload: sig[64] | fact_len u32 LE | fact[fact_len]
+pub const slcl2_payload_header: u32 = kumara.signature_length + 4;
+pub const slcl2_max_fact: u32 = 256;
+
+/// Pinned witness fact — byte-identical to `tools/fixtures/slcl1_fact.bron` canonical form.
+pub const witness_canonical_fact =
+    \\from 2152f8d19b791d24453242e15f2eab6cb7cffa7b6a5ed30097960e069881db12
+    \\to 2152f8d19b791d24453242e15f2eab6cb7cffa7b6a5ed30097960e069881db12
+    \\amount 100
+    \\memo stipend for animation micro-gig
+    \\stamp 20260702.195426
+    \\
+;
+pub const witness_expected_balance: i64 = 100;
+
+pub const FactFields = struct {
+    from: []const u8,
+    to: []const u8,
+    amount: []const u8,
+    memo: []const u8,
+    stamp: []const u8,
+};
+
+fn buf_len_u32(buf: []const u8) u32 {
+    assert(buf.len <= std.math.maxInt(u32));
+    return @intCast(buf.len);
+}
+
+fn trim_line(line: []const u8) []const u8 {
+    return std.mem.trim(u8, line, " \t\r\n");
+}
+
+pub fn parse_fact_fields(text: []const u8, fields: *FactFields) error{InvalidFact}!void {
+    var from_set = false;
+    var to_set = false;
+    var amount_set = false;
+    var memo_set = false;
+    var stamp_set = false;
+
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    while (lines.next()) |raw| {
+        const line = trim_line(raw);
+        if (line.len == 0) continue;
+        if (line[0] == '#') continue;
+        const space = std.mem.indexOfScalar(u8, line, ' ') orelse return error.InvalidFact;
+        const key = line[0..space];
+        const value = trim_line(line[space + 1 ..]);
+        if (value.len == 0) return error.InvalidFact;
+        if (std.mem.eql(u8, key, "from")) {
+            fields.from = value;
+            from_set = true;
+        } else if (std.mem.eql(u8, key, "to")) {
+            fields.to = value;
+            to_set = true;
+        } else if (std.mem.eql(u8, key, "amount")) {
+            fields.amount = value;
+            amount_set = true;
+        } else if (std.mem.eql(u8, key, "memo")) {
+            fields.memo = value;
+            memo_set = true;
+        } else if (std.mem.eql(u8, key, "stamp")) {
+            fields.stamp = value;
+            stamp_set = true;
+        } else {
+            return error.InvalidFact;
+        }
+    }
+    if (!from_set or !to_set or !amount_set or !memo_set or !stamp_set) return error.InvalidFact;
+}
+
+pub fn write_canonical_fact(fields: FactFields, out: []u8) error{Overflow}!u32 {
+    const written = std.fmt.bufPrint(
+        out,
+        "from {s}\nto {s}\namount {s}\nmemo {s}\nstamp {s}\n",
+        .{ fields.from, fields.to, fields.amount, fields.memo, fields.stamp },
+    ) catch return error.Overflow;
+    return buf_len_u32(written);
+}
+
+fn write_hex_lower(bytes: []const u8, out: []u8) error{Overflow}!u32 {
+    if (out.len < bytes.len * 2) return error.Overflow;
+    var i: u32 = 0;
+    while (i < buf_len_u32(bytes)) : (i += 1) {
+        _ = std.fmt.bufPrint(out[i * 2 ..][0..2], "{x:0>2}", .{bytes[i]}) catch return error.Overflow;
+    }
+    return @intCast(bytes.len * 2);
+}
+
+fn decode_hex_lower(hex: []const u8, out: []u8) error{InvalidHex}!u32 {
+    if (hex.len % 2 != 0) return error.InvalidHex;
+    const nbytes: u32 = @intCast(hex.len / 2);
+    if (nbytes > buf_len_u32(out)) return error.InvalidHex;
+    var i: u32 = 0;
+    while (i < nbytes) : (i += 1) {
+        const pair = hex[i * 2 ..][0..2];
+        out[i] = tally_parse_int.parse_int(u8, pair, .{ .base = 16, .allow_leading_zero = true }) catch return error.InvalidHex;
+    }
+    return nbytes;
+}
+
+pub fn format_log_line(sig: kumara.Signature, fact: []const u8, out: []u8) error{Overflow}!u32 {
+    const sig_bytes = sig.toBytes();
+    var pos: u32 = 0;
+    pos += try write_hex_lower(&sig_bytes, out[pos..]);
+    if (pos >= buf_len_u32(out)) return error.Overflow;
+    out[pos] = ' ';
+    pos += 1;
+    pos += try write_hex_lower(fact, out[pos..]);
+    if (pos < buf_len_u32(out)) out[pos] = '\n';
+    return pos + 1;
+}
+
+pub fn parse_log_line(line: []const u8, sig_out: []u8, fact_out: []u8) error{InvalidLine}!struct { sig_len: u32, fact_len: u32 } {
+    const trimmed = trim_line(line);
+    if (trimmed.len < sig_hex_len + 2) return error.InvalidLine;
+    const sig_hex = trimmed[0..sig_hex_len];
+    if (trimmed[sig_hex_len] != ' ') return error.InvalidLine;
+    const fact_hex = trim_line(trimmed[sig_hex_len + 1 ..]);
+    const sig_len = decode_hex_lower(sig_hex, sig_out) catch return error.InvalidLine;
+    const fact_len = decode_hex_lower(fact_hex, fact_out) catch return error.InvalidLine;
+    return .{ .sig_len = sig_len, .fact_len = fact_len };
+}
+
+pub fn parse_amount_signed(amount_text: []const u8) error{InvalidAmount}!i64 {
+    // Strict by default: a financial amount carrying a leading zero is refused
+    // rather than silently parsed, the same footgun std.fmt.parseInt would allow.
+    return tally_parse_int.parse_int(i64, amount_text, .{}) catch return error.InvalidAmount;
+}
+
+pub fn verify_record(sig_bytes: []const u8, fact: []const u8, pubkey: kumara.PublicKey) error{VerifyFailed}!void {
+    return kumara.verify_bytes(fact, sig_bytes, pubkey);
+}
+
+pub fn fold_balance_from_facts(fact: []const u8, balance: *i64) error{InvalidAmount}!void {
+    var fields: FactFields = undefined;
+    parse_fact_fields(fact, &fields) catch return error.InvalidAmount;
+    const delta = try parse_amount_signed(fields.amount);
+    balance.* +%= delta;
+}
+
+pub fn digest_log(log: []const u8, digest: *[Sha3_256.digest_length]u8) void {
+    Sha3_256.hash(log[0..log.len], digest, .{});
+}
+
+pub fn encode_compact_payload(sig: kumara.Signature, fact: []const u8, out: []u8) error{Overflow}!u32 {
+    if (fact.len > slcl2_max_fact) return error.Overflow;
+    const total: u32 = slcl2_payload_header + @as(u32, @intCast(fact.len));
+    if (total > buf_len_u32(out)) return error.Overflow;
+    const sig_bytes = sig.toBytes();
+    tally_copy.copy_disjoint(u8, out[0..sig_bytes.len], std.mem.asBytes(&sig_bytes));
+    std.mem.writeInt(u32, out[kumara.signature_length..][0..4], @intCast(fact.len), .little);
+    tally_copy.copy_disjoint(u8, out[slcl2_payload_header..][0..fact.len], fact);
+    return total;
+}
+
+pub fn decode_compact_payload(buf: []const u8, sig_out: []u8, fact_out: []u8) error{InvalidPayload}!struct { fact_len: u32 } {
+    if (buf.len < slcl2_payload_header) return error.InvalidPayload;
+    const fact_len = std.mem.readInt(u32, buf[kumara.signature_length..][0..4], .little);
+    if (fact_len > slcl2_max_fact) return error.InvalidPayload;
+    if (buf.len < slcl2_payload_header + fact_len) return error.InvalidPayload;
+    if (sig_out.len < kumara.signature_length) return error.InvalidPayload;
+    if (fact_out.len < fact_len) return error.InvalidPayload;
+    tally_copy.copy_disjoint(u8, sig_out[0..kumara.signature_length], buf[0..kumara.signature_length]);
+    tally_copy.copy_disjoint(u8, fact_out[0..fact_len], buf[slcl2_payload_header..][0..fact_len]);
+    return .{ .fact_len = fact_len };
+}

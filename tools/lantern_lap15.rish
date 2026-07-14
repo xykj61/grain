@@ -1,0 +1,18 @@
+# lantern_lap15.rish — Lantern lap 15: length_stop request pin.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/lantern_lap15.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lantern/bin/lantern"
+
+let build = run ["sh" "-c" "mkdir -p lantern/bin && env RYE_ZIG=${zig} rye/bin/rye build lantern/lantern.rye -femit-bin=${bin}"]
+assert build.ok else "Lantern lap 15 build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "Lantern selftest exited non-zero"
+assert selftest.out contains "GREEN" else "Lantern selftest not GREEN"
+assert selftest.out contains "length_stop pin completion" else "Lantern missing length_stop pin welcome"
+assert selftest.out contains "length_stop pin mismatch" else "Lantern missing length_stop pin mismatch"
+
+say "GREEN: Lantern lap 15 — length_stop request pin on the bounded contract."

@@ -1,0 +1,281 @@
+//! mantra/recall_sync_wire.rye — NS-L3 wire payloads for bolt-revision sync (hosted lap 1).
+//!
+//! Compact request/response bodies that fit one sealed datagram (max_message 340).
+//! Scope: [`active-designing/20260706-023912_the-referential-namespace.md`](../active-designing/20260706-023912_the-referential-namespace.md)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const ns = @import("recall_lap1.rye");
+const tally_copy = @import("tally_copy.rye");
+
+pub const sync_wire_version = "20260706.041512";
+
+const kind_request: u8 = 0x01;
+const kind_response: u8 = 0x02;
+
+pub const max_held_digests: u32 = 8;
+pub const max_wire_entries: u32 = 8;
+pub const max_wire_payload: u32 = 340;
+
+pub const WireError = error{
+    BadKind,
+    Overflow,
+    Truncated,
+    DigestMismatch,
+};
+
+pub const SyncRequest = struct {
+    peer: []const u8,
+    bolt: []const u8,
+    revision: u32,
+    held_count: u32,
+    held_digests: [max_held_digests][64]u8,
+};
+
+pub const WireEntry = struct {
+    path: []const u8,
+    digest_hex: [64]u8,
+    tilak: []const u8,
+    bytes_len: u32,
+    bytes: [ns.max_resin_bytes]u8,
+};
+
+pub const SyncResponse = struct {
+    peer: []const u8,
+    bolt: []const u8,
+    revision: u32,
+    entry_count: u32,
+    entries: [max_wire_entries]WireEntry,
+};
+
+fn digest_held(req: *const SyncRequest, digest_hex: []const u8) bool {
+    var i: u32 = 0;
+    while (i < req.held_count) : (i += 1) {
+        if (std.mem.eql(u8, req.held_digests[i][0..64], digest_hex)) return true;
+    }
+    return false;
+}
+
+pub fn encode_request(req: SyncRequest, out: []u8) WireError!u32 {
+    if (req.peer.len > 16 or req.bolt.len > 32 or req.held_count > max_held_digests) return error.Overflow;
+    var off: u32 = 0;
+    if (out.len < 12) return error.Overflow;
+    out[off] = kind_request;
+    off += 1;
+    out[off] = @intCast(req.peer.len);
+    off += 1;
+    if (off + req.peer.len > out.len) return error.Overflow;
+    tally_copy.copy_disjoint(u8, out[off..][0..req.peer.len], req.peer);
+    off += @intCast(req.peer.len);
+    out[off] = @intCast(req.bolt.len);
+    off += 1;
+    if (off + req.bolt.len + 5 > out.len) return error.Overflow;
+    tally_copy.copy_disjoint(u8, out[off..][0..req.bolt.len], req.bolt);
+    off += @intCast(req.bolt.len);
+    std.mem.writeInt(u32, out[off..][0..4], req.revision, .little);
+    off += 4;
+    out[off] = @intCast(req.held_count);
+    off += 1;
+    var i: u32 = 0;
+    while (i < req.held_count) : (i += 1) {
+        if (off + 64 > out.len) return error.Overflow;
+        tally_copy.copy_disjoint(u8, out[off..][0..64], req.held_digests[i][0..64]);
+        off += 64;
+    }
+    assert(off <= out.len);
+    assert(off <= max_wire_payload);
+    return off;
+}
+
+pub fn decode_request(payload: []const u8, out: *SyncRequest) WireError!void {
+    if (payload.len < 8 or payload[0] != kind_request) return error.BadKind;
+    var off: u32 = 1;
+    const peer_len: u32 = payload[off];
+    off += 1;
+    if (off + peer_len > payload.len) return error.Truncated;
+    out.peer = payload[off..][0..peer_len];
+    off += peer_len;
+    if (off >= payload.len) return error.Truncated;
+    const bolt_len: u32 = payload[off];
+    off += 1;
+    if (off + bolt_len + 5 > payload.len) return error.Truncated;
+    out.bolt = payload[off..][0..bolt_len];
+    off += bolt_len;
+    out.revision = std.mem.readInt(u32, payload[off..][0..4], .little);
+    off += 4;
+    out.held_count = payload[off];
+    off += 1;
+    if (out.held_count > max_held_digests) return error.Overflow;
+    var i: u32 = 0;
+    while (i < out.held_count) : (i += 1) {
+        if (off + 64 > payload.len) return error.Truncated;
+        tally_copy.copy_disjoint(u8, out.held_digests[i][0..64], payload[off..][0..64]);
+        off += 64;
+    }
+    assert(out.held_count <= max_held_digests);
+    assert(out.peer.len <= 16);
+    assert(out.bolt.len <= 32);
+}
+
+pub fn build_response(src: *const ns.BoltCatalog, req: *const SyncRequest, out: *SyncResponse) WireError!void {
+    out.* = .{
+        .peer = req.peer,
+        .bolt = req.bolt,
+        .revision = req.revision,
+        .entry_count = 0,
+        .entries = undefined,
+    };
+    const total = src.revision_leaf_count(req.peer, req.bolt, req.revision);
+    if (total > max_wire_entries) return error.Overflow;
+    var ord: u32 = 0;
+    while (ord < total) : (ord += 1) {
+        const leaf = src.revision_leaf_at(req.peer, req.bolt, req.revision, ord) orelse return error.Truncated;
+        const entry = &out.entries[out.entry_count];
+        entry.path = leaf.path;
+        tally_copy.copy_disjoint(u8, entry.digest_hex[0..64], leaf.digest_hex[0..64]);
+        entry.tilak = leaf.tilak;
+        if (digest_held(req, leaf.digest_hex[0..64])) {
+            entry.bytes_len = 0; // have-already lane — ref only
+        } else {
+            entry.bytes_len = @intCast(leaf.bytes.len);
+            tally_copy.copy_disjoint(u8, entry.bytes[0..leaf.bytes.len], leaf.bytes);
+        }
+        out.entry_count += 1;
+    }
+    assert(out.entry_count == total);
+    assert(out.entry_count <= max_wire_entries);
+}
+
+pub fn encode_response(resp: *const SyncResponse, out: []u8) WireError!u32 {
+    if (resp.peer.len > 16 or resp.bolt.len > 32 or resp.entry_count > max_wire_entries) return error.Overflow;
+    var off: u32 = 0;
+    out[off] = kind_response;
+    off += 1;
+    out[off] = @intCast(resp.peer.len);
+    off += 1;
+    if (off + resp.peer.len > out.len) return error.Overflow;
+    tally_copy.copy_disjoint(u8, out[off..][0..resp.peer.len], resp.peer);
+    off += @intCast(resp.peer.len);
+    out[off] = @intCast(resp.bolt.len);
+    off += 1;
+    if (off + resp.bolt.len + 4 > out.len) return error.Overflow;
+    tally_copy.copy_disjoint(u8, out[off..][0..resp.bolt.len], resp.bolt);
+    off += @intCast(resp.bolt.len);
+    std.mem.writeInt(u32, out[off..][0..4], resp.revision, .little);
+    off += 4;
+    out[off] = @intCast(resp.entry_count);
+    off += 1;
+    var e: u32 = 0;
+    while (e < resp.entry_count) : (e += 1) {
+        const entry = &resp.entries[e];
+        if (entry.path.len > ns.max_path or entry.tilak.len > ns.max_tilak) return error.Overflow;
+        if (entry.bytes_len > ns.max_resin_bytes) return error.Overflow;
+        if (off + 1 + entry.path.len + 64 + 1 + entry.tilak.len + 2 + entry.bytes_len > out.len) return error.Overflow;
+        out[off] = @intCast(entry.path.len);
+        off += 1;
+        tally_copy.copy_disjoint(u8, out[off..][0..entry.path.len], entry.path);
+        off += @intCast(entry.path.len);
+        tally_copy.copy_disjoint(u8, out[off..][0..64], entry.digest_hex[0..64]);
+        off += 64;
+        out[off] = @intCast(entry.tilak.len);
+        off += 1;
+        tally_copy.copy_disjoint(u8, out[off..][0..entry.tilak.len], entry.tilak);
+        off += @intCast(entry.tilak.len);
+        std.mem.writeInt(u16, out[off..][0..2], @intCast(entry.bytes_len), .little);
+        off += 2;
+        if (entry.bytes_len > 0) {
+            tally_copy.copy_disjoint(u8, out[off..][0..entry.bytes_len], entry.bytes[0..entry.bytes_len]);
+            off += entry.bytes_len;
+        }
+    }
+    assert(off <= out.len);
+    assert(off <= max_wire_payload);
+    return off;
+}
+
+pub fn decode_response(payload: []const u8, out: *SyncResponse) WireError!void {
+    if (payload.len < 8 or payload[0] != kind_response) return error.BadKind;
+    var off: u32 = 1;
+    const peer_len: u32 = payload[off];
+    off += 1;
+    if (off + peer_len > payload.len) return error.Truncated;
+    out.peer = payload[off..][0..peer_len];
+    off += peer_len;
+    if (off >= payload.len) return error.Truncated;
+    const bolt_len: u32 = payload[off];
+    off += 1;
+    if (off + bolt_len + 5 > payload.len) return error.Truncated;
+    out.bolt = payload[off..][0..bolt_len];
+    off += bolt_len;
+    out.revision = std.mem.readInt(u32, payload[off..][0..4], .little);
+    off += 4;
+    out.entry_count = payload[off];
+    off += 1;
+    if (out.entry_count > max_wire_entries) return error.Overflow;
+    var e: u32 = 0;
+    while (e < out.entry_count) : (e += 1) {
+        const entry = &out.entries[e];
+        if (off >= payload.len) return error.Truncated;
+        const path_len: u32 = payload[off];
+        off += 1;
+        if (off + path_len + 64 + 1 > payload.len) return error.Truncated;
+        entry.path = payload[off..][0..path_len];
+        off += path_len;
+        tally_copy.copy_disjoint(u8, entry.digest_hex[0..64], payload[off..][0..64]);
+        off += 64;
+        const tilak_len: u32 = payload[off];
+        off += 1;
+        if (off + tilak_len + 2 > payload.len) return error.Truncated;
+        entry.tilak = payload[off..][0..tilak_len];
+        off += tilak_len;
+        entry.bytes_len = std.mem.readInt(u16, payload[off..][0..2], .little);
+        off += 2;
+        if (entry.bytes_len > ns.max_resin_bytes) return error.Overflow;
+        if (off + entry.bytes_len > payload.len) return error.Truncated;
+        if (entry.bytes_len > 0) {
+            tally_copy.copy_disjoint(u8, entry.bytes[0..entry.bytes_len], payload[off..][0..entry.bytes_len]);
+            off += entry.bytes_len;
+        }
+    }
+    assert(out.entry_count <= max_wire_entries);
+}
+
+fn resin_bytes_for_entry(dest: *const ns.BoltCatalog, entry: *const WireEntry) ns.RecallError![]const u8 {
+    if (entry.bytes_len > 0) {
+        try ns.verify_resin(entry.digest_hex[0..64], entry.bytes[0..entry.bytes_len]);
+        return entry.bytes[0..entry.bytes_len];
+    }
+    // Have-already lane: bytes stay home in dest; locate by digest.
+    const held = dest.bytes_for_digest(entry.digest_hex[0..64]) orelse return error.StoreMissing;
+    try ns.verify_resin(entry.digest_hex[0..64], held);
+    return held;
+}
+
+/// Apply a wire response into a destination catalog — same invariants as `syncRevision`.
+pub fn apply_sync_response(dest: *ns.BoltCatalog, resp: *const SyncResponse) ns.RecallError!ns.SyncReport {
+    // Pass one: verify every entry; refuse whole on any mismatch.
+    var e: u32 = 0;
+    while (e < resp.entry_count) : (e += 1) {
+        const entry = &resp.entries[e];
+        _ = try resin_bytes_for_entry(dest, entry);
+    }
+    // Pass two: append and count lanes.
+    var report: ns.SyncReport = .{ .total = 0, .had_already = 0, .needed = 0 };
+    e = 0;
+    while (e < resp.entry_count) : (e += 1) {
+        const entry = &resp.entries[e];
+        report.total += 1;
+        const content = try resin_bytes_for_entry(dest, entry);
+        if (dest.has_resin(entry.digest_hex[0..64]) and entry.bytes_len == 0) {
+            report.had_already += 1;
+        } else if (entry.bytes_len > 0) {
+            report.needed += 1;
+        } else {
+            report.had_already += 1;
+        }
+        try dest.append_leaf(resp.peer, resp.bolt, resp.revision, entry.path, content, entry.tilak);
+    }
+    assert(report.total == resp.entry_count);
+    assert(report.had_already + report.needed == report.total);
+    return report;
+}

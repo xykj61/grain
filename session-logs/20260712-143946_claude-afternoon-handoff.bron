@@ -1,0 +1,16 @@
+format session-log-v1
+stamp 20260712.143946
+editor Cursor
+model Cursor Grok 4.5
+voice Rio 3
+title Claude afternoon handoff bron · on-path · parity park
+prompt full summary bron for claude with commits and pushes and printout
+product_nib 430
+suite_nib 432
+git_nib ff35220
+think Wrote paste-ready Claude handoff covering afternoon arc: ai-jail v1.12 · launch-cursor fixes · on-path G0-complete GREEN 140403 · parity tee RED×2 · argv-direct pins ff35220 four remotes · doorway Status root cause · uncommitted Checkable fix. Printout includes FAIL line and commit list.
+obs Handoff lives in bron-resins for Claude paste; this log indexes it. Uncommitted Status+err-print still await go.
+recommend keep-going go the Status fix when Kaeden words it — mechanical; check-in Claude on handoff asks before next metal parity sitting
+file bron-resins/20260712-143946_claude-afternoon-onpath-parity.bron · Claude chat-printout-v1
+file session-logs/20260712-143946_claude-afternoon-handoff.bron · this index log
+file session-logs/README.md · index row

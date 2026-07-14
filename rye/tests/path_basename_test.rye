@@ -1,0 +1,17 @@
+//! Rye test: std.fs.path.basename — pass 9978.
+//!
+//! Pairs with path.dirname (9980). Basename returns the final path component.
+
+const std = @import("std");
+
+pub fn main() void {
+    const path = std.fs.path;
+
+    std.debug.assert(std.mem.eql(u8, path.basename("home/xy/veganreyklah2/foo.rye"), "foo.rye"));
+    std.debug.assert(std.mem.eql(u8, path.basename("/a/b/c"), "c"));
+    std.debug.assert(std.mem.eql(u8, path.basename("solo.rye"), "solo.rye"));
+    std.debug.assert(path.basename("").len == 0);
+    std.debug.assert(path.basename("/").len == 0);
+
+    std.debug.print("rye: path.basename assertions confirmed.\n", .{});
+}

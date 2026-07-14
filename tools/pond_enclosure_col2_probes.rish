@@ -1,0 +1,74 @@
+# pond_enclosure_col2_probes.rish — column-two probes (refuse-until-candidate).
+#
+# Claude 212412 ask three: land probes before any build word. Pattern follows
+# G1 crossing spike — print measured truth against pond-required cells, claim
+# nothing, open no season. Candidate Pond enclosure does not exist yet.
+#
+#   rishi/bin/rishi run tools/pond_enclosure_col2_probes.rish
+
+let cache = "tools/.cache/pond-enclosure"
+let meta = "${cache}/col2-probes-meta.txt"
+let exit_bron = "bron-resins/pond-supersede-exit.bron"
+let scorecard_pin = "active-designing/20260712-210800_pond-enclosure-scorecard-two-column.md"
+let exit_card = "active-designing/20260712-210800_pond-supersede-exit-criteria.md"
+
+say "pond col2 probes: requiring scorecard · exit card · season-closed…"
+let have_sc = run ["test" "-f" scorecard_pin]
+assert have_sc.ok else "missing ${scorecard_pin}"
+let have_ex = run ["test" "-f" exit_card]
+assert have_ex.ok else "missing ${exit_card}"
+let bron_gone = run ["sh" "-c" "test ! -e ${exit_bron} && test ! -e ${exit_bron}.asc"]
+assert bron_gone.ok else "exit bron or .asc present — col2 probes are refuse-until-candidate only while season sleeps"
+let seal = run ["bash" "tools/pond_exit_bron_master_seal.sh" "--season-closed"]
+assert seal.ok else "master-seal --season-closed failed"
+
+say "pond col2 probes: re-measure three-door bus against pond-required…"
+let doors = run ["bash" "tools/fixtures/pond_sixbar_bus_doors.sh" "--write-dir" cache]
+assert doors.ok else "bus doors probe failed"
+let bus_env_raw = read-file "${cache}/bus_env"
+let bus_sock_raw = read-file "${cache}/bus_socket"
+let bus_net_raw = read-file "${cache}/bus_netns"
+let bus_env = trim bus_env_raw
+let bus_sock = trim bus_sock_raw
+let bus_net = trim bus_net_raw
+
+say "pond col2 probes: door env — measured=${bus_env} · required=empty"
+say "pond col2 probes: door socket — measured=${bus_sock} · required=absent"
+say "pond col2 probes: door netns — measured=${bus_net} · required=unshared"
+
+let verdict = run ["sh" "-c" "e=$(cat ${cache}/bus_env); s=$(cat ${cache}/bus_socket); n=$(cat ${cache}/bus_netns); ev=hold; sv=hold; nv=hold; [ \"$e\" = empty ] && ev=met; [ \"$s\" = absent ] && sv=met; [ \"$n\" = unshared ] && nv=met; echo env=$ev socket=$sv netns=$nv"]
+assert verdict.ok
+say "pond col2 probes: ${verdict.out} (hold = not yet under Pond)"
+say "pond col2 probes: GPU lane customs — hold (grant/refuse pair not yet Pond policy)"
+say "pond col2 probes: bar parity translation — hold (incumbent-anchored cells not yet behavior-only under Pond)"
+say "pond col2 probes: daily-driver · customs · N soak — hold until named build word + frozen candidate"
+
+let pond_bin = run ["test" "-x" "pond/bin/enclosure"]
+if pond_bin.ok then say "pond col2 probes: NOTICE pond/bin/enclosure present — still refuse supersede claim without exit bron"
+if pond_bin.ok == false then say "pond col2 probes: no Pond enclosure binary — refuse-until-candidate stands"
+
+say "pond col2 probes: writing ${meta}…"
+let mkdir = run ["mkdir" "-p" cache]
+assert mkdir.ok
+let clear = run ["rm" "-f" meta]
+assert clear.ok
+let w1 = run ["sh" "-c" "echo probes landed refuse-until-candidate > ${meta}"]
+assert w1.ok
+let w2 = run ["sh" "-c" "echo bus_doors ${verdict.out} >> ${meta}"]
+assert w2.ok
+let w3 = run ["sh" "-c" "echo bus_env ${bus_env} >> ${meta}"]
+assert w3.ok
+let w4 = run ["sh" "-c" "echo bus_socket ${bus_sock} >> ${meta}"]
+assert w4.ok
+let w5 = run ["sh" "-c" "echo bus_netns ${bus_net} >> ${meta}"]
+assert w5.ok
+let w6 = run ["sh" "-c" "echo gpu_customs hold >> ${meta}"]
+assert w6.ok
+let w7 = run ["sh" "-c" "echo claim none >> ${meta}"]
+assert w7.ok
+let w8 = run ["sh" "-c" "echo exit_bron absent >> ${meta}"]
+assert w8.ok
+let w9 = run ["sh" "-c" "echo season closed >> ${meta}"]
+assert w9.ok
+
+say "GREEN: pond col2 probes — landed refuse-until-candidate; measured truth printed; no supersede claim"

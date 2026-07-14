@@ -1,0 +1,7 @@
+# Lantern lap 19 fixture — require_model pin (assist must be listed).
+model_hash sha3-256-rye-forge-lap0
+require_model sha3-256-rye-forge-assist
+tokens_in 6
+tokens_out 3
+stopped_reason eos
+text require model ok

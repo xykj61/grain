@@ -1,0 +1,21 @@
+//! Rye test: std.mem.readVarInt — pass 9910.
+//!
+//! Variable-width integer decode from byte buffers; wire-endian paths.
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    std.debug.assert(mem.readVarInt(u0, &.{}, .big) == 0);
+    std.debug.assert(mem.readVarInt(u8, &.{0x12}, .big) == 0x12);
+    std.debug.assert(mem.readVarInt(u8, &.{0xde}, .little) == 0xde);
+    std.debug.assert(mem.readVarInt(u16, &.{ 0x12, 0x34 }, .big) == 0x1234);
+    std.debug.assert(mem.readVarInt(u16, &.{ 0x12, 0x34 }, .little) == 0x3412);
+
+    std.debug.assert(mem.readVarInt(i8, &.{0xff}, .big) == -1);
+    std.debug.assert(mem.readVarInt(i16, &.{ 0xff, 0xfd }, .big) == -3);
+
+    std.debug.assert(mem.readVarInt(u80, &.{ 0x12, 0x34, 0x56, 0x78, 0x9a, 0xbc, 0xde, 0xf0, 0x24 }, .big) == 0x123456789abcdef024);
+
+    std.debug.print("rye: mem.readVarInt assertions confirmed.\n", .{});
+}

@@ -1,0 +1,22 @@
+//! Rye test: std.mem.alignInBytes / alignInSlice — pass 9901.
+//!
+//! Largest aligned sub-slice inside a buffer; pairs with alignForward (9904).
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    var storage: [32]u8 align(1) = undefined;
+    const aligned_bytes = mem.alignInBytes(storage[0..], 16).?;
+    std.debug.assert(mem.isAligned(@intFromPtr(aligned_bytes.ptr), 16));
+    std.debug.assert(aligned_bytes.len <= storage.len);
+    std.debug.assert(@intFromPtr(aligned_bytes.ptr) == mem.alignForward(usize, @intFromPtr(&storage[0]), 16));
+
+    const words = mem.bytesAsSlice(u32, storage[0..]);
+    const aligned_words = mem.alignInSlice(words, 16).?;
+    std.debug.assert(mem.isAligned(@intFromPtr(aligned_words.ptr), 16));
+    std.debug.assert(aligned_words.len <= words.len);
+    std.debug.assert(@intFromPtr(aligned_words.ptr) == @intFromPtr(aligned_bytes.ptr));
+
+    std.debug.print("rye: mem.alignInBytes/alignInSlice assertions confirmed.\n", .{});
+}

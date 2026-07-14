@@ -1,0 +1,15 @@
+//! Rye test: std.mem.containsAtLeastScalar — pass 9888.
+//!
+//! Deprecated wrapper; postcondition ties to countScalar (9951).
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    std.debug.assert(mem.containsAtLeastScalar(u8, "aa", 2, 'a'));
+    std.debug.assert(!mem.containsAtLeastScalar(u8, "aa", 3, 'a'));
+    std.debug.assert(mem.containsAtLeastScalar(u8, "adadda", 3, 'd'));
+    std.debug.assert(mem.countScalar(u8, "adadda", 'd') >= 3);
+
+    std.debug.print("rye: mem.containsAtLeastScalar assertions confirmed.\n", .{});
+}

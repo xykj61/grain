@@ -1,0 +1,10 @@
+# session_logs_archive.rish — integration witness for archive fold selftest.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run rishi/tests/session_logs_archive.rish
+
+let witness = run ["rishi/bin/rishi" "run" "tools/session_logs_archive_witness.rish"]
+assert witness.ok else "session_logs_archive witness must pass"
+say witness.out
+assert witness.out contains "GREEN" else "witness must report GREEN"
+say "session_logs_archive integration held."

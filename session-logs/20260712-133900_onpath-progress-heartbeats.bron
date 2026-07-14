@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260712.133900
+editor Cursor
+model Cursor Grok 4.5
+voice Rio 3
+title On-path progress heartbeats · not stuck on GRUB wait
+prompt could we add more prints so i'm sure we're not stuck?
+product_nib 430
+suite_nib 432
+git_nib cf0558a
+think Host sitting paused visually at G0-complete — QEMU wait for QMP+GRUB can take ~2 min; Rishi buffers child stdout until exit.
+think Added progress() heartbeats every 5 ticks to proven_seat_g0c_lane_kvm.sh writing META and /dev/tty. Rish says before boot and points at tail -f meta.
+obs Current run: open second terminal and tail -f tools/.cache/proven-seat/g0c-lane-meta.txt — or wait for GREEN. Next pull gets live pulses.
+file tools/proven_seat_g0c_lane_kvm.sh progress heartbeats
+file tools/lane_kvm_onpath_host.rish pre-boot says + print boot.out
+file session-logs/20260712-133900_onpath-progress-heartbeats.bron this log
+file session-logs/README.md index
+recommend keep-going let current boot finish or tail -f meta; pull for next sitting — mechanical

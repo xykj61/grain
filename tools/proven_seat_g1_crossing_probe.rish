@@ -1,0 +1,45 @@
+# proven_seat_g1_crossing_probe.rish — G1 spike: name the Genode crossing path.
+#
+# Answers Claude's first honest question without claiming serial GREEN.
+# Seed stays receipt_core; seat changes — this witness only pins the build path.
+#
+#   rishi/bin/rishi run tools/proven_seat_g1_crossing_probe.rish
+
+let cache = "tools/.cache/proven-seat"
+let img = "${cache}/sculpt-26-04.img"
+let pin = "active-designing/20260712-195339_proven-seat-g1-crossing-pin.md"
+let expected = "241b916ab9e3ed25a089c27119aac98f80fe4d3e67101936b4e69d7f1c708f14"
+
+say "proven-seat G1 crossing: G0 ground — Sculpt image…"
+let have_img = run ["test" "-f" img]
+assert have_img.ok else "missing ${img} — restore G0 image under tools/.cache/proven-seat/"
+
+let hash = run ["sha256sum" img]
+assert hash.ok else "sha256sum failed"
+assert hash.out contains expected else "sculpt-26-04.img sha256 mismatch (want ${expected})"
+say "proven-seat G1 crossing: Sculpt 26.04 sha256 still pinned"
+
+say "proven-seat G1 crossing: committed path pin…"
+let have_pin = run ["test" "-f" pin]
+assert have_pin.ok else "missing crossing pin ${pin}"
+let pin_text = read-file pin
+assert pin_text contains "Genode toolchain" else "crossing pin must name Genode toolchain"
+assert pin_text contains "posix" else "crossing pin must name posix/libc runtime"
+assert pin_text contains "Refuse as the Genode crossing" else "crossing pin must refuse host Zig-alone"
+say "proven-seat G1 crossing: pin names Genode toolchain + posix/libc; refuses host Zig-alone"
+
+let tool_dir = "${cache}/genode-toolchain"
+let have_tool = run ["test" "-d" tool_dir]
+if have_tool.ok then say "proven-seat G1 crossing: toolchain directory present at ${tool_dir}"
+if have_tool.ok == false then say "proven-seat G1 crossing: toolchain not fetched yet — next kg follows pin fetch recipe"
+
+let src_dir = "vendor/genode"
+let have_src = run ["test" "-d" "${src_dir}/repos/base"]
+if have_src.ok then say "proven-seat G1 crossing: sources home present at ${src_dir}"
+if have_src.ok == false then say "proven-seat G1 crossing: sources not fetched yet — next kg is proven_seat_g1_fetch_sources.rish"
+
+let goa = run ["sh" "-c" "command -v goa >/dev/null"]
+if goa.ok then say "proven-seat G1 crossing: goa on PATH"
+if goa.ok == false then say "proven-seat G1 crossing: goa not on PATH (optional teacher)"
+
+say "GREEN: proven-seat G1 crossing — path named (Genode toolchain + posix/libc); Sculpt ground holds; serial verify-witness still ahead."

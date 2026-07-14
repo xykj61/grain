@@ -1,0 +1,72 @@
+//! comlink/guest_sync_fetcher_rx.rye — NS-L3 wire lap 2: fetcher RX (apply sync response, recall beta).
+
+const vn = @import("virtio_net.rye");
+const wf = @import("wire_format.rye");
+const sw = @import("recall_sync_wire.rye");
+const ns = @import("recall_lap1.rye");
+
+var rx: vn.RxQueue = undefined;
+
+export fn _start() linksection(".text.init") callconv(.naked) noreturn {
+    asm volatile (
+        \\ li sp, 0x80100000
+        \\ j kmain
+    );
+}
+
+export fn kmain() callconv(.c) noreturn {
+    vn.init_device();
+    rx.init();
+    vn.driver_ok();
+    rx.kick();
+
+    const n = rx.wait_frame();
+    if (n == 0) {
+        vn.write_str("nsw2 device wire: FAIL — fetcher RX timeout\n");
+        vn.finish_fail();
+    }
+    const poff = vn.virtio_net_hdr_len + vn.eth_header_len;
+    if (n <= poff) {
+        vn.write_str("nsw2 device wire: FAIL — fetcher frame too short\n");
+        vn.finish_fail();
+    }
+    const buf = rx.frame();
+    const datagram = buf[poff..n];
+
+    var opened: [@intCast(wf.max_message)]u8 = undefined;
+    const opened_len = wf.open_datagram(datagram, &opened) catch {
+        vn.write_str("nsw2 device wire: FAIL — fetcher open refused\n");
+        vn.finish_fail();
+    };
+
+    var resp: sw.SyncResponse = undefined;
+    sw.decode_response(opened[0..@intCast(opened_len)], &resp) catch {
+        vn.write_str("nsw2 device wire: FAIL — response decode\n");
+        vn.finish_fail();
+    };
+
+    var fetcher: ns.BoltCatalog = .empty();
+    ns.BoltCatalog.append_leaf(&fetcher, "peerA", "seed", 1, "x", "alpha", "plain-text") catch unreachable;
+
+    const report = sw.apply_sync_response(&fetcher, &resp) catch {
+        vn.write_str("nsw2 device wire: FAIL — apply sync\n");
+        vn.finish_fail();
+    };
+    if (report.total != 2 or report.had_already != 1 or report.needed != 1) {
+        vn.write_str("nsw2 device wire: FAIL — sync report mismatch\n");
+        vn.finish_fail();
+    }
+
+    const nb = ns.Name{ .peer = "peerB", .bolt = "b", .revision = 1, .path = "b.txt" };
+    var out: [128]u8 = undefined;
+    const r = ns.BoltCatalog.recall(&fetcher, nb, &out) catch {
+        vn.write_str("nsw2 device wire: FAIL — recall beta\n");
+        vn.finish_fail();
+    };
+    if (r.len != 4 or out[0] != 'b' or out[1] != 'e' or out[2] != 't' or out[3] != 'a') {
+        vn.write_str("nsw2 device wire: FAIL — beta bytes mismatch\n");
+        vn.finish_fail();
+    }
+    vn.write_str("nsw2 device wire: sealed sync response GREEN — verify and recall passed\n");
+    vn.finish_pass();
+}

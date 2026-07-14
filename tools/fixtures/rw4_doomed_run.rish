@@ -1,0 +1,2 @@
+# rw4_doomed_run.rish — fixture for RW-4: a doomed script run.
+assert (1 == 2) else "RW-4 doomed on purpose"

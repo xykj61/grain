@@ -1,0 +1,28 @@
+//! Rye test: std.mem.order and lessThan — pass 9953.
+//!
+//! Lexicographic slice compare backs SemanticVersion pre-release ordering
+//! and general string sorting.
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    std.debug.assert(mem.order(u8, "abcd", "bee") == .lt);
+    std.debug.assert(mem.order(u8, "abc", "abc") == .eq);
+    std.debug.assert(mem.order(u8, "abc", "abc0") == .lt);
+    std.debug.assert(mem.order(u8, "", "") == .eq);
+    std.debug.assert(mem.order(u8, "", "a") == .lt);
+    std.debug.assert(mem.order(u8, "beta", "alpha") == .gt);
+
+    const s: []const u8 = "abc";
+    std.debug.assert(mem.order(u8, s, s) == .eq);
+    std.debug.assert(mem.order(u8, s[0..2], s) == .lt);
+
+    std.debug.assert(mem.lessThan(u8, "abcd", "bee"));
+    std.debug.assert(!mem.lessThan(u8, "abc", "abc"));
+    std.debug.assert(mem.lessThan(u8, "abc", "abc0"));
+    std.debug.assert(!mem.lessThan(u8, "", ""));
+    std.debug.assert(mem.lessThan(u8, "", "a"));
+
+    std.debug.print("rye: mem.order assertions confirmed.\n", .{});
+}

@@ -1,0 +1,23 @@
+//! Rye test: std.mem.bytesToValue — pass 9896.
+//!
+//! Byte buffer to typed copy; pairs with bytesAsValue (9922) and toBytes (9923).
+
+const std = @import("std");
+const builtin = @import("builtin");
+const mem = std.mem;
+
+pub fn main() void {
+    const deadbeef_bytes = switch (builtin.cpu.arch.endian()) {
+        .big => "\xDE\xAD\xBE\xEF",
+        .little => "\xEF\xBE\xAD\xDE",
+    };
+    std.debug.assert(mem.bytesToValue(u32, deadbeef_bytes) == 0xDEADBEEF);
+
+    var storage = switch (builtin.cpu.arch.endian()) {
+        .big => [_]u8{ 0xC0, 0xDE, 0xFA, 0xCE },
+        .little => [_]u8{ 0xCE, 0xFA, 0xDE, 0xC0 },
+    };
+    std.debug.assert(mem.bytesToValue(u32, storage[0..]) == 0xC0DEFACE);
+
+    std.debug.print("rye: mem.bytesToValue assertions confirmed.\n", .{});
+}

@@ -1,0 +1,6 @@
+# Lantern lap 0 fixture — pinned completion for Rye forge assist view.
+model_hash sha3-256-rye-forge-lap0
+tokens_in 24
+tokens_out 12
+stopped_reason eos
+text use init.garden not ArgIterator

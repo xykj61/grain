@@ -1,0 +1,22 @@
+# split.rish — tests for the `split` string builtin.
+
+let path = "home/xy/veganreyklah2"
+let segs = split path "/"
+assert segs contains "home" else "split: first segment missing"
+assert segs contains "xy" else "split: middle segment missing"
+assert segs contains "veganreyklah2" else "split: last segment missing"
+assert length segs == 3 else "split: segment count failed"
+
+let csv = "rye,rishi,mantra"
+let cols = split csv ","
+assert join cols "," == csv else "split/join round-trip failed"
+
+let solo = split "solo" ","
+assert solo contains "solo" else "split: single element failed"
+assert length solo == 1 else "split: solo count failed"
+
+# multi-byte separator
+let tagged = split "a::b::c" "::"
+assert join tagged "::" == "a::b::c" else "split: multi-byte sep failed"
+
+say "split held."

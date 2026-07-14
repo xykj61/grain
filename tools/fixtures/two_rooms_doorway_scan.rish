@@ -1,0 +1,25 @@
+# two_rooms_doorway_scan.rish — forward-facing pages name their room at the door.
+#
+# Native orchestration — per-file verdict in two_rooms_doorway_scan_one.sh
+# (stamp compare, head-25 Status, case-insensitive room register).
+# Run from the repository root:
+#   rishi/bin/rishi run tools/fixtures/two_rooms_doorway_scan.rish
+
+let seating_env = env "TWO_ROOMS_SEATING_STAMP"
+let seating = "20260705-203144"
+if seating_env != "" then let seating = seating_env
+
+let roster = run ["sh" "tools/fixtures/two_rooms_doorway_roster.sh"]
+assert roster.ok else "two_rooms doorway roster failed"
+let files = where (lines roster.out) as p: p != ""
+
+let results = map files as f: run ["sh" "tools/fixtures/two_rooms_doorway_scan_one.sh" f seating]
+
+for-each results as r do say trim r.out
+
+let fails = where results as r: r.ok == false
+
+if length fails != 0 then say "FAIL doorway scan"
+if length fails != 0 then exit 1
+
+say "OK   doorway scan complete (seating ${seating})"

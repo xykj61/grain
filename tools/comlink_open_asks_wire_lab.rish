@@ -1,0 +1,47 @@
+# comlink_open_asks_wire_lab.rish — OA-L2 device-wire QEMU lab (spawn / wait-for).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/comlink_open_asks_wire_lab.rish
+#
+# Replaces the background-orchestration half of comlink/run_open_asks_wire_lab.sh;
+# the shell entry point delegates here so stable paths and citations hold.
+
+let zig = "vendor/zig-toolchain/zig"
+let build_dir = "comlink/.build"
+let port_request_raw = env "COMLINK_OPEN_ASKS_LAB_PORT"
+if port_request_raw == "" then let port_request = "15557" else let port_request = port_request_raw
+let port_application_raw = env "COMLINK_OPEN_ASKS_APP_LAB_PORT"
+if port_application_raw == "" then let port_application = "15558" else let port_application = port_application_raw
+let sock_request = "127.0.0.1:${port_request}"
+let sock_application = "127.0.0.1:${port_application}"
+
+let prep = run ["sh" "-c" "mkdir -p ${build_dir}"]
+assert prep.ok else "open asks wire lab mkdir failed"
+
+let build_rx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_open_asks_rx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/open-asks-rx.elf"]
+assert build_rx.ok else "open asks rx guest build failed"
+
+let build_tx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_open_asks_tx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/open-asks-tx.elf"]
+assert build_tx.ok else "open asks tx guest build failed"
+
+let build_poster_rx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_open_asks_poster_rx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/open-asks-poster-rx.elf"]
+assert build_poster_rx.ok else "open asks poster rx guest build failed"
+
+let build_app_tx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_open_asks_application_tx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/open-asks-app-tx.elf"]
+assert build_app_tx.ok else "open asks application tx guest build failed"
+
+let request_rx = spawn ["timeout" "60" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,listen=${sock_request}" "-kernel" "${build_dir}/open-asks-rx.elf"]
+let request_pause = run ["sleep" "1"]
+assert request_pause.ok else "request hop sleep failed"
+let request_tx = run ["timeout" "30" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,connect=${sock_request}" "-kernel" "${build_dir}/open-asks-tx.elf"]
+let request_rx_done = wait-for request_rx
+assert request_rx_done.out contains "sealed request GREEN" else "request hop RED"
+
+let application_rx = spawn ["timeout" "60" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,listen=${sock_application}" "-kernel" "${build_dir}/open-asks-poster-rx.elf"]
+let application_pause = run ["sleep" "1"]
+assert application_pause.ok else "application hop sleep failed"
+let application_tx = run ["timeout" "30" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,connect=${sock_application}" "-kernel" "${build_dir}/open-asks-app-tx.elf"]
+let application_rx_done = wait-for application_rx
+assert application_rx_done.out contains "sealed application GREEN" else "application hop RED"
+
+say "oal2 device wire lab: GREEN (request + application)"

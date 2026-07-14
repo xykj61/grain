@@ -1,0 +1,19 @@
+# mandi_settle_view.rish — Mandi settle view: vessel settle → Skate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/mandi_settle_view.rish
+
+let bin = "pond/bin/drawn-terminal"
+
+say "build: Mandi settle view — drawn-terminal compile"
+let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+assert build.ok else "drawn_terminal build failed for mandi settle view witness"
+assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
+
+let view = run ["sh" "-c" "${bin} mandisettletest 2>&1"]
+assert view.ok else "drawn terminal mandisettletest exited non-zero"
+assert view.out contains "mandi settle view" else "mandi settle view witness missing expected output"
+assert view.out contains "GREEN" else "Mandi settle view witness not GREEN"
+assert view.out contains "lines=6" else "mandi settle view missing six-line frame"
+
+say "GREEN: Mandi settle view — vessel listing closed on MALA/WOV on a Skate frame."

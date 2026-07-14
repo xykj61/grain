@@ -1,0 +1,19 @@
+# inference_scribble_para_view.rish — Scribble paragraphs → Skate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/inference_scribble_para_view.rish
+
+let bin = "pond/bin/drawn-terminal"
+
+say "build: Scribble paragraphs view — drawn-terminal compile"
+let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+assert build.ok else "drawn_terminal build failed for scribble paragraphs view"
+assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
+
+let view = run ["sh" "-c" "${bin} scribbleparaviewtest 2>&1"]
+assert view.ok else "drawn terminal scribbleparaviewtest exited non-zero"
+assert view.out contains "paragraphs view" else "paragraphs view missing expected output"
+assert view.out contains "GREEN" else "Scribble paragraphs view not GREEN"
+assert view.out contains "lines=5" else "paragraphs view missing five-line frame"
+
+say "GREEN: Scribble paragraphs view — prose bodies compose a Skate frame."

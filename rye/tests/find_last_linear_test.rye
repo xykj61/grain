@@ -1,0 +1,17 @@
+//! Rye test: std.mem.findLastLinear — pass 9972.
+//!
+//! Linear backward sub-slice search. Backs findLast on small inputs; pairs
+//! with findPosLinear (9973) for forward search.
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    std.debug.assert(mem.lastIndexOfLinear(u8, "one two three two four", "two").? == 14);
+    std.debug.assert(mem.lastIndexOfLinear(u8, "aba", "a").? == 2);
+    std.debug.assert(mem.lastIndexOfLinear(u8, "abcabc", "bc").? == 4);
+    std.debug.assert(mem.lastIndexOfLinear(u8, "aba", "c") == null);
+    std.debug.assert(mem.lastIndexOfLinear(u8, "foo", "bar") == null);
+
+    std.debug.print("rye: findLastLinear assertions confirmed.\n", .{});
+}

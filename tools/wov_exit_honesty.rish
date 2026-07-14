@@ -1,0 +1,22 @@
+# wov_exit_honesty.rish — WOV lap 1 exit-honesty witness.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/wov_exit_honesty.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/wov"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/wov_core.rye -femit-bin=${bin}"]
+
+assert build.ok else "WOV exit-honesty build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "WOV exit-honesty selftest exited non-zero"
+assert selftest.out contains "GREEN" else "WOV exit-honesty selftest not GREEN"
+assert selftest.out contains "holder A balance 700 proven" else "WOV missing balance proof welcome"
+assert selftest.out contains "golden exit bundle matches fixture" else "WOV missing golden fixture welcome"
+assert selftest.out contains "holder A exit accepted" else "WOV missing exit accept welcome"
+assert selftest.out contains "double exit refused" else "WOV missing double-exit unwelcome"
+assert selftest.out contains "tampered bundle refused" else "WOV missing tamper unwelcome"
+
+say "GREEN: WOV exit-honesty witness passed."

@@ -1,0 +1,18 @@
+# run_record_witness.rish — RW-3: pin all four run-record fields, both outcomes.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/run_record_witness.rish
+
+let ok_run = run ["sh" "-c" "printf 'RW-3 stdout\\n'; exit 0"]
+assert ok_run.ok else "success path must report ok"
+assert ok_run.code == 0 else "success path must exit zero"
+assert ok_run.out contains "RW-3 stdout" else "success path must capture stdout"
+assert ok_run.err == "" else "success path must leave stderr empty"
+
+let fail_run = run ["sh" "-c" "printf 'RW-3 stderr\\n' 1>&2; exit 7"]
+assert (fail_run.ok == false) else "failure path must report not ok"
+assert fail_run.code == 7 else "failure path must preserve exit code"
+assert fail_run.out == "" else "failure path must leave stdout empty"
+assert fail_run.err contains "RW-3 stderr" else "failure path must capture stderr"
+
+say "GREEN: RW-3 — run record pins .ok, .code, .out, and .err for both outcomes."

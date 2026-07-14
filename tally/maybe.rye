@@ -1,0 +1,38 @@
+//! tally/maybe.rye — the dual of assert: a condition that may honestly go either way.
+//!
+//! `assert` states what must always hold. `maybe` states what sometimes holds and
+//! sometimes does not — turning a comment that says "this branch is fine either
+//! way" into a mark the reader, and one day a tool, can find by name. It asserts
+//! nothing and changes nothing; its only job is to be searchable.
+//!
+//! Gratitude: TigerBeetle's `stdx.maybe`, matched at the letter — one honest line.
+//!
+//!   rye build tally/maybe.rye -femit-bin=tally/bin/maybe
+//!   tally/bin/maybe selftest
+
+const std = @import("std");
+const print = std.debug.print;
+
+pub const tally_maybe_version = "20260707.185612";
+
+pub fn maybe(ok: bool) void {
+    _ = ok;
+}
+
+fn run_selftest(_: std.Io) !u8 {
+    maybe(true);
+    maybe(false);
+    print("tally maybe: a condition may honestly go either way — both marked, neither asserted\n", .{});
+    print("tally maybe: version {s}\n", .{tally_maybe_version});
+    print("GREEN: tally maybe — sometimes true, sometimes false, always searchable.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(init.arena.allocator());
+    if (args.len >= 2) {
+        if (std.mem.eql(u8, args[1], "selftest")) return run_selftest(io);
+    }
+    return run_selftest(io);
+}

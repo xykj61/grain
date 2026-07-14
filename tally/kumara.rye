@@ -1,0 +1,72 @@
+//! tally/kumara.rye — Kumara identity at the seam: deterministic keypair, sign, verify.
+//!
+//! Kumara names the keypair that signs a fact before it enters the log.
+//! This file centralizes the scattered `Ed25519` calls so every module
+//! reaches identity through one home — extraction, rather than a new capability.
+//!
+//!   rye build tally/kumara.rye -femit-bin=tally/bin/kumara
+//!   tally/bin/kumara selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+pub const kumara_version = "20260707.223300";
+
+const Ed25519 = std.crypto.sign.Ed25519;
+
+pub const KeyPair = Ed25519.KeyPair;
+pub const PublicKey = Ed25519.PublicKey;
+pub const Signature = Ed25519.Signature;
+
+pub const seed_length = Ed25519.KeyPair.seed_length;
+pub const signature_length = Ed25519.Signature.encoded_length;
+
+/// Deterministic keypair from a 32-byte seed — the same seed yields the same keys.
+pub fn keypair_from_seed(seed: *const [seed_length]u8) KeyPair {
+    return KeyPair.generateDeterministic(seed.*) catch unreachable;
+}
+
+/// Sign canonical message bytes. Optional `noise` buffer follows upstream Ed25519.
+pub fn sign(message: []const u8, kp: KeyPair, noise: ?[Ed25519.noise_length]u8) Signature {
+    return kp.sign(message, noise) catch unreachable;
+}
+
+/// Verify a signature over message bytes.
+pub fn verify(message: []const u8, sig: Signature, pubkey: PublicKey) error{VerifyFailed}!void {
+    sig.verify(message, pubkey) catch return error.VerifyFailed;
+}
+
+/// Verify raw signature bytes (64 octets) over message bytes.
+pub fn verify_bytes(message: []const u8, sig_bytes: []const u8, pubkey: PublicKey) error{VerifyFailed}!void {
+    if (sig_bytes.len < signature_length) return error.VerifyFailed;
+    const sig = Signature.fromBytes(sig_bytes[0..signature_length].*);
+    return verify(message, sig, pubkey);
+}
+
+fn run_selftest(_: std.Io) !u8 {
+    const seed: [seed_length]u8 = .{0x42} ** seed_length;
+    const kp = keypair_from_seed(&seed);
+    const message = "kumara witness message\n";
+
+    const sig = sign(message, kp, null);
+    try verify(message, sig, kp.public_key);
+
+    const tampered = "kumara witness messagf\n";
+    verify(tampered, sig, kp.public_key) catch {
+        print("tally kumara: tampered message refused — GREEN unwelcome path\n", .{});
+        print("tally kumara: version {s}\n", .{kumara_version});
+        print("GREEN: tally kumara — deterministic keypair, sign, verify.\n", .{});
+        return 0;
+    };
+    return error.TamperVerified;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(init.arena.allocator());
+    if (args.len >= 2) {
+        if (std.mem.eql(u8, args[1], "selftest")) return run_selftest(io);
+    }
+    return run_selftest(io);
+}

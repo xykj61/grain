@@ -1,0 +1,29 @@
+# Linguist overrides — public language bar (Path A interim).
+#
+# Rye is a thin Zig frontend; Linguist has no Rye entry yet, so content
+# heuristics were mislabeling .rye as C. Remap to Zig — truthful, not a fudge.
+# Path C (languages.yml PR, display color Flax) waits multi-repo adoption.
+#
+# See: work-in-progress/ready-to-ask-claude.md · GitHub Linguist docs/overrides.md
+
+# --- Path A: .rye is Zig beneath the frontend ---
+*.rye linguist-language=Zig linguist-detectable
+
+# --- Vendored: pinned toolchains and third-party clones stay out of stats ---
+vendor/** linguist-vendored
+
+# --- Documentation: prose shelves (already prose by type; named so the bar stays clear) ---
+gratitude/** linguist-documentation
+session-logs/** linguist-documentation
+external-research/** linguist-documentation
+counsel/** linguist-documentation
+context/** linguist-documentation
+active-designing/** linguist-documentation
+foundations/** linguist-documentation
+expanding-prompts/** linguist-documentation
+manual/** linguist-documentation
+work-in-progress/** linguist-documentation
+archive/** linguist-documentation
+
+# HTML 24.4% (Linengrow web glass / gratitude .html): product-vs-sketch is Kaeden's
+# per-path word — left unmarked until that ruling. Shell (.rish/.sh) stays as-is.

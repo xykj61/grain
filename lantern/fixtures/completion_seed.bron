@@ -1,0 +1,8 @@
+# Lantern lap 3 fixture — pinned seed + temperature for deterministic complete.
+model_hash sha3-256-rye-forge-lap0
+tokens_in 24
+tokens_out 12
+stopped_reason eos
+temperature 0.0
+seed 42
+text use init.garden not ArgIterator

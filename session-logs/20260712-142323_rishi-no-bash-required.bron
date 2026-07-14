@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260712.142323
+editor Cursor
+model Cursor Grok 4.5
+voice Rio 3
+title Rishi scripts need not rely on bash
+prompt do our rishi scripts have to rely on bash?
+product_nib 430
+suite_nib 432
+think Kaeden asked whether bash is required after recent bash -c swaps in tally/align witnesses. Tree count ~338 sh vs ~10 bash. TAME: POSIX is a seam; orchestration in .rish. Bash only for real bashisms (pipefail vs Ubuntu dash). RYE_ZIG pin and 2>&1 work under sh.
+obs Mid-pass RYE_ZIG pins still open (align pinned; enrich still bare; tame_usize + comlink_device_wire partially updated). Prefer sh for remaining pins.
+recommend keep-going finish RYE_ZIG pins with sh then host tee parity — mechanical; Claude before any prefer-bash policy
+file tools/align_session_logs.rish · RYE_ZIG pin (bash this pass; may restyle to sh)
+file tools/parity_ch01.rish · nested 2>&1 for align/tame/enrich
+file tools/tame_usize_audit.rish · RYE_ZIG pin
+file tools/comlink_device_wire.rish · RYE_ZIG pin
+file session-logs/20260712-142323_rishi-no-bash-required.bron · this log

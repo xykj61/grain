@@ -1,0 +1,44 @@
+# comlink_device_wire_lab.rish — Comlink device-wire QEMU lab (spawn / wait-for).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/comlink_device_wire_lab.rish
+#
+# Replaces the background-orchestration half of comlink/run_device_wire_lab.sh;
+# the shell entry point delegates here so stable paths and citations hold.
+
+let zig = "vendor/zig-toolchain/zig"
+let build_dir = "comlink/.build"
+let port_raw = env "COMLINK_LAB_PORT"
+if port_raw == "" then let port = "15555" else let port = port_raw
+let sock = "127.0.0.1:${port}"
+
+let prep = run ["sh" "-c" "mkdir -p ${build_dir}"]
+assert prep.ok else "device wire lab mkdir failed"
+
+let build_pattern_rx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_pattern_rx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/pattern-rx.elf"]
+assert build_pattern_rx.ok else "pattern rx guest build failed"
+
+let build_pattern_tx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_pattern_tx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/pattern-tx.elf"]
+assert build_pattern_tx.ok else "pattern tx guest build failed"
+
+let build_sealed_rx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_sealed_rx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/sealed-rx.elf"]
+assert build_sealed_rx.ok else "sealed rx guest build failed"
+
+let build_sealed_tx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_sealed_tx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/sealed-tx.elf"]
+assert build_sealed_tx.ok else "sealed tx guest build failed"
+
+let pattern_rx = spawn ["timeout" "60" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,listen=${sock}" "-kernel" "${build_dir}/pattern-rx.elf"]
+let pattern_pause = run ["sleep" "1"]
+assert pattern_pause.ok else "pattern lap sleep failed"
+let pattern_tx = run ["timeout" "30" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,connect=${sock}" "-kernel" "${build_dir}/pattern-tx.elf"]
+let pattern_rx_done = wait-for pattern_rx
+assert pattern_rx_done.out contains "linktest GREEN" else "pattern lap RED"
+
+let sealed_rx = spawn ["timeout" "60" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,listen=${sock}" "-kernel" "${build_dir}/sealed-rx.elf"]
+let sealed_pause = run ["sleep" "1"]
+assert sealed_pause.ok else "sealed lap sleep failed"
+let sealed_tx = run ["timeout" "30" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,connect=${sock}" "-kernel" "${build_dir}/sealed-tx.elf"]
+let sealed_rx_done = wait-for sealed_rx
+assert sealed_rx_done.out contains "sealed datagram GREEN" else "sealed lap RED"
+
+say "comlink device wire lab: GREEN — sub-lap 2 and sub-lap 3"

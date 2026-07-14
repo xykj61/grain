@@ -1,0 +1,26 @@
+# amphora_purchase_delivery.rish — commerce delivery of purchased work (Amphora slip).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/amphora_purchase_delivery.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "amphora/bin/purchase-delivery"
+
+say "amphora-delivery: build purchase-delivery..."
+let build = run ["sh" "-c" "mkdir -p amphora/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/purchase_delivery.rye -femit-bin=${bin}"]
+assert build.ok else "amphora purchase_delivery build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "amphora purchase_delivery selftest exited non-zero"
+assert selftest.out contains "GREEN" else "amphora purchase_delivery selftest not GREEN"
+assert selftest.out contains "vessel bind" else "amphora purchase_delivery missing vessel bind"
+
+say "amphora-delivery: pour → slip → scrub → verify..."
+let witness = run ["sh" "tools/fixtures/amphora_purchase_delivery_witness.sh"]
+assert witness.ok else "Amphora purchase delivery witness failed"
+assert witness.out contains "GREEN" else "Amphora purchase delivery did not report GREEN"
+assert witness.out contains "DELIVERY ok" else "Amphora purchase delivery missing DELIVERY ok"
+assert witness.out contains "TAMPER refused" else "Amphora purchase delivery missing tamper refusal"
+assert witness.out contains "CUSTOMS ok" else "Amphora purchase delivery missing Pond customs"
+
+say "GREEN: Amphora purchase delivery — purchased work slip on the vessel path."

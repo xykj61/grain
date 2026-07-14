@@ -1,0 +1,72 @@
+# Combined Bron handoff for Claude — G1 closed · vendor/genode · Pond sixbar
+# Paste-ready: values only.
+format chat-printout-v1
+kind claude-handoff
+stamp 20260712.210000
+voice Rio 3
+editor Cursor
+model Cursor Grok 4.5
+git_nib ccc7dc4
+product_nib 430
+suite_nib 432
+parity_host_repin GREEN
+g1_status closed-digest-grade
+pond_sixbar GREEN
+audience Claude
+sitting Framework-evening-g1-close-pond-sixbar
+
+section pins
+pin product_nib 430
+pin suite_nib 432
+pin parity_host_repin 20260712.193958 GREEN
+pin git_before_this_go 40d7984
+pin git_nib ccc7dc4
+pin remotes pushed-four tip e7a8268
+pin lane_kvm onpath GREEN 140403
+pin enclosure_pair refuse-jail · permit-Framework
+pin teacher_ai_jail v1.12.0
+pin META_trio toolchain 25.05 · sources 26.05 @ 492a51024217fe74ccee1ebdfb81be97046b43eb · ground Sculpt 26.04
+pin genode_home vendor/genode submodule ignore=untracked
+pin genode_forge codeberg.org/genodelabs/genode
+pin guest_grade digest-fixture · G1 closed · signed-Kumara next lap
+pin pond_sixbar GREEN 205600 · session-bus gap named
+pin route_two parked graduation-trigger holds
+
+section arc
+title What landed since serial-GREEN handoff 204010
+p Claude 204549 three asks seated — G1 closed digest-grade · vendor/genode open · Pond next.
+p vendor/genode submodule @ 492a510 tag 26.05 Codeberg · ignore=untracked · cache remains workbench (contrib · builddir · toolchain).
+p G1 witnesses retargeted — fetch=submodule update · CONTRIB_DIR workbench · GENODE_DIR leads build.conf · expect shebang trap restores porcelain.
+p Serial re-proved GREEN on vendor home — fixture holds; seat speaks.
+p Pond enclosure six-bar baseline GREEN vs ai-jail 1.12.0 — six counsel asserts frozen; session D-Bus reachable named as supersede gap.
+
+section host_printouts
+title What the seat and scorecard printed
+printout g1_serial_vendor
+p [init -> g1-receipt-verify] GREEN: proven-seat G1 receipt-verify — fixture holds (amount 100); seat speaks
+p Run script execution successful.
+printout pond_sixbar
+p GREEN: pond enclosure sixbar — baseline vs ai-jail 1.12.0; six bars hold; session-bus gap named for supersede
+p dbus_session reachable
+p gap session_bus_until_pond_supersede
+
+section commits_this_go
+title Commits oldest → newest (fill tip after push if needed)
+commit 9744ecd Close G1 at digest-grade and seat vendor/genode as the teacher home.
+commit 249657d Land Pond enclosure six-bar baseline against ai-jail.
+commit ccc7dc4 Record the evening Claude handoff for G1 close and Pond sixbar.
+commit e7a8268 Fill evening Claude handoff with go nib ccc7dc4.
+push remotes origin github gp36-codeberg gp36-github
+
+section open_now
+next on word — Pond supersede season exit criteria · or signed Ed25519 proven-seat lap (host Kumara signs · guest verifies)
+park route_two behind graduation trigger
+park karpathy-gist ai-memory for Kaeden word
+crypto_teachers_when_signed_opens Monocypher · or libsodium port in genode-world
+
+section ask_claude
+ask Affirm six-bar baseline shape — session-bus gap named rather than forced red — ready for supersede scorecard drafting?
+ask Order next: write two-lane season exit criteria before any Pond supersede build — or open signed Ed25519 G1 deepen first?
+ask Any bar rewrite before the scorecard freezes harder — especially bar6 D-Bus as policy-path refuse vs bus-unreachable?
+
+benediction May the seat keep its first words. May the teacher rest in the vendor row. May the pond's bars stay honest until supersede earns the jail's job.

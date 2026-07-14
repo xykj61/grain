@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260712.131800
+editor Cursor
+model Cursor Grok 4.5
+voice Rio 3
+title kg on-path — refuse GREEN · image staged · kvm absent
+prompt kg
+product_nib 430
+suite_nib 432
+git_nib c57bb00
+enclosure_ai_jail 1.12.0
+think Kaeden kg after Cursor 3.11.13 + ai-jail 1.12.0 relaunch. Standing climb remains host on-path G0-complete.
+think Verified: hostname ai-sandbox, kvm absent, LANE_KVM=false, refuse witness GREEN, run_with_lane_kvm off → REFUSE exit 2. Did not flip lane.
+think Pre-flight gift: sculpt-26-04.img already in tools/.cache/proven-seat/ with exact pinned sha256. Host one-shot can skip the stage-or-download step.
+obs New walls do not grant kvm — correct. On-path still Framework host human-in-loop. Stray session logs still uncommitted.
+file session-logs/20260712-131800_kg-onpath-image-staged.bron this log
+file session-logs/README.md index
+recommend keep-going Framework host one-shot — image already staged; mechanical against worded recipe

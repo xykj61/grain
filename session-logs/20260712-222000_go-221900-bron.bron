@@ -1,0 +1,11 @@
+format session-log-v1
+stamp 20260712.222000
+editor Cursor
+model Composer 2.5
+voice Rio 3
+title Go — ship 221900 go bron · four remotes
+prompt go
+think Pending 221900 go bron and README index from prior turn
+think Committed a86415a pushed all four remotes clean tree
+obs git nib a86415a traces 6a801e4 design landing
+recommend keep-going go PROVEN_SEAT for first docs page

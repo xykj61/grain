@@ -1,0 +1,21 @@
+# mala_m1_witness.rish — MALA M1 one issuer, one holder witness.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/mala_m1_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/mala"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/mala.rye -femit-bin=${bin}"]
+
+assert build.ok else "MALA M1 build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "MALA M1 selftest exited non-zero"
+assert selftest.out contains "GREEN" else "MALA M1 selftest not GREEN"
+assert selftest.out contains "forged mint signature refused" else "MALA M1 missing forged-sig unwelcome"
+assert selftest.out contains "non-issuer mint refused" else "MALA M1 missing non-issuer unwelcome"
+assert selftest.out contains "send exceeding balance refused" else "MALA M1 missing overspend unwelcome"
+assert selftest.out contains "tampered log refused" else "MALA M1 missing tamper unwelcome"
+
+say "GREEN: MALA M1 one-issuer one-holder witness passed."

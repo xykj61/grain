@@ -1,0 +1,31 @@
+//! Rye test: SplitIterator.first via splitScalar/Any/Sequence — pass 9963.
+//!
+//! first() must only be called before iteration begins; it delegates to next()
+//! with the same sub-slice contract (9993). Completes the split iterator quartet.
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    var scalar = mem.splitScalar(u8, "abc|def||ghi", '|');
+    std.debug.assert(mem.eql(u8, scalar.first(), "abc"));
+    std.debug.assert(mem.eql(u8, scalar.next().?, "def"));
+
+    var any = mem.splitAny(u8, "a,b;c", ",;");
+    std.debug.assert(mem.eql(u8, any.first(), "a"));
+    std.debug.assert(mem.eql(u8, any.next().?, "b"));
+
+    var seq = mem.splitSequence(u8, "xx||yy", "||");
+    std.debug.assert(mem.eql(u8, seq.first(), "xx"));
+    std.debug.assert(mem.eql(u8, seq.next().?, "yy"));
+
+    var leading = mem.splitScalar(u8, "|tail", '|');
+    std.debug.assert(leading.first().len == 0);
+    std.debug.assert(mem.eql(u8, leading.next().?, "tail"));
+
+    var solo = mem.splitScalar(u8, "whole", '|');
+    std.debug.assert(mem.eql(u8, solo.first(), "whole"));
+    std.debug.assert(solo.next() == null);
+
+    std.debug.print("rye: SplitIterator.first assertions confirmed.\n", .{});
+}

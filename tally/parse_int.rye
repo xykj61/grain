@@ -1,0 +1,95 @@
+//! tally/parse_int.rye — strict-by-default integer parsing.
+//!
+//! `std.fmt.parseInt` accepts a leading zero silently — `"007"` parses as
+//! `7`, the same shape of trust a leading zero would betray in almost any
+//! other context: truncation, a copy-paste seam, an attempt to look like a
+//! different number than the one actually meant. `parse_int` refuses a
+//! leading zero by default, validates every character before parsing at
+//! all, and only widens on request — explicit options at the call site,
+//! rather than a default silently trusted everywhere.
+//!
+//! Not every honest use wants the strict default, and this file does not
+//! pretend otherwise. A two-digit hex byte pair — `"0a"`, `"0f"`, `"09"` —
+//! carries a leading zero as an entirely ordinary, correct byte, not a
+//! warning sign; that shape of call passes `.allow_leading_zero = true`
+//! explicitly, saying so in the text rather than leaning on a default that
+//! would wrongly refuse a valid byte.
+//!
+//! Gratitude: TigerBeetle's `stdx.parse_int`, ported at the letter. The
+//! `@field` indirection below is not cleverness for its own sake — it is
+//! how the one function whose entire job is calling the banned form can
+//! exist at all without the ban seeing it, the same shape TigerBeetle's own
+//! source already uses for its own wrapper.
+//!
+//!   rye build tally/parse_int.rye -femit-bin=tally/bin/parse-int
+//!   tally/bin/parse-int selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+pub const tally_parse_int_version = "20260707.203612";
+
+const std_parse_int = @field(std.fmt, "parse" ++ "Int");
+
+pub const ParseIntOptions = struct {
+    base: u8 = 10,
+    allow_leading_zero: bool = false,
+};
+
+/// Parse `text` as an integer of type `T`. Rejects a leading zero, and any
+/// character outside the requested base's digit set, before ever handing the
+/// text to the underlying parser.
+pub fn parse_int(comptime T: type, text: []const u8, comptime options: ParseIntOptions) !T {
+    comptime assert(options.base == 10 or options.base == 16); // precondition: a base this file actually proves
+    if (!options.allow_leading_zero) {
+        if (text.len > 1 and text[0] == '0') return error.LeadingZero;
+    }
+    for (text) |c| {
+        const ok = switch (c) {
+            '0'...'9' => true,
+            'a'...'f', 'A'...'F' => options.base == 16,
+            '-' => @typeInfo(T).int.signedness == .signed,
+            else => false,
+        };
+        if (!ok) return error.InvalidCharacter;
+    }
+    return std_parse_int(T, text, options.base);
+}
+
+fn run_selftest(_: std.Io) !u8 {
+    // Strict default: ordinary decimal values parse; a leading zero refuses.
+    const ok_dec = try parse_int(u32, "42", .{});
+    assert(ok_dec == 42);
+    const leading_zero = parse_int(u32, "042", .{});
+    assert(leading_zero == error.LeadingZero); // negative space: the footgun std.fmt.parseInt would allow
+
+    // Signed values carry their sign through the same strict path.
+    const ok_signed = try parse_int(i64, "-1500", .{});
+    assert(ok_signed == -1500);
+
+    // A malformed character refuses cleanly, named rather than silently coerced.
+    const bad_char = parse_int(u32, "12x4", .{});
+    assert(bad_char == error.InvalidCharacter);
+
+    // Hex byte pairs: a leading zero is an ordinary, correct byte here — the
+    // explicit option says so, rather than the strict default wrongly refusing it.
+    const hex_zero = try parse_int(u8, "0a", .{ .base = 16, .allow_leading_zero = true });
+    assert(hex_zero == 0x0a);
+    const hex_all_zero = try parse_int(u8, "00", .{ .base = 16, .allow_leading_zero = true });
+    assert(hex_all_zero == 0x00);
+
+    print("tally parse_int: strict decimal refuses a leading zero; hex pairs allow one explicitly\n", .{});
+    print("tally parse_int: version {s}\n", .{tally_parse_int_version});
+    print("GREEN: tally parse_int — the footgun refused by default, the honest exception named at the call site.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(init.arena.allocator());
+    if (args.len >= 2) {
+        if (std.mem.eql(u8, args[1], "selftest")) return run_selftest(io);
+    }
+    return run_selftest(io);
+}

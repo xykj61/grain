@@ -1,0 +1,100 @@
+# proven_seat_signed_kumara_fetch.rish — Monocypher pin + three-assert shape.
+#
+# Claude 214900 · 215400 open: vendor/monocypher @ 4.0.3 / ab2b16d…
+#   1. pin — HEAD equals ab2b16d…
+#   2. red-avoid — guest: crypto_eddsa_ nowhere; crypto_ed25519_check ≥ 2 (the pair)
+#   3. fixture — regenerate into cache; byte-diff against committed header
+#
+#   rishi/bin/rishi run tools/proven_seat_signed_kumara_fetch.rish
+
+let cache = "tools/.cache/proven-seat"
+let root = "vendor/monocypher"
+let pinned = "ab2b16dd619ad5f6979a4fbe69cfa324a6fcc35f"
+let tag = "4.0.3"
+let remote = "https://github.com/LoupVaillant/Monocypher.git"
+let guest = "tools/proven_seat_signed_kumara_guest"
+let committed = "${guest}/src/app/signed-kumara-verify/fixture_receipt.h"
+let regen = "${cache}/signed-kumara-fixture_receipt.h"
+let fixture_meta = "${cache}/signed-kumara-fixture-meta.txt"
+let meta = "${cache}/signed-kumara-monocypher-meta.txt"
+let gen_bin = "${cache}/signed-kumara-gen"
+let zig = "vendor/zig-toolchain/zig"
+
+say "signed-Kumara fetch: preparing cache shelf…"
+let mkdir = run ["mkdir" "-p" cache]
+assert mkdir.ok else "could not create ${cache}"
+
+say "signed-Kumara fetch: git submodule update --init ${root}…"
+let sub = run ["git" "submodule" "update" "--init" root]
+assert sub.ok else "git submodule update --init failed for ${root}"
+
+say "signed-Kumara fetch: assert 1 — HEAD equals pinned ${pinned}…"
+let head = run ["git" "-C" root "rev-parse" "HEAD"]
+assert head.ok else "git rev-parse HEAD failed"
+let head_trim = trim head.out
+assert head_trim == pinned else "monocypher HEAD mismatch (want ${pinned}; got ${head_trim})"
+say "GREEN: signed-Kumara pin — HEAD ${pinned} · tag ${tag}"
+
+say "signed-Kumara fetch: teacher files present…"
+let f1 = run ["test" "-f" "${root}/src/monocypher.c"]
+assert f1.ok else "missing ${root}/src/monocypher.c"
+let f2 = run ["test" "-f" "${root}/src/monocypher.h"]
+assert f2.ok else "missing ${root}/src/monocypher.h"
+let f3 = run ["test" "-f" "${root}/src/optional/monocypher-ed25519.c"]
+assert f3.ok else "missing ${root}/src/optional/monocypher-ed25519.c"
+let f4 = run ["test" "-f" "${root}/src/optional/monocypher-ed25519.h"]
+assert f4.ok else "missing ${root}/src/optional/monocypher-ed25519.h"
+let lic = run ["test" "-f" "${root}/LICENCE.md"]
+assert lic.ok else "missing ${root}/LICENCE.md"
+let ed_hdr = read-file "${root}/src/optional/monocypher-ed25519.h"
+assert ed_hdr contains "crypto_ed25519_check" else "teacher header must declare crypto_ed25519_check"
+say "signed-Kumara fetch: four teacher files + LICENCE.md · crypto_ed25519_check declared"
+
+say "signed-Kumara fetch: assert 2 — red-avoid on guest source (≥2 checks)…"
+let red_scan = run ["bash" "tools/fixtures/signed_kumara_red_avoid.sh" guest]
+assert red_scan.ok else "red-avoid scan failed"
+let red_note = trim red_scan.out
+assert red_note == "OK" else "red-avoid failed: want crypto_ed25519_check at least twice and crypto_eddsa_ absent"
+say "GREEN: signed-Kumara red-avoid — crypto_ed25519_check ≥2 · crypto_eddsa_ absent"
+
+say "signed-Kumara fetch: assert 3 — fixture freshness (regenerate + byte-diff)…"
+let have_committed = run ["test" "-f" committed]
+assert have_committed.ok else "missing committed ${committed} — run generator first"
+let build_gen = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build tools/proven_seat_signed_kumara_gen.rye -femit-bin=${gen_bin}"]
+assert build_gen.ok else "fixture generator build failed"
+let run_gen = run ["sh" "-c" "${gen_bin} --out ${regen} 2>&1"]
+assert run_gen.ok else "fixture generator run failed"
+assert run_gen.out contains "GREEN: signed-Kumara gen" else "generator missing GREEN"
+let diff = run ["diff" "-q" committed regen]
+assert diff.ok else "fixture freshness failed — committed header differs from regenerated (re-run gen and commit)"
+let clear_fm = run ["rm" "-f" fixture_meta]
+assert clear_fm.ok
+let fm1 = run ["sh" "-c" "echo fixture fresh >> ${fixture_meta}"]
+assert fm1.ok
+let fm2 = run ["sh" "-c" "echo seed signed-kumara-fixture-seed-v1 >> ${fixture_meta}"]
+assert fm2.ok
+let fm3 = run ["sh" "-c" "echo tamper_byte 7 >> ${fixture_meta}"]
+assert fm3.ok
+say "GREEN: signed-Kumara fixture — regenerated matches committed header"
+
+say "signed-Kumara fetch: writing ${meta}…"
+let clear = run ["rm" "-f" meta]
+assert clear.ok
+let w1 = run ["sh" "-c" "echo pin ${pinned} > ${meta}"]
+assert w1.ok
+let w2 = run ["sh" "-c" "echo tag ${tag} >> ${meta}"]
+assert w2.ok
+let w3 = run ["sh" "-c" "echo remote ${remote} >> ${meta}"]
+assert w3.ok
+let w4 = run ["sh" "-c" "echo home ${root} >> ${meta}"]
+assert w4.ok
+let w5 = run ["sh" "-c" "echo red_avoid GREEN >> ${meta}"]
+assert w5.ok
+let w6 = run ["sh" "-c" "echo fixture GREEN >> ${meta}"]
+assert w6.ok
+let w7 = run ["sh" "-c" "echo guest ${guest} >> ${meta}"]
+assert w7.ok
+let w8 = run ["sh" "-c" "echo teacher_files four+licence >> ${meta}"]
+assert w8.ok
+
+say "GREEN: signed-Kumara fetch — pin ${tag} @ ${pinned}; red_avoid=GREEN; fixture=GREEN"

@@ -1,0 +1,19 @@
+//! Rye test: std.mem.findLast — pass 9970.
+//!
+//! Backward sub-slice search entry point. Pairs with find (9993) and findPos
+//! (9971); delegates to findLastLinear on small inputs.
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    std.debug.assert(mem.lastIndexOf(u8, "one two three two four", "two").? == 14);
+    std.debug.assert(mem.lastIndexOf(u8, "aba", "a").? == 2);
+    std.debug.assert(mem.lastIndexOf(u8, "foo", "bar") == null);
+    std.debug.assert(mem.lastIndexOf(u8, "haystack", "").? == 8);
+
+    const long = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabneedle";
+    std.debug.assert(mem.lastIndexOf(u8, long, "needle").? == 51);
+
+    std.debug.print("rye: findLast assertions confirmed.\n", .{});
+}

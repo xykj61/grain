@@ -1,0 +1,28 @@
+//! Rye test: std.mem.readPackedInt / writePackedInt — pass 9907.
+//!
+//! Bit-field load/store at arbitrary bit offsets; MMIO-adjacent wire path.
+
+const std = @import("std");
+const builtin = @import("builtin");
+const mem = std.mem;
+
+const Packed = packed struct(u16) {
+    a: u3,
+    b: u7,
+    c: u6,
+};
+
+pub fn main() void {
+    var st = Packed{ .a = 1, .b = 2, .c = 4 };
+    const endian = builtin.cpu.arch.endian();
+    const off = @bitOffsetOf(Packed, "b");
+
+    const b_field = mem.readPackedInt(u7, mem.asBytes(&st), off, endian);
+    std.debug.assert(b_field == 2);
+
+    mem.writePackedInt(u7, mem.asBytes(&st), off, 0x7f, endian);
+    std.debug.assert(st.b == 0x7f);
+    std.debug.assert(mem.readPackedInt(u7, mem.asBytes(&st), off, endian) == 0x7f);
+
+    std.debug.print("rye: mem.readPackedInt/writePackedInt assertions confirmed.\n", .{});
+}

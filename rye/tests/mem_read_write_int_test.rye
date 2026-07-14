@@ -1,0 +1,27 @@
+//! Rye test: std.mem.readInt / writeInt — pass 9909.
+//!
+//! Fixed-width integer encode/decode; pairs with readVarInt (9910).
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    var buf2: [2]u8 = undefined;
+    mem.writeInt(u16, &buf2, 0x1234, .big);
+    std.debug.assert(mem.eql(u8, buf2[0..], &.{ 0x12, 0x34 }));
+    std.debug.assert(mem.readInt(u16, &buf2, .big) == 0x1234);
+
+    mem.writeInt(u16, &buf2, 0x5678, .little);
+    std.debug.assert(mem.eql(u8, buf2[0..], &.{ 0x78, 0x56 }));
+    std.debug.assert(mem.readInt(u16, &buf2, .little) == 0x5678);
+
+    var buf1: [1]u8 = undefined;
+    mem.writeInt(i8, &buf1, -1, .big);
+    std.debug.assert(mem.readInt(i8, &buf1, .big) == -1);
+
+    var buf9: [9]u8 = undefined;
+    mem.writeInt(u72, &buf9, 0x123456789abcdef024, .big);
+    std.debug.assert(mem.readInt(u72, &buf9, .big) == 0x123456789abcdef024);
+
+    std.debug.print("rye: mem.readInt/writeInt assertions confirmed.\n", .{});
+}

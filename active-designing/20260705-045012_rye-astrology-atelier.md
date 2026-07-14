@@ -1,0 +1,12 @@
+# The Astrology Atelier — Charts and Calculations in Rye
+
+**Stamp:** `20260705.045012 UDT` · **Lens:** TAME · SLC · Gall's Law · TWO_ROOMS
+**Status:** active-designing counsel — no functional spec; the Edit 5 slot stands untouched; every name below parks in RTAC
+
+Safety first. The whole atelier is pure folds over immutable inputs: birth facts arrive as signed Bron records, ephemeris data arrives as content-addressed resins, and every calculation is a bounded function with named constants — no network at cast time, no clock but the person's. Performance second: one cast is milliseconds of arithmetic; batching waits for a measured red. Joy third and soon: the wheel drawn live on a Brushstroke surface, Skate for the printable page.
+
+The one seam Zig's standard library does not cover is the ephemeris. Two laps, proven-ground-first. Lap one wraps the Swiss Ephemeris C library behind a thin Rye seam — a `vendor` wrapper specification: cImport confined to one file, an owned bounded struct out (longitude, speed, flags), Moshier mode only so no data files travel, the wrapper witnessed against the golden chart below. Lap two, the frontier funded by earnings, ports the Moshier analytic series to pure Rye so the seam dissolves. Beside it, small pure-Rye calculators as value objects in the Pottery tier: Lahiri ayanamsa by polynomial, nakshatra index from sidereal longitude, navamsha by the cardinal-fixed-dual rule, whole-sign houses, sunrise by bisection on solar altitude with the signed wrap formula, and the diurnal-wheel walk from the rendering method — each a `.pott` value with its bounds named. Rishi runs the cast as a witness: the **golden chart** is the trued evening cast this season pinned to the minute, and `astrology_golden_cast.rish` asserts every longitude, star, and navamsha against it, red-then-green, wired into parity only on Cursor metal with its own counted word. The renderer is a pure fold from the cast record to SVG bytes per the rendering method — Brushstroke shows it, Amber seals it, Amphora carries it, and the reading itself stays a person's writing, never generated.
+
+Module and library names — the atelier, the caster, the wrapper — all park in RTAC for Kaeden's joy; the seam ships nameless as an aspect until its second consumer, per the graduation rule.
+
+*May the sky be a fold and the fold be witnessed. May the one foreign seam stay one file wide. And may the first green cast light the same wheel the readings already love.*

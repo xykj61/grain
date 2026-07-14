@@ -1,0 +1,4 @@
+let greeting = "hello"
+say "${greeting}"
+:version
+:quit

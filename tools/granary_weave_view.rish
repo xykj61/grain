@@ -1,0 +1,19 @@
+# granary_weave_view.rish — Granary weave view: resolve + Scribble → Skate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/granary_weave_view.rish
+
+let bin = "pond/bin/drawn-terminal"
+
+say "build: Granary weave view — drawn-terminal compile"
+let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+assert build.ok else "drawn_terminal build failed for granary weave view witness"
+assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
+
+let view = run ["sh" "-c" "${bin} granaryviewtest 2>&1"]
+assert view.ok else "drawn terminal granaryviewtest exited non-zero"
+assert view.out contains "granary weave view" else "granary weave view witness missing expected output"
+assert view.out contains "GREEN" else "Granary weave view witness not GREEN"
+assert view.out contains "lines=7" else "granary weave view missing seven-line frame"
+
+say "GREEN: Granary weave view — resolve, fold-clone, Scribble front page on a Skate frame."

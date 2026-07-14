@@ -1,0 +1,38 @@
+# .brix — veganreyklah2
+# Course descriptor: name, version, and the bricks (source files) Mantra tracks.
+# Format: one key-value pair per line, space-separated. Lines starting with
+# '#' are comments; blank lines are ignored.
+#
+# Keys:
+#   name     — the project name (one value)
+#   version  — descriptor version (Rye chronological stamp)
+#   file     — one tracked brick/source file (multiple, in order)
+
+name veganreyklah2
+version 20260629.004912
+
+# Rye compiler
+file rye/src/main.rye
+
+# Rishi shell
+file rishi/src/main.rye
+
+# Tally memory model
+file tally/seed.rye
+file tally/gardens.rye
+
+# Caravan supervision
+file caravan/seed.rye
+file caravan/bounded.rye
+file caravan/twin.rye
+file caravan/chain.rye
+
+# Mantra version control
+file mantra/src/main.rye
+
+# Gate trio — Rishi only (tools/*.rish)
+file tools/parity.rish
+
+# Living documentation
+file work-in-progress/ROADMAP.md
+file work-in-progress/TASKS.md

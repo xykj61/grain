@@ -1,0 +1,20 @@
+# lantern_lap1.rish — Lantern lap 1: fixture completion + max_tokens budget.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/lantern_lap1.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lantern/bin/lantern"
+
+let build = run ["sh" "-c" "mkdir -p lantern/bin && env RYE_ZIG=${zig} rye/bin/rye build lantern/lantern.rye -femit-bin=${bin}"]
+assert build.ok else "Lantern lap 1 build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "Lantern selftest exited non-zero"
+assert selftest.out contains "GREEN" else "Lantern selftest not GREEN"
+assert selftest.out contains "fixture completion" else "Lantern missing completion welcome"
+assert selftest.out contains "max_tokens truncate" else "Lantern missing length-budget welcome"
+assert selftest.out contains "model mismatch refused" else "Lantern missing model unwelcome"
+assert selftest.out contains "zero budget refused" else "Lantern missing zero-budget unwelcome"
+
+say "GREEN: Lantern lap 1 — bounded completion with max_tokens truncate to length."

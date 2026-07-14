@@ -1,0 +1,108 @@
+// crossing_manifest_seed.rye — GRADUATED to amphora/manifest_entry.rye (20260710.143500).
+// Elder seed kept for inbound references; run amphora/bin/manifest-entry or tools/crossing_manifest_seed.rish.
+// Original lap-one parse harness GREEN at parity 151.
+//
+// Lap one of the sealed crossing: one manifest line, plain text, one entry:
+//
+//     <mark> <sha3-256-hex> <name>
+//
+// Invariant: a line holds exactly three fields split by single spaces.
+// Invariant: the digest field is exactly 64 lowercase hex characters
+//            (resins law, working tier).
+
+const std = @import("std");
+const assert = std.debug.assert;
+
+const digest_hex_len: u32 = 64; // SHA3-256 rendered as hex — the working tier
+const max_mark_len: u32 = 32; // a mark is one short word, easy to speak aloud
+const max_name_len: u32 = 200; // matches the tree's filename bound
+const max_line_len: u32 = max_mark_len + 1 + digest_hex_len + 1 + max_name_len;
+
+// Invariant: every field is a slice of the caller's line; nothing is copied.
+// Invariant: mark.len >= 1; name.len >= 1; digest_hex.len == digest_hex_len.
+const ManifestEntry = struct {
+    mark: []const u8,
+    digest_hex: []const u8,
+    name: []const u8,
+};
+
+fn is_lower_hex(c: u8) bool {
+    if (c >= '0' and c <= '9') return true;
+    if (c >= 'a' and c <= 'f') return true;
+    return false;
+}
+
+// Precondition: line contains no newline and fits the named bound.
+// Postcondition: all three fields are nonempty; the digest is well-formed.
+fn parse_manifest_line(line: []const u8) error{InvalidFormat}!ManifestEntry {
+    assert(line.len >= 1); // precondition: the caller's reader skips blanks
+    assert(line.len <= max_line_len); // precondition: bound named above
+
+    const len: u32 = @intCast(line.len);
+
+    var first_space: u32 = 0;
+    while (first_space < len) : (first_space += 1) {
+        if (line[@intCast(first_space)] == ' ') break;
+    }
+    if (first_space == 0) return error.InvalidFormat; // empty mark field
+    if (first_space >= len) return error.InvalidFormat; // digest field missing
+    if (first_space > max_mark_len) return error.InvalidFormat;
+
+    const digest_start: u32 = first_space + 1;
+    const digest_end: u32 = digest_start + digest_hex_len;
+    if (digest_end >= len) {
+        return error.InvalidFormat; // digest short, or name field missing
+    }
+    if (line[@intCast(digest_end)] != ' ') return error.InvalidFormat;
+
+    var i: u32 = digest_start;
+    while (i < digest_end) : (i += 1) {
+        if (is_lower_hex(line[@intCast(i)])) {
+            // The digest invariant holds at this character.
+        } else {
+            return error.InvalidFormat; // the wreck rule: refuse whole
+        }
+    }
+
+    const name_start: u32 = digest_end + 1;
+    assert(name_start < len); // implied by the digest_end check above
+    if (len - name_start > max_name_len) return error.InvalidFormat;
+
+    const entry = ManifestEntry{
+        .mark = line[0..@intCast(first_space)],
+        .digest_hex = line[@intCast(digest_start)..@intCast(digest_end)],
+        .name = line[@intCast(name_start)..@intCast(len)],
+    };
+    assert(entry.mark.len >= 1); // postcondition
+    assert(entry.digest_hex.len == digest_hex_len); // postcondition
+    assert(entry.name.len >= 1); // postcondition
+    return entry;
+}
+
+test "a well-formed line parses whole" {
+    const line = "bytes " ++ ("ab" ** 32) ++ " session-logs/example.md";
+    const entry = try parse_manifest_line(line);
+    try std.testing.expectEqualStrings("bytes", entry.mark);
+    try std.testing.expectEqual(@as(usize, digest_hex_len), entry.digest_hex.len);
+    try std.testing.expectEqualStrings("session-logs/example.md", entry.name);
+}
+
+test "a damaged line is refused whole" {
+    try std.testing.expectError(error.InvalidFormat, parse_manifest_line("bytes short name"));
+    try std.testing.expectError(error.InvalidFormat, parse_manifest_line(" " ++ ("ab" ** 32) ++ " x"));
+    try std.testing.expectError(error.InvalidFormat, parse_manifest_line("bytes " ++ ("AB" ** 32) ++ " x"));
+}
+
+pub fn main() void {
+    const line = "bytes " ++ ("ab" ** 32) ++ " session-logs/example.md";
+    const entry = parse_manifest_line(line) catch unreachable;
+    assert(std.mem.eql(u8, entry.mark, "bytes"));
+    assert(entry.digest_hex.len == digest_hex_len);
+    assert(std.mem.eql(u8, entry.name, "session-logs/example.md"));
+
+    if (parse_manifest_line("bytes short name")) |_| unreachable else |_| {}
+    if (parse_manifest_line(" " ++ ("ab" ** 32) ++ " x")) |_| unreachable else |_| {}
+    if (parse_manifest_line("bytes " ++ ("AB" ** 32) ++ " x")) |_| unreachable else |_| {}
+
+    std.debug.print("GREEN: crossing manifest seed — parse and refuse whole.\n", .{});
+}

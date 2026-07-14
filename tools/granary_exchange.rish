@@ -1,0 +1,21 @@
+# granary_exchange.rish — Granary lap 5: Exchange listing (weave priced in MALA).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/granary_exchange.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "granary/bin/exchange-listing"
+
+let build = run ["sh" "-c" "mkdir -p granary/bin && env RYE_ZIG=${zig} rye/bin/rye build granary/exchange_listing.rye -femit-bin=${bin}"]
+assert build.ok else "Granary exchange listing build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "Granary exchange selftest exited non-zero"
+assert selftest.out contains "GREEN" else "Granary exchange selftest not GREEN"
+assert selftest.out contains "100 mala" else "Granary exchange missing price claim"
+assert selftest.out contains "receipt" else "Granary exchange missing receipt"
+assert selftest.out contains "zero price refused" else "Granary exchange missing zero-price refuse"
+assert selftest.out contains "lying listing refused" else "Granary exchange missing lying refuse"
+assert selftest.out contains "registry digest mismatch refused" else "Granary exchange missing mismatch refuse"
+
+say "GREEN: Granary Exchange — weave listing in MALA; receipt without identities."

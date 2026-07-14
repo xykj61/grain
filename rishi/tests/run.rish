@@ -1,0 +1,18 @@
+# run.rish — running commands, and reading the result as a record.
+
+let greet = run ["echo" "rishi runs"]
+say "echo said: ${greet.out}"
+assert greet.code == 0
+assert greet.ok
+
+# true succeeds with no output; its result is an ordinary record.
+let yes = run ["true"]
+assert yes.ok
+assert yes.out == ""
+
+# A command that runs and exits non-zero is a normal result, not a crash.
+let no = run ["false"]
+assert no.code == 1
+assert no.ok == false
+
+say "run held."

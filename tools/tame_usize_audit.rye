@@ -1,0 +1,313 @@
+//! TAME / Tiger Style usize audit for strengthening pass docs.
+//!
+//! Tiger Style: use explicitly-sized types like `u32`; avoid `usize`.
+//! TAME: `usize` is a boundary type, rather than a design type.
+
+const std = @import("std");
+
+pub const max_audit_rows: u32 = 256;
+
+pub const AuditRow = struct {
+    locus: []const u8,
+    row_type: []const u8,
+    policy: []const u8,
+    status: []const u8,
+};
+
+fn is_word_char(c: u8) bool {
+    return std.ascii.isAlphanumeric(c) or c == '_';
+}
+
+fn at_word_boundary(text: []const u8, start: usize, end: usize) bool {
+    const left_ok = start == 0 or !is_word_char(text[start - 1]);
+    const right_ok = end >= text.len or !is_word_char(text[end]);
+    return left_ok and right_ok;
+}
+
+fn append_row(rows: *std.ArrayListUnmanaged(AuditRow), a: std.mem.Allocator, r: AuditRow) !void {
+    std.debug.assert(rows.items.len < max_audit_rows);
+    try rows.append(a, r);
+}
+
+fn tier_c_inherited_rows(a: std.mem.Allocator, sig: []const u8, rows: *std.ArrayListUnmanaged(AuditRow)) !void {
+    const has_slice = std.mem.indexOf(u8, sig, "[]") != null;
+    const has_usize = std.mem.indexOf(u8, sig, "usize") != null;
+    if (has_slice or has_usize) {
+        var parts = std.ArrayListUnmanaged([]const u8).empty;
+        defer parts.deinit(a);
+        if (has_slice) try parts.append(a, "slice params / `.len`");
+        if (std.mem.indexOf(u8, sig, ") usize") != null or std.mem.endsWith(u8, std.mem.trim(u8, sig, " \t"), "usize")) {
+            try parts.append(a, "return `usize`");
+        }
+        const locus = if (parts.items.len > 0)
+            try std.mem.join(a, ", ", parts.items)
+        else
+            "public signature";
+        try append_row(rows, a, .{
+            .locus = locus,
+            .row_type = "inherited `usize` (Tier C)",
+            .policy = "Tiger: avoid `usize` in APIs we publish — this surface is inherited Zig `std`; unchanged per `10024` rule 3",
+            .status = "done",
+        });
+    }
+    try append_row(rows, a, .{
+        .locus = "Tier",
+        .row_type = "C — inherited `std`",
+        .policy = "`992` Phase 4 — touch named bounds only; do not rename public seam",
+        .status = "done",
+    });
+}
+
+fn scan_max_bound_usize(a: std.mem.Allocator, body: []const u8, rows: *std.ArrayListUnmanaged(AuditRow)) !void {
+    var i: usize = 0;
+    while (i < body.len) : (i += 1) {
+        if (!std.mem.startsWith(u8, body[i..], "max_")) continue;
+        var j = i + 4;
+        while (j < body.len and is_word_char(body[j])) : (j += 1) {}
+        if (j >= body.len or body[j] != ':') continue;
+        var k = j + 1;
+        while (k < body.len and body[k] == ' ') : (k += 1) {}
+        if (k + 5 > body.len or !std.mem.startsWith(u8, body[k..], "usize")) continue;
+        if (!at_word_boundary(body, i, k + 5)) continue;
+        const span = body[i .. k + 5];
+        try append_row(rows, a, .{
+            .locus = try a.dupe(u8, span),
+            .row_type = "violation",
+            .policy = "Tiger/TAME: named bounds must be `u32`, not `usize`",
+            .status = "fail",
+        });
+    }
+}
+
+fn scan_u32_bounds(a: std.mem.Allocator, body: []const u8, rows: *std.ArrayListUnmanaged(AuditRow)) !void {
+    var i: usize = 0;
+    while (i < body.len) : (i += 1) {
+        if (!std.mem.startsWith(u8, body[i..], "max_")) continue;
+        var j = i + 4;
+        while (j < body.len and is_word_char(body[j])) : (j += 1) {}
+        if (j >= body.len or body[j] != ':') continue;
+        var k = j + 1;
+        while (k < body.len and body[k] == ' ') : (k += 1) {}
+        if (k + 3 > body.len or !std.mem.startsWith(u8, body[k..], "u32")) continue;
+        if (!at_word_boundary(body, i, k + 3)) continue;
+        const name = body[i..j];
+        var val: []const u8 = "";
+        var p = k + 3;
+        while (p < body.len and body[p] == ' ') : (p += 1) {}
+        if (p < body.len and body[p] == '=') {
+            p += 1;
+            while (p < body.len and body[p] == ' ') : (p += 1) {}
+            const vs = p;
+            while (p < body.len and std.ascii.isDigit(body[p])) : (p += 1) {}
+            if (p > vs) val = body[vs..p];
+        }
+        const locus = try std.fmt.allocPrint(a, "`{s}`", .{name});
+        const policy = if (val.len > 0)
+            try std.fmt.allocPrint(a, "Named snapshot/verify bound = {s} — design width, not `usize`", .{val})
+        else
+            try a.dupe(u8, "Named snapshot/verify bound — design width, not `usize`");
+        try append_row(rows, a, .{
+            .locus = locus,
+            .row_type = "`u32` (Tiger explicit)",
+            .policy = policy,
+            .status = "done",
+        });
+    }
+}
+
+fn scan_paren_inner(body: []const u8, open: usize) ?[]const u8 {
+    var depth: u32 = 0;
+    var i = open;
+    while (i < body.len) : (i += 1) {
+        if (body[i] == '(') depth += 1;
+        if (body[i] == ')') {
+            depth -= 1;
+            if (depth == 0) return body[open + 1 .. i];
+        }
+    }
+    return null;
+}
+
+fn scan_seam_widen(a: std.mem.Allocator, body: []const u8, rows: *std.ArrayListUnmanaged(AuditRow)) !void {
+    var seen = std.ArrayListUnmanaged([]const u8).empty;
+    defer seen.deinit(a);
+    var i: usize = 0;
+    while (i < body.len) : (i += 1) {
+        if (!std.mem.startsWith(u8, body[i..], "@as(usize,")) continue;
+        const inner = scan_paren_inner(body, i + 3) orelse continue;
+        const trimmed = std.mem.trim(u8, inner, " \t");
+        var duped = false;
+        for (seen.items) |s| {
+            if (std.mem.eql(u8, s, trimmed)) duped = true;
+        }
+        if (duped) continue;
+        try seen.append(a, try a.dupe(u8, trimmed));
+        const locus = try std.fmt.allocPrint(a, "`@as(usize, {s})`", .{trimmed});
+        try append_row(rows, a, .{
+            .locus = locus,
+            .row_type = "seam widen",
+            .policy = "TAME: `usize` only at slice seam — widen `u32` bound for `.len` compare",
+            .status = "done",
+        });
+    }
+}
+
+fn scan_int_cast(a: std.mem.Allocator, body: []const u8, rows: *std.ArrayListUnmanaged(AuditRow)) !void {
+    var i: usize = 0;
+    while (i < body.len) : (i += 1) {
+        if (!std.mem.startsWith(u8, body[i..], "@intCast(")) continue;
+        const inner = scan_paren_inner(body, i + 8) orelse continue;
+        const target = std.mem.trim(u8, inner, " \t");
+        const has_guard = std.mem.indexOf(u8, body, "maxInt") != null and std.mem.indexOf(u8, body, "assert") != null;
+        const locus = try std.fmt.allocPrint(a, "`@intCast({s})`", .{target});
+        try append_row(rows, a, .{
+            .locus = locus,
+            .row_type = "seam narrow",
+            .policy = if (has_guard)
+                "`10024` rule 2 — paired with `assert` before narrow cast"
+            else
+                "`10024` rule 2 — needs `assert(... <= maxInt(u32))` before cast",
+            .status = if (has_guard) "done" else "fail",
+        });
+    }
+}
+
+fn std_function_compliant(a: std.mem.Allocator, body: []const u8, rows: *std.ArrayListUnmanaged(AuditRow)) !void {
+    try scan_u32_bounds(a, body, rows);
+    try scan_seam_widen(a, body, rows);
+    try scan_int_cast(a, body, rows);
+}
+
+fn std_function_violations(a: std.mem.Allocator, body: []const u8, rows: *std.ArrayListUnmanaged(AuditRow)) !void {
+    try scan_max_bound_usize(a, body, rows);
+}
+
+pub const AnalyzeResult = struct { rows: []AuditRow, ok: bool };
+
+pub fn analyze_std_function(
+    a: std.mem.Allocator,
+    body: ?[]const u8,
+    sig: ?[]const u8,
+) !AnalyzeResult {
+    var rows = std.ArrayListUnmanaged(AuditRow).empty;
+    errdefer rows.deinit(a);
+    if (body == null or sig == null) return .{ .rows = &.{}, .ok = false };
+    try tier_c_inherited_rows(a, sig.?, &rows);
+    try std_function_compliant(a, body.?, &rows);
+    try std_function_violations(a, body.?, &rows);
+    var ok = rows.items.len > 0;
+    for (rows.items) |r| {
+        if (std.mem.eql(u8, r.status, "fail")) ok = false;
+    }
+    return .{ .rows = try rows.toOwnedSlice(a), .ok = ok };
+}
+
+fn line_has_authored_usize_field(line: []const u8) bool {
+    const trimmed = std.mem.trim(u8, line, " \t");
+    const colon = std.mem.indexOfScalar(u8, trimmed, ':') orelse return false;
+    var k = colon + 1;
+    while (k < trimmed.len and trimmed[k] == ' ') : (k += 1) {}
+    return k + 5 <= trimmed.len and std.mem.startsWith(u8, trimmed[k..], "usize") and at_word_boundary(trimmed, k, k + 5);
+}
+
+fn line_has_authored_pub_usize(line: []const u8) bool {
+    if (!std.mem.startsWith(u8, std.mem.trim(u8, line, " \t"), "pub fn ")) return false;
+    if (std.mem.indexOf(u8, line, "{") != null) return false;
+    return std.mem.indexOf(u8, line, "usize") != null;
+}
+
+pub fn analyze_witness_rye(
+    a: std.mem.Allocator,
+    io: std.Io,
+    root: []const u8,
+    rel_path: []const u8,
+) !struct { rows: []AuditRow, ok: bool } {
+    var rows = std.ArrayListUnmanaged(AuditRow).empty;
+    errdefer rows.deinit(a);
+    const full = try std.fs.path.join(a, &.{ root, rel_path });
+    defer a.free(full);
+    const cwd = std.Io.Dir.cwd();
+    const text = cwd.readFileAlloc(io, full, a, .unlimited) catch return .{ .rows = &.{}, .ok = false };
+    try append_row(&rows, a, .{
+        .locus = "Tier",
+        .row_type = "B — witness `.rye`",
+        .policy = "`992` — `usize` only at `buf[0..n]` slice edge",
+        .status = "done",
+    });
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    while (lines.next()) |line| {
+        if (line_has_authored_usize_field(line)) {
+            try append_row(&rows, a, .{
+                .locus = try a.dupe(u8, std.mem.trim(u8, line, " \t")),
+                .row_type = "violation",
+                .policy = "TAME: no `usize` in struct fields we publish",
+                .status = "fail",
+            });
+        }
+        if (line_has_authored_pub_usize(line) and std.mem.indexOf(u8, line, "pub fn main") == null) {
+            try append_row(&rows, a, .{
+                .locus = "public fn",
+                .row_type = "violation",
+                .policy = "TAME: no `usize` in public params/returns we publish",
+                .status = "fail",
+            });
+        }
+    }
+    var has_fail = false;
+    for (rows.items) |r| {
+        if (std.mem.eql(u8, r.status, "fail")) has_fail = true;
+    }
+    if (!has_fail) {
+        try append_row(&rows, a, .{
+            .locus = "witness body",
+            .row_type = "slice edge only",
+            .policy = "Stack buffers + `.len` at seam — no authored `usize` fields",
+            .status = "done",
+        });
+    }
+    var ok = true;
+    for (rows.items) |r| {
+        if (std.mem.eql(u8, r.status, "fail")) ok = false;
+    }
+    return .{ .rows = try rows.toOwnedSlice(a), .ok = ok };
+}
+
+pub fn format_surface_table(
+    a: std.mem.Allocator,
+    full_name: []const u8,
+    rows: []const AuditRow,
+) ![]const u8 {
+    var out = std.ArrayListUnmanaged(u8).empty;
+    errdefer out.deinit(a);
+    try out.appendSlice(a, "### `");
+    try out.appendSlice(a, full_name);
+    try out.appendSlice(a, "`\n\n| Check | Type | Tiger/TAME policy | Status |\n|-------|------|-------------------|--------|\n");
+    for (rows) |r| {
+        const line = try std.fmt.allocPrint(a, "| {s} | {s} | {s} | {s} |\n", .{ r.locus, r.row_type, r.policy, r.status });
+        defer a.free(line);
+        try out.appendSlice(a, line);
+    }
+    try out.appendSlice(a, "\n");
+    return try out.toOwnedSlice(a);
+}
+
+pub fn section_header(a: std.mem.Allocator) ![]const u8 {
+    return try a.dupe(u8,
+        \\## usize explicit audit
+        \\
+        \\Tiger Style: *use explicitly-sized types like `u32`; avoid architecture-specific `usize`* ([`gratitude/TIGER_STYLE.md`](../gratitude/TIGER_STYLE.md) § Safety).
+        \\
+        \\TAME: **`usize` is a boundary type, not a design type** — [`context/TAME_GUIDANCE.md`](../context/TAME_GUIDANCE.md), [`10024`](../expanding-prompts/20260620-210812_explicit-width-audit.md), [`992`](../work-in-progress/20260620-212126_usize-width-baseline.md).
+        \\
+        \\Lexicon ✅ requires every row **`done`** and zero **`fail`** rows.
+        \\
+    );
+}
+
+pub fn surface_audit_ok(rows: []const AuditRow) bool {
+    if (rows.len == 0) return false;
+    for (rows) |r| {
+        if (std.mem.eql(u8, r.status, "fail")) return false;
+    }
+    return true;
+}

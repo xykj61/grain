@@ -1,0 +1,35 @@
+# SUPERSEDED 20260711.055800 — WOV TB host seam A retired from the living suite.
+# Kaeden approved Claude counsel 055112: keep pure-Rye WOV core; retire the optional
+# TigerBeetle cross-check seam to dated record. Kept; never deleted. Not run from parity.
+# Living WOV coverage: tools/wov_exit_honesty.rish · tools/wov_dual_monarch.rish
+#
+# wov_tb_host.rish — WOV lap 2b seam A: TB projection → exit honesty.
+#
+# Run from the repository root (manual / dated record only):
+#   rishi/bin/rishi run tools/wov_tb_host.rish
+#
+# Live cluster-of-one needs io_uring (skipped under ai-jail). Projection path
+# always proves the exit-bundle grammar from a TB-shaped balance table.
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/wov-tb-host"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/wov_tb_host.rye -femit-bin=${bin}"]
+assert build.ok else "WOV TB host build failed"
+
+let ensure = run ["sh" "tools/wov_tb_ensure_binary.sh"]
+assert ensure.ok else "WOV TB ensure-binary failed"
+assert ensure.out contains "WOV-TB-BINARY-OK" else "WOV TB binary not staged"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "WOV TB host selftest exited non-zero"
+assert selftest.out contains "GREEN" else "WOV TB host selftest not GREEN"
+assert selftest.out contains "holder A balance 700 proven" else "WOV TB host missing balance proof"
+assert selftest.out contains "exit bundle matches lap-1 golden" else "WOV TB host missing golden match"
+assert selftest.out contains "holder A exit accepted" else "WOV TB host missing exit accept"
+
+let live = run ["sh" "tools/wov_tb_repl_lab.sh"]
+assert live.ok else "WOV TB REPL lab failed"
+assert live.out contains "WOV-TB-LIVE-" else "WOV TB live path must SKIP or GREEN"
+
+say "GREEN: WOV TB host seam A — binary staged; projection → exit honesty; live skip-or-green."

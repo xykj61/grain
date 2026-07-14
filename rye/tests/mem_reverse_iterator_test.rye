@@ -1,0 +1,22 @@
+//! Rye test: mem.reverseIterator — pass 9920.
+//!
+//! Reverse walk over a slice; pairs with mem.reverse (9921).
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    var it = mem.reverseIterator("abc");
+    std.debug.assert(it.next() == 'c');
+    std.debug.assert(it.next() == 'b');
+    std.debug.assert(it.next() == 'a');
+    std.debug.assert(it.next() == null);
+
+    var array = [2]i32{ 3, 7 };
+    var ptr_it = mem.reverseIterator(&array);
+    std.debug.assert(ptr_it.nextPtr().?.* == 7);
+    std.debug.assert(ptr_it.nextPtr().?.* == 3);
+    std.debug.assert(ptr_it.nextPtr() == null);
+
+    std.debug.print("rye: mem.reverseIterator assertions confirmed.\n", .{});
+}

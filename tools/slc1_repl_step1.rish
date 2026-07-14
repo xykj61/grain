@@ -1,0 +1,10 @@
+# slc1_repl_step1.rish — witness for SLC-1 Step 1: bindings carry forward in `rishi repl`.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/slc1_repl_step1.rish
+
+let result = run ["sh" "-c" "rishi/bin/rishi repl < tools/fixtures/slc1_repl_step1.input"]
+
+assert result.ok else "rishi repl exited non-zero"
+assert result.out contains "7" else "binding from first line should be visible on the second"
+say "GREEN: SLC-1 Step 1 — rishi repl carries bindings forward."

@@ -1,0 +1,33 @@
+# collision_guard.rish — print every name hit with two lines of context.
+#
+# Practice companion to context/specs/collision-guard.md.
+# Never truncates. Always reprints the three required sweeps.
+#
+#   rishi/bin/rishi run tools/collision_guard.rish NAME
+
+assert length args != 0 else "usage: rishi run tools/collision_guard.rish NAME"
+let name = args[0]
+
+say "collision-guard: searching owned surfaces for '${name}' (every hit, -C 2)…"
+
+let tree = run ["rg" "-n" "-C" "2" "--glob" "!gratitude/**" "--glob" "!external-research/**" "--glob" "!yonder/**" "--glob" "!vendor/**" "--glob" "!archive/**" "--glob" "!.git/**" "-i" "--" name "."]
+say tree.out
+if tree.ok == false then say "(rg exit non-zero — often means zero matches; required sweeps still print)"
+
+say "collision-guard: required sweep — work-in-progress/ready-to-ask-claude.md"
+let rtac = run ["rg" "-n" "-C" "2" "-i" "--" name "work-in-progress/ready-to-ask-claude.md"]
+say rtac.out
+if rtac.ok == false then say "(no hits in RTAC)"
+
+say "collision-guard: required sweep — context/specs/reserved-vocabulary.md"
+let reserved = run ["rg" "-n" "-C" "2" "-i" "--" name "context/specs/reserved-vocabulary.md"]
+say reserved.out
+if reserved.ok == false then say "(no hits in reserved-vocabulary)"
+
+say "collision-guard: required sweep — context/LEXICON.md"
+let lexicon = run ["rg" "-n" "-C" "2" "-i" "--" name "context/LEXICON.md"]
+say lexicon.out
+if lexicon.ok == false then say "(no hits in LEXICON)"
+
+say "collision-guard: classify each hit as teacher-quote / prose-verb / park; record the list in the seating spec."
+say "GREEN: collision-guard printed every hit (classification is the human gate)."

@@ -1,0 +1,6 @@
+# forge tablecloth query hits — Realidream forge-query fixture
+# Filter shape matching Tablecloth query wire for Amber/Amphora forge facts.
+filter_tilak amber-manifest
+hit_count 2
+hit peerForge amber 1 manifest.bron
+hit peerForge amphora 1 vessel.bron

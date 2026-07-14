@@ -1,0 +1,224 @@
+//! mandi/listing_settle.rye — Mandi lap 3 selftest (settle vessel listing).
+//!
+//!   rye build mandi/listing_settle.rye -femit-bin=mandi/bin/listing-settle
+//!   mandi/bin/listing-settle selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const kumara = @import("kumara.rye");
+const mandi = @import("mandi_core.rye");
+const settle = @import("listing_settle_core.rye");
+const mala = @import("mala_core.rye");
+const wov = @import("wov_core.rye");
+const rc = @import("receipt_core.rye");
+const tally_copy = @import("tally_copy.rye");
+
+fn run_selftest(io: std.Io) !u8 {
+    _ = io;
+
+    // 1. Mandi listing at 25 mala.
+    var parent: [mandi.digest_hex_len]u8 = undefined;
+    mandi.witness_vessel_parent(&parent);
+    var listing: [mandi.max_listing_len]u8 = undefined;
+    const ln = try mandi.sign_listing(mandi.mandi_version, &parent, "25", &listing);
+    try mandi.verify_listing(listing[0..ln]);
+    var listing_receipt: [mandi.digest_hex_len]u8 = undefined;
+    try mandi.receipt_digest(listing[0..ln], &listing_receipt);
+
+    // 2. MALA: mint then send 25 (payment).
+    const issuer_kp = kumara.keypair_from_seed(&mala.issuer_seed);
+    const holder_kp = kumara.keypair_from_seed(&mala.holder_seed);
+    var issuer_hex: [mala.pubkey_hex_len]u8 = undefined;
+    var holder_hex: [mala.pubkey_hex_len]u8 = undefined;
+    mala.hex_of_key(issuer_kp.public_key, &issuer_hex);
+    mala.hex_of_key(holder_kp.public_key, &holder_hex);
+
+    var log: [rc.max_log_len]u8 = undefined;
+    var log_len: u32 = 0;
+    const mint_fields = rc.FactFields{
+        .from = issuer_hex[0..],
+        .to = holder_hex[0..],
+        .amount = "1000",
+        .memo = mala.memo_mint,
+        .stamp = settle.settle_version,
+    };
+    try mala.sign_append(&log, &log_len, mint_fields, issuer_kp);
+
+    const send_fields = rc.FactFields{
+        .from = holder_hex[0..],
+        .to = issuer_hex[0..],
+        .amount = "25",
+        .memo = mala.memo_send,
+        .stamp = settle.settle_version,
+    };
+    var send_canonical: [rc.max_fact_len]u8 = undefined;
+    const send_canon_len = try rc.write_canonical_fact(send_fields, &send_canonical);
+    try mala.sign_append(&log, &log_len, send_fields, holder_kp);
+    const balances = try mala.fold_mala_log(
+        log[0..log_len],
+        &issuer_hex,
+        &holder_hex,
+        issuer_kp.public_key,
+        holder_kp.public_key,
+    );
+    assert(balances.holder == 975);
+    assert(balances.issuer == 25);
+    var mala_digest: [settle.digest_hex_len]u8 = undefined;
+    settle.digest_bytes(send_canonical[0..send_canon_len], &mala_digest);
+
+    // 3. WOV: mint buyer, transfer 25 to seller.
+    const buyer_kp = kumara.keypair_from_seed(&wov.holder_a_seed);
+    const seller_kp = kumara.keypair_from_seed(&wov.holder_b_seed);
+    var buyer_hex: [wov.pubkey_hex_len]u8 = undefined;
+    var seller_hex: [wov.pubkey_hex_len]u8 = undefined;
+    wov.hex_of_key(buyer_kp.public_key, &buyer_hex);
+    wov.hex_of_key(seller_kp.public_key, &seller_hex);
+    var book = wov.Book.init();
+    try wov.mint(&book, &buyer_hex, 100);
+    try wov.transfer(&book, &buyer_hex, &seller_hex, 25);
+    var wov_line: [160]u8 = undefined;
+    const wov_line_len = try std.fmt.bufPrint(
+        &wov_line,
+        "wov-transfer {s} {s} 25\n",
+        .{ buyer_hex[0..], seller_hex[0..] },
+    );
+    var wov_digest: [settle.digest_hex_len]u8 = undefined;
+    settle.digest_bytes(wov_line_len, &wov_digest);
+
+    // 4. Payment body → payment digest.
+    const payment_fields = settle.PaymentFields{
+        .amount = "25",
+        .currency = "mala",
+        .mala_digest = &mala_digest,
+        .wov_digest = &wov_digest,
+    };
+    var payment_hex: [settle.digest_hex_len]u8 = undefined;
+    try settle.payment_digest(payment_fields, &payment_hex);
+
+    // 5. Sign settle slip.
+    var slip: [settle.max_settle_len]u8 = undefined;
+    const sn = try settle.sign_settle(
+        settle.settle_version,
+        &listing_receipt,
+        &payment_hex,
+        &slip,
+    );
+    try settle.verify_settle(slip[0..sn]);
+    try settle.verify_against_listing(slip[0..sn], &listing_receipt, &payment_hex, "25", "25");
+    assert(std.mem.indexOf(u8, slip[0..sn], "buyer") == null);
+    assert(std.mem.indexOf(u8, slip[0..sn], "seller") == null);
+
+    var settled = settle.SettledSet.empty();
+    try settle.record_settle(&settled, &listing_receipt);
+    print("mandi settle: listed vessel at 25 mala — settled\n", .{});
+    print("mandi settle: mala fold + wov transfer bound — receipt {s}\n", .{listing_receipt[0..12]});
+
+    // Unwelcome: zero amount on payment.
+    const zero_pay = settle.PaymentFields{
+        .amount = "0",
+        .currency = "mala",
+        .mala_digest = &mala_digest,
+        .wov_digest = &wov_digest,
+    };
+    if (settle.payment_digest(zero_pay, &payment_hex)) |_| {
+        return error.ZeroAccepted;
+    } else |err| {
+        assert(err == error.BadPrice);
+    }
+    print("mandi settle: zero amount refused\n", .{});
+
+    // Unwelcome: lying settle sig.
+    try settle.payment_digest(payment_fields, &payment_hex);
+    var lying: [settle.max_settle_len]u8 = undefined;
+    const lyn = try settle.sign_settle(settle.settle_version, &listing_receipt, &payment_hex, &lying);
+    const sig_key = "stamp_sig ";
+    const sig_at = std.mem.indexOf(u8, lying[0..lyn], sig_key) orelse return error.MissingSig;
+    lying[sig_at + sig_key.len] = if (lying[sig_at + sig_key.len] == '0') '1' else '0';
+    if (settle.verify_settle(lying[0..lyn])) |_| {
+        return error.LyingAccepted;
+    } else |err| {
+        assert(err == error.VerifyFailed);
+    }
+    print("mandi settle: lying settle refused\n", .{});
+
+    // Restore honest slip for bind checks.
+    try settle.payment_digest(payment_fields, &payment_hex);
+    const good_n = try settle.sign_settle(settle.settle_version, &listing_receipt, &payment_hex, &slip);
+
+    // Unwelcome: listing receipt mismatch.
+    var other_receipt: [settle.digest_hex_len]u8 = undefined;
+    settle.digest_bytes("other-listing\n", &other_receipt);
+    if (settle.verify_against_listing(slip[0..good_n], &other_receipt, &payment_hex, "25", "25")) |_| {
+        return error.ListingMismatchAccepted;
+    } else |err| {
+        assert(err == error.ListingMismatch);
+    }
+    print("mandi settle: listing receipt mismatch refused\n", .{});
+
+    // Unwelcome: payment digest mismatch.
+    var other_pay: [settle.digest_hex_len]u8 = undefined;
+    settle.digest_bytes("other-payment\n", &other_pay);
+    if (settle.verify_against_listing(slip[0..good_n], &listing_receipt, &other_pay, "25", "25")) |_| {
+        return error.PaymentMismatchAccepted;
+    } else |err| {
+        assert(err == error.PaymentMismatch);
+    }
+    print("mandi settle: payment digest mismatch refused\n", .{});
+
+    // Unwelcome: price mismatch.
+    if (settle.verify_against_listing(slip[0..good_n], &listing_receipt, &payment_hex, "25", "10")) |_| {
+        return error.PriceMismatchAccepted;
+    } else |err| {
+        assert(err == error.PriceMismatch);
+    }
+    print("mandi settle: price mismatch refused\n", .{});
+
+    // Unwelcome: MALA overdraft fold.
+    var bad_log: [rc.max_log_len]u8 = undefined;
+    var bad_len: u32 = 0;
+    try mala.sign_append(&bad_log, &bad_len, mint_fields, issuer_kp);
+    const over = rc.FactFields{
+        .from = holder_hex[0..],
+        .to = issuer_hex[0..],
+        .amount = "9999",
+        .memo = mala.memo_send,
+        .stamp = settle.settle_version,
+    };
+    try mala.sign_append(&bad_log, &bad_len, over, holder_kp);
+    if (mala.fold_mala_log(bad_log[0..bad_len], &issuer_hex, &holder_hex, issuer_kp.public_key, holder_kp.public_key)) |_| {
+        return error.MalaOverdraftAccepted;
+    } else |_| {}
+    print("mandi settle: mala fold refused\n", .{});
+
+    // Unwelcome: WOV insufficient.
+    var thin = wov.Book.init();
+    try wov.mint(&thin, &buyer_hex, 5);
+    if (wov.transfer(&thin, &buyer_hex, &seller_hex, 25)) |_| {
+        return error.WovInsufficientAccepted;
+    } else |err| {
+        assert(err == error.Insufficient);
+    }
+    print("mandi settle: wov insufficient refused\n", .{});
+
+    // Unwelcome: double settle.
+    if (settle.record_settle(&settled, &listing_receipt)) |_| {
+        return error.DoubleSettleAccepted;
+    } else |err| {
+        assert(err == error.DoubleSettle);
+    }
+    print("mandi settle: double settle refused\n", .{});
+
+    print("mandi settle lap3: version {s} — GREEN\n", .{settle.settle_version});
+    print("GREEN: Mandi settle — listing receipt + MALA/WOV payment, no identities.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) return run_selftest(io);
+    print("usage: listing-settle selftest\n", .{});
+    return 1;
+}

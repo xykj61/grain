@@ -1,0 +1,27 @@
+# tally_no_padding.rish — the padding-proof law's own witness.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/tally_no_padding.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let zig_ver = run [zig "version"]
+assert zig_ver.ok else "pinned ziglang toolchain missing at vendor/zig-toolchain"
+
+let mkdir = run ["mkdir" "-p" "tally/bin"]
+assert mkdir.ok else "could not create tally/bin"
+let build = run ["env" "RYE_ZIG=${zig}" "rye/bin/rye" "build" "tally/no_padding.rye" "-femit-bin=tally/bin/no-padding"]
+if build.ok == false then say "tally no_padding build stdout:"
+if build.ok == false then say build.out
+if build.ok == false then say "tally no_padding build stderr:"
+if build.ok == false then say build.err
+assert build.ok else "tally no_padding build failed"
+
+let self = run ["tally/bin/no-padding" "selftest"]
+if self.ok == false then say "tally no_padding selftest stdout:"
+if self.ok == false then say self.out
+if self.ok == false then say "tally no_padding selftest stderr:"
+if self.ok == false then say self.err
+assert self.ok else "tally no_padding selftest exited non-zero"
+assert self.err contains "GREEN" else "tally no_padding selftest not GREEN"
+
+say "GREEN: tally no_padding witness passed."

@@ -1,0 +1,3 @@
+# Out-of-range index — must fail with a friendly message, not a crash.
+assert (args.len == 1) else "expected one arg for oob fixture"
+assert (args[5] == "never") else "unreachable"

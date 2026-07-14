@@ -1,0 +1,23 @@
+//! Rye test: std.mem.copyForwards — pass 9943.
+//!
+//! Overlapping-safe copy from the start; pairs with copyBackwards (9944).
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    var dest: [8]u8 = .{0} ** 8;
+    mem.copyForwards(u8, dest[0..4], "Rye");
+    std.debug.assert(mem.eql(u8, dest[0..3], "Rye"));
+    std.debug.assert(dest[3] == 0);
+
+    var overlap: [6]u8 = .{ 'a', 'b', 'c', 'd', 'e', 'f' };
+    mem.copyForwards(u8, overlap[0..4], overlap[2..6]);
+    std.debug.assert(mem.eql(u8, overlap[0..4], "cdef"));
+
+    var dest2: [4]u8 = .{'x'} ** 4;
+    mem.copyForwards(u8, &dest2, "");
+    std.debug.assert(dest2[0] == 'x');
+
+    std.debug.print("rye: copyForwards assertions confirmed.\n", .{});
+}

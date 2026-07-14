@@ -1,0 +1,16 @@
+# mantra_beading.rish — NS-L3 3w-3b beading witness.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/mantra_beading.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mantra/bin/beading"
+
+let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/beading.rye -femit-bin=${bin}"]
+assert build.ok else "beading build failed"
+
+let beading = run ["sh" "-c" "${bin} beading 2>&1"]
+assert beading.ok else "beading selftest exited non-zero"
+assert beading.out contains "GREEN" else "beading selftest not GREEN"
+
+say "GREEN: NS-L3 3w-3b beading witness passed."

@@ -1,0 +1,20 @@
+# lantern_lap4.rish — Lantern lap 4: top_p + temperature + seed + allow-list + max_tokens.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/lantern_lap4.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lantern/bin/lantern"
+
+let build = run ["sh" "-c" "mkdir -p lantern/bin && env RYE_ZIG=${zig} rye/bin/rye build lantern/lantern.rye -femit-bin=${bin}"]
+assert build.ok else "Lantern lap 4 build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "Lantern selftest exited non-zero"
+assert selftest.out contains "GREEN" else "Lantern selftest not GREEN"
+assert selftest.out contains "top_p completion" else "Lantern missing top_p welcome"
+assert selftest.out contains "bad top_p refused" else "Lantern missing top_p range unwelcome"
+assert selftest.out contains "top_p mismatch refused" else "Lantern missing top_p pin unwelcome"
+assert selftest.out contains "seed+temperature completion" else "Lantern missing seed welcome"
+
+say "GREEN: Lantern lap 4 — top_p on the bounded request contract."

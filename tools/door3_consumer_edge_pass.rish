@@ -1,0 +1,21 @@
+# door3_consumer_edge_pass.rish — Seam Door 3: consumer-edge pass (in-process).
+#
+#   rishi/bin/rishi run tools/door3_consumer_edge_pass.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "granary/bin/consumer-edge-pass"
+
+let build = run ["sh" "-c" "mkdir -p granary/bin && env RYE_ZIG=${zig} rye/bin/rye build granary/consumer_edge_pass.rye -femit-bin=${bin}"]
+
+assert build.ok else "Door 3 consumer-edge-pass build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "Door 3 selftest exited non-zero"
+assert selftest.out contains "GREEN" else "Door 3 selftest not GREEN"
+assert selftest.out contains "published read admitted" else "Door 3 missing published read welcome"
+assert selftest.out contains "unpublished digest refused" else "Door 3 missing unpublished unwelcome"
+assert selftest.out contains "lying pass refused" else "Door 3 missing lying-pass unwelcome"
+assert selftest.out contains "signed submit admitted" else "Door 3 missing signed submit welcome"
+assert selftest.out contains "lying signature refused" else "Door 3 missing lying-signature unwelcome"
+
+say "GREEN: Door 3 consumer-edge pass witness passed."

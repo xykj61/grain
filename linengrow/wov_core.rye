@@ -1,0 +1,962 @@
+//! linengrow/wov_core.rye — WOV lap 1 exit honesty + dual-monarch D1.
+//!
+//!   rye build linengrow/wov_core.rye -femit-bin=linengrow/bin/wov
+//!   linengrow/bin/wov selftest
+//!   linengrow/bin/wov selftest-dual
+//!
+//! Spec: [`../context/specs/20260709-200443_wov-exit-honesty.md`](../context/specs/20260709-200443_wov-exit-honesty.md)
+//! Dual: [`../context/specs/20260709-224531_wov-dual-monarch.md`](../context/specs/20260709-224531_wov-dual-monarch.md)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const Dir = std.Io.Dir;
+const Sha3_256 = std.crypto.hash.sha3.Sha3_256;
+const kumara = @import("kumara.rye");
+const rc = @import("receipt_core.rye");
+const tally_copy = @import("tally_copy.rye");
+const tally_parse_int = @import("parse_int.rye");
+
+pub const wov_version = "20260709.224634";
+
+/// Pinned witness seeds — distinct from MALA (0x61/0x62) and Open Asks (0x51–0x53).
+pub const monarch_seed = [_]u8{0x71} ** kumara.seed_length;
+pub const holder_a_seed = [_]u8{0x72} ** kumara.seed_length;
+pub const holder_b_seed = [_]u8{0x73} ** kumara.seed_length;
+/// Second monarch for dual-control D1 (twin log lines).
+pub const monarch_b_seed = [_]u8{0x74} ** kumara.seed_length;
+
+pub const instance_id_bytes = [_]u8{0xaa} ** 16;
+pub const pubkey_hex_len: u32 = 64;
+pub const instance_hex_len: u32 = 32;
+pub const digest_hex_len: u32 = 64;
+pub const max_accounts: u32 = 4;
+pub const max_bundle_len: u32 = 2048;
+pub const max_memo_len: u32 = 256;
+pub const max_exits: u32 = 8;
+pub const max_log_lines: u32 = 24;
+pub const dual_witness_stamp = "20260709.224634";
+
+pub const memo_root_prefix = "wov:root ";
+pub const memo_exit_prefix = "wov:exit ";
+pub const bundle_header = "wov-exit-bundle/v1";
+pub const witness_stamp = "20260709.200729";
+pub const zero_root_hex = "0000000000000000000000000000000000000000000000000000000000000000";
+
+const Account = struct {
+    id_hex: [pubkey_hex_len]u8 = undefined,
+    balance: i64 = 0,
+    nonce: u64 = 0,
+    live: bool = false,
+};
+
+const ExitKey = struct {
+    account_hex: [pubkey_hex_len]u8 = undefined,
+    seq: u64 = 0,
+    used: bool = false,
+};
+
+pub const Book = struct {
+    accounts: [max_accounts]Account = [_]Account{.{}} ** max_accounts,
+    account_count: u32 = 0,
+    issued: i64 = 0,
+    redeemed: i64 = 0,
+    root_seq: u64 = 0,
+    prev_state_root_hex: [digest_hex_len]u8 = undefined,
+    exits: [max_exits]ExitKey = [_]ExitKey{.{}} ** max_exits,
+    exit_count: u32 = 0,
+
+    pub fn init() Book {
+        var b: Book = .{};
+        tally_copy.copy_disjoint(u8, &b.prev_state_root_hex, zero_root_hex);
+        return b;
+    }
+};
+
+fn buf_len_u32(buf: []const u8) u32 {
+    assert(buf.len <= std.math.maxInt(u32));
+    return @intCast(buf.len);
+}
+
+fn write_hex(bytes: []const u8, out: []u8) void {
+    var i: u32 = 0;
+    while (i < bytes.len) : (i += 1) {
+        _ = std.fmt.bufPrint(out[i * 2 ..][0..2], "{x:0>2}", .{bytes[i]}) catch unreachable;
+    }
+}
+
+pub fn hex_of_key(pk: kumara.PublicKey, out: *[pubkey_hex_len]u8) void {
+    write_hex(&pk.toBytes(), out);
+}
+
+pub fn hex_of_instance(out: *[instance_hex_len]u8) void {
+    write_hex(&instance_id_bytes, out);
+}
+
+fn find_account(book: *Book, id_hex: *const [pubkey_hex_len]u8) ?*Account {
+    var i: u32 = 0;
+    while (i < book.account_count) : (i += 1) {
+        if (book.accounts[i].live and std.mem.eql(u8, &book.accounts[i].id_hex, id_hex)) {
+            return &book.accounts[i];
+        }
+    }
+    return null;
+}
+
+fn ensure_account(book: *Book, id_hex: *const [pubkey_hex_len]u8) error{Overflow}!*Account {
+    if (find_account(book, id_hex)) |a| return a;
+    if (book.account_count >= max_accounts) return error.Overflow;
+    const slot = &book.accounts[book.account_count];
+    tally_copy.copy_disjoint(u8, &slot.id_hex, id_hex);
+    slot.balance = 0;
+    slot.nonce = 0;
+    slot.live = true;
+    book.account_count += 1;
+    return slot;
+}
+
+/// Mint into WOV: credit holder; increase issued.
+pub fn mint(book: *Book, to_hex: *const [pubkey_hex_len]u8, amount: i64) error{Overflow, BadAmount}!void {
+    if (amount <= 0) return error.BadAmount;
+    const acct = try ensure_account(book, to_hex);
+    acct.balance +%= amount;
+    acct.nonce +%= 1;
+    book.issued +%= amount;
+}
+
+/// Transfer inside WOV between two accounts.
+pub fn transfer(
+    book: *Book,
+    from_hex: *const [pubkey_hex_len]u8,
+    to_hex: *const [pubkey_hex_len]u8,
+    amount: i64,
+) error{Overflow, BadAmount, Insufficient}!void {
+    if (amount <= 0) return error.BadAmount;
+    const from_acct = find_account(book, from_hex) orelse return error.Insufficient;
+    if (from_acct.balance < amount) return error.Insufficient;
+    const to_acct = try ensure_account(book, to_hex);
+    from_acct.balance -%= amount;
+    from_acct.nonce +%= 1;
+    to_acct.balance +%= amount;
+    to_acct.nonce +%= 1;
+}
+
+fn cmp_hex(a: *const [pubkey_hex_len]u8, b: *const [pubkey_hex_len]u8) bool {
+    return std.mem.order(u8, a, b) == .lt;
+}
+
+fn sort_nonzero_indices(book: *const Book, indices: *[max_accounts]u32, count: *u32) void {
+    count.* = 0;
+    var i: u32 = 0;
+    while (i < book.account_count) : (i += 1) {
+        if (book.accounts[i].live and book.accounts[i].balance != 0) {
+            indices[count.*] = i;
+            count.* += 1;
+        }
+    }
+    // Insertion sort by account id hex.
+    var a: u32 = 1;
+    while (a < count.*) : (a += 1) {
+        var b = a;
+        while (b > 0 and cmp_hex(&book.accounts[indices[b]].id_hex, &book.accounts[indices[b - 1]].id_hex)) {
+            const tmp = indices[b - 1];
+            indices[b - 1] = indices[b];
+            indices[b] = tmp;
+            b -= 1;
+        }
+    }
+}
+
+/// Build unsigned exit-bundle body (header + accounts + conservation).
+/// Also fills `accounts_digest_hex` over the sorted account-table bytes alone.
+pub fn write_bundle_body(
+    book: *const Book,
+    seq: u64,
+    stamp: []const u8,
+    out: []u8,
+    accounts_digest_hex: *[digest_hex_len]u8,
+) error{Overflow, ConservationBroken}!u32 {
+    var instance_hex: [instance_hex_len]u8 = undefined;
+    hex_of_instance(&instance_hex);
+
+    var indices: [max_accounts]u32 = undefined;
+    var n: u32 = 0;
+    sort_nonzero_indices(book, &indices, &n);
+
+    var pos: u32 = 0;
+    const head = std.fmt.bufPrint(
+        out[pos..],
+        "{s}\ninstance {s}\nseq {d}\nstamp {s}\n",
+        .{ bundle_header, instance_hex[0..], seq, stamp },
+    ) catch return error.Overflow;
+    pos += buf_len_u32(head);
+
+    var table: [max_bundle_len]u8 = undefined;
+    var table_len: u32 = 0;
+    var sum: i64 = 0;
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        const acct = book.accounts[indices[i]];
+        sum +%= acct.balance;
+        const line = std.fmt.bufPrint(
+            table[table_len..],
+            "{s} {d} {d}\n",
+            .{ acct.id_hex[0..], acct.balance, acct.nonce },
+        ) catch return error.Overflow;
+        const line_len = buf_len_u32(line);
+        if (pos + line_len > buf_len_u32(out)) return error.Overflow;
+        tally_copy.copy_disjoint(u8, out[pos..][0..line_len], line);
+        pos += line_len;
+        table_len += line_len;
+    }
+
+    var digest: [32]u8 = undefined;
+    Sha3_256.hash(table[0..table_len], &digest, .{});
+    write_hex(&digest, accounts_digest_hex);
+
+    const expected = book.issued -% book.redeemed;
+    // invariant: sum of nonzero balances equals issued minus redeemed
+    if (sum != expected) return error.ConservationBroken;
+    const cons = std.fmt.bufPrint(
+        out[pos..],
+        "conservation {d} issued {d} redeemed {d}\n",
+        .{ sum, book.issued, book.redeemed },
+    ) catch return error.Overflow;
+    pos += buf_len_u32(cons);
+    return pos;
+}
+
+fn decode_hex_lower(hex: []const u8, out: []u8) error{InvalidHex}!void {
+    if (hex.len != out.len * 2) return error.InvalidHex;
+    var i: u32 = 0;
+    while (i < out.len) : (i += 1) {
+        const pair = hex[i * 2 ..][0..2];
+        out[i] = tally_parse_int.parse_int(u8, pair, .{ .base = 16, .allow_leading_zero = true }) catch return error.InvalidHex;
+    }
+}
+
+pub const PublishedRoot = struct {
+    bundle: [max_bundle_len]u8 = undefined,
+    bundle_len: u32 = 0,
+    state_root_hex: [digest_hex_len]u8 = undefined,
+    accounts_digest_hex: [digest_hex_len]u8 = undefined,
+    seq: u64 = 0,
+};
+
+/// Publish root: build bundle, sign body, append wov:root to MALA log.
+// Build the attested bundle into `out.bundle`, hash it into `out.state_root_hex`,
+// and fill `out.accounts_digest_hex`. The attestation is monarch A's signature
+// over the bundle body. Shared by publish_root and publish_root_dual.
+fn build_attested_bundle(
+    book: *Book,
+    seq: u64,
+    stamp: []const u8,
+    attester: kumara.KeyPair,
+    out: *PublishedRoot,
+) error{Overflow, InvalidFact, ConservationBroken}!void {
+    var body: [max_bundle_len]u8 = undefined;
+    const body_len = try write_bundle_body(book, seq, stamp, &body, &out.accounts_digest_hex);
+
+    const asig = kumara.sign(body[0..body_len], attester, null);
+    var sig_hex: [kumara.signature_length * 2]u8 = undefined;
+    write_hex(&asig.toBytes(), &sig_hex);
+
+    if (body_len + 12 + sig_hex.len + 1 > max_bundle_len) return error.Overflow;
+    tally_copy.copy_disjoint(u8, out.bundle[0..body_len], body[0..body_len]);
+    const att = std.fmt.bufPrint(
+        out.bundle[body_len..],
+        "attestation {s}\n",
+        .{sig_hex[0..]},
+    ) catch return error.Overflow;
+    out.bundle_len = body_len + buf_len_u32(att);
+
+    var state_digest: [32]u8 = undefined;
+    Sha3_256.hash(out.bundle[0..out.bundle_len], &state_digest, .{});
+    write_hex(&state_digest, &out.state_root_hex);
+}
+
+// Format the root-fact memo (prefix, instance, seq, state root, accounts digest,
+// prev root) into `memo_buf`, returning the written slice.
+fn write_root_memo(
+    book: *const Book,
+    seq: u64,
+    out: *const PublishedRoot,
+    memo_buf: *[max_memo_len]u8,
+) error{Overflow}![]const u8 {
+    var instance_hex: [instance_hex_len]u8 = undefined;
+    hex_of_instance(&instance_hex);
+    return std.fmt.bufPrint(
+        memo_buf,
+        "{s}{s} {d} {s} {s} {s}",
+        .{
+            memo_root_prefix,
+            instance_hex[0..],
+            seq,
+            out.state_root_hex[0..],
+            out.accounts_digest_hex[0..],
+            book.prev_state_root_hex[0..],
+        },
+    ) catch return error.Overflow;
+}
+
+// Sign `canonical` with `signer` and append the formatted log line to `log`.
+fn append_signed_line(
+    canonical: []const u8,
+    signer: kumara.KeyPair,
+    log: []u8,
+    log_len: *u32,
+) error{Overflow, InvalidFact}!void {
+    const root_sig = kumara.sign(canonical, signer, null);
+    var line: [rc.max_line_len]u8 = undefined;
+    const line_len = try rc.format_log_line(root_sig, canonical, &line);
+    const need = log_len.* + line_len;
+    if (need > buf_len_u32(log)) return error.Overflow;
+    tally_copy.copy_disjoint(u8, log[log_len.*..][0..line_len], line[0..line_len]);
+    log_len.* = need;
+}
+
+pub fn publish_root(
+    book: *Book,
+    monarch: kumara.KeyPair,
+    monarch_hex: *const [pubkey_hex_len]u8,
+    stamp: []const u8,
+    log: []u8,
+    log_len: *u32,
+    out: *PublishedRoot,
+) error{Overflow, InvalidFact, ConservationBroken}!void {
+    const seq = book.root_seq + 1;
+    try build_attested_bundle(book, seq, stamp, monarch, out);
+
+    var memo_buf: [max_memo_len]u8 = undefined;
+    const memo = try write_root_memo(book, seq, out, &memo_buf);
+
+    const fields = rc.FactFields{
+        .from = monarch_hex[0..],
+        .to = monarch_hex[0..],
+        .amount = "0",
+        .memo = memo,
+        .stamp = stamp,
+    };
+
+    // Root facts use amount 0 — sign via receipt_core directly (MALA fold refuses 0).
+    var canonical: [rc.max_fact_len]u8 = undefined;
+    const canonical_len = try rc.write_canonical_fact(fields, &canonical);
+    try append_signed_line(canonical[0..canonical_len], monarch, log, log_len);
+
+    book.root_seq = seq;
+    tally_copy.copy_disjoint(u8, &book.prev_state_root_hex, &out.state_root_hex);
+    out.seq = seq;
+}
+
+/// Dual D1: same exit bundle (attested by monarch A); two log lines over identical
+/// canonical fact bytes (`from` A, `to` B), signed by A then B.
+pub fn publish_root_dual(
+    book: *Book,
+    monarch_a: kumara.KeyPair,
+    monarch_a_hex: *const [pubkey_hex_len]u8,
+    monarch_b: kumara.KeyPair,
+    monarch_b_hex: *const [pubkey_hex_len]u8,
+    stamp: []const u8,
+    log: []u8,
+    log_len: *u32,
+    out: *PublishedRoot,
+) error{Overflow, InvalidFact, ConservationBroken}!void {
+    const seq = book.root_seq + 1;
+    try build_attested_bundle(book, seq, stamp, monarch_a, out);
+
+    var memo_buf: [max_memo_len]u8 = undefined;
+    const memo = try write_root_memo(book, seq, out, &memo_buf);
+
+    const fields = rc.FactFields{
+        .from = monarch_a_hex[0..],
+        .to = monarch_b_hex[0..],
+        .amount = "0",
+        .memo = memo,
+        .stamp = stamp,
+    };
+
+    var canonical: [rc.max_fact_len]u8 = undefined;
+    const canonical_len = try rc.write_canonical_fact(fields, &canonical);
+
+    // Two log lines over identical canonical bytes: signed by A, then by B.
+    try append_signed_line(canonical[0..canonical_len], monarch_a, log, log_len);
+    try append_signed_line(canonical[0..canonical_len], monarch_b, log, log_len);
+
+    book.root_seq = seq;
+    tally_copy.copy_disjoint(u8, &book.prev_state_root_hex, &out.state_root_hex);
+    out.seq = seq;
+}
+
+fn parse_root_memo(memo: []const u8) error{BadMemo}!struct {
+    instance: []const u8,
+    seq: u64,
+    state_root: []const u8,
+    accounts_digest: []const u8,
+    prev_root: []const u8,
+} {
+    if (!std.mem.startsWith(u8, memo, memo_root_prefix)) return error.BadMemo;
+    var it = std.mem.splitScalar(u8, memo[memo_root_prefix.len..], ' ');
+    const instance = it.next() orelse return error.BadMemo;
+    const seq_s = it.next() orelse return error.BadMemo;
+    const state_root = it.next() orelse return error.BadMemo;
+    const accounts_d = it.next() orelse return error.BadMemo;
+    const prev_root = it.next() orelse return error.BadMemo;
+    if (it.next() != null) return error.BadMemo;
+    if (instance.len != instance_hex_len) return error.BadMemo;
+    if (state_root.len != digest_hex_len) return error.BadMemo;
+    if (accounts_d.len != digest_hex_len) return error.BadMemo;
+    if (prev_root.len != digest_hex_len) return error.BadMemo;
+    const seq = tally_parse_int.parse_int(u64, seq_s, .{}) catch return error.BadMemo;
+    return .{
+        .instance = instance,
+        .seq = seq,
+        .state_root = state_root,
+        .accounts_digest = accounts_d,
+        .prev_root = prev_root,
+    };
+}
+
+/// Find and verify the latest wov:root on the log for this instance.
+pub fn verify_latest_root(
+    log: []const u8,
+    monarch_pk: kumara.PublicKey,
+    expected_instance: *const [instance_hex_len]u8,
+) error{VerifyFailed}!struct {
+    seq: u64,
+    state_root: [digest_hex_len]u8,
+    fact_ok: bool,
+} {
+    var found = false;
+    var best_seq: u64 = 0;
+    var best_root: [digest_hex_len]u8 = undefined;
+    var pos: u32 = 0;
+    var lines: u32 = 0;
+    while (pos < buf_len_u32(log)) {
+        if (lines >= max_log_lines) return error.VerifyFailed;
+        const line_end_usz = std.mem.indexOfScalarPos(u8, log, pos, '\n') orelse log.len;
+        assert(line_end_usz <= std.math.maxInt(u32));
+        const line_end: u32 = @intCast(line_end_usz);
+        const line = log[pos..line_end];
+        pos = if (line_end < buf_len_u32(log)) line_end + 1 else line_end;
+        if (std.mem.trim(u8, line, " \t\r\n").len == 0) continue;
+        lines += 1;
+
+        var sig_buf: [kumara.signature_length]u8 = undefined;
+        var fact_out: [rc.max_fact_len]u8 = undefined;
+        const parsed = rc.parse_log_line(line, &sig_buf, &fact_out) catch continue;
+        const fact = fact_out[0..parsed.fact_len];
+        var fields: rc.FactFields = undefined;
+        rc.parse_fact_fields(fact, &fields) catch continue;
+        if (!std.mem.startsWith(u8, fields.memo, memo_root_prefix)) continue;
+        rc.verify_record(sig_buf[0..parsed.sig_len], fact, monarch_pk) catch return error.VerifyFailed;
+        const root = parse_root_memo(fields.memo) catch return error.VerifyFailed;
+        if (!std.mem.eql(u8, root.instance, expected_instance)) return error.VerifyFailed;
+        if (!found or root.seq > best_seq) {
+            found = true;
+            best_seq = root.seq;
+            tally_copy.copy_disjoint(u8, &best_root, root.state_root);
+        }
+    }
+    if (!found) return error.VerifyFailed;
+    return .{ .seq = best_seq, .state_root = best_root, .fact_ok = true };
+}
+
+/// Dual D1: accept a root only when both monarchs signed the same canonical fact.
+/// Solo-signed roots (one matching line) are refused.
+pub fn verify_latest_root_dual(
+    log: []const u8,
+    monarch_a_pk: kumara.PublicKey,
+    monarch_b_pk: kumara.PublicKey,
+    monarch_a_hex: *const [pubkey_hex_len]u8,
+    monarch_b_hex: *const [pubkey_hex_len]u8,
+    expected_instance: *const [instance_hex_len]u8,
+) error{VerifyFailed}!struct {
+    seq: u64,
+    state_root: [digest_hex_len]u8,
+    fact_ok: bool,
+} {
+    var found = false;
+    var best_seq: u64 = 0;
+    var best_root: [digest_hex_len]u8 = undefined;
+    var pos: u32 = 0;
+    var lines: u32 = 0;
+    while (pos < buf_len_u32(log)) {
+        if (lines >= max_log_lines) return error.VerifyFailed;
+        const line_end_usz = std.mem.indexOfScalarPos(u8, log, pos, '\n') orelse log.len;
+        assert(line_end_usz <= std.math.maxInt(u32));
+        const line_end: u32 = @intCast(line_end_usz);
+        const line = log[pos..line_end];
+        pos = if (line_end < buf_len_u32(log)) line_end + 1 else line_end;
+        if (std.mem.trim(u8, line, " \t\r\n").len == 0) continue;
+        lines += 1;
+
+        var sig_buf: [kumara.signature_length]u8 = undefined;
+        var fact_out: [rc.max_fact_len]u8 = undefined;
+        const parsed = rc.parse_log_line(line, &sig_buf, &fact_out) catch continue;
+        const fact = fact_out[0..parsed.fact_len];
+        var fields: rc.FactFields = undefined;
+        rc.parse_fact_fields(fact, &fields) catch continue;
+        if (!std.mem.startsWith(u8, fields.memo, memo_root_prefix)) continue;
+        if (fields.from.len != pubkey_hex_len or fields.to.len != pubkey_hex_len) continue;
+        if (!std.mem.eql(u8, fields.from, monarch_a_hex) or !std.mem.eql(u8, fields.to, monarch_b_hex)) continue;
+
+        // Need a second consecutive root line with identical fact bytes.
+        if (pos >= buf_len_u32(log)) return error.VerifyFailed;
+        const line2_end_usz = std.mem.indexOfScalarPos(u8, log, pos, '\n') orelse log.len;
+        assert(line2_end_usz <= std.math.maxInt(u32));
+        const line2_end: u32 = @intCast(line2_end_usz);
+        const line2 = log[pos..line2_end];
+        pos = if (line2_end < buf_len_u32(log)) line2_end + 1 else line2_end;
+        if (std.mem.trim(u8, line2, " \t\r\n").len == 0) return error.VerifyFailed;
+        lines += 1;
+
+        var sig2_buf: [kumara.signature_length]u8 = undefined;
+        var fact2_out: [rc.max_fact_len]u8 = undefined;
+        const parsed2 = rc.parse_log_line(line2, &sig2_buf, &fact2_out) catch return error.VerifyFailed;
+        const fact2 = fact2_out[0..parsed2.fact_len];
+        if (!std.mem.eql(u8, fact, fact2)) return error.VerifyFailed;
+
+        rc.verify_record(sig_buf[0..parsed.sig_len], fact, monarch_a_pk) catch return error.VerifyFailed;
+        rc.verify_record(sig2_buf[0..parsed2.sig_len], fact2, monarch_b_pk) catch return error.VerifyFailed;
+
+        const root = parse_root_memo(fields.memo) catch return error.VerifyFailed;
+        if (!std.mem.eql(u8, root.instance, expected_instance)) return error.VerifyFailed;
+        if (!found or root.seq > best_seq) {
+            found = true;
+            best_seq = root.seq;
+            tally_copy.copy_disjoint(u8, &best_root, root.state_root);
+        }
+    }
+    if (!found) return error.VerifyFailed;
+    return .{ .seq = best_seq, .state_root = best_root, .fact_ok = true };
+}
+
+pub fn verify_bundle_matches_root(
+    bundle: []const u8,
+    state_root_hex: *const [digest_hex_len]u8,
+    monarch_pk: kumara.PublicKey,
+) error{VerifyFailed}!void {
+    var digest: [32]u8 = undefined;
+    Sha3_256.hash(bundle, &digest, .{});
+    var hex: [digest_hex_len]u8 = undefined;
+    write_hex(&digest, &hex);
+    if (!std.mem.eql(u8, &hex, state_root_hex)) return error.VerifyFailed;
+
+    // Verify attestation line
+    var att_pos: ?usize = null;
+    var pos: usize = 0;
+    while (pos < bundle.len) {
+        const nl = std.mem.indexOfScalarPos(u8, bundle, pos, '\n') orelse bundle.len;
+        const line = bundle[pos..nl];
+        if (std.mem.startsWith(u8, line, "attestation ")) att_pos = pos;
+        pos = if (nl < bundle.len) nl + 1 else nl;
+    }
+    const ap = att_pos orelse return error.VerifyFailed;
+    const att_line = bundle[ap..];
+    const nl = std.mem.indexOfScalar(u8, att_line, '\n') orelse return error.VerifyFailed;
+    const prefix = "attestation ";
+    if (!std.mem.startsWith(u8, att_line[0..nl], prefix)) return error.VerifyFailed;
+    const sig_hex = att_line[prefix.len..nl];
+    if (sig_hex.len != kumara.signature_length * 2) return error.VerifyFailed;
+    var sig_bytes: [kumara.signature_length]u8 = undefined;
+    decode_hex_lower(sig_hex, &sig_bytes) catch return error.VerifyFailed;
+    const body = bundle[0..ap];
+    rc.verify_record(&sig_bytes, body, monarch_pk) catch return error.VerifyFailed;
+}
+
+pub fn prove_balance(
+    bundle: []const u8,
+    account_hex: *const [pubkey_hex_len]u8,
+) error{NotFound, BadBundle}!struct { balance: i64, nonce: u64 } {
+    var pos: usize = 0;
+    var header_lines: u32 = 0;
+    while (pos < bundle.len) {
+        const nl = std.mem.indexOfScalarPos(u8, bundle, pos, '\n') orelse bundle.len;
+        const line = bundle[pos..nl];
+        pos = if (nl < bundle.len) nl + 1 else nl;
+        if (header_lines < 4) {
+            header_lines += 1;
+            continue;
+        }
+        if (std.mem.startsWith(u8, line, "conservation ") or std.mem.startsWith(u8, line, "attestation ")) break;
+        if (line.len < pubkey_hex_len + 3) return error.BadBundle;
+        if (!std.mem.eql(u8, line[0..pubkey_hex_len], account_hex)) continue;
+        if (line[pubkey_hex_len] != ' ') return error.BadBundle;
+        var rest = line[pubkey_hex_len + 1 ..];
+        const sp = std.mem.indexOfScalar(u8, rest, ' ') orelse return error.BadBundle;
+        const bal_s = rest[0..sp];
+        const nonce_s = rest[sp + 1 ..];
+        const balance = tally_parse_int.parse_int(i64, bal_s, .{}) catch return error.BadBundle;
+        const nonce = tally_parse_int.parse_int(u64, nonce_s, .{}) catch return error.BadBundle;
+        return .{ .balance = balance, .nonce = nonce };
+    }
+    return error.NotFound;
+}
+
+fn exit_already_used(book: *const Book, account_hex: *const [pubkey_hex_len]u8, seq: u64) bool {
+    var i: u32 = 0;
+    while (i < book.exit_count) : (i += 1) {
+        if (book.exits[i].used and book.exits[i].seq == seq and
+            std.mem.eql(u8, &book.exits[i].account_hex, account_hex))
+            return true;
+    }
+    return false;
+}
+
+fn record_exit(book: *Book, account_hex: *const [pubkey_hex_len]u8, seq: u64) error{Overflow}!void {
+    if (book.exit_count >= max_exits) return error.Overflow;
+    const slot = &book.exits[book.exit_count];
+    tally_copy.copy_disjoint(u8, &slot.account_hex, account_hex);
+    slot.seq = seq;
+    slot.used = true;
+    book.exit_count += 1;
+}
+
+/// Accept holder exit against latest root; append wov:exit; credit redeemed.
+pub fn accept_exit(
+    book: *Book,
+    holder: kumara.KeyPair,
+    holder_hex: *const [pubkey_hex_len]u8,
+    issuer_hex: *const [pubkey_hex_len]u8,
+    monarch_pk: kumara.PublicKey,
+    log: []u8,
+    log_len: *u32,
+    published: *const PublishedRoot,
+    stamp: []const u8,
+) error{Rejected, Overflow, InvalidFact}!void {
+    var instance_hex: [instance_hex_len]u8 = undefined;
+    hex_of_instance(&instance_hex);
+
+    const latest = verify_latest_root(log[0..log_len.*], monarch_pk, &instance_hex) catch return error.Rejected;
+    if (latest.seq != published.seq) return error.Rejected;
+    if (!std.mem.eql(u8, &latest.state_root, &published.state_root_hex)) return error.Rejected;
+
+    verify_bundle_matches_root(published.bundle[0..published.bundle_len], &published.state_root_hex, monarch_pk) catch return error.Rejected;
+    const proof = prove_balance(published.bundle[0..published.bundle_len], holder_hex) catch return error.Rejected;
+    if (proof.balance <= 0) return error.Rejected;
+    if (exit_already_used(book, holder_hex, published.seq)) return error.Rejected;
+
+    var bal_buf: [32]u8 = undefined;
+    const bal_s = std.fmt.bufPrint(&bal_buf, "{d}", .{proof.balance}) catch return error.Overflow;
+
+    var memo_buf: [max_memo_len]u8 = undefined;
+    const memo = std.fmt.bufPrint(
+        &memo_buf,
+        "{s}{s} {d} {s} {d} {s}",
+        .{
+            memo_exit_prefix,
+            instance_hex[0..],
+            published.seq,
+            bal_s,
+            proof.nonce,
+            published.state_root_hex[0..],
+        },
+    ) catch return error.Overflow;
+
+    const fields = rc.FactFields{
+        .from = holder_hex[0..],
+        .to = issuer_hex[0..],
+        .amount = bal_s,
+        .memo = memo,
+        .stamp = stamp,
+    };
+    var canonical: [rc.max_fact_len]u8 = undefined;
+    const canonical_len = try rc.write_canonical_fact(fields, &canonical);
+    const sig = kumara.sign(canonical[0..canonical_len], holder, null);
+    var line: [rc.max_line_len]u8 = undefined;
+    const line_len = try rc.format_log_line(sig, canonical[0..canonical_len], &line);
+    const need = log_len.* + line_len;
+    if (need > buf_len_u32(log)) return error.Overflow;
+    tally_copy.copy_disjoint(u8, log[log_len.*..][0..line_len], line[0..line_len]);
+    log_len.* = need;
+
+    try record_exit(book, holder_hex, published.seq);
+    book.redeemed +%= proof.balance;
+    if (find_account(book, holder_hex)) |acct| {
+        acct.balance = 0;
+        acct.nonce +%= 1;
+    }
+}
+
+/// Accept holder exit against a dual D1 root (both monarch signatures required).
+pub fn accept_exit_dual(
+    book: *Book,
+    holder: kumara.KeyPair,
+    holder_hex: *const [pubkey_hex_len]u8,
+    issuer_hex: *const [pubkey_hex_len]u8,
+    monarch_a_pk: kumara.PublicKey,
+    monarch_b_pk: kumara.PublicKey,
+    monarch_a_hex: *const [pubkey_hex_len]u8,
+    monarch_b_hex: *const [pubkey_hex_len]u8,
+    log: []u8,
+    log_len: *u32,
+    published: *const PublishedRoot,
+    stamp: []const u8,
+) error{Rejected, Overflow, InvalidFact}!void {
+    var instance_hex: [instance_hex_len]u8 = undefined;
+    hex_of_instance(&instance_hex);
+
+    const latest = verify_latest_root_dual(
+        log[0..log_len.*],
+        monarch_a_pk,
+        monarch_b_pk,
+        monarch_a_hex,
+        monarch_b_hex,
+        &instance_hex,
+    ) catch return error.Rejected;
+    if (latest.seq != published.seq) return error.Rejected;
+    if (!std.mem.eql(u8, &latest.state_root, &published.state_root_hex)) return error.Rejected;
+
+    verify_bundle_matches_root(published.bundle[0..published.bundle_len], &published.state_root_hex, monarch_a_pk) catch return error.Rejected;
+    const proof = prove_balance(published.bundle[0..published.bundle_len], holder_hex) catch return error.Rejected;
+    if (proof.balance <= 0) return error.Rejected;
+    if (exit_already_used(book, holder_hex, published.seq)) return error.Rejected;
+
+    var bal_buf: [32]u8 = undefined;
+    const bal_s = std.fmt.bufPrint(&bal_buf, "{d}", .{proof.balance}) catch return error.Overflow;
+
+    var memo_buf: [max_memo_len]u8 = undefined;
+    const memo = std.fmt.bufPrint(
+        &memo_buf,
+        "{s}{s} {d} {s} {d} {s}",
+        .{
+            memo_exit_prefix,
+            instance_hex[0..],
+            published.seq,
+            bal_s,
+            proof.nonce,
+            published.state_root_hex[0..],
+        },
+    ) catch return error.Overflow;
+
+    const fields = rc.FactFields{
+        .from = holder_hex[0..],
+        .to = issuer_hex[0..],
+        .amount = bal_s,
+        .memo = memo,
+        .stamp = stamp,
+    };
+    var canonical: [rc.max_fact_len]u8 = undefined;
+    const canonical_len = try rc.write_canonical_fact(fields, &canonical);
+    try append_signed_line(canonical[0..canonical_len], holder, log, log_len);
+
+    try record_exit(book, holder_hex, published.seq);
+    book.redeemed +%= proof.balance;
+    if (find_account(book, holder_hex)) |acct| {
+        acct.balance = 0;
+        acct.nonce +%= 1;
+    }
+}
+
+fn check_fixture_bundle(io: std.Io, expected: []const u8) !void {
+    const cwd = Dir.cwd();
+    var buf: [max_bundle_len]u8 = undefined;
+    const read = try cwd.readFile(io, "tools/fixtures/wov_exit_bundle_v1.bron", &buf);
+    if (!std.mem.eql(u8, read, expected)) return error.FixtureMismatch;
+}
+
+fn run_selftest(io: std.Io) !u8 {
+    const monarch = kumara.keypair_from_seed(&monarch_seed);
+    const holder_a = kumara.keypair_from_seed(&holder_a_seed);
+    const holder_b = kumara.keypair_from_seed(&holder_b_seed);
+
+    var monarch_hex: [pubkey_hex_len]u8 = undefined;
+    var holder_a_hex: [pubkey_hex_len]u8 = undefined;
+    var holder_b_hex: [pubkey_hex_len]u8 = undefined;
+    hex_of_key(monarch.public_key, &monarch_hex);
+    hex_of_key(holder_a.public_key, &holder_a_hex);
+    hex_of_key(holder_b.public_key, &holder_b_hex);
+
+    var book = Book.init();
+    try mint(&book, &holder_a_hex, 1000);
+    try transfer(&book, &holder_a_hex, &holder_b_hex, 300);
+    assert(find_account(&book, &holder_a_hex).?.balance == 700);
+    assert(find_account(&book, &holder_b_hex).?.balance == 300);
+
+    var log: [rc.max_log_len]u8 = undefined;
+    var log_len: u32 = 0;
+    var published: PublishedRoot = .{};
+    try publish_root(&book, monarch, &monarch_hex, witness_stamp, &log, &log_len, &published);
+    assert(published.seq == 1);
+
+    var instance_hex: [instance_hex_len]u8 = undefined;
+    hex_of_instance(&instance_hex);
+    const latest = try verify_latest_root(log[0..log_len], monarch.public_key, &instance_hex);
+    assert(latest.seq == 1);
+    assert(std.mem.eql(u8, &latest.state_root, &published.state_root_hex));
+
+    try verify_bundle_matches_root(published.bundle[0..published.bundle_len], &published.state_root_hex, monarch.public_key);
+    const proof_a = try prove_balance(published.bundle[0..published.bundle_len], &holder_a_hex);
+    assert(proof_a.balance == 700);
+    print("wov: holder A balance {d} proven from bundle — GREEN welcome\n", .{proof_a.balance});
+
+    try check_fixture_bundle(io, published.bundle[0..published.bundle_len]);
+    print("wov: golden exit bundle matches fixture — GREEN welcome\n", .{});
+
+    try accept_exit(
+        &book,
+        holder_a,
+        &holder_a_hex,
+        &monarch_hex,
+        monarch.public_key,
+        &log,
+        &log_len,
+        &published,
+        "20260709.200730",
+    );
+    print("wov: holder A exit accepted — GREEN welcome\n", .{});
+
+    // Double exit refused
+    if (accept_exit(
+        &book,
+        holder_a,
+        &holder_a_hex,
+        &monarch_hex,
+        monarch.public_key,
+        &log,
+        &log_len,
+        &published,
+        "20260709.200731",
+    )) |_| {
+        return error.UnwelcomePassed;
+    } else |_| print("wov: double exit refused — GREEN unwelcome path\n", .{});
+
+    // Tampered bundle refused
+    var forged = published;
+    forged.bundle[0] +%= 1;
+    if (verify_bundle_matches_root(forged.bundle[0..forged.bundle_len], &published.state_root_hex, monarch.public_key)) |_| {
+        return error.UnwelcomePassed;
+    } else |_| print("wov: tampered bundle refused — GREEN unwelcome path\n", .{});
+
+    print("wov: version {s}\n", .{wov_version});
+    print("GREEN: WOV exit honesty — mint, root, prove, exit, refuse double.\n", .{});
+    return 0;
+}
+
+fn run_write_fixture(_: std.Io) !u8 {
+    const monarch = kumara.keypair_from_seed(&monarch_seed);
+    const holder_a = kumara.keypair_from_seed(&holder_a_seed);
+    const holder_b = kumara.keypair_from_seed(&holder_b_seed);
+    var monarch_hex: [pubkey_hex_len]u8 = undefined;
+    var holder_a_hex: [pubkey_hex_len]u8 = undefined;
+    var holder_b_hex: [pubkey_hex_len]u8 = undefined;
+    hex_of_key(monarch.public_key, &monarch_hex);
+    hex_of_key(holder_a.public_key, &holder_a_hex);
+    hex_of_key(holder_b.public_key, &holder_b_hex);
+
+    var book = Book.init();
+    try mint(&book, &holder_a_hex, 1000);
+    try transfer(&book, &holder_a_hex, &holder_b_hex, 300);
+    var log: [rc.max_log_len]u8 = undefined;
+    var log_len: u32 = 0;
+    var published: PublishedRoot = .{};
+    try publish_root(&book, monarch, &monarch_hex, witness_stamp, &log, &log_len, &published);
+    print("{s}", .{published.bundle[0..published.bundle_len]});
+    return 0;
+}
+
+fn run_selftest_dual(_: std.Io) !u8 {
+    const monarch_a = kumara.keypair_from_seed(&monarch_seed);
+    const monarch_b = kumara.keypair_from_seed(&monarch_b_seed);
+    const holder_a = kumara.keypair_from_seed(&holder_a_seed);
+    const holder_b = kumara.keypair_from_seed(&holder_b_seed);
+
+    var monarch_a_hex: [pubkey_hex_len]u8 = undefined;
+    var monarch_b_hex: [pubkey_hex_len]u8 = undefined;
+    var holder_a_hex: [pubkey_hex_len]u8 = undefined;
+    var holder_b_hex: [pubkey_hex_len]u8 = undefined;
+    hex_of_key(monarch_a.public_key, &monarch_a_hex);
+    hex_of_key(monarch_b.public_key, &monarch_b_hex);
+    hex_of_key(holder_a.public_key, &holder_a_hex);
+    hex_of_key(holder_b.public_key, &holder_b_hex);
+
+    var book = Book.init();
+    try mint(&book, &holder_a_hex, 1000);
+    try transfer(&book, &holder_a_hex, &holder_b_hex, 300);
+
+    var log: [rc.max_log_len]u8 = undefined;
+    var log_len: u32 = 0;
+    var published: PublishedRoot = .{};
+    try publish_root_dual(
+        &book,
+        monarch_a,
+        &monarch_a_hex,
+        monarch_b,
+        &monarch_b_hex,
+        dual_witness_stamp,
+        &log,
+        &log_len,
+        &published,
+    );
+    assert(published.seq == 1);
+
+    var instance_hex: [instance_hex_len]u8 = undefined;
+    hex_of_instance(&instance_hex);
+    const latest = try verify_latest_root_dual(
+        log[0..log_len],
+        monarch_a.public_key,
+        monarch_b.public_key,
+        &monarch_a_hex,
+        &monarch_b_hex,
+        &instance_hex,
+    );
+    assert(latest.seq == 1);
+    assert(std.mem.eql(u8, &latest.state_root, &published.state_root_hex));
+    print("wov-dual: twin-line root verified — GREEN welcome\n", .{});
+
+    try verify_bundle_matches_root(published.bundle[0..published.bundle_len], &published.state_root_hex, monarch_a.public_key);
+    const proof_a = try prove_balance(published.bundle[0..published.bundle_len], &holder_a_hex);
+    assert(proof_a.balance == 700);
+    print("wov-dual: holder A balance {d} proven — GREEN welcome\n", .{proof_a.balance});
+
+    try accept_exit_dual(
+        &book,
+        holder_a,
+        &holder_a_hex,
+        &monarch_a_hex,
+        monarch_a.public_key,
+        monarch_b.public_key,
+        &monarch_a_hex,
+        &monarch_b_hex,
+        &log,
+        &log_len,
+        &published,
+        "20260709.224635",
+    );
+    print("wov-dual: holder A exit accepted — GREEN welcome\n", .{});
+
+    // Solo-signed root refused under dual verify
+    var solo_book = Book.init();
+    try mint(&solo_book, &holder_a_hex, 1000);
+    var solo_log: [rc.max_log_len]u8 = undefined;
+    var solo_log_len: u32 = 0;
+    var solo_pub: PublishedRoot = .{};
+    try publish_root(&solo_book, monarch_a, &monarch_a_hex, dual_witness_stamp, &solo_log, &solo_log_len, &solo_pub);
+    if (verify_latest_root_dual(
+        solo_log[0..solo_log_len],
+        monarch_a.public_key,
+        monarch_b.public_key,
+        &monarch_a_hex,
+        &monarch_b_hex,
+        &instance_hex,
+    )) |_| {
+        return error.UnwelcomePassed;
+    } else |_| print("wov-dual: solo root refused under dual config — GREEN unwelcome path\n", .{});
+
+    print("wov-dual: version {s}\n", .{wov_version});
+    print("GREEN: WOV dual monarch D1 — twin lines, prove, exit, refuse solo.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2) {
+        if (std.mem.eql(u8, args[1], "selftest")) return run_selftest(io);
+        if (std.mem.eql(u8, args[1], "selftest-dual")) return run_selftest_dual(io);
+        if (std.mem.eql(u8, args[1], "write-fixture")) return run_write_fixture(io);
+    }
+    print("usage: wov selftest | selftest-dual | write-fixture\n", .{});
+    return 1;
+}

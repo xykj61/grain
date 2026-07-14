@@ -1,0 +1,30 @@
+# records.rish — records, field access, say, and equality as a gate.
+
+let enclosure = { read: ["/usr" "/lib"], write: ["/home/me"], net: false, mem_mb: 4096 }
+
+say "the enclosure: ${enclosure}"
+say "may it reach the net? ${enclosure.net}"
+say "its memory bound: ${enclosure.mem_mb}"
+
+# Field access yields a value we can gate on.
+assert enclosure.net == false else "this enclosure stays offline"
+assert enclosure.mem_mb == 4096
+
+# A field can be a list, and contains works on it.
+assert enclosure.read contains "/usr"
+
+# A field value can itself be a comparison, kept whole inside the braces.
+let flags = { ok: 1 == 1, bad: 1 == 2 }
+assert flags.ok
+assert flags.bad == false
+
+# Records compare by fields and values, order need not match.
+let same = { a: 1, b: 2 } == { b: 2, a: 1 }
+assert same else "records should match regardless of order"
+
+# Nested records, reached by a field path.
+let person = { name: "reya", keys: { sign: "ed25519", chain: "sui" } }
+say "signing key: ${person.keys.sign}"
+assert person.keys.chain == "sui"
+
+say "records held."

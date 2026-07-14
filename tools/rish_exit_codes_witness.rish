@@ -1,0 +1,20 @@
+# rish_exit_codes_witness.rish — Rishi named exit-code vocabulary witness.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/rish_exit_codes_witness.rish
+
+assert exit-ok == 0 else "exit-ok must be 0"
+assert exit-temporary == 112 else "exit-temporary must be 112 (execline/s6 lineage)"
+assert exit-permanent == 111 else "exit-permanent must be 111 (execline/s6 lineage)"
+assert exit-could-not-begin == 125 else "exit-could-not-begin must be 125 (exec failure)"
+
+let temp = run ["rishi/bin/rishi" "run" "tools/fixtures/exit_temporary.rish"]
+assert temp.code == exit-temporary else "exit_temporary fixture must return exit-temporary"
+
+let perm = run ["rishi/bin/rishi" "run" "tools/fixtures/exit_permanent.rish"]
+assert perm.code == exit-permanent else "exit_permanent fixture must return exit-permanent"
+
+let begin = run ["rishi/bin/rishi" "run" "tools/fixtures/exit_could_not_begin.rish"]
+assert begin.code == exit-could-not-begin else "exit_could_not_begin fixture must return exit-could-not-begin"
+
+say "GREEN: Rishi exit vocabulary — pre-bound names and exit statement."

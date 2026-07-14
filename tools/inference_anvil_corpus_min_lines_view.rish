@@ -1,0 +1,19 @@
+# inference_anvil_corpus_min_lines_view.rish — Anvil min_lines → Skate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/inference_anvil_corpus_min_lines_view.rish
+
+let bin = "pond/bin/drawn-terminal"
+
+say "build: Anvil corpus min_lines view — drawn-terminal compile"
+let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+assert build.ok else "drawn_terminal build failed for min_lines view"
+assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
+
+let corpus = run ["sh" "-c" "${bin} corpusminlinesviewtest 2>&1"]
+assert corpus.ok else "drawn terminal corpusminlinesviewtest exited non-zero"
+assert corpus.out contains "min lines view" else "min lines view missing expected output"
+assert corpus.out contains "GREEN" else "Anvil min lines view not GREEN"
+assert corpus.out contains "lines=5" else "min lines view missing five-line frame"
+
+say "GREEN: Anvil corpus min_lines view — large chunks on Skate."

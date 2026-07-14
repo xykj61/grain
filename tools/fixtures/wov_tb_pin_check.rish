@@ -1,0 +1,36 @@
+# wov_tb_pin_check.rish — assert gratitude/tigerbeetle pin shape (no TB link).
+#
+# Invoked by tools/wov_tb_pin.rish from the repository root.
+
+let pin_full = "59f2b995b6db9116ed8b257a33e39705234b3a6e"
+let pin_short = "59f2b99"
+let tb = "gratitude/tigerbeetle"
+
+let rev = run ["sh" "-c" "cd ${tb} && git rev-parse HEAD"]
+assert rev.ok else "tigerbeetle git rev-parse failed"
+assert rev.out contains pin_full else "tigerbeetle HEAD must match pinned SHA 59f2b995b6db9116ed8b257a33e39705234b3a6e"
+
+let gitlink = run ["sh" "-c" "git ls-tree HEAD gratitude/tigerbeetle"]
+assert gitlink.ok else "git ls-tree tigerbeetle failed"
+assert gitlink.out contains pin_full else "gitlink must record the same pinned SHA"
+assert gitlink.out contains "160000" else "tigerbeetle must remain a gitlink (mode 160000)"
+
+let license = run ["sh" "-c" "head -5 ${tb}/LICENSE"]
+assert license.ok else "tigerbeetle LICENSE unreadable"
+assert license.out contains "Apache" else "tigerbeetle LICENSE must name Apache"
+
+let style = run ["sh" "-c" "test -f ${tb}/docs/TIGER_STYLE.md && echo TIGER_STYLE_OK"]
+assert style.ok else "TIGER_STYLE.md missing"
+assert style.out contains "TIGER_STYLE_OK" else "TIGER_STYLE.md check failed"
+
+let entry = run ["sh" "-c" "test -f ${tb}/src/tigerbeetle.zig && echo SRC_OK"]
+assert entry.ok else "src/tigerbeetle.zig missing"
+assert entry.out contains "SRC_OK" else "src/tigerbeetle.zig check failed"
+
+# Clean-room soak: no authored .rye may import the pin tree yet.
+# Gratitude comments naming tigerbeetle (study only) are welcome; @import of the pin is not.
+let imports = run ["sh" "-c" "rg -n '@import\\([^)]*tigerbeetle|gratitude/tigerbeetle' --glob '*.rye' linengrow tally comlink mantra pond rye rishi caravan brushstroke 2>/dev/null | head -20 || true"]
+assert imports.ok else "import scan failed"
+assert imports.out == "" else "authored .rye must not @import or path-link gratitude/tigerbeetle until the client lap"
+
+say "WOV-TB-PIN-GREEN: rev ${pin_short} Apache TIGER_STYLE src present; no .rye TB import yet."

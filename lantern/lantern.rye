@@ -1,0 +1,1186 @@
+//! lantern/lantern.rye — Lantern lap 33 selftest (echo · user pins) + RW-5 contract.
+//!
+//!   rye build lantern/lantern.rye -femit-bin=lantern/bin/lantern
+//!   lantern/bin/lantern selftest
+//!   lantern/bin/lantern rw5contracttest  # RW-5 six-probe contract (parity tip 421)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const Dir = std.Io.Dir;
+const lc = @import("lantern_core.rye");
+
+const lantern_version = "20260711.005028";
+pub const fixture_path = "lantern/fixtures/completion.bron";
+pub const length_fixture_path = "lantern/fixtures/completion_length.bron";
+pub const allow_fixture_path = "lantern/fixtures/allowed_models.bron";
+pub const seed_fixture_path = "lantern/fixtures/completion_seed.bron";
+pub const top_p_fixture_path = "lantern/fixtures/completion_top_p.bron";
+pub const err_stop_fixture_path = "lantern/fixtures/completion_err_stop.bron";
+pub const stop_sequence_fixture_path = "lantern/fixtures/completion_stop_sequence.bron";
+pub const prompt_fixture_path = "lantern/fixtures/completion_prompt.bron";
+pub const max_tokens_fixture_path = "lantern/fixtures/completion_max_tokens.bron";
+pub const text_fixture_path = "lantern/fixtures/completion_text.bron";
+pub const temperature_fixture_path = "lantern/fixtures/completion_temperature.bron";
+pub const seed_pin_fixture_path = "lantern/fixtures/completion_seed_pin.bron";
+pub const err_stop_pin_fixture_path = "lantern/fixtures/completion_err_stop_pin.bron";
+pub const length_stop_pin_fixture_path = "lantern/fixtures/completion_length_stop_pin.bron";
+pub const allow_count_fixture_path = "lantern/fixtures/completion_allow_count.bron";
+pub const empty_allow_fixture_path = "lantern/fixtures/allowed_models_empty.bron";
+pub const one_allow_fixture_path = "lantern/fixtures/allowed_models_one.bron";
+pub const assist_fixture_path = "lantern/fixtures/completion_assist.bron";
+pub const require_model_fixture_path = "lantern/fixtures/completion_require_model.bron";
+pub const stopped_reason_pin_fixture_path = "lantern/fixtures/completion_stopped_reason_pin.bron";
+pub const stopped_reason_length_pin_fixture_path = "lantern/fixtures/completion_stopped_reason_length_pin.bron";
+pub const stopped_reason_err_stop_pin_fixture_path = "lantern/fixtures/completion_stopped_reason_err_stop_pin.bron";
+pub const stopped_reason_stop_sequence_pin_fixture_path = "lantern/fixtures/completion_stopped_reason_stop_sequence_pin.bron";
+pub const stream_pin_fixture_path = "lantern/fixtures/completion_stream_pin.bron";
+pub const stream_on_fixture_path = "lantern/fixtures/completion_stream_on.bron";
+pub const top_k_fixture_path = "lantern/fixtures/completion_top_k.bron";
+pub const frequency_penalty_fixture_path = "lantern/fixtures/completion_frequency_penalty.bron";
+pub const presence_penalty_fixture_path = "lantern/fixtures/completion_presence_penalty.bron";
+pub const n_fixture_path = "lantern/fixtures/completion_n.bron";
+pub const tokens_out_fixture_path = "lantern/fixtures/completion_tokens_out.bron";
+pub const tokens_in_fixture_path = "lantern/fixtures/completion_tokens_in.bron";
+pub const echo_fixture_path = "lantern/fixtures/completion_echo.bron";
+pub const user_fixture_path = "lantern/fixtures/completion_user.bron";
+
+fn welcome_complete(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, fixture_path, &buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "init.garden for args",
+        .max_tokens = 64,
+    };
+    const resp = try lc.complete_fixture(req, text);
+    assert(resp.tokens_in == 24);
+    assert(resp.tokens_out == 12);
+    assert(resp.stopped_reason == .eos);
+    assert(std.mem.indexOf(u8, resp.text, "init.garden") != null);
+    print("lantern: fixture completion — tokens {d}/{d} eos\n", .{ resp.tokens_in, resp.tokens_out });
+}
+
+fn welcome_length_budget(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, length_fixture_path, &buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "budget",
+        .max_tokens = 5,
+    };
+    const resp = try lc.complete_fixture(req, text);
+    assert(resp.tokens_out == 5);
+    assert(resp.stopped_reason == .length);
+    assert(std.mem.eql(u8, resp.text, "one two three four five"));
+    print("lantern: max_tokens truncate — tokens {d} length\n", .{resp.tokens_out});
+}
+
+fn unwelcome_model_mismatch(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, fixture_path, &buf);
+    const req = lc.Request{
+        .model_hash = "wrong-hash",
+        .prompt = "x",
+        .max_tokens = 8,
+    };
+    if (lc.complete_fixture(req, text)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ModelMismatch);
+    }
+    print("lantern: model mismatch refused\n", .{});
+}
+
+fn unwelcome_prompt_too_long() !void {
+    var long: [lc.max_prompt_len + 4]u8 = undefined;
+    @memset(long[0..], 'a');
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = long[0 .. lc.max_prompt_len + 1],
+        .max_tokens = 8,
+    };
+    if (lc.validate_request(req)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.PromptTooLong);
+    }
+    print("lantern: prompt overflow refused\n", .{});
+}
+
+fn welcome_allowlist(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var fix_buf: [1024]u8 = undefined;
+    const fixture = try cwd.readFile(io, fixture_path, &fix_buf);
+    var allow_buf: [1024]u8 = undefined;
+    const allow = try cwd.readFile(io, allow_fixture_path, &allow_buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "allow",
+        .max_tokens = 64,
+    };
+    const resp = try lc.complete_allowed(req, fixture, allow);
+    assert(resp.stopped_reason == .eos);
+    print("lantern: allow-list completion — model accepted\n", .{});
+}
+
+fn unwelcome_allowlist_refuse(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var fix_buf: [1024]u8 = undefined;
+    const fixture = try cwd.readFile(io, fixture_path, &fix_buf);
+    var allow_buf: [1024]u8 = undefined;
+    const allow = try cwd.readFile(io, allow_fixture_path, &allow_buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-not-on-list",
+        .prompt = "x",
+        .max_tokens = 8,
+    };
+    if (lc.complete_allowed(req, fixture, allow)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ModelMismatch);
+    }
+    print("lantern: allow-list refuse — unknown model\n", .{});
+}
+
+fn welcome_seed_temperature(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, seed_fixture_path, &buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "seeded",
+        .max_tokens = 64,
+        .temperature = 0.0,
+        .seed = 42,
+    };
+    const resp = try lc.complete_fixture(req, text);
+    assert(resp.stopped_reason == .eos);
+    assert(std.mem.indexOf(u8, resp.text, "init.garden") != null);
+    print("lantern: seed+temperature completion — seed 42 temp 0.0\n", .{});
+}
+
+fn unwelcome_bad_temperature() !void {
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "x",
+        .max_tokens = 8,
+        .temperature = 2.5,
+        .seed = 0,
+    };
+    if (lc.validate_request(req)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.BadTemperature);
+    }
+    print("lantern: bad temperature refused\n", .{});
+}
+
+fn unwelcome_seed_mismatch(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, seed_fixture_path, &buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "x",
+        .max_tokens = 8,
+        .temperature = 0.0,
+        .seed = 99,
+    };
+    if (lc.complete_fixture(req, text)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.SeedMismatch);
+    }
+    print("lantern: seed mismatch refused\n", .{});
+}
+
+fn welcome_top_p(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, top_p_fixture_path, &buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "nucleus",
+        .max_tokens = 64,
+        .temperature = 0.0,
+        .seed = 42,
+        .top_p = 1.0,
+    };
+    const resp = try lc.complete_fixture(req, text);
+    assert(resp.stopped_reason == .eos);
+    assert(std.mem.indexOf(u8, resp.text, "init.garden") != null);
+    print("lantern: top_p completion — top_p 1.0 seed 42\n", .{});
+}
+
+fn unwelcome_bad_top_p() !void {
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "x",
+        .max_tokens = 8,
+        .top_p = 1.5,
+    };
+    if (lc.validate_request(req)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.BadTopP);
+    }
+    print("lantern: bad top_p refused\n", .{});
+}
+
+fn unwelcome_top_p_mismatch(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, top_p_fixture_path, &buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "x",
+        .max_tokens = 8,
+        .temperature = 0.0,
+        .seed = 42,
+        .top_p = 0.5,
+    };
+    if (lc.complete_fixture(req, text)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.TopPMismatch);
+    }
+    print("lantern: top_p mismatch refused\n", .{});
+}
+
+fn welcome_err_stop(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, err_stop_fixture_path, &buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "incomplete",
+        .max_tokens = 64,
+    };
+    const resp = try lc.complete_fixture(req, text);
+    assert(resp.stopped_reason == .err_stop);
+    assert(resp.tokens_out == 4);
+    assert(std.mem.indexOf(u8, resp.text, "refuse") != null);
+    print("lantern: err_stop completion — tokens {d} err_stop\n", .{resp.tokens_out});
+}
+
+fn welcome_stop_sequence(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, stop_sequence_fixture_path, &buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "fence",
+        .max_tokens = 64,
+        .stop_sequence = "fence",
+    };
+    const resp = try lc.complete_fixture(req, text);
+    assert(resp.stopped_reason == .stop_sequence);
+    assert(resp.tokens_out == 3);
+    assert(std.mem.indexOf(u8, resp.text, "halt") != null);
+    print("lantern: stop_sequence completion — tokens {d} stop_sequence\n", .{resp.tokens_out});
+}
+
+fn unwelcome_stop_sequence_mismatch(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, stop_sequence_fixture_path, &buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "fence",
+        .max_tokens = 64,
+        .stop_sequence = "other",
+    };
+    if (lc.complete_fixture(req, text)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.StopSequenceMismatch);
+    }
+    print("lantern: stop_sequence mismatch refused\n", .{});
+}
+
+fn unwelcome_bad_stop_sequence() !void {
+    const long = "abcdefghijklmnopqrstuvwxyz012345"; // 32 chars ok; 33 refused
+    const too_long = long ++ "x";
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "x",
+        .max_tokens = 8,
+        .stop_sequence = too_long,
+    };
+    if (lc.validate_request(req)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.BadStopSequence);
+    }
+    print("lantern: bad stop_sequence refused\n", .{});
+}
+
+fn welcome_prompt_pin(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, prompt_fixture_path, &buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "init.garden for args",
+        .max_tokens = 64,
+    };
+    const resp = try lc.complete_fixture(req, text);
+    assert(resp.stopped_reason == .eos);
+    assert(resp.tokens_out == 5);
+    assert(std.mem.indexOf(u8, resp.text, "garden") != null);
+    print("lantern: prompt pin completion — tokens {d} eos\n", .{resp.tokens_out});
+}
+
+fn unwelcome_prompt_mismatch(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, prompt_fixture_path, &buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "other prompt",
+        .max_tokens = 64,
+    };
+    if (lc.complete_fixture(req, text)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.PromptMismatch);
+    }
+    print("lantern: prompt mismatch refused\n", .{});
+}
+
+fn welcome_max_tokens_pin(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, max_tokens_fixture_path, &buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "budget pin",
+        .max_tokens = 8,
+    };
+    const resp = try lc.complete_fixture(req, text);
+    assert(resp.stopped_reason == .eos);
+    assert(resp.tokens_out == 4);
+    assert(std.mem.indexOf(u8, resp.text, "one") != null);
+    print("lantern: max_tokens pin completion — tokens {d} eos\n", .{resp.tokens_out});
+}
+
+fn unwelcome_max_tokens_mismatch(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, max_tokens_fixture_path, &buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "budget pin",
+        .max_tokens = 16,
+    };
+    if (lc.complete_fixture(req, text)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.MaxTokensMismatch);
+    }
+    print("lantern: max_tokens mismatch refused\n", .{});
+}
+
+fn welcome_text_pin(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, text_fixture_path, &buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "text pin",
+        .max_tokens = 64,
+    };
+    const resp = try lc.complete_fixture(req, text);
+    assert(resp.stopped_reason == .eos);
+    assert(resp.tokens_out == 4);
+    assert(std.mem.eql(u8, resp.text, "one two three four"));
+    print("lantern: text pin completion — tokens {d} eos\n", .{resp.tokens_out});
+}
+
+fn welcome_temperature_pin(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, temperature_fixture_path, &buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "warm",
+        .max_tokens = 64,
+        .temperature = 0.5,
+    };
+    const resp = try lc.complete_fixture(req, text);
+    assert(resp.stopped_reason == .eos);
+    assert(resp.tokens_out == 3);
+    assert(std.mem.indexOf(u8, resp.text, "warm") != null);
+    print("lantern: temperature pin completion — temp 0.5 eos\n", .{});
+}
+
+fn welcome_seed_pin(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, seed_pin_fixture_path, &buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "seeded",
+        .max_tokens = 64,
+        .seed = 42,
+    };
+    const resp = try lc.complete_fixture(req, text);
+    assert(resp.stopped_reason == .eos);
+    assert(resp.tokens_out == 3);
+    assert(std.mem.indexOf(u8, resp.text, "seed") != null);
+    print("lantern: seed pin completion — seed 42 eos\n", .{});
+}
+
+fn unwelcome_seed_pin_mismatch(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, seed_pin_fixture_path, &buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "seeded",
+        .max_tokens = 64,
+        .seed = 7,
+    };
+    if (lc.complete_fixture(req, text)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.SeedMismatch);
+    }
+    print("lantern: seed pin mismatch refused\n", .{});
+}
+
+fn welcome_err_stop_pin(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, err_stop_pin_fixture_path, &buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "guard",
+        .max_tokens = 64,
+        .err_stop = true,
+    };
+    const resp = try lc.complete_fixture(req, text);
+    assert(resp.stopped_reason == .err_stop);
+    assert(resp.tokens_out == 4);
+    print("lantern: err_stop pin completion — err_stop true\n", .{});
+}
+
+fn unwelcome_err_stop_pin_mismatch(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, err_stop_pin_fixture_path, &buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "guard",
+        .max_tokens = 64,
+        .err_stop = false,
+    };
+    if (lc.complete_fixture(req, text)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ErrStopMismatch);
+    }
+    print("lantern: err_stop pin mismatch refused\n", .{});
+}
+
+fn welcome_length_stop_pin(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, length_stop_pin_fixture_path, &buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "budget",
+        .max_tokens = 64,
+        .length_stop = true,
+    };
+    const resp = try lc.complete_fixture(req, text);
+    assert(resp.stopped_reason == .length);
+    assert(resp.tokens_out == 2);
+    print("lantern: length_stop pin completion — length_stop true\n", .{});
+}
+
+fn unwelcome_length_stop_pin_mismatch(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, length_stop_pin_fixture_path, &buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "budget",
+        .max_tokens = 64,
+        .length_stop = false,
+    };
+    if (lc.complete_fixture(req, text)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.LengthStopMismatch);
+    }
+    print("lantern: length_stop pin mismatch refused\n", .{});
+}
+
+fn unwelcome_temperature_mismatch(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, temperature_fixture_path, &buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "warm",
+        .max_tokens = 64,
+        .temperature = 0.0,
+    };
+    if (lc.complete_fixture(req, text)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.TemperatureMismatch);
+    }
+    print("lantern: temperature mismatch refused\n", .{});
+}
+
+fn unwelcome_text_mismatch(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, text_fixture_path, &buf);
+    // Small budget truncates the pinned text → TextMismatch.
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "text pin",
+        .max_tokens = 2,
+    };
+    if (lc.complete_fixture(req, text)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.TextMismatch);
+    }
+    print("lantern: text mismatch refused\n", .{});
+}
+
+fn unwelcome_zero_budget() !void {
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "x",
+        .max_tokens = 0,
+    };
+    if (lc.validate_request(req)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.BudgetExceeded);
+    }
+    print("lantern: zero budget refused\n", .{});
+}
+
+
+fn welcome_allow_count(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, allow_count_fixture_path, &buf);
+    var allow_buf: [1024]u8 = undefined;
+    const allow = try cwd.readFile(io, allow_fixture_path, &allow_buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "listed",
+        .max_tokens = 64,
+    };
+    const resp = try lc.complete_allowed(req, text, allow);
+    assert(resp.stopped_reason == .eos);
+    assert(lc.count_allowed_models(allow) == 2);
+    print("lantern: allow_count pin completion — count 2\n", .{});
+}
+
+fn unwelcome_allow_count_mismatch(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, allow_count_fixture_path, &buf);
+    var allow_buf: [1024]u8 = undefined;
+    const allow = try cwd.readFile(io, one_allow_fixture_path, &allow_buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "listed",
+        .max_tokens = 64,
+    };
+    if (lc.complete_allowed(req, text, allow)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.AllowCountMismatch);
+    }
+    print("lantern: allow_count mismatch refused\n", .{});
+}
+
+fn unwelcome_empty_allow_list(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, fixture_path, &buf);
+    var allow_buf: [1024]u8 = undefined;
+    const allow = try cwd.readFile(io, empty_allow_fixture_path, &allow_buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "listed",
+        .max_tokens = 64,
+    };
+    if (lc.complete_allowed(req, text, allow)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.EmptyAllowList);
+    }
+    print("lantern: empty allow-list refused\n", .{});
+}
+
+
+fn welcome_dual_model_allow(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, assist_fixture_path, &buf);
+    var allow_buf: [1024]u8 = undefined;
+    const allow = try cwd.readFile(io, allow_fixture_path, &allow_buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-assist",
+        .prompt = "assist",
+        .max_tokens = 64,
+    };
+    const resp = try lc.complete_allowed(req, text, allow);
+    assert(resp.stopped_reason == .eos);
+    assert(resp.tokens_out == 3);
+    assert(std.mem.indexOf(u8, resp.text, "assist") != null);
+    print("lantern: dual-model allow completion — assist model\n", .{});
+}
+
+fn welcome_require_model(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, require_model_fixture_path, &buf);
+    var allow_buf: [1024]u8 = undefined;
+    const allow = try cwd.readFile(io, allow_fixture_path, &allow_buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "require",
+        .max_tokens = 64,
+    };
+    const resp = try lc.complete_allowed(req, text, allow);
+    assert(resp.stopped_reason == .eos);
+    print("lantern: require_model pin completion — assist listed\n", .{});
+}
+
+fn unwelcome_require_model_missing(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, require_model_fixture_path, &buf);
+    var allow_buf: [1024]u8 = undefined;
+    const allow = try cwd.readFile(io, one_allow_fixture_path, &allow_buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "require",
+        .max_tokens = 64,
+    };
+    if (lc.complete_allowed(req, text, allow)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.RequireModelMissing);
+    }
+    print("lantern: require_model missing refused\n", .{});
+}
+
+
+fn welcome_stopped_reason_pin(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, stopped_reason_pin_fixture_path, &buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "stop pin",
+        .max_tokens = 64,
+        .expect_stopped = "eos",
+    };
+    const resp = try lc.complete_fixture(req, text);
+    assert(resp.stopped_reason == .eos);
+    print("lantern: stopped_reason pin completion — expect eos\n", .{});
+}
+
+fn welcome_stopped_reason_length_pin(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, stopped_reason_length_pin_fixture_path, &buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "budget",
+        .max_tokens = 64,
+        .expect_stopped = "length",
+    };
+    const resp = try lc.complete_fixture(req, text);
+    assert(resp.stopped_reason == .length);
+    print("lantern: stopped_reason length pin completion — expect length\n", .{});
+}
+
+fn welcome_stopped_reason_err_stop_pin(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, stopped_reason_err_stop_pin_fixture_path, &buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "refuse",
+        .max_tokens = 64,
+        .expect_stopped = "err_stop",
+    };
+    const resp = try lc.complete_fixture(req, text);
+    assert(resp.stopped_reason == .err_stop);
+    print("lantern: stopped reason err_stop pin completion — expect err_stop\n", .{});
+}
+
+fn welcome_stopped_reason_stop_sequence_pin(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, stopped_reason_stop_sequence_pin_fixture_path, &buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "cut",
+        .max_tokens = 64,
+        .stop_sequence = "END",
+        .expect_stopped = "stop_sequence",
+    };
+    const resp = try lc.complete_fixture(req, text);
+    assert(resp.stopped_reason == .stop_sequence);
+    print("lantern: stopped reason stop_sequence pin completion — expect stop_sequence\n", .{});
+}
+
+fn unwelcome_stopped_reason_mismatch(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, stopped_reason_pin_fixture_path, &buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "stop pin",
+        .max_tokens = 64,
+        .expect_stopped = "length",
+    };
+    if (lc.complete_fixture(req, text)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.StoppedReasonMismatch);
+    }
+    print("lantern: stopped_reason mismatch refused\n", .{});
+}
+
+
+fn welcome_stream_pin(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, stream_pin_fixture_path, &buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "batch",
+        .max_tokens = 64,
+        .stream = false,
+    };
+    const resp = try lc.complete_fixture(req, text);
+    assert(resp.stopped_reason == .eos);
+    print("lantern: stream pin completion — stream false\n", .{});
+}
+
+fn welcome_stream_on(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, stream_on_fixture_path, &buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "stream",
+        .max_tokens = 64,
+        .stream = true,
+    };
+    const resp = try lc.complete_fixture(req, text);
+    assert(resp.stopped_reason == .eos);
+    print("lantern: stream on completion — stream true\n", .{});
+}
+
+fn unwelcome_stream_mismatch(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, stream_pin_fixture_path, &buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "batch",
+        .max_tokens = 64,
+        .stream = true,
+    };
+    if (lc.complete_fixture(req, text)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.StreamMismatch);
+    }
+    print("lantern: stream mismatch refused\n", .{});
+}
+
+
+fn welcome_top_k_pin(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, top_k_fixture_path, &buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "topk",
+        .max_tokens = 64,
+        .top_k = 40,
+    };
+    const resp = try lc.complete_fixture(req, text);
+    assert(resp.stopped_reason == .eos);
+    print("lantern: top_k pin completion — top_k 40\n", .{});
+}
+
+fn unwelcome_top_k_mismatch(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, top_k_fixture_path, &buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "topk",
+        .max_tokens = 64,
+        .top_k = 8,
+    };
+    if (lc.complete_fixture(req, text)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.TopKMismatch);
+    }
+    print("lantern: top_k mismatch refused\n", .{});
+}
+
+fn welcome_frequency_penalty_pin(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, frequency_penalty_fixture_path, &buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "freq",
+        .max_tokens = 64,
+        .frequency_penalty = 0.5,
+    };
+    const resp = try lc.complete_fixture(req, text);
+    assert(resp.stopped_reason == .eos);
+    print("lantern: frequency_penalty pin completion — penalty 0.5\n", .{});
+}
+
+fn unwelcome_frequency_penalty_mismatch(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, frequency_penalty_fixture_path, &buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "freq",
+        .max_tokens = 64,
+        .frequency_penalty = 1.0,
+    };
+    if (lc.complete_fixture(req, text)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.FrequencyPenaltyMismatch);
+    }
+    print("lantern: frequency_penalty mismatch refused\n", .{});
+}
+
+fn welcome_presence_penalty_pin(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, presence_penalty_fixture_path, &buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "pres",
+        .max_tokens = 64,
+        .presence_penalty = 0.25,
+    };
+    const resp = try lc.complete_fixture(req, text);
+    assert(resp.stopped_reason == .eos);
+    print("lantern: presence_penalty pin completion — penalty 0.25\n", .{});
+}
+
+fn unwelcome_presence_penalty_mismatch(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, presence_penalty_fixture_path, &buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "pres",
+        .max_tokens = 64,
+        .presence_penalty = 1.0,
+    };
+    if (lc.complete_fixture(req, text)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.PresencePenaltyMismatch);
+    }
+    print("lantern: presence_penalty mismatch refused\n", .{});
+}
+
+fn welcome_n_pin(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, n_fixture_path, &buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "n",
+        .max_tokens = 64,
+        .n = 2,
+    };
+    const resp = try lc.complete_fixture(req, text);
+    assert(resp.stopped_reason == .eos);
+    print("lantern: n pin completion — n 2\n", .{});
+}
+
+fn unwelcome_n_mismatch(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, n_fixture_path, &buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "n",
+        .max_tokens = 64,
+        .n = 1,
+    };
+    if (lc.complete_fixture(req, text)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.NMismatch);
+    }
+    print("lantern: n mismatch refused\n", .{});
+}
+
+fn welcome_tokens_out_pin(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, tokens_out_fixture_path, &buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "tokens-out",
+        .max_tokens = 64,
+        .expect_tokens_out = 3,
+    };
+    const resp = try lc.complete_fixture(req, text);
+    assert(resp.tokens_out == 3);
+    assert(resp.stopped_reason == .eos);
+    print("lantern: tokens_out pin completion — out 3\n", .{});
+}
+
+fn unwelcome_tokens_out_mismatch(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, tokens_out_fixture_path, &buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "tokens-out",
+        .max_tokens = 64,
+        .expect_tokens_out = 9,
+    };
+    if (lc.complete_fixture(req, text)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.TokensOutMismatch);
+    }
+    print("lantern: tokens_out mismatch refused\n", .{});
+}
+
+fn welcome_tokens_in_pin(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, tokens_in_fixture_path, &buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "tokens-in",
+        .max_tokens = 64,
+        .expect_tokens_in = 5,
+    };
+    const resp = try lc.complete_fixture(req, text);
+    assert(resp.tokens_in == 5);
+    assert(resp.stopped_reason == .eos);
+    print("lantern: tokens_in pin completion — in 5\n", .{});
+}
+
+fn unwelcome_tokens_in_mismatch(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, tokens_in_fixture_path, &buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "tokens-in",
+        .max_tokens = 64,
+        .expect_tokens_in = 1,
+    };
+    if (lc.complete_fixture(req, text)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.TokensInMismatch);
+    }
+    print("lantern: tokens_in mismatch refused\n", .{});
+}
+
+fn welcome_echo_pin(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, echo_fixture_path, &buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "echo",
+        .max_tokens = 64,
+        .echo = true,
+    };
+    const resp = try lc.complete_fixture(req, text);
+    assert(resp.stopped_reason == .eos);
+    print("lantern: echo pin completion — echo true\n", .{});
+}
+
+fn unwelcome_echo_mismatch(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, echo_fixture_path, &buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "echo",
+        .max_tokens = 64,
+        .echo = false,
+    };
+    if (lc.complete_fixture(req, text)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.EchoMismatch);
+    }
+    print("lantern: echo mismatch refused\n", .{});
+}
+
+fn welcome_user_pin(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, user_fixture_path, &buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "user",
+        .max_tokens = 64,
+        .user = "steward-rio",
+    };
+    const resp = try lc.complete_fixture(req, text);
+    assert(resp.stopped_reason == .eos);
+    print("lantern: user pin completion — user steward-rio\n", .{});
+}
+
+fn unwelcome_user_mismatch(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, user_fixture_path, &buf);
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "user",
+        .max_tokens = 64,
+        .user = "other",
+    };
+    if (lc.complete_fixture(req, text)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.UserMismatch);
+    }
+    print("lantern: user mismatch refused\n", .{});
+}
+
+fn unwelcome_bad_user() !void {
+    var long_user: [lc.max_user_len + 1]u8 = undefined;
+    @memset(&long_user, 'u');
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "x",
+        .max_tokens = 64,
+        .user = &long_user,
+    };
+    if (lc.validate_request(req)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.BadUser);
+    }
+    print("lantern: bad user refused\n", .{});
+}
+
+
+
+/// RW-5 contract — six welcome / unwelcome probes on the mirrored pair surface.
+fn run_rw5_contract_test(io: std.Io) !u8 {
+    try welcome_complete(io);
+    try welcome_echo_pin(io);
+    try welcome_user_pin(io);
+    try unwelcome_model_mismatch(io);
+    try unwelcome_echo_mismatch(io);
+    try unwelcome_user_mismatch(io);
+    print("lantern rw5 contract: 6/6 GREEN\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        try welcome_complete(io);
+        try welcome_length_budget(io);
+        try welcome_allowlist(io);
+        try welcome_seed_temperature(io);
+        try welcome_top_p(io);
+        try welcome_err_stop(io);
+        try welcome_stop_sequence(io);
+        try welcome_prompt_pin(io);
+        try welcome_max_tokens_pin(io);
+        try welcome_text_pin(io);
+        try welcome_temperature_pin(io);
+        try welcome_seed_pin(io);
+        try welcome_err_stop_pin(io);
+        try welcome_length_stop_pin(io);
+        try welcome_allow_count(io);
+        try welcome_dual_model_allow(io);
+        try welcome_require_model(io);
+        try welcome_stopped_reason_pin(io);
+        try welcome_stopped_reason_length_pin(io);
+        try welcome_stopped_reason_err_stop_pin(io);
+        try welcome_stopped_reason_stop_sequence_pin(io);
+        try welcome_stream_pin(io);
+        try welcome_stream_on(io);
+        try welcome_top_k_pin(io);
+        try welcome_frequency_penalty_pin(io);
+        try welcome_presence_penalty_pin(io);
+        try welcome_n_pin(io);
+        try welcome_tokens_out_pin(io);
+        try welcome_tokens_in_pin(io);
+        try welcome_echo_pin(io);
+        try welcome_user_pin(io);
+        try unwelcome_model_mismatch(io);
+        try unwelcome_prompt_too_long();
+        try unwelcome_zero_budget();
+        try unwelcome_allowlist_refuse(io);
+        try unwelcome_bad_temperature();
+        try unwelcome_seed_mismatch(io);
+        try unwelcome_seed_pin_mismatch(io);
+        try unwelcome_bad_top_p();
+        try unwelcome_top_p_mismatch(io);
+        try unwelcome_stop_sequence_mismatch(io);
+        try unwelcome_bad_stop_sequence();
+        try unwelcome_prompt_mismatch(io);
+        try unwelcome_max_tokens_mismatch(io);
+        try unwelcome_text_mismatch(io);
+        try unwelcome_temperature_mismatch(io);
+        try unwelcome_err_stop_pin_mismatch(io);
+        try unwelcome_length_stop_pin_mismatch(io);
+        try unwelcome_allow_count_mismatch(io);
+        try unwelcome_empty_allow_list(io);
+        try unwelcome_require_model_missing(io);
+        try unwelcome_stopped_reason_mismatch(io);
+        try unwelcome_stream_mismatch(io);
+        try unwelcome_top_k_mismatch(io);
+        try unwelcome_frequency_penalty_mismatch(io);
+        try unwelcome_presence_penalty_mismatch(io);
+        try unwelcome_n_mismatch(io);
+        try unwelcome_tokens_out_mismatch(io);
+        try unwelcome_tokens_in_mismatch(io);
+        try unwelcome_echo_mismatch(io);
+        try unwelcome_user_mismatch(io);
+        try unwelcome_bad_user();
+        print("lantern lap33: version {s} — GREEN\n", .{lantern_version});
+        return 0;
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "rw5contracttest")) {
+        return run_rw5_contract_test(io);
+    }
+    print("usage: lantern selftest|rw5contracttest\n", .{});
+    return 1;
+}

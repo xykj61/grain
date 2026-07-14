@@ -1,0 +1,7 @@
+# Lantern lap 22 fixture — stream pin false (batch completion).
+model_hash sha3-256-rye-forge-lap0
+stream 0
+tokens_in 6
+tokens_out 3
+stopped_reason eos
+text stream off ok

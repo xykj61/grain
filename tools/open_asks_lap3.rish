@@ -1,0 +1,30 @@
+# open_asks_lap3.rish — OA-L3 escrow hold and release witness (lap 1 fold + lap 2 carriage).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/open_asks_lap3.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/open-asks"
+let delivery = "linengrow/bin/open-asks-escrow-delivery"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/open_asks.rye -femit-bin=${bin} && env RYE_ZIG=${zig} rye/bin/rye build linengrow/open_asks_escrow_delivery.rye -lc -femit-bin=${delivery}"]
+
+assert build.ok else "OA-L3 open asks build failed"
+
+let escrow = run ["sh" "-c" "${bin} escrow 2>&1"]
+assert escrow.ok else "OA-L3 escrow selftest exited non-zero"
+assert escrow.out contains "GREEN" else "OA-L3 escrow selftest not GREEN"
+
+let delivery_selftest = run ["sh" "-c" "${delivery} selftest 2>&1"]
+assert delivery_selftest.ok else "OA-L3 escrow delivery selftest exited non-zero"
+assert delivery_selftest.out contains "GREEN" else "OA-L3 escrow delivery selftest not GREEN"
+
+let delivery_demo = run ["sh" "-c" "${delivery} demo 2>&1"]
+assert delivery_demo.ok else "OA-L3 escrow delivery demo exited non-zero"
+assert delivery_demo.out contains "GREEN" else "OA-L3 escrow delivery demo not GREEN"
+
+let wire_lab = run ["sh" "comlink/run_open_asks_escrow_wire_lab.sh"]
+assert wire_lab.ok else "OA-L3 escrow device wire lab failed"
+assert wire_lab.out contains "GREEN" else "OA-L3 escrow device wire lab not GREEN"
+
+say "GREEN: OA-L3 escrow hold and release witness passed (fold + hosted + device wire)."

@@ -1,0 +1,107 @@
+//! aurora/src/relay.rye — Aurora's second stage: a boot as a flow of named values.
+//!
+//! The seed (`seed.rye`) proved the smallest boot: wake, speak, rest. This grows
+//! it by one true step — the first *relay*. Three stages hand control along a
+//! line, and a value flows with them: stage one reads the machine's identity,
+//! stage two proves what it found and speaks it, stage three rests. Each handoff
+//! is a tail call; each stage asserts what it leans on. This is the
+//! boot-as-flow-of-named-values idea (external-research/993, /986) at its
+//! smallest honest size.
+//!
+//! Build and run with `../run.sh relay`. Same machine as the seed: QEMU's `virt`,
+//! console UART at 0x1000_0000, test finisher at 0x10_0000, RAM at 0x8000_0000.
+//!
+//! For now each Aurora stage is one self-contained file, because `rye build`
+//! bridges a single source; the small console helpers here will move to a shared
+//! Aurora module once many-file `.rye` programs land (an open thread in the
+//! learning process).
+
+const uart_tx: *volatile u8 = @ptrFromInt(0x1000_0000);
+const test_finisher: *volatile u32 = @ptrFromInt(0x0010_0000);
+const finisher_pass: u32 = 0x5555;
+
+/// misa names each base and extension by one bit, 'A'=0 .. 'Z'=25. The base
+/// integer ISA must always be present; 'C' (compressed) is one we build with.
+const isa_base_integer: usize = 1 << ('I' - 'A');
+const isa_compressed: usize = 1 << ('C' - 'A');
+
+/// The named value that flows along the relay: what stage one learned of the
+/// machine, for the later stages to prove and to speak.
+const Machine = struct {
+    hartid: usize,
+    isa: usize,
+};
+
+export fn _start() linksection(".text.init") callconv(.naked) noreturn {
+    asm volatile (
+        \\ li sp, 0x80100000
+        \\ j stage_wake
+    );
+}
+
+/// Stage one: wake, learn the machine's identity, and hand it to stage two.
+export fn stage_wake() callconv(.c) noreturn {
+    const machine = Machine{
+        .hartid = read_csr("mhartid"),
+        .isa = read_csr("misa"),
+    };
+    stage_prove(machine);
+}
+
+/// Stage two: prove what stage one found, speak it, and hand off to rest.
+fn stage_prove(machine: Machine) noreturn {
+    // The base integer ISA must be present — this very code could not run
+    // otherwise. Naming the invariant means an impossible machine would stop
+    // loudly, right here, rather than wander on.
+    assert((machine.isa & isa_base_integer) != 0);
+
+    write_str("Aurora relay:\n");
+    write_str("  stage 1 -> woke hart ");
+    write_dec(machine.hartid);
+    write_str("\n  stage 2 -> proved RV with base integer");
+    if ((machine.isa & isa_compressed) != 0) write_str(" + compressed");
+    write_str("\n  stage 3 -> resting.\n");
+
+    stage_rest();
+}
+
+/// Stage three: rest. The relay is complete, so ask the machine to power down.
+fn stage_rest() noreturn {
+    test_finisher.* = finisher_pass;
+    while (true) {}
+}
+
+/// Read a machine control/status register by name. `comptime name` keeps the
+/// instruction exact, decided before the program ever runs.
+fn read_csr(comptime name: []const u8) usize {
+    return asm volatile ("csrr %[out], " ++ name
+        : [out] "=r" (-> usize),
+    );
+}
+
+/// Write a string to the console, one byte at a time.
+fn write_str(text: []const u8) void {
+    for (text) |byte| uart_tx.* = byte;
+}
+
+/// Write an unsigned value in decimal. Small and stack-only — there is no
+/// allocator on a bare hart, and none is needed for at most twenty digits.
+fn write_dec(value: usize) void {
+    var buf: [20]u8 = undefined;
+    var i: usize = buf.len;
+    var v = value;
+    // At least one digit, so zero prints as "0".
+    while (true) {
+        i -= 1;
+        buf[i] = @as(u8, '0') + @as(u8, @intCast(v % 10));
+        v /= 10;
+        if (v == 0) break;
+    }
+    write_str(buf[i..]);
+}
+
+/// A bare-metal `assert`, the same idiom as the seed: with no standard library
+/// beneath us, the stage states its own. It compiles out of a release build.
+fn assert(ok: bool) void {
+    if (!ok) unreachable;
+}

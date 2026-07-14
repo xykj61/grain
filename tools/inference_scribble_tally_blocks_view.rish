@@ -1,0 +1,14 @@
+# inference_scribble_tally_blocks_view.rish — Scribble tally+blocks combo → Skate.
+let bin = "pond/bin/drawn-terminal"
+say "build: Scribble tally blocks view — drawn-terminal compile"
+let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+assert build.ok else "drawn_terminal build failed for scribble tally blocks view"
+assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
+let view = run ["sh" "-c" "${bin} scribbletallyblocksviewtest 2>&1"]
+assert view.ok else "drawn terminal scribbletallyblocksviewtest exited non-zero"
+assert view.out contains "scribble tally blocks view" else "tally blocks view missing expected output"
+assert view.out contains "GREEN" else "Scribble tally blocks view not GREEN"
+assert view.out contains "lines=5" else "tally blocks view missing five-line frame"
+assert view.out contains "headings=3" else "tally blocks view missing headings=3"
+assert view.out contains "blocks=6" else "tally blocks view missing blocks=6"
+say "GREEN: Scribble tally blocks view — tally and blocks on one Skate frame."

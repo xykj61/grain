@@ -1,0 +1,25 @@
+# lane_kvm_refuse.rish — Paired refuse witness when lane_kvm is off.
+#
+# Counsel 20260712.090512 A-narrow: off → witness refuses. No D-Bus, no
+# systemd host escape, no /dev/kvm grant while LANE_KVM is false/unset.
+#
+#   rishi/bin/rishi run tools/lane_kvm_refuse.rish
+
+say "lane_kvm refuse: assert lane off…"
+let off = run ["sh" "-c" "./tools/lane_kvm.sh assert-off"]
+assert off.ok else "LANE_KVM must be off (default) for refuse witness — see tools/enclosure.conf"
+say "lane_kvm refuse: ${off.out}"
+
+say "lane_kvm refuse: probe gate refuses run…"
+let probe = run ["sh" "-c" "./tools/lane_kvm.sh refuse-probe"]
+assert probe.ok else "refuse-probe failed — gate must refuse run while lane off"
+assert probe.out contains "OK" else "refuse-probe missing OK"
+say "lane_kvm refuse: ${probe.out}"
+
+say "lane_kvm refuse: status surface…"
+let st = run ["sh" "-c" "./tools/lane_kvm.sh status"]
+assert st.ok else "lane_kvm status failed"
+assert st.out contains "LANE_KVM=off" else "status must show LANE_KVM=off"
+say "lane_kvm refuse: ${st.out}"
+
+say "GREEN: lane_kvm refuse — lane off; run refused; no KVM grant while the gate is closed."

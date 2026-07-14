@@ -1,0 +1,70 @@
+//! comlink/guest_sync_source_tx.rye — NS-L3 wire lap 2: source TX (sync response under Comlink seal).
+
+const vn = @import("virtio_net.rye");
+const tally_copy = @import("tally_copy.rye");
+const wf = @import("wire_format.rye");
+const sw = @import("recall_sync_wire.rye");
+const ns = @import("recall_lap1.rye");
+const Sha3_256 = @import("std").crypto.hash.sha3.Sha3_256;
+
+var tx: vn.TxQueue = undefined;
+
+fn digest_hex_of(content: []const u8, out: *[64]u8) void {
+    var digest: [32]u8 = undefined;
+    Sha3_256.hash(content, &digest, .{});
+    var i: u32 = 0;
+    while (i < 32) : (i += 1) {
+        _ = @import("std").fmt.bufPrint(out[i * 2 ..][0..2], "{x:0>2}", .{digest[i]}) catch unreachable;
+    }
+}
+
+export fn _start() linksection(".text.init") callconv(.naked) noreturn {
+    asm volatile (
+        \\ li sp, 0x80100000
+        \\ j kmain
+    );
+}
+
+export fn kmain() callconv(.c) noreturn {
+    vn.init_device();
+    tx.init();
+    vn.driver_ok();
+
+    var src: ns.BoltCatalog = .empty();
+    ns.BoltCatalog.append_leaf(&src, "peerB", "b", 1, "a.txt", "alpha", "plain-text") catch unreachable;
+    ns.BoltCatalog.append_leaf(&src, "peerB", "b", 1, "b.txt", "beta", "plain-text") catch unreachable;
+
+    var req: sw.SyncRequest = .{
+        .peer = "peerB",
+        .bolt = "b",
+        .revision = 1,
+        .held_count = 1,
+        .held_digests = undefined,
+    };
+    digest_hex_of("alpha", &req.held_digests[0]);
+
+    var resp: sw.SyncResponse = undefined;
+    sw.build_response(&src, &req, &resp) catch unreachable;
+
+    var payload: [sw.max_wire_payload]u8 = undefined;
+    const payload_len = sw.encode_response(&resp, &payload) catch unreachable;
+
+    var scratch: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const dg_len: u32 = @intCast(wf.seal_message(payload[0..payload_len], &scratch) catch unreachable);
+
+    const buf = tx.frame();
+    @memset(buf[0..vn.virtio_net_hdr_len], 0);
+    const eoff = vn.virtio_net_hdr_len;
+    var i: u32 = 0;
+    while (i < 6) : (i += 1) buf[eoff + i] = 0xff;
+    while (i < 12) : (i += 1) buf[eoff + i] = 0x00;
+    buf[eoff + 12] = @truncate(vn.lab_ethertype >> 8);
+    buf[eoff + 13] = @truncate(vn.lab_ethertype);
+    const poff = eoff + vn.eth_header_len;
+    tally_copy.copy_disjoint(u8, buf[poff..][0..dg_len], scratch[0..dg_len]);
+    const total: u32 = poff + dg_len;
+
+    tx.send(total);
+    vn.write_str("nsw2 device wire: sealed sync response TX sent\n");
+    vn.finish_pass();
+}

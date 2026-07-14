@@ -1,0 +1,29 @@
+# rw4_slc_failure_paths.rish — RW-4: friendly failure paths for shell and script runs.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/rw4_slc_failure_paths.rish
+
+let meta = run ["sh" "-c" "rishi/bin/rishi repl < tools/fixtures/rw4_meta_unknown.input 2>&1"]
+assert meta.ok else "repl must survive unknown meta-command"
+assert meta.out contains "unknown meta-command" else "unknown meta-command must name itself kindly"
+
+let recall_empty = run ["sh" "-c" "rishi/bin/rishi repl < tools/fixtures/rw4_recall_empty.input 2>&1"]
+assert recall_empty.ok else "repl must survive empty-history recall"
+assert recall_empty.out contains "no history yet to recall" else "empty recall must answer kindly"
+
+let recall_bad = run ["sh" "-c" "rishi/bin/rishi repl < tools/fixtures/rw4_recall_bad_arg.input 2>&1"]
+assert recall_bad.ok else "repl must survive bad :recall argument"
+assert recall_bad.out contains "usage — :recall" else "bad :recall must print usage"
+
+let doomed = run ["rishi/bin/rishi" "run" "tools/fixtures/rw4_doomed_run.rish"]
+assert (doomed.ok == false) else "doomed script must exit non-zero"
+assert doomed.code == 1 else "doomed script must preserve exit code 1"
+assert doomed.err contains "assertion failed" else "doomed script must name the broken fact on stderr"
+assert doomed.err contains "RW-4 doomed on purpose" else "doomed script must carry the witness message"
+
+let cli = run ["rishi/bin/rishi" "nosuch"]
+assert (cli.ok == false) else "unknown CLI command must fail"
+assert cli.code == 2 else "unknown CLI command must exit 2"
+assert cli.err contains "unknown command" else "unknown CLI command must answer kindly on stderr"
+
+say "GREEN: RW-4 — meta-command, :recall, doomed run, and CLI failures pinned kindly."

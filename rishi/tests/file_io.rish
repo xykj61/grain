@@ -1,0 +1,25 @@
+# file_io.rish — file I/O builtins for Rishi.
+# Proves: read-file, write-file, list-dir — each behind the OS boundary.
+
+# Write a file, then read it back.
+write-file "/tmp/rishi_io_test.txt" "hello from rishi"
+let content = read-file "/tmp/rishi_io_test.txt"
+assert content == "hello from rishi" else "read-file round-trip failed"
+
+# Write a second file with an integer value rendered to text.
+write-file "/tmp/rishi_io_test_num.txt" 42
+let num_content = read-file "/tmp/rishi_io_test_num.txt"
+assert num_content == "42" else "write-file integer rendering failed"
+
+# List the directory containing our test files.
+let entries = list-dir "/tmp"
+assert entries contains "rishi_io_test.txt" else "list-dir did not find rishi_io_test.txt"
+assert entries contains "rishi_io_test_num.txt" else "list-dir did not find rishi_io_test_num.txt"
+
+# Write with a variable path.
+let path = "/tmp/rishi_io_var_path.txt"
+write-file path "variable path works"
+let var_content = read-file path
+assert var_content == "variable path works" else "variable-path write-file round-trip failed"
+
+say "file I/O held."

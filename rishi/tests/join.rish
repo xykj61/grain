@@ -1,0 +1,18 @@
+# join.rish — tests for the `join` list builtin.
+
+let words = ["rye" "rishi" "mantra"]
+assert join words " " == "rye rishi mantra" else "join: space failed"
+assert join words "," == "rye,rishi,mantra" else "join: comma failed"
+
+let one = ["solo"]
+assert join one "|" == "solo" else "join: single element failed"
+
+let empty = []
+assert join empty "," == "" else "join: empty list failed"
+
+# compose with map: build a path from segments
+let segs = ["home" "xy" "veganreyklah2"]
+let path = join segs "/"
+assert path == "home/xy/veganreyklah2" else "join: path compose failed"
+
+say "join held."

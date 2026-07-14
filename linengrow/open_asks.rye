@@ -1,0 +1,1677 @@
+//! linengrow/open_asks.rye — OA-L1 closed ask loop: post, apply, accept, complete, verify.
+//!
+//!   rye build linengrow/open_asks.rye -femit-bin=linengrow/bin/open-asks
+//!   linengrow/bin/open-asks selftest
+//!
+//! Scope: [`active-designing/20260706-002912_open-asks-hammock-scope.md`](../active-designing/20260706-002912_open-asks-hammock-scope.md)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const kumara = @import("kumara.rye");
+const print = std.debug.print;
+const Dir = std.Io.Dir;
+const Sha3_256 = std.crypto.hash.sha3.Sha3_256;
+const rc = @import("receipt_core.rye");
+const tally_copy = @import("tally_copy.rye");
+
+const oa1_version = "20260707.023512";
+pub const poster_seed = [_]u8{0x51} ** kumara.seed_length;
+pub const applicant_seed = [_]u8{0x52} ** kumara.seed_length;
+const oa1_poster_seed = poster_seed;
+const oa1_applicant_seed = applicant_seed;
+
+/// Nyasa — the escrow account (Kaeden's word, 20260706.014512): value held in
+/// trust between poster and applicant, from acceptance until completion. A
+/// reserved deterministic identity, so a hold and a release name it as an
+/// ordinary account without forking the fact shape.
+pub const escrow_seed = [_]u8{0x53} ** kumara.seed_length;
+
+/// OA-L3 escrow memo prefixes on the receipt-core fact. The hold is the M1
+/// commitment (poster to Nyasa); the release is the M2 delivery (Nyasa to
+/// applicant). The wire does not fork: an escrow fact is a receipt-core fact
+/// whose memo names its role.
+pub const escrow_hold_prefix = "escrow-hold request_ref=";
+pub const escrow_release_prefix = "escrow-release request_ref=";
+pub const completion_memo_prefix = "completion request_ref=";
+pub const EscrowRole = enum { hold, release };
+
+/// OA-L4 consent memo values — the applicant names whether this completion may
+/// count toward a private reputation fold. Withheld consent excludes the bounty
+/// entirely; missing consent after completion excludes it too.
+pub const consent_grant = "grant";
+pub const consent_withhold = "withhold";
+
+pub const max_reputation_cycles: u32 = 8;
+
+pub const oa2_payload_header: u32 = kumara.signature_length + 4;
+
+/// Pinned witness request — canonical bytes for `tools/fixtures/open_asks_request.bron`.
+pub const witness_canonical_request =
+    \\poster c050c5637a44fa8629fff3cccce2300cb362a63d99d95fc54145266f4332445a
+    \\title animator for researcher interview visuals
+    \\skills animation,video
+    \\bounds remote, 4 hours, paid micro-gig
+    \\stipend 100
+    \\deadline 20260715.235959
+    \\stamp 20260706.002912
+    \\
+;
+
+pub const witness_request_ref = "9cdb9aafd7672a6b58f1d9c123f58abce7a4eff29ff855795aa40474d0424390";
+
+pub const ref_hex_len: u32 = Sha3_256.digest_length * 2;
+pub const max_oa_fact: u32 = 512;
+pub const max_line_len: u32 = rc.sig_hex_len + 1 + max_oa_fact * 2;
+pub const max_log_len: u32 = 16384;
+
+pub const RequestFields = struct {
+    poster: []const u8,
+    title: []const u8,
+    skills: []const u8,
+    bounds: []const u8,
+    stipend: []const u8,
+    deadline: []const u8,
+    stamp: []const u8,
+};
+
+pub const ApplicationFields = struct {
+    applicant: []const u8,
+    request_ref: []const u8,
+    message: []const u8,
+    stamp: []const u8,
+};
+
+pub const AcceptanceFields = struct {
+    poster: []const u8,
+    request_ref: []const u8,
+    applicant: []const u8,
+    stamp: []const u8,
+};
+
+pub const ConsentFields = struct {
+    applicant: []const u8,
+    request_ref: []const u8,
+    consent: []const u8,
+    stamp: []const u8,
+};
+
+pub const ConsentChoice = enum { grant, withhold };
+
+pub const AskCycle = struct {
+    request_ref: [ref_hex_len]u8 = undefined,
+    request_ref_len: u32 = 0,
+    applicant_hex: [64]u8 = undefined,
+    applicant_hex_len: u32 = 0,
+    stipend: i64 = 0,
+    completed: bool = false,
+    consent: enum { none, grant, withhold } = .none,
+};
+
+pub const ReputationFoldState = struct {
+    consented_completions: u32 = 0,
+    consented_stipend: i64 = 0,
+};
+
+pub const FoldState = struct {
+    request_ref: [ref_hex_len]u8 = undefined,
+    request_ref_len: u32 = 0,
+    posted: bool = false,
+    applied: bool = false,
+    accepted: bool = false,
+    completed: bool = false,
+    poster_hex: [64]u8 = undefined,
+    poster_hex_len: u32 = 0,
+    applicant_hex: [64]u8 = undefined,
+    applicant_hex_len: u32 = 0,
+    stipend: i64 = 0,
+    held: bool = false,
+    released: bool = false,
+    escrow_balance: i64 = 0,
+};
+
+fn copy_hex_field(src: []const u8, dest: []u8) error{FoldFailed}!u32 {
+    if (src.len > buf_len_u32(dest)) return error.FoldFailed;
+    tally_copy.copy_disjoint(u8, dest[0..src.len], src);
+    return @intCast(src.len);
+}
+
+fn buf_len_u32(buf: []const u8) u32 {
+    assert(buf.len <= std.math.maxInt(u32));
+    return @intCast(buf.len);
+}
+
+fn trim_line(line: []const u8) []const u8 {
+    return std.mem.trim(u8, line, " \t\r\n");
+}
+
+fn parse_key_line(line: []const u8) error{InvalidFact}!struct { key: []const u8, value: []const u8 } {
+    const space = std.mem.indexOfScalar(u8, line, ' ') orelse return error.InvalidFact;
+    const key = line[0..space];
+    const value = trim_line(line[space + 1 ..]);
+    if (value.len == 0) return error.InvalidFact;
+    return .{ .key = key, .value = value };
+}
+
+pub fn parse_request_fields(text: []const u8, fields: *RequestFields) error{InvalidFact}!void {
+    var poster_set = false;
+    var title_set = false;
+    var skills_set = false;
+    var bounds_set = false;
+    var stipend_set = false;
+    var deadline_set = false;
+    var stamp_set = false;
+
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    while (lines.next()) |raw| {
+        const line = trim_line(raw);
+        if (line.len == 0) continue;
+        if (line[0] == '#') continue;
+        const kv = parse_key_line(line) catch return error.InvalidFact;
+        if (std.mem.eql(u8, kv.key, "poster")) {
+            fields.poster = kv.value;
+            poster_set = true;
+        } else if (std.mem.eql(u8, kv.key, "title")) {
+            fields.title = kv.value;
+            title_set = true;
+        } else if (std.mem.eql(u8, kv.key, "skills")) {
+            fields.skills = kv.value;
+            skills_set = true;
+        } else if (std.mem.eql(u8, kv.key, "bounds")) {
+            fields.bounds = kv.value;
+            bounds_set = true;
+        } else if (std.mem.eql(u8, kv.key, "stipend")) {
+            fields.stipend = kv.value;
+            stipend_set = true;
+        } else if (std.mem.eql(u8, kv.key, "deadline")) {
+            fields.deadline = kv.value;
+            deadline_set = true;
+        } else if (std.mem.eql(u8, kv.key, "stamp")) {
+            fields.stamp = kv.value;
+            stamp_set = true;
+        } else {
+            return error.InvalidFact;
+        }
+    }
+    if (!poster_set or !title_set or !skills_set or !bounds_set or !stipend_set or !deadline_set or !stamp_set) {
+        return error.InvalidFact;
+    }
+}
+
+pub fn write_canonical_request(fields: RequestFields, out: []u8) error{Overflow}!u32 {
+    const written = std.fmt.bufPrint(
+        out,
+        "poster {s}\ntitle {s}\nskills {s}\nbounds {s}\nstipend {s}\ndeadline {s}\nstamp {s}\n",
+        .{ fields.poster, fields.title, fields.skills, fields.bounds, fields.stipend, fields.deadline, fields.stamp },
+    ) catch return error.Overflow;
+    return buf_len_u32(written);
+}
+
+pub fn parse_application_fields(text: []const u8, fields: *ApplicationFields) error{InvalidFact}!void {
+    var applicant_set = false;
+    var ref_set = false;
+    var message_set = false;
+    var stamp_set = false;
+
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    while (lines.next()) |raw| {
+        const line = trim_line(raw);
+        if (line.len == 0) continue;
+        if (line[0] == '#') continue;
+        const kv = parse_key_line(line) catch return error.InvalidFact;
+        if (std.mem.eql(u8, kv.key, "applicant")) {
+            fields.applicant = kv.value;
+            applicant_set = true;
+        } else if (std.mem.eql(u8, kv.key, "request_ref")) {
+            if (kv.value.len != ref_hex_len) return error.InvalidFact;
+            fields.request_ref = kv.value;
+            ref_set = true;
+        } else if (std.mem.eql(u8, kv.key, "message")) {
+            fields.message = kv.value;
+            message_set = true;
+        } else if (std.mem.eql(u8, kv.key, "stamp")) {
+            fields.stamp = kv.value;
+            stamp_set = true;
+        } else {
+            return error.InvalidFact;
+        }
+    }
+    if (!applicant_set or !ref_set or !message_set or !stamp_set) return error.InvalidFact;
+}
+
+pub fn write_canonical_application(fields: ApplicationFields, out: []u8) error{Overflow}!u32 {
+    const written = std.fmt.bufPrint(
+        out,
+        "applicant {s}\nrequest_ref {s}\nmessage {s}\nstamp {s}\n",
+        .{ fields.applicant, fields.request_ref, fields.message, fields.stamp },
+    ) catch return error.Overflow;
+    return buf_len_u32(written);
+}
+
+pub fn parse_acceptance_fields(text: []const u8, fields: *AcceptanceFields) error{InvalidFact}!void {
+    var poster_set = false;
+    var ref_set = false;
+    var applicant_set = false;
+    var stamp_set = false;
+
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    while (lines.next()) |raw| {
+        const line = trim_line(raw);
+        if (line.len == 0) continue;
+        if (line[0] == '#') continue;
+        const kv = parse_key_line(line) catch return error.InvalidFact;
+        if (std.mem.eql(u8, kv.key, "poster")) {
+            fields.poster = kv.value;
+            poster_set = true;
+        } else if (std.mem.eql(u8, kv.key, "request_ref")) {
+            if (kv.value.len != ref_hex_len) return error.InvalidFact;
+            fields.request_ref = kv.value;
+            ref_set = true;
+        } else if (std.mem.eql(u8, kv.key, "applicant")) {
+            fields.applicant = kv.value;
+            applicant_set = true;
+        } else if (std.mem.eql(u8, kv.key, "stamp")) {
+            fields.stamp = kv.value;
+            stamp_set = true;
+        } else {
+            return error.InvalidFact;
+        }
+    }
+    if (!poster_set or !ref_set or !applicant_set or !stamp_set) return error.InvalidFact;
+}
+
+pub fn write_canonical_acceptance(fields: AcceptanceFields, out: []u8) error{Overflow}!u32 {
+    const written = std.fmt.bufPrint(
+        out,
+        "poster {s}\nrequest_ref {s}\napplicant {s}\nstamp {s}\n",
+        .{ fields.poster, fields.request_ref, fields.applicant, fields.stamp },
+    ) catch return error.Overflow;
+    return buf_len_u32(written);
+}
+
+pub fn parse_consent_fields(text: []const u8, fields: *ConsentFields) error{InvalidFact}!void {
+    var applicant_set = false;
+    var ref_set = false;
+    var consent_set = false;
+    var stamp_set = false;
+
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    while (lines.next()) |raw| {
+        const line = trim_line(raw);
+        if (line.len == 0) continue;
+        if (line[0] == '#') continue;
+        const kv = parse_key_line(line) catch return error.InvalidFact;
+        if (std.mem.eql(u8, kv.key, "applicant")) {
+            fields.applicant = kv.value;
+            applicant_set = true;
+        } else if (std.mem.eql(u8, kv.key, "request_ref")) {
+            if (kv.value.len != ref_hex_len) return error.InvalidFact;
+            fields.request_ref = kv.value;
+            ref_set = true;
+        } else if (std.mem.eql(u8, kv.key, "consent")) {
+            fields.consent = kv.value;
+            consent_set = true;
+        } else if (std.mem.eql(u8, kv.key, "stamp")) {
+            fields.stamp = kv.value;
+            stamp_set = true;
+        } else {
+            return error.InvalidFact;
+        }
+    }
+    if (!applicant_set or !ref_set or !consent_set or !stamp_set) return error.InvalidFact;
+}
+
+pub fn parse_consent_choice(text: []const u8) error{InvalidFact}!ConsentChoice {
+    if (std.mem.eql(u8, text, consent_grant)) return .grant;
+    if (std.mem.eql(u8, text, consent_withhold)) return .withhold;
+    return error.InvalidFact;
+}
+
+pub fn write_canonical_consent(fields: ConsentFields, out: []u8) error{Overflow}!u32 {
+    const written = std.fmt.bufPrint(
+        out,
+        "applicant {s}\nrequest_ref {s}\nconsent {s}\nstamp {s}\n",
+        .{ fields.applicant, fields.request_ref, fields.consent, fields.stamp },
+    ) catch return error.Overflow;
+    return buf_len_u32(written);
+}
+
+fn find_cycle_by_ref(cycles: []AskCycle, cycle_count: u32, ref_hex: []const u8) ?u32 {
+    var i: u32 = 0;
+    while (i < cycle_count) : (i += 1) {
+        if (std.mem.eql(u8, cycles[i].request_ref[0..cycles[i].request_ref_len], ref_hex)) return i;
+    }
+    return null;
+}
+
+pub fn request_ref_hex(canonical: []const u8, out: *[ref_hex_len]u8) void {
+    var digest: [Sha3_256.digest_length]u8 = undefined;
+    Sha3_256.hash(canonical, &digest, .{});
+    var i: u32 = 0;
+    while (i < Sha3_256.digest_length) : (i += 1) {
+        _ = std.fmt.bufPrint(out[i * 2 ..][0..2], "{x:0>2}", .{digest[i]}) catch unreachable;
+    }
+}
+
+fn fact_has_key(text: []const u8, key: []const u8) bool {
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    while (lines.next()) |raw| {
+        const line = trim_line(raw);
+        if (line.len == 0 or line[0] == '#') continue;
+        const space = std.mem.indexOfScalar(u8, line, ' ');
+        if (space) |s| {
+            if (std.mem.eql(u8, line[0..s], key)) return true;
+        }
+    }
+    return false;
+}
+
+pub fn classify_fact(fact: []const u8) error{InvalidFact}!enum { request, application, acceptance, completion, consent } {
+    if (fact_has_key(fact, "title")) return .request;
+    if (fact_has_key(fact, "message")) return .application;
+    if (fact_has_key(fact, "consent") and fact_has_key(fact, "request_ref")) return .consent;
+    if (fact_has_key(fact, "from") and fact_has_key(fact, "amount")) return .completion;
+    if (fact_has_key(fact, "request_ref") and fact_has_key(fact, "applicant")) return .acceptance;
+    return error.InvalidFact;
+}
+
+pub fn encode_compact_payload(sig: kumara.Signature, fact: []const u8, out: []u8) error{Overflow}!u32 {
+    if (fact.len > max_oa_fact) return error.Overflow;
+    const total: u32 = oa2_payload_header + @as(u32, @intCast(fact.len));
+    if (total > buf_len_u32(out)) return error.Overflow;
+    const sig_bytes = sig.toBytes();
+    tally_copy.copy_disjoint(u8, out[0..sig_bytes.len], std.mem.asBytes(&sig_bytes));
+    std.mem.writeInt(u32, out[kumara.signature_length..][0..4], @intCast(fact.len), .little);
+    tally_copy.copy_disjoint(u8, out[oa2_payload_header..][0..fact.len], fact);
+    return total;
+}
+
+pub fn decode_compact_payload(buf: []const u8, sig_out: []u8, fact_out: []u8) error{InvalidPayload}!struct { fact_len: u32 } {
+    if (buf.len < oa2_payload_header) return error.InvalidPayload;
+    const fact_len = std.mem.readInt(u32, buf[kumara.signature_length..][0..4], .little);
+    if (fact_len > max_oa_fact) return error.InvalidPayload;
+    if (buf.len < oa2_payload_header + fact_len) return error.InvalidPayload;
+    if (sig_out.len < kumara.signature_length) return error.InvalidPayload;
+    if (fact_out.len < fact_len) return error.InvalidPayload;
+    tally_copy.copy_disjoint(u8, sig_out[0..kumara.signature_length], buf[0..kumara.signature_length]);
+    tally_copy.copy_disjoint(u8, fact_out[0..fact_len], buf[oa2_payload_header..][0..fact_len]);
+    return .{ .fact_len = fact_len };
+}
+
+pub fn fold_applied_log(log: []const u8, poster_pk: kumara.PublicKey, applicant_pk: kumara.PublicKey) error{FoldFailed}!FoldState {
+    var state: FoldState = .{};
+    var pos: u32 = 0;
+    while (pos < buf_len_u32(log)) {
+        const line_end = std.mem.indexOfScalarPos(u8, log, pos, '\n') orelse buf_len_u32(log);
+        const line = log[pos..line_end];
+        pos = if (line_end < buf_len_u32(log)) @as(u32, @intCast(line_end + 1)) else @as(u32, @intCast(line_end));
+        if (trim_line(line).len == 0) continue;
+
+        var sig_buf: [kumara.signature_length]u8 = undefined;
+        var fact_buf: [max_oa_fact]u8 = undefined;
+        const parsed = rc.parse_log_line(line, &sig_buf, &fact_buf) catch return error.FoldFailed;
+        const fact = fact_buf[0..parsed.fact_len];
+
+        const kind = classify_fact(fact) catch return error.FoldFailed;
+        switch (kind) {
+            .request => {
+                if (state.posted) return error.FoldFailed;
+                var fields: RequestFields = undefined;
+                parse_request_fields(fact, &fields) catch return error.FoldFailed;
+                rc.verify_record(sig_buf[0..parsed.sig_len], fact, poster_pk) catch return error.FoldFailed;
+                var poster_hex: [64]u8 = undefined;
+                const poster_kp_bytes = poster_pk.toBytes();
+                var i: u32 = 0;
+                while (i < 32) : (i += 1) {
+                    _ = std.fmt.bufPrint(poster_hex[i * 2 ..][0..2], "{x:0>2}", .{poster_kp_bytes[i]}) catch return error.FoldFailed;
+                }
+                if (!std.mem.eql(u8, fields.poster, poster_hex[0..64])) return error.FoldFailed;
+                var ref_buf: [ref_hex_len]u8 = undefined;
+                request_ref_hex(fact, &ref_buf);
+                tally_copy.copy_disjoint(u8, state.request_ref[0..ref_hex_len], std.mem.asBytes(&ref_buf));
+                state.request_ref_len = ref_hex_len;
+                state.poster_hex_len = try copy_hex_field(fields.poster, &state.poster_hex);
+                state.stipend = rc.parse_amount_signed(fields.stipend) catch return error.FoldFailed;
+                state.posted = true;
+            },
+            .application => {
+                if (!state.posted or state.applied) return error.FoldFailed;
+                var fields: ApplicationFields = undefined;
+                parse_application_fields(fact, &fields) catch return error.FoldFailed;
+                rc.verify_record(sig_buf[0..parsed.sig_len], fact, applicant_pk) catch return error.FoldFailed;
+                if (!std.mem.eql(u8, fields.request_ref, state.request_ref[0..state.request_ref_len])) return error.FoldFailed;
+                state.applicant_hex_len = try copy_hex_field(fields.applicant, &state.applicant_hex);
+                state.applied = true;
+            },
+            .consent, .acceptance, .completion => return error.FoldFailed,
+        }
+    }
+    if (!state.posted or !state.applied) return error.FoldFailed;
+    return state;
+}
+
+fn fold_log_on_request(
+    state: *FoldState,
+    sig: []const u8,
+    fact: []const u8,
+    poster_pk: kumara.PublicKey,
+) error{FoldFailed}!void {
+    if (state.posted) return error.FoldFailed;
+    var fields: RequestFields = undefined;
+    parse_request_fields(fact, &fields) catch return error.FoldFailed;
+    rc.verify_record(sig, fact, poster_pk) catch return error.FoldFailed;
+    var poster_hex: [64]u8 = undefined;
+    hex_of_key(poster_pk, &poster_hex);
+    if (!std.mem.eql(u8, fields.poster, poster_hex[0..64])) return error.FoldFailed;
+    var ref_buf: [ref_hex_len]u8 = undefined;
+    request_ref_hex(fact, &ref_buf);
+    tally_copy.copy_disjoint(u8, state.request_ref[0..ref_hex_len], std.mem.asBytes(&ref_buf));
+    state.request_ref_len = ref_hex_len;
+    state.poster_hex_len = try copy_hex_field(fields.poster, &state.poster_hex);
+    state.stipend = rc.parse_amount_signed(fields.stipend) catch return error.FoldFailed;
+    state.posted = true;
+}
+
+fn fold_log_on_application(
+    state: *FoldState,
+    sig: []const u8,
+    fact: []const u8,
+    applicant_pk: kumara.PublicKey,
+) error{FoldFailed}!void {
+    if (!state.posted or state.applied) return error.FoldFailed;
+    var fields: ApplicationFields = undefined;
+    parse_application_fields(fact, &fields) catch return error.FoldFailed;
+    rc.verify_record(sig, fact, applicant_pk) catch return error.FoldFailed;
+    if (!std.mem.eql(u8, fields.request_ref, state.request_ref[0..state.request_ref_len])) return error.FoldFailed;
+    state.applicant_hex_len = try copy_hex_field(fields.applicant, &state.applicant_hex);
+    state.applied = true;
+}
+
+fn fold_log_on_acceptance(
+    state: *FoldState,
+    sig: []const u8,
+    fact: []const u8,
+    poster_pk: kumara.PublicKey,
+) error{FoldFailed}!void {
+    if (!state.applied or state.accepted) return error.FoldFailed;
+    var fields: AcceptanceFields = undefined;
+    parse_acceptance_fields(fact, &fields) catch return error.FoldFailed;
+    rc.verify_record(sig, fact, poster_pk) catch return error.FoldFailed;
+    if (!std.mem.eql(u8, fields.request_ref, state.request_ref[0..state.request_ref_len])) return error.FoldFailed;
+    if (!std.mem.eql(u8, fields.applicant, state.applicant_hex[0..state.applicant_hex_len])) return error.FoldFailed;
+    state.accepted = true;
+}
+
+fn fold_log_on_completion(
+    state: *FoldState,
+    sig: []const u8,
+    fact: []const u8,
+    poster_pk: kumara.PublicKey,
+) error{FoldFailed}!void {
+    if (!state.accepted or state.completed) return error.FoldFailed;
+    var fields: rc.FactFields = undefined;
+    rc.parse_fact_fields(fact, &fields) catch return error.FoldFailed;
+    rc.verify_record(sig, fact, poster_pk) catch return error.FoldFailed;
+    const expected_memo_prefix = "completion request_ref=";
+    if (!std.mem.startsWith(u8, fields.memo, expected_memo_prefix)) return error.FoldFailed;
+    const memo_ref = fields.memo[expected_memo_prefix.len..];
+    if (!std.mem.eql(u8, memo_ref, state.request_ref[0..state.request_ref_len])) return error.FoldFailed;
+    const amount = rc.parse_amount_signed(fields.amount) catch return error.FoldFailed;
+    if (amount != state.stipend) return error.FoldFailed;
+    if (!std.mem.eql(u8, fields.to, state.applicant_hex[0..state.applicant_hex_len])) return error.FoldFailed;
+    state.completed = true;
+}
+
+pub fn fold_log(log: []const u8, poster_pk: kumara.PublicKey, applicant_pk: kumara.PublicKey) error{FoldFailed}!FoldState {
+    var state: FoldState = .{};
+    var pos: u32 = 0;
+    while (pos < buf_len_u32(log)) {
+        const line_end = std.mem.indexOfScalarPos(u8, log, pos, '\n') orelse buf_len_u32(log);
+        const line = log[pos..line_end];
+        pos = if (line_end < buf_len_u32(log)) @as(u32, @intCast(line_end + 1)) else @as(u32, @intCast(line_end));
+        if (trim_line(line).len == 0) continue;
+
+        var sig_buf: [kumara.signature_length]u8 = undefined;
+        var fact_buf: [max_oa_fact]u8 = undefined;
+        const parsed = rc.parse_log_line(line, &sig_buf, &fact_buf) catch return error.FoldFailed;
+        const fact = fact_buf[0..parsed.fact_len];
+
+        const kind = classify_fact(fact) catch return error.FoldFailed;
+        const sig = sig_buf[0..parsed.sig_len];
+        switch (kind) {
+            .request => try fold_log_on_request(&state, sig, fact, poster_pk),
+            .application => try fold_log_on_application(&state, sig, fact, applicant_pk),
+            .acceptance => try fold_log_on_acceptance(&state, sig, fact, poster_pk),
+            .completion => try fold_log_on_completion(&state, sig, fact, poster_pk),
+            .consent => return error.FoldFailed,
+        }
+    }
+    if (!state.completed) return error.FoldFailed;
+    return state;
+}
+
+fn hex_of_key(pk: kumara.PublicKey, out: *[64]u8) void {
+    const bytes = pk.toBytes();
+    var i: u32 = 0;
+    while (i < 32) : (i += 1) {
+        _ = std.fmt.bufPrint(out[i * 2 ..][0..2], "{x:0>2}", .{bytes[i]}) catch unreachable;
+    }
+}
+
+fn fold_escrow_on_request(
+    state: *FoldState,
+    sig: []const u8,
+    fact: []const u8,
+    poster_pk: kumara.PublicKey,
+    poster_hex: []const u8,
+) error{FoldFailed}!void {
+    if (state.posted) return error.FoldFailed;
+    var fields: RequestFields = undefined;
+    parse_request_fields(fact, &fields) catch return error.FoldFailed;
+    rc.verify_record(sig, fact, poster_pk) catch return error.FoldFailed;
+    if (!std.mem.eql(u8, fields.poster, poster_hex)) return error.FoldFailed;
+    var ref_buf: [ref_hex_len]u8 = undefined;
+    request_ref_hex(fact, &ref_buf);
+    tally_copy.copy_disjoint(u8, state.request_ref[0..ref_hex_len], std.mem.asBytes(&ref_buf));
+    state.request_ref_len = ref_hex_len;
+    state.poster_hex_len = try copy_hex_field(fields.poster, &state.poster_hex);
+    state.stipend = rc.parse_amount_signed(fields.stipend) catch return error.FoldFailed;
+    if (state.stipend <= 0) return error.FoldFailed; // a bounty holds a positive stipend
+    state.posted = true;
+}
+
+fn fold_escrow_on_application(
+    state: *FoldState,
+    sig: []const u8,
+    fact: []const u8,
+    applicant_pk: kumara.PublicKey,
+    applicant_hex: []const u8,
+) error{FoldFailed}!void {
+    if (!state.posted or state.applied) return error.FoldFailed;
+    var fields: ApplicationFields = undefined;
+    parse_application_fields(fact, &fields) catch return error.FoldFailed;
+    rc.verify_record(sig, fact, applicant_pk) catch return error.FoldFailed;
+    if (!std.mem.eql(u8, fields.request_ref, state.request_ref[0..state.request_ref_len])) return error.FoldFailed;
+    state.applicant_hex_len = try copy_hex_field(fields.applicant, &state.applicant_hex);
+    if (!std.mem.eql(u8, state.applicant_hex[0..state.applicant_hex_len], applicant_hex)) return error.FoldFailed;
+    state.applied = true;
+}
+
+fn fold_escrow_on_acceptance(
+    state: *FoldState,
+    sig: []const u8,
+    fact: []const u8,
+    poster_pk: kumara.PublicKey,
+) error{FoldFailed}!void {
+    if (!state.applied or state.accepted) return error.FoldFailed;
+    var fields: AcceptanceFields = undefined;
+    parse_acceptance_fields(fact, &fields) catch return error.FoldFailed;
+    rc.verify_record(sig, fact, poster_pk) catch return error.FoldFailed;
+    if (!std.mem.eql(u8, fields.request_ref, state.request_ref[0..state.request_ref_len])) return error.FoldFailed;
+    if (!std.mem.eql(u8, fields.applicant, state.applicant_hex[0..state.applicant_hex_len])) return error.FoldFailed;
+    state.accepted = true;
+}
+
+fn fold_escrow_on_completion(
+    state: *FoldState,
+    sig: []const u8,
+    fact: []const u8,
+    poster_pk: kumara.PublicKey,
+    poster_hex: []const u8,
+    escrow_hex: []const u8,
+) error{FoldFailed}!void {
+    var fields: rc.FactFields = undefined;
+    rc.parse_fact_fields(fact, &fields) catch return error.FoldFailed;
+    const role: EscrowRole = if (std.mem.startsWith(u8, fields.memo, escrow_hold_prefix))
+        .hold
+    else if (std.mem.startsWith(u8, fields.memo, escrow_release_prefix))
+        .release
+    else
+        return error.FoldFailed;
+    rc.verify_record(sig, fact, poster_pk) catch return error.FoldFailed; // poster signs both legs
+    const amount = rc.parse_amount_signed(fields.amount) catch return error.FoldFailed;
+    const prefix = if (role == .hold) escrow_hold_prefix else escrow_release_prefix;
+    const memo_ref = fields.memo[prefix.len..];
+    if (!std.mem.eql(u8, memo_ref, state.request_ref[0..state.request_ref_len])) return error.FoldFailed;
+    switch (role) {
+        .hold => {
+            if (!state.accepted or state.held) return error.FoldFailed;
+            if (amount != state.stipend) return error.FoldFailed;
+            if (!std.mem.eql(u8, fields.from, poster_hex)) return error.FoldFailed;
+            if (!std.mem.eql(u8, fields.to, escrow_hex)) return error.FoldFailed;
+            if (state.escrow_balance != 0) return error.FoldFailed; // opens at zero
+            state.escrow_balance += amount;
+            if (state.escrow_balance < 0) return error.FoldFailed; // never negative
+            state.held = true;
+        },
+        .release => {
+            if (!state.held or state.released) return error.FoldFailed;
+            if (amount != state.stipend) return error.FoldFailed;
+            if (amount != state.escrow_balance) return error.FoldFailed; // release exactly what is held
+            if (!std.mem.eql(u8, fields.from, escrow_hex)) return error.FoldFailed;
+            if (!std.mem.eql(u8, fields.to, state.applicant_hex[0..state.applicant_hex_len])) return error.FoldFailed;
+            state.escrow_balance -= amount;
+            if (state.escrow_balance != 0) return error.FoldFailed; // closes at zero
+            state.released = true;
+            state.completed = true;
+        },
+    }
+}
+
+/// OA-L3 escrow fold: post, apply, accept, hold, release — on one log.
+///
+/// Invariants (stated first in the session log, enforced here):
+///   - conservation: the release equals the held amount; the escrow balance
+///     opens at zero, rises by the hold, and closes at zero on the release;
+///   - the escrow balance is never negative at any step;
+///   - a release reaches only the accepted applicant, only for the accepted
+///     request, only in the held amount, and only after a matching hold;
+///   - a hold requires a prior acceptance; no double-hold and no double-release;
+///   - every escrow fact is poster-signed and every amount stays within bounds;
+///   - internal only: own log, own keys, test units, no external chain.
+pub fn fold_escrow_log(
+    log: []const u8,
+    poster_pk: kumara.PublicKey,
+    applicant_pk: kumara.PublicKey,
+    escrow_pk: kumara.PublicKey,
+) error{FoldFailed}!FoldState {
+    var state: FoldState = .{};
+
+    var poster_hex: [64]u8 = undefined;
+    hex_of_key(poster_pk, &poster_hex);
+    var applicant_hex: [64]u8 = undefined;
+    hex_of_key(applicant_pk, &applicant_hex);
+    var escrow_hex: [64]u8 = undefined;
+    hex_of_key(escrow_pk, &escrow_hex);
+
+    var pos: u32 = 0;
+    while (pos < buf_len_u32(log)) {
+        const line_end = std.mem.indexOfScalarPos(u8, log, pos, '\n') orelse buf_len_u32(log);
+        const line = log[pos..line_end];
+        pos = if (line_end < buf_len_u32(log)) @as(u32, @intCast(line_end + 1)) else @as(u32, @intCast(line_end));
+        if (trim_line(line).len == 0) continue;
+
+        var sig_buf: [kumara.signature_length]u8 = undefined;
+        var fact_buf: [max_oa_fact]u8 = undefined;
+        const parsed = rc.parse_log_line(line, &sig_buf, &fact_buf) catch return error.FoldFailed;
+        const fact = fact_buf[0..parsed.fact_len];
+
+        const kind = classify_fact(fact) catch return error.FoldFailed;
+        const sig = sig_buf[0..parsed.sig_len];
+        switch (kind) {
+            .request => try fold_escrow_on_request(&state, sig, fact, poster_pk, poster_hex[0..64]),
+            .application => try fold_escrow_on_application(&state, sig, fact, applicant_pk, applicant_hex[0..64]),
+            .acceptance => try fold_escrow_on_acceptance(&state, sig, fact, poster_pk),
+            .completion => try fold_escrow_on_completion(&state, sig, fact, poster_pk, poster_hex[0..64], escrow_hex[0..64]),
+            .consent => return error.FoldFailed,
+        }
+    }
+    if (!state.posted or !state.applied or !state.accepted) return error.FoldFailed;
+    if (!state.held or !state.released or !state.completed) return error.FoldFailed;
+    if (state.escrow_balance != 0) return error.FoldFailed;
+    return state;
+}
+
+/// OA-L4 reputation fold: many completed asks on one log; consent-before-counting
+/// governs what may be tallied about an applicant.
+///
+/// Invariants:
+///   - only completions with a matching applicant-signed consent `grant` count;
+///   - `withhold` and missing consent exclude the bounty entirely;
+///   - consent requires a prior completion for the same `request_ref`;
+///   - no double consent on one bounty;
+///   - the fold is deterministic — the same log always yields the same view.
+/// Payment memo for reputation: plain completion, escrow release (delivery), or
+/// escrow hold (skipped — a promise, not a delivery).
+fn completion_request_ref(memo: []const u8) error{FoldFailed}!?[]const u8 {
+    if (std.mem.startsWith(u8, memo, escrow_hold_prefix)) return null;
+    if (std.mem.startsWith(u8, memo, completion_memo_prefix)) {
+        return memo[completion_memo_prefix.len..];
+    }
+    if (std.mem.startsWith(u8, memo, escrow_release_prefix)) {
+        return memo[escrow_release_prefix.len..];
+    }
+    return error.FoldFailed;
+}
+
+fn fold_reputation_on_request(
+    cycles: []AskCycle,
+    cycle_count: *u32,
+    sig: []const u8,
+    fact: []const u8,
+    poster_pk: kumara.PublicKey,
+    poster_hex: []const u8,
+) error{FoldFailed}!void {
+    if (cycle_count.* >= max_reputation_cycles) return error.FoldFailed;
+    var fields: RequestFields = undefined;
+    parse_request_fields(fact, &fields) catch return error.FoldFailed;
+    rc.verify_record(sig, fact, poster_pk) catch return error.FoldFailed;
+    if (!std.mem.eql(u8, fields.poster, poster_hex)) return error.FoldFailed;
+    var ref_buf: [ref_hex_len]u8 = undefined;
+    request_ref_hex(fact, &ref_buf);
+    if (find_cycle_by_ref(cycles, cycle_count.*, ref_buf[0..ref_hex_len]) != null) return error.FoldFailed;
+    cycles[cycle_count.*] = .{};
+    var cycle = &cycles[cycle_count.*];
+    tally_copy.copy_disjoint(u8, cycle.request_ref[0..ref_hex_len], std.mem.asBytes(&ref_buf));
+    cycle.request_ref_len = ref_hex_len;
+    cycle.stipend = rc.parse_amount_signed(fields.stipend) catch return error.FoldFailed;
+    cycle_count.* += 1;
+}
+
+fn fold_reputation_on_application(
+    cycles: []AskCycle,
+    cycle_count: u32,
+    sig: []const u8,
+    fact: []const u8,
+    applicant_pk: kumara.PublicKey,
+    applicant_hex: []const u8,
+) error{FoldFailed}!void {
+    var fields: ApplicationFields = undefined;
+    parse_application_fields(fact, &fields) catch return error.FoldFailed;
+    rc.verify_record(sig, fact, applicant_pk) catch return error.FoldFailed;
+    const idx = find_cycle_by_ref(cycles, cycle_count, fields.request_ref) orelse return error.FoldFailed;
+    var cycle = &cycles[idx];
+    if (cycle.applicant_hex_len != 0) return error.FoldFailed;
+    cycle.applicant_hex_len = try copy_hex_field(fields.applicant, &cycle.applicant_hex);
+    if (!std.mem.eql(u8, cycle.applicant_hex[0..cycle.applicant_hex_len], applicant_hex)) return error.FoldFailed;
+}
+
+fn fold_reputation_on_acceptance(
+    cycles: []AskCycle,
+    cycle_count: u32,
+    sig: []const u8,
+    fact: []const u8,
+    poster_pk: kumara.PublicKey,
+) error{FoldFailed}!void {
+    var fields: AcceptanceFields = undefined;
+    parse_acceptance_fields(fact, &fields) catch return error.FoldFailed;
+    rc.verify_record(sig, fact, poster_pk) catch return error.FoldFailed;
+    const idx = find_cycle_by_ref(cycles, cycle_count, fields.request_ref) orelse return error.FoldFailed;
+    const cycle = &cycles[idx];
+    if (cycle.applicant_hex_len == 0) return error.FoldFailed;
+    if (!std.mem.eql(u8, fields.applicant, cycle.applicant_hex[0..cycle.applicant_hex_len])) return error.FoldFailed;
+}
+
+fn fold_reputation_on_completion(
+    cycles: []AskCycle,
+    cycle_count: u32,
+    sig: []const u8,
+    fact: []const u8,
+    poster_pk: kumara.PublicKey,
+) error{FoldFailed}!void {
+    var fields: rc.FactFields = undefined;
+    rc.parse_fact_fields(fact, &fields) catch return error.FoldFailed;
+    rc.verify_record(sig, fact, poster_pk) catch return error.FoldFailed;
+    const memo_ref = completion_request_ref(fields.memo) catch return error.FoldFailed;
+    if (memo_ref) |ref| {
+        const idx = find_cycle_by_ref(cycles, cycle_count, ref) orelse return error.FoldFailed;
+        var cycle = &cycles[idx];
+        if (cycle.completed) return error.FoldFailed;
+        if (cycle.applicant_hex_len == 0) return error.FoldFailed;
+        const amount = rc.parse_amount_signed(fields.amount) catch return error.FoldFailed;
+        if (amount != cycle.stipend) return error.FoldFailed;
+        if (!std.mem.eql(u8, fields.to, cycle.applicant_hex[0..cycle.applicant_hex_len])) return error.FoldFailed;
+        cycle.completed = true;
+    }
+}
+
+fn fold_reputation_on_consent(
+    cycles: []AskCycle,
+    cycle_count: u32,
+    sig: []const u8,
+    fact: []const u8,
+    applicant_pk: kumara.PublicKey,
+) error{FoldFailed}!void {
+    var fields: ConsentFields = undefined;
+    parse_consent_fields(fact, &fields) catch return error.FoldFailed;
+    rc.verify_record(sig, fact, applicant_pk) catch return error.FoldFailed;
+    const choice = parse_consent_choice(fields.consent) catch return error.FoldFailed;
+    const idx = find_cycle_by_ref(cycles, cycle_count, fields.request_ref) orelse return error.FoldFailed;
+    var cycle = &cycles[idx];
+    if (!cycle.completed) return error.FoldFailed;
+    if (cycle.consent != .none) return error.FoldFailed;
+    if (!std.mem.eql(u8, fields.applicant, cycle.applicant_hex[0..cycle.applicant_hex_len])) return error.FoldFailed;
+    cycle.consent = switch (choice) {
+        .grant => .grant,
+        .withhold => .withhold,
+    };
+}
+
+fn fold_reputation_tally(cycles: []const AskCycle, cycle_count: u32, target_applicant_hex: []const u8) ReputationFoldState {
+    var result: ReputationFoldState = .{};
+    var i: u32 = 0;
+    while (i < cycle_count) : (i += 1) {
+        const cycle = cycles[i];
+        if (!cycle.completed) continue;
+        if (!std.mem.eql(u8, cycle.applicant_hex[0..cycle.applicant_hex_len], target_applicant_hex)) continue;
+        if (cycle.consent != .grant) continue;
+        result.consented_completions += 1;
+        result.consented_stipend += cycle.stipend;
+    }
+    return result;
+}
+
+pub fn fold_reputation_log(
+    log: []const u8,
+    poster_pk: kumara.PublicKey,
+    applicant_pk: kumara.PublicKey,
+    target_applicant_hex: []const u8,
+) error{FoldFailed}!ReputationFoldState {
+    var cycles: [max_reputation_cycles]AskCycle = undefined;
+    var cycle_count: u32 = 0;
+
+    var poster_hex: [64]u8 = undefined;
+    hex_of_key(poster_pk, &poster_hex);
+    var applicant_hex: [64]u8 = undefined;
+    hex_of_key(applicant_pk, &applicant_hex);
+
+    var pos: u32 = 0;
+    while (pos < buf_len_u32(log)) {
+        const line_end = std.mem.indexOfScalarPos(u8, log, pos, '\n') orelse buf_len_u32(log);
+        const line = log[pos..line_end];
+        pos = if (line_end < buf_len_u32(log)) @as(u32, @intCast(line_end + 1)) else @as(u32, @intCast(line_end));
+        if (trim_line(line).len == 0) continue;
+
+        var sig_buf: [kumara.signature_length]u8 = undefined;
+        var fact_buf: [max_oa_fact]u8 = undefined;
+        const parsed = rc.parse_log_line(line, &sig_buf, &fact_buf) catch return error.FoldFailed;
+        const fact = fact_buf[0..parsed.fact_len];
+
+        const kind = classify_fact(fact) catch return error.FoldFailed;
+        const sig = sig_buf[0..parsed.sig_len];
+        switch (kind) {
+            .request => try fold_reputation_on_request(cycles[0..], &cycle_count, sig, fact, poster_pk, poster_hex[0..64]),
+            .application => try fold_reputation_on_application(cycles[0..], cycle_count, sig, fact, applicant_pk, applicant_hex[0..64]),
+            .acceptance => try fold_reputation_on_acceptance(cycles[0..], cycle_count, sig, fact, poster_pk),
+            .completion => try fold_reputation_on_completion(cycles[0..], cycle_count, sig, fact, poster_pk),
+            .consent => try fold_reputation_on_consent(cycles[0..], cycle_count, sig, fact, applicant_pk),
+        }
+    }
+
+    return fold_reputation_tally(cycles[0..], cycle_count, target_applicant_hex);
+}
+
+fn append_signed(sig: kumara.Signature, fact: []const u8, log: []u8, log_len: *u32) error{Overflow}!void {
+    var line: [max_line_len]u8 = undefined;
+    const line_len = try rc.format_log_line(sig, fact, &line);
+    if (log_len.* + line_len > buf_len_u32(log)) return error.Overflow;
+    tally_copy.copy_disjoint(u8, log[log_len.*..][0..line_len], line[0..line_len]);
+    log_len.* += line_len;
+}
+
+fn pubkey_hex(kp: kumara.KeyPair, out: *[64]u8) void {
+    const bytes = kp.public_key.toBytes();
+    var i: u32 = 0;
+    while (i < 32) : (i += 1) {
+        _ = std.fmt.bufPrint(out[i * 2 ..][0..2], "{x:0>2}", .{bytes[i]}) catch unreachable;
+    }
+}
+
+fn append_oa1_completion_payment(
+    poster_kp: kumara.KeyPair,
+    poster_hex: []const u8,
+    applicant_hex: []const u8,
+    ref_hex: []const u8,
+    stipend: []const u8,
+    log: []u8,
+    log_len: *u32,
+) !void {
+    var memo_buf: [128]u8 = undefined;
+    const memo_written = try std.fmt.bufPrint(&memo_buf, "{s}{s}", .{ completion_memo_prefix, ref_hex });
+    const completion_fields = rc.FactFields{
+        .from = poster_hex,
+        .to = applicant_hex,
+        .amount = stipend,
+        .memo = memo_written,
+        .stamp = "20260706.003200",
+    };
+    var canonical_pay: [max_oa_fact]u8 = undefined;
+    const pay_len = try rc.write_canonical_fact(completion_fields, &canonical_pay);
+    const pay_sig = poster_kp.sign(canonical_pay[0..pay_len], null) catch unreachable;
+    try append_signed(pay_sig, canonical_pay[0..pay_len], log, log_len);
+}
+
+fn append_oa1_welcome_log(
+    io: std.Io,
+    poster_kp: kumara.KeyPair,
+    applicant_kp: kumara.KeyPair,
+    poster_hex: []const u8,
+    applicant_hex: []const u8,
+    log: []u8,
+    log_len: *u32,
+) !struct {
+    req_sig: kumara.Signature,
+    canonical_req: [max_oa_fact]u8,
+    req_len: u32,
+    app_fields: ApplicationFields,
+    ref_hex: [ref_hex_len]u8,
+    stipend: i64,
+} {
+    const fixture_path = "tools/fixtures/open_asks_request.bron";
+    const cwd = Dir.cwd();
+    var fixture_buf: [max_oa_fact]u8 = undefined;
+    const fixture_read = try cwd.readFile(io, fixture_path, &fixture_buf);
+    assert(fixture_read.len <= max_oa_fact);
+
+    var req_fields: RequestFields = undefined;
+    try parse_request_fields(fixture_read, &req_fields);
+    assert(std.mem.eql(u8, req_fields.poster, poster_hex));
+
+    var canonical_req: [max_oa_fact]u8 = undefined;
+    const req_len = try write_canonical_request(req_fields, &canonical_req);
+
+    var ref_hex: [ref_hex_len]u8 = undefined;
+    request_ref_hex(canonical_req[0..req_len], &ref_hex);
+
+    const req_sig = poster_kp.sign(canonical_req[0..req_len], null) catch unreachable;
+    try append_signed(req_sig, canonical_req[0..req_len], log, log_len);
+
+    const app_fields = ApplicationFields{
+        .applicant = applicant_hex,
+        .request_ref = ref_hex[0..ref_hex_len],
+        .message = "I animate science explainers and would love this gig.",
+        .stamp = "20260706.003000",
+    };
+    var canonical_app: [max_oa_fact]u8 = undefined;
+    const app_len = try write_canonical_application(app_fields, &canonical_app);
+    const app_sig = applicant_kp.sign(canonical_app[0..app_len], null) catch unreachable;
+    try append_signed(app_sig, canonical_app[0..app_len], log, log_len);
+
+    const acc_fields = AcceptanceFields{
+        .poster = poster_hex,
+        .request_ref = ref_hex[0..ref_hex_len],
+        .applicant = applicant_hex,
+        .stamp = "20260706.003100",
+    };
+    var canonical_acc: [max_oa_fact]u8 = undefined;
+    const acc_len = try write_canonical_acceptance(acc_fields, &canonical_acc);
+    const acc_sig = poster_kp.sign(canonical_acc[0..acc_len], null) catch unreachable;
+    try append_signed(acc_sig, canonical_acc[0..acc_len], log, log_len);
+
+    try append_oa1_completion_payment(poster_kp, poster_hex, applicant_hex, ref_hex[0..ref_hex_len], req_fields.stipend, log, log_len);
+
+    return .{
+        .req_sig = req_sig,
+        .canonical_req = canonical_req,
+        .req_len = req_len,
+        .app_fields = app_fields,
+        .ref_hex = ref_hex,
+        .stipend = rc.parse_amount_signed(req_fields.stipend) catch unreachable,
+    };
+}
+
+fn run_selftest_unwelcome_bad_ref(
+    applicant_kp: kumara.KeyPair,
+    poster_pk: kumara.PublicKey,
+    applicant_pk: kumara.PublicKey,
+    applicant_hex: []const u8,
+    welcome: struct {
+        req_sig: kumara.Signature,
+        canonical_req: [max_oa_fact]u8,
+        req_len: u32,
+        app_fields: ApplicationFields,
+    },
+) !void {
+    var bad_ref: [ref_hex_len]u8 = undefined;
+    @memset(&bad_ref, '0');
+    const bad_app = ApplicationFields{
+        .applicant = applicant_hex,
+        .request_ref = bad_ref[0..ref_hex_len],
+        .message = welcome.app_fields.message,
+        .stamp = welcome.app_fields.stamp,
+    };
+    var bad_canonical: [max_oa_fact]u8 = undefined;
+    const bad_len = try write_canonical_application(bad_app, &bad_canonical);
+    const bad_sig = applicant_kp.sign(bad_canonical[0..bad_len], null) catch unreachable;
+    var bad_log: [max_log_len]u8 = undefined;
+    var bad_log_len: u32 = 0;
+    try append_signed(welcome.req_sig, welcome.canonical_req[0..welcome.req_len], &bad_log, &bad_log_len);
+    try append_signed(bad_sig, bad_canonical[0..bad_len], &bad_log, &bad_log_len);
+    _ = fold_log(bad_log[0..bad_log_len], poster_pk, applicant_pk) catch {
+        print("oal1: bad request_ref refused at fold — GREEN unwelcome path\n", .{});
+        return;
+    };
+    return error.UnwelcomePassed;
+}
+
+fn run_selftest(io: std.Io) !u8 {
+    const state = try run_welcome_fold(io);
+    assert(state.completed);
+    assert(state.stipend == 100);
+
+    const poster_kp = kumara.keypair_from_seed(&oa1_poster_seed);
+    const applicant_kp = kumara.keypair_from_seed(&oa1_applicant_seed);
+    var poster_hex: [64]u8 = undefined;
+    var applicant_hex: [64]u8 = undefined;
+    pubkey_hex(poster_kp, &poster_hex);
+    pubkey_hex(applicant_kp, &applicant_hex);
+
+    var log: [max_log_len]u8 = undefined;
+    var log_len: u32 = 0;
+    const welcome = try append_oa1_welcome_log(
+        io,
+        poster_kp,
+        applicant_kp,
+        poster_hex[0..64],
+        applicant_hex[0..64],
+        &log,
+        &log_len,
+    );
+    try run_selftest_unwelcome_bad_ref(applicant_kp, poster_kp.public_key, applicant_kp.public_key, applicant_hex[0..64], .{
+        .req_sig = welcome.req_sig,
+        .canonical_req = welcome.canonical_req,
+        .req_len = welcome.req_len,
+        .app_fields = welcome.app_fields,
+    });
+
+    print("oal1: version {s}\n", .{oa1_version});
+    print("GREEN: OA-L1 closed ask loop — post, apply, accept, complete, verify.\n", .{});
+    return 0;
+}
+
+/// Public welcome fold for Skate views — OA-L1 closed loop in-process.
+pub fn run_welcome_fold(io: std.Io) !FoldState {
+    const poster_kp = kumara.keypair_from_seed(&oa1_poster_seed);
+    const applicant_kp = kumara.keypair_from_seed(&oa1_applicant_seed);
+    var poster_hex: [64]u8 = undefined;
+    var applicant_hex: [64]u8 = undefined;
+    pubkey_hex(poster_kp, &poster_hex);
+    pubkey_hex(applicant_kp, &applicant_hex);
+
+    var log: [max_log_len]u8 = undefined;
+    var log_len: u32 = 0;
+    const welcome = try append_oa1_welcome_log(
+        io,
+        poster_kp,
+        applicant_kp,
+        poster_hex[0..64],
+        applicant_hex[0..64],
+        &log,
+        &log_len,
+    );
+    const state = try fold_log(log[0..log_len], poster_kp.public_key, applicant_kp.public_key);
+    assert(state.completed);
+    assert(state.stipend == welcome.stipend);
+    return state;
+}
+
+const EscrowKeys = struct {
+    poster: kumara.KeyPair,
+    applicant: kumara.KeyPair,
+    escrow: kumara.KeyPair,
+    poster_hex: [64]u8,
+    applicant_hex: [64]u8,
+    escrow_hex: [64]u8,
+};
+
+fn build_accepted_prefix(keys: EscrowKeys, req_fields: RequestFields, ref_hex: []const u8, log: []u8, log_len: *u32) !void {
+    var canonical_req: [max_oa_fact]u8 = undefined;
+    const req_len = try write_canonical_request(req_fields, &canonical_req);
+    const req_sig = keys.poster.sign(canonical_req[0..req_len], null) catch unreachable;
+    try append_signed(req_sig, canonical_req[0..req_len], log, log_len);
+
+    const app_fields = ApplicationFields{
+        .applicant = keys.applicant_hex[0..64],
+        .request_ref = ref_hex,
+        .message = "I animate science explainers and would love this gig.",
+        .stamp = "20260706.003000",
+    };
+    var canonical_app: [max_oa_fact]u8 = undefined;
+    const app_len = try write_canonical_application(app_fields, &canonical_app);
+    const app_sig = keys.applicant.sign(canonical_app[0..app_len], null) catch unreachable;
+    try append_signed(app_sig, canonical_app[0..app_len], log, log_len);
+
+    const acc_fields = AcceptanceFields{
+        .poster = keys.poster_hex[0..64],
+        .request_ref = ref_hex,
+        .applicant = keys.applicant_hex[0..64],
+        .stamp = "20260706.003100",
+    };
+    var canonical_acc: [max_oa_fact]u8 = undefined;
+    const acc_len = try write_canonical_acceptance(acc_fields, &canonical_acc);
+    const acc_sig = keys.poster.sign(canonical_acc[0..acc_len], null) catch unreachable;
+    try append_signed(acc_sig, canonical_acc[0..acc_len], log, log_len);
+}
+
+fn build_escrow_fact(
+    signer: kumara.KeyPair,
+    role: EscrowRole,
+    from_hex: []const u8,
+    to_hex: []const u8,
+    amount_text: []const u8,
+    ref_hex: []const u8,
+    stamp: []const u8,
+    log: []u8,
+    log_len: *u32,
+) !void {
+    var canonical: [max_oa_fact]u8 = undefined;
+    const clen = try write_escrow_payment_canonical(role, from_hex, to_hex, amount_text, ref_hex, stamp, &canonical);
+    const sig = signer.sign(canonical[0..clen], null) catch unreachable;
+    try append_signed(sig, canonical[0..clen], log, log_len);
+}
+
+/// Canonical bytes for a poster-signed escrow payment fact (hold or release).
+pub fn write_escrow_payment_canonical(
+    role: EscrowRole,
+    from_hex: []const u8,
+    to_hex: []const u8,
+    amount_text: []const u8,
+    ref_hex: []const u8,
+    stamp: []const u8,
+    out: []u8,
+) error{Overflow}!u32 {
+    const prefix = if (role == .hold) escrow_hold_prefix else escrow_release_prefix;
+    var memo_buf: [128]u8 = undefined;
+    const memo = std.fmt.bufPrint(&memo_buf, "{s}{s}", .{ prefix, ref_hex }) catch return error.Overflow;
+    const fields = rc.FactFields{ .from = from_hex, .to = to_hex, .amount = amount_text, .memo = memo, .stamp = stamp };
+    return try rc.write_canonical_fact(fields, out);
+}
+
+/// Public escrow welcome fold for Skate views — OA-L3 hold then release in-process.
+pub fn run_escrow_welcome_fold(io: std.Io) !FoldState {
+    const poster_kp = kumara.keypair_from_seed(&oa1_poster_seed);
+    const applicant_kp = kumara.keypair_from_seed(&oa1_applicant_seed);
+    const escrow_kp = kumara.keypair_from_seed(&escrow_seed);
+
+    var keys: EscrowKeys = .{
+        .poster = poster_kp,
+        .applicant = applicant_kp,
+        .escrow = escrow_kp,
+        .poster_hex = undefined,
+        .applicant_hex = undefined,
+        .escrow_hex = undefined,
+    };
+    hex_of_key(poster_kp.public_key, &keys.poster_hex);
+    hex_of_key(applicant_kp.public_key, &keys.applicant_hex);
+    hex_of_key(escrow_kp.public_key, &keys.escrow_hex);
+
+    const cwd = Dir.cwd();
+    var fixture_buf: [max_oa_fact]u8 = undefined;
+    const fixture_read = try cwd.readFile(io, "tools/fixtures/open_asks_request.bron", &fixture_buf);
+    var req_fields: RequestFields = undefined;
+    try parse_request_fields(fixture_read, &req_fields);
+    assert(std.mem.eql(u8, req_fields.poster, keys.poster_hex[0..64]));
+
+    var canonical_req: [max_oa_fact]u8 = undefined;
+    const req_len = try write_canonical_request(req_fields, &canonical_req);
+    var ref_hex: [ref_hex_len]u8 = undefined;
+    request_ref_hex(canonical_req[0..req_len], &ref_hex);
+    const stipend_text = req_fields.stipend;
+
+    var log: [max_log_len]u8 = undefined;
+    var log_len: u32 = 0;
+    try build_accepted_prefix(keys, req_fields, ref_hex[0..ref_hex_len], &log, &log_len);
+    try build_escrow_fact(poster_kp, .hold, keys.poster_hex[0..64], keys.escrow_hex[0..64], stipend_text, ref_hex[0..ref_hex_len], "20260706.003200", &log, &log_len);
+    try build_escrow_fact(poster_kp, .release, keys.escrow_hex[0..64], keys.applicant_hex[0..64], stipend_text, ref_hex[0..ref_hex_len], "20260706.003300", &log, &log_len);
+
+    const state = try fold_escrow_log(log[0..log_len], poster_kp.public_key, applicant_kp.public_key, escrow_kp.public_key);
+    assert(state.held);
+    assert(state.released);
+    assert(state.completed);
+    assert(state.escrow_balance == 0);
+    assert(state.stipend == 100);
+    return state;
+}
+
+fn run_escrow_selftest(io: std.Io) !u8 {
+    const state = try run_escrow_welcome_fold(io);
+    assert(state.held);
+    assert(state.released);
+    assert(state.completed);
+    assert(state.escrow_balance == 0);
+    assert(state.stipend == 100);
+    print("oal3: hold then release folded — escrow closes at {d}, stipend {d}\n", .{ state.escrow_balance, state.stipend });
+
+    const poster_kp = kumara.keypair_from_seed(&oa1_poster_seed);
+    const applicant_kp = kumara.keypair_from_seed(&oa1_applicant_seed);
+    const escrow_kp = kumara.keypair_from_seed(&escrow_seed);
+    var keys: EscrowKeys = .{
+        .poster = poster_kp,
+        .applicant = applicant_kp,
+        .escrow = escrow_kp,
+        .poster_hex = undefined,
+        .applicant_hex = undefined,
+        .escrow_hex = undefined,
+    };
+    hex_of_key(poster_kp.public_key, &keys.poster_hex);
+    hex_of_key(applicant_kp.public_key, &keys.applicant_hex);
+    hex_of_key(escrow_kp.public_key, &keys.escrow_hex);
+
+    const cwd = Dir.cwd();
+    var fixture_buf: [max_oa_fact]u8 = undefined;
+    const fixture_read = try cwd.readFile(io, "tools/fixtures/open_asks_request.bron", &fixture_buf);
+    var req_fields: RequestFields = undefined;
+    try parse_request_fields(fixture_read, &req_fields);
+    var canonical_req: [max_oa_fact]u8 = undefined;
+    const req_len = try write_canonical_request(req_fields, &canonical_req);
+    var ref_hex: [ref_hex_len]u8 = undefined;
+    request_ref_hex(canonical_req[0..req_len], &ref_hex);
+    const stipend_text = req_fields.stipend;
+
+    // Unwelcome path 1 — release with no prior hold.
+    {
+        var bad: [max_log_len]u8 = undefined;
+        var bl: u32 = 0;
+        try build_accepted_prefix(keys, req_fields, ref_hex[0..ref_hex_len], &bad, &bl);
+        try build_escrow_fact(poster_kp, .release, keys.escrow_hex[0..64], keys.applicant_hex[0..64], stipend_text, ref_hex[0..ref_hex_len], "20260706.003300", &bad, &bl);
+        if (fold_escrow_log(bad[0..bl], poster_kp.public_key, applicant_kp.public_key, escrow_kp.public_key)) |_| {
+            return error.UnwelcomePassed;
+        } else |_| print("oal3: release without hold refused — GREEN unwelcome path\n", .{});
+    }
+
+    // Unwelcome path 2 — release in the wrong amount.
+    {
+        var bad: [max_log_len]u8 = undefined;
+        var bl: u32 = 0;
+        try build_accepted_prefix(keys, req_fields, ref_hex[0..ref_hex_len], &bad, &bl);
+        try build_escrow_fact(poster_kp, .hold, keys.poster_hex[0..64], keys.escrow_hex[0..64], stipend_text, ref_hex[0..ref_hex_len], "20260706.003200", &bad, &bl);
+        try build_escrow_fact(poster_kp, .release, keys.escrow_hex[0..64], keys.applicant_hex[0..64], "50", ref_hex[0..ref_hex_len], "20260706.003300", &bad, &bl);
+        if (fold_escrow_log(bad[0..bl], poster_kp.public_key, applicant_kp.public_key, escrow_kp.public_key)) |_| {
+            return error.UnwelcomePassed;
+        } else |_| print("oal3: wrong-amount release refused — GREEN unwelcome path\n", .{});
+    }
+
+    // Unwelcome path 3 — release to the wrong applicant.
+    {
+        var bad: [max_log_len]u8 = undefined;
+        var bl: u32 = 0;
+        try build_accepted_prefix(keys, req_fields, ref_hex[0..ref_hex_len], &bad, &bl);
+        try build_escrow_fact(poster_kp, .hold, keys.poster_hex[0..64], keys.escrow_hex[0..64], stipend_text, ref_hex[0..ref_hex_len], "20260706.003200", &bad, &bl);
+        try build_escrow_fact(poster_kp, .release, keys.escrow_hex[0..64], keys.poster_hex[0..64], stipend_text, ref_hex[0..ref_hex_len], "20260706.003300", &bad, &bl);
+        if (fold_escrow_log(bad[0..bl], poster_kp.public_key, applicant_kp.public_key, escrow_kp.public_key)) |_| {
+            return error.UnwelcomePassed;
+        } else |_| print("oal3: wrong-applicant release refused — GREEN unwelcome path\n", .{});
+    }
+
+    // Unwelcome path 4 — a second release on a settled bounty.
+    {
+        var bad: [max_log_len]u8 = undefined;
+        var bl: u32 = 0;
+        try build_accepted_prefix(keys, req_fields, ref_hex[0..ref_hex_len], &bad, &bl);
+        try build_escrow_fact(poster_kp, .hold, keys.poster_hex[0..64], keys.escrow_hex[0..64], stipend_text, ref_hex[0..ref_hex_len], "20260706.003200", &bad, &bl);
+        try build_escrow_fact(poster_kp, .release, keys.escrow_hex[0..64], keys.applicant_hex[0..64], stipend_text, ref_hex[0..ref_hex_len], "20260706.003300", &bad, &bl);
+        try build_escrow_fact(poster_kp, .release, keys.escrow_hex[0..64], keys.applicant_hex[0..64], stipend_text, ref_hex[0..ref_hex_len], "20260706.003400", &bad, &bl);
+        if (fold_escrow_log(bad[0..bl], poster_kp.public_key, applicant_kp.public_key, escrow_kp.public_key)) |_| {
+            return error.UnwelcomePassed;
+        } else |_| print("oal3: double release refused — GREEN unwelcome path\n", .{});
+    }
+
+    // Unwelcome path 5 — a second hold on the same request.
+    {
+        var bad: [max_log_len]u8 = undefined;
+        var bl: u32 = 0;
+        try build_accepted_prefix(keys, req_fields, ref_hex[0..ref_hex_len], &bad, &bl);
+        try build_escrow_fact(poster_kp, .hold, keys.poster_hex[0..64], keys.escrow_hex[0..64], stipend_text, ref_hex[0..ref_hex_len], "20260706.003200", &bad, &bl);
+        try build_escrow_fact(poster_kp, .hold, keys.poster_hex[0..64], keys.escrow_hex[0..64], stipend_text, ref_hex[0..ref_hex_len], "20260706.003250", &bad, &bl);
+        if (fold_escrow_log(bad[0..bl], poster_kp.public_key, applicant_kp.public_key, escrow_kp.public_key)) |_| {
+            return error.UnwelcomePassed;
+        } else |_| print("oal3: double hold refused — GREEN unwelcome path\n", .{});
+    }
+
+    print("oal3: version {s}\n", .{oa1_version});
+    print("GREEN: OA-L3 escrow — hold, release, verify on one log.\n", .{});
+    return 0;
+}
+
+fn append_ask_through_acceptance(
+    poster_kp: kumara.KeyPair,
+    applicant_kp: kumara.KeyPair,
+    poster_hex: []const u8,
+    applicant_hex: []const u8,
+    req_fields: RequestFields,
+    app_message: []const u8,
+    log: []u8,
+    log_len: *u32,
+) ![ref_hex_len]u8 {
+    var canonical_req: [max_oa_fact]u8 = undefined;
+    const req_len = try write_canonical_request(req_fields, &canonical_req);
+    const req_sig = poster_kp.sign(canonical_req[0..req_len], null) catch unreachable;
+    try append_signed(req_sig, canonical_req[0..req_len], log, log_len);
+
+    var ref_hex: [ref_hex_len]u8 = undefined;
+    request_ref_hex(canonical_req[0..req_len], &ref_hex);
+
+    const app_fields = ApplicationFields{
+        .applicant = applicant_hex,
+        .request_ref = ref_hex[0..ref_hex_len],
+        .message = app_message,
+        .stamp = req_fields.stamp,
+    };
+    var canonical_app: [max_oa_fact]u8 = undefined;
+    const app_len = try write_canonical_application(app_fields, &canonical_app);
+    const app_sig = applicant_kp.sign(canonical_app[0..app_len], null) catch unreachable;
+    try append_signed(app_sig, canonical_app[0..app_len], log, log_len);
+
+    const acc_fields = AcceptanceFields{
+        .poster = poster_hex,
+        .request_ref = ref_hex[0..ref_hex_len],
+        .applicant = applicant_hex,
+        .stamp = req_fields.stamp,
+    };
+    var canonical_acc: [max_oa_fact]u8 = undefined;
+    const acc_len = try write_canonical_acceptance(acc_fields, &canonical_acc);
+    const acc_sig = poster_kp.sign(canonical_acc[0..acc_len], null) catch unreachable;
+    try append_signed(acc_sig, canonical_acc[0..acc_len], log, log_len);
+    return ref_hex;
+}
+
+fn append_optional_consent(
+    applicant_kp: kumara.KeyPair,
+    applicant_hex: []const u8,
+    ref_hex: []const u8,
+    consent: ConsentChoice,
+    stamp: []const u8,
+    log: []u8,
+    log_len: *u32,
+) !void {
+    const consent_text = if (consent == .grant) consent_grant else consent_withhold;
+    const consent_fields = ConsentFields{
+        .applicant = applicant_hex,
+        .request_ref = ref_hex,
+        .consent = consent_text,
+        .stamp = stamp,
+    };
+    var canonical_consent: [max_oa_fact]u8 = undefined;
+    const consent_len = try write_canonical_consent(consent_fields, &canonical_consent);
+    const consent_sig = applicant_kp.sign(canonical_consent[0..consent_len], null) catch unreachable;
+    try append_signed(consent_sig, canonical_consent[0..consent_len], log, log_len);
+}
+
+fn append_escrow_hold_release(
+    poster_kp: kumara.KeyPair,
+    poster_hex: []const u8,
+    applicant_hex: []const u8,
+    escrow_hex: []const u8,
+    stipend: []const u8,
+    ref_hex: []const u8,
+    stamp: []const u8,
+    log: []u8,
+    log_len: *u32,
+) !void {
+    try build_escrow_fact(poster_kp, .hold, poster_hex, escrow_hex, stipend, ref_hex, stamp, log, log_len);
+    try build_escrow_fact(poster_kp, .release, escrow_hex, applicant_hex, stipend, ref_hex, stamp, log, log_len);
+}
+
+fn append_completed_ask(
+    poster_kp: kumara.KeyPair,
+    applicant_kp: kumara.KeyPair,
+    poster_hex: []const u8,
+    applicant_hex: []const u8,
+    req_fields: RequestFields,
+    consent: ?ConsentChoice,
+    log: []u8,
+    log_len: *u32,
+) !void {
+    const ref_hex = try append_ask_through_acceptance(
+        poster_kp,
+        applicant_kp,
+        poster_hex,
+        applicant_hex,
+        req_fields,
+        "Completed work for reputation witness.",
+        log,
+        log_len,
+    );
+
+    var memo_buf: [128]u8 = undefined;
+    const memo_written = try std.fmt.bufPrint(&memo_buf, "{s}{s}", .{ completion_memo_prefix, ref_hex[0..ref_hex_len] });
+    const completion_fields = rc.FactFields{
+        .from = poster_hex,
+        .to = applicant_hex,
+        .amount = req_fields.stipend,
+        .memo = memo_written,
+        .stamp = req_fields.stamp,
+    };
+    var canonical_pay: [max_oa_fact]u8 = undefined;
+    const pay_len = try rc.write_canonical_fact(completion_fields, &canonical_pay);
+    const pay_sig = poster_kp.sign(canonical_pay[0..pay_len], null) catch unreachable;
+    try append_signed(pay_sig, canonical_pay[0..pay_len], log, log_len);
+
+    if (consent) |choice| {
+        try append_optional_consent(applicant_kp, applicant_hex, ref_hex[0..ref_hex_len], choice, req_fields.stamp, log, log_len);
+    }
+}
+
+fn append_escrow_completed_ask(
+    poster_kp: kumara.KeyPair,
+    applicant_kp: kumara.KeyPair,
+    poster_hex: []const u8,
+    applicant_hex: []const u8,
+    escrow_hex: []const u8,
+    req_fields: RequestFields,
+    consent: ?ConsentChoice,
+    log: []u8,
+    log_len: *u32,
+) !void {
+    const ref_hex = try append_ask_through_acceptance(
+        poster_kp,
+        applicant_kp,
+        poster_hex,
+        applicant_hex,
+        req_fields,
+        "Escrow-paid work for reputation witness.",
+        log,
+        log_len,
+    );
+    try append_escrow_hold_release(
+        poster_kp,
+        poster_hex,
+        applicant_hex,
+        escrow_hex,
+        req_fields.stipend,
+        ref_hex[0..ref_hex_len],
+        req_fields.stamp,
+        log,
+        log_len,
+    );
+    if (consent) |choice| {
+        try append_optional_consent(applicant_kp, applicant_hex, ref_hex[0..ref_hex_len], choice, req_fields.stamp, log, log_len);
+    }
+}
+
+fn append_reputation_witness_bolt(
+    poster_kp: kumara.KeyPair,
+    applicant_kp: kumara.KeyPair,
+    poster_hex: []const u8,
+    applicant_hex: []const u8,
+    escrow_hex: []const u8,
+    log: []u8,
+    log_len: *u32,
+) !void {
+    const req_a = RequestFields{
+        .poster = poster_hex[0..64],
+        .title = "animator gig alpha",
+        .skills = "animation",
+        .bounds = "remote",
+        .stipend = "100",
+        .deadline = "20260715.235959",
+        .stamp = "20260706.234500",
+    };
+    const req_b = RequestFields{
+        .poster = poster_hex[0..64],
+        .title = "animator gig beta",
+        .skills = "animation",
+        .bounds = "remote",
+        .stipend = "100",
+        .deadline = "20260716.235959",
+        .stamp = "20260706.234501",
+    };
+    const req_c = RequestFields{
+        .poster = poster_hex[0..64],
+        .title = "animator gig gamma",
+        .skills = "animation",
+        .bounds = "remote",
+        .stipend = "100",
+        .deadline = "20260717.235959",
+        .stamp = "20260706.234502",
+    };
+    const req_d = RequestFields{
+        .poster = poster_hex[0..64],
+        .title = "animator gig delta (escrow)",
+        .skills = "animation",
+        .bounds = "remote",
+        .stipend = "100",
+        .deadline = "20260718.235959",
+        .stamp = "20260706.234503",
+    };
+    const req_e = RequestFields{
+        .poster = poster_hex[0..64],
+        .title = "animator gig epsilon (escrow withhold)",
+        .skills = "animation",
+        .bounds = "remote",
+        .stipend = "100",
+        .deadline = "20260719.235959",
+        .stamp = "20260706.234504",
+    };
+    try append_completed_ask(poster_kp, applicant_kp, poster_hex, applicant_hex, req_a, .grant, log, log_len);
+    try append_completed_ask(poster_kp, applicant_kp, poster_hex, applicant_hex, req_b, .grant, log, log_len);
+    try append_completed_ask(poster_kp, applicant_kp, poster_hex, applicant_hex, req_c, .withhold, log, log_len);
+    try append_escrow_completed_ask(poster_kp, applicant_kp, poster_hex, applicant_hex, escrow_hex, req_d, .grant, log, log_len);
+    try append_escrow_completed_ask(poster_kp, applicant_kp, poster_hex, applicant_hex, escrow_hex, req_e, .withhold, log, log_len);
+}
+
+fn verify_reputation_welcome_fold(
+    log: []const u8,
+    poster_kp: kumara.KeyPair,
+    applicant_kp: kumara.KeyPair,
+    applicant_hex: []const u8,
+) !ReputationFoldState {
+    const view_a = try fold_reputation_log(log, poster_kp.public_key, applicant_kp.public_key, applicant_hex);
+    const view_b = try fold_reputation_log(log, poster_kp.public_key, applicant_kp.public_key, applicant_hex);
+    assert(view_a.consented_completions == view_b.consented_completions);
+    assert(view_a.consented_stipend == view_b.consented_stipend);
+    assert(view_a.consented_completions == 3);
+    assert(view_a.consented_stipend == 300);
+    print("oal4: consented completions {d}, stipend {d} — plain + escrow-release; withheld excluded\n", .{
+        view_a.consented_completions, view_a.consented_stipend,
+    });
+    return view_a;
+}
+
+/// Public reputation welcome fold for Skate views — OA-L4 consent-before-counting in-process.
+pub fn run_reputation_welcome_fold(io: std.Io) !ReputationFoldState {
+    _ = io;
+    const poster_kp = kumara.keypair_from_seed(&oa1_poster_seed);
+    const applicant_kp = kumara.keypair_from_seed(&oa1_applicant_seed);
+
+    var poster_hex: [64]u8 = undefined;
+    var applicant_hex: [64]u8 = undefined;
+    hex_of_key(poster_kp.public_key, &poster_hex);
+    hex_of_key(applicant_kp.public_key, &applicant_hex);
+
+    const escrow_kp = kumara.keypair_from_seed(&escrow_seed);
+    var escrow_hex: [64]u8 = undefined;
+    hex_of_key(escrow_kp.public_key, &escrow_hex);
+
+    var log: [max_log_len]u8 = undefined;
+    var log_len: u32 = 0;
+    try append_reputation_witness_bolt(
+        poster_kp,
+        applicant_kp,
+        poster_hex[0..64],
+        applicant_hex[0..64],
+        escrow_hex[0..64],
+        &log,
+        &log_len,
+    );
+    return try verify_reputation_welcome_fold(log[0..log_len], poster_kp, applicant_kp, applicant_hex[0..64]);
+}
+
+fn reputation_unwelcome_consent_before_completion(
+    poster_kp: kumara.KeyPair,
+    applicant_kp: kumara.KeyPair,
+    applicant_hex: []const u8,
+    req_a: RequestFields,
+) !void {
+    var bad: [max_log_len]u8 = undefined;
+    var bl: u32 = 0;
+    var canonical_req: [max_oa_fact]u8 = undefined;
+    const req_len = try write_canonical_request(req_a, &canonical_req);
+    const req_sig = poster_kp.sign(canonical_req[0..req_len], null) catch unreachable;
+    try append_signed(req_sig, canonical_req[0..req_len], &bad, &bl);
+    var ref_hex: [ref_hex_len]u8 = undefined;
+    request_ref_hex(canonical_req[0..req_len], &ref_hex);
+    const consent_fields = ConsentFields{
+        .applicant = applicant_hex[0..64],
+        .request_ref = ref_hex[0..ref_hex_len],
+        .consent = consent_grant,
+        .stamp = "20260706.234599",
+    };
+    var canonical_consent: [max_oa_fact]u8 = undefined;
+    const consent_len = try write_canonical_consent(consent_fields, &canonical_consent);
+    const consent_sig = applicant_kp.sign(canonical_consent[0..consent_len], null) catch unreachable;
+    try append_signed(consent_sig, canonical_consent[0..consent_len], &bad, &bl);
+    if (fold_reputation_log(bad[0..bl], poster_kp.public_key, applicant_kp.public_key, applicant_hex[0..64])) |_| {
+        return error.UnwelcomePassed;
+    } else |_| print("oal4: consent before completion refused — GREEN unwelcome path\n", .{});
+}
+
+fn reputation_unwelcome_double_consent(
+    poster_kp: kumara.KeyPair,
+    applicant_kp: kumara.KeyPair,
+    poster_hex: []const u8,
+    applicant_hex: []const u8,
+    req_a: RequestFields,
+) !void {
+    var bad: [max_log_len]u8 = undefined;
+    var bl: u32 = 0;
+    try append_completed_ask(poster_kp, applicant_kp, poster_hex, applicant_hex, req_a, .grant, &bad, &bl);
+    var canonical_req: [max_oa_fact]u8 = undefined;
+    const req_len = try write_canonical_request(req_a, &canonical_req);
+    var ref_hex: [ref_hex_len]u8 = undefined;
+    request_ref_hex(canonical_req[0..req_len], &ref_hex);
+    const consent_fields = ConsentFields{
+        .applicant = applicant_hex[0..64],
+        .request_ref = ref_hex[0..ref_hex_len],
+        .consent = consent_grant,
+        .stamp = "20260706.234600",
+    };
+    var canonical_consent: [max_oa_fact]u8 = undefined;
+    const consent_len = try write_canonical_consent(consent_fields, &canonical_consent);
+    const consent_sig = applicant_kp.sign(canonical_consent[0..consent_len], null) catch unreachable;
+    try append_signed(consent_sig, canonical_consent[0..consent_len], &bad, &bl);
+    if (fold_reputation_log(bad[0..bl], poster_kp.public_key, applicant_kp.public_key, applicant_hex[0..64])) |_| {
+        return error.UnwelcomePassed;
+    } else |_| print("oal4: double consent refused — GREEN unwelcome path\n", .{});
+}
+
+fn run_reputation_selftest(io: std.Io) !u8 {
+    const poster_kp = kumara.keypair_from_seed(&oa1_poster_seed);
+    const applicant_kp = kumara.keypair_from_seed(&oa1_applicant_seed);
+
+    var poster_hex: [64]u8 = undefined;
+    var applicant_hex: [64]u8 = undefined;
+    hex_of_key(poster_kp.public_key, &poster_hex);
+    hex_of_key(applicant_kp.public_key, &applicant_hex);
+
+    const welcome = try run_reputation_welcome_fold(io);
+    assert(welcome.consented_completions == 3);
+    assert(welcome.consented_stipend == 300);
+
+    const req_a = RequestFields{
+        .poster = poster_hex[0..64],
+        .title = "animator gig alpha",
+        .skills = "animation",
+        .bounds = "remote",
+        .stipend = "100",
+        .deadline = "20260715.235959",
+        .stamp = "20260706.234500",
+    };
+    try reputation_unwelcome_consent_before_completion(poster_kp, applicant_kp, applicant_hex[0..64], req_a);
+    try reputation_unwelcome_double_consent(poster_kp, applicant_kp, poster_hex[0..64], applicant_hex[0..64], req_a);
+
+    print("oal4: version {s}\n", .{oa1_version});
+    print("GREEN: OA-L4 reputation-as-fold — consent-before-counting on one log.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) return run_selftest(io);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "escrow")) return run_escrow_selftest(io);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "reputation")) return run_reputation_selftest(io);
+    const oa1 = try run_selftest(io);
+    if (oa1 != 0) return oa1;
+    return run_escrow_selftest(io);
+}

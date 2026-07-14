@@ -1,0 +1,23 @@
+# caravan_witness_stop_footgun.rish — refuse witness-stop-after-N outside witness mode.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/caravan_witness_stop_footgun.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let delivery = "mantra/bin/recall-subscribe-poll-delivery"
+let service = "caravan/bin/subscribe-poll-service"
+let sentinel = "/tmp/veganreyklah2-ns-poll-stop"
+
+let build = run ["sh" "-c" "mkdir -p mantra/bin caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/recall_subscribe_poll_delivery.rye -lc -femit-bin=${delivery} && env RYE_ZIG=${zig} rye/bin/rye build caravan/subscribe_poll_service.rye -lc -femit-bin=${service}"]
+assert build.ok else "witness stop footgun build failed"
+
+let refuse = run ["sh" "-c" "rm -f ${sentinel} && ${service} ${delivery} ${sentinel} 2 2>&1; echo exit:$?"]
+assert refuse.out contains "witness-stop-after-N is test-only" else "missing refusal message"
+assert refuse.out contains "CARAVAN_WITNESS_MODE=1" else "missing witness mode hint"
+assert refuse.out contains "exit:2" else "footgun should exit 2"
+
+let ok = run ["sh" "-c" "rm -f ${sentinel} && CARAVAN_WITNESS_MODE=1 ${service} ${delivery} ${sentinel} 2 2>&1"]
+assert ok.ok else "witness mode supervisor exited non-zero"
+assert ok.out contains "GREEN" else "witness mode supervisor not GREEN"
+
+say "GREEN: Caravan witness-stop-after footgun witness passed."

@@ -1,0 +1,43 @@
+//! Rye test: Ed25519 signing — the identity and authentication primitive our
+//! new ideas lean on (rooted identity, active-designing/994; sealed messaging,
+//! active-designing/993; the network, external-research/yonder/20260618-195512_encrypted-networking-riscv.md/982). The hash that
+//! names values is already strengthened (SHA3-512); this proves the *signing*
+//! foundation works in Rye's own std, the way the SHA3 test first proved hashing.
+//!
+//! Everything here is deterministic — a fixed seed and null noise (RFC 8032
+//! deterministic signatures) — so the output is identical on every run and
+//! across the baseline and the strengthened std, which lets the parity gate
+//! compare it byte for byte. The seed is a test fixture, never a real secret.
+
+const std = @import("std");
+const Ed25519 = std.crypto.sign.Ed25519;
+
+pub fn main() void {
+    // A fixed seed gives a deterministic key pair — an identity we can re-derive.
+    const seed = [_]u8{0x42} ** Ed25519.KeyPair.seed_length;
+    const kp = Ed25519.KeyPair.generateDeterministic(seed) catch unreachable;
+
+    const message = "Rye speaks, and signs.";
+
+    // Null noise makes the signature deterministic.
+    const sig = kp.sign(message, null) catch unreachable;
+
+    // The true signature verifies against the public key.
+    sig.verify(message, kp.public_key) catch unreachable;
+    std.debug.print("ed25519: the true message verifies.\n", .{});
+
+    // A tampered message must be rejected — authentication's whole purpose.
+    const tampered = "Rye speaks, and signs!";
+    if (sig.verify(tampered, kp.public_key)) |_| {
+        std.debug.print("ed25519: ERROR — a tampered message verified.\n", .{});
+    } else |_| {
+        std.debug.print("ed25519: a tampered message is rejected, as it must be.\n", .{});
+    }
+
+    // Render the public key as lowercase hex — a stable identity value for the
+    // gate to compare across the baseline and the strengthened std.
+    const pk = kp.public_key.toBytes();
+    std.debug.print("ed25519 identity (public key) = ", .{});
+    for (pk) |b| std.debug.print("{x:0>2}", .{b});
+    std.debug.print("\n", .{});
+}

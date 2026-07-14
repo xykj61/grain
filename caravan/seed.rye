@@ -1,0 +1,141 @@
+//! Caravan seed — the smallest living supervision loop.
+//!
+//! One parent, one dependent, restart on fall. The supervisor spawns a dependent
+//! process, waits for it to exit, and restarts it when the exit code is
+//! non-zero. The dependent is this same binary invoked in dependent mode — it
+//! exits with the code given as its argument, so the supervisor can plan
+//! exactly how many failures to expect and assert the result.
+//!
+//! This seed proves two things:
+//!   1. A parent can watch a dependent and restart it on failure.
+//!   2. The restart count matches the plan exactly — supervision is
+//!      deterministic — a planned restart count, rather than a retry loop with hope.
+//!
+//! The seed runs hosted, where the gates can reach it. Freestanding
+//! Caravan follows Aurora's relay pattern once the hosted proof is green.
+//!
+//! Usage:
+//!   caravan_seed               Run as supervisor (spawn self as dependent)
+//!   caravan_seed dependent <code>  Run as dependent (exit with <code>)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const tally_parse_int = @import("parse_int.rye");
+
+/// Caravan seed version — stamped chronologically.
+const caravan_seed_version = "20260619.224512";
+
+/// Maximum restarts before the supervisor gives up. Bounded on purpose:
+/// a supervision loop without a ceiling is a loop without honesty.
+const max_restarts: u32 = 10;
+
+/// Planned failures for the self-test. The dependent will fail this many
+/// times, then succeed. The supervisor asserts the restart count matches.
+const planned_failures: u32 = 3;
+
+pub fn main(init: std.process.Init) !u8 {
+    const io = init.io;
+    const allocator = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(allocator);
+
+    // Dependent mode: exit with the given code.
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "dependent")) {
+        return run_dependent(args);
+    }
+
+    // Supervisor mode.
+    return run_supervisor(allocator, io, args);
+}
+
+// =========================================================================
+// § Dependent — the process under supervision
+// =========================================================================
+
+/// In dependent mode, exit with the code given as the second argument.
+/// A dependent that cannot parse its exit code exits 1 — a stated failure,
+/// not a silent one.
+fn run_dependent(args: []const [:0]const u8) u8 {
+    if (args.len < 3) return 1;
+    // invariant: exit code is a single byte, 0–255
+    const code = tally_parse_int.parse_int(u8, args[2], .{}) catch return 1;
+    return code;
+}
+
+// =========================================================================
+// § Supervisor — the parent that never dies
+// =========================================================================
+
+/// The supervision loop. Spawns the dependent, waits for it, restarts on
+/// non-zero exit. Asserts the restart count matches the plan.
+fn run_supervisor(allocator: std.mem.Allocator, io: std.Io, args: []const [:0]const u8) !u8 {
+    // invariant: we have at least argv[0] — our own path
+    assert(args.len >= 1);
+    const self_path = args[0];
+
+    print("caravan seed: supervisor alive. planned failures: {d}, max restarts: {d}\n", .{
+        planned_failures, max_restarts,
+    });
+
+    var restarts: u32 = 0;
+
+    while (true) {
+        // invariant: restarts stays within the stated bound
+        assert(restarts <= max_restarts);
+
+        // Choose the dependent's exit code: fail for the first N, then succeed.
+        const dependent_code: []const u8 = if (restarts < planned_failures) "1" else "0";
+
+        // Spawn ourselves as a dependent process.
+        const argv = try allocator.alloc([]const u8, 3);
+        // postcondition: argv has exactly 3 slots
+        assert(argv.len == 3);
+        argv[0] = self_path;
+        argv[1] = "dependent";
+        argv[2] = dependent_code;
+
+        var dependent = std.process.spawn(io, .{ .argv = argv }) catch |err| {
+            print("caravan seed: could not start dependent ({s})\n", .{@errorName(err)});
+            return 1;
+        };
+
+        const term = try dependent.wait(io);
+        const code: u8 = switch (term) {
+            .exited => |c| c,
+            else => 255, // signal or abnormal — treat as failure
+        };
+
+        if (code == 0) {
+            // Dependent exited cleanly — supervision succeeded.
+            print("caravan seed: dependent exited cleanly after {d} restart(s).\n", .{restarts});
+            break;
+        }
+
+        // Dependent fell. Restart.
+        restarts += 1;
+        print("caravan seed: dependent fell (code {d}), restart {d}/{d}\n", .{
+            code, restarts, max_restarts,
+        });
+
+        if (restarts >= max_restarts) {
+            print("caravan seed: restart limit reached — giving up.\n", .{});
+            return 1;
+        }
+    }
+
+    // =====================================================================
+    // § Assertions — the proof
+    // =====================================================================
+
+    // postcondition: restart count matches the plan exactly
+    assert(restarts == planned_failures);
+
+    // postcondition: we did not exceed the restart limit
+    assert(restarts < max_restarts);
+
+    print(
+        "caravan seed: {d} assertion(s) confirmed. supervision loop proven GREEN.\n",
+        .{planned_failures + 2}, // planned_failures restarts + 2 postconditions
+    );
+    return 0;
+}

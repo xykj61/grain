@@ -1,0 +1,187 @@
+//! pond/customs.rye — Pond's first policy concept: customs at receipt, per Tilak mark.
+//!
+//! Verdicts: place · hold · refuse. Root allow-list starts with plain-bytes (place);
+//! await-word holds for a human word; every unknown mark refuses whole.
+//!
+//!   rye build pond/customs.rye -femit-bin=pond/bin/customs
+//!   pond/bin/customs selftest
+//!   pond/bin/customs mark <tilak>
+//!   pond/bin/customs inspect <manifest.bron>
+//!
+//! Ground: marked value [`active-designing/20260703-202312_the-marked-value.md`](../active-designing/20260703-202312_the-marked-value.md)
+//! · sealed crossing [`active-designing/20260703-201612_the-sealed-crossing.md`](../active-designing/20260703-201612_the-sealed-crossing.md)
+//! · counsel [`counsel/20260707-025212_claude-counsel-weave-brix-pond-customs.md`](../counsel/20260707-025212_claude-counsel-weave-brix-pond-customs.md)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+pub const pond_customs_version = "20260710.161125";
+pub const max_manifest_len: u32 = 8192;
+pub const max_entries: u32 = 32;
+pub const max_mark_len: u32 = 32;
+
+pub const Verdict = enum {
+    place,
+    hold,
+    refuse,
+};
+
+pub const Receipt = struct {
+    verdict: Verdict,
+    place_count: u32,
+    hold_count: u32,
+    refuse_count: u32,
+};
+
+fn trim_line(line: []const u8) []const u8 {
+    return std.mem.trim(u8, line, " \t\r\n");
+}
+
+fn verdict_name(v: Verdict) []const u8 {
+    return switch (v) {
+        .place => "place",
+        .hold => "hold",
+        .refuse => "refuse",
+    };
+}
+
+/// Pond's first policy table — marks named here are Pond's own allow-list roots.
+pub fn verdict_for_mark(mark: []const u8) Verdict {
+    if (std.mem.eql(u8, mark, "plain-bytes")) return .place;
+    if (std.mem.eql(u8, mark, "await-word")) return .hold;
+    return .refuse;
+}
+
+fn fold_verdict(acc: Verdict, next: Verdict) Verdict {
+    if (acc == .refuse or next == .refuse) return .refuse;
+    if (acc == .hold or next == .hold) return .hold;
+    return .place;
+}
+
+fn parse_entry_mark(line: []const u8) ?[]const u8 {
+    const prefixes = [_][]const u8{ "entry ", "cargo " };
+    for (prefixes) |prefix| {
+        if (!std.mem.startsWith(u8, line, prefix)) continue;
+        const rest = line[prefix.len..];
+        const space = std.mem.indexOfScalar(u8, rest, ' ') orelse return null;
+        if (space == 0 or space > max_mark_len) return null;
+        return rest[0..space];
+    }
+    return null;
+}
+
+pub fn inspect_manifest(text: []const u8) error{EmptyManifest}!Receipt {
+    var receipt: Receipt = .{
+        .verdict = .place,
+        .place_count = 0,
+        .hold_count = 0,
+        .refuse_count = 0,
+    };
+    var seen: u32 = 0;
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    while (lines.next()) |raw| {
+        const line = trim_line(raw);
+        if (line.len == 0 or line[0] == '#') continue;
+        const mark = parse_entry_mark(line) orelse continue;
+        if (seen >= max_entries) break;
+        seen += 1;
+        const v = verdict_for_mark(mark);
+        switch (v) {
+            .place => receipt.place_count += 1,
+            .hold => receipt.hold_count += 1,
+            .refuse => receipt.refuse_count += 1,
+        }
+        receipt.verdict = fold_verdict(receipt.verdict, v);
+    }
+    if (seen == 0) return error.EmptyManifest;
+    return receipt;
+}
+
+fn run_mark(mark: []const u8) !u8 {
+    const v = verdict_for_mark(mark);
+    print("pond customs: mark {s} verdict={s}\n", .{ mark, verdict_name(v) });
+    if (v == .refuse) {
+        print("REFUSE: Pond customs — unknown or forbidden mark.\n", .{});
+        return 2;
+    }
+    if (v == .hold) {
+        print("HOLD: Pond customs — awaits a word before placement.\n", .{});
+        return 1;
+    }
+    print("GREEN: Pond customs — mark may be placed.\n", .{});
+    return 0;
+}
+
+fn run_inspect(io: std.Io, path: []const u8) !u8 {
+    const cwd = std.Io.Dir.cwd();
+    var buf: [max_manifest_len]u8 = undefined;
+    const text = try cwd.readFile(io, path, &buf);
+    const receipt = try inspect_manifest(text);
+    print("pond customs: inspect place={d} hold={d} refuse={d} verdict={s}\n", .{
+        receipt.place_count,
+        receipt.hold_count,
+        receipt.refuse_count,
+        verdict_name(receipt.verdict),
+    });
+    if (receipt.verdict == .refuse) {
+        print("REFUSE: Pond customs — cargo refused at receipt.\n", .{});
+        return 2;
+    }
+    if (receipt.verdict == .hold) {
+        print("HOLD: Pond customs — cargo waits for a word.\n", .{});
+        return 1;
+    }
+    print("GREEN: Pond customs — cargo admitted for placement.\n", .{});
+    return 0;
+}
+
+fn run_selftest() !u8 {
+    assert(verdict_for_mark("plain-bytes") == .place);
+    assert(verdict_for_mark("await-word") == .hold);
+    assert(verdict_for_mark("stranger-mark") == .refuse);
+
+    const welcome =
+        \\format amber-ring1-v2-tilak
+        \\entry plain-bytes cd416bd6cae889877c353fc9abe39daaff1668666049a8fd10974248d99d23ab hello.txt
+        \\entry plain-bytes 7cab931ab9048ca077cd8005ec20ace63e4466340ff9d70cb8099c3d93e26308 nested/leaf.txt
+    ;
+    const ok = try inspect_manifest(welcome);
+    assert(ok.verdict == .place);
+    assert(ok.place_count == 2);
+    assert(ok.refuse_count == 0);
+
+    const held =
+        \\entry plain-bytes cd416bd6cae889877c353fc9abe39daaff1668666049a8fd10974248d99d23ab hello.txt
+        \\entry await-word aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa wait.me
+    ;
+    const held_r = try inspect_manifest(held);
+    assert(held_r.verdict == .hold);
+    assert(held_r.hold_count == 1);
+
+    const bad =
+        \\entry plain-bytes cd416bd6cae889877c353fc9abe39daaff1668666049a8fd10974248d99d23ab hello.txt
+        \\entry stranger-mark bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb x.bin
+    ;
+    const bad_r = try inspect_manifest(bad);
+    assert(bad_r.verdict == .refuse);
+    assert(bad_r.refuse_count == 1);
+
+    if (inspect_manifest("# empty\nformat x\n")) |_| return error.UnwelcomePassed else |_| {}
+
+    print("pond: customs version {s}\n", .{pond_customs_version});
+    print("GREEN: Pond customs — place, hold, refuse; empty refused.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 3 and std.mem.eql(u8, args[1], "mark")) {
+        return run_mark(args[2]);
+    }
+    if (args.len >= 3 and std.mem.eql(u8, args[1], "inspect")) {
+        return run_inspect(init.io, args[2]);
+    }
+    return run_selftest();
+}

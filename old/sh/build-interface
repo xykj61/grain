@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+set -ex
+
+cd pkg/interface
+npm install
+npm run build:prod &
+
+cd ./dbug
+npm install
+gulp bundle-prod
+
+set +x

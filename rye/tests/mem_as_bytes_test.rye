@@ -1,0 +1,25 @@
+//! Rye test: std.mem.asBytes — pass 9925.
+//!
+//! Single value to underlying byte view; pairs with sliceAsBytes (9926).
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    var word: u32 = 0xC0DEFACE;
+    const bytes = mem.asBytes(&word);
+    std.debug.assert(bytes.len == 4);
+
+    for (bytes) |*b| b.* = 0;
+    std.debug.assert(word == 0);
+
+    const Zst = struct {};
+    var zst = Zst{};
+    std.debug.assert(mem.asBytes(&zst).len == 0);
+
+    const Pair = packed struct { a: u8, b: u8 };
+    var pair = Pair{ .a = 0xAA, .b = 0xBB };
+    std.debug.assert(mem.asBytes(&pair).len == 2);
+
+    std.debug.print("rye: mem.asBytes assertions confirmed.\n", .{});
+}

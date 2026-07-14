@@ -1,0 +1,18 @@
+# tame_style_scan_bans_selftest.rish — proves native ban scan finds violations.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/tame_style_scan_bans_selftest.rish
+
+let violation = read-file "tools/fixtures/tame_style_ban_violation.rye"
+assert violation contains "std.debug.assert(" else "fixture missing intentional violation"
+
+let roster = run ["sh" "-c" "find tools/fixtures -name 'tame_style_ban_violation.rye' 2>/dev/null"]
+let file_lines = lines roster.out
+let files = where file_lines as f: f != ""
+let hits = where files as f: (read-file f) contains "std.debug.assert("
+assert length hits == 1 else "native ban idiom missed fixture violation"
+
+let misses = where files as f: (read-file f) contains "copyForwards"
+assert length misses == 0 else "native ban idiom false positive on fixture"
+
+say "GREEN: tame_style_scan_bans idiom — finds violation, clean on absent pattern."

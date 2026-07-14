@@ -1,0 +1,27 @@
+# rw5_assist_integration.rish — RW-5 assist integration: glass asks complete_fixture (tip 428).
+#
+# Assist view + assist sight keep their golden frames; the lantern band now rides
+# the same complete_fixture ask path as RW-5 collaboration (tip 420).
+# Run from the repository root:
+#   rishi/bin/rishi run tools/rw5_assist_integration.rish
+
+let bin = "pond/bin/drawn-terminal"
+
+say "build: drawn-terminal for RW-5 assist integration"
+let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+assert build.ok else "drawn_terminal build failed for RW-5 assist integration"
+assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
+
+let assist = run ["sh" "-c" "${bin} assistviewtest 2>&1"]
+assert assist.ok else "assistviewtest exited non-zero"
+assert assist.out contains "GREEN" else "assist view not GREEN after complete_fixture integration"
+assert assist.out contains "echo=1 user=steward-rio" else "assist view missing echo/user pins"
+assert assist.out contains "lines=8" else "assist view missing eight-line frame"
+
+let sight = run ["sh" "-c" "${bin} assistviewsighttest 2>&1"]
+assert sight.ok else "assistviewsighttest exited non-zero"
+assert sight.out contains "GREEN" else "assist sight not GREEN after complete_fixture integration"
+assert sight.out contains "echo=1 user=steward-rio" else "assist sight missing echo/user pins"
+assert sight.out contains "lines=8" else "assist sight missing eight-line frame"
+
+say "GREEN: RW-5 assist integration — assist glass asks complete_fixture (tip 428)."

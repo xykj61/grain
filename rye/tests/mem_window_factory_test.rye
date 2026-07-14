@@ -1,0 +1,25 @@
+//! Rye test: mem.window factory — pass 9931.
+//!
+//! window() begins at index zero when the buffer is non-empty, null when empty
+//! (pairs with WindowIterator 9954 and split/tokenize factories 9932–9934).
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    var chunk = mem.window(u8, "abcdefg", 3, 3);
+    std.debug.assert(mem.eql(u8, chunk.next().?, "abc"));
+
+    var slide = mem.window(u8, "abcdefg", 3, 1);
+    std.debug.assert(mem.eql(u8, slide.next().?, "abc"));
+    std.debug.assert(mem.eql(u8, slide.next().?, "bcd"));
+
+    var empty = mem.window(u8, "", 3, 1);
+    std.debug.assert(empty.next() == null);
+
+    var single = mem.window(u8, "x", 5, 1);
+    std.debug.assert(mem.eql(u8, single.next().?, "x"));
+    std.debug.assert(single.next() == null);
+
+    std.debug.print("rye: mem window factory assertions confirmed.\n", .{});
+}

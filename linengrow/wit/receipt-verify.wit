@@ -1,0 +1,19 @@
+package linengrow:receipt-verify;
+
+/// Seam study 2 compile lap — Component Model world for SLC-L1 verify.
+/// Lap one imports nothing from the host. Guest holds the pinned witness fact.
+///
+/// First green may ship as a core wasm module with C ABI exports isomorphic
+/// to this world; full component packaging accretes later without changing
+/// the guest's fold rules.
+
+world receipt-verify {
+  /// Verify pinned witness path: sign / append / fold / verify on embedded fixture.
+  /// Returns ok(true) when balance and signature hold.
+  export verify-witness: func() -> result<bool, string>;
+
+  /// Unwelcome probe: refuse a tampered fact (or return ok(false) when verify fails).
+  /// First-green core ABI may expose refuse-tampered as a built-in probe isomorphic
+  /// to supplying bad bytes here.
+  export verify-fact: func(fact: list<u8>, sig: list<u8>) -> result<bool, string>;
+}

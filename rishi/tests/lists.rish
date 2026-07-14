@@ -1,0 +1,22 @@
+# lists.rish — list values, say, contains, and list equality as a gate.
+
+let langs = ["rye" "rishi" "silo"]
+say "the family: ${langs}"
+
+let has_rishi = langs contains "rishi"
+say "has rishi? ${has_rishi}"
+
+# Membership is a gate.
+assert langs contains "rye"
+assert langs contains "silo" else "silo belongs to the family"
+
+# Lists compare by length and elements, in order.
+assert langs == ["rye" "rishi" "silo"] else "the family should match"
+
+# Integers live in lists, and a quoted element keeps its spaces.
+let nums = [1 2 3]
+assert nums contains 2
+let phrases = ["meet me" "where the rye grows"]
+assert phrases contains "meet me"
+
+say "lists held."

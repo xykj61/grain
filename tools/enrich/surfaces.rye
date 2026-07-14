@@ -1,0 +1,129 @@
+//! Surface naming, path mapping, filename guesses.
+
+const std = @import("std");
+const scan_text = @import("scan_text.rye");
+
+pub fn surface_dotted_name(surface: []const u8) ?[]const u8 {
+    if (std.mem.startsWith(u8, surface, "std.")) return surface[4..];
+    if (std.mem.indexOfScalar(u8, surface, '/') != null or std.mem.endsWith(u8, surface, ".rye")) return null;
+    return surface;
+}
+
+pub fn surface_to_std_file(surface: []const u8) []const u8 {
+    const rest = if (std.mem.startsWith(u8, surface, "std.")) surface[4..] else surface;
+    if (std.mem.startsWith(u8, rest, "debug.")) return "debug.zig";
+    if (std.mem.startsWith(u8, rest, "mem.Allocator")) return "mem/Allocator.zig";
+    if (std.mem.startsWith(u8, rest, "mem.")) return "mem.zig";
+    if (std.mem.startsWith(u8, rest, "fs.path.")) return "fs/path.zig";
+    if (std.mem.startsWith(u8, rest, "fs.")) return "fs.zig";
+    if (std.mem.indexOf(u8, rest, "sha3") != null or std.mem.indexOf(u8, rest, "Sha3") != null) return "crypto/sha3.zig";
+    if (std.mem.indexOf(u8, rest, "keccak") != null) return "crypto/keccak_p.zig";
+    if (std.mem.indexOf(u8, rest, "timing_safe") != null) return "crypto/timing_safe.zig";
+    if (std.mem.startsWith(u8, rest, "crypto.")) return "crypto.zig";
+    if (std.mem.startsWith(u8, rest, "SemanticVersion.")) return "SemanticVersion.zig";
+    if (std.mem.startsWith(u8, rest, "process.")) return "process.zig";
+    if (std.mem.startsWith(u8, rest, "fmt.")) return "fmt.zig";
+    if (std.mem.startsWith(u8, rest, "Io.Dir.")) return "Io/Dir.zig";
+    if (std.mem.startsWith(u8, rest, "Io.")) return "Io/";
+    return "authored/misc";
+}
+
+pub fn surface_short_name(surface: []const u8) []const u8 {
+    if (!std.mem.startsWith(u8, surface, "std.")) return surface;
+    const rest = surface[4..];
+    var last: []const u8 = rest;
+    var it = std.mem.splitScalar(u8, rest, '.');
+    while (it.next()) |p| last = p;
+    return last;
+}
+
+pub fn zig_path_for_surface_alloc(a: std.mem.Allocator, surface: []const u8) ![]const u8 {
+    if (std.mem.indexOfScalar(u8, surface, '/') != null or std.mem.endsWith(u8, surface, ".rye"))
+        return try a.dupe(u8, surface);
+    const full = if (std.mem.startsWith(u8, surface, "std."))
+        surface
+    else
+        try std.fmt.allocPrint(a, "std.{s}", .{surface});
+    defer if (!std.mem.startsWith(u8, surface, "std.")) a.free(full);
+    const rel = surface_to_std_file(full);
+    if (std.mem.startsWith(u8, rel, "authored/")) return try a.dupe(u8, rel["authored/".len..]);
+    return try std.fmt.allocPrint(a, "rye/lib/std/{s}", .{rel});
+}
+
+pub fn module_prefix_for_stem(stem: []const u8) []const u8 {
+    if (std.mem.indexOf(u8, stem, "_mem_") != null or std.mem.startsWith(u8, stem, "mem_")) return "mem";
+    if (std.mem.indexOf(u8, stem, "_sha3_") != null or std.mem.startsWith(u8, stem, "sha3_")) return "crypto.sha3";
+    if (std.mem.indexOf(u8, stem, "_keccak_") != null or std.mem.startsWith(u8, stem, "keccak_")) return "crypto.keccak";
+    if (std.mem.indexOf(u8, stem, "_path_") != null) return "fs.path";
+    if (std.mem.startsWith(u8, stem, "crypto_")) return "crypto";
+    return "mem";
+}
+
+fn append_guess(a: std.mem.Allocator, out: *std.ArrayListUnmanaged([]const u8), s: []const u8) !void {
+    try out.append(a, try a.dupe(u8, s));
+}
+
+pub fn filename_guess(a: std.mem.Allocator, stem: []const u8) ![]const []const u8 {
+    var out = std.ArrayListUnmanaged([]const u8).empty;
+    errdefer out.deinit(a);
+    const us = std.mem.indexOfScalar(u8, stem, '_') orelse return &.{};
+    var slug = stem[us + 1 ..];
+    if (std.mem.eql(u8, slug, "tally_gardens") or std.mem.eql(u8, slug, "mantra_seed")) return &.{};
+    if (std.mem.endsWith(u8, slug, "_strengthen")) slug = slug[0 .. slug.len - "_strengthen".len];
+    var parts: [16][]const u8 = undefined;
+    var n: usize = 0;
+    var it = std.mem.splitScalar(u8, slug, '_');
+    while (it.next()) |p| {
+        if (n < parts.len) {
+            parts[n] = p;
+            n += 1;
+        }
+    }
+    if (n == 0) return &.{};
+    if (std.mem.eql(u8, parts[0], "mem") and n > 1) {
+        try append_guess(a, &out, try std.fmt.allocPrint(a, "mem.{s}", .{parts[1]}));
+        return try out.toOwnedSlice(a);
+    }
+    if (std.mem.eql(u8, parts[0], "sha3")) {
+        try append_guess(a, &out, "crypto.sha3");
+    } else if (std.mem.eql(u8, parts[0], "keccak")) {
+        try append_guess(a, &out, "crypto.keccak");
+    } else if (std.mem.eql(u8, parts[0], "path") and n > 1) {
+        try append_guess(a, &out, try std.fmt.allocPrint(a, "fs.path.{s}", .{parts[1]}));
+    } else if (std.mem.eql(u8, parts[0], "semantic") and n > 2) {
+        try append_guess(a, &out, try std.fmt.allocPrint(a, "SemanticVersion.{s}", .{parts[2]}));
+    } else if (std.mem.eql(u8, parts[0], "allocator")) {
+        try append_guess(a, &out, "mem.Allocator.alloc");
+    } else if (std.mem.eql(u8, parts[0], "alloc")) {
+        try append_guess(a, &out, "fmt.allocPrint");
+    } else if (std.mem.eql(u8, parts[0], "process")) {
+        try append_guess(a, &out, "process.run");
+    } else if (std.mem.eql(u8, parts[0], "dir")) {
+        try append_guess(a, &out, "Io.Dir.iterate");
+    } else if (std.mem.eql(u8, parts[0], "fs")) {
+        try append_guess(a, &out, "fs");
+    } else if (std.mem.eql(u8, parts[0], "window")) {
+        try append_guess(a, &out, "mem.window");
+    } else if (std.mem.eql(u8, parts[0], "iterator")) {
+        try append_guess(a, &out, "mem.Iterator.reset");
+    } else if (std.mem.eql(u8, parts[0], "tokenize")) {
+        try append_guess(a, &out, "mem.tokenize");
+    } else if (std.mem.eql(u8, parts[0], "split")) {
+        try append_guess(a, &out, "mem.split");
+    }
+    return try out.toOwnedSlice(a);
+}
+
+pub fn extract_std_names(a: std.mem.Allocator, text: []const u8) ![]const []const u8 {
+    var names = std.ArrayListUnmanaged([]const u8).empty;
+    defer names.deinit(a);
+    try scan_text.find_std_ref_names(text, a, &names);
+    try scan_text.find_backtick_std_names(text, a, &names);
+    return try names.toOwnedSlice(a);
+}
+
+pub fn surface_display_name_alloc(a: std.mem.Allocator, surface: []const u8) ![]const u8 {
+    if (std.mem.startsWith(u8, surface, "std.")) return try a.dupe(u8, surface);
+    if (std.mem.indexOfScalar(u8, surface, '/') != null or std.mem.endsWith(u8, surface, ".rye")) return try a.dupe(u8, surface);
+    return try std.fmt.allocPrint(a, "std.{s}", .{surface});
+}

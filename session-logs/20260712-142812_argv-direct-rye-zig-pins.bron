@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260712.142812
+editor Cursor
+model Cursor Grok 4.5
+voice Rio 3
+title Argv-direct RYE_ZIG pins · assert .err
+prompt continue in the best path you recommend with all this knowledge
+product_nib 430
+suite_nib 432
+think Applied Kaeden's argv-direct ruling: mkdir + env RYE_ZIG + rye as separate run argv lists; read-file/list-dir/md5sum/test -f instead of sh -c. Dropped bash 2>&1. GREEN from Rye tools lands on stderr (std.debug.print) — assert .err not .out. Nested parity_ch01 prints both out and err on fail.
+obs Six witnesses GREEN in jail: tally_maybe, tally_no_padding, tally_parse_int, align_session_logs, tame_usize_audit, enrich_strengthening_docs. comlink_device_wire build pin restyled; lab still uses permanent .sh entry. Host full parity tee still the metal re-pin.
+recommend keep-going host git pull then tee parity.rish — mechanical verify; Claude before new run-environ builtin
+file tools/align_session_logs.rish · argv-direct · .err Aligned
+file tools/enrich_strengthening_docs.rish · argv-direct · .err enrich lines
+file tools/tame_usize_audit.rish · argv-direct · .err GREEN
+file tools/tally_maybe.rish · argv-direct · .err GREEN
+file tools/tally_no_padding.rish · argv-direct · .err GREEN
+file tools/tally_parse_int.rish · argv-direct · .err GREEN
+file tools/comlink_device_wire.rish · argv-direct hosted build · .err GREEN
+file tools/parity_ch01.rish · nested argv rishi · out+err on fail
+file session-logs/20260712-142812_argv-direct-rye-zig-pins.bron · this log

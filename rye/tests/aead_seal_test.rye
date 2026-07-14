@@ -1,0 +1,48 @@
+//! Rye test: AEAD sealing (ChaCha20-Poly1305) — the third crypto primitive our
+//! new ideas lean on, after signing and key agreement. It seals a payload so
+//! only the right key opens it, and rejects any tampering. Combined with X25519
+//! (the shared key) and Ed25519 (the attestation), this is how a message is
+//! sealed to an identity (active-designing/993; external-research/yonder/20260618-212112_content-centric-messaging.md, /985).
+//!
+//! Deterministic — a fixed key and nonce — so the output is identical on every
+//! run and across the baseline and the strengthened std, for the parity gate.
+//! The key and nonce are test fixtures; a real seal never reuses a nonce under
+//! one key.
+
+const std = @import("std");
+const ChaCha20Poly1305 = std.crypto.aead.chacha_poly.ChaCha20Poly1305;
+
+pub fn main() void {
+    const key = [_]u8{0x33} ** ChaCha20Poly1305.key_length;
+    const nonce = [_]u8{0x07} ** ChaCha20Poly1305.nonce_length;
+    const ad = "rye-aead-test"; // associated data: authenticated, not encrypted
+    const message = "Sealed, yet readable by the right key.";
+
+    var ciphertext: [message.len]u8 = undefined;
+    var tag: [ChaCha20Poly1305.tag_length]u8 = undefined;
+    ChaCha20Poly1305.encrypt(&ciphertext, &tag, message, ad, nonce, key);
+
+    // The right key opens the seal back to the original message.
+    var opened: [message.len]u8 = undefined;
+    ChaCha20Poly1305.decrypt(&opened, &ciphertext, tag, ad, nonce, key) catch unreachable;
+    if (std.mem.eql(u8, &opened, message)) {
+        std.debug.print("aead: the seal opens to the original message.\n", .{});
+    } else {
+        std.debug.print("aead: ERROR — the opened text differs.\n", .{});
+    }
+
+    // A tampered ciphertext must be rejected — the seal's whole purpose.
+    var tampered = ciphertext;
+    tampered[0] ^= 0x01;
+    var discard: [message.len]u8 = undefined;
+    if (ChaCha20Poly1305.decrypt(&discard, &tampered, tag, ad, nonce, key)) |_| {
+        std.debug.print("aead: ERROR — a tampered ciphertext opened.\n", .{});
+    } else |_| {
+        std.debug.print("aead: a tampered ciphertext is rejected, as it must be.\n", .{});
+    }
+
+    // Render the authentication tag as lowercase hex — a stable value for the gate.
+    std.debug.print("aead tag = ", .{});
+    for (tag) |b| std.debug.print("{x:0>2}", .{b});
+    std.debug.print("\n", .{});
+}

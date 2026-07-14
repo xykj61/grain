@@ -1,0 +1,329 @@
+//! linengrow/mala_delivery.rye — MALA M2: mint crosses Comlink; receipt crosses back (hosted).
+//!
+//!   rye build linengrow/mala_delivery.rye -lc -femit-bin=linengrow/bin/mala-delivery
+//!   linengrow/bin/mala-delivery selftest
+//!   linengrow/bin/mala-delivery demo
+//!
+//! Scope: [`expanding-prompts/20260709-191634_mala-m2-mailable-comlink.md`](../expanding-prompts/20260709-191634_mala-m2-mailable-comlink.md)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const c = std.c;
+const kumara = @import("kumara.rye");
+const rc = @import("receipt_core.rye");
+const wf = @import("wire_format.rye");
+const mc = @import("mala_core.rye");
+const tally_copy = @import("tally_copy.rye");
+
+const mala_m2_version = "20260709.191634";
+
+const AF_INET: c_uint = 2;
+const SOCK_DGRAM: c_uint = 2;
+const SOL_SOCKET: c_int = 1;
+const SO_REUSEADDR: c_int = 2;
+
+/// Mint fact → holder.
+const mint_port: u16 = 38492;
+/// Receipt fact → issuer.
+const receipt_port: u16 = 38493;
+
+const sockaddr_in = extern struct {
+    sin_family: c_ushort = AF_INET,
+    sin_port: c_ushort,
+    sin_addr: [4]u8 = .{ 127, 0, 0, 1 },
+    sin_zero: [8]u8 = .{0} ** 8,
+};
+
+fn localhost_addr(port: u16) sockaddr_in {
+    return .{
+        .sin_port = std.mem.nativeToBig(u16, port),
+    };
+}
+
+fn open_socket() !c.fd_t {
+    const fd = c.socket(AF_INET, SOCK_DGRAM, 0);
+    if (fd < 0) return error.SocketFailed;
+    const yes: c_int = 1;
+    _ = c.setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &yes, @sizeOf(c_int));
+    return fd;
+}
+
+fn send_wire(port: u16, wire: []const u8) !void {
+    const fd = try open_socket();
+    defer _ = c.close(fd);
+    const dest = localhost_addr(port);
+    const sent = c.sendto(fd, wire.ptr, @intCast(wire.len), 0, @ptrCast(&dest), @sizeOf(sockaddr_in));
+    if (sent < 0 or @as(usize, @intCast(sent)) != wire.len) return error.SendFailed;
+}
+
+fn recv_wire(port: u16, wire: []u8) !u64 {
+    const fd = try open_socket();
+    defer _ = c.close(fd);
+    var bind_addr = localhost_addr(port);
+    if (c.bind(fd, @ptrCast(&bind_addr), @sizeOf(sockaddr_in)) < 0) return error.BindFailed;
+    var from: sockaddr_in = undefined;
+    var from_len: c.socklen_t = @sizeOf(sockaddr_in);
+    const n = c.recvfrom(fd, wire.ptr, @intCast(wire.len), 0, @ptrCast(&from), &from_len);
+    if (n < 0) return error.RecvFailed;
+    return @intCast(n);
+}
+
+fn party_hexes() struct {
+    issuer_kp: kumara.KeyPair,
+    holder_kp: kumara.KeyPair,
+    issuer_hex: [mc.pubkey_hex_len]u8,
+    holder_hex: [mc.pubkey_hex_len]u8,
+} {
+    const issuer_kp = kumara.keypair_from_seed(&mc.issuer_seed);
+    const holder_kp = kumara.keypair_from_seed(&mc.holder_seed);
+    var issuer_hex: [mc.pubkey_hex_len]u8 = undefined;
+    var holder_hex: [mc.pubkey_hex_len]u8 = undefined;
+    mc.hex_of_key(issuer_kp.public_key, &issuer_hex);
+    mc.hex_of_key(holder_kp.public_key, &holder_hex);
+    return .{
+        .issuer_kp = issuer_kp,
+        .holder_kp = holder_kp,
+        .issuer_hex = issuer_hex,
+        .holder_hex = holder_hex,
+    };
+}
+
+fn encode_sealed_fact(fields: rc.FactFields, signer: kumara.KeyPair, wire: *[@intCast(wf.wire_capacity)]u8) !u64 {
+    const signed = try mc.sign_fact(fields, signer);
+    assert(signed.canonical_len <= rc.slcl2_max_fact);
+    var payload: [rc.slcl2_payload_header + rc.slcl2_max_fact]u8 = undefined;
+    const payload_len = try rc.encode_compact_payload(signed.sig, signed.canonical[0..signed.canonical_len], &payload);
+    return try wf.seal_message(payload[0..payload_len], wire);
+}
+
+fn open_and_decode(wire: []const u8, sig_out: []u8, fact_out: []u8) !u32 {
+    var opened: [@intCast(wf.max_message)]u8 = undefined;
+    const opened_len = try wf.open_datagram(wire, &opened);
+    const decoded = try rc.decode_compact_payload(opened[0..@intCast(opened_len)], sig_out, fact_out);
+    return decoded.fact_len;
+}
+
+fn verify_mint_payload(
+    fact: []const u8,
+    sig_bytes: []const u8,
+    issuer_hex: *const [mc.pubkey_hex_len]u8,
+    holder_hex: *const [mc.pubkey_hex_len]u8,
+    issuer_pk: kumara.PublicKey,
+    holder_pk: kumara.PublicKey,
+) !mc.Balances {
+    var fields: rc.FactFields = undefined;
+    try rc.parse_fact_fields(fact, &fields);
+    var balances: mc.Balances = .{};
+    try mc.fold_one_line(fields, fact, sig_bytes, &balances, issuer_hex, holder_hex, issuer_pk, holder_pk);
+    return balances;
+}
+
+fn verify_receipt_payload(
+    fact: []const u8,
+    sig_bytes: []const u8,
+    issuer_hex: *const [mc.pubkey_hex_len]u8,
+    holder_hex: *const [mc.pubkey_hex_len]u8,
+    holder_pk: kumara.PublicKey,
+) !void {
+    var fields: rc.FactFields = undefined;
+    try rc.parse_fact_fields(fact, &fields);
+    if (!mc.memo_is_receipt(fields.memo)) return error.FoldFailed;
+    if (!std.mem.eql(u8, fields.from, holder_hex[0..])) return error.FoldFailed;
+    if (!std.mem.eql(u8, fields.to, issuer_hex[0..])) return error.FoldFailed;
+    try rc.verify_record(sig_bytes, fact, holder_pk);
+}
+
+fn run_selftest(_: std.Io) !u8 {
+    const parties = party_hexes();
+
+    const mint_fields = mc.mint_fields_from_fixture(&parties.issuer_hex, &parties.holder_hex);
+    var mint_wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const mint_wire_len = try encode_sealed_fact(mint_fields, parties.issuer_kp, &mint_wire);
+
+    var sig_buf: [kumara.signature_length]u8 = undefined;
+    var fact_buf: [rc.slcl2_max_fact]u8 = undefined;
+    const fact_len = try open_and_decode(mint_wire[0..@intCast(mint_wire_len)], &sig_buf, &fact_buf);
+    const balances = try verify_mint_payload(
+        fact_buf[0..fact_len],
+        sig_buf[0..],
+        &parties.issuer_hex,
+        &parties.holder_hex,
+        parties.issuer_kp.public_key,
+        parties.holder_kp.public_key,
+    );
+    assert(balances.holder == 1000);
+    assert(balances.issuer == 0);
+
+    const receipt_fields = rc.FactFields{
+        .from = parties.holder_hex[0..],
+        .to = parties.issuer_hex[0..],
+        .amount = "1000",
+        .memo = mc.memo_receipt,
+        .stamp = "20260709.191634",
+    };
+    var receipt_wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const receipt_wire_len = try encode_sealed_fact(receipt_fields, parties.holder_kp, &receipt_wire);
+    const rfact_len = try open_and_decode(receipt_wire[0..@intCast(receipt_wire_len)], &sig_buf, &fact_buf);
+    try verify_receipt_payload(
+        fact_buf[0..rfact_len],
+        sig_buf[0..],
+        &parties.issuer_hex,
+        &parties.holder_hex,
+        parties.holder_kp.public_key,
+    );
+
+    // Unwelcome — tampered outer wire refused at open.
+    var bad_wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const mint_len: usize = @intCast(mint_wire_len);
+    tally_copy.copy_disjoint(u8, bad_wire[0..mint_len], mint_wire[0..mint_len]);
+    bad_wire[mint_len - 1] +%= 1;
+    if (open_and_decode(bad_wire[0..mint_len], &sig_buf, &fact_buf)) |_| {
+        return error.UnwelcomePassed;
+    } else |_| print("mala m2: tampered wire refused — GREEN unwelcome path\n", .{});
+
+    // Unwelcome — holder-signed mint refused at fold.
+    var forged_wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const forged_len = try encode_sealed_fact(mint_fields, parties.holder_kp, &forged_wire);
+    const forged_fact_len = try open_and_decode(forged_wire[0..@intCast(forged_len)], &sig_buf, &fact_buf);
+    if (verify_mint_payload(
+        fact_buf[0..forged_fact_len],
+        sig_buf[0..],
+        &parties.issuer_hex,
+        &parties.holder_hex,
+        parties.issuer_kp.public_key,
+        parties.holder_kp.public_key,
+    )) |_| {
+        return error.UnwelcomePassed;
+    } else |_| print("mala m2: forged mint signature refused — GREEN unwelcome path\n", .{});
+
+    print("mala m2: selftest GREEN — seal, open, fold mint, verify receipt\n", .{});
+    print("mala m2: version {s} wire_format {s}\n", .{ mala_m2_version, wf.wire_format_version });
+    print("GREEN: MALA M2 — mailable mint under Comlink seal, receipt back.\n", .{});
+    return 0;
+}
+
+/// Holder: bind mint port, recv mint, fold, send receipt to receipt port.
+fn run_holder(_: std.Io) !u8 {
+    const parties = party_hexes();
+    var wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const wire_len = try recv_wire(mint_port, &wire);
+    if (wire_len < wf.off_cipher or wire_len > wf.wire_capacity) return error.RecvFailed;
+
+    var sig_buf: [kumara.signature_length]u8 = undefined;
+    var fact_buf: [rc.slcl2_max_fact]u8 = undefined;
+    const fact_len = try open_and_decode(wire[0..@intCast(wire_len)], &sig_buf, &fact_buf);
+    const balances = try verify_mint_payload(
+        fact_buf[0..fact_len],
+        sig_buf[0..],
+        &parties.issuer_hex,
+        &parties.holder_hex,
+        parties.issuer_kp.public_key,
+        parties.holder_kp.public_key,
+    );
+    assert(balances.holder == 1000);
+
+    const receipt_fields = rc.FactFields{
+        .from = parties.holder_hex[0..],
+        .to = parties.issuer_hex[0..],
+        .amount = "1000",
+        .memo = mc.memo_receipt,
+        .stamp = "20260709.191634",
+    };
+    var receipt_wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const receipt_wire_len = try encode_sealed_fact(receipt_fields, parties.holder_kp, &receipt_wire);
+    try send_wire(receipt_port, receipt_wire[0..@intCast(receipt_wire_len)]);
+
+    print("mala m2: holder folded mint balance {d}, receipt sent\n", .{balances.holder});
+    return 0;
+}
+
+/// Issuer: bind receipt port first, send mint, wait for receipt.
+fn run_issuer(_: std.Io) !u8 {
+    const parties = party_hexes();
+
+    // Bind receipt port before sending mint — race discipline from lap brief.
+    const receipt_fd = try open_socket();
+    defer _ = c.close(receipt_fd);
+    var receipt_bind = localhost_addr(receipt_port);
+    if (c.bind(receipt_fd, @ptrCast(&receipt_bind), @sizeOf(sockaddr_in)) < 0) return error.BindFailed;
+
+    const mint_fields = mc.mint_fields_from_fixture(&parties.issuer_hex, &parties.holder_hex);
+    var mint_wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const mint_wire_len = try encode_sealed_fact(mint_fields, parties.issuer_kp, &mint_wire);
+    try send_wire(mint_port, mint_wire[0..@intCast(mint_wire_len)]);
+    print("mala m2: issuer sent sealed mint ({d} wire bytes)\n", .{mint_wire_len});
+
+    var wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    var from: sockaddr_in = undefined;
+    var from_len: c.socklen_t = @sizeOf(sockaddr_in);
+    const n = c.recvfrom(receipt_fd, &wire, @intCast(wf.wire_capacity), 0, @ptrCast(&from), &from_len);
+    if (n < 0) return error.RecvFailed;
+    const wire_len: u64 = @intCast(n);
+    if (wire_len < wf.off_cipher or wire_len > wf.wire_capacity) return error.RecvFailed;
+
+    var sig_buf: [kumara.signature_length]u8 = undefined;
+    var fact_buf: [rc.slcl2_max_fact]u8 = undefined;
+    const fact_len = try open_and_decode(wire[0..@intCast(wire_len)], &sig_buf, &fact_buf);
+    try verify_receipt_payload(
+        fact_buf[0..fact_len],
+        sig_buf[0..],
+        &parties.issuer_hex,
+        &parties.holder_hex,
+        parties.holder_kp.public_key,
+    );
+
+    print("mala m2: issuer verified holder receipt\n", .{});
+    return 0;
+}
+
+fn run_demo(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) !u8 {
+    const holder_argv = try allocator.alloc([]const u8, 2);
+    holder_argv[0] = self_path;
+    holder_argv[1] = "holder";
+
+    var holder_child = try std.process.spawn(io, .{ .argv = holder_argv });
+    var pause = c.timespec{ .sec = 0, .nsec = 50_000_000 };
+    _ = c.nanosleep(&pause, null);
+
+    const issuer_argv = try allocator.alloc([]const u8, 2);
+    issuer_argv[0] = self_path;
+    issuer_argv[1] = "issuer";
+
+    var issuer_child = try std.process.spawn(io, .{ .argv = issuer_argv });
+
+    const holder_term = try holder_child.wait(io);
+    const issuer_term = try issuer_child.wait(io);
+
+    const holder_code: u8 = switch (holder_term) {
+        .exited => |code| code,
+        else => 255,
+    };
+    const issuer_code: u8 = switch (issuer_term) {
+        .exited => |code| code,
+        else => 255,
+    };
+
+    assert(holder_code == 0);
+    assert(issuer_code == 0);
+
+    print("mala m2: demo GREEN — mint crossed localhost; receipt crossed back\n", .{});
+    print("mala m2: version {s} wire_format {s}\n", .{ mala_m2_version, wf.wire_format_version });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(garden);
+
+    if (args.len >= 2) {
+        if (std.mem.eql(u8, args[1], "holder")) return run_holder(io);
+        if (std.mem.eql(u8, args[1], "issuer")) return run_issuer(io);
+        if (std.mem.eql(u8, args[1], "selftest")) return run_selftest(io);
+        if (std.mem.eql(u8, args[1], "demo")) return run_demo(garden, io, args[0]);
+    }
+
+    if (args.len >= 1) return run_selftest(io);
+    return 1;
+}

@@ -1,0 +1,13 @@
+const std = @import("std");
+const builtin = @import("builtin");
+
+pub fn main() void {
+    // Rye stands, for now, exactly on Zig 0.16.0. We report the backend's
+    // version through Zig's own mechanism — `builtin.zig_version`, a value the
+    // compiler injects — rather than inventing a parallel one in std. Our
+    // standard library at rye/lib begins bit-for-bit identical to this backend;
+    // from here it diverges only by our deliberate choices, and the `rye` CLI
+    // insists on loading it by path, so we always know whose std is in force.
+    const v = builtin.zig_version;
+    std.debug.print("rye: standing on Zig {d}.{d}.{d} (backend, via builtin.zig_version)\n", .{ v.major, v.minor, v.patch });
+}

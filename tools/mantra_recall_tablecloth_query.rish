@@ -1,0 +1,16 @@
+# mantra_recall_tablecloth_query.rish — Tablecloth query witness (in-process).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/mantra_recall_tablecloth_query.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mantra/bin/recall-tablecloth-query"
+
+let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/recall_tablecloth_query.rye -femit-bin=${bin}"]
+assert build.ok else "recall_tablecloth_query build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "recall_tablecloth_query selftest exited non-zero"
+assert selftest.out contains "GREEN" else "recall_tablecloth_query selftest not GREEN"
+
+say "GREEN: Tablecloth query witness passed (optional fields, every match)."

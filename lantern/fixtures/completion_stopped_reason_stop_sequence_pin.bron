@@ -1,0 +1,8 @@
+# Lantern lap 25 fixture — pin_stopped_reason stop_sequence.
+model_hash sha3-256-rye-forge-lap0
+pin_stopped_reason stop_sequence
+stop_sequence END
+tokens_in 6
+tokens_out 2
+stopped_reason stop_sequence
+text cut at END

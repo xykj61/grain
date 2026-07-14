@@ -1,0 +1,20 @@
+# inference_scribble_h2_view.rish — Scribble h2 headings → Skate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/inference_scribble_h2_view.rish
+
+let bin = "pond/bin/drawn-terminal"
+
+say "build: Scribble h2 view — drawn-terminal compile"
+let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+assert build.ok else "drawn_terminal build failed for scribble h2 view"
+assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
+
+let view = run ["sh" "-c" "${bin} scribbleh2viewtest 2>&1"]
+assert view.ok else "drawn terminal scribbleh2viewtest exited non-zero"
+assert view.out contains "scribble h2 view" else "scribble h2 view missing expected output"
+assert view.out contains "GREEN" else "Scribble h2 view not GREEN"
+assert view.out contains "lines=5" else "scribble h2 view missing five-line frame"
+assert view.out contains "h2=2" else "scribble h2 view missing h2=2"
+
+say "GREEN: Scribble h2 view — depth-2 headings on one Skate frame."

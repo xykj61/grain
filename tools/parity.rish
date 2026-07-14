@@ -1,0 +1,27 @@
+# parity.rish — behavior regression suite (chaptered under Rishi Env[256]).
+#
+# Each chapter runs in a fresh Rishi process so bindings reset. The former
+# monolith hit TooManyBindings (~330 user lets + exit-* prebinds) at lantern_lap23.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/parity.rish
+
+say "witness suite: chapter 1/2…"
+let ch1 = run ["rishi/bin/rishi" "run" "tools/parity_ch01.rish"]
+if ch1.ok == false then say "parity chapter 1 output (failure detail):"
+if ch1.ok == false then say ch1.out
+if ch1.ok == false then say "parity chapter 1 stderr:"
+if ch1.ok == false then say ch1.err
+assert ch1.ok else "parity chapter 1 failed"
+say "GREEN: parity chapter 1/2 passed."
+
+say "witness suite: chapter 2/2…"
+let ch2 = run ["rishi/bin/rishi" "run" "tools/parity_ch02.rish"]
+if ch2.ok == false then say "parity chapter 2 output (failure detail):"
+if ch2.ok == false then say ch2.out
+if ch2.ok == false then say "parity chapter 2 stderr:"
+if ch2.ok == false then say ch2.err
+assert ch2.ok else "parity chapter 2 failed"
+say "GREEN: parity chapter 2/2 passed."
+
+say "GREEN: full witness suite — 2 chapters under Env binding ceiling."

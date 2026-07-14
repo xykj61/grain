@@ -1,0 +1,24 @@
+# contains_string.rish — string membership via `contains`.
+
+# list membership still works (regression guard)
+let xs = ["rye" "rishi" "mantra"]
+assert xs contains "rishi" else "contains: list failed"
+assert (xs contains "pond") == false else "contains: list negative failed"
+
+# string substring membership
+assert "rye rishi mantra" contains "rishi" else "contains: substring failed"
+assert ("hello world" contains "xyz") == false else "contains: string negative failed"
+
+# empty needle matches at the start (std.mem.indexOf semantics)
+assert "abc" contains "" else "contains: empty needle failed"
+
+# compose with split/join: every segment reappears in the whole
+let path = "home/xy/veganreyklah2"
+let segs = split path "/"
+assert path contains join segs "/" else "contains: round-trip guard failed"
+
+# gate-style filter on command output
+let out = run ["echo" "parity gate: GREEN"]
+assert out.out contains "GREEN" else "contains: run output failed"
+
+say "contains held for lists and strings."

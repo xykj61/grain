@@ -1,0 +1,60 @@
+//! comlink/guest_mala_receipt_tx.rye — MALA M2b receipt hop TX (holder → issuer).
+
+const vn = @import("virtio_net.rye");
+const tally_copy = @import("tally_copy.rye");
+const wf = @import("wire_format.rye");
+const rc = @import("receipt_core.rye");
+const mc = @import("mala_core.rye");
+const kumara = @import("kumara.rye");
+
+var tx: vn.TxQueue = undefined;
+
+export fn _start() linksection(".text.init") callconv(.naked) noreturn {
+    asm volatile (
+        \\ li sp, 0x80100000
+        \\ j kmain
+    );
+}
+
+export fn kmain() callconv(.c) noreturn {
+    vn.init_device();
+    tx.init();
+    vn.driver_ok();
+
+    const issuer_kp = kumara.keypair_from_seed(&mc.issuer_seed);
+    const holder_kp = kumara.keypair_from_seed(&mc.holder_seed);
+    var issuer_hex: [mc.pubkey_hex_len]u8 = undefined;
+    var holder_hex: [mc.pubkey_hex_len]u8 = undefined;
+    mc.hex_of_key(issuer_kp.public_key, &issuer_hex);
+    mc.hex_of_key(holder_kp.public_key, &holder_hex);
+
+    const fields = rc.FactFields{
+        .from = holder_hex[0..],
+        .to = issuer_hex[0..],
+        .amount = "1000",
+        .memo = mc.memo_receipt,
+        .stamp = "20260709.191634",
+    };
+    const signed = mc.sign_fact(fields, holder_kp) catch unreachable;
+    var payload: [rc.slcl2_payload_header + rc.slcl2_max_fact]u8 = undefined;
+    const payload_len = rc.encode_compact_payload(signed.sig, signed.canonical[0..signed.canonical_len], &payload) catch unreachable;
+
+    var scratch: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const dg_len: u32 = @intCast(wf.seal_message(payload[0..payload_len], &scratch) catch unreachable);
+
+    const buf = tx.frame();
+    @memset(buf[0..vn.virtio_net_hdr_len], 0);
+    const eoff = vn.virtio_net_hdr_len;
+    var i: u32 = 0;
+    while (i < 6) : (i += 1) buf[eoff + i] = 0xff;
+    while (i < 12) : (i += 1) buf[eoff + i] = 0x00;
+    buf[eoff + 12] = @truncate(vn.lab_ethertype >> 8);
+    buf[eoff + 13] = @truncate(vn.lab_ethertype);
+    const poff = eoff + vn.eth_header_len;
+    tally_copy.copy_disjoint(u8, buf[poff..][0..dg_len], scratch[0..dg_len]);
+    const total: u32 = poff + dg_len;
+
+    tx.send(total);
+    vn.write_str("mala m2b device wire: sealed receipt TX sent\n");
+    vn.finish_pass();
+}

@@ -1,0 +1,47 @@
+[submodule "gratitude/sixos"]
+	path = gratitude/sixos
+	url = https://codeberg.org/amjoseph/sixos.git
+[submodule "gratitude/infuse.nix"]
+	path = gratitude/infuse.nix
+	url = https://codeberg.org/amjoseph/infuse.nix.git
+[submodule "gratitude/manyana"]
+	path = gratitude/manyana
+	url = https://github.com/bramcohen/manyana.git
+[submodule "gratitude/ai-jail"]
+	path = gratitude/ai-jail
+	url = https://github.com/akitaonrails/ai-jail
+[submodule "gratitude/zig"]
+	path = gratitude/zig
+	url = https://codeberg.org/ziglang/zig.git
+[submodule "gratitude/libqrencode"]
+	path = gratitude/libqrencode
+	url = https://github.com/fukuchi/libqrencode
+[submodule "gratitude/tigerbeetle"]
+	path = gratitude/tigerbeetle
+	url = https://github.com/tigerbeetle/tigerbeetle
+[submodule "gratitude/nips"]
+	path = gratitude/nips
+	url = https://github.com/nostr-protocol/nips
+[submodule "gratitude/damus"]
+	path = gratitude/damus
+	url = https://github.com/damus-io/damus
+[submodule "gratitude/primal"]
+	path = gratitude/primal
+	url = https://github.com/PrimalHQ/primal-caching-service
+[submodule "gratitude/urbit"]
+	path = gratitude/urbit
+	url = https://github.com/urbit/urbit
+[submodule "gratitude/sui"]
+	path = gratitude/sui
+	url = https://github.com/MystenLabs/sui
+[submodule "gratitude/dvui"]
+	path = gratitude/dvui
+	url = https://github.com/david-vanderson/dvui
+[submodule "vendor/genode"]
+	ignore = untracked
+	branch = 26.05
+	path = vendor/genode
+	url = https://codeberg.org/genodelabs/genode.git
+[submodule "vendor/monocypher"]
+	path = vendor/monocypher
+	url = https://github.com/LoupVaillant/Monocypher.git

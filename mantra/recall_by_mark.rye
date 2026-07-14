@@ -1,0 +1,177 @@
+//! mantra/recall_by_mark.rye — marks-on-read: recall by Tilak within a bolt revision.
+//!
+//! recall_lap1 resolves peer / bolt / revision / path. Every leaf already carries a
+//! Tilak; this file composes a second read gate that finds leaves by mark within a bolt
+//! revision — unique mark resolves directly, duplicate marks narrow with an optional path
+//! hint, and digest verification stays recall_lap1's own guarantee. Composing rather than
+//! extending: recall_lap1.rye is imported and left standing.
+//!
+//!   rye build mantra/recall_by_mark.rye -femit-bin=mantra/bin/recall-by-mark
+//!   mantra/bin/recall-by-mark selftest
+//!
+//! Scope: [`active-designing/20260706-023912_the-referential-namespace.md`](../active-designing/20260706-023912_the-referential-namespace.md)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const recall_lap1 = @import("recall_lap1.rye");
+
+pub const recall_by_mark_version = "20260707.000012";
+
+pub const MarkReadError = error{
+    MarkAmbiguous,
+} || recall_lap1.RecallError;
+
+/// Read by Tilak within peer / bolt / revision. When `path_hint` is null, exactly one
+/// leaf must carry the mark or the read refuses whole as ambiguous. When `path_hint` is
+/// set, it narrows among mark matches to that path — the honest disambiguator when several
+/// leaves share a mark.
+pub const MarkReadQuery = struct {
+    peer: []const u8,
+    bolt: []const u8,
+    revision: u32,
+    tilak: []const u8,
+    path_hint: ?[]const u8 = null,
+};
+
+fn leaf_matches_query(leaf: *const recall_lap1.LeafBinding, query: MarkReadQuery) bool {
+    if (!std.mem.eql(u8, leaf.peer[0..leaf.peer_len], query.peer)) return false;
+    if (!std.mem.eql(u8, leaf.bolt[0..leaf.bolt_len], query.bolt)) return false;
+    if (leaf.revision != query.revision) return false;
+    if (!std.mem.eql(u8, leaf.tilak[0..leaf.tilak_len], query.tilak)) return false;
+    if (query.path_hint) |hint| {
+        if (!std.mem.eql(u8, leaf.path[0..leaf.path_len], hint)) return false;
+    }
+    return true;
+}
+
+fn count_matches(catalog: *const recall_lap1.BoltCatalog, query: MarkReadQuery) u32 {
+    var count: u32 = 0;
+    var i: u32 = 0;
+    while (i < catalog.leaf_count) : (i += 1) {
+        if (leaf_matches_query(&catalog.leaves[i], query)) count += 1;
+    }
+    return count;
+}
+
+fn sole_match_leaf(catalog: *const recall_lap1.BoltCatalog, query: MarkReadQuery) ?*const recall_lap1.LeafBinding {
+    var found: ?*const recall_lap1.LeafBinding = null;
+    var i: u32 = 0;
+    while (i < catalog.leaf_count) : (i += 1) {
+        const leaf = &catalog.leaves[i];
+        if (!leaf_matches_query(leaf, query)) continue;
+        if (found != null) return null;
+        found = leaf;
+    }
+    return found;
+}
+
+pub fn recall_by_mark(
+    catalog: *const recall_lap1.BoltCatalog,
+    query: MarkReadQuery,
+    out: []u8,
+) MarkReadError!recall_lap1.RecallResult {
+    const matches = count_matches(catalog, query);
+    if (matches == 0) {
+        return .{ .outcome = .never, .len = 0, .tilak = query.tilak };
+    }
+    if (matches > 1) return error.MarkAmbiguous;
+    const leaf = sole_match_leaf(catalog, query) orelse return error.MarkAmbiguous;
+    const name = recall_lap1.Name{
+        .peer = leaf.peer[0..leaf.peer_len],
+        .bolt = leaf.bolt[0..leaf.bolt_len],
+        .revision = leaf.revision,
+        .path = leaf.path[0..leaf.path_len],
+    };
+    return catalog.recall(name, out);
+}
+
+fn run_selftest(_: std.Io) !u8 {
+    var cat: recall_lap1.BoltCatalog = .empty();
+    try cat.append_leaf("peerB", "b", 1, "notes.txt", "alpha notes", "plain-text");
+    try cat.append_leaf("peerB", "b", 1, "data.bin", "beta bytes", "plain-bytes");
+    try cat.append_leaf("peerB", "b", 1, "config.toml", "gamma cfg", "plain-text");
+
+    var buf: [recall_lap1.max_resin_bytes]u8 = undefined;
+
+    // Unique mark resolves without a path.
+    const q_bytes = MarkReadQuery{
+        .peer = "peerB",
+        .bolt = "b",
+        .revision = 1,
+        .tilak = "plain-bytes",
+    };
+    const r_bytes = try recall_by_mark(&cat, q_bytes, &buf);
+    assert(r_bytes.outcome == .here);
+    assert(std.mem.eql(u8, buf[0..r_bytes.len], "beta bytes"));
+    assert(std.mem.eql(u8, r_bytes.tilak, "plain-bytes"));
+
+    // Shared mark without hint refuses whole.
+    const q_ambig = MarkReadQuery{
+        .peer = "peerB",
+        .bolt = "b",
+        .revision = 1,
+        .tilak = "plain-text",
+    };
+    if (recall_by_mark(&cat, q_ambig, &buf)) |_| {
+        return error.MarkAmbiguous;
+    } else |err| {
+        assert(err == error.MarkAmbiguous);
+    }
+    print("ns-mark: ambiguous mark refused whole — GREEN unwelcome path\n", .{});
+
+    // Path hint disambiguates; bytes match name recall.
+    const q_hint = MarkReadQuery{
+        .peer = "peerB",
+        .bolt = "b",
+        .revision = 1,
+        .tilak = "plain-text",
+        .path_hint = "notes.txt",
+    };
+    const r_hint = try recall_by_mark(&cat, q_hint, &buf);
+    assert(std.mem.eql(u8, buf[0..r_hint.len], "alpha notes"));
+    const by_name = try cat.recall(.{
+        .peer = "peerB",
+        .bolt = "b",
+        .revision = 1,
+        .path = "notes.txt",
+    }, &buf);
+    assert(std.mem.eql(u8, buf[0..r_hint.len], buf[0..by_name.len]));
+
+    // Absent mark answers never.
+    const q_missing = MarkReadQuery{
+        .peer = "peerB",
+        .bolt = "b",
+        .revision = 1,
+        .tilak = "bead-index",
+    };
+    const r_missing = try recall_by_mark(&cat, q_missing, &buf);
+    assert(r_missing.outcome == .never);
+
+    // Digest mismatch on a mark-selected leaf refuses whole.
+    var i: u32 = 0;
+    while (i < cat.leaf_count) : (i += 1) {
+        if (std.mem.eql(u8, cat.leaves[i].path[0..cat.leaves[i].path_len], "data.bin")) {
+            cat.leaves[i].digest_hex[0] = if (cat.leaves[i].digest_hex[0] == 'a') 'b' else 'a';
+            break;
+        }
+    }
+    if (recall_by_mark(&cat, q_bytes, &buf)) |_| {
+        return error.DigestMismatch;
+    } else |err| {
+        assert(err == error.DigestMismatch);
+    }
+    print("ns-mark: digest mismatch refused whole — GREEN unwelcome path\n", .{});
+
+    print("ns-mark: unique mark, path hint, and name recall agree — marks-on-read GREEN\n", .{});
+    print("ns-mark: version {s}\n", .{recall_by_mark_version});
+    print("GREEN: marks-on-read — recall by Tilak within a bolt revision.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(init.arena.allocator());
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) return run_selftest(io);
+    return run_selftest(io);
+}

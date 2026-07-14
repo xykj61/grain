@@ -1,0 +1,35 @@
+//! Rye test: std.fs.path.join — pass 9983.
+//!
+//! Pond path policy and Rishi scripts will compose paths through join.
+//! Empty components are skipped (documented with `maybe`); the buffer
+//! postcondition lives in joinSepMaybeZ.
+
+const std = @import("std");
+
+pub fn main() void {
+    const gpa = std.heap.page_allocator;
+
+    const joined = std.fs.path.join(gpa, &.{ "home", "xy", "veganreyklah2" }) catch unreachable;
+    defer gpa.free(joined);
+    std.debug.assert(std.mem.eql(u8, joined, "home" ++ std.fs.path.sep_str ++ "xy" ++ std.fs.path.sep_str ++ "veganreyklah2"));
+
+    const skips_empty = std.fs.path.join(gpa, &.{ "a", "", "b" }) catch unreachable;
+    defer gpa.free(skips_empty);
+    std.debug.assert(std.mem.eql(u8, skips_empty, "a" ++ std.fs.path.sep_str ++ "b"));
+
+    const merges_sep = std.fs.path.join(gpa, &.{ "base/", "file" }) catch unreachable;
+    defer gpa.free(merges_sep);
+    std.debug.assert(std.mem.eql(u8, merges_sep, "base" ++ std.fs.path.sep_str ++ "file"));
+
+    const single = std.fs.path.join(gpa, &.{"solo"}) catch unreachable;
+    defer gpa.free(single);
+    std.debug.assert(std.mem.eql(u8, single, "solo"));
+
+    const none = std.fs.path.join(gpa, &.{}) catch unreachable;
+    std.debug.assert(none.len == 0);
+
+    const all_empty = std.fs.path.join(gpa, &.{ "", "" }) catch unreachable;
+    std.debug.assert(all_empty.len == 0);
+
+    std.debug.print("rye: path.join assertions confirmed.\n", .{});
+}

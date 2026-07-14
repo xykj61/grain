@@ -1,0 +1,132 @@
+# Expanding Prompts
+
+*A place where a request becomes a plan. When you hand me a seed of intent, I bring it here, read it closely through every lens we have built, and craft from it a fuller, clearer prompt for myself — one I can then run. The seed stays yours; the expansion is how I make sure I have understood it, sharpened it, and lost none of it.*
+
+**Language:** EN
+**Last updated:** 2026-07-11 (Cursor-bot arc audit apply `053412`)
+**Style:** Radiant (see `../context/RADIANT_STYLE.md`)
+**Voice:** Rio 3
+
+---
+
+## Why This Stack Exists
+
+A prompt is a seed. It carries intent — often more than its words say outright, and sometimes a little less than it means. The other stacks here grow outward from decisions already made; this one grows *inward* first. It takes what you asked and expands it into a working specification before any of it is built.
+
+The practice is simple, and I mean it kindly: I restate your intent in full, I name the deliverables plainly, I apply our active-designing principles, our TAME lens, and the radiant voice, and I add the questions and structure that will make the work good. Then I run that expanded prompt. Nothing of yours is dropped; what I add is scaffolding, never substitution.
+
+Why keep them at all? Because a prompt well understood is half the work, and a prompt misunderstood is the most expensive mistake there is. Writing the expansion down lets you see how I heard you — and correct me before, not after.
+
+## One clock, one order
+
+Dated prompts carry `YYYYMMDD-HHMMSS_short-slug.md`; this README is the living foundation. Full naming law: [`../context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
+
+**Consumed prompts** — including executed `cursor-*` bench passes and legacy `cursor-prompt_*` files from the one-clock reorg — rest in [`yonder/`](yonder/) when the work they drove has landed. Session logs record the outcome; the prompt stays as an honest record of how the request was expanded.
+
+## Redirects and retired patterns
+
+**Executed prompts** become redirect stubs at the stub-event stamp `20260621-051612` with distinct `-redirect` slugs. See also [`../external-research/README.md`](../external-research/README.md).
+
+**Current tooling (use these):**
+
+| Role | Path |
+|------|------|
+| Parity gate | `tools/parity.rish` |
+| Additive gate | `tools/additive-gate.rish` |
+| Strengthening enricher | `tools/enrich_strengthening_docs.rye` |
+| Session log aligner | `tools/align_session_logs.rye` |
+| Width audit (hosted gate) | `tools/width-check.rish` in `tools/parity.rish`; charter [`20260620-210812_explicit-width-audit.md`](20260620-210812_explicit-width-audit.md) |
+
+
+### Topic routing (from retired `10010_reserved`)
+
+| Topic | Lives in |
+|-------|----------|
+| Tablecloth + Brix compose | [`20260620-043812_tablecloth-brix-split.md`](yonder/20260620-043812_tablecloth-brix-split.md) through [`20260620-044112_tablecloth-v1-seed.md`](yonder/20260620-044112_tablecloth-v1-seed.md) |
+| Main track (Rye · Rishi · strengthening · width fork) | [`yonder/20260621-051612_main-track-rye-rishi-strengthening.md`](yonder/20260621-051612_main-track-rye-rishi-strengthening.md) (consumed), [`20260620-210812_explicit-width-audit.md`](20260620-210812_explicit-width-audit.md), [`../work-in-progress/ROADMAP.md`](../work-in-progress/ROADMAP.md), [`../work-in-progress/TASKS.md`](../work-in-progress/TASKS.md) |
+| Strengthening doc + width enricher | [`yonder/20260621-051612_strengthening-stdlib-doc-width-pass-redirect.md`](yonder/20260621-051612_strengthening-stdlib-doc-width-pass-redirect.md) → [`../tools/enrich_strengthening_docs.rye`](../tools/enrich_strengthening_docs.rye) |
+| Literal `usize` ban / language fork | [`../external-research/20260621-051312_literal-usize-ban-language-fork.md`](../external-research/20260621-051312_literal-usize-ban-language-fork.md), [`../active-designing/yonder/20260621-051312_explicit-width-in-rye.md`](../active-designing/yonder/20260621-051312_explicit-width-in-rye.md), [`../external-research/20260621-050312_usize-boundary-not-design.md`](../external-research/20260621-050312_usize-boundary-not-design.md) |
+
+**Retired in new prompts:** `tools/parity.sh`, `enrich_strengthening_docs.py`, `align_session_logs.py`, `parity.rye` as gate target, `init.arena`, authored `ArenaAllocator`, “`usize` only at seam” as **permanent** policy (interim only — see width fork links above).
+
+**Width:** charter [`20260620-210812_explicit-width-audit.md`](20260620-210812_explicit-width-audit.md); baseline [`../work-in-progress/20260620-212126_usize-width-baseline.md`](../work-in-progress/20260620-212126_usize-width-baseline.md); fork research [`../external-research/20260621-051312_literal-usize-ban-language-fork.md`](../external-research/20260621-051312_literal-usize-ban-language-fork.md); design [`../active-designing/yonder/20260621-051312_explicit-width-in-rye.md`](../active-designing/yonder/20260621-051312_explicit-width-in-rye.md); interim seam [`../external-research/20260621-050312_usize-boundary-not-design.md`](../external-research/20260621-050312_usize-boundary-not-design.md).
+
+## What Belongs Here
+
+- The expanded prompt itself: my improved, structured reading of a request.
+- A faithful echo of the original intent, so the seed is never lost.
+- The lens applied: which principles and filters shaped the expansion.
+- The plan I will run, and the deliverables it should produce.
+
+What does *not* belong here is the work itself — that lands in the research, design, and code stacks. This is only where intent is sharpened into a plan.
+
+---
+
+*May every seed be heard in full. May what I add only clarify, never crowd. And may the prompt I write for myself stay truer to your meaning than the bare words could carry alone.*
+
+## Expanded prompts (newest first)
+
+| Stamp | Prompt | Meaning |
+|-------|--------|---------|
+| `20260711.053412` | [Apply Cursor-bot arc audit](20260711-053412_apply-cursor-bot-arc-audit.md) | WOV money fn split; counsel; Kaeden TB question held |
+| `20260710.133500` | [Inference stack lap 0](20260710-133500_inference-stack-lap0.md) | Module roots + assist view; parity **215** |
+| `20260710.132548` | [Dimeroll lap 3 — sight view](20260710-132548_dimeroll-lap3-sight-view.md) | Carriage + books Skate frame; parity **210** |
+| `20260710.131212` | [Dimeroll root + lap 2 reports](20260710-131212_dimeroll-root-lap2-reports.md) | Own folder; P&L · BS · exceptions; parity **209** |
+| `20260710.125953` | [Dimeroll lap 1 — books view](20260710-125953_dimeroll-lap1-books-view.md) | Chart · journal · fold · Skate booksviewtest; parity **207**/**208** |
+| `20260709.225159` | [MALA kind field — gated](20260709-225159_mala-kind-field-gated.md) | K0 keep memos; K1 still gated |
+| `20260709.224531` | [WOV dual monarch — gated](20260709-224531_wov-dual-monarch-gated.md) | D1 twin-lines landed (parity **205**); D2 later |
+| `20260709.224325` | [SLC-L4 lap 2 width — gated](20260709-224325_slcl4-lap2-width-gated.md) | W0 cleared; W1/W2 soak |
+| `20260709.204026` | [WOV lap 2b TB client wrapper](20260709-204026_wov-lap2b-tb-client-wrapper.md) | Seam A host landed (parity **204**); seam B soak |
+| `20260709.203527` | [WOV lap 2 TigerBeetle pin](20260709-203527_wov-lap2-tigerbeetle-pin-presence.md) | Pin presence; parity **203** |
+| `20260709.202427` | [Realidream thin view](20260709-202427_realidream-thin-view-local-facts.md) | Local fixtures → Skate; parity **202** |
+| `20260709.201734` | [MALA M2b device wire](20260709-201734_mala-m2b-device-wire.md) | Device-wire MALA path |
+| `20260709.200443` | [WOV lap 1 exit honesty](20260709-200443_wov-lap1-exit-honesty-witness.md) | In-memory exit honesty; parity **201** |
+| `20260709.191634` | [MALA M2 mailable Comlink](20260709-191634_mala-m2-mailable-comlink.md) | Hosted M2; parity **199** |
+| `20260709.182354` | [MALA M1 one issuer one holder](20260709-182354_mala-m1-one-issuer-one-holder.md) | M1 first lap; parity **198** |
+| `20260709.031612` | [SLC-L4 lap 1 fixed-tier Sigma](20260709-031612_slcl4-lap1-fixed-tier-sigma-protocol.md) | Pedersen + proof of opening; parity **200** |
+| `20260706.190644` | [Claude zip 58 — NS-L3 handoff](20260706-190644_claude-zip58-ns-l3-handoff.md) | Wire ladder complete; OA-L4 vs MALA; wire-serves-the-fold then proposed, now landed `232812` |
+| `20260706.013512` | [Claude OA-L3 escrow first lap](20260706-013512_claude-oal3-escrow-first-lap.md) | Runnable bench — vocabulary gate, hold/release on one log, parity **158** |
+| `20260705.195812` | [Fidelity soften — thirteen title-drawn studies](20260705-195812_fidelity-soften-instructions.md) | Gratitude softening on #24–#36; Chitra and transcript-true batches untouched |
+| `20260705.190812` | [Claude recursion v9 — batch-6 bundle](20260705-190812_claude-recursion-v9.md) | Apply b1→b4→b5→b6 in order; commit/push/zip 47 |
+| `20260705.184612` | [Claude recursion v8](20260705-184612_claude-recursion-v8.md) | Mid-arc handoff before batch 6 |
+| `20260705.174412` | [Claude recursion v7](20260705-174412_claude-recursion-prompt-v7.md) | Studies #24–#36 batches 1–3; fidelity note on title-drawn citations |
+| `20260705.161900` | [Claude silo deepening transcript bench](20260705-161900_claude-silo-deepening-transcript-bench.md) | Runnable Claude bench — transcript intake, dissociation, recomposition, commit/push/zip 47 |
+| `20260705.160712` | [Claude silo deepening recursion v1](20260705-160712_claude-silo-deepening-recursion-v1.md) | Movement names and purpose — superseded for execution by `161900` |
+| `20260705.042512` | [Cursor final — reading canon and shelf](20260705-042512_cursor-final-reading-canon.md) | Chitra ruling, Makara sweep, canon derive batches, divine-mother re-emphasis |
+| `20260705.041312` | [Cursor final — privacy audit and rebase](20260705-041312_cursor-final-privacy-audit-and-rebase.md) | History pickaxe, conditional filter-repo, zip 45 cut |
+| `20260705.031812` | [Cursor infusion — wheel v4 and Brooke shelf](20260705-031812_cursor-infusion-wheel-v4-and-brooke-shelf.md) | Diurnal method, Alice renderer wheels, shelf moves, natural titles |
+| `20260705.022512` | [Cursor infusion — final Brooke round](20260705-022512_cursor-infusion-final-brooke-round.md) | One paste for the whole round: files arrive placed and gate-verified; batches A–D; RTAC carried with two additions. |
+| `20260704.185412` | [Cursor lane — unified zip-42 intake](20260704-185412_cursor-lane-zip42-counsel-unified.md) | One paste for the whole sitting: both counsels, Kaeden's words listed with the lens gate added, mechanical stops smallest-first, zip 43 cut discipline. |
+| `20260704.181012` | [Zero-copy resins — Claude counsel](20260704-181012_zero-copy-resins-claude-counsel.md) | Snapshot + Comlink batch architecture; ROADMAP/TASKS/decoder refresh; CIVIC alignment — **answered** at `181612`/`185412` |
+| `20260704-030300` | [Cursor recursion prompt v4 — itinerary, stops, journey's pause](20260704-030300_cursor-recursion-prompt-v4.md) | **Active loop** — open itinerary · STOPS · journey's pause; supersedes v2/v3 |
+| `20260703-020012` | [Cursor recursion prompt v3 — land eight, then hold the doors](20260703-020012_cursor-recursion-prompt-v3.md) | Superseded by v4 — frozen for accretion |
+| `20260702-202612` | [Astrology silos 19–20 — Cursor](yonder/20260702-202612_cursor-astrology-silos-19-20.md) | Consumed — studies 19–20 distilled and landed; raw transcripts never committed; in `yonder/` |
+| `20260702-030112` | [SLC-2b — keyboard from the window](20260702-030112_cursor-slc-2b-keyboard-from-window.md) | **Next open question** — Dexter genesis; awaits Kaeden nod |
+| `20260701-231512` | [SLC-2a Ring 3 — mirror live session](yonder/20260701-231512_cursor-slc-2a-ring-three.md) | Consumed — witness at parity 139; metal-closed on GNOME `20260703.032412`; in `yonder/` |
+| `20260701-221512` | [Amber and deep archive docs round](yonder/20260701-221512_cursor-amber-and-deep-archive.md) | Consumed — blueprint, Amber spec, rulings; in `yonder/` |
+| `20260628-120912` | [Kernel direction, Brix, and foundations — batch brief](20260628-120912_kernel-direction-brix-and-foundations.md) | Microkernel as Caravan direction (horizon); Brix clarification; foundation layer; revitalization practice |
+| `20260621-051612` | [10023 · Main Track — Rye, Rishi, and Strengthening](yonder/20260621-051612_main-track-rye-rishi-strengthening.md) | Consumed — strengthening arc and width gate complete; in `yonder/` |
+| `20260621-051612` | [10025 · Strengthening Stdlib Doc + Width Pass — Redirect](yonder/20260621-051612_strengthening-stdlib-doc-width-pass-redirect.md) | Redirect stub — in `yonder/` |
+| `20260621-051612` | [10015 · Documentation and Almanac Sync — Redirect](yonder/20260621-051612_documentation-and-almanac-sync-redirect.md) | Redirect stub — in `yonder/` |
+| `20260621-051612` | [10013 · What We Mean by Seed — Redirect](yonder/20260621-051612_what-we-mean-by-seed-redirect.md) | Redirect stub — in `yonder/` |
+| `20260620-210812` | [10024 · Explicit Width Audit — `usize` to `u32` / `u64`](20260620-210812_explicit-width-audit.md) | Expanded at `210812` from the seed: TAME modeled on Tiger Style demands explicitly sized types; our  |
+| `20260620-044112` | [10022 · Tablecloth v1 — Smallest Living Store](yonder/20260620-044112_tablecloth-v1-seed.md) | Rung 4 of the Tablecloth ladder (`10018`). Expanded at `044112`: grow **Tablecloth v1** from Mantra' |
+| `20260620-044012` | [10021 · Tablecloth in the One-Value Model](yonder/20260620-044012_tablecloth-value-model.md) | Rung 3 of the Tablecloth ladder (`10018`). Expanded at `044012`: **remember** — how Tablecloth sits  |
+| `20260620-044012` | [10018 · Tablecloth Ladder — Index and Vocabulary](yonder/20260620-044012_tablecloth-ladder-index.md) | Expanded at `043712` to unify every expanding prompt that named the content-addressed **store** — no |
+| `20260620-043912` | [10020 · Tablecloth and Brix — The Build](yonder/20260620-043912_tablecloth-brix-build.md) | Rung 2 of the Tablecloth ladder (`10018`). Expanded at `043912`: how **Brix** and **Tablecloth** com |
+| `20260620-043812` | [10019 · Tablecloth and Brix — The Split](yonder/20260620-043812_tablecloth-brix-split.md) | Rung 1 of the Tablecloth ladder (`10018`). Expanded at `043812`: **Tablecloth** holds and **Brix** c |
+| `20260620-040712` | [10017 · Build Catches Design — Two-Thirds Code, One-Third Prose](yonder/20260620-040712_build-catches-design.md) | Expanded at `040712` after counsel from the Zed Opus agent: seven new `.rye` programs and five Rishi |
+| `20260620-034212` | [10016 · Virtio-Net Device Wire](yonder/20260620-034212_virtio-device-wire.md) | Expanded at `034212` after Comlink's hosted wire: the same sealed datagram that crossed shared memor |
+| `20260620-032012` | [10014 · Device Wire and Comlink's Next Rung](yonder/20260620-032012_caravan-chain-and-device-wire.md) | Expanded at `032012` after Caravan chain-loading: supervision now runs seed → bounded → twin → chain |
+| `20260620-021612` | [10012 · Brushstroke Wayland Seed and the Display Frontier](yonder/20260620-021612_brushstroke-wayland-and-display-frontier.md) | Expanded at `021612` after push and Caravan twin: the hosted Brushstroke seed draws from values on s |
+| `20260620-021212` | [10011 · Display Frontier, Flow of Values, and Garden Vocabulary — Autonomous Milestone Run](yonder/20260620-021212_display-flow-gardens-and-next-milestones.md) | Expanded at `021212` from the active-designing lens review: priorities align with Gall's Law, single |
+| `20260619-153612` | [10009 · Pond as Native Desktop — Rishi Shell, Mantra Version Control, Brushstroke Surface, x86_64 First](yonder/20260619-153612_pond-gui-rishi-mantra-x86-amd.md) | Expanding the vision: a Pond GUI application, drawn by Brushstroke, running a Rishi shell whose Mant |
+| `20260619-090512` | [10008 · Zed Claude Rules and the Agent Panel — Mirror Cursor, Run in Zed](yonder/20260619-090512_zed-claude-rules-and-agent-panel.md) | Consumed — Zed rules, agent panel, and enclosure all live; spec repointed; in `yonder/` |
+| `20260619-084412` | [10007 · First Seeds — Caravan, Tally, and a Close Reading Before the Wire Grows](yonder/20260619-084412_caravan-tally-seeds-and-close-reading.md) | Expanded from counsel received at `084412`, spoken in Reya 2's radiant voice through a TAME lens. Th |
+| `20260619-081812` | [10006 · Two Editors, One Garden — ai-jail, Zed, Cursor, and a Cloneable Template](yonder/20260619-081812_dual-editors-enclosure-template.md) | Expanded from a seed of four strands. The first asks how to run **ai-jail** from `~/veganreyklah2` f |
+| `20260619-072600` | [10005 · silo the Surface, Honor the Ground, Keep a Log](yonder/20260619-072600_silo-the-surface-honor-ground-keep-log.md) | Expanded from a seed of three strands. The first asks for a new practice: that I write down my step- |
+| `20260619-070612` | [10004 · Documentation, and a Drawn Surface for Rye](yonder/20260619-070612_brushstroke-and-documentation.md) | Expanded from a seed with two strands woven together: a question about documentation, and a vision f |
+| `20260619-024512` | [The Near Future — From a Proven Foundation Toward the First Living Network](yonder/20260619-024512_the-near-future.md) | Consumed — arc largely built; living successor is ROADMAP + TASKS; in `yonder/` |
+| `20260618-215512` | [10002 · One Identity, Many Keys — and a Fractal Address Space](yonder/20260618-215512_unified-keys-and-address-space.md) | Consumed prompt — Comlink landed; identity + fractal address horizon; in `yonder/` |
+| `20260618-212012` | [10001 · A Content-Centric Messenger, From the Network In](yonder/20260618-212012_content-centric-messaging.md) | Consumed prompt — networking in Aurora/Comlink; messenger + shape-casting horizon; in `yonder/` |
+| `20260618-195512` | [10000 · Encrypted Networking and the Social Layer](yonder/20260618-195512_encrypted-networking-and-social.md) | Consumed prompt — networking landed as Comlink; social is horizon; in `yonder/` |

@@ -1,0 +1,78 @@
+//! Add Rye std surface + Tiger/TAME usize audit to strengthening-compiler pass docs.
+//!
+//! usize policy: `tools/tame_usize_audit.rye` (Tiger Style + TAME + 10024 + 992).
+
+const std = @import("std");
+const root_mod = @import("enrich/root.rye");
+const constants = @import("enrich/constants.rye");
+const enrich_file = @import("enrich/enrich_file.rye");
+const sync = @import("enrich/sync.rye");
+const crosswalk = @import("enrich/crosswalk.rye");
+const lexicon = @import("enrich/lexicon.rye");
+const zig_lookup = @import("enrich/zig_lookup.rye");
+
+pub fn main(init: std.process.Init) !u8 {
+    const a = init.arena.allocator();
+    const io = init.io;
+    const project_root = try root_mod.resolve_root(a, io, init);
+    defer a.free(project_root);
+
+    var sources = try zig_lookup.load_zig_sources(a, io, project_root);
+    defer {
+        var it = sources.iterator();
+        while (it.next()) |e| {
+            a.free(e.key_ptr.*);
+            a.free(e.value_ptr.*);
+        }
+        sources.deinit(a);
+    }
+
+    const docs = try sync.list_pass_docs(a, io, project_root);
+    defer {
+        for (docs) |d| {
+            a.free(d.path);
+            a.free(d.name);
+            a.free(d.stem);
+        }
+        a.free(docs);
+    }
+
+    var changed: u32 = 0;
+    for (docs) |doc| {
+        if (try enrich_file.enrich_file(a, io, doc.path, doc.name, doc.stem, &sources)) {
+            changed += 1;
+            std.debug.print("enriched {s}\n", .{doc.name});
+        }
+    }
+
+    const synced = try sync.sync_width_audit_docs(a, io, project_root, &sources);
+    std.debug.print("synced width audit tables on {d} pass docs\n", .{synced});
+
+    const impl_synced = try sync.sync_pass_audit_writings(a, io, project_root, &sources);
+    std.debug.print("synced audit writings (usize explicit + implementations) on {d} pass docs\n", .{impl_synced});
+
+    const parity_path = try std.fs.path.join(a, &.{ project_root, "tools", "parity.rish" });
+    defer a.free(parity_path);
+    const parity_text = try std.Io.Dir.cwd().readFileAlloc(io, parity_path, a, .limited(zig_lookup.max_file_bytes));
+    const completed = try sync.complete_pending_width_audits(a, io, project_root, parity_text, &sources);
+    std.debug.print("completed width audits on {d} pass docs\n", .{completed});
+
+    const rows = try crosswalk.crosswalk_rows(a, io, project_root, &sources);
+    defer a.free(rows);
+    const crosswalk_path = try std.fs.path.join(a, &.{ project_root, "work-in-progress", "992_strengthening_width_crosswalk.md" });
+    defer a.free(crosswalk_path);
+    const crosswalk_body = try std.mem.concat(a, u8, &.{ crosswalk.crosswalk_header, rows, "\n" });
+    defer a.free(crosswalk_body);
+    try std.Io.Dir.cwd().writeFile(io, .{ .sub_path = crosswalk_path, .data = crosswalk_body });
+    std.debug.print("crosswalk: {d} rows -> {s}\n", .{ std.mem.count(u8, rows, "\n"), crosswalk_path });
+
+    const lex = try lexicon.generate_lexicon(a, io, project_root, &sources);
+    defer a.free(lex);
+    const lexicon_path = try std.fs.path.join(a, &.{ project_root, "strengthening-compiler", "0000_STRENGTHENING_LEXICON.md" });
+    defer a.free(lexicon_path);
+    try std.Io.Dir.cwd().writeFile(io, .{ .sub_path = lexicon_path, .data = lex });
+    const n_surfaces = try lexicon.lexicon_surface_count(a, io, project_root, &sources);
+    std.debug.print("lexicon: {d} surfaces -> {s}\n", .{ n_surfaces, lexicon_path });
+    std.debug.print("enriched {d} files\n", .{changed});
+    return 0;
+}

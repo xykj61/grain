@@ -1,0 +1,139 @@
+//! Rye test: Tally gardens — pass 9989.
+//!
+//! Exercises the Gardens data model: named regions, add/get/clearOne/clearAll,
+//! edge overflow, invariant preservation. Pure stack memory — no file I/O,
+//! no Init dependency, parity-gate compatible.
+
+const std = @import("std");
+
+// ---- Region (inlined) ----------------------------------------------------
+
+const Region = struct {
+    buf: []u8,
+    pos: usize,
+
+    fn init(buf: []u8) Region {
+        const r = Region{ .buf = buf, .pos = 0 };
+        std.debug.assert(r.pos <= r.buf.len);
+        return r;
+    }
+
+    fn alloc(self: *Region, n: usize) error{OutOfBounds}![]u8 {
+        std.debug.assert(self.pos <= self.buf.len);
+        if (n > self.buf.len - self.pos) return error.OutOfBounds;
+        const slice = self.buf[self.pos .. self.pos + n];
+        self.pos += n;
+        std.debug.assert(self.pos <= self.buf.len);
+        return slice;
+    }
+
+    fn clear(self: *Region) void {
+        self.pos = 0;
+        std.debug.assert(self.pos <= self.buf.len);
+    }
+
+    fn remaining(self: *const Region) usize {
+        return self.buf.len - self.pos;
+    }
+};
+
+// ---- Gardens (inlined) ---------------------------------------------------
+
+const max_name_len: usize = 32;
+const max_gardens:  usize = 8;
+
+const NamedRegion = struct { name: []const u8, region: Region };
+
+const Gardens = struct {
+    entries: [max_gardens]NamedRegion,
+    count:   usize,
+
+    fn init() Gardens {
+        return .{ .entries = undefined, .count = 0 };
+    }
+
+    fn add(self: *Gardens, name: []const u8, buf: []u8) !void {
+        std.debug.assert(name.len > 0);
+        std.debug.assert(name.len <= max_name_len);
+        std.debug.assert(self.count < max_gardens);
+        for (self.entries[0..self.count]) |e| {
+            std.debug.assert(!std.mem.eql(u8, e.name, name));
+        }
+        self.entries[self.count] = .{ .name = name, .region = Region.init(buf) };
+        self.count += 1;
+    }
+
+    fn get(self: *Gardens, name: []const u8) ?*Region {
+        std.debug.assert(name.len > 0);
+        for (self.entries[0..self.count]) |*e| {
+            if (std.mem.eql(u8, e.name, name)) return &e.region;
+        }
+        return null;
+    }
+
+    fn clearOne(self: *Gardens, name: []const u8) void {
+        std.debug.assert(name.len > 0);
+        for (self.entries[0..self.count]) |*e| {
+            if (std.mem.eql(u8, e.name, name)) { e.region.clear(); return; }
+        }
+        std.debug.assert(false);
+    }
+
+    fn clearAll(self: *Gardens) void {
+        for (self.entries[0..self.count]) |*e| e.region.clear();
+        for (self.entries[0..self.count]) |e| std.debug.assert(e.region.pos == 0);
+    }
+};
+
+// ---- Test body -----------------------------------------------------------
+
+pub fn main() void {
+    var bb: [64]u8 = undefined;
+    var db: [32]u8 = undefined;
+    var fb: [16]u8 = undefined;
+
+    var g = Gardens.init();
+    g.add("blob",  &bb) catch unreachable;
+    g.add("diff",  &db) catch unreachable;
+    g.add("frame", &fb) catch unreachable;
+
+    std.debug.assert(g.count == 3);
+
+    // get finds each garden; absent name returns null.
+    const blob = g.get("blob")  orelse unreachable;
+    const diff = g.get("diff")  orelse unreachable;
+    _           = g.get("frame") orelse unreachable;
+    std.debug.assert(g.get("none") == null);
+
+    // Alloc within bounds.
+    const a = blob.alloc(40) catch unreachable;
+    std.debug.assert(a.len == 40);
+    std.debug.assert(blob.remaining() == 24);
+
+    // Alloc past edge fails.
+    {
+        const r = blob.alloc(25);
+        if (r) |_| unreachable else |err| std.debug.assert(err == error.OutOfBounds);
+    }
+
+    // clearOne resets one garden; others untouched.
+    g.clearOne("blob");
+    std.debug.assert(blob.remaining() == 64);
+    std.debug.assert(diff.remaining() == 32); // diff unchanged
+
+    // clearAll resets all.
+    const x = diff.alloc(20) catch unreachable;
+    _ = x;
+    g.clearAll();
+    std.debug.assert(blob.remaining() == 64);
+    std.debug.assert(diff.remaining() == 32);
+
+    // Invariants hold across all entries.
+    for (g.entries[0..g.count]) |e| {
+        std.debug.assert(e.name.len > 0);
+        std.debug.assert(e.name.len <= max_name_len);
+        std.debug.assert(e.region.pos <= e.region.buf.len);
+    }
+
+    std.debug.print("rye: Tally gardens assertions confirmed (add, get, clearOne, clearAll, overflow).\n", .{});
+}

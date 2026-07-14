@@ -1,0 +1,16 @@
+# mantra_recall_catch_up.rish — catch-up-to-latest witness (in-process).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/mantra_recall_catch_up.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mantra/bin/recall-catch-up"
+
+let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/recall_catch_up.rye -femit-bin=${bin}"]
+assert build.ok else "recall_catch_up build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "recall_catch_up selftest exited non-zero"
+assert selftest.out contains "GREEN" else "recall_catch_up selftest not GREEN"
+
+say "GREEN: catch-up-to-latest witness passed (bounded inner loop, in-process)."

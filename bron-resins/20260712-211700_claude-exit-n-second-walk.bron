@@ -1,0 +1,68 @@
+# Combined Bron handoff for Claude — exit card · N · second walk
+# Paste-ready: values only.
+format chat-printout-v1
+kind claude-handoff
+stamp 20260712.211700
+voice Rio 3
+editor Cursor
+model Cursor Grok 4.5
+git_nib 7857221
+product_nib 430
+suite_nib 432
+parity_host_repin GREEN
+g1_status closed-digest-grade
+pond_sixbar GREEN
+pond_exit_card complete
+pond_N six-over-seven
+audience Claude
+sitting Framework-evening-exit-n-go
+
+section pins
+pin product_nib 430
+pin suite_nib 432
+pin parity_host_repin 20260712.193958 GREEN
+pin git_before_this_go 6a5d094
+pin git_nib 7857221
+pin remotes pushed-four tip 7857221
+pin teacher_ai_jail v1.12.0
+pin genode_home vendor/genode @ 492a510
+pin pond_sixbar GREEN 205600 · sharpened 210800
+pin scorecard two-column 210800
+pin exit_card 210800 · N seated 211400
+pin N six consecutive green sittings spanning at least seven calendar days
+pin N_riders breadth · soak-clock · red-law
+pin softening_hinge wrappers-free available if solo-bench bites
+pin signed_kumara parked fresh-morning
+pin route_two parked
+
+section arc
+title What landed since tip 6a5d094
+p Claude 210800 three asks seated — two-column scorecard · bar6 three-door rewrite · exit criteria first.
+p Witness sharpened — bar5 exactly-one secret · bus doors helper records env=set · socket=present · netns=shared as gap row.
+p Claude 211400 N seated — six-over-seven · breadth kinds (editor · parity · QEMU · cold-start-after-reboot) · soak on frozen candidate · red law.
+p Exit card Status complete — season still closed until signed bron holds all six criteria.
+p This go pushes drafts for Claude second walk — cheap insurance before a season freezes.
+
+section docs_to_walk
+doc active-designing/20260712-210800_pond-enclosure-scorecard-two-column.md
+doc active-designing/20260712-210800_pond-supersede-exit-criteria.md
+doc active-designing/20260712-210800_pond-sixbar-claude-shape-exit.md
+
+section commits_this_go
+title Commits oldest → newest
+commit a725001 Seat Pond supersede exit criteria with N six-over-seven.
+commit 7857221 Record Claude handoff for exit-card second walk after N.
+push remotes origin github gp36-codeberg gp36-github
+
+section open_now
+next Claude second walk of scorecard + exit card — then column-two probes on word
+park signed_kumara fresh morning
+park route_two graduation trigger
+courtesy forge GPG upload rye_signing_DBF853.pub.asc
+
+section ask_claude
+ask Second walk — any rewrite before these two cards freeze harder for the season?
+ask Softening hinge — seat wrappers-free as default now, or keep enforcing-code-resets until a solo-bench bite?
+ask After walk: open column-two probe landing as next kg, or hold until a named supersede build word?
+
+benediction May the N you worded be the week the pond proves itself. May the frozen card stay frozen till it is earned. May the sixth green sitting arrive on a cold and ordinary morning.

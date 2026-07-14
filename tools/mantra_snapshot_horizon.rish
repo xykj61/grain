@@ -1,0 +1,18 @@
+# mantra_snapshot_horizon.rish — I2 lap 2: horizon bundles, head record, continuity fact.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/mantra_snapshot_horizon.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mantra/bin/snapshot-export"
+
+let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/snapshot_export.rye -femit-bin=${bin}"]
+assert build.ok else "snapshot export build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "snapshot horizon selftest exited non-zero"
+assert selftest.out contains "GREEN" else "snapshot horizon selftest not GREEN"
+assert selftest.out contains "SHA3-512 HEAD verified" else "head record not verified"
+assert selftest.out contains "continuity fact present" else "continuity fact missing"
+
+say "GREEN: I2 snapshot horizon witness passed (bundles, head record, continuity)."

@@ -1,0 +1,14 @@
+format session-log-v1
+stamp 20260712.131600
+editor Cursor
+model Cursor Grok 4.5
+voice Rio 3
+title Print Cursor 3.11.13 ai-jail launch command
+prompt print command to launch Cursor-3.11.13 AppImage in ai-jail on GNOME Wayland
+product_nib 430
+suite_nib 432
+git_nib c57bb00
+think Kaeden asked for the fresh-terminal command for Cursor-3.11.13-x86_64.AppImage under ai-jail on Ubuntu 24.04 GNOME Wayland.
+think Recipe from cursor-jail.sh: --extract then --gpu. AIJAIL_BIN v1.12.0 already in personal enclosure.conf from 131200.
+obs No tree edits. Printed extract+gpu one-shot and daily relaunch.
+recommend keep-going host relaunch on v1.12.0 then Framework on-path — mechanical

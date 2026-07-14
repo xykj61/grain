@@ -1,0 +1,27 @@
+//! Rye test: forward split factories — pass 9934.
+//!
+//! splitScalar, splitAny, and splitSequence must begin at index zero with
+//! rest() spanning the full buffer before iteration (pairs with SplitIterator 9963–9969).
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    var scalar = mem.splitScalar(u8, "a|b|c", '|');
+    std.debug.assert(mem.eql(u8, scalar.rest(), "a|b|c"));
+    std.debug.assert(mem.eql(u8, scalar.peek().?, "a"));
+
+    var any = mem.splitAny(u8, "a,b;c", ",;");
+    std.debug.assert(mem.eql(u8, any.rest(), "a,b;c"));
+    std.debug.assert(mem.eql(u8, any.peek().?, "a"));
+
+    var seq = mem.splitSequence(u8, "xx||yy", "||");
+    std.debug.assert(mem.eql(u8, seq.rest(), "xx||yy"));
+    std.debug.assert(mem.eql(u8, seq.peek().?, "xx"));
+
+    var empty = mem.splitScalar(u8, "", '|');
+    std.debug.assert(empty.rest().len == 0);
+    std.debug.assert(mem.eql(u8, empty.peek().?, ""));
+
+    std.debug.print("rye: mem split factory assertions confirmed.\n", .{});
+}

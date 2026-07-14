@@ -1,0 +1,100 @@
+//! Text scanners matching Python regex behavior (no std.regex).
+
+const std = @import("std");
+
+pub fn strip_fenced_code(text: []const u8, a: std.mem.Allocator) ![]const u8 {
+    var out = std.ArrayListUnmanaged(u8).empty;
+    errdefer out.deinit(a);
+    var i: usize = 0;
+    while (i < text.len) {
+        if (std.mem.startsWith(u8, text[i..], "```")) {
+            const close = std.mem.indexOfPos(u8, text, i + 3, "```") orelse break;
+            i = close + 3;
+            continue;
+        }
+        try out.append(a, text[i]);
+        i += 1;
+    }
+    return try out.toOwnedSlice(a);
+}
+
+pub fn find_std_ref_names(text: []const u8, a: std.mem.Allocator, names: *std.ArrayListUnmanaged([]const u8)) !void {
+    var i: usize = 0;
+    while (i < text.len) {
+        if (!std.mem.startsWith(u8, text[i..], "**`std.")) {
+            i += 1;
+            continue;
+        }
+        const start = i + 7; // after "**`std."
+        const end = std.mem.indexOfScalar(u8, text[start..], '`') orelse {
+            i += 1;
+            continue;
+        };
+        const name = text[start .. start + end];
+        var found = false;
+        for (names.items) |n| {
+            if (std.mem.eql(u8, n, name)) found = true;
+        }
+        if (!found) try names.append(a, try a.dupe(u8, name));
+        i = start + end + 1;
+    }
+}
+
+pub fn find_backtick_std_names(text: []const u8, a: std.mem.Allocator, names: *std.ArrayListUnmanaged([]const u8)) !void {
+    var i: usize = 0;
+    while (i < text.len) {
+        if (!std.mem.startsWith(u8, text[i..], "`std.")) {
+            i += 1;
+            continue;
+        }
+        const start = i + 5;
+        const end = std.mem.indexOfScalar(u8, text[start..], '`') orelse {
+            i += 1;
+            continue;
+        };
+        const name = text[start .. start + end];
+        var dup = false;
+        for (names.items) |n| {
+            if (std.mem.eql(u8, n, name)) dup = true;
+        }
+        if (!dup) try names.append(a, try a.dupe(u8, name));
+        i = start + end + 1;
+    }
+}
+
+pub fn find_backtick_fns(text: []const u8, a: std.mem.Allocator, names: *std.ArrayListUnmanaged([]const u8)) !void {
+    var i: usize = 0;
+    while (i < text.len) {
+        if (text[i] != '`') {
+            i += 1;
+            continue;
+        }
+        const start = i + 1;
+        if (start >= text.len or !std.ascii.isLower(text[start])) {
+            i += 1;
+            continue;
+        }
+        var j = start + 1;
+        while (j < text.len and (std.ascii.isAlphanumeric(text[j]) or text[j] == '_')) : (j += 1) {}
+        if (j >= text.len or text[j] != '`') {
+            i += 1;
+            continue;
+        }
+        const fn_name = text[start..j];
+        var dup = false;
+        for (names.items) |n| {
+            if (std.mem.eql(u8, n, fn_name)) dup = true;
+        }
+        if (!dup) try names.append(a, try a.dupe(u8, fn_name));
+        i = j + 1;
+    }
+}
+
+pub fn section_has_pending_or_fail(section: []const u8, needle: []const u8) bool {
+    return std.mem.indexOf(u8, section, needle) != null;
+}
+
+pub fn pass_num_from_name(name: []const u8) []const u8 {
+    const us = std.mem.indexOfScalar(u8, name, '_') orelse return "?";
+    return name[0..us];
+}

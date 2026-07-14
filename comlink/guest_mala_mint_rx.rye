@@ -1,0 +1,84 @@
+//! comlink/guest_mala_mint_rx.rye — MALA M2b mint hop RX (holder).
+//!
+//! Opens the sealed mint, folds via mala_core, asserts holder balance 1000.
+
+const vn = @import("virtio_net.rye");
+const wf = @import("wire_format.rye");
+const rc = @import("receipt_core.rye");
+const mc = @import("mala_core.rye");
+const kumara = @import("kumara.rye");
+
+var rx: vn.RxQueue = undefined;
+
+export fn _start() linksection(".text.init") callconv(.naked) noreturn {
+    asm volatile (
+        \\ li sp, 0x80100000
+        \\ j kmain
+    );
+}
+
+export fn kmain() callconv(.c) noreturn {
+    vn.init_device();
+    rx.init();
+    vn.driver_ok();
+    rx.kick();
+
+    const n = rx.wait_frame();
+    if (n == 0) {
+        vn.write_str("mala m2b device wire: FAIL — mint RX timeout\n");
+        vn.finish_fail();
+    }
+    const poff = vn.virtio_net_hdr_len + vn.eth_header_len;
+    if (n <= poff) {
+        vn.write_str("mala m2b device wire: FAIL — mint frame too short\n");
+        vn.finish_fail();
+    }
+    const buf = rx.frame();
+    const datagram = buf[poff..n];
+
+    var opened: [@intCast(wf.max_message)]u8 = undefined;
+    const opened_len = wf.open_datagram(datagram, &opened) catch {
+        vn.write_str("mala m2b device wire: FAIL — mint open refused\n");
+        vn.finish_fail();
+    };
+
+    const issuer_kp = kumara.keypair_from_seed(&mc.issuer_seed);
+    const holder_kp = kumara.keypair_from_seed(&mc.holder_seed);
+    var issuer_hex: [mc.pubkey_hex_len]u8 = undefined;
+    var holder_hex: [mc.pubkey_hex_len]u8 = undefined;
+    mc.hex_of_key(issuer_kp.public_key, &issuer_hex);
+    mc.hex_of_key(holder_kp.public_key, &holder_hex);
+
+    var sig_buf: [kumara.signature_length]u8 = undefined;
+    var fact_buf: [rc.slcl2_max_fact]u8 = undefined;
+    const decoded = rc.decode_compact_payload(opened[0..@intCast(opened_len)], &sig_buf, &fact_buf) catch {
+        vn.write_str("mala m2b device wire: FAIL — mint payload decode\n");
+        vn.finish_fail();
+    };
+    const fact = fact_buf[0..decoded.fact_len];
+    var fields: rc.FactFields = undefined;
+    rc.parse_fact_fields(fact, &fields) catch {
+        vn.write_str("mala m2b device wire: FAIL — mint fact parse\n");
+        vn.finish_fail();
+    };
+    var balances: mc.Balances = .{};
+    mc.fold_one_line(
+        fields,
+        fact,
+        sig_buf[0..kumara.signature_length],
+        &balances,
+        &issuer_hex,
+        &holder_hex,
+        issuer_kp.public_key,
+        holder_kp.public_key,
+    ) catch {
+        vn.write_str("mala m2b device wire: FAIL — mint fold\n");
+        vn.finish_fail();
+    };
+    if (balances.holder != 1000) {
+        vn.write_str("mala m2b device wire: FAIL — mint balance mismatch\n");
+        vn.finish_fail();
+    }
+    vn.write_str("mala m2b device wire: sealed mint GREEN — fold passed\n");
+    vn.finish_pass();
+}

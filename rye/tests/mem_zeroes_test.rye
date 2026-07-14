@@ -1,0 +1,24 @@
+//! Rye test: std.mem.zeroes — pass 9895.
+//!
+//! Zero-initialize scalars and small extern structs; pairs with secure_zero (9929).
+
+const std = @import("std");
+const mem = std.mem;
+
+const Ex = extern struct {
+    x: u32,
+    y: u32,
+};
+
+pub fn main() void {
+    std.debug.assert(mem.zeroes(u32) == 0);
+    std.debug.assert(mem.zeroes(bool) == false);
+    std.debug.assert(mem.zeroes(?*u8) == null);
+
+    const z = mem.zeroes(Ex);
+    std.debug.assert(z.x == 0);
+    std.debug.assert(z.y == 0);
+    std.debug.assert(mem.eql(u8, mem.asBytes(&z), &[_]u8{0} ** @sizeOf(Ex)));
+
+    std.debug.print("rye: mem.zeroes assertions confirmed.\n", .{});
+}

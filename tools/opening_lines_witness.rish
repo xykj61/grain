@@ -1,0 +1,20 @@
+# opening_lines_witness.rish — hosted corpus carries the canonical three-line head.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/opening_lines_witness.rish
+
+say "opening-lines: scanning hosted .rye (assert and print bindings)..."
+
+let result = run ["rishi/bin/rishi" "run" "tools/fixtures/opening_lines_scan.rish"]
+assert result.ok else "opening-lines scan script failed"
+
+say result.out
+
+let lines = lines result.out
+let fails = where lines as l: l starts-with "FAIL"
+let oks = where lines as l: l starts-with "OK"
+
+if length fails == 0 then say "OPENING LINES GREEN: all ${length lines} hosted files carry bare assert and print."
+if length fails != 0 then say "OPENING LINES RED: ${length fails} file(s) missing the canonical head."
+
+assert length fails == 0 else "opening-lines RED: hosted .rye missing canonical assert/print bindings"

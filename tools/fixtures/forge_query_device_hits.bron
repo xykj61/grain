@@ -1,0 +1,7 @@
+# forge tablecloth query device hits — forge-query device provenance fixture
+# Same Amber/Amphora forge filter shape; wire device marks virtio carriage.
+wire device
+filter_tilak amber-manifest
+hit_count 2
+hit peerForge amber 1 manifest.bron
+hit peerForge amphora 1 vessel.bron

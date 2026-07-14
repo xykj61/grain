@@ -1,0 +1,98 @@
+//! caravan/service.rye — ring B: supervise a bounded multi-tick service dependent.
+//!
+//! The chain proved ordered stages with restart-on-fall per stage. This program
+//! proves the service semantic: one long-running dependent runs a bounded tick loop
+//! (standing in for poll cycles or any repeating work); a fall mid-run restarts
+//! the whole service; the parent never dies until the dependent completes clean.
+//!
+//! Usage:
+//!   service                     Run as supervisor
+//!   service dependent <attempt>     Run as service dependent (attempt = restart count)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const tally_parse_int = @import("parse_int.rye");
+
+const caravan_service_version = "20260707.011412";
+
+const max_ticks: u32 = 4;
+const planned_fail_tick: u32 = 2;
+const max_restarts: u32 = 5;
+
+pub fn main(init: std.process.Init) !u8 {
+    const io = init.io;
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+
+    if (args.len >= 3 and std.mem.eql(u8, args[1], "dependent")) {
+        const attempt = tally_parse_int.parse_int(u32, args[2], .{}) catch return 1;
+        return run_service_dependent(attempt);
+    }
+
+    return run_supervisor(garden, io, args);
+}
+
+fn run_service_dependent(attempt: u32) u8 {
+    assert(attempt <= max_restarts);
+    print("caravan service: dependent attempt {d}, ticks {d}\n", .{ attempt, max_ticks });
+
+    var tick: u32 = 1;
+    while (tick <= max_ticks) : (tick += 1) {
+        if (attempt == 0 and tick == planned_fail_tick) {
+            print("caravan service: tick {d} fell — service restart expected\n", .{tick});
+            return 1;
+        }
+        print("caravan service: tick {d}/{d} — GREEN\n", .{ tick, max_ticks });
+    }
+    return 0;
+}
+
+fn run_supervisor(allocator: std.mem.Allocator, io: std.Io, args: []const [:0]const u8) !u8 {
+    assert(args.len >= 1);
+    const self_path = args[0];
+
+    print("caravan service: supervisor alive. ticks {d}, planned fail at tick {d}\n", .{
+        max_ticks, planned_fail_tick,
+    });
+
+    var restarts: u32 = 0;
+    while (true) {
+        assert(restarts <= max_restarts);
+
+        const attempt_buf = try std.fmt.allocPrint(allocator, "{d}", .{restarts});
+        const argv = try allocator.alloc([]const u8, 3);
+        argv[0] = self_path;
+        argv[1] = "dependent";
+        argv[2] = attempt_buf;
+
+        var dependent = std.process.spawn(io, .{ .argv = argv }) catch |err| {
+            print("caravan service: could not start dependent ({s})\n", .{@errorName(err)});
+            return 1;
+        };
+
+        const term = try dependent.wait(io);
+        const code: u8 = switch (term) {
+            .exited => |c| c,
+            else => 255,
+        };
+
+        if (code == 0) {
+            print("caravan service: dependent completed all ticks after {d} restart(s).\n", .{restarts});
+            break;
+        }
+
+        restarts += 1;
+        print("caravan service: dependent fell (code {d}), restart {d}/{d}\n", .{
+            code, restarts, max_restarts,
+        });
+        if (restarts >= max_restarts) {
+            print("caravan service: restart limit reached — giving up.\n", .{});
+            return 1;
+        }
+    }
+
+    assert(restarts == 1);
+    print("caravan service: bounded multi-tick service supervised — GREEN.\n", .{});
+    return 0;
+}

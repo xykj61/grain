@@ -1,0 +1,14 @@
+# inference_assist_view_lap8.rish — Assist view: BS equity on the assist fold.
+let bin = "pond/bin/drawn-terminal"
+say "build: inference assist view lap 8 — drawn-terminal compile"
+let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+assert build.ok else "drawn_terminal build failed for assist view lap 8"
+assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
+let assist = run ["sh" "-c" "${bin} assistviewtest 2>&1"]
+assert assist.ok else "drawn terminal assistviewtest exited non-zero"
+assert assist.out contains "assist view" else "assist view missing expected output"
+assert assist.out contains "pnl=800" else "assist view missing pnl=800"
+assert assist.out contains "equity=0" else "assist view missing equity=0"
+assert assist.out contains "GREEN" else "Inference assist view lap 8 not GREEN"
+assert assist.out contains "lines=8" else "assist view missing eight-line frame"
+say "GREEN: Assist view lap 8 — BS equity joins P&L on the assist fold."

@@ -1,0 +1,24 @@
+# mantra_recall_tablecloth_query_wire.rish — Tablecloth query over Comlink hosted wire.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/mantra_recall_tablecloth_query_wire.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let wire_bin = "mantra/bin/recall-tablecloth-query-wire"
+let delivery_bin = "mantra/bin/recall-tablecloth-query-delivery"
+
+let build_wire = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/recall_tablecloth_query_wire.rye -femit-bin=${wire_bin}"]
+assert build_wire.ok else "tablecloth query wire build failed"
+
+let wire_selftest = run ["sh" "-c" "${wire_bin} selftest 2>&1"]
+assert wire_selftest.ok else "tablecloth query wire selftest exited non-zero"
+assert wire_selftest.out contains "GREEN" else "tablecloth query wire selftest not GREEN"
+
+let build_delivery = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build mantra/recall_tablecloth_query_delivery.rye -lc -femit-bin=${delivery_bin}"]
+assert build_delivery.ok else "tablecloth query delivery build failed"
+
+let delivery_selftest = run ["sh" "-c" "${delivery_bin} selftest 2>&1"]
+assert delivery_selftest.ok else "tablecloth query delivery selftest exited non-zero"
+assert delivery_selftest.out contains "GREEN" else "tablecloth query delivery selftest not GREEN"
+
+say "GREEN: Tablecloth query wire witness passed (encode + hosted Comlink filter)."

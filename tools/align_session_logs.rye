@@ -1,0 +1,506 @@
+//! Align session-logs/ to one-clock discipline: Stamp, Editor, Model; rebuild README index.
+//!
+//! Run: `rye run tools/align_session_logs.rye`
+
+const std = @import("std");
+const root_mod = @import("enrich/root.rye");
+const zig_lookup = @import("enrich/zig_lookup.rye");
+
+const weak_h1 = "# Session log \u{2014} session";
+
+const readme_header =
+    \\# Session logs
+    \\
+    \\Living index for the append-only session stream. Files sort ascending by stamp; this table reads **newest first**.
+    \\
+    \\Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
+    \\
+    \\**Filename:** `YYYYMMDD-HHMMSS_short-slug.md` — no countdown prefix. **Body:** `**Stamp:**` in dot form (`YYYYMMDD.HHMMSS`); **Editor** and **Model** at the top per `.claude/rules/session-logs.md`.
+    \\
+    \\**Commit discipline:** ship the log in the **same commit** as the work it records whenever possible. A follow-up commit only for the log is a last resort. Re-align the archive with `rye run tools/align_session_logs.rye`.
+    \\
+    \\| Stamp | Log | Meaning |
+    \\|-------|-----|---------|
+    \\
+;
+
+const LogMeta = struct {
+    hyphen: []const u8,
+    fname: []const u8,
+    h1: []const u8,
+    meaning: []const u8,
+};
+
+const ParsedName = struct {
+    ymd: []const u8,
+    hms: []const u8,
+    slug: ?[]const u8,
+};
+
+fn parse_fname(name: []const u8) ?ParsedName {
+    if (!std.mem.endsWith(u8, name, ".md")) return null;
+    const stem = name[0 .. name.len - 3];
+    if (stem.len < 15 or stem[8] != '-') return null;
+    const ymd = stem[0..8];
+    const hms = stem[9..15];
+    for (ymd) |c| if (c < '0' or c > '9') return null;
+    for (hms) |c| if (c < '0' or c > '9') return null;
+    const slug: ?[]const u8 = if (stem.len > 16 and stem[15] == '_') stem[16..] else null;
+    return .{ .ymd = ymd, .hms = hms, .slug = slug };
+}
+
+fn dot_stamp(a: std.mem.Allocator, ymd: []const u8, hms: []const u8) ![]const u8 {
+    return try std.fmt.allocPrint(a, "{s}.{s}", .{ ymd, hms });
+}
+
+fn hyphen_stamp(a: std.mem.Allocator, ymd: []const u8, hms: []const u8) ![]const u8 {
+    return try std.fmt.allocPrint(a, "{s}-{s}", .{ ymd, hms });
+}
+
+fn has_substring(hay: []const u8, needle: []const u8) bool {
+    return std.mem.indexOf(u8, hay, needle) != null;
+}
+
+fn starts_with_any(line: []const u8, prefixes: []const []const u8) bool {
+    for (prefixes) |p| {
+        if (std.mem.startsWith(u8, line, p)) return true;
+    }
+    return false;
+}
+
+fn infer_editor_model(a: std.mem.Allocator, text: []const u8, ymd: []const u8) !?[]const u8 {
+    if (has_substring(text, "**Editor:**")) return null;
+
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    while (lines.next()) |line| {
+        if (std.mem.startsWith(u8, line, "**Agent:**")) {
+            const rest = std.mem.trim(u8, line["**Agent:**".len..], " \t");
+            if (has_substring(rest, "Zed")) {
+                return try std.fmt.allocPrint(a, "**Editor:** Claude Code (Zed) \u{00b7} **Model:** Claude Opus", .{});
+            }
+            if (has_substring(rest, "Cursor")) {
+                return try std.fmt.allocPrint(a, "**Editor:** Cursor \u{00b7} **Model:** Composer", .{});
+            }
+        }
+    }
+
+    const head_len = @min(text.len, 1200);
+    const head = text[0..head_len];
+    const head_short = text[0..@min(text.len, 400)];
+    if ((has_substring(head, "Claude Code") or has_substring(head, "launch-zed") or has_substring(head, "Zed")) and
+        !has_substring(head_short, "Cursor"))
+    {
+        return try std.fmt.allocPrint(a, "**Editor:** Claude Code (Zed) \u{00b7} **Model:** Claude Opus", .{});
+    }
+    if (has_substring(head, "Composer")) {
+        return try std.fmt.allocPrint(a, "**Editor:** Cursor \u{00b7} **Model:** Composer", .{});
+    }
+    if (std.mem.indexOf(u8, head, "Opus") != null) {
+        return try std.fmt.allocPrint(a, "**Editor:** Claude Code (Zed) \u{00b7} **Model:** Claude Opus", .{});
+    }
+    if (std.mem.order(u8, ymd, "20260628") != .lt) {
+        return try std.fmt.allocPrint(a, "**Editor:** Cursor \u{00b7} **Model:** Composer", .{});
+    }
+    return try std.fmt.allocPrint(a, "**Editor:** (historical) \u{00b7} **Model:** (historical)", .{});
+}
+
+fn slug_to_title(a: std.mem.Allocator, slug: []const u8) ![]const u8 {
+    var out = std.ArrayListUnmanaged(u8).empty;
+    errdefer out.deinit(a);
+    for (slug) |c| {
+        try out.append(a, if (c == '-') ' ' else c);
+    }
+    return try out.toOwnedSlice(a);
+}
+
+fn split_middle_dot(a: std.mem.Allocator, line: []const u8) ![][]const u8 {
+    var out = std.ArrayListUnmanaged([]const u8).empty;
+    errdefer {
+        for (out.items) |p| a.free(p);
+        out.deinit(a);
+    }
+    var cur_start: usize = 0;
+    var i: usize = 0;
+    const trimmed = std.mem.trim(u8, if (std.mem.startsWith(u8, line, "#")) line[1..] else line, " \t");
+    while (i < trimmed.len) {
+        if (trimmed[i] == '\u{00b7}') {
+            const part = std.mem.trim(u8, trimmed[cur_start..i], " \t");
+            try out.append(a, try a.dupe(u8, part));
+            i += 1;
+            cur_start = i;
+            continue;
+        }
+        i += 1;
+    }
+    const tail = std.mem.trim(u8, trimmed[cur_start..], " \t");
+    try out.append(a, try a.dupe(u8, tail));
+    return try out.toOwnedSlice(a);
+}
+
+fn strip_kaeden_lead(a: std.mem.Allocator, line: []const u8) ![]const u8 {
+    const prefixes = [_][]const u8{
+        "Kaeden asked", "Kaeden said", "Kaeden requested", "Kaeden noted", "Kaeden handed", "Kaeden delivered",
+        "User asked", "User said", "User requested", "User noted", "User handed", "User delivered",
+    };
+    const trimmed = std.mem.trim(u8, line, " \t");
+    for (prefixes) |p| {
+        if (std.mem.startsWith(u8, trimmed, p)) {
+            const dot = std.mem.indexOfScalar(u8, trimmed, '.') orelse return try a.dupe(u8, trimmed);
+            const after = std.mem.trim(u8, trimmed[dot + 1 ..], " \t");
+            return try a.dupe(u8, after);
+        }
+    }
+    return try a.dupe(u8, trimmed);
+}
+
+fn truncate_title(a: std.mem.Allocator, s: []const u8, max_len: usize) ![]const u8 {
+    if (s.len <= max_len) return try a.dupe(u8, s);
+    var cut = s[0..max_len];
+    if (std.mem.lastIndexOfScalar(u8, cut, ' ')) |sp| {
+        cut = cut[0..sp];
+    }
+    return try std.fmt.allocPrint(a, "{s}\u{2026}", .{cut});
+}
+
+fn has_countdown_h1(line: []const u8) bool {
+    if (has_substring(line, "99999")) return true;
+    const a = std.mem.indexOf(u8, line, "Session log") orelse return false;
+    const b = std.mem.indexOf(u8, line, "Session Log") orelse return false;
+    const start = if (a != 0) a else b;
+    _ = start;
+    var i: usize = 0;
+    while (i + 12 < line.len) : (i += 1) {
+        if ((std.mem.startsWith(u8, line[i..], "Session log") or std.mem.startsWith(u8, line[i..], "Session Log")) and
+            std.mem.indexOf(u8, line[i..], "\u{00b7}") != null)
+        {
+            const mid = line[i..];
+            var j: usize = 0;
+            while (j < mid.len and mid[j] != '\u{00b7}') : (j += 1) {}
+            if (j >= mid.len) continue;
+            j += 1;
+            while (j < mid.len and mid[j] == ' ') : (j += 1) {}
+            var digits: u32 = 0;
+            while (j < mid.len and mid[j] >= '0' and mid[j] <= '9') : (j += 1) {
+                digits += 1;
+            }
+            if (digits == 5) return true;
+        }
+    }
+    return false;
+}
+
+fn repair_weak_h1(a: std.mem.Allocator, h1: []const u8, slug: ?[]const u8, ymd: []const u8, hms: []const u8, content: []const u8) ![]const u8 {
+    if (!std.mem.eql(u8, std.mem.trim(u8, h1, " \t"), weak_h1)) return try a.dupe(u8, h1);
+    if (has_substring(content, "## The Request") and std.mem.eql(u8, ymd, "20260619") and std.mem.eql(u8, hms, "072600")) {
+        return try a.dupe(u8, "# Session log \u{2014} first log (one-clock practice begins)");
+    }
+    const marker = "## Thinking trace";
+    if (std.mem.indexOf(u8, content, marker)) |pos| {
+        const rest = std.mem.trim(u8, content[pos + marker.len ..], " \n\r\t");
+        const nl = std.mem.indexOfScalar(u8, rest, '\n') orelse rest.len;
+        const first_raw = std.mem.trim(u8, rest[0..nl], " \t");
+        const first = try strip_kaeden_lead(a, first_raw);
+        defer a.free(first);
+        if (first.len > 0) {
+            const clipped = try truncate_title(a, first, 60);
+            return try std.fmt.allocPrint(a, "# Session log \u{2014} {s}", .{clipped});
+        }
+    }
+    if (slug) |s| {
+        const title = try slug_to_title(a, s);
+        defer a.free(title);
+        return try std.fmt.allocPrint(a, "# Session log \u{2014} {s}", .{title});
+    }
+    return try std.fmt.allocPrint(a, "# Session log \u{2014} {s}-{s}", .{ ymd, hms });
+}
+
+fn fix_h1(a: std.mem.Allocator, line: []const u8, slug: ?[]const u8, dot: []const u8, content: []const u8, ymd: []const u8, hms: []const u8) ![]const u8 {
+    if (!std.mem.startsWith(u8, line, "#")) {
+        if (slug) |s| {
+            const title = try slug_to_title(a, s);
+            defer a.free(title);
+            return try std.fmt.allocPrint(a, "# Session log \u{2014} {s}", .{title});
+        }
+        return try std.fmt.allocPrint(a, "# Session log \u{2014} {s}", .{dot});
+    }
+    if (has_countdown_h1(line)) {
+        if (slug) |s| {
+            const title = try slug_to_title(a, s);
+            defer a.free(title);
+            return try std.fmt.allocPrint(a, "# Session log \u{2014} {s}", .{title});
+        }
+        const parts = try split_middle_dot(a, line);
+        defer {
+            for (parts) |p| a.free(p);
+            a.free(parts);
+        }
+        if (parts.len >= 3 and parts[2].len > 0) {
+            return try std.fmt.allocPrint(a, "# Session log \u{2014} {s}", .{parts[2]});
+        }
+        if (parts.len >= 2 and parts[1].len > 0) {
+            return try std.fmt.allocPrint(a, "# Session log \u{2014} {s}", .{parts[1]});
+        }
+        return try a.dupe(u8, line);
+    }
+    if (std.mem.startsWith(u8, line, "# Session Log \u{00b7}")) {
+        const rest = std.mem.trim(u8, line["# Session Log \u{00b7}".len..], " \t");
+        return try std.fmt.allocPrint(a, "# Session log \u{2014} {s}", .{rest});
+    }
+    return repair_weak_h1(a, line, slug, ymd, hms, content);
+}
+
+fn extract_meaning(a: std.mem.Allocator, content: []const u8, h1: []const u8) ![]const u8 {
+    const marker = "## Thinking trace";
+    if (std.mem.indexOf(u8, content, marker)) |pos| {
+        const rest = std.mem.trim(u8, content[pos + marker.len ..], " \n\r\t");
+        const nl = std.mem.indexOfScalar(u8, rest, '\n') orelse rest.len;
+        const first_raw = std.mem.trim(u8, rest[0..nl], " \t");
+        const first = try strip_kaeden_lead(a, first_raw);
+        defer a.free(first);
+        if (first.len > 0) {
+            if (first.len > 140) return try truncate_title(a, first, 140);
+            return try a.dupe(u8, first);
+        }
+    }
+    var lines = std.mem.splitScalar(u8, content, '\n');
+    while (lines.next()) |line| {
+        if (std.mem.startsWith(u8, line, "## ") and !std.mem.startsWith(u8, line, "## Thinking trace")) {
+            const sec = std.mem.trim(u8, line[3..], " \t");
+            if (sec.len > 100) return try a.dupe(u8, sec[0..100]);
+            return try a.dupe(u8, sec);
+        }
+    }
+    var title = h1;
+    if (std.mem.startsWith(u8, title, "#")) title = std.mem.trim(u8, title[1..], " \t");
+    const prefixes = [_][]const u8{ "Session log \u{2014} ", "Session log \u{00b7} ", "Session log - " };
+    for (prefixes) |p| {
+        if (std.mem.startsWith(u8, title, p)) {
+            title = std.mem.trim(u8, title[p.len..], " \t");
+            break;
+        }
+    }
+    if (title.len > 100) return try a.dupe(u8, title[0..100]);
+    if (title.len == 0) return try a.dupe(u8, "Session log");
+    return try a.dupe(u8, title);
+}
+
+fn link_title(a: std.mem.Allocator, h1: []const u8, fname: []const u8) ![]const u8 {
+    var title = h1;
+    if (std.mem.startsWith(u8, title, "#")) title = std.mem.trim(u8, title[1..], " \t");
+    const prefixes = [_][]const u8{ "Session log \u{2014} ", "Session log \u{00b7} ", "Session log - " };
+    for (prefixes) |p| {
+        if (std.mem.startsWith(u8, title, p)) {
+            title = std.mem.trim(u8, title[p.len..], " \t");
+            break;
+        }
+    }
+    if (title.len == 0 or std.mem.eql(u8, title, fname)) {
+        if (parse_fname(fname)) |parsed| {
+            if (parsed.slug) |s| return try slug_to_title(a, s);
+        }
+        return try a.dupe(u8, fname[0 .. fname.len - 3]);
+    }
+    return try a.dupe(u8, title);
+}
+
+fn align_file(a: std.mem.Allocator, fname: []const u8, original: []const u8) !struct { text: []const u8, meta: LogMeta } {
+    const parsed = parse_fname(fname) orelse return error.InvalidLogName;
+    const dot = try dot_stamp(a, parsed.ymd, parsed.hms);
+    defer a.free(dot);
+    const hyphen = try hyphen_stamp(a, parsed.ymd, parsed.hms);
+
+    var lines = std.mem.splitScalar(u8, original, '\n');
+    const first = lines.next() orelse "";
+    var header_end: usize = original.len;
+    {
+        var scan = std.mem.splitScalar(u8, original, '\n');
+        var offset: usize = 0;
+        while (scan.next()) |line| {
+            if (std.mem.startsWith(u8, line, "## ")) {
+                header_end = offset;
+                break;
+            }
+            offset += line.len + 1;
+        }
+    }
+    const header_part = original[0..header_end];
+    const body_part = original[header_end..];
+
+    const h1 = try fix_h1(a, first, parsed.slug, dot, original, parsed.ymd, parsed.hms);
+    errdefer a.free(h1);
+
+    var out = std.ArrayListUnmanaged(u8).empty;
+    errdefer out.deinit(a);
+    try out.appendSlice(a, h1);
+    try out.appendSlice(a, "\n\n");
+
+    var had_stamp = false;
+    var had_editor = false;
+    var trail = std.ArrayListUnmanaged([]const u8).empty;
+    errdefer {
+        for (trail.items) |t| a.free(t);
+        trail.deinit(a);
+    }
+
+    var header_lines = std.mem.splitScalar(u8, header_part, '\n');
+    _ = header_lines.next(); // skip old h1
+    while (header_lines.next()) |line| {
+        if (starts_with_any(line, &.{ "**Countdown:**", "**Clock:**", "**Date:**", "**Agent:**" })) continue;
+        if (std.mem.startsWith(u8, line, "**Stamp:**")) {
+            const stamp_line = try std.fmt.allocPrint(a, "**Stamp:** `{s}`", .{dot});
+            defer a.free(stamp_line);
+            try out.appendSlice(a, stamp_line);
+            try out.appendSlice(a, "\n");
+            had_stamp = true;
+            continue;
+        }
+        if (std.mem.startsWith(u8, line, "**Editor:**")) {
+            try out.appendSlice(a, std.mem.trim(u8, line, " \t"));
+            try out.appendSlice(a, "\n");
+            had_editor = true;
+            continue;
+        }
+        if (std.mem.trim(u8, line, " \t").len == 0) continue;
+        try trail.append(a, try a.dupe(u8, std.mem.trim(u8, line, " \t")));
+    }
+
+    if (!had_stamp) {
+        const stamp_line = try std.fmt.allocPrint(a, "**Stamp:** `{s}`", .{dot});
+        defer a.free(stamp_line);
+        try out.appendSlice(a, stamp_line);
+        try out.appendSlice(a, "\n");
+    }
+    if (!had_editor) {
+        if (try infer_editor_model(a, original, parsed.ymd)) |ed| {
+            defer a.free(ed);
+            try out.appendSlice(a, ed);
+            try out.appendSlice(a, "\n");
+        }
+    }
+    for (trail.items) |t| {
+        try out.appendSlice(a, t);
+        try out.appendSlice(a, "\n");
+    }
+    try out.appendSlice(a, "\n");
+    try out.appendSlice(a, body_part);
+    while (out.items.len > 0 and (out.items[out.items.len - 1] == '\n' or out.items[out.items.len - 1] == '\r' or out.items[out.items.len - 1] == ' ' or out.items[out.items.len - 1] == '\t')) {
+        _ = out.pop();
+    }
+    try out.appendSlice(a, "\n");
+
+    const text = try out.toOwnedSlice(a);
+    const meaning = try extract_meaning(a, text, h1);
+    return .{
+        .text = text,
+        .meta = .{
+            .hyphen = hyphen,
+            .fname = try a.dupe(u8, fname),
+            .h1 = h1,
+            .meaning = meaning,
+        },
+    };
+}
+
+fn cmp_order_desc(ctx: []const LogMeta, a: usize, b: usize) bool {
+    return std.mem.order(u8, ctx[a].hyphen, ctx[b].hyphen) == .gt;
+}
+
+fn rebuild_readme(a: std.mem.Allocator, entries: []LogMeta) ![]const u8 {
+    const order = try a.alloc(usize, entries.len);
+    defer a.free(order);
+    for (order, 0..) |*o, i| o.* = i;
+    std.mem.sort(usize, order, entries, cmp_order_desc);
+
+    var out = std.ArrayListUnmanaged(u8).empty;
+    errdefer out.deinit(a);
+    try out.appendSlice(a, readme_header);
+    for (order) |idx| {
+        const e = entries[idx];
+        const title = try link_title(a, e.h1, e.fname);
+        defer a.free(title);
+        var meaning = e.meaning;
+        var owned_meaning: ?[]const u8 = null;
+        defer if (owned_meaning) |m| a.free(m);
+        if (std.mem.indexOfScalar(u8, meaning, '|') != null) {
+            owned_meaning = try std.mem.replaceOwned(u8, a, meaning, "|", "\\|");
+            meaning = owned_meaning.?;
+        }
+        const row = try std.fmt.allocPrint(a, "| `{s}` | [{s}]({s}) | {s} |\n", .{ e.hyphen, title, e.fname, meaning });
+        defer a.free(row);
+        try out.appendSlice(a, row);
+    }
+    return try out.toOwnedSlice(a);
+}
+
+fn list_session_logs(a: std.mem.Allocator, io: std.Io, root: []const u8) ![][]const u8 {
+    const dir_path = try std.fs.path.join(a, &.{ root, "session-logs" });
+    defer a.free(dir_path);
+    const dir = try std.Io.Dir.cwd().openDir(io, dir_path, .{ .iterate = true });
+    var it = dir.iterate();
+    var names = std.ArrayListUnmanaged([]const u8).empty;
+    errdefer {
+        for (names.items) |n| a.free(n);
+        names.deinit(a);
+    }
+    while (try it.next(io)) |entry| {
+        if (entry.kind != .file) continue;
+        if (!std.mem.endsWith(u8, entry.name, ".md")) continue;
+        if (std.mem.eql(u8, entry.name, "README.md")) continue;
+        try names.append(a, try a.dupe(u8, entry.name));
+    }
+    std.mem.sort([]const u8, names.items, {}, struct {
+        fn less(_: void, x: []const u8, y: []const u8) bool {
+            return std.mem.order(u8, x, y) == .lt;
+        }
+    }.less);
+    return try names.toOwnedSlice(a);
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const a = init.arena.allocator();
+    const io = init.io;
+    const root = try root_mod.resolve_root(a, io, init);
+    defer a.free(root);
+
+    const names = try list_session_logs(a, io, root);
+    defer {
+        for (names) |n| a.free(n);
+        a.free(names);
+    }
+
+    var entries = std.ArrayListUnmanaged(LogMeta).empty;
+    defer {
+        for (entries.items) |e| {
+            a.free(e.hyphen);
+            a.free(e.fname);
+            a.free(e.h1);
+            a.free(e.meaning);
+        }
+        entries.deinit(a);
+    }
+    var changed: u32 = 0;
+    const logs_dir = try std.fs.path.join(a, &.{ root, "session-logs" });
+    defer a.free(logs_dir);
+
+    for (names) |fname| {
+        const path = try std.fs.path.join(a, &.{ logs_dir, fname });
+        defer a.free(path);
+        const original = try std.Io.Dir.cwd().readFileAlloc(io, path, a, .limited(zig_lookup.max_file_bytes));
+        const aligned = try align_file(a, fname, original);
+        if (!std.mem.eql(u8, original, aligned.text)) {
+            try std.Io.Dir.cwd().writeFile(io, .{ .sub_path = path, .data = aligned.text });
+            changed += 1;
+        }
+        try entries.append(a, aligned.meta);
+    }
+
+    const readme_path = try std.fs.path.join(a, &.{ logs_dir, "README.md" });
+    defer a.free(readme_path);
+    const readme = try rebuild_readme(a, entries.items);
+    defer a.free(readme);
+    try std.Io.Dir.cwd().writeFile(io, .{ .sub_path = readme_path, .data = readme });
+
+    std.debug.print("Aligned {d} logs; {d} files updated.\n", .{ entries.items.len, changed });
+    std.debug.print("README index: {d} rows.\n", .{entries.items.len});
+    return 0;
+}

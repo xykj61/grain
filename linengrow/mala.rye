@@ -1,0 +1,157 @@
+//! linengrow/mala.rye — MALA M1: one issuer, one holder, mint/send/fold/verify.
+//!
+//!   rye build linengrow/mala.rye -femit-bin=linengrow/bin/mala
+//!   linengrow/bin/mala selftest
+//!
+//! Scope: [`expanding-prompts/20260709-182354_mala-m1-one-issuer-one-holder.md`](../expanding-prompts/20260709-182354_mala-m1-one-issuer-one-holder.md)
+//! Core: [`mala_core.rye`](mala_core.rye)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const Dir = std.Io.Dir;
+const kumara = @import("kumara.rye");
+const rc = @import("receipt_core.rye");
+const tally_copy = @import("tally_copy.rye");
+const mc = @import("mala_core.rye");
+
+const mala_version = "20260709.191634";
+
+fn welcome_path(
+    issuer_kp: kumara.KeyPair,
+    holder_kp: kumara.KeyPair,
+    issuer_hex: *const [mc.pubkey_hex_len]u8,
+    holder_hex: *const [mc.pubkey_hex_len]u8,
+) !void {
+    var log: [rc.max_log_len]u8 = undefined;
+    const log_len = try mc.build_welcome_log(&log, issuer_kp, holder_kp, issuer_hex, holder_hex);
+    const balances = try mc.fold_mala_log(
+        log[0..log_len],
+        issuer_hex,
+        holder_hex,
+        issuer_kp.public_key,
+        holder_kp.public_key,
+    );
+    assert(balances.holder == 800);
+    assert(balances.issuer == 200);
+
+    var digest: [32]u8 = undefined;
+    rc.digest_log(log[0..log_len], &digest);
+    assert(digest[0] != 0 or digest[1] != 0);
+
+    print("mala m1: holder {d}, issuer {d} — mint 1000, send 200 back\n", .{ balances.holder, balances.issuer });
+}
+
+fn check_fixture_mint(io: std.Io, issuer_hex: *const [mc.pubkey_hex_len]u8, holder_hex: *const [mc.pubkey_hex_len]u8) !void {
+    const cwd = Dir.cwd();
+    var fact_buf: [rc.max_fact_len]u8 = undefined;
+    const fact_read = try cwd.readFile(io, "tools/fixtures/mala_m1_mint.bron", &fact_buf);
+    var fields: rc.FactFields = undefined;
+    try rc.parse_fact_fields(fact_read, &fields);
+    assert(std.mem.eql(u8, fields.from, issuer_hex[0..]));
+    assert(std.mem.eql(u8, fields.to, holder_hex[0..]));
+    assert(std.mem.eql(u8, fields.amount, "1000"));
+    assert(mc.memo_is_mint(fields.memo));
+    assert(std.mem.eql(u8, fields.stamp, "20260709.182354"));
+}
+
+fn unwelcome_forged_sig(
+    issuer_kp: kumara.KeyPair,
+    holder_kp: kumara.KeyPair,
+    issuer_hex: *const [mc.pubkey_hex_len]u8,
+    holder_hex: *const [mc.pubkey_hex_len]u8,
+) !void {
+    var log: [rc.max_log_len]u8 = undefined;
+    var log_len: u32 = 0;
+    const fields = mc.mint_fields_from_fixture(issuer_hex, holder_hex);
+    try mc.sign_append(&log, &log_len, fields, holder_kp);
+    if (mc.fold_mala_log(log[0..log_len], issuer_hex, holder_hex, issuer_kp.public_key, holder_kp.public_key)) |_| {
+        return error.UnwelcomePassed;
+    } else |_| print("mala m1: forged mint signature refused — GREEN unwelcome path\n", .{});
+}
+
+fn unwelcome_non_issuer_mint(
+    issuer_kp: kumara.KeyPair,
+    holder_kp: kumara.KeyPair,
+    issuer_hex: *const [mc.pubkey_hex_len]u8,
+    holder_hex: *const [mc.pubkey_hex_len]u8,
+) !void {
+    var log: [rc.max_log_len]u8 = undefined;
+    var log_len: u32 = 0;
+    const fields = rc.FactFields{
+        .from = holder_hex[0..],
+        .to = holder_hex[0..],
+        .amount = "500",
+        .memo = mc.memo_mint,
+        .stamp = "20260709.184051",
+    };
+    try mc.sign_append(&log, &log_len, fields, holder_kp);
+    if (mc.fold_mala_log(log[0..log_len], issuer_hex, holder_hex, issuer_kp.public_key, holder_kp.public_key)) |_| {
+        return error.UnwelcomePassed;
+    } else |_| print("mala m1: non-issuer mint refused — GREEN unwelcome path\n", .{});
+}
+
+fn unwelcome_overspend(
+    issuer_kp: kumara.KeyPair,
+    holder_kp: kumara.KeyPair,
+    issuer_hex: *const [mc.pubkey_hex_len]u8,
+    holder_hex: *const [mc.pubkey_hex_len]u8,
+) !void {
+    var log: [rc.max_log_len]u8 = undefined;
+    var log_len = try mc.build_welcome_log(&log, issuer_kp, holder_kp, issuer_hex, holder_hex);
+    const over = rc.FactFields{
+        .from = holder_hex[0..],
+        .to = issuer_hex[0..],
+        .amount = "900",
+        .memo = mc.memo_send,
+        .stamp = "20260709.184100",
+    };
+    try mc.sign_append(&log, &log_len, over, holder_kp);
+    if (mc.fold_mala_log(log[0..log_len], issuer_hex, holder_hex, issuer_kp.public_key, holder_kp.public_key)) |_| {
+        return error.UnwelcomePassed;
+    } else |_| print("mala m1: send exceeding balance refused — GREEN unwelcome path\n", .{});
+}
+
+fn unwelcome_tampered_log(
+    issuer_kp: kumara.KeyPair,
+    holder_kp: kumara.KeyPair,
+    issuer_hex: *const [mc.pubkey_hex_len]u8,
+    holder_hex: *const [mc.pubkey_hex_len]u8,
+) !void {
+    var log: [rc.max_log_len]u8 = undefined;
+    const log_len = try mc.build_welcome_log(&log, issuer_kp, holder_kp, issuer_hex, holder_hex);
+    var tampered: [rc.max_log_len]u8 = undefined;
+    tally_copy.copy_disjoint(u8, tampered[0..log_len], log[0..log_len]);
+    tampered[log_len - 3] +%= 1;
+    if (mc.fold_mala_log(tampered[0..log_len], issuer_hex, holder_hex, issuer_kp.public_key, holder_kp.public_key)) |_| {
+        return error.UnwelcomePassed;
+    } else |_| print("mala m1: tampered log refused — GREEN unwelcome path\n", .{});
+}
+
+fn run_selftest(io: std.Io) !u8 {
+    const issuer_kp = kumara.keypair_from_seed(&mc.issuer_seed);
+    const holder_kp = kumara.keypair_from_seed(&mc.holder_seed);
+    var issuer_hex: [mc.pubkey_hex_len]u8 = undefined;
+    var holder_hex: [mc.pubkey_hex_len]u8 = undefined;
+    mc.hex_of_key(issuer_kp.public_key, &issuer_hex);
+    mc.hex_of_key(holder_kp.public_key, &holder_hex);
+
+    try check_fixture_mint(io, &issuer_hex, &holder_hex);
+    try welcome_path(issuer_kp, holder_kp, &issuer_hex, &holder_hex);
+    try unwelcome_forged_sig(issuer_kp, holder_kp, &issuer_hex, &holder_hex);
+    try unwelcome_non_issuer_mint(issuer_kp, holder_kp, &issuer_hex, &holder_hex);
+    try unwelcome_overspend(issuer_kp, holder_kp, &issuer_hex, &holder_hex);
+    try unwelcome_tampered_log(issuer_kp, holder_kp, &issuer_hex, &holder_hex);
+
+    print("mala m1: version {s}\n", .{mala_version});
+    print("GREEN: MALA M1 — one issuer, one holder, mint, send, fold, verify.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) return run_selftest(io);
+    return run_selftest(io);
+}

@@ -1,0 +1,11 @@
+# tame_check_scan.rish — scan authored .rye for TH-2 textual rules.
+#
+# Native repoint of tame_check_scan.sh — map + where per opening_lines_scan.rish.
+# Run from the repository root:
+#   rishi/bin/rishi run tools/fixtures/tame_check_scan.rish
+
+let files = ["tally/seed.rye" "tally/gardens.rye" "caravan/seed.rye" "caravan/bounded.rye" "caravan/twin.rye" "caravan/chain.rye" "caravan/capabilities.rye" "mantra/src/main.rye" "mantra/src/store.rye" "mantra/src/weave.rye" "mantra/src/diff.rye" "rishi/src/main.rye" "brushstroke/seed.rye" "comlink/hosted_wire.rye" "aurora/src/deciding.rye" "aurora/src/seed.rye"]
+
+let scans = map files as f: { path: f, qual_assert: length (where (lines (read-file f)) as ln: ln contains "std.debug.assert("), self_ref: length (where (lines (read-file f)) as ln: ln contains "Self = @This()"), tab: length (where (lines (read-file f)) as ln: ln contains "	"), trail_s: length (where (lines (read-file f)) as ln: ln ends-with " "), trail_t: length (where (lines (read-file f)) as ln: ln ends-with "	") }
+
+for-each scans as s do if (s.qual_assert != 0) then say "FAIL ${s.path} assert=${s.qual_assert} self=${s.self_ref} tab=${s.tab} trail=${s.trail_s + s.trail_t}" else if (s.self_ref != 0) then say "FAIL ${s.path} assert=${s.qual_assert} self=${s.self_ref} tab=${s.tab} trail=${s.trail_s + s.trail_t}" else if (s.tab != 0) then say "FAIL ${s.path} assert=${s.qual_assert} self=${s.self_ref} tab=${s.tab} trail=${s.trail_s + s.trail_t}" else if ((s.trail_s + s.trail_t) != 0) then say "FAIL ${s.path} assert=${s.qual_assert} self=${s.self_ref} tab=${s.tab} trail=${s.trail_s + s.trail_t}" else say "OK   ${s.path}"

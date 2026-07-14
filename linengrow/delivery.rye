@@ -1,0 +1,227 @@
+//! linengrow/delivery.rye — SLC-L2 sealed delivery: signed receipt over Comlink hosted wire.
+//!
+//! Alice signs the SLC-L1 fact, seals the compact payload with wire_format, and sends
+//! over localhost UDP. Bob opens the datagram, verifies the receipt, and folds balance.
+//!
+//!   rye build linengrow/delivery.rye -lc -femit-bin=linengrow/bin/delivery
+//!
+//! Imports `wire_format.rye` via symlink `linengrow/wire_format.rye` → `comlink/wire_format.rye`
+//! (format stays one layout; rye module path stays within one directory).
+//!   linengrow/bin/delivery selftest
+//!   linengrow/bin/delivery demo
+//!
+//! Scope: [`active-designing/20260706-000812_slcl2-sealed-delivery.md`](../active-designing/20260706-000812_slcl2-sealed-delivery.md)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const c = std.c;
+const Dir = std.Io.Dir;
+const kumara = @import("kumara.rye");
+const rc = @import("receipt_core.rye");
+const wf = @import("wire_format.rye");
+
+const slcl2_version = "20260706.000812";
+
+const AF_INET: c_uint = 2;
+const SOCK_DGRAM: c_uint = 2;
+const SOL_SOCKET: c_int = 1;
+const SO_REUSEADDR: c_int = 2;
+
+const delivery_port: u16 = 38473;
+
+const sockaddr_in = extern struct {
+    sin_family: c_ushort = AF_INET,
+    sin_port: c_ushort,
+    sin_addr: [4]u8 = .{ 127, 0, 0, 1 },
+    sin_zero: [8]u8 = .{0} ** 8,
+};
+
+fn localhost_addr(port: u16) sockaddr_in {
+    return .{
+        .sin_port = std.mem.nativeToBig(u16, port),
+    };
+}
+
+fn open_socket() !c.fd_t {
+    const fd = c.socket(AF_INET, SOCK_DGRAM, 0);
+    if (fd < 0) return error.SocketFailed;
+    const yes: c_int = 1;
+    _ = c.setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &yes, @sizeOf(c_int));
+    return fd;
+}
+
+fn slcl1_keypair() kumara.KeyPair {
+    return kumara.keypair_from_seed(&rc.slcl1_seed);
+}
+
+fn load_signed_payload(io: std.Io) !struct { payload: [rc.slcl2_payload_header + rc.slcl2_max_fact]u8, payload_len: u32, pubkey: kumara.PublicKey } {
+    const kp = slcl1_keypair();
+    const fixture_path = "tools/fixtures/slcl1_fact.bron";
+    const cwd = Dir.cwd();
+
+    var fact_buf: [rc.max_fact_len]u8 = undefined;
+    const fact_read = try cwd.readFile(io, fixture_path, &fact_buf);
+    assert(fact_read.len <= rc.max_fact_len);
+
+    var fields: rc.FactFields = undefined;
+    try rc.parse_fact_fields(fact_read, &fields);
+
+    var canonical: [rc.max_fact_len]u8 = undefined;
+    const canonical_len = try rc.write_canonical_fact(fields, &canonical);
+    assert(canonical_len <= rc.slcl2_max_fact);
+
+    const sig = kumara.sign(canonical[0..canonical_len], kp, null);
+
+    var payload: [rc.slcl2_payload_header + rc.slcl2_max_fact]u8 = undefined;
+    const payload_len = try rc.encode_compact_payload(sig, canonical[0..canonical_len], &payload);
+
+    return .{
+        .payload = payload,
+        .payload_len = payload_len,
+        .pubkey = kp.public_key,
+    };
+}
+
+fn verify_opened_payload(payload: []const u8, pubkey: kumara.PublicKey) !i64 {
+    var sig_buf: [kumara.signature_length]u8 = undefined;
+    var fact_buf: [rc.slcl2_max_fact]u8 = undefined;
+    const decoded = try rc.decode_compact_payload(payload, &sig_buf, &fact_buf);
+    try rc.verify_record(sig_buf[0..kumara.signature_length], fact_buf[0..decoded.fact_len], pubkey);
+    var balance: i64 = 0;
+    try rc.fold_balance_from_facts(fact_buf[0..decoded.fact_len], &balance);
+    return balance;
+}
+
+fn run_selftest(io: std.Io) !u8 {
+    const signed = try load_signed_payload(io);
+
+    var wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const wire_len = try wf.seal_message(signed.payload[0..signed.payload_len], &wire);
+
+    var opened: [@intCast(wf.max_message)]u8 = undefined;
+    const opened_len = try wf.open_datagram(wire[0..@intCast(wire_len)], &opened);
+    assert(opened_len == signed.payload_len);
+    assert(std.mem.eql(u8, opened[0..@intCast(opened_len)], signed.payload[0..signed.payload_len]));
+
+    const balance = try verify_opened_payload(opened[0..@intCast(opened_len)], signed.pubkey);
+    assert(balance == 100);
+
+    print("slcl2: selftest GREEN — seal, open, verify receipt in one process\n", .{});
+    print("slcl2: version {s} wire_format {s}\n", .{ slcl2_version, wf.wire_format_version });
+    print("GREEN: SLC-L2 sealed delivery — signed receipt under Comlink seal.\n", .{});
+    return 0;
+}
+
+fn run_send(io: std.Io) !u8 {
+    const signed = try load_signed_payload(io);
+
+    var wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const wire_len = try wf.seal_message(signed.payload[0..signed.payload_len], &wire);
+
+    const fd = try open_socket();
+    defer _ = c.close(fd);
+
+    const dest = localhost_addr(delivery_port);
+    const sent = c.sendto(fd, &wire, @intCast(wire_len), 0, @ptrCast(&dest), @sizeOf(sockaddr_in));
+    if (sent < 0 or @as(usize, @intCast(sent)) != @as(usize, @intCast(wire_len))) return error.SendFailed;
+
+    print("slcl2: sealed receipt sent ({d} wire bytes)\n", .{wire_len});
+    return 0;
+}
+
+fn run_recv(_: std.Io) !u8 {
+    const kp = slcl1_keypair();
+    const pubkey = kp.public_key;
+
+    const fd = try open_socket();
+    defer _ = c.close(fd);
+
+    var bind_addr = localhost_addr(delivery_port);
+    if (c.bind(fd, @ptrCast(&bind_addr), @sizeOf(sockaddr_in)) < 0) return error.BindFailed;
+
+    var wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    var from: sockaddr_in = undefined;
+    var from_len: c.socklen_t = @sizeOf(sockaddr_in);
+    const n = c.recvfrom(fd, &wire, @intCast(wf.wire_capacity), 0, @ptrCast(&from), &from_len);
+    if (n < 0) return error.RecvFailed;
+    const wire_len: u64 = @intCast(n);
+
+    if (wire_len < wf.off_cipher or wire_len > wf.wire_capacity) {
+        print("slcl2: malformed datagram, refused at the edge\n", .{});
+        return 1;
+    }
+
+    var opened: [@intCast(wf.max_message)]u8 = undefined;
+    const opened_len = wf.open_datagram(wire[0..@intCast(wire_len)], &opened) catch {
+        print("slcl2: open failed\n", .{});
+        return 1;
+    };
+
+    const balance = verify_opened_payload(opened[0..@intCast(opened_len)], pubkey) catch {
+        print("slcl2: receipt verify failed\n", .{});
+        return 1;
+    };
+
+    if (balance != 100) {
+        print("slcl2: fold balance mismatch\n", .{});
+        return 1;
+    }
+
+    print("slcl2: opened sealed receipt from localhost — balance {d}\n", .{balance});
+    return 0;
+}
+
+fn run_demo(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) !u8 {
+    const recv_argv = try allocator.alloc([]const u8, 2);
+    recv_argv[0] = self_path;
+    recv_argv[1] = "recv";
+
+    var recv_child = try std.process.spawn(io, .{ .argv = recv_argv });
+    var pause = c.timespec{ .sec = 0, .nsec = 50_000_000 };
+    _ = c.nanosleep(&pause, null);
+
+    const send_argv = try allocator.alloc([]const u8, 2);
+    send_argv[0] = self_path;
+    send_argv[1] = "send";
+
+    var send_child = try std.process.spawn(io, .{ .argv = send_argv });
+
+    const recv_term = try recv_child.wait(io);
+    const send_term = try send_child.wait(io);
+
+    const recv_code: u8 = switch (recv_term) {
+        .exited => |code| code,
+        else => 255,
+    };
+    const send_code: u8 = switch (send_term) {
+        .exited => |code| code,
+        else => 255,
+    };
+
+    assert(recv_code == 0);
+    assert(send_code == 0);
+
+    print("slcl2: demo GREEN — signed receipt crossed localhost under Comlink seal\n", .{});
+    print("slcl2: version {s} wire_format {s}\n", .{ slcl2_version, wf.wire_format_version });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(garden);
+
+    if (args.len >= 2) {
+        if (std.mem.eql(u8, args[1], "send")) return run_send(io);
+        if (std.mem.eql(u8, args[1], "recv")) return run_recv(io);
+        if (std.mem.eql(u8, args[1], "selftest")) return run_selftest(io);
+        if (std.mem.eql(u8, args[1], "demo")) {
+            assert(args.len >= 1);
+            return run_demo(garden, io, args[0]);
+        }
+    }
+
+    if (args.len >= 1) return run_demo(garden, io, args[0]);
+    return 1;
+}

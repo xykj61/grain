@@ -1,0 +1,44 @@
+//! Rye test: std.mem.sortContext / sortUnstableContext — pass 9890.
+//!
+//! Index-based in-place sorting; postcondition checked via sorted range.
+
+const std = @import("std");
+const mem = std.mem;
+
+const U8Ctx = struct {
+    items: []u8,
+
+    pub fn lessThan(ctx: @This(), i: usize, j: usize) bool {
+        return ctx.items[i] < ctx.items[j];
+    }
+
+    pub fn swap(ctx: @This(), i: usize, j: usize) void {
+        mem.swap(u8, &ctx.items[i], &ctx.items[j]);
+    }
+};
+
+const I32Ctx = struct {
+    items: []i32,
+
+    pub fn lessThan(ctx: @This(), i: usize, j: usize) bool {
+        return ctx.items[i] < ctx.items[j];
+    }
+
+    pub fn swap(ctx: @This(), i: usize, j: usize) void {
+        mem.swap(i32, &ctx.items[i], &ctx.items[j]);
+    }
+};
+
+pub fn main() void {
+    var arr = [_]u8{ 5, 2, 8, 1, 9, 3 };
+    const ctx = U8Ctx{ .items = arr[0..] };
+    mem.sortContext(0, arr.len, ctx);
+    std.debug.assert(mem.eql(u8, &arr, &[_]u8{ 1, 2, 3, 5, 8, 9 }));
+
+    var arr2 = [_]i32{ 30, 10, 20, 15 };
+    const ctx2 = I32Ctx{ .items = arr2[0..] };
+    mem.sortUnstableContext(0, arr2.len, ctx2);
+    std.debug.assert(arr2[0] == 10 and arr2[1] == 15 and arr2[2] == 20 and arr2[3] == 30);
+
+    std.debug.print("rye: mem.sortContext/sortUnstableContext assertions confirmed.\n", .{});
+}

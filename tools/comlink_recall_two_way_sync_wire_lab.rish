@@ -1,0 +1,73 @@
+# comlink_recall_two_way_sync_wire_lab.rish — two-way sync device-wire QEMU lab (spawn / wait-for).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/comlink_recall_two_way_sync_wire_lab.rish
+#
+# Replaces the background-orchestration half of comlink/run_recall_two_way_sync_wire_lab.sh;
+# the shell entry point delegates here so stable paths and citations hold.
+
+let zig = "vendor/zig-toolchain/zig"
+let build_dir = "comlink/.build"
+let port_request_raw = env "COMLINK_SYNC_LAB_PORT"
+if port_request_raw == "" then let port_request = "15561" else let port_request = port_request_raw
+let port_response_raw = env "COMLINK_SYNC_RESP_LAB_PORT"
+if port_response_raw == "" then let port_response = "15562" else let port_response = port_response_raw
+let sock_request = "127.0.0.1:${port_request}"
+let sock_response = "127.0.0.1:${port_response}"
+
+let prep = run ["sh" "-c" "mkdir -p ${build_dir}"]
+assert prep.ok else "two-way sync wire lab mkdir failed"
+
+let build_sync_source_rx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_sync_source_rx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/sync-source-rx.elf"]
+assert build_sync_source_rx.ok else "phase 1 sync source rx build failed"
+
+let build_sync_fetcher_tx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_sync_fetcher_tx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/sync-fetcher-tx.elf"]
+assert build_sync_fetcher_tx.ok else "phase 1 sync fetcher tx build failed"
+
+let build_sync_fetcher_rx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_sync_fetcher_rx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/sync-fetcher-rx.elf"]
+assert build_sync_fetcher_rx.ok else "phase 1 sync fetcher rx build failed"
+
+let build_sync_source_tx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_sync_source_tx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/sync-source-tx.elf"]
+assert build_sync_source_tx.ok else "phase 1 sync source tx build failed"
+
+let peerb_request_rx = spawn ["timeout" "60" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,listen=${sock_request}" "-kernel" "${build_dir}/sync-source-rx.elf"]
+let peerb_request_pause = run ["sleep" "1"]
+assert peerb_request_pause.ok else "phase 1 request sleep failed"
+let peerb_request_tx = run ["timeout" "30" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,connect=${sock_request}" "-kernel" "${build_dir}/sync-fetcher-tx.elf"]
+let peerb_request_done = wait-for peerb_request_rx
+assert peerb_request_done.out contains "sealed sync request GREEN" else "phase 1 request RED"
+
+let peerb_response_rx = spawn ["timeout" "60" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,listen=${sock_response}" "-kernel" "${build_dir}/sync-fetcher-rx.elf"]
+let peerb_response_pause = run ["sleep" "1"]
+assert peerb_response_pause.ok else "phase 1 response sleep failed"
+let peerb_response_tx = run ["timeout" "30" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,connect=${sock_response}" "-kernel" "${build_dir}/sync-source-tx.elf"]
+let peerb_response_done = wait-for peerb_response_rx
+assert peerb_response_done.out contains "sealed sync response GREEN" else "phase 1 response RED"
+
+let build_2way_source_rx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_2way_source_rx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/2way-source-rx.elf"]
+assert build_2way_source_rx.ok else "phase 2 2way source rx build failed"
+
+let build_2way_fetcher_tx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_2way_fetcher_tx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/2way-fetcher-tx.elf"]
+assert build_2way_fetcher_tx.ok else "phase 2 2way fetcher tx build failed"
+
+let build_2way_fetcher_rx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_2way_fetcher_rx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/2way-fetcher-rx.elf"]
+assert build_2way_fetcher_rx.ok else "phase 2 2way fetcher rx build failed"
+
+let build_2way_source_tx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_2way_source_tx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/2way-source-tx.elf"]
+assert build_2way_source_tx.ok else "phase 2 2way source tx build failed"
+
+let peera_request_rx = spawn ["timeout" "60" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,listen=${sock_request}" "-kernel" "${build_dir}/2way-source-rx.elf"]
+let peera_request_pause = run ["sleep" "1"]
+assert peera_request_pause.ok else "phase 2 request sleep failed"
+let peera_request_tx = run ["timeout" "30" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,connect=${sock_request}" "-kernel" "${build_dir}/2way-fetcher-tx.elf"]
+let peera_request_done = wait-for peera_request_rx
+assert peera_request_done.out contains "sealed peerA sync request GREEN" else "phase 2 request RED"
+
+let peera_response_rx = spawn ["timeout" "60" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,listen=${sock_response}" "-kernel" "${build_dir}/2way-fetcher-rx.elf"]
+let peera_response_pause = run ["sleep" "1"]
+assert peera_response_pause.ok else "phase 2 response sleep failed"
+let peera_response_tx = run ["timeout" "30" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,connect=${sock_response}" "-kernel" "${build_dir}/2way-source-tx.elf"]
+let peera_response_done = wait-for peera_response_rx
+assert peera_response_done.out contains "sealed peerA sync response GREEN" else "phase 2 response RED"
+
+say "ns-2wayw device wire lab: GREEN (peerB + peerA, roles reversed)"

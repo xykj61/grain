@@ -1,0 +1,25 @@
+format session-log-v1
+stamp 20260712.131200
+editor Cursor
+model Cursor Grok 4.5
+voice Rio 3
+title ai-jail v1.12.0 pin · study refresh · Karpathy park
+prompt install newest ai-jail v1.12.0 from jail; Karpathy gist + ai-memory ask
+product_nib 430
+suite_nib 432
+git_nib 2d04c43
+enclosure_ai_jail 1.12.0
+enclosure_tarball_sha256 91458f153c7b0a87d79aae9014b558a0cfc4b160b7e390008a00c1adfc3edc21
+think Claude verified tarball hash on bench; recipe run inside this jail. sha256sum -c OK. Binary reports ai-jail 1.12.0. grep help confirmed no kvm/--dev.
+think Placed binary at tools/.cache/bin/ai-jail (gitignored). Set AIJAIL_BIN in personal enclosure.conf. Current session walls unchanged until next cursor-jail.sh launch.
+think Checked out gratitude/ai-jail submodule to tag v1.12.0 (53c082a). Note origin also has v1.13.0 — stayed on Claude's pinned 1.12.0.
+think Wrapper --version echo at launch left on word. Karpathy gist + ai-memory dispositions seated in RTAC awaiting Kaeden word — no install of ai-memory, no lint lap named yet.
+obs Route one still closed at 1.12.0. Host one-shot and Route two sequencing unchanged.
+file tools/.cache/bin/ai-jail binary v1.12.0 gitignored
+file tools/enclosure.conf AIJAIL_BIN personal
+file gratitude/ai-jail submodule v1.12.0
+file tools/enclosure.conf.example · context/specs/enclosure-editors.md · active-designing/130300
+file work-in-progress/TASKS.md · ready-to-ask-claude.md
+file session-logs/20260712-131200_ai-jail-v1120-pin.bron this log
+file session-logs/README.md index
+recommend keep-going host one-shot after next launch on v1.12.0 — or word wrapper-echo / Karpathy dispositions / Route two

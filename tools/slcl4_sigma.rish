@@ -1,0 +1,8 @@
+# slcl4_sigma.rish — deprecated alias; warm name is slcl4_mudra.rish (seated 061012).
+# Kept so older prompts that name this path still green.
+#
+#   rishi/bin/rishi run tools/slcl4_sigma.rish
+
+let mudra = run ["rishi/bin/rishi" "run" "tools/slcl4_mudra.rish"]
+assert mudra.ok else "slcl4_mudra (via sigma alias) failed"
+say "GREEN: SLC-L4 fixed-tier mudra witness passed (sigma alias)."

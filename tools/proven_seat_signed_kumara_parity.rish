@@ -1,0 +1,13 @@
+# proven_seat_signed_kumara_parity.rish — signed-Kumara trio for parity chapter 2 tail.
+#
+# fetch always gates; build+serial when host bench staged (jail-safe ADVISE skip).
+# No KVM — jailed TCG only. Counsel 220400 · word approved 20260713.
+#
+#   rishi/bin/rishi run tools/proven_seat_signed_kumara_parity.rish
+
+say "witness suite: signed-Kumara parity (fetch · optional build+serial)…"
+let orch = run ["bash" "tools/fixtures/signed_kumara_parity.sh"]
+say orch.out
+if orch.err != "" then say orch.err
+assert orch.ok else "signed-Kumara parity witness failed"
+say "GREEN: signed-Kumara parity witness passed."

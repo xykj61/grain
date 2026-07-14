@@ -1,0 +1,16 @@
+# tame_check_mantra.rish — assert mantra/src/* is TH-2b clean (import-once only).
+#
+# Native repoint of tame_check_mantra.sh.
+# Run from the repository root:
+#   rishi/bin/rishi run tools/fixtures/tame_check_mantra.rish
+
+let files = ["mantra/src/main.rye" "mantra/src/store.rye" "mantra/src/weave.rye" "mantra/src/diff.rye"]
+
+let scans = map files as f: { path: f, unqual: length (where (lines (read-file f)) as ln: ln contains "std.debug.assert("), bind_ok: length (where (lines (read-file f)) as ln: ln == "const assert = std.debug.assert;") }
+
+for-each scans as s do if (s.unqual != 0) then say "FAIL ${s.path} unqualified_assert=${s.unqual}" else if (s.bind_ok == 0) then say "FAIL ${s.path} missing import-once assert binding" else say "OK   ${s.path}"
+
+let fails_unqual = where scans as s: s.unqual != 0
+let fails_bind = where scans as s: s.bind_ok == 0
+assert length fails_unqual == 0 else "Mantra module carries unqualified std.debug.assert calls"
+assert length fails_bind == 0 else "Mantra module missing import-once assert binding"

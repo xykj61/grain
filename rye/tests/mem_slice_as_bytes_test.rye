@@ -1,0 +1,22 @@
+//! Rye test: std.mem.sliceAsBytes — pass 9926.
+//!
+//! Typed slice to underlying byte view; pairs with asBytes on single items.
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    const bytes = [_]u16{ 0xDEAD, 0xBEEF };
+    const view = mem.sliceAsBytes(bytes[0..]);
+    std.debug.assert(view.len == 4);
+    std.debug.assert(mem.eql(u8, view[0..2], mem.asBytes(&bytes[0])[0..]));
+    std.debug.assert(mem.eql(u8, view[2..4], mem.asBytes(&bytes[1])[0..]));
+
+    const empty_string: [:0]const u8 = "";
+    std.debug.assert(mem.sliceAsBytes(empty_string).len == 0);
+
+    const lots_of_nothing = [1]void{{}} ** 4;
+    std.debug.assert(mem.sliceAsBytes(&lots_of_nothing).len == 0);
+
+    std.debug.print("rye: mem.sliceAsBytes assertions confirmed.\n", .{});
+}

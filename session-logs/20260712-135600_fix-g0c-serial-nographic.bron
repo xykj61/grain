@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260712.135600
+editor Cursor
+model Cursor Grok 4.5
+voice Rio 3
+title Fix G0c serial — nographic phase after empty file log
+prompt host on-path RED — serial never reached GRUB; meta + empty serial log
+product_nib 430
+suite_nib 432
+git_nib 4067b0a
+think Diagnosis: g0c-lane-serial.log was 0 bytes for 120s. QMP came up; guest serial never wrote. Known-green 004012 used -nographic stdout capture (388 bytes, GRUB loading). One-boot -display none -serial file left an empty log.
+think Rewrote proven_seat_g0c_lane_kvm.sh to two phases: A nographic+nic none serial floor; B display none + QMP glass. Counsel -nic none kept. Documented why.
+obs Host should git pull and re-run lane_kvm_onpath_host.rish. Expect phase A GRUB within 90s then phase B PNG.
+file tools/proven_seat_g0c_lane_kvm.sh two-phase serial+glass
+file tools/lane_kvm_onpath_host.rish timing say
+file session-logs/20260712-135600_fix-g0c-serial-nographic.bron this log
+file session-logs/README.md index
+recommend keep-going host git pull then lane_kvm_onpath_host.rish — mechanical after serial-path fix

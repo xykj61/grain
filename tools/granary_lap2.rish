@@ -1,0 +1,20 @@
+# granary_lap2.rish — Granary lap 2: write gate (durable publish + reload).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/granary_lap2.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "granary/bin/granary"
+
+let build = run ["sh" "-c" "mkdir -p granary/bin && env RYE_ZIG=${zig} rye/bin/rye build granary/granary.rye -femit-bin=${bin}"]
+assert build.ok else "Granary lap 2 build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest-lap2 2>&1"]
+assert selftest.ok else "Granary lap 2 selftest exited non-zero"
+assert selftest.out contains "GREEN" else "Granary lap 2 selftest not GREEN"
+assert selftest.out contains "prior greeting unchanged" else "Granary lap 2 missing prior-immutability"
+assert selftest.out contains "durable log reload" else "Granary lap 2 missing reload"
+assert selftest.out contains "exact replay refused" else "Granary lap 2 missing duplicate refuse"
+assert selftest.out contains "lying publish refused" else "Granary lap 2 missing lying publish refuse"
+
+say "GREEN: Granary lap 2 — write gate publish, reload, duplicate and lying refused."

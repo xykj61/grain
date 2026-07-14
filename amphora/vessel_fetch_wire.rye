@@ -1,0 +1,322 @@
+//! amphora/vessel_fetch_wire.rye — Amphora fetch-by-digest: one resin over one or more sealed datagrams.
+//!
+//! Request names a SHA3-256 hex digest. Small resins ride one response frame;
+//! larger resins ride kind-0x33 chunk frames and reassemble before digest verify.
+//!
+//!   rye build amphora/vessel_fetch_wire.rye -femit-bin=amphora/bin/vessel-fetch-wire
+//!   amphora/bin/vessel-fetch-wire selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const tally_copy = @import("tally_copy.rye");
+
+pub const vessel_fetch_wire_version = "20260710.154300";
+
+const kind_request: u8 = 0x31;
+const kind_response: u8 = 0x32;
+const kind_response_chunk: u8 = 0x33;
+
+pub const digest_hex_len: u32 = 64;
+/// Assembled resin ceiling — chunked when it will not fit one datagram.
+pub const max_resin_bytes: u32 = 1024;
+pub const max_wire_payload: u32 = 340;
+/// Single-frame overhead: kind + digest + u16 length.
+pub const response_header_len: u32 = 1 + digest_hex_len + 2;
+pub const max_single_body: u32 = max_wire_payload - response_header_len;
+/// Chunk overhead: kind + digest + index + count + total_len.
+pub const chunk_header_len: u32 = 1 + digest_hex_len + 2 + 2 + 4;
+pub const max_chunk_body: u32 = max_wire_payload - chunk_header_len;
+pub const max_resin_chunks: u16 = 8;
+
+pub const WireError = error{
+    BadKind,
+    Overflow,
+    Truncated,
+    DigestMismatch,
+    BadChunk,
+    ChunkMismatch,
+    Incomplete,
+};
+
+pub const FetchRequest = struct {
+    digest_hex: [digest_hex_len]u8,
+};
+
+pub const FetchResponse = struct {
+    digest_hex: [digest_hex_len]u8,
+    bytes_len: u32,
+    bytes: [max_resin_bytes]u8,
+};
+
+fn digest_hex_of(content: []const u8, out: *[digest_hex_len]u8) void {
+    var digest: [32]u8 = undefined;
+    std.crypto.hash.sha3.Sha3_256.hash(content, &digest, .{});
+    var i: u32 = 0;
+    while (i < 32) : (i += 1) {
+        _ = std.fmt.bufPrint(out[i * 2 ..][0..2], "{x:0>2}", .{digest[i]}) catch unreachable;
+    }
+}
+
+pub fn verify_resin(claimed_digest_hex: []const u8, bytes: []const u8) WireError!void {
+    if (claimed_digest_hex.len != digest_hex_len) return error.DigestMismatch;
+    var recomputed: [digest_hex_len]u8 = undefined;
+    digest_hex_of(bytes, &recomputed);
+    if (!std.mem.eql(u8, recomputed[0..], claimed_digest_hex)) return error.DigestMismatch;
+}
+
+pub fn encode_request(req: FetchRequest, out: []u8) WireError!u32 {
+    if (out.len < 1 + digest_hex_len) return error.Overflow;
+    out[0] = kind_request;
+    tally_copy.copy_disjoint(u8, out[1..][0..digest_hex_len], req.digest_hex[0..]);
+    return 1 + digest_hex_len;
+}
+
+pub fn decode_request(payload: []const u8, out: *FetchRequest) WireError!void {
+    if (payload.len < 1 + digest_hex_len or payload[0] != kind_request) return error.BadKind;
+    tally_copy.copy_disjoint(u8, out.digest_hex[0..], payload[1..][0..digest_hex_len]);
+}
+
+pub fn resin_needs_chunking(bytes_len: u32) bool {
+    return bytes_len > max_single_body;
+}
+
+pub fn resin_chunk_count(bytes_len: u32) WireError!u16 {
+    if (bytes_len == 0) return 1;
+    if (bytes_len > max_resin_bytes) return error.Overflow;
+    if (!resin_needs_chunking(bytes_len)) return 1;
+    const n = (bytes_len + max_chunk_body - 1) / max_chunk_body;
+    if (n > max_resin_chunks) return error.Overflow;
+    return @intCast(n);
+}
+
+pub fn encode_response(resp: *const FetchResponse, out: []u8) WireError!u32 {
+    if (resp.bytes_len > max_single_body) return error.Overflow;
+    if (resp.bytes_len > max_resin_bytes) return error.Overflow;
+    try verify_resin(resp.digest_hex[0..], resp.bytes[0..resp.bytes_len]);
+    const need: u32 = response_header_len + resp.bytes_len;
+    if (out.len < need or need > max_wire_payload) return error.Overflow;
+    var off: u32 = 0;
+    out[off] = kind_response;
+    off += 1;
+    tally_copy.copy_disjoint(u8, out[off..][0..digest_hex_len], resp.digest_hex[0..]);
+    off += digest_hex_len;
+    std.mem.writeInt(u16, out[off..][0..2], @intCast(resp.bytes_len), .little);
+    off += 2;
+    if (resp.bytes_len > 0) {
+        tally_copy.copy_disjoint(u8, out[off..][0..resp.bytes_len], resp.bytes[0..resp.bytes_len]);
+        off += resp.bytes_len;
+    }
+    assert(off == need);
+    return off;
+}
+
+pub fn encode_response_chunk(resp: *const FetchResponse, chunk_index: u16, out: []u8) WireError!u32 {
+    const count = try resin_chunk_count(resp.bytes_len);
+    if (count < 2) return error.BadChunk;
+    if (chunk_index >= count) return error.BadChunk;
+    try verify_resin(resp.digest_hex[0..], resp.bytes[0..resp.bytes_len]);
+    const off_body = @as(u32, chunk_index) * max_chunk_body;
+    const remain = resp.bytes_len - off_body;
+    const take = @min(remain, max_chunk_body);
+    if (out.len < chunk_header_len + take) return error.Overflow;
+    out[0] = kind_response_chunk;
+    tally_copy.copy_disjoint(u8, out[1..][0..digest_hex_len], resp.digest_hex[0..]);
+    std.mem.writeInt(u16, out[1 + digest_hex_len ..][0..2], chunk_index, .little);
+    std.mem.writeInt(u16, out[1 + digest_hex_len + 2 ..][0..2], count, .little);
+    std.mem.writeInt(u32, out[1 + digest_hex_len + 4 ..][0..4], resp.bytes_len, .little);
+    tally_copy.copy_disjoint(u8, out[chunk_header_len..][0..take], resp.bytes[off_body..][0..take]);
+    return chunk_header_len + take;
+}
+
+pub fn decode_response(payload: []const u8, out: *FetchResponse) WireError!void {
+    if (payload.len < response_header_len or payload[0] != kind_response) return error.BadKind;
+    var off: u32 = 1;
+    tally_copy.copy_disjoint(u8, out.digest_hex[0..], payload[off..][0..digest_hex_len]);
+    off += digest_hex_len;
+    const bytes_len: u32 = std.mem.readInt(u16, payload[off..][0..2], .little);
+    off += 2;
+    if (bytes_len > max_single_body or bytes_len > max_resin_bytes) return error.Overflow;
+    if (off + bytes_len > payload.len) return error.Truncated;
+    out.bytes_len = bytes_len;
+    if (bytes_len > 0) {
+        tally_copy.copy_disjoint(u8, out.bytes[0..bytes_len], payload[off..][0..bytes_len]);
+    }
+    try verify_resin(out.digest_hex[0..], out.bytes[0..out.bytes_len]);
+}
+
+pub const FeedState = enum { need_more, ready };
+
+pub const ResinAssembler = struct {
+    buf: [max_resin_bytes]u8 = undefined,
+    digest_hex: [digest_hex_len]u8 = undefined,
+    total: u32 = 0,
+    count: u16 = 0,
+    received: u16 = 0,
+    mask: u16 = 0,
+    digest_set: bool = false,
+
+    pub fn reset(self: *ResinAssembler) void {
+        self.* = .{};
+    }
+
+    pub fn feed(self: *ResinAssembler, payload: []const u8) WireError!FeedState {
+        if (payload.len < 1) return error.Truncated;
+        if (payload[0] == kind_response) {
+            var resp: FetchResponse = undefined;
+            try decode_response(payload, &resp);
+            tally_copy.copy_disjoint(u8, self.buf[0..resp.bytes_len], resp.bytes[0..resp.bytes_len]);
+            tally_copy.copy_disjoint(u8, self.digest_hex[0..], resp.digest_hex[0..]);
+            self.total = resp.bytes_len;
+            self.count = 1;
+            self.received = 1;
+            self.mask = 1;
+            self.digest_set = true;
+            return .ready;
+        }
+        return self.feed_chunk(payload);
+    }
+
+    fn feed_chunk(self: *ResinAssembler, payload: []const u8) WireError!FeedState {
+        if (payload[0] != kind_response_chunk) return error.BadKind;
+        if (payload.len < chunk_header_len) return error.Truncated;
+        const digest_slice = payload[1..][0..digest_hex_len];
+        const index = std.mem.readInt(u16, payload[1 + digest_hex_len ..][0..2], .little);
+        const count = std.mem.readInt(u16, payload[1 + digest_hex_len + 2 ..][0..2], .little);
+        const total = std.mem.readInt(u32, payload[1 + digest_hex_len + 4 ..][0..4], .little);
+        if (count < 2 or count > max_resin_chunks) return error.BadChunk;
+        if (index >= count) return error.BadChunk;
+        if (total == 0 or total > max_resin_bytes) return error.BadChunk;
+        if (!resin_needs_chunking(total)) return error.BadChunk;
+        const expected = try resin_chunk_count(total);
+        if (count != expected) return error.ChunkMismatch;
+        if (self.digest_set) {
+            if (!std.mem.eql(u8, self.digest_hex[0..], digest_slice)) return error.ChunkMismatch;
+            if (self.total != total or self.count != count) return error.ChunkMismatch;
+        } else {
+            tally_copy.copy_disjoint(u8, self.digest_hex[0..], digest_slice);
+            self.total = total;
+            self.count = count;
+            self.digest_set = true;
+        }
+        const body = payload[chunk_header_len..];
+        const off_body = @as(u32, index) * max_chunk_body;
+        if (off_body >= total) return error.BadChunk;
+        const remain = total - off_body;
+        const take = @min(remain, max_chunk_body);
+        if (body.len != take) return error.Truncated;
+        const bit: u16 = @as(u16, 1) << @intCast(index);
+        if ((self.mask & bit) != 0) return error.BadChunk;
+        tally_copy.copy_disjoint(u8, self.buf[off_body..][0..take], body);
+        self.mask |= bit;
+        self.received += 1;
+        if (self.received < self.count) return .need_more;
+        try verify_resin(self.digest_hex[0..], self.buf[0..self.total]);
+        return .ready;
+    }
+
+    pub fn resin(self: *const ResinAssembler) []const u8 {
+        return self.buf[0..self.total];
+    }
+
+    pub fn digest(self: *const ResinAssembler) []const u8 {
+        return self.digest_hex[0..];
+    }
+};
+
+fn run_selftest_small() !void {
+    const hello = "amber ring one — small text fixture\n";
+    var digest: [digest_hex_len]u8 = undefined;
+    digest_hex_of(hello, &digest);
+
+    var req: FetchRequest = .{ .digest_hex = undefined };
+    tally_copy.copy_disjoint(u8, req.digest_hex[0..], digest[0..]);
+    var req_buf: [max_wire_payload]u8 = undefined;
+    const req_len = try encode_request(req, &req_buf);
+    var decoded_req: FetchRequest = undefined;
+    try decode_request(req_buf[0..req_len], &decoded_req);
+    assert(std.mem.eql(u8, decoded_req.digest_hex[0..], digest[0..]));
+
+    var resp: FetchResponse = .{
+        .digest_hex = undefined,
+        .bytes_len = @intCast(hello.len),
+        .bytes = undefined,
+    };
+    tally_copy.copy_disjoint(u8, resp.digest_hex[0..], digest[0..]);
+    tally_copy.copy_disjoint(u8, resp.bytes[0..hello.len], hello);
+    var resp_buf: [max_wire_payload]u8 = undefined;
+    const resp_len = try encode_response(&resp, &resp_buf);
+    var asm_small: ResinAssembler = .{};
+    const state = try asm_small.feed(resp_buf[0..resp_len]);
+    assert(state == .ready);
+    assert(std.mem.eql(u8, asm_small.resin(), hello));
+
+    var bad = resp_buf;
+    bad[resp_len - 1] ^= 0xff;
+    var junk: ResinAssembler = .{};
+    if (junk.feed(bad[0..resp_len])) |_| {
+        return error.DigestMismatch;
+    } else |_| {}
+}
+
+fn run_selftest_chunk() !void {
+    var big: [400]u8 = undefined;
+    var i: u32 = 0;
+    while (i < big.len) : (i += 1) {
+        big[i] = @intCast(i % 251);
+    }
+    var digest: [digest_hex_len]u8 = undefined;
+    digest_hex_of(&big, &digest);
+    assert(resin_needs_chunking(@intCast(big.len)));
+    const count = try resin_chunk_count(@intCast(big.len));
+    assert(count >= 2);
+
+    var resp: FetchResponse = .{
+        .digest_hex = undefined,
+        .bytes_len = @intCast(big.len),
+        .bytes = undefined,
+    };
+    tally_copy.copy_disjoint(u8, resp.digest_hex[0..], digest[0..]);
+    tally_copy.copy_disjoint(u8, resp.bytes[0..big.len], &big);
+
+    var asm_big: ResinAssembler = .{};
+    var c: u16 = 0;
+    while (c < count) : (c += 1) {
+        var frame: [max_wire_payload]u8 = undefined;
+        const flen = try encode_response_chunk(&resp, c, &frame);
+        const state = try asm_big.feed(frame[0..flen]);
+        if (c + 1 < count) {
+            assert(state == .need_more);
+        } else {
+            assert(state == .ready);
+        }
+    }
+    assert(std.mem.eql(u8, asm_big.resin(), &big));
+
+    // Unwelcome: flip last chunk body — assembled digest must refuse.
+    var asm_bad: ResinAssembler = .{};
+    c = 0;
+    while (c < count) : (c += 1) {
+        var frame: [max_wire_payload]u8 = undefined;
+        const flen = try encode_response_chunk(&resp, c, &frame);
+        if (c + 1 == count) frame[flen - 1] ^= 0xff;
+        const fed = asm_bad.feed(frame[0..flen]);
+        if (c + 1 < count) {
+            assert((try fed) == .need_more);
+        } else {
+            if (fed) |_| return error.DigestMismatch else |_| {}
+        }
+    }
+}
+
+fn run_selftest(_: std.Io) !u8 {
+    try run_selftest_small();
+    try run_selftest_chunk();
+    print("amphora: vessel_fetch_wire version {s}\n", .{vessel_fetch_wire_version});
+    print("GREEN: Amphora vessel fetch wire — single + chunk, tamper refused.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init.io);
+}

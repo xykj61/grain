@@ -1,0 +1,22 @@
+//! Rye test: std.mem.Alignment toByteUnits/fromByteUnits/order/compare/max/min — pass 9892.
+//!
+//! Enum ↔ byte-unit conversion and comparison; pairs with forward/backward/check (9893).
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    const a8 = mem.Alignment.@"8";
+    std.debug.assert(a8.toByteUnits() == 8);
+    std.debug.assert(mem.Alignment.fromByteUnits(4).toByteUnits() == 4);
+    std.debug.assert(mem.Alignment.fromByteUnitsOptional(16).?.toByteUnits() == 16);
+    std.debug.assert(mem.Alignment.fromByteUnitsOptional(null) == null);
+
+    const a4 = mem.Alignment.@"4";
+    std.debug.assert(a4.order(a8) == .lt);
+    std.debug.assert(a8.compare(.gt, a4));
+    std.debug.assert(mem.Alignment.max(a4, a8) == a8);
+    std.debug.assert(mem.Alignment.min(a4, a8) == a4);
+
+    std.debug.print("rye: mem.Alignment byte-units/compare assertions confirmed.\n", .{});
+}

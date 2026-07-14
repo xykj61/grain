@@ -1,0 +1,25 @@
+# caravan_subscribe_poll_source_crash.rish — source-loop dies mid-service → named halt.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/caravan_subscribe_poll_source_crash.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let delivery = "mantra/bin/recall-subscribe-poll-delivery"
+let service = "caravan/bin/subscribe-poll-service"
+let sentinel = "/tmp/veganreyklah2-ns-poll-stop"
+let log = "/tmp/veganreyklah2-poll-src-crash.out"
+let probe_sh = "tools/fixtures/caravan_subscribe_poll_source_crash.sh"
+
+let build = run ["sh" "-c" "mkdir -p mantra/bin caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/recall_subscribe_poll_delivery.rye -lc -femit-bin=${delivery} && env RYE_ZIG=${zig} rye/bin/rye build caravan/subscribe_poll_service.rye -lc -femit-bin=${service}"]
+assert build.ok else "source crash witness build failed"
+
+let probe = run ["sh" probe_sh service delivery sentinel log]
+assert probe.ok else "source crash witness shell failed"
+assert probe.out contains "source-loop died" else "missing source death message"
+assert probe.out contains "supervisor halting" else "missing halt message"
+assert probe.out contains "exit:3" else "supervisor should exit 3 on source loss"
+
+let cleanup = run ["sh" "-c" "rm -f ${sentinel} ${log}"]
+assert cleanup.ok else "source crash witness cleanup failed"
+
+say "GREEN: Caravan source-crash recovery witness passed."

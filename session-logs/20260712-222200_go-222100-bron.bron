@@ -1,0 +1,10 @@
+format session-log-v1
+stamp 20260712.222200
+editor Cursor
+model Composer 2.5
+voice Rio 3
+title Go — ship 222100 go bron · four remotes
+prompt go
+think Committed ff108c1 pushed four remotes 222100 bron indexed
+obs Go-trace chain complete from design 6a801e4 through ff108c1; next lap should carry work
+recommend keep-going implement docs/PROVEN_SEAT.md — fold this bron into that go rather than another log-only lap

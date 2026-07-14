@@ -1,0 +1,17 @@
+# mantra_recall_two_way_sync.rish — two-way sync witness (in-process).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/mantra_recall_two_way_sync.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mantra/bin/recall-two-way-sync"
+
+let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/recall_two_way_sync.rye -femit-bin=${bin}"]
+
+assert build.ok else "recall_two_way_sync build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "recall_two_way_sync selftest exited non-zero"
+assert selftest.out contains "GREEN" else "recall_two_way_sync selftest not GREEN"
+
+say "GREEN: two-way sync witness passed (symmetric syncRevision, in-process)."

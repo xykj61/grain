@@ -1,0 +1,62 @@
+//! comlink/guest_granary_resin_source_tx.rye — Granary lap 4b device: source TX (resin response).
+
+const vn = @import("virtio_net.rye");
+const tally_copy = @import("tally_copy.rye");
+const wf = @import("wire_format.rye");
+const vfw = @import("vessel_fetch_wire.rye");
+const Sha3_256 = @import("std").crypto.hash.sha3.Sha3_256;
+
+var tx: vn.TxQueue = undefined;
+
+fn digest_hex_of(content: []const u8, out: *[64]u8) void {
+    var digest: [32]u8 = undefined;
+    Sha3_256.hash(content, &digest, .{});
+    var i: u32 = 0;
+    while (i < 32) : (i += 1) {
+        _ = @import("std").fmt.bufPrint(out[i * 2 ..][0..2], "{x:0>2}", .{digest[i]}) catch unreachable;
+    }
+}
+
+export fn _start() linksection(".text.init") callconv(.naked) noreturn {
+    asm volatile (
+        \\ li sp, 0x80100000
+        \\ j kmain
+    );
+}
+
+export fn kmain() callconv(.c) noreturn {
+    vn.init_device();
+    tx.init();
+    vn.driver_ok();
+
+    const leaf = "leaf-granary-lap4";
+    var resp: vfw.FetchResponse = .{
+        .digest_hex = undefined,
+        .bytes_len = @intCast(leaf.len),
+        .bytes = undefined,
+    };
+    digest_hex_of(leaf, &resp.digest_hex);
+    tally_copy.copy_disjoint(u8, resp.bytes[0..leaf.len], leaf);
+
+    var payload: [vfw.max_wire_payload]u8 = undefined;
+    const payload_len = vfw.encode_response(&resp, &payload) catch unreachable;
+
+    var scratch: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const dg_len: u32 = @intCast(wf.seal_message(payload[0..payload_len], &scratch) catch unreachable);
+
+    const buf = tx.frame();
+    @memset(buf[0..vn.virtio_net_hdr_len], 0);
+    const eoff = vn.virtio_net_hdr_len;
+    var i: u32 = 0;
+    while (i < 6) : (i += 1) buf[eoff + i] = 0xff;
+    while (i < 12) : (i += 1) buf[eoff + i] = 0x00;
+    buf[eoff + 12] = @truncate(vn.lab_ethertype >> 8);
+    buf[eoff + 13] = @truncate(vn.lab_ethertype);
+    const poff = eoff + vn.eth_header_len;
+    tally_copy.copy_disjoint(u8, buf[poff..][0..dg_len], scratch[0..dg_len]);
+    const total: u32 = poff + dg_len;
+
+    tx.send(total);
+    vn.write_str("granary device wire: sealed resin fetch response TX sent\n");
+    vn.finish_pass();
+}

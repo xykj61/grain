@@ -1,0 +1,87 @@
+//! linengrow/receipt.rye — SLC-L1 verifiable receipt: sign, append, fold, verify.
+//!
+//!   rye build linengrow/receipt.rye -femit-bin=linengrow/bin/receipt
+//!   linengrow/bin/receipt selftest
+//!
+//! Scope: [`active-designing/20260702-195426_slcl1-verifiable-receipt.md`](../active-designing/20260702-195426_slcl1-verifiable-receipt.md)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const Dir = std.Io.Dir;
+const kumara = @import("kumara.rye");
+const rc = @import("receipt_core.rye");
+const tally_copy = @import("tally_copy.rye");
+
+const slcl1_version = "20260704.020800";
+
+fn run_selftest(io: std.Io) !u8 {
+    const kp = kumara.keypair_from_seed(&rc.slcl1_seed);
+    const fixture_path = "tools/fixtures/slcl1_fact.bron";
+    const cwd = Dir.cwd();
+
+    var fact_buf: [rc.max_fact_len]u8 = undefined;
+    const fact_read = try cwd.readFile(io, fixture_path, &fact_buf);
+    assert(fact_read.len <= rc.max_fact_len);
+
+    var fields: rc.FactFields = undefined;
+    try rc.parse_fact_fields(fact_read, &fields);
+
+    var canonical: [rc.max_fact_len]u8 = undefined;
+    const canonical_len = try rc.write_canonical_fact(fields, &canonical);
+
+    const sig = kumara.sign(canonical[0..canonical_len], kp, null);
+
+    var line: [rc.max_line_len]u8 = undefined;
+    const line_len = try rc.format_log_line(sig, canonical[0..canonical_len], &line);
+
+    var log: [rc.max_log_len]u8 = undefined;
+    tally_copy.copy_disjoint(u8, log[0..line_len], line[0..line_len]);
+    const log_len: u32 = line_len;
+
+    var sig_buf: [kumara.signature_length]u8 = undefined;
+    var fact_out: [rc.max_fact_len]u8 = undefined;
+    const parsed = try rc.parse_log_line(log[0..log_len], &sig_buf, &fact_out);
+    assert(parsed.sig_len == kumara.signature_length);
+    assert(parsed.fact_len == canonical_len);
+    assert(std.mem.eql(u8, fact_out[0..parsed.fact_len], canonical[0..canonical_len]));
+
+    const pubkey = kp.public_key;
+    try rc.verify_record(sig_buf[0..parsed.sig_len], fact_out[0..parsed.fact_len], pubkey);
+
+    var balance: i64 = 0;
+    try rc.fold_balance_from_facts(fact_out[0..parsed.fact_len], &balance);
+    assert(balance == 100);
+
+    var digest: [32]u8 = undefined;
+    rc.digest_log(log[0..log_len], &digest);
+    assert(digest[0] != 0 or digest[1] != 0);
+
+    var tampered: [rc.max_log_len]u8 = undefined;
+    tally_copy.copy_disjoint(u8, tampered[0..log_len], log[0..log_len]);
+    tampered[log_len - 3] +%= 1;
+
+    var bad_sig: [kumara.signature_length]u8 = undefined;
+    var bad_fact: [rc.max_fact_len]u8 = undefined;
+    const bad_parsed = rc.parse_log_line(tampered[0..log_len], &bad_sig, &bad_fact) catch {
+        print("slcl1: tampered log refused at parse — GREEN unwelcome path\n", .{});
+        print("slcl1: version {s}\n", .{slcl1_version});
+        print("GREEN: SLC-L1 verifiable receipt — sign, append, fold, verify.\n", .{});
+        return 0;
+    };
+    rc.verify_record(bad_sig[0..bad_parsed.sig_len], bad_fact[0..bad_parsed.fact_len], pubkey) catch {
+        print("slcl1: tampered fact rejected at verify — GREEN unwelcome path\n", .{});
+        print("slcl1: version {s}\n", .{slcl1_version});
+        print("GREEN: SLC-L1 verifiable receipt — sign, append, fold, verify.\n", .{});
+        return 0;
+    };
+    return error.TamperVerified;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) return run_selftest(io);
+    return run_selftest(io);
+}

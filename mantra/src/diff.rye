@@ -1,0 +1,128 @@
+//! mantra/src/diff.rye — pure diff: old weave state → new text → Diff.
+//!
+//! A Diff names exactly what changed between the weave's current view and a
+//! new version of the text. It is pure: same inputs produce the same Diff,
+//! every time. The algorithm is a simple LCS (longest common subsequence) over
+//! line text equality — small, correct, and determinable.
+//!
+//! Public surface:
+//!   diff(allocator, old_lines, new_text) !Diff
+//!
+//! The resulting Diff may be applied to the weave with Weave.apply.
+//! Pure functions — no file I/O, no side effects.
+
+const std   = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const Weave = @import("weave.rye").Weave;
+const Line  = @import("weave.rye").Line;
+const Diff  = @import("weave.rye").Diff;
+
+/// Compute the diff between `old_lines` (the weave's current view) and
+/// `new_text` (the desired lines of the file as it is now).
+///
+/// Precondition:  old_lines is sorted by position (guaranteed by Weave.current).
+/// Postcondition: applying the returned Diff to a weave whose current() equals
+///   old_lines will produce a weave whose current() equals new_text.
+///
+/// The returned Diff borrows its insert strings from `new_text` — the caller
+/// must ensure `new_text` outlives the Diff, or copy as needed.
+pub fn diff(
+    allocator: std.mem.Allocator,
+    old_lines: []const Line,
+    new_text:  []const []const u8,
+) !Diff {
+    // LCS table over (old_lines, new_text) using line text equality.
+    const m = old_lines.len;
+    const n = new_text.len;
+
+    // lcs[i][j] = length of LCS of old_lines[0..i] and new_text[0..j].
+    // Allocate as a flat array: lcs[i * (n+1) + j].
+    const table = try allocator.alloc(u32, (m + 1) * (n + 1));
+    defer allocator.free(table);
+    @memset(table, 0);
+
+    for (1..m + 1) |i| {
+        for (1..n + 1) |j| {
+            if (std.mem.eql(u8, old_lines[i - 1].text, new_text[j - 1])) {
+                table[i * (n + 1) + j] = table[(i - 1) * (n + 1) + (j - 1)] + 1;
+            } else {
+                const up   = table[(i - 1) * (n + 1) + j];
+                const left = table[i * (n + 1) + (j - 1)];
+                table[i * (n + 1) + j] = if (up >= left) up else left;
+            }
+        }
+    }
+
+    // Back-track to find which old lines are in the LCS (kept) and which are
+    // not (deleted), and which new lines are not in the LCS (inserted).
+    var kept_old = try allocator.alloc(bool, m); // true = matched in LCS
+    var kept_new = try allocator.alloc(bool, n); // true = matched in LCS
+    defer allocator.free(kept_old);
+    defer allocator.free(kept_new);
+    @memset(kept_old, false);
+    @memset(kept_new, false);
+
+    var i: u32 = @intCast(m);
+    var j: u32 = @intCast(n);
+    while (i > 0 and j > 0) {
+        if (std.mem.eql(u8, old_lines[@intCast(i - 1)].text, new_text[@intCast(j - 1)])) {
+            kept_old[@intCast(i - 1)] = true;
+            kept_new[@intCast(j - 1)] = true;
+            i -= 1;
+            j -= 1;
+        } else if (table[@intCast((i - 1) * (@as(u32, @intCast(n)) + 1) + j)] >= table[@intCast(i * (@as(u32, @intCast(n)) + 1) + (j - 1))]) {
+            i -= 1;
+        } else {
+            j -= 1;
+        }
+    }
+
+    // Collect deletes: old lines not in the LCS, by their stable position.
+    var deletes = std.ArrayListUnmanaged(u32){};
+    for (old_lines, 0..) |line, idx| {
+        if (!kept_old[idx]) {
+            try deletes.append(allocator, line.pos);
+        }
+    }
+
+    // Collect inserts: new lines not in the LCS, in new-text order.
+    var inserts = std.ArrayListUnmanaged([]const u8){};
+    for (new_text, 0..) |text, idx| {
+        if (!kept_new[idx]) {
+            try inserts.append(allocator, text);
+        }
+    }
+
+    // Postcondition: applying the diff is a net transformation — not necessarily
+    // fewer lines, yet never a negative-length insert or delete.
+    const result = Diff{
+        .inserts = try inserts.toOwnedSlice(allocator),
+        .deletes = try deletes.toOwnedSlice(allocator),
+    };
+    assert(result.inserts.len <= n); // can't insert more than the new text has
+    assert(result.deletes.len <= m); // can't delete more than the old text had
+    return result;
+}
+
+/// Split `text` into lines on `\n`, returning a slice of string slices. The
+/// returned slice and all strings within it are allocated from `allocator`.
+/// A trailing newline produces no empty string at the end — the common case
+/// for text files.
+pub fn split_lines(allocator: std.mem.Allocator, text: []const u8) ![]const []const u8 {
+    maybe(text.len == 0); // empty text is valid; yields zero lines
+    var lines = std.ArrayListUnmanaged([]const u8){};
+    var it = std.mem.splitScalar(u8, text, '\n');
+    while (it.next()) |line| {
+        // Skip the trailing empty token produced by a file that ends in \n.
+        if (line.len == 0 and it.rest().len == 0) break;
+        try lines.append(allocator, line);
+    }
+    return lines.toOwnedSlice(allocator);
+}
+
+/// maybe: a named acknowledgement of legitimately variable input. Compiles to
+/// nothing in release builds — same weight as assert.
+inline fn maybe(condition: bool) void {
+    _ = condition;
+}

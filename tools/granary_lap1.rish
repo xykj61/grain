@@ -1,0 +1,21 @@
+# granary_lap1.rish — Granary lap 1: name-fact registry + resolve + Scribble frame.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/granary_lap1.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "granary/bin/granary"
+
+let build = run ["sh" "-c" "mkdir -p granary/bin && env RYE_ZIG=${zig} rye/bin/rye build granary/granary.rye -femit-bin=${bin}"]
+assert build.ok else "Granary lap 1 build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "Granary selftest exited non-zero"
+assert selftest.out contains "GREEN" else "Granary selftest not GREEN"
+assert selftest.out contains "resolved rio/greeting" else "Granary missing resolve"
+assert selftest.out contains "clone fold matched" else "Granary missing resin clone"
+assert selftest.out contains "Scribble front page drawn" else "Granary missing Scribble frame"
+assert selftest.out contains "lying signature refused" else "Granary missing lying-sig refuse"
+assert selftest.out contains "accrete rename" else "Granary missing accrete rename"
+
+say "GREEN: Granary lap 1 — registry, resolve, fold-clone, Scribble frame, lying sig refused."

@@ -1,0 +1,22 @@
+# inference_assist_sight_lap5.rish — Assist sight: P&L net on the carriage fold.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/inference_assist_sight_lap5.rish
+
+let bin = "pond/bin/drawn-terminal"
+
+say "build: inference assist sight lap 5 — drawn-terminal compile"
+let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+assert build.ok else "drawn_terminal build failed for assist sight lap 5"
+assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
+
+let assist = run ["sh" "-c" "${bin} assistviewsighttest 2>&1"]
+assert assist.ok else "drawn terminal assistviewsighttest exited non-zero"
+assert assist.out contains "assist sight" else "assist sight missing expected output"
+assert assist.out contains "journal=2" else "assist sight missing journal entry count"
+assert assist.out contains "chart=4" else "assist sight missing chart account count"
+assert assist.out contains "pnl=800" else "assist sight missing pnl=800"
+assert assist.out contains "GREEN" else "Inference assist sight lap 5 not GREEN"
+assert assist.out contains "lines=8" else "assist sight missing eight-line frame"
+
+say "GREEN: Inference assist sight lap 5 — P&L net joins journal and chart on the carriage fold."

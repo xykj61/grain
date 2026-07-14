@@ -1,0 +1,11 @@
+# slc1_recall_step3.rish — witness for SLC-1 Step 3: :recall re-runs a prior line.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/slc1_recall_step3.rish
+
+let result = run ["sh" "-c" "rishi/bin/rishi repl < tools/fixtures/slc1_recall_step3.input"]
+
+assert result.ok else "rishi repl recall pass exited non-zero"
+let parts = split result.out "RE-RAN"
+assert length parts == 3 else ":recall did not re-run the prior line"
+say "GREEN: SLC-1 Step 3 — :recall brings a prior line back and runs it again."

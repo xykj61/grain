@@ -1,0 +1,17 @@
+# open_asks_lap4.rish — OA-L4 reputation-as-fold witness (consent-before-counting).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/open_asks_lap4.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/open-asks"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/open_asks.rye -femit-bin=${bin}"]
+
+assert build.ok else "OA-L4 open asks build failed"
+
+let reputation = run ["sh" "-c" "${bin} reputation 2>&1"]
+assert reputation.ok else "OA-L4 reputation selftest exited non-zero"
+assert reputation.out contains "GREEN" else "OA-L4 reputation selftest not GREEN"
+
+say "GREEN: OA-L4 reputation-as-fold witness passed (consent-before-counting)."

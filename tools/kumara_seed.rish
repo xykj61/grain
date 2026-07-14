@@ -1,0 +1,16 @@
+# kumara_seed.rish — Kumara identity seam witness.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/kumara_seed.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "tally/bin/kumara"
+
+let build = run ["sh" "-c" "mkdir -p tally/bin && env RYE_ZIG=${zig} rye/bin/rye build tally/kumara.rye -femit-bin=${bin}"]
+assert build.ok else "tally kumara build failed"
+
+let self = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert self.ok else "tally kumara selftest exited non-zero"
+assert self.out contains "GREEN" else "tally kumara selftest not GREEN"
+
+say "GREEN: tally kumara witness passed."

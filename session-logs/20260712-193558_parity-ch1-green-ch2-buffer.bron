@@ -1,0 +1,15 @@
+format session-log-v1
+stamp 20260712.193558
+editor Cursor
+model Cursor Grok 4.5
+voice Rio 3
+title Chapter 1 GREEN · chapter 2 buffering
+prompt screenshots — ch1 passed · ch2 running · rg missing on host
+product_nib 430
+suite_nib 432
+git_nib 826bcea
+think Host log shows GREEN chapter 1/2 then chapter 2/2 banner. Same nested-run buffer — silence until ch02 exits. ch02 is ~650 lines of witnesses (lantern/lattice heavy); ch1 already took ~14 min cold. Ctrl-C only stopped tail -f. Host has no rg — use grep -E.
+obs Not stuck at the ch1 wall; let ch2 finish or re-run parity_ch02 under tee for live lines.
+recommend keep-going let host chapter 2 finish — mechanical wait; Claude before streaming orchestrator
+file session-logs/20260712-193558_parity-ch1-green-ch2-buffer.bron · this note
+file session-logs/README.md · index

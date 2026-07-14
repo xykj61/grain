@@ -1,0 +1,16 @@
+//! Rye test: mem.replacementSize — pass 9916.
+//!
+//! Output buffer size for replace; pairs with mem.replace (9917).
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    std.debug.assert(mem.replacementSize(u8, "All your base are belong to us", "base", "Zig") == 29);
+    std.debug.assert(mem.replacementSize(u8, "Favor reading code over writing code.", "code", "") == 29);
+    std.debug.assert(mem.replacementSize(u8, "", "x", "y") == 0);
+    std.debug.assert(mem.replacementSize(u8, "abbba", "b", "cd") == 8);
+    std.debug.assert(mem.replacementSize(u8, "\\n\\n", "\\n", "\n") == 2);
+
+    std.debug.print("rye: mem.replacementSize assertions confirmed.\n", .{});
+}

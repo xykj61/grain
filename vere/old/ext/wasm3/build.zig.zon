@@ -1,0 +1,17 @@
+.{
+    .name = .wasm3,
+    .version = "0.0.1",
+    .fingerprint = 0x377ef9510a920f6f,
+    .dependencies = .{
+        .softfloat = .{
+            .path = "../softfloat",
+        },
+        .wasm3 = .{
+            .url = "https://github.com/urbit/wasm3/archive/268894556ac471c88089d88c84b7922c8d9b9d72.tar.gz",
+            .hash = "N-V-__8AAO4jSQCtK5vWXgJPPmDwYQMHDHd51UVtjLu9o3vk",
+        },
+    },
+    .paths = .{
+        "",
+    },
+}

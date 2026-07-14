@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set -xeuo pipefail
+
+cd "${0%/*}/.."
+
+cp "$(nix build .#brass --no-link --print-out-paths)" bin/brass.pill

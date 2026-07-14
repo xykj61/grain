@@ -1,0 +1,18 @@
+//! Rye test: std.mem.isAligned / isAlignedGeneric / isAlignedLog2 — pass 9902.
+//!
+//! Alignment predicates; pairs with alignBackward (9904) and alignPointer (9903).
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    std.debug.assert(mem.isAligned(0, 4));
+    std.debug.assert(mem.isAligned(16, 8));
+    std.debug.assert(!mem.isAligned(17, 8));
+    std.debug.assert(mem.isAlignedGeneric(u32, 24, 8));
+    std.debug.assert(!mem.isAlignedGeneric(u32, 26, 8));
+    std.debug.assert(mem.isAlignedLog2(16, 4));
+    std.debug.assert(!mem.isAlignedLog2(8, 4));
+
+    std.debug.print("rye: mem.isAligned/isAlignedGeneric/isAlignedLog2 assertions confirmed.\n", .{});
+}

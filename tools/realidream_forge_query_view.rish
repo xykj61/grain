@@ -1,0 +1,19 @@
+# realidream_forge_query_view.rish — forge Tablecloth-query hits → Skate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/realidream_forge_query_view.rish
+
+let bin = "pond/bin/drawn-terminal"
+
+say "build: Realidream forge query view — drawn-terminal compile"
+let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+assert build.ok else "drawn_terminal build failed for forge query view"
+assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
+
+let fq = run ["sh" "-c" "${bin} forgequeryviewtest 2>&1"]
+assert fq.ok else "drawn terminal forgequeryviewtest exited non-zero"
+assert fq.out contains "forge query" else "forge query view missing expected output"
+assert fq.out contains "GREEN" else "Realidream forge query view not GREEN"
+assert fq.out contains "lines=6" else "forge query view missing six-line frame"
+
+say "GREEN: Realidream forge query view — Tablecloth-shaped forge hits compose a Skate frame."

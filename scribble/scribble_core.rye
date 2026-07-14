@@ -1,0 +1,293 @@
+//! scribble/scribble_core.rye — Markdown subset → value blocks (lap 7).
+//!
+//! Headings, paragraphs, fenced code (rye / rish / plain). Heading, paragraph, fence-kind, plain-snippet extract, and heading-depth filter for views.
+
+const std = @import("std");
+const assert = std.debug.assert;
+
+pub const max_doc_bytes: u32 = 8192;
+pub const max_blocks: u32 = 32;
+pub const max_block_text: u32 = 512;
+pub const max_fence_lang: u32 = 16;
+
+pub const ParseError = error{
+    DocTooLarge,
+    BlockOverflow,
+    BlockTooLarge,
+    UnclosedFence,
+    BadHeading,
+    SnippetOverflow,
+};
+
+pub const max_snippets: u32 = 16;
+
+pub const Snippet = struct {
+    text: [max_block_text]u8 = .{0} ** max_block_text,
+    text_len: u32 = 0,
+
+    pub fn text_slice(self: *const Snippet) []const u8 {
+        return self.text[0..self.text_len];
+    }
+};
+
+pub const BlockKind = enum(u8) {
+    heading,
+    paragraph,
+    code_fence,
+    rye_fence,
+    rish_fence,
+};
+
+pub const Block = struct {
+    kind: BlockKind,
+    depth: u32 = 0,
+    lang: [max_fence_lang]u8 = .{0} ** max_fence_lang,
+    lang_len: u32 = 0,
+    text: [max_block_text]u8 = .{0} ** max_block_text,
+    text_len: u32 = 0,
+
+    pub fn text_slice(self: *const Block) []const u8 {
+        return self.text[0..self.text_len];
+    }
+
+    pub fn lang_slice(self: *const Block) []const u8 {
+        return self.lang[0..self.lang_len];
+    }
+};
+
+fn copy_into(buf: []u8, len: *u32, src: []const u8) ParseError!void {
+    if (src.len > buf.len) return error.BlockTooLarge;
+    @memcpy(buf[0..src.len], src);
+    len.* = @intCast(src.len);
+}
+
+fn push_block(
+    blocks: []Block,
+    count: *u32,
+    kind: BlockKind,
+    depth: u32,
+    lang: []const u8,
+    text: []const u8,
+) ParseError!void {
+    if (count.* >= blocks.len) return error.BlockOverflow;
+    if (text.len > max_block_text) return error.BlockTooLarge;
+    if (lang.len > max_fence_lang) return error.BlockTooLarge;
+    var block: Block = .{ .kind = kind, .depth = depth };
+    try copy_into(&block.text, &block.text_len, text);
+    try copy_into(&block.lang, &block.lang_len, lang);
+    blocks[count.*] = block;
+    count.* += 1;
+}
+
+fn fence_kind(lang: []const u8) BlockKind {
+    if (std.mem.eql(u8, lang, "rye")) return .rye_fence;
+    if (std.mem.eql(u8, lang, "rish")) return .rish_fence;
+    return .code_fence;
+}
+
+/// Walk a bounded markdown slice; write blocks into `out` in source order.
+pub fn parse_markdown(text: []const u8, out: []Block) ParseError!u32 {
+    if (text.len > max_doc_bytes) return error.DocTooLarge;
+    var count: u32 = 0;
+    var para_buf: [max_block_text]u8 = undefined;
+    var para_len: u32 = 0;
+
+    const flush_paragraph = struct {
+        fn run(blocks: []Block, n: *u32, buf: []u8, len: *u32) ParseError!void {
+            if (len.* == 0) return;
+            const trimmed = std.mem.trim(u8, buf[0..len.*], " \t\r\n");
+            if (trimmed.len == 0) {
+                len.* = 0;
+                return;
+            }
+            try push_block(blocks, n, .paragraph, 0, "", trimmed);
+            len.* = 0;
+        }
+    }.run;
+
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    while (lines.next()) |raw| {
+        const line = std.mem.trimEnd(u8, raw, "\r");
+        if (std.mem.startsWith(u8, line, "```")) {
+            try flush_paragraph(out, &count, &para_buf, &para_len);
+            const lang = std.mem.trim(u8, line[3..], " \t");
+            var body_buf: [max_block_text]u8 = undefined;
+            var body_len: u32 = 0;
+            while (lines.next()) |inner_raw| {
+                const inner = std.mem.trimEnd(u8, inner_raw, "\r");
+                if (std.mem.startsWith(u8, inner, "```")) {
+                    const kind = fence_kind(lang);
+                    try push_block(out, &count, kind, 0, lang, body_buf[0..body_len]);
+                    break;
+                }
+                if (body_len > 0) {
+                    if (body_len >= body_buf.len) return error.BlockTooLarge;
+                    body_buf[body_len] = '\n';
+                    body_len += 1;
+                }
+                if (body_len + inner.len > body_buf.len) return error.BlockTooLarge;
+                @memcpy(body_buf[body_len..][0..inner.len], inner);
+                body_len += @intCast(inner.len);
+            } else {
+                return error.UnclosedFence;
+            }
+            continue;
+        }
+        if (line.len > 0 and line[0] == '#') {
+            try flush_paragraph(out, &count, &para_buf, &para_len);
+            var depth: u32 = 0;
+            var i: u32 = 0;
+            while (i < line.len and line[i] == '#') : (i += 1) depth += 1;
+            if (depth == 0 or depth > 6) return error.BadHeading;
+            if (i >= line.len or line[i] != ' ') return error.BadHeading;
+            const title = std.mem.trim(u8, line[i + 1 ..], " \t");
+            try push_block(out, &count, .heading, depth, "", title);
+            continue;
+        }
+        if (line.len == 0) {
+            try flush_paragraph(out, &count, &para_buf, &para_len);
+            continue;
+        }
+        if (para_len > 0) {
+            if (para_len >= para_buf.len) return error.BlockTooLarge;
+            para_buf[para_len] = '\n';
+            para_len += 1;
+        }
+        if (para_len + line.len > para_buf.len) return error.BlockTooLarge;
+        @memcpy(para_buf[para_len..][0..line.len], line);
+        para_len += @intCast(line.len);
+    }
+    try flush_paragraph(out, &count, &para_buf, &para_len);
+    return count;
+}
+
+/// Collect every `rye_fence` body in source order — training snippets for Anvil forge.
+pub fn extract_rye_snippets(blocks: []const Block, out: []Snippet) ParseError!u32 {
+    return extract_kind_snippets(blocks, .rye_fence, out);
+}
+
+/// Collect every `rish_fence` body in source order — witness-script snippets for Anvil forge.
+pub fn extract_rish_snippets(blocks: []const Block, out: []Snippet) ParseError!u32 {
+    return extract_kind_snippets(blocks, .rish_fence, out);
+}
+
+/// Collect every plain `code_fence` body in source order — unmarked fences for corpus work.
+pub fn extract_plain_snippets(blocks: []const Block, out: []Snippet) ParseError!u32 {
+    return extract_kind_snippets(blocks, .code_fence, out);
+}
+
+fn extract_kind_snippets(blocks: []const Block, kind: BlockKind, out: []Snippet) ParseError!u32 {
+    var count: u32 = 0;
+    var i: u32 = 0;
+    while (i < blocks.len) : (i += 1) {
+        if (blocks[i].kind != kind) continue;
+        if (count >= out.len) return error.SnippetOverflow;
+        const body = blocks[i].text_slice();
+        if (body.len > max_block_text) return error.BlockTooLarge;
+        var snippet: Snippet = .{};
+        @memcpy(snippet.text[0..body.len], body);
+        snippet.text_len = @intCast(body.len);
+        out[count] = snippet;
+        count += 1;
+    }
+    return count;
+}
+
+pub const Heading = struct {
+    depth: u32 = 0,
+    text: [max_block_text]u8 = .{0} ** max_block_text,
+    text_len: u32 = 0,
+
+    pub fn text_slice(self: *const Heading) []const u8 {
+        return self.text[0..self.text_len];
+    }
+};
+
+pub const max_headings: u32 = 16;
+
+/// Collect every heading title in source order — outline for Scribble view.
+pub fn extract_headings(blocks: []const Block, out: []Heading) ParseError!u32 {
+    var count: u32 = 0;
+    var i: u32 = 0;
+    while (i < blocks.len) : (i += 1) {
+        if (blocks[i].kind != .heading) continue;
+        if (count >= out.len) return error.SnippetOverflow;
+        const body = blocks[i].text_slice();
+        if (body.len > max_block_text) return error.BlockTooLarge;
+        var heading: Heading = .{ .depth = blocks[i].depth };
+        @memcpy(heading.text[0..body.len], body);
+        heading.text_len = @intCast(body.len);
+        out[count] = heading;
+        count += 1;
+    }
+    return count;
+}
+
+/// Collect headings at one depth — h1/h2 outline folds for Scribble views.
+pub fn extract_headings_at_depth(blocks: []const Block, depth: u8, out: []Heading) ParseError!u32 {
+    var count: u32 = 0;
+    var i: u32 = 0;
+    while (i < blocks.len) : (i += 1) {
+        if (blocks[i].kind != .heading) continue;
+        if (blocks[i].depth != depth) continue;
+        if (count >= out.len) return error.SnippetOverflow;
+        const body = blocks[i].text_slice();
+        if (body.len > max_block_text) return error.BlockTooLarge;
+        var heading: Heading = .{ .depth = blocks[i].depth };
+        @memcpy(heading.text[0..body.len], body);
+        heading.text_len = @intCast(body.len);
+        out[count] = heading;
+        count += 1;
+    }
+    return count;
+}
+
+pub const Paragraph = struct {
+    text: [max_block_text]u8 = .{0} ** max_block_text,
+    text_len: u32 = 0,
+
+    pub fn text_slice(self: *const Paragraph) []const u8 {
+        return self.text[0..self.text_len];
+    }
+};
+
+pub const max_paragraphs: u32 = 16;
+
+/// Collect every paragraph body in source order — prose fold for Scribble view.
+pub fn extract_paragraphs(blocks: []const Block, out: []Paragraph) ParseError!u32 {
+    var count: u32 = 0;
+    var i: u32 = 0;
+    while (i < blocks.len) : (i += 1) {
+        if (blocks[i].kind != .paragraph) continue;
+        if (count >= out.len) return error.SnippetOverflow;
+        const body = blocks[i].text_slice();
+        if (body.len > max_block_text) return error.BlockTooLarge;
+        var paragraph: Paragraph = .{};
+        @memcpy(paragraph.text[0..body.len], body);
+        paragraph.text_len = @intCast(body.len);
+        out[count] = paragraph;
+        count += 1;
+    }
+    return count;
+}
+
+pub const FenceKinds = struct {
+    rye: u32 = 0,
+    rish: u32 = 0,
+    plain: u32 = 0,
+};
+
+/// Count rye / rish / plain fences in source order — fence-kinds fold for Scribble view.
+pub fn count_fence_kinds(blocks: []const Block) FenceKinds {
+    var kinds: FenceKinds = .{};
+    var i: u32 = 0;
+    while (i < blocks.len) : (i += 1) {
+        switch (blocks[i].kind) {
+            .rye_fence => kinds.rye += 1,
+            .rish_fence => kinds.rish += 1,
+            .code_fence => kinds.plain += 1,
+            else => {},
+        }
+    }
+    return kinds;
+}

@@ -1,0 +1,10 @@
+# lantern_lap26.rish — Lantern lap 26: top_k pin.
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lantern/bin/lantern"
+let build = run ["sh" "-c" "mkdir -p lantern/bin && env RYE_ZIG=${zig} rye/bin/rye build lantern/lantern.rye -femit-bin=${bin}"]
+assert build.ok else "Lantern lap 26 build failed"
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "Lantern selftest exited non-zero"
+assert selftest.out contains "GREEN" else "Lantern selftest not GREEN"
+assert selftest.out contains "top_k pin completion" else "Lantern missing top_k pin welcome"
+say "GREEN: Lantern lap 26 — top_k pin on the request contract."

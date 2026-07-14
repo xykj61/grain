@@ -1,0 +1,4 @@
+let mark = "RE-RAN"
+say "${mark}"
+:recall 2
+:quit

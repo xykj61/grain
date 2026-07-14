@@ -1,0 +1,10 @@
+# hello.rish — the first Rishi script.
+# Comments begin with '#'. `let` binds a name; `say` speaks a value,
+# interpolating ${name} as it goes.
+
+let who = "Rye"
+let year = 2026
+
+say "hello from Rishi, sibling of ${who}!"
+say "the year is ${year}"
+say who

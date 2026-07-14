@@ -1,0 +1,25 @@
+# amphora_vessel_stamp.rish — Amphora Kumara vessel stamp (stamp_sig).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/amphora_vessel_stamp.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let vessel_bin = "amphora/bin/vessel-core"
+
+say "amphora-stamp: build vessel-core..."
+let build = run ["sh" "-c" "mkdir -p amphora/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_core.rye -femit-bin=${vessel_bin}"]
+assert build.ok else "amphora vessel_core build failed for stamp lap"
+
+let selftest = run ["sh" "-c" "${vessel_bin} selftest 2>&1"]
+assert selftest.ok else "amphora vessel stamp selftest exited non-zero"
+assert selftest.out contains "GREEN" else "amphora vessel stamp selftest not GREEN"
+assert selftest.out contains "Kumara" else "amphora vessel stamp selftest missing Kumara"
+
+say "amphora-stamp: pour signed vessel + scrub verify..."
+let witness = run ["sh" "tools/fixtures/amphora_vessel_stamp_witness.sh"]
+assert witness.ok else "Amphora vessel stamp witness failed"
+assert witness.out contains "GREEN" else "Amphora vessel stamp did not report GREEN"
+assert witness.out contains "STAMP ok" else "Amphora vessel stamp missing STAMP ok"
+assert witness.out contains "TAMPER refused" else "Amphora vessel stamp missing tamper refusal"
+
+say "GREEN: Amphora vessel stamp — Kumara stamp_sig on pour, verified on scrub."

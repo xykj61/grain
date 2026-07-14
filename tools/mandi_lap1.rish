@@ -1,0 +1,21 @@
+# mandi_lap1.rish — Mandi lap 1: vessel market listing (priced in MALA).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/mandi_lap1.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mandi/bin/mandi"
+
+let build = run ["sh" "-c" "mkdir -p mandi/bin && env RYE_ZIG=${zig} rye/bin/rye build mandi/mandi.rye -femit-bin=${bin}"]
+assert build.ok else "Mandi lap 1 build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "Mandi lap 1 selftest exited non-zero"
+assert selftest.out contains "GREEN" else "Mandi lap 1 selftest not GREEN"
+assert selftest.out contains "25 mala" else "Mandi lap 1 missing price claim"
+assert selftest.out contains "receipt" else "Mandi lap 1 missing receipt"
+assert selftest.out contains "zero price refused" else "Mandi lap 1 missing zero-price refuse"
+assert selftest.out contains "lying listing refused" else "Mandi lap 1 missing lying refuse"
+assert selftest.out contains "parent mismatch refused" else "Mandi lap 1 missing parent mismatch refuse"
+
+say "GREEN: Mandi lap 1 — vessel listing in MALA; receipt without identities."

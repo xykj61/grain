@@ -1,0 +1,63 @@
+# comlink_open_asks_lap5_wire_lab.rish — OA-L5 device-wire QEMU lab (spawn / wait-for).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/comlink_open_asks_lap5_wire_lab.rish
+#
+# Replaces the background-orchestration half of comlink/run_open_asks_lap5_wire_lab.sh;
+# the shell entry point delegates here so stable paths and citations hold.
+
+let zig = "vendor/zig-toolchain/zig"
+let build_dir = "comlink/.build"
+let port_accept_raw = env "COMLINK_OPEN_ASKS_ACCEPT_PORT"
+if port_accept_raw == "" then let port_acceptance = "15561" else let port_acceptance = port_accept_raw
+let port_complete_raw = env "COMLINK_OPEN_ASKS_COMPLETE_PORT"
+if port_complete_raw == "" then let port_completion = "15562" else let port_completion = port_complete_raw
+let port_consent_raw = env "COMLINK_OPEN_ASKS_CONSENT_PORT"
+if port_consent_raw == "" then let port_consent = "15563" else let port_consent = port_consent_raw
+let sock_acceptance = "127.0.0.1:${port_acceptance}"
+let sock_completion = "127.0.0.1:${port_completion}"
+let sock_consent = "127.0.0.1:${port_consent}"
+
+let prep = run ["sh" "-c" "mkdir -p ${build_dir}"]
+assert prep.ok else "open asks lap5 wire lab mkdir failed"
+
+let build_accept_rx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_open_asks_acceptance_rx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/open-asks-accept-rx.elf"]
+assert build_accept_rx.ok else "acceptance rx guest build failed"
+
+let build_accept_tx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_open_asks_acceptance_tx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/open-asks-accept-tx.elf"]
+assert build_accept_tx.ok else "acceptance tx guest build failed"
+
+let build_complete_rx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_open_asks_completion_rx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/open-asks-complete-rx.elf"]
+assert build_complete_rx.ok else "completion rx guest build failed"
+
+let build_complete_tx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_open_asks_completion_tx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/open-asks-complete-tx.elf"]
+assert build_complete_tx.ok else "completion tx guest build failed"
+
+let build_consent_rx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_open_asks_consent_rx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/open-asks-consent-rx.elf"]
+assert build_consent_rx.ok else "consent rx guest build failed"
+
+let build_consent_tx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_open_asks_consent_tx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/open-asks-consent-tx.elf"]
+assert build_consent_tx.ok else "consent tx guest build failed"
+
+let accept_rx = spawn ["timeout" "60" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,listen=${sock_acceptance}" "-kernel" "${build_dir}/open-asks-accept-rx.elf"]
+let accept_pause = run ["sleep" "1"]
+assert accept_pause.ok else "acceptance hop sleep failed"
+let accept_tx = run ["timeout" "30" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,connect=${sock_acceptance}" "-kernel" "${build_dir}/open-asks-accept-tx.elf"]
+let accept_rx_done = wait-for accept_rx
+assert accept_rx_done.out contains "sealed acceptance GREEN" else "acceptance hop RED"
+
+let complete_rx = spawn ["timeout" "60" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,listen=${sock_completion}" "-kernel" "${build_dir}/open-asks-complete-rx.elf"]
+let complete_pause = run ["sleep" "1"]
+assert complete_pause.ok else "completion hop sleep failed"
+let complete_tx = run ["timeout" "30" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,connect=${sock_completion}" "-kernel" "${build_dir}/open-asks-complete-tx.elf"]
+let complete_rx_done = wait-for complete_rx
+assert complete_rx_done.out contains "sealed completion GREEN" else "completion hop RED"
+
+let consent_rx = spawn ["timeout" "60" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,listen=${sock_consent}" "-kernel" "${build_dir}/open-asks-consent-rx.elf"]
+let consent_pause = run ["sleep" "1"]
+assert consent_pause.ok else "consent hop sleep failed"
+let consent_tx = run ["timeout" "30" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,connect=${sock_consent}" "-kernel" "${build_dir}/open-asks-consent-tx.elf"]
+let consent_rx_done = wait-for consent_rx
+assert consent_rx_done.out contains "sealed consent GREEN" else "consent hop RED"
+
+say "oal5 device wire lab: GREEN (acceptance + completion + consent)"

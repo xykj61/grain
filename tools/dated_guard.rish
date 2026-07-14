@@ -1,0 +1,15 @@
+# dated_guard.rish — staged dated artifacts on main stay immutable unless living.
+#
+# Staged MODIFIED files matching 2026????-??????_* that already exist on main
+# are RED unless the working-tree header declares a living ledger (or a freeze
+# pointer stub). Vacuous GREEN when the index has no such staged mods.
+#
+# Spec: context/specs/living-vs-dated.md
+#   rishi/bin/rishi run tools/dated_guard.rish
+
+say "dated-guard: scanning staged MODIFIED dated paths…"
+
+let scan = run ["python3" "tools/fixtures/dated_guard_scan.py"]
+say scan.out
+assert scan.ok else "dated-guard RED: staged dated file on main lacks living header"
+say "GREEN: dated-guard — staged dated mods on main declare living or are absent."

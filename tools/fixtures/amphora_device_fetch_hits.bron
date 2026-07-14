@@ -1,0 +1,6 @@
+# amphora device fetch hits — Realidream forge-device-view fixture
+# Same hello.txt digest Amphora device wire (ports 15571/15572) fetches under seal.
+wire device
+digest cd416bd6cae889877c353fc9abe39daaff1668666049a8fd10974248d99d23ab
+name hello.txt
+ports 15571/15572

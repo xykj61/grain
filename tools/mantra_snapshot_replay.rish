@@ -1,0 +1,16 @@
+# mantra_snapshot_replay.rish — I2 lap 1: snapshot export and catalog replay on host.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/mantra_snapshot_replay.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mantra/bin/snapshot-export"
+
+let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/snapshot_export.rye -femit-bin=${bin}"]
+assert build.ok else "snapshot export build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "snapshot export selftest exited non-zero"
+assert selftest.out contains "GREEN" else "snapshot export selftest not GREEN"
+
+say "GREEN: I2 snapshot replay witness passed (export → import → equal recall)."

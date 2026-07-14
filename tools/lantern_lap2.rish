@@ -1,0 +1,19 @@
+# lantern_lap2.rish — Lantern lap 2: model allow-list + max_tokens.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/lantern_lap2.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lantern/bin/lantern"
+
+let build = run ["sh" "-c" "mkdir -p lantern/bin && env RYE_ZIG=${zig} rye/bin/rye build lantern/lantern.rye -femit-bin=${bin}"]
+assert build.ok else "Lantern lap 2 build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "Lantern selftest exited non-zero"
+assert selftest.out contains "GREEN" else "Lantern selftest not GREEN"
+assert selftest.out contains "allow-list completion" else "Lantern missing allow-list welcome"
+assert selftest.out contains "allow-list refuse" else "Lantern missing allow-list unwelcome"
+assert selftest.out contains "max_tokens truncate" else "Lantern missing length-budget welcome"
+
+say "GREEN: Lantern lap 2 — allow-list gate with max_tokens truncate."

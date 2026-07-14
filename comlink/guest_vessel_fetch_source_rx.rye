@@ -1,0 +1,68 @@
+//! comlink/guest_vessel_fetch_source_rx.rye — Amphora lap 3 device: source RX (open digest request).
+
+const vn = @import("virtio_net.rye");
+const wf = @import("wire_format.rye");
+const vfw = @import("vessel_fetch_wire.rye");
+const Sha3_256 = @import("std").crypto.hash.sha3.Sha3_256;
+
+var rx: vn.RxQueue = undefined;
+
+fn digest_hex_of(content: []const u8, out: *[64]u8) void {
+    var digest: [32]u8 = undefined;
+    Sha3_256.hash(content, &digest, .{});
+    var i: u32 = 0;
+    while (i < 32) : (i += 1) {
+        _ = @import("std").fmt.bufPrint(out[i * 2 ..][0..2], "{x:0>2}", .{digest[i]}) catch unreachable;
+    }
+}
+
+export fn _start() linksection(".text.init") callconv(.naked) noreturn {
+    asm volatile (
+        \\ li sp, 0x80100000
+        \\ j kmain
+    );
+}
+
+export fn kmain() callconv(.c) noreturn {
+    vn.init_device();
+    rx.init();
+    vn.driver_ok();
+    rx.kick();
+
+    const n = rx.wait_frame();
+    if (n == 0) {
+        vn.write_str("amphora device wire: FAIL — source RX timeout\n");
+        vn.finish_fail();
+    }
+    const poff = vn.virtio_net_hdr_len + vn.eth_header_len;
+    if (n <= poff) {
+        vn.write_str("amphora device wire: FAIL — frame too short\n");
+        vn.finish_fail();
+    }
+    const buf = rx.frame();
+    const datagram = buf[poff..n];
+
+    var opened: [@intCast(wf.max_message)]u8 = undefined;
+    const opened_len = wf.open_datagram(datagram, &opened) catch {
+        vn.write_str("amphora device wire: FAIL — open refused\n");
+        vn.finish_fail();
+    };
+
+    var req: vfw.FetchRequest = undefined;
+    vfw.decode_request(opened[0..@intCast(opened_len)], &req) catch {
+        vn.write_str("amphora device wire: FAIL — request decode\n");
+        vn.finish_fail();
+    };
+
+    var expect: [64]u8 = undefined;
+    digest_hex_of("leaf-amphora-lap3", &expect);
+    var i: u32 = 0;
+    while (i < 64) : (i += 1) {
+        if (req.digest_hex[i] != expect[i]) {
+            vn.write_str("amphora device wire: FAIL — digest mismatch\n");
+            vn.finish_fail();
+        }
+    }
+    vn.write_str("amphora device wire: sealed vessel fetch request GREEN — verify passed\n");
+    vn.finish_pass();
+}

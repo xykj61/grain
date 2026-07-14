@@ -1,0 +1,12 @@
+# tame_check_th2.rish — TH-2 witness: tame-check runs and gates the authored corpus.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/tame_check_th2.rish
+
+let result = run ["rishi/bin/rishi" "run" "tools/tame-check.rish"]
+assert result.ok else "tame-check did not run cleanly"
+
+assert result.out contains "mantra/src/main.rye" else "tame-check must scan mantra/src/main.rye"
+assert result.out contains "TAME CHECK GREEN" else "tame-check must pass as a hard gate"
+
+say "GREEN: TH-2 — tame-check runs and gates authored .rye."

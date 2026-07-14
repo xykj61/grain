@@ -1,0 +1,298 @@
+//! amphora/vessel_seal.rye — Amber AEAD seal for Amphora vessel cargo.
+//!
+//! ChaCha20-Poly1305 over the cargo block; shoulder is associated data
+//! (readable without opening the seal). Rite: seal, then Kumara stamp.
+//!
+//!   rye build amphora/vessel_seal.rye -femit-bin=amphora/bin/vessel-seal
+//!   amphora/bin/vessel-seal selftest
+//!   amphora/bin/vessel-seal seal <path>
+//!   amphora/bin/vessel-seal open-check <path>
+//!
+//! Scope: [`active-designing/20260703-201612_the-sealed-crossing.md`](../active-designing/20260703-201612_the-sealed-crossing.md)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const ChaCha20Poly1305 = std.crypto.aead.chacha_poly.ChaCha20Poly1305;
+const Sha3_256 = std.crypto.hash.sha3.Sha3_256;
+const me = @import("manifest_entry.rye");
+const tally_copy = @import("tally_copy.rye");
+
+pub const amphora_seal_version = "20260710.153745";
+pub const max_vessel_len: u32 = 8192;
+pub const max_seal_plain: u32 = 1024;
+pub const max_cargo: u32 = 16;
+pub const nonce_hex_len: u32 = ChaCha20Poly1305.nonce_length * 2;
+pub const tag_hex_len: u32 = ChaCha20Poly1305.tag_length * 2;
+
+/// Witness seal key — distinct from vessel stamp seed 0x62 and kumara 0x42.
+const vessel_seal_seed: [ChaCha20Poly1305.key_length]u8 = .{0x63} ** ChaCha20Poly1305.key_length;
+
+fn trim_line(line: []const u8) []const u8 {
+    return std.mem.trim(u8, line, " \t\r\n");
+}
+
+fn is_lower_hex(c: u8) bool {
+    return (c >= '0' and c <= '9') or (c >= 'a' and c <= 'f');
+}
+
+fn write_hex(bytes: []const u8, out: []u8) void {
+    assert(out.len >= bytes.len * 2);
+    var i: u32 = 0;
+    while (i < bytes.len) : (i += 1) {
+        _ = std.fmt.bufPrint(out[i * 2 ..][0..2], "{x:0>2}", .{bytes[i]}) catch unreachable;
+    }
+}
+
+fn decode_hex_lower(hex: []const u8, out: []u8) error{BadHex}!void {
+    if (hex.len != out.len * 2) return error.BadHex;
+    var i: u32 = 0;
+    while (i < out.len) : (i += 1) {
+        const hi = hex[i * 2];
+        const lo = hex[i * 2 + 1];
+        if (!is_lower_hex(hi) or !is_lower_hex(lo)) return error.BadHex;
+        const hv: u8 = if (hi <= '9') hi - '0' else hi - 'a' + 10;
+        const lv: u8 = if (lo <= '9') lo - '0' else lo - 'a' + 10;
+        out[i] = (hv << 4) | lv;
+    }
+}
+
+pub fn seal_key() [ChaCha20Poly1305.key_length]u8 {
+    return vessel_seal_seed;
+}
+
+/// Deterministic nonce from stamp + parent — same pour yields the same seal.
+pub fn nonce_from_stamp_parent(stamp: []const u8, parent: []const u8) [ChaCha20Poly1305.nonce_length]u8 {
+    var digest: [Sha3_256.digest_length]u8 = undefined;
+    var h = Sha3_256.init(.{});
+    h.update(stamp);
+    h.update("|");
+    h.update(parent);
+    h.final(&digest);
+    var nonce: [ChaCha20Poly1305.nonce_length]u8 = undefined;
+    tally_copy.copy_disjoint(u8, nonce[0..], digest[0..ChaCha20Poly1305.nonce_length]);
+    return nonce;
+}
+
+pub fn encrypt_cargo(
+    plain: []const u8,
+    ad: []const u8,
+    nonce: [ChaCha20Poly1305.nonce_length]u8,
+    cipher: []u8,
+    tag: *[ChaCha20Poly1305.tag_length]u8,
+) error{Overflow}!void {
+    if (plain.len > max_seal_plain) return error.Overflow;
+    if (cipher.len < plain.len) return error.Overflow;
+    ChaCha20Poly1305.encrypt(cipher[0..plain.len], tag, plain, ad, nonce, seal_key());
+}
+
+pub fn decrypt_cargo(
+    cipher: []const u8,
+    tag: [ChaCha20Poly1305.tag_length]u8,
+    ad: []const u8,
+    nonce: [ChaCha20Poly1305.nonce_length]u8,
+    plain: []u8,
+) error{Overflow, OpenFailed}!void {
+    if (cipher.len > max_seal_plain) return error.Overflow;
+    if (plain.len < cipher.len) return error.Overflow;
+    ChaCha20Poly1305.decrypt(plain[0..cipher.len], cipher, tag, ad, nonce, seal_key()) catch return error.OpenFailed;
+}
+
+fn collect_cargo_block(text: []const u8, out: []u8) error{InvalidVessel, Overflow}!u32 {
+    var off: u32 = 0;
+    var cargo_count: u32 = 0;
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    while (lines.next()) |raw| {
+        const line = trim_line(raw);
+        if (!std.mem.startsWith(u8, line, "cargo ")) continue;
+        const rest = line["cargo ".len..];
+        _ = me.parse_manifest_line(rest) catch return error.InvalidVessel;
+        if (cargo_count >= max_cargo) return error.Overflow;
+        if (off + line.len + 1 > out.len) return error.Overflow;
+        tally_copy.copy_disjoint(u8, out[off..][0..line.len], line);
+        off += @intCast(line.len);
+        out[off] = '\n';
+        off += 1;
+        cargo_count += 1;
+    }
+    if (cargo_count == 0) return error.InvalidVessel;
+    return off;
+}
+
+fn read_field(text: []const u8, key: []const u8) error{InvalidVessel}![]const u8 {
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    while (lines.next()) |raw| {
+        const line = trim_line(raw);
+        if (line.len == 0 or line[0] == '#') continue;
+        const space = std.mem.indexOfScalar(u8, line, ' ') orelse continue;
+        if (!std.mem.eql(u8, line[0..space], key)) continue;
+        const value = trim_line(line[space + 1 ..]);
+        if (value.len == 0) return error.InvalidVessel;
+        return value;
+    }
+    return error.InvalidVessel;
+}
+
+fn has_seal_fields(text: []const u8) bool {
+    return std.mem.indexOf(u8, text, "\nseal_nonce ") != null or std.mem.startsWith(u8, trim_line(text), "seal_nonce ");
+}
+
+fn strip_stamp_and_cargo(text: []const u8, out: []u8) error{Overflow}!u32 {
+    var off: u32 = 0;
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    while (lines.next()) |raw| {
+        const line = trim_line(raw);
+        if (std.mem.startsWith(u8, line, "stamp_sig ")) continue;
+        if (std.mem.startsWith(u8, line, "cargo ")) continue;
+        if (std.mem.startsWith(u8, line, "seal_nonce ")) continue;
+        if (std.mem.startsWith(u8, line, "seal_tag ")) continue;
+        if (std.mem.startsWith(u8, line, "seal_cargo ")) continue;
+        if (off + raw.len + 1 > out.len) return error.Overflow;
+        tally_copy.copy_disjoint(u8, out[off..][0..raw.len], raw);
+        off += @intCast(raw.len);
+        out[off] = '\n';
+        off += 1;
+    }
+    return off;
+}
+
+fn append_line(out: []u8, off: *u32, key: []const u8, value: []const u8) error{Overflow}!void {
+    const need = key.len + 1 + value.len + 1;
+    if (off.* + need > out.len) return error.Overflow;
+    tally_copy.copy_disjoint(u8, out[off.*..][0..key.len], key);
+    off.* += @intCast(key.len);
+    out[off.*] = ' ';
+    off.* += 1;
+    tally_copy.copy_disjoint(u8, out[off.*..][0..value.len], value);
+    off.* += @intCast(value.len);
+    out[off.*] = '\n';
+    off.* += 1;
+}
+
+fn run_seal_file(io: std.Io, path: []const u8) !u8 {
+    const cwd = std.Io.Dir.cwd();
+    var buf: [max_vessel_len]u8 = undefined;
+    const text = try cwd.readFile(io, path, &buf);
+    if (has_seal_fields(text)) return error.AlreadySealed;
+
+    const shoulder = try read_field(text, "shoulder");
+    const stamp = try read_field(text, "stamp");
+    const parent = try read_field(text, "parent");
+
+    var plain: [max_seal_plain]u8 = undefined;
+    const plain_len = try collect_cargo_block(text, &plain);
+    const nonce = nonce_from_stamp_parent(stamp, parent);
+    var cipher: [max_seal_plain]u8 = undefined;
+    var tag: [ChaCha20Poly1305.tag_length]u8 = undefined;
+    try encrypt_cargo(plain[0..plain_len], shoulder, nonce, &cipher, &tag);
+
+    var nonce_hex: [nonce_hex_len]u8 = undefined;
+    var tag_hex: [tag_hex_len]u8 = undefined;
+    var cargo_hex: [max_seal_plain * 2]u8 = undefined;
+    write_hex(&nonce, &nonce_hex);
+    write_hex(&tag, &tag_hex);
+    write_hex(cipher[0..plain_len], cargo_hex[0 .. plain_len * 2]);
+
+    var head: [max_vessel_len]u8 = undefined;
+    const head_len = try strip_stamp_and_cargo(text, &head);
+    var out: [max_vessel_len]u8 = undefined;
+    var off: u32 = 0;
+    if (head_len > out.len) return error.Overflow;
+    tally_copy.copy_disjoint(u8, out[0..head_len], head[0..head_len]);
+    off = head_len;
+    try append_line(&out, &off, "seal_nonce", &nonce_hex);
+    try append_line(&out, &off, "seal_tag", &tag_hex);
+    try append_line(&out, &off, "seal_cargo", cargo_hex[0 .. plain_len * 2]);
+
+    try cwd.writeFile(io, .{ .sub_path = path, .data = out[0..off] });
+    try open_check_text(out[0..off]);
+    print("amphora: vessel sealed cargo_bytes={d}\n", .{plain_len});
+    print("GREEN: Amphora vessel — Amber AEAD seal written.\n", .{});
+    return 0;
+}
+
+pub fn open_check_text(text: []const u8) error{InvalidVessel, BadHex, Overflow, OpenFailed}!void {
+    var plain: [max_seal_plain]u8 = undefined;
+    const plain_len = try open_cargo_plain(text, &plain);
+    var cargo_count: u32 = 0;
+    var lines = std.mem.splitScalar(u8, plain[0..plain_len], '\n');
+    while (lines.next()) |raw| {
+        const line = trim_line(raw);
+        if (line.len == 0) continue;
+        if (!std.mem.startsWith(u8, line, "cargo ")) return error.InvalidVessel;
+        _ = me.parse_manifest_line(line["cargo ".len..]) catch return error.InvalidVessel;
+        cargo_count += 1;
+    }
+    if (cargo_count == 0) return error.InvalidVessel;
+}
+
+/// Decrypt seal_cargo into plain; returns plaintext length.
+pub fn open_cargo_plain(text: []const u8, plain: []u8) error{InvalidVessel, BadHex, Overflow, OpenFailed}!u32 {
+    const shoulder = try read_field(text, "shoulder");
+    const nonce_hex = try read_field(text, "seal_nonce");
+    const tag_hex = try read_field(text, "seal_tag");
+    const cargo_hex = try read_field(text, "seal_cargo");
+    if (nonce_hex.len != nonce_hex_len) return error.InvalidVessel;
+    if (tag_hex.len != tag_hex_len) return error.InvalidVessel;
+    if (cargo_hex.len == 0 or cargo_hex.len % 2 != 0) return error.InvalidVessel;
+    const cipher_len: u32 = @intCast(cargo_hex.len / 2);
+    if (cipher_len > max_seal_plain) return error.Overflow;
+    if (plain.len < cipher_len) return error.Overflow;
+
+    var nonce: [ChaCha20Poly1305.nonce_length]u8 = undefined;
+    var tag: [ChaCha20Poly1305.tag_length]u8 = undefined;
+    var cipher: [max_seal_plain]u8 = undefined;
+    try decode_hex_lower(nonce_hex, &nonce);
+    try decode_hex_lower(tag_hex, &tag);
+    try decode_hex_lower(cargo_hex, cipher[0..cipher_len]);
+    try decrypt_cargo(cipher[0..cipher_len], tag, shoulder, nonce, plain);
+    return cipher_len;
+}
+
+fn run_open_check(io: std.Io, path: []const u8) !u8 {
+    const cwd = std.Io.Dir.cwd();
+    var buf: [max_vessel_len]u8 = undefined;
+    const text = try cwd.readFile(io, path, &buf);
+    try open_check_text(text);
+    print("amphora: vessel seal opens\n", .{});
+    print("GREEN: Amphora vessel — Amber AEAD seal ok.\n", .{});
+    return 0;
+}
+
+fn run_selftest() !u8 {
+    const plain = "cargo plain-bytes cd416bd6cae889877c353fc9abe39daaff1668666049a8fd10974248d99d23ab hello.txt\n";
+    const ad = "amber-ring1-season";
+    const nonce = [_]u8{0x07} ** ChaCha20Poly1305.nonce_length;
+    var cipher: [max_seal_plain]u8 = undefined;
+    var tag: [ChaCha20Poly1305.tag_length]u8 = undefined;
+    try encrypt_cargo(plain, ad, nonce, &cipher, &tag);
+
+    var opened: [max_seal_plain]u8 = undefined;
+    try decrypt_cargo(cipher[0..plain.len], tag, ad, nonce, &opened);
+    assert(std.mem.eql(u8, opened[0..plain.len], plain));
+
+    var tampered = cipher;
+    tampered[0] ^= 0x01;
+    if (decrypt_cargo(tampered[0..plain.len], tag, ad, nonce, &opened)) |_| {
+        return error.UnwelcomePassed;
+    } else |_| {}
+
+    const n = nonce_from_stamp_parent("20260710.153745", "8ffb113abd0b51216cc5062d34687fd8a64ae5d2d3c8f91bcb7f019c43c656ff");
+    assert(n.len == ChaCha20Poly1305.nonce_length);
+
+    print("amphora: seal version {s}\n", .{amphora_seal_version});
+    print("GREEN: Amphora vessel — Amber AEAD seal, refuse wreck.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 3 and std.mem.eql(u8, args[1], "seal")) {
+        return run_seal_file(init.io, args[2]);
+    }
+    if (args.len >= 3 and std.mem.eql(u8, args[1], "open-check")) {
+        return run_open_check(init.io, args[2]);
+    }
+    return run_selftest();
+}

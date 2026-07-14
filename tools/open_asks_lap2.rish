@@ -1,0 +1,25 @@
+# open_asks_lap2.rish — OA-L2 cross-party delivery witness.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/open_asks_lap2.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/open-asks-delivery"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/open_asks_delivery.rye -lc -femit-bin=${bin}"]
+
+assert build.ok else "OA-L2 open asks delivery build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "OA-L2 open asks delivery selftest exited non-zero"
+assert selftest.out contains "GREEN" else "OA-L2 open asks delivery selftest not GREEN"
+
+let demo = run ["sh" "-c" "${bin} demo 2>&1"]
+assert demo.ok else "OA-L2 open asks delivery demo exited non-zero"
+assert demo.out contains "GREEN" else "OA-L2 open asks delivery demo not GREEN"
+
+let device = run ["sh" "comlink/run_open_asks_wire_lab.sh"]
+assert device.ok else "OA-L2 device wire lab failed"
+assert device.out contains "GREEN" else "OA-L2 device wire lab not GREEN"
+
+say "GREEN: OA-L2 cross-party delivery witness passed (hosted + device wire)."

@@ -1,0 +1,71 @@
+# proven_seat_g1.rish — G1: receipt verify-witness on Genode POSIX seat (jailed TCG).
+#
+# Requires guest binary (proven_seat_g1_build_guest.rish) and prior unroll steps.
+# Runs make run/receipt_verify KERNEL=nova; asserts GREEN on serial.
+#
+#   rishi/bin/rishi run tools/proven_seat_g1.rish
+
+let cache = "tools/.cache/proven-seat"
+let guest = "${cache}/g1-receipt-verify"
+let pin = "active-designing/20260712-195339_proven-seat-g1-crossing-pin.md"
+let build = "${cache}/genode-build-x86_64"
+let tools = "${cache}/host-tools"
+let log = "${cache}/g1-serial-run.log"
+let expect_bin = "${tools}/usr/bin/expect"
+let run_tool = "vendor/genode/tool/run/run"
+
+say "proven-seat G1: requiring crossing pin…"
+let have_pin = run ["test" "-f" pin]
+assert have_pin.ok else "run tools/proven_seat_g1_crossing_probe.rish first — crossing pin missing"
+
+say "proven-seat G1: looking for Genode-built receipt verify guest…"
+let have_guest = run ["test" "-x" guest]
+assert have_guest.ok else "missing ${guest} — run proven_seat_g1_build_guest.rish first"
+
+say "proven-seat G1: resolving CROSS_DEV_PREFIX…"
+let find_cxx = run ["sh" "-c" "find ${cache}/genode-toolchain -type f -name genode-x86-g++ 2>/dev/null | head -1"]
+assert find_cxx.ok else "find genode-x86-g++ failed"
+assert find_cxx.out != "" else "toolchain missing"
+let cxx_rel = trim find_cxx.out
+let abs_cxx = run ["realpath" cxx_rel]
+assert abs_cxx.ok else "realpath failed"
+let cxx = trim abs_cxx.out
+let bin_dir = run ["sh" "-c" "dirname ${cxx}"]
+assert bin_dir.ok else "dirname failed"
+let abs_bin = trim bin_dir.out
+let cross = "${abs_bin}/genode-x86-"
+
+say "proven-seat G1: ensuring cache expect (vendor run tool restored after)…"
+let have_expect = run ["test" "-x" expect_bin]
+assert have_expect.ok else "missing ${expect_bin} — extract expect+tcl-expect into host-tools"
+let have_run = run ["test" "-f" run_tool]
+assert have_run.ok else "missing ${run_tool} — run proven_seat_g1_fetch_sources.rish first"
+let abs_expect = run ["realpath" expect_bin]
+assert abs_expect.ok else "realpath expect failed"
+let expect_abs = trim abs_expect.out
+let abs_src = run ["realpath" "vendor/genode"]
+assert abs_src.ok else "realpath vendor/genode failed"
+let src_abs = trim abs_src.out
+let abs_run = run ["realpath" run_tool]
+assert abs_run.ok else "realpath run tool failed"
+let run_abs = trim abs_run.out
+
+say "proven-seat G1: jailed TCG serial — make run/receipt_verify KERNEL=nova…"
+let abs_log_run = run ["realpath" "-m" log]
+assert abs_log_run.ok else "realpath log failed"
+let log_path = trim abs_log_run.out
+let abs_tools_run = run ["realpath" tools]
+assert abs_tools_run.ok else "realpath host-tools failed"
+let tools_abs = trim abs_tools_run.out
+let abs_build_run = run ["realpath" build]
+assert abs_build_run.ok else "realpath builddir failed"
+let build_abs = trim abs_build_run.out
+# Temporary shebang patch under trap — host has no /usr/bin/expect; nested bwrap is refused in jail.
+# EXIT restores tool/run/run from git (absolute paths — make cds into the builddir).
+let serial = run ["sh" "-c" "trap 'git -C ${src_abs} checkout -- tool/run/run' EXIT; printf '%s\n' '#!${expect_abs}' > ${run_abs}.new; tail -n +2 ${run_abs} >> ${run_abs}.new; mv ${run_abs}.new ${run_abs}; chmod +x ${run_abs}; export PATH=${tools_abs}/usr/bin:/usr/bin:/bin LD_LIBRARY_PATH=${tools_abs}/usr/lib/x86_64-linux-gnu BISON_PKGDATADIR=${tools_abs}/usr/share/bison M4=${tools_abs}/usr/bin/m4; cd ${build_abs}; make run/receipt_verify KERNEL=nova BOARD=pc CROSS_DEV_PREFIX=${cross} > ${log_path} 2>&1; status=\$?; exit \$status"]
+let log_text = read-file log
+assert log_text contains "GREEN: proven-seat G1 receipt-verify" else "serial log missing GREEN line — see ${log}"
+assert log_text contains "Run script execution successful" else "run script did not report success — see ${log}"
+say "proven-seat G1: serial GREEN matched"
+
+say "GREEN: proven-seat G1 — jailed TCG serial; fixture holds; seat speaks"

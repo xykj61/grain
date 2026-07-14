@@ -1,0 +1,40 @@
+//! Rye test: std.Io.Dir fs boundary assertions — pass 9992.
+//!
+//! openFile, createFile, readFile, and writeFile each now carry two
+//! assertions at their door: sub_path.len > 0 (empty path is always a
+//! caller error) and sub_path.len < max_path_bytes (path within the OS
+//! limit). readFile also asserts buffer.len > 0.
+//!
+//! This test exercises all four functions with valid paths and a valid
+//! buffer, confirms the write-then-read round-trip produces the expected
+//! content, and confirms parity: the same output on both the baseline
+//! and our strengthened std.
+
+const std = @import("std");
+const Dir = std.Io.Dir;
+
+pub fn main(init: std.process.Init) !u8 {
+    const io = init.io;
+    const cwd = Dir.cwd();
+
+    const tmp_path = "/tmp/rye_fs_boundary_test.txt";
+    const expected = "Rye: fs boundary assertions hold.\n";
+
+    // writeFile exercises the writeFile + createFile boundary assertions.
+    try cwd.writeFile(io, .{ .sub_path = tmp_path, .data = expected });
+
+    // readFile exercises the readFile boundary assertion (path + buffer).
+    var buf: [64]u8 = undefined;
+    const got = try cwd.readFile(io, tmp_path, &buf);
+    std.debug.assert(std.mem.eql(u8, got, expected));
+
+    // openFile exercises the openFile boundary assertion directly.
+    const f = try cwd.openFile(io, tmp_path, .{});
+    f.close(io);
+
+    // Clean up.
+    cwd.deleteFile(io, tmp_path) catch {};
+
+    std.debug.print("rye: fs boundary assertions confirmed (openFile, createFile, readFile, writeFile).\n", .{});
+    return 0;
+}

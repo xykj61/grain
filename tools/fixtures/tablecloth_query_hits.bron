@@ -1,0 +1,7 @@
+# tablecloth query hits — Realidream query-view fixture (wire answer shape)
+# Same hits the hosted Tablecloth query wire returns for peerB/b.
+filter_peer peerB
+filter_bolt b
+hit_count 2
+hit peerB b 1 notes.txt
+hit peerB b 2 notes.txt

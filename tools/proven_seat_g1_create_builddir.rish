@@ -1,0 +1,114 @@
+# proven_seat_g1_create_builddir.rish — Genode x86_64 builddir beside the cache tree.
+#
+# Claude 201200 unroll step 3 · Claude 204549 vendor home. Pins GENODE_DIR to
+# vendor/genode, CONTRIB_DIR to the cache workbench, CROSS_DEV_PREFIX to the
+# cached 25.05 toolchain (absolute path · genode-x86- suffix), and enables
+# repos/libports for the posix/libc guest. Cache claims no seat.
+#
+#   rishi/bin/rishi run tools/proven_seat_g1_create_builddir.rish
+
+let cache = "tools/.cache/proven-seat"
+let src = "vendor/genode"
+let build = "${cache}/genode-build-x86_64"
+let contrib = "${cache}/genode-contrib"
+let meta = "${cache}/g1-builddir-meta.txt"
+let trio = "${cache}/g1-toolchain-meta.txt"
+let cxx_name = "genode-x86-g++"
+let prefix_tail = "genode-x86-"
+let libc_hash = "d6a3665f0d2778ce8928c66302f1694cdc0d8480"
+
+say "proven-seat G1 builddir: checking sources · toolchain · libc…"
+let have_src = run ["test" "-d" src]
+assert have_src.ok else "missing ${src} — run proven_seat_g1_fetch_sources.rish first"
+let have_create = run ["test" "-f" "${src}/tool/create_builddir"]
+assert have_create.ok else "missing ${src}/tool/create_builddir"
+let have_libc = run ["test" "-d" "${contrib}/libc-${libc_hash}"]
+assert have_libc.ok else "missing prepared libc — run proven_seat_g1_prepare_libc.rish first"
+let have_trio = run ["test" "-f" trio]
+assert have_trio.ok else "missing ${trio} — run proven_seat_g1_fetch_toolchain.rish first"
+
+say "proven-seat G1 builddir: resolving CROSS_DEV_PREFIX from toolchain meta…"
+let find_cxx = run ["sh" "-c" "find ${cache}/genode-toolchain -type f -name ${cxx_name} 2>/dev/null | head -1"]
+assert find_cxx.ok else "find ${cxx_name} failed"
+assert find_cxx.out != "" else "${cxx_name} not found under ${cache}/genode-toolchain"
+let cxx = trim find_cxx.out
+let abs_cxx = run ["realpath" cxx]
+assert abs_cxx.ok else "realpath ${cxx} failed"
+let abs_cxx_path = trim abs_cxx.out
+let bin_dir = run ["sh" "-c" "dirname ${abs_cxx_path}"]
+assert bin_dir.ok else "dirname failed"
+let abs_bin = trim bin_dir.out
+let cross = "${abs_bin}/${prefix_tail}"
+say "proven-seat G1 builddir: CROSS_DEV_PREFIX=${cross}"
+let ver = run ["sh" "-c" "${cross}g++ --version"]
+assert ver.ok else "cross g++ --version failed at ${cross}g++"
+say "proven-seat G1 builddir: ${ver.out}"
+
+say "proven-seat G1 builddir: resolving absolute GENODE_DIR and CONTRIB_DIR…"
+let abs_src = run ["realpath" src]
+assert abs_src.ok else "realpath ${src} failed"
+let genode_dir = trim abs_src.out
+let abs_contrib = run ["realpath" contrib]
+assert abs_contrib.ok else "realpath ${contrib} failed"
+let contrib_dir = trim abs_contrib.out
+say "proven-seat G1 builddir: GENODE_DIR=${genode_dir}"
+say "proven-seat G1 builddir: CONTRIB_DIR=${contrib_dir}"
+
+say "proven-seat G1 builddir: ensuring build directory at ${build}…"
+let have_build = run ["test" "-f" "${build}/etc/build.conf"]
+if have_build.ok then say "proven-seat G1 builddir: already present — refreshing pins"
+if have_build.ok == false then say "proven-seat G1 builddir: create_builddir x86_64…"
+if have_build.ok == false then let mkdir_parent = run ["mkdir" "-p" cache]
+if have_build.ok == false then assert mkdir_parent.ok
+if have_build.ok == false then let create = run ["sh" "-c" "cd ${src} && make -f tool/create_builddir x86_64 BUILD_DIR=$(cd ${cache} && pwd)/genode-build-x86_64"]
+if have_build.ok == false then assert create.ok
+let have_build2 = run ["test" "-f" "${build}/etc/build.conf"]
+assert have_build2.ok else "build.conf missing after create_builddir"
+let have_specs = run ["test" "-f" "${build}/etc/specs.conf"]
+assert have_specs.ok else "specs.conf missing"
+let specs = read-file "${build}/etc/specs.conf"
+assert specs contains "x86_64" else "specs.conf must name x86_64"
+let have_mk = run ["test" "-e" "${build}/Makefile"]
+assert have_mk.ok else "build Makefile missing"
+
+say "proven-seat G1 builddir: pinning GENODE_DIR · CONTRIB_DIR · CROSS_DEV_PREFIX · libports…"
+let conf_path = "${build}/etc/build.conf"
+# Strip prior pins; GENODE_DIR/CONTRIB_DIR must lead the file so := lines expand them.
+# Drop every active libports REPOSITORIES line (duplicates refuse the build), then append one.
+let rewrite = run ["sh" "-c" "grep -v '^CROSS_DEV_PREFIX' ${conf_path} | grep -v '^GENODE_DIR' | grep -v '^CONTRIB_DIR' | grep -v 'proven-seat G1: enable libports' | grep -v '^REPOSITORIES += .*repos/libports' > ${conf_path}.body && { echo GENODE_DIR := ${genode_dir}; echo CONTRIB_DIR := ${contrib_dir}; echo; cat ${conf_path}.body; echo; echo '# proven-seat G1: enable libports for posix/libc guest'; printf '%s\n' 'REPOSITORIES += $(GENODE_DIR)/repos/libports'; echo CROSS_DEV_PREFIX := ${cross}; } > ${conf_path} && rm -f ${conf_path}.body"]
+assert rewrite.ok else "could not rewrite build.conf pins"
+let conf = read-file "${build}/etc/build.conf"
+assert conf contains "CROSS_DEV_PREFIX" else "build.conf missing CROSS_DEV_PREFIX"
+assert conf contains "GENODE_DIR" else "build.conf missing GENODE_DIR"
+assert conf contains "CONTRIB_DIR" else "build.conf missing CONTRIB_DIR"
+assert conf contains "repos/libports" else "build.conf must enable repos/libports"
+assert conf contains "genode-x86-" else "CROSS_DEV_PREFIX must use genode-x86- suffix"
+assert conf contains "vendor/genode" else "GENODE_DIR must point at vendor/genode"
+assert conf contains "genode-contrib" else "CONTRIB_DIR must point at cache workbench contrib"
+let head_pin = run ["sh" "-c" "grep -v '^\$' ${conf_path} | head -1"]
+assert head_pin.ok
+assert head_pin.out contains "GENODE_DIR" else "GENODE_DIR must be the first pin in build.conf"
+let libports_n = run ["sh" "-c" "grep -c '^REPOSITORIES += .*repos/libports' ${conf_path}"]
+assert libports_n.ok
+assert libports_n.out contains "1" else "build.conf must enable libports exactly once"
+say "proven-seat G1 builddir: build.conf pins GENODE_DIR · CONTRIB_DIR · CROSS_DEV_PREFIX · libports"
+
+say "proven-seat G1 builddir: writing ${meta}…"
+let clear_meta = run ["rm" "-f" meta]
+assert clear_meta.ok else "could not clear ${meta}"
+let w1 = run ["sh" "-c" "echo platform x86_64 > ${meta}"]
+assert w1.ok else "meta write failed"
+let w2 = run ["sh" "-c" "echo build_dir ${build} >> ${meta}"]
+assert w2.ok else "meta write failed"
+let w3 = run ["sh" "-c" "echo sources ${src} >> ${meta}"]
+assert w3.ok else "meta write failed"
+let w4 = run ["sh" "-c" "echo contrib ${contrib} >> ${meta}"]
+assert w4.ok else "meta write failed"
+let w5 = run ["sh" "-c" "echo cross_dev_prefix ${cross} >> ${meta}"]
+assert w5.ok else "meta write failed"
+let w6 = run ["sh" "-c" "echo cxx ${cross}g++ >> ${meta}"]
+assert w6.ok else "meta write failed"
+let w7 = run ["sh" "-c" "echo libports enabled >> ${meta}"]
+assert w7.ok else "meta write failed"
+
+say "GREEN: proven-seat G1 builddir — x86_64 at ${build}; GENODE_DIR=${src}; CONTRIB_DIR workbench; CROSS_DEV_PREFIX pinned; libports on; SLC guest next"

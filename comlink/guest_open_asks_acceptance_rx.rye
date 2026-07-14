@@ -1,0 +1,97 @@
+//! comlink/guest_open_asks_acceptance_rx.rye — OA-L5 device wire acceptance RX guest.
+
+const std = @import("std");
+const vn = @import("virtio_net.rye");
+const wf = @import("wire_format.rye");
+const oa = @import("open_asks.rye");
+const rc = @import("receipt_core.rye");
+const kumara = @import("kumara.rye");
+
+var rx: vn.RxQueue = undefined;
+
+fn pubkey_hex(kp: kumara.KeyPair, out: *[64]u8) void {
+    const bytes = kp.public_key.toBytes();
+    var i: u32 = 0;
+    while (i < 32) : (i += 1) {
+        _ = std.fmt.bufPrint(out[i * 2 ..][0..2], "{x:0>2}", .{bytes[i]}) catch unreachable;
+    }
+}
+
+export fn _start() linksection(".text.init") callconv(.naked) noreturn {
+    asm volatile (
+        \\ li sp, 0x80100000
+        \\ j kmain
+    );
+}
+
+export fn kmain() callconv(.c) noreturn {
+    vn.init_device();
+    rx.init();
+    vn.driver_ok();
+    rx.kick();
+
+    const poster_kp = kumara.keypair_from_seed(&oa.poster_seed);
+    const applicant_kp = kumara.keypair_from_seed(&oa.applicant_seed);
+    var applicant_hex: [64]u8 = undefined;
+    pubkey_hex(applicant_kp, &applicant_hex);
+
+    const n = rx.wait_frame();
+    if (n == 0) {
+        vn.write_str("oal5 device wire: FAIL — acceptance RX timeout\n");
+        vn.finish_fail();
+    }
+    const poff = vn.virtio_net_hdr_len + vn.eth_header_len;
+    if (n <= poff) {
+        vn.write_str("oal5 device wire: FAIL — acceptance frame too short\n");
+        vn.finish_fail();
+    }
+    const buf = rx.frame();
+    const datagram = buf[poff..n];
+
+    var opened: [@intCast(wf.max_message)]u8 = undefined;
+    const opened_len = wf.open_datagram(datagram, &opened) catch {
+        vn.write_str("oal5 device wire: FAIL — acceptance open refused\n");
+        vn.finish_fail();
+    };
+
+    var sig_buf: [kumara.signature_length]u8 = undefined;
+    var fact_buf: [oa.max_oa_fact]u8 = undefined;
+    const decoded = oa.decode_compact_payload(opened[0..@intCast(opened_len)], &sig_buf, &fact_buf) catch {
+        vn.write_str("oal5 device wire: FAIL — acceptance payload decode\n");
+        vn.finish_fail();
+    };
+    const fact = fact_buf[0..decoded.fact_len];
+    rc.verify_record(sig_buf[0..kumara.signature_length], fact, poster_kp.public_key) catch {
+        vn.write_str("oal5 device wire: FAIL — acceptance verify\n");
+        vn.finish_fail();
+    };
+    const kind = oa.classify_fact(fact) catch {
+        vn.write_str("oal5 device wire: FAIL — acceptance classify\n");
+        vn.finish_fail();
+    };
+    if (kind != .acceptance) {
+        vn.write_str("oal5 device wire: FAIL — not acceptance\n");
+        vn.finish_fail();
+    }
+    var fields: oa.AcceptanceFields = undefined;
+    oa.parse_acceptance_fields(fact, &fields) catch {
+        vn.write_str("oal5 device wire: FAIL — acceptance parse\n");
+        vn.finish_fail();
+    };
+    var i: u32 = 0;
+    while (i < oa.ref_hex_len) : (i += 1) {
+        if (fields.request_ref[i] != oa.witness_request_ref[i]) {
+            vn.write_str("oal5 device wire: FAIL — acceptance request_ref\n");
+            vn.finish_fail();
+        }
+    }
+    var j: u32 = 0;
+    while (j < 64) : (j += 1) {
+        if (fields.applicant[j] != applicant_hex[j]) {
+            vn.write_str("oal5 device wire: FAIL — acceptance applicant\n");
+            vn.finish_fail();
+        }
+    }
+    vn.write_str("oal5 device wire: sealed acceptance GREEN — verify and request_ref passed\n");
+    vn.finish_pass();
+}

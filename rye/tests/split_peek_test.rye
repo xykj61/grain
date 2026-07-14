@@ -1,0 +1,21 @@
+//! Rye test: SplitIterator.peek via splitScalar — pass 9969.
+//!
+//! Rishi splits every line on newlines and peeks ahead while parsing.
+//! next() was strengthened in 9993; peek now carries the same sub-slice contract.
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    var it = mem.splitScalar(u8, "abc|def||ghi", '|');
+    std.debug.assert(mem.eql(u8, it.first(), "abc"));
+    std.debug.assert(mem.eql(u8, it.peek().?, "def"));
+    std.debug.assert(mem.eql(u8, it.next().?, "def"));
+    std.debug.assert(mem.eql(u8, it.peek().?, ""));
+    std.debug.assert(mem.eql(u8, it.next().?, ""));
+    std.debug.assert(mem.eql(u8, it.peek().?, "ghi"));
+    std.debug.assert(mem.eql(u8, it.next().?, "ghi"));
+    std.debug.assert(it.peek() == null);
+
+    std.debug.print("rye: SplitIterator.peek assertions confirmed.\n", .{});
+}

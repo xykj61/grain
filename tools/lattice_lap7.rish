@@ -1,0 +1,18 @@
+# lattice_lap7.rish — Lattice lap 6 elementwise mul witness.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/lattice_lap7.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lattice/bin/lattice"
+
+let build = run ["sh" "-c" "mkdir -p lattice/bin && env RYE_ZIG=${zig} rye/bin/rye build lattice/lattice.rye -femit-bin=${bin}"]
+assert build.ok else "Lattice lap 6 build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "Lattice selftest exited non-zero"
+assert selftest.out contains "GREEN" else "Lattice selftest not GREEN"
+assert selftest.out contains "mul 2x2" else "Lattice missing mul welcome"
+assert selftest.out contains "mul shape mismatch refused" else "Lattice missing mul unwelcome"
+
+say "GREEN: Lattice lap 6 — elementwise mul with shape asserts."

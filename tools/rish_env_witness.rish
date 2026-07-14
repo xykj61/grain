@@ -1,0 +1,19 @@
+# rish_env_witness.rish — Rishi environment builtin witness.
+#
+# Run from the repository root with a pinned test variable:
+#   RISHI_ENV_WITNESS_TEST=pinned rishi/bin/rishi run tools/rish_env_witness.rish
+
+let home = env "HOME"
+let home_len = length home
+assert home_len != 0 else "HOME should be set on this host"
+
+let pinned = env "RISHI_ENV_WITNESS_TEST"
+assert pinned == "pinned" else "RISHI_ENV_WITNESS_TEST should be pinned by the runner"
+
+let missing = env "RISHI_DEFINITELY_UNSET_VAR_XYZ"
+assert missing == "" else "unset env var should be empty string"
+
+if pinned starts-with "pin" then let prefix_ok = true else let prefix_ok = false
+assert prefix_ok == true else "env value usable in if condition"
+
+say "GREEN: Rishi env — host lookup, empty when unset, composes in conditions."

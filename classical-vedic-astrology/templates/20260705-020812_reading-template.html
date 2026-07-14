@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<!--
+  Two-wheel reading template, derived 20260705.020812 from the standalone report of its round.
+  Tokens: {{NAME}} {{READING_TITLE}} {{BIRTH_LINE}} {{STAMP}} {{VOICE}} {{OPENING}} {{D1_CAPTION}} {{D9_CAPTION}}
+          {{CHAPTERS}} {{GRATITUDE}} {{BENEDICTION}} {{BIRTH_PLACE}} {{BIRTH_DATE}} {{SUNRISE}} {{SUNSET}}
+          {{DAY_HOURS}} {{DAY_LABEL}} {{NIGHT_LABEL}} {{D1_ASC}} {{D9_ASC}} {{D1_PLANETS}} {{D9_PLANETS}} {{D1_CUSPS}} {{D1_HOUSE_NUMS}} {{D9_CUSPS}} {{D9_HOUSE_NUMS}} — per-chart, from the degree-true walk; planet entries are {ab, gl, dg, a} with a precomputed: a = ccwCusp(house) − deg/30 × width(house), hand-flanked where labels crowd; cusps in this file are baked for this birth-day and are re-walked per chart by the caster
+  The wheel renderer stays intact: ascendant pinned due east, day and night arcs swept from the true hours.
+-->
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>{{NAME}} — {{READING_TITLE}}</title>
+<style>
+  :root{--ink:#e9dcc2;--gold:#d9af66;--cream:#181310;--card:#211a13;--night:#2e3a5c;--day:#f3d98b;--soft:#a08b6a;}
+  body{background:var(--cream);color:var(--ink);font-family:Georgia,'Times New Roman',serif;line-height:1.75;margin:0;padding:0;}
+  .page{max-width:920px;margin:0 auto;padding:48px 28px 80px;}
+  h1{font-size:2.1em;letter-spacing:.5px;margin:0 0 6px;color:var(--ink);font-weight:normal;}
+  h2{font-size:1.35em;margin:54px 0 10px;color:var(--gold);font-weight:normal;letter-spacing:.4px;border-bottom:1px solid #3a2e20;padding-bottom:6px;}
+  h3{font-size:1.05em;margin:26px 0 6px;color:var(--ink);font-weight:bold;}
+  .sub{color:var(--soft);font-size:1.02em;margin-bottom:4px;}
+  .stampline{color:var(--soft);font-size:.9em;font-style:italic;margin-bottom:30px;}
+  .rule{height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:26px 0;}
+  .wheelwrap{background:radial-gradient(closest-side,#241b12,#191309);border:1px solid #3a2e20;border-radius:14px;padding:22px 18px 14px;margin:26px 0;box-shadow:0 2px 14px rgba(0,0,0,.35);}
+  .wheelwrap p.cap{font-size:.92em;color:var(--soft);text-align:center;margin:8px 6px 2px;}
+  .wheelwrap h3{text-align:center;margin-top:0;}
+  table{border-collapse:collapse;width:100%;margin:18px 0;background:var(--card);font-size:.95em;}
+  th,td{border:1px solid #3a2e20;padding:7px 10px;text-align:left;}
+  th{background:#241b12;color:#cbb996;font-weight:bold;}
+  .bene{font-style:italic;text-align:center;color:#cbb996;margin:44px auto 0;max-width:700px;font-size:1.06em;}
+  .grat{font-size:.95em;color:var(--soft);}
+  em{color:#cbb996;}
+  @media print{.page{max-width:100%;} body{background:#fff;}}
+  #wheel-d1 svg,#wheel-d9 svg{width:100%;max-width:560px;height:auto;display:block;margin:0 auto;}
+  #wheel-d1 text,#wheel-d9 text{text-anchor:middle;dominant-baseline:central;font-family:'Iowan Old Style',Palatino,Georgia,serif;}
+  .ring{fill:none;stroke:#6f5a3e;stroke-width:1;opacity:.8;}
+  .ring2{fill:none;stroke:#6f5a3e;stroke-width:1;opacity:.4;}
+  .hub{fill:rgba(20,15,9,.6);stroke:#80683f;opacity:.9;}
+  .cusp{stroke:#594830;stroke-width:1;opacity:.6;}
+  .axis{stroke:#caa45e;stroke-width:1.6;opacity:.92;}
+  .houseNum{fill:#9c8458;font-size:12px;font-style:italic;}
+  .angLbl{fill:#ecc079;font-size:12px;font-weight:600;letter-spacing:.5px;}
+  .angWord{fill:#8f7a55;font-size:7.5px;font-style:italic;letter-spacing:.4px;}
+  .ptick{stroke:#caa45e;stroke-width:1.6;}
+  .pAbbr{fill:#efe0bd;font-size:14px;font-weight:600;}
+  .pGl{fill:#dcb16b;font-size:13px;font-weight:400;}
+  .pDeg{fill:#a08b64;font-size:9px;}
+  .hubName{fill:#dcb16b;font-size:19px;}
+  .hubSub{fill:#9c8458;font-size:8.5px;letter-spacing:2px;}
+  .hubDot{fill:#caa45e;}
+  .wheel-key{text-align:center;color:#a08b6a;font-size:.78rem;letter-spacing:.3px;margin:10px auto 2px;max-width:560px;line-height:1.7;}
+  .trine{stroke:#caa45e;stroke-width:.8;opacity:.35;} .square{stroke:#a05a3e;stroke-width:.9;opacity:.4;} .kendra{fill:#d9af66;font-size:15px;font-weight:600;font-style:normal;}
+</style>
+</head>
+<body>
+<div class="page">
+
+<h1>{{NAME}} — {{READING_TITLE}}</h1>
+<div class="sub">{{BIRTH_LINE}}</div>
+<div class="sub">Tropical signs, houses, and dignities · sidereal nakshatras by the Lahiri ayanamsa · whole-sign houses · main chart and ninth chart</div>
+<div class="stampline">Stamp {{STAMP}} · Written together by Kaeden and {{VOICE}} · Style: Radiant</div>
+
+{{OPENING}}
+
+<h2>The Two Wheels</h2>
+<div class="wheelwrap">
+  <h3>The Visible Chart — Rasi (D1)</h3>
+  <div id="wheel-d1" style="text-align:center"></div>
+  <p class="wheel-key">As Ascendant · Mc Midheaven · Ds Descendant · Ic Imum Coeli — Su Sun · Mo Moon · Me Mercury · Ve Venus · Ma Mars · Ju Jupiter · Sa Saturn · Ra Rāhu · Ke Ketu</p>
+  <p class="cap">{{D9_CAPTION}}</p>
+</div>
+
+{{CHAPTERS}}
+
+<h2>With Gratitude</h2>
+<p class="grat">{{GRATITUDE}}</p>
+
+<div class="rule"></div>
+<p class="bene">{{BENEDICTION}}</p>
+
+<script>
+(function(){
+  try{
+    var cx=320, cy=320;
+    var rOuter=298, rMid=240, rHub=100;
+    var rLabel=206, rTickOut=238, rTickIn=228, rHouseNum=126;
+    var rAngleLabel=308, rAngWord=283;
+
+    function P(r,th){ var a=th*Math.PI/180; return [(cx+r*Math.cos(a)).toFixed(2),(cy-r*Math.sin(a)).toFixed(2)]; }
+
+    // house cusp boundaries (degrees, math convention: 0=right, 90=top) — silo walk, this birth-day's hours
+    
+
+    // house number positions at sector midpoints
+    var houseNums=[[1,345.4375],[2,318.35],[3,294.175],[4,270.0],[5,245.825],[6,221.65],[7,194.5625],[8,161.65],[9,125.825],[10,90.0],[11,54.175],[12,18.35]];
+
+    // the four angles, at house centres
+    var angles=[['Mc',90,'solar noon'],['Ic',270,'midnight'],['As',342.525,'sunrise'],['Ds',197.475,'sunset']];
+
+    var CHARTS=[
+     {mount:'wheel-d1', cusps:{{D1_CUSPS}}, houseNums:{{D1_HOUSE_NUMS}}, rising:'{{D1_RISING_LABEL}}', planets:{{D1_PLANETS}}},
+     {mount:'wheel-d9', cusps:{{D9_CUSPS}}, houseNums:{{D9_HOUSE_NUMS}}, rising:'{{D9_RISING_LABEL}}', planets:{{D9_PLANETS}}}
+    ];
+
+    CHARTS.forEach(function(ch){
+      var s='';
+      s+='<defs><radialGradient id="glow-'+ch.mount+'" cx="50%" cy="46%" r="62%">'
+        +'<stop offset="0%" stop-color="#2c2114"/>'
+        +'<stop offset="100%" stop-color="#191309"/></radialGradient>'
+        +'<clipPath id="disk-'+ch.mount+'"><circle cx="'+cx+'" cy="'+cy+'" r="'+(rOuter-1)+'"/></clipPath></defs>';
+      s+='<circle cx="'+cx+'" cy="'+cy+'" r="'+(rOuter-1)+'" fill="url(#glow-'+ch.mount+')"/>';
+
+      // day / night wash, split at the horizon chord
+      var horizonY=(cy - rOuter*(-0.3003));
+      s+='<g clip-path="url(#disk-'+ch.mount+')">';
+      s+='<rect x="'+(cx-rOuter)+'" y="'+(cy-rOuter)+'" width="'+(2*rOuter)+'" height="'+(horizonY-(cy-rOuter)).toFixed(2)+'" fill="#e6c074" opacity="0.06"/>';
+      s+='<rect x="'+(cx-rOuter)+'" y="'+horizonY.toFixed(2)+'" width="'+(2*rOuter)+'" height="'+((cy+rOuter)-horizonY).toFixed(2)+'" fill="#0a0602" opacity="0.22"/>';
+      s+='</g>';
+
+      // rings
+      s+='<circle cx="'+cx+'" cy="'+cy+'" r="'+rOuter+'" class="ring"/>';
+      s+='<circle cx="'+cx+'" cy="'+cy+'" r="'+rMid+'" class="ring2"/>';
+
+      // house cusp lines
+      ch.cusps.forEach(function(c){
+        var p1=P(rHub,c), p2=P(rOuter,c);
+        s+='<line x1="'+p1[0]+'" y1="'+p1[1]+'" x2="'+p2[0]+'" y2="'+p2[1]+'" class="cusp"/>';
+      });
+
+      // angle axes: vertical meridian + horizontal horizon chord
+      var mc1=P(rOuter,90), mc2=P(rOuter,270);
+      s+='<line x1="'+mc1[0]+'" y1="'+mc1[1]+'" x2="'+mc2[0]+'" y2="'+mc2[1]+'" class="axis"/>';
+      var as1=P(rOuter,342.525), as2=P(rOuter,197.475);
+      s+='<line x1="'+as1[0]+'" y1="'+as1[1]+'" x2="'+as2[0]+'" y2="'+as2[1]+'" class="axis"/>';
+
+      // house numbers
+      ch.houseNums.forEach(function(h){
+        var p=P(rHouseNum,h[1]);
+        s+='<text x="'+p[0]+'" y="'+p[1]+'" class="houseNum'+((h[0]==1||h[0]==4||h[0]==7||h[0]==10)?' kendra':'')+'">'+h[0]+'</text>';
+      });
+
+      // angle labels + descriptive words
+      angles.forEach(function(g){
+        var p=P(rAngleLabel,g[1]);
+        s+='<text x="'+p[0]+'" y="'+p[1]+'" class="angLbl">'+g[0]+'</text>';
+        var w=P(rAngWord,g[1]);
+        s+='<text x="'+w[0]+'" y="'+w[1]+'" class="angWord">'+g[2]+'</text>';
+      });
+
+      // planets
+      ch.planets.forEach(function(p){
+        var t1=P(rTickOut,p.a), t2=P(rTickIn,p.a);
+        s+='<line x1="'+t1[0]+'" y1="'+t1[1]+'" x2="'+t2[0]+'" y2="'+t2[1]+'" class="ptick"/>';
+        var lp=P(p.r||rLabel,p.a);
+        s+='<text x="'+lp[0]+'" y="'+(parseFloat(lp[1])-4)+'" class="pAbbr">'+p.ab+' <tspan class="pGl">'+p.gl+'</tspan></text>';
+        s+='<text x="'+lp[0]+'" y="'+(parseFloat(lp[1])+11)+'" class="pDeg">'+p.dg+'</text>';
+      });
+
+      // hub
+      var SIG={'\u2648':0,'\u2649':1,'\u264A':2,'\u264B':3,'\u264C':4,'\u264D':5,'\u264E':6,'\u264F':7,'\u2650':8,'\u2651':9,'\u2652':10,'\u2653':11};
+for(var ii=0;ii<ch.planets.length;ii++)for(var jj=ii+1;jj<ch.planets.length;jj++){var A=ch.planets[ii],B=ch.planets[jj];var s1=SIG[(A.gl||'').replace('\uFE0E','')],s2=SIG[(B.gl||'').replace('\uFE0E','')];if(s1==null||s2==null)continue;var dd=((s2-s1)%12+12)%12;var cls=(dd==4||dd==8)?'trine':((dd==3||dd==9)?'square':null);if(cls){var q1=P(138,A.a),q2=P(138,B.a);s+='<line x1="'+q1[0]+'" y1="'+q1[1]+'" x2="'+q2[0]+'" y2="'+q2[1]+'" class="'+cls+'"/>';}}
+s+='<circle cx="'+cx+'" cy="'+cy+'" r="'+rHub+'" class="ring hub"/>';
+      s+='<text x="'+cx+'" y="'+(cy-10)+'" class="hubName">{{NAME}}</text>';
+      s+='<circle cx="'+cx+'" cy="'+(cy+4)+'" r="1.7" class="hubDot"/>';
+      s+='<text x="'+cx+'" y="'+(cy+17)+'" class="hubSub">'+ch.rising+'</text>';
+
+      var svg='<svg viewBox="0 0 640 640" preserveAspectRatio="xMidYMid meet" '
+            +'xmlns="http://www.w3.org/2000/svg" role="img" '
+            +'aria-label="Day and night house wheel">'+s+'</svg>';
+      document.getElementById(ch.mount).innerHTML=svg;
+    });
+  }catch(e){
+    ['wheel-d1','wheel-d9'].forEach(function(id){var el=document.getElementById(id); if(el){el.innerHTML='<p style="color:#a08b6a;font-style:italic;text-align:center">(The chart wheel could not render here; the full chart stands written, exact to the minute, in the table above.)</p>';}});
+  }
+})();
+</script>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,176 @@
+# pond_enclosure_sixbar.rish — Pond ring-one enclosure baseline vs ai-jail.
+#
+# Counsel 20260712.090512 bar B · Claude 204549 Pond next · Claude 210800
+# two-column scorecard sharpening. Freezes the six-line minimum as asserts
+# against the living ai-jail enclosure (teacher v1.12.0). Column one GREEN
+# freezes incumbent truth; pond-required (column two) waits supersede.
+# Bar6 records three-door bus measure as a gap row — never forced red on baseline.
+#
+#   rishi/bin/rishi run tools/pond_enclosure_sixbar.rish
+#
+# Bars:
+#   1 Durable project tree
+#   2 Home and tmp reset
+#   3 Wayland/GPU lane
+#   4 KVM lane (named gate · off by default)
+#   5 Signing-lane separation (sandbox present · master absent · lane absent)
+#   6 Three refusals (kvm-off · no D-Bus KVM path · host home)
+
+let cache = "tools/.cache/pond-enclosure"
+let meta = "${cache}/sixbar-baseline-meta.txt"
+let pin = "active-designing/20260712-205600_pond-enclosure-sixbar-baseline.md"
+let sandbox_fpr = "DBF853437A937B4E36B93611D949807AC26B2B99"
+let master_fpr = "06462132D3E63B834F976E03A81D720B9235FA7A"
+let gpg_wrap = ".gnupg-rye/gpg.sh"
+let aijail = "tools/.cache/bin/ai-jail"
+let teacher = "1.12.0"
+
+say "pond sixbar: preparing meta shelf…"
+let mkdir = run ["mkdir" "-p" cache]
+assert mkdir.ok else "could not create ${cache}"
+
+# --- Bar 1: Durable project tree ---
+say "pond sixbar bar1: durable project tree…"
+let have_git = run ["test" "-d" ".git"]
+assert have_git.ok else "bar1: missing .git — project tree not durable here"
+let writable = run ["test" "-w" "."]
+assert writable.ok else "bar1: project root not writable"
+let marker = "${cache}/durable-probe.txt"
+let write_m = run ["sh" "-c" "echo pond-sixbar-durable > ${marker}"]
+assert write_m.ok else "bar1: could not write probe under project cache"
+let have_m = run ["test" "-f" marker]
+assert have_m.ok else "bar1: durable probe missing after write"
+say "GREEN: pond sixbar bar1 — durable project tree"
+
+# --- Bar 2: Home and tmp reset ---
+say "pond sixbar bar2: home and tmp reset…"
+let landlock = run ["test" "-e" "/tmp/.ai-jail-landlock"]
+assert landlock.ok else "bar2: missing /tmp/.ai-jail-landlock — expect ai-jail private tmp"
+let no_docs = run ["sh" "-c" "test ! -d \"$HOME/Documents\""]
+assert no_docs.ok else "bar2: host Documents visible under HOME — private-home drift"
+let no_dl = run ["sh" "-c" "test ! -d \"$HOME/Downloads\""]
+assert no_dl.ok else "bar2: host Downloads visible under HOME — private-home drift"
+let tmp_w = run ["sh" "-c" "echo ok > /tmp/pond-sixbar-tmp-probe && rm -f /tmp/pond-sixbar-tmp-probe"]
+assert tmp_w.ok else "bar2: /tmp not writable inside enclosure"
+say "GREEN: pond sixbar bar2 — home and tmp reset (landlock · sparse HOME)"
+
+# --- Bar 3: Wayland/GPU lane ---
+say "pond sixbar bar3: Wayland/GPU lane…"
+let have_wl = run ["sh" "-c" "test -n \"$WAYLAND_DISPLAY\""]
+let have_dri = run ["test" "-d" "/dev/dri"]
+if have_wl.ok then say "pond sixbar bar3: WAYLAND_DISPLAY present"
+if have_dri.ok then say "pond sixbar bar3: /dev/dri present"
+assert have_wl.ok else "bar3: WAYLAND_DISPLAY empty — GPU/Wayland lane missing"
+assert have_dri.ok else "bar3: /dev/dri missing — GPU lane missing"
+say "GREEN: pond sixbar bar3 — Wayland/GPU lane"
+
+# --- Bar 4: KVM lane (named gate) ---
+say "pond sixbar bar4: KVM lane gate…"
+let st = run ["sh" "-c" "./tools/lane_kvm.sh status"]
+assert st.ok else "bar4: lane_kvm status failed"
+assert st.out contains "LANE_KVM=off" else "bar4: baseline expects LANE_KVM=off (default)"
+let conf = run ["test" "-f" "tools/enclosure.conf.example"]
+assert conf.ok else "bar4: missing enclosure.conf.example"
+let example = read-file "tools/enclosure.conf.example"
+assert example contains "LANE_KVM=false" else "bar4: example must default LANE_KVM=false"
+let have_teacher = run ["test" "-x" aijail]
+assert have_teacher.ok else "bar4: missing pinned ai-jail at ${aijail}"
+let ver = run [aijail "--version"]
+assert ver.ok else "bar4: ai-jail --version failed"
+assert ver.out contains teacher else "bar4: teacher pin want ai-jail ${teacher}"
+say "GREEN: pond sixbar bar4 — KVM lane named; off by default; teacher ${teacher}"
+
+# --- Bar 5: Signing-lane separation ---
+say "pond sixbar bar5: signing-lane separation…"
+let have_gpg = run ["test" "-x" gpg_wrap]
+assert have_gpg.ok else "bar5: missing ${gpg_wrap} — sandbox keyring wrapper"
+let secs = run ["sh" "-c" "${gpg_wrap} --list-secret-keys --with-colons"]
+assert secs.ok else "bar5: gpg list-secret-keys failed"
+assert secs.out contains sandbox_fpr else "bar5: sandbox secret ${sandbox_fpr} must be present"
+# Master secret must not sit in the sandbox keyring (public may).
+let master_sec = run ["sh" "-c" "${gpg_wrap} --list-secret-keys --with-colons | grep -F ${master_fpr} || true"]
+assert master_sec.out == "" else "bar5: master secret present in sandbox keyring — refuse"
+# Claude 210800: exactly one secret key — nothing strays in beside the sandbox key.
+let sec_n = run ["sh" "-c" "${gpg_wrap} --list-secret-keys --with-colons | grep -c '^sec:' || true"]
+assert sec_n.ok
+let sec_count = trim sec_n.out
+assert sec_count == "1" else "bar5: want exactly one secret key (sandbox alone); got ${sec_count}"
+let no_host_ssh = run ["sh" "-c" "test ! -f \"$HOME/.ssh/id_ed25519\""]
+assert no_host_ssh.ok else "bar5: host SSH private key visible under HOME"
+let no_lane_file = run ["sh" "-c" "test ! -f \"$HOME/.ssh/id_ed25519_cursor_cloud\" && test ! -f \"$HOME/.ssh/cursor_cloud\""]
+assert no_lane_file.ok else "bar5: cloud lane private key file present in jail HOME"
+say "GREEN: pond sixbar bar5 — sandbox present; master absent; exactly one secret; lane key file absent"
+
+# --- Bar 6: Three refusals ---
+say "pond sixbar bar6: three refusals…"
+let refuse = run ["sh" "-c" "./tools/lane_kvm.sh refuse-probe"]
+assert refuse.ok else "bar6: kvm refuse-probe failed"
+assert refuse.out contains "OK" else "bar6: kvm refuse-probe missing OK"
+say "pond sixbar bar6: kvm-off refuse OK"
+
+let dbus_tools = run ["sh" "-c" "grep -nE 'dbus-send|systemd-run' tools/lane_kvm.sh tools/run_with_lane_kvm.sh tools/proven_seat_g0c_lane_kvm.sh 2>/dev/null | head -5"]
+assert dbus_tools.out == "" else "bar6: living KVM tools must not call dbus-send/systemd-run"
+say "pond sixbar bar6: D-Bus KVM path absent from living tools (retired 113900)"
+
+let host_home = run ["sh" "-c" "test ! -f \"$HOME/.ssh/id_ed25519\""]
+assert host_home.ok else "bar6: host home SSH private still reachable"
+let host_docs = run ["sh" "-c" "test ! -d \"$HOME/Documents\""]
+assert host_docs.ok else "bar6: host Documents reachable — home refuse failed"
+say "pond sixbar bar6: host home refuse OK"
+
+# Claude 210800: three-door bus measure — env · concrete socket · netns (gap row, not forced red).
+say "pond sixbar bar6: three-door bus measure…"
+let doors = run ["bash" "tools/fixtures/pond_sixbar_bus_doors.sh" "--write-dir" cache]
+assert doors.ok else "bar6: three-door bus probe failed"
+assert doors.out contains "bus_env=" else "bar6: bus_env missing from probe"
+assert doors.out contains "bus_socket=" else "bar6: bus_socket missing from probe"
+assert doors.out contains "bus_netns=" else "bar6: bus_netns missing from probe"
+let bus_env_raw = read-file "${cache}/bus_env"
+let bus_sock_raw = read-file "${cache}/bus_socket"
+let bus_net_raw = read-file "${cache}/bus_netns"
+let bus_env = trim bus_env_raw
+let bus_sock = trim bus_sock_raw
+let bus_net = trim bus_net_raw
+say "pond sixbar bar6: bus_env=${bus_env} · bus_socket=${bus_sock} · bus_netns=${bus_net}"
+say "pond sixbar bar6: gap row — pond-required wants env empty · socket absent · netns unshared"
+
+say "GREEN: pond sixbar bar6 — kvm-off refuse · no D-Bus KVM path · host home refuse · three-door bus recorded"
+
+# --- Meta + pin presence ---
+say "pond sixbar: writing ${meta}…"
+let clear = run ["rm" "-f" meta]
+assert clear.ok
+let w1 = run ["sh" "-c" "echo teacher ai-jail-${teacher} > ${meta}"]
+assert w1.ok
+let w2 = run ["sh" "-c" "echo bar1 durable GREEN >> ${meta}"]
+assert w2.ok
+let w3 = run ["sh" "-c" "echo bar2 home_tmp GREEN >> ${meta}"]
+assert w3.ok
+let w4 = run ["sh" "-c" "echo bar3 wayland_gpu GREEN >> ${meta}"]
+assert w4.ok
+let w5 = run ["sh" "-c" "echo bar4 kvm_lane GREEN >> ${meta}"]
+assert w5.ok
+let w6 = run ["sh" "-c" "echo bar5 signing GREEN sandbox ${sandbox_fpr} sec_count 1 >> ${meta}"]
+assert w6.ok
+let w7 = run ["sh" "-c" "echo bar6 refusals GREEN >> ${meta}"]
+assert w7.ok
+let w8 = run ["sh" "-c" "echo bus_env ${bus_env} >> ${meta}"]
+assert w8.ok
+let w8b = run ["sh" "-c" "echo bus_socket ${bus_sock} >> ${meta}"]
+assert w8b.ok
+let w8c = run ["sh" "-c" "echo bus_netns ${bus_net} >> ${meta}"]
+assert w8c.ok
+let w9 = run ["sh" "-c" "echo gap bus_three_door_until_pond_supersede >> ${meta}"]
+assert w9.ok
+let w10 = run ["sh" "-c" "echo counsel 20260712.090512 >> ${meta}"]
+assert w10.ok
+let w11 = run ["sh" "-c" "echo claude_shape 20260712.210800 >> ${meta}"]
+assert w11.ok
+let w12 = run ["sh" "-c" "echo scorecard two-column >> ${meta}"]
+assert w12.ok
+
+let have_pin = run ["test" "-f" pin]
+if have_pin.ok then say "pond sixbar: pin present at ${pin}"
+if have_pin.ok == false then say "pond sixbar: pin file still landing — witness GREEN stands on asserts"
+
+say "GREEN: pond enclosure sixbar — baseline vs ai-jail ${teacher}; six bars hold; three-door bus gap named for supersede"

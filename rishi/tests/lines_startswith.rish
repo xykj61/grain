@@ -1,0 +1,42 @@
+# lines_startswith.rish — tests for `lines` and `starts-with` builtins.
+# Proves: splitting strings by newline, checking string prefixes.
+
+# lines: split a multi-line string (use printf to get newlines)
+let multi = run ["printf" "hello\nworld\nrye"]
+let parts = lines multi.out
+assert parts contains "hello" else "lines: first line missing"
+assert parts contains "world" else "lines: second line missing"
+assert parts contains "rye" else "lines: third line missing"
+
+# lines: single line (no newlines) produces a one-element list
+let single = lines "one"
+assert single contains "one" else "lines: single line failed"
+
+# lines: empty string produces one empty element
+let empty_parts = lines ""
+assert empty_parts contains "" else "lines: empty string failed"
+
+# starts-with: basic prefix check
+assert "hello world" starts-with "hello" else "starts-with: basic failed"
+assert "rishi" starts-with "ri" else "starts-with: short prefix failed"
+
+# starts-with: empty prefix always matches
+assert "anything" starts-with "" else "starts-with: empty prefix failed"
+
+# starts-with: non-matching prefix
+assert ("xyz" starts-with "abc") == false else "starts-with: false case failed"
+
+# starts-with: exact match
+assert "hello" starts-with "hello" else "starts-with: exact match failed"
+
+# starts-with: longer prefix than string
+assert ("hi" starts-with "hello") == false else "starts-with: longer prefix failed"
+
+# combined: filter lines by prefix (simulate diff output)
+let diff = run ["printf" "+added line\n-removed line\n context line\n+another add"]
+let diff_lines = lines diff.out
+let additions = where diff_lines as l: l starts-with "+"
+assert additions contains "+added line" else "filter: missed first addition"
+assert additions contains "+another add" else "filter: missed second addition"
+
+say "lines and starts-with held."

@@ -1,0 +1,7 @@
+# Lantern lap 20–21 fixture — pin_stopped_reason on the request contract.
+model_hash sha3-256-rye-forge-lap0
+pin_stopped_reason eos
+tokens_in 6
+tokens_out 3
+stopped_reason eos
+text stop reason ok

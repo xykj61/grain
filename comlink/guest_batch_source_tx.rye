@@ -1,0 +1,97 @@
+//! comlink/guest_batch_source_tx.rye — NS-L3 batch wire device: source TX (sealed resin-batch).
+
+const vn = @import("virtio_net.rye");
+const tally_copy = @import("tally_copy.rye");
+const wf = @import("wire_format.rye");
+const bw = @import("recall_batch_wire.rye");
+const rb = @import("resin_batch.rye");
+const ns = @import("recall_lap1.rye");
+const rbd = @import("recall_beaded.rye");
+const bd = @import("beading.rye");
+const kumara = @import("kumara.rye");
+const Sha3_256 = @import("std").crypto.hash.sha3.Sha3_256;
+
+var tx: vn.TxQueue = undefined;
+
+const batch_signer_seed = [_]u8{0x61} ** kumara.seed_length;
+
+fn digest_hex_of(content: []const u8, out: *[64]u8) void {
+    var digest: [32]u8 = undefined;
+    Sha3_256.hash(content, &digest, .{});
+    var i: u32 = 0;
+    while (i < 32) : (i += 1) {
+        _ = @import("std").fmt.bufPrint(out[i * 2 ..][0..2], "{x:0>2}", .{digest[i]}) catch unreachable;
+    }
+}
+
+fn witness_pattern_fill(buf: []u8, seed: u32) void {
+    var x: u32 = seed;
+    var i: u32 = 0;
+    while (i < buf.len) : (i += 1) {
+        x = x *% 1664525 +% 1013904223;
+        buf[i] = @intCast((x >> 24) & 0xFF);
+    }
+}
+
+fn send_sealed_payload(payload: []const u8) void {
+    var scratch: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const dg_len: u32 = @intCast(wf.seal_message(payload, &scratch) catch unreachable);
+
+    const buf = tx.frame();
+    @memset(buf[0..vn.virtio_net_hdr_len], 0);
+    const eoff = vn.virtio_net_hdr_len;
+    var i: u32 = 0;
+    while (i < 6) : (i += 1) buf[eoff + i] = 0xff;
+    while (i < 12) : (i += 1) buf[eoff + i] = 0x00;
+    buf[eoff + 12] = @truncate(vn.lab_ethertype >> 8);
+    buf[eoff + 13] = @truncate(vn.lab_ethertype);
+    const poff = eoff + vn.eth_header_len;
+    tally_copy.copy_disjoint(u8, buf[poff..][0..dg_len], scratch[0..dg_len]);
+    tx.send(poff + dg_len);
+}
+
+export fn _start() linksection(".text.init") callconv(.naked) noreturn {
+    asm volatile (
+        \\ li sp, 0x80100000
+        \\ j kmain
+    );
+}
+
+export fn kmain() callconv(.c) noreturn {
+    vn.init_device();
+    tx.init();
+    vn.driver_ok();
+
+    const signer = kumara.keypair_from_seed(&batch_signer_seed);
+
+    var src: ns.BoltCatalog = .empty();
+    var beads: bd.BeadStore = .empty();
+    ns.BoltCatalog.append_leaf(&src, "peerB", "b", 1, "a.txt", "alpha", "plain-text") catch unreachable;
+    var content: [400]u8 = undefined;
+    witness_pattern_fill(&content, 20260706);
+    _ = rbd.append_leaf_beaded(&src, &beads, "peerB", "b", 1, "large.bin", content[0..], "plain-bytes") catch unreachable;
+
+    var alpha_digest: [64]u8 = undefined;
+    digest_hex_of("alpha", &alpha_digest);
+    const held = [_][64]u8{alpha_digest};
+
+    var batch_buf: [rb.max_batch_bytes]u8 = undefined;
+    const built = rb.build_batch(&src, "peerB", "b", 1, &held, signer, &batch_buf) catch unreachable;
+
+    if (built.len <= bw.max_batch_wire) {
+        var payload: [bw.max_batch_wire]u8 = undefined;
+        const payload_len = bw.encode_batch_response(batch_buf[0..built.len], &payload) catch unreachable;
+        send_sealed_payload(payload[0..payload_len]);
+    } else {
+        const count = bw.batch_chunk_count(built.len) catch unreachable;
+        var ci: u16 = 0;
+        while (ci < count) : (ci += 1) {
+            var payload: [bw.max_batch_wire]u8 = undefined;
+            const payload_len = bw.encode_batch_chunk(batch_buf[0..built.len], ci, &payload) catch unreachable;
+            send_sealed_payload(payload[0..payload_len]);
+        }
+    }
+
+    vn.write_str("rbw device wire: sealed beaded batch response TX sent\n");
+    vn.finish_pass();
+}

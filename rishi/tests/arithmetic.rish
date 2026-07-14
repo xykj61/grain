@@ -1,0 +1,47 @@
+# arithmetic.rish — integer arithmetic and parenthesized grouping.
+# Proves: +, -, *, / with correct operator precedence, left-associativity,
+# negative numbers, and (expr) grouping. Each fact is asserted as a gate.
+
+# Basic operations
+let a = 3 + 4
+assert a == 7 else "+ failed"
+
+let b = 10 - 3
+assert b == 7 else "- failed"
+
+let c = 3 * 4
+assert c == 12 else "* failed"
+
+let d = 12 / 4
+assert d == 3 else "/ failed"
+
+# Operator precedence: * before +
+let e = 2 + 3 * 4
+assert e == 14 else "precedence: * before + failed"
+
+let f = 10 - 2 * 3
+assert f == 4 else "precedence: * before - failed"
+
+# Left-associativity of -
+let g = 10 - 3 - 2
+assert g == 5 else "left-associativity of - failed"
+
+# Parenthesized grouping overrides precedence
+let h = (2 + 3) * 4
+assert h == 20 else "(2 + 3) * 4 failed"
+
+let i = 10 / (2 + 3)
+assert i == 2 else "10 / (2 + 3) failed"
+
+# Negative numbers work as operands
+let j = 0 - 5
+assert j == -5 else "negative result failed"
+
+let k = 3 + -2
+assert k == 1 else "3 + -2 failed"
+
+# Mixed arithmetic and comparison in assert
+assert 1 + 1 == 2 else "1 + 1 == 2 failed"
+assert 2 * 3 != 7 else "2 * 3 != 7 failed"
+
+say "arithmetic held."

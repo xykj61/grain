@@ -1,0 +1,18 @@
+//! Rye test: std.mem.isValidAlign / isValidAlignGeneric — pass 9898.
+//!
+//! Power-of-2 alignment validation; gates alignForward (9904) preconditions.
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    std.debug.assert(mem.isValidAlign(1));
+    std.debug.assert(mem.isValidAlign(8));
+    std.debug.assert(!mem.isValidAlign(0));
+    std.debug.assert(!mem.isValidAlign(6));
+    std.debug.assert(mem.isValidAlignGeneric(u32, 16));
+    std.debug.assert(!mem.isValidAlignGeneric(u32, 0));
+    std.debug.assert(!mem.isValidAlignGeneric(u32, 12));
+
+    std.debug.print("rye: mem.isValidAlign/isValidAlignGeneric assertions confirmed.\n", .{});
+}

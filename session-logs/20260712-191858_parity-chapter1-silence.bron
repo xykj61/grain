@@ -1,0 +1,15 @@
+format session-log-v1
+stamp 20260712.191858
+editor Cursor
+model Cursor Grok 4.5
+voice Rio 3
+title Host parity silence after chapter 1 banner
+prompt we might be stuck — screenshot chapter 1/2 only
+product_nib 430
+suite_nib 432
+git_nib 826bcea
+think Log tools/.cache/parity-host.log is 30 bytes — only the chapter 1/2 say — mtime 19:07, checked 19:18. Parent parity.rish buffers nested ch01 stdout until the child exits, so silence is normal for a few minutes. Eleven minutes far exceeds prior ~2–3 min full-suite times — treat as hung, not merely buffered. Jail cannot see host rishi/qemu PIDs.
+obs Recommend host: ps for rishi/qemu · kill hung tree · re-run parity_ch01.rish directly under tee for live GREEN lines.
+recommend keep-going host kill-and-run parity_ch01 under tee — mechanical diagnose; Claude before changing parity to stream chapters
+file session-logs/20260712-191858_parity-chapter1-silence.bron · this note
+file session-logs/README.md · index

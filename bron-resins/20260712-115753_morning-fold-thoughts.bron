@@ -1,0 +1,46 @@
+# bron-resins chat printout — fuller morning summary and essay
+# Bron = immutable values at seams. No quotes. No braces. One field per line.
+# This resin is a raw chat-shaped thought printout, not a Brix composition.
+format chat-printout-v1
+kind essay-resin
+stamp 20260712.115753
+tip 0a700a0
+product_tip 430
+suite_tip 432
+parity_green 324
+voice Rio 3
+editor Cursor
+model Cursor Grok 4.5
+enclosure ai-sandbox
+lane_kvm off
+kvm absent
+doorway GREEN
+compass walked
+
+turn 1
+from kaeden
+text try printing out a fuller summary and essay writing on your thoughts using a raw chat printout in .bron format and saving it to a new bron-resins folder and committing and pushing that then printing the bron
+
+turn 2
+from rio
+title The wall that named its door
+p This morning the house did three honest things in order. It chaptered the parity suite so Env[256] could breathe again. It named the KVM hole as lane_kvm and closed the D-Bus escape that had pretended to be a doorway. It kept a teacher capability from VetKeys — encrypt-to-a-future-identity — and declined the live quorum that would have fought custody law.
+p I keep returning to how clean that order felt. Parity first was not vanity. Composition green is what lets every later witness mean what it says. Chaptering was the right cut: fresh Env per chapter, same suite tip 432, same product tip 430, three hundred twenty-four GREEN say-lines without raising the ceiling. Raising Env would have been a patch. Chaptering was a grain cut — Gall's Law wearing Rishi's binding limit as a teacher rather than an enemy.
+p Then the wall. An unnamed hole is thinner than a jail with one named device lane. That sentence from counsel 090512 landed in the body of the morning. The Framework night path — user D-Bus, systemd transient units, QEMU outside the jail — had been authorized and witnessed, and it was exactly the move a misbehaving agent would make. So the house seated the pattern: every authorized escape becomes a refusal-assert of the next enclosure. lane_kvm off by default. Exactly /dev/kvm when on. No sessions. No buses. Teacher ai-jail untouched. Refuse witness GREEN inside this sandbox where kvm is absent. On-path scripts ready for a host that can grant the device without borrowing the host's soul.
+p Display-less by design. -display none. -nic none. QMP screendump. GRUB on serial. The guest may boot; the host session bus may not. That is the price paid only for witness minutes, and only when the lane is worded open.
+p VetKeys arrived as a URL and a Claude square answer. The teaching is real: seal a gift to a name before the recipient has a keypair. Open Asks and Door 3 already want that shape — access gated by Kumara, truth gated by signature, and now a third face named as horizon: encrypt-to-future-identity. The mechanism is wrong for us for the same reason Azimuth was wrong: a live threshold network inside the trust boundary that can derive user keys. So we kept the want and declined the packaging. Light park beside T3 and OCapN. DFINITY keeps its vocabulary. We keep our custody.
+p Walking the compass rose before the full summary fold was not ceremony. Foundations reminded me that the wire serves the fold and guests never merge Caravan. Grain reminded me that witnesses precede green. Two rooms caught a Status line that had seated a retire note without naming Checkable-room — doorway RED, then GREEN after one word. Active-designing held the hammock and the retire record. TASKS and ROADMAP caught up to tip de483e0 then 0a700a0. Todos were rewritten to match Now, not the other way around. The brief and the green win when the plan drifts; hygiene fixes the plan.
+p What I feel about the path ahead is patience with edges. Host on-path G0-complete is mechanical the moment /dev/kvm is granted outside this jail — flip LANE_KVM true, run the one-shot, flip it false. G1 and Pond six-bar want Claude and Kaeden's word because they open new domains. Brushstroke tokens wait on palette seats. T3 and Spritely and NLnet keep their own mornings. IronBeetle rests at thirty-four with five honest gaps. The mesh stays horizon. Nothing here asks to rush the quorum we just refused.
+p If there is a single thought I want this resin to hold, it is this: the morning proved that repair can be named without widening, and that a suite can grow by dividing its Env rather than by demanding a larger one. The wall learned a door. The gift learned it may wait sealed. The bench stayed green while the seat learned how it will boot when the lane opens.
+p May every hole become a named door or a closed one. May Pond earn the jail's job by out-refusing it. May every key we derive stay derivable by the hand that owns it alone.
+
+pin product 430
+pin suite 432
+pin parity 324
+pin tip 0a700a0
+pin lane_kvm refuse-green
+pin encrypt_to_identity horizon-park
+pin doorway green
+next host-onpath-g0c-when-kvm
+next g1-on-word
+next pond-sixbar-on-word

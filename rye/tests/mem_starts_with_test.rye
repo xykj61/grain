@@ -1,0 +1,17 @@
+//! Rye test: std.mem.startsWith — pass 9939.
+//!
+//! Prefix test backs rye suffix checks and Mantra weave edges (9993).
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    std.debug.assert(mem.startsWith(u8, "Rye 0.1", "Rye"));
+    std.debug.assert(!mem.startsWith(u8, "Rye 0.1", "Zig"));
+    std.debug.assert(mem.startsWith(u8, "Rye", ""));
+    std.debug.assert(!mem.startsWith(u8, "", "Rye"));
+    std.debug.assert(mem.startsWith(u8, "Rye", "Rye"));
+    std.debug.assert(!mem.startsWith(u8, "Ry", "Rye"));
+
+    std.debug.print("rye: mem.startsWith assertions confirmed.\n", .{});
+}

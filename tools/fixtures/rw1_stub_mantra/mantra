@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+# rw1_stub_mantra — a history store that speaks only the RW-1 contract.
+# Records every call so the collaboration witness can prove the shell asked.
+set -eu
+mkdir -p .mantra/blobs
+printf '%s\n' "$*" >> .mantra/rw1_stub_calls.log
+case "${1:-}" in
+  init) : > .mantra/HEAD; echo "stub: init" ;;
+  add)  echo "stub: woven ${2:-all}" ;;
+  *)    echo "stub: ${1:-} ok" ;;
+esac
+exit 0

@@ -1,0 +1,27 @@
+//! Rye test: std.fmt.bufPrint — pass 9986.
+//!
+//! bufPrint formats into a caller-owned stack buffer. Rishi, Mantra, Skate
+//! selftests, and the rye bridge all lean on it for short, bounded messages.
+
+const std = @import("std");
+
+pub fn main() void {
+    var buf: [64]u8 = undefined;
+
+    const hello = std.fmt.bufPrint(&buf, "hello {s}", .{"world"}) catch unreachable;
+    std.debug.assert(std.mem.eql(u8, hello, "hello world"));
+    std.debug.assert(hello.len <= buf.len);
+
+    const nums = std.fmt.bufPrint(&buf, "{d}+{d}={d}", .{ 2, 3, 5 }) catch unreachable;
+    std.debug.assert(std.mem.eql(u8, nums, "2+3=5"));
+    std.debug.assert(nums.len == 5);
+
+    const empty = std.fmt.bufPrint(&buf, "", .{}) catch unreachable;
+    std.debug.assert(empty.len == 0);
+
+    const tight = std.fmt.bufPrint(&buf, "x", .{}) catch unreachable;
+    std.debug.assert(tight.len == 1);
+    std.debug.assert(tight[0] == 'x');
+
+    std.debug.print("rye: bufPrint assertions confirmed.\n", .{});
+}

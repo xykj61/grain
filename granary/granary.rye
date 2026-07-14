@@ -1,0 +1,346 @@
+//! granary/granary.rye — Granary laps 1–3 selftest (registry · write gate · Sharing).
+//!
+//!   rye build granary/granary.rye -femit-bin=granary/bin/granary
+//!   granary/bin/granary selftest
+//!   granary/bin/granary selftest-lap2
+//!   granary/bin/granary selftest-lap3
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const Dir = std.Io.Dir;
+const gc = @import("granary_core.rye");
+const tally_copy = @import("tally_copy.rye");
+
+const write_gate_log_path = "granary/bin/write_gate_witness.bron";
+
+fn welcome_registry_resolve_clone_frame(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var md_buf: [gc.max_resin_bytes]u8 = undefined;
+    const markdown = try cwd.readFile(io, gc.fixture_front_page, &md_buf);
+
+    var store = gc.ResinStore.empty();
+    const digest = try gc.put_resin(&store, markdown);
+
+    var fact_buf: [gc.max_fact_len]u8 = undefined;
+    const fact_len = try gc.sign_name_fact(
+        gc.granary_version,
+        "rio",
+        "greeting",
+        &digest,
+        &fact_buf,
+    );
+    try gc.verify_name_fact(fact_buf[0..fact_len]);
+
+    var reg = gc.Registry.empty();
+    try gc.append_fact(&reg, fact_buf[0..fact_len]);
+
+    // Second fact for another weave — registry holds more than one.
+    const other_md = "# other\n\nparked.\n";
+    const other_digest = try gc.put_resin(&store, other_md);
+    var other_buf: [gc.max_fact_len]u8 = undefined;
+    const other_len = try gc.sign_name_fact(
+        gc.granary_version,
+        "rio",
+        "other",
+        &other_digest,
+        &other_buf,
+    );
+    try gc.append_fact(&reg, other_buf[0..other_len]);
+    assert(reg.fact_count == 2);
+
+    const resolved = try gc.resolve(&reg, "rio/greeting");
+    assert(std.mem.eql(u8, resolved.person, "rio"));
+    assert(std.mem.eql(u8, resolved.weave, "greeting"));
+    assert(std.mem.eql(u8, resolved.resin_digest, &digest));
+    print("granary: resolved rio/greeting → resin {s}\n", .{resolved.resin_digest[0..16]});
+
+    var clone: [gc.max_resin_bytes]u8 = undefined;
+    const clone_len = try gc.clone_resin(&store, resolved.resin_digest, &clone);
+    assert(clone_len == markdown.len);
+    assert(std.mem.eql(u8, clone[0..clone_len], markdown));
+    print("granary: clone fold matched front-page resin\n", .{});
+
+    var frame: gc.Frame = .{};
+    try gc.render_front_page(clone[0..clone_len], &frame);
+    assert(frame.line_count >= 3);
+    assert(std.mem.indexOf(u8, frame.lines[0].slice(), "granary front page") != null);
+    var saw_heading = false;
+    var i: u32 = 0;
+    while (i < frame.line_count) : (i += 1) {
+        if (std.mem.indexOf(u8, frame.lines[i].slice(), "rio/greeting") != null) saw_heading = true;
+        if (std.mem.indexOf(u8, frame.lines[i].slice(), "# rio/greeting") != null) saw_heading = true;
+    }
+    assert(saw_heading);
+    print("granary: Scribble front page drawn — lines={d}\n", .{frame.line_count});
+    i = 0;
+    while (i < frame.line_count) : (i += 1) {
+        print("  {s}\n", .{frame.lines[i].slice()});
+    }
+}
+
+fn welcome_accrete_rename() !void {
+    var store = gc.ResinStore.empty();
+    const first = try gc.put_resin(&store, "# v1\n");
+    const second = try gc.put_resin(&store, "# v2\n");
+    var reg = gc.Registry.empty();
+    var a: [gc.max_fact_len]u8 = undefined;
+    var b: [gc.max_fact_len]u8 = undefined;
+    const al = try gc.sign_name_fact(gc.granary_version, "kaeden", "sketch", &first, &a);
+    const bl = try gc.sign_name_fact(gc.granary_version, "kaeden", "sketch", &second, &b);
+    try gc.append_fact(&reg, a[0..al]);
+    try gc.append_fact(&reg, b[0..bl]);
+    const resolved = try gc.resolve(&reg, "kaeden/sketch");
+    assert(std.mem.eql(u8, resolved.resin_digest, &second));
+    print("granary: accrete rename — latest name-fact wins\n", .{});
+}
+
+fn unwelcome_lying_signature() !void {
+    var store = gc.ResinStore.empty();
+    const digest = try gc.put_resin(&store, "honest bytes\n");
+    var fact_buf: [gc.max_fact_len]u8 = undefined;
+    const fact_len = try gc.sign_name_fact(gc.granary_version, "rio", "lie", &digest, &fact_buf);
+
+    // Flip one hex nibble in stamp_sig — signature lies.
+    var lying: [gc.max_fact_len]u8 = undefined;
+    tally_copy.copy_disjoint(u8, lying[0..fact_len], fact_buf[0..fact_len]);
+    const sig_key = "stamp_sig ";
+    const sig_at = std.mem.indexOf(u8, lying[0..fact_len], sig_key) orelse return error.MissingSig;
+    const hex_at = sig_at + sig_key.len;
+    assert(hex_at < fact_len);
+    lying[hex_at] = if (lying[hex_at] == '0') '1' else '0';
+
+    if (gc.verify_name_fact(lying[0..fact_len])) |_| {
+        return error.LyingAccepted;
+    } else |err| {
+        assert(err == error.VerifyFailed);
+    }
+
+    var reg = gc.Registry.empty();
+    if (gc.append_fact(&reg, lying[0..fact_len])) |_| {
+        return error.LyingAppended;
+    } else |err| {
+        assert(err == error.VerifyFailed);
+    }
+    print("granary: lying signature refused\n", .{});
+}
+
+fn unwelcome_unknown_name() !void {
+    var reg = gc.Registry.empty();
+    if (gc.resolve(&reg, "nobody/nowhere")) |_| {
+        return error.UnknownPassed;
+    } else |err| {
+        assert(err == error.UnknownName);
+    }
+    print("granary: unknown person/weave refused\n", .{});
+}
+
+fn unwelcome_bad_path() !void {
+    var reg = gc.Registry.empty();
+    if (gc.resolve(&reg, "noshslash")) |_| {
+        return error.BadPathPassed;
+    } else |err| {
+        assert(err == error.PathBad);
+    }
+    if (gc.resolve(&reg, "a/b/c")) |_| {
+        return error.NestedPassed;
+    } else |err| {
+        assert(err == error.PathBad);
+    }
+    print("granary: bad resolve path refused\n", .{});
+}
+
+fn welcome_write_gate(io: std.Io) !void {
+    var store = gc.ResinStore.empty();
+    const d1 = try gc.put_resin(&store, "# greeting v1\n");
+    const d2 = try gc.put_resin(&store, "# sketch v1\n");
+    const d3 = try gc.put_resin(&store, "# sketch v2\n");
+
+    var f1: [gc.max_fact_len]u8 = undefined;
+    var f2: [gc.max_fact_len]u8 = undefined;
+    var f3: [gc.max_fact_len]u8 = undefined;
+    const n1 = try gc.sign_name_fact(gc.granary_version, "rio", "greeting", &d1, &f1);
+    const n2 = try gc.sign_name_fact(gc.granary_version, "rio", "sketch", &d2, &f2);
+    const n3 = try gc.sign_name_fact(gc.granary_version, "rio", "sketch", &d3, &f3);
+
+    var reg = gc.Registry.empty();
+    var log: [gc.max_log_bytes]u8 = undefined;
+    var log_len: u32 = 0;
+
+    try gc.publish(&reg, &log, &log_len, f1[0..n1]);
+    const greeting_before = try gc.resolve(&reg, "rio/greeting");
+    assert(std.mem.eql(u8, greeting_before.resin_digest, &d1));
+
+    try gc.publish(&reg, &log, &log_len, f2[0..n2]);
+    // Prior weave unchanged after a second publish.
+    const greeting_after = try gc.resolve(&reg, "rio/greeting");
+    assert(std.mem.eql(u8, greeting_after.resin_digest, &d1));
+    assert(std.mem.eql(u8, greeting_after.stamp_sig, greeting_before.stamp_sig));
+
+    try gc.publish(&reg, &log, &log_len, f3[0..n3]);
+    const sketch = try gc.resolve(&reg, "rio/sketch");
+    assert(std.mem.eql(u8, sketch.resin_digest, &d3));
+    assert(reg.fact_count == 3);
+    print("granary lap2: publish accrete — prior greeting unchanged\n", .{});
+
+    const cwd = Dir.cwd();
+    try cwd.writeFile(io, .{ .sub_path = write_gate_log_path, .data = log[0..log_len] });
+
+    var reloaded = gc.Registry.empty();
+    var file_buf: [gc.max_log_bytes]u8 = undefined;
+    const disk = try cwd.readFile(io, write_gate_log_path, &file_buf);
+    try gc.load_log(&reloaded, disk);
+    assert(reloaded.fact_count == 3);
+    const g2 = try gc.resolve(&reloaded, "rio/greeting");
+    const s2 = try gc.resolve(&reloaded, "rio/sketch");
+    assert(std.mem.eql(u8, g2.resin_digest, &d1));
+    assert(std.mem.eql(u8, s2.resin_digest, &d3));
+    print("granary lap2: durable log reload — three facts restored\n", .{});
+}
+
+fn unwelcome_duplicate_publish() !void {
+    var store = gc.ResinStore.empty();
+    const digest = try gc.put_resin(&store, "once\n");
+    var fact: [gc.max_fact_len]u8 = undefined;
+    const n = try gc.sign_name_fact(gc.granary_version, "rio", "once", &digest, &fact);
+    var reg = gc.Registry.empty();
+    var log: [gc.max_log_bytes]u8 = undefined;
+    var log_len: u32 = 0;
+    try gc.publish(&reg, &log, &log_len, fact[0..n]);
+    if (gc.publish(&reg, &log, &log_len, fact[0..n])) |_| {
+        return error.DuplicateAccepted;
+    } else |err| {
+        assert(err == error.DuplicateFact);
+    }
+    assert(reg.fact_count == 1);
+    print("granary lap2: exact replay refused\n", .{});
+}
+
+fn unwelcome_lying_publish() !void {
+    var store = gc.ResinStore.empty();
+    const digest = try gc.put_resin(&store, "gate\n");
+    var fact: [gc.max_fact_len]u8 = undefined;
+    const n = try gc.sign_name_fact(gc.granary_version, "rio", "gate", &digest, &fact);
+    var lying: [gc.max_fact_len]u8 = undefined;
+    tally_copy.copy_disjoint(u8, lying[0..n], fact[0..n]);
+    const sig_key = "stamp_sig ";
+    const sig_at = std.mem.indexOf(u8, lying[0..n], sig_key) orelse return error.MissingSig;
+    lying[sig_at + sig_key.len] = if (lying[sig_at + sig_key.len] == '0') '1' else '0';
+
+    var reg = gc.Registry.empty();
+    var log: [gc.max_log_bytes]u8 = undefined;
+    var log_len: u32 = 0;
+    if (gc.publish(&reg, &log, &log_len, lying[0..n])) |_| {
+        return error.LyingPublished;
+    } else |err| {
+        assert(err == error.VerifyFailed);
+    }
+    assert(reg.fact_count == 0);
+    assert(log_len == 0);
+    print("granary lap2: lying publish refused — log untouched\n", .{});
+}
+
+fn welcome_mirror_share(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var md_buf: [gc.max_resin_bytes]u8 = undefined;
+    const markdown = try cwd.readFile(io, gc.fixture_front_page, &md_buf);
+
+    var host = gc.ResinStore.empty();
+    const digest = try gc.put_resin(&host, markdown);
+    var fact: [gc.max_fact_len]u8 = undefined;
+    const n = try gc.sign_name_fact(gc.granary_version, "rio", "greeting", &digest, &fact);
+    var reg = gc.Registry.empty();
+    try gc.append_fact(&reg, fact[0..n]);
+
+    var guest = gc.ResinStore.empty();
+    assert(!gc.has_resin(&guest, &digest));
+    assert(gc.has_resin(&host, &digest));
+
+    const first = try gc.mirror_weave(&guest, &host, &reg, "rio/greeting");
+    assert(!first.had_already);
+    assert(first.bytes_copied == markdown.len);
+    assert(gc.has_resin(&guest, &digest));
+
+    var guest_bytes: [gc.max_resin_bytes]u8 = undefined;
+    const gl = try gc.clone_resin(&guest, &digest, &guest_bytes);
+    assert(std.mem.eql(u8, guest_bytes[0..gl], markdown));
+
+    const second = try gc.mirror_weave(&guest, &host, &reg, "rio/greeting");
+    assert(second.had_already);
+    assert(second.bytes_copied == 0);
+    print("granary lap3: mirror clone — guest equals host\n", .{});
+
+    var frame: gc.Frame = .{};
+    try gc.render_front_page(guest_bytes[0..gl], &frame);
+    assert(std.mem.indexOf(u8, frame.lines[1].slice(), "rio/greeting") != null);
+    print("granary lap3: mirrored front page renders\n", .{});
+}
+
+fn unwelcome_host_missing() !void {
+    var host = gc.ResinStore.empty();
+    const digest = try gc.put_resin(&host, "only-on-paper\n");
+    // Name-fact points at digest, then remove by using empty host for serve.
+    var fact: [gc.max_fact_len]u8 = undefined;
+    const n = try gc.sign_name_fact(gc.granary_version, "rio", "ghost", &digest, &fact);
+    var reg = gc.Registry.empty();
+    try gc.append_fact(&reg, fact[0..n]);
+
+    var empty_host = gc.ResinStore.empty();
+    var guest = gc.ResinStore.empty();
+    if (gc.mirror_weave(&guest, &empty_host, &reg, "rio/ghost")) |_| {
+        return error.MissingServed;
+    } else |err| {
+        assert(err == error.ResinMissing);
+    }
+    print("granary lap3: host missing resin refused\n", .{});
+}
+
+fn unwelcome_tampered_host() !void {
+    var host = gc.ResinStore.empty();
+    const digest = try gc.put_resin(&host, "honest mirror\n");
+    var fact: [gc.max_fact_len]u8 = undefined;
+    const n = try gc.sign_name_fact(gc.granary_version, "rio", "tamper", &digest, &fact);
+    var reg = gc.Registry.empty();
+    try gc.append_fact(&reg, fact[0..n]);
+    try gc.tamper_resin_for_witness(&host, &digest);
+
+    var guest = gc.ResinStore.empty();
+    if (gc.mirror_weave(&guest, &host, &reg, "rio/tamper")) |_| {
+        return error.TamperMirrored;
+    } else |err| {
+        assert(err == error.DigestMismatch);
+    }
+    assert(!gc.has_resin(&guest, &digest));
+    print("granary lap3: tampered host resin refused\n", .{});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        try welcome_registry_resolve_clone_frame(io);
+        try welcome_accrete_rename();
+        try unwelcome_lying_signature();
+        try unwelcome_unknown_name();
+        try unwelcome_bad_path();
+        print("granary lap1: version {s} — GREEN\n", .{gc.granary_version});
+        return 0;
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest-lap2")) {
+        try welcome_write_gate(io);
+        try unwelcome_duplicate_publish();
+        try unwelcome_lying_publish();
+        print("granary lap2: version {s} — GREEN\n", .{gc.granary_version});
+        return 0;
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest-lap3")) {
+        try welcome_mirror_share(io);
+        try unwelcome_host_missing();
+        try unwelcome_tampered_host();
+        print("granary lap3: version {s} — GREEN\n", .{gc.granary_version});
+        return 0;
+    }
+    print("usage: granary selftest | selftest-lap2 | selftest-lap3\n", .{});
+    return 1;
+}

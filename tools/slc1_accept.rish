@@ -1,0 +1,16 @@
+# slc1_accept.rish — SLC-1 acceptance: the four verbs proven together in one pass.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/slc1_accept.rish
+
+# The fixture puts mantra/bin on PATH; raise the binary first, the way every
+# sibling witness raises its own, so the suite stands green from a bare clone.
+let zig = "vendor/zig-toolchain/zig"
+let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/src/main.rye -femit-bin=mantra/bin/mantra"]
+assert build.ok else "mantra build failed for SLC-1 acceptance witness"
+
+let result = run ["sh" "tools/fixtures/slc1_accept.sh"]
+
+assert result.ok else "SLC-1 acceptance pass exited non-zero"
+assert result.out contains "GREEN: SLC-1 ACCEPT" else "the four verbs did not all prove out in one session"
+say "GREEN: SLC-1 ACCEPT — type, run, version, recall all breathe on one pass."

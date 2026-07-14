@@ -1,0 +1,23 @@
+//! Rye test: std.mem.Alignment forward/backward/check — pass 9893.
+//!
+//! Enum alignment helpers; pairs with alignForward/alignBackward (9904).
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    const a8 = mem.Alignment.@"8";
+    std.debug.assert(a8.toByteUnits() == 8);
+    std.debug.assert(a8.forward(17) == 24);
+    std.debug.assert(a8.backward(17) == 16);
+    std.debug.assert(a8.check(16));
+    std.debug.assert(!a8.check(17));
+    std.debug.assert(a8.forward(17) == mem.alignForward(usize, 17, 8));
+    std.debug.assert(a8.backward(17) == mem.alignBackward(usize, 17, 8));
+
+    const a4 = mem.Alignment.fromByteUnits(4);
+    std.debug.assert(a4.check(12));
+    std.debug.assert(mem.isAlignedLog2(12, @intFromEnum(a4)));
+
+    std.debug.print("rye: mem.Alignment forward/backward/check assertions confirmed.\n", .{});
+}

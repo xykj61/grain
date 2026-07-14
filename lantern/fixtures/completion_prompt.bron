@@ -1,0 +1,7 @@
+# Lantern lap 8 fixture — pinned prompt on the request contract.
+model_hash sha3-256-rye-forge-lap0
+prompt init.garden for args
+tokens_in 8
+tokens_out 5
+stopped_reason eos
+text garden holds the args

@@ -1,0 +1,58 @@
+//! Rye test: std.fmt.allocPrint and std.mem.trimEnd — pass 9988.
+//!
+//! allocPrint produces a sentinel-terminated formatted string. trimEnd
+//! removes trailing characters from a slice. Both are used by the Rishi
+//! file I/O builtins (allocPrint for path conversion) and the arithmetic
+//! parser (trimEnd for operator detection).
+//!
+//! This test exercises both functions with known inputs and asserts the
+//! output matches expectations, so the parity gate can confirm behavior
+//! is identical across the baseline and strengthened std.
+
+const std = @import("std");
+
+pub fn main() void {
+    const allocator = std.heap.page_allocator;
+
+    // --- allocPrint: format a string with interpolation ---
+    // invariant: allocPrint produces a sentinel-terminated slice matching the format
+    const result1 = std.fmt.allocPrint(allocator, "hello {s}", .{"world"}) catch unreachable;
+    std.debug.assert(std.mem.eql(u8, result1, "hello world"));
+    // postcondition: result length matches expected
+    std.debug.assert(result1.len == 11);
+
+    // invariant: allocPrint with integer formatting
+    const result2 = std.fmt.allocPrint(allocator, "{d}+{d}={d}", .{ 2, 3, 5 }) catch unreachable;
+    std.debug.assert(std.mem.eql(u8, result2, "2+3=5"));
+    std.debug.assert(result2.len == 5);
+
+    // invariant: allocPrint with empty format inserts
+    const result3 = std.fmt.allocPrint(allocator, "{s}", .{"path/to/file"}) catch unreachable;
+    std.debug.assert(std.mem.eql(u8, result3, "path/to/file"));
+    std.debug.assert(result3.len == 12);
+
+    // --- trimEnd: remove trailing characters ---
+    // invariant: trimEnd removes only trailing matches
+    const trimmed1 = std.mem.trimEnd(u8, "hello   ", " \t");
+    std.debug.assert(std.mem.eql(u8, trimmed1, "hello"));
+
+    // invariant: trimEnd on a string with no trailing matches returns the whole string
+    const trimmed2 = std.mem.trimEnd(u8, "hello", " \t");
+    std.debug.assert(std.mem.eql(u8, trimmed2, "hello"));
+
+    // invariant: trimEnd on an empty string returns empty
+    const trimmed3 = std.mem.trimEnd(u8, "", " \t");
+    std.debug.assert(trimmed3.len == 0);
+
+    // invariant: trimEnd result length <= input length
+    const input = "data  \t\t";
+    const trimmed4 = std.mem.trimEnd(u8, input, " \t");
+    std.debug.assert(trimmed4.len <= input.len);
+    std.debug.assert(std.mem.eql(u8, trimmed4, "data"));
+
+    // invariant: trimEnd does not touch leading characters
+    const trimmed5 = std.mem.trimEnd(u8, "  hello  ", " ");
+    std.debug.assert(std.mem.eql(u8, trimmed5, "  hello"));
+
+    std.debug.print("rye: allocPrint and trimEnd assertions confirmed.\n", .{});
+}

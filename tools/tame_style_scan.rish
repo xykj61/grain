@@ -1,0 +1,33 @@
+# tame_style_scan.rish — TAME textual lint mode router.
+#
+# Modes: bans (default) · advise · bans-legacy · advise-legacy
+# Run from the repository root:
+#   rishi/bin/rishi run tools/tame_style_scan.rish [mode]
+#
+# Fixture entry (thin delegate): tools/fixtures/tame_style_scan.sh
+
+if args contains "advise-legacy" then let legacy = run ["sh" "tools/fixtures/tame_style_scan_advise_legacy.sh"]
+if args contains "advise-legacy" then say legacy.out
+if args contains "advise-legacy" then exit 0
+
+if args contains "bans-legacy" then let legacy = run ["sh" "tools/fixtures/tame_style_scan_bans_legacy.sh"]
+if args contains "bans-legacy" then say legacy.out
+if args contains "bans-legacy" then assert legacy.ok
+if args contains "bans-legacy" then exit 0
+
+if args contains "advise" then let advise = run ["rishi/bin/rishi" "run" "tools/tame_style_scan_advise.rish"]
+if args contains "advise" then say advise.out
+if args contains "advise" then assert advise.ok
+if args contains "advise" then exit 0
+
+if args contains "bans" then let bans = run ["rishi/bin/rishi" "run" "tools/tame_style_scan_bans.rish"]
+if args contains "bans" then say bans.out
+if args contains "bans" then assert bans.ok
+if args contains "bans" then exit 0
+
+if length args == 0 then let bans = run ["rishi/bin/rishi" "run" "tools/tame_style_scan_bans.rish"]
+if length args == 0 then say bans.out
+if length args == 0 then assert bans.ok
+if length args == 0 then exit 0
+
+say "usage: tame_style_scan.rish [bans|advise|bans-legacy|advise-legacy]"

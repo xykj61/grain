@@ -1,0 +1,27 @@
+//! Rye test: mem.swap — pass 9919.
+//!
+//! Exchange two memory locations; pairs with mem.reverse (9921).
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    var a: u8 = 1;
+    var b: u8 = 2;
+    mem.swap(u8, &a, &b);
+    std.debug.assert(a == 2 and b == 1);
+
+    var x: i32 = 10;
+    var y: i32 = 20;
+    mem.swap(i32, &x, &y);
+    std.debug.assert(x == 20 and y == 10);
+
+    const Pair = struct { u8, u8 };
+    var pair: Pair = .{ 3, 4 };
+    var other: Pair = .{ 5, 6 };
+    mem.swap(Pair, &pair, &other);
+    std.debug.assert(pair[0] == 5 and pair[1] == 6);
+    std.debug.assert(other[0] == 3 and other[1] == 4);
+
+    std.debug.print("rye: mem.swap assertions confirmed.\n", .{});
+}

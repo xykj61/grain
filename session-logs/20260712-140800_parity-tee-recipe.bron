@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260712.140800
+editor Cursor
+model Cursor Grok 4.5
+voice Rio 3
+title Parity has no meta tail — tee recipe + print ch.out on fail
+prompt parity chapter 1 failed; what tail command?
+product_nib 430
+suite_nib 432
+git_nib 065b6ab
+think Parity writes no g0c-style meta file — stdout only. Orchestrator asserted without printing ch1.out so the RED reason was hidden.
+think Teach tee to tools/.cache/parity-host.log; improve parity.rish to say chapter out on failure.
+obs Host: mkdir -p tools/.cache && rishi … parity.rish 2>&1 | tee tools/.cache/parity-host.log — then tail -f that path in another terminal.
+file tools/parity.rish say ch.out on chapter fail
+file session-logs/20260712-140800_parity-tee-recipe.bron this log
+file session-logs/README.md index
+recommend keep-going host re-run parity with tee — mechanical; park on second red per standing law

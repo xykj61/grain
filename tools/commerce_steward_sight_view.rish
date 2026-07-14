@@ -1,0 +1,20 @@
+# commerce_steward_sight_view.rish — Steward sight: livelihood + books on Skate (tip 423).
+#
+# Golden: drawn terminal steward sight: listed=25 settled=1 cash=825 conservation=0 pnl=825 journal=3 memo=mandi:vessel-sale … — GREEN
+# Run from the repository root:
+#   rishi/bin/rishi run tools/commerce_steward_sight_view.rish
+
+let bin = "pond/bin/drawn-terminal"
+
+say "build: commerce steward sight — drawn-terminal compile"
+let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+assert build.ok else "drawn_terminal build failed for steward sight"
+assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
+
+let view = run ["sh" "-c" "${bin} stewardsighttest 2>&1"]
+assert view.ok else "drawn terminal stewardsighttest exited non-zero"
+assert view.out contains "GREEN" else "Steward sight witness not GREEN"
+assert view.out contains "drawn terminal steward sight: listed=25 settled=1 cash=825 conservation=0 pnl=825 journal=3 memo=mandi:vessel-sale" else "Steward sight missing golden finale"
+assert view.out contains "lines=8" else "Steward sight missing eight-line frame"
+
+say "GREEN: Commerce steward sight — livelihood and books on one Skate frame (tip 423)."

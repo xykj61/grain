@@ -1,0 +1,66 @@
+//! comlink/guest_tablecloth_query_client_rx.rye — Tablecloth query device: client RX (verify hits).
+
+const std = @import("std");
+const vn = @import("virtio_net.rye");
+const wf = @import("wire_format.rye");
+const qw = @import("recall_tablecloth_query_wire.rye");
+
+var rx: vn.RxQueue = undefined;
+
+export fn _start() linksection(".text.init") callconv(.naked) noreturn {
+    asm volatile (
+        \\ li sp, 0x80100000
+        \\ j kmain
+    );
+}
+
+export fn kmain() callconv(.c) noreturn {
+    vn.init_device();
+    rx.init();
+    vn.driver_ok();
+    rx.kick();
+
+    const n = rx.wait_frame();
+    if (n == 0) {
+        vn.write_str("tablecloth query device: FAIL — client RX timeout\n");
+        vn.finish_fail();
+    }
+    const poff = vn.virtio_net_hdr_len + vn.eth_header_len;
+    if (n <= poff) {
+        vn.write_str("tablecloth query device: FAIL — client frame too short\n");
+        vn.finish_fail();
+    }
+    const buf = rx.frame();
+    const datagram = buf[poff..n];
+
+    var opened: [@intCast(wf.max_message)]u8 = undefined;
+    const opened_len = wf.open_datagram(datagram, &opened) catch {
+        vn.write_str("tablecloth query device: FAIL — client open refused\n");
+        vn.finish_fail();
+    };
+
+    var resp: qw.QueryWireResponse = undefined;
+    qw.decode_response(opened[0..@intCast(opened_len)], &resp) catch {
+        vn.write_str("tablecloth query device: FAIL — response decode\n");
+        vn.finish_fail();
+    };
+
+    if (resp.hit_count != 2) {
+        vn.write_str("tablecloth query device: FAIL — hit count\n");
+        vn.finish_fail();
+    }
+    if (!std.mem.eql(u8, resp.hits[0].peer, "peerB") or !std.mem.eql(u8, resp.hits[0].bolt, "b")) {
+        vn.write_str("tablecloth query device: FAIL — hit0 identity\n");
+        vn.finish_fail();
+    }
+    if (resp.hits[0].revision != 1 or !std.mem.eql(u8, resp.hits[0].path, "notes.txt")) {
+        vn.write_str("tablecloth query device: FAIL — hit0 fields\n");
+        vn.finish_fail();
+    }
+    if (resp.hits[1].revision != 2 or !std.mem.eql(u8, resp.hits[1].path, "notes.txt")) {
+        vn.write_str("tablecloth query device: FAIL — hit1 fields\n");
+        vn.finish_fail();
+    }
+    vn.write_str("tablecloth query device: sealed filter response GREEN — verify passed\n");
+    vn.finish_pass();
+}

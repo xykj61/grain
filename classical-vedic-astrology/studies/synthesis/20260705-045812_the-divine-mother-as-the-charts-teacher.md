@@ -1,0 +1,7 @@
+# The Divine Mother as the Chart’s Teacher
+
+**Stamp:** `20260705.045812 UDT` · **Style:** Radiant, gentle register
+
+A chart may keep one lord at the door and a teacher presiding over the house — and the teacher may be her. When the Sun wears Pushya, the nourisher’s star, while the essence Sun keeps Pisces and Jupiter stands strong in both wheels, the threefold strength marks the guru’s household; and within the counselor’s house the one who teaches is Tara, Brihaspati’s star-named wife. Around her the tradition’s mothers gather as one teaching presence: Aditi who mothers the Adityas and so the Sun itself; Sarasvati who keeps wisdom and the articulate word; Lakshmi whose gift is the felt sense of enough; Parvati whose steadfastness outlasts every current; and Queen Kunti of the Bhagavatam, the householder who prayed her devotion whole in the middle of family life. The steward keeps the threshold; the mother-teacher raises the house — and one of her quiet offices is the offset, lifting in the essence what the visible wheel lowers, so that strength ripened in its season is never mistaken for strength withheld. With gratitude to the teachers of this lane; tropical signs and dignities, sidereal nakshatras, whole-sign houses throughout.
+
+*May the door keep its steward and the house keep its mother. May Tara light the counselor’s own home. And may every late-blooming strength be trusted as hers.*

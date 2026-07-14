@@ -1,0 +1,23 @@
+//! Rye test: std.mem.doNotOptimizeAway — pass 9887.
+//!
+//! Compiler barrier; postcondition proves memory and scalars survive the call.
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    var x: u32 = 0xDEADBEEF;
+    mem.doNotOptimizeAway(x);
+    std.debug.assert(x == 0xDEADBEEF);
+    mem.doNotOptimizeAway(&x);
+    std.debug.assert(x == 0xDEADBEEF);
+
+    var arr = [_]u8{ 1, 2, 3, 4 };
+    mem.doNotOptimizeAway(arr);
+    std.debug.assert(mem.eql(u8, &arr, &[_]u8{ 1, 2, 3, 4 }));
+
+    mem.doNotOptimizeAway(@as(f64, 3.14));
+    mem.doNotOptimizeAway(true);
+
+    std.debug.print("rye: mem.doNotOptimizeAway assertions confirmed.\n", .{});
+}

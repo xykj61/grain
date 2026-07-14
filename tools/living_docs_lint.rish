@@ -1,0 +1,22 @@
+# living_docs_lint.rish — ratchet-advisory living-docs lint (five duties).
+#
+# Kaeden seated the name 20260712.222800 · Claude counsel at bench 4fa8363.
+# Print every parity run; never fail. Hardening horizon: link-breaks may earn
+# a gate once the docs shelf proves stable.
+#
+# Duties (fixtures/living_docs_lint_scan.py):
+#   1. retired LEXICON words in living-voice lines (word-boundary; keeps.txt exemptions)
+#   2. broken relative links on roster
+#   3. orphan roster pages (no inbound from roster + docs/README)
+#   4. Status rooms on rostered living pages
+#   5. docs/ pin-strings byte-match canon (PUBKEYS · master-seal · exit card)
+#
+# First-lap roster: tools/fixtures/living_docs_lint_roster.sh
+# Design: active-designing/20260712-221600_docs-compression-layer-design.md
+#
+#   rishi/bin/rishi run tools/living_docs_lint.rish
+
+say "living-docs lint: ratchet advisory (five duties)…"
+let scan = run ["python3" "tools/fixtures/living_docs_lint_scan.py"]
+say scan.out
+say "GREEN: living-docs lint — advisories printed; witness never fails."

@@ -1,0 +1,18 @@
+# rs2_flag.rish — RS-2 witness: flag args scans for --name value pairs.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/rs2_flag.rish
+
+let found = run ["rishi/bin/rishi" "run" "tools/fixtures/rs2_flag_found.rish" "--appimage" "/tmp/rs2-test"]
+assert found.ok else "flag parse must succeed when flag is present"
+assert found.out contains "RS-2 flag parse ok" else "flag parse must return the value"
+
+let missing = run ["rishi/bin/rishi" "run" "tools/fixtures/rs2_flag_missing.rish" "a"]
+assert (missing.ok == false) else "missing flag must fail"
+assert missing.err contains "flag not found" else "missing flag must print a friendly message"
+
+let novalue = run ["rishi/bin/rishi" "run" "tools/fixtures/rs2_flag_novalue.rish" "--alone"]
+assert (novalue.ok == false) else "flag without value must fail"
+assert novalue.err contains "requires a value" else "flag without value must print a friendly message"
+
+say "GREEN: RS-2 — flag args reads --name value from a string list."
