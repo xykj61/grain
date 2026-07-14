@@ -1,0 +1,65 @@
+# cursor_jail_macos_harden_witness.rish — proves the --harden-home profile
+# emitted by tools/cursor_jail_macos.rish actually denies reads to real
+# home dotfiles (the .ssh/.gnupg exfiltration path named in
+# session-logs/20260714-074900_read-fence-vs-jail-local-keys-security-question.bron),
+# while the small, named allow-back list (git identity, shell rc) still
+# works, and the ordinary project read/write fence is untouched.
+#
+# Refuse witness: a read of a real credential store (~/.ssh/config,
+# ~/.gnupg) must be denied. Permit witness: ~/.gitconfig (never on the
+# deny list) and a plain project file must both stay readable.
+#
+#   rishi/bin/rishi run tools/cursor_jail_macos_harden_witness.rish
+#
+# Run this from an ordinary, unsandboxed terminal (Terminal.app, not from
+# inside an already-jailed Cursor window). Proven on this host 20260714:
+# once a process is already sandbox_apply'd, a *second*, nested
+# sandbox_apply carrying a (deny ...) rule fails outright (sandbox-exec:
+# sandbox_apply: Operation not permitted) even though the identical
+# profile applies cleanly as a first, non-nested sandbox_apply -- an
+# allow-only nested profile (tools/cursor_jail_macos_witness.rish's own
+# write-fence check) nests fine; a profile carrying an explicit deny
+# rule does not. This witness's own honesty depends on the shell that
+# runs it not already being sandboxed.
+
+let sandbox_check = run ["sh" "-c" "command -v sandbox-exec"]
+assert sandbox_check.ok else "sandbox-exec not found -- this witness is macOS-only."
+
+let pwd_run = run ["pwd"]
+let repo = trim pwd_run.out
+let home = env "HOME"
+
+let build_mk = run ["mkdir" "-p" "${repo}/tools/.build"]
+assert build_mk.ok else "could not create tools/.build/"
+
+let profile_path = "tools/.build/cursor_jail_macos_harden_witness_profile.sbpl"
+let emit = run ["sh" "-c" "rishi/bin/rishi run tools/cursor_jail_macos.rish --print-profile --harden-home > ${profile_path}"]
+assert emit.ok else "could not emit the launcher's --harden-home profile"
+
+let apply_probe = run ["sandbox-exec" "-f" profile_path "--" "sh" "-c" "true"]
+assert apply_probe.ok else "FAIL: sandbox_apply itself was refused for this profile -- run this witness from an unsandboxed terminal, not from inside an already-jailed window (see this file's own header)."
+
+say "== refuse witness: read of a real dotfile (~/.ssh/config) =="
+let ssh_read = run ["sandbox-exec" "-f" profile_path "--" "sh" "-c" "cat '${home}/.ssh/config' >/dev/null"]
+if ssh_read.ok then say "FAIL: ~/.ssh/config was readable -- the harden fence is not enforcing"
+assert (ssh_read.ok == false) else "FAIL: ~/.ssh/config was readable -- the harden fence is not enforcing"
+say "PASS: ~/.ssh/config was denied"
+
+say "== refuse witness: read of the real GPG keyring (~/.gnupg) =="
+let gnupg_read = run ["sandbox-exec" "-f" profile_path "--" "sh" "-c" "ls '${home}/.gnupg' >/dev/null"]
+if gnupg_read.ok then say "FAIL: ~/.gnupg was listable -- the harden fence is not enforcing"
+assert (gnupg_read.ok == false) else "FAIL: ~/.gnupg was listable -- the harden fence is not enforcing"
+say "PASS: ~/.gnupg was denied"
+
+say "== permit witness: ~/.gitconfig, untouched by the deny-only list =="
+let gitconfig_read = run ["sandbox-exec" "-f" profile_path "--" "sh" "-c" "cat '${home}/.gitconfig' >/dev/null"]
+assert gitconfig_read.ok else "FAIL: ~/.gitconfig was denied -- git identity would fail to load"
+say "PASS: ~/.gitconfig stayed readable"
+
+say "== permit witness: an ordinary project file =="
+let project_read = run ["sandbox-exec" "-f" profile_path "--" "sh" "-c" "cat '${repo}/SOURCE.md' >/dev/null"]
+assert project_read.ok else "FAIL: an ordinary project file was denied -- the harden fence is too strict"
+say "PASS: project files stayed readable"
+
+say "== all four witnesses green =="
+say "GREEN: --harden-home denies real dotfile reads and keeps the allow-back list and the project readable."
