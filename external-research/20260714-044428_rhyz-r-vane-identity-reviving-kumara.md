@@ -39,27 +39,27 @@ From the gratitude source (`../gratitude/RhizomeTimenergy.md`), two siloed insig
 
 And the resource insight: a bounded, quiet, forgetful identity vane returns **timenergy** to the holder — the same reason our "device that forgets" foundation and TAME's bounds are kindnesses, not only safeties.
 
-## Rhyz's Identity Tiers (Azimuth-style, adopted)
+## Rhyz's Identity Tiers (Azimuth-style, adopted, tier words settled `20260714.050500`)
 
-Rhyz's addressing adopts the three-tier shape, over Kumara's proven Ed25519 root:
+Rhyz's addressing adopts the three-tier shape **and the tier words themselves**, taken directly from Azimuth, over Kumara's proven Ed25519 root:
 
-| Tier | Role (our voice) | Azimuth parallel |
+| Tier | Role in Rhyz | Azimuth's own word |
 |---|---|---|
 | **Point** | a leaf identity — one person, one node, the common case | planet |
 | **Planet** | a mid identity that can sponsor points | star |
 | **Star** | an anchor identity that sponsors planets; few, legible | galaxy |
 
-(Names above are the *conceptual tiers*; the exact Rhyz tier words are a design detail to settle when the vane is built — the adopted decision is the *three-tier Azimuth-style shape* and legible-sponsor addressing, not the final tier vocabulary.) The keypair beneath every tier is Kumara's Ed25519 seam, revived; the tiers are addressing and sponsorship over it, and connectivity stays peer-to-peer regardless of tier.
+Rhyz's own tier names are `point`, `planet`, and `star` — Azimuth's actual vocabulary, adopted for legibility rather than paraphrased into a novel Glow triad, since "adopt Azimuth-style point/planet/star tier naming" names the words themselves, not merely the shape. The keypair beneath every tier is Kumara's Ed25519 seam, revived; the tiers are addressing and sponsorship over it, and connectivity stays peer-to-peer regardless of tier.
 
 ## My Honest Opinion
 
 **Rhyz is a strong name and the revival is the right method.** The rhizome is not decoration — it names the real network shape of a peer identity system, and the address-tree-vs-connection-graph distinction is a genuinely useful thing to have written down before building. Adopting the Azimuth tiers is the pragmatic, legible choice and aligns us with the network we mean to interoperate with. The one discipline to hold firm: **do not let "revive with Rhyz" become a 72-file rename today** — that would break the green witnesses for a cosmetic gain, against every rule we keep. Revive in the living layer, seal the past, defer the code to proven-supersede. That is both the safe path and the one our own laws require.
 
-## Open Questions (for Keaton's word)
+## Resolved (`20260714.050500`)
 
-- The exact **Rhyz tier vocabulary** (the three-tier Azimuth-style shape is adopted; the tier *words* are open).
-- **Build timing** — seat Rhyz as a named horizon revival now (design carried, code deferred), or open its first Glow-native lap when the identity runtime is ready?
-- Confirm the **revive-not-rename method** above is the intended reading of "revive everything with Rhyz" (living now, 72-file code migration at proven-supersede).
+- **Tier vocabulary confirmed:** Rhyz's tiers **are** `point` / `planet` / `star`, taken directly from Azimuth — "adopt Azimuth-style point/planet/star tier naming" is read literally, not as a cue to coin novel Glow words. The table above updates from conceptual placeholders to the settled names.
+- **Build timing confirmed:** Rhyz is seated **now** as a named horizon revival; its first Glow-native lap opens when the identity runtime is ready.
+- **Revive-not-rename method confirmed** as the intended reading of "revive everything with Rhyz."
 
 ---
 
