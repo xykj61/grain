@@ -1,0 +1,37 @@
+# Azimuth-Galaxy-Proposal Format
+
+**Always on** for any commit, `CONTRIBUTING.md` change, or `expanding-prompts/` grant proposal substantial enough to be worth pitching outside this fork — to one or more of Urbit's real Azimuth galaxy holders.
+
+## The Real Ownership This Names
+
+There are 256 Azimuth galaxies. As of this rule's writing, there are fewer than 256 real-life galaxy owners, since some hold more than one — the galaxy, star, and planet points are ERC-721-style NFTs on Ethereum, tradable on markets like OpenSea:
+
+- Galaxies: `opensea.io/collection/urbit-id-galaxy` — contract `0x33eecbf908478c10614626a9d304bfe18b78dd73`
+- Stars: `opensea.io/collection/urbit-id-star` — same contract, `0x33eecbf908478c10614626a9d304bfe18b78dd73`
+- Planets: `opensea.io/collection/urbit-id-planet` — contract `0x9ef27de616154ff8b38893c59522b69c7ba8a81c`
+
+This fork's own identity carries a real star (`~bandun`) and planet (`~pacpet-solreb`), recorded at [`../../PUBKEYS.md`](../../PUBKEYS.md) — Kaeden is already one of these real-life owners, not a hypothetical one.
+
+## What the Format Adds
+
+Beyond the ordinary `commit-messages.md` shape (component-prefixed subject, Radiant body, `Related` section), a change substantial enough to warrant outside attention carries one additional block, in the commit body or the proposal document itself:
+
+```
+### Galaxy Pitch
+
+For: <what a galaxy holder gets or should care about>
+Ask: <what this fork is asking them to weigh in on, adopt, or fund — or "none; informational only">
+Scope: <how large a change this is, in Urbit-grants PR-sizing terms>
+```
+
+- **`For`** names the real stake — network health, a shared tool, a naming decision that could ripple into the wider ecosystem — never inflated to make a small change sound bigger than it is.
+- **`Ask`** is honest about whether this is actually asking anything of anyone, or just informing. Most of this fork's own work carries `Ask: none; informational only` — this rule does not manufacture asks that are not real.
+- **`Scope`** borrows this project's own already-seated PR-sizing discipline (per `commit-messages.md` and the Urbit-grants proposal shapes already written in `expanding-prompts/`) so a galaxy holder skimming many pitches can tell a ten-minute review from a season-long undertaking at a glance.
+
+## When to Skip It
+
+Ordinary, internal-only commits — a typo fix, a session log, a small witness — carry no Galaxy Pitch block at all. This is not a section every commit needs; it is a section every commit *earns the right to include* only when the change is real enough to matter past this fork's own tree.
+
+## Why It Is Shaped This Way
+
+Kaeden holds a real Azimuth star and planet, not a hypothetical one, and this fork's own naming and architecture proposals (the vane-parallel mapping, the Glow-language collision research, the four-kernel-variant naming) are exactly the kind of decision that could someday be worth a real galaxy holder's attention — Urbit's own governance already runs partly through this ownership structure. Naming the format now, while the stakes are still small, means this fork is ready to pitch outward the day a proposal is actually worth it, rather than needing to invent the shape under pressure later.
