@@ -53,6 +53,23 @@
 - [x] **grep/sed Rishi builtin grant proposals** — Urbit-grants-shaped, literal-string tier, staged into small PRs — [`expanding-prompts/20260713-222100_grep-sed-rishi-grant-proposals.md`](../expanding-prompts/20260713-222100_grep-sed-rishi-grant-proposals.md)
 - [x] **Grain lineage cloned whole + siloed** — six documents held whole in [`gratitude/grain-lineage/`](../gratitude/grain-lineage/README.md); secular module-named silo at [`external-research/grain-lineage-silo/`](../external-research/grain-lineage-silo/README.md)
 
+### Proposal reframe, warm-aura versioning, and the archiving/reviving naming sweep (`20260714`)
+
+*This fork reframed as a collaborative pull-request **proposal** to Urbit rather than a competitive fork — radiant, open-source-spirited, in the ethical-accelerationist register. And the whole tree's dated naming named as one thing: the Glow warm-aura date atom.*
+
+- [x] **Root `README.md`** — generic Acme voice, the four Glow OS variants as the central choice, honest status; reframed from "fork" to "proposal to Urbit" (collaborative, infinite-game) — [`README.md`](../README.md)
+- [x] **`GLOW_PROFILE.bron`** — root contributor-profile config (sibling to `GLOW_HOST.bron`); generic docs stay generic, the specific contributor lives here — [`context/specs/20260714-015200_glow-profile-and-acme-generic-voice.md`](../context/specs/20260714-015200_glow-profile-and-acme-generic-voice.md)
+- [x] **Root rule 9 — docs and implementation stay synced** — seated in `TAME_GUIDANCE.md`; always-on rule pair `docs-implementation-sync`
+- [x] **Warm-aura versioning + doc-sync design** — Spec-ulation drawn through Hoon's warm/cold aura: Glow grows warm (chronological, accreting) and pins cold (kelvin) at the Urbit seam — [`external-research/20260714-015200_glow-warm-aura-versioning-and-doc-code-sync.md`](../external-research/20260714-015200_glow-warm-aura-versioning-and-doc-code-sync.md)
+- [x] **Warm-aura date atom named** — one stamp, three renderings (version `YYYYMMDD.HHMMSS` · filename `YYYYMMDD-HHMMSS_slug` · dated folder bare `YYYYMMDD`), TAME-guided — [`context/specs/20260714-024800_warm-aura-date-atom-naming.md`](../context/specs/20260714-024800_warm-aura-date-atom-naming.md)
+- [x] **Techno-Optimist Manifesto gratitude** — IP-safe principles summary; carry the infinite game and pay-it-forward, set down competition-as-engine and the combative register; synthesize collaborative ethical accelerationism — [`gratitude/TechnoOptimistManifesto.md`](../gratitude/TechnoOptimistManifesto.md)
+- [x] **Archiving/reviving sweep = naming-alignment, not file-move** — confirmed on metal: every dated folder is bare `YYYYMMDD` (`session-logs/archive/` is the reference; `work-in-progress/archive/` is flat dated files — both valid); no bulk flatten (settled `20260714.000100`) — prompt [`expanding-prompts/20260714-024800_archiving-reviving-sweep-warm-aura-alignment.md`](../expanding-prompts/20260714-024800_archiving-reviving-sweep-warm-aura-alignment.md)
+- [x] **`ORGANIZING.md` One Clock + `active-reviving/README.md`** — both point at the warm-aura date-atom spec; reviving and archiving named as one clock
+- [x] **`.peal` audio easter egg** — `anvil/anvil.peal` (Opus-in-Ogg under our own four-letter mark, not `.opus`, to avoid Claude-Opus confusion); gratitude [`gratitude/OpusOggXiph.md`](../gratitude/OpusOggXiph.md); Glow audio-Tilak lane A0–A4 added to ROADMAP
+- [ ] **GATED — commit-message reframe** — rewrite "fork" → "proposal" wording across the 57 own-commit messages, re-sign, force-push both remotes; backup branch `backup/pre-proposal-rewrite` + bundle in `~/backups/` ready first
+- [ ] **CARRIED — Ojjo benchmarking vane** — TAME safety/performance benchmarking vane proving Hoon/Dojo vs Glow/Rish parity with timed compile+runtime stats (Measure What Matters + HOM + TAME + TigerBeetle); design/gratitude/prompt/name pending
+- [ ] **CARRIED — key-card generator** — macOS-compatible (magick + brew qrencode) plain white/black regeneration, Rishi-orchestrated with key + PNG audits, template-ified for the generic Acme employee, then personal cards matching the confirmed `xykj61` fingerprints
+
 ### Identity, rules, and safety seated this session
 
 - [x] **`PUBKEYS.md`** — fork identity recorded (xykj61 / Keaton Dunsford / keatondun); star `~bandun`, planet `~pacpet-solreb`
