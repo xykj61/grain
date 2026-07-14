@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260714.011504
+editor Cursor
+model Sonnet 5 1M Medium
+voice Rio 3
+host macOS 26.6 arm64 (Apple M2) — see context/specs/20260713-211800_local-host-system-hardware-anonymized.md
+title GLOW_HOST.bron seated and tested; the VPN guide reified in real, witnessed Rish
+prompt Keaton asked to reify/strengthen/fortify OS-checking for the toolchain footgun via a Bron template metaconfig cloned at the root, framed as Glow OS's own version of Claude/Cursor rules; and to reify the self-hosted VPN guide, implemented and instructed with Rishi (Rish vane .rish).
+think Found GLOW_HOST.bron, GLOW_HOST.template.bron, and tools/glow_host_run.sh already present on disk, created minutes before this turn began, matching the request closely -- did not assume they were correct or complete. Read the script in full, then actually tested both its permit and refuse paths (right host/right toolchain succeeds; wrong declared os is rejected; a bad rye_zig path is rejected) before treating any of it as done, and confirmed with no RYE_ZIG/RYE_LIB pre-set at all that it still builds rishi correctly -- the exact footgun from the prior witness-run doc, now closed and proven closed, not just asserted closed.
+think Wrote and ran a formal glow_host_run_witness.sh (permit + refuse, matching this project's own witness convention) rather than leaving the fix as an unwitnessed script -- both green.
+think Chose to build the VPN reification honestly split by machine capability: this Mac is the client, so the client half runs here for real; the server half is a deploy artifact for a VPS that does not exist in this session, syntax-checked but explicitly not claimed as deploy-witnessed.
+think Actually ran the client .rish script end to end rather than just writing it, and found four real Rishi language gaps by doing so -- not assumed, discovered by testing: no multi-line string literals (UndefinedName), no multi-line list literals either, run's captured .out escapes real newlines to literal two-character "\n" text (confirmed by a direct isolated test against read-file/write-file, which DO preserve real newlines), and "if cond then assert ... else msg" does not parse (UnknownStatement, the if/else and assert/else colliding). Fixed all four with real, working patterns (single-line lists, a one-line newline fixture read via read-file, pushing the idempotency check into the shell command itself) rather than working around them silently -- and named all four plainly in the spec doc for whoever writes the next .rish script.
+think Verified idempotency concretely, not just claimed it: captured the private key file's mtime before a second run, ran the script again, and confirmed the mtime and the printed public key were unchanged -- a real key was not silently regenerated or overwritten.
+think Installed wireguard-tools via Homebrew as a deliberate, visible act (matching the script's own printed guidance) rather than skipping the real end-to-end test out of caution -- then actually generated a real local keypair and rendered the real template, confirming with cat -e that it holds genuine newlines throughout.
+obs Both artifacts share one discipline: check reality before trusting a shortcut. GLOW_HOST checks the actual host before trusting a toolchain path; the VPN script checks the filesystem before trusting that a key needs generating. Named this explicitly as the throughline in the spec.
+file GLOW_HOST.bron and GLOW_HOST.template.bron why: Glow OS's own root host/toolchain config, Bron-form, sibling to .claude/.cursor rules; found pre-existing, tested and confirmed correct
+file tools/glow_host_run.sh why: found pre-existing, tested permit+refuse paths for real
+file tools/glow_host_run_witness.sh why: new formal witness, both paths green
+file tools/vpn_wireguard_client_setup.rish why: real, run, witnessed client-side WireGuard setup; fixed three Rishi-syntax bugs found by running it
+file tools/vpn_wireguard_server_setup.sh why: syntax-checked server deploy artifact for a real VPS
+file manual/guides/self-hosted-vpn-setup.md why: the practical guide, honest about which half is witnessed
+file context/specs/20260714-011504_glow-host-config-and-vpn-reification.md why: seats GLOW_HOST.bron and names the four real Rishi gaps found
+recommend keep-going -- both artifacts are real and tested to the limit of what this session can reach (no VPS to complete the server-side end-to-end proof). A natural next step, whenever Keaton has a real VPS, is running vpn_wireguard_server_setup.sh against it for the first true end-to-end handshake witness.
