@@ -18,6 +18,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 | Stamp | Log | Meaning |
 |-------|-----|---------|
+| 20260713.233147 | [Grain lineage cloned whole to gratitude, siloed to plain module-named use](20260713-233147_grain-lineage-cloned-and-siloed.bron) | six documents held whole in gratitude · six secular module-named silos in external-research · originals never edited |
 | 20260713.230602 | [Cold/warm atoms are real Hoon terms — my earlier correction was wrong](20260713-230602_cold-warm-atom-correction.bron) | Kaeden was right; fixed the Glow supplement doc to ground cold/warm atoms correctly beside auras |
 | 20260713.225955 | [Glow accepted, Tera to Triz, placeholder-ship-name rule, Glow supplement scoped](20260713-225955_glow-accepted-safety-rules-supplement-scoped.bron) | one language/four variants clarified · Riyo/Reya named as diverse-redundant pair · structural-invalidity ship-name safety rule |
 | 20260713.224402 | [%glow search, four-kernel-variant naming research, Azimuth-pitch rule](20260713-224402_glow-search-kernel-variants-azimuth-rule.bron) | %glow doesn't exist · Glow/Reya both collide (external + this fork's own Reya 2) · new optional Galaxy Pitch rule |
