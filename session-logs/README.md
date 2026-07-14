@@ -18,6 +18,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 | Stamp | Log | Meaning |
 |-------|-----|---------|
+| 20260713.224402 | [%glow search, four-kernel-variant naming research, Azimuth-pitch rule](20260713-224402_glow-search-kernel-variants-azimuth-rule.bron) | %glow doesn't exist · Glow/Reya both collide (external + this fork's own Reya 2) · new optional Galaxy Pitch rule |
 | 20260713.223536 | [macOS ai-jail landed, ORGANIZING/CONTRIBUTING grown, onboarding guide](20260713-223536_macos-ai-jail-landed-plus-onboarding.bron) | sandbox-exec launcher witnessed green on this host · root CONTRIBUTING.md · caught and fixed a README overwrite mistake |
 | 20260713.222200 | [Commits, new rules, hammock reading set, grant proposals, vere study](20260713-222200_commits-rules-hammock-vere-study.bron) | 13 atomic CONTRIBUTING-style commits · 2 new always-on rules · Kaeden/veganreyklah2 audit (1,104/122 files, flagged not rewritten) |
 | 20260713.215900 | [Urbit/Hoon/Nock fusion scoping pass — naming, interpreter, RISC-V, archive](20260713-215900_urbit-fusion-scoping-pass.bron) | Four scoping docs, zero renames/code/moves · session-log rules updated for this host |
