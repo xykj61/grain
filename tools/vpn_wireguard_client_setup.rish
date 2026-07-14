@@ -1,0 +1,77 @@
+# vpn_wireguard_client_setup.rish — the real, runnable client half of the
+# self-hosted WireGuard VPN guide.
+#
+# Reifies external-research/20260713-212900_self-hosted-vpn-cto-credential-security.md
+# Steps 4-5 (the parts this Mac, as the client, can actually do). Steps 1-3
+# (provisioning the VPS) cannot run here -- this Mac is not the server -- so
+# they are a separate deploy artifact: tools/vpn_wireguard_server_setup.sh,
+# meant to be copied to and run ON the VPS.
+#
+# Run: rishi/bin/rishi run tools/vpn_wireguard_client_setup.rish
+
+let wg_check = run ["sh" "-c" "command -v wg"]
+if wg_check.ok == false then say "wg not found on PATH."
+if wg_check.ok == false then say ""
+if wg_check.ok == false then say "This is a real, meaningful install (networking software) --"
+if wg_check.ok == false then say "run it yourself, deliberately, rather than have it run for you:"
+if wg_check.ok == false then say ""
+if wg_check.ok == false then say "  brew install wireguard-tools"
+if wg_check.ok == false then say ""
+if wg_check.ok == false then say "Then run this script again."
+if wg_check.ok == false then exit exit-temporary
+
+say "wg found: ${wg_check.out}"
+
+let mkdir = run ["mkdir" "-p" ".wireguard"]
+assert mkdir.ok else "could not create .wireguard/"
+
+# Idempotency lives entirely inside this one shell command -- Rishi's own
+# if/then only guards single statements, so keeping the "only if missing"
+# logic in the shell itself avoids ever re-running (and overwriting) a real
+# key by accident.
+let key_exists = run ["test" "-f" ".wireguard/laptop_private.key"]
+let genkey = run ["sh" "-c" "test -f .wireguard/laptop_private.key || (umask 077 && wg genkey | tee .wireguard/laptop_private.key | wg pubkey > .wireguard/laptop_public.key)"]
+assert genkey.ok else "wg genkey/pubkey failed"
+
+if key_exists.ok == false then say "No client keypair existed -- generated one just now."
+if key_exists.ok == true then say "A client keypair already existed -- reused it, generated nothing new."
+say "The private key never leaves disk: umask 077 at creation, never printed, never read back into this script."
+
+let pubkey = read-file ".wireguard/laptop_public.key"
+say "This laptop's WireGuard public key (safe to share, paste into the server's [Peer] block):"
+say trim pubkey
+
+# A real newline, from a one-line fixture -- Rishi string literals have no
+# \n escape and no multi-line form, but read-file/write-file preserve real
+# newlines exactly (unlike run's captured .out, which escapes them to the
+# two-character text "\n" -- confirmed by direct test; a real Rishi gap
+# worth naming, not a mistake in this script).
+let nl = read-file "tools/fixtures/newline.txt"
+
+let line1 = "[Interface]"
+let line2 = "PrivateKey = <contents of .wireguard/laptop_private.key -- never paste this into a shared channel>"
+let line3 = "Address = 10.66.0.2/32"
+let line4 = "DNS = 10.66.0.1"
+let line5 = ""
+let line6 = "[Peer]"
+let line7 = "PublicKey = <the VPS server's public key, from tools/vpn_wireguard_server_setup.sh Step 2>"
+let line8 = "Endpoint = <your VPS public IP>:51820"
+let line9 = "AllowedIPs = 10.0.0.0/8, 172.16.0.0/12"
+let line10 = "# AllowedIPs = 0.0.0.0/0   # swap in for a full-tunnel profile instead"
+let line11 = "PersistentKeepalive = 25"
+let template_lines = [line1 line2 line3 line4 line5 line6 line7 line8 line9 line10 line11]
+let template = join template_lines nl
+
+write-file ".wireguard/wg0-client.conf.template" template
+say ""
+say "Client config template written to .wireguard/wg0-client.conf.template"
+say "(this whole .wireguard/ directory is gitignored -- keys and this template never enter git history)"
+say ""
+say "Next, on the VPS side (this Mac cannot do this part -- it is not the server):"
+say "  1. Copy tools/vpn_wireguard_server_setup.sh to your VPS and run it there as root."
+say "  2. Paste this laptop's public key (printed above) into the server's [Peer] block."
+say "  3. Fill in the server's public key and IP into .wireguard/wg0-client.conf.template."
+say "  4. Rename it to wg0.conf and import it into the WireGuard macOS app, or run:"
+say "       sudo wg-quick up ./.wireguard/wg0.conf"
+say ""
+say "GREEN: client-side WireGuard setup complete on this host."
