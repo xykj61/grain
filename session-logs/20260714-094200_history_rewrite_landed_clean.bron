@@ -1,0 +1,12 @@
+format session-log-v1
+stamp 20260714.094200
+editor Cursor
+model Cursor Sonnet 5 1M Medium
+voice Rio 3
+title History rewrite landed clean; Keaton confirms
+prompt Keaton confirmed the resign-and-force-push worked perfectly, closing out this thread.
+think this closes a chain that started with a genuine security question (read-fence vs jail-local keys), moved through building --harden-home, discovering and fixing a broken GPG identity and a known_hosts gap, clarifying that Keaton's real workflow only ever uses jailed keys (reframing the whole "disposable key" premise), and ending in a careful, verified history rewrite: found the true fork boundary (87 commits, not the 105 a date filter alone would have caught), excluded 18 commits belonging to real named Urbit contributors that should never carry Keaton's signature, rewrote with git filter-branch's commit-filter (tree/parents/message/author/committer all passed through untouched, only the signature added), diffed old against new byte-for-byte before ever pushing, then force-pushed with --force-with-lease to codeberg and github only -- upstream-urbit-foundation never touched.
+think the collaboration rhythm's own "check-in before an unruled, high-stakes action" instinct proved right-sized here: paused twice (once on the resign question itself, once again on the exact commit range after finding non-Keaton authors mixed into the naive date-filtered range) rather than running either version blind, and both pauses caught something real.
+obs a good, complete close: nothing left half-done, no follow-up correction needed, real verification (diff, signature check, remote-hash comparison) rather than a hopeful assertion that it worked.
+file session-logs/20260714-094200_history_rewrite_landed_clean.bron -- this log
+recommend keep-going -- this thread is closed. Two small housekeeping notes for whenever they come up naturally, not urgent: the local backup-before-resign-20260714-093200 branch can be deleted once Keaton is sure he never wants to glance back at the pre-resign hashes; and the known_hosts / gh-scoped-token / SVG-key-card threads from earlier this session are still open, smaller follow-ups whenever he wants them.
