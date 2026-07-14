@@ -18,6 +18,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 | Stamp | Log | Meaning |
 |-------|-----|---------|
+| 20260713.223536 | [macOS ai-jail landed, ORGANIZING/CONTRIBUTING grown, onboarding guide](20260713-223536_macos-ai-jail-landed-plus-onboarding.bron) | sandbox-exec launcher witnessed green on this host · root CONTRIBUTING.md · caught and fixed a README overwrite mistake |
 | 20260713.222200 | [Commits, new rules, hammock reading set, grant proposals, vere study](20260713-222200_commits-rules-hammock-vere-study.bron) | 13 atomic CONTRIBUTING-style commits · 2 new always-on rules · Kaeden/veganreyklah2 audit (1,104/122 files, flagged not rewritten) |
 | 20260713.215900 | [Urbit/Hoon/Nock fusion scoping pass — naming, interpreter, RISC-V, archive](20260713-215900_urbit-fusion-scoping-pass.bron) | Four scoping docs, zero renames/code/moves · session-log rules updated for this host |
 | 20260713.201910 | [Local fork Pass 1 — urbit/vere restructure, keys, PDT convention](20260713-201910_local-fork-pass1-restructure.bron) | ~/urbit rebuilt over urbit/vere histories · keatondun@gmail.com identity · Pacific stamp convention seated |
