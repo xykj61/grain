@@ -27,7 +27,7 @@
 |---|---|---|
 | The language | **Glow** | the fused Rye-Hoon language (accepted `20260713.225658`) |
 | The umbrella OS | **Glow OS** | was "Rye OS"; the whole project |
-| The four OS variants | **Reya · Riyo · Trey · Triz** | all written in Glow; all part of Glow OS; Riyo/Reya a diverse-redundant pair |
+| The four OS variants | **Reya · Riyo · Trey · Triz** | all written in Glow; all part of Glow OS; **all four confirmed** `20260714.035600` as two diverse-redundant pairs — Riyo/Reya and Trey/Triz |
 | The shell | **Rishi** (proposed: **Dojo**, or a new Glow-OS name) | still to confirm — see the names spec |
 | The style/law | **TAME Guidance** | one document, governs all of Glow OS |
 

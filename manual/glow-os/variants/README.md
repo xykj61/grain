@@ -20,12 +20,12 @@ The four variants — **Reya, Riyo, Trey, Triz** — are one design seen four wa
 
 | Variant | Role | Confirm status |
 |---|---|---|
-| **Reya** | OS variant; Riyo's diverse-redundant twin | awaiting confirm — real double collision (ReyaChain + retired Reya 2 voice) |
-| **Riyo** | OS variant; Reya's diverse-redundant twin | awaiting confirm — quiet in collision research |
-| **Trey** | OS variant | awaiting confirm — quiet |
-| **Triz** | OS variant | awaiting confirm — soft TRIZ collision |
+| **Reya** | OS variant; Riyo's diverse-redundant twin | **Confirmed** `20260714.002123` — double collision (ReyaChain + retired Reya 2 voice) seen and accepted |
+| **Riyo** | OS variant; Reya's diverse-redundant twin | **Confirmed** `20260714.035600` — quiet in collision research |
+| **Trey** | OS variant; Triz's diverse-redundant twin | **Confirmed** `20260714.035600` — quiet in collision research |
+| **Triz** | OS variant; Trey's diverse-redundant twin | **Confirmed** `20260714.035600` — soft TRIZ collision seen and accepted |
 
-Confirm/deny for all four lives in [`../../../context/specs/20260713-235600_names-awaiting-confirmation.md`](../../../context/specs/20260713-235600_names-awaiting-confirmation.md). Per-variant pages (`reya.md`, `riyo.md`, `trey.md`, `triz.md`) are generated from the template once the names are confirmed — not hand-written now, so a not-yet-confirmed name is never baked into four separate files.
+All four variant names are **confirmed**, and the two-pair symmetry is settled: **Riyo/Reya** and **Trey/Triz** are each a diverse-redundant pair (one design built independently twice). The remaining question is not the names but the *implementation shape* of that redundancy — two separate codebases from one spec, or one codebase with two independently-verified paths — a build-time engineering choice tracked in [`../../../context/specs/20260713-235600_names-awaiting-confirmation.md`](../../../context/specs/20260713-235600_names-awaiting-confirmation.md). Per-variant pages (`reya.md`, `riyo.md`, `trey.md`, `triz.md`) are generated from the template once the doc-fusion machinery exists (Scribble/Brix/Mantra), not hand-written now.
 
 ## Why Generated, Not Hand-Written
 

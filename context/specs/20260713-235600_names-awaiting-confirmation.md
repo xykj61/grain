@@ -23,19 +23,19 @@ Every row is a proposal, not a fact. Nothing here is renamed in the tree yet. Ke
 | **Rish / Rishi** | the shell | **Confirmed** `20260714.002123` — Rish (reference), Rishi (tutorials); Dojo *not* adopted |
 | **Module names vs. Urbit vane names** | the whole naming strategy | **Decided** `20260714.002123` — keep our names in code, use Urbit names as documented roles; no mass rename, no directory re-nest. See [`20260714-002123_naming-decisions-and-role-nesting.md`](20260714-002123_naming-decisions-and-role-nesting.md) |
 | **Ojjo** | benchmarking **O-vane** (safety/performance) | **Confirmed** `20260714.034900` — palindrome symmetric-yardstick discipline; O follows Neth's N; quiet in collision research. Design [`20260714-025200_ojjo-benchmarking-vane-design.md`](../../external-research/20260714-025200_ojjo-benchmarking-vane-design.md). Build is now-or-horizon (nothing to measure until Glow runs a program) — a *separate* build-timing question from the name, still open below |
+| **Riyo · Trey · Triz** | the other three OS variants | **Confirmed** `20260714.035600` — Keaton approved the gates for Reya, Riyo, Trey, and Triz "to all." All four variant names are now settled |
+| **The two diverse-redundant pairs** | four variants = two pairs | **Confirmed** `20260714.035600` — "to all" read as affirming the symmetry: **Riyo/Reya** are one diverse-redundant pair and **Trey/Triz** are the second, each pair one design built independently twice. The *implementation shape* of "diverse redundancy" (two separate codebases from one spec vs. one codebase with two independently-verified paths) stays a build-time engineering choice, not a naming gate — carried to the variant build, below |
 
 ## Awaiting Confirm or Deny
 
-Reya, Maze, Neth, the shell name (Rish/Rishi), the module-vs-vane naming strategy, and **Ojjo** (`20260714.034900`) are settled — see the Settled table above. What remains open:
+Reya, Riyo, Trey, Triz (all four variants + their two-pair symmetry, `20260714.035600`), Maze, Neth, Ojjo, the shell name (Rish/Rishi), and the module-vs-vane naming strategy are settled — see the Settled table above. What remains open:
 
 | Name | Role | Open question |
 |---|---|---|
-| **Riyo** | one of four OS variants | Quiet in collision research. Confirm? (Reya's diverse-redundant twin) |
-| **Trey** | one of four OS variants | Quiet in collision research. Confirm? |
-| **Triz** | one of four OS variants (replaced "Tera") | Low-stakes soft collision with TRIZ (the innovation methodology). Confirm? |
-| **Trey/Triz pairing** | diverse redundancy | Riyo/Reya are the confirmed diverse-redundant pair. Do Trey/Triz mirror that? And does "diverse redundancy" mean two independent codebases, or one codebase with two independently-verified paths? |
+| **Pool** | applications / data-market **P-vane** (Gall-expanded) | Proposed `20260714.035600` — the content-creation computational data market as a Gall-inspired vane; P follows Ojjo's O. Collision check + design [`20260714-035600_pool-p-vane-content-data-market.md`](../../external-research/20260714-035600_pool-p-vane-content-data-market.md). Confirm? |
 | **Kumara** | identity seam | Adopt Azimuth-style point/planet/star tier naming for its own identity tiers, or keep Kumara as-is? |
 | **Ojjo — build timing** | the now-or-horizon question (name is confirmed) | Seat Ojjo as a *named horizon vane* now and build it correctness-first when Glow's first program exists, or defer the seat entirely until then? Ojjo has nothing to measure until Glow runs a program either way |
+| **Diverse-redundancy shape** | how the two pairs are built (names settled) | Two independently-written codebases from one shared spec, or one codebase with two independently-verified compile/execution paths? A real engineering choice with different costs; decided when the first variant is built |
 
 The Maze proposal and my opinion are kept below for the record, now that Maze is confirmed.
 
