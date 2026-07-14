@@ -96,7 +96,7 @@ The private half never leaves your keeping. The public half travels freely.
 
 ---
 
-## Step 4 — Fingerprints as Art (Fira Code QR Codes)
+## Step 4 — Fingerprints as Art (QR Codes)
 
 A fingerprint is meant to be shared and checked. It is also, quietly, beautiful — so this repository carries a small tool that turns yours into a card: three QR codes — SSH for Codeberg, SSH for GitHub, and your OpenPGP signing key — gathered under your name in the typeface that loves code, rendered once tall and once wide.
 
@@ -118,7 +118,7 @@ ssh-keygen -lf ~/.ssh/id_ed25519_github.pub
 gpg --fingerprint you@example.com                 # the spaced 40-hex string
 ```
 
-On **macOS**, the Rish orchestrator ([`tools/make_key_card.rish`](tools/make_key_card.rish)) is the recommended path: it first audits every declared fingerprint against the real key on your host (so a card can never ship a wrong fingerprint), renders the cards with Homebrew's `qrencode` and ImageMagick, then audits the output PNGs — a green run proves the whole chain. Install its two dependencies once with `brew install qrencode imagemagick`; the monospace font resolves automatically (Fira Code if you have it, otherwise Menlo, which ships on every Mac). On **Linux**, `./tools/make-key-card.sh` builds `qrencode` from the vendored `gratitude/libqrencode` submodule and uses `apt`-installed Fira Code (`sudo apt install gcc libpng-dev pkg-config imagemagick fonts-firacode`).
+On **macOS**, the Rish orchestrator ([`tools/make_key_card.rish`](tools/make_key_card.rish)) is the recommended path: it first audits every declared fingerprint against the real key on your host (so a card can never ship a wrong fingerprint), renders the cards with Homebrew's `qrencode` and ImageMagick, then audits the output PNGs — a green run proves the whole chain. Install its two dependencies once with `brew install qrencode imagemagick`; the font is **Menlo**, pinned — it ships on every Mac, so there is no font-install step at all. On **Linux**, `./tools/make-key-card.sh` builds `qrencode` from the vendored `gratitude/libqrencode` submodule and uses `apt`-installed Fira Code (`sudo apt install gcc libpng-dev pkg-config imagemagick fonts-firacode`) — the two hosts keep their own settled font choice.
 
 The result is two images at the repository root, `keys_<font>_<yourhandle>_landscape.png` and `…_portrait.png`, in a **plain white-background, black-text palette** that prints cleanly and scans reliably (override `BG`/`FG` in the config for a themed card). Pin them to a profile, print them, keep them: they prove your identity to anyone who scans. The full walkthrough, written for any contributor, is [`manual/guides/key-cards-setup.md`](manual/guides/key-cards-setup.md).
 

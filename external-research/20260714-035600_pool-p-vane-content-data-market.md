@@ -74,10 +74,11 @@ The ambiguity named plainly:
 
 **Recommendation: confirm Pool as the P-vane — framed as Glow's Gall-role application vane whose defining expansion is the content-creation computational data market, with Granary/Mandi/Open Asks/Linengrow as agents that run in it.** The collision search makes it a free, clean name; the architecture is sound; the one care to take is leading with the shared-resource meaning so the common-word ambiguity resolves the right way. Denying it is reasonable only if you would rather the market surfaces stay peer modules with no hosting vane — but I think naming the host is the more legible choice, and "Pool" fits it well.
 
-## Open Questions (for Keaton's word)
+## Resolved (`20260714.050500`)
 
-- **The name Pool is confirmed** (`20260714.042545`), as the P-vane — recorded in [`../context/specs/20260713-235600_names-awaiting-confirmation.md`](../context/specs/20260713-235600_names-awaiting-confirmation.md) and `../context/LEXICON.md`. The questions below are now *build* questions, not name gates.
-- **Whole application vane, or market-specialized? (still open)** Is Pool Glow's full Gall-role (hosting all userspace, market as flagship), or specifically the market host with a separate general application vane elsewhere?
+- **The name Pool is confirmed** (`20260714.042545`), as the P-vane — recorded in [`../context/specs/20260713-235600_names-awaiting-confirmation.md`](../context/specs/20260713-235600_names-awaiting-confirmation.md) and `../context/LEXICON.md`.
+- **Framing confirmed:** Pool is Glow's **whole application vane** — the full Gall-role, hosting all userspace — with the content-creation data market as its headline, defining expansion, not a market-only sub-vane. This adopts the refinement named in the honest opinion above.
+- **Build timing confirmed:** seated **now** as a named horizon vane; Granary, Mandi, Open Asks, and Linengrow move in as agents *in* Pool once Glow can host an agent.
 - **Now or horizon?** Like Ojjo, Pool has little to host until Glow can run an agent; is it seated as a named horizon vane now, or deferred until the agent runtime exists?
 - **Relationship to Linengrow and the market surfaces** — confirm that Granary, Mandi, Open Asks, and Linengrow are agents *in* Pool rather than peers beside it.
 

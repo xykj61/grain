@@ -55,11 +55,11 @@ So: **no new vane for the sandboxes.** The capability is Quin (agents) × Puddle
 - **Quin: I like it.** It is the same good move as Pool — a named host for real, scattered, already-working pieces — and the "fifth thing the four voices make" reading is apt and quiet (kernel-free). The one care, as with every common-ish name, is to lead with the four-voices meaning so "quin" is not first heard as just a number-prefix. Maze shelter is exactly right for it.
 - **The sandboxes: compose, do not name a new vane.** The instinct to seed nested deterministic testing is strong and correct, but its honest home is the composition above (Quin × Puddle × Neth, Maze/TAME guided), not a new Q-or-other vane. Seeding it "under Neth" is half-right (Neth provides the replay engine); seeding it "under Pond" is half-right (Puddle provides the isolation); the whole is the composition.
 
-## Open Questions (for Keaton's word)
+## Resolved (`20260714.050500`)
 
-- **Confirm Quin** as the Q-vane and as the unifying host of Lattice/Scribble/Lantern/Anvil.
-- **Now or horizon?** Like Pool, Quin has little to host until Glow runs an agent; seat as named horizon vane now, or defer?
-- **The sandbox loop** — accept the compose-don't-name recommendation (Quin × Puddle × Neth, Maze-sheltered), or do you want a single named pattern for it in the Maze nursery?
+- **Quin confirmed** as the Q-vane and the unifying host of Lattice/Scribble/Lantern/Anvil.
+- **Build timing confirmed:** seated **now** as a named horizon vane; built when Glow can host an agent.
+- **The sandbox loop confirmed as final:** the compose-don't-name recommendation is accepted — Quin × Puddle × Neth, Maze-sheltered, TAME-guided. No new vane named for it.
 
 ---
 
