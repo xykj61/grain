@@ -1,0 +1,25 @@
+# neth_serial_core_witness.rish — proves Neth's small serial core.
+#
+# The Neth build ladder's first real lap after the deterministic-root
+# witness: append+fold is bounded and asserted, and the pipelined stages
+# (Comlink carriage, disk write, record signing) are named as living
+# outside the call, not inside it. See
+# external-research/20260714-041542_ironbeetle-patterns-for-the-neth-ladder.md
+# and linengrow/neth_serial_core.rye.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/neth_serial_core_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/neth_serial_core_witness"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/neth_serial_core_witness.rye -femit-bin=${bin}"]
+
+assert build.ok else "Neth serial core witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "Neth serial core witness exited non-zero"
+assert selftest.out contains "GREEN" else "Neth serial core witness not GREEN"
+assert selftest.out contains "refused with StepTooLarge" else "Neth serial core witness missing bound-enforcement unwelcome path"
+
+say "GREEN: Neth small serial core witness passed."

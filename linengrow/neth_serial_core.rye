@@ -1,0 +1,69 @@
+//! linengrow/neth_serial_core.rye — Neth's small serial core.
+//!
+//! Per external-research/20260714-041542_ironbeetle-patterns-for-the-neth-ladder.md
+//! pattern 1 ("the small serial core, everything else pipelined"): a
+//! system that must keep one true order does not parallelize the
+//! ordering, it shrinks the one place order truly matters until it is
+//! vanishingly small and single-threaded, and pipelines everything else.
+//!
+//! `append_and_reroot` is that one narrow place for Neth: append one
+//! already-signed record, then fold the whole log (verify + apply) into
+//! the new balances and root. Nothing else lives inside it. Named,
+//! deliberately, so the boundary stays honest rather than assumed:
+//!
+//!   - Comlink carriage (getting a record here from a peer) happens
+//!     *before* this call — a pipelined stage, never inside the core.
+//!   - Disk persistence of the log happens *after* this call returns —
+//!     the core only ever touches the in-memory buffer it is given.
+//!   - The signature on the record is produced *before* this call, by
+//!     mala_core.sign_fact — the core does not sign. It does re-verify
+//!     while folding (mala_core.fold_mala_log's own contract), because
+//!     that verification is inseparable from deciding whether the record
+//!     may be admitted at all — the ordering decision itself, not a
+//!     separable pipeline stage.
+//!
+//! Bounded, asserted size: a single call may never append more than
+//! `max_append_bytes` — small enough to eyeball, far under
+//! receipt_core.max_log_len (4096). This is Neth's own stated promise
+//! that the ordered step stays brief; `StepTooLarge` is the witness that
+//! the promise is enforced, not merely written down.
+
+const std = @import("std");
+const kumara = @import("kumara.rye");
+const rc = @import("receipt_core.rye");
+const mc = @import("mala_core.rye");
+
+/// The one bound this whole lap exists to assert.
+pub const max_append_bytes: u32 = 768;
+
+pub const AppendResult = struct {
+    new_log_len: u32,
+    root: [32]u8,
+    balances: mc.Balances,
+};
+
+pub const CoreError = error{ StepTooLarge, Overflow, FoldFailed };
+
+pub fn append_and_reroot(
+    log: []u8,
+    log_len: u32,
+    line: []const u8,
+    issuer_hex: *const [mc.pubkey_hex_len]u8,
+    holder_hex: *const [mc.pubkey_hex_len]u8,
+    issuer_pk: kumara.PublicKey,
+    holder_pk: kumara.PublicKey,
+) CoreError!AppendResult {
+    if (line.len > max_append_bytes) return error.StepTooLarge;
+    const new_len_usize = @as(usize, log_len) + line.len;
+    if (new_len_usize > log.len) return error.Overflow;
+    const new_len: u32 = @intCast(new_len_usize);
+
+    std.mem.copyForwards(u8, log[log_len..new_len], line);
+
+    const balances = mc.fold_mala_log(log[0..new_len], issuer_hex, holder_hex, issuer_pk, holder_pk) catch return error.FoldFailed;
+
+    var root: [32]u8 = undefined;
+    rc.digest_log(log[0..new_len], &root);
+
+    return .{ .new_log_len = new_len, .root = root, .balances = balances };
+}

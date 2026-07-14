@@ -1016,3 +1016,8 @@ say "witness suite: Lattice lap 13 (abs)…"
 let lattice_lap14 = run ["rishi/bin/rishi" "run" "tools/lattice_lap14.rish"]
 assert lattice_lap14.ok else "Lattice lap 13 witness failed"
 say "GREEN: Lattice lap 13 witness passed."
+
+say "witness suite: Neth small serial core (bounded append + fold)…"
+let neth_serial_core = run ["rishi/bin/rishi" "run" "tools/neth_serial_core_witness.rish"]
+assert neth_serial_core.ok else "Neth small serial core witness failed"
+say "GREEN: Neth small serial core witness passed."
