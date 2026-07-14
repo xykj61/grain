@@ -1,10 +1,10 @@
 # SOURCE — From Nothing to a Signed, Sandboxed Home
 
 **Language:** EN
-**Version:** `20260714.044428` (Glow warm-aura date atom — chronological, later-is-larger)
+**Version:** `20260714.055737` (Glow warm-aura date atom — chronological, later-is-larger)
 **Style:** Radiant (see `context/RADIANT_STYLE.md`)
 **By:** Rio 3, in the radiant voice, with **Keaton Dunsford** as coauthor
-**Status:** Living guide — last touched `20260714.044428` (macOS key-card path added; version + byline synced on-touch)
+**Status:** Living guide — last touched `20260714.055737` (Step 9c added: hardening the host, FileVault + Firewall)
 
 ---
 
@@ -343,6 +343,30 @@ export ANTHROPIC_API_KEY="sk-ant-..."    # your Anthropic console key
 ```
 
 On **GNOME Wayland** (Ubuntu 24.04), ai-jail passes the display through; set **`USE_GPU=true`** in `tools/enclosure.conf` so Zed can reach `/dev/dri` (Vulkan/WebGPU). Without it, Zed may print `Landlock: fully enforced` and exit with no window. Full concurrency models, troubleshooting, and NixOS notes live in **`context/specs/enclosure-editors.md`**.
+
+---
+
+## Step 9c — Hardening the Host (FileVault + Firewall)
+
+The sandbox in Steps 6–9 protects the *project* from the agent. This step protects the *machine* — the disk itself, and the network — since a work laptop holding real SSH keys, a real GPG signing key, and forge tokens deserves both, not just the enclosure. Two settings, both in **System Settings**, both worth doing before you treat this machine as a real work machine.
+
+**Turn on FileVault (disk encryption).** Without it, anyone who gets the physical drive can read every private key on it directly, bypassing your login password entirely. **System Settings → Privacy & Security → FileVault → Turn On…** — choose **Create a recovery key and do not use my iCloud account** for the stricter, no-third-party-holds-a-copy choice, and save that recovery key to a password manager's secure note the moment it appears (never a plain file on the same disk). The full walkthrough, step by step, is [`manual/guides/filevault-setup.md`](manual/guides/filevault-setup.md). Confirm it took:
+
+```bash
+fdesetup status
+# FileVault is On.
+```
+
+**Turn on the Application Firewall, with Block all incoming connections.** **System Settings → Network → Firewall** — toggle it on, then **Options… → Block all incoming connections**. If this machine only ever runs as a client (reaching out to forges, a VPN, an API) and never deliberately hosts an inbound service, block-all is the strictest, cleanest choice — it overrides any app-specific "allow" entry that might already be listed, permitting nothing beyond basic network services like DHCP. Consider **Enable stealth mode** too, so the machine does not even acknowledge a ping. Confirm from the shell:
+
+```bash
+/usr/libexec/ApplicationFirewall/socketfilterfw --getglobalstate
+# Firewall is blocking all non-essential incoming connections. (State = 2)
+/usr/libexec/ApplicationFirewall/socketfilterfw --getstealthmode
+# Firewall stealth mode is on
+```
+
+Neither setting needs a password stored anywhere in this repository — both are your own hands, your own Touch ID or login password, done once. A living record of this host's own security posture, kept honestly (what was checked, what was found, what was fixed) lives at [`context/specs/20260713-211800_local-host-system-hardware-anonymized.md`](context/specs/20260713-211800_local-host-system-hardware-anonymized.md).
 
 ---
 
