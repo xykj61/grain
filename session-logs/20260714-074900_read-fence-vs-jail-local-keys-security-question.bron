@@ -1,0 +1,15 @@
+format session-log-v1
+stamp 20260714.074900
+editor Cursor
+model Cursor Sonnet 5 1M Medium
+voice Rio 3
+title Read-fence vs jail-local keys: answering a live security question
+prompt Keaton asked directly, no task attached: is it more secure for ai-jail to keep reading ~/.ssh and other real home dotfiles, or to deny that read entirely and reroute every relevant command to dedicated binaries/dotfiles living inside ~/urbit/ instead?
+think this is a design question, not a task -- answered in prose rather than touching any file, per the collaboration rhythm's own distinction between mechanical next steps and design/value-model questions that deserve a named ruling before action.
+think named the real exploit chain plainly: the macOS launcher's two current defaults -- reads open everywhere, network allowed by default -- combine into a full exfiltration path that needs no write at all. The write fence (repo + /tmp, deny elsewhere) that this session's own earlier tests proved solid protects against tampering with the host; it does nothing against a compromised agent reading a real private key and phoning it out over the already-open network.
+think connected this directly to SOURCE.md's own Step 8 design for the Linux launcher (dedicated sandbox-only GPG key, copied SSH deploy keys, revocable, never the master identity) -- that pattern already names the right answer; the macOS GUI launcher just hasn't built the private-$HOME half of it yet, a gap the macOS guide already names but had understated the stakes of.
+think framed the trade-off honestly rather than picking a side for Keaton: today's real-key-read approach is more convenient (no new keys to generate or register) and carries the larger blast radius (real identity exposed on compromise); dedicated jail-local keys cost setup effort and buy a small, revocable blast radius instead.
+obs did not build the deny-read + dedicated-key sandbox this turn -- that reshapes the sandbox's own security model, which the collaboration rhythm names as exactly the kind of decision that earns a check-in rather than an assumed yes, even though Keaton is asking the question directly in this same session.
+obs offered to build it next, explicitly, rather than leaving the question purely informational -- the real next step (macOS private-$HOME + jail-local SSH/GPG materials, mirroring SOURCE.md Step 8b/8c) is now named and waiting on Keaton's word.
+file session-logs/20260714-074900_read-fence-vs-jail-local-keys-security-question.bron -- this log
+recommend check-in -- Keaton's answer on whether to build the macOS private-$HOME + jail-local-keys hardening determines real, non-trivial next work (a Seatbelt profile change denying reads on ~/.ssh and ~/.gnupg, new dedicated keys generated and registered on both forges, and a SOURCE.md Step 8 macOS section written to match); this is a security-shape decision, not a mechanical continuation, so it waits for his word before any file changes.
