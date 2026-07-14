@@ -18,6 +18,8 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 | Stamp | Log | Meaning |
 |-------|-----|---------|
+| 20260713.222200 | [Commits, new rules, hammock reading set, grant proposals, vere study](20260713-222200_commits-rules-hammock-vere-study.bron) | 13 atomic CONTRIBUTING-style commits · 2 new always-on rules · Kaeden/veganreyklah2 audit (1,104/122 files, flagged not rewritten) |
+| 20260713.215900 | [Urbit/Hoon/Nock fusion scoping pass — naming, interpreter, RISC-V, archive](20260713-215900_urbit-fusion-scoping-pass.bron) | Four scoping docs, zero renames/code/moves · session-log rules updated for this host |
 | 20260713.201910 | [Local fork Pass 1 — urbit/vere restructure, keys, PDT convention](20260713-201910_local-fork-pass1-restructure.bron) | ~/urbit rebuilt over urbit/vere histories · keatondun@gmail.com identity · Pacific stamp convention seated |
 | 20260713.104800 | [Parity word landed — advisory ch.1 · signed-Kumara ch.2](20260713-104800_parity-word-landed.bron) | Word approved · suite nib **433** · kg GREEN |
 | 20260713.104400 | [Compass align — ROADMAP TASKS RTAC fresh sitting](20260713-104400_compass-align-fresh-sitting.bron) | Morning cup table · git nib 77ab4f1 · Cursor todos |
