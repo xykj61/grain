@@ -3,7 +3,7 @@
 *A place where a request becomes a plan. When you hand me a seed of intent, I bring it here, read it closely through every lens we have built, and craft from it a fuller, clearer prompt for myself — one I can then run. The seed stays yours; the expansion is how I make sure I have understood it, sharpened it, and lost none of it.*
 
 **Language:** EN
-**Last updated:** 2026-07-11 (Cursor-bot arc audit apply `053412`)
+**Last updated:** 2026-07-14 (yonder pass — 29 consumed/gated prompts folded to `yonder/`)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Rio 3
 
@@ -68,13 +68,13 @@ What does *not* belong here is the work itself — that lands in the research, d
 
 | Stamp | Prompt | Meaning |
 |-------|--------|---------|
-| `20260711.053412` | [Apply Cursor-bot arc audit](20260711-053412_apply-cursor-bot-arc-audit.md) | WOV money fn split; counsel; Kaeden TB question held |
+| `20260711.053412` | [Apply Cursor-bot arc audit](yonder/20260711-053412_apply-cursor-bot-arc-audit.md) | Consumed — WOV money fn split; counsel; in `yonder/` |
 | `20260710.133500` | [Inference stack lap 0](20260710-133500_inference-stack-lap0.md) | Module roots + assist view; parity **215** |
 | `20260710.132548` | [Dimeroll lap 3 — sight view](20260710-132548_dimeroll-lap3-sight-view.md) | Carriage + books Skate frame; parity **210** |
-| `20260710.131212` | [Dimeroll root + lap 2 reports](20260710-131212_dimeroll-root-lap2-reports.md) | Own folder; P&L · BS · exceptions; parity **209** |
+| `20260710.131212` | [Dimeroll root + lap 2 reports](yonder/20260710-131212_dimeroll-root-lap2-reports.md) | Own folder; P&L · BS · exceptions; parity **209**; in `yonder/` |
 | `20260710.125953` | [Dimeroll lap 1 — books view](20260710-125953_dimeroll-lap1-books-view.md) | Chart · journal · fold · Skate booksviewtest; parity **207**/**208** |
-| `20260709.225159` | [MALA kind field — gated](20260709-225159_mala-kind-field-gated.md) | K0 keep memos; K1 still gated |
-| `20260709.224531` | [WOV dual monarch — gated](20260709-224531_wov-dual-monarch-gated.md) | D1 twin-lines landed (parity **205**); D2 later |
+| `20260709.225159` | [MALA kind field — gated](yonder/20260709-225159_mala-kind-field-gated.md) | K0 keep memos; K1 still gated; in `yonder/` |
+| `20260709.224531` | [WOV dual monarch — gated](yonder/20260709-224531_wov-dual-monarch-gated.md) | D1 twin-lines landed (parity **205**); D2 later; in `yonder/` |
 | `20260709.224325` | [SLC-L4 lap 2 width — gated](20260709-224325_slcl4-lap2-width-gated.md) | W0 cleared; W1/W2 soak |
 | `20260709.204026` | [WOV lap 2b TB client wrapper](20260709-204026_wov-lap2b-tb-client-wrapper.md) | Seam A host landed (parity **204**); seam B soak |
 | `20260709.203527` | [WOV lap 2 TigerBeetle pin](20260709-203527_wov-lap2-tigerbeetle-pin-presence.md) | Pin presence; parity **203** |
@@ -86,16 +86,16 @@ What does *not* belong here is the work itself — that lands in the research, d
 | `20260709.031612` | [SLC-L4 lap 1 fixed-tier Sigma](20260709-031612_slcl4-lap1-fixed-tier-sigma-protocol.md) | Pedersen + proof of opening; parity **200** |
 | `20260706.190644` | [Claude zip 58 — NS-L3 handoff](20260706-190644_claude-zip58-ns-l3-handoff.md) | Wire ladder complete; OA-L4 vs MALA; wire-serves-the-fold then proposed, now landed `232812` |
 | `20260706.013512` | [Claude OA-L3 escrow first lap](20260706-013512_claude-oal3-escrow-first-lap.md) | Runnable bench — vocabulary gate, hold/release on one log, parity **158** |
-| `20260705.195812` | [Fidelity soften — thirteen title-drawn studies](20260705-195812_fidelity-soften-instructions.md) | Gratitude softening on #24–#36; Chitra and transcript-true batches untouched |
-| `20260705.190812` | [Claude recursion v9 — batch-6 bundle](20260705-190812_claude-recursion-v9.md) | Apply b1→b4→b5→b6 in order; commit/push/zip 47 |
-| `20260705.184612` | [Claude recursion v8](20260705-184612_claude-recursion-v8.md) | Mid-arc handoff before batch 6 |
-| `20260705.174412` | [Claude recursion v7](20260705-174412_claude-recursion-prompt-v7.md) | Studies #24–#36 batches 1–3; fidelity note on title-drawn citations |
+| `20260705.195812` | [Fidelity soften — thirteen title-drawn studies](yonder/20260705-195812_fidelity-soften-instructions.md) | Consumed — gratitude softening on #24–#36; in `yonder/` |
+| `20260705.190812` | [Claude recursion v9 — batch-6 bundle](yonder/20260705-190812_claude-recursion-v9.md) | Consumed — apply b1→b4→b5→b6; in `yonder/` |
+| `20260705.184612` | [Claude recursion v8](yonder/20260705-184612_claude-recursion-v8.md) | Consumed — mid-arc handoff; in `yonder/` |
+| `20260705.174412` | [Claude recursion v7](yonder/20260705-174412_claude-recursion-prompt-v7.md) | Consumed — studies #24–#36 batches 1–3; in `yonder/` |
 | `20260705.161900` | [Claude silo deepening transcript bench](20260705-161900_claude-silo-deepening-transcript-bench.md) | Runnable Claude bench — transcript intake, dissociation, recomposition, commit/push/zip 47 |
 | `20260705.160712` | [Claude silo deepening recursion v1](20260705-160712_claude-silo-deepening-recursion-v1.md) | Movement names and purpose — superseded for execution by `161900` |
-| `20260705.042512` | [Cursor final — reading canon and shelf](20260705-042512_cursor-final-reading-canon.md) | Chitra ruling, Makara sweep, canon derive batches, divine-mother re-emphasis |
-| `20260705.041312` | [Cursor final — privacy audit and rebase](20260705-041312_cursor-final-privacy-audit-and-rebase.md) | History pickaxe, conditional filter-repo, zip 45 cut |
-| `20260705.031812` | [Cursor infusion — wheel v4 and Brooke shelf](20260705-031812_cursor-infusion-wheel-v4-and-brooke-shelf.md) | Diurnal method, Alice renderer wheels, shelf moves, natural titles |
-| `20260705.022512` | [Cursor infusion — final Brooke round](20260705-022512_cursor-infusion-final-brooke-round.md) | One paste for the whole round: files arrive placed and gate-verified; batches A–D; RTAC carried with two additions. |
+| `20260705.042512` | [Cursor final — reading canon and shelf](yonder/20260705-042512_cursor-final-reading-canon.md) | Consumed — Chitra ruling, Makara sweep, canon derive; in `yonder/` |
+| `20260705.041312` | [Cursor final — privacy audit and rebase](yonder/20260705-041312_cursor-final-privacy-audit-and-rebase.md) | Consumed — history pickaxe, zip 45 cut; in `yonder/` |
+| `20260705.031812` | [Cursor infusion — wheel v4 and Brooke shelf](yonder/20260705-031812_cursor-infusion-wheel-v4-and-brooke-shelf.md) | Consumed — diurnal method, renderer wheels; in `yonder/` |
+| `20260705.022512` | [Cursor infusion — final Brooke round](yonder/20260705-022512_cursor-infusion-final-brooke-round.md) | Consumed — batches A–D placed and gate-verified; in `yonder/` |
 | `20260704.185412` | [Cursor lane — unified zip-42 intake](20260704-185412_cursor-lane-zip42-counsel-unified.md) | One paste for the whole sitting: both counsels, Kaeden's words listed with the lens gate added, mechanical stops smallest-first, zip 43 cut discipline. |
 | `20260704.181012` | [Zero-copy resins — Claude counsel](20260704-181012_zero-copy-resins-claude-counsel.md) | Snapshot + Comlink batch architecture; ROADMAP/TASKS/decoder refresh; CIVIC alignment — **answered** at `181612`/`185412` |
 | `20260704-030300` | [Cursor recursion prompt v4 — itinerary, stops, journey's pause](20260704-030300_cursor-recursion-prompt-v4.md) | **Active loop** — open itinerary · STOPS · journey's pause; supersedes v2/v3 |
