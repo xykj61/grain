@@ -19,6 +19,13 @@
 #                                        GPG key, no passphrase (matches
 #                                        SOURCE.md Step 8c's own pattern)
 #
+# Identity (name, forge handle, email) comes from GLOW_PROFILE.bron -- the
+# one gitignored source of truth this tree already keeps (see
+# GLOW_PROFILE.template.bron). The GPG key's email is what lets a forge
+# show the signature as Verified, so it must match a verified address on
+# both accounts; the SSH comment carries the same identity so a glance at
+# the forge's key list names its owner. No identity is hardcoded here.
+#
 # Both kinds are generated passphrase-free on purpose: once --harden-home
 # denies this jail's own read of your real ~/.gnupg (where gpg-agent and
 # pinentry already live), there is no reliable interactive prompt path
@@ -36,6 +43,28 @@ let repo = trim pwd_run.out
 let already_sandboxed = run ["sh" "-c" "sandbox-exec -p '(version 1)(allow default)' -- true 2>&1"]
 if (already_sandboxed.ok == false) then say "WARNING: sandbox_apply just failed for a no-op profile -- this terminal may already be inside a jail. Re-run from a plain, unsandboxed terminal for this script's own promise to hold."
 
+# Identity from GLOW_PROFILE.bron, the tree's one gitignored source of
+# truth for name/handle/email. Bron is key-then-value per line, so a
+# grep-and-cut lifts each field; assert each one so a missing profile
+# fails loudly here rather than minting a key with an empty identity.
+let name_run = run ["sh" "-c" "grep '^name ' GLOW_PROFILE.bron | head -1 | cut -d' ' -f2-"]
+let profile_name = trim name_run.out
+assert (profile_name != "") else "GLOW_PROFILE.bron has no 'name' -- copy GLOW_PROFILE.template.bron and fill it in first."
+
+let email_run = run ["sh" "-c" "grep '^email ' GLOW_PROFILE.bron | head -1 | cut -d' ' -f2-"]
+let profile_email = trim email_run.out
+assert (profile_email != "") else "GLOW_PROFILE.bron has no 'email' -- fill it in first (the GPG email is what makes a forge show Verified)."
+
+let gh_handle_run = run ["sh" "-c" "grep '^handle_github ' GLOW_PROFILE.bron | head -1 | cut -d' ' -f2-"]
+let gh_handle = trim gh_handle_run.out
+let cb_handle_run = run ["sh" "-c" "grep '^handle_codeberg ' GLOW_PROFILE.bron | head -1 | cut -d' ' -f2-"]
+let cb_handle = trim cb_handle_run.out
+
+let gh_comment = join [profile_email " " gh_handle " jail-only github (macOS Seatbelt, no master identity)"] ""
+let cb_comment = join [profile_email " " cb_handle " jail-only codeberg (macOS Seatbelt, no master identity)"] ""
+let gpg_uid = join [profile_name " (" gh_handle ", jail-only macOS Seatbelt) <" profile_email ">"] ""
+say "Identity from GLOW_PROFILE.bron: ${gpg_uid}"
+
 let ssh_mk = run ["mkdir" "-p" "${repo}/.ssh"]
 assert ssh_mk.ok else "could not create .ssh/ at the repo root"
 let ssh_chmod = run ["chmod" "700" "${repo}/.ssh"]
@@ -45,14 +74,18 @@ let gh_key_path = "${repo}/.ssh/id_ed25519_jail_github"
 let cb_key_path = "${repo}/.ssh/id_ed25519_jail_codeberg"
 
 let gh_exists = run ["test" "-f" gh_key_path]
-if gh_exists.ok then say "id_ed25519_jail_github already exists -- leaving it alone."
-if (gh_exists.ok == false) then let gh_gen = run ["ssh-keygen" "-t" "ed25519" "-N" "" "-C" "jail-only github (macOS Seatbelt, no master identity)" "-f" gh_key_path]
-if (gh_exists.ok == false) then assert gh_gen.ok else "ssh-keygen failed for the github jail key"
+if gh_exists.ok then say "id_ed25519_jail_github already exists -- refreshing its comment to the current GLOW_PROFILE identity."
+if gh_exists.ok then let gh_recomment = run ["ssh-keygen" "-c" "-C" gh_comment "-f" gh_key_path]
+if (gh_exists.ok == false) then let gh_gen = run ["ssh-keygen" "-t" "ed25519" "-N" "" "-C" gh_comment "-f" gh_key_path]
+let gh_pub_check = run ["test" "-f" "${gh_key_path}.pub"]
+assert gh_pub_check.ok else "the github jail key is missing after generate/recomment -- see ssh-keygen's own error above"
 
 let cb_exists = run ["test" "-f" cb_key_path]
-if cb_exists.ok then say "id_ed25519_jail_codeberg already exists -- leaving it alone."
-if (cb_exists.ok == false) then let cb_gen = run ["ssh-keygen" "-t" "ed25519" "-N" "" "-C" "jail-only codeberg (macOS Seatbelt, no master identity)" "-f" cb_key_path]
-if (cb_exists.ok == false) then assert cb_gen.ok else "ssh-keygen failed for the codeberg jail key"
+if cb_exists.ok then say "id_ed25519_jail_codeberg already exists -- refreshing its comment to the current GLOW_PROFILE identity."
+if cb_exists.ok then let cb_recomment = run ["ssh-keygen" "-c" "-C" cb_comment "-f" cb_key_path]
+if (cb_exists.ok == false) then let cb_gen = run ["ssh-keygen" "-t" "ed25519" "-N" "" "-C" cb_comment "-f" cb_key_path]
+let cb_pub_check = run ["test" "-f" "${cb_key_path}.pub"]
+assert cb_pub_check.ok else "the codeberg jail key is missing after generate/recomment -- see ssh-keygen's own error above"
 
 let gnupg_home = "${repo}/.gnupg-rye"
 let gnupg_mk = run ["mkdir" "-p" gnupg_home]
@@ -63,9 +96,10 @@ assert gnupg_chmod.ok else "could not chmod .gnupg-rye/ to 700"
 let existing_keys = run ["sh" "-c" "GNUPGHOME='${gnupg_home}' gpg --list-secret-keys --with-colons 2>/dev/null | grep -c '^sec'"]
 let key_count = trim existing_keys.out
 
-if (key_count == "0") then let gpg_gen = run ["sh" "-c" "GNUPGHOME='${gnupg_home}' gpg --batch --pinentry-mode loopback --passphrase '' --quick-generate-key 'jail-only signing key (macOS Seatbelt)' ed25519 sign 2y"]
-if (key_count == "0") then assert gpg_gen.ok else "gpg key generation failed -- see gpg's own error above"
-if (key_count != "0") then say "A signing key already exists in .gnupg-rye/ -- leaving it alone."
+if (key_count == "0") then let gpg_gen = run ["sh" "-c" "GNUPGHOME='${gnupg_home}' gpg --batch --pinentry-mode loopback --passphrase '' --quick-generate-key '${gpg_uid}' ed25519 sign 2y"]
+if (key_count != "0") then say "A signing key already exists in .gnupg-rye/ -- leaving its key material alone (rerun after editing GLOW_PROFILE.bron only regenerates identity if you delete the key first)."
+let gpg_check = run ["sh" "-c" "GNUPGHOME='${gnupg_home}' gpg --list-secret-keys --with-colons 2>/dev/null | grep -c '^sec'"]
+assert (trim gpg_check.out != "0") else "no signing key present in .gnupg-rye/ after generation -- see gpg's own error above"
 
 say ""
 say "== Done. Paste these into both forges before relaunching with --harden-home. =="
@@ -84,7 +118,7 @@ say "-- GPG signing key, both forges' GPG Keys section --"
 let fpr_run = run ["sh" "-c" "GNUPGHOME='${gnupg_home}' gpg --list-secret-keys --keyid-format=long"]
 let fpr_trimmed = trim fpr_run.out
 say fpr_trimmed
-let armor_run = run ["sh" "-c" "GNUPGHOME='${gnupg_home}' gpg --armor --export 'jail-only signing key (macOS Seatbelt)'"]
+let armor_run = run ["sh" "-c" "GNUPGHOME='${gnupg_home}' gpg --armor --export '${profile_email}'"]
 let armor_trimmed = trim armor_run.out
 say armor_trimmed
 say ""
