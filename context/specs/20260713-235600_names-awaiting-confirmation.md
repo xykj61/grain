@@ -30,7 +30,8 @@ Every row is a proposal, not a fact. Nothing here is renamed in the tree yet. Ke
 | **Rishi → Dojo?** | the shell | Keep "Rishi," adopt Urbit's own "Dojo," or coin a new Glow-OS shell name? |
 | **Module → vane parallels** | Comlink≈Ames, Mantra≈Clay, Caravan≈Gall, Aurora≈Vere, Bron≈noun-level, Brix≈Ford | Are these *literal* renames (Comlink becomes "Ames") or Glow-flavored variants keeping their own names in a vane *role*? Which modules actually rename at all? |
 | **Kumara** | identity seam | Adopt Azimuth-style point/planet/star tier naming for its own identity tiers, or keep Kumara as-is? |
-| **Maze** | proposed new bundle/nursery namespace | New this turn — see the dedicated section below and my opinion. Confirm, deny, or refine? |
+| **Maze** | proposed new bundle/nursery namespace | New `20260713` — see the dedicated section below and my opinion. Confirm, deny, or refine? |
+| **Neth** (N-vane, after Maze's M) | settlement-layer sequencer — a Glow-TigerBeetle replicated state machine evolved from the existing WOV/MALA money work | New `20260714` — **real close-domain collision** with Nethermind (top-two Ethereum client; `spaceneth`/`NethDev` shorthand), which bites hardest because Neth's own purpose is Ethereum interop. Options: keep **Neth**; use **Neith** (the weaver goddess — beautiful, ties to the Weave, but five letters); or pick another four-letter N-name. My lean is Neith or another name over Neth. Full reasoning + the whole L1/L2 architecture: [`../../external-research/20260714-001017_neth-mala-settlement-l1-l2-design.md`](../../external-research/20260714-001017_neth-mala-settlement-l1-l2-design.md). |
 
 ## The Maze Proposal, and My Opinion
 
