@@ -1,0 +1,6 @@
+//! Intentional TAME ban violation — fixture only; never import in production code.
+const std = @import("std");
+
+pub fn demo() void {
+    std.debug.assert(false);
+}

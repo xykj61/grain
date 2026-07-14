@@ -1,0 +1,31 @@
+//! Rye test: SplitBackwardsIterator via splitBackwardsScalar — pass 9962.
+//!
+//! Backward split walks fields from the tail; next() mirrors forward SplitIterator (9993).
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    var it = mem.splitBackwardsScalar(u8, "abc|def||ghi", '|');
+    std.debug.assert(mem.eql(u8, it.rest(), "abc|def||ghi"));
+    std.debug.assert(mem.eql(u8, it.first(), "ghi"));
+    std.debug.assert(mem.eql(u8, it.rest(), "abc|def|"));
+    std.debug.assert(mem.eql(u8, it.next().?, ""));
+    std.debug.assert(mem.eql(u8, it.next().?, "def"));
+    std.debug.assert(mem.eql(u8, it.next().?, "abc"));
+    std.debug.assert(it.next() == null);
+
+    var any = mem.splitBackwardsAny(u8, "a,b;c", ",;");
+    std.debug.assert(mem.eql(u8, any.first(), "c"));
+    std.debug.assert(mem.eql(u8, any.next().?, "b"));
+
+    var seq = mem.splitBackwardsSequence(u8, "xx||yy", "||");
+    std.debug.assert(mem.eql(u8, seq.first(), "yy"));
+    std.debug.assert(mem.eql(u8, seq.next().?, "xx"));
+
+    var solo = mem.splitBackwardsScalar(u8, "whole", '|');
+    std.debug.assert(mem.eql(u8, solo.first(), "whole"));
+    std.debug.assert(solo.next() == null);
+
+    std.debug.print("rye: SplitBackwardsIterator assertions confirmed.\n", .{});
+}

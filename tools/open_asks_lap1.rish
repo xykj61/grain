@@ -1,0 +1,17 @@
+# open_asks_lap1.rish — OA-L1 closed ask loop witness.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/open_asks_lap1.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/open-asks"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/open_asks.rye -femit-bin=${bin}"]
+
+assert build.ok else "OA-L1 open asks build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "OA-L1 open asks selftest exited non-zero"
+assert selftest.out contains "GREEN" else "OA-L1 open asks selftest not GREEN"
+
+say "GREEN: OA-L1 closed ask loop witness passed."

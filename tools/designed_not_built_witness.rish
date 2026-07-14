@@ -1,0 +1,21 @@
+# designed_not_built_witness.rish — at most one functional spec in designed-not-built flight.
+#
+# Gated on Edit 5 ruling: not in parity until Kaeden rules for the bound.
+# Run from the repository root:
+#   rishi/bin/rishi run tools/designed_not_built_witness.rish
+
+say "designed-not-built: counting functional specs in flight..."
+
+let result = run ["rishi/bin/rishi" "run" "tools/fixtures/designed_not_built_scan.rish"]
+assert result.ok else "designed-not-built scan script failed"
+
+say result.out
+
+let lines = lines result.out
+let fails = where lines as l: l starts-with "FAIL"
+let oks = where lines as l: l starts-with "OK"
+
+if length fails == 0 then say "DESIGNED-NOT-BUILT GREEN: at most one functional spec in flight."
+if length fails != 0 then say "DESIGNED-NOT-BUILT RED: too many functional specs in designed-not-built flight."
+
+assert length fails == 0 else "designed-not-built RED: bound is one until first lap green"

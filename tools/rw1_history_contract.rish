@@ -1,0 +1,49 @@
+# rw1_history_contract.rish — RW-1 contract: the real history store answers directly.
+#
+# The answerer (mantra) is exercised with no REPL in the room, proving it honors
+# every question the collaboration witness asks — welcome and unwelcome alike.
+# The contract's "recall exact bytes" is demonstrated at the store's true seam:
+# the blob under .mantra/blobs/ compares byte-identical to the woven text.
+# Run from the repository root:
+#   rishi/bin/rishi run tools/rw1_history_contract.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/src/main.rye -femit-bin=mantra/bin/mantra"]
+assert build.ok else "mantra must self-provision for the contract witness"
+
+let fresh = run ["sh" "-c" "rm -rf .mantra .rw1_probe.txt"]
+assert fresh.ok else "contract scratch must start clean"
+
+let init = run ["mantra/bin/mantra" "init"]
+assert init.ok else "init on an empty cwd must succeed"
+assert init.err contains "initialized" else "init must announce itself"
+let shape = run ["sh" "-c" "test -d .mantra/blobs && test ! -f .mantra/HEAD && echo SHAPE"]
+assert shape.out contains "SHAPE" else "init must create blobs/; HEAD is born at first weave"
+
+let write = run ["sh" "-c" "cp tools/fixtures/rw1_probe_line.txt .rw1_probe.txt"]
+assert write.ok else "probe line must copy byte-true from its fixture"
+let add = run ["mantra/bin/mantra" "add" ".rw1_probe.txt"]
+assert add.ok else "add after a session line must succeed"
+let head_after = run ["sh" "-c" "test -f .mantra/HEAD && echo HEADYES"]
+assert head_after.out contains "HEADYES" else "add must bring HEAD into being and advance it"
+
+let exact = run ["rishi/bin/rishi" "run" "tools/fixtures/rw1_exact_probe.rish"]
+assert exact.out contains "MATCH" else "a weave blob must return the exact prior-line bytes"
+
+let history = run ["mantra/bin/mantra" "log"]
+assert history.ok else "history read after add must succeed"
+let listed = lines history.out
+assert (length listed == 0) == false else "log must list the woven entry"
+
+let missing = run ["mantra/bin/mantra" "add" ".rw1_no_such_file.txt"]
+assert (missing.ok == false) else "add on a missing path must refuse"
+
+let unknown = run ["mantra/bin/mantra" "nosuch"]
+assert (unknown.ok == false) else "unknown store command must refuse"
+assert unknown.code == 2 else "unknown store command must exit 2"
+assert unknown.err contains "unknown command" else "the refusal must name itself"
+
+let clean = run ["sh" "-c" "rm -rf .mantra .rw1_probe.txt"]
+assert clean.ok else "contract scratch must clear"
+
+say "GREEN: RW-1 contract — the store answers every question, welcome and unwelcome."

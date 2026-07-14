@@ -1,0 +1,24 @@
+format session-log-v1
+stamp 20260712.132000
+editor Cursor
+model Cursor Grok 4.5
+voice Rio 3
+title Host on-path as Rishi · LANE_KVM env one-shot · launch-cursor extract
+prompt not working; run as rishi; ai-jail/cursor as rishi too
+product_nib 430
+suite_nib 432
+git_nib c57bb00
+enclosure_ai_jail 1.12.0
+think Host paste refused because LANE_KVM stayed false — comments were not edits. zsh also choked on pasted # lines.
+think Fixed lane_kvm.sh so caller LANE_KVM=true wins over enclosure.conf (one-shot without editing conf).
+think Added tools/lane_kvm_onpath_host.rish — verify-commit, kvm, image pin, boot, optional --parity, refuse-probe, cache-leak check.
+think Extended launch-cursor.rish with --extract (Cursor already had Rishi door; shell remains driver).
+think In-jail onpath asserts kvm absent correctly; refuse still GREEN.
+obs Paste for host is now one Rishi line. Cursor relaunch is Rishi too.
+file tools/lane_kvm.sh env override
+file tools/lane_kvm_onpath_host.rish new
+file tools/launch-cursor.rish --extract
+file tools/proven_seat_g0_complete_jailed.rish · enclosure.conf.example · enclosure-editors · TASKS
+file session-logs/20260712-132000_onpath-rishi-env-oneshot.bron this log
+file session-logs/README.md index
+recommend keep-going host git pull then rishi run lane_kvm_onpath_host.rish — mechanical

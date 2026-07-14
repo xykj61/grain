@@ -1,0 +1,33 @@
+//! caravan/supervisor_signal.rye — atomic stop flag + SIGTERM/SIGINT handlers.
+//!
+//! The handler's whole job is one atomic store; ordinary code at the supervisor
+//! loop top creates the sentinel file. Counsel:
+//! [`counsel/20260707-021012_claude-counsel-ring4-signal-handler.md`](../counsel/20260707-021012_claude-counsel-ring4-signal-handler.md)
+
+const std = @import("std");
+const posix = std.posix;
+
+pub const supervisor_signal_version = "20260707.021012";
+
+var stop_flag = std.atomic.Value(bool).init(false);
+
+fn on_stop_signal(sig: posix.SIG, info: *const posix.siginfo_t, ctx: ?*anyopaque) callconv(.c) void {
+    _ = sig;
+    _ = info;
+    _ = ctx;
+    stop_flag.store(true, .seq_cst);
+}
+
+pub fn install_handlers() void {
+    const sa = posix.Sigaction{
+        .handler = .{ .sigaction = on_stop_signal },
+        .mask = posix.sigemptyset(),
+        .flags = posix.SA.SIGINFO,
+    };
+    posix.sigaction(posix.SIG.TERM, &sa, null);
+    posix.sigaction(posix.SIG.INT, &sa, null);
+}
+
+pub fn stop_requested() bool {
+    return stop_flag.load(.seq_cst);
+}

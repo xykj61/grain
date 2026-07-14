@@ -1,0 +1,16 @@
+//! Rye test: std.mem.findLastNone — pass 9964.
+//!
+//! Backward strspn-like search for the last byte outside a set.
+//! Pairs with findNonePos (9965) and findLastAny (9966).
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    std.debug.assert(mem.lastIndexOfNone(u8, "abc123", "123").? == 2);
+    std.debug.assert(mem.lastIndexOfNone(u8, "123abc", "123").? == 5);
+    std.debug.assert(mem.lastIndexOfNone(u8, "333333", "123") == null);
+    std.debug.assert(mem.lastIndexOfNone(u8, "x1y2z", "0123456789").? == 4);
+
+    std.debug.print("rye: findLastNone assertions confirmed.\n", .{});
+}

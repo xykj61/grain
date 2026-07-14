@@ -1,0 +1,20 @@
+//! Rye test: std.mem.byteSwapAllElements — pass 9908.
+//!
+//! In-place endian swap on scalar slices; pairs with readInt/writeInt (9909).
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    var words = [_]u32{ 0x12345678, 0xAABBCCDD };
+    mem.byteSwapAllElements(u32, words[0..]);
+    std.debug.assert(words[0] == @byteSwap(@as(u32, 0x12345678)));
+    std.debug.assert(words[1] == @byteSwap(@as(u32, 0xAABBCCDD)));
+
+    var shorts = [_]u16{ 0x1234, 0x5678 };
+    mem.byteSwapAllElements(u16, shorts[0..]);
+    std.debug.assert(shorts[0] == 0x3412);
+    std.debug.assert(shorts[1] == 0x7856);
+
+    std.debug.print("rye: mem.byteSwapAllElements assertions confirmed.\n", .{});
+}

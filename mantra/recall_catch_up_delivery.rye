@@ -1,0 +1,391 @@
+//! mantra/recall_catch_up_delivery.rye — catch-up-to-latest over Comlink sealed datagrams.
+//!
+//! Loops the NS-L3 sync exchange until an empty response — same wire shape as
+//! recall_sync_delivery, zero edits to recall_sync_wire or recall_lap1.
+//!
+//!   rye build mantra/recall_catch_up_delivery.rye -lc -femit-bin=mantra/bin/recall-catch-up-delivery
+//!   mantra/bin/recall-catch-up-delivery selftest
+//!   mantra/bin/recall-catch-up-delivery demo
+//!
+//! Counsel: [`counsel/20260707-001612_claude-counsel-subscribe-revisited.md`](../counsel/20260707-001612_claude-counsel-subscribe-revisited.md)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const c = std.c;
+const ns = @import("recall_lap1.rye");
+const sw = @import("recall_sync_wire.rye");
+const wf = @import("wire_format.rye");
+const cu = @import("recall_catch_up.rye");
+const tally_copy = @import("tally_copy.rye");
+
+const ncw_version = "20260707.002012";
+
+const AF_INET: c_uint = 2;
+const SOCK_DGRAM: c_uint = 2;
+const SOL_SOCKET: c_int = 1;
+const SO_REUSEADDR: c_int = 2;
+const SO_RCVTIMEO: c_int = 20;
+
+const fetcher_port: u16 = 38484;
+const source_port: u16 = 38485;
+
+const witness_peer = "peerB";
+const witness_bolt = "b";
+const witness_path = "bolt.txt";
+
+const sockaddr_in = extern struct {
+    sin_family: c_ushort = AF_INET,
+    sin_port: c_ushort,
+    sin_addr: [4]u8 = .{ 127, 0, 0, 1 },
+    sin_zero: [8]u8 = .{0} ** 8,
+};
+
+fn localhost_addr(port: u16) sockaddr_in {
+    return .{ .sin_port = std.mem.nativeToBig(u16, port) };
+}
+
+fn open_socket() !c.fd_t {
+    const fd = c.socket(AF_INET, SOCK_DGRAM, 0);
+    if (fd < 0) return error.SocketFailed;
+    const yes: c_int = 1;
+    _ = c.setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &yes, @sizeOf(c_int));
+    return fd;
+}
+
+fn send_wire(port: u16, wire: []const u8) !void {
+    const fd = try open_socket();
+    defer _ = c.close(fd);
+    const dest = localhost_addr(port);
+    const sent = c.sendto(fd, wire.ptr, @intCast(wire.len), 0, @ptrCast(&dest), @sizeOf(sockaddr_in));
+    if (sent < 0 or @as(usize, @intCast(sent)) != wire.len) return error.SendFailed;
+}
+
+fn recv_wire(port: u16, wire: []u8) !u64 {
+    return recv_wire_timeout(port, wire, 0);
+}
+
+fn recv_wire_timeout(port: u16, wire: []u8, timeout_sec: u32) !u64 {
+    const fd = try open_socket();
+    defer _ = c.close(fd);
+    if (timeout_sec > 0) {
+        var tv = c.timeval{ .sec = @intCast(timeout_sec), .usec = 0 };
+        _ = c.setsockopt(fd, SOL_SOCKET, SO_RCVTIMEO, &tv, @sizeOf(c.timeval));
+    }
+    var bind_addr = localhost_addr(port);
+    if (c.bind(fd, @ptrCast(&bind_addr), @sizeOf(sockaddr_in)) < 0) return error.BindFailed;
+    var from: sockaddr_in = undefined;
+    var from_len: c.socklen_t = @sizeOf(sockaddr_in);
+    const n = c.recvfrom(fd, wire.ptr, @intCast(wire.len), 0, @ptrCast(&from), &from_len);
+    if (n < 0) return error.RecvFailed;
+    return @intCast(n);
+}
+
+fn seal_payload(payload: []const u8, wire: *[@intCast(wf.wire_capacity)]u8) !u64 {
+    return try wf.seal_message(payload, wire);
+}
+
+fn open_wire(wire: []const u8, opened: *[@intCast(wf.max_message)]u8) !u64 {
+    return try wf.open_datagram(wire, opened);
+}
+
+fn init_witness_source(cat: *ns.BoltCatalog) !void {
+    cat.* = .empty();
+    try cat.append_leaf(witness_peer, witness_bolt, 1, witness_path, "rev-one", "plain-text");
+    try cat.append_leaf(witness_peer, witness_bolt, 2, witness_path, "rev-two", "plain-text");
+    try cat.append_leaf(witness_peer, witness_bolt, 3, witness_path, "rev-three", "plain-text");
+}
+
+fn init_witness_fetcher(cat: *ns.BoltCatalog) !void {
+    cat.* = .empty();
+    try cat.append_leaf(witness_peer, witness_bolt, 1, witness_path, "rev-one", "plain-text");
+}
+
+fn build_catch_up_request(
+    fetcher: *const ns.BoltCatalog,
+    peer: []const u8,
+    bolt: []const u8,
+    revision: u32,
+) sw.WireError!sw.SyncRequest {
+    var req: sw.SyncRequest = .{
+        .peer = peer,
+        .bolt = bolt,
+        .revision = revision,
+        .held_count = 0,
+        .held_digests = undefined,
+    };
+    var i: u32 = 0;
+    while (i < fetcher.leaf_count and req.held_count < sw.max_held_digests) : (i += 1) {
+        const leaf = &fetcher.leaves[i];
+        const digest = leaf.digest_hex[0..64];
+        var seen: u32 = 0;
+        while (seen < req.held_count) : (seen += 1) {
+            if (std.mem.eql(u8, req.held_digests[seen][0..64], digest)) break;
+        }
+        if (seen < req.held_count) continue;
+        tally_copy.copy_disjoint(u8, req.held_digests[req.held_count][0..64], digest);
+        req.held_count += 1;
+    }
+    return req;
+}
+
+fn run_wire_exchange_in_process(
+    fetcher: *ns.BoltCatalog,
+    source: *const ns.BoltCatalog,
+    peer: []const u8,
+    bolt: []const u8,
+    revision: u32,
+) !struct { report: ns.SyncReport, entry_count: u32 } {
+    const req = try build_catch_up_request(fetcher, peer, bolt, revision);
+    var req_buf: [sw.max_wire_payload]u8 = undefined;
+    const req_len = try sw.encode_request(req, &req_buf);
+
+    var wire_resp: sw.SyncResponse = undefined;
+    try sw.build_response(source, &req, &wire_resp);
+    const entry_count = wire_resp.entry_count;
+    var resp_buf: [sw.max_wire_payload]u8 = undefined;
+    const resp_len = try sw.encode_response(&wire_resp, &resp_buf);
+
+    var req_wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const req_wire_len = try seal_payload(req_buf[0..req_len], &req_wire);
+    var req_opened: [@intCast(wf.max_message)]u8 = undefined;
+    const req_opened_len = try open_wire(req_wire[0..@intCast(req_wire_len)], &req_opened);
+
+    var decoded_req: sw.SyncRequest = undefined;
+    try sw.decode_request(req_opened[0..@intCast(req_opened_len)], &decoded_req);
+
+    var built_resp: sw.SyncResponse = undefined;
+    try sw.build_response(source, &decoded_req, &built_resp);
+    var resp_wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const resp_wire_len = try seal_payload(resp_buf[0..resp_len], &resp_wire);
+    var resp_opened: [@intCast(wf.max_message)]u8 = undefined;
+    const resp_opened_len = try open_wire(resp_wire[0..@intCast(resp_wire_len)], &resp_opened);
+
+    var decoded_resp: sw.SyncResponse = undefined;
+    try sw.decode_response(resp_opened[0..@intCast(resp_opened_len)], &decoded_resp);
+    const report = try sw.apply_sync_response(fetcher, &decoded_resp);
+    return .{ .report = report, .entry_count = entry_count };
+}
+
+fn catch_up_wire_in_process(
+    fetcher: *ns.BoltCatalog,
+    source: *const ns.BoltCatalog,
+    peer: []const u8,
+    bolt: []const u8,
+) !cu.CatchUpReport {
+    var report: cu.CatchUpReport = .{
+        .revisions_synced = 0,
+        .empty_asks = 0,
+        .total_leaves = 0,
+        .had_already = 0,
+        .needed = 0,
+    };
+    var next_rev = cu.max_revision_held(fetcher, peer, bolt) + 1;
+    while (true) {
+        const step = try run_wire_exchange_in_process(fetcher, source, peer, bolt, next_rev);
+        if (step.entry_count == 0) {
+            report.empty_asks += 1;
+            break;
+        }
+        report.revisions_synced += 1;
+        report.total_leaves += step.report.total;
+        report.had_already += step.report.had_already;
+        report.needed += step.report.needed;
+        next_rev += 1;
+    }
+    return report;
+}
+
+fn assert_recall_converged(fetcher: *const ns.BoltCatalog, source: *const ns.BoltCatalog) !void {
+    const expected = [_][]const u8{ "rev-one", "rev-two", "rev-three" };
+    var rev: u32 = 1;
+    while (rev <= 3) : (rev += 1) {
+        const name = ns.Name{ .peer = witness_peer, .bolt = witness_bolt, .revision = rev, .path = witness_path };
+        var buf_f: [ns.max_resin_bytes]u8 = undefined;
+        var buf_s: [ns.max_resin_bytes]u8 = undefined;
+        const rf = try fetcher.recall(name, &buf_f);
+        const rs = try source.recall(name, &buf_s);
+        assert(std.mem.eql(u8, buf_f[0..rf.len], expected[rev - 1]));
+        assert(std.mem.eql(u8, buf_f[0..rf.len], buf_s[0..rs.len]));
+    }
+}
+
+fn run_selftest(_: std.Io) !u8 {
+    var source: ns.BoltCatalog = undefined;
+    try init_witness_source(&source);
+    var fetcher: ns.BoltCatalog = undefined;
+    try init_witness_fetcher(&fetcher);
+
+    const first = try catch_up_wire_in_process(&fetcher, &source, witness_peer, witness_bolt);
+    assert(first.revisions_synced == 2);
+    assert(first.empty_asks == 1);
+    assert(first.needed == 2);
+
+    const second = try catch_up_wire_in_process(&fetcher, &source, witness_peer, witness_bolt);
+    assert(second.revisions_synced == 0);
+    assert(second.empty_asks == 1);
+
+    try assert_recall_converged(&fetcher, &source);
+
+    // In-process composition matches wire composition.
+    var fetcher2: ns.BoltCatalog = undefined;
+    try init_witness_fetcher(&fetcher2);
+    const composed = try cu.catch_up_to_latest(&fetcher2, &source, witness_peer, witness_bolt);
+    assert(composed.revisions_synced == first.revisions_synced);
+
+    print("ns-catchupw: two revisions crossed under Comlink seal — empty ask stops loop GREEN\n", .{});
+    print("ns-catchupw: second call asked once, changed nothing — stopping rule GREEN\n", .{});
+    print("ns-catchupw: version {s} catch_up {s} sync_wire {s}\n", .{ ncw_version, cu.recall_catch_up_version, sw.sync_wire_version });
+    print("GREEN: catch-up-to-latest wire lap — hosted request/response loop.\n", .{});
+    return 0;
+}
+
+fn run_one_wire_exchange_sockets(
+    fetcher: *ns.BoltCatalog,
+    peer: []const u8,
+    bolt: []const u8,
+    revision: u32,
+) !struct { report: ns.SyncReport, entry_count: u32 } {
+    const req = try build_catch_up_request(fetcher, peer, bolt, revision);
+    var payload: [sw.max_wire_payload]u8 = undefined;
+    const payload_len = try sw.encode_request(req, &payload);
+    var wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const wire_len = try seal_payload(payload[0..payload_len], &wire);
+    try send_wire(source_port, wire[0..@intCast(wire_len)]);
+
+    var recv_buf: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const recv_len = try recv_wire(fetcher_port, &recv_buf);
+    if (recv_len < wf.off_cipher or recv_len > wf.wire_capacity) return error.RecvFailed;
+
+    var opened: [@intCast(wf.max_message)]u8 = undefined;
+    const opened_len = try open_wire(recv_buf[0..@intCast(recv_len)], &opened);
+
+    var resp: sw.SyncResponse = undefined;
+    try sw.decode_response(opened[0..@intCast(opened_len)], &resp);
+    const entry_count = resp.entry_count;
+    const report = try sw.apply_sync_response(fetcher, &resp);
+    return .{ .report = report, .entry_count = entry_count };
+}
+
+fn catch_up_wire_over_sockets(
+    fetcher: *ns.BoltCatalog,
+    peer: []const u8,
+    bolt: []const u8,
+) !cu.CatchUpReport {
+    var report: cu.CatchUpReport = .{
+        .revisions_synced = 0,
+        .empty_asks = 0,
+        .total_leaves = 0,
+        .had_already = 0,
+        .needed = 0,
+    };
+    var next_rev = cu.max_revision_held(fetcher, peer, bolt) + 1;
+    while (true) {
+        const step = try run_one_wire_exchange_sockets(fetcher, peer, bolt, next_rev);
+        if (step.entry_count == 0) {
+            report.empty_asks += 1;
+            break;
+        }
+        report.revisions_synced += 1;
+        report.total_leaves += step.report.total;
+        report.had_already += step.report.had_already;
+        report.needed += step.report.needed;
+        next_rev += 1;
+    }
+    return report;
+}
+
+fn run_source_loop(_: std.Io) !u8 {
+    var src: ns.BoltCatalog = undefined;
+    try init_witness_source(&src);
+
+    var hops: u32 = 0;
+    while (hops < 8) : (hops += 1) {
+        var wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+        const wire_len = recv_wire_timeout(source_port, &wire, 2) catch break;
+        if (wire_len < wf.off_cipher or wire_len > wf.wire_capacity) return error.RecvFailed;
+
+        var opened: [@intCast(wf.max_message)]u8 = undefined;
+        const opened_len = try open_wire(wire[0..@intCast(wire_len)], &opened);
+
+        var req: sw.SyncRequest = undefined;
+        try sw.decode_request(opened[0..@intCast(opened_len)], &req);
+
+        var resp: sw.SyncResponse = undefined;
+        try sw.build_response(&src, &req, &resp);
+        var payload: [sw.max_wire_payload]u8 = undefined;
+        const payload_len = try sw.encode_response(&resp, &payload);
+
+        var out_wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+        const out_wire_len = try seal_payload(payload[0..payload_len], &out_wire);
+        try send_wire(fetcher_port, out_wire[0..@intCast(out_wire_len)]);
+    }
+    print("ns-catchupw: source loop answered catch-up requests\n", .{});
+    return 0;
+}
+
+fn run_fetcher_catchup(_: std.Io) !u8 {
+    var fetcher: ns.BoltCatalog = undefined;
+    try init_witness_fetcher(&fetcher);
+
+    const first = try catch_up_wire_over_sockets(&fetcher, witness_peer, witness_bolt);
+    if (first.revisions_synced != 2 or first.empty_asks != 1) return error.SyncFailed;
+
+    const second = try catch_up_wire_over_sockets(&fetcher, witness_peer, witness_bolt);
+    if (second.revisions_synced != 0 or second.empty_asks != 1) return error.SyncFailed;
+
+    const name2 = ns.Name{ .peer = witness_peer, .bolt = witness_bolt, .revision = 2, .path = witness_path };
+    const name3 = ns.Name{ .peer = witness_peer, .bolt = witness_bolt, .revision = 3, .path = witness_path };
+    var buf: [128]u8 = undefined;
+    const r2 = try fetcher.recall(name2, &buf);
+    if (!std.mem.eql(u8, buf[0..r2.len], "rev-two")) return error.SyncFailed;
+    const r3 = try fetcher.recall(name3, &buf);
+    if (!std.mem.eql(u8, buf[0..r3.len], "rev-three")) return error.SyncFailed;
+
+    print("ns-catchupw: fetcher caught up over localhost — recall GREEN\n", .{});
+    return 0;
+}
+
+fn run_demo(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) !u8 {
+    const source_argv = try allocator.alloc([]const u8, 2);
+    source_argv[0] = self_path;
+    source_argv[1] = "source-loop";
+    var source_child = try std.process.spawn(io, .{ .argv = source_argv });
+    var pause = c.timespec{ .sec = 0, .nsec = 50_000_000 };
+    _ = c.nanosleep(&pause, null);
+
+    const fetcher_argv = try allocator.alloc([]const u8, 2);
+    fetcher_argv[0] = self_path;
+    fetcher_argv[1] = "fetcher-catchup";
+    var fetcher_child = try std.process.spawn(io, .{ .argv = fetcher_argv });
+
+    const st = try source_child.wait(io);
+    const ft = try fetcher_child.wait(io);
+    const sc: u8 = switch (st) { .exited => |c0| c0, else => 255 };
+    const fc: u8 = switch (ft) { .exited => |c0| c0, else => 255 };
+    assert(sc == 0);
+    assert(fc == 0);
+
+    print("ns-catchupw: demo GREEN — catch-up crossed localhost under Comlink seal\n", .{});
+    print("ns-catchupw: version {s}\n", .{ncw_version});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(garden);
+
+    if (args.len >= 2) {
+        if (std.mem.eql(u8, args[1], "source-loop")) return run_source_loop(io);
+        if (std.mem.eql(u8, args[1], "fetcher-catchup")) return run_fetcher_catchup(io);
+        if (std.mem.eql(u8, args[1], "selftest")) return run_selftest(io);
+        if (std.mem.eql(u8, args[1], "demo")) {
+            assert(args.len >= 1);
+            return run_demo(garden, io, args[0]);
+        }
+    }
+
+    if (args.len >= 1) return run_selftest(io);
+    return 1;
+}

@@ -1,0 +1,24 @@
+//! Rye test: mem.replace — pass 9917.
+//!
+//! Needle replacement into a caller buffer; pairs with startsWith (9939).
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    var output: [29]u8 = undefined;
+    const reps = mem.replace(u8, "All your base are belong to us", "base", "Zig", output[0..]);
+    std.debug.assert(reps == 1);
+    std.debug.assert(mem.eql(u8, output[0..29], "All your Zig are belong to us"));
+
+    var output2: [8]u8 = undefined;
+    const reps2 = mem.replace(u8, "abbba", "b", "cd", output2[0..]);
+    std.debug.assert(reps2 == 3);
+    std.debug.assert(mem.eql(u8, output2[0..8], "acdcdcda"));
+
+    var output3: [0]u8 = undefined;
+    const reps3 = mem.replace(u8, "", "x", "y", output3[0..]);
+    std.debug.assert(reps3 == 0);
+
+    std.debug.print("rye: mem.replace assertions confirmed.\n", .{});
+}

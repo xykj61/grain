@@ -1,0 +1,29 @@
+//! Rye test: std.mem.trimStart — pass 9979.
+//!
+//! Rishi trims leading whitespace on nearly every parsed line. trimStart
+//! complements trimEnd (9982) and trim (9996). This test exercises the
+//! strengthened postconditions on both arms of the parity gate.
+
+const std = @import("std");
+
+pub fn main() void {
+    const trimmed1 = std.mem.trimStart(u8, "   hello", " \t");
+    std.debug.assert(std.mem.eql(u8, trimmed1, "hello"));
+
+    const trimmed2 = std.mem.trimStart(u8, "hello", " \t");
+    std.debug.assert(std.mem.eql(u8, trimmed2, "hello"));
+
+    const trimmed3 = std.mem.trimStart(u8, "", " \t");
+    std.debug.assert(trimmed3.len == 0);
+
+    const input = "\t\tdata";
+    const trimmed4 = std.mem.trimStart(u8, input, " \t");
+    std.debug.assert(trimmed4.len <= input.len);
+    std.debug.assert(std.mem.eql(u8, trimmed4, "data"));
+
+    // trimStart leaves trailing characters untouched.
+    const trimmed5 = std.mem.trimStart(u8, "  hello  ", " ");
+    std.debug.assert(std.mem.eql(u8, trimmed5, "hello  "));
+
+    std.debug.print("rye: trimStart assertions confirmed.\n", .{});
+}

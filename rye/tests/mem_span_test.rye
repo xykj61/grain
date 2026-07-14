@@ -1,0 +1,21 @@
+//! Rye test: std.mem.span — pass 9928.
+//!
+//! Sentinel-terminated pointer to slice; pairs with len (9942) and sliceTo (9945).
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    var array: [5]u16 = [_]u16{ 1, 2, 3, 4, 5 };
+    const ptr = @as([*:3]u16, array[0..2 :3]);
+    std.debug.assert(mem.eql(u16, mem.span(ptr), &[_]u16{ 1, 2 }));
+
+    var buf: [8]u8 = .{ 'f', 'o', 'o', 0, 'b', 'a', 'r', 0 };
+    const c_str: [*:0]const u8 = @ptrCast(&buf);
+    std.debug.assert(mem.eql(u8, mem.span(c_str), "foo"));
+
+    std.debug.assert(mem.eql(u8, mem.span(@as([*:0]const u8, "Rye")), "Rye"));
+    std.debug.assert(mem.span(@as(?[*:0]u16, null)) == null);
+
+    std.debug.print("rye: mem.span assertions confirmed.\n", .{});
+}

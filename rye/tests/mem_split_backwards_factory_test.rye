@@ -1,0 +1,24 @@
+//! Rye test: backward split factories — pass 9933.
+//!
+//! splitBackwardsScalar, splitBackwardsAny, and splitBackwardsSequence begin at
+//! index buffer.len with rest() spanning the full buffer (pairs with 9962, 9934).
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    var scalar = mem.splitBackwardsScalar(u8, "a|b|c", '|');
+    std.debug.assert(mem.eql(u8, scalar.rest(), "a|b|c"));
+
+    var any = mem.splitBackwardsAny(u8, "a,b;c", ",;");
+    std.debug.assert(mem.eql(u8, any.rest(), "a,b;c"));
+
+    var seq = mem.splitBackwardsSequence(u8, "xx||yy", "||");
+    std.debug.assert(mem.eql(u8, seq.rest(), "xx||yy"));
+
+    var empty = mem.splitBackwardsScalar(u8, "", '|');
+    std.debug.assert(empty.rest().len == 0);
+    std.debug.assert(mem.eql(u8, empty.first(), ""));
+
+    std.debug.print("rye: mem split backwards factory assertions confirmed.\n", .{});
+}

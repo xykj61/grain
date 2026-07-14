@@ -1,0 +1,112 @@
+//! mantra/recall_two_way_sync.rye — two-way sync: symmetric syncRevision composition.
+//!
+//! syncRevision already carries one direction with no asymmetry baked in. This file
+//! composes it twice — source and destination swapped, peer name matching the revision
+//! owner — so both catalogs gain what the other held. Composing rather than extending:
+//! recall_lap1.rye is imported and left standing.
+//!
+//!   rye build mantra/recall_two_way_sync.rye -femit-bin=mantra/bin/recall-two-way-sync
+//!   mantra/bin/recall-two-way-sync selftest
+//!
+//! Counsel: [`counsel/20260707-000112_claude-counsel-two-way-sync-and-subscribe.md`](../counsel/20260707-000112_claude-counsel-two-way-sync-and-subscribe.md)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const recall_lap1 = @import("recall_lap1.rye");
+
+pub const recall_two_way_sync_version = "20260707.000112";
+
+pub const TwoWaySyncReport = struct {
+    right_to_left: recall_lap1.SyncReport,
+    left_to_right: recall_lap1.SyncReport,
+};
+
+/// Sync peer-left's revision into catalog `left` and peer-right's revision into `right`.
+/// Each catalog must already hold its own peer's leaves; the crossing appends only what
+/// the destination lacks.
+pub fn sync_both_ways(
+    left: *recall_lap1.BoltCatalog,
+    right: *recall_lap1.BoltCatalog,
+    left_peer: []const u8,
+    left_bolt: []const u8,
+    left_revision: u32,
+    right_peer: []const u8,
+    right_bolt: []const u8,
+    right_revision: u32,
+) recall_lap1.RecallError!TwoWaySyncReport {
+    const right_to_left = try recall_lap1.sync_revision(left, right, right_peer, right_bolt, right_revision);
+    const left_to_right = try recall_lap1.sync_revision(right, left, left_peer, left_bolt, left_revision);
+    return .{ .right_to_left = right_to_left, .left_to_right = left_to_right };
+}
+
+fn run_selftest(_: std.Io) !u8 {
+    // Each peer holds one leaf the other lacks; one shared digest exercises had-already.
+    var left: recall_lap1.BoltCatalog = .empty();
+    try left.append_leaf("peerA", "a", 1, "from-a.txt", "shared", "plain-text");
+    var right: recall_lap1.BoltCatalog = .empty();
+    try right.append_leaf("peerB", "b", 1, "shared.txt", "shared", "plain-text");
+    try right.append_leaf("peerB", "b", 1, "from-b.txt", "unique-b", "plain-text");
+
+    const report = try sync_both_ways(&left, &right, "peerA", "a", 1, "peerB", "b", 1);
+    assert(report.right_to_left.total == 2);
+    assert(report.right_to_left.had_already == 1);
+    assert(report.right_to_left.needed == 1);
+    assert(report.left_to_right.total == 1);
+    assert(report.left_to_right.had_already == 1);
+    assert(report.left_to_right.needed == 0);
+
+    const na = recall_lap1.Name{ .peer = "peerA", .bolt = "a", .revision = 1, .path = "from-a.txt" };
+    const nb1 = recall_lap1.Name{ .peer = "peerB", .bolt = "b", .revision = 1, .path = "shared.txt" };
+    const nb2 = recall_lap1.Name{ .peer = "peerB", .bolt = "b", .revision = 1, .path = "from-b.txt" };
+
+    var buf_a: [recall_lap1.max_resin_bytes]u8 = undefined;
+    var buf_shared: [recall_lap1.max_resin_bytes]u8 = undefined;
+    var buf_b: [recall_lap1.max_resin_bytes]u8 = undefined;
+    const ra = try left.recall(na, &buf_a);
+    const rb1 = try left.recall(nb1, &buf_shared);
+    const rb2 = try left.recall(nb2, &buf_b);
+    assert(std.mem.eql(u8, buf_a[0..ra.len], "shared"));
+    assert(std.mem.eql(u8, buf_shared[0..rb1.len], "shared"));
+    assert(std.mem.eql(u8, buf_b[0..rb2.len], "unique-b"));
+
+    var buf_r_a: [recall_lap1.max_resin_bytes]u8 = undefined;
+    var buf_r_shared: [recall_lap1.max_resin_bytes]u8 = undefined;
+    var buf_r_b: [recall_lap1.max_resin_bytes]u8 = undefined;
+    const ra_r = try right.recall(na, &buf_r_a);
+    const rb1r = try right.recall(nb1, &buf_r_shared);
+    const rb2r = try right.recall(nb2, &buf_r_b);
+    assert(std.mem.eql(u8, buf_r_a[0..ra_r.len], "shared"));
+    assert(std.mem.eql(u8, buf_r_shared[0..rb1r.len], "shared"));
+    assert(std.mem.eql(u8, buf_r_b[0..rb2r.len], "unique-b"));
+
+    print("ns-2way: both peers recall both names — referential transparency GREEN\n", .{});
+
+    // Re-syncing an already-crossed revision refuses whole per direction.
+    if (recall_lap1.sync_revision(&left, &right, "peerB", "b", 1)) |_| {
+        return error.RevisionImmutable;
+    } else |err| {
+        assert(err == error.RevisionImmutable);
+    }
+    print("ns-2way: duplicate revision sync refused — GREEN unwelcome path\n", .{});
+
+    // A new revision on one side crosses once; prior revision leaves stay recallable.
+    try right.append_leaf("peerB", "b", 2, "from-b.txt", "unique-b-v2", "plain-text");
+    const rev2 = try recall_lap1.sync_revision(&left, &right, "peerB", "b", 2);
+    assert(rev2.total == 1);
+    assert(rev2.needed == 1);
+    const nrev2 = recall_lap1.Name{ .peer = "peerB", .bolt = "b", .revision = 2, .path = "from-b.txt" };
+    const rrev2 = try left.recall(nrev2, &buf_b);
+    assert(std.mem.eql(u8, buf_b[0..rrev2.len], "unique-b-v2"));
+
+    print("ns-2way: version {s}\n", .{recall_two_way_sync_version});
+    print("GREEN: two-way sync — symmetric syncRevision, in-process.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(init.arena.allocator());
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) return run_selftest(io);
+    return run_selftest(io);
+}

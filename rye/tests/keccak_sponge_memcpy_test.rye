@@ -1,0 +1,32 @@
+//! Rye test: Keccak sponge @memcpy boundaries — pass 9936.
+//!
+//! Absorb and squeeze across block boundaries; every Aurora hash walks this path.
+
+const std = @import("std");
+const Sha3_256 = std.crypto.hash.sha3.Sha3_256;
+const Shake128 = std.crypto.hash.sha3.Shake128;
+
+pub fn main() void {
+    var input: [200]u8 = undefined;
+    for (&input, 0..) |*b, i| b.* = @intCast(i % 251);
+
+    var digest: [Sha3_256.digest_length]u8 = undefined;
+    Sha3_256.hash(&input, &digest, .{});
+
+    var hasher = Sha3_256.init(.{});
+    hasher.update(input[0..100]);
+    hasher.update(input[100..]);
+    var digest2: [Sha3_256.digest_length]u8 = undefined;
+    hasher.final(&digest2);
+    std.debug.assert(std.mem.eql(u8, &digest, &digest2));
+
+    var shake_buf: [150]u8 = undefined;
+    var shaker = Shake128.init(.{});
+    shaker.update(input[0..50]);
+    shaker.update(input[50..]);
+    shaker.squeeze(shake_buf[0..75]);
+    shaker.squeeze(shake_buf[75..]);
+    std.debug.assert(shake_buf[0] != 0 or shake_buf[1] != 0);
+
+    std.debug.print("rye: Keccak sponge @memcpy boundaries confirmed.\n", .{});
+}

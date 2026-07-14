@@ -1,0 +1,29 @@
+//! Rye test: std.mem.readVarPackedInt / writeVarPackedInt — pass 9906.
+//!
+//! Variable bit-count load/store at arbitrary offsets; pairs with readPackedInt (9907).
+
+const std = @import("std");
+const builtin = @import("builtin");
+const mem = std.mem;
+
+const Packed = packed struct(u16) {
+    a: u3,
+    b: u7,
+    c: u6,
+};
+
+pub fn main() void {
+    var st = Packed{ .a = 1, .b = 2, .c = 4 };
+    const endian = builtin.cpu.arch.endian();
+    const off = @bitOffsetOf(Packed, "b");
+    const bit_count: u32 = 7;
+
+    const b_field = mem.readVarPackedInt(u64, mem.asBytes(&st), off, bit_count, endian, .unsigned);
+    std.debug.assert(b_field == 2);
+
+    mem.writeVarPackedInt(mem.asBytes(&st), off, bit_count, @as(u64, 0x7f), endian);
+    std.debug.assert(st.b == 0x7f);
+    std.debug.assert(mem.readVarPackedInt(u64, mem.asBytes(&st), off, bit_count, endian, .unsigned) == 0x7f);
+
+    std.debug.print("rye: mem.readVarPackedInt/writeVarPackedInt assertions confirmed.\n", .{});
+}

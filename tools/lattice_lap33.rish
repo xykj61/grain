@@ -1,0 +1,11 @@
+# lattice_lap33.rish — Lattice lap 32 softsign witness.
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lattice/bin/lattice"
+let build = run ["sh" "-c" "mkdir -p lattice/bin && env RYE_ZIG=${zig} rye/bin/rye build lattice/lattice.rye -femit-bin=${bin}"]
+assert build.ok else "Lattice lap 32 build failed"
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "Lattice selftest exited non-zero"
+assert selftest.out contains "GREEN" else "Lattice selftest not GREEN"
+assert selftest.out contains "softsign 2x2" else "Lattice missing softsign welcome"
+assert selftest.out contains "softsign shape mismatch" else "Lattice missing softsign unwelcome"
+say "GREEN: Lattice lap 32 — elementwise softsign with shape assert."

@@ -1,0 +1,354 @@
+//! mantra/recall_two_way_sync_delivery.rye — two-way sync over Comlink sealed datagrams.
+//!
+//! Composes the NS-L3 sync exchange twice with roles reversed — same wire shape as
+//! recall_sync_delivery, zero edits to recall_sync_wire or recall_lap1.
+//!
+//!   rye build mantra/recall_two_way_sync_delivery.rye -lc -femit-bin=mantra/bin/recall-two-way-sync-delivery
+//!   mantra/bin/recall-two-way-sync-delivery selftest
+//!   mantra/bin/recall-two-way-sync-delivery demo
+//!
+//! Counsel: [`counsel/20260707-000112_claude-counsel-two-way-sync-and-subscribe.md`](../counsel/20260707-000112_claude-counsel-two-way-sync-and-subscribe.md)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const c = std.c;
+const ns = @import("recall_lap1.rye");
+const sw = @import("recall_sync_wire.rye");
+const wf = @import("wire_format.rye");
+const tw = @import("recall_two_way_sync.rye");
+
+const nsw2_version = "20260707.001512";
+
+const AF_INET: c_uint = 2;
+const SOCK_DGRAM: c_uint = 2;
+const SOL_SOCKET: c_int = 1;
+const SO_REUSEADDR: c_int = 2;
+
+const fetcher_port: u16 = 38482;
+const source_port: u16 = 38483;
+
+const sockaddr_in = extern struct {
+    sin_family: c_ushort = AF_INET,
+    sin_port: c_ushort,
+    sin_addr: [4]u8 = .{ 127, 0, 0, 1 },
+    sin_zero: [8]u8 = .{0} ** 8,
+};
+
+fn localhost_addr(port: u16) sockaddr_in {
+    return .{ .sin_port = std.mem.nativeToBig(u16, port) };
+}
+
+fn open_socket() !c.fd_t {
+    const fd = c.socket(AF_INET, SOCK_DGRAM, 0);
+    if (fd < 0) return error.SocketFailed;
+    const yes: c_int = 1;
+    _ = c.setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &yes, @sizeOf(c_int));
+    return fd;
+}
+
+fn send_wire(port: u16, wire: []const u8) !void {
+    const fd = try open_socket();
+    defer _ = c.close(fd);
+    const dest = localhost_addr(port);
+    const sent = c.sendto(fd, wire.ptr, @intCast(wire.len), 0, @ptrCast(&dest), @sizeOf(sockaddr_in));
+    if (sent < 0 or @as(usize, @intCast(sent)) != wire.len) return error.SendFailed;
+}
+
+fn recv_wire(port: u16, wire: []u8) !u64 {
+    const fd = try open_socket();
+    defer _ = c.close(fd);
+    var bind_addr = localhost_addr(port);
+    if (c.bind(fd, @ptrCast(&bind_addr), @sizeOf(sockaddr_in)) < 0) return error.BindFailed;
+    var from: sockaddr_in = undefined;
+    var from_len: c.socklen_t = @sizeOf(sockaddr_in);
+    const n = c.recvfrom(fd, wire.ptr, @intCast(wire.len), 0, @ptrCast(&from), &from_len);
+    if (n < 0) return error.RecvFailed;
+    return @intCast(n);
+}
+
+fn seal_payload(payload: []const u8, wire: *[@intCast(wf.wire_capacity)]u8) !u64 {
+    return try wf.seal_message(payload, wire);
+}
+
+fn open_wire(wire: []const u8, opened: *[@intCast(wf.max_message)]u8) !u64 {
+    return try wf.open_datagram(wire, opened);
+}
+
+fn digest_hex_of(content: []const u8, out: *[64]u8) void {
+    var digest: [32]u8 = undefined;
+    std.crypto.hash.sha3.Sha3_256.hash(content, &digest, .{});
+    var i: u32 = 0;
+    while (i < 32) : (i += 1) {
+        _ = std.fmt.bufPrint(out[i * 2 ..][0..2], "{x:0>2}", .{digest[i]}) catch unreachable;
+    }
+}
+
+fn init_witness_left(cat: *ns.BoltCatalog) !void {
+    cat.* = .empty();
+    try cat.append_leaf("peerA", "a", 1, "from-a.txt", "shared", "plain-text");
+}
+
+fn init_witness_right(cat: *ns.BoltCatalog) !void {
+    cat.* = .empty();
+    try cat.append_leaf("peerB", "b", 1, "shared.txt", "shared", "plain-text");
+    try cat.append_leaf("peerB", "b", 1, "from-b.txt", "unique-b", "plain-text");
+}
+
+fn build_held_request(peer: []const u8, bolt: []const u8, revision: u32, held_content: []const u8) sw.WireError!sw.SyncRequest {
+    var req: sw.SyncRequest = .{
+        .peer = peer,
+        .bolt = bolt,
+        .revision = revision,
+        .held_count = 1,
+        .held_digests = undefined,
+    };
+    digest_hex_of(held_content, &req.held_digests[0]);
+    return req;
+}
+
+fn run_wire_exchange_in_process(
+    fetcher: *ns.BoltCatalog,
+    source: *ns.BoltCatalog,
+    peer: []const u8,
+    bolt: []const u8,
+    revision: u32,
+    held_content: []const u8,
+) !ns.SyncReport {
+    const req = try build_held_request(peer, bolt, revision, held_content);
+    var req_buf: [sw.max_wire_payload]u8 = undefined;
+    const req_len = try sw.encode_request(req, &req_buf);
+
+    var wire_resp: sw.SyncResponse = undefined;
+    try sw.build_response(source, &req, &wire_resp);
+    var resp_buf: [sw.max_wire_payload]u8 = undefined;
+    const resp_len = try sw.encode_response(&wire_resp, &resp_buf);
+
+    var req_wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const req_wire_len = try seal_payload(req_buf[0..req_len], &req_wire);
+    var req_opened: [@intCast(wf.max_message)]u8 = undefined;
+    const req_opened_len = try open_wire(req_wire[0..@intCast(req_wire_len)], &req_opened);
+
+    var decoded_req: sw.SyncRequest = undefined;
+    try sw.decode_request(req_opened[0..@intCast(req_opened_len)], &decoded_req);
+
+    var built_resp: sw.SyncResponse = undefined;
+    try sw.build_response(source, &decoded_req, &built_resp);
+    var resp_wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const resp_wire_len = try seal_payload(resp_buf[0..resp_len], &resp_wire);
+    var resp_opened: [@intCast(wf.max_message)]u8 = undefined;
+    const resp_opened_len = try open_wire(resp_wire[0..@intCast(resp_wire_len)], &resp_opened);
+
+    var decoded_resp: sw.SyncResponse = undefined;
+    try sw.decode_response(resp_opened[0..@intCast(resp_opened_len)], &decoded_resp);
+    return try sw.apply_sync_response(fetcher, &decoded_resp);
+}
+
+fn assert_both_peers_recall(left: *ns.BoltCatalog, right: *ns.BoltCatalog) !void {
+    const na = ns.Name{ .peer = "peerA", .bolt = "a", .revision = 1, .path = "from-a.txt" };
+    const nb1 = ns.Name{ .peer = "peerB", .bolt = "b", .revision = 1, .path = "shared.txt" };
+    const nb2 = ns.Name{ .peer = "peerB", .bolt = "b", .revision = 1, .path = "from-b.txt" };
+
+    var buf: [ns.max_resin_bytes]u8 = undefined;
+    const ra_l = try left.recall(na, &buf);
+    assert(std.mem.eql(u8, buf[0..ra_l.len], "shared"));
+    const rb1_l = try left.recall(nb1, &buf);
+    assert(std.mem.eql(u8, buf[0..rb1_l.len], "shared"));
+    const rb2_l = try left.recall(nb2, &buf);
+    assert(std.mem.eql(u8, buf[0..rb2_l.len], "unique-b"));
+
+    const ra_r = try right.recall(na, &buf);
+    assert(std.mem.eql(u8, buf[0..ra_r.len], "shared"));
+    const rb1_r = try right.recall(nb1, &buf);
+    assert(std.mem.eql(u8, buf[0..rb1_r.len], "shared"));
+    const rb2_r = try right.recall(nb2, &buf);
+    assert(std.mem.eql(u8, buf[0..rb2_r.len], "unique-b"));
+}
+
+fn run_selftest(_: std.Io) !u8 {
+    var left: ns.BoltCatalog = undefined;
+    try init_witness_left(&left);
+    var right: ns.BoltCatalog = undefined;
+    try init_witness_right(&right);
+
+    const r1 = try run_wire_exchange_in_process(&left, &right, "peerB", "b", 1, "shared");
+    assert(r1.total == 2);
+    assert(r1.had_already == 1);
+    assert(r1.needed == 1);
+
+    const r2 = try run_wire_exchange_in_process(&right, &left, "peerA", "a", 1, "shared");
+    assert(r2.total == 1);
+    assert(r2.had_already == 1);
+    assert(r2.needed == 0);
+
+    try assert_both_peers_recall(&left, &right);
+
+    // In-process composition matches wire composition.
+    var left2: ns.BoltCatalog = undefined;
+    try init_witness_left(&left2);
+    var right2: ns.BoltCatalog = undefined;
+    try init_witness_right(&right2);
+    const composed = try tw.sync_both_ways(&left2, &right2, "peerA", "a", 1, "peerB", "b", 1);
+    assert(composed.right_to_left.total == r1.total);
+    assert(composed.left_to_right.total == r2.total);
+
+    print("ns-2wayw: both directions crossed under Comlink seal — referential transparency GREEN\n", .{});
+    print("ns-2wayw: version {s} two_way {s} sync_wire {s}\n", .{ nsw2_version, tw.recall_two_way_sync_version, sw.sync_wire_version });
+    print("GREEN: two-way sync wire lap — hosted request/response, roles reversed.\n", .{});
+    return 0;
+}
+
+fn run_source_right(_: std.Io) !u8 {
+    var src: ns.BoltCatalog = undefined;
+    try init_witness_right(&src);
+    return run_source_common(&src, "peerB", "b", 1, "shared");
+}
+
+fn run_source_left(_: std.Io) !u8 {
+    var src: ns.BoltCatalog = undefined;
+    try init_witness_left(&src);
+    return run_source_common(&src, "peerA", "a", 1, "shared");
+}
+
+fn run_source_common(src: *ns.BoltCatalog, peer: []const u8, bolt: []const u8, revision: u32, held: []const u8) !u8 {
+    var wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const wire_len = try recv_wire(source_port, &wire);
+    if (wire_len < wf.off_cipher or wire_len > wf.wire_capacity) return error.RecvFailed;
+
+    var opened: [@intCast(wf.max_message)]u8 = undefined;
+    const opened_len = try open_wire(wire[0..@intCast(wire_len)], &opened);
+
+    var req: sw.SyncRequest = undefined;
+    try sw.decode_request(opened[0..@intCast(opened_len)], &req);
+
+    var resp: sw.SyncResponse = undefined;
+    try sw.build_response(src, &req, &resp);
+    var payload: [sw.max_wire_payload]u8 = undefined;
+    const payload_len = try sw.encode_response(&resp, &payload);
+
+    var out_wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const out_wire_len = try seal_payload(payload[0..payload_len], &out_wire);
+    try send_wire(fetcher_port, out_wire[0..@intCast(out_wire_len)]);
+
+    _ = peer;
+    _ = bolt;
+    _ = revision;
+    _ = held;
+    print("ns-2wayw: source answered sync for {s}/{s}\n", .{ req.peer, req.bolt });
+    return 0;
+}
+
+fn run_fetcher_left(_: std.Io) !u8 {
+    var fetcher: ns.BoltCatalog = undefined;
+    try init_witness_left(&fetcher);
+    const report = try run_fetcher_common(&fetcher, "peerB", "b", 1, "shared");
+    if (report.total != 2 or report.had_already != 1 or report.needed != 1) return error.SyncFailed;
+    print("ns-2wayw: fetcher-left synced peerB revision GREEN\n", .{});
+    return 0;
+}
+
+fn run_fetcher_right(_: std.Io) !u8 {
+    var fetcher: ns.BoltCatalog = undefined;
+    try init_witness_right(&fetcher);
+    const report = try run_fetcher_common(&fetcher, "peerA", "a", 1, "shared");
+    if (report.total != 1 or report.had_already != 1 or report.needed != 0) return error.SyncFailed;
+
+    const na = ns.Name{ .peer = "peerA", .bolt = "a", .revision = 1, .path = "from-a.txt" };
+    var buf: [128]u8 = undefined;
+    const r = try fetcher.recall(na, &buf);
+    if (!std.mem.eql(u8, buf[0..r.len], "shared")) return error.SyncFailed;
+
+    print("ns-2wayw: fetcher-right synced peerA revision — recall matches GREEN\n", .{});
+    return 0;
+}
+
+fn run_fetcher_common(fetcher: *ns.BoltCatalog, peer: []const u8, bolt: []const u8, revision: u32, held: []const u8) !ns.SyncReport {
+    const req = try build_held_request(peer, bolt, revision, held);
+    var payload: [sw.max_wire_payload]u8 = undefined;
+    const payload_len = try sw.encode_request(req, &payload);
+    var wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const wire_len = try seal_payload(payload[0..payload_len], &wire);
+    try send_wire(source_port, wire[0..@intCast(wire_len)]);
+
+    var recv_buf: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const recv_len = try recv_wire(fetcher_port, &recv_buf);
+    if (recv_len < wf.off_cipher or recv_len > wf.wire_capacity) return error.RecvFailed;
+
+    var opened: [@intCast(wf.max_message)]u8 = undefined;
+    const opened_len = try open_wire(recv_buf[0..@intCast(recv_len)], &opened);
+
+    var resp: sw.SyncResponse = undefined;
+    try sw.decode_response(opened[0..@intCast(opened_len)], &resp);
+    return try sw.apply_sync_response(fetcher, &resp);
+}
+
+fn run_demo(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) !u8 {
+    // Exchange 1: left fetches peerB from right.
+    {
+        const source_argv = try allocator.alloc([]const u8, 2);
+        source_argv[0] = self_path;
+        source_argv[1] = "source-right";
+        var source_child = try std.process.spawn(io, .{ .argv = source_argv });
+        var pause = c.timespec{ .sec = 0, .nsec = 50_000_000 };
+        _ = c.nanosleep(&pause, null);
+
+        const fetcher_argv = try allocator.alloc([]const u8, 2);
+        fetcher_argv[0] = self_path;
+        fetcher_argv[1] = "fetcher-left";
+        var fetcher_child = try std.process.spawn(io, .{ .argv = fetcher_argv });
+
+        const st = try source_child.wait(io);
+        const ft = try fetcher_child.wait(io);
+        const sc: u8 = switch (st) { .exited => |c0| c0, else => 255 };
+        const fc: u8 = switch (ft) { .exited => |c0| c0, else => 255 };
+        assert(sc == 0);
+        assert(fc == 0);
+    }
+
+    // Exchange 2: right fetches peerA from left — roles reversed.
+    {
+        const source_argv = try allocator.alloc([]const u8, 2);
+        source_argv[0] = self_path;
+        source_argv[1] = "source-left";
+        var source_child = try std.process.spawn(io, .{ .argv = source_argv });
+        var pause = c.timespec{ .sec = 0, .nsec = 50_000_000 };
+        _ = c.nanosleep(&pause, null);
+
+        const fetcher_argv = try allocator.alloc([]const u8, 2);
+        fetcher_argv[0] = self_path;
+        fetcher_argv[1] = "fetcher-right";
+        var fetcher_child = try std.process.spawn(io, .{ .argv = fetcher_argv });
+
+        const st = try source_child.wait(io);
+        const ft = try fetcher_child.wait(io);
+        const sc: u8 = switch (st) { .exited => |c0| c0, else => 255 };
+        const fc: u8 = switch (ft) { .exited => |c0| c0, else => 255 };
+        assert(sc == 0);
+        assert(fc == 0);
+    }
+
+    print("ns-2wayw: demo GREEN — two-way sync crossed localhost under Comlink seal\n", .{});
+    print("ns-2wayw: version {s}\n", .{nsw2_version});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(garden);
+
+    if (args.len >= 2) {
+        if (std.mem.eql(u8, args[1], "source-right")) return run_source_right(io);
+        if (std.mem.eql(u8, args[1], "source-left")) return run_source_left(io);
+        if (std.mem.eql(u8, args[1], "fetcher-left")) return run_fetcher_left(io);
+        if (std.mem.eql(u8, args[1], "fetcher-right")) return run_fetcher_right(io);
+        if (std.mem.eql(u8, args[1], "selftest")) return run_selftest(io);
+        if (std.mem.eql(u8, args[1], "demo")) {
+            assert(args.len >= 1);
+            return run_demo(garden, io, args[0]);
+        }
+    }
+
+    if (args.len >= 1) return run_selftest(io);
+    return 1;
+}

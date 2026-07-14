@@ -1,0 +1,19 @@
+name: Feature pull request
+
+on:
+  pull_request:
+    paths:
+      - 'build.zig'
+      - 'build.zig.zon'
+      - 'ext/**'
+      - '!ext/**.md'
+      - 'pkg/**'
+      - '.github/workflows/**.yml'
+      - '*.sh'
+
+jobs:
+  urbit:
+    uses: ./.github/workflows/shared.yml
+    with:
+      pace: 'edge'
+      upload: false

@@ -1,0 +1,7 @@
+# Lantern lap 28 fixture — pinned presence_penalty on the request contract.
+model_hash sha3-256-rye-forge-lap0
+presence_penalty 0.25
+tokens_in 5
+tokens_out 3
+stopped_reason eos
+text presence pin done

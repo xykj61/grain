@@ -1,0 +1,169 @@
+//! aurora/src/posted.rye — a sealed datagram, posted from one hart to another.
+//!
+//! The wire proved two harts pass a value; the sealed hart proved one hart seals
+//! and opens. This unites them. Hart 0 (Alice) seals a datagram to hart 1 (Bob),
+//! serializes it to the shared-memory wire, and raises the flag. Hart 1 reads the
+//! raw bytes off the wire, shape-casts them against the datagram's expected form,
+//! and — trusting only its own secret and what arrived — verifies the attestation,
+//! confirms the content-name, derives the shared secret, and opens the seal.
+//!
+//! This is a sealed value crossing the wire between two harts: the smallest seed
+//! of Comlink (active-designing/992 shape-casting, /993 the bounded network;
+//! external-research/yonder/20260618-212112_content-centric-messaging.md content-centric messaging, /985 encrypted networking).
+//!
+//! Run with `RYE_SMP=2 ../run.sh posted`.
+
+const std = @import("std");
+const kumara = @import("kumara.rye");
+const X25519 = std.crypto.dh.X25519;
+const ChaCha20Poly1305 = std.crypto.aead.chacha_poly.ChaCha20Poly1305;
+const Sha3_512 = std.crypto.hash.sha3.Sha3_512;
+
+const uart_tx: *volatile u8 = @ptrFromInt(0x1000_0000);
+const test_finisher: *volatile u32 = @ptrFromInt(0x0010_0000);
+const finisher_pass: u32 = 0x5555;
+
+// The shared-memory wire: a ready flag, a length, and the datagram bytes.
+const ready: *volatile u32 = @ptrFromInt(0x8020_0000);
+const wire_len: *volatile u32 = @ptrFromInt(0x8020_0010);
+const wire: [*]volatile u8 = @ptrFromInt(0x8020_0040);
+
+// The datagram's shape on the wire: fixed-size fields, then the ciphertext.
+const off_sender: usize = 0; // signer public key — who sealed it
+const off_nonce: usize = off_sender + 32; // AEAD nonce
+const off_name: usize = off_nonce + ChaCha20Poly1305.nonce_length; // SHA3-512 content-name
+const off_sig: usize = off_name + Sha3_512.digest_length; // identity attestation over the name
+const off_tag: usize = off_sig + kumara.signature_length; // Poly1305 tag
+const off_cipher: usize = off_tag + ChaCha20Poly1305.tag_length; // ciphertext begins here
+const wire_capacity: usize = 512;
+const max_message: usize = wire_capacity - off_cipher;
+
+const seed_alice = [_]u8{0xA1} ** 32;
+const seed_bob = [_]u8{0xB0} ** 32;
+
+export fn _start() linksection(".text.init") callconv(.naked) noreturn {
+    // Each hart gives itself its own stack, then passes its id to kmain.
+    asm volatile (
+        \\ csrr t0, mhartid
+        \\ li   sp, 0x80180000
+        \\ slli t1, t0, 16
+        \\ sub  sp, sp, t1
+        \\ mv   a0, t0
+        \\ j    kmain
+    );
+}
+
+export fn kmain(hartid: usize) callconv(.c) noreturn {
+    if (hartid == 0) seal_and_post() else receive_and_open();
+}
+
+/// Derive the symmetric seal key from a shared secret, through the strengthened hash.
+fn seal_key(shared: [32]u8) [ChaCha20Poly1305.key_length]u8 {
+    var digest: [Sha3_512.digest_length]u8 = undefined;
+    Sha3_512.hash(&shared, &digest, .{});
+    return digest[0..ChaCha20Poly1305.key_length].*;
+}
+
+/// Hart 0 (Alice): seal a message to Bob, lay it on the wire, raise the flag.
+fn seal_and_post() noreturn {
+    const alice_id = kumara.keypair_from_seed(&seed_alice);
+    // Alice uses only Bob's public key — his published address. Deriving it from a
+    // seed here is a test stand-in for looking it up; none of Bob's secret is read.
+    const bob_pub = kumara.keypair_from_seed(&seed_bob).public_key;
+    const alice_x = X25519.KeyPair.fromEd25519(alice_id) catch unreachable;
+    const bob_x_pub = X25519.publicKeyFromEd25519(bob_pub) catch unreachable;
+
+    const message = "Meet me where the rye grows.";
+    const nonce = [_]u8{0x01} ** ChaCha20Poly1305.nonce_length;
+
+    const shared = X25519.scalarmult(alice_x.secret_key, bob_x_pub) catch unreachable;
+    const key = seal_key(shared);
+    var ciphertext: [message.len]u8 = undefined;
+    var tag: [ChaCha20Poly1305.tag_length]u8 = undefined;
+    ChaCha20Poly1305.encrypt(&ciphertext, &tag, message, "", nonce, key);
+    var name: [Sha3_512.digest_length]u8 = undefined;
+    Sha3_512.hash(&ciphertext, &name, .{});
+    const sig = kumara.sign(&name, alice_id, null);
+
+    // Lay the datagram on the wire, field by field.
+    const sender_bytes = alice_id.public_key.toBytes();
+    const sig_bytes = sig.toBytes();
+    write_bytes(off_sender, &sender_bytes);
+    write_bytes(off_nonce, &nonce);
+    write_bytes(off_name, &name);
+    write_bytes(off_sig, &sig_bytes);
+    write_bytes(off_tag, &tag);
+    write_bytes(off_cipher, &ciphertext);
+    wire_len.* = off_cipher + ciphertext.len;
+    asm volatile ("fence" ::: .{ .memory = true }); // publish the datagram before the flag
+    ready.* = 1;
+    while (true) asm volatile ("wfi");
+}
+
+/// Hart 1 (Bob): take the raw bytes off the wire, shape-cast them, and open.
+fn receive_and_open() noreturn {
+    while (ready.* == 0) {}
+    asm volatile ("fence" ::: .{ .memory = true }); // read the datagram only after the flag
+    const len = wire_len.*;
+
+    // The shape-cast: untrusted wire bytes become a trusted datagram only if the
+    // shape holds. One shorter than its header, or longer than the wire, is refused
+    // before a single byte is trusted (active-designing/992: validate at the edge).
+    if (len < off_cipher or len > wire_capacity) {
+        write_str("Aurora posted: a malformed datagram, refused at the wire.\n");
+        test_finisher.* = finisher_pass;
+        while (true) {}
+    }
+    const cipher_len = len - off_cipher;
+
+    var buf: [wire_capacity]u8 = undefined;
+    var i: usize = 0;
+    while (i < len) : (i += 1) buf[i] = wire[i];
+
+    const sender = kumara.PublicKey.fromBytes(buf[off_sender..][0..32].*) catch unreachable;
+    const nonce = buf[off_nonce..][0..ChaCha20Poly1305.nonce_length].*;
+    const name = buf[off_name..][0..Sha3_512.digest_length].*;
+    const tag = buf[off_tag..][0..ChaCha20Poly1305.tag_length].*;
+    const ciphertext = buf[off_cipher..len];
+
+    // Bob trusts only his own secret and what arrived. He verifies the attestation,
+    // confirms the content-name binds the bytes, derives the shared secret, opens.
+    kumara.verify_bytes(&name, buf[off_sig..], sender) catch unreachable;
+    var check: [Sha3_512.digest_length]u8 = undefined;
+    Sha3_512.hash(ciphertext, &check, .{});
+    const name_ok = std.mem.eql(u8, &name, &check);
+
+    const bob_id = kumara.keypair_from_seed(&seed_bob);
+    const bob_x = X25519.KeyPair.fromEd25519(bob_id) catch unreachable;
+    const sender_x = X25519.publicKeyFromEd25519(sender) catch unreachable;
+    const shared = X25519.scalarmult(bob_x.secret_key, sender_x) catch unreachable;
+    const key = seal_key(shared);
+
+    var opened: [max_message]u8 = undefined;
+    ChaCha20Poly1305.decrypt(opened[0..cipher_len], ciphertext, tag, "", nonce, key) catch unreachable;
+
+    write_str("Aurora posted: hart 1 opened a sealed datagram from hart 0.\n");
+    write_str(if (name_ok) "  attestation verified, content-name matches.\n" else "  content-name MISMATCH.\n");
+    write_str("  opened = ");
+    write_str(opened[0..cipher_len]);
+    write_str("\n  name = ");
+    for (name[0..16]) |b| write_hex_byte(b);
+    write_str("...\n");
+
+    test_finisher.* = finisher_pass; // hart 1 powers the machine down once opened
+    while (true) {}
+}
+
+fn write_bytes(offset: usize, bytes: []const u8) void {
+    for (bytes, 0..) |byte, i| wire[offset + i] = byte;
+}
+
+fn write_str(text: []const u8) void {
+    for (text) |byte| uart_tx.* = byte;
+}
+
+fn write_hex_byte(byte: u8) void {
+    const hex = "0123456789abcdef";
+    uart_tx.* = hex[byte >> 4];
+    uart_tx.* = hex[byte & 0x0f];
+}

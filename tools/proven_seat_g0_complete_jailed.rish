@@ -1,0 +1,43 @@
+# proven_seat_g0_complete_jailed.rish — G0-complete under lane_kvm (A-narrow).
+#
+# Counsel 20260712.090512: -accel kvm -cpu host -m 4G -display none + QMP PNG
+# + GRUB serial; -nic none. Requires LANE_KVM=true and /dev/kvm in this enclosure.
+# Prefer the full host sitting (verify + boot + refuse restore):
+#   rishi/bin/rishi run tools/lane_kvm_onpath_host.rish
+# One-shot boot only (caller export; conf may stay false):
+#   LANE_KVM=true rishi/bin/rishi run tools/proven_seat_g0_complete_jailed.rish
+# Paired refuse: tools/lane_kvm_refuse.rish (lane off).
+#
+#   rishi/bin/rishi run tools/proven_seat_g0_complete_jailed.rish
+
+let cache = "tools/.cache/proven-seat"
+let img = "${cache}/sculpt-26-04.img"
+let expected = "241b916ab9e3ed25a089c27119aac98f80fe4d3e67101936b4e69d7f1c708f14"
+let glass = "${cache}/g0c-lane-screendump.png"
+let serial = "${cache}/g0c-lane-serial.log"
+
+say "proven-seat G0-complete (lane_kvm): assert lane on + /dev/kvm…"
+let on = run ["sh" "-c" "./tools/lane_kvm.sh assert-on"]
+assert on.ok else "lane_kvm on-path needs LANE_KVM=true and /dev/kvm — keep refuse GREEN with lane off; relaunch host one-shot via tools/run_with_lane_kvm.sh when granting the lane"
+
+say "proven-seat G0-complete (lane_kvm): image pin…"
+let have = run ["sh" "-c" "test -f ${img}"]
+assert have.ok else "missing ${img}"
+let hash = run ["sh" "-c" "sha256sum ${img} | cut -d' ' -f1"]
+assert hash.ok else "sha256sum failed"
+assert hash.out contains expected else "sculpt-26-04.img sha256 mismatch (want ${expected})"
+
+say "proven-seat G0-complete (lane_kvm): boot -display none -nic none…"
+let boot = run ["sh" "-c" "./tools/proven_seat_g0c_lane_kvm.sh"]
+assert boot.ok else "lane_kvm G0-complete boot failed — see ${cache}/g0c-lane-meta.txt"
+assert boot.out contains "GREEN" else "lane_kvm G0-complete missing GREEN"
+
+say "proven-seat G0-complete (lane_kvm): serial + glass artifacts…"
+let ser = run ["sh" "-c" "test -f ${serial} && grep -aFq 'GRUB loading' ${serial}"]
+assert ser.ok else "serial missing GRUB loading — see ${serial}"
+let glass_ok = run ["sh" "-c" "test -s ${glass}"]
+assert glass_ok.ok else "missing or empty ${glass}"
+let glass_sz = run ["sh" "-c" "wc -c < ${glass} | tr -d ' \\n'"]
+say "proven-seat G0-complete (lane_kvm): glass ${glass_sz.out} bytes"
+
+say "GREEN: proven-seat G0-complete under lane_kvm — pinned image; KVM; -display none; -nic none; GRUB serial; QMP PNG. Legacy D-Bus host escape is retired."

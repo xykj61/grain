@@ -1,0 +1,15 @@
+# Anvil lap 0 — Rye corpus catalog (our tree only).
+chunk
+path dimeroll/dimeroll_core.rye
+kind rye
+lines 240
+
+chunk
+path pond/apps/drawn_terminal.rye
+kind rye
+lines 764
+
+chunk
+path tools/parity.rish
+kind rish
+lines 518

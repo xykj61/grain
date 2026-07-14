@@ -1,0 +1,42 @@
+# comlink_device_wire.rish — Comlink device wire witness (sub-lap 2 pattern + sub-lap 3 sealed).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/comlink_device_wire.rish
+#
+# The freestanding lab below proves the guests cross a real virtio link; it
+# never builds or runs device_wire.rye's own hosted selftest, so a rename
+# that missed this file's one call site could sit unnoticed indefinitely —
+# exactly what a prior camelCase pass left behind here. The hosted check
+# below closes that gap: fast, no QEMU, and it is where the layout proof for
+# virtio_net.rye's wire structures lives.
+#
+# Wire into tools/parity.rish only after a red-then-green pass on the wiring
+# bench, and pin the resulting count from metal.
+
+let zig = "vendor/zig-toolchain/zig"
+let zig_ver = run [zig "version"]
+assert zig_ver.ok else "pinned ziglang toolchain missing at vendor/zig-toolchain"
+
+let mkdir = run ["mkdir" "-p" "comlink/bin"]
+assert mkdir.ok else "could not create comlink/bin"
+let build = run ["env" "RYE_ZIG=${zig}" "rye/bin/rye" "build" "comlink/device_wire.rye" "-lc" "-femit-bin=comlink/bin/device-wire"]
+if build.ok == false then say "comlink device wire build stdout:"
+if build.ok == false then say build.out
+if build.ok == false then say "comlink device wire build stderr:"
+if build.ok == false then say build.err
+assert build.ok else "comlink device wire hosted build failed"
+
+let hosted = run ["comlink/bin/device-wire" "selftest"]
+if hosted.ok == false then say "comlink device wire hosted stdout:"
+if hosted.ok == false then say hosted.out
+if hosted.ok == false then say "comlink device wire hosted stderr:"
+if hosted.ok == false then say hosted.err
+assert hosted.ok else "comlink device wire hosted selftest exited non-zero"
+assert hosted.err contains "GREEN" else "comlink device wire hosted selftest not GREEN"
+assert hosted.err contains "padding-free" else "comlink device wire layout proof did not run"
+
+let lab = run ["sh" "comlink/run_device_wire_lab.sh"]
+assert lab.ok else "comlink device wire lab failed"
+assert lab.out contains "GREEN" else "comlink device wire lab not GREEN"
+
+say "GREEN: Comlink device wire witness passed (hosted selftest + sub-lap 2 + sub-lap 3)."

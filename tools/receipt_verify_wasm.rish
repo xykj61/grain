@@ -1,0 +1,36 @@
+# receipt_verify_wasm.rish — Seam component compile lap: receipt-verify under Wasmtime.
+#
+# Builds linengrow/receipt_verify_guest.rye → wasm32-freestanding, then invokes
+# verify_witness and refuse_tampered via Wasmtime (core ABI isomorphic to WIT).
+#
+#   rishi/bin/rishi run tools/receipt_verify_wasm.rish
+#
+# Requires: vendor/zig-toolchain (or RYE_ZIG), rye/bin/rye, and wasmtime —
+# PATH first, else tools/.cache/wasmtime/wasmtime (gitignored pin; bench: 31.0.0).
+
+let zig = "vendor/zig-toolchain/zig"
+let wasm = "linengrow/bin/receipt-verify.wasm"
+
+let zig_ver = run [zig "version"]
+assert zig_ver.ok else "pinned ziglang toolchain missing at vendor/zig-toolchain"
+say "receipt-verify wasm: pinned ziglang ${zig_ver.out}"
+
+let resolve_wt = run ["sh" "-c" "if command -v wasmtime >/dev/null; then command -v wasmtime; elif test -x tools/.cache/wasmtime/wasmtime; then printf '%s' tools/.cache/wasmtime/wasmtime; else exit 1; fi"]
+assert resolve_wt.ok else "wasmtime missing — install wasmtime-cli on PATH or place 31.0.0 at tools/.cache/wasmtime/wasmtime"
+let wasmtime = resolve_wt.out
+let wt_ver = run ["sh" "-c" "${wasmtime} --version"]
+assert wt_ver.ok else "wasmtime --version failed"
+say "receipt-verify wasm: pinned wasmtime ${wt_ver.out} (${wasmtime})"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/receipt_verify_guest.rye -target wasm32-freestanding -fno-entry -rdynamic -OReleaseSmall -femit-bin=${wasm}"]
+assert build.ok else "receipt-verify wasm guest build failed"
+
+let witness = run ["sh" "-c" "${wasmtime} run --invoke verify_witness ${wasm} 2>&1"]
+assert witness.ok else "verify_witness invoke failed"
+assert witness.out contains "1" else "verify_witness did not return 1"
+
+let refuse = run ["sh" "-c" "${wasmtime} run --invoke refuse_tampered ${wasm} 2>&1"]
+assert refuse.ok else "refuse_tampered invoke failed"
+assert refuse.out contains "1" else "refuse_tampered did not return 1 (tamper wrongly verified)"
+
+say "GREEN: receipt-verify Wasmtime guest — verify-witness + refuse-tampered (ziglang ${zig_ver.out} · wasmtime ${wt_ver.out})."

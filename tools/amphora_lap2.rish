@@ -1,0 +1,21 @@
+# amphora_lap2.rish — Amphora lap 2: pour Amber season, carry far, cold scrub.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/amphora_lap2.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let vessel_bin = "amphora/bin/vessel-core"
+
+say "amphora-lap2: ensure vessel-core on metal..."
+let build = run ["sh" "-c" "mkdir -p amphora/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_core.rye -femit-bin=${vessel_bin}"]
+assert build.ok else "amphora vessel_core build failed for lap 2"
+
+say "amphora-lap2: pour → carry → cold scrub witness..."
+let witness = run ["sh" "tools/fixtures/amphora_lap2_witness.sh"]
+assert witness.ok else "Amphora lap 2 witness failed"
+assert witness.out contains "GREEN" else "Amphora lap 2 did not report GREEN"
+assert witness.out contains "THREE_COPIES" else "Amphora lap 2 missing 3-2-1 assertion"
+assert witness.out contains "SCRUB ok" else "Amphora lap 2 missing cold scrub"
+assert witness.out contains "TAMPER refused" else "Amphora lap 2 missing tamper refusal"
+
+say "GREEN: Amphora lap 2 — Amber season poured, carried far, scrubbed cold."

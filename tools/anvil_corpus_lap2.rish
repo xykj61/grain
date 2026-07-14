@@ -1,0 +1,17 @@
+# anvil_corpus_lap2.rish — Anvil corpus lap 2 min_lines filter witness.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/anvil_corpus_lap2.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "anvil/bin/anvil"
+
+let build = run ["sh" "-c" "mkdir -p anvil/bin && env RYE_ZIG=${zig} rye/bin/rye build anvil/anvil.rye -femit-bin=${bin}"]
+assert build.ok else "Anvil corpus lap 2 build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "Anvil selftest exited non-zero"
+assert selftest.out contains "GREEN" else "Anvil selftest not GREEN"
+assert selftest.out contains "min_lines filter" else "Anvil missing min_lines welcome"
+
+say "GREEN: Anvil corpus lap 2 — min_lines filter on corpus query."

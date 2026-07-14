@@ -1,0 +1,18 @@
+//! Rye test: std.mem.reverse — pass 9921.
+//!
+//! In-place slice reversal; postcondition checked for len <= 64.
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    var arr = [_]u8{ 1, 2, 3, 4, 5 };
+    mem.reverse(u8, arr[0..]);
+    std.debug.assert(mem.eql(u8, &arr, &[_]u8{ 5, 4, 3, 2, 1 }));
+
+    var arr2 = [_]i32{ 10, 20, 30 };
+    mem.reverse(i32, arr2[0..]);
+    std.debug.assert(arr2[0] == 30 and arr2[2] == 10);
+
+    std.debug.print("rye: mem.reverse assertions confirmed.\n", .{});
+}

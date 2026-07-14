@@ -1,0 +1,36 @@
+//! Rye test: std.mem concat — pass 9911.
+//!
+//! Concatenates slices without a separator; pairs with mem.join (9961).
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    const gpa = std.heap.page_allocator;
+
+    const bytes = mem.concat(gpa, u8, &.{ "abc", "def", "ghi" }) catch unreachable;
+    defer gpa.free(bytes);
+    std.debug.assert(mem.eql(u8, bytes, "abcdefghi"));
+    std.debug.assert(bytes.len == 9);
+
+    const nums = mem.concat(gpa, u32, &.{
+        @as([]const u32, &.{ 0, 1 }),
+        @as([]const u32, &.{ 2, 3, 4 }),
+        @as([]const u32, &.{}),
+        @as([]const u32, &.{5}),
+    }) catch unreachable;
+    defer gpa.free(nums);
+    std.debug.assert(mem.eql(u32, nums, &.{ 0, 1, 2, 3, 4, 5 }));
+
+    const zed = mem.concatWithSentinel(gpa, u8, &.{ "abc", "def" }, 0) catch unreachable;
+    defer gpa.free(zed);
+    std.debug.assert(mem.eql(u8, zed, "abcdef"));
+    std.debug.assert(zed[zed.len] == 0);
+
+    const empty_zed = mem.concatWithSentinel(gpa, u8, &.{}, 0) catch unreachable;
+    defer gpa.free(empty_zed);
+    std.debug.assert(empty_zed.len == 0);
+    std.debug.assert(empty_zed[0] == 0);
+
+    std.debug.print("rye: mem.concat assertions confirmed.\n", .{});
+}

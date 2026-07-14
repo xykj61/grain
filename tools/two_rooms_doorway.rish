@@ -1,0 +1,26 @@
+# two_rooms_doorway.rish — TWO_ROOMS seated; forward pages name their room.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/two_rooms_doorway.rish
+
+say "two-rooms doorway: asserting canon seated..."
+
+let seat_check = run ["sh" "-c" "grep -Fq '**Status:** Seated' context/TWO_ROOMS.md && test -f context/specs/20260705-203144_canonical-glosses.md"]
+assert seat_check.ok else "TWO_ROOMS or canonical gloss spec not seated"
+
+say "two-rooms doorway: scanning forward-facing pages..."
+
+let result = run ["rishi/bin/rishi" "run" "tools/fixtures/two_rooms_doorway_scan.rish"]
+if result.ok == false then say "two-rooms doorway scan stderr:"
+if result.ok == false then say result.err
+assert result.ok else "two-rooms doorway scan failed"
+
+say result.out
+
+let lines = lines result.out
+let fails = where lines as l: l starts-with "FAIL"
+
+if length fails == 0 then say "TWO-ROOMS DOORWAY GREEN: canon seated; forward pages name their room."
+if length fails != 0 then say "TWO-ROOMS DOORWAY RED: ${length fails} page(s) forgot the door."
+
+assert length fails == 0 else "two-rooms doorway RED"

@@ -1,0 +1,13 @@
+format session-log-v1
+stamp 20260712.143130
+editor Cursor
+model Cursor Grok 4.5
+voice Rio 3
+title Go — argv-direct RYE_ZIG pins
+prompt still running parity. go while we wait
+product_nib 430
+suite_nib 432
+think Commit argv-direct pin stack + bron logs while host parity tees. Exclude tools/bin rebuild churn. Push four remotes.
+obs Host parity still running; this go lands the fix so pull can refresh mid-tee or next sitting.
+recommend keep-going await host tee result — park if second full-suite red
+file session-logs/20260712-143130_go-argv-direct-rye-zig-pins.bron · this go log

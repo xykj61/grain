@@ -1,0 +1,14 @@
+# inference_scribble_h1_blocks_view.rish — Scribble h1+blocks combo → Skate.
+let bin = "pond/bin/drawn-terminal"
+say "build: Scribble h1 blocks view — drawn-terminal compile"
+let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+assert build.ok else "drawn_terminal build failed for scribble h1 blocks view"
+assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
+let view = run ["sh" "-c" "${bin} scribbleh1blocksviewtest 2>&1"]
+assert view.ok else "drawn terminal scribbleh1blocksviewtest exited non-zero"
+assert view.out contains "scribble h1 blocks view" else "h1 blocks view missing expected output"
+assert view.out contains "GREEN" else "Scribble h1 blocks view not GREEN"
+assert view.out contains "lines=5" else "h1 blocks view missing five-line frame"
+assert view.out contains "h1=1" else "h1 blocks view missing h1=1"
+assert view.out contains "blocks=6" else "h1 blocks view missing blocks=6"
+say "GREEN: Scribble h1 blocks view — h1 and blocks on one Skate frame."

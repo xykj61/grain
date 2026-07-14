@@ -1,0 +1,18 @@
+//! Rye test: std.mem.findPosLinear — pass 9973.
+//!
+//! Linear forward sub-slice search from an offset. Backs findPos on small
+//! inputs; Rishi index-of and contains use indexOf (find) for multi-byte needles.
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    std.debug.assert(mem.indexOfPosLinear(u8, "one two", 0, "two").? == 4);
+    std.debug.assert(mem.indexOfPosLinear(u8, "one two two", 5, "two").? == 8);
+    std.debug.assert(mem.indexOfPosLinear(u8, "one two", 5, "two") == null);
+    std.debug.assert(mem.indexOfPosLinear(u8, "aba", 0, "a").? == 0);
+    std.debug.assert(mem.indexOfPosLinear(u8, "aba", 1, "a").? == 2);
+    std.debug.assert(mem.indexOfPosLinear(u8, "aba", 0, "ab").? == 0);
+
+    std.debug.print("rye: findPosLinear assertions confirmed.\n", .{});
+}

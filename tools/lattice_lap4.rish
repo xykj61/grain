@@ -1,0 +1,18 @@
+# lattice_lap4.rish — Lattice lap 3 reduce_sum witness.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/lattice_lap4.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lattice/bin/lattice"
+
+let build = run ["sh" "-c" "mkdir -p lattice/bin && env RYE_ZIG=${zig} rye/bin/rye build lattice/lattice.rye -femit-bin=${bin}"]
+assert build.ok else "Lattice lap 3 build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "Lattice selftest exited non-zero"
+assert selftest.out contains "GREEN" else "Lattice selftest not GREEN"
+assert selftest.out contains "reduce_sum 2x2" else "Lattice missing reduce welcome"
+assert selftest.out contains "reduce shape mismatch refused" else "Lattice missing reduce unwelcome"
+
+say "GREEN: Lattice lap 3 — full-matrix reduce_sum into 1x1."

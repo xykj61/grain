@@ -1,0 +1,18 @@
+# chrono_version_sweep.rish — five-line semver drift sweep on authored .md surfaces.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/chrono_version_sweep.rish
+#
+# Verdict lives in tools/.cache/chrono-scan-summary.txt (written by the drive
+# script) so large OK/FAIL transcripts never cross Rishi string/list ceilings.
+
+say "chrono-version: scanning authored surfaces for semver Version lines..."
+
+let result = run ["rishi/bin/rishi" "run" "tools/fixtures/chrono_version_scan.rish"]
+assert result.ok else "chrono-version scan script failed"
+
+say result.out
+
+let summary = read-file "tools/.cache/chrono-scan-summary.txt"
+assert summary contains "verdict=GREEN" else "chrono-version RED: semver drift on authored surfaces"
+say "CHRONO VERSION GREEN: summary ${summary}"

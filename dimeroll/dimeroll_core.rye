@@ -1,0 +1,308 @@
+//! dimeroll/dimeroll_core.rye — Dimeroll: chart, journal, trial-balance fold, reports.
+//!
+//! Centralized books of record. Debit-positive nets; conservation holds when the sum of nets is zero.
+//! Lap 2 adds income-statement and balance-sheet projections from the same fold.
+//! Lap 4 deepens journal filters: account · memo prefix · cash flow · sum amounts.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const tally_parse_int = @import("parse_int.rye");
+
+pub const account_count: u32 = 4;
+pub const max_entries: u32 = 32;
+pub const max_memo_len: u32 = 64;
+pub const max_stamp_len: u32 = 32;
+pub const max_journal_len: u32 = 4096;
+pub const max_exceptions: u32 = 16;
+
+pub const FilterError = error{
+    ResultOverflow,
+};
+
+pub const Account = enum(u8) {
+    cash = 0,
+    revenue = 1,
+    expense = 2,
+    equity = 3,
+
+    pub fn name(self: Account) []const u8 {
+        return switch (self) {
+            .cash => "cash",
+            .revenue => "revenue",
+            .expense => "expense",
+            .equity => "equity",
+        };
+    }
+
+    pub fn parse(text: []const u8) error{UnknownAccount}!Account {
+        if (std.mem.eql(u8, text, "cash")) return .cash;
+        if (std.mem.eql(u8, text, "revenue")) return .revenue;
+        if (std.mem.eql(u8, text, "expense")) return .expense;
+        if (std.mem.eql(u8, text, "equity")) return .equity;
+        return error.UnknownAccount;
+    }
+};
+
+pub const Entry = struct {
+    debit: Account,
+    credit: Account,
+    amount: i64,
+    memo: []const u8,
+    stamp: []const u8,
+};
+
+pub const TrialBalance = struct {
+    /// Debit-positive net per account (cash, revenue, expense, equity).
+    nets: [account_count]i64 = .{0} ** account_count,
+
+    pub fn conservation(self: TrialBalance) i64 {
+        var sum: i64 = 0;
+        var i: u32 = 0;
+        while (i < account_count) : (i += 1) sum += self.nets[i];
+        return sum;
+    }
+};
+
+/// P&L projection — revenue and expense as positive magnitudes; net = revenue − expense.
+pub const IncomeStatement = struct {
+    revenue: i64,
+    expense: i64,
+    net_income: i64,
+};
+
+/// Balance-sheet projection — cash asset; booked equity credit; retained from P&L.
+pub const BalanceSheet = struct {
+    cash: i64,
+    equity_booked: i64,
+    retained: i64,
+
+    pub fn balances(self: BalanceSheet) bool {
+        return self.cash == self.equity_booked + self.retained;
+    }
+};
+
+/// Cash movement fold — inflow when cash is debited; outflow when cash is credited.
+pub const CashFlow = struct {
+    inflow: i64,
+    outflow: i64,
+
+    pub fn net(self: CashFlow) i64 {
+        return self.inflow - self.outflow;
+    }
+};
+
+/// One refused draft for the exception queue (Digits checklist lesson, our words).
+pub const Exception = struct {
+    reason: []const u8,
+    draft: []const u8,
+};
+
+pub fn post_entry(tb: *TrialBalance, entry: Entry) error{Unbalanced, BadAmount, SameAccount}!void {
+    if (entry.amount <= 0) return error.BadAmount;
+    if (entry.debit == entry.credit) return error.SameAccount;
+    // Double-entry: debit increases debit-positive net; credit decreases it.
+    const di: u32 = @intFromEnum(entry.debit);
+    const ci: u32 = @intFromEnum(entry.credit);
+    tb.nets[di] += entry.amount;
+    tb.nets[ci] -= entry.amount;
+}
+
+pub fn fold_journal(entries: []const Entry) error{Unbalanced, BadAmount, SameAccount}!TrialBalance {
+    var tb: TrialBalance = .{};
+    for (entries) |e| {
+        try post_entry(&tb, e);
+    }
+    assert(tb.conservation() == 0);
+    return tb;
+}
+
+/// Revenue is credit-normal (negative debit-positive net); expense is debit-normal.
+pub fn fold_income_statement(tb: TrialBalance) IncomeStatement {
+    const revenue = -tb.nets[@intFromEnum(Account.revenue)];
+    const expense = tb.nets[@intFromEnum(Account.expense)];
+    return .{
+        .revenue = revenue,
+        .expense = expense,
+        .net_income = revenue - expense,
+    };
+}
+
+pub fn fold_balance_sheet(tb: TrialBalance) BalanceSheet {
+    const cash = tb.nets[@intFromEnum(Account.cash)];
+    const equity_booked = -tb.nets[@intFromEnum(Account.equity)];
+    const is = fold_income_statement(tb);
+    const sheet = BalanceSheet{
+        .cash = cash,
+        .equity_booked = equity_booked,
+        .retained = is.net_income,
+    };
+    assert(sheet.balances());
+    return sheet;
+}
+
+/// Entries that debit or credit the named account — indices in held order.
+pub fn filter_by_account(
+    entries: []const Entry,
+    account: Account,
+    out_indices: []u32,
+) FilterError!u32 {
+    var count: u32 = 0;
+    var i: u32 = 0;
+    while (i < entries.len) : (i += 1) {
+        const e = entries[i];
+        if (e.debit != account and e.credit != account) continue;
+        if (count >= out_indices.len) return error.ResultOverflow;
+        out_indices[count] = i;
+        count += 1;
+    }
+    return count;
+}
+
+/// Entries whose memo starts with `prefix` — indices in held order.
+pub fn filter_by_memo_prefix(
+    entries: []const Entry,
+    prefix: []const u8,
+    out_indices: []u32,
+) FilterError!u32 {
+    var count: u32 = 0;
+    var i: u32 = 0;
+    while (i < entries.len) : (i += 1) {
+        if (!std.mem.startsWith(u8, entries[i].memo, prefix)) continue;
+        if (count >= out_indices.len) return error.ResultOverflow;
+        out_indices[count] = i;
+        count += 1;
+    }
+    return count;
+}
+
+/// Cash inflow (debit cash) and outflow (credit cash) across the journal.
+pub fn fold_cash_flow(entries: []const Entry) CashFlow {
+    var inflow: i64 = 0;
+    var outflow: i64 = 0;
+    for (entries) |e| {
+        if (e.debit == .cash) inflow += e.amount;
+        if (e.credit == .cash) outflow += e.amount;
+    }
+    return .{ .inflow = inflow, .outflow = outflow };
+}
+
+/// Sum of entry amounts (unsigned magnitudes as posted).
+pub fn sum_amounts(entries: []const Entry) i64 {
+    var sum: i64 = 0;
+    for (entries) |e| sum += e.amount;
+    return sum;
+}
+
+fn trim_line(line: []const u8) []const u8 {
+    return std.mem.trim(u8, line, " \t\r\n");
+}
+
+/// Parse one journal entry block from bron-like text:
+/// debit cash\ncredit revenue\namount 1000\nmemo stipend\nstamp 20260710.125953\n
+pub fn parse_entry(text: []const u8, entry: *Entry) error{InvalidEntry, UnknownAccount, BadAmount}!void {
+    var debit_set = false;
+    var credit_set = false;
+    var amount_set = false;
+    var memo_set = false;
+    var stamp_set = false;
+    var debit: Account = .cash;
+    var credit: Account = .cash;
+    var amount: i64 = 0;
+    var memo: []const u8 = "";
+    var stamp: []const u8 = "";
+
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    while (lines.next()) |raw| {
+        const line = trim_line(raw);
+        if (line.len == 0) continue;
+        if (line[0] == '#') continue;
+        const space = std.mem.indexOfScalar(u8, line, ' ') orelse return error.InvalidEntry;
+        const key = line[0..space];
+        const value = trim_line(line[space + 1 ..]);
+        if (value.len == 0) return error.InvalidEntry;
+        if (std.mem.eql(u8, key, "debit")) {
+            debit = try Account.parse(value);
+            debit_set = true;
+        } else if (std.mem.eql(u8, key, "credit")) {
+            credit = try Account.parse(value);
+            credit_set = true;
+        } else if (std.mem.eql(u8, key, "amount")) {
+            amount = tally_parse_int.parse_int(i64, value, .{ .base = 10, .allow_leading_zero = true }) catch return error.BadAmount;
+            amount_set = true;
+        } else if (std.mem.eql(u8, key, "memo")) {
+            memo = value;
+            memo_set = true;
+        } else if (std.mem.eql(u8, key, "stamp")) {
+            stamp = value;
+            stamp_set = true;
+        } else return error.InvalidEntry;
+    }
+    if (!(debit_set and credit_set and amount_set and memo_set and stamp_set)) return error.InvalidEntry;
+    if (amount <= 0) return error.BadAmount;
+    entry.* = .{ .debit = debit, .credit = credit, .amount = amount, .memo = memo, .stamp = stamp };
+}
+
+/// Split a multi-entry journal on `---` separators.
+pub fn parse_journal(text: []const u8, out: *[max_entries]Entry, count: *u32) error{InvalidEntry, UnknownAccount, BadAmount, TooMany}!void {
+    count.* = 0;
+    var blocks = std.mem.splitSequence(u8, text, "---");
+    while (blocks.next()) |raw| {
+        const block = trim_line(raw);
+        if (block.len == 0) continue;
+        if (count.* >= max_entries) return error.TooMany;
+        try parse_entry(block, &out[count.*]);
+        count.* += 1;
+    }
+}
+
+/// Collect parse/post refusals into an exception queue (bounded).
+pub fn collect_exceptions(
+    drafts: []const []const u8,
+    out: *[max_exceptions]Exception,
+    count: *u32,
+) void {
+    count.* = 0;
+    for (drafts) |draft| {
+        if (count.* >= max_exceptions) return;
+        var entry: Entry = undefined;
+        if (parse_entry(draft, &entry)) |_| {
+            var tb: TrialBalance = .{};
+            if (post_entry(&tb, entry)) |_| {
+                // Welcome draft — not an exception.
+            } else |err| {
+                const reason: []const u8 = switch (err) {
+                    error.BadAmount => "bad amount",
+                    error.SameAccount => "same account",
+                    error.Unbalanced => "unbalanced",
+                };
+                out[count.*] = .{ .reason = reason, .draft = draft };
+                count.* += 1;
+            }
+        } else |err| {
+            const reason: []const u8 = switch (err) {
+                error.UnknownAccount => "unknown account",
+                error.BadAmount => "bad amount",
+                error.InvalidEntry => "invalid entry",
+            };
+            out[count.*] = .{ .reason = reason, .draft = draft };
+            count.* += 1;
+        }
+    }
+}
+
+pub const welcome_journal =
+    \\debit cash
+    \\credit revenue
+    \\amount 1000
+    \\memo stipend received
+    \\stamp 20260710.125953
+    \\---
+    \\debit expense
+    \\credit cash
+    \\amount 200
+    \\memo supplies
+    \\stamp 20260710.125953
+    \\
+;
+
+pub const fixture_path = "dimeroll/fixtures/journal.bron";

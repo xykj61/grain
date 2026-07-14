@@ -1,0 +1,29 @@
+name: Push to master
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'build.zig'
+      - 'build.zig.zon'
+      - 'ext/**'
+      - '!ext/**.md'
+      - 'pkg/**'
+      - '.github/workflows/**.yml'
+      - '*.sh'
+
+jobs:
+  urbit:
+    uses: ./.github/workflows/shared.yml
+    with:
+      pace: 'live'
+      upload: true
+      fake_tests: false
+    secrets: inherit
+
+  docker:
+    uses: ./.github/workflows/docker-shared.yml
+    with:
+      pace: 'live'
+    secrets: inherit

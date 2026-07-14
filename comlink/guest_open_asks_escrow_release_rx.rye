@@ -1,0 +1,120 @@
+//! comlink/guest_open_asks_escrow_release_rx.rye — OA-L3 lap 2 device wire release RX guest.
+
+const std = @import("std");
+const vn = @import("virtio_net.rye");
+const wf = @import("wire_format.rye");
+const oa = @import("open_asks.rye");
+const rc = @import("receipt_core.rye");
+const kumara = @import("kumara.rye");
+
+var rx: vn.RxQueue = undefined;
+
+fn pubkey_hex(pk: kumara.PublicKey, out: *[64]u8) void {
+    const bytes = pk.toBytes();
+    var i: u32 = 0;
+    while (i < 32) : (i += 1) {
+        _ = std.fmt.bufPrint(out[i * 2 ..][0..2], "{x:0>2}", .{bytes[i]}) catch unreachable;
+    }
+}
+
+fn hex_eq(a: []const u8, b: []const u8) bool {
+    if (a.len != b.len) return false;
+    var i: u32 = 0;
+    while (i < a.len) : (i += 1) {
+        if (a[i] != b[i]) return false;
+    }
+    return true;
+}
+
+export fn _start() linksection(".text.init") callconv(.naked) noreturn {
+    asm volatile (
+        \\ li sp, 0x80100000
+        \\ j kmain
+    );
+}
+
+export fn kmain() callconv(.c) noreturn {
+    vn.init_device();
+    rx.init();
+    vn.driver_ok();
+    rx.kick();
+
+    const n = rx.wait_frame();
+    if (n == 0) {
+        vn.write_str("oal3l2 device wire: FAIL — release RX timeout\n");
+        vn.finish_fail();
+    }
+    const poff = vn.virtio_net_hdr_len + vn.eth_header_len;
+    if (n <= poff) {
+        vn.write_str("oal3l2 device wire: FAIL — release frame too short\n");
+        vn.finish_fail();
+    }
+    const buf = rx.frame();
+    const datagram = buf[poff..n];
+
+    var opened: [@intCast(wf.max_message)]u8 = undefined;
+    const opened_len = wf.open_datagram(datagram, &opened) catch {
+        vn.write_str("oal3l2 device wire: FAIL — release open refused\n");
+        vn.finish_fail();
+    };
+
+    const poster_kp = kumara.keypair_from_seed(&oa.poster_seed);
+    const escrow_kp = kumara.keypair_from_seed(&oa.escrow_seed);
+    const applicant_kp = kumara.keypair_from_seed(&oa.applicant_seed);
+    const poster_pk = poster_kp.public_key;
+
+    var sig_buf: [kumara.signature_length]u8 = undefined;
+    var fact_buf: [oa.max_oa_fact]u8 = undefined;
+    const decoded = oa.decode_compact_payload(opened[0..@intCast(opened_len)], &sig_buf, &fact_buf) catch {
+        vn.write_str("oal3l2 device wire: FAIL — release payload decode\n");
+        vn.finish_fail();
+    };
+    const fact = fact_buf[0..decoded.fact_len];
+    rc.verify_record(sig_buf[0..kumara.signature_length], fact, poster_pk) catch {
+        vn.write_str("oal3l2 device wire: FAIL — release verify\n");
+        vn.finish_fail();
+    };
+    const kind = oa.classify_fact(fact) catch {
+        vn.write_str("oal3l2 device wire: FAIL — release classify\n");
+        vn.finish_fail();
+    };
+    if (kind != .completion) {
+        vn.write_str("oal3l2 device wire: FAIL — release not completion\n");
+        vn.finish_fail();
+    }
+    var fields: rc.FactFields = undefined;
+    rc.parse_fact_fields(fact, &fields) catch {
+        vn.write_str("oal3l2 device wire: FAIL — release parse\n");
+        vn.finish_fail();
+    };
+    if (!std.mem.startsWith(u8, fields.memo, oa.escrow_release_prefix)) {
+        vn.write_str("oal3l2 device wire: FAIL — release memo\n");
+        vn.finish_fail();
+    }
+    const memo_ref = fields.memo[oa.escrow_release_prefix.len..];
+    var i: u32 = 0;
+    while (i < oa.ref_hex_len) : (i += 1) {
+        if (memo_ref[i] != oa.witness_request_ref[i]) {
+            vn.write_str("oal3l2 device wire: FAIL — release request_ref\n");
+            vn.finish_fail();
+        }
+    }
+    const amount = rc.parse_amount_signed(fields.amount) catch {
+        vn.write_str("oal3l2 device wire: FAIL — release amount\n");
+        vn.finish_fail();
+    };
+    if (amount != 100) {
+        vn.write_str("oal3l2 device wire: FAIL — release stipend\n");
+        vn.finish_fail();
+    }
+    var escrow_hex: [64]u8 = undefined;
+    var applicant_hex: [64]u8 = undefined;
+    pubkey_hex(escrow_kp.public_key, &escrow_hex);
+    pubkey_hex(applicant_kp.public_key, &applicant_hex);
+    if (!hex_eq(fields.from, escrow_hex[0..64]) or !hex_eq(fields.to, applicant_hex[0..64])) {
+        vn.write_str("oal3l2 device wire: FAIL — release from/to\n");
+        vn.finish_fail();
+    }
+    vn.write_str("oal3l2 device wire: sealed release GREEN — verify and request_ref passed\n");
+    vn.finish_pass();
+}

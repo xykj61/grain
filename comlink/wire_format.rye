@@ -1,0 +1,120 @@
+//! comlink/wire_format.rye — sealed datagram layout shared by every Comlink wire rung.
+//!
+//! Offsets and crypto are identical across shared memory, hosted UDP, and virtio-net.
+//! Hosted wire and device wire import this module; the format stays one layout.
+//!
+//! Discipline (control-before-data, shape-cast at edge, bounded capacity) shares DNA
+//! with the zero-copy resins research — inherited here as the single-datagram letter;
+//! batched resin-frame hardening (counsel I1) is deliberately deferred.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const kumara = @import("kumara.rye");
+const X25519 = std.crypto.dh.X25519;
+const ChaCha20Poly1305 = std.crypto.aead.chacha_poly.ChaCha20Poly1305;
+const Sha3_512 = std.crypto.hash.sha3.Sha3_512;
+const tally_copy = @import("tally_copy.rye");
+
+pub const wire_format_version = "20260705.225412";
+
+pub const wire_capacity: u64 = 528;
+
+pub const off_sender: u64 = 0;
+pub const off_nonce: u64 = off_sender + 32;
+pub const off_name: u64 = off_nonce + ChaCha20Poly1305.nonce_length;
+pub const off_sig: u64 = off_name + Sha3_512.digest_length;
+pub const off_tag: u64 = off_sig + kumara.signature_length;
+pub const off_cipher: u64 = off_tag + ChaCha20Poly1305.tag_length;
+pub const max_message: u64 = wire_capacity - off_cipher;
+
+/// Witness fixture seeds — unpredictable bytes pinned for parity, not production keys.
+const seed_alice = [_]u8{
+    0x30, 0x67, 0x4a, 0xec, 0xf2, 0x43, 0x4f, 0xc6, 0x92, 0x7f, 0x03, 0x79, 0xa8, 0x57, 0x6f, 0x40,
+    0xb3, 0x92, 0x4b, 0x67, 0xfd, 0x2c, 0xf4, 0xb7, 0x94, 0x4b, 0xc6, 0xcc, 0xda, 0xce, 0xe3, 0x73,
+};
+const seed_bob = [_]u8{
+    0xd9, 0xfb, 0xd1, 0xab, 0x33, 0xdb, 0x8a, 0xeb, 0x77, 0x2f, 0xe2, 0x1f, 0x1d, 0xa3, 0xfb, 0x8d,
+    0xc8, 0xe0, 0x92, 0x17, 0x1e, 0xd0, 0x9f, 0x81, 0x1c, 0xbe, 0x86, 0xb4, 0x3f, 0x64, 0x12, 0x71,
+};
+
+var seal_nonce_counter: u64 = 0;
+
+pub const expected_message = "Meet me where the rye grows.";
+
+fn fresh_nonce() [ChaCha20Poly1305.nonce_length]u8 {
+    seal_nonce_counter += 1;
+    var counter_bytes: [8]u8 = undefined;
+    std.mem.writeInt(u64, &counter_bytes, seal_nonce_counter, .little);
+    var digest: [Sha3_512.digest_length]u8 = undefined;
+    Sha3_512.hash(&counter_bytes, &digest, .{});
+    var nonce: [ChaCha20Poly1305.nonce_length]u8 = undefined;
+    tally_copy.copy_disjoint(u8, nonce[0..], digest[0..nonce.len]);
+    return nonce;
+}
+
+fn seal_key(shared: [32]u8) [ChaCha20Poly1305.key_length]u8 {
+    var digest: [Sha3_512.digest_length]u8 = undefined;
+    Sha3_512.hash(&shared, &digest, .{});
+    return digest[0..ChaCha20Poly1305.key_length].*;
+}
+
+pub fn seal_message(message: []const u8, buf: *[@intCast(wire_capacity)]u8) !u64 {
+    if (message.len > max_message) return error.MessageTooLarge;
+
+    const alice_id = kumara.keypair_from_seed(&seed_alice);
+    const bob_pub = kumara.keypair_from_seed(&seed_bob).public_key;
+    const alice_x = X25519.KeyPair.fromEd25519(alice_id) catch unreachable;
+    const bob_x_pub = X25519.publicKeyFromEd25519(bob_pub) catch unreachable;
+
+    const nonce = fresh_nonce();
+
+    const shared = X25519.scalarmult(alice_x.secret_key, bob_x_pub) catch unreachable;
+    const key = seal_key(shared);
+    var ciphertext: [max_message]u8 = undefined;
+    var tag: [ChaCha20Poly1305.tag_length]u8 = undefined;
+    ChaCha20Poly1305.encrypt(ciphertext[0..message.len], &tag, message, "", nonce, key);
+    var name: [Sha3_512.digest_length]u8 = undefined;
+    Sha3_512.hash(ciphertext[0..message.len], &name, .{});
+    const sig = kumara.sign(&name, alice_id, null);
+
+    const sender_bytes = alice_id.public_key.toBytes();
+    const sig_bytes = sig.toBytes();
+    tally_copy.copy_disjoint(u8, buf[@intCast(off_sender)..][0..32], sender_bytes[0..32]);
+    tally_copy.copy_disjoint(u8, buf[@intCast(off_nonce)..][0..nonce.len], nonce[0..]);
+    tally_copy.copy_disjoint(u8, buf[@intCast(off_name)..][0..name.len], name[0..]);
+    tally_copy.copy_disjoint(u8, buf[@intCast(off_sig)..][0..sig_bytes.len], sig_bytes[0..sig_bytes.len]);
+    tally_copy.copy_disjoint(u8, buf[@intCast(off_tag)..][0..tag.len], tag[0..]);
+    tally_copy.copy_disjoint(u8, buf[@intCast(off_cipher)..][0..message.len], ciphertext[0..message.len]);
+    return off_cipher + @as(u64, @intCast(message.len));
+}
+
+pub fn seal_datagram(buf: *[@intCast(wire_capacity)]u8) u64 {
+    return seal_message(expected_message, buf) catch unreachable;
+}
+
+pub fn open_datagram(buf: []const u8, opened: []u8) !u64 {
+    assert(buf.len >= @as(usize, @intCast(off_cipher)));
+    assert(buf.len <= @as(usize, @intCast(wire_capacity)));
+    assert(opened.len >= @as(usize, @intCast(max_message)));
+
+    const sender = kumara.PublicKey.fromBytes(buf[@intCast(off_sender)..][0..32].*) catch return error.BadSender;
+    const nonce = buf[@intCast(off_nonce)..][0..ChaCha20Poly1305.nonce_length].*;
+    const name = buf[@intCast(off_name)..][0..Sha3_512.digest_length].*;
+    const tag = buf[@intCast(off_tag)..][0..ChaCha20Poly1305.tag_length].*;
+    const ciphertext = buf[@intCast(off_cipher)..];
+
+    kumara.verify_bytes(&name, buf[@intCast(off_sig)..], sender) catch return error.VerifyFailed;
+    var check: [Sha3_512.digest_length]u8 = undefined;
+    Sha3_512.hash(ciphertext, &check, .{});
+    if (!std.mem.eql(u8, &name, &check)) return error.NameMismatch;
+
+    const bob_id = kumara.keypair_from_seed(&seed_bob);
+    const bob_x = X25519.KeyPair.fromEd25519(bob_id) catch unreachable;
+    const sender_x = X25519.publicKeyFromEd25519(sender) catch unreachable;
+    const shared = X25519.scalarmult(bob_x.secret_key, sender_x) catch unreachable;
+    const key = seal_key(shared);
+
+    ChaCha20Poly1305.decrypt(opened[0..ciphertext.len], ciphertext, tag, "", nonce, key) catch return error.OpenFailed;
+    return @as(u64, @intCast(ciphertext.len));
+}

@@ -1,0 +1,26 @@
+//! Rye test: std.mem.orderZ and findSentinel — pass 9952.
+//!
+//! NUL-terminated C-string compare pairs with mem.order (9953); findSentinel
+//! backs slice length for sentinel-terminated pointers.
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    std.debug.assert(mem.orderZ(u8, "abcd", "bee") == .lt);
+    std.debug.assert(mem.orderZ(u8, "abc", "abc") == .eq);
+    std.debug.assert(mem.orderZ(u8, "abc", "abc0") == .lt);
+    std.debug.assert(mem.orderZ(u8, "", "") == .eq);
+    std.debug.assert(mem.orderZ(u8, "", "a") == .lt);
+
+    const s: [*:0]const u8 = "abc";
+    std.debug.assert(mem.orderZ(u8, s, s) == .eq);
+
+    std.debug.assert(mem.findSentinel(u8, 0, "hello") == 5);
+    std.debug.assert(mem.findSentinel(u8, 0, "") == 0);
+
+    std.debug.assert(mem.boundedOrderZ(u8, "ab", "ac", 1) == .eq);
+    std.debug.assert(mem.boundedOrderZ(u8, "ab", "ac", 2) == .lt);
+
+    std.debug.print("rye: orderZ assertions confirmed.\n", .{});
+}

@@ -1,0 +1,63 @@
+//! Build Rye std surface and width notes blocks.
+
+const std = @import("std");
+const buf = @import("buf.rye");
+const constants = @import("constants.rye");
+const zig_lookup = @import("zig_lookup.rye");
+const surfaces = @import("surfaces.rye");
+
+fn format_function_block(name: []const u8, sources: *const zig_lookup.ZigSources) ?[]const u8 {
+    const dotted = surfaces.surface_dotted_name(name) orelse if (std.mem.startsWith(u8, name, "std.")) name[4..] else name;
+    if (zig_lookup.find_function_body(dotted, sources)) |body| return body;
+    return zig_lookup.find_signature(dotted, sources);
+}
+
+pub fn build_surface_block(a: std.mem.Allocator, names: []const []const u8, sources: *const zig_lookup.ZigSources) ![]const u8 {
+    if (names.len == 0) return try a.dupe(u8, "");
+    var out = std.ArrayListUnmanaged(u8).empty;
+    errdefer out.deinit(a);
+    try out.appendSlice(a, constants.surface_section ++ "\n\nLive implementation from `rye/lib/std` (strengthened):\n\n");
+    for (names) |name| {
+        try buf.append_fmt(a, &out, "**`std.{s}`**\n\n", .{name});
+        if (format_function_block(name, sources)) |impl| {
+            try out.appendSlice(a, "```zig\n");
+            try out.appendSlice(a, impl);
+            try out.appendSlice(a, "\n```\n\n");
+        } else {
+            try buf.append_fmt(a, &out, "*see `rye/lib/std` — `{s}` not auto-located*\n\n", .{name});
+        }
+    }
+    return try out.toOwnedSlice(a);
+}
+
+fn width_note_for(a: std.mem.Allocator, name: []const u8, sig: ?[]const u8) ![]const u8 {
+    const seam = if (sig) |s| blk: {
+        if (std.mem.indexOf(u8, s, "usize") != null) break :blk
+            "Public signature inherits Zig `usize` for slice lengths and indices — keep at the inherited seam per `992` Phase 4. Narrow to `u32`/`u64` only for named bounds inside the body (`max_*_check`, loop counters) with `assert` before `@intCast`.";
+        break :blk "No `usize` in the public signature; internal slice walks still use `usize` at the seam where Zig slices require it.";
+    } else
+        "Authored module or iterator family — width migration lives in Tier A (`992`); std iterator indices remain `usize` until wrapped at our API.";
+    return try std.fmt.allocPrint(a,
+        \\**`std.{s}`** — {s}
+        \\
+        \\| Surface | Width policy |
+        \\|---------|-------------|
+        \\| Inherited params (`[]T`, `len`, indices) | `usize` — Zig seam |
+        \\| Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
+        \\| Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
+        \\
+    , .{ name, seam });
+}
+
+pub fn build_width_block(a: std.mem.Allocator, names: []const []const u8, sources: *const zig_lookup.ZigSources) ![]const u8 {
+    if (names.len == 0) return try a.dupe(u8, "");
+    var out = std.ArrayListUnmanaged(u8).empty;
+    errdefer out.deinit(a);
+    try out.appendSlice(a, constants.width_section ++ "\n\n");
+    for (names) |name| {
+        const note = try width_note_for(a, name, zig_lookup.find_signature(name, sources));
+        defer a.free(note);
+        try out.appendSlice(a, note);
+    }
+    return try out.toOwnedSlice(a);
+}

@@ -1,0 +1,25 @@
+# rw5_lantern_collab.rish — RW-5 collaboration: Drawn Terminal asks Lantern (tip 420).
+#
+# Golden: drawn terminal rw5 collaboration: tokens=24/12 echo=1 user=steward-rio refused=3 — GREEN
+# Run from the repository root:
+#   rishi/bin/rishi run tools/rw5_lantern_collab.rish
+
+let bin = "pond/bin/drawn-terminal"
+
+say "build: drawn-terminal for RW-5 Lantern collaboration"
+let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+assert build.ok else "drawn_terminal build failed for RW-5 collab"
+assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
+
+let witness = run ["sh" "-c" "${bin} rw5collabtest 2>&1"]
+assert witness.ok else "RW-5 collab witness exited non-zero"
+assert witness.out contains "GREEN" else "RW-5 collab witness not GREEN"
+assert witness.out contains "drawn terminal rw5 collaboration: tokens=24/12 echo=1 user=steward-rio refused=3" else "RW-5 collab missing golden finale"
+assert witness.out contains "completion welcome tokens 24/12 eos" else "RW-5 collab missing base completion welcome"
+assert witness.out contains "echo pin welcome echo=1" else "RW-5 collab missing echo pin welcome"
+assert witness.out contains "user pin welcome user=steward-rio" else "RW-5 collab missing user pin welcome"
+assert witness.out contains "model mismatch survived" else "RW-5 collab missing model mismatch survive"
+assert witness.out contains "echo mismatch survived" else "RW-5 collab missing echo mismatch survive"
+assert witness.out contains "user mismatch survived" else "RW-5 collab missing user mismatch survive"
+
+say "GREEN: RW-5 Lantern collaboration — Drawn Terminal asks complete_fixture (tip 420)."

@@ -1,0 +1,25 @@
+//! tally/pedersen.rye — **deprecated re-export shim** for `tally/bud.rye`.
+//!
+//! Warm name **bud** is seated `20260712.061012`. This file keeps the old
+//! import path green (accrete-never-break). Prefer `@import("bud.rye")`.
+//! Pinned domain strings and `pinned_h_bytes` live in bud.rye and are unchanged.
+
+const std = @import("std");
+const bud = @import("bud.rye");
+
+pub const pedersen_version = bud.pedersen_version;
+pub const bud_version = bud.bud_version;
+pub const h_domain = bud.h_domain;
+pub const point_len = bud.point_len;
+pub const scalar_len = bud.scalar_len;
+pub const pinned_h_bytes = bud.pinned_h_bytes;
+
+pub const scalar_from_u64 = bud.scalar_from_u64;
+pub const derive_h = bud.derive_h;
+pub const assert_pinned_h = bud.assert_pinned_h;
+pub const commit = bud.commit;
+pub const point_to_hex = bud.point_to_hex;
+
+pub fn main(init: std.process.Init) !u8 {
+    return bud.main(init);
+}

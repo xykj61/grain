@@ -1,0 +1,459 @@
+//! amphora/vessel_fetch_delivery.rye — Amphora lap 3: hosted Comlink fetch-by-digest for vessel cargo.
+//!
+//! Ports: fetcher 38494 · source 38495.
+//! Scope: [`active-designing/20260703-201612_the-sealed-crossing.md`](../active-designing/20260703-201612_the-sealed-crossing.md)
+//!
+//!   rye build amphora/vessel_fetch_delivery.rye -lc -femit-bin=amphora/bin/vessel-fetch-delivery
+//!   amphora/bin/vessel-fetch-delivery selftest
+//!   amphora/bin/vessel-fetch-delivery demo
+//!   amphora/bin/vessel-fetch-delivery source <bundle_dir>
+//!   amphora/bin/vessel-fetch-delivery fetcher <bundle_dir>
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const c = std.c;
+const vfw = @import("vessel_fetch_wire.rye");
+const wf = @import("wire_format.rye");
+const tally_copy = @import("tally_copy.rye");
+const vessel_seal = @import("vessel_seal.rye");
+
+const vfd_version = "20260710.154300";
+
+const AF_INET: c_uint = 2;
+const SOCK_DGRAM: c_uint = 2;
+const SOL_SOCKET: c_int = 1;
+const SO_REUSEADDR: c_int = 2;
+
+const fetcher_port: u16 = 38494;
+const source_port: u16 = 38495;
+
+const sockaddr_in = extern struct {
+    sin_family: c_ushort = AF_INET,
+    sin_port: c_ushort,
+    sin_addr: [4]u8 = .{ 127, 0, 0, 1 },
+    sin_zero: [8]u8 = .{0} ** 8,
+};
+
+fn localhost_addr(port: u16) sockaddr_in {
+    return .{ .sin_port = std.mem.nativeToBig(u16, port) };
+}
+
+fn open_socket() !c.fd_t {
+    const fd = c.socket(AF_INET, SOCK_DGRAM, 0);
+    if (fd < 0) return error.SocketFailed;
+    const yes: c_int = 1;
+    _ = c.setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &yes, @sizeOf(c_int));
+    return fd;
+}
+
+fn send_wire(port: u16, wire: []const u8) !void {
+    const fd = try open_socket();
+    defer _ = c.close(fd);
+    const dest = localhost_addr(port);
+    const sent = c.sendto(fd, wire.ptr, @intCast(wire.len), 0, @ptrCast(&dest), @sizeOf(sockaddr_in));
+    if (sent < 0 or @as(usize, @intCast(sent)) != wire.len) return error.SendFailed;
+}
+
+fn recv_wire(port: u16, wire: []u8) !u64 {
+    const fd = try open_socket();
+    defer _ = c.close(fd);
+    var bind_addr = localhost_addr(port);
+    if (c.bind(fd, @ptrCast(&bind_addr), @sizeOf(sockaddr_in)) < 0) return error.BindFailed;
+    var from: sockaddr_in = undefined;
+    var from_len: c.socklen_t = @sizeOf(sockaddr_in);
+    const n = c.recvfrom(fd, wire.ptr, @intCast(wire.len), 0, @ptrCast(&from), &from_len);
+    if (n < 0) return error.RecvFailed;
+    return @intCast(n);
+}
+
+fn seal_payload(payload: []const u8, wire: *[@intCast(wf.wire_capacity)]u8) !u64 {
+    return try wf.seal_message(payload, wire);
+}
+
+fn open_wire(wire: []const u8, opened: *[@intCast(wf.max_message)]u8) !u64 {
+    return try wf.open_datagram(wire, opened);
+}
+
+fn digest_hex_of(content: []const u8, out: *[64]u8) void {
+    var digest: [32]u8 = undefined;
+    std.crypto.hash.sha3.Sha3_256.hash(content, &digest, .{});
+    var i: u32 = 0;
+    while (i < 32) : (i += 1) {
+        _ = std.fmt.bufPrint(out[i * 2 ..][0..2], "{x:0>2}", .{digest[i]}) catch unreachable;
+    }
+}
+
+const FixtureResin = struct {
+    digest_hex: [64]u8,
+    bytes: []const u8,
+};
+
+fn fixture_resins(out: *[2]FixtureResin) void {
+    const a = "hello-amphora-lap3";
+    const b = "leaf-amphora-lap3";
+    out[0] = .{ .digest_hex = undefined, .bytes = a };
+    out[1] = .{ .digest_hex = undefined, .bytes = b };
+    digest_hex_of(a, &out[0].digest_hex);
+    digest_hex_of(b, &out[1].digest_hex);
+}
+
+fn find_fixture(resins: []const FixtureResin, digest_hex: []const u8) ?[]const u8 {
+    var i: u32 = 0;
+    while (i < resins.len) : (i += 1) {
+        if (std.mem.eql(u8, resins[i].digest_hex[0..], digest_hex)) return resins[i].bytes;
+    }
+    return null;
+}
+
+fn build_response_bytes(digest_hex: []const u8, bytes: []const u8, out: *vfw.FetchResponse) !void {
+    if (bytes.len > vfw.max_resin_bytes) return error.Overflow;
+    tally_copy.copy_disjoint(u8, out.digest_hex[0..], digest_hex[0..64]);
+    out.bytes_len = @intCast(bytes.len);
+    if (bytes.len > 0) {
+        tally_copy.copy_disjoint(u8, out.bytes[0..bytes.len], bytes);
+    }
+    try vfw.verify_resin(out.digest_hex[0..], out.bytes[0..out.bytes_len]);
+}
+
+fn send_resin_response(resp: *const vfw.FetchResponse) !void {
+    if (!vfw.resin_needs_chunking(resp.bytes_len)) {
+        var payload: [vfw.max_wire_payload]u8 = undefined;
+        const payload_len = try vfw.encode_response(resp, &payload);
+        var wire_out: [@intCast(wf.wire_capacity)]u8 = undefined;
+        const sealed_len = try seal_payload(payload[0..payload_len], &wire_out);
+        try send_wire(fetcher_port, wire_out[0..@intCast(sealed_len)]);
+        return;
+    }
+    const count = try vfw.resin_chunk_count(resp.bytes_len);
+    var chunk_i: u16 = 0;
+    while (chunk_i < count) : (chunk_i += 1) {
+        var payload: [vfw.max_wire_payload]u8 = undefined;
+        const payload_len = try vfw.encode_response_chunk(resp, chunk_i, &payload);
+        var wire_out: [@intCast(wf.wire_capacity)]u8 = undefined;
+        const sealed_len = try seal_payload(payload[0..payload_len], &wire_out);
+        try send_wire(fetcher_port, wire_out[0..@intCast(sealed_len)]);
+    }
+}
+
+fn run_selftest(_: std.Io) !u8 {
+    var resins: [2]FixtureResin = undefined;
+    fixture_resins(&resins);
+
+    var req: vfw.FetchRequest = .{ .digest_hex = undefined };
+    tally_copy.copy_disjoint(u8, req.digest_hex[0..], resins[0].digest_hex[0..]);
+    var req_buf: [vfw.max_wire_payload]u8 = undefined;
+    const req_len = try vfw.encode_request(req, &req_buf);
+
+    var req_wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const req_wire_len = try seal_payload(req_buf[0..req_len], &req_wire);
+    var req_opened: [@intCast(wf.max_message)]u8 = undefined;
+    const req_opened_len = try open_wire(req_wire[0..@intCast(req_wire_len)], &req_opened);
+    var decoded_req: vfw.FetchRequest = undefined;
+    try vfw.decode_request(req_opened[0..@intCast(req_opened_len)], &decoded_req);
+
+    const bytes = find_fixture(&resins, decoded_req.digest_hex[0..]) orelse return error.MissingResin;
+    var resp: vfw.FetchResponse = undefined;
+    try build_response_bytes(decoded_req.digest_hex[0..], bytes, &resp);
+    var resp_buf: [vfw.max_wire_payload]u8 = undefined;
+    const resp_len = try vfw.encode_response(&resp, &resp_buf);
+
+    var resp_wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const resp_wire_len = try seal_payload(resp_buf[0..resp_len], &resp_wire);
+    var resp_opened: [@intCast(wf.max_message)]u8 = undefined;
+    const resp_opened_len = try open_wire(resp_wire[0..@intCast(resp_wire_len)], &resp_opened);
+    var decoded_resp: vfw.FetchResponse = undefined;
+    try vfw.decode_response(resp_opened[0..@intCast(resp_opened_len)], &decoded_resp);
+    assert(std.mem.eql(u8, decoded_resp.bytes[0..decoded_resp.bytes_len], resins[0].bytes));
+
+    // Unwelcome: bad Comlink seal refuses whole.
+    var corrupt = resp_wire;
+    corrupt[@intCast(resp_wire_len - 1)] ^= 0xff;
+    var junk: [@intCast(wf.max_message)]u8 = undefined;
+    if (open_wire(corrupt[0..@intCast(resp_wire_len)], &junk)) |_| {
+        return error.VerifyFailed;
+    } else |_| {}
+
+    // Unwelcome: digest mismatch refuses whole.
+    var bad_resp = resp;
+    bad_resp.digest_hex[0] = if (bad_resp.digest_hex[0] == 'a') 'b' else 'a';
+    var bad_buf: [vfw.max_wire_payload]u8 = undefined;
+    if (vfw.encode_response(&bad_resp, &bad_buf)) |_| {
+        return error.DigestMismatch;
+    } else |_| {}
+
+    print("vfd: sealed fetch-by-digest round-trip — GREEN welcome\n", .{});
+    print("vfd: bad seal + digest mismatch refused — GREEN unwelcome\n", .{});
+    print("vfd: version {s} wire {s} format {s}\n", .{ vfd_version, vfw.vessel_fetch_wire_version, wf.wire_format_version });
+    print("GREEN: Amphora lap 3 — vessel cargo fetch under Comlink seal.\n", .{});
+    return 0;
+}
+
+fn read_file_limited(io: std.Io, path: []const u8, buf: []u8) ![]const u8 {
+    const cwd = std.Io.Dir.cwd();
+    return try cwd.readFile(io, path, buf);
+}
+
+fn serve_one_from_bundle(io: std.Io, bundle_dir: []const u8) !void {
+    var wire_in: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const n = try recv_wire(source_port, &wire_in);
+    var opened: [@intCast(wf.max_message)]u8 = undefined;
+    const opened_len = try open_wire(wire_in[0..n], &opened);
+    var req: vfw.FetchRequest = undefined;
+    try vfw.decode_request(opened[0..@intCast(opened_len)], &req);
+
+    var full: [384]u8 = undefined;
+    const resins_path = try std.fmt.bufPrint(&full, "{s}/resins/{s}", .{ bundle_dir, req.digest_hex[0..] });
+
+    var file_buf: [vfw.max_resin_bytes]u8 = undefined;
+    const bytes = try read_file_limited(io, resins_path, &file_buf);
+    var resp: vfw.FetchResponse = undefined;
+    try build_response_bytes(req.digest_hex[0..], bytes, &resp);
+    try send_resin_response(&resp);
+}
+
+fn run_source(io: std.Io, bundle_dir: []const u8) !u8 {
+    try serve_one_from_bundle(io, bundle_dir);
+    try serve_one_from_bundle(io, bundle_dir);
+    print("vfd: source served two resins from {s}\n", .{bundle_dir});
+    return 0;
+}
+
+fn parse_cargo_lines(text: []const u8, out: *[8][64]u8) !u32 {
+    var count: u32 = 0;
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    while (lines.next()) |raw| {
+        const line = std.mem.trim(u8, raw, " \t\r\n");
+        if (!std.mem.startsWith(u8, line, "cargo ")) continue;
+        var parts = std.mem.tokenizeScalar(u8, line, ' ');
+        _ = parts.next(); // cargo
+        _ = parts.next(); // mark
+        const digest = parts.next() orelse return error.BadVessel;
+        if (digest.len != 64) return error.BadVessel;
+        if (count >= 8) return error.Overflow;
+        tally_copy.copy_disjoint(u8, out[count][0..], digest[0..64]);
+        count += 1;
+    }
+    if (count == 0) return error.BadVessel;
+    return count;
+}
+
+fn parse_cargo_digests(vessel_text: []const u8, out: *[8][64]u8) !u32 {
+    if (std.mem.indexOf(u8, vessel_text, "seal_cargo ") != null) {
+        var plain: [vessel_seal.max_seal_plain]u8 = undefined;
+        const plain_len = try vessel_seal.open_cargo_plain(vessel_text, &plain);
+        return parse_cargo_lines(plain[0..plain_len], out);
+    }
+    return parse_cargo_lines(vessel_text, out);
+}
+
+fn fetch_one(digest_hex: []const u8, out_bytes: *[vfw.max_resin_bytes]u8) !u32 {
+    var req: vfw.FetchRequest = .{ .digest_hex = undefined };
+    tally_copy.copy_disjoint(u8, req.digest_hex[0..], digest_hex[0..64]);
+    var payload: [vfw.max_wire_payload]u8 = undefined;
+    const payload_len = try vfw.encode_request(req, &payload);
+    var wire_out: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const sealed_len = try seal_payload(payload[0..payload_len], &wire_out);
+    try send_wire(source_port, wire_out[0..@intCast(sealed_len)]);
+
+    var asm_resin: vfw.ResinAssembler = .{};
+    var hops: u16 = 0;
+    while (hops < vfw.max_resin_chunks) : (hops += 1) {
+        var wire_in: [@intCast(wf.wire_capacity)]u8 = undefined;
+        const n = try recv_wire(fetcher_port, &wire_in);
+        var opened: [@intCast(wf.max_message)]u8 = undefined;
+        const opened_len = try open_wire(wire_in[0..n], &opened);
+        const state = try asm_resin.feed(opened[0..@intCast(opened_len)]);
+        if (state == .ready) break;
+    }
+    if (asm_resin.received == 0 or asm_resin.received < asm_resin.count) return error.Incomplete;
+    if (!std.mem.eql(u8, asm_resin.digest(), digest_hex[0..64])) return error.DigestMismatch;
+    const len = asm_resin.total;
+    tally_copy.copy_disjoint(u8, out_bytes[0..len], asm_resin.resin());
+    return len;
+}
+
+fn run_fetcher(io: std.Io, bundle_dir: []const u8) !u8 {
+    var vessel_buf: [2048]u8 = undefined;
+    var vessel_path_buf: [384]u8 = undefined;
+    const vessel_path = try std.fmt.bufPrint(&vessel_path_buf, "{s}/vessel.bron", .{bundle_dir});
+    const vessel_text = try read_file_limited(io, vessel_path, &vessel_buf);
+
+    var digests: [8][64]u8 = undefined;
+    const cargo_count = try parse_cargo_digests(vessel_text, &digests);
+
+    var resins_dir_buf: [384]u8 = undefined;
+    const resins_dir = try std.fmt.bufPrint(&resins_dir_buf, "{s}/resins", .{bundle_dir});
+
+    var i: u32 = 0;
+    while (i < cargo_count) : (i += 1) {
+        var bytes: [vfw.max_resin_bytes]u8 = undefined;
+        const len = try fetch_one(digests[i][0..], &bytes);
+        var out_path_buf: [448]u8 = undefined;
+        const out_path = try std.fmt.bufPrint(&out_path_buf, "{s}/{s}", .{ resins_dir, digests[i][0..] });
+        try std.Io.Dir.cwd().writeFile(io, .{ .sub_path = out_path, .data = bytes[0..len] });
+    }
+
+    print("vfd: fetcher wrote {d} resins into {s}\n", .{ cargo_count, resins_dir });
+    print("vfd: fetcher cargo fetch GREEN\n", .{});
+    return 0;
+}
+
+fn run_demo_source(_: std.Io) !u8 {
+    var resins: [2]FixtureResin = undefined;
+    fixture_resins(&resins);
+    var served: u32 = 0;
+    while (served < 2) : (served += 1) {
+        var wire_in: [@intCast(wf.wire_capacity)]u8 = undefined;
+        const n = try recv_wire(source_port, &wire_in);
+        var opened: [@intCast(wf.max_message)]u8 = undefined;
+        const opened_len = try open_wire(wire_in[0..n], &opened);
+        var req: vfw.FetchRequest = undefined;
+        try vfw.decode_request(opened[0..@intCast(opened_len)], &req);
+        const bytes = find_fixture(&resins, req.digest_hex[0..]) orelse return error.MissingResin;
+        var resp: vfw.FetchResponse = undefined;
+        try build_response_bytes(req.digest_hex[0..], bytes, &resp);
+        try send_resin_response(&resp);
+    }
+    print("vfd: demo source served fixture resins\n", .{});
+    return 0;
+}
+
+fn run_demo_fetcher(_: std.Io) !u8 {
+    var resins: [2]FixtureResin = undefined;
+    fixture_resins(&resins);
+    var i: u32 = 0;
+    while (i < 2) : (i += 1) {
+        var bytes: [vfw.max_resin_bytes]u8 = undefined;
+        const len = try fetch_one(resins[i].digest_hex[0..], &bytes);
+        if (!std.mem.eql(u8, bytes[0..len], resins[i].bytes)) return error.DigestMismatch;
+    }
+    print("vfd: demo fetcher received both resins GREEN\n", .{});
+    return 0;
+}
+
+fn run_demo(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) !u8 {
+    const source_argv = try allocator.alloc([]const u8, 2);
+    source_argv[0] = self_path;
+    source_argv[1] = "demo-source";
+
+    var source_child = try std.process.spawn(io, .{ .argv = source_argv });
+    var pause = c.timespec{ .sec = 0, .nsec = 50_000_000 };
+    _ = c.nanosleep(&pause, null);
+
+    const fetcher_argv = try allocator.alloc([]const u8, 2);
+    fetcher_argv[0] = self_path;
+    fetcher_argv[1] = "demo-fetcher";
+    var fetcher_child = try std.process.spawn(io, .{ .argv = fetcher_argv });
+
+    const source_term = try source_child.wait(io);
+    const fetcher_term = try fetcher_child.wait(io);
+    const source_code: u8 = switch (source_term) {
+        .exited => |code| code,
+        else => 255,
+    };
+    const fetcher_code: u8 = switch (fetcher_term) {
+        .exited => |code| code,
+        else => 255,
+    };
+    assert(source_code == 0);
+    assert(fetcher_code == 0);
+
+    print("vfd: demo GREEN — vessel cargo crossed localhost under Comlink seal\n", .{});
+    print("vfd: version {s} wire_format {s}\n", .{ vfd_version, wf.wire_format_version });
+    return 0;
+}
+
+fn chunk_fixture(out_bytes: *[400]u8, out_digest: *[64]u8) void {
+    var i: u32 = 0;
+    while (i < 400) : (i += 1) {
+        out_bytes[i] = @intCast(i % 251);
+    }
+    var digest: [32]u8 = undefined;
+    std.crypto.hash.sha3.Sha3_256.hash(out_bytes[0..], &digest, .{});
+    i = 0;
+    while (i < 32) : (i += 1) {
+        _ = std.fmt.bufPrint(out_digest[i * 2 ..][0..2], "{x:0>2}", .{digest[i]}) catch unreachable;
+    }
+}
+
+fn run_chunkdemo_source(_: std.Io) !u8 {
+    var bytes: [400]u8 = undefined;
+    var digest_hex: [64]u8 = undefined;
+    chunk_fixture(&bytes, &digest_hex);
+
+    var wire_in: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const n = try recv_wire(source_port, &wire_in);
+    var opened: [@intCast(wf.max_message)]u8 = undefined;
+    const opened_len = try open_wire(wire_in[0..n], &opened);
+    var req: vfw.FetchRequest = undefined;
+    try vfw.decode_request(opened[0..@intCast(opened_len)], &req);
+    if (!std.mem.eql(u8, req.digest_hex[0..], digest_hex[0..])) return error.DigestMismatch;
+
+    var resp: vfw.FetchResponse = undefined;
+    try build_response_bytes(digest_hex[0..], bytes[0..], &resp);
+    assert(vfw.resin_needs_chunking(resp.bytes_len));
+    try send_resin_response(&resp);
+    print("vfd: chunkdemo source sent {d}-byte resin in chunks\n", .{resp.bytes_len});
+    return 0;
+}
+
+fn run_chunkdemo_fetcher(_: std.Io) !u8 {
+    var expect: [400]u8 = undefined;
+    var digest_hex: [64]u8 = undefined;
+    chunk_fixture(&expect, &digest_hex);
+    var got: [vfw.max_resin_bytes]u8 = undefined;
+    const len = try fetch_one(digest_hex[0..], &got);
+    if (len != 400) return error.DigestMismatch;
+    if (!std.mem.eql(u8, got[0..len], expect[0..])) return error.DigestMismatch;
+    print("vfd: chunkdemo fetcher assembled 400-byte resin GREEN\n", .{});
+    return 0;
+}
+
+fn run_chunkdemo(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) !u8 {
+    const source_argv = try allocator.alloc([]const u8, 2);
+    source_argv[0] = self_path;
+    source_argv[1] = "chunkdemo-source";
+    var source_child = try std.process.spawn(io, .{ .argv = source_argv });
+    var pause = c.timespec{ .sec = 0, .nsec = 50_000_000 };
+    _ = c.nanosleep(&pause, null);
+
+    const fetcher_argv = try allocator.alloc([]const u8, 2);
+    fetcher_argv[0] = self_path;
+    fetcher_argv[1] = "chunkdemo-fetcher";
+    var fetcher_child = try std.process.spawn(io, .{ .argv = fetcher_argv });
+
+    const source_term = try source_child.wait(io);
+    const fetcher_term = try fetcher_child.wait(io);
+    const source_code: u8 = switch (source_term) {
+        .exited => |code| code,
+        else => 255,
+    };
+    const fetcher_code: u8 = switch (fetcher_term) {
+        .exited => |code| code,
+        else => 255,
+    };
+    assert(source_code == 0);
+    assert(fetcher_code == 0);
+    print("vfd: chunkdemo GREEN — 400 B resin crossed in multiple sealed datagrams\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(garden);
+
+    if (args.len >= 2) {
+        if (std.mem.eql(u8, args[1], "selftest")) return run_selftest(io);
+        if (std.mem.eql(u8, args[1], "demo")) return run_demo(garden, io, args[0]);
+        if (std.mem.eql(u8, args[1], "demo-source")) return run_demo_source(io);
+        if (std.mem.eql(u8, args[1], "demo-fetcher")) return run_demo_fetcher(io);
+        if (std.mem.eql(u8, args[1], "chunkdemo")) return run_chunkdemo(garden, io, args[0]);
+        if (std.mem.eql(u8, args[1], "chunkdemo-source")) return run_chunkdemo_source(io);
+        if (std.mem.eql(u8, args[1], "chunkdemo-fetcher")) return run_chunkdemo_fetcher(io);
+        if (std.mem.eql(u8, args[1], "source") and args.len >= 3) return run_source(io, args[2]);
+        if (std.mem.eql(u8, args[1], "fetcher") and args.len >= 3) return run_fetcher(io, args[2]);
+    }
+    return run_selftest(io);
+}

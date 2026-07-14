@@ -1,0 +1,39 @@
+# aurora_run.rish — Aurora stage build + QEMU wake (developer utility).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/aurora_run.rish              # default stage seed
+#   rishi/bin/rishi run tools/aurora_run.rish relay
+#   RYE_SMP=2 rishi/bin/rishi run tools/aurora_run.rish wire
+#
+# Replaces the orchestration half of aurora/run.sh; the shell entry point
+# delegates here so stable paths and citations hold. Not a parity witness —
+# each stage prints different console output.
+
+let zig_raw = env "RYE_ZIG"
+if zig_raw == "" then let zig = "vendor/zig-toolchain/zig" else let zig = zig_raw
+let stage_arg = join args ""
+if stage_arg == "" then let stage = "seed" else let stage = stage_arg
+let src = "aurora/src/${stage}.rye"
+let elf = "aurora/.build/${stage}.elf"
+
+let check = run ["test" "-f" "${src}"]
+if check.ok == false then say "aurora/run.sh: no such stage: ${src}"
+if check.ok == false then exit 2
+
+let prep = run ["sh" "-c" "mkdir -p aurora/.build"]
+assert prep.ok else "aurora run mkdir failed"
+
+say "building '${stage}' with rye build (freestanding riscv64) ..."
+let build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${src} -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${elf}"]
+assert build.ok else "aurora stage build failed"
+
+let smp_raw = env "RYE_SMP"
+if smp_raw == "" then let smp = "1" else let smp = smp_raw
+
+say "waking '${stage}' in qemu-system-riscv64 (machine virt) ..."
+say "----"
+let wake = run ["timeout" "10" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-smp" "${smp}" "-kernel" "${elf}"]
+say "----"
+let status = wake.code
+say "qemu exited with status ${status} (0 means the hart asked the machine to rest)"
+exit status

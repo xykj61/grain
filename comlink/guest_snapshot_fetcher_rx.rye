@@ -1,0 +1,80 @@
+//! comlink/guest_snapshot_fetcher_rx.rye — I2 snapshot lap 3 device: fetcher RX (apply snapshot revision batch).
+
+const vn = @import("virtio_net.rye");
+const wf = @import("wire_format.rye");
+const bw = @import("recall_batch_wire.rye");
+const ns = @import("recall_lap1.rye");
+const kumara = @import("kumara.rye");
+
+var rx: vn.RxQueue = undefined;
+
+const batch_signer_seed = [_]u8{0x61} ** kumara.seed_length;
+
+export fn _start() linksection(".text.init") callconv(.naked) noreturn {
+    asm volatile (
+        \\ li sp, 0x80100000
+        \\ j kmain
+    );
+}
+
+export fn kmain() callconv(.c) noreturn {
+    vn.init_device();
+    rx.init();
+    vn.driver_ok();
+    rx.kick();
+
+    const signer = kumara.keypair_from_seed(&batch_signer_seed);
+
+    const n = rx.wait_frame();
+    if (n == 0) {
+        vn.write_str("sed device wire: FAIL — fetcher RX timeout\n");
+        vn.finish_fail();
+    }
+    const poff = vn.virtio_net_hdr_len + vn.eth_header_len;
+    if (n <= poff) {
+        vn.write_str("sed device wire: FAIL — fetcher frame too short\n");
+        vn.finish_fail();
+    }
+    const buf = rx.frame();
+    const datagram = buf[poff..n];
+
+    var opened: [@intCast(wf.max_message)]u8 = undefined;
+    const opened_len = wf.open_datagram(datagram, &opened) catch {
+        vn.write_str("sed device wire: FAIL — fetcher open refused\n");
+        vn.finish_fail();
+    };
+
+    var batch_asm: bw.BatchAssembler = .{};
+    const state = bw.BatchAssembler.feed(&batch_asm, opened[0..@intCast(opened_len)]) catch {
+        vn.write_str("sed device wire: FAIL — batch feed\n");
+        vn.finish_fail();
+    };
+    if (state != .ready) {
+        vn.write_str("sed device wire: FAIL — batch not ready\n");
+        vn.finish_fail();
+    }
+
+    var fetcher: ns.BoltCatalog = .empty();
+    const report = bw.apply_wire_batch(&fetcher, batch_asm.batch(), signer.public_key) catch {
+        vn.write_str("sed device wire: FAIL — apply batch\n");
+        vn.finish_fail();
+    };
+    if (report.needed < 2) {
+        vn.write_str("sed device wire: FAIL — batch report mismatch\n");
+        vn.finish_fail();
+    }
+
+    var out: [32]u8 = undefined;
+    const name = ns.Name{ .peer = "peerB", .bolt = "b", .revision = 1, .path = "a.txt" };
+    const r = fetcher.recall(name, &out) catch {
+        vn.write_str("sed device wire: FAIL — recall a.txt\n");
+        vn.finish_fail();
+    };
+    if (r.len != 5 or !@import("std").mem.eql(u8, out[0..5], "alpha")) {
+        vn.write_str("sed device wire: FAIL — a.txt bytes mismatch\n");
+        vn.finish_fail();
+    }
+
+    vn.write_str("sed device wire: sealed snapshot batch response GREEN — verify and recall passed\n");
+    vn.finish_pass();
+}

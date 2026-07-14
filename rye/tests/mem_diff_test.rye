@@ -1,0 +1,91 @@
+//! Rye test: mem diff primitives — copyForwards, startsWith, endsWith, indexOf, splitScalar.
+//!
+//! These five functions are the ones Mantra's weave logic depends on:
+//!   copyForwards  — move bytes from one buffer to another
+//!   startsWith    — does this slice begin with this prefix?
+//!   endsWith      — does this slice end with this suffix?
+//!   indexOf/find  — find the first occurrence of a sub-slice
+//!   splitScalar   — split a slice on a scalar delimiter
+//!
+//! Pass 9993 strengthened each in rye/lib/std/mem.zig. This test
+//! exercises the interesting cases for all five, with the live assertions
+//! running, and confirms the parity gate sees the same output from both
+//! the baseline and our strengthened std.
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    // --- copyForwards ---
+    var dest: [8]u8 = .{0} ** 8;
+    mem.copyForwards(u8, &dest, "Rye");
+    // Precondition assertion live: dest.len (8) >= source.len (3).
+    std.debug.assert(dest[0] == 'R' and dest[1] == 'y' and dest[2] == 'e');
+    std.debug.assert(dest[3] == 0); // bytes beyond source are untouched
+
+    // Copy empty source — no-op, dest unchanged.
+    var dest2: [4]u8 = .{'x'} ** 4;
+    mem.copyForwards(u8, &dest2, "");
+    std.debug.assert(dest2[0] == 'x');
+
+    // --- startsWith ---
+    std.debug.assert(mem.startsWith(u8, "Rye 0.1", "Rye"));    // normal prefix match
+    std.debug.assert(!mem.startsWith(u8, "Rye 0.1", "Zig"));   // prefix mismatch
+    std.debug.assert(mem.startsWith(u8, "Rye", ""));            // empty needle: always true
+    std.debug.assert(!mem.startsWith(u8, "", "Rye"));           // needle longer than haystack
+    std.debug.assert(mem.startsWith(u8, "Rye", "Rye"));         // equal-length exact match
+    std.debug.assert(!mem.startsWith(u8, "Ry", "Rye"));         // needle longer: false
+
+    // --- endsWith ---
+    std.debug.assert(mem.endsWith(u8, "README.md", ".md"));  // normal suffix match
+    std.debug.assert(!mem.endsWith(u8, "README.md", ".rye")); // suffix mismatch
+    std.debug.assert(mem.endsWith(u8, "abc", ""));               // empty needle: always true
+    std.debug.assert(!mem.endsWith(u8, "", "abc"));              // needle longer than haystack
+    std.debug.assert(mem.endsWith(u8, "Rye", "Rye"));            // equal-length exact match
+
+    // --- indexOf / find ---
+    // Normal found cases.
+    std.debug.assert(mem.indexOf(u8, "Rye is grown from Rye", "Rye").? == 0);
+    std.debug.assert(mem.indexOf(u8, "hello world", "world").? == 6);
+    std.debug.assert(mem.indexOf(u8, "abcabc", "bc").? == 1);
+
+    // Not-found cases.
+    std.debug.assert(mem.indexOf(u8, "hello world", "Rye") == null);
+    std.debug.assert(mem.indexOf(u8, "foo", "fool") == null);
+
+    // Empty needle: always returns 0 (the start_index).
+    std.debug.assert(mem.indexOf(u8, "hello", "").? == 0);
+
+    // Needle equals haystack.
+    std.debug.assert(mem.indexOf(u8, "Rye", "Rye").? == 0);
+
+    // --- splitScalar ---
+    // Three fields separated by '|'.
+    var it = mem.splitScalar(u8, "a|b|c", '|');
+    const f1 = it.next().?;
+    const f2 = it.next().?;
+    const f3 = it.next().?;
+    const f4 = it.next();
+    std.debug.assert(mem.eql(u8, f1, "a"));
+    std.debug.assert(mem.eql(u8, f2, "b"));
+    std.debug.assert(mem.eql(u8, f3, "c"));
+    std.debug.assert(f4 == null);
+
+    // No delimiter: yields the whole buffer as one field.
+    var it2 = mem.splitScalar(u8, "Rye", '|');
+    const only = it2.next().?;
+    std.debug.assert(mem.eql(u8, only, "Rye"));
+    std.debug.assert(it2.next() == null);
+
+    // Empty fields: "|a|" yields "", "a", "".
+    var it3 = mem.splitScalar(u8, "|a|", '|');
+    const e1 = it3.next().?;
+    const e2 = it3.next().?;
+    const e3 = it3.next().?;
+    std.debug.assert(mem.eql(u8, e1, ""));
+    std.debug.assert(mem.eql(u8, e2, "a"));
+    std.debug.assert(mem.eql(u8, e3, ""));
+    std.debug.assert(it3.next() == null);
+
+    std.debug.print("rye: mem diff primitives confirmed (copyForwards, startsWith, endsWith, indexOf, splitScalar).\n", .{});
+}

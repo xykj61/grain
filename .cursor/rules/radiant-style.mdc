@@ -1,0 +1,29 @@
+---
+description: Radiant Style — voice, vocabulary, and pre-publish checklist for all prose
+alwaysApply: true
+---
+
+# Radiant Style
+
+Full guide: `context/RADIANT_STYLE.md`. Apply to chats, commit messages, specs, session logs, and documentation.
+
+## Core moves
+
+- Lead with what **is** — capabilities, presence, what we build.
+- **Active voice** by default.
+- Prefer **yet** / **however** over **but**; prefer **rather than** over heavy **not**.
+- Vary sentence length; let each sentence land before the next.
+- Weave practical and meaningful together; close longer pieces with a short benediction when it fits.
+
+## Vocabulary of correctness
+
+- **Prepare** for challenges; **prove** and **state** invariants; **prevent** error classes — rather than firefight, debug, or patch as the main story.
+- **Nib** names the landed edge (product · suite · git) — not *tip*. See `context/LEXICON.md` · `.cursor/rules/vocabulary-nib.mdc`.
+
+## Before you publish prose
+
+1. Read it aloud — does it flow and feel generous?
+2. First words of each sentence — affirmative where possible?
+3. Passive only where the actor truly does not matter?
+4. "But" and "not" — could **yet**, **however**, or a restated positive carry it?
+5. Longer pieces — a closing line that affirms the work?

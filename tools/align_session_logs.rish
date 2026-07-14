@@ -1,0 +1,67 @@
+# align_session_logs.rish — proves the session-log aligner on a fixture, never on the real tree.
+#
+# align_session_logs.rye derives its target directory from the repo root via
+# enrich/root.rye's resolveRoot, which checks VEGANREYKLAH2_ROOT before it ever
+# walks the filesystem. Setting that variable to a small fixture root — never
+# to this repository — lets the tool run for real, mutate a real file, and be
+# checked against a known-correct result, with zero risk to the live tree.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/align_session_logs.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let zig_ver = run [zig "version"]
+assert zig_ver.ok else "pinned ziglang toolchain missing at vendor/zig-toolchain"
+
+let real_before = run ["md5sum" "session-logs/README.md"]
+assert real_before.ok else "could not checksum the real session-logs/README.md before the run"
+
+let mkdir = run ["mkdir" "-p" "tools/bin"]
+assert mkdir.ok else "could not create tools/bin"
+let build = run ["env" "RYE_ZIG=${zig}" "rye/bin/rye" "build" "tools/align_session_logs.rye" "-femit-bin=tools/bin/align-session-logs"]
+if build.ok == false then say "align_session_logs build stdout:"
+if build.ok == false then say build.out
+if build.ok == false then say "align_session_logs build stderr:"
+if build.ok == false then say build.err
+assert build.ok else "align_session_logs build failed"
+
+let fixture_src = "tools/fixtures/align_session_logs_fixture"
+let work = "tools/fixtures/.align_session_logs_work"
+let clear = run ["rm" "-rf" work]
+assert clear.ok else "align_session_logs fixture clear failed"
+let prep = run ["cp" "-r" fixture_src work]
+assert prep.ok else "align_session_logs fixture copy failed"
+
+let target = "20260101-120000_fixture-smoke.md"
+let path = "${work}/session-logs/${target}"
+
+let before_text = read-file path
+assert (before_text contains "Stamp:") == false else "fixture must start without a Stamp line — check the fixture, not the tool"
+
+let pwd_r = run ["pwd"]
+let pwd_s = trim pwd_r.out
+let work_root = "${pwd_s}/${work}"
+let run_result = run ["env" "VEGANREYKLAH2_ROOT=${work_root}" "tools/bin/align-session-logs"]
+if run_result.ok == false then say "align_session_logs run stdout:"
+if run_result.ok == false then say run_result.out
+if run_result.ok == false then say "align_session_logs run stderr:"
+if run_result.ok == false then say run_result.err
+assert run_result.ok else "align_session_logs run failed"
+assert run_result.err contains "Aligned 1 logs" else "align_session_logs did not report the one fixture file"
+
+let after_text = read-file path
+assert after_text contains "Stamp:" else "align_session_logs did not add a Stamp line"
+assert after_text contains "20260101.120000" else "align_session_logs did not stamp the fixture correctly"
+assert after_text contains "Some body text that should survive the alignment untouched." else "align_session_logs lost body text it should have preserved"
+
+let fixture_entries = list-dir "${work}/session-logs"
+assert fixture_entries contains "README.md" else "align_session_logs did not build a README index in the fixture"
+
+let real_after = run ["md5sum" "session-logs/README.md"]
+assert real_after.ok else "could not checksum the real session-logs/README.md after the run"
+assert real_after.out == real_before.out else "the real session-logs/README.md changed — this witness must never touch it"
+
+let cleanup = run ["rm" "-rf" work]
+assert cleanup.ok else "align_session_logs fixture cleanup failed"
+
+say "GREEN: align_session_logs — fixture stamped correctly, real session-logs/ untouched."

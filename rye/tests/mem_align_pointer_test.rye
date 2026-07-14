@@ -1,0 +1,23 @@
+//! Rye test: std.mem.alignPointer / alignPointerOffset — pass 9903.
+//!
+//! Pointer alignment for allocator bump path; pairs with alignForward (9904).
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    var storage: [64]u8 align(1) = undefined;
+    const base = @intFromPtr(&storage[0]);
+    const ptr: [*]u8 = @ptrFromInt(base + 3);
+    const off = mem.alignPointerOffset(ptr, 16).?;
+    const aligned = mem.alignPointer(ptr, 16).?;
+    std.debug.assert(off == @intFromPtr(aligned) - @intFromPtr(ptr));
+    std.debug.assert(@intFromPtr(aligned) % 16 == 0);
+    std.debug.assert(@intFromPtr(aligned) == mem.alignForward(usize, @intFromPtr(ptr), 16));
+
+    const u32ptr: [*]u32 = @ptrFromInt(0x4);
+    std.debug.assert(@intFromPtr(mem.alignPointer(u32ptr, 16).?) == 0x10);
+    std.debug.assert(mem.alignPointerOffset(u32ptr, 16).? == 3);
+
+    std.debug.print("rye: mem.alignPointer/alignPointerOffset assertions confirmed.\n", .{});
+}

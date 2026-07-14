@@ -1,0 +1,28 @@
+---
+description: Git commit signing — GPG required, four-remote push, commit message hygiene against accidental @mentions
+alwaysApply: true
+---
+
+# Git Commit Signing
+
+All commits MUST be GPG-signed. The global config already sets `commit.gpgsign=true` and names the signing key. Never bypass this:
+
+- Never use `--no-gpg-sign` or `-c commit.gpgsign=false`
+- Never skip hooks with `--no-verify`
+- If a commit fails due to GPG, investigate and fix — do not disable signing
+
+After pushing, remind the user to upload their public GPG key to GitHub and Codeberg if commits show as "Unverified" on those platforms.
+
+Push to all four remotes when the user asks:
+- `origin` (Codeberg veganreyklah2)
+- `github` (GitHub veganreyklah2)
+- `gp36-codeberg` (Codeberg groupproject36)
+- `gp36-github` (GitHub groupproject36)
+
+## Commit message hygiene — no bare `@name` in subject or body
+
+GitHub's commit-message renderer linkifies any `@word` that happens to match a real username or org, regardless of backticks — this is different from file content, issue bodies, and comments, where full Markdown correctly treats a backtick-wrapped `@word` as code. Zig builtins are the live risk here: `@memcpy`, `@import`, `@intCast`, `@sizeOf`, `@typeInfo`, `@bitSizeOf`, `@offsetOf`, `@field`, `@This`, and any other `@`-prefixed builtin can coincidentally match a real GitHub account, as `@memcpy` confirmed on this repo.
+
+**In commit subject and body text specifically:** write the builtin's name without the leading `@` — "the memcpy builtin," "migrate memcpy sites," "import sites" — never a bare `@memcpy`. **In file content, counsel, and documentation:** keep the `@` and the backticks exactly as TAME's own style already does (`` `@memcpy` ``); this is correct there and needs no change, since GitHub's file-content and Markdown rendering already handles it properly.
+
+GitHub removed the *notification* side-effect of commit-message mentions in November 2025 — no one is actually being pinged — so this is a clarity fix, not an urgent one, and it applies going forward. Existing commit messages are dated artifacts and are not rewritten to fix this; the one-clock law already protects them.

@@ -1,0 +1,129 @@
+//! mantra/src/weave.rye — the weave: a living history of a text stream.
+//!
+//! A Weave is a list of Lines. Each Line carries its text, a generation count,
+//! and a stable position that never changes once assigned. Generation parity
+//! names presence: odd = present, even = gone. Generations never decrease.
+//! These two facts together mean the weave remembers every line ever seen —
+//! its full history — while current() surfaces only what is present now.
+//!
+//! Three operations:
+//!   Weave.empty()          — an empty weave, no lines yet
+//!   weave.apply(alloc, d)  — advance the weave by one Diff
+//!   weave.current(alloc)   — the lines present now, in position order
+//!
+//! Part of Mantra — TAME-first from line one.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+/// A single line in the weave. Once added, its position is permanent.
+///
+/// Invariants:
+///   gen >= 1         — zero is reserved; every line starts at generation 1
+///   gen is odd       ⟺  line is currently present
+pub const Line = struct {
+    text: []const u8,
+    gen: u32,
+    pos: u32,
+};
+
+/// An edit to a weave: a set of lines to insert (with their text) and a set
+/// of positions to delete (by stable position). Inserts arrive in the order
+/// they should appear; deletes are positions of currently-present lines.
+pub const Diff = struct {
+    inserts: []const []const u8, // text of new lines, in order
+    deletes: []const u32,        // positions of lines to remove
+};
+
+/// A Weave: the living history of a text stream.
+///
+/// Invariant: for all i < lines.items.len:
+///   lines.items[i].gen >= 1
+///   lines.items[i].pos < next_pos
+///   gen counts are non-decreasing across successive apply calls
+pub const Weave = struct {
+    lines: std.ArrayListUnmanaged(Line),
+    next_pos: u32,
+
+    /// An empty weave — no history yet.
+    pub fn empty() Weave {
+        return .{ .lines = .{}, .next_pos = 0 };
+    }
+
+    /// Advance the weave by one diff. Deletes remove lines by toggling their
+    /// generation to even (gone); inserts append new lines at the current
+    /// generation (1 = first time seen). Position counters are assigned
+    /// monotonically and never reused.
+    ///
+    /// Precondition:  every delete position exists in the weave and is present
+    ///   (odd gen) — asserted individually.
+    /// Postcondition: all inserted lines carry gen == 1 and odd (present);
+    ///   all deleted lines carry gen % 2 == 0 (gone).
+    pub fn apply(self: *Weave, allocator: std.mem.Allocator, diff: Diff) !void {
+        // Process deletes first: find each position and bump its gen to even.
+        for (diff.deletes) |target_pos| {
+            var found = false;
+            for (self.lines.items) |*line| {
+                if (line.pos == target_pos) {
+                    assert(line.gen % 2 == 1); // must be present to delete
+                    line.gen += 1;                       // odd → even: mark gone
+                    found = true;
+                    break;
+                }
+            }
+            assert(found); // deleting a position that does not exist is a caller error
+        }
+
+        // Process inserts: each new line enters at generation 1 (first appearance,
+        // present). Position is assigned from the monotone counter.
+        for (diff.inserts) |text| {
+            const line = Line{
+                .text = text,
+                .gen   = 1,
+                .pos   = self.next_pos,
+            };
+            assert(line.gen % 2 == 1); // new lines are always present
+            try self.lines.append(allocator, line);
+            self.next_pos += 1;
+        }
+
+        // Postcondition: every line in the weave has a valid, assigned position.
+        for (self.lines.items) |line| {
+            assert(line.gen >= 1);
+            assert(line.pos < self.next_pos);
+        }
+    }
+
+    /// Return the lines currently present (odd generation), in position order.
+    /// The caller owns the returned slice; it is allocated from `allocator`.
+    pub fn current(self: *const Weave, allocator: std.mem.Allocator) ![]const Line {
+        var out = std.ArrayListUnmanaged(Line){};
+        for (self.lines.items) |line| {
+            if (line.gen % 2 == 1) { // odd = present
+                try out.append(allocator, line);
+            }
+        }
+        // Sort by position — inserts append to the backing list in order of
+        // arrival; a merge may interleave positions from two weave branches.
+        const result = try out.toOwnedSlice(allocator);
+        std.mem.sort(Line, result, {}, struct {
+            fn less_than(_: void, a: Line, b: Line) bool {
+                return a.pos < b.pos;
+            }
+        }.less_than);
+
+        // Postcondition: result is sorted and all entries are present.
+        for (result) |line| {
+            assert(line.gen % 2 == 1);
+        }
+        for (result, 0..) |line, i| {
+            if (i + 1 < result.len) {
+                assert(result[i].pos < result[i + 1].pos);
+            }
+            _ = line;
+        }
+
+        return result;
+    }
+};

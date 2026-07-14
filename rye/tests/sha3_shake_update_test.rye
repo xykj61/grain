@@ -1,0 +1,27 @@
+//! Rye test: SHA3 ShakeLike update — pass 9927.
+//!
+//! Sponge cursor stays within the rate after every absorb; multi-chunk update
+//! matches one-shot hash. Pairs with ShakeLike.squeeze (9935) and keccak_p (9936).
+
+const std = @import("std");
+const Shake128 = std.crypto.hash.sha3.Shake128;
+
+pub fn main() void {
+    var input: [96]u8 = undefined;
+    for (&input, 0..) |*b, i| b.* = @intCast(i);
+
+    var one_shot: [48]u8 = undefined;
+    Shake128.hash(&input, &one_shot, .{});
+
+    var shaker = Shake128.init(.{});
+    shaker.update(input[0..37]);
+    shaker.update(input[37..72]);
+    shaker.update(input[72..]);
+
+    var stepped: [48]u8 = undefined;
+    shaker.squeeze(&stepped);
+
+    std.debug.assert(std.mem.eql(u8, &one_shot, &stepped));
+
+    std.debug.print("rye: SHA3 ShakeLike update sponge bounds confirmed.\n", .{});
+}

@@ -1,0 +1,20 @@
+//! Rye test: std.mem.findPos — pass 9971.
+//!
+//! Offset sub-slice search entry point. Composes findScalarPos, findPosLinear,
+//! and Boyer-Moore-Horspool; find (9993) wraps from start_index zero.
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    std.debug.assert(mem.indexOfPos(u8, "one two", 0, "two").? == 4);
+    std.debug.assert(mem.indexOfPos(u8, "one two two", 5, "two").? == 8);
+    std.debug.assert(mem.indexOfPos(u8, "abc", 1, "b").? == 1);
+    std.debug.assert(mem.indexOfPos(u8, "abc", 0, "z") == null);
+    std.debug.assert(mem.indexOfPos(u8, "haystack", 0, "").? == 0);
+
+    const long = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabneedle";
+    std.debug.assert(mem.indexOfPos(u8, long, 0, "needle").? == 51);
+
+    std.debug.print("rye: findPos assertions confirmed.\n", .{});
+}

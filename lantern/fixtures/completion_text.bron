@@ -1,0 +1,7 @@
+# Lantern lap 10 fixture — pinned response text on the completion contract.
+model_hash sha3-256-rye-forge-lap0
+text_pin one two three four
+tokens_in 6
+tokens_out 4
+stopped_reason eos
+text one two three four

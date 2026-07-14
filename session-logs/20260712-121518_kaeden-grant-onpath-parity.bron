@@ -1,0 +1,16 @@
+format session-log-v1
+stamp 20260712.121518
+editor Cursor
+model Cursor Grok 4.5
+voice Rio 3
+title Kaeden grant — on-path + parity ride-along
+prompt kg i grant
+think Affirmed hygiene tip f63be3e. Interpreted grant as word for host lane_kvm on-path G0-complete and same-sitting metal parity re-pin per Claude scheduling note.
+think This enclosure remains ai-sandbox with kvm absent — cannot complete on-path here without retiring the D-Bus escape we just closed.
+think Recorded word in TASKS Now and RTAC; left LANE_KVM=false in-jail so refuse floor stays GREEN until host one-shot.
+obs Grant is seated; green waits on Framework host /dev/kvm. Recipe written in TASKS Ordered next.
+file work-in-progress/TASKS.md worded on-path + host recipe
+file work-in-progress/ready-to-ask-claude.md grant 121518
+file session-logs/20260712-121518_kaeden-grant-onpath-parity.bron this log
+file session-logs/README.md index row
+recommend keep-going host one-shot outside ai-jail — mechanical against written gate; flip LANE_KVM false after; then check-in Claude before G1

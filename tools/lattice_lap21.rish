@@ -1,0 +1,12 @@
+# lattice_lap21.rish — Lattice lap 20 pow witness.
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lattice/bin/lattice"
+let build = run ["sh" "-c" "mkdir -p lattice/bin && env RYE_ZIG=${zig} rye/bin/rye build lattice/lattice.rye -femit-bin=${bin}"]
+assert build.ok else "Lattice lap 20 build failed"
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "Lattice selftest exited non-zero"
+assert selftest.out contains "GREEN" else "Lattice selftest not GREEN"
+assert selftest.out contains "pow 2x2" else "Lattice missing pow welcome"
+assert selftest.out contains "pow shape mismatch" else "Lattice missing pow shape unwelcome"
+assert selftest.out contains "pow negative" else "Lattice missing pow negative unwelcome"
+say "GREEN: Lattice lap 20 — elementwise pow with negative refuse."

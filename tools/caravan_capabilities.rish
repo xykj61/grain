@@ -1,0 +1,17 @@
+# caravan_capabilities.rish — Caravan capability table self-test witness.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/caravan_capabilities.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/capabilities"
+
+let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/capabilities.rye -femit-bin=${bin}"]
+
+assert build.ok else "caravan capabilities build failed"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "caravan capabilities selftest exited non-zero"
+assert test.out contains "GREEN" else "caravan capabilities selftest not GREEN"
+
+say "GREEN: Caravan capability table witness passed."

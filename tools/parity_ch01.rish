@@ -1,0 +1,1013 @@
+# parity_ch01.rish — witness suite chapter 1 (fresh Env; ≤200 user lets).
+#
+# Lines 1–987 of the former monolithic parity.rish · 200 lets.
+# Driven by tools/parity.rish. Run alone:
+#   rishi/bin/rishi run tools/parity_ch01.rish
+
+let rye = "rye/bin/rye"
+let zig = "vendor/zig-toolchain/zig"
+let dir = "rye/tests"
+
+let zig_ver = run [zig "version"]
+assert zig_ver.ok else "pinned ziglang toolchain missing at vendor/zig-toolchain"
+let wt_ver = run ["sh" "-c" "if command -v wasmtime >/dev/null; then wasmtime --version; else echo wasmtime-not-on-PATH; fi"]
+say "witness suite: pinned toolchain — ziglang ${zig_ver.out} · ${wt_ver.out}"
+
+let witnesses = ["dir_iterate_test" "fs_boundary_test" "mem_diff_test" "sha3_256_test" "sha3_256_boundary_test" "sha3_512_test" "sha3_boundary_test" "version_test" "call_paths_test" "ed25519_sign_test" "x25519_agree_test" "aead_seal_test" "sealed_message_test" "mantra_weave_test" "tally_gardens_test" "alloc_print_test" "allocator_alloc_test" "buf_print_test" "write_streaming_all_test" "read_file_alloc_test" "path_join_test" "process_run_test" "path_dirname_test" "trim_start_test" "path_basename_test" "path_extension_test" "path_stem_test" "find_scalar_last_test" "find_scalar_pos_test" "find_pos_linear_test" "find_last_linear_test" "find_pos_test" "find_last_test" "split_peek_test" "split_rest_test" "find_any_pos_test" "find_last_any_test" "find_none_pos_test" "find_last_none_test" "split_first_test" "split_backwards_test" "mem_join_test" "cut_prefix_suffix_test" "cut_test" "cut_last_test" "tokenize_peek_test" "tokenize_next_test" "iterator_reset_test" "window_iterator_test" "mem_order_test" "mem_order_z_test" "mem_read_varint_test" "mem_read_write_int_test" "mem_read_write_packed_int_test" "mem_read_write_var_packed_int_test" "mem_replacement_size_test" "mem_replace_owned_test" "mem_replace_scalar_test" "mem_replace_test" "mem_reverse_test" "mem_reverse_iterator_test" "mem_rotate_test" "mem_swap_test" "mem_count_test" "mem_contains_at_least_test" "mem_contains_at_least_scalar_test" "mem_concat_test" "mem_find_diff_test" "mem_find_min_max_test" "mem_slice_to_test" "mem_sort_test" "mem_sort_context_test" "mem_span_test" "mem_slice_as_bytes_test" "mem_copy_backwards_test" "mem_copy_forwards_test" "mem_len_test" "mem_eql_test" "mem_all_equal_test" "mem_align_forward_backward_test" "mem_alignment_methods_test" "mem_alignment_byte_units_test" "mem_align_pointer_test" "mem_is_aligned_test" "mem_align_in_bytes_slice_test" "mem_align_any_align_test" "mem_align_log2_any_align_test" "mem_is_valid_align_test" "mem_absorb_sentinel_test" "mem_as_bytes_test" "mem_byte_swap_all_elements_test" "mem_byte_swap_all_fields_test" "mem_bytes_as_slice_test" "mem_bytes_as_value_test" "mem_bytes_to_value_test" "mem_zeroes_test" "mem_zero_init_test" "mem_collapse_repeats_test" "mem_starts_with_test" "mem_to_bytes_test" "mem_ends_with_test" "mem_do_not_optimize_away_test" "mem_endian_host_test" "crypto_timing_safe_eql_test" "crypto_secure_zero_test" "keccak_sponge_memcpy_test" "sha3_shake_buffered_memcpy_test" "sha3_shake_update_test" "mem_split_factory_test" "mem_split_backwards_factory_test" "mem_tokenize_factory_test" "mem_window_factory_test" "mem_trim_test" "semantic_version_format_test" "semantic_version_order_test" "semantic_version_parse_test"]
+
+say "witness suite: running ${witnesses} against pristine std"
+
+let runs = map witnesses as s: run ["env" "RYE_ZIG=${zig}" rye "run" "${dir}/${s}.rye"]
+
+let codes = map runs as r: r.code
+let failures = where codes as c: c != 0
+assert length failures == 0 else "a witness failed — the regression suite is RED"
+say "GREEN: all witnesses passed against pristine std."
+
+say "witness suite: SLC-1 Step 1 repl…"
+let slc1 = run ["rishi/bin/rishi" "run" "tools/slc1_repl_step1.rish"]
+assert slc1.ok else "SLC-1 Step 1 repl witness failed"
+say "GREEN: SLC-1 Step 1 repl witness passed."
+
+say "witness suite: SLC-1 Step 2 version…"
+let slc1v = run ["rishi/bin/rishi" "run" "tools/slc1_version_step2.rish"]
+assert slc1v.ok else "SLC-1 Step 2 version witness failed"
+say "GREEN: SLC-1 Step 2 version witness passed."
+
+say "witness suite: SLC-1 Step 3 recall…"
+let slc1r = run ["rishi/bin/rishi" "run" "tools/slc1_recall_step3.rish"]
+assert slc1r.ok else "SLC-1 Step 3 recall witness failed"
+say "GREEN: SLC-1 Step 3 recall witness passed."
+
+say "witness suite: SLC-1 acceptance…"
+let slc1a = run ["rishi/bin/rishi" "run" "tools/slc1_accept.rish"]
+assert slc1a.ok else "SLC-1 acceptance witness failed"
+say "GREEN: SLC-1 acceptance witness passed."
+
+say "witness suite: SLC-2a Lap 1 arbitrary value…"
+let slc2r1 = run ["rishi/bin/rishi" "run" "tools/slc2a_ring1_arbitrary.rish"]
+assert slc2r1.ok else "SLC-2a Lap 1 arbitrary-value witness failed"
+say "GREEN: SLC-2a Lap 1 arbitrary-value witness passed."
+
+say "witness suite: SLC-2a Lap 2 redraw…"
+let slc2r2 = run ["rishi/bin/rishi" "run" "tools/slc2a_ring2_redraw.rish"]
+assert slc2r2.ok else "SLC-2a Lap 2 redraw witness failed"
+say "GREEN: SLC-2a Lap 2 redraw witness passed."
+
+say "witness suite: SLC-2a Lap 3 session mirror…"
+let slc2r3 = run ["rishi/bin/rishi" "run" "tools/slc2a_ring3_session.rish"]
+assert slc2r3.ok else "SLC-2a Lap 3 session mirror witness failed"
+say "GREEN: SLC-2a Lap 3 session mirror witness passed."
+
+say "witness suite: Caravan capability table…"
+let caravan_caps = run ["rishi/bin/rishi" "run" "tools/caravan_capabilities.rish"]
+assert caravan_caps.ok else "Caravan capability table witness failed"
+say "GREEN: Caravan capability table witness passed."
+
+say "witness suite: Caravan supervision seeds…"
+let caravan_seeds = run ["rishi/bin/rishi" "run" "tools/caravan_seeds.rish"]
+assert caravan_seeds.ok else "Caravan supervision seeds witness failed"
+say "GREEN: Caravan supervision seeds witness passed."
+
+say "witness suite: Caravan subscribe poll service (production scheduling)…"
+let caravan_pollsvc = run ["rishi/bin/rishi" "run" "tools/caravan_subscribe_poll_service.rish"]
+assert caravan_pollsvc.ok else "Caravan subscribe poll service witness failed"
+say "GREEN: Caravan subscribe poll service witness passed."
+
+say "witness suite: Caravan witness-stop-after footgun…"
+let caravan_footgun = run ["rishi/bin/rishi" "run" "tools/caravan_witness_stop_footgun.rish"]
+assert caravan_footgun.ok else "Caravan witness-stop footgun witness failed"
+say "GREEN: Caravan witness-stop-after footgun witness passed."
+
+say "witness suite: Caravan source-loop crash recovery…"
+let caravan_srccrash = run ["rishi/bin/rishi" "run" "tools/caravan_subscribe_poll_source_crash.rish"]
+assert caravan_srccrash.ok else "Caravan source-crash recovery witness failed"
+say "GREEN: Caravan source-loop crash recovery witness passed."
+
+say "witness suite: Caravan host mirror under supervision…"
+let caravan_pollmirror = run ["rishi/bin/rishi" "run" "tools/caravan_subscribe_poll_mirror_service.rish"]
+assert caravan_pollmirror.ok else "Caravan host mirror supervision witness failed"
+say "GREEN: Caravan host mirror under supervision witness passed."
+
+say "witness suite: Caravan subscribe poll SIGTERM (ring 4)…"
+let caravan_pollsig = run ["rishi/bin/rishi" "run" "tools/caravan_subscribe_poll_signal.rish"]
+assert caravan_pollsig.ok else "Caravan subscribe poll SIGTERM witness failed"
+say "GREEN: Caravan subscribe poll SIGTERM witness passed."
+
+say "witness suite: Mantra subscribe poll stop sentinel (graceful boundary)…"
+let mantra_pollstop = run ["rishi/bin/rishi" "run" "tools/mantra_recall_subscribe_poll_stop.rish"]
+assert mantra_pollstop.ok else "Mantra subscribe poll stop sentinel witness failed"
+say "GREEN: Mantra subscribe poll stop sentinel witness passed."
+
+say "witness suite: Caravan restart on cycle_ok (exit-code ring)…"
+let caravan_reok = run ["rishi/bin/rishi" "run" "tools/caravan_restart_on_ok.rish"]
+assert caravan_reok.ok else "Caravan restart-on-ok witness failed"
+say "GREEN: Caravan restart-on-ok witness passed."
+
+say "witness suite: Comlink hosted wire…"
+let comlink_hw = run ["rishi/bin/rishi" "run" "tools/comlink_hosted_wire.rish"]
+assert comlink_hw.ok else "Comlink hosted wire witness failed"
+say "GREEN: Comlink hosted wire witness passed."
+
+say "witness suite: Tally and Brushstroke foundation seeds…"
+let foundation = run ["rishi/bin/rishi" "run" "tools/foundation_seeds.rish"]
+assert foundation.ok else "foundation seeds witness failed"
+say "GREEN: Tally and Brushstroke foundation seeds witness passed."
+
+say "witness suite: TH-1 width-check seam…"
+let th1 = run ["rishi/bin/rishi" "run" "tools/width_check_th1.rish"]
+assert th1.ok else "TH-1 width-check seam witness failed"
+say "GREEN: TH-1 width-check seam witness passed."
+
+say "witness suite: Tally copy_disjoint…"
+let tcopy = run ["rishi/bin/rishi" "run" "tools/tally_copy.rish"]
+assert tcopy.ok else "tally copy_disjoint witness failed"
+say "GREEN: Tally copy_disjoint witness passed."
+
+say "witness suite: Kumara identity seam…"
+let kumara = run ["rishi/bin/rishi" "run" "tools/kumara_seed.rish"]
+assert kumara.ok else "kumara identity seam witness failed"
+say "GREEN: Kumara identity seam witness passed."
+
+say "witness suite: Rishi count idiom…"
+let rcount = run ["rishi/bin/rishi" "run" "tools/rish_count_selftest.rish"]
+assert rcount.ok else "Rishi count idiom selftest failed"
+say "GREEN: Rishi count idiom selftest passed."
+
+say "witness suite: TAME style advise native…"
+let tame_adv = run ["rishi/bin/rishi" "run" "tools/tame_style_scan_advise_selftest.rish"]
+assert tame_adv.ok else "TAME style advise native selftest failed"
+say "GREEN: TAME style advise native selftest passed."
+
+say "witness suite: TAME style bans native idiom…"
+let tame_bans = run ["rishi/bin/rishi" "run" "tools/tame_style_scan_bans_selftest.rish"]
+assert tame_bans.ok else "TAME style bans native idiom selftest failed"
+say "GREEN: TAME style bans native idiom selftest passed."
+
+say "witness suite: TAME style bans…"
+let tame = run ["rishi/bin/rishi" "run" "tools/tame_style_check.rish"]
+assert tame.ok else "TAME style witness failed"
+say "GREEN: TAME style witness passed."
+
+say "witness suite: living-docs lint (ratchet advisory beside tame_style)…"
+let docs_lint = run ["rishi/bin/rishi" "run" "tools/living_docs_lint.rish"]
+say docs_lint.out
+if docs_lint.err != "" then say docs_lint.err
+say "GREEN: living-docs lint advisory printed (ratchet; never fails witness)."
+
+say "witness suite: Tally maybe…"
+let tmaybe = run ["rishi/bin/rishi" "run" "tools/tally_maybe.rish"]
+if tmaybe.ok == false then say "tally maybe nested stdout:"
+if tmaybe.ok == false then say tmaybe.out
+if tmaybe.ok == false then say "tally maybe nested stderr:"
+if tmaybe.ok == false then say tmaybe.err
+assert tmaybe.ok else "tally maybe witness failed"
+say "GREEN: Tally maybe witness passed."
+
+say "witness suite: Tally no_padding…"
+let tnp = run ["rishi/bin/rishi" "run" "tools/tally_no_padding.rish"]
+if tnp.ok == false then say "tally no_padding nested stdout:"
+if tnp.ok == false then say tnp.out
+if tnp.ok == false then say "tally no_padding nested stderr:"
+if tnp.ok == false then say tnp.err
+assert tnp.ok else "tally no_padding witness failed"
+say "GREEN: Tally no_padding witness passed."
+
+say "witness suite: Tally parse_int…"
+let tpi = run ["rishi/bin/rishi" "run" "tools/tally_parse_int.rish"]
+if tpi.ok == false then say "tally parse_int nested stdout:"
+if tpi.ok == false then say tpi.out
+if tpi.ok == false then say "tally parse_int nested stderr:"
+if tpi.ok == false then say tpi.err
+assert tpi.ok else "tally parse_int witness failed"
+say "GREEN: Tally parse_int witness passed."
+
+say "witness suite: align_session_logs (fixture only)…"
+let asl = run ["rishi/bin/rishi" "run" "tools/align_session_logs.rish"]
+if asl.ok == false then say "align_session_logs nested stdout:"
+if asl.ok == false then say asl.out
+if asl.ok == false then say "align_session_logs nested stderr:"
+if asl.ok == false then say asl.err
+assert asl.ok else "align_session_logs witness failed"
+say "GREEN: align_session_logs witness passed."
+
+say "witness suite: tame_usize_audit surfaceAuditOk…"
+let tua = run ["rishi/bin/rishi" "run" "tools/tame_usize_audit.rish"]
+if tua.ok == false then say "tame_usize_audit nested stdout:"
+if tua.ok == false then say tua.out
+if tua.ok == false then say "tame_usize_audit nested stderr:"
+if tua.ok == false then say tua.err
+assert tua.ok else "tame_usize_audit witness failed"
+say "GREEN: tame_usize_audit witness passed."
+
+say "witness suite: enrich_strengthening_docs (fixture only)…"
+let esd = run ["rishi/bin/rishi" "run" "tools/enrich_strengthening_docs.rish"]
+if esd.ok == false then say "enrich_strengthening_docs nested stdout:"
+if esd.ok == false then say esd.out
+if esd.ok == false then say "enrich_strengthening_docs nested stderr:"
+if esd.ok == false then say esd.err
+assert esd.ok else "enrich_strengthening_docs witness failed"
+say "GREEN: enrich_strengthening_docs witness passed."
+
+say "witness suite: TH-2 tame-check gate…"
+let th2 = run ["rishi/bin/rishi" "run" "tools/tame_check_th2.rish"]
+assert th2.ok else "TH-2 tame-check witness failed"
+say "GREEN: TH-2 tame-check witness passed."
+
+say "witness suite: TH-2b Mantra bare assert…"
+let th2b = run ["rishi/bin/rishi" "run" "tools/tame_check_th2b.rish"]
+assert th2b.ok else "TH-2b Mantra bare assert witness failed"
+say "GREEN: TH-2b Mantra bare assert witness passed."
+
+say "witness suite: TH-2c hosted corpus bare assert…"
+let th2c = run ["rishi/bin/rishi" "run" "tools/tame_check_th2c.rish"]
+assert th2c.ok else "TH-2c hosted corpus bare assert witness failed"
+say "GREEN: TH-2c hosted corpus bare assert witness passed."
+
+say "witness suite: opening-lines hosted head…"
+let opening = run ["rishi/bin/rishi" "run" "tools/opening_lines_witness.rish"]
+assert opening.ok else "opening-lines witness failed"
+say "GREEN: opening-lines hosted head witness passed."
+
+say "witness suite: TH-3 Mantra width…"
+let th3 = run ["rishi/bin/rishi" "run" "tools/width_check_th3.rish"]
+assert th3.ok else "TH-3 Mantra width witness failed"
+say "GREEN: TH-3 Mantra width witness passed."
+
+say "witness suite: TH-4 .brix mend…"
+let th4 = run ["rishi/bin/rishi" "run" "tools/width_check_th4.rish"]
+assert th4.ok else "TH-4 .brix mend witness failed"
+say "GREEN: TH-4 .brix mend witness passed."
+
+say "witness suite: TH-5 Rishi width…"
+let th5 = run ["rishi/bin/rishi" "run" "tools/width_check_th5.rish"]
+assert th5.ok else "TH-5 Rishi width witness failed"
+say "GREEN: TH-5 Rishi width witness passed."
+
+say "witness suite: RS-1 script args…"
+let rs1 = run ["rishi/bin/rishi" "run" "tools/rs1_args.rish"]
+assert rs1.ok else "RS-1 script args witness failed"
+say "GREEN: RS-1 script args witness passed."
+
+say "witness suite: RS-2 flag parse…"
+let rs2 = run ["rishi/bin/rishi" "run" "tools/rs2_flag.rish"]
+assert rs2.ok else "RS-2 flag parse witness failed"
+say "GREEN: RS-2 flag parse witness passed."
+
+say "witness suite: RS-3 launch-cursor args…"
+let rs3 = run ["rishi/bin/rishi" "run" "tools/rs3_launch_cursor.rish"]
+assert rs3.ok else "RS-3 launch-cursor witness failed"
+say "GREEN: RS-3 launch-cursor witness passed."
+
+say "witness suite: RW-3 run record…"
+let rw3 = run ["rishi/bin/rishi" "run" "tools/run_record_witness.rish"]
+assert rw3.ok else "RW-3 run-record witness failed"
+say "GREEN: RW-3 run-record witness passed."
+
+say "witness suite: RW-4 SLC failure paths…"
+let rw4 = run ["rishi/bin/rishi" "run" "tools/rw4_slc_failure_paths.rish"]
+assert rw4.ok else "RW-4 SLC failure-path witness failed"
+say "GREEN: RW-4 SLC failure-path witness passed."
+
+say "witness suite: TH-6 Comlink width…"
+let th6 = run ["rishi/bin/rishi" "run" "tools/width_check_th6.rish"]
+assert th6.ok else "TH-6 Comlink width witness failed"
+say "GREEN: TH-6 Comlink width witness passed."
+
+say "witness suite: RW-1 shell collaboration…"
+let rw1c = run ["rishi/bin/rishi" "run" "tools/rw1_shell_collab.rish"]
+assert rw1c.ok else "RW-1 shell collaboration witness failed"
+say "GREEN: RW-1 shell-collaboration witness passed."
+
+say "witness suite: RW-1 history contract…"
+let rw1h = run ["rishi/bin/rishi" "run" "tools/rw1_history_contract.rish"]
+assert rw1h.ok else "RW-1 history contract witness failed"
+say "GREEN: RW-1 history-contract witness passed."
+
+say "witness suite: width-check hosted corpus…"
+let wc = run ["rishi/bin/rishi" "run" "tools/width-check.rish"]
+assert wc.ok else "width-check hosted corpus witness failed"
+say "GREEN: width-check hosted corpus witness passed."
+
+say "witness suite: dated-guard (living-vs-dated)…"
+let dated = run ["rishi/bin/rishi" "run" "tools/dated_guard.rish"]
+assert dated.ok else "dated-guard witness failed"
+say "GREEN: dated-guard witness passed."
+
+say "witness suite: designed-not-built spec bound…"
+let edit5 = run ["rishi/bin/rishi" "run" "tools/designed_not_built_witness.rish"]
+assert edit5.ok else "designed-not-built witness failed"
+say "GREEN: designed-not-built spec bound witness passed."
+
+say "witness suite: amber first lap…"
+let amber1 = run ["rishi/bin/rishi" "run" "tools/amber_first_ring.rish"]
+assert amber1.ok else "amber first lap witness failed"
+say "GREEN: amber first lap witness passed."
+
+say "witness suite: amber manifest Tilak hygiene (I6)…"
+let amber_i6 = run ["rishi/bin/rishi" "run" "tools/amber_manifest_tilak.rish"]
+assert amber_i6.ok else "amber manifest tilak witness failed"
+say "GREEN: amber manifest Tilak witness passed."
+
+say "witness suite: SLC-2b keyboard from window…"
+let slc2b = run ["rishi/bin/rishi" "run" "tools/slc2b_keyboard.rish"]
+assert slc2b.ok else "SLC-2b keyboard witness failed"
+say "GREEN: SLC-2b keyboard-from-window witness passed."
+
+say "witness suite: chrono version sweep…"
+let chrono = run ["rishi/bin/rishi" "run" "tools/chrono_version_sweep.rish"]
+assert chrono.ok else "chrono version sweep witness failed"
+say "GREEN: chrono version sweep witness passed."
+
+say "witness suite: crossing manifest seed (lap one parse)…"
+let crossing = run ["rishi/bin/rishi" "run" "tools/crossing_manifest_seed.rish"]
+assert crossing.ok else "crossing manifest seed witness failed"
+say "GREEN: crossing manifest seed witness passed."
+
+say "witness suite: SLC-L1 verifiable receipt…"
+let slcl1 = run ["rishi/bin/rishi" "run" "tools/slcl1_receipt.rish"]
+assert slcl1.ok else "SLC-L1 receipt witness failed"
+say "GREEN: SLC-L1 verifiable receipt witness passed."
+
+say "witness suite: MALA M1 one issuer, one holder…"
+let mala_m1 = run ["rishi/bin/rishi" "run" "tools/mala_m1_witness.rish"]
+assert mala_m1.ok else "MALA M1 witness failed"
+say "GREEN: MALA M1 one-issuer one-holder witness passed."
+
+say "witness suite: MALA M2 mailable Comlink (hosted + device wire)…"
+let mala_m2 = run ["rishi/bin/rishi" "run" "tools/mala_m2_witness.rish"]
+assert mala_m2.ok else "MALA M2 witness failed"
+say "GREEN: MALA M2 mailable Comlink (hosted + device wire) witness passed."
+
+say "witness suite: SLC-L4 fixed-tier Sigma (Zig-native)…"
+let slcl4 = run ["rishi/bin/rishi" "run" "tools/slcl4_mudra.rish"]
+assert slcl4.ok else "SLC-L4 Sigma witness failed"
+say "GREEN: SLC-L4 fixed-tier Sigma witness passed."
+
+say "witness suite: WOV exit honesty (in-memory lap 1)…"
+let wov = run ["rishi/bin/rishi" "run" "tools/wov_exit_honesty.rish"]
+assert wov.ok else "WOV exit-honesty witness failed"
+say "GREEN: WOV exit-honesty witness passed."
+
+# WOV TigerBeetle pin + host seam A retired from the living suite 20260711.055800
+# (Kaeden approved counsel 055112). Pure-Rye coverage stays via exit honesty + dual monarch.
+# Dated record: tools/wov_tb_pin.rish · tools/wov_tb_host.rish · linengrow/wov_tb_host.rye
+
+say "witness suite: WOV dual monarch D1 (twin log lines)…"
+let wov_dual = run ["rishi/bin/rishi" "run" "tools/wov_dual_monarch.rish"]
+assert wov_dual.ok else "WOV dual-monarch witness failed"
+say "GREEN: WOV dual monarch D1 witness passed."
+say "witness suite: SLC-L2 sealed delivery…"
+let slcl2 = run ["rishi/bin/rishi" "run" "tools/slcl2_receipt.rish"]
+assert slcl2.ok else "SLC-L2 sealed delivery witness failed"
+say "GREEN: SLC-L2 sealed delivery witness passed."
+
+say "witness suite: OA-L1 closed ask loop…"
+let oal1 = run ["rishi/bin/rishi" "run" "tools/open_asks_lap1.rish"]
+assert oal1.ok else "OA-L1 closed ask loop witness failed"
+say "GREEN: OA-L1 closed ask loop witness passed."
+
+say "witness suite: OA-L2 cross-party delivery…"
+let oal2 = run ["rishi/bin/rishi" "run" "tools/open_asks_lap2.rish"]
+assert oal2.ok else "OA-L2 cross-party delivery witness failed"
+say "GREEN: OA-L2 cross-party delivery witness passed."
+
+say "witness suite: OA-L3 escrow hold and release…"
+let oal3 = run ["rishi/bin/rishi" "run" "tools/open_asks_lap3.rish"]
+assert oal3.ok else "OA-L3 escrow witness failed"
+say "GREEN: OA-L3 escrow hold and release witness passed."
+
+say "witness suite: OA-L4 reputation-as-fold…"
+let oal4 = run ["rishi/bin/rishi" "run" "tools/open_asks_lap4.rish"]
+assert oal4.ok else "OA-L4 reputation witness failed"
+say "GREEN: OA-L4 reputation-as-fold witness passed."
+
+say "witness suite: OA-L5 accept, complete, consent wire…"
+let oal5 = run ["rishi/bin/rishi" "run" "tools/open_asks_lap5.rish"]
+assert oal5.ok else "OA-L5 completion wire witness failed"
+say "GREEN: OA-L5 accept, complete, consent wire witness passed."
+
+say "witness suite: NS-L1 referentially-transparent recall…"
+let nsl1 = run ["rishi/bin/rishi" "run" "tools/mantra_recall_lap1.rish"]
+assert nsl1.ok else "NS-L1 recall witness failed"
+say "GREEN: NS-L1 referentially-transparent recall witness passed."
+
+say "witness suite: NS-L2 write revision…"
+let nsl2 = run ["rishi/bin/rishi" "run" "tools/mantra_recall_lap2.rish"]
+assert nsl2.ok else "NS-L2 recall witness failed"
+say "GREEN: NS-L2 write revision witness passed."
+
+say "witness suite: NS-L3 sync a bolt revision…"
+let nsl3 = run ["rishi/bin/rishi" "run" "tools/mantra_recall_lap3.rish"]
+assert nsl3.ok else "NS-L3 sync witness failed"
+say "GREEN: NS-L3 sync a bolt revision witness passed."
+
+say "witness suite: NS-L3 wire lap 1 hosted sync…"
+let nsw1 = run ["rishi/bin/rishi" "run" "tools/mantra_recall_lap3_wire.rish"]
+assert nsw1.ok else "NS-L3 wire lap 1 witness failed"
+say "GREEN: NS-L3 wire lap 1 hosted sync witness passed."
+
+say "witness suite: NS-L3 3w-3a resin-batch frame…"
+let rbatch = run ["rishi/bin/rishi" "run" "tools/mantra_resin_batch.rish"]
+assert rbatch.ok else "NS-L3 resin-batch witness failed"
+say "GREEN: NS-L3 3w-3a resin-batch frame witness passed."
+
+say "witness suite: NS-L3 3w-3b beading…"
+let beading = run ["rishi/bin/rishi" "run" "tools/mantra_beading.rish"]
+assert beading.ok else "NS-L3 beading witness failed"
+say "GREEN: NS-L3 3w-3b beading witness passed."
+
+say "witness suite: NS-L3 recall_beaded…"
+let recall_beaded = run ["rishi/bin/rishi" "run" "tools/mantra_recall_beaded.rish"]
+assert recall_beaded.ok else "NS-L3 recall_beaded witness failed"
+say "GREEN: NS-L3 recall_beaded witness passed."
+
+say "witness suite: marks-on-read (recall by Tilak)…"
+let ns_mark = run ["rishi/bin/rishi" "run" "tools/mantra_recall_by_mark.rish"]
+assert ns_mark.ok else "marks-on-read witness failed"
+say "GREEN: marks-on-read witness passed."
+
+say "witness suite: two-way sync (in-process)…"
+let ns_2way = run ["rishi/bin/rishi" "run" "tools/mantra_recall_two_way_sync.rish"]
+assert ns_2way.ok else "two-way sync witness failed"
+say "GREEN: two-way sync witness passed."
+
+say "witness suite: two-way sync wire (hosted + device)…"
+let ns_2wayw = run ["rishi/bin/rishi" "run" "tools/mantra_recall_two_way_sync_wire.rish"]
+assert ns_2wayw.ok else "two-way sync wire witness failed"
+say "GREEN: two-way sync wire witness passed."
+
+say "witness suite: catch-up-to-latest (in-process)…"
+let ns_catchup = run ["rishi/bin/rishi" "run" "tools/mantra_recall_catch_up.rish"]
+assert ns_catchup.ok else "catch-up-to-latest witness failed"
+say "GREEN: catch-up-to-latest witness passed."
+
+say "witness suite: catch-up-to-latest wire (hosted + device)…"
+let ns_catchupw = run ["rishi/bin/rishi" "run" "tools/mantra_recall_catch_up_wire.rish"]
+assert ns_catchupw.ok else "catch-up wire witness failed"
+say "GREEN: catch-up-to-latest wire witness passed."
+
+say "witness suite: outer subscribe poll (in-process)…"
+let ns_poll = run ["rishi/bin/rishi" "run" "tools/mantra_recall_subscribe_poll.rish"]
+assert ns_poll.ok else "outer subscribe poll witness failed"
+say "GREEN: outer subscribe poll witness passed."
+
+say "witness suite: outer subscribe poll interval (in-process)…"
+let ns_pollint = run ["rishi/bin/rishi" "run" "tools/mantra_recall_subscribe_poll_interval.rish"]
+assert ns_pollint.ok else "outer subscribe poll interval witness failed"
+say "GREEN: outer subscribe poll interval witness passed."
+
+say "witness suite: outer subscribe poll wire (hosted + device)…"
+let ns_pollw = run ["rishi/bin/rishi" "run" "tools/mantra_recall_subscribe_poll_wire.rish"]
+assert ns_pollw.ok else "outer subscribe poll wire witness failed"
+say "GREEN: outer subscribe poll wire witness passed."
+
+say "witness suite: Tablecloth query (in-process)…"
+let ns_tcq = run ["rishi/bin/rishi" "run" "tools/mantra_recall_tablecloth_query.rish"]
+assert ns_tcq.ok else "Tablecloth query witness failed"
+say "GREEN: Tablecloth query witness passed."
+
+say "witness suite: I2 snapshot replay (export → import)…"
+let ns_snap = run ["rishi/bin/rishi" "run" "tools/mantra_snapshot_replay.rish"]
+assert ns_snap.ok else "I2 snapshot replay witness failed"
+say "GREEN: I2 snapshot replay witness passed."
+
+say "witness suite: I2 snapshot horizon (bundles + head record)…"
+let ns_snaph = run ["rishi/bin/rishi" "run" "tools/mantra_snapshot_horizon.rish"]
+assert ns_snaph.ok else "I2 snapshot horizon witness failed"
+say "GREEN: I2 snapshot horizon witness passed."
+
+say "witness suite: I2 snapshot wire lap 3 (hosted Comlink crossing)…"
+let ns_snapw = run ["rishi/bin/rishi" "run" "tools/mantra_snapshot_wire.rish"]
+assert ns_snapw.ok else "I2 snapshot wire lap 3 witness failed"
+say "GREEN: I2 snapshot wire lap 3 witness passed."
+
+say "witness suite: NS-L3 lap 3w-4 resin-batch wire (hosted + device)…"
+let rbwire = run ["rishi/bin/rishi" "run" "tools/mantra_recall_batch_wire.rish"]
+assert rbwire.ok else "NS-L3 batch wire witness failed"
+say "GREEN: NS-L3 lap 3w-4 resin-batch wire witness passed (hosted + device)."
+
+say "witness suite: session-logs archive hygiene (preview, fold, idempotency)…"
+let slog_arch = run ["rishi/bin/rishi" "run" "tools/session_logs_archive_witness.rish"]
+assert slog_arch.ok else "session-logs archive witness failed"
+say "GREEN: session-logs archive hygiene witness passed."
+
+say "witness suite: RW-2 app collaboration…"
+let rw2a = run ["rishi/bin/rishi" "run" "tools/rw2_app_collab.rish"]
+assert rw2a.ok else "RW-2 app collaboration witness failed"
+say "GREEN: RW-2 app-collaboration witness passed."
+
+say "witness suite: RW-2 surface contract…"
+let rw2s = run ["rishi/bin/rishi" "run" "tools/rw2_surface_contract.rish"]
+assert rw2s.ok else "RW-2 surface contract witness failed"
+say "GREEN: RW-2 surface-contract witness passed."
+
+say "witness suite: Realidream thin view (local MALA/WOV fixtures)…"
+let thin_view = run ["rishi/bin/rishi" "run" "tools/realidream_thin_view.rish"]
+assert thin_view.ok else "Realidream thin view witness failed"
+say "GREEN: Realidream thin view witness passed."
+
+say "witness suite: Dimeroll lap 1 (centralized books fold)…"
+let dimeroll = run ["rishi/bin/rishi" "run" "tools/dimeroll_lap1.rish"]
+assert dimeroll.ok else "Dimeroll lap 1 witness failed"
+say "GREEN: Dimeroll lap 1 witness passed."
+
+say "witness suite: Dimeroll books view (Skate trial balance)…"
+let books_view = run ["rishi/bin/rishi" "run" "tools/dimeroll_books_view.rish"]
+assert books_view.ok else "Dimeroll books view witness failed"
+say "GREEN: Dimeroll books view witness passed."
+
+say "witness suite: Dimeroll lap 2 (P&L, balance sheet, exceptions)…"
+let dimeroll2 = run ["rishi/bin/rishi" "run" "tools/dimeroll_lap2.rish"]
+assert dimeroll2.ok else "Dimeroll lap 2 witness failed"
+say "GREEN: Dimeroll lap 2 witness passed."
+
+say "witness suite: Linengrow sight view (carriage + books Skate frame)…"
+let sight_view = run ["rishi/bin/rishi" "run" "tools/dimeroll_sight_view.rish"]
+assert sight_view.ok else "Linengrow sight view witness failed"
+say "GREEN: Linengrow sight view witness passed."
+
+say "witness suite: Lattice lap 0 (f32 matmul)…"
+let lattice_lap1 = run ["rishi/bin/rishi" "run" "tools/lattice_lap1.rish"]
+assert lattice_lap1.ok else "Lattice lap 0 witness failed"
+say "GREEN: Lattice lap 0 witness passed."
+
+say "witness suite: Scribble lap 0 (markdown blocks)…"
+let scribble_lap1 = run ["rishi/bin/rishi" "run" "tools/scribble_lap1.rish"]
+assert scribble_lap1.ok else "Scribble lap 0 witness failed"
+say "GREEN: Scribble lap 0 witness passed."
+
+say "witness suite: Scribble lap 1 (rye snippet extract)…"
+let scribble_lap2 = run ["rishi/bin/rishi" "run" "tools/scribble_lap2.rish"]
+assert scribble_lap2.ok else "Scribble lap 1 witness failed"
+say "GREEN: Scribble lap 1 witness passed."
+
+say "witness suite: Scribble lap 2 (rish snippet extract)…"
+let scribble_lap3 = run ["rishi/bin/rishi" "run" "tools/scribble_lap3.rish"]
+assert scribble_lap3.ok else "Scribble lap 2 witness failed"
+say "GREEN: Scribble lap 2 witness passed."
+
+say "witness suite: Scribble lap 3 (heading extract)…"
+let scribble_lap4 = run ["rishi/bin/rishi" "run" "tools/scribble_lap4.rish"]
+assert scribble_lap4.ok else "Scribble lap 3 witness failed"
+say "GREEN: Scribble lap 3 witness passed."
+
+say "witness suite: Lantern lap 1 (fixture + max_tokens)…"
+let lantern_lap1 = run ["rishi/bin/rishi" "run" "tools/lantern_lap1.rish"]
+assert lantern_lap1.ok else "Lantern lap 1 witness failed"
+say "GREEN: Lantern lap 1 witness passed."
+
+say "witness suite: Lantern lap 2 (model allow-list)…"
+let lantern_lap2 = run ["rishi/bin/rishi" "run" "tools/lantern_lap2.rish"]
+assert lantern_lap2.ok else "Lantern lap 2 witness failed"
+say "GREEN: Lantern lap 2 witness passed."
+
+say "witness suite: Lantern lap 3 (temperature + seed)…"
+let lantern_lap3 = run ["rishi/bin/rishi" "run" "tools/lantern_lap3.rish"]
+assert lantern_lap3.ok else "Lantern lap 3 witness failed"
+say "GREEN: Lantern lap 3 witness passed."
+
+say "witness suite: Anvil corpus lap 0 (rye catalog)…"
+let anvil_corpus = run ["rishi/bin/rishi" "run" "tools/anvil_corpus_lap1.rish"]
+assert anvil_corpus.ok else "Anvil corpus lap 0 witness failed"
+say "GREEN: Anvil corpus lap 0 witness passed."
+
+say "witness suite: Anvil corpus lap 1 (query filter)…"
+let anvil_query = run ["rishi/bin/rishi" "run" "tools/anvil_corpus_lap2.rish"]
+assert anvil_query.ok else "Anvil corpus lap 1 witness failed"
+say "GREEN: Anvil corpus lap 1 witness passed."
+
+say "witness suite: Lattice lap 1 (elementwise add)…"
+let lattice_lap2 = run ["rishi/bin/rishi" "run" "tools/lattice_lap2.rish"]
+assert lattice_lap2.ok else "Lattice lap 1 witness failed"
+say "GREEN: Lattice lap 1 witness passed."
+
+say "witness suite: Lattice lap 2 (reshape)…"
+let lattice_lap3 = run ["rishi/bin/rishi" "run" "tools/lattice_lap3.rish"]
+assert lattice_lap3.ok else "Lattice lap 2 witness failed"
+say "GREEN: Lattice lap 2 witness passed."
+
+say "witness suite: Lattice lap 3 (reduce_sum)…"
+let lattice_lap4 = run ["rishi/bin/rishi" "run" "tools/lattice_lap4.rish"]
+assert lattice_lap4.ok else "Lattice lap 3 witness failed"
+say "GREEN: Lattice lap 3 witness passed."
+
+say "witness suite: Lattice lap 4 (scale)…"
+let lattice_lap5 = run ["rishi/bin/rishi" "run" "tools/lattice_lap5.rish"]
+assert lattice_lap5.ok else "Lattice lap 4 witness failed"
+say "GREEN: Lattice lap 4 witness passed."
+
+say "witness suite: Inference assist view (Skate fold)…"
+let assist_view = run ["rishi/bin/rishi" "run" "tools/inference_assist_view.rish"]
+assert assist_view.ok else "Inference assist view witness failed"
+say "GREEN: Inference assist view witness passed."
+
+say "witness suite: Inference assist view lap 2 (Scribble snippets)…"
+let assist_view_lap2 = run ["rishi/bin/rishi" "run" "tools/inference_assist_view_lap2.rish"]
+assert assist_view_lap2.ok else "Inference assist view lap 2 witness failed"
+say "GREEN: Inference assist view lap 2 witness passed."
+
+say "witness suite: Inference assist sight (carriage + assist fold)…"
+let assist_view_lap3 = run ["rishi/bin/rishi" "run" "tools/inference_assist_view_lap3.rish"]
+assert assist_view_lap3.ok else "Inference assist sight view witness failed"
+say "GREEN: Inference assist sight view witness passed."
+
+say "witness suite: Inference assist view lap 4 (rye+rish snippet kinds)…"
+let assist_view_lap4 = run ["rishi/bin/rishi" "run" "tools/inference_assist_view_lap4.rish"]
+assert assist_view_lap4.ok else "Inference assist view lap 4 witness failed"
+say "GREEN: Inference assist view lap 4 witness passed."
+
+say "witness suite: Inference assist sight lap 2 (rye+rish kinds)…"
+let assist_sight_lap2 = run ["rishi/bin/rishi" "run" "tools/inference_assist_sight_lap2.rish"]
+assert assist_sight_lap2.ok else "Inference assist sight lap 2 witness failed"
+say "GREEN: Inference assist sight lap 2 witness passed."
+
+say "witness suite: compass rose (navigation habit seated)…"
+let compass = run ["rishi/bin/rishi" "run" "tools/compass_rose.rish"]
+assert compass.ok else "compass rose witness failed"
+say "GREEN: compass rose witness passed."
+
+say "witness suite: two-rooms doorway (canon seated, forward pages name their room)…"
+let doorway = run ["rishi/bin/rishi" "run" "tools/two_rooms_doorway.rish"]
+assert doorway.ok else "two-rooms doorway witness failed"
+say "GREEN: two-rooms doorway witness passed."
+
+say "witness suite: identity check (PUBKEYS template + context path)…"
+let identity = run ["rishi/bin/rishi" "run" "tools/identity_check.rish"]
+assert identity.ok else "identity check witness failed"
+say "GREEN: identity check witness passed."
+
+say "witness suite: Comlink device wire (pattern + sealed laps)…"
+let comlink_dw = run ["rishi/bin/rishi" "run" "tools/comlink_device_wire.rish"]
+assert comlink_dw.ok else "Comlink device wire witness failed"
+say "GREEN: Comlink device wire witness passed."
+
+say "witness suite: Tablecloth query wire (Comlink hosted filter)…"
+let tcq_wire = run ["rishi/bin/rishi" "run" "tools/mantra_recall_tablecloth_query_wire.rish"]
+assert tcq_wire.ok else "Tablecloth query wire witness failed"
+say "GREEN: Tablecloth query wire witness passed."
+
+say "witness suite: Tablecloth query device wire (virtio filter)…"
+let tcq_device = run ["rishi/bin/rishi" "run" "tools/mantra_recall_tablecloth_query_device.rish"]
+assert tcq_device.ok else "Tablecloth query device wire witness failed"
+say "GREEN: Tablecloth query device wire witness passed."
+
+say "witness suite: Realidream query view (Tablecloth hits → Skate)…"
+let query_view = run ["rishi/bin/rishi" "run" "tools/realidream_query_view.rish"]
+assert query_view.ok else "Realidream query view witness failed"
+say "GREEN: Realidream query view witness passed."
+
+say "witness suite: Realidream query device view (device-wire hits → Skate)…"
+let query_device_view = run ["rishi/bin/rishi" "run" "tools/realidream_query_device_view.rish"]
+assert query_device_view.ok else "Realidream query device view witness failed"
+say "GREEN: Realidream query device view witness passed."
+
+say "witness suite: Realidream query unified view (hosted + device → Skate)…"
+let query_unified_view = run ["rishi/bin/rishi" "run" "tools/realidream_query_unified_view.rish"]
+assert query_unified_view.ok else "Realidream query unified view witness failed"
+say "GREEN: Realidream query unified view witness passed."
+
+say "witness suite: Realidream forge view (Amber cellar → Skate)…"
+let forge_view = run ["rishi/bin/rishi" "run" "tools/realidream_forge_view.rish"]
+assert forge_view.ok else "Realidream forge view witness failed"
+say "GREEN: Realidream forge view witness passed."
+
+say "witness suite: Realidream forge device view (virtio fetch → Skate)…"
+let forge_device_view = run ["rishi/bin/rishi" "run" "tools/realidream_forge_device_view.rish"]
+assert forge_device_view.ok else "Realidream forge device view witness failed"
+say "GREEN: Realidream forge device view witness passed."
+
+say "witness suite: Realidream forge unified view (pour + device → Skate)…"
+let forge_unified_view = run ["rishi/bin/rishi" "run" "tools/realidream_forge_unified_view.rish"]
+assert forge_unified_view.ok else "Realidream forge unified view witness failed"
+say "GREEN: Realidream forge unified view witness passed."
+
+say "witness suite: Amphora lap 1 (manifest entry + vessel)…"
+let amphora = run ["rishi/bin/rishi" "run" "tools/amphora_lap1.rish"]
+assert amphora.ok else "Amphora lap 1 witness failed"
+say "GREEN: Amphora lap 1 witness passed."
+
+say "witness suite: Amphora lap 2 (pour Amber season → far scrub)…"
+let amphora2 = run ["rishi/bin/rishi" "run" "tools/amphora_lap2.rish"]
+assert amphora2.ok else "Amphora lap 2 witness failed"
+say "GREEN: Amphora lap 2 witness passed."
+
+say "witness suite: Amphora lap 3 (Comlink fetch-by-digest)…"
+let amphora3 = run ["rishi/bin/rishi" "run" "tools/amphora_lap3.rish"]
+assert amphora3.ok else "Amphora lap 3 witness failed"
+say "GREEN: Amphora lap 3 witness passed."
+
+say "witness suite: Amphora device wire (virtio vessel fetch)…"
+let amphora_dw = run ["rishi/bin/rishi" "run" "tools/amphora_device_wire.rish"]
+assert amphora_dw.ok else "Amphora device wire witness failed"
+say "GREEN: Amphora device wire witness passed."
+
+say "witness suite: Amphora vessel stamp (Kumara stamp_sig)…"
+let amphora_stamp = run ["rishi/bin/rishi" "run" "tools/amphora_vessel_stamp.rish"]
+assert amphora_stamp.ok else "Amphora vessel stamp witness failed"
+say "GREEN: Amphora vessel stamp witness passed."
+
+say "witness suite: Amphora vessel seal (Amber AEAD)…"
+let amphora_seal = run ["rishi/bin/rishi" "run" "tools/amphora_vessel_seal.rish"]
+assert amphora_seal.ok else "Amphora vessel seal witness failed"
+say "GREEN: Amphora vessel seal witness passed."
+
+say "witness suite: Amphora resin chunk (large cargo beyond one datagram)…"
+let amphora_chunk = run ["rishi/bin/rishi" "run" "tools/amphora_resin_chunk.rish"]
+assert amphora_chunk.ok else "Amphora resin chunk witness failed"
+say "GREEN: Amphora resin chunk witness passed."
+
+say "witness suite: Pond customs (policy at receipt per Tilak)…"
+let pond_customs = run ["rishi/bin/rishi" "run" "tools/pond_customs.rish"]
+assert pond_customs.ok else "Pond customs witness failed"
+say "GREEN: Pond customs witness passed."
+
+say "witness suite: Amphora purchase delivery (commerce slip)…"
+let amphora_delivery = run ["rishi/bin/rishi" "run" "tools/amphora_purchase_delivery.rish"]
+assert amphora_delivery.ok else "Amphora purchase delivery witness failed"
+say "GREEN: Amphora purchase delivery witness passed."
+
+say "witness suite: Granary lap 1 (name-fact registry + Scribble frame)…"
+let granary1 = run ["rishi/bin/rishi" "run" "tools/granary_lap1.rish"]
+assert granary1.ok else "Granary lap 1 witness failed"
+say "GREEN: Granary lap 1 witness passed."
+
+say "witness suite: Granary weave view (resolve + Scribble → Skate)…"
+let granary_view = run ["rishi/bin/rishi" "run" "tools/granary_weave_view.rish"]
+assert granary_view.ok else "Granary weave view witness failed"
+say "GREEN: Granary weave view witness passed."
+
+say "witness suite: Granary lap 2 (write gate publish + reload)…"
+let granary2 = run ["rishi/bin/rishi" "run" "tools/granary_lap2.rish"]
+assert granary2.ok else "Granary lap 2 witness failed"
+say "GREEN: Granary lap 2 witness passed."
+
+say "witness suite: Granary lap 3 (host serve + mirror clone)…"
+let granary3 = run ["rishi/bin/rishi" "run" "tools/granary_lap3.rish"]
+assert granary3.ok else "Granary lap 3 witness failed"
+say "GREEN: Granary lap 3 witness passed."
+
+say "witness suite: Granary lap 4 (Comlink resin serve)…"
+let granary4 = run ["rishi/bin/rishi" "run" "tools/granary_resin_wire.rish"]
+assert granary4.ok else "Granary lap 4 resin wire witness failed"
+say "GREEN: Granary lap 4 resin wire witness passed."
+
+say "witness suite: Granary lap 4b (device-wire resin serve)…"
+let granary4b = run ["rishi/bin/rishi" "run" "tools/granary_device_wire.rish"]
+assert granary4b.ok else "Granary lap 4b device wire witness failed"
+say "GREEN: Granary lap 4b device wire witness passed."
+
+say "witness suite: Granary lap 5 (Exchange listing in MALA)…"
+let granary5 = run ["rishi/bin/rishi" "run" "tools/granary_exchange.rish"]
+assert granary5.ok else "Granary lap 5 exchange witness failed"
+say "GREEN: Granary lap 5 exchange witness passed."
+
+say "witness suite: Granary Exchange view (weave listing → Skate)…"
+let exchange_view = run ["rishi/bin/rishi" "run" "tools/granary_exchange_view.rish"]
+assert exchange_view.ok else "Granary Exchange view witness failed"
+say "GREEN: Granary Exchange view witness passed."
+
+say "witness suite: Granary lap 6 (weave settle MALA + WOV)…"
+let granary6 = run ["rishi/bin/rishi" "run" "tools/granary_weave_settle.rish"]
+assert granary6.ok else "Granary weave settle witness failed"
+say "GREEN: Granary weave settle witness passed."
+
+say "witness suite: Granary settle view (weave settle → Skate)…"
+let granary_settle_view = run ["rishi/bin/rishi" "run" "tools/granary_settle_view.rish"]
+assert granary_settle_view.ok else "Granary settle view witness failed"
+say "GREEN: Granary settle view witness passed."
+
+say "witness suite: Mandi lap 1 (vessel market listing in MALA)…"
+let mandi1 = run ["rishi/bin/rishi" "run" "tools/mandi_lap1.rish"]
+assert mandi1.ok else "Mandi lap 1 witness failed"
+say "GREEN: Mandi lap 1 witness passed."
+
+say "witness suite: Mandi floor view (vessel listing → Skate)…"
+let mandi_view = run ["rishi/bin/rishi" "run" "tools/mandi_floor_view.rish"]
+assert mandi_view.ok else "Mandi floor view witness failed"
+say "GREEN: Mandi floor view witness passed."
+
+say "witness suite: Mandi lap 3 (listing settle MALA + WOV)…"
+let mandi3 = run ["rishi/bin/rishi" "run" "tools/mandi_listing_settle.rish"]
+assert mandi3.ok else "Mandi listing settle witness failed"
+say "GREEN: Mandi listing settle witness passed."
+
+say "witness suite: Mandi settle view (vessel settle → Skate)…"
+let mandi_settle_view = run ["rishi/bin/rishi" "run" "tools/mandi_settle_view.rish"]
+assert mandi_settle_view.ok else "Mandi settle view witness failed"
+say "GREEN: Mandi settle view witness passed."
+
+say "witness suite: Realidream forge query view (Tablecloth forge hits → Skate)…"
+let forge_query = run ["rishi/bin/rishi" "run" "tools/realidream_forge_query_view.rish"]
+assert forge_query.ok else "Realidream forge query view witness failed"
+say "GREEN: Realidream forge query view witness passed."
+
+say "witness suite: Realidream forge query device view (device forge hits → Skate)…"
+let forge_query_device = run ["rishi/bin/rishi" "run" "tools/realidream_forge_query_device_view.rish"]
+assert forge_query_device.ok else "Realidream forge query device view witness failed"
+say "GREEN: Realidream forge query device view witness passed."
+
+say "witness suite: Realidream forge query unified view (hosted + device → Skate)…"
+let forge_query_unified = run ["rishi/bin/rishi" "run" "tools/realidream_forge_query_unified_view.rish"]
+assert forge_query_unified.ok else "Realidream forge query unified view witness failed"
+say "GREEN: Realidream forge query unified view witness passed."
+
+say "witness suite: Anvil corpus view (query hits → Skate)…"
+let anvil_corpus_view = run ["rishi/bin/rishi" "run" "tools/inference_anvil_corpus_view.rish"]
+assert anvil_corpus_view.ok else "Anvil corpus view witness failed"
+say "GREEN: Anvil corpus view witness passed."
+
+say "witness suite: Scribble outline view (headings → Skate)…"
+let scribble_view = run ["rishi/bin/rishi" "run" "tools/inference_scribble_view.rish"]
+assert scribble_view.ok else "Scribble outline view witness failed"
+say "GREEN: Scribble outline view witness passed."
+
+say "witness suite: Anvil corpus prefix view (path_prefix → Skate)…"
+let anvil_prefix_view = run ["rishi/bin/rishi" "run" "tools/inference_anvil_corpus_prefix_view.rish"]
+assert anvil_prefix_view.ok else "Anvil corpus prefix view witness failed"
+say "GREEN: Anvil corpus prefix view witness passed."
+
+say "witness suite: Dimeroll exception view (refused drafts → Skate)…"
+let exception_view = run ["rishi/bin/rishi" "run" "tools/dimeroll_exception_view.rish"]
+assert exception_view.ok else "Dimeroll exception view witness failed"
+say "GREEN: Dimeroll exception view witness passed."
+
+say "witness suite: Lattice lap 5 (transpose)…"
+let lattice_lap6 = run ["rishi/bin/rishi" "run" "tools/lattice_lap6.rish"]
+assert lattice_lap6.ok else "Lattice lap 5 witness failed"
+say "GREEN: Lattice lap 5 witness passed."
+
+say "witness suite: Anvil corpus rish view (kind rish → Skate)…"
+let anvil_rish_view = run ["rishi/bin/rishi" "run" "tools/inference_anvil_corpus_rish_view.rish"]
+assert anvil_rish_view.ok else "Anvil corpus rish view witness failed"
+say "GREEN: Anvil corpus rish view witness passed."
+
+say "witness suite: Scribble lap 4 (paragraph extract)…"
+let scribble_lap5 = run ["rishi/bin/rishi" "run" "tools/scribble_lap5.rish"]
+assert scribble_lap5.ok else "Scribble lap 4 witness failed"
+say "GREEN: Scribble lap 4 witness passed."
+
+say "witness suite: Dimeroll P&L view (income statement → Skate)…"
+let pnl_view = run ["rishi/bin/rishi" "run" "tools/dimeroll_pnl_view.rish"]
+assert pnl_view.ok else "Dimeroll P&L view witness failed"
+say "GREEN: Dimeroll P&L view witness passed."
+
+say "witness suite: Lattice lap 6 (elementwise mul)…"
+let lattice_lap7 = run ["rishi/bin/rishi" "run" "tools/lattice_lap7.rish"]
+assert lattice_lap7.ok else "Lattice lap 6 witness failed"
+say "GREEN: Lattice lap 6 witness passed."
+
+say "witness suite: Scribble paragraphs view (prose → Skate)…"
+let scribble_para_view = run ["rishi/bin/rishi" "run" "tools/inference_scribble_para_view.rish"]
+assert scribble_para_view.ok else "Scribble paragraphs view witness failed"
+say "GREEN: Scribble paragraphs view witness passed."
+
+say "witness suite: Dimeroll BS view (balance sheet → Skate)…"
+let bs_view = run ["rishi/bin/rishi" "run" "tools/dimeroll_bs_view.rish"]
+assert bs_view.ok else "Dimeroll BS view witness failed"
+say "GREEN: Dimeroll BS view witness passed."
+
+say "witness suite: Lantern lap 4 (top_p)…"
+let lantern_lap4 = run ["rishi/bin/rishi" "run" "tools/lantern_lap4.rish"]
+assert lantern_lap4.ok else "Lantern lap 4 witness failed"
+say "GREEN: Lantern lap 4 witness passed."
+
+say "witness suite: Lattice lap 7 (fill)…"
+let lattice_lap8 = run ["rishi/bin/rishi" "run" "tools/lattice_lap8.rish"]
+assert lattice_lap8.ok else "Lattice lap 7 witness failed"
+say "GREEN: Lattice lap 7 witness passed."
+
+say "witness suite: Dimeroll TB view (trial balance → Skate)…"
+let tb_view = run ["rishi/bin/rishi" "run" "tools/dimeroll_tb_view.rish"]
+assert tb_view.ok else "Dimeroll TB view witness failed"
+say "GREEN: Dimeroll TB view witness passed."
+
+say "witness suite: Scribble fence kinds view (rye/rish/plain → Skate)…"
+let scribble_fence_view = run ["rishi/bin/rishi" "run" "tools/inference_scribble_fence_view.rish"]
+assert scribble_fence_view.ok else "Scribble fence kinds view witness failed"
+say "GREEN: Scribble fence kinds view witness passed."
+
+say "witness suite: Lantern lap 5 (err_stop)…"
+let lantern_lap5 = run ["rishi/bin/rishi" "run" "tools/lantern_lap5.rish"]
+assert lantern_lap5.ok else "Lantern lap 5 witness failed"
+say "GREEN: Lantern lap 5 witness passed."
+
+say "witness suite: Lattice lap 8 (copy)…"
+let lattice_lap9 = run ["rishi/bin/rishi" "run" "tools/lattice_lap9.rish"]
+assert lattice_lap9.ok else "Lattice lap 8 witness failed"
+say "GREEN: Lattice lap 8 witness passed."
+
+say "witness suite: Anvil corpus rye prefix view (rye + pond/ → Skate)…"
+let rye_prefix_view = run ["rishi/bin/rishi" "run" "tools/inference_anvil_corpus_rye_prefix_view.rish"]
+assert rye_prefix_view.ok else "Anvil corpus rye prefix view witness failed"
+say "GREEN: Anvil corpus rye prefix view witness passed."
+
+say "witness suite: Scribble lap 6 (plain snippets)…"
+let scribble_lap7 = run ["rishi/bin/rishi" "run" "tools/scribble_lap7.rish"]
+assert scribble_lap7.ok else "Scribble lap 6 witness failed"
+say "GREEN: Scribble lap 6 witness passed."
+
+say "witness suite: Lantern lap 6 (stop_sequence)…"
+let lantern_lap6 = run ["rishi/bin/rishi" "run" "tools/lantern_lap6.rish"]
+assert lantern_lap6.ok else "Lantern lap 6 witness failed"
+say "GREEN: Lantern lap 6 witness passed."
+
+say "witness suite: Lattice lap 9 (sub)…"
+let lattice_lap10 = run ["rishi/bin/rishi" "run" "tools/lattice_lap10.rish"]
+assert lattice_lap10.ok else "Lattice lap 9 witness failed"
+say "GREEN: Lattice lap 9 witness passed."
+
+say "witness suite: Dimeroll journal view (entries → Skate)…"
+let journal_view = run ["rishi/bin/rishi" "run" "tools/dimeroll_journal_view.rish"]
+assert journal_view.ok else "Dimeroll journal view witness failed"
+say "GREEN: Dimeroll journal view witness passed."
+
+say "witness suite: Scribble plain snippets view (unmarked fences → Skate)…"
+let scribble_plain_view = run ["rishi/bin/rishi" "run" "tools/inference_scribble_plain_view.rish"]
+assert scribble_plain_view.ok else "Scribble plain snippets view witness failed"
+say "GREEN: Scribble plain snippets view witness passed."
+
+say "witness suite: Lantern lap 7 (stop_sequence request pin)…"
+let lantern_lap7 = run ["rishi/bin/rishi" "run" "tools/lantern_lap7.rish"]
+assert lantern_lap7.ok else "Lantern lap 7 witness failed"
+say "GREEN: Lantern lap 7 witness passed."
+
+say "witness suite: Inference assist view lap 5 (plain + journal)…"
+let assist_view_lap5 = run ["rishi/bin/rishi" "run" "tools/inference_assist_view_lap5.rish"]
+assert assist_view_lap5.ok else "Inference assist view lap 5 witness failed"
+say "GREEN: Inference assist view lap 5 witness passed."
+
+say "witness suite: Inference assist sight lap 3 (plain + journal)…"
+let assist_sight_lap3 = run ["rishi/bin/rishi" "run" "tools/inference_assist_sight_lap3.rish"]
+assert assist_sight_lap3.ok else "Inference assist sight lap 3 witness failed"
+say "GREEN: Inference assist sight lap 3 witness passed."
+
+say "witness suite: Linengrow sight view lap 2 (journal on glass)…"
+let sight_view_lap2 = run ["rishi/bin/rishi" "run" "tools/dimeroll_sight_view_lap2.rish"]
+assert sight_view_lap2.ok else "Linengrow sight view lap 2 witness failed"
+say "GREEN: Linengrow sight view lap 2 witness passed."
+
+say "witness suite: Lattice lap 10 (neg)…"
+let lattice_lap11 = run ["rishi/bin/rishi" "run" "tools/lattice_lap11.rish"]
+assert lattice_lap11.ok else "Lattice lap 10 witness failed"
+say "GREEN: Lattice lap 10 witness passed."
+
+say "witness suite: Dimeroll chart view (accounts → Skate)…"
+let chart_view = run ["rishi/bin/rishi" "run" "tools/dimeroll_chart_view.rish"]
+assert chart_view.ok else "Dimeroll chart view witness failed"
+say "GREEN: Dimeroll chart view witness passed."
+
+say "witness suite: Anvil corpus tools prefix view (tools/ → Skate)…"
+let tools_prefix_view = run ["rishi/bin/rishi" "run" "tools/inference_anvil_corpus_tools_prefix_view.rish"]
+assert tools_prefix_view.ok else "Anvil corpus tools prefix view witness failed"
+say "GREEN: Anvil corpus tools prefix view witness passed."
+
+say "witness suite: Lantern lap 8 (prompt pin)…"
+let lantern_lap8 = run ["rishi/bin/rishi" "run" "tools/lantern_lap8.rish"]
+assert lantern_lap8.ok else "Lantern lap 8 witness failed"
+say "GREEN: Lantern lap 8 witness passed."
+
+say "witness suite: Lattice lap 11 (div)…"
+let lattice_lap12 = run ["rishi/bin/rishi" "run" "tools/lattice_lap12.rish"]
+assert lattice_lap12.ok else "Lattice lap 11 witness failed"
+say "GREEN: Lattice lap 11 witness passed."
+
+say "witness suite: Scribble rye snippets view (rye fences → Skate)…"
+let scribble_rye_view = run ["rishi/bin/rishi" "run" "tools/inference_scribble_rye_view.rish"]
+assert scribble_rye_view.ok else "Scribble rye snippets view witness failed"
+say "GREEN: Scribble rye snippets view witness passed."
+
+say "witness suite: Anvil corpus dimeroll prefix view (dimeroll/ → Skate)…"
+let dimeroll_prefix_view = run ["rishi/bin/rishi" "run" "tools/inference_anvil_corpus_dimeroll_prefix_view.rish"]
+assert dimeroll_prefix_view.ok else "Anvil corpus dimeroll prefix view witness failed"
+say "GREEN: Anvil corpus dimeroll prefix view witness passed."
+
+say "witness suite: Lantern lap 9 (max_tokens pin)…"
+let lantern_lap9 = run ["rishi/bin/rishi" "run" "tools/lantern_lap9.rish"]
+assert lantern_lap9.ok else "Lantern lap 9 witness failed"
+say "GREEN: Lantern lap 9 witness passed."
+
+say "witness suite: Lattice lap 12 (reduce_mean)…"
+let lattice_lap13 = run ["rishi/bin/rishi" "run" "tools/lattice_lap13.rish"]
+assert lattice_lap13.ok else "Lattice lap 12 witness failed"
+say "GREEN: Lattice lap 12 witness passed."
+
+say "witness suite: Scribble rish snippets view (rish fences → Skate)…"
+let scribble_rish_view = run ["rishi/bin/rishi" "run" "tools/inference_scribble_rish_view.rish"]
+assert scribble_rish_view.ok else "Scribble rish snippets view witness failed"
+say "GREEN: Scribble rish snippets view witness passed."
+
+say "witness suite: Linengrow sight view lap 3 (chart on glass)…"
+let sight_view_lap3 = run ["rishi/bin/rishi" "run" "tools/dimeroll_sight_view_lap3.rish"]
+assert sight_view_lap3.ok else "Linengrow sight view lap 3 witness failed"
+say "GREEN: Linengrow sight view lap 3 witness passed."
+
+say "witness suite: Lantern lap 10 (text pin)…"
+let lantern_lap10 = run ["rishi/bin/rishi" "run" "tools/lantern_lap10.rish"]
+assert lantern_lap10.ok else "Lantern lap 10 witness failed"
+say "GREEN: Lantern lap 10 witness passed."
+
+say "witness suite: Lattice lap 13 (abs)…"
+let lattice_lap14 = run ["rishi/bin/rishi" "run" "tools/lattice_lap14.rish"]
+assert lattice_lap14.ok else "Lattice lap 13 witness failed"
+say "GREEN: Lattice lap 13 witness passed."

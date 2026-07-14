@@ -1,0 +1,27 @@
+//! Rye test: WindowIterator via mem.window — pass 9954.
+//!
+//! Sliding windows back hex dumps and chunked I/O; pairs with split iterators.
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    var chunk = mem.window(u8, "abcdefg", 3, 3);
+    std.debug.assert(mem.eql(u8, chunk.next().?, "abc"));
+    std.debug.assert(mem.eql(u8, chunk.next().?, "def"));
+    std.debug.assert(mem.eql(u8, chunk.next().?, "g"));
+    std.debug.assert(chunk.next() == null);
+
+    chunk.reset();
+    std.debug.assert(mem.eql(u8, chunk.next().?, "abc"));
+
+    var slide = mem.window(u8, "abcdefg", 3, 1);
+    std.debug.assert(mem.eql(u8, slide.next().?, "abc"));
+    std.debug.assert(mem.eql(u8, slide.next().?, "bcd"));
+    std.debug.assert(mem.eql(u8, slide.next().?, "cde"));
+
+    var empty = mem.window(u8, "", 3, 1);
+    std.debug.assert(empty.next() == null);
+
+    std.debug.print("rye: WindowIterator assertions confirmed.\n", .{});
+}

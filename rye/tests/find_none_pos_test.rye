@@ -1,0 +1,19 @@
+//! Rye test: std.mem.findNonePos and findNone — pass 9965.
+//!
+//! strspn-like search for the first byte outside a set.
+//! Pairs with findAnyPos (9967).
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    std.debug.assert(mem.indexOfNone(u8, "abc123", "123").? == 0);
+    std.debug.assert(mem.indexOfNone(u8, "123abc", "123").? == 3);
+    std.debug.assert(mem.indexOfNone(u8, "123123", "123") == null);
+    std.debug.assert(mem.indexOfNone(u8, "333333", "123") == null);
+
+    std.debug.assert(mem.indexOfNonePos(u8, "abc123", 3, "321") == null);
+    std.debug.assert(mem.indexOfNonePos(u8, "abc123", 1, "bc").? == 3);
+
+    std.debug.print("rye: findNonePos assertions confirmed.\n", .{});
+}

@@ -1,0 +1,25 @@
+# mandi_listing_settle.rish — Mandi lap 3: settle vessel listing (MALA + WOV in-process).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/mandi_listing_settle.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mandi/bin/listing-settle"
+
+let build = run ["sh" "-c" "mkdir -p mandi/bin && env RYE_ZIG=${zig} rye/bin/rye build mandi/listing_settle.rye -femit-bin=${bin}"]
+assert build.ok else "Mandi listing settle build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "Mandi listing settle selftest exited non-zero"
+assert selftest.out contains "GREEN" else "Mandi listing settle selftest not GREEN"
+assert selftest.out contains "settled" else "Mandi listing settle missing settle claim"
+assert selftest.out contains "zero amount refused" else "Mandi listing settle missing zero refuse"
+assert selftest.out contains "lying settle refused" else "Mandi listing settle missing lying refuse"
+assert selftest.out contains "listing receipt mismatch refused" else "Mandi listing settle missing listing mismatch refuse"
+assert selftest.out contains "payment digest mismatch refused" else "Mandi listing settle missing payment mismatch refuse"
+assert selftest.out contains "price mismatch refused" else "Mandi listing settle missing price mismatch refuse"
+assert selftest.out contains "mala fold refused" else "Mandi listing settle missing mala refuse"
+assert selftest.out contains "wov insufficient refused" else "Mandi listing settle missing wov refuse"
+assert selftest.out contains "double settle refused" else "Mandi listing settle missing double settle refuse"
+
+say "GREEN: Mandi lap 3 — listing settle binds MALA send + WOV transfer; no identities."

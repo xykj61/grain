@@ -1,0 +1,339 @@
+//! granary/consumer_edge_pass.rye — Seam Door 3: consumer-edge pass (access vs truth).
+//!
+//! Pass = door (access). Record = room (truth). First green is in-process only.
+//! Reuses Granary published-set gate and name-fact verify; does not replace them.
+//!
+//!   rye build granary/consumer_edge_pass.rye -femit-bin=granary/bin/consumer-edge-pass
+//!   granary/bin/consumer-edge-pass selftest
+//!
+//! Ground: ER [`../external-research/20260712-053324_ocapn-beside-comlink.md`](../external-research/20260712-053324_ocapn-beside-comlink.md)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const kumara = @import("kumara.rye");
+const tally_copy = @import("tally_copy.rye");
+const gc = @import("granary_core.rye");
+
+const door3_version = "20260712.063213";
+
+pub const PassError = error{
+    InvalidPass,
+    BadHex,
+    Overflow,
+    VerifyFailed,
+    PassRefused,
+    ScopeMismatch,
+    NotPublished,
+    DigestMismatch,
+    ResinMissing,
+    StoreFull,
+    DuplicateFact,
+    UnknownName,
+    PathBad,
+    FrameOverflow,
+    LogOverflow,
+};
+
+const max_pass_len: u32 = 1024;
+const pass_sig_hex_len: u32 = kumara.signature_length * 2;
+
+fn trim_line(line: []const u8) []const u8 {
+    return std.mem.trim(u8, line, " \t\r\n");
+}
+
+fn is_lower_hex(c: u8) bool {
+    return (c >= '0' and c <= '9') or (c >= 'a' and c <= 'f');
+}
+
+fn require_lower_hex(value: []const u8, want_len: u32) PassError!void {
+    if (value.len != want_len) return error.InvalidPass;
+    var i: u32 = 0;
+    while (i < value.len) : (i += 1) {
+        if (!is_lower_hex(value[i])) return error.InvalidPass;
+    }
+}
+
+fn write_hex(bytes: []const u8, out: []u8) void {
+    assert(out.len >= bytes.len * 2);
+    var i: u32 = 0;
+    while (i < bytes.len) : (i += 1) {
+        _ = std.fmt.bufPrint(out[i * 2 ..][0..2], "{x:0>2}", .{bytes[i]}) catch unreachable;
+    }
+}
+
+fn decode_hex_lower(hex: []const u8, out: []u8) PassError!void {
+    if (hex.len != out.len * 2) return error.BadHex;
+    var i: u32 = 0;
+    while (i < out.len) : (i += 1) {
+        const hi = hex[i * 2];
+        const lo = hex[i * 2 + 1];
+        if (!is_lower_hex(hi) or !is_lower_hex(lo)) return error.BadHex;
+        const hv: u8 = if (hi <= '9') hi - '0' else hi - 'a' + 10;
+        const lv: u8 = if (lo <= '9') lo - '0' else lo - 'a' + 10;
+        out[i] = (hv << 4) | lv;
+    }
+}
+
+fn append_kv(out: []u8, off: *u32, key: []const u8, value: []const u8) PassError!void {
+    const need = key.len + 1 + value.len + 1;
+    if (off.* + need > out.len) return error.Overflow;
+    tally_copy.copy_disjoint(u8, out[off.*..][0..key.len], key);
+    off.* += @intCast(key.len);
+    out[off.*] = ' ';
+    off.* += 1;
+    tally_copy.copy_disjoint(u8, out[off.*..][0..value.len], value);
+    off.* += @intCast(value.len);
+    out[off.*] = '\n';
+    off.* += 1;
+}
+
+const PassFields = struct {
+    scope: []const u8,
+    resin_digest: []const u8,
+    person: []const u8,
+    weave: []const u8,
+    pass_sig: []const u8,
+};
+
+fn parse_pass(text: []const u8, out: *PassFields) PassError!void {
+    var format: ?[]const u8 = null;
+    var scope: ?[]const u8 = null;
+    var resin_digest: ?[]const u8 = null;
+    var person: ?[]const u8 = null;
+    var weave: ?[]const u8 = null;
+    var pass_sig: ?[]const u8 = null;
+
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    while (lines.next()) |raw| {
+        const line = trim_line(raw);
+        if (line.len == 0 or line[0] == '#') continue;
+        const space = std.mem.indexOfScalar(u8, line, ' ') orelse return error.InvalidPass;
+        const key = line[0..space];
+        const value = trim_line(line[space + 1 ..]);
+        if (value.len == 0) return error.InvalidPass;
+        if (std.mem.eql(u8, key, "format")) {
+            format = value;
+        } else if (std.mem.eql(u8, key, "scope")) {
+            scope = value;
+        } else if (std.mem.eql(u8, key, "resin_digest")) {
+            try require_lower_hex(value, gc.digest_hex_len);
+            resin_digest = value;
+        } else if (std.mem.eql(u8, key, "person")) {
+            person = value;
+        } else if (std.mem.eql(u8, key, "weave")) {
+            weave = value;
+        } else if (std.mem.eql(u8, key, "pass_sig")) {
+            try require_lower_hex(value, pass_sig_hex_len);
+            pass_sig = value;
+        } else return error.InvalidPass;
+    }
+    if (format == null or scope == null or pass_sig == null) return error.InvalidPass;
+    if (!std.mem.eql(u8, format.?, "pass-v1")) return error.InvalidPass;
+    out.* = .{
+        .scope = scope.?,
+        .resin_digest = if (resin_digest) |d| d else "",
+        .person = if (person) |p| p else "",
+        .weave = if (weave) |w| w else "",
+        .pass_sig = pass_sig.?,
+    };
+}
+
+fn write_canonical_read(digest_hex: []const u8, out: []u8) PassError!u32 {
+    var off: u32 = 0;
+    try append_kv(out, &off, "format", "pass-v1");
+    try append_kv(out, &off, "scope", "read");
+    try append_kv(out, &off, "resin_digest", digest_hex);
+    return off;
+}
+
+fn write_canonical_submit(person: []const u8, weave: []const u8, out: []u8) PassError!u32 {
+    var off: u32 = 0;
+    try append_kv(out, &off, "format", "pass-v1");
+    try append_kv(out, &off, "scope", "submit");
+    try append_kv(out, &off, "person", person);
+    try append_kv(out, &off, "weave", weave);
+    return off;
+}
+
+fn sign_canonical(canonical: []const u8, out_pass: []u8, body_len: u32) PassError!u32 {
+    if (body_len > out_pass.len) return error.Overflow;
+    tally_copy.copy_disjoint(u8, out_pass[0..body_len], canonical[0..body_len]);
+    const sig = kumara.sign(canonical, gc.publisher_keypair(), null);
+    const sig_bytes = sig.toBytes();
+    var sig_hex: [pass_sig_hex_len]u8 = undefined;
+    write_hex(&sig_bytes, &sig_hex);
+    var off = body_len;
+    try append_kv(out_pass, &off, "pass_sig", &sig_hex);
+    return off;
+}
+
+/// Keeper issues a read pass for one published resin digest.
+pub fn issue_read_pass(digest_hex: []const u8, out: []u8) PassError!u32 {
+    try require_lower_hex(digest_hex, gc.digest_hex_len);
+    var canonical: [max_pass_len]u8 = undefined;
+    const canon_len = try write_canonical_read(digest_hex, &canonical);
+    return try sign_canonical(canonical[0..canon_len], out, canon_len);
+}
+
+/// Keeper issues a submit pass for one person/weave lane.
+pub fn issue_submit_pass(person: []const u8, weave: []const u8, out: []u8) PassError!u32 {
+    if (person.len == 0 or weave.len == 0) return error.InvalidPass;
+    if (person.len > gc.max_person or weave.len > gc.max_weave) return error.Overflow;
+    var canonical: [max_pass_len]u8 = undefined;
+    const canon_len = try write_canonical_submit(person, weave, &canonical);
+    return try sign_canonical(canonical[0..canon_len], out, canon_len);
+}
+
+fn verify_pass_sig(canonical: []const u8, pass_sig_hex: []const u8) PassError!void {
+    var sig_bytes: [kumara.signature_length]u8 = undefined;
+    try decode_hex_lower(pass_sig_hex, &sig_bytes);
+    kumara.verify_bytes(canonical, &sig_bytes, gc.publisher_keypair().public_key) catch return error.PassRefused;
+}
+
+/// Access layer: valid read pass for this digest.
+pub fn verify_read_pass(pass_text: []const u8, digest_hex: []const u8) PassError!void {
+    try require_lower_hex(digest_hex, gc.digest_hex_len);
+    var fields: PassFields = undefined;
+    try parse_pass(pass_text, &fields);
+    if (!std.mem.eql(u8, fields.scope, "read")) return error.ScopeMismatch;
+    if (!std.mem.eql(u8, fields.resin_digest, digest_hex)) return error.PassRefused;
+    var canonical: [max_pass_len]u8 = undefined;
+    const canon_len = try write_canonical_read(digest_hex, &canonical);
+    try verify_pass_sig(canonical[0..canon_len], fields.pass_sig);
+}
+
+/// Access layer: valid submit pass for this person/weave.
+pub fn verify_submit_pass(pass_text: []const u8, person: []const u8, weave: []const u8) PassError!void {
+    var fields: PassFields = undefined;
+    try parse_pass(pass_text, &fields);
+    if (!std.mem.eql(u8, fields.scope, "submit")) return error.ScopeMismatch;
+    if (!std.mem.eql(u8, fields.person, person) or !std.mem.eql(u8, fields.weave, weave)) return error.PassRefused;
+    var canonical: [max_pass_len]u8 = undefined;
+    const canon_len = try write_canonical_submit(person, weave, &canonical);
+    try verify_pass_sig(canonical[0..canon_len], fields.pass_sig);
+}
+
+/// Pass admits published read; published-set still gates truth of publication.
+pub fn read_with_pass(
+    pass_text: []const u8,
+    host: *const gc.ResinStore,
+    reg: *const gc.Registry,
+    digest_hex: []const u8,
+    out: []u8,
+) PassError!u32 {
+    try verify_read_pass(pass_text, digest_hex);
+    return gc.serve_resin_published(host, reg, digest_hex, out) catch |err| switch (err) {
+        error.NotPublished => return error.NotPublished,
+        error.ResinMissing => return error.ResinMissing,
+        error.DigestMismatch => return error.DigestMismatch,
+        error.Overflow => return error.Overflow,
+        else => return error.VerifyFailed,
+    };
+}
+
+/// Pass admits submit; name-fact signature still gates truth.
+pub fn submit_with_pass(
+    pass_text: []const u8,
+    reg: *gc.Registry,
+    fact_text: []const u8,
+) PassError!void {
+    var fact: gc.NameFact = undefined;
+    gc.parse_name_fact(fact_text, &fact) catch return error.InvalidPass;
+    try verify_submit_pass(pass_text, fact.person, fact.weave);
+    gc.append_fact(reg, fact_text) catch |err| switch (err) {
+        error.VerifyFailed => return error.VerifyFailed,
+        error.DuplicateFact => return error.DuplicateFact,
+        error.Overflow => return error.Overflow,
+        error.InvalidFact => return error.InvalidPass,
+        else => return error.VerifyFailed,
+    };
+}
+
+fn flip_pass_sig(pass: []u8, pass_len: u32) PassError!void {
+    const key = "pass_sig ";
+    const at = std.mem.indexOf(u8, pass[0..pass_len], key) orelse return error.InvalidPass;
+    const hex_at = at + key.len;
+    assert(hex_at < pass_len);
+    pass[hex_at] = if (pass[hex_at] == '0') '1' else '0';
+}
+
+fn run_selftest(_: std.Io) !u8 {
+    // --- Read path: published admitted ---
+    var host = gc.ResinStore.empty();
+    const public_bytes = "# door3 greeting\n";
+    const digest = try gc.put_resin(&host, public_bytes);
+    var fact_buf: [gc.max_fact_len]u8 = undefined;
+    const fact_len = try gc.sign_name_fact(gc.granary_version, "rio", "greeting", &digest, &fact_buf);
+    var reg = gc.Registry.empty();
+    try gc.append_fact(&reg, fact_buf[0..fact_len]);
+
+    var read_pass: [max_pass_len]u8 = undefined;
+    const read_pass_len = try issue_read_pass(&digest, &read_pass);
+    var out: [gc.max_resin_bytes]u8 = undefined;
+    const n = try read_with_pass(read_pass[0..read_pass_len], &host, &reg, &digest, &out);
+    assert(n == public_bytes.len);
+    assert(std.mem.eql(u8, out[0..n], public_bytes));
+    print("door3: published read admitted — GREEN welcome\n", .{});
+
+    // --- Read path: unpublished refused (same store) ---
+    const private_bytes = "# private note\n";
+    const private_digest = try gc.put_resin(&host, private_bytes);
+    assert(!gc.digest_is_published(&reg, private_digest[0..]));
+    var private_pass: [max_pass_len]u8 = undefined;
+    const private_pass_len = try issue_read_pass(private_digest[0..], &private_pass);
+    if (read_with_pass(private_pass[0..private_pass_len], &host, &reg, private_digest[0..], &out)) |_| {
+        return error.UnpublishedAdmitted;
+    } else |err| {
+        assert(err == error.NotPublished);
+    }
+    print("door3: unpublished digest refused — GREEN unwelcome\n", .{});
+
+    // --- Read path: lying pass refused ---
+    var lying_pass: [max_pass_len]u8 = undefined;
+    tally_copy.copy_disjoint(u8, lying_pass[0..read_pass_len], read_pass[0..read_pass_len]);
+    try flip_pass_sig(&lying_pass, read_pass_len);
+    if (read_with_pass(lying_pass[0..read_pass_len], &host, &reg, &digest, &out)) |_| {
+        return error.LyingPassAdmitted;
+    } else |err| {
+        assert(err == error.PassRefused);
+    }
+    print("door3: lying pass refused — GREEN unwelcome\n", .{});
+
+    // --- Submit path: signed fact admitted ---
+    const submit_digest = try gc.put_resin(&host, "# sketch body\n");
+    var submit_fact: [gc.max_fact_len]u8 = undefined;
+    const submit_fact_len = try gc.sign_name_fact(gc.granary_version, "rio", "sketch", &submit_digest, &submit_fact);
+    var submit_pass: [max_pass_len]u8 = undefined;
+    const submit_pass_len = try issue_submit_pass("rio", "sketch", &submit_pass);
+    var submit_reg = gc.Registry.empty();
+    try submit_with_pass(submit_pass[0..submit_pass_len], &submit_reg, submit_fact[0..submit_fact_len]);
+    assert(submit_reg.fact_count == 1);
+    print("door3: signed submit admitted — GREEN welcome\n", .{});
+
+    // --- Submit path: lying fact signature refused ---
+    var lying_fact: [gc.max_fact_len]u8 = undefined;
+    tally_copy.copy_disjoint(u8, lying_fact[0..submit_fact_len], submit_fact[0..submit_fact_len]);
+    const sig_key = "stamp_sig ";
+    const sig_at = std.mem.indexOf(u8, lying_fact[0..submit_fact_len], sig_key) orelse return error.InvalidPass;
+    const hex_at = sig_at + sig_key.len;
+    lying_fact[hex_at] = if (lying_fact[hex_at] == '0') '1' else '0';
+    var lie_reg = gc.Registry.empty();
+    if (submit_with_pass(submit_pass[0..submit_pass_len], &lie_reg, lying_fact[0..submit_fact_len])) |_| {
+        return error.LyingFactAdmitted;
+    } else |err| {
+        assert(err == error.VerifyFailed);
+    }
+    print("door3: lying signature refused — GREEN unwelcome\n", .{});
+
+    print("door3: version {s}\n", .{door3_version});
+    print("GREEN: Door 3 consumer-edge pass — access vs truth.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(init.arena.allocator());
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) return run_selftest(io);
+    return run_selftest(io);
+}

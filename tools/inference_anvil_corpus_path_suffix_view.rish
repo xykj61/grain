@@ -1,0 +1,19 @@
+# inference_anvil_corpus_path_suffix_view.rish — Anvil path_suffix → Skate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/inference_anvil_corpus_path_suffix_view.rish
+
+let bin = "pond/bin/drawn-terminal"
+
+say "build: Anvil corpus path_suffix view — drawn-terminal compile"
+let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+assert build.ok else "drawn_terminal build failed for path_suffix view"
+assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
+
+let corpus = run ["sh" "-c" "${bin} corpuspathsuffixviewtest 2>&1"]
+assert corpus.ok else "drawn terminal corpuspathsuffixviewtest exited non-zero"
+assert corpus.out contains "path suffix view" else "path suffix view missing expected output"
+assert corpus.out contains "GREEN" else "Anvil path suffix view not GREEN"
+assert corpus.out contains "lines=5" else "path suffix view missing five-line frame"
+
+say "GREEN: Anvil corpus path_suffix view — .rish chunks on Skate."

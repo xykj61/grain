@@ -1,0 +1,44 @@
+# comlink_vessel_fetch_wire_lab.rish — Amphora vessel-fetch device-wire QEMU lab.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/comlink_vessel_fetch_wire_lab.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let build_dir = "comlink/.build"
+let port_request_raw = env "COMLINK_AMPHORA_FETCH_LAB_PORT"
+if port_request_raw == "" then let port_request = "15571" else let port_request = port_request_raw
+let port_response_raw = env "COMLINK_AMPHORA_FETCH_RESP_LAB_PORT"
+if port_response_raw == "" then let port_response = "15572" else let port_response = port_response_raw
+let sock_request = "127.0.0.1:${port_request}"
+let sock_response = "127.0.0.1:${port_response}"
+
+let prep = run ["sh" "-c" "mkdir -p ${build_dir}"]
+assert prep.ok else "amphora vessel fetch wire lab mkdir failed"
+
+let build_source_rx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_vessel_fetch_source_rx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/vessel-fetch-source-rx.elf"]
+assert build_source_rx.ok else "vessel fetch source rx guest build failed"
+
+let build_fetcher_tx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_vessel_fetch_fetcher_tx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/vessel-fetch-fetcher-tx.elf"]
+assert build_fetcher_tx.ok else "vessel fetch fetcher tx guest build failed"
+
+let build_fetcher_rx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_vessel_fetch_fetcher_rx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/vessel-fetch-fetcher-rx.elf"]
+assert build_fetcher_rx.ok else "vessel fetch fetcher rx guest build failed"
+
+let build_source_tx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_vessel_fetch_source_tx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/vessel-fetch-source-tx.elf"]
+assert build_source_tx.ok else "vessel fetch source tx guest build failed"
+
+let request_rx = spawn ["timeout" "60" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,listen=${sock_request}" "-kernel" "${build_dir}/vessel-fetch-source-rx.elf"]
+let request_pause = run ["sleep" "1"]
+assert request_pause.ok else "request hop sleep failed"
+let request_tx = run ["timeout" "30" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,connect=${sock_request}" "-kernel" "${build_dir}/vessel-fetch-fetcher-tx.elf"]
+let request_rx_done = wait-for request_rx
+assert request_rx_done.out contains "sealed vessel fetch request GREEN" else "request hop RED"
+
+let response_rx = spawn ["timeout" "60" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,listen=${sock_response}" "-kernel" "${build_dir}/vessel-fetch-fetcher-rx.elf"]
+let response_pause = run ["sleep" "1"]
+assert response_pause.ok else "response hop sleep failed"
+let response_tx = run ["timeout" "30" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,connect=${sock_response}" "-kernel" "${build_dir}/vessel-fetch-source-tx.elf"]
+let response_rx_done = wait-for response_rx
+assert response_rx_done.out contains "sealed vessel fetch response GREEN" else "response hop RED"
+
+say "amphora device wire lab: GREEN (request + response)"

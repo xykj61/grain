@@ -1,0 +1,51 @@
+//! comlink/guest_open_asks_tx.rye — OA-L2 device wire TX guest (freestanding RISC-V virt).
+//!
+//! Signs the pinned witness request, seals the compact payload with wire_format,
+//! and sends it across virtio-net to the open asks RX guest.
+
+const vn = @import("virtio_net.rye");
+const tally_copy = @import("tally_copy.rye");
+const wf = @import("wire_format.rye");
+const oa = @import("open_asks.rye");
+const kumara = @import("kumara.rye");
+
+var tx: vn.TxQueue = undefined;
+
+export fn _start() linksection(".text.init") callconv(.naked) noreturn {
+    asm volatile (
+        \\ li sp, 0x80100000
+        \\ j kmain
+    );
+}
+
+export fn kmain() callconv(.c) noreturn {
+    vn.init_device();
+    tx.init();
+    vn.driver_ok();
+
+    const kp = kumara.keypair_from_seed(&oa.poster_seed);
+    const fact = oa.witness_canonical_request;
+    const sig = kumara.sign(fact, kp, null);
+
+    var payload: [oa.oa2_payload_header + oa.max_oa_fact]u8 = undefined;
+    const payload_len = oa.encode_compact_payload(sig, fact, &payload) catch unreachable;
+
+    var scratch: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const dg_len: u32 = @intCast(wf.seal_message(payload[0..payload_len], &scratch) catch unreachable);
+
+    const buf = tx.frame();
+    @memset(buf[0..vn.virtio_net_hdr_len], 0);
+    const eoff = vn.virtio_net_hdr_len;
+    var i: u32 = 0;
+    while (i < 6) : (i += 1) buf[eoff + i] = 0xff;
+    while (i < 12) : (i += 1) buf[eoff + i] = 0x00;
+    buf[eoff + 12] = @truncate(vn.lab_ethertype >> 8);
+    buf[eoff + 13] = @truncate(vn.lab_ethertype);
+    const poff = eoff + vn.eth_header_len;
+    tally_copy.copy_disjoint(u8, buf[poff..][0..dg_len], scratch[0..dg_len]);
+    const total: u32 = poff + dg_len;
+
+    tx.send(total);
+    vn.write_str("oal2 device wire: sealed request TX sent\n");
+    vn.finish_pass();
+}

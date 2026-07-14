@@ -1,0 +1,21 @@
+# realidream_query_unified_view.rish — Realidream query unified view: hosted + device → Skate.
+#
+# Folds both Tablecloth query fixtures through SLC-2a drawn terminal on one frame.
+# No new input, no Pond policy, no Dexter graduation — thin-view exception family.
+# Run from the repository root:
+#   rishi/bin/rishi run tools/realidream_query_unified_view.rish
+
+let bin = "pond/bin/drawn-terminal"
+
+say "build: Realidream query unified view — drawn-terminal compile"
+let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+assert build.ok else "drawn_terminal build failed for query unified view witness"
+assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
+
+let query = run ["sh" "-c" "${bin} queryunifiedviewtest 2>&1"]
+assert query.ok else "drawn terminal queryunifiedviewtest exited non-zero"
+assert query.out contains "query unified view" else "query unified view witness missing expected output"
+assert query.out contains "GREEN" else "Realidream query unified view witness not GREEN"
+assert query.out contains "lines=8" else "query unified view missing eight-line frame"
+
+say "GREEN: Realidream query unified view — hosted and device hits compose one Skate frame."

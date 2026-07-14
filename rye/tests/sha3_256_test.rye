@@ -1,0 +1,40 @@
+//! Rye test: SHA3-256 parity with Zig 0.16.0.
+//!
+//! Goal: prove that SHA3-256, as provided by the standard crypto library,
+//! produces the known-correct digest for a sample input. SHA3-256 is
+//! the content-naming primitive Mantra uses for its weave lines — a
+//! shorter digest than SHA3-512, trading some collision resistance for
+//! a name that fits comfortably in a line of text.
+//!
+//! Method: hash the bytes "Rye" with SHA3-256, render the digest as lowercase
+//! hex by hand (no reliance on a volatile formatting API), and assert it
+//! equals a digest verified independently before this test was written.
+
+const std = @import("std");
+const Sha3_256 = std.crypto.hash.sha3.Sha3_256;
+
+pub fn main() void {
+    const message = "Rye";
+
+    // Compute the SHA3-256 digest of the message.
+    var digest: [Sha3_256.digest_length]u8 = undefined;
+    Sha3_256.hash(message, &digest, .{});
+
+    // Render the digest as lowercase hex with an explicit, bounded loop.
+    const hex_alphabet = "0123456789abcdef";
+    var actual_hex: [Sha3_256.digest_length * 2]u8 = undefined;
+    for (digest, 0..) |byte, i| {
+        actual_hex[i * 2] = hex_alphabet[byte >> 4];
+        actual_hex[i * 2 + 1] = hex_alphabet[byte & 0x0f];
+    }
+
+    // The known-correct SHA3-256 of "Rye", verified independently.
+    const expected_hex = "d10e097c85b00d288dfe8b29b8feaa8b331db1d37c3b5366c0052958779e3e40";
+
+    // Assert the positive space we expect: the digest matches exactly.
+    std.debug.assert(actual_hex.len == expected_hex.len);
+    std.debug.assert(std.mem.eql(u8, &actual_hex, expected_hex));
+
+    std.debug.print("SHA3-256(\"{s}\") = {s}\n", .{ message, actual_hex });
+    std.debug.print("rye: SHA3-256 parity with Zig 0.16.0 confirmed.\n", .{});
+}

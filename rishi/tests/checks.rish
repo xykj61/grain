@@ -1,0 +1,26 @@
+# checks.rish — booleans, comparison, and assert as a gate.
+# Comments begin with '#'. `let` binds; `say` speaks; `==` and `!=` compare;
+# `assert` makes a fact a gate that stops the script when it does not hold.
+
+let a = "rye"
+let b = "rye"
+let n = 42
+
+# A comparison yields a boolean we can bind and speak.
+let same = a == b
+say "a equals b? ${same}"
+
+let differ = a != "rishi"
+say "a differs from rishi? ${differ}"
+
+# A bare name copies a value; an integer compares too.
+let count = n
+say "count is ${count}"
+
+# assert is the gate: each of these holds, so the script runs to the end.
+assert a == b
+assert n == 42
+assert count == n
+assert a != "rishi" else "the names should differ"
+
+say "all checks held."

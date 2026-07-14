@@ -1,0 +1,76 @@
+//! Rye test: a sealed message — the heart of content-centric messaging, shown
+//! working as one value. It composes the three proven primitives with the
+//! strengthened hash: two identities agree a shared secret (X25519, derived from
+//! their Ed25519 identities), seal a payload to it (AEAD), name the sealed bytes
+//! by content (SHA3-512), and attest the name (Ed25519). The reader verifies the
+//! attestation, checks the content-name, derives the same secret, and opens it.
+//! This is active-designing/993 and external-research/yonder/20260618-212112_content-centric-messaging.md, /985 in miniature.
+//!
+//! Deterministic throughout — fixed seeds and nonce — so the output is identical
+//! every run and across both stds, for the parity gate. Fixtures, never secrets.
+
+const std = @import("std");
+const Ed25519 = std.crypto.sign.Ed25519;
+const X25519 = std.crypto.dh.X25519;
+const ChaCha20Poly1305 = std.crypto.aead.chacha_poly.ChaCha20Poly1305;
+const Sha3_512 = std.crypto.hash.sha3.Sha3_512;
+
+/// Derive the symmetric seal key from a shared secret, through the strengthened
+/// hash — so the network's keys and Mantra's names rest on the same function.
+fn seal_key(shared: [32]u8) [ChaCha20Poly1305.key_length]u8 {
+    var digest: [Sha3_512.digest_length]u8 = undefined;
+    Sha3_512.hash(&shared, &digest, .{});
+    return digest[0..ChaCha20Poly1305.key_length].*;
+}
+
+pub fn main() void {
+    // Two identities, each one owner seed (994: one root, derived keys).
+    const alice_id = Ed25519.KeyPair.generateDeterministic([_]u8{0xA1} ** 32) catch unreachable;
+    const bob_id = Ed25519.KeyPair.generateDeterministic([_]u8{0xB0} ** 32) catch unreachable;
+    // Their agreement keys, derived from the very same identities.
+    const alice_x = X25519.KeyPair.fromEd25519(alice_id) catch unreachable;
+    const bob_x = X25519.KeyPair.fromEd25519(bob_id) catch unreachable;
+
+    const message = "Meet me where the rye grows.";
+    const nonce = [_]u8{0x01} ** ChaCha20Poly1305.nonce_length;
+
+    // --- Alice seals to Bob ---
+    const shared_a = X25519.scalarmult(alice_x.secret_key, bob_x.public_key) catch unreachable;
+    const key_a = seal_key(shared_a);
+    var ciphertext: [message.len]u8 = undefined;
+    var tag: [ChaCha20Poly1305.tag_length]u8 = undefined;
+    ChaCha20Poly1305.encrypt(&ciphertext, &tag, message, "", nonce, key_a);
+    // Name the sealed bytes by their content (Mantra-style identity).
+    var name: [Sha3_512.digest_length]u8 = undefined;
+    Sha3_512.hash(&ciphertext, &name, .{});
+    // Alice attests the content-name: she vouches for this sealed content.
+    const sig = alice_id.sign(&name, null) catch unreachable;
+
+    // --- Bob opens it, verifying as he goes ---
+    // 1. The attestation: this content truly came from Alice.
+    sig.verify(&name, alice_id.public_key) catch unreachable;
+    // 2. The content-name matches the bytes (integrity, before trust).
+    var check: [Sha3_512.digest_length]u8 = undefined;
+    Sha3_512.hash(&ciphertext, &check, .{});
+    if (!std.mem.eql(u8, &name, &check)) {
+        std.debug.print("sealed: ERROR — the content-name does not match the bytes.\n", .{});
+        return;
+    }
+    // 3. The same shared secret, derived from Bob's own side.
+    const shared_b = X25519.scalarmult(bob_x.secret_key, alice_x.public_key) catch unreachable;
+    const key_b = seal_key(shared_b);
+    // 4. Open the seal.
+    var opened: [message.len]u8 = undefined;
+    ChaCha20Poly1305.decrypt(&opened, &ciphertext, tag, "", nonce, key_b) catch unreachable;
+
+    if (std.mem.eql(u8, &opened, message)) {
+        std.debug.print("sealed message: Bob verified Alice, checked the name, and opened it.\n", .{});
+        std.debug.print("  message = {s}\n", .{opened});
+    } else {
+        std.debug.print("sealed: ERROR — the opened message differs.\n", .{});
+    }
+    // The content-name — the message's identity on the network (first 16 bytes).
+    std.debug.print("  content-name = ", .{});
+    for (name[0..16]) |b| std.debug.print("{x:0>2}", .{b});
+    std.debug.print("...\n", .{});
+}

@@ -1,0 +1,22 @@
+//! Rye test: std.mem.Allocator.alloc — pass 9987.
+//!
+//! Skate's Grid.init and many modules allocate through `allocator.alloc`.
+//! This test exercises the postcondition strengthened at `allocAdvancedWithRetAddr`:
+//! the returned slice length always equals the requested count.
+
+const std = @import("std");
+
+pub fn main() void {
+    const allocator = std.heap.page_allocator;
+
+    const a = allocator.alloc(u8, 16) catch unreachable;
+    std.debug.assert(a.len == 16);
+
+    const b = allocator.alloc(u32, 4) catch unreachable;
+    std.debug.assert(b.len == 4);
+
+    const empty = allocator.alloc(u8, 0) catch unreachable;
+    std.debug.assert(empty.len == 0);
+
+    std.debug.print("rye: Allocator.alloc assertions confirmed.\n", .{});
+}

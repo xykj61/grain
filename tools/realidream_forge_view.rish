@@ -1,0 +1,26 @@
+# realidream_forge_view.rish — Realidream forge view: live Amphora pour → Skate.
+#
+# Pours amphora_lap3_tree into tools/fixtures/.forge_view_bundle, then folds
+# Amber manifest + Amphora vessel through SLC-2a. Thin view — no Dexter graduation.
+# Run from the repository root:
+#   rishi/bin/rishi run tools/realidream_forge_view.rish
+
+let bin = "pond/bin/drawn-terminal"
+
+say "pour: forge view bundle from Amphora pour..."
+let pour = run ["sh" "tools/fixtures/forge_view_pour.sh"]
+assert pour.ok else "forge view pour failed"
+assert pour.out contains "FORGE_POUR ok" else "forge view pour missing ok line"
+
+say "build: Realidream forge view — drawn-terminal compile"
+let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+assert build.ok else "drawn_terminal build failed for forge view witness"
+assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
+
+let forge = run ["sh" "-c" "${bin} forgeviewtest 2>&1"]
+assert forge.ok else "drawn terminal forgeviewtest exited non-zero"
+assert forge.out contains "forge view" else "forge view witness missing expected output"
+assert forge.out contains "GREEN" else "Realidream forge view witness not GREEN"
+assert forge.out contains "lines=8" else "forge view missing eight-line frame"
+
+say "GREEN: Realidream forge view — live Amphora pour composes a Skate frame."

@@ -1,0 +1,16 @@
+# tally_copy.rish — the disjoint-copy law's own witness.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/tally_copy.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "tally/bin/copy"
+
+let build = run ["sh" "-c" "mkdir -p tally/bin && env RYE_ZIG=${zig} rye/bin/rye build tally/copy.rye -femit-bin=${bin}"]
+assert build.ok else "tally copy build failed"
+
+let self = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert self.ok else "tally copy selftest exited non-zero"
+assert self.out contains "GREEN" else "tally copy selftest not GREEN"
+
+say "GREEN: tally copy_disjoint witness passed."

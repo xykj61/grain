@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260712.202551
+editor Cursor
+model Cursor Grok 4.5
+voice Rio 3
+title Kg — G1 create_builddir x86_64 GREEN
+prompt kg
+product_nib 430
+suite_nib 432
+think Wrote proven_seat_g1_create_builddir.rish — create_builddir x86_64 under cache · absolute CROSS_DEV_PREFIX genode-x86- · enable libports · assert specs/Makefile/cross g++. Verified GREEN.
+obs Builddir sibling to sources/toolchain; idempotent refresh of pins. Next kg is the first SLC guest itself — design width may want Claude if entry shape is unclear.
+recommend keep-going smallest posix/libc receipt-verify guest under the builddir — mechanical if following Claude SLC bar; check in with Claude before naming a Genode module home
+file tools/proven_seat_g1_create_builddir.rish · builddir witness
+file active-designing/20260712-195339_proven-seat-g1-crossing-pin.md · step 3 GREEN
+file work-in-progress/TASKS.md · next SLC guest
+file expanding-prompts/20260712-195339_proven-seat-g1-open.md · status
+file session-logs/20260712-202551_g1-create-builddir-green.bron · this log
+file session-logs/README.md · index

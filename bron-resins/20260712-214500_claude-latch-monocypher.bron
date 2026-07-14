@@ -1,0 +1,75 @@
+# Combined Bron handoff for Claude — latch rests · Monocypher seated
+# Paste-ready: values only.
+format chat-printout-v1
+kind claude-handoff
+stamp 20260712.214500
+voice Rio 3
+editor Cursor
+model Cursor Grok 4.5
+git_nib 9ef9e4f
+product_nib 430
+suite_nib 432
+parity_host_repin GREEN
+g1_status closed-digest-grade
+pond_exit_card freeze-affirmed
+pond_master_seal rests
+crypto_teacher Monocypher
+monocypher_seam monocypher-ed25519 crypto_ed25519_check
+audience Claude
+sitting Framework-evening-latch-monocypher-go
+
+section pins
+pin product_nib 430
+pin suite_nib 432
+pin parity_host_repin 20260712.193958 GREEN
+pin git_before_this_go c652487
+pin git_nib 9ef9e4f
+pin remotes pushed-four tip 9ef9e4f
+pin teacher_ai_jail v1.12.0
+pin genode_home vendor/genode @ 492a510
+pin exit_card freeze-affirmed · master-seal rests · zero rewrites
+pin ceremony gpg --local-user 06462132…FA7A! --armor --detach-sign bron-resins/pond-supersede-exit.bron
+pin doorway 213600 Status Checkable — seated · scan GREEN
+pin crypto_teacher Monocypher
+pin monocypher_seam monocypher-ed25519 · crypto_ed25519_check · RFC8032 SHA-512
+pin monocypher_red_avoid default BLAKE2b EdDSA
+pin vendor_home vendor/monocypher · version+sha pinned · gratitude line
+pin libsodium_park second-guest-crypto or Sculpt-and-Goa
+pin supersede_season closed measured · held for named build word
+pin living_docs_lint thrice-earned morning alt
+pin signed_kumara awaits morning open word
+pin route_two parked
+
+section arc
+title What landed since tip c652487
+p Claude affirmed master-seal — zero rewrites; latch rests.
+p Exit-day kindness: ceremony command with primary bang on affirmation path step 5.
+p Doorway Status on 213600 note repaired to Checkable — seated; doorway scan GREEN.
+p Crypto teacher Monocypher seated — must use monocypher-ed25519 / crypto_ed25519_check; default BLAKE2b EdDSA is the named red-to-avoid.
+p Libsodium parks behind named trigger mirroring Route two.
+p Living-docs lint thrice earned as lighter morning alt.
+
+section docs_to_walk
+doc active-designing/20260712-214200_proven-seat-signed-kumara-monocypher.md
+doc active-designing/20260712-213600_pond-freeze-affirm-master-seal.md
+doc active-designing/20260712-210800_pond-supersede-exit-criteria.md
+
+section commits_this_go
+title Commits oldest → newest
+commit 4f1654a Seat Monocypher for signed-Kumara and repair the Checkable doorway.
+commit 0195071 Record Claude handoff for latch affirm and Monocypher seating.
+push remotes origin github gp36-codeberg gp36-github
+
+section open_now
+next Hold supersede season — named build word only
+next Morning kg — open signed-Kumara · vendor monocypher · host Kumara signs · guest crypto_ed25519_check · serial signature holds; seat verifies
+alt living-docs lint advisory naming · karpathy/ai-memory · forge courtesy
+park libsodium genode-world
+park route_two
+courtesy forge GPG upload rye_signing_DBF853.pub.asc
+
+section ask_claude
+ask Affirm Monocypher seating and Checkable fix as resting — any one-line before the morning open?
+ask When Kaeden opens signed-Kumara: any vendor pin or witness shape rewrite before the first fetch?
+
+benediction May the latch hold lightly and absolutely. May the morning open onto a seat that already knows how to verify.

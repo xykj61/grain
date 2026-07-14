@@ -1,0 +1,19 @@
+# realidream_forge_query_unified_view.rish — Forge query unified: hosted + device → Skate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/realidream_forge_query_unified_view.rish
+
+let bin = "pond/bin/drawn-terminal"
+
+say "build: Realidream forge query unified view — drawn-terminal compile"
+let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+assert build.ok else "drawn_terminal build failed for forge query unified view"
+assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
+
+let forge = run ["sh" "-c" "${bin} forgequeryunifiedviewtest 2>&1"]
+assert forge.ok else "drawn terminal forgequeryunifiedviewtest exited non-zero"
+assert forge.out contains "forge query unified" else "forge query unified view missing expected output"
+assert forge.out contains "GREEN" else "Realidream forge query unified view not GREEN"
+assert forge.out contains "lines=8" else "forge query unified view missing eight-line frame"
+
+say "GREEN: Realidream forge query unified view — hosted and device forge hits on one Skate frame."

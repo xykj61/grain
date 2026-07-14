@@ -1,0 +1,20 @@
+//! Rye test: std.mem.cut and cutScalar — pass 9959.
+//!
+//! Split once on first needle occurrence; pairs with cutPrefix/cutSuffix (9960).
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    std.debug.assert(mem.cut(u8, "a b c", "B") == null);
+    const seq = mem.cut(u8, "a be c", "be") orelse unreachable;
+    std.debug.assert(mem.eql(u8, seq[0], "a "));
+    std.debug.assert(mem.eql(u8, seq[1], " c"));
+
+    std.debug.assert(mem.cutScalar(u8, "a b c", 'B') == null);
+    const scal = mem.cutScalar(u8, "a b c", 'b') orelse unreachable;
+    std.debug.assert(mem.eql(u8, scal[0], "a "));
+    std.debug.assert(mem.eql(u8, scal[1], " c"));
+
+    std.debug.print("rye: cut/cutScalar assertions confirmed.\n", .{});
+}

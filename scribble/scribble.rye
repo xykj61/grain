@@ -1,0 +1,276 @@
+//! scribble/scribble.rye — Scribble lap 7 selftest (parse · rye/rish/plain · headings · depth filter · paragraphs · fence kinds).
+//!
+//!   rye build scribble/scribble.rye -femit-bin=scribble/bin/scribble
+//!   scribble/bin/scribble selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const Dir = std.Io.Dir;
+const sc = @import("scribble_core.rye");
+
+const scribble_version = "20260710.211930";
+pub const fixture_path = "scribble/fixtures/sample.md";
+pub const session_fixture_path = "scribble/fixtures/session_snippets.md";
+pub const session_rish_fixture_path = "scribble/fixtures/session_rish_snippets.md";
+pub const outline_fixture_path = "scribble/fixtures/outline.md";
+pub const fence_kinds_fixture_path = "scribble/fixtures/fence_kinds.md";
+
+fn welcome_parse() !void {
+    const sample =
+        \\# Rye forge
+        \\
+        \\TAME gardens hold tensors.
+        \\
+        \\```rye
+        \\const garden = init.garden;
+        \\```
+        \\
+        \\```rish
+        \\say "witness"
+        \\```
+        \\
+    ;
+    var blocks: [sc.max_blocks]sc.Block = undefined;
+    const n = try sc.parse_markdown(sample, &blocks);
+    assert(n == 4);
+    assert(blocks[0].kind == .heading);
+    assert(blocks[0].depth == 1);
+    assert(std.mem.eql(u8, blocks[0].text_slice(), "Rye forge"));
+    assert(blocks[1].kind == .paragraph);
+    assert(blocks[2].kind == .rye_fence);
+    assert(std.mem.indexOf(u8, blocks[2].text_slice(), "init.garden") != null);
+    assert(blocks[3].kind == .rish_fence);
+    print("scribble: rye_fence and rish_fence parsed — blocks={d}\n", .{n});
+}
+
+fn check_fixture(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [sc.max_doc_bytes]u8 = undefined;
+    const text = try cwd.readFile(io, fixture_path, &buf);
+    var blocks: [sc.max_blocks]sc.Block = undefined;
+    const n = try sc.parse_markdown(text, &blocks);
+    assert(n >= 3);
+    print("scribble: fixture parsed — blocks={d}\n", .{n});
+}
+
+fn welcome_extract(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [sc.max_doc_bytes]u8 = undefined;
+    const text = try cwd.readFile(io, session_fixture_path, &buf);
+    var blocks: [sc.max_blocks]sc.Block = undefined;
+    const n = try sc.parse_markdown(text, &blocks);
+    var snippets: [sc.max_snippets]sc.Snippet = undefined;
+    const sn = try sc.extract_rye_snippets(blocks[0..n], &snippets);
+    assert(sn == 2);
+    assert(std.mem.indexOf(u8, snippets[0].text_slice(), "init.minimal.args") != null);
+    assert(std.mem.indexOf(u8, snippets[1].text_slice(), "lc.matmul") != null);
+    print("scribble: rye snippets extracted — count={d}\n", .{sn});
+}
+
+fn unwelcome_snippet_overflow(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [sc.max_doc_bytes]u8 = undefined;
+    const text = try cwd.readFile(io, session_fixture_path, &buf);
+    var blocks: [sc.max_blocks]sc.Block = undefined;
+    const n = try sc.parse_markdown(text, &blocks);
+    var tiny: [1]sc.Snippet = undefined;
+    if (sc.extract_rye_snippets(blocks[0..n], &tiny)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.SnippetOverflow);
+    }
+    print("scribble: snippet overflow refused\n", .{});
+}
+
+fn welcome_extract_rish(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [sc.max_doc_bytes]u8 = undefined;
+    const text = try cwd.readFile(io, session_rish_fixture_path, &buf);
+    var blocks: [sc.max_blocks]sc.Block = undefined;
+    const n = try sc.parse_markdown(text, &blocks);
+    var snippets: [sc.max_snippets]sc.Snippet = undefined;
+    const sn = try sc.extract_rish_snippets(blocks[0..n], &snippets);
+    assert(sn == 2);
+    assert(std.mem.indexOf(u8, snippets[0].text_slice(), "lantern lap") != null);
+    assert(std.mem.indexOf(u8, snippets[1].text_slice(), "GREEN") != null);
+    print("scribble: rish snippets extracted — count={d}\n", .{sn});
+}
+
+fn unwelcome_rish_snippet_overflow(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [sc.max_doc_bytes]u8 = undefined;
+    const text = try cwd.readFile(io, session_rish_fixture_path, &buf);
+    var blocks: [sc.max_blocks]sc.Block = undefined;
+    const n = try sc.parse_markdown(text, &blocks);
+    var tiny: [1]sc.Snippet = undefined;
+    if (sc.extract_rish_snippets(blocks[0..n], &tiny)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.SnippetOverflow);
+    }
+    print("scribble: rish snippet overflow refused\n", .{});
+}
+
+fn welcome_extract_headings(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [sc.max_doc_bytes]u8 = undefined;
+    const text = try cwd.readFile(io, outline_fixture_path, &buf);
+    var blocks: [sc.max_blocks]sc.Block = undefined;
+    const n = try sc.parse_markdown(text, &blocks);
+    var headings: [sc.max_headings]sc.Heading = undefined;
+    const hn = try sc.extract_headings(blocks[0..n], &headings);
+    assert(hn == 3);
+    assert(headings[0].depth == 1);
+    assert(std.mem.eql(u8, headings[0].text_slice(), "Forge outline"));
+    assert(headings[1].depth == 2);
+    assert(std.mem.eql(u8, headings[1].text_slice(), "Lattice first"));
+    assert(headings[2].depth == 2);
+    assert(std.mem.eql(u8, headings[2].text_slice(), "Scribble next"));
+    print("scribble: headings extracted — count={d}\n", .{hn});
+}
+
+fn welcome_extract_headings_at_depth(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [sc.max_doc_bytes]u8 = undefined;
+    const text = try cwd.readFile(io, outline_fixture_path, &buf);
+    var blocks: [sc.max_blocks]sc.Block = undefined;
+    const n = try sc.parse_markdown(text, &blocks);
+    var headings: [sc.max_headings]sc.Heading = undefined;
+    const h1 = try sc.extract_headings_at_depth(blocks[0..n], 1, &headings);
+    assert(h1 == 1);
+    assert(std.mem.eql(u8, headings[0].text_slice(), "Forge outline"));
+    const h2 = try sc.extract_headings_at_depth(blocks[0..n], 2, &headings);
+    assert(h2 == 2);
+    assert(std.mem.eql(u8, headings[0].text_slice(), "Lattice first"));
+    assert(std.mem.eql(u8, headings[1].text_slice(), "Scribble next"));
+    print("scribble: headings at depth — h1={d} h2={d}\n", .{ h1, h2 });
+}
+
+fn unwelcome_heading_overflow(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [sc.max_doc_bytes]u8 = undefined;
+    const text = try cwd.readFile(io, outline_fixture_path, &buf);
+    var blocks: [sc.max_blocks]sc.Block = undefined;
+    const n = try sc.parse_markdown(text, &blocks);
+    var tiny: [1]sc.Heading = undefined;
+    if (sc.extract_headings(blocks[0..n], &tiny)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.SnippetOverflow);
+    }
+    print("scribble: heading overflow refused\n", .{});
+}
+
+fn welcome_extract_paragraphs(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [sc.max_doc_bytes]u8 = undefined;
+    const text = try cwd.readFile(io, outline_fixture_path, &buf);
+    var blocks: [sc.max_blocks]sc.Block = undefined;
+    const n = try sc.parse_markdown(text, &blocks);
+    var paragraphs: [sc.max_paragraphs]sc.Paragraph = undefined;
+    const pn = try sc.extract_paragraphs(blocks[0..n], &paragraphs);
+    assert(pn == 3);
+    assert(std.mem.eql(u8, paragraphs[0].text_slice(), "Lattice before Lantern; Scribble feeds the corpus."));
+    assert(std.mem.eql(u8, paragraphs[1].text_slice(), "Matmul, add, reshape, reduce — parity before weights."));
+    assert(std.mem.eql(u8, paragraphs[2].text_slice(), "Headings become outline values for the Skate fold."));
+    print("scribble: paragraphs extracted — count={d}\n", .{pn});
+}
+
+fn unwelcome_paragraph_overflow(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [sc.max_doc_bytes]u8 = undefined;
+    const text = try cwd.readFile(io, outline_fixture_path, &buf);
+    var blocks: [sc.max_blocks]sc.Block = undefined;
+    const n = try sc.parse_markdown(text, &blocks);
+    var tiny: [1]sc.Paragraph = undefined;
+    if (sc.extract_paragraphs(blocks[0..n], &tiny)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.SnippetOverflow);
+    }
+    print("scribble: paragraph overflow refused\n", .{});
+}
+
+fn welcome_fence_kinds(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [sc.max_doc_bytes]u8 = undefined;
+    const text = try cwd.readFile(io, fence_kinds_fixture_path, &buf);
+    var blocks: [sc.max_blocks]sc.Block = undefined;
+    const n = try sc.parse_markdown(text, &blocks);
+    const kinds = sc.count_fence_kinds(blocks[0..n]);
+    assert(kinds.rye == 1);
+    assert(kinds.rish == 1);
+    assert(kinds.plain == 1);
+    print("scribble: fence kinds — rye={d} rish={d} plain={d}\n", .{ kinds.rye, kinds.rish, kinds.plain });
+}
+
+fn welcome_extract_plain(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [sc.max_doc_bytes]u8 = undefined;
+    const text = try cwd.readFile(io, fence_kinds_fixture_path, &buf);
+    var blocks: [sc.max_blocks]sc.Block = undefined;
+    const n = try sc.parse_markdown(text, &blocks);
+    var snippets: [sc.max_blocks]sc.Snippet = undefined;
+    const sn = try sc.extract_plain_snippets(blocks[0..n], &snippets);
+    assert(sn == 1);
+    assert(std.mem.eql(u8, snippets[0].text_slice(), "plain fence body"));
+    print("scribble: plain snippets extracted — count={d}\n", .{sn});
+}
+
+fn unwelcome_plain_snippet_overflow(io: std.Io) !void {
+    const cwd = Dir.cwd();
+    var buf: [sc.max_doc_bytes]u8 = undefined;
+    const text = try cwd.readFile(io, fence_kinds_fixture_path, &buf);
+    var blocks: [sc.max_blocks]sc.Block = undefined;
+    const n = try sc.parse_markdown(text, &blocks);
+    var tiny: [0]sc.Snippet = .{};
+    if (sc.extract_plain_snippets(blocks[0..n], &tiny)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.SnippetOverflow);
+    }
+    print("scribble: plain snippet overflow refused\n", .{});
+}
+
+fn unwelcome_unclosed_fence() !void {
+    const bad =
+        \\```rye
+        \\no closing fence
+        \\
+    ;
+    var blocks: [sc.max_blocks]sc.Block = undefined;
+    if (sc.parse_markdown(bad, &blocks)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.UnclosedFence);
+    }
+    print("scribble: unclosed fence refused\n", .{});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        try welcome_parse();
+        try check_fixture(io);
+        try welcome_extract(io);
+        try welcome_extract_rish(io);
+        try welcome_extract_headings(io);
+        try welcome_extract_headings_at_depth(io);
+        try welcome_extract_paragraphs(io);
+        try unwelcome_snippet_overflow(io);
+        try unwelcome_rish_snippet_overflow(io);
+        try unwelcome_heading_overflow(io);
+        try unwelcome_paragraph_overflow(io);
+        try welcome_fence_kinds(io);
+        try welcome_extract_plain(io);
+        try unwelcome_plain_snippet_overflow(io);
+        try unwelcome_unclosed_fence();
+        print("scribble lap7: version {s} — GREEN\n", .{scribble_version});
+        return 0;
+    }
+    print("usage: scribble selftest\n", .{});
+    return 1;
+}

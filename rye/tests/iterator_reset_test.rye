@@ -1,0 +1,27 @@
+//! Rye test: iterator reset — pass 9955.
+//!
+//! SplitIterator, SplitBackwardsIterator, and TokenIterator reset replay.
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    var split = mem.splitScalar(u8, "a|b|c", '|');
+    std.debug.assert(mem.eql(u8, split.first(), "a"));
+    _ = split.next();
+    split.reset();
+    std.debug.assert(mem.eql(u8, split.first(), "a"));
+
+    var back = mem.splitBackwardsScalar(u8, "a|b|c", '|');
+    std.debug.assert(mem.eql(u8, back.first(), "c"));
+    _ = back.next();
+    back.reset();
+    std.debug.assert(mem.eql(u8, back.first(), "c"));
+
+    var tok = mem.tokenizeScalar(u8, "x y z", ' ');
+    std.debug.assert(mem.eql(u8, tok.next().?, "x"));
+    tok.reset();
+    std.debug.assert(mem.eql(u8, tok.next().?, "x"));
+
+    std.debug.print("rye: iterator reset assertions confirmed.\n", .{});
+}

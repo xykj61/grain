@@ -1,0 +1,5 @@
+# amber-style manifest — refuse: unknown Tilak
+format amber-ring1-v2-tilak
+stamp 20260710.161125
+entry plain-bytes cd416bd6cae889877c353fc9abe39daaff1668666049a8fd10974248d99d23ab hello.txt
+entry stranger-mark bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb x.bin

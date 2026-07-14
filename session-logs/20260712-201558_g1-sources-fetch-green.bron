@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260712.201558
+editor Cursor
+model Cursor Grok 4.5
+voice Rio 3
+title Kg — G1 sources fetch GREEN
+prompt kg
+product_nib 430
+suite_nib 432
+think Wrote proven_seat_g1_fetch_sources.rish in toolchain shape — GitHub tag 25.05 archive · sha256 pin · extract to genode-sources · assert VERSION base libports prepare_port · meta + trio append. Fixed if-then-assert-else trap and bash -c escaped-quote UndefinedName (echo lines). Crossing probe notices sources. Verified GREEN.
+obs Sources ~7.3M archive; libc port content still arrives via prepare_port. Toolchain meta writer aligned to echo form.
+recommend keep-going prepare_port libc under genode-sources — next named step in Claude unroll; Claude if prepare_port needs network grants inside ai-jail
+file tools/proven_seat_g1_fetch_sources.rish · source fetch witness
+file tools/proven_seat_g1_fetch_toolchain.rish · echo meta · if-assert fix
+file tools/proven_seat_g1_crossing_probe.rish · sources present line
+file active-designing/20260712-195339_proven-seat-g1-crossing-pin.md · recipe + status
+file work-in-progress/TASKS.md · next prepare_port
+file expanding-prompts/20260712-195339_proven-seat-g1-open.md · next kg
+file session-logs/20260712-201558_g1-sources-fetch-green.bron · this log
+file session-logs/README.md · index

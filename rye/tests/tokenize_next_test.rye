@@ -1,0 +1,31 @@
+//! Rye test: TokenIterator.next via tokenizeScalar — pass 9956.
+//!
+//! next() advances through tokens after peek (9957); reset replays from start.
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    var it = mem.tokenizeScalar(u8, "   abc def   ghi  ", ' ');
+    std.debug.assert(mem.eql(u8, it.next().?, "abc"));
+    std.debug.assert(mem.eql(u8, it.next().?, "def"));
+    std.debug.assert(mem.eql(u8, it.next().?, "ghi"));
+    std.debug.assert(it.next() == null);
+
+    it.reset();
+    std.debug.assert(mem.eql(u8, it.next().?, "abc"));
+    std.debug.assert(mem.eql(u8, it.next().?, "def"));
+
+    var any = mem.tokenizeAny(u8, "a|b,c/d", " /,|");
+    std.debug.assert(mem.eql(u8, any.next().?, "a"));
+    std.debug.assert(mem.eql(u8, any.next().?, "b"));
+    std.debug.assert(mem.eql(u8, any.next().?, "c"));
+    std.debug.assert(mem.eql(u8, any.next().?, "d"));
+    std.debug.assert(any.next() == null);
+
+    var seq = mem.tokenizeSequence(u8, "x<>y", "<>");
+    std.debug.assert(mem.eql(u8, seq.next().?, "x"));
+    std.debug.assert(mem.eql(u8, seq.next().?, "y"));
+
+    std.debug.print("rye: TokenIterator.next assertions confirmed.\n", .{});
+}

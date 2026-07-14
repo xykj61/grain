@@ -1,0 +1,287 @@
+//! caravan/subscribe_poll_service.rye — production scheduling: supervise poll wire work.
+//!
+//! Ring C supervises Mantra's subscribe-poll delivery with the exit-code convention
+//! from `supervisor_exit.rye`: **cycle_ok** (0) spawns again; **stop_requested** (8)
+//! halts; any other non-zero is a fall and restarts. A long-lived source dependent
+//! answers catch-up requests; each fetcher-poll worker runs one wire cycle and
+//! checks the stop sentinel at the boundary. SIGTERM/SIGINT flip an atomic flag;
+//! the loop top creates the same sentinel the witness hook and a manual `touch` use.
+//!
+//!   rye build caravan/subscribe_poll_service.rye -lc -femit-bin=caravan/bin/subscribe-poll-service
+//!   caravan/bin/subscribe-poll-service <delivery-binary> <stop-sentinel-path> [witness-stop-after-N] [interval-ns]
+//!
+//! Set `CARAVAN_WITNESS_MIRROR=1` (with `CARAVAN_WITNESS_MODE=1`) to supervise host mirror
+//! delivery — `source-loop-mirror` + `fetcher-poll-mirror` over two named peer/bolt pairs.
+//!
+//! The third argument is test-only: set `CARAVAN_WITNESS_MODE=1` from a witness runner.
+//! Counsel: [`counsel/20260707-004712`](../counsel/20260707-004712_claude-counsel-outer-subscribe-and-host-mirror.md)
+//! · [`counsel/20260707-014212_claude-counsel-graceful-stop-reframed.md`](../counsel/20260707-014212_claude-counsel-graceful-stop-reframed.md)
+//! · [`counsel/20260707-021012_claude-counsel-ring4-signal-handler.md`](../counsel/20260707-021012_claude-counsel-ring4-signal-handler.md)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const tally_parse_int = @import("parse_int.rye");
+const c = std.c;
+const se = @import("supervisor_exit.rye");
+const ss = @import("supervisor_signal.rye");
+
+const caravan_subscribe_poll_service_version = "20260707.052212";
+
+const witness_mode_env = "CARAVAN_WITNESS_MODE";
+const witness_mirror_env = "CARAVAN_WITNESS_MIRROR";
+
+/// Supervisor halts when the long-lived source dependent dies unexpectedly.
+const source_lost_exit: u8 = 3;
+
+const linux = std.os.linux;
+
+fn witness_mode_allowed(environ: *const std.process.Environ.Map) bool {
+    const v = environ.get(witness_mode_env) orelse return false;
+    return std.mem.eql(u8, v, "1");
+}
+
+fn witness_mirror_enabled(environ: *const std.process.Environ.Map) bool {
+    const v = environ.get(witness_mirror_env) orelse return false;
+    return std.mem.eql(u8, v, "1");
+}
+
+/// Non-blocking reap; returns the source exit code when the dependent has exited.
+fn poll_source_exit(source_dependent: *std.process.Child) ?u8 {
+    const pid = source_dependent.id orelse return 0;
+    var status: u32 = 0;
+    const rc = linux.waitpid(@intCast(pid), &status, linux.W.NOHANG);
+    switch (linux.errno(rc)) {
+        .SUCCESS => {
+            if (rc == 0) return null;
+            source_dependent.id = null;
+            if (linux.W.IFEXITED(status)) {
+                return linux.W.EXITSTATUS(status);
+            }
+            return 255;
+        },
+        else => return null,
+    }
+}
+
+fn halt_if_source_died(source_dependent: *std.process.Child) ?u8 {
+    if (poll_source_exit(source_dependent)) |code| {
+        print("caravan poll-service: source-loop died (exit {d}) — supervisor halting\n", .{code});
+        return source_lost_exit;
+    }
+    return null;
+}
+
+const max_fall_restarts: u32 = 5;
+const source_ready_ns: u64 = 50_000_000;
+const dependent_poll_ns: u64 = 20_000_000;
+
+fn status_to_exit_code(status: u32) u8 {
+    if (linux.W.IFEXITED(status)) {
+        return linux.W.EXITSTATUS(status);
+    }
+    return 255;
+}
+
+fn wait_fetcher_or_source_lost(
+    io: std.Io,
+    source_dependent: *std.process.Child,
+    fetcher_dependent: *std.process.Child,
+) !union(enum) { fetcher_done: u8, source_lost: u8 } {
+    while (fetcher_dependent.id != null) {
+        if (halt_if_source_died(source_dependent)) |lost| {
+            fetcher_dependent.kill(io);
+            return .{ .source_lost = lost };
+        }
+        var status: u32 = 0;
+        const fpid = fetcher_dependent.id.?;
+        const rc = linux.waitpid(@intCast(fpid), &status, linux.W.NOHANG);
+        switch (linux.errno(rc)) {
+            .SUCCESS => {
+                if (rc != 0) {
+                    fetcher_dependent.id = null;
+                    return .{ .fetcher_done = status_to_exit_code(status) };
+                }
+            },
+            else => {},
+        }
+        var slice = c.timespec{ .sec = 0, .nsec = @intCast(dependent_poll_ns) };
+        _ = c.nanosleep(&slice, null);
+    }
+    return error.InvalidDependent;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const io = init.io;
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+
+    if (args.len < 3) {
+        print("usage: subscribe-poll-service <delivery-binary> <stop-sentinel-path> [witness-stop-after-N] [interval-ns]\n", .{});
+        return 1;
+    }
+
+    const witness_stop_after: ?u32 = if (args.len >= 4)
+        try tally_parse_int.parse_int(u32, args[3], .{})
+    else
+        null;
+
+    if (witness_stop_after != null and !witness_mode_allowed(init.environ_map)) {
+        print("caravan poll-service: witness-stop-after-N is test-only; set CARAVAN_WITNESS_MODE=1 from a witness runner\n", .{});
+        return 2;
+    }
+
+    const mirror_mode = witness_mirror_enabled(init.environ_map);
+    if (mirror_mode and !witness_mode_allowed(init.environ_map)) {
+        print("caravan poll-service: host mirror witness requires CARAVAN_WITNESS_MODE=1 from a witness runner\n", .{});
+        return 2;
+    }
+
+    const poll_interval_ns: u64 = if (args.len >= 5)
+        try tally_parse_int.parse_int(u64, args[4], .{})
+    else
+        0;
+
+    return run_supervisor(garden, io, args[1], args[2], witness_stop_after, poll_interval_ns, mirror_mode);
+}
+
+fn create_stop_sentinel(io: std.Io, sentinel_path: []const u8) !void {
+    const f = try std.Io.Dir.cwd().createFile(io, sentinel_path, .{});
+    f.close(io);
+}
+
+const SupervisorStep = union(enum) {
+    continue_loop,
+    stop_loop,
+    exit: u8,
+};
+
+fn build_fetcher_argv(
+    allocator: std.mem.Allocator,
+    delivery_path: []const u8,
+    sentinel_path: []const u8,
+    poll_interval_ns: u64,
+    mirror_mode: bool,
+    interval_buf: *[32]u8,
+) ![]const []const u8 {
+    const fetcher_cmd = if (mirror_mode) "fetcher-poll-mirror" else "fetcher-poll";
+    if (poll_interval_ns > 0) {
+        const argv = try allocator.alloc([]const u8, 4);
+        argv[0] = delivery_path;
+        argv[1] = fetcher_cmd;
+        argv[2] = sentinel_path;
+        argv[3] = try std.fmt.bufPrint(interval_buf, "{d}", .{poll_interval_ns});
+        return argv;
+    }
+    const argv = try allocator.alloc([]const u8, 3);
+    argv[0] = delivery_path;
+    argv[1] = fetcher_cmd;
+    argv[2] = sentinel_path;
+    return argv;
+}
+
+fn apply_fetcher_exit(
+    code: u8,
+    ordinary_seen: *u32,
+    fall_restarts: *u32,
+    source_dependent: *std.process.Child,
+    io: std.Io,
+) !SupervisorStep {
+    if (se.supervisor_stops(code)) {
+        print("caravan poll-service: stop after {d} ordinary cycle(s), {d} fall restart(s)\n", .{
+            ordinary_seen.*, fall_restarts.*,
+        });
+        source_dependent.kill(io);
+        return .stop_loop;
+    }
+
+    if (code == se.cycle_ok) {
+        ordinary_seen.* += 1;
+        return .continue_loop;
+    }
+
+    if (se.supervisor_restarts_after_fall(code)) {
+        fall_restarts.* += 1;
+        print("caravan poll-service: fall restart {d}/{d}\n", .{ fall_restarts.*, max_fall_restarts });
+        if (fall_restarts.* >= max_fall_restarts) {
+            source_dependent.kill(io);
+            return .{ .exit = 1 };
+        }
+        return .continue_loop;
+    }
+
+    source_dependent.kill(io);
+    return .{ .exit = code };
+}
+
+fn print_supervisor_success(mirror_mode: bool) void {
+    if (mirror_mode) {
+        print("caravan poll-service: supervised host mirror — two named pairs per cycle — GREEN.\n", .{});
+    } else {
+        print("caravan poll-service: supervised poll — restart on cycle_ok, stop on sentinel — GREEN.\n", .{});
+    }
+    print("caravan poll-service: version {s} signal {s}\n", .{
+        caravan_subscribe_poll_service_version, ss.supervisor_signal_version,
+    });
+}
+
+fn run_supervisor(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    delivery_path: []const u8,
+    sentinel_path: []const u8,
+    witness_stop_after: ?u32,
+    poll_interval_ns: u64,
+    mirror_mode: bool,
+) !u8 {
+    ss.install_handlers();
+
+    print("caravan poll-service: supervisor alive. delivery {s} sentinel {s}{s}\n", .{
+        delivery_path, sentinel_path, if (mirror_mode) " mirror" else "",
+    });
+
+    std.Io.Dir.cwd().deleteFile(io, sentinel_path) catch {};
+
+    const source_argv = try allocator.alloc([]const u8, 2);
+    source_argv[0] = delivery_path;
+    source_argv[1] = if (mirror_mode) "source-loop-mirror" else "source-loop";
+
+    var source_dependent = try std.process.spawn(io, .{ .argv = source_argv });
+    var pause = c.timespec{ .sec = 0, .nsec = @intCast(source_ready_ns) };
+    _ = c.nanosleep(&pause, null);
+
+    var ordinary_seen: u32 = 0;
+    var fall_restarts: u32 = 0;
+
+    while (true) {
+        if (halt_if_source_died(&source_dependent)) |code| return code;
+
+        var should_create_sentinel = ss.stop_requested();
+        if (witness_stop_after) |n| {
+            if (ordinary_seen == n) should_create_sentinel = true;
+        }
+        if (should_create_sentinel) {
+            try create_stop_sentinel(io, sentinel_path);
+        }
+
+        var interval_buf: [32]u8 = undefined;
+        const fetcher_argv = try build_fetcher_argv(allocator, delivery_path, sentinel_path, poll_interval_ns, mirror_mode, &interval_buf);
+
+        var fetcher_dependent = try std.process.spawn(io, .{ .argv = fetcher_argv });
+        const code: u8 = switch (try wait_fetcher_or_source_lost(io, &source_dependent, &fetcher_dependent)) {
+            .fetcher_done => |c0| c0,
+            .source_lost => |lost| return lost,
+        };
+
+        switch (try apply_fetcher_exit(code, &ordinary_seen, &fall_restarts, &source_dependent, io)) {
+            .continue_loop => continue,
+            .stop_loop => break,
+            .exit => |exit_code| return exit_code,
+        }
+    }
+
+    if (witness_stop_after) |n| assert(ordinary_seen == n);
+
+    print_supervisor_success(mirror_mode);
+    return 0;
+}

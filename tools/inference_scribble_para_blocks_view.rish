@@ -1,0 +1,14 @@
+# inference_scribble_para_blocks_view.rish — Scribble paragraphs+blocks combo → Skate.
+let bin = "pond/bin/drawn-terminal"
+say "build: Scribble para blocks view — drawn-terminal compile"
+let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+assert build.ok else "drawn_terminal build failed for scribble para blocks view"
+assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
+let view = run ["sh" "-c" "${bin} scribbleparablocksviewtest 2>&1"]
+assert view.ok else "drawn terminal scribbleparablocksviewtest exited non-zero"
+assert view.out contains "scribble para blocks view" else "para blocks view missing expected output"
+assert view.out contains "GREEN" else "Scribble para blocks view not GREEN"
+assert view.out contains "lines=5" else "para blocks view missing five-line frame"
+assert view.out contains "paragraphs=3" else "para blocks view missing paragraphs=3"
+assert view.out contains "blocks=6" else "para blocks view missing blocks=6"
+say "GREEN: Scribble para blocks view — paragraphs and blocks on one Skate frame."

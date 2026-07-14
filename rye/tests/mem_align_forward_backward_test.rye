@@ -1,0 +1,16 @@
+//! Rye test: std.mem.alignForward / alignBackward — pass 9904.
+//!
+//! Power-of-2 address rounding; pairs with alignPointer (allocator path).
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    std.debug.assert(mem.alignBackward(u32, 17, 8) == 16);
+    std.debug.assert(mem.alignForward(u32, 17, 8) == 24);
+    std.debug.assert(mem.alignForward(u32, 16, 8) == 16);
+    std.debug.assert(mem.alignBackward(usize, 15, 8) == 8);
+    std.debug.assert(mem.isAlignedGeneric(u32, mem.alignForward(u32, 15, 8), 8));
+
+    std.debug.print("rye: mem.alignForward/alignBackward assertions confirmed.\n", .{});
+}

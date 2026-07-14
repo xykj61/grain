@@ -1,0 +1,28 @@
+//! Rye test: std.SemanticVersion.format — pass 9946.
+//!
+//! Round-trip with parse (9947) and order (9948); backs capability bounds.
+
+const std = @import("std");
+const SemVer = std.SemanticVersion;
+
+pub fn main() void {
+    var buf: [128]u8 = undefined;
+
+    const release = SemVer.parse("1.2.3") catch unreachable;
+    const release_text = std.fmt.bufPrint(&buf, "{f}", .{release}) catch unreachable;
+    std.debug.assert(std.mem.eql(u8, release_text, "1.2.3"));
+
+    const pre = SemVer.parse("1.0.0-alpha.1") catch unreachable;
+    const pre_text = std.fmt.bufPrint(&buf, "{f}", .{pre}) catch unreachable;
+    std.debug.assert(std.mem.eql(u8, pre_text, "1.0.0-alpha.1"));
+
+    const build = SemVer.parse("2.0.1+build.meta") catch unreachable;
+    const build_text = std.fmt.bufPrint(&buf, "{f}", .{build}) catch unreachable;
+    std.debug.assert(std.mem.eql(u8, build_text, "2.0.1+build.meta"));
+
+    const both = SemVer.parse("1.0.0-rc.1+20260620") catch unreachable;
+    const both_text = std.fmt.bufPrint(&buf, "{f}", .{both}) catch unreachable;
+    std.debug.assert(std.mem.eql(u8, both_text, "1.0.0-rc.1+20260620"));
+
+    std.debug.print("rye: SemanticVersion.format assertions confirmed.\n", .{});
+}

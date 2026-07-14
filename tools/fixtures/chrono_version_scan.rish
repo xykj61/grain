@@ -1,0 +1,10 @@
+# chrono_version_scan.rish — flag semver **Version:** marks on authored .md surfaces.
+#
+# Roster grows past Rishi's 256-element list ceiling; the drive script splits into
+# ≤200-path chunks and runs chrono_version_scan_chunk.rish per chunk.
+# Run from the repository root:
+#   rishi/bin/rishi run tools/fixtures/chrono_version_scan.rish
+
+let result = run ["sh" "tools/fixtures/chrono_version_scan_drive.sh"]
+say result.out
+assert result.ok else "chrono_version chunked scan failed"

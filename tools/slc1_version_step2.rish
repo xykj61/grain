@@ -1,0 +1,16 @@
+# slc1_version_step2.rish — witness for SLC-1 Step 2: :version weaves session into Mantra.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/slc1_version_step2.rish
+
+# The fixture puts mantra/bin on PATH; raise the binary first, the way every
+# sibling witness raises its own, so the suite stands green from a bare clone.
+let zig = "vendor/zig-toolchain/zig"
+let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/src/main.rye -femit-bin=mantra/bin/mantra"]
+assert build.ok else "mantra build failed for SLC-1 Step 2 witness"
+
+let result = run ["sh" "tools/fixtures/slc1_version_step2.sh"]
+
+assert result.ok else "rishi repl version pass exited non-zero"
+assert result.out contains "GREEN: SLC-1 Step 2" else "version did not advance HEAD with a blob"
+say "GREEN: SLC-1 Step 2 — the session versions into Mantra."

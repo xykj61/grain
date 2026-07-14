@@ -1,0 +1,7 @@
+# Lantern lap 9 fixture — pinned max_tokens on the request contract.
+model_hash sha3-256-rye-forge-lap0
+max_tokens 8
+tokens_in 6
+tokens_out 4
+stopped_reason eos
+text one two three four

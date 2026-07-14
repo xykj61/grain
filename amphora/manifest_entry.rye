@@ -1,0 +1,92 @@
+//! amphora/manifest_entry.rye — Amphora lap 1: one cargo line, three fields, wreck rule.
+//!
+//! Graduated from work-in-progress crossing manifest seed (parity 151).
+//!
+//!   rye build amphora/manifest_entry.rye -femit-bin=amphora/bin/manifest-entry
+//!   amphora/bin/manifest-entry selftest
+//!
+//!     <mark> <sha3-256-hex> <name>
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+pub const amphora_manifest_entry_version = "20260710.143500";
+
+pub const digest_hex_len: u32 = 64;
+pub const max_mark_len: u32 = 32;
+pub const max_name_len: u32 = 200;
+pub const max_line_len: u32 = max_mark_len + 1 + digest_hex_len + 1 + max_name_len;
+
+pub const ManifestEntry = struct {
+    mark: []const u8,
+    digest_hex: []const u8,
+    name: []const u8,
+};
+
+fn is_lower_hex(c: u8) bool {
+    if (c >= '0' and c <= '9') return true;
+    if (c >= 'a' and c <= 'f') return true;
+    return false;
+}
+
+/// Precondition: line contains no newline and fits the named bound.
+/// Postcondition: all three fields are nonempty; the digest is well-formed.
+pub fn parse_manifest_line(line: []const u8) error{InvalidFormat}!ManifestEntry {
+    assert(line.len >= 1);
+    assert(line.len <= max_line_len);
+
+    const len: u32 = @intCast(line.len);
+
+    var first_space: u32 = 0;
+    while (first_space < len) : (first_space += 1) {
+        if (line[@intCast(first_space)] == ' ') break;
+    }
+    if (first_space == 0) return error.InvalidFormat;
+    if (first_space >= len) return error.InvalidFormat;
+    if (first_space > max_mark_len) return error.InvalidFormat;
+
+    const digest_start: u32 = first_space + 1;
+    const digest_end: u32 = digest_start + digest_hex_len;
+    if (digest_end >= len) return error.InvalidFormat;
+    if (line[@intCast(digest_end)] != ' ') return error.InvalidFormat;
+
+    var i: u32 = digest_start;
+    while (i < digest_end) : (i += 1) {
+        if (!is_lower_hex(line[@intCast(i)])) return error.InvalidFormat;
+    }
+
+    const name_start: u32 = digest_end + 1;
+    if (len - name_start > max_name_len) return error.InvalidFormat;
+
+    const entry = ManifestEntry{
+        .mark = line[0..@intCast(first_space)],
+        .digest_hex = line[@intCast(digest_start)..@intCast(digest_end)],
+        .name = line[@intCast(name_start)..@intCast(len)],
+    };
+    assert(entry.mark.len >= 1);
+    assert(entry.digest_hex.len == digest_hex_len);
+    assert(entry.name.len >= 1);
+    return entry;
+}
+
+fn run_selftest(_: std.Io) !u8 {
+    const line = "bytes " ++ ("ab" ** 32) ++ " session-logs/example.md";
+    const entry = try parse_manifest_line(line);
+    assert(std.mem.eql(u8, entry.mark, "bytes"));
+    assert(entry.digest_hex.len == digest_hex_len);
+    assert(std.mem.eql(u8, entry.name, "session-logs/example.md"));
+
+    if (parse_manifest_line("bytes short name")) |_| return error.UnwelcomePassed else |_| {}
+    if (parse_manifest_line(" " ++ ("ab" ** 32) ++ " x")) |_| return error.UnwelcomePassed else |_| {}
+    if (parse_manifest_line("bytes " ++ ("AB" ** 32) ++ " x")) |_| return error.UnwelcomePassed else |_| {}
+
+    print("amphora: version {s}\n", .{amphora_manifest_entry_version});
+    print("GREEN: Amphora manifest entry — parse and refuse whole.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init.arena.allocator();
+    return run_selftest(init.io);
+}

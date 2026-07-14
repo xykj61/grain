@@ -1,0 +1,8 @@
+# tablecloth query device hits — Realidream query-device-view fixture
+# Same hits the virtio Tablecloth query device wire returns for peerB/b (ports 15575/15576).
+wire device
+filter_peer peerB
+filter_bolt b
+hit_count 2
+hit peerB b 1 notes.txt
+hit peerB b 2 notes.txt

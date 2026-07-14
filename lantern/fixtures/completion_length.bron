@@ -1,0 +1,6 @@
+# Lantern lap 1 fixture — long completion to exercise max_tokens truncation.
+model_hash sha3-256-rye-forge-lap0
+tokens_in 24
+tokens_out 12
+stopped_reason eos
+text one two three four five six seven eight nine ten eleven twelve

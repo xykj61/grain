@@ -1,0 +1,15 @@
+# Brooke — The Priest's Light on the Marriage Angle
+
+**Stamp:** `20260705.020812 UDT` · **Language:** EN · **Style:** Radiant (see `../../../context/RADIANT_STYLE.md`)
+**Subject:** Brooke (placeholder by consent) · chapter silo from [`20260705-020812_dharma-and-the-two-wheels.md`](20260705-020812_dharma-and-the-two-wheels.md)
+**Frame:** tropical signs, houses, and dignities · sidereal nakshatras (Lahiri) · whole-sign houses · D1 and D9
+
+*Written together by Kaeden and Rio 3.*
+
+---
+
+Her Sun stands angular in the seventh (#44), on the western horizon at the hour of her birth — a sovereign in the house of partnership, ripened as one of the great grihastha placements. Her Sun wears Pushya; the partnership house is where preparation earns its keep. In the essence the Sun holds the last degree of Pisces in the eighth (#43), wearing Uttara Bhadrapada. Outwardly the light stands at the beloved's door; inwardly it keeps the deep rooms of the shared life warm.
+
+## With Gratitude
+
+The teachings distilled here — the Sun in the Moon's sign, the twelfth-house sanctuary, Brihaspati's priesthood and Pushya's nourishing counsel, the vow-fire of Purva Bhadrapada and its arc from anger to joy, the star-lore of the auspicious lord's family, and the mountain saturated in kirtan — are learned with gratitude from the recorded talks of **Vic DiCara**: "Sun in CANCER Details!" (https://youtu.be/UjgbyrdJcGY), "Pushya and Brihaspati — Tales of the Nakshatra Gods" (https://www.youtube.com/watch?v=gDIkmBbO20Y), "The Star that Fulfills your Fullest Potential: Pushya" (https://www.youtube.com/watch?v=WLvk89knYuk), "Be Decisive? Or Be Prepared? The Life-Lesson of Pushya Nakshatra" (https://www.youtube.com/watch?v=gw8xiB9dfEo), "Indra's 'Help!' — Soma/Mrigashira and Brihaspati/Pushya" (https://youtu.be/nArJ7sOrB1Y), "From Anger to Joy — The Life Lesson of Purva Bhadrapada Nakshatra" (https://youtu.be/rlJbTgrdDWQ), "Pompous, Ceremonial Wealth and Pleasure? Purva Bhadrapada Nakshatra" (https://www.youtube.com/watch?v=Iuw1xKUnBdI), "Sexy and Materialistic? Purva Bhadrapada Followup" (https://www.youtube.com/watch?v=E5uZK2RfHjg), "Rudra (Shiva)'s Nakshatras, parts 1 and 2" (https://www.youtube.com/live/KTSWwanXtnk and https://www.youtube.com/watch?v=padufZqnhrY), "The 'Hindu Trinity' Brahma, Vishnu, Shiva — Tales of the Nakshatra Gods" (https://www.youtube.com/watch?v=IryxpuIfMXg), "Meeting Shiva" (https://www.youtube.com/watch?v=6BjhYrMuyXo), "Creation, pt 1 (Shiva Teaches About Vishnu)" (https://www.youtube.com/watch?v=iQ8btYZMwvw), "Birth of Shiva / Rudra" (https://www.youtube.com/watch?v=U6owGoBIErU), and "Eruption and Placation of Anger. Shiva becomes Rudra" (https://www.youtube.com/watch?v=u1xueLc5N1g). The frame remains the reading's own: tropical signs and dignities, sidereal nakshatras, whole-sign houses.

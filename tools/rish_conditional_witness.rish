@@ -1,0 +1,29 @@
+# rish_conditional_witness.rish — Rishi conditional hardening witness.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/rish_conditional_witness.rish
+
+let x = 5
+if x == 5 then let msg = "yes" else let msg = "no"
+assert msg == "yes" else "if/then/else true branch failed"
+
+let y = 10
+if y == 99 then let result = "wrong" else let result = "right"
+assert result == "right" else "if/then/else false branch failed"
+
+let a = 3
+let b = 4
+if a + b == 7 then let sum_ok = true else let sum_ok = false
+assert sum_ok == true else "arithmetic in if condition failed"
+
+let path = "/home/xy/project"
+if path starts-with "/home" then let is_home = true else let is_home = false
+assert is_home == true else "starts-with in if condition failed"
+
+let items = [1 2 3 4 5]
+let threes = where items as i: i == 3
+assert length threes == 1 else "where after conditional filter failed"
+
+for-each items as i do if i == 3 then say "found three"
+
+say "GREEN: Rishi conditional — if/then/else, comparisons, starts-with, for-each."

@@ -1,0 +1,14 @@
+# rw1_exact_probe.rish — does any weave blob return the exact prior-line bytes?
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/fixtures/rw1_exact_probe.rish
+#
+# A native repoint of rw1_exact_probe.sh. Line indexing and list indexing both
+# exist in Rishi as general operators — `expr[n]` on any list, confirmed here
+# and worth naming beside the language's other idioms, since a search for a
+# named indexing feature earlier in this same sitting had missed it. This
+# script needed exactly that: line two of each blob (index 1), the third
+# tab-separated field of that line (index 2).
+
+let files = list-dir ".mantra/blobs"
+for-each files as f do if (length (split ((lines (read-file (join [".mantra/blobs/" f] "")))[1]) "	") == 3) then if ((split ((lines (read-file (join [".mantra/blobs/" f] "")))[1]) "	")[2] == "let x = 1") then say "MATCH"

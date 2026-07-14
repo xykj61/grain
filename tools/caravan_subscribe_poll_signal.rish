@@ -1,0 +1,24 @@
+# caravan_subscribe_poll_signal.rish — ring 4: real SIGTERM → sentinel → graceful stop.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/caravan_subscribe_poll_signal.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let delivery = "mantra/bin/recall-subscribe-poll-delivery"
+let service = "caravan/bin/subscribe-poll-service"
+let sentinel = "/tmp/veganreyklah2-ns-poll-stop"
+let out = "/tmp/veganreyklah2-poll-svc.out"
+
+let build = run ["sh" "-c" "mkdir -p mantra/bin caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/recall_subscribe_poll_delivery.rye -lc -femit-bin=${delivery} && env RYE_ZIG=${zig} rye/bin/rye build caravan/subscribe_poll_service.rye -lc -femit-bin=${service}"]
+assert build.ok else "subscribe poll signal build failed"
+
+let run = run ["sh" "-c" "rm -f ${sentinel} ${out} && ${service} ${delivery} ${sentinel} >${out} 2>&1 & pid=$!; sleep 0.8; kill -TERM $pid; i=0; while kill -0 $pid 2>/dev/null; do i=$((i+1)); test $i -gt 24 && exit 2; sleep 0.25; done; wait $pid; echo exit:$?; cat ${out}"]
+assert run.ok else "subscribe poll signal witness shell failed"
+assert run.out contains "GREEN" else "subscribe poll service not GREEN after SIGTERM"
+assert run.out contains "exit:0" else "supervisor wrong exit after SIGTERM"
+assert run.out contains "stop_requested" else "SIGTERM did not reach sentinel stop path"
+
+let cleanup = run ["sh" "-c" "rm -f ${sentinel} ${out}"]
+assert cleanup.ok else "signal witness cleanup failed"
+
+say "GREEN: Caravan subscribe poll SIGTERM witness passed (real signal, graceful stop)."

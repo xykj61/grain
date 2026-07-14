@@ -1,0 +1,25 @@
+# cast_a_chart.rish — dual-zodiac natal caster witness.
+#
+# Tropical signs for dignity; sidereal Lahiri for nakshatra and pada; whole-sign houses.
+# Edit birth constants at the head of cast_a_chart.py before casting a new sky.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run classical-vedic-astrology/cast_a_chart.rish
+#
+# Hosted POSIX seam: classical-vedic-astrology/cast_a_chart_host.sh
+# Ephemeris implementation: classical-vedic-astrology/cast_a_chart.py (pyswisseph)
+
+say "cast: witness — dual-zodiac natal chart"
+
+let cast = run ["sh" "classical-vedic-astrology/cast_a_chart_host.sh"]
+
+assert cast.ok else "cast_a_chart_host failed"
+assert cast.out contains "cast: prepare" else "cast missing prepare phase"
+assert cast.out contains "cast: compute" else "cast missing compute phase"
+assert cast.out contains "Ayanamsa" else "cast missing ayanamsa line"
+assert cast.out contains "Asc" else "cast missing ascendant row"
+assert cast.out contains "Sun" else "cast missing Sun row"
+assert cast.out contains "cast: GREEN" else "cast did not reach GREEN"
+
+say cast.out
+say "GREEN: cast_a_chart witness passed."

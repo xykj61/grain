@@ -1,0 +1,43 @@
+# control_flow.rish — if/then/else and for-each.
+# Proves: conditional execution and iteration with effects.
+
+# if/then — true branch
+let x = 5
+if x == 5 then say "x is five"
+
+# if/then — false branch (nothing happens)
+if x == 99 then say "SHOULD NOT PRINT"
+
+# if/then/else — true branch
+if x == 5 then let msg = "yes" else let msg = "no"
+assert msg == "yes" else "if/then/else true branch failed"
+
+# if/then/else — false branch
+let y = 10
+if y == 99 then let result = "wrong" else let result = "right"
+assert result == "right" else "if/then/else false branch failed"
+
+# if with comparison expression
+let a = 3
+let b = 4
+if a + b == 7 then let sum_ok = true else let sum_ok = false
+assert sum_ok == true else "arithmetic in if condition failed"
+
+# if with starts-with
+let path = "/home/xy/project"
+if path starts-with "/home" then let is_home = true else let is_home = false
+assert is_home == true else "starts-with in if condition failed"
+
+# for-each — iterate and say
+let fruits = ["apple" "banana" "cherry"]
+for-each fruits as f do say f
+
+# for-each — iterate and assert
+let nums = [1 2 3]
+for-each nums as n do assert n + 0 == n else "identity failed"
+
+# for-each with nested if
+let items = [1 2 3 4 5]
+for-each items as i do if i == 3 then say "found three"
+
+say "control flow held."

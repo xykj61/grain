@@ -1,0 +1,13 @@
+# inference_assist_view_lap9.rish — Assist view: exceptions on assist fold.
+let bin = "pond/bin/drawn-terminal"
+say "build: inference assist view lap 9 — drawn-terminal compile"
+let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+assert build.ok else "drawn_terminal build failed for assist view lap 9"
+assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
+let assist = run ["sh" "-c" "${bin} assistviewtest 2>&1"]
+assert assist.ok else "drawn terminal assistviewtest exited non-zero"
+assert assist.out contains "exceptions=2" else "assist view missing exceptions=2"
+assert assist.out contains "equity=0" else "assist view missing equity=0"
+assert assist.out contains "GREEN" else "Inference assist view lap 9 not GREEN"
+assert assist.out contains "lines=8" else "assist view missing eight-line frame"
+say "GREEN: Assist view lap 9 — exceptions join BS on the assist fold."

@@ -1,0 +1,107 @@
+//! comlink/guest_batch_fetcher_rx.rye — NS-L3 batch wire device: fetcher RX (apply beaded batch).
+
+const vn = @import("virtio_net.rye");
+const wf = @import("wire_format.rye");
+const bw = @import("recall_batch_wire.rye");
+const ns = @import("recall_lap1.rye");
+const rbd = @import("recall_beaded.rye");
+const bd = @import("beading.rye");
+const kumara = @import("kumara.rye");
+
+var rx: vn.RxQueue = undefined;
+
+const batch_signer_seed = [_]u8{0x61} ** kumara.seed_length;
+
+fn witness_pattern_fill(buf: []u8, seed: u32) void {
+    var x: u32 = seed;
+    var i: u32 = 0;
+    while (i < buf.len) : (i += 1) {
+        x = x *% 1664525 +% 1013904223;
+        buf[i] = @intCast((x >> 24) & 0xFF);
+    }
+}
+
+export fn _start() linksection(".text.init") callconv(.naked) noreturn {
+    asm volatile (
+        \\ li sp, 0x80100000
+        \\ j kmain
+    );
+}
+
+export fn kmain() callconv(.c) noreturn {
+    vn.init_device();
+    rx.init();
+    vn.driver_ok();
+    rx.kick();
+
+    const signer = kumara.keypair_from_seed(&batch_signer_seed);
+
+    var batch_asm: bw.BatchAssembler = .{};
+    while (true) {
+        const n = rx.wait_frame();
+        if (n == 0) {
+            vn.write_str("rbw device wire: FAIL — fetcher RX timeout\n");
+            vn.finish_fail();
+        }
+        const poff = vn.virtio_net_hdr_len + vn.eth_header_len;
+        if (n <= poff) {
+            vn.write_str("rbw device wire: FAIL — fetcher frame too short\n");
+            vn.finish_fail();
+        }
+        const buf = rx.frame();
+        const datagram = buf[poff..n];
+
+        var opened: [@intCast(wf.max_message)]u8 = undefined;
+        const opened_len = wf.open_datagram(datagram, &opened) catch {
+            vn.write_str("rbw device wire: FAIL — fetcher open refused\n");
+            vn.finish_fail();
+        };
+
+        const state = bw.BatchAssembler.feed(&batch_asm, opened[0..@intCast(opened_len)]) catch {
+            vn.write_str("rbw device wire: FAIL — batch chunk feed\n");
+            vn.finish_fail();
+        };
+        if (state == .ready) break;
+        rx.repost();
+    }
+
+    var fetcher: ns.BoltCatalog = .empty();
+    ns.BoltCatalog.append_leaf(&fetcher, "peerA", "seed", 1, "x", "alpha", "plain-text") catch unreachable;
+
+    const report = bw.apply_wire_batch(&fetcher, batch_asm.batch(), signer.public_key) catch {
+        vn.write_str("rbw device wire: FAIL — apply batch\n");
+        vn.finish_fail();
+    };
+    if (report.had_already != 1 or report.needed < 2) {
+        vn.write_str("rbw device wire: FAIL — batch report mismatch\n");
+        vn.finish_fail();
+    }
+
+    var fetch_beads: bd.BeadStore = .empty();
+    rbd.hydrate_bead_store_from_catalog(&fetcher, &fetch_beads, "peerB", "b", 1, "large.bin") catch {
+        vn.write_str("rbw device wire: FAIL — hydrate bead store\n");
+        vn.finish_fail();
+    };
+
+    const n_large = ns.Name{ .peer = "peerB", .bolt = "b", .revision = 1, .path = "large.bin" };
+    var out: [512]u8 = undefined;
+    const r = rbd.recall_beaded(&fetcher, &fetch_beads, n_large, &out) catch {
+        vn.write_str("rbw device wire: FAIL — recallBeaded large.bin\n");
+        vn.finish_fail();
+    };
+    if (r.outcome != .here or r.len != 400) {
+        vn.write_str("rbw device wire: FAIL — large.bin length mismatch\n");
+        vn.finish_fail();
+    }
+    var expect: [400]u8 = undefined;
+    witness_pattern_fill(&expect, 20260706);
+    var i: u32 = 0;
+    while (i < 400) : (i += 1) {
+        if (out[i] != expect[i]) {
+            vn.write_str("rbw device wire: FAIL — large.bin bytes mismatch\n");
+            vn.finish_fail();
+        }
+    }
+    vn.write_str("rbw device wire: sealed beaded batch response GREEN — verify and recall passed\n");
+    vn.finish_pass();
+}

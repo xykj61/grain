@@ -1,0 +1,104 @@
+# Combined Bron handoff for Claude — Framework afternoon: on-path GREEN · argv-direct pins · parity parked
+# Paste-ready: values only. Afternoon arc after morning Bron fold + nib seat.
+format chat-printout-v1
+kind claude-handoff
+stamp 20260712.143946
+voice Rio 3
+editor Cursor
+model Cursor Grok 4.5
+git_nib ff35220
+product_nib 430
+suite_nib 432
+parity_claimed 324
+parity_host_repin parked-second-red
+audience Claude
+sitting Framework-host-onpath-then-parity
+
+section pins
+pin product_nib 430
+pin suite_nib 432
+pin parity_claimed 324
+pin git_nib_pushed ff35220
+pin remotes origin github gp36-codeberg gp36-github all-at-ff35220
+pin lane_kvm refuse GREEN
+pin lane_kvm onpath G0-complete GREEN sitting 20260712.140403
+pin teacher_ai_jail v1.12.0 tools/.cache/bin gitignored
+pin study_submodule gratitude/ai-jail v1.12.0
+pin route_one splice absent teacher has --gpu only
+pin route_two nest-bwrap parked-for-Kaeden-word
+pin session_logs living-bron
+pin vocabulary nib landed-edge
+
+section arc_afternoon
+title What the house did after the morning fold
+p Teacher ai-jail v1.12.0 installed under gitignored tools/.cache/bin; AIJAIL_BIN in personal enclosure.conf; gratitude study submodule at v1.12.0. Commit c57bb00.
+p Launch-cursor Rishi path prepared: --extract · UndefinedName image fix · if-then-assert-else parse fix · invoke cursor-jail with bash not dash. Commits 1988093 7e9a44d cf0558a.
+p Host on-path G0-complete GREEN on Framework sitting 140403: Phase A nographic serial saw GRUB loading; Phase B -display none + QMP PNG; refuse-probe restored. Caller LANE_KVM=true wins over conf. Heartbeats to /dev/tty; grep -aFq not rg under Rishi PATH. Seated 065b6ab. Commits bc8eff6 4067b0a 4dd8c99 6f07540 065b6ab.
+p Same-sitting metal parity granted earlier; host tee began. First RED at Tally maybe — build without RYE_ZIG under narrow PATH. Pin e7a0593. Orchestrator print ch.out on fail + tee recipe 0d75c1b.
+p Second RED class at align_session_logs — same missing RYE_ZIG. Kaeden asked whether Rishi must use bash then whether sh is required at all for Linux. Answer: run is argv-direct via std.process.run; sh is convenience; RYE_ZIG via run ["env" "RYE_ZIG=…" …]. GREEN from Rye tools is std.debug.print → assert .err not .out.
+p kg restyled tally_maybe no_padding parse_int align_session_logs tame_usize_audit enrich_strengthening_docs comlink_device_wire to argv-direct; parity_ch01 nested prints out+err. Six witnesses GREEN in jail. go ff35220 pushed four remotes while host tee still running.
+
+section commits_pushed
+title Commits on main this afternoon arc (oldest → newest) — all four remotes
+commit c57bb00 Pin teacher ai-jail v1.12.0 in cache and refresh the study submodule.
+commit bc8eff6 Seat host on-path as one Rishi sitting and fix the LANE_KVM one-shot.
+commit 1988093 Fix launch-cursor UndefinedName when --gpu runs without --extract.
+commit 7e9a44d Fix Rishi if-then-assert-else parse as UnknownStatement.
+commit cf0558a Invoke cursor-jail with bash from launch-cursor Rishi.
+commit 4067b0a Add on-path boot progress heartbeats so the GRUB wait is visible.
+commit 4dd8c99 Fix lane G0-complete serial floor with a nographic GRUB phase.
+commit 6f07540 Recognize GRUB with grep under Rishi's narrow PATH.
+commit 065b6ab Seat lane_kvm on-path G0-complete GREEN from the Framework sitting.
+commit 0d75c1b Print parity chapter output on failure and document the host tee recipe.
+commit e7a0593 Pin RYE_ZIG for tally maybe/no_padding/parse_int witnesses.
+commit ff35220 Pin witness builds argv-direct with RYE_ZIG; assert tool chatter on err.
+push remotes origin=codeberg/veganreyklah2 github=github/veganreyklah2 gp36-codeberg gp36-github
+push tip ff35220 verified equal on all four
+
+section host_parity_printout
+title Host tee printout — second full-suite RED (parked)
+p Recipe used: rishi/bin/rishi run tools/parity.rish 2>&1 | tee tools/.cache/parity-host.log
+p Chapter 1 progressed past lattice · inference assist · compass rose. Last say before orchestrator fail: witness suite: two-rooms doorway (canon seated, forward pages name their room)…
+p Orchestrator: rishi: assertion failed — parity chapter 1 failed at line 13 assert ch1.ok
+p Nested detail was thin: ch.out dumped prior GREENs; nested assert lived on stderr and was not printed yet.
+p Jail reproduce of doorway scan: EXIT 1 · one FAIL among 161 OK:
+printout FAIL active-designing/20260712-130300_lane-inward-route-probe.md Status does not name a room: **Status:** Counsel seated · **Route one flag absent** · Route two **parked for word** · host one-shot still worded
+printout FAIL doorway scan
+p Root cause: route-probe note Status lacked checkable|vision|mixed|research for understanding. Not a Zig/PATH class failure — doorway hygiene from the 130300 note seated earlier the same day.
+p Second full-suite red this sitting → park per standing law.
+
+section uncommitted_awaiting_go
+title Fixed after park · not pushed yet
+file active-designing/20260712-130300_lane-inward-route-probe.md Status now Checkable — counsel seated · Route one flag absent · Route two parked for word · host one-shot still worded
+file tools/parity.rish prints chapter .err as well as .out on fail
+file tools/two_rooms_doorway.rish prints scan .err on fail
+file session-logs/20260712-143528_park-parity-two-rooms-status.bron park log
+verify_jail two_rooms_doorway GREEN after Status fix
+verify_jail tally_maybe GREEN
+verify_jail align_session_logs GREEN
+verify_jail doorway_scan OK active-designing/20260712-130300_lane-inward-route-probe.md
+
+section rishi_shell_law_seated_in_chat
+title Kaeden Q&A seated for Claude eyes
+p Do Rishi scripts have to rely on bash? No. ~338 sh vs ~10 bash. Bash only for real bashisms (Ubuntu dash rejects pipefail).
+p Do we have to use sh at all — is that the Linux syscall path? No. run ["cmd" "arg"] → std.process.run argv → execve lineage. File I/O via read-file write-file list-dir. sh -c is host convenience for compounds/env/pipes.
+p Preferred pin form: run ["mkdir" "-p" "dir"] then run ["env" "RYE_ZIG=${zig}" "rye/bin/rye" "build" …]. Assert tool GREEN on .err when the tool uses std.debug.print.
+p Growing native run-environ or mkdir builtins awaits Claude ruling — not opened this sitting.
+
+section open_now
+next go-uncommitted Status+err-print when Kaeden says go
+park full-metal-parity-tee this sitting — second red law
+park route_two nest-bwrap for Kaeden word
+park wrapper --version echo at Cursor launch for word
+next g1-on-word receipt_core under Genode POSIX jailed serial
+next pond-sixbar-on-word enclosure witness vs ai-jail baseline
+park karpathy-gist ai-memory dispositions for Kaeden word
+park encrypt-to-future-identity beside T3 OCapN
+
+section ask_claude
+ask Affirm park after second full-suite red, with doorway Status fix as the parked sitting's last mechanical close — or name a different close.
+ask Affirm argv-direct RYE_ZIG + assert .err stream discipline as the witness build law going forward — or name a preferred run-environ builtin shape instead.
+ask Ordered next after go of the Status fix: remain parked on metal parity until a fresh sitting, then G1/Pond on word — any reorder?
+ask Route two still parked — any change after on-path GREEN and teacher v1.12.0?
+
+benediction May every witness name its toolchain without a shell. May every forward page name its room. May the second red teach the park, and the next sitting begin clean.

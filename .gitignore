@@ -1,0 +1,160 @@
+# This repository lives inside a sandboxed home directory that also holds the
+# editor, its unpacked AppImage, downloaded tools, personal files, and
+# credentials (including .ssh). To keep every one of those out safely and by
+# default, we ignore everything at the repository root, then allow back in only
+# the project's own directories and files. When we add a new top-level project
+# directory, we list it here too.
+
+/*
+
+# --- The project ------------------------------------------------------------
+!/.gitignore
+!/.gitmodules
+!/.gitattributes
+!/SOURCE.md
+!/LICENSE-MIT
+!/LICENSE-APACHE
+!/LICENSE-CC-BY
+!/PUBKEYS.template.md
+!/.brix
+!/keys_*.png
+!/context/
+!/counsel/
+!/external-research/
+!/active-designing/
+!/foundations/
+!/manual/
+!/docs/
+!/classical-vedic-astrology/
+!/linengrow/
+!/dimeroll/
+!/lattice/
+!/lantern/
+!/scribble/
+!/anvil/
+!/rye/
+!/rye-learning-process/
+!/gratitude/
+!/tools/
+!/strengthening-compiler/
+!/work-in-progress/
+!/rishi/
+!/aurora/
+!/tally/
+!/caravan/
+!/brushstroke/
+!/comlink/
+!/mantra/
+!/pond/
+!/amber/
+!/amphora/
+!/bron-resins/
+!/granary/
+!/mandi/
+!/expanding-prompts/
+!/session-logs/
+!/vendor/
+/vendor/*
+!/vendor/genode/
+!/vendor/monocypher/
+!/.cursor/
+!/CLAUDE.md
+!/ORGANIZING.md
+!/.claude/
+!/old/
+!/vere/
+
+# Claude Code grows this file when you approve shell commands in Zed; machine-local.
+/.claude/settings.local.json
+
+# --- Re-ignore fetched dependencies and build artifacts inside the project --
+# The Zig toolchain is large and fetched, not authored (the binary alone is
+# ~165MB, past GitHub's 100MB limit). The rye binary and caches are built.
+/rye/bin/
+/rishi/bin/
+/tally/bin/
+/caravan/bin/
+/comlink/bin/
+/comlink/.build/
+/brushstroke/bin/
+/mantra/bin/
+/aurora/.build/
+/linengrow/bin/
+/dimeroll/bin/
+/lattice/bin/
+/lantern/bin/
+/scribble/bin/
+/anvil/bin/
+*.rye.zig
+.zig-cache/
+zig-cache/
+
+# --- macOS extended attributes and Finder artifacts (host moved from Linux) -
+# The Linux-host .gitignore above only named .DS_Store; the Mac host adds a
+# wider family of Finder/Spotlight/TimeMachine/AppleDouble droppings that can
+# appear at any nesting depth, so these carry no leading slash on purpose.
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+.fseventsd
+.TemporaryItems
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+Icon
+
+# --- tools/ : ship the template, withhold the personal fill-in --------------
+# The committed key-card.conf.example is the template anyone copies; the real
+# key-card.conf holds one person's details and stays local. tools/.build holds
+# the qrencode binary we compile on demand from the vendored source.
+/tools/key-card.conf
+/tools/enclosure.conf
+/tools/secrets.env
+/tools/launch-cursor.sh
+/tools/launch-zed.sh
+# Tracked launchers (not gitignored): tools/cursor-jail.sh, tools/launch-cursor.rish
+/tools/.build/
+
+# --- Editor state inside the project (ai-jail durable ground) ---------------
+/.cursor-state/
+/.zed-state/
+/squashfs-root/                              # extracted Cursor AppImage — binary, not source
+/Cursor-*.AppImage                           # downloaded AppImages at repo root
+
+# --- Local key material — never tracked -------------------------------------
+# The allow-list above already excludes anything outside the project, but we
+# say it explicitly: a sandbox GnuPG home and any loose key files live at the
+# repo root and stay out of history. These are root-anchored so they never
+# touch crypto test fixtures inside rye/lib/std.
+/.gnupg-rye/
+/.gnupg/
+/*.asc
+/*.gpg
+/*.sec
+/*.key
+
+# --- Regenerated and local-only reference (added 20260627-191712) ----------
+tools/fixtures/rish_io/*.txt
+tools/fixtures/session_logs_archive/_sandbox/
+tools/.build/
+tools/.cache/
+# IronBeetle raw captions stay out of git (covered by tools/.cache/; named for the pilot):
+# tools/.cache/ironbeetle-transcripts/
+__pycache__/
+*.pyc
+/gratitude/nix/
+/gratitude/s6/
+/gratitude/skalibs/
+/gratitude/zon/
+/pond/bin/
+/amphora/bin/
+/granary/bin/
+/mandi/bin/
+/tools/fixtures/.forge_view_bundle/

@@ -1,0 +1,19 @@
+# inference_anvil_corpus_prefix_view.rish — Anvil path_prefix query → Skate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/inference_anvil_corpus_prefix_view.rish
+
+let bin = "pond/bin/drawn-terminal"
+
+say "build: Anvil corpus prefix view — drawn-terminal compile"
+let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+assert build.ok else "drawn_terminal build failed for corpus prefix view"
+assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
+
+let corpus = run ["sh" "-c" "${bin} corpusprefixviewtest 2>&1"]
+assert corpus.ok else "drawn terminal corpusprefixviewtest exited non-zero"
+assert corpus.out contains "corpus prefix view" else "corpus prefix view missing expected output"
+assert corpus.out contains "GREEN" else "Anvil corpus prefix view not GREEN"
+assert corpus.out contains "lines=5" else "corpus prefix view missing five-line frame"
+
+say "GREEN: Anvil corpus prefix view — pond/ filter hits compose a Skate frame."

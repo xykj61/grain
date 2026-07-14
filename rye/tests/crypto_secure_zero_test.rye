@@ -1,0 +1,20 @@
+//! Rye test: std.crypto.secureZero — pass 9929.
+//!
+//! Volatile zeroing backs key wipe on crypto decrypt paths and bcrypt cleanup.
+
+const std = @import("std");
+
+pub fn main() void {
+    var key: [32]u8 = .{0xAB} ** 32;
+    std.crypto.secureZero(u8, &key);
+    for (key) |b| std.debug.assert(b == 0);
+
+    var words: [4]u32 = .{0xDEADBEEF} ** 4;
+    std.crypto.secureZero(u32, &words);
+    for (words) |w| std.debug.assert(w == 0);
+
+    var empty: [0]u8 = .{};
+    std.crypto.secureZero(u8, &empty);
+
+    std.debug.print("rye: crypto.secureZero assertions confirmed.\n", .{});
+}

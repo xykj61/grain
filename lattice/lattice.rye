@@ -1,0 +1,1259 @@
+//! lattice/lattice.rye — Lattice lap 39 selftest (ops through hard_sigmoid · rsqrt · hardtanh · cube).
+//!
+//!   rye build lattice/lattice.rye -femit-bin=lattice/bin/lattice
+//!   lattice/bin/lattice selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const lc = @import("lattice_core.rye");
+
+const lattice_version = "20260710.232158";
+
+fn welcome_add() !void {
+    var a = try lc.Matrix.init(2, 2);
+    a.set(0, 0, 1);
+    a.set(0, 1, 2);
+    a.set(1, 0, 3);
+    a.set(1, 1, 4);
+
+    var b = try lc.Matrix.init(2, 2);
+    b.set(0, 0, 10);
+    b.set(0, 1, 20);
+    b.set(1, 0, 30);
+    b.set(1, 1, 40);
+
+    var c = try lc.Matrix.init(2, 2);
+    try lc.add(&a, &b, &c);
+    assert(c.at(0, 0) == 11);
+    assert(c.at(1, 1) == 44);
+    print("lattice: add 2x2 green — c00={d} c11={d}\n", .{ c.at(0, 0), c.at(1, 1) });
+}
+
+fn welcome_matmul() !void {
+    var a = try lc.Matrix.init(2, 2);
+    a.set(0, 0, 1);
+    a.set(0, 1, 2);
+    a.set(1, 0, 3);
+    a.set(1, 1, 4);
+
+    var b = try lc.Matrix.init(2, 2);
+    b.set(0, 0, 5);
+    b.set(0, 1, 6);
+    b.set(1, 0, 7);
+    b.set(1, 1, 8);
+
+    var c = try lc.Matrix.init(2, 2);
+    try lc.matmul(&a, &b, &c);
+    assert(c.at(0, 0) == 19);
+    assert(c.at(0, 1) == 22);
+    assert(c.at(1, 0) == 43);
+    assert(c.at(1, 1) == 50);
+    print("lattice: matmul 2x2 green — c00={d} c11={d}\n", .{ c.at(0, 0), c.at(1, 1) });
+}
+
+fn welcome_reshape() !void {
+    var a = try lc.Matrix.init(2, 3);
+    a.set(0, 0, 1);
+    a.set(0, 1, 2);
+    a.set(0, 2, 3);
+    a.set(1, 0, 4);
+    a.set(1, 1, 5);
+    a.set(1, 2, 6);
+
+    var b = try lc.Matrix.init(3, 2);
+    try lc.reshape(&a, &b);
+    assert(b.at(0, 0) == 1);
+    assert(b.at(0, 1) == 2);
+    assert(b.at(1, 0) == 3);
+    assert(b.at(1, 1) == 4);
+    assert(b.at(2, 0) == 5);
+    assert(b.at(2, 1) == 6);
+    print("lattice: reshape 2x3→3x2 green — b00={d} b21={d}\n", .{ b.at(0, 0), b.at(2, 1) });
+}
+
+fn welcome_reduce_sum() !void {
+    var a = try lc.Matrix.init(2, 2);
+    a.set(0, 0, 1);
+    a.set(0, 1, 2);
+    a.set(1, 0, 3);
+    a.set(1, 1, 4);
+    var out = try lc.Matrix.init(1, 1);
+    try lc.reduce_sum(&a, &out);
+    assert(out.at(0, 0) == 10);
+    print("lattice: reduce_sum 2x2 green — sum={d}\n", .{out.at(0, 0)});
+}
+
+fn welcome_reduce_mean() !void {
+    var a = try lc.Matrix.init(2, 2);
+    a.set(0, 0, 1);
+    a.set(0, 1, 2);
+    a.set(1, 0, 3);
+    a.set(1, 1, 4);
+    var out = try lc.Matrix.init(1, 1);
+    try lc.reduce_mean(&a, &out);
+    assert(out.at(0, 0) == 2.5);
+    print("lattice: reduce_mean 2x2 green — mean={d}\n", .{out.at(0, 0)});
+}
+
+fn welcome_scale() !void {
+    var a = try lc.Matrix.init(2, 2);
+    a.set(0, 0, 1);
+    a.set(0, 1, 2);
+    a.set(1, 0, 3);
+    a.set(1, 1, 4);
+    var out = try lc.Matrix.init(2, 2);
+    try lc.scale(&a, 2.0, &out);
+    assert(out.at(0, 0) == 2);
+    assert(out.at(1, 1) == 8);
+    print("lattice: scale 2x2 green — o00={d} o11={d}\n", .{ out.at(0, 0), out.at(1, 1) });
+}
+
+fn welcome_transpose() !void {
+    var a = try lc.Matrix.init(2, 3);
+    a.set(0, 0, 1);
+    a.set(0, 1, 2);
+    a.set(0, 2, 3);
+    a.set(1, 0, 4);
+    a.set(1, 1, 5);
+    a.set(1, 2, 6);
+    var out = try lc.Matrix.init(3, 2);
+    try lc.transpose(&a, &out);
+    assert(out.at(0, 0) == 1);
+    assert(out.at(0, 1) == 4);
+    assert(out.at(1, 0) == 2);
+    assert(out.at(1, 1) == 5);
+    assert(out.at(2, 0) == 3);
+    assert(out.at(2, 1) == 6);
+    print("lattice: transpose 2x3→3x2 green — o00={d} o21={d}\n", .{ out.at(0, 0), out.at(2, 1) });
+}
+
+fn welcome_mul() !void {
+    var a = try lc.Matrix.init(2, 2);
+    a.set(0, 0, 2);
+    a.set(0, 1, 3);
+    a.set(1, 0, 4);
+    a.set(1, 1, 5);
+    var b = try lc.Matrix.init(2, 2);
+    b.set(0, 0, 10);
+    b.set(0, 1, 2);
+    b.set(1, 0, 3);
+    b.set(1, 1, 4);
+    var out = try lc.Matrix.init(2, 2);
+    try lc.mul(&a, &b, &out);
+    assert(out.at(0, 0) == 20);
+    assert(out.at(0, 1) == 6);
+    assert(out.at(1, 0) == 12);
+    assert(out.at(1, 1) == 20);
+    print("lattice: mul 2x2 green — o00={d} o11={d}\n", .{ out.at(0, 0), out.at(1, 1) });
+}
+
+fn welcome_fill() !void {
+    var out = try lc.Matrix.init(2, 2);
+    lc.fill(&out, 7.0);
+    assert(out.at(0, 0) == 7);
+    assert(out.at(0, 1) == 7);
+    assert(out.at(1, 0) == 7);
+    assert(out.at(1, 1) == 7);
+    print("lattice: fill 2x2 green — o00={d} o11={d}\n", .{ out.at(0, 0), out.at(1, 1) });
+}
+
+fn welcome_copy() !void {
+    var src = try lc.Matrix.init(2, 2);
+    src.set(0, 0, 1);
+    src.set(0, 1, 2);
+    src.set(1, 0, 3);
+    src.set(1, 1, 4);
+    var out = try lc.Matrix.init(2, 2);
+    try lc.copy(&src, &out);
+    assert(out.at(0, 0) == 1);
+    assert(out.at(0, 1) == 2);
+    assert(out.at(1, 0) == 3);
+    assert(out.at(1, 1) == 4);
+    print("lattice: copy 2x2 green — o00={d} o11={d}\n", .{ out.at(0, 0), out.at(1, 1) });
+}
+
+fn welcome_sub() !void {
+    var a = try lc.Matrix.init(2, 2);
+    a.set(0, 0, 10);
+    a.set(0, 1, 20);
+    a.set(1, 0, 30);
+    a.set(1, 1, 40);
+    var b = try lc.Matrix.init(2, 2);
+    b.set(0, 0, 1);
+    b.set(0, 1, 2);
+    b.set(1, 0, 3);
+    b.set(1, 1, 4);
+    var out = try lc.Matrix.init(2, 2);
+    try lc.sub(&a, &b, &out);
+    assert(out.at(0, 0) == 9);
+    assert(out.at(0, 1) == 18);
+    assert(out.at(1, 0) == 27);
+    assert(out.at(1, 1) == 36);
+    print("lattice: sub 2x2 green — o00={d} o11={d}\n", .{ out.at(0, 0), out.at(1, 1) });
+}
+
+fn welcome_neg() !void {
+    var src = try lc.Matrix.init(2, 2);
+    src.set(0, 0, 1);
+    src.set(0, 1, -2);
+    src.set(1, 0, 3);
+    src.set(1, 1, -4);
+    var out = try lc.Matrix.init(2, 2);
+    try lc.neg(&src, &out);
+    assert(out.at(0, 0) == -1);
+    assert(out.at(0, 1) == 2);
+    assert(out.at(1, 0) == -3);
+    assert(out.at(1, 1) == 4);
+    print("lattice: neg 2x2 green — o00={d} o11={d}\n", .{ out.at(0, 0), out.at(1, 1) });
+}
+
+fn welcome_div() !void {
+    var a = try lc.Matrix.init(2, 2);
+    a.set(0, 0, 6);
+    a.set(0, 1, 8);
+    a.set(1, 0, 9);
+    a.set(1, 1, 16);
+    var b = try lc.Matrix.init(2, 2);
+    b.set(0, 0, 2);
+    b.set(0, 1, 4);
+    b.set(1, 0, 3);
+    b.set(1, 1, 4);
+    var out = try lc.Matrix.init(2, 2);
+    try lc.div(&a, &b, &out);
+    assert(out.at(0, 0) == 3);
+    assert(out.at(0, 1) == 2);
+    assert(out.at(1, 0) == 3);
+    assert(out.at(1, 1) == 4);
+    print("lattice: div 2x2 green — o00={d} o11={d}\n", .{ out.at(0, 0), out.at(1, 1) });
+}
+
+fn welcome_abs() !void {
+    var src = try lc.Matrix.init(2, 2);
+    src.set(0, 0, -3);
+    src.set(0, 1, 4);
+    src.set(1, 0, -5);
+    src.set(1, 1, 0);
+    var out = try lc.Matrix.init(2, 2);
+    try lc.abs(&src, &out);
+    assert(out.at(0, 0) == 3);
+    assert(out.at(0, 1) == 4);
+    assert(out.at(1, 0) == 5);
+    assert(out.at(1, 1) == 0);
+    print("lattice: abs 2x2 green — o00={d} o10={d}\n", .{ out.at(0, 0), out.at(1, 0) });
+}
+
+fn welcome_clamp() !void {
+    var src = try lc.Matrix.init(2, 2);
+    src.set(0, 0, -3);
+    src.set(0, 1, 4);
+    src.set(1, 0, -5);
+    src.set(1, 1, 0);
+    var out = try lc.Matrix.init(2, 2);
+    try lc.clamp(&src, 0.0, 4.0, &out);
+    assert(out.at(0, 0) == 0);
+    assert(out.at(0, 1) == 4);
+    assert(out.at(1, 0) == 0);
+    assert(out.at(1, 1) == 0);
+    print("lattice: clamp 2x2 green — o00={d} o01={d}\n", .{ out.at(0, 0), out.at(0, 1) });
+}
+
+fn welcome_reduce_max() !void {
+    var a = try lc.Matrix.init(2, 2);
+    a.set(0, 0, -3);
+    a.set(0, 1, 4);
+    a.set(1, 0, -5);
+    a.set(1, 1, 0);
+    var out = try lc.Matrix.init(1, 1);
+    try lc.reduce_max(&a, &out);
+    assert(out.at(0, 0) == 4);
+    print("lattice: reduce_max 2x2 green — max={d}\n", .{out.at(0, 0)});
+}
+
+fn welcome_reduce_min() !void {
+    var a = try lc.Matrix.init(2, 2);
+    a.set(0, 0, -3);
+    a.set(0, 1, 4);
+    a.set(1, 0, -5);
+    a.set(1, 1, 0);
+    var out = try lc.Matrix.init(1, 1);
+    try lc.reduce_min(&a, &out);
+    assert(out.at(0, 0) == -5);
+    print("lattice: reduce_min 2x2 green — min={d}\n", .{out.at(0, 0)});
+}
+
+fn welcome_sqrt() !void {
+    var src = try lc.Matrix.init(2, 2);
+    src.set(0, 0, 4);
+    src.set(0, 1, 9);
+    src.set(1, 0, 0);
+    src.set(1, 1, 16);
+    var out = try lc.Matrix.init(2, 2);
+    try lc.sqrt(&src, &out);
+    assert(out.at(0, 0) == 2);
+    assert(out.at(0, 1) == 3);
+    assert(out.at(1, 0) == 0);
+    assert(out.at(1, 1) == 4);
+    print("lattice: sqrt 2x2 green — o00={d} o01={d}\n", .{ out.at(0, 0), out.at(0, 1) });
+}
+
+fn welcome_exp() !void {
+    var src = try lc.Matrix.init(2, 2);
+    src.set(0, 0, 0);
+    src.set(0, 1, 0);
+    src.set(1, 0, 0);
+    src.set(1, 1, 0);
+    var out = try lc.Matrix.init(2, 2);
+    try lc.exp(&src, &out);
+    assert(out.at(0, 0) == 1);
+    assert(out.at(0, 1) == 1);
+    assert(out.at(1, 0) == 1);
+    assert(out.at(1, 1) == 1);
+    print("lattice: exp 2x2 green — o00={d}\n", .{out.at(0, 0)});
+}
+
+fn welcome_log() !void {
+    var src = try lc.Matrix.init(2, 2);
+    src.set(0, 0, 1);
+    src.set(0, 1, 1);
+    src.set(1, 0, 1);
+    src.set(1, 1, 1);
+    var out = try lc.Matrix.init(2, 2);
+    try lc.log(&src, &out);
+    assert(out.at(0, 0) == 0);
+    assert(out.at(0, 1) == 0);
+    assert(out.at(1, 0) == 0);
+    assert(out.at(1, 1) == 0);
+    print("lattice: log 2x2 green — o00={d}\n", .{out.at(0, 0)});
+}
+
+fn welcome_pow() !void {
+    var src = try lc.Matrix.init(2, 2);
+    src.set(0, 0, 2);
+    src.set(0, 1, 3);
+    src.set(1, 0, 4);
+    src.set(1, 1, 1);
+    var out = try lc.Matrix.init(2, 2);
+    try lc.pow(&src, 2.0, &out);
+    assert(out.at(0, 0) == 4);
+    assert(out.at(0, 1) == 9);
+    assert(out.at(1, 0) == 16);
+    assert(out.at(1, 1) == 1);
+    print("lattice: pow 2x2 green — o00={d} o01={d}\n", .{ out.at(0, 0), out.at(0, 1) });
+}
+
+fn welcome_relu() !void {
+    var src = try lc.Matrix.init(2, 2);
+    src.set(0, 0, -3);
+    src.set(0, 1, 4);
+    src.set(1, 0, -5);
+    src.set(1, 1, 0);
+    var out = try lc.Matrix.init(2, 2);
+    try lc.relu(&src, &out);
+    assert(out.at(0, 0) == 0);
+    assert(out.at(0, 1) == 4);
+    assert(out.at(1, 0) == 0);
+    assert(out.at(1, 1) == 0);
+    print("lattice: relu 2x2 green — o00={d} o01={d}\n", .{ out.at(0, 0), out.at(0, 1) });
+}
+
+fn welcome_sigmoid() !void {
+    var src = try lc.Matrix.init(2, 2);
+    src.set(0, 0, 0);
+    src.set(0, 1, 0);
+    src.set(1, 0, 0);
+    src.set(1, 1, 0);
+    var out = try lc.Matrix.init(2, 2);
+    try lc.sigmoid(&src, &out);
+    assert(out.at(0, 0) == 0.5);
+    assert(out.at(0, 1) == 0.5);
+    assert(out.at(1, 0) == 0.5);
+    assert(out.at(1, 1) == 0.5);
+    print("lattice: sigmoid 2x2 green — o00={d}\n", .{out.at(0, 0)});
+}
+
+fn welcome_softmax() !void {
+    var src = try lc.Matrix.init(1, 4);
+    src.set(0, 0, 0);
+    src.set(0, 1, 0);
+    src.set(0, 2, 0);
+    src.set(0, 3, 0);
+    var out = try lc.Matrix.init(1, 4);
+    try lc.softmax(&src, &out);
+    assert(out.at(0, 0) == 0.25);
+    assert(out.at(0, 1) == 0.25);
+    assert(out.at(0, 2) == 0.25);
+    assert(out.at(0, 3) == 0.25);
+    print("lattice: softmax 1x4 green — p0={d}\n", .{out.at(0, 0)});
+}
+
+fn welcome_tanh() !void {
+    var src = try lc.Matrix.init(2, 2);
+    src.set(0, 0, 0);
+    src.set(0, 1, 0);
+    src.set(1, 0, 0);
+    src.set(1, 1, 0);
+    var out = try lc.Matrix.init(2, 2);
+    try lc.tanh(&src, &out);
+    assert(out.at(0, 0) == 0);
+    assert(out.at(0, 1) == 0);
+    assert(out.at(1, 0) == 0);
+    assert(out.at(1, 1) == 0);
+    print("lattice: tanh 2x2 green — o00={d}\n", .{out.at(0, 0)});
+}
+
+fn welcome_gelu() !void {
+    var src = try lc.Matrix.init(2, 2);
+    src.set(0, 0, 0);
+    src.set(0, 1, 0);
+    src.set(1, 0, 0);
+    src.set(1, 1, 0);
+    var out = try lc.Matrix.init(2, 2);
+    try lc.gelu(&src, &out);
+    assert(out.at(0, 0) == 0);
+    assert(out.at(0, 1) == 0);
+    assert(out.at(1, 0) == 0);
+    assert(out.at(1, 1) == 0);
+    print("lattice: gelu 2x2 green — o00={d}\n", .{out.at(0, 0)});
+}
+
+fn welcome_silu() !void {
+    var src = try lc.Matrix.init(2, 2);
+    src.set(0, 0, 0);
+    src.set(0, 1, 0);
+    src.set(1, 0, 0);
+    src.set(1, 1, 0);
+    var out = try lc.Matrix.init(2, 2);
+    try lc.silu(&src, &out);
+    assert(out.at(0, 0) == 0);
+    assert(out.at(0, 1) == 0);
+    assert(out.at(1, 0) == 0);
+    assert(out.at(1, 1) == 0);
+    print("lattice: silu 2x2 green — o00={d}\n", .{out.at(0, 0)});
+}
+
+fn welcome_leaky_relu() !void {
+    var src = try lc.Matrix.init(2, 2);
+    src.set(0, 0, 1);
+    src.set(0, 1, -1);
+    src.set(1, 0, 2);
+    src.set(1, 1, -2);
+    var out = try lc.Matrix.init(2, 2);
+    try lc.leaky_relu(&src, 0.01, &out);
+    assert(out.at(0, 0) == 1);
+    assert(out.at(0, 1) == -0.01);
+    assert(out.at(1, 0) == 2);
+    assert(out.at(1, 1) == -0.02);
+    print("lattice: leaky_relu 2x2 green — o01={d}\n", .{out.at(0, 1)});
+}
+
+fn welcome_softplus() !void {
+    var src = try lc.Matrix.init(2, 2);
+    src.set(0, 0, 0);
+    src.set(0, 1, 0);
+    src.set(1, 0, 0);
+    src.set(1, 1, 0);
+    var out = try lc.Matrix.init(2, 2);
+    try lc.softplus(&src, &out);
+    assert(out.at(0, 0) > 0.69);
+    assert(out.at(0, 0) < 0.70);
+    assert(out.at(1, 1) > 0.69);
+    assert(out.at(1, 1) < 0.70);
+    print("lattice: softplus 2x2 green — o00={d}\n", .{out.at(0, 0)});
+}
+
+fn welcome_maximum() !void {
+    var a = try lc.Matrix.init(2, 2);
+    a.set(0, 0, 1);
+    a.set(0, 1, 4);
+    a.set(1, 0, 2);
+    a.set(1, 1, 0);
+    var b = try lc.Matrix.init(2, 2);
+    b.set(0, 0, 3);
+    b.set(0, 1, 1);
+    b.set(1, 0, 2);
+    b.set(1, 1, 5);
+    var out = try lc.Matrix.init(2, 2);
+    try lc.maximum(&a, &b, &out);
+    assert(out.at(0, 0) == 3);
+    assert(out.at(0, 1) == 4);
+    assert(out.at(1, 0) == 2);
+    assert(out.at(1, 1) == 5);
+    print("lattice: maximum 2x2 green — o00={d}\n", .{out.at(0, 0)});
+}
+
+
+fn welcome_minimum() !void {
+    var a = try lc.Matrix.init(2, 2);
+    a.set(0, 0, 1);
+    a.set(0, 1, 4);
+    a.set(1, 0, 2);
+    a.set(1, 1, 0);
+    var b = try lc.Matrix.init(2, 2);
+    b.set(0, 0, 3);
+    b.set(0, 1, 1);
+    b.set(1, 0, 2);
+    b.set(1, 1, 5);
+    var out = try lc.Matrix.init(2, 2);
+    try lc.minimum(&a, &b, &out);
+    assert(out.at(0, 0) == 1);
+    assert(out.at(0, 1) == 1);
+    assert(out.at(1, 0) == 2);
+    assert(out.at(1, 1) == 0);
+    print("lattice: minimum 2x2 green — o00={d}\n", .{out.at(0, 0)});
+}
+
+fn welcome_elu() !void {
+    var src = try lc.Matrix.init(2, 2);
+    src.set(0, 0, 0);
+    src.set(0, 1, 0);
+    src.set(1, 0, 0);
+    src.set(1, 1, 0);
+    var out = try lc.Matrix.init(2, 2);
+    try lc.elu(&src, 1.0, &out);
+    assert(out.at(0, 0) == 0);
+    assert(out.at(0, 1) == 0);
+    assert(out.at(1, 0) == 0);
+    assert(out.at(1, 1) == 0);
+    print("lattice: elu 2x2 green — o00={d}\n", .{out.at(0, 0)});
+}
+
+fn welcome_softsign() !void {
+    var src = try lc.Matrix.init(2, 2);
+    src.set(0, 0, 0);
+    src.set(0, 1, 1);
+    src.set(1, 0, -1);
+    src.set(1, 1, 0);
+    var out = try lc.Matrix.init(2, 2);
+    try lc.softsign(&src, &out);
+    assert(out.at(0, 0) == 0);
+    assert(out.at(0, 1) == 0.5);
+    assert(out.at(1, 0) == -0.5);
+    assert(out.at(1, 1) == 0);
+    print("lattice: softsign 2x2 green — o01={d}\n", .{out.at(0, 1)});
+}
+
+fn welcome_square() !void {
+    var src = try lc.Matrix.init(2, 2);
+    src.set(0, 0, 2);
+    src.set(0, 1, -3);
+    src.set(1, 0, 0);
+    src.set(1, 1, 4);
+    var out = try lc.Matrix.init(2, 2);
+    try lc.square(&src, &out);
+    assert(out.at(0, 0) == 4);
+    assert(out.at(0, 1) == 9);
+    assert(out.at(1, 0) == 0);
+    assert(out.at(1, 1) == 16);
+    print("lattice: square 2x2 green — o00={d}\n", .{out.at(0, 0)});
+}
+
+fn welcome_sign() !void {
+    var src = try lc.Matrix.init(2, 2);
+    src.set(0, 0, 3);
+    src.set(0, 1, -2);
+    src.set(1, 0, 0);
+    src.set(1, 1, 1);
+    var out = try lc.Matrix.init(2, 2);
+    try lc.sign(&src, &out);
+    assert(out.at(0, 0) == 1);
+    assert(out.at(0, 1) == -1);
+    assert(out.at(1, 0) == 0);
+    assert(out.at(1, 1) == 1);
+    print("lattice: sign 2x2 green — o00={d}\n", .{out.at(0, 0)});
+}
+
+fn welcome_reciprocal() !void {
+    var src = try lc.Matrix.init(2, 2);
+    src.set(0, 0, 2);
+    src.set(0, 1, -4);
+    src.set(1, 0, 1);
+    src.set(1, 1, 0.5);
+    var out = try lc.Matrix.init(2, 2);
+    try lc.reciprocal(&src, &out);
+    assert(out.at(0, 0) == 0.5);
+    assert(out.at(0, 1) == -0.25);
+    assert(out.at(1, 0) == 1);
+    assert(out.at(1, 1) == 2);
+    print("lattice: reciprocal 2x2 green — o00={d}\n", .{out.at(0, 0)});
+}
+
+fn welcome_hard_sigmoid() !void {
+    var src = try lc.Matrix.init(2, 2);
+    src.set(0, 0, 0);
+    src.set(0, 1, 10);
+    src.set(1, 0, -10);
+    src.set(1, 1, 2.5);
+    var out = try lc.Matrix.init(2, 2);
+    try lc.hard_sigmoid(&src, &out);
+    assert(out.at(0, 0) == 0.5);
+    assert(out.at(0, 1) == 1);
+    assert(out.at(1, 0) == 0);
+    assert(out.at(1, 1) == 1);
+    print("lattice: hard_sigmoid 2x2 green — o00={d}\n", .{out.at(0, 0)});
+}
+
+fn welcome_rsqrt() !void {
+    var src = try lc.Matrix.init(2, 2);
+    src.set(0, 0, 1);
+    src.set(0, 1, 4);
+    src.set(1, 0, 16);
+    src.set(1, 1, 0.25);
+    var out = try lc.Matrix.init(2, 2);
+    try lc.rsqrt(&src, &out);
+    assert(out.at(0, 0) == 1);
+    assert(out.at(0, 1) == 0.5);
+    assert(out.at(1, 0) == 0.25);
+    assert(out.at(1, 1) == 2);
+    print("lattice: rsqrt 2x2 green — o00={d}\n", .{out.at(0, 0)});
+}
+
+fn welcome_hardtanh() !void {
+    var src = try lc.Matrix.init(2, 2);
+    src.set(0, 0, 0.5);
+    src.set(0, 1, 2);
+    src.set(1, 0, -2);
+    src.set(1, 1, -0.25);
+    var out = try lc.Matrix.init(2, 2);
+    try lc.hardtanh(&src, &out);
+    assert(out.at(0, 0) == 0.5);
+    assert(out.at(0, 1) == 1);
+    assert(out.at(1, 0) == -1);
+    assert(out.at(1, 1) == -0.25);
+    print("lattice: hardtanh 2x2 green — o00={d}\n", .{out.at(0, 0)});
+}
+
+fn welcome_cube() !void {
+    var src = try lc.Matrix.init(2, 2);
+    src.set(0, 0, 2);
+    src.set(0, 1, -2);
+    src.set(1, 0, 1);
+    src.set(1, 1, 0);
+    var out = try lc.Matrix.init(2, 2);
+    try lc.cube(&src, &out);
+    assert(out.at(0, 0) == 8);
+    assert(out.at(0, 1) == -8);
+    assert(out.at(1, 0) == 1);
+    assert(out.at(1, 1) == 0);
+    print("lattice: cube 2x2 green — o00={d}\n", .{out.at(0, 0)});
+}
+
+
+fn unwelcome_copy_shape() !void {
+    var src = try lc.Matrix.init(2, 2);
+    var out = try lc.Matrix.init(2, 1);
+    if (lc.copy(&src, &out)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ShapeMismatch);
+    }
+    print("lattice: copy shape mismatch refused\n", .{});
+}
+
+fn unwelcome_sub_shape() !void {
+    var a = try lc.Matrix.init(2, 2);
+    var b = try lc.Matrix.init(2, 1);
+    var out = try lc.Matrix.init(2, 2);
+    if (lc.sub(&a, &b, &out)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ShapeMismatch);
+    }
+    print("lattice: sub shape mismatch refused\n", .{});
+}
+
+fn unwelcome_neg_shape() !void {
+    var src = try lc.Matrix.init(2, 2);
+    var out = try lc.Matrix.init(2, 1);
+    if (lc.neg(&src, &out)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ShapeMismatch);
+    }
+    print("lattice: neg shape mismatch refused\n", .{});
+}
+
+fn unwelcome_div_shape() !void {
+    var a = try lc.Matrix.init(2, 2);
+    var b = try lc.Matrix.init(2, 1);
+    var out = try lc.Matrix.init(2, 2);
+    if (lc.div(&a, &b, &out)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ShapeMismatch);
+    }
+    print("lattice: div shape mismatch refused\n", .{});
+}
+
+fn unwelcome_div_zero() !void {
+    var a = try lc.Matrix.init(2, 2);
+    a.set(0, 0, 1);
+    a.set(0, 1, 2);
+    a.set(1, 0, 3);
+    a.set(1, 1, 4);
+    var b = try lc.Matrix.init(2, 2);
+    b.set(0, 0, 1);
+    b.set(0, 1, 0);
+    b.set(1, 0, 1);
+    b.set(1, 1, 1);
+    var out = try lc.Matrix.init(2, 2);
+    if (lc.div(&a, &b, &out)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.DivideByZero);
+    }
+    print("lattice: div by zero refused\n", .{});
+}
+
+fn unwelcome_abs_shape() !void {
+    var src = try lc.Matrix.init(2, 2);
+    var out = try lc.Matrix.init(2, 1);
+    if (lc.abs(&src, &out)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ShapeMismatch);
+    }
+    print("lattice: abs shape mismatch refused\n", .{});
+}
+
+fn unwelcome_clamp_shape() !void {
+    var src = try lc.Matrix.init(2, 2);
+    var out = try lc.Matrix.init(2, 1);
+    if (lc.clamp(&src, 0.0, 1.0, &out)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ShapeMismatch);
+    }
+    print("lattice: clamp shape mismatch refused\n", .{});
+}
+
+fn unwelcome_reduce_max_shape() !void {
+    var a = try lc.Matrix.init(2, 2);
+    var b = try lc.Matrix.init(2, 1);
+    if (lc.reduce_max(&a, &b)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ShapeMismatch);
+    }
+    print("lattice: reduce_max shape mismatch refused\n", .{});
+}
+
+fn unwelcome_reduce_min_shape() !void {
+    var a = try lc.Matrix.init(2, 2);
+    var b = try lc.Matrix.init(2, 1);
+    if (lc.reduce_min(&a, &b)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ShapeMismatch);
+    }
+    print("lattice: reduce_min shape mismatch refused\n", .{});
+}
+
+fn unwelcome_sqrt_shape() !void {
+    var src = try lc.Matrix.init(2, 2);
+    var out = try lc.Matrix.init(2, 1);
+    if (lc.sqrt(&src, &out)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ShapeMismatch);
+    }
+    print("lattice: sqrt shape mismatch refused\n", .{});
+}
+
+fn unwelcome_sqrt_negative() !void {
+    var src = try lc.Matrix.init(2, 2);
+    src.set(0, 0, 1);
+    src.set(0, 1, -1);
+    src.set(1, 0, 4);
+    src.set(1, 1, 9);
+    var out = try lc.Matrix.init(2, 2);
+    if (lc.sqrt(&src, &out)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.NegativeInput);
+    }
+    print("lattice: sqrt negative refused\n", .{});
+}
+
+fn unwelcome_exp_shape() !void {
+    var src = try lc.Matrix.init(2, 2);
+    var out = try lc.Matrix.init(2, 1);
+    if (lc.exp(&src, &out)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ShapeMismatch);
+    }
+    print("lattice: exp shape mismatch refused\n", .{});
+}
+
+fn unwelcome_log_shape() !void {
+    var src = try lc.Matrix.init(2, 2);
+    var out = try lc.Matrix.init(2, 1);
+    if (lc.log(&src, &out)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ShapeMismatch);
+    }
+    print("lattice: log shape mismatch refused\n", .{});
+}
+
+fn unwelcome_log_nonpositive() !void {
+    var src = try lc.Matrix.init(2, 2);
+    src.set(0, 0, 1);
+    src.set(0, 1, 0);
+    src.set(1, 0, 1);
+    src.set(1, 1, 1);
+    var out = try lc.Matrix.init(2, 2);
+    if (lc.log(&src, &out)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.NonPositiveInput);
+    }
+    print("lattice: log nonpositive refused\n", .{});
+}
+
+fn unwelcome_pow_shape() !void {
+    var src = try lc.Matrix.init(2, 2);
+    var out = try lc.Matrix.init(2, 1);
+    if (lc.pow(&src, 2.0, &out)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ShapeMismatch);
+    }
+    print("lattice: pow shape mismatch refused\n", .{});
+}
+
+fn unwelcome_pow_negative() !void {
+    var src = try lc.Matrix.init(2, 2);
+    src.set(0, 0, 1);
+    src.set(0, 1, -2);
+    src.set(1, 0, 3);
+    src.set(1, 1, 4);
+    var out = try lc.Matrix.init(2, 2);
+    if (lc.pow(&src, 2.0, &out)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.NegativeInput);
+    }
+    print("lattice: pow negative refused\n", .{});
+}
+
+fn unwelcome_relu_shape() !void {
+    var src = try lc.Matrix.init(2, 2);
+    var out = try lc.Matrix.init(2, 1);
+    if (lc.relu(&src, &out)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ShapeMismatch);
+    }
+    print("lattice: relu shape mismatch refused\n", .{});
+}
+
+fn unwelcome_sigmoid_shape() !void {
+    var src = try lc.Matrix.init(2, 2);
+    var out = try lc.Matrix.init(2, 1);
+    if (lc.sigmoid(&src, &out)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ShapeMismatch);
+    }
+    print("lattice: sigmoid shape mismatch refused\n", .{});
+}
+
+fn unwelcome_softmax_shape() !void {
+    var src = try lc.Matrix.init(1, 4);
+    var out = try lc.Matrix.init(1, 3);
+    if (lc.softmax(&src, &out)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ShapeMismatch);
+    }
+    print("lattice: softmax shape mismatch refused\n", .{});
+}
+
+fn unwelcome_tanh_shape() !void {
+    var src = try lc.Matrix.init(2, 2);
+    var out = try lc.Matrix.init(2, 1);
+    if (lc.tanh(&src, &out)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ShapeMismatch);
+    }
+    print("lattice: tanh shape mismatch refused\n", .{});
+}
+
+fn unwelcome_gelu_shape() !void {
+    var src = try lc.Matrix.init(2, 2);
+    var out = try lc.Matrix.init(2, 1);
+    if (lc.gelu(&src, &out)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ShapeMismatch);
+    }
+    print("lattice: gelu shape mismatch refused\n", .{});
+}
+
+fn unwelcome_silu_shape() !void {
+    var src = try lc.Matrix.init(2, 2);
+    var out = try lc.Matrix.init(2, 1);
+    if (lc.silu(&src, &out)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ShapeMismatch);
+    }
+    print("lattice: silu shape mismatch refused\n", .{});
+}
+
+fn unwelcome_leaky_relu_shape() !void {
+    var src = try lc.Matrix.init(2, 2);
+    var out = try lc.Matrix.init(2, 1);
+    if (lc.leaky_relu(&src, 0.01, &out)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ShapeMismatch);
+    }
+    print("lattice: leaky_relu shape mismatch refused\n", .{});
+}
+
+fn unwelcome_softplus_shape() !void {
+    var src = try lc.Matrix.init(2, 2);
+    var out = try lc.Matrix.init(2, 1);
+    if (lc.softplus(&src, &out)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ShapeMismatch);
+    }
+    print("lattice: softplus shape mismatch refused\n", .{});
+}
+
+fn unwelcome_maximum_shape() !void {
+    var a = try lc.Matrix.init(2, 2);
+    var b = try lc.Matrix.init(2, 1);
+    var out = try lc.Matrix.init(2, 2);
+    if (lc.maximum(&a, &b, &out)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ShapeMismatch);
+    }
+    print("lattice: maximum shape mismatch refused\n", .{});
+}
+
+
+fn unwelcome_minimum_shape() !void {
+    var a = try lc.Matrix.init(2, 2);
+    var b = try lc.Matrix.init(2, 1);
+    var out = try lc.Matrix.init(2, 2);
+    if (lc.minimum(&a, &b, &out)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ShapeMismatch);
+    }
+    print("lattice: minimum shape mismatch refused\n", .{});
+}
+
+fn unwelcome_elu_shape() !void {
+    var src = try lc.Matrix.init(2, 2);
+    var out = try lc.Matrix.init(2, 1);
+    if (lc.elu(&src, 1.0, &out)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ShapeMismatch);
+    }
+    print("lattice: elu shape mismatch refused\n", .{});
+}
+
+fn unwelcome_softsign_shape() !void {
+    var src = try lc.Matrix.init(2, 2);
+    var out = try lc.Matrix.init(2, 1);
+    if (lc.softsign(&src, &out)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ShapeMismatch);
+    }
+    print("lattice: softsign shape mismatch refused\n", .{});
+}
+
+fn unwelcome_square_shape() !void {
+    var src = try lc.Matrix.init(2, 2);
+    var out = try lc.Matrix.init(2, 1);
+    if (lc.square(&src, &out)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ShapeMismatch);
+    }
+    print("lattice: square shape mismatch refused\n", .{});
+}
+
+fn unwelcome_sign_shape() !void {
+    var src = try lc.Matrix.init(2, 2);
+    var out = try lc.Matrix.init(2, 1);
+    if (lc.sign(&src, &out)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ShapeMismatch);
+    }
+    print("lattice: sign shape mismatch refused\n", .{});
+}
+
+fn unwelcome_reciprocal_shape() !void {
+    var src = try lc.Matrix.init(2, 2);
+    var out = try lc.Matrix.init(2, 1);
+    if (lc.reciprocal(&src, &out)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ShapeMismatch);
+    }
+    print("lattice: reciprocal shape mismatch refused\n", .{});
+}
+
+fn unwelcome_reciprocal_zero() !void {
+    var src = try lc.Matrix.init(1, 1);
+    src.set(0, 0, 0);
+    var out = try lc.Matrix.init(1, 1);
+    if (lc.reciprocal(&src, &out)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.DivideByZero);
+    }
+    print("lattice: reciprocal zero refused\n", .{});
+}
+
+fn unwelcome_hard_sigmoid_shape() !void {
+    var src = try lc.Matrix.init(2, 2);
+    var out = try lc.Matrix.init(2, 1);
+    if (lc.hard_sigmoid(&src, &out)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ShapeMismatch);
+    }
+    print("lattice: hard_sigmoid shape mismatch refused\n", .{});
+}
+
+fn unwelcome_rsqrt_shape() !void {
+    var src = try lc.Matrix.init(2, 2);
+    var out = try lc.Matrix.init(2, 1);
+    if (lc.rsqrt(&src, &out)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ShapeMismatch);
+    }
+    print("lattice: rsqrt shape mismatch refused\n", .{});
+}
+
+fn unwelcome_rsqrt_nonpositive() !void {
+    var src = try lc.Matrix.init(1, 1);
+    src.set(0, 0, 0);
+    var out = try lc.Matrix.init(1, 1);
+    if (lc.rsqrt(&src, &out)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.NonPositiveInput);
+    }
+    print("lattice: rsqrt non-positive refused\n", .{});
+}
+
+fn unwelcome_hardtanh_shape() !void {
+    var src = try lc.Matrix.init(2, 2);
+    var out = try lc.Matrix.init(2, 1);
+    if (lc.hardtanh(&src, &out)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ShapeMismatch);
+    }
+    print("lattice: hardtanh shape mismatch refused\n", .{});
+}
+
+fn unwelcome_cube_shape() !void {
+    var src = try lc.Matrix.init(2, 2);
+    var out = try lc.Matrix.init(2, 1);
+    if (lc.cube(&src, &out)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ShapeMismatch);
+    }
+    print("lattice: cube shape mismatch refused\n", .{});
+}
+
+
+fn unwelcome_shape_mismatch() !void {
+    var a = try lc.Matrix.init(2, 3);
+    var b = try lc.Matrix.init(2, 2);
+    var c = try lc.Matrix.init(2, 2);
+    if (lc.matmul(&a, &b, &c)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ShapeMismatch);
+    }
+    print("lattice: shape mismatch refused\n", .{});
+}
+
+fn unwelcome_reshape_count() !void {
+    var a = try lc.Matrix.init(2, 2);
+    var b = try lc.Matrix.init(3, 1);
+    if (lc.reshape(&a, &b)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ShapeMismatch);
+    }
+    print("lattice: reshape count mismatch refused\n", .{});
+}
+
+fn unwelcome_reduce_shape() !void {
+    var a = try lc.Matrix.init(2, 2);
+    var b = try lc.Matrix.init(2, 1);
+    if (lc.reduce_sum(&a, &b)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ShapeMismatch);
+    }
+    print("lattice: reduce shape mismatch refused\n", .{});
+}
+
+fn unwelcome_reduce_mean_shape() !void {
+    var a = try lc.Matrix.init(2, 2);
+    var b = try lc.Matrix.init(2, 1);
+    if (lc.reduce_mean(&a, &b)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ShapeMismatch);
+    }
+    print("lattice: reduce_mean shape mismatch refused\n", .{});
+}
+
+fn unwelcome_scale_shape() !void {
+    var a = try lc.Matrix.init(2, 2);
+    var b = try lc.Matrix.init(2, 1);
+    if (lc.scale(&a, 3.0, &b)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ShapeMismatch);
+    }
+    print("lattice: scale shape mismatch refused\n", .{});
+}
+
+fn unwelcome_transpose_shape() !void {
+    var a = try lc.Matrix.init(2, 3);
+    var b = try lc.Matrix.init(2, 3);
+    if (lc.transpose(&a, &b)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ShapeMismatch);
+    }
+    print("lattice: transpose shape mismatch refused\n", .{});
+}
+
+fn unwelcome_mul_shape() !void {
+    var a = try lc.Matrix.init(2, 2);
+    var b = try lc.Matrix.init(2, 1);
+    var c = try lc.Matrix.init(2, 2);
+    if (lc.mul(&a, &b, &c)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ShapeMismatch);
+    }
+    print("lattice: mul shape mismatch refused\n", .{});
+}
+
+fn unwelcome_dim_overflow() !void {
+    if (lc.Matrix.init(9, 2)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.DimOverflow);
+    }
+    print("lattice: dim overflow refused\n", .{});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const args = try init.minimal.args.toSlice(init.arena.allocator());
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        try welcome_matmul();
+        try welcome_add();
+        try welcome_reshape();
+        try welcome_reduce_sum();
+        try welcome_reduce_mean();
+        try welcome_scale();
+        try welcome_transpose();
+        try welcome_mul();
+        try welcome_fill();
+        try welcome_copy();
+        try welcome_sub();
+        try welcome_neg();
+        try welcome_div();
+        try welcome_abs();
+        try welcome_clamp();
+        try welcome_reduce_max();
+        try welcome_reduce_min();
+        try welcome_sqrt();
+        try welcome_exp();
+        try welcome_log();
+        try welcome_pow();
+        try welcome_relu();
+        try welcome_sigmoid();
+        try welcome_softmax();
+        try welcome_tanh();
+        try welcome_gelu();
+        try welcome_silu();
+        try welcome_leaky_relu();
+        try welcome_softplus();
+        try welcome_maximum();
+        try welcome_minimum();
+        try welcome_elu();
+        try welcome_softsign();
+        try welcome_square();
+        try welcome_sign();
+        try welcome_reciprocal();
+        try welcome_hard_sigmoid();
+        try welcome_rsqrt();
+        try welcome_hardtanh();
+        try welcome_cube();
+        try unwelcome_shape_mismatch();
+        try unwelcome_reshape_count();
+        try unwelcome_reduce_shape();
+        try unwelcome_reduce_mean_shape();
+        try unwelcome_reduce_max_shape();
+        try unwelcome_reduce_min_shape();
+        try unwelcome_scale_shape();
+        try unwelcome_transpose_shape();
+        try unwelcome_mul_shape();
+        try unwelcome_copy_shape();
+        try unwelcome_sub_shape();
+        try unwelcome_neg_shape();
+        try unwelcome_div_shape();
+        try unwelcome_div_zero();
+        try unwelcome_abs_shape();
+        try unwelcome_clamp_shape();
+        try unwelcome_sqrt_shape();
+        try unwelcome_sqrt_negative();
+        try unwelcome_exp_shape();
+        try unwelcome_log_shape();
+        try unwelcome_log_nonpositive();
+        try unwelcome_pow_shape();
+        try unwelcome_pow_negative();
+        try unwelcome_relu_shape();
+        try unwelcome_sigmoid_shape();
+        try unwelcome_softmax_shape();
+        try unwelcome_tanh_shape();
+        try unwelcome_gelu_shape();
+        try unwelcome_silu_shape();
+        try unwelcome_leaky_relu_shape();
+        try unwelcome_softplus_shape();
+        try unwelcome_maximum_shape();
+        try unwelcome_minimum_shape();
+        try unwelcome_elu_shape();
+        try unwelcome_softsign_shape();
+        try unwelcome_square_shape();
+        try unwelcome_sign_shape();
+        try unwelcome_reciprocal_shape();
+        try unwelcome_reciprocal_zero();
+        try unwelcome_hard_sigmoid_shape();
+        try unwelcome_rsqrt_shape();
+        try unwelcome_rsqrt_nonpositive();
+        try unwelcome_hardtanh_shape();
+        try unwelcome_cube_shape();
+        try unwelcome_dim_overflow();
+        print("lattice lap39: version {s} — GREEN\n", .{lattice_version});
+        return 0;
+    }
+    print("usage: lattice selftest\n", .{});
+    return 1;
+}

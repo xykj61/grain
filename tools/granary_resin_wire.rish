@@ -1,0 +1,27 @@
+# granary_resin_wire.rish — Granary lap 4: Comlink resin serve (Sharing over the wire).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/granary_resin_wire.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "granary/bin/resin-serve-delivery"
+
+say "granary-wire: build resin-serve-delivery..."
+let build = run ["sh" "-c" "mkdir -p granary/bin && env RYE_ZIG=${zig} rye/bin/rye build granary/resin_serve_delivery.rye -lc -femit-bin=${bin}"]
+assert build.ok else "Granary resin serve delivery build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "Granary resin wire selftest exited non-zero"
+assert selftest.out contains "GREEN" else "Granary resin wire selftest not GREEN"
+assert selftest.out contains "guest equals host" else "Granary resin wire missing mirror equality"
+assert selftest.out contains "bad seal refused" else "Granary resin wire missing seal refuse"
+assert selftest.out contains "unpublished digest refused" else "Granary resin wire missing published-set gate"
+
+say "granary-wire: hosted UDP demo..."
+let demo = run ["sh" "-c" "${bin} demo 2>&1"]
+assert demo.ok else "Granary resin wire demo exited non-zero"
+assert demo.out contains "GREEN" else "Granary resin wire demo not GREEN"
+assert demo.out contains "guest equals host" else "Granary resin wire demo missing equality"
+assert demo.out contains "mirrored front page" else "Granary resin wire demo missing front page"
+
+say "GREEN: Granary lap 4 — resin serve over Comlink; guest mirrors host."

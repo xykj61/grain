@@ -1,0 +1,79 @@
+//! mandi/mandi.rye — Mandi lap 1 selftest (vessel market listing).
+//!
+//!   rye build mandi/mandi.rye -femit-bin=mandi/bin/mandi
+//!   mandi/bin/mandi selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const mc = @import("mandi_core.rye");
+
+fn run_selftest(io: std.Io) !u8 {
+    _ = io;
+    var parent: [mc.digest_hex_len]u8 = undefined;
+    mc.witness_vessel_parent(&parent);
+
+    var listing: [mc.max_listing_len]u8 = undefined;
+    const n = try mc.sign_listing(mc.mandi_version, &parent, "25", &listing);
+    try mc.verify_listing(listing[0..n]);
+    try mc.verify_against_parent(listing[0..n], &parent);
+
+    var receipt: [mc.digest_hex_len]u8 = undefined;
+    try mc.receipt_digest(listing[0..n], &receipt);
+    assert(receipt[0] != 0 or receipt[1] != 0);
+    assert(std.mem.indexOf(u8, listing[0..n], "buyer") == null);
+    assert(std.mem.indexOf(u8, listing[0..n], "seller") == null);
+    print("mandi: listed vessel at 25 mala — receipt {s}\n", .{receipt[0..16]});
+
+    // Unwelcome: zero price.
+    if (mc.sign_listing(mc.mandi_version, &parent, "0", &listing)) |_| {
+        return error.ZeroPriceAccepted;
+    } else |err| {
+        assert(err == error.BadPrice);
+    }
+    print("mandi: zero price refused\n", .{});
+
+    // Unwelcome: lying signature.
+    var lying: [mc.max_listing_len]u8 = undefined;
+    const ln = try mc.sign_listing(mc.mandi_version, &parent, "10", &lying);
+    const sig_key = "stamp_sig ";
+    const sig_at = std.mem.indexOf(u8, lying[0..ln], sig_key) orelse return error.MissingSig;
+    lying[sig_at + sig_key.len] = if (lying[sig_at + sig_key.len] == '0') '1' else '0';
+    if (mc.verify_listing(lying[0..ln])) |_| {
+        return error.LyingAccepted;
+    } else |err| {
+        assert(err == error.VerifyFailed);
+    }
+    print("mandi: lying listing refused\n", .{});
+
+    // Unwelcome: parent mismatch.
+    const other_shoulder = "other-vessel-shoulder\n";
+    var other_digest: [32]u8 = undefined;
+    std.crypto.hash.sha3.Sha3_256.hash(other_shoulder, &other_digest, .{});
+    var other_hex: [mc.digest_hex_len]u8 = undefined;
+    var i: u32 = 0;
+    while (i < 32) : (i += 1) {
+        _ = std.fmt.bufPrint(other_hex[i * 2 ..][0..2], "{x:0>2}", .{other_digest[i]}) catch unreachable;
+    }
+    var good: [mc.max_listing_len]u8 = undefined;
+    const gn = try mc.sign_listing(mc.mandi_version, &parent, "10", &good);
+    if (mc.verify_against_parent(good[0..gn], &other_hex)) |_| {
+        return error.MismatchAccepted;
+    } else |err| {
+        assert(err == error.ParentMismatch);
+    }
+    print("mandi: parent mismatch refused\n", .{});
+
+    print("mandi lap1: version {s} — GREEN\n", .{mc.mandi_version});
+    print("GREEN: Mandi — vessel listing in MALA, receipt without identities.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) return run_selftest(io);
+    print("usage: mandi selftest\n", .{});
+    return 1;
+}

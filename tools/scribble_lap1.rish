@@ -1,0 +1,18 @@
+# scribble_lap1.rish — Scribble lap 0 markdown→blocks witness.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/scribble_lap1.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "scribble/bin/scribble"
+
+let build = run ["sh" "-c" "mkdir -p scribble/bin && env RYE_ZIG=${zig} rye/bin/rye build scribble/scribble.rye -femit-bin=${bin}"]
+assert build.ok else "Scribble lap 0 build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "Scribble selftest exited non-zero"
+assert selftest.out contains "GREEN" else "Scribble selftest not GREEN"
+assert selftest.out contains "rye_fence" else "Scribble missing rye_fence parse"
+assert selftest.out contains "unclosed fence refused" else "Scribble missing fence unwelcome"
+
+say "GREEN: Scribble lap 0 — markdown blocks with rye_fence and rish_fence."

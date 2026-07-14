@@ -1,0 +1,18 @@
+# lattice_lap12.rish — Lattice lap 11 div witness.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/lattice_lap12.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lattice/bin/lattice"
+
+let build = run ["sh" "-c" "mkdir -p lattice/bin && env RYE_ZIG=${zig} rye/bin/rye build lattice/lattice.rye -femit-bin=${bin}"]
+assert build.ok else "Lattice lap 11 build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "Lattice selftest exited non-zero"
+assert selftest.out contains "GREEN" else "Lattice selftest not GREEN"
+assert selftest.out contains "div 2x2" else "Lattice missing div welcome"
+assert selftest.out contains "div by zero" else "Lattice missing div-by-zero refuse"
+
+say "GREEN: Lattice lap 11 — elementwise div with shape assert and zero refuse."

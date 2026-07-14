@@ -1,0 +1,26 @@
+# ends_with.rish — tests for the `ends-with` string builtin.
+# Proves: suffix checks mirror `starts-with`; uses strengthened std.mem.endsWith.
+
+assert "hello world" ends-with "world" else "ends-with: basic failed"
+assert "parity.rish" ends-with ".rish" else "ends-with: suffix failed"
+
+# empty suffix always matches
+assert "anything" ends-with "" else "ends-with: empty suffix failed"
+
+# non-matching suffix
+assert ("xyz" ends-with "abc") == false else "ends-with: false case failed"
+
+# exact match
+assert "hello" ends-with "hello" else "ends-with: exact match failed"
+
+# longer suffix than string
+assert ("hi" ends-with "hello") == false else "ends-with: longer suffix failed"
+
+# compose with where: keep lines ending in .md
+let names = ["README.md" "main.rye" "notes.txt" "CHANGELOG.md"]
+let docs = where names as n: n ends-with ".md"
+assert docs contains "README.md" else "filter: README.md missing"
+assert docs contains "CHANGELOG.md" else "filter: CHANGELOG.md missing"
+assert length docs == 2 else "filter: wrong count"
+
+say "ends-with held."

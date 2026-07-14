@@ -1,0 +1,30 @@
+//! tools/fixtures/tame_usize_audit_test.rye — proves surface_audit_ok's three welcome cases.
+//!
+//! tame_usize_audit.rye exports pure functions with no file I/O at all — this
+//! witness calls the exported surface directly, rather than reaching for a
+//! fixture tree the way align_session_logs' witness must. No repo state is
+//! ever at risk here; there is none to risk.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const audit = @import("tame_usize_audit.rye");
+
+pub fn main() void {
+    const empty: []const audit.AuditRow = &.{};
+    assert(!audit.surface_audit_ok(empty)); // no rows: nothing proven, refuse rather than vacuously pass
+
+    const clean = [_]audit.AuditRow{
+        .{ .locus = "a", .row_type = "authored", .policy = "u32", .status = "done" },
+        .{ .locus = "b", .row_type = "seam", .policy = "usize", .status = "done" },
+    };
+    assert(audit.surface_audit_ok(&clean)); // every row done, none failing: surface proven
+
+    const one_fail = [_]audit.AuditRow{
+        .{ .locus = "a", .row_type = "authored", .policy = "u32", .status = "done" },
+        .{ .locus = "c", .row_type = "authored", .policy = "usize", .status = "fail" },
+    };
+    assert(!audit.surface_audit_ok(&one_fail)); // one fail among many done: refuse whole
+
+    print("GREEN: tame_usize_audit.surface_audit_ok — empty refuses, clean passes, one fail refuses whole.\n", .{});
+}

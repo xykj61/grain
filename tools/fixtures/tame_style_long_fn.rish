@@ -1,0 +1,21 @@
+# tame_style_long_fn.rish — >70-line function ledger for tame_style_scan advise.
+#
+# Native orchestration — per-file awk in tame_style_long_fn_one.sh; rank via sort.
+# Run from the repository root:
+#   rishi/bin/rishi run tools/fixtures/tame_style_long_fn.rish
+
+let roster = run ["sh" "tools/fixtures/tame_style_long_fn_roster.sh"]
+assert roster.ok else "tame_style_long_fn roster failed"
+
+let files = where (lines roster.out) as f: f != ""
+
+let results = map files as f: run ["sh" "tools/fixtures/tame_style_long_fn_one.sh" f]
+
+let chunks = map results as r: trim r.out
+
+let non_empty = where chunks as c: c != ""
+
+if length non_empty != 0 then let blob = join non_empty "\n"
+if length non_empty != 0 then let ranked = run ["sh" "-c" "printf '%s\\n' \"${blob}\" | sort -t= -k2 -rn | head -10"]
+if length non_empty != 0 then assert ranked.ok else "tame_style_long_fn rank failed"
+if length non_empty != 0 then say ranked.out

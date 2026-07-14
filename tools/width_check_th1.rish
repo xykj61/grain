@@ -1,0 +1,19 @@
+# width_check_th1.rish — TH-1 witness: seam-aware width-check both ways.
+#
+# Proves tally/seed.rye (seam casts only) passes the refined lint, and an
+# authored `usize` declaration still fails it.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/width_check_th1.rish
+
+let seam_cmd = "grep 'usize' tally/seed.rye 2>/dev/null | grep -v '@intCast' | grep -v '@as(usize' | wc -l"
+
+let tally = run ["sh" "-c" seam_cmd]
+assert trim tally.out == "0" else "Tally exemplar must pass seam-aware lint"
+
+let bad = "tools/fixtures/width_check_authored_usize.rye"
+let bad_cmd = "grep 'usize' ${bad} 2>/dev/null | grep -v '@intCast' | grep -v '@as(usize' | wc -l"
+let authored = run ["sh" "-c" bad_cmd]
+assert trim authored.out != "0" else "authored usize fixture must fail seam-aware lint"
+
+say "GREEN: TH-1 — seam casts pass, authored usize still flagged."

@@ -1,0 +1,18 @@
+//! Rye test: std.mem.alignForwardAnyAlign / alignBackwardAnyAlign — pass 9900.
+//!
+//! Non-power-of-2 alignment rounding; power-of-2 delegates to alignForward (9904).
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    std.debug.assert(mem.alignForwardAnyAlign(u32, 17, 8) == 24);
+    std.debug.assert(mem.alignBackwardAnyAlign(u32, 17, 8) == 16);
+
+    std.debug.assert(mem.alignBackwardAnyAlign(u32, 17, 6) == 12);
+    std.debug.assert(mem.alignForwardAnyAlign(u32, 17, 6) == 18);
+    std.debug.assert(@mod(mem.alignBackwardAnyAlign(u32, 17, 6), 6) == 0);
+    std.debug.assert(@mod(mem.alignForwardAnyAlign(u32, 17, 6), 6) == 0);
+
+    std.debug.print("rye: mem.alignForwardAnyAlign/alignBackwardAnyAlign assertions confirmed.\n", .{});
+}

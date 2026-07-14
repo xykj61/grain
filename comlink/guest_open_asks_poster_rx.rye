@@ -1,0 +1,109 @@
+//! comlink/guest_open_asks_poster_rx.rye — OA-L2 device wire poster RX guest.
+//!
+//! Receives the sealed application datagram, verifies it against the witness request,
+//! and folds the poster log to applied.
+
+const vn = @import("virtio_net.rye");
+const tally_copy = @import("tally_copy.rye");
+const wf = @import("wire_format.rye");
+const oa = @import("open_asks.rye");
+const rc = @import("receipt_core.rye");
+const kumara = @import("kumara.rye");
+
+var rx: vn.RxQueue = undefined;
+
+fn append_signed(sig: kumara.Signature, fact: []const u8, log: []u8, log_len: *u32) void {
+    var line: [oa.max_line_len]u8 = undefined;
+    const line_len = rc.format_log_line(sig, fact, &line) catch unreachable;
+    tally_copy.copy_disjoint(u8, log[log_len.*..][0..line_len], line[0..line_len]);
+    log_len.* += line_len;
+}
+
+export fn _start() linksection(".text.init") callconv(.naked) noreturn {
+    asm volatile (
+        \\ li sp, 0x80100000
+        \\ j kmain
+    );
+}
+
+export fn kmain() callconv(.c) noreturn {
+    vn.init_device();
+    rx.init();
+    vn.driver_ok();
+    rx.kick();
+
+    const poster_kp = kumara.keypair_from_seed(&oa.poster_seed);
+    const applicant_kp = kumara.keypair_from_seed(&oa.applicant_seed);
+    const poster_pk = poster_kp.public_key;
+    const applicant_pk = applicant_kp.public_key;
+
+    const req_sig = kumara.sign(oa.witness_canonical_request, poster_kp, null);
+
+    const n = rx.wait_frame();
+    if (n == 0) {
+        vn.write_str("oal2 device wire: FAIL — poster RX timeout\n");
+        vn.finish_fail();
+    }
+    const poff = vn.virtio_net_hdr_len + vn.eth_header_len;
+    if (n <= poff) {
+        vn.write_str("oal2 device wire: FAIL — poster frame too short\n");
+        vn.finish_fail();
+    }
+    const buf = rx.frame();
+    const datagram = buf[poff..n];
+
+    var opened: [@intCast(wf.max_message)]u8 = undefined;
+    const opened_len = wf.open_datagram(datagram, &opened) catch {
+        vn.write_str("oal2 device wire: FAIL — poster open refused\n");
+        vn.finish_fail();
+    };
+
+    var sig_buf: [kumara.signature_length]u8 = undefined;
+    var fact_buf: [oa.max_oa_fact]u8 = undefined;
+    const decoded = oa.decode_compact_payload(opened[0..@intCast(opened_len)], &sig_buf, &fact_buf) catch {
+        vn.write_str("oal2 device wire: FAIL — application payload decode\n");
+        vn.finish_fail();
+    };
+    const fact = fact_buf[0..decoded.fact_len];
+    rc.verify_record(sig_buf[0..kumara.signature_length], fact, applicant_pk) catch {
+        vn.write_str("oal2 device wire: FAIL — application verify\n");
+        vn.finish_fail();
+    };
+    const kind = oa.classify_fact(fact) catch {
+        vn.write_str("oal2 device wire: FAIL — application classify\n");
+        vn.finish_fail();
+    };
+    if (kind != .application) {
+        vn.write_str("oal2 device wire: FAIL — not an application\n");
+        vn.finish_fail();
+    }
+    var fields: oa.ApplicationFields = undefined;
+    oa.parse_application_fields(fact, &fields) catch {
+        vn.write_str("oal2 device wire: FAIL — application parse\n");
+        vn.finish_fail();
+    };
+    var i: u32 = 0;
+    while (i < oa.ref_hex_len) : (i += 1) {
+        if (fields.request_ref[i] != oa.witness_request_ref[i]) {
+            vn.write_str("oal2 device wire: FAIL — application request_ref mismatch\n");
+            vn.finish_fail();
+        }
+    }
+
+    const app_sig = kumara.Signature.fromBytes(sig_buf[0..kumara.signature_length].*);
+    var log: [oa.max_log_len]u8 = undefined;
+    var log_len: u32 = 0;
+    append_signed(req_sig, oa.witness_canonical_request, &log, &log_len);
+    append_signed(app_sig, fact, &log, &log_len);
+
+    const state = oa.fold_applied_log(log[0..log_len], poster_pk, applicant_pk) catch {
+        vn.write_str("oal2 device wire: FAIL — fold applied\n");
+        vn.finish_fail();
+    };
+    if (!state.applied or state.stipend != 100) {
+        vn.write_str("oal2 device wire: FAIL — fold state mismatch\n");
+        vn.finish_fail();
+    }
+    vn.write_str("oal2 device wire: sealed application GREEN — verify and fold applied passed\n");
+    vn.finish_pass();
+}

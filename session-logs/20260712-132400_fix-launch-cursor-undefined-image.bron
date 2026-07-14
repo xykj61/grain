@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260712.132400
+editor Cursor
+model Cursor Grok 4.5
+voice Rio 3
+title Fix launch-cursor Rishi UndefinedName on image
+prompt screenshot — extract assert fail then --gpu UndefinedName image
+product_nib 430
+suite_nib 432
+git_nib bc8eff6
+think Rishi resolves names in every if-branch. let image only inside extract if left image unbound for --gpu-only runs.
+think Declared let image = "" and let apprun before flags. Extended rs3_launch_cursor witness with extract+gpu and gpu-only fixtures — GREEN.
+obs Do not paste # comment lines into zsh. Prefer --gpu alone when squashfs-root already exists.
+file tools/launch-cursor.rish default binds
+file tools/fixtures/rs3_launch_extract.rish · tools/rs3_launch_cursor.rish
+file session-logs/20260712-132400_fix-launch-cursor-undefined-image.bron this log
+file session-logs/README.md index
+recommend keep-going host pull then launch-cursor --gpu — mechanical; on-path rish next

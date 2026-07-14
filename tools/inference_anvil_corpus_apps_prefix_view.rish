@@ -1,0 +1,19 @@
+# inference_anvil_corpus_apps_prefix_view.rish — Anvil pond/apps/ prefix → Skate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/inference_anvil_corpus_apps_prefix_view.rish
+
+let bin = "pond/bin/drawn-terminal"
+
+say "build: Anvil corpus apps prefix view — drawn-terminal compile"
+let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+assert build.ok else "drawn_terminal build failed for corpus apps prefix view"
+assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
+
+let corpus = run ["sh" "-c" "${bin} corpusappsprefixviewtest 2>&1"]
+assert corpus.ok else "drawn terminal corpusappsprefixviewtest exited non-zero"
+assert corpus.out contains "corpus apps prefix view" else "corpus apps prefix view missing expected output"
+assert corpus.out contains "GREEN" else "Anvil corpus apps prefix view not GREEN"
+assert corpus.out contains "lines=5" else "corpus apps prefix view missing five-line frame"
+
+say "GREEN: Anvil corpus apps prefix view — pond/apps/ hits compose a Skate frame."

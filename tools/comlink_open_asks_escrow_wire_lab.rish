@@ -1,0 +1,47 @@
+# comlink_open_asks_escrow_wire_lab.rish — OA-L3 escrow device-wire QEMU lab (spawn / wait-for).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/comlink_open_asks_escrow_wire_lab.rish
+#
+# Replaces the background-orchestration half of comlink/run_open_asks_escrow_wire_lab.sh;
+# the shell entry point delegates here so stable paths and citations hold.
+
+let zig = "vendor/zig-toolchain/zig"
+let build_dir = "comlink/.build"
+let port_hold_raw = env "COMLINK_OPEN_ASKS_ESCROW_HOLD_PORT"
+if port_hold_raw == "" then let port_hold = "15559" else let port_hold = port_hold_raw
+let port_release_raw = env "COMLINK_OPEN_ASKS_ESCROW_RELEASE_PORT"
+if port_release_raw == "" then let port_release = "15560" else let port_release = port_release_raw
+let sock_hold = "127.0.0.1:${port_hold}"
+let sock_release = "127.0.0.1:${port_release}"
+
+let prep = run ["sh" "-c" "mkdir -p ${build_dir}"]
+assert prep.ok else "open asks escrow wire lab mkdir failed"
+
+let build_hold_rx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_open_asks_escrow_hold_rx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/open-asks-escrow-hold-rx.elf"]
+assert build_hold_rx.ok else "escrow hold rx guest build failed"
+
+let build_hold_tx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_open_asks_escrow_hold_tx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/open-asks-escrow-hold-tx.elf"]
+assert build_hold_tx.ok else "escrow hold tx guest build failed"
+
+let build_release_rx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_open_asks_escrow_release_rx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/open-asks-escrow-release-rx.elf"]
+assert build_release_rx.ok else "escrow release rx guest build failed"
+
+let build_release_tx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_open_asks_escrow_release_tx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/open-asks-escrow-release-tx.elf"]
+assert build_release_tx.ok else "escrow release tx guest build failed"
+
+let hold_rx = spawn ["timeout" "60" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,listen=${sock_hold}" "-kernel" "${build_dir}/open-asks-escrow-hold-rx.elf"]
+let hold_pause = run ["sleep" "1"]
+assert hold_pause.ok else "hold hop sleep failed"
+let hold_tx = run ["timeout" "30" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,connect=${sock_hold}" "-kernel" "${build_dir}/open-asks-escrow-hold-tx.elf"]
+let hold_rx_done = wait-for hold_rx
+assert hold_rx_done.out contains "sealed hold GREEN" else "hold hop RED"
+
+let release_rx = spawn ["timeout" "60" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,listen=${sock_release}" "-kernel" "${build_dir}/open-asks-escrow-release-rx.elf"]
+let release_pause = run ["sleep" "1"]
+assert release_pause.ok else "release hop sleep failed"
+let release_tx = run ["timeout" "30" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,connect=${sock_release}" "-kernel" "${build_dir}/open-asks-escrow-release-tx.elf"]
+let release_rx_done = wait-for release_rx
+assert release_rx_done.out contains "sealed release GREEN" else "release hop RED"
+
+say "oal3l2 device wire lab: GREEN (hold + release)"

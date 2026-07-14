@@ -1,0 +1,44 @@
+# comlink_tablecloth_query_wire_lab.rish — Tablecloth query device-wire QEMU lab.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/comlink_tablecloth_query_wire_lab.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let build_dir = "comlink/.build"
+let port_request_raw = env "COMLINK_TABLECLOTH_QUERY_LAB_PORT"
+if port_request_raw == "" then let port_request = "15575" else let port_request = port_request_raw
+let port_response_raw = env "COMLINK_TABLECLOTH_QUERY_RESP_LAB_PORT"
+if port_response_raw == "" then let port_response = "15576" else let port_response = port_response_raw
+let sock_request = "127.0.0.1:${port_request}"
+let sock_response = "127.0.0.1:${port_response}"
+
+let prep = run ["sh" "-c" "mkdir -p ${build_dir}"]
+assert prep.ok else "tablecloth query wire lab mkdir failed"
+
+let build_host_rx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_tablecloth_query_host_rx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/tablecloth-query-host-rx.elf"]
+assert build_host_rx.ok else "tablecloth query host rx guest build failed"
+
+let build_client_tx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_tablecloth_query_client_tx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/tablecloth-query-client-tx.elf"]
+assert build_client_tx.ok else "tablecloth query client tx guest build failed"
+
+let build_client_rx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_tablecloth_query_client_rx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/tablecloth-query-client-rx.elf"]
+assert build_client_rx.ok else "tablecloth query client rx guest build failed"
+
+let build_host_tx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_tablecloth_query_host_tx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/tablecloth-query-host-tx.elf"]
+assert build_host_tx.ok else "tablecloth query host tx guest build failed"
+
+let request_rx = spawn ["timeout" "60" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,listen=${sock_request}" "-kernel" "${build_dir}/tablecloth-query-host-rx.elf"]
+let request_pause = run ["sleep" "1"]
+assert request_pause.ok else "request hop sleep failed"
+let request_tx = run ["timeout" "30" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,connect=${sock_request}" "-kernel" "${build_dir}/tablecloth-query-client-tx.elf"]
+let request_rx_done = wait-for request_rx
+assert request_rx_done.out contains "sealed filter request GREEN" else "request hop RED"
+
+let response_rx = spawn ["timeout" "60" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,listen=${sock_response}" "-kernel" "${build_dir}/tablecloth-query-client-rx.elf"]
+let response_pause = run ["sleep" "1"]
+assert response_pause.ok else "response hop sleep failed"
+let response_tx = run ["timeout" "30" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,connect=${sock_response}" "-kernel" "${build_dir}/tablecloth-query-host-tx.elf"]
+let response_rx_done = wait-for response_rx
+assert response_rx_done.out contains "sealed filter response GREEN" else "response hop RED"
+
+say "tablecloth query device wire lab: GREEN (request + response)"

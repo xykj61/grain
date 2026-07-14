@@ -1,0 +1,36 @@
+//! Resolve veganreyklah2 repository root from env or cwd walk.
+
+const std = @import("std");
+
+pub const max_walk_depth: u32 = 32;
+
+pub fn resolve_root(a: std.mem.Allocator, io: std.Io, init: std.process.Init) ![]const u8 {
+    if (init.environ_map.get("VEGANREYKLAH2_ROOT")) |p| return try a.dupe(u8, p);
+    var buf: [std.fs.max_path_bytes]u8 = undefined;
+    const len = try std.Io.Dir.readLinkAbsolute(io, "/proc/self/cwd", &buf);
+    var cur = try a.dupe(u8, buf[0..len]);
+    const cwd = std.Io.Dir.cwd();
+    var depth: u32 = 0;
+    while (depth < max_walk_depth) : (depth += 1) {
+        const sc = try std.fs.path.join(a, &.{ cur, "strengthening-compiler" });
+        defer a.free(sc);
+        const lib = try std.fs.path.join(a, &.{ cur, "rye", "lib", "std" });
+        defer a.free(lib);
+        cwd.access(io, sc, .{}) catch {
+            const parent = std.fs.path.dirname(cur) orelse break;
+            const next = try a.dupe(u8, parent);
+            a.free(cur);
+            cur = next;
+            continue;
+        };
+        cwd.access(io, lib, .{}) catch {
+            const parent = std.fs.path.dirname(cur) orelse break;
+            const next = try a.dupe(u8, parent);
+            a.free(cur);
+            cur = next;
+            continue;
+        };
+        return cur;
+    }
+    return error.RootNotFound;
+}

@@ -1,0 +1,17 @@
+//! Rye test: std.mem.endsWith — pass 9938.
+//!
+//! Suffix test backs rye file-suffix checks and Mantra weave edges (9993).
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    std.debug.assert(mem.endsWith(u8, "file.rye", ".rye"));
+    std.debug.assert(!mem.endsWith(u8, "file.rye", ".zig"));
+    std.debug.assert(mem.endsWith(u8, "path", ""));
+    std.debug.assert(!mem.endsWith(u8, "", "rye"));
+    std.debug.assert(mem.endsWith(u8, "Rye", "Rye"));
+    std.debug.assert(!mem.endsWith(u8, "Rye", "ey"));
+
+    std.debug.print("rye: mem.endsWith assertions confirmed.\n", .{});
+}

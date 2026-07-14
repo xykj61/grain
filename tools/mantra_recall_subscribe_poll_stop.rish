@@ -1,0 +1,39 @@
+# mantra_recall_subscribe_poll_stop.rish — stop sentinel honored at wire poll boundary.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/mantra_recall_subscribe_poll_stop.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mantra/bin/recall-subscribe-poll-delivery"
+let sentinel = "/tmp/veganreyklah2-ns-poll-stop"
+
+let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/recall_subscribe_poll_delivery.rye -lc -femit-bin=${bin}"]
+assert build.ok else "subscribe poll delivery build failed"
+
+let prep = run ["sh" "-c" "rm -f ${sentinel}"]
+assert prep.ok else "sentinel prep failed"
+
+let source = run ["sh" "-c" "nohup ${bin} source-loop >/dev/null 2>&1 & echo $! > /tmp/veganreyklah2-ns-poll-source.pid; sleep 0.1"]
+assert source.ok else "source-loop start failed"
+
+let c1 = run ["sh" "-c" "${bin} fetcher-poll ${sentinel} 2>&1; echo exit:$?"]
+assert c1.ok else "first poll cycle failed"
+assert c1.out contains "cycle_ok" else "first cycle not cycle_ok"
+assert c1.out contains "exit:0" else "first cycle wrong exit"
+
+let c2 = run ["sh" "-c" "${bin} fetcher-poll ${sentinel} 2>&1; echo exit:$?"]
+assert c2.ok else "second poll cycle failed"
+assert c2.out contains "exit:0" else "second cycle wrong exit"
+
+let touch = run ["sh" "-c" "touch ${sentinel}"]
+assert touch.ok else "sentinel touch failed"
+
+let c3 = run ["sh" "-c" "${bin} fetcher-poll ${sentinel} 2>&1; echo exit:$?"]
+assert c3.ok else "stop boundary poll failed"
+assert c3.out contains "stop_requested" else "sentinel not honored"
+assert c3.out contains "exit:8" else "stop should exit 8"
+
+let cleanup = run ["sh" "-c" "kill $(cat /tmp/veganreyklah2-ns-poll-source.pid 2>/dev/null) 2>/dev/null; rm -f ${sentinel} /tmp/veganreyklah2-ns-poll-source.pid"]
+assert cleanup.ok else "cleanup failed"
+
+say "GREEN: subscribe poll stop sentinel witness passed (boundary honored)."

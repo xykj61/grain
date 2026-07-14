@@ -1,0 +1,20 @@
+# open_asks_civic_sight_view.rish — Open Asks civic sight: L1+L3+L4 on Skate (tip 430).
+#
+# Golden: drawn terminal open asks civic sight: lifecycle=1 escrow=0 consented=3 stipend=300 withheld=excluded … — GREEN
+# Run from the repository root:
+#   rishi/bin/rishi run tools/open_asks_civic_sight_view.rish
+
+let bin = "pond/bin/drawn-terminal"
+
+say "build: open asks civic sight — drawn-terminal compile"
+let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+assert build.ok else "drawn_terminal build failed for open asks civic sight"
+assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
+
+let view = run ["sh" "-c" "${bin} openaskscivicsighttest 2>&1"]
+assert view.ok else "drawn terminal openaskscivicsighttest exited non-zero"
+assert view.out contains "GREEN" else "Open Asks civic sight witness not GREEN"
+assert view.out contains "drawn terminal open asks civic sight: lifecycle=1 escrow=0 consented=3 stipend=300 withheld=excluded" else "Open Asks civic sight missing golden finale"
+assert view.out contains "lines=8" else "Open Asks civic sight missing eight-line frame"
+
+say "GREEN: Open Asks civic sight — lifecycle · escrow · consent on one Skate frame (tip 430)."

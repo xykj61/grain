@@ -1,0 +1,12 @@
+# mantra_recall_tablecloth_query_device.rish — Tablecloth query over Comlink device wire (virtio).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/mantra_recall_tablecloth_query_device.rish
+
+say "tablecloth-query-device: virtio filter request + response lab..."
+let lab = run ["sh" "comlink/run_tablecloth_query_wire_lab.sh"]
+assert lab.ok else "Tablecloth query device wire lab failed"
+assert lab.out contains "GREEN" else "Tablecloth query device wire lab not GREEN"
+assert lab.out contains "request + response" else "Tablecloth query device wire missing two-hop banner"
+
+say "GREEN: Tablecloth query device wire — filter hits under virtio Comlink seal."

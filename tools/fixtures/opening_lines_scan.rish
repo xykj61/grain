@@ -1,0 +1,11 @@
+# opening_lines_scan.rish — hosted .rye canonical head (std / assert / print).
+#
+# Native repoint of opening_lines_scan.sh — map + where per tame_style_scan_advise.
+# Run from the repository root:
+#   rishi/bin/rishi run tools/fixtures/opening_lines_scan.rish
+
+let files = ["tally/seed.rye" "tally/gardens.rye" "caravan/seed.rye" "caravan/bounded.rye" "caravan/twin.rye" "caravan/chain.rye" "caravan/capabilities.rye" "mantra/src/main.rye" "mantra/src/store.rye" "mantra/src/weave.rye" "mantra/src/diff.rye" "rishi/src/main.rye" "brushstroke/seed.rye" "comlink/wire_format.rye" "comlink/hosted_wire.rye" "comlink/device_wire.rye" "pond/apps/drawn_terminal.rye"]
+
+let scans = map files as f: { path: f, bind_a: length (where (lines (read-file f)) as ln: ln contains "const assert = std.debug.assert;"), bind_p: length (where (lines (read-file f)) as ln: ln contains "const print = std.debug.print;"), qual_a: length (where (lines (read-file f)) as ln: ln contains "std.debug.assert("), qual_p: length (where (lines (read-file f)) as ln: ln contains "std.debug.print(") }
+
+for-each scans as s do if (s.bind_a == 0) then say "FAIL ${s.path} assert-bind" else if (s.bind_p == 0) then say "FAIL ${s.path} print-bind" else if (s.qual_a != 0) then say "FAIL ${s.path} qual-assert=${s.qual_a}" else if (s.qual_p != 0) then say "FAIL ${s.path} qual-print=${s.qual_p}" else say "OK   ${s.path}"

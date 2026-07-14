@@ -1,0 +1,232 @@
+name: shared
+
+on:
+  workflow_call:
+    inputs:
+      pace:
+        description: 'Release pace'
+        type: string
+        default: 'edge'
+        required: false
+      upload:
+        description: 'Upload binaries to GCP'
+        type: boolean
+        default: false
+        required: false
+      fake_tests:
+        description: 'Run fake ship tests'
+        type: boolean
+        default: true
+        required: false
+      next:
+        description: 'Next Kelvin version branch name'
+        type: string
+        default: null
+        required: false
+    secrets:
+      GCP_CREDENTIALS:
+        required: false
+      GCP_PROJECT:
+        required: false
+
+env:
+  UPLOAD_BASE: bootstrap.urbit.org/vere
+  GH_TOKEN: ${{ github.token }}
+
+jobs:
+  urbit:
+    strategy:
+      fail-fast: false
+
+    runs-on: ubuntu-22.04
+
+    steps:
+      #
+      # BUILD AND TEST
+      #
+      - uses: actions/checkout@v3
+
+      - name: Set swap space
+        run: |
+          echo "Memory and swap:"
+          free -h
+          echo
+          swapon --show
+          echo
+
+          export SWAP_FILE=$(swapon --show=NAME | tail -n 1)
+          if test -z "${SWAP_FILE}"; then
+              export SWAP_FILE=/swapfile
+          else
+              sudo swapoff -a
+              sudo rm "${SWAP_FILE}"
+          fi
+          sudo fallocate -l 10G "${SWAP_FILE}"
+          sudo chmod 600 "${SWAP_FILE}"
+          sudo mkswap "${SWAP_FILE}"
+          sudo swapon "${SWAP_FILE}"
+
+          echo "Memory and swap:"
+          free -h
+          echo
+          swapon --show
+          echo
+
+      - uses: mlugg/setup-zig@v2
+        with:
+          version: 0.15.2
+          # 8GB cache limit chosen at random
+          cache-size-limit: 8192
+
+      - name: Build binaries
+        run: |
+          if [[ "${{ inputs.pace }}" == "live" ]]; then
+            zig build                  \
+              -Dall                    \
+              -Drelease                \
+              --summary all
+          else
+            zig build                  \
+              -Dall                    \
+              -Doptimize=ReleaseFast   \
+              -Dpace=${{inputs.pace}}  \
+              --summary all
+          fi
+      - name: Run unit tests
+        run: |
+          zig build                    \
+            ur-test ent-test           \
+            hashtable-test jets-test   \
+            nock-test retrieve-test    \
+            serial-test ames-test      \
+            pact-test equality-test    \
+            boot-test newt-test        \
+            vere-noun-test unix-test   \
+            bytestream-test mesa-test  \
+            benchmarks                 \
+            -Doptimize=ReleaseFast     \
+            -Dpace=${{inputs.pace}}    \
+            --summary all
+
+      - name: Build test binary
+        if: ${{ inputs.fake_tests }}
+        run: |
+          zig build                    \
+            -Doptimize=ReleaseFast     \
+            -Dpace=${{inputs.pace}}    \
+            -Dbinary-name=urbit-test   \
+            -Dcpu-dbg                  \
+            -Dmem-dbg                  \
+            -Dc3dbg                    \
+            -Dsnapshot-validation      \
+            -Durth-mass                \
+            --summary all
+
+      - name: Boot fake ship
+        if: ${{ inputs.fake_tests }}
+        env:
+          URBIT_BINARY: "zig-out/x86_64-linux-musl/urbit-test"
+        run: ./boot-fake-ship.sh
+
+      - name: Run fake ship tests
+        if: ${{ inputs.fake_tests }}
+        env:
+          URBIT_BINARY: "zig-out/x86_64-linux-musl/urbit-test"
+        run: ./test-fake-ship.sh
+
+      #
+      # UPLOAD TO GCP
+      #
+
+      - uses: google-github-actions/auth@v1
+        if: ${{ inputs.upload }}
+        with:
+          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+
+      - uses: google-github-actions/setup-gcloud@v1
+        if: ${{ inputs.upload }}
+        with:
+          project_id: ${{ secrets.GCP_PROJECT }}
+
+      - name: Upload binary to bootstrap.urbit.org
+        if: ${{ inputs.upload }}
+        run: |
+          sha_version=$(sed -nr 's/#define URBIT_VERSION "(.*)"/\1/p' zig-out/include/version.h)
+          declare -a targets=(
+            "aarch64-linux-musl linux-aarch64"
+            "aarch64-macos-none macos-aarch64"
+            "x86_64-linux-musl linux-x86_64"
+            "x86_64-macos-none macos-x86_64"
+            "x86_64-windows-gnu windows-x86_64"
+          )
+          for t in "${targets[@]}"
+          do
+            IFS=' ' read zig_target target <<< "${t}"
+            if [[ "$zig_target" == *"windows"* ]]; then
+              urbit_static=$GITHUB_WORKSPACE/zig-out/${zig_target}/urbit.exe
+            else
+              urbit_static=$GITHUB_WORKSPACE/zig-out/${zig_target}/urbit
+            fi
+            if ${{ inputs.next != null }}; then
+              next=$(echo "${{ inputs.next }}" | sed 's/[^0-9]//g')
+              dest="gs://${UPLOAD_BASE}/next/kelvin/${next}/v${sha_version}/vere-v${sha_version}-${target}"
+            else
+              dest="gs://${UPLOAD_BASE}/${{ inputs.pace }}/v${sha_version}/vere-v${sha_version}-${target}"
+            fi
+
+            args=""
+            # We never overwrite a binary deployed to the "live" train, but we do
+            # overwrite same-versioned binaries deployed to the "soon" and "edge"
+            # trains.
+            if [[ "${{ inputs.pace }}" == "live" ]]; then
+              gsutil cp -n "${urbit_static}" "$dest"
+            else
+              gsutil cp "${urbit_static}" "$dest"
+            fi
+            exitcode=$?
+
+            ([ $exitcode -eq 0 ] && echo "upload to $dest complete.") ||
+            (echo "upload to $dest failed." && exit $exitcode);
+          done
+
+  upload-version-string:
+    name: Upload latest deployed version string to GCP
+    runs-on: ubuntu-latest
+    needs: [urbit]
+    if: inputs.upload
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+
+      - uses: google-github-actions/setup-gcloud@v1
+        with:
+          project_id: ${{ secrets.GCP_PROJECT }}
+
+      - name: Upload latest deployed version string to GCP
+        run: |
+          echo "${{ inputs.pace }}" > ./PACE
+          if [ "${{ inputs.pace }}" == "live" ]; then
+            sed -nr 's/const VERSION = "(.*)"\;/\1/p' build.zig > ./VERSION
+          else
+            printf "$(sed -nr 's/const VERSION = "(.*)"\;/\1/p' build.zig)-%.7s" "$(git rev-parse HEAD)" > ./VERSION
+          fi
+
+          if ${{ inputs.next != null }}; then
+            next=$(echo "${{ inputs.next }}" | sed 's/[^0-9]//g')
+            target="gs://${UPLOAD_BASE}/next/kelvin/${next}/last"
+          else
+            target="gs://${UPLOAD_BASE}/${{ inputs.pace }}/last"
+          fi
+
+          # We don't use -n here because we want to overwrite the version
+          # string.
+          gsutil cp ./VERSION "$target"
+          exitcode=$?
+
+          [ $exitcode -eq 0 ] &&
+            echo "Upload to $target completed successfully." ||
+            echo "Upload to $target failed.";
+          exit $exitcode

@@ -1,0 +1,11 @@
+# parser_hyphens.rish — hyphenated word operators vs integer subtraction.
+
+# infix word ops compared without wrapping parens
+assert "parity.rish" ends-with ".rish" == true else "ends-with == true failed"
+assert "xyz" starts-with "abc" == false else "starts-with == false failed"
+
+# arithmetic `-` still works beside word operators
+assert 10 - 3 == 7 else "subtraction failed"
+assert 3 + -2 == 1 else "unary negative failed"
+
+say "parser hyphens held."

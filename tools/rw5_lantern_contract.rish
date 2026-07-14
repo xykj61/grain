@@ -1,0 +1,25 @@
+# rw5_lantern_contract.rish — RW-5 contract: Lantern six-probe welcome/unwelcome (tip 421).
+#
+# Golden: lantern rw5 contract: 6/6 GREEN
+# Run from the repository root:
+#   rishi/bin/rishi run tools/rw5_lantern_contract.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lantern/bin/lantern"
+
+say "build: lantern for RW-5 contract"
+let build = run ["sh" "-c" "mkdir -p lantern/bin && env RYE_ZIG=${zig} rye/bin/rye build lantern/lantern.rye -femit-bin=${bin}"]
+assert build.ok else "Lantern RW-5 contract build failed"
+
+let witness = run ["sh" "-c" "${bin} rw5contracttest 2>&1"]
+assert witness.ok else "RW-5 contract witness exited non-zero"
+assert witness.out contains "GREEN" else "RW-5 contract witness not GREEN"
+assert witness.out contains "lantern rw5 contract: 6/6 GREEN" else "RW-5 contract missing golden finale"
+assert witness.out contains "fixture completion — tokens 24/12 eos" else "RW-5 contract missing base completion"
+assert witness.out contains "echo pin completion — echo true" else "RW-5 contract missing echo pin"
+assert witness.out contains "user pin completion — user steward-rio" else "RW-5 contract missing user pin"
+assert witness.out contains "model mismatch refused" else "RW-5 contract missing model mismatch"
+assert witness.out contains "echo mismatch refused" else "RW-5 contract missing echo mismatch"
+assert witness.out contains "user mismatch refused" else "RW-5 contract missing user mismatch"
+
+say "GREEN: RW-5 Lantern contract — six welcome/unwelcome probes (tip 421)."

@@ -1,0 +1,24 @@
+# rish_file_io_witness.rish — Rishi file I/O builtin witness.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/rish_file_io_witness.rish
+
+let dir = "tools/fixtures/rish_io"
+let path = "tools/fixtures/rish_io/roundtrip.txt"
+
+write-file path "hello from rishi witness"
+let content = read-file path
+assert content == "hello from rishi witness" else "read-file round-trip failed"
+
+write-file "tools/fixtures/rish_io/number.txt" 42
+let num_text = read-file "tools/fixtures/rish_io/number.txt"
+assert num_text == "42" else "write-file integer rendering failed"
+
+let entries = list-dir dir
+assert entries contains "roundtrip.txt" else "list-dir missed roundtrip.txt"
+assert entries contains "number.txt" else "list-dir missed number.txt"
+
+if content starts-with "hello" then let prefix_ok = true else let prefix_ok = false
+assert prefix_ok == true else "read-file content usable in if condition"
+
+say "GREEN: Rishi file I/O — read-file, write-file, list-dir."

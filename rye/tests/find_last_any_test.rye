@@ -1,0 +1,16 @@
+//! Rye test: std.mem.findLastAny — pass 9966.
+//!
+//! Backward any-of-scalars search backs splitAny backwards scans.
+//! Pairs with findAnyPos (9967) and findScalarLast (9975).
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    std.debug.assert(mem.lastIndexOfAny(u8, "boo, cat", "abo").? == 6);
+    std.debug.assert(mem.lastIndexOfAny(u8, "a=b=c", "=:").? == 3);
+    std.debug.assert(mem.lastIndexOfAny(u8, "aaa", "a").? == 2);
+    std.debug.assert(mem.lastIndexOfAny(u8, "hello", "xyz") == null);
+
+    std.debug.print("rye: findLastAny assertions confirmed.\n", .{});
+}

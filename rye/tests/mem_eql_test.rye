@@ -1,0 +1,22 @@
+//! Rye test: std.mem.eql — pass 9941.
+//!
+//! Slice equality backs Rishi name checks and findDiff (9949) / order (9953).
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    std.debug.assert(mem.eql(u8, "Rye", "Rye"));
+    std.debug.assert(!mem.eql(u8, "Rye", "Zig"));
+    std.debug.assert(!mem.eql(u8, "abc", "ab"));
+    std.debug.assert(mem.eql(u8, "", ""));
+    std.debug.assert(!mem.eql(u8, "a", "b"));
+
+    const shared = "hello";
+    std.debug.assert(mem.eql(u8, shared, shared));
+
+    std.debug.assert(mem.eql(u8, "abcdef", "abcdef"));
+    std.debug.assert(!mem.eql(u8, "abcdef", "abZdef"));
+
+    std.debug.print("rye: mem.eql assertions confirmed.\n", .{});
+}

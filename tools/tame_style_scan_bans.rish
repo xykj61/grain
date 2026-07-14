@@ -1,0 +1,71 @@
+# tame_style_scan_bans.rish — TAME ban patterns over the scan roster (native bans half).
+#
+# File enumeration uses find (list-dir does not recurse). Compound-assert line
+# match still uses grep for the one-line regex; fixed-string bans are native.
+# Mode router: tools/tame_style_scan.rish · advise: tools/tame_style_scan_advise.rish
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/tame_style_scan_bans.rish
+
+let roster = run ["sh" "-c" "find mantra caravan linengrow comlink rishi/src tally aurora pond brushstroke rye/src -name '*.rye' ! -type l 2>/dev/null | sort"]
+assert roster.ok else "tame_style_scan_bans: find roster failed"
+
+let file_lines = lines roster.out
+let files = where file_lines as f: f != ""
+
+let hits_err_eq = where files as f: (read-file f) contains ") == error."
+if length hits_err_eq != 0 then say "BAN [) == error.]:"
+for-each hits_err_eq as f do say f
+assert length hits_err_eq == 0 else "TAME ban: ) == error."
+
+let hits_err_ne = where files as f: (read-file f) contains ") != error."
+if length hits_err_ne != 0 then say "BAN [) != error.]:"
+for-each hits_err_ne as f do say f
+assert length hits_err_ne == 0 else "TAME ban: ) != error."
+
+let hits_qassert = where files as f: (read-file f) contains "std.debug.assert("
+if length hits_qassert != 0 then say "BAN [std.debug.assert(]:"
+for-each hits_qassert as f do say f
+assert length hits_qassert == 0 else "TAME ban: std.debug.assert("
+
+let hits_self = where files as f: (read-file f) contains "Self = @This()"
+if length hits_self != 0 then say "BAN [Self = @This()]:"
+for-each hits_self as f do say f
+assert length hits_self == 0 else "TAME ban: Self = @This()"
+
+let hits_using = where files as f: (read-file f) contains "usingnamespace"
+if length hits_using != 0 then say "BAN [usingnamespace]:"
+for-each hits_using as f do say f
+assert length hits_using == 0 else "TAME ban: usingnamespace"
+
+let hits_not_comptime = where files as f: (read-file f) contains "!comptime"
+if length hits_not_comptime != 0 then say "BAN [!comptime]:"
+for-each hits_not_comptime as f do say f
+assert length hits_not_comptime == 0 else "TAME ban: !comptime"
+
+let hits_cf = where files as f: (read-file f) contains "copyForwards"
+if length hits_cf != 0 then say "BAN [copyForwards]:"
+for-each hits_cf as f do say f
+assert length hits_cf == 0 else "TAME ban: copyForwards"
+
+let hits_cb = where files as f: (read-file f) contains "copyBackwards"
+if length hits_cb != 0 then say "BAN [copyBackwards]:"
+for-each hits_cb as f do say f
+assert length hits_cb == 0 else "TAME ban: copyBackwards"
+
+let hits_fixme = where files as f: (read-file f) contains "FIXME"
+if length hits_fixme != 0 then say "BAN [FIXME]:"
+for-each hits_fixme as f do say f
+assert length hits_fixme == 0 else "TAME ban: FIXME"
+
+let hits_dbg = where files as f: (read-file f) contains "dbg("
+if length hits_dbg != 0 then say "BAN [dbg(]:"
+for-each hits_dbg as f do say f
+assert length hits_dbg == 0 else "TAME ban: dbg("
+
+let compound = run ["sh" "-c" "grep -Hn 'assert(.* and .*)' $(find mantra caravan linengrow comlink rishi/src tally aurora pond brushstroke rye/src -name '*.rye' ! -type l 2>/dev/null) 2>/dev/null | head -8"]
+if compound.out != "" then say "BAN [compound assert — split so the failing half is named]:"
+if compound.out != "" then say compound.out
+assert compound.out == "" else "TAME ban: compound assert"
+
+say "GREEN: TAME style bans clean on scan roster."

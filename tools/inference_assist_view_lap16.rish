@@ -1,0 +1,12 @@
+# inference_assist_view_lap16.rish — Assist view: echo pin on lantern band.
+let bin = "pond/bin/drawn-terminal"
+say "build: inference assist view lap 16 — drawn-terminal compile"
+let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+assert build.ok else "drawn_terminal build failed for assist view lap 16"
+assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
+let view = run ["sh" "-c" "${bin} assistviewtest 2>&1"]
+assert view.ok else "drawn terminal assistviewtest exited non-zero"
+assert view.out contains "echo=1" else "assist view missing echo=1"
+assert view.out contains "GREEN" else "Assist view lap 16 not GREEN"
+assert view.out contains "lines=8" else "assist view missing eight-line frame"
+say "GREEN: Assist view lap 16 — echo pin on the assist fold."

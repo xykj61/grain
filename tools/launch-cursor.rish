@@ -1,0 +1,28 @@
+# launch-cursor.rish — start Cursor inside ai-jail from the repository root.
+#
+# Reads --appimage, --extract, and --gpu from script args (RS-3).
+# Bind defaults before any if — Rishi resolves names in every branch.
+# Never write `if … then assert cond else "msg"` — the else binds to if, not assert.
+# Invoke with bash — cursor-jail.sh needs pipefail and arrays (Ubuntu sh is dash).
+#
+#   rishi/bin/rishi run tools/launch-cursor.rish --gpu
+#   rishi/bin/rishi run tools/launch-cursor.rish --extract ./Cursor-3.11.13-x86_64.AppImage --gpu
+#   rishi/bin/rishi run tools/launch-cursor.rish --appimage squashfs-root/AppRun --gpu
+#
+# Shell equivalent: ./tools/cursor-jail.sh --gpu
+# See: SOURCE.md Step 9 · context/specs/enclosure-editors.md
+
+let image = ""
+let apprun = "squashfs-root/AppRun"
+if (args contains "--extract") then let image = flag args "--extract"
+if (args contains "--appimage") then let apprun = flag args "--appimage"
+
+if (args contains "--extract") then if (args contains "--gpu") then let result = run ["bash" "tools/cursor-jail.sh" "--extract" image "--gpu"] else let result = run ["bash" "tools/cursor-jail.sh" "--extract" image]
+if (args contains "--extract") then say "launch-cursor: extract path finished — ok=${result.ok}"
+if (args contains "--extract") then assert result.ok
+if (args contains "--extract") then exit 0
+
+if (args contains "--gpu") then let result = run ["bash" "tools/cursor-jail.sh" "--gpu" apprun] else let result = run ["bash" "tools/cursor-jail.sh" apprun]
+
+say "launch-cursor: cursor-jail finished — ok=${result.ok}"
+assert result.ok else "cursor-jail failed to start Cursor in ai-jail"

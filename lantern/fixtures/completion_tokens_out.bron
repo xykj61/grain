@@ -1,0 +1,7 @@
+# Lantern lap 30 fixture — pinned tokens_out on the request contract.
+model_hash sha3-256-rye-forge-lap0
+pin_tokens_out 3
+tokens_in 4
+tokens_out 3
+stopped_reason eos
+text tokens out pin done

@@ -1,0 +1,20 @@
+# granary_lap3.rish — Granary lap 3: Sharing door (host serve + mirror clone).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/granary_lap3.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "granary/bin/granary"
+
+let build = run ["sh" "-c" "mkdir -p granary/bin && env RYE_ZIG=${zig} rye/bin/rye build granary/granary.rye -femit-bin=${bin}"]
+assert build.ok else "Granary lap 3 build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest-lap3 2>&1"]
+assert selftest.ok else "Granary lap 3 selftest exited non-zero"
+assert selftest.out contains "GREEN" else "Granary lap 3 selftest not GREEN"
+assert selftest.out contains "guest equals host" else "Granary lap 3 missing mirror equality"
+assert selftest.out contains "mirrored front page renders" else "Granary lap 3 missing front page"
+assert selftest.out contains "host missing resin refused" else "Granary lap 3 missing host-missing refuse"
+assert selftest.out contains "tampered host resin refused" else "Granary lap 3 missing tamper refuse"
+
+say "GREEN: Granary lap 3 — host serves, guest mirrors, equal folds; missing and tamper refused."

@@ -1,0 +1,339 @@
+//! amphora/purchase_delivery.rye — commerce delivery slip for purchased work in an Amphora vessel.
+//!
+//! Binds vessel parent + payment digest under Kumara stamp. Granary (market floor)
+//! stays held; this lap is the delivery rite alone — Amphora carries, MALA paid,
+//! Pond already gated the scrub.
+//!
+//!   rye build amphora/purchase_delivery.rye -femit-bin=amphora/bin/purchase-delivery
+//!   amphora/bin/purchase-delivery selftest
+//!   amphora/bin/purchase-delivery sign <path>
+//!   amphora/bin/purchase-delivery verify <path> [vessel.bron]
+//!
+//! Scope: [`active-designing/20260703-201612_the-sealed-crossing.md`](../active-designing/20260703-201612_the-sealed-crossing.md)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const kumara = @import("kumara.rye");
+const tally_copy = @import("tally_copy.rye");
+
+pub const purchase_delivery_version = "20260710.161358";
+pub const max_slip_len: u32 = 4096;
+pub const digest_hex_len: u32 = 64;
+pub const stamp_sig_hex_len: u32 = kumara.signature_length * 2;
+
+/// Witness seed — distinct from vessel stamp 0x62 and seal 0x63.
+const delivery_stamp_seed: [kumara.seed_length]u8 = .{0x64} ** kumara.seed_length;
+
+pub const SlipFields = struct {
+    format: []const u8,
+    stamp: []const u8,
+    shoulder: []const u8,
+    vessel_parent: []const u8,
+    payment: []const u8,
+    buyer: []const u8,
+    seller: []const u8,
+    stamp_sig: []const u8,
+};
+
+fn trim_line(line: []const u8) []const u8 {
+    return std.mem.trim(u8, line, " \t\r\n");
+}
+
+fn is_lower_hex(c: u8) bool {
+    return (c >= '0' and c <= '9') or (c >= 'a' and c <= 'f');
+}
+
+fn require_lower_hex(value: []const u8, want_len: u32) error{InvalidSlip}!void {
+    if (value.len != want_len) return error.InvalidSlip;
+    var i: u32 = 0;
+    while (i < value.len) : (i += 1) {
+        if (!is_lower_hex(value[i])) return error.InvalidSlip;
+    }
+}
+
+fn write_hex(bytes: []const u8, out: []u8) void {
+    assert(out.len >= bytes.len * 2);
+    var i: u32 = 0;
+    while (i < bytes.len) : (i += 1) {
+        _ = std.fmt.bufPrint(out[i * 2 ..][0..2], "{x:0>2}", .{bytes[i]}) catch unreachable;
+    }
+}
+
+fn decode_hex_lower(hex: []const u8, out: []u8) error{BadHex}!void {
+    if (hex.len != out.len * 2) return error.BadHex;
+    var i: u32 = 0;
+    while (i < out.len) : (i += 1) {
+        const hi = hex[i * 2];
+        const lo = hex[i * 2 + 1];
+        if (!is_lower_hex(hi) or !is_lower_hex(lo)) return error.BadHex;
+        const hv: u8 = if (hi <= '9') hi - '0' else hi - 'a' + 10;
+        const lv: u8 = if (lo <= '9') lo - '0' else lo - 'a' + 10;
+        out[i] = (hv << 4) | lv;
+    }
+}
+
+fn append_kv(out: []u8, off: *u32, key: []const u8, value: []const u8) error{Overflow}!void {
+    const need = key.len + 1 + value.len + 1;
+    if (off.* + need > out.len) return error.Overflow;
+    tally_copy.copy_disjoint(u8, out[off.*..][0..key.len], key);
+    off.* += @intCast(key.len);
+    out[off.*] = ' ';
+    off.* += 1;
+    tally_copy.copy_disjoint(u8, out[off.*..][0..value.len], value);
+    off.* += @intCast(value.len);
+    out[off.*] = '\n';
+    off.* += 1;
+}
+
+pub fn delivery_keypair() kumara.KeyPair {
+    return kumara.keypair_from_seed(&delivery_stamp_seed);
+}
+
+pub fn parse_slip(text: []const u8, out: *SlipFields) error{InvalidSlip}!void {
+    var format: ?[]const u8 = null;
+    var stamp: ?[]const u8 = null;
+    var shoulder: ?[]const u8 = null;
+    var vessel_parent: ?[]const u8 = null;
+    var payment: ?[]const u8 = null;
+    var buyer: ?[]const u8 = null;
+    var seller: ?[]const u8 = null;
+    var stamp_sig: ?[]const u8 = null;
+
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    while (lines.next()) |raw| {
+        const line = trim_line(raw);
+        if (line.len == 0 or line[0] == '#') continue;
+        const space = std.mem.indexOfScalar(u8, line, ' ') orelse return error.InvalidSlip;
+        const key = line[0..space];
+        const value = trim_line(line[space + 1 ..]);
+        if (value.len == 0) return error.InvalidSlip;
+        if (std.mem.eql(u8, key, "format")) {
+            format = value;
+        } else if (std.mem.eql(u8, key, "stamp")) {
+            stamp = value;
+        } else if (std.mem.eql(u8, key, "shoulder")) {
+            shoulder = value;
+        } else if (std.mem.eql(u8, key, "vessel_parent")) {
+            try require_lower_hex(value, digest_hex_len);
+            vessel_parent = value;
+        } else if (std.mem.eql(u8, key, "payment")) {
+            try require_lower_hex(value, digest_hex_len);
+            payment = value;
+        } else if (std.mem.eql(u8, key, "buyer")) {
+            buyer = value;
+        } else if (std.mem.eql(u8, key, "seller")) {
+            seller = value;
+        } else if (std.mem.eql(u8, key, "stamp_sig")) {
+            try require_lower_hex(value, stamp_sig_hex_len);
+            stamp_sig = value;
+        } else return error.InvalidSlip;
+    }
+    if (format == null or stamp == null or shoulder == null) return error.InvalidSlip;
+    if (vessel_parent == null or payment == null) return error.InvalidSlip;
+    if (buyer == null or seller == null or stamp_sig == null) return error.InvalidSlip;
+    if (!std.mem.eql(u8, format.?, "commerce-delivery-v1")) return error.InvalidSlip;
+    out.* = .{
+        .format = format.?,
+        .stamp = stamp.?,
+        .shoulder = shoulder.?,
+        .vessel_parent = vessel_parent.?,
+        .payment = payment.?,
+        .buyer = buyer.?,
+        .seller = seller.?,
+        .stamp_sig = stamp_sig.?,
+    };
+}
+
+fn take_slip_kv(
+    key: []const u8,
+    value: []const u8,
+    format: *?[]const u8,
+    stamp: *?[]const u8,
+    shoulder: *?[]const u8,
+    vessel_parent: *?[]const u8,
+    payment: *?[]const u8,
+    buyer: *?[]const u8,
+    seller: *?[]const u8,
+) error{InvalidSlip}!void {
+    if (std.mem.eql(u8, key, "format")) {
+        format.* = value;
+    } else if (std.mem.eql(u8, key, "stamp")) {
+        stamp.* = value;
+    } else if (std.mem.eql(u8, key, "shoulder")) {
+        shoulder.* = value;
+    } else if (std.mem.eql(u8, key, "vessel_parent")) {
+        try require_lower_hex(value, digest_hex_len);
+        vessel_parent.* = value;
+    } else if (std.mem.eql(u8, key, "payment")) {
+        try require_lower_hex(value, digest_hex_len);
+        payment.* = value;
+    } else if (std.mem.eql(u8, key, "buyer")) {
+        buyer.* = value;
+    } else if (std.mem.eql(u8, key, "seller")) {
+        seller.* = value;
+    } else return error.InvalidSlip;
+}
+
+pub fn write_canonical(text: []const u8, out: []u8) error{InvalidSlip, Overflow}!u32 {
+    var format: ?[]const u8 = null;
+    var stamp: ?[]const u8 = null;
+    var shoulder: ?[]const u8 = null;
+    var vessel_parent: ?[]const u8 = null;
+    var payment: ?[]const u8 = null;
+    var buyer: ?[]const u8 = null;
+    var seller: ?[]const u8 = null;
+
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    while (lines.next()) |raw| {
+        const line = trim_line(raw);
+        if (line.len == 0 or line[0] == '#') continue;
+        if (std.mem.startsWith(u8, line, "stamp_sig ")) continue;
+        const space = std.mem.indexOfScalar(u8, line, ' ') orelse return error.InvalidSlip;
+        const value = trim_line(line[space + 1 ..]);
+        if (value.len == 0) return error.InvalidSlip;
+        try take_slip_kv(line[0..space], value, &format, &stamp, &shoulder, &vessel_parent, &payment, &buyer, &seller);
+    }
+    if (format == null or stamp == null or shoulder == null) return error.InvalidSlip;
+    if (vessel_parent == null or payment == null or buyer == null or seller == null) return error.InvalidSlip;
+    if (!std.mem.eql(u8, format.?, "commerce-delivery-v1")) return error.InvalidSlip;
+
+    var off: u32 = 0;
+    try append_kv(out, &off, "format", format.?);
+    try append_kv(out, &off, "stamp", stamp.?);
+    try append_kv(out, &off, "shoulder", shoulder.?);
+    try append_kv(out, &off, "vessel_parent", vessel_parent.?);
+    try append_kv(out, &off, "payment", payment.?);
+    try append_kv(out, &off, "buyer", buyer.?);
+    try append_kv(out, &off, "seller", seller.?);
+    return off;
+}
+
+pub fn verify_slip(text: []const u8) error{InvalidSlip, VerifyFailed, Overflow, BadHex}!void {
+    var fields: SlipFields = undefined;
+    try parse_slip(text, &fields);
+    var canonical: [max_slip_len]u8 = undefined;
+    const canon_len = try write_canonical(text, &canonical);
+    var sig_bytes: [kumara.signature_length]u8 = undefined;
+    try decode_hex_lower(fields.stamp_sig, &sig_bytes);
+    try kumara.verify_bytes(canonical[0..canon_len], &sig_bytes, delivery_keypair().public_key);
+}
+
+pub fn verify_against_vessel(slip_text: []const u8, vessel_text: []const u8) error{InvalidSlip, VerifyFailed, Overflow, BadHex, ParentMismatch}!void {
+    try verify_slip(slip_text);
+    var fields: SlipFields = undefined;
+    try parse_slip(slip_text, &fields);
+    var lines = std.mem.splitScalar(u8, vessel_text, '\n');
+    while (lines.next()) |raw| {
+        const line = trim_line(raw);
+        if (!std.mem.startsWith(u8, line, "parent ")) continue;
+        const parent = trim_line(line["parent ".len..]);
+        if (!std.mem.eql(u8, parent, fields.vessel_parent)) return error.ParentMismatch;
+        return;
+    }
+    return error.ParentMismatch;
+}
+
+fn strip_stamp_sig(text: []const u8, out: []u8) error{Overflow}!u32 {
+    var off: u32 = 0;
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    while (lines.next()) |raw| {
+        const line = trim_line(raw);
+        if (std.mem.startsWith(u8, line, "stamp_sig ")) continue;
+        if (off + raw.len + 1 > out.len) return error.Overflow;
+        tally_copy.copy_disjoint(u8, out[off..][0..raw.len], raw);
+        off += @intCast(raw.len);
+        out[off] = '\n';
+        off += 1;
+    }
+    return off;
+}
+
+fn run_sign_file(io: std.Io, path: []const u8) !u8 {
+    const cwd = std.Io.Dir.cwd();
+    var buf: [max_slip_len]u8 = undefined;
+    const text = try cwd.readFile(io, path, &buf);
+    var body: [max_slip_len]u8 = undefined;
+    const body_len = try strip_stamp_sig(text, &body);
+    var canonical: [max_slip_len]u8 = undefined;
+    const canon_len = try write_canonical(body[0..body_len], &canonical);
+    const sig = kumara.sign(canonical[0..canon_len], delivery_keypair(), null);
+    const sig_bytes = sig.toBytes();
+    var sig_hex: [stamp_sig_hex_len]u8 = undefined;
+    write_hex(&sig_bytes, &sig_hex);
+
+    var out: [max_slip_len]u8 = undefined;
+    if (body_len + 11 + stamp_sig_hex_len + 1 > out.len) return error.Overflow;
+    tally_copy.copy_disjoint(u8, out[0..body_len], body[0..body_len]);
+    var off = body_len;
+    const prefix = "stamp_sig ";
+    tally_copy.copy_disjoint(u8, out[off..][0..prefix.len], prefix);
+    off += @intCast(prefix.len);
+    tally_copy.copy_disjoint(u8, out[off..][0..stamp_sig_hex_len], &sig_hex);
+    off += stamp_sig_hex_len;
+    out[off] = '\n';
+    off += 1;
+    try cwd.writeFile(io, .{ .sub_path = path, .data = out[0..off] });
+    try verify_slip(out[0..off]);
+    print("amphora: purchase delivery signed stamp_sig={s}\n", .{sig_hex[0..16]});
+    print("GREEN: Amphora purchase delivery — Kumara stamp written.\n", .{});
+    return 0;
+}
+
+fn run_verify_file(io: std.Io, path: []const u8, vessel_path: ?[]const u8) !u8 {
+    const cwd = std.Io.Dir.cwd();
+    var buf: [max_slip_len]u8 = undefined;
+    const text = try cwd.readFile(io, path, &buf);
+    if (vessel_path) |vp| {
+        var vbuf: [max_slip_len]u8 = undefined;
+        const vessel = try cwd.readFile(io, vp, &vbuf);
+        try verify_against_vessel(text, vessel);
+        print("amphora: purchase delivery verified against vessel parent\n", .{});
+    } else {
+        try verify_slip(text);
+        print("amphora: purchase delivery stamp_sig verified\n", .{});
+    }
+    print("GREEN: Amphora purchase delivery — slip ok.\n", .{});
+    return 0;
+}
+
+fn run_selftest(io: std.Io) !u8 {
+    const cwd = std.Io.Dir.cwd();
+    var buf: [max_slip_len]u8 = undefined;
+    const text = try cwd.readFile(io, "tools/fixtures/purchase_delivery_lap1.bron", &buf);
+    var fields: SlipFields = undefined;
+    try parse_slip(text, &fields);
+    assert(std.mem.eql(u8, fields.format, "commerce-delivery-v1"));
+    assert(std.mem.eql(u8, fields.shoulder, "purchased-work"));
+    assert(fields.vessel_parent.len == digest_hex_len);
+    assert(fields.payment.len == digest_hex_len);
+    try verify_slip(text);
+
+    var vessel_buf: [max_slip_len]u8 = undefined;
+    const vessel = try cwd.readFile(io, "tools/fixtures/amphora_vessel_lap1.bron", &vessel_buf);
+    try verify_against_vessel(text, vessel);
+
+    var bad: [max_slip_len]u8 = undefined;
+    tally_copy.copy_disjoint(u8, bad[0..text.len], text);
+    if (std.mem.indexOf(u8, bad[0..text.len], "payment ")) |idx| {
+        bad[idx + 8] = if (bad[idx + 8] == 'a') 'b' else 'a';
+    }
+    if (verify_slip(bad[0..text.len])) |_| return error.UnwelcomePassed else |_| {}
+
+    print("amphora: purchase delivery version {s}\n", .{purchase_delivery_version});
+    print("GREEN: Amphora purchase delivery — parse, stamp, vessel bind, refuse wreck.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 3 and std.mem.eql(u8, args[1], "sign")) {
+        return run_sign_file(init.io, args[2]);
+    }
+    if (args.len >= 3 and std.mem.eql(u8, args[1], "verify")) {
+        const vessel = if (args.len >= 4) args[3] else null;
+        return run_verify_file(init.io, args[2], vessel);
+    }
+    return run_selftest(init.io);
+}

@@ -1,0 +1,316 @@
+//! mandi/listing_settle_core.rye — Mandi lap 3: settle a vessel listing (in-process).
+//!
+//! Binds listing_receipt + payment digest under Kumara seed 0x68.
+//! Payment digests MALA send + WOV transfer proofs — no buyer/seller identities.
+//! Amphora carriage and live TB wait.
+//!
+//! Ground: [`../context/specs/20260710-171202_mandi-listing-settle-seated.md`](../context/specs/20260710-171202_mandi-listing-settle-seated.md)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const kumara = @import("kumara.rye");
+const tally_copy = @import("tally_copy.rye");
+const Sha3_256 = std.crypto.hash.sha3.Sha3_256;
+
+pub const settle_version = "20260710.171202";
+pub const max_settle_len: u32 = 2048;
+pub const max_payment_len: u32 = 512;
+pub const digest_hex_len: u32 = 64;
+pub const stamp_sig_hex_len: u32 = kumara.signature_length * 2;
+pub const max_price_len: u32 = 16;
+pub const max_settled: u32 = 8;
+
+/// Settle seed — distinct from Mandi listing 0x67, Exchange 0x66, delivery 0x64.
+const settle_seed: [kumara.seed_length]u8 = .{0x68} ** kumara.seed_length;
+
+pub const SettleError = error{
+    InvalidSettle,
+    InvalidPayment,
+    BadHex,
+    Overflow,
+    VerifyFailed,
+    BadPrice,
+    ListingMismatch,
+    PaymentMismatch,
+    PriceMismatch,
+    DoubleSettle,
+};
+
+pub const PaymentFields = struct {
+    amount: []const u8,
+    currency: []const u8,
+    mala_digest: []const u8,
+    wov_digest: []const u8,
+};
+
+pub const SettleFields = struct {
+    stamp: []const u8,
+    listing_receipt: []const u8,
+    payment: []const u8,
+    stamp_sig: []const u8,
+};
+
+pub const SettledSet = struct {
+    receipts: [max_settled][digest_hex_len]u8 = undefined,
+    count: u32 = 0,
+
+    pub fn empty() SettledSet {
+        return .{};
+    }
+};
+
+pub fn settle_keypair() kumara.KeyPair {
+    return kumara.keypair_from_seed(&settle_seed);
+}
+
+fn trim_line(line: []const u8) []const u8 {
+    return std.mem.trim(u8, line, " \t\r\n");
+}
+
+fn is_lower_hex(c: u8) bool {
+    return (c >= '0' and c <= '9') or (c >= 'a' and c <= 'f');
+}
+
+fn require_lower_hex(value: []const u8, want_len: u32) SettleError!void {
+    if (value.len != want_len) return error.InvalidSettle;
+    var i: u32 = 0;
+    while (i < value.len) : (i += 1) {
+        if (!is_lower_hex(value[i])) return error.InvalidSettle;
+    }
+}
+
+fn write_hex(bytes: []const u8, out: []u8) void {
+    assert(out.len >= bytes.len * 2);
+    var i: u32 = 0;
+    while (i < bytes.len) : (i += 1) {
+        _ = std.fmt.bufPrint(out[i * 2 ..][0..2], "{x:0>2}", .{bytes[i]}) catch unreachable;
+    }
+}
+
+fn decode_hex_lower(hex: []const u8, out: []u8) SettleError!void {
+    if (hex.len != out.len * 2) return error.BadHex;
+    var i: u32 = 0;
+    while (i < out.len) : (i += 1) {
+        const hi = hex[i * 2];
+        const lo = hex[i * 2 + 1];
+        if (!is_lower_hex(hi) or !is_lower_hex(lo)) return error.BadHex;
+        const hv: u8 = if (hi <= '9') hi - '0' else hi - 'a' + 10;
+        const lv: u8 = if (lo <= '9') lo - '0' else lo - 'a' + 10;
+        out[i] = (hv << 4) | lv;
+    }
+}
+
+fn append_kv(out: []u8, off: *u32, key: []const u8, value: []const u8) SettleError!void {
+    const need = key.len + 1 + value.len + 1;
+    if (off.* + need > out.len) return error.Overflow;
+    tally_copy.copy_disjoint(u8, out[off.*..][0..key.len], key);
+    off.* += @intCast(key.len);
+    out[off.*] = ' ';
+    off.* += 1;
+    tally_copy.copy_disjoint(u8, out[off.*..][0..value.len], value);
+    off.* += @intCast(value.len);
+    out[off.*] = '\n';
+    off.* += 1;
+}
+
+fn price_ok(price: []const u8) bool {
+    if (price.len == 0 or price.len > max_price_len) return false;
+    if (price[0] == '0' and price.len > 1) return false;
+    var i: u32 = 0;
+    while (i < price.len) : (i += 1) {
+        if (price[i] < '0' or price[i] > '9') return false;
+    }
+    if (price.len == 1 and price[0] == '0') return false;
+    return true;
+}
+
+pub fn write_payment_canonical(fields: PaymentFields, out: []u8) SettleError!u32 {
+    var off: u32 = 0;
+    try append_kv(out, &off, "format", "vessel-payment-v1");
+    try append_kv(out, &off, "amount", fields.amount);
+    try append_kv(out, &off, "currency", "mala");
+    try append_kv(out, &off, "mala_digest", fields.mala_digest);
+    try append_kv(out, &off, "wov_digest", fields.wov_digest);
+    return off;
+}
+
+pub fn parse_payment(text: []const u8, out: *PaymentFields) SettleError!void {
+    var format: ?[]const u8 = null;
+    var amount: ?[]const u8 = null;
+    var currency: ?[]const u8 = null;
+    var mala_digest: ?[]const u8 = null;
+    var wov_digest: ?[]const u8 = null;
+
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    while (lines.next()) |raw| {
+        const line = trim_line(raw);
+        if (line.len == 0 or line[0] == '#') continue;
+        const space = std.mem.indexOfScalar(u8, line, ' ') orelse return error.InvalidPayment;
+        const key = line[0..space];
+        const value = trim_line(line[space + 1 ..]);
+        if (value.len == 0) return error.InvalidPayment;
+        if (std.mem.eql(u8, key, "format")) {
+            format = value;
+        } else if (std.mem.eql(u8, key, "amount")) {
+            amount = value;
+        } else if (std.mem.eql(u8, key, "currency")) {
+            currency = value;
+        } else if (std.mem.eql(u8, key, "mala_digest")) {
+            try require_lower_hex(value, digest_hex_len);
+            mala_digest = value;
+        } else if (std.mem.eql(u8, key, "wov_digest")) {
+            try require_lower_hex(value, digest_hex_len);
+            wov_digest = value;
+        } else return error.InvalidPayment;
+    }
+    if (format == null or amount == null or currency == null) return error.InvalidPayment;
+    if (mala_digest == null or wov_digest == null) return error.InvalidPayment;
+    if (!std.mem.eql(u8, format.?, "vessel-payment-v1")) return error.InvalidPayment;
+    if (!std.mem.eql(u8, currency.?, "mala")) return error.InvalidPayment;
+    if (!price_ok(amount.?)) return error.BadPrice;
+    out.* = .{
+        .amount = amount.?,
+        .currency = currency.?,
+        .mala_digest = mala_digest.?,
+        .wov_digest = wov_digest.?,
+    };
+}
+
+pub fn payment_digest(fields: PaymentFields, out: *[digest_hex_len]u8) SettleError!void {
+    if (!price_ok(fields.amount)) return error.BadPrice;
+    if (!std.mem.eql(u8, fields.currency, "mala")) return error.InvalidPayment;
+    try require_lower_hex(fields.mala_digest, digest_hex_len);
+    try require_lower_hex(fields.wov_digest, digest_hex_len);
+    var canonical: [max_payment_len]u8 = undefined;
+    const canon_len = try write_payment_canonical(fields, &canonical);
+    var digest: [32]u8 = undefined;
+    Sha3_256.hash(canonical[0..canon_len], &digest, .{});
+    write_hex(&digest, out);
+}
+
+pub fn parse_settle(text: []const u8, out: *SettleFields) SettleError!void {
+    var format: ?[]const u8 = null;
+    var stamp: ?[]const u8 = null;
+    var listing_receipt: ?[]const u8 = null;
+    var payment: ?[]const u8 = null;
+    var stamp_sig: ?[]const u8 = null;
+
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    while (lines.next()) |raw| {
+        const line = trim_line(raw);
+        if (line.len == 0 or line[0] == '#') continue;
+        const space = std.mem.indexOfScalar(u8, line, ' ') orelse return error.InvalidSettle;
+        const key = line[0..space];
+        const value = trim_line(line[space + 1 ..]);
+        if (value.len == 0) return error.InvalidSettle;
+        if (std.mem.eql(u8, key, "format")) {
+            format = value;
+        } else if (std.mem.eql(u8, key, "stamp")) {
+            stamp = value;
+        } else if (std.mem.eql(u8, key, "listing_receipt")) {
+            try require_lower_hex(value, digest_hex_len);
+            listing_receipt = value;
+        } else if (std.mem.eql(u8, key, "payment")) {
+            try require_lower_hex(value, digest_hex_len);
+            payment = value;
+        } else if (std.mem.eql(u8, key, "stamp_sig")) {
+            try require_lower_hex(value, stamp_sig_hex_len);
+            stamp_sig = value;
+        } else return error.InvalidSettle;
+    }
+    if (format == null or stamp == null or listing_receipt == null) return error.InvalidSettle;
+    if (payment == null or stamp_sig == null) return error.InvalidSettle;
+    if (!std.mem.eql(u8, format.?, "vessel-settle-v1")) return error.InvalidSettle;
+    out.* = .{
+        .stamp = stamp.?,
+        .listing_receipt = listing_receipt.?,
+        .payment = payment.?,
+        .stamp_sig = stamp_sig.?,
+    };
+}
+
+pub fn write_settle_canonical(fields: SettleFields, out: []u8) SettleError!u32 {
+    var off: u32 = 0;
+    try append_kv(out, &off, "format", "vessel-settle-v1");
+    try append_kv(out, &off, "stamp", fields.stamp);
+    try append_kv(out, &off, "listing_receipt", fields.listing_receipt);
+    try append_kv(out, &off, "payment", fields.payment);
+    return off;
+}
+
+pub fn verify_settle(text: []const u8) SettleError!void {
+    var fields: SettleFields = undefined;
+    try parse_settle(text, &fields);
+    var canonical: [max_settle_len]u8 = undefined;
+    const canon_len = try write_settle_canonical(fields, &canonical);
+    var sig_bytes: [kumara.signature_length]u8 = undefined;
+    try decode_hex_lower(fields.stamp_sig, &sig_bytes);
+    kumara.verify_bytes(canonical[0..canon_len], &sig_bytes, settle_keypair().public_key) catch return error.VerifyFailed;
+}
+
+pub fn verify_against_listing(
+    settle_text: []const u8,
+    listing_receipt: []const u8,
+    payment_hex: []const u8,
+    listing_price: []const u8,
+    payment_amount: []const u8,
+) SettleError!void {
+    try verify_settle(settle_text);
+    var fields: SettleFields = undefined;
+    try parse_settle(settle_text, &fields);
+    try require_lower_hex(listing_receipt, digest_hex_len);
+    try require_lower_hex(payment_hex, digest_hex_len);
+    if (!std.mem.eql(u8, fields.listing_receipt, listing_receipt)) return error.ListingMismatch;
+    if (!std.mem.eql(u8, fields.payment, payment_hex)) return error.PaymentMismatch;
+    if (!std.mem.eql(u8, listing_price, payment_amount)) return error.PriceMismatch;
+}
+
+pub fn sign_settle(
+    stamp: []const u8,
+    listing_receipt: []const u8,
+    payment_hex: []const u8,
+    out: []u8,
+) SettleError!u32 {
+    try require_lower_hex(listing_receipt, digest_hex_len);
+    try require_lower_hex(payment_hex, digest_hex_len);
+    if (stamp.len > 32) return error.Overflow;
+    const draft = SettleFields{
+        .stamp = stamp,
+        .listing_receipt = listing_receipt,
+        .payment = payment_hex,
+        .stamp_sig = "",
+    };
+    var canonical: [max_settle_len]u8 = undefined;
+    const canon_len = try write_settle_canonical(draft, &canonical);
+    const sig = kumara.sign(canonical[0..canon_len], settle_keypair(), null);
+    const sig_bytes = sig.toBytes();
+    var sig_hex: [stamp_sig_hex_len]u8 = undefined;
+    write_hex(&sig_bytes, &sig_hex);
+
+    var off: u32 = 0;
+    try append_kv(out, &off, "format", "vessel-settle-v1");
+    try append_kv(out, &off, "stamp", stamp);
+    try append_kv(out, &off, "listing_receipt", listing_receipt);
+    try append_kv(out, &off, "payment", payment_hex);
+    try append_kv(out, &off, "stamp_sig", &sig_hex);
+    try verify_settle(out[0..off]);
+    return off;
+}
+
+pub fn record_settle(set: *SettledSet, listing_receipt: []const u8) SettleError!void {
+    try require_lower_hex(listing_receipt, digest_hex_len);
+    var i: u32 = 0;
+    while (i < set.count) : (i += 1) {
+        if (std.mem.eql(u8, &set.receipts[i], listing_receipt)) return error.DoubleSettle;
+    }
+    if (set.count >= max_settled) return error.Overflow;
+    tally_copy.copy_disjoint(u8, &set.receipts[set.count], listing_receipt);
+    set.count += 1;
+}
+
+/// SHA3-256 hex of arbitrary proof bytes (MALA fact or WOV transfer line).
+pub fn digest_bytes(bytes: []const u8, out: *[digest_hex_len]u8) void {
+    var digest: [32]u8 = undefined;
+    Sha3_256.hash(bytes, &digest, .{});
+    write_hex(&digest, out);
+}

@@ -1,0 +1,307 @@
+//! granary/exchange_listing.rye — Granary lap 5: Exchange listing (weave priced in MALA).
+//!
+//! Binds person/weave + resin digest + MALA price under Kumara. Receipt is a digest
+//! of the listing body — no buyer/seller identities. Weave settle landed; live TB waits.
+//!
+//!   rye build granary/exchange_listing.rye -femit-bin=granary/bin/exchange-listing
+//!   granary/bin/exchange-listing selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const kumara = @import("kumara.rye");
+const tally_copy = @import("tally_copy.rye");
+const gc = @import("granary_core.rye");
+const Sha3_256 = std.crypto.hash.sha3.Sha3_256;
+
+pub const exchange_version = "20260710.165348";
+pub const max_listing_len: u32 = 2048;
+pub const digest_hex_len: u32 = 64;
+pub const stamp_sig_hex_len: u32 = kumara.signature_length * 2;
+pub const max_price_len: u32 = 16;
+pub const max_path_len: u32 = 64;
+
+/// Exchange listing seed — distinct from publisher 0x65, delivery 0x64, seal 0x63, vessel 0x62.
+const listing_seed: [kumara.seed_length]u8 = .{0x66} ** kumara.seed_length;
+
+pub const ListingError = error{
+    InvalidListing,
+    BadHex,
+    Overflow,
+    VerifyFailed,
+    PathMismatch,
+    DigestMismatch,
+    BadPrice,
+};
+
+pub const ListingFields = struct {
+    stamp: []const u8,
+    path: []const u8,
+    resin_digest: []const u8,
+    price: []const u8,
+    currency: []const u8,
+    stamp_sig: []const u8,
+};
+
+pub fn listing_keypair() kumara.KeyPair {
+    return kumara.keypair_from_seed(&listing_seed);
+}
+
+fn trim_line(line: []const u8) []const u8 {
+    return std.mem.trim(u8, line, " \t\r\n");
+}
+
+fn is_lower_hex(c: u8) bool {
+    return (c >= '0' and c <= '9') or (c >= 'a' and c <= 'f');
+}
+
+fn require_lower_hex(value: []const u8, want_len: u32) ListingError!void {
+    if (value.len != want_len) return error.InvalidListing;
+    var i: u32 = 0;
+    while (i < value.len) : (i += 1) {
+        if (!is_lower_hex(value[i])) return error.InvalidListing;
+    }
+}
+
+fn write_hex(bytes: []const u8, out: []u8) void {
+    assert(out.len >= bytes.len * 2);
+    var i: u32 = 0;
+    while (i < bytes.len) : (i += 1) {
+        _ = std.fmt.bufPrint(out[i * 2 ..][0..2], "{x:0>2}", .{bytes[i]}) catch unreachable;
+    }
+}
+
+fn decode_hex_lower(hex: []const u8, out: []u8) ListingError!void {
+    if (hex.len != out.len * 2) return error.BadHex;
+    var i: u32 = 0;
+    while (i < out.len) : (i += 1) {
+        const hi = hex[i * 2];
+        const lo = hex[i * 2 + 1];
+        if (!is_lower_hex(hi) or !is_lower_hex(lo)) return error.BadHex;
+        const hv: u8 = if (hi <= '9') hi - '0' else hi - 'a' + 10;
+        const lv: u8 = if (lo <= '9') lo - '0' else lo - 'a' + 10;
+        out[i] = (hv << 4) | lv;
+    }
+}
+
+fn append_kv(out: []u8, off: *u32, key: []const u8, value: []const u8) ListingError!void {
+    const need = key.len + 1 + value.len + 1;
+    if (off.* + need > out.len) return error.Overflow;
+    tally_copy.copy_disjoint(u8, out[off.*..][0..key.len], key);
+    off.* += @intCast(key.len);
+    out[off.*] = ' ';
+    off.* += 1;
+    tally_copy.copy_disjoint(u8, out[off.*..][0..value.len], value);
+    off.* += @intCast(value.len);
+    out[off.*] = '\n';
+    off.* += 1;
+}
+
+fn price_ok(price: []const u8) bool {
+    if (price.len == 0 or price.len > max_price_len) return false;
+    if (price[0] == '0' and price.len > 1) return false;
+    var i: u32 = 0;
+    while (i < price.len) : (i += 1) {
+        if (price[i] < '0' or price[i] > '9') return false;
+    }
+    // Refuse zero.
+    if (price.len == 1 and price[0] == '0') return false;
+    return true;
+}
+
+pub fn parse_listing(text: []const u8, out: *ListingFields) ListingError!void {
+    var format: ?[]const u8 = null;
+    var stamp: ?[]const u8 = null;
+    var path: ?[]const u8 = null;
+    var resin_digest: ?[]const u8 = null;
+    var price: ?[]const u8 = null;
+    var currency: ?[]const u8 = null;
+    var stamp_sig: ?[]const u8 = null;
+
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    while (lines.next()) |raw| {
+        const line = trim_line(raw);
+        if (line.len == 0 or line[0] == '#') continue;
+        const space = std.mem.indexOfScalar(u8, line, ' ') orelse return error.InvalidListing;
+        const key = line[0..space];
+        const value = trim_line(line[space + 1 ..]);
+        if (value.len == 0) return error.InvalidListing;
+        if (std.mem.eql(u8, key, "format")) {
+            format = value;
+        } else if (std.mem.eql(u8, key, "stamp")) {
+            stamp = value;
+        } else if (std.mem.eql(u8, key, "path")) {
+            path = value;
+        } else if (std.mem.eql(u8, key, "resin_digest")) {
+            try require_lower_hex(value, digest_hex_len);
+            resin_digest = value;
+        } else if (std.mem.eql(u8, key, "price")) {
+            price = value;
+        } else if (std.mem.eql(u8, key, "currency")) {
+            currency = value;
+        } else if (std.mem.eql(u8, key, "stamp_sig")) {
+            try require_lower_hex(value, stamp_sig_hex_len);
+            stamp_sig = value;
+        } else return error.InvalidListing;
+    }
+    if (format == null or stamp == null or path == null) return error.InvalidListing;
+    if (resin_digest == null or price == null or currency == null or stamp_sig == null) return error.InvalidListing;
+    if (!std.mem.eql(u8, format.?, "weave-listing-v1")) return error.InvalidListing;
+    if (!std.mem.eql(u8, currency.?, "mala")) return error.InvalidListing;
+    if (!price_ok(price.?)) return error.BadPrice;
+    if (path.?.len > max_path_len) return error.Overflow;
+    out.* = .{
+        .stamp = stamp.?,
+        .path = path.?,
+        .resin_digest = resin_digest.?,
+        .price = price.?,
+        .currency = currency.?,
+        .stamp_sig = stamp_sig.?,
+    };
+}
+
+pub fn write_canonical(fields: ListingFields, out: []u8) ListingError!u32 {
+    var off: u32 = 0;
+    try append_kv(out, &off, "format", "weave-listing-v1");
+    try append_kv(out, &off, "stamp", fields.stamp);
+    try append_kv(out, &off, "path", fields.path);
+    try append_kv(out, &off, "resin_digest", fields.resin_digest);
+    try append_kv(out, &off, "price", fields.price);
+    try append_kv(out, &off, "currency", "mala");
+    return off;
+}
+
+pub fn verify_listing(text: []const u8) ListingError!void {
+    var fields: ListingFields = undefined;
+    try parse_listing(text, &fields);
+    var canonical: [max_listing_len]u8 = undefined;
+    const canon_len = try write_canonical(fields, &canonical);
+    var sig_bytes: [kumara.signature_length]u8 = undefined;
+    try decode_hex_lower(fields.stamp_sig, &sig_bytes);
+    kumara.verify_bytes(canonical[0..canon_len], &sig_bytes, listing_keypair().public_key) catch return error.VerifyFailed;
+}
+
+/// Listing must name the same resin the registry resolves for path.
+pub fn verify_against_registry(text: []const u8, reg: *const gc.Registry) ListingError!void {
+    try verify_listing(text);
+    var fields: ListingFields = undefined;
+    try parse_listing(text, &fields);
+    const resolved = gc.resolve(reg, fields.path) catch return error.PathMismatch;
+    if (!std.mem.eql(u8, resolved.resin_digest, fields.resin_digest)) return error.DigestMismatch;
+}
+
+pub fn sign_listing(
+    stamp: []const u8,
+    path: []const u8,
+    resin_digest: []const u8,
+    price: []const u8,
+    out: []u8,
+) ListingError!u32 {
+    try require_lower_hex(resin_digest, digest_hex_len);
+    if (!price_ok(price)) return error.BadPrice;
+    if (path.len > max_path_len or stamp.len > 32) return error.Overflow;
+    const draft = ListingFields{
+        .stamp = stamp,
+        .path = path,
+        .resin_digest = resin_digest,
+        .price = price,
+        .currency = "mala",
+        .stamp_sig = "",
+    };
+    var canonical: [max_listing_len]u8 = undefined;
+    const canon_len = try write_canonical(draft, &canonical);
+    const sig = kumara.sign(canonical[0..canon_len], listing_keypair(), null);
+    const sig_bytes = sig.toBytes();
+    var sig_hex: [stamp_sig_hex_len]u8 = undefined;
+    write_hex(&sig_bytes, &sig_hex);
+
+    var off: u32 = 0;
+    try append_kv(out, &off, "format", "weave-listing-v1");
+    try append_kv(out, &off, "stamp", stamp);
+    try append_kv(out, &off, "path", path);
+    try append_kv(out, &off, "resin_digest", resin_digest);
+    try append_kv(out, &off, "price", price);
+    try append_kv(out, &off, "currency", "mala");
+    try append_kv(out, &off, "stamp_sig", &sig_hex);
+    try verify_listing(out[0..off]);
+    return off;
+}
+
+/// Receipt without identities — SHA3-256 of canonical listing body (no stamp_sig).
+pub fn receipt_digest(text: []const u8, out: *[digest_hex_len]u8) ListingError!void {
+    var fields: ListingFields = undefined;
+    try parse_listing(text, &fields);
+    var canonical: [max_listing_len]u8 = undefined;
+    const canon_len = try write_canonical(fields, &canonical);
+    var digest: [32]u8 = undefined;
+    Sha3_256.hash(canonical[0..canon_len], &digest, .{});
+    write_hex(&digest, out);
+}
+
+fn run_selftest(io: std.Io) !u8 {
+    _ = io;
+    var store = gc.ResinStore.empty();
+    const digest = try gc.put_resin(&store, "# priced weave\n\nfor sale in mala.\n");
+    var fact: [gc.max_fact_len]u8 = undefined;
+    const fact_len = try gc.sign_name_fact(gc.granary_version, "rio", "greeting", &digest, &fact);
+    var reg = gc.Registry.empty();
+    try gc.append_fact(&reg, fact[0..fact_len]);
+
+    var listing: [max_listing_len]u8 = undefined;
+    const n = try sign_listing(exchange_version, "rio/greeting", &digest, "100", &listing);
+    try verify_listing(listing[0..n]);
+    try verify_against_registry(listing[0..n], &reg);
+
+    var receipt: [digest_hex_len]u8 = undefined;
+    try receipt_digest(listing[0..n], &receipt);
+    assert(receipt[0] != 0 or receipt[1] != 0);
+    // Receipt text carries no buyer/seller keys.
+    assert(std.mem.indexOf(u8, listing[0..n], "buyer") == null);
+    assert(std.mem.indexOf(u8, listing[0..n], "seller") == null);
+    print("exchange: listed rio/greeting at 100 mala — receipt {s}\n", .{receipt[0..16]});
+
+    // Unwelcome: zero price.
+    if (sign_listing(exchange_version, "rio/greeting", &digest, "0", &listing)) |_| {
+        return error.ZeroPriceAccepted;
+    } else |err| {
+        assert(err == error.BadPrice);
+    }
+    print("exchange: zero price refused\n", .{});
+
+    // Unwelcome: lying signature.
+    var lying: [max_listing_len]u8 = undefined;
+    const ln = try sign_listing(exchange_version, "rio/greeting", &digest, "50", &lying);
+    const sig_key = "stamp_sig ";
+    const sig_at = std.mem.indexOf(u8, lying[0..ln], sig_key) orelse return error.MissingSig;
+    lying[sig_at + sig_key.len] = if (lying[sig_at + sig_key.len] == '0') '1' else '0';
+    if (verify_listing(lying[0..ln])) |_| {
+        return error.LyingAccepted;
+    } else |err| {
+        assert(err == error.VerifyFailed);
+    }
+    print("exchange: lying listing refused\n", .{});
+
+    // Unwelcome: digest does not match registry resolve.
+    const other = try gc.put_resin(&store, "# other\n");
+    var bad: [max_listing_len]u8 = undefined;
+    const bn = try sign_listing(exchange_version, "rio/greeting", &other, "25", &bad);
+    if (verify_against_registry(bad[0..bn], &reg)) |_| {
+        return error.MismatchAccepted;
+    } else |err| {
+        assert(err == error.DigestMismatch);
+    }
+    print("exchange: registry digest mismatch refused\n", .{});
+
+    print("exchange lap5: version {s} — GREEN\n", .{exchange_version});
+    print("GREEN: Granary Exchange — weave listing in MALA, receipt without identities.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) return run_selftest(io);
+    print("usage: exchange-listing selftest\n", .{});
+    return 1;
+}

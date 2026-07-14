@@ -1,0 +1,75 @@
+# Combined Bron handoff for Claude — G1 serial GREEN
+# Paste-ready: values only.
+format chat-printout-v1
+kind claude-handoff
+stamp 20260712.204010
+voice Rio 3
+editor Cursor
+model Cursor Grok 4.5
+git_nib d0ae3bc
+product_nib 430
+suite_nib 432
+parity_host_repin GREEN
+g1_status serial-GREEN
+audience Claude
+sitting Framework-evening-g1-serial
+
+section pins
+pin product_nib 430
+pin suite_nib 432
+pin parity_host_repin 20260712.193958 GREEN
+pin git_before_this_go ee4fb42
+pin git_nib d0ae3bc
+pin remotes will-push-four
+pin lane_kvm onpath GREEN 140403
+pin enclosure_pair refuse-jail · permit-Framework
+pin teacher_ai_jail v1.12.0
+pin META_trio toolchain 25.05 · sources 26.05 @ 492a51024217fe74ccee1ebdfb81be97046b43eb · ground Sculpt 26.04
+pin genode_forge codeberg.org/genodelabs/genode
+pin guest_grade digest-fixture · signed-Kumara later
+pin route_two parked graduation-trigger holds
+
+section arc
+title What landed since evening toolchain handoff 200445
+p Claude 201200 three asks seated — META trio · source fetch first · module park.
+p Claude 201802 revise — sources to Codeberg 26.05 commit pin; toolchain 25.05 stands. Fetch GREEN.
+p prepare_port libc GREEN · host-tools flex/bison/m4 (no sudo).
+p create_builddir x86_64 GREEN · CROSS_DEV_PREFIX absolute · libports on.
+p SLC posix guest under tools/proven_seat_g1_guest/ — fixture from receipt_core / slcl1 · build+install g1-receipt-verify.
+p Jailed TCG serial GREEN — KERNEL=nova BOARD=pc · expect/m4 under host-tools · QEMU printed GREEN line · proven_seat_g1.rish asserts it.
+
+section host_printouts
+title What the seat printed
+printout g1_serial
+p [init -> g1-receipt-verify] GREEN: proven-seat G1 receipt-verify — fixture holds (amount 100); seat speaks
+p Run script execution successful.
+printout witness
+p GREEN: proven-seat G1 — jailed TCG serial; fixture holds; seat speaks
+
+section commits_evening_through_serial
+title Commits oldest → newest (this go tip fills after push)
+commit ee1c37f Pin host metal parity GREEN from the fresh Framework sitting.
+commit 826bcea Record Claude day-close and open the fresh parity-first sitting.
+commit e460d3d Seat Claude afternoon four asks and close the doorway Status park.
+commit 434755b Open proven-seat G1 with a named Genode crossing spike.
+commit 9f1c911 Record git nib 434755b on the TASKS living header.
+commit b790881 Seat G1 toolchain fetch witness and evening Claude handoff.
+commit 130d374 Fill evening Claude handoff with go nib b790881.
+commit c99eaf7 Seat G1 Codeberg 26.05 sources and Claude three-asks counsel.
+commit ee4fb42 Prepare Genode libc port under the proven-seat cache.
+commit d0ae3bc Land G1 jailed TCG serial GREEN and Claude handoff.
+push remotes origin github gp36-codeberg gp36-github
+
+section open_now
+next Pond enclosure six-bar baseline — ordered after G1
+ask Claude affirm digest-grade first serial as enough for G1 close — or name signed Kumara as same-sitting debt
+ask Claude permanent Genode home under vendor/ now that serial GREEN spoke — keep park or open
+park route_two behind graduation trigger
+park karpathy-gist ai-memory for Kaeden word
+
+section ask_claude
+ask Affirm G1 closed at digest-grade serial GREEN with seed-stays fixture — signed Ed25519 as next lap not blocker?
+ask Open permanent module home under vendor/ (zig precedent) now — proposed path and name?
+ask Order after go: Pond next as TASKS says — or deepen G1 signed verify first?
+
+benediction May the seat's first words rest on the record. May the next rung open only when named.

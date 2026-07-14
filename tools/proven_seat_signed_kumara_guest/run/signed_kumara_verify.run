@@ -1,0 +1,43 @@
+#
+# proven-seat signed-Kumara — run under jailed TCG (KERNEL=nova BOARD=pc)
+#
+
+build { core init timer lib/ld lib/libc lib/libm lib/vfs lib/posix app/signed-kumara-verify }
+
+create_boot_directory
+
+install_config {
+config
++ parent-provides
+  + service ROM
+  + service IRQ
+  + service IO_MEM
+  + service IO_PORT
+  + service PD
+  + service RM
+  + service CPU
+  + service LOG
+
++ default-route
+  + any-service
+    + parent
+    + any-child
+
++ default | caps: 100 | ram: 1M
+
++ start timer
+  + provides | + service Timer
+
++ start signed-kumara-verify | ram: 8M
+  + config
+    + vfs | + dir dev | + log
+    + libc | stdout: /dev/log | stderr: /dev/log
+-
+}
+
+build_boot_image [build_artifacts]
+
+append qemu_args " -nographic  "
+
+# Wait for the second GREEN — the pair's refuse line — so both checks have run.
+run_genode_until "GREEN: signed-Kumara — tampered signature refused.*\n" 90

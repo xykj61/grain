@@ -1,0 +1,59 @@
+//! Crosswalk row generation.
+
+const std = @import("std");
+const buf = @import("buf.rye");
+const constants = @import("constants.rye");
+const scan_text = @import("scan_text.rye");
+const surfaces = @import("surfaces.rye");
+const sync = @import("sync.rye");
+const zig_lookup = @import("zig_lookup.rye");
+
+pub const crosswalk_header =
+    \\# 992b · Strengthening ↔ Width Crosswalk
+    \\
+    \\**Stamp:** `20260621.043312`
+    \\**Parent:** `992_usize_width_baseline.md`
+    \\**Lexicon:** [`../strengthening-compiler/0000_STRENGTHENING_LEXICON.md`](../strengthening-compiler/0000_STRENGTHENING_LEXICON.md)
+    \\**Prompt:** `expanding-prompts/yonder/20260621-051612_strengthening-stdlib-doc-width-pass-redirect.md`
+    \\
+    \\Auto-generated index of every strengthening pass, its primary surface, and width tier.
+    \\
+    \\| Pass | Doc | Primary surface | `usize` in signature | Width phase |
+    \\|------|-----|-----------------|----------------------|-------------|
+;
+
+pub fn crosswalk_rows(a: std.mem.Allocator, io: std.Io, root: []const u8, sources: *const zig_lookup.ZigSources) ![]const u8 {
+    const docs = try sync.list_pass_docs(a, io, root);
+    defer {
+        for (docs) |d| {
+            a.free(d.path);
+            a.free(d.name);
+            a.free(d.stem);
+        }
+        a.free(docs);
+    }
+    var out = std.ArrayListUnmanaged(u8).empty;
+    errdefer out.deinit(a);
+    for (docs) |doc| {
+        const text = try std.Io.Dir.cwd().readFileAlloc(io, doc.path, a, .limited(zig_lookup.max_file_bytes));
+        const num = scan_text.pass_num_from_name(doc.name);
+        if (constants.authored_module(doc.name)) |auth| {
+            try buf.append_fmt(a, &out, "| {s} | `{s}` | `{s}` | authored | Tier A |\n", .{ num, doc.name, auth.mod });
+            continue;
+        }
+        const names = try surfaces.extract_std_names(a, text);
+        defer a.free(names);
+        const guess = if (names.len == 0) try surfaces.filename_guess(a, doc.stem) else names;
+        defer if (names.len == 0) a.free(guess);
+        const primary = if (guess.len > 0) guess[0] else doc.stem;
+        const sig = if (guess.len > 0) zig_lookup.find_signature(primary, sources) else null;
+        const usize_col = if (sig != null and std.mem.indexOf(u8, sig.?, "usize") != null)
+            "yes"
+        else if (guess.len == 0)
+            "authored"
+        else
+            "internal";
+        try buf.append_fmt(a, &out, "| {s} | `{s}` | `std.{s}` | {s} seam | Phase 4 |\n", .{ num, doc.name, primary, usize_col });
+    }
+    return try out.toOwnedSlice(a);
+}

@@ -1,0 +1,352 @@
+//! The `rye` command-line tool — the first version of the Rye language.
+//!
+//! Rye is a derivative of Zig 0.16.0. This first version is honest about what
+//! it is: a thin, careful front-end that runs `.rye` source through the Zig
+//! 0.16.0 toolchain. Rye source is Zig source for now; the language will grow
+//! its own shape over time. By standing on the same toolchain, every capability
+//! Zig 0.16.0 offers — including SHA3-512 in the standard crypto library — is
+//! Rye's too, by construction.
+//!
+//! The `rye` command is itself a Rye program — this file, `src/main.rye` — so
+//! Rye is, from here, written in Rye. Once a first `rye` binary exists, Rye
+//! builds itself with `rye build`; `bootstrap.sh` is the cold start before one
+//! does. The programs we author carry the `.rye` name; the standard library
+//! under `lib/std` keeps the `.zig` name the compiler looks for when we point it
+//! there with `--zig-lib-dir`. The line is clean: `.rye` is what we write, `.zig`
+//! is the library layout the toolchain reads.
+//!
+//! Commands:
+//!   rye version            Print the Rye version and its toolchain backend.
+//!   rye run <file.rye>     Compile and run a single .rye source file.
+//!   rye build <file.rye>   Compile a .rye source file to a binary. Flags after
+//!                          the file pass through to the toolchain, so Rye can
+//!                          aim at any target it supports — including freestanding
+//!                          RISC-V, the ground Aurora's first seed wakes on.
+//!
+//! We locate the Zig toolchain through the RYE_ZIG environment variable when
+//! set, and otherwise as `zig` on the PATH. We pass this explicitly rather than
+//! guessing in the dark, so the backend in use is always clear.
+//!
+//! Rye carries its own standard library at `rye/lib`: a copy of the toolchain's
+//! `std` that we are free to tend, with the unchanging remainder symlinked back
+//! to the pinned toolchain. We point the compiler at it with `--zig-lib-dir`,
+//! so `@import("std")` in a `.rye` program means *Rye's* std. We find that
+//! library beside this executable, at `<exe_dir>/../lib`, or through the
+//! RYE_LIB environment variable when it is set.
+
+const std = @import("std");
+const assert = std.debug.assert;
+
+/// Rye's version, stamped chronologically — YYYYMMDD.HHMMSS, where later is
+/// larger. The scheme itself was the first divergence from Zig (20260617.213112):
+/// Rye names its versions on a clock while the backend keeps its honest semantic
+/// version, reported through `builtin.zig_version`. From there Rye accretes,
+/// nothing removed and only added, along two strands. Divergences in *substance*
+/// strengthen Rye's own `std`, each additive and parity-identical, recorded in
+/// the strengthening-compiler stack: the SHA3-512 wrappers (20260618.070012,
+/// 9998), the Keccak sponge (20260618.072512, 9997), and this stamp — the std
+/// functions our own tools call, `mem.trim`, `mem.eql`, `mem.findScalar`, and
+/// `fmt.parseInt`, given postconditions, a precondition, and a `maybe` (9996).
+/// Accretions in *capability* grow the tool itself: the `build` command, and
+/// with it Aurora's first freestanding RISC-V seed, arrived at 20260618.191412.
+/// The backend stays honestly 0.16.0 throughout.
+const rye_version = "20260618.193812";
+
+/// The Zig toolchain version this first Rye stands upon.
+const zig_backend_version = "0.16.0";
+
+/// The backend's version on Rye's chronological clock: the UTC commit time of
+/// the pinned Zig 0.16.0 source (codeberg.org/ziglang/zig @ 24fdd5b7). Zig
+/// reports itself semantically as 0.16.0 through `builtin.zig_version`, and we
+/// never overwrite that truth; this simply reads the same pinned snapshot the
+/// Rye way, so even the ground we stand on carries a chronological name.
+const zig_backend_version_chrono = "20260413.181917";
+
+/// Where Rye's standard library sits relative to this binary: a hard-coded,
+/// relative template that holds no matter where the repository is cloned. The
+/// binary lives at `rye/bin/rye`, so its library is one step over at `rye/lib`
+/// — that is, `../lib` from the binary's own directory.
+const rye_lib_relative_to_exe = "../lib";
+
+comptime {
+    // The template stays relative on purpose: resolved against the binary's
+    // real location, it bakes in no absolute path and assumes nothing about
+    // the current directory.
+    assert(rye_lib_relative_to_exe.len != 0);
+    assert(rye_lib_relative_to_exe[0] != '/');
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    // Allocate from the process garden — cleared whole on exit by the runtime.
+    // A short-lived command needs no finer bookkeeping than that.
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len < 2) {
+        print_usage();
+        return 0;
+    }
+
+    const command = args[1];
+    if (std.mem.eql(u8, command, "version")) {
+        print_version();
+        return 0;
+    } else if (std.mem.eql(u8, command, "run")) {
+        return bridge_to_zig(init, args, "run", "run");
+    } else if (std.mem.eql(u8, command, "build")) {
+        return bridge_to_zig(init, args, "build-exe", "build");
+    } else if (std.mem.eql(u8, command, "help") or std.mem.eql(u8, command, "--help")) {
+        print_usage();
+        return 0;
+    } else {
+        std.debug.print("rye: unknown command '{s}'\n\n", .{command});
+        print_usage();
+        return 2;
+    }
+}
+
+fn print_usage() void {
+    std.debug.print(
+        \\rye {s} — a Zig {s} derivative
+        \\
+        \\usage:
+        \\  rye version            print the Rye version and toolchain backend
+        \\  rye run <file.rye>     compile and run a single .rye source file
+        \\  rye build <file.rye>   compile a .rye file to a binary (flags pass through)
+        \\
+    , .{ rye_version, zig_backend_version });
+}
+
+fn print_version() void {
+    std.debug.print(
+        \\rye {s}  (chronological: YYYYMMDD.HHMMSS, later is larger)
+        \\backend: zig {s}  (Rye clock: {s}; live value via builtin.zig_version)
+        \\
+    , .{ rye_version, zig_backend_version, zig_backend_version_chrono });
+}
+
+/// Bridge a `.rye` file to the toolchain: copy it to an adjacent `.zig`, hand
+/// that to `zig <zig_subcommand>` against Rye's own standard library, then clear
+/// the bridge away. `run` and `build` share this one path; only the toolchain
+/// verb and the spoken label differ. Flags after the file pass straight through,
+/// so a caller can aim a build at any target the toolchain supports.
+fn bridge_to_zig(
+    init: std.process.Init,
+    args: []const [:0]const u8,
+    zig_subcommand: []const u8,
+    label: []const u8,
+) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+
+    if (args.len < 3) {
+        std.debug.print("rye {s}: expected a .rye file\n", .{label});
+        return 2;
+    }
+    const rye_path = args[2];
+
+    // A `.rye` source is required; reject the negative space plainly.
+    if (!std.mem.endsWith(u8, rye_path, ".rye")) {
+        std.debug.print("rye {s}: source file must end with .rye, got '{s}'\n", .{ label, rye_path });
+        return 2;
+    }
+
+    const dir = std.Io.Dir.cwd();
+
+    // Bridge the root `.rye` file and every local `.rye` module dependency to
+    // ephemeral `.zig` files the toolchain can read, then clear them all away.
+    var staged_rye = std.ArrayListUnmanaged([]const u8).empty;
+    defer staged_rye.deinit(garden);
+    var bridge_zigs = std.ArrayListUnmanaged([]const u8).empty;
+    defer {
+        for (bridge_zigs.items) |path| dir.deleteFile(io, path) catch {};
+        for (bridge_zigs.items) |p| garden.free(p);
+        bridge_zigs.deinit(garden);
+    }
+    defer {
+        for (staged_rye.items) |p| garden.free(p);
+    }
+    const bridge_path = try bridge_rye_tree(io, dir, rye_path, true, &staged_rye, &bridge_zigs, garden, label);
+
+    // Resolve the toolchain explicitly: an absolute RYE_ZIG, else `zig` on PATH.
+    const zig = init.environ_map.get("RYE_ZIG") orelse "zig";
+
+    // Resolve Rye's own standard library, so `@import("std")` means *our* std.
+    // Rye insists on its own std and never falls back to the toolchain's
+    // silently: a build that succeeds is a build that used our standard library.
+    const rye_lib = resolve_rye_lib(init, garden) catch |err| {
+        std.debug.print(
+            "rye {s}: could not locate Rye's standard library ({s}). It should sit beside this binary at '{s}', or set RYE_LIB to point at rye/lib.\n",
+            .{ label, @errorName(err), rye_lib_relative_to_exe },
+        );
+        return 1;
+    };
+
+    // Confirm our std is truly present at that path before we lean on it. This
+    // is the assurance that we load our own library, never the backend's.
+    const std_root = try std.fmt.allocPrint(garden, "{s}/std/std.zig", .{rye_lib});
+    dir.access(io, std_root, .{}) catch |err| {
+        std.debug.print(
+            "rye {s}: Rye's standard library is missing at '{s}' ({s}). Expected our std at '{s}'.\n",
+            .{ label, rye_lib, @errorName(err), std_root },
+        );
+        return 1;
+    };
+
+    // Invocation: zig <subcommand> <bridged.zig> --zig-lib-dir <rye/lib> [forwarded].
+    // `run` runs the program; `build-exe` emits a binary. The forwarded flags let
+    // a build choose its target, code model, linker script, and output path — the
+    // levers Aurora's freestanding RISC-V seed leans on.
+    const extra: []const [:0]const u8 = if (args.len > 3) args[3..] else &.{};
+    const argv = try garden.alloc([]const u8, 5 + extra.len);
+    argv[0] = zig;
+    argv[1] = zig_subcommand;
+    argv[2] = bridge_path;
+    argv[3] = "--zig-lib-dir";
+    argv[4] = rye_lib;
+    for (extra, 0..) |item, i| argv[5 + i] = item;
+
+    var child = std.process.spawn(io, .{ .argv = argv }) catch |err| {
+        std.debug.print(
+            "rye {s}: could not start toolchain '{s}' ({s}). Set RYE_ZIG to the zig binary, or put zig on your PATH.\n",
+            .{ label, zig, @errorName(err) },
+        );
+        return 1;
+    };
+    const term = try child.wait(io);
+    return switch (term) {
+        .exited => |code| code,
+        else => 1,
+    };
+}
+
+/// Find Rye's standard library directory, so the compiler can be pointed at it.
+/// An explicit RYE_LIB wins, for clarity and for hosts without `/proc`. Failing
+/// that, we read this executable's own path and apply the relative template
+/// beside it — `<exe_dir>/../lib`, the layout the `rye` tree ships in. We
+/// return an error rather than a fallback, so the caller can insist on our std.
+fn resolve_rye_lib(init: std.process.Init, garden: std.mem.Allocator) ![]const u8 {
+    // An explicit RYE_LIB wins, for clarity and for hosts without `/proc`.
+    if (init.environ_map.get("RYE_LIB")) |path| return path;
+
+    // Otherwise, find the library beside this binary. `/proc/self/exe` names
+    // the running executable on Linux, our first-class target.
+    var buf: [4096]u8 = undefined;
+    const len = try std.Io.Dir.readLinkAbsolute(init.io, "/proc/self/exe", &buf);
+    const exe_path = buf[0..len];
+    const bin_dir = std.fs.path.dirname(exe_path) orelse return error.NoExecutableDirectory;
+    // Apply the relative template against the binary's own directory.
+    return std.fmt.allocPrint(garden, "{s}/{s}", .{ bin_dir, rye_lib_relative_to_exe });
+}
+
+/// Ephemeral bridge path for a `.rye` source. The root file keeps the historical
+/// `{path}.rye.zig` shape; local imports bridge to `{basename}.zig` beside the source.
+fn bridge_zig_path(rye_path: []const u8, is_root: bool, garden: std.mem.Allocator) ![]const u8 {
+    if (is_root) return std.fmt.allocPrint(garden, "{s}.zig", .{rye_path});
+    if (!std.mem.endsWith(u8, rye_path, ".rye")) return error.NotRyeFile;
+    return std.fmt.allocPrint(garden, "{s}.zig", .{rye_path[0 .. rye_path.len - ".rye".len]});
+}
+
+/// Rewrite local `.rye` import paths to `.zig` for the toolchain bridge.
+fn rewrite_rye_imports(source: []const u8, garden: std.mem.Allocator) ![]u8 {
+    var out = std.ArrayListUnmanaged(u8).empty;
+    errdefer out.deinit(garden);
+
+    var i: usize = 0;
+    while (i < source.len) {
+        if (std.mem.startsWith(u8, source[i..], "@import(\"")) {
+            const marker_start = i;
+            i += "@import(\"".len;
+            const import_start = i;
+            while (i < source.len and source[i] != '"') : (i += 1) {}
+            const import_path = source[import_start..i];
+            try out.appendSlice(garden, source[marker_start..import_start]);
+            if (std.mem.endsWith(u8, import_path, ".rye")) {
+                try out.appendSlice(garden, import_path[0 .. import_path.len - ".rye".len]);
+                try out.appendSlice(garden, ".zig");
+            } else {
+                try out.appendSlice(garden, import_path);
+            }
+            if (i < source.len) {
+                try out.append(garden, source[i]);
+                i += 1;
+            }
+        } else {
+            try out.append(garden, source[i]);
+            i += 1;
+        }
+    }
+    return try out.toOwnedSlice(garden);
+}
+
+fn bridge_already_staged(staged_rye: *const std.ArrayListUnmanaged([]const u8), rye_path: []const u8) bool {
+    for (staged_rye.items) |path| {
+        if (std.mem.eql(u8, path, rye_path)) return true;
+    }
+    return false;
+}
+
+/// Bridge `rye_path` and every local `.rye` module it imports, recursively.
+fn bridge_rye_tree(
+    io: std.Io,
+    dir: std.Io.Dir,
+    rye_path: []const u8,
+    is_root: bool,
+    staged_rye: *std.ArrayListUnmanaged([]const u8),
+    bridge_zigs: *std.ArrayListUnmanaged([]const u8),
+    garden: std.mem.Allocator,
+    label: []const u8,
+) ![]const u8 {
+    if (bridge_already_staged(staged_rye, rye_path)) {
+        return bridge_zig_path(rye_path, is_root, garden);
+    }
+
+    const source = dir.readFileAlloc(io, rye_path, garden, .unlimited) catch |err| {
+        std.debug.print("rye {s}: could not read '{s}': {s}\n", .{ label, rye_path, @errorName(err) });
+        return err;
+    };
+
+    var import_paths = std.ArrayListUnmanaged([]const u8).empty;
+    defer {
+        for (import_paths.items) |p| garden.free(p);
+        import_paths.deinit(garden);
+    }
+
+    var scan: usize = 0;
+    while (scan < source.len) {
+        if (std.mem.startsWith(u8, source[scan..], "@import(\"")) {
+            scan += "@import(\"".len;
+            const import_start = scan;
+            while (scan < source.len and source[scan] != '"') : (scan += 1) {}
+            const import_path = source[import_start..scan];
+            if (std.mem.endsWith(u8, import_path, ".rye")) {
+                const base_dir = std.fs.path.dirname(rye_path) orelse ".";
+                const resolved = std.fs.path.resolve(garden, &.{ base_dir, import_path }) catch |err| {
+                    std.debug.print("rye {s}: could not resolve import '{s}' from '{s}': {s}\n", .{
+                        label, import_path, rye_path, @errorName(err),
+                    });
+                    return err;
+                };
+                try import_paths.append(garden, resolved);
+            }
+            if (scan < source.len) scan += 1;
+        } else {
+            scan += 1;
+        }
+    }
+
+    for (import_paths.items) |dep_rye| {
+        _ = try bridge_rye_tree(io, dir, dep_rye, false, staged_rye, bridge_zigs, garden, label);
+    }
+
+    const bridged_source = try rewrite_rye_imports(source, garden);
+    const zig_path = try bridge_zig_path(rye_path, is_root, garden);
+    dir.writeFile(io, .{ .sub_path = zig_path, .data = bridged_source }) catch |err| {
+        std.debug.print("rye {s}: could not stage '{s}': {s}\n", .{ label, zig_path, @errorName(err) });
+        return err;
+    };
+
+    try staged_rye.append(garden, try garden.dupe(u8, rye_path));
+    try bridge_zigs.append(garden, try garden.dupe(u8, zig_path));
+
+    return zig_path;
+}

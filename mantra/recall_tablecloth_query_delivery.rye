@@ -1,0 +1,173 @@
+//! mantra/recall_tablecloth_query_delivery.rye — Tablecloth query over Comlink hosted UDP.
+//!
+//! Client seals a filter request; host opens, runs query_tablecloth, seals name hits back.
+//! Scope: [`active-designing/20260710-140500_comlink-view-filter-not-graphql.md`](../active-designing/20260710-140500_comlink-view-filter-not-graphql.md)
+//!
+//!   rye build mantra/recall_tablecloth_query_delivery.rye -lc -femit-bin=mantra/bin/recall-tablecloth-query-delivery
+//!   mantra/bin/recall-tablecloth-query-delivery selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const c = std.c;
+const ns = @import("recall_lap1.rye");
+const qw = @import("recall_tablecloth_query_wire.rye");
+const wf = @import("wire_format.rye");
+
+const nqw_version = "20260710.140500";
+
+const AF_INET: c_uint = 2;
+const SOCK_DGRAM: c_uint = 2;
+const SOL_SOCKET: c_int = 1;
+const SO_REUSEADDR: c_int = 2;
+
+const client_port: u16 = 38490;
+const host_port: u16 = 38491;
+
+const sockaddr_in = extern struct {
+    sin_family: c_ushort = AF_INET,
+    sin_port: c_ushort,
+    sin_addr: [4]u8 = .{ 127, 0, 0, 1 },
+    sin_zero: [8]u8 = .{0} ** 8,
+};
+
+fn localhost_addr(port: u16) sockaddr_in {
+    return .{ .sin_port = std.mem.nativeToBig(u16, port) };
+}
+
+fn open_socket() !c.fd_t {
+    const fd = c.socket(AF_INET, SOCK_DGRAM, 0);
+    if (fd < 0) return error.SocketFailed;
+    const yes: c_int = 1;
+    _ = c.setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &yes, @sizeOf(c_int));
+    return fd;
+}
+
+fn send_wire(port: u16, wire: []const u8) !void {
+    const fd = try open_socket();
+    defer _ = c.close(fd);
+    const dest = localhost_addr(port);
+    const sent = c.sendto(fd, wire.ptr, @intCast(wire.len), 0, @ptrCast(&dest), @sizeOf(sockaddr_in));
+    if (sent < 0 or @as(usize, @intCast(sent)) != wire.len) return error.SendFailed;
+}
+
+fn recv_wire(port: u16, wire: []u8) !u64 {
+    const fd = try open_socket();
+    defer _ = c.close(fd);
+    var bind_addr = localhost_addr(port);
+    if (c.bind(fd, @ptrCast(&bind_addr), @sizeOf(sockaddr_in)) < 0) return error.BindFailed;
+    var from: sockaddr_in = undefined;
+    var from_len: c.socklen_t = @sizeOf(sockaddr_in);
+    const n = c.recvfrom(fd, wire.ptr, @intCast(wire.len), 0, @ptrCast(&from), &from_len);
+    if (n < 0) return error.RecvFailed;
+    return @intCast(n);
+}
+
+fn init_host_catalog(cat: *ns.BoltCatalog) !void {
+    cat.* = .empty();
+    try cat.append_leaf("peerB", "b", 1, "notes.txt", "alpha", "plain-text");
+    try cat.append_leaf("peerB", "b", 2, "notes.txt", "alpha2", "plain-text");
+    try cat.append_leaf("peerB", "c", 1, "other.txt", "beta", "plain-bytes");
+}
+
+fn run_host_once(cat: *const ns.BoltCatalog) !void {
+    var wire_in: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const n = try recv_wire(host_port, &wire_in);
+    var opened: [@intCast(wf.max_message)]u8 = undefined;
+    const opened_len = try wf.open_datagram(wire_in[0..n], &opened);
+
+    var req: qw.QueryWireRequest = undefined;
+    try qw.decode_request(opened[0..@intCast(opened_len)], &req);
+
+    var resp: qw.QueryWireResponse = undefined;
+    try qw.build_response(cat, req, &resp);
+
+    var payload: [qw.max_wire_payload]u8 = undefined;
+    const payload_len = try qw.encode_response(resp, &payload);
+    var wire_out: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const sealed_len = try wf.seal_message(payload[0..payload_len], &wire_out);
+    try send_wire(client_port, wire_out[0..@intCast(sealed_len)]);
+}
+
+fn run_client_query(req: qw.QueryWireRequest) !qw.QueryWireResponse {
+    var payload: [qw.max_wire_payload]u8 = undefined;
+    const payload_len = try qw.encode_request(req, &payload);
+    var wire_out: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const sealed_len = try wf.seal_message(payload[0..payload_len], &wire_out);
+    try send_wire(host_port, wire_out[0..@intCast(sealed_len)]);
+
+    var wire_in: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const n = try recv_wire(client_port, &wire_in);
+    var opened: [@intCast(wf.max_message)]u8 = undefined;
+    const opened_len = try wf.open_datagram(wire_in[0..n], &opened);
+    var resp: qw.QueryWireResponse = undefined;
+    try qw.decode_response(opened[0..@intCast(opened_len)], &resp);
+    return resp;
+}
+
+fn run_selftest(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) !u8 {
+    var cat: ns.BoltCatalog = undefined;
+    try init_host_catalog(&cat);
+
+    // Host process: wait for one request, reply, exit.
+    const host_argv = try allocator.alloc([]const u8, 2);
+    defer allocator.free(host_argv);
+    host_argv[0] = self_path;
+    host_argv[1] = "host";
+
+    var host_child = try std.process.spawn(io, .{ .argv = host_argv });
+    var pause = c.timespec{ .sec = 0, .nsec = 50_000_000 };
+    _ = c.nanosleep(&pause, null);
+
+    const resp = try run_client_query(.{ .peer = "peerB", .bolt = "b" });
+    assert(resp.hit_count == 2);
+    assert(std.mem.eql(u8, resp.hits[0].path, "notes.txt"));
+    assert(resp.hits[0].revision == 1);
+    assert(resp.hits[1].revision == 2);
+
+    const host_term = try host_child.wait(io);
+    const host_code: u8 = switch (host_term) {
+        .exited => |code| code,
+        else => 255,
+    };
+    assert(host_code == 0);
+
+    // Second exchange: empty match (honest absence).
+    const host_argv2 = try allocator.alloc([]const u8, 2);
+    defer allocator.free(host_argv2);
+    host_argv2[0] = self_path;
+    host_argv2[1] = "host";
+    var host2 = try std.process.spawn(io, .{ .argv = host_argv2 });
+    _ = c.nanosleep(&pause, null);
+
+    const empty = try run_client_query(.{ .tilak = "no-such-tilak" });
+    assert(empty.hit_count == 0);
+
+    const host2_term = try host2.wait(io);
+    const host2_code: u8 = switch (host2_term) {
+        .exited => |code| code,
+        else => 255,
+    };
+    assert(host2_code == 0);
+
+    print("ns-tcqd: version {s} wire {s}\n", .{ nqw_version, qw.query_wire_version });
+    print("GREEN: Tablecloth query delivery — hosted filter hits + empty match.\n", .{});
+    return 0;
+}
+
+fn run_host() !u8 {
+    var cat: ns.BoltCatalog = undefined;
+    try init_host_catalog(&cat);
+    try run_host_once(&cat);
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "host")) {
+        return run_host();
+    }
+    return run_selftest(garden, io, args[0]);
+}

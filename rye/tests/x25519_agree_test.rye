@@ -1,0 +1,38 @@
+//! Rye test: X25519 key agreement — the second crypto primitive our new ideas
+//! lean on, after signing. Two identities, each holding only their own secret
+//! and the other's public key, derive the *same* shared secret without ever
+//! sending it. This is how a message is sealed *to an identity* rather than to
+//! a channel (active-designing/993; external-research/yonder/20260618-195512_encrypted-networking-riscv.md, /982), and it is the
+//! next seed on the path to the encrypted, content-named datagram.
+//!
+//! Deterministic throughout — fixed seeds — so the output is identical on every
+//! run and across the baseline and the strengthened std, which lets the parity
+//! gate compare it. The seeds are test fixtures, never real secrets.
+
+const std = @import("std");
+const X25519 = std.crypto.dh.X25519;
+
+pub fn main() void {
+    // Two identities, each from a fixed seed.
+    const seed_a = [_]u8{0x11} ** X25519.seed_length;
+    const seed_b = [_]u8{0x22} ** X25519.seed_length;
+    const alice = X25519.KeyPair.generateDeterministic(seed_a) catch unreachable;
+    const bob = X25519.KeyPair.generateDeterministic(seed_b) catch unreachable;
+
+    // Each computes the shared secret from their own secret and the other's
+    // public key. Neither secret ever leaves its holder.
+    const shared_a = X25519.scalarmult(alice.secret_key, bob.public_key) catch unreachable;
+    const shared_b = X25519.scalarmult(bob.secret_key, alice.public_key) catch unreachable;
+
+    // The Diffie-Hellman property: both arrive at the very same secret.
+    if (std.mem.eql(u8, &shared_a, &shared_b)) {
+        std.debug.print("x25519: both identities derived the same shared secret.\n", .{});
+    } else {
+        std.debug.print("x25519: ERROR — the shared secrets differ.\n", .{});
+    }
+
+    // Render the shared secret as lowercase hex — a stable value for the gate.
+    std.debug.print("x25519 shared secret = ", .{});
+    for (shared_a) |b| std.debug.print("{x:0>2}", .{b});
+    std.debug.print("\n", .{});
+}

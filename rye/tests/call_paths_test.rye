@@ -1,0 +1,42 @@
+//! Rye test: the std call paths our tools lean on, exercised so the parity gate
+//! covers the call-path strengthening pass.
+//!
+//! Goal: run the standard-library functions the `rye` CLI and the Rishi shell
+//! actually call — `std.mem.trim`, `std.mem.eql`, `std.mem.indexOfScalar` and
+//! `indexOfScalarPos` (which call `findScalarPos`), and `std.fmt.parseInt` — and
+//! print their results, so the parity gate can confirm the strengthened std
+//! behaves byte-for-byte like the baseline. The TAME assertions we added state
+//! invariants; they must never change what these functions return.
+
+const std = @import("std");
+
+pub fn main() void {
+    // mem.trim: leading/trailing strip, a no-op, and an all-stripped (empty) case.
+    std.debug.print("trim '{s}' '{s}' '{s}'\n", .{
+        std.mem.trim(u8, "  hi \t", " \t"),
+        std.mem.trim(u8, "keep", " "),
+        std.mem.trim(u8, "   ", " "),
+    });
+
+    // mem.eql: equal, unequal length, equal length yet unequal content.
+    std.debug.print("eql {} {} {}\n", .{
+        std.mem.eql(u8, "abc", "abc"),
+        std.mem.eql(u8, "abc", "abcd"),
+        std.mem.eql(u8, "abc", "abd"),
+    });
+
+    // mem.indexOfScalar / indexOfScalarPos: found, not found, found-from-a-start.
+    std.debug.print("idx {?d} {?d} {?d}\n", .{
+        std.mem.indexOfScalar(u8, "a=b=c", '='),
+        std.mem.indexOfScalar(u8, "abc", '='),
+        std.mem.indexOfScalarPos(u8, "a=b=c", 2, '='),
+    });
+
+    // fmt.parseInt: base 10, base 16, base 0 (autodetect), and a negative.
+    std.debug.print("int {d} {d} {d} {d}\n", .{
+        std.fmt.parseInt(i64, "2026", 10) catch -1,
+        std.fmt.parseInt(i64, "ff", 16) catch -1,
+        std.fmt.parseInt(i64, "0x10", 0) catch -1,
+        std.fmt.parseInt(i64, "-42", 10) catch -1,
+    });
+}

@@ -1,0 +1,850 @@
+//! brushstroke/wayland_seed.rye — Skate grid on a Wayland surface.
+//!
+//! The hosted seed (`seed.rye`) proved Frame → redraw on stdout. This seed
+//! proves monospace **Skate** cells land on a compositor surface: connect,
+//! create an xdg toplevel, attach one SHM buffer filled from a cell grid,
+//! commit once, wait for the frame callback, exit cleanly.
+//!
+//! Build (from repo root):
+//!   mkdir -p brushstroke/bin
+//!   export RYE_ZIG="$PWD/vendor/zig-toolchain/zig"
+//!   rye/bin/rye build brushstroke/wayland_seed.rye brushstroke/xdg-shell-protocol.c \
+//!     -Ibrushstroke -lc -lwayland-client -lxkbcommon -lrt \
+//!     -femit-bin=brushstroke/bin/brushstroke-wayland-seed
+//!   brushstroke/bin/brushstroke-wayland-seed          # Wayland window
+//!   brushstroke/bin/brushstroke-wayland-seed selftest # headless grid proof
+//!   brushstroke/bin/brushstroke-wayland-seed arbitrary # SLC-2a Lap 1 witness
+//!   brushstroke/bin/brushstroke-wayland-seed redraw     # SLC-2a Lap 2 metal: A then B
+//!   brushstroke/bin/brushstroke-wayland-seed redrawtest # SLC-2a Lap 2 headless witness
+//!
+//! Requires a running Wayland compositor (`WAYLAND_DISPLAY`) for the default mode.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const posix = std.posix;
+const skate = @import("skate_grid.rye");
+
+const c = @cImport({
+    @cInclude("wayland-client.h");
+    @cInclude("xdg-shell-client-protocol.h");
+    @cInclude("xkbcommon/xkbcommon.h");
+    @cInclude("xkbcommon/xkbcommon-keysyms.h");
+});
+
+const max_key_actions: u32 = 64;
+
+pub const KeyAction = union(enum) {
+    none,
+    char_: u8,
+    backspace,
+    submit,
+};
+
+const wayland_seed_version = "20260703.135212";
+
+const pixel_scale: u32 = 2;
+const window_width: i32 = 1280;
+const window_height: i32 = 768;
+const max_lines: u32 = 8;
+const grid_cols: u32 = @intCast(@divExact(window_width, @as(i32, @intCast(skate.cell_w * pixel_scale))));
+const grid_rows: u32 = @intCast(@divExact(window_height, @as(i32, @intCast(skate.cell_h * pixel_scale))));
+const skate_bg = skate.Color{ .r = 0x1a, .g = 0x1a, .b = 0x2e };
+const skate_fg = skate.Color{ .r = 0xe0, .g = 0xe0, .b = 0xe0 };
+
+/// Display seam — connect holds the session socket lifecycle (`985`).
+const Display = struct {
+    handle: *c.wl_display,
+
+    fn connect() !Display {
+        const handle = c.wl_display_connect(null);
+        if (handle == null) return error.WaylandConnectFailed;
+        return .{ .handle = handle.? };
+    }
+
+    fn disconnect(self: Display) void {
+        _ = c.wl_display_disconnect(self.handle);
+    }
+
+    fn flush(self: Display) !void {
+        if (c.wl_display_flush(self.handle) < 0) return error.WaylandFlushFailed;
+    }
+
+    fn roundtrip(self: Display) !void {
+        if (c.wl_display_roundtrip(self.handle) < 0) return error.WaylandRoundtripFailed;
+    }
+
+    fn dispatch(self: Display) !void {
+        if (c.wl_display_dispatch(self.handle) < 0) return error.WaylandDispatchFailed;
+    }
+};
+
+const Line = struct {
+    text: []const u8,
+};
+
+pub const SkateLine = Line;
+pub const viewer_grid_rows = grid_rows;
+pub const viewer_max_lines = max_lines;
+
+const Frame = struct {
+    lines: []const Line,
+
+    fn init(lines: []const Line) Frame {
+        assert(lines.len <= max_lines);
+        return .{ .lines = lines };
+    }
+
+    fn to_grid(self: Frame, allocator: std.mem.Allocator) !skate.Grid {
+        var grid = try skate.Grid.init(allocator, grid_cols, grid_rows);
+        var i: u32 = 0;
+        const line_count: u32 = @intCast(self.lines.len);
+        while (i < line_count) : (i += 1) {
+            grid.put_line(i, self.lines[i].text);
+        }
+        return grid;
+    }
+};
+
+fn default_lines(garden: std.mem.Allocator) ![]Line {
+    const lines = try garden.alloc(Line, 3);
+    lines[0] = .{ .text = "Skate grid seed" };
+    lines[1] = .{ .text = "monospace cells from values" };
+    lines[2] = .{ .text = wayland_seed_version };
+    return lines;
+}
+
+fn arbitrary_witness_lines(garden: std.mem.Allocator) ![]Line {
+    const lines = try garden.alloc(Line, 2);
+    lines[0] = .{ .text = "rye" };
+    lines[1] = .{ .text = "lotus" };
+    return lines;
+}
+
+fn raster_lit_for_lines(garden: std.mem.Allocator, lines: []const Line) !u32 {
+    const frame = Frame.init(lines);
+    var grid = try frame.to_grid(garden);
+    const stride: u32 = @as(u32, @intCast(window_width)) * 4;
+    const size: u32 = stride * @as(u32, @intCast(window_height));
+    const pixels = try garden.alloc(u8, @intCast(size));
+    grid.rasterize(pixels, stride, window_width, window_height, skate_bg, skate_fg, pixel_scale);
+    return grid.lit_pixel_count(pixels, stride, window_width, window_height, skate_bg);
+}
+
+fn buffer_signature(pixels: []const u8) u64 {
+    var hash: u64 = 0xcbf29ce484222325;
+    for (pixels) |byte| {
+        hash ^= byte;
+        hash *%= 0x100000001b3;
+    }
+    return hash;
+}
+
+fn signature_from_grid(garden: std.mem.Allocator, grid: *const skate.Grid) !u64 {
+    const stride: u32 = @as(u32, @intCast(window_width)) * 4;
+    const size: u32 = stride * @as(u32, @intCast(window_height));
+    const pixels = try garden.alloc(u8, @intCast(size));
+    grid.rasterize(pixels, stride, window_width, window_height, skate_bg, skate_fg, pixel_scale);
+    return buffer_signature(pixels);
+}
+
+fn signature_from_lines(garden: std.mem.Allocator, lines: []const Line) !u64 {
+    var grid = try Frame.init(lines).to_grid(garden);
+    return signature_from_grid(garden, &grid);
+}
+
+pub fn content_signature(garden: std.mem.Allocator, lines: []const Line) !u64 {
+    return signature_from_lines(garden, lines);
+}
+
+fn redraw_lines_a(garden: std.mem.Allocator) ![]Line {
+    const lines = try garden.alloc(Line, 2);
+    lines[0] = .{ .text = "frame A" };
+    lines[1] = .{ .text = "redraw seed" };
+    return lines;
+}
+
+fn redraw_lines_b(garden: std.mem.Allocator) ![]Line {
+    const lines = try garden.alloc(Line, 2);
+    lines[0] = .{ .text = "frame B" };
+    lines[1] = .{ .text = "updated" };
+    return lines;
+}
+
+const App = struct {
+    display: Display,
+    compositor: ?*c.wl_compositor = null,
+    shm: ?*c.wl_shm = null,
+    wm_base: ?*c.xdg_wm_base = null,
+    seat: ?*c.wl_seat = null,
+    keyboard: ?*c.wl_keyboard = null,
+    xkb_ctx: ?*c.struct_xkb_context = null,
+    xkb_keymap: ?*c.struct_xkb_keymap = null,
+    xkb_state: ?*c.struct_xkb_state = null,
+    surface: ?*c.wl_surface = null,
+    xdg_surface: ?*c.xdg_surface = null,
+    xdg_toplevel: ?*c.xdg_toplevel = null,
+    configured: bool = false,
+    frame_done: bool = false,
+    should_close: bool = false,
+    keyboard_enabled: bool = false,
+    keyboard_focused: bool = false,
+    key_actions: [max_key_actions]KeyAction = undefined,
+    key_actions_head: u32 = 0,
+    key_actions_tail: u32 = 0,
+    frame: Frame,
+    grid: skate.Grid,
+    garden: std.mem.Allocator,
+
+    fn enqueue_key_action(self: *App, action: KeyAction) void {
+        const next_tail = (self.key_actions_tail + 1) % max_key_actions;
+        if (next_tail == self.key_actions_head) return;
+        self.key_actions[self.key_actions_tail] = action;
+        self.key_actions_tail = next_tail;
+    }
+
+    fn dequeue_key_action(self: *App) KeyAction {
+        if (self.key_actions_head == self.key_actions_tail) return .none;
+        const action = self.key_actions[self.key_actions_head];
+        self.key_actions_head = (self.key_actions_head + 1) % max_key_actions;
+        return action;
+    }
+
+    fn clear_keymap(self: *App) void {
+        if (self.xkb_state) |state| c.xkb_state_unref(state);
+        if (self.xkb_keymap) |keymap| c.xkb_keymap_unref(keymap);
+        self.xkb_state = null;
+        self.xkb_keymap = null;
+    }
+
+    fn handle_key_press(self: *App, keycode: u32) void {
+        const xkb_state = self.xkb_state orelse return;
+        const kc: c.xkb_keycode_t = @intCast(keycode + 8);
+        const sym = c.xkb_state_key_get_one_sym(xkb_state, kc);
+        if (sym == c.XKB_KEY_Return or sym == c.XKB_KEY_KP_Enter) {
+            self.enqueue_key_action(.submit);
+            return;
+        }
+        if (sym == c.XKB_KEY_BackSpace) {
+            self.enqueue_key_action(.backspace);
+            return;
+        }
+        var utf8: [8]u8 = undefined;
+        const n = c.xkb_state_key_get_utf8(xkb_state, kc, &utf8, utf8.len);
+        if (n == 1) {
+            self.enqueue_key_action(.{ .char_ = utf8[0] });
+        }
+    }
+
+    fn registry_global(
+        data: ?*anyopaque,
+        registry: ?*c.wl_registry,
+        id: u32,
+        interface: [*c]const u8,
+        version: u32,
+    ) callconv(.c) void {
+        const app: *App = @ptrCast(@alignCast(data));
+        const iface = std.mem.span(interface orelse return);
+        if (std.mem.eql(u8, iface, "wl_compositor")) {
+            app.compositor = @ptrCast(c.wl_registry_bind(registry, id, &c.wl_compositor_interface, @min(version, 4)));
+        } else if (std.mem.eql(u8, iface, "wl_shm")) {
+            app.shm = @ptrCast(c.wl_registry_bind(registry, id, &c.wl_shm_interface, @min(version, 1)));
+        } else if (std.mem.eql(u8, iface, std.mem.span(c.xdg_wm_base_interface.name))) {
+            app.wm_base = @ptrCast(c.wl_registry_bind(registry, id, &c.xdg_wm_base_interface, @min(version, 2)));
+        } else if (std.mem.eql(u8, iface, "wl_seat")) {
+            app.seat = @ptrCast(c.wl_registry_bind(registry, id, &c.wl_seat_interface, @min(version, 7)));
+        }
+    }
+
+    fn registry_global_remove(
+        data: ?*anyopaque,
+        registry: ?*c.wl_registry,
+        id: u32,
+    ) callconv(.c) void {
+        _ = data;
+        _ = registry;
+        _ = id;
+    }
+
+    fn xdg_wm_base_ping(
+        data: ?*anyopaque,
+        wm_base: ?*c.xdg_wm_base,
+        serial: u32,
+    ) callconv(.c) void {
+        _ = data;
+        c.xdg_wm_base_pong(wm_base, serial);
+    }
+
+    fn xdg_surface_configure(
+        data: ?*anyopaque,
+        xdg_surface: ?*c.xdg_surface,
+        serial: u32,
+    ) callconv(.c) void {
+        const app: *App = @ptrCast(@alignCast(data));
+        c.xdg_surface_ack_configure(xdg_surface, serial);
+        app.configured = true;
+    }
+
+    fn xdg_toplevel_configure(
+        data: ?*anyopaque,
+        xdg_toplevel: ?*c.xdg_toplevel,
+        width: i32,
+        height: i32,
+        states: ?*c.wl_array,
+    ) callconv(.c) void {
+        _ = data;
+        _ = xdg_toplevel;
+        _ = width;
+        _ = height;
+        _ = states;
+    }
+
+    fn xdg_toplevel_close(data: ?*anyopaque, xdg_toplevel: ?*c.xdg_toplevel) callconv(.c) void {
+        _ = xdg_toplevel;
+        const app: *App = @ptrCast(@alignCast(data));
+        app.should_close = true;
+    }
+
+    fn on_frame_done(
+        data: ?*anyopaque,
+        callback: ?*c.wl_callback,
+        callback_data: u32,
+    ) callconv(.c) void {
+        _ = callback_data;
+        const app: *App = @ptrCast(@alignCast(data));
+        app.frame_done = true;
+        c.wl_callback_destroy(callback);
+    }
+
+    fn seat_capabilities(
+        data: ?*anyopaque,
+        wl_seat: ?*c.wl_seat,
+        capabilities: u32,
+    ) callconv(.c) void {
+        const app: *App = @ptrCast(@alignCast(data));
+        if (!app.keyboard_enabled) return;
+        const has_keyboard = (capabilities & c.WL_SEAT_CAPABILITY_KEYBOARD) != 0;
+        if (has_keyboard and app.keyboard == null) {
+            app.keyboard = c.wl_seat_get_keyboard(wl_seat);
+            if (app.keyboard != null) {
+                const keyboard_listener = c.wl_keyboard_listener{
+                    .keymap = keyboard_keymap,
+                    .enter = keyboard_enter,
+                    .leave = keyboard_leave,
+                    .key = keyboard_key,
+                    .modifiers = keyboard_modifiers,
+                    .repeat_info = keyboard_repeat_info,
+                };
+                _ = c.wl_keyboard_add_listener(app.keyboard, &keyboard_listener, app);
+            }
+        } else if (!has_keyboard and app.keyboard != null) {
+            c.wl_keyboard_destroy(app.keyboard);
+            app.keyboard = null;
+            app.clear_keymap();
+        }
+    }
+
+    fn seat_name(
+        data: ?*anyopaque,
+        wl_seat: ?*c.wl_seat,
+        name: [*c]const u8,
+    ) callconv(.c) void {
+        _ = data;
+        _ = wl_seat;
+        _ = name;
+    }
+
+    fn keyboard_keymap(
+        data: ?*anyopaque,
+        wl_keyboard: ?*c.wl_keyboard,
+        format: u32,
+        fd: i32,
+        size: u32,
+    ) callconv(.c) void {
+        _ = wl_keyboard;
+        const app: *App = @ptrCast(@alignCast(data));
+        if (format != c.WL_KEYBOARD_KEYMAP_FORMAT_XKB_V1) {
+            _ = std.c.close(fd);
+            return;
+        }
+        defer _ = std.c.close(fd);
+        const mapped = posix.mmap(
+            null,
+            size,
+            .{ .READ = true },
+            .{ .TYPE = .PRIVATE },
+            fd,
+            0,
+        ) catch return;
+        defer posix.munmap(mapped);
+
+        app.clear_keymap();
+        if (app.xkb_ctx == null) {
+            app.xkb_ctx = c.xkb_context_new(c.XKB_CONTEXT_NO_FLAGS);
+        }
+        const ctx = app.xkb_ctx orelse return;
+        app.xkb_keymap = c.xkb_keymap_new_from_string(
+            ctx,
+            @ptrCast(mapped.ptr),
+            c.XKB_KEYMAP_FORMAT_TEXT_V1,
+            c.XKB_KEYMAP_COMPILE_NO_FLAGS,
+        );
+        if (app.xkb_keymap == null) return;
+        app.xkb_state = c.xkb_state_new(app.xkb_keymap);
+    }
+
+    fn keyboard_enter(
+        data: ?*anyopaque,
+        wl_keyboard: ?*c.wl_keyboard,
+        serial: u32,
+        surface: ?*c.wl_surface,
+        keys: ?*c.wl_array,
+    ) callconv(.c) void {
+        _ = wl_keyboard;
+        _ = serial;
+        _ = keys;
+        const app: *App = @ptrCast(@alignCast(data));
+        app.keyboard_focused = surface == app.surface;
+    }
+
+    fn keyboard_leave(
+        data: ?*anyopaque,
+        wl_keyboard: ?*c.wl_keyboard,
+        serial: u32,
+        surface: ?*c.wl_surface,
+    ) callconv(.c) void {
+        _ = wl_keyboard;
+        _ = serial;
+        _ = surface;
+        const app: *App = @ptrCast(@alignCast(data));
+        app.keyboard_focused = false;
+    }
+
+    fn keyboard_key(
+        data: ?*anyopaque,
+        wl_keyboard: ?*c.wl_keyboard,
+        serial: u32,
+        time: u32,
+        key: u32,
+        state: u32,
+    ) callconv(.c) void {
+        _ = wl_keyboard;
+        _ = serial;
+        _ = time;
+        const app: *App = @ptrCast(@alignCast(data));
+        if (!app.keyboard_focused) return;
+        if (state != c.WL_KEYBOARD_KEY_STATE_PRESSED) return;
+        app.handle_key_press(key);
+    }
+
+    fn keyboard_modifiers(
+        data: ?*anyopaque,
+        wl_keyboard: ?*c.wl_keyboard,
+        serial: u32,
+        mods_depressed: u32,
+        mods_latched: u32,
+        mods_locked: u32,
+        group: u32,
+    ) callconv(.c) void {
+        _ = wl_keyboard;
+        _ = serial;
+        const app: *App = @ptrCast(@alignCast(data));
+        const xkb_state = app.xkb_state orelse return;
+        _ = c.xkb_state_update_mask(
+            xkb_state,
+            mods_depressed,
+            mods_latched,
+            mods_locked,
+            0,
+            0,
+            group,
+        );
+    }
+
+    fn keyboard_repeat_info(
+        data: ?*anyopaque,
+        wl_keyboard: ?*c.wl_keyboard,
+        rate: i32,
+        delay: i32,
+    ) callconv(.c) void {
+        _ = data;
+        _ = wl_keyboard;
+        _ = rate;
+        _ = delay;
+    }
+
+    fn bind_globals(self: *App) !void {
+        const registry = c.wl_display_get_registry(self.display.handle);
+        if (registry == null) return error.NoRegistry;
+
+        const listener = c.wl_registry_listener{
+            .global = registry_global,
+            .global_remove = registry_global_remove,
+        };
+        _ = c.wl_registry_add_listener(registry, &listener, self);
+        try self.display.roundtrip();
+        assert(self.compositor != null);
+        assert(self.shm != null);
+        assert(self.wm_base != null);
+
+        if (self.keyboard_enabled and self.seat != null) {
+            const seat_listener = c.wl_seat_listener{
+                .capabilities = seat_capabilities,
+                .name = seat_name,
+            };
+            _ = c.wl_seat_add_listener(self.seat, &seat_listener, self);
+            try self.display.roundtrip();
+        }
+    }
+
+    fn create_surface(self: *App) !void {
+        self.surface = c.wl_compositor_create_surface(self.compositor);
+        if (self.surface == null) return error.NoSurface;
+
+        self.xdg_surface = c.xdg_wm_base_get_xdg_surface(self.wm_base, self.surface);
+        if (self.xdg_surface == null) return error.NoXdgSurface;
+
+        const xdg_surface_listener = c.xdg_surface_listener{
+            .configure = xdg_surface_configure,
+        };
+        _ = c.xdg_surface_add_listener(self.xdg_surface, &xdg_surface_listener, self);
+
+        self.xdg_toplevel = c.xdg_surface_get_toplevel(self.xdg_surface);
+        if (self.xdg_toplevel == null) return error.NoToplevel;
+
+        const title = "brushstroke wayland seed";
+        _ = c.xdg_toplevel_set_title(self.xdg_toplevel, title);
+        _ = c.xdg_toplevel_set_min_size(self.xdg_toplevel, window_width, window_height);
+
+        const toplevel_listener = c.xdg_toplevel_listener{
+            .configure = xdg_toplevel_configure,
+            .close = xdg_toplevel_close,
+        };
+        _ = c.xdg_toplevel_add_listener(self.xdg_toplevel, &toplevel_listener, self);
+
+        const wm_listener = c.xdg_wm_base_listener{
+            .ping = xdg_wm_base_ping,
+        };
+        _ = c.xdg_wm_base_add_listener(self.wm_base, &wm_listener, self);
+
+        c.wl_surface_commit(self.surface);
+        try self.display.flush();
+    }
+
+    fn fill_buffer(self: *App, pixels: []u8, stride: u32) void {
+        self.grid.rasterize(pixels, stride, window_width, window_height, skate_bg, skate_fg, pixel_scale);
+    }
+
+    fn commit_frame(self: *App) !void {
+        const stride: i32 = window_width * 4;
+        const size: u32 = @intCast(stride * window_height);
+
+        const fd = try posix.memfd_create("brushstroke-frame", 0);
+        defer _ = std.c.close(fd);
+        if (std.c.ftruncate(fd, @intCast(size)) < 0) return error.FtruncateFailed;
+
+        const mapped = try posix.mmap(
+            null,
+            @intCast(size),
+            .{ .READ = true, .WRITE = true },
+            .{ .TYPE = .SHARED },
+            fd,
+            0,
+        );
+        defer posix.munmap(mapped);
+
+        self.fill_buffer(mapped, @intCast(stride));
+
+        const pool = c.wl_shm_create_pool(self.shm, fd, @intCast(size));
+        if (pool == null) return error.NoShmPool;
+        defer c.wl_shm_pool_destroy(pool);
+
+        const buffer = c.wl_shm_pool_create_buffer(
+            pool,
+            0,
+            window_width,
+            window_height,
+            stride,
+            c.WL_SHM_FORMAT_ARGB8888,
+        );
+        if (buffer == null) return error.NoBuffer;
+
+        c.wl_surface_attach(self.surface, buffer, 0, 0);
+        c.wl_surface_damage_buffer(self.surface, 0, 0, window_width, window_height);
+
+        const callback = c.wl_surface_frame(self.surface);
+        if (callback == null) return error.NoFrameCallback;
+        const frame_listener = c.wl_callback_listener{
+            .done = on_frame_done,
+        };
+        _ = c.wl_callback_add_listener(callback, &frame_listener, self);
+
+        c.wl_surface_commit(self.surface);
+        try self.display.flush();
+    }
+
+    pub fn dispatch_once(self: *App, timeout_ms: i32) !void {
+        _ = c.wl_display_flush(self.display.handle);
+        if (c.wl_display_prepare_read(self.display.handle) != 0) {
+            if (c.wl_display_dispatch_pending(self.display.handle) < 0) return error.WaylandDispatchFailed;
+            return;
+        }
+        const wl_display_fd = c.wl_display_get_fd(self.display.handle);
+        var poll_fds = [_]std.posix.pollfd{.{
+            .fd = wl_display_fd,
+            .events = std.posix.POLL.IN,
+            .revents = 0,
+        }};
+        const ready = std.posix.poll(&poll_fds, timeout_ms) catch 0;
+        if (ready > 0 and (poll_fds[0].revents & std.posix.POLL.IN) != 0) {
+            if (c.wl_display_read_events(self.display.handle) < 0) return error.WaylandDispatchFailed;
+            if (c.wl_display_dispatch_pending(self.display.handle) < 0) return error.WaylandDispatchFailed;
+        } else {
+            c.wl_display_cancel_read(self.display.handle);
+        }
+    }
+
+    fn wait_for_frame(self: *App) !void {
+        var waits: u32 = 0;
+        while (!self.frame_done and waits < 100) : (waits += 1) {
+            if (c.wl_display_dispatch(self.display.handle) < 0) return error.WaylandDispatchFailed;
+        }
+        assert(self.frame_done);
+    }
+
+    fn present_current_frame(self: *App, wait: bool) !void {
+        self.frame_done = false;
+        try self.commit_frame();
+        if (wait) try self.wait_for_frame();
+    }
+
+    pub fn set_frame(self: *App, new_lines: []const Line) !void {
+        self.frame = Frame.init(new_lines);
+        self.grid = try self.frame.to_grid(self.garden);
+        try self.present_current_frame(true);
+    }
+
+    pub fn update_frame(self: *App, new_lines: []const Line) !void {
+        self.frame = Frame.init(new_lines);
+        self.grid = try self.frame.to_grid(self.garden);
+        try self.present_current_frame(false);
+    }
+
+    pub fn prepare_surface(self: *App) !void {
+        try self.bind_globals();
+        try self.create_surface();
+        try self.display.roundtrip();
+
+        var configure_waits: u32 = 0;
+        while (!self.configured and configure_waits < 100) : (configure_waits += 1) {
+            try self.dispatch_once(50);
+        }
+        assert(self.configured);
+    }
+
+    pub fn disconnect(self: *App) void {
+        self.release_keyboard();
+        self.display.disconnect();
+    }
+
+    pub fn display_fd(self: *const App) posix.fd_t {
+        return c.wl_display_get_fd(self.display.handle);
+    }
+
+    pub fn enable_keyboard(self: *App) void {
+        self.keyboard_enabled = true;
+    }
+
+    pub fn keyboard_ready(self: *const App) bool {
+        return self.xkb_state != null;
+    }
+
+    pub fn has_key_action(self: *const App) bool {
+        return self.key_actions_head != self.key_actions_tail;
+    }
+
+    pub fn pop_key_action(self: *App) KeyAction {
+        return self.dequeue_key_action();
+    }
+
+    pub fn set_window_title(self: *App, title: [*:0]const u8) void {
+        if (self.xdg_toplevel) |toplevel| {
+            _ = c.xdg_toplevel_set_title(toplevel, title);
+        }
+    }
+
+    pub fn set_app_id(self: *App, app_id: [*:0]const u8) void {
+        if (self.xdg_toplevel) |toplevel| {
+            _ = c.xdg_toplevel_set_app_id(toplevel, app_id);
+        }
+    }
+
+    pub fn wants_close(self: *const App) bool {
+        return self.should_close;
+    }
+
+    pub fn release_keyboard(self: *App) void {
+        self.clear_keymap();
+        if (self.xkb_ctx) |ctx| {
+            c.xkb_context_unref(ctx);
+            self.xkb_ctx = null;
+        }
+        if (self.keyboard) |keyboard| {
+            c.wl_keyboard_destroy(keyboard);
+            self.keyboard = null;
+        }
+    }
+
+    fn run(self: *App) !void {
+        try self.prepare_surface();
+        try self.present_current_frame(true);
+    }
+
+    fn run_redraw(self: *App, lines_b: []const Line) !void {
+        try self.prepare_surface();
+        try self.present_current_frame(true);
+        var beat: u32 = 0;
+        while (beat < 8) : (beat += 1) {
+            try self.dispatch_once(50);
+        }
+        try self.set_frame(lines_b);
+    }
+};
+
+fn run_redraw_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
+    const lines_a = try default_lines(garden);
+    const lines_b = try arbitrary_witness_lines(garden);
+
+    var grid = try Frame.init(lines_a).to_grid(garden);
+    const sig_a = try signature_from_grid(garden, &grid);
+
+    grid = try Frame.init(lines_b).to_grid(garden);
+    const sig_b = try signature_from_grid(garden, &grid);
+    const sig_fresh_b = try signature_from_lines(garden, lines_b);
+    assert(sig_b == sig_fresh_b);
+    assert(sig_a != sig_b);
+
+    grid = try Frame.init(lines_a).to_grid(garden);
+    const sig_a2 = try signature_from_grid(garden, &grid);
+    assert(sig_a2 == sig_a);
+
+    var buf: [128]u8 = undefined;
+    const msg = try std.fmt.bufPrint(
+        &buf,
+        "viewer redraw witness: sig_a={x} sig_b={x} sig_a2={x} — GREEN\n",
+        .{ sig_a, sig_b, sig_a2 },
+    );
+    try std.Io.File.stdout().writeStreamingAll(io, msg);
+    return 0;
+}
+
+fn run_bounds_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
+    const over = max_lines + 1;
+    const lines = try garden.alloc(Line, over);
+    var i: u32 = 0;
+    while (i < over) : (i += 1) {
+        lines[i] = .{ .text = "overflow" };
+    }
+    if (lines.len > max_lines) {
+        var buf: [96]u8 = undefined;
+        const msg = try std.fmt.bufPrint(
+            &buf,
+            "surface bounds witness: refused {d} lines (max {d}) — GREEN\n",
+            .{ lines.len, max_lines },
+        );
+        try std.Io.File.stdout().writeStreamingAll(io, msg);
+        return 0;
+    }
+    return 1;
+}
+
+fn run_redraw_metal(garden: std.mem.Allocator, io: std.Io) !u8 {
+    const lines_a = try redraw_lines_a(garden);
+    const lines_b = try redraw_lines_b(garden);
+    var app = try present_value(garden, lines_a);
+    defer app.display.disconnect();
+    try app.run_redraw(lines_b);
+    try std.Io.File.stdout().writeStreamingAll(io, "brushstroke wayland seed: redraw A to B\n");
+    return 0;
+}
+
+fn present_value(garden: std.mem.Allocator, lines: []const Line) !App {
+    const frame = Frame.init(lines);
+    const grid = try frame.to_grid(garden);
+    return App{
+        .display = try Display.connect(),
+        .frame = frame,
+        .grid = grid,
+        .garden = garden,
+    };
+}
+
+pub const SurfaceApp = App;
+
+pub fn open_surface(garden: std.mem.Allocator, lines: []const Line) !App {
+    return present_value(garden, lines);
+}
+
+fn run_selftest(garden: std.mem.Allocator, io: std.Io) !u8 {
+    const lines = try default_lines(garden);
+    const grid = try Frame.init(lines).to_grid(garden);
+    assert(grid.cols == grid_cols);
+    assert(grid.rows == grid_rows);
+
+    const lit = try raster_lit_for_lines(garden, lines);
+    assert(lit > 200);
+
+    var buf: [64]u8 = undefined;
+    const lit_msg = try std.fmt.bufPrint(&buf, "skate grid selftest: {d} lit pixels — GREEN\n", .{lit});
+    try std.Io.File.stdout().writeStreamingAll(io, lit_msg);
+    return 0;
+}
+
+fn run_arbitrary_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
+    const seed_lines = try default_lines(garden);
+    const distinct_lines = try arbitrary_witness_lines(garden);
+    const seed_lit = try raster_lit_for_lines(garden, seed_lines);
+    const distinct_lit = try raster_lit_for_lines(garden, distinct_lines);
+    assert(distinct_lit > 100);
+    assert(distinct_lit != seed_lit);
+
+    var buf: [96]u8 = undefined;
+    const msg = try std.fmt.bufPrint(
+        &buf,
+        "viewer arbitrary value: {d} lit pixels (default {d}) — GREEN\n",
+        .{ distinct_lit, seed_lit },
+    );
+    try std.Io.File.stdout().writeStreamingAll(io, msg);
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden, io);
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "arbitrary")) {
+        return run_arbitrary_witness(garden, io);
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "redrawtest")) {
+        return run_redraw_witness(garden, io);
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "boundstest")) {
+        return run_bounds_witness(garden, io);
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "redraw")) {
+        return run_redraw_metal(garden, io);
+    }
+
+    const lines = try default_lines(garden);
+    var app = try present_value(garden, lines);
+    defer app.display.disconnect();
+
+    assert(app.frame.lines.len == 3);
+
+    try app.run();
+
+    try std.Io.File.stdout().writeStreamingAll(io, "brushstroke wayland seed: skate grid drawn\n");
+    return 0;
+}

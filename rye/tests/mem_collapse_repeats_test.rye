@@ -1,0 +1,22 @@
+//! Rye test: mem.collapseRepeats — pass 9913.
+//!
+//! Collapse consecutive duplicate elements; pairs with replaceScalar (9914).
+
+const std = @import("std");
+const mem = std.mem;
+
+pub fn main() void {
+    var empty = [_]u8{};
+    std.debug.assert(mem.collapseRepeats(u8, empty[0..], '/').len == 0);
+
+    var slashes = [_]u8{ '/', '/', 'a' };
+    std.debug.assert(mem.eql(u8, mem.collapseRepeats(u8, slashes[0..], '/'), "/a"));
+
+    var pathish = [_]u8{ 'a', '/', '/', 'a' };
+    std.debug.assert(mem.eql(u8, mem.collapseRepeats(u8, pathish[0..], '/'), "a/a"));
+
+    var long = [_]u8{ '/', '/', 'a', '/', '/', '/', 'a', '/', '/', '/', '/' };
+    std.debug.assert(mem.eql(u8, mem.collapseRepeats(u8, long[0..], '/'), "/a/a/"));
+
+    std.debug.print("rye: mem.collapseRepeats assertions confirmed.\n", .{});
+}

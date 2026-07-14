@@ -1,0 +1,226 @@
+//! linengrow/mala_core.rye — shared MALA mint/send fold for M1 and M2.
+//!
+//! Imported by `mala.rye` (one-node selftest) and `mala_delivery.rye` (Comlink carriage).
+
+const std = @import("std");
+const assert = std.debug.assert;
+const kumara = @import("kumara.rye");
+const rc = @import("receipt_core.rye");
+const tally_copy = @import("tally_copy.rye");
+
+/// Pinned witness seeds — distinct from SLC-L1 (0x42) and Open Asks (0x51–0x53).
+pub const issuer_seed = [_]u8{0x61} ** kumara.seed_length;
+pub const holder_seed = [_]u8{0x62} ** kumara.seed_length;
+
+pub const max_log_lines: u32 = 16;
+pub const pubkey_hex_len: u32 = 64;
+
+pub const memo_mint = "mala:mint";
+pub const memo_send = "mala:send";
+pub const memo_receipt = "mala:receipt";
+
+pub const Balances = struct {
+    issuer: i64 = 0,
+    holder: i64 = 0,
+};
+
+fn buf_len_u32(buf: []const u8) u32 {
+    assert(buf.len <= std.math.maxInt(u32));
+    return @intCast(buf.len);
+}
+
+pub fn hex_of_key(pk: kumara.PublicKey, out: *[pubkey_hex_len]u8) void {
+    const bytes = pk.toBytes();
+    var i: u32 = 0;
+    while (i < 32) : (i += 1) {
+        _ = std.fmt.bufPrint(out[i * 2 ..][0..2], "{x:0>2}", .{bytes[i]}) catch unreachable;
+    }
+}
+
+pub fn memo_is_mint(memo: []const u8) bool {
+    return std.mem.eql(u8, memo, memo_mint) or std.mem.startsWith(u8, memo, memo_mint ++ " ");
+}
+
+pub fn memo_is_send(memo: []const u8) bool {
+    return std.mem.eql(u8, memo, memo_send) or std.mem.startsWith(u8, memo, memo_send ++ " ");
+}
+
+pub fn memo_is_receipt(memo: []const u8) bool {
+    return std.mem.eql(u8, memo, memo_receipt) or std.mem.startsWith(u8, memo, memo_receipt ++ " ");
+}
+
+fn append_line(log: []u8, log_len: *u32, line: []const u8) error{Overflow}!void {
+    const need = log_len.* + buf_len_u32(line);
+    if (need > buf_len_u32(log)) return error.Overflow;
+    tally_copy.copy_disjoint(u8, log[log_len.*..][0..line.len], line);
+    log_len.* = need;
+}
+
+pub fn sign_append(
+    log: []u8,
+    log_len: *u32,
+    fields: rc.FactFields,
+    signer: kumara.KeyPair,
+) error{Overflow, InvalidFact}!void {
+    var canonical: [rc.max_fact_len]u8 = undefined;
+    const canonical_len = try rc.write_canonical_fact(fields, &canonical);
+    const sig = kumara.sign(canonical[0..canonical_len], signer, null);
+    var line: [rc.max_line_len]u8 = undefined;
+    const line_len = try rc.format_log_line(sig, canonical[0..canonical_len], &line);
+    try append_line(log, log_len, line[0..line_len]);
+}
+
+pub fn sign_fact(fields: rc.FactFields, signer: kumara.KeyPair) error{Overflow, InvalidFact}!struct {
+    canonical: [rc.max_fact_len]u8,
+    canonical_len: u32,
+    sig: kumara.Signature,
+} {
+    var canonical: [rc.max_fact_len]u8 = undefined;
+    const canonical_len = try rc.write_canonical_fact(fields, &canonical);
+    const sig = kumara.sign(canonical[0..canonical_len], signer, null);
+    return .{ .canonical = canonical, .canonical_len = canonical_len, .sig = sig };
+}
+
+fn signer_for_hex(
+    hex: []const u8,
+    issuer_hex: *const [pubkey_hex_len]u8,
+    holder_hex: *const [pubkey_hex_len]u8,
+    issuer_pk: kumara.PublicKey,
+    holder_pk: kumara.PublicKey,
+) error{UnknownParty}!kumara.PublicKey {
+    if (std.mem.eql(u8, hex, issuer_hex[0..])) return issuer_pk;
+    if (std.mem.eql(u8, hex, holder_hex[0..])) return holder_pk;
+    return error.UnknownParty;
+}
+
+fn credit(balances: *Balances, party_hex: []const u8, issuer_hex: []const u8, amount: i64) error{FoldFailed}!void {
+    if (std.mem.eql(u8, party_hex, issuer_hex)) {
+        balances.issuer +%= amount;
+    } else {
+        balances.holder +%= amount;
+    }
+    if (balances.issuer < 0 or balances.holder < 0) return error.FoldFailed;
+}
+
+fn debit(balances: *Balances, party_hex: []const u8, issuer_hex: []const u8, amount: i64) error{FoldFailed}!void {
+    if (std.mem.eql(u8, party_hex, issuer_hex)) {
+        if (balances.issuer < amount) return error.FoldFailed;
+        balances.issuer -%= amount;
+    } else {
+        if (balances.holder < amount) return error.FoldFailed;
+        balances.holder -%= amount;
+    }
+}
+
+pub fn fold_one_line(
+    fields: rc.FactFields,
+    fact: []const u8,
+    sig_bytes: []const u8,
+    balances: *Balances,
+    issuer_hex: *const [pubkey_hex_len]u8,
+    holder_hex: *const [pubkey_hex_len]u8,
+    issuer_pk: kumara.PublicKey,
+    holder_pk: kumara.PublicKey,
+) error{FoldFailed}!void {
+    const amount = rc.parse_amount_signed(fields.amount) catch return error.FoldFailed;
+    if (amount <= 0) return error.FoldFailed;
+
+    if (memo_is_mint(fields.memo)) {
+        if (!std.mem.eql(u8, fields.from, issuer_hex[0..])) return error.FoldFailed;
+        rc.verify_record(sig_bytes, fact, issuer_pk) catch return error.FoldFailed;
+        try credit(balances, fields.to, issuer_hex[0..], amount);
+        return;
+    }
+    if (memo_is_send(fields.memo)) {
+        const spender_pk = signer_for_hex(fields.from, issuer_hex, holder_hex, issuer_pk, holder_pk) catch return error.FoldFailed;
+        rc.verify_record(sig_bytes, fact, spender_pk) catch return error.FoldFailed;
+        try debit(balances, fields.from, issuer_hex[0..], amount);
+        try credit(balances, fields.to, issuer_hex[0..], amount);
+        return;
+    }
+    return error.FoldFailed;
+}
+
+/// Fold MALA log: verify each line, apply mint/send, refuse negatives and non-issuer mint.
+pub fn fold_mala_log(
+    log: []const u8,
+    issuer_hex: *const [pubkey_hex_len]u8,
+    holder_hex: *const [pubkey_hex_len]u8,
+    issuer_pk: kumara.PublicKey,
+    holder_pk: kumara.PublicKey,
+) error{FoldFailed}!Balances {
+    var balances: Balances = .{};
+    var pos: u32 = 0;
+    var lines: u32 = 0;
+    while (pos < buf_len_u32(log)) {
+        if (lines >= max_log_lines) return error.FoldFailed;
+        const line_end_usz = std.mem.indexOfScalarPos(u8, log, pos, '\n') orelse log.len;
+        assert(line_end_usz <= std.math.maxInt(u32));
+        const line_end: u32 = @intCast(line_end_usz);
+        const line = log[pos..line_end];
+        pos = if (line_end < buf_len_u32(log)) line_end + 1 else line_end;
+        if (std.mem.trim(u8, line, " \t\r\n").len == 0) continue;
+
+        var sig_buf: [kumara.signature_length]u8 = undefined;
+        var fact_out: [rc.max_fact_len]u8 = undefined;
+        const parsed = rc.parse_log_line(line, &sig_buf, &fact_out) catch return error.FoldFailed;
+        const fact = fact_out[0..parsed.fact_len];
+
+        var fields: rc.FactFields = undefined;
+        rc.parse_fact_fields(fact, &fields) catch return error.FoldFailed;
+
+        try fold_one_line(
+            fields,
+            fact,
+            sig_buf[0..parsed.sig_len],
+            &balances,
+            issuer_hex,
+            holder_hex,
+            issuer_pk,
+            holder_pk,
+        );
+        lines += 1;
+    }
+    return balances;
+}
+
+pub fn build_welcome_log(
+    log: []u8,
+    issuer_kp: kumara.KeyPair,
+    holder_kp: kumara.KeyPair,
+    issuer_hex: *const [pubkey_hex_len]u8,
+    holder_hex: *const [pubkey_hex_len]u8,
+) error{Overflow, InvalidFact}!u32 {
+    var log_len: u32 = 0;
+    const mint_fields = rc.FactFields{
+        .from = issuer_hex[0..],
+        .to = holder_hex[0..],
+        .amount = "1000",
+        .memo = memo_mint,
+        .stamp = "20260709.182354",
+    };
+    try sign_append(log, &log_len, mint_fields, issuer_kp);
+
+    const send_fields = rc.FactFields{
+        .from = holder_hex[0..],
+        .to = issuer_hex[0..],
+        .amount = "200",
+        .memo = memo_send,
+        .stamp = "20260709.184051",
+    };
+    try sign_append(log, &log_len, send_fields, holder_kp);
+    return log_len;
+}
+
+pub fn mint_fields_from_fixture(
+    issuer_hex: *const [pubkey_hex_len]u8,
+    holder_hex: *const [pubkey_hex_len]u8,
+) rc.FactFields {
+    return .{
+        .from = issuer_hex[0..],
+        .to = holder_hex[0..],
+        .amount = "1000",
+        .memo = memo_mint,
+        .stamp = "20260709.182354",
+    };
+}

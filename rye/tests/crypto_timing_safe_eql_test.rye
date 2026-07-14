@@ -1,0 +1,22 @@
+//! Rye test: std.crypto.timing_safe.eql — pass 9937.
+//!
+//! Constant-time equality backs AEAD tag verify on Aurora's metal path.
+
+const std = @import("std");
+const timing_safe = std.crypto.timing_safe;
+
+pub fn main() void {
+    const a: [32]u8 = .{0xAA} ** 32;
+    const b: [32]u8 = .{0xAA} ** 32;
+    const c: [32]u8 = .{0xBB} ** 32;
+    std.debug.assert(timing_safe.eql([32]u8, a, b));
+    std.debug.assert(!timing_safe.eql([32]u8, a, c));
+
+    const tag_a: [16]u8 = .{0x01} ** 16;
+    var tag_b: [16]u8 = tag_a;
+    std.debug.assert(timing_safe.eql([16]u8, tag_a, tag_b));
+    tag_b[0] ^= 1;
+    std.debug.assert(!timing_safe.eql([16]u8, tag_a, tag_b));
+
+    std.debug.print("rye: timing_safe.eql assertions confirmed.\n", .{});
+}

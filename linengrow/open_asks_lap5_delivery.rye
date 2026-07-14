@@ -1,0 +1,685 @@
+//! linengrow/open_asks_lap5_delivery.rye — OA-L5: acceptance, completion, consent on Comlink wire.
+//!
+//!   rye build linengrow/open_asks_lap5_delivery.rye -lc -femit-bin=linengrow/bin/open-asks-lap5
+//!   linengrow/bin/open-asks-lap5 selftest
+//!   linengrow/bin/open-asks-lap5 demo
+//!
+//! Finishes the open-asks wire: request and application (OA-L2) already cross localhost;
+//! this lap seals acceptance, completion (SLC-L1 payment fact), and consent the same way.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const kumara = @import("kumara.rye");
+const print = std.debug.print;
+const c = std.c;
+const Dir = std.Io.Dir;
+const oa = @import("open_asks.rye");
+const rc = @import("receipt_core.rye");
+const wf = @import("wire_format.rye");
+const tally_copy = @import("tally_copy.rye");
+
+const oa5_version = "20260709.192631";
+
+const AF_INET: c_uint = 2;
+const SOCK_DGRAM: c_uint = 2;
+const SOL_SOCKET: c_int = 1;
+const SO_REUSEADDR: c_int = 2;
+
+const applicant_port: u16 = 38488;
+const poster_port: u16 = 38489;
+
+const sockaddr_in = extern struct {
+    sin_family: c_ushort = AF_INET,
+    sin_port: c_ushort,
+    sin_addr: [4]u8 = .{ 127, 0, 0, 1 },
+    sin_zero: [8]u8 = .{0} ** 8,
+};
+
+fn localhost_addr(port: u16) sockaddr_in {
+    return .{
+        .sin_port = std.mem.nativeToBig(u16, port),
+    };
+}
+
+fn open_socket() !c.fd_t {
+    const fd = c.socket(AF_INET, SOCK_DGRAM, 0);
+    if (fd < 0) return error.SocketFailed;
+    const yes: c_int = 1;
+    _ = c.setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &yes, @sizeOf(c_int));
+    return fd;
+}
+
+fn send_wire(port: u16, wire: []const u8) !void {
+    const fd = try open_socket();
+    defer _ = c.close(fd);
+    const dest = localhost_addr(port);
+    const sent = c.sendto(fd, wire.ptr, @intCast(wire.len), 0, @ptrCast(&dest), @sizeOf(sockaddr_in));
+    if (sent < 0 or @as(usize, @intCast(sent)) != wire.len) return error.SendFailed;
+}
+
+/// Bind before any peer send — UDP has no listener queue across close/rebind.
+fn bind_socket(port: u16) !c.fd_t {
+    const fd = try open_socket();
+    var bind_addr = localhost_addr(port);
+    if (c.bind(fd, @ptrCast(&bind_addr), @sizeOf(sockaddr_in)) < 0) {
+        _ = c.close(fd);
+        return error.BindFailed;
+    }
+    return fd;
+}
+
+fn recv_on(fd: c.fd_t, wire: []u8) !u64 {
+    var from: sockaddr_in = undefined;
+    var from_len: c.socklen_t = @sizeOf(sockaddr_in);
+    const n = c.recvfrom(fd, wire.ptr, @intCast(wire.len), 0, @ptrCast(&from), &from_len);
+    if (n < 0) return error.RecvFailed;
+    return @intCast(n);
+}
+
+fn recv_wire(port: u16, wire: []u8) !u64 {
+    const fd = try bind_socket(port);
+    defer _ = c.close(fd);
+    return recv_on(fd, wire);
+}
+
+fn seal_payload(payload: []const u8, wire: *[@intCast(wf.wire_capacity)]u8) !u64 {
+    return try wf.seal_message(payload, wire);
+}
+
+fn open_wire(wire: []const u8, opened: *[@intCast(wf.max_message)]u8) !u64 {
+    return try wf.open_datagram(wire, opened);
+}
+
+fn pubkey_hex(kp: kumara.KeyPair, out: *[64]u8) void {
+    const bytes = kp.public_key.toBytes();
+    var i: u32 = 0;
+    while (i < 32) : (i += 1) {
+        _ = std.fmt.bufPrint(out[i * 2 ..][0..2], "{x:0>2}", .{bytes[i]}) catch unreachable;
+    }
+}
+
+fn append_signed(sig: kumara.Signature, fact: []const u8, log: []u8, log_len: *u32) error{Overflow}!void {
+    var line: [oa.max_line_len]u8 = undefined;
+    const line_len = try rc.format_log_line(sig, fact, &line);
+    if (log_len.* + line_len > log.len) return error.Overflow;
+    tally_copy.copy_disjoint(u8, log[log_len.*..][0..line_len], line[0..line_len]);
+    log_len.* += line_len;
+}
+
+fn load_signed_request(io: std.Io, poster_kp: kumara.KeyPair) !struct {
+    canonical: [oa.max_oa_fact]u8,
+    canonical_len: u32,
+    sig: kumara.Signature,
+    ref_hex: [oa.ref_hex_len]u8,
+    stipend_buf: [16]u8,
+    stipend_len: u32,
+} {
+    const fixture_path = "tools/fixtures/open_asks_request.bron";
+    const cwd = Dir.cwd();
+    var fixture_buf: [oa.max_oa_fact]u8 = undefined;
+    const fixture_read = try cwd.readFile(io, fixture_path, &fixture_buf);
+    assert(fixture_read.len <= oa.max_oa_fact);
+
+    var req_fields: oa.RequestFields = undefined;
+    try oa.parse_request_fields(fixture_read, &req_fields);
+
+    var canonical: [oa.max_oa_fact]u8 = undefined;
+    const canonical_len = try oa.write_canonical_request(req_fields, &canonical);
+    const sig = poster_kp.sign(canonical[0..canonical_len], null) catch unreachable;
+
+    var ref_hex: [oa.ref_hex_len]u8 = undefined;
+    oa.request_ref_hex(canonical[0..canonical_len], &ref_hex);
+
+    var stipend_buf: [16]u8 = undefined;
+    if (req_fields.stipend.len > stipend_buf.len) return error.Overflow;
+    tally_copy.copy_disjoint(u8, stipend_buf[0..req_fields.stipend.len], req_fields.stipend);
+
+    return .{
+        .canonical = canonical,
+        .canonical_len = canonical_len,
+        .sig = sig,
+        .ref_hex = ref_hex,
+        .stipend_buf = stipend_buf,
+        .stipend_len = @intCast(req_fields.stipend.len),
+    };
+}
+
+fn verify_request_payload(payload: []const u8, poster_pk: kumara.PublicKey, fact_out: []u8) !struct { fact_len: u32, ref_hex: [oa.ref_hex_len]u8 } {
+    var sig_buf: [kumara.signature_length]u8 = undefined;
+    const decoded = try oa.decode_compact_payload(payload, &sig_buf, fact_out);
+    const fact = fact_out[0..decoded.fact_len];
+    try rc.verify_record(sig_buf[0..kumara.signature_length], fact, poster_pk);
+    const kind = try oa.classify_fact(fact);
+    if (kind != .request) return error.InvalidFact;
+    var ref_hex: [oa.ref_hex_len]u8 = undefined;
+    oa.request_ref_hex(fact, &ref_hex);
+    return .{ .fact_len = decoded.fact_len, .ref_hex = ref_hex };
+}
+
+fn verify_application_payload(payload: []const u8, applicant_pk: kumara.PublicKey, expected_ref: []const u8, sig_out: []u8, fact_out: []u8) !u32 {
+    const decoded = try oa.decode_compact_payload(payload, sig_out, fact_out);
+    const fact = fact_out[0..decoded.fact_len];
+    try rc.verify_record(sig_out[0..kumara.signature_length], fact, applicant_pk);
+    const kind = try oa.classify_fact(fact);
+    if (kind != .application) return error.InvalidFact;
+    var fields: oa.ApplicationFields = undefined;
+    try oa.parse_application_fields(fact, &fields);
+    if (!std.mem.eql(u8, fields.request_ref, expected_ref)) return error.FoldFailed;
+    return decoded.fact_len;
+}
+
+fn verify_acceptance_payload(payload: []const u8, poster_pk: kumara.PublicKey, expected_ref: []const u8, expected_applicant: []const u8, sig_out: []u8, fact_out: []u8) !u32 {
+    const decoded = try oa.decode_compact_payload(payload, sig_out, fact_out);
+    const fact = fact_out[0..decoded.fact_len];
+    try rc.verify_record(sig_out[0..kumara.signature_length], fact, poster_pk);
+    const kind = try oa.classify_fact(fact);
+    if (kind != .acceptance) return error.InvalidFact;
+    var fields: oa.AcceptanceFields = undefined;
+    try oa.parse_acceptance_fields(fact, &fields);
+    if (!std.mem.eql(u8, fields.request_ref, expected_ref)) return error.FoldFailed;
+    if (!std.mem.eql(u8, fields.applicant, expected_applicant)) return error.FoldFailed;
+    return decoded.fact_len;
+}
+
+fn verify_completion_payload(payload: []const u8, poster_pk: kumara.PublicKey, expected_ref: []const u8, expected_applicant: []const u8, expected_stipend: i64, sig_out: []u8, fact_out: []u8) !u32 {
+    const decoded = try oa.decode_compact_payload(payload, sig_out, fact_out);
+    const fact = fact_out[0..decoded.fact_len];
+    try rc.verify_record(sig_out[0..kumara.signature_length], fact, poster_pk);
+    const kind = try oa.classify_fact(fact);
+    if (kind != .completion) return error.InvalidFact;
+    var fields: rc.FactFields = undefined;
+    try rc.parse_fact_fields(fact, &fields);
+    if (!std.mem.eql(u8, fields.to, expected_applicant)) return error.FoldFailed;
+    const amount = try rc.parse_amount_signed(fields.amount);
+    if (amount != expected_stipend) return error.FoldFailed;
+    var memo_buf: [128]u8 = undefined;
+    const memo_written = try std.fmt.bufPrint(&memo_buf, "{s}{s}", .{ oa.completion_memo_prefix, expected_ref });
+    if (!std.mem.eql(u8, fields.memo, memo_written)) return error.FoldFailed;
+    return decoded.fact_len;
+}
+
+fn verify_consent_payload(payload: []const u8, applicant_pk: kumara.PublicKey, expected_ref: []const u8, expected_consent: []const u8, sig_out: []u8, fact_out: []u8) !u32 {
+    const decoded = try oa.decode_compact_payload(payload, sig_out, fact_out);
+    const fact = fact_out[0..decoded.fact_len];
+    try rc.verify_record(sig_out[0..kumara.signature_length], fact, applicant_pk);
+    const kind = try oa.classify_fact(fact);
+    if (kind != .consent) return error.InvalidFact;
+    var fields: oa.ConsentFields = undefined;
+    try oa.parse_consent_fields(fact, &fields);
+    if (!std.mem.eql(u8, fields.request_ref, expected_ref)) return error.FoldFailed;
+    if (!std.mem.eql(u8, fields.consent, expected_consent)) return error.FoldFailed;
+    return decoded.fact_len;
+}
+
+fn seal_and_open(payload: []const u8, opened: *[@intCast(wf.max_message)]u8) !u64 {
+    var wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const wire_len = try seal_payload(payload, &wire);
+    return try open_wire(wire[0..@intCast(wire_len)], opened);
+}
+
+fn build_signed_acceptance(
+    poster_kp: kumara.KeyPair,
+    poster_hex: []const u8,
+    applicant_hex: []const u8,
+    ref_hex: []const u8,
+) !struct { sig: kumara.Signature, canonical: [oa.max_oa_fact]u8, canonical_len: u32 } {
+    const acc_fields = oa.AcceptanceFields{
+        .poster = poster_hex,
+        .request_ref = ref_hex,
+        .applicant = applicant_hex,
+        .stamp = "20260706.003100",
+    };
+    var canonical: [oa.max_oa_fact]u8 = undefined;
+    const len = try oa.write_canonical_acceptance(acc_fields, &canonical);
+    const sig = poster_kp.sign(canonical[0..len], null) catch unreachable;
+    return .{ .sig = sig, .canonical = canonical, .canonical_len = len };
+}
+
+fn build_signed_completion(
+    poster_kp: kumara.KeyPair,
+    poster_hex: []const u8,
+    applicant_hex: []const u8,
+    ref_hex: []const u8,
+    stipend_text: []const u8,
+) !struct { sig: kumara.Signature, canonical: [oa.max_oa_fact]u8, canonical_len: u32 } {
+    var memo_buf: [128]u8 = undefined;
+    const memo_written = try std.fmt.bufPrint(&memo_buf, "{s}{s}", .{ oa.completion_memo_prefix, ref_hex });
+    const completion_fields = rc.FactFields{
+        .from = poster_hex,
+        .to = applicant_hex,
+        .amount = stipend_text,
+        .memo = memo_written,
+        .stamp = "20260706.003200",
+    };
+    var canonical: [oa.max_oa_fact]u8 = undefined;
+    const len = try rc.write_canonical_fact(completion_fields, &canonical);
+    const sig = poster_kp.sign(canonical[0..len], null) catch unreachable;
+    return .{ .sig = sig, .canonical = canonical, .canonical_len = len };
+}
+
+fn build_signed_consent(
+    applicant_kp: kumara.KeyPair,
+    applicant_hex: []const u8,
+    ref_hex: []const u8,
+) !struct { sig: kumara.Signature, canonical: [oa.max_oa_fact]u8, canonical_len: u32 } {
+    const consent_fields = oa.ConsentFields{
+        .applicant = applicant_hex,
+        .request_ref = ref_hex,
+        .consent = oa.consent_grant,
+        .stamp = "20260706.003300",
+    };
+    var canonical: [oa.max_oa_fact]u8 = undefined;
+    const len = try oa.write_canonical_consent(consent_fields, &canonical);
+    const sig = applicant_kp.sign(canonical[0..len], null) catch unreachable;
+    return .{ .sig = sig, .canonical = canonical, .canonical_len = len };
+}
+
+const Oa5SelftestWire = struct {
+    signed_req_sig: kumara.Signature,
+    signed_req_canonical: [oa.max_oa_fact]u8,
+    signed_req_len: u32,
+    applicant_hex: [64]u8,
+    wire_app_sig: kumara.Signature,
+    app_fact: [oa.max_oa_fact]u8,
+    app_fact_len: u32,
+    wire_acc_sig: kumara.Signature,
+    acc_fact: [oa.max_oa_fact]u8,
+    acc_fact_len: u32,
+    wire_pay_sig: kumara.Signature,
+    pay_fact: [oa.max_oa_fact]u8,
+    pay_fact_len: u32,
+    wire_consent_sig: kumara.Signature,
+    consent_fact: [oa.max_oa_fact]u8,
+    consent_fact_len: u32,
+};
+
+const Oa5RequestWire = struct {
+    signed_req_sig: kumara.Signature,
+    signed_req_canonical: [oa.max_oa_fact]u8,
+    signed_req_len: u32,
+    ref_hex: [oa.ref_hex_len]u8,
+    stipend_buf: [16]u8,
+    stipend_len: u32,
+    poster_hex: [64]u8,
+    applicant_hex: [64]u8,
+};
+
+fn selftest_oa5_verify_request_wire(
+    io: std.Io,
+    poster_kp: kumara.KeyPair,
+    applicant_kp: kumara.KeyPair,
+    poster_pk: kumara.PublicKey,
+    opened: *[@intCast(wf.max_message)]u8,
+) !Oa5RequestWire {
+    const signed_req = try load_signed_request(io, poster_kp);
+
+    var req_payload: [oa.oa2_payload_header + oa.max_oa_fact]u8 = undefined;
+    const req_payload_len = try oa.encode_compact_payload(signed_req.sig, signed_req.canonical[0..signed_req.canonical_len], &req_payload);
+    const req_opened_len = try seal_and_open(req_payload[0..req_payload_len], opened);
+    var req_fact_buf: [oa.max_oa_fact]u8 = undefined;
+    const verified_req = try verify_request_payload(opened[0..@intCast(req_opened_len)], poster_pk, &req_fact_buf);
+
+    var applicant_hex: [64]u8 = undefined;
+    var poster_hex: [64]u8 = undefined;
+    pubkey_hex(applicant_kp, &applicant_hex);
+    pubkey_hex(poster_kp, &poster_hex);
+
+    return .{
+        .signed_req_sig = signed_req.sig,
+        .signed_req_canonical = signed_req.canonical,
+        .signed_req_len = signed_req.canonical_len,
+        .ref_hex = verified_req.ref_hex,
+        .stipend_buf = signed_req.stipend_buf,
+        .stipend_len = signed_req.stipend_len,
+        .poster_hex = poster_hex,
+        .applicant_hex = applicant_hex,
+    };
+}
+
+fn selftest_oa5_verify_application_wire(
+    req: Oa5RequestWire,
+    applicant_kp: kumara.KeyPair,
+    applicant_pk: kumara.PublicKey,
+    opened: *[@intCast(wf.max_message)]u8,
+) !struct {
+    wire_app_sig: kumara.Signature,
+    app_fact: [oa.max_oa_fact]u8,
+    app_fact_len: u32,
+} {
+    const app_fields = oa.ApplicationFields{
+        .applicant = req.applicant_hex[0..64],
+        .request_ref = req.ref_hex[0..oa.ref_hex_len],
+        .message = "I animate science explainers and would love this gig.",
+        .stamp = "20260706.003000",
+    };
+    var canonical_app: [oa.max_oa_fact]u8 = undefined;
+    const app_len = try oa.write_canonical_application(app_fields, &canonical_app);
+    const app_sig = applicant_kp.sign(canonical_app[0..app_len], null) catch unreachable;
+    var app_payload: [oa.oa2_payload_header + oa.max_oa_fact]u8 = undefined;
+    const app_payload_len = try oa.encode_compact_payload(app_sig, canonical_app[0..app_len], &app_payload);
+    const app_opened_len = try seal_and_open(app_payload[0..app_payload_len], opened);
+    var app_fact_buf: [oa.max_oa_fact]u8 = undefined;
+    var sig_buf: [kumara.signature_length]u8 = undefined;
+    const app_fact_len = try verify_application_payload(opened[0..@intCast(app_opened_len)], applicant_pk, req.ref_hex[0..oa.ref_hex_len], &sig_buf, &app_fact_buf);
+    return .{
+        .wire_app_sig = kumara.Signature.fromBytes(sig_buf[0..kumara.signature_length].*),
+        .app_fact = app_fact_buf,
+        .app_fact_len = app_fact_len,
+    };
+}
+
+fn selftest_oa5_verify_acc_pay_consent_wire(
+    req: Oa5RequestWire,
+    poster_kp: kumara.KeyPair,
+    applicant_kp: kumara.KeyPair,
+    poster_pk: kumara.PublicKey,
+    applicant_pk: kumara.PublicKey,
+    opened: *[@intCast(wf.max_message)]u8,
+) !struct {
+    wire_acc_sig: kumara.Signature,
+    acc_fact: [oa.max_oa_fact]u8,
+    acc_fact_len: u32,
+    wire_pay_sig: kumara.Signature,
+    pay_fact: [oa.max_oa_fact]u8,
+    pay_fact_len: u32,
+    wire_consent_sig: kumara.Signature,
+    consent_fact: [oa.max_oa_fact]u8,
+    consent_fact_len: u32,
+} {
+    var sig_buf: [kumara.signature_length]u8 = undefined;
+
+    const signed_acc = try build_signed_acceptance(poster_kp, req.poster_hex[0..64], req.applicant_hex[0..64], req.ref_hex[0..oa.ref_hex_len]);
+    var acc_payload: [oa.oa2_payload_header + oa.max_oa_fact]u8 = undefined;
+    const acc_payload_len = try oa.encode_compact_payload(signed_acc.sig, signed_acc.canonical[0..signed_acc.canonical_len], &acc_payload);
+    const acc_opened_len = try seal_and_open(acc_payload[0..acc_payload_len], opened);
+    var acc_fact_buf: [oa.max_oa_fact]u8 = undefined;
+    const acc_fact_len = try verify_acceptance_payload(opened[0..@intCast(acc_opened_len)], poster_pk, req.ref_hex[0..oa.ref_hex_len], req.applicant_hex[0..64], &sig_buf, &acc_fact_buf);
+    const wire_acc_sig = kumara.Signature.fromBytes(sig_buf[0..kumara.signature_length].*);
+
+    const signed_pay = try build_signed_completion(poster_kp, req.poster_hex[0..64], req.applicant_hex[0..64], req.ref_hex[0..oa.ref_hex_len], req.stipend_buf[0..req.stipend_len]);
+    var pay_payload: [oa.oa2_payload_header + oa.max_oa_fact]u8 = undefined;
+    const pay_payload_len = try oa.encode_compact_payload(signed_pay.sig, signed_pay.canonical[0..signed_pay.canonical_len], &pay_payload);
+    const pay_opened_len = try seal_and_open(pay_payload[0..pay_payload_len], opened);
+    var pay_fact_buf: [oa.max_oa_fact]u8 = undefined;
+    const pay_fact_len = try verify_completion_payload(opened[0..@intCast(pay_opened_len)], poster_pk, req.ref_hex[0..oa.ref_hex_len], req.applicant_hex[0..64], 100, &sig_buf, &pay_fact_buf);
+    const wire_pay_sig = kumara.Signature.fromBytes(sig_buf[0..kumara.signature_length].*);
+
+    const signed_consent = try build_signed_consent(applicant_kp, req.applicant_hex[0..64], req.ref_hex[0..oa.ref_hex_len]);
+    var consent_payload: [oa.oa2_payload_header + oa.max_oa_fact]u8 = undefined;
+    const consent_payload_len = try oa.encode_compact_payload(signed_consent.sig, signed_consent.canonical[0..signed_consent.canonical_len], &consent_payload);
+    const consent_opened_len = try seal_and_open(consent_payload[0..consent_payload_len], opened);
+    var consent_fact_buf: [oa.max_oa_fact]u8 = undefined;
+    const consent_fact_len = try verify_consent_payload(opened[0..@intCast(consent_opened_len)], applicant_pk, req.ref_hex[0..oa.ref_hex_len], oa.consent_grant, &sig_buf, &consent_fact_buf);
+    const wire_consent_sig = kumara.Signature.fromBytes(sig_buf[0..kumara.signature_length].*);
+
+    return .{
+        .wire_acc_sig = wire_acc_sig,
+        .acc_fact = acc_fact_buf,
+        .acc_fact_len = acc_fact_len,
+        .wire_pay_sig = wire_pay_sig,
+        .pay_fact = pay_fact_buf,
+        .pay_fact_len = pay_fact_len,
+        .wire_consent_sig = wire_consent_sig,
+        .consent_fact = consent_fact_buf,
+        .consent_fact_len = consent_fact_len,
+    };
+}
+
+fn selftest_oa5_verify_wire_legs(
+    io: std.Io,
+    poster_kp: kumara.KeyPair,
+    applicant_kp: kumara.KeyPair,
+    poster_pk: kumara.PublicKey,
+    applicant_pk: kumara.PublicKey,
+) !Oa5SelftestWire {
+    var opened: [@intCast(wf.max_message)]u8 = undefined;
+    const req = try selftest_oa5_verify_request_wire(io, poster_kp, applicant_kp, poster_pk, &opened);
+    const app = try selftest_oa5_verify_application_wire(req, applicant_kp, applicant_pk, &opened);
+    const close = try selftest_oa5_verify_acc_pay_consent_wire(req, poster_kp, applicant_kp, poster_pk, applicant_pk, &opened);
+
+    return .{
+        .signed_req_sig = req.signed_req_sig,
+        .signed_req_canonical = req.signed_req_canonical,
+        .signed_req_len = req.signed_req_len,
+        .applicant_hex = req.applicant_hex,
+        .wire_app_sig = app.wire_app_sig,
+        .app_fact = app.app_fact,
+        .app_fact_len = app.app_fact_len,
+        .wire_acc_sig = close.wire_acc_sig,
+        .acc_fact = close.acc_fact,
+        .acc_fact_len = close.acc_fact_len,
+        .wire_pay_sig = close.wire_pay_sig,
+        .pay_fact = close.pay_fact,
+        .pay_fact_len = close.pay_fact_len,
+        .wire_consent_sig = close.wire_consent_sig,
+        .consent_fact = close.consent_fact,
+        .consent_fact_len = close.consent_fact_len,
+    };
+}
+
+fn selftest_oa5_fold_and_reputation(
+    wire: Oa5SelftestWire,
+    poster_pk: kumara.PublicKey,
+    applicant_pk: kumara.PublicKey,
+) !void {
+    var log: [oa.max_log_len]u8 = undefined;
+    var log_len: u32 = 0;
+    try append_signed(wire.signed_req_sig, wire.signed_req_canonical[0..wire.signed_req_len], &log, &log_len);
+    try append_signed(wire.wire_app_sig, wire.app_fact[0..wire.app_fact_len], &log, &log_len);
+    try append_signed(wire.wire_acc_sig, wire.acc_fact[0..wire.acc_fact_len], &log, &log_len);
+    try append_signed(wire.wire_pay_sig, wire.pay_fact[0..wire.pay_fact_len], &log, &log_len);
+
+    const cycle_len = log_len;
+    const state = try oa.fold_log(log[0..cycle_len], poster_pk, applicant_pk);
+    if (!state.completed or state.stipend != 100) return error.FoldFailed;
+
+    try append_signed(wire.wire_consent_sig, wire.consent_fact[0..wire.consent_fact_len], &log, &log_len);
+
+    const rep = try oa.fold_reputation_log(log[0..log_len], poster_pk, applicant_pk, wire.applicant_hex[0..64]);
+    if (rep.consented_completions != 1 or rep.consented_stipend != 100) return error.FoldFailed;
+}
+
+fn run_selftest(io: std.Io) !u8 {
+    const poster_kp = kumara.keypair_from_seed(&oa.poster_seed);
+    const applicant_kp = kumara.keypair_from_seed(&oa.applicant_seed);
+    const poster_pk = poster_kp.public_key;
+    const applicant_pk = applicant_kp.public_key;
+
+    const wire = try selftest_oa5_verify_wire_legs(io, poster_kp, applicant_kp, poster_pk, applicant_pk);
+    try selftest_oa5_fold_and_reputation(wire, poster_pk, applicant_pk);
+
+    print("oal5: version {s} wire_format {s}\n", .{ oa5_version, wf.wire_format_version });
+    print("GREEN: OA-L5 — accept, complete, consent crossed Comlink wire; fold and reputation GREEN.\n", .{});
+    return 0;
+}
+
+fn run_applicant(_: std.Io) !u8 {
+    const poster_kp = kumara.keypair_from_seed(&oa.poster_seed);
+    const applicant_kp = kumara.keypair_from_seed(&oa.applicant_seed);
+    const poster_pk = poster_kp.public_key;
+
+    // One bind for request + acceptance + payment — poster sends acceptance
+    // and payment back-to-back; rebinding between them drops the second.
+    const listen_fd = try bind_socket(applicant_port);
+    defer _ = c.close(listen_fd);
+
+    var wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const wire_len = try recv_on(listen_fd, &wire);
+    if (wire_len < wf.off_cipher or wire_len > wf.wire_capacity) return error.RecvFailed;
+
+    var opened: [@intCast(wf.max_message)]u8 = undefined;
+    const opened_len = try open_wire(wire[0..@intCast(wire_len)], &opened);
+    var req_fact_buf: [oa.max_oa_fact]u8 = undefined;
+    const verified = try verify_request_payload(opened[0..@intCast(opened_len)], poster_pk, &req_fact_buf);
+    const stipend = blk: {
+        var fields: oa.RequestFields = undefined;
+        try oa.parse_request_fields(req_fact_buf[0..verified.fact_len], &fields);
+        break :blk try rc.parse_amount_signed(fields.stipend);
+    };
+
+    var applicant_hex: [64]u8 = undefined;
+    pubkey_hex(applicant_kp, &applicant_hex);
+
+    const app_fields = oa.ApplicationFields{
+        .applicant = applicant_hex[0..64],
+        .request_ref = verified.ref_hex[0..oa.ref_hex_len],
+        .message = "I animate science explainers and would love this gig.",
+        .stamp = "20260706.003000",
+    };
+    var canonical_app: [oa.max_oa_fact]u8 = undefined;
+    const app_len = try oa.write_canonical_application(app_fields, &canonical_app);
+    const app_sig = applicant_kp.sign(canonical_app[0..app_len], null) catch unreachable;
+    var app_payload: [oa.oa2_payload_header + oa.max_oa_fact]u8 = undefined;
+    const app_payload_len = try oa.encode_compact_payload(app_sig, canonical_app[0..app_len], &app_payload);
+    var out_wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const app_wire_len = try seal_payload(app_payload[0..app_payload_len], &out_wire);
+    try send_wire(poster_port, out_wire[0..@intCast(app_wire_len)]);
+
+    const acc_wire_len = try recv_on(listen_fd, &wire);
+    const acc_opened_len = try open_wire(wire[0..@intCast(acc_wire_len)], &opened);
+    var sig_buf: [kumara.signature_length]u8 = undefined;
+    var acc_fact_buf: [oa.max_oa_fact]u8 = undefined;
+    _ = try verify_acceptance_payload(opened[0..@intCast(acc_opened_len)], poster_pk, verified.ref_hex[0..oa.ref_hex_len], applicant_hex[0..64], &sig_buf, &acc_fact_buf);
+
+    const pay_wire_len = try recv_on(listen_fd, &wire);
+    const pay_opened_len = try open_wire(wire[0..@intCast(pay_wire_len)], &opened);
+    var pay_fact_buf: [oa.max_oa_fact]u8 = undefined;
+    _ = try verify_completion_payload(opened[0..@intCast(pay_opened_len)], poster_pk, verified.ref_hex[0..oa.ref_hex_len], applicant_hex[0..64], stipend, &sig_buf, &pay_fact_buf);
+
+    const signed_consent = try build_signed_consent(applicant_kp, applicant_hex[0..64], verified.ref_hex[0..oa.ref_hex_len]);
+    var consent_payload: [oa.oa2_payload_header + oa.max_oa_fact]u8 = undefined;
+    const consent_payload_len = try oa.encode_compact_payload(signed_consent.sig, signed_consent.canonical[0..signed_consent.canonical_len], &consent_payload);
+    const consent_wire_len = try seal_payload(consent_payload[0..consent_payload_len], &out_wire);
+    try send_wire(poster_port, out_wire[0..@intCast(consent_wire_len)]);
+
+    print("oal5: applicant returned application and consent — wire hops GREEN\n", .{});
+    return 0;
+}
+
+fn run_poster(io: std.Io) !u8 {
+    const poster_kp = kumara.keypair_from_seed(&oa.poster_seed);
+    const applicant_kp = kumara.keypair_from_seed(&oa.applicant_seed);
+    const poster_pk = poster_kp.public_key;
+    const applicant_pk = applicant_kp.public_key;
+
+    var poster_hex: [64]u8 = undefined;
+    var applicant_hex: [64]u8 = undefined;
+    pubkey_hex(poster_kp, &poster_hex);
+    pubkey_hex(applicant_kp, &applicant_hex);
+
+    // Bind reply port before first send so application and consent land here.
+    const listen_fd = try bind_socket(poster_port);
+    defer _ = c.close(listen_fd);
+
+    const signed_req = try load_signed_request(io, poster_kp);
+    var payload: [oa.oa2_payload_header + oa.max_oa_fact]u8 = undefined;
+    const req_payload_len = try oa.encode_compact_payload(signed_req.sig, signed_req.canonical[0..signed_req.canonical_len], &payload);
+    var wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const req_wire_len = try seal_payload(payload[0..req_payload_len], &wire);
+    try send_wire(applicant_port, wire[0..@intCast(req_wire_len)]);
+
+    const app_recv_len = try recv_on(listen_fd, &wire);
+    var opened: [@intCast(wf.max_message)]u8 = undefined;
+    const app_opened_len = try open_wire(wire[0..@intCast(app_recv_len)], &opened);
+    var app_fact_buf: [oa.max_oa_fact]u8 = undefined;
+    var sig_buf: [kumara.signature_length]u8 = undefined;
+    const app_fact_len = try verify_application_payload(opened[0..@intCast(app_opened_len)], applicant_pk, signed_req.ref_hex[0..oa.ref_hex_len], &sig_buf, &app_fact_buf);
+    const app_sig = kumara.Signature.fromBytes(sig_buf[0..kumara.signature_length].*);
+
+    const signed_acc = try build_signed_acceptance(poster_kp, poster_hex[0..64], applicant_hex[0..64], signed_req.ref_hex[0..oa.ref_hex_len]);
+    const acc_payload_len = try oa.encode_compact_payload(signed_acc.sig, signed_acc.canonical[0..signed_acc.canonical_len], &payload);
+    const acc_wire_len = try seal_payload(payload[0..acc_payload_len], &wire);
+    try send_wire(applicant_port, wire[0..@intCast(acc_wire_len)]);
+
+    const signed_pay = try build_signed_completion(poster_kp, poster_hex[0..64], applicant_hex[0..64], signed_req.ref_hex[0..oa.ref_hex_len], signed_req.stipend_buf[0..signed_req.stipend_len]);
+    const pay_payload_len = try oa.encode_compact_payload(signed_pay.sig, signed_pay.canonical[0..signed_pay.canonical_len], &payload);
+    const pay_wire_len = try seal_payload(payload[0..pay_payload_len], &wire);
+    try send_wire(applicant_port, wire[0..@intCast(pay_wire_len)]);
+
+    const consent_recv_len = try recv_on(listen_fd, &wire);
+    const consent_opened_len = try open_wire(wire[0..@intCast(consent_recv_len)], &opened);
+    var consent_fact_buf: [oa.max_oa_fact]u8 = undefined;
+    const consent_fact_len = try verify_consent_payload(opened[0..@intCast(consent_opened_len)], applicant_pk, signed_req.ref_hex[0..oa.ref_hex_len], oa.consent_grant, &sig_buf, &consent_fact_buf);
+    const consent_sig = kumara.Signature.fromBytes(sig_buf[0..kumara.signature_length].*);
+
+    var acc_fact_buf: [oa.max_oa_fact]u8 = undefined;
+    const acc_fact_len = signed_acc.canonical_len;
+    tally_copy.copy_disjoint(u8, acc_fact_buf[0..acc_fact_len], signed_acc.canonical[0..acc_fact_len]);
+
+    var pay_fact_buf: [oa.max_oa_fact]u8 = undefined;
+    const pay_fact_len = signed_pay.canonical_len;
+    tally_copy.copy_disjoint(u8, pay_fact_buf[0..pay_fact_len], signed_pay.canonical[0..pay_fact_len]);
+
+    var log: [oa.max_log_len]u8 = undefined;
+    var log_len: u32 = 0;
+    try append_signed(signed_req.sig, signed_req.canonical[0..signed_req.canonical_len], &log, &log_len);
+    try append_signed(app_sig, app_fact_buf[0..app_fact_len], &log, &log_len);
+    try append_signed(signed_acc.sig, acc_fact_buf[0..acc_fact_len], &log, &log_len);
+    try append_signed(signed_pay.sig, pay_fact_buf[0..pay_fact_len], &log, &log_len);
+
+    const cycle_len = log_len;
+    const state = try oa.fold_log(log[0..cycle_len], poster_pk, applicant_pk);
+    if (!state.completed or state.stipend != 100) return error.FoldFailed;
+
+    try append_signed(consent_sig, consent_fact_buf[0..consent_fact_len], &log, &log_len);
+
+    const rep = try oa.fold_reputation_log(log[0..log_len], poster_pk, applicant_pk, applicant_hex[0..64]);
+    if (rep.consented_completions != 1 or rep.consented_stipend != 100) return error.FoldFailed;
+
+    print("oal5: poster folded full cycle with consent — GREEN\n", .{});
+    return 0;
+}
+
+fn run_demo(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) !u8 {
+    const applicant_argv = try allocator.alloc([]const u8, 2);
+    applicant_argv[0] = self_path;
+    applicant_argv[1] = "applicant";
+
+    var applicant_child = try std.process.spawn(io, .{ .argv = applicant_argv });
+    var pause = c.timespec{ .sec = 0, .nsec = 50_000_000 };
+    _ = c.nanosleep(&pause, null);
+
+    const poster_argv = try allocator.alloc([]const u8, 2);
+    poster_argv[0] = self_path;
+    poster_argv[1] = "poster";
+
+    var poster_child = try std.process.spawn(io, .{ .argv = poster_argv });
+
+    const applicant_term = try applicant_child.wait(io);
+    const poster_term = try poster_child.wait(io);
+
+    const applicant_code: u8 = switch (applicant_term) {
+        .exited => |code| code,
+        else => 255,
+    };
+    const poster_code: u8 = switch (poster_term) {
+        .exited => |code| code,
+        else => 255,
+    };
+
+    assert(applicant_code == 0);
+    assert(poster_code == 0);
+
+    print("oal5: demo GREEN — full ask cycle crossed localhost under Comlink seal\n", .{});
+    print("oal5: version {s} wire_format {s}\n", .{ oa5_version, wf.wire_format_version });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(garden);
+
+    if (args.len >= 2) {
+        if (std.mem.eql(u8, args[1], "applicant")) return run_applicant(io);
+        if (std.mem.eql(u8, args[1], "poster")) return run_poster(io);
+        if (std.mem.eql(u8, args[1], "selftest")) return run_selftest(io);
+        if (std.mem.eql(u8, args[1], "demo")) {
+            assert(args.len >= 1);
+            return run_demo(garden, io, args[0]);
+        }
+    }
+
+    if (args.len >= 1) return run_selftest(io);
+    return 1;
+}

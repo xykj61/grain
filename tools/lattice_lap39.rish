@@ -1,0 +1,11 @@
+# lattice_lap39.rish — Lattice lap 38 hardtanh witness.
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lattice/bin/lattice"
+let build = run ["sh" "-c" "mkdir -p lattice/bin && env RYE_ZIG=${zig} rye/bin/rye build lattice/lattice.rye -femit-bin=${bin}"]
+assert build.ok else "Lattice lap 38 build failed"
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "Lattice selftest exited non-zero"
+assert selftest.out contains "GREEN" else "Lattice selftest not GREEN"
+assert selftest.out contains "hardtanh 2x2" else "Lattice missing hardtanh welcome"
+assert selftest.out contains "hardtanh shape mismatch" else "Lattice missing hardtanh unwelcome"
+say "GREEN: Lattice lap 38 — elementwise hardtanh with shape assert."

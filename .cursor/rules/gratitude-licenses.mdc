@@ -1,0 +1,57 @@
+---
+description: Gratitude project licenses and clean-room discipline — never copy GPL/copyleft code into our modules
+alwaysApply: true
+---
+
+# Gratitude Licenses — Clean-Room Discipline
+
+**Canonical reference:** `external-research/20260620-014412_system.md` → **Gratitude Licenses and the Clean Room** (full Radiant notes per project).
+
+`gratitude/` is a reading library, not a dependency. We study concepts; we never copy code, documentation, or text into our own modules.
+
+## GPL-3.0 — gitlinks or not cloned
+
+| Project | How we hold it | Study boundary |
+|---------|----------------|----------------|
+| **sixos**, **ai-jail**, **damus** | Gitlinks only | Design concepts; clean-room briefs in `active-designing/` |
+| **River** (Isaac Freund) | **Not cloned** | Public Wayland specs + public docs only |
+
+Per-project notes: **997_SYSTEM.md**.
+
+## LGPL-2.1 — never link into Rye binaries we ship
+
+| Project | How we hold it | Study boundary |
+|---------|----------------|----------------|
+| **Nix** | Local clone; not in git | Brix, Tablecloth — do not link libnix |
+| **libqrencode** | Gitlink | `tools/.build/qrencode` only |
+
+LGPL limits embedding, not ideas or separate host tools. Full notes: **997_SYSTEM.md**.
+
+## skarnet (s6, skalibs) — ISC, not GPL
+
+**s6** and **skalibs** (Laurent Bercot) are **ISC** — permissive, not GPL. **SixOS** (Adam Joseph) is the GPL-3.0 project that composes s6 with Nix.
+
+- Local clones may exist on disk; they are **not tracked by git**
+- Prefer **public API reference** at skarnet.org as the study surface
+- **Caravan** inherits s6 supervision discipline; **Tally** inherits skalibs bounded-allocation discipline (`external-research/974`)
+
+## LGPL-2.1 — local clone or gitlink, not linked into Rye
+
+**Nix** may be cloned locally for reading; excluded from git tracking.
+
+| Project | Hold | Rule |
+|---------|------|------|
+| **Nix** | Local clone | Brix/Tablecloth ideas only — no libnix link |
+| **libqrencode** | Gitlink | `tools/.build/qrencode` only |
+
+## Permissive — study freely, still write our own code
+
+MIT, ISC, Apache 2.0, public domain — Zig, DVUI, Ghostty, Manyana, infuse.nix, Urbit, TigerBeetle, Sui, Primal, Monocypher (CC0/BSD dual · `vendor/monocypher`). Permissive licenses allow reading; implementations still enter through the clean room.
+
+## The clean-room path
+
+- `external-research/` — studies the world with attribution
+- `active-designing/` — names only our own modules
+- `rye/`, `rishi/`, `tally/`, `caravan/`, … — our implementations
+
+When honoring a gratitude source in prose, state its license. When building from it, use our vocabulary only.

@@ -1,0 +1,42 @@
+#
+# proven-seat G1 — run receipt_verify under jailed TCG (KERNEL=nova BOARD=pc)
+#
+
+build { core init timer lib/ld lib/libc lib/libm lib/vfs lib/posix app/receipt_verify }
+
+create_boot_directory
+
+install_config {
+config
++ parent-provides
+  + service ROM
+  + service IRQ
+  + service IO_MEM
+  + service IO_PORT
+  + service PD
+  + service RM
+  + service CPU
+  + service LOG
+
++ default-route
+  + any-service
+    + parent
+    + any-child
+
++ default | caps: 100 | ram: 1M
+
++ start timer
+  + provides | + service Timer
+
++ start g1-receipt-verify | ram: 4M
+  + config
+    + vfs | + dir dev | + log
+    + libc | stdout: /dev/log | stderr: /dev/log
+-
+}
+
+build_boot_image [build_artifacts]
+
+append qemu_args " -nographic  "
+
+run_genode_until "GREEN: proven-seat G1 receipt-verify.*\n" 60

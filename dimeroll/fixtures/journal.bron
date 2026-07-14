@@ -1,0 +1,13 @@
+# Dimeroll lap-1 journal fixture — two balanced entries (cash/revenue, expense/cash).
+# Byte-stable for booksviewtest golden lines.
+debit cash
+credit revenue
+amount 1000
+memo stipend received
+stamp 20260710.125953
+---
+debit expense
+credit cash
+amount 200
+memo supplies
+stamp 20260710.125953

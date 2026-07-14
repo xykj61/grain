@@ -1,0 +1,31 @@
+# comlink_receipt_wire_lab.rish — SLC-L2 receipt device-wire QEMU lab (spawn / wait-for).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/comlink_receipt_wire_lab.rish
+#
+# Replaces the background-orchestration half of comlink/run_receipt_wire_lab.sh;
+# the shell entry point delegates here so stable paths and citations hold.
+
+let zig = "vendor/zig-toolchain/zig"
+let build_dir = "comlink/.build"
+let port_raw = env "COMLINK_RECEIPT_LAB_PORT"
+if port_raw == "" then let port = "15556" else let port = port_raw
+let sock = "127.0.0.1:${port}"
+
+let prep = run ["sh" "-c" "mkdir -p ${build_dir}"]
+assert prep.ok else "receipt wire lab mkdir failed"
+
+let build_rx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_receipt_rx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/receipt-rx.elf"]
+assert build_rx.ok else "receipt rx guest build failed"
+
+let build_tx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_receipt_tx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/receipt-tx.elf"]
+assert build_tx.ok else "receipt tx guest build failed"
+
+let rx = spawn ["timeout" "60" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,listen=${sock}" "-kernel" "${build_dir}/receipt-rx.elf"]
+let pause = run ["sleep" "1"]
+assert pause.ok else "receipt lap sleep failed"
+let tx = run ["timeout" "30" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,connect=${sock}" "-kernel" "${build_dir}/receipt-tx.elf"]
+let rx_done = wait-for rx
+assert rx_done.out contains "sealed receipt GREEN" else "slcl2 device wire lab RED"
+
+say "slcl2 device wire lab: GREEN"

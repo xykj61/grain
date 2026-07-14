@@ -1,0 +1,43 @@
+//! Rye test: std.mem.zeroInit — pass 9894.
+//!
+//! Struct default/zero initialization with overrides; pairs with zeroes (9895).
+
+const std = @import("std");
+const mem = std.mem;
+
+const Inner = struct {
+    d: f64,
+};
+
+const Outer = struct {
+    a: u32,
+    b: ?bool,
+    c: Inner,
+    e: [3]u8,
+    f: i64 = -1,
+};
+
+pub fn main() void {
+    const s = mem.zeroInit(Outer, .{
+        .a = 42,
+    });
+    std.debug.assert(s.a == 42);
+    std.debug.assert(s.b == null);
+    std.debug.assert(s.c.d == 0);
+    std.debug.assert(s.e[0] == 0 and s.e[2] == 0);
+    std.debug.assert(s.f == -1);
+
+    const Color = struct {
+        r: u8,
+        g: u8,
+        b: u8,
+        a: u8,
+    };
+    const c = mem.zeroInit(Color, .{ 255, 255 });
+    std.debug.assert(c.r == 255);
+    std.debug.assert(c.g == 255);
+    std.debug.assert(c.b == 0);
+    std.debug.assert(c.a == 0);
+
+    std.debug.print("rye: mem.zeroInit assertions confirmed.\n", .{});
+}

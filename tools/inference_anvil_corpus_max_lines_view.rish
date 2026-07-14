@@ -1,0 +1,19 @@
+# inference_anvil_corpus_max_lines_view.rish — Anvil max_lines → Skate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/inference_anvil_corpus_max_lines_view.rish
+
+let bin = "pond/bin/drawn-terminal"
+
+say "build: Anvil corpus max_lines view — drawn-terminal compile"
+let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+assert build.ok else "drawn_terminal build failed for max_lines view"
+assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
+
+let corpus = run ["sh" "-c" "${bin} corpusmaxlinesviewtest 2>&1"]
+assert corpus.ok else "drawn terminal corpusmaxlinesviewtest exited non-zero"
+assert corpus.out contains "max lines view" else "max lines view missing expected output"
+assert corpus.out contains "GREEN" else "Anvil max lines view not GREEN"
+assert corpus.out contains "lines=5" else "max lines view missing five-line frame"
+
+say "GREEN: Anvil corpus max_lines view — small chunks on Skate."

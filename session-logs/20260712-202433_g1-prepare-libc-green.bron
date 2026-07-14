@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260712.202433
+editor Cursor
+model Cursor Grok 4.5
+voice Rio 3
+title Go + kg — prepare_port libc GREEN
+prompt go and kg
+product_nib 430
+suite_nib 432
+think First go pushed Codeberg sources at c99eaf7. Then kg: extracted flex/bison/m4 into cache host-tools; ran prepare_port libc (contrib libc-d6a3665f…); wrote proven_seat_g1_prepare_libc.rish witness GREEN; updated pin TASKS; second commit push.
+obs Jail has no sudo apt — Ubuntu noble debs extracted under tools/.cache/proven-seat/host-tools. Idempotent skip when contrib hash dir present.
+recommend keep-going create_builddir x86_64 under genode-sources with CROSS_DEV_PREFIX from toolchain meta — next named unroll step
+file tools/proven_seat_g1_prepare_libc.rish · libc prepare witness
+file active-designing/20260712-195339_proven-seat-g1-crossing-pin.md · step 2 GREEN
+file work-in-progress/TASKS.md · next create_builddir
+file expanding-prompts/20260712-195339_proven-seat-g1-open.md · status
+file session-logs/20260712-202433_g1-prepare-libc-green.bron · this log
+file session-logs/README.md · index

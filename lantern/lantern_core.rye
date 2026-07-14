@@ -1,0 +1,328 @@
+//! lantern/lantern_core.rye — bounded request/response inference contract (lap 33).
+//!
+//! Weights live in Tablecloth by hash. Laps deepen through echo · user pins.
+
+const std = @import("std");
+const assert = std.debug.assert;
+
+pub const max_prompt_len: u32 = 256;
+pub const max_completion_len: u32 = 256;
+pub const max_hash_len: u32 = 64;
+pub const max_budget_tokens: u32 = 512;
+pub const max_temperature: f32 = 2.0;
+pub const max_top_p: f32 = 1.0;
+pub const max_top_k: u32 = 256;
+pub const max_frequency_penalty: f32 = 2.0;
+pub const max_presence_penalty: f32 = 2.0;
+pub const max_n: u32 = 8;
+pub const max_stop_sequence_len: u32 = 32;
+pub const max_user_len: u32 = 64;
+
+pub const StoppedReason = enum(u8) {
+    eos,
+    length,
+    err_stop,
+    stop_sequence,
+};
+
+pub const LanternError = error{
+    PromptTooLong,
+    ModelMismatch,
+    BudgetExceeded,
+    BadFixture,
+    BadTemperature,
+    TemperatureMismatch,
+    SeedMismatch,
+    BadTopP,
+    TopPMismatch,
+    StopSequenceMismatch,
+    BadStopSequence,
+    PromptMismatch,
+    MaxTokensMismatch,
+    TextMismatch,
+    ErrStopMismatch,
+    LengthStopMismatch,
+    EmptyAllowList,
+    AllowCountMismatch,
+    RequireModelMissing,
+    StoppedReasonMismatch,
+    StreamMismatch,
+    BadTopK,
+    TopKMismatch,
+    BadFrequencyPenalty,
+    FrequencyPenaltyMismatch,
+    BadPresencePenalty,
+    PresencePenaltyMismatch,
+    BadN,
+    NMismatch,
+    TokensOutMismatch,
+    TokensInMismatch,
+    EchoMismatch,
+    UserMismatch,
+    BadUser,
+};
+
+pub const Request = struct {
+    model_hash: []const u8,
+    prompt: []const u8,
+    max_tokens: u32,
+    temperature: f32 = 0.0,
+    seed: u64 = 0,
+    top_p: f32 = 1.0,
+    stop_sequence: []const u8 = "",
+    err_stop: bool = false,
+    length_stop: bool = false,
+    expect_stopped: []const u8 = "",
+    stream: bool = false,
+    top_k: u32 = 0,
+    frequency_penalty: f32 = 0.0,
+    presence_penalty: f32 = 0.0,
+    n: u32 = 1,
+    expect_tokens_out: ?u32 = null,
+    expect_tokens_in: ?u32 = null,
+    echo: bool = false,
+    user: []const u8 = "",
+};
+
+pub const Response = struct {
+    text: []const u8,
+    tokens_in: u32,
+    tokens_out: u32,
+    stopped_reason: StoppedReason,
+};
+
+pub fn validate_request(req: Request) LanternError!void {
+    if (req.prompt.len > max_prompt_len) return error.PromptTooLong;
+    if (req.max_tokens == 0 or req.max_tokens > max_budget_tokens) return error.BudgetExceeded;
+    if (req.temperature < 0.0 or req.temperature > max_temperature) return error.BadTemperature;
+    if (req.top_p < 0.0 or req.top_p > max_top_p) return error.BadTopP;
+    if (req.top_k > max_top_k) return error.BadTopK;
+    if (req.frequency_penalty < -max_frequency_penalty or req.frequency_penalty > max_frequency_penalty) return error.BadFrequencyPenalty;
+    if (req.presence_penalty < -max_presence_penalty or req.presence_penalty > max_presence_penalty) return error.BadPresencePenalty;
+    if (req.n == 0 or req.n > max_n) return error.BadN;
+    if (req.stop_sequence.len > max_stop_sequence_len) return error.BadStopSequence;
+    if (req.user.len > max_user_len) return error.BadUser;
+}
+
+fn field_value(text: []const u8, key: []const u8) ?[]const u8 {
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    while (lines.next()) |raw| {
+        const line = std.mem.trim(u8, raw, " \t\r\n");
+        if (line.len == 0 or line[0] == '#') continue;
+        if (!std.mem.startsWith(u8, line, key)) continue;
+        if (line.len == key.len) return "";
+        if (line[key.len] != ' ') continue;
+        return std.mem.trim(u8, line[key.len + 1 ..], " \t\r\n");
+    }
+    return null;
+}
+
+/// Parse a pinned completion fixture (Bron-shaped text).
+pub fn parse_fixture(text: []const u8) LanternError!Response {
+    const model = field_value(text, "model_hash") orelse return error.BadFixture;
+    _ = model;
+    const completion = field_value(text, "text") orelse return error.BadFixture;
+    const tin = field_value(text, "tokens_in") orelse return error.BadFixture;
+    const tout = field_value(text, "tokens_out") orelse return error.BadFixture;
+    const reason = field_value(text, "stopped_reason") orelse return error.BadFixture;
+    const tokens_in = std.fmt.parseInt(u32, tin, 10) catch return error.BadFixture;
+    const tokens_out = std.fmt.parseInt(u32, tout, 10) catch return error.BadFixture;
+    const stopped_reason: StoppedReason = if (std.mem.eql(u8, reason, "eos"))
+        .eos
+    else if (std.mem.eql(u8, reason, "length"))
+        .length
+    else if (std.mem.eql(u8, reason, "err_stop"))
+        .err_stop
+    else if (std.mem.eql(u8, reason, "stop_sequence"))
+        .stop_sequence
+    else
+        return error.BadFixture;
+    return .{
+        .text = completion,
+        .tokens_in = tokens_in,
+        .tokens_out = tokens_out,
+        .stopped_reason = stopped_reason,
+    };
+}
+
+/// Lap 1: return fixture completion when model hash matches; enforce max_tokens.
+/// Truncates whitespace-separated words when the fixture outruns the budget.
+pub fn complete_fixture(req: Request, fixture_text: []const u8) LanternError!Response {
+    try validate_request(req);
+    const fixture_model = field_value(fixture_text, "model_hash") orelse return error.BadFixture;
+    if (!std.mem.eql(u8, req.model_hash, fixture_model)) return error.ModelMismatch;
+    if (field_value(fixture_text, "seed")) |seed_text| {
+        const pinned = std.fmt.parseInt(u64, seed_text, 10) catch return error.BadFixture;
+        if (req.seed != pinned) return error.SeedMismatch;
+    }
+    if (field_value(fixture_text, "temperature")) |temp_text| {
+        const pinned = std.fmt.parseFloat(f32, temp_text) catch return error.BadFixture;
+        if (req.temperature != pinned) return error.TemperatureMismatch;
+    }
+    if (field_value(fixture_text, "top_p")) |top_p_text| {
+        const pinned = std.fmt.parseFloat(f32, top_p_text) catch return error.BadFixture;
+        if (req.top_p != pinned) return error.TopPMismatch;
+    }
+    if (field_value(fixture_text, "stop_sequence")) |pinned| {
+        if (!std.mem.eql(u8, req.stop_sequence, pinned)) return error.StopSequenceMismatch;
+    }
+    if (field_value(fixture_text, "err_stop")) |pinned_text| {
+        const pinned = if (std.mem.eql(u8, pinned_text, "1"))
+            true
+        else if (std.mem.eql(u8, pinned_text, "0"))
+            false
+        else
+            return error.BadFixture;
+        if (req.err_stop != pinned) return error.ErrStopMismatch;
+    }
+    if (field_value(fixture_text, "length_stop")) |pinned_text| {
+        const pinned = if (std.mem.eql(u8, pinned_text, "1"))
+            true
+        else if (std.mem.eql(u8, pinned_text, "0"))
+            false
+        else
+            return error.BadFixture;
+        if (req.length_stop != pinned) return error.LengthStopMismatch;
+    }
+    if (field_value(fixture_text, "pin_stopped_reason")) |pinned| {
+        if (!std.mem.eql(u8, req.expect_stopped, pinned)) return error.StoppedReasonMismatch;
+    }
+    if (field_value(fixture_text, "stream")) |pinned_text| {
+        const pinned = if (std.mem.eql(u8, pinned_text, "1"))
+            true
+        else if (std.mem.eql(u8, pinned_text, "0"))
+            false
+        else
+            return error.BadFixture;
+        if (req.stream != pinned) return error.StreamMismatch;
+    }
+    if (field_value(fixture_text, "top_k")) |pinned_text| {
+        const pinned = std.fmt.parseInt(u32, pinned_text, 10) catch return error.BadFixture;
+        if (req.top_k != pinned) return error.TopKMismatch;
+    }
+    if (field_value(fixture_text, "frequency_penalty")) |pinned_text| {
+        const pinned = std.fmt.parseFloat(f32, pinned_text) catch return error.BadFixture;
+        if (req.frequency_penalty != pinned) return error.FrequencyPenaltyMismatch;
+    }
+    if (field_value(fixture_text, "presence_penalty")) |pinned_text| {
+        const pinned = std.fmt.parseFloat(f32, pinned_text) catch return error.BadFixture;
+        if (req.presence_penalty != pinned) return error.PresencePenaltyMismatch;
+    }
+    if (field_value(fixture_text, "n")) |pinned_text| {
+        const pinned = std.fmt.parseInt(u32, pinned_text, 10) catch return error.BadFixture;
+        if (req.n != pinned) return error.NMismatch;
+    }
+    if (field_value(fixture_text, "pin_tokens_out")) |pinned_text| {
+        const pinned = std.fmt.parseInt(u32, pinned_text, 10) catch return error.BadFixture;
+        const expect = req.expect_tokens_out orelse return error.TokensOutMismatch;
+        if (expect != pinned) return error.TokensOutMismatch;
+    }
+    if (field_value(fixture_text, "pin_tokens_in")) |pinned_text| {
+        const pinned = std.fmt.parseInt(u32, pinned_text, 10) catch return error.BadFixture;
+        const expect = req.expect_tokens_in orelse return error.TokensInMismatch;
+        if (expect != pinned) return error.TokensInMismatch;
+    }
+    if (field_value(fixture_text, "echo")) |pinned_text| {
+        const pinned = if (std.mem.eql(u8, pinned_text, "1"))
+            true
+        else if (std.mem.eql(u8, pinned_text, "0"))
+            false
+        else
+            return error.BadFixture;
+        if (req.echo != pinned) return error.EchoMismatch;
+    }
+    if (field_value(fixture_text, "user")) |pinned| {
+        if (!std.mem.eql(u8, req.user, pinned)) return error.UserMismatch;
+    }
+    if (field_value(fixture_text, "prompt")) |pinned| {
+        if (!std.mem.eql(u8, req.prompt, pinned)) return error.PromptMismatch;
+    }
+    if (field_value(fixture_text, "max_tokens")) |pinned_text| {
+        const pinned = std.fmt.parseInt(u32, pinned_text, 10) catch return error.BadFixture;
+        if (req.max_tokens != pinned) return error.MaxTokensMismatch;
+    }
+    var resp = try parse_fixture(fixture_text);
+    if (field_value(fixture_text, "pin_tokens_out")) |pinned_text| {
+        const pinned = std.fmt.parseInt(u32, pinned_text, 10) catch return error.BadFixture;
+        if (resp.tokens_out != pinned) return error.TokensOutMismatch;
+    }
+    if (field_value(fixture_text, "pin_tokens_in")) |pinned_text| {
+        const pinned = std.fmt.parseInt(u32, pinned_text, 10) catch return error.BadFixture;
+        if (resp.tokens_in != pinned) return error.TokensInMismatch;
+    }
+    if (resp.tokens_out <= req.max_tokens) {
+        if (field_value(fixture_text, "text_pin")) |pinned| {
+            if (!std.mem.eql(u8, resp.text, pinned)) return error.TextMismatch;
+        }
+        return resp;
+    }
+
+    // Truncate to max_tokens words; mark length stop.
+    var words: u32 = 0;
+    var cut: usize = 0;
+    var i: usize = 0;
+    var in_word = false;
+    while (i < resp.text.len) : (i += 1) {
+        const c = resp.text[i];
+        const is_space = c == ' ' or c == '\t' or c == '\n' or c == '\r';
+        if (!is_space) {
+            if (!in_word) {
+                if (words == req.max_tokens) break;
+                words += 1;
+                in_word = true;
+            }
+            cut = i + 1;
+        } else {
+            in_word = false;
+        }
+    }
+    resp.text = resp.text[0..cut];
+    resp.tokens_out = words;
+    resp.stopped_reason = .length;
+    if (field_value(fixture_text, "text_pin")) |pinned| {
+        if (!std.mem.eql(u8, resp.text, pinned)) return error.TextMismatch;
+    }
+    return resp;
+}
+
+/// True when `model_hash` appears as a `model_hash` line in an allow-list fixture.
+pub fn model_allowed(model_hash: []const u8, allow_text: []const u8) bool {
+    var lines = std.mem.splitScalar(u8, allow_text, '\n');
+    while (lines.next()) |raw| {
+        const line = std.mem.trim(u8, raw, " \t\r\n");
+        if (line.len == 0 or line[0] == '#') continue;
+        if (!std.mem.startsWith(u8, line, "model_hash ")) continue;
+        const hash = std.mem.trim(u8, line["model_hash ".len..], " \t\r\n");
+        if (std.mem.eql(u8, hash, model_hash)) return true;
+    }
+    return false;
+}
+
+/// Count `model_hash` lines in an allow-list fixture.
+pub fn count_allowed_models(allow_text: []const u8) u32 {
+    var n: u32 = 0;
+    var lines = std.mem.splitScalar(u8, allow_text, '\n');
+    while (lines.next()) |raw| {
+        const line = std.mem.trim(u8, raw, " \t\r\n");
+        if (line.len == 0 or line[0] == '#') continue;
+        if (!std.mem.startsWith(u8, line, "model_hash ")) continue;
+        n += 1;
+    }
+    return n;
+}
+
+/// Lap 2: allow-list gate, then lap-1 complete_fixture.
+/// Empty allow-list refused; optional fixture `allow_count` pins the list size.
+pub fn complete_allowed(req: Request, fixture_text: []const u8, allow_text: []const u8) LanternError!Response {
+    const allow_n = count_allowed_models(allow_text);
+    if (allow_n == 0) return error.EmptyAllowList;
+    if (field_value(fixture_text, "allow_count")) |pinned_text| {
+        const pinned = std.fmt.parseInt(u32, pinned_text, 10) catch return error.BadFixture;
+        if (allow_n != pinned) return error.AllowCountMismatch;
+    }
+    if (field_value(fixture_text, "require_model")) |required| {
+        if (!model_allowed(required, allow_text)) return error.RequireModelMissing;
+    }
+    if (!model_allowed(req.model_hash, allow_text)) return error.ModelMismatch;
+    return complete_fixture(req, fixture_text);
+}

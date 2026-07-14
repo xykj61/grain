@@ -1,0 +1,13 @@
+# tame_check_th2c.rish — TH-2c witness: hosted corpus clean; tame-check is a hard gate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/tame_check_th2c.rish
+
+let result = run ["rishi/bin/rishi" "run" "tools/tame-check.rish"]
+assert result.ok else "tame-check must pass as a hard gate after TH-2c"
+
+assert result.out contains "TAME CHECK GREEN" else "tame-check must report full corpus green"
+assert result.out contains "tally/seed.rye" else "tame-check must scan tally/seed.rye"
+assert result.out contains "rishi/src/main.rye" else "tame-check must scan rishi/src/main.rye"
+
+say "GREEN: TH-2c — hosted modules read bare assert; tame-check gates the corpus."

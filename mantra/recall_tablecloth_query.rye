@@ -1,0 +1,147 @@
+//! mantra/recall_tablecloth_query.rye — Tablecloth query: optional peer/bolt/revision filter.
+//!
+//! recall_by_mark requires peer, bolt, and revision and refuses ambiguous marks.
+//! This file loosens those fields to optional and returns every matching leaf in
+//! catalog order — a filter walked once over the bounded array, rather than an index.
+//! Composing rather than extending: recall_lap1.rye is imported and left standing.
+//!
+//!   rye build mantra/recall_tablecloth_query.rye -femit-bin=mantra/bin/recall-tablecloth-query
+//!   mantra/bin/recall-tablecloth-query selftest
+//!
+//! Counsel: [`counsel/20260707-005612_claude-counsel-tablecloth-query.md`](../counsel/20260707-005612_claude-counsel-tablecloth-query.md)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const recall_lap1 = @import("recall_lap1.rye");
+const rbm = @import("recall_by_mark.rye");
+const tally_copy = @import("tally_copy.rye");
+
+pub const recall_tablecloth_query_version = "20260707.005612";
+
+pub const TableclothQuery = struct {
+    peer: ?[]const u8 = null,
+    bolt: ?[]const u8 = null,
+    revision: ?u32 = null,
+    tilak: ?[]const u8 = null,
+    path_hint: ?[]const u8 = null,
+};
+
+pub const QueryError = error{
+    ResultOverflow,
+} || recall_lap1.RecallError;
+
+fn leaf_matches(leaf: *const recall_lap1.LeafBinding, query: TableclothQuery) bool {
+    if (query.peer) |peer| {
+        if (!std.mem.eql(u8, leaf.peer[0..leaf.peer_len], peer)) return false;
+    }
+    if (query.bolt) |bolt| {
+        if (!std.mem.eql(u8, leaf.bolt[0..leaf.bolt_len], bolt)) return false;
+    }
+    if (query.revision) |revision| {
+        if (leaf.revision != revision) return false;
+    }
+    if (query.tilak) |tilak| {
+        if (!std.mem.eql(u8, leaf.tilak[0..leaf.tilak_len], tilak)) return false;
+    }
+    if (query.path_hint) |hint| {
+        if (!std.mem.eql(u8, leaf.path[0..leaf.path_len], hint)) return false;
+    }
+    return true;
+}
+
+/// Filter the catalog once; write matching names into `out_names` in held order.
+/// Returns the number of hits (zero when nothing matches).
+pub fn query_tablecloth(
+    catalog: *const recall_lap1.BoltCatalog,
+    query: TableclothQuery,
+    out_names: []recall_lap1.Name,
+) QueryError!u32 {
+    var count: u32 = 0;
+    var i: u32 = 0;
+    while (i < catalog.leaf_count) : (i += 1) {
+        const leaf = &catalog.leaves[i];
+        if (!leaf_matches(leaf, query)) continue;
+        if (count >= out_names.len) return error.ResultOverflow;
+        out_names[count] = .{
+            .peer = leaf.peer[0..leaf.peer_len],
+            .bolt = leaf.bolt[0..leaf.bolt_len],
+            .revision = leaf.revision,
+            .path = leaf.path[0..leaf.path_len],
+        };
+        count += 1;
+    }
+    return count;
+}
+
+fn run_selftest(_: std.Io) !u8 {
+    var cat: recall_lap1.BoltCatalog = .empty();
+    try cat.append_leaf("peerB", "b", 1, "notes.txt", "alpha notes", "plain-text");
+    try cat.append_leaf("peerB", "b", 1, "data.bin", "beta bytes", "plain-bytes");
+    try cat.append_leaf("peerB", "b", 1, "config.toml", "gamma cfg", "plain-text");
+    try cat.append_leaf("peerB", "b", 2, "notes.txt", "alpha notes v2", "plain-text");
+
+    var names: [recall_lap1.max_bindings]recall_lap1.Name = undefined;
+    var buf: [recall_lap1.max_resin_bytes]u8 = undefined;
+
+    // Peer + bolt, revision open — both revisions walk.
+    const n_bolt = try query_tablecloth(&cat, .{
+        .peer = "peerB",
+        .bolt = "b",
+    }, &names);
+    assert(n_bolt == 4);
+
+    // Tilak alone — crosses revisions; plain-text hits three leaves.
+    const n_mark = try query_tablecloth(&cat, .{
+        .tilak = "plain-text",
+    }, &names);
+    assert(n_mark == 3);
+
+    // Absent tilak — empty result, no refusal.
+    const n_none = try query_tablecloth(&cat, .{
+        .tilak = "bead-index",
+    }, &names);
+    assert(n_none == 0);
+
+    // Convergence: name recall, recallByMark (with hint), and query agree.
+    const exact = recall_lap1.Name{ .peer = "peerB", .bolt = "b", .revision = 1, .path = "notes.txt" };
+    const by_name = try cat.recall(exact, &buf);
+    var name_bytes: [recall_lap1.max_resin_bytes]u8 = undefined;
+    tally_copy.copy_disjoint(u8, name_bytes[0..by_name.len], buf[0..by_name.len]);
+    const by_mark = try rbm.recall_by_mark(&cat, .{
+        .peer = "peerB",
+        .bolt = "b",
+        .revision = 1,
+        .tilak = "plain-text",
+        .path_hint = "notes.txt",
+    }, &buf);
+    assert(by_name.outcome == .here);
+    assert(by_mark.outcome == .here);
+    assert(std.mem.eql(u8, buf[0..by_mark.len], name_bytes[0..by_name.len]));
+
+    const n_one = try query_tablecloth(&cat, .{
+        .peer = "peerB",
+        .bolt = "b",
+        .revision = 1,
+        .tilak = "plain-text",
+        .path_hint = "notes.txt",
+    }, &names);
+    assert(n_one == 1);
+    const by_query = try cat.recall(names[0], &buf);
+    assert(std.mem.eql(u8, buf[0..by_query.len], name_bytes[0..by_name.len]));
+
+    print("ns-tcq: omit revision walks both — GREEN\n", .{});
+    print("ns-tcq: query by tilak alone crosses bolts and revisions — GREEN\n", .{});
+    print("ns-tcq: no match returns empty — GREEN\n", .{});
+    print("ns-tcq: name, mark, and query agree on reachable leaves — GREEN\n", .{});
+    print("ns-tcq: version {s}\n", .{recall_tablecloth_query_version});
+    print("GREEN: Tablecloth query — filter over bounded catalog, every match returned.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(init.arena.allocator());
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) return run_selftest(io);
+    return run_selftest(io);
+}

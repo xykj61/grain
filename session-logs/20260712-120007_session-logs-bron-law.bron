@@ -1,0 +1,23 @@
+# session-log-v1 — first living Bron log after Markdown archive fold
+format session-log-v1
+stamp 20260712.120007
+editor Cursor
+model Cursor Grok 4.5
+voice Rio 3
+title Session logs to Bron · md archived by day
+prompt update claude and cursor session-log rules to .bron after archiving all md by date; commit push; print combined bron for Claude
+think Ran session_logs_archive fold — moved 207 prior-day md logs under archive/YYYYMMDD/.
+think Moved all 43 flat 20260712 md logs into archive/20260712/ and rewrote README links.
+think Updated .cursor/rules/session-logs.mdc and .claude/rules/session-logs.md to Bron law (session-log-v1 fields).
+think Synced CLAUDE.md · ORGANIZING.md · rio3.mdc · session-logs/README.md living format note.
+think Wrote this log as .bron; combined Claude handoff bron in bron-resins/.
+obs Markdown stream closed into dated archives; living shelf is Bron only. Align tool remains Markdown-era. Archive fold still md-scoped until extended.
+file .cursor/rules/session-logs.mdc Bron session-log law for Cursor
+file .claude/rules/session-logs.md Bron session-log law for Claude Code
+file CLAUDE.md dual-editor session-log paragraph
+file ORGANIZING.md session-logs and archive fold notes
+file .cursor/rules/rio3.mdc Bron mention
+file session-logs/README.md living Bron + archive note + this row
+file session-logs/archive/20260712/ folded today's md
+file bron-resins/20260712-120007_claude-combined-morning.bron Claude handoff printout
+recommend keep-going host on-path G0-complete when kvm granted — mechanical; check-in Claude before G1 or Pond six-bar

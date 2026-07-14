@@ -1,0 +1,12 @@
+# granary_device_wire.rish — Granary lap 4b: resin serve over Comlink device wire (virtio).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/granary_device_wire.rish
+
+say "granary-device-wire: virtio resin fetch-by-digest lab..."
+let lab = run ["sh" "comlink/run_granary_resin_wire_lab.sh"]
+assert lab.ok else "Granary resin serve device wire lab failed"
+assert lab.out contains "GREEN" else "Granary device wire lab not GREEN"
+assert lab.out contains "request + response" else "Granary device wire missing two-hop banner"
+
+say "GREEN: Granary device wire — resin serve under virtio Comlink seal."

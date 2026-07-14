@@ -1,0 +1,12 @@
+# width_check_th6.rish — TH-6 witness: Comlink hosted wire zero authored usize.
+#
+# Gates comlink/hosted_wire.rye — wire offsets and capacities use u64 per seam
+# policy; global width-check stays RED until Aurora freestanding width.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/width_check_th6.rish
+
+let result = run ["sh" "-c" "grep 'usize' comlink/hosted_wire.rye 2>/dev/null | grep -v '@intCast' | grep -v '@as(usize' | wc -l"]
+assert trim result.out == "0" else "Comlink hosted wire must carry zero authored usize after TH-6"
+
+say "GREEN: TH-6 — Comlink hosted wire reads zero authored usize under the seam policy."
