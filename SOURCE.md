@@ -122,6 +122,8 @@ On **macOS**, the Rish orchestrator ([`tools/make_key_card.rish`](tools/make_key
 
 The result is two images at the repository root, `keys_<font>_<yourhandle>_landscape.png` and `…_portrait.png`, in a **plain white-background, black-text palette** that prints cleanly and scans reliably (override `BG`/`FG` in the config for a themed card). Pin them to a profile, print them, keep them: they prove your identity to anyone who scans. The full walkthrough, written for any contributor, is [`manual/guides/key-cards-setup.md`](manual/guides/key-cards-setup.md).
 
+Alongside the composited PNG card, `rishi/bin/rishi run tools/make_key_qr_svg.rish` writes each of the three QR codes again as a small, standalone **SVG** — fully textual, diffable, no binary blob, since `qrencode` emits SVG directly for free. The PNG card stays the one to print; the SVGs exist for anywhere a checkable, text-native form fits better.
+
 If Cursor is already set up (Step 5), you can simply ask the agent to do all of this for you — *"fill in my key-card config and render my cards"* — and it will, entirely from inside the sandbox.
 
 > A note on the horizon: both halves of this tool lean on others' work we are grateful for — `libqrencode` for the codes, ImageMagick for the composition. In time, both are candidates to be re-grown in Rye, our own language, the same way **Pond** re-grows the sandbox.

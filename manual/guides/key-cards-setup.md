@@ -1,7 +1,7 @@
 # Making Your Identity Key Cards
 
 **Language:** EN
-**Version:** `20260714.032200` (Pacific)
+**Version:** `20260714.115000` (Pacific)
 **Style:** Radiant (see `../../context/RADIANT_STYLE.md`)
 **Voice:** Rio 3
 **Status:** Guide for the task — the macOS path is witnessed end to end on this host; the Linux path is the inherited script
@@ -63,6 +63,16 @@ The orchestrator does three things in order, and stops loudly if any fails: it a
 ```
 
 This builds its QR encoder from the vendored `gratitude/libqrencode` submodule into the gitignored `tools/.build/`, and uses `apt`-installed Fira Code. On Debian or Ubuntu, `sudo apt install gcc libpng-dev pkg-config imagemagick fonts-firacode` covers the dependencies.
+
+### Standalone SVG QR codes, alongside the PNG card
+
+The composited card above stays PNG — the diamond, the raster QR tiles, and the burned-in captions are ImageMagick's own compositing work, and rebuilding all of that as one hand-built vector document is a real project of its own, not covered here. What is quick: `qrencode` already emits SVG directly, so each of the three QR codes can also exist as a small, fully textual file — no binary blob, diffable, greppable, the same way this tree already prefers text for everything else it keeps:
+
+```bash
+rishi/bin/rishi run tools/make_key_qr_svg.rish
+```
+
+Writes `keys_<yourhandle>_ssh_codeberg.svg`, `keys_<yourhandle>_ssh_github.svg`, and `keys_<yourhandle>_openpgp.svg` at the repository root — allow-listed in `.gitignore` alongside the PNG cards, since a QR code encodes only a public fingerprint and is exactly as safe to commit and share as the fingerprint text itself.
 
 ## Verify Before You Trust
 
