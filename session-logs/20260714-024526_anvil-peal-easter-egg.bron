@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260714.024526
+editor Cursor
+model Fable 5 1M Max
+voice Rio 3
+host macOS 26.6 arm64 (Apple M2) — see context/specs/20260713-211800_local-host-system-hardware-anonymized.md
+title The forge rings once — an Opus-in-Ogg audio easter egg under our own four-letter .peal mark
+prompt Keaton asked to ffmpeg-rip the audio from ~/Downloads/veteran-ave-final-unfinished.mp4, choose the best open, mac/linux-compatible, well-compressed, servable, non-gitignored audio format, land it as anvil.{ext} in the root anvil folder as a project easter egg, cryptically credit the beat producer's IG @debrided in a CONTRIBUTING-compatible bron commit message, push to all remotes, and add roadmap plans for Glow marks/tilaks that process Glow code over the audio type, Landscape/Realidream-compatible in Brushstroke. A follow-up asked to avoid confusing audio Opus with Claude Opus — either pick a clearly-distinct format or gratitude the concepts and use our own four-letter Glow/Urbit-compatible extension name.
+think Probed the source first with ffprobe: h264 video + AAC stereo 44.1kHz, ~60s. Chose Opus-in-Ogg as the format — royalty-free, BSD-licensed, best-in-class compression at music bitrates, decodes everywhere on mac/linux, clean to serve as audio/ogg. Ripped with libopus at 96k VBR, stripped all metadata (-map_metadata -1) so no incidental tags ride along, ~544 KB for the minute.
+think Heeded the Opus-vs-Claude-Opus caution directly rather than wave it off: kept the real, interoperable bytes (Opus codec in an Ogg container, unchanged and re-probeable) but named the file with our own four-letter Glow/Urbit-compatible mark **.peal** instead of .opus — peal as the ringing a struck anvil sends out, teaching its function the way every LEXICON name does, and never once colliding with Claude Opus on a daily read. Verified the file decodes end-to-end (ffmpeg -f null) and that the Ogg/OpusHead bytes are well-formed.
+think Wrote a gratitude note for the concepts (gratitude/OpusOggXiph.md) — but a different kind than our copyrighted-essay summaries: Opus and Ogg are permissively licensed, so unlike Systemantics or PathWithHeart we may and do use the real format, not merely summarize it. Named that distinction plainly, and recorded why the mark stays ours even when the bytes are borrowed.
+think Confirmed the file is tracked, not gitignored — the root catch-all allows /anvil/ back in and there is no audio ignore rule, so a servable easter egg genuinely ships. Added a brief, honest line to anvil/README.md (an easter egg can still be documented; the cryptic part lives in the commit message, per Keaton's ask).
+think Added the roadmap plan Keaton asked for: an Audio Tilak lane (A0 landed → A1 Peal Tilak absorb/express/tend → A2 peal over Weave as a content-addressed resin → A3 Brushstroke peal view, Landscape/Realidream-compatible → A4 Maitreya time seam), keeping the lane's departures identical to Realidream's (immutable facts re-folded, meaning via Tilak, Bron across seams).
+obs The egg is real and servable, not a placeholder: a valid one-minute Opus stream a browser or ffmpeg plays directly, under a mark that is ours. The producer is credited cryptically in the commit body per the ask, within CONTRIBUTING's Radiant-with-Related shape.
+file anvil/anvil.peal why: the easter egg itself — Opus-in-Ogg audio under our .peal mark, tracked and servable
+file gratitude/OpusOggXiph.md why: gratitude for the free Opus/Ogg standards and the record of the .peal mark and why it stays ours
+file anvil/README.md why: one honest line naming the peal in the forge's layout
+file work-in-progress/ROADMAP.md why: the Audio Tilak lane (A0–A4) toward Glow processing sound as a first-class value, Brushstroke/Realidream-compatible
+recommend keep-going — self-contained easter egg; the Tilak lane it seeds is horizon, gated on the Tilak family and a real audio consumer.

@@ -129,6 +129,20 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **Gratitude shelf for the lane:** Hyperfiddle (Dustin Getz — UIs as streaming DAGs) · Matklad (project-wide semantic graph) · the Nostr protocol (signed-event, relay-subscribed shape — [`nips/`](../gratitude/nips/)) · TigerBeetle (already kept) · grain-sketchbook (Kaeden's archived prototype — [`grain-sketchbook.md`](../gratitude/grain-sketchbook.md)) · Noah B. (name's artistic source — [`noah-b-realidream.md`](../gratitude/noah-b-realidream.md)). **Affirmed `174500`.** **Departures the lane keeps:** immutable facts re-folded, never nodes patched; meaning per-entry via Tilak, never one shared enum across consumers; values cross seams as Bron, never JSON-in-a-payload.
 
+### The Audio Tilak lane — `.peal`, and Glow over sound (horizon, opened `20260714.023700`)
+
+*Opened from the `anvil/anvil.peal` easter egg — the first audio bytes in the tree (Opus-in-Ogg under a four-letter Glow-compatible mark; gratitude [`../gratitude/OpusOggXiph.md`](../gratitude/OpusOggXiph.md)). A struck anvil should ring, so the forge module carries the first peal.* The lane grows a real capability, smallest-first, so Glow code can process audio as an ordinary value the system already knows how to fold:
+
+| Rung | Name | What it is | Gate |
+|------|------|------------|------|
+| **A0** | **`.peal` mark exists** | **landed** — a servable Opus-in-Ogg stream at `anvil/anvil.peal`, tracked (not gitignored), decode-verified | done `023700` |
+| **A1** | **Peal Tilak** | a Glow type-mark for a `.peal` value: `absorb` (bytes → peal), `express` (peal → duration/channels/bitrate summary, waveform frame), `tend` (peal history in its own grain) — the same three Tilak duties every marked value keeps ([`../context/LEXICON.md`](../context/LEXICON.md)) | Tilak family stable; a real audio consumer asks |
+| **A2** | **Peal over Weave** | a peal enters Weave as a content-addressed resin (SHA3 name), so Glow code folds over it exactly as it folds over text and receipts — audio as a first-class value, not a blob beside the system | A1 · Weave resin tiers |
+| **A3** | **Brushstroke peal view** | a Brushstroke component that renders a peal's waveform/metadata as an immediate-mode frame — Landscape/Realidream-compatible, drawn from the value every frame, per the three living essays | A2 · Brushstroke frame seam · Realidream rung 1 |
+| **A4** | **Maitreya time seam** | playback/decode as a bounded host seam under **Maitreya** (the media driver already named in `LEXICON.md` for audio/video time), so Realidream can play a peal through the same seam Lotus and Linengrow will | A3 · Maitreya first lap |
+
+**Departures this lane keeps (same as Realidream's):** the peal is an immutable signed value re-folded, never a mutable buffer patched; its meaning rides a Tilak, never a shared enum; it crosses seams as Bron-wrapped bytes, never an untyped payload. **The codec stays borrowed and free; the mark stays ours** — anything needing raw Opus re-probes in one step.
+
 ---
 
 ## The Inference Track — Local Forge (horizon lane, lap 0 opened `20260710.133500`)

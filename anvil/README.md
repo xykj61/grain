@@ -34,6 +34,7 @@ Anvil names training and fine-tuning on our own corpus. Lap 0 catalogs `.rye` / 
 | [`anvil_core.rye`](anvil_core.rye) | Catalog parse + query |
 | [`anvil.rye`](anvil.rye) | Selftest |
 | [`fixtures/rye_corpus.bron`](fixtures/rye_corpus.bron) | Pinned chunk list |
+| `anvil.peal` | The forge rings once — a one-minute Opus-in-Ogg audio stream under our four-letter `.peal` mark; the first audio bytes in the tree. Gratitude [`../gratitude/OpusOggXiph.md`](../gratitude/OpusOggXiph.md); the Glow audio-Tilak lane it seeds is in [`../work-in-progress/ROADMAP.md`](../work-in-progress/ROADMAP.md). |
 
 ```
 rishi/bin/rishi run tools/anvil_corpus_lap1.rish
