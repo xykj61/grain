@@ -11,6 +11,7 @@
 !/.gitignore
 !/.gitmodules
 !/.gitattributes
+!/README.md
 !/SOURCE.md
 !/LICENSE-MIT
 !/LICENSE-APACHE
@@ -19,6 +20,7 @@
 !/PUBKEYS.md
 !/CONTRIBUTING.md
 !/GLOW_HOST.template.bron
+!/GLOW_PROFILE.template.bron
 !/.brix
 !/keys_*.png
 !/context/

@@ -6,9 +6,9 @@
 
 ---
 
-This directory is the memory and compass for work in `~/veganreyklah2`. It gathers the durable guidance — how we write, who Rio 3 is this season, and the plain-English specs that record each decision — in one calm, local place.
+This directory is the memory and compass for the Glow OS repository. It gathers the durable guidance — how we write, who Rio 3 is this season, and the plain-English specs that record each decision — in one calm, local place. Whoever reads it — you, arriving fresh, or an agent picking up the work — finds the disciplines here rather than scattered through the tree.
 
-Everything here lives inside the persistent project directory, so it survives every sandbox reset. The ai-jail wrapper keeps only the project directory across runs; this `context/` home rests safely within it.
+Everything here lives inside the persistent project directory, so it survives every sandbox reset. The enclosure wrapper keeps only the project directory across runs; this `context/` home rests safely within it. The specific contributor behind a given clone — the name that signs the work, the clock the stamps come from, the editor and voice defaults — lives in the root [`GLOW_PROFILE.bron`](../GLOW_PROFILE.template.bron), so this guidance can stay generally addressed while the profile carries the specifics.
 
 ---
 
@@ -18,7 +18,7 @@ Everything here lives inside the persistent project directory, so it survives ev
 - **`TAME_GUIDANCE.md`** — the operational code supplement (root + Rye / Brix / Rishi). Named like TigerBeetle's `docs/TIGER_STYLE.md`; pairs with `external-research/TAME_GUIDANCE.md` and `gratitude/TIGER_STYLE.md`.
 - **`SIMPLE_LOVABLE_COMPLETE.md`** — how we ship. Simple, lovable, complete at every lap; our distillation of Jason Cohen's method, bound to how Rye OS grows. Source essay in `gratitude/`.
 - **`CIVIC_STYLE.md`** — how we design public benefit. Name the outcome you want, name what the reward measures, keep the two aligned — the civic companion to TAME, Radiant, and SLC.
-- **`REYA2.md`** — the prior identity note (Reya 2). **`RIO3.md`** — **Rio 3**, active voice this season until Kaeden restores Reya 2.
+- **`REYA2.md`** — the prior identity note (Reya 2). **`RIO3.md`** — **Rio 3**, active voice this season until Keaton restores Reya 2.
 - **`SILO_TECHNIQUE.md`** — the siloing technique: how an outside idea becomes an owned, understood concept in our own voice, with gratitude kept apart and honored. Portable, and meant to travel beside the voice guide and the identity note.
 - **`LEXICON.md`** — module names and one-line meanings; Weave, Dexter, Kumara, Bookie, the open horizons, the **preservation pair** (Amber = cellar software, Amphora = vessel software), and **Kitchen twin** (plain companion to a hard canon). **Nib** vocabulary for landed edges (product · suite · git) — retired *tip* in new prose only.
 
@@ -41,7 +41,8 @@ When a chat or a file stops serving the project, name it gently and let it go. P
 ## The Shape of the Workspace
 
 ```
-~/veganreyklah2/
+glow-os/
+  README.md       <- the front door: what Glow OS is, the four variants
   ORGANIZING.md   <- filing guide: tree shape, placement test, one-clock law
   context/        <- this home: disciplines, identity, specs
     RADIANT_STYLE.md

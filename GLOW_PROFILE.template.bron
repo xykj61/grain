@@ -1,0 +1,65 @@
+# GLOW_PROFILE.bron — this contributor's professional profile.
+#
+# Copy this file to GLOW_PROFILE.bron at the repository root and fill in YOUR
+# values. GLOW_PROFILE.bron is gitignored (personal identity metadata); only
+# this .template is committed, so it works for anyone who clones the fork.
+#
+# Why this file exists. Glow OS's reader-facing docs address a generic Acme
+# Corporation employee, never a named individual (see
+# .cursor/rules/acme-employee-voice.mdc). That keeps the tree shareable and
+# teachable. But some things a real contributor genuinely needs are specific
+# and professional: the real name that signs the work, forge handles, the
+# clock stamps come from, the editor and voice defaults for session logs.
+# Rather than scatter those specifics through the generic docs, they live
+# here, in one loadable Bron profile — the sibling, in Bron, to GLOW_HOST.bron
+# (which declares the host and toolchain) and to .claude/rules / .cursor/rules
+# (which configure agent behavior). This one declares the contributor.
+#
+# Single source of truth: canonical public fingerprints live in PUBKEYS.md,
+# not here — this file points at that record rather than copying it, per
+# context/TAME_GUIDANCE.md root rule 9 (docs and implementation stay synced).
+
+format glow-profile-v1
+
+# --- Identity — the professional "who" that signs this work -----------------
+# Use your real professional name; this is the name a paid contribution ships
+# under. The generic docs never say it — this file is where it lives.
+name Your Full Name
+handle_github your-github-handle
+handle_codeberg your-codeberg-handle
+email you@example.com
+
+# --- Signing — pointer, not a copy ------------------------------------------
+# Canonical SSH + OpenPGP fingerprints live in PUBKEYS.md (or context/PUBKEYS.md).
+# This points there so the two never drift apart.
+pubkeys PUBKEYS.md
+
+# --- Urbit Azimuth points (optional) ----------------------------------------
+# If you hold real Azimuth points, name them here. Per the placeholder-ship-names
+# rule, real points are NEVER used as example ship names in generic docs — only
+# named in identity records like this one. Leave blank if you hold none yet.
+azimuth_star
+azimuth_planet
+
+# --- Clock — where your stamps come from ------------------------------------
+# The one-clock naming law takes stamps from the contributor verbatim; this
+# names which wall clock that is, so a reader knows how to read your stamps.
+timezone America/Los_Angeles
+timezone_label Pacific (PDT/PST)
+
+# --- Session-log defaults for this clone ------------------------------------
+# The session-logs rule reads these as the default editor/model/voice for logs
+# written from this clone, until you name a change.
+editor Cursor
+model Cursor Sonnet 5 1M Medium
+voice Rio 3
+
+# --- Placeholder identities for examples ------------------------------------
+# Structurally-invalid @p placeholders for docs and commands (never a real
+# point). See .cursor/rules/placeholder-ship-names.mdc for the full table.
+placeholder_galaxy ~acme
+placeholder_star ~acme-star
+placeholder_planet ~acme-corp-test-ship
+
+# --- When this profile was last confirmed correct (your local stamp) --------
+checked YYYYMMDD.HHMMSS
