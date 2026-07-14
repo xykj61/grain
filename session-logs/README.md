@@ -18,7 +18,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 | Stamp | Log | Meaning |
 |-------|-----|---------|
-| 20260714.011504 | [GLOW_HOST.bron seated and tested; the VPN guide reified in real, witnessed Rish](20260714-011504_glow-host-config-vpn-reified.bron) | Toolchain footgun closed and witnessed (permit+refuse) · client VPN setup real and run · 4 real Rishi language gaps found and fixed |
+| 20260714.012125 | [Neth's real infrastructure — VPS cost, TigerBeetle cluster size, roadmap](20260714-012125_neth-vps-cost-research.bron) | TigerBeetle needs exactly 6 replicas, 1 core each, separate disk+machine required · real pricing across 4 providers · 3 plans, $0 to ~$125/mo, all under budget |
 | 20260714.005658 | [The first native arm64 parity witness run — real build, real green, one real diagnosed gap](20260714-005658_first-native-arm64-parity-run.bron) | Pinned Zig 0.16.0 fetched + checksum-verified · rye/rishi built natively on this Mac · full pristine-std + SLC-1 GREEN · one Wayland-only gap fully diagnosed |
 | 20260714.004428 | [Reviving replaces renaming — active-reviving sibling to active-designing](20260714-004428_reviving-replaces-renaming.bron) | New reviving concept: re-grow elders into Glow as new artifacts born with their name · retires the mass-rename framing · Neth/doc-pipeline/Glow indexed as revivals |
 | 20260714.002123 | [Confirm Neth/Reya/Maze, shell is Rish/Rishi, names-in-code roles-in-pitch strategy](20260714-002123_naming-decisions-role-nesting.bron) | Three names confirmed · Dojo not adopted (Rish/Rishi) · recommended keep-our-names + Urbit-roles, no rename/re-nest · role map recorded |
