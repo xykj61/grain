@@ -42,7 +42,7 @@ A working record of the Mac this `~/urbit` clone lives on, gathered for Kaeden's
 | **Gatekeeper** | Enabled (`assessments enabled`) | Good — leave it on; it is what makes unsigned/unnotarized code ask before it runs |
 | **Screen lock delay** | Immediate | Good — the screen locks the instant it sleeps or is closed, rather than after a grace window |
 | **Automatic macOS updates** | Enabled (`AutomaticallyInstallMacOSUpdates = 1`, `CriticalUpdateInstall = 1`) | Good for a work machine — security patches land without a manual step to forget |
-| **Application Firewall** | **Not checked** — reading its state needs `sudo`, and this record was gathered without prompting for or storing a password | Kaeden should check by hand: **System Settings → Network → Firewall** — recommend **On**, with "Block all incoming connections" considered if no inbound services (like a self-hosted VPN test server) are deliberately run from this machine |
+| **Application Firewall** | **Confirmed Off** (`20260714.054500`, via System Settings and `socketfilterfw --getglobalstate`) — all incoming connections are currently allowed | **Open.** Turn on in **System Settings → Network → Firewall** (needs your own password/Touch ID — deliberately never captured through this record); then click **Options…** and consider **"Block all incoming connections."** This Mac only runs as the WireGuard *client* (the server half lives on a separate VPS), so there is no deliberately-run inbound service here to protect — the strictest setting fits cleanly |
 
 ## Software Relevant to This Project's Trust Chain
 
