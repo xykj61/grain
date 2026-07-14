@@ -104,6 +104,9 @@ The tool reads your details from a config file, so it works for anyone. Copy the
 
 ```bash
 cp tools/key-card.conf.example tools/key-card.conf   # then edit with your details
+# macOS (Homebrew qrencode + imagemagick), audited end to end in Rish:
+rishi/bin/rishi run tools/make_key_card.rish
+# Linux (vendored libqrencode + apt fonts):
 ./tools/make-key-card.sh
 ```
 
@@ -115,11 +118,11 @@ ssh-keygen -lf ~/.ssh/id_ed25519_github.pub
 gpg --fingerprint you@example.com                 # the spaced 40-hex string
 ```
 
-The script builds its QR encoder from source on first run — `qrencode`, vendored as a submodule at `gratitude/libqrencode` and compiled into the gitignored `tools/.build/` — then composes the card with ImageMagick. It needs `gcc`, `libpng-dev`, `pkg-config`, ImageMagick, and the Fira Code font present; on Debian or Ubuntu, `sudo apt install gcc libpng-dev pkg-config imagemagick fonts-firacode` covers them. The result is two images at the repository root, `keys_firacode_<yourhandle>_landscape.png` and `…_portrait.png`, in the warm `#FF7F00` on `#444400` palette. Pin them to a profile, print them, keep them: they prove your identity to anyone who scans, and they look like you mean it.
+On **macOS**, the Rish orchestrator ([`tools/make_key_card.rish`](tools/make_key_card.rish)) is the recommended path: it first audits every declared fingerprint against the real key on your host (so a card can never ship a wrong fingerprint), renders the cards with Homebrew's `qrencode` and ImageMagick, then audits the output PNGs — a green run proves the whole chain. Install its two dependencies once with `brew install qrencode imagemagick`; the monospace font resolves automatically (Fira Code if you have it, otherwise Menlo, which ships on every Mac). On **Linux**, `./tools/make-key-card.sh` builds `qrencode` from the vendored `gratitude/libqrencode` submodule and uses `apt`-installed Fira Code (`sudo apt install gcc libpng-dev pkg-config imagemagick fonts-firacode`).
 
-This repository carries a finished pair to model yours on — `keys_firacode_veganreyklah2_landscape.png` and its portrait twin. Fingerprints are public by design, so these images are safe to share anywhere.
+The result is two images at the repository root, `keys_<font>_<yourhandle>_landscape.png` and `…_portrait.png`, in a **plain white-background, black-text palette** that prints cleanly and scans reliably (override `BG`/`FG` in the config for a themed card). Pin them to a profile, print them, keep them: they prove your identity to anyone who scans. The full walkthrough, written for any contributor, is [`manual/guides/key-cards-setup.md`](manual/guides/key-cards-setup.md).
 
-If Cursor is already set up (Step 5), you can simply ask the agent to do all of this for you — *"fill in my key-card config and render my Fira Code cards"* — and it will, entirely from inside the sandbox.
+If Cursor is already set up (Step 5), you can simply ask the agent to do all of this for you — *"fill in my key-card config and render my cards"* — and it will, entirely from inside the sandbox.
 
 > A note on the horizon: both halves of this tool lean on others' work we are grateful for — `libqrencode` for the codes, ImageMagick for the composition. In time, both are candidates to be re-grown in Rye, our own language, the same way **Pond** re-grows the sandbox.
 

@@ -1,10 +1,16 @@
-# key-card.conf — public identity details for tools/make-key-card.sh.
+# key-card.conf — public identity details for the key-card generators.
 #
 # Copy this file to tools/key-card.conf and fill in YOUR values. The real
 # tools/key-card.conf is gitignored; only this .example template is committed,
-# so the SOURCE.md walkthrough works for anyone who clones the repo.
+# so the walkthrough works for anyone who clones the repository.
 #
-# Find your fingerprints (see SOURCE.md):
+# Read by:
+#   tools/make_key_card_macos.sh   (macOS: Homebrew qrencode + magick)
+#   tools/make-key-card.sh         (Linux: vendored libqrencode + apt fonts)
+#   tools/make_key_card.rish       (Rish orchestrator: audits, then generates)
+#   tools/key_card_audit.sh        (the fingerprint + PNG audit seam)
+#
+# Find your fingerprints:
 #   SSH:     ssh-keygen -lf ~/.ssh/your_key.pub     # copy the "SHA256:..." part
 #   OpenPGP: gpg --fingerprint you@example.com      # the spaced 40-hex string
 
@@ -16,9 +22,19 @@ FP_SSH_CODEBERG="SHA256:EXAMPLEexampleCODEBERGsshFINGERPRINTexample00"
 FP_SSH_GITHUB="SHA256:EXAMPLEexampleGITHUBsshFINGERPRINTexampleexa00"
 FP_OPENPGP="0000 0000 0000 0000 0000 0000 0000 0000 0000 0000"
 
-# --- Optional overrides (defaults shown) ---
-# BG="#FF7F00"
-# FG="#444400"
+# --- Audit inputs (optional but recommended) --------------------------------
+# When set, tools/key_card_audit.sh confirms each declared fingerprint above
+# actually matches the real key on this host BEFORE a card is rendered, so a
+# card can never ship a wrong fingerprint. Leave blank to skip a given check.
+KEY_SSH_CODEBERG=""               # e.g. "$HOME/.ssh/id_ed25519_codeberg.pub"
+KEY_SSH_GITHUB=""                 # e.g. "$HOME/.ssh/id_ed25519_github.pub"
+GPG_EMAIL=""                      # e.g. "you@example.com" (gpg --fingerprint lookup)
+
+# --- Palette (defaults shown: PLAIN — white bg, black text/QR) ---------------
+# The macOS generator defaults to a plain white-on-black-safe card that prints
+# cleanly and scans reliably. Uncomment to theme it.
+# BG="#FFFFFF"
+# FG="#000000"
 # LABEL_1="SSH · Codeberg"
 # LABEL_2="SSH · GitHub"
 # LABEL_3="OpenPGP · sign"

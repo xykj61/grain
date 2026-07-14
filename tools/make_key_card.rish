@@ -1,0 +1,30 @@
+# make_key_card.rish — orchestrate key-card generation with audits, in Rish.
+#
+# The Rish hand over the macOS card generator: it audits the declared
+# fingerprints against the real keys on this host, generates the cards, then
+# audits the output PNGs — so a green run is proof the card shows the true
+# fingerprints and the images came out well-formed, not merely that a command
+# ran. The ssh-keygen/gpg/magick reads and the config sourcing live behind a
+# .sh seam (tools/key_card_audit.sh), per this project's own .sh/.rish boundary;
+# Rish owns the order, the assertions, and the go/no-go.
+#
+# Run from the repository root, after copying the config:
+#   cp tools/key-card.conf.example tools/key-card.conf   # fill in your details
+#   rishi/bin/rishi run tools/make_key_card.rish
+
+say "key-card: auditing declared fingerprints against real keys on this host…"
+let pre = run ["sh" "tools/key_card_audit.sh" "pre"]
+say pre.out
+assert pre.ok else "key-card: pre-generation fingerprint audit FAILED — refusing to render a card with a wrong fingerprint"
+
+say "key-card: rendering landscape + portrait cards…"
+let gen = run ["sh" "tools/make_key_card_macos.sh"]
+say gen.out
+assert gen.ok else "key-card: generation failed"
+
+say "key-card: auditing output PNGs…"
+let post = run ["sh" "tools/key_card_audit.sh" "post"]
+say post.out
+assert post.ok else "key-card: post-generation PNG audit FAILED"
+
+say "GREEN: key-card — fingerprints verified against real keys, cards rendered, PNGs valid."
