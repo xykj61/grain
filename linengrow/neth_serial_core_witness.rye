@@ -1,0 +1,95 @@
+//! linengrow/neth_serial_core_witness.rye — proves Neth's small serial core.
+//!
+//!   rye build linengrow/neth_serial_core_witness.rye -femit-bin=linengrow/bin/neth_serial_core_witness
+//!   linengrow/bin/neth_serial_core_witness
+//!
+//! Per external-research/20260714-041542_ironbeetle-patterns-for-the-neth-ladder.md
+//! pattern 1 and linengrow/neth_serial_core.rye. Three claims, each welcome
+//! or unwelcome on purpose:
+//!   1. Two independent calls, same prior log, same one new pre-signed
+//!      record, agree bit-for-bit on the new root and balances.
+//!   2. A record over the bound is refused with StepTooLarge, and the log
+//!      it was refused against is left byte-for-byte untouched.
+//!   3. The pre-signed record used throughout was built (and signed)
+//!      entirely outside the core call -- named in the printed record,
+//!      not just in a comment.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const kumara = @import("kumara.rye");
+const rc = @import("receipt_core.rye");
+const mc = @import("mala_core.rye");
+const core = @import("neth_serial_core.rye");
+
+const witness_version = "20260714.061500";
+
+fn run_selftest() !u8 {
+    const issuer_kp = kumara.keypair_from_seed(&mc.issuer_seed);
+    const holder_kp = kumara.keypair_from_seed(&mc.holder_seed);
+    var issuer_hex: [mc.pubkey_hex_len]u8 = undefined;
+    var holder_hex: [mc.pubkey_hex_len]u8 = undefined;
+    mc.hex_of_key(issuer_kp.public_key, &issuer_hex);
+    mc.hex_of_key(holder_kp.public_key, &holder_hex);
+
+    var log: [rc.max_log_len]u8 = undefined;
+    const log_len = try mc.build_welcome_log(&log, issuer_kp, holder_kp, &issuer_hex, &holder_hex);
+    print("neth-core: prior log -- {d} bytes (mint, send), as if delivered by an earlier pipelined stage\n", .{log_len});
+
+    // Build and sign the next record entirely outside the core -- this
+    // witness stands in for the pipelined stage that would do so in the
+    // real system (Comlink carriage handing over an already-signed record).
+    const send_back_fields = rc.FactFields{
+        .from = issuer_hex[0..],
+        .to = holder_hex[0..],
+        .amount = "50",
+        .memo = mc.memo_send,
+        .stamp = "20260714.061500",
+    };
+    const signed = try mc.sign_fact(send_back_fields, issuer_kp);
+    var line_buf: [rc.max_line_len]u8 = undefined;
+    const line_len = try rc.format_log_line(signed.sig, signed.canonical[0..signed.canonical_len], &line_buf);
+    const line = line_buf[0..line_len];
+    print("neth-core: one pre-signed record ready -- {d} bytes, under the {d}-byte bound\n", .{ line.len, core.max_append_bytes });
+    assert(line.len <= core.max_append_bytes);
+
+    // Welcome path: two independent calls, same inputs, from scratch --
+    // must agree bit-for-bit on the new root, mirroring the diverse-
+    // replica shape of the whole-log deterministic-root witness.
+    var log_1 = log;
+    var log_2 = log;
+    const result_1 = try core.append_and_reroot(&log_1, log_len, line, &issuer_hex, &holder_hex, issuer_kp.public_key, holder_kp.public_key);
+    const result_2 = try core.append_and_reroot(&log_2, log_len, line, &issuer_hex, &holder_hex, issuer_kp.public_key, holder_kp.public_key);
+
+    assert(result_1.new_log_len == result_2.new_log_len);
+    assert(std.mem.eql(u8, &result_1.root, &result_2.root));
+    assert(result_1.balances.issuer == result_2.balances.issuer);
+    assert(result_1.balances.holder == result_2.balances.holder);
+
+    print("neth-core: appended -- new log {d} bytes, issuer {d}, holder {d}\n", .{ result_1.new_log_len, result_1.balances.issuer, result_1.balances.holder });
+    print("neth-core: new root -- {x}\n", .{result_1.root});
+    assert(result_1.balances.issuer == 150);
+    assert(result_1.balances.holder == 850);
+
+    // Unwelcome path: a record over the bound is refused before it ever
+    // touches the log -- the bound is enforced, not merely stated.
+    var oversized: [1000]u8 = undefined;
+    @memset(&oversized, 'x');
+    var log_3 = log;
+    const refused = core.append_and_reroot(&log_3, log_len, &oversized, &issuer_hex, &holder_hex, issuer_kp.public_key, holder_kp.public_key);
+    if (refused) |_| {
+        return error.BoundNotEnforced;
+    } else |err| {
+        if (err != core.CoreError.StepTooLarge) return err;
+    }
+    assert(std.mem.eql(u8, &log_3, &log));
+    print("neth-core: oversized record (1000 bytes) refused with StepTooLarge, log left untouched -- GREEN unwelcome path\n", .{});
+
+    print("neth-core: version {s}\n", .{witness_version});
+    print("GREEN: Neth small serial core -- append+fold bounded and asserted; Comlink carriage, disk write, and record signing all named outside this call.\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}
