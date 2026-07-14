@@ -1,7 +1,7 @@
 # The Active-Designing Stack
 
 **Language:** EN
-**Last updated:** 2026-07-12 (Kaeden word · proven-seat G0 · Steep living twin)
+**Last updated:** 2026-07-14 (yonder pass — The Editor 980 + Rye astrology atelier folded to `yonder/` as far-horizon)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Foundation
 
@@ -68,7 +68,7 @@ Dated briefs carry `YYYYMMDD-HHMMSS_short-slug.md` filenames; this README is the
 | `20260706.185112` | [The witness bolt](20260706-185112_the-witness-bolt.md) | Minimal pinned catalog fixture for NS-L3 witnesses; small, chunk, and beaded variants |
 | `20260706.023912` | [The referential namespace — Mantra grows to hold it](20260706-023912_the-referential-namespace.md) | **recall** and **bolt** seated; NS-L1–L3 wire + batch chunking GREEN parity **166** |
 | `20260705.225412` | [Comlink device wire](20260705-225412_comlink-device-wire.md) | Virtio carriage for sealed datagram — sub-lap 1 fixture selftest GREEN |
-| `20260705-045012` | [Rye astrology atelier](20260705-045012_rye-astrology-atelier.md) | Charts and calculations in Rye — ephemeris seam, golden cast witness, SVG fold; counsel only |
+| `20260705-045012` | [Rye astrology atelier](yonder/20260705-045012_rye-astrology-atelier.md) | Charts and calculations in Rye — ephemeris seam, golden cast witness, SVG fold; counsel only. **Horizon — in `yonder/`** (well beyond the near-term roadmap) |
 | `20260704-211012` | [The Rye core and the shell](20260704-211012_the-rye-core-and-the-shell.md) | Lap law seated — core proves, shell witnesses; explicit subject, horizon, `preview`/`fold`, parity hygiene |
 | `20260703-202312` | [The marked value — types that travel](20260703-202312_the-marked-value.md) | Type-mark layer unified with crossing; absorb/express/tend triad; Tilak leads (RTAC); three laps dogfed by nightly packet |
 | `20260703-201612` | [The sealed crossing](20260703-201612_the-sealed-crossing.md) | Amphora vessel duty — **Landed** laps 1–3; kitchen twin [`002952`](../external-research/20260710-002952_sealed-crossing-plainly.md) · crossing plainly [`145313`](../external-research/20260710-145313_amphora-crossing-plainly.md) |
@@ -103,7 +103,7 @@ Dated briefs carry `YYYYMMDD-HHMMSS_short-slug.md` filenames; this README is the
 | `20260620-021212` | [977 · Flow of Values — How the System Moves Without Braiding](yonder/20260620-021212_flow-of-values.md) | A siloed foundation brief for the compositional law beneath the whole family: values transformed, moved, routed, and remembered — kept apart |
 | `20260620-020712` | [978 · Scribble, Lantern, and Lattice — Horizon Modules on One Value Grammar](20260620-020712_scribble-lantern-and-lattice.md) | A siloed design brief for the modules that extend our stack toward human-readable docs, GPU-aware editing, local inference, and honest tenso |
 | `20260620-012112` | [979 · Comlink Remoting — Value-Based State Sync Over the Bounded Network](yonder/20260620-012112_comlink-remoting.md) | A siloed design brief for remote access in the TAME Rye OS: Comlink carries terminal state as values over UDP, authenticated by owner keys,  |
-| `20260620-012012` | [980 · The Editor — Select, Then Act, Configured in Brix and Rishi](20260620-012012_the-editor.md) | A siloed design brief for the TAME editor: modal text editing that follows the select-then-act model, configured through Brix (settings) and |
+| `20260620-012012` | [980 · The Editor — Select, Then Act, Configured in Brix and Rishi](yonder/20260620-012012_the-editor.md) | A siloed design brief for the TAME editor: modal text editing, select-then-act, configured through Brix and Rishi. **Horizon — in `yonder/`** (rejoins its 977·979·981·982·983 siblings already there) |
 | `20260620-011412` | [981 · The Desktop — Brushstroke, Skate, and Rishi Composed for the Screen](yonder/20260620-011412_the-desktop.md) | A siloed design brief for the TAME desktop: Brushstroke as the compositor, Skate as the terminal, Rishi as the keybinding language, and ever |
 | `20260620-005112` | [982 · The Forge — Mantra Served, Brushstroke Drawn, Group Projects Welcome](yonder/20260620-005112_the-forge.md) | A siloed design brief for the forge we mean to build: a place where Mantra repositories are served, Brushstroke draws the surface, Comlink r |
 | `20260619-225712` | [983 · The Whole System — Every Module Composed on Its Own Ground](yonder/20260619-225712_the-whole-system.md) | A siloed design brief that names the complete system we are building: language, kernel, supervision, composition, memory, store, boot, shell |
