@@ -14,10 +14,21 @@
 - [x] Add macOS Finder/Spotlight/AppleDouble ignore family to `.gitignore` beside the existing Linux-host `.DS_Store` line; allow-list `old/` and `vere/`
 - [x] Seat a Pacific Time (Reno, NV) stamp convention for this local clone — [`context/specs/20260713-201910_pacific-time-local-clone-convention.md`](../context/specs/20260713-201910_pacific-time-local-clone-convention.md)
 - [ ] **gh CLI auth for `xykj61`** — device-flow login started; Kaeden completing the browser step
-- [ ] Add new SSH/GPG public keys to the `xykj61` GitHub account (via `gh` once authenticated) and Codeberg account (manual — no CLI equivalent)
-- [ ] Create `xykj61/urbit` (or the intended name) on GitHub and Codeberg, point `~/urbit` remotes at them
+- [x] Add new SSH/GPG public keys to the `xykj61` GitHub account (via `gh`) and Codeberg account (Kaeden, by hand) — both verified `20260713`–`20260714`
+- [x] Create `xykj61/urbit` on GitHub and Codeberg, point `~/urbit` remotes at them — pushed and signature-verified on both forges at commit `def0d3c7`
 - [x] **Pass 2, study 1** — macOS enclosure (Seatbelt/`sandbox-exec`) and QEMU-vs-`Virtualization.framework` — [`external-research/20260713-202929_macos-enclosure-and-qemu-vs-vz-study.md`](../external-research/20260713-202929_macos-enclosure-and-qemu-vs-vz-study.md); finding: keep QEMU + `-accel hvf` for the existing wire labs (lowest disruption, ARM64-native already), Pond's macOS enclosure wants its own Rye/Rishi SBPL-profile seam (real work, not a horizon) — study only, no lap opened
 - [ ] **Pass 2, remaining:** Azimuth contract address confirmation (web search, current date) and a Comlink↔Ethereum design sketch; `urbit/vere` issue triage via `gh` for recreation in the new fork
+
+### SOURCE.md ai-jail → macOS: granular adaptation (opened `20260713.211800`)
+
+*Cursor ships as a native `.app` on macOS with a `cursor` CLI wrapper (Homebrew-installed, confirmed on this Mac) — no AppImage, no `squashfs-root/AppRun`. The `--user-data-dir` / `--extensions-dir` flags `tools/cursor-jail.sh` already relies on exist unchanged in the macOS build, so the project-local state-directory model ports directly; only the sandbox layer itself (`bwrap` → Seatbelt) and the launch target (`AppRun` → `cursor`/`Cursor.app`) need new code.*
+
+- [ ] Author `tools/macos_sandbox_profile.rish` — a Rye/Rishi seed that renders an SBPL `(deny default)` profile from named allow-paths (project dir read+write, `/System` and toolchain paths read-only, one coarse network allow/deny switch), mirroring the `agent-jail`/`mkke/seatbelt` shape named in the study
+- [ ] Author `tools/cursor-jail-macos.sh` — execs `sandbox-exec -f <generated .sb> -- cursor --user-data-dir="$CURSOR_STATE/user-data" --extensions-dir="$CURSOR_STATE/extensions" "$REPO"`, same `enclosure.conf` variables as the Linux launcher where they still make sense
+- [ ] Witness: confirm a write attempt outside the project directory is denied under the profile, a write inside succeeds, and the network switch actually blocks/allows a real connection — same spirit as `tools/lane_kvm_refuse.rish`'s refuse-witness pattern
+- [ ] Decide and document the private-`$HOME` equivalent — macOS has no `--private-home` primitive; likely answer is a prepared substitute `HOME` directory pointed at via `HOME=` before the `sandbox-exec` call, scoped only to the launched process's environment
+- [ ] Extend `context/specs/enclosure-editors.md` with a macOS section alongside the existing Ubuntu/NixOS ones
+- [ ] Extend `SOURCE.md` Step 6 and Step 9 with a macOS variant path once the above is witnessed — not before, so the guide never describes an untested command
 - Session log: [`session-logs/20260713-201910_local-fork-pass1-restructure.bron`](../session-logs/20260713-201910_local-fork-pass1-restructure.bron)
 
 ## Now — product nib **430** · suite nib **433** · proven-seat · enclosure A→B · `lane_kvm`
