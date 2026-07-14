@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260714.034700
+editor Cursor
+model Opus 4.8 1M Max
+voice Rio 3
+host macOS 26.6 arm64 (Apple M2) — see context/specs/20260713-211800_local-host-system-hardware-anonymized.md
+title A careful active-designing yonder pass — two far-horizon briefs folded, the rest left as-is by design
+prompt Continue the yonder thread from the prior sitting (Keaton's invitation to fold far-horizon writings to yonder/, keeping near-term work one level deep), now on the active-designing folder I had deferred as its own careful sitting.
+think Measured before moving, the same discipline as the expanding-prompts pass: counted per-brief inbound links from living docs, excluding session-logs and work-in-progress/archive (immutable record, allowed to keep old paths) and the active-designing README index (which I repoint by hand). The audit took real time (a grep per file across the tree) but it is the honest way — I will not move a file that a living doc still points at.
+think The audit's finding is itself the main result, and it is a good one: active-designing is already well-curated. Only three top-level briefs have zero living cross-references, and of those only two are genuinely far-horizon-and-alive: The Editor (980) and the Rye astrology atelier. The third, the-shape-carries-the-bound, has a TAME canon passage awaiting Keaton's word — that is live/gated, not horizon, so it stays.
+think Moved exactly those two. The Editor (980) is the cleanest: its only non-index reference is in work-in-progress/archive (immutable), and its numbered siblings 977·979·981·982·983 are all already in yonder/, so this rejoins the series and completes its consistency. The astrology atelier is counsel-only and sits well beyond the near-term Glow/Neth/proposal roadmap; its only non-index reference is in expanding-prompts/yonder (already folded). Both repointed in the README index, verified twice that no living doc links either at its old top-level path — CLEAN.
+think Deliberately left Lotus (the DAW) in place even though it is conceptually far-horizon, because a living design brief (the-stack-and-the-surface) still cross-references it in its own body — moving it would edit a live brief's cross-reference for little gain, and Lotus is still woven into the named module surface. Also left the recently-landed hammocks (glass composition, steward sights, Open Asks views, Dimeroll laps) in place: a just-landed hammock is fresh design record, not forward-pointing horizon, and "yonder is a horizon, not a graveyard" — consumed-and-recent is better left until it ages or a dedicated archive pass, not swept now.
+obs The right outcome of a careful audit was a small move, not a big one — two files, because the folder was already tended. That is the project's own instinct (align what is already true rather than move what already serves) honored rather than overridden to look busy.
+file active-designing/yonder/20260620-012012_the-editor.md why: The Editor 980 folded to yonder, rejoining its numbered siblings
+file active-designing/yonder/20260705-045012_rye-astrology-atelier.md why: astrology atelier folded to yonder as far-horizon counsel-only
+file active-designing/README.md why: two index rows repointed to yonder/ and marked horizon; date bumped
+recommend keep-going — the active-designing pass is done and small by design; external-research remains its own careful sitting on Keaton's word (highest citation density of all the writings folders).
