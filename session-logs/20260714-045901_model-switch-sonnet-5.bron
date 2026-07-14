@@ -1,0 +1,14 @@
+format session-log-v1
+stamp 20260714.045901
+editor Cursor
+model Cursor Sonnet 5 1M Medium
+voice Rio 3
+host macOS 26.6 arm64 (Apple M2) — see context/specs/20260713-211800_local-host-system-hardware-anonymized.md
+title Note the model switch to Cursor Sonnet 5 1M Medium
+prompt Keaton asked to note a model switch to Sonnet 5 1M Medium and continue.
+think Updated the single source of truth (GLOW_PROFILE.bron's model field) and both session-logs rules to name the current model and the honest day-arc so far: Fable 5 1M Max -> Opus 4.8 1M Max (a Fable safety-filter auto-switch) -> Fable 5 1M Max -> Sonnet 5 1M Medium. Earlier dated logs keep whatever model they recorded and are never rewritten.
+obs Fourth model note today; the pattern is holding steady (one field of truth, two rule pointers, one small bron log per switch) without any drift.
+file GLOW_PROFILE.bron why: model field set to Cursor Sonnet 5 1M Medium (single source of truth)
+file .cursor/rules/session-logs.mdc why: current-model note updated, day-arc named
+file .claude/rules/session-logs.md why: same, mirrored
+recommend keep-going — small metadata note; ready for the next substantive task.
