@@ -18,6 +18,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 | Stamp | Log | Meaning |
 |-------|-----|---------|
+| 20260714.005658 | [The first native arm64 parity witness run — real build, real green, one real diagnosed gap](20260714-005658_first-native-arm64-parity-run.bron) | Pinned Zig 0.16.0 fetched + checksum-verified · rye/rishi built natively on this Mac · full pristine-std + SLC-1 GREEN · one Wayland-only gap fully diagnosed |
 | 20260714.004428 | [Reviving replaces renaming — active-reviving sibling to active-designing](20260714-004428_reviving-replaces-renaming.bron) | New reviving concept: re-grow elders into Glow as new artifacts born with their name · retires the mass-rename framing · Neth/doc-pipeline/Glow indexed as revivals |
 | 20260714.002123 | [Confirm Neth/Reya/Maze, shell is Rish/Rishi, names-in-code roles-in-pitch strategy](20260714-002123_naming-decisions-role-nesting.bron) | Three names confirmed · Dojo not adopted (Rish/Rishi) · recommended keep-our-names + Urbit-roles, no rename/re-nest · role map recorded |
 | 20260714.001017 | [Neth settlement layer — TigerBeetle-as-L2 design, honest naming and scope](20260714-001017_neth-mala-settlement-design.bron) | Core affirmed (TigerBeetle RSM = L2; WOV-TB pin revived) · Nethermind collision flagged · one anchor + one witness recommended · design/social-experiment only |
