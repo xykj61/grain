@@ -1,0 +1,33 @@
+# GLOW_HOST.bron — this host's toolchain and OS declaration.
+#
+# Copy this file to GLOW_HOST.bron at the repository root and fill in YOUR
+# values. GLOW_HOST.bron is gitignored (personal, machine-specific absolute
+# paths); only this .template is committed, so this works for anyone who
+# clones the fork. This is Glow OS's own root config — the sibling, in Bron,
+# to .claude/rules and .cursor/rules, but for the host and toolchain rather
+# than agent behavior.
+#
+# Read by: tools/glow_host_run.sh
+# See: external-research/20260714-005658_native-arm64-parity-witness-run.md
+# (the RYE_ZIG/RYE_LIB PATH-fallback footgun this file exists to close)
+
+# os: macos | linux | (uname -s, lowercased, first word)
+os macos
+# arch: aarch64 | x86_64 (uname -m; "arm64" reads as aarch64)
+arch aarch64
+
+# Absolute path to the pinned Zig 0.16.0 binary for THIS host's os/arch.
+# Fetch + checksum-verify per rye/README.md before pointing here — never trust
+# an unverified toolchain. See the witness-run doc above for the exact fetch
+# and the official checksum to verify against.
+rye_zig /absolute/path/to/vendor/zig-toolchain/zig
+
+# Absolute path to rye/lib (Rye's own standard library directory).
+rye_lib /absolute/path/to/rye/lib
+
+# The Zig version this toolchain reports (rye version prints it back to you;
+# confirm they match before trusting a build).
+zig_version 0.16.0
+
+# When this file was last confirmed correct on this host (Pacific stamp).
+checked 20260714.005658
