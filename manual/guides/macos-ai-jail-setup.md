@@ -1,11 +1,11 @@
 # Setting Up the Sandbox on macOS
 
 **Language:** EN
-**Version:** `20260714.073300`
+**Version:** `20260714.081500`
 **Style:** Radiant (see `../../context/RADIANT_STYLE.md`)
 **Voice:** Rio 3
 **Status:** Guide for the task — witnessed on this fork's own macOS host, including a real jailed-GUI launch and a live write-fence probe from inside a running jailed agent window; the Rish scripts below are the primary path, with their bash elders kept beside them
-**Versions, all enduring:** `20260714.052900` first page (bash launcher) · `060500` Rish-native pair · `070500` the GUI launch actually proven (app binary direct, `--no-sandbox`, Mach/IPC section) and upstream ai-jail's own new macOS backend adopted for CLI agents · `073300` two more findings from a live agent session: the multi-account SSH `IdentitiesOnly` collision and the GPG trustdb quirk
+**Versions, all enduring:** `20260714.052900` first page (bash launcher) · `060500` Rish-native pair · `070500` the GUI launch actually proven (app binary direct, `--no-sandbox`, Mach/IPC section) and upstream ai-jail's own new macOS backend adopted for CLI agents · `073300` two more findings from a live agent session: the multi-account SSH `IdentitiesOnly` collision and the GPG trustdb quirk · `081500` `--harden-home` closes the read side of the private-`$HOME` gap for named credential stores, with a dedicated jail-local key generator and an honest limit on self-testing from inside an already-jailed window
 
 ---
 
@@ -21,7 +21,7 @@ You are on macOS, and `SOURCE.md`'s Step 6 describes ai-jail. When this guide wa
 - **Writes are fenced** to this project's own directory, plus `/tmp` and its usual macOS relatives. Anywhere else on disk, a write is denied by the kernel itself — not by convention, not by a linter, by Seatbelt.
 - **Reads stay open everywhere.** This is a deliberate, named trade-off (see the study above): enumerating every path your toolchain needs to read from is a maintenance trap no serious sandbox-exec-based tool takes on. The write fence is the real boundary.
 - **Network is allowed by default**, and can be denied outright with one flag. There is no partial, per-host filtering at this layer — that would need a proxy in front, a separate later step.
-- **There is no macOS `--private-home`.** Your real `$HOME` stays readable inside the sandbox. If that matters for a specific session, ask for that as its own next step; this guide names the gap rather than pretending it is closed.
+- **There is no full macOS `--private-home`, yet `--harden-home` closes the part that matters most.** Your real `$HOME` stays broadly readable inside the sandbox by default; `--harden-home` denies reads specifically to the named credential stores (`~/.ssh`, `~/.gnupg`, `~/.aws`, and the rest — see "Denying the Real Credential Stores" below) without touching anything else. A full private-`$HOME` (hiding all of `$HOME`, not just the credential stores) stays a named, open gap.
 - **The jailed Cursor opens signed out on first run.** Your normal login lives in `~/Library/Application Support/Cursor` — the default profile, *outside* the fence — so the jail boots from its own fresh `.cursor-state/` instead. That is the isolation working, not a bug. Sign in once inside the jail; the state persists in `.cursor-state/` (gitignored), inside the fence.
 
 ## Launch the Jailed Cursor
@@ -60,6 +60,41 @@ rishi/bin/rishi run tools/cursor_jail_macos.rish --print-profile
 ```bash
 ./tools/cursor-jail-macos.sh [--no-network|--print-profile]
 ```
+
+## Denying the Real Credential Stores (`--harden-home`)
+
+Reads staying open everywhere (above) is a real trade-off, not a free one: combined with network allowed by default, an agent that reads your real `~/.ssh` or `~/.gnupg` and then reaches the network has an exfiltration path that needs no write at all. `--harden-home` closes exactly that path, without touching the general "reads stay open" trade-off for everything else:
+
+```bash
+rishi/bin/rishi run tools/cursor_jail_macos.rish --harden-home
+```
+
+It denies reads to a named list of real credential stores under `$HOME` — `~/.ssh`, `~/.gnupg`, `~/.aws`, `~/.config/gh`, `~/.terraform.d`, `~/.docker`, `~/.kube`, `~/.azure`, `~/.gcloud`, `~/.codeberg-token`, `~/.netrc`, `~/.git-credentials`, `~/.npmrc` — and leaves every other read exactly as open as the default profile. It is a **deny-only list of specific paths**, not a blanket "deny all dotfiles, allow back a few" rule: Apple's Seatbelt on this host resolves an overlapping allow/deny pair to **deny, no matter which rule is written first or which is more specific** (proven directly — an `(allow file-read* (literal ...))` placed *before* an overlapping `(deny file-read* (regex ...))` still denies). A blanket-deny-then-allow-back shape would have silently also denied `~/.gitconfig` and every shell rc file it tried to allow back; naming only the credential stores themselves sidesteps that trap entirely.
+
+**Before your first `--harden-home` launch**, generate and register dedicated jail-local keys — from an ordinary terminal, **outside any jail**:
+
+```bash
+cd ~/urbit
+rishi/bin/rishi run tools/generate_jail_local_keys_macos.rish
+```
+
+This makes a fresh SSH deploy key per forge and a passphrase-free, signing-only GPG key, all living under this project's own gitignored `.ssh/` and `.gnupg-rye/` — never your master identity, always revocable, always this one small scope (the same shape `SOURCE.md` Step 8c already names for the Linux launcher). It prints exactly what to paste into GitHub's and Codeberg's key settings; you do the pasting yourself, on purpose. Running key *generation* from outside any jail, rather than delegating it to the agent that will later use the keys, is a deliberate choice — a "dedicated, revocable" key means less if the same agent that will wield it also minted it.
+
+Once both keys are registered, wire git to the new local files (from inside the jail is fine for this part — it is just repo-local config, same shape as Step 7's SSH override):
+
+```bash
+git config --local core.sshCommand "ssh -i $PWD/.ssh/id_ed25519_jail_github -i $PWD/.ssh/id_ed25519_jail_codeberg -o IdentitiesOnly=yes"
+git config --local gpg.program "$PWD/.gnupg-rye/gpg.sh"   # a tiny wrapper exporting GNUPGHOME, per SOURCE.md Step 8c
+git config --local user.signingkey <the fingerprint generate_jail_local_keys_macos.rish printed>
+```
+
+**Prove it, from outside the jail.** `tools/cursor_jail_macos_harden_witness.rish` checks that `~/.ssh` and `~/.gnupg` are denied while `~/.gitconfig` and the project stay readable — but only when the shell running it is not already inside a jail:
+
+```bash
+rishi/bin/rishi run tools/cursor_jail_macos_harden_witness.rish
+```
+
+This is a real, named limit, not a convenience note: proven directly on this host, once a process is already `sandbox_apply`'d, a *second*, nested `sandbox_apply` carrying an explicit `(deny ...)` rule fails outright — `sandbox-exec: sandbox_apply: Operation not permitted` — even though the identical profile applies cleanly as a first, non-nested call, and even though an allow-only nested profile (the plain write-fence witness above) nests without issue. An agent already working inside a jailed window cannot fully self-certify `--harden-home` from within that same window; the witness says so plainly rather than reporting a false pass.
 
 ## Jail a Terminal Agent Instead (Upstream ai-jail)
 
@@ -127,7 +162,8 @@ timeout 10 git --no-pager log --show-signature -1 | cat
 ## What Is Still Open
 
 - No network egress *filtering* (only allow-all or deny-all) — a proxy-based follow-up, not built yet.
-- No private-`$HOME` substitute for the GUI launcher — reads of your real home directory stay open inside the sandbox. (Upstream ai-jail's `--private-home` covers this for CLI agents, via Seatbelt read-deny lists.)
+- No **full** private-`$HOME` substitute for the GUI launcher — `--harden-home` denies reads to the named credential stores, yet the rest of your real home directory stays open inside the sandbox by design (the "enumerating every path is a maintenance trap" trade-off still holds for everything that isn't a known secret store). Upstream ai-jail's `--private-home` covers the fuller version for CLI agents, via Seatbelt read-deny lists.
+- `--harden-home`'s witness cannot self-certify from inside an already-jailed window (named above) — it needs a human, or a CI runner, on the outside.
 - This guide covers Cursor specifically; a Zed-in-Seatbelt equivalent, mirroring `SOURCE.md`'s Step 9b, is a natural next guide once this one is proven in daily use.
 
 ---

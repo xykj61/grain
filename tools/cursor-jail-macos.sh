@@ -5,7 +5,17 @@
 #
 #   ./tools/cursor-jail-macos.sh
 #   ./tools/cursor-jail-macos.sh --no-network
+#   ./tools/cursor-jail-macos.sh --harden-home     # deny real ~/.ssh, ~/.gnupg, etc.
 #   ./tools/cursor-jail-macos.sh --print-profile   # show the generated SBPL, don't launch
+#
+# --harden-home denies reads to the real credential stores under $HOME
+# (~/.ssh, ~/.gnupg, ~/.aws, and the rest -- see the list below) rather
+# than a blanket dotfile deny, because Seatbelt on this host resolves an
+# overlapping allow/deny pair to deny regardless of order or specificity
+# -- a blanket deny-dotfiles-then-allow-back-.gitconfig approach silently
+# loses the allow-back. Generate and register dedicated jail-local keys
+# first with tools/generate_jail_local_keys_macos.rish, run from an
+# ordinary terminal outside any jail -- see the macOS guide.
 #
 # See: external-research/20260713-202929_macos-enclosure-and-qemu-vs-vz-study.md
 # and SOURCE.md Step 6/9 (the Linux/NixOS path this mirrors).
@@ -43,12 +53,15 @@ CURSOR_STATE="${CURSOR_STATE:-$REPO/.cursor-state}"
 CURSOR_BIN="${CURSOR_BIN:-/Applications/Cursor.app/Contents/MacOS/Cursor}"
 ALLOW_NETWORK=true
 PRINT_ONLY=false
+HARDEN_HOME=false
 
 usage() {
   cat <<'EOF'
 Usage: ./tools/cursor-jail-macos.sh [options]
 
   --no-network      Deny all network access inside the sandbox
+  --harden-home      Deny reads to real ~/.ssh, ~/.gnupg, and other
+                      credential stores under $HOME
   --print-profile    Print the generated SBPL profile and exit; do not launch
   -h, --help          Show this help
 EOF
@@ -58,6 +71,10 @@ while [ $# -gt 0 ]; do
   case "$1" in
     --no-network)
       ALLOW_NETWORK=false
+      shift
+      ;;
+    --harden-home)
+      HARDEN_HOME=true
       shift
       ;;
     --print-profile)
@@ -99,6 +116,30 @@ if [ "$ALLOW_NETWORK" = false ]; then
   net_rule="(deny network*)"
 fi
 
+harden_rules=""
+if [ "$HARDEN_HOME" = true ]; then
+  harden_rules="$(cat <<HARDEN
+; --harden-home: deny reads on the specific real credential stores
+; under \$HOME -- SSH/GPG private keys, cloud and forge tokens. Deny
+; always wins an overlap on this host, so the list stays a deny-only,
+; named set rather than a blanket dotfile deny with an allow-back.
+(deny file-read* (subpath "$HOME/.ssh"))
+(deny file-read* (subpath "$HOME/.gnupg"))
+(deny file-read* (subpath "$HOME/.aws"))
+(deny file-read* (subpath "$HOME/.config/gh"))
+(deny file-read* (subpath "$HOME/.terraform.d"))
+(deny file-read* (subpath "$HOME/.docker"))
+(deny file-read* (subpath "$HOME/.kube"))
+(deny file-read* (subpath "$HOME/.azure"))
+(deny file-read* (subpath "$HOME/.gcloud"))
+(deny file-read* (literal "$HOME/.codeberg-token"))
+(deny file-read* (literal "$HOME/.netrc"))
+(deny file-read* (literal "$HOME/.git-credentials"))
+(deny file-read* (literal "$HOME/.npmrc"))
+HARDEN
+)"
+fi
+
 PROFILE="$(cat <<SBPL
 (version 1)
 (deny default)
@@ -107,6 +148,7 @@ PROFILE="$(cat <<SBPL
 ; (git, node, python, cargo, and their transitive dependencies) is a
 ; maintenance trap; the write fence below is the real boundary.
 (allow file-read*)
+$harden_rules
 
 ; Writes fenced to the project directory and its own state.
 (allow file-write*

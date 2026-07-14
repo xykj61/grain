@@ -141,6 +141,7 @@ Icon
 # touch crypto test fixtures inside rye/lib/std.
 /.gnupg-rye/
 /.gnupg/
+/.ssh/
 /*.asc
 /*.gpg
 /*.sec
