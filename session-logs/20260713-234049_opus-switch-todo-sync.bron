@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260713.234049
+editor Cursor
+model Opus 4.8
+voice Rio 3
+host macOS 26.6 arm64 (Apple M2) — see context/specs/20260713-211800_local-host-system-hardware-anonymized.md
+title Model switch to Opus 4.8; clean stray READMEs, sync TASKS/ROADMAP, populate Cursor to-dos
+prompt Fable 5 hit a safety filter and the conversation auto-switched to Opus 4.8. Kaeden asked to continue, then summarize the chat, and to populate and complete-check-off the Cursor to-do list syncing with ROADMAP and TASKS in the best way recommended.
+think First act on the new model was to confirm repo state, not assume it. Found two uncommitted modifications — old/README.md and vere/old/README.md — the exact files a prior turn had accidentally overwritten. Diffed before touching: HEAD/committed held the correct original Urbit READMEs, but the working tree held stray duplicate copies of the fork-notes content that already lives (committed) in FORK_NOTES.md.
+think Restored both READMEs with git checkout rather than editing — the committed state was already correct, so the fix was to discard the stray working-tree copies. Confirmed FORK_NOTES.md files remain committed, so no fork notes were lost and the tree returned to clean.
+think Chose to sync in the documents first, then mirror into the Cursor to-do list, so the to-dos reflect the fork's own written plan rather than a separate ad-hoc list. Fixed a stale unchecked gh-auth box in TASKS.md (auth had in fact completed and keys were verified two turns earlier), added a Glow/naming/lineage design-thread subsection and an identity/rules/safety subsection so the whole session's fork work is tracked in one place, and updated the ROADMAP fork paragraph to separate landed from open.
+think Built the Cursor to-do list as a synced snapshot: landed work checked off (Pass 1, macOS enclosure, naming mapping, Glow naming, Nock/supplement/RISC-V/Vere studies, grain lineage, identity/rules), open work as pending and each labelled OPEN with whether it waits on Kaeden's word. Consolidated the several ai-jail follow-ups into one hardening item to keep the list actionable rather than sprawling.
+obs Every genuinely-open fork item is a decision or a witness-run, not mechanical coding: Azimuth/Comlink, vere issue migration, the rename decisions, seating the Glow supplement, the native-arm64 parity run, the rename-audit scope, and host FileVault. Named that plainly so the next session knows nothing here is a keep-going mechanical box.
+obs The highest-value non-code open item remains host FileVault being off — a work laptop holding SSH/GPG private keys on an unencrypted disk. Kept it visible at the top of the security follow-ups.
+file old/README.md why: restored to original Urbit content (discarded stray working-tree duplicate of FORK_NOTES)
+file vere/old/README.md why: same restore
+file work-in-progress/TASKS.md why: stale gh box checked; Glow/naming/lineage and identity/rules/safety subsections added
+file work-in-progress/ROADMAP.md why: fork paragraph now separates landed from open
+file session-logs/20260713-234049_opus-switch-todo-sync.bron why: this log
+recommend check-in — the session's build work is committed and both forges are in sync; the entire remaining fork backlog is Kaeden-decisions and witness-runs. Best next step is Kaeden picking one open thread (most likely the naming decisions, since they gate the largest downstream renames, or Azimuth/Comlink, since it needs a fresh external fact).
