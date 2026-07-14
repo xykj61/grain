@@ -104,7 +104,7 @@ git config --local gpg.program "$PWD/.gnupg-rye/gpg.sh"   # a tiny wrapper expor
 git config --local user.signingkey <the fingerprint generate_jail_local_keys_macos.rish printed>
 ```
 
-**Prove it, from outside the jail.** `tools/cursor_jail_macos_harden_witness.rish` checks that `~/.ssh` and `~/.gnupg` are denied while `~/.gitconfig` and the project stay readable — but only when the shell running it is not already inside a jail:
+**Prove it, from outside the jail.** `tools/cursor_jail_macos_harden_witness.rish` checks that `~/.ssh` and `~/.gnupg` are denied while `~/.gitconfig` and the project stay readable, yet only when the shell running it is not already inside a jail:
 
 ```bash
 rishi/bin/rishi run tools/cursor_jail_macos_harden_witness.rish
@@ -125,7 +125,7 @@ gh ssh-key add .ssh/id_ed25519_jail_github.pub --title "jail-only github"
 gh pr create --fill        # PRs, issues, CI checks, releases — all work
 ```
 
-`GH_TOKEN` provides auth directly, so `gh` never touches the denied real config; `GH_CONFIG_DIR` gives it a jail-local place to keep its own settings. Create the token as a **fine-grained personal access token scoped to this one repository** with only the permissions the task needs (Contents and Administration read/write covers key uploads, pushes, and PRs), store it in the gitignored `tools/gh-token.secret`, and revoke it when the work is done. This keeps everything `--harden-home` bought: a compromised jail sees a single-repo, revocable token, never your whole GitHub account. Copying `~/.config/gh` wholesale still works but drags your real broad token inside the fence — the scoped `GH_TOKEN` is the better trade.
+`GH_TOKEN` provides auth directly, so `gh` never touches the denied real config; `GH_CONFIG_DIR` gives it a jail-local place to keep its own settings. Create the token as a **fine-grained personal access token scoped to this one repository** with only the permissions the task needs (Contents and Administration read/write covers key uploads, pushes, and PRs), store it in the gitignored `tools/gh-token.secret`, and revoke it when the work is done. This keeps everything `--harden-home` bought: a compromised jail sees a single-repo, revocable token, never your whole GitHub account. Copying `~/.config/gh` wholesale still works, yet it drags your real broad token inside the fence — the scoped `GH_TOKEN` is the better trade.
 
 What you genuinely lose by *not* setting this up at all: `gh`'s conveniences — opening PRs, triaging issues, watching CI runs, cutting releases, managing keys — all from the terminal. None of it is irreplaceable (the web UI and plain `git` cover the essentials, and key uploads are a one-time paste), so whether the scoped-token setup is worth it depends on how much of your workflow runs through `gh`. For a mostly-`git` workflow, manual key pastes and the web UI are enough; for heavy PR/issue work, the scoped token pays for itself quickly.
 
@@ -190,7 +190,7 @@ timeout 10 git --no-pager log --show-signature -1 | cat
 - **`sandbox-exec: command not found`** — this script is macOS-only; you are not on macOS, or something is unusually broken about this install.
 - **`Cursor.app not found`** — install Cursor to `/Applications`, or point `CURSOR_BIN` in `tools/enclosure.conf` at the app's real binary (`…/Cursor.app/Contents/MacOS/Cursor` — not the CLI wrapper) and use the bash elder, which reads that file.
 - **A write you expected to work is denied** — the profile only allows writes under this project's own path, `/tmp`, and macOS's usual temp directories. Anything else needs its own named allowance, added deliberately, not opened wide. (A known cosmetic instance: a `SQLITE_READONLY` complaint from an analytics service on first boot — an outside-the-fence write being correctly refused.)
-- **The window never appears but the script printed success** — this was the CLI-wrapper trap (fact 1 above); if you see it again, confirm the launcher is executing the app binary directly (`--print-profile` and the `spawn` line in the script name it).
+- **The window never appears, yet the script printed success** — this was the CLI-wrapper trap (fact 1 above); if you see it again, confirm the launcher is executing the app binary directly (`--print-profile` and the `spawn` line in the script name it).
 
 ## What Is Still Open
 
