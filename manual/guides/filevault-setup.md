@@ -16,7 +16,7 @@ If you treat this laptop as a work machine — holding real SSH keys, a real GPG
 
 ## Before You Start
 
-- **Time:** initial encryption runs in the background while you keep working, but budget a few minutes of active attention now to start it correctly.
+- **Time:** initial encryption runs in the background while you keep working, yet budget a few minutes of active attention now to start it correctly.
 - **Power:** plug in. Encrypting a large disk on battery is unnecessary risk for no benefit.
 - **A place to keep one secret safe:** you will be given a 24-character recovery key. Decide *before* you start where it will live — a password manager's secure notes are the best choice. It must **not** be saved as a plain file on this same disk (that would defeat the entire point) and it must not be a photo left in an easily-searched phone gallery.
 

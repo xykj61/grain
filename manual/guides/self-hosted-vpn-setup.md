@@ -41,7 +41,7 @@ bash vpn_wireguard_server_setup.sh <this-laptop's-public-key-from-step-above>
 
 This installs WireGuard/`ufw`/`fail2ban`/`unattended-upgrades`, generates the server's own keypair (idempotently — safe to re-run), writes `/etc/wireguard/wg0.conf` with your laptop as the first peer, opens the firewall, and brings the interface up. It prints the server's public key and public IP at the end — paste both into `.wireguard/wg0-client.conf.template` on your Mac.
 
-This script's syntax is checked (`bash -n`) but it has **not** been run against a real VPS from this session, since no VPS exists here to run it on — it is a faithful transcription of the guide's own Steps 1–3, not yet an end-to-end-witnessed deploy. Treat the first real run on your own VPS as the actual proof.
+This script's syntax is checked (`bash -n`), yet it has not been run against a real VPS from this session, since no VPS exists here to run it on — it is a faithful transcription of the guide's own Steps 1–3, not yet an end-to-end-witnessed deploy. Treat the first real run on your own VPS as the actual proof.
 
 **Deliberately not automated:** hardening `sshd_config` (`PasswordAuthentication no`, etc.) — a mistake there can lock you out of a box with no console access, so the guide's own advice stands: do that one by hand, watching the result, before anything else touches the box.
 

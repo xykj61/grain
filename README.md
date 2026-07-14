@@ -42,7 +42,7 @@ The full onboarding surface for the four variants lives in the manual: [`manual/
 | Kernel spine | state as a pure fold over an append-only log of signed facts | the transition-function model | the stated spine, with running witnesses |
 | Modules | Rishi, Mantra, Comlink, Caravan, Tally, Brix, Bron, Aurora, Pond, Scribble, and more | the running seeds | many green today |
 
-**An honest word on status.** Most of what runs today runs under the project's prior name and is being carried into Glow OS by decision, not yet by a mass rename. The language, the interpreter, and the four variants are named and scoped — real design, real direction — but not yet things you can boot. Every page in this tree marks its own register: what a witness proves, versus what is proposed. Nothing here claims a feature its witnesses do not show. That discipline has a name and a home ([`context/TWO_ROOMS.md`](context/TWO_ROOMS.md)).
+**An honest word on status.** Most of what runs today runs under the project's prior name and is being carried into Glow OS by decision, not yet by a mass rename. The language, the interpreter, and the four variants are named and scoped — real design, real direction — yet not things you can boot quite yet. Every page in this tree marks its own register: what a witness proves, versus what is proposed. Nothing here claims a feature its witnesses do not show. That discipline has a name and a home ([`context/TWO_ROOMS.md`](context/TWO_ROOMS.md)).
 
 ---
 
