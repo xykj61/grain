@@ -340,6 +340,8 @@ Name the local `garden` (warm vocabulary — Tally's future owned concept) or `a
 
 **On static allocation.** TigerBeetle allocates all memory at startup and frees nothing after, a discipline its database domain rewards with zero latency spikes and no use-after-free. We adopt the spirit fully — bound everything, name every budget — and we adopt the letter where the domain matches: freestanding Aurora paths favor `FixedBufferAllocator` and Tally regions sized up front. For hosted seeds and tools, the bounded `init.arena` season is our deliberate, honest choice: a single arena, released at the end of its season, rather than per-call churn. We name this difference plainly rather than claim a rule we do not yet keep.
 
+**Release-after-one-checkpoint, where a rewind could still need it.** In a crash-recoverable, append-only, checkpointed subsystem — Neth's root storage, Amber's cellar, Mantra's history — a resource finished with is **not freed immediately**. It is released only after one checkpoint has passed, because a crash that rewinds the system to before the replacement was durably written could still need the thing that looked done. The deferral is cheap and closes a whole class of use-after-rewind faults. This is the crash-safety companion to the *written-is-not-acknowledged* rule (a thing becomes true for the system only when the one authoritative record admits it). Siloed from the IronBeetle build stream — study [`../external-research/20260714-041542_ironbeetle-patterns-for-the-neth-ladder.md`](../external-research/20260714-041542_ironbeetle-patterns-for-the-neth-ladder.md). It applies only where a checkpoint/rewind model exists; ordinary bounded season memory keeps its plain end-of-season release.
+
 ---
 
 ## Brix Supplement
