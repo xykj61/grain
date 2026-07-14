@@ -19,16 +19,18 @@
 - [x] **Pass 2, study 1** — macOS enclosure (Seatbelt/`sandbox-exec`) and QEMU-vs-`Virtualization.framework` — [`external-research/20260713-202929_macos-enclosure-and-qemu-vs-vz-study.md`](../external-research/20260713-202929_macos-enclosure-and-qemu-vs-vz-study.md); finding: keep QEMU + `-accel hvf` for the existing wire labs (lowest disruption, ARM64-native already), Pond's macOS enclosure wants its own Rye/Rishi SBPL-profile seam (real work, not a horizon) — study only, no lap opened
 - [ ] **Pass 2, remaining:** Azimuth contract address confirmation (web search, current date) and a Comlink↔Ethereum design sketch; `urbit/vere` issue triage via `gh` for recreation in the new fork
 
-### SOURCE.md ai-jail → macOS: granular adaptation (opened `20260713.211800`)
+### SOURCE.md ai-jail → macOS: granular adaptation (opened `20260713.211800`, first landed `20260714.052900`)
 
-*Cursor ships as a native `.app` on macOS with a `cursor` CLI wrapper (Homebrew-installed, confirmed on this Mac) — no AppImage, no `squashfs-root/AppRun`. The `--user-data-dir` / `--extensions-dir` flags `tools/cursor-jail.sh` already relies on exist unchanged in the macOS build, so the project-local state-directory model ports directly; only the sandbox layer itself (`bwrap` → Seatbelt) and the launch target (`AppRun` → `cursor`/`Cursor.app`) need new code.*
+*Cursor ships as a native `.app` on macOS with a `cursor` CLI wrapper (Homebrew-installed, confirmed on this Mac) — no AppImage, no `squashfs-root/AppRun`. The `--user-data-dir` / `--extensions-dir` flags `tools/cursor-jail.sh` already relies on exist unchanged in the macOS build, so the project-local state-directory model ports directly.*
 
-- [ ] Author `tools/macos_sandbox_profile.rish` — a Rye/Rishi seed that renders an SBPL `(deny default)` profile from named allow-paths (project dir read+write, `/System` and toolchain paths read-only, one coarse network allow/deny switch), mirroring the `agent-jail`/`mkke/seatbelt` shape named in the study
-- [ ] Author `tools/cursor-jail-macos.sh` — execs `sandbox-exec -f <generated .sb> -- cursor --user-data-dir="$CURSOR_STATE/user-data" --extensions-dir="$CURSOR_STATE/extensions" "$REPO"`, same `enclosure.conf` variables as the Linux launcher where they still make sense
-- [ ] Witness: confirm a write attempt outside the project directory is denied under the profile, a write inside succeeds, and the network switch actually blocks/allows a real connection — same spirit as `tools/lane_kvm_refuse.rish`'s refuse-witness pattern
-- [ ] Decide and document the private-`$HOME` equivalent — macOS has no `--private-home` primitive; likely answer is a prepared substitute `HOME` directory pointed at via `HOME=` before the `sandbox-exec` call, scoped only to the launched process's environment
+- [x] Author `tools/cursor-jail-macos.sh` — a shell launcher (not yet the Rye/Rishi seed originally proposed; landed as bash first, matching `tools/cursor-jail.sh`'s own POSIX-seam precedent) that generates an SBPL `(deny default)` profile inline and execs `sandbox-exec -f <profile> -- cursor --user-data-dir=... --extensions-dir=... "$REPO"` — [`tools/cursor-jail-macos.sh`](../tools/cursor-jail-macos.sh)
+- [x] Witness: `tools/cursor_jail_macos_witness.sh` — **both green on this host** `20260714.052900`: write inside the project succeeds, write outside (to real `$HOME`) is denied with `Operation not permitted`, confirmed with no leaked file
+- [x] Guide: [`manual/guides/macos-ai-jail-setup.md`](../manual/guides/macos-ai-jail-setup.md) — the practical setup and troubleshooting path, honest about what is still open
+- [ ] A future Rye/Rishi-native `tools/macos_sandbox_profile.rish` seed, replacing the bash SBPL generation, once Rishi's own hosted build is proven on this Mac's arm64 (ties to the RISC-V/ARM64 parity witness-run item)
+- [ ] Network egress *filtering* (proxy-based, allow-list by host) — the current script only offers allow-all or deny-all
+- [ ] Decide and document the private-`$HOME` equivalent — named as an open gap in the guide; not yet built
 - [ ] Extend `context/specs/enclosure-editors.md` with a macOS section alongside the existing Ubuntu/NixOS ones
-- [ ] Extend `SOURCE.md` Step 6 and Step 9 with a macOS variant path once the above is witnessed — not before, so the guide never describes an untested command
+- [ ] Extend `SOURCE.md` Step 6 and Step 9 with a macOS variant path — the guide above stands alone for now; folding it into `SOURCE.md` itself is a small follow-up
 - Session log: [`session-logs/20260713-201910_local-fork-pass1-restructure.bron`](../session-logs/20260713-201910_local-fork-pass1-restructure.bron)
 
 ## Now — product nib **430** · suite nib **433** · proven-seat · enclosure A→B · `lane_kvm`
