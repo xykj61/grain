@@ -36,6 +36,10 @@ Reference any related issues, links, papers, etc. here.
 
 When no tracking issue exists yet — common in this fork's earlier, exploratory passes — say so plainly rather than inventing a number: `No tracking issue; see the linked session log for context.`
 
+## Pitching Beyond This Fork
+
+A commit or proposal substantial enough to matter past this fork's own tree may carry a **Galaxy Pitch** block, formatted for Urbit's real Azimuth galaxy holders — see [`.claude/rules/azimuth-galaxy-proposal-format.md`](.claude/rules/azimuth-galaxy-proposal-format.md) / [`.cursor/rules/azimuth-galaxy-proposal-format.mdc`](.cursor/rules/azimuth-galaxy-proposal-format.mdc). Most commits carry no such block — it is earned, not default.
+
 ## Signing
 
 Every commit is GPG-signed. This fork's own signing key is recorded at [`PUBKEYS.md`](PUBKEYS.md); `.claude/rules/git-signing.md` and `.cursor/rules/git-signing.mdc` govern the discipline (never `--no-gpg-sign`, never `--no-verify`).
