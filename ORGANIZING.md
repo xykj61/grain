@@ -53,9 +53,9 @@ Read the sections below when you wonder where a new file belongs. When a season'
 
 **`vendor/`** — third-party source the build leans on, local and unmodified.
 
-**`old/`** — this fork's own predecessor material, kept whole rather than discarded: the original `urbit/urbit` tree this fork's `.git` history descends from, plus a legacy personal collection (`nockchain`, `urbit.org`) that predated the fork. Each subfolder keeps its own original `README.md` untouched; [`old/FORK_NOTES.md`](old/FORK_NOTES.md) names what sits here and why. See [`context/specs/20260713-222416_new-journey-identity-marker.md`](context/specs/20260713-222416_new-journey-identity-marker.md) for the fork's own identity seam.
+**`old/`** — this proposal's own predecessor material, kept whole rather than discarded: the original `urbit/urbit` tree this project's `.git` history descends from, plus a legacy personal collection (`nockchain`, `urbit.org`) that predated the downstream work. Each subfolder keeps its own original `README.md` untouched; [`old/PROPOSAL_NOTES.md`](old/PROPOSAL_NOTES.md) names what sits here and why. See [`context/specs/20260713-222416_new-journey-identity-marker.md`](context/specs/20260713-222416_new-journey-identity-marker.md) for the project's own identity seam.
 
-**`vere/`** — the `urbit/vere` runtime, forked the same way as the top-level project: `vere/old/` holds the original tree, and `vere/`'s own `.git` history now lives outside this project at `~/.git-vere-backup/` rather than inside it, per this fork's own chosen variant for that module.
+**`vere/`** — the `urbit/vere` runtime, cloned downstream the same way as the top-level project: `vere/old/` holds the original tree, and `vere/`'s own `.git` history now lives outside this project at `~/.git-vere-backup/` rather than inside it, per this project's own chosen variant for that module.
 
 **Module homes** — [`rye/README.md`](rye/README.md) · [`rishi/README.md`](rishi/README.md) · [`tally/README.md`](tally/README.md) · [`caravan/README.md`](caravan/README.md) · [`mantra/README.md`](mantra/README.md) · [`comlink/README.md`](comlink/README.md) · [`pond/README.md`](pond/README.md) · [`aurora/README.md`](aurora/README.md) · [`brushstroke/`](brushstroke/) · [`linengrow/`](linengrow/) (vision until graduation), and the rest: each grows a seed toward a running whole.
 
@@ -100,6 +100,8 @@ The placements for any given season are recorded in `session-logs/` — what mov
 ## The One Clock
 
 Every dated artifact names itself `YYYYMMDD-HHMMSS_short-slug.md`. Later is always larger. Living documents (`README.md`, `ROADMAP.md`, `TASKS.md`, the discipline files) carry **Last updated** and evolve in place. Full law: `context/specs/20260627-102012_one-clock-naming-law.md`.
+
+This one stamp is Glow's **warm-aura date atom**, and it renders exactly three ways: a version string `YYYYMMDD.HHMMSS` (dot), a filename stamp `YYYYMMDD-HHMMSS_slug` (hyphen), and a **dated folder bare `YYYYMMDD`** (day precision — the `session-logs/archive/20260619/` pattern every archive fold matches, never slugged or counted). Naming and TAME framing: `context/specs/20260714-024800_warm-aura-date-atom-naming.md`.
 
 ---
 
