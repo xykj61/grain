@@ -19,11 +19,11 @@ The heart of the template is a choice among **four OS variants**. They are not f
 | Variant | What it is | Status |
 |---|---|---|
 | **Reya** | An OS variant; the diverse-redundant twin of Riyo | Name confirmed; not yet built |
-| **Riyo** | An OS variant; the diverse-redundant twin of Reya | Name proposed; not yet built |
-| **Trey** | An OS variant | Name proposed; not yet built |
-| **Triz** | An OS variant | Name proposed; not yet built |
+| **Riyo** | An OS variant; the diverse-redundant twin of Reya | Name confirmed; not yet built |
+| **Trey** | An OS variant; the diverse-redundant twin of Triz | Name confirmed; not yet built |
+| **Triz** | An OS variant; the diverse-redundant twin of Trey | Name confirmed; not yet built |
 
-**Why more than one?** Safety leads every decision in this tree (that is what TAME Guidance means by "safety first"). Two honest, independently-written implementations of the same intent mean a single implementation mistake cannot take down the only copy you have — the same principle as N-version programming, applied at the scale of a whole operating system. Reya and Riyo are that diverse-redundant pair: they must agree on every externally-visible behavior, checked by one shared witness suite both must pass identically, and may differ only in internal detail. Whether Trey and Triz mirror that pairing is an open question, recorded honestly in [`context/specs/20260713-235600_names-awaiting-confirmation.md`](context/specs/20260713-235600_names-awaiting-confirmation.md).
+**Why more than one?** Safety leads every decision in this tree (that is what TAME Guidance means by "safety first"). Two honest, independently-written implementations of the same intent mean a single implementation mistake cannot take down the only copy you have — the same principle as N-version programming, applied at the scale of a whole operating system. The four variants form **two diverse-redundant pairs** — Riyo/Reya and Trey/Triz — where each pair must agree on every externally-visible behavior, checked by one shared witness suite both must pass identically, and may differ only in internal detail. All four names and the two-pair symmetry are confirmed; the one thing still to settle, at build time, is the *shape* of that redundancy (two codebases from one spec, or one codebase with two independently-verified paths), recorded in [`context/specs/20260713-235600_names-awaiting-confirmation.md`](context/specs/20260713-235600_names-awaiting-confirmation.md).
 
 **How you would choose one.** A boot reads a signed, verified value naming which variant to wake — the design is in [`external-research/20260714-013700_aurora-vere-arvo-boot-fusion-and-kelvin-strategy.md`](external-research/20260714-013700_aurora-vere-arvo-boot-fusion-and-kelvin-strategy.md). Today the four variants are **named and scoped, not yet bootable**; the selection mechanism is designed as a small, reviewable step, not yet built. When you copy a command from these docs, the ship name in it is always a deliberately invalid placeholder such as `~acme-corp-test-ship` — never a real point on the live network.
 

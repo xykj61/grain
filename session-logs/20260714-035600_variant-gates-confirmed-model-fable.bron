@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260714.035600
+editor Cursor
+model Fable 5 1M Max
+voice Rio 3
+host macOS 26.6 arm64 (Apple M2) — see context/specs/20260713-211800_local-host-system-hardware-anonymized.md
+title All four OS-variant gates confirmed; model switched back to Fable 5 1M Max
+prompt Keaton said "back to Fable 5 1M Max" and "yes approve to gates for reya riyo trey triz to all" — approving all four variant names — alongside the Pool proposal (logged separately).
+think Recorded the model switch back to Fable 5 1M Max in the single source of truth (GLOW_PROFILE.bron model field) and updated both session-logs rules to name it and the honest day-arc: Fable -> Opus (safety-filter auto-switch) -> Fable. Earlier dated logs keep whatever model they recorded and are never rewritten.
+think Read "approve to gates for reya riyo trey triz to all" as confirming all four variant NAMES and the two-pair symmetry — Riyo/Reya and Trey/Triz each a diverse-redundant pair — since Reya was already confirmed and "to all" naturally extends the pairing the four-variant design always carried. Confirmed Riyo, Trey, Triz (Reya already done) and seated the two-pair symmetry.
+think Kept one thing carefully separate rather than over-read the approval: the NAMES and the pairing are settled, but the IMPLEMENTATION SHAPE of diverse redundancy (two independent codebases from one spec, or one codebase with two independently-verified compile/execution paths) is a real build-time engineering choice with different costs, not a naming gate — so I left it as an open build-time row, not swept into the confirmation.
+think Synced every place the variants appeared with a status: names-awaiting-confirmation (moved to Settled), the glow-os overview and variants README and variant template, the root README table, and the Keaton-name/Glow-OS umbrella spec — each now says all four confirmed and names the two pairs, on-touch, with the build-shape question named as the one thing still open.
+obs The confirmation collapses a cluster of open naming questions into one clean remaining engineering choice. The four-variant design is now fully named; what is left is how to build the redundancy, which rightly waits until the first variant is built.
+file GLOW_PROFILE.bron why: model field set to Fable 5 1M Max (single source of truth)
+file .cursor/rules/session-logs.mdc why: current-model note updated to Fable 5, day-arc named
+file .claude/rules/session-logs.md why: same, mirrored
+file context/specs/20260713-235600_names-awaiting-confirmation.md why: Riyo/Trey/Triz + two-pair symmetry moved to Settled; build-shape left open
+file manual/glow-os/overview.md why: variants row + pairing prose updated to confirmed
+file manual/glow-os/variants/README.md why: all four confirmed, two pairs named, build-shape the remaining question
+file manual/glow-os/variants/_variant-template.md why: pairing note updated from awaiting to confirmed
+file README.md why: variant table + why-more-than-one prose updated to two confirmed pairs
+file context/specs/20260713-235455_keaton-name-and-glow-os-umbrella.md why: variant row updated to all-four-confirmed
+recommend keep-going — names settled; the diverse-redundancy build shape is the one remaining variant decision, and it rightly waits for the first build.

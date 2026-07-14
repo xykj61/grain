@@ -19,13 +19,13 @@
 | Language | **Glow** | the fused Rye-Hoon language, keeping Hoon's runes over TAME-bounded semantics | proposed; scoped, not built |
 | Interpreter | **Nock interpreter** | runs Glow's compiled forms | scoped (Nock 4K), not built |
 | Umbrella | **Glow OS** | the whole system, by Keaton Dunsford / `xykj61` | named; was Rye OS |
-| Variants | **Reya · Riyo · Trey · Triz** | four switchable OS builds, all in Glow | named; awaiting confirm |
+| Variants | **Reya · Riyo · Trey · Triz** | four switchable OS builds, all in Glow | **all four confirmed** `20260714.035600` |
 | Kernel spine | state as a pure fold over an append-only log of signed facts | the transition-function model | already this fork's stated spine |
 | Modules | Rishi, Mantra, Comlink, Caravan, Tally, Brix, Bron, Aurora, Pond, Scribble, and the rest | the running seeds | many green today under the prior name |
 
 ## Why Four Variants
 
-The four variants are not four different systems — they are **one design, built more than once, on purpose.** Riyo and Reya are a diverse-redundant pair: the same intent implemented independently, so a single implementation mistake cannot take down the only copy. This is safety-first, TAME's own first value, expressed at the whole-OS scale. Whether Trey and Triz mirror that pairing is still open ([`../../context/specs/20260713-235600_names-awaiting-confirmation.md`](../../context/specs/20260713-235600_names-awaiting-confirmation.md)).
+The four variants are not four different systems — they are **one design, built more than once, on purpose.** They form **two diverse-redundant pairs** — Riyo/Reya and Trey/Triz — where each pair is the same intent implemented independently, so a single implementation mistake cannot take down the only copy. This is safety-first, TAME's own first value, expressed at the whole-OS scale. All four names and the two-pair symmetry are confirmed (`20260714.035600`); the one thing still to decide, at build time, is the *shape* of the redundancy — two codebases from one spec, or one codebase with two independently-verified paths ([`../../context/specs/20260713-235600_names-awaiting-confirmation.md`](../../context/specs/20260713-235600_names-awaiting-confirmation.md)).
 
 ## Glow, the Language Beneath
 
