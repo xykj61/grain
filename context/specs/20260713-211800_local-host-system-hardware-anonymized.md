@@ -37,7 +37,7 @@ A working record of the Mac this `~/urbit` clone lives on, gathered for Kaeden's
 
 | Control | State | Read on a work machine |
 |---|---|---|
-| **FileVault (disk encryption)** | **Off** | **The single highest-priority fix here.** A work laptop holding SSH/GPG private key material and `gh` OAuth tokens on an unencrypted disk means a stolen or lost machine hands over everything the moment the disk is read directly, bypassing the login password entirely. Turn on in **System Settings → Privacy & Security → FileVault**; save the recovery key somewhere that is not this machine (a password manager's secure notes, or printed and locked away — never a plain file on the same disk) |
+| **FileVault (disk encryption)** | **On — encryption finished** (confirmed `20260714.053400` via `fdesetup status` and in System Settings) | **Closed.** Was the single highest-priority fix; the disk is now unreadable without the login password or the recovery key. The recovery key is saved to 1Password as a secure note — the right home for it, off this machine, in the one place meant for exactly this. Guide: [`../../manual/guides/filevault-setup.md`](../../manual/guides/filevault-setup.md) |
 | **System Integrity Protection (SIP)** | Enabled | Good — leave it on; it is the boundary that keeps a compromised user-level process from rewriting system binaries or code-signing enforcement itself |
 | **Gatekeeper** | Enabled (`assessments enabled`) | Good — leave it on; it is what makes unsigned/unnotarized code ask before it runs |
 | **Screen lock delay** | Immediate | Good — the screen locks the instant it sleeps or is closed, rather than after a grace window |
