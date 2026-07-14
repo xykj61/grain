@@ -55,4 +55,17 @@ This is one Urbit-grants-sized PR: one directory, one new subfolder, a bounded a
 
 ---
 
+## Conclusion — the archive process, settled `20260714.000100` (Pacific)
+
+On review with Keaton, the archive process **concludes with the conventions the tree already keeps**, and makes no bulk pre-today move:
+
+- **`session-logs/`** already folds closed days under `archive/YYYYMMDD/` (20260619 onward, folded). Working as designed.
+- **`expanding-prompts/`** already sends consumed prompts to `yonder/` — 73 of them there today. That *is* this directory's archive, under its own name; it needs no separate `archive/`.
+- **`active-designing/`** keeps its three-tier `active / yonder / archive` shape; **`counsel/`** stays "as filed" by its own law; **`context/`, `foundations/`, `strengthening-compiler/`** keep their deliberate roles.
+- **No blanket flatten.** Moving the ~1,100 pre-today documents into one shape would break the inbound references that "references are promises" protects, for no gain the per-directory conventions do not already provide.
+
+The archive process is therefore **complete** in the only form that does not damage the tree: each directory archives in its own established way, and the whole is held together by the naming-transition and new-journey markers rather than by relocation. Any future narrowing (a specific stale file to `yonder/`) is an on-touch move, not a sweep.
+
+---
+
 *May the tree keep the shape that already serves it, and may we archive only what has truly gone quiet, never what still has a role to play.*
