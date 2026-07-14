@@ -16,6 +16,8 @@
 
 **Glow OS** is Keaton Dunsford's fork of Urbit — the project formerly named Rye OS — written in **Glow**, the fused Rye-Hoon language. One language, one value model, one law (TAME Guidance), and **four switchable OS variants** — Reya, Riyo, Trey, and Triz — that a person can dual/tri/quad-boot between. The naming hierarchy is settled in [`../../context/specs/20260713-235455_keaton-name-and-glow-os-umbrella.md`](../../context/specs/20260713-235455_keaton-name-and-glow-os-umbrella.md).
 
+**Names in code, roles in the pitch.** Glow OS keeps its own module names in the code (Mantra, Brix, Rish/Rishi, Brushstroke, Realidream, Skate, Comlink, and the rest) and speaks Urbit's vane names as *roles* when pitching to the Urbit community (Mantra is our Clay, Brix our Ford, Rish/Rishi our Dojo, Realidream our Landscape, Comlink our Ames). The full role map is in [`../../context/specs/20260714-002123_naming-decisions-and-role-nesting.md`](../../context/specs/20260714-002123_naming-decisions-and-role-nesting.md). The shell is **Rish** in this reference-manual register and **Rishi** in tutorials.
+
 These docs deliberately mirror the shape of Urbit's own documentation — an overview, a getting-started path, and per-variant reference — adapted to Glow OS's new direction. Where Urbit's docs teach one system, ours teach one system with four interchangeable variants, so the per-variant pages are generated from a single shared template.
 
 ## The Rooms
