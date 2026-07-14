@@ -36,7 +36,7 @@ model Cursor Sonnet 5 1M Medium
 voice Rio 3
 host macOS 26.6 arm64 (Apple M2) — see context/specs/20260713-211800_local-host-system-hardware-anonymized.md
 title short title
-prompt what Kaeden asked
+prompt what Keaton asked
 think step of reasoning
 think another step
 obs observation or trade-off
