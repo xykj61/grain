@@ -23,6 +23,8 @@ The lane grows by the same law as the code: reference specifications open only w
 - **`tutorials/run-record-and-failures.md`** — the four run-record fields and RW-4 failure paths.
 - **`guides/macos-ai-jail-setup.md`** — the macOS sandbox-exec enclosure, witnessed green.
 - **`guides/self-hosted-vpn-setup.md`** — the self-hosted WireGuard VPN, client half witnessed here, server half a real deploy artifact for your own VPS.
+- **`guides/key-cards-setup.md`** — making your identity key cards (SSH + GPG fingerprints as a scannable, printable image), audited end to end on macOS.
+- **`guides/filevault-setup.md`** — turning on macOS disk encryption, the single highest-priority security fix for a work machine.
 
 *Next rooms, in season: Aurora interface reference when the surface stabilizes; utility pages rendered from their own `.bron` man records when the toolset's first lap lands.*
 

@@ -62,12 +62,11 @@ The one caution:
 
 **Recommendation: confirm Ojjo as the O-vane, and build it correctness-first (lap 1 = conformance, no timing), timing-second (lap 2 = the measured comparison, host-stamped).** The name is apt, quiet, and teaches its symmetric discipline; the design is the project's own values pointed at a real question. Denying it is reasonable only if benchmarking is judged premature before Glow itself is built — a fair call, since Ojjo has nothing to measure until there is a Glow program to run. In that case it is a *named horizon vane*, not a today lap.
 
-## Open Questions (for Keaton's word)
+## Resolved (`20260714.050500`)
 
 - **The name Ojjo is confirmed** (`20260714.034900`), as the O-vane in the proposed vane sequence — recorded in [`../context/specs/20260713-235600_names-awaiting-confirmation.md`](../context/specs/20260713-235600_names-awaiting-confirmation.md) and `../context/LEXICON.md`.
-- **Now or horizon? (still open)** Ojjo cannot measure anything until Glow can run a program. Is it seated as a named horizon vane now, and built when Glow's first program exists — or deferred entirely until then?
-- **Where does it live** — as a vane proposal in the Maze nursery until Glow is real, or directly named as the O-vane now?
-- **Correctness-first laps** — is the lap-1-conformance / lap-2-timing split the right shape, or should timing come sooner?
+- **Build timing confirmed:** Ojjo is seated **now** as a named horizon vane; lap 1 (correctness-first, no timing) opens the day Glow runs its first program.
+- **Correctness-first laps confirmed:** the lap-1-conformance / lap-2-timing split stands as designed above.
 
 ---
 

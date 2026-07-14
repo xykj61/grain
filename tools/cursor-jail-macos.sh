@@ -110,6 +110,15 @@ PROFILE="$(cat <<SBPL
   (subpath "/private/tmp")
   (subpath "/private/var/folders"))
 
+; /dev/null (and its siblings) are not paths under the write fence above, and
+; the deny-default denies them too -- but Cursor's own CLI wrapper writes to
+; /dev/null on startup (redirecting output while it resolves its app path),
+; so without this the wrapper itself fails before Cursor ever launches. This
+; is not a write anyone can read data back from or escalate through -- it is
+; the standard "discard" device -- so allowing it plainly does not weaken the
+; fence above.
+(allow file-write-data (literal "/dev/null"))
+
 ; Process exec/fork -- Cursor spawns helper processes, extension hosts,
 ; language servers, and shells; all of that stays inside this same profile
 ; since a child inherits its parent's sandbox on macOS.

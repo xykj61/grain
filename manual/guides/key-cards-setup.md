@@ -54,7 +54,7 @@ brew install qrencode imagemagick
 rishi/bin/rishi run tools/make_key_card.rish
 ```
 
-The orchestrator does three things in order, and stops loudly if any fails: it audits your declared fingerprints against your real keys, renders the landscape and portrait cards, then audits that the output images came out valid and correctly shaped. A green run means the whole chain held — the fingerprints on the card are the true ones, and the images are well-formed. The monospace font resolves automatically: Fira Code if you have installed it, otherwise Menlo, which ships on every Mac.
+The orchestrator does three things in order, and stops loudly if any fails: it audits your declared fingerprints against your real keys, renders the landscape and portrait cards, then audits that the output images came out valid and correctly shaped. A green run means the whole chain held — the fingerprints on the card are the true ones, and the images are well-formed. **The font is Menlo** — it ships on every Mac, needs no install step, and is the settled choice for this path; no Fira Code lookup or install is needed.
 
 ### On Linux
 
@@ -84,7 +84,7 @@ Everything here runs inside the macOS `sandbox-exec` enclosure or the Linux ai-j
 - **`qrencode not found`** — install it (`brew install qrencode`, or `apt install qrencode`).
 - **ImageMagick not found** — install it (`brew install imagemagick`, or `apt install imagemagick`).
 - **The audit fails with a fingerprint mismatch** — the fingerprint in your config does not match the key at the path you gave. Re-copy it from `ssh-keygen`/`gpg`; the audit is doing its job by refusing to render a misleading card.
-- **The card uses a plain fallback font** — Fira Code is not installed; the card still renders correctly in Menlo. Install Fira Code if you want its look.
+- **You want a different look than Menlo** — that is a deliberate, settled choice for this path (no install step, ships on every Mac), not a fallback; if you truly want a different font, edit `resolve_font` in `tools/make_key_card_macos.sh` directly.
 
 ---
 

@@ -9,8 +9,9 @@
 #
 # Dependencies (install once, Homebrew):
 #   brew install qrencode imagemagick
-# A monospace font is resolved automatically (Fira Code if installed, else Menlo,
-# else the first monospace fontconfig offers).
+# Font: Menlo, pinned -- it ships on every Mac, needs no install step, and is
+# the settled choice for this path (falls back to Monaco, then whatever
+# fontconfig calls monospace, only if Menlo is somehow missing).
 #
 # Personal details are read from a config file (default: tools/key-card.conf), so
 # this works for anyone who clones the repository:
@@ -70,15 +71,14 @@ resolve_font() {
   FONT_FAMILY="$(printf '%s' "$family" | tr 'A-Z ' 'a-z_' | tr -cd 'a-z0-9_')"
   return 0
 }
-resolve_font 'Fira Code' || resolve_font 'Menlo' || resolve_font 'Monaco' || true
+resolve_font 'Menlo' || resolve_font 'Monaco' || true
 if [ -z "$FONT" ]; then
   FONT="$(fc-match -f '%{file}' monospace 2>/dev/null || true)"
   FONT_FAMILY="$(fc-match -f '%{family}' monospace 2>/dev/null | tr 'A-Z ' 'a-z_' | tr -cd 'a-z0-9_')"
 fi
 [ -n "$FONT" ] || { echo "No monospace font resolvable via fontconfig."; exit 1; }
 [ -n "$FONT_FAMILY" ] || FONT_FAMILY="mono"
-FONTB="$(fc-match -f '%{file}' 'Fira Code:weight=bold' 2>/dev/null || echo "$FONT")"
-[ -f "$FONTB" ] || FONTB="$FONT"
+FONTB="$FONT"
 FONTM="$FONT"
 
 W="$(mktemp -d)"; trap 'rm -rf "$W"' EXIT
