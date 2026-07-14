@@ -1,0 +1,92 @@
+//! linengrow/neth_root_witness.rye — Neth's minimal first witness.
+//!
+//!   rye build linengrow/neth_root_witness.rye -femit-bin=linengrow/bin/neth_root_witness
+//!   linengrow/bin/neth_root_witness
+//!
+//! Proves the one load-bearing claim Neth's whole design rests on, per
+//! external-research/20260714-001017_neth-mala-settlement-l1-l2-design.md's
+//! recommended minimal first lap: a hash-chained, signed, append-only log
+//! folds to a state-root that is a *reproducible pure function of the log
+//! alone* -- the same claim TigerBeetle's own ARCHITECTURE.md states as its
+//! foundation ("Because all replicas start with the same (empty) state and
+//! the state transition function is deterministic, the replicas arrive at
+//! the same state").
+//!
+//! This does not write a new fold or a new hash-chain -- it revives and
+//! composes primitives that already exist and are already witnessed:
+//! mala_core.rye's build_welcome_log (a real signed MALA log) and
+//! fold_mala_log (a real replay-from-log-alone fold), plus
+//! receipt_core.rye's digest_log (SHA3-256 over the raw log bytes, already
+//! used as MALA's own log-integrity check). Two independent "replicas" --
+//! in this witness, two independent calls, from scratch, on the same
+//! immutable log bytes -- must agree bit-for-bit on both the folded
+//! balances and the state-root, or the witness fails.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const kumara = @import("kumara.rye");
+const rc = @import("receipt_core.rye");
+const mc = @import("mala_core.rye");
+
+const neth_witness_version = "20260714.013000";
+
+fn run_selftest() !u8 {
+    const issuer_kp = kumara.keypair_from_seed(&mc.issuer_seed);
+    const holder_kp = kumara.keypair_from_seed(&mc.holder_seed);
+    var issuer_hex: [mc.pubkey_hex_len]u8 = undefined;
+    var holder_hex: [mc.pubkey_hex_len]u8 = undefined;
+    mc.hex_of_key(issuer_kp.public_key, &issuer_hex);
+    mc.hex_of_key(holder_kp.public_key, &holder_hex);
+
+    // The log: one signed, append-only, hash-verifiable sequence of prepares
+    // (a mint, then a send) -- built once, as the one shared ground truth
+    // every "replica" below reads independently.
+    var log: [rc.max_log_len]u8 = undefined;
+    const log_len = try mc.build_welcome_log(&log, issuer_kp, holder_kp, &issuer_hex, &holder_hex);
+    print("neth: log built -- {d} bytes, 2 signed prepares (mint, send)\n", .{log_len});
+
+    // "Replica one": fold the log from scratch into balances, and hash the
+    // log bytes into a state-root, independently of anything else.
+    const balances_1 = try mc.fold_mala_log(log[0..log_len], &issuer_hex, &holder_hex, issuer_kp.public_key, holder_kp.public_key);
+    var root_1: [32]u8 = undefined;
+    rc.digest_log(log[0..log_len], &root_1);
+
+    // "Replica two": the same log bytes, folded again from a fresh start --
+    // standing in for a second machine that has never seen replica one's
+    // in-memory state, only the log itself.
+    const balances_2 = try mc.fold_mala_log(log[0..log_len], &issuer_hex, &holder_hex, issuer_kp.public_key, holder_kp.public_key);
+    var root_2: [32]u8 = undefined;
+    rc.digest_log(log[0..log_len], &root_2);
+
+    // The load-bearing assertion: two independent replicas, same log,
+    // bit-identical balances and bit-identical root. This is the whole
+    // claim -- state is a pure, deterministic fold over the log alone.
+    assert(balances_1.issuer == balances_2.issuer);
+    assert(balances_1.holder == balances_2.holder);
+    assert(std.mem.eql(u8, &root_1, &root_2));
+
+    print("neth: replica one  -- issuer {d}, holder {d}\n", .{ balances_1.issuer, balances_1.holder });
+    print("neth: replica two  -- issuer {d}, holder {d}\n", .{ balances_2.issuer, balances_2.holder });
+    print("neth: state-root   -- {x}\n", .{root_1});
+    assert(balances_1.holder == 800);
+    assert(balances_1.issuer == 200);
+
+    // Negative space: a tampered log must NOT reproduce the same root --
+    // proving the root actually depends on the log's real content, rather
+    // than being a constant that would pass by accident.
+    var tampered = log;
+    tampered[0] +%= 1;
+    var root_tampered: [32]u8 = undefined;
+    rc.digest_log(tampered[0..log_len], &root_tampered);
+    if (std.mem.eql(u8, &root_1, &root_tampered)) return error.RootDidNotDependOnLog;
+    print("neth: tampered log produces a different root -- GREEN unwelcome path\n", .{});
+
+    print("neth: version {s}\n", .{neth_witness_version});
+    print("GREEN: Neth minimal witness -- two independent replicas, one log, one reproducible root.\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}

@@ -339,6 +339,11 @@ let mala_m2 = run ["rishi/bin/rishi" "run" "tools/mala_m2_witness.rish"]
 assert mala_m2.ok else "MALA M2 witness failed"
 say "GREEN: MALA M2 mailable Comlink (hosted + device wire) witness passed."
 
+say "witness suite: Neth minimal deterministic-root witness…"
+let neth_root = run ["rishi/bin/rishi" "run" "tools/neth_root_witness.rish"]
+assert neth_root.ok else "Neth root witness failed"
+say "GREEN: Neth minimal deterministic-root witness passed."
+
 say "witness suite: SLC-L4 fixed-tier Sigma (Zig-native)…"
 let slcl4 = run ["rishi/bin/rishi" "run" "tools/slcl4_mudra.rish"]
 assert slcl4.ok else "SLC-L4 Sigma witness failed"

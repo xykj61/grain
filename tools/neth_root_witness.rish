@@ -1,0 +1,25 @@
+# neth_root_witness.rish — Neth's minimal deterministic-root witness.
+#
+# Proves the load-bearing claim Neth's whole design rests on: two
+# independent replicas, folding the same signed log from scratch, agree
+# bit-for-bit on both the folded balances and the state-root -- and a
+# tampered log does not reproduce the same root. See
+# external-research/20260714-001017_neth-mala-settlement-l1-l2-design.md
+# and linengrow/neth_root_witness.rye.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/neth_root_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/neth_root_witness"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/neth_root_witness.rye -femit-bin=${bin}"]
+
+assert build.ok else "Neth root witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "Neth root witness exited non-zero"
+assert selftest.out contains "GREEN" else "Neth root witness not GREEN"
+assert selftest.out contains "tampered log produces a different root" else "Neth root witness missing tamper unwelcome"
+
+say "GREEN: Neth minimal deterministic-root witness passed."
