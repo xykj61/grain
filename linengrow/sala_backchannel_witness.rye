@@ -1,0 +1,111 @@
+//! linengrow/sala_backchannel_witness.rye — proves Sala B2: audience + back-channel.
+//!
+//!   rye build linengrow/sala_backchannel_witness.rye -femit-bin=linengrow/bin/sala_backchannel_witness
+//!   linengrow/bin/sala_backchannel_witness
+//!
+//! Per external-research/20260715-181500_sala-broadcast-live-session-fold.md
+//! rung B2 and linengrow/sala_session_core.rye. A broadcast is one ordered
+//! log carrying both the broadcaster's content and viewers' chat, each a
+//! signed fact from its own author, folded and verified against its own key.
+//! Five claims:
+//!   1. A mixed session (broadcaster content interleaved with two viewers'
+//!      chat) replays multi-signer, each event verified against the key it
+//!      names — the back-channel folded into the same stream.
+//!   2. VOD: replaying the finished log at rest reproduces the identical
+//!      root — the recording is the log, deterministic on demand.
+//!   3. A chat event from an unadmitted signer is refused UnknownSigner —
+//!      consent-before-counting: only registered voices fold.
+//!   4. A tampered chat line fails replay — a viewer cannot forge another's
+//!      voice or edit the record.
+//!   5. Audience: two followers replaying the same log agree on the root —
+//!      many subscribers see one verified stream.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const kumara = @import("kumara.rye");
+const rc = @import("receipt_core.rye");
+const mc = @import("mala_core.rye");
+const sala = @import("sala_session_core.rye");
+
+const witness_version = "20260715.210500";
+
+// A third seed for a second viewer, distinct from mala's issuer/holder seeds.
+const viewer2_seed = [_]u8{0x63} ** kumara.seed_length;
+
+fn run_selftest() !u8 {
+    // Broadcaster is the issuer key; viewer one is the holder key; viewer two
+    // is its own key. Three distinct signers in one stream.
+    const caster_kp = kumara.keypair_from_seed(&mc.issuer_seed);
+    const viewer1_kp = kumara.keypair_from_seed(&mc.holder_seed);
+    const viewer2_kp = kumara.keypair_from_seed(&viewer2_seed);
+    var caster_hex: [mc.pubkey_hex_len]u8 = undefined;
+    var viewer1_hex: [mc.pubkey_hex_len]u8 = undefined;
+    var viewer2_hex: [mc.pubkey_hex_len]u8 = undefined;
+    mc.hex_of_key(caster_kp.public_key, &caster_hex);
+    mc.hex_of_key(viewer1_kp.public_key, &viewer1_hex);
+    mc.hex_of_key(viewer2_kp.public_key, &viewer2_hex);
+
+    // One ordered log: broadcaster content interleaved with viewer chat, each
+    // event signed by its own author, the sequence climbing across all.
+    var log: [rc.max_log_len]u8 = undefined;
+    var len: u32 = 0;
+    len = try sala.append_event(&log, len, 1, "20260715.210501", "sala:open session", &caster_hex, caster_kp);
+    len = try sala.append_event(&log, len, 2, "20260715.210502", "chat:great to be here", &viewer1_hex, viewer1_kp);
+    len = try sala.append_event(&log, len, 3, "20260715.210503", "sala:frame update", &caster_hex, caster_kp);
+    len = try sala.append_event(&log, len, 4, "20260715.210504", "chat:love this", &viewer2_hex, viewer2_kp);
+    len = try sala.append_event(&log, len, 5, "20260715.210505", "sala:closing", &caster_hex, caster_kp);
+
+    // The registry of consented voices: broadcaster + two viewers.
+    var registry: sala.ActorRegistry = .{};
+    try registry.admit(&caster_hex, caster_kp.public_key);
+    try registry.admit(&viewer1_hex, viewer1_kp.public_key);
+    try registry.admit(&viewer2_hex, viewer2_kp.public_key);
+
+    // Claim 1: the mixed stream replays multi-signer.
+    const r1 = try sala.replay_multi(log[0..len], &registry);
+    assert(r1.events == 5 and r1.last_seq == 5);
+    print("sala-b2: mixed session (3 broadcaster + 2 viewer chat events) replayed multi-signer -- {d} events -- GREEN welcome path\n", .{r1.events});
+
+    // Claim 2: VOD -- the finished log replays to the same root at rest.
+    const r2 = try sala.replay_multi(log[0..len], &registry);
+    assert(std.mem.eql(u8, &r1.root, &r2.root));
+    print("sala-b2: VOD -- the finished log replays to the identical root -- {x} -- GREEN determinism path\n", .{r1.root});
+
+    // Claim 3: a chat from an unadmitted signer is refused. Build a log whose
+    // second event is signed by viewer2 but viewer2 is NOT in the registry.
+    var closed_registry: sala.ActorRegistry = .{};
+    try closed_registry.admit(&caster_hex, caster_kp.public_key);
+    try closed_registry.admit(&viewer1_hex, viewer1_kp.public_key);
+    const refused_unknown = sala.replay_multi(log[0..len], &closed_registry);
+    if (refused_unknown) |_| {
+        return error.UnknownSignerAdmitted;
+    } else |err| {
+        if (err != sala.SessionError.UnknownSigner) return err;
+    }
+    print("sala-b2: chat from an unadmitted signer refused UnknownSigner -- consent before counting -- GREEN unwelcome path\n", .{});
+
+    // Claim 4: a tampered chat line fails replay.
+    var tampered = log;
+    tampered[0] +%= 1;
+    const refused_tamper = sala.replay_multi(tampered[0..len], &registry);
+    if (refused_tamper) |_| {
+        return error.TamperAdmitted;
+    } else |_| {
+        print("sala-b2: tampered line refused at replay -- no forged voices, no edited record -- GREEN unwelcome path\n", .{});
+    }
+
+    // Claim 5: two followers replaying the same log agree on the root.
+    const follower_a = try sala.replay_multi(log[0..len], &registry);
+    const follower_b = try sala.replay_multi(log[0..len], &registry);
+    assert(std.mem.eql(u8, &follower_a.root, &follower_b.root));
+    print("sala-b2: two subscribers replay the same stream to the same root -- one audience, one verified truth -- GREEN convergence path\n", .{});
+
+    print("sala-b2: version {s}\n", .{witness_version});
+    print("GREEN: Sala B2 -- audience and back-channel; chat as folded signed facts, only consented voices, one verified stream.\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}

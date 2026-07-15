@@ -1,0 +1,25 @@
+# sala_backchannel_witness.rish — Sala B2: audience + back-channel.
+#
+# A broadcast is one ordered log carrying the broadcaster's content and
+# viewers' chat, each a signed fact from its own author, verified against its
+# own key; only consented voices fold, and the VOD is the log at rest. See
+# external-research/20260715-181500_sala-broadcast-live-session-fold.md
+# and linengrow/sala_session_core.rye (replay_multi + ActorRegistry).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/sala_backchannel_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/sala_backchannel_witness"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/sala_backchannel_witness.rye -femit-bin=${bin}"]
+assert build.ok else "Sala B2 back-channel witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "Sala B2 back-channel witness exited non-zero"
+assert selftest.out contains "GREEN" else "Sala B2 back-channel witness not GREEN"
+assert selftest.out contains "replayed multi-signer" else "Sala B2 missing the multi-signer welcome path"
+assert selftest.out contains "refused UnknownSigner" else "Sala B2 missing the consent unwelcome path"
+assert selftest.out contains "one audience, one verified truth" else "Sala B2 missing the audience-convergence path"
+
+say "GREEN: Sala B2 back-channel witness passed."
