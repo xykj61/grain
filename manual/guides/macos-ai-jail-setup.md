@@ -1,11 +1,11 @@
 # Setting Up the Sandbox on macOS
 
 **Language:** EN
-**Version:** `20260714.183000`
+**Version:** `20260714.190500`
 **Style:** Radiant (see `../../context/RADIANT_STYLE.md`)
 **Voice:** Rio 3
 **Status:** Guide for the task — witnessed on this fork's own macOS host, including a real jailed-GUI launch and a live write-fence probe from inside a running jailed agent window; the Rish scripts below are the primary path, with their bash elders kept beside them
-**Versions, all enduring:** `20260714.052900` first page (bash launcher) · `060500` Rish-native pair · `070500` the GUI launch actually proven (app binary direct, `--no-sandbox`, Mach/IPC section) and upstream ai-jail's own new macOS backend adopted for CLI agents · `073300` two more findings from a live agent session: the multi-account SSH `IdentitiesOnly` collision and the GPG trustdb quirk · `081500` `--harden-home` closes the read side of the private-`$HOME` gap for named credential stores, with a dedicated jail-local key generator and an honest limit on self-testing from inside an already-jailed window · `085000` jail-local keys carry real identity from `GLOW_PROFILE.bron`, and a scoped-`GH_TOKEN` path lets `gh` work under `--harden-home` without the real broad token · `183000` the key generator now wires git itself and creates a jail-local `known_hosts` automatically; the harden witness checks `known_hosts` denial mechanically instead of only in prose
+**Versions, all enduring:** `20260714.052900` first page (bash launcher) · `060500` Rish-native pair · `070500` the GUI launch actually proven (app binary direct, `--no-sandbox`, Mach/IPC section) and upstream ai-jail's own new macOS backend adopted for CLI agents · `073300` two more findings from a live agent session: the multi-account SSH `IdentitiesOnly` collision and the GPG trustdb quirk · `081500` `--harden-home` closes the read side of the private-`$HOME` gap for named credential stores, with a dedicated jail-local key generator and an honest limit on self-testing from inside an already-jailed window · `085000` jail-local keys carry real identity from `GLOW_PROFILE.bron`, and a scoped-`GH_TOKEN` path lets `gh` work under `--harden-home` without the real broad token · `183000` the key generator now wires git itself and creates a jail-local `known_hosts` automatically; the harden witness checks `known_hosts` denial mechanically instead of only in prose · `190500` `--private-home` ships a full private-`$HOME` equivalent, enumerated fresh at each launch, correcting a first design that would have been fatal on this host's own layout
 
 ---
 
@@ -21,7 +21,7 @@ You are on macOS, and `SOURCE.md`'s Step 6 describes ai-jail. When this guide wa
 - **Writes are fenced** to this project's own directory, plus `/tmp` and its usual macOS relatives. Anywhere else on disk, a write is denied by the kernel itself — not by convention, not by a linter, by Seatbelt.
 - **Reads stay open everywhere.** This is a deliberate, named trade-off (see the study above): enumerating every path your toolchain needs to read from is a maintenance trap no serious sandbox-exec-based tool takes on. The write fence is the real boundary.
 - **Network is allowed by default**, and can be denied outright with one flag. There is no partial, per-host filtering at this layer — that would need a proxy in front, a separate later step.
-- **There is no full macOS `--private-home`, yet `--harden-home` closes the part that matters most.** Your real `$HOME` stays broadly readable inside the sandbox by default; `--harden-home` denies reads specifically to the named credential stores (`~/.ssh`, `~/.gnupg`, `~/.aws`, and the rest — see "Denying the Real Credential Stores" below) without touching anything else. A full private-`$HOME` (hiding all of `$HOME`, not just the credential stores) stays a named, open gap.
+- **A full macOS `--private-home` exists now, alongside `--harden-home`.** `--harden-home` denies reads specifically to the named credential stores (`~/.ssh`, `~/.gnupg`, `~/.aws`, and the rest — see "Denying the Real Credential Stores" below); `--private-home` goes further, denying every top-level entry under the real `$HOME` except this project's own directory. Combine them freely — `--harden-home`'s named list becomes harmlessly redundant once `--private-home` covers the same ground, and each still works fine alone.
 - **The jailed Cursor opens signed out on first run.** Your normal login lives in `~/Library/Application Support/Cursor` — the default profile, *outside* the fence — so the jail boots from its own fresh `.cursor-state/` instead. That is the isolation working, not a bug. Sign in once inside the jail; the state persists in `.cursor-state/` (gitignored), inside the fence.
 
 ## Launch the Jailed Cursor
@@ -107,6 +107,30 @@ gh pr create --fill        # PRs, issues, CI checks, releases — all work
 
 What you genuinely lose by *not* setting this up at all: `gh`'s conveniences — opening PRs, triaging issues, watching CI runs, cutting releases, managing keys — all from the terminal. None of it is irreplaceable (the web UI and plain `git` cover the essentials, and key uploads are a one-time paste), so whether the scoped-token setup is worth it depends on how much of your workflow runs through `gh`. For a mostly-`git` workflow, manual key pastes and the web UI are enough; for heavy PR/issue work, the scoped token pays for itself quickly.
 
+## A Full Private-`$HOME` (`--private-home`)
+
+`--harden-home` denies a short, named list of credential stores. `--private-home` denies the *rest* of your real `$HOME` too — every top-level entry except this project's own directory, enumerated fresh at every launch:
+
+```bash
+rishi/bin/rishi run tools/cursor_jail_macos.rish --private-home
+```
+
+**Why not a blanket deny of the whole real `$HOME`?** Because this project's own repository lives *inside* the real `$HOME` on a standard macOS layout — a blanket `(deny file-read* (subpath $HOME))` would deny the project's own path along with everything else, and Apple's Seatbelt resolves an overlapping allow/deny pair to deny, no exceptions, no way to carve the project back out (the same rule `--harden-home` already proved). `--private-home` sidesteps that trap entirely: it lists every top-level `$HOME` entry *except* the project's own directory and denies each individually, so there is never an overlap to resolve in the first place. The full design reasoning, including the shape that was tried and found unbuildable before this one, lives in [`active-designing/20260714-184500_macos-full-private-home-design.md`](../../active-designing/20260714-184500_macos-full-private-home-design.md).
+
+Combine freely with `--harden-home` — the two overlap harmlessly where `--harden-home`'s named credential stores also happen to be top-level `$HOME` entries:
+
+```bash
+rishi/bin/rishi run tools/cursor_jail_macos.rish --harden-home --private-home
+```
+
+**Prove it, from outside the jail** — same honest self-testing limit as `--harden-home`'s own witness (a nested `sandbox_apply` carrying a `deny` rule fails on this host even when the identical profile applies cleanly as a first, non-nested call):
+
+```bash
+rishi/bin/rishi run tools/cursor_jail_macos_private_home_witness.rish
+```
+
+**One real, named incompleteness.** A *symlinked* top-level `$HOME` entry gets its own literal path denied, yet Seatbelt evaluates a symlink by its resolved target — if that target lies outside `$HOME` entirely, reading through the symlink is not covered. Closing that fully would mean resolving and denying every symlink's real target too, not built yet.
+
 ## Jail a Terminal Agent Instead (Upstream ai-jail)
 
 For CLI agents and shells — the thing upstream ai-jail wraps natively — install it and use it directly. The Homebrew tap needs no SSH key; the release binary is simplest:
@@ -173,8 +197,8 @@ timeout 10 git --no-pager log --show-signature -1 | cat
 ## What Is Still Open
 
 - No network egress *filtering* (only allow-all or deny-all) — a proxy-based follow-up, not built yet.
-- No **full** private-`$HOME` substitute for the GUI launcher — `--harden-home` denies reads to the named credential stores, yet the rest of your real home directory stays open inside the sandbox by design (the "enumerating every path is a maintenance trap" trade-off still holds for everything that isn't a known secret store). Upstream ai-jail's `--private-home` covers the fuller version for CLI agents, via Seatbelt read-deny lists.
-- `--harden-home`'s witness cannot self-certify from inside an already-jailed window (named above) — it needs a human, or a CI runner, on the outside.
+- `--private-home` denies real, symlinked top-level entries only by their own literal path, not by their resolved target — a symlink pointing outside `$HOME` can still leak through. Named above, not yet closed.
+- `--harden-home`'s and `--private-home`'s witnesses cannot self-certify from inside an already-jailed window (named above) — both need a human, or a CI runner, on the outside.
 - This guide covers Cursor specifically; a Zed-in-Seatbelt equivalent, mirroring `SOURCE.md`'s Step 9b, is a natural next guide once this one is proven in daily use.
 
 ---

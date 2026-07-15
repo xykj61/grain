@@ -4,7 +4,7 @@
 **Stamp:** `20260714.184500`
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Rio 3
-**Status:** Design exploration only — nothing here is built. This names the shape, the trade-offs, and a recommendation; it waits on Keaton's word before any of it becomes real, per this tree's own collaboration rhythm (a sandbox-shape change earns a ruling, not an assumed yes).
+**Status:** Superseded by a build, `20260714.190500` — Keaton chose to build this the same session it was scoped. The shape actually shipped is **neither** of the two named below: both were found unworkable or wasteful once tested against this host's real layout, and a third, better shape emerged and landed as `--private-home` on `tools/cursor_jail_macos.rish` and its bash elder. This document is kept as the honest record of how the design got there, corrected in place rather than quietly replaced. See [`manual/guides/macos-ai-jail-setup.md`](../manual/guides/macos-ai-jail-setup.md) for the shipped, working guide.
 
 ---
 
@@ -55,6 +55,20 @@ Building this costs real, ongoing maintenance — every new tool a working sessi
 ## Recommendation
 
 Build Shape B, not Shape A, if and when a full private-`$HOME` is worth building at all — the fail-safe-by-inclusion shape is simply the more honest engineering choice between the two. Whether it is worth building *now* is Keaton's call, not a technical question this document can answer on its own: `--harden-home` already closes the concrete threat this fork named for itself, and a full private-`$HOME` is a broader, more expensive guarantee against a threat model (a compromised agent reading personal, non-credential files) that has not yet been named as a real concern the way the credential-exfiltration path was.
+
+---
+
+## What Actually Shipped, `20260714.190500` — Shape B Was Fatal, and the Real Shape Is Simpler
+
+Keaton chose to build this the same session, and before implementing Shape B, one concrete test against this host's real layout broke it decisively: **this project's own repository lives at `/Users/bhagavan851c05a/urbit` — inside the real `$HOME`.** Shape B's blanket `(deny file-read* (subpath realHome))` would deny the project's own path along with everything else, and Seatbelt's proven deny-always-wins-an-overlap rule means no `(allow ...)` rule could carve the project back out. Shape B, as literally scoped above, is not buildable on this host at all — a fact worth naming loudly rather than discovering after building it.
+
+The fix turned out simpler than either shape considered above, and needs no fake `$HOME`, no symlinks, no `HOME` environment override at all:
+
+**Shape C — enumerate, don't blanket-deny.** List every top-level entry directly under the real `$HOME`, and deny each one individually — *except* the project's own directory. Since the project's path is simply never included in a deny rule in the first place, there is never an overlapping allow/deny pair for Seatbelt to resolve, and the "deny wins" rule that sank Shape B never enters the picture. This keeps Shape B's real virtue (fail-safe by omission for everything actually denied) while sidestepping the exact trap that made it unbuildable here.
+
+Shipped as `--private-home` on both `tools/cursor_jail_macos.rish` and `tools/cursor-jail-macos.sh`, combinable freely with `--harden-home`. Witnessed by `tools/cursor_jail_macos_private_home_witness.rish` (same honest self-testing limit as the `--harden-home` witness — run it from outside any jail).
+
+**One real, named incompleteness, carried forward rather than hidden:** a *symlinked* top-level `$HOME` entry (this host has several, e.g. `~/bhagavan851c05a -> ~/kae3g/bhagavan851c05a`) gets its own literal path denied, yet Seatbelt evaluates a symlink by its *resolved* target — if that target lies outside `$HOME` entirely, reading through the symlink is not covered by this enumeration at all. Closing that gap fully would mean resolving every symlink's real target and denying that too, a further pass not built in this session.
 
 ---
 
