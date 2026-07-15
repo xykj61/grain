@@ -45,9 +45,33 @@ mikroPhone taught the honest limit: bespoke openness costs performance. The SLC 
 - No claim to compete with mikroPhone — it is a teacher we honor; the SLC product runs on different (capable) hardware and delivers a different (software-sovereignty) value.
 - L2 and L3 stay horizon, honestly gated on Pool P0; nothing here promises live carriage before that keystone lands.
 
-## Reach Tier (`20260715.195500`) — the Budget Used Android, and Modifying the SLC for Reach
+## Go-to-Market — Flagship First, Then the Three Tiers (`20260715.200000`)
 
-Accreted to widen customer potential: the Fairphone /e/OS is the *repairable-flagship* device (own it fully, firmware freer, ~$600), yet it is a barrier to *reach* at that price. For the widest customer potential, the SLC broadcaster client should target a **cheap used/refurbished Android** as its reach tier — and the honest best target, TAME-aligned, is a **used Google Pixel (7a or 8a class)** on a de-Googled ROM (dated July 2026, cited):
+Accreted as the decisive ordering, and it **supersedes the budget-first framing of the Reach Tier section below** (which stays, per accrete-never-break, as the honest *value-tier* analysis it becomes — not deleted, repositioned). The strategy Keaton named is start-at-the-top: **lead with the highest-performance device money can currently buy, for wealthier early adopters where cost is no object, so the very first experience is as lovable as it can possibly be — then carry those lessons down into sustainable Glowphone tiers (value · pro · flagship).**
+
+This is the right ordering for three reasons that all point the same way:
+
+- **SLC leads with lovable.** The discipline says make it *lovable* first, at whatever scope. The most lovable broadcast experience — a gorgeous camera, a fast fluid display, no compromise anywhere — is easiest to reach when the hardware imposes no ceiling. Nail lovability once at the top, then preserve it as you scale down.
+- **Zero-to-One niche domination.** Delight a small premium niche *completely* before expanding, rather than entering broad and thin (the market-position study's own logic). Wealthy early adopters who love the thing become the proof and the word-of-mouth that funds the descent to affordable tiers.
+- **Learn where the ceiling is highest.** Lessons found on the best hardware (what makes the broadcast lovable, what the fold needs, where Comlink strains) transfer *downward* cleanly; lessons found on constrained hardware do not transfer *upward*. Build at the top, harvest the lessons, then meet more people where they are.
+
+**The highest-performance sovereign device money can buy today (July 2026, cited): the Google Pixel 10 Pro XL.** Tensor G5 (TSMC 3nm), 16 GB RAM, a 6.8" LTPO OLED at 120 Hz, a pro triple camera (50 MP wide / 48 MP ultrawide / 48 MP telephoto, 8K video — ideal for a genuinely lovable broadcast), Titan M2 + hardware memory tagging (ARM MTE), Wi-Fi 7, IP68, and 7 years of updates. It is **GrapheneOS production-supported**, with an unlockable bootloader and a 15–30 minute web installer — so it is both the highest-performance *and* fully sovereign, de-Googled, hardened. (The Pixel 10 Pro Fold is the ultra-premium option above it, also GrapheneOS-supported, when a foldable is wanted.)
+
+One honest note, so the flagship is justified for the right reason: for GrapheneOS *security* itself, the Pro-XL premium buys comfort, camera, and display — not a fundamentally safer device than the cheaper Pixel 10 (same Tensor G5, same Titan M2, same MTE). So the flagship earns its place here on **lovability** — the experience — which is exactly the stated goal, rather than on any security theater.
+
+**The three sustainable Glowphone tiers this scales toward:**
+
+| Tier | Device shape | Value it leads on | When |
+|---|---|---|---|
+| **Flagship** | Pixel 10 Pro XL-class today; an eventual Glow-flagship | the most lovable, no-compromise experience | now — the starting point, wealthy early adopters |
+| **Pro** | mid-flagship (Pixel 10-class) or the repairable **Fairphone /e/OS** | balance — capability + repairability | after flagship lessons land |
+| **Value** | the budget used **Pixel 7a/8a** of the Reach Tier below (~$150–250, de-Googled) | reach + affordability + abundance | last — widest customer potential, once the experience is proven lovable at the top |
+
+The value tier is not abandoned — it is the *destination*, reached with the lovability already proven, so the affordable phone inherits an experience worth loving rather than a compromised one. The Reach Tier analysis below is exactly that value-tier device work, now correctly ordered last rather than first.
+
+## Reach Tier (`20260715.195500`) — the Value-Tier Budget Android (arrives last, not first)
+
+*Repositioned by the Go-to-Market section above: this budget analysis is the **value tier**, reached after the flagship lessons — not the starting point. The device reasoning stays true; only its place in the ordering changed.* For the widest customer potential at the value tier, the SLC broadcaster client targets a **cheap used/refurbished Android** — and the honest best target, TAME-aligned, is a **used Google Pixel (7a or 8a class)** on a de-Googled ROM (dated July 2026, cited):
 
 - **Reach floor — used Pixel 7a (~$150–220 refurb, or ~$298 pre-flashed with GrapheneOS).** The cheapest sovereign-capable entry: unlockable bootloader, GrapheneOS/CalyxOS/DivestOS/LineageOS support, Tensor G2, 90 Hz OLED. Honest caveat: on the old A-series update policy, security patches end ~2028 — a ~two-year runway, a reach device rather than a keep-for-a-decade one.
 - **Best value — used Pixel 8a (~$250 refurb).** Tensor G3, and the first A-series on Google's 7-year policy, so security updates run to **2031** even on a $250 refurb. The buy-once-keep-long choice.
