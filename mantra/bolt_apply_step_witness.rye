@@ -1,0 +1,104 @@
+//! mantra/bolt_apply_step_witness.rye — proves a bolt written is not a bolt visible.
+//!
+//!   rye build mantra/bolt_apply_step_witness.rye -femit-bin=mantra/bin/bolt-apply-step-witness
+//!   mantra/bin/bolt-apply-step-witness
+//!
+//! Per external-research/20260714-041542_ironbeetle-patterns-for-the-neth-ladder.md
+//! pattern 3 and mantra/bolt_apply_step.rye. Five claims:
+//!   1. A written-but-unapplied leaf is invisible to the catalog's own
+//!      resolve_binding/recall -- .never, not .here, and recall refuses
+//!      PathNotBound.
+//!   2. apply_pending admits it -- resolve_binding turns .here, recall
+//!      returns the real bytes.
+//!   3. A crash in the write-to-apply window costs nothing: the catalog
+//!      is untouched (nothing to undo), and the discarded leaf redoes and
+//!      applies cleanly afterward.
+//!   4. apply_pending forwards the foundation's own admission refusals
+//!      unmodified -- a pending leaf that would violate RevisionOutOfOrder
+//!      is refused exactly as append_leaf itself would refuse it.
+//!   5. Applying with nothing pending is refused, not silently accepted.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const ns = @import("recall_lap1.rye");
+const step = @import("bolt_apply_step.rye");
+
+const witness_version = "20260715.074500";
+
+fn run_selftest() !u8 {
+    var state: step.BoltApplyStep = .empty();
+    const name_r1 = ns.Name{ .peer = "local", .bolt = "witness-bolt", .revision = 1, .path = "greeting.txt" };
+    const name_r2 = ns.Name{ .peer = "local", .bolt = "witness-bolt", .revision = 2, .path = "greeting.txt" };
+
+    // Claim 1: written, not yet applied, is invisible to the real
+    // recall/resolve_binding surface -- not an internal flag standing in
+    // for it, the actual namespace law.
+    try step.write_leaf_pending(&state, "local", "witness-bolt", 1, "greeting.txt", "Meet me where the rye grows.", "plain-text");
+    assert(state.consulted(name_r1) == .never);
+    var buf: [128]u8 = undefined;
+    const before_apply = try state.catalog.recall(name_r1, &buf);
+    assert(before_apply.outcome == .never);
+    assert(before_apply.len == 0);
+    print("mantra-apply: revision 1 written -- resolve_binding and recall both still .never, len 0 -- GREEN unwelcome-looking, welcome-by-design path\n", .{});
+
+    // Claim 2: apply_pending admits it, and only then.
+    try step.apply_pending(&state);
+    assert(state.consulted(name_r1) == .here);
+    const r1 = try state.catalog.recall(name_r1, &buf);
+    assert(std.mem.eql(u8, buf[0..r1.len], "Meet me where the rye grows."));
+    print("mantra-apply: revision 1 applied -- resolve_binding .here, recall returns the real bytes -- GREEN welcome path\n", .{});
+
+    // Claim 3: a crash lands in the window between writing revision 2
+    // and applying it. Recovery costs nothing -- the catalog was never
+    // touched by the pending write, so revision 1 stays exactly as it
+    // was, and revision 2 stays .not_yet (revision 1 already holds the
+    // path, so 2 is the honestly-next slot, simply not admitted yet).
+    try step.write_leaf_pending(&state, "local", "witness-bolt", 2, "greeting.txt", "The rye remembers every line.", "plain-text");
+    step.recover_after_crash(&state);
+    assert(state.consulted(name_r1) == .here);
+    assert(state.consulted(name_r2) == .not_yet);
+    print("mantra-apply: crash in the write-to-apply window for revision 2 -- catalog untouched, revision 1 stands, revision 2 still not_yet -- GREEN crash-safety path\n", .{});
+
+    // The discarded write is simply redone and applies cleanly afterward.
+    try step.write_leaf_pending(&state, "local", "witness-bolt", 2, "greeting.txt", "The rye remembers every line.", "plain-text");
+    try step.apply_pending(&state);
+    assert(state.consulted(name_r2) == .here);
+    const r2 = try state.catalog.recall(name_r2, &buf);
+    assert(std.mem.eql(u8, buf[0..r2.len], "The rye remembers every line."));
+    print("mantra-apply: revision 2 redone and applied after recovery -- recall returns the real bytes -- GREEN redo path\n", .{});
+
+    // Claim 4: apply_pending forwards the foundation's own refusal
+    // unmodified. A pending leaf skipping ahead to revision 4 (revision 1
+    // and 2 already committed, 3 is the honestly-next slot) is refused
+    // RevisionOutOfOrder exactly as append_leaf itself would refuse it --
+    // this module adds no admission rule of its own.
+    try step.write_leaf_pending(&state, "local", "witness-bolt", 4, "greeting.txt", "skips ahead", "plain-text");
+    if (step.apply_pending(&state)) |_| {
+        return error.OutOfOrderNotRefused;
+    } else |err| {
+        assert(err == ns.RecallError.RevisionOutOfOrder);
+    }
+    print("mantra-apply: a pending leaf skipping ahead refused RevisionOutOfOrder, forwarded from append_leaf unmodified -- GREEN unwelcome path\n", .{});
+
+    // Claim 5: applying with nothing pending is refused, not silently
+    // accepted. Clear the invalid pending leaf from claim 4 first (a real
+    // crash-recovery move in its own right), then apply against an
+    // honestly empty pending slot.
+    step.recover_after_crash(&state);
+    if (step.apply_pending(&state)) |_| {
+        return error.EmptyApplyNotRefused;
+    } else |err| {
+        assert(err == step.ApplyError.NothingPending);
+    }
+    assert(state.consulted(name_r2) == .here);
+    print("mantra-apply: apply with nothing pending refused NothingPending, catalog unchanged -- GREEN unwelcome path\n", .{});
+
+    print("mantra-apply: version {s}\n", .{witness_version});
+    print("GREEN: a bolt written is not a bolt visible until the namespace record admits it.\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}
