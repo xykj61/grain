@@ -6,8 +6,19 @@
 # works, and the ordinary project read/write fence is untouched.
 #
 # Refuse witness: a read of a real credential store (~/.ssh/config,
-# ~/.gnupg) must be denied. Permit witness: ~/.gitconfig (never on the
-# deny list) and a plain project file must both stay readable.
+# ~/.gnupg, ~/.ssh/known_hosts) must be denied. Permit witness:
+# ~/.gitconfig (never on the deny list), a plain project file, and (once
+# tools/generate_jail_local_keys_macos.rish has run) the jail-local
+# known_hosts_jail must all stay readable.
+#
+# The known_hosts check matters on its own: SSH reads ~/.ssh/known_hosts
+# for host-key verification regardless of which identity file it ends up
+# using, and that file lives inside the same denied ~/.ssh subpath as the
+# keys -- without a jail-local replacement (which the generator script
+# now creates automatically), every push fails with "Host key
+# verification failed" before it ever reaches key auth. Found live on
+# this host 20260714, folded into this witness so it is checked
+# mechanically rather than only known through prose.
 #
 #   rishi/bin/rishi run tools/cursor_jail_macos_harden_witness.rish
 #
@@ -51,6 +62,12 @@ if gnupg_read.ok then say "FAIL: ~/.gnupg was listable -- the harden fence is no
 assert (gnupg_read.ok == false) else "FAIL: ~/.gnupg was listable -- the harden fence is not enforcing"
 say "PASS: ~/.gnupg was denied"
 
+say "== refuse witness: read of the real known_hosts (~/.ssh/known_hosts) =="
+let known_hosts_read = run ["sandbox-exec" "-f" profile_path "--" "sh" "-c" "cat '${home}/.ssh/known_hosts' >/dev/null"]
+if known_hosts_read.ok then say "FAIL: ~/.ssh/known_hosts was readable -- SSH host-key verification would silently trust the real file"
+assert (known_hosts_read.ok == false) else "FAIL: ~/.ssh/known_hosts was readable -- SSH host-key verification would silently trust the real file"
+say "PASS: ~/.ssh/known_hosts was denied"
+
 say "== permit witness: ~/.gitconfig, untouched by the deny-only list =="
 let gitconfig_read = run ["sandbox-exec" "-f" profile_path "--" "sh" "-c" "cat '${home}/.gitconfig' >/dev/null"]
 assert gitconfig_read.ok else "FAIL: ~/.gitconfig was denied -- git identity would fail to load"
@@ -61,5 +78,12 @@ let project_read = run ["sandbox-exec" "-f" profile_path "--" "sh" "-c" "cat '${
 assert project_read.ok else "FAIL: an ordinary project file was denied -- the harden fence is too strict"
 say "PASS: project files stayed readable"
 
-say "== all four witnesses green =="
-say "GREEN: --harden-home denies real dotfile reads and keeps the allow-back list and the project readable."
+let jail_known_hosts_exists = run ["test" "-f" "${repo}/.ssh/known_hosts_jail"]
+if jail_known_hosts_exists.ok then say "== permit witness: the jail-local known_hosts_jail =="
+if jail_known_hosts_exists.ok then let jail_kh_read = run ["sandbox-exec" "-f" profile_path "--" "sh" "-c" "cat '${repo}/.ssh/known_hosts_jail' >/dev/null"]
+if jail_known_hosts_exists.ok then assert jail_kh_read.ok else "FAIL: .ssh/known_hosts_jail was denied -- SSH would have no usable host-key file at all"
+if jail_known_hosts_exists.ok then say "PASS: .ssh/known_hosts_jail stayed readable"
+if (jail_known_hosts_exists.ok == false) then say "== skipped: .ssh/known_hosts_jail does not exist yet (run tools/generate_jail_local_keys_macos.rish first) =="
+
+say "== all witnesses green =="
+say "GREEN: --harden-home denies real credential-store reads (including known_hosts) and keeps the allow-back list and the project readable."
