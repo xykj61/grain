@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260715.193000
+editor Cursor
+model Cursor Fable 5 1M Low
+voice Quin
+title Glow mobile platform M0 — verified fold runs on emulated aarch64; two dev environments distinguished
+prompt Keaton asked to start emulating our preparation for the Glow mobile platform, distinguishing the isolated Cursor cloud development environment here from the NixOS environment he wants to set up on a fresh-wiped Framework laptop he intends to buy.
+think read "emulate preparing" through the finishing discipline: the honest first step is to actually RUN Glow's own verified code on the phone's CPU architecture, not only plan it. So the real M0 lap is a cross-build to aarch64 plus a user-mode emulated run, proven green -- ship a real thing.
+think probed the sandbox first rather than assuming: no qemu, no /dev/kvm, x86_64, but sudo and apt available. Zig cross-compiled the Sala B0 witness to aarch64-linux-musl cleanly (statically linked ELF) with zero fuss -- the thin-frontend-on-Zig discipline paying off, since Zig cross-compiles for free. Installed qemu-user-static via apt and ran the aarch64 binary under qemu-aarch64-static: it printed the identical session root (99b3ae...) and the same GREEN as native x86_64. Determinism holds across the architecture boundary -- real mobile-readiness for our own code, today.
+think hit and fixed two real Rishi limits while wiring the witness: if/then/else does not parse (kept the branching, then removed it entirely, moving detection into the shell), and the nested-double-quote escape gap broke a quoted "$QEMU" call -- fixed by calling qemu-aarch64-static directly (the binary path carries no spaces, so no quoting is needed). Same class of Rishi gaps this tree has named before; fixed the same honest way.
+think distinguished the two environments in a durable spec rather than blurring them: the cloud sandbox AUTHORS and PROVES (qemu user-mode only -- a binary against the host kernel, no devices, no GPU), the NixOS Framework host RUNS and FLASHES (qemu system-mode with a booting mobile OS and a screen, then a physical /e/OS Fairphone over USB). Named the clean rule and the M0-M3 ladder, with M0 green and M1-M3 horizon gated on the host and the device.
+think named plainly what M0 does NOT prove -- not a whole OS boot, not devices/GPU/radios, not the physical phone -- so its green is not mistaken for more than it is. qemu-user is the compute proof, not the platform proof.
+think kept the M0 witness standalone rather than in the always-run parity suite, since qemu-user-static is an extra prerequisite (like the zig toolchain) that not every host carries; noted that in TASKS and the witness header.
+obs continued to hold the send convention: this is committed to a branch and pushed, not merged to main -- awaiting Keaton's "send." Third turn honoring the rule.
+file tools/glow_mobile_target_witness.rish -- new; cross-build Sala B0 to aarch64 + run under qemu-aarch64-static, assert identical GREEN
+file context/specs/20260715-193000_two-dev-environments-and-mobile-emulation.md -- new; the two environments kept apart + the M0-M3 mobile-emulation ladder
+file work-in-progress/TASKS.md -- Glow mobile M0 marked GREEN
+file session-logs/20260715-193000_glow-mobile-m0-aarch64-emulation.bron -- this log
+recommend check-in -- M0 is green: Glow's fold runs on the emulated phone architecture in the isolated cloud env. It is committed on a branch awaiting "send." The next rungs (M1 postmarketOS full-system boot, M2 Glow userland on the emulated whole, M3 flashed /e/OS Fairphone) belong to the NixOS Framework host and the device -- so the real next step is Keaton's word to send, and then the Framework purchase plus its NixOS config, which is its own sitting.
