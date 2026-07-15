@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260715.175500
+editor Cursor
+model Cursor Fable 5 1M Low
+voice Quin
+title Sala seated as Realidream's revival-name — the Landscape-parallel viewer
+prompt Keaton, after a naming exchange (first considering Relm for the R-slot, then recalling Rhyz already holds R), proposed Sala for the S-slot as an alternative name for Realidream, and confirmed "yes" to seat it.
+think ran the project's own collision discipline before affirming: grepped the whole old/ Urbit kernel for "sala" and found only incidental substrings inside the BIP39 english wordlist (salad, salmon, salon, salt), never a term/mold/arm -- the same clean kernel-free verdict Quin earned. Zero living-tree collision either.
+think weighed the meaning honestly rather than just approving: Sanskrit sala/shala means "hall/abode," the space one inhabits to see and use one's things -- a closer fit for a Landscape-parallel than Realidream was, and the gaushala (cow sanctuary) resonance ties directly to the project's own vegan/sanctuary mission. It honors the Vedic soul (Prakriti/Purusha) already behind Realidream's name.
+think named the one real trade with eyes open: Sala keeps Realidream's "Reality/abode" half and lets go the "Dream/streaming-creativity" half; and "sala" is a common word/name globally (Italian/Spanish "room/hall") -- a low-stakes external soft-collision, the same tier as Quin's TRIZ soft-collision. Recorded both in the registry row rather than hiding them.
+think kept the vane-vs-userspace distinction honest: Realidream (and so Sala) is the Landscape parallel, and Landscape is userspace, not a kernel vane -- so Sala runs under Pool, and the four-letter S-slot is a naming-family convention, not a vane claim. Noted this explicitly in every seat so it is never misread later.
+think seated the name per the reviving discipline without renaming anything: Sala is born with its name now; the elder Realidream keeps its ~18 references and the roadmap Visual-Track lane until proven-supersede. Added the registry row (confirmed), the LEXICON entry, and the reviving-index row; did NOT touch Realidream's code/doc references, matching cheapest-first migration deferred to its own explicit word.
+obs bumped the active-reviving README's stale voice line from Rio 3 to Quin while seating the row there, since it is a living doc now speaking as of this stamp -- a small on-touch alignment, not a sweep.
+file context/specs/20260713-235600_names-awaiting-confirmation.md -- Sala row added to the Settled table; the "nothing open" summary re-dated
+file context/LEXICON.md -- Sala entry seated beside the other confirmed vane/surface names
+file active-reviving/README.md -- Sala->Realidream revival-index row; voice bumped to Quin
+file session-logs/20260715-175500_sala-seated-realidream-revival-name.bron -- this log
+recommend keep-going -- the name is seated cleanly and nothing churned; Realidream's own reference migration to Sala stays deferred to proven-supersede, cheapest-first, on Keaton's explicit word, exactly like Rhyz->Kumara and the other confirmed revivals. No action waits on anyone until that migration word, or until Pool's P0 opens and Sala earns its first real view.
