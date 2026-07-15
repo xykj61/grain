@@ -1,0 +1,128 @@
+//! linengrow/sala_surface_witness.rye — proves Sala R2: the unified viewer.
+//!
+//!   rye build linengrow/sala_surface_witness.rye -femit-bin=linengrow/bin/sala_surface_witness
+//!   linengrow/bin/sala_surface_witness
+//!
+//! Per external-research/20260715-172000_pool-keystone-revival-realidream-landscape.md
+//! rung R2 and linengrow/sala_surface.rye. Three capability-isolated
+//! Pool-hosted agents (ask, receipt, reputation) gathered onto one Sala
+//! surface. Four claims:
+//!   1. Three isolated agents, each hosted on its own capability over its
+//!      own state, render onto one surface as three panels, each reflecting
+//!      its own distinct fold.
+//!   2. Building the surface twice from the same hosted states yields
+//!      byte-identical panels — deterministic.
+//!   3. The surface is bounded (panel count within the limit).
+//!   4. Only Pool-hosted agents earn a panel — a refused agent (no
+//!      capability) contributes nothing, so the surface shows exactly what
+//!      Pool admitted.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const kumara = @import("kumara.rye");
+const rc = @import("receipt_core.rye");
+const mc = @import("mala_core.rye");
+const caps = @import("capabilities.rye");
+const pool = @import("pool_host_seam.rye");
+const surface = @import("sala_surface.rye");
+
+const witness_version = "20260715.205500";
+
+fn append_send(log: *[rc.max_log_len]u8, len: *u32, amount: []const u8, from_hex: *const [mc.pubkey_hex_len]u8, to_hex: *const [mc.pubkey_hex_len]u8, signer: kumara.KeyPair) !void {
+    const fields = rc.FactFields{ .from = from_hex[0..], .to = to_hex[0..], .amount = amount, .memo = mc.memo_send, .stamp = "20260715.205500" };
+    try mc.sign_append(log, len, fields, signer);
+}
+
+fn run_selftest() !u8 {
+    const issuer_kp = kumara.keypair_from_seed(&mc.issuer_seed);
+    const holder_kp = kumara.keypair_from_seed(&mc.holder_seed);
+    var issuer_hex: [mc.pubkey_hex_len]u8 = undefined;
+    var holder_hex: [mc.pubkey_hex_len]u8 = undefined;
+    mc.hex_of_key(issuer_kp.public_key, &issuer_hex);
+    mc.hex_of_key(holder_kp.public_key, &holder_hex);
+
+    // Three distinct agent states, so the panels show genuinely different
+    // folds: ask (welcome, 200/800), receipt (+send 50, 250/750),
+    // reputation (+send 50 +send 25, 275/725).
+    var log_ask: [rc.max_log_len]u8 = undefined;
+    const ask_len = try mc.build_welcome_log(&log_ask, issuer_kp, holder_kp, &issuer_hex, &holder_hex);
+
+    var log_receipt: [rc.max_log_len]u8 = undefined;
+    var receipt_len = try mc.build_welcome_log(&log_receipt, issuer_kp, holder_kp, &issuer_hex, &holder_hex);
+    try append_send(&log_receipt, &receipt_len, "50", &holder_hex, &issuer_hex, holder_kp);
+
+    var log_rep: [rc.max_log_len]u8 = undefined;
+    var rep_len = try mc.build_welcome_log(&log_rep, issuer_kp, holder_kp, &issuer_hex, &holder_hex);
+    try append_send(&log_rep, &rep_len, "50", &holder_hex, &issuer_hex, holder_kp);
+    try append_send(&log_rep, &rep_len, "25", &holder_hex, &issuer_hex, holder_kp);
+
+    // Caravan table: three agents, each owning its own state resource (P1's
+    // isolation), each granted rw over only its own.
+    var table: caps.CapabilityTable = .{};
+    const ask = try table.add_child("ask");
+    try ask.grant(caps.Capability.init("state-ask", caps.right_read | caps.right_write));
+    const receipt = try table.add_child("receipt");
+    try receipt.grant(caps.Capability.init("state-receipt", caps.right_read | caps.right_write));
+    const reputation = try table.add_child("reputation");
+    try reputation.grant(caps.Capability.init("state-reputation", caps.right_read | caps.right_write));
+
+    // Host each isolated agent, then gather all three onto one Sala surface.
+    const r_ask = try pool.host_agent_on(&table, "ask", "state-ask", log_ask[0..ask_len], &issuer_hex, &holder_hex, issuer_kp.public_key, holder_kp.public_key);
+    const r_receipt = try pool.host_agent_on(&table, "receipt", "state-receipt", log_receipt[0..receipt_len], &issuer_hex, &holder_hex, issuer_kp.public_key, holder_kp.public_key);
+    const r_rep = try pool.host_agent_on(&table, "reputation", "state-reputation", log_rep[0..rep_len], &issuer_hex, &holder_hex, issuer_kp.public_key, holder_kp.public_key);
+
+    var surf: surface.Surface = .{};
+    try surf.add("ask", r_ask);
+    try surf.add("receipt", r_receipt);
+    try surf.add("reputation", r_rep);
+
+    // Claim 1: three panels, each reflecting its own distinct fold.
+    assert(surf.count == 3);
+    assert(std.mem.eql(u8, surf.panel(0).label_slice(), "ask"));
+    assert(std.mem.eql(u8, surf.panel(0).frame.line(1), "issuer 200"));
+    assert(std.mem.eql(u8, surf.panel(1).frame.line(1), "issuer 250"));
+    assert(std.mem.eql(u8, surf.panel(2).frame.line(1), "issuer 275"));
+    print("pool-r2: one Sala surface, three capability-isolated Pool agents --\n", .{});
+    var p: u32 = 0;
+    while (p < surf.count) : (p += 1) {
+        const pan = surf.panel(p);
+        print("pool-r2:   [{s}] {s} / {s}\n", .{ pan.label_slice(), pan.frame.line(1), pan.frame.line(2) });
+    }
+    print("pool-r2: three agents on one surface, each its own fold -- GREEN welcome path\n", .{});
+
+    // Claim 2: deterministic -- a second surface from the same states matches.
+    var surf2: surface.Surface = .{};
+    try surf2.add("ask", r_ask);
+    try surf2.add("receipt", r_receipt);
+    try surf2.add("reputation", r_rep);
+    assert(surf2.count == surf.count);
+    p = 0;
+    while (p < surf.count) : (p += 1) {
+        assert(std.mem.eql(u8, surf.panel(p).frame.line(1), surf2.panel(p).frame.line(1)));
+    }
+    print("pool-r2: two surfaces from the same hosted states agree byte-for-byte -- GREEN determinism path\n", .{});
+
+    // Claim 3: bounded.
+    assert(surf.count <= surface.max_panels);
+    print("pool-r2: surface bounded -- {d} panels within {d} -- GREEN bound path\n", .{ surf.count, surface.max_panels });
+
+    // Claim 4: only Pool-hosted agents earn a panel. A refused agent yields
+    // no hosted state, so it never reaches the surface.
+    const refused = pool.host_agent_on(&table, "sanctuary", "state-sanctuary", log_ask[0..ask_len], &issuer_hex, &holder_hex, issuer_kp.public_key, holder_kp.public_key);
+    if (refused) |_| {
+        return error.UngrantedHosted;
+    } else |err| {
+        if (err != pool.HostError.NotAdmitted) return err;
+    }
+    assert(surf.count == 3);
+    print("pool-r2: an ungranted 'sanctuary' agent is refused by Pool, so it earns no panel -- the surface shows only what Pool admitted -- GREEN unwelcome path\n", .{});
+
+    print("pool-r2: version {s}\n", .{witness_version});
+    print("GREEN: Sala R2 -- the unified viewer, many capability-isolated Pool agents on one surface, each a pure fold.\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}

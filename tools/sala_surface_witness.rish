@@ -1,0 +1,26 @@
+# sala_surface_witness.rish — Sala R2: the unified viewer, many agents on one surface.
+#
+# The Landscape-parallel proper: ask, receipt, reputation — each a
+# capability-isolated Pool-hosted agent — gathered onto one Sala surface,
+# each rendered as its own bounded fold. Also the second consumer that
+# graduates Dexter. See
+# external-research/20260715-172000_pool-keystone-revival-realidream-landscape.md
+# and linengrow/sala_surface.rye.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/sala_surface_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/sala_surface_witness"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/sala_surface_witness.rye -femit-bin=${bin}"]
+assert build.ok else "Sala R2 surface witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "Sala R2 surface witness exited non-zero"
+assert selftest.out contains "GREEN" else "Sala R2 surface witness not GREEN"
+assert selftest.out contains "three agents on one surface" else "Sala R2 missing the unified-surface welcome path"
+assert selftest.out contains "agree byte-for-byte" else "Sala R2 missing the determinism claim"
+assert selftest.out contains "shows only what Pool admitted" else "Sala R2 missing the hosted-only unwelcome path"
+
+say "GREEN: Sala R2 unified-viewer witness passed."

@@ -1071,3 +1071,8 @@ say "witness suite: Sala R1 — the viewer renders what Pool hosts…"
 let sala_r1 = run ["rishi/bin/rishi" "run" "tools/sala_view_witness.rish"]
 assert sala_r1.ok else "Sala R1 view witness failed"
 say "GREEN: Sala R1 view witness passed."
+
+say "witness suite: Sala R2 — the unified viewer, many agents on one surface…"
+let sala_r2 = run ["rishi/bin/rishi" "run" "tools/sala_surface_witness.rish"]
+assert sala_r2.ok else "Sala R2 unified-viewer witness failed"
+say "GREEN: Sala R2 unified-viewer witness passed."
