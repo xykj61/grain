@@ -68,6 +68,7 @@ What does *not* belong here is the work itself — that lands in the research, d
 
 | Stamp | Prompt | Meaning |
 |-------|--------|---------|
+| `20260715.164500` | [Glow's non-vane strata, the Urbit fleet reconciliation, and mold nesting](20260715-164500_glow-vane-strata-fleet-and-molds.md) | Ran a round of Glow design questions into three citable studies: the three non-vane strata + Pond's narrowing, the Glow/Neth/fleet reconciliation, and bounded mold nesting as the sixth Glow-supplement surface |
 | `20260715.160500` | [A student's "mixed" on college, AI, and the vows that fit](20260715-160500_college-education-mixed-exploitation-ai-and-vows.md) | Siloed a student's honest word on education-as-exploitation and the age of AI; ran it into study #58 on Kali Yuga, the Brahmana in grihastha, artha, and how Glow OS balances the extraction underneath |
 | `20260711.053412` | [Apply Cursor-bot arc audit](yonder/20260711-053412_apply-cursor-bot-arc-audit.md) | Consumed — WOV money fn split; counsel; in `yonder/` |
 | `20260710.133500` | [Inference stack lap 0](20260710-133500_inference-stack-lap0.md) | Module roots + assist view; parity **215** |
