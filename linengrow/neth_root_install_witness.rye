@@ -1,0 +1,142 @@
+//! linengrow/neth_root_install_witness.rye — proves Neth's two-posture root install.
+//!
+//!   rye build linengrow/neth_root_install_witness.rye -femit-bin=linengrow/bin/neth_root_install_witness
+//!   linengrow/bin/neth_root_install_witness
+//!
+//! Per external-research/20260714-041542_ironbeetle-patterns-for-the-neth-ladder.md
+//! pattern 2 and linengrow/neth_root_install.rye. Five claims:
+//!   1. Two roots installed at-source in order, with no chain proof
+//!      demanded -- a follower's own current view, growing.
+//!   2. A repair root that hash-chains cleanly onto the last held root
+//!      installs -- graduated trust's verified half.
+//!   3. A repair root with a wrong (tampered) claimed prior root is
+//!      refused ChainMismatch, and the log is left untouched.
+//!   4. A source root claiming an already-committed seq is refused
+//!      RootTruncated, and the log is left untouched -- the shared rule
+//!      holds even for the trusted-outright posture.
+//!   5. install_at_source demands no chain proof at all -- a root that
+//!      does not actually derive from the prior one still installs, so
+//!      long as its seq is next in order -- the honest boundary between
+//!      "trusted outright" and "verified": the difference is real, not
+//!      merely a stricter check on the same posture.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const kumara = @import("kumara.rye");
+const rc = @import("receipt_core.rye");
+const mc = @import("mala_core.rye");
+const core = @import("neth_root_install.rye");
+
+const witness_version = "20260714.200000";
+
+fn digest_of(log: []const u8) [32]u8 {
+    var out: [32]u8 = undefined;
+    rc.digest_log(log, &out);
+    return out;
+}
+
+fn run_selftest() !u8 {
+    const issuer_kp = kumara.keypair_from_seed(&mc.issuer_seed);
+    const holder_kp = kumara.keypair_from_seed(&mc.holder_seed);
+    var issuer_hex: [mc.pubkey_hex_len]u8 = undefined;
+    var holder_hex: [mc.pubkey_hex_len]u8 = undefined;
+    mc.hex_of_key(issuer_kp.public_key, &issuer_hex);
+    mc.hex_of_key(holder_kp.public_key, &holder_hex);
+
+    // Three real, growing logs -- root0 (mint only), root1 (mint+send, the
+    // welcome log), root2 (welcome log + one more signed send) -- so every
+    // root below is a real state-root, not an arbitrary byte pattern.
+    var log0: [rc.max_log_len]u8 = undefined;
+    var log0_len: u32 = 0;
+    try mc.sign_append(&log0, &log0_len, mc.mint_fields_from_fixture(&issuer_hex, &holder_hex), issuer_kp);
+    const root0 = digest_of(log0[0..log0_len]);
+
+    var log1: [rc.max_log_len]u8 = undefined;
+    const log1_len = try mc.build_welcome_log(&log1, issuer_kp, holder_kp, &issuer_hex, &holder_hex);
+    const root1 = digest_of(log1[0..log1_len]);
+
+    var log2 = log1;
+    var log2_len: u32 = log1_len;
+    const extra_send = rc.FactFields{
+        .from = holder_hex[0..],
+        .to = issuer_hex[0..],
+        .amount = "25",
+        .memo = mc.memo_send,
+        .stamp = "20260714.195900",
+    };
+    try mc.sign_append(&log2, &log2_len, extra_send, holder_kp);
+    const root2 = digest_of(log2[0..log2_len]);
+
+    print("neth-root-install: three real roots derived -- root0 (mint), root1 (welcome), root2 (welcome+send)\n", .{});
+
+    // Claim 1: trust-at-source, two roots installed in order, no chain
+    // proof demanded -- this is the follower's own current-view install.
+    var state: core.RootLog = .{};
+    try core.install_at_source(&state, 0, root0);
+    try core.install_at_source(&state, 1, root1);
+    assert(state.committed_len == 2);
+    assert(std.mem.eql(u8, &state.last_root().?, &root1));
+    print("neth-root-install: trust-at-source installed seq 0, 1 -- GREEN welcome path\n", .{});
+
+    // Claim 2: repair root that hash-chains cleanly onto the last held
+    // root installs -- graduated trust's verified half.
+    try core.install_on_repair(&state, 2, root1, root2);
+    assert(state.committed_len == 3);
+    assert(std.mem.eql(u8, &state.last_root().?, &root2));
+    print("neth-root-install: verified-on-repair installed seq 2 (chain-linked to root1) -- GREEN welcome path\n", .{});
+
+    // Claim 3: a repair root claiming the wrong prior root is refused
+    // ChainMismatch, log left untouched.
+    var log3 = log2;
+    var log3_len: u32 = log2_len;
+    const bogus_send = rc.FactFields{
+        .from = issuer_hex[0..],
+        .to = holder_hex[0..],
+        .amount = "10",
+        .memo = mc.memo_send,
+        .stamp = "20260714.200000",
+    };
+    try mc.sign_append(&log3, &log3_len, bogus_send, issuer_kp);
+    const root3 = digest_of(log3[0..log3_len]);
+    const wrong_prev = root0; // real root, just not the one actually before root3
+    const refused_repair = core.install_on_repair(&state, 3, wrong_prev, root3);
+    if (refused_repair) |_| {
+        return error.ChainMismatchNotEnforced;
+    } else |err| {
+        if (err != core.RootError.ChainMismatch) return err;
+    }
+    assert(state.committed_len == 3);
+    assert(std.mem.eql(u8, &state.last_root().?, &root2));
+    print("neth-root-install: repair root with a wrong claimed prior root refused ChainMismatch, log untouched -- GREEN unwelcome path\n", .{});
+
+    // Claim 4: a source root claiming an already-committed seq (seq 1,
+    // when 0..2 are already committed) is refused RootTruncated even
+    // under the trusted-outright posture -- the shared rule holds
+    // regardless of which posture is asking.
+    const refused_truncate = core.install_at_source(&state, 1, root2);
+    if (refused_truncate) |_| {
+        return error.TruncationNotEnforced;
+    } else |err| {
+        if (err != core.RootError.RootTruncated) return err;
+    }
+    assert(state.committed_len == 3);
+    print("neth-root-install: source root claiming an already-committed seq refused RootTruncated -- GREEN unwelcome path\n", .{});
+
+    // Claim 5: install_at_source demands no chain proof at all -- feed it
+    // a root that does not actually derive from root2, at the next seq.
+    // It installs anyway, drawing the honest line between the two
+    // postures: trust-at-source checks ordering, never chain content.
+    try core.install_at_source(&state, 3, root0); // root0 again, not chain-derived from root2 at all
+    assert(state.committed_len == 4);
+    assert(std.mem.eql(u8, &state.last_root().?, &root0));
+    print("neth-root-install: trust-at-source admitted a non-chain-derived root at the next seq -- the honest posture boundary\n", .{});
+
+    print("neth-root-install: version {s}\n", .{witness_version});
+    print("GREEN: Neth two-posture root install -- trust-at-source ordered, verify-on-repair chain-linked, never-truncate shared by both.\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}
