@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260715.163900
+editor Cursor
+model Cursor Sonnet 5 1M Low
+voice Rio 3
+title Expanded prompt written and sent for the Linux/Framework jail identity
+prompt Keaton asked to summarize the current thread in an expanded prompt and send.
+think read .cursor/rules/send-word.mdc before acting, since "send" is now a seated Glow word (commit, push, merge) rather than a loose figure of speech -- confirmed its exact meaning (commit in CONTRIBUTING style, push, fast-forward merge to main, signing always on) before treating the request as a git action rather than only a writing one.
+think wrote expanding-prompts/20260715-163900_linux_framework_jail_identity_separation.md matching the existing expanding-prompts format (Seed / Lens Applied / Deliverables / Related), capturing the real thread rather than a generic restatement: the macOS brew-install attempt, the real chown fix Keaton ran correctly, the jail's own write-fence blocker discovered underneath it, and the pivot to a genuinely different machine and problem -- a second Ubuntu/Framework host already running a separate project (veganreyklah2) with its own real keys, needing a new, non-competing urbit identity there.
+think named the one finding that actually matters for scoping the next pass: Linux's ai-jail --private-home uses real kernel namespaces, so it already gives a genuinely separate $HOME by default (tools/cursor-jail.sh's own AIJAIL_FLAGS default) -- unlike macOS, which needed a hand-built enumeration workaround (landed the prior session) because Seatbelt has no equivalent namespace-level primitive. This means the read-side isolation Keaton asked for is already solved, today, with zero code change; the real remaining work is narrower than it first sounded -- a jail-local key generator, mirroring the macOS one, so the isolated urbit jail has something to push and sign with.
+think chose not to write the actual Linux script this turn -- I was mid-read of the macOS generator's own source (to port it faithfully) when the request pivoted to "summarize and send" instead of "keep building," so the honest move is to hand the scoped, half-drafted plan forward as a runnable prompt rather than rushing an untested port in the same turn the send was asked for.
+obs this is exactly what expanding-prompts exists for: a real request spanning several turns and a genuine pivot, worth a durable, citable home rather than only living in chat, with nothing lost and the next pass able to pick it back up precisely.
+file expanding-prompts/20260715-163900_linux_framework_jail_identity_separation.md -- the expanded prompt itself
+file expanding-prompts/README.md -- newest-first index row added
+file work-in-progress/TASKS.md -- new open task row pointing at the expanded prompt
+file session-logs/20260715-163900_linux_jail_identity_expanded_prompt.bron -- this log
+recommend keep-going -- the next concrete step is writing tools/generate_jail_local_keys_linux.rish itself, porting the macOS generator closely; it needs to run on the actual Framework/Ubuntu host, outside any jail, by Keaton's own hand, exactly like its macOS sibling.
