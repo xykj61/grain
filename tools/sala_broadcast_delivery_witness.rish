@@ -1,0 +1,29 @@
+# sala_broadcast_delivery_witness.rish — Sala B1: a session carried live over Comlink.
+#
+# The SLC flagship's live-broadcast lap, unblocked by Pool P0: a signed,
+# ordered session (Sala B0) carried event-by-event over a real Comlink hop
+# to a follower who replays it to the identical session root, in order. See
+# external-research/20260715-181500_sala-broadcast-live-session-fold.md
+# and linengrow/sala_broadcast_delivery.rye.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/sala_broadcast_delivery_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/sala_broadcast_delivery"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/sala_broadcast_delivery.rye -lc -femit-bin=${bin}"]
+assert build.ok else "Sala B1 broadcast delivery build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "Sala B1 broadcast delivery selftest exited non-zero"
+assert selftest.out contains "GREEN" else "Sala B1 selftest not GREEN"
+assert selftest.out contains "carriage-transparency path" else "Sala B1 missing carriage-transparency claim"
+assert selftest.out contains "tampered sealed event refused" else "Sala B1 missing tamper unwelcome path"
+
+let demo = run ["sh" "-c" "${bin} demo 2>&1"]
+assert demo.ok else "Sala B1 broadcast delivery demo exited non-zero"
+assert demo.out contains "demo GREEN" else "Sala B1 demo not GREEN"
+assert demo.out contains "matches the source's own" else "Sala B1 demo missing convergence claim"
+
+say "GREEN: Sala B1 broadcast delivery witness passed — session carried live over a real hop."

@@ -1,0 +1,24 @@
+format session-log-v1
+stamp 20260715.203500
+editor Cursor
+model Cursor Fable 5 1M Low
+voice Quin
+title Sala B1 landed GREEN — a session carried live over Comlink, the SLC flagship's L2
+prompt Keaton said "kg" after Pool P1; the recommend line named Sala B1 (live carriage over Comlink, unblocked by Pool P0) as the most direct step toward the SLC flagship's live broadcast.
+think this is the lap the whole SLC/go-to-market strategy points at -- the live broadcast a creator does from their phone. Built it green rather than described it, stacking on the same Pool branch so it ships with P0/P1.
+think composed rather than invented: the log and replay are Sala B0; the seal is Comlink's wire_format; the carriage shape (source/follower/selftest/demo over real UDP) mirrors the Neth carriage lap already proven, including its compact-payload-vs-hex-line lesson (a session event line hex-doubles past the 340-byte sealed datagram, so the event crosses in receipt_core's compact binary payload and the follower reconstructs the exact signed line).
+think added append_signed_line to sala_session_core.rye additively -- the follower holds only the broadcaster's public key, so it cannot re-sign; it appends the carried, already-signed line and replay verifies the whole. Confirmed Sala B0's own witness stays green after the additive edit.
+think made the carriage-transparency claim exact: build_event_payload signs the SAME FactFields sala.append_event signs (from=actor, amount=seq, memo=payload, stamp), so the reconstructed line is byte-identical to the direct one, so the follower's replayed session root equals the source's own -- carriage changes nothing about the fold. Proven in-process (selftest) and over real UDP with three ordered events (demo).
+think witnessed order preservation implicitly and correctly: the source sends events seq 1,2,3 in order, the follower appends in receipt order, and sala.replay enforces the strictly-increasing sequence -- so any reordering by carriage would be caught as OutOfOrder. This is the ordered-stream property (Mycelium's concern) the broadcast needs.
+think ran the two-subprocess demo over actual localhost UDP: source broadcast 3 sealed events in order, follower replayed them and sealed its root back, source checked it against its own independently-computed root -- matched. A real broadcast crossed a real wire.
+think wired B1 into parity_ch01.rish and re-ran Sala B0, Sala B1, Pool P0, Pool P1 together -- all GREEN, no regression from the additive append_signed_line.
+obs three real green laps this session's build stretch (Pool P0, Pool P1, Sala B1) -- the design layer has caught down to the build, and the SLC flagship's live-broadcast experience (L2) now runs end to end over a real hop.
+obs "kg" is keep-going, not "send" -- so P0, P1, and B1 all rest on the branch awaiting Keaton's send word.
+file linengrow/sala_session_core.rye -- added append_signed_line (place a carried pre-signed event), additive; B0 witness stays green
+file linengrow/sala_broadcast_delivery.rye -- Sala B1: session carried event-by-event over a real Comlink hop; source/follower/selftest/demo
+file tools/sala_broadcast_delivery_witness.rish -- build + selftest + real two-subprocess demo, asserted
+file tools/parity_ch01.rish -- Sala B1 wired into the living suite after Pool P1
+file active-designing/20260715-194500_the-slc-product-glow-on-capable-hardware.md -- SLC lap L2 marked GREEN (Sala B1)
+file work-in-progress/TASKS.md -- Sala B1 marked GREEN, named as the SLC L2
+file session-logs/20260715-203500_sala-b1-live-carriage-green.bron -- this log
+recommend keep-going -- the SLC flagship's live broadcast (L2/B1) is green over a real hop. The next real lap is B2 (audience + back-channel: many subscribers, chat as folded signed facts, the VOD as the log at rest) or R1 (Realidream's first view over a Pool-hosted agent -- the viewer surface). B2 deepens the broadcast; R1 opens the viewer. One at a time, ship before naming the next.

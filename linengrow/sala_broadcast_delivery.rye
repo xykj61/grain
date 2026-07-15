@@ -1,0 +1,291 @@
+//! linengrow/sala_broadcast_delivery.rye — Sala B1: a session carried live over Comlink.
+//!
+//!   rye build linengrow/sala_broadcast_delivery.rye -lc -femit-bin=linengrow/bin/sala-broadcast-delivery
+//!   linengrow/bin/sala-broadcast-delivery selftest
+//!   linengrow/bin/sala-broadcast-delivery demo
+//!
+//! Per external-research/20260715-181500_sala-broadcast-live-session-fold.md
+//! rung B1: the same signed, ordered session log of Sala B0, now carried
+//! event-by-event over a genuine Comlink hop to a follower, who replays it
+//! to the identical session root. This is the live-broadcast lap the SLC
+//! flagship rests on, unblocked by Pool P0.
+//!
+//! Composition, not new machinery: the log and replay are Sala B0
+//! (sala_session_core.rye); the seal is Comlink's wire_format (the same
+//! primitive neth_serial_core_delivery.rye and mala_delivery.rye use); the
+//! carriage shape (source/follower/selftest/demo over real UDP) mirrors the
+//! Neth carriage lap already proven. As there, each event crosses the wire
+//! in receipt_core's compact binary payload (raw signature + raw fact),
+//! since the log's hex line does not fit one 340-byte sealed datagram; the
+//! follower reconstructs the exact signed line and appends it without
+//! re-signing (it holds only the broadcaster's public key).
+//!
+//! Two claims this lap proves: a session carried event-by-event, sealed and
+//! opened, replays to the identical session root the source computes
+//! directly (carriage changes nothing about the fold); and order is
+//! preserved — the follower appends events in receipt order and replay
+//! enforces the strictly-increasing sequence, so any reordering is caught.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const c = std.c;
+const kumara = @import("kumara.rye");
+const rc = @import("receipt_core.rye");
+const mc = @import("mala_core.rye");
+const wf = @import("wire_format.rye");
+const sala = @import("sala_session_core.rye");
+const tally_copy = @import("tally_copy.rye");
+
+const delivery_version = "20260715.203500";
+
+const AF_INET: c_uint = 2;
+const SOCK_DGRAM: c_uint = 2;
+const SOL_SOCKET: c_int = 1;
+const SO_REUSEADDR: c_int = 2;
+
+/// Sealed session events → follower.
+const event_port: u16 = 38496;
+/// Follower's resulting session root → source, for its own independent check.
+const root_port: u16 = 38497;
+
+const event_count: u32 = 3;
+
+const sockaddr_in = extern struct {
+    sin_family: c_ushort = AF_INET,
+    sin_port: c_ushort,
+    sin_addr: [4]u8 = .{ 127, 0, 0, 1 },
+    sin_zero: [8]u8 = .{0} ** 8,
+};
+
+fn localhost_addr(port: u16) sockaddr_in {
+    return .{ .sin_port = std.mem.nativeToBig(u16, port) };
+}
+
+fn open_socket() !c.fd_t {
+    const fd = c.socket(AF_INET, SOCK_DGRAM, 0);
+    if (fd < 0) return error.SocketFailed;
+    const yes: c_int = 1;
+    _ = c.setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &yes, @sizeOf(c_int));
+    return fd;
+}
+
+fn send_wire(port: u16, wire: []const u8) !void {
+    const fd = try open_socket();
+    defer _ = c.close(fd);
+    const dest = localhost_addr(port);
+    const sent = c.sendto(fd, wire.ptr, @intCast(wire.len), 0, @ptrCast(&dest), @sizeOf(sockaddr_in));
+    if (sent < 0 or @as(usize, @intCast(sent)) != wire.len) return error.SendFailed;
+}
+
+fn actor() struct { kp: kumara.KeyPair, hex: [mc.pubkey_hex_len]u8 } {
+    const kp = kumara.keypair_from_seed(&mc.issuer_seed);
+    var hex: [mc.pubkey_hex_len]u8 = undefined;
+    mc.hex_of_key(kp.public_key, &hex);
+    return .{ .kp = kp, .hex = hex };
+}
+
+fn event_fields(seq: i64, stamp: []const u8, payload: []const u8, actor_hex: *const [mc.pubkey_hex_len]u8, seq_buf: *[24]u8) rc.FactFields {
+    const seq_text = std.fmt.bufPrint(seq_buf, "{d}", .{seq}) catch unreachable;
+    return .{ .from = actor_hex[0..], .to = actor_hex[0..], .amount = seq_text, .memo = payload, .stamp = stamp };
+}
+
+/// Sign event #seq and encode it in the compact wire payload — the exact
+/// bytes sala_session_core.append_event would sign, so the reconstructed
+/// line matches and roots agree.
+fn build_event_payload(seq: i64, stamp: []const u8, payload: []const u8, actor_hex: *const [mc.pubkey_hex_len]u8, signer: kumara.KeyPair, out: *[rc.slcl2_payload_header + rc.slcl2_max_fact]u8) !u32 {
+    var seq_buf: [24]u8 = undefined;
+    const fields = event_fields(seq, stamp, payload, actor_hex, &seq_buf);
+    const signed = try mc.sign_fact(fields, signer);
+    return try rc.encode_compact_payload(signed.sig, signed.canonical[0..signed.canonical_len], out);
+}
+
+/// Decode a carried compact payload back into the exact signed session line.
+fn payload_to_line(payload: []const u8, out: *[rc.max_line_len]u8) !u32 {
+    var sig_buf: [kumara.signature_length]u8 = undefined;
+    var fact_buf: [rc.slcl2_max_fact]u8 = undefined;
+    const decoded = try rc.decode_compact_payload(payload, &sig_buf, &fact_buf);
+    const sig = kumara.Signature.fromBytes(sig_buf[0..kumara.signature_length].*);
+    return try rc.format_log_line(sig, fact_buf[0..decoded.fact_len], out);
+}
+
+const stamps = [event_count][]const u8{ "20260715.203501", "20260715.203502", "20260715.203503" };
+const payloads = [event_count][]const u8{ "sala:open session", "sala:type a line", "sala:frame update" };
+
+/// Build the source's own session directly (the ground truth root).
+fn build_source_session(log: *[rc.max_log_len]u8, actor_hex: *const [mc.pubkey_hex_len]u8, signer: kumara.KeyPair) !sala.ReplayResult {
+    var len: u32 = 0;
+    var i: u32 = 0;
+    while (i < event_count) : (i += 1) {
+        len = try sala.append_event(log, len, @as(i64, i + 1), stamps[i], payloads[i], actor_hex, signer);
+    }
+    return try sala.replay(log[0..len], actor_hex, signer.public_key);
+}
+
+fn run_selftest(_: std.Io) !u8 {
+    const a = actor();
+
+    // The source's own session, direct — the root the carriage must match.
+    var src_log: [rc.max_log_len]u8 = undefined;
+    const src = try build_source_session(&src_log, &a.hex, a.kp);
+
+    // The follower's session, built by carriage: seal each event, open it,
+    // reconstruct the line, append without re-signing.
+    var follower_log: [rc.max_log_len]u8 = undefined;
+    var flen: u32 = 0;
+    var i: u32 = 0;
+    while (i < event_count) : (i += 1) {
+        var payload_buf: [rc.slcl2_payload_header + rc.slcl2_max_fact]u8 = undefined;
+        const plen = try build_event_payload(@as(i64, i + 1), stamps[i], payloads[i], &a.hex, a.kp, &payload_buf);
+        var wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+        const wlen = try wf.seal_message(payload_buf[0..plen], &wire);
+        var opened: [@intCast(wf.max_message)]u8 = undefined;
+        const olen = try wf.open_datagram(wire[0..@intCast(wlen)], &opened);
+        var line_buf: [rc.max_line_len]u8 = undefined;
+        const line_len = try payload_to_line(opened[0..@intCast(olen)], &line_buf);
+        flen = try sala.append_signed_line(&follower_log, flen, line_buf[0..line_len]);
+    }
+    const follower = try sala.replay(follower_log[0..flen], &a.hex, a.kp.public_key);
+
+    assert(follower.events == src.events);
+    assert(follower.last_seq == src.last_seq);
+    assert(std.mem.eql(u8, &follower.root, &src.root));
+    print("sala-b1: {d} events carried (seal->open->reconstruct->append), follower root matches the source's own byte-for-byte -- GREEN carriage-transparency path\n", .{follower.events});
+
+    // Unwelcome: a tampered sealed event refuses at open, before it ever
+    // reaches the session log.
+    var payload_buf: [rc.slcl2_payload_header + rc.slcl2_max_fact]u8 = undefined;
+    const plen = try build_event_payload(1, stamps[0], payloads[0], &a.hex, a.kp, &payload_buf);
+    var wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const wlen = try wf.seal_message(payload_buf[0..plen], &wire);
+    var bad: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const wl: usize = @intCast(wlen);
+    tally_copy.copy_disjoint(u8, bad[0..wl], wire[0..wl]);
+    bad[wl - 1] +%= 1;
+    var junk: [@intCast(wf.max_message)]u8 = undefined;
+    if (wf.open_datagram(bad[0..wl], &junk)) |_| {
+        return error.TamperNotCaught;
+    } else |_| {
+        print("sala-b1: tampered sealed event refused at open -- GREEN unwelcome path\n", .{});
+    }
+
+    print("sala-b1: version {s} wire_format {s}\n", .{ delivery_version, wf.wire_format_version });
+    print("GREEN: Sala B1 -- a session carried live over Comlink replays to the identical root, in order.\n", .{});
+    return 0;
+}
+
+/// Follower: receive `event_count` sealed events in order, append each to the
+/// session log without re-signing, replay, and seal the resulting root back.
+fn run_follower(_: std.Io) !u8 {
+    const a = actor();
+    const fd = try open_socket();
+    defer _ = c.close(fd);
+    var bind_addr = localhost_addr(event_port);
+    if (c.bind(fd, @ptrCast(&bind_addr), @sizeOf(sockaddr_in)) < 0) return error.BindFailed;
+
+    var log: [rc.max_log_len]u8 = undefined;
+    var len: u32 = 0;
+    var received: u32 = 0;
+    while (received < event_count) : (received += 1) {
+        var wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+        var from: sockaddr_in = undefined;
+        var from_len: c.socklen_t = @sizeOf(sockaddr_in);
+        const n = c.recvfrom(fd, &wire, @intCast(wf.wire_capacity), 0, @ptrCast(&from), &from_len);
+        if (n < 0) return error.RecvFailed;
+        const wlen: u64 = @intCast(n);
+        var opened: [@intCast(wf.max_message)]u8 = undefined;
+        const olen = try wf.open_datagram(wire[0..@intCast(wlen)], &opened);
+        var line_buf: [rc.max_line_len]u8 = undefined;
+        const line_len = try payload_to_line(opened[0..@intCast(olen)], &line_buf);
+        len = try sala.append_signed_line(&log, len, line_buf[0..line_len]);
+    }
+    const result = try sala.replay(log[0..len], &a.hex, a.kp.public_key);
+
+    var root_wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const root_wire_len = try wf.seal_message(&result.root, &root_wire);
+    try send_wire(root_port, root_wire[0..@intCast(root_wire_len)]);
+    print("sala-b1: follower replayed {d} carried events, root sent back\n", .{result.events});
+    return 0;
+}
+
+/// Source: bind the root port first, compute the session root independently,
+/// send the events in order, then check the follower's reported root.
+fn run_source(_: std.Io) !u8 {
+    const a = actor();
+    const root_fd = try open_socket();
+    defer _ = c.close(root_fd);
+    var root_bind = localhost_addr(root_port);
+    if (c.bind(root_fd, @ptrCast(&root_bind), @sizeOf(sockaddr_in)) < 0) return error.BindFailed;
+
+    var src_log: [rc.max_log_len]u8 = undefined;
+    const src = try build_source_session(&src_log, &a.hex, a.kp);
+
+    var i: u32 = 0;
+    while (i < event_count) : (i += 1) {
+        var payload_buf: [rc.slcl2_payload_header + rc.slcl2_max_fact]u8 = undefined;
+        const plen = try build_event_payload(@as(i64, i + 1), stamps[i], payloads[i], &a.hex, a.kp, &payload_buf);
+        var wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+        const wlen = try wf.seal_message(payload_buf[0..plen], &wire);
+        try send_wire(event_port, wire[0..@intCast(wlen)]);
+        var pause = c.timespec{ .sec = 0, .nsec = 10_000_000 };
+        _ = c.nanosleep(&pause, null);
+    }
+    print("sala-b1: source broadcast {d} sealed events in order\n", .{event_count});
+
+    var wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    var from: sockaddr_in = undefined;
+    var from_len: c.socklen_t = @sizeOf(sockaddr_in);
+    const n = c.recvfrom(root_fd, &wire, @intCast(wf.wire_capacity), 0, @ptrCast(&from), &from_len);
+    if (n < 0) return error.RecvFailed;
+    const wlen: u64 = @intCast(n);
+    var opened: [@intCast(wf.max_message)]u8 = undefined;
+    const olen = try wf.open_datagram(wire[0..@intCast(wlen)], &opened);
+    if (olen != 32) return error.RootSizeMismatch;
+    if (!std.mem.eql(u8, opened[0..32], &src.root)) return error.RootMismatch;
+    print("sala-b1: follower's broadcast root matches the source's own -- GREEN convergence path\n", .{});
+    return 0;
+}
+
+fn run_demo(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) !u8 {
+    const follower_argv = try allocator.alloc([]const u8, 2);
+    follower_argv[0] = self_path;
+    follower_argv[1] = "follower";
+    var follower_child = try std.process.spawn(io, .{ .argv = follower_argv });
+    var pause = c.timespec{ .sec = 0, .nsec = 50_000_000 };
+    _ = c.nanosleep(&pause, null);
+
+    const source_argv = try allocator.alloc([]const u8, 2);
+    source_argv[0] = self_path;
+    source_argv[1] = "source";
+    var source_child = try std.process.spawn(io, .{ .argv = source_argv });
+
+    const follower_term = try follower_child.wait(io);
+    const source_term = try source_child.wait(io);
+    const follower_code: u8 = switch (follower_term) {
+        .exited => |code| code,
+        else => 255,
+    };
+    const source_code: u8 = switch (source_term) {
+        .exited => |code| code,
+        else => 255,
+    };
+    assert(follower_code == 0);
+    assert(source_code == 0);
+    print("sala-b1: demo GREEN -- a session broadcast over localhost, in order, replayed to the source's own root\n", .{});
+    print("sala-b1: version {s} wire_format {s}\n", .{ delivery_version, wf.wire_format_version });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2) {
+        if (std.mem.eql(u8, args[1], "follower")) return run_follower(io);
+        if (std.mem.eql(u8, args[1], "source")) return run_source(io);
+        if (std.mem.eql(u8, args[1], "selftest")) return run_selftest(io);
+        if (std.mem.eql(u8, args[1], "demo")) return run_demo(garden, io, args[0]);
+    }
+    if (args.len >= 1) return run_selftest(io);
+    return 1;
+}

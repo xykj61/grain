@@ -81,6 +81,21 @@ pub fn append_event(
     return new_len;
 }
 
+/// Append a pre-signed event line received from elsewhere (a broadcaster's
+/// carried event), bound-checked, without re-signing. The line already
+/// carries its signature and trailing newline, exactly as `append_event`
+/// formats one; a follower uses this to place a carried event into its own
+/// session log, then `replay` verifies the whole. Refused if it would
+/// exceed the event bound or overflow the log.
+pub fn append_signed_line(log: []u8, log_len: u32, line: []const u8) SessionError!u32 {
+    if (line.len > max_event_bytes) return error.EventTooLarge;
+    const new_len_usize = @as(usize, log_len) + line.len;
+    if (new_len_usize > log.len) return error.Overflow;
+    const new_len: u32 = @intCast(new_len_usize);
+    std.mem.copyForwards(u8, log[log_len..new_len], line);
+    return new_len;
+}
+
 /// Replay the session: verify every event's signature, enforce a strictly
 /// increasing sequence (order is the one discipline a broadcast needs), count
 /// the events, and digest the whole log into the session root. Deterministic:
