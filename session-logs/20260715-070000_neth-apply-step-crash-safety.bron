@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260715.070000
+editor Cursor
+model Cursor Sonnet 5 1M Low
+voice Rio 3
+title Neth apply-step crash safety lands and runs real GREEN on the cloud sandbox
+prompt Keaton replied "kg" (keep-going) to the standing recommend line, which pointed at the Neth ladder's next lap: apply-step crash safety.
+think read the ladder's own naming for this lap in TASKS.md and pattern 3 of the IronBeetle-patterns study together -- root application (admit into the consulted structure) is a distinct step from root writing, so a crash in the window costs nothing.
+think designed neth_apply_step.rye around one field the rest of the system is ever allowed to read (applied_root, exposed only through consulted()) and one field standing in for a real durable write outside this module's own concern (pending_written_root) -- the same pipelined-stage boundary neth_serial_core.rye already draws for disk persistence. write_root and apply_pending are the two distinct steps the pattern names; recover_after_crash discards a pending write outright rather than guessing whether it was meant to apply, which is the whole crash-safety claim in one line.
+think wrote the witness with four claims: written-but-unapplied stays invisible (the "manifest is the moment of truth" claim itself), apply_pending makes it visible and only then, a crash in the window costs nothing and the discarded write redoes and applies cleanly afterward, and applying with nothing pending is refused rather than silently accepted (so consulted() can never silently repeat or drift). Reused real derived roots (root0 mint-only, root1 the welcome log) via receipt_core.digest_log and mala_core, matching this session's own prior two laps' convention rather than arbitrary bytes.
+think built and ran the witness directly in this same cloud sandbox raised last turn -- GREEN on the first try, no bugs hit this time (unlike several earlier macOS-host sessions in this same ladder that found real Rish/Rye language gaps along the way). This is a genuinely different working rhythm from every prior Neth lap: design, build, and witness all confirmed in the same sitting, no host-run handoff needed.
+think wired the new witness into tools/parity_ch01.rish directly after the two-posture root install entry, keeping the ladder's order visible in the living suite itself.
+obs three Neth laps now stand real-GREEN in a row this session (root install, apply-step), both proven on this same disposable cloud sandbox rather than merely reasoned about by inspection -- a genuine acceleration once the toolchain-raise gap from the prior session closed.
+file linengrow/neth_apply_step.rye -- new; write_root/apply_pending/recover_after_crash, one field (applied_root) the system may ever consult
+file linengrow/neth_apply_step_witness.rye -- new; four claims, real derived roots reused from receipt_core/mala_core
+file tools/neth_apply_step_witness.rish -- new; build+run+assert wrapper matching the existing Neth witness shape
+file tools/parity_ch01.rish -- wired the new witness into the living suite, directly after the two-posture root install entry
+file work-in-progress/TASKS.md -- apply-step crash safety marked landed and confirmed GREEN; Last-updated line folds in this stamp
+file session-logs/20260715-070000_neth-apply-step-crash-safety.bron -- this log
+recommend keep-going -- two Neth laps land and run real GREEN in one sitting now that the cloud toolchain raise closed the prior gap. The ladder's remaining named item is the deterministic-simulation horizon (seeded fault/delay injection over the replica set) -- named explicitly in TASKS.md as "built after the real replica laps," which this session's own apply-step and root-install laps arguably satisfy the spirit of, though the ladder also names Mantra's own apply step (a bolt written is not a bolt visible until the namespace record admits it, the same pattern as this session's Neth lap) as a sibling item still open. Worth a check-in on which of the two Keaton wants next, since both are real, separate laps rather than one obviously implying the other.
