@@ -1,0 +1,40 @@
+# glow_mobile_target_witness.rish — Glow's verified code runs on the phone's architecture.
+#
+# The first real lap of preparing for the Glow mobile platform: cross-build a
+# Glow witness for aarch64 (the Glowphone's CPU architecture, per the Fairphone
+# refinement in external-research/20260715-182500_...) and run it under QEMU
+# user-mode emulation, proving the fold reproduces byte-for-byte on the mobile
+# target. See context/specs/20260715-193000_two-dev-environments-and-mobile-emulation.md.
+#
+# This is the isolated-cloud-dev-environment half of the two-environment split:
+# it emulates the mobile target with qemu-user, no KVM, no device. The NixOS
+# Framework host runs the fuller path (postmarketOS qemu-system, then a flashed
+# Fairphone). An honest limit: if qemu-aarch64-static is absent, the witness
+# proves the cross-build and names the emulator gap rather than faking a run.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/glow_mobile_target_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let src = "linengrow/sala_session_core_witness.rye"
+let bin = "linengrow/bin/sala_session_core_witness_aarch64"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build ${src} -target aarch64-linux-musl -femit-bin=${bin}"]
+assert build.ok else "Glow mobile-target cross-build for aarch64 failed"
+
+let shape = run ["sh" "-c" "file ${bin}"]
+assert shape.out contains "aarch64" else "cross-built binary is not aarch64"
+say "GREEN: Glow witness cross-built for aarch64 (the Glowphone's architecture)."
+
+# qemu-user-static is a prerequisite of this witness, exactly like the zig
+# toolchain: `apt install qemu-user-static` on the cloud dev env, or the NixOS
+# host's own qemu package. The aarch64 binary runs emulated and must reproduce
+# the same GREEN it prints natively -- proving Glow's verified fold behaves
+# identically on the phone's architecture, byte-for-byte. (The call is direct
+# rather than quoted because Rishi keeps no nested-double-quote escape; the
+# binary path carries no spaces, so no quoting is needed.)
+let emu = run ["sh" "-c" "qemu-aarch64-static ${bin} 2>&1"]
+assert emu.ok else "aarch64 witness failed under QEMU (install qemu-user-static?)"
+assert emu.out contains "GREEN" else "aarch64 witness not GREEN under emulation"
+assert emu.out contains "byte-identical session root" else "aarch64 emulation missing the determinism claim"
+say "GREEN: Glow's verified fold runs on the emulated phone architecture, byte-for-byte."
