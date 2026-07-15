@@ -1,0 +1,14 @@
+format session-log-v1
+stamp 20260715.135600
+editor Cursor
+model Cursor Sonnet 5 1M Low
+voice Rio 3
+title The Zero to One / rhizome synthesis gets a durable home in external-research
+prompt Keaton asked to document the chat's Zero to One / rhizome strategy synthesis as an external-research writing.
+think wrote external-research/20260715-135200_zero-to-one-rhizome-market-position.md in the generic Acme Corporation employee voice this doc category requires, per the acme-employee-voice rule -- addressed the reader directly as "you," never naming Keaton inside the instructional prose itself, matching the same register as the IronBeetle-patterns study this doc sits beside.
+think thanked Peter Thiel and Zero to One as a source of vocabulary and framing rather than quoting the book, re-expressing every borrowed idea in this tree's own words -- the same discipline the matklad and IronBeetle studies already model. Checked first whether a gratitude/ note for Thiel already existed (none did) -- a book's business-strategy ideas are a different register from the code-licensing clean-room the gratitude-licenses rule governs, so no gratitude/ file was needed, only the inline thanks this doc's own sources section already carries.
+think kept the doc honest rather than one-sided by adding a "What This Doc Does Not Claim" section -- named plainly that indispensability is a target, not a present fact, and that Urbit's own maintainers have not seen or endorsed any of this yet, so the doc reads as a real strategic proposal rather than an inflated claim of arrival.
+think caught and fixed a real mistake mid-turn: first attempted to append a second dated record onto the prior session log's own file rather than opening a new one, breaking the one-record-per-file convention this whole session-logs stream depends on. Reverted that append and opened this file instead, at its own honest stamp.
+file external-research/20260715-135200_zero-to-one-rhizome-market-position.md -- new; the durable home for this turn's synthesis
+file session-logs/20260715-135600_zero-to-one-rhizome-doc-landed.bron -- this log
+recommend check-in -- same reasoning as the prior log: this reframes strategic direction, and deserves a read before it shapes future prioritization language elsewhere in the tree.
