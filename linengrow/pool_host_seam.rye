@@ -1,0 +1,72 @@
+//! linengrow/pool_host_seam.rye — Pool P0: the userspace host seam.
+//!
+//! Per external-research/20260715-172000_pool-keystone-revival-realidream-landscape.md
+//! rung P0: a minimal Pool that hosts one agent over Caravan's own
+//! capability table (`caravan/capabilities.rye`, imported here as the real
+//! thing, not a copy) — the agent is admitted only if the table grants the
+//! right it needs, it runs bounded, and its state is a pure fold over a
+//! signed, append-only log. This is the keystone that turns Glow's green
+//! spine (Comlink, Mantra, Neth, Kumara, the MALA fold) into something a
+//! person can inhabit: a host under which agents run, gated by capability.
+//!
+//! P0's discipline, stated plainly:
+//!   - Admission is a capability check, not a name check. Pool asks the
+//!     Caravan table `allows(agent, resource, right)` and hosts the agent
+//!     only when the grant is real. An agent with no grant is refused at
+//!     the door — the same customs place/hold/refuse shape Pond keeps.
+//!   - The hosted agent's state is a fold. Pool never mutates agent state
+//!     directly; it applies a signed event by folding, exactly as Neth and
+//!     Sala already do. A tampered or wrongly-signed event is refused; the
+//!     fold reproduces deterministically.
+//!   - Everything is bounded (the log, the event, the agent count) and the
+//!     agent runs within its granted right and nothing more.
+//!
+//! First tenant: a minimal ledger agent — the smallest real agent whose
+//! state is a MALA balance fold — standing in for the richer closed
+//! Open Ask loop, which is the P1 tenant. P0 proves the host *seam*
+//! (capability admission + bounded fold), not a specific rich agent.
+
+const std = @import("std");
+const kumara = @import("kumara.rye");
+const rc = @import("receipt_core.rye");
+const mc = @import("mala_core.rye");
+const caps = @import("capabilities.rye");
+
+/// The one resource a hosted ledger agent needs, and the right over it.
+pub const ledger_resource = "ledger";
+
+pub const HostError = error{ NotAdmitted, FoldFailed };
+
+pub const AgentResult = struct {
+    admitted: bool,
+    balances: mc.Balances,
+};
+
+/// Admit an agent only if the Caravan capability table grants it the named
+/// right over the named resource. This is the door: a name alone never
+/// admits; a real grant does.
+pub fn admitted(table: *const caps.CapabilityTable, agent_label: []const u8, resource: []const u8, need: u8) bool {
+    return table.allows(agent_label, resource, need);
+}
+
+/// Host one agent: admit it by capability, then run its bounded fold over a
+/// signed log into balances. Refuses at the door without a real grant, and
+/// refuses a log whose signing does not hold. The agent's state is a fold,
+/// never mutated in place.
+pub fn host_ledger_agent(
+    table: *const caps.CapabilityTable,
+    agent_label: []const u8,
+    log: []const u8,
+    issuer_hex: *const [mc.pubkey_hex_len]u8,
+    holder_hex: *const [mc.pubkey_hex_len]u8,
+    issuer_pk: kumara.PublicKey,
+    holder_pk: kumara.PublicKey,
+) HostError!AgentResult {
+    // The door: a ledger agent must hold read+write over the ledger resource.
+    if (!admitted(table, agent_label, ledger_resource, caps.right_read | caps.right_write)) {
+        return error.NotAdmitted;
+    }
+    // The run: state is a fold over the signed log, verified while folding.
+    const balances = mc.fold_mala_log(log, issuer_hex, holder_hex, issuer_pk, holder_pk) catch return error.FoldFailed;
+    return .{ .admitted = true, .balances = balances };
+}

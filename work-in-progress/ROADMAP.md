@@ -123,7 +123,7 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 | Rung | Name | What it is | Gate |
 |------|------|------------|------|
-| **P0** | **Pool host seam** | A minimal Pool hosting one agent over Caravan's supervision + capability table; agent admitted, runs bounded, state is a fold; witnessed on one real tenant (the closed Open Ask loop is the natural first) | Caravan capability table green (it is); Keaton's word to open |
+| **P0** | **Pool host seam** | **GREEN `20260715.201500`** — hosts one agent over Caravan's own capability table (imported real); admission is a capability check, not a name check; the agent's state is a verified MALA fold. Five claims witnessed (granted-admitted-folds · ungranted-refused · read-only-refused · deterministic · tampered-refused). First tenant a minimal ledger agent; the closed Open Ask loop is the P1 tenant | ~~done~~ |
 | **P1** | **Two agents, one capability boundary** | Two Pool agents that cannot touch each other's state except through a named, granted capability — the isolation guarantee witnessed | P0 |
 | **R1** | **Realidream first view over Pool** | Realidream renders one Pool-hosted agent (the Open Ask) as a pure fold to the frame — the thin-view exception, sourced from Pool rather than a local fixture | P0 · Visual Track rung 1 |
 | **R2** | **Realidream as the unified viewer** | ask · receipt · reputation · sanctuary page, each a Pool agent on one Realidream surface — the Landscape-parallel proper; also the second consumer that graduates Dexter | R1 · P1 · Dexter graduation |

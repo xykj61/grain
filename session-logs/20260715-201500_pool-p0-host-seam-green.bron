@@ -1,0 +1,25 @@
+format session-log-v1
+stamp 20260715.201500
+editor Cursor
+model Cursor Fable 5 1M Low
+voice Quin
+title Pool P0 landed GREEN — the keystone host seam over Caravan's capability table
+prompt Keaton said "proceed!" after the align pass named Pool P0 as the one aligned next build. Built it green rather than described it.
+think studied Caravan first, as the align/finishing discipline requires -- read caravan/README.md and caravan/capabilities.rye. Found a real, bounded capability table (children, per-child capabilities, rights bitmask read/write/exec/net/device, and an allows(child,resource,right) query) already green. So Pool P0 composes on it rather than starting cold, exactly as the brief promised.
+think made Caravan's capability query surface pub (CapabilityTable, Capability, ChildSlot, add_child, grant, allows, find_child, the right_* constants, the max_* bounds) -- an additive change that exposes the real table to Pool without altering behavior; confirmed the Caravan capabilities witness stays green after the edit, honoring accrete-never-break.
+think composed Pool in linengrow/ (where the fold primitives kumara/receipt_core/mala_core already resolve) with a single new symlink linengrow/capabilities.rye -> ../caravan/capabilities.rye, the least-friction path to green; noted in the module doc that Pool's canonical home is a future pool/ dir, composing here for P0.
+think kept P0 to the smallest real host seam per SLC/finishing: admission is a capability check (Pool asks allows(agent, resource, right) -- a name alone never admits, a real grant does), and the hosted agent's state is a verified MALA fold (never mutated in place), reusing the exact fold Neth and Sala already prove. Chose a minimal ledger agent as the first tenant, standing in honestly for the richer closed Open Ask loop (named as the P1 tenant) -- P0 proves the host seam, not a specific rich agent.
+think wrote five falsifiable claims and they passed first try: a granted agent is admitted and folds to issuer 200 / holder 800; an ungranted agent is refused NotAdmitted at the door; a read-only grant is refused (the exact right is checked, not mere presence -- the capability boundary that must be sound from the first witness); two hostings agree bit-for-bit; a tampered log is refused FoldFailed so a hosted agent cannot admit a lie.
+think wired P0 into parity_ch01.rish and re-ran all ten related witnesses together (Caravan + six Neth + Mantra + Sala B0 + Pool P0) -- all GREEN, no regression, confirming the additive Caravan pub edit and the new seam compose cleanly.
+obs this is the design layer catching down to the build at last: the keystone the whole SLC/go-to-market strategy rested on is now a running, witnessed thing rather than a prioritized box. Pool P0 unblocks Sala B1 (live carriage) and the R-rungs -- the live broadcast the flagship experience showcases.
+obs "proceed!" is a build instruction, not "send" -- so this is committed to a branch and pushed, held from main awaiting Keaton's send word, per the convention.
+file caravan/capabilities.rye -- capability query surface made pub (additive); Caravan witness stays green
+file linengrow/capabilities.rye -- new symlink to caravan/capabilities.rye so Pool imports the real table
+file linengrow/pool_host_seam.rye -- Pool P0: admit-by-capability + state-is-a-verified-fold host seam
+file linengrow/pool_host_seam_witness.rye -- five claims, GREEN first try
+file tools/pool_host_seam_witness.rish -- build+run+assert wrapper
+file tools/parity_ch01.rish -- Pool P0 wired into the living suite after Sala B0
+file work-in-progress/TASKS.md -- P0 box checked green with the real shape
+file work-in-progress/ROADMAP.md -- keystone lane P0 row marked GREEN
+file session-logs/20260715-201500_pool-p0-host-seam-green.bron -- this log
+recommend keep-going -- Pool P0 is green: the keystone runs. The next real laps are P1 (two agents, one capability boundary -- the isolation guarantee witnessed) and Sala B1 (live carriage over Comlink, now unblocked), with the closed Open Ask loop as the richer P1 tenant. One lap at a time, ship before naming the next.
