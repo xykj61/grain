@@ -1,0 +1,25 @@
+---
+description: The Glow word "send" — commit, push, and merge from the client to the GitHub pier
+alwaysApply: true
+---
+
+# "send" — the Glow word for commit · push · merge
+
+When Keaton says **"send"** (from a client terminal — the Cursor iOS app, a desktop, any machine talking to the agent), it is Glow's one word for **ship the current work to the personal server**: commit, push, and merge to `main`. The client is the hand; GitHub holds the project — our pier, our own `urbit` clone — in the cloud for now; "send" carries the work from hand to pier.
+
+## What "send" does, in order
+
+1. **Commit** the staged work in CONTRIBUTING style — component-prefixed subject under 50 characters, a Radiant body naming what changed and why, a `Related` section. One commit per logical change; more than one commit when the work spans logical changes.
+2. **Push** the working branch: `git push -u origin <branch>` (retry on network error, exponential backoff).
+3. **Merge to `main`**: fast-forward when clean (`git checkout main` · `git merge --ff-only <branch>` · `git push origin main`), preserving every signed commit exactly. Never a force-push, never an amend, unless Keaton says so explicitly.
+
+## Discipline "send" always keeps
+
+- **Signing stays on.** Every commit is GPG-signed (`git-signing` rule); never bypass it.
+- **A session log rides along.** The work's `.bron` session log is committed in the same send whenever possible (`session-logs` rule).
+- **Green before send, when there is code.** If the send includes code, its witness runs GREEN first (or the send honestly names why it could not, per `docs-implementation-sync`).
+- **The branch is not left.** After a fast-forward merge the client rests on `main`, ready for the next hand-off.
+
+## Why the word exists
+
+A client talking to an agent talking to the pier is the shape of Glow's own network — a hand, a companion, a personal server holding the whole faithful history. "Send" names that gesture in one syllable, so shipping from a phone feels like handing a letter to your own ship rather than reciting three git verbs. It is the client-to-pier verb; when Glow's own Comlink carries this someday, "send" keeps its meaning.
