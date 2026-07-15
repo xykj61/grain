@@ -1,11 +1,11 @@
 # Setting Up the Sandbox on macOS
 
 **Language:** EN
-**Version:** `20260714.085000`
+**Version:** `20260714.183000`
 **Style:** Radiant (see `../../context/RADIANT_STYLE.md`)
 **Voice:** Rio 3
 **Status:** Guide for the task — witnessed on this fork's own macOS host, including a real jailed-GUI launch and a live write-fence probe from inside a running jailed agent window; the Rish scripts below are the primary path, with their bash elders kept beside them
-**Versions, all enduring:** `20260714.052900` first page (bash launcher) · `060500` Rish-native pair · `070500` the GUI launch actually proven (app binary direct, `--no-sandbox`, Mach/IPC section) and upstream ai-jail's own new macOS backend adopted for CLI agents · `073300` two more findings from a live agent session: the multi-account SSH `IdentitiesOnly` collision and the GPG trustdb quirk · `081500` `--harden-home` closes the read side of the private-`$HOME` gap for named credential stores, with a dedicated jail-local key generator and an honest limit on self-testing from inside an already-jailed window · `085000` jail-local keys carry real identity from `GLOW_PROFILE.bron`, and a scoped-`GH_TOKEN` path lets `gh` work under `--harden-home` without the real broad token
+**Versions, all enduring:** `20260714.052900` first page (bash launcher) · `060500` Rish-native pair · `070500` the GUI launch actually proven (app binary direct, `--no-sandbox`, Mach/IPC section) and upstream ai-jail's own new macOS backend adopted for CLI agents · `073300` two more findings from a live agent session: the multi-account SSH `IdentitiesOnly` collision and the GPG trustdb quirk · `081500` `--harden-home` closes the read side of the private-`$HOME` gap for named credential stores, with a dedicated jail-local key generator and an honest limit on self-testing from inside an already-jailed window · `085000` jail-local keys carry real identity from `GLOW_PROFILE.bron`, and a scoped-`GH_TOKEN` path lets `gh` work under `--harden-home` without the real broad token · `183000` the key generator now wires git itself and creates a jail-local `known_hosts` automatically; the harden witness checks `known_hosts` denial mechanically instead of only in prose
 
 ---
 
@@ -78,31 +78,9 @@ cd ~/urbit
 rishi/bin/rishi run tools/generate_jail_local_keys_macos.rish
 ```
 
-This makes a fresh SSH deploy key per forge and a passphrase-free, signing-only GPG key, all living under this project's own gitignored `.ssh/` and `.gnupg-rye/` — never your master identity, always revocable, always this one small scope (the same shape `SOURCE.md` Step 8c already names for the Linux launcher). It prints exactly what to paste into GitHub's and Codeberg's key settings; you do the pasting yourself, on purpose. Running key *generation* from outside any jail, rather than delegating it to the agent that will later use the keys, is a deliberate choice — a "dedicated, revocable" key means less if the same agent that will wield it also minted it.
+This makes a fresh SSH deploy key per forge, a jail-local `known_hosts` (fetched fresh via `ssh-keyscan`, since `--harden-home` denies the real `~/.ssh/known_hosts` too — it lives inside the same denied `~/.ssh` subpath, and without a jail-local replacement every push fails with `Host key verification failed` before it ever gets to checking your key), and a passphrase-free, signing-only GPG key — all living under this project's own gitignored `.ssh/` and `.gnupg-rye/`, never your master identity, always revocable, always this one small scope (the same shape `SOURCE.md` Step 8c already names for the Linux launcher). It prints exactly what to paste into GitHub's and Codeberg's key settings; you do the pasting yourself, on purpose. Running key *generation* from outside any jail, rather than delegating it to the agent that will later use the keys, is a deliberate choice — a "dedicated, revocable" key means less if the same agent that will wield it also minted it.
 
-Once both keys are registered, wire git to the new local files (from inside the jail is fine for this part — it is just repo-local config, same shape as Step 7's SSH override). SSH needs one more piece here that is easy to miss: it reads `~/.ssh/known_hosts` for host-key verification, and `--harden-home` denies that file too, since it lives inside the same denied `~/.ssh` subpath — without a jail-local replacement, every push fails with `Host key verification failed` before it ever gets to checking your key. Fetch fresh host keys into a jail-local file and point a repo-local SSH config at both the new identity files and the new known-hosts file:
-
-```bash
-ssh-keyscan github.com codeberg.org > .ssh/known_hosts_jail
-cat > .git/ssh_config_urbit <<'EOF'
-Host github.com
-  HostName github.com
-  User git
-  IdentityFile /path/to/this/repo/.ssh/id_ed25519_jail_github
-  IdentitiesOnly yes
-  UserKnownHostsFile /path/to/this/repo/.ssh/known_hosts_jail
-
-Host codeberg.org
-  HostName codeberg.org
-  User git
-  IdentityFile /path/to/this/repo/.ssh/id_ed25519_jail_codeberg
-  IdentitiesOnly yes
-  UserKnownHostsFile /path/to/this/repo/.ssh/known_hosts_jail
-EOF
-git config --local core.sshCommand "ssh -F $PWD/.git/ssh_config_urbit"
-git config --local gpg.program "$PWD/.gnupg-rye/gpg.sh"   # a tiny wrapper exporting GNUPGHOME, per SOURCE.md Step 8c
-git config --local user.signingkey <the fingerprint generate_jail_local_keys_macos.rish printed>
-```
+**Git wiring is automatic.** The script itself sets `core.sshCommand` (pointing at a repo-local `.git/ssh_config_urbit` it writes, naming both the identity files and the jail-local `known_hosts`), `gpg.program` (a tiny wrapper exporting `GNUPGHOME`, per `SOURCE.md` Step 8c's own pattern), and `user.signingkey` — nothing to configure by hand afterward. Rerunning the script is safe: it leaves existing key material alone and only refreshes the SSH comment and the repo-local config, so editing `GLOW_PROFILE.bron` and rerunning re-stamps identity without minting new keys.
 
 **Prove it, from outside the jail.** `tools/cursor_jail_macos_harden_witness.rish` checks that `~/.ssh` and `~/.gnupg` are denied while `~/.gitconfig` and the project stay readable, yet only when the shell running it is not already inside a jail:
 
