@@ -1,0 +1,74 @@
+//! linengrow/neth_root_install.rye — Neth's two-posture root install.
+//!
+//! Per external-research/20260714-041542_ironbeetle-patterns-for-the-neth-ladder.md
+//! pattern 2 ("graduated trust — authoritative at the source, verified
+//! everywhere else"): the same kind of message earns two different levels
+//! of trust depending on where it came from.
+//!
+//!   - `install_at_source` — a root at issue from the one machine
+//!     authoritative about its own current view (the issuing monarch)
+//!     installs outright, with no hash-chain proof demanded. If that one
+//!     source lied about the root it itself just computed, far more is
+//!     already broken than a chain check could save.
+//!   - `install_on_repair` — a root arriving from anyone else (a peer
+//!     answering a repair request) installs only if it hash-chains
+//!     cleanly onto the root already held for the immediately prior seq.
+//!
+//! Both postures share one absolute rule, checked before either kind of
+//! trust is extended: a seq already committed is never revisited, by
+//! either posture. `RootTruncated` covers both "that slot is already
+//! settled" and "you have skipped ahead of the next expected slot" —
+//! Neth admits roots strictly in order, one seq at a time, from either
+//! posture.
+//!
+//! This module composes on top of the already-green deterministic-root
+//! witness (linengrow/neth_root_witness.rye) — it does not recompute a
+//! root, it decides whether an already-computed root may be admitted.
+
+const std = @import("std");
+
+/// Bounded history of committed roots — small enough to eyeball, mirroring
+/// neth_serial_core.rye's own max_append_bytes discipline.
+pub const max_committed_roots: u32 = 64;
+
+pub const RootLog = struct {
+    roots: [max_committed_roots][32]u8 = undefined,
+    committed_len: u32 = 0,
+
+    pub fn last_root(self: *const RootLog) ?[32]u8 {
+        if (self.committed_len == 0) return null;
+        return self.roots[self.committed_len - 1];
+    }
+};
+
+pub const RootError = error{ RootTruncated, ChainMismatch, Overflow };
+
+fn admit_next(state: *RootLog, seq: u32, new_root: [32]u8) RootError!void {
+    // Never-truncate, never-skip: the one rule both postures share. A seq
+    // behind what is already committed is refused as RootTruncated; so is
+    // a seq that jumps ahead of the next expected slot -- Neth admits
+    // roots strictly one seq at a time.
+    if (seq != state.committed_len) return error.RootTruncated;
+    if (state.committed_len >= max_committed_roots) return error.Overflow;
+    state.roots[state.committed_len] = new_root;
+    state.committed_len += 1;
+}
+
+/// Trust-at-source: the issuing monarch's own root for its own current
+/// view. No chain-link proof demanded -- the source is authoritative
+/// about this by construction. Still bound by the shared never-truncate
+/// rule above.
+pub fn install_at_source(state: *RootLog, seq: u32, new_root: [32]u8) RootError!void {
+    try admit_next(state, seq, new_root);
+}
+
+/// Verify-on-repair: a root arriving from a peer, not the issuing source.
+/// Installed only if it hash-chains onto the root already held for the
+/// immediately prior seq -- graduated trust's other half.
+pub fn install_on_repair(state: *RootLog, seq: u32, claimed_prev_root: [32]u8, new_root: [32]u8) RootError!void {
+    if (state.committed_len > 0) {
+        const held_prev = state.roots[state.committed_len - 1];
+        if (!std.mem.eql(u8, &claimed_prev_root, &held_prev)) return error.ChainMismatch;
+    }
+    try admit_next(state, seq, new_root);
+}
