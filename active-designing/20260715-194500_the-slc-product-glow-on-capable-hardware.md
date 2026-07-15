@@ -45,6 +45,26 @@ mikroPhone taught the honest limit: bespoke openness costs performance. The SLC 
 - No claim to compete with mikroPhone — it is a teacher we honor; the SLC product runs on different (capable) hardware and delivers a different (software-sovereignty) value.
 - L2 and L3 stay horizon, honestly gated on Pool P0; nothing here promises live carriage before that keystone lands.
 
+## Reach Tier (`20260715.195500`) — the Budget Used Android, and Modifying the SLC for Reach
+
+Accreted to widen customer potential: the Fairphone /e/OS is the *repairable-flagship* device (own it fully, firmware freer, ~$600), yet it is a barrier to *reach* at that price. For the widest customer potential, the SLC broadcaster client should target a **cheap used/refurbished Android** as its reach tier — and the honest best target, TAME-aligned, is a **used Google Pixel (7a or 8a class)** on a de-Googled ROM (dated July 2026, cited):
+
+- **Reach floor — used Pixel 7a (~$150–220 refurb, or ~$298 pre-flashed with GrapheneOS).** The cheapest sovereign-capable entry: unlockable bootloader, GrapheneOS/CalyxOS/DivestOS/LineageOS support, Tensor G2, 90 Hz OLED. Honest caveat: on the old A-series update policy, security patches end ~2028 — a ~two-year runway, a reach device rather than a keep-for-a-decade one.
+- **Best value — used Pixel 8a (~$250 refurb).** Tensor G3, and the first A-series on Google's 7-year policy, so security updates run to **2031** even on a $250 refurb. The buy-once-keep-long choice.
+- **Skip:** carrier-financed Pixels (locked bootloaders), Pixel 6a (2025 battery recall), Pixel 6/earlier (support ended).
+
+**Why the used Pixel is the reach sweet spot** — it is cheap and *abundant* (Google's high sales volume feeds a deep refurb market), it is one of the few cheap Androids with a genuinely *unlockable* bootloader (most budget carrier phones are locked), and it has the *widest* sovereign-ROM support of any device family. A creator can even buy one **pre-flashed with GrapheneOS**, so being a sovereign broadcaster needs zero flashing skill — that removes the technical barrier that would otherwise cap reach.
+
+**The one honest tension**, the same one the Glowphone study named: a used Pixel is GrapheneOS-*hardened* yet runs the *least firmware-free* silicon (closed secure element, closed baseband and camera blobs). So the two device tiers serve different values and are complementary, not competing: the **Fairphone** leads on repair + firmware-freedom (own-it-fully), the **used Pixel** leads on hardened-security + low-cost + abundance (reach). Both are de-Googled and sovereign; a person picks by which value they weigh most.
+
+**Modifying the first SLC for reach** — three changes, none of which touch the green core:
+
+1. **Broaden the broadcaster-client target** from Fairphone-only to *any de-Googled-capable cheap used Android*, with the used Pixel 7a/8a as the lead reach device. Entry cost drops roughly 4x (~$600 → ~$150–250), so far more people can be a sovereign broadcaster.
+2. **Lower the skill barrier** by supporting pre-flashed GrapheneOS/CalyxOS devices, so no flashing is required to start.
+3. **Keep the audience platform-agnostic** — the viewer reaches any broadcast over the open web (the WebSocket bridge the Sala-broadcast study names), so the *watching* side has universal reach regardless of the broadcaster's device or the viewer's.
+
+Together these keep the SLC's green L1 core untouched while widening both who can broadcast (cheap sovereign device) and who can watch (any device, over the web) — reach on both sides, sovereignty uncompromised.
+
 ## Related
 
 - `../gratitude/mikrophone.md` — the teacher whose performance limit points to this software-on-capable-hardware stance.
