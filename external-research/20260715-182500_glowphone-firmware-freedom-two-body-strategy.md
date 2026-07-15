@@ -101,7 +101,12 @@ The two-body design still holds and now reads even more honestly: **do not fabri
 - **Right to repair** — the iFixit gold standard, modular by design — met most of all.
 - **Firmware freedom** — met *where the silicon allows*; the modem and ISP blobs are isolated and named, not pretended free. This is the one requirement that scopes rather than maxes, and the honesty is the point.
 
-The Glow software path is then: lead with a **de-Googled / postmarketOS-maturing base** on Fairphone-class hardware for firmware freedom and reflashability, with **CalyxOS/DivestOS or GrapheneOS-on-Pixel** as the hardened-threat-model fallback — the same "both values live a season past the flip" honesty the enclosure work keeps. The Glow surfaces (Rishi, Sala, Rhyz key, Comlink) ride as a userland; custom silicon stays a far horizon, never the opening move.
+The Glow software path is then two-phase, not a single choice — a refinement worth stating plainly, since Fairphone sells the Gen. 6 in two flavours (stock Android, and a pre-installed de-Googled **/e/OS** by Murena):
+
+- **Phase one — start with /e/OS (better first chance).** Buy the /e/OS flavour: it ships de-Googled (microG) with no flashing, works immediately, keeps the bootloader unlockable so no door closes, and puts a real, capable, private phone in the hand *now* — the finishing discipline applied to hardware (ship the real thing first). The Glow surfaces (Rishi, Sala, Rhyz key, Comlink) ride as a userland on top of Android at this phase.
+- **Phase two — migrate to postmarketOS as it matures (better eventual substrate).** /e/OS is still Android underneath, so Glow rides *on* it rather than replacing it. postmarketOS is real mainline Linux — the substrate where a Glow-direction OS could live natively, our stack down as far as the silicon allows. It is less mature on any given device today, so it is the target to grow toward, not the opening move.
+
+One correction to the draft's fallback: **GrapheneOS is Pixel-only and was never a Fairphone option** — on a Fairphone the real bases are /e/OS, CalyxOS, or postmarketOS, and /e/OS is the officially-shipping de-Googled one today. The GrapheneOS-on-Pixel path remains a *separate-device* hardened fallback for a threat model that demands memory tagging, not a base for this device. Custom silicon stays a far horizon, never the opening move.
 
 ### The one requirement that is a scope, not a max — named plainly
 

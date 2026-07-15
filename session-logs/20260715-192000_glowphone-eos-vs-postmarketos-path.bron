@@ -1,0 +1,15 @@
+format session-log-v1
+stamp 20260715.192000
+editor Cursor
+model Cursor Fable 5 1M Low
+voice Quin
+title Glowphone OS path — start with /e/OS, migrate to postmarketOS
+prompt Keaton, looking at Fairphone's store (stock Android vs a pre-installed /e/OS flavour), asked whether we would have a better chance with their /e/OS or with what I had already recommended.
+think read this as "better chance of what" -- and answered honestly that it depends on the goal: /e/OS is the better first chance (a real de-Googled capable phone in hand now, no flashing, bootloader kept unlockable, doors open), while postmarketOS (mainline Linux) is the better eventual substrate for a Glow-native OS down to the silicon. They are two phases, not an either/or.
+think corrected my own earlier framing: GrapheneOS is Pixel-only and was never a Fairphone option, so on this device the real bases are /e/OS, CalyxOS, or postmarketOS; /e/OS is the officially-shipping de-Googled one today. Named that correction plainly rather than letting the draft's "GrapheneOS fallback" stand as if it applied to the Fairphone.
+think tied the recommendation to the finishing discipline just seated: /e/OS is the "ship one real thing now" move for hardware -- live with the device this month, layer Glow surfaces as userland -- and postmarketOS is the deeper build to grow toward as it matures, exactly the ship-now-grow-later shape the counsel names.
+think folded the refinement into the Glowphone doc's OS-path paragraph on the branch already pending Keaton's "send," so the pending work stays complete and honest rather than leaving the doc's recommendation stale.
+obs continued to hold the send convention: this refinement is committed to the same pending branch, still not merged to main -- the merge waits for "send." Two turns now have tested the rule and honored it.
+file external-research/20260715-182500_glowphone-firmware-freedom-two-body-strategy.md -- OS-path paragraph refined to the two-phase /e/OS-then-postmarketOS recommendation, with the GrapheneOS-Pixel-only correction
+file session-logs/20260715-192000_glowphone-eos-vs-postmarketos-path.bron -- this log
+recommend check-in -- the OS path is now honest and staged on the pending branch; it awaits Keaton's "send" to reach main, alongside the requirement refinement from the prior turn. The next real step is his word to send, or a decision to actually acquire the /e/OS Fairphone as the phase-one device.
