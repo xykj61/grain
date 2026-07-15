@@ -1,0 +1,26 @@
+# neth_apply_step_witness.rish — Neth's apply-step crash-safety witness.
+#
+# The Neth build ladder's third real lap: root application (admit into the
+# consulted structure) is a distinct step from root writing, so a crash in
+# the window between the two costs nothing -- the prior root stays
+# authoritative, the new one simply redone. See
+# external-research/20260714-041542_ironbeetle-patterns-for-the-neth-ladder.md
+# and linengrow/neth_apply_step.rye.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/neth_apply_step_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/neth_apply_step_witness"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/neth_apply_step_witness.rye -femit-bin=${bin}"]
+
+assert build.ok else "Neth apply step witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "Neth apply step witness exited non-zero"
+assert selftest.out contains "GREEN" else "Neth apply step witness not GREEN"
+assert selftest.out contains "crash in the write-to-apply window" else "Neth apply step witness missing crash-safety unwelcome path"
+assert selftest.out contains "refused NothingPending" else "Neth apply step witness missing empty-apply unwelcome path"
+
+say "GREEN: Neth apply step witness passed."

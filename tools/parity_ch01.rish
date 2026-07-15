@@ -1026,3 +1026,8 @@ say "witness suite: Neth two-posture root install (trust-at-source, verify-on-re
 let neth_root_install = run ["rishi/bin/rishi" "run" "tools/neth_root_install_witness.rish"]
 assert neth_root_install.ok else "Neth two-posture root install witness failed"
 say "GREEN: Neth two-posture root install witness passed."
+
+say "witness suite: Neth apply-step crash safety (written is not visible until applied)…"
+let neth_apply_step = run ["rishi/bin/rishi" "run" "tools/neth_apply_step_witness.rish"]
+assert neth_apply_step.ok else "Neth apply-step crash safety witness failed"
+say "GREEN: Neth apply-step crash safety witness passed."
