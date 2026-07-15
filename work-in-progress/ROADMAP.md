@@ -3,10 +3,10 @@
 *A living plan shaped by one law: a complex system that works grows from a simpler system that worked. We build by growing, and we ship something simple that runs at every step.*
 
 **Language:** EN
-**Version:** `20260713` (Fresh sitting — morning cup · docs keeper complete)
-**Last updated:** 2026-07-13 (parity word landed · suite nib **433** · git nib pending go)
+**Version:** `20260715` (Pool keystone revival prioritized · Quin voice seated)
+**Last updated:** 2026-07-15 (Pool/Realidream keystone lane added `20260715.172000`; parity word landed · suite nib **433**)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Voice:** Rio 3
+**Voice:** Quin
 **Lens:** TAME — safety, performance, joy; the Seed Law; [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md)
 **Status:** Living roadmap
 
@@ -117,9 +117,20 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 ---
 
+## The Keystone Revival — Pool (Gall's role), with Realidream as its Landscape (prioritized `20260715.172000`)
+
+*The single most load-bearing Urbit-vane revival for Glow, prioritized this stamp: **Gall — the userspace application host — revived as Pool**, with **Realidream** as its Landscape-parallel viewer. Ames and Clay already live as Comlink and Mantra (green); identity half-lives as Kumara. What Glow lacks is the host that turns that green spine into a system a person can inhabit — and everything at the product layer (Linengrow, Open Asks, the sanctuary care log, the content market, Dimeroll) is Gall-shaped. Pool composes Caravan's supervision + capability table (arguably ahead of Gall's current model) rather than starting cold; Realidream renders what Pool hosts as a pure fold from Weave to the frame — the alternative to Urbit's Landscape, grown on a capability-secured, witnessed spine. Full brief: [`../external-research/20260715-172000_pool-keystone-revival-realidream-landscape.md`](../external-research/20260715-172000_pool-keystone-revival-realidream-landscape.md). Design/research register — a prioritization, no Pool code built yet; gated behind Keaton's word to open P0.*
+
+| Rung | Name | What it is | Gate |
+|------|------|------------|------|
+| **P0** | **Pool host seam** | A minimal Pool hosting one agent over Caravan's supervision + capability table; agent admitted, runs bounded, state is a fold; witnessed on one real tenant (the closed Open Ask loop is the natural first) | Caravan capability table green (it is); Keaton's word to open |
+| **P1** | **Two agents, one capability boundary** | Two Pool agents that cannot touch each other's state except through a named, granted capability — the isolation guarantee witnessed | P0 |
+| **R1** | **Realidream first view over Pool** | Realidream renders one Pool-hosted agent (the Open Ask) as a pure fold to the frame — the thin-view exception, sourced from Pool rather than a local fixture | P0 · Visual Track rung 1 |
+| **R2** | **Realidream as the unified viewer** | ask · receipt · reputation · sanctuary page, each a Pool agent on one Realidream surface — the Landscape-parallel proper; also the second consumer that graduates Dexter | R1 · P1 · Dexter graduation |
+
 ## The Visual Track — Realidream (horizon lane, ladder already named)
 
-*Where Linengrow's SLC product gets designed and **seen** — every surface a pure fold from Weave to the frame, per the three living essays. Opened `20260708.021912` from the grain-sketchbook mining ([study](../external-research/20260708-021912_grain-sketchbook-realidream-mining.md) · [counsel](../counsel/20260708-021912_claude-counsel-realidream-zig016-brix.md)); the sketchbook's unified DAG UI backend (Aurora + Skate + Realidream) is this lane's direct ancestor, its event DAG the unsigned ancestor of Weave itself.*
+*Where Linengrow's SLC product gets designed and **seen** — every surface a pure fold from Weave to the frame, per the three living essays. Opened `20260708.021912` from the grain-sketchbook mining ([study](../external-research/20260708-021912_grain-sketchbook-realidream-mining.md) · [counsel](../counsel/20260708-021912_claude-counsel-realidream-zig016-brix.md)); the sketchbook's unified DAG UI backend (Aurora + Skate + Realidream) is this lane's direct ancestor, its event DAG the unsigned ancestor of Weave itself. **This lane now sits under the Pool keystone revival above** — Realidream's rungs are the R-rungs there, rendered over what Pool hosts.*
 
 | Rung | Name | State | Gate |
 |------|------|-------|------|

@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260715.172000
+editor Cursor
+model Cursor Fable 5 1M Low
+voice Quin
+title Pool prioritized as the keystone Urbit-vane revival, with Realidream as its Landscape
+prompt Keaton, after asking which Urbit Hoon vane matters most to revive into Glow, said to prioritize it for the roadmap if it is a good idea, and to create Realidream within it as an alternative to Urbit Landscape / userspace.
+think confirmed my own recommendation held under scrutiny before prioritizing it: of the ten vanes, Ames and Clay are already revived and green (Comlink, Mantra), identity half-lives (Kumara), so the honest highest-leverage revival is Gall's userspace-host role -- the piece that turns a green infrastructure spine into a system a person can inhabit. Every product-layer concern in the tree is Gall-shaped, so Pool unlocks the most downstream work at once.
+think checked that this composes rather than starts cold: Caravan already carries a supervision tree plus an explicit capability table, and the vane-mapping notes Caravan's capability model is arguably ahead of Gall's current direct-kernel design. So the P0 lap is Pool-over-Caravan, not a host invented from nothing.
+think placed Realidream correctly relative to Pool rather than as a rival concept: Urbit keeps Gall (host) and Landscape (viewer) as a clean split, and the naming-mapping already maps Realidream to the Landscape parallel. So Realidream sits UNDER the Pool revival -- Pool hosts, Realidream shows -- and its existing Visual Track rungs become the R-rungs of one combined ladder, rendered over what Pool hosts. Named this so the roadmap reads as one keystone lane, not two competing ones.
+think honored the reviving discipline: Pool revives Gall's role in Glow's own capability-secured shape, the elder keeping its witnesses until the revival earns them; nothing renamed, no Pool code written, the whole ladder gated on Keaton's word to open P0.
+think tied the first tenant to something already green -- the closed Open Ask loop -- so P0's first hosted agent is a real, witnessed thing, not a toy, and R1 renders that same agent, and R2 (the unified viewer) is also the second consumer that graduates Dexter, wiring the ladder into a rule already written rather than inventing a new gate.
+think wrote the decision brief in the design register with its own "does not claim" fence, and prioritized it on both the living ROADMAP (a new keystone-revival lane above the Visual Track, which now sits under it) and the granular TASKS.md ladder (P0/P1/R1/R2). Bumped the ROADMAP voice to Quin and both headers' last-updated, since these are living docs now speaking as of this stamp.
+obs kept the whole thing a prioritization, not a build: the strongest honest service here is naming the keystone, the composition path, and the first real laps clearly enough that the next build sitting can open P0 the moment Keaton gives the word -- rather than reaching for code before the word.
+file external-research/20260715-172000_pool-keystone-revival-realidream-landscape.md -- the decision brief: why Pool is the keystone, Realidream as its Landscape, laps P0-R2
+file work-in-progress/ROADMAP.md -- new keystone-revival lane above the Visual Track; voice bumped to Quin; last-updated bumped
+file work-in-progress/TASKS.md -- Pool keystone revival item + P0/P1/R1/R2 ladder, gated on Keaton's word; last-updated bumped
+file external-research/README.md -- newest-first row for the decision brief
+file session-logs/20260715-172000_pool-keystone-realidream-prioritized.bron -- this log
+recommend check-in -- the keystone is named and prioritized on the roadmap, with a composition path and first laps ready; the one thing it waits on is Keaton's word to open P0. That word is the real gate: once given, the next build sitting can host the closed Open Ask loop under a minimal Pool over Caravan's capability table and witness it, exactly as the Neth ladder's laps were witnessed this same day.
