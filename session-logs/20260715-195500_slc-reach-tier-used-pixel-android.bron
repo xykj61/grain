@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260715.195500
+editor Cursor
+model Cursor Fable 5 1M Low
+voice Quin
+title SLC reach tier — the budget used Pixel widens who can broadcast, audience stays web-reachable
+prompt Keaton asked for the best budget/cheap/used/refurbished Android device to widen customer potential if we modify our first SLC -- write and ship.
+think grounded the answer in dated (July 2026) research rather than guessing: the honest best budget sovereign-capable device is a used Google Pixel -- 7a (~$150-220 refurb, or ~$298 pre-flashed GrapheneOS) as the reach floor, 8a (~$250, security to 2031 on the 7-year policy) as the best value. Named the skips (carrier-financed locked bootloaders, Pixel 6a battery recall, Pixel 6/earlier end-of-support).
+think reasoned why used Pixel is the reach sweet spot: cheap AND abundant (deep refurb market), one of the few cheap Androids with a genuinely unlockable bootloader (most budget carrier phones are locked), and the widest sovereign-ROM support of any family -- plus you can buy it pre-flashed with GrapheneOS, removing the flashing-skill barrier that would otherwise cap reach.
+think held the honest tension the Glowphone study already named: the used Pixel is GrapheneOS-hardened yet runs the least firmware-free silicon, so the two device tiers are complementary not competing -- Fairphone leads on repair + firmware-freedom (own-it-fully, ~$600), used Pixel leads on hardened-security + low-cost + abundance (reach). Both de-Googled and sovereign; a person picks by which value they weigh most.
+think named the SLC modification precisely without touching the green L1 core: broaden the broadcaster-client target from Fairphone-only to any de-Googled-capable cheap used Android (Pixel 7a/8a lead, ~4x cheaper entry), lower the skill barrier via pre-flashed devices, and keep the audience platform-agnostic over the open-web WebSocket bridge -- reach on both the broadcasting and watching sides, sovereignty uncompromised.
+think this answer also encodes the prior turn's Android-over-iOS decision (a used sovereign de-Googled Android is only possible because Android allows it; iOS forbids the whole path), so the reach tier is consistent with the TAME-alignment reasoning without re-litigating it.
+think "write and ship" is an explicit ship instruction, so this send does commit-push-merge to main.
+file active-designing/20260715-194500_the-slc-product-glow-on-capable-hardware.md -- accreted a dated Reach Tier section: the budget used Pixel, the three SLC modifications for reach, the two-tier device complementarity
+file active-designing/README.md -- index row meaning extended to note the reach tier
+file session-logs/20260715-195500_slc-reach-tier-used-pixel-android.bron -- this log
+recommend keep-going -- the SLC product now has both a sovereign-flagship device (Fairphone /e/OS) and a reach device (used Pixel 7a/8a), with the client and audience both widened and the green L1 core untouched. The build-side next step is unchanged and unblocked: Pool P0, which turns L1 into the live L2 broadcast the reach tier is meant to carry.
