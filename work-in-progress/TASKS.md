@@ -1,7 +1,7 @@
 # Tasks — The Granular Plan
 
 **Language:** EN
-**Last updated:** 2026-07-14 (compass align landed · git nib **daa2cc0f97**; local macOS fork Pass 1 `20260713.201910`; Glow/naming/lineage design thread `20260713.233147`; macOS `--harden-home` + jail-local identity + history rewrite + Radiant sweep `20260714.114000`)
+**Last updated:** 2026-07-14 (compass align landed · git nib **655d345091**; local macOS fork Pass 1 `20260713.201910`; Glow/naming/lineage design thread `20260713.233147`; macOS `--harden-home` + jail-local identity + history rewrite + Radiant sweep + known_hosts tooling `20260714.183000`)
 
 ## Local macOS fork — Pass 1 landed `20260713.201910`, Pass 2 open
 
@@ -37,8 +37,8 @@
 - [x] Standalone SVG QR codes beside the PNG key card — `tools/make_key_qr_svg.rish`, `20260714.114000`
 - [x] A scoped Radiant Style sweep over this tree's 85 living, first-party docs (7 root, 11 `context/`, 15 `manual/`, ~20 module READMEs) — dated archives and the `strengthening-compiler/` spec catalog explicitly out of scope; found and fixed 7 real "but" instances, confirmed the tree already well-kept
 - [ ] Network egress *filtering* (proxy-based, allow-list by host) — the current script only offers allow-all or deny-all
-- [ ] A **full** private-`$HOME` equivalent (hiding all of `$HOME`, not just the named credential stores `--harden-home` already covers) — still an open, named gap
-- [ ] Fold the `known_hosts` finding (`--harden-home` also breaks SSH host-key verification) into `tools/cursor_jail_macos_harden_witness.rish` itself, not just the guide's prose
+- [x] Fold the `known_hosts` finding (`--harden-home` also breaks SSH host-key verification) into the tooling itself — `20260714.183000`: `tools/generate_jail_local_keys_macos.rish` now creates a jail-local `known_hosts` and wires git automatically; `tools/cursor_jail_macos_harden_witness.rish` checks it mechanically
+- [ ] A **full** private-`$HOME` equivalent (hiding all of `$HOME`, not just the named credential stores `--harden-home` already covers) — scoped, not built, `20260714.184500`: [`active-designing/20260714-184500_macos-full-private-home-design.md`](../active-designing/20260714-184500_macos-full-private-home-design.md) recommends a scratch-`$HOME`-plus-curated-symlinks shape (fail-safe by inclusion) over extending the deny-list further (fail-unsafe by omission); waiting on Keaton's word on whether it is worth building now
 - [ ] Extend `context/specs/enclosure-editors.md` with a macOS section alongside the existing Ubuntu/NixOS ones
 - [ ] A full vector (SVG) rebuild of the composited key card, replacing the ImageMagick raster pipeline — named as a real, separate project, not attempted
 - [ ] A Radiant Style pass over `strengthening-compiler/`'s prose sections — needs its own scoping pass first (the catalog is mostly structured technical spec, not narrative)
