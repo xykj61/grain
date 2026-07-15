@@ -21,7 +21,7 @@ The reason is historical and clean: Hoon compiles to Nock because, over a decade
 
 ## The Two Backends
 
-- **Primary — Glow → Zig 0.16.0 → RISC-V** (and aarch64, x86_64). The real execution path, standing and **green**: Glow is a thin frontend on pinned Zig 0.16.0, and `tools/glow_riscv_target_witness.rish` now cross-builds the Sala B0 witness for `riscv64-linux-musl` and runs it under `qemu-riscv64-static`, reproducing the same byte-identical session root it prints natively and on emulated aarch64 (M0). The shared-IR research already found the Zig backend *is* the shared IR — so this was a parity witness, not a new compiler.
+- **Primary — Glow → Zig 0.16.0 → RISC-V** (and aarch64, x86_64). The real execution path, standing and **green across three keystone vanes**: Glow is a thin frontend on pinned Zig 0.16.0, and `tools/glow_riscv_target_witness.rish` cross-builds Sala B0, Neth's minimal witness, and Pool P0 for `riscv64-linux-musl`, running each under `qemu-riscv64-static`. Each comparison is the strongest form of the claim — not a hand-picked hash line, but the **entire stdout compared byte-for-byte** against the identical source's native x86_64 run, self-verifying against source drift rather than a literal that could fall stale. All three matched exactly. The shared-IR research already found the Zig backend *is* the shared IR — so this was a parity witness, not a new compiler.
 - **Second — Glow → Nock**, for **Urbit interop and verification only**. Same Glow source, a Nock target so Glow can meet the Urbit world and be checked against it — aligned with Ojjo's Hoon/Glow parity and the Glow↔Hoon round-trip. The Nock interpreter the world-facing study scopes is this **interop seam**, not the execution foundation. (The bridge direction is "Glow emits Nock," never "compile RISC-V down to Nock.")
 
 ## Determinism Moves from the VM to the Discipline
@@ -32,7 +32,7 @@ This also resolves the world-facing study's long-standing fork toward **option 3
 
 ## How This Re-Reads the Recent Decisions
 
-- **Validated:** the Neth/Sala/Pool green laps are the proof of disciplinary determinism on native code — the build stretch *is* this thesis, witnessed.
+- **Validated, twice over:** the Neth/Sala/Pool green laps are the proof of disciplinary determinism on native code, and the same three now run byte-identical on emulated RISC-V — the build stretch *is* this thesis, witnessed on both the origin architecture and the substrate architecture.
 - **Sharpened — the runtime (Aurora + Caravan + Tally):** Aurora boots onto RISC-V via Zig, hosting Glow-native execution; the kelvin/Nock interop is a seam, not the core.
 - **Sharpened — the held T-vane / runtime unification:** Urbit keeps its pure-kernel / impure-runtime split *because* determinism lives in its VM; Glow's determinism lives in the discipline, so unifying kernel and runtime loses less here than there — a point in the proposal's favour, still not a now-build.
 - **Sharpened — Glowphone / mikroPhone:** M0 proved Glow's code arch-portable via Zig; mikroPhone's RISC-V central MCU is a real, funded instance of exactly this substrate.
