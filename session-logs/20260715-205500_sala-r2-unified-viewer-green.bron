@@ -1,0 +1,24 @@
+format session-log-v1
+stamp 20260715.205500
+editor Cursor
+model Cursor Fable 5 1M Low
+voice Quin
+title Sala R2 landed GREEN — the unified viewer closes the Pool keystone ladder and graduates Dexter
+prompt Keaton said "kg" after Sala R1; chose R2 (Realidream as the unified viewer — many Pool agents on one surface) as the next lap, completing the Landscape-parallel.
+think R2 is the Landscape-parallel proper: one surface over many sovereign, capability-isolated Pool agents, each rendered as its own fold. Composed it on the three green laps beneath it -- Pool P1's host_agent_on (isolation), Sala R1's render_ledger/Frame (rendering), and P0's admission -- so R2 is genuinely the composition of what already works, not new machinery.
+think modeled the surface as a bounded list of labelled panels; each panel is one agent's rendered frame. Only Pool-hosted agents earn a panel -- an agent Pool refused never reaches the surface -- so the view shows exactly what Pool admitted, the same only-what-Pool-hosts honesty R1 keeps, now across many agents.
+think gave the three agents (ask, receipt, reputation) genuinely distinct states (welcome; +send 50; +send 50 +send 25 -> issuer 200/250/275) so the panels show different folds, making "many agents, one surface, each its own state" visible rather than asserted. Printed the actual three-panel surface in the witness output.
+think hit and fixed one real Zig shadow error on the first build -- a local `panel` variable shadowed the `panel` accessor method; renamed the local to new_panel. Caught immediately by building in-session, the finishing rhythm working.
+think wrote four falsifiable claims, green after the shadow fix: three isolated agents render as three distinct-fold panels; two surfaces from the same states agree byte-for-byte (deterministic); the surface is bounded; and an ungranted sanctuary agent is refused by Pool and earns no panel.
+think this closes the whole Pool keystone ladder -- P0 (host), P1 (isolate), R1 (render one), R2 (render many on one surface) all green -- and R2 is the second thin-view consumer the Dexter graduation rule waited for, so I marked Dexter graduated in the ROADMAP Visual Track.
+think ran the full Pool+Sala set (P0, P1, B0, B1, R1, R2) together -- all GREEN, no regression from the additive edits across the stretch.
+obs five real green laps this build stretch (Pool P0, Pool P1, Sala B1, Sala R1, Sala R2): the keystone brief's "Pool hosts, Sala shows" is now complete end to end -- host, isolate, record, broadcast, render one, render many. The design that outpaced the build has been fully answered by the build.
+obs "kg" is keep-going, not "send" -- so all five laps rest on the branch awaiting Keaton's send word.
+file linengrow/sala_surface.rye -- Sala R2: a bounded Surface of labelled panels; add renders one Pool agent's frame; fixed the panel-shadow
+file linengrow/sala_surface_witness.rye -- four claims GREEN; prints the three-panel unified surface
+file tools/sala_surface_witness.rish -- build+run+assert wrapper
+file tools/parity_ch01.rish -- Sala R2 wired into the living suite after R1
+file work-in-progress/TASKS.md -- R2 box checked green; keystone ladder closed noted
+file work-in-progress/ROADMAP.md -- R2 row GREEN; Dexter graduation marked graduated
+file session-logs/20260715-205500_sala-r2-unified-viewer-green.bron -- this log
+recommend check-in -- the Pool keystone ladder is fully closed (P0·P1·R1·R2 green) and Dexter graduated; the SLC flagship (Sala broadcast L1/L2) runs end to end. This is a real milestone and a natural resting point. The remaining named laps are B2 (audience + back-channel: many subscribers, chat as folded signed facts, the VOD) -- which deepens the broadcast and would want multi-signer replay, a slightly larger design -- so it is worth Keaton's word on whether to open B2 next or rest the thread here. And this branch (P0/P1/B1/R1/R2) is ready whenever Keaton says send.
