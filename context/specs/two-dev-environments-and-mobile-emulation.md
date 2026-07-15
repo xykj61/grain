@@ -1,10 +1,10 @@
 # Two Development Environments, and Emulating the Glow Mobile Platform
 
 **Language:** EN
-**Stamp:** living ledger (born `20260715.193000`) · refreshed `20260715.230000` (M0-riscv rung added; frozen dated original now a pointer stub, per [`living-vs-dated.md`](living-vs-dated.md))
+**Stamp:** living ledger (born `20260715.193000`) · refreshed `20260715.230000` (M0-riscv rung added; frozen dated original now a pointer stub, per [`living-vs-dated.md`](living-vs-dated.md)) · refreshed `20260715.163500` (a third, interim macOS environment named; the Pixel/GrapheneOS ladder, G0–G3, opened separately from the Fairphone/postmarketOS M-ladder)
 **Style:** Radiant (see `../RADIANT_STYLE.md`)
 **Voice:** Quin
-**Status:** Living — distinguishes the two dev environments and names the mobile-emulation ladder. Register: mixed — M0 and M0-riscv below are checkable (green), the rest is horizon (design).
+**Status:** Living — distinguishes the dev environments (cloud, NixOS, and now this interim macOS host) and names both mobile-emulation ladders (M-ladder for the Fairphone/postmarketOS Glowphone body, G-ladder for the Pixel/GrapheneOS SLC line). Register: mixed — M0 and M0-riscv are checkable (green); G0 is checked-and-honestly-blocked on a real host issue; everything else is horizon (design).
 
 ---
 
@@ -41,6 +41,25 @@ Each rung provable before the next; M0 and M0-riscv are green today, the rest ar
 **Prove:** Glow's own authored, verified code — the fold, the signing, the bounds — compiles for a target CPU architecture and runs byte-for-byte identically there. The Sala B0 session root is the same hash on x86_64 and emulated aarch64; the same holds (extended to Neth and Pool P0 too) on emulated riscv64. Determinism holds across the architecture boundary, on the Glowphone's own CPU family and on the open RISC-V substrate. That is real mobile- and RISC-V-readiness for *our* code, today, in the isolated cloud env.
 
 **Do not prove:** that a whole mobile OS boots, that devices/GPU/radios work, or that the physical phone behaves — all of which are system-mode and real-device concerns that belong to the NixOS host and M1–M3. qemu-user runs a static binary against the host kernel; it is the compute proof, not the platform proof. Named plainly so M0/M0-riscv's green is not mistaken for more than it is.
+
+## A Third Environment, Interim — This macOS Host, and the GrapheneOS/Pixel Ladder (`20260715.163500`)
+
+Keaton is on a macOS Tahoe Beta 26.6 host right now, ahead of the NixOS Framework purchase, and asked to adapt the plan rather than wait — and to settle plainly which OS base the Pixel-line SLC product (`../../active-designing/20260715-194500_the-slc-product-glow-on-capable-hardware.md`) actually targets. Both answered honestly, together, since they turn out to be the same question.
+
+**The OS choice for Pixel phones is GrapheneOS, never postmarketOS.** The two OS bases already named in this tree serve two entirely different hardware bodies, not competing choices for one device: **postmarketOS** is the phase-two target for the Fairphone-class **Glowphone** (`../../external-research/20260715-182500_glowphone-firmware-freedom-two-body-strategy.md`) — genuine mainline Linux, grown toward as that hardware family's mainline support matures. **GrapheneOS** is Pixel-exclusive — it depends on hardware memory tagging only Titan-class Pixel silicon has — and is the base for the separate Pixel-line SLC product named in the go-to-market brief above (Pixel 10 Pro XL flagship-first, used Pixel 7a/8a value tier). Neither substitutes for the other; a Fairphone cannot run GrapheneOS, and Pixel is not this tree's target for postmarketOS.
+
+**This macOS host is a real, usable interim environment for compute-and-fold proofs (M0/M0-riscv's own shape), checked directly rather than assumed:** Homebrew already carries `qemu` 10.2.2 with HVF acceleration available (`qemu-system-aarch64 -accel help` lists `hvf`) — the same hardware-accelerated system-mode emulation the NixOS host's own qemu package would provide. This closes M0/M0-riscv's own gate on this Mac without waiting for the Framework purchase; it does not, on its own, unblock M1's postmarketOS-on-Fairphone rung, which still wants pmbootstrap tooling this host does not carry yet.
+
+**The GrapheneOS/Pixel line needs its own ladder, not a reuse of M0–M3** (those name the Fairphone/postmarketOS body specifically). Named here, checked against the current state of the world (dated, cited, re-checkable as GrapheneOS's own build process changes):
+
+| Rung | Name | Where | State |
+|---|---|---|---|
+| **G0** | **Stock AOSP/Android Emulator, HVF-accelerated** | This macOS host | **Blocked, not gated on missing tooling** — `20260715.163500`: a real, unrelated Homebrew ownership issue (`/opt/homebrew` owned by a different user than the current account, likely from an earlier `sudo brew install`) blocks installing `android-commandlinetools` via Homebrew. Fix is a one-time, interactive `sudo chown -R $(whoami) /opt/homebrew`, run by Keaton in a real terminal (an agent session cannot supply an interactive sudo password). Once installed: an AVD with a Google/AOSP arm64 or x86_64 system image, HVF-accelerated on Apple Silicon, hosts and exercises Glow's Android-side userland (the Sala broadcaster client) at the app layer |
+| **G1** | **Glow userland (Sala broadcaster) inside the AVD** | This macOS host | horizon — gate: G0 · Sala B0/B1 (both already GREEN) |
+| **G2** | **Real GrapheneOS build, emulator target** | A Linux host (KVM) | horizon, and genuinely out of reach on macOS — GrapheneOS ships **no prebuilt emulator image** (checked directly, `20260715.163500`: `grapheneos.org/build`). Their own `sdk_phone64_x86_64` development-build target exists only by building the full GrapheneOS/AOSP source tree, and its own docs name **KVM** for hardware acceleration — Linux-only, unavailable on macOS's HVF. This rung needs a Linux host (the NixOS Framework, once acquired) regardless of anything achievable on this Mac |
+| **G3** | **Physical Pixel, GrapheneOS flashed** | Device | horizon — the real target device (Pixel 10 Pro XL flagship-first, per the go-to-market brief), gate: G1 |
+
+**The honest register, named plainly rather than blurred:** G0/G1 exercise real AOSP/Android, the same userland surface GrapheneOS presents to an app, HVF-accelerated on this exact Mac — genuinely useful for developing and testing Glow's Android-side code today. They are **not** GrapheneOS itself, and no claim here says otherwise; GrapheneOS's own hardening (Titan M2, MTE, verified boot) lives beneath the userland surface G0/G1 can reach, and only G2's real build (on a Linux/KVM host) or G3's physical device ever actually exercises it. This is the same "prove the compute, not the platform" honesty M0/M0-riscv already carry for the Fairphone/postmarketOS side.
 
 ## Related
 
