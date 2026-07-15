@@ -37,7 +37,39 @@ pub const max_event_bytes: u32 = 768;
 /// A bounded session — small enough to hold whole in memory and reason about.
 pub const max_events: u32 = 64;
 
-pub const SessionError = error{ EventTooLarge, OutOfOrder, Overflow, ReplayFailed };
+pub const SessionError = error{ EventTooLarge, OutOfOrder, Overflow, ReplayFailed, UnknownSigner };
+
+/// A bounded registry of the actors whose signed events a session admits —
+/// the broadcaster and the viewers whose chat has been consented into the
+/// stream. Multi-signer replay verifies each event against the key named in
+/// its own `from` field, and refuses an event from any actor not registered
+/// here: consent-before-counting, the moderation floor in one check.
+pub const max_actors: u32 = 8;
+
+pub const Actor = struct {
+    hex: [mc.pubkey_hex_len]u8 = undefined,
+    pk: kumara.PublicKey = undefined,
+};
+
+pub const ActorRegistry = struct {
+    actors: [max_actors]Actor = undefined,
+    count: u32 = 0,
+
+    pub fn admit(self: *ActorRegistry, hex: *const [mc.pubkey_hex_len]u8, pk: kumara.PublicKey) SessionError!void {
+        if (self.count >= max_actors) return error.Overflow;
+        std.mem.copyForwards(u8, self.actors[self.count].hex[0..], hex[0..]);
+        self.actors[self.count].pk = pk;
+        self.count += 1;
+    }
+
+    fn find(self: *const ActorRegistry, from_hex: []const u8) ?kumara.PublicKey {
+        var i: u32 = 0;
+        while (i < self.count) : (i += 1) {
+            if (std.mem.eql(u8, self.actors[i].hex[0..], from_hex)) return self.actors[i].pk;
+        }
+        return null;
+    }
+};
 
 pub const ReplayResult = struct {
     events: u32,
@@ -130,6 +162,50 @@ pub fn replay(
         rc.verify_record(sig_buf[0..parsed.sig_len], fact, actor_pk) catch return error.ReplayFailed;
 
         // Strict order: the sequence rides `amount` and must climb by exactly one.
+        const seq = rc.parse_amount_signed(fields.amount) catch return error.ReplayFailed;
+        if (seq != last_seq + 1) return error.OutOfOrder;
+        last_seq = seq;
+        count += 1;
+    }
+    var root: [32]u8 = undefined;
+    rc.digest_log(log, &root);
+    return .{ .events = count, .root = root, .last_seq = last_seq };
+}
+
+/// Replay a multi-signer session: broadcaster content and viewer chat in one
+/// ordered log, each event verified against the key named in its own `from`
+/// field, looked up in the registry. An event from an actor not admitted to
+/// the registry is refused UnknownSigner — the back-channel folds only
+/// consented voices. Order and determinism hold exactly as in `replay`.
+pub fn replay_multi(
+    log: []const u8,
+    registry: *const ActorRegistry,
+) SessionError!ReplayResult {
+    var count: u32 = 0;
+    var last_seq: i64 = 0;
+    var pos: u32 = 0;
+    const log_u32: u32 = @intCast(log.len);
+    while (pos < log_u32) {
+        if (count >= max_events) return error.ReplayFailed;
+        const line_end_usz = std.mem.indexOfScalarPos(u8, log, pos, '\n') orelse log.len;
+        const line_end: u32 = @intCast(line_end_usz);
+        const line = log[pos..line_end];
+        pos = if (line_end < log_u32) line_end + 1 else line_end;
+        if (std.mem.trim(u8, line, " \t\r\n").len == 0) continue;
+
+        var sig_buf: [kumara.signature_length]u8 = undefined;
+        var fact_out: [rc.max_fact_len]u8 = undefined;
+        const parsed = rc.parse_log_line(line, &sig_buf, &fact_out) catch return error.ReplayFailed;
+        const fact = fact_out[0..parsed.fact_len];
+
+        var fields: rc.FactFields = undefined;
+        rc.parse_fact_fields(fact, &fields) catch return error.ReplayFailed;
+
+        // The signer is whoever the event names in `from` — and must be a
+        // registered, consented actor, or the event is refused.
+        const pk = registry.find(fields.from) orelse return error.UnknownSigner;
+        rc.verify_record(sig_buf[0..parsed.sig_len], fact, pk) catch return error.ReplayFailed;
+
         const seq = rc.parse_amount_signed(fields.amount) catch return error.ReplayFailed;
         if (seq != last_seq + 1) return error.OutOfOrder;
         last_seq = seq;
