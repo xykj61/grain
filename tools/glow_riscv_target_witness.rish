@@ -1,16 +1,24 @@
 # glow_riscv_target_witness.rish — Glow's verified code runs on RISC-V.
 #
-# The parity lap for the RISC-V-substrate decision: cross-build a Glow witness
+# The parity lap for the RISC-V-substrate decision: cross-build Glow witnesses
 # for riscv64 (the open, frozen base ISA that is the permanent hardware
-# substrate Nock stood in for in software) and run it under QEMU user-mode
-# emulation, proving the same signed fold reproduces byte-for-byte on RISC-V.
-# See active-reviving/20260715-213500_glow-revives-hoon-runes-targets-riscv.md
+# substrate Nock stood in for in software) and run them under QEMU user-mode
+# emulation, proving each fold reproduces byte-for-byte on RISC-V. See
+# active-reviving/20260715-213500_glow-revives-hoon-runes-targets-riscv.md
 # and external-research/20260713-215200_riscv-arm64-shared-ir-research.md.
 #
 # This turns the argued claim green: Glow's primary backend is Glow -> Zig
 # 0.16.0 -> RISC-V, so the same source that runs native and on emulated aarch64
 # (M0, glow_mobile_target_witness.rish) also runs on RISC-V, unchanged. Nock is
 # reserved as a second backend for Urbit interop; RISC-V is the execution floor.
+#
+# Three foundational folds prove the claim, one from each keystone vane family
+# rather than Sala alone: Sala B0 (the session-broadcast root), Neth's minimal
+# witness (the settlement state-root), and Pool P0 (the capability-hosted
+# fold). Each comparison is the strongest and most general form of the claim:
+# not a hand-picked hash line, but the ENTIRE stdout compared byte-for-byte
+# between a native x86_64 run and the emulated riscv64 run of the identical
+# source -- self-verifying against source drift, no literal to fall stale.
 #
 # qemu-user-static is a prerequisite exactly as at M0: `apt install
 # qemu-user-static` on the cloud dev env, or the NixOS host's own qemu package.
@@ -19,22 +27,71 @@
 #   rishi/bin/rishi run tools/glow_riscv_target_witness.rish
 
 let zig = "vendor/zig-toolchain/zig"
-let src = "linengrow/sala_session_core_witness.rye"
-let bin = "linengrow/bin/sala_session_core_witness_riscv64"
 
-let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build ${src} -target riscv64-linux-musl -femit-bin=${bin}"]
-assert build.ok else "Glow RISC-V cross-build for riscv64 failed"
+# --- Sala B0: the session-broadcast root ------------------------------------
 
-let shape = run ["sh" "-c" "file ${bin}"]
-assert shape.out contains "RISC-V" else "cross-built binary is not RISC-V"
-say "GREEN: Glow witness cross-built for riscv64 (the open base-ISA substrate)."
+let src_sala = "linengrow/sala_session_core_witness.rye"
+let bin_sala_native = "linengrow/bin/sala_session_core_witness_native"
+let bin_sala_riscv = "linengrow/bin/sala_session_core_witness_riscv64"
 
-# The riscv64 binary runs emulated and must reproduce the same GREEN it prints
-# natively and on aarch64 -- proving Glow's verified fold behaves identically on
-# RISC-V, byte-for-byte. (Direct call, no quoting: the path carries no spaces
-# and Rishi keeps no nested-double-quote escape.)
-let emu = run ["sh" "-c" "qemu-riscv64-static ${bin} 2>&1"]
-assert emu.ok else "riscv64 witness failed under QEMU (install qemu-user-static?)"
-assert emu.out contains "GREEN" else "riscv64 witness not GREEN under emulation"
-assert emu.out contains "byte-identical session root" else "riscv64 emulation missing the determinism claim"
-say "GREEN: Glow's verified fold runs on emulated RISC-V, byte-for-byte."
+let build_sala_native = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build ${src_sala} -femit-bin=${bin_sala_native}"]
+assert build_sala_native.ok else "Sala native build failed"
+let native_sala = run ["sh" "-c" "${bin_sala_native} 2>&1"]
+assert native_sala.ok else "Sala native run failed"
+assert native_sala.out contains "GREEN" else "Sala native run not GREEN"
+
+let build_sala_riscv = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${src_sala} -target riscv64-linux-musl -femit-bin=${bin_sala_riscv}"]
+assert build_sala_riscv.ok else "Sala RISC-V cross-build failed"
+let shape_sala = run ["sh" "-c" "file ${bin_sala_riscv}"]
+assert shape_sala.out contains "RISC-V" else "Sala cross-built binary is not RISC-V"
+
+let emu_sala = run ["sh" "-c" "qemu-riscv64-static ${bin_sala_riscv} 2>&1"]
+assert emu_sala.ok else "Sala riscv64 witness failed under QEMU (install qemu-user-static?)"
+assert emu_sala.out == native_sala.out else "Sala riscv64 output diverges from native -- not byte-identical"
+say "GREEN: Sala B0's fold runs on emulated RISC-V, byte-for-byte identical to native."
+
+# --- Neth: the settlement state-root -----------------------------------------
+
+let src_neth = "linengrow/neth_root_witness.rye"
+let bin_neth_native = "linengrow/bin/neth_root_witness_native"
+let bin_neth_riscv = "linengrow/bin/neth_root_witness_riscv64"
+
+let build_neth_native = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${src_neth} -femit-bin=${bin_neth_native}"]
+assert build_neth_native.ok else "Neth native build failed"
+let native_neth = run ["sh" "-c" "${bin_neth_native} 2>&1"]
+assert native_neth.ok else "Neth native run failed"
+assert native_neth.out contains "GREEN" else "Neth native run not GREEN"
+
+let build_neth_riscv = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${src_neth} -target riscv64-linux-musl -femit-bin=${bin_neth_riscv}"]
+assert build_neth_riscv.ok else "Neth RISC-V cross-build failed"
+let shape_neth = run ["sh" "-c" "file ${bin_neth_riscv}"]
+assert shape_neth.out contains "RISC-V" else "Neth cross-built binary is not RISC-V"
+
+let emu_neth = run ["sh" "-c" "qemu-riscv64-static ${bin_neth_riscv} 2>&1"]
+assert emu_neth.ok else "Neth riscv64 witness failed under QEMU"
+assert emu_neth.out == native_neth.out else "Neth riscv64 output diverges from native -- not byte-identical"
+say "GREEN: Neth's settlement fold runs on emulated RISC-V, byte-for-byte identical to native."
+
+# --- Pool P0: the capability-hosted fold -------------------------------------
+
+let src_pool = "linengrow/pool_host_seam_witness.rye"
+let bin_pool_native = "linengrow/bin/pool_host_seam_witness_native"
+let bin_pool_riscv = "linengrow/bin/pool_host_seam_witness_riscv64"
+
+let build_pool_native = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${src_pool} -femit-bin=${bin_pool_native}"]
+assert build_pool_native.ok else "Pool native build failed"
+let native_pool = run ["sh" "-c" "${bin_pool_native} 2>&1"]
+assert native_pool.ok else "Pool native run failed"
+assert native_pool.out contains "GREEN" else "Pool native run not GREEN"
+
+let build_pool_riscv = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${src_pool} -target riscv64-linux-musl -femit-bin=${bin_pool_riscv}"]
+assert build_pool_riscv.ok else "Pool RISC-V cross-build failed"
+let shape_pool = run ["sh" "-c" "file ${bin_pool_riscv}"]
+assert shape_pool.out contains "RISC-V" else "Pool cross-built binary is not RISC-V"
+
+let emu_pool = run ["sh" "-c" "qemu-riscv64-static ${bin_pool_riscv} 2>&1"]
+assert emu_pool.ok else "Pool riscv64 witness failed under QEMU"
+assert emu_pool.out == native_pool.out else "Pool riscv64 output diverges from native -- not byte-identical"
+say "GREEN: Pool P0's capability-hosted fold runs on emulated RISC-V, byte-for-byte identical to native."
+
+say "GREEN: Glow's primary backend (Glow -> Zig 0.16.0 -> RISC-V) proves out across three keystone vanes -- Sala, Neth, Pool -- each byte-identical to its native run."
