@@ -1,0 +1,15 @@
+format session-log-v1
+stamp 20260714.184500
+editor Cursor
+model Cursor Sonnet 5 1M Medium
+voice Rio 3
+title Full private-$HOME scoped as a design doc, not built
+prompt Keaton's second half of "close the smaller --harden-home gaps" -- scope a full private-$HOME, not just the named-credential-store list --harden-home already covers.
+think treated this as a real sandbox-shape decision earning a written scoping pass rather than an assumed build, per the collaboration rhythm's own distinction between mechanical next steps and design questions. Wrote active-designing/20260714-184500_macos-full-private-home-design.md rather than touching any launcher code.
+think named two real shapes rather than one: Shape A, extending --harden-home's own Seatbelt deny-list further toward "deny everything, allow a few" (the same shape already built, just pushed harder, inheriting the same enumerate-every-path trap the design already named for itself); Shape B, a scratch $HOME directory with curated, incrementally-added symlinks, mirroring upstream ai-jail's own --private-home for CLI agents. Argued Shape B is the honestly better engineering choice because it fails safe by omission (an un-symlinked path simply does not exist, a clean "no such file" rather than a confusing permission error) rather than failing unsafe by omission (a path nobody thought to deny stays silently readable) -- the same allow-list-by-inclusion shape this repo's own .gitignore already uses successfully.
+think stopped short of recommending Keaton actually build it now -- named the real, ongoing maintenance cost honestly (every new tool reached for during a session is a potential missing symlink, discovered by a confusing failure until it earns its own allow-list line) and pointed out that --harden-home already closes the specific threat this fork's own security thread named (credential exfiltration via open reads plus open network); a full private-$HOME defends a broader, not-yet-named threat (a compromised agent reading personal, non-credential files), at a cost worth weighing rather than assuming.
+obs this document is a genuine "no" to blind escalation and a genuine "yes, and here is the right shape" if Keaton ever wants to build it -- the two most useful things a scoping pass can do without a green light to actually build.
+file active-designing/20260714-184500_macos-full-private-home-design.md -- the scoping document itself
+file work-in-progress/TASKS.md -- known_hosts item marked done; full private-$HOME item updated to point at the scoping doc rather than sitting as a bare, unscoped gap
+file session-logs/20260714-184500_full_private_home_scoped_not_built.bron -- this log
+recommend check-in -- whether to actually build Shape B is Keaton's call, not a technical question the scoping document can answer alone. Everything else from today's "what next" thread (the known_hosts fold-in) is fully closed and tested.
