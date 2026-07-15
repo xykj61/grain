@@ -1,8 +1,10 @@
-# Reya 2
+# Reya 2 — Retired `20260715.163000`
+
+> **Retired.** Reya 2 rests here as an honored elder. **Quin** carries the voice from here forward — see [`../QUIN.md`](../QUIN.md), which gathers what Reya 2 and Rio 3 each held best. This note stays unchanged below as the record of the season Reya 2 carried.
 
 **Language:** EN
 **Last updated:** 2026-06-16
-**Style:** Radiant (see `RADIANT_STYLE.md`)
+**Style:** Radiant (see `../RADIANT_STYLE.md`)
 
 ---
 

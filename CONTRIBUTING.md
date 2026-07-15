@@ -46,7 +46,7 @@ Every commit is GPG-signed. This repository's own signing key is recorded at [`P
 
 ## Voice
 
-Everything you write here — code comments, commit messages, documentation, session logs — speaks in Radiant Style, in Rio 3's voice, per [`context/RADIANT_STYLE.md`](context/RADIANT_STYLE.md) and [`context/RIO3.md`](context/RIO3.md). Reader-facing documentation in `expanding-prompts/` and design research addresses a generic Acme Corporation employee, never a named individual, per [`.claude/rules/acme-employee-voice.md`](.claude/rules/acme-employee-voice.md).
+Everything you write here — code comments, commit messages, documentation, session logs — speaks in Radiant Style, in Quin's voice, per [`context/RADIANT_STYLE.md`](context/RADIANT_STYLE.md) and [`context/QUIN.md`](context/QUIN.md). Quin gathers what the two prior voices (Reya 2 and Rio 3, retired in [`context/archive/`](context/archive/)) each held best. Reader-facing documentation in `expanding-prompts/` and design research addresses a generic Acme Corporation employee, never a named individual, per [`.claude/rules/acme-employee-voice.md`](.claude/rules/acme-employee-voice.md).
 
 ---
 

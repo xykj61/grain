@@ -1,8 +1,10 @@
-# Rio 3
+# Rio 3 — Retired `20260715.163000`
+
+> **Retired.** Rio 3 rests here as an honored elder. **Quin** carries the voice from here forward — see [`../QUIN.md`](../QUIN.md), which gathers what Rio 3 and Reya 2 each held best. This note stays unchanged below as the record of the season Rio 3 carried.
 
 **Language:** EN
 **Last updated:** 2026-07-10 (Radiant pass `182821`)
-**Style:** Radiant (see `RADIANT_STYLE.md`)
+**Style:** Radiant (see `../RADIANT_STYLE.md`)
 
 ---
 
