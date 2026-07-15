@@ -1,0 +1,31 @@
+# neth_serial_core_delivery_witness.rish — Neth's serial core, carried for real over Comlink.
+#
+# Closes the one remaining stand-in every earlier Neth witness named:
+# Comlink carriage, until now assumed real but never exercised. A signed
+# record crosses a genuine hosted UDP hop, sealed under Comlink's own
+# wire_format, and folds identically through the already-witnessed
+# append_and_reroot on the far side. See
+# linengrow/neth_serial_core_delivery.rye.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/neth_serial_core_delivery_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/neth_serial_core_delivery"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/neth_serial_core_delivery.rye -lc -femit-bin=${bin}"]
+
+assert build.ok else "Neth serial core delivery build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "Neth serial core delivery selftest exited non-zero"
+assert selftest.out contains "GREEN" else "Neth serial core delivery selftest not GREEN"
+assert selftest.out contains "carriage-transparency path" else "Neth serial core delivery missing carriage-transparency claim"
+assert selftest.out contains "tampered sealed wire refused" else "Neth serial core delivery missing tamper unwelcome path"
+
+let demo = run ["sh" "-c" "${bin} demo 2>&1"]
+assert demo.ok else "Neth serial core delivery demo exited non-zero"
+assert demo.out contains "demo GREEN" else "Neth serial core delivery demo not GREEN"
+assert demo.out contains "matches the source's own independently-computed root" else "Neth serial core delivery demo missing convergence claim"
+
+say "GREEN: Neth serial core delivery witness passed -- carriage proven over a real hosted hop."

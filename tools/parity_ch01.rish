@@ -1041,3 +1041,8 @@ say "witness suite: Neth deterministic simulation lap 1 (seeded fault/delay repl
 let neth_sim = run ["rishi/bin/rishi" "run" "tools/neth_sim_witness.rish"]
 assert neth_sim.ok else "Neth deterministic simulation witness failed"
 say "GREEN: Neth deterministic simulation witness passed."
+
+say "witness suite: Neth serial core, carried for real over Comlink's sealed wire…"
+let neth_delivery = run ["rishi/bin/rishi" "run" "tools/neth_serial_core_delivery_witness.rish"]
+assert neth_delivery.ok else "Neth serial core delivery witness failed"
+say "GREEN: Neth serial core delivery witness passed."
