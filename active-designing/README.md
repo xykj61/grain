@@ -51,6 +51,7 @@ Dated briefs carry `YYYYMMDD-HHMMSS_short-slug.md` filenames; this README is the
 | living | [Giving-lane T2 courtesy wire](giving-lane-t2-courtesy-wire.md) | Word seated · wire opened · composition witness ahead |
 | living | [Steep — peer file sharing](steep.md) | Living twin · published-set / peer-offer precedent seated |
 | living | [Seam season — hammock](seam-season-hammock.md) | Living twin — product nib **430** · suite nib **432**; edit here |
+| `20260715.163000` | [Radiant Style self-critique — benediction, vocabulary, ornament](20260715-163000_radiant-style-self-critique-benediction-vocabulary-ornament.md) | Three watch-points that refine the house voice: spend the benediction where earned, name coined terms for newcomers, let the fact arrive before the ornament |
 | `20260712.052806` | [Seam season — hammock (frozen)](20260712-052806_seam-season-hammock.md) | Dated original → pointer to living twin |
 | `20260712.054942` | [Giving-lane T1 — OA stipend field map](20260712-054942_giving-lane-t1-open-asks-field-map.md) | Gap list: public `amount`/`from` vs transparent `to`; consent glass holds |
 | `20260711.032657` | [Open Asks civic sight — L1·L3·L4 on Skate](20260711-032657_open-asks-civic-sight-hammock.md) | Tip **430** — three seated folds on one frame |

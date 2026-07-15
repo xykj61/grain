@@ -47,6 +47,8 @@ Naming the vows is one thing. A real life keeping them in a Kali Yuga economy ne
 
 None of this makes the vows easier to keep. It makes them possible to keep *without the tools working against the person the moment they are not looking* — which, in Kali Yuga, is most of the time.
 
+Honesty asks one more line here: not every vow has a software answer, and it would flatter the tools to pretend otherwise. Truthfulness that survives a bad quarter, simplicity that outpaces income, study that continues past graduation — these live in a person's own discipline, and no design can carry them for anyone. What the tooling offers is narrower and real: it declines to work *against* those vows, and it proves, on the record, when it has declined. The rest stays the person's own to keep.
+
 ## With Gratitude
 
 The four-yuga cycle, the character of Kali Yuga (dharma's four legs thinning, the ease of the congregational path opening as the harder paths close), and the varna/ashrama frame this study builds on belong to the long Vedic tradition, carried in our study through the *Srimad Bhagavatam* and the *Bhagavad-gita*, exactly as the companion life-frame and government-as-planetary-spectrum studies already receive them, with gratitude, through the conversational teaching lineage of **Parisa Yazdi** and **Vic DiCara**. We have re-expressed the teaching entirely in our own words and applied it, on our own initiative, to a software project neither teacher has seen; any error in that application is ours alone to hold, not theirs to answer for.

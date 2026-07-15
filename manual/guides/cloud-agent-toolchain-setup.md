@@ -72,4 +72,4 @@ This is acceptable for a same-sitting cloud agent for the reasons named above (n
 
 ---
 
-*May every disposable sandbox raise its own toolchain as easily as a persistent host raises its, and may the trust chain each one leans on always be named rather than assumed.*
+A disposable sandbox raises its own toolchain in four commands; the one trust-chain trade-off it leans on is named plainly above rather than assumed.
