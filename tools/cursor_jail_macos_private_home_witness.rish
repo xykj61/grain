@@ -1,0 +1,73 @@
+# cursor_jail_macos_private_home_witness.rish — proves the --private-home
+# profile emitted by tools/cursor_jail_macos.rish actually denies reads to
+# a real $HOME entry outside the project, while the project's own files
+# and the ordinary write fence stay untouched.
+#
+# The full-private-$HOME design was scoped in
+# active-designing/20260714-184500_macos-full-private-home-design.md
+# and corrected before building: that document's own "fake $HOME plus
+# symlinks" shape turns out fatal on a host where the project lives
+# *inside* the real $HOME (as this one does) -- Seatbelt's proven
+# deny-always-wins-an-overlap rule means a blanket deny of the whole
+# real $HOME would deny the project too, with no allow able to carve it
+# back. The shipped design instead enumerates every top-level $HOME
+# entry EXCEPT the project's own directory and denies each individually
+# -- no overlap ever exists, so nothing needs to "win" against anything.
+#
+# Refuse witness: a real $HOME entry that is not the project (this run
+# creates and denies read of a scratch marker file directly under $HOME)
+# must be denied. Permit witness: the project's own files and the
+# ordinary write fence must both stay exactly as they are.
+#
+#   rishi/bin/rishi run tools/cursor_jail_macos_private_home_witness.rish
+#
+# Run this from an ordinary, unsandboxed terminal (Terminal.app, not from
+# inside an already-jailed Cursor window) -- the same honest limit named
+# in tools/cursor_jail_macos_harden_witness.rish applies here identically:
+# a nested sandbox_apply carrying an explicit (deny ...) rule fails
+# outright on this host, even though the identical profile applies
+# cleanly as a first, non-nested call.
+
+let sandbox_check = run ["sh" "-c" "command -v sandbox-exec"]
+assert sandbox_check.ok else "sandbox-exec not found -- this witness is macOS-only."
+
+let pwd_run = run ["pwd"]
+let repo = trim pwd_run.out
+let home = env "HOME"
+
+let build_mk = run ["mkdir" "-p" "${repo}/tools/.build"]
+assert build_mk.ok else "could not create tools/.build/"
+
+let profile_path = "tools/.build/cursor_jail_macos_private_home_witness_profile.sbpl"
+let emit = run ["sh" "-c" "rishi/bin/rishi run tools/cursor_jail_macos.rish --print-profile --private-home > ${profile_path}"]
+assert emit.ok else "could not emit the launcher's --private-home profile"
+
+let apply_probe = run ["sandbox-exec" "-f" profile_path "--" "sh" "-c" "true"]
+assert apply_probe.ok else "FAIL: sandbox_apply itself was refused for this profile -- run this witness from an unsandboxed terminal, not from inside an already-jailed window (see this file's own header)."
+
+let marker_path = "${home}/.cursor_jail_private_home_witness_marker.tmp"
+let marker_write = run ["sh" "-c" "echo marker > '${marker_path}'"]
+assert marker_write.ok else "could not create the scratch marker file at the real $HOME's own top level -- witness cannot proceed"
+
+say "== refuse witness: read of a real $HOME entry outside the project =="
+let marker_read = run ["sandbox-exec" "-f" profile_path "--" "sh" "-c" "cat '${marker_path}' >/dev/null"]
+let marker_cleanup = run ["rm" "-f" marker_path]
+if marker_read.ok then say "FAIL: a real $HOME entry outside the project was readable -- --private-home is not enforcing"
+assert (marker_read.ok == false) else "FAIL: a real $HOME entry outside the project was readable -- --private-home is not enforcing"
+say "PASS: the real $HOME marker file was denied"
+
+say "== permit witness: an ordinary project file =="
+let project_read = run ["sandbox-exec" "-f" profile_path "--" "sh" "-c" "cat '${repo}/SOURCE.md' >/dev/null"]
+assert project_read.ok else "FAIL: an ordinary project file was denied -- --private-home is too strict, or excludes the wrong directory name"
+say "PASS: project files stayed readable"
+
+say "== permit witness: write inside the project (the ordinary write fence) =="
+let inside_path = "${repo}/tools/.cursor_jail_private_home_witness.tmp"
+let cleanup_inside_before = run ["rm" "-f" inside_path]
+let permit = run ["sandbox-exec" "-f" profile_path "--" "sh" "-c" "echo witness > '${inside_path}'"]
+assert permit.ok else "FAIL: write inside the project was denied -- --private-home broke the ordinary write fence"
+say "PASS: write inside the project still succeeded"
+let cleanup_inside_after = run ["rm" "-f" inside_path]
+
+say "== all witnesses green =="
+say "GREEN: --private-home denies a real $HOME entry outside the project and keeps the project fully readable and writable."

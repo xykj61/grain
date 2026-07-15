@@ -9,7 +9,21 @@
 #   rishi/bin/rishi run tools/cursor_jail_macos.rish
 #   rishi/bin/rishi run tools/cursor_jail_macos.rish --no-network
 #   rishi/bin/rishi run tools/cursor_jail_macos.rish --harden-home
+#   rishi/bin/rishi run tools/cursor_jail_macos.rish --private-home
 #   rishi/bin/rishi run tools/cursor_jail_macos.rish --print-profile
+#
+# --private-home is the full private-$HOME this project's own design doc
+# scoped (active-designing/20260714-184500_macos-full-private-home-design.md)
+# -- corrected before building: that doc's own "fake $HOME + symlinks"
+# shape turns out fatal on THIS host layout, since the project lives
+# *inside* the real $HOME and Seatbelt's deny-always-wins-an-overlap rule
+# (proven under --harden-home) means a blanket deny of the whole real
+# $HOME would deny the project too, with no allow able to carve it back.
+# The fix: enumerate every top-level entry under $HOME EXCEPT the
+# project's own directory, and deny each one individually -- no overlap
+# ever exists, so "deny wins" never becomes a problem. Combine freely
+# with --harden-home (redundant on the entries --harden-home already
+# names, harmless).
 #
 # --harden-home closes the read side of the "no private-$HOME yet" gap
 # for the credentials that actually matter: it denies reads to a named
@@ -42,11 +56,12 @@
 #   - Reads stay open everywhere (the write fence is the real boundary),
 #     unless --harden-home is passed, which denies reads to the named
 #     real credential stores (~/.ssh, ~/.gnupg, ~/.aws, and the rest)
-#     while leaving every other read exactly as open.
+#     while leaving every other read exactly as open. --private-home
+#     denies every top-level real $HOME entry except this project's own
+#     directory, enumerated fresh at each launch; --harden-home and
+#     --private-home combine freely (harmlessly redundant where they
+#     overlap).
 #   - Network is allowed by default; --no-network denies it outright.
-#   - There is no full macOS equivalent of --private-home: outside the
-#     --harden-home credential-store list, reads of your real $HOME stay
-#     open inside the sandbox.
 #   - First launch opens signed out: your normal login lives in the
 #     default profile (~/Library/Application Support/Cursor), outside this
 #     fence. Sign in once inside the jail; that state persists in
@@ -70,6 +85,7 @@ assert state_mk.ok else "could not create .cursor-state/ or tools/.build/"
 let print_only = args contains "--print-profile"
 let no_network = args contains "--no-network"
 let harden_home = args contains "--harden-home"
+let private_home = args contains "--private-home"
 
 if no_network then let net_line = "(deny network*)" else let net_line = "(allow network*)"
 
@@ -82,6 +98,8 @@ let home = env "HOME"
 # rather than by escaping inside a string literal.
 let dq = read-file "tools/fixtures/dquote.txt"
 let nl = read-file "tools/fixtures/newline.txt"
+let bs = read-file "tools/fixtures/backslash.txt"
+let esc_dq = join [bs dq] ""
 
 # Apple's Seatbelt resolves an overlapping allow/deny pair to deny,
 # regardless of which rule is written first or which is more specific
@@ -108,6 +126,39 @@ if harden_home then let harden_o = join ["(deny file-read* (literal " dq home "/
 if harden_home then let harden_p = join ["(deny file-read* (literal " dq home "/.netrc" dq "))"] "" else let harden_p = ""
 if harden_home then let harden_q = join ["(deny file-read* (literal " dq home "/.git-credentials" dq "))"] "" else let harden_q = ""
 if harden_home then let harden_r = join ["(deny file-read* (literal " dq home "/.npmrc" dq "))"] "" else let harden_r = ""
+
+# --private-home: deny every top-level entry under the real $HOME except
+# the project's own directory (basename of $repo). Built via a shell
+# one-liner rather than a Rish loop -- this project's own Rish scripts
+# already keep enumeration work behind a shell seam and glue the result
+# in (see cursor_jail_macos_witness.rish's own note on run().out escaping
+# real newlines to literal backslash-n text); a written fragment file,
+# read back with read-file, avoids that gap entirely.
+let private_fragment_path = "tools/.build/cursor_jail_macos_private_home.sbpl.fragment"
+let repo_basename_run = run ["sh" "-c" "basename '${repo}'"]
+let repo_basename = trim repo_basename_run.out
+
+# Built entirely with the dq/nl/bs fixtures -- no literal \" or \n
+# written directly in this Rish string, since Rish has no backslash
+# escapes at all (confirmed directly: a first attempt using literal \"
+# produced one malformed SBPL line instead of a real deny list). A
+# literal \" in the *generated shell text* needs the bs+dq join, since
+# that combination becomes a real escaped-quote character once the
+# outer shell parses it -- two entirely different escaping layers.
+# The glob covers both plain and dot-prefixed top-level entries
+# ("*" alone skips dotfiles in POSIX sh) -- missing ~/.ssh, ~/.gnupg,
+# and the rest would defeat most of the point of this flag.
+let enum_script_a = join ["for e in " dq home dq "/* " dq home dq "/.[!.]*; do [ -e " dq "$e" dq " ] || continue; n=$(basename " dq "$e" dq "); [ " dq "$n" dq " = " dq repo_basename dq " ] && continue; printf " dq "(deny file-read* (subpath " esc_dq "%s" esc_dq "))\n" dq " " dq "$e" dq "; done > " dq private_fragment_path dq] ""
+if private_home then let private_gen = run ["sh" "-c" enum_script_a]
+if (private_home == false) then let private_touch = run ["sh" "-c" (join ["printf '' > " dq private_fragment_path dq] "")]
+let private_fragment_check = run ["test" "-f" private_fragment_path]
+assert private_fragment_check.ok else "could not write the --private-home enumeration fragment -- see the shell error above"
+let private_lines_text = read-file private_fragment_path
+
+if private_home then let priv_note_a = "; --private-home: deny every top-level entry under the real $HOME" else let priv_note_a = ""
+if private_home then let priv_note_b = "; except this project's own directory -- enumerated fresh at launch," else let priv_note_b = ""
+if private_home then let priv_note_c = "; so the deny-always-wins-an-overlap rule never has anything to win" else let priv_note_c = ""
+if private_home then let priv_note_d = "; against (the project's path is simply never denied)." else let priv_note_d = ""
 
 let line_a = "(version 1)"
 let line_b = "(deny default)"
@@ -156,8 +207,11 @@ let line_ar = ""
 let line_as = "(allow iokit-open)"
 let line_at = ""
 
-let profile_lines = [line_a line_b line_c line_d line_e line_f harden_b harden_c harden_d harden_e harden_f harden_g harden_h harden_i harden_j harden_k harden_l harden_m harden_n harden_o harden_p harden_q harden_r line_g line_h line_i line_j line_k line_l line_m line_n line_o line_p line_q line_r line_s line_t line_u line_v line_w line_x line_y line_z line_aa line_ab line_ac line_ad line_ae line_af line_ag line_ah line_ai line_aj line_ak line_al line_am line_an line_ao line_ap line_aq line_ar line_as line_at net_line]
-let profile = join profile_lines nl
+let profile_head_lines = [line_a line_b line_c line_d line_e line_f harden_b harden_c harden_d harden_e harden_f harden_g harden_h harden_i harden_j harden_k harden_l harden_m harden_n harden_o harden_p harden_q harden_r priv_note_a priv_note_b priv_note_c priv_note_d]
+let profile_head = join profile_head_lines nl
+let profile_tail_lines = [line_g line_h line_i line_j line_k line_l line_m line_n line_o line_p line_q line_r line_s line_t line_u line_v line_w line_x line_y line_z line_aa line_ab line_ac line_ad line_ae line_af line_ag line_ah line_ai line_aj line_ak line_al line_am line_an line_ao line_ap line_aq line_ar line_as line_at net_line]
+let profile_tail = join profile_tail_lines nl
+let profile = join [profile_head nl private_lines_text profile_tail] ""
 
 if print_only then say profile
 if print_only then exit exit-ok
@@ -183,6 +237,9 @@ say "  state:   ${repo}/.cursor-state/"
 if no_network then say "  network: denied" else say "  network: allowed"
 if harden_home then say "  home:    hardened -- real ~/.ssh, ~/.gnupg, ~/.aws, and the other"
 if harden_home then say "           named credential stores are unreadable inside this window"
+if private_home then say "  home:    private -- every real $HOME entry except this project is"
+if private_home then say "           unreadable inside this window (symlinked entries may still"
+if private_home then say "           leak through to a target outside $HOME -- named, not fixed)"
 say "First run opens signed out (your normal login lives outside the fence);"
 say "sign in once inside the jail and it persists in .cursor-state/."
 say "This script returns immediately; Cursor keeps running on its own."

@@ -54,6 +54,7 @@ CURSOR_BIN="${CURSOR_BIN:-/Applications/Cursor.app/Contents/MacOS/Cursor}"
 ALLOW_NETWORK=true
 PRINT_ONLY=false
 HARDEN_HOME=false
+PRIVATE_HOME=false
 
 usage() {
   cat <<'EOF'
@@ -62,6 +63,8 @@ Usage: ./tools/cursor-jail-macos.sh [options]
   --no-network      Deny all network access inside the sandbox
   --harden-home      Deny reads to real ~/.ssh, ~/.gnupg, and other
                       credential stores under $HOME
+  --private-home     Deny reads to every real $HOME entry except this
+                      project's own directory (enumerated fresh at launch)
   --print-profile    Print the generated SBPL profile and exit; do not launch
   -h, --help          Show this help
 EOF
@@ -75,6 +78,10 @@ while [ $# -gt 0 ]; do
       ;;
     --harden-home)
       HARDEN_HOME=true
+      shift
+      ;;
+    --private-home)
+      PRIVATE_HOME=true
       shift
       ;;
     --print-profile)
@@ -116,6 +123,29 @@ if [ "$ALLOW_NETWORK" = false ]; then
   net_rule="(deny network*)"
 fi
 
+# --private-home: deny every top-level entry under the real $HOME except
+# this project's own directory -- enumerated fresh at launch, so the
+# deny-always-wins-an-overlap rule (proven under --harden-home) never has
+# anything to win against, since the project's own path is simply never
+# denied in the first place. The glob covers dotfiles too (.[!.]* skips
+# just "." and ".."); a bare "$HOME"/* alone would miss ~/.ssh, ~/.gnupg,
+# and the rest, defeating most of the point of this flag.
+private_rules=""
+if [ "$PRIVATE_HOME" = true ]; then
+  repo_basename="$(basename "$REPO")"
+  private_rules="; --private-home: deny every top-level entry under the real \$HOME
+; except this project's own directory -- enumerated fresh at launch,
+; so the deny-always-wins-an-overlap rule never has anything to win
+; against (the project's path is simply never denied)."
+  for e in "$HOME"/* "$HOME"/.[!.]*; do
+    [ -e "$e" ] || continue
+    n="$(basename "$e")"
+    [ "$n" = "$repo_basename" ] && continue
+    private_rules="$private_rules
+(deny file-read* (subpath \"$e\"))"
+  done
+fi
+
 harden_rules=""
 if [ "$HARDEN_HOME" = true ]; then
   harden_rules="$(cat <<HARDEN
@@ -149,6 +179,7 @@ PROFILE="$(cat <<SBPL
 ; maintenance trap; the write fence below is the real boundary.
 (allow file-read*)
 $harden_rules
+$private_rules
 
 ; Writes fenced to the project directory and its own state.
 (allow file-write*
