@@ -31,6 +31,7 @@ Each rung provable before the next; M0 is green today, the rest are horizon.
 | Rung | Name | Where | State |
 |---|---|---|---|
 | **M0** | **aarch64 cross-build + user-mode emulation** | Cloud dev env | **GREEN** `20260715.193000` — a Glow witness cross-builds for `aarch64-linux` (Zig cross-compiles with zero fuss) and runs under `qemu-aarch64-static`, reproducing the same GREEN it prints natively; witnessed by `tools/glow_mobile_target_witness.rish` on Sala B0 |
+| **M0-riscv** | **riscv64 cross-build + user-mode emulation** | Cloud dev env | **GREEN** `20260715.213500` — the same Sala B0 witness cross-builds for `riscv64-linux-musl` and runs under `qemu-riscv64-static`, byte-identical session root; witnessed by `tools/glow_riscv_target_witness.rish`. This is the parity proof for the RISC-V-substrate decision (`../../active-reviving/20260715-213500_glow-revives-hoon-runes-targets-riscv.md`): Glow's primary backend targets RISC-V directly, and the fold runs true there |
 | **M1** | **postmarketOS `qemu-aarch64` full-system boot** | NixOS host | horizon — boot a mainline-Linux mobile OS image with a display in qemu-system, run the Glow userland (Rishi, Sala) against it; gate: the NixOS host exists with its qemu package |
 | **M2** | **Glow userland on the emulated whole** | NixOS host | horizon — Rishi shell + Sala surface + Comlink over the emulated OS, the phone's software fully exercised without the device; gate: M1 · Pool P0 |
 | **M3** | **/e/OS Fairphone, flashed and live** | NixOS host + device | horizon — the phase-one device from the Glowphone refinement; Glow surfaces as userland on a real de-Googled phone; gate: M2 · the device acquired |
@@ -46,7 +47,9 @@ Each rung provable before the next; M0 is green today, the rest are horizon.
 - `../../manual/guides/cloud-agent-toolchain-setup.md` — how the cloud dev env raises its toolchain.
 - `../../external-research/20260715-182500_glowphone-firmware-freedom-two-body-strategy.md` — the Glowphone (Fairphone-class, /e/OS-then-postmarketOS) this emulates toward.
 - `enclosure-editors.md` — the persistent-host editor/enclosure spec the NixOS host extends.
-- `../../tools/glow_mobile_target_witness.rish` — the M0 witness.
+- `../../tools/glow_mobile_target_witness.rish` — the M0 witness (aarch64).
+- `../../tools/glow_riscv_target_witness.rish` — the M0-riscv witness (riscv64), the RISC-V-substrate parity proof.
+- `../../active-reviving/20260715-213500_glow-revives-hoon-runes-targets-riscv.md` — the decision this parity witness makes green.
 
 ---
 

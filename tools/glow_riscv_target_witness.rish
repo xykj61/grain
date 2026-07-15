@@ -1,0 +1,40 @@
+# glow_riscv_target_witness.rish — Glow's verified code runs on RISC-V.
+#
+# The parity lap for the RISC-V-substrate decision: cross-build a Glow witness
+# for riscv64 (the open, frozen base ISA that is the permanent hardware
+# substrate Nock stood in for in software) and run it under QEMU user-mode
+# emulation, proving the same signed fold reproduces byte-for-byte on RISC-V.
+# See active-reviving/20260715-213500_glow-revives-hoon-runes-targets-riscv.md
+# and external-research/20260713-215200_riscv-arm64-shared-ir-research.md.
+#
+# This turns the argued claim green: Glow's primary backend is Glow -> Zig
+# 0.16.0 -> RISC-V, so the same source that runs native and on emulated aarch64
+# (M0, glow_mobile_target_witness.rish) also runs on RISC-V, unchanged. Nock is
+# reserved as a second backend for Urbit interop; RISC-V is the execution floor.
+#
+# qemu-user-static is a prerequisite exactly as at M0: `apt install
+# qemu-user-static` on the cloud dev env, or the NixOS host's own qemu package.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/glow_riscv_target_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let src = "linengrow/sala_session_core_witness.rye"
+let bin = "linengrow/bin/sala_session_core_witness_riscv64"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build ${src} -target riscv64-linux-musl -femit-bin=${bin}"]
+assert build.ok else "Glow RISC-V cross-build for riscv64 failed"
+
+let shape = run ["sh" "-c" "file ${bin}"]
+assert shape.out contains "RISC-V" else "cross-built binary is not RISC-V"
+say "GREEN: Glow witness cross-built for riscv64 (the open base-ISA substrate)."
+
+# The riscv64 binary runs emulated and must reproduce the same GREEN it prints
+# natively and on aarch64 -- proving Glow's verified fold behaves identically on
+# RISC-V, byte-for-byte. (Direct call, no quoting: the path carries no spaces
+# and Rishi keeps no nested-double-quote escape.)
+let emu = run ["sh" "-c" "qemu-riscv64-static ${bin} 2>&1"]
+assert emu.ok else "riscv64 witness failed under QEMU (install qemu-user-static?)"
+assert emu.out contains "GREEN" else "riscv64 witness not GREEN under emulation"
+assert emu.out contains "byte-identical session root" else "riscv64 emulation missing the determinism claim"
+say "GREEN: Glow's verified fold runs on emulated RISC-V, byte-for-byte."
