@@ -45,6 +45,9 @@ Dated explorations carry `YYYYMMDD-HHMMSS_short-slug.md`; living documents (`REA
 
 | Stamp | Note | Meaning |
 |-------|------|---------|
+| `20260715.170000` | [Glow mold nesting — bounded normalizers, decidable nest, bounded recursion](20260715-170000_glow-mold-nesting-bounded.md) | Sixth Glow-supplement surface: a mold names its bound, `nest` stays decidable, recursive molds carry an explicit depth (`list:N`, never unbounded `list`) |
+| `20260715.165500` | [Glow, Neth, and the Urbit fleet](20260715-165500_glow-neth-and-the-urbit-fleet.md) | Sponsorship hierarchy = Neth's graduated trust; Rhyz × Neth × Pool × Comlink compose a fleet; one honest divergence — Urbit keeps sponsorship lightweight by design |
+| `20260715.165000` | [What doesn't nest within a vane — Glow's three non-vane strata, and Pond's narrowing](20260715-165000_glow-non-vane-strata-and-pond.md) | Substrate (Rye · Bron · Aurora · Tally), enclosure/build (Pond · Puddle · Maze · Brix), shell (Rishi); the unclaimed Zuse slot; Pond narrows to the isolation-policy substrate |
 | `20260712.054521` | [Taler giving-lane asymmetry](20260712-054521_taler-giving-lane-asymmetry.md) | Seam study 4; private payer · transparent payee; MALA/WOV seat unchanged; four studies complete |
 | `20260712.054342` | [Proven-seat guest — Genode / seL4](20260712-054342_proven-seat-guest-genode-sel4.md) | Seam study 3; guest never merger; G0–G3 on receipt_core; Caravan stays horizon |
 | `20260712.054135` | [Component-model target — one seed](20260712-054135_component-model-one-seed.md) | Seam study 2; pick `receipt_core` verify-witness; Brushstroke canvas twin track |
