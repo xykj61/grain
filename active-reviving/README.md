@@ -1,9 +1,9 @@
 # Active Reviving — Re-Growing the Elders into Glow
 
 **Language:** EN
-**Version:** `20260714.004428` (Pacific)
+**Version:** `20260715.175500` (Pacific)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Voice:** Rio 3
+**Voice:** Quin
 **Status:** Living — the home for revivals in motion, sibling to `active-designing/`
 
 ---
@@ -47,6 +47,7 @@ These are already underway, now recognized as revivals rather than one-off desig
 | **The doc pipeline** | Scribble, Brix, and Mantra toward their Clay/Ford roles in Glow | [`../external-research/20260713-235700_glow-doc-fusion-scribble-brix-mantra.md`](../external-research/20260713-235700_glow-doc-fusion-scribble-brix-mantra.md) | design; round-trip witness proposed |
 | **Glow itself** | Rye + Hoon | [`../external-research/20260713-214400_nock-interpreter-and-rye-hoon-fusion-scoping.md`](../external-research/20260713-214400_nock-interpreter-and-rye-hoon-fusion-scoping.md) | scoped |
 | **Rhyz** | **Kumara** (the Ed25519 identity seam — `tally/kumara.rye` + 72 code files + green witnesses) | [`../external-research/20260714-044428_rhyz-r-vane-identity-reviving-kumara.md`](../external-research/20260714-044428_rhyz-r-vane-identity-reviving-kumara.md) | name confirmed (R-vane, rhizome); Azimuth-tier shape adopted; elder keeps its home + witnesses; living docs migrate on-touch, code migration deferred to proven-supersede |
+| **Sala** | **Realidream** (the unified viewer — its ~18 code/doc references + the roadmap Visual-Track lane) | [`../external-research/20260715-172000_pool-keystone-revival-realidream-landscape.md`](../external-research/20260715-172000_pool-keystone-revival-realidream-landscape.md) | name **confirmed** `20260715.175500` (Sanskrit *śālā*, "hall/abode"; Landscape parallel, runs under Pool); elder keeps its name, references, and lane; code migration deferred to proven-supersede |
 | **Pond** (precedent, already landed) | ai-jail | (the supersede pattern this whole concept generalizes) | superseded on word |
 
 ## Why This Is the Right Shape
