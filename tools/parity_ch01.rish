@@ -1021,3 +1021,8 @@ say "witness suite: Neth small serial core (bounded append + fold)…"
 let neth_serial_core = run ["rishi/bin/rishi" "run" "tools/neth_serial_core_witness.rish"]
 assert neth_serial_core.ok else "Neth small serial core witness failed"
 say "GREEN: Neth small serial core witness passed."
+
+say "witness suite: Neth two-posture root install (trust-at-source, verify-on-repair, never-truncate)…"
+let neth_root_install = run ["rishi/bin/rishi" "run" "tools/neth_root_install_witness.rish"]
+assert neth_root_install.ok else "Neth two-posture root install witness failed"
+say "GREEN: Neth two-posture root install witness passed."

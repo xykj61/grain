@@ -1,0 +1,26 @@
+# neth_root_install_witness.rish — Neth's two-posture root install witness.
+#
+# The Neth build ladder's second real lap after the small serial core:
+# a follower trusts the issuing monarch's own current-view root at issue
+# outright, verifies the hash-chain of any root received by repair from a
+# peer, and never truncates a committed root under either posture. See
+# external-research/20260714-041542_ironbeetle-patterns-for-the-neth-ladder.md
+# and linengrow/neth_root_install.rye.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/neth_root_install_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/neth_root_install_witness"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/neth_root_install_witness.rye -femit-bin=${bin}"]
+
+assert build.ok else "Neth root install witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "Neth root install witness exited non-zero"
+assert selftest.out contains "GREEN" else "Neth root install witness not GREEN"
+assert selftest.out contains "refused ChainMismatch" else "Neth root install witness missing chain-mismatch unwelcome path"
+assert selftest.out contains "refused RootTruncated" else "Neth root install witness missing never-truncate unwelcome path"
+
+say "GREEN: Neth two-posture root install witness passed."
