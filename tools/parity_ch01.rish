@@ -1061,3 +1061,8 @@ say "witness suite: Pool P1 — two agents, one capability boundary…"
 let pool_p1 = run ["rishi/bin/rishi" "run" "tools/pool_isolation_witness.rish"]
 assert pool_p1.ok else "Pool P1 isolation witness failed"
 say "GREEN: Pool P1 isolation witness passed."
+
+say "witness suite: Sala B1 — a session carried live over Comlink…"
+let sala_b1 = run ["rishi/bin/rishi" "run" "tools/sala_broadcast_delivery_witness.rish"]
+assert sala_b1.ok else "Sala B1 broadcast delivery witness failed"
+say "GREEN: Sala B1 broadcast delivery witness passed."
