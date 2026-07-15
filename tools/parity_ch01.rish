@@ -1036,3 +1036,8 @@ say "witness suite: Mantra bolt apply step (a bolt written is not a bolt visible
 let mantra_apply_step = run ["rishi/bin/rishi" "run" "tools/mantra_bolt_apply_step_witness.rish"]
 assert mantra_apply_step.ok else "Mantra bolt apply step witness failed"
 say "GREEN: Mantra bolt apply step witness passed."
+
+say "witness suite: Neth deterministic simulation lap 1 (seeded fault/delay replay)…"
+let neth_sim = run ["rishi/bin/rishi" "run" "tools/neth_sim_witness.rish"]
+assert neth_sim.ok else "Neth deterministic simulation witness failed"
+say "GREEN: Neth deterministic simulation witness passed."

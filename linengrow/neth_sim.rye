@@ -1,0 +1,93 @@
+//! linengrow/neth_sim.rye — Neth's deterministic simulation horizon, lap 1.
+//!
+//! Per external-research/20260714-041542_ironbeetle-patterns-for-the-neth-ladder.md
+//! pattern 4 ("deterministic simulation as the debugging substrate"): a
+//! seeded fault/delay injection over the replica set so any liveness or
+//! safety failure replays byte-for-byte. Named as a horizon in
+//! work-in-progress/TASKS.md, "built after the real replica laps" —
+//! this composes on the two laps that landed this same season:
+//! neth_serial_core.rye's already-witnessed `append_and_reroot` (the fold)
+//! and the two-posture-install/apply-step laps' own crash-safety shape.
+//!
+//! Scope, named honestly for a first lap: delivery *order* to any one
+//! replica is fixed by the log itself (Neth's whole design rests on that
+//! ordering claim, proven elsewhere). What a real network actually
+//! varies is *when* each record reaches a replica -- drops, retries,
+//! delay. This lap seeds exactly that: a per-replica delivery schedule
+//! (how many ticks a record's delivery attempt drops before it lands),
+//! driven entirely from one seed, with a bounded per-record tick ceiling
+//! so an always-dropped delivery is a named, checked LivenessFailure
+//! rather than an infinite loop.
+//!
+//! Two claims this lap exists to prove: the same seed replays the exact
+//! same delivery trace and reaches the exact same final root (determinism
+//! itself), and two *different* seeds -- different delay schedules
+//! entirely -- still converge on the same final root, because the fold
+//! Neth already proved deterministic depends on record order, never on
+//! delivery timing (safety-under-fault). A seed engineered to always drop
+//! must trip the bound, proving it is enforced rather than assumed.
+
+const std = @import("std");
+const mc = @import("mala_core.rye");
+const rc = @import("receipt_core.rye");
+const core = @import("neth_serial_core.rye");
+const kumara = @import("kumara.rye");
+
+pub const max_records: u32 = 4;
+pub const max_ticks_per_record: u32 = 32;
+
+pub const SimError = error{LivenessFailure} || core.CoreError;
+
+pub const ReplicaSim = struct {
+    log: [rc.max_log_len]u8 = undefined,
+    log_len: u32 = 0,
+    final_root: [32]u8 = undefined,
+    trace: [max_records]u32 = undefined,
+    records_applied: u32 = 0,
+};
+
+fn dropped_this_tick(rand: std.Random, drop_pct: u8) bool {
+    return rand.intRangeLessThan(u32, 0, 100) < drop_pct;
+}
+
+/// Deliver `records` (already-signed log lines, in fixed log order) to one
+/// replica, under a seeded drop/retry schedule. `trace[i]` records how
+/// many ticks record i's delivery took (1 = landed on the first attempt).
+/// Two calls with the same seed and drop_pct produce byte-identical
+/// traces and final roots -- this is the determinism the whole lap rests
+/// on, proven by the witness rather than assumed here.
+pub fn run_replica_delivery(
+    replica: *ReplicaSim,
+    records: []const []const u8,
+    issuer_hex: *const [mc.pubkey_hex_len]u8,
+    holder_hex: *const [mc.pubkey_hex_len]u8,
+    issuer_pk: kumara.PublicKey,
+    holder_pk: kumara.PublicKey,
+    seed: u64,
+    drop_pct: u8,
+) SimError!void {
+    var prng = std.Random.DefaultPrng.init(seed);
+    const rand = prng.random();
+    var i: u32 = 0;
+    while (i < records.len) : (i += 1) {
+        var tick: u32 = 0;
+        while (true) {
+            tick += 1;
+            if (tick > max_ticks_per_record) return error.LivenessFailure;
+            if (!dropped_this_tick(rand, drop_pct)) break;
+        }
+        replica.trace[i] = tick;
+        const result = try core.append_and_reroot(
+            &replica.log,
+            replica.log_len,
+            records[i],
+            issuer_hex,
+            holder_hex,
+            issuer_pk,
+            holder_pk,
+        );
+        replica.log_len = result.new_log_len;
+        replica.final_root = result.root;
+        replica.records_applied += 1;
+    }
+}
