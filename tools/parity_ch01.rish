@@ -1056,3 +1056,8 @@ say "witness suite: Pool P0 — one agent hosted over Caravan's capability table
 let pool_p0 = run ["rishi/bin/rishi" "run" "tools/pool_host_seam_witness.rish"]
 assert pool_p0.ok else "Pool P0 host seam witness failed"
 say "GREEN: Pool P0 host seam witness passed."
+
+say "witness suite: Pool P1 — two agents, one capability boundary…"
+let pool_p1 = run ["rishi/bin/rishi" "run" "tools/pool_isolation_witness.rish"]
+assert pool_p1.ok else "Pool P1 isolation witness failed"
+say "GREEN: Pool P1 isolation witness passed."
