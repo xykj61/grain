@@ -1,0 +1,26 @@
+# pool_host_seam_witness.rish — Pool P0: the userspace host seam.
+#
+# The keystone revival's first real lap: a minimal Pool hosts one agent over
+# Caravan's own capability table (caravan/capabilities.rye), admitting it only
+# by a real capability grant, running its state as a verified fold over a
+# signed log. Turns Glow's green spine into something a person can inhabit.
+# See external-research/20260715-172000_pool-keystone-revival-realidream-landscape.md
+# and linengrow/pool_host_seam.rye.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/pool_host_seam_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/pool_host_seam_witness"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/pool_host_seam_witness.rye -femit-bin=${bin}"]
+assert build.ok else "Pool P0 host seam witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "Pool P0 host seam witness exited non-zero"
+assert selftest.out contains "GREEN" else "Pool P0 host seam witness not GREEN"
+assert selftest.out contains "admitted by capability" else "Pool P0 missing the capability-admission welcome path"
+assert selftest.out contains "refused NotAdmitted" else "Pool P0 missing the ungranted-refusal unwelcome path"
+assert selftest.out contains "refused FoldFailed" else "Pool P0 missing the tamper-refusal unwelcome path"
+
+say "GREEN: Pool P0 host seam witness passed."

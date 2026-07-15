@@ -1051,3 +1051,8 @@ say "witness suite: Sala B0 — a session is a signed, ordered, replayable log�
 let sala_b0 = run ["rishi/bin/rishi" "run" "tools/sala_session_core_witness.rish"]
 assert sala_b0.ok else "Sala B0 session-core witness failed"
 say "GREEN: Sala B0 session-core witness passed."
+
+say "witness suite: Pool P0 — one agent hosted over Caravan's capability table…"
+let pool_p0 = run ["rishi/bin/rishi" "run" "tools/pool_host_seam_witness.rish"]
+assert pool_p0.ok else "Pool P0 host seam witness failed"
+say "GREEN: Pool P0 host seam witness passed."
