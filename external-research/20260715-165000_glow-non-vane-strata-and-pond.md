@@ -55,6 +55,24 @@ What remains is the thing only Pond does: **the isolation-policy substrate** —
 
 **Which vane, if forced into the Arvo frame?** None — Pond stays Rye-named, exactly as the mapping concluded, and the P-slot is already Pool's. Spiritually, its closest analog is **Jael's permissions half** (Jael is Urbit's security/PKI vane; Pond's place/hold/refuse is permission-granting), with **Lick** (the POSIX/host-boundary vane) as the secondary echo for Pond's host-fence face. Its identity half — the other side of Jael — belongs to Rhyz, not Pond.
 
+## The Three-Layer Enclosure, Clarified by the Pool Build (`20260715.211500`)
+
+Landing Pool P0 (host an agent, admitted by capability) and P1 (isolate agents, no cross-access without a named grant) — both green over Caravan's own capability table — made the enclosure layering concrete, and it settles what Pond *is a part of* now that Pool is real. Three named parts compose, none absorbing another:
+
+- **Caravan** — holds the capability *table* (the facts of what each child may do) and the supervision. The mechanism.
+- **Pool** — the userspace *host* (the vane) that reads that table to admit an agent (P0) and enforce the boundary between agents (P1). Where the agents run.
+- **Pond** — the *policy substrate beneath Pool*, keeping the two jobs only it does: **customs on content crossing in** (place/hold/refuse on a mark or resin at receipt — distinct from Pool/Caravan's capability check on *agents*; Amber's cold-scrub already calls customs before a restore) and **the host-OS boundary** (the ai-jail/Seatbelt-style fence against the machine underneath).
+
+So Pond is a part of the same enclosure-and-policy concern as Pool and Caravan — specifically its **content-customs and host-fence floor**. An agent is *hosted by Pool*, *isolated by Caravan's capabilities*, running *inside Pond's customs and host boundary*. Pool is the vane; Pond is the policy floor it stands on. Pool taking agent-hosting and Puddle taking the ephemeral-multi-whole role did not shrink Pond into nothing — it left Pond exactly the two jobs no other layer does.
+
+## Puddle, and Why the Fleet Research Sharpens Rather Than Undermines It (`20260715.211500`)
+
+Puddle (ephemeral, snapshot-able, isolated wholes on one machine, each with its own identity and policy, torn down after) and a **fleet** (many sovereign, persistent wholes across the network in a sponsorship/settlement relation — Rhyz membership × Neth graduated-trust × Pool monitor × Comlink, per `20260715-165500_glow-neth-and-the-urbit-fleet.md`) solve different problems and do not overlap: Puddle is *local, ephemeral, multi-tenant*; a fleet is *distributed, persistent, identity-anchored*. The fleet research does not make Puddle redundant — it draws the line sharply: do not reach for Puddle when you mean a fleet, nor a fleet when you mean an ephemeral local sandbox.
+
+After Pool took agent-hosting, Puddle's one genuine remaining job is the **ephemeral sandbox in the deterministic-testing / agents-spawn-agents loop** (Quin × Puddle × Neth) — spin up a throwaway isolated whole, run a generated attempt, prove it on Neth's seeded replay, tear it down. Neither Pool (persistent agent host) nor the fleet (distributed sponsorship) covers that.
+
+**The recommendation, honoring the finishing discipline:** Puddle stays a good idea for that narrow niche, and stays a **named horizon, not built** — nothing green today, nor the SLC flagship, nor the fleet needs it; it earns its build only when the vibe-coding sandbox loop it serves is actually built. And when that day comes it belongs on the **home forge** (the AMD/Minisforum box), not the phone — a phone does not run many ephemeral wholes; the two-body strategy already puts that heavy multi-tenant work on the forge.
+
 ## What This Doc Does Not Claim
 
 - It does not rename anything; the strata are an architecture over the existing names, and every rename stays gated behind Keaton's word per the mapping proposal.
