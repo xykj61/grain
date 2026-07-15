@@ -1,7 +1,7 @@
 # Active Reviving — Re-Growing the Elders into Glow
 
 **Language:** EN
-**Version:** `20260715.175500` (Pacific)
+**Version:** `20260715.213500` (Pacific)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Status:** Living — the home for revivals in motion, sibling to `active-designing/`
@@ -45,7 +45,7 @@ These are already underway, now recognized as revivals rather than one-off desig
 |---|---|---|---|
 | **Neth** | the retired WOV-TigerBeetle pin + TigerBeetle's replicated-state-machine shape | design [`../external-research/20260714-001017_neth-mala-settlement-l1-l2-design.md`](../external-research/20260714-001017_neth-mala-settlement-l1-l2-design.md); cost/cluster [`../external-research/20260714-012125_neth-vps-cost-and-cluster-plan.md`](../external-research/20260714-012125_neth-vps-cost-and-cluster-plan.md); **build ladder** [`../external-research/20260714-041542_ironbeetle-patterns-for-the-neth-ladder.md`](../external-research/20260714-041542_ironbeetle-patterns-for-the-neth-ladder.md) | name confirmed; deterministic-root witness **green** (Plan A, $0, local); IronBeetle-siloed ladder now names the next laps — small serial core · two-posture root install · apply-step crash safety · seeded simulation horizon |
 | **The doc pipeline** | Scribble, Brix, and Mantra toward their Clay/Ford roles in Glow | [`../external-research/20260713-235700_glow-doc-fusion-scribble-brix-mantra.md`](../external-research/20260713-235700_glow-doc-fusion-scribble-brix-mantra.md) | design; round-trip witness proposed |
-| **Glow itself** | Rye + Hoon | [`../external-research/20260713-214400_nock-interpreter-and-rye-hoon-fusion-scoping.md`](../external-research/20260713-214400_nock-interpreter-and-rye-hoon-fusion-scoping.md) | scoped |
+| **Glow itself** | Rye + **Hoon** | study [`../external-research/20260713-214400_nock-interpreter-and-rye-hoon-fusion-scoping.md`](../external-research/20260713-214400_nock-interpreter-and-rye-hoon-fusion-scoping.md); **owned decision** [`20260715-213500_glow-revives-hoon-runes-targets-riscv.md`](20260715-213500_glow-revives-hoon-runes-targets-riscv.md) | decision seated `20260715.213500` — Glow carries Hoon's **runes** and referential transparency, changes the **target**: primary Glow→Zig→**RISC-V** (M0-proven arch-portable), Nock a **second backend** for Urbit interop only; determinism moves from the VM to the discipline |
 | **Rhyz** | **Kumara** (the Ed25519 identity seam — `tally/kumara.rye` + 72 code files + green witnesses) | [`../external-research/20260714-044428_rhyz-r-vane-identity-reviving-kumara.md`](../external-research/20260714-044428_rhyz-r-vane-identity-reviving-kumara.md) | name confirmed (R-vane, rhizome); Azimuth-tier shape adopted; elder keeps its home + witnesses; living docs migrate on-touch, code migration deferred to proven-supersede |
 | **Sala** | **Realidream** (the unified viewer — its ~18 code/doc references + the roadmap Visual-Track lane) | [`../external-research/20260715-172000_pool-keystone-revival-realidream-landscape.md`](../external-research/20260715-172000_pool-keystone-revival-realidream-landscape.md) | name **confirmed** `20260715.175500` (Sanskrit *śālā*, "hall/abode"; Landscape parallel, runs under Pool); elder keeps its name, references, and lane; code migration deferred to proven-supersede |
 | **Pond** (precedent, already landed) | ai-jail | (the supersede pattern this whole concept generalizes) | superseded on word |
