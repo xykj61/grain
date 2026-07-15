@@ -1,0 +1,109 @@
+//! mantra/bolt_apply_step.rye — a bolt written is not a bolt visible.
+//!
+//! Per external-research/20260714-041542_ironbeetle-patterns-for-the-neth-ladder.md
+//! pattern 3 ("written is not acknowledged — the manifest is the moment of
+//! truth"), named for Mantra directly in work-in-progress/TASKS.md: a bolt
+//! written is not a bolt visible until the namespace record admits it —
+//! the same written≠acknowledged pattern as Neth's own root application
+//! (linengrow/neth_apply_step.rye).
+//!
+//! This composes on top of recall_lap1.rye's own BoltCatalog rather than
+//! editing it — recall_lap1.rye's own doc comment names the family's
+//! standing rule ("every file after it imports that foundation and edits
+//! nothing beneath itself"), and this module keeps faith with that rule.
+//! `write_leaf_pending` lands a leaf's fields somewhere real but not yet
+//! admitted; `apply_pending` is the distinct, later step that calls the
+//! foundation's own `append_leaf` — the one path that ever makes a leaf
+//! visible to `recall`. `recover_after_crash` discards a pending write
+//! outright, so a crash between the two costs nothing: the catalog's own
+//! `recall` and `resolve_binding` never once saw the pending leaf, and
+//! never needs to unsee it.
+
+const std = @import("std");
+const tally_copy = @import("tally_copy.rye");
+const ns = @import("recall_lap1.rye");
+
+pub const ApplyError = error{NothingPending} || ns.RecallError;
+
+const PendingLeaf = struct {
+    peer: [16]u8,
+    peer_len: u32,
+    bolt: [32]u8,
+    bolt_len: u32,
+    revision: u32,
+    path: [ns.max_path]u8,
+    path_len: u32,
+    content: [ns.max_resin_bytes]u8,
+    content_len: u32,
+    tilak: [ns.max_tilak]u8,
+    tilak_len: u32,
+};
+
+pub const BoltApplyStep = struct {
+    catalog: ns.BoltCatalog,
+    pending: ?PendingLeaf = null,
+
+    pub fn empty() BoltApplyStep {
+        return .{ .catalog = .empty(), .pending = null };
+    }
+
+    /// The one thing the rest of the system is ever allowed to consult —
+    /// a pending write, however real in this module's own memory, is
+    /// invisible to recall/resolve_binding until apply_pending admits it.
+    pub fn consulted(self: *const BoltApplyStep, name: ns.Name) ns.RecallOutcome {
+        return self.catalog.resolve_binding(name);
+    }
+};
+
+/// Land a leaf's fields somewhere real -- written, not yet visible to
+/// this catalog's own recall or resolve_binding.
+pub fn write_leaf_pending(
+    state: *BoltApplyStep,
+    peer: []const u8,
+    bolt: []const u8,
+    revision: u32,
+    path: []const u8,
+    content: []const u8,
+    tilak: []const u8,
+) error{Overflow}!void {
+    if (peer.len > 16 or bolt.len > 32 or path.len > ns.max_path or tilak.len > ns.max_tilak) return error.Overflow;
+    if (content.len > ns.max_resin_bytes) return error.Overflow;
+    var pending: PendingLeaf = undefined;
+    tally_copy.copy_disjoint(u8, pending.peer[0..peer.len], peer);
+    pending.peer_len = @intCast(peer.len);
+    tally_copy.copy_disjoint(u8, pending.bolt[0..bolt.len], bolt);
+    pending.bolt_len = @intCast(bolt.len);
+    pending.revision = revision;
+    tally_copy.copy_disjoint(u8, pending.path[0..path.len], path);
+    pending.path_len = @intCast(path.len);
+    tally_copy.copy_disjoint(u8, pending.content[0..content.len], content);
+    pending.content_len = @intCast(content.len);
+    tally_copy.copy_disjoint(u8, pending.tilak[0..tilak.len], tilak);
+    pending.tilak_len = @intCast(tilak.len);
+    state.pending = pending;
+}
+
+/// The distinct, authoritative admit step: calls the foundation's own
+/// append_leaf, the one path that ever makes a leaf visible. Any refusal
+/// append_leaf itself would give (RevisionImmutable, RevisionOutOfOrder,
+/// CatalogFull, Overflow) passes straight through, unmodified -- this
+/// module adds no new admission rule of its own.
+pub fn apply_pending(state: *BoltApplyStep) ApplyError!void {
+    const pending = state.pending orelse return error.NothingPending;
+    try state.catalog.append_leaf(
+        pending.peer[0..pending.peer_len],
+        pending.bolt[0..pending.bolt_len],
+        pending.revision,
+        pending.path[0..pending.path_len],
+        pending.content[0..pending.content_len],
+        pending.tilak[0..pending.tilak_len],
+    );
+    state.pending = null;
+}
+
+/// A crash landed somewhere in the write-to-apply window. Discard the
+/// pending leaf outright -- the catalog itself was never touched, so
+/// there is nothing to undo, only something to forget.
+pub fn recover_after_crash(state: *BoltApplyStep) void {
+    state.pending = null;
+}

@@ -1031,3 +1031,8 @@ say "witness suite: Neth apply-step crash safety (written is not visible until a
 let neth_apply_step = run ["rishi/bin/rishi" "run" "tools/neth_apply_step_witness.rish"]
 assert neth_apply_step.ok else "Neth apply-step crash safety witness failed"
 say "GREEN: Neth apply-step crash safety witness passed."
+
+say "witness suite: Mantra bolt apply step (a bolt written is not a bolt visible)…"
+let mantra_apply_step = run ["rishi/bin/rishi" "run" "tools/mantra_bolt_apply_step_witness.rish"]
+assert mantra_apply_step.ok else "Mantra bolt apply step witness failed"
+say "GREEN: Mantra bolt apply step witness passed."
