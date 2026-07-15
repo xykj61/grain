@@ -1,0 +1,28 @@
+# neth_sim_witness.rish — Neth's deterministic simulation, lap 1.
+#
+# The Neth build ladder's horizon lap: seeded fault/delay injection over
+# the replica set, so any liveness or safety failure replays byte-for-
+# byte. Built after the real replica laps (two-posture root install,
+# apply-step crash safety), per the ladder's own naming in
+# work-in-progress/TASKS.md. See
+# external-research/20260714-041542_ironbeetle-patterns-for-the-neth-ladder.md
+# and linengrow/neth_sim.rye.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/neth_sim_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/neth_sim_witness"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/neth_sim_witness.rye -femit-bin=${bin}"]
+
+assert build.ok else "Neth deterministic simulation witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "Neth deterministic simulation witness exited non-zero"
+assert selftest.out contains "GREEN" else "Neth deterministic simulation witness not GREEN"
+assert selftest.out contains "GREEN determinism path" else "Neth deterministic simulation witness missing determinism claim"
+assert selftest.out contains "GREEN safety-under-fault path" else "Neth deterministic simulation witness missing safety-under-fault claim"
+assert selftest.out contains "tripped LivenessFailure" else "Neth deterministic simulation witness missing liveness-bound unwelcome path"
+
+say "GREEN: Neth deterministic simulation witness passed."
