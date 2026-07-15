@@ -1,0 +1,25 @@
+# sala_view_witness.rish — Sala R1: render what Pool hosts as a bounded frame.
+#
+# The Landscape-parallel viewer's first rung: Sala (Realidream) renders one
+# Pool-hosted agent's folded state as a pure, bounded, deterministic frame,
+# sourced from Pool rather than a local fixture — Pool hosts, Sala shows. See
+# external-research/20260715-172000_pool-keystone-revival-realidream-landscape.md
+# and linengrow/sala_view.rye.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/sala_view_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/sala_view_witness"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/sala_view_witness.rye -femit-bin=${bin}"]
+assert build.ok else "Sala R1 view witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "Sala R1 view witness exited non-zero"
+assert selftest.out contains "GREEN" else "Sala R1 view witness not GREEN"
+assert selftest.out contains "frame reflects the folded state" else "Sala R1 missing the render welcome path"
+assert selftest.out contains "agree byte-for-byte" else "Sala R1 missing the determinism claim"
+assert selftest.out contains "shows only what Pool admitted" else "Sala R1 missing the hosted-only unwelcome path"
+
+say "GREEN: Sala R1 view witness passed."

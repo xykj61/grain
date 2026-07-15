@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260715.204500
+editor Cursor
+model Cursor Fable 5 1M Low
+voice Quin
+title Sala R1 landed GREEN — the viewer renders what Pool hosts, Pool-hosts-Sala-shows
+prompt Keaton said "good job kg!" -- keep-going after Sala B1; chose R1 (Realidream's first view over a Pool-hosted agent) as the next lap, opening the viewer surface and connecting Pool to Sala.
+think chose R1 over a fan-out B2 because R1 opens a genuinely new surface (rendering) and realizes the keystone brief's core claim -- Pool hosts, Sala shows -- rather than repeating B1's convergence with more followers. It is the R-ladder's first rung and the Landscape-parallel's first visible frame.
+think kept R1 to the thin-view discipline the tree already names: local facts (here, a Pool-hosted agent's folded state) rendered to a small bounded frame, no Pond/Dexter. A Frame is a bounded list of short lines (max 8 lines, 64 cols), and render_ledger is a pure fold from the AgentResult to the frame.
+think composed on the real thing rather than a fixture: the witness hosts the agent through Pool P0 (admitted by capability) and renders that real AgentResult, so R1 literally shows what Pool hosts, exactly as the brief requires -- and an un-admitted agent yields no hosted state, so there is nothing to render, proving the view shows only what Pool admitted.
+think wrote four falsifiable claims, green first try: the frame reflects the fold (agent ledger-agent / issuer 200 / holder 800 render from the folded balances); rendering is deterministic (same state -> byte-identical frame twice); the frame is bounded (line count and width within limits); and only Pool-hosted state is renderable. Printed the actual rendered frame in the witness output so the view is visible, not just asserted.
+think wired R1 into parity_ch01.rish and re-ran the full Pool+Sala set (P0, P1, B0, B1, R1) -- all GREEN, no regression.
+obs four real green laps this build stretch now (Pool P0, Pool P1, Sala B1, Sala R1): Pool hosts and isolates agents by capability, Sala records/replays/broadcasts a session and renders a hosted agent's state. The keystone brief's "Pool hosts, Sala shows" is a running, witnessed thing end to end.
+obs "kg" is keep-going, not "send" -- so P0, P1, B1, and R1 all rest on the branch awaiting Keaton's send word.
+file linengrow/sala_view.rye -- Sala R1: a bounded Frame and render_ledger (pure fold from a Pool AgentResult to a frame)
+file linengrow/sala_view_witness.rye -- four claims GREEN; prints the actual rendered frame
+file tools/sala_view_witness.rish -- build+run+assert wrapper
+file tools/parity_ch01.rish -- Sala R1 wired into the living suite after Sala B1
+file work-in-progress/TASKS.md -- R1 box checked green
+file work-in-progress/ROADMAP.md -- keystone lane R1 row marked GREEN
+file session-logs/20260715-204500_sala-r1-view-over-pool-green.bron -- this log
+recommend keep-going -- four laps of the keystone are green and Pool-hosts-Sala-shows runs end to end. The next real lap is R2 (Realidream as the unified viewer: ask/receipt/reputation/sanctuary each a Pool agent on one Sala surface -- also the second consumer that graduates Dexter) or B2 (audience + back-channel). R2 completes the Landscape-parallel; B2 deepens the broadcast. One at a time, ship before naming the next -- and this branch (P0/P1/B1/R1) is ready whenever Keaton says send.

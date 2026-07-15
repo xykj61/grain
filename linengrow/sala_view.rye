@@ -1,0 +1,64 @@
+//! linengrow/sala_view.rye — Sala R1: render what Pool hosts as a bounded frame.
+//!
+//! Per external-research/20260715-172000_pool-keystone-revival-realidream-landscape.md
+//! rung R1: Realidream (Sala) renders one Pool-hosted agent's state as a pure
+//! fold from the state to a frame — the thin-view exception (local facts → a
+//! small bounded frame, no Pond/Dexter), sourced from Pool rather than a
+//! local fixture. This is the first rung of the Landscape-parallel viewer:
+//! Pool hosts, Sala shows.
+//!
+//! A frame is a bounded list of short text lines derived purely from the
+//! hosted agent's folded state. Rendering is a deterministic fold — the same
+//! state always yields the same frame — and it shows only what Pool actually
+//! hosts: an agent Pool refused (no capability) has no state, so there is
+//! nothing to render. Everything is bounded (line count, line width), per
+//! TAME.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const mc = @import("mala_core.rye");
+const pool = @import("pool_host_seam.rye");
+
+/// A frame is small enough to eyeball — the thin-view discipline.
+pub const max_frame_lines: u32 = 8;
+pub const max_line_width: u32 = 64;
+
+pub const FrameError = error{ TooManyLines, LineTooWide };
+
+pub const Frame = struct {
+    lines: [max_frame_lines][max_line_width]u8 = undefined,
+    line_lens: [max_frame_lines]u32 = undefined,
+    count: u32 = 0,
+
+    fn push(self: *Frame, text: []const u8) FrameError!void {
+        if (self.count >= max_frame_lines) return error.TooManyLines;
+        if (text.len > max_line_width) return error.LineTooWide;
+        std.mem.copyForwards(u8, self.lines[self.count][0..text.len], text);
+        self.line_lens[self.count] = @intCast(text.len);
+        self.count += 1;
+    }
+
+    pub fn line(self: *const Frame, i: u32) []const u8 {
+        assert(i < self.count);
+        const n: usize = @intCast(self.line_lens[i]);
+        return self.lines[i][0..n];
+    }
+};
+
+/// Render a Pool-hosted ledger agent's folded state as a bounded frame.
+/// A pure fold: same label + same balances always yields the same frame.
+pub fn render_ledger(agent_label: []const u8, result: pool.AgentResult) FrameError!Frame {
+    var frame: Frame = .{};
+    var buf: [max_line_width]u8 = undefined;
+
+    const agent_line = std.fmt.bufPrint(&buf, "agent {s}", .{agent_label}) catch return error.LineTooWide;
+    try frame.push(agent_line);
+
+    const issuer_line = std.fmt.bufPrint(&buf, "issuer {d}", .{result.balances.issuer}) catch return error.LineTooWide;
+    try frame.push(issuer_line);
+
+    const holder_line = std.fmt.bufPrint(&buf, "holder {d}", .{result.balances.holder}) catch return error.LineTooWide;
+    try frame.push(holder_line);
+
+    return frame;
+}
