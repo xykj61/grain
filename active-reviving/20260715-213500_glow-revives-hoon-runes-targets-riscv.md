@@ -5,7 +5,7 @@
 **Version:** `20260715.213500` (Pacific)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
-**Status:** Reviving decision — the owned silo of the RISC-V-substrate lens. Register: design/decision (Two Rooms — the primary backend is green in the pieces already witnessed; the Nock second backend is a scoped horizon).
+**Status:** Reviving decision — the owned silo of the RISC-V-substrate lens. Register: design/decision (Two Rooms — the primary backend is **green** on RISC-V as of `20260715.213500` via `tools/glow_riscv_target_witness.rish`; the Nock second backend is a scoped horizon).
 **Revives:** **Hoon** (`old/` — the language whose runes and referential transparency Glow carries, whose Nock-target it changes). World-facing study: [`../external-research/20260713-214400_nock-interpreter-and-rye-hoon-fusion-scoping.md`](../external-research/20260713-214400_nock-interpreter-and-rye-hoon-fusion-scoping.md).
 
 ---
@@ -21,7 +21,7 @@ The reason is historical and clean: Hoon compiles to Nock because, over a decade
 
 ## The Two Backends
 
-- **Primary — Glow → Zig 0.16.0 → RISC-V** (and aarch64, x86_64). The real execution path, already standing: Glow is a thin frontend on pinned Zig 0.16.0, and Zig's backend already targets RISC-V, proven arch-portable green by the M0 lap (aarch64 cross-build + emulation; riscv64 is the same move). The remaining lap is a **RISC-V parity witness**, not a new compiler — the shared-IR research already found the Zig backend *is* the shared IR.
+- **Primary — Glow → Zig 0.16.0 → RISC-V** (and aarch64, x86_64). The real execution path, standing and **green**: Glow is a thin frontend on pinned Zig 0.16.0, and `tools/glow_riscv_target_witness.rish` now cross-builds the Sala B0 witness for `riscv64-linux-musl` and runs it under `qemu-riscv64-static`, reproducing the same byte-identical session root it prints natively and on emulated aarch64 (M0). The shared-IR research already found the Zig backend *is* the shared IR — so this was a parity witness, not a new compiler.
 - **Second — Glow → Nock**, for **Urbit interop and verification only**. Same Glow source, a Nock target so Glow can meet the Urbit world and be checked against it — aligned with Ojjo's Hoon/Glow parity and the Glow↔Hoon round-trip. The Nock interpreter the world-facing study scopes is this **interop seam**, not the execution foundation. (The bridge direction is "Glow emits Nock," never "compile RISC-V down to Nock.")
 
 ## Determinism Moves from the VM to the Discipline
