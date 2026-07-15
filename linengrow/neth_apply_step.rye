@@ -1,0 +1,57 @@
+//! linengrow/neth_apply_step.rye — Neth's apply step, distinct from writing.
+//!
+//! Per external-research/20260714-041542_ironbeetle-patterns-for-the-neth-ladder.md
+//! pattern 3 ("written is not acknowledged — the manifest is the moment of
+//! truth"): a result can be fully written to real, valid storage and still
+//! count for nothing until a separate, authoritative step formally admits
+//! it into the structure the rest of the system actually consults.
+//!
+//! For Neth specifically: `write_root` lands a new root somewhere real
+//! (in this module, `pending_written_root` — standing in for a disk write
+//! that lives outside this module's own concern, same boundary
+//! neth_serial_core.rye already names for disk persistence). `apply_pending`
+//! is the distinct, later step that admits it into `applied_root` — the
+//! one field the rest of the system is ever allowed to consult.
+//!
+//! A crash in the window between the two costs nothing: `recover_after_crash`
+//! discards any pending write outright rather than guessing whether it was
+//! meant to apply. The prior `applied_root` (if any) stays authoritative,
+//! untouched; the discarded write is simply redone from its own source
+//! (the log, in Neth's real case) once the system comes back up.
+
+const std = @import("std");
+
+pub const ApplyStep = struct {
+    applied_root: ?[32]u8 = null,
+    pending_written_root: ?[32]u8 = null,
+
+    /// The one thing the rest of the system is ever allowed to read.
+    /// A pending write, however real on disk, is invisible here until
+    /// admitted.
+    pub fn consulted(self: *const ApplyStep) ?[32]u8 {
+        return self.applied_root;
+    }
+};
+
+pub const ApplyError = error{NothingPending};
+
+/// Land a new root somewhere real -- written, not yet visible.
+pub fn write_root(state: *ApplyStep, root: [32]u8) void {
+    state.pending_written_root = root;
+}
+
+/// The distinct, authoritative admit step. Only after this call does
+/// `consulted()` see the new root.
+pub fn apply_pending(state: *ApplyStep) ApplyError!void {
+    const pending = state.pending_written_root orelse return error.NothingPending;
+    state.applied_root = pending;
+    state.pending_written_root = null;
+}
+
+/// A crash landed somewhere in the write-to-apply window. Discard the
+/// pending write outright -- never assume it was meant to apply. The
+/// already-applied root, if any, is never touched by this call; it stays
+/// authoritative exactly as it was before the crash.
+pub fn recover_after_crash(state: *ApplyStep) void {
+    state.pending_written_root = null;
+}

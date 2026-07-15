@@ -1,0 +1,100 @@
+//! linengrow/neth_apply_step_witness.rye — proves Neth's apply step is crash-safe.
+//!
+//!   rye build linengrow/neth_apply_step_witness.rye -femit-bin=linengrow/bin/neth_apply_step_witness
+//!   linengrow/bin/neth_apply_step_witness
+//!
+//! Per external-research/20260714-041542_ironbeetle-patterns-for-the-neth-ladder.md
+//! pattern 3 and linengrow/neth_apply_step.rye. Four claims:
+//!   1. A written-but-unapplied root is invisible to `consulted()` -- the
+//!      manifest, not the write, is the moment of truth.
+//!   2. `apply_pending` makes the written root visible, and only then.
+//!   3. A crash in the write-to-apply window costs nothing: the prior
+//!      applied root stays exactly as it was, and the discarded write is
+//!      redone and applied cleanly afterward.
+//!   4. Applying with nothing pending is refused, not silently accepted.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const kumara = @import("kumara.rye");
+const rc = @import("receipt_core.rye");
+const mc = @import("mala_core.rye");
+const step = @import("neth_apply_step.rye");
+
+const witness_version = "20260715.070000";
+
+fn digest_of(log: []const u8) [32]u8 {
+    var out: [32]u8 = undefined;
+    rc.digest_log(log, &out);
+    return out;
+}
+
+fn run_selftest() !u8 {
+    const issuer_kp = kumara.keypair_from_seed(&mc.issuer_seed);
+    const holder_kp = kumara.keypair_from_seed(&mc.holder_seed);
+    var issuer_hex: [mc.pubkey_hex_len]u8 = undefined;
+    var holder_hex: [mc.pubkey_hex_len]u8 = undefined;
+    mc.hex_of_key(issuer_kp.public_key, &issuer_hex);
+    mc.hex_of_key(holder_kp.public_key, &holder_hex);
+
+    // Two real, growing roots -- root0 (mint only), root1 (the welcome
+    // log) -- so the crash-window claim below is exercised against real
+    // Neth state-roots, not arbitrary bytes.
+    var log0: [rc.max_log_len]u8 = undefined;
+    var log0_len: u32 = 0;
+    try mc.sign_append(&log0, &log0_len, mc.mint_fields_from_fixture(&issuer_hex, &holder_hex), issuer_kp);
+    const root0 = digest_of(log0[0..log0_len]);
+
+    var log1: [rc.max_log_len]u8 = undefined;
+    const log1_len = try mc.build_welcome_log(&log1, issuer_kp, holder_kp, &issuer_hex, &holder_hex);
+    const root1 = digest_of(log1[0..log1_len]);
+
+    print("neth-apply: two real roots derived -- root0 (mint), root1 (welcome)\n", .{});
+
+    var state: step.ApplyStep = .{};
+
+    // Claim 1: written, not yet applied, is invisible to consulted().
+    step.write_root(&state, root0);
+    assert(state.consulted() == null);
+    print("neth-apply: root0 written -- consulted() still sees nothing -- GREEN unwelcome-looking, welcome-by-design path\n", .{});
+
+    // Claim 2: apply_pending makes it visible, and only then.
+    try step.apply_pending(&state);
+    assert(std.mem.eql(u8, &state.consulted().?, &root0));
+    print("neth-apply: root0 applied -- consulted() now sees it -- GREEN welcome path\n", .{});
+
+    // Claim 3: a crash lands in the window between writing root1 and
+    // applying it. Recovery must cost nothing: the prior applied root
+    // (root0) stays exactly as it was, untouched by the crash.
+    step.write_root(&state, root1);
+    step.recover_after_crash(&state);
+    assert(std.mem.eql(u8, &state.consulted().?, &root0));
+    print("neth-apply: crash in the write-to-apply window for root1 -- consulted() still root0, untouched -- GREEN crash-safety path\n", .{});
+
+    // The discarded write is simply redone from its own source (the log,
+    // in Neth's real case) once the system comes back up, and applies
+    // cleanly the second time.
+    step.write_root(&state, root1);
+    try step.apply_pending(&state);
+    assert(std.mem.eql(u8, &state.consulted().?, &root1));
+    print("neth-apply: root1 redone and applied after recovery -- consulted() now root1 -- GREEN redo path\n", .{});
+
+    // Claim 4: applying with nothing pending is refused, not silently
+    // accepted -- consulted() must not silently repeat or drift.
+    const refused = step.apply_pending(&state);
+    if (refused) |_| {
+        return error.EmptyApplyNotRefused;
+    } else |err| {
+        if (err != step.ApplyError.NothingPending) return err;
+    }
+    assert(std.mem.eql(u8, &state.consulted().?, &root1));
+    print("neth-apply: apply with nothing pending refused NothingPending, consulted() unchanged -- GREEN unwelcome path\n", .{});
+
+    print("neth-apply: version {s}\n", .{witness_version});
+    print("GREEN: Neth apply step -- written is not visible until applied, and a crash in the window costs nothing.\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}
