@@ -66,7 +66,7 @@ The seed asked whether a different strategy might be needed to target the most a
 
 ## With Gratitude
 
-The mainline-hardware progress is studied with thanks to the **Rockchip mainline** community (Collabora and contributors), the **linux-msm / postmarketOS** Qualcomm-mainline effort, **AMD's** open ROCm/`amdxdna` stack, and the **GrapheneOS, CalyxOS, and DivestOS** projects for the hardened-Android lineage. Every fact is cited to its dated source and re-expressed in our own words; the sovereign two-body synthesis is ours to carry.
+The mainline-hardware progress is studied with thanks to the **Rockchip mainline** community (Collabora and contributors), the **linux-msm / postmarketOS** Qualcomm-mainline effort, **AMD's** open ROCm/`amdxdna` stack, and the **GrapheneOS, CalyxOS, and DivestOS** projects for the hardened-Android lineage. The repairable-capable-phone grounding in the refinement below is studied with thanks to **Fairphone** (the Gen. 6 modular design and its 2033 support promise), **iFixit** (the gold-standard teardown), **Murena /e/OS**, and **GSMArena** for the dated specifications. Every fact is cited to its dated source and re-expressed in our own words; the sovereign two-body synthesis is ours to carry.
 
 ## Related
 
@@ -77,4 +77,36 @@ The mainline-hardware progress is studied with thanks to the **Rockchip mainline
 
 ---
 
-The freest phone and the freest forge are two different machines in July 2026; the Glowphone is the calm free client, the Minisforum is the open forge, and the sovereign seam between them is the thing worth owning.
+## Requirement Refinement (`20260715.191500`) — a Fully-Capable Repairable Phone, Not the Ascetic Sibling
+
+Accreted after the first draft, per Keaton's own clarification, which sharpens the Glowphone's identity and corrects where the draft above leaned toward the Mantrapod's calm-minimal soul. **The Glowphone's only requirements, stated plainly:** it fits in a pocket and is held in the hands; it is typed with thumbs on a touchscreen; and it carries *state-of-the-art* networking, wireless, storage, battery, chip, camera, sensors, and buttons, with drop resistance where possible, in a balanced overall design — and right to repair is non-negotiable.
+
+This is a decisive fork from the Mantrapod, and it should be named as such: **the Mantrapod stays the ascetic e-ink, radio-free, forgetting device; the Glowphone is a fully-capable modern smartphone that is also repairable.** They are siblings with opposite postures — one that hands attention back by *subtracting* capability, one that keeps every modern capability yet refuses the *extraction* around it. The draft's "calm free client" framing was half-right on the values (sovereignty, repair, low-blue-light) and half-wrong on the shape; this requirement set is a capable phone, not a minimal one.
+
+### What the requirement set actually selects (July 2026, dated and cited)
+
+Two of the requirements pull hard against each other and the honest reading matters: **"state of the art everything"** and **"fully free firmware"** cannot both be maximized, because a state-of-the-art modem and camera ISP are the *least* free firmware on any phone — the cellular baseband and the camera image-signal-processor blobs are proprietary at the flagship tier without exception, even on the most open devices. **Right to repair, by contrast, is fully satisfiable at the state-of-the-art tier today.** So the requirement set resolves cleanly: chase capability + repairability as hard requirements, and scope firmware freedom to "free where the silicon allows, proprietary blobs isolated and named," rather than pretending the modem can be free.
+
+The device that most literally satisfies the stated requirements today is the **Fairphone (Gen. 6)** class (GSMArena / iFixit / Fairphone, 2026): Snapdragon 7s Gen 3, a 6.31" LTPO OLED (10–120 Hz adaptive, ~1400 nits peak, true blacks), a 50 MP OIS main camera (Sony Lytia 700C) with individually-replaceable camera modules, Wi-Fi 6E, 5G dual-SIM/eSIM, NFC, microSD to 2 TB, a **user-removable** 4415 mAh battery, IP55 + Gorilla Glass 7i + MIL-STD-810H drop-tested to 1.5 m, and — the decisive part — an iFixit gold-standard modular teardown (screen on eight screws, modular USB-C port, replaceable cameras) with official repair guides, 8 Android upgrades, and support to 2033. Fairphone publishes its source and works with LineageOS, CalyxOS, IodéOS, postmarketOS, and Ubuntu Touch; it ships with de-Googled /e/OS as an option. The honest caveats iFixit names: it is not absolute flagship camera silicon, and it is USB-2 — "state of the art *balanced*," which is exactly the phrase the requirement used.
+
+The purist alternatives fail the *repair* requirement, not the capability one: a Pixel + GrapheneOS is more capable and far more hardened, yet it is glued, not modular — repairable-with-parts, not repairable-by-design. So under a hard right-to-repair requirement, **Fairphone-class wins and Pixel becomes the hardened-but-less-repairable fallback**, inverting the draft's Path-A/Path-B lean.
+
+### The revised strategy — build atop the repairable capable phone, not fabricate one
+
+The two-body design still holds and now reads even more honestly: **do not fabricate a phone.** Reflash a Glow-direction OS onto an already-repairable, already-capable device (Fairphone-class), reached by its own state-of-the-art radios, with the heavy AI still on the home forge over Comlink. This is the fastest honest path from dream to a device in the hand, and it satisfies every stated requirement:
+
+- **Pocketable, thumb-typed touchscreen** — a 6.31" OLED phone, met directly.
+- **State-of-the-art networking/wireless/storage/battery/chip/camera/sensors/buttons** — Snapdragon 7s Gen 3, Wi-Fi 6E, 5G, removable battery, 50 MP OIS, microSD — met at the balanced tier.
+- **Drop resistance** — IP55, Gorilla Glass 7i, MIL-STD-810H to 1.5 m — met.
+- **Right to repair** — the iFixit gold standard, modular by design — met most of all.
+- **Firmware freedom** — met *where the silicon allows*; the modem and ISP blobs are isolated and named, not pretended free. This is the one requirement that scopes rather than maxes, and the honesty is the point.
+
+The Glow software path is then: lead with a **de-Googled / postmarketOS-maturing base** on Fairphone-class hardware for firmware freedom and reflashability, with **CalyxOS/DivestOS or GrapheneOS-on-Pixel** as the hardened-threat-model fallback — the same "both values live a season past the flip" honesty the enclosure work keeps. The Glow surfaces (Rishi, Sala, Rhyz key, Comlink) ride as a userland; custom silicon stays a far horizon, never the opening move.
+
+### The one requirement that is a scope, not a max — named plainly
+
+Everything in the requirement set is achievable now *except* absolute firmware freedom, which the state-of-the-art modem and camera forbid at this tier. The Glowphone's honest promise is therefore: **every modern capability, full right to repair, sovereignty and low-blue-light and a key in your own hand — and firmware as free as the best repairable capable silicon allows, with every proprietary blob isolated and named rather than hidden.** That is a real, buildable phone in 2026, and it is a better fit for the stated requirements than either the ascetic Mantrapod or a fabricated-from-scratch device.
+
+---
+
+The Glowphone is not the Mantrapod's quiet twin after all — it is a fully-capable, fully-repairable modern phone that keeps every capability yet refuses the extraction around it, most likely a Glow-direction OS reflashed onto a Fairphone-class body, with the home forge carrying the heavy AI over the sovereign seam.
