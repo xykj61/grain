@@ -1,0 +1,95 @@
+//! linengrow/sala_view_witness.rye — proves Sala R1: rendering what Pool hosts.
+//!
+//!   rye build linengrow/sala_view_witness.rye -femit-bin=linengrow/bin/sala_view_witness
+//!   linengrow/bin/sala_view_witness
+//!
+//! Per external-research/20260715-172000_pool-keystone-revival-realidream-landscape.md
+//! rung R1 and linengrow/sala_view.rye. Four claims:
+//!   1. Sala renders a Pool-hosted agent's folded state to a bounded frame,
+//!      and the frame's content reflects the fold (the real balances appear).
+//!   2. The render is deterministic — the same hosted state yields a
+//!      byte-identical frame twice.
+//!   3. The frame is bounded — line count and line width within the stated
+//!      limits (the thin-view discipline).
+//!   4. It renders only what Pool hosts — the input is a real Pool
+//!      AgentResult from an admitted agent, not a local fixture, so a
+//!      refused agent (no capability) leaves nothing to render.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const kumara = @import("kumara.rye");
+const rc = @import("receipt_core.rye");
+const mc = @import("mala_core.rye");
+const caps = @import("capabilities.rye");
+const pool = @import("pool_host_seam.rye");
+const view = @import("sala_view.rye");
+
+const witness_version = "20260715.204500";
+
+fn run_selftest() !u8 {
+    const issuer_kp = kumara.keypair_from_seed(&mc.issuer_seed);
+    const holder_kp = kumara.keypair_from_seed(&mc.holder_seed);
+    var issuer_hex: [mc.pubkey_hex_len]u8 = undefined;
+    var holder_hex: [mc.pubkey_hex_len]u8 = undefined;
+    mc.hex_of_key(issuer_kp.public_key, &issuer_hex);
+    mc.hex_of_key(holder_kp.public_key, &holder_hex);
+
+    var log: [rc.max_log_len]u8 = undefined;
+    const log_len = try mc.build_welcome_log(&log, issuer_kp, holder_kp, &issuer_hex, &holder_hex);
+
+    // Pool hosts the agent (P0), granting it the ledger capability.
+    var table: caps.CapabilityTable = .{};
+    const ledger_agent = try table.add_child("ledger-agent");
+    try ledger_agent.grant(caps.Capability.init(pool.ledger_resource, caps.right_read | caps.right_write));
+    const hosted = try pool.host_ledger_agent(&table, "ledger-agent", log[0..log_len], &issuer_hex, &holder_hex, issuer_kp.public_key, holder_kp.public_key);
+    print("pool-r1: Pool hosts ledger-agent -- folded issuer {d}, holder {d}\n", .{ hosted.balances.issuer, hosted.balances.holder });
+
+    // Claim 1: Sala renders the hosted state to a frame reflecting the fold.
+    const frame = try view.render_ledger("ledger-agent", hosted);
+    assert(frame.count == 3);
+    assert(std.mem.eql(u8, frame.line(0), "agent ledger-agent"));
+    assert(std.mem.eql(u8, frame.line(1), "issuer 200"));
+    assert(std.mem.eql(u8, frame.line(2), "holder 800"));
+    print("pool-r1: Sala frame renders what Pool hosts --\n", .{});
+    var i: u32 = 0;
+    while (i < frame.count) : (i += 1) {
+        print("pool-r1:   | {s}\n", .{frame.line(i)});
+    }
+    print("pool-r1: frame reflects the folded state -- GREEN welcome path\n", .{});
+
+    // Claim 2: rendering is deterministic -- same state, byte-identical frame.
+    const frame2 = try view.render_ledger("ledger-agent", hosted);
+    assert(frame2.count == frame.count);
+    i = 0;
+    while (i < frame.count) : (i += 1) {
+        assert(std.mem.eql(u8, frame.line(i), frame2.line(i)));
+    }
+    print("pool-r1: two renders of the same hosted state agree byte-for-byte -- GREEN determinism path\n", .{});
+
+    // Claim 3: the frame is bounded (thin-view discipline).
+    assert(frame.count <= view.max_frame_lines);
+    i = 0;
+    while (i < frame.count) : (i += 1) {
+        assert(frame.line(i).len <= view.max_line_width);
+    }
+    print("pool-r1: frame bounded -- {d} lines, each within {d} cols -- GREEN bound path\n", .{ frame.count, view.max_line_width });
+
+    // Claim 4: only what Pool hosts is rendered. A refused agent yields no
+    // hosted state, so there is nothing to render.
+    const refused = pool.host_ledger_agent(&table, "stranger", log[0..log_len], &issuer_hex, &holder_hex, issuer_kp.public_key, holder_kp.public_key);
+    if (refused) |_| {
+        return error.RefusedAgentHosted;
+    } else |err| {
+        if (err != pool.HostError.NotAdmitted) return err;
+    }
+    print("pool-r1: an un-admitted agent has no hosted state to render -- the view shows only what Pool admitted -- GREEN unwelcome path\n", .{});
+
+    print("pool-r1: version {s}\n", .{witness_version});
+    print("GREEN: Sala R1 -- the viewer renders what Pool hosts, a pure bounded fold from state to frame.\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}
