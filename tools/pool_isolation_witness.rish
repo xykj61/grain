@@ -1,0 +1,26 @@
+# pool_isolation_witness.rish — Pool P1: two agents, one capability boundary.
+#
+# The keystone revival's second lap: two Pool agents, each owning its own
+# state resource in Caravan's capability table, cannot touch each other's
+# state except through a named, granted capability — the isolation guarantee
+# witnessed, not assumed. See
+# external-research/20260715-172000_pool-keystone-revival-realidream-landscape.md
+# and linengrow/pool_host_seam.rye.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/pool_isolation_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/pool_isolation_witness"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/pool_isolation_witness.rye -femit-bin=${bin}"]
+assert build.ok else "Pool P1 isolation witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "Pool P1 isolation witness exited non-zero"
+assert selftest.out contains "GREEN" else "Pool P1 isolation witness not GREEN"
+assert selftest.out contains "isolation holds" else "Pool P1 missing the cross-access-refused unwelcome path"
+assert selftest.out contains "only by a named capability" else "Pool P1 missing the named-capability-bridge welcome path"
+assert selftest.out contains "did not leak" else "Pool P1 missing the grant-does-not-leak unwelcome path"
+
+say "GREEN: Pool P1 isolation witness passed."
