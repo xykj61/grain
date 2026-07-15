@@ -1,0 +1,334 @@
+//! linengrow/neth_serial_core_delivery.rye — Neth's serial core, carried for real over Comlink.
+//!
+//!   rye build linengrow/neth_serial_core_delivery.rye -lc -femit-bin=linengrow/bin/neth-serial-core-delivery
+//!   linengrow/bin/neth-serial-core-delivery selftest
+//!   linengrow/bin/neth-serial-core-delivery demo
+//!
+//! Every Neth witness so far (neth_root_witness.rye, neth_serial_core.rye,
+//! neth_root_install.rye, neth_apply_step.rye, neth_sim.rye) names Comlink
+//! carriage as "living outside this call" — a pipelined stage assumed
+//! real, never actually exercised. This module closes that one remaining
+//! gap: a follower replica receives one already-signed record over a
+//! genuine hosted UDP hop, sealed under Comlink's own wire_format (the
+//! same primitive mantra's recall delivery family and linengrow's own
+//! mala_delivery.rye already use), and applies it through
+//! neth_serial_core.rye's already-witnessed `append_and_reroot` —
+//! unmodified, the exact same call every earlier Neth witness already
+//! proved correct in-process.
+//!
+//! One real, honest bound surfaced while building this lap and worth
+//! naming plainly: the log's own on-disk line format hex-encodes both
+//! the signature and the fact, which comfortably fits `receipt_core`'s
+//! own 768-byte append bound yet does *not* fit Comlink's 340-byte
+//! (`wire_format.wire_capacity` minus its own header) sealed-datagram
+//! ceiling — a single hop is smaller than a single log append. This
+//! module carries the record over the wire in `receipt_core`'s existing
+//! compact binary payload (raw signature bytes plus the raw fact, the
+//! same encoding `mala_delivery.rye` already uses for its own mint/receipt
+//! hop) rather than the hex line — the wire's own concern is carrying
+//! bytes compactly, the log's own concern is a stable on-disk shape, and
+//! this lap keeps the two honestly separate rather than assuming one
+//! format serves both.
+//!
+//! The one claim this lap exists to prove: a record that crosses a real
+//! wire produces the identical root a record applied in-process would —
+//! carriage changes nothing about the fold's own deterministic outcome.
+//! The source computes its own expected root independently, before
+//! sending, and only then compares it against what the follower reports
+//! back over its own sealed hop — never trusting the follower's answer
+//! on its own word alone.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const c = std.c;
+const kumara = @import("kumara.rye");
+const rc = @import("receipt_core.rye");
+const mc = @import("mala_core.rye");
+const wf = @import("wire_format.rye");
+const core = @import("neth_serial_core.rye");
+const tally_copy = @import("tally_copy.rye");
+
+const delivery_version = "20260715.150000";
+
+const AF_INET: c_uint = 2;
+const SOCK_DGRAM: c_uint = 2;
+const SOL_SOCKET: c_int = 1;
+const SO_REUSEADDR: c_int = 2;
+
+/// New signed record → follower.
+const record_port: u16 = 38494;
+/// Follower's resulting root → source, for the source's own independent check.
+const root_port: u16 = 38495;
+
+const sockaddr_in = extern struct {
+    sin_family: c_ushort = AF_INET,
+    sin_port: c_ushort,
+    sin_addr: [4]u8 = .{ 127, 0, 0, 1 },
+    sin_zero: [8]u8 = .{0} ** 8,
+};
+
+fn localhost_addr(port: u16) sockaddr_in {
+    return .{ .sin_port = std.mem.nativeToBig(u16, port) };
+}
+
+fn open_socket() !c.fd_t {
+    const fd = c.socket(AF_INET, SOCK_DGRAM, 0);
+    if (fd < 0) return error.SocketFailed;
+    const yes: c_int = 1;
+    _ = c.setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &yes, @sizeOf(c_int));
+    return fd;
+}
+
+fn send_wire(port: u16, wire: []const u8) !void {
+    const fd = try open_socket();
+    defer _ = c.close(fd);
+    const dest = localhost_addr(port);
+    const sent = c.sendto(fd, wire.ptr, @intCast(wire.len), 0, @ptrCast(&dest), @sizeOf(sockaddr_in));
+    if (sent < 0 or @as(usize, @intCast(sent)) != wire.len) return error.SendFailed;
+}
+
+fn recv_wire(port: u16, wire: []u8) !u64 {
+    const fd = try open_socket();
+    defer _ = c.close(fd);
+    var bind_addr = localhost_addr(port);
+    if (c.bind(fd, @ptrCast(&bind_addr), @sizeOf(sockaddr_in)) < 0) return error.BindFailed;
+    var from: sockaddr_in = undefined;
+    var from_len: c.socklen_t = @sizeOf(sockaddr_in);
+    const n = c.recvfrom(fd, wire.ptr, @intCast(wire.len), 0, @ptrCast(&from), &from_len);
+    if (n < 0) return error.RecvFailed;
+    return @intCast(n);
+}
+
+fn party_hexes() struct {
+    issuer_kp: kumara.KeyPair,
+    holder_kp: kumara.KeyPair,
+    issuer_hex: [mc.pubkey_hex_len]u8,
+    holder_hex: [mc.pubkey_hex_len]u8,
+} {
+    const issuer_kp = kumara.keypair_from_seed(&mc.issuer_seed);
+    const holder_kp = kumara.keypair_from_seed(&mc.holder_seed);
+    var issuer_hex: [mc.pubkey_hex_len]u8 = undefined;
+    var holder_hex: [mc.pubkey_hex_len]u8 = undefined;
+    mc.hex_of_key(issuer_kp.public_key, &issuer_hex);
+    mc.hex_of_key(holder_kp.public_key, &holder_hex);
+    return .{ .issuer_kp = issuer_kp, .holder_kp = holder_kp, .issuer_hex = issuer_hex, .holder_hex = holder_hex };
+}
+
+/// Both replicas already hold this same starting log before the lap
+/// begins — the pre-shared state every earlier Neth witness also starts
+/// from, standing in for whatever earlier crossing put it there.
+fn starting_log(log: *[rc.max_log_len]u8, issuer_kp: kumara.KeyPair, holder_kp: kumara.KeyPair, issuer_hex: *const [mc.pubkey_hex_len]u8, holder_hex: *const [mc.pubkey_hex_len]u8) !u32 {
+    return try mc.build_welcome_log(log, issuer_kp, holder_kp, issuer_hex, holder_hex);
+}
+
+fn next_record_fields(issuer_hex: *const [mc.pubkey_hex_len]u8, holder_hex: *const [mc.pubkey_hex_len]u8) rc.FactFields {
+    return .{
+        .from = holder_hex[0..],
+        .to = issuer_hex[0..],
+        .amount = "75",
+        .memo = mc.memo_send,
+        .stamp = "20260715.150000",
+    };
+}
+
+/// Sign the next record and encode it in receipt_core's own compact
+/// binary payload (raw signature bytes + raw fact) -- the wire's own
+/// carriage shape, distinct from the log's on-disk hex line.
+fn build_compact_payload(issuer_hex: *const [mc.pubkey_hex_len]u8, holder_hex: *const [mc.pubkey_hex_len]u8, signer: kumara.KeyPair, out: *[rc.slcl2_payload_header + rc.slcl2_max_fact]u8) !u32 {
+    const signed = try mc.sign_fact(next_record_fields(issuer_hex, holder_hex), signer);
+    assert(signed.canonical_len <= rc.slcl2_max_fact);
+    return try rc.encode_compact_payload(signed.sig, signed.canonical[0..signed.canonical_len], out);
+}
+
+/// The receiving side's own job: decode the wire's compact payload back
+/// into the log's own on-disk hex line -- the one shape
+/// append_and_reroot's already-witnessed contract expects.
+fn compact_payload_to_log_line(payload: []const u8, out: *[rc.max_line_len]u8) !u32 {
+    var sig_buf: [kumara.signature_length]u8 = undefined;
+    var fact_buf: [rc.slcl2_max_fact]u8 = undefined;
+    const decoded = try rc.decode_compact_payload(payload, &sig_buf, &fact_buf);
+    const sig = kumara.Signature.fromBytes(sig_buf[0..kumara.signature_length].*);
+    return try rc.format_log_line(sig, fact_buf[0..decoded.fact_len], out);
+}
+
+fn run_selftest(_: std.Io) !u8 {
+    const parties = party_hexes();
+
+    var log: [rc.max_log_len]u8 = undefined;
+    const log_len = try starting_log(&log, parties.issuer_kp, parties.holder_kp, &parties.issuer_hex, &parties.holder_hex);
+
+    var payload_buf: [rc.slcl2_payload_header + rc.slcl2_max_fact]u8 = undefined;
+    const payload_len = try build_compact_payload(&parties.issuer_hex, &parties.holder_hex, parties.holder_kp, &payload_buf);
+    const payload = payload_buf[0..payload_len];
+    assert(payload.len <= @as(usize, @intCast(wf.max_message)));
+
+    // The in-process expected outcome -- decode the same payload straight
+    // to a log line and call the already-witnessed append_and_reroot on
+    // a private copy of the log.
+    var line_buf: [rc.max_line_len]u8 = undefined;
+    const line_len = try compact_payload_to_log_line(payload, &line_buf);
+    var log_direct = log;
+    const direct = try core.append_and_reroot(&log_direct, log_len, line_buf[0..line_len], &parties.issuer_hex, &parties.holder_hex, parties.issuer_kp.public_key, parties.holder_kp.public_key);
+
+    // Seal the compact payload, as if handed to Comlink for real
+    // carriage, then open it on the "other side" -- still in-process
+    // here, but the same seal/open pair run_source/run_follower use for
+    // real below.
+    var wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const wire_len = try wf.seal_message(payload, &wire);
+    var opened: [@intCast(wf.max_message)]u8 = undefined;
+    const opened_len = try wf.open_datagram(wire[0..@intCast(wire_len)], &opened);
+
+    var carried_line_buf: [rc.max_line_len]u8 = undefined;
+    const carried_line_len = try compact_payload_to_log_line(opened[0..@intCast(opened_len)], &carried_line_buf);
+    var log_carried = log;
+    const carried = try core.append_and_reroot(&log_carried, log_len, carried_line_buf[0..carried_line_len], &parties.issuer_hex, &parties.holder_hex, parties.issuer_kp.public_key, parties.holder_kp.public_key);
+
+    assert(direct.new_log_len == carried.new_log_len);
+    assert(std.mem.eql(u8, &direct.root, &carried.root));
+    assert(direct.balances.issuer == carried.balances.issuer);
+    assert(direct.balances.holder == carried.balances.holder);
+    print("neth-delivery: sealed-then-opened record folds to the identical root as the direct in-process call -- GREEN carriage-transparency path\n", .{});
+
+    // Unwelcome: a tampered sealed wire refuses at open, before it ever
+    // reaches append_and_reroot -- the log stays untouched.
+    var bad_wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const wlen: usize = @intCast(wire_len);
+    tally_copy.copy_disjoint(u8, bad_wire[0..wlen], wire[0..wlen]);
+    bad_wire[wlen - 1] +%= 1;
+    var junk: [@intCast(wf.max_message)]u8 = undefined;
+    if (wf.open_datagram(bad_wire[0..wlen], &junk)) |_| {
+        return error.UnwelcomePassed;
+    } else |_| {
+        print("neth-delivery: tampered sealed wire refused at open -- GREEN unwelcome path\n", .{});
+    }
+
+    print("neth-delivery: version {s} wire_format {s}\n", .{ delivery_version, wf.wire_format_version });
+    print("GREEN: Neth serial core, carried for real over Comlink's sealed wire.\n", .{});
+    return 0;
+}
+
+/// Follower: bind the record port, receive the sealed line, apply it
+/// through the unmodified append_and_reroot, seal the resulting root back.
+fn run_follower(_: std.Io) !u8 {
+    const parties = party_hexes();
+    var log: [rc.max_log_len]u8 = undefined;
+    const log_len = try starting_log(&log, parties.issuer_kp, parties.holder_kp, &parties.issuer_hex, &parties.holder_hex);
+
+    var wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const wire_len = try recv_wire(record_port, &wire);
+    if (wire_len < wf.off_cipher or wire_len > wf.wire_capacity) return error.RecvFailed;
+
+    var opened: [@intCast(wf.max_message)]u8 = undefined;
+    const opened_len = try wf.open_datagram(wire[0..@intCast(wire_len)], &opened);
+
+    var line_buf: [rc.max_line_len]u8 = undefined;
+    const line_len = try compact_payload_to_log_line(opened[0..@intCast(opened_len)], &line_buf);
+    const result = try core.append_and_reroot(&log, log_len, line_buf[0..line_len], &parties.issuer_hex, &parties.holder_hex, parties.issuer_kp.public_key, parties.holder_kp.public_key);
+
+    var root_wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const root_wire_len = try wf.seal_message(&result.root, &root_wire);
+    try send_wire(root_port, root_wire[0..@intCast(root_wire_len)]);
+
+    print("neth-delivery: follower applied the carried record -- balances issuer {d} holder {d}, root sent back\n", .{ result.balances.issuer, result.balances.holder });
+    return 0;
+}
+
+/// Source: bind the root port first (race discipline, same as
+/// mala_delivery.rye's own issuer), compute the expected root
+/// independently, send the sealed record, then check the follower's
+/// reported root against that independent expectation -- never trusting
+/// the follower's word alone.
+fn run_source(_: std.Io) !u8 {
+    const parties = party_hexes();
+
+    const root_fd = try open_socket();
+    defer _ = c.close(root_fd);
+    var root_bind = localhost_addr(root_port);
+    if (c.bind(root_fd, @ptrCast(&root_bind), @sizeOf(sockaddr_in)) < 0) return error.BindFailed;
+
+    var log: [rc.max_log_len]u8 = undefined;
+    const log_len = try starting_log(&log, parties.issuer_kp, parties.holder_kp, &parties.issuer_hex, &parties.holder_hex);
+
+    var payload_buf: [rc.slcl2_payload_header + rc.slcl2_max_fact]u8 = undefined;
+    const payload_len = try build_compact_payload(&parties.issuer_hex, &parties.holder_hex, parties.holder_kp, &payload_buf);
+    const payload = payload_buf[0..payload_len];
+
+    var line_buf: [rc.max_line_len]u8 = undefined;
+    const line_len = try compact_payload_to_log_line(payload, &line_buf);
+    var expected_log = log;
+    const expected = try core.append_and_reroot(&expected_log, log_len, line_buf[0..line_len], &parties.issuer_hex, &parties.holder_hex, parties.issuer_kp.public_key, parties.holder_kp.public_key);
+
+    var record_wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const record_wire_len = try wf.seal_message(payload, &record_wire);
+    try send_wire(record_port, record_wire[0..@intCast(record_wire_len)]);
+    print("neth-delivery: source sent the sealed record ({d} wire bytes), computed expected root independently\n", .{record_wire_len});
+
+    var wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    var from: sockaddr_in = undefined;
+    var from_len: c.socklen_t = @sizeOf(sockaddr_in);
+    const n = c.recvfrom(root_fd, &wire, @intCast(wf.wire_capacity), 0, @ptrCast(&from), &from_len);
+    if (n < 0) return error.RecvFailed;
+    const wire_len: u64 = @intCast(n);
+    if (wire_len < wf.off_cipher or wire_len > wf.wire_capacity) return error.RecvFailed;
+
+    var opened: [@intCast(wf.max_message)]u8 = undefined;
+    const opened_len = try wf.open_datagram(wire[0..@intCast(wire_len)], &opened);
+    if (opened_len != 32) return error.RootSizeMismatch;
+    if (!std.mem.eql(u8, opened[0..32], &expected.root)) return error.RootMismatch;
+
+    print("neth-delivery: follower's carried root matches the source's own independently-computed root -- GREEN convergence path\n", .{});
+    return 0;
+}
+
+fn run_demo(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) !u8 {
+    const follower_argv = try allocator.alloc([]const u8, 2);
+    follower_argv[0] = self_path;
+    follower_argv[1] = "follower";
+
+    var follower_child = try std.process.spawn(io, .{ .argv = follower_argv });
+    var pause = c.timespec{ .sec = 0, .nsec = 50_000_000 };
+    _ = c.nanosleep(&pause, null);
+
+    const source_argv = try allocator.alloc([]const u8, 2);
+    source_argv[0] = self_path;
+    source_argv[1] = "source";
+
+    var source_child = try std.process.spawn(io, .{ .argv = source_argv });
+
+    const follower_term = try follower_child.wait(io);
+    const source_term = try source_child.wait(io);
+
+    const follower_code: u8 = switch (follower_term) {
+        .exited => |code| code,
+        else => 255,
+    };
+    const source_code: u8 = switch (source_term) {
+        .exited => |code| code,
+        else => 255,
+    };
+
+    assert(follower_code == 0);
+    assert(source_code == 0);
+
+    print("neth-delivery: demo GREEN -- a signed record crossed localhost under Comlink seal, and the follower's fold matched the source's own\n", .{});
+    print("neth-delivery: version {s} wire_format {s}\n", .{ delivery_version, wf.wire_format_version });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(garden);
+
+    if (args.len >= 2) {
+        if (std.mem.eql(u8, args[1], "follower")) return run_follower(io);
+        if (std.mem.eql(u8, args[1], "source")) return run_source(io);
+        if (std.mem.eql(u8, args[1], "selftest")) return run_selftest(io);
+        if (std.mem.eql(u8, args[1], "demo")) return run_demo(garden, io, args[0]);
+    }
+
+    if (args.len >= 1) return run_selftest(io);
+    return 1;
+}
