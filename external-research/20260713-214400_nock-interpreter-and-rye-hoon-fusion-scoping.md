@@ -92,3 +92,28 @@ If and when Kaeden gives the word to move from scoping to a first landed witness
 ---
 
 *May the spec stay small enough to hold in one page, and may the fusion we choose keep both traditions' real virtues — Hoon's directness, TAME's bound — rather than quietly losing one to gain the other.*
+
+---
+
+## RISC-V as the Substrate Nock Stood In For — a Lens, and an Evaluation (`20260715.213500`)
+
+Accreted after a clarifying insight: Hoon compiles to **Nock** because, over a decade ago, there was no open, frozen, universal *hardware* substrate to target — x86 was proprietary and messy, ARM was licensed. Nock filled that absence in software: a tiny, mathematical, frozen, hardware-independent combinator VM, the "permanent substrate." **RISC-V's frozen, open, royalty-free base ISA is now that permanent substrate in hardware** — the thing that did not exist when Nock had to stand in for it. So Glow can target RISC-V *directly* where Hoon *needed* Nock. This reframes this whole document's fork (above) and the recent design work below.
+
+### The two-backend strategy this implies
+
+Glow is already a thin frontend on pinned **Zig 0.16.0**, and Zig's backend already targets RISC-V (as it targets aarch64 — proven green by the M0 lap, `context/specs/20260715-193000_two-dev-environments-and-mobile-emulation.md`). So:
+
+- **Primary backend — Glow → Zig 0.16.0 → RISC-V** (and aarch64, x86_64): the real execution path, already standing. The shared-IR research already concluded the Zig backend *is* the shared IR, so the open work here is a **RISC-V parity witness run**, not a new compiler.
+- **Second backend — Glow → Nock**: for *Urbit-world interop and verification*, not for execution. This corrects the bridge direction — the useful artifact is "Glow also emits Nock," not "compile RISC-V down to Nock." It aligns with Ojjo's Hoon/Glow parity, the diverse-redundant pair idea, and the Glow↔Hoon round-trip. The Nock interpreter this document scopes is therefore an **interop seam**, not the execution foundation.
+
+**The one honest trade:** Nock gave determinism and replayability *for free* at the VM level (the ground of Arvo's event-log replay). Target RISC-V directly and Glow must **re-earn that determinism with discipline** — TAME's bounds, no unbounded recursion, deterministic folds, witness-before-truth, the fold-over-signed-log spine. Determinism moves *from the VM to the discipline*. This resolves the fork above in favour of **option 3** (Hoon-flavoured syntax compiling to bounded Rye/RISC-V; Nock strictly a target, never a place TAME's bound is waived) — now with a clear *reason*: RISC-V is the execution substrate, so Nock never needs to be one.
+
+### Recent design decisions, evaluated through this lens
+
+- **Validated — the Neth/Sala/Pool green laps are the proof the strategy works.** Every deterministic fold that ran green on native (and emulated aarch64 at M0) is evidence that disciplinary determinism holds *without* a Nock VM. Neth's byte-for-byte replay, Sala's session root, Pool's verified fold — these are exactly the determinism Nock gave for free, re-earned by TAME on native code. The build stretch is retroactively the RISC-V-direct thesis, proven.
+- **Sharpened — the runtime (Aurora + Caravan + Tally).** Aurora-as-Vere-parallel boots onto *RISC-V via Zig*, not onto a Nock VM; the runtime revival hosts Glow-native execution, and the kelvin/Nock interop is a seam, not the core (`20260714-013700_aurora-vere-arvo-boot-fusion-and-kelvin-strategy.md`).
+- **Sharpened — the T-vane / runtime unification stays held, and the lens makes it *less* fraught.** Urbit keeps the pure-Nock-kernel / impure-runtime split precisely because determinism lives in the VM. Glow's determinism lives in the *discipline*, so unifying kernel and runtime loses less than it would in Urbit — a real point in the proposal's favour, still not a now-build.
+- **Sharpened — the Glowphone and mikroPhone.** M0 already proved Glow's code is arch-portable via Zig (aarch64; riscv64 is the same move). mikroPhone's RISC-V central MCU is *exactly* this substrate — a real, funded proof that the target Glow compiles to is a shipping open ISA.
+- **Unchanged — the SLC honesty.** The SLC rests on the runtime's green pieces; the runtime is more foundational, the SLC ships now. The lens confirms it: the SLC already runs on RISC-V-portable native code (M0), so it is honest about its substrate.
+
+The owned decision is siloed into `../active-reviving/20260715-213500_glow-revives-hoon-runes-targets-riscv.md`.
