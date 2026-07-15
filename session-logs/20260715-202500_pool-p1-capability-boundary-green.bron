@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260715.202500
+editor Cursor
+model Cursor Fable 5 1M Low
+voice Quin
+title Pool P1 landed GREEN — two agents, one capability boundary, isolation witnessed
+prompt Keaton said "kg" (keep-going) after Pool P0 landed green; the recommend line named P1 (two agents, one capability boundary) as the next lap.
+think stacked P1 on the same branch as P0 (unsent, awaiting send) so the two ship together, rather than branching from an unmerged base.
+think extended pool_host_seam.rye additively with host_agent_on(table, agent, state_resource, log, ...) -- the generalization P1 needs: each agent's state is its own named resource, so admission to one says nothing about another. Left P0's host_ledger_agent untouched so the P0 witness stays byte-stable and green (confirmed by re-run).
+think modeled the isolation guarantee as a capability boundary rather than an ambient sandbox: agent-a owns state-a (rw), agent-b owns state-b (rw); each folds only its own state, and cross-access is refused unless the table explicitly grants it. This is the honest microkernel shape -- isolation IS the capability table, not a separate mechanism -- and it is exactly what the brief said P1 must witness.
+think made the two states genuinely distinct (log_b = welcome + one extra signed send, so issuer 250/holder 750 vs A's 200/800) so "independent state" is shown by different folds, not merely asserted.
+think wrote five falsifiable claims, green first try: each agent folds its own independent state; agent-a refused at agent-b's state; agent-b refused at agent-a's state (mutual); an explicit grant to agent-a over state-b is the ONLY thing that opens cross-access; and that grant does not leak back the other way (agent-b still refused at state-a). The mutual-and-non-leaking pair is the load-bearing part -- it proves the boundary is real in both directions and does not spill.
+think wired P1 into parity_ch01.rish after P0 and re-ran both Pool witnesses -- both GREEN, confirming the additive host_agent_on did not disturb P0.
+obs the capability boundary sound from the first witness is the thing I flagged earlier as Pool's largest risk (every agent above inherits any flaw); P1 witnesses it directly -- no cross-access without a named, granted capability, and grants do not leak.
+obs "kg" is keep-going, not "send" -- so P0 and P1 both rest on the branch awaiting Keaton's send word.
+file linengrow/pool_host_seam.rye -- added host_agent_on (resource-generic hosting), additive; P0's host_ledger_agent untouched
+file linengrow/pool_isolation_witness.rye -- P1: two agents, one capability boundary, five claims GREEN
+file tools/pool_isolation_witness.rish -- build+run+assert wrapper
+file tools/parity_ch01.rish -- P1 wired into the living suite after P0
+file work-in-progress/TASKS.md -- P1 box checked green
+file work-in-progress/ROADMAP.md -- keystone lane P1 row marked GREEN
+file session-logs/20260715-202500_pool-p1-capability-boundary-green.bron -- this log
+recommend keep-going -- P0 and P1 are green: Pool hosts agents and isolates them by capability. The next real lap is Sala B1 (live carriage over Comlink, now unblocked by P0) or R1 (Realidream's first view over a Pool-hosted agent). Sala B1 most directly advances the SLC flagship (the live broadcast); R1 advances the viewer. One at a time, ship before naming the next.
