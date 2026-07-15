@@ -66,6 +66,7 @@ Each study distills one placement pattern in our own voice. Studies live in **to
 | 55 | The hybrid lunar day | [`lunar-craft/20260705-195800_the-hybrid-lunar-day.md`](lunar-craft/20260705-195800_the-hybrid-lunar-day.md) |
 | 56 | The hinge of the lights at birth | [`reading-themes/20260705-195800_the-hinge-of-the-lights-at-birth.md`](reading-themes/20260705-195800_the-hinge-of-the-lights-at-birth.md) |
 | 57 | The three paths braid — apsara, grihastha, artisan | [`reading-themes/20260705-195800_the-three-paths-braid.md`](reading-themes/20260705-195800_the-three-paths-braid.md) |
+| 58 | Kali Yuga, the Brahmana in grihastha, and what Glow OS can carry underneath (teaching) | [`teaching/20260715-160000_kali-yuga-brahmana-grihastha-artha-and-glow.md`](teaching/20260715-160000_kali-yuga-brahmana-grihastha-artha-and-glow.md) |
 
 ## Topic folders
 
