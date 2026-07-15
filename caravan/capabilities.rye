@@ -17,13 +17,13 @@ const print = std.debug.print;
 const caravan_capabilities_version = "20260630.042012";
 
 /// Maximum supervised dependents in one table. Bounded on purpose.
-const max_dependents: u32 = 4;
+pub const max_dependents: u32 = 4;
 
 /// Maximum capabilities per dependent.
-const max_caps_per_dependent: u32 = 8;
+pub const max_caps_per_dependent: u32 = 8;
 
 /// Maximum bytes in a dependent label or resource name.
-const max_name_len: u32 = 48;
+pub const max_name_len: u32 = 48;
 
 fn buf_len_u32(buf: []const u8) u32 {
     assert(buf.len <= std.math.maxInt(u32));
@@ -34,14 +34,14 @@ fn buf_len_u32(buf: []const u8) u32 {
 // § Rights — what a capability grants
 // =========================================================================
 
-const right_read: u8 = 1 << 0;
-const right_write: u8 = 1 << 1;
-const right_exec: u8 = 1 << 2;
-const right_net: u8 = 1 << 3;
-const right_device: u8 = 1 << 4;
+pub const right_read: u8 = 1 << 0;
+pub const right_write: u8 = 1 << 1;
+pub const right_exec: u8 = 1 << 2;
+pub const right_net: u8 = 1 << 3;
+pub const right_device: u8 = 1 << 4;
 
-const Rights = struct {
-    fn contains(have: u8, need: u8) bool {
+pub const Rights = struct {
+    pub fn contains(have: u8, need: u8) bool {
         return (have & need) == need;
     }
 };
@@ -51,12 +51,12 @@ const Rights = struct {
 // =========================================================================
 
 // Invariant: name_len <= max_name_len; rights_mask uses only known bits.
-const Capability = struct {
+pub const Capability = struct {
     name: [max_name_len]u8 = undefined,
     name_len: u32 = 0,
     rights_mask: u8 = 0,
 
-    fn init(name: []const u8, rights_mask: u8) Capability {
+    pub fn init(name: []const u8, rights_mask: u8) Capability {
         assert(name.len <= max_name_len);
         var cap: Capability = .{};
         cap.name_len = buf_len_u32(name);
@@ -79,14 +79,14 @@ const Capability = struct {
 // =========================================================================
 
 // Invariant: cap_count <= max_caps_per_dependent when active.
-const DependentSlot = struct {
+pub const DependentSlot = struct {
     label: [max_name_len]u8 = undefined,
     label_len: u32 = 0,
     caps: [max_caps_per_dependent]Capability = undefined,
     cap_count: u32 = 0,
     active: bool = false,
 
-    fn init(label: []const u8) DependentSlot {
+    pub fn init(label: []const u8) DependentSlot {
         assert(label.len <= max_name_len);
         var slot: DependentSlot = .{};
         slot.label_len = buf_len_u32(label);
@@ -102,7 +102,7 @@ const DependentSlot = struct {
         return self.label[0..n];
     }
 
-    fn grant(self: *DependentSlot, cap: Capability) error{TableFull}!void {
+    pub fn grant(self: *DependentSlot, cap: Capability) error{TableFull}!void {
         assert(self.active);
         assert(self.cap_count <= max_caps_per_dependent);
         if (self.cap_count >= max_caps_per_dependent) return error.TableFull;
@@ -117,11 +117,11 @@ const DependentSlot = struct {
 // =========================================================================
 
 // Invariant: dependent_count <= max_dependents.
-const CapabilityTable = struct {
+pub const CapabilityTable = struct {
     dependents: [max_dependents]DependentSlot = undefined,
     dependent_count: u32 = 0,
 
-    fn add_dependent(self: *CapabilityTable, label: []const u8) error{TableFull}!*DependentSlot {
+    pub fn add_dependent(self: *CapabilityTable, label: []const u8) error{TableFull}!*DependentSlot {
         assert(self.dependent_count <= max_dependents);
         if (self.dependent_count >= max_dependents) return error.TableFull;
         self.dependents[self.dependent_count] = DependentSlot.init(label);
@@ -131,7 +131,7 @@ const CapabilityTable = struct {
         return slot;
     }
 
-    fn find_dependent(self: *const CapabilityTable, label: []const u8) ?*const DependentSlot {
+    pub fn find_dependent(self: *const CapabilityTable, label: []const u8) ?*const DependentSlot {
         var i: u32 = 0;
         while (i < self.dependent_count) : (i += 1) {
             assert(i < max_dependents);
@@ -143,7 +143,7 @@ const CapabilityTable = struct {
 
     /// Returns true when the named dependent holds a capability for the resource
     /// that includes every requested right bit.
-    fn allows(self: *const CapabilityTable, dependent_label: []const u8, resource: []const u8, need: u8) bool {
+    pub fn allows(self: *const CapabilityTable, dependent_label: []const u8, resource: []const u8, need: u8) bool {
         const slot = self.find_dependent(dependent_label) orelse return false;
         assert(slot.cap_count <= max_caps_per_dependent);
         var i: u32 = 0;
