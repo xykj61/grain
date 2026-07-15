@@ -19,7 +19,7 @@ Read the sections below when you wonder where a new file belongs. When a season'
 
 ## The Shape of the Tree
 
-**`context/`** — memory and compass. The disciplines we keep across every track: Tiger and TAME for code rigor, Radiant for prose, Simple-Lovable-Complete for product scope, and Civic for designing public benefit so the reward points at the good. Identity (`RIO3.md` this season; `REYA2.md` resting), and `specs/` for plain-English decisions that deserve a durable home.
+**`context/`** — memory and compass. The disciplines we keep across every track: Tiger and TAME for code rigor, Radiant for prose, Simple-Lovable-Complete for product scope, and Civic for designing public benefit so the reward points at the good. Identity (`QUIN.md`, the standing voice; Reya 2 and Rio 3 retired in `archive/`), and `specs/` for plain-English decisions that deserve a durable home.
 
 **`foundations/`** — the why beneath the work: foundation briefs, the distilled essays and the weave that composes them, and the civic visions. Dated artifacts rest beneath a living README.
 
