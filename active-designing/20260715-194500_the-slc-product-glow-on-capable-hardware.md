@@ -30,7 +30,7 @@ Each lap simple, lovable, complete at its own scale — grown from the running s
 | Lap | Simple scope | Lovable | Complete | State / gate |
 |---|---|---|---|---|
 | **L1 — Record & replay** | A session recorded as a signed, ordered log; replayed to a deterministic root | Your own session, verifiable, yours | The loop closes: record → replay, byte-for-byte | **GREEN** (Sala B0, `20260715.190000`); runs on capable aarch64, proven at M0 |
-| **L2 — Live carriage** | The same log carried in order over Comlink to one viewer, live | Broadcast from your phone to a friend, sovereign, no platform | Record → carry → watch, live, verified | Horizon — gates on **Pool P0** and the Mycelium ordering aspect (Sala B1) |
+| **L2 — Live carriage** | The same log carried in order over Comlink to one viewer, live | Broadcast from your phone to a friend, sovereign, no platform | Record → carry → watch, live, verified | **GREEN `20260715.203500`** (Sala B1) — a session carried event-by-event over a real Comlink hop replays to the source's own root, in order; two-subprocess demo over UDP green. Pool P0 (green) unblocked it |
 | **L3 — Audience & back-channel** | Many viewers; chat as folded signed facts; the VOD is the log at rest | A real sovereign alternative to a streaming platform, on your own phone | Broadcast → audience → replay, whole | Horizon — gates on L2 (Sala B2) |
 
 L1 is a complete, lovable product *today* — a person can record a session on a capable phone and replay it, verifiably. That is the SLC stance: modest, finished, worth loving on the day it arrives, claiming no more than it keeps.
