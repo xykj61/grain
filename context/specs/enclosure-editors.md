@@ -163,7 +163,7 @@ Two editors, two rule surfaces, one **`context/`** home.
 - `.claude/rules/` — same disciplines for Claude Code (Zed).
 - `CLAUDE.md` + `.claude/rules/` — the same three themes for Claude in Zed.
 
-Keep long-form guidance in `context/` (`REYA2.md`, `RADIANT_STYLE.md`, specs). Editor rule files stay thin pointers so Cursor and Zed stay aligned.
+Keep long-form guidance in `context/` (`QUIN.md`, `RADIANT_STYLE.md`, specs). Editor rule files stay thin pointers so Cursor and Zed stay aligned.
 
 **Inside ai-jail:** `CLAUDE.md` and `.claude/` live in the project mount and persist. Host `~/.claude` is tmpfs under `--private-home`; API keys via `ANTHROPIC_API_KEY` (or Zed `/login` state under `.zed-state/`) are the durable auth paths.
 
