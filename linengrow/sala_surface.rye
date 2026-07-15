@@ -1,0 +1,56 @@
+//! linengrow/sala_surface.rye — Sala R2: the unified viewer, many agents on one surface.
+//!
+//! Per external-research/20260715-172000_pool-keystone-revival-realidream-landscape.md
+//! rung R2: ask, receipt, reputation, sanctuary — each a Pool-hosted agent,
+//! capability-isolated (P1) — rendered as its own bounded frame (R1) and
+//! gathered onto ONE Sala surface. This is the Landscape-parallel proper:
+//! one window over many sovereign, isolated agents, each shown as a pure
+//! fold, none able to touch another's state.
+//!
+//! A surface is a bounded list of panels; a panel is a labelled frame. Only
+//! Pool-hosted agents earn a panel — an agent Pool refused (no capability)
+//! contributes nothing to the view, so the surface shows exactly what Pool
+//! admitted, no more. Everything bounded, per TAME.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const view = @import("sala_view.rye");
+const pool = @import("pool_host_seam.rye");
+
+pub const max_panels: u32 = 8;
+pub const max_label_len: u32 = 48;
+
+pub const SurfaceError = error{ TooManyPanels, LabelTooLong } || view.FrameError;
+
+pub const Panel = struct {
+    label: [max_label_len]u8 = undefined,
+    label_len: u32 = 0,
+    frame: view.Frame = .{},
+
+    pub fn label_slice(self: *const Panel) []const u8 {
+        const n: usize = @intCast(self.label_len);
+        return self.label[0..n];
+    }
+};
+
+pub const Surface = struct {
+    panels: [max_panels]Panel = undefined,
+    count: u32 = 0,
+
+    /// Add one Pool-hosted agent's rendered frame as a panel on the surface.
+    pub fn add(self: *Surface, label: []const u8, result: pool.AgentResult) SurfaceError!void {
+        if (self.count >= max_panels) return error.TooManyPanels;
+        if (label.len > max_label_len) return error.LabelTooLong;
+        var new_panel: Panel = .{};
+        std.mem.copyForwards(u8, new_panel.label[0..label.len], label);
+        new_panel.label_len = @intCast(label.len);
+        new_panel.frame = try view.render_ledger(label, result);
+        self.panels[self.count] = new_panel;
+        self.count += 1;
+    }
+
+    pub fn panel(self: *const Surface, i: u32) *const Panel {
+        assert(i < self.count);
+        return &self.panels[i];
+    }
+};
