@@ -1046,3 +1046,8 @@ say "witness suite: Neth serial core, carried for real over Comlink's sealed wir
 let neth_delivery = run ["rishi/bin/rishi" "run" "tools/neth_serial_core_delivery_witness.rish"]
 assert neth_delivery.ok else "Neth serial core delivery witness failed"
 say "GREEN: Neth serial core delivery witness passed."
+
+say "witness suite: Sala B0 — a session is a signed, ordered, replayable log…"
+let sala_b0 = run ["rishi/bin/rishi" "run" "tools/sala_session_core_witness.rish"]
+assert sala_b0.ok else "Sala B0 session-core witness failed"
+say "GREEN: Sala B0 session-core witness passed."

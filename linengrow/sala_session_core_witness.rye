@@ -1,0 +1,93 @@
+//! linengrow/sala_session_core_witness.rye — proves Sala B0: a session replays.
+//!
+//!   rye build linengrow/sala_session_core_witness.rye -femit-bin=linengrow/bin/sala_session_core_witness
+//!   linengrow/bin/sala_session_core_witness
+//!
+//! Per external-research/20260715-181500_sala-broadcast-live-session-fold.md
+//! rung B0 and linengrow/sala_session_core.rye. Four claims:
+//!   1. A session of three signed, ordered events replays to a deterministic
+//!      root twice, agreeing bit-for-bit on root, count, and last sequence —
+//!      the whole B0 claim (a broadcast is a fold over an ordered log).
+//!   2. A tampered event line fails replay (signature no longer verifies).
+//!   3. An out-of-order sequence is refused at append-time reasoning and, if
+//!      forced into the log, refused at replay with OutOfOrder.
+//!   4. An oversized event is refused with EventTooLarge before the log grows.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const kumara = @import("kumara.rye");
+const rc = @import("receipt_core.rye");
+const mc = @import("mala_core.rye");
+const sala = @import("sala_session_core.rye");
+
+const witness_version = "20260715.190000";
+
+fn run_selftest() !u8 {
+    const actor_kp = kumara.keypair_from_seed(&mc.issuer_seed);
+    var actor_hex: [mc.pubkey_hex_len]u8 = undefined;
+    mc.hex_of_key(actor_kp.public_key, &actor_hex);
+
+    // Build a real session of three signed, strictly-ordered events -- the
+    // Asciinema shape: a typed line, a frame summary, a chat line, each an
+    // event in the log rather than a pixel dump.
+    var log: [rc.max_log_len]u8 = undefined;
+    var len: u32 = 0;
+    len = try sala.append_event(&log, len, 1, "20260715.190001", "sala:open rishi session", &actor_hex, actor_kp);
+    len = try sala.append_event(&log, len, 2, "20260715.190002", "sala:type let x = 42", &actor_hex, actor_kp);
+    len = try sala.append_event(&log, len, 3, "20260715.190003", "sala:frame 8-line skate view", &actor_hex, actor_kp);
+    print("sala-b0: session of 3 signed ordered events built -- {d} log bytes\n", .{len});
+
+    // Claim 1: two independent replays agree bit-for-bit.
+    const r1 = try sala.replay(log[0..len], &actor_hex, actor_kp.public_key);
+    const r2 = try sala.replay(log[0..len], &actor_hex, actor_kp.public_key);
+    assert(r1.events == 3 and r2.events == 3);
+    assert(r1.last_seq == 3 and r2.last_seq == 3);
+    assert(std.mem.eql(u8, &r1.root, &r2.root));
+    print("sala-b0: replayed twice -- 3 events, last seq 3, byte-identical session root -- GREEN determinism path\n", .{});
+    print("sala-b0: session root -- {x}\n", .{r1.root});
+
+    // Claim 2: a tampered event line fails replay.
+    var tampered = log;
+    tampered[0] +%= 1;
+    if (sala.replay(tampered[0..len], &actor_hex, actor_kp.public_key)) |_| {
+        return error.TamperNotCaught;
+    } else |_| {
+        print("sala-b0: tampered event line refused at replay -- GREEN unwelcome path\n", .{});
+    }
+
+    // Claim 3: an out-of-order sequence is refused at replay. Build a log whose
+    // second event skips to seq 5 rather than 2.
+    var bad: [rc.max_log_len]u8 = undefined;
+    var bad_len: u32 = 0;
+    bad_len = try sala.append_event(&bad, bad_len, 1, "20260715.190001", "sala:open", &actor_hex, actor_kp);
+    bad_len = try sala.append_event(&bad, bad_len, 5, "20260715.190002", "sala:skips ahead", &actor_hex, actor_kp);
+    if (sala.replay(bad[0..bad_len], &actor_hex, actor_kp.public_key)) |_| {
+        return error.OutOfOrderNotCaught;
+    } else |err| {
+        if (err != sala.SessionError.OutOfOrder) return err;
+    }
+    print("sala-b0: out-of-order sequence (1 then 5) refused OutOfOrder -- GREEN unwelcome path\n", .{});
+
+    // Claim 4: an oversized event is refused before the log grows. A 300-byte
+    // payload pushes the signed line past the 768-byte event bound while still
+    // fitting receipt_core's line buffer, so EventTooLarge (not Overflow) fires.
+    var oversized: [300]u8 = undefined;
+    @memset(&oversized, 'x');
+    var probe: [rc.max_log_len]u8 = undefined;
+    const refused = sala.append_event(&probe, 0, 1, "20260715.190001", &oversized, &actor_hex, actor_kp);
+    if (refused) |_| {
+        return error.OversizeNotCaught;
+    } else |err| {
+        if (err != sala.SessionError.EventTooLarge) return err;
+    }
+    print("sala-b0: oversized event refused EventTooLarge before the log grew -- GREEN unwelcome path\n", .{});
+
+    print("sala-b0: version {s}\n", .{witness_version});
+    print("GREEN: Sala B0 -- a session is a signed, ordered, replayable log; two replays agree on the root.\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}
