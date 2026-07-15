@@ -68,6 +68,7 @@ What does *not* belong here is the work itself — that lands in the research, d
 
 | Stamp | Prompt | Meaning |
 |-------|--------|---------|
+| `20260715.181500` | [Sala as a broadcast surface, and the Glowphone](20260715-181500_sala-broadcast-and-glowphone.md) | Ran two intertwined visions into grounded studies: Sala-broadcast (a livestream is a fold over a signed ordered log) and the Glowphone (a two-body firmware-free-client + open-AI-home-forge strategy, hardware forks dated and cited) |
 | `20260715.164500` | [Glow's non-vane strata, the Urbit fleet reconciliation, and mold nesting](20260715-164500_glow-vane-strata-fleet-and-molds.md) | Ran a round of Glow design questions into three citable studies: the three non-vane strata + Pond's narrowing, the Glow/Neth/fleet reconciliation, and bounded mold nesting as the sixth Glow-supplement surface |
 | `20260715.160500` | [A student's "mixed" on college, AI, and the vows that fit](20260715-160500_college-education-mixed-exploitation-ai-and-vows.md) | Siloed a student's honest word on education-as-exploitation and the age of AI; ran it into study #58 on Kali Yuga, the Brahmana in grihastha, artha, and how Glow OS balances the extraction underneath |
 | `20260711.053412` | [Apply Cursor-bot arc audit](yonder/20260711-053412_apply-cursor-bot-arc-audit.md) | Consumed — WOV money fn split; counsel; in `yonder/` |
