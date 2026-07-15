@@ -1076,3 +1076,8 @@ say "witness suite: Sala R2 — the unified viewer, many agents on one surface�
 let sala_r2 = run ["rishi/bin/rishi" "run" "tools/sala_surface_witness.rish"]
 assert sala_r2.ok else "Sala R2 unified-viewer witness failed"
 say "GREEN: Sala R2 unified-viewer witness passed."
+
+say "witness suite: Sala B2 — audience + back-channel (multi-signer chat)…"
+let sala_b2 = run ["rishi/bin/rishi" "run" "tools/sala_backchannel_witness.rish"]
+assert sala_b2.ok else "Sala B2 back-channel witness failed"
+say "GREEN: Sala B2 back-channel witness passed."

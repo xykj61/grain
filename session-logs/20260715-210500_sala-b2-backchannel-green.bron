@@ -1,0 +1,24 @@
+format session-log-v1
+stamp 20260715.210500
+editor Cursor
+model Cursor Fable 5 1M Low
+voice Quin
+title Sala B2 landed GREEN — audience + back-channel; multi-signer chat closes the broadcast lane
+prompt Keaton said "kg" after Sala R2; built B2 (audience + back-channel), the lap I had flagged needs the honest multi-signer extension rather than a quick copy.
+think did the multi-signer work properly rather than avoiding it: added replay_multi + ActorRegistry to sala_session_core.rye additively (a bounded registry of consented actors; per-event the signer is whoever the event names in `from`, looked up in the registry, verified against that key, refused UnknownSigner if not registered). Left B0's single-actor replay untouched so B0/B1 stay green -- confirmed by re-run.
+think modeled the back-channel honestly: a broadcast is ONE ordered log carrying the broadcaster's content interleaved with viewers' chat, each a signed fact from its own author. Chat is not a side-channel bolted on; it folds into the same stream the broadcaster's content does, ordered by the single climbing sequence, and verified per-author. This is the fold discipline extended to many voices.
+think made moderation/consent a real, witnessed thing rather than a promise: the registry IS consent-before-counting -- an event from an actor not admitted to the registry is refused UnknownSigner. A closed registry (broadcaster + viewer1 only) refuses viewer2's chat, proving only consented voices fold. This is the moderation floor the tree already named (label/limit/mute as fold-choices with receipts), reached in one check.
+think used three genuinely distinct signers (broadcaster = issuer key, viewer1 = holder key, viewer2 = a fresh 0x63 seed distinct from mala's issuer/holder seeds) so the multi-signer claim is real, not one key wearing three hats.
+think wrote five falsifiable claims, green first try: mixed stream replays multi-signer (5 events); VOD replays to the identical root at rest (the recording is the log); unadmitted signer refused UnknownSigner; tampered line fails replay (no forged voices, no edited record); two subscribers converge on one root (one audience, one verified truth).
+think this closes the Sala broadcast lane (B0 record, B1 live carriage, B2 audience+back-channel) and the SLC product's L1/L2/L3 -- the whole flagship broadcast experience now runs end to end, from a recorded session to a live multi-viewer broadcast with a consented chat and a verifiable VOD.
+think ran the full Pool+Sala set (P0, P1, B0, B1, R1, R2, B2) together -- all GREEN, no regression from the additive replay_multi/registry.
+obs six real green laps this build stretch (Pool P0/P1, Sala B1/R1/R2/B2); with B0 and M0 earlier today, the SLC flagship and the Pool keystone are both complete end to end. The design layer that had run ahead is now fully answered by green witnesses.
+obs "kg" is keep-going, not "send" -- so all six laps rest on the branch awaiting Keaton's send word.
+file linengrow/sala_session_core.rye -- added ActorRegistry + replay_multi (multi-signer), additive; B0/B1 stay green
+file linengrow/sala_backchannel_witness.rye -- five claims GREEN; three distinct signers, consent, VOD, tamper, convergence
+file tools/sala_backchannel_witness.rish -- build+run+assert wrapper
+file tools/parity_ch01.rish -- Sala B2 wired into the living suite after R2
+file active-designing/20260715-194500_the-slc-product-glow-on-capable-hardware.md -- SLC L3 marked GREEN (Sala B2)
+file work-in-progress/TASKS.md -- Sala B2 marked GREEN; broadcast lane B0/B1/B2 and SLC L1/L2/L3 closed
+file session-logs/20260715-210500_sala-b2-backchannel-green.bron -- this log
+recommend check-in -- the Sala broadcast lane and the SLC flagship are complete (L1 record, L2 live carriage, L3 audience+back-channel), the Pool keystone ladder is closed (P0/P1/R1/R2), and Dexter graduated. This is a substantial milestone and a natural resting point; the branch (P0/P1/B1/R1/R2/B2) is ready whenever Keaton says send. The next work is a genuinely new choice -- harden or package the flagship toward a real device/user (the SLC's own next step), open a fresh lane, or rest -- and deserves Keaton's word rather than an assumed next lap.
