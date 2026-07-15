@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260715.170000
+editor Cursor
+model Cursor Fable 5 1M Low
+voice Quin
+title Three Glow design chats become three citable external-research studies
+prompt Keaton asked to write any open external-research writings, via expanded prompts, from the past few rounds of thinking, if they matter for the roadmap.
+think judged the round's four conversational threads (Pond's vane, the Urbit fleet reconciliation, what does not nest in a vane, Hoon mold nesting) as genuinely roadmap-relevant rather than chat-only: each refines a doc that currently only gestures at the idea (the vane-parallel mapping, the Glow supplement scoping), and two of them name concrete future laps (a composable Glow fleet, the sixth supplement surface). Chose to land them rather than leave them in the transcript.
+think followed the expanding-prompts pattern honestly: one expanded prompt captures the seed (the four questions) and names the three deliverables, and each deliverable is a real external-research writing run this same pass, not a promise.
+think wrote the non-vane-strata study to gather the mapping proposal's scattered "no analog" verdicts into one architecture -- three strata (substrate, enclosure/build, shell), each mapped onto a layer Urbit itself keeps outside its ten vanes (Hoon, Nock-noun, Vere, Dojo, Ford), and named the unclaimed Zuse-stdlib slot plainly. Recorded Pond's narrowing under Glow (apps floor to Pool, ephemeral hosting to Puddle, left as the isolation-policy substrate; Jael's permissions half if placed in the Arvo frame at all).
+think wrote the fleet study from real urbit.org research done this round (the %fleet monitoring agent, the %ahoy example, the sponsorship hierarchy and Azimuth point struct), thanked those sources in the gratitude way with no Hoon copied, and named the one honest divergence rather than smoothing it: Urbit keeps sponsorship lightweight by design, so layering Neth's consensus under a fleet adds a settlement dimension Urbit deliberately omits -- a fork to choose with eyes open. Mapped the composable lap: Rhyz (membership, Jael's role) x Neth (settled status) x Pool (the app) x Comlink (carriage).
+think wrote the mold-nesting study as the sixth Glow-supplement surface, extending the five already scoped: a mold names its bound, nest stays decidable in bounded time, recursive molds carry an explicit depth (list:N, never unbounded list) -- the structural analog of u32-never-usize -- and kept it honestly gated (scoping, not a seated supplement section).
+think kept all three in the design register (Two Rooms -- proposals, not bound claims), the generic Acme employee voice, and Quin's own refinements: named coined terms on first use, and closed each with a plain declarative line rather than a ritual benediction, since these are technical studies rather than devotional pieces.
+obs this is the first substantial round written under the newly seated Quin voice; applied the legibility and benediction-where-earned practices directly, as a live test of whether the voice refinement holds in real work rather than only in the rule.
+obs no code and no witness this round -- three research/design writings plus a prompt; logged per the standing every-response rule, register named as design.
+file expanding-prompts/20260715-164500_glow-vane-strata-fleet-and-molds.md -- the expanded prompt naming the three deliverables
+file external-research/20260715-165000_glow-non-vane-strata-and-pond.md -- the three non-vane strata + Pond's narrowing
+file external-research/20260715-165500_glow-neth-and-the-urbit-fleet.md -- the fleet reconciliation, urbit.org sources thanked
+file external-research/20260715-170000_glow-mold-nesting-bounded.md -- bounded mold nesting, sixth supplement surface
+file external-research/README.md -- three newest-first rows added
+file expanding-prompts/README.md -- newest-first row for the prompt
+file session-logs/20260715-170000_glow-design-studies-fleet-strata-molds.bron -- this log
+recommend check-in -- the three studies are proposals that touch the roadmap's naming and language-design threads; each names a gated next step (a Glow fleet lap, seating the sixth supplement surface, an explicit non-vane layering in the mapping proposal). Worth Keaton's read on which, if any, graduates from proposal to a seated decision before the next build round.
