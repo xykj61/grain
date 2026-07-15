@@ -45,6 +45,7 @@ Dated explorations carry `YYYYMMDD-HHMMSS_short-slug.md`; living documents (`REA
 
 | Stamp | Note | Meaning |
 |-------|------|---------|
+| `20260715.172000` | [Pool as the keystone revival — the userspace host, with Realidream as its Landscape](20260715-172000_pool-keystone-revival-realidream-landscape.md) | Prioritizes Gall's role revived as Pool (the host that makes the green spine inhabitable) with Realidream as the Landscape-parallel viewer; first laps P0–R2 named, gated on Keaton's word |
 | `20260715.170000` | [Glow mold nesting — bounded normalizers, decidable nest, bounded recursion](20260715-170000_glow-mold-nesting-bounded.md) | Sixth Glow-supplement surface: a mold names its bound, `nest` stays decidable, recursive molds carry an explicit depth (`list:N`, never unbounded `list`) |
 | `20260715.165500` | [Glow, Neth, and the Urbit fleet](20260715-165500_glow-neth-and-the-urbit-fleet.md) | Sponsorship hierarchy = Neth's graduated trust; Rhyz × Neth × Pool × Comlink compose a fleet; one honest divergence — Urbit keeps sponsorship lightweight by design |
 | `20260715.165000` | [What doesn't nest within a vane — Glow's three non-vane strata, and Pond's narrowing](20260715-165000_glow-non-vane-strata-and-pond.md) | Substrate (Rye · Bron · Aurora · Tally), enclosure/build (Pond · Puddle · Maze · Brix), shell (Rishi); the unclaimed Zuse slot; Pond narrows to the isolation-policy substrate |
