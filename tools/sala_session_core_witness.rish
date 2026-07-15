@@ -1,0 +1,27 @@
+# sala_session_core_witness.rish — Sala B0: a session is a replayable signed log.
+#
+# The first real lap of the Sala broadcast lane: a session (Asciinema's shape)
+# is a signed, strictly-ordered, replayable log that folds to a deterministic
+# session root. Composes on receipt_core + kumara, gates on nothing but the
+# fold primitives already green. See
+# external-research/20260715-181500_sala-broadcast-live-session-fold.md
+# and linengrow/sala_session_core.rye.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/sala_session_core_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/sala_session_core_witness"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/sala_session_core_witness.rye -femit-bin=${bin}"]
+
+assert build.ok else "Sala session core witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "Sala session core witness exited non-zero"
+assert selftest.out contains "GREEN" else "Sala session core witness not GREEN"
+assert selftest.out contains "GREEN determinism path" else "Sala session core witness missing determinism claim"
+assert selftest.out contains "refused at replay" else "Sala session core witness missing tamper unwelcome path"
+assert selftest.out contains "refused OutOfOrder" else "Sala session core witness missing order unwelcome path"
+
+say "GREEN: Sala B0 session-core witness passed."

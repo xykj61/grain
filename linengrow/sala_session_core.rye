@@ -1,0 +1,126 @@
+//! linengrow/sala_session_core.rye — Sala B0: a session is a signed, ordered, replayable log.
+//!
+//! Per external-research/20260715-181500_sala-broadcast-live-session-fold.md
+//! rung B0: a broadcast (or a recorded session, Asciinema's shape) is not a
+//! video — it is a replayable log of signed, timestamped, strictly-ordered
+//! events, re-rendered by folding. This is the smallest real lap of the Sala
+//! broadcast lane, and it gates on nothing but the fold primitives already
+//! green (it does not wait on Pool P0; only live carriage, B1, does).
+//!
+//! Composition, not new machinery: an event rides receipt_core's already-
+//! witnessed fact line and kumara's signing. The FactFields shape carries a
+//! session event with a plain mapping, so nothing new is parsed:
+//!
+//!   from   = the actor (broadcaster) public-key hex
+//!   to     = the actor again (a session event has one author)
+//!   amount = the sequence number (a strictly increasing monotonic counter)
+//!   memo   = the event payload (a keystroke line, a frame summary, a chat line)
+//!   stamp  = the event time
+//!
+//! The sequence riding `amount` gives ordering for free through the proven
+//! parse_amount_signed, so B0 enforces the one discipline a broadcast needs —
+//! strict order — without writing a new parser. Two replays of the same log
+//! agree bit-for-bit on the session root, because a fold over an immutable
+//! ordered log always reproduces: that is the whole claim.
+
+const std = @import("std");
+const kumara = @import("kumara.rye");
+const rc = @import("receipt_core.rye");
+const mc = @import("mala_core.rye");
+
+/// One event line may never exceed this — small enough to eyeball, well under
+/// receipt_core.max_line_len (1153). Sized like neth_serial_core's own bound,
+/// since a signed line hex-doubles its fact: the two fixed pubkey-hex fields
+/// alone spend ~260 bytes before any payload.
+pub const max_event_bytes: u32 = 768;
+
+/// A bounded session — small enough to hold whole in memory and reason about.
+pub const max_events: u32 = 64;
+
+pub const SessionError = error{ EventTooLarge, OutOfOrder, Overflow, ReplayFailed };
+
+pub const ReplayResult = struct {
+    events: u32,
+    root: [32]u8,
+    last_seq: i64,
+};
+
+fn seq_string(seq: i64, buf: *[24]u8) []const u8 {
+    return std.fmt.bufPrint(buf, "{d}", .{seq}) catch unreachable;
+}
+
+/// Sign one event and append its line to the session log. `seq` must be the
+/// strictly-next sequence (the caller counts); an event whose line would
+/// exceed max_event_bytes is refused before the log is touched.
+pub fn append_event(
+    log: []u8,
+    log_len: u32,
+    seq: i64,
+    stamp: []const u8,
+    payload: []const u8,
+    actor_hex: *const [mc.pubkey_hex_len]u8,
+    signer: kumara.KeyPair,
+) SessionError!u32 {
+    var seq_buf: [24]u8 = undefined;
+    const seq_text = seq_string(seq, &seq_buf);
+    const fields = rc.FactFields{
+        .from = actor_hex[0..],
+        .to = actor_hex[0..],
+        .amount = seq_text,
+        .memo = payload,
+        .stamp = stamp,
+    };
+    const signed = mc.sign_fact(fields, signer) catch return error.Overflow;
+    var line_buf: [rc.max_line_len]u8 = undefined;
+    const line_len = rc.format_log_line(signed.sig, signed.canonical[0..signed.canonical_len], &line_buf) catch return error.Overflow;
+    if (line_len > max_event_bytes) return error.EventTooLarge;
+    const new_len_usize = @as(usize, log_len) + line_len;
+    if (new_len_usize > log.len) return error.Overflow;
+    const new_len: u32 = @intCast(new_len_usize);
+    std.mem.copyForwards(u8, log[log_len..new_len], line_buf[0..line_len]);
+    return new_len;
+}
+
+/// Replay the session: verify every event's signature, enforce a strictly
+/// increasing sequence (order is the one discipline a broadcast needs), count
+/// the events, and digest the whole log into the session root. Deterministic:
+/// two replays of the same bytes agree on events, root, and last_seq.
+pub fn replay(
+    log: []const u8,
+    actor_hex: *const [mc.pubkey_hex_len]u8,
+    actor_pk: kumara.PublicKey,
+) SessionError!ReplayResult {
+    var count: u32 = 0;
+    var last_seq: i64 = 0;
+    var pos: u32 = 0;
+    const log_u32: u32 = @intCast(log.len);
+    while (pos < log_u32) {
+        if (count >= max_events) return error.ReplayFailed;
+        const line_end_usz = std.mem.indexOfScalarPos(u8, log, pos, '\n') orelse log.len;
+        const line_end: u32 = @intCast(line_end_usz);
+        const line = log[pos..line_end];
+        pos = if (line_end < log_u32) line_end + 1 else line_end;
+        if (std.mem.trim(u8, line, " \t\r\n").len == 0) continue;
+
+        var sig_buf: [kumara.signature_length]u8 = undefined;
+        var fact_out: [rc.max_fact_len]u8 = undefined;
+        const parsed = rc.parse_log_line(line, &sig_buf, &fact_out) catch return error.ReplayFailed;
+        const fact = fact_out[0..parsed.fact_len];
+
+        var fields: rc.FactFields = undefined;
+        rc.parse_fact_fields(fact, &fields) catch return error.ReplayFailed;
+
+        // The author is who the event claims, and it must be the session's actor.
+        if (!std.mem.eql(u8, fields.from, actor_hex[0..])) return error.ReplayFailed;
+        rc.verify_record(sig_buf[0..parsed.sig_len], fact, actor_pk) catch return error.ReplayFailed;
+
+        // Strict order: the sequence rides `amount` and must climb by exactly one.
+        const seq = rc.parse_amount_signed(fields.amount) catch return error.ReplayFailed;
+        if (seq != last_seq + 1) return error.OutOfOrder;
+        last_seq = seq;
+        count += 1;
+    }
+    var root: [32]u8 = undefined;
+    rc.digest_log(log, &root);
+    return .{ .events = count, .root = root, .last_seq = last_seq };
+}

@@ -1,0 +1,24 @@
+format session-log-v1
+stamp 20260715.190000
+editor Cursor
+model Cursor Fable 5 1M Low
+voice Quin
+title Documented the finishing discipline, seated the "send" word, and walked the growth edge with Sala B0 GREEN
+prompt Keaton asked to document the prior turn's honest reflection, continue on the growth edge, commit-push-merge, and create a Claude/Cursor rule that "send" is the Glow word for commit-push-merge from a client (his Cursor iOS) to the GitHub pier.
+think treated "continue on our growth edge" literally rather than writing another design doc -- the growth edge I had just named is finishing and shipping one real green thing. So the honest move was to actually land a witnessed lap, not preach the lesson again.
+think chose Sala B0 (session-as-log) as the smallest real green lap: its own ladder gates it on nothing but the fold primitives already green (only B1 live-carriage waits on Pool P0), and it reuses the exact kumara + receipt_core primitives the Neth laps already proved, so the compose-don't-duplicate discipline keeps the bug surface tiny.
+think designed the event to ride receipt_core's already-witnessed FactFields line with a plain mapping (from=actor, amount=sequence, memo=payload, stamp=time), so ordering rides the proven parse_amount_signed and no new parser is written -- the lowest-risk path to green, exactly what the finishing lesson calls for.
+think built and ran it in the raised toolchain and caught a real bound bug on the first run: max_event_bytes=512 was too tight because the signed line hex-doubles its fact (two pubkey-hex fields alone spend ~260 bytes), so a normal event line ran ~526 bytes. Fixed the bound to 768 (matching neth_serial_core's own reasoning) and re-sized the oversize probe to a 300-byte payload so EventTooLarge (not Overflow) fires -- then GREEN, all four claims, and re-ran all eight Neth/Mantra/Sala witnesses together with no regression. This is the finishing discipline in miniature: run it, let it fail honestly, fix the real thing, prove it green.
+think wrote the counsel note in counsel/ (where a reflection may name Keaton plainly) rather than an Acme-voice doc, since its whole use is a durable self-check he returns to -- naming the design-over-build ratio as the one honest finding, the five blind spots with answers, the grounded aptitudes, the effortless passions, and the growth edge in one line.
+think seated the "send" word as an always-on rule in both editors: send = commit (CONTRIBUTING style) + push + fast-forward merge to main, signing on, session log riding along, green-before-send when there is code, resting on main after. Named why the word exists -- a client talking to an agent talking to the pier is the shape of Glow's own network, and "send" is the hand-to-ship gesture in one syllable.
+obs practiced what the counsel preaches in the same turn it was written: Sala B0 landed green, so the counsel is not only advice but a demonstrated edge -- the first small proof the ratio can be corrected.
+file counsel/20260715-190000_the-design-over-build-ratio-and-finishing.md -- the durable finishing-discipline self-check
+file .cursor/rules/send-word.mdc -- "send" = commit push merge, always-on
+file .claude/rules/send-word.md -- same, for Claude Code
+file linengrow/sala_session_core.rye -- Sala B0: session as a signed, ordered, replayable log
+file linengrow/sala_session_core_witness.rye -- four claims, GREEN
+file tools/sala_session_core_witness.rish -- build+run+assert wrapper
+file tools/parity_ch01.rish -- Sala B0 wired into the living suite after the Neth carriage entry
+file work-in-progress/TASKS.md -- Sala B0 marked landed and GREEN
+file session-logs/20260715-190000_finishing-counsel-send-word-sala-b0.bron -- this log
+recommend keep-going -- the growth edge is now walked once, not only named; Sala B0 is green and in the suite. The honest next step that keeps the edge is Pool P0 (host the Open Ask loop over Caravan's capability table), which unblocks Sala B1 (live carriage) -- one real lap at a time, ship before naming the next.
