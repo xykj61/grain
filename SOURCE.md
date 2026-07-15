@@ -1,10 +1,10 @@
 # SOURCE — From Nothing to a Signed, Sandboxed Home
 
 **Language:** EN
-**Version:** `20260714.183000` (Glow warm-aura date atom — chronological, later-is-larger)
+**Version:** `20260714.190500` (Glow warm-aura date atom — chronological, later-is-larger)
 **Style:** Radiant (see `context/RADIANT_STYLE.md`)
 **By:** Rio 3, in the radiant voice, with **Keaton Dunsford** as coauthor
-**Status:** Living guide — last touched `20260714.183000` (Step 8's key generator now wires git itself and creates a jail-local known_hosts automatically — nothing left to configure by hand)
+**Status:** Living guide — last touched `20260714.190500` (Step 6 gains `--private-home`, a full private-`$HOME` equivalent alongside `--harden-home`)
 
 ---
 
