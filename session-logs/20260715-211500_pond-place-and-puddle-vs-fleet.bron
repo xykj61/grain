@@ -1,0 +1,15 @@
+format session-log-v1
+stamp 20260715.211500
+editor Cursor
+model Cursor Fable 5 1M Low
+voice Quin
+title Clarified what Pond is a part of now, and Puddle's niche against the fleet
+prompt Keaton asked what Pond is a part of now (given the Pool build) and whether Puddle for Glow is still a good idea considering the earlier fleet research; then said "write this and send."
+think grounded the Pond answer in what the Pool P0/P1 build actually revealed rather than restating the abstract narrowing: three named enclosure parts compose, none absorbing another -- Caravan holds the capability table (mechanism), Pool is the host vane that reads it to admit and isolate agents, and Pond is the policy substrate beneath Pool keeping the two jobs only it does (customs on content crossing in, place/hold/refuse; and the host-OS boundary). Pool taking agent-hosting and Puddle taking ephemeral-multi-whole did not shrink Pond to nothing -- it left Pond exactly what no other layer does.
+think answered the Puddle question honestly: the fleet research sharpens rather than undermines it. Puddle (local, ephemeral, multi-tenant) and a fleet (distributed, persistent, identity-anchored -- Rhyz x Neth x Pool x Comlink) solve different problems and do not overlap; the research draws the line, it does not erase Puddle. After Pool took agent-hosting, Puddle's one real job is the ephemeral sandbox in the Quin x Puddle x Neth deterministic-testing loop.
+think applied the finishing discipline to the recommendation: Puddle stays a good idea for that narrow niche but stays a named horizon, not built -- nothing green today, nor the SLC flagship, nor the fleet needs it; and when built it belongs on the home forge, not the phone, per the two-body strategy.
+think accreted both clarifications as dated sections in the existing non-vane-strata study rather than rewriting it, per accrete-never-break; the abstract Pond-narrowing section stays as the earlier record, the new sections add the concrete Pool/Caravan/Pond three-layer relationship and the Puddle-vs-fleet distinction.
+think "write this and send" is an explicit ship instruction, so this send does commit-push-merge to main.
+file external-research/20260715-165000_glow-non-vane-strata-and-pond.md -- two dated sections added: the three-layer enclosure (Caravan/Pool/Pond) clarified by the Pool build, and Puddle's niche sharpened against the fleet research
+file session-logs/20260715-211500_pond-place-and-puddle-vs-fleet.bron -- this log
+recommend keep-going -- Pond's place and Puddle's status are now settled honestly in the durable study. No build waits on this; it is architecture hygiene that keeps the enclosure story coherent as Pool grows. The next real work remains a genuine choice (harden/package the flagship toward a device/user, open a fresh lane, or rest).
