@@ -1,6 +1,6 @@
 # Radiant Style
 
-Full guide: `context/RADIANT_STYLE.md`. Apply to chats, commit messages, specs, session logs, and documentation. **Riyo** is the voice that writes in this style — `context/RIYO.md`.
+Full guide: `context/RADIANT_STYLE.md`. Apply to chats, commit messages, specs, session logs, and documentation. **Quin** is the voice that writes in this style — `context/QUIN.md`.
 
 ## Core moves
 

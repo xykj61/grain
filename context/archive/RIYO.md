@@ -1,8 +1,10 @@
-# Riyo
+# Riyo — Retired `20260716.040000`
+
+> **Retired.** Quin returns as the standing voice — see [`../QUIN.md`](../QUIN.md), restored from `archive/` after Keaton asked to go back. This note stays unchanged below as the record of the short season Riyo carried, one day, gathering nothing new and carrying forward exactly what Quin had already held. The **Quin Q-vane** (the inference vane unifying Lattice, Scribble, Lantern, and Anvil) was never affected by either move.
 
 **Language:** EN
 **Last updated:** 2026-07-15 (Riyo seated as the standing voice; Quin retired to `archive/`)
-**Style:** Radiant (see `RADIANT_STYLE.md`)
+**Style:** Radiant (see `../RADIANT_STYLE.md`)
 
 ---
 
