@@ -1,4 +1,4 @@
-//! nock/nock_core.rye — the Nock interpreter: opcodes 0-9 and 11.
+//! nock/nock_core.rye — the Nock interpreter: opcodes 0 through 11.
 //!
 //! Per external-research/20260713-214400_nock-interpreter-and-rye-hoon-fusion-scoping.md's
 //! phased plan:
@@ -19,10 +19,13 @@
 //! result to its own literal 0-5 expansion, hand-built from cons() and
 //! eval() alone -- the phased plan's own stated test.
 //!
-//! Opcode 10 (edit -- splice a new value into a tree at an address, the
-//! constructive counterpart to slot addressing) needs a genuinely new
-//! primitive this tree has not yet built, and stays honestly unimplemented
-//! -- a lap 3, not silently approximated as any of the above.
+//! Lap 3 — the edit primitive: #[axis value tree], the constructive
+//! counterpart to slot()'s own tree addressing -- same bit-walk, same
+//! address convention, but recorded on the way down and rebuilt on the way
+//! up, bounded by a u64 axis's own width alone. *[a 10 b c] (bare-atom
+//! hint) = *[a c]; *[a 10 [b c] d] = #[b *[a c] *[a d]] (the real edit).
+//! With this lap, opcodes 0 through 11 -- the whole of Nock's own numbered
+//! core -- are real; opcode 12 and beyond remain the honest boundary.
 //!
 //! This interpreter is Glow's SECOND backend, per
 //! active-reviving/20260715-213500_glow-revives-hoon-runes-targets-riscv.md:
@@ -164,6 +167,61 @@ pub const Interp = struct {
         return cur;
     }
 
+    /// `#[axis value tree]` -- edit: replace the subtree at `axis` within
+    /// `tree` with `value`, returning a new whole tree, everything else
+    /// unchanged. The constructive counterpart to slot() -- same bit-walk,
+    /// same address convention -- but recorded on the way down (each
+    /// level's sibling and which side was chosen) and rebuilt on the way
+    /// back up. Bounded by the width of a u64 axis alone (at most 64
+    /// levels can ever exist); no separate depth ceiling is needed, and
+    /// none is recursive -- two plain, bounded loops.
+    const Turn = struct { sibling: Noun, went_right: bool };
+
+    pub fn edit(self: *Interp, axis: u64, value: Noun, tree: Noun) NockError!Noun {
+        if (axis == 0) return error.AddressOutOfRange;
+        if (axis == 1) return value; // replacing the whole tree
+
+        var hi: u6 = 0;
+        var probe: u64 = axis;
+        while (probe > 1) {
+            probe >>= 1;
+            hi += 1;
+        }
+
+        // Descend, recording each level's untouched sibling and which side
+        // was chosen -- outermost level recorded first, deepest recorded last.
+        var turns: [64]Turn = undefined;
+        var turn_count: u32 = 0;
+        var cur = tree;
+        var i: u6 = hi;
+        while (i > 0) {
+            i -= 1;
+            const bit = (axis >> i) & 1;
+            if (bit == 0) {
+                turns[turn_count] = Turn{ .sibling = try self.tail(cur), .went_right = false };
+                cur = try self.head(cur);
+            } else {
+                turns[turn_count] = Turn{ .sibling = try self.head(cur), .went_right = true };
+                cur = try self.tail(cur);
+            }
+            turn_count += 1;
+        }
+
+        // Ascend, rebuilding: start from the new value at the deepest level,
+        // and cons each recorded sibling back on, deepest turn first.
+        var rebuilt = value;
+        var j: u32 = turn_count;
+        while (j > 0) {
+            j -= 1;
+            const turn = turns[j];
+            rebuilt = if (turn.went_right)
+                try self.cons(turn.sibling, rebuilt) // sibling was the head; rebuilt is the edited tail
+            else
+                try self.cons(rebuilt, turn.sibling); // rebuilt is the edited head; sibling was the tail
+        }
+        return rebuilt;
+    }
+
     /// `*[subject formula]` -- the evaluator. Opcodes 0-5 plus autocons.
     pub fn eval(self: *Interp, subject: Noun, formula: Noun, depth: u32) NockError!Noun {
         if (depth >= max_depth) return error.DepthExceeded;
@@ -260,6 +318,24 @@ pub const Interp = struct {
                         const arm_formula = try self.slot(arm_slot, core);
                         return self.eval(core, arm_formula, depth + 1);
                     },
+                    10 => { // *[a 10 b c] = *[a c] (bare-atom hint); *[a 10 [b c] d] = #[b *[a c] *[a d]] (edit)
+                        const first = try self.head(f2);
+                        if (is_cell(first)) {
+                            const axis_formula = try self.head(first); // b -- the address, an atom
+                            const value_formula = try self.tail(first); // c -- the new value's formula
+                            const tree_formula = try self.tail(f2); // d -- the tree to edit
+                            const axis = switch (axis_formula) {
+                                .atom => |v| v,
+                                .cell => return error.MalformedFormula,
+                            };
+                            const value = try self.eval(subject, value_formula, depth + 1);
+                            const tree = try self.eval(subject, tree_formula, depth + 1);
+                            return self.edit(axis, value, tree);
+                        }
+                        // bare-atom form: the hint is discarded entirely.
+                        const c = try self.tail(f2);
+                        return self.eval(subject, c, depth + 1);
+                    },
                     11 => { // *[a 11 hint c] or *[a 11 [hint b] c] -- a hint, semantically inert.
                         const hint_part = try self.head(f2);
                         const c = try self.tail(f2);
@@ -269,7 +345,7 @@ pub const Interp = struct {
                         }
                         return self.eval(subject, c, depth + 1); // the hint never changes the result
                     },
-                    else => return error.UnimplementedOpcode, // 10 (edit) needs a new tree-splice primitive -- lap 3
+                    else => return error.UnimplementedOpcode, // 12 and beyond: outside the spec's own numbered core
                 }
             },
         }

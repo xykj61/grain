@@ -1,0 +1,25 @@
+# nock_lap3_witness.rish — the edit primitive and opcode 10, proven.
+#
+# Per external-research/20260713-214400_nock-interpreter-and-rye-hoon-fusion-scoping.md's
+# phased plan and nock/nock_core.rye: #[axis value tree] -- the constructive
+# counterpart to slot() -- and opcode 10 (edit), dispatched end to end and
+# reconstructed by hand against the official #[b *[a c] *[a d]] rule. With
+# this lap, opcodes 0 through 11 -- the whole of Nock's own numbered core --
+# are real.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/nock_lap3_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "nock/bin/nock_lap3_witness"
+
+let build = run ["sh" "-c" "mkdir -p nock/bin && env RYE_ZIG=${zig} rye/bin/rye build nock/nock_lap3_witness.rye -femit-bin=${bin}"]
+assert build.ok else "Nock lap 3 witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "Nock lap 3 witness exited non-zero"
+assert selftest.out contains "GREEN" else "Nock lap 3 witness not GREEN"
+assert selftest.out contains "hand-reconstructed" else "Nock lap 3 witness missing the official-rule reconstruction claim"
+assert selftest.out contains "whole of Nock's own core" else "Nock lap 3 witness missing the closing claim"
+
+say "GREEN: Nock lap 3 witness passed -- the edit primitive and opcode 10, the whole numbered core now real."

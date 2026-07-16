@@ -20,9 +20,9 @@
 //!      proving equality is structural, never pool-index identity.
 //!   9. Autocons: a formula whose own head is a cell distributes rather than
 //!      dispatching by opcode.
-//!   10. The honest boundary: opcode 10 (edit -- a lap 3, needing a new
-//!       tree-splice primitive) refuses cleanly with UnimplementedOpcode
-//!       rather than silently misbehaving.
+//!   10. The honest boundary: opcode 12 (outside Nock's own numbered
+//!       0-11 core) refuses cleanly with UnimplementedOpcode rather than
+//!       silently misbehaving.
 //!   11. The depth bound is real: a formula nested past max_depth refuses
 //!       DepthExceeded rather than trusting the host stack.
 
@@ -142,16 +142,18 @@ fn run_selftest() !u8 {
     assert(try interp.eql(r_auto, c67, 0));
     print("nock: autocons -- [[1 6] [1 7]] distributes to [6 7] -- GREEN\n", .{});
 
-    // --- Claim 10: the honest boundary -- opcode 10 (edit) is a later lap ----
-    // Opcode 6 moved into lap 2 (nock_lap2_witness.rye); opcode 10 (edit)
-    // still needs a new tree-splice primitive this module has not built.
-    const f_unimpl = try interp.cons(nock.Noun.a(10), try interp.cons(identity_noun, identity_noun));
+    // --- Claim 10: the honest boundary -- opcode 12 is outside the spec's core
+    // Opcodes 6-11 all landed across lap 2 (nock_lap2_witness.rye) and lap 3
+    // (nock_lap3_witness.rye) -- 0 through 11 is the whole of Nock's own
+    // numbered core. Opcode 12 names nothing the spec defines, so it stays
+    // the honest boundary this witness checks.
+    const f_unimpl = try interp.cons(nock.Noun.a(12), try interp.cons(identity_noun, identity_noun));
     if (interp.run(nock.Noun.a(0), f_unimpl)) |_| {
         return error.UnimplementedOpcodeNotCaught;
     } else |err| {
         if (err != nock.NockError.UnimplementedOpcode) return err;
     }
-    print("nock: opcode 10 refused UnimplementedOpcode -- GREEN unwelcome path, honest about lap 1's scope\n", .{});
+    print("nock: opcode 12 (outside Nock's own numbered core) refused UnimplementedOpcode -- GREEN unwelcome path\n", .{});
 
     // --- Claim 11: the depth bound is real ------------------------------------
     // A formula whose own evaluation recurses past max_depth must refuse
