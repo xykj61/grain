@@ -38,7 +38,8 @@ say "hawm1: emulator attached"
 
 say "hawm1: cross-building the Sala B0 witness natively (this host's own architecture) as the reference…"
 let build_native = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/sala_session_core_witness.rye -femit-bin=linengrow/bin/sala_session_core_witness_native"]
-assert build_native.ok else "native Sala B0 build failed"
+if (build_native.ok == false) then say "hawm1: native build stderr — ${build_native.err}"
+assert build_native.ok else "native Sala B0 build failed — real reason printed just above"
 let run_native = run ["sh" "-c" "linengrow/bin/sala_session_core_witness_native 2>&1"]
 assert run_native.ok else "native Sala B0 run failed"
 assert run_native.out contains "GREEN" else "native Sala B0 run not GREEN"
@@ -48,7 +49,8 @@ say "hawm1: native reference — ${native_root_line.out}"
 
 say "hawm1: cross-building the same witness for x86_64-linux-android (bionic libc)…"
 let build_android = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build linengrow/sala_session_core_witness.rye -target x86_64-linux-android -femit-bin=linengrow/bin/sala_session_core_witness_android_x86_64"]
-assert build_android.ok else "android-target Sala B0 build failed"
+if (build_android.ok == false) then say "hawm1: android-target build stderr — ${build_android.err}"
+assert build_android.ok else "android-target Sala B0 build failed — real reason printed just above"
 let shape = run ["sh" "-c" "file linengrow/bin/sala_session_core_witness_android_x86_64"]
 assert shape.out contains "x86-64" else "cross-built binary is not x86-64"
 say "hawm1: android-target binary built and shaped correctly"

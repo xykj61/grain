@@ -40,7 +40,8 @@ say "  tail -f tools/.cache/hawm0/hawm0-boot-meta.txt"
 let boot = run ["bash" "-c" "./tools/hawm0_boot_worker.sh"]
 say "hawm0 on-path host: boot finished — ok=${boot.ok}"
 say "${boot.out}"
-assert boot.ok else "HAWM0 boot failed — see tools/.cache/hawm0/hawm0-boot-meta.txt and hawm0-emulator.log"
+if (boot.ok == false) then say "hawm0 on-path host: worker stderr — ${boot.err}"
+assert boot.ok else "HAWM0 boot failed — real reason printed just above (worker stderr); full detail also in tools/.cache/hawm0/hawm0-boot-meta.txt and hawm0-emulator.log"
 assert boot.out contains "GREEN" else "HAWM0 boot missing GREEN"
 
 say "GREEN: hawm0 on-path host — stock AOSP/Android emulator booted, KVM-accelerated."
