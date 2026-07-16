@@ -1,0 +1,123 @@
+//! glow/rune_bounded_trap_witness.rye — proves the bounded `|-` rune's front half.
+//!
+//!   rye build glow/rune_bounded_trap_witness.rye -femit-bin=glow/bin/rune_bounded_trap_witness
+//!   glow/bin/rune_bounded_trap_witness
+//!
+//! Per active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md,
+//! the RISC-V section already proved the back half real (disassembled,
+//! not guessed). This proves the front half connects to it. Nine claims:
+//!   1. A literal bound ("|-  32") parses to BoundSpec.literal 32.
+//!   2. A (lent x) bound ("|-  (lent records)") parses to BoundSpec.lent_of
+//!      naming "records" -- read back exactly by lent_of_slice.
+//!   3. A trailing trap body ("|-  (lent records) { ... }") does not
+//!      confuse the tokenizer -- the bound still reads back exactly.
+//!   4. A line not starting with the rune refuses NotATrap.
+//!   5. A trap with no stated bound refuses MissingBound.
+//!   6. A malformed bound expression refuses MalformedBoundExpr.
+//!   7. Feeding a parsed literal bound into the checked mechanism succeeds
+//!      when the real step count stays within it.
+//!   8. The same mechanism refuses BoundExceeded, cleanly, the moment the
+//!      real step count would exceed the bound -- tripping at exactly
+//!      bound+1, never later.
+//!   9. End to end: parse "|-  10", extract its literal bound, and prove
+//!      both the welcome and unwelcome paths through the one pipeline --
+//!      text, parsed, to the exact mechanism the RISC-V section quoted.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const rbt = @import("rune_bounded_trap.rye");
+
+const witness_version = "20260716.050000";
+
+fn run_selftest() !u8 {
+    // --- Claim 1: literal bound ------------------------------------------------
+    const spec1 = try rbt.parse("|-  32");
+    switch (spec1) {
+        .literal => |v| assert(v == 32),
+        .lent_of => return error.WrongBoundKind,
+    }
+    print("rune: \"|-  32\" parses to a literal bound of 32 -- GREEN\n", .{});
+
+    // --- Claim 2: (lent x) bound ------------------------------------------------
+    const spec2 = try rbt.parse("|-  (lent records)");
+    switch (spec2) {
+        .literal => return error.WrongBoundKind,
+        .lent_of => |buf| {
+            const name = rbt.lent_of_slice(&buf);
+            assert(std.mem.eql(u8, name, "records"));
+        },
+    }
+    print("rune: \"|-  (lent records)\" parses to a lent-of bound naming \"records\" -- GREEN\n", .{});
+
+    // --- Claim 3: a trailing body does not confuse the tokenizer ---------------
+    const spec3 = try rbt.parse("|-  (lent ship-list) { ?~  ship-list  ~ }");
+    switch (spec3) {
+        .literal => return error.WrongBoundKind,
+        .lent_of => |buf| {
+            const name = rbt.lent_of_slice(&buf);
+            assert(std.mem.eql(u8, name, "ship-list"));
+        },
+    }
+    print("rune: a trailing trap body does not confuse the bound scan -- GREEN\n", .{});
+
+    // --- Claim 4: not a trap at all ----------------------------------------------
+    if (rbt.parse("?:  yes  no")) |_| {
+        return error.NotATrapNotCaught;
+    } else |err| {
+        if (err != rbt.ParseError.NotATrap) return err;
+    }
+    print("rune: a non-trap line refused NotATrap -- GREEN unwelcome path\n", .{});
+
+    // --- Claim 5: no stated bound --------------------------------------------------
+    if (rbt.parse("|-")) |_| {
+        return error.MissingBoundNotCaught;
+    } else |err| {
+        if (err != rbt.ParseError.MissingBound) return err;
+    }
+    print("rune: a bare \"|-\" with no bound refused MissingBound -- GREEN unwelcome path\n", .{});
+
+    // --- Claim 6: malformed bound expression --------------------------------------
+    if (rbt.parse("|-  banana")) |_| {
+        return error.MalformedNotCaught;
+    } else |err| {
+        if (err != rbt.ParseError.MalformedBoundExpr) return err;
+    }
+    print("rune: \"|-  banana\" -- neither a literal nor a (lent x) call -- refused MalformedBoundExpr -- GREEN unwelcome path\n", .{});
+
+    // --- Claim 7: the checked mechanism, welcome path -----------------------------
+    const tick_ok = try rbt.run_bounded(32, 20);
+    assert(tick_ok == 20);
+    print("rune: 20 real steps against a bound of 32 -- completes cleanly, tick 20 -- GREEN\n", .{});
+
+    // --- Claim 8: the checked mechanism, unwelcome path, trips exactly at bound+1 --
+    if (rbt.run_bounded(32, 40)) |_| {
+        return error.BoundNotCaught;
+    } else |err| {
+        if (err != rbt.TrapError.BoundExceeded) return err;
+    }
+    print("rune: 40 real steps against a bound of 32 -- refused BoundExceeded, never loops -- GREEN unwelcome path\n", .{});
+
+    // --- Claim 9: end to end, one pipeline, both paths ------------------------------
+    const spec9 = try rbt.parse("|-  10");
+    const bound9: u32 = switch (spec9) {
+        .literal => |v| v,
+        .lent_of => return error.WrongBoundKind,
+    };
+    const within = try rbt.run_bounded(bound9, 10); // exactly at the bound -- still welcome
+    assert(within == 10);
+    if (rbt.run_bounded(bound9, 11)) |_| {
+        return error.EndToEndBoundNotCaught;
+    } else |err| {
+        if (err != rbt.TrapError.BoundExceeded) return err;
+    }
+    print("rune: end to end -- \"|-  10\" parsed, its bound run at exactly 10 (welcome) and 11 (refused) -- GREEN\n", .{});
+
+    print("rune: version {s}\n", .{witness_version});
+    print("GREEN: the bounded |- rune's front half -- real text, parsed, feeds the RISC-V-quoted checked mechanism exactly.\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}
