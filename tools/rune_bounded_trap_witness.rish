@@ -1,0 +1,24 @@
+# rune_bounded_trap_witness.rish — the bounded |- rune's front half, proves out.
+#
+# Per active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md:
+# that brief proved the back half real (RISC-V disassembly, not guesswork).
+# This proves the front half connects to it -- real rune-shaped text, parsed,
+# feeding the exact checked mechanism the RISC-V section quoted.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/rune_bounded_trap_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "glow/bin/rune_bounded_trap_witness"
+
+let build = run ["sh" "-c" "mkdir -p glow/bin && env RYE_ZIG=${zig} rye/bin/rye build glow/rune_bounded_trap_witness.rye -femit-bin=${bin}"]
+assert build.ok else "Rune bounded-trap witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "Rune bounded-trap witness exited non-zero"
+assert selftest.out contains "GREEN" else "Rune bounded-trap witness not GREEN"
+assert selftest.out contains "lent-of bound" else "Rune bounded-trap witness missing the (lent x) claim"
+assert selftest.out contains "BoundExceeded" else "Rune bounded-trap witness missing the unwelcome path"
+assert selftest.out contains "end to end" else "Rune bounded-trap witness missing the end-to-end claim"
+
+say "GREEN: rune bounded-trap witness passed -- the front half parses; the back half was already proven on RISC-V."
