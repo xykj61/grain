@@ -3,7 +3,7 @@
 **Language:** EN
 **Version:** `20260715.163900` (Pacific)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Status:** Runnable plan — the Linux jail-local key generator is scoped and half-drafted, not yet landed. Register: mixed — the read-side isolation this depends on (`ai-jail --private-home`) is already real and default; the write-side (dedicated signing keys) is the open work this prompt hands forward.
+**Status:** **Landed and run** `20260716.115927` — `tools/generate_jail_local_keys_linux.rish` was written `20260716.110152`, then run by Keaton's own hands at a plain host terminal outside the jail, exactly as this prompt specified. The read-side isolation this depends on (`ai-jail --private-home`) was already real and default; the write-side (dedicated signing keys) is now real too — `.ssh/id_ed25519_jail_github`, `.ssh/id_ed25519_jail_codeberg`, and a `.gnupg-rye/` signing key all live and git-wired, public halves recorded in `../PUBKEYS.md` and `../keys/jail_signing_linux_CC8BA6.pub.asc`. Register: checkable in full. Still open: pasting the two SSH keys and the GPG key into GitHub's and Codeberg's own key-management pages, if not already done by Keaton's hand — this pass recorded the keys, it did not confirm forge-side registration.
 
 ---
 
