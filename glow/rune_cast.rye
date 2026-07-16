@@ -1,0 +1,76 @@
+//! glow/rune_cast.rye — parses Glow's `^-` cast rune, for real.
+//!
+//! Per active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md's
+//! reading-runes section: `^-  <mold>` casts the following expression's
+//! result to the stated mold, catching a type mismatch at the boundary
+//! rather than three calls downstream. glow/rune_bounded_trap.rye already
+//! proved one rune's front half connects to a real checked back half; this
+//! is the second, proving the front-end shape generalizes past that one
+//! rune rather than being a one-off special case for `|-` alone.
+//!
+//! One shape recognized, matching the brief's own worked example:
+//!   ^-  @u32
+//!
+//! No general expression parser exists here, and none is claimed — this
+//! extracts the mold name only. The expression the cast applies to (the
+//! brief's own next line, "(add issuer-balance holder-balance)") is not
+//! this parser's job, the same "not a step toward a general grammar"
+//! discipline glow/rune_bounded_trap.rye already names for itself.
+
+const std = @import("std");
+const assert = std.debug.assert;
+
+pub const max_mold_len: u32 = 64;
+
+pub const ParseError = error{
+    NotACast,
+    MissingMold,
+    MoldTooLong,
+    MoldNotAnAura,
+};
+
+/// A parsed cast's own mold name, NUL-padded; use mold_slice() to read it
+/// back trimmed.
+pub const CastSpec = struct {
+    mold: [max_mold_len]u8 = [_]u8{0} ** max_mold_len,
+};
+
+pub fn mold_slice(spec: *const CastSpec) []const u8 {
+    var len: u32 = 0;
+    while (len < max_mold_len and spec.mold[len] != 0) len += 1;
+    return spec.mold[0..len];
+}
+
+/// Parses one line of Glow's own `^-` cast rune. `line` is trimmed of
+/// leading/trailing whitespace by the caller's own convention, mirroring
+/// glow/rune_bounded_trap.rye's parse() -- this recognizes the rune head
+/// and its mold only, never a whole cast expression.
+pub fn parse(line: []const u8) ParseError!CastSpec {
+    if (line.len < 2 or !std.mem.eql(u8, line[0..2], "^-")) return error.NotACast;
+
+    var rest = line[2..];
+    rest = std.mem.trimStart(u8, rest, " \t");
+    if (rest.len == 0) return error.MissingMold;
+
+    // The mold name ends at the first whitespace outside the rune head --
+    // a cast's own expression, if it follows on the same line, is not this
+    // parser's job to read.
+    var end: u32 = 0;
+    while (end < rest.len and rest[end] != ' ' and rest[end] != '\t') end += 1;
+    const mold_text = rest[0..end];
+
+    if (mold_text.len == 0) return error.MissingMold;
+    if (mold_text.len > max_mold_len) return error.MoldTooLong;
+
+    // A cast's own mold is either an aura (leads with '@', per the brief's
+    // own worked example "@u32") or a named mold defined elsewhere in the
+    // tree (a bare identifier, e.g. "record" from the brief's +$ example).
+    // Refusing a mold name that could never legitimately name either shape
+    // -- one starting with a digit, say -- catches an authoring mistake at
+    // the cast's own boundary rather than a confusing failure downstream.
+    if (mold_text[0] >= '0' and mold_text[0] <= '9') return error.MoldNotAnAura;
+
+    var spec: CastSpec = .{};
+    @memcpy(spec.mold[0..mold_text.len], mold_text);
+    return spec;
+}

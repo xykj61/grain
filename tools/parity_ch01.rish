@@ -1107,6 +1107,11 @@ let rune_trap = run ["rishi/bin/rishi" "run" "tools/rune_bounded_trap_witness.ri
 assert rune_trap.ok else "Rune bounded-trap witness failed"
 say "GREEN: rune bounded-trap witness passed."
 
+say "witness suite: the ^- cast rune's front half, a second rune category…"
+let rune_cast = run ["rishi/bin/rishi" "run" "tools/rune_cast_witness.rish"]
+assert rune_cast.ok else "Rune cast witness failed"
+say "GREEN: rune cast witness passed."
+
 say "witness suite: TUBE0 — the Glow app-manifest mold…"
 let tube0 = run ["rishi/bin/rishi" "run" "tools/tube0_manifest_witness.rish"]
 assert tube0.ok else "TUBE0 manifest witness failed"
