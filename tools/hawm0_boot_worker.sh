@@ -90,11 +90,35 @@ progress "emulator + AVD present"
 
 ADB="$ANDROID_SDK_ROOT/platform-tools/adb"
 
-progress "checking for a stray emulator already running on this AVD…"
-"$ADB" devices | grep -q "emulator-" && {
-  echo "RED: an emulator is already attached — close it first (adb devices to see which)" | tee -a "$META" >&2
+report_identity_and_green() {
+  progress "reading device identity as final proof of a real, booted userland…"
+  model="$("$ADB" shell getprop ro.product.model 2>/dev/null | tr -d '\r\n')"
+  release="$("$ADB" shell getprop ro.build.version.release 2>/dev/null | tr -d '\r\n')"
+  abi="$("$ADB" shell getprop ro.product.cpu.abi 2>/dev/null | tr -d '\r\n')"
+  kvm_check="$("$ADB" shell getprop ro.kernel.qemu 2>/dev/null | tr -d '\r\n')"
+  echo "device: model=$model android=$release abi=$abi qemu=$kvm_check" | tee -a "$META"
+  echo "GREEN: HAWM0 — stock AOSP/Android emulator booted, KVM-accelerated (model=$model android=$release abi=$abi)"
+}
+
+# An already-running, already-booted hawm0 is exactly the intended end state
+# after the exit-trap fix above (a successful boot deliberately stays up for
+# a caller like tools/hawm1_sala_witness.rish) -- treating it as a failure
+# here would make a second, ordinary call into this same script red for no
+# real reason. Idempotent success: verify the existing device is genuinely
+# booted (not merely attached-but-stuck) before declaring GREEN and exiting
+# early, never launching a second competing emulator process.
+progress "checking for an emulator already running on this AVD…"
+if "$ADB" devices 2>/dev/null | grep -q "emulator-"; then
+  progress "an emulator is already attached — checking whether it is actually booted…"
+  existing_boot="$("$ADB" shell getprop sys.boot_completed 2>/dev/null | tr -d '\r\n')"
+  if [ "$existing_boot" = "1" ]; then
+    progress "already booted — treating as idempotent success, not launching a second emulator"
+    report_identity_and_green
+    exit 0
+  fi
+  echo "RED: an emulator is attached but not fully booted (sys.boot_completed='$existing_boot') — close it first (tools/hawm0_stop.sh), then retry" | tee -a "$META" >&2
   exit 1
-} || true
+fi
 
 progress "launching hawm0 (-accel kvm, headless, no audio; up to 180s to boot)…"
 rm -f "$LOG"
@@ -147,13 +171,6 @@ if [ "$booted" -ne 1 ]; then
   exit 1
 fi
 
-progress "reading device identity as final proof of a real, booted userland…"
-model="$("$ADB" shell getprop ro.product.model 2>/dev/null | tr -d '\r\n')"
-release="$("$ADB" shell getprop ro.build.version.release 2>/dev/null | tr -d '\r\n')"
-abi="$("$ADB" shell getprop ro.product.cpu.abi 2>/dev/null | tr -d '\r\n')"
-kvm_check="$("$ADB" shell getprop ro.kernel.qemu 2>/dev/null | tr -d '\r\n')"
-echo "device: model=$model android=$release abi=$abi qemu=$kvm_check" | tee -a "$META"
-
 # Disarm the cleanup trap before declaring success — a booted emulator this
 # script just proved GREEN is exactly what a caller (HAWM1's own adb push,
 # or an interactive session) needs to still be running a moment later. The
@@ -163,4 +180,4 @@ echo "device: model=$model android=$release abi=$abi qemu=$kvm_check" | tee -a "
 trap - EXIT
 progress "emulator left running (pid=$EPID) — stop later with tools/hawm0_stop.sh"
 
-echo "GREEN: HAWM0 — stock AOSP/Android emulator booted, KVM-accelerated (model=$model android=$release abi=$abi)"
+report_identity_and_green
