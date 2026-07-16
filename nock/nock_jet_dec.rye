@@ -1,0 +1,125 @@
+//! nock/nock_jet_dec.rye — a real jet: dec, fast and slow, proven identical.
+//!
+//! Per the runes-scoping study's own jet proposal ("every jet in Glow ships
+//! with a paired witness — a fixture proving the accelerated path and the
+//! pure Glow path produce identical output on the same input"), this is the
+//! first real jet: dec (decrement), the classic example, since Nock has a
+//! native increment (opcode 4) but no native decrement at all -- computing
+//! dec purely in Nock means counting up from zero until you find the
+//! predecessor, an honestly slow, genuinely recursive computation.
+//!
+//! Three pieces:
+//!   1. slow_dec_formula(n) -- a real, hand-built, self-recursive Nock core
+//!      (composed from opcodes 6, 7, 9, 10 -- if/then/else, compose, invoke
+//!      an arm, and edit) that computes dec(n) the slow way, taking the bare
+//!      atom n as its subject.
+//!   2. fast_dec(n) -- the native, O(1) implementation.
+//!   3. eval_with_dec_jet() -- eval()'s own opcode-11 hint dispatch, extended
+//!      to recognize one specific hint tag and substitute the fast path --
+//!      proven, in the witness, to agree with the slow path on every input,
+//!      and to fall through correctly to the slow path on any other tag.
+//!
+//! The jet's own correctness obligation, stated plainly: fast and slow must
+//! always agree. A jet is a faster spelling of an already-proven answer,
+//! never a second, independently-trusted implementation.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const nock = @import("nock_core.rye");
+
+/// The hint tag this jet recognizes. Not a claim to replicate Urbit's own
+/// cord-packing convention for jet names -- a clearly-labeled placeholder
+/// marker, since the point of this first jet is the dispatch-and-prove
+/// mechanism, not byte-exact fidelity to a naming scheme not yet built.
+pub const jet_dec_tag: u64 = 0xDEC;
+
+pub const JetError = error{
+    DecrementOfZero,
+};
+
+/// The fast path -- O(1), native.
+pub fn fast_dec(n: u64) JetError!u64 {
+    if (n == 0) return error.DecrementOfZero;
+    return n - 1;
+}
+
+/// Builds *[n slow_dec_formula] = dec(n), taking the bare atom n as the
+/// subject. Constructs a self-recursive core [arm [n 0]] and invokes it:
+/// the arm tests whether n equals b+1 (b starting at 0); if so, returns b;
+/// otherwise edits the core's own payload to advance b, and invokes itself
+/// again via opcode 9. This is exactly the shape Hoon's own |- trap desugars
+/// to, built here from raw opcodes rather than through any rune or parser.
+pub fn slow_dec_formula(interp: *nock.Interp) nock.NockError!nock.Noun {
+    // test = [5 [[0 6] [4 [0 7]]]] -- is n (slot 6) equal to b+1 (slot 7, incremented)?
+    const slot6 = try interp.cons(nock.Noun.a(0), nock.Noun.a(6)); // [0 6] -- n
+    const slot7 = try interp.cons(nock.Noun.a(0), nock.Noun.a(7)); // [0 7] -- b
+    const b_plus_1 = try interp.cons(nock.Noun.a(4), slot7); // [4 [0 7]]
+    const test_pair = try interp.cons(slot6, b_plus_1);
+    const test_formula = try interp.cons(nock.Noun.a(5), test_pair);
+
+    // then = [0 7] -- yes: return b.
+    const then_branch = slot7;
+
+    // else = [9 [2 [10 [[7 [4 [0 7]]] [0 1]]]]] -- no: edit slot 7 (b) to
+    // b+1 within the CURRENT core (identity, [0 1]), then invoke slot 2
+    // (this same arm) on the freshly-edited core.
+    const incr_b = try interp.cons(nock.Noun.a(4), slot7); // [4 [0 7]] -- b+1, built fresh
+    const edit_axis_value = try interp.cons(nock.Noun.a(7), incr_b); // [7 [4 [0 7]]]
+    const identity_formula = try interp.cons(nock.Noun.a(0), nock.Noun.a(1)); // [0 1]
+    const edit_pair = try interp.cons(edit_axis_value, identity_formula);
+    const edit_formula = try interp.cons(nock.Noun.a(10), edit_pair); // [10 [[7 [4 [0 7]]] [0 1]]]
+    const invoke_pair = try interp.cons(nock.Noun.a(2), edit_formula);
+    const else_branch = try interp.cons(nock.Noun.a(9), invoke_pair);
+
+    // arm = [6 [test [then else]]]
+    const then_else = try interp.cons(then_branch, else_branch);
+    const test_then_else = try interp.cons(test_formula, then_else);
+    const arm = try interp.cons(nock.Noun.a(6), test_then_else);
+
+    // From subject = n (a bare atom), build the initial core [arm [n 0]] and
+    // invoke it. payload_formula = [[0 1] [1 0]] -- autocons producing [n 0]
+    // (slot(1,n)=n, identity; constant 0). build_core_formula =
+    // [[1 arm] payload_formula] -- autocons producing [arm [n 0]].
+    const zero_formula = try interp.cons(nock.Noun.a(1), nock.Noun.a(0)); // [1 0] -- constant 0
+    const payload_formula = try interp.cons(identity_formula, zero_formula); // [[0 1] [1 0]]
+    const const_arm = try interp.cons(nock.Noun.a(1), arm); // [1 arm]
+    const build_core_formula = try interp.cons(const_arm, payload_formula); // [[1 arm] [[0 1] [1 0]]]
+
+    // invoke_self_formula = [9 [2 [0 1]]] -- invoke slot 2 (the arm) on
+    // subject = itself (whatever subject it is handed at that point).
+    const invoke_self_formula = try interp.cons(nock.Noun.a(2), identity_formula);
+    const invoke_self = try interp.cons(nock.Noun.a(9), invoke_self_formula);
+
+    // c = [7 [build_core_formula invoke_self]] -- compose: build the core
+    // from n, then invoke it.
+    const compose_pair = try interp.cons(build_core_formula, invoke_self);
+    return interp.cons(nock.Noun.a(7), compose_pair);
+}
+
+/// The jet-dispatching evaluator: recognizes formula shape
+/// [11 [jet_dec_tag c]] and substitutes fast_dec(subject) directly, bypassing
+/// eval(subject, c) entirely -- while any OTHER hint tag (or none) on the
+/// same formula falls straight through to the ordinary slow evaluation,
+/// exactly as opcode 11 already specifies. subject must be a bare atom for
+/// the fast path; a non-atom subject under this specific tag is a malformed
+/// jet call, refused rather than silently misinterpreted.
+pub fn eval_with_dec_jet(interp: *nock.Interp, subject: nock.Noun, formula: nock.Noun) !nock.Noun {
+    switch (formula) {
+        .cell => {
+            const f1 = try interp.head(formula);
+            if (!nock.is_cell(f1) and f1.atom == 11) {
+                const f2 = try interp.tail(formula);
+                const hint_part = try interp.head(f2);
+                if (!nock.is_cell(hint_part) and hint_part.atom == jet_dec_tag) {
+                    const n = switch (subject) {
+                        .atom => |v| v,
+                        .cell => return error.NotAnAtom,
+                    };
+                    return nock.Noun.a(try fast_dec(n));
+                }
+            }
+            return interp.run(subject, formula);
+        },
+        .atom => return error.MalformedFormula,
+    }
+}

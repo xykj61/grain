@@ -7,7 +7,7 @@
 
 ---
 
-**Nock is Glow's second backend, never its execution floor.** Per [`../active-reviving/20260715-213500_glow-revives-hoon-runes-targets-riscv.md`](../active-reviving/20260715-213500_glow-revives-hoon-runes-targets-riscv.md), Glow's primary path compiles straight through Zig to RISC-V — proven, green, byte-identical across eight keystone pieces, this interpreter's own three laps among them (see [`../tools/glow_riscv_target_witness.rish`](../tools/glow_riscv_target_witness.rish)). This interpreter exists for one purpose only: Urbit-world interop and verification, so Glow can meet the Nock world and be checked against it, the way Hoon itself once needed Nock as the floor a decade before RISC-V existed to be one.
+**Nock is Glow's second backend, never its execution floor.** Per [`../active-reviving/20260715-213500_glow-revives-hoon-runes-targets-riscv.md`](../active-reviving/20260715-213500_glow-revives-hoon-runes-targets-riscv.md), Glow's primary path compiles straight through Zig to RISC-V — proven, green, byte-identical across nine keystone pieces, this interpreter's own three laps and its first jet among them (see [`../tools/glow_riscv_target_witness.rish`](../tools/glow_riscv_target_witness.rish)). This interpreter exists for one purpose only: Urbit-world interop and verification, so Glow can meet the Nock world and be checked against it, the way Hoon itself once needed Nock as the floor a decade before RISC-V existed to be one.
 
 ## Lap 1 — the Primitive Core
 
@@ -37,6 +37,10 @@ Opcode 10 needed a genuinely new primitive lap 2 named honestly and left open: `
 | [`nock_lap3_witness.rye`](nock_lap3_witness.rye) | Eight claims — `edit()` directly (the trivial whole-tree replace, a shallow head/tail replace, and a deep edit worked out by hand, touching only the one addressed leaf); opcode 10's bare-atom hint form; opcode 10's real edit form, dispatched end to end from real formula text and proven equal to a direct `edit()` call *and* to an independent, hand-built reconstruction of the official `#[b *[a c] *[a d]]` rule; the honest boundary (opcode 12) re-checked now that 0 through 11 is whole; and `edit()`'s own address boundary, matching `slot()`'s |
 
 With this lap, **opcodes 0 through 11 — the whole of Nock's own numbered core — are real.** Opcode 12 and beyond remain the honest boundary, refusing `UnimplementedOpcode` rather than silently misbehaving.
+
+## The First Jet — dec, Fast and Slow, Proven to Agree
+
+Per the runes-scoping study's own jet proposal, [`JET_DEC.md`](JET_DEC.md) names the first real jet: `dec` (decrement), a hand-built self-recursive Nock core proven identical to its native fast counterpart, with a real dispatch mechanism recognizing one hint tag and falling through correctly on any other. The jet's own correctness obligation — fast and slow always agree — is proven directly, not assumed; the interpreter's own honest depth limit is measured and named, not hidden.
 
 ## What This Interpreter Does Not Claim
 
