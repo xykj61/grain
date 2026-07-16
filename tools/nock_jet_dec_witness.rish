@@ -1,0 +1,25 @@
+# nock_jet_dec_witness.rish — the dec jet: fast, slow, and dispatched, proven.
+#
+# Per external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md's
+# own jet proposal: "every jet in Glow ships with a paired witness -- a
+# fixture proving the accelerated path and the pure Glow path produce
+# identical output on the same input." dec is the classic first jet, since
+# Nock has native increment (opcode 4) but no native decrement at all.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/nock_jet_dec_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "nock/bin/nock_jet_dec_witness"
+
+let build = run ["sh" "-c" "mkdir -p nock/bin && env RYE_ZIG=${zig} rye/bin/rye build nock/nock_jet_dec_witness.rye -femit-bin=${bin}"]
+assert build.ok else "Nock dec jet witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "Nock dec jet witness exited non-zero"
+assert selftest.out contains "GREEN" else "Nock dec jet witness not GREEN"
+assert selftest.out contains "dispatches to fast_dec" else "Nock dec jet witness missing the dispatch claim"
+assert selftest.out contains "falls through to the slow path" else "Nock dec jet witness missing the fallthrough claim"
+assert selftest.out contains "named honestly, not hidden" else "Nock dec jet witness missing the honest depth-limit claim"
+
+say "GREEN: Nock dec jet witness passed -- fast, slow, and dispatched, all proven to agree."

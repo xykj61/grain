@@ -12,15 +12,16 @@
 # (M0, glow_mobile_target_witness.rish) also runs on RISC-V, unchanged. Nock is
 # reserved as a second backend for Urbit interop; RISC-V is the execution floor.
 #
-# Eight foundational folds prove the claim, one from each keystone vane
+# Nine foundational folds prove the claim, one from each keystone vane
 # family rather than Sala alone: Sala B0 (the session-broadcast root), Neth's
 # minimal witness (the settlement state-root), Pool P0 (the capability-hosted
 # fold), Rhyz/Kumara (the Ed25519 identity seam), the Nock core lap 1
 # (Glow's second backend, opcodes 0-5), Nock lap 2 (the macro layer, opcodes
 # 6-9 and 11), Nock lap 3 (the edit primitive and opcode 10 -- the whole
-# numbered core, real), and the bounded |- rune's front half (the design
-# brief's own proposed parser). Each comparison is the strongest and most
-# general form of the claim:
+# numbered core, real), the dec jet (fast, slow, and dispatched, proven to
+# agree), and the bounded |- rune's front half (the design brief's own
+# proposed parser). Each comparison is the strongest and most general form
+# of the claim:
 # not a hand-picked hash line, but the ENTIRE stdout compared byte-for-byte
 # between a native x86_64 run and the emulated riscv64 run of the identical
 # source -- self-verifying against source drift, no literal to fall stale.
@@ -183,6 +184,26 @@ assert emu_nock3.ok else "Nock lap 3 riscv64 witness failed under QEMU"
 assert emu_nock3.out == native_nock3.out else "Nock lap 3 riscv64 output diverges from native -- not byte-identical"
 say "GREEN: Nock's edit primitive and opcode 10 (lap 3) run on emulated RISC-V, byte-for-byte identical to native."
 
+let src_jet = "nock/nock_jet_dec_witness.rye"
+let bin_jet_native = "nock/bin/nock_jet_dec_witness_native"
+let bin_jet_riscv = "nock/bin/nock_jet_dec_witness_riscv64"
+
+let build_jet_native = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${src_jet} -femit-bin=${bin_jet_native}"]
+assert build_jet_native.ok else "Nock dec jet native build failed"
+let native_jet = run ["sh" "-c" "${bin_jet_native} 2>&1"]
+assert native_jet.ok else "Nock dec jet native run failed"
+assert native_jet.out contains "GREEN" else "Nock dec jet native run not GREEN"
+
+let build_jet_riscv = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${src_jet} -target riscv64-linux-musl -femit-bin=${bin_jet_riscv}"]
+assert build_jet_riscv.ok else "Nock dec jet RISC-V cross-build failed"
+let shape_jet = run ["sh" "-c" "file ${bin_jet_riscv}"]
+assert shape_jet.out contains "RISC-V" else "Nock dec jet cross-built binary is not RISC-V"
+
+let emu_jet = run ["sh" "-c" "qemu-riscv64-static ${bin_jet_riscv} 2>&1"]
+assert emu_jet.ok else "Nock dec jet riscv64 witness failed under QEMU"
+assert emu_jet.out == native_jet.out else "Nock dec jet riscv64 output diverges from native -- not byte-identical"
+say "GREEN: the dec jet (fast, slow, and dispatched) runs on emulated RISC-V, byte-for-byte identical to native."
+
 # --- The bounded |- rune's front half -----------------------------------------
 
 let src_rune = "glow/rune_bounded_trap_witness.rye"
@@ -205,4 +226,4 @@ assert emu_rune.ok else "Rune bounded-trap riscv64 witness failed under QEMU"
 assert emu_rune.out == native_rune.out else "Rune bounded-trap riscv64 output diverges from native -- not byte-identical"
 say "GREEN: the bounded |- rune's front half runs on emulated RISC-V, byte-for-byte identical to native."
 
-say "GREEN: Glow's primary backend (Glow -> Zig 0.16.0 -> RISC-V) proves out across eight keystone pieces -- Sala, Neth, Pool, Rhyz/Kumara, Nock lap 1, Nock lap 2, Nock lap 3, the bounded rune parser -- each byte-identical to its native run."
+say "GREEN: Glow's primary backend (Glow -> Zig 0.16.0 -> RISC-V) proves out across nine keystone pieces -- Sala, Neth, Pool, Rhyz/Kumara, Nock lap 1, Nock lap 2, Nock lap 3, the dec jet, the bounded rune parser -- each byte-identical to its native run."

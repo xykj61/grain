@@ -1097,6 +1097,11 @@ let nock_lap3 = run ["rishi/bin/rishi" "run" "tools/nock_lap3_witness.rish"]
 assert nock_lap3.ok else "Nock lap 3 witness failed"
 say "GREEN: Nock lap 3 witness passed."
 
+say "witness suite: Nock dec jet — fast, slow, and dispatched…"
+let nock_jet = run ["rishi/bin/rishi" "run" "tools/nock_jet_dec_witness.rish"]
+assert nock_jet.ok else "Nock dec jet witness failed"
+say "GREEN: Nock dec jet witness passed."
+
 say "witness suite: the bounded |- rune's front half, real text parsed…"
 let rune_trap = run ["rishi/bin/rishi" "run" "tools/rune_bounded_trap_witness.rish"]
 assert rune_trap.ok else "Rune bounded-trap witness failed"
