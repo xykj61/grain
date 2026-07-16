@@ -1,0 +1,80 @@
+# hawm1_sala_witness.rish — HAWM1: Glow's own verified code runs inside a
+# real, KVM-booted Android userland (context/specs/two-dev-environments-and-
+# mobile-emulation.md; waymark fix context/specs/20260716-115927_waymark-
+# ladder-naming-and-g0-collision-fix.md).
+#
+# HAWM0 proved the AVD itself boots real, GREEN 20260716.132659. HAWM1 asks
+# the next honest question: does Glow's own verified code run there too, and
+# does its fold still agree with the same code's own native run? This is the
+# M0 aarch64/qemu-user claim (tools/glow_mobile_target_witness.rish) carried
+# one step further -- not user-mode emulation of a Linux binary, but the real
+# Android device tree (adb push, adb shell exec) inside a real, booted OS.
+#
+# Run OUTSIDE ai-jail, from the same plain host terminal HAWM0 already used —
+# needs `adb` from tools/.cache/hawm0/android-sdk/platform-tools/ and a
+# currently-running hawm0 emulator (boot it first with
+# tools/hawm0_boot_onpath_host.rish if it is not already up).
+#
+#   rishi/bin/rishi run tools/hawm1_sala_witness.rish
+#
+# Cross-builds linengrow/sala_session_core_witness.rye (the same Sala B0
+# witness M0 already proved on aarch64/qemu-user) for x86_64-linux-android —
+# Zig's own bionic-libc target, confirmed real via `zig targets` and a
+# smoke-compile before this witness existed — pushes the binary to
+# /data/local/tmp on the device, executes it there via `adb shell`, and
+# asserts its own session-root claim matches the already-proven native run
+# bit for bit: Glow's fold behaves identically whether it runs on this host's
+# own glibc/musl or inside Android's real bionic userland, on real hardware
+# acceleration, not just user-mode QEMU.
+
+let android_sdk = "tools/.cache/hawm0/android-sdk"
+let adb = "${android_sdk}/platform-tools/adb"
+let zig = "vendor/zig-toolchain/zig"
+
+say "hawm1: confirming a hawm0 emulator is attached…"
+let devices = run ["sh" "-c" "${adb} devices | grep -c emulator-"]
+assert (trim devices.out != "0") else "no emulator attached — boot hawm0 first: rishi/bin/rishi run tools/hawm0_boot_onpath_host.rish"
+say "hawm1: emulator attached"
+
+say "hawm1: cross-building the Sala B0 witness natively (this host's own architecture) as the reference…"
+let build_native = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/sala_session_core_witness.rye -femit-bin=linengrow/bin/sala_session_core_witness_native"]
+assert build_native.ok else "native Sala B0 build failed"
+let run_native = run ["sh" "-c" "linengrow/bin/sala_session_core_witness_native 2>&1"]
+assert run_native.ok else "native Sala B0 run failed"
+assert run_native.out contains "GREEN" else "native Sala B0 run not GREEN"
+let native_root_line = run ["sh" "-c" "echo '${run_native.out}' | grep 'session root'"]
+assert native_root_line.ok else "could not read native session root from run output"
+say "hawm1: native reference — ${native_root_line.out}"
+
+say "hawm1: cross-building the same witness for x86_64-linux-android (bionic libc)…"
+let build_android = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build linengrow/sala_session_core_witness.rye -target x86_64-linux-android -femit-bin=linengrow/bin/sala_session_core_witness_android_x86_64"]
+assert build_android.ok else "android-target Sala B0 build failed"
+let shape = run ["sh" "-c" "file linengrow/bin/sala_session_core_witness_android_x86_64"]
+assert shape.out contains "x86-64" else "cross-built binary is not x86-64"
+say "hawm1: android-target binary built and shaped correctly"
+
+say "hawm1: pushing the binary onto the real, booted device (/data/local/tmp)…"
+let push = run ["sh" "-c" "${adb} push linengrow/bin/sala_session_core_witness_android_x86_64 /data/local/tmp/sala_b0_witness"]
+assert push.ok else "adb push failed"
+let chmod = run ["sh" "-c" "${adb} shell chmod 755 /data/local/tmp/sala_b0_witness"]
+assert chmod.ok else "adb shell chmod failed"
+say "hawm1: pushed and made executable on-device"
+
+say "hawm1: running Glow's own verified code inside the real Android userland…"
+let device_run = run ["sh" "-c" "${adb} shell /data/local/tmp/sala_b0_witness 2>&1"]
+assert device_run.ok else "on-device run failed — see ${device_run.err}"
+assert device_run.out contains "GREEN" else "on-device run not GREEN"
+say "${device_run.out}"
+
+let device_root_line = run ["sh" "-c" "echo '${device_run.out}' | grep 'session root'"]
+assert device_root_line.ok else "could not read on-device session root from run output"
+say "hawm1: on-device — ${device_root_line.out}"
+
+assert device_root_line.out == native_root_line.out else "RED: on-device session root diverges from the native reference — Glow's fold disagrees on Android"
+say "hawm1: session roots agree bit for bit — native and on-device (Android userland) are the same fold"
+
+say "hawm1: cleaning up the pushed binary…"
+let cleanup = run ["sh" "-c" "${adb} shell rm -f /data/local/tmp/sala_b0_witness"]
+assert cleanup.ok else "cleanup rm failed (non-fatal to the claim; named for hygiene)"
+
+say "GREEN: HAWM1 — Glow's own verified Sala B0 witness runs inside a real, KVM-booted Android userland, session root byte-identical to the native run."
