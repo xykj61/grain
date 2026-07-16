@@ -1081,3 +1081,13 @@ say "witness suite: Sala B2 — audience + back-channel (multi-signer chat)…"
 let sala_b2 = run ["rishi/bin/rishi" "run" "tools/sala_backchannel_witness.rish"]
 assert sala_b2.ok else "Sala B2 back-channel witness failed"
 say "GREEN: Sala B2 back-channel witness passed."
+
+say "witness suite: Nock core lap 1 — noun, slot addressing, opcodes 0-5, autocons…"
+let nock_lap1 = run ["rishi/bin/rishi" "run" "tools/nock_core_witness.rish"]
+assert nock_lap1.ok else "Nock core lap 1 witness failed"
+say "GREEN: Nock core lap 1 witness passed."
+
+say "witness suite: the bounded |- rune's front half, real text parsed…"
+let rune_trap = run ["rishi/bin/rishi" "run" "tools/rune_bounded_trap_witness.rish"]
+assert rune_trap.ok else "Rune bounded-trap witness failed"
+say "GREEN: rune bounded-trap witness passed."

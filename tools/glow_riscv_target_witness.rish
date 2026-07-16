@@ -12,10 +12,13 @@
 # (M0, glow_mobile_target_witness.rish) also runs on RISC-V, unchanged. Nock is
 # reserved as a second backend for Urbit interop; RISC-V is the execution floor.
 #
-# Three foundational folds prove the claim, one from each keystone vane family
+# Six foundational folds prove the claim, one from each keystone vane family
 # rather than Sala alone: Sala B0 (the session-broadcast root), Neth's minimal
-# witness (the settlement state-root), and Pool P0 (the capability-hosted
-# fold). Each comparison is the strongest and most general form of the claim:
+# witness (the settlement state-root), Pool P0 (the capability-hosted fold),
+# Rhyz/Kumara (the Ed25519 identity seam), the Nock core (Glow's second
+# backend, opcodes 0-5), and the bounded |- rune's front half (the design
+# brief's own proposed parser). Each comparison is the strongest and most
+# general form of the claim:
 # not a hand-picked hash line, but the ENTIRE stdout compared byte-for-byte
 # between a native x86_64 run and the emulated riscv64 run of the identical
 # source -- self-verifying against source drift, no literal to fall stale.
@@ -94,4 +97,70 @@ assert emu_pool.ok else "Pool riscv64 witness failed under QEMU"
 assert emu_pool.out == native_pool.out else "Pool riscv64 output diverges from native -- not byte-identical"
 say "GREEN: Pool P0's capability-hosted fold runs on emulated RISC-V, byte-for-byte identical to native."
 
-say "GREEN: Glow's primary backend (Glow -> Zig 0.16.0 -> RISC-V) proves out across three keystone vanes -- Sala, Neth, Pool -- each byte-identical to its native run."
+# --- Rhyz/Kumara: the Ed25519 identity seam ----------------------------------
+
+let src_kumara = "tally/kumara.rye"
+let bin_kumara_native = "tally/bin/kumara_native"
+let bin_kumara_riscv = "tally/bin/kumara_riscv64"
+
+let build_kumara_native = run ["sh" "-c" "mkdir -p tally/bin && env RYE_ZIG=${zig} rye/bin/rye build ${src_kumara} -femit-bin=${bin_kumara_native}"]
+assert build_kumara_native.ok else "Kumara native build failed"
+let native_kumara = run ["sh" "-c" "${bin_kumara_native} selftest 2>&1"]
+assert native_kumara.ok else "Kumara native run failed"
+assert native_kumara.out contains "GREEN" else "Kumara native run not GREEN"
+
+let build_kumara_riscv = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${src_kumara} -target riscv64-linux-musl -femit-bin=${bin_kumara_riscv}"]
+assert build_kumara_riscv.ok else "Kumara RISC-V cross-build failed"
+let shape_kumara = run ["sh" "-c" "file ${bin_kumara_riscv}"]
+assert shape_kumara.out contains "RISC-V" else "Kumara cross-built binary is not RISC-V"
+
+let emu_kumara = run ["sh" "-c" "qemu-riscv64-static ${bin_kumara_riscv} selftest 2>&1"]
+assert emu_kumara.ok else "Kumara riscv64 witness failed under QEMU"
+assert emu_kumara.out == native_kumara.out else "Kumara riscv64 output diverges from native -- not byte-identical"
+say "GREEN: Rhyz/Kumara's Ed25519 identity seam runs on emulated RISC-V, byte-for-byte identical to native."
+
+# --- Nock core: Glow's second backend, opcodes 0-5 ---------------------------
+
+let src_nock = "nock/nock_core_witness.rye"
+let bin_nock_native = "nock/bin/nock_core_witness_native"
+let bin_nock_riscv = "nock/bin/nock_core_witness_riscv64"
+
+let build_nock_native = run ["sh" "-c" "mkdir -p nock/bin && env RYE_ZIG=${zig} rye/bin/rye build ${src_nock} -femit-bin=${bin_nock_native}"]
+assert build_nock_native.ok else "Nock core native build failed"
+let native_nock = run ["sh" "-c" "${bin_nock_native} 2>&1"]
+assert native_nock.ok else "Nock core native run failed"
+assert native_nock.out contains "GREEN" else "Nock core native run not GREEN"
+
+let build_nock_riscv = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${src_nock} -target riscv64-linux-musl -femit-bin=${bin_nock_riscv}"]
+assert build_nock_riscv.ok else "Nock core RISC-V cross-build failed"
+let shape_nock = run ["sh" "-c" "file ${bin_nock_riscv}"]
+assert shape_nock.out contains "RISC-V" else "Nock core cross-built binary is not RISC-V"
+
+let emu_nock = run ["sh" "-c" "qemu-riscv64-static ${bin_nock_riscv} 2>&1"]
+assert emu_nock.ok else "Nock core riscv64 witness failed under QEMU"
+assert emu_nock.out == native_nock.out else "Nock core riscv64 output diverges from native -- not byte-identical"
+say "GREEN: the Nock core (Glow's second backend) runs on emulated RISC-V, byte-for-byte identical to native."
+
+# --- The bounded |- rune's front half -----------------------------------------
+
+let src_rune = "glow/rune_bounded_trap_witness.rye"
+let bin_rune_native = "glow/bin/rune_bounded_trap_witness_native"
+let bin_rune_riscv = "glow/bin/rune_bounded_trap_witness_riscv64"
+
+let build_rune_native = run ["sh" "-c" "mkdir -p glow/bin && env RYE_ZIG=${zig} rye/bin/rye build ${src_rune} -femit-bin=${bin_rune_native}"]
+assert build_rune_native.ok else "Rune bounded-trap native build failed"
+let native_rune = run ["sh" "-c" "${bin_rune_native} 2>&1"]
+assert native_rune.ok else "Rune bounded-trap native run failed"
+assert native_rune.out contains "GREEN" else "Rune bounded-trap native run not GREEN"
+
+let build_rune_riscv = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${src_rune} -target riscv64-linux-musl -femit-bin=${bin_rune_riscv}"]
+assert build_rune_riscv.ok else "Rune bounded-trap RISC-V cross-build failed"
+let shape_rune = run ["sh" "-c" "file ${bin_rune_riscv}"]
+assert shape_rune.out contains "RISC-V" else "Rune bounded-trap cross-built binary is not RISC-V"
+
+let emu_rune = run ["sh" "-c" "qemu-riscv64-static ${bin_rune_riscv} 2>&1"]
+assert emu_rune.ok else "Rune bounded-trap riscv64 witness failed under QEMU"
+assert emu_rune.out == native_rune.out else "Rune bounded-trap riscv64 output diverges from native -- not byte-identical"
+say "GREEN: the bounded |- rune's front half runs on emulated RISC-V, byte-for-byte identical to native."
+
+say "GREEN: Glow's primary backend (Glow -> Zig 0.16.0 -> RISC-V) proves out across six keystone pieces -- Sala, Neth, Pool, Rhyz/Kumara, the Nock core, the bounded rune parser -- each byte-identical to its native run."
