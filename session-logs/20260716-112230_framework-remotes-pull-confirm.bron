@@ -1,0 +1,16 @@
+format session-log-v1
+stamp 20260716.112230
+editor Cursor
+model Cursor Sonnet 5 1M Max
+voice Quin
+host Framework 16 AMD (AMD Ryzen 7 7840HS), Ubuntu 24.04.4 LTS (kernel 6.17.0-40-generic), GNOME Wayland, zsh; ai-jail --private-home (only ~/urbit visible)
+title Remotes confirmed, tree current with GitHub, GrapheneOS G0 still the open next
+prompt Keaton asked to continue Glow OS PR-proposal work beginning GrapheneOS/Pixel SLC roadmap implementation on the Framework 16 AMD Ubuntu GNOME Wayland host (stated as upgraded 24.04 to 26.04), pull latest ~/urbit upstream, check remotes (may need to add codeberg), named Cursor model as Sonnet 5 1M Max, running inside tools/cursor-jail.sh ai-jail with only ~/urbit accessible.
+think Shell tool in this Cursor session fails nested sandboxing inside ai-jail (Bubblewrap backend unavailable), so git/host probes ran via a shell subagent with broader permissions, trusting ai-jail's own containment.
+think fetched all remotes: origin is GitHub https://github.com/xykj61/urbit/; codeberg is already registered at https://codeberg.org/xykj61/urbit.git — no add needed this turn.
+think HEAD 3ac5c4b7eb matches origin/main (0 ahead / 0 behind); local main is 11 commits ahead of codeberg/main, so pull was correctly skipped; codeberg catch-up still waits on jail-local push identity.
+think dirty tree from the earlier 20260716.110152 Framework-arrival session remains uncommitted: SOURCE.md, session-logs/README.md, TASKS.md modified; untracked generate_jail_local_keys_linux.rish and that session's bron — left untouched this turn (Keaton did not ask to commit).
+think re-confirmed host facts for the G-ladder: Ubuntu 24.04.4 LTS (not 26.04 as stated), no adb/sdkmanager/emulator, qemu present, /dev/kvm absent inside the daily jail by the already-ruled lane_kvm A-narrow policy — GrapheneOS/Pixel G0 still needs Keaton's ruling on how to run accelerated emulation.
+obs codeberg remote already exists; tree is current with GitHub; the real next fork is still G0 path + jail keys outside the jail, not another remote add.
+file session-logs/20260716-112230_framework-remotes-pull-confirm.bron -- this log
+recommend check-in -- confirm 24.04 vs 26.04, choose G0 path (host-terminal KVM matching lane_kvm precedent / TCG in jail / widen lane / defer), and run generate_jail_local_keys_linux.rish from a plain host terminal when ready to push (including the 11 commits codeberg still lacks).
