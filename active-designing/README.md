@@ -47,6 +47,7 @@ Dated briefs carry `YYYYMMDD-HHMMSS_short-slug.md` filenames; this README is the
 
 | Stamp | Brief | Meaning |
 |-------|-------|---------|
+| `20260715.183700` | [Quin's dispatch loop — pseudocode over the four voices' real APIs](20260715-183700_quin_dispatch_loop_pseudocode.md) | Pseudocodes the Q-vane's own unbuilt turn loop against Lattice/Lantern/Anvil/Scribble's real, read-from-source signatures · names the halting bound explicitly · ties into the already-confirmed Quin×Puddle×Neth sandbox composition · names the one real gate (Lantern past fixture-served laps) that would actually open this |
 | living | [Proven-seat guest — hammock](proven-seat-guest-hammock.md) | Kaeden word · G0 GRUB milestone GREEN · G1–G3 ahead |
 | living | [Giving-lane T2 courtesy wire](giving-lane-t2-courtesy-wire.md) | Word seated · wire opened · composition witness ahead |
 | living | [Steep — peer file sharing](steep.md) | Living twin · published-set / peer-offer precedent seated |
