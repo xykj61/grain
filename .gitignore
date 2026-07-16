@@ -58,6 +58,8 @@
 !/bron-resins/
 !/granary/
 !/mandi/
+!/nock/
+!/glow/
 !/expanding-prompts/
 !/session-logs/
 !/vendor/
@@ -92,6 +94,8 @@
 /lantern/bin/
 /scribble/bin/
 /anvil/bin/
+/nock/bin/
+/glow/bin/
 *.rye.zig
 .zig-cache/
 zig-cache/

@@ -1,0 +1,180 @@
+//! nock/nock_core_witness.rye — proves the Nock primitive core, opcode by opcode.
+//!
+//!   rye build nock/nock_core_witness.rye -femit-bin=nock/bin/nock_core_witness
+//!   nock/bin/nock_core_witness
+//!
+//! Per external-research/20260713-214400_nock-interpreter-and-rye-hoon-fusion-scoping.md's
+//! phased plan, lap 1: fixture formulas, hand-derived, checked against each
+//! opcode's own stated reduction rule -- the same fixture-driven witness
+//! style this project already uses everywhere. Eleven claims:
+//!   1-3. Opcode 0 (slot/fas): shallow, mid, and deep tree addresses on one
+//!        fixed subject, including the trivial slot 1 (identity).
+//!   4. Opcode 1 (constant): ignores the subject entirely -- two different
+//!      subjects, same formula, same result.
+//!   5. Opcode 2 (evaluate): computes a new subject and a new formula from
+//!      the old subject, then evaluates them against each other.
+//!   6. Opcode 3 (cell test): 0 for a cell, 1 for an atom.
+//!   7. Opcode 4 (increment): atoms increment; a cell is refused NotAnAtom.
+//!   8. Opcode 5 (equality): equal and unequal constants, and structural
+//!      equality of two separately-constructed, shape-identical cells --
+//!      proving equality is structural, never pool-index identity.
+//!   9. Autocons: a formula whose own head is a cell distributes rather than
+//!      dispatching by opcode.
+//!   10. The honest boundary: opcode 6 (out of this lap's scope) refuses
+//!       cleanly with UnimplementedOpcode rather than silently misbehaving.
+//!   11. The depth bound is real: a formula nested past max_depth refuses
+//!       DepthExceeded rather than trusting the host stack.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const nock = @import("nock_core.rye");
+
+const witness_version = "20260716.043000";
+
+fn run_selftest() !u8 {
+    var interp = nock.Interp.init();
+
+    // --- Claims 1-3: opcode 0, slot addressing -----------------------------
+    // subject = [[4 5] [6 [14 15]]] -- each atom names its own slot number,
+    // so a correct address reads back the number that names it.
+    const n14 = try interp.cons(nock.Noun.a(14), nock.Noun.a(15));
+    const n6 = try interp.cons(nock.Noun.a(6), n14);
+    const n45 = try interp.cons(nock.Noun.a(4), nock.Noun.a(5));
+    const subject = try interp.cons(n45, n6);
+
+    // slot 1 -- the trivial case, the whole subject back.
+    const s1 = try interp.slot(1, subject);
+    assert(nock.is_cell(s1));
+    // slot 2, 3 -- head and tail directly.
+    const s2 = try interp.slot(2, subject);
+    const s3 = try interp.slot(3, subject);
+    assert(try interp.eql(s2, n45, 0));
+    assert(try interp.eql(s3, n6, 0));
+    print("nock: slot 1/2/3 -- identity, head, tail all correct -- GREEN\n", .{});
+
+    // slot 4,5,6,7 -- one level deeper.
+    const s4 = try interp.slot(4, subject);
+    const s5 = try interp.slot(5, subject);
+    const s6 = try interp.slot(6, subject);
+    const s7 = try interp.slot(7, subject);
+    assert(std.meta.eql(s4, nock.Noun.a(4)));
+    assert(std.meta.eql(s5, nock.Noun.a(5)));
+    assert(std.meta.eql(s6, nock.Noun.a(6)));
+    assert(try interp.eql(s7, n14, 0));
+    print("nock: slot 4/5/6/7 -- each address reads back the atom that names it -- GREEN\n", .{});
+
+    // slot 14,15 -- two levels deeper, proving the bit-walk composes.
+    const s14 = try interp.slot(14, subject);
+    const s15 = try interp.slot(15, subject);
+    assert(std.meta.eql(s14, nock.Noun.a(14)));
+    assert(std.meta.eql(s15, nock.Noun.a(15)));
+    print("nock: slot 14/15 -- deep addresses compose correctly -- GREEN\n", .{});
+
+    // --- Claim 4: opcode 1, constant ----------------------------------------
+    const f_const = try interp.cons(nock.Noun.a(1), nock.Noun.a(42));
+    const r1a = try interp.run(nock.Noun.a(9), f_const);
+    const r1b = try interp.run(nock.Noun.a(999), f_const);
+    assert(std.meta.eql(r1a, nock.Noun.a(42)) and std.meta.eql(r1b, nock.Noun.a(42)));
+    print("nock: opcode 1 (constant) ignores the subject -- two different subjects, same 42 -- GREEN\n", .{});
+
+    // --- Claim 5: opcode 2, evaluate ----------------------------------------
+    // *[a 2 b c] = *[*[a b] *[a c]]. b = [1 [6 7]] (constant: the new subject
+    // is [6 7]); c = [1 [0 1]] (constant: the new FORMULA is the noun [0 1]
+    // -- not [0 1] evaluated now, but produced as data, to be applied to the
+    // new subject next). [0 1] as a formula means "slot 1 of the subject" --
+    // identity -- so the whole thing should read back [6 7] unchanged.
+    const c67 = try interp.cons(nock.Noun.a(6), nock.Noun.a(7));
+    const b_const_67 = try interp.cons(nock.Noun.a(1), c67);
+    const identity_noun = try interp.cons(nock.Noun.a(0), nock.Noun.a(1)); // the noun [0 1]
+    const c_const_identity = try interp.cons(nock.Noun.a(1), identity_noun); // [1 [0 1]]
+    const bc = try interp.cons(b_const_67, c_const_identity);
+    const f_eval = try interp.cons(nock.Noun.a(2), bc);
+    const r2 = try interp.run(nock.Noun.a(1), f_eval);
+    assert(try interp.eql(r2, c67, 0));
+    print("nock: opcode 2 (evaluate) -- new subject [6 7], identity formula, result [6 7] -- GREEN\n", .{});
+
+    // --- Claim 6: opcode 3, cell test ----------------------------------------
+    const f_celltest = try interp.cons(nock.Noun.a(3), identity_noun);
+    const r3_cell = try interp.run(c67, f_celltest); // subject is a cell
+    const r3_atom = try interp.run(nock.Noun.a(7), f_celltest); // subject is an atom
+    assert(std.meta.eql(r3_cell, nock.Noun.a(0)));
+    assert(std.meta.eql(r3_atom, nock.Noun.a(1)));
+    print("nock: opcode 3 (cell test) -- 0 for a cell, 1 for an atom -- GREEN\n", .{});
+
+    // --- Claim 7: opcode 4, increment ----------------------------------------
+    const f_inc = try interp.cons(nock.Noun.a(4), identity_noun);
+    const r4 = try interp.run(nock.Noun.a(41), f_inc);
+    assert(std.meta.eql(r4, nock.Noun.a(42)));
+    if (interp.run(c67, f_inc)) |_| {
+        return error.IncrementOnCellNotCaught;
+    } else |err| {
+        if (err != nock.NockError.NotAnAtom) return err;
+    }
+    print("nock: opcode 4 (increment) -- 41 -> 42; a cell refused NotAnAtom -- GREEN\n", .{});
+
+    // --- Claim 8: opcode 5, equality ------------------------------------------
+    const f9 = try interp.cons(nock.Noun.a(1), nock.Noun.a(9));
+    const f8 = try interp.cons(nock.Noun.a(1), nock.Noun.a(8));
+    const eq_same = try interp.cons(f9, f9);
+    const eq_diff = try interp.cons(f9, f8);
+    const r5_same = try interp.run(nock.Noun.a(0), try interp.cons(nock.Noun.a(5), eq_same));
+    const r5_diff = try interp.run(nock.Noun.a(0), try interp.cons(nock.Noun.a(5), eq_diff));
+    assert(std.meta.eql(r5_same, nock.Noun.a(0))); // equal -> 0
+    assert(std.meta.eql(r5_diff, nock.Noun.a(1))); // unequal -> 1
+
+    // Structural equality: two SEPARATELY-constructed cells with the same
+    // shape and contents must compare equal, never by pool-index identity.
+    const pair_x = try interp.cons(nock.Noun.a(1), nock.Noun.a(2));
+    const pair_y = try interp.cons(nock.Noun.a(1), nock.Noun.a(2));
+    assert(pair_x.cell != pair_y.cell); // genuinely two different pool slots
+    assert(try interp.eql(pair_x, pair_y, 0)); // yet structurally equal
+    print("nock: opcode 5 (equality) -- 9=9 -> 0, 9=8 -> 1; two separately-built [1 2] cells compare equal -- GREEN\n", .{});
+
+    // --- Claim 9: autocons ----------------------------------------------------
+    // [[1 6] [1 7]] -- the formula's own head is a cell, so this distributes
+    // rather than dispatching opcode 1 on the outer pair.
+    const auto_l = try interp.cons(nock.Noun.a(1), nock.Noun.a(6));
+    const auto_r = try interp.cons(nock.Noun.a(1), nock.Noun.a(7));
+    const f_auto = try interp.cons(auto_l, auto_r);
+    const r_auto = try interp.run(nock.Noun.a(0), f_auto);
+    assert(try interp.eql(r_auto, c67, 0));
+    print("nock: autocons -- [[1 6] [1 7]] distributes to [6 7] -- GREEN\n", .{});
+
+    // --- Claim 10: the honest boundary -- opcodes 6-11 are a later lap -------
+    const f_unimpl = try interp.cons(nock.Noun.a(6), try interp.cons(identity_noun, identity_noun));
+    if (interp.run(nock.Noun.a(0), f_unimpl)) |_| {
+        return error.UnimplementedOpcodeNotCaught;
+    } else |err| {
+        if (err != nock.NockError.UnimplementedOpcode) return err;
+    }
+    print("nock: opcode 6 refused UnimplementedOpcode -- GREEN unwelcome path, honest about lap 1's scope\n", .{});
+
+    // --- Claim 11: the depth bound is real ------------------------------------
+    // A formula whose own evaluation recurses past max_depth must refuse
+    // cleanly rather than trusting the host stack. [1 0] alone is a leaf
+    // (opcode 1 terminates in one step, no further recursion); nesting it as
+    // the LEFT branch of an autocons cell, with the RIGHT branch one level
+    // shallower each time, builds a right-leaning chain whose own eval walk
+    // grows exactly one level of depth per layer as it unwinds the chain.
+    const leaf = try interp.cons(nock.Noun.a(1), nock.Noun.a(0));
+    var deep_formula = leaf;
+    var built: u32 = 0;
+    while (built < nock.max_depth + 8) : (built += 1) {
+        deep_formula = try interp.cons(leaf, deep_formula);
+    }
+    if (interp.run(nock.Noun.a(0), deep_formula)) |_| {
+        return error.DepthBoundNotCaught;
+    } else |err| {
+        if (err != nock.NockError.DepthExceeded) return err;
+    }
+    print("nock: a chain nested past max_depth refused DepthExceeded -- GREEN unwelcome path\n", .{});
+
+    print("nock: version {s}\n", .{witness_version});
+    print("GREEN: Nock core lap 1 -- noun, slot addressing, opcodes 0-5, and autocons all prove their own stated rule.\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}
