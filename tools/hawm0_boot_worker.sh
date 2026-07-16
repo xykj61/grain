@@ -1,11 +1,21 @@
 #!/usr/bin/env bash
-# hawm0_boot_onpath_host.sh — HAWM0: stock AOSP/Android emulator, KVM-accelerated
-# (context/specs/two-dev-environments-and-mobile-emulation.md · waymark fix
-# context/specs/20260716-115927_waymark-ladder-naming-and-g0-collision-fix.md).
+# hawm0_boot_worker.sh — HAWM0's actual boot worker: backgrounds the emulator,
+# polls adb + sys.boot_completed, reads back device identity. Bash, not Rish,
+# on purpose: Rish's own `run` is blocking-only (manual/reference/rishi-language.md
+# §4) — no `&`, no `trap`, no `wait`, no sleep-and-poll loop. This mirrors
+# tools/proven_seat_g0c_lane_kvm.sh's own relationship to
+# tools/lane_kvm_onpath_host.rish exactly: the .rish file is the host-facing
+# entrypoint and precondition-checker; this .sh file is the one seam that
+# actually manages a long-lived background process.
 #
-# Run OUTSIDE ai-jail, from a plain host terminal that already has /dev/kvm —
-# the same "host-terminal one-shot" pattern as tools/lane_kvm_onpath_host.rish,
-# though HAWM0 never touches the ai-jail wall or tools/lane_kvm.sh at all: this
+# Not run directly — call tools/hawm0_boot_onpath_host.rish instead:
+#   rishi/bin/rishi run tools/hawm0_boot_onpath_host.rish
+#
+# (context/specs/two-dev-environments-and-mobile-emulation.md · waymark fix
+# context/specs/20260716-115927_waymark-ladder-naming-and-g0-collision-fix.md)
+#
+# Run OUTSIDE ai-jail, from a plain host terminal that already has /dev/kvm.
+# HAWM0 never touches the ai-jail wall or tools/lane_kvm.sh at all: this
 # emulator never runs inside the jail in the first place (no /dev/kvm, no
 # sdkmanager/emulator binaries reachable there), so there is nothing to widen
 # and nothing to gate — it is simply a host action, same as any other program
@@ -22,8 +32,6 @@
 # tools/.cache/hawm0/ lives on this host's real, persistent ~/urbit partition
 # (not the jail's tmpfs $HOME), so every file already staged there is reachable
 # unchanged from this plain terminal too.
-#
-#   ./tools/hawm0_boot_onpath_host.sh
 #
 # This is the honest register named in the living spec: HAWM0 boots real
 # stock AOSP/Android with KVM acceleration, the same userland surface
