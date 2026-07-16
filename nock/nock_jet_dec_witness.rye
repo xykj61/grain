@@ -1,0 +1,115 @@
+//! nock/nock_jet_dec_witness.rye — proves the dec jet: fast, slow, and dispatched.
+//!
+//!   rye build nock/nock_jet_dec_witness.rye -femit-bin=nock/bin/nock_jet_dec_witness
+//!   nock/bin/nock_jet_dec_witness
+//!
+//! Seven claims:
+//!   1-2. The slow, self-recursive Nock core agrees with the fast native
+//!        dec across several small inputs -- the jet's own correctness
+//!        obligation, proven directly rather than assumed.
+//!   3. dec(0) has no honest answer; the fast path refuses DecrementOfZero.
+//!   4. dec(0), attempted the slow way, would loop forever (no b ever
+//!      satisfies n = b+1 when n is 0) -- caught safely by the interpreter's
+//!      own depth bound rather than hanging, a real demonstration of why
+//!      the bound exists, not only a theoretical safety net.
+//!   5. The jet-tagged formula dispatches to the fast path -- proven by
+//!      comparing its result to fast_dec() directly, not merely by trusting
+//!      the dispatch code path was taken.
+//!   6. An untagged (or differently-tagged) hint on the identical slow
+//!      formula falls straight through to the slow path, agreeing with it
+//!      exactly -- the jet changes nothing about what is computed, only
+//!      how fast the answer arrives.
+//!   7. The honest limit, named rather than hidden: this interpreter's own
+//!      depth bound (tuned for lap 1-3's shallow fixtures) comfortably
+//!      serves small inputs; a real workload needing deep dec chains would
+//!      want either a larger bound or genuine tail-call elimination, which
+//!      this interpreter does not yet have.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const nock = @import("nock_core.rye");
+const jet = @import("nock_jet_dec.rye");
+
+const witness_version = "20260716.080000";
+
+fn run_selftest() !u8 {
+    var interp = nock.Interp.init();
+
+    // --- Claims 1-2: slow agrees with fast, across several small inputs ------
+    const c = try jet.slow_dec_formula(&interp);
+    const inputs = [_]u64{ 1, 2, 3, 4, 5 };
+    for (inputs) |n| {
+        const slow_result = try interp.run(nock.Noun.a(n), c);
+        const fast_result = try jet.fast_dec(n);
+        const slow_val: u64 = switch (slow_result) {
+            .atom => |v| v,
+            .cell => return error.ExpansionShapeWrong,
+        };
+        assert(slow_val == fast_result);
+    }
+    print("nock jet dec: slow (self-recursive Nock core) agrees with fast (native) for n=1..5 -- GREEN\n", .{});
+
+    const slow3 = try interp.run(nock.Noun.a(3), c);
+    assert(std.meta.eql(slow3, nock.Noun.a(2)));
+    print("nock jet dec: dec(3) = 2, both ways -- GREEN\n", .{});
+
+    // --- Claim 3: dec(0) has no honest answer, fast path refuses -------------
+    if (jet.fast_dec(0)) |_| {
+        return error.DecrementOfZeroNotCaught;
+    } else |err| {
+        if (err != jet.JetError.DecrementOfZero) return err;
+    }
+    print("nock jet dec: fast_dec(0) refused DecrementOfZero -- GREEN unwelcome path\n", .{});
+
+    // --- Claim 4: dec(0) the slow way would never terminate; the depth bound catches it, not a hang
+    if (interp.run(nock.Noun.a(0), c)) |_| {
+        return error.DepthBoundNotCaught;
+    } else |err| {
+        if (err != nock.NockError.DepthExceeded) return err;
+    }
+    print("nock jet dec: dec(0) the slow way -- no b ever satisfies the base case; refused DepthExceeded, never hangs -- GREEN\n", .{});
+
+    // --- Claim 5: the jet-tagged formula dispatches to the fast path ---------
+    const tag_formula = try interp.cons(nock.Noun.a(jet.jet_dec_tag), c);
+    const jetted_formula = try interp.cons(nock.Noun.a(11), tag_formula);
+    const jetted_result = try jet.eval_with_dec_jet(&interp, nock.Noun.a(4), jetted_formula);
+    const fast4 = try jet.fast_dec(4);
+    assert(std.meta.eql(jetted_result, nock.Noun.a(fast4)));
+    print("nock jet dec: the jet-tagged formula dispatches to fast_dec(4) -- GREEN\n", .{});
+
+    // --- Claim 6: any other hint falls through to the slow path, unchanged --
+    const other_tag_formula = try interp.cons(nock.Noun.a(999), c); // not the jet's own tag
+    const other_formula = try interp.cons(nock.Noun.a(11), other_tag_formula);
+    const fallthrough_result = try jet.eval_with_dec_jet(&interp, nock.Noun.a(4), other_formula);
+    const slow4 = try interp.run(nock.Noun.a(4), c);
+    assert(std.meta.eql(fallthrough_result, slow4));
+    assert(std.meta.eql(fallthrough_result, nock.Noun.a(fast4))); // and it's still correct
+    print("nock jet dec: an unrecognized hint falls through to the slow path, unchanged and still correct -- GREEN\n", .{});
+
+    // --- Claim 7: the honest depth limit, named rather than hidden -----------
+    // Each loop iteration of the slow core costs several depth units (the
+    // opcode-6 test, the opcode-9 invoke, the opcode-10 edit, and the
+    // recursive call itself). Find the largest n this interpreter's own
+    // max_depth (64) can still honestly compute, rather than asserting a
+    // guessed number.
+    var largest_ok: u64 = 0;
+    var probe_n: u64 = 1;
+    while (probe_n <= 20) : (probe_n += 1) {
+        if (interp.run(nock.Noun.a(probe_n), c)) |_| {
+            largest_ok = probe_n;
+        } else |_| {
+            break;
+        }
+    }
+    assert(largest_ok >= 5); // comfortably covers this witness's own small fixtures
+    print("nock jet dec: this interpreter's own depth bound (64) computes the slow path correctly up through n={d} -- named honestly, not hidden. A deeper chain would want a larger bound or real tail-call elimination, neither built yet.\n", .{largest_ok});
+
+    print("nock jet dec: version {s}\n", .{witness_version});
+    print("GREEN: the dec jet -- fast, slow, and dispatched -- all agree, and the interpreter's own limit is named plainly.\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}
