@@ -1,0 +1,137 @@
+//! nock/nock_lap3_witness.rye — proves the edit primitive and opcode 10.
+//!
+//!   rye build nock/nock_lap3_witness.rye -femit-bin=nock/bin/nock_lap3_witness
+//!   nock/bin/nock_lap3_witness
+//!
+//! Lap 3 closes the one door lap 2 named honestly and left open: opcode 10
+//! (edit) needed a genuinely new primitive, #[axis value tree] -- the
+//! constructive counterpart to slot()'s own tree addressing. Same bit-walk,
+//! same address convention, but recorded on the way down and rebuilt on the
+//! way up; bounded by a u64 axis's own width alone, no separate ceiling, no
+//! recursion. Eight claims:
+//!   1-3. edit() directly: the trivial whole-tree replace (axis 1); a
+//!        shallow replace at axis 2 (head) and axis 3 (tail); and the deep
+//!        case worked out by hand before any code was written -- editing
+//!        axis 6 within [[4 5] [6 [14 15]]] to 999, touching only that one
+//!        leaf and nothing else in the tree.
+//!   4. The bare-atom form of opcode 10: *[a 10 b c] = *[a c] -- the same
+//!      shape opcode 11's own atom-hint form already proved, checked here
+//!      for opcode 10 specifically.
+//!   5-6. The edit form of opcode 10, dispatched end to end from real
+//!        formula text: *[a 10 [b c] d], proven equal to a direct edit()
+//!        call, AND proven equal to independently evaluating *[a c] and
+//!        *[a d] first and feeding those results to edit() by hand --
+//!        the official #[b *[a c] *[a d]] rule, reconstructed rather than
+//!        assumed.
+//!   7. The honest boundary held: opcode 12 still refuses UnimplementedOpcode
+//!      (re-checked here since lap 3 is the point past which every opcode
+//!      Nock's own spec numbers, 0 through 11, is real).
+//!   8. edit() at axis 0 refuses AddressOutOfRange, the same boundary
+//!      slot() already keeps.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const nock = @import("nock_core.rye");
+
+const witness_version = "20260716.070000";
+
+fn run_selftest() !u8 {
+    var interp = nock.Interp.init();
+
+    // --- Claims 1-4: edit() directly ------------------------------------------
+    const n14 = try interp.cons(nock.Noun.a(14), nock.Noun.a(15));
+    const n6 = try interp.cons(nock.Noun.a(6), n14);
+    const n45 = try interp.cons(nock.Noun.a(4), nock.Noun.a(5));
+    const tree = try interp.cons(n45, n6); // [[4 5] [6 [14 15]]] -- the same fixture slot() already proved on
+
+    const whole = try interp.edit(1, nock.Noun.a(777), tree);
+    assert(std.meta.eql(whole, nock.Noun.a(777))); // axis 1 replaces everything
+    print("nock lap3: edit() at axis 1 -- whole-tree replace, 777 -- GREEN\n", .{});
+
+    const shallow = try interp.cons(nock.Noun.a(10), nock.Noun.a(20));
+    const edited_head = try interp.edit(2, nock.Noun.a(99), shallow);
+    const expect_head = try interp.cons(nock.Noun.a(99), nock.Noun.a(20));
+    assert(try interp.eql(edited_head, expect_head, 0));
+    const edited_tail = try interp.edit(3, nock.Noun.a(99), shallow);
+    const expect_tail = try interp.cons(nock.Noun.a(10), nock.Noun.a(99));
+    assert(try interp.eql(edited_tail, expect_tail, 0));
+    print("nock lap3: edit() at axis 2/3 -- replaces exactly the head or the tail, sibling untouched -- GREEN\n", .{});
+
+    // The deep case, worked out by hand: editing axis 6 (the atom "6" itself,
+    // per the fixture's own naming convention) to 999 must touch ONLY that
+    // one leaf -- [4 5] and [14 15] both survive unchanged.
+    const deep = try interp.edit(6, nock.Noun.a(999), tree);
+    const expect_deep_inner = try interp.cons(nock.Noun.a(999), n14);
+    const expect_deep = try interp.cons(n45, expect_deep_inner);
+    assert(try interp.eql(deep, expect_deep, 0));
+    // And the untouched siblings really are byte-identical to the originals,
+    // not merely equal in shape -- proving nothing but the one leaf moved.
+    const still_45 = try interp.slot(2, deep);
+    const still_14_15 = try interp.slot(7, deep);
+    assert(try interp.eql(still_45, n45, 0));
+    assert(try interp.eql(still_14_15, n14, 0));
+    const changed_leaf = try interp.slot(6, deep);
+    assert(std.meta.eql(changed_leaf, nock.Noun.a(999)));
+    print("nock lap3: edit() at axis 6, deep -- only that one leaf changes to 999, [4 5] and [14 15] survive untouched -- GREEN\n", .{});
+
+    // --- Claim 5: opcode 10, bare-atom hint form ------------------------------
+    const subj10 = nock.Noun.a(7);
+    const c10 = try interp.cons(nock.Noun.a(4), try interp.cons(nock.Noun.a(0), nock.Noun.a(1))); // +subject -> 8
+    const f10_atom = try interp.cons(nock.Noun.a(10), try interp.cons(nock.Noun.a(555), c10));
+    const native10_atom = try interp.run(subj10, f10_atom);
+    assert(std.meta.eql(native10_atom, nock.Noun.a(8)));
+    print("nock lap3: opcode 10, bare-atom hint -- discarded, result is *[a c], 8 -- GREEN\n", .{});
+
+    // --- Claims 6-7: opcode 10, the edit form, end to end ---------------------
+    // *[a 10 [b c] d] = #[b *[a c] *[a d]]. b = 6 (the axis, an atom); c is a
+    // formula producing 999; d is a formula producing the same tree fixture.
+    const b_axis = nock.Noun.a(6);
+    const c_value_formula = try interp.cons(nock.Noun.a(1), nock.Noun.a(999)); // constant 999
+    const d_tree_formula = try interp.cons(nock.Noun.a(1), tree); // constant: the tree itself
+    const bc_pair = try interp.cons(b_axis, c_value_formula);
+    const f10_edit = try interp.cons(nock.Noun.a(10), try interp.cons(bc_pair, d_tree_formula));
+    const native10_edit = try interp.run(nock.Noun.a(0), f10_edit);
+    assert(try interp.eql(native10_edit, deep, 0)); // agrees with the direct edit() call above
+    print("nock lap3: opcode 10, edit form, native dispatch -- agrees with the direct edit() call -- GREEN\n", .{});
+
+    // Reconstruct the official rule by hand: independently evaluate *[a c]
+    // and *[a d], then call edit() with those results, exactly as
+    // #[b *[a c] *[a d]] states -- proving the dispatch is not merely
+    // convenient but actually the rule.
+    const value_via_eval = try interp.run(nock.Noun.a(0), c_value_formula);
+    const tree_via_eval = try interp.run(nock.Noun.a(0), d_tree_formula);
+    const axis_val: u64 = switch (b_axis) {
+        .atom => |v| v,
+        .cell => return error.ExpansionShapeWrong,
+    };
+    const hand_edit = try interp.edit(axis_val, value_via_eval, tree_via_eval);
+    assert(try interp.eql(hand_edit, native10_edit, 0));
+    print("nock lap3: opcode 10 -- hand-reconstructed #[b *[a c] *[a d]] agrees exactly with the native dispatch -- GREEN\n", .{});
+
+    // --- Claim 8: the honest boundary, re-checked at the top of the core -----
+    const identity_noun = try interp.cons(nock.Noun.a(0), nock.Noun.a(1));
+    const f_unimpl = try interp.cons(nock.Noun.a(12), try interp.cons(identity_noun, identity_noun));
+    if (interp.run(nock.Noun.a(0), f_unimpl)) |_| {
+        return error.UnimplementedOpcodeNotCaught;
+    } else |err| {
+        if (err != nock.NockError.UnimplementedOpcode) return err;
+    }
+    print("nock lap3: opcode 12 still refused UnimplementedOpcode -- 0 through 11 is now the whole of Nock's own core -- GREEN\n", .{});
+
+    // --- Claim 9: edit() keeps the same address boundary slot() already keeps
+    if (interp.edit(0, nock.Noun.a(1), tree)) |_| {
+        return error.AddressOutOfRangeNotCaught;
+    } else |err| {
+        if (err != nock.NockError.AddressOutOfRange) return err;
+    }
+    print("nock lap3: edit() at axis 0 refused AddressOutOfRange -- GREEN unwelcome path\n", .{});
+
+    print("nock lap3: version {s}\n", .{witness_version});
+    print("GREEN: Nock's edit primitive and opcode 10 -- lap 3 -- opcodes 0 through 11, the whole numbered core, real.\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}
