@@ -11,6 +11,16 @@
 # Not run directly — call tools/hawm0_boot_onpath_host.rish instead:
 #   rishi/bin/rishi run tools/hawm0_boot_onpath_host.rish
 #
+# A successful GREEN close leaves the emulator running on purpose — a
+# caller (tools/hawm1_sala_witness.rish, or an interactive `adb shell`
+# session) needs it still attached a moment later. Stop it explicitly with
+# tools/hawm0_stop.sh when actually done. Only a failure path tears the
+# emulator back down automatically; this is a real fix, corrected
+# `20260716.140207` after an earlier version's own exit-trap killed a
+# just-proven-GREEN boot before anything downstream could ever attach —
+# Keaton hit this exact bug live, two GREEN HAWM0 boots in a row followed
+# immediately by HAWM1 reporting no emulator attached, seconds later.
+#
 # (context/specs/two-dev-environments-and-mobile-emulation.md · waymark fix
 # context/specs/20260716-115927_waymark-ladder-naming-and-g0-collision-fix.md)
 #
@@ -143,5 +153,14 @@ release="$("$ADB" shell getprop ro.build.version.release 2>/dev/null | tr -d '\r
 abi="$("$ADB" shell getprop ro.product.cpu.abi 2>/dev/null | tr -d '\r\n')"
 kvm_check="$("$ADB" shell getprop ro.kernel.qemu 2>/dev/null | tr -d '\r\n')"
 echo "device: model=$model android=$release abi=$abi qemu=$kvm_check" | tee -a "$META"
+
+# Disarm the cleanup trap before declaring success — a booted emulator this
+# script just proved GREEN is exactly what a caller (HAWM1's own adb push,
+# or an interactive session) needs to still be running a moment later. The
+# trap stays live for every failure path above (a broken boot really should
+# tear itself down); only a genuinely successful close leaves hawm0 up.
+# Stop it later with: adb -s emulator-5554 emu kill  (or tools/hawm0_stop.sh)
+trap - EXIT
+progress "emulator left running (pid=$EPID) — stop later with tools/hawm0_stop.sh"
 
 echo "GREEN: HAWM0 — stock AOSP/Android emulator booted, KVM-accelerated (model=$model android=$release abi=$abi)"
