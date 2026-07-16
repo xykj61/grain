@@ -1,0 +1,76 @@
+//! glow/rune_cast_witness.rye — proves the `^-` cast rune's front half.
+//!
+//!   rye build glow/rune_cast_witness.rye -femit-bin=glow/bin/rune_cast_witness
+//!   glow/bin/rune_cast_witness
+//!
+//! Per active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md's
+//! reading-runes section and glow/rune_cast.rye. Six claims:
+//!   1. An aura mold ("^-  @u32") parses to CastSpec naming "@u32" -- the
+//!      brief's own worked example, read back exactly by mold_slice.
+//!   2. A named mold ("^-  record") parses the same way -- a cast is not
+//!      special-cased to auras alone.
+//!   3. A trailing expression on the same line does not confuse the scan --
+//!      the mold still reads back exactly, the expression left untouched.
+//!   4. A line not starting with the rune refuses NotACast.
+//!   5. A bare "^-" with no stated mold refuses MissingMold.
+//!   6. A mold name that could never legitimately name an aura or a named
+//!      mold (leading digit) refuses MoldNotAnAura.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const rc = @import("rune_cast.rye");
+
+const witness_version = "20260716.150500";
+
+fn run_selftest() !u8 {
+    // --- Claim 1: an aura mold, the brief's own worked example -----------------
+    const spec1 = try rc.parse("^-  @u32");
+    const name1 = rc.mold_slice(&spec1);
+    assert(std.mem.eql(u8, name1, "@u32"));
+    print("rune: \"^-  @u32\" parses to a cast naming aura \"@u32\" -- GREEN\n", .{});
+
+    // --- Claim 2: a named mold, not just an aura --------------------------------
+    const spec2 = try rc.parse("^-  record");
+    const name2 = rc.mold_slice(&spec2);
+    assert(std.mem.eql(u8, name2, "record"));
+    print("rune: \"^-  record\" parses to a cast naming mold \"record\" -- GREEN\n", .{});
+
+    // --- Claim 3: a trailing expression does not confuse the scan --------------
+    const spec3 = try rc.parse("^-  @u32  (add issuer-balance holder-balance)");
+    const name3 = rc.mold_slice(&spec3);
+    assert(std.mem.eql(u8, name3, "@u32"));
+    print("rune: a trailing cast expression does not confuse the mold scan -- GREEN\n", .{});
+
+    // --- Claim 4: not a cast at all ----------------------------------------------
+    if (rc.parse("|-  32")) |_| {
+        return error.NotACastNotCaught;
+    } else |err| {
+        if (err != rc.ParseError.NotACast) return err;
+    }
+    print("rune: a non-cast line refused NotACast -- GREEN unwelcome path\n", .{});
+
+    // --- Claim 5: no stated mold --------------------------------------------------
+    if (rc.parse("^-")) |_| {
+        return error.MissingMoldNotCaught;
+    } else |err| {
+        if (err != rc.ParseError.MissingMold) return err;
+    }
+    print("rune: a bare \"^-\" with no mold refused MissingMold -- GREEN unwelcome path\n", .{});
+
+    // --- Claim 6: a mold name that could never name an aura or a named mold ----
+    if (rc.parse("^-  4bad")) |_| {
+        return error.MoldNotAnAuraNotCaught;
+    } else |err| {
+        if (err != rc.ParseError.MoldNotAnAura) return err;
+    }
+    print("rune: \"^-  4bad\" -- a mold name starting with a digit -- refused MoldNotAnAura -- GREEN unwelcome path\n", .{});
+
+    print("rune: version {s}\n", .{witness_version});
+    print("GREEN: the `^-` cast rune's front half parses -- the second rune category proven, past the one |- started with.\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}
