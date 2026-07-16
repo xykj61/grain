@@ -1,12 +1,28 @@
-//! nock/nock_core.rye — the Nock interpreter's primitive core: opcodes 0-5.
+//! nock/nock_core.rye — the Nock interpreter: opcodes 0-9 and 11.
 //!
 //! Per external-research/20260713-214400_nock-interpreter-and-rye-hoon-fusion-scoping.md's
-//! phased plan, lap 1: a noun (atom or cell), the tree-addressing "slot" helper
-//! (Nock's own `/` fas rune), and the Turing-complete primitive core --
-//! *[a 0 b] through *[a 5 b c] -- plus the autocons rule that lets a formula's
-//! head itself be a cell (*[a [b c] d] = [*[a b c] *[a d]]). Opcodes 6-11 (the
-//! macro/sugar layer) are a later lap, refused honestly here with
-//! UnimplementedOpcode rather than silently misbehaving.
+//! phased plan:
+//!
+//! Lap 1 — the primitive core: a noun (atom or cell), the tree-addressing
+//! "slot" helper (Nock's own `/` fas rune), and the Turing-complete
+//! primitive core -- *[a 0 b] through *[a 5 b c] -- plus the autocons rule
+//! that lets a formula's head itself be a cell
+//! (*[a [b c] d] = [*[a b c] *[a d]]).
+//!
+//! Lap 2 — the macro/sugar layer, the pieces expressible by direct
+//! composition of what lap 1 already proved, with no new supporting
+//! machinery: *[a 6 b c d] (if/then/else), *[a 7 b c] (compose),
+//! *[a 8 b c] (extend the subject), *[a 9 b c] (invoke an arm -- Hoon's
+//! own core-calling convention), and *[a 11 b c] (a hint, semantically
+//! inert). Each is implemented natively here for speed and clarity; the
+//! witness proves, independently, that each one produces the identical
+//! result to its own literal 0-5 expansion, hand-built from cons() and
+//! eval() alone -- the phased plan's own stated test.
+//!
+//! Opcode 10 (edit -- splice a new value into a tree at an address, the
+//! constructive counterpart to slot addressing) needs a genuinely new
+//! primitive this tree has not yet built, and stays honestly unimplemented
+//! -- a lap 3, not silently approximated as any of the above.
 //!
 //! This interpreter is Glow's SECOND backend, per
 //! active-reviving/20260715-213500_glow-revives-hoon-runes-targets-riscv.md:
@@ -61,6 +77,7 @@ pub const NockError = error{
     NotAnAtom,
     UnimplementedOpcode,
     MalformedFormula,
+    MalformedBoolean,
     DepthExceeded,
 };
 
@@ -203,7 +220,56 @@ pub const Interp = struct {
                         const equal = try self.eql(rb, rc, depth + 1);
                         return Noun.a(if (equal) 0 else 1);
                     },
-                    else => return error.UnimplementedOpcode, // 6-11: a later lap
+                    6 => { // *[a 6 b c d] -- if/then/else. Formula shape [6 [b [c d]]].
+                        const b = try self.head(f2);
+                        const cd = try self.tail(f2);
+                        const c = try self.head(cd);
+                        const d = try self.tail(cd);
+                        const test_result = try self.eval(subject, b, depth + 1);
+                        const flag = switch (test_result) {
+                            .atom => |v| v,
+                            .cell => return error.MalformedBoolean,
+                        };
+                        return switch (flag) {
+                            0 => self.eval(subject, c, depth + 1), // 0 is Nock's own "yes"
+                            1 => self.eval(subject, d, depth + 1), // 1 is Nock's own "no"
+                            else => error.MalformedBoolean,
+                        };
+                    },
+                    7 => { // *[a 7 b c] = *[*[a b] c] -- compose.
+                        const b = try self.head(f2);
+                        const c = try self.tail(f2);
+                        const new_subject = try self.eval(subject, b, depth + 1);
+                        return self.eval(new_subject, c, depth + 1);
+                    },
+                    8 => { // *[a 8 b c] = *[[*[a b] a] c] -- extend the subject.
+                        const b = try self.head(f2);
+                        const c = try self.tail(f2);
+                        const new_head = try self.eval(subject, b, depth + 1);
+                        const new_subject = try self.cons(new_head, subject);
+                        return self.eval(new_subject, c, depth + 1);
+                    },
+                    9 => { // *[a 9 b c] = *[*[a c] 2 [0 1] 0 b] -- invoke an arm.
+                        const b = try self.head(f2); // the arm's own slot address, an atom
+                        const c = try self.tail(f2);
+                        const arm_slot = switch (b) {
+                            .atom => |v| v,
+                            .cell => return error.MalformedFormula,
+                        };
+                        const core = try self.eval(subject, c, depth + 1);
+                        const arm_formula = try self.slot(arm_slot, core);
+                        return self.eval(core, arm_formula, depth + 1);
+                    },
+                    11 => { // *[a 11 hint c] or *[a 11 [hint b] c] -- a hint, semantically inert.
+                        const hint_part = try self.head(f2);
+                        const c = try self.tail(f2);
+                        if (is_cell(hint_part)) {
+                            const hint_formula = try self.tail(hint_part);
+                            _ = try self.eval(subject, hint_formula, depth + 1); // side effect only, discarded
+                        }
+                        return self.eval(subject, c, depth + 1); // the hint never changes the result
+                    },
+                    else => return error.UnimplementedOpcode, // 10 (edit) needs a new tree-splice primitive -- lap 3
                 }
             },
         }

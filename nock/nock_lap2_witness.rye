@@ -1,0 +1,177 @@
+//! nock/nock_lap2_witness.rye — proves the Nock macro layer reduces to lap 1.
+//!
+//!   rye build nock/nock_lap2_witness.rye -femit-bin=nock/bin/nock_lap2_witness
+//!   nock/bin/nock_lap2_witness
+//!
+//! Per external-research/20260713-214400_nock-interpreter-and-rye-hoon-fusion-scoping.md's
+//! phased plan's own stated test for lap 2: "each opcode's witness proving
+//! it reduces to the same result as its stated 0-5 expansion." Five opcodes,
+//! eleven claims -- each opcode proven natively (fast, direct, in
+//! nock_core.rye), and separately proven equal to a hand-built formula
+//! using ONLY primitives already proven in lap 1 (0-5 plus autocons):
+//!   1-3. Opcode 6 (if/then/else): the native "yes" call, then the full,
+//!        literal, four-step expansion from the spec's own nested-star
+//!        notation (*[a 4 4 b], validated through [2 3], selecting between
+//!        c and d, evaluated against the original subject) -- reconstructed
+//!        by hand and shown to agree; then the "no" branch and a malformed
+//!        (non-boolean) test, both native-only, rounding out coverage.
+//!   4-5. Opcode 7 (compose): the native call, then *[a 2 b [1 c]].
+//!   6-7. Opcode 8 (extend the subject): the native call, then
+//!        *[a 2 [b [0 1]] [1 c]] -- autocons carrying the extension.
+//!   8-9. Opcode 9 (invoke an arm): the native call on a real two-part
+//!        core (a battery arm and a payload), then *[X 2 [0 1] [0 b]]
+//!        where X = *[a c] is the same core, computed once and shared.
+//!   10-11. Opcode 11 (hint): the atom-hint form and the cell-hint form
+//!          (a side-effecting sub-formula, evaluated and discarded) both
+//!          agree with the trivial *[a c] the hint never changes.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const nock = @import("nock_core.rye");
+
+const witness_version = "20260716.060000";
+
+fn run_selftest() !u8 {
+    var interp = nock.Interp.init();
+
+    // --- Claims 1-2: opcode 6, if/then/else -----------------------------------
+    const b6 = try interp.cons(nock.Noun.a(1), nock.Noun.a(0)); // constant 0 -- Nock's own "yes"
+    const c6 = try interp.cons(nock.Noun.a(1), nock.Noun.a(111));
+    const d6 = try interp.cons(nock.Noun.a(1), nock.Noun.a(222));
+    const subj6 = nock.Noun.a(0);
+
+    const f6 = try interp.cons(nock.Noun.a(6), try interp.cons(b6, try interp.cons(c6, d6)));
+    const native6 = try interp.run(subj6, f6);
+    assert(std.meta.eql(native6, nock.Noun.a(111))); // "yes" selects c
+    print("nock lap2: opcode 6 (native) -- \"yes\" selects the c branch, 111 -- GREEN\n", .{});
+
+    // Hand-expansion, one nested star at a time, per the spec's own rule:
+    // *[a 6 b c d] = *[a *[[c d] 0 *[[2 3] 0 *[a 4 4 b]]]]
+    const f_44b = try interp.cons(nock.Noun.a(4), try interp.cons(nock.Noun.a(4), b6));
+    const x1 = try interp.run(subj6, f_44b); // *[a 4 4 b] -- doubly-increment the boolean
+    const x1v: u64 = switch (x1) {
+        .atom => |v| v,
+        .cell => return error.ExpansionShapeWrong,
+    };
+    assert(x1v == 2); // "yes" (0), incremented twice, is 2 -- a slot address
+
+    const pair23 = try interp.cons(nock.Noun.a(2), nock.Noun.a(3));
+    const x2 = try interp.run(pair23, try interp.cons(nock.Noun.a(0), nock.Noun.a(x1v))); // validated through [2 3]
+    const x2v: u64 = switch (x2) {
+        .atom => |v| v,
+        .cell => return error.ExpansionShapeWrong,
+    };
+    assert(x2v == 2);
+
+    const pair_cd = try interp.cons(c6, d6);
+    const x3 = try interp.run(pair_cd, try interp.cons(nock.Noun.a(0), nock.Noun.a(x2v))); // selects c or d, as data
+    assert(try interp.eql(x3, c6, 0)); // the selected branch formula is c
+
+    const expanded6 = try interp.run(subj6, x3); // finally, evaluate the selected branch
+    assert(std.meta.eql(expanded6, native6));
+    print("nock lap2: opcode 6 (hand-expanded, four nested stars) -- agrees exactly with the native call -- GREEN\n", .{});
+
+    // The "no" branch, and the honest crash on a malformed boolean -- both
+    // native-only, since the hand-expansion above already proved the
+    // mechanism; these round out opcode 6's own coverage.
+    const b6_no = try interp.cons(nock.Noun.a(1), nock.Noun.a(1)); // constant 1 -- Nock's own "no"
+    const f6_no = try interp.cons(nock.Noun.a(6), try interp.cons(b6_no, try interp.cons(c6, d6)));
+    const native6_no = try interp.run(subj6, f6_no);
+    assert(std.meta.eql(native6_no, nock.Noun.a(222))); // "no" selects d
+    const b6_bad = try interp.cons(nock.Noun.a(1), nock.Noun.a(9)); // constant 9 -- neither yes nor no
+    const f6_bad = try interp.cons(nock.Noun.a(6), try interp.cons(b6_bad, try interp.cons(c6, d6)));
+    if (interp.run(subj6, f6_bad)) |_| {
+        return error.MalformedBooleanNotCaught;
+    } else |err| {
+        if (err != nock.NockError.MalformedBoolean) return err;
+    }
+    print("nock lap2: opcode 6 -- \"no\" selects d, 222; a non-boolean test refused MalformedBoolean -- GREEN\n", .{});
+
+    // --- Claims 3-4: opcode 7, compose -----------------------------------------
+    const subj7 = nock.Noun.a(5);
+    const b7 = try interp.cons(nock.Noun.a(4), try interp.cons(nock.Noun.a(0), nock.Noun.a(1))); // [4 [0 1]] -- +subject
+    const c7 = try interp.cons(nock.Noun.a(4), try interp.cons(nock.Noun.a(0), nock.Noun.a(1))); // same shape, applied next
+    const f7 = try interp.cons(nock.Noun.a(7), try interp.cons(b7, c7));
+    const native7 = try interp.run(subj7, f7);
+    assert(std.meta.eql(native7, nock.Noun.a(7))); // 5 -> 6 -> 7
+    print("nock lap2: opcode 7 (native) -- compose two increments, 5 -> 6 -> 7 -- GREEN\n", .{});
+
+    // *[a 7 b c] = *[a 2 b [1 c]]
+    const const_c7 = try interp.cons(nock.Noun.a(1), c7);
+    const expanded7_formula = try interp.cons(nock.Noun.a(2), try interp.cons(b7, const_c7));
+    const expanded7 = try interp.run(subj7, expanded7_formula);
+    assert(std.meta.eql(expanded7, native7));
+    print("nock lap2: opcode 7 (hand-expanded via *[a 2 b [1 c]]) -- agrees exactly -- GREEN\n", .{});
+
+    // --- Claims 5-6: opcode 8, extend the subject -------------------------------
+    const subj8 = nock.Noun.a(10);
+    const b8 = try interp.cons(nock.Noun.a(4), try interp.cons(nock.Noun.a(0), nock.Noun.a(1))); // +subject -> 11
+    const c8 = try interp.cons(nock.Noun.a(0), nock.Noun.a(2)); // slot 2 of the EXTENDED subject -- the pushed value
+    const f8 = try interp.cons(nock.Noun.a(8), try interp.cons(b8, c8));
+    const native8 = try interp.run(subj8, f8);
+    assert(std.meta.eql(native8, nock.Noun.a(11))); // the pushed value itself, read back
+    print("nock lap2: opcode 8 (native) -- pushes 11 onto the subject, reads slot 2 back as 11 -- GREEN\n", .{});
+
+    // *[a 8 b c] = *[a 2 [b [0 1]] [1 c]]
+    const identity_formula8 = try interp.cons(nock.Noun.a(0), nock.Noun.a(1));
+    const b_ext8 = try interp.cons(b8, identity_formula8); // [b [0 1]] -- autocons builds [*[a b] a]
+    const const_c8 = try interp.cons(nock.Noun.a(1), c8);
+    const expanded8_formula = try interp.cons(nock.Noun.a(2), try interp.cons(b_ext8, const_c8));
+    const expanded8 = try interp.run(subj8, expanded8_formula);
+    assert(std.meta.eql(expanded8, native8));
+    print("nock lap2: opcode 8 (hand-expanded via *[a 2 [b [0 1]] [1 c]]) -- agrees exactly -- GREEN\n", .{});
+
+    // --- Claims 7-8: opcode 9, invoke an arm ------------------------------------
+    // A minimal core: [arm payload] -- the arm increments slot 3 (the payload)
+    // of whatever subject it is given; invoking it means running the arm WITH
+    // the core itself as the subject, so slot 3 resolves to the payload.
+    const arm9 = try interp.cons(nock.Noun.a(4), try interp.cons(nock.Noun.a(0), nock.Noun.a(3))); // [4 [0 3]]
+    const payload9 = nock.Noun.a(99);
+    const core9 = try interp.cons(arm9, payload9);
+    const c9 = try interp.cons(nock.Noun.a(1), core9); // constant: produces the core, ignoring whatever a is
+    const f9 = try interp.cons(nock.Noun.a(9), try interp.cons(nock.Noun.a(2), c9)); // invoke slot 2 (the arm)
+    const native9 = try interp.run(nock.Noun.a(0), f9);
+    assert(std.meta.eql(native9, nock.Noun.a(100))); // 99 + 1
+    print("nock lap2: opcode 9 (native) -- invokes the arm at slot 2, payload 99 -> 100 -- GREEN\n", .{});
+
+    // *[a 9 b c] = *[*[a c] 2 [0 1] 0 b] -- pure primitives: opcode 2 dispatching
+    // slot-1 (identity, the core itself) and slot-b (the arm) against the core.
+    const x_core = try interp.run(nock.Noun.a(0), c9); // *[a c] -- the same core, shared
+    assert(try interp.eql(x_core, core9, 0));
+    const slot_b_formula = try interp.cons(nock.Noun.a(0), nock.Noun.a(2)); // [0 2]
+    const slot_1_formula = try interp.cons(nock.Noun.a(0), nock.Noun.a(1)); // [0 1]
+    const expanded9_formula = try interp.cons(nock.Noun.a(2), try interp.cons(slot_1_formula, slot_b_formula));
+    const expanded9 = try interp.run(x_core, expanded9_formula);
+    assert(std.meta.eql(expanded9, native9));
+    print("nock lap2: opcode 9 (hand-expanded via *[X 2 [0 1] [0 b]], X the same core) -- agrees exactly -- GREEN\n", .{});
+
+    // --- Claims 9-10: opcode 11, a hint that never changes the result ----------
+    const subj11 = nock.Noun.a(7);
+    const c11 = try interp.cons(nock.Noun.a(4), try interp.cons(nock.Noun.a(0), nock.Noun.a(1))); // +subject -> 8
+
+    // Atom-hint form: *[a 11 hint c] = *[a c].
+    const f11_atom = try interp.cons(nock.Noun.a(11), try interp.cons(nock.Noun.a(999), c11));
+    const native11_atom = try interp.run(subj11, f11_atom);
+    const direct11 = try interp.run(subj11, c11);
+    assert(std.meta.eql(native11_atom, direct11));
+    assert(std.meta.eql(native11_atom, nock.Noun.a(8)));
+    print("nock lap2: opcode 11 (atom hint, native) -- the hint is discarded; result is *[a c], 8 -- GREEN\n", .{});
+
+    // Cell-hint form: the side-effect formula is evaluated (must not crash)
+    // and its own result discarded; the answer still comes from c alone.
+    const side_effect_formula = try interp.cons(nock.Noun.a(1), nock.Noun.a(0)); // a harmless constant
+    const hint_cell = try interp.cons(nock.Noun.a(888), side_effect_formula);
+    const f11_cell = try interp.cons(nock.Noun.a(11), try interp.cons(hint_cell, c11));
+    const native11_cell = try interp.run(subj11, f11_cell);
+    assert(std.meta.eql(native11_cell, direct11));
+    print("nock lap2: opcode 11 (cell hint, native) -- the side-effect formula runs and is discarded; result unchanged -- GREEN\n", .{});
+
+    print("nock lap2: version {s}\n", .{witness_version});
+    print("GREEN: Nock's macro layer -- opcodes 6, 7, 8, 9, 11 -- each agrees exactly with its own literal 0-5 expansion.\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}

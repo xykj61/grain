@@ -1,0 +1,25 @@
+# nock_lap2_witness.rish — Nock's macro layer proves out against lap 1.
+#
+# Per external-research/20260713-214400_nock-interpreter-and-rye-hoon-fusion-scoping.md's
+# phased plan and nock/nock_core.rye: opcodes 6 (if/then/else), 7 (compose),
+# 8 (extend the subject), 9 (invoke an arm), and 11 (hint) each proven
+# natively AND proven equal to a hand-built formula using only lap 1's
+# primitives -- the phased plan's own stated test for the macro layer.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/nock_lap2_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "nock/bin/nock_lap2_witness"
+
+let build = run ["sh" "-c" "mkdir -p nock/bin && env RYE_ZIG=${zig} rye/bin/rye build nock/nock_lap2_witness.rye -femit-bin=${bin}"]
+assert build.ok else "Nock lap 2 witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "Nock lap 2 witness exited non-zero"
+assert selftest.out contains "GREEN" else "Nock lap 2 witness not GREEN"
+assert selftest.out contains "opcode 6" else "Nock lap 2 witness missing the if/then/else claim"
+assert selftest.out contains "opcode 9" else "Nock lap 2 witness missing the invoke-an-arm claim"
+assert selftest.out contains "agrees exactly" else "Nock lap 2 witness missing a hand-expansion agreement claim"
+
+say "GREEN: Nock lap 2 witness passed -- the macro layer reduces to lap 1's primitives, proven, not merely argued."

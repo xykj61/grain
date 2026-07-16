@@ -20,8 +20,9 @@
 //!      proving equality is structural, never pool-index identity.
 //!   9. Autocons: a formula whose own head is a cell distributes rather than
 //!      dispatching by opcode.
-//!   10. The honest boundary: opcode 6 (out of this lap's scope) refuses
-//!       cleanly with UnimplementedOpcode rather than silently misbehaving.
+//!   10. The honest boundary: opcode 10 (edit -- a lap 3, needing a new
+//!       tree-splice primitive) refuses cleanly with UnimplementedOpcode
+//!       rather than silently misbehaving.
 //!   11. The depth bound is real: a formula nested past max_depth refuses
 //!       DepthExceeded rather than trusting the host stack.
 
@@ -141,14 +142,16 @@ fn run_selftest() !u8 {
     assert(try interp.eql(r_auto, c67, 0));
     print("nock: autocons -- [[1 6] [1 7]] distributes to [6 7] -- GREEN\n", .{});
 
-    // --- Claim 10: the honest boundary -- opcodes 6-11 are a later lap -------
-    const f_unimpl = try interp.cons(nock.Noun.a(6), try interp.cons(identity_noun, identity_noun));
+    // --- Claim 10: the honest boundary -- opcode 10 (edit) is a later lap ----
+    // Opcode 6 moved into lap 2 (nock_lap2_witness.rye); opcode 10 (edit)
+    // still needs a new tree-splice primitive this module has not built.
+    const f_unimpl = try interp.cons(nock.Noun.a(10), try interp.cons(identity_noun, identity_noun));
     if (interp.run(nock.Noun.a(0), f_unimpl)) |_| {
         return error.UnimplementedOpcodeNotCaught;
     } else |err| {
         if (err != nock.NockError.UnimplementedOpcode) return err;
     }
-    print("nock: opcode 6 refused UnimplementedOpcode -- GREEN unwelcome path, honest about lap 1's scope\n", .{});
+    print("nock: opcode 10 refused UnimplementedOpcode -- GREEN unwelcome path, honest about lap 1's scope\n", .{});
 
     // --- Claim 11: the depth bound is real ------------------------------------
     // A formula whose own evaluation recurses past max_depth must refuse
