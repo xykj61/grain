@@ -1,0 +1,226 @@
+# generate_jail_local_keys_linux.rish — generate dedicated, jail-only SSH
+# and GPG signing keys that live only inside this repository (gitignored),
+# giving a Linux ai-jail session (e.g. tools/cursor-jail.sh --private-home)
+# its own working forge identity.
+#
+#   rishi/bin/rishi run tools/generate_jail_local_keys_linux.rish
+#
+# RUN THIS FROM AN ORDINARY TERMINAL, OUTSIDE ANY JAIL. Its whole point is
+# to keep key *creation* off any agent-controlled process entirely -- a
+# dedicated, revocable key is a weaker promise if the agent that will use
+# it also generated it. Run it from a plain host shell (not one already
+# inside tools/cursor-jail.sh or ai-jail), before you first launch Cursor
+# in this project.
+#
+# A named, honest gap versus this script's macOS twin
+# (generate_jail_local_keys_macos.rish): that script opens with a
+# self-check ("am I already inside a Seatbelt sandbox?") via a harmless
+# no-op sandbox-exec call. Linux has no equivalent one-liner that detects
+# "already inside bwrap" from a plain shell test -- bwrap's namespaces
+# don't announce themselves the way sandbox-exec's own denial does. Rather
+# than fake a check that would only give false confidence, this script
+# simply carries the same instruction in prose above and trusts the human
+# running it to actually be at a plain host shell.
+#
+# Why Linux needs only the write side, unlike the macOS twin: ai-jail's
+# --private-home on Linux uses real kernel user-namespaces to give the
+# jailed process a genuinely separate $HOME -- the read side (hiding this
+# host's other real ~/.ssh, ~/.gnupg from inside any urbit jail) is
+# already solved by that default, with no macOS-style --harden-home
+# enumeration step needed at all. This script exists purely to give the
+# jailed session something real to push and sign *with*.
+#
+# What it makes, all under this repo (gitignored, see .gitignore's "Local
+# key material" section):
+#   .ssh/id_ed25519_jail_github      -- dedicated SSH deploy key, github.com
+#   .ssh/id_ed25519_jail_codeberg    -- dedicated SSH deploy key, codeberg.org
+#   .ssh/known_hosts_jail            -- github.com + codeberg.org host keys,
+#                                        fetched fresh via ssh-keyscan, so
+#                                        SSH host-key verification works
+#                                        without touching this host's real
+#                                        ~/.ssh/known_hosts (which may
+#                                        already belong to a different
+#                                        project's identity on this host --
+#                                        see SOURCE.md Step 7's "Linux, when
+#                                        this host already runs another
+#                                        project's own identity" note)
+#   .git/ssh_config_urbit            -- repo-local SSH config pointing at
+#                                        both files above, wired via
+#                                        core.sshCommand
+#   .gnupg-rye/                      -- dedicated GNUPGHOME, one signing-only
+#                                        GPG key, no passphrase (matches
+#                                        SOURCE.md Step 8c's own pattern)
+#
+# Identity (name, forge handle, email) comes from GLOW_PROFILE.bron -- the
+# one gitignored source of truth this tree already keeps (see
+# GLOW_PROFILE.template.bron). The GPG key's email is what lets a forge
+# show the signature as Verified, so it must match a verified address on
+# both accounts; the SSH comment carries the same identity so a glance at
+# the forge's key list names its owner. No identity is hardcoded here.
+#
+# Both kinds are generated passphrase-free on purpose: this jail-local key
+# is deliberately narrow in scope (never the master identity), so an agent
+# working inside the jail can sign and push unattended, the same trade
+# SOURCE.md Step 8c already names for this exact pattern.
+#
+# After this script finishes, it prints exactly what to paste where. You
+# still do the pasting -- registering a new key with a forge is a human
+# act, on purpose, and this script does not attempt it for you.
+
+let pwd_run = run ["pwd"]
+let repo = trim pwd_run.out
+
+let name_run = run ["sh" "-c" "grep '^name ' GLOW_PROFILE.bron | head -1 | cut -d' ' -f2-"]
+let profile_name = trim name_run.out
+assert (profile_name != "") else "GLOW_PROFILE.bron has no 'name' -- copy GLOW_PROFILE.template.bron and fill it in first."
+
+let email_run = run ["sh" "-c" "grep '^email ' GLOW_PROFILE.bron | head -1 | cut -d' ' -f2-"]
+let profile_email = trim email_run.out
+assert (profile_email != "") else "GLOW_PROFILE.bron has no 'email' -- fill it in first (the GPG email is what makes a forge show Verified)."
+
+let gh_handle_run = run ["sh" "-c" "grep '^handle_github ' GLOW_PROFILE.bron | head -1 | cut -d' ' -f2-"]
+let gh_handle = trim gh_handle_run.out
+let cb_handle_run = run ["sh" "-c" "grep '^handle_codeberg ' GLOW_PROFILE.bron | head -1 | cut -d' ' -f2-"]
+let cb_handle = trim cb_handle_run.out
+
+let gh_comment = join [profile_email " " gh_handle " jail-only github (Linux ai-jail, no master identity)"] ""
+let cb_comment = join [profile_email " " cb_handle " jail-only codeberg (Linux ai-jail, no master identity)"] ""
+let gpg_uid = join [profile_name " (" gh_handle ", jail-only Linux ai-jail) <" profile_email ">"] ""
+say "Identity from GLOW_PROFILE.bron: ${gpg_uid}"
+
+let ssh_mk = run ["mkdir" "-p" "${repo}/.ssh"]
+assert ssh_mk.ok else "could not create .ssh/ at the repo root"
+let ssh_chmod = run ["chmod" "700" "${repo}/.ssh"]
+assert ssh_chmod.ok else "could not chmod .ssh/ to 700"
+
+let gh_key_path = "${repo}/.ssh/id_ed25519_jail_github"
+let cb_key_path = "${repo}/.ssh/id_ed25519_jail_codeberg"
+
+let gh_exists = run ["test" "-f" gh_key_path]
+if gh_exists.ok then say "id_ed25519_jail_github already exists -- refreshing its comment to the current GLOW_PROFILE identity."
+if gh_exists.ok then let gh_recomment = run ["ssh-keygen" "-c" "-C" gh_comment "-f" gh_key_path]
+if (gh_exists.ok == false) then let gh_gen = run ["ssh-keygen" "-t" "ed25519" "-N" "" "-C" gh_comment "-f" gh_key_path]
+let gh_pub_check = run ["test" "-f" "${gh_key_path}.pub"]
+assert gh_pub_check.ok else "the github jail key is missing after generate/recomment -- see ssh-keygen's own error above"
+
+let cb_exists = run ["test" "-f" cb_key_path]
+if cb_exists.ok then say "id_ed25519_jail_codeberg already exists -- refreshing its comment to the current GLOW_PROFILE identity."
+if cb_exists.ok then let cb_recomment = run ["ssh-keygen" "-c" "-C" cb_comment "-f" cb_key_path]
+if (cb_exists.ok == false) then let cb_gen = run ["ssh-keygen" "-t" "ed25519" "-N" "" "-C" cb_comment "-f" cb_key_path]
+let cb_pub_check = run ["test" "-f" "${cb_key_path}.pub"]
+assert cb_pub_check.ok else "the codeberg jail key is missing after generate/recomment -- see ssh-keygen's own error above"
+
+# known_hosts also has to move: a private-$HOME jail starts with an empty
+# $HOME, so there is no ~/.ssh/known_hosts inside it at all, and this
+# host's real one may belong to a different project's identity besides
+# (see SOURCE.md Step 7's Linux multi-identity note). Refreshed every run
+# -- host keys rotate rarely, and a stale entry is a real (if unlikely)
+# risk, so this always re-scans rather than skipping when the file
+# already exists.
+let known_hosts_path = "${repo}/.ssh/known_hosts_jail"
+let keyscan = run ["sh" "-c" "ssh-keyscan github.com codeberg.org > '${known_hosts_path}' 2>/dev/null"]
+assert keyscan.ok else "ssh-keyscan failed -- check network reachability to github.com and codeberg.org"
+let known_hosts_check = run ["sh" "-c" "test -s '${known_hosts_path}'"]
+assert known_hosts_check.ok else "known_hosts_jail came back empty -- ssh-keyscan reached neither host"
+
+# A literal double quote, from a one-byte fixture -- Rish string literals
+# have no \" escape, so the SSH config text below is built by joining
+# fragments around this fixture rather than escaping inside a string
+# literal (same gap the macOS twin and cursor_jail_macos.rish both name).
+let dq = read-file "tools/fixtures/dquote.txt"
+let nl = read-file "tools/fixtures/newline.txt"
+
+let sc_a = "# Local-only, never tracked (lives inside .git/, not repo content)."
+let sc_b = "# Written by tools/generate_jail_local_keys_linux.rish. Routes this repo's"
+let sc_c = "# SSH traffic to the dedicated jail-local deploy keys and a jail-local"
+let sc_d = "# known_hosts, bypassing this host's global ~/.ssh/config entirely -- both"
+let sc_e = "# a different project's own identity already pinned there, and the fact"
+let sc_f = "# that a fresh --private-home jail starts with no ~/.ssh/known_hosts at all."
+let sc_g = ""
+let sc_h = "Host github.com"
+let sc_i = "  HostName github.com"
+let sc_j = "  User git"
+let sc_k = join ["  IdentityFile " gh_key_path] ""
+let sc_l = "  IdentitiesOnly yes"
+let sc_m = join ["  UserKnownHostsFile " known_hosts_path] ""
+let sc_n = ""
+let sc_o = "Host codeberg.org"
+let sc_p = "  HostName codeberg.org"
+let sc_q = "  User git"
+let sc_r = join ["  IdentityFile " cb_key_path] ""
+let sc_s = "  IdentitiesOnly yes"
+let sc_t = join ["  UserKnownHostsFile " known_hosts_path] ""
+let ssh_conf_lines = [sc_a sc_b sc_c sc_d sc_e sc_f sc_g sc_h sc_i sc_j sc_k sc_l sc_m sc_n sc_o sc_p sc_q sc_r sc_s sc_t]
+let ssh_conf_text = join ssh_conf_lines nl
+let ssh_conf_path = "${repo}/.git/ssh_config_urbit"
+write-file ssh_conf_path ssh_conf_text
+
+let wire_ssh = run ["git" "config" "--local" "core.sshCommand" (join ["ssh -F " ssh_conf_path] "")]
+assert wire_ssh.ok else "could not set git config core.sshCommand"
+say "wired: git config --local core.sshCommand -> ${ssh_conf_path}"
+
+let gnupg_home = "${repo}/.gnupg-rye"
+let gnupg_mk = run ["mkdir" "-p" gnupg_home]
+assert gnupg_mk.ok else "could not create .gnupg-rye/"
+let gnupg_chmod = run ["chmod" "700" gnupg_home]
+assert gnupg_chmod.ok else "could not chmod .gnupg-rye/ to 700"
+
+let existing_keys = run ["sh" "-c" "GNUPGHOME='${gnupg_home}' gpg --list-secret-keys --with-colons 2>/dev/null | grep -c '^sec'"]
+let key_count = trim existing_keys.out
+
+if (key_count == "0") then let gpg_gen = run ["sh" "-c" "GNUPGHOME='${gnupg_home}' gpg --batch --pinentry-mode loopback --passphrase '' --quick-generate-key '${gpg_uid}' ed25519 sign 2y"]
+if (key_count != "0") then say "A signing key already exists in .gnupg-rye/ -- leaving its key material alone (rerun after editing GLOW_PROFILE.bron only regenerates identity if you delete the key first)."
+let gpg_check = run ["sh" "-c" "GNUPGHOME='${gnupg_home}' gpg --list-secret-keys --with-colons 2>/dev/null | grep -c '^sec'"]
+assert (trim gpg_check.out != "0") else "no signing key present in .gnupg-rye/ after generation -- see gpg's own error above"
+
+let gpg_fpr_run = run ["sh" "-c" "GNUPGHOME='${gnupg_home}' gpg --list-secret-keys --with-colons 2>/dev/null | awk -F: '/^fpr/{print $10; exit}'"]
+let gpg_fpr = trim gpg_fpr_run.out
+assert (gpg_fpr != "") else "could not read the new key's own fingerprint back from .gnupg-rye/"
+
+# SOURCE.md Step 8c's own wrapper pattern -- a tiny script that always
+# finds the jail-local keyring, so signing survives a restart without
+# depending on GNUPGHOME being exported in the calling shell.
+let gw_a = "#!/bin/sh"
+let gw_b = join ["export GNUPGHOME=" gnupg_home] ""
+let gw_c = join ["exec gpg " dq "$@" dq] ""
+let gpg_wrapper_lines = [gw_a gw_b gw_c]
+let gpg_wrapper_text = join gpg_wrapper_lines nl
+let gpg_wrapper_path = "${gnupg_home}/gpg.sh"
+write-file gpg_wrapper_path gpg_wrapper_text
+let gpg_wrapper_chmod = run ["chmod" "+x" gpg_wrapper_path]
+assert gpg_wrapper_chmod.ok else "could not chmod .gnupg-rye/gpg.sh executable"
+
+let wire_gpg_program = run ["git" "config" "--local" "gpg.program" gpg_wrapper_path]
+assert wire_gpg_program.ok else "could not set git config gpg.program"
+let wire_signingkey = run ["git" "config" "--local" "user.signingkey" gpg_fpr]
+assert wire_signingkey.ok else "could not set git config user.signingkey"
+let wire_gpgsign = run ["git" "config" "--local" "commit.gpgsign" "true"]
+assert wire_gpgsign.ok else "could not set git config commit.gpgsign"
+say "wired: git config --local gpg.program -> ${gpg_wrapper_path}"
+say "wired: git config --local user.signingkey -> ${gpg_fpr}"
+
+say ""
+say "== Done. Paste these into both forges before relaunching Cursor in the jail. =="
+say ""
+say "-- SSH deploy key for github.com (GitHub -> Settings -> SSH and GPG keys -> New SSH key) --"
+let gh_pub = run ["cat" "${gh_key_path}.pub"]
+let gh_pub_trimmed = trim gh_pub.out
+say gh_pub_trimmed
+say ""
+say "-- SSH deploy key for codeberg.org (Codeberg -> Settings -> SSH/GPG Keys -> Add Key) --"
+let cb_pub = run ["cat" "${cb_key_path}.pub"]
+let cb_pub_trimmed = trim cb_pub.out
+say cb_pub_trimmed
+say ""
+say "-- GPG signing key, both forges' GPG Keys section --"
+let fpr_run = run ["sh" "-c" "GNUPGHOME='${gnupg_home}' gpg --list-secret-keys --keyid-format=long"]
+let fpr_trimmed = trim fpr_run.out
+say fpr_trimmed
+let armor_run = run ["sh" "-c" "GNUPGHOME='${gnupg_home}' gpg --armor --export '${profile_email}'"]
+let armor_trimmed = trim armor_run.out
+say armor_trimmed
+say ""
+say "git is already wired to these files (core.sshCommand, gpg.program,"
+say "user.signingkey) -- nothing further to configure by hand. Once both"
+say "keys are pasted into both forges, relaunch Cursor in the jail as usual:"
+say "  ./tools/cursor-jail.sh --gpu"

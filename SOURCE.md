@@ -1,10 +1,10 @@
 # SOURCE — From Nothing to a Signed, Sandboxed Home
 
 **Language:** EN
-**Version:** `20260714.190500` (Glow warm-aura date atom — chronological, later-is-larger)
+**Version:** `20260716.110152` (Glow warm-aura date atom — chronological, later-is-larger)
 **Style:** Radiant (see `context/RADIANT_STYLE.md`)
-**By:** Rio 3, in the radiant voice, with **Keaton Dunsford** as coauthor
-**Status:** Living guide — last touched `20260714.190500` (Step 6 gains `--private-home`, a full private-`$HOME` equivalent alongside `--harden-home`)
+**By:** Riyo, in the radiant voice, with **Keaton Dunsford** as coauthor
+**Status:** Living guide — last touched `20260716.110152` (Step 7 gains the Linux multi-identity note, mirroring the macOS one; `tools/generate_jail_local_keys_linux.rish` is the real generator behind it)
 
 ---
 
@@ -230,6 +230,15 @@ ssh -F .git/ssh_config_urbit -T git@codeberg.org
 ```
 
 `core.sshCommand` is per-repo (stored in `.git/config`, itself untracked), so this touches nothing global and nothing another project on the same Mac relies on.
+
+**Linux, when this host already runs another project's own identity.** The same collision can happen on a shared Ubuntu or NixOS machine: if this host already has a `~/.ssh/config` `Host github.com` / `Host codeberg.org` block pinned to an older project's own key, that block wins for every repo on the host, this one included. Linux's own answer is simpler than macOS's, though, because `tools/cursor-jail.sh` already defaults to `ai-jail --private-home` — real kernel user-namespaces give the jailed Cursor session a genuinely separate `$HOME`, so the *other* project's real `~/.ssh` and `~/.gnupg` are already invisible from inside any jailed session here, with no enumeration workaround needed at all (unlike macOS's Seatbelt, which has no namespace-level private-home primitive and must deny each real `$HOME` entry by name). What Linux still wants, the same as macOS, is a *working* identity of its own inside that private, empty jailed `$HOME` — generated the same way as Step 8b/8c below, run from an ordinary terminal outside any jail:
+
+```bash
+rishi/bin/rishi run tools/generate_jail_local_keys_linux.rish
+# paste the printed SSH and GPG public keys into GitHub and Codeberg
+```
+
+This mirrors the macOS jail-local generator directly: identity from `GLOW_PROFILE.bron`, a dedicated SSH deploy key per forge, a jail-local `known_hosts` (fetched via `ssh-keyscan`, since a fresh `--private-home` jail starts with none at all), and a passphrase-free, signing-only GPG key, all under this project's own gitignored `.ssh/` and `.gnupg-rye/`, all wired into git config directly. Once both keys are pasted into both forges, relaunch Cursor in the jail as usual (`./tools/cursor-jail.sh`); the jailed session can now push and sign under its own dedicated identity, and the host's other project never enters the jail's view at all.
 
 ---
 
