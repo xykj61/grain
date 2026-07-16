@@ -1,0 +1,190 @@
+//! linengrow/tube_manifest.rye — TUBE0: the Glow app-manifest mold.
+//!
+//! Per expanding-prompts/20260716-142818_glow-application-framework-and-
+//! publishing.md, Part 3 and Part 5 (rung TUBE0): an installable Glow
+//! application is a Pool agent, and what an app *is* — its name, its
+//! version, the capabilities it declares needing, the resource ceiling its
+//! own bounded loops run under — is a bounded `+$` mold, not a free-form
+//! bag of fields. This is the manifest half of that mold, expressed as a
+//! Rye value type with its own validation, before Pool's own agent runtime
+//! exists to admit anything against it — a pure value witness, buildable
+//! and checkable today, needing no emulator, no device, no agent host.
+//!
+//! Deliberately reuses caravan/capabilities.rye's own `right_*` bit
+//! constants for declared capabilities rather than inventing a parallel
+//! set: a manifest's own declared capability is exactly a
+//! (resource, rights_mask) pair, the same shape Pool's capability table
+//! already grants against — sameness, not two vocabularies for one idea.
+//!
+//! What "well-formed" means here, checked by `validate`:
+//!   - the app name and version are non-empty and within the bounded
+//!     name-length ceiling (mirrors Capability.name's own bound);
+//!   - at least one capability is declared (an app that declares nothing
+//!     could never be admitted to anything — an empty manifest is not a
+//!     minimal app, it is a malformed one);
+//!   - every declared capability names a non-empty resource and carries a
+//!     non-zero rights mask (a capability granting no right at all is
+//!     meaningless, and Pool's own `Rights.contains` would refuse it
+//!     silently forever — better to refuse the manifest that declares it,
+//!     loudly, before admission is ever attempted);
+//!   - the declared iteration bound is non-zero (per TAME root rule 2 and
+//!     the rune brief's own bounded-trap discipline — a loop whose stated
+//!     ceiling is zero can never legitimately run at all, which is not a
+//!     valid bound, it is an authoring mistake the manifest should catch
+//!     at its own boundary rather than let surface as a confusing runtime
+//!     refusal later).
+
+const std = @import("std");
+const assert = std.debug.assert;
+const tally_copy = @import("tally_copy.rye");
+const caps = @import("capabilities.rye");
+
+const tube_manifest_version = "20260716.143500";
+
+/// Maximum bytes in an app's name or version string.
+pub const max_name_len: u32 = 48;
+
+/// Maximum capabilities one manifest may declare. Bounded on purpose,
+/// mirroring caravan/capabilities.rye's own max_caps_per_dependent.
+pub const max_declared_caps: u32 = 8;
+
+fn buf_len_u32(buf: []const u8) u32 {
+    assert(buf.len <= std.math.maxInt(u32));
+    return @intCast(buf.len);
+}
+
+fn slice_len_u32(comptime T: type, buf: []const T) u32 {
+    assert(buf.len <= std.math.maxInt(u32));
+    return @intCast(buf.len);
+}
+
+// =========================================================================
+// § DeclaredCapability — one resource this app needs, and the right over it
+// =========================================================================
+
+// Invariant: resource_len <= max_name_len; rights_mask uses only bits
+// caravan/capabilities.rye already names (right_read/write/exec/net/device).
+pub const DeclaredCapability = struct {
+    resource: [max_name_len]u8 = undefined,
+    resource_len: u32 = 0,
+    rights_mask: u8 = 0,
+
+    pub fn init(resource: []const u8, rights_mask: u8) DeclaredCapability {
+        assert(resource.len <= max_name_len);
+        var dc: DeclaredCapability = .{};
+        dc.resource_len = buf_len_u32(resource);
+        tally_copy.copy_disjoint(u8, dc.resource[0..resource.len], resource);
+        dc.rights_mask = rights_mask;
+        assert(dc.resource_len <= max_name_len);
+        return dc;
+    }
+
+    pub fn resource_slice(self: *const DeclaredCapability) []const u8 {
+        assert(self.resource_len <= max_name_len);
+        const n: usize = @intCast(self.resource_len);
+        assert(n <= self.resource.len);
+        return self.resource[0..n];
+    }
+};
+
+// =========================================================================
+// § Manifest — the whole of what an app declares about itself
+// =========================================================================
+
+pub const ManifestError = error{
+    NameEmpty,
+    NameTooLong,
+    VersionEmpty,
+    VersionTooLong,
+    NoDeclaredCapabilities,
+    TooManyDeclaredCapabilities,
+    CapabilityResourceEmpty,
+    CapabilityRightsMaskZero,
+    IterationBoundZero,
+};
+
+// Invariant: name_len <= max_name_len; version_len <= max_name_len;
+// cap_count <= max_declared_caps when active; iteration_bound_max >= 1.
+pub const Manifest = struct {
+    name: [max_name_len]u8 = undefined,
+    name_len: u32 = 0,
+    version: [max_name_len]u8 = undefined,
+    version_len: u32 = 0,
+    caps: [max_declared_caps]DeclaredCapability = undefined,
+    cap_count: u32 = 0,
+    /// The stated ceiling every bounded loop in this app's own code must
+    /// carry at its own site, per the rune brief's `|- <bound>` design —
+    /// TUBE0 does not enforce individual loops (that is the compiler's own
+    /// job once Glow lowers `|-`); it asserts the manifest at least
+    /// *declares* a real, non-zero ceiling, the same way a mold refuses a
+    /// field that could never hold a valid value.
+    iteration_bound_max: u32 = 0,
+
+    pub fn name_slice(self: *const Manifest) []const u8 {
+        assert(self.name_len <= max_name_len);
+        const n: usize = @intCast(self.name_len);
+        return self.name[0..n];
+    }
+
+    pub fn version_slice(self: *const Manifest) []const u8 {
+        assert(self.version_len <= max_name_len);
+        const n: usize = @intCast(self.version_len);
+        return self.version[0..n];
+    }
+
+    pub fn declares(self: *const Manifest, resource: []const u8, need: u8) bool {
+        assert(self.cap_count <= max_declared_caps);
+        var i: u32 = 0;
+        while (i < self.cap_count) : (i += 1) {
+            assert(i < max_declared_caps);
+            const dc = &self.caps[i];
+            if (std.mem.eql(u8, dc.resource_slice(), resource)) {
+                return caps.Rights.contains(dc.rights_mask, need);
+            }
+        }
+        return false;
+    }
+};
+
+/// Build a manifest from its parts and immediately validate it — a
+/// Manifest value that exists at all is, by construction, well-formed;
+/// there is no half-built, unchecked manifest anywhere in this module,
+/// the same "checked at expansion, never merely trusted" discipline the
+/// rune brief names for a bounded trap's own hidden counter.
+pub fn build(
+    name: []const u8,
+    version: []const u8,
+    declared: []const DeclaredCapability,
+    iteration_bound_max: u32,
+) ManifestError!Manifest {
+    if (name.len == 0) return error.NameEmpty;
+    if (name.len > max_name_len) return error.NameTooLong;
+    if (version.len == 0) return error.VersionEmpty;
+    if (version.len > max_name_len) return error.VersionTooLong;
+    if (declared.len == 0) return error.NoDeclaredCapabilities;
+    if (declared.len > max_declared_caps) return error.TooManyDeclaredCapabilities;
+    if (iteration_bound_max == 0) return error.IterationBoundZero;
+
+    for (declared) |dc| {
+        if (dc.resource_len == 0) return error.CapabilityResourceEmpty;
+        if (dc.rights_mask == 0) return error.CapabilityRightsMaskZero;
+    }
+
+    var m: Manifest = .{};
+    m.name_len = buf_len_u32(name);
+    tally_copy.copy_disjoint(u8, m.name[0..name.len], name);
+    m.version_len = buf_len_u32(version);
+    tally_copy.copy_disjoint(u8, m.version[0..version.len], version);
+    m.cap_count = slice_len_u32(DeclaredCapability, declared);
+    var i: u32 = 0;
+    while (i < declared.len) : (i += 1) {
+        m.caps[i] = declared[i];
+    }
+    m.iteration_bound_max = iteration_bound_max;
+
+    assert(m.name_len <= max_name_len);
+    assert(m.version_len <= max_name_len);
+    assert(m.cap_count <= max_declared_caps);
+    assert(m.iteration_bound_max >= 1);
+    return m;
+}

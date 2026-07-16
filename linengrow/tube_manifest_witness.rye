@@ -1,0 +1,120 @@
+//! linengrow/tube_manifest_witness.rye — proves TUBE0: the app-manifest mold.
+//!
+//!   rye build linengrow/tube_manifest_witness.rye -femit-bin=linengrow/bin/tube_manifest_witness
+//!   linengrow/bin/tube_manifest_witness
+//!
+//! Per expanding-prompts/20260716-142818_glow-application-framework-and-
+//! publishing.md rung TUBE0 and linengrow/tube_manifest.rye. Eight claims:
+//!   1. A well-formed manifest (real name, version, at least one declared
+//!      capability, a real iteration bound) builds cleanly.
+//!   2. `declares` answers true for a capability the manifest actually
+//!      grants, checking the exact right rather than mere resource
+//!      presence — the same discipline Pool's own capability table keeps.
+//!   3. `declares` answers false for a right the manifest never granted
+//!      over a resource it does name (read-only declared, write asked).
+//!   4. `declares` answers false for a resource never named at all.
+//!   5. An empty name is refused NameEmpty.
+//!   6. A manifest with zero declared capabilities is refused
+//!      NoDeclaredCapabilities — an app that asks for nothing could never
+//!      be admitted to anything.
+//!   7. A declared capability with a zero rights mask is refused
+//!      CapabilityRightsMaskZero — a capability granting no right is
+//!      meaningless and would otherwise refuse silently forever at
+//!      admission time instead of loudly at the manifest's own boundary.
+//!   8. A manifest whose iteration bound is zero is refused
+//!      IterationBoundZero — TAME root rule 2's own bounded-loop discipline,
+//!      checked at the manifest boundary rather than left to a confusing
+//!      runtime failure later.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const caps = @import("capabilities.rye");
+const tm = @import("tube_manifest.rye");
+
+const witness_version = "20260716.143500";
+
+fn run_selftest() !u8 {
+    // Claim 1: a well-formed manifest builds cleanly.
+    var declared = [_]tm.DeclaredCapability{
+        tm.DeclaredCapability.init("network", caps.right_net),
+        tm.DeclaredCapability.init("sala-session", caps.right_read | caps.right_write),
+    };
+    const manifest = try tm.build("sala-broadcaster", "0.1.0", &declared, 32);
+    assert(std.mem.eql(u8, manifest.name_slice(), "sala-broadcaster"));
+    assert(std.mem.eql(u8, manifest.version_slice(), "0.1.0"));
+    assert(manifest.cap_count == 2);
+    assert(manifest.iteration_bound_max == 32);
+    print("tube0: well-formed manifest built -- name={s} version={s} caps={d} bound={d}\n", .{
+        manifest.name_slice(),
+        manifest.version_slice(),
+        manifest.cap_count,
+        manifest.iteration_bound_max,
+    });
+    print("tube0: GREEN welcome path -- a real manifest parses.\n", .{});
+
+    // Claim 2: declares() answers true for a real grant, checking the exact right.
+    assert(manifest.declares("network", caps.right_net));
+    assert(manifest.declares("sala-session", caps.right_read | caps.right_write));
+    print("tube0: declares() confirms the exact granted rights -- GREEN welcome path.\n", .{});
+
+    // Claim 3: declares() answers false when the resource is named but the
+    // right was never granted (network was declared net-only, not device).
+    assert(!manifest.declares("network", caps.right_device));
+    print("tube0: declares() refuses an ungranted right over a named resource -- GREEN unwelcome path.\n", .{});
+
+    // Claim 4: declares() answers false for a resource never named at all.
+    assert(!manifest.declares("camera", caps.right_read));
+    print("tube0: declares() refuses a resource never named in the manifest -- GREEN unwelcome path.\n", .{});
+
+    // Claim 5: an empty name is refused at the manifest's own boundary.
+    const empty_name = tm.build("", "0.1.0", &declared, 32);
+    if (empty_name) |_| {
+        return error.EmptyNameAccepted;
+    } else |err| {
+        if (err != tm.ManifestError.NameEmpty) return err;
+    }
+    print("tube0: empty name refused NameEmpty -- GREEN unwelcome path.\n", .{});
+
+    // Claim 6: zero declared capabilities is refused -- an app that asks
+    // for nothing could never be admitted to anything.
+    const no_caps: [0]tm.DeclaredCapability = .{};
+    const empty_caps = tm.build("no-op-app", "0.1.0", &no_caps, 32);
+    if (empty_caps) |_| {
+        return error.NoCapabilitiesAccepted;
+    } else |err| {
+        if (err != tm.ManifestError.NoDeclaredCapabilities) return err;
+    }
+    print("tube0: zero declared capabilities refused NoDeclaredCapabilities -- GREEN unwelcome path.\n", .{});
+
+    // Claim 7: a capability with a zero rights mask is refused -- a
+    // capability granting no right is meaningless.
+    var zero_rights = [_]tm.DeclaredCapability{
+        tm.DeclaredCapability.init("network", 0),
+    };
+    const zero_mask = tm.build("meaningless-app", "0.1.0", &zero_rights, 32);
+    if (zero_mask) |_| {
+        return error.ZeroRightsMaskAccepted;
+    } else |err| {
+        if (err != tm.ManifestError.CapabilityRightsMaskZero) return err;
+    }
+    print("tube0: zero-rights capability refused CapabilityRightsMaskZero -- GREEN unwelcome path.\n", .{});
+
+    // Claim 8: an iteration bound of zero is refused -- TAME root rule 2's
+    // own bounded-loop discipline, checked at the manifest boundary.
+    const zero_bound = tm.build("unbounded-app", "0.1.0", &declared, 0);
+    if (zero_bound) |_| {
+        return error.ZeroBoundAccepted;
+    } else |err| {
+        if (err != tm.ManifestError.IterationBoundZero) return err;
+    }
+    print("tube0: zero iteration bound refused IterationBoundZero -- GREEN unwelcome path.\n", .{});
+
+    print("tube0: version {s}\n", .{witness_version});
+    print("GREEN: TUBE0 -- the app-manifest mold parses a real app and refuses every malformed shape named above.\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}

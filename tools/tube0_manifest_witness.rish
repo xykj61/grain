@@ -1,0 +1,27 @@
+# tube0_manifest_witness.rish — TUBE0: the Glow app-manifest mold.
+#
+# Per expanding-prompts/20260716-142818_glow-application-framework-and-
+# publishing.md rung TUBE0: an installable Glow application is a Pool
+# agent, and a manifest is a bounded mold naming what it is — name,
+# version, declared capabilities, a real iteration bound. This is the
+# reachable, device-free first rung of the TUBE application-framework
+# ladder, buildable and checkable today with no agent runtime, no
+# emulator, no physical device. See linengrow/tube_manifest.rye.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/tube0_manifest_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/tube_manifest_witness"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/tube_manifest_witness.rye -femit-bin=${bin}"]
+assert build.ok else "TUBE0 manifest witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "TUBE0 manifest witness exited non-zero"
+assert selftest.out contains "GREEN" else "TUBE0 manifest witness not GREEN"
+assert selftest.out contains "a real manifest parses" else "TUBE0 missing the well-formed welcome path"
+assert selftest.out contains "NoDeclaredCapabilities" else "TUBE0 missing the zero-capabilities refusal"
+assert selftest.out contains "IterationBoundZero" else "TUBE0 missing the zero-bound refusal"
+
+say "GREEN: TUBE0 manifest witness passed."

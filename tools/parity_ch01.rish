@@ -1106,3 +1106,8 @@ say "witness suite: the bounded |- rune's front half, real text parsed…"
 let rune_trap = run ["rishi/bin/rishi" "run" "tools/rune_bounded_trap_witness.rish"]
 assert rune_trap.ok else "Rune bounded-trap witness failed"
 say "GREEN: rune bounded-trap witness passed."
+
+say "witness suite: TUBE0 — the Glow app-manifest mold…"
+let tube0 = run ["rishi/bin/rishi" "run" "tools/tube0_manifest_witness.rish"]
+assert tube0.ok else "TUBE0 manifest witness failed"
+say "GREEN: TUBE0 manifest witness passed."
