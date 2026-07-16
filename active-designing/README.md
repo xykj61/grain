@@ -47,6 +47,7 @@ Dated briefs carry `YYYYMMDD-HHMMSS_short-slug.md` filenames; this README is the
 
 | Stamp | Brief | Meaning |
 |-------|-------|---------|
+| `20260716.033000` | [Sameness and the rune — Glow's grammar, composed and bounded, on RISC-V](20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md) | Resolves whether a rune is sameness or cleverness (closed · regular · checked-at-expansion) · curates Glow's own rune table · redesigns `\|-` as a bounded trap · a complicated two-level composition (Neth's own fold, in shape) · the RISC-V codegen claim quotes real disassembly, not guesswork |
 | `20260715.183700` | [Quin's dispatch loop — pseudocode over the four voices' real APIs](20260715-183700_quin_dispatch_loop_pseudocode.md) | Pseudocodes the Q-vane's own unbuilt turn loop against Lattice/Lantern/Anvil/Scribble's real, read-from-source signatures · names the halting bound explicitly · ties into the already-confirmed Quin×Puddle×Neth sandbox composition · names the one real gate (Lantern past fixture-served laps) that would actually open this |
 | living | [Proven-seat guest — hammock](proven-seat-guest-hammock.md) | Kaeden word · G0 GRUB milestone GREEN · G1–G3 ahead |
 | living | [Giving-lane T2 courtesy wire](giving-lane-t2-courtesy-wire.md) | Word seated · wire opened · composition witness ahead |
