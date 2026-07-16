@@ -1,0 +1,25 @@
+# rune_cast_witness.rish — the `^-` cast rune's front half, proves out.
+#
+# Per active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md
+# and tools/rune_bounded_trap_witness.rish (the first rune category, |-,
+# proved this front-end shape connects to a real checked back half). This
+# proves the shape generalizes to a second, independent rune category
+# rather than being a one-off special case for the trap alone.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/rune_cast_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "glow/bin/rune_cast_witness"
+
+let build = run ["sh" "-c" "mkdir -p glow/bin && env RYE_ZIG=${zig} rye/bin/rye build glow/rune_cast_witness.rye -femit-bin=${bin}"]
+assert build.ok else "Rune cast witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "Rune cast witness exited non-zero"
+assert selftest.out contains "GREEN" else "Rune cast witness not GREEN"
+assert selftest.out contains "naming aura" else "Rune cast witness missing the aura-mold claim"
+assert selftest.out contains "naming mold" else "Rune cast witness missing the named-mold claim"
+assert selftest.out contains "MoldNotAnAura" else "Rune cast witness missing the malformed-mold unwelcome path"
+
+say "GREEN: rune cast witness passed -- a second rune category parses, past the one |- started with."
