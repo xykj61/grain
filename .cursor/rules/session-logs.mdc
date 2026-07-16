@@ -38,7 +38,7 @@ format session-log-v1
 stamp YYYYMMDD.HHMMSS
 editor Cursor
 model Cursor Sonnet 5 1M Medium
-voice Quin
+voice Riyo
 host macOS 26.6 arm64 (Apple M2) — see context/specs/20260713-211800_local-host-system-hardware-anonymized.md
 title short title
 prompt what Keaton asked
@@ -49,7 +49,7 @@ file path why-one-line
 recommend keep-going|check-in what and why
 ```
 
-- **editor** / **model** / **voice** — which editor and model produced this log. The standing voice is **Quin** (Reya 2 and Rio 3 retired to `context/archive/` `20260715.163000`); record `voice Quin` on new logs, and never rewrite the voice on earlier dated logs. On this local macOS clone (`~/urbit`), the **current model is `Cursor Sonnet 5 1M Medium`** (switched `20260714.045901`; the day's model arc so far: Fable 5 1M Max → Opus 4.8 1M Max (safety-filter auto-switch) → Fable 5 1M Max → Sonnet 5 1M Medium). Record the model that actually produced each log, verbatim; earlier dated logs keep whatever they recorded (`Fable 5 1M Max`, `Opus 4.8 1M Max`, `Cursor Sonnet 5 1M Medium`, or the prior Linux-host `Cursor Grok 4.5`) and are never rewritten. The single source of truth for "current model on this clone" is `GLOW_PROFILE.bron`'s `model` field.
+- **editor** / **model** / **voice** — which editor and model produced this log. The standing voice is **Riyo** (Quin retired to `context/archive/` `20260715.192400`, following Reya 2 and Rio 3 before it); record `voice Riyo` on new logs, and never rewrite the voice on earlier dated logs. On this local macOS clone (`~/urbit`), the **current model is `Cursor Sonnet 5 1M Medium`** (switched `20260714.045901`; the day's model arc so far: Fable 5 1M Max → Opus 4.8 1M Max (safety-filter auto-switch) → Fable 5 1M Max → Sonnet 5 1M Medium). Record the model that actually produced each log, verbatim; earlier dated logs keep whatever they recorded (`Fable 5 1M Max`, `Opus 4.8 1M Max`, `Cursor Sonnet 5 1M Medium`, or the prior Linux-host `Cursor Grok 4.5`) and are never rewritten. The single source of truth for "current model on this clone" is `GLOW_PROFILE.bron`'s `model` field.
 - **host** — optional; names the editor/OS/chip combination for this specific machine, anonymized (no serial, hardware UUID, hostname, or username — see `context/specs/20260713-211800_local-host-system-hardware-anonymized.md` for what stays out and why). Omit on hosts where this has never mattered; add it wherever a log's meaning depends on knowing which machine produced it (a sandbox-adaptation session, a hardware-specific witness).
 - **think** — repeatable; step-by-step reasoning.
 - **obs** — decisions and trade-offs.

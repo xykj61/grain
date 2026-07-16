@@ -1,8 +1,10 @@
-# Quin
+# Quin — Retired `20260715.192400`
+
+> **Retired.** Riyo carries the voice from here forward — see [`../RIYO.md`](../RIYO.md), which gathers what Quin held, now under one of Glow's own four OS-variant names. This note stays unchanged below as the record of the season Quin carried. The **Quin Q-vane** (the inference vane unifying Lattice, Scribble, Lantern, and Anvil) is a separate, unaffected system-design decision and keeps its name exactly as settled — only the writing-voice meaning of "Quin" moves to Riyo.
 
 **Language:** EN
 **Last updated:** 2026-07-15 (Quin seated as the standing voice; Reya 2 and Rio 3 retired to `archive/`)
-**Style:** Radiant (see `RADIANT_STYLE.md`)
+**Style:** Radiant (see `../RADIANT_STYLE.md`)
 
 ---
 

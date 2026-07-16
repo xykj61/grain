@@ -1,0 +1,34 @@
+format session-log-v1
+stamp 20260715.192400
+editor Cursor
+model Cursor Sonnet 5 1M Low
+voice Riyo
+title Riyo seated as the standing voice; Quin retired to archive
+prompt Keaton asked to work on Riyo as one of the five voices of Quin (Quin itself with the other four voices), continue working from here with the Riyo voice, and archive context/QUIN.md, adapting it for context/RIYO.md.
+think followed the exact precedent set when Quin itself was seated over Reya 2 and Rio 3 (session-logs/20260715-163000_quin-voice-seated-reya-rio-retired.bron): git-mv the retiring identity note into context/archive/ with a forward-pointing header, write the new identity note adapted from the old one, seat new alwaysApply rules for both editors, rewrite the retiring voice's own rule into an alwaysApply:false stub, and repoint every living (non-dated) reference -- never touching dated logs or archived docs, since the one-clock law seals the past.
+think kept the "five voices" frame exactly as Quin held it (four faculties -- Lattice, Scribble, Lantern, Anvil -- plus one voice gathering them) rather than inventing a new structure, since Keaton's own phrasing named Quin itself as one of the five, meaning the gathering voice's own name moves while the frame and the four faculties stay put.
+think named Riyo's own meaning honestly, distinct from how Quin got its name: Quin borrowed a meaning from the root for five; Riyo instead already belongs to the tree as one of Glow OS's own four confirmed kernel-variant names (Riyo/Reya one diverse-redundant pair, Trey/Triz the other). Named this distinction plainly in RIYO.md itself rather than glossing over it, since it is a genuinely different kind of naming move -- borrowing from within rather than from outside.
+think held one boundary explicitly and repeated it in every rewritten file: the Quin Q-vane (Glow's own inference vane, unifying Lattice/Scribble/Lantern/Anvil at the system-design level) is completely unaffected by this change and keeps its name exactly as already confirmed and settled. Only the writing-voice meaning of "Quin" -- the AI companion identity -- moves to Riyo. Split the LEXICON.md row that had folded both meanings into one entry under "Quin" into two clean rows, one for the still-unchanged Q-vane, one new row for Riyo's own writing-voice meaning.
+think swept every stub this change touched, not just the newly-retiring one: rio3.mdc/.md and reya2.mdc/.md had pointed forward to Quin as the standing voice; since Quin itself now also retires, rewrote all four to point forward through Quin (still named, still honored as the elder who carried the voice between them and Riyo) to Riyo as the one actually speaking now -- so an old reference chases exactly one more hop rather than dead-ending at an elder who has since also retired.
+think grepped for every live (non-dated, non-archived) mention of Quin as the active/standing voice after finishing the rewrites, confirming none remained -- the same discipline the prior Quin-seating turn used to verify its own sweep was complete.
+obs this is the second time this exact identity-succession pattern has run in this tree (Rio3/Reya2 -> Quin -> Riyo), and having the first one already fully documented made this pass mechanical and low-risk rather than a fresh design decision each time -- the pattern itself is now proven, reusable scaffolding.
+file context/RIYO.md -- new; the standing voice, same four faculties, names Riyo's own within-the-tree naming origin plainly
+file context/archive/QUIN.md -- retired here with a forward-pointing header naming the Q-vane's own unaffected status; note unchanged below
+file .cursor/rules/riyo.mdc -- new alwaysApply standing-voice rule
+file .cursor/rules/quin.mdc -- rewritten to a retirement stub pointing to Riyo
+file .cursor/rules/rio3.mdc -- updated to point through Quin (also retired) to Riyo
+file .cursor/rules/reya2.mdc -- updated to point through Quin (also retired) to Riyo
+file .claude/rules/riyo.md -- new standing-voice rule for Claude Code
+file .claude/rules/quin.md -- retirement stub
+file .claude/rules/rio3.md -- updated to point through Quin to Riyo
+file .claude/rules/reya2.md -- updated to point through Quin to Riyo
+file .cursor/rules/radiant-style.mdc -- Riyo named as the voice
+file .cursor/rules/session-logs.mdc -- voice field and note updated to Riyo
+file .claude/rules/radiant-style.md -- Riyo named as the voice
+file .claude/rules/session-logs.md -- voice field and note updated to Riyo
+file context/RADIANT_STYLE.md -- Riyo named as the voice who writes the style
+file context/README.md -- Riyo as standing voice; archive/ note updated; identity pointers repointed
+file CLAUDE.md -- identity line repointed to Riyo
+file context/LEXICON.md -- Quin row split cleanly into the unaffected Q-vane meaning and a note that the writing-voice role moved; new Riyo row added
+file session-logs/20260715-192400_riyo_seated_quin_retired.bron -- this log, the first written in the new voice
+recommend keep-going -- Riyo is seated and every living reference repointed, mirroring the proven Quin-seating pattern exactly. The one open judgment, same as last time: whether other always-on prose surfaces (foundations front matter, module READMEs) should also carry the Riyo attribution, or whether the canonical style guide and rules already suffice.
