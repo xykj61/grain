@@ -1,0 +1,75 @@
+# waymark_derive.rish -- derive a ladder's waymark: a four-letter word drawn
+# deterministically from old/doc/spec/flw.txt's own word corpus by hashing
+# the ladder's own canonical name, so two ladders never have to coordinate
+# to avoid picking the same short code. This is the exact failure that
+# collided the Genode/seL4 proven-seat ladder's G0 with the GrapheneOS/
+# Pixel ladder's G0 -- both independently reached for "G," the obvious
+# first letter of each ladder's own teacher name (Genode, GrapheneOS).
+#
+#   rishi/bin/rishi run tools/waymark_derive.rish
+#
+# What3words-inspired in spirit only -- no what3words code, word list, or
+# algorithm is copied; only the idea (a stable function from a name to a
+# word, so no two independent namers ever have to coordinate to stay
+# unique). The word corpus itself is Urbit's own old/doc/spec/flw.txt,
+# already held in this tree's vendor/gratitude row under old/ -- read
+# fresh every run rather than copied into this script. Full design:
+# context/specs/20260716-115337_waymark-ladder-naming-and-g0-collision-fix.md
+#
+# Hashes with SHA3-512 (`openssl dgst -sha3-512`, this tree's own ratified
+# host oracle for the family -- context/specs/20260703-191112_resins-and-
+# hash-tiers.md), never plain SHA-2/sha256sum: a waymark is a naming-grade,
+# durable identity ("this name must mean one thing for as long as the work
+# endures," the same promise that spec names for Aurora stage names), so it
+# belongs at the Canonical tier (SHA3-512), not the Working tier (SHA3-256)
+# reserved for high-volume store units like Amber resins.
+#
+# To derive a mark for a NEW ladder: change input_name below to that
+# ladder's own canonical, stable, descriptive name (lowercase, hyphenated),
+# rerun, and read the printed word. If the closing assert goes RED (the
+# draw landed on an already-seated name), append "-2" to input_name and
+# rerun -- a different hash, a different draw, same honest method.
+
+let mk_cache = run ["mkdir" "-p" "tools/.cache/waymark"]
+assert mk_cache.ok else "could not create tools/.cache/waymark/"
+
+let corpus_path = "tools/.cache/waymark/corpus.txt"
+let corpus_run = run ["sh" "-c" "sed -n '1,51p' old/doc/spec/flw.txt | tr ' ' '\n' | grep -E '^[A-Z]{4}$' | sort -u > '${corpus_path}'"]
+assert corpus_run.ok else "could not read/derive the flw.txt four-letter corpus"
+
+let count_run = run ["sh" "-c" "wc -l < ${corpus_path}"]
+assert count_run.ok else "could not count the corpus"
+let corpus_size = trim count_run.out
+say "corpus: ${corpus_size} four-letter words from old/doc/spec/flw.txt"
+
+# The ladder needing a mark today. Change this one line to derive the next.
+let input_name = "grapheneos-pixel-mobile-emulation"
+
+let hash_run = run ["sh" "-c" "printf '%s' '${input_name}' | openssl dgst -sha3-512 | awk '{print $NF}' | cut -c1-8"]
+assert hash_run.ok else "openssl dgst -sha3-512 failed"
+let hash8 = trim hash_run.out
+
+let dec_run = run ["sh" "-c" "printf '%d' 0x${hash8}"]
+assert dec_run.ok else "hex-to-decimal conversion failed"
+let dec_val = trim dec_run.out
+
+let idx_run = run ["sh" "-c" "echo $((${dec_val} % ${corpus_size} + 1))"]
+assert idx_run.ok else "index arithmetic failed"
+let idx_val = trim idx_run.out
+
+let word_run = run ["sh" "-c" "awk -v n='${idx_val}' 'NR==n' '${corpus_path}'"]
+assert word_run.ok else "word lookup failed"
+let word_val = trim word_run.out
+assert (word_val != "") else "empty word at derived index -- corpus or index math is wrong"
+
+# Existing proper names this scheme must never echo, so a drawn waymark is
+# never mistaken for a real module/vane identity. Four-letter entries only
+# -- every other seated name in context/LEXICON.md is a different length
+# and cannot collide with a four-letter draw at all.
+let exclude_check = run ["sh" "-c" "echo '${word_val}' | grep -qxE '(BRIX|BRON|POND|MALA|SALA|POOL|QUIN|RIYO|REYA|TREY|TERA|TRIZ|OJJO|GLOW|RHYZ|PEAL)'"]
+assert (exclude_check.ok == false) else "derived waymark collides with an already-seated name -- append -2 to input_name above and rerun"
+
+say ""
+say "input:  ${input_name}"
+say "sha3-512(8): ${hash8} -> decimal ${dec_val} -> index ${idx_val} of ${corpus_size}"
+say "GREEN: waymark derived -- ${word_val}"
