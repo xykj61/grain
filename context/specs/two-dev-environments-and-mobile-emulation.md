@@ -3,7 +3,7 @@
 **Language:** EN
 **Stamp:** living ledger (born `20260715.193000`) · refreshed `20260715.230000` (M0-riscv rung added; frozen dated original now a pointer stub, per [`living-vs-dated.md`](living-vs-dated.md)) · refreshed `20260715.163500` (a third, interim macOS environment named; the Pixel/GrapheneOS ladder, G0–G3, opened separately from the Fairphone/postmarketOS M-ladder)
 **Style:** Radiant (see `../RADIANT_STYLE.md`)
-**Voice:** Riyo
+**Voice:** Quin
 **Status:** Living — distinguishes the dev environments (cloud, NixOS, and now this interim macOS host) and names both mobile-emulation ladders (M-ladder for the Fairphone/postmarketOS Glowphone body, G-ladder for the Pixel/GrapheneOS SLC line). Register: mixed — M0 and M0-riscv are checkable (green); G0 is checked-and-honestly-blocked on a real host issue; everything else is horizon (design).
 
 ---

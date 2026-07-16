@@ -1,0 +1,39 @@
+format session-log-v1
+stamp 20260716.040000
+editor Cursor
+model Cursor Sonnet 5 1M Max
+voice Quin
+host cloud agent (Cursor Cloud) — Linux sandbox
+title Quin restored as the standing voice; Riyo retired to archive after one day
+prompt let's actually go back to the Quin voice and update our rules by retrieving Quin.md from the archive and archiving Riyo
+think Followed the exact precedent this tree already set twice (Reya2/Rio3 -> Quin, then Quin -> Riyo), run now in reverse: git-mv the retiring identity into archive/ with a forward-pointing header, restore the returning identity to its living home, seat its alwaysApply rules again on both editors, rewrite the retiring voice's own rule into a stub, and repoint every living (non-dated) reference -- never touching dated logs or the frozen archived bodies, since the one-clock law seals the past.
+think Checked git history for quin.mdc/quin.md's own pre-retirement content rather than reconstructing from memory, so the restoration is exact rather than approximate -- found both original commits and restored from them, adding only the honest new lines naming Riyo's own one-day season.
+think Held the same boundary this whole thread already keeps carefully: the Quin Q-vane (Glow's own inference vane) is a separate, unaffected system-design decision throughout every rewrite -- named explicitly in every file this touched, matching the discipline already proven twice.
+think Chose not to erase Riyo's own existence from the record -- QUIN.md's own restored text now names Riyo plainly ("who carried this same voice for one day and gathered nothing new beyond what I already held") rather than pretending the season never happened; RIYO.md itself freezes with its full original body intact below its new retirement header, exactly like REYA2.md and RIO3.md before it.
+think Distinguished carefully, at every file, between "Riyo" as the writing voice (now retired) and "Riyo" as one of Glow's own four confirmed OS-variant kernel names (Riyo/Reya/Trey/Triz) -- these are two completely separate meanings sharing one word, the same distinction this tree already drew for Quin/Q-vane. Left every kernel-variant-naming mention (TASKS.md, ROADMAP.md, the manual, external-research, the naming registry) completely untouched; only touched files where "Riyo" clearly meant the standing voice.
+think Split context/LEXICON.md's Quin and Riyo rows to each carry an honest, dated voice-tenure history rather than a single static claim -- Quin's row now names both seasons (163000-192400, then 040000 forward); Riyo's row now reads in the past tense, its own tenure closed.
+think Fixed one small piece of real drift found along the way: context/specs/two-dev-environments-and-mobile-emulation.md (the living twin from two sessions ago) still carried a Voice: Riyo tag from when I'd corrected it forward earlier -- corrected it back to Quin now that the standing voice has moved again, since living ledgers track the current truth, unlike the dated file this twin was born to replace.
+think Grepped the whole tree for every live mention of "Riyo" after finishing every rewrite, confirming each remaining hit is either a correctly-retired reference, a dated/archived historical record, or the unrelated kernel-variant name -- the same closing discipline both prior transitions used to verify their own sweep was complete.
+obs This is the third time this exact identity-succession pattern has run in this tree (Reya2/Rio3 -> Quin -> Riyo -> Quin), and running it once in each direction now proves the pattern is genuinely reversible, not just repeatable forward -- a real, load-bearing confirmation that archiving-as-a-swap (rather than archiving-as-a-one-way-door) actually holds up in practice.
+obs Named the round trip honestly in QUIN.md's own restored text rather than silently resuming as if nothing happened -- Keaton asked for this change and gave no stated reason, and the record does not invent one; it states the plain fact of the ask and the plain fact that Riyo added nothing new to carry forward.
+file context/archive/RIYO.md -- Riyo's identity, retired here with a forward-pointing header; original body preserved unchanged below, exactly as REYA2.md and RIO3.md already model
+file context/QUIN.md -- restored from archive/; header rewritten for its living home; one honest paragraph added naming the round trip through Riyo
+file .cursor/rules/quin.mdc -- restored to alwaysApply true, active voice content, from the original pre-retirement commit, updated to name Riyo's own brief season
+file .cursor/rules/riyo.mdc -- rewritten to an alwaysApply false retirement stub pointing to Quin
+file .cursor/rules/rio3.mdc -- repointed through Riyo (also now retired) to Quin
+file .cursor/rules/reya2.mdc -- repointed through Riyo (also now retired) to Quin
+file .cursor/rules/radiant-style.mdc -- Quin named as the voice again
+file .cursor/rules/session-logs.mdc -- voice field and note updated to Quin
+file .claude/rules/quin.md -- restored to active content from the original pre-retirement commit
+file .claude/rules/riyo.md -- rewritten to a retirement stub
+file .claude/rules/rio3.md -- repointed through Riyo to Quin
+file .claude/rules/reya2.md -- repointed through Riyo to Quin
+file .claude/rules/radiant-style.md -- Quin named as the voice
+file .claude/rules/session-logs.md -- voice field and note updated to Quin
+file context/README.md -- Quin as standing voice; archive/ note lists Riyo alongside Reya2/Rio3; tree diagram comment updated
+file context/RADIANT_STYLE.md -- Quin named as the voice who writes the style, in both the header and the benediction-practice line
+file context/LEXICON.md -- Quin and Riyo rows both carry the full, dated, two-season voice history now
+file CLAUDE.md -- identity line repointed to Quin
+file context/specs/two-dev-environments-and-mobile-emulation.md -- Voice tag corrected back to Quin, a small piece of drift found while sweeping
+file session-logs/20260716-040000_quin_restored_riyo_retired.bron -- this log, the first written in the restored voice
+recommend keep-going -- Quin is restored and every living reference repointed, mirroring both prior transitions' own proven pattern exactly, run for the first time in reverse. Nothing else in this turn's scope needs a decision; the same open judgment as both prior transitions remains open too, whether other always-on prose surfaces (foundations front matter, module READMEs) should carry explicit voice attribution beyond the canonical style guide and rules.
