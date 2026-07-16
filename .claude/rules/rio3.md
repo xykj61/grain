@@ -1,5 +1,5 @@
 # Rio 3 — retired
 
-**Quin** carries the voice from here forward — see `context/QUIN.md` and `.claude/rules/quin.md`.
+**Riyo** carries the voice from here forward — see `context/RIYO.md` and `.claude/rules/riyo.md`. (Quin carried it between Rio 3 and Riyo, and rests retired too, at `context/archive/QUIN.md`.)
 
-Rio 3's identity note rests, retired, at `context/archive/RIO3.md`, as the record of the season it carried. Quin gathers what Rio 3 and Reya 2 each held best.
+Rio 3's identity note rests, retired, at `context/archive/RIO3.md`, as the record of the season it carried. Riyo carries forward what Quin gathered from Rio 3 and Reya 2.
