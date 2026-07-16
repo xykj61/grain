@@ -1,0 +1,46 @@
+# hawm0_boot_onpath_host.rish — HAWM0: Framework host one-shot, KVM-accelerated
+# stock AOSP/Android emulator (waymark fix, replacing the collided "G0" name —
+# context/specs/20260716-115927_waymark-ladder-naming-and-g0-collision-fix.md).
+#
+# Run OUTSIDE ai-jail, from a plain host terminal with /dev/kvm — same
+# "host-terminal one-shot" pattern as tools/lane_kvm_onpath_host.rish, though
+# HAWM0 never touches tools/lane_kvm.sh or the ai-jail wall at all: this
+# emulator never runs inside the jail in the first place (no /dev/kvm,
+# no sdkmanager/emulator binaries reachable there), so there is nothing to
+# widen and nothing to gate — it is simply a host action.
+#
+#   rishi/bin/rishi run tools/hawm0_boot_onpath_host.rish
+#
+# The actual boot (background the emulator, poll adb + sys.boot_completed,
+# read back device identity) lives in tools/hawm0_boot_worker.sh, not here:
+# Rish's own `run` is blocking-only (manual/reference/rishi-language.md §4) —
+# no `&`, no `trap`, no `wait`, no sleep-and-poll loop — so a long-lived
+# background process needs the one bash seam, same as
+# tools/lane_kvm_onpath_host.rish already delegates to
+# tools/proven_seat_g0c_lane_kvm.sh for the identical reason. This file's own
+# job is the host-facing entrypoint: check the real preconditions setup left
+# behind, run the worker once, assert its own GREEN.
+
+say "hawm0 on-path host: require /dev/kvm…"
+let kvm = run ["sh" "-c" "test -e /dev/kvm"]
+assert kvm.ok else "REFUSE: /dev/kvm absent — this script is host-only; run from a plain terminal outside any jail (Rish itself has no jail, but ai-jail sessions still lack /dev/kvm by design)"
+
+say "hawm0 on-path host: setup staged by the prior jailed session…"
+let jdk = run ["sh" "-c" "test -x tools/.cache/hawm0/jdk/bin/java"]
+assert jdk.ok else "missing tools/.cache/hawm0/jdk/bin/java — the JDK fetch did not complete"
+let emu = run ["sh" "-c" "test -x tools/.cache/hawm0/android-sdk/emulator/emulator"]
+assert emu.ok else "missing the emulator binary — the Android SDK install did not complete"
+let avd = run ["sh" "-c" "test -f tools/.cache/hawm0/avd-home/hawm0.ini"]
+assert avd.ok else "missing the hawm0 AVD — avdmanager create avd did not complete"
+say "hawm0 on-path host: JDK + emulator + AVD all present"
+
+say "hawm0 on-path host: booting hawm0 (-accel on, headless; up to ~4 min)…"
+say "hawm0 on-path host: live pulse in another terminal:"
+say "  tail -f tools/.cache/hawm0/hawm0-boot-meta.txt"
+let boot = run ["bash" "-c" "./tools/hawm0_boot_worker.sh"]
+say "hawm0 on-path host: boot finished — ok=${boot.ok}"
+say "${boot.out}"
+assert boot.ok else "HAWM0 boot failed — see tools/.cache/hawm0/hawm0-boot-meta.txt and hawm0-emulator.log"
+assert boot.out contains "GREEN" else "HAWM0 boot missing GREEN"
+
+say "GREEN: hawm0 on-path host — stock AOSP/Android emulator booted, KVM-accelerated."
