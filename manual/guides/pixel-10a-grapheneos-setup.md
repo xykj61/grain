@@ -18,10 +18,14 @@ You just bought a real device — a Google Pixel 10a — and you want GrapheneOS
 
 ## Before You Start — What You Need
 
-- **This computer** — Ubuntu 24.04 LTS is on GrapheneOS's own officially-supported list for the web installer, so you're already on a good host. You'll need at least 2GB of free memory and 32GB of free storage (checked separately from your own agent's own jailed workspace — this runs in your ordinary desktop session, not inside `~/urbit`'s jail).
-- **A browser** — **Brave is already installed on this host** and is one of GrapheneOS's own officially-supported browsers for the web installer, with one catch: **disable Brave Shields** on the install page before you start (Shields caps available storage to avoid fingerprinting, which starves the installer of the space it needs to extract the download). Click the Brave Shields icon in the address bar and toggle it off for `grapheneos.org` specifically — no need to disable it everywhere.
-- **A real USB-C cable** — the one that came in the box with the Pixel 10a, if you still have it. Avoid a USB hub (the front-panel ports on a desktop case are usually a hub); plug directly into a rear port on this laptop. Cheap or damaged cables are, by GrapheneOS's own account, the single most common cause of installer trouble.
-- **Not a virtual machine** — install from this real Ubuntu desktop directly, never through a VM (USB passthrough for this kind of low-level flashing is unreliable, and VMs often shortchange memory/storage). This also means: **do this from your ordinary desktop session, outside `tools/cursor-jail.sh`'s own ai-jail** — the jail's whole point is walling off hardware and devices, which is exactly what this task needs to reach.
+- **This computer** — Ubuntu 24.04 LTS is on GrapheneOS's own officially-supported list for the web installer, so you're already on a good host.
+  You'll need at least 2GB of free memory and 32GB of free storage (checked separately from your own agent's own jailed workspace — this runs in your ordinary desktop session, not inside `~/urbit`'s jail).
+- **A browser** — **Brave is already installed on this host** and is one of GrapheneOS's own officially-supported browsers for the web installer, with one catch: **disable Brave Shields** on the install page before you start.
+  Shields caps available storage to avoid fingerprinting, which starves the installer of the space it needs to extract the download. Click the Brave Shields icon in the address bar and toggle it off for `grapheneos.org` specifically — no need to disable it everywhere.
+- **A real USB-C cable** — the one that came in the box with the Pixel 10a, if you still have it.
+  Avoid a USB hub (the front-panel ports on a desktop case are usually a hub); plug directly into a rear port on this laptop. Cheap or damaged cables are, by GrapheneOS's own account, the single most common cause of installer trouble.
+- **Not a virtual machine** — install from this real Ubuntu desktop directly, never through a VM (USB passthrough for this kind of low-level flashing is unreliable, and VMs often shortchange memory/storage).
+  This also means: **do this from your ordinary desktop session, outside `tools/cursor-jail.sh`'s own ai-jail** — the jail's whole point is walling off hardware and devices, which is exactly what this task needs to reach.
 - **Two Linux-specific housekeeping steps**, both one-time:
   ```bash
   sudo apt install android-sdk-platform-tools-common
@@ -60,15 +64,21 @@ This step handles everything itself — flashing the latest firmware, rebooting 
 
 ## Step 6 — Lock the Bootloader (Wipes the Phone Again)
 
-Once flashing finishes, the installer page will offer a "Lock bootloader" button (or you can select it directly on the phone's own bootloader menu). This is not optional if you want the security GrapheneOS actually provides — an **unlocked** bootloader means verified boot cannot fully do its job, and fastboot can still flash/erase partitions from outside the OS. Confirm on the device the same way as Step 4 (volume button to select, power button to confirm). **This wipes the device once more** — the second and last wipe of this whole process, and the one that seats GrapheneOS's own verified-boot key into the Titan M2 secure element for real.
+Once flashing finishes, the installer page will offer a "Lock bootloader" button (or you can select it directly on the phone's own bootloader menu). This is not optional if you want the security GrapheneOS actually provides — an **unlocked** bootloader means verified boot cannot fully do its job, and fastboot can still flash/erase partitions from outside the OS.
+
+Confirm on the device the same way as Step 4 (volume button to select, power button to confirm). **This wipes the device once more** — the second and last wipe of this whole process, and the one that seats GrapheneOS's own verified-boot key into the Titan M2 secure element for real.
 
 ## Step 7 — First Boot and Setup
 
-Press the power button with "Start" selected in the bootloader menu, and GrapheneOS boots for the first time. Walk through the on-device setup screens normally. Near the end, there's a toggle for **OEM unlocking, checked by default — leave it checked to let setup disable OEM unlocking automatically**, which is the recommended, locked-down end state. (You can always re-enable OEM unlocking later from Developer options if you ever need to flash something again.)
+Press the power button with "Start" selected in the bootloader menu, and GrapheneOS boots for the first time. Walk through the on-device setup screens normally.
+
+Near the end, there's a toggle for **OEM unlocking, checked by default — leave it checked to let setup disable OEM unlocking automatically**, which is the recommended, locked-down end state. (You can always re-enable OEM unlocking later from Developer options if you ever need to flash something again.)
 
 ## Step 8 — Verify You're Actually Running Real GrapheneOS, Not an Imposter
 
-This is the step most guides skip, and it's the one that actually proves the hardware root of trust did its job. On every boot, GrapheneOS (being an "alternate OS" from the stock bootloader's own point of view) shows a brief yellow notice naming the SHA-256 hash of its own verified-boot public key, burned into the Titan M2 at install time. The Pixel 10a shows the **full** hash (older 4th/5th-gen Pixels only show a truncated 32-bit fragment, so this full check is a genuine Pixel-10a-and-later advantage). Compare what your phone shows against GrapheneOS's own official, published value for exactly this device:
+This is the step most guides skip, and it's the one that actually proves the hardware root of trust did its job. On every boot, GrapheneOS (being an "alternate OS" from the stock bootloader's own point of view) shows a brief yellow notice naming the SHA-256 hash of its own verified-boot public key, burned into the Titan M2 at install time.
+
+The Pixel 10a shows the **full** hash (older 4th/5th-gen Pixels only show a truncated 32-bit fragment, so this full check is a genuine Pixel-10a-and-later advantage). Compare what your phone shows against GrapheneOS's own official, published value for exactly this device:
 
 ```
 Pixel 10a verified-boot key hash:
