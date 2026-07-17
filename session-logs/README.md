@@ -8,6 +8,8 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260717.163310` — [Techno-Optimist gratitude to Quin then send Glow @u64](20260717-163310_techno-optimist-quin-and-u64-send.bron) — manifesto Voice Quin; nest @u64 to pier
+- `20260717.163004` — [Nested @u64 closes unsigned cast family](20260717-163004_nested-u64-cast-family.bron) — face + arm nests; desk GREEN
 - `20260717.162620` — [Quin intentionally unpaired — five settled](20260717-162620_quin-intentionally-unpaired.bron) — five boot images; no twin hunt
 - `20260717.162114` — [Quin seated as fifth OS variant](20260717-162114_quin-fifth-os-variant.bron) — beside Reya · Riyo · Trey · Triz; twin open
 - `20260717.161823` — [Glass covers Network · Sensors toggles](20260717-161823_glass-covers-network-sensors.bron) — load-bearing toggles; pack path unchanged

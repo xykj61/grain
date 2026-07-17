@@ -4,7 +4,7 @@
 
 **Language:** EN
 **Version:** `20260715` (Pool keystone revival prioritized · Quin voice seated · align pass reconciles the closed ladder)
-**Last updated:** 2026-07-17 (**Quin unpaired** `20260717.162620` — five OS variants settled; TUBE6/HAWM2 horizon)
+**Last updated:** 2026-07-17 (**Glow nested @u64** `20260717.163004` — unsigned cast family closed; Quin unpaired · TUBE6/HAWM2 horizon)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Lens:** TAME — safety, performance, joy; the Seed Law; [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md)
@@ -190,7 +190,7 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **Eighth rune head — `=*`, `20260717.150453`** — [`glow/rune_alias.rye`](../glow/rune_alias.rye) completes the `=` trio. Witness GREEN; `parity_ch01` wired.
 
-**Glow generator hop** (sent through `dbf19e2880`) · **product edge `892ede954c` · templates `185a8ff460` · glass toggles `20260717.161823`** — Resource Scope · Network · Sensors load-bearing on glass; OTHER_SENSORS emit; front door + templates current. Hold: GrapheneOS-facing code stays Glow/Rye → native. Next: send glass toggle cover, then check-in before HAWM2/TUBE6 or a new parallel domain.
+**Glow generator hop** (sent through `dbf19e2880`) · **nested `@u64` `20260717.163004`** — unsigned cast family closed at nest width; product edge + Quin five variants on pier. Hold: GrapheneOS-facing code stays Glow/Rye → native. Next: send this Glow lap; then check-in before a general Glow lexer or HAWM2/TUBE6.
 
 ## The Visual Track — Realidream (horizon lane, ladder already named)
 

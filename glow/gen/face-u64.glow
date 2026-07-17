@@ -1,0 +1,3 @@
+::  Typed face over nested @u64 cast-of-literal — closes the unsigned nest family.
+::  Lowered by glow/lower_face.rye into ordinary Rye; Rishi stays the shell.
+=/  next-root=@u64  ^-  @u64  42
