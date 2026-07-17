@@ -230,6 +230,73 @@ fn emit_cast(
     return @intCast(written.len);
 }
 
+/// Nested `^-  @u64` — source is u128 so 2^64 can overflow the cast (same as lower_cast).
+fn emit_cast_u64(
+    glow_label: []const u8,
+    face_mold: []const u8,
+    zig_face: []const u8,
+    cast_mold: []const u8,
+    lit: u64,
+    welcome: bool,
+    out: []u8,
+) LowerError!u32 {
+    const typed = face_mold.len != 0;
+    if (welcome) {
+        if (typed) {
+            const written = std.fmt.bufPrint(out,
+                \\const std = @import("std");
+                \\
+                \\/// Lowered from Glow `=/  {s}={s}  ^-  {s}  {d}` — face over u64 cast.
+                \\pub fn main(_: std.process.Init) !u8 {{
+                \\    const raw: u128 = {d};
+                \\    const {s}: u64 = std.math.cast(u64, raw) orelse return 1;
+                \\    return if (@as(u128, {s}) == raw) 0 else 1;
+                \\}}
+                \\
+            , .{ glow_label, face_mold, cast_mold, lit, lit, zig_face, zig_face }) catch return error.Overflow;
+            return @intCast(written.len);
+        }
+        const written = std.fmt.bufPrint(out,
+            \\const std = @import("std");
+            \\
+            \\/// Lowered from Glow `=/  {s}  ^-  {s}  {d}` — face over u64 cast.
+            \\pub fn main(_: std.process.Init) !u8 {{
+            \\    const raw: u128 = {d};
+            \\    const {s}: u64 = std.math.cast(u64, raw) orelse return 1;
+            \\    return if (@as(u128, {s}) == raw) 0 else 1;
+            \\}}
+            \\
+        , .{ glow_label, cast_mold, lit, lit, zig_face, zig_face }) catch return error.Overflow;
+        return @intCast(written.len);
+    }
+    if (typed) {
+        const written = std.fmt.bufPrint(out,
+            \\const std = @import("std");
+            \\
+            \\/// Lowered from Glow `=/  {s}={s}  ^-  {s}  …` — u64 cast overflow path.
+            \\pub fn main(_: std.process.Init) !u8 {{
+            \\    const raw: u128 = 18446744073709551616;
+            \\    const {s}: u64 = std.math.cast(u64, raw) orelse return 1;
+            \\    return if (@as(u128, {s}) == raw) 0 else 1;
+            \\}}
+            \\
+        , .{ glow_label, face_mold, cast_mold, zig_face, zig_face }) catch return error.Overflow;
+        return @intCast(written.len);
+    }
+    const written = std.fmt.bufPrint(out,
+        \\const std = @import("std");
+        \\
+        \\/// Lowered from Glow `=/  {s}  ^-  {s}  …` — u64 cast overflow path.
+        \\pub fn main(_: std.process.Init) !u8 {{
+        \\    const raw: u128 = 18446744073709551616;
+        \\    const {s}: u64 = std.math.cast(u64, raw) orelse return 1;
+        \\    return if (@as(u128, {s}) == raw) 0 else 1;
+        \\}}
+        \\
+    , .{ glow_label, cast_mold, zig_face, zig_face }) catch return error.Overflow;
+    return @intCast(written.len);
+}
+
 fn lower_line(line: []const u8, welcome: bool, out: []u8) LowerError!u32 {
     const trimmed = std.mem.trim(u8, line, " \t\r\n");
     if (trimmed.len == 0) return error.EmptySource;
@@ -252,8 +319,7 @@ fn lower_line(line: []const u8, welcome: bool, out: []u8) LowerError!u32 {
             if (mold.len != 0 and !std.mem.eql(u8, mold, cast_mold)) return error.CastMoldMismatch;
             const zig_ty = try zig_type_for_mold(cast_mold);
             if (std.mem.eql(u8, zig_ty, "u64")) {
-                // Nested u64 cast needs a u128 source path — later lap.
-                return error.AuraNotYetLowered;
+                return emit_cast_u64(face, mold, zig_face, cast_mold, bound.lit, welcome, out);
             }
             if (welcome) {
                 return emit_cast(face, mold, zig_face, cast_mold, zig_ty, bound.lit, bound.lit, true, out);

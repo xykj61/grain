@@ -24,6 +24,11 @@ assert cast8.ok else "glow_run cast-u8.glow failed"
 assert cast8.out contains "GREEN" else "glow_run cast-u8.glow not GREEN"
 assert cast8.out contains "cast-u8.glow" else "glow_run cast-u8 claim missing path"
 
+let cast64 = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cast-u64.glow"]
+assert cast64.ok else "glow_run cast-u64.glow failed"
+assert cast64.out contains "GREEN" else "glow_run cast-u64.glow not GREEN"
+assert cast64.out contains "cast-u64.glow" else "glow_run cast-u64 claim missing path"
+
 let iff = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/if-gth.glow"]
 assert iff.ok else "glow_run if-gth.glow failed"
 assert iff.out contains "GREEN" else "glow_run if-gth.glow not GREEN"
@@ -38,6 +43,11 @@ let face = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/face-roo
 assert face.ok else "glow_run face-root.glow failed"
 assert face.out contains "GREEN" else "glow_run face-root.glow not GREEN"
 assert face.out contains "face-root.glow" else "glow_run face-root claim missing path"
+
+let face64 = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/face-u64.glow"]
+assert face64.ok else "glow_run face-u64.glow failed"
+assert face64.out contains "GREEN" else "glow_run face-u64.glow not GREEN"
+assert face64.out contains "face-u64.glow" else "glow_run face-u64 claim missing path"
 
 let nullt = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/null-records.glow"]
 assert nullt.ok else "glow_run null-records.glow failed"

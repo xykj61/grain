@@ -8,7 +8,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const lower = @import("lower_face.rye");
 
-const witness_version = "20260717.154327";
+const witness_version = "20260717.163004";
 
 fn run_selftest(init: std.process.Init) !u8 {
     const io = init.io;
@@ -63,6 +63,17 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("lower: face mold vs cast mold CastMoldMismatch refused -- GREEN\n", .{});
 
+    const n_u64 = try lower.lower_line_welcome("=/  next-root=@u64  ^-  @u64  42", &buf);
+    const rye_u64 = buf[0..n_u64];
+    assert(std.mem.indexOf(u8, rye_u64, "const raw: u128 = 42") != null);
+    assert(std.mem.indexOf(u8, rye_u64, "std.math.cast(u64, raw)") != null);
+    print("lower: \"=/  …  ^-  @u64  42\" welcome nests u64 cast -- GREEN\n", .{});
+
+    const n_u64b = try lower.lower_line_unwelcome("=/  next-root=@u64  ^-  @u64  42", &buf);
+    const rye_u64b = buf[0..n_u64b];
+    assert(std.mem.indexOf(u8, rye_u64b, "18446744073709551616") != null);
+    print("lower: \"=/  …  ^-  @u64  42\" unwelcome overflows u64 from u128 -- GREEN\n", .{});
+
     if (lower.lower_line_welcome("=/  cur-record=record", &buf)) |_| {
         return error.NamedMoldLoweredTooSoon;
     } else |err| {
@@ -91,7 +102,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("lower: glow/gen/face-root.glow nests cast under face -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: `=/` lowers faces with nested `^-` cast values to ordinary Rye.\n", .{});
+    print("GREEN: `=/` lowers faces with nested `^-` cast values including @u64 to ordinary Rye.\n", .{});
     return 0;
 }
 

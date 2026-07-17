@@ -1,10 +1,10 @@
 # The Techno-Optimist Manifesto — and an Ethic of Collaborative Acceleration
 
-*A foundation written in gratitude. One essay named the mood of a moment: that technology, wielded on purpose, is how abundance is made — and that optimism about the future is not naïveté but a duty. This piece gathers its transferable threads in our own words, as a curated summary of its principles, offered in thanks. Because the source is a copyrighted essay, this file honors it in summary rather than in verbatim reproduction — the same way we hold `Systemantics.md` and `PathWithHeart.md`, and per `.cursor/rules/gratitude-licenses.mdc`.*
+*A foundation written in gratitude. One essay named the mood of a moment: that technology, wielded on purpose, is how abundance is made — and that optimism about the future is not naïveté but a duty. This piece gathers its transferable threads in our own words, as a curated summary of its principles, offered in thanks. Because the source is a copyrighted essay, this file honors it in summary rather than in verbatim reproduction — the same way we hold `Systemantics.md` and `PathWithHeart.md`, and per `.cursor/rules/gratitude-licenses.mdc` / `.claude/rules/gratitude-licenses.md`.*
 
-**Stamp:** `20260714.021300`
-**Voice:** Rio 3
-**Style:** Radiant (see `../context/RADIANT_STYLE.md`)
+**Stamp:** `20260717.163310`
+**Voice:** Quin
+**Style:** Radiant (see `../context/RADIANT_STYLE.md` · standing voice `../context/QUIN.md`)
 **Status:** Gratitude — our principles summary, in our own words, with what we carry and what we set down named plainly. The original is copyrighted and is honored here in summary, not reproduced.
 
 **With gratitude to:**
@@ -16,7 +16,9 @@
 
 ## Why We Read It Here
 
-Keaton asked that this fork's public face read less like a competitor breaking away and more like a contributor joining in — collaborative, radiant, in the open spirit of open source, drawing on the ethical-accelerationist conviction that building good things quickly, in the open, is itself a moral act. The Techno-Optimist Manifesto is the essay that put that conviction into the wider air, so we read it here for the threads worth carrying — and, in the discerning spirit Hickey's *Hammock-Driven Development* asks of us, we name plainly the threads we set down.
+Keaton asked that this proposal's public face read less like a competitor breaking away and more like a contributor joining in — collaborative, radiant, in the open spirit of open source, drawing on the ethical-accelerationist conviction that building good things quickly, in the open, is itself a moral act. The Techno-Optimist Manifesto is the essay that put that conviction into the wider air, so we read it here for the threads worth carrying — and, in the discerning spirit Hickey's *Hammock-Driven Development* asks of us, we name plainly the threads we set down.
+
+That same spirit now lives on the front door of **Glow OS**: one language, one law (TAME), five switchable OS variants (Reya · Riyo · Trey · Triz · Quin unpaired), and witnesses before narrative ([`../context/TWO_ROOMS.md`](../context/TWO_ROOMS.md)). Acceleration here means contribution offered upstream, measured on green witnesses, not a break held apart.
 
 ## The Threads We Carry
 
@@ -31,12 +33,12 @@ Keaton asked that this fork's public face read less like a competitor breaking a
 Receiving a gift well includes being honest about what does not fit our own hand:
 
 - **Competition as the engine.** The manifesto leans hard on markets and competition as the primary machine of progress. Our own ethic leans the other way — toward the **gift economy and the commons**, toward contribution offered upstream rather than advantage held close. We keep the positive-sum *infinite game* and set down the zero-sum *win*.
-- **The combative register.** The essay has an "Enemy" section, written to name and oppose. Our register is Radiant by discipline: we affirm what we build rather than define ourselves against an opponent, and we do not import the adversarial voice. Ethical acceleration, for us, means accelerating *toward* the good, not *against* a foe.
-- **Growth without a named cost.** "Grow or die" is a bracing slogan, but TAME's own first value is safety, and Gall's Law asks that complex systems grow only from simpler ones that already worked. We keep the optimism and pair it, always, with the bounded, witnessed discipline that keeps fast building from becoming reckless building.
+- **The combative register.** The essay has an "Enemy" section, written to name and oppose. Our register is Radiant by discipline, in Quin's voice: we affirm what we build rather than define ourselves against an opponent, and we do not import the adversarial voice. Ethical acceleration, for us, means accelerating *toward* the good, not *against* a foe.
+- **Growth without a named cost.** "Grow or die" is a bracing slogan, but TAME's own first value is safety, and Gall's Law asks that complex systems grow only from simpler ones that already worked. We keep the optimism and pair it, always, with the bounded, witnessed discipline that keeps fast building from becoming reckless building — docs and implementation stay synced, and a claim enters the checkable room only when a witness binds it.
 
 ## The Synthesis We Keep
 
-Our own reading is a **collaborative, ethical accelerationism**: build ambitiously and in the open, treat the future as ours to author, and measure honestly so the lever's motion is visible — but do it as an *infinite game*, offered upstream as a gift to a commons, safety-first and witnessed, affirming rather than adversarial. That is the spirit in which this fork reframes itself not as a break from Urbit but as a **proposal to it**: acceleration by contribution, not by competition.
+Our own reading is a **collaborative, ethical accelerationism**: build ambitiously and in the open, treat the future as ours to author, and measure honestly so the lever's motion is visible — but do it as an *infinite game*, offered upstream as a gift to a commons, safety-first and witnessed, affirming rather than adversarial. That is the spirit in which this tree reframes itself not as a break from Urbit but as a **proposal to it**: acceleration by contribution, not by competition. The root [`../README.md`](../README.md) carries the same stance on the front door.
 
 ---
 

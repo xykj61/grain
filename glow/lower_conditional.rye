@@ -179,21 +179,31 @@ fn emit_cast_bindings(then_arm: *const ArmExpr, else_arm: *const ArmExpr, out: [
     if (then_arm.kind == .cast_literal) {
         const mold = mold_slice(then_arm);
         const zig_ty = try zig_type_for_mold(mold);
-        if (std.mem.eql(u8, zig_ty, "u64")) return error.AuraNotYetLowered;
-        const line = std.fmt.bufPrint(out[at.*..],
-            "    const then_arm: {s} = std.math.cast({s}, @as(u64, {d})) orelse return 1;\n",
-            .{ zig_ty, zig_ty, then_arm.lit },
-        ) catch return error.Overflow;
+        const line = if (std.mem.eql(u8, zig_ty, "u64"))
+            std.fmt.bufPrint(out[at.*..],
+                "    const then_arm: u64 = std.math.cast(u64, @as(u128, {d})) orelse return 1;\n",
+                .{then_arm.lit},
+            ) catch return error.Overflow
+        else
+            std.fmt.bufPrint(out[at.*..],
+                "    const then_arm: {s} = std.math.cast({s}, @as(u64, {d})) orelse return 1;\n",
+                .{ zig_ty, zig_ty, then_arm.lit },
+            ) catch return error.Overflow;
         at.* += line.len;
     }
     if (else_arm.kind == .cast_literal) {
         const mold = mold_slice(else_arm);
         const zig_ty = try zig_type_for_mold(mold);
-        if (std.mem.eql(u8, zig_ty, "u64")) return error.AuraNotYetLowered;
-        const line = std.fmt.bufPrint(out[at.*..],
-            "    const else_arm: {s} = std.math.cast({s}, @as(u64, {d})) orelse return 1;\n",
-            .{ zig_ty, zig_ty, else_arm.lit },
-        ) catch return error.Overflow;
+        const line = if (std.mem.eql(u8, zig_ty, "u64"))
+            std.fmt.bufPrint(out[at.*..],
+                "    const else_arm: u64 = std.math.cast(u64, @as(u128, {d})) orelse return 1;\n",
+                .{else_arm.lit},
+            ) catch return error.Overflow
+        else
+            std.fmt.bufPrint(out[at.*..],
+                "    const else_arm: {s} = std.math.cast({s}, @as(u64, {d})) orelse return 1;\n",
+                .{ zig_ty, zig_ty, else_arm.lit },
+            ) catch return error.Overflow;
         at.* += line.len;
     }
 }
