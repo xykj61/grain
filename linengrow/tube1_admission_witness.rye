@@ -3,12 +3,13 @@
 //!   rye build linengrow/tube1_admission_witness.rye -femit-bin=linengrow/bin/tube1_admission_witness
 //!   linengrow/bin/tube1_admission_witness
 //!
-//! Four claims:
-//!   1. A well-formed manifest whose declared caps match a grant is admitted
-//!      and the hosted ledger fold reflects the welcome balances.
-//!   2. The same manifest against a table with no grant is refused NotAdmitted.
-//!   3. A grant with fewer rights than the manifest declares is refused.
-//!   4. admit_manifest is deterministic for the same table + manifest.
+//! Claims:
+//!   1. Matching grant admits and hosts the ledger fold.
+//!   2. Missing grant refuses NotAdmitted.
+//!   3. Weaker grant than the manifest refuses.
+//!   4. admit_manifest is deterministic.
+//!   5. Matching grant + matching Storage Scope admits (scoped door).
+//!   6. Matching grant + weaker/revoked Scope refuses.
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -19,9 +20,12 @@ const mc = @import("mala_core.rye");
 const caps = @import("capabilities.rye");
 const pool = @import("pool_host_seam.rye");
 const tube = @import("tube_manifest.rye");
+const scope_mod = @import("glow_storage_scope.rye");
+const net_mod = @import("glow_network_grant.rye");
+const sens_mod = @import("glow_sensors_grant.rye");
 const tube1 = @import("tube1_admission.rye");
 
-const witness_version = "20260717.131000";
+const witness_version = "20260717.161013";
 
 fn run_selftest() !u8 {
     const issuer_kp = kumara.keypair_from_seed(&mc.issuer_seed);
@@ -97,8 +101,176 @@ fn run_selftest() !u8 {
     assert(tube1.admit_manifest(&table, "ledger-agent", &manifest));
     print("tube1: admit_manifest agrees twice on the same table -- GREEN determinism\n", .{});
 
+    // Claim 5: Caravan grant + Storage Scope covering the ledger resource.
+    const scope_ok = try scope_mod.Scope.build(&[_]scope_mod.ScopeEntry{
+        scope_mod.ScopeEntry.init(pool.ledger_resource, caps.right_read | caps.right_write),
+    });
+    assert(tube1.admit_manifest_scoped(&table, "ledger-agent", &manifest, &scope_ok));
+    const hosted_scoped = try tube1.host_ledger_from_manifest_scoped(
+        &table,
+        "ledger-agent",
+        &manifest,
+        &scope_ok,
+        log[0..log_len],
+        &issuer_hex,
+        &holder_hex,
+        issuer_kp.public_key,
+        holder_kp.public_key,
+    );
+    assert(hosted_scoped.admitted);
+    assert(hosted_scoped.balances.issuer == 200);
+    print("tube1: matching grant + Storage Scope admits -- GREEN scoped path\n", .{});
+
+    // Claim 6a: scope covers the resource but grants only read → refuse.
+    const scope_weak = try scope_mod.Scope.build(&[_]scope_mod.ScopeEntry{
+        scope_mod.ScopeEntry.init(pool.ledger_resource, caps.right_read),
+    });
+    assert(!tube1.admit_manifest_scoped(&table, "ledger-agent", &manifest, &scope_weak));
+    print("tube1: Storage Scope weaker than manifest refuses -- GREEN scoped rights\n", .{});
+
+    // Claim 6b: revoke ends scoped admission (uninstall-shaped).
+    var scope_rev = try scope_mod.Scope.build(&[_]scope_mod.ScopeEntry{
+        scope_mod.ScopeEntry.init(pool.ledger_resource, caps.right_read | caps.right_write),
+    });
+    assert(tube1.admit_manifest_scoped(&table, "ledger-agent", &manifest, &scope_rev));
+    scope_rev.revoke();
+    assert(!tube1.admit_manifest_scoped(&table, "ledger-agent", &manifest, &scope_rev));
+    print("tube1: revoked Storage Scope refuses -- GREEN uninstall-shaped\n", .{});
+
+    // Unrelated scope entry does not block a ledger-only manifest.
+    const scope_other = try scope_mod.Scope.build(&[_]scope_mod.ScopeEntry{
+        scope_mod.ScopeEntry.init("photos", caps.right_read),
+    });
+    assert(tube1.admit_manifest_scoped(&table, "ledger-agent", &manifest, &scope_other));
+    print("tube1: unrelated Scope entry leaves ledger admit open -- GREEN cover filter\n", .{});
+
+    // Contact Scope + Storage Scope stacked (GrapheneOS Contact Scopes parallel).
+    const storage_photos = try scope_mod.Scope.build(&[_]scope_mod.ScopeEntry{
+        scope_mod.ScopeEntry.init("photos", caps.right_read),
+    });
+    const contact_ok = try scope_mod.Scope.build(&[_]scope_mod.ScopeEntry{
+        scope_mod.ScopeEntry.init("contacts", caps.right_read),
+    });
+    const dual_ok = [_]*const scope_mod.Scope{ &storage_photos, &contact_ok };
+    assert(tube1.admit_manifest_scopes(&table, "ledger-agent", &manifest, dual_ok[0..]));
+    print("tube1: Storage + Contact Scopes stack admit ledger-only manifest -- GREEN contact path\n", .{});
+
+    // Manifest that declares contacts must pass the Contact Scope.
+    const with_contacts = [_]tube.DeclaredCapability{
+        tube.DeclaredCapability.init(pool.ledger_resource, caps.right_read | caps.right_write),
+        tube.DeclaredCapability.init("contacts", caps.right_read),
+    };
+    const manifest_contacts = try tube.build("sala-contacts", "0.1.0", &with_contacts, 1024);
+    var table_c: caps.CapabilityTable = .{};
+    const agent_c = try table_c.add_child("ledger-agent");
+    try agent_c.grant(caps.Capability.init(pool.ledger_resource, caps.right_read | caps.right_write));
+    try agent_c.grant(caps.Capability.init("contacts", caps.right_read));
+    assert(tube1.admit_manifest_scopes(&table_c, "ledger-agent", &manifest_contacts, dual_ok[0..]));
+
+    const contact_denied = try scope_mod.Scope.build(&[_]scope_mod.ScopeEntry{
+        scope_mod.ScopeEntry.init("contacts", caps.right_write), // write only — read needed
+    });
+    const dual_denied = [_]*const scope_mod.Scope{ &storage_photos, &contact_denied };
+    assert(!tube1.admit_manifest_scopes(&table_c, "ledger-agent", &manifest_contacts, dual_denied[0..]));
+    print("tube1: Contact Scope weaker than contacts declaration refuses -- GREEN contact rights\n", .{});
+
+    // Network Grant: ledger-only manifest ignores the toggle (door stays open).
+    const net_welcome = net_mod.NetworkGrant.grant();
+    const empty_scopes = [_]*const scope_mod.Scope{};
+    assert(tube1.admit_manifest_networked(&table, "ledger-agent", &manifest, empty_scopes[0..], &net_welcome));
+    print("tube1: Network Grant unused on ledger-only manifest -- GREEN network cover filter\n", .{});
+
+    // Manifest declaring network requires a live Network Grant.
+    const with_network = [_]tube.DeclaredCapability{
+        tube.DeclaredCapability.init(pool.ledger_resource, caps.right_read | caps.right_write),
+        tube.DeclaredCapability.init(tube1.network_resource, caps.right_net),
+    };
+    const manifest_net = try tube.build("sala-network", "0.1.0", &with_network, 1024);
+    var table_n: caps.CapabilityTable = .{};
+    const agent_n = try table_n.add_child("ledger-agent");
+    try agent_n.grant(caps.Capability.init(pool.ledger_resource, caps.right_read | caps.right_write));
+    try agent_n.grant(caps.Capability.init(tube1.network_resource, caps.right_net));
+    assert(tube1.admit_manifest_networked(&table_n, "ledger-agent", &manifest_net, empty_scopes[0..], &net_welcome));
+    print("tube1: Network Grant admits network-declaring manifest -- GREEN network path\n", .{});
+
+    const net_denied = net_mod.NetworkGrant.deny();
+    assert(!tube1.admit_manifest_networked(&table_n, "ledger-agent", &manifest_net, empty_scopes[0..], &net_denied));
+    assert(net_denied.appears_down());
+    print("tube1: denied Network Grant refuses and appears down -- GREEN network deny\n", .{});
+
+    var net_rev = net_mod.NetworkGrant.grant();
+    assert(tube1.admit_manifest_networked(&table_n, "ledger-agent", &manifest_net, empty_scopes[0..], &net_rev));
+    net_rev.revoke();
+    assert(!tube1.admit_manifest_networked(&table_n, "ledger-agent", &manifest_net, empty_scopes[0..], &net_rev));
+    assert(net_rev.appears_down());
+    print("tube1: revoked Network Grant refuses and appears down -- GREEN network revoke\n", .{});
+
+    // Sensors Grant: ledger-only ignores the toggle; sensors declaration requires it.
+    const sens_welcome = sens_mod.SensorsGrant.grant();
+    assert(tube1.admit_manifest_gated(
+        &table,
+        "ledger-agent",
+        &manifest,
+        empty_scopes[0..],
+        &net_welcome,
+        &sens_welcome,
+    ));
+    print("tube1: Sensors Grant unused on ledger-only manifest -- GREEN sensors cover filter\n", .{});
+
+    const with_sensors = [_]tube.DeclaredCapability{
+        tube.DeclaredCapability.init(pool.ledger_resource, caps.right_read | caps.right_write),
+        tube.DeclaredCapability.init(tube1.sensors_resource, caps.right_device),
+    };
+    const manifest_sens = try tube.build("sala-sensors", "0.1.0", &with_sensors, 1024);
+    var table_s: caps.CapabilityTable = .{};
+    const agent_s = try table_s.add_child("ledger-agent");
+    try agent_s.grant(caps.Capability.init(pool.ledger_resource, caps.right_read | caps.right_write));
+    try agent_s.grant(caps.Capability.init(tube1.sensors_resource, caps.right_device));
+    assert(tube1.admit_manifest_gated(
+        &table_s,
+        "ledger-agent",
+        &manifest_sens,
+        empty_scopes[0..],
+        &net_welcome,
+        &sens_welcome,
+    ));
+    print("tube1: Sensors Grant admits sensors-declaring manifest -- GREEN sensors path\n", .{});
+
+    const sens_denied = sens_mod.SensorsGrant.deny();
+    assert(!tube1.admit_manifest_gated(
+        &table_s,
+        "ledger-agent",
+        &manifest_sens,
+        empty_scopes[0..],
+        &net_welcome,
+        &sens_denied,
+    ));
+    assert(sens_denied.appears_zeroed());
+    print("tube1: denied Sensors Grant refuses and appears zeroed -- GREEN sensors deny\n", .{});
+
+    var sens_rev = sens_mod.SensorsGrant.grant();
+    assert(tube1.admit_manifest_gated(
+        &table_s,
+        "ledger-agent",
+        &manifest_sens,
+        empty_scopes[0..],
+        &net_welcome,
+        &sens_rev,
+    ));
+    sens_rev.revoke();
+    assert(!tube1.admit_manifest_gated(
+        &table_s,
+        "ledger-agent",
+        &manifest_sens,
+        empty_scopes[0..],
+        &net_welcome,
+        &sens_rev,
+    ));
+    assert(sens_rev.appears_zeroed());
+    print("tube1: revoked Sensors Grant refuses and appears zeroed -- GREEN sensors revoke\n", .{});
+
     print("tube1: version {s}\n", .{witness_version});
-    print("GREEN: TUBE1 -- Pool admits an agent iff the manifest's caps match a grant.\n", .{});
+    print("GREEN: TUBE1 -- Pool admits iff grant matches; Storage + Contact + Network + Sensors wire GrapheneOS parallels.\n", .{});
     return 0;
 }
 

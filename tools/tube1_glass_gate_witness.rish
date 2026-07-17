@@ -1,0 +1,23 @@
+# tube1_glass_gate_witness.rish — glass covers declared Storage · Contact.
+#
+# Proves the NativeActivity TUBE1 door declares photos + contacts and that
+# matching Resource Scopes cover them (weaker/revoked scopes refuse).
+# Device-free. See linengrow/tube1_glass_gate.rye.
+#
+#   rishi/bin/rishi run tools/tube1_glass_gate_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/tube1_glass_gate_witness"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/tube1_glass_gate_witness.rye -femit-bin=${bin}"]
+assert build.ok else "tube1_glass_gate_witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "tube1_glass_gate_witness exited non-zero"
+assert selftest.out contains "GREEN" else "tube1_glass_gate_witness not GREEN"
+assert selftest.out contains "demo admit opens" else "missing demo admit claim"
+assert selftest.out contains "cover path" else "missing covering scopes claim"
+assert selftest.out contains "Storage Scope weaker" else "missing storage-cover refuse"
+assert selftest.out contains "revoked Contact Scope" else "missing contact-cover refuse"
+
+say "GREEN: TUBE1 glass — Storage + Contact Scopes cover declared resources."

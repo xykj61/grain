@@ -1,0 +1,106 @@
+//! linengrow/tube1_glass_gate_witness.rye — proves glass covers Storage · Contact.
+//!
+//!   rye build linengrow/tube1_glass_gate_witness.rye \
+//!     -femit-bin=linengrow/bin/tube1_glass_gate_witness
+//!   linengrow/bin/tube1_glass_gate_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const caps = @import("capabilities.rye");
+const tube = @import("tube_manifest.rye");
+const scope_mod = @import("glow_storage_scope.rye");
+const net_mod = @import("glow_network_grant.rye");
+const sens_mod = @import("glow_sensors_grant.rye");
+const tube1 = @import("tube1_admission.rye");
+const glass = @import("tube1_glass_gate.rye");
+
+const witness_version = "20260717.161220";
+const rw: u8 = caps.right_read | caps.right_write;
+
+fn build_glass_manifest() !tube.Manifest {
+    const declared = [_]tube.DeclaredCapability{
+        tube.DeclaredCapability.init("state-ask", rw),
+        tube.DeclaredCapability.init("state-receipt", rw),
+        tube.DeclaredCapability.init("state-reputation", rw),
+        tube.DeclaredCapability.init("photos", caps.right_read),
+        tube.DeclaredCapability.init("contacts", caps.right_read),
+    };
+    return try tube.build("sala-broadcaster", "0.1.0", &declared, 1024);
+}
+
+fn grant_glass_table(table: *caps.CapabilityTable) !void {
+    const agent = try table.add_child("sala-broadcaster");
+    try agent.grant(caps.Capability.init("state-ask", rw));
+    try agent.grant(caps.Capability.init("state-receipt", rw));
+    try agent.grant(caps.Capability.init("state-reputation", rw));
+    try agent.grant(caps.Capability.init("photos", caps.right_read));
+    try agent.grant(caps.Capability.init("contacts", caps.right_read));
+}
+
+fn run_selftest() !u8 {
+    assert(glass.run_demo_admit());
+    print("glass: demo admit opens with covering photos + contacts scopes -- GREEN\n", .{});
+
+    const manifest = try build_glass_manifest();
+    var table: caps.CapabilityTable = .{};
+    try grant_glass_table(&table);
+
+    const storage_ok = try scope_mod.Scope.build(&[_]scope_mod.ScopeEntry{
+        scope_mod.ScopeEntry.init("photos", caps.right_read),
+    });
+    const contact_ok = try scope_mod.Scope.build(&[_]scope_mod.ScopeEntry{
+        scope_mod.ScopeEntry.init("contacts", caps.right_read),
+    });
+    const scopes_ok = [_]*const scope_mod.Scope{ &storage_ok, &contact_ok };
+    const network = net_mod.NetworkGrant.grant();
+    const sensors = sens_mod.SensorsGrant.grant();
+    assert(tube1.admit_manifest_gated(
+        &table,
+        "sala-broadcaster",
+        &manifest,
+        scopes_ok[0..],
+        &network,
+        &sensors,
+    ));
+    print("glass: gated admit with covering Storage + Contact Scopes -- GREEN cover path\n", .{});
+
+    // Storage Scope weaker than photos/read declaration → refuse.
+    const storage_weak = try scope_mod.Scope.build(&[_]scope_mod.ScopeEntry{
+        scope_mod.ScopeEntry.init("photos", caps.right_write),
+    });
+    const scopes_weak_storage = [_]*const scope_mod.Scope{ &storage_weak, &contact_ok };
+    assert(!tube1.admit_manifest_gated(
+        &table,
+        "sala-broadcaster",
+        &manifest,
+        scopes_weak_storage[0..],
+        &network,
+        &sensors,
+    ));
+    print("glass: Storage Scope weaker than photos declaration refuses -- GREEN storage cover\n", .{});
+
+    // Contact Scope revoked → refuse.
+    var contact_rev = try scope_mod.Scope.build(&[_]scope_mod.ScopeEntry{
+        scope_mod.ScopeEntry.init("contacts", caps.right_read),
+    });
+    contact_rev.revoke();
+    const scopes_rev_contact = [_]*const scope_mod.Scope{ &storage_ok, &contact_rev };
+    assert(!tube1.admit_manifest_gated(
+        &table,
+        "sala-broadcaster",
+        &manifest,
+        scopes_rev_contact[0..],
+        &network,
+        &sensors,
+    ));
+    print("glass: revoked Contact Scope refuses covering contacts declaration -- GREEN contact cover\n", .{});
+
+    print("glass: version {s}\n", .{witness_version});
+    print("GREEN: TUBE1 glass — Storage + Contact Scopes cover declared resources.\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}

@@ -4,7 +4,7 @@
 
 **Language:** EN
 **Version:** `20260715` (Pool keystone revival prioritized · Quin voice seated · align pass reconciles the closed ladder)
-**Last updated:** 2026-07-17 (**glass batch** `20260717.145547` — TUBE1–5 + TUBE7 on Pixel GREEN; TUBE6/HAWM2 still horizon; prior align `20260717.121800`)
+**Last updated:** 2026-07-17 (**glass cover** `20260717.161220` — Storage · Contact Scopes cover declared photos + contacts; Sensors · Network gated · TUBE6/HAWM2 still horizon)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Lens:** TAME — safety, performance, joy; the Seed Law; [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md)
@@ -190,7 +190,7 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **Eighth rune head — `=*`, `20260717.150453`** — [`glow/rune_alias.rye`](../glow/rune_alias.rye) completes the `=` trio. Witness GREEN; `parity_ch01` wired.
 
-**Glow generator hop — eight heads emit** (sent `6b61e26ed5` · body deepen `8a034c2a2b`) · **nested expressions through `?~` `20260717.155111`** · **truth ruling `20260717.154943`** — `=/` over `^-`; `?:`/`?-`/`?~` decimal/cast arms; ambient Zig/`bool`. Naming hold: Glow = language · Pool = Gall-role · Glow is not a vane. Next: general lexer, or grow more value shapes; check-in before a new domain.
+**Glow generator hop** (sent through `dbf19e2880`) · **GrapheneOS product edge `20260717.161220`** — Resource Scope covers glass-declared photos + contacts; Network (appears down) + Sensors (appears zeroed) through `admit_manifest_gated`. Hold: GrapheneOS-facing code stays Glow/Rye → native. Next keep-going: TUBE0.5 `sensors` emission table row if Android needs it, or send this stack to the pier; HAWM2/TUBE6 stay horizon.
 
 ## The Visual Track — Realidream (horizon lane, ladder already named)
 
