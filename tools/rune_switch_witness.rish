@@ -1,0 +1,21 @@
+# rune_switch_witness.rish — the `?-` exhaustive-switch rune head, proves out.
+#
+# Fourth rune-head after |- , ^- , and ?: . Subject wing only — no arm
+# exhaustiveness check yet (that is a later compiler lap).
+#
+#   rishi/bin/rishi run tools/rune_switch_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "glow/bin/rune_switch_witness"
+
+let build = run ["sh" "-c" "mkdir -p glow/bin && env RYE_ZIG=${zig} rye/bin/rye build glow/rune_switch_witness.rye -femit-bin=${bin}"]
+assert build.ok else "Rune switch witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "Rune switch witness exited non-zero"
+assert selftest.out contains "GREEN" else "Rune switch witness not GREEN"
+assert selftest.out contains "kind.cur-record" else "Rune switch witness missing the brief-subject claim"
+assert selftest.out contains "trailing switch arms" else "Rune switch witness missing the trailing-arms claim"
+assert selftest.out contains "MalformedSubject" else "Rune switch witness missing the malformed-subject unwelcome path"
+
+say "GREEN: rune switch witness passed -- a fourth rune head parses (`?-`), still no general grammar."
