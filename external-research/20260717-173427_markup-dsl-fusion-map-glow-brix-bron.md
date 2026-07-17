@@ -43,7 +43,7 @@ An Acme employee reading this can hold one sentence: **write in marks, compose i
 | Shell | **Rishi** | Dojo-role | Living |
 | App host | **Pool** | Gall | P0–R2 green |
 | Viewer | **Sala** | Landscape | Glass green on Pixel |
-| Input | **Dexter** | Landscape-tile (not Dill) | D0+D1+D2 green; soft-keyboard drain later |
+| Input | **Dexter** | Landscape-tile (not Dill) | D0–D3 green (live KEY + showSoftInput); Pixel typing look open |
 | Bounds / allocator ideas | **Tally** | skalibs discipline | Living |
 | Supervision | **Caravan** | s6 / SixOS discipline | Living |
 

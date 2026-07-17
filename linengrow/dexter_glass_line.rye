@@ -1,7 +1,6 @@
 //! linengrow/dexter_glass_line.rye — Dexter line for NativeActivity Skate glass.
 //!
-//! Runs the device-free Dexter demo editor and returns a short Skate line.
-//! Soft-keyboard drain stays later; glass presents the fold claim.
+//! Demo path seeds the first paint; live KEY drain refreshes via format_dexter_line.
 
 const std = @import("std");
 const core = @import("dexter_glass_core.rye");
@@ -9,13 +8,18 @@ const dexter = @import("window_input.rye");
 
 pub const dexter_line_max: u32 = 48;
 
+/// Format prompt text into the Skate status line. Returns false if it will not fit.
+pub fn format_dexter_line(prompt: []const u8, out_line: *[dexter_line_max]u8, out_len: *u32) bool {
+    const line = std.fmt.bufPrint(out_line, "DEXTER line · {s}", .{prompt}) catch return false;
+    out_len.* = @intCast(line.len);
+    return true;
+}
+
 /// Demo Dexter submit → status line. Returns false if the editor diverges.
 pub fn run_demo_dexter_line(out_line: *[dexter_line_max]u8, out_len: *u32) bool {
     var submitted: [dexter.max_line_len]u8 = undefined;
     var submitted_len: u32 = 0;
     const lens = core.run_demo_editor(&submitted, &submitted_len) catch return false;
     if (lens.submitted_len != core.demo_submitted.len) return false;
-    const line = std.fmt.bufPrint(out_line, "DEXTER line · {s}", .{submitted[0..submitted_len]}) catch return false;
-    out_len.* = @intCast(line.len);
-    return true;
+    return format_dexter_line(submitted[0..submitted_len], out_line, out_len);
 }

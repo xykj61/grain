@@ -1,0 +1,62 @@
+//! linengrow/dexter_glass_key.rye — Android-shaped key downs → Dexter Action.
+//!
+//! Device-free mapper for soft-keyboard / hardware KEY events. NativeActivity
+//! drains AInputEvent KEY through these fields; the witness replays the same
+//! shape without an AInputQueue. IME composition stays later.
+
+const dexter = @import("window_input.rye");
+
+/// Android AKEYCODE_* (android/keycodes.h) — subset used on glass.
+pub const keycode_a: i32 = 29;
+pub const keycode_z: i32 = 54;
+pub const keycode_0: i32 = 7;
+pub const keycode_9: i32 = 16;
+pub const keycode_space: i32 = 62;
+pub const keycode_enter: i32 = 66;
+pub const keycode_del: i32 = 67;
+pub const keycode_comma: i32 = 55;
+pub const keycode_period: i32 = 56;
+pub const keycode_slash: i32 = 76;
+pub const keycode_minus: i32 = 69;
+
+/// AMETA_SHIFT_ON
+pub const meta_shift_on: i32 = 0x01;
+
+pub const KeyDown = struct {
+    key_code: i32,
+    meta_state: i32 = 0,
+};
+
+fn shifted(meta: i32) bool {
+    return (meta & meta_shift_on) != 0;
+}
+
+/// Map one key-down to a Dexter Action. Returns null when the key is ignored.
+pub fn action_from_key_down(k: KeyDown) ?dexter.Action {
+    if (k.key_code == keycode_enter) return .submit;
+    if (k.key_code == keycode_del) return .backspace;
+    if (k.key_code == keycode_space) return .{ .char_ = ' ' };
+    if (k.key_code == keycode_comma) return .{ .char_ = if (shifted(k.meta_state)) '<' else ',' };
+    if (k.key_code == keycode_period) return .{ .char_ = if (shifted(k.meta_state)) '>' else '.' };
+    if (k.key_code == keycode_slash) return .{ .char_ = if (shifted(k.meta_state)) '?' else '/' };
+    if (k.key_code == keycode_minus) return .{ .char_ = if (shifted(k.meta_state)) '_' else '-' };
+    if (k.key_code >= keycode_0 and k.key_code <= keycode_9) {
+        const digit: u8 = @intCast('0' + (k.key_code - keycode_0));
+        return .{ .char_ = digit };
+    }
+    if (k.key_code >= keycode_a and k.key_code <= keycode_z) {
+        const base: u8 = @intCast('a' + (k.key_code - keycode_a));
+        const ch: u8 = if (shifted(k.meta_state)) base - ('a' - 'A') else base;
+        return .{ .char_ = ch };
+    }
+    return null;
+}
+
+/// Apply a key-down sequence to a live editor (same path NativeActivity drains).
+pub fn drain_key_downs(editor: *dexter.LineEditor, keys: []const KeyDown) void {
+    for (keys) |k| {
+        if (action_from_key_down(k)) |action| {
+            editor.apply_action(action);
+        }
+    }
+}
