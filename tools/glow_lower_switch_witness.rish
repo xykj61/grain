@@ -1,0 +1,34 @@
+# glow_lower_switch_witness.rish — `?-` lowers to Rye; emitted program runs.
+#
+#   rishi/bin/rishi run tools/glow_lower_switch_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "glow/bin/lower_switch_witness"
+let welcome_rye = "glow/.cache/switch_kind_welcome.rye"
+let welcome_bin = "glow/bin/switch_kind_welcome"
+let unwelcome_rye = "glow/.cache/switch_kind_unwelcome.rye"
+let unwelcome_bin = "glow/bin/switch_kind_unwelcome"
+
+let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/lower_switch_witness.rye -femit-bin=${bin}"]
+assert build.ok else "lower_switch_witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "lower_switch_witness exited non-zero"
+assert selftest.out contains "GREEN" else "lower_switch_witness not GREEN"
+assert selftest.out contains "mint arm" else "lower_switch_witness missing mint-arm claim"
+assert selftest.out contains "send arm" else "lower_switch_witness missing send-arm claim"
+assert selftest.out contains "SubjectNotYetLowered" else "lower_switch_witness missing refuse claim"
+assert selftest.out contains "switch-kind.glow" else "lower_switch_witness missing gen desk claim"
+
+let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
+assert build_welcome.ok else "switch welcome .rye build failed"
+let run_welcome = run ["sh" "-c" "${welcome_bin}; echo EXIT:$?"]
+assert run_welcome.ok else "switch welcome binary failed to launch"
+assert run_welcome.out contains "EXIT:0" else "switch welcome binary did not exit 0"
+
+let build_unwelcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${unwelcome_rye} -femit-bin=${unwelcome_bin}"]
+assert build_unwelcome.ok else "switch unwelcome .rye build failed"
+let run_unwelcome = run ["sh" "-c" "${unwelcome_bin}; echo EXIT:$?"]
+assert run_unwelcome.out contains "EXIT:1" else "switch unwelcome binary did not exit 1"
+
+say "GREEN: Glow `?-` switch hop — kind.cur-record lowers to Rye; welcome 0 / unwelcome 1."

@@ -1,0 +1,34 @@
+# glow_lower_face_witness.rish — `=/` lowers to Rye; emitted program runs.
+#
+#   rishi/bin/rishi run tools/glow_lower_face_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "glow/bin/lower_face_witness"
+let welcome_rye = "glow/.cache/face_root_welcome.rye"
+let welcome_bin = "glow/bin/face_root_welcome"
+let unwelcome_rye = "glow/.cache/face_root_unwelcome.rye"
+let unwelcome_bin = "glow/bin/face_root_unwelcome"
+
+let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/lower_face_witness.rye -femit-bin=${bin}"]
+assert build.ok else "lower_face_witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "lower_face_witness exited non-zero"
+assert selftest.out contains "GREEN" else "lower_face_witness not GREEN"
+assert selftest.out contains "binds next_root" else "lower_face_witness missing typed-face claim"
+assert selftest.out contains "bare tick" else "lower_face_witness missing bare-face claim"
+assert selftest.out contains "NamedMoldNotYetLowered" else "lower_face_witness missing named-mold refuse"
+assert selftest.out contains "face-root.glow" else "lower_face_witness missing gen desk claim"
+
+let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
+assert build_welcome.ok else "face welcome .rye build failed"
+let run_welcome = run ["sh" "-c" "${welcome_bin}; echo EXIT:$?"]
+assert run_welcome.ok else "face welcome binary failed to launch"
+assert run_welcome.out contains "EXIT:0" else "face welcome binary did not exit 0"
+
+let build_unwelcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${unwelcome_rye} -femit-bin=${unwelcome_bin}"]
+assert build_unwelcome.ok else "face unwelcome .rye build failed"
+let run_unwelcome = run ["sh" "-c" "${unwelcome_bin}; echo EXIT:$?"]
+assert run_unwelcome.out contains "EXIT:1" else "face unwelcome binary did not exit 1"
+
+say "GREEN: Glow `=/` face hop — next-root=@u32 lowers to Rye; welcome 0 / unwelcome 1."

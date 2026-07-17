@@ -1,0 +1,99 @@
+//! glow/lower_face.rye — lower a parsed `=/` face binding to runnable `.rye`.
+//!
+//! Per active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md:
+//! `=/` is typed let. This hop lowers `next-root=@u32` (aura mold) and bare
+//! `tick` to a Zig `const` binding with a demo value. Named molds (e.g.
+//! `record`) refuse until a later lap. The bound value expression is not
+//! lowered yet — the emit supplies a demo initializer.
+
+const std = @import("std");
+const rf = @import("rune_face.rye");
+
+pub const LowerError = rf.ParseError || error{
+    Overflow,
+    EmptySource,
+    BadIdent,
+    NamedMoldNotYetLowered,
+    AuraNotYetLowered,
+};
+
+pub const face_welcome_u32: u32 = 7;
+pub const face_unwelcome_expect: u32 = 8;
+
+fn zig_safe_ident(face: []const u8, out: *[rf.max_name_len]u8) LowerError!usize {
+    if (face.len == 0 or face.len > rf.max_name_len) return error.BadIdent;
+    var i: usize = 0;
+    while (i < face.len) : (i += 1) {
+        const c = face[i];
+        const mapped: u8 = if (c == '-') '_' else c;
+        if (i == 0) {
+            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or mapped == '_'))
+                return error.BadIdent;
+        } else {
+            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or (mapped >= '0' and mapped <= '9') or mapped == '_'))
+                return error.BadIdent;
+        }
+        out[i] = mapped;
+    }
+    return face.len;
+}
+
+fn zig_type_for_mold(mold: []const u8) LowerError![]const u8 {
+    if (mold.len == 0) return "u32"; // bare face — implicit u32 demo
+    if (mold[0] != '@') return error.NamedMoldNotYetLowered;
+    if (std.mem.eql(u8, mold, "@u32")) return "u32";
+    return error.AuraNotYetLowered;
+}
+
+fn lower_spec(spec: rf.FaceSpec, welcome: bool, out: []u8) LowerError!u32 {
+    const face = rf.face_slice(&spec);
+    const mold = rf.mold_slice(&spec);
+    var zig_face_buf: [rf.max_name_len]u8 = undefined;
+    const face_len = try zig_safe_ident(face, &zig_face_buf);
+    const zig_face = zig_face_buf[0..face_len];
+    const zig_ty = try zig_type_for_mold(mold);
+    const value: u32 = face_welcome_u32;
+    const expect: u32 = if (welcome) face_welcome_u32 else face_unwelcome_expect;
+
+    if (mold.len == 0) {
+        const written = std.fmt.bufPrint(out,
+            \\const std = @import("std");
+            \\
+            \\/// Lowered from Glow `=/  {s}` — bare face binding with a demo value.
+            \\pub fn main(_: std.process.Init) !u8 {{
+            \\    const {s}: {s} = {d};
+            \\    return if ({s} == {d}) 0 else 1;
+            \\}}
+            \\
+        , .{ face, zig_face, zig_ty, value, zig_face, expect }) catch return error.Overflow;
+        return @intCast(written.len);
+    }
+
+    const written = std.fmt.bufPrint(out,
+        \\const std = @import("std");
+        \\
+        \\/// Lowered from Glow `=/  {s}={s}` — typed face binding with a demo value.
+        \\pub fn main(_: std.process.Init) !u8 {{
+        \\    const {s}: {s} = {d};
+        \\    return if ({s} == {d}) 0 else 1;
+        \\}}
+        \\
+    , .{ face, mold, zig_face, zig_ty, value, zig_face, expect }) catch return error.Overflow;
+    return @intCast(written.len);
+}
+
+/// Parse one Glow `=/` line and emit a welcome-path program (binding matches).
+pub fn lower_line_welcome(line: []const u8, out: []u8) LowerError!u32 {
+    const trimmed = std.mem.trim(u8, line, " \t\r\n");
+    if (trimmed.len == 0) return error.EmptySource;
+    const spec = try rf.parse(trimmed);
+    return lower_spec(spec, true, out);
+}
+
+/// Parse one Glow `=/` line and emit an unwelcome-path program (expect mismatch).
+pub fn lower_line_unwelcome(line: []const u8, out: []u8) LowerError!u32 {
+    const trimmed = std.mem.trim(u8, line, " \t\r\n");
+    if (trimmed.len == 0) return error.EmptySource;
+    const spec = try rf.parse(trimmed);
+    return lower_spec(spec, false, out);
+}

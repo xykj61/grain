@@ -1157,7 +1157,22 @@ let glow_if = run ["rishi/bin/rishi" "run" "tools/glow_lower_conditional_witness
 assert glow_if.ok else "Glow lower-conditional witness failed"
 say "GREEN: Glow lower-conditional witness passed."
 
-say "witness suite: glow_run desk — bound-tick, lent-tick, cast-u32, if-gth…"
+say "witness suite: Glow `?-` lowers to Rye — switch hop…"
+let glow_sw = run ["rishi/bin/rishi" "run" "tools/glow_lower_switch_witness.rish"]
+assert glow_sw.ok else "Glow lower-switch witness failed"
+say "GREEN: Glow lower-switch witness passed."
+
+say "witness suite: Glow `=/` lowers to Rye — face hop…"
+let glow_face = run ["rishi/bin/rishi" "run" "tools/glow_lower_face_witness.rish"]
+assert glow_face.ok else "Glow lower-face witness failed"
+say "GREEN: Glow lower-face witness passed."
+
+say "witness suite: Glow `?~` lowers to Rye — null hop…"
+let glow_null = run ["rishi/bin/rishi" "run" "tools/glow_lower_null_witness.rish"]
+assert glow_null.ok else "Glow lower-null witness failed"
+say "GREEN: Glow lower-null witness passed."
+
+say "witness suite: glow_run desk — bound-tick through null-records…"
 let glow_desk = run ["rishi/bin/rishi" "run" "tools/glow_run_desk_witness.rish"]
 assert glow_desk.ok else "Glow run desk witness failed"
 say "GREEN: glow_run desk witness passed."

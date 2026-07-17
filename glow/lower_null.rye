@@ -1,0 +1,84 @@
+//! glow/lower_null.rye — lower a parsed `?~` null-test to runnable `.rye`.
+//!
+//! Per active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md:
+//! `?~` is the null test. This hop lowers the brief's own subject
+//! `records.cur` to an optional Zig value: null takes the then arm (exit 0);
+//! present takes the else arm (exit 1). Real then/else arms stay later.
+
+const std = @import("std");
+const rn = @import("rune_null.rye");
+
+pub const LowerError = rn.ParseError || error{
+    Overflow,
+    EmptySource,
+    BadIdent,
+    SubjectNotYetLowered,
+};
+
+const SubjectKind = enum { records_cur };
+
+fn classify_subject(subject: []const u8) LowerError!SubjectKind {
+    if (std.mem.eql(u8, subject, "records.cur")) return .records_cur;
+    return error.SubjectNotYetLowered;
+}
+
+fn zig_safe_wing(wing: []const u8, out: *[rn.max_subject_len]u8) LowerError!usize {
+    if (wing.len == 0 or wing.len > rn.max_subject_len) return error.BadIdent;
+    var i: usize = 0;
+    while (i < wing.len) : (i += 1) {
+        const c = wing[i];
+        const mapped: u8 = if (c == '.' or c == '-') '_' else c;
+        if (i == 0) {
+            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or mapped == '_'))
+                return error.BadIdent;
+        } else {
+            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or (mapped >= '0' and mapped <= '9') or mapped == '_'))
+                return error.BadIdent;
+        }
+        out[i] = mapped;
+    }
+    return wing.len;
+}
+
+fn emit_optional_program(glow_subject: []const u8, zig_face: []const u8, is_null: bool, out: []u8) LowerError!u32 {
+    const init: []const u8 = if (is_null) "null" else "1";
+    const written = std.fmt.bufPrint(out,
+        \\const std = @import("std");
+        \\
+        \\/// Lowered from Glow `?~  {s}` — null test; then arm on null.
+        \\pub fn main(_: std.process.Init) !u8 {{
+        \\    const {s}: ?u32 = {s};
+        \\    if ({s} == null) {{
+        \\        return 0;
+        \\    }} else {{
+        \\        return 1;
+        \\    }}
+        \\}}
+        \\
+    , .{ glow_subject, zig_face, init, zig_face }) catch return error.Overflow;
+    return @intCast(written.len);
+}
+
+fn lower_spec(subject: []const u8, welcome: bool, out: []u8) LowerError!u32 {
+    _ = try classify_subject(subject);
+    var zig_buf: [rn.max_subject_len]u8 = undefined;
+    const n = try zig_safe_wing(subject, &zig_buf);
+    const zig_face = zig_buf[0..n];
+    return emit_optional_program(subject, zig_face, welcome, out);
+}
+
+/// Welcome: subject is null → then arm / exit 0.
+pub fn lower_line_welcome(line: []const u8, out: []u8) LowerError!u32 {
+    const trimmed = std.mem.trim(u8, line, " \t\r\n");
+    if (trimmed.len == 0) return error.EmptySource;
+    const spec = try rn.parse(trimmed);
+    return lower_spec(rn.subject_slice(&spec), true, out);
+}
+
+/// Unwelcome: subject is present → else arm / exit 1.
+pub fn lower_line_unwelcome(line: []const u8, out: []u8) LowerError!u32 {
+    const trimmed = std.mem.trim(u8, line, " \t\r\n");
+    if (trimmed.len == 0) return error.EmptySource;
+    const spec = try rn.parse(trimmed);
+    return lower_spec(rn.subject_slice(&spec), false, out);
+}

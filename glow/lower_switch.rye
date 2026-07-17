@@ -1,0 +1,63 @@
+//! glow/lower_switch.rye — lower a parsed `?-` subject to runnable `.rye`.
+//!
+//! Per active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md:
+//! `?-` is the exhaustive switch over a cold-atom-tagged subject. This hop
+//! lowers the brief's own subject `kind.cur-record` to a two-arm Zig switch
+//! over `%mint` / `%send` (as `.mint` / `.send`). Real arm bodies and
+//! compile-time exhaustiveness over a growing mold stay later laps.
+
+const std = @import("std");
+const rsw = @import("rune_switch.rye");
+
+pub const LowerError = rsw.ParseError || error{
+    Overflow,
+    EmptySource,
+    SubjectNotYetLowered,
+};
+
+const SubjectKind = enum { kind_cur_record };
+
+fn classify_subject(subject: []const u8) LowerError!SubjectKind {
+    if (std.mem.eql(u8, subject, "kind.cur-record")) return .kind_cur_record;
+    return error.SubjectNotYetLowered;
+}
+
+fn emit_kind_program(tag: []const u8, out: []u8) LowerError!u32 {
+    const written = std.fmt.bufPrint(out,
+        \\const std = @import("std");
+        \\
+        \\/// Lowered from Glow `?-  kind.cur-record` — exhaustive switch over kind.
+        \\pub fn main(_: std.process.Init) !u8 {{
+        \\    const Kind = enum {{ mint, send }};
+        \\    const kind: Kind = .{s};
+        \\    switch (kind) {{
+        \\        .mint => return 0,
+        \\        .send => return 1,
+        \\    }}
+        \\}}
+        \\
+    , .{tag}) catch return error.Overflow;
+    return @intCast(written.len);
+}
+
+/// Parse one Glow `?-` line and emit a welcome-path program (mint arm / exit 0).
+pub fn lower_line_welcome(line: []const u8, out: []u8) LowerError!u32 {
+    const trimmed = std.mem.trim(u8, line, " \t\r\n");
+    if (trimmed.len == 0) return error.EmptySource;
+    const spec = try rsw.parse(trimmed);
+    const subject = rsw.subject_slice(&spec);
+    return switch (try classify_subject(subject)) {
+        .kind_cur_record => emit_kind_program("mint", out),
+    };
+}
+
+/// Parse one Glow `?-` line and emit an unwelcome-path program (send arm / exit 1).
+pub fn lower_line_unwelcome(line: []const u8, out: []u8) LowerError!u32 {
+    const trimmed = std.mem.trim(u8, line, " \t\r\n");
+    if (trimmed.len == 0) return error.EmptySource;
+    const spec = try rsw.parse(trimmed);
+    const subject = rsw.subject_slice(&spec);
+    return switch (try classify_subject(subject)) {
+        .kind_cur_record => emit_kind_program("send", out),
+    };
+}
