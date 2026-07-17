@@ -1,9 +1,11 @@
 //! glow/lower_null.rye — lower a parsed `?~` null-test to runnable `.rye`.
 //!
 //! Per active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md:
-//! `?~` is the null test. This hop lowers `records.cur` and deepens then/else
-//! into named arm faces (optional trailing idents, or defaults `root` /
-//! `cont` matching the brief's then-arm shape). Real arm expressions stay later.
+//! `?~` is the null test. This hop lowers `records.cur` with then/else as
+//! named faces (defaults root/cont), decimal literals, or nested
+//! `^-  @uN  <decimal>` cast-of-literals. Arm decimals are payloads, not
+//! Hoon loobeans; exits are POSIX (0 success). See glow/truth_semantics.rye.
+//! Other parenthesized arm expressions refuse until a later lap.
 
 const std = @import("std");
 const rn = @import("rune_null.rye");
@@ -13,16 +15,30 @@ pub const LowerError = rn.ParseError || error{
     EmptySource,
     BadIdent,
     SubjectNotYetLowered,
+    ArmNotYetLowered,
     MalformedArms,
+    AuraNotYetLowered,
+    NamedMoldNotYetLowered,
 };
 
 pub const max_arm_len: u32 = 64;
 
 const SubjectKind = enum { records_cur };
 
+const ArmKind = enum { face, literal, cast_literal };
+
+const ArmExpr = struct {
+    kind: ArmKind,
+    face: [max_arm_len]u8 = [_]u8{0} ** max_arm_len,
+    face_len: usize = 0,
+    lit: u32 = 0,
+    mold: [max_arm_len]u8 = [_]u8{0} ** max_arm_len,
+    mold_len: usize = 0,
+};
+
 const ArmPair = struct {
-    then_face: []const u8,
-    else_face: []const u8,
+    then_arm: ArmExpr,
+    else_arm: ArmExpr,
 };
 
 fn classify_subject(subject: []const u8) LowerError!SubjectKind {
@@ -73,58 +89,188 @@ fn zig_safe_wing(wing: []const u8, out: *[rn.max_subject_len]u8) LowerError!usiz
     return wing.len;
 }
 
-/// Optional `then else` bare faces after the subject. Defaults: root / cont.
-fn arm_faces(line: []const u8, subject: []const u8) LowerError!ArmPair {
-    const idx = std.mem.indexOf(u8, line, subject) orelse return error.MalformedArms;
-    var rest = std.mem.trim(u8, line[idx + subject.len ..], " \t\r\n");
-    if (rest.len == 0) {
-        return .{ .then_face = "root", .else_face = "cont" };
-    }
-    var end1: usize = 0;
-    while (end1 < rest.len and is_ident_char(rest[end1])) end1 += 1;
-    if (end1 == 0) return error.MalformedArms;
-    const then_face = rest[0..end1];
-    rest = std.mem.trimStart(u8, rest[end1..], " \t");
+fn zig_type_for_mold(mold: []const u8) LowerError![]const u8 {
+    if (mold.len == 0) return error.MalformedArms;
+    if (mold[0] != '@') return error.NamedMoldNotYetLowered;
+    if (std.mem.eql(u8, mold, "@u8")) return "u8";
+    if (std.mem.eql(u8, mold, "@u16")) return "u16";
+    if (std.mem.eql(u8, mold, "@u32")) return "u32";
+    if (std.mem.eql(u8, mold, "@u64")) return "u64";
+    return error.AuraNotYetLowered;
+}
+
+fn face_slice(a: *const ArmExpr) []const u8 {
+    return a.face[0..a.face_len];
+}
+
+fn mold_slice(a: *const ArmExpr) []const u8 {
+    return a.mold[0..a.mold_len];
+}
+
+fn parse_decimal_prefix(rest: []const u8) LowerError!struct { lit: u32, rest: []const u8 } {
+    var end: usize = 0;
+    while (end < rest.len and rest[end] >= '0' and rest[end] <= '9') end += 1;
+    if (end == 0) return error.MalformedArms;
+    const lit = std.fmt.parseInt(u32, rest[0..end], 10) catch return error.Overflow;
+    return .{ .lit = lit, .rest = std.mem.trimStart(u8, rest[end..], " \t") };
+}
+
+fn parse_one_arm(rest_in: []const u8) LowerError!struct { arm: ArmExpr, rest: []const u8 } {
+    const rest = std.mem.trimStart(u8, rest_in, " \t");
     if (rest.len == 0) return error.MalformedArms;
-    var end2: usize = 0;
-    while (end2 < rest.len and is_ident_char(rest[end2])) end2 += 1;
-    if (end2 == 0) return error.MalformedArms;
-    const else_face = rest[0..end2];
-    rest = std.mem.trimStart(u8, rest[end2..], " \t");
-    if (rest.len != 0) return error.MalformedArms;
-    if (then_face[0] >= '0' and then_face[0] <= '9') return error.BadIdent;
-    if (else_face[0] >= '0' and else_face[0] <= '9') return error.BadIdent;
-    return .{ .then_face = then_face, .else_face = else_face };
+    if (rest[0] == '(') return error.ArmNotYetLowered;
+
+    if (rest[0] >= '0' and rest[0] <= '9') {
+        const parsed = try parse_decimal_prefix(rest);
+        return .{ .arm = .{ .kind = .literal, .lit = parsed.lit }, .rest = parsed.rest };
+    }
+
+    if (rest.len >= 2 and rest[0] == '^' and rest[1] == '-') {
+        var after_rune = std.mem.trimStart(u8, rest[2..], " \t");
+        var mold_end: usize = 0;
+        while (mold_end < after_rune.len and after_rune[mold_end] != ' ' and after_rune[mold_end] != '\t')
+            mold_end += 1;
+        const mold = after_rune[0..mold_end];
+        if (mold.len == 0 or mold.len > max_arm_len) return error.MalformedArms;
+        _ = try zig_type_for_mold(mold);
+        const after_mold = std.mem.trimStart(u8, after_rune[mold_end..], " \t");
+        const parsed = try parse_decimal_prefix(after_mold);
+        var arm: ArmExpr = .{ .kind = .cast_literal, .lit = parsed.lit, .mold_len = mold.len };
+        @memcpy(arm.mold[0..mold.len], mold);
+        return .{ .arm = arm, .rest = parsed.rest };
+    }
+
+    var end: usize = 0;
+    while (end < rest.len and is_ident_char(rest[end])) end += 1;
+    if (end == 0) return error.MalformedArms;
+    const face = rest[0..end];
+    if (face[0] >= '0' and face[0] <= '9') return error.BadIdent;
+    if (face.len > max_arm_len) return error.BadIdent;
+    var arm: ArmExpr = .{ .kind = .face, .face_len = face.len };
+    @memcpy(arm.face[0..face.len], face);
+    return .{ .arm = arm, .rest = std.mem.trimStart(u8, rest[end..], " \t") };
+}
+
+fn arm_pair(line: []const u8, subject: []const u8) LowerError!ArmPair {
+    const idx = std.mem.indexOf(u8, line, subject) orelse return error.MalformedArms;
+    const rest0 = std.mem.trim(u8, line[idx + subject.len ..], " \t\r\n");
+    if (rest0.len == 0) {
+        var then_arm: ArmExpr = .{ .kind = .face, .face_len = 4 };
+        @memcpy(then_arm.face[0..4], "root");
+        var else_arm: ArmExpr = .{ .kind = .face, .face_len = 4 };
+        @memcpy(else_arm.face[0..4], "cont");
+        return .{ .then_arm = then_arm, .else_arm = else_arm };
+    }
+    const first = try parse_one_arm(rest0);
+    const second = try parse_one_arm(first.rest);
+    if (second.rest.len != 0) return error.MalformedArms;
+    return .{ .then_arm = first.arm, .else_arm = second.arm };
+}
+
+fn expect_then_value(then_arm: *const ArmExpr) u32 {
+    return switch (then_arm.kind) {
+        .face => 1,
+        .literal, .cast_literal => then_arm.lit,
+    };
+}
+
+fn emit_face_bindings(then_arm: *const ArmExpr, else_arm: *const ArmExpr, out: []u8, at: *usize) LowerError!void {
+    if (then_arm.kind == .face) {
+        var zb: [max_arm_len]u8 = undefined;
+        const zn = try zig_safe_ident(face_slice(then_arm), &zb);
+        const line = std.fmt.bufPrint(out[at.*..], "    const {s}: u32 = 1;\n", .{zb[0..zn]}) catch return error.Overflow;
+        at.* += line.len;
+    }
+    if (else_arm.kind == .face) {
+        var zb: [max_arm_len]u8 = undefined;
+        const zn = try zig_safe_ident(face_slice(else_arm), &zb);
+        const line = std.fmt.bufPrint(out[at.*..], "    const {s}: u32 = 0;\n", .{zb[0..zn]}) catch return error.Overflow;
+        at.* += line.len;
+    }
+}
+
+fn emit_cast_bindings(then_arm: *const ArmExpr, else_arm: *const ArmExpr, out: []u8, at: *usize) LowerError!void {
+    if (then_arm.kind == .cast_literal) {
+        const mold = mold_slice(then_arm);
+        const zig_ty = try zig_type_for_mold(mold);
+        if (std.mem.eql(u8, zig_ty, "u64")) return error.AuraNotYetLowered;
+        const line = std.fmt.bufPrint(out[at.*..],
+            "    const then_arm: {s} = std.math.cast({s}, @as(u64, {d})) orelse return 1;\n",
+            .{ zig_ty, zig_ty, then_arm.lit },
+        ) catch return error.Overflow;
+        at.* += line.len;
+    }
+    if (else_arm.kind == .cast_literal) {
+        const mold = mold_slice(else_arm);
+        const zig_ty = try zig_type_for_mold(mold);
+        if (std.mem.eql(u8, zig_ty, "u64")) return error.AuraNotYetLowered;
+        const line = std.fmt.bufPrint(out[at.*..],
+            "    const else_arm: {s} = std.math.cast({s}, @as(u64, {d})) orelse return 1;\n",
+            .{ zig_ty, zig_ty, else_arm.lit },
+        ) catch return error.Overflow;
+        at.* += line.len;
+    }
+}
+
+fn write_arm_expr(arm: *const ArmExpr, role: enum { then_role, else_role }, out: []u8) LowerError![]const u8 {
+    switch (arm.kind) {
+        .face => {
+            var zb: [max_arm_len]u8 = undefined;
+            const zn = try zig_safe_ident(face_slice(arm), &zb);
+            if (zn > out.len) return error.Overflow;
+            @memcpy(out[0..zn], zb[0..zn]);
+            return out[0..zn];
+        },
+        .literal => {
+            return std.fmt.bufPrint(out, "{d}", .{arm.lit}) catch return error.Overflow;
+        },
+        .cast_literal => {
+            return switch (role) {
+                .then_role => "then_arm",
+                .else_role => "else_arm",
+            };
+        },
+    }
 }
 
 fn emit_optional_program(
     glow_subject: []const u8,
     zig_face: []const u8,
-    then_glow: []const u8,
-    else_glow: []const u8,
+    then_arm: *const ArmExpr,
+    else_arm: *const ArmExpr,
     is_null: bool,
     out: []u8,
 ) LowerError!u32 {
-    var then_buf: [max_arm_len]u8 = undefined;
-    var else_buf: [max_arm_len]u8 = undefined;
-    const then_n = try zig_safe_ident(then_glow, &then_buf);
-    const else_n = try zig_safe_ident(else_glow, &else_buf);
-    const then_z = then_buf[0..then_n];
-    const else_z = else_buf[0..else_n];
+    var body: [1536]u8 = undefined;
+    var at: usize = 0;
     const init: []const u8 = if (is_null) "null" else "1";
+    const subj_line = std.fmt.bufPrint(body[at..], "    const {s}: ?u32 = {s};\n", .{ zig_face, init }) catch return error.Overflow;
+    at += subj_line.len;
+    try emit_face_bindings(then_arm, else_arm, &body, &at);
+    try emit_cast_bindings(then_arm, else_arm, &body, &at);
+
+    var then_expr_buf: [max_arm_len]u8 = undefined;
+    var else_expr_buf: [max_arm_len]u8 = undefined;
+    const then_expr = try write_arm_expr(then_arm, .then_role, &then_expr_buf);
+    const else_expr = try write_arm_expr(else_arm, .else_role, &else_expr_buf);
+    const expect = expect_then_value(then_arm);
+
+    var cond_buf: [rn.max_subject_len + 16]u8 = undefined;
+    const cond = std.fmt.bufPrint(&cond_buf, "{s} == null", .{zig_face}) catch return error.Overflow;
+    const if_line = std.fmt.bufPrint(body[at..],
+        "    const result: u32 = if ({s}) {s} else {s};\n    return if (result == {d}) 0 else 1;\n",
+        .{ cond, then_expr, else_expr, expect },
+    ) catch return error.Overflow;
+    at += if_line.len;
+
     const written = std.fmt.bufPrint(out,
         \\const std = @import("std");
         \\
-        \\/// Lowered from Glow `?~  {s}  {s}  {s}` — null test with named arms.
+        \\/// Lowered from Glow `?~  {s}` — then/else arm expressions.
         \\pub fn main(_: std.process.Init) !u8 {{
-        \\    const {s}: ?u32 = {s};
-        \\    const {s}: u32 = 1;
-        \\    const {s}: u32 = 0;
-        \\    const result: u32 = if ({s} == null) {s} else {s};
-        \\    return if (result == {s}) 0 else 1;
-        \\}}
+        \\{s}}}
         \\
-    , .{ glow_subject, then_glow, else_glow, zig_face, init, then_z, else_z, zig_face, then_z, else_z, then_z }) catch return error.Overflow;
+    , .{ glow_subject, body[0..at] }) catch return error.Overflow;
     return @intCast(written.len);
 }
 
@@ -134,11 +280,11 @@ fn lower_line(line: []const u8, welcome: bool, out: []u8) LowerError!u32 {
     const spec = try rn.parse(trimmed);
     const subject = rn.subject_slice(&spec);
     _ = try classify_subject(subject);
-    const arms = try arm_faces(trimmed, subject);
+    var arms = try arm_pair(trimmed, subject);
     var zig_buf: [rn.max_subject_len]u8 = undefined;
     const n = try zig_safe_wing(subject, &zig_buf);
     const zig_face = zig_buf[0..n];
-    return emit_optional_program(subject, zig_face, arms.then_face, arms.else_face, welcome, out);
+    return emit_optional_program(subject, zig_face, &arms.then_arm, &arms.else_arm, welcome, out);
 }
 
 pub fn lower_line_welcome(line: []const u8, out: []u8) LowerError!u32 {

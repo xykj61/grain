@@ -1,3 +1,3 @@
-::  Conditional with named then/else arms — brief's (gth tick 32) test.
-::  Lowered by glow/lower_conditional.rye into an if-expression over arm faces.
-?:  (gth tick 32)  delivered  dropped
+::  Conditional with decimal then/else arm payloads — brief's (gth tick 32).
+::  1 and 0 are ordinary values, not Hoon loobeans (Glow ambient truth is Zig).
+?:  (gth tick 32)  1  0

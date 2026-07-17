@@ -8,7 +8,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const lower = @import("lower_conditional.rye");
 
-const witness_version = "20260717.153451";
+const witness_version = "20260717.154458";
 
 fn run_selftest(init: std.process.Init) !u8 {
     const io = init.io;
@@ -41,6 +41,25 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, rye4, "if (ready) yes else no") != null);
     print("lower: \"?:  ready  yes  no\" welcome takes then arm -- GREEN\n", .{});
 
+    const n5 = try lower.lower_line_welcome("?:  (gth tick 32)  1  0", &buf);
+    const rye5 = buf[0..n5];
+    assert(std.mem.indexOf(u8, rye5, "if (tick > 32) 1 else 0") != null);
+    assert(std.mem.indexOf(u8, rye5, "result == 1") != null);
+    print("lower: \"?:  (gth tick 32)  1  0\" welcome nests decimal arms -- GREEN\n", .{});
+
+    const n6 = try lower.lower_line_unwelcome("?:  (gth tick 32)  1  0", &buf);
+    const rye6 = buf[0..n6];
+    assert(std.mem.indexOf(u8, rye6, "const tick: u32 = 10") != null);
+    assert(std.mem.indexOf(u8, rye6, "if (tick > 32) 1 else 0") != null);
+    print("lower: \"?:  (gth tick 32)  1  0\" unwelcome takes else literal -- GREEN\n", .{});
+
+    const n7 = try lower.lower_line_welcome("?:  (gth tick 32)  ^-  @u32  1  ^-  @u32  0", &buf);
+    const rye7 = buf[0..n7];
+    assert(std.mem.indexOf(u8, rye7, "const then_arm: u32 = std.math.cast(u32") != null);
+    assert(std.mem.indexOf(u8, rye7, "const else_arm: u32 = std.math.cast(u32") != null);
+    assert(std.mem.indexOf(u8, rye7, "if (tick > 32) then_arm else else_arm") != null);
+    print("lower: \"?:  …  ^-  @u32  1  ^-  @u32  0\" welcome nests cast arms -- GREEN\n", .{});
+
     if (lower.lower_line_welcome("?:  (dropped-this-tick rand)", &buf)) |_| {
         return error.TestLoweredTooSoon;
     } else |err| {
@@ -48,21 +67,28 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("lower: \"?:  (dropped-this-tick rand)\" refused TestNotYetLowered -- GREEN\n", .{});
 
+    if (lower.lower_line_welcome("?:  (gth tick 32)  (mix a b)  0", &buf)) |_| {
+        return error.ArmLoweredTooSoon;
+    } else |err| {
+        if (err != lower.LowerError.ArmNotYetLowered) return err;
+    }
+    print("lower: parenthesized arm refused ArmNotYetLowered -- GREEN\n", .{});
+
     try cwd.createDirPath(io, "glow/.cache");
     const welcome_path = "glow/.cache/if_gth_welcome.rye";
     const unwelcome_path = "glow/.cache/if_gth_unwelcome.rye";
-    const n5 = try lower.lower_line_welcome("?:  (gth tick 32)  delivered  dropped", &buf);
-    try cwd.writeFile(io, .{ .sub_path = welcome_path, .data = buf[0..n5] });
-    const n6 = try lower.lower_line_unwelcome("?:  (gth tick 32)  delivered  dropped", &buf);
-    try cwd.writeFile(io, .{ .sub_path = unwelcome_path, .data = buf[0..n6] });
+    const n8 = try lower.lower_line_welcome("?:  (gth tick 32)  1  0", &buf);
+    try cwd.writeFile(io, .{ .sub_path = welcome_path, .data = buf[0..n8] });
+    const n9 = try lower.lower_line_unwelcome("?:  (gth tick 32)  1  0", &buf);
+    try cwd.writeFile(io, .{ .sub_path = unwelcome_path, .data = buf[0..n9] });
     print("lower: wrote if welcome and unwelcome .rye under glow/.cache/ -- GREEN\n", .{});
 
     const gen_src = try cwd.readFileAlloc(io, "glow/gen/if-gth.glow", a, .limited(4096));
-    assert(std.mem.indexOf(u8, gen_src, "?:  (gth tick 32)  delivered  dropped") != null);
-    print("lower: glow/gen/if-gth.glow carries named then/else arms -- GREEN\n", .{});
+    assert(std.mem.indexOf(u8, gen_src, "?:  (gth tick 32)  1  0") != null);
+    print("lower: glow/gen/if-gth.glow carries decimal then/else arms -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: `?:` lowers with named then/else arms to ordinary Rye.\n", .{});
+    print("GREEN: `?:` lowers with decimal and cast then/else arms to ordinary Rye.\n", .{});
     return 0;
 }
 

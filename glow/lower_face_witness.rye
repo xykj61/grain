@@ -8,7 +8,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const lower = @import("lower_face.rye");
 
-const witness_version = "20260717.153723";
+const witness_version = "20260717.154327";
 
 fn run_selftest(init: std.process.Init) !u8 {
     const io = init.io;
@@ -38,6 +38,31 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, rye4, "const tick: u32 = 9") != null);
     print("lower: \"=/  tick  9\" bare face binds trailing value -- GREEN\n", .{});
 
+    const n5 = try lower.lower_line_welcome("=/  next-root=@u32  ^-  @u32  42", &buf);
+    const rye5 = buf[0..n5];
+    assert(std.mem.indexOf(u8, rye5, "std.math.cast(u32, raw)") != null);
+    assert(std.mem.indexOf(u8, rye5, "const raw: u64 = 42") != null);
+    assert(std.mem.indexOf(u8, rye5, "next_root == 42") != null);
+    print("lower: \"=/  …  ^-  @u32  42\" welcome nests cast literal -- GREEN\n", .{});
+
+    const n6 = try lower.lower_line_unwelcome("=/  next-root=@u32  ^-  @u32  42", &buf);
+    const rye6 = buf[0..n6];
+    assert(std.mem.indexOf(u8, rye6, "const raw: u64 = 4294967296") != null);
+    assert(std.mem.indexOf(u8, rye6, "std.math.cast(u32, raw)") != null);
+    print("lower: \"=/  …  ^-  @u32  42\" unwelcome overflows cast -- GREEN\n", .{});
+
+    const n7 = try lower.lower_line_welcome("=/  next-root  ^-  @u8  7", &buf);
+    const rye7 = buf[0..n7];
+    assert(std.mem.indexOf(u8, rye7, "std.math.cast(u8, raw)") != null);
+    print("lower: bare face over nested ^- @u8 welcome -- GREEN\n", .{});
+
+    if (lower.lower_line_welcome("=/  next-root=@u32  ^-  @u8  7", &buf)) |_| {
+        return error.CastMoldMismatchAccepted;
+    } else |err| {
+        if (err != lower.LowerError.CastMoldMismatch) return err;
+    }
+    print("lower: face mold vs cast mold CastMoldMismatch refused -- GREEN\n", .{});
+
     if (lower.lower_line_welcome("=/  cur-record=record", &buf)) |_| {
         return error.NamedMoldLoweredTooSoon;
     } else |err| {
@@ -55,18 +80,18 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.createDirPath(io, "glow/.cache");
     const welcome_path = "glow/.cache/face_root_welcome.rye";
     const unwelcome_path = "glow/.cache/face_root_unwelcome.rye";
-    const n5 = try lower.lower_line_welcome("=/  next-root=@u32  42", &buf);
-    try cwd.writeFile(io, .{ .sub_path = welcome_path, .data = buf[0..n5] });
-    const n6 = try lower.lower_line_unwelcome("=/  next-root=@u32  42", &buf);
-    try cwd.writeFile(io, .{ .sub_path = unwelcome_path, .data = buf[0..n6] });
+    const n8 = try lower.lower_line_welcome("=/  next-root=@u32  ^-  @u32  42", &buf);
+    try cwd.writeFile(io, .{ .sub_path = welcome_path, .data = buf[0..n8] });
+    const n9 = try lower.lower_line_unwelcome("=/  next-root=@u32  ^-  @u32  42", &buf);
+    try cwd.writeFile(io, .{ .sub_path = unwelcome_path, .data = buf[0..n9] });
     print("lower: wrote face welcome and unwelcome .rye under glow/.cache/ -- GREEN\n", .{});
 
     const gen_src = try cwd.readFileAlloc(io, "glow/gen/face-root.glow", a, .limited(4096));
-    assert(std.mem.indexOf(u8, gen_src, "=/  next-root=@u32  42") != null);
-    print("lower: glow/gen/face-root.glow carries trailing bound value -- GREEN\n", .{});
+    assert(std.mem.indexOf(u8, gen_src, "=/  next-root=@u32  ^-  @u32  42") != null);
+    print("lower: glow/gen/face-root.glow nests cast under face -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: `=/` lowers typed faces with trailing bound values to ordinary Rye.\n", .{});
+    print("GREEN: `=/` lowers faces with nested `^-` cast values to ordinary Rye.\n", .{});
     return 0;
 }
 

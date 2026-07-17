@@ -1,13 +1,15 @@
 # Nock — the Second Backend, for Interop and Verification
 
 **Language:** EN
-**Last updated:** 2026-07-16 (lap 3 landed — the edit primitive and opcode 10; opcodes 0 through 11, the whole of Nock's own numbered core, are now real)
+**Last updated:** 2026-07-17 (loobean kept here; Glow ambient truth is Zig — seam named)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Checkable — opcodes 0 through 11, GREEN
 
 ---
 
 **Nock is Glow's second backend, never its execution floor.** Per [`../active-reviving/20260715-213500_glow-revives-hoon-runes-targets-riscv.md`](../active-reviving/20260715-213500_glow-revives-hoon-runes-targets-riscv.md), Glow's primary path compiles straight through Zig to RISC-V — proven, green, byte-identical across nine keystone pieces, this interpreter's own three laps and its first jet among them (see [`../tools/glow_riscv_target_witness.rish`](../tools/glow_riscv_target_witness.rish)). This interpreter exists for one purpose only: Urbit-world interop and verification, so Glow can meet the Nock world and be checked against it, the way Hoon itself once needed Nock as the floor a decade before RISC-V existed to be one.
+
+**Loobeans stay Nock's own law here.** Opcode 6 treats atom **0 as yes** and **1 as no** — correct for Nock, and **not** Glow ambient truth. Glow uses Zig/`bool` and POSIX exits; crossing into this interpreter converts through [`../glow/truth_semantics.rye`](../glow/truth_semantics.rye). Ruling: [`../context/specs/20260717-154943_glow-truth-zig-ambient-nock-loobean-seam.md`](../context/specs/20260717-154943_glow-truth-zig-ambient-nock-loobean-seam.md).
 
 ## Lap 1 — the Primitive Core
 

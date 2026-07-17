@@ -2,9 +2,12 @@
 //!
 //! Per active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md:
 //! `?-` is the exhaustive switch over a cold-atom-tagged subject. This hop
-//! lowers `kind.cur-record` to a Zig switch over `.mint` / `.send`, and
-//! deepens arms into named result faces (optional trailing
-//! `%mint <face> %send <face>`, or defaults). Real arm expressions stay later.
+//! lowers `kind.cur-record` to a Zig switch over `.mint` / `.send`. Arms are
+//! named faces (defaults minted/sent), decimal literals, or nested
+//! `^-  @uN  <decimal>` cast-of-literals after `%mint` / `%send`. Arm
+//! decimals are payloads, not Hoon loobeans; exits are POSIX (0 success).
+//! See glow/truth_semantics.rye. Other parenthesized arm expressions refuse
+//! until a later lap.
 
 const std = @import("std");
 const rsw = @import("rune_switch.rye");
@@ -13,17 +16,31 @@ pub const LowerError = rsw.ParseError || error{
     Overflow,
     EmptySource,
     SubjectNotYetLowered,
+    ArmNotYetLowered,
     BadIdent,
     MalformedArms,
+    AuraNotYetLowered,
+    NamedMoldNotYetLowered,
 };
 
 pub const max_arm_len: u32 = 64;
 
 const SubjectKind = enum { kind_cur_record };
 
+const ArmKind = enum { face, literal, cast_literal };
+
+const ArmExpr = struct {
+    kind: ArmKind,
+    face: [max_arm_len]u8 = [_]u8{0} ** max_arm_len,
+    face_len: usize = 0,
+    lit: u32 = 0,
+    mold: [max_arm_len]u8 = [_]u8{0} ** max_arm_len,
+    mold_len: usize = 0,
+};
+
 const ArmPair = struct {
-    mint_face: []const u8,
-    send_face: []const u8,
+    mint_arm: ArmExpr,
+    send_arm: ArmExpr,
 };
 
 fn classify_subject(subject: []const u8) LowerError!SubjectKind {
@@ -56,17 +73,22 @@ fn zig_safe_ident(face: []const u8, out: *[max_arm_len]u8) LowerError!usize {
     return face.len;
 }
 
-fn take_ident(rest: *[]const u8) LowerError![]const u8 {
-    var r = rest.*;
-    r = std.mem.trimStart(u8, r, " \t");
-    if (r.len == 0) return error.MalformedArms;
-    var end: usize = 0;
-    while (end < r.len and is_ident_char(r[end])) end += 1;
-    if (end == 0) return error.MalformedArms;
-    if (r[0] >= '0' and r[0] <= '9') return error.BadIdent;
-    const ident = r[0..end];
-    rest.* = std.mem.trimStart(u8, r[end..], " \t");
-    return ident;
+fn zig_type_for_mold(mold: []const u8) LowerError![]const u8 {
+    if (mold.len == 0) return error.MalformedArms;
+    if (mold[0] != '@') return error.NamedMoldNotYetLowered;
+    if (std.mem.eql(u8, mold, "@u8")) return "u8";
+    if (std.mem.eql(u8, mold, "@u16")) return "u16";
+    if (std.mem.eql(u8, mold, "@u32")) return "u32";
+    if (std.mem.eql(u8, mold, "@u64")) return "u64";
+    return error.AuraNotYetLowered;
+}
+
+fn face_slice(a: *const ArmExpr) []const u8 {
+    return a.face[0..a.face_len];
+}
+
+fn mold_slice(a: *const ArmExpr) []const u8 {
+    return a.mold[0..a.mold_len];
 }
 
 fn expect_tag(rest: *[]const u8, tag: []const u8) LowerError!void {
@@ -78,45 +100,167 @@ fn expect_tag(rest: *[]const u8, tag: []const u8) LowerError!void {
     rest.* = std.mem.trimStart(u8, after, " \t");
 }
 
-/// Optional `%mint <face> %send <face>` after the subject. Defaults when absent.
-fn arm_faces(line: []const u8, subject: []const u8) LowerError!ArmPair {
+fn parse_decimal_prefix(rest: []const u8) LowerError!struct { lit: u32, rest: []const u8 } {
+    var end: usize = 0;
+    while (end < rest.len and rest[end] >= '0' and rest[end] <= '9') end += 1;
+    if (end == 0) return error.MalformedArms;
+    const lit = std.fmt.parseInt(u32, rest[0..end], 10) catch return error.Overflow;
+    return .{ .lit = lit, .rest = std.mem.trimStart(u8, rest[end..], " \t") };
+}
+
+fn parse_one_arm(rest_in: []const u8) LowerError!struct { arm: ArmExpr, rest: []const u8 } {
+    const rest = std.mem.trimStart(u8, rest_in, " \t");
+    if (rest.len == 0) return error.MalformedArms;
+    if (rest[0] == '(') return error.ArmNotYetLowered;
+
+    if (rest[0] >= '0' and rest[0] <= '9') {
+        const parsed = try parse_decimal_prefix(rest);
+        return .{ .arm = .{ .kind = .literal, .lit = parsed.lit }, .rest = parsed.rest };
+    }
+
+    if (rest.len >= 2 and rest[0] == '^' and rest[1] == '-') {
+        var after_rune = std.mem.trimStart(u8, rest[2..], " \t");
+        var mold_end: usize = 0;
+        while (mold_end < after_rune.len and after_rune[mold_end] != ' ' and after_rune[mold_end] != '\t')
+            mold_end += 1;
+        const mold = after_rune[0..mold_end];
+        if (mold.len == 0 or mold.len > max_arm_len) return error.MalformedArms;
+        _ = try zig_type_for_mold(mold);
+        const after_mold = std.mem.trimStart(u8, after_rune[mold_end..], " \t");
+        const parsed = try parse_decimal_prefix(after_mold);
+        var arm: ArmExpr = .{ .kind = .cast_literal, .lit = parsed.lit, .mold_len = mold.len };
+        @memcpy(arm.mold[0..mold.len], mold);
+        return .{ .arm = arm, .rest = parsed.rest };
+    }
+
+    var end: usize = 0;
+    while (end < rest.len and is_ident_char(rest[end])) end += 1;
+    if (end == 0) return error.MalformedArms;
+    const face = rest[0..end];
+    if (face[0] >= '0' and face[0] <= '9') return error.BadIdent;
+    if (face.len > max_arm_len) return error.BadIdent;
+    var arm: ArmExpr = .{ .kind = .face, .face_len = face.len };
+    @memcpy(arm.face[0..face.len], face);
+    return .{ .arm = arm, .rest = std.mem.trimStart(u8, rest[end..], " \t") };
+}
+
+fn arm_pair(line: []const u8, subject: []const u8) LowerError!ArmPair {
     const idx = std.mem.indexOf(u8, line, subject) orelse return error.MalformedArms;
     var rest = std.mem.trim(u8, line[idx + subject.len ..], " \t\r\n");
     if (rest.len == 0) {
-        return .{ .mint_face = "minted", .send_face = "sent" };
+        var mint_arm: ArmExpr = .{ .kind = .face, .face_len = 6 };
+        @memcpy(mint_arm.face[0..6], "minted");
+        var send_arm: ArmExpr = .{ .kind = .face, .face_len = 4 };
+        @memcpy(send_arm.face[0..4], "sent");
+        return .{ .mint_arm = mint_arm, .send_arm = send_arm };
     }
     try expect_tag(&rest, "%mint");
-    const mint_face = try take_ident(&rest);
+    const mint = try parse_one_arm(rest);
+    rest = mint.rest;
     try expect_tag(&rest, "%send");
-    const send_face = try take_ident(&rest);
-    if (rest.len != 0) return error.MalformedArms;
-    return .{ .mint_face = mint_face, .send_face = send_face };
+    const send = try parse_one_arm(rest);
+    if (send.rest.len != 0) return error.MalformedArms;
+    return .{ .mint_arm = mint.arm, .send_arm = send.arm };
 }
 
-fn emit_kind_program(tag: []const u8, mint_glow: []const u8, send_glow: []const u8, out: []u8) LowerError!u32 {
-    var mint_buf: [max_arm_len]u8 = undefined;
-    var send_buf: [max_arm_len]u8 = undefined;
-    const mint_n = try zig_safe_ident(mint_glow, &mint_buf);
-    const send_n = try zig_safe_ident(send_glow, &send_buf);
-    const mint_z = mint_buf[0..mint_n];
-    const send_z = send_buf[0..send_n];
-    const written = std.fmt.bufPrint(out,
-        \\const std = @import("std");
-        \\
-        \\/// Lowered from Glow `?-  kind.cur-record  %mint  {s}  %send  {s}`.
-        \\pub fn main(_: std.process.Init) !u8 {{
-        \\    const Kind = enum {{ mint, send }};
-        \\    const kind: Kind = .{s};
-        \\    const {s}: u32 = 1;
-        \\    const {s}: u32 = 0;
+fn expect_mint_value(mint_arm: *const ArmExpr) u32 {
+    return switch (mint_arm.kind) {
+        .face => 1,
+        .literal, .cast_literal => mint_arm.lit,
+    };
+}
+
+fn emit_face_bindings(mint_arm: *const ArmExpr, send_arm: *const ArmExpr, out: []u8, at: *usize) LowerError!void {
+    if (mint_arm.kind == .face) {
+        var zb: [max_arm_len]u8 = undefined;
+        const zn = try zig_safe_ident(face_slice(mint_arm), &zb);
+        const line = std.fmt.bufPrint(out[at.*..], "    const {s}: u32 = 1;\n", .{zb[0..zn]}) catch return error.Overflow;
+        at.* += line.len;
+    }
+    if (send_arm.kind == .face) {
+        var zb: [max_arm_len]u8 = undefined;
+        const zn = try zig_safe_ident(face_slice(send_arm), &zb);
+        const line = std.fmt.bufPrint(out[at.*..], "    const {s}: u32 = 0;\n", .{zb[0..zn]}) catch return error.Overflow;
+        at.* += line.len;
+    }
+}
+
+fn emit_cast_bindings(mint_arm: *const ArmExpr, send_arm: *const ArmExpr, out: []u8, at: *usize) LowerError!void {
+    if (mint_arm.kind == .cast_literal) {
+        const mold = mold_slice(mint_arm);
+        const zig_ty = try zig_type_for_mold(mold);
+        if (std.mem.eql(u8, zig_ty, "u64")) return error.AuraNotYetLowered;
+        const line = std.fmt.bufPrint(out[at.*..],
+            "    const mint_arm: {s} = std.math.cast({s}, @as(u64, {d})) orelse return 1;\n",
+            .{ zig_ty, zig_ty, mint_arm.lit },
+        ) catch return error.Overflow;
+        at.* += line.len;
+    }
+    if (send_arm.kind == .cast_literal) {
+        const mold = mold_slice(send_arm);
+        const zig_ty = try zig_type_for_mold(mold);
+        if (std.mem.eql(u8, zig_ty, "u64")) return error.AuraNotYetLowered;
+        const line = std.fmt.bufPrint(out[at.*..],
+            "    const send_arm: {s} = std.math.cast({s}, @as(u64, {d})) orelse return 1;\n",
+            .{ zig_ty, zig_ty, send_arm.lit },
+        ) catch return error.Overflow;
+        at.* += line.len;
+    }
+}
+
+fn write_arm_expr(arm: *const ArmExpr, role: enum { mint_role, send_role }, out: []u8) LowerError![]const u8 {
+    switch (arm.kind) {
+        .face => {
+            var zb: [max_arm_len]u8 = undefined;
+            const zn = try zig_safe_ident(face_slice(arm), &zb);
+            if (zn > out.len) return error.Overflow;
+            @memcpy(out[0..zn], zb[0..zn]);
+            return out[0..zn];
+        },
+        .literal => {
+            return std.fmt.bufPrint(out, "{d}", .{arm.lit}) catch return error.Overflow;
+        },
+        .cast_literal => {
+            return switch (role) {
+                .mint_role => "mint_arm",
+                .send_role => "send_arm",
+            };
+        },
+    }
+}
+
+fn emit_kind_program(tag: []const u8, mint_arm: *const ArmExpr, send_arm: *const ArmExpr, out: []u8) LowerError!u32 {
+    var body: [1536]u8 = undefined;
+    var at: usize = 0;
+    try emit_face_bindings(mint_arm, send_arm, &body, &at);
+    try emit_cast_bindings(mint_arm, send_arm, &body, &at);
+
+    var mint_expr_buf: [max_arm_len]u8 = undefined;
+    var send_expr_buf: [max_arm_len]u8 = undefined;
+    const mint_expr = try write_arm_expr(mint_arm, .mint_role, &mint_expr_buf);
+    const send_expr = try write_arm_expr(send_arm, .send_role, &send_expr_buf);
+    const expect = expect_mint_value(mint_arm);
+
+    const switch_block = std.fmt.bufPrint(body[at..],
         \\    const result: u32 = switch (kind) {{
         \\        .mint => {s},
         \\        .send => {s},
         \\    }};
-        \\    return if (result == {s}) 0 else 1;
-        \\}}
+        \\    return if (result == {d}) 0 else 1;
         \\
-    , .{ mint_glow, send_glow, tag, mint_z, send_z, mint_z, send_z, mint_z }) catch return error.Overflow;
+    , .{ mint_expr, send_expr, expect }) catch return error.Overflow;
+    at += switch_block.len;
+
+    const written = std.fmt.bufPrint(out,
+        \\const std = @import("std");
+        \\
+        \\/// Lowered from Glow `?-  kind.cur-record` — mint/send arm expressions.
+        \\pub fn main(_: std.process.Init) !u8 {{
+        \\    const Kind = enum {{ mint, send }};
+        \\    const kind: Kind = .{s};
+        \\{s}}}
+        \\
+    , .{ tag, body[0..at] }) catch return error.Overflow;
     return @intCast(written.len);
 }
 
@@ -126,9 +270,9 @@ fn lower_line(line: []const u8, welcome: bool, out: []u8) LowerError!u32 {
     const spec = try rsw.parse(trimmed);
     const subject = rsw.subject_slice(&spec);
     _ = try classify_subject(subject);
-    const arms = try arm_faces(trimmed, subject);
+    var arms = try arm_pair(trimmed, subject);
     const tag: []const u8 = if (welcome) "mint" else "send";
-    return emit_kind_program(tag, arms.mint_face, arms.send_face, out);
+    return emit_kind_program(tag, &arms.mint_arm, &arms.send_arm, out);
 }
 
 pub fn lower_line_welcome(line: []const u8, out: []u8) LowerError!u32 {

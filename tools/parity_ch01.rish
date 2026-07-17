@@ -1187,6 +1187,11 @@ let glow_desk = run ["rishi/bin/rishi" "run" "tools/glow_run_desk_witness.rish"]
 assert glow_desk.ok else "Glow run desk witness failed"
 say "GREEN: glow_run desk witness passed."
 
+say "witness suite: Glow truth — Zig ambient · Nock loobean seam…"
+let glow_truth = run ["rishi/bin/rishi" "run" "tools/glow_truth_semantics_witness.rish"]
+assert glow_truth.ok else "Glow truth-semantics witness failed"
+say "GREEN: Glow truth-semantics witness passed."
+
 say "witness suite: TUBE0 — the Glow app-manifest mold…"
 let tube0 = run ["rishi/bin/rishi" "run" "tools/tube0_manifest_witness.rish"]
 assert tube0.ok else "TUBE0 manifest witness failed"
