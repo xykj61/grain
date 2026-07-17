@@ -19,6 +19,11 @@ assert cast.ok else "glow_run cast-u32.glow failed"
 assert cast.out contains "GREEN" else "glow_run cast-u32.glow not GREEN"
 assert cast.out contains "cast-u32.glow" else "glow_run cast-u32 claim missing path"
 
+let cast8 = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cast-u8.glow"]
+assert cast8.ok else "glow_run cast-u8.glow failed"
+assert cast8.out contains "GREEN" else "glow_run cast-u8.glow not GREEN"
+assert cast8.out contains "cast-u8.glow" else "glow_run cast-u8 claim missing path"
+
 let iff = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/if-gth.glow"]
 assert iff.ok else "glow_run if-gth.glow failed"
 assert iff.out contains "GREEN" else "glow_run if-gth.glow not GREEN"
@@ -39,4 +44,15 @@ assert nullt.ok else "glow_run null-records.glow failed"
 assert nullt.out contains "GREEN" else "glow_run null-records.glow not GREEN"
 assert nullt.out contains "null-records.glow" else "glow_run null-records claim missing path"
 
-say "GREEN: glow_run desk — bound-tick through null-records lowered, built, exit 0."
+let mut = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/mutate-root.glow"]
+assert mut.ok else "glow_run mutate-root.glow failed"
+assert mut.out contains "GREEN" else "glow_run mutate-root.glow not GREEN"
+assert mut.out contains "mutate-root.glow" else "glow_run mutate-root claim missing path"
+
+let alias = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/alias-records.glow"]
+assert alias.ok else "glow_run alias-records.glow failed"
+assert alias.out contains "GREEN" else "glow_run alias-records.glow not GREEN"
+assert alias.out contains "alias-records.glow" else "glow_run alias-records claim missing path"
+
+say "GREEN: glow_run desk — all eight generator hops lowered, built, exit 0."
+

@@ -1,0 +1,56 @@
+//! glow/lower_mutate.rye — lower a parsed `=.` mutate to runnable `.rye`.
+//!
+//! Per active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md:
+//! `=.` mutates one leg. This hop lowers bare `root` to a Zig `var` write
+//! with a demo value. Dotted wings and parenthesized forms refuse until a
+//! later lap. The new-value expression is not lowered yet.
+
+const std = @import("std");
+const rm = @import("rune_mutate.rye");
+
+pub const LowerError = rm.ParseError || error{
+    Overflow,
+    EmptySource,
+    WingNotYetLowered,
+};
+
+pub const mutate_demo_value: u32 = 7;
+pub const mutate_unwelcome_expect: u32 = 8;
+
+fn classify_wing(wing: []const u8) LowerError!void {
+    if (std.mem.eql(u8, wing, "root")) return;
+    return error.WingNotYetLowered;
+}
+
+fn emit_root_program(expect: u32, out: []u8) LowerError!u32 {
+    const written = std.fmt.bufPrint(out,
+        \\const std = @import("std");
+        \\
+        \\/// Lowered from Glow `=.  root` — mutate one leg with a demo value.
+        \\pub fn main(_: std.process.Init) !u8 {{
+        \\    var root: u32 = 0;
+        \\    root = {d};
+        \\    return if (root == {d}) 0 else 1;
+        \\}}
+        \\
+    , .{ mutate_demo_value, expect }) catch return error.Overflow;
+    return @intCast(written.len);
+}
+
+/// Welcome: mutated root equals the demo value.
+pub fn lower_line_welcome(line: []const u8, out: []u8) LowerError!u32 {
+    const trimmed = std.mem.trim(u8, line, " \t\r\n");
+    if (trimmed.len == 0) return error.EmptySource;
+    const spec = try rm.parse(trimmed);
+    try classify_wing(rm.wing_slice(&spec));
+    return emit_root_program(mutate_demo_value, out);
+}
+
+/// Unwelcome: expect mismatches the demo write.
+pub fn lower_line_unwelcome(line: []const u8, out: []u8) LowerError!u32 {
+    const trimmed = std.mem.trim(u8, line, " \t\r\n");
+    if (trimmed.len == 0) return error.EmptySource;
+    const spec = try rm.parse(trimmed);
+    try classify_wing(rm.wing_slice(&spec));
+    return emit_root_program(mutate_unwelcome_expect, out);
+}
