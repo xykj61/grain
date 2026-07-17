@@ -59,7 +59,7 @@ rishi/bin/rishi run tools/tube05_install_proof_onpath_host.rish
 # → 99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe
 ```
 
-**First surface GREEN on Pixel `20260717.124843` · chrome + tap-close `20260717.125302`:** paints title, match-green hex, and `TAP TO CLOSE` (tap finishes). Fold + `sala_root.txt` still land in onCreate before the window callback. **Still open:** Skate / richer UI. Debug keystore under `tools/.cache/tube05/` is host-local, never for publish.
+**Surface + Skate on Pixel GREEN `20260717.125858`:** `glow_native_surface.rye` rasterizes Brushstroke Skate onto the ANativeWindow; Keaton confirmed on-device. Fold + `sala_root.txt` still land in onCreate; tap finishes. **Still open:** thin-view / richer Skate frames. Debug keystore under `tools/.cache/tube05/` is host-local, never for publish.
 
 ---
 

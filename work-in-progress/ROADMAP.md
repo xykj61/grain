@@ -172,7 +172,9 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **First NativeActivity surface, `20260717.124458`** — success path keeps the activity alive and paints the Sala session-root hex on the ANativeWindow (`glow_native_surface.rye`: software RGBA lock, 5×7 bitmap font). Fold + file proof unchanged in onCreate. Pack witness GREEN. **Seen on the Pixel `20260717.124843`** — Keaton confirmed the hex readable on the GrapheneOS device; install proof still GREEN.
 
-**Surface chrome + tap to close, `20260717.125302`** — title / match-green hex / `TAP TO CLOSE`; motion-up on the input queue finishes the activity. Keaton confirmed on the Pixel. Skate-grade UI stays later; debug keystore stays host-local.
+**Surface chrome + tap to close, `20260717.125302`** — title / match-green hex / `TAP TO CLOSE`; motion-up on the input queue finishes the activity. Keaton confirmed on the Pixel.
+
+**Skate on Android glass, `20260717.125858`** — NativeActivity presents a Brushstroke Skate grid (same `skate_grid.rye` as the desktop viewer) onto the ANativeWindow. Keaton confirmed the look on the GrapheneOS Pixel. Thin-view / richer frames stay later; debug keystore stays host-local.
 
 ## The Visual Track — Realidream (horizon lane, ladder already named)
 
