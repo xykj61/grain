@@ -1,0 +1,58 @@
+# tube05_install_proof_onpath_host.rish — TUBE0.5 on-device slice:
+# install the signed Glow NativeActivity APK, launch it, and prove
+# ANativeActivity_onCreate wrote the Sala B0 demo root to the app's
+# private files dir (same hex HAWM1 already proved bit-identical).
+#
+# Run OUTSIDE ai-jail, from a plain host terminal — needs adb from
+# tools/.cache/hawm0/android-sdk/platform-tools/ and either:
+#   - a booted hawm0 emulator (rishi/bin/rishi run tools/hawm0_boot_onpath_host.rish), or
+#   - the physical Pixel 10a with USB debugging authorized
+#
+# The APK carries both arm64-v8a and x86_64, so one install path covers
+# emulator and Pixel. Host-side pack must already be GREEN:
+#   rishi/bin/rishi run tools/tube05_apk_pack_witness.rish
+#
+#   rishi/bin/rishi run tools/tube05_install_proof_onpath_host.rish
+
+let android_sdk = "tools/.cache/hawm0/android-sdk"
+let adb = "${android_sdk}/platform-tools/adb"
+let apk = "tools/.cache/tube05/sala-broadcaster.apk"
+let pkg = "org.glow.app.sala_broadcaster"
+let expected = "99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe"
+
+say "tube05-install: confirming an adb device is attached…"
+let devices = run ["sh" "-c" "${adb} devices | grep -c '[[:space:]]device$'"]
+assert (trim devices.out != "0") else "no adb device — boot hawm0 (host terminal) or plug in the Pixel with USB debugging on"
+say "tube05-install: device attached"
+
+say "tube05-install: confirming the signed APK is present…"
+let apk_ok = run ["sh" "-c" "test -f ${apk}"]
+assert apk_ok.ok else "missing ${apk} — run rishi/bin/rishi run tools/tube05_apk_pack_witness.rish first"
+say "tube05-install: APK present"
+
+say "tube05-install: adb install -r…"
+let install = run ["sh" "-c" "${adb} install -r ${apk} 2>&1"]
+say "${install.out}"
+if (install.ok == false) then say "tube05-install: install stderr — ${install.err}"
+assert install.ok else "adb install failed — real reason printed just above"
+assert install.out contains "Success" else "adb install did not report Success"
+say "tube05-install: installed"
+
+say "tube05-install: launching NativeActivity…"
+let stop = run ["sh" "-c" "${adb} shell am force-stop ${pkg}"]
+assert stop.ok else "force-stop failed"
+let start = run ["sh" "-c" "${adb} shell am start -n ${pkg}/android.app.NativeActivity 2>&1"]
+say "${start.out}"
+assert start.ok else "am start failed"
+say "tube05-install: waiting briefly for onCreate to write sala_root.txt…"
+let wait = run ["sh" "-c" "sleep 2"]
+assert wait.ok else "sleep failed"
+
+say "tube05-install: reading files/sala_root.txt via run-as (debuggable APK)…"
+let cat = run ["sh" "-c" "${adb} shell run-as ${pkg} cat files/sala_root.txt 2>&1"]
+say "tube05-install: sala_root.txt — ${cat.out}"
+if (cat.ok == false) then say "tube05-install: cat stderr — ${cat.err}"
+assert cat.ok else "could not read sala_root.txt — onCreate may have failed to write, or run-as was refused"
+assert cat.out contains "${expected}" else "RED: sala_root.txt does not contain the HAWM1 demo root"
+
+say "GREEN: TUBE0.5 — Glow NativeActivity APK installed; Sala B0 fold wrote the expected session root on-device."

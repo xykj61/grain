@@ -25,15 +25,24 @@ let perm = run ["rishi/bin/rishi" "run" "tools/tube0_5_android_permission_witnes
 assert perm.ok else "permission-emission witness failed"
 say "tube05: permission emission GREEN"
 
-say "tube05: packing the first Glow NativeActivity APK…"
+say "tube05: proving the Sala B0 fold unit matches the HAWM1 demo root…"
+let fold_build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/sala_b0_fold_witness.rye -femit-bin=linengrow/bin/sala_b0_fold_witness"]
+assert fold_build.ok else "sala_b0_fold witness failed to build"
+let fold_run = run ["sh" "-c" "linengrow/bin/sala_b0_fold_witness 2>&1"]
+assert fold_run.ok else "sala_b0_fold witness exited non-zero"
+assert fold_run.out contains "99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe" else "sala_b0_fold root mismatch"
+say "tube05: Sala B0 fold unit GREEN"
+
+say "tube05: packing the Glow NativeActivity APK (Sala fold inside libglowapp.so)…"
 let pack = run ["bash" "-c" "./tools/tube05_apk_pack_worker.sh"]
 say "${pack.out}"
 if (pack.ok == false) then say "tube05: pack stderr — ${pack.err}"
 assert pack.ok else "APK pack worker failed — real reason printed just above"
 assert pack.out contains "GREEN" else "APK pack worker missing GREEN"
+assert pack.out contains "fold=sala-b0" else "APK pack missing sala-b0 fold marker"
 
 let apk = "tools/.cache/tube05/sala-broadcaster.apk"
 let apk_ok = run ["sh" "-c" "test -f ${apk}"]
 assert apk_ok.ok else "signed APK missing at tools/.cache/tube05/sala-broadcaster.apk"
 
-say "GREEN: TUBE0.5 — first installable Glow APK envelope packed (NativeActivity + libglowapp.so + closed-table permissions). On-device install is the next slice."
+say "GREEN: TUBE0.5 — installable Glow APK with Sala B0 fold inside NativeActivity (arm64+x86_64). Next (host terminal): rishi/bin/rishi run tools/tube05_install_proof_onpath_host.rish"

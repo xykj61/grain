@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260717.121625
+editor Cursor
+model Cursor Sonnet 5 1M Low
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern time convention, context/specs/20260717-003132_eastern-time-framework-host-convention.md
+title TUBE0.5 install-proof host witness ready; jail still cannot run it
+prompt Keaton said keep going once more after the Sala-fold pack GREEN
+think confirmed this Cursor session is still inside ai-sandbox — no /dev/kvm, adb devices empty, so the install slice cannot close from here
+think wrote tools/tube05_install_proof_onpath_host.rish in the same host-terminal shape as hawm0_boot / hawm1_sala — install, am start, run-as cat files/sala_root.txt, match HAWM1 root
+think smoke-ran it in-jail: refuses cleanly at the no-device assert, which is the honest jailed outcome
+think pointed docs/TUBE.md, get-started, TASKS, ROADMAP, and the native-activity brief at that one-shot so the next human step is one command after HAWM0 boot
+obs best remaining path is mechanical and host-only; no more packaging code earns the install claim from inside the jail
+obs uncommitted tree now holds Sala fold, pack worker, rye build-lib, install-proof witness, and living-ledger updates — ready for send when Keaton wants the host-side half shipped before or after the install GREEN
+file tools/tube05_install_proof_onpath_host.rish host one-shot install + sala_root proof
+file docs/TUBE.md one-shot recipe
+file manual/glow-os/get-started.md same
+recommend check-in — run the two host-terminal commands outside ai-jail (hawm0 boot if needed, then tube05_install_proof_onpath_host); say send to ship the uncommitted host-side work whenever you want it on the pier

@@ -99,6 +99,7 @@ pub fn render_android_manifest(
         \\{s}    <application
         \\        android:label="{s}"
         \\        android:hasCode="false"
+        \\        android:debuggable="true"
         \\        android:extractNativeLibs="true">
         \\        <activity
         \\            android:name="android.app.NativeActivity"

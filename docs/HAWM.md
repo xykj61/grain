@@ -39,6 +39,7 @@ On-device Sala via `tools/hawm3_sala_device_witness.rish` (aarch64) needs USB de
 | Upstream install / features wording | [`gratitude/grapheneos/`](../gratitude/grapheneos/) (MIT mirror — study, not our guide) |
 | Living ledger (full register) | [`context/specs/two-dev-environments-and-mobile-emulation.md`](../context/specs/two-dev-environments-and-mobile-emulation.md) |
 | Next packaging seam | [`TUBE.md`](TUBE.md) — how a Glow binary becomes an installable APK |
+| Install TUBE0.5 APK + prove Sala root | Host terminal: `tools/tube05_install_proof_onpath_host.rish` (after HAWM0 boot or Pixel USB) |
 
 ---
 
