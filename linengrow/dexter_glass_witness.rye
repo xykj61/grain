@@ -1,0 +1,38 @@
+//! linengrow/dexter_glass_witness.rye — proves Dexter D0 glass welcome line.
+//!
+//!   rye build linengrow/dexter_glass_witness.rye \
+//!     -femit-bin=linengrow/bin/dexter_glass_witness
+//!   linengrow/bin/dexter_glass_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const core = @import("dexter_glass_core.rye");
+const glass = @import("dexter_glass_line.rye");
+const dexter = @import("window_input.rye");
+
+const witness_version = "20260717.173133";
+
+fn run_selftest(_: std.process.Init) !u8 {
+    var submitted: [dexter.max_line_len]u8 = undefined;
+    var submitted_len: u32 = 0;
+    const lens = try core.run_demo_editor(&submitted, &submitted_len);
+    assert(lens.submitted_len == core.demo_submitted.len);
+    assert(std.mem.eql(u8, submitted[0..submitted_len], core.demo_submitted));
+    print("dexter-glass: demo editor submits \"{s}\" -- GREEN\n", .{submitted[0..submitted_len]});
+
+    var line: [glass.dexter_line_max]u8 = undefined;
+    var len: u32 = 0;
+    assert(glass.run_demo_dexter_line(&line, &len));
+    assert(std.mem.indexOf(u8, line[0..len], "DEXTER line") != null);
+    assert(std.mem.indexOf(u8, line[0..len], "glow") != null);
+    print("dexter-glass: Skate line \"{s}\" -- GREEN\n", .{line[0..len]});
+
+    print("dexter-glass: version {s}\n", .{witness_version});
+    print("GREEN: Dexter D0 glass — pure LineEditor paints a Skate line.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
+}

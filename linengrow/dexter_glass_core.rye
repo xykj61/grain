@@ -1,0 +1,37 @@
+//! linengrow/dexter_glass_core.rye — device-free Dexter path for glass (D0).
+//!
+//! Feeds Android-shaped key actions into the pure Dexter LineEditor
+//! (`window_input.rye` → pond/apps). No AInputQueue here — the glass and
+//! device-free door. Live key drain stays in glow_native_activity later.
+
+const std = @import("std");
+const dexter = @import("window_input.rye");
+
+/// Demo payload typed on glass — short, printable, Skate-safe.
+pub const demo_submitted: []const u8 = "glow";
+
+pub const DexterLens = struct {
+    submitted_len: u32,
+};
+
+/// Map a demo key sequence through Dexter; returns the submitted line length.
+pub fn run_demo_editor(out_line: *[dexter.max_line_len]u8, out_len: *u32) !DexterLens {
+    var editor = dexter.LineEditor{};
+    const actions = [_]dexter.Action{
+        .{ .char_ = 'g' },
+        .{ .char_ = 'l' },
+        .{ .char_ = 'o' },
+        .{ .char_ = 'w' },
+        .submit,
+    };
+    for (actions) |action| {
+        editor.apply_action(action);
+    }
+    if (!editor.pending_submit) return error.SubmitMissing;
+    const prompt = editor.prompt_slice();
+    if (!std.mem.eql(u8, prompt, demo_submitted)) return error.LineMismatch;
+    if (prompt.len > out_line.len) return error.LineTooLong;
+    @memcpy(out_line[0..prompt.len], prompt);
+    out_len.* = @intCast(prompt.len);
+    return .{ .submitted_len = @intCast(prompt.len) };
+}

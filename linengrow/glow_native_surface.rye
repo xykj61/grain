@@ -50,7 +50,7 @@ fn put_line_centered(grid: *skate.Grid, row: u32, text: []const u8) void {
     grid.put_line(row, line[0..cols]);
 }
 
-/// Paint via Skate: title, R2, TUBE5 tip, hex, TUBE2–4 rail, Sala B1, tap.
+/// Paint via Skate: title, R2, TUBE5 tip, hex, TUBE2–4 rail, Sala B1, Dexter, tap.
 pub fn paint_session_root_hex(
     window: ?*anyopaque,
     hex: *const [64]u8,
@@ -62,6 +62,7 @@ pub fn paint_session_root_hex(
     fetch_line: ?[]const u8,
     market_line: ?[]const u8,
     carriage_line: ?[]const u8,
+    dexter_line: ?[]const u8,
 ) void {
     if (window == null) return;
     _ = ANativeWindow_setBuffersGeometry(window, 0, 0, format_rgba8888);
@@ -79,13 +80,13 @@ pub fn paint_session_root_hex(
     const cell_pw = skate.cell_w * scale;
     const cell_ph = skate.cell_h * scale;
     const cols: u32 = @intCast(@max(8, @min(80, @divTrunc(w, @as(i32, @intCast(cell_pw))))));
-    const rows: u32 = 13;
+    const rows: u32 = 14;
 
     const allocator = std.heap.page_allocator;
     var grid = skate.Grid.init(allocator, cols, rows) catch return;
     defer allocator.free(grid.cells);
 
-    const title = if (matched and tube1_admitted) "SALA B0+B1+R2+T1 GREEN" else if (matched) "SALA B0  GREEN" else "SALA B0";
+    const title = if (matched and tube1_admitted) "SALA B0+B1+DX+R2+T1 GREEN" else if (matched) "SALA B0  GREEN" else "SALA B0";
     put_line_centered(&grid, 0, title);
     put_line_centered(&grid, 1, if (tube1_admitted) "TUBE1 admitted · Pool x3" else "TUBE1 refused");
     var row: u32 = 2;
@@ -124,8 +125,11 @@ pub fn paint_session_root_hex(
         if (carriage_line) |carriage| {
             put_line_centered(&grid, 11, carriage);
         }
+        if (dexter_line) |dex| {
+            put_line_centered(&grid, 12, dex);
+        }
     }
-    put_line_centered(&grid, 12, "TAP TO CLOSE");
+    put_line_centered(&grid, 13, "TAP TO CLOSE");
 
     const bg = rgba(0x1a, 0x14, 0x10);
     const fg = if (matched) rgba(0x7d, 0xc4, 0x8a) else rgba(0xe8, 0xc4, 0x7a);

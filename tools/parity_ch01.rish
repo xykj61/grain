@@ -1072,6 +1072,11 @@ let sala_b1_glass = run ["rishi/bin/rishi" "run" "tools/sala_b1_glass_carriage_w
 assert sala_b1_glass.ok else "Sala B1 glass carriage witness failed"
 say "GREEN: Sala B1 glass carriage witness passed."
 
+say "witness suite: Dexter D0 glass — pure LineEditor paints Skate…"
+let dexter_glass = run ["rishi/bin/rishi" "run" "tools/dexter_glass_witness.rish"]
+assert dexter_glass.ok else "Dexter glass witness failed"
+say "GREEN: Dexter D0 glass witness passed."
+
 say "witness suite: Sala R1 — the viewer renders what Pool hosts…"
 let sala_r1 = run ["rishi/bin/rishi" "run" "tools/sala_view_witness.rish"]
 assert sala_r1.ok else "Sala R1 view witness failed"

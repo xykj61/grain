@@ -4,7 +4,7 @@
 
 **Language:** EN
 **Version:** `20260715` (Pool keystone revival prioritized · Quin voice seated · align pass reconciles the closed ladder)
-**Last updated:** 2026-07-17 (**align** `20260717.172832` — Dexter-on-glass named under Brushstroke/Sala; Dill stays gap; mix form closed; jam/tokens held)
+**Last updated:** 2026-07-17 (**Dexter D0+D1** `20260717.173133` — pure editor paints on glass; pack GREEN; D2 Pixel look next)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Lens:** TAME — safety, performance, joy; the Seed Law; [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md)
@@ -194,7 +194,9 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **Sala B1 welcome carriage on glass, `20260717.170315` · Pixel `20260717.171015`** — HAWM2/TUBE6 remain horizon (full GrapheneOS build). In-process B1 welcome paints `SALA B1 carriage · 3 ev` on NativeActivity Skate row 11; pack GREEN; install proof GREEN; Keaton confirmed on Pixel. UDP live hop stays in `sala_broadcast_delivery.rye`.
 
-**Align pass — Dexter · Dill · glass input, `20260717.172832`** — compass rose walked (foundations → grain → Two Rooms → active-designing / **active-reviving** → TASKS/ROADMAP → green witnesses). Product pin healthy (B1 Pixel GREEN · TUBE1–5 glass). Language pin healthy (`lent` + `mix` closed; `(jam …)` denser nest held). **Seated:** Dexter is an aspect of the **Brushstroke / Sala** stack, not Dill; fuse Dexter with Glow GrapheneOS as named laps D0–D2 when opened; Dill stays an honest vane gap (no nest under Dexter, no rename). World study [`../external-research/20260717-172832_dexter-dill-glow-grapheneos-input.md`](../external-research/20260717-172832_dexter-dill-glow-grapheneos-input.md); reviving silo [`../active-reviving/20260717-172832_dexter-beside-brushstroke-dill-stays-gap.md`](../active-reviving/20260717-172832_dexter-beside-brushstroke-dill-stays-gap.md). **Aligned next:** check-in before opening D0 (Dexter-on-NativeActivity) or a Sala B2 glass layout word; hold `(jam …)`, fuller tokens, HAWM2/TUBE6, and any Dill-parallel kernel door.
+**Align pass — Dexter · Dill · glass input, `20260717.172832`** — compass rose walked. **Seated:** Dexter is an aspect of the **Brushstroke / Sala** stack, not Dill; Dill stays an honest vane gap. World study [`../external-research/20260717-172832_dexter-dill-glow-grapheneos-input.md`](../external-research/20260717-172832_dexter-dill-glow-grapheneos-input.md); reviving silo [`../active-reviving/20260717-172832_dexter-beside-brushstroke-dill-stays-gap.md`](../active-reviving/20260717-172832_dexter-beside-brushstroke-dill-stays-gap.md).
+
+**Dexter D0+D1 on glass, `20260717.173133`** — pure LineEditor (`pond/apps/window_input.rye`, symlinked) fed Android-shaped demo actions; Skate paints `DEXTER line · glow` on row 12; title `SALA B0+B1+DX+R2+T1 GREEN`. Witness GREEN; pack GREEN; parity wired. Soft-keyboard live drain stays later. **Aligned next:** D2 Pixel look (host install); then check-in before B2 layout, `(jam …)`, or Dill kernel.
 
 ## The Visual Track — Realidream (horizon lane, ladder already named)
 
