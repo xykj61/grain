@@ -65,7 +65,7 @@ build_android_so() {
   echo "tube05-pack: NDK clang -shared -> ${so_out}..."
   "$clang" -shared -o "$so_out" \
     -Wl,--whole-archive "$archive" -Wl,--no-whole-archive \
-    -lc -ldl -lm -llog \
+    -lc -ldl -lm -llog -landroid \
     -Wl,-soname,libglowapp.so \
     -Wl,--no-undefined \
     || die "NDK link failed for ${abi_dir}"
