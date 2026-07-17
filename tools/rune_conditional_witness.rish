@@ -1,0 +1,21 @@
+# rune_conditional_witness.rish — the `?:` if/then/else rune head, proves out.
+#
+# Third rune category after |- (bounded trap) and ^- (cast). Same small
+# head-parser discipline — test expression only, no then/else lowering.
+#
+#   rishi/bin/rishi run tools/rune_conditional_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "glow/bin/rune_conditional_witness"
+
+let build = run ["sh" "-c" "mkdir -p glow/bin && env RYE_ZIG=${zig} rye/bin/rye build glow/rune_conditional_witness.rye -femit-bin=${bin}"]
+assert build.ok else "Rune conditional witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "Rune conditional witness exited non-zero"
+assert selftest.out contains "GREEN" else "Rune conditional witness not GREEN"
+assert selftest.out contains "(gth tick 32)" else "Rune conditional witness missing the brief-example claim"
+assert selftest.out contains "then/else" else "Rune conditional witness missing the trailing-arms claim"
+assert selftest.out contains "MalformedTest" else "Rune conditional witness missing the malformed-test unwelcome path"
+
+say "GREEN: rune conditional witness passed -- a third rune category parses, past |- and ^-."

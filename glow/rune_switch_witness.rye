@@ -1,0 +1,75 @@
+//! glow/rune_switch_witness.rye — proves the `?-` exhaustive-switch rune head.
+//!
+//!   rye build glow/rune_switch_witness.rye -femit-bin=glow/bin/rune_switch_witness
+//!   glow/bin/rune_switch_witness
+//!
+//! Six claims:
+//!   1. Brief subject "?-  kind.cur-record" parses exactly.
+//!   2. Trailing arm text on the same line does not confuse the subject scan.
+//!   3. A parenthesized subject still parses.
+//!   4. A non-switch line refuses NotASwitch.
+//!   5. A bare "?-" refuses MissingSubject.
+//!   6. Digit-led / bad-char / empty-parens refuse MalformedSubject.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const rsw = @import("rune_switch.rye");
+
+const witness_version = "20260717.150005";
+
+fn run_selftest() !u8 {
+    const spec1 = try rsw.parse("?-  kind.cur-record");
+    const s1 = rsw.subject_slice(&spec1);
+    assert(std.mem.eql(u8, s1, "kind.cur-record"));
+    print("rune: \"?-  kind.cur-record\" parses to subject \"kind.cur-record\" -- GREEN\n", .{});
+
+    const spec2 = try rsw.parse("?-  kind.cur-record  %mint  (mix root x)  %send  (mix root y)");
+    const s2 = rsw.subject_slice(&spec2);
+    assert(std.mem.eql(u8, s2, "kind.cur-record"));
+    print("rune: trailing switch arms do not confuse the subject scan -- GREEN\n", .{});
+
+    const spec3 = try rsw.parse("?-  (kind-of cur)");
+    const s3 = rsw.subject_slice(&spec3);
+    assert(std.mem.eql(u8, s3, "(kind-of cur)"));
+    print("rune: \"?-  (kind-of cur)\" parses to subject \"(kind-of cur)\" -- GREEN\n", .{});
+
+    if (rsw.parse("?:  ready")) |_| {
+        return error.NotASwitchNotCaught;
+    } else |err| {
+        if (err != rsw.ParseError.NotASwitch) return err;
+    }
+    print("rune: a non-switch line refused NotASwitch -- GREEN unwelcome path\n", .{});
+
+    if (rsw.parse("?-")) |_| {
+        return error.MissingSubjectNotCaught;
+    } else |err| {
+        if (err != rsw.ParseError.MissingSubject) return err;
+    }
+    print("rune: a bare \"?-\" with no subject refused MissingSubject -- GREEN unwelcome path\n", .{});
+
+    if (rsw.parse("?-  4bad")) |_| {
+        return error.DigitLedNotCaught;
+    } else |err| {
+        if (err != rsw.ParseError.MalformedSubject) return err;
+    }
+    if (rsw.parse("?-  kind!cur")) |_| {
+        return error.BadCharNotCaught;
+    } else |err| {
+        if (err != rsw.ParseError.MalformedSubject) return err;
+    }
+    if (rsw.parse("?-  ()")) |_| {
+        return error.EmptyParensNotCaught;
+    } else |err| {
+        if (err != rsw.ParseError.MalformedSubject) return err;
+    }
+    print("rune: digit-led, bad-char, and empty-parens subjects refused MalformedSubject -- GREEN unwelcome path\n", .{});
+
+    print("rune: version {s}\n", .{witness_version});
+    print("GREEN: the `?-` exhaustive-switch rune's front half parses -- fourth rune head, still no general grammar.\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}

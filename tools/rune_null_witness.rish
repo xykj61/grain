@@ -1,0 +1,20 @@
+# rune_null_witness.rish — the `?~` null-test rune head, proves out.
+#
+# Sixth rune head — deepens the `?` category after ?: and ?-.
+#
+#   rishi/bin/rishi run tools/rune_null_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "glow/bin/rune_null_witness"
+
+let build = run ["sh" "-c" "mkdir -p glow/bin && env RYE_ZIG=${zig} rye/bin/rye build glow/rune_null_witness.rye -femit-bin=${bin}"]
+assert build.ok else "Rune null witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "Rune null witness exited non-zero"
+assert selftest.out contains "GREEN" else "Rune null witness not GREEN"
+assert selftest.out contains "records.cur" else "Rune null witness missing the brief-subject claim"
+assert selftest.out contains "then-arm" else "Rune null witness missing the trailing-arm claim"
+assert selftest.out contains "MalformedSubject" else "Rune null witness missing the malformed-subject unwelcome path"
+
+say "GREEN: rune null witness passed -- a sixth rune head parses (`?~`), `?` category deepened."

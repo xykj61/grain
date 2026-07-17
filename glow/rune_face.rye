@@ -1,0 +1,102 @@
+//! glow/rune_face.rye — parses Glow's `=/` typed-let (face binding) rune head.
+//!
+//! Per active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md's
+//! `=` category: `=/` is let, typed. The brief's composition uses
+//! `=/  cur-record=record` and `=/  next-root=@u32` before the bound value.
+//! This extracts the face clause only — the value expression is not this
+//! parser's job. Fifth rune head; still no general Glow grammar.
+//!
+//! Shapes recognized:
+//!   =/  cur-record=record
+//!   =/  next-root=@u32
+//!   =/  tick                 -- bare face, mold left implicit for now
+
+const std = @import("std");
+
+pub const max_name_len: u32 = 64;
+
+pub const ParseError = error{
+    NotAFace,
+    MissingFace,
+    FaceTooLong,
+    MalformedFace,
+};
+
+/// A parsed `=/` face clause: name, and optional mold (empty if bare).
+pub const FaceSpec = struct {
+    face: [max_name_len]u8 = [_]u8{0} ** max_name_len,
+    mold: [max_name_len]u8 = [_]u8{0} ** max_name_len,
+};
+
+pub fn face_slice(spec: *const FaceSpec) []const u8 {
+    var len: u32 = 0;
+    while (len < max_name_len and spec.face[len] != 0) len += 1;
+    return spec.face[0..len];
+}
+
+pub fn mold_slice(spec: *const FaceSpec) []const u8 {
+    var len: u32 = 0;
+    while (len < max_name_len and spec.mold[len] != 0) len += 1;
+    return spec.mold[0..len];
+}
+
+fn is_ident_char(c: u8) bool {
+    if (c >= 'a' and c <= 'z') return true;
+    if (c >= 'A' and c <= 'Z') return true;
+    if (c >= '0' and c <= '9') return true;
+    return c == '-' or c == '_';
+}
+
+fn is_mold_char(c: u8) bool {
+    return is_ident_char(c) or c == '@';
+}
+
+/// Parses one line of Glow's `=/` rune. Face clause only — not the value.
+pub fn parse(line: []const u8) ParseError!FaceSpec {
+    if (line.len < 2 or !std.mem.eql(u8, line[0..2], "=/")) return error.NotAFace;
+
+    var rest = line[2..];
+    rest = std.mem.trimStart(u8, rest, " \t");
+    if (rest.len == 0) return error.MissingFace;
+
+    var end: u32 = 0;
+    while (end < rest.len and rest[end] != ' ' and rest[end] != '\t') end += 1;
+    const clause = rest[0..end];
+    if (clause.len == 0) return error.MissingFace;
+    if (clause.len > max_name_len * 2 + 1) return error.FaceTooLong;
+
+    // Split on the first '=' into face and optional mold.
+    var eq: ?u32 = null;
+    var i: u32 = 0;
+    while (i < clause.len) : (i += 1) {
+        if (clause[i] == '=') {
+            eq = i;
+            break;
+        }
+    }
+
+    const face_text = if (eq) |e| clause[0..e] else clause;
+    const mold_text = if (eq) |e| clause[e + 1 ..] else clause[0..0];
+
+    if (face_text.len == 0 or face_text.len > max_name_len) return error.MalformedFace;
+    if (face_text[0] >= '0' and face_text[0] <= '9') return error.MalformedFace;
+    for (face_text) |c| {
+        if (!is_ident_char(c)) return error.MalformedFace;
+    }
+
+    if (eq != null) {
+        if (mold_text.len == 0 or mold_text.len > max_name_len) return error.MalformedFace;
+        // Mold: aura (@u32) or named mold (record) — same rule as ^-.
+        if (mold_text[0] >= '0' and mold_text[0] <= '9') return error.MalformedFace;
+        for (mold_text) |c| {
+            if (!is_mold_char(c)) return error.MalformedFace;
+        }
+    }
+
+    var spec: FaceSpec = .{};
+    @memcpy(spec.face[0..face_text.len], face_text);
+    if (mold_text.len > 0) {
+        @memcpy(spec.mold[0..mold_text.len], mold_text);
+    }
+    return spec;
+}

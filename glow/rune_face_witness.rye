@@ -1,0 +1,67 @@
+//! glow/rune_face_witness.rye — proves the `=/` typed-let (face) rune head.
+//!
+//!   rye build glow/rune_face_witness.rye -femit-bin=glow/bin/rune_face_witness
+//!   glow/bin/rune_face_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const rf = @import("rune_face.rye");
+
+const witness_version = "20260717.150053";
+
+fn run_selftest() !u8 {
+    const spec1 = try rf.parse("=/  cur-record=record");
+    assert(std.mem.eql(u8, rf.face_slice(&spec1), "cur-record"));
+    assert(std.mem.eql(u8, rf.mold_slice(&spec1), "record"));
+    print("rune: \"=/  cur-record=record\" parses face \"cur-record\" mold \"record\" -- GREEN\n", .{});
+
+    const spec2 = try rf.parse("=/  next-root=@u32  (mix root (jam from.cur-record amount.cur-record))");
+    assert(std.mem.eql(u8, rf.face_slice(&spec2), "next-root"));
+    assert(std.mem.eql(u8, rf.mold_slice(&spec2), "@u32"));
+    print("rune: \"=/  next-root=@u32\" with trailing value keeps mold \"@u32\" -- GREEN\n", .{});
+
+    const spec3 = try rf.parse("=/  tick");
+    assert(std.mem.eql(u8, rf.face_slice(&spec3), "tick"));
+    assert(rf.mold_slice(&spec3).len == 0);
+    print("rune: \"=/  tick\" parses bare face \"tick\" with no mold -- GREEN\n", .{});
+
+    if (rf.parse("?-  kind.cur-record")) |_| {
+        return error.NotAFaceNotCaught;
+    } else |err| {
+        if (err != rf.ParseError.NotAFace) return err;
+    }
+    print("rune: a non-face line refused NotAFace -- GREEN unwelcome path\n", .{});
+
+    if (rf.parse("=/")) |_| {
+        return error.MissingFaceNotCaught;
+    } else |err| {
+        if (err != rf.ParseError.MissingFace) return err;
+    }
+    print("rune: a bare \"=/\" with no face refused MissingFace -- GREEN unwelcome path\n", .{});
+
+    if (rf.parse("=/  =record")) |_| {
+        return error.EmptyFaceNotCaught;
+    } else |err| {
+        if (err != rf.ParseError.MalformedFace) return err;
+    }
+    if (rf.parse("=/  4bad=record")) |_| {
+        return error.DigitLedNotCaught;
+    } else |err| {
+        if (err != rf.ParseError.MalformedFace) return err;
+    }
+    if (rf.parse("=/  cur-record=")) |_| {
+        return error.EmptyMoldNotCaught;
+    } else |err| {
+        if (err != rf.ParseError.MalformedFace) return err;
+    }
+    print("rune: empty face, digit-led face, and empty mold refused MalformedFace -- GREEN unwelcome path\n", .{});
+
+    print("rune: version {s}\n", .{witness_version});
+    print("GREEN: the `=/` face-binding rune's front half parses -- fifth rune head, `=` category opened.\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}

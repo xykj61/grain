@@ -1,0 +1,81 @@
+//! glow/rune_conditional_witness.rye — proves the `?:` if/then/else rune head.
+//!
+//!   rye build glow/rune_conditional_witness.rye -femit-bin=glow/bin/rune_conditional_witness
+//!   glow/bin/rune_conditional_witness
+//!
+//! Six claims, matching the cast witness's shape for a third category:
+//!   1. Brief example "?:  (gth tick 32)" → test "(gth tick 32)".
+//!   2. Trailing then/else on the same line do not confuse the test scan.
+//!   3. A bare identifier test still parses ("?:  ready").
+//!   4. A non-if line refuses NotAnIf.
+//!   5. A bare "?:" refuses MissingTest.
+//!   6. Unbalanced / empty / digit-led tests refuse MalformedTest.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const rif = @import("rune_conditional.rye");
+
+const witness_version = "20260717.145804";
+
+fn run_selftest() !u8 {
+    // Claim 1: brief's own parenthesized test.
+    const spec1 = try rif.parse("?:  (gth tick 32)");
+    const t1 = rif.test_slice(&spec1);
+    assert(std.mem.eql(u8, t1, "(gth tick 32)"));
+    print("rune: \"?:  (gth tick 32)\" parses to test \"(gth tick 32)\" -- GREEN\n", .{});
+
+    // Claim 2: trailing then/else (brief's second example shape).
+    const spec2 = try rif.parse("?:  (dropped-this-tick rand)  $(tick tick)  actually-delivered");
+    const t2 = rif.test_slice(&spec2);
+    assert(std.mem.eql(u8, t2, "(dropped-this-tick rand)"));
+    print("rune: trailing then/else arms do not confuse the test scan -- GREEN\n", .{});
+
+    // Claim 3: bare identifier test.
+    const spec3 = try rif.parse("?:  ready");
+    const t3 = rif.test_slice(&spec3);
+    assert(std.mem.eql(u8, t3, "ready"));
+    print("rune: \"?:  ready\" parses to test \"ready\" -- GREEN\n", .{});
+
+    // Claim 4: not an if.
+    if (rif.parse("^-  @u32")) |_| {
+        return error.NotAnIfNotCaught;
+    } else |err| {
+        if (err != rif.ParseError.NotAnIf) return err;
+    }
+    print("rune: a non-if line refused NotAnIf -- GREEN unwelcome path\n", .{});
+
+    // Claim 5: missing test.
+    if (rif.parse("?:")) |_| {
+        return error.MissingTestNotCaught;
+    } else |err| {
+        if (err != rif.ParseError.MissingTest) return err;
+    }
+    print("rune: a bare \"?:\" with no test refused MissingTest -- GREEN unwelcome path\n", .{});
+
+    // Claim 6: malformed tests.
+    if (rif.parse("?:  (gth tick 32")) |_| {
+        return error.UnbalancedNotCaught;
+    } else |err| {
+        if (err != rif.ParseError.MalformedTest) return err;
+    }
+    if (rif.parse("?:  ()")) |_| {
+        return error.EmptyParensNotCaught;
+    } else |err| {
+        if (err != rif.ParseError.MalformedTest) return err;
+    }
+    if (rif.parse("?:  4bad")) |_| {
+        return error.DigitLedNotCaught;
+    } else |err| {
+        if (err != rif.ParseError.MalformedTest) return err;
+    }
+    print("rune: unbalanced, empty, and digit-led tests refused MalformedTest -- GREEN unwelcome path\n", .{});
+
+    print("rune: version {s}\n", .{witness_version});
+    print("GREEN: the `?:` conditional rune's front half parses -- the third rune category, past |- and ^-.\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}
