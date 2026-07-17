@@ -25,7 +25,7 @@
 
 ## Why Five Variants
 
-The five variants are not five different systems — they are **one design, built more than once, on purpose.** Four form **two diverse-redundant pairs** — Riyo/Reya and Trey/Triz — where each pair is the same intent implemented independently, so a single implementation mistake cannot take down the only copy. **Quin** is the fifth bootable image; a diverse-redundant twin for Quin stays open until named. This is safety-first, TAME's own first value, expressed at the whole-OS scale. Registry: [`../../context/specs/20260713-235600_names-awaiting-confirmation.md`](../../context/specs/20260713-235600_names-awaiting-confirmation.md).
+The five variants are not five different systems — they are **one design, built more than once, on purpose.** Four form **two diverse-redundant pairs** — Riyo/Reya and Trey/Triz — where each pair is the same intent implemented independently, so a single implementation mistake cannot take down the only copy. **Quin** is the fifth bootable image, **intentionally unpaired** (`20260717.162620`) — five total, settled. This is safety-first, TAME's own first value, expressed at the whole-OS scale. Registry: [`../../context/specs/20260713-235600_names-awaiting-confirmation.md`](../../context/specs/20260713-235600_names-awaiting-confirmation.md).
 
 ## Glow, the Language Beneath
 

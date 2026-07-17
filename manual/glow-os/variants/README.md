@@ -24,9 +24,9 @@ The five variants — **Reya, Riyo, Trey, Triz, Quin** — are one design seen f
 | **Riyo** | OS variant; Reya's diverse-redundant twin | **Confirmed** `20260714.035600` — quiet in collision research |
 | **Trey** | OS variant; Triz's diverse-redundant twin | **Confirmed** `20260714.035600` — quiet in collision research |
 | **Triz** | OS variant; Trey's diverse-redundant twin | **Confirmed** `20260714.035600` — soft TRIZ collision seen and accepted |
-| **Quin** | OS variant; fifth boot image (unpaired twin for now) | **Confirmed** `20260717.162114` — also standing writing voice + Q-vane name |
+| **Quin** | OS variant; fifth boot image, intentionally unpaired | **Confirmed** `20260717.162114` · unpaired settled `20260717.162620` — also standing writing voice + Q-vane name |
 
-Four of the five form two diverse-redundant pairs: **Riyo/Reya** and **Trey/Triz**. **Quin** is the fifth bootable image; a diverse-redundant twin for Quin stays open until named. Redundancy *shape* for each pair (one codebase, two independently-verified paths) is tracked in [`../../../context/specs/20260713-235600_names-awaiting-confirmation.md`](../../../context/specs/20260713-235600_names-awaiting-confirmation.md). Per-variant pages (`reya.md`, `riyo.md`, `trey.md`, `triz.md`, `quin.md`) are generated from the template once the doc-fusion machinery exists (Scribble/Brix/Mantra), not hand-written now.
+Four of the five form two diverse-redundant pairs: **Riyo/Reya** and **Trey/Triz**. **Quin** is the fifth bootable image, **intentionally unpaired** — five total is the settled count. Redundancy *shape* for each pair (one codebase, two independently-verified paths) is tracked in [`../../../context/specs/20260713-235600_names-awaiting-confirmation.md`](../../../context/specs/20260713-235600_names-awaiting-confirmation.md). Per-variant pages (`reya.md`, `riyo.md`, `trey.md`, `triz.md`, `quin.md`) are generated from the template once the doc-fusion machinery exists (Scribble/Brix/Mantra), not hand-written now.
 
 ## Why Generated, Not Hand-Written
 

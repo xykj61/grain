@@ -4,7 +4,7 @@
 
 **Language:** EN
 **Version:** `20260715` (Pool keystone revival prioritized · Quin voice seated · align pass reconciles the closed ladder)
-**Last updated:** 2026-07-17 (**Quin fifth OS variant** `20260717.162114` · glass toggles `20260717.161823` — five boot names; twin for Quin open · TUBE6/HAWM2 horizon)
+**Last updated:** 2026-07-17 (**Quin unpaired** `20260717.162620` — five OS variants settled; TUBE6/HAWM2 horizon)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Lens:** TAME — safety, performance, joy; the Seed Law; [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md)
