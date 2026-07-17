@@ -25,6 +25,7 @@ The lane grows by the same law as the code: reference specifications open only w
 - **`guides/self-hosted-vpn-setup.md`** — the self-hosted WireGuard VPN, client half witnessed here, server half a real deploy artifact for your own VPS.
 - **`guides/key-cards-setup.md`** — making your identity key cards (SSH + GPG fingerprints as a scannable, printable image), audited end to end on macOS.
 - **`guides/filevault-setup.md`** — turning on macOS disk encryption, the single highest-priority security fix for a work machine.
+- **`guides/pixel-10a-grapheneos-setup.md`** — installing GrapheneOS on a Pixel 10a via the official web installer, transcribed from GrapheneOS's own instructions, with the device's own published verified-boot key hash to check at the end.
 
 *Next rooms, in season: Aurora interface reference when the surface stabilizes; utility pages rendered from their own `.bron` man records when the toolset's first lap lands.*
 
