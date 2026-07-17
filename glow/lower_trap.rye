@@ -1,0 +1,65 @@
+//! glow/lower_trap.rye — lower a parsed `|-` bound to runnable `.rye` text.
+//!
+//! Per active-designing/20260716-093000_glow-and-rye-what-shares-under-the-hood.md:
+//! Glow's hop emits ordinary Rye; Rye's bridge takes it from there. This is
+//! the first real lowering: a literal `|-  N` becomes a complete small
+//! program whose body is a fixed step count under the same counter-checked
+//! shape rune_bounded_trap.run_bounded already proves.
+//!
+//! `(lent …)` bounds are recognized by the parser but not lowered yet —
+//! that needs a real subject list at emit time.
+
+const std = @import("std");
+const rbt = @import("rune_bounded_trap.rye");
+
+pub const LowerError = rbt.ParseError || error{
+    Overflow,
+    NotYetLowered,
+    EmptySource,
+};
+
+/// Emit a complete `.rye` main that walks `actual_steps` under `bound`.
+/// Returns 0 when every step fits; returns 1 on BoundExceeded (tick > bound).
+pub fn emit_literal_program(bound: u32, actual_steps: u32, out: []u8) LowerError!u32 {
+    const written = std.fmt.bufPrint(out,
+        \\const std = @import("std");
+        \\
+        \\/// Lowered from Glow `|-  {d}` — bounded trap with a fixed body length.
+        \\pub fn main(_: std.process.Init) !u8 {{
+        \\    const bound: u32 = {d};
+        \\    const actual_steps: u32 = {d};
+        \\    var tick: u32 = 0;
+        \\    var step: u32 = 0;
+        \\    while (step < actual_steps) : (step += 1) {{
+        \\        tick += 1;
+        \\        if (tick > bound) return 1;
+        \\    }}
+        \\    return if (tick == actual_steps) 0 else 1;
+        \\}}
+        \\
+    , .{ bound, bound, actual_steps }) catch return error.Overflow;
+    return @intCast(written.len);
+}
+
+/// Parse one Glow line and emit a welcome-path program (steps == bound).
+/// Only literal bounds lower today.
+pub fn lower_line_welcome(line: []const u8, out: []u8) LowerError!u32 {
+    const trimmed = std.mem.trim(u8, line, " \t\r\n");
+    if (trimmed.len == 0) return error.EmptySource;
+    const spec = try rbt.parse(trimmed);
+    return switch (spec) {
+        .literal => |bound| emit_literal_program(bound, bound, out),
+        .lent_of => error.NotYetLowered,
+    };
+}
+
+/// Parse one Glow line and emit an unwelcome-path program (steps == bound+1).
+pub fn lower_line_unwelcome(line: []const u8, out: []u8) LowerError!u32 {
+    const trimmed = std.mem.trim(u8, line, " \t\r\n");
+    if (trimmed.len == 0) return error.EmptySource;
+    const spec = try rbt.parse(trimmed);
+    return switch (spec) {
+        .literal => |bound| emit_literal_program(bound, bound + 1, out),
+        .lent_of => error.NotYetLowered,
+    };
+}

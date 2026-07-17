@@ -1142,6 +1142,11 @@ let rune_alias = run ["rishi/bin/rishi" "run" "tools/rune_alias_witness.rish"]
 assert rune_alias.ok else "Rune alias witness failed"
 say "GREEN: rune alias witness passed."
 
+say "witness suite: Glow `|-` lowers to Rye — first generator hop…"
+let glow_lower = run ["rishi/bin/rishi" "run" "tools/glow_lower_trap_witness.rish"]
+assert glow_lower.ok else "Glow lower-trap witness failed"
+say "GREEN: Glow lower-trap witness passed."
+
 say "witness suite: TUBE0 — the Glow app-manifest mold…"
 let tube0 = run ["rishi/bin/rishi" "run" "tools/tube0_manifest_witness.rish"]
 assert tube0.ok else "TUBE0 manifest witness failed"

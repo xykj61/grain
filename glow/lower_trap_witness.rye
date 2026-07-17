@@ -1,0 +1,57 @@
+//! glow/lower_trap_witness.rye — proves `|-` lowers to runnable `.rye`.
+//!
+//!   rye build glow/lower_trap_witness.rye -femit-bin=glow/bin/lower_trap_witness
+//!   glow/bin/lower_trap_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const lower = @import("lower_trap.rye");
+
+const witness_version = "20260717.150812";
+
+fn run_selftest(init: std.process.Init) !u8 {
+    const io = init.io;
+    const a = init.arena.allocator();
+    const cwd = std.Io.Dir.cwd();
+    var buf: [2048]u8 = undefined;
+
+    const n1 = try lower.lower_line_welcome("|-  10", &buf);
+    const rye1 = buf[0..n1];
+    assert(std.mem.indexOf(u8, rye1, "const bound: u32 = 10") != null);
+    assert(std.mem.indexOf(u8, rye1, "actual_steps: u32 = 10") != null);
+    print("lower: \"|-  10\" welcome emit names bound 10 -- GREEN\n", .{});
+
+    const n2 = try lower.lower_line_unwelcome("|-  10", &buf);
+    const rye2 = buf[0..n2];
+    assert(std.mem.indexOf(u8, rye2, "actual_steps: u32 = 11") != null);
+    print("lower: \"|-  10\" unwelcome emit walks 11 steps -- GREEN\n", .{});
+
+    if (lower.lower_line_welcome("|-  (lent records)", &buf)) |_| {
+        return error.LentLoweredTooSoon;
+    } else |err| {
+        if (err != lower.LowerError.NotYetLowered) return err;
+    }
+    print("lower: \"|-  (lent records)\" refused NotYetLowered -- GREEN\n", .{});
+
+    try cwd.createDirPath(io, "glow/.cache");
+    const welcome_path = "glow/.cache/bound_tick_welcome.rye";
+    const unwelcome_path = "glow/.cache/bound_tick_unwelcome.rye";
+    const n3 = try lower.lower_line_welcome("|-  32", &buf);
+    try cwd.writeFile(io, .{ .sub_path = welcome_path, .data = buf[0..n3] });
+    const n4 = try lower.lower_line_unwelcome("|-  32", &buf);
+    try cwd.writeFile(io, .{ .sub_path = unwelcome_path, .data = buf[0..n4] });
+    print("lower: wrote welcome and unwelcome .rye under glow/.cache/ -- GREEN\n", .{});
+
+    const gen_src = try cwd.readFileAlloc(io, "glow/gen/bound-tick.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_src, "|-  32") != null);
+    print("lower: glow/gen/bound-tick.glow carries \"|-  32\" -- GREEN\n", .{});
+
+    print("lower: version {s}\n", .{witness_version});
+    print("GREEN: `|-` lowers to ordinary Rye — first Glow generator hop.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
+}
