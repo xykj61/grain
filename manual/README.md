@@ -4,7 +4,7 @@
 **Last updated:** 2026-07-17 (dual-door hubs: language path · device/HAWM path)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
-**Status:** Founded — reference at parity **142**; two tutorials open; Caravan and Tally reference partial; Glow OS onboarding scaffold under `glow-os/`; Pixel/HAWM/TUBE path indexed
+**Status:** Founded — reference at parity **142**; three tutorials open (first-witness · run-record · Cursor-and-the-compass scaffold); Caravan and Tally reference partial; Glow OS onboarding scaffold under `glow-os/`; Pixel/HAWM/TUBE path indexed
 
 ---
 
@@ -24,6 +24,7 @@ The lane grows by the same law as the code: reference specifications open only w
 |---------|------|----------|
 | [`tutorials/first-witness.md`](tutorials/first-witness.md) | First `.rish` witness | Checkable |
 | [`tutorials/run-record-and-failures.md`](tutorials/run-record-and-failures.md) | Run-record fields and failures | Checkable |
+| [`tutorials/cursor-and-the-compass.md`](tutorials/cursor-and-the-compass.md) | Foundations · witness habitat · Cursor rules · log · send | Mixed — scaffold `20260717.173427` |
 | [`reference/rishi-language.md`](reference/rishi-language.md) | Rishi language reference (parity **142**) | Checkable |
 | [`../glow/`](../glow/) | Bounded `\|-` and `^-` rune prototypes | Checkable (two heads only) |
 | Rune grammar brief | [`../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md`](../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md) | Design — no full Glow tutorial yet |
@@ -52,6 +53,7 @@ Living ledger (full register): [`../context/specs/two-dev-environments-and-mobil
 - **`reference/tally-gardens.md`** — named bounded memory regions (witnessed behavior only).
 - **`tutorials/first-witness.md`** — run, read, write: your first `.rish` witness against the living suite.
 - **`tutorials/run-record-and-failures.md`** — the four run-record fields and RW-4 failure paths.
+- **`tutorials/cursor-and-the-compass.md`** — stitched first-day path: foundations → witness habitat → Cursor rules → Bron log → send (scaffold; sections earn checkable Status as witnesses land).
 - **`guides/macos-ai-jail-setup.md`** — the macOS sandbox-exec enclosure, witnessed green.
 - **`guides/self-hosted-vpn-setup.md`** — the self-hosted WireGuard VPN, client half witnessed here, server half a real deploy artifact for your own VPS.
 - **`guides/key-cards-setup.md`** — making your identity key cards (SSH + GPG fingerprints as a scannable, printable image), audited end to end on macOS.

@@ -69,12 +69,13 @@ Layering declines the nest too. Dill is kernel terminal I/O. Dexter is userspace
 
 ## Related
 
-- `../context/LEXICON.md` — Dexter · Brushstroke · Skate · Sala · Pool
+- `../context/LEXICON.md` — Dexter · Brushstroke · Skate · Sala · Pool · **Witness habitat**
 - `../context/specs/20260713-214400_urbit-parallel-naming-mapping-proposal.md` — Dill unfilled; Dexter Landscape-tile
 - `../context/specs/20260714-002123_naming-decisions-and-role-nesting.md` — conceptual nest only
 - `../context/specs/20260714-004428_reviving-replaces-renaming.md` — revive, never rename
 - `../context/specs/20260709-225343_thin-view-dexter-exception.md` — render-only does not graduate Dexter
 - `../active-designing/20260717-014522_native-activity-shim-and-slc-packaging.md` — window + input seam
+- `../active-designing/20260717-173427_witness-habitat-and-the-markup-pipeline.md` — Acme testing face + markup spine
 - `../pond/apps/window_input.rye` — Dexter line editor
 - `../glow/README.md` — working Glow surface pin
 - `../context/TAME_GUIDANCE.md` — operational TAME (Rye/Brix/Rishi; Glow via emitted Rye)

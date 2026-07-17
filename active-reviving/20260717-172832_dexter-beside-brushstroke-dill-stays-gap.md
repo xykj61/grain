@@ -63,6 +63,7 @@ Sala B2 on glass remains a sibling product option that still needs a **layout wo
 ## Related
 
 - World study: [`../external-research/20260717-172832_dexter-dill-glow-grapheneos-input.md`](../external-research/20260717-172832_dexter-dill-glow-grapheneos-input.md)
+- Witness habitat + markup spine: [`../active-designing/20260717-173427_witness-habitat-and-the-markup-pipeline.md`](../active-designing/20260717-173427_witness-habitat-and-the-markup-pipeline.md)
 - Mapping: [`../context/specs/20260713-214400_urbit-parallel-naming-mapping-proposal.md`](../context/specs/20260713-214400_urbit-parallel-naming-mapping-proposal.md)
 - Reviving law: [`../context/specs/20260714-004428_reviving-replaces-renaming.md`](../context/specs/20260714-004428_reviving-replaces-renaming.md)
 - Glass: [`../docs/TUBE.md`](../docs/TUBE.md) · [`../docs/HAWM.md`](../docs/HAWM.md)
