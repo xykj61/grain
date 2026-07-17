@@ -1,7 +1,8 @@
 # session_logs_archive.rish — fold prior days' session logs into archive/YYYYMMDD/.
 #
 # Convention (ORGANIZING.md): the working day stays flat; earlier days live under
-# session-logs/archive/<YYYYMMDD>/.
+# session-logs/archive/<YYYYMMDD>/. Folds both living Bron (.bron) and historical
+# Markdown (.md) session logs; README.md stays flat and has links rewritten.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/session_logs_archive.rish
