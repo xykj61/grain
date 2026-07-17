@@ -8,6 +8,8 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260717.125858` — [Skate look confirmed on the Pixel](20260717-125858_skate-seen-on-pixel.bron) — Skate glyphs on GrapheneOS glass; install proof GREEN
+- `20260717.125642` — [Skate grid rasterized onto Android NativeActivity glass](20260717-125642_skate-on-android-glass.bron) — pack GREEN; host look next
 - `20260717.125302` — [Tap to close confirmed on the Pixel](20260717-125302_tap-to-close-confirmed.bron) — chrome + input finish seen on GrapheneOS
 - `20260717.125143` — [Surface chrome — title GREEN, match color, tap to close](20260717-125143_surface-title-tap-close.bron) — pack GREEN; host look next
 - `20260717.124843` — [First NativeActivity surface seen on the Pixel](20260717-124843_surface-seen-on-pixel.bron) — Keaton confirmed hex on GrapheneOS glass; install proof GREEN
@@ -40,6 +42,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 | Stamp | Log | Meaning |
 |-------|-----|---------|
+| 20260717.125858 | [Skate look confirmed on the Pixel](20260717-125858_skate-seen-on-pixel.bron) | Brushstroke Skate on NativeActivity glass; install proof GREEN |
 | 20260717.125302 | [Tap to close confirmed on the Pixel](20260717-125302_tap-to-close-confirmed.bron) | Title match-green hex tap-finish seen on device; install proof GREEN |
 | 20260717.124843 | [First NativeActivity surface seen on the Pixel](20260717-124843_surface-seen-on-pixel.bron) | Hex visible on GrapheneOS; install proof GREEN; surface lap closed |
 | 20260717.124458 | [First NativeActivity surface paints the Sala root hex](20260717-124458_native-activity-surface-hex.bron) | Software ANativeWindow paint; pack GREEN; host look confirms |
