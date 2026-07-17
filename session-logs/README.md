@@ -8,6 +8,12 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260717.151854` — [send Glow generator hops through ?:](20260717-151854_send-glow-hops-through-if.bron) — lent · cast · conditional to pier; kg to ?-
+- `20260717.151802` — [Glow ?: conditional lowers to Rye GREEN](20260717-151802_glow-conditional-lower.bron) — (gth tick 32) / ready if-else; if-gth.glow
+- `20260717.151634` — [Glow ^- @u32 cast lowers to Rye GREEN](20260717-151634_glow-cast-u32-lower.bron) — checked cast hop; cast-u32.glow via glow_run
+- `20260717.151515` — [glow_run desk witness wired into parity](20260717-151515_glow-run-desk-parity.bron) — bound-tick + lent-tick via Rishi hand
+- `20260717.151403` — [Glow (lent …) bound lowers to Rye GREEN](20260717-151403_glow-lent-bound-lower.bron) — runtime face.len emit; lent-tick.glow via glow_run
+- `20260717.151200` — [Keaton confirmed glow_run bound-tick GREEN](20260717-151200_glow-run-bound-tick-green.bron) — first generator hop closed on his hand
 - `20260717.151000` — [First Glow generator hop — |- lowers to Rye GREEN](20260717-151000_glow-generator-first-hop.bron) — bound-tick.glow via Rishi hand
 - `20260717.150600` — [Glow generator vs Rishi naming — recommendation](20260717-150600_glow-generator-rishi-naming.bron) — keep Rishi shell; glow build + |- lower first
 - `20260717.150453` — [Eighth rune head — =* alias GREEN](20260717-150453_eighth-rune-alias.bron) — = category complete; unsaved with =.

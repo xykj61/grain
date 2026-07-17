@@ -1,0 +1,34 @@
+# glow_lower_cast_witness.rish — `^-` lowers to Rye; emitted program runs.
+#
+#   rishi/bin/rishi run tools/glow_lower_cast_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "glow/bin/lower_cast_witness"
+let welcome_rye = "glow/.cache/cast_u32_welcome.rye"
+let welcome_bin = "glow/bin/cast_u32_welcome"
+let unwelcome_rye = "glow/.cache/cast_u32_unwelcome.rye"
+let unwelcome_bin = "glow/bin/cast_u32_unwelcome"
+
+let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/lower_cast_witness.rye -femit-bin=${bin}"]
+assert build.ok else "lower_cast_witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "lower_cast_witness exited non-zero"
+assert selftest.out contains "GREEN" else "lower_cast_witness not GREEN"
+assert selftest.out contains "checked-casts into u32" else "lower_cast_witness missing welcome-emit claim"
+assert selftest.out contains "NamedMoldNotYetLowered" else "lower_cast_witness missing named-mold refuse"
+assert selftest.out contains "AuraNotYetLowered" else "lower_cast_witness missing other-aura refuse"
+assert selftest.out contains "cast-u32.glow" else "lower_cast_witness missing gen desk claim"
+
+let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
+assert build_welcome.ok else "cast welcome .rye build failed"
+let run_welcome = run ["sh" "-c" "${welcome_bin}; echo EXIT:$?"]
+assert run_welcome.ok else "cast welcome binary failed to launch"
+assert run_welcome.out contains "EXIT:0" else "cast welcome binary did not exit 0"
+
+let build_unwelcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${unwelcome_rye} -femit-bin=${unwelcome_bin}"]
+assert build_unwelcome.ok else "cast unwelcome .rye build failed"
+let run_unwelcome = run ["sh" "-c" "${unwelcome_bin}; echo EXIT:$?"]
+assert run_unwelcome.out contains "EXIT:1" else "cast unwelcome binary did not exit 1"
+
+say "GREEN: Glow `^-` cast hop — @u32 lowers to Rye; welcome 0 / unwelcome 1."

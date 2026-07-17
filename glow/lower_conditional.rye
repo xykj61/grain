@@ -1,0 +1,88 @@
+//! glow/lower_conditional.rye — lower a parsed `?:` test to runnable `.rye`.
+//!
+//! Per active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md:
+//! `?:` is if/then/else. This hop lowers two small test shapes already named
+//! by the front-half parser: the brief's `(gth tick 32)` and a bare face
+//! `ready`. Then/else arms are fixed demo returns (0 / 1); a later lap will
+//! lower real arms.
+
+const std = @import("std");
+const rif = @import("rune_conditional.rye");
+
+pub const LowerError = rif.ParseError || error{
+    Overflow,
+    EmptySource,
+    TestNotYetLowered,
+};
+
+pub const gth_welcome_tick: u32 = 40;
+pub const gth_unwelcome_tick: u32 = 10;
+
+const TestKind = enum { gth_tick_32, ready_face };
+
+fn classify_test(test_expr: []const u8) LowerError!TestKind {
+    if (std.mem.eql(u8, test_expr, "(gth tick 32)")) return .gth_tick_32;
+    if (std.mem.eql(u8, test_expr, "ready")) return .ready_face;
+    return error.TestNotYetLowered;
+}
+
+fn emit_gth_program(tick: u32, out: []u8) LowerError!u32 {
+    const written = std.fmt.bufPrint(out,
+        \\const std = @import("std");
+        \\
+        \\/// Lowered from Glow `?:  (gth tick 32)` — if/then/else at the boundary.
+        \\pub fn main(_: std.process.Init) !u8 {{
+        \\    const tick: u32 = {d};
+        \\    if (tick > 32) {{
+        \\        return 0;
+        \\    }} else {{
+        \\        return 1;
+        \\    }}
+        \\}}
+        \\
+    , .{tick}) catch return error.Overflow;
+    return @intCast(written.len);
+}
+
+fn emit_ready_program(ready: bool, out: []u8) LowerError!u32 {
+    const ready_lit: []const u8 = if (ready) "true" else "false";
+    const written = std.fmt.bufPrint(out,
+        \\const std = @import("std");
+        \\
+        \\/// Lowered from Glow `?:  ready` — bare-face if/then/else.
+        \\pub fn main(_: std.process.Init) !u8 {{
+        \\    const ready: bool = {s};
+        \\    if (ready) {{
+        \\        return 0;
+        \\    }} else {{
+        \\        return 1;
+        \\    }}
+        \\}}
+        \\
+    , .{ready_lit}) catch return error.Overflow;
+    return @intCast(written.len);
+}
+
+/// Parse one Glow `?:` line and emit a welcome-path program (then arm / exit 0).
+pub fn lower_line_welcome(line: []const u8, out: []u8) LowerError!u32 {
+    const trimmed = std.mem.trim(u8, line, " \t\r\n");
+    if (trimmed.len == 0) return error.EmptySource;
+    const spec = try rif.parse(trimmed);
+    const test_expr = rif.test_slice(&spec);
+    return switch (try classify_test(test_expr)) {
+        .gth_tick_32 => emit_gth_program(gth_welcome_tick, out),
+        .ready_face => emit_ready_program(true, out),
+    };
+}
+
+/// Parse one Glow `?:` line and emit an unwelcome-path program (else arm / exit 1).
+pub fn lower_line_unwelcome(line: []const u8, out: []u8) LowerError!u32 {
+    const trimmed = std.mem.trim(u8, line, " \t\r\n");
+    if (trimmed.len == 0) return error.EmptySource;
+    const spec = try rif.parse(trimmed);
+    const test_expr = rif.test_slice(&spec);
+    return switch (try classify_test(test_expr)) {
+        .gth_tick_32 => emit_gth_program(gth_unwelcome_tick, out),
+        .ready_face => emit_ready_program(false, out),
+    };
+}

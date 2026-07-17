@@ -1,0 +1,64 @@
+//! glow/lower_cast_witness.rye — proves `^-` lowers to runnable `.rye`.
+//!
+//!   rye build glow/lower_cast_witness.rye -femit-bin=glow/bin/lower_cast_witness
+//!   glow/bin/lower_cast_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const lower = @import("lower_cast.rye");
+
+const witness_version = "20260717.151533";
+
+fn run_selftest(init: std.process.Init) !u8 {
+    const io = init.io;
+    const a = init.arena.allocator();
+    const cwd = std.Io.Dir.cwd();
+    var buf: [2048]u8 = undefined;
+
+    const n1 = try lower.lower_line_welcome("^-  @u32", &buf);
+    const rye1 = buf[0..n1];
+    assert(std.mem.indexOf(u8, rye1, "std.math.cast(u32, raw)") != null);
+    assert(std.mem.indexOf(u8, rye1, "const raw: u64 = 42") != null);
+    print("lower: \"^-  @u32\" welcome emit checked-casts into u32 -- GREEN\n", .{});
+
+    const n2 = try lower.lower_line_unwelcome("^-  @u32", &buf);
+    const rye2 = buf[0..n2];
+    assert(std.mem.indexOf(u8, rye2, "const raw: u64 = 4294967296") != null);
+    print("lower: \"^-  @u32\" unwelcome emit uses raw that overflows u32 -- GREEN\n", .{});
+
+    if (lower.lower_line_welcome("^-  record", &buf)) |_| {
+        return error.NamedMoldLoweredTooSoon;
+    } else |err| {
+        if (err != lower.LowerError.NamedMoldNotYetLowered) return err;
+    }
+    print("lower: \"^-  record\" refused NamedMoldNotYetLowered -- GREEN\n", .{});
+
+    if (lower.lower_line_welcome("^-  @u8", &buf)) |_| {
+        return error.AuraLoweredTooSoon;
+    } else |err| {
+        if (err != lower.LowerError.AuraNotYetLowered) return err;
+    }
+    print("lower: \"^-  @u8\" refused AuraNotYetLowered -- GREEN\n", .{});
+
+    try cwd.createDirPath(io, "glow/.cache");
+    const welcome_path = "glow/.cache/cast_u32_welcome.rye";
+    const unwelcome_path = "glow/.cache/cast_u32_unwelcome.rye";
+    const n3 = try lower.lower_line_welcome("^-  @u32", &buf);
+    try cwd.writeFile(io, .{ .sub_path = welcome_path, .data = buf[0..n3] });
+    const n4 = try lower.lower_line_unwelcome("^-  @u32", &buf);
+    try cwd.writeFile(io, .{ .sub_path = unwelcome_path, .data = buf[0..n4] });
+    print("lower: wrote cast welcome and unwelcome .rye under glow/.cache/ -- GREEN\n", .{});
+
+    const gen_src = try cwd.readFileAlloc(io, "glow/gen/cast-u32.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_src, "^-  @u32") != null);
+    print("lower: glow/gen/cast-u32.glow carries \"^-  @u32\" -- GREEN\n", .{});
+
+    print("lower: version {s}\n", .{witness_version});
+    print("GREEN: `^-` lowers @u32 cast to ordinary Rye.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
+}

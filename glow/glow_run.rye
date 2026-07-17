@@ -4,12 +4,14 @@
 //!   glow/bin/glow_run glow/gen/bound-tick.glow
 //!   # prints the emitted .rye path; Rishi builds and runs it
 //!
-//! Skips `::` comments and blanks; lowers the first `|-` line. Build/run
-//! stay in tools/glow_run.rish so Rishi remains the shell.
+//! Skips `::` comments and blanks; lowers the first `|-`, `^-`, or `?:` line.
+//! Build/run stay in tools/glow_run.rish so Rishi remains the shell.
 
 const std = @import("std");
 const print = std.debug.print;
-const lower = @import("lower_trap.rye");
+const lower_trap = @import("lower_trap.rye");
+const lower_cast = @import("lower_cast.rye");
+const lower_if = @import("lower_conditional.rye");
 
 fn first_glow_line(src: []const u8) ?[]const u8 {
     var it = std.mem.splitScalar(u8, src, '\n');
@@ -46,9 +48,27 @@ pub fn main(init: std.process.Init) !u8 {
     };
 
     var rye_buf: [4096]u8 = undefined;
-    const rye_len = lower.lower_line_welcome(line, &rye_buf) catch |err| {
-        print("glow_run: lower failed ({s})\n", .{@errorName(err)});
-        return 1;
+    const rye_len: u32 = blk: {
+        if (line.len >= 2 and line[0] == '|' and line[1] == '-') {
+            break :blk lower_trap.lower_line_welcome(line, &rye_buf) catch |err| {
+                print("glow_run: trap lower failed ({s})\n", .{@errorName(err)});
+                return 1;
+            };
+        }
+        if (line.len >= 2 and line[0] == '^' and line[1] == '-') {
+            break :blk lower_cast.lower_line_welcome(line, &rye_buf) catch |err| {
+                print("glow_run: cast lower failed ({s})\n", .{@errorName(err)});
+                return 1;
+            };
+        }
+        if (line.len >= 2 and line[0] == '?' and line[1] == ':') {
+            break :blk lower_if.lower_line_welcome(line, &rye_buf) catch |err| {
+                print("glow_run: conditional lower failed ({s})\n", .{@errorName(err)});
+                return 1;
+            };
+        }
+        print("glow_run: unsupported Glow head in {s}\n", .{glow_path});
+        return 2;
     };
 
     try cwd.createDirPath(io, "glow/.cache");
