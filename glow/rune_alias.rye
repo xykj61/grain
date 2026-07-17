@@ -1,0 +1,61 @@
+//! glow/rune_alias.rye — parses Glow's `=*` alias (no-copy) rune head.
+//!
+//! Per active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md's
+//! `=` category: `=*` is alias, no copy — the last of the three binding
+//! siblings (`=/` let, `=.` mutate, `=*` alias). This extracts the face being
+//! aliased; the source wing/value is not this parser's job. Eighth rune head.
+//!
+//! One shape recognized:
+//!   =*  records
+
+const std = @import("std");
+
+pub const max_name_len: u32 = 64;
+
+pub const ParseError = error{
+    NotAnAlias,
+    MissingFace,
+    FaceTooLong,
+    MalformedFace,
+};
+
+pub const AliasSpec = struct {
+    face: [max_name_len]u8 = [_]u8{0} ** max_name_len,
+};
+
+pub fn face_slice(spec: *const AliasSpec) []const u8 {
+    var len: u32 = 0;
+    while (len < max_name_len and spec.face[len] != 0) len += 1;
+    return spec.face[0..len];
+}
+
+fn is_ident_char(c: u8) bool {
+    if (c >= 'a' and c <= 'z') return true;
+    if (c >= 'A' and c <= 'Z') return true;
+    if (c >= '0' and c <= '9') return true;
+    return c == '-' or c == '_';
+}
+
+/// Parses one line of Glow's `=*` rune. Face only — not the source.
+pub fn parse(line: []const u8) ParseError!AliasSpec {
+    if (line.len < 2 or !std.mem.eql(u8, line[0..2], "=*")) return error.NotAnAlias;
+
+    var rest = line[2..];
+    rest = std.mem.trimStart(u8, rest, " \t");
+    if (rest.len == 0) return error.MissingFace;
+
+    var end: u32 = 0;
+    while (end < rest.len and rest[end] != ' ' and rest[end] != '\t') end += 1;
+    const face_text = rest[0..end];
+
+    if (face_text.len == 0) return error.MissingFace;
+    if (face_text.len > max_name_len) return error.FaceTooLong;
+    if (face_text[0] >= '0' and face_text[0] <= '9') return error.MalformedFace;
+    for (face_text) |c| {
+        if (!is_ident_char(c)) return error.MalformedFace;
+    }
+
+    var spec: AliasSpec = .{};
+    @memcpy(spec.face[0..face_text.len], face_text);
+    return spec;
+}

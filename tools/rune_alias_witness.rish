@@ -1,0 +1,20 @@
+# rune_alias_witness.rish — the `=*` alias (no-copy) rune head, proves out.
+#
+# Eighth rune head — completes the `=` category trio (=/ · =. · =*).
+#
+#   rishi/bin/rishi run tools/rune_alias_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "glow/bin/rune_alias_witness"
+
+let build = run ["sh" "-c" "mkdir -p glow/bin && env RYE_ZIG=${zig} rye/bin/rye build glow/rune_alias_witness.rye -femit-bin=${bin}"]
+assert build.ok else "Rune alias witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "Rune alias witness exited non-zero"
+assert selftest.out contains "GREEN" else "Rune alias witness not GREEN"
+assert selftest.out contains "records" else "Rune alias witness missing the records-face claim"
+assert selftest.out contains "trailing source" else "Rune alias witness missing the trailing-source claim"
+assert selftest.out contains "MalformedFace" else "Rune alias witness missing the malformed-face unwelcome path"
+
+say "GREEN: rune alias witness passed -- an eighth rune head parses (`=*`), `=` category complete."

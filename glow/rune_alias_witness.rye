@@ -1,0 +1,59 @@
+//! glow/rune_alias_witness.rye — proves the `=*` alias rune head.
+//!
+//!   rye build glow/rune_alias_witness.rye -femit-bin=glow/bin/rune_alias_witness
+//!   glow/bin/rune_alias_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const ra = @import("rune_alias.rye");
+
+const witness_version = "20260717.150500";
+
+fn run_selftest() !u8 {
+    const spec1 = try ra.parse("=*  records");
+    assert(std.mem.eql(u8, ra.face_slice(&spec1), "records"));
+    print("rune: \"=*  records\" parses to face \"records\" -- GREEN\n", .{});
+
+    const spec2 = try ra.parse("=*  cur  i.records.cur");
+    assert(std.mem.eql(u8, ra.face_slice(&spec2), "cur"));
+    print("rune: trailing source wing does not confuse the face scan -- GREEN\n", .{});
+
+    const spec3 = try ra.parse("=*  next-root");
+    assert(std.mem.eql(u8, ra.face_slice(&spec3), "next-root"));
+    print("rune: \"=*  next-root\" parses hyphenated face -- GREEN\n", .{});
+
+    if (ra.parse("=.  root")) |_| {
+        return error.NotAnAliasNotCaught;
+    } else |err| {
+        if (err != ra.ParseError.NotAnAlias) return err;
+    }
+    print("rune: a non-alias line refused NotAnAlias -- GREEN unwelcome path\n", .{});
+
+    if (ra.parse("=*")) |_| {
+        return error.MissingFaceNotCaught;
+    } else |err| {
+        if (err != ra.ParseError.MissingFace) return err;
+    }
+    print("rune: a bare \"=*\" with no face refused MissingFace -- GREEN unwelcome path\n", .{});
+
+    if (ra.parse("=*  4bad")) |_| {
+        return error.DigitLedNotCaught;
+    } else |err| {
+        if (err != ra.ParseError.MalformedFace) return err;
+    }
+    if (ra.parse("=*  kind.cur")) |_| {
+        return error.DotInFaceNotCaught;
+    } else |err| {
+        if (err != ra.ParseError.MalformedFace) return err;
+    }
+    print("rune: digit-led and dotted faces refused MalformedFace -- GREEN unwelcome path\n", .{});
+
+    print("rune: version {s}\n", .{witness_version});
+    print("GREEN: the `=*` alias rune's front half parses -- eighth rune head, `=` category complete.\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}

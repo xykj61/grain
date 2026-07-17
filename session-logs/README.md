@@ -8,6 +8,9 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260717.150600` — [Glow generator vs Rishi naming — recommendation](20260717-150600_glow-generator-rishi-naming.bron) — keep Rishi shell; glow build + |- lower first
+- `20260717.150453` — [Eighth rune head — =* alias GREEN](20260717-150453_eighth-rune-alias.bron) — = category complete; unsaved with =.
+- `20260717.150409` — [Seventh rune head — =. mutate GREEN](20260717-150409_seventh-rune-mutate.bron) — = category deepened; unsaved
 - `20260717.150309` — [send TUBE glass through TUBE7 and six rune heads](20260717-150309_send-glass-and-rune-heads.bron) — pier holds glass + |- ^- ?: ?- =/ ?~
 - `20260717.150219` — [Sixth rune head — ?~ null test GREEN](20260717-150219_sixth-rune-null.bron) — ? category deepened; composition heads covered; batch unsaved
 - `20260717.150053` — [Fifth rune head — =/ face binding GREEN](20260717-150053_fifth-rune-face.bron) — = category opened; parity wired; batch unsaved
