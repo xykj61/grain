@@ -3,13 +3,14 @@
 //! Per active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md:
 //! `=/` is typed let. This hop lowers `next-root=@u32` and bare `tick`, trailing
 //! decimal literals (default 7), and one nested value expression:
-//! `^-  @uN  <decimal>` — a cast-of-literal under the face. Other parenthesized
-//! forms still refuse. Named molds still refuse.
+//! `^-  @uN  <decimal>` — a cast-of-literal under the face. Nest forms parse
+//! through `expr.rye`. Other parenthesized forms still refuse. Named molds still refuse.
 
 const std = @import("std");
 const rf = @import("rune_face.rye");
+const expr = @import("expr.rye");
 
-pub const LowerError = rf.ParseError || error{
+pub const LowerError = rf.ParseError || expr.ParseError || error{
     Overflow,
     EmptySource,
     BadIdent,
@@ -84,32 +85,15 @@ fn clause_text(face: []const u8, mold: []const u8, buf: *[rf.max_name_len * 2 + 
     return buf[0 .. face.len + 1 + mold.len];
 }
 
-fn parse_decimal(rest: []const u8) LowerError!u32 {
-    var end: usize = 0;
-    while (end < rest.len and rest[end] >= '0' and rest[end] <= '9') end += 1;
-    if (end == 0) return error.MalformedValue;
-    if (end < rest.len) {
-        const after = std.mem.trimStart(u8, rest[end..], " \t");
-        if (after.len != 0) return error.MalformedValue;
-    }
-    return std.fmt.parseInt(u32, rest[0..end], 10) catch return error.Overflow;
-}
-
-fn parse_cast_value(rest: []const u8) LowerError!BoundValue {
-    if (rest.len < 2 or rest[0] != '^' or rest[1] != '-') return error.MalformedValue;
-    var after_rune = std.mem.trimStart(u8, rest[2..], " \t");
-    if (after_rune.len == 0) return error.MalformedValue;
-    var mold_end: usize = 0;
-    while (mold_end < after_rune.len and after_rune[mold_end] != ' ' and after_rune[mold_end] != '\t')
-        mold_end += 1;
-    const mold = after_rune[0..mold_end];
-    if (mold.len == 0 or mold.len > rf.max_name_len) return error.MalformedValue;
-    _ = try zig_type_for_mold(mold);
-    const after_mold = std.mem.trimStart(u8, after_rune[mold_end..], " \t");
-    const lit = try parse_decimal(after_mold);
-    var bound: BoundValue = .{ .kind = .cast_literal, .lit = lit, .cast_mold_len = mold.len };
-    @memcpy(bound.cast_mold[0..mold.len], mold);
-    return bound;
+fn map_expr_err(err: expr.ParseError) LowerError {
+    return switch (err) {
+        error.ExprNotYetLowered => error.ValueNotYetLowered,
+        error.MalformedExpr => error.MalformedValue,
+        error.Overflow => error.Overflow,
+        error.BadIdent => error.BadIdent,
+        error.AuraNotYetLowered => error.AuraNotYetLowered,
+        error.NamedMoldNotYetLowered => error.NamedMoldNotYetLowered,
+    };
 }
 
 /// Trailing value after the face clause: default, decimal, or nested `^-`.
@@ -119,10 +103,17 @@ fn bound_value(line: []const u8, face: []const u8, mold: []const u8) LowerError!
     const idx = std.mem.indexOf(u8, line, clause) orelse return error.MalformedValue;
     const rest = std.mem.trim(u8, line[idx + clause.len ..], " \t\r\n");
     if (rest.len == 0) return .{ .kind = .literal, .lit = face_default_value };
-    if (rest[0] == '(') return error.ValueNotYetLowered;
-    if (rest.len >= 2 and rest[0] == '^' and rest[1] == '-') return parse_cast_value(rest);
-    const lit = try parse_decimal(rest);
-    return .{ .kind = .literal, .lit = lit };
+    const e = expr.parse_whole(rest) catch |err| return map_expr_err(err);
+    return switch (e.kind) {
+        .face => error.MalformedValue,
+        .literal => .{ .kind = .literal, .lit = e.lit },
+        .cast_literal => blk: {
+            const cm = expr.mold_slice(&e);
+            var bound: BoundValue = .{ .kind = .cast_literal, .lit = e.lit, .cast_mold_len = cm.len };
+            @memcpy(bound.cast_mold[0..cm.len], cm);
+            break :blk bound;
+        },
+    };
 }
 
 fn emit_literal(

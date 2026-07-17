@@ -8,6 +8,8 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260717.164350` — [Glow shared nest expr — first general-lexer lap](20260717-164350_glow-shared-nest-expr-first-lexer-lap.bron) — expr.rye; lowers share nests; GREEN
+- `20260717.163946` — [TWO_ROOMS send then check-in](20260717-163946_two-rooms-send-and-check-in.bron) — git nib 26cbe45419; three doors named
 - `20260717.163748` — [TWO_ROOMS Quin refresh and doorway GREEN](20260717-163748_two-rooms-quin-and-doorway-green.bron) — Voice Quin; 25 Status tokens; witness GREEN
 - `20260717.163310` — [Techno-Optimist gratitude to Quin then send Glow @u64](20260717-163310_techno-optimist-quin-and-u64-send.bron) — manifesto Voice Quin; nest @u64 to pier
 - `20260717.163004` — [Nested @u64 closes unsigned cast family](20260717-163004_nested-u64-cast-family.bron) — face + arm nests; desk GREEN

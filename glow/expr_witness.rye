@@ -1,0 +1,79 @@
+//! glow/expr_witness.rye — proves the shared nest-expression parser.
+//!
+//!   rye build glow/expr_witness.rye -femit-bin=glow/bin/expr_witness
+//!   glow/bin/expr_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const expr = @import("expr.rye");
+
+const witness_version = "20260717.164100";
+
+fn run_selftest(_: std.process.Init) !u8 {
+    {
+        const p = try expr.parse_prefix("42  rest");
+        assert(p.expr.kind == .literal);
+        assert(p.expr.lit == 42);
+        assert(std.mem.eql(u8, p.rest, "rest"));
+        print("expr: decimal prefix leaves rest -- GREEN\n", .{});
+    }
+    {
+        const p = try expr.parse_prefix("^-  @u32  7");
+        assert(p.expr.kind == .cast_literal);
+        assert(p.expr.lit == 7);
+        assert(std.mem.eql(u8, expr.mold_slice(&p.expr), "@u32"));
+        assert(p.rest.len == 0);
+        print("expr: nested ^- @u32 decimal -- GREEN\n", .{});
+    }
+    {
+        const p = try expr.parse_prefix("^-  @u64  42");
+        assert(p.expr.kind == .cast_literal);
+        assert(std.mem.eql(u8, expr.mold_slice(&p.expr), "@u64"));
+        print("expr: nested ^- @u64 decimal -- GREEN\n", .{});
+    }
+    {
+        const p = try expr.parse_prefix("delivered");
+        assert(p.expr.kind == .face);
+        assert(std.mem.eql(u8, expr.face_slice(&p.expr), "delivered"));
+        print("expr: bare face ident -- GREEN\n", .{});
+    }
+    {
+        const e = try expr.parse_whole("^-  @u8  1");
+        assert(e.kind == .cast_literal);
+        assert(e.lit == 1);
+        print("expr: parse_whole cast literal -- GREEN\n", .{});
+    }
+    if (expr.parse_whole("42  leftover")) |_| {
+        assert(false);
+    } else |err| {
+        assert(err == expr.ParseError.MalformedExpr);
+        print("expr: parse_whole refuses leftover -- GREEN\n", .{});
+    }
+    if (expr.parse_prefix("(mix root x)")) |_| {
+        assert(false);
+    } else |err| {
+        assert(err == expr.ParseError.ExprNotYetLowered);
+        print("expr: parenthesized form refused ExprNotYetLowered -- GREEN\n", .{});
+    }
+    if (expr.zig_type_for_mold("@ux")) |_| {
+        assert(false);
+    } else |err| {
+        assert(err == expr.ParseError.AuraNotYetLowered);
+        print("expr: @ux refused AuraNotYetLowered -- GREEN\n", .{});
+    }
+    if (expr.zig_type_for_mold("record")) |_| {
+        assert(false);
+    } else |err| {
+        assert(err == expr.ParseError.NamedMoldNotYetLowered);
+        print("expr: named mold refused NamedMoldNotYetLowered -- GREEN\n", .{});
+    }
+
+    print("GREEN: shared nest-expression parser — decimal · ^- @uN · face; parens later.\n", .{});
+    _ = witness_version;
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
+}

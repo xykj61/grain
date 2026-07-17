@@ -1,0 +1,21 @@
+# glow_expr_witness.rish — shared nest-expression parser GREEN.
+#
+#   rishi/bin/rishi run tools/glow_expr_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "glow/bin/expr_witness"
+
+let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/expr_witness.rye -femit-bin=${bin}"]
+assert build.ok else "expr_witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "expr_witness exited non-zero"
+assert selftest.out contains "GREEN" else "expr_witness not GREEN"
+assert selftest.out contains "decimal prefix" else "expr_witness missing decimal claim"
+assert selftest.out contains "nested ^- @u32" else "expr_witness missing @u32 nest claim"
+assert selftest.out contains "nested ^- @u64" else "expr_witness missing @u64 nest claim"
+assert selftest.out contains "bare face" else "expr_witness missing face claim"
+assert selftest.out contains "ExprNotYetLowered" else "expr_witness missing paren refuse"
+assert selftest.out contains "parse_whole refuses leftover" else "expr_witness missing whole-rest claim"
+
+say "GREEN: Glow shared nest-expression parser — first general-lexer lap."
