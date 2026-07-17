@@ -8,6 +8,12 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260717.183425` — [Write form-factor note · send · kg](20260717-183425_write-form-factor-note-send-kg.bron) — naming/orientation silo; ship; ZETA2b next
+- `20260717.183345` — [ZETA Pixel typing GREEN · align gaps](20260717-183345_zeta-pixel-typing-green-align.bron) — type works; ZETA2b hit-box/density next
+- `20260717.183015` — [ZETA3 caret blink · kg](20260717-183015_zeta3-caret-blink-kg.bron) — `|` pulse via timerfd; pack+install; eyes next
+- `20260717.182418` — [TAME Lap 2 · kg means keep going](20260717-182418_tame-lap2-kg-keep-going.bron) — Lap2 GREEN; kg≠send; zero-assert 3 left
+- `20260717.181715` — [TAME SLC realign · Lap 1 GREEN](20260717-181715_tame-slc-realign-lap1.bron) — advise truth; DoD rules; glass asserts; memcpy 0
+- `20260717.180933` — [ZETA2 tap→Action · ZETA1 Pixel look](20260717-180933_zeta2-tap-action-pixel-look.bron) — keyboard visible; taps drain to Dexter; install Success
 - `20260717.180725` — [ZETA1 letters paint + hit · kg](20260717-180725_zeta1-letters-paint-hit-kg.bron) — QWERTY on Skate 14–17; pack GREEN
 - `20260717.180147` — [Seat waymark ZETA and ZETA0 layouts](20260717-180147_waymark-seat-zeta-and-zeta0.bron) — ZETA drawn; layout tables GREEN; ZETA1 next
 - `20260717.175328` — [Glass keyboard · iOS-inspired · align · send](20260717-175328_glass-keyboard-ios-inspired-align-send.bron) — own Skate QWERTY; layout tables next; IME/caret gaps named

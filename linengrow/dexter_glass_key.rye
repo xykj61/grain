@@ -4,6 +4,9 @@
 //! drains AInputEvent KEY through these fields; the witness replays the same
 //! shape without an AInputQueue. IME composition stays later.
 
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
 const dexter = @import("window_input.rye");
 
 /// Android AKEYCODE_* (android/keycodes.h) — subset used on glass.
@@ -28,11 +31,15 @@ pub const KeyDown = struct {
 };
 
 fn shifted(meta: i32) bool {
+    // invariant: only the shift bit is consulted
+    assert(meta_shift_on == 0x01);
     return (meta & meta_shift_on) != 0;
 }
 
 /// Map one key-down to a Dexter Action. Returns null when the key is ignored.
 pub fn action_from_key_down(k: KeyDown) ?dexter.Action {
+    // invariant: key codes are non-negative Android ids
+    assert(k.key_code >= 0);
     if (k.key_code == keycode_enter) return .submit;
     if (k.key_code == keycode_del) return .backspace;
     if (k.key_code == keycode_space) return .{ .char_ = ' ' };
@@ -42,21 +49,39 @@ pub fn action_from_key_down(k: KeyDown) ?dexter.Action {
     if (k.key_code == keycode_minus) return .{ .char_ = if (shifted(k.meta_state)) '_' else '-' };
     if (k.key_code >= keycode_0 and k.key_code <= keycode_9) {
         const digit: u8 = @intCast('0' + (k.key_code - keycode_0));
+        // invariant: digit is ASCII 0-9
+        assert(digit >= '0');
+        assert(digit <= '9');
         return .{ .char_ = digit };
     }
     if (k.key_code >= keycode_a and k.key_code <= keycode_z) {
         const base: u8 = @intCast('a' + (k.key_code - keycode_a));
-        const ch: u8 = if (shifted(k.meta_state)) base - ('a' - 'A') else base;
-        return .{ .char_ = ch };
+        if (shifted(k.meta_state)) {
+            const ch: u8 = base - ('a' - 'A');
+            // invariant: uppercase A-Z
+            assert(ch >= 'A');
+            assert(ch <= 'Z');
+            return .{ .char_ = ch };
+        }
+        // invariant: lowercase a-z
+        assert(base >= 'a');
+        assert(base <= 'z');
+        return .{ .char_ = base };
     }
     return null;
 }
 
 /// Apply a key-down sequence to a live editor (same path NativeActivity drains).
 pub fn drain_key_downs(editor: *dexter.LineEditor, keys: []const KeyDown) void {
+    assert(editor.len <= dexter.max_line_len);
     for (keys) |k| {
         if (action_from_key_down(k)) |action| {
             editor.apply_action(action);
         }
     }
+    assert(editor.len <= dexter.max_line_len);
+}
+
+comptime {
+    _ = print;
 }

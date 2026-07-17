@@ -78,3 +78,16 @@ When these pull against each other, safety wins. When safety and performance are
 - zero `assert(` in core modules → import assert; contract postconditions; see honest exempt list in scan script
 
 Run when touching authored `.rye`: `rishi/bin/rishi run tools/tame_style_check.rish`
+
+## SLC Rye Definition of Done (hosted · linengrow · glass)
+
+No new law — the supplement already seats this. Agents must not skip it when shipping an SLC.
+
+1. **Opening triad** on every new or touched hosted `.rye`: `const std`, `const assert = std.debug.assert`, `const print = std.debug.print` (witnesses use bare `print` for claim lines).
+2. **Contract asserts** on every new/touched `fn` — aim ≥ two per function (preconditions, postconditions, bounds). `// invariant:` on each assert.
+3. **No new `@memcpy`** — use `tally/copy.rye` `copy_disjoint` (linengrow: `@import("tally_copy.rye")` symlink).
+4. **Witnesses are not enough** — a GREEN `*_witness.rye` does not excuse zero asserts in the module under test.
+5. **Before claiming GREEN** — run `tame_style_check` and the module’s own witness; trust advise ratchet counts (native must match legacy after `20260717.181715`).
+6. **Glass / NativeActivity touch** — migrate `@memcpy` and add opening lines in that file before leaving.
+
+**Ledger:** `active-designing/20260717-181715_tame-slc-rye-audit-ledger.md` · **Brief:** `active-designing/20260707-164612_tame-tidy-rules-brief.md`

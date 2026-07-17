@@ -15,6 +15,10 @@
 //!
 //! Does not copy GrapheneOS code or docs; gratitude study only.
 
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
 pub const sensors_grant_version = "20260717.161013";
 
 /// Binary per-app sensors grant. Revoked or denied grants allow nothing.
@@ -23,26 +27,51 @@ pub const SensorsGrant = struct {
 
     /// Install-shaped welcome: sensors allowed until revoke.
     pub fn grant() SensorsGrant {
-        return .{ .granted = true };
+        const welcome: SensorsGrant = .{ .granted = true };
+        // invariant: welcome grant admits sensors
+        assert(welcome.granted);
+        assert(!welcome.appears_zeroed());
+        return welcome;
     }
 
     /// Explicit deny at build time (install toggle off).
     pub fn deny() SensorsGrant {
-        return .{ .granted = false };
+        const denied: SensorsGrant = .{ .granted = false };
+        // invariant: denied grant presents as zeroed
+        assert(!denied.granted);
+        assert(denied.appears_zeroed());
+        return denied;
     }
 
     /// True when this grant still admits sensor use.
     pub fn allows(self: *const SensorsGrant) bool {
-        return self.granted;
+        const admitted = self.granted;
+        // invariant: allows tracks granted bit
+        assert(admitted == self.granted);
+        assert(self.appears_zeroed() == !admitted);
+        return admitted;
     }
 
     /// GrapheneOS parallel: refused grant presents as zeroed sensor data.
     pub fn appears_zeroed(self: *const SensorsGrant) bool {
-        return !self.granted;
+        const zeroed = !self.granted;
+        // invariant: zeroed is the refusal presentation
+        assert(zeroed == !self.granted);
+        if (zeroed) {
+            assert(!self.granted);
+        }
+        return zeroed;
     }
 
     /// Uninstall-shaped revoke: every later allows() is false.
     pub fn revoke(self: *SensorsGrant) void {
         self.granted = false;
+        // invariant: revoke clears admission
+        assert(!self.granted);
+        assert(self.appears_zeroed());
     }
 };
+
+comptime {
+    _ = print;
+}

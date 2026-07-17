@@ -5,7 +5,10 @@
 //! device-free door. Live KEY drain: dexter_glass_key + glow_native_activity.
 
 const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
 const dexter = @import("window_input.rye");
+const tally_copy = @import("tally_copy.rye");
 
 /// Demo payload typed on glass — short, printable, Skate-safe.
 pub const demo_submitted: []const u8 = "glow";
@@ -16,6 +19,9 @@ pub const DexterLens = struct {
 
 /// Map a demo key sequence through Dexter; returns the submitted line length.
 pub fn run_demo_editor(out_line: *[dexter.max_line_len]u8, out_len: *u32) !DexterLens {
+    // invariant: demo fits the editor bound
+    assert(demo_submitted.len > 0);
+    assert(demo_submitted.len <= dexter.max_line_len);
     var editor = dexter.LineEditor{};
     const actions = [_]dexter.Action{
         .{ .char_ = 'g' },
@@ -31,7 +37,13 @@ pub fn run_demo_editor(out_line: *[dexter.max_line_len]u8, out_len: *u32) !Dexte
     const prompt = editor.prompt_slice();
     if (!std.mem.eql(u8, prompt, demo_submitted)) return error.LineMismatch;
     if (prompt.len > out_line.len) return error.LineTooLong;
-    @memcpy(out_line[0..prompt.len], prompt);
+    tally_copy.copy_disjoint(u8, out_line[0..prompt.len], prompt);
     out_len.* = @intCast(prompt.len);
+    // invariant: length matches demo
+    assert(out_len.* == demo_submitted.len);
     return .{ .submitted_len = @intCast(prompt.len) };
+}
+
+comptime {
+    _ = print;
 }

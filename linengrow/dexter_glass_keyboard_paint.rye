@@ -4,16 +4,53 @@
 //! Device-free; NativeActivity stores the last HitMap for motion.
 
 const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
 const layout = @import("dexter_glass_keyboard_layout.rye");
+const dexter = @import("window_input.rye");
+const tally_copy = @import("tally_copy.rye");
 
 pub const max_line_len: u32 = 48;
 pub const keyboard_rows: u32 = 4;
+
+/// What a glass key tap means for Dexter / mode (ZETA2).
+pub const TapResult = union(enum) {
+    action: dexter.Action,
+    set_mode: layout.Mode,
+    toggle_shift,
+    none,
+};
+
+/// Map a layout key + shift latch into an editor action or mode change.
+pub fn tap_result(key: layout.Key, shift_on: bool) TapResult {
+    return switch (key) {
+        .char_ => |ch| blk: {
+            // invariant: printable face
+            assert(ch >= 32);
+            assert(ch < 127);
+            var out = ch;
+            if (shift_on and ch >= 'a' and ch <= 'z') {
+                out = ch - ('a' - 'A');
+                assert(out >= 'A');
+                assert(out <= 'Z');
+            }
+            break :blk .{ .action = .{ .char_ = out } };
+        },
+        .space => .{ .action = .{ .char_ = ' ' } },
+        .delete => .{ .action = .backspace },
+        .@"return" => .{ .action = .submit },
+        .shift => .toggle_shift,
+        .to_numbers => .{ .set_mode = .numbers },
+        .to_letters => .{ .set_mode = .letters },
+        .to_symbols => .{ .set_mode = .symbols },
+        .to_emoji => .none, // ZETA4
+    };
+}
 
 /// ASCII face for one key (Skate-safe).
 pub fn label_for(key: layout.Key) []const u8 {
     return switch (key) {
         .char_ => |ch| blk: {
-            // Single-byte printable — caller copies into a 1-char buffer when needed.
             _ = ch;
             break :blk "";
         },
@@ -30,8 +67,12 @@ pub fn label_for(key: layout.Key) []const u8 {
 
 /// Write one page row as space-separated labels into out_line. Returns length.
 pub fn format_page_row(page: layout.Page, row_idx: u32, out_line: *[max_line_len]u8) u32 {
+    if (page.rows.len == 0) return 0;
+    // invariant: row index in page
+    assert(row_idx < page.rows.len);
     if (row_idx >= page.rows.len) return 0;
     const keys = page.rows[row_idx].keys;
+    assert(keys.len <= layout.max_keys_per_row);
     var pos: u32 = 0;
     var i: u32 = 0;
     while (i < keys.len) : (i += 1) {
@@ -49,24 +90,52 @@ pub fn format_page_row(page: layout.Page, row_idx: u32, out_line: *[max_line_len
             else => {
                 const lab = label_for(keys[i]);
                 if (pos + lab.len > max_line_len) break;
-                @memcpy(out_line[pos..][0..lab.len], lab);
+                tally_copy.copy_disjoint(u8, out_line[pos..][0..lab.len], lab);
                 pos += @intCast(lab.len);
             },
         }
     }
+    assert(pos <= max_line_len);
     return pos;
 }
 
-/// Format all four letters-page rows. Returns false if any row is empty.
-pub fn format_letters_page(out_lines: *[keyboard_rows][max_line_len]u8, out_lens: *[keyboard_rows]u32) bool {
-    const page = layout.letters_page;
+/// Format all four rows of a page. Returns false if any row is empty.
+pub fn format_page(page: layout.Page, out_lines: *[keyboard_rows][max_line_len]u8, out_lens: *[keyboard_rows]u32) bool {
+    assert(page.rows.len == keyboard_rows);
     var r: u32 = 0;
     while (r < keyboard_rows) : (r += 1) {
         out_lens[r] = format_page_row(page, r, &out_lines[r]);
         if (out_lens[r] == 0) return false;
     }
-    // Sanity: top-left q visible.
-    return std.mem.indexOf(u8, out_lines[0][0..out_lens[0]], "q") != null;
+    return true;
+}
+
+/// Format letters page; requires top-left `q`.
+pub fn format_letters_page(out_lines: *[keyboard_rows][max_line_len]u8, out_lens: *[keyboard_rows]u32) bool {
+    if (!format_page(layout.letters_page, out_lines, out_lens)) return false;
+    // invariant: QWERTY top-left visible
+    assert(std.mem.indexOf(u8, out_lines[0][0..out_lens[0]], "q") != null);
+    return true;
+}
+
+/// Apply a sequence of layout keys to an editor (device-free ZETA2 path).
+pub fn drain_layout_keys(editor: *dexter.LineEditor, keys: []const layout.Key) void {
+    assert(editor.len <= dexter.max_line_len);
+    var shift_on = false;
+    for (keys) |key| {
+        switch (tap_result(key, shift_on)) {
+            .action => |action| {
+                editor.apply_action(action);
+                switch (key) {
+                    .char_, .space => shift_on = false,
+                    else => {},
+                }
+            },
+            .toggle_shift => shift_on = !shift_on,
+            .set_mode, .none => {},
+        }
+    }
+    assert(editor.len <= dexter.max_line_len);
 }
 
 pub const HitMap = struct {
@@ -87,6 +156,8 @@ pub const HitMap = struct {
     /// Hit-test a tap in window coordinates. Returns null when outside the keyboard.
     pub fn hit_test(self: HitMap, x: i32, y: i32) ?layout.Key {
         if (!self.contains(x, y)) return null;
+        // invariant: ready map has positive row height
+        assert(self.row_h > 0);
         const local_y = y - self.origin_y;
         const row_idx: u32 = @intCast(@divTrunc(local_y, self.row_h));
         if (row_idx >= self.page.rows.len) return null;
@@ -98,6 +169,8 @@ pub const HitMap = struct {
         var col: i32 = @divTrunc(local_x, key_w);
         if (col < 0) col = 0;
         if (col >= keys.len) col = @intCast(keys.len - 1);
+        assert(col >= 0);
+        assert(col < keys.len);
         return keys[@intCast(col)];
     }
 };
@@ -111,6 +184,10 @@ pub fn build_hit_map(
     row0: u32,
     page: layout.Page,
 ) HitMap {
+    // invariant: positive cell metrics for hit boxes
+    assert(grid_w > 0);
+    assert(cell_ph > 0);
+    assert(page.rows.len == keyboard_rows);
     return .{
         .origin_x = grid_origin_x,
         .origin_y = grid_origin_y + @as(i32, @intCast(row0)) * cell_ph,
@@ -139,4 +216,8 @@ pub fn letters_top_left_hit_is_q() bool {
         .char_ => |ch| ch == 'q',
         else => false,
     };
+}
+
+comptime {
+    _ = print;
 }

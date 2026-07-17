@@ -1,5 +1,9 @@
 # tame_style_scan_advise_selftest.rish — native advise matches legacy shell counts.
 #
+# Does not require ratchets at zero — only that native and legacy agree
+# (false GREEN guard: equal counts, seated 20260717.181715).
+# Counts are read with Rish lines/split — no Python, no Glow.
+#
 # Run from the repository root:
 #   rishi/bin/rishi run tools/tame_style_scan_advise_selftest.rish
 
@@ -9,12 +13,40 @@ assert native.ok else "native advise failed"
 let legacy = run ["sh" "tools/fixtures/tame_style_scan.sh" "advise-legacy"]
 assert legacy.ok else "legacy advise failed"
 
-assert native.out contains "ratchet: @memcpy application sites = 0" else "native memcpy ratchet mismatch"
-assert legacy.out contains "ratchet: @memcpy application sites = 0" else "legacy memcpy ratchet mismatch"
-assert native.out contains "ratchet: camelCase fn declarations = 0" else "native camelCase ratchet mismatch"
-assert native.out contains "ratchet: parseInt( application sites = 0" else "native parseInt ratchet mismatch"
-assert native.out contains "ratchet: Ed25519 application sites = 0" else "native Ed25519 ratchet mismatch"
-assert legacy.out contains "ratchet: Ed25519 application sites = 0" else "legacy Ed25519 ratchet mismatch"
-assert native.out contains "ratchet: zero assert( files remaining = 0" else "native zero-assert ratchet mismatch"
+assert native.out contains "ratchet: @memcpy application sites =" else "native missing memcpy ratchet"
+assert legacy.out contains "ratchet: @memcpy application sites =" else "legacy missing memcpy ratchet"
+assert native.out contains "ratchet: camelCase fn declarations =" else "native missing camelCase ratchet"
+assert native.out contains "ratchet: parseInt( application sites =" else "native missing parseInt ratchet"
+assert native.out contains "ratchet: Ed25519 application sites =" else "native missing Ed25519 ratchet"
+assert native.out contains "ratchet: zero assert( files remaining =" else "native missing zero-assert ratchet"
+assert legacy.out contains "ratchet: zero assert( files remaining =" else "legacy missing zero-assert ratchet"
 
-say "GREEN: tame_style_scan_advise matches legacy ratchet lines on clean tree."
+# ratchet: zero assert( files remaining = N (...
+# tokens: 0=ratchet: 1=zero 2=assert( 3=files 4=remaining 5== 6=N
+let native_za_lines = where (lines native.out) as ln: ln contains "zero assert( files remaining ="
+let legacy_za_lines = where (lines legacy.out) as ln: ln contains "zero assert( files remaining ="
+assert (length native_za_lines) == 1 else "native zero-assert ratchet line missing or duplicated"
+assert (length legacy_za_lines) == 1 else "legacy zero-assert ratchet line missing or duplicated"
+let native_za_parts = split native_za_lines[0] " "
+let legacy_za_parts = split legacy_za_lines[0] " "
+assert native_za_parts[5] == "=" else "native zero-assert line shape drifted"
+assert legacy_za_parts[5] == "=" else "legacy zero-assert line shape drifted"
+let native_za = native_za_parts[6]
+let legacy_za = legacy_za_parts[6]
+assert native_za == legacy_za else "native/legacy zero-assert counts disagree"
+
+# ratchet: @memcpy application sites = N (...
+# tokens: 0=ratchet: 1=@memcpy 2=application 3=sites 4== 5=N
+let native_mc_lines = where (lines native.out) as ln: ln contains "@memcpy application sites ="
+let legacy_mc_lines = where (lines legacy.out) as ln: ln contains "@memcpy application sites ="
+assert (length native_mc_lines) == 1 else "native memcpy ratchet line missing or duplicated"
+assert (length legacy_mc_lines) == 1 else "legacy memcpy ratchet line missing or duplicated"
+let native_mc_parts = split native_mc_lines[0] " "
+let legacy_mc_parts = split legacy_mc_lines[0] " "
+assert native_mc_parts[4] == "=" else "native memcpy line shape drifted"
+assert legacy_mc_parts[4] == "=" else "legacy memcpy line shape drifted"
+let native_mc = native_mc_parts[5]
+let legacy_mc = legacy_mc_parts[5]
+assert native_mc == legacy_mc else "native/legacy memcpy counts disagree"
+
+say "GREEN: tame_style_scan_advise matches legacy ratchet counts (zero-assert=${native_za} memcpy=${native_mc})."

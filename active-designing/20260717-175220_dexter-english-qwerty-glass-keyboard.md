@@ -5,7 +5,7 @@
 **Version:** `20260717.175220` (Eastern) · waymark **ZETA** + ZETA0 `20260717.180025`
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
-**Status:** Mixed — **ZETA0+ZETA1** Checkable GREEN; ZETA2+ vision (Two Rooms).
+**Status:** Mixed — **ZETA0–ZETA2** Checkable GREEN (device-free + pack); Pixel typing look next; ZETA3+ vision (Two Rooms).
 **World study:** [`../external-research/20260717-175220_glow-english-qwerty-glass-keyboard-ios-inspired.md`](../external-research/20260717-175220_glow-english-qwerty-glass-keyboard-ios-inspired.md)
 **Compressor:** [`../docs/ZETA.md`](../docs/ZETA.md)
 
@@ -30,15 +30,15 @@ Study public layout/behavior notes only. Emit Glow layout tables (Rye). Never ve
 | Lap | Claim | State |
 |---|---|---|
 | **ZETA0** | English letters + numbers + symbols **layout tables** | **GREEN** |
-| **ZETA1** | Paint letters mode on Skate; hit boxes | **GREEN** `20260717.180558` |
-| **ZETA2** | Tap → Dexter Action → live line refresh | open |
-| **ZETA3** | Blinking caret on `DEXTER line · …` | open |
+| **ZETA1** | Paint letters mode on Skate; hit boxes | **GREEN** `20260717.180558` · Pixel look `20260717.180933` |
+| **ZETA2** | Tap → Dexter Action → live line refresh | **GREEN** device-free `20260717.180933` · Pixel typing look = eyes |
+| **ZETA3** | Blinking caret on `DEXTER line · …` | **GREEN** device-free `20260717.182826` · Pixel blink look next |
 | **ZETA4** | Emoji mode SLC (bounded frequent set) | open |
 | **ZETA5** | Pixel look — keys + caret + type by tap | open |
 
 ## Aligned Next
 
-**ZETA1 Pixel look** — host install; then **ZETA2** tap → Dexter Action.
+**ZETA2b** — hit boxes match painted key widths; larger Skate scale on phone; fill portrait height. Typing + blink look GREEN `20260717.183345` with those gaps named. Orientation naming/firmware stays check-in.
 
 ## Related
 
