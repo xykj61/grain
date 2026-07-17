@@ -1,7 +1,7 @@
 # Lexicon — Module Names and Their Meanings
 
 **Language:** EN
-**Last updated:** 2026-07-17 (**Glow truth** — Zig ambient · Nock loobean seam-only · **HAWM** · **TUBE**)
+**Last updated:** 2026-07-17 (**Witness habitat** Acme face for happy zone · Glow truth · HAWM · TUBE)
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 
 ---
@@ -49,6 +49,7 @@ Living vocabulary for the Rye OS family. Each name teaches its function. Provena
 | **Green** | A witness ran, assertions held, exit zero — machine fact on metal, not mood — plainly [`../external-research/20260710-002544_first-lap-goes-green-plainly.md`](../external-research/20260710-002544_first-lap-goes-green-plainly.md) |
 | **Nib** | The landed edge of the work — the point the pen has reached: **product nib** (civic/product parity pin), **suite nib** (witness-suite parity pin), **git nib** (HEAD commit on the living branch). Seated `20260712.121719`. Prefer **nib** in new prose; *tip* remains readable in old logs |
 | **Metalsmoke** | The thin edge's few honest integrated checks — world alone can answer, smallest slice, witnessed; happy zone stays in parity — [`active-designing/20260703-013412_metalsmoke.md`](../active-designing/20260703-013412_metalsmoke.md) · plainly [`../external-research/20260710-002017_metalsmoke-plainly.md`](../external-research/20260710-002017_metalsmoke-plainly.md) |
+| **Witness habitat** | Acme-facing name for the foundations' **happy zone** — the fast, isolated suite that proves pure folds and seam contracts; devices and hosts stay on a thin edge with metalsmoke. Prefer in tutorials and expanding-prompts; keep *happy zone* in foundations and gratitude — seated `20260717.173427` · study [`../external-research/20260717-173427_witness-habitat-foundations-fit-and-onboarding-gaps.md`](../external-research/20260717-173427_witness-habitat-foundations-fit-and-onboarding-gaps.md) · silo [`../active-designing/20260717-173427_witness-habitat-and-the-markup-pipeline.md`](../active-designing/20260717-173427_witness-habitat-and-the-markup-pipeline.md) · tutorial [`../manual/tutorials/cursor-and-the-compass.md`](../manual/tutorials/cursor-and-the-compass.md) |
 | **Season** | A bounded interval with a named opening, a stated budget, and a clean close that returns everything it held — Tally's discipline applied to time; Amber's unit of custody — [`active-designing/20260703-071212_amber-seasons.md`](../active-designing/20260703-071212_amber-seasons.md) · plainly [`../external-research/20260710-002422_amber-seasons-plainly.md`](../external-research/20260710-002422_amber-seasons-plainly.md) |
 | **Bench** | Where claims become evidence — metal raised by recipe, a named sitter for a season, and the discipline that pins what the bench reports, never prediction — [`active-designing/20260703-140212_the-bench.md`](../active-designing/20260703-140212_the-bench.md) |
 | **Kitchen twin** | A plain-speech companion (`*-plainly.md`) beside a hard canon — table voice for jargon, not a cooking metaphor; the shelf is those plainly notes the rose asserts — hearth [`../foundations/20260702-202612_a-conversation-with-serena.md`](../foundations/20260702-202612_a-conversation-with-serena.md) · example [`../external-research/20260710-171707_granary-mandi-commerce-plainly.md`](../external-research/20260710-171707_granary-mandi-commerce-plainly.md) |
