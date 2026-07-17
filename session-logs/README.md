@@ -8,6 +8,16 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260717.154204` — [send Glow body-deepen lap then check-in](20260717-154204_send-body-deepen-lap.bron) — deepen batch to pier; next seam needs a ruling
+- `20260717.154131` — [=* named source — = category bodies complete](20260717-154131_alias-named-source-complete.bron) — stock source; deepen lap closed at this width
+- `20260717.154012` — [Glow desk looks run in-jail by Quin](20260717-154012_glow-self-look-in-jail.bron) — no Android; stop asking Keaton to re-run glow_run
+- `20260717.153951` — [=. trailing mutate value deepens GREEN](20260717-153951_mutate-trailing-value.bron) — decimal after root; mutate-root.glow 42
+- `20260717.153900` — [?~ then/else named arms deepen GREEN](20260717-153900_null-named-arms.bron) — root/cont arms; null-records.glow
+- `20260717.153756` — [=/ trailing bound value deepens GREEN](20260717-153756_face-trailing-value.bron) — decimal after face clause; face-root.glow 42
+- `20260717.153656` — [?- mint/send named arms deepen GREEN](20260717-153656_switch-named-arms.bron) — %mint/%send faces; switch-kind.glow
+- `20260717.153609` — [Counsel — do not make Glow the %g vane](20260717-153609_glow-not-g-vane-counsel.bron) — Pool stays Gall-role; Glow stays language
+- `20260717.153525` — [?: then/else named arms deepen GREEN](20260717-153525_conditional-named-arms.bron) — delivered/dropped if-expression; if-gth.glow
+- `20260717.153403` — [Lent emit deepens to shrinking fold GREEN](20260717-153403_lent-shrinking-fold.bron) — while len>0 + slice[1..]; BoundExceeded on non-shrink
 - `20260717.152923` — [send eight-head emit and cast auras](20260717-152923_send-eight-heads-and-auras.bron) — =. · =* · @u8–@u64 to pier
 - `20260717.152847` — [Glow cast auras @u8–@u64 GREEN](20260717-152847_glow-cast-aura-family.bron) — unsigned family; cast-u8.glow; deepen still check-in
 - `20260717.152730` — [Glow =* alias — eight heads emit GREEN](20260717-152730_glow-alias-eight-complete.bron) — no-copy alias; all eight hops via desk

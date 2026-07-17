@@ -2,9 +2,9 @@
 //!
 //! Per active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md:
 //! `?-` is the exhaustive switch over a cold-atom-tagged subject. This hop
-//! lowers the brief's own subject `kind.cur-record` to a two-arm Zig switch
-//! over `%mint` / `%send` (as `.mint` / `.send`). Real arm bodies and
-//! compile-time exhaustiveness over a growing mold stay later laps.
+//! lowers `kind.cur-record` to a Zig switch over `.mint` / `.send`, and
+//! deepens arms into named result faces (optional trailing
+//! `%mint <face> %send <face>`, or defaults). Real arm expressions stay later.
 
 const std = @import("std");
 const rsw = @import("rune_switch.rye");
@@ -13,51 +13,128 @@ pub const LowerError = rsw.ParseError || error{
     Overflow,
     EmptySource,
     SubjectNotYetLowered,
+    BadIdent,
+    MalformedArms,
 };
 
+pub const max_arm_len: u32 = 64;
+
 const SubjectKind = enum { kind_cur_record };
+
+const ArmPair = struct {
+    mint_face: []const u8,
+    send_face: []const u8,
+};
 
 fn classify_subject(subject: []const u8) LowerError!SubjectKind {
     if (std.mem.eql(u8, subject, "kind.cur-record")) return .kind_cur_record;
     return error.SubjectNotYetLowered;
 }
 
-fn emit_kind_program(tag: []const u8, out: []u8) LowerError!u32 {
+fn is_ident_char(c: u8) bool {
+    if (c >= 'a' and c <= 'z') return true;
+    if (c >= 'A' and c <= 'Z') return true;
+    if (c >= '0' and c <= '9') return true;
+    return c == '-' or c == '_';
+}
+
+fn zig_safe_ident(face: []const u8, out: *[max_arm_len]u8) LowerError!usize {
+    if (face.len == 0 or face.len > max_arm_len) return error.BadIdent;
+    var i: usize = 0;
+    while (i < face.len) : (i += 1) {
+        const c = face[i];
+        const mapped: u8 = if (c == '-') '_' else c;
+        if (i == 0) {
+            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or mapped == '_'))
+                return error.BadIdent;
+        } else {
+            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or (mapped >= '0' and mapped <= '9') or mapped == '_'))
+                return error.BadIdent;
+        }
+        out[i] = mapped;
+    }
+    return face.len;
+}
+
+fn take_ident(rest: *[]const u8) LowerError![]const u8 {
+    var r = rest.*;
+    r = std.mem.trimStart(u8, r, " \t");
+    if (r.len == 0) return error.MalformedArms;
+    var end: usize = 0;
+    while (end < r.len and is_ident_char(r[end])) end += 1;
+    if (end == 0) return error.MalformedArms;
+    if (r[0] >= '0' and r[0] <= '9') return error.BadIdent;
+    const ident = r[0..end];
+    rest.* = std.mem.trimStart(u8, r[end..], " \t");
+    return ident;
+}
+
+fn expect_tag(rest: *[]const u8, tag: []const u8) LowerError!void {
+    var r = rest.*;
+    r = std.mem.trimStart(u8, r, " \t");
+    if (r.len < tag.len or !std.mem.eql(u8, r[0..tag.len], tag)) return error.MalformedArms;
+    const after = r[tag.len..];
+    if (after.len > 0 and is_ident_char(after[0])) return error.MalformedArms;
+    rest.* = std.mem.trimStart(u8, after, " \t");
+}
+
+/// Optional `%mint <face> %send <face>` after the subject. Defaults when absent.
+fn arm_faces(line: []const u8, subject: []const u8) LowerError!ArmPair {
+    const idx = std.mem.indexOf(u8, line, subject) orelse return error.MalformedArms;
+    var rest = std.mem.trim(u8, line[idx + subject.len ..], " \t\r\n");
+    if (rest.len == 0) {
+        return .{ .mint_face = "minted", .send_face = "sent" };
+    }
+    try expect_tag(&rest, "%mint");
+    const mint_face = try take_ident(&rest);
+    try expect_tag(&rest, "%send");
+    const send_face = try take_ident(&rest);
+    if (rest.len != 0) return error.MalformedArms;
+    return .{ .mint_face = mint_face, .send_face = send_face };
+}
+
+fn emit_kind_program(tag: []const u8, mint_glow: []const u8, send_glow: []const u8, out: []u8) LowerError!u32 {
+    var mint_buf: [max_arm_len]u8 = undefined;
+    var send_buf: [max_arm_len]u8 = undefined;
+    const mint_n = try zig_safe_ident(mint_glow, &mint_buf);
+    const send_n = try zig_safe_ident(send_glow, &send_buf);
+    const mint_z = mint_buf[0..mint_n];
+    const send_z = send_buf[0..send_n];
     const written = std.fmt.bufPrint(out,
         \\const std = @import("std");
         \\
-        \\/// Lowered from Glow `?-  kind.cur-record` — exhaustive switch over kind.
+        \\/// Lowered from Glow `?-  kind.cur-record  %mint  {s}  %send  {s}`.
         \\pub fn main(_: std.process.Init) !u8 {{
         \\    const Kind = enum {{ mint, send }};
         \\    const kind: Kind = .{s};
-        \\    switch (kind) {{
-        \\        .mint => return 0,
-        \\        .send => return 1,
-        \\    }}
+        \\    const {s}: u32 = 1;
+        \\    const {s}: u32 = 0;
+        \\    const result: u32 = switch (kind) {{
+        \\        .mint => {s},
+        \\        .send => {s},
+        \\    }};
+        \\    return if (result == {s}) 0 else 1;
         \\}}
         \\
-    , .{tag}) catch return error.Overflow;
+    , .{ mint_glow, send_glow, tag, mint_z, send_z, mint_z, send_z, mint_z }) catch return error.Overflow;
     return @intCast(written.len);
 }
 
-/// Parse one Glow `?-` line and emit a welcome-path program (mint arm / exit 0).
-pub fn lower_line_welcome(line: []const u8, out: []u8) LowerError!u32 {
+fn lower_line(line: []const u8, welcome: bool, out: []u8) LowerError!u32 {
     const trimmed = std.mem.trim(u8, line, " \t\r\n");
     if (trimmed.len == 0) return error.EmptySource;
     const spec = try rsw.parse(trimmed);
     const subject = rsw.subject_slice(&spec);
-    return switch (try classify_subject(subject)) {
-        .kind_cur_record => emit_kind_program("mint", out),
-    };
+    _ = try classify_subject(subject);
+    const arms = try arm_faces(trimmed, subject);
+    const tag: []const u8 = if (welcome) "mint" else "send";
+    return emit_kind_program(tag, arms.mint_face, arms.send_face, out);
 }
 
-/// Parse one Glow `?-` line and emit an unwelcome-path program (send arm / exit 1).
+pub fn lower_line_welcome(line: []const u8, out: []u8) LowerError!u32 {
+    return lower_line(line, true, out);
+}
+
 pub fn lower_line_unwelcome(line: []const u8, out: []u8) LowerError!u32 {
-    const trimmed = std.mem.trim(u8, line, " \t\r\n");
-    if (trimmed.len == 0) return error.EmptySource;
-    const spec = try rsw.parse(trimmed);
-    const subject = rsw.subject_slice(&spec);
-    return switch (try classify_subject(subject)) {
-        .kind_cur_record => emit_kind_program("send", out),
-    };
+    return lower_line(line, false, out);
 }

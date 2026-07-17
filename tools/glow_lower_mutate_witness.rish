@@ -15,9 +15,11 @@ assert build.ok else "lower_mutate_witness build failed"
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
 assert selftest.ok else "lower_mutate_witness exited non-zero"
 assert selftest.out contains "GREEN" else "lower_mutate_witness not GREEN"
-assert selftest.out contains "mutates root" else "lower_mutate_witness missing mutate claim"
-assert selftest.out contains "WingNotYetLowered" else "lower_mutate_witness missing refuse claim"
-assert selftest.out contains "mutate-root.glow" else "lower_mutate_witness missing gen desk claim"
+assert selftest.out contains "trailing value" else "lower_mutate_witness missing trailing-value claim"
+assert selftest.out contains "defaults mutate value" else "lower_mutate_witness missing default-value claim"
+assert selftest.out contains "WingNotYetLowered" else "lower_mutate_witness missing wing refuse"
+assert selftest.out contains "ValueNotYetLowered" else "lower_mutate_witness missing value refuse"
+assert selftest.out contains "trailing mutate value" else "lower_mutate_witness missing gen desk claim"
 
 let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
 assert build_welcome.ok else "mutate welcome .rye build failed"
@@ -30,4 +32,4 @@ assert build_unwelcome.ok else "mutate unwelcome .rye build failed"
 let run_unwelcome = run ["sh" "-c" "${unwelcome_bin}; echo EXIT:$?"]
 assert run_unwelcome.out contains "EXIT:1" else "mutate unwelcome binary did not exit 1"
 
-say "GREEN: Glow `=.` mutate hop — root lowers to Rye; welcome 0 / unwelcome 1."
+say "GREEN: Glow `=.` mutate hop — trailing bound value; welcome 0 / unwelcome 1."

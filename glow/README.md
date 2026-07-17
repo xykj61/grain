@@ -33,7 +33,7 @@ rishi/bin/rishi run tools/glow_run_desk_witness.rish
 # → GREEN: glow_run desk — all eight generator hops …
 ```
 
-Each hop lowers one named shape from its front-half parser; richer bodies refuse until a later lap. Cast hop covers `@u8` · `@u16` · `@u32` · `@u64`. No general Glow lexer yet.
+Each hop lowers one named shape from its front-half parser; richer bodies refuse until a later lap. `(lent …)` emits a shrinking-list fold under `face.len`. `?:` · `?-` · `?~` emit named arm faces. `=/` and `=.` take optional trailing decimals; `=*` takes an optional source wing. Cast hop covers `@u8` · `@u16` · `@u32` · `@u64`. No general Glow lexer yet.
 
 ---
 

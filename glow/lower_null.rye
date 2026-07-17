@@ -1,9 +1,9 @@
 //! glow/lower_null.rye — lower a parsed `?~` null-test to runnable `.rye`.
 //!
 //! Per active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md:
-//! `?~` is the null test. This hop lowers the brief's own subject
-//! `records.cur` to an optional Zig value: null takes the then arm (exit 0);
-//! present takes the else arm (exit 1). Real then/else arms stay later.
+//! `?~` is the null test. This hop lowers `records.cur` and deepens then/else
+//! into named arm faces (optional trailing idents, or defaults `root` /
+//! `cont` matching the brief's then-arm shape). Real arm expressions stay later.
 
 const std = @import("std");
 const rn = @import("rune_null.rye");
@@ -13,13 +13,46 @@ pub const LowerError = rn.ParseError || error{
     EmptySource,
     BadIdent,
     SubjectNotYetLowered,
+    MalformedArms,
 };
 
+pub const max_arm_len: u32 = 64;
+
 const SubjectKind = enum { records_cur };
+
+const ArmPair = struct {
+    then_face: []const u8,
+    else_face: []const u8,
+};
 
 fn classify_subject(subject: []const u8) LowerError!SubjectKind {
     if (std.mem.eql(u8, subject, "records.cur")) return .records_cur;
     return error.SubjectNotYetLowered;
+}
+
+fn is_ident_char(c: u8) bool {
+    if (c >= 'a' and c <= 'z') return true;
+    if (c >= 'A' and c <= 'Z') return true;
+    if (c >= '0' and c <= '9') return true;
+    return c == '-' or c == '_';
+}
+
+fn zig_safe_ident(face: []const u8, out: *[max_arm_len]u8) LowerError!usize {
+    if (face.len == 0 or face.len > max_arm_len) return error.BadIdent;
+    var i: usize = 0;
+    while (i < face.len) : (i += 1) {
+        const c = face[i];
+        const mapped: u8 = if (c == '-') '_' else c;
+        if (i == 0) {
+            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or mapped == '_'))
+                return error.BadIdent;
+        } else {
+            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or (mapped >= '0' and mapped <= '9') or mapped == '_'))
+                return error.BadIdent;
+        }
+        out[i] = mapped;
+    }
+    return face.len;
 }
 
 fn zig_safe_wing(wing: []const u8, out: *[rn.max_subject_len]u8) LowerError!usize {
@@ -40,45 +73,78 @@ fn zig_safe_wing(wing: []const u8, out: *[rn.max_subject_len]u8) LowerError!usiz
     return wing.len;
 }
 
-fn emit_optional_program(glow_subject: []const u8, zig_face: []const u8, is_null: bool, out: []u8) LowerError!u32 {
+/// Optional `then else` bare faces after the subject. Defaults: root / cont.
+fn arm_faces(line: []const u8, subject: []const u8) LowerError!ArmPair {
+    const idx = std.mem.indexOf(u8, line, subject) orelse return error.MalformedArms;
+    var rest = std.mem.trim(u8, line[idx + subject.len ..], " \t\r\n");
+    if (rest.len == 0) {
+        return .{ .then_face = "root", .else_face = "cont" };
+    }
+    var end1: usize = 0;
+    while (end1 < rest.len and is_ident_char(rest[end1])) end1 += 1;
+    if (end1 == 0) return error.MalformedArms;
+    const then_face = rest[0..end1];
+    rest = std.mem.trimStart(u8, rest[end1..], " \t");
+    if (rest.len == 0) return error.MalformedArms;
+    var end2: usize = 0;
+    while (end2 < rest.len and is_ident_char(rest[end2])) end2 += 1;
+    if (end2 == 0) return error.MalformedArms;
+    const else_face = rest[0..end2];
+    rest = std.mem.trimStart(u8, rest[end2..], " \t");
+    if (rest.len != 0) return error.MalformedArms;
+    if (then_face[0] >= '0' and then_face[0] <= '9') return error.BadIdent;
+    if (else_face[0] >= '0' and else_face[0] <= '9') return error.BadIdent;
+    return .{ .then_face = then_face, .else_face = else_face };
+}
+
+fn emit_optional_program(
+    glow_subject: []const u8,
+    zig_face: []const u8,
+    then_glow: []const u8,
+    else_glow: []const u8,
+    is_null: bool,
+    out: []u8,
+) LowerError!u32 {
+    var then_buf: [max_arm_len]u8 = undefined;
+    var else_buf: [max_arm_len]u8 = undefined;
+    const then_n = try zig_safe_ident(then_glow, &then_buf);
+    const else_n = try zig_safe_ident(else_glow, &else_buf);
+    const then_z = then_buf[0..then_n];
+    const else_z = else_buf[0..else_n];
     const init: []const u8 = if (is_null) "null" else "1";
     const written = std.fmt.bufPrint(out,
         \\const std = @import("std");
         \\
-        \\/// Lowered from Glow `?~  {s}` — null test; then arm on null.
+        \\/// Lowered from Glow `?~  {s}  {s}  {s}` — null test with named arms.
         \\pub fn main(_: std.process.Init) !u8 {{
         \\    const {s}: ?u32 = {s};
-        \\    if ({s} == null) {{
-        \\        return 0;
-        \\    }} else {{
-        \\        return 1;
-        \\    }}
+        \\    const {s}: u32 = 1;
+        \\    const {s}: u32 = 0;
+        \\    const result: u32 = if ({s} == null) {s} else {s};
+        \\    return if (result == {s}) 0 else 1;
         \\}}
         \\
-    , .{ glow_subject, zig_face, init, zig_face }) catch return error.Overflow;
+    , .{ glow_subject, then_glow, else_glow, zig_face, init, then_z, else_z, zig_face, then_z, else_z, then_z }) catch return error.Overflow;
     return @intCast(written.len);
 }
 
-fn lower_spec(subject: []const u8, welcome: bool, out: []u8) LowerError!u32 {
+fn lower_line(line: []const u8, welcome: bool, out: []u8) LowerError!u32 {
+    const trimmed = std.mem.trim(u8, line, " \t\r\n");
+    if (trimmed.len == 0) return error.EmptySource;
+    const spec = try rn.parse(trimmed);
+    const subject = rn.subject_slice(&spec);
     _ = try classify_subject(subject);
+    const arms = try arm_faces(trimmed, subject);
     var zig_buf: [rn.max_subject_len]u8 = undefined;
     const n = try zig_safe_wing(subject, &zig_buf);
     const zig_face = zig_buf[0..n];
-    return emit_optional_program(subject, zig_face, welcome, out);
+    return emit_optional_program(subject, zig_face, arms.then_face, arms.else_face, welcome, out);
 }
 
-/// Welcome: subject is null → then arm / exit 0.
 pub fn lower_line_welcome(line: []const u8, out: []u8) LowerError!u32 {
-    const trimmed = std.mem.trim(u8, line, " \t\r\n");
-    if (trimmed.len == 0) return error.EmptySource;
-    const spec = try rn.parse(trimmed);
-    return lower_spec(rn.subject_slice(&spec), true, out);
+    return lower_line(line, true, out);
 }
 
-/// Unwelcome: subject is present → else arm / exit 1.
 pub fn lower_line_unwelcome(line: []const u8, out: []u8) LowerError!u32 {
-    const trimmed = std.mem.trim(u8, line, " \t\r\n");
-    if (trimmed.len == 0) return error.EmptySource;
-    const spec = try rn.parse(trimmed);
-    return lower_spec(rn.subject_slice(&spec), false, out);
+    return lower_line(line, false, out);
 }

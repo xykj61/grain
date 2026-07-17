@@ -1,9 +1,10 @@
 //! glow/lower_mutate.rye — lower a parsed `=.` mutate to runnable `.rye`.
 //!
 //! Per active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md:
-//! `=.` mutates one leg. This hop lowers bare `root` to a Zig `var` write
-//! with a demo value. Dotted wings and parenthesized forms refuse until a
-//! later lap. The new-value expression is not lowered yet.
+//! `=.` mutates one leg. This hop lowers bare `root` to a Zig `var` write,
+//! and deepens the new value to an optional trailing decimal (default 7).
+//! Dotted wings, parenthesized wings, and parenthesized values refuse until
+//! a later lap.
 
 const std = @import("std");
 const rm = @import("rune_mutate.rye");
@@ -12,45 +13,62 @@ pub const LowerError = rm.ParseError || error{
     Overflow,
     EmptySource,
     WingNotYetLowered,
+    ValueNotYetLowered,
+    MalformedValue,
 };
 
-pub const mutate_demo_value: u32 = 7;
-pub const mutate_unwelcome_expect: u32 = 8;
+pub const mutate_default_value: u32 = 7;
 
 fn classify_wing(wing: []const u8) LowerError!void {
     if (std.mem.eql(u8, wing, "root")) return;
     return error.WingNotYetLowered;
 }
 
-fn emit_root_program(expect: u32, out: []u8) LowerError!u32 {
+fn bound_value(line: []const u8, wing: []const u8) LowerError!u32 {
+    const idx = std.mem.indexOf(u8, line, wing) orelse return error.MalformedValue;
+    var rest = std.mem.trim(u8, line[idx + wing.len ..], " \t\r\n");
+    if (rest.len == 0) return mutate_default_value;
+    if (rest[0] == '(') return error.ValueNotYetLowered;
+    var end: usize = 0;
+    while (end < rest.len and rest[end] >= '0' and rest[end] <= '9') end += 1;
+    if (end == 0) return error.MalformedValue;
+    if (end < rest.len) {
+        const after = std.mem.trimStart(u8, rest[end..], " \t");
+        if (after.len != 0) return error.MalformedValue;
+    }
+    return std.fmt.parseInt(u32, rest[0..end], 10) catch return error.Overflow;
+}
+
+fn emit_root_program(value: u32, expect: u32, out: []u8) LowerError!u32 {
     const written = std.fmt.bufPrint(out,
         \\const std = @import("std");
         \\
-        \\/// Lowered from Glow `=.  root` — mutate one leg with a demo value.
+        \\/// Lowered from Glow `=.  root  {d}` — mutate one leg with a bound value.
         \\pub fn main(_: std.process.Init) !u8 {{
         \\    var root: u32 = 0;
         \\    root = {d};
         \\    return if (root == {d}) 0 else 1;
         \\}}
         \\
-    , .{ mutate_demo_value, expect }) catch return error.Overflow;
+    , .{ value, value, expect }) catch return error.Overflow;
     return @intCast(written.len);
 }
 
-/// Welcome: mutated root equals the demo value.
-pub fn lower_line_welcome(line: []const u8, out: []u8) LowerError!u32 {
+fn lower_line(line: []const u8, welcome: bool, out: []u8) LowerError!u32 {
     const trimmed = std.mem.trim(u8, line, " \t\r\n");
     if (trimmed.len == 0) return error.EmptySource;
     const spec = try rm.parse(trimmed);
-    try classify_wing(rm.wing_slice(&spec));
-    return emit_root_program(mutate_demo_value, out);
+    const wing = rm.wing_slice(&spec);
+    try classify_wing(wing);
+    const value = try bound_value(trimmed, wing);
+    const expect: u32 = if (welcome) value else value +% 1;
+    return emit_root_program(value, expect, out);
 }
 
-/// Unwelcome: expect mismatches the demo write.
+pub fn lower_line_welcome(line: []const u8, out: []u8) LowerError!u32 {
+    return lower_line(line, true, out);
+}
+
 pub fn lower_line_unwelcome(line: []const u8, out: []u8) LowerError!u32 {
-    const trimmed = std.mem.trim(u8, line, " \t\r\n");
-    if (trimmed.len == 0) return error.EmptySource;
-    const spec = try rm.parse(trimmed);
-    try classify_wing(rm.wing_slice(&spec));
-    return emit_root_program(mutate_unwelcome_expect, out);
+    return lower_line(line, false, out);
 }

@@ -2,9 +2,9 @@
 //!
 //! Per active-designing/20260716-093000_glow-and-rye-what-shares-under-the-hood.md:
 //! Glow's hop emits ordinary Rye; Rye's bridge takes it from there. Literal
-//! `|-  N` and `(lent face)` both lower today. Lent emits a small demo
-//! subject under that face so the bound is `face.len` at runtime — the same
-//! counter-checked shape rune_bounded_trap.run_bounded already proves.
+//! `|-  N` walks a fixed step count. `(lent face)` emits the brief's own
+//! shrinking-list fold: bound is `face.len` once at entry; each step must
+//! shrink the slice or the hidden tick trips BoundExceeded (exit 1).
 
 const std = @import("std");
 const rbt = @import("rune_bounded_trap.rye");
@@ -41,30 +41,49 @@ pub fn emit_literal_program(bound: u32, actual_steps: u32, out: []u8) LowerError
     return @intCast(written.len);
 }
 
-/// Emit a complete `.rye` main whose bound is a named subject's runtime length.
-/// Glow hyphens in the face become Zig underscores so the identifier is legal.
-pub fn emit_lent_program(face: []const u8, actual_steps: u32, out: []u8) LowerError!u32 {
+/// Emit a shrinking-list fold. Welcome shrinks each step; unwelcome does not
+/// (the authoring bug BoundExceeded exists to catch).
+pub fn emit_lent_program(face: []const u8, shrink: bool, out: []u8) LowerError!u32 {
     var zig_face: [rbt.max_ident_len]u8 = undefined;
     const face_len = try zig_safe_ident(face, &zig_face);
     const name = zig_face[0..face_len];
+    if (shrink) {
+        const written = std.fmt.bufPrint(out,
+            \\const std = @import("std");
+            \\
+            \\/// Lowered from Glow `|-  (lent {s})` — shrinking fold under face.len.
+            \\pub fn main(_: std.process.Init) !u8 {{
+            \\    var {s}: []const u32 = &[_]u32{{ 1, 2, 3, 4, 5 }};
+            \\    const bound: u32 = @intCast({s}.len);
+            \\    var tick: u32 = 0;
+            \\    while ({s}.len > 0) {{
+            \\        tick += 1;
+            \\        if (tick > bound) return 1;
+            \\        {s} = {s}[1..];
+            \\    }}
+            \\    return if (tick == bound) 0 else 1;
+            \\}}
+            \\
+        , .{ face, name, name, name, name, name }) catch return error.Overflow;
+        return @intCast(written.len);
+    }
     const written = std.fmt.bufPrint(out,
         \\const std = @import("std");
         \\
-        \\/// Lowered from Glow `|-  (lent {s})` — bound is the subject's own length.
+        \\/// Lowered from Glow `|-  (lent {s})` — unwelcome: list does not shrink.
         \\pub fn main(_: std.process.Init) !u8 {{
-        \\    const {s} = [_]u32{{ 1, 2, 3, 4, 5 }};
+        \\    const {s}: []const u32 = &[_]u32{{ 1, 2, 3, 4, 5 }};
         \\    const bound: u32 = @intCast({s}.len);
-        \\    const actual_steps: u32 = {d};
         \\    var tick: u32 = 0;
-        \\    var step: u32 = 0;
-        \\    while (step < actual_steps) : (step += 1) {{
+        \\    while ({s}.len > 0) {{
         \\        tick += 1;
         \\        if (tick > bound) return 1;
+        \\        // intentional non-shrink — BoundExceeded
         \\    }}
-        \\    return if (tick == actual_steps) 0 else 1;
+        \\    return 0;
         \\}}
         \\
-    , .{ face, name, name, actual_steps }) catch return error.Overflow;
+    , .{ face, name, name, name }) catch return error.Overflow;
     return @intCast(written.len);
 }
 
@@ -86,24 +105,24 @@ fn zig_safe_ident(face: []const u8, out: *[rbt.max_ident_len]u8) LowerError!usiz
     return face.len;
 }
 
-/// Parse one Glow line and emit a welcome-path program (steps == bound).
+/// Parse one Glow line and emit a welcome-path program.
 pub fn lower_line_welcome(line: []const u8, out: []u8) LowerError!u32 {
     const trimmed = std.mem.trim(u8, line, " \t\r\n");
     if (trimmed.len == 0) return error.EmptySource;
     const spec = try rbt.parse(trimmed);
     return switch (spec) {
         .literal => |bound| emit_literal_program(bound, bound, out),
-        .lent_of => |buf| emit_lent_program(rbt.lent_of_slice(&buf), lent_demo_len, out),
+        .lent_of => |buf| emit_lent_program(rbt.lent_of_slice(&buf), true, out),
     };
 }
 
-/// Parse one Glow line and emit an unwelcome-path program (steps == bound+1).
+/// Parse one Glow line and emit an unwelcome-path program.
 pub fn lower_line_unwelcome(line: []const u8, out: []u8) LowerError!u32 {
     const trimmed = std.mem.trim(u8, line, " \t\r\n");
     if (trimmed.len == 0) return error.EmptySource;
     const spec = try rbt.parse(trimmed);
     return switch (spec) {
         .literal => |bound| emit_literal_program(bound, bound + 1, out),
-        .lent_of => |buf| emit_lent_program(rbt.lent_of_slice(&buf), lent_demo_len + 1, out),
+        .lent_of => |buf| emit_lent_program(rbt.lent_of_slice(&buf), false, out),
     };
 }
