@@ -14,7 +14,7 @@
 # unique). The word corpus itself is Urbit's own old/doc/spec/flw.txt,
 # already held in this tree's vendor/gratitude row under old/ -- read
 # fresh every run rather than copied into this script. Full design:
-# context/specs/20260716-115337_waymark-ladder-naming-and-g0-collision-fix.md
+# context/specs/20260716-115927_waymark-ladder-naming-and-g0-collision-fix.md
 #
 # Hashes with SHA3-512 (`openssl dgst -sha3-512`, this tree's own ratified
 # host oracle for the family -- context/specs/20260703-191112_resins-and-
@@ -29,6 +29,9 @@
 # rerun, and read the printed word. If the closing assert goes RED (the
 # draw landed on an already-seated name), append "-2" to input_name and
 # rerun -- a different hash, a different draw, same honest method.
+#
+# Agent rule: .cursor/rules/waymark-ladders.mdc · .claude/rules/waymark-ladders.md
+# — draw before numbering any new ladder.
 
 let mk_cache = run ["mkdir" "-p" "tools/.cache/waymark"]
 assert mk_cache.ok else "could not create tools/.cache/waymark/"
@@ -43,11 +46,13 @@ let corpus_size = trim count_run.out
 say "corpus: ${corpus_size} four-letter words from old/doc/spec/flw.txt"
 
 # The ladder needing a mark today. Change this one line to derive the next.
-# Seated draws (do not reuse input strings):
+# Seated draws (do not reuse input strings; do not redraw):
 #   grapheneos-pixel-mobile-emulation -> HAWM
 #   glow-application-framework-and-publishing -> TUBE
 #   glow-english-qwerty-glass-keyboard-3 -> ZETA (20260717.180025)
-let input_name = "glow-english-qwerty-glass-keyboard-3"
+#   sala-broadcast-live-session-fold -> JABS (20260717.191030)
+# Placeholder below is the most recent seat (JABS); change it when drawing the next.
+let input_name = "sala-broadcast-live-session-fold"
 
 let hash_run = run ["sh" "-c" "printf '%s' '${input_name}' | openssl dgst -sha3-512 | awk '{print $NF}' | cut -c1-8"]
 assert hash_run.ok else "openssl dgst -sha3-512 failed"
@@ -66,10 +71,11 @@ assert word_run.ok else "word lookup failed"
 let word_val = trim word_run.out
 assert (word_val != "") else "empty word at derived index -- corpus or index math is wrong"
 
-# Existing proper names this scheme must never echo, so a drawn waymark is
-# never mistaken for a real module/vane identity. Four-letter entries only
-# -- every other seated name in context/LEXICON.md is a different length
-# and cannot collide with a four-letter draw at all.
+# Existing proper names this scheme must never echo (four-letter Lexicon
+# identities). Seated waymarks (HAWM · TUBE · ZETA · JABS) live in the
+# comment block above and in .cursor/rules/waymark-ladders.mdc — before
+# seating a NEW draw, grep those; if the word matches a seated waymark,
+# append -2 to input_name and redraw.
 let exclude_check = run ["sh" "-c" "echo '${word_val}' | grep -qxE '(BRIX|BRON|POND|MALA|SALA|POOL|QUIN|RIYO|REYA|TREY|TERA|TRIZ|OJJO|GLOW|RHYZ|PEAL)'"]
 assert (exclude_check.ok == false) else "derived waymark collides with an already-seated name -- append -2 to input_name above and rerun"
 

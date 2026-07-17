@@ -220,6 +220,12 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **ZETA2b / ZETA5 Pixel look GREEN, `20260717.184837`** — Keaton: typed and deleted; special-character tab switching worked; typed a `:)`. Keys land; glass keyboard is a real hand path.
 
+**ZETA4 emoji mode nod + device-free GREEN, `20260717.185520`** — Keaton: as similar to iOS as possible within SLC. Frequent strip + four tabs; real UTF-8 into Dexter; monochrome Skate atlas (40 faces). Pixel look next.
+
+**ZETA4 Pixel look GREEN + distinct glyphs, `20260717.190045`** — Keaton: emojis worked; faces looked same within categories. Polish: hand-distinct 8×8 per face; witness binds distinctness; reinstall for eyes.
+
+**ZETA4 distinct look GREEN · JABS2 glass, `20260717.190358`** — Keaton: glyphs look really good; kg to next. Layout word: Skate 20 rows · JABS2 audience 14–15 · keyboard 16–19. Device-free B2 glass GREEN; installed for Pixel look.
+
 **Glow OS · Glow Desk · Glow Glass seated, `20260717.183622`** — Keaton: **Glow OS** unifies; **Glow Desk** = desktop; **Glow Glass** = mobile. Lexicon + silo [`../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md`](../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md). Orientation firmware stays check-in.
 
 **Witness habitat + markup pipeline, `20260717.173427`** — foundations fit study affirms single-strand · sameness · happy-zone practice in the suite; teaching path was the gap. Seats **witness habitat** as Acme synonym (foundations keep *happy zone*). Fusion map holds Scribble→Brix→Bron→Mantra→Sala with Glow under TAME; Udon/Sail/Zuse horizon. Tutorial scaffold [`../manual/tutorials/cursor-and-the-compass.md`](../manual/tutorials/cursor-and-the-compass.md); silo [`../active-designing/20260717-173427_witness-habitat-and-the-markup-pipeline.md`](../active-designing/20260717-173427_witness-habitat-and-the-markup-pipeline.md). Product next remains Dexter D2.

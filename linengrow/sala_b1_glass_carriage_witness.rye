@@ -1,4 +1,4 @@
-//! linengrow/sala_b1_glass_carriage_witness.rye — proves B1 glass welcome line.
+//! linengrow/sala_b1_glass_carriage_witness.rye — proves JABS1 glass welcome line.
 //!
 //!   rye build linengrow/sala_b1_glass_carriage_witness.rye \
 //!     -femit-bin=linengrow/bin/sala_b1_glass_carriage_witness
@@ -20,12 +20,12 @@ fn run_selftest(_: std.process.Init) !u8 {
     var line: [glass.carriage_line_max]u8 = undefined;
     var len: u32 = 0;
     assert(glass.run_demo_carriage(&line, &len));
-    assert(std.mem.indexOf(u8, line[0..len], "SALA B1 carriage") != null);
+    assert(std.mem.indexOf(u8, line[0..len], "JABS1 carriage") != null);
     assert(std.mem.indexOf(u8, line[0..len], "3 ev") != null);
     print("b1-glass: Skate line \"{s}\" -- GREEN\n", .{line[0..len]});
 
     print("b1-glass: version {s}\n", .{witness_version});
-    print("GREEN: Sala B1 glass — live-carriage welcome path paints a Skate line.\n", .{});
+    print("GREEN: JABS1 glass — live-carriage welcome path paints a Skate line.\n", .{});
     return 0;
 }
 

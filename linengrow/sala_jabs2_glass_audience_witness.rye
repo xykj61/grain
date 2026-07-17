@@ -1,0 +1,34 @@
+//! linengrow/sala_jabs2_glass_audience_witness.rye — proves JABS2 glass audience lines.
+//!
+//!   rye build linengrow/sala_jabs2_glass_audience_witness.rye \
+//!     -femit-bin=linengrow/bin/sala_jabs2_glass_audience_witness
+//!   linengrow/bin/sala_jabs2_glass_audience_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const glass = @import("sala_jabs2_glass_audience.rye");
+
+const witness_version = "20260717.190358";
+
+fn run_selftest(_: std.process.Init) !u8 {
+    var lines: [glass.audience_rows][glass.audience_line_max]u8 = undefined;
+    var lens: [glass.audience_rows]u32 = undefined;
+    assert(glass.run_demo_audience(&lines, &lens));
+    assert(std.mem.indexOf(u8, lines[0][0..lens[0]], "JABS2 audience") != null);
+    assert(std.mem.indexOf(u8, lines[0][0..lens[0]], "voices") != null);
+    assert(std.mem.indexOf(u8, lines[1][0..lens[1]], "chat") != null);
+    assert(std.mem.indexOf(u8, lines[1][0..lens[1]], "love this") != null);
+    assert(glass.skate_row0 == 14);
+    assert(glass.keyboard_row0 == 16);
+    assert(glass.grid_rows == 20);
+    print("jabs2-glass: layout rows 14–15 audience, 16–19 keyboard -- GREEN\n", .{});
+    print("jabs2-glass: \"{s}\" / \"{s}\" -- GREEN\n", .{ lines[0][0..lens[0]], lines[1][0..lens[1]] });
+    print("zeta: version {s}\n", .{witness_version});
+    print("GREEN: JABS2 glass — audience strip paints under the layout word.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
+}

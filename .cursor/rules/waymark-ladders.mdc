@@ -1,0 +1,34 @@
+---
+description: New numbered ladders must draw a waymark before the first rung is named
+alwaysApply: true
+---
+
+# Waymark Ladders — Draw Before You Number
+
+**Canon:** `context/specs/20260716-115927_waymark-ladder-naming-and-g0-collision-fix.md` · witness `tools/waymark_derive.rish` · Lexicon **Waymark**.
+
+## When a ladder opens
+
+Before the first rung is written as `X0` / `X1` / … in TASKS, ROADMAP, compressors, module titles, or session logs that speak as *now*:
+
+1. Choose a **canonical hyphenated input name** for the ladder (stable, descriptive, lowercase).
+2. Set `input_name` in `tools/waymark_derive.rish` and run `rishi/bin/rishi run tools/waymark_derive.rish`.
+3. Seat the printed four-letter **waymark** in Lexicon + the script’s seated-draws comment + exclude list.
+4. Name every rung `WAYMARK0`, `WAYMARK1`, … — never a bare capital letter alone (`B0`, `G0`) for a new ladder.
+
+## Seated waymarks (do not redraw)
+
+| Waymark | Input | Ladder |
+|---|---|---|
+| **HAWM** | `grapheneos-pixel-mobile-emulation` | Pixel / GrapheneOS SLC |
+| **TUBE** | `glow-application-framework-and-publishing` | App framework / packaging |
+| **ZETA** | `glow-english-qwerty-glass-keyboard-3` | Glass English QWERTY keyboard |
+| **JABS** | `sala-broadcast-live-session-fold` | Sala broadcast session fold (was bare B0–B3) |
+
+## Accrete-never-break
+
+Dated logs and research that already say `B0` / `B1` / `B2` stay readable. Living *Now* lines, new modules, new commits, and compressors use **JABS** (and other seated waymarks) from the draw forward.
+
+## Collision
+
+If the derive assert goes RED (word hits a seated module or waymark name), append `-2` to `input_name` and redraw — same method as the spec.

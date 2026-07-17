@@ -18,6 +18,8 @@ const skate = @import("skate_grid.rye");
 const sala_surf = @import("sala_surface.rye");
 const kb_paint = @import("dexter_glass_keyboard_paint.rye");
 const kb_layout = @import("dexter_glass_keyboard_layout.rye");
+const kb_emoji = @import("dexter_glass_emoji.rye");
+const jabs2_glass = @import("sala_jabs2_glass_audience.rye");
 const tally_copy = @import("tally_copy.rye");
 
 const WindowBuffer = extern struct {
@@ -59,8 +61,10 @@ fn put_line_centered(grid: *skate.Grid, row: u32, text: []const u8) void {
 
 /// Last keyboard hit map from paint (window coords). Soft-reset each paint.
 pub var last_keyboard_hit: kb_paint.HitMap = .{};
-/// Current ZETA page (letters / numbers / symbols). Activity may change this.
+/// Current ZETA page (letters / numbers / symbols / emoji). Activity may change this.
 pub var keyboard_mode: kb_layout.Mode = .letters;
+/// Active emoji category tab (ZETA4).
+pub var keyboard_emoji_tab: kb_emoji.Tab = .smileys;
 
 fn fill_admitted_rows(
     grid: *skate.Grid,
@@ -72,6 +76,8 @@ fn fill_admitted_rows(
     market_line: ?[]const u8,
     carriage_line: ?[]const u8,
     dexter_line: ?[]const u8,
+    jabs2_line0: ?[]const u8,
+    jabs2_line1: ?[]const u8,
 ) void {
     if (!tube1_admitted) return;
     var row: u32 = 2;
@@ -95,13 +101,16 @@ fn fill_admitted_rows(
     if (market_line) |market| put_line_centered(grid, 10, market);
     if (carriage_line) |carriage| put_line_centered(grid, 11, carriage);
     if (dexter_line) |dex| put_line_centered(grid, 12, dex);
-    const page = kb_layout.page_for(keyboard_mode);
+    // Layout word: JABS2 audience on 14–15; ZETA keyboard on 16–19.
+    if (jabs2_line0) |a| put_line_centered(grid, jabs2_glass.skate_row0, a);
+    if (jabs2_line1) |b| put_line_centered(grid, jabs2_glass.skate_row0 + 1, b);
+    const page = kb_layout.page_for_tab(keyboard_mode, keyboard_emoji_tab);
     var kb_lines: [kb_paint.keyboard_rows][kb_paint.max_line_len]u8 = undefined;
     var kb_lens: [kb_paint.keyboard_rows]u32 = undefined;
     if (kb_paint.format_page(page, &kb_lines, &kb_lens)) {
         var kr: u32 = 0;
         while (kr < kb_paint.keyboard_rows) : (kr += 1) {
-            put_line_centered(grid, 14 + kr, kb_lines[kr][0..kb_lens[kr]]);
+            put_line_centered(grid, jabs2_glass.keyboard_row0 + kr, kb_lines[kr][0..kb_lens[kr]]);
         }
     }
 }
@@ -162,6 +171,8 @@ const PaintChrome = struct {
     market_line: ?[]const u8,
     carriage_line: ?[]const u8,
     dexter_line: ?[]const u8,
+    jabs2_line0: ?[]const u8,
+    jabs2_line1: ?[]const u8,
 };
 
 fn fill_chrome_rows(
@@ -172,7 +183,15 @@ fn fill_chrome_rows(
     surf: ?*const sala_surf.Surface,
     chrome: PaintChrome,
 ) void {
-    const title = if (matched and tube1_admitted) "SALA B0+B1+DX+R2+T1 GREEN" else if (matched) "SALA B0  GREEN" else "SALA B0";
+    const jabs2_on = chrome.jabs2_line0 != null;
+    const title = if (matched and tube1_admitted and jabs2_on)
+        "SALA JABS0+JABS1+JABS2+DX+R2+T1 GREEN"
+    else if (matched and tube1_admitted)
+        "SALA JABS0+JABS1+DX+R2+T1 GREEN"
+    else if (matched)
+        "SALA B0  GREEN"
+    else
+        "SALA B0";
     put_line_centered(grid, 0, title);
     put_line_centered(grid, 1, if (tube1_admitted) "TUBE1 admitted · Pool x3" else "TUBE1 refused");
     fill_admitted_rows(
@@ -185,13 +204,15 @@ fn fill_chrome_rows(
         chrome.market_line,
         chrome.carriage_line,
         chrome.dexter_line,
+        chrome.jabs2_line0,
+        chrome.jabs2_line1,
     );
     put_line_centered(grid, 6, hex[0..32]);
     put_line_centered(grid, 7, hex[32..64]);
     put_line_centered(grid, 13, if (tube1_admitted) "TAP ABOVE KB TO CLOSE" else "TAP TO CLOSE");
 }
 
-/// Paint via Skate: title, R2, tip, hex, rail, B1, Dexter, ZETA letters, tap.
+/// Paint via Skate: title, R2, tip, hex, rail, JABS1, Dexter, JABS2, ZETA, tap.
 pub fn paint_session_root_hex(
     window: ?*anyopaque,
     hex: *const [64]u8,
@@ -204,6 +225,8 @@ pub fn paint_session_root_hex(
     market_line: ?[]const u8,
     carriage_line: ?[]const u8,
     dexter_line: ?[]const u8,
+    jabs2_line0: ?[]const u8,
+    jabs2_line1: ?[]const u8,
 ) void {
     last_keyboard_hit = .{};
     if (window == null) return;
@@ -217,7 +240,7 @@ pub fn paint_session_root_hex(
     const stride_px = buf.stride;
     assert(w > 0);
     assert(h > 0);
-    const grid_rows: u32 = 18;
+    const grid_rows: u32 = jabs2_glass.grid_rows;
     // Glow Glass portrait: scale so ~90% of height is chrome; desk keeps prior buckets.
     const portrait = h > w;
     const scale: u32 = if (portrait) blk: {
@@ -239,6 +262,8 @@ pub fn paint_session_root_hex(
         .market_line = market_line,
         .carriage_line = carriage_line,
         .dexter_line = dexter_line,
+        .jabs2_line0 = jabs2_line0,
+        .jabs2_line1 = jabs2_line1,
     });
     const bg = rgba(0x1a, 0x14, 0x10);
     const fg = if (matched) rgba(0x7d, 0xc4, 0x8a) else rgba(0xe8, 0xc4, 0x7a);
@@ -249,6 +274,8 @@ pub fn paint_session_root_hex(
     const grid_stride: u32 = @intCast(grid_w * 4);
     const pixels = allocator.alloc(u8, @intCast(grid_stride * @as(u32, @intCast(grid_h)))) catch return;
     defer allocator.free(pixels);
+    // ZETA4: atlas cells 128+ paint via Skate extended glyphs.
+    skate.extended_glyphs = &kb_emoji.glyphs_ext;
     grid.rasterize(pixels, grid_stride, grid_w, grid_h, bg, fg, scale);
     const bits: [*]u8 = @ptrCast(buf.bits.?);
     fill_window_bg(bits, w, h, stride_px);
@@ -265,8 +292,8 @@ pub fn paint_session_root_hex(
             @intCast(cell_pw),
             @intCast(cell_ph),
             cols,
-            14,
-            kb_layout.page_for(keyboard_mode),
+            jabs2_glass.keyboard_row0,
+            kb_layout.page_for_tab(keyboard_mode, keyboard_emoji_tab),
         );
     }
     blit_grid_centered(bits, w, h, stride_px, pixels, grid_w, grid_h, origin_x, origin_y);
