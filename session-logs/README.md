@@ -8,6 +8,9 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260717.144200` — [silo OpenVM pairing-hint soundness lessons](20260717-144200_openvm-soundness-silo.bron) — composition · hints · cheap membership; Sigma pin affirmed
+- `20260717.144132` — [pause — save TUBE2 glass progress](20260717-144132_pause-save-tube2-glass.bron) — commit glass path; look still open
+- `20260717.140800` — [TUBE2 publish painted on Skate Android glass](20260717-140800_tube2-pub-on-skate-glass.bron) — pack GREEN; host look for published · verified
 - `20260717.140623` — [send TUBE5 Mantra revision and glass tip](20260717-140623_send-tube5-glass-tip.bron) — Pixel look confirmed; ship to pier
 - `20260717.140320` — [tube05 install proof — no adb device](20260717-140320_tube05-install-no-adb-device.bron) — Pixel on USB; adb still empty; authorize then retry
 - `20260717.135727` — [TUBE5 tip painted on Skate Android glass](20260717-135727_tube5-tip-on-skate-glass.bron) — pack GREEN; host look for tip rev2 next

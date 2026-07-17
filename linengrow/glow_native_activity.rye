@@ -6,15 +6,17 @@
 //! packaging.md: one small, fixed, never-generated entry. App logic is
 //! the Sala B0 demo fold (`sala_b0_fold.rye`), the TUBE1 admit gate
 //! (`tube1_glass_gate.rye`), the R2 multi-panel surface
-//! (`sala_r2_surface.rye`), and the TUBE5 tip line (`tube5_glass_tip.rye`).
+//! (`sala_r2_surface.rye`), the TUBE5 tip line (`tube5_glass_tip.rye`),
+//! and the TUBE2 publish line (`tube2_glass_pub.rye`).
 //! After writing files/sala_root.txt, registers window + input callbacks:
-//! paints panels + tip + session-root hex (glow_native_surface.rye) and
-//! finishes on tap. R2 and TUBE5 paint only when TUBE1 admits.
+//! paints panels + tip + pub + session-root hex (glow_native_surface.rye) and
+//! finishes on tap. R2, TUBE5, and TUBE2 paint only when TUBE1 admits.
 
 const std = @import("std");
 const fold = @import("sala_b0_fold.rye");
 const tube1_gate = @import("tube1_glass_gate.rye");
 const tube5_tip = @import("tube5_glass_tip.rye");
+const tube2_pub = @import("tube2_glass_pub.rye");
 const r2 = @import("sala_r2_surface.rye");
 const sala_surf = @import("sala_surface.rye");
 const surface = @import("glow_native_surface.rye");
@@ -30,6 +32,9 @@ var g_surface_ready: bool = false;
 var g_tip_line: [tube5_tip.tip_line_max]u8 = undefined;
 var g_tip_len: u32 = 0;
 var g_tip_ready: bool = false;
+var g_pub_line: [tube2_pub.pub_line_max]u8 = undefined;
+var g_pub_len: u32 = 0;
+var g_pub_ready: bool = false;
 
 export fn __zig_probe_stack() callconv(.c) void {}
 
@@ -108,6 +113,7 @@ fn paint_window(_: ?*anyopaque, window: ?*anyopaque) callconv(.c) void {
     if (glow_last_session_root_hex[0] == 0) return;
     const surf_ptr: ?*const sala_surf.Surface = if (g_surface_ready) &g_surface else null;
     const tip: ?[]const u8 = if (g_tip_ready) g_tip_line[0..g_tip_len] else null;
+    const published: ?[]const u8 = if (g_pub_ready) g_pub_line[0..g_pub_len] else null;
     surface.paint_session_root_hex(
         window,
         glow_last_session_root_hex[0..64],
@@ -115,6 +121,7 @@ fn paint_window(_: ?*anyopaque, window: ?*anyopaque) callconv(.c) void {
         g_tube1_admitted,
         surf_ptr,
         tip,
+        published,
     );
 }
 
@@ -199,5 +206,7 @@ export fn ANativeActivity_onCreate(
 
     g_tip_len = 0;
     g_tip_ready = tube5_tip.run_demo_tip(&g_tip_line, &g_tip_len);
+    g_pub_len = 0;
+    g_pub_ready = tube2_pub.run_demo_pub(&g_pub_line, &g_pub_len);
     wire_surface_callbacks(activity);
 }
