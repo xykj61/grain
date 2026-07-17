@@ -1077,6 +1077,11 @@ let dexter_glass = run ["rishi/bin/rishi" "run" "tools/dexter_glass_witness.rish
 assert dexter_glass.ok else "Dexter glass witness failed"
 say "GREEN: Dexter D0 glass witness passed."
 
+say "witness suite: ZETA0 — English glass keyboard layout tables…"
+let zeta0 = run ["rishi/bin/rishi" "run" "tools/dexter_glass_keyboard_witness.rish"]
+assert zeta0.ok else "ZETA0 keyboard layout witness failed"
+say "GREEN: ZETA0 keyboard layout witness passed."
+
 say "witness suite: Sala R1 — the viewer renders what Pool hosts…"
 let sala_r1 = run ["rishi/bin/rishi" "run" "tools/sala_view_witness.rish"]
 assert sala_r1.ok else "Sala R1 view witness failed"

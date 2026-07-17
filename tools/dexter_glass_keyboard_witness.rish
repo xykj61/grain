@@ -1,0 +1,19 @@
+# dexter_glass_keyboard_witness.rish — ZETA0 English layout tables.
+#
+#   rishi/bin/rishi run tools/dexter_glass_keyboard_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/dexter_glass_keyboard_witness"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/dexter_glass_keyboard_witness.rye -femit-bin=${bin}"]
+assert build.ok else "ZETA0 keyboard layout witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "ZETA0 keyboard layout witness exited non-zero"
+assert selftest.out contains "GREEN" else "ZETA0 not GREEN"
+assert selftest.out contains "waymark ZETA" else "ZETA0 missing waymark claim"
+assert selftest.out contains "letters QWERTY" else "ZETA0 missing letters claim"
+assert selftest.out contains "numbers page" else "ZETA0 missing numbers claim"
+assert selftest.out contains "symbols page" else "ZETA0 missing symbols claim"
+
+say "GREEN: ZETA0 — English layout tables under waymark ZETA."
