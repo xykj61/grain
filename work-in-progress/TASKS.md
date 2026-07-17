@@ -229,13 +229,13 @@
 - [x] **Dexter D2 — Pixel look** `20260717.174336` — Keaton confirmed GREEN on device after host install: title `SALA B0+B1+DX+R2+T1 GREEN` and `DEXTER line · glow`. Soft-keyboard live drain stays later.
 - [x] **Dexter D3 — soft-keyboard live KEY drain** `20260717.174551` — [`dexter_glass_key.rye`](../linengrow/dexter_glass_key.rye) maps Android KEY downs → Dexter Action; [`glow_native_activity.rye`](../linengrow/glow_native_activity.rye) drains live keys, refreshes row 12, shows soft input. Witness GREEN (demo + live KEY); pack GREEN. Pixel typing look: host install + eyes.
 - [x] **Dexter D3 Pixel look** `20260717.175220` — Keaton confirmed GREEN for install + `DEXTER line · glow`. **Honest gaps:** no system soft keyboard visible; no blinking caret. Graphene IME via `showSoftInput` insufficient on bare NativeActivity.
-- [x] **Glow English QWERTY glass keyboard — research + silo** `20260717.175220` — study [`../external-research/20260717-175220_glow-english-qwerty-glass-keyboard-ios-inspired.md`](../external-research/20260717-175220_glow-english-qwerty-glass-keyboard-ios-inspired.md); silo [`../active-designing/20260717-175220_dexter-english-qwerty-glass-keyboard.md`](../active-designing/20260717-175220_dexter-english-qwerty-glass-keyboard.md). Own Skate OSK (iOS-inspired public layout); decline IME host; K0–K5 named.
-- [ ] **K0 — English layout tables** — letters · numbers · symbols as witnessable data (device-free).
-- [ ] **K1 — Paint letters mode on Skate** — bottom glass hit boxes.
-- [ ] **K2 — Tap → Dexter Action** — live line without system IME.
-- [ ] **K3 — Blinking caret on Dexter line** — visible terminal pulse.
-- [ ] **K4 — Emoji mode SLC** — bounded frequent set + few tabs.
-- [ ] **K5 — Pixel look keys + caret** — type by tap on device.
+- [x] **Glow English QWERTY glass keyboard — research + silo** `20260717.175220` — study [`../external-research/20260717-175220_glow-english-qwerty-glass-keyboard-ios-inspired.md`](../external-research/20260717-175220_glow-english-qwerty-glass-keyboard-ios-inspired.md); silo [`../active-designing/20260717-175220_dexter-english-qwerty-glass-keyboard.md`](../active-designing/20260717-175220_dexter-english-qwerty-glass-keyboard.md). Own Skate OSK; decline IME host.
+- [x] **Waymark ZETA + ZETA0 layout tables** `20260717.180025` — input `glow-english-qwerty-glass-keyboard-3` → **ZETA**; [`dexter_glass_keyboard_layout.rye`](../linengrow/dexter_glass_keyboard_layout.rye); witness GREEN; parity wired; compressor [`../docs/ZETA.md`](../docs/ZETA.md).
+- [ ] **ZETA1 — Paint letters mode on Skate** — bottom glass hit boxes.
+- [ ] **ZETA2 — Tap → Dexter Action** — live line without system IME.
+- [ ] **ZETA3 — Blinking caret on Dexter line** — visible terminal pulse.
+- [ ] **ZETA4 — Emoji mode SLC** — bounded frequent set + few tabs.
+- [ ] **ZETA5 — Pixel look keys + caret** — type by tap on device.
 - [ ] **C2 thin TAME compressor** — optional `docs/TAME.md` only if cold-load pain is measured.
 - [ ] **C3 LEXICON core Bron card** — optional; Keaton's word.
 - [ ] **Sala B2 on glass** — audience + back-channel already GREEN device-free; needs a **layout word** (Skate now 14 rows) before paint.

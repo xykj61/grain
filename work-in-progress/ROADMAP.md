@@ -4,7 +4,7 @@
 
 **Language:** EN
 **Version:** `20260715` (Pool keystone revival prioritized · Quin voice seated · align pass reconciles the closed ladder)
-**Last updated:** 2026-07-17 (**Glass keyboard** `20260717.175220` — own English QWERTY on Skate; D3 look GREEN with IME/caret gaps; K0 next)
+**Last updated:** 2026-07-17 (**ZETA** `20260717.180025` — waymark ZETA seated; ZETA0 tables GREEN; ZETA1 paint next)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Lens:** TAME — safety, performance, joy; the Seed Law; [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md)
@@ -202,18 +202,20 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **Dexter D3 live KEY drain, `20260717.174551`** — `dexter_glass_key.rye` + NativeActivity KEY path + `ANativeActivity_showSoftInput`; witness GREEN (demo + live KEY); pack GREEN.
 
-**Dexter D3 Pixel look + glass keyboard decision, `20260717.175220`** — Keaton: GREEN for install + Dexter line; **no** system keyboard visible; **no** blinking caret. Align: Graphene/AOSP IME will not own glass typing on bare NativeActivity. **Seat** Glow-owned English QWERTY on Skate (iOS-inspired public layout notes; clean-room). Study [`../external-research/20260717-175220_glow-english-qwerty-glass-keyboard-ios-inspired.md`](../external-research/20260717-175220_glow-english-qwerty-glass-keyboard-ios-inspired.md); silo [`../active-designing/20260717-175220_dexter-english-qwerty-glass-keyboard.md`](../active-designing/20260717-175220_dexter-english-qwerty-glass-keyboard.md). Laps K0–K5. Foundations / TAME / Glow runes unmoved. **Aligned next:** K0 English layout tables (device-free witness).
+**Dexter D3 Pixel look + glass keyboard decision, `20260717.175220`** — Keaton: GREEN for install + Dexter line; **no** system keyboard visible; **no** blinking caret. Align: Graphene/AOSP IME will not own glass typing on bare NativeActivity. **Seat** Glow-owned English QWERTY on Skate (iOS-inspired public layout notes; clean-room).
+
+**Waymark ZETA + ZETA0, `20260717.180025`** — keyboard ladder waymark **ZETA** from `glow-english-qwerty-glass-keyboard-3`; English layout tables GREEN; compressor [`../docs/ZETA.md`](../docs/ZETA.md). Living rungs **ZETA0–ZETA5**. **Aligned next:** ZETA1 paint letters on Skate.
 
 **Witness habitat + markup pipeline, `20260717.173427`** — foundations fit study affirms single-strand · sameness · happy-zone practice in the suite; teaching path was the gap. Seats **witness habitat** as Acme synonym (foundations keep *happy zone*). Fusion map holds Scribble→Brix→Bron→Mantra→Sala with Glow under TAME; Udon/Sail/Zuse horizon. Tutorial scaffold [`../manual/tutorials/cursor-and-the-compass.md`](../manual/tutorials/cursor-and-the-compass.md); silo [`../active-designing/20260717-173427_witness-habitat-and-the-markup-pipeline.md`](../active-designing/20260717-173427_witness-habitat-and-the-markup-pipeline.md). Product next remains Dexter D2.
 
 **Align pass — three prompts closed, `20260717.173848`** — compass rose walked against the last three seated laps:
 
-1. **Dexter · Dill · glass** (`172832`…`175220`) — Dexter = Brushstroke/Sala; D0–D3 GREEN; D3 look GREEN with IME/caret gaps named; **own English QWERTY glass keyboard** seated (K0–K5); Dill gap.
+1. **Dexter · Dill · glass** (`172832`…`175220`) — Dexter = Brushstroke/Sala; D0–D3 GREEN; D3 look GREEN with IME/caret gaps named; **own English QWERTY glass keyboard** seated; Dill gap.
 2. **Witness habitat + markup** (`173427`) — Acme testing face; fusion spine; Cursor-and-the-compass tutorial scaffold.
 3. **Foundations / LLM compress** (`173848`) — decline archive/Bron essays; COMPASS + compass card seated.
-4. **Glass keyboard** (`175220`) — decline Graphene IME host; iOS-inspired public layout; Glow paints Skate keys.
+4. **Glass keyboard / ZETA** (`175220`/`180025`) — decline Graphene IME host; waymark **ZETA**; ZETA0 layout tables GREEN.
 
-**Aligned next (one step):** **K0** — English layout tables with a device-free witness. Then K1 paint. Hold B2 layout word, `(jam …)`, Dill, M1 for check-in.
+**Aligned next (one step):** **ZETA1** — paint letters mode on Skate. Hold B2 layout word, `(jam …)`, Dill, M1 for check-in.
 
 ## The Visual Track — Realidream (horizon lane, ladder already named)
 

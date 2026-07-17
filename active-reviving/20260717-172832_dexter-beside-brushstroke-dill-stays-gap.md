@@ -57,7 +57,7 @@ Align prefers **Dexter-on-glass** (or a B2 layout word) over racing into `(jam �
 | **D1** | Pack + Skate presents `DEXTER line · glow` | **GREEN** `20260717.173133` · pack |
 | **D2** | Pixel look GREEN | **GREEN** `20260717.174336` · Keaton eyes on device |
 | **D3** | Soft-keyboard live KEY drain | **GREEN** device-free + pack `20260717.174551` · Pixel look `20260717.175220` (line GREEN; IME/caret gaps) |
-| **K0–K5** | Glow English QWERTY on Skate | silo `active-designing/20260717-175220_*` · K0 next |
+| **ZETA0–ZETA5** | Glow English QWERTY on Skate (waymark **ZETA**) | ZETA0 GREEN · ZETA1 paint next |
 | **Dill-parallel (horizon)** | New kernel terminal vane revival — separate brief | real need · not D0–D3 |
 
 Sala B2 on glass remains a sibling product option that still needs a **layout word** (13-row Skate is full) before paint.
