@@ -55,7 +55,7 @@ Align prefers **Dexter-on-glass** (or a B2 layout word) over racing into `(jam �
 |---|---|---|
 | **D0** | Device-free Dexter glass core — same pure editor, Android-shaped actions | **GREEN** `20260717.173133` · `tools/dexter_glass_witness.rish` |
 | **D1** | Pack + Skate presents `DEXTER line · glow` | **GREEN** `20260717.173133` · pack |
-| **D2** | Pixel look GREEN | D1 · host install — open |
+| **D2** | Pixel look GREEN | **GREEN** `20260717.174336` · Keaton eyes on device |
 | **Dill-parallel (horizon)** | New kernel terminal vane revival — separate brief | real need · not D0–D2 |
 
 Sala B2 on glass remains a sibling product option that still needs a **layout word** (13-row Skate is full) before paint.
