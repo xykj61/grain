@@ -1,0 +1,64 @@
+//! glow/lower_cast.rye — lower a parsed `^-` cast to runnable `.rye` text.
+//!
+//! Per active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md:
+//! `^-  <mold>` catches a type mismatch at the cast boundary. This hop lowers
+//! the brief's own aura `@u32` to a checked `std.math.cast` into Zig `u32`.
+//! Named molds and other auras parse but do not lower yet.
+
+const std = @import("std");
+const rc = @import("rune_cast.rye");
+
+pub const LowerError = rc.ParseError || error{
+    Overflow,
+    EmptySource,
+    AuraNotYetLowered,
+    NamedMoldNotYetLowered,
+};
+
+/// Welcome raw that fits in u32; unwelcome raw is 2^32 (does not fit).
+pub const cast_welcome_raw: u64 = 42;
+pub const cast_unwelcome_raw: u64 = 4294967296;
+
+fn zig_type_for_mold(mold: []const u8) LowerError![]const u8 {
+    if (mold.len == 0) return error.MissingMold;
+    if (mold[0] != '@') return error.NamedMoldNotYetLowered;
+    if (std.mem.eql(u8, mold, "@u32")) return "u32";
+    return error.AuraNotYetLowered;
+}
+
+/// Emit a complete `.rye` main that checked-casts `raw` into the mold's Zig type.
+/// Returns 0 when the cast succeeds; returns 1 when the value does not fit.
+pub fn emit_aura_program(mold: []const u8, zig_ty: []const u8, raw: u64, out: []u8) LowerError!u32 {
+    const written = std.fmt.bufPrint(out,
+        \\const std = @import("std");
+        \\
+        \\/// Lowered from Glow `^-  {s}` — checked cast at the boundary.
+        \\pub fn main(_: std.process.Init) !u8 {{
+        \\    const raw: u64 = {d};
+        \\    const casted: {s} = std.math.cast({s}, raw) orelse return 1;
+        \\    return if (@as(u64, casted) == raw) 0 else 1;
+        \\}}
+        \\
+    , .{ mold, raw, zig_ty, zig_ty }) catch return error.Overflow;
+    return @intCast(written.len);
+}
+
+/// Parse one Glow cast line and emit a welcome-path program (value fits).
+pub fn lower_line_welcome(line: []const u8, out: []u8) LowerError!u32 {
+    const trimmed = std.mem.trim(u8, line, " \t\r\n");
+    if (trimmed.len == 0) return error.EmptySource;
+    const spec = try rc.parse(trimmed);
+    const mold = rc.mold_slice(&spec);
+    const zig_ty = try zig_type_for_mold(mold);
+    return emit_aura_program(mold, zig_ty, cast_welcome_raw, out);
+}
+
+/// Parse one Glow cast line and emit an unwelcome-path program (value overflows).
+pub fn lower_line_unwelcome(line: []const u8, out: []u8) LowerError!u32 {
+    const trimmed = std.mem.trim(u8, line, " \t\r\n");
+    if (trimmed.len == 0) return error.EmptySource;
+    const spec = try rc.parse(trimmed);
+    const mold = rc.mold_slice(&spec);
+    const zig_ty = try zig_type_for_mold(mold);
+    return emit_aura_program(mold, zig_ty, cast_unwelcome_raw, out);
+}
