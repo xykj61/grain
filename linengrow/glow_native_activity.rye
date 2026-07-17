@@ -4,27 +4,20 @@
 //!
 //! Per active-designing/20260717-014522_native-activity-shim-and-slc-
 //! packaging.md: one small, fixed, never-generated entry. App logic is
-//! the Sala B0 demo fold (`sala_b0_fold.rye`) — the same three-event
-//! session HAWM1 already proved bit-identical on Android userland.
-//!
-//! After the fold writes files/sala_root.txt, this entry registers
-//! NativeActivity window callbacks and paints the session-root hex on
-//! the ANativeWindow (glow_native_surface.rye). No Kotlin; NDK libandroid
-//! only. Install proof still reads sala_root.txt via run-as.
+//! the Sala B0 demo fold (`sala_b0_fold.rye`). After writing
+//! files/sala_root.txt, registers window + input callbacks: paints the
+//! session-root hex (glow_native_surface.rye) and finishes on tap.
 
 const std = @import("std");
 const fold = @import("sala_b0_fold.rye");
 const surface = @import("glow_native_surface.rye");
 
-/// Last successful demo-fold root as 64 hex chars + NUL. Zeroed until
-/// onCreate runs the fold successfully. Exported for inspection; not a
-/// general IPC channel.
 export var glow_last_session_root_hex: [65]u8 = [_]u8{0} ** 65;
 
-/// Zig emits calls to `__zig_probe_stack` on some targets. When we NDK-link
-/// a static archive into a real Android .so, Zig's own compiler-rt is often
-/// absent or non-PIC in the cache. A no-op stub is enough for the Sala B0
-/// fold (no huge stack frames).
+var g_activity: ?*anyopaque = null;
+var g_input_queue: ?*anyopaque = null;
+var g_root_matched: bool = false;
+
 export fn __zig_probe_stack() callconv(.c) void {}
 
 fn record_root(root: *const [32]u8) void {
@@ -53,7 +46,6 @@ fn write_root_file(hex: *const [64]u8) void {
     _ = write(fd, "\n", 1);
 }
 
-/// ABI-matched to android/native_activity.h ANativeActivityCallbacks.
 const ActivityCallbacks = extern struct {
     onStart: ?*const fn (?*anyopaque) callconv(.c) void = null,
     onResume: ?*const fn (?*anyopaque) callconv(.c) void = null,
@@ -73,27 +65,81 @@ const ActivityCallbacks = extern struct {
     onLowMemory: ?*const fn (?*anyopaque) callconv(.c) void = null,
 };
 
-/// First field of ANativeActivity is callbacks*.
 const ActivityHead = extern struct {
     callbacks: ?*ActivityCallbacks,
 };
 
 extern fn ANativeActivity_finish(activity: ?*anyopaque) callconv(.c) void;
+extern fn ALooper_forThread() callconv(.c) ?*anyopaque;
+extern fn AInputQueue_attachLooper(
+    queue: ?*anyopaque,
+    looper: ?*anyopaque,
+    ident: c_int,
+    callback: ?*const fn (c_int, c_int, ?*anyopaque) callconv(.c) c_int,
+    data: ?*anyopaque,
+) callconv(.c) void;
+extern fn AInputQueue_detachLooper(queue: ?*anyopaque) callconv(.c) void;
+extern fn AInputQueue_hasEvents(queue: ?*anyopaque) callconv(.c) i32;
+extern fn AInputQueue_getEvent(queue: ?*anyopaque, out_event: *?*anyopaque) callconv(.c) i32;
+extern fn AInputQueue_preDispatchEvent(queue: ?*anyopaque, event: ?*anyopaque) callconv(.c) i32;
+extern fn AInputQueue_finishEvent(queue: ?*anyopaque, event: ?*anyopaque, handled: c_int) callconv(.c) void;
+extern fn AInputEvent_getType(event: ?*anyopaque) callconv(.c) i32;
+extern fn AMotionEvent_getAction(event: ?*anyopaque) callconv(.c) i32;
+
+const looper_id_input: c_int = 1;
+const input_event_motion: i32 = 2;
+const motion_action_mask: i32 = 0xff;
+const motion_action_up: i32 = 1;
 
 fn paint_window(_: ?*anyopaque, window: ?*anyopaque) callconv(.c) void {
     if (glow_last_session_root_hex[0] == 0) return;
-    surface.paint_session_root_hex(window, glow_last_session_root_hex[0..64]);
+    surface.paint_session_root_hex(window, glow_last_session_root_hex[0..64], g_root_matched);
+}
+
+fn on_input_cb(_: c_int, _: c_int, _: ?*anyopaque) callconv(.c) c_int {
+    const queue = g_input_queue orelse return 1;
+    while (AInputQueue_hasEvents(queue) > 0) {
+        var event: ?*anyopaque = null;
+        if (AInputQueue_getEvent(queue, &event) < 0) break;
+        if (AInputQueue_preDispatchEvent(queue, event) != 0) continue;
+        var handled: c_int = 0;
+        if (AInputEvent_getType(event) == input_event_motion) {
+            const action = AMotionEvent_getAction(event) & motion_action_mask;
+            if (action == motion_action_up) {
+                ANativeActivity_finish(g_activity);
+                handled = 1;
+            }
+        }
+        AInputQueue_finishEvent(queue, event, handled);
+    }
+    return 1;
+}
+
+fn on_input_queue_created(activity: ?*anyopaque, queue: ?*anyopaque) callconv(.c) void {
+    g_activity = activity;
+    g_input_queue = queue;
+    const looper = ALooper_forThread();
+    if (looper != null and queue != null) {
+        AInputQueue_attachLooper(queue, looper, looper_id_input, on_input_cb, null);
+    }
+}
+
+fn on_input_queue_destroyed(_: ?*anyopaque, queue: ?*anyopaque) callconv(.c) void {
+    if (queue != null) AInputQueue_detachLooper(queue);
+    if (g_input_queue == queue) g_input_queue = null;
 }
 
 fn wire_surface_callbacks(activity: ?*anyopaque) void {
     if (activity == null) return;
+    g_activity = activity;
     const head: *ActivityHead = @ptrCast(@alignCast(activity.?));
     const cbs = head.callbacks orelse return;
     cbs.onNativeWindowCreated = paint_window;
     cbs.onNativeWindowRedrawNeeded = paint_window;
+    cbs.onInputQueueCreated = on_input_queue_created;
+    cbs.onInputQueueDestroyed = on_input_queue_destroyed;
 }
 
-/// Android calls this with a real ANativeActivity*.
 export fn ANativeActivity_onCreate(
     activity: ?*anyopaque,
     saved_state: ?*anyopaque,
@@ -104,11 +150,12 @@ export fn ANativeActivity_onCreate(
 
     const root = fold.run_demo_fold() catch {
         @memset(glow_last_session_root_hex[0..], 0);
+        g_root_matched = false;
         ANativeActivity_finish(activity);
         return;
     };
     record_root(&root);
+    g_root_matched = fold.root_matches_expected(&root);
     write_root_file(glow_last_session_root_hex[0..64]);
-    // Keep the activity alive and paint when the native window arrives.
     wire_surface_callbacks(activity);
 }
