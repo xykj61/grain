@@ -27,6 +27,8 @@
 //! (capability admission + bounded fold), not a specific rich agent.
 
 const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
 const kumara = @import("kumara.rye");
 const rc = @import("receipt_core.rye");
 const mc = @import("mala_core.rye");
@@ -46,6 +48,9 @@ pub const AgentResult = struct {
 /// right over the named resource. This is the door: a name alone never
 /// admits; a real grant does.
 pub fn admitted(table: *const caps.CapabilityTable, agent_label: []const u8, resource: []const u8, need: u8) bool {
+    // invariant: admission consults the capability table
+    assert(agent_label.len > 0);
+    assert(resource.len > 0);
     return table.allows(agent_label, resource, need);
 }
 
@@ -62,12 +67,16 @@ pub fn host_ledger_agent(
     issuer_pk: kumara.PublicKey,
     holder_pk: kumara.PublicKey,
 ) HostError!AgentResult {
+    // invariant: ledger host requires read+write over ledger resource
+    assert(log.len <= rc.max_log_len);
+    assert(mc.pubkey_hex_len > 0);
     // The door: a ledger agent must hold read+write over the ledger resource.
     if (!admitted(table, agent_label, ledger_resource, caps.right_read | caps.right_write)) {
         return error.NotAdmitted;
     }
     // The run: state is a fold over the signed log, verified while folding.
     const balances = mc.fold_mala_log(log, issuer_hex, holder_hex, issuer_pk, holder_pk) catch return error.FoldFailed;
+    assert(balances.issuer + balances.holder >= balances.issuer);
     return .{ .admitted = true, .balances = balances };
 }
 
@@ -87,9 +96,17 @@ pub fn host_agent_on(
     issuer_pk: kumara.PublicKey,
     holder_pk: kumara.PublicKey,
 ) HostError!AgentResult {
+    // invariant: named-state host checks the exact resource grant
+    assert(state_resource.len > 0);
+    assert(log.len <= rc.max_log_len);
     if (!admitted(table, agent_label, state_resource, caps.right_read | caps.right_write)) {
         return error.NotAdmitted;
     }
     const balances = mc.fold_mala_log(log, issuer_hex, holder_hex, issuer_pk, holder_pk) catch return error.FoldFailed;
+    assert(balances.issuer + balances.holder >= balances.issuer);
     return .{ .admitted = true, .balances = balances };
+}
+
+comptime {
+    _ = print;
 }

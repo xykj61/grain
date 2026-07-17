@@ -24,6 +24,8 @@
 //! ordered log always reproduces: that is the whole claim.
 
 const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
 const kumara = @import("kumara.rye");
 const rc = @import("receipt_core.rye");
 const mc = @import("mala_core.rye");
@@ -57,6 +59,9 @@ pub const ActorRegistry = struct {
     count: u32 = 0,
 
     pub fn admit(self: *ActorRegistry, hex: *const [mc.pubkey_hex_len]u8, pk: kumara.PublicKey) SessionError!void {
+        // invariant: registry stays within actor bound
+        assert(self.count <= max_actors);
+        assert(mc.pubkey_hex_len > 0);
         if (self.count >= max_actors) return error.Overflow;
         tally_copy.copy_disjoint(u8, self.actors[self.count].hex[0..], hex[0..]);
         self.actors[self.count].pk = pk;
@@ -64,6 +69,9 @@ pub const ActorRegistry = struct {
     }
 
     fn find(self: *const ActorRegistry, from_hex: []const u8) ?kumara.PublicKey {
+        // invariant: lookup scans only admitted actors
+        assert(self.count <= max_actors);
+        assert(from_hex.len > 0);
         var i: u32 = 0;
         while (i < self.count) : (i += 1) {
             if (std.mem.eql(u8, self.actors[i].hex[0..], from_hex)) return self.actors[i].pk;
@@ -79,6 +87,9 @@ pub const ReplayResult = struct {
 };
 
 fn seq_string(seq: i64, buf: *[24]u8) []const u8 {
+    // invariant: sequence text fits the scratch buffer
+    assert(buf.len == 24);
+    assert(seq >= 0);
     return std.fmt.bufPrint(buf, "{d}", .{seq}) catch unreachable;
 }
 
@@ -94,6 +105,9 @@ pub fn append_event(
     actor_hex: *const [mc.pubkey_hex_len]u8,
     signer: kumara.KeyPair,
 ) SessionError!u32 {
+    // invariant: append stays within session bounds
+    assert(log_len <= log.len);
+    assert(log.len <= rc.max_log_len);
     var seq_buf: [24]u8 = undefined;
     const seq_text = seq_string(seq, &seq_buf);
     const fields = rc.FactFields{
@@ -121,6 +135,9 @@ pub fn append_event(
 /// session log, then `replay` verifies the whole. Refused if it would
 /// exceed the event bound or overflow the log.
 pub fn append_signed_line(log: []u8, log_len: u32, line: []const u8) SessionError!u32 {
+    // invariant: carried line fits log bounds
+    assert(log_len <= log.len);
+    assert(log.len <= rc.max_log_len);
     if (line.len > max_event_bytes) return error.EventTooLarge;
     const new_len_usize = @as(usize, log_len) + line.len;
     if (new_len_usize > log.len) return error.Overflow;
@@ -138,6 +155,9 @@ pub fn replay(
     actor_hex: *const [mc.pubkey_hex_len]u8,
     actor_pk: kumara.PublicKey,
 ) SessionError!ReplayResult {
+    // invariant: replay scans a bounded log
+    assert(log.len <= rc.max_log_len);
+    assert(mc.pubkey_hex_len > 0);
     var count: u32 = 0;
     var last_seq: i64 = 0;
     var pos: u32 = 0;
@@ -182,6 +202,9 @@ pub fn replay_multi(
     log: []const u8,
     registry: *const ActorRegistry,
 ) SessionError!ReplayResult {
+    // invariant: multi-signer replay uses a bounded registry
+    assert(log.len <= rc.max_log_len);
+    assert(registry.count <= max_actors);
     var count: u32 = 0;
     var last_seq: i64 = 0;
     var pos: u32 = 0;
@@ -215,4 +238,8 @@ pub fn replay_multi(
     var root: [32]u8 = undefined;
     rc.digest_log(log, &root);
     return .{ .events = count, .root = root, .last_seq = last_seq };
+}
+
+comptime {
+    _ = print;
 }

@@ -21,9 +21,10 @@ Bare NativeActivity does not attach Graphene/AOSP soft IME reliably. **ZETA** is
 | Rung | Claim | Witness / gate | State |
 |------|-------|----------------|-------|
 | **ZETA0** | Letters · numbers · symbols layout tables | `tools/dexter_glass_keyboard_witness.rish` | **GREEN** `20260717.180025` |
-| **ZETA1** | Paint letters mode on Skate; hit boxes | same witness · pack | **GREEN** `20260717.180558` |
-| **ZETA2** | Tap → Dexter Action → live line | ZETA1 | open |
-| **ZETA3** | Blinking caret on Dexter line | ZETA1+ | open |
+| **ZETA1** | Paint letters mode on Skate; hit boxes | same witness · pack | **GREEN** `20260717.180558` · Pixel look `20260717.180933` |
+| **ZETA2** | Tap → Dexter Action → live line | same witness · pack | **GREEN** `20260717.180933` · Pixel typing look `20260717.183345` |
+| **ZETA3** | Blinking caret on Dexter line | `dexter_glass_witness` · pack · timerfd | **GREEN** `20260717.182826` · Pixel blink look `20260717.183345` |
+| **ZETA2b** | Hit boxes match paint · phone density · portrait fill | ZETA2 | open — wrong keys / tiny / letterbox named |
 | **ZETA4** | Emoji mode SLC (bounded) | ZETA2 | open |
 | **ZETA5** | Pixel look — keys + caret + type by tap | ZETA2 · ZETA3 | open |
 

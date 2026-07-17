@@ -1,4 +1,4 @@
-# dexter_glass_keyboard_witness.rish — ZETA0 tables + ZETA1 paint/hit.
+# dexter_glass_keyboard_witness.rish — ZETA0–ZETA2 glass keyboard.
 #
 #   rishi/bin/rishi run tools/dexter_glass_keyboard_witness.rish
 
@@ -17,5 +17,6 @@ assert selftest.out contains "numbers page" else "ZETA missing numbers claim"
 assert selftest.out contains "symbols page" else "ZETA missing symbols claim"
 assert selftest.out contains "letters paint lines" else "ZETA1 missing paint claim"
 assert selftest.out contains "hit boxes" else "ZETA1 missing hit-box claim"
+assert selftest.out contains "tap drain" else "ZETA2 missing tap→Action claim"
 
-say "GREEN: ZETA0+ZETA1 — layout tables and letters paint/hit under waymark ZETA."
+say "GREEN: ZETA0–ZETA2 — layout, paint/hit, and tap→Action under waymark ZETA."

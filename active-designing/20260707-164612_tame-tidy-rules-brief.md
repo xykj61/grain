@@ -64,7 +64,9 @@ Ratchets **never fail** parity. They only count downward as files are touched.
 | functions past 70 lines | split at natural seams; run targeted witnesses after |
 | zero `assert(` in core modules | import assert; add contract postconditions; exempt list in `tame_style_scan.sh` |
 
-**Standing counts (2026-07-07 evening bench):** `@memcpy` application **0** + **1** canonical in `tally/copy.rye`; camelCase **0** in scan dirs; >70-line ledger **empty**; zero-assert non-exempt **0**. **`maybe`** parked RTAC (`counsel/20260707.183412`).
+**Standing counts (2026-07-07 evening bench, historical):** `@memcpy` application **0** + **1** canonical; camelCase **0**; >70-line empty; zero-assert non-exempt **0**. **`maybe`** parked RTAC (`counsel/20260707.183412`).
+
+**Standing counts (`20260717.182418` Lap 2):** `@memcpy` application **0** + **1** canonical; camelCase **0**; long-fn advisory non-empty; zero-assert non-exempt **3** (`mantra/bolt_apply_step.rye`, `tally/kumara.rye`, `tally/pedersen.rye`). Inventory: [`20260717-181715_tame-slc-rye-audit-ledger.md`](20260717-181715_tame-slc-rye-audit-ledger.md). `glow/` still outside the scan roster.
 
 ---
 

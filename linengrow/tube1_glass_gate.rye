@@ -7,6 +7,9 @@
 //! separate TUBE0.5 path — glass does not emit Android permissions.
 //! Paints R2 only when this door opens.
 
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
 const caps = @import("capabilities.rye");
 const tube = @import("tube_manifest.rye");
 const scope_mod = @import("glow_storage_scope.rye");
@@ -18,6 +21,8 @@ const rw: u8 = caps.right_read | caps.right_write;
 
 /// True when admitted under covering scopes + live Network · Sensors Grants.
 pub fn run_demo_admit() bool {
+    // invariant: read|write mask is non-zero
+    assert(rw != 0);
     const declared = [_]tube.DeclaredCapability{
         tube.DeclaredCapability.init("state-ask", rw),
         tube.DeclaredCapability.init("state-receipt", rw),
@@ -27,6 +32,8 @@ pub fn run_demo_admit() bool {
         tube.DeclaredCapability.init(tube1.network_resource, caps.right_net),
         tube.DeclaredCapability.init(tube1.sensors_resource, caps.right_device),
     };
+    // invariant: seven declared capabilities for sala-broadcaster glass
+    assert(declared.len == 7);
     const manifest = tube.build("sala-broadcaster", "0.1.0", &declared, 1024) catch return false;
 
     var table: caps.CapabilityTable = .{};
@@ -46,6 +53,7 @@ pub fn run_demo_admit() bool {
         scope_mod.ScopeEntry.init("contacts", caps.right_read),
     }) catch return false;
     const scopes = [_]*const scope_mod.Scope{ &storage, &contacts };
+    assert(scopes.len == 2);
     const network = net_mod.NetworkGrant.grant();
     const sensors = sens_mod.SensorsGrant.grant();
 
@@ -57,4 +65,8 @@ pub fn run_demo_admit() bool {
         &network,
         &sensors,
     );
+}
+
+comptime {
+    _ = print;
 }

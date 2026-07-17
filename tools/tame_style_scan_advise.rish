@@ -43,14 +43,16 @@ say "ratchet: Ed25519 application sites = ${trim ed25519_app} (migrate to tally/
 say "ratchet: Ed25519 canonical in tally/kumara.rye = ${ed25519_canonical} (intentional inside kumara seam)"
 say "ratchet: functions past 70 lines —"
 
-let za1 = where files as f: (read-file f) contains "assert(" == false
-let za2 = where za1 as f: f starts-with "comlink/guest_" == false
-let za3 = where za2 as f: f starts-with "aurora/src/" == false
-let za4 = where za3 as f: f == "brushstroke/font8x8_data.rye" == false
-let za5 = where za4 as f: f == "caravan/supervisor_signal.rye" == false
-let za6 = where za5 as f: f == "caravan/supervisor_exit.rye" == false
-let za7 = where za6 as f: f == "pond/apps/window_input.rye" == false
-let za8 = where za7 as f: f == "tally/maybe.rye" == false
+# Parenthesize every `== false` — bare `f == "path" == false` empties the list
+# (Rish binds `==` tighter than intended; seated 20260717.181715).
+let za1 = where files as f: ((read-file f) contains "assert(") == false
+let za2 = where za1 as f: (f starts-with "comlink/guest_") == false
+let za3 = where za2 as f: (f starts-with "aurora/src/") == false
+let za4 = where za3 as f: (f == "brushstroke/font8x8_data.rye") == false
+let za5 = where za4 as f: (f == "caravan/supervisor_signal.rye") == false
+let za6 = where za5 as f: (f == "caravan/supervisor_exit.rye") == false
+let za7 = where za6 as f: (f == "pond/apps/window_input.rye") == false
+let za8 = where za7 as f: (f == "tally/maybe.rye") == false
 for-each za8 as f do say "  ${f} (zero assert — review on touch)"
 say "ratchet: zero assert( files remaining = ${length za8} (honest exempt: virtio guests, aurora freestanding, signal handler, font table, thin line editor, exit constants, the dual-of-assert mark itself)"
 

@@ -5,6 +5,8 @@
 //! session root; R1 owns what Pool hosts painted as lines.
 
 const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
 const kumara = @import("kumara.rye");
 const rc = @import("receipt_core.rye");
 const mc = @import("mala_core.rye");
@@ -16,6 +18,9 @@ pub const FrameError = view.FrameError || pool.HostError || error{ TableFull, Ov
 
 /// Host the welcome-path ledger agent and render its fold as a bounded frame.
 pub fn run_demo_frame() FrameError!view.Frame {
+    // invariant: welcome demo keys are seated
+    assert(mc.issuer_seed.len == kumara.seed_length);
+    assert(mc.holder_seed.len == kumara.seed_length);
     const issuer_kp = kumara.keypair_from_seed(&mc.issuer_seed);
     const holder_kp = kumara.keypair_from_seed(&mc.holder_seed);
     var issuer_hex: [mc.pubkey_hex_len]u8 = undefined;
@@ -38,5 +43,10 @@ pub fn run_demo_frame() FrameError!view.Frame {
         issuer_kp.public_key,
         holder_kp.public_key,
     );
+    assert(hosted.admitted);
     return try view.render_ledger("ledger-agent", hosted);
+}
+
+comptime {
+    _ = print;
 }

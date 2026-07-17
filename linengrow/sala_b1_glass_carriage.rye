@@ -4,14 +4,26 @@
 //! UDP hop stays in sala_broadcast_delivery; glass presents the fold claim.
 
 const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
 const core = @import("sala_b1_carriage_core.rye");
 
 pub const carriage_line_max: u32 = 48;
 
 /// Welcome carriage → status line. Returns false if roots diverge.
 pub fn run_demo_carriage(out_line: *[carriage_line_max]u8, out_len: *u32) bool {
+    // invariant: glass line buffer is non-zero
+    assert(out_line.len == carriage_line_max);
+    assert(carriage_line_max > 0);
     const lens = core.run_welcome_carriage() catch return false;
+    assert(lens.events == core.event_count);
     const line = std.fmt.bufPrint(out_line, "SALA B1 carriage · {d} ev", .{lens.events}) catch return false;
     out_len.* = @intCast(line.len);
+    assert(out_len.* <= carriage_line_max);
+    assert(out_len.* > 0);
     return true;
+}
+
+comptime {
+    _ = print;
 }

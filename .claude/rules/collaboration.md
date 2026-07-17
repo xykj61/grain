@@ -8,6 +8,8 @@ Cursor (or Claude Code) climbs the bench one keystone at a time. End every pass 
 
 **Keep going** when the next item is mechanical, single-module, and follows a policy already written down.
 
+**`kg` means keep going** — one syllable for the same guidance. It is not commit, push, or merge; those stay under **send** (see the send-word rule).
+
 **Pause for a Claude ruling** when the next item: crosses a module seam; changes Rishi or the value model; opens a new domain (a new lap, a new surface); raises a design or width question no written policy answers; needs a ruling not yet made; touches a foundational or heavily-cited file (assess rather than assume); or reaches for current external facts.
 
 **Stamps come from Kaeden.** Never compute or invent a one-clock timestamp; use the stamp Kaeden supplies, verbatim, in `YYYYMMDD.HHMMSS`.

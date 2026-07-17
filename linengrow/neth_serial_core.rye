@@ -29,6 +29,8 @@
 //! the promise is enforced, not merely written down.
 
 const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
 const kumara = @import("kumara.rye");
 const rc = @import("receipt_core.rye");
 const mc = @import("mala_core.rye");
@@ -54,6 +56,9 @@ pub fn append_and_reroot(
     issuer_pk: kumara.PublicKey,
     holder_pk: kumara.PublicKey,
 ) CoreError!AppendResult {
+    // invariant: append stays within serial-core bounds
+    assert(log_len <= log.len);
+    assert(max_append_bytes == 768);
     if (line.len > max_append_bytes) return error.StepTooLarge;
     const new_len_usize = @as(usize, log_len) + line.len;
     if (new_len_usize > log.len) return error.Overflow;
@@ -65,6 +70,12 @@ pub fn append_and_reroot(
 
     var root: [32]u8 = undefined;
     rc.digest_log(log[0..new_len], &root);
+    assert(line.len <= max_append_bytes);
+    assert(new_len <= log.len);
 
     return .{ .new_log_len = new_len, .root = root, .balances = balances };
+}
+
+comptime {
+    _ = print;
 }

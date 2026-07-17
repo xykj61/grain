@@ -28,6 +28,8 @@
 //! must trip the bound, proving it is enforced rather than assumed.
 
 const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
 const mc = @import("mala_core.rye");
 const rc = @import("receipt_core.rye");
 const core = @import("neth_serial_core.rye");
@@ -47,7 +49,11 @@ pub const ReplicaSim = struct {
 };
 
 fn dropped_this_tick(rand: std.Random, drop_pct: u8) bool {
-    return rand.intRangeLessThan(u32, 0, 100) < drop_pct;
+    // invariant: drop percentage stays a valid percent
+    assert(drop_pct <= 100);
+    const roll_ceiling: u32 = 100;
+    assert(roll_ceiling == 100);
+    return rand.intRangeLessThan(u32, 0, roll_ceiling) < drop_pct;
 }
 
 /// Deliver `records` (already-signed log lines, in fixed log order) to one
@@ -66,6 +72,9 @@ pub fn run_replica_delivery(
     seed: u64,
     drop_pct: u8,
 ) SimError!void {
+    // invariant: delivery schedule is bounded per record
+    assert(records.len <= max_records);
+    assert(drop_pct <= 100);
     var prng = std.Random.DefaultPrng.init(seed);
     const rand = prng.random();
     var i: u32 = 0;
@@ -90,4 +99,9 @@ pub fn run_replica_delivery(
         replica.final_root = result.root;
         replica.records_applied += 1;
     }
+    assert(replica.records_applied == records.len);
+}
+
+comptime {
+    _ = print;
 }

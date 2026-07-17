@@ -1,17 +1,53 @@
 //! linengrow/dexter_glass_line.rye — Dexter line for NativeActivity Skate glass.
 //!
-//! Demo path seeds the first paint; live KEY drain refreshes via format_dexter_line.
+//! Demo path seeds the first paint; live KEY/tap drain refreshes via
+//! format_dexter_line_live. ZETA3: optional blinking caret glyph.
 
 const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
 const core = @import("dexter_glass_core.rye");
 const dexter = @import("window_input.rye");
 
 pub const dexter_line_max: u32 = 48;
+/// Skate-safe caret face (ZETA3).
+pub const caret_glyph: u8 = '|';
+/// Half-period of the blink (on for this many ms, then off).
+pub const caret_period_ms: u64 = 500;
 
-/// Format prompt text into the Skate status line. Returns false if it will not fit.
+/// True when the caret should paint at monotonic millisecond `ms`.
+pub fn caret_visible_at(ms: u64) bool {
+    // invariant: period is positive
+    assert(caret_period_ms > 0);
+    return (ms / caret_period_ms) % 2 == 0;
+}
+
+/// Format prompt into the Skate status line (no caret). Returns false if it will not fit.
 pub fn format_dexter_line(prompt: []const u8, out_line: *[dexter_line_max]u8, out_len: *u32) bool {
-    const line = std.fmt.bufPrint(out_line, "DEXTER line · {s}", .{prompt}) catch return false;
+    return format_dexter_line_live(prompt, false, out_line, out_len);
+}
+
+/// Format prompt with optional caret glyph after the text.
+pub fn format_dexter_line_live(
+    prompt: []const u8,
+    caret_on: bool,
+    out_line: *[dexter_line_max]u8,
+    out_len: *u32,
+) bool {
+    // invariant: prompt is bounded for Skate chrome
+    assert(prompt.len <= dexter.max_line_len);
+    assert(out_line.len == dexter_line_max);
+    const line = if (caret_on)
+        std.fmt.bufPrint(out_line, "DEXTER line · {s}{c}", .{ prompt, caret_glyph }) catch return false
+    else
+        std.fmt.bufPrint(out_line, "DEXTER line · {s}", .{prompt}) catch return false;
     out_len.* = @intCast(line.len);
+    assert(out_len.* > 0);
+    assert(out_len.* <= dexter_line_max);
+    if (caret_on) {
+        // invariant: caret is the last painted byte
+        assert(out_line[out_len.* - 1] == caret_glyph);
+    }
     return true;
 }
 
@@ -20,6 +56,12 @@ pub fn run_demo_dexter_line(out_line: *[dexter_line_max]u8, out_len: *u32) bool 
     var submitted: [dexter.max_line_len]u8 = undefined;
     var submitted_len: u32 = 0;
     const lens = core.run_demo_editor(&submitted, &submitted_len) catch return false;
+    // invariant: demo length matches seated payload
+    assert(lens.submitted_len == core.demo_submitted.len);
     if (lens.submitted_len != core.demo_submitted.len) return false;
     return format_dexter_line(submitted[0..submitted_len], out_line, out_len);
+}
+
+comptime {
+    _ = print;
 }

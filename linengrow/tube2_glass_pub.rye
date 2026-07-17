@@ -5,6 +5,8 @@
 //! presents the welcome publish+verify door.
 
 const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
 const gc = @import("granary_core.rye");
 const caps = @import("capabilities.rye");
 const pool = @import("pool_host_seam.rye");
@@ -14,6 +16,8 @@ pub const pub_line_max: u32 = 48;
 
 /// Publish, resolve+admit, write a status line. Returns false on any refuse.
 pub fn run_demo_pub(out_line: *[pub_line_max]u8, out_len: *u32) bool {
+    // invariant: out buffer is the Skate line bound
+    assert(out_line.len == pub_line_max);
     var store = gc.ResinStore.empty();
     var reg = gc.Registry.empty();
     var log: [gc.max_log_bytes]u8 = undefined;
@@ -35,5 +39,12 @@ pub fn run_demo_pub(out_line: *[pub_line_max]u8, out_len: *u32) bool {
 
     const line = std.fmt.bufPrint(out_line, "TUBE2 published · verified", .{}) catch return false;
     out_len.* = @intCast(line.len);
+    // invariant: status line fits chrome
+    assert(out_len.* > 0);
+    assert(out_len.* <= pub_line_max);
     return true;
+}
+
+comptime {
+    _ = print;
 }

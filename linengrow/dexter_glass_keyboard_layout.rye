@@ -4,6 +4,10 @@
 //! data only — paint and tap hit-testing are ZETA1+. iOS-inspired mode family
 //! from public notes; clean-room (no Apple assets).
 
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
 /// Waymark for this ladder (SHA3-512 over glow-english-qwerty-glass-keyboard-3).
 pub const waymark: []const u8 = "ZETA";
 
@@ -39,6 +43,9 @@ pub const Page = struct {
 };
 
 fn c(ch: u8) Key {
+    // invariant: printable ASCII for Skate faces
+    assert(ch >= 32);
+    assert(ch < 127);
     return .{ .char_ = ch };
 }
 
@@ -100,29 +107,41 @@ pub const symbols_page: Page = .{
 };
 
 pub fn page_for(mode: Mode) Page {
-    return switch (mode) {
+    const page = switch (mode) {
         .letters => letters_page,
         .numbers => numbers_page,
         .symbols => symbols_page,
     };
+    // invariant: every page carries exactly four rows
+    assert(page.rows.len == max_rows);
+    assert(page.mode == mode);
+    return page;
 }
 
 pub fn row_count(page: Page) u32 {
-    return @intCast(page.rows.len);
+    assert(page.rows.len <= max_rows);
+    const n: u32 = @intCast(page.rows.len);
+    assert(n > 0);
+    return n;
 }
 
 pub fn key_count(page: Page) u32 {
+    assert(page.rows.len > 0);
     var n: u32 = 0;
     for (page.rows) |row| {
+        assert(row.keys.len <= max_keys_per_row);
         n += @intCast(row.keys.len);
     }
+    assert(n > 0);
     return n;
 }
 
 /// First printable letter on the letters page must be 'q' (QWERTY top-left).
 pub fn letters_top_left_is_q() bool {
     const page = letters_page;
-    if (page.rows.len == 0 or page.rows[0].keys.len == 0) return false;
+    // invariant: letters page is non-empty QWERTY
+    assert(page.rows.len > 0);
+    assert(page.rows[0].keys.len > 0);
     return switch (page.rows[0].keys[0]) {
         .char_ => |ch| ch == 'q',
         else => false,
@@ -132,7 +151,8 @@ pub fn letters_top_left_is_q() bool {
 /// Numbers page top row is 1..0.
 pub fn numbers_top_row_is_digits() bool {
     const row = numbers_page.rows[0].keys;
-    if (row.len != 10) return false;
+    // invariant: digit row is ten keys
+    assert(row.len == 10);
     var i: u32 = 0;
     while (i < 10) : (i += 1) {
         switch (row[i]) {
@@ -144,4 +164,10 @@ pub fn numbers_top_row_is_digits() bool {
         }
     }
     return true;
+}
+
+// Keep print in the opening triad; layout tables have no runtime claims.
+comptime {
+    _ = print;
+    _ = std;
 }

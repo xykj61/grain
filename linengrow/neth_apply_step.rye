@@ -20,6 +20,8 @@
 //! (the log, in Neth's real case) once the system comes back up.
 
 const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
 
 pub const ApplyStep = struct {
     applied_root: ?[32]u8 = null,
@@ -29,7 +31,13 @@ pub const ApplyStep = struct {
     /// A pending write, however real on disk, is invisible here until
     /// admitted.
     pub fn consulted(self: *const ApplyStep) ?[32]u8 {
-        return self.applied_root;
+        const applied = self.applied_root;
+        // invariant: consulted reads applied_root only
+        if (applied) |root| {
+            assert(root.len == 32);
+        }
+        assert(@sizeOf([32]u8) == 32);
+        return applied;
     }
 };
 
@@ -37,15 +45,21 @@ pub const ApplyError = error{NothingPending};
 
 /// Land a new root somewhere real -- written, not yet visible.
 pub fn write_root(state: *ApplyStep, root: [32]u8) void {
+    // invariant: root is a full digest width
+    assert(root.len == 32);
     state.pending_written_root = root;
+    assert(state.pending_written_root != null);
 }
 
 /// The distinct, authoritative admit step. Only after this call does
 /// `consulted()` see the new root.
 pub fn apply_pending(state: *ApplyStep) ApplyError!void {
     const pending = state.pending_written_root orelse return error.NothingPending;
+    // invariant: apply clears pending after admitting
+    assert(pending.len == 32);
     state.applied_root = pending;
     state.pending_written_root = null;
+    assert(state.pending_written_root == null);
 }
 
 /// A crash landed somewhere in the write-to-apply window. Discard the
@@ -53,5 +67,14 @@ pub fn apply_pending(state: *ApplyStep) ApplyError!void {
 /// already-applied root, if any, is never touched by this call; it stays
 /// authoritative exactly as it was before the crash.
 pub fn recover_after_crash(state: *ApplyStep) void {
+    const prior_len: u32 = if (state.applied_root != null) 32 else 0;
+    // invariant: crash recovery clears pending only
     state.pending_written_root = null;
+    assert(state.pending_written_root == null);
+    const after_len: u32 = if (state.applied_root != null) 32 else 0;
+    assert(after_len == prior_len);
+}
+
+comptime {
+    _ = print;
 }

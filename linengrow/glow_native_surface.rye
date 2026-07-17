@@ -11,12 +11,14 @@
 
 const std = @import("std");
 const assert = std.debug.assert;
+const print = std.debug.print;
 // Symlinked beside this file (linengrow/skate_grid.rye → brushstroke/) so Zig's
 // module root stays inside linengrow while Skate remains the one Brushstroke source.
 const skate = @import("skate_grid.rye");
 const sala_surf = @import("sala_surface.rye");
 const kb_paint = @import("dexter_glass_keyboard_paint.rye");
 const kb_layout = @import("dexter_glass_keyboard_layout.rye");
+const tally_copy = @import("tally_copy.rye");
 
 const WindowBuffer = extern struct {
     width: i32,
@@ -39,6 +41,8 @@ fn rgba(r: u8, g: u8, b: u8) skate.Color {
 }
 
 fn put_line_centered(grid: *skate.Grid, row: u32, text: []const u8) void {
+    // invariant: row in grid
+    assert(row < grid.rows);
     if (row >= grid.rows) return;
     if (text.len >= grid.cols) {
         grid.put_line(row, text);
@@ -47,13 +51,145 @@ fn put_line_centered(grid: *skate.Grid, row: u32, text: []const u8) void {
     var line: [64]u8 = [_]u8{' '} ** 64;
     const cols: usize = @intCast(grid.cols);
     assert(cols <= line.len);
+    assert(text.len <= cols);
     const start = (cols - text.len) / 2;
-    @memcpy(line[start..][0..text.len], text);
+    tally_copy.copy_disjoint(u8, line[start..][0..text.len], text);
     grid.put_line(row, line[0..cols]);
 }
 
 /// Last keyboard hit map from paint (window coords). Soft-reset each paint.
 pub var last_keyboard_hit: kb_paint.HitMap = .{};
+/// Current ZETA page (letters / numbers / symbols). Activity may change this.
+pub var keyboard_mode: kb_layout.Mode = .letters;
+
+fn fill_admitted_rows(
+    grid: *skate.Grid,
+    tube1_admitted: bool,
+    surf: ?*const sala_surf.Surface,
+    tip_line: ?[]const u8,
+    pub_line: ?[]const u8,
+    fetch_line: ?[]const u8,
+    market_line: ?[]const u8,
+    carriage_line: ?[]const u8,
+    dexter_line: ?[]const u8,
+) void {
+    if (!tube1_admitted) return;
+    var row: u32 = 2;
+    if (surf) |s| {
+        var p: u32 = 0;
+        while (p < s.count and row < 5) : (p += 1) {
+            const pan = s.panel(p);
+            var line_buf: [64]u8 = undefined;
+            const line = std.fmt.bufPrint(
+                &line_buf,
+                "[{s}] {s}",
+                .{ pan.label_slice(), pan.frame.line(1) },
+            ) catch continue;
+            put_line_centered(grid, row, line);
+            row += 1;
+        }
+    }
+    if (tip_line) |tip| put_line_centered(grid, 5, tip);
+    if (pub_line) |published| put_line_centered(grid, 8, published);
+    if (fetch_line) |fetched| put_line_centered(grid, 9, fetched);
+    if (market_line) |market| put_line_centered(grid, 10, market);
+    if (carriage_line) |carriage| put_line_centered(grid, 11, carriage);
+    if (dexter_line) |dex| put_line_centered(grid, 12, dex);
+    const page = kb_layout.page_for(keyboard_mode);
+    var kb_lines: [kb_paint.keyboard_rows][kb_paint.max_line_len]u8 = undefined;
+    var kb_lens: [kb_paint.keyboard_rows]u32 = undefined;
+    if (kb_paint.format_page(page, &kb_lines, &kb_lens)) {
+        var kr: u32 = 0;
+        while (kr < kb_paint.keyboard_rows) : (kr += 1) {
+            put_line_centered(grid, 14 + kr, kb_lines[kr][0..kb_lens[kr]]);
+        }
+    }
+}
+
+fn fill_window_bg(bits: [*]u8, w: i32, h: i32, stride_px: i32) void {
+    // invariant: positive window
+    assert(w > 0);
+    assert(h > 0);
+    assert(stride_px > 0);
+    var y: i32 = 0;
+    while (y < h) : (y += 1) {
+        var x: i32 = 0;
+        while (x < w) : (x += 1) {
+            const off: usize = @intCast((y * stride_px + x) * 4);
+            bits[off + 0] = 0x1a;
+            bits[off + 1] = 0x14;
+            bits[off + 2] = 0x10;
+            bits[off + 3] = 0xff;
+        }
+    }
+}
+
+fn blit_grid_centered(
+    bits: [*]u8,
+    w: i32,
+    h: i32,
+    stride_px: i32,
+    pixels: []const u8,
+    grid_w: i32,
+    grid_h: i32,
+    origin_x: i32,
+    origin_y: i32,
+) void {
+    assert(grid_w > 0);
+    assert(grid_h > 0);
+    var gy: i32 = 0;
+    while (gy < grid_h) : (gy += 1) {
+        const dy = origin_y + gy;
+        if (dy < 0 or dy >= h) continue;
+        var gx: i32 = 0;
+        while (gx < grid_w) : (gx += 1) {
+            const dx = origin_x + gx;
+            if (dx < 0 or dx >= w) continue;
+            const src: usize = @intCast((gy * grid_w + gx) * 4);
+            const dst: usize = @intCast((dy * stride_px + dx) * 4);
+            bits[dst + 0] = pixels[src + 0];
+            bits[dst + 1] = pixels[src + 1];
+            bits[dst + 2] = pixels[src + 2];
+            bits[dst + 3] = pixels[src + 3];
+        }
+    }
+}
+
+const PaintChrome = struct {
+    tip_line: ?[]const u8,
+    pub_line: ?[]const u8,
+    fetch_line: ?[]const u8,
+    market_line: ?[]const u8,
+    carriage_line: ?[]const u8,
+    dexter_line: ?[]const u8,
+};
+
+fn fill_chrome_rows(
+    grid: *skate.Grid,
+    hex: *const [64]u8,
+    matched: bool,
+    tube1_admitted: bool,
+    surf: ?*const sala_surf.Surface,
+    chrome: PaintChrome,
+) void {
+    const title = if (matched and tube1_admitted) "SALA B0+B1+DX+R2+T1 GREEN" else if (matched) "SALA B0  GREEN" else "SALA B0";
+    put_line_centered(grid, 0, title);
+    put_line_centered(grid, 1, if (tube1_admitted) "TUBE1 admitted · Pool x3" else "TUBE1 refused");
+    fill_admitted_rows(
+        grid,
+        tube1_admitted,
+        surf,
+        chrome.tip_line,
+        chrome.pub_line,
+        chrome.fetch_line,
+        chrome.market_line,
+        chrome.carriage_line,
+        chrome.dexter_line,
+    );
+    put_line_centered(grid, 6, hex[0..32]);
+    put_line_centered(grid, 7, hex[32..64]);
+    put_line_centered(grid, 13, if (tube1_admitted) "TAP ABOVE KB TO CLOSE" else "TAP TO CLOSE");
+}
 
 /// Paint via Skate: title, R2, tip, hex, rail, B1, Dexter, ZETA letters, tap.
 pub fn paint_session_root_hex(
@@ -72,133 +208,48 @@ pub fn paint_session_root_hex(
     last_keyboard_hit = .{};
     if (window == null) return;
     _ = ANativeWindow_setBuffersGeometry(window, 0, 0, format_rgba8888);
-
     var buf: WindowBuffer = undefined;
     if (ANativeWindow_lock(window, &buf, null) != 0) return;
     defer _ = ANativeWindow_unlockAndPost(window);
-
     if (buf.bits == null or buf.width <= 0 or buf.height <= 0 or buf.stride <= 0) return;
     const w = buf.width;
     const h = buf.height;
-    const stride_px = buf.stride; // pixels per row
-
+    const stride_px = buf.stride;
+    assert(w > 0);
+    assert(h > 0);
     const scale: u32 = if (w >= 1080) 3 else if (w >= 720) 2 else 1;
     const cell_pw = skate.cell_w * scale;
     const cell_ph = skate.cell_h * scale;
     const cols: u32 = @intCast(@max(8, @min(80, @divTrunc(w, @as(i32, @intCast(cell_pw))))));
-    // 0–13 content · 14–17 ZETA letters keyboard (when admitted).
-    const rows: u32 = 18;
-
     const allocator = std.heap.page_allocator;
-    var grid = skate.Grid.init(allocator, cols, rows) catch return;
+    var grid = skate.Grid.init(allocator, cols, 18) catch return;
     defer allocator.free(grid.cells);
-
-    const title = if (matched and tube1_admitted) "SALA B0+B1+DX+R2+T1 GREEN" else if (matched) "SALA B0  GREEN" else "SALA B0";
-    put_line_centered(&grid, 0, title);
-    put_line_centered(&grid, 1, if (tube1_admitted) "TUBE1 admitted · Pool x3" else "TUBE1 refused");
-    var row: u32 = 2;
-    if (tube1_admitted) {
-        if (surf) |s| {
-            var p: u32 = 0;
-            while (p < s.count and row < 5) : (p += 1) {
-                const pan = s.panel(p);
-                var line_buf: [64]u8 = undefined;
-                const line = std.fmt.bufPrint(
-                    &line_buf,
-                    "[{s}] {s}",
-                    .{ pan.label_slice(), pan.frame.line(1) },
-                ) catch continue;
-                put_line_centered(&grid, row, line);
-                row += 1;
-            }
-        }
-        if (tip_line) |tip| {
-            put_line_centered(&grid, 5, tip);
-        }
-    }
-    // Hex under the panels; two rows of 32.
-    put_line_centered(&grid, 6, hex[0..32]);
-    put_line_centered(&grid, 7, hex[32..64]);
-    if (tube1_admitted) {
-        if (pub_line) |published| {
-            put_line_centered(&grid, 8, published);
-        }
-        if (fetch_line) |fetched| {
-            put_line_centered(&grid, 9, fetched);
-        }
-        if (market_line) |market| {
-            put_line_centered(&grid, 10, market);
-        }
-        if (carriage_line) |carriage| {
-            put_line_centered(&grid, 11, carriage);
-        }
-        if (dexter_line) |dex| {
-            put_line_centered(&grid, 12, dex);
-        }
-        var kb_lines: [kb_paint.keyboard_rows][kb_paint.max_line_len]u8 = undefined;
-        var kb_lens: [kb_paint.keyboard_rows]u32 = undefined;
-        if (kb_paint.format_letters_page(&kb_lines, &kb_lens)) {
-            var kr: u32 = 0;
-            while (kr < kb_paint.keyboard_rows) : (kr += 1) {
-                put_line_centered(&grid, 14 + kr, kb_lines[kr][0..kb_lens[kr]]);
-            }
-        }
-    }
-    put_line_centered(&grid, 13, if (tube1_admitted) "TAP ABOVE KB TO CLOSE" else "TAP TO CLOSE");
-
+    fill_chrome_rows(&grid, hex, matched, tube1_admitted, surf, .{
+        .tip_line = tip_line,
+        .pub_line = pub_line,
+        .fetch_line = fetch_line,
+        .market_line = market_line,
+        .carriage_line = carriage_line,
+        .dexter_line = dexter_line,
+    });
     const bg = rgba(0x1a, 0x14, 0x10);
     const fg = if (matched) rgba(0x7d, 0xc4, 0x8a) else rgba(0xe8, 0xc4, 0x7a);
-
-    // Rasterize into a Skate-sized buffer, then blit centered onto the window.
     const grid_w: i32 = @intCast(cols * cell_pw);
-    const grid_h: i32 = @intCast(rows * cell_ph);
+    const grid_h: i32 = @intCast(18 * cell_ph);
     const grid_stride: u32 = @intCast(grid_w * 4);
-    const grid_bytes: usize = @intCast(grid_stride * @as(u32, @intCast(grid_h)));
-    const pixels = allocator.alloc(u8, grid_bytes) catch return;
+    const pixels = allocator.alloc(u8, @intCast(grid_stride * @as(u32, @intCast(grid_h)))) catch return;
     defer allocator.free(pixels);
-
     grid.rasterize(pixels, grid_stride, grid_w, grid_h, bg, fg, scale);
-
-    // Fill window with background, then copy the Skate bitmap centered.
     const bits: [*]u8 = @ptrCast(buf.bits.?);
-    var y: i32 = 0;
-    while (y < h) : (y += 1) {
-        var x: i32 = 0;
-        while (x < w) : (x += 1) {
-            const off: usize = @intCast((y * stride_px + x) * 4);
-            bits[off + 0] = 0x1a;
-            bits[off + 1] = 0x14;
-            bits[off + 2] = 0x10;
-            bits[off + 3] = 0xff;
-        }
-    }
-
+    fill_window_bg(bits, w, h, stride_px);
     const origin_x = @divTrunc(w - grid_w, 2);
     const origin_y = @divTrunc(h - grid_h, 5);
     if (tube1_admitted) {
-        last_keyboard_hit = kb_paint.build_hit_map(
-            origin_x,
-            origin_y,
-            grid_w,
-            @intCast(cell_ph),
-            14,
-            kb_layout.letters_page,
-        );
+        last_keyboard_hit = kb_paint.build_hit_map(origin_x, origin_y, grid_w, @intCast(cell_ph), 14, kb_layout.page_for(keyboard_mode));
     }
-    var gy: i32 = 0;
-    while (gy < grid_h) : (gy += 1) {
-        const dy = origin_y + gy;
-        if (dy < 0 or dy >= h) continue;
-        var gx: i32 = 0;
-        while (gx < grid_w) : (gx += 1) {
-            const dx = origin_x + gx;
-            if (dx < 0 or dx >= w) continue;
-            const src: usize = @intCast((gy * grid_w + gx) * 4);
-            const dst: usize = @intCast((dy * stride_px + dx) * 4);
-            bits[dst + 0] = pixels[src + 0];
-            bits[dst + 1] = pixels[src + 1];
-            bits[dst + 2] = pixels[src + 2];
-            bits[dst + 3] = pixels[src + 3];
-        }
-    }
+    blit_grid_centered(bits, w, h, stride_px, pixels, grid_w, grid_h, origin_x, origin_y);
+}
+
+comptime {
+    _ = print;
 }

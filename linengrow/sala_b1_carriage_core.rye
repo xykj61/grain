@@ -5,6 +5,8 @@
 //! door. Live hop stays in sala_broadcast_delivery.rye.
 
 const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
 const kumara = @import("kumara.rye");
 const rc = @import("receipt_core.rye");
 const mc = @import("mala_core.rye");
@@ -22,6 +24,9 @@ const stamps = [event_count][]const u8{ "20260715.203501", "20260715.203502", "2
 const payloads = [event_count][]const u8{ "sala:open session", "sala:type a line", "sala:frame update" };
 
 fn actor() struct { kp: kumara.KeyPair, hex: [mc.pubkey_hex_len]u8 } {
+    // invariant: seated demo actor bounds
+    assert(mc.pubkey_hex_len > 0);
+    assert(mc.issuer_seed.len == kumara.seed_length);
     const kp = kumara.keypair_from_seed(&mc.issuer_seed);
     var hex: [mc.pubkey_hex_len]u8 = undefined;
     mc.hex_of_key(kp.public_key, &hex);
@@ -29,11 +34,18 @@ fn actor() struct { kp: kumara.KeyPair, hex: [mc.pubkey_hex_len]u8 } {
 }
 
 fn event_fields(seq: i64, stamp: []const u8, payload: []const u8, actor_hex: *const [mc.pubkey_hex_len]u8, seq_buf: *[24]u8) rc.FactFields {
+    // invariant: event fields are non-empty
+    assert(seq >= 1);
+    assert(stamp.len > 0);
+    assert(payload.len > 0);
     const seq_text = std.fmt.bufPrint(seq_buf, "{d}", .{seq}) catch unreachable;
     return .{ .from = actor_hex[0..], .to = actor_hex[0..], .amount = seq_text, .memo = payload, .stamp = stamp };
 }
 
 fn build_event_payload(seq: i64, stamp: []const u8, payload: []const u8, actor_hex: *const [mc.pubkey_hex_len]u8, signer: kumara.KeyPair, out: *[rc.slcl2_payload_header + rc.slcl2_max_fact]u8) !u32 {
+    // invariant: payload buffer fits compact encoding
+    assert(out.len >= rc.slcl2_payload_header + rc.slcl2_max_fact);
+    assert(seq >= 1);
     var seq_buf: [24]u8 = undefined;
     const fields = event_fields(seq, stamp, payload, actor_hex, &seq_buf);
     const signed = try mc.sign_fact(fields, signer);
@@ -41,6 +53,9 @@ fn build_event_payload(seq: i64, stamp: []const u8, payload: []const u8, actor_h
 }
 
 fn payload_to_line(payload: []const u8, out: *[rc.max_line_len]u8) !u32 {
+    // invariant: compact payload decodes to a bounded line
+    assert(payload.len > 0);
+    assert(out.len == rc.max_line_len);
     var sig_buf: [kumara.signature_length]u8 = undefined;
     var fact_buf: [rc.slcl2_max_fact]u8 = undefined;
     const decoded = try rc.decode_compact_payload(payload, &sig_buf, &fact_buf);
@@ -49,6 +64,9 @@ fn payload_to_line(payload: []const u8, out: *[rc.max_line_len]u8) !u32 {
 }
 
 fn build_source_session(log: *[rc.max_log_len]u8, actor_hex: *const [mc.pubkey_hex_len]u8, signer: kumara.KeyPair) !sala.ReplayResult {
+    // invariant: welcome session fits B0 bounds
+    assert(event_count > 0);
+    assert(event_count <= sala.max_events);
     var len: u32 = 0;
     var i: u32 = 0;
     while (i < event_count) : (i += 1) {
@@ -59,6 +77,9 @@ fn build_source_session(log: *[rc.max_log_len]u8, actor_hex: *const [mc.pubkey_h
 
 /// Welcome carriage: roots match. Device-free and glass-safe.
 pub fn run_welcome_carriage() !CarriageLens {
+    // invariant: carriage replays a fixed welcome event count
+    assert(event_count == 3);
+    assert(event_count <= sala.max_events);
     const a = actor();
     var src_log: [rc.max_log_len]u8 = undefined;
     const src = try build_source_session(&src_log, &a.hex, a.kp);
@@ -81,5 +102,11 @@ pub fn run_welcome_carriage() !CarriageLens {
     if (follower.events != src.events) return error.EventCountMismatch;
     if (follower.last_seq != src.last_seq) return error.SeqMismatch;
     if (!std.mem.eql(u8, &follower.root, &src.root)) return error.RootMismatch;
+    assert(follower.events == src.events);
+    assert(follower.last_seq == src.last_seq);
     return .{ .events = follower.events, .root = follower.root };
+}
+
+comptime {
+    _ = print;
 }
