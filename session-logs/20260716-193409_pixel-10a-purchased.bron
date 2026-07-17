@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260716.193409
+editor Cursor
+model Cursor Sonnet 5 1M Low
+voice Quin
+host Framework 16 AMD (AMD Ryzen 7 7840HS), Ubuntu 24.04.4 LTS (kernel 6.17.0-40-generic), GNOME Wayland, zsh; ai-jail --private-home (only ~/urbit visible)
+title A real Pixel arrives -- Keaton buys a used Pixel 10a, 128GB, for $325
+prompt Keaton announced buying a used Google Pixel 10a, 128GB, for $325 on Facebook Marketplace.
+think Checked the device's own real specs directly rather than assuming -- Google's own support page and GrapheneOS's own review/support material confirm Tensor G4, Titan M2, a 6.3" 120Hz pOLED, launched 20260305, full GrapheneOS production support with a self-install web installer (grapheneos.org/install/web, ~15-30 minutes), and an update runway to ~2033. Cross-checked the price against current new retail (~$450-550) to confirm $325 used is a genuinely good deal, not merely asserted as one.
+think Held the new fact against the go-to-market brief's own already-written three-tier structure (active-designing/20260715-194500) rather than treating it as an isolated event -- the brief's own Value tier named a used Pixel 7a/8a (Tensor G2/G3, ~$150-250) as the destination reached last, after flagship lessons land. The Pixel 10a is a real, one-generation-newer instance of exactly that same device shape, landing ahead of the flagship purchase the brief's own ordering plans for. Named this precisely as the tier table's own ordering welcoming a device-in-hand rather than conflicting with the flagship-first strategy -- the plan does not need to change, only be updated with what is now real.
+think Updated the honest register in both places that named "no physical Pixel owned yet" as of 20260716 (context/specs/two-dev-environments-and-mobile-emulation.md's own HAWM3 rung, and the go-to-market brief itself) -- careful to distinguish owning the device from HAWM3's own rung actually closing: the device satisfies HAWM3's gate, but the rung itself stays open until GrapheneOS is actually flashed onto it, which is Keaton's own next real, human step, not something this session did or could do.
+obs This is the first real hardware fact the whole GrapheneOS/Pixel thread has had all session, after two full days of pure emulation work (HAWM0, HAWM1) -- worth naming plainly as a genuine turning point in the thread's own register, not just another dated bullet.
+file context/specs/two-dev-environments-and-mobile-emulation.md HAWM3 rung's own State cell rewritten from "no device" to the real, checked device now owned, naming honestly that the rung itself is not yet closed
+file active-designing/20260715-194500_the-slc-product-glow-on-capable-hardware.md new dated paragraph naming the real device against the brief's own already-written value-tier language
+file work-in-progress/TASKS.md new dated bullet recording the purchase, its checked specs, and the honest gate-vs-rung distinction
+file work-in-progress/ROADMAP.md new dated paragraph naming the same fact and the nearest real next step (flashing GrapheneOS via the official web installer)
+recommend check-in only for the literal next human action -- flashing GrapheneOS onto the new device via grapheneos.org/install/web, entirely Keaton's own hands (OEM unlocking, a USB-C cable, ~15-30 minutes); nothing here needs a ruling, only time.

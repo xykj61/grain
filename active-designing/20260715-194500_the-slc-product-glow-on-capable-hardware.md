@@ -65,9 +65,11 @@ One honest note, so the flagship is justified for the right reason: for Graphene
 |---|---|---|---|
 | **Flagship** | Pixel 10 Pro XL-class today; an eventual Glow-flagship | the most lovable, no-compromise experience | now — the starting point, wealthy early adopters |
 | **Pro** | mid-flagship (Pixel 10-class) or the repairable **Fairphone /e/OS** | balance — capability + repairability | after flagship lessons land |
-| **Value** | the budget used **Pixel 7a/8a** of the Reach Tier below (~$150–250, de-Googled) | reach + affordability + abundance | last — widest customer potential, once the experience is proven lovable at the top |
+| **Value** | the budget used **Pixel 7a/8a** of the Reach Tier below (~$150–250, de-Googled) — or a newer-generation equivalent, per the update just below | reach + affordability + abundance | last — widest customer potential, once the experience is proven lovable at the top |
 
 The value tier is not abandoned — it is the *destination*, reached with the lovability already proven, so the affordable phone inherits an experience worth loving rather than a compromised one. The Reach Tier analysis below is exactly that value-tier device work, now correctly ordered last rather than first.
+
+**A real device landed in the value tier ahead of the flagship, `20260716.193409`** — Keaton bought a used **Google Pixel 10a, 128GB, for $325** on Facebook Marketplace. Checked directly (July 2026): Tensor G4, Titan M2, launched `20260305`, full GrapheneOS **production** support with a self-install web installer, updates through `~2033`. New retail is `~$450–550`, so this is a genuinely strong used-market price — and it is a real, one-generation-newer instance of exactly the value-tier device shape this section already named (Tensor G4 vs. the 7a/8a's G2/G3), reached earlier than the ordering above planned. This does not change the *ordering* — the flagship-first lesson-harvesting strategy above stands, and the 10a's own first lap is still gated on getting GrapheneOS actually flashed onto it — but it means the value tier's own destination is no longer only planned, it is owned.
 
 ## Reach Tier (`20260715.195500`) — the Value-Tier Budget Android (arrives last, not first)
 
