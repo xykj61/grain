@@ -45,7 +45,7 @@ rishi/bin/rishi run tools/tube05_apk_pack_witness.rish
 # → tools/.cache/tube05/sala-broadcaster.apk
 ```
 
-4. **Install and prove the fold (host terminal)** — HAWM0 emulator path GREEN `20260717.122010`; Pixel USB uses the same commands:
+4. **Install and prove the fold (host terminal)** — HAWM0 GREEN `20260717.122010` · Pixel 10a GREEN `20260717.123226`; same commands:
 
 ```bash
 rishi/bin/rishi run tools/hawm0_boot_onpath_host.rish   # if no device yet

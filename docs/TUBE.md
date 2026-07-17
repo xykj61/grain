@@ -23,7 +23,7 @@ Language path and device path meet here: Glow's fold (language) becomes an insta
 | Rung | Claim | Primary witness | State |
 |------|-------|-----------------|-------|
 | **TUBE0** | App-manifest mold validates at the boundary | `tools/tube0_manifest_witness.rish` | GREEN |
-| **TUBE0.5** | Permissions emit; NativeActivity envelope; signed APK with Sala B0 fold; install + `sala_root.txt` on HAWM0 | `tools/tube0_5_android_permission_witness.rish` · `tools/tube05_envelope_witness.rish` · `tools/tube05_apk_pack_witness.rish` · `tools/tube05_install_proof_onpath_host.rish` | **GREEN** pack `20260717.021857` · Sala wire `20260717.121445` · **emulator install `20260717.122010`** |
+| **TUBE0.5** | Permissions emit; NativeActivity envelope; signed APK with Sala B0 fold; install + `sala_root.txt` on HAWM0 and Pixel 10a | `tools/tube0_5_android_permission_witness.rish` · `tools/tube05_envelope_witness.rish` · `tools/tube05_apk_pack_witness.rish` · `tools/tube05_install_proof_onpath_host.rish` | **GREEN** pack · Sala wire · HAWM0 `20260717.122010` · **Pixel `20260717.123226`** |
 | **TUBE1** | Pool admits an agent iff manifest caps match a grant | — | design (needs agent runtime) |
 | **TUBE2–5** | Signed publish · resins · market · Mantra revisions | — | design |
 | **TUBE6–7** | Whole stack on GrapheneOS build / physical Pixel | — | joins [`HAWM.md`](HAWM.md) |
@@ -49,17 +49,17 @@ rishi/bin/rishi run tools/tube05_apk_pack_witness.rish
 | Native entry (`ANativeActivity_onCreate`) | `linengrow/glow_native_activity.rye` |
 | Pack worker | `tools/tube05_apk_pack_worker.sh` |
 
-**Emulator install GREEN `20260717.122010`** — host terminal ran HAWM0 boot then the one-shot below; `sala_root.txt` matched the HAWM1 demo root. Re-run anytime (or on Pixel USB):
+**Install GREEN** — HAWM0 `20260717.122010` · physical Pixel 10a `20260717.123226` (`sala_root.txt` = HAWM1 demo root both times). Re-run anytime:
 
 ```bash
 # Host terminal (not ai-jail):
-rishi/bin/rishi run tools/hawm0_boot_onpath_host.rish   # if emulator not up
+rishi/bin/rishi run tools/hawm0_boot_onpath_host.rish   # emulator path
+# or: Pixel USB debugging authorized, then:
 rishi/bin/rishi run tools/tube05_install_proof_onpath_host.rish
-# → adb install -r · am start NativeActivity · run-as cat files/sala_root.txt
 # → 99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe
 ```
 
-**Still open:** same witness on the physical Pixel 10a (USB debugging); NativeActivity surface/finish. Debug keystore under `tools/.cache/tube05/` is host-local, never for publish.
+**Still open:** NativeActivity surface/finish. Debug keystore under `tools/.cache/tube05/` is host-local, never for publish.
 
 ---
 
