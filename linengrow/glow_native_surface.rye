@@ -50,7 +50,7 @@ fn put_line_centered(grid: *skate.Grid, row: u32, text: []const u8) void {
     grid.put_line(row, line[0..cols]);
 }
 
-/// Paint via Skate: title, R2 panels, TUBE5 tip, hex, TUBE2 pub, TUBE3 fetch, tap.
+/// Paint via Skate: title, R2, TUBE5 tip, hex, TUBE2–4 rail lines, tap.
 pub fn paint_session_root_hex(
     window: ?*anyopaque,
     hex: *const [64]u8,
@@ -60,6 +60,7 @@ pub fn paint_session_root_hex(
     tip_line: ?[]const u8,
     pub_line: ?[]const u8,
     fetch_line: ?[]const u8,
+    market_line: ?[]const u8,
 ) void {
     if (window == null) return;
     _ = ANativeWindow_setBuffersGeometry(window, 0, 0, format_rgba8888);
@@ -77,7 +78,7 @@ pub fn paint_session_root_hex(
     const cell_pw = skate.cell_w * scale;
     const cell_ph = skate.cell_h * scale;
     const cols: u32 = @intCast(@max(8, @min(80, @divTrunc(w, @as(i32, @intCast(cell_pw))))));
-    const rows: u32 = 11;
+    const rows: u32 = 12;
 
     const allocator = std.heap.page_allocator;
     var grid = skate.Grid.init(allocator, cols, rows) catch return;
@@ -116,8 +117,11 @@ pub fn paint_session_root_hex(
         if (fetch_line) |fetched| {
             put_line_centered(&grid, 9, fetched);
         }
+        if (market_line) |market| {
+            put_line_centered(&grid, 10, market);
+        }
     }
-    put_line_centered(&grid, 10, "TAP TO CLOSE");
+    put_line_centered(&grid, 11, "TAP TO CLOSE");
 
     const bg = rgba(0x1a, 0x14, 0x10);
     const fg = if (matched) rgba(0x7d, 0xc4, 0x8a) else rgba(0xe8, 0xc4, 0x7a);
