@@ -1,4 +1,4 @@
-//! linengrow/dexter_glass_keyboard_witness.rye — ZETA0 layout tables GREEN.
+//! linengrow/dexter_glass_keyboard_witness.rye — ZETA0 tables + ZETA1 paint/hit.
 //!
 //!   rye build linengrow/dexter_glass_keyboard_witness.rye \
 //!     -femit-bin=linengrow/bin/dexter_glass_keyboard_witness
@@ -8,8 +8,9 @@ const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 const layout = @import("dexter_glass_keyboard_layout.rye");
+const paint = @import("dexter_glass_keyboard_paint.rye");
 
-const witness_version = "20260717.180025";
+const witness_version = "20260717.180558";
 
 fn run_selftest(_: std.process.Init) !u8 {
     assert(std.mem.eql(u8, layout.waymark, "ZETA"));
@@ -32,8 +33,23 @@ fn run_selftest(_: std.process.Init) !u8 {
     assert(letters.mode == .letters);
     print("zeta0: page_for mode switch -- GREEN\n", .{});
 
-    print("zeta0: version {s}\n", .{witness_version});
-    print("GREEN: ZETA0 — English layout tables seated under waymark ZETA.\n", .{});
+    var lines: [paint.keyboard_rows][paint.max_line_len]u8 = undefined;
+    var lens: [paint.keyboard_rows]u32 = undefined;
+    assert(paint.format_letters_page(&lines, &lens));
+    assert(std.mem.indexOf(u8, lines[0][0..lens[0]], "q") != null);
+    assert(std.mem.indexOf(u8, lines[0][0..lens[0]], "p") != null);
+    assert(std.mem.indexOf(u8, lines[2][0..lens[2]], "sh") != null);
+    assert(std.mem.indexOf(u8, lines[3][0..lens[3]], "123") != null);
+    print("zeta1: letters paint lines \"{s}\" -- GREEN\n", .{lines[0][0..lens[0]]});
+
+    assert(paint.letters_top_left_hit_is_q());
+    const map = paint.build_hit_map(0, 0, 1000, 100, 0, layout.letters_page);
+    assert(map.contains(10, 10));
+    assert(!map.contains(-1, 0));
+    print("zeta1: hit boxes top-left q -- GREEN\n", .{});
+
+    print("zeta: version {s}\n", .{witness_version});
+    print("GREEN: ZETA0+ZETA1 — layout tables and letters paint/hit under waymark ZETA.\n", .{});
     return 0;
 }
 

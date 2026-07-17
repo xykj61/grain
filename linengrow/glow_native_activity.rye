@@ -130,6 +130,8 @@ extern fn AInputQueue_preDispatchEvent(queue: ?*anyopaque, event: ?*anyopaque) c
 extern fn AInputQueue_finishEvent(queue: ?*anyopaque, event: ?*anyopaque, handled: c_int) callconv(.c) void;
 extern fn AInputEvent_getType(event: ?*anyopaque) callconv(.c) i32;
 extern fn AMotionEvent_getAction(event: ?*anyopaque) callconv(.c) i32;
+extern fn AMotionEvent_getX(event: ?*anyopaque, pointer_index: usize) callconv(.c) f32;
+extern fn AMotionEvent_getY(event: ?*anyopaque, pointer_index: usize) callconv(.c) f32;
 extern fn AKeyEvent_getAction(event: ?*anyopaque) callconv(.c) i32;
 extern fn AKeyEvent_getKeyCode(event: ?*anyopaque) callconv(.c) i32;
 extern fn AKeyEvent_getMetaState(event: ?*anyopaque) callconv(.c) i32;
@@ -213,8 +215,15 @@ fn on_input_cb(_: c_int, _: c_int, _: ?*anyopaque) callconv(.c) c_int {
         } else if (ev_type == input_event_motion) {
             const action = AMotionEvent_getAction(event) & motion_action_mask;
             if (action == motion_action_up) {
-                ANativeActivity_finish(g_activity);
-                handled = 1;
+                const tx: i32 = @intFromFloat(AMotionEvent_getX(event, 0));
+                const ty: i32 = @intFromFloat(AMotionEvent_getY(event, 0));
+                // ZETA1: taps on the painted keyboard stay on glass (ZETA2 drains Actions).
+                if (surface.last_keyboard_hit.contains(tx, ty)) {
+                    handled = 1;
+                } else {
+                    ANativeActivity_finish(g_activity);
+                    handled = 1;
+                }
             }
         }
         AInputQueue_finishEvent(queue, event, handled);
