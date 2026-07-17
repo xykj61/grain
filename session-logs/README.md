@@ -8,6 +8,9 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260717.165715` — [Glow lent-as-arm closes the form](20260717-165715_glow-lent-as-arm.bron) — ?: ?- ?~ length arms; foundations unmoved
+- `20260717.165200` — [Compass vs Glow surface — check-in](20260717-165200_compass-vs-glow-surface-check-in.bron) — keep foundations; working layer for rune surface
+- `20260717.165112` — [Check-in after lent paren send](20260717-165112_check-in-after-lent-paren.bron) — lean lent-as-arm next
 - `20260717.164748` — [Glow (lent …) first paren nest form](20260717-164748_glow-lent-paren-nest-form.bron) — expr lent_of under =/; desk GREEN
 - `20260717.164450` — [Check-in after shared nest expr send](20260717-164450_check-in-after-shared-nest-expr.bron) — paren op vs tokens vs HAWM2
 - `20260717.164350` — [Glow shared nest expr — first general-lexer lap](20260717-164350_glow-shared-nest-expr-first-lexer-lap.bron) — expr.rye; lowers share nests; GREEN
