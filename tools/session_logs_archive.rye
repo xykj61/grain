@@ -47,8 +47,10 @@ fn list_flat_logs(a: std.mem.Allocator, io: std.Io, logs_dir: []const u8) ![][]c
     }
     while (try it.next(io)) |entry| {
         if (entry.kind != .file) continue;
-        if (!std.mem.endsWith(u8, entry.name, ".md")) continue;
         if (std.mem.eql(u8, entry.name, "README.md")) continue;
+        const is_md = std.mem.endsWith(u8, entry.name, ".md");
+        const is_bron = std.mem.endsWith(u8, entry.name, ".bron");
+        if (!is_md and !is_bron) continue;
         if (day_from_log_fname(entry.name) == null) continue;
         try names.append(a, try a.dupe(u8, entry.name));
     }
@@ -255,12 +257,15 @@ fn today_from_env_or_date(a: std.mem.Allocator, io: std.Io) ![]const u8 {
 
 test "day_from_log_fname parses stamp prefix" {
     try std.testing.expectEqualStrings("20260703", day_from_log_fname("20260703-100000_alpha.md").?);
+    try std.testing.expectEqualStrings("20260717", day_from_log_fname("20260717-125858_skate-seen-on-pixel.bron").?);
     try std.testing.expect(day_from_log_fname("README.md") == null);
 }
 
 test "should_fold_flat keeps today flat" {
     try std.testing.expect(should_fold_flat("20260703-100000_alpha.md", "20260704"));
     try std.testing.expect(!should_fold_flat("20260704-100000_beta.md", "20260704"));
+    try std.testing.expect(should_fold_flat("20260716-145955_rune.bron", "20260717"));
+    try std.testing.expect(!should_fold_flat("20260717-125858_skate.bron", "20260717"));
 }
 
 test "rewrite_readme_link is idempotent" {
