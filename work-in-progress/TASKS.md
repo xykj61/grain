@@ -232,9 +232,21 @@
 - [x] **Glow English QWERTY glass keyboard — research + silo** `20260717.175220` — study [`../external-research/20260717-175220_glow-english-qwerty-glass-keyboard-ios-inspired.md`](../external-research/20260717-175220_glow-english-qwerty-glass-keyboard-ios-inspired.md); silo [`../active-designing/20260717-175220_dexter-english-qwerty-glass-keyboard.md`](../active-designing/20260717-175220_dexter-english-qwerty-glass-keyboard.md). Own Skate OSK; decline IME host.
 - [x] **Waymark ZETA + ZETA0 layout tables** `20260717.180025` — input `glow-english-qwerty-glass-keyboard-3` → **ZETA**; [`dexter_glass_keyboard_layout.rye`](../linengrow/dexter_glass_keyboard_layout.rye); witness GREEN; parity wired; compressor [`../docs/ZETA.md`](../docs/ZETA.md).
 - [x] **ZETA1 — Paint letters mode on Skate** `20260717.180558` — [`dexter_glass_keyboard_paint.rye`](../linengrow/dexter_glass_keyboard_paint.rye) formats letters rows; glass paints Skate rows 14–17; hit map stored; taps on keyboard do not finish (ZETA2 drains Actions). Witness + pack GREEN.
-- [ ] **ZETA1 Pixel look** — host install; eyes on QWERTY rows under Dexter line.
-- [ ] **ZETA2 — Tap → Dexter Action** — live line without system IME.
-- [ ] **ZETA3 — Blinking caret on Dexter line** — visible terminal pulse.
+- [x] **ZETA1 Pixel look** `20260717.180933` — Keaton: QWERTY visible on glass; taps not live yet (expected before ZETA2).
+- [x] **ZETA2 — Tap → Dexter Action** `20260717.180933` — `hit_test` → `tap_result` → `LineEditor.apply_action`; mode pages + shift latch; device-free drain GREEN; pack GREEN. Pixel typing look next.
+- [x] **ZETA2 Pixel typing look** `20260717.183345` — Keaton: we can type; GREEN for typing. Honest gaps: some keys wrong (hit boxes ≠ painted label widths); font tiny; portrait letterboxing (grid centered, large empty top/bottom).
+- [ ] **ZETA hit-box / density / portrait layout** — map taps to painted key bounds (not equal column slices); raise Skate scale on phone; fill portrait height rather than tiny centered chrome.
+- [x] **TAME SLC realign — diagnosis + ledger** `20260717.181715` — [`../active-designing/20260717-181715_tame-slc-rye-audit-ledger.md`](../active-designing/20260717-181715_tame-slc-rye-audit-ledger.md); native advise false GREEN named; ROADMAP/ZETA tidy gate.
+- [x] **TAME advise truth** `20260717.181715` — parenthesize `== false` filters in `tame_style_scan_advise.rish`; selftest native=legacy counts via Rish `lines`/`split` (no Python).
+- [x] **TAME SLC Rye DoD in agent rules** `20260717.181715` — Cursor + Claude `tame-guidance` Definition of Done.
+- [x] **TAME Lap 1 — Dexter/ZETA/`glow_native_*`** `20260717.181715` — opening lines, asserts, `copy_disjoint`; keyboard + dexter witnesses GREEN; pack GREEN; Lap 1 files left zero-assert list (21 remain for Lap 2+); `@memcpy` app sites **0**.
+- [x] **TAME Lap 2 — tube/sala/neth/grants** `20260717.182418` — all linengrow glass-season zero-assert files tidied; witnesses GREEN; advise **3** remaining (`bolt_apply_step`, `kumara`, `pedersen`).
+- [ ] **TAME Lap 3** — check-in before crypto/mantra density on the three leftovers.
+- [x] **`kg` = keep going** `20260717.182418` — seated in Cursor + Claude collaboration rules; **send** remains commit·push·merge.
+- [x] **ZETA3 — Blinking caret on Dexter line** `20260717.182826` — `format_dexter_line_live` + `caret_visible_at`; NativeActivity `timerfd` on ALooper; witness + pack GREEN. Pixel blink look next.
+- [x] **ZETA3 Pixel blink look** `20260717.183345` — typing path GREEN with caret (same look pass as ZETA2).
+- [ ] **Horizon — Glow orientation (Sensors → layout)** — check-in; note [`../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md`](../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md).
+- [ ] **Horizon — Glow form-factor product names** — check-in; same note (GlowOS / Glow Desk · Glow Glass / Glow Go); Sala stays viewer parallel.
 - [ ] **ZETA4 — Emoji mode SLC** — bounded frequent set + few tabs.
 - [ ] **ZETA5 — Pixel look keys + caret** — type by tap on device.
 - [ ] **C2 thin TAME compressor** — optional `docs/TAME.md` only if cold-load pain is measured.

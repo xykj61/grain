@@ -6,6 +6,8 @@
 //! only then may admit (TUBE1). Composes landed Granary + TUBE0 + TUBE1.
 
 const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
 const gc = @import("granary_core.rye");
 const tube = @import("tube_manifest.rye");
 const tube1 = @import("tube1_admission.rye");
@@ -26,11 +28,17 @@ pub fn publish_app_manifest(
     weave: []const u8,
     manifest: *const tube.Manifest,
 ) PublishError![gc.digest_hex_len]u8 {
+    // invariant: path parts and log buffer are non-empty
+    assert(person.len > 0);
+    assert(weave.len > 0);
+    assert(log.len > 0);
     var body: [tube.max_canonical_bytes]u8 = undefined;
     const body_len = try tube.write_canonical(manifest, &body);
+    assert(body_len > 0);
     const digest = try gc.put_resin(store, body[0..body_len]);
     var fact_buf: [gc.max_fact_len]u8 = undefined;
     const fact_len = try gc.sign_name_fact(gc.granary_version, person, weave, &digest, &fact_buf);
+    assert(fact_len > 0);
     try gc.publish(reg, log, log_len, fact_buf[0..fact_len]);
     return digest;
 }
@@ -45,9 +53,12 @@ pub fn resolve_and_admit(
     table: *const caps.CapabilityTable,
     agent_label: []const u8,
 ) PublishError!void {
+    assert(path.len > 0);
+    assert(agent_label.len > 0);
     const fact = try gc.resolve(reg, path);
     var out: [tube.max_canonical_bytes]u8 = undefined;
     const n = try gc.clone_resin(store, fact.resin_digest, &out);
+    assert(n > 0);
     var check: [gc.digest_hex_len]u8 = undefined;
     gc.digest_hex_of(out[0..n], &check);
     if (!std.mem.eql(u8, &check, fact.resin_digest)) return error.DigestMismatch;
@@ -61,10 +72,16 @@ pub fn run_demo_publish(
     log: []u8,
     log_len: *u32,
 ) PublishError!struct { manifest: tube.Manifest, digest: [gc.digest_hex_len]u8 } {
+    assert(log.len > 0);
     const declared = [_]tube.DeclaredCapability{
         tube.DeclaredCapability.init(pool.ledger_resource, caps.right_read | caps.right_write),
     };
+    assert(declared.len == 1);
     const manifest = try tube.build("sala-broadcaster", "0.1.0", &declared, 1024);
     const digest = try publish_app_manifest(store, reg, log, log_len, "glow", "sala-broadcaster", &manifest);
     return .{ .manifest = manifest, .digest = digest };
+}
+
+comptime {
+    _ = print;
 }

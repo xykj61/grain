@@ -1,4 +1,4 @@
-# dexter_glass_witness.rish — Dexter glass demo + live KEY drain.
+# dexter_glass_witness.rish — Dexter glass demo + live KEY + ZETA3 caret.
 #
 #   rishi/bin/rishi run tools/dexter_glass_witness.rish
 
@@ -14,5 +14,6 @@ assert selftest.out contains "GREEN" else "Dexter glass not GREEN"
 assert selftest.out contains "demo editor submits" else "Dexter glass missing editor claim"
 assert selftest.out contains "DEXTER line" else "Dexter glass missing Skate line claim"
 assert selftest.out contains "live KEY drain" else "Dexter glass missing live KEY drain claim"
+assert selftest.out contains "ZETA3 caret" else "Dexter glass missing ZETA3 caret claim"
 
-say "GREEN: Dexter glass witness passed — demo + live KEY drain."
+say "GREEN: Dexter glass witness passed — demo + live KEY + ZETA3 caret."

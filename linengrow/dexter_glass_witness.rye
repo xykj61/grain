@@ -12,7 +12,7 @@ const glass = @import("dexter_glass_line.rye");
 const key = @import("dexter_glass_key.rye");
 const dexter = @import("window_input.rye");
 
-const witness_version = "20260717.174551";
+const witness_version = "20260717.182826";
 
 fn run_selftest(_: std.process.Init) !u8 {
     var submitted: [dexter.max_line_len]u8 = undefined;
@@ -56,8 +56,18 @@ fn run_selftest(_: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, line[0..len], "hi") != null);
     print("dexter-glass: live KEY drain \"{s}\" -- GREEN\n", .{line[0..len]});
 
+    // ZETA3 — caret phase + live line with glyph.
+    assert(glass.caret_visible_at(0));
+    assert(!glass.caret_visible_at(glass.caret_period_ms));
+    assert(glass.caret_visible_at(glass.caret_period_ms * 2));
+    assert(glass.format_dexter_line_live("glow", true, &line, &len));
+    assert(line[len - 1] == glass.caret_glyph);
+    assert(glass.format_dexter_line_live("glow", false, &line, &len));
+    assert(line[len - 1] != glass.caret_glyph);
+    print("dexter-glass: ZETA3 caret blink phase -- GREEN\n", .{});
+
     print("dexter-glass: version {s}\n", .{witness_version});
-    print("GREEN: Dexter glass — demo + live KEY drain paint a Skate line.\n", .{});
+    print("GREEN: Dexter glass — demo + live KEY + ZETA3 caret.\n", .{});
     return 0;
 }
 

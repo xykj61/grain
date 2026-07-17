@@ -1,4 +1,4 @@
-//! linengrow/dexter_glass_keyboard_witness.rye — ZETA0 tables + ZETA1 paint/hit.
+//! linengrow/dexter_glass_keyboard_witness.rye — ZETA0–ZETA2 glass keyboard.
 //!
 //!   rye build linengrow/dexter_glass_keyboard_witness.rye \
 //!     -femit-bin=linengrow/bin/dexter_glass_keyboard_witness
@@ -9,8 +9,9 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const layout = @import("dexter_glass_keyboard_layout.rye");
 const paint = @import("dexter_glass_keyboard_paint.rye");
+const dexter = @import("window_input.rye");
 
-const witness_version = "20260717.180558";
+const witness_version = "20260717.180933";
 
 fn run_selftest(_: std.process.Init) !u8 {
     assert(std.mem.eql(u8, layout.waymark, "ZETA"));
@@ -48,8 +49,44 @@ fn run_selftest(_: std.process.Init) !u8 {
     assert(!map.contains(-1, 0));
     print("zeta1: hit boxes top-left q -- GREEN\n", .{});
 
+    // ZETA2: tap_result + drain into LineEditor (same Actions KEY drain uses).
+    const q_action = paint.tap_result(.{ .char_ = 'q' }, false);
+    assert(q_action == .action);
+    switch (q_action) {
+        .action => |a| switch (a) {
+            .char_ => |ch| assert(ch == 'q'),
+            else => unreachable,
+        },
+        else => unreachable,
+    }
+    const shift_q = paint.tap_result(.{ .char_ = 'q' }, true);
+    switch (shift_q) {
+        .action => |a| switch (a) {
+            .char_ => |ch| assert(ch == 'Q'),
+            else => unreachable,
+        },
+        else => unreachable,
+    }
+    assert(paint.tap_result(.delete, false) == .action);
+    assert(paint.tap_result(.to_numbers, false) == .set_mode);
+
+    var editor: dexter.LineEditor = .{};
+    const taps = [_]layout.Key{
+        .{ .char_ = 'g' },
+        .{ .char_ = 'l' },
+        .{ .char_ = 'o' },
+        .{ .char_ = 'w' },
+        .space,
+        .{ .char_ = '1' },
+        .delete,
+        .{ .char_ = '2' },
+    };
+    paint.drain_layout_keys(&editor, &taps);
+    assert(std.mem.eql(u8, editor.prompt_slice(), "glow 2"));
+    print("zeta2: tap drain \"{s}\" -- GREEN\n", .{editor.prompt_slice()});
+
     print("zeta: version {s}\n", .{witness_version});
-    print("GREEN: ZETA0+ZETA1 — layout tables and letters paint/hit under waymark ZETA.\n", .{});
+    print("GREEN: ZETA0–ZETA2 — layout, paint/hit, and tap→Action under waymark ZETA.\n", .{});
     return 0;
 }
 

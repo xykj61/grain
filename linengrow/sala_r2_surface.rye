@@ -6,6 +6,8 @@
 //! multi-panel thin-view.
 
 const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
 const kumara = @import("kumara.rye");
 const rc = @import("receipt_core.rye");
 const mc = @import("mala_core.rye");
@@ -23,6 +25,9 @@ fn append_send(
     to_hex: *const [mc.pubkey_hex_len]u8,
     signer: kumara.KeyPair,
 ) !void {
+    // invariant: send append stays within log bound
+    assert(len.* <= rc.max_log_len);
+    assert(amount.len > 0);
     const fields = rc.FactFields{
         .from = from_hex[0..],
         .to = to_hex[0..],
@@ -35,6 +40,9 @@ fn append_send(
 
 /// Host three isolated ledger agents and gather them onto one Sala surface.
 pub fn run_demo_surface() SurfaceError!sala_surf.Surface {
+    // invariant: three isolated panels fit R2 bounds
+    assert(sala_surf.max_panels >= 3);
+    assert(mc.issuer_seed.len == kumara.seed_length);
     const issuer_kp = kumara.keypair_from_seed(&mc.issuer_seed);
     const holder_kp = kumara.keypair_from_seed(&mc.holder_seed);
     var issuer_hex: [mc.pubkey_hex_len]u8 = undefined;
@@ -97,5 +105,10 @@ pub fn run_demo_surface() SurfaceError!sala_surf.Surface {
     try surf.add("ask", r_ask);
     try surf.add("receipt", r_receipt);
     try surf.add("reputation", r_rep);
+    assert(surf.count == 3);
     return surf;
+}
+
+comptime {
+    _ = print;
 }
