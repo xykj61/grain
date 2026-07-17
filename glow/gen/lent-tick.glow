@@ -1,3 +1,3 @@
 ::  Bounded trap whose ceiling is a named subject's length.
-::  Lowered by glow/lower_trap.rye into ordinary Rye; bound is records.len.
+::  Lowers to a shrinking-list fold under records.len (brief's own shape).
 |-  (lent records)

@@ -190,7 +190,7 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **Eighth rune head — `=*`, `20260717.150453`** — [`glow/rune_alias.rye`](../glow/rune_alias.rye) completes the `=` trio. Witness GREEN; `parity_ch01` wired.
 
-**Glow generator hop — all eight heads emit, `20260717.152649`** · cast auras `20260717.152801` (sent through `?~` at `ae7184faf7`; `=.` · `=*` · aura grow local) — every rune head lowers; unsigned cast family `@u8`–`@u64` checked. Desk under [`glow/gen/`](../glow/gen/). Naming hold: Glow = language, Rishi = shell. Next: deepen bodies (real arms, subjects, expressions), or a general lexer — still check-in.
+**Glow generator hop — eight heads emit** (sent `6b61e26ed5`) · **body deepen lap through `=*` `20260717.154037`** — shrinking lent · named `?:`/`?-`/`?~` arms · trailing `=/`/`=.` values · `=*` named source. `=` category bodies complete. Naming hold: Glow = language · Pool = Gall-role · Glow is not a vane. Next: real expressions under arms, or a general lexer — still check-in.
 
 ## The Visual Track — Realidream (horizon lane, ladder already named)
 
