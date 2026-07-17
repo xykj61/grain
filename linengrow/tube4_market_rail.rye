@@ -1,0 +1,144 @@
+//! linengrow/tube4_market_rail.rye — TUBE4: acquire a published app over the market rail.
+//!
+//! Per expanding-prompts/20260716-142818 rung TUBE4: price the TUBE2 Manifest
+//! resin in MALA on Granary Exchange, settle the send through Neth's
+//! append_and_reroot, bind a weave-settle slip, then unlock TUBE3 sealed
+//! fetch. Mandi's vessel floor stays a sibling pattern; this slice uses the
+//! weave Exchange floor already landed for person/weave digests.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const kumara = @import("kumara.rye");
+const rc = @import("receipt_core.rye");
+const mc = @import("mala_core.rye");
+const neth = @import("neth_serial_core.rye");
+const gc = @import("granary_core.rye");
+const exchange = @import("exchange_listing.rye");
+const settle = @import("weave_settle_core.rye");
+const wov = @import("wov_core.rye");
+const vfw = @import("vessel_fetch_wire.rye");
+const tube2 = @import("tube2_publish.rye");
+const tube3 = @import("tube3_resin_fetch.rye");
+
+pub const demo_price = "50";
+
+pub const MarketError = tube3.FetchError || exchange.ListingError || settle.SettleError || neth.CoreError || error{ TableFull, Overflow, InvalidFact, BadAmount, Insufficient };
+
+pub const AcquireResult = struct {
+    digest: [gc.digest_hex_len]u8 = undefined,
+    listing_receipt: [exchange.digest_hex_len]u8 = undefined,
+    neth_root: [32]u8 = undefined,
+    fetched_len: u32 = 0,
+};
+
+/// Publish (TUBE2), list at demo_price, pay via Neth append, settle, fetch (TUBE3).
+pub fn run_demo_acquire(
+    store: *gc.ResinStore,
+    reg: *gc.Registry,
+    granary_log: []u8,
+    granary_log_len: *u32,
+    out_bytes: *[vfw.max_resin_bytes]u8,
+) MarketError!AcquireResult {
+    const published = try tube2.run_demo_publish(store, reg, granary_log, granary_log_len);
+
+    var listing: [exchange.max_listing_len]u8 = undefined;
+    const ln = try exchange.sign_listing(
+        exchange.exchange_version,
+        tube2.demo_path,
+        &published.digest,
+        demo_price,
+        &listing,
+    );
+    try exchange.verify_against_registry(listing[0..ln], reg);
+    var listing_receipt: [exchange.digest_hex_len]u8 = undefined;
+    try exchange.receipt_digest(listing[0..ln], &listing_receipt);
+
+    // MALA: mint only, then Neth-append the price send (settle through Neth).
+    const issuer_kp = kumara.keypair_from_seed(&mc.issuer_seed);
+    const holder_kp = kumara.keypair_from_seed(&mc.holder_seed);
+    var issuer_hex: [mc.pubkey_hex_len]u8 = undefined;
+    var holder_hex: [mc.pubkey_hex_len]u8 = undefined;
+    mc.hex_of_key(issuer_kp.public_key, &issuer_hex);
+    mc.hex_of_key(holder_kp.public_key, &holder_hex);
+
+    var mala_log: [rc.max_log_len]u8 = undefined;
+    var mala_len: u32 = 0;
+    const mint_fields = rc.FactFields{
+        .from = issuer_hex[0..],
+        .to = holder_hex[0..],
+        .amount = "1000",
+        .memo = mc.memo_mint,
+        .stamp = settle.settle_version,
+    };
+    try mc.sign_append(&mala_log, &mala_len, mint_fields, issuer_kp);
+
+    const send_fields = rc.FactFields{
+        .from = holder_hex[0..],
+        .to = issuer_hex[0..],
+        .amount = demo_price,
+        .memo = mc.memo_send,
+        .stamp = settle.settle_version,
+    };
+    const signed = try mc.sign_fact(send_fields, holder_kp);
+    var line_buf: [rc.max_line_len]u8 = undefined;
+    const line_len = try rc.format_log_line(signed.sig, signed.canonical[0..signed.canonical_len], &line_buf);
+    const neth_result = try neth.append_and_reroot(
+        &mala_log,
+        mala_len,
+        line_buf[0..line_len],
+        &issuer_hex,
+        &holder_hex,
+        issuer_kp.public_key,
+        holder_kp.public_key,
+    );
+    assert(neth_result.balances.issuer == 50);
+    assert(neth_result.balances.holder == 950);
+
+    var mala_digest: [settle.digest_hex_len]u8 = undefined;
+    settle.digest_bytes(signed.canonical[0..signed.canonical_len], &mala_digest);
+
+    // WOV payment half at the same amount.
+    const buyer_kp = kumara.keypair_from_seed(&wov.holder_a_seed);
+    const seller_kp = kumara.keypair_from_seed(&wov.holder_b_seed);
+    var buyer_hex: [wov.pubkey_hex_len]u8 = undefined;
+    var seller_hex: [wov.pubkey_hex_len]u8 = undefined;
+    wov.hex_of_key(buyer_kp.public_key, &buyer_hex);
+    wov.hex_of_key(seller_kp.public_key, &seller_hex);
+    var book = wov.Book.init();
+    try wov.mint(&book, &buyer_hex, 200);
+    try wov.transfer(&book, &buyer_hex, &seller_hex, 50);
+    var wov_line: [160]u8 = undefined;
+    const wov_line_slice = std.fmt.bufPrint(
+        &wov_line,
+        "wov-transfer {s} {s} 50\n",
+        .{ buyer_hex[0..], seller_hex[0..] },
+    ) catch return error.Overflow;
+    var wov_digest: [settle.digest_hex_len]u8 = undefined;
+    settle.digest_bytes(wov_line_slice, &wov_digest);
+
+    const payment_fields = settle.PaymentFields{
+        .amount = demo_price,
+        .currency = "mala",
+        .mala_digest = &mala_digest,
+        .wov_digest = &wov_digest,
+    };
+    var payment_hex: [settle.digest_hex_len]u8 = undefined;
+    try settle.payment_digest(payment_fields, &payment_hex);
+
+    var slip: [settle.max_settle_len]u8 = undefined;
+    const sn = try settle.sign_settle(settle.settle_version, &listing_receipt, &payment_hex, &slip);
+    try settle.verify_against_listing(slip[0..sn], &listing_receipt, &payment_hex, demo_price, demo_price);
+
+    var settled = settle.SettledSet.empty();
+    try settle.record_settle(&settled, &listing_receipt);
+
+    // Unlock: sealed fetch of the purchased resin (TUBE3).
+    const fetched_len = try tube3.fetch_published_sealed(store, reg, published.digest[0..], out_bytes);
+
+    return .{
+        .digest = published.digest,
+        .listing_receipt = listing_receipt,
+        .neth_root = neth_result.root,
+        .fetched_len = fetched_len,
+    };
+}

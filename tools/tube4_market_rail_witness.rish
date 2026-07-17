@@ -1,0 +1,23 @@
+# tube4_market_rail_witness.rish — TUBE4: market acquire of a published app.
+#
+# TUBE2 publish → Exchange list → Neth pay → weave settle → TUBE3 fetch.
+# See linengrow/tube4_market_rail.rye.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/tube4_market_rail_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/tube4_market_rail_witness"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/tube4_market_rail_witness.rye -femit-bin=${bin}"]
+assert build.ok else "TUBE4 market-rail witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "TUBE4 market-rail witness exited non-zero"
+assert selftest.out contains "GREEN" else "TUBE4 market-rail witness not GREEN"
+assert selftest.out contains "welcome acquire" else "TUBE4 missing the welcome acquire path"
+assert selftest.out contains "zero price" else "TUBE4 missing the zero-price refusal"
+assert selftest.out contains "digest mismatch" else "TUBE4 missing the digest-mismatch refusal"
+assert selftest.out contains "double settle" else "TUBE4 missing the double-settle refusal"
+
+say "GREEN: TUBE4 market-rail witness passed."
