@@ -5,7 +5,7 @@
 **Version:** `20260717.175220` (Eastern) · waymark **ZETA** + ZETA0 `20260717.180025`
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
-**Status:** Mixed — design seated; **ZETA0** layout tables Checkable GREEN; paint still vision (Two Rooms).
+**Status:** Mixed — **ZETA0+ZETA1** Checkable GREEN; ZETA2+ vision (Two Rooms).
 **World study:** [`../external-research/20260717-175220_glow-english-qwerty-glass-keyboard-ios-inspired.md`](../external-research/20260717-175220_glow-english-qwerty-glass-keyboard-ios-inspired.md)
 **Compressor:** [`../docs/ZETA.md`](../docs/ZETA.md)
 
@@ -29,8 +29,8 @@ Study public layout/behavior notes only. Emit Glow layout tables (Rye). Never ve
 
 | Lap | Claim | State |
 |---|---|---|
-| **ZETA0** | English letters + numbers + symbols **layout tables** | **GREEN** · `tools/dexter_glass_keyboard_witness.rish` |
-| **ZETA1** | Paint letters mode on Skate; hit boxes | open |
+| **ZETA0** | English letters + numbers + symbols **layout tables** | **GREEN** |
+| **ZETA1** | Paint letters mode on Skate; hit boxes | **GREEN** `20260717.180558` |
 | **ZETA2** | Tap → Dexter Action → live line refresh | open |
 | **ZETA3** | Blinking caret on `DEXTER line · …` | open |
 | **ZETA4** | Emoji mode SLC (bounded frequent set) | open |
@@ -38,7 +38,7 @@ Study public layout/behavior notes only. Emit Glow layout tables (Rye). Never ve
 
 ## Aligned Next
 
-**ZETA1** — paint the letters page on Skate with hit boxes.
+**ZETA1 Pixel look** — host install; then **ZETA2** tap → Dexter Action.
 
 ## Related
 

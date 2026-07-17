@@ -1,0 +1,142 @@
+//! linengrow/dexter_glass_keyboard_paint.rye — ZETA1 letters paint + hit boxes.
+//!
+//! Formats a layout Page into Skate text rows and maps window taps onto keys.
+//! Device-free; NativeActivity stores the last HitMap for motion.
+
+const std = @import("std");
+const layout = @import("dexter_glass_keyboard_layout.rye");
+
+pub const max_line_len: u32 = 48;
+pub const keyboard_rows: u32 = 4;
+
+/// ASCII face for one key (Skate-safe).
+pub fn label_for(key: layout.Key) []const u8 {
+    return switch (key) {
+        .char_ => |ch| blk: {
+            // Single-byte printable — caller copies into a 1-char buffer when needed.
+            _ = ch;
+            break :blk "";
+        },
+        .shift => "sh",
+        .delete => "del",
+        .space => "spc",
+        .@"return" => "ret",
+        .to_numbers => "123",
+        .to_letters => "abc",
+        .to_symbols => "#+=",
+        .to_emoji => "em",
+    };
+}
+
+/// Write one page row as space-separated labels into out_line. Returns length.
+pub fn format_page_row(page: layout.Page, row_idx: u32, out_line: *[max_line_len]u8) u32 {
+    if (row_idx >= page.rows.len) return 0;
+    const keys = page.rows[row_idx].keys;
+    var pos: u32 = 0;
+    var i: u32 = 0;
+    while (i < keys.len) : (i += 1) {
+        if (pos > 0) {
+            if (pos >= max_line_len) break;
+            out_line[pos] = ' ';
+            pos += 1;
+        }
+        switch (keys[i]) {
+            .char_ => |ch| {
+                if (pos >= max_line_len) break;
+                out_line[pos] = ch;
+                pos += 1;
+            },
+            else => {
+                const lab = label_for(keys[i]);
+                if (pos + lab.len > max_line_len) break;
+                @memcpy(out_line[pos..][0..lab.len], lab);
+                pos += @intCast(lab.len);
+            },
+        }
+    }
+    return pos;
+}
+
+/// Format all four letters-page rows. Returns false if any row is empty.
+pub fn format_letters_page(out_lines: *[keyboard_rows][max_line_len]u8, out_lens: *[keyboard_rows]u32) bool {
+    const page = layout.letters_page;
+    var r: u32 = 0;
+    while (r < keyboard_rows) : (r += 1) {
+        out_lens[r] = format_page_row(page, r, &out_lines[r]);
+        if (out_lens[r] == 0) return false;
+    }
+    // Sanity: top-left q visible.
+    return std.mem.indexOf(u8, out_lines[0][0..out_lens[0]], "q") != null;
+}
+
+pub const HitMap = struct {
+    origin_x: i32 = 0,
+    origin_y: i32 = 0,
+    width: i32 = 0,
+    height: i32 = 0,
+    row_h: i32 = 0,
+    ready: bool = false,
+    page: layout.Page = layout.letters_page,
+
+    pub fn contains(self: HitMap, x: i32, y: i32) bool {
+        if (!self.ready or self.width <= 0 or self.height <= 0) return false;
+        return x >= self.origin_x and x < self.origin_x + self.width and
+            y >= self.origin_y and y < self.origin_y + self.height;
+    }
+
+    /// Hit-test a tap in window coordinates. Returns null when outside the keyboard.
+    pub fn hit_test(self: HitMap, x: i32, y: i32) ?layout.Key {
+        if (!self.contains(x, y)) return null;
+        const local_y = y - self.origin_y;
+        const row_idx: u32 = @intCast(@divTrunc(local_y, self.row_h));
+        if (row_idx >= self.page.rows.len) return null;
+        const keys = self.page.rows[row_idx].keys;
+        if (keys.len == 0) return null;
+        const local_x = x - self.origin_x;
+        const key_w = @divTrunc(self.width, @as(i32, @intCast(keys.len)));
+        if (key_w <= 0) return null;
+        var col: i32 = @divTrunc(local_x, key_w);
+        if (col < 0) col = 0;
+        if (col >= keys.len) col = @intCast(keys.len - 1);
+        return keys[@intCast(col)];
+    }
+};
+
+/// Build a hit map for a keyboard painted at skate rows starting at `row0`.
+pub fn build_hit_map(
+    grid_origin_x: i32,
+    grid_origin_y: i32,
+    grid_w: i32,
+    cell_ph: i32,
+    row0: u32,
+    page: layout.Page,
+) HitMap {
+    return .{
+        .origin_x = grid_origin_x,
+        .origin_y = grid_origin_y + @as(i32, @intCast(row0)) * cell_ph,
+        .width = grid_w,
+        .height = @as(i32, @intCast(keyboard_rows)) * cell_ph,
+        .row_h = cell_ph,
+        .ready = true,
+        .page = page,
+    };
+}
+
+/// Device-free: center of top-left key on a synthetic map returns 'q'.
+pub fn letters_top_left_hit_is_q() bool {
+    const map = HitMap{
+        .origin_x = 0,
+        .origin_y = 0,
+        .width = 1000,
+        .height = 400,
+        .row_h = 100,
+        .ready = true,
+        .page = layout.letters_page,
+    };
+    // First key of 10: center x = 50.
+    const key = map.hit_test(50, 50) orelse return false;
+    return switch (key) {
+        .char_ => |ch| ch == 'q',
+        else => false,
+    };
+}

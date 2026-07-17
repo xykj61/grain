@@ -15,6 +15,8 @@ const assert = std.debug.assert;
 // module root stays inside linengrow while Skate remains the one Brushstroke source.
 const skate = @import("skate_grid.rye");
 const sala_surf = @import("sala_surface.rye");
+const kb_paint = @import("dexter_glass_keyboard_paint.rye");
+const kb_layout = @import("dexter_glass_keyboard_layout.rye");
 
 const WindowBuffer = extern struct {
     width: i32,
@@ -50,7 +52,10 @@ fn put_line_centered(grid: *skate.Grid, row: u32, text: []const u8) void {
     grid.put_line(row, line[0..cols]);
 }
 
-/// Paint via Skate: title, R2, TUBE5 tip, hex, TUBE2–4 rail, Sala B1, Dexter, tap.
+/// Last keyboard hit map from paint (window coords). Soft-reset each paint.
+pub var last_keyboard_hit: kb_paint.HitMap = .{};
+
+/// Paint via Skate: title, R2, tip, hex, rail, B1, Dexter, ZETA letters, tap.
 pub fn paint_session_root_hex(
     window: ?*anyopaque,
     hex: *const [64]u8,
@@ -64,6 +69,7 @@ pub fn paint_session_root_hex(
     carriage_line: ?[]const u8,
     dexter_line: ?[]const u8,
 ) void {
+    last_keyboard_hit = .{};
     if (window == null) return;
     _ = ANativeWindow_setBuffersGeometry(window, 0, 0, format_rgba8888);
 
@@ -80,7 +86,8 @@ pub fn paint_session_root_hex(
     const cell_pw = skate.cell_w * scale;
     const cell_ph = skate.cell_h * scale;
     const cols: u32 = @intCast(@max(8, @min(80, @divTrunc(w, @as(i32, @intCast(cell_pw))))));
-    const rows: u32 = 14;
+    // 0–13 content · 14–17 ZETA letters keyboard (when admitted).
+    const rows: u32 = 18;
 
     const allocator = std.heap.page_allocator;
     var grid = skate.Grid.init(allocator, cols, rows) catch return;
@@ -128,8 +135,16 @@ pub fn paint_session_root_hex(
         if (dexter_line) |dex| {
             put_line_centered(&grid, 12, dex);
         }
+        var kb_lines: [kb_paint.keyboard_rows][kb_paint.max_line_len]u8 = undefined;
+        var kb_lens: [kb_paint.keyboard_rows]u32 = undefined;
+        if (kb_paint.format_letters_page(&kb_lines, &kb_lens)) {
+            var kr: u32 = 0;
+            while (kr < kb_paint.keyboard_rows) : (kr += 1) {
+                put_line_centered(&grid, 14 + kr, kb_lines[kr][0..kb_lens[kr]]);
+            }
+        }
     }
-    put_line_centered(&grid, 13, "TAP TO CLOSE");
+    put_line_centered(&grid, 13, if (tube1_admitted) "TAP ABOVE KB TO CLOSE" else "TAP TO CLOSE");
 
     const bg = rgba(0x1a, 0x14, 0x10);
     const fg = if (matched) rgba(0x7d, 0xc4, 0x8a) else rgba(0xe8, 0xc4, 0x7a);
@@ -160,6 +175,16 @@ pub fn paint_session_root_hex(
 
     const origin_x = @divTrunc(w - grid_w, 2);
     const origin_y = @divTrunc(h - grid_h, 5);
+    if (tube1_admitted) {
+        last_keyboard_hit = kb_paint.build_hit_map(
+            origin_x,
+            origin_y,
+            grid_w,
+            @intCast(cell_ph),
+            14,
+            kb_layout.letters_page,
+        );
+    }
     var gy: i32 = 0;
     while (gy < grid_h) : (gy += 1) {
         const dy = origin_y + gy;

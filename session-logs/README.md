@@ -8,6 +8,7 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260717.180725` — [ZETA1 letters paint + hit · kg](20260717-180725_zeta1-letters-paint-hit-kg.bron) — QWERTY on Skate 14–17; pack GREEN
 - `20260717.180147` — [Seat waymark ZETA and ZETA0 layouts](20260717-180147_waymark-seat-zeta-and-zeta0.bron) — ZETA drawn; layout tables GREEN; ZETA1 next
 - `20260717.175328` — [Glass keyboard · iOS-inspired · align · send](20260717-175328_glass-keyboard-ios-inspired-align-send.bron) — own Skate QWERTY; layout tables next; IME/caret gaps named
 - `20260717.174805` — [Dexter D3 live KEY drain · kg](20260717-174805_dexter-d3-live-key-drain-kg.bron) — showSoftInput + KEY→Action; pack GREEN
