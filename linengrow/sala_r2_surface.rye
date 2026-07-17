@@ -1,0 +1,101 @@
+//! linengrow/sala_r2_surface.rye — Sala R2 demo surface as a callable unit.
+//!
+//! Same three capability-isolated Pool agents as sala_surface_witness.rye
+//! Claim 1 (ask · receipt · reputation), gathered onto one Surface for the
+//! NativeActivity present seam. B0 still owns the session root; R2 owns the
+//! multi-panel thin-view.
+
+const std = @import("std");
+const kumara = @import("kumara.rye");
+const rc = @import("receipt_core.rye");
+const mc = @import("mala_core.rye");
+const caps = @import("capabilities.rye");
+const pool = @import("pool_host_seam.rye");
+const sala_surf = @import("sala_surface.rye");
+
+pub const SurfaceError = sala_surf.SurfaceError || pool.HostError || error{ TableFull, Overflow, InvalidFact, InvalidAmount };
+
+fn append_send(
+    log: *[rc.max_log_len]u8,
+    len: *u32,
+    amount: []const u8,
+    from_hex: *const [mc.pubkey_hex_len]u8,
+    to_hex: *const [mc.pubkey_hex_len]u8,
+    signer: kumara.KeyPair,
+) !void {
+    const fields = rc.FactFields{
+        .from = from_hex[0..],
+        .to = to_hex[0..],
+        .amount = amount,
+        .memo = mc.memo_send,
+        .stamp = "20260715.205500",
+    };
+    try mc.sign_append(log, len, fields, signer);
+}
+
+/// Host three isolated ledger agents and gather them onto one Sala surface.
+pub fn run_demo_surface() SurfaceError!sala_surf.Surface {
+    const issuer_kp = kumara.keypair_from_seed(&mc.issuer_seed);
+    const holder_kp = kumara.keypair_from_seed(&mc.holder_seed);
+    var issuer_hex: [mc.pubkey_hex_len]u8 = undefined;
+    var holder_hex: [mc.pubkey_hex_len]u8 = undefined;
+    mc.hex_of_key(issuer_kp.public_key, &issuer_hex);
+    mc.hex_of_key(holder_kp.public_key, &holder_hex);
+
+    var log_ask: [rc.max_log_len]u8 = undefined;
+    const ask_len = try mc.build_welcome_log(&log_ask, issuer_kp, holder_kp, &issuer_hex, &holder_hex);
+
+    var log_receipt: [rc.max_log_len]u8 = undefined;
+    var receipt_len = try mc.build_welcome_log(&log_receipt, issuer_kp, holder_kp, &issuer_hex, &holder_hex);
+    try append_send(&log_receipt, &receipt_len, "50", &holder_hex, &issuer_hex, holder_kp);
+
+    var log_rep: [rc.max_log_len]u8 = undefined;
+    var rep_len = try mc.build_welcome_log(&log_rep, issuer_kp, holder_kp, &issuer_hex, &holder_hex);
+    try append_send(&log_rep, &rep_len, "50", &holder_hex, &issuer_hex, holder_kp);
+    try append_send(&log_rep, &rep_len, "25", &holder_hex, &issuer_hex, holder_kp);
+
+    var table: caps.CapabilityTable = .{};
+    const ask = try table.add_child("ask");
+    try ask.grant(caps.Capability.init("state-ask", caps.right_read | caps.right_write));
+    const receipt = try table.add_child("receipt");
+    try receipt.grant(caps.Capability.init("state-receipt", caps.right_read | caps.right_write));
+    const reputation = try table.add_child("reputation");
+    try reputation.grant(caps.Capability.init("state-reputation", caps.right_read | caps.right_write));
+
+    const r_ask = try pool.host_agent_on(
+        &table,
+        "ask",
+        "state-ask",
+        log_ask[0..ask_len],
+        &issuer_hex,
+        &holder_hex,
+        issuer_kp.public_key,
+        holder_kp.public_key,
+    );
+    const r_receipt = try pool.host_agent_on(
+        &table,
+        "receipt",
+        "state-receipt",
+        log_receipt[0..receipt_len],
+        &issuer_hex,
+        &holder_hex,
+        issuer_kp.public_key,
+        holder_kp.public_key,
+    );
+    const r_rep = try pool.host_agent_on(
+        &table,
+        "reputation",
+        "state-reputation",
+        log_rep[0..rep_len],
+        &issuer_hex,
+        &holder_hex,
+        issuer_kp.public_key,
+        holder_kp.public_key,
+    );
+
+    var surf: sala_surf.Surface = .{};
+    try surf.add("ask", r_ask);
+    try surf.add("receipt", r_receipt);
+    try surf.add("reputation", r_rep);
+    return surf;
+}

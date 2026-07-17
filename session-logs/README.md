@@ -8,6 +8,9 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260717.130922` — [Send R2 surface on Pixel GREEN](20260717-130922_send-r2-surface-pixel.bron) — commit + push; kg next after glass present seam
+- `20260717.130848` — [Sala R2 surface seen on the Pixel](20260717-130848_r2-surface-seen-on-pixel.bron) — install proof GREEN; three panels confirmed on glass
+- `20260717.130735` — [Sala R2 multi-panel surface on Skate Android glass](20260717-130735_sala-r2-surface-on-skate-glass.bron) — pack GREEN; host look for three panels next
 - `20260717.130610` — [Send R1 thin-view on Pixel GREEN](20260717-130610_send-r1-thin-view-pixel.bron) — commit + push; kg R2 multi-panel next
 - `20260717.130602` — [Sala R1 thin-view seen on the Pixel](20260717-130602_r1-thin-view-seen-on-pixel.bron) — install proof GREEN; ledger lines confirmed on glass
 - `20260717.130434` — [Sala R1 thin-view painted on Skate Android glass](20260717-130434_sala-r1-thin-view-on-skate-glass.bron) — pack GREEN; host look for ledger lines next
