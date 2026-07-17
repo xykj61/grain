@@ -186,6 +186,10 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **Sixth rune head — `?~`, `20260717.150219`** — [`glow/rune_null.rye`](../glow/rune_null.rye) deepens the `?` category with the null-test subject. Witness GREEN; `parity_ch01` wired. The brief's composition heads (`|-` · `?~` · `=/` · `?-` · `?:`) each have a front half; general lowering stays later.
 
+**Seventh rune head — `=.`, `20260717.150409`** — [`glow/rune_mutate.rye`](../glow/rune_mutate.rye) deepens the `=` category (mutate one leg). Witness GREEN; `parity_ch01` wired.
+
+**Eighth rune head — `=*`, `20260717.150453`** — [`glow/rune_alias.rye`](../glow/rune_alias.rye) completes the `=` trio. Witness GREEN; `parity_ch01` wired. Next language leap (mold `+$` / cores / lowering) is a check-in, not another automatic head.
+
 ## The Visual Track — Realidream (horizon lane, ladder already named)
 
 *Where Linengrow's SLC product gets designed and **seen** — every surface a pure fold from Weave to the frame, per the three living essays. Opened `20260708.021912` from the grain-sketchbook mining ([study](../external-research/20260708-021912_grain-sketchbook-realidream-mining.md) · [counsel](../counsel/20260708-021912_claude-counsel-realidream-zig016-brix.md)); the sketchbook's unified DAG UI backend (Aurora + Skate + Realidream) is this lane's direct ancestor, its event DAG the unsigned ancestor of Weave itself. **This lane now sits under the Pool keystone revival above** — Realidream's rungs are the R-rungs there, rendered over what Pool hosts.*
