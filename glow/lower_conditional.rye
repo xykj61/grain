@@ -3,10 +3,11 @@
 //! Per active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md:
 //! `?:` is if/then/else. This hop lowers `(gth tick 32)` and bare `ready`,
 //! with then/else as named faces (defaults delivered/dropped), decimal
-//! literals, nested `^-  @uN  <decimal>`, or `(lent <face>)` — parsed through
-//! `expr.rye`. Arm decimals and lengths are payloads, not Hoon loobeans;
-//! `ready` emits Zig `bool`; exits are POSIX (0 success). See
-//! glow/truth_semantics.rye. Other parenthesized arm expressions refuse.
+//! literals, nested `^-  @uN  <decimal>`, `(lent <face>)`, or
+//! `(mix <face> <face>)` — parsed through `expr.rye`. Arm decimals, lengths,
+//! and XOR results are payloads, not Hoon loobeans; `ready` emits Zig `bool`;
+//! exits are POSIX (0 success). See glow/truth_semantics.rye. Other
+//! parenthesized arm expressions refuse.
 
 const std = @import("std");
 const rif = @import("rune_conditional.rye");
@@ -71,6 +72,10 @@ fn face_slice(a: *const ArmExpr) []const u8 {
     return expr.face_slice(a);
 }
 
+fn face2_slice(a: *const ArmExpr) []const u8 {
+    return expr.face2_slice(a);
+}
+
 fn mold_slice(a: *const ArmExpr) []const u8 {
     return expr.mold_slice(a);
 }
@@ -81,7 +86,6 @@ fn parse_one_arm(rest_in: []const u8) LowerError!struct { arm: ArmExpr, rest: []
         error.MalformedExpr => error.MalformedArms,
         else => err,
     };
-    if (parsed.expr.kind == .mix_of) return error.ArmNotYetLowered;
     return .{ .arm = parsed.expr, .rest = parsed.rest };
 }
 
@@ -106,9 +110,31 @@ fn expect_then_value(then_arm: *const ArmExpr) u32 {
         .face => 1,
         .literal, .cast_literal => then_arm.lit,
         .lent_of => expr.lent_demo_len,
-        .mix_of => unreachable,
+        .mix_of => expr.mix_demo_result(),
     };
 }
+
+const MixEmitted = struct {
+    slots: [4][max_arm_len]u8 = undefined,
+    lens: [4]usize = .{0} ** 4,
+    n: usize = 0,
+
+    fn contains(self: *const MixEmitted, name: []const u8) bool {
+        var i: usize = 0;
+        while (i < self.n) : (i += 1) {
+            if (std.mem.eql(u8, self.slots[i][0..self.lens[i]], name)) return true;
+        }
+        return false;
+    }
+
+    fn remember(self: *MixEmitted, name: []const u8) LowerError!void {
+        if (self.contains(name)) return;
+        if (self.n >= self.slots.len or name.len > max_arm_len) return error.Overflow;
+        @memcpy(self.slots[self.n][0..name.len], name);
+        self.lens[self.n] = name.len;
+        self.n += 1;
+    }
+};
 
 fn emit_face_bindings(then_arm: *const ArmExpr, else_arm: *const ArmExpr, out: []u8, at: *usize) LowerError!void {
     if (then_arm.kind == .face) {
@@ -185,6 +211,31 @@ fn emit_lent_bindings(then_arm: *const ArmExpr, else_arm: *const ArmExpr, out: [
     _ = try emit_one_lent("else_arm", else_arm, out, at, after_then);
 }
 
+fn emit_mix_atom(zig_name: []const u8, value: u32, out: []u8, at: *usize, emitted: *MixEmitted) LowerError!void {
+    if (emitted.contains(zig_name)) return;
+    try emitted.remember(zig_name);
+    const line = std.fmt.bufPrint(out[at.*..], "    const {s}: u32 = {d};\n", .{ zig_name, value }) catch return error.Overflow;
+    at.* += line.len;
+}
+
+fn emit_one_mix(role: []const u8, arm: *const ArmExpr, out: []u8, at: *usize, emitted: *MixEmitted) LowerError!void {
+    if (arm.kind != .mix_of) return;
+    var zl: [max_arm_len]u8 = undefined;
+    const ln = try zig_safe_ident(face_slice(arm), &zl);
+    var zr: [max_arm_len]u8 = undefined;
+    const rn = try zig_safe_ident(face2_slice(arm), &zr);
+    try emit_mix_atom(zl[0..ln], expr.mix_demo_left, out, at, emitted);
+    try emit_mix_atom(zr[0..rn], expr.mix_demo_right, out, at, emitted);
+    const arm_line = std.fmt.bufPrint(out[at.*..], "    const {s}: u32 = {s} ^ {s};\n", .{ role, zl[0..ln], zr[0..rn] }) catch return error.Overflow;
+    at.* += arm_line.len;
+}
+
+fn emit_mix_bindings(then_arm: *const ArmExpr, else_arm: *const ArmExpr, out: []u8, at: *usize) LowerError!void {
+    var emitted: MixEmitted = .{};
+    try emit_one_mix("then_arm", then_arm, out, at, &emitted);
+    try emit_one_mix("else_arm", else_arm, out, at, &emitted);
+}
+
 fn write_arm_expr(arm: *const ArmExpr, role: enum { then_role, else_role }, out: []u8) LowerError![]const u8 {
     switch (arm.kind) {
         .face => {
@@ -197,13 +248,12 @@ fn write_arm_expr(arm: *const ArmExpr, role: enum { then_role, else_role }, out:
         .literal => {
             return std.fmt.bufPrint(out, "{d}", .{arm.lit}) catch return error.Overflow;
         },
-        .cast_literal, .lent_of => {
+        .cast_literal, .lent_of, .mix_of => {
             return switch (role) {
                 .then_role => "then_arm",
                 .else_role => "else_arm",
             };
         },
-        .mix_of => unreachable,
     }
 }
 
@@ -220,6 +270,7 @@ fn emit_program(
     try emit_face_bindings(then_arm, else_arm, &body, &at);
     try emit_cast_bindings(then_arm, else_arm, &body, &at);
     try emit_lent_bindings(then_arm, else_arm, &body, &at);
+    try emit_mix_bindings(then_arm, else_arm, &body, &at);
 
     var then_expr_buf: [max_arm_len]u8 = undefined;
     var else_expr_buf: [max_arm_len]u8 = undefined;
