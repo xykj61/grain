@@ -1,0 +1,92 @@
+//! linengrow/tube3_resin_fetch.rye — TUBE3: fetch a published Manifest resin over Comlink.
+//!
+//! Per expanding-prompts/20260716-142818 rung TUBE3: the app's bytes (here the
+//! TUBE0 Manifest resin from TUBE2) cross as Amphora fetch-by-digest frames
+//! sealed by Comlink; the peer verifies the digest before any TUBE1 admit.
+//! This module proves the sealed fetch + published-set gate; admission stays
+//! TUBE1/TUBE2's job.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const vfw = @import("vessel_fetch_wire.rye");
+const wf = @import("wire_format.rye");
+const tally_copy = @import("tally_copy.rye");
+const gc = @import("granary_core.rye");
+const tube2 = @import("tube2_publish.rye");
+
+pub const FetchError = tube2.PublishError || vfw.WireError || error{ SealFailed, OpenFailed };
+
+fn seal_payload(payload: []const u8, wire: *[@intCast(wf.wire_capacity)]u8) FetchError!u64 {
+    return wf.seal_message(payload, wire) catch return error.SealFailed;
+}
+
+fn open_wire(wire: []const u8, opened: *[@intCast(wf.max_message)]u8) FetchError!u64 {
+    return wf.open_datagram(wire, opened) catch return error.OpenFailed;
+}
+
+fn build_response_bytes(digest_hex: []const u8, bytes: []const u8, out: *vfw.FetchResponse) FetchError!void {
+    if (bytes.len > vfw.max_resin_bytes) return error.Overflow;
+    tally_copy.copy_disjoint(u8, out.digest_hex[0..], digest_hex[0..64]);
+    out.bytes_len = @intCast(bytes.len);
+    if (bytes.len > 0) {
+        tally_copy.copy_disjoint(u8, out.bytes[0..bytes.len], bytes);
+    }
+    try vfw.verify_resin(out.digest_hex[0..], out.bytes[0..out.bytes_len]);
+}
+
+/// Sealed in-process fetch of a published digest: encode request → seal →
+/// open → serve_resin_published → encode response → seal → open → verify.
+/// Returns the arrived resin length in `out_bytes`.
+pub fn fetch_published_sealed(
+    store: *const gc.ResinStore,
+    reg: *const gc.Registry,
+    digest_hex: []const u8,
+    out_bytes: *[vfw.max_resin_bytes]u8,
+) FetchError!u32 {
+    assert(digest_hex.len == 64);
+
+    var req: vfw.FetchRequest = .{ .digest_hex = undefined };
+    tally_copy.copy_disjoint(u8, req.digest_hex[0..], digest_hex[0..64]);
+    var req_buf: [vfw.max_wire_payload]u8 = undefined;
+    const req_len = try vfw.encode_request(req, &req_buf);
+    var req_wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const req_wire_len = try seal_payload(req_buf[0..req_len], &req_wire);
+    var req_opened: [@intCast(wf.max_message)]u8 = undefined;
+    const req_opened_len = try open_wire(req_wire[0..@intCast(req_wire_len)], &req_opened);
+    var decoded_req: vfw.FetchRequest = undefined;
+    try vfw.decode_request(req_opened[0..@intCast(req_opened_len)], &decoded_req);
+
+    var served: [gc.max_resin_bytes]u8 = undefined;
+    const served_len = try gc.serve_resin_published(store, reg, decoded_req.digest_hex[0..], &served);
+
+    var resp: vfw.FetchResponse = undefined;
+    try build_response_bytes(decoded_req.digest_hex[0..], served[0..served_len], &resp);
+    var resp_buf: [vfw.max_wire_payload]u8 = undefined;
+    const resp_len = try vfw.encode_response(&resp, &resp_buf);
+    var resp_wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const resp_wire_len = try seal_payload(resp_buf[0..resp_len], &resp_wire);
+    var resp_opened: [@intCast(wf.max_message)]u8 = undefined;
+    const resp_opened_len = try open_wire(resp_wire[0..@intCast(resp_wire_len)], &resp_opened);
+    var decoded_resp: vfw.FetchResponse = undefined;
+    try vfw.decode_response(resp_opened[0..@intCast(resp_opened_len)], &decoded_resp);
+
+    try vfw.verify_resin(decoded_resp.digest_hex[0..], decoded_resp.bytes[0..decoded_resp.bytes_len]);
+    if (!std.mem.eql(u8, decoded_resp.digest_hex[0..], digest_hex[0..64])) return error.DigestMismatch;
+    const len = decoded_resp.bytes_len;
+    if (len > out_bytes.len) return error.Overflow;
+    tally_copy.copy_disjoint(u8, out_bytes[0..len], decoded_resp.bytes[0..len]);
+    return len;
+}
+
+/// TUBE2 publish then sealed fetch of that digest — the TUBE3 welcome path.
+pub fn run_demo_fetch(
+    store: *gc.ResinStore,
+    reg: *gc.Registry,
+    log: []u8,
+    log_len: *u32,
+    out_bytes: *[vfw.max_resin_bytes]u8,
+) FetchError!struct { digest: [gc.digest_hex_len]u8, len: u32 } {
+    const published = try tube2.run_demo_publish(store, reg, log, log_len);
+    const len = try fetch_published_sealed(store, reg, published.digest[0..], out_bytes);
+    return .{ .digest = published.digest, .len = len };
+}
