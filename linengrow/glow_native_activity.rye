@@ -9,10 +9,11 @@
 //! (`sala_r2_surface.rye`), the TUBE5 tip line (`tube5_glass_tip.rye`),
 //! the TUBE2–4 rail lines (`tube2_glass_pub.rye`, `tube3_glass_fetch.rye`,
 //! `tube4_glass_market.rye`), and Sala B1 live-carriage
-//! (`sala_b1_glass_carriage.rye`).
+//! (`sala_b1_glass_carriage.rye`), and Dexter D0 glass line
+//! (`dexter_glass_line.rye`).
 //! After writing files/sala_root.txt, registers window + input callbacks:
-//! paints panels + tip + rail + B1 + session-root hex and finishes on tap.
-//! R2 and TUBE2–5 + B1 paint only when TUBE1 admits.
+//! paints panels + tip + rail + B1 + Dexter + session-root hex and finishes on tap.
+//! R2 and TUBE2–5 + B1 + Dexter paint only when TUBE1 admits.
 
 const std = @import("std");
 const fold = @import("sala_b0_fold.rye");
@@ -22,6 +23,7 @@ const tube2_pub = @import("tube2_glass_pub.rye");
 const tube3_fetch = @import("tube3_glass_fetch.rye");
 const tube4_market = @import("tube4_glass_market.rye");
 const b1_carriage = @import("sala_b1_glass_carriage.rye");
+const dexter_glass = @import("dexter_glass_line.rye");
 const r2 = @import("sala_r2_surface.rye");
 const sala_surf = @import("sala_surface.rye");
 const surface = @import("glow_native_surface.rye");
@@ -49,6 +51,9 @@ var g_market_ready: bool = false;
 var g_b1_line: [b1_carriage.carriage_line_max]u8 = undefined;
 var g_b1_len: u32 = 0;
 var g_b1_ready: bool = false;
+var g_dexter_line: [dexter_glass.dexter_line_max]u8 = undefined;
+var g_dexter_len: u32 = 0;
+var g_dexter_ready: bool = false;
 
 export fn __zig_probe_stack() callconv(.c) void {}
 
@@ -131,6 +136,7 @@ fn paint_window(_: ?*anyopaque, window: ?*anyopaque) callconv(.c) void {
     const fetched: ?[]const u8 = if (g_fetch_ready) g_fetch_line[0..g_fetch_len] else null;
     const market: ?[]const u8 = if (g_market_ready) g_market_line[0..g_market_len] else null;
     const carriage: ?[]const u8 = if (g_b1_ready) g_b1_line[0..g_b1_len] else null;
+    const dexter_line: ?[]const u8 = if (g_dexter_ready) g_dexter_line[0..g_dexter_len] else null;
     surface.paint_session_root_hex(
         window,
         glow_last_session_root_hex[0..64],
@@ -142,6 +148,7 @@ fn paint_window(_: ?*anyopaque, window: ?*anyopaque) callconv(.c) void {
         fetched,
         market,
         carriage,
+        dexter_line,
     );
 }
 
@@ -234,5 +241,7 @@ export fn ANativeActivity_onCreate(
     g_market_ready = tube4_market.run_demo_market_line(&g_market_line, &g_market_len);
     g_b1_len = 0;
     g_b1_ready = b1_carriage.run_demo_carriage(&g_b1_line, &g_b1_len);
+    g_dexter_len = 0;
+    g_dexter_ready = dexter_glass.run_demo_dexter_line(&g_dexter_line, &g_dexter_len);
     wire_surface_callbacks(activity);
 }
