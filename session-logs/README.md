@@ -8,6 +8,9 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260717.124843` — [First NativeActivity surface seen on the Pixel](20260717-124843_surface-seen-on-pixel.bron) — Keaton confirmed hex on GrapheneOS glass; install proof GREEN
+- `20260717.124458` — [First NativeActivity surface paints the Sala root hex](20260717-124458_native-activity-surface-hex.bron) — ANativeWindow software paint; pack GREEN; host look next
+- `20260717.124130` — [What next after TUBE0.5 closed end to end](20260717-124130_what-next-after-tube05.bron) — surface vs rest vs other lanes
 - `20260717.124029` — [ANativeActivity_finish reproven GREEN on the Pixel](20260717-124029_tube05-finish-pixel-reproof-green.bron) — finish after write; install proof still GREEN
 - `20260717.123314` — [ANativeActivity_finish after Sala fold; Pixel GREEN sent](20260717-123314_tube05-finish-after-fold.bron) — e7496585b9 sent; finish + libandroid; pack re-GREEN
 - `20260717.123226` — [TUBE0.5 install GREEN on the physical Pixel 10a](20260717-123226_tube05-pixel-install-green.bron) — stallion / GrapheneOS; sala_root.txt matches HAWM1; TUBE0.5 end to end
@@ -35,6 +38,8 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 | Stamp | Log | Meaning |
 |-------|-----|---------|
+| 20260717.124843 | [First NativeActivity surface seen on the Pixel](20260717-124843_surface-seen-on-pixel.bron) | Hex visible on GrapheneOS; install proof GREEN; surface lap closed |
+| 20260717.124458 | [First NativeActivity surface paints the Sala root hex](20260717-124458_native-activity-surface-hex.bron) | Software ANativeWindow paint; pack GREEN; host look confirms |
 | 20260717.124029 | [ANativeActivity_finish reproven GREEN on the Pixel](20260717-124029_tube05-finish-pixel-reproof-green.bron) | Finish after sala_root write; Pixel install proof still GREEN |
 | 20260717.123314 | [ANativeActivity_finish after Sala fold; Pixel GREEN sent](20260717-123314_tube05-finish-after-fold.bron) | Sent Pixel close; onCreate finishes after sala_root write; pack witness GREEN |
 | 20260717.123226 | [TUBE0.5 install GREEN on the physical Pixel 10a](20260717-123226_tube05-pixel-install-green.bron) | Real GrapheneOS Pixel; same sala_root as HAWM1; TUBE0.5 closed end to end |

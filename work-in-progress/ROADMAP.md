@@ -168,7 +168,9 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **TUBE0.5 on Pixel 10a GREEN, `20260717.123226`** — same install proof on the physical GrapheneOS Pixel (`66041JEA306288`, `product=stallion model=Pixel_10a`): adb authorized after the on-device Allow dialog, APK installed, NativeActivity launched, `sala_root.txt` again `99b3ae96…e4c5fe`. **TUBE0.5 is checkable end to end — pack, HAWM0, and real Titan-class hardware.**
 
-**NativeActivity finish after fold, `20260717.124029`** — onCreate writes `sala_root.txt` then calls `ANativeActivity_finish` (`-landroid`). Pixel re-proof GREEN — the proof file remains readable; the blank window no longer hangs. A drawn surface stays later; debug keystore stays host-local.
+**NativeActivity finish after fold, `20260717.124029`** — onCreate writes `sala_root.txt` then calls `ANativeActivity_finish` (`-landroid`). Pixel re-proof GREEN — the proof file remains readable; the blank window no longer hangs.
+
+**First NativeActivity surface, `20260717.124458`** — success path keeps the activity alive and paints the Sala session-root hex on the ANativeWindow (`glow_native_surface.rye`: software RGBA lock, 5×7 bitmap font). Fold + file proof unchanged in onCreate. Pack witness GREEN. **Seen on the Pixel `20260717.124843`** — Keaton confirmed the hex readable on the GrapheneOS device; install proof still GREEN. Skate-grade UI stays later; debug keystore stays host-local.
 
 ## The Visual Track — Realidream (horizon lane, ladder already named)
 

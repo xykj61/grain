@@ -1,0 +1,147 @@
+//! linengrow/glow_native_surface.rye — first drawn Glow surface on Android.
+//!
+//! Locks an ANativeWindow, fills a calm background, and paints the 64-char
+//! Sala session-root hex with a tiny fixed bitmap font. No EGL, no Kotlin —
+//! software pixels through NDK libandroid (Apache 2.0 API; our own draw code).
+//!
+//! Called from glow_native_activity when the framework delivers
+//! onNativeWindowCreated / onNativeWindowRedrawNeeded.
+
+const std = @import("std");
+const assert = std.debug.assert;
+
+/// Matches android/native_window.h ANativeWindow_Buffer (ABI).
+const WindowBuffer = extern struct {
+    width: i32,
+    height: i32,
+    stride: i32,
+    format: i32,
+    bits: ?*anyopaque,
+    reserved: [6]u32,
+};
+
+extern fn ANativeWindow_setBuffersGeometry(window: ?*anyopaque, w: i32, h: i32, format: i32) callconv(.c) i32;
+extern fn ANativeWindow_lock(window: ?*anyopaque, out: *WindowBuffer, dirty: ?*anyopaque) callconv(.c) i32;
+extern fn ANativeWindow_unlockAndPost(window: ?*anyopaque) callconv(.c) i32;
+
+/// WINDOW_FORMAT_RGBA_8888
+const format_rgba8888: i32 = 1;
+
+/// Background — deep warm dark (not flat black).
+const bg_r: u8 = 0x1a;
+const bg_g: u8 = 0x14;
+const bg_b: u8 = 0x10;
+/// Glyph — soft amber on that ground.
+const fg_r: u8 = 0xe8;
+const fg_g: u8 = 0xc4;
+const fg_b: u8 = 0x7a;
+
+/// 5×7 bitmap font for 0-9a-f (and space). Rows are top→bottom; bit0 = left.
+const font_w = 5;
+const font_h = 7;
+const glyph: [17][font_h]u8 = .{
+    .{ 0x0e, 0x11, 0x13, 0x15, 0x19, 0x11, 0x0e }, // 0
+    .{ 0x04, 0x0c, 0x04, 0x04, 0x04, 0x04, 0x0e }, // 1
+    .{ 0x0e, 0x11, 0x01, 0x06, 0x08, 0x10, 0x1f }, // 2
+    .{ 0x0e, 0x11, 0x01, 0x06, 0x01, 0x11, 0x0e }, // 3
+    .{ 0x02, 0x06, 0x0a, 0x12, 0x1f, 0x02, 0x02 }, // 4
+    .{ 0x1f, 0x10, 0x1e, 0x01, 0x01, 0x11, 0x0e }, // 5
+    .{ 0x06, 0x08, 0x10, 0x1e, 0x11, 0x11, 0x0e }, // 6
+    .{ 0x1f, 0x01, 0x02, 0x04, 0x08, 0x08, 0x08 }, // 7
+    .{ 0x0e, 0x11, 0x11, 0x0e, 0x11, 0x11, 0x0e }, // 8
+    .{ 0x0e, 0x11, 0x11, 0x0f, 0x01, 0x02, 0x0c }, // 9
+    .{ 0x0e, 0x11, 0x11, 0x1f, 0x11, 0x11, 0x11 }, // a
+    .{ 0x1e, 0x11, 0x11, 0x1e, 0x11, 0x11, 0x1e }, // b
+    .{ 0x0e, 0x11, 0x10, 0x10, 0x10, 0x11, 0x0e }, // c
+    .{ 0x1e, 0x11, 0x11, 0x11, 0x11, 0x11, 0x1e }, // d
+    .{ 0x1f, 0x10, 0x10, 0x1e, 0x10, 0x10, 0x1f }, // e
+    .{ 0x1f, 0x10, 0x10, 0x1e, 0x10, 0x10, 0x10 }, // f
+    .{ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // space
+};
+
+fn glyph_index(c: u8) usize {
+    if (c >= '0' and c <= '9') return c - '0';
+    if (c >= 'a' and c <= 'f') return 10 + (c - 'a');
+    if (c >= 'A' and c <= 'F') return 10 + (c - 'A');
+    return 16;
+}
+
+fn put_pixel(bits: [*]u8, stride: i32, x: i32, y: i32, w: i32, h: i32, r: u8, g: u8, b: u8) void {
+    if (x < 0 or y < 0 or x >= w or y >= h) return;
+    const off: usize = @intCast((y * stride + x) * 4);
+    bits[off + 0] = r;
+    bits[off + 1] = g;
+    bits[off + 2] = b;
+    bits[off + 3] = 0xff;
+}
+
+fn fill(bits: [*]u8, stride: i32, w: i32, h: i32, r: u8, g: u8, b: u8) void {
+    assert(w > 0 and h > 0);
+    assert(w <= 8192 and h <= 8192);
+    var y: i32 = 0;
+    while (y < h) : (y += 1) {
+        var x: i32 = 0;
+        while (x < w) : (x += 1) {
+            put_pixel(bits, stride, x, y, w, h, r, g, b);
+        }
+    }
+}
+
+fn draw_char(bits: [*]u8, stride: i32, ox: i32, oy: i32, scale: i32, w: i32, h: i32, c: u8) void {
+    const gi = glyph_index(c);
+    const rows = glyph[gi];
+    var row: i32 = 0;
+    while (row < font_h) : (row += 1) {
+        const bits_row = rows[@intCast(row)];
+        var col: i32 = 0;
+        while (col < font_w) : (col += 1) {
+            // bit4 = leftmost column of the 5-wide glyph
+            if ((bits_row & (@as(u8, 0x10) >> @intCast(col))) == 0) continue;
+            var dy: i32 = 0;
+            while (dy < scale) : (dy += 1) {
+                var dx: i32 = 0;
+                while (dx < scale) : (dx += 1) {
+                    put_pixel(bits, stride, ox + col * scale + dx, oy + row * scale + dy, w, h, fg_r, fg_g, fg_b);
+                }
+            }
+        }
+    }
+}
+
+/// Paint the 64 hex chars (two rows of 32) centered-ish near the top.
+pub fn paint_session_root_hex(window: ?*anyopaque, hex: *const [64]u8) void {
+    if (window == null) return;
+    _ = ANativeWindow_setBuffersGeometry(window, 0, 0, format_rgba8888);
+
+    var buf: WindowBuffer = undefined;
+    if (ANativeWindow_lock(window, &buf, null) != 0) return;
+    defer _ = ANativeWindow_unlockAndPost(window);
+
+    if (buf.bits == null or buf.width <= 0 or buf.height <= 0 or buf.stride <= 0) return;
+    const bits: [*]u8 = @ptrCast(buf.bits.?);
+    const w = buf.width;
+    const h = buf.height;
+    const stride = buf.stride;
+
+    fill(bits, stride, w, h, bg_r, bg_g, bg_b);
+
+    const scale: i32 = if (w >= 900) 4 else if (w >= 600) 3 else 2;
+    const cell_w = font_w * scale + scale; // gutter
+    const cell_h = font_h * scale + scale;
+    const cols: i32 = 32;
+    const rows: i32 = 2;
+    const block_w = cols * cell_w;
+    const block_h = rows * cell_h;
+    const origin_x = @divTrunc(w - block_w, 2);
+    const origin_y = @divTrunc(h, 5);
+
+    var i: usize = 0;
+    while (i < 64) : (i += 1) {
+        const col: i32 = @intCast(i % 32);
+        const row: i32 = @intCast(i / 32);
+        const x = origin_x + col * cell_w;
+        const y = origin_y + row * cell_h;
+        draw_char(bits, stride, x, y, scale, w, h, hex[i]);
+    }
+    _ = block_h;
+}

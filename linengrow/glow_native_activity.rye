@@ -7,19 +7,14 @@
 //! the Sala B0 demo fold (`sala_b0_fold.rye`) — the same three-event
 //! session HAWM1 already proved bit-identical on Android userland.
 //!
-//! Built as a shared library:
-//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build-lib \
-//!     linengrow/glow_native_activity.rye -dynamic -target aarch64-linux-android \
-//!     -fPIC -OReleaseSafe -femit-bin=linengrow/bin/libglowapp.so
-//!
-//! Result surface: the fixed demo root is copied into the exported
-//! `glow_last_session_root_hex` buffer and written to files/sala_root.txt
-//! (proven on HAWM0 and the Pixel). After a successful write, this entry
-//! calls ANativeActivity_finish so the activity does not sit on a blank
-//! window — a first UI surface stays a later slice.
+//! After the fold writes files/sala_root.txt, this entry registers
+//! NativeActivity window callbacks and paints the session-root hex on
+//! the ANativeWindow (glow_native_surface.rye). No Kotlin; NDK libandroid
+//! only. Install proof still reads sala_root.txt via run-as.
 
 const std = @import("std");
 const fold = @import("sala_b0_fold.rye");
+const surface = @import("glow_native_surface.rye");
 
 /// Last successful demo-fold root as 64 hex chars + NUL. Zeroed until
 /// onCreate runs the fold successfully. Exported for inspection; not a
@@ -29,8 +24,7 @@ export var glow_last_session_root_hex: [65]u8 = [_]u8{0} ** 65;
 /// Zig emits calls to `__zig_probe_stack` on some targets. When we NDK-link
 /// a static archive into a real Android .so, Zig's own compiler-rt is often
 /// absent or non-PIC in the cache. A no-op stub is enough for the Sala B0
-/// fold (no huge stack frames). Prefer linking real compiler-rt when the
-/// pack worker can find a PIC android build of it.
+/// fold (no huge stack frames).
 export fn __zig_probe_stack() callconv(.c) void {}
 
 fn record_root(root: *const [32]u8) void {
@@ -40,8 +34,6 @@ fn record_root(root: *const [32]u8) void {
     glow_last_session_root_hex[64] = 0;
 }
 
-/// libc open/write — linked via the NDK shared-library step. Avoids Zig's
-/// Io.Dir surface on Android for this one on-device proof file.
 const O_WRONLY: c_int = 1;
 const O_CREAT: c_int = 64;
 const O_TRUNC: c_int = 512;
@@ -50,9 +42,6 @@ extern fn write(fd: c_int, buf: [*]const u8, n: usize) isize;
 extern fn close(fd: c_int) c_int;
 extern fn mkdir(path: [*:0]const u8, mode: c_int) c_int;
 
-/// Write the session-root hex to the app's own files dir so `adb shell cat`
-/// can prove the fold ran on-device. Path is package-private for
-/// org.glow.app.sala_broadcaster.
 fn write_root_file(hex: *const [64]u8) void {
     const dir_path = "/data/user/0/org.glow.app.sala_broadcaster/files";
     const path = "/data/user/0/org.glow.app.sala_broadcaster/files/sala_root.txt";
@@ -64,13 +53,47 @@ fn write_root_file(hex: *const [64]u8) void {
     _ = write(fd, "\n", 1);
 }
 
-/// NDK libandroid — finishes the Activity after the fold proof lands.
-/// Declared without android/native_activity.h so this tree stays free of
-/// NDK headers; the pack worker links -landroid.
+/// ABI-matched to android/native_activity.h ANativeActivityCallbacks.
+const ActivityCallbacks = extern struct {
+    onStart: ?*const fn (?*anyopaque) callconv(.c) void = null,
+    onResume: ?*const fn (?*anyopaque) callconv(.c) void = null,
+    onSaveInstanceState: ?*const fn (?*anyopaque, *usize) callconv(.c) ?*anyopaque = null,
+    onPause: ?*const fn (?*anyopaque) callconv(.c) void = null,
+    onStop: ?*const fn (?*anyopaque) callconv(.c) void = null,
+    onDestroy: ?*const fn (?*anyopaque) callconv(.c) void = null,
+    onWindowFocusChanged: ?*const fn (?*anyopaque, c_int) callconv(.c) void = null,
+    onNativeWindowCreated: ?*const fn (?*anyopaque, ?*anyopaque) callconv(.c) void = null,
+    onNativeWindowResized: ?*const fn (?*anyopaque, ?*anyopaque) callconv(.c) void = null,
+    onNativeWindowRedrawNeeded: ?*const fn (?*anyopaque, ?*anyopaque) callconv(.c) void = null,
+    onNativeWindowDestroyed: ?*const fn (?*anyopaque, ?*anyopaque) callconv(.c) void = null,
+    onInputQueueCreated: ?*const fn (?*anyopaque, ?*anyopaque) callconv(.c) void = null,
+    onInputQueueDestroyed: ?*const fn (?*anyopaque, ?*anyopaque) callconv(.c) void = null,
+    onContentRectChanged: ?*const fn (?*anyopaque, ?*anyopaque) callconv(.c) void = null,
+    onConfigurationChanged: ?*const fn (?*anyopaque) callconv(.c) void = null,
+    onLowMemory: ?*const fn (?*anyopaque) callconv(.c) void = null,
+};
+
+/// First field of ANativeActivity is callbacks*.
+const ActivityHead = extern struct {
+    callbacks: ?*ActivityCallbacks,
+};
+
 extern fn ANativeActivity_finish(activity: ?*anyopaque) callconv(.c) void;
 
-/// Android calls this with a real ANativeActivity*. Opaque pointer keeps
-/// NDK headers out of the packaging witness; we only need finish().
+fn paint_window(_: ?*anyopaque, window: ?*anyopaque) callconv(.c) void {
+    if (glow_last_session_root_hex[0] == 0) return;
+    surface.paint_session_root_hex(window, glow_last_session_root_hex[0..64]);
+}
+
+fn wire_surface_callbacks(activity: ?*anyopaque) void {
+    if (activity == null) return;
+    const head: *ActivityHead = @ptrCast(@alignCast(activity.?));
+    const cbs = head.callbacks orelse return;
+    cbs.onNativeWindowCreated = paint_window;
+    cbs.onNativeWindowRedrawNeeded = paint_window;
+}
+
+/// Android calls this with a real ANativeActivity*.
 export fn ANativeActivity_onCreate(
     activity: ?*anyopaque,
     saved_state: ?*anyopaque,
@@ -86,7 +109,6 @@ export fn ANativeActivity_onCreate(
     };
     record_root(&root);
     write_root_file(glow_last_session_root_hex[0..64]);
-    // Finish after the proof file is on disk so run-as cat in the install
-    // witness still sees sala_root.txt. A drawn surface is a later slice.
-    ANativeActivity_finish(activity);
+    // Keep the activity alive and paint when the native window arrives.
+    wire_surface_callbacks(activity);
 }
