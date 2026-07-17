@@ -4,12 +4,15 @@
 //!
 //! Per active-designing/20260717-014522_native-activity-shim-and-slc-
 //! packaging.md: one small, fixed, never-generated entry. App logic is
-//! the Sala B0 demo fold (`sala_b0_fold.rye`). After writing
-//! files/sala_root.txt, registers window + input callbacks: paints the
-//! session-root hex (glow_native_surface.rye) and finishes on tap.
+//! the Sala B0 demo fold (`sala_b0_fold.rye`) plus the R1 thin-view frame
+//! (`sala_r1_frame.rye`). After writing files/sala_root.txt, registers
+//! window + input callbacks: paints thin-view + session-root hex
+//! (glow_native_surface.rye) and finishes on tap.
 
 const std = @import("std");
 const fold = @import("sala_b0_fold.rye");
+const r1 = @import("sala_r1_frame.rye");
+const view = @import("sala_view.rye");
 const surface = @import("glow_native_surface.rye");
 
 export var glow_last_session_root_hex: [65]u8 = [_]u8{0} ** 65;
@@ -17,6 +20,8 @@ export var glow_last_session_root_hex: [65]u8 = [_]u8{0} ** 65;
 var g_activity: ?*anyopaque = null;
 var g_input_queue: ?*anyopaque = null;
 var g_root_matched: bool = false;
+var g_frame: view.Frame = .{};
+var g_frame_ready: bool = false;
 
 export fn __zig_probe_stack() callconv(.c) void {}
 
@@ -93,7 +98,8 @@ const motion_action_up: i32 = 1;
 
 fn paint_window(_: ?*anyopaque, window: ?*anyopaque) callconv(.c) void {
     if (glow_last_session_root_hex[0] == 0) return;
-    surface.paint_session_root_hex(window, glow_last_session_root_hex[0..64], g_root_matched);
+    const frame_ptr: ?*const view.Frame = if (g_frame_ready) &g_frame else null;
+    surface.paint_session_root_hex(window, glow_last_session_root_hex[0..64], g_root_matched, frame_ptr);
 }
 
 fn on_input_cb(_: c_int, _: c_int, _: ?*anyopaque) callconv(.c) c_int {
@@ -157,5 +163,12 @@ export fn ANativeActivity_onCreate(
     record_root(&root);
     g_root_matched = fold.root_matches_expected(&root);
     write_root_file(glow_last_session_root_hex[0..64]);
+    g_frame = r1.run_demo_frame() catch {
+        g_frame = .{};
+        g_frame_ready = false;
+        wire_surface_callbacks(activity);
+        return;
+    };
+    g_frame_ready = true;
     wire_surface_callbacks(activity);
 }
