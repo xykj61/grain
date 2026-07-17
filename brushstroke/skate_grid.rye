@@ -11,6 +11,9 @@
 const std = @import("std");
 const assert = std.debug.assert;
 const font8x8 = @import("font8x8_data.rye");
+
+/// Optional glyphs for cell values 128..255 (ZETA4 emoji atlas). Slot i = cell 128+i.
+pub var extended_glyphs: ?*const [128][8]u8 = null;
 const tally_copy = @import("tally_copy.rye");
 
 fn buf_len_u32(buf: []const u8) u32 {
@@ -147,7 +150,12 @@ fn draw_glyph(
     const width_u: u32 = @intCast(width);
     assert(stride >= width_u * 4);
 
-    const glyph = if (ch < 128) font8x8.font8x8_basic[ch] else [_]u8{0} ** 8;
+    const glyph = if (ch < 128)
+        font8x8.font8x8_basic[ch]
+    else if (extended_glyphs) |ext|
+        ext[ch - 128]
+    else
+        [_]u8{0} ** 8;
     const stride_usize: usize = @intCast(stride);
     var gy: u32 = 0;
     while (gy < 8) : (gy += 1) {
