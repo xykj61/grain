@@ -8,6 +8,9 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260717.123226` — [TUBE0.5 install GREEN on the physical Pixel 10a](20260717-123226_tube05-pixel-install-green.bron) — stallion / GrapheneOS; sala_root.txt matches HAWM1; TUBE0.5 end to end
+- `20260717.123100` — [Pixel shows adb unauthorized](20260717-123100_adb-unauthorized-pixel.bron) — Allow dialog was the gate; witness error improved
+- `20260717.122450` — [Instructions for next steps after TUBE0.5 HAWM0 GREEN](20260717-122450_next-steps-tube05-pixel.bron) — Pixel USB install proof named as the finishing edge
 - `20260717.122231` — [Model fields corrected to Cursor Grok 4.5 300k High Fast](20260717-122231_model-field-corrected-to-grok.bron) — Claude credits exhausted; afternoon TUBE0.5 logs re-attributed; Framework host profile updated
 - `20260717.122010` — [TUBE0.5 on-device install GREEN on HAWM0](20260717-122010_tube05-hawm0-install-green.bron) — host HAWM0 boot + install proof; sala_root.txt matches HAWM1 root
 - `20260717.121800` — [Ten batches roll-up — align and send](20260717-121800_align-send-ten-batches.md) ([Bron](20260717-121800_align-send-ten-batches.bron)) — MD summary of Pixel→HAWM3→TUBE0.5 arc; compass align; host install proof named as the one next step
@@ -30,6 +33,9 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 | Stamp | Log | Meaning |
 |-------|-----|---------|
+| 20260717.123226 | [TUBE0.5 install GREEN on the physical Pixel 10a](20260717-123226_tube05-pixel-install-green.bron) | Real GrapheneOS Pixel; same sala_root as HAWM1; TUBE0.5 closed end to end |
+| 20260717.123100 | [Pixel shows adb unauthorized](20260717-123100_adb-unauthorized-pixel.bron) | Authorize on-device; install witness names unauthorized |
+| 20260717.122450 | [Instructions for next steps after TUBE0.5 HAWM0 GREEN](20260717-122450_next-steps-tube05-pixel.bron) | Pixel USB install proof as the finishing edge after HAWM0 GREEN |
 | 20260717.122231 | [Model fields corrected to Cursor Grok 4.5 300k High Fast](20260717-122231_model-field-corrected-to-grok.bron) | False Sonnet labels on afternoon logs fixed; GLOW_PROFILE + session-log rules name Grok on this host |
 | 20260717.122010 | [TUBE0.5 on-device install GREEN on HAWM0](20260717-122010_tube05-hawm0-install-green.bron) | HAWM0 KVM boot + APK install; sala_root.txt = HAWM1 demo root; TUBE0.5 emulator half closed |
 | 20260717.121800 | [Ten batches roll-up — align and send](20260717-121800_align-send-ten-batches.md) | MD arc summary Pixel→HAWM3→TUBE0.5; compass align; one next step = host install proof |

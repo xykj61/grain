@@ -67,7 +67,7 @@ The native-activity shim is that missing precondition, and it belongs beneath TU
 
 | Rung | Name | Gate | State |
 |---|---|---|---|
-| **TUBE0.5** | **First installable Glow APK on GrapheneOS** | TUBE0 (GREEN) · HAWM3 (closed, verified-boot Pixel 10a) | **Host pack GREEN `20260717.021857`** · **Sala fold wired `20260717.121445`** · **HAWM0 install GREEN `20260717.122010`** — APK installed; `sala_root.txt` matched HAWM1 root. Pixel USB path still open; surface/finish later |
+| **TUBE0.5** | **First installable Glow APK on GrapheneOS** | TUBE0 (GREEN) · HAWM3 (closed, verified-boot Pixel 10a) | **GREEN end to end** — host pack · Sala fold · HAWM0 install `20260717.122010` · **Pixel 10a install `20260717.123226`**. Surface/finish later |
 
 TUBE0.5's host-side half is now checkable. What landed:
 
@@ -80,8 +80,7 @@ TUBE0.5's host-side half is now checkable. What landed:
 
 ## What remains open
 
-- **Physical Pixel install** — same host one-shot `tools/tube05_install_proof_onpath_host.rish` with USB debugging on the GrapheneOS Pixel 10a (HAWM0 emulator path already GREEN `20260717.122010`).
-- **Activity finish / surface** — onCreate runs the fold today; finishing the activity via the real `ANativeActivity` layout and a first UI surface stay later slices.
+- **Activity finish / surface** — onCreate runs the fold and writes `sala_root.txt` (proven on HAWM0 and Pixel); finishing the activity via the real `ANativeActivity` layout and a first UI surface stay later slices.
 - **APK signing and distribution for publish** stay TUBE2's and TUBE3's own territory (signed weave over Granary, content-addressed resins over Comlink). The debug keystore under `tools/.cache/tube05/` is host-local, never for publish.
 
 ## Gratitude

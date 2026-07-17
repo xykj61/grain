@@ -21,6 +21,8 @@ let pkg = "org.glow.app.sala_broadcaster"
 let expected = "99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe"
 
 say "tube05-install: confirming an adb device is attached…"
+let unauthorized = run ["sh" "-c" "${adb} devices | grep -c '[[:space:]]unauthorized$'"]
+assert (trim unauthorized.out == "0") else "adb device is unauthorized — unlock the phone and tap Allow on 'Allow USB debugging?' (check Always allow from this computer)"
 let devices = run ["sh" "-c" "${adb} devices | grep -c '[[:space:]]device$'"]
 assert (trim devices.out != "0") else "no adb device — boot hawm0 (host terminal) or plug in the Pixel with USB debugging on"
 say "tube05-install: device attached"
