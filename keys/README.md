@@ -13,7 +13,7 @@ This is the root `keys/` folder for **this fork's current identity** (`xykj61` /
 
 **Why keep this here:** anyone cloning the project can verify commits signed from this jailed session without hunting an external paste, the same reasoning `../context/keys/README.md` already names for the retired identity's own sandbox key.
 
-**A named, honest gap:** a macOS jail-local key also exists for this same identity (generated during the `20260714.085000` session, fingerprint `D31BD189…` per that session's own log), yet its public halves were never exported into this folder or `../PUBKEYS.md` — that session recorded the fingerprint in prose but not the portable `.pub`/`.pub.asc` files this folder wants. Closing that gap needs the macOS host itself (this Linux clone cannot read another machine's key material); named here so a future macOS-session turn can find it without re-deriving the need from scratch.
+**A named, honest gap:** a macOS jail-local key also exists for this same identity (generated during the `20260714.085000` session, fingerprint `D31BD189…` per that session's own log), yet its public halves were never exported into this folder or `../PUBKEYS.md` — that session recorded the fingerprint in prose, never the portable `.pub`/`.pub.asc` files this folder wants. Closing that gap needs the macOS host itself (this Linux clone cannot read another machine's key material); named here so a future macOS-session turn can find it without re-deriving the need from scratch.
 
 ---
 
