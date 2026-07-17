@@ -1,32 +1,45 @@
 # Glow — Language Tooling, Grown from Real Design
 
 **Language:** EN
-**Last updated:** 2026-07-17 (eighth rune head — `=*` alias; `=` category complete)
+**Last updated:** 2026-07-17 (first generator hop — `|-` lowers to Rye)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Status:** Checkable — eight small rune-head parsers, GREEN
-**Ground:** [`active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md`](../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md)
+**Status:** Checkable — eight rune heads + first lowering hop, GREEN
+**Ground:** [`active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md`](../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md) · [`20260716-093000_glow-and-rye-what-shares-under-the-hood.md`](../active-designing/20260716-093000_glow-and-rye-what-shares-under-the-hood.md)
 
 ---
 
-This is where Glow's own language tooling lives once a design earns real code. Each tenant is one rune's **front half** — real text parsed at the head — connected to a named discipline, never a leap to a general grammar.
+Glow is the **language** (Hoon-parallel). Rishi is the **shell** (Dojo-parallel). Glow emits ordinary `.rye`; Rye's bridge takes it to Zig. Rishi drives witnesses and `glow_run`.
+
+## Rune heads
 
 | File | Rune | Proves |
 |---|---|---|
-| [`rune_bounded_trap.rye`](rune_bounded_trap.rye) | `\|-` | Bound shapes `32` and `(lent records)` + checked `run_bounded` / `BoundExceeded` |
-| [`rune_cast.rye`](rune_cast.rye) | `^-` | Mold name — aura (`@u32`) or named mold (`record`) |
-| [`rune_conditional.rye`](rune_conditional.rye) | `?:` | Test expression — parenthesized or bare identifier; then/else not yet |
-| [`rune_switch.rye`](rune_switch.rye) | `?-` | Subject wing (`kind.cur-record`); arm exhaustiveness not yet |
-| [`rune_face.rye`](rune_face.rye) | `=/` | Face + optional mold (`cur-record=record`, `next-root=@u32`); value not yet |
-| [`rune_null.rye`](rune_null.rye) | `?~` | Subject wing (`records.cur`); then/else null arms not yet |
-| [`rune_mutate.rye`](rune_mutate.rye) | `=.` | Wing to mutate (`root`, `kind.cur-record`); new value not yet |
-| [`rune_alias.rye`](rune_alias.rye) | `=*` | Alias face (`records`); source wing not yet |
+| [`rune_bounded_trap.rye`](rune_bounded_trap.rye) | `\|-` | Bound shapes + `run_bounded` / `BoundExceeded` |
+| [`rune_cast.rye`](rune_cast.rye) | `^-` | Mold name — aura or named mold |
+| [`rune_conditional.rye`](rune_conditional.rye) | `?:` | Test expression |
+| [`rune_switch.rye`](rune_switch.rye) | `?-` | Subject wing |
+| [`rune_face.rye`](rune_face.rye) | `=/` | Face + optional mold |
+| [`rune_null.rye`](rune_null.rye) | `?~` | Null-test subject |
+| [`rune_mutate.rye`](rune_mutate.rye) | `=.` | Wing to mutate |
+| [`rune_alias.rye`](rune_alias.rye) | `=*` | Alias face |
 
-Witnesses: `rune_*_witness.rye` · rish wrappers under `tools/` · wired in `tools/parity_ch01.rish`.
+## First generator hop
 
-## What This Is, and Is Not
+| Piece | Role |
+|---|---|
+| [`lower_trap.rye`](lower_trap.rye) | Lower literal `\|-  N` → complete `.rye` main |
+| [`gen/bound-tick.glow`](gen/bound-tick.glow) | Smallest desk generator (`\|-  32`) |
+| [`glow_run.rye`](glow_run.rye) | Lower `.glow` → `.rye` path on stdout |
+| [`../tools/glow_run.rish`](../tools/glow_run.rish) | Rishi hand: lower, rye-build, run |
+| [`../tools/glow_lower_trap_witness.rish`](../tools/glow_lower_trap_witness.rish) | Welcome exit 0 / unwelcome exit 1 |
 
-Eight heads across four categories: **bar**, **cast**, **conditional** (`?:` · `?-` · `?~`), **bindings** (`=/` · `=.` · `=*` — category complete). The brief's composition heads are covered, and the whole `=` trio is named. It is **not** a general Glow lexer or lowering pass — those stay design until a real need asks.
+```bash
+rishi/bin/rishi run tools/glow_run.rish glow/gen/bound-tick.glow
+# → GREEN: glow_run — … exit 0
+```
+
+`(lent …)` bounds parse but do not lower yet (`NotYetLowered`). No general Glow lexer yet.
 
 ---
 
-*May the next rune's own front half arrive the same way — small, real, and connected to a discipline already named, rather than argued and left waiting.*
+*May every generator stay a short spelling of ordinary Rye, and may the shell stay the hand that runs it.*

@@ -97,6 +97,7 @@
 /anvil/bin/
 /nock/bin/
 /glow/bin/
+/glow/.cache/
 *.rye.zig
 .zig-cache/
 zig-cache/
