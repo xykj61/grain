@@ -1,0 +1,61 @@
+//! linengrow/tube1_admission.rye — TUBE1: admit iff the manifest matches a grant.
+//!
+//! Per expanding-prompts/20260716-142818 rung TUBE1: Pool admits one agent
+//! only when every capability the TUBE0 manifest declares is granted on the
+//! Caravan table for that agent. This is P0's door re-aimed at a Manifest —
+//! no separate agent runtime yet; the host still folds a ledger log when
+//! admission holds.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const caps = @import("capabilities.rye");
+const tube = @import("tube_manifest.rye");
+const pool = @import("pool_host_seam.rye");
+const kumara = @import("kumara.rye");
+const mc = @import("mala_core.rye");
+
+/// True when every declared capability on the manifest is granted to
+/// `agent_label` on the table (resource name + rights bits both match).
+pub fn admit_manifest(
+    table: *const caps.CapabilityTable,
+    agent_label: []const u8,
+    manifest: *const tube.Manifest,
+) bool {
+    assert(manifest.cap_count <= tube.max_declared_caps);
+    if (manifest.cap_count == 0) return false;
+    var i: u32 = 0;
+    while (i < manifest.cap_count) : (i += 1) {
+        const dc = &manifest.caps[i];
+        if (!table.allows(agent_label, dc.resource_slice(), dc.rights_mask)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+/// Host a ledger agent only after the manifest's declarations all match
+/// grants. Refuses `NotAdmitted` when the manifest door fails or when Pool's
+/// own ledger right check fails (same error — the door stayed closed).
+pub fn host_ledger_from_manifest(
+    table: *const caps.CapabilityTable,
+    agent_label: []const u8,
+    manifest: *const tube.Manifest,
+    log: []const u8,
+    issuer_hex: *const [mc.pubkey_hex_len]u8,
+    holder_hex: *const [mc.pubkey_hex_len]u8,
+    issuer_pk: kumara.PublicKey,
+    holder_pk: kumara.PublicKey,
+) pool.HostError!pool.AgentResult {
+    if (!admit_manifest(table, agent_label, manifest)) {
+        return error.NotAdmitted;
+    }
+    return pool.host_ledger_agent(
+        table,
+        agent_label,
+        log,
+        issuer_hex,
+        holder_hex,
+        issuer_pk,
+        holder_pk,
+    );
+}

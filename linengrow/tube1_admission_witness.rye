@@ -1,0 +1,107 @@
+//! linengrow/tube1_admission_witness.rye — proves TUBE1 admission.
+//!
+//!   rye build linengrow/tube1_admission_witness.rye -femit-bin=linengrow/bin/tube1_admission_witness
+//!   linengrow/bin/tube1_admission_witness
+//!
+//! Four claims:
+//!   1. A well-formed manifest whose declared caps match a grant is admitted
+//!      and the hosted ledger fold reflects the welcome balances.
+//!   2. The same manifest against a table with no grant is refused NotAdmitted.
+//!   3. A grant with fewer rights than the manifest declares is refused.
+//!   4. admit_manifest is deterministic for the same table + manifest.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const kumara = @import("kumara.rye");
+const rc = @import("receipt_core.rye");
+const mc = @import("mala_core.rye");
+const caps = @import("capabilities.rye");
+const pool = @import("pool_host_seam.rye");
+const tube = @import("tube_manifest.rye");
+const tube1 = @import("tube1_admission.rye");
+
+const witness_version = "20260717.131000";
+
+fn run_selftest() !u8 {
+    const issuer_kp = kumara.keypair_from_seed(&mc.issuer_seed);
+    const holder_kp = kumara.keypair_from_seed(&mc.holder_seed);
+    var issuer_hex: [mc.pubkey_hex_len]u8 = undefined;
+    var holder_hex: [mc.pubkey_hex_len]u8 = undefined;
+    mc.hex_of_key(issuer_kp.public_key, &issuer_hex);
+    mc.hex_of_key(holder_kp.public_key, &holder_hex);
+
+    var log: [rc.max_log_len]u8 = undefined;
+    const log_len = try mc.build_welcome_log(&log, issuer_kp, holder_kp, &issuer_hex, &holder_hex);
+
+    const declared = [_]tube.DeclaredCapability{
+        tube.DeclaredCapability.init(pool.ledger_resource, caps.right_read | caps.right_write),
+    };
+    const manifest = try tube.build("sala-broadcaster", "0.1.0", &declared, 1024);
+    assert(manifest.declares(pool.ledger_resource, caps.right_read | caps.right_write));
+
+    // Claim 1: matching grant → admitted + fold.
+    var table: caps.CapabilityTable = .{};
+    const agent = try table.add_child("ledger-agent");
+    try agent.grant(caps.Capability.init(pool.ledger_resource, caps.right_read | caps.right_write));
+    assert(tube1.admit_manifest(&table, "ledger-agent", &manifest));
+    const hosted = try tube1.host_ledger_from_manifest(
+        &table,
+        "ledger-agent",
+        &manifest,
+        log[0..log_len],
+        &issuer_hex,
+        &holder_hex,
+        issuer_kp.public_key,
+        holder_kp.public_key,
+    );
+    assert(hosted.admitted);
+    assert(hosted.balances.issuer == 200);
+    assert(hosted.balances.holder == 800);
+    print("tube1: matching grant admits manifest and hosts ledger -- issuer {d} holder {d}\n", .{
+        hosted.balances.issuer,
+        hosted.balances.holder,
+    });
+    print("tube1: welcome path -- GREEN\n", .{});
+
+    // Claim 2: no grant → NotAdmitted.
+    var empty: caps.CapabilityTable = .{};
+    _ = try empty.add_child("ledger-agent");
+    assert(!tube1.admit_manifest(&empty, "ledger-agent", &manifest));
+    const refused = tube1.host_ledger_from_manifest(
+        &empty,
+        "ledger-agent",
+        &manifest,
+        log[0..log_len],
+        &issuer_hex,
+        &holder_hex,
+        issuer_kp.public_key,
+        holder_kp.public_key,
+    );
+    if (refused) |_| {
+        return error.UngrantedAdmitted;
+    } else |err| {
+        if (err != pool.HostError.NotAdmitted) return err;
+    }
+    print("tube1: missing grant refuses NotAdmitted -- GREEN unwelcome path\n", .{});
+
+    // Claim 3: grant weaker than manifest declaration → NotAdmitted.
+    var weak: caps.CapabilityTable = .{};
+    const weak_agent = try weak.add_child("ledger-agent");
+    try weak_agent.grant(caps.Capability.init(pool.ledger_resource, caps.right_read));
+    assert(!tube1.admit_manifest(&weak, "ledger-agent", &manifest));
+    print("tube1: read-only grant fails a read+write manifest -- GREEN rights path\n", .{});
+
+    // Claim 4: deterministic admit.
+    assert(tube1.admit_manifest(&table, "ledger-agent", &manifest));
+    assert(tube1.admit_manifest(&table, "ledger-agent", &manifest));
+    print("tube1: admit_manifest agrees twice on the same table -- GREEN determinism\n", .{});
+
+    print("tube1: version {s}\n", .{witness_version});
+    print("GREEN: TUBE1 -- Pool admits an agent iff the manifest's caps match a grant.\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}

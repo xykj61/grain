@@ -1,0 +1,22 @@
+# tube1_admission_witness.rish — TUBE1: admit iff manifest caps match a grant.
+#
+# Pool's door re-aimed at a TUBE0 Manifest. Device-free; composes landed
+# tube_manifest.rye + pool_host_seam.rye. See linengrow/tube1_admission.rye.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/tube1_admission_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/tube1_admission_witness"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/tube1_admission_witness.rye -femit-bin=${bin}"]
+assert build.ok else "TUBE1 admission witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "TUBE1 admission witness exited non-zero"
+assert selftest.out contains "GREEN" else "TUBE1 admission witness not GREEN"
+assert selftest.out contains "welcome path" else "TUBE1 missing the matching-grant welcome path"
+assert selftest.out contains "NotAdmitted" else "TUBE1 missing the unwelcome NotAdmitted path"
+assert selftest.out contains "read-only grant" else "TUBE1 missing the rights-mismatch path"
+
+say "GREEN: TUBE1 admission witness passed."

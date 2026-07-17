@@ -1117,6 +1117,11 @@ let tube0 = run ["rishi/bin/rishi" "run" "tools/tube0_manifest_witness.rish"]
 assert tube0.ok else "TUBE0 manifest witness failed"
 say "GREEN: TUBE0 manifest witness passed."
 
+say "witness suite: TUBE1 — admit iff manifest caps match a grant…"
+let tube1 = run ["rishi/bin/rishi" "run" "tools/tube1_admission_witness.rish"]
+assert tube1.ok else "TUBE1 admission witness failed"
+say "GREEN: TUBE1 admission witness passed."
+
 say "witness suite: TUBE0.5 — manifest capabilities emit as Android permissions…"
 let tube0_5 = run ["rishi/bin/rishi" "run" "tools/tube0_5_android_permission_witness.rish"]
 assert tube0_5.ok else "TUBE0.5 permission-emission witness failed"
