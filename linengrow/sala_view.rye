@@ -18,6 +18,7 @@ const std = @import("std");
 const assert = std.debug.assert;
 const mc = @import("mala_core.rye");
 const pool = @import("pool_host_seam.rye");
+const tally_copy = @import("tally_copy.rye");
 
 /// A frame is small enough to eyeball — the thin-view discipline.
 pub const max_frame_lines: u32 = 8;
@@ -33,7 +34,7 @@ pub const Frame = struct {
     fn push(self: *Frame, text: []const u8) FrameError!void {
         if (self.count >= max_frame_lines) return error.TooManyLines;
         if (text.len > max_line_width) return error.LineTooWide;
-        std.mem.copyForwards(u8, self.lines[self.count][0..text.len], text);
+        tally_copy.copy_disjoint(u8, self.lines[self.count][0..text.len], text);
         self.line_lens[self.count] = @intCast(text.len);
         self.count += 1;
     }

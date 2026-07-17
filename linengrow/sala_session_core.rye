@@ -27,6 +27,7 @@ const std = @import("std");
 const kumara = @import("kumara.rye");
 const rc = @import("receipt_core.rye");
 const mc = @import("mala_core.rye");
+const tally_copy = @import("tally_copy.rye");
 
 /// One event line may never exceed this — small enough to eyeball, well under
 /// receipt_core.max_line_len (1153). Sized like neth_serial_core's own bound,
@@ -57,7 +58,7 @@ pub const ActorRegistry = struct {
 
     pub fn admit(self: *ActorRegistry, hex: *const [mc.pubkey_hex_len]u8, pk: kumara.PublicKey) SessionError!void {
         if (self.count >= max_actors) return error.Overflow;
-        std.mem.copyForwards(u8, self.actors[self.count].hex[0..], hex[0..]);
+        tally_copy.copy_disjoint(u8, self.actors[self.count].hex[0..], hex[0..]);
         self.actors[self.count].pk = pk;
         self.count += 1;
     }
@@ -109,7 +110,7 @@ pub fn append_event(
     const new_len_usize = @as(usize, log_len) + line_len;
     if (new_len_usize > log.len) return error.Overflow;
     const new_len: u32 = @intCast(new_len_usize);
-    std.mem.copyForwards(u8, log[log_len..new_len], line_buf[0..line_len]);
+    tally_copy.copy_disjoint(u8, log[log_len..new_len], line_buf[0..line_len]);
     return new_len;
 }
 
@@ -124,7 +125,7 @@ pub fn append_signed_line(log: []u8, log_len: u32, line: []const u8) SessionErro
     const new_len_usize = @as(usize, log_len) + line.len;
     if (new_len_usize > log.len) return error.Overflow;
     const new_len: u32 = @intCast(new_len_usize);
-    std.mem.copyForwards(u8, log[log_len..new_len], line);
+    tally_copy.copy_disjoint(u8, log[log_len..new_len], line);
     return new_len;
 }
 

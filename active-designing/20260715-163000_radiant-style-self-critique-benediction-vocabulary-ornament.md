@@ -3,7 +3,7 @@
 **Language:** EN
 **Version:** `20260715.163000` (Pacific)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Status:** Design reflection — a critique of this tree's own prose, offered to sharpen the house voice rather than replace it. Register: design/research (Two Rooms — a proposal about how we write, not a change to the canonical style guide). Addressed to a generic Acme Corporation employee.
+**Status:** Vision register (Two Rooms) — a design reflection, a critique of this tree's own prose, offered to sharpen the house voice rather than replace it; a proposal about how we write, not a change to the canonical style guide. Addressed to a generic Acme Corporation employee.
 **Companion:** `../context/RADIANT_STYLE.md` (the canonical discipline this note refines from experience, and does not overrule)
 
 ---

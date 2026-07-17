@@ -64,7 +64,8 @@ fn run_selftest() !u8 {
 
     // Claim 1: the mixed stream replays multi-signer.
     const r1 = try sala.replay_multi(log[0..len], &registry);
-    assert(r1.events == 5 and r1.last_seq == 5);
+    assert(r1.events == 5);
+    assert(r1.last_seq == 5);
     print("sala-b2: mixed session (3 broadcaster + 2 viewer chat events) replayed multi-signer -- {d} events -- GREEN welcome path\n", .{r1.events});
 
     // Claim 2: VOD -- the finished log replays to the same root at rest.
