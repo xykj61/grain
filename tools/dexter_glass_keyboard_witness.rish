@@ -19,5 +19,7 @@ assert selftest.out contains "letters paint lines" else "ZETA1 missing paint cla
 assert selftest.out contains "hit boxes" else "ZETA1 missing hit-box claim"
 assert selftest.out contains "tap drain" else "ZETA2 missing tap→Action claim"
 assert selftest.out contains "label-span hit" else "ZETA2b missing label-span hit claim"
+assert selftest.out contains "emoji UTF-8" else "ZETA4 missing emoji UTF-8 claim"
+assert selftest.out contains "distinct atlas" else "ZETA4 missing distinct-atlas claim"
 
-say "GREEN: ZETA0–ZETA2b — layout, label-span hit, and tap→Action under waymark ZETA."
+say "GREEN: ZETA0–ZETA4 — layout, label-span hit, tap→Action, and emoji under waymark ZETA."

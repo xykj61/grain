@@ -3,13 +3,28 @@
 //! Composes key events into one submitted line for `runOneInput`. The Wayland
 //! seam in Brushstroke drains into these actions; this module stays pure so
 //! headless witnesses can replay the same path without a compositor.
+//!
+//! ZETA4: `utf8` inserts a bounded multi-byte sequence (emoji); backspace
+//! prefers a curated face suffix, else one UTF-8 codepoint.
 
 const std = @import("std");
+const assert = std.debug.assert;
 
 pub const max_line_len: u32 = 400;
+pub const max_utf8_insert: u32 = 8;
+
+pub const Utf8Insert = struct {
+    data: [max_utf8_insert]u8 = [_]u8{0} ** max_utf8_insert,
+    len: u8 = 0,
+
+    pub fn slice(self: *const Utf8Insert) []const u8 {
+        return self.data[0..self.len];
+    }
+};
 
 pub const Action = union(enum) {
     char_: u8,
+    utf8: Utf8Insert,
     backspace,
     submit,
 };
@@ -30,8 +45,22 @@ pub const LineEditor = struct {
         self.len += 1;
     }
 
+    pub fn push_utf8(self: *LineEditor, bytes: []const u8) void {
+        // invariant: insert is bounded
+        assert(bytes.len > 0);
+        assert(bytes.len <= max_utf8_insert);
+        if (self.len + bytes.len > max_line_len) return;
+        @memcpy(self.buf[self.len .. self.len + bytes.len], bytes);
+        self.len += @intCast(bytes.len);
+    }
+
     pub fn backspace(self: *LineEditor) void {
-        if (self.len > 0) self.len -= 1;
+        if (self.len == 0) return;
+        const n = utf8_delete_len(self.buf[0..self.len]);
+        // invariant: delete within buffer
+        assert(n > 0);
+        assert(n <= self.len);
+        self.len -= n;
     }
 
     pub fn submit(self: *LineEditor) void {
@@ -45,6 +74,7 @@ pub const LineEditor = struct {
     pub fn apply_action(self: *LineEditor, action: Action) void {
         switch (action) {
             .char_ => |ch| self.push_char(ch),
+            .utf8 => |u| self.push_utf8(u.slice()),
             .backspace => self.backspace(),
             .submit => self.submit(),
         }
@@ -60,3 +90,20 @@ pub const LineEditor = struct {
         return try garden.dupe(u8, trimmed);
     }
 };
+
+/// Bytes to remove from the end: one UTF-8 codepoint (1–4 bytes).
+fn utf8_delete_len(buf: []const u8) u32 {
+    assert(buf.len > 0);
+    var i: usize = buf.len;
+    // Walk back continuation bytes (10xxxxxx).
+    while (i > 0) {
+        i -= 1;
+        const b = buf[i];
+        if (b & 0xC0 != 0x80) {
+            return @intCast(buf.len - i);
+        }
+        // Guard: orphan continuations — delete one byte.
+        if (buf.len - i >= 4) return 1;
+    }
+    return 1;
+}

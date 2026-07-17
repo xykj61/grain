@@ -1,0 +1,234 @@
+//! linengrow/dexter_glass_emoji.rye — ZETA4 bounded emoji atlas + UTF-8 faces.
+//!
+//! iOS-inspired organization (public notes): frequent strip + four category tabs.
+//! Clean-room monochrome 8×8 glyphs; real UTF-8 inserted into Dexter. Not Apple art.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+pub const max_utf8: u32 = 8;
+pub const face_count: u32 = 40;
+pub const faces_per_tab: u32 = 8;
+pub const frequent_count: u32 = 8;
+/// Skate cell values 128..127+face_count paint via extended_glyphs.
+pub const skate_base: u8 = 128;
+
+pub const Tab = enum(u8) {
+    smileys = 0,
+    gestures = 1,
+    hearts = 2,
+    nature = 3,
+};
+
+pub const Utf8 = struct {
+    data: [max_utf8]u8 = [_]u8{0} ** max_utf8,
+    len: u8 = 0,
+
+    pub fn slice(self: *const Utf8) []const u8 {
+        return self.data[0..self.len];
+    }
+};
+
+pub const Face = struct {
+    utf8: Utf8,
+    glyph: [8]u8,
+};
+
+fn utf8_from(comptime s: []const u8) Utf8 {
+    comptime assert(s.len > 0);
+    comptime assert(s.len <= max_utf8);
+    var out: Utf8 = .{};
+    out.len = s.len;
+    @memcpy(out.data[0..s.len], s);
+    return out;
+}
+
+fn g(comptime rows: [8]u8) [8]u8 {
+    return rows;
+}
+
+fn face_at(id: u8) Face {
+    // invariant: id in atlas
+    assert(id < face_count);
+    return faces[id];
+}
+
+/// True when every face in [lo, lo+n) has a unique 8×8 glyph (ZETA4 polish).
+pub fn glyphs_distinct_range(lo: u8, n: u8) bool {
+    assert(n > 1);
+    assert(lo + n <= face_count);
+    var i: u8 = 0;
+    while (i < n) : (i += 1) {
+        var j: u8 = i + 1;
+        while (j < n) : (j += 1) {
+            if (std.mem.eql(u8, &faces[lo + i].glyph, &faces[lo + j].glyph)) return false;
+        }
+    }
+    return true;
+}
+
+pub fn atlas_glyphs_are_distinct() bool {
+    return glyphs_distinct_range(0, 8) and
+        glyphs_distinct_range(8, 8) and
+        glyphs_distinct_range(16, 8) and
+        glyphs_distinct_range(24, 8) and
+        glyphs_distinct_range(32, 8);
+}
+
+/// Curated UTF-8 + hand-distinct clean-room 8×8 glyphs (not Apple art).
+pub const faces: [face_count]Face = .{
+    // Smileys 0..7 (also frequent) — mouth / eyes / brows differ
+    .{ .utf8 = utf8_from("😀"), .glyph = g(.{ 0x3C, 0x42, 0xA5, 0x81, 0xA5, 0x99, 0x42, 0x3C }) }, // grin
+    .{ .utf8 = utf8_from("😊"), .glyph = g(.{ 0x3C, 0x42, 0xA5, 0x81, 0x81, 0xA5, 0x5A, 0x3C }) }, // blush smile
+    .{ .utf8 = utf8_from("😂"), .glyph = g(.{ 0x3C, 0x42, 0xE7, 0x81, 0xA5, 0x99, 0x42, 0x3C }) }, // tears high
+    .{ .utf8 = utf8_from("😍"), .glyph = g(.{ 0x3C, 0x42, 0xDB, 0x81, 0xA5, 0x99, 0x42, 0x3C }) }, // heart eyes
+    .{ .utf8 = utf8_from("😎"), .glyph = g(.{ 0x3C, 0x42, 0xFF, 0xE7, 0x81, 0x99, 0x42, 0x3C }) }, // shades
+    .{ .utf8 = utf8_from("😢"), .glyph = g(.{ 0x3C, 0x42, 0xA5, 0x81, 0x99, 0xA5, 0x42, 0x3C }) }, // frown + tear
+    .{ .utf8 = utf8_from("🤔"), .glyph = g(.{ 0x3C, 0x4A, 0xA5, 0x81, 0x81, 0x91, 0x4A, 0x3C }) }, // raised brow
+    .{ .utf8 = utf8_from("🥰"), .glyph = g(.{ 0x3C, 0x66, 0xA5, 0x81, 0xA5, 0x99, 0x42, 0x3C }) }, // love face
+    // Gestures 8..15 — silhouette per gesture
+    .{ .utf8 = utf8_from("👍"), .glyph = g(.{ 0x08, 0x0C, 0x0E, 0x3F, 0x3F, 0x0E, 0x0C, 0x08 }) }, // thumb up
+    .{ .utf8 = utf8_from("👎"), .glyph = g(.{ 0x10, 0x30, 0x70, 0xFC, 0xFC, 0x70, 0x30, 0x10 }) }, // thumb down
+    .{ .utf8 = utf8_from("👏"), .glyph = g(.{ 0x66, 0x66, 0xFF, 0xFF, 0x7E, 0x3C, 0x18, 0x00 }) }, // clap
+    .{ .utf8 = utf8_from("🙏"), .glyph = g(.{ 0x18, 0x3C, 0x3C, 0x3C, 0x18, 0x18, 0x18, 0x00 }) }, // prayer
+    .{ .utf8 = utf8_from("💪"), .glyph = g(.{ 0x00, 0x60, 0xF0, 0xF8, 0x3E, 0x1F, 0x0E, 0x04 }) }, // muscle
+    .{ .utf8 = utf8_from("🤝"), .glyph = g(.{ 0x00, 0x42, 0xE7, 0xFF, 0x7E, 0x3C, 0x00, 0x00 }) }, // handshake
+    .{ .utf8 = utf8_from("👋"), .glyph = g(.{ 0x08, 0x1C, 0x3E, 0x1C, 0x08, 0x1C, 0x3E, 0x1C }) }, // wave
+    .{ .utf8 = utf8_from("✋"), .glyph = g(.{ 0x24, 0x24, 0x3C, 0x3C, 0x3C, 0x3C, 0x18, 0x18 }) }, // open palm
+    // Hearts 16..23 — shape variants (mono can't carry hue)
+    .{ .utf8 = utf8_from("❤"), .glyph = g(.{ 0x00, 0x66, 0xFF, 0xFF, 0x7E, 0x3C, 0x18, 0x00 }) }, // solid
+    .{ .utf8 = utf8_from("🧡"), .glyph = g(.{ 0x00, 0x66, 0x99, 0x81, 0x42, 0x24, 0x18, 0x00 }) }, // outline
+    .{ .utf8 = utf8_from("💛"), .glyph = g(.{ 0x00, 0x24, 0x7E, 0x7E, 0x3C, 0x18, 0x00, 0x00 }) }, // small
+    .{ .utf8 = utf8_from("💚"), .glyph = g(.{ 0x66, 0xFF, 0xFF, 0xFF, 0x7E, 0x3C, 0x18, 0x00 }) }, // tall
+    .{ .utf8 = utf8_from("💙"), .glyph = g(.{ 0x00, 0x66, 0xFF, 0xE7, 0x7E, 0x3C, 0x18, 0x00 }) }, // hollow center
+    .{ .utf8 = utf8_from("💜"), .glyph = g(.{ 0x00, 0x42, 0xE7, 0xFF, 0x7E, 0x3C, 0x18, 0x00 }) }, // narrow
+    .{ .utf8 = utf8_from("💕"), .glyph = g(.{ 0x00, 0x6C, 0xFE, 0xFE, 0x7C, 0x38, 0x10, 0x00 }) }, // double lean
+    .{ .utf8 = utf8_from("💔"), .glyph = g(.{ 0x00, 0x66, 0xFF, 0xDB, 0x66, 0x24, 0x18, 0x00 }) }, // broken
+    // Nature 24..31
+    .{ .utf8 = utf8_from("🌸"), .glyph = g(.{ 0x28, 0x7C, 0xFE, 0x7C, 0x28, 0x10, 0x10, 0x00 }) }, // blossom
+    .{ .utf8 = utf8_from("🌺"), .glyph = g(.{ 0x10, 0x54, 0xFE, 0xFE, 0x7C, 0x38, 0x10, 0x00 }) }, // hibiscus
+    .{ .utf8 = utf8_from("🍀"), .glyph = g(.{ 0x00, 0x28, 0x7C, 0xFE, 0x7C, 0x28, 0x10, 0x10 }) }, // clover
+    .{ .utf8 = utf8_from("🌳"), .glyph = g(.{ 0x18, 0x3C, 0x7E, 0x7E, 0x3C, 0x18, 0x18, 0x3C }) }, // tree
+    .{ .utf8 = utf8_from("🐶"), .glyph = g(.{ 0x42, 0xA5, 0xFF, 0xA5, 0x81, 0x99, 0x42, 0x3C }) }, // dog
+    .{ .utf8 = utf8_from("🐱"), .glyph = g(.{ 0x42, 0xE7, 0xFF, 0xA5, 0x81, 0xA5, 0x5A, 0x3C }) }, // cat
+    .{ .utf8 = utf8_from("☀"), .glyph = g(.{ 0x10, 0x54, 0x38, 0xFE, 0x38, 0x54, 0x10, 0x00 }) }, // sun
+    .{ .utf8 = utf8_from("🌙"), .glyph = g(.{ 0x3C, 0x7E, 0x70, 0x60, 0x70, 0x7E, 0x3C, 0x00 }) }, // moon
+    // Extra smileys 32..39
+    .{ .utf8 = utf8_from("😉"), .glyph = g(.{ 0x3C, 0x42, 0x85, 0x81, 0xA5, 0x99, 0x42, 0x3C }) }, // wink
+    .{ .utf8 = utf8_from("😘"), .glyph = g(.{ 0x3C, 0x42, 0xA5, 0x81, 0x99, 0xC3, 0x42, 0x3C }) }, // kiss
+    .{ .utf8 = utf8_from("🥲"), .glyph = g(.{ 0x3C, 0x42, 0xA5, 0x81, 0xA5, 0x5A, 0x4A, 0x3C }) }, // tear smile
+    .{ .utf8 = utf8_from("😅"), .glyph = g(.{ 0x3C, 0x4A, 0xA5, 0x81, 0xA5, 0x99, 0x42, 0x3C }) }, // sweat
+    .{ .utf8 = utf8_from("🤗"), .glyph = g(.{ 0xE7, 0x42, 0xA5, 0x81, 0xA5, 0x99, 0x42, 0x3C }) }, // hug arms
+    .{ .utf8 = utf8_from("🫡"), .glyph = g(.{ 0x3C, 0x42, 0xA5, 0x81, 0x81, 0x81, 0x5A, 0x3C }) }, // salute flat
+    .{ .utf8 = utf8_from("😴"), .glyph = g(.{ 0x3C, 0x42, 0xA5, 0x81, 0xFF, 0x81, 0x42, 0x3C }) }, // sleep Z mouth
+    .{ .utf8 = utf8_from("🤩"), .glyph = g(.{ 0x3C, 0x5A, 0xE7, 0x81, 0xA5, 0x99, 0x42, 0x3C }) }, // star eyes
+};
+
+/// Glyph table for Skate extended slots 0..127 (only 0..face_count-1 filled).
+pub const glyphs_ext: [128][8]u8 = blk: {
+    var out: [128][8]u8 = [_][8]u8{[_]u8{0} ** 8} ** 128;
+    for (faces, 0..) |f, i| {
+        out[i] = f.glyph;
+    }
+    break :blk out;
+};
+
+pub fn skate_cell(id: u8) u8 {
+    assert(id < face_count);
+    return skate_base + id;
+}
+
+pub fn tab_base(tab: Tab) u8 {
+    return switch (tab) {
+        .smileys => 0,
+        .gestures => 8,
+        .hearts => 16,
+        .nature => 24,
+    };
+}
+
+/// Second row for smileys uses faces 32..39; other tabs repeat the first eight (SLC density).
+pub fn tab_row1_id(tab: Tab, col: u8) u8 {
+    assert(col < faces_per_tab);
+    if (tab == .smileys) return 32 + col;
+    return tab_base(tab) + col;
+}
+
+pub fn utf8_for(id: u8) Utf8 {
+    return face_at(id).utf8;
+}
+
+pub fn action_utf8(id: u8) Utf8 {
+    return utf8_for(id);
+}
+
+/// Map a buffer suffix to a face id when it matches a curated UTF-8 sequence.
+pub fn face_id_matching_suffix(buf: []const u8) ?u8 {
+    var best: ?u8 = null;
+    var best_len: u8 = 0;
+    var i: u8 = 0;
+    while (i < face_count) : (i += 1) {
+        const u = faces[i].utf8;
+        if (u.len == 0 or u.len > buf.len) continue;
+        if (u.len <= best_len) continue;
+        if (std.mem.eql(u8, buf[buf.len - u.len ..], u.slice())) {
+            best = i;
+            best_len = u.len;
+        }
+    }
+    return best;
+}
+
+/// Skate-safe chrome preview: ASCII kept; curated emoji → atlas cell bytes.
+pub fn skate_preview(prompt: []const u8, out: []u8) u32 {
+    assert(out.len > 0);
+    var pi: usize = 0;
+    var oi: u32 = 0;
+    while (pi < prompt.len and oi < out.len) {
+        const rest = prompt[pi..];
+        if (face_id_matching_prefix(rest)) |id| {
+            out[oi] = skate_cell(id);
+            oi += 1;
+            pi += faces[id].utf8.len;
+            continue;
+        }
+        out[oi] = prompt[pi];
+        oi += 1;
+        pi += 1;
+    }
+    return oi;
+}
+
+fn face_id_matching_prefix(buf: []const u8) ?u8 {
+    var best: ?u8 = null;
+    var best_len: u8 = 0;
+    var i: u8 = 0;
+    while (i < face_count) : (i += 1) {
+        const u = faces[i].utf8;
+        if (u.len == 0 or u.len > buf.len) continue;
+        if (u.len <= best_len) continue;
+        if (std.mem.eql(u8, buf[0..u.len], u.slice())) {
+            best = i;
+            best_len = u.len;
+        }
+    }
+    return best;
+}
+
+pub fn tab_label(tab: Tab) []const u8 {
+    return switch (tab) {
+        .smileys => "sm",
+        .gestures => "gn",
+        .hearts => "ht",
+        .nature => "nt",
+    };
+}
+
+comptime {
+    _ = print;
+    assert(face_count == 40);
+    assert(faces[0].utf8.len >= 3);
+    assert(glyphs_ext[0][0] != 0 or glyphs_ext[0][1] != 0);
+    assert(atlas_glyphs_are_distinct());
+}

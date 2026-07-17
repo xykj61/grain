@@ -1,12 +1,13 @@
-//! linengrow/dexter_glass_keyboard_layout.rye — ZETA0 English layout tables.
+//! linengrow/dexter_glass_keyboard_layout.rye — ZETA0/ZETA4 English layout tables.
 //!
 //! Glow-owned QWERTY pages for the glass keyboard (waymark ZETA). Device-free
 //! data only — paint and tap hit-testing are ZETA1+. iOS-inspired mode family
-//! from public notes; clean-room (no Apple assets).
+//! from public notes; clean-room (no Apple assets). ZETA4 adds emoji pages.
 
 const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
+const emoji = @import("dexter_glass_emoji.rye");
 
 /// Waymark for this ladder (SHA3-512 over glow-english-qwerty-glass-keyboard-3).
 pub const waymark: []const u8 = "ZETA";
@@ -15,6 +16,7 @@ pub const Mode = enum {
     letters,
     numbers,
     symbols,
+    emoji,
 };
 
 /// One key face on a page. Specials are named; printables carry a UTF-8 byte.
@@ -28,6 +30,8 @@ pub const Key = union(enum) {
     to_letters,
     to_symbols,
     to_emoji,
+    emoji_face: u8,
+    emoji_tab: emoji.Tab,
 };
 
 pub const max_keys_per_row: u32 = 12;
@@ -47,6 +51,11 @@ fn c(ch: u8) Key {
     assert(ch >= 32);
     assert(ch < 127);
     return .{ .char_ = ch };
+}
+
+fn face(id: u8) Key {
+    assert(id < emoji.face_count);
+    return .{ .emoji_face = id };
 }
 
 // --- Letters (QWERTY) -------------------------------------------------------
@@ -106,11 +115,76 @@ pub const symbols_page: Page = .{
     .rows = &symbols_rows,
 };
 
+// --- Emoji (ZETA4): frequent + tab grid + ABC/tabs/delete ---------------------
+
+const emoji_freq = [_]Key{ face(0), face(1), face(2), face(3), face(4), face(5), face(6), face(7) };
+
+const emoji_smileys_r1 = [_]Key{ face(0), face(1), face(2), face(3), face(4), face(5), face(6), face(7) };
+const emoji_smileys_r2 = [_]Key{ face(32), face(33), face(34), face(35), face(36), face(37), face(38), face(39) };
+
+const emoji_gestures_r1 = [_]Key{ face(8), face(9), face(10), face(11), face(12), face(13), face(14), face(15) };
+const emoji_gestures_r2 = [_]Key{ face(8), face(9), face(10), face(11), face(12), face(13), face(14), face(15) };
+
+const emoji_hearts_r1 = [_]Key{ face(16), face(17), face(18), face(19), face(20), face(21), face(22), face(23) };
+const emoji_hearts_r2 = [_]Key{ face(16), face(17), face(18), face(19), face(20), face(21), face(22), face(23) };
+
+const emoji_nature_r1 = [_]Key{ face(24), face(25), face(26), face(27), face(28), face(29), face(30), face(31) };
+const emoji_nature_r2 = [_]Key{ face(24), face(25), face(26), face(27), face(28), face(29), face(30), face(31) };
+
+const emoji_chrome = [_]Key{
+    .to_letters,
+    .{ .emoji_tab = .smileys },
+    .{ .emoji_tab = .gestures },
+    .{ .emoji_tab = .hearts },
+    .{ .emoji_tab = .nature },
+    .delete,
+};
+
+const emoji_smileys_rows = [_]Row{
+    .{ .keys = &emoji_freq },
+    .{ .keys = &emoji_smileys_r1 },
+    .{ .keys = &emoji_smileys_r2 },
+    .{ .keys = &emoji_chrome },
+};
+const emoji_gestures_rows = [_]Row{
+    .{ .keys = &emoji_freq },
+    .{ .keys = &emoji_gestures_r1 },
+    .{ .keys = &emoji_gestures_r2 },
+    .{ .keys = &emoji_chrome },
+};
+const emoji_hearts_rows = [_]Row{
+    .{ .keys = &emoji_freq },
+    .{ .keys = &emoji_hearts_r1 },
+    .{ .keys = &emoji_hearts_r2 },
+    .{ .keys = &emoji_chrome },
+};
+const emoji_nature_rows = [_]Row{
+    .{ .keys = &emoji_freq },
+    .{ .keys = &emoji_nature_r1 },
+    .{ .keys = &emoji_nature_r2 },
+    .{ .keys = &emoji_chrome },
+};
+
+pub const emoji_smileys_page: Page = .{ .mode = .emoji, .rows = &emoji_smileys_rows };
+pub const emoji_gestures_page: Page = .{ .mode = .emoji, .rows = &emoji_gestures_rows };
+pub const emoji_hearts_page: Page = .{ .mode = .emoji, .rows = &emoji_hearts_rows };
+pub const emoji_nature_page: Page = .{ .mode = .emoji, .rows = &emoji_nature_rows };
+
 pub fn page_for(mode: Mode) Page {
+    return page_for_tab(mode, .smileys);
+}
+
+pub fn page_for_tab(mode: Mode, tab: emoji.Tab) Page {
     const page = switch (mode) {
         .letters => letters_page,
         .numbers => numbers_page,
         .symbols => symbols_page,
+        .emoji => switch (tab) {
+            .smileys => emoji_smileys_page,
+            .gestures => emoji_gestures_page,
+            .hearts => emoji_hearts_page,
+            .nature => emoji_nature_page,
+        },
     };
     // invariant: every page carries exactly four rows
     assert(page.rows.len == max_rows);
@@ -166,7 +240,14 @@ pub fn numbers_top_row_is_digits() bool {
     return true;
 }
 
-// Keep print in the opening triad; layout tables have no runtime claims.
+/// ZETA4: emoji smileys page leads with frequent face 0.
+pub fn emoji_frequent_top_left_is_face0() bool {
+    return switch (emoji_smileys_page.rows[0].keys[0]) {
+        .emoji_face => |id| id == 0,
+        else => false,
+    };
+}
+
 comptime {
     _ = print;
     _ = std;
