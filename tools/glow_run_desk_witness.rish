@@ -24,4 +24,19 @@ assert iff.ok else "glow_run if-gth.glow failed"
 assert iff.out contains "GREEN" else "glow_run if-gth.glow not GREEN"
 assert iff.out contains "if-gth.glow" else "glow_run if-gth claim missing path"
 
-say "GREEN: glow_run desk — bound-tick, lent-tick, cast-u32, and if-gth lowered, built, exit 0."
+let sw = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/switch-kind.glow"]
+assert sw.ok else "glow_run switch-kind.glow failed"
+assert sw.out contains "GREEN" else "glow_run switch-kind.glow not GREEN"
+assert sw.out contains "switch-kind.glow" else "glow_run switch-kind claim missing path"
+
+let face = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/face-root.glow"]
+assert face.ok else "glow_run face-root.glow failed"
+assert face.out contains "GREEN" else "glow_run face-root.glow not GREEN"
+assert face.out contains "face-root.glow" else "glow_run face-root claim missing path"
+
+let nullt = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/null-records.glow"]
+assert nullt.ok else "glow_run null-records.glow failed"
+assert nullt.out contains "GREEN" else "glow_run null-records.glow not GREEN"
+assert nullt.out contains "null-records.glow" else "glow_run null-records claim missing path"
+
+say "GREEN: glow_run desk — bound-tick through null-records lowered, built, exit 0."

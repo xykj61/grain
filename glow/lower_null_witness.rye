@@ -1,0 +1,57 @@
+//! glow/lower_null_witness.rye — proves `?~` lowers to runnable `.rye`.
+//!
+//!   rye build glow/lower_null_witness.rye -femit-bin=glow/bin/lower_null_witness
+//!   glow/bin/lower_null_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const lower = @import("lower_null.rye");
+
+const witness_version = "20260717.152356";
+
+fn run_selftest(init: std.process.Init) !u8 {
+    const io = init.io;
+    const a = init.arena.allocator();
+    const cwd = std.Io.Dir.cwd();
+    var buf: [2048]u8 = undefined;
+
+    const n1 = try lower.lower_line_welcome("?~  records.cur", &buf);
+    const rye1 = buf[0..n1];
+    assert(std.mem.indexOf(u8, rye1, "const records_cur: ?u32 = null") != null);
+    assert(std.mem.indexOf(u8, rye1, "if (records_cur == null)") != null);
+    print("lower: \"?~  records.cur\" welcome emit takes then arm on null -- GREEN\n", .{});
+
+    const n2 = try lower.lower_line_unwelcome("?~  records.cur", &buf);
+    const rye2 = buf[0..n2];
+    assert(std.mem.indexOf(u8, rye2, "const records_cur: ?u32 = 1") != null);
+    print("lower: \"?~  records.cur\" unwelcome emit takes else arm when present -- GREEN\n", .{});
+
+    if (lower.lower_line_welcome("?~  (head-of list)", &buf)) |_| {
+        return error.SubjectLoweredTooSoon;
+    } else |err| {
+        if (err != lower.LowerError.SubjectNotYetLowered) return err;
+    }
+    print("lower: \"?~  (head-of list)\" refused SubjectNotYetLowered -- GREEN\n", .{});
+
+    try cwd.createDirPath(io, "glow/.cache");
+    const welcome_path = "glow/.cache/null_records_welcome.rye";
+    const unwelcome_path = "glow/.cache/null_records_unwelcome.rye";
+    const n3 = try lower.lower_line_welcome("?~  records.cur", &buf);
+    try cwd.writeFile(io, .{ .sub_path = welcome_path, .data = buf[0..n3] });
+    const n4 = try lower.lower_line_unwelcome("?~  records.cur", &buf);
+    try cwd.writeFile(io, .{ .sub_path = unwelcome_path, .data = buf[0..n4] });
+    print("lower: wrote null welcome and unwelcome .rye under glow/.cache/ -- GREEN\n", .{});
+
+    const gen_src = try cwd.readFileAlloc(io, "glow/gen/null-records.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_src, "?~  records.cur") != null);
+    print("lower: glow/gen/null-records.glow carries \"?~  records.cur\" -- GREEN\n", .{});
+
+    print("lower: version {s}\n", .{witness_version});
+    print("GREEN: `?~` lowers records.cur to ordinary Rye.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
+}

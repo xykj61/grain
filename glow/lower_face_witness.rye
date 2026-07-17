@@ -1,0 +1,62 @@
+//! glow/lower_face_witness.rye — proves `=/` lowers to runnable `.rye`.
+//!
+//!   rye build glow/lower_face_witness.rye -femit-bin=glow/bin/lower_face_witness
+//!   glow/bin/lower_face_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const lower = @import("lower_face.rye");
+
+const witness_version = "20260717.152129";
+
+fn run_selftest(init: std.process.Init) !u8 {
+    const io = init.io;
+    const a = init.arena.allocator();
+    const cwd = std.Io.Dir.cwd();
+    var buf: [2048]u8 = undefined;
+
+    const n1 = try lower.lower_line_welcome("=/  next-root=@u32", &buf);
+    const rye1 = buf[0..n1];
+    assert(std.mem.indexOf(u8, rye1, "const next_root: u32 = 7") != null);
+    assert(std.mem.indexOf(u8, rye1, "next_root == 7") != null);
+    print("lower: \"=/  next-root=@u32\" welcome emit binds next_root -- GREEN\n", .{});
+
+    const n2 = try lower.lower_line_unwelcome("=/  next-root=@u32", &buf);
+    const rye2 = buf[0..n2];
+    assert(std.mem.indexOf(u8, rye2, "next_root == 8") != null);
+    print("lower: \"=/  next-root=@u32\" unwelcome emit expects mismatch -- GREEN\n", .{});
+
+    const n3 = try lower.lower_line_welcome("=/  tick", &buf);
+    const rye3 = buf[0..n3];
+    assert(std.mem.indexOf(u8, rye3, "const tick: u32 = 7") != null);
+    print("lower: \"=/  tick\" welcome emit binds bare tick -- GREEN\n", .{});
+
+    if (lower.lower_line_welcome("=/  cur-record=record", &buf)) |_| {
+        return error.NamedMoldLoweredTooSoon;
+    } else |err| {
+        if (err != lower.LowerError.NamedMoldNotYetLowered) return err;
+    }
+    print("lower: \"=/  cur-record=record\" refused NamedMoldNotYetLowered -- GREEN\n", .{});
+
+    try cwd.createDirPath(io, "glow/.cache");
+    const welcome_path = "glow/.cache/face_root_welcome.rye";
+    const unwelcome_path = "glow/.cache/face_root_unwelcome.rye";
+    const n4 = try lower.lower_line_welcome("=/  next-root=@u32", &buf);
+    try cwd.writeFile(io, .{ .sub_path = welcome_path, .data = buf[0..n4] });
+    const n5 = try lower.lower_line_unwelcome("=/  next-root=@u32", &buf);
+    try cwd.writeFile(io, .{ .sub_path = unwelcome_path, .data = buf[0..n5] });
+    print("lower: wrote face welcome and unwelcome .rye under glow/.cache/ -- GREEN\n", .{});
+
+    const gen_src = try cwd.readFileAlloc(io, "glow/gen/face-root.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_src, "=/  next-root=@u32") != null);
+    print("lower: glow/gen/face-root.glow carries \"=/  next-root=@u32\" -- GREEN\n", .{});
+
+    print("lower: version {s}\n", .{witness_version});
+    print("GREEN: `=/` lowers next-root=@u32 and bare tick to ordinary Rye.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
+}
