@@ -4,7 +4,7 @@
 
 **Language:** EN
 **Version:** `20260715` (Pool keystone revival prioritized · Quin voice seated · align pass reconciles the closed ladder)
-**Last updated:** 2026-07-17 (**ZETA** `20260717.180025` — waymark ZETA seated; ZETA0 tables GREEN; ZETA1 paint next)
+**Last updated:** 2026-07-17 (**ZETA1** `20260717.180558` — letters paint + hit boxes GREEN; Pixel look next)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Lens:** TAME — safety, performance, joy; the Seed Law; [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md)
@@ -204,7 +204,9 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **Dexter D3 Pixel look + glass keyboard decision, `20260717.175220`** — Keaton: GREEN for install + Dexter line; **no** system keyboard visible; **no** blinking caret. Align: Graphene/AOSP IME will not own glass typing on bare NativeActivity. **Seat** Glow-owned English QWERTY on Skate (iOS-inspired public layout notes; clean-room).
 
-**Waymark ZETA + ZETA0, `20260717.180025`** — keyboard ladder waymark **ZETA** from `glow-english-qwerty-glass-keyboard-3`; English layout tables GREEN; compressor [`../docs/ZETA.md`](../docs/ZETA.md). Living rungs **ZETA0–ZETA5**. **Aligned next:** ZETA1 paint letters on Skate.
+**Waymark ZETA + ZETA0, `20260717.180025`** — keyboard ladder waymark **ZETA** from `glow-english-qwerty-glass-keyboard-3`; English layout tables GREEN; compressor [`../docs/ZETA.md`](../docs/ZETA.md).
+
+**ZETA1 letters paint + hit boxes, `20260717.180558`** — Skate rows 14–17 paint QWERTY; `HitMap` in window coords; taps on keyboard stay on glass. Witness + pack GREEN. **Aligned next:** ZETA1 Pixel look; then ZETA2 tap→Action.
 
 **Witness habitat + markup pipeline, `20260717.173427`** — foundations fit study affirms single-strand · sameness · happy-zone practice in the suite; teaching path was the gap. Seats **witness habitat** as Acme synonym (foundations keep *happy zone*). Fusion map holds Scribble→Brix→Bron→Mantra→Sala with Glow under TAME; Udon/Sail/Zuse horizon. Tutorial scaffold [`../manual/tutorials/cursor-and-the-compass.md`](../manual/tutorials/cursor-and-the-compass.md); silo [`../active-designing/20260717-173427_witness-habitat-and-the-markup-pipeline.md`](../active-designing/20260717-173427_witness-habitat-and-the-markup-pipeline.md). Product next remains Dexter D2.
 
@@ -215,7 +217,7 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 3. **Foundations / LLM compress** (`173848`) — decline archive/Bron essays; COMPASS + compass card seated.
 4. **Glass keyboard / ZETA** (`175220`/`180025`) — decline Graphene IME host; waymark **ZETA**; ZETA0 layout tables GREEN.
 
-**Aligned next (one step):** **ZETA1** — paint letters mode on Skate. Hold B2 layout word, `(jam …)`, Dill, M1 for check-in.
+**Aligned next (one step):** **ZETA1 Pixel look** (host install). Then ZETA2 tap→Action. Hold B2 layout word, `(jam …)`, Dill, M1 for check-in.
 
 ## The Visual Track — Realidream (horizon lane, ladder already named)
 
