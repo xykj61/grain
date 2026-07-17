@@ -8,6 +8,8 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260717.134122` — [Send TUBE3 sealed resin-fetch GREEN](20260717-134122_send-tube3-resin-fetch.bron) — commit + push; next TUBE4 market rail
+- `20260717.134037` — [TUBE3 sealed resin-fetch witness GREEN](20260717-134037_tube3-resin-fetch-green.bron) — Comlink seal + published-set gate; parity wired
 - `20260717.133825` — [Send TUBE2 signed publish GREEN](20260717-133825_send-tube2-publish.bron) — commit + push; kg TUBE3 resin fetch next
 - `20260717.131618` — [TUBE2 signed publish witness GREEN](20260717-131618_tube2-publish-green.bron) — Granary name-fact + admit before install; parity wired
 - `20260717.131410` — [Send TUBE1 admission and glass gate GREEN](20260717-131410_send-tube1-glass-pixel.bron) — commit + push; kg TUBE2 next

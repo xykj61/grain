@@ -2,7 +2,7 @@
 
 *App = Pool agent. Manifest = bounded mold. Publish = signed fold. Packaging = NativeActivity envelope over Glow-built native code — never a Kotlin transpiler.*
 
-**Status:** Checkable — operator compressor (TUBE0 / TUBE0.5 / TUBE1 / TUBE2 GREEN)
+**Status:** Checkable — operator compressor (TUBE0 / TUBE0.5 / TUBE1 / TUBE2 / TUBE3 GREEN)
 **Depth:** guide
 **Ceiling:** ≤150 lines
 **Last updated:** 2026-07-17
@@ -26,7 +26,8 @@ Language path and device path meet here: Glow's fold (language) becomes an insta
 | **TUBE0.5** | Permissions emit; NativeActivity envelope; signed APK with Sala B0 fold; install + `sala_root.txt` on HAWM0 and Pixel 10a | `tools/tube0_5_android_permission_witness.rish` · `tools/tube05_envelope_witness.rish` · `tools/tube05_apk_pack_witness.rish` · `tools/tube05_install_proof_onpath_host.rish` | **GREEN** pack · Sala wire · HAWM0 `20260717.122010` · **Pixel `20260717.123226`** |
 | **TUBE1** | Pool admits an agent iff manifest caps match a grant | `tools/tube1_admission_witness.rish` · glass gate `tube1_glass_gate.rye` | **GREEN** device-free `20260717.131000` · glass + Pixel `20260717.131404` |
 | **TUBE2** | Maker signs app+manifest into Granary; consumer verifies before install | `tools/tube2_publish_witness.rish` | **GREEN** `20260717.131500` (device-free) |
-| **TUBE3–5** | Resins over Comlink · market · Mantra revisions | — | design |
+| **TUBE3** | Manifest resin fetched by digest under Comlink seal; verified before admit | `tools/tube3_resin_fetch_witness.rish` | **GREEN** `20260717.133900` (device-free) |
+| **TUBE4–5** | Market rail · Mantra revisions | — | design |
 | **TUBE6–7** | Whole stack on GrapheneOS build / physical Pixel | — | joins [`HAWM.md`](HAWM.md) |
 
 ---

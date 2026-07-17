@@ -1,0 +1,23 @@
+# tube3_resin_fetch_witness.rish — TUBE3: sealed Manifest resin fetch.
+#
+# TUBE2 publish → Amphora digest wire → Comlink seal → verify before admit.
+# See linengrow/tube3_resin_fetch.rye.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/tube3_resin_fetch_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/tube3_resin_fetch_witness"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/tube3_resin_fetch_witness.rye -femit-bin=${bin}"]
+assert build.ok else "TUBE3 resin-fetch witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "TUBE3 resin-fetch witness exited non-zero"
+assert selftest.out contains "GREEN" else "TUBE3 resin-fetch witness not GREEN"
+assert selftest.out contains "welcome fetch" else "TUBE3 missing the welcome fetch path"
+assert selftest.out contains "bad Comlink seal" else "TUBE3 missing the bad-seal refusal"
+assert selftest.out contains "digest mismatch" else "TUBE3 missing the digest-mismatch refusal"
+assert selftest.out contains "unpublished digest" else "TUBE3 missing the published-set gate"
+
+say "GREEN: TUBE3 resin-fetch witness passed."
