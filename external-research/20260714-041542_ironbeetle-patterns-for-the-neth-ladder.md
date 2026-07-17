@@ -3,7 +3,7 @@
 **Language:** EN
 **Version:** `20260714.041542` (Pacific)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Status:** Study → design, siloed. Register: design/research (Two Rooms — proposals, not bound claims). Sources thanked, none quoted; every insight re-expressed in our own vocabulary. Addressed to a generic Acme Corporation employee.
+**Status:** Research for understanding — study → design, siloed. Register: design/research (Two Rooms — proposals, not bound claims). Sources thanked, none quoted; every insight re-expressed in our own vocabulary. Addressed to a generic Acme Corporation employee.
 **Companion:** `20260712-093812_matklad-teachings-distilled.md` (his *essays*, general); this doc gathers the *built-system* patterns from watching the beetle itself be built, and ties each to one of our own live threads.
 
 ---

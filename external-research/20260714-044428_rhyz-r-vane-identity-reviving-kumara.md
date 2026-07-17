@@ -3,7 +3,7 @@
 **Language:** EN
 **Version:** `20260714.044428` (Pacific)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Status:** Design and reviving — Rhyz named and its elder named; no code renamed. Register: design (Two Rooms — proposals, not bound claims). Addressed to a generic Acme Corporation employee.
+**Status:** Vision register — design and reviving; Rhyz named and its elder named; no code renamed. Register: design (Two Rooms — proposals, not bound claims). Addressed to a generic Acme Corporation employee.
 **Grounds on:** the collision + footprint search below, `../gratitude/RhizomeTimenergy.md` (siloed), `../active-reviving/README.md` (revive-not-rename discipline), `../context/specs/20260714-024800_proposal-not-fork-reframing.md` (marker-seals-history pattern), and the confirmed Azimuth-tier choice.
 
 ---

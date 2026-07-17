@@ -3,7 +3,7 @@
 **Language:** EN
 **Version:** `20260713.214400`
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Status:** Research and scoping — no interpreter code, no language grammar written yet
+**Status:** Research for understanding — scoping only; no interpreter code, no language grammar written yet
 
 ---
 

@@ -3,7 +3,7 @@
 **Language:** EN
 **Version:** `20260715.135200` (Pacific)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Status:** Study → strategic framing, siloed. Register: design/research (Two Rooms — proposal, not bound claim). Source thanked, none quoted; every idea re-expressed in our own vocabulary. Addressed to a generic Acme Corporation employee.
+**Status:** Research for understanding — study → strategic framing, siloed. Register: design/research (Two Rooms — proposal, not bound claim). Source thanked, none quoted; every idea re-expressed in our own vocabulary. Addressed to a generic Acme Corporation employee.
 **Companion:** `20260714-041542_ironbeetle-patterns-for-the-neth-ladder.md` (a built-system study feeding the same Neth ladder this doc uses as its concrete evidence); `context/specs/20260713-214400_urbit-parallel-naming-mapping-proposal.md` (the naming discipline this doc's market framing sits beside).
 
 ---
