@@ -1,4 +1,4 @@
-//! linengrow/dexter_glass_witness.rye — proves Dexter D0 glass welcome line.
+//! linengrow/dexter_glass_witness.rye — proves Dexter glass demo + live KEY drain.
 //!
 //!   rye build linengrow/dexter_glass_witness.rye \
 //!     -femit-bin=linengrow/bin/dexter_glass_witness
@@ -9,9 +9,10 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const core = @import("dexter_glass_core.rye");
 const glass = @import("dexter_glass_line.rye");
+const key = @import("dexter_glass_key.rye");
 const dexter = @import("window_input.rye");
 
-const witness_version = "20260717.173133";
+const witness_version = "20260717.174551";
 
 fn run_selftest(_: std.process.Init) !u8 {
     var submitted: [dexter.max_line_len]u8 = undefined;
@@ -28,8 +29,35 @@ fn run_selftest(_: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, line[0..len], "glow") != null);
     print("dexter-glass: Skate line \"{s}\" -- GREEN\n", .{line[0..len]});
 
+    // Live KEY drain — Android-shaped downs through the same mapper NativeActivity uses.
+    assert(key.action_from_key_down(.{ .key_code = key.keycode_a }) != null);
+    assert(key.action_from_key_down(.{ .key_code = key.keycode_enter }).? == .submit);
+    assert(key.action_from_key_down(.{ .key_code = key.keycode_del }).? == .backspace);
+    const shift_a = key.action_from_key_down(.{
+        .key_code = key.keycode_a,
+        .meta_state = key.meta_shift_on,
+    }).?;
+    switch (shift_a) {
+        .char_ => |ch| assert(ch == 'A'),
+        else => assert(false),
+    }
+
+    var editor = dexter.LineEditor{};
+    const downs = [_]key.KeyDown{
+        .{ .key_code = key.keycode_a + ('h' - 'a') },
+        .{ .key_code = key.keycode_a + ('i' - 'a') },
+        .{ .key_code = key.keycode_enter },
+    };
+    key.drain_key_downs(&editor, &downs);
+    assert(editor.pending_submit);
+    assert(std.mem.eql(u8, editor.prompt_slice(), "hi"));
+    assert(glass.format_dexter_line(editor.prompt_slice(), &line, &len));
+    assert(std.mem.indexOf(u8, line[0..len], "DEXTER line") != null);
+    assert(std.mem.indexOf(u8, line[0..len], "hi") != null);
+    print("dexter-glass: live KEY drain \"{s}\" -- GREEN\n", .{line[0..len]});
+
     print("dexter-glass: version {s}\n", .{witness_version});
-    print("GREEN: Dexter D0 glass — pure LineEditor paints a Skate line.\n", .{});
+    print("GREEN: Dexter glass — demo + live KEY drain paint a Skate line.\n", .{});
     return 0;
 }
 

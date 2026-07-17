@@ -8,6 +8,8 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260717.174805` — [Dexter D3 live KEY drain · kg](20260717-174805_dexter-d3-live-key-drain-kg.bron) — showSoftInput + KEY→Action; pack GREEN
+- `20260717.174434` — [Check-in after Dexter D2](20260717-174434_check-in-after-dexter-d2.bron) — lean soft-keyboard drain or rest
 - `20260717.174336` — [Dexter D2 Pixel look GREEN · kg](20260717-174336_dexter-d2-pixel-look-green-kg.bron) — Keaton confirmed title + DEXTER line on device
 - `20260717.174257` — [Guidance — Dexter D2 next](20260717-174257_guidance-dexter-d2-next.bron) — host install + eyes on DEXTER line
 - `20260717.174151` — [kg — tree already clean](20260717-174151_kg-tree-already-clean.bron) — main at fee0fbf8f0; nothing left to ship

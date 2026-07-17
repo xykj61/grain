@@ -2,7 +2,7 @@
 //!
 //! Feeds Android-shaped key actions into the pure Dexter LineEditor
 //! (`window_input.rye` → pond/apps). No AInputQueue here — the glass and
-//! device-free door. Live key drain stays in glow_native_activity later.
+//! device-free door. Live KEY drain: dexter_glass_key + glow_native_activity.
 
 const std = @import("std");
 const dexter = @import("window_input.rye");
