@@ -1,6 +1,6 @@
 //! linengrow/glow_native_surface.rye — Skate grid presented on Android glass.
 //!
-//! Builds a small Brushstroke Skate text grid (title, Sala R1 thin-view lines,
+//! Builds a small Brushstroke Skate text grid (title, Sala R2 panel lines,
 //! session-root hex, tap hint), rasterizes it with skate_grid.rye, and copies
 //! pixels into the locked ANativeWindow. No EGL, no Kotlin — Skate stays
 //! OS-free; this file is only the Android present seam (same role Wayland seed
@@ -14,7 +14,7 @@ const assert = std.debug.assert;
 // Symlinked beside this file (linengrow/skate_grid.rye → brushstroke/) so Zig's
 // module root stays inside linengrow while Skate remains the one Brushstroke source.
 const skate = @import("skate_grid.rye");
-const view = @import("sala_view.rye");
+const sala_surf = @import("sala_surface.rye");
 
 const WindowBuffer = extern struct {
     width: i32,
@@ -50,12 +50,12 @@ fn put_line_centered(grid: *skate.Grid, row: u32, text: []const u8) void {
     grid.put_line(row, line[0..cols]);
 }
 
-/// Paint via Skate: title, optional R1 thin-view lines, 64 hex chars, tap hint.
+/// Paint via Skate: title, optional R2 panels, 64 hex chars, tap hint.
 pub fn paint_session_root_hex(
     window: ?*anyopaque,
     hex: *const [64]u8,
     matched: bool,
-    frame: ?*const view.Frame,
+    surf: ?*const sala_surf.Surface,
 ) void {
     if (window == null) return;
     _ = ANativeWindow_setBuffersGeometry(window, 0, 0, format_rgba8888);
@@ -79,18 +79,25 @@ pub fn paint_session_root_hex(
     var grid = skate.Grid.init(allocator, cols, rows) catch return;
     defer allocator.free(grid.cells);
 
-    const title = if (matched) "SALA B0+R1  GREEN" else "SALA B0+R1";
+    const title = if (matched) "SALA B0+R2  GREEN" else "SALA B0+R2";
     put_line_centered(&grid, 0, title);
-    put_line_centered(&grid, 1, "thin-view (Pool)");
+    put_line_centered(&grid, 1, "surface (Pool x3)");
     var row: u32 = 2;
-    if (frame) |f| {
-        var i: u32 = 0;
-        while (i < f.count and row < 5) : (i += 1) {
-            put_line_centered(&grid, row, f.line(i));
+    if (surf) |s| {
+        var p: u32 = 0;
+        while (p < s.count and row < 5) : (p += 1) {
+            const pan = s.panel(p);
+            var line_buf: [64]u8 = undefined;
+            const line = std.fmt.bufPrint(
+                &line_buf,
+                "[{s}] {s}",
+                .{ pan.label_slice(), pan.frame.line(1) },
+            ) catch continue;
+            put_line_centered(&grid, row, line);
             row += 1;
         }
     }
-    // Hex under the frame; two rows of 32.
+    // Hex under the panels; two rows of 32.
     put_line_centered(&grid, 6, hex[0..32]);
     put_line_centered(&grid, 7, hex[32..64]);
     put_line_centered(&grid, 9, "TAP TO CLOSE");
