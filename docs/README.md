@@ -3,7 +3,7 @@
 **Status:** Checkable — compression shelf routing
 **Depth:** routing
 **Ceiling:** ≤40 lines
-**Last updated:** 2026-07-12
+**Last updated:** 2026-07-17 (HAWM + TUBE compressors)
 **Compresses:** [`active-designing/20260712-221600_docs-compression-layer-design.md`](../active-designing/20260712-221600_docs-compression-layer-design.md)
 
 ---
@@ -21,7 +21,9 @@ Docs carry **no load-bearing pins** — every fingerprint cites a witness or MET
 
 | Page | Grade | Role |
 |------|-------|------|
-| [`PROVEN_SEAT.md`](PROVEN_SEAT.md) | guide · ≤300 | Proven-seat ladder — G0 through signed-Kumara |
+| [`PROVEN_SEAT.md`](PROVEN_SEAT.md) | guide · ≤300 | Proven-seat ladder — Genode G0 through signed-Kumara (not HAWM) |
+| [`HAWM.md`](HAWM.md) | guide · ≤120 | GrapheneOS / Pixel mobile ladder — HAWM0–HAWM3 |
+| [`TUBE.md`](TUBE.md) | guide · ≤150 | App-manifest + NativeActivity APK ladder — TUBE0 / TUBE0.5 |
 | [`ENCLOSURE.md`](ENCLOSURE.md) | guide · ≤300 | Enclosure · pond · lane_kvm · supersede season |
 | [`VENDORING.md`](VENDORING.md) | recipe · ≤150 | Vendor · gratitude · cache · pin habit |
 | [`WITNESS_PATTERNS.md`](WITNESS_PATTERNS.md) | thin · ≤120 | Witness habits → TAME_GUIDANCE (self-deleting if canon) |
