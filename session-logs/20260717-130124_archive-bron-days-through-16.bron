@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260717.130124
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern time convention
+title Archive fold Bron days through 20260716
+prompt Keaton asked to archive organize session logs before today by date, then kg
+think tools/session_logs_archive.rye only listed .md so preview moved=0 while ~209 Bron logs still sat flat
+think extended list_flat_logs for .bron and .md; selftest still GREEN on md fixtures; unit tests cover Bron stamp parse
+think preview moved=209 with --today 20260717; fold GREEN; README links rewritten; today stays flat (25 bron + roll-up md)
+obs archive days now include 20260713–20260716; rules note Bron fold is live; work uncommitted until Keaton says send
+file tools/session_logs_archive.rye accept .bron in flat list
+file tools/session_logs_archive.rish note Bron+md fold
+file .cursor/rules/session-logs.mdc Bron fold wording
+file .claude/rules/session-logs.md Bron fold wording
+file session-logs/README.md archive note + this row
+recommend keep-going — send this archive fold when ready, then richer Skate frames / thin-view on the Pixel (product door after skate-seen GREEN)
