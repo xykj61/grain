@@ -16,7 +16,7 @@
 2. **Bron does not replace why-prose.** Bron holds seam values and pointer cards; Radiant Markdown holds foundations.
 3. **Extend docs compression** with [`../docs/COMPASS.md`](../docs/COMPASS.md) — day-one rose for employees and agents.
 4. **Seat** [`../docs/compass_card.bron`](../docs/compass_card.bron) — succinct cold-start reading order (paths only).
-5. Product next remains **Dexter D2**; this lap is documentation / agent hygiene.
+5. This lap was documentation / agent hygiene; Dexter D2 Pixel look closed later the same day (`20260717.174336`).
 
 ## What Stays Unmoved
 
