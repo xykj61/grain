@@ -1,0 +1,80 @@
+# hawm3_sala_device_witness.rish — HAWM3: Glow's own verified code runs
+# inside the real, physical Pixel 10a's own GrapheneOS userland
+# (context/specs/two-dev-environments-and-mobile-emulation.md).
+#
+# HAWM0 proved the emulator boots real (KVM, x86_64, GREEN 20260716.132659).
+# HAWM1 proved Glow's own verified Sala B0 witness runs, bit-identically,
+# inside that emulated Android userland (GREEN, same day). HAWM3 carries
+# the same claim one step further onto real, physical hardware: the Pixel
+# 10a Keaton owns, flashed with real GrapheneOS, its own verified-boot
+# hash checked and matched `20260717.013700`.
+#
+# The one real difference from HAWM1, worth naming plainly: the Pixel
+# 10a's own Tensor G4 is **aarch64**, not the emulator's x86_64. This
+# witness cross-builds for `aarch64-linux-android` (bionic libc, ARM64),
+# not `x86_64-linux-android` — a different Zig target, not a copy-paste
+# of HAWM1's own build line.
+#
+# Run OUTSIDE ai-jail, from a plain host terminal — needs `adb` from
+# tools/.cache/hawm0/android-sdk/platform-tools/ and the physical Pixel
+# 10a connected by USB with:
+#   - Settings → About phone → tap "Build number" 7x → Developer options
+#     unlocked
+#   - Settings → System → Developer options → USB debugging: on
+#   - the on-device "Allow USB debugging?" dialog accepted (once per host)
+#
+#   rishi/bin/rishi run tools/hawm3_sala_device_witness.rish
+
+let android_sdk = "tools/.cache/hawm0/android-sdk"
+let adb = "${android_sdk}/platform-tools/adb"
+let zig = "vendor/zig-toolchain/zig"
+
+say "hawm3: confirming a real (non-emulator) device is attached…"
+let devices = run ["sh" "-c" "${adb} devices | grep -v 'List of devices' | grep -v '^$' | grep -v emulator- | grep -c device$"]
+assert (trim devices.out != "0") else "no real device attached — check USB cable, USB debugging, and the on-device authorization dialog"
+say "hawm3: real device attached"
+
+say "hawm3: cross-building the Sala B0 witness natively (this host's own architecture) as the reference…"
+let build_native = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/sala_session_core_witness.rye -femit-bin=linengrow/bin/sala_session_core_witness_native"]
+if (build_native.ok == false) then say "hawm3: native build stderr — ${build_native.err}"
+assert build_native.ok else "native Sala B0 build failed — real reason printed just above"
+let run_native = run ["sh" "-c" "linengrow/bin/sala_session_core_witness_native 2>&1"]
+assert run_native.ok else "native Sala B0 run failed"
+assert run_native.out contains "GREEN" else "native Sala B0 run not GREEN"
+let native_root_line = run ["sh" "-c" "echo '${run_native.out}' | grep 'session root'"]
+assert native_root_line.ok else "could not read native session root from run output"
+say "hawm3: native reference — ${native_root_line.out}"
+
+say "hawm3: cross-building the same witness for aarch64-linux-android (bionic libc, the Tensor G4's own architecture)…"
+let build_android = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build linengrow/sala_session_core_witness.rye -target aarch64-linux-android -femit-bin=linengrow/bin/sala_session_core_witness_android_aarch64"]
+if (build_android.ok == false) then say "hawm3: android-target build stderr — ${build_android.err}"
+assert build_android.ok else "aarch64-android-target Sala B0 build failed — real reason printed just above"
+let shape = run ["sh" "-c" "file linengrow/bin/sala_session_core_witness_android_aarch64"]
+assert shape.out contains "ARM aarch64" else "cross-built binary is not aarch64"
+say "hawm3: android-target binary built and shaped correctly"
+
+say "hawm3: pushing the binary onto the real, physical device (/data/local/tmp)…"
+let push = run ["sh" "-c" "${adb} push linengrow/bin/sala_session_core_witness_android_aarch64 /data/local/tmp/sala_b0_witness"]
+assert push.ok else "adb push failed"
+let chmod = run ["sh" "-c" "${adb} shell chmod 755 /data/local/tmp/sala_b0_witness"]
+assert chmod.ok else "adb shell chmod failed"
+say "hawm3: pushed and made executable on-device"
+
+say "hawm3: running Glow's own verified code inside the real GrapheneOS userland…"
+let device_run = run ["sh" "-c" "${adb} shell /data/local/tmp/sala_b0_witness 2>&1"]
+assert device_run.ok else "on-device run failed — see ${device_run.err}"
+assert device_run.out contains "GREEN" else "on-device run not GREEN"
+say "${device_run.out}"
+
+let device_root_line = run ["sh" "-c" "echo '${device_run.out}' | grep 'session root'"]
+assert device_root_line.ok else "could not read on-device session root from run output"
+say "hawm3: on-device — ${device_root_line.out}"
+
+assert device_root_line.out == native_root_line.out else "RED: on-device session root diverges from the native reference — Glow's fold disagrees on real GrapheneOS hardware"
+say "hawm3: session roots agree bit for bit — native and on-device (real GrapheneOS, real Tensor G4) are the same fold"
+
+say "hawm3: cleaning up the pushed binary…"
+let cleanup = run ["sh" "-c" "${adb} shell rm -f /data/local/tmp/sala_b0_witness"]
+assert cleanup.ok else "cleanup rm failed (non-fatal to the claim; named for hygiene)"
+
+say "GREEN: HAWM3 — Glow's own verified Sala B0 witness runs inside the real, physical GrapheneOS device, session root byte-identical to the native run. First rung on this whole ladder to prove Glow's fold on real, verified-boot hardware."
