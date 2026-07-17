@@ -8,6 +8,7 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260717.191417` — [BRB save progress · resume brief](20260717-191417_brb-save-progress-resume-brief.bron) — pier clean; glass season seated
 - `20260717.191030` — [Seat waymark JABS · ZETA4 · JABS2 glass](20260717-191030_seat-waymark-jabs-zeta4-jabs2.bron) — draw JABS; rules; prune; force-push seat
 - `20260717.190646` — [ZETA4 look GREEN · JABS2 glass](20260717-190646_zeta4-look-kg-sala-b2-glass.bron) — glyphs loved; JABS2 rows 14–15 on Pixel
 - `20260717.190139` — [ZETA4 look GREEN · distinct glyphs](20260717-190139_zeta4-look-green-distinct-glyphs.bron) — Pixel GREEN; per-face silhouettes
