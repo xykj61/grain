@@ -15,6 +15,8 @@ const lower_if = @import("lower_conditional.rye");
 const lower_sw = @import("lower_switch.rye");
 const lower_face = @import("lower_face.rye");
 const lower_null = @import("lower_null.rye");
+const lower_mutate = @import("lower_mutate.rye");
+const lower_alias = @import("lower_alias.rye");
 
 fn first_glow_line(src: []const u8) ?[]const u8 {
     var it = std.mem.splitScalar(u8, src, '\n');
@@ -79,6 +81,18 @@ pub fn main(init: std.process.Init) !u8 {
         if (line.len >= 2 and line[0] == '=' and line[1] == '/') {
             break :blk lower_face.lower_line_welcome(line, &rye_buf) catch |err| {
                 print("glow_run: face lower failed ({s})\n", .{@errorName(err)});
+                return 1;
+            };
+        }
+        if (line.len >= 2 and line[0] == '=' and line[1] == '.') {
+            break :blk lower_mutate.lower_line_welcome(line, &rye_buf) catch |err| {
+                print("glow_run: mutate lower failed ({s})\n", .{@errorName(err)});
+                return 1;
+            };
+        }
+        if (line.len >= 2 and line[0] == '=' and line[1] == '*') {
+            break :blk lower_alias.lower_line_welcome(line, &rye_buf) catch |err| {
+                print("glow_run: alias lower failed ({s})\n", .{@errorName(err)});
                 return 1;
             };
         }

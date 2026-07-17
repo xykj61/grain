@@ -8,6 +8,10 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260717.152923` — [send eight-head emit and cast auras](20260717-152923_send-eight-heads-and-auras.bron) — =. · =* · @u8–@u64 to pier
+- `20260717.152847` — [Glow cast auras @u8–@u64 GREEN](20260717-152847_glow-cast-aura-family.bron) — unsigned family; cast-u8.glow; deepen still check-in
+- `20260717.152730` — [Glow =* alias — eight heads emit GREEN](20260717-152730_glow-alias-eight-complete.bron) — no-copy alias; all eight hops via desk
+- `20260717.152622` — [Glow =. mutate lowers to Rye GREEN](20260717-152622_glow-mutate-root-lower.bron) — bare root var write; mutate-root.glow
 - `20260717.152511` — [send Glow generator hops through ?~](20260717-152511_send-glow-hops-through-null.bron) — ?- · =/ · ?~ to pier; kg to =.
 - `20260717.152438` — [Glow ?~ null lowers to Rye GREEN](20260717-152438_glow-null-records-lower.bron) — records.cur optional null-test; null-records.glow
 - `20260717.152245` — [Glow =/ face lowers to Rye GREEN](20260717-152245_glow-face-root-lower.bron) — next-root=@u32 / bare tick; face-root.glow
