@@ -8,6 +8,13 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260717.150309` — [send TUBE glass through TUBE7 and six rune heads](20260717-150309_send-glass-and-rune-heads.bron) — pier holds glass + |- ^- ?: ?- =/ ?~
+- `20260717.150219` — [Sixth rune head — ?~ null test GREEN](20260717-150219_sixth-rune-null.bron) — ? category deepened; composition heads covered; batch unsaved
+- `20260717.150053` — [Fifth rune head — =/ face binding GREEN](20260717-150053_fifth-rune-face.bron) — = category opened; parity wired; batch unsaved
+- `20260717.150005` — [Fourth rune head — ?- exhaustive switch GREEN](20260717-150005_fourth-rune-switch.bron) — subject wing parses; parity wired; batch unsaved
+- `20260717.145912` — [Third rune category — ?: if/then/else head GREEN](20260717-145912_third-rune-conditional.bron) — test child parses; parity wired; batch unsaved
+- `20260717.145547` — [TUBE4 look and TUBE7 glass path GREEN — batch](20260717-145547_tube4-tube7-glass-green-batch.bron) — Pixel rail closed; TUBE6/HAWM2 check-in; send later
+- `20260717.145400` — [TUBE3 look closed; TUBE4 glass painted — batch](20260717-145400_tube3-look-tube4-glass-batch.bron) — pack GREEN; host look for market · acquired; send later
 - `20260717.144620` — [TUBE3 sealed fetch painted on Skate Android glass](20260717-144620_tube3-fetch-on-skate-glass.bron) — pack GREEN; host look for sealed · fetch ok
 - `20260717.144536` — [TUBE2 Pixel look GREEN — send and kg](20260717-144536_tube2-pixel-look-green.bron) — look closed; TUBE3 glass next
 - `20260717.144300` — [send TUBE2 glass and OpenVM silo](20260717-144300_send-tube2-and-openvm-silo.bron) — pier holds glass path + soundness silo
