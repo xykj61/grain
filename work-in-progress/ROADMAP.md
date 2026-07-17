@@ -4,7 +4,7 @@
 
 **Language:** EN
 **Version:** `20260715` (Pool keystone revival prioritized · Quin voice seated · align pass reconciles the closed ladder)
-**Last updated:** 2026-07-17 (**align pass** `20260717.121800` — TUBE0.5 Sala-in-APK host-side GREEN reconciled; next is host-terminal install proof; prior align `20260715.230000` Pool/Sala/M0 still stands)
+**Last updated:** 2026-07-17 (**glass batch** `20260717.145547` — TUBE1–5 + TUBE7 on Pixel GREEN; TUBE6/HAWM2 still horizon; prior align `20260717.121800`)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Lens:** TAME — safety, performance, joy; the Seed Law; [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md)
@@ -175,6 +175,16 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 **Surface chrome + tap to close, `20260717.125302`** — title / match-green hex / `TAP TO CLOSE`; motion-up on the input queue finishes the activity. Keaton confirmed on the Pixel.
 
 **Skate on Android glass, `20260717.125858`** — NativeActivity presents a Brushstroke Skate grid (same `skate_grid.rye` as the desktop viewer) onto the ANativeWindow. Keaton confirmed the look on the GrapheneOS Pixel. Thin-view / richer frames stay later; debug keystore stays host-local.
+
+**TUBE glass path through TUBE7, `20260717.145547`** — after Skate/R1/R2, the Pixel presents TUBE1 admit, TUBE5 tip, TUBE2 publish, TUBE3 sealed fetch, and TUBE4 market acquire as Skate lines under the Sala panels (device-free TUBE2–5 witnesses already GREEN). Install proof still binds `sala_root.txt`; Keaton confirmed each glass line. **TUBE7 (packaging + rail present on physical Pixel) is GREEN** for this demo stack. **TUBE6** (whole stack on a real GrapheneOS *build*) stays horizon behind **HAWM2**. Compressor: [`docs/TUBE.md`](../docs/TUBE.md). Batch still local until Keaton says send.
+
+**Third rune category — `?:`, `20260717.145912`** — after the glass ladder closed, the named keep-going on the language path: [`glow/rune_conditional.rye`](../glow/rune_conditional.rye) parses the if/then/else **test** child (parenthesized or bare ident), same head-only discipline as `|-` and `^-`. Witness GREEN; `parity_ch01` wired.
+
+**Fourth rune head — `?-`, `20260717.150005`** — [`glow/rune_switch.rye`](../glow/rune_switch.rye) parses the exhaustive-switch **subject** (`kind.cur-record`). Witness GREEN; `parity_ch01` wired.
+
+**Fifth rune head — `=/`, `20260717.150053`** — [`glow/rune_face.rye`](../glow/rune_face.rye) opens the `=` bindings category: face + optional mold. Witness GREEN; `parity_ch01` wired.
+
+**Sixth rune head — `?~`, `20260717.150219`** — [`glow/rune_null.rye`](../glow/rune_null.rye) deepens the `?` category with the null-test subject. Witness GREEN; `parity_ch01` wired. The brief's composition heads (`|-` · `?~` · `=/` · `?-` · `?:`) each have a front half; general lowering stays later.
 
 ## The Visual Track — Realidream (horizon lane, ladder already named)
 

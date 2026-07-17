@@ -2,7 +2,7 @@
 
 *App = Pool agent. Manifest = bounded mold. Publish = signed fold. Packaging = NativeActivity envelope over Glow-built native code — never a Kotlin transpiler.*
 
-**Status:** Checkable — operator compressor (TUBE0 / TUBE0.5 / TUBE1–5 GREEN)
+**Status:** Checkable — operator compressor (TUBE0 / TUBE0.5 / TUBE1–5 / TUBE7 GREEN; TUBE6 horizon)
 **Depth:** guide
 **Ceiling:** ≤150 lines
 **Last updated:** 2026-07-17
@@ -26,11 +26,11 @@ Language path and device path meet here: Glow's fold (language) becomes an insta
 | **TUBE0.5** | Permissions emit; NativeActivity envelope; signed APK with Sala B0 fold; install + `sala_root.txt` on HAWM0 and Pixel 10a | `tools/tube0_5_android_permission_witness.rish` · `tools/tube05_envelope_witness.rish` · `tools/tube05_apk_pack_witness.rish` · `tools/tube05_install_proof_onpath_host.rish` | **GREEN** pack · Sala wire · HAWM0 `20260717.122010` · **Pixel `20260717.123226`** |
 | **TUBE1** | Pool admits an agent iff manifest caps match a grant | `tools/tube1_admission_witness.rish` · glass gate `tube1_glass_gate.rye` | **GREEN** device-free `20260717.131000` · glass + Pixel `20260717.131404` |
 | **TUBE2** | Maker signs app+manifest into Granary; consumer verifies before install | `tools/tube2_publish_witness.rish` · glass `tube2_glass_pub.rye` | **GREEN** device-free `20260717.131500`; glass + Pixel `20260717.144536` |
-| **TUBE3** | Manifest resin fetched by digest under Comlink seal; verified before admit | `tools/tube3_resin_fetch_witness.rish` · glass `tube3_glass_fetch.rye` | **GREEN** device-free `20260717.133900`; glass pack GREEN (host look open) |
-| **TUBE4** | Price on Exchange, settle via Neth, unlock sealed fetch | `tools/tube4_market_rail_witness.rish` | **GREEN** `20260717.134300` (device-free) |
+| **TUBE3** | Manifest resin fetched by digest under Comlink seal; verified before admit | `tools/tube3_resin_fetch_witness.rish` · glass `tube3_glass_fetch.rye` | **GREEN** device-free `20260717.133900`; glass + Pixel `20260717.145328` |
+| **TUBE4** | Price on Exchange, settle via Neth, unlock sealed fetch | `tools/tube4_market_rail_witness.rish` · glass `tube4_glass_market.rye` | **GREEN** device-free `20260717.134300`; glass + Pixel `20260717.145547` |
 | **TUBE5** | Update as a Mantra revision; rollback selects prior rev | `tools/tube5_mantra_revision_witness.rish` · glass tip `tube5_glass_tip.rye` | **GREEN** device-free `20260717.135200`; glass pack + Pixel look `20260717.140600` |
 | **TUBE6** | Whole stack on real GrapheneOS build | — | horizon — needs HAWM2 |
-| **TUBE7** | Packaging + admit on physical Pixel | TUBE0.5 install + TUBE1 glass | **partial** — HAWM3 closed; Pixel GREEN for 0.5+T1+T2+T5; TUBE3–4 glass still open |
+| **TUBE7** | Packaging + admit + rail present on physical Pixel | TUBE0.5 install · TUBE1–5 glass | **GREEN** `20260717.145547` — Pixel look for 0.5+T1–T5; HAWM3 already closed |
 
 ---
 
@@ -75,7 +75,11 @@ rishi/bin/rishi run tools/tube05_install_proof_onpath_host.rish
 
 **TUBE2 publish on glass GREEN `20260717.144536`:** after tip + hex, `tube2_glass_pub.rye` runs demo publish + resolve/admit and paints `TUBE2 published · verified` on row 8. Install proof GREEN; Keaton confirmed on Pixel.
 
-**TUBE3 sealed fetch on glass (pack GREEN):** `tube3_glass_fetch.rye` runs demo publish + Comlink-sealed fetch and paints `TUBE3 sealed · fetch ok` on row 9. Host install + look closes the product claim. Debug keystore under `tools/.cache/tube05/` is host-local, never for publish.
+**TUBE3 sealed fetch on glass GREEN `20260717.145328`:** `tube3_glass_fetch.rye` runs demo publish + Comlink-sealed fetch and paints `TUBE3 sealed · fetch ok` on row 9. Install proof GREEN; Keaton confirmed on Pixel.
+
+**TUBE4 market on glass GREEN `20260717.145547`:** `tube4_glass_market.rye` runs demo Exchange+Neth acquire and paints `TUBE4 market · acquired` on row 10. Install proof GREEN; Keaton confirmed on Pixel. Debug keystore under `tools/.cache/tube05/` is host-local, never for publish.
+
+**TUBE7 glass path GREEN `20260717.145547`:** installable APK on GrapheneOS Pixel presents admit + R2 + tip + publish + sealed fetch + market acquire. TUBE6 (real GrapheneOS *build*) stays horizon behind HAWM2.
 
 ---
 
