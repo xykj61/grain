@@ -1137,6 +1137,11 @@ let tube4 = run ["rishi/bin/rishi" "run" "tools/tube4_market_rail_witness.rish"]
 assert tube4.ok else "TUBE4 market-rail witness failed"
 say "GREEN: TUBE4 market-rail witness passed."
 
+say "witness suite: TUBE5 — app update as a Mantra revision…"
+let tube5 = run ["rishi/bin/rishi" "run" "tools/tube5_mantra_revision_witness.rish"]
+assert tube5.ok else "TUBE5 Mantra-revision witness failed"
+say "GREEN: TUBE5 Mantra-revision witness passed."
+
 say "witness suite: TUBE0.5 — manifest capabilities emit as Android permissions…"
 let tube0_5 = run ["rishi/bin/rishi" "run" "tools/tube0_5_android_permission_witness.rish"]
 assert tube0_5.ok else "TUBE0.5 permission-emission witness failed"

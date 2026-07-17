@@ -1,0 +1,75 @@
+//! linengrow/tube5_mantra_revision_witness.rye — proves TUBE5 Mantra revisions.
+//!
+//!   rye build linengrow/tube5_mantra_revision_witness.rye -femit-bin=linengrow/bin/tube5_mantra_revision_witness
+//!   linengrow/bin/tube5_mantra_revision_witness
+//!
+//! Four claims:
+//!   1. Welcome update: rev1 (0.1.0) then rev2 (0.2.0) both land.
+//!   2. Rollback: recalling rev1 after rev2 still returns 0.1.0 bytes.
+//!   3. Rewrite of rev1 refused (RevisionImmutable).
+//!   4. Skipping to rev4 refused (RevisionOutOfOrder).
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const caps = @import("capabilities.rye");
+const pool = @import("pool_host_seam.rye");
+const tube = @import("tube_manifest.rye");
+const mantra = @import("recall_lap1.rye");
+const tube5 = @import("tube5_mantra_revision.rye");
+
+const witness_version = "20260717.135200";
+
+fn run_selftest() !u8 {
+    var catalog = mantra.BoltCatalog.empty();
+
+    // Claim 1: welcome update.
+    const lens = try tube5.run_demo_update(&catalog);
+    assert(lens.rev1_len > 0);
+    assert(lens.rev2_len > 0);
+    print("tube5: landed rev1 (0.1.0) and rev2 (0.2.0) under glow/sala-broadcaster/manifest\n", .{});
+    print("tube5: welcome update path -- GREEN\n", .{});
+
+    // Claim 2: rollback — rev1 still holds 0.1.0 after rev2.
+    var out1: [mantra.max_resin_bytes]u8 = undefined;
+    const n1 = try tube5.recall_app_revision(&catalog, 1, &out1);
+    assert(n1 == lens.rev1_len);
+    assert(std.mem.indexOf(u8, out1[0..n1], "version 0.1.0") != null);
+    assert(std.mem.indexOf(u8, out1[0..n1], "version 0.2.0") == null);
+
+    var out2: [mantra.max_resin_bytes]u8 = undefined;
+    const n2 = try tube5.recall_app_revision(&catalog, 2, &out2);
+    assert(n2 == lens.rev2_len);
+    assert(std.mem.indexOf(u8, out2[0..n2], "version 0.2.0") != null);
+    print("tube5: recall rev1 after rev2 still returns 0.1.0 -- rollback by selection -- GREEN\n", .{});
+
+    // Claim 3: rewrite refused.
+    const declared = [_]tube.DeclaredCapability{
+        tube.DeclaredCapability.init(pool.ledger_resource, caps.right_read | caps.right_write),
+    };
+    const again = try tube.build("sala-broadcaster", "0.1.1", &declared, 1024);
+    var body: [tube.max_canonical_bytes]u8 = undefined;
+    const blen = try tube.write_canonical(&again, &body);
+    if (catalog.append_leaf(tube5.demo_peer, tube5.demo_bolt, 1, tube5.demo_path, body[0..blen], tube5.demo_tilak)) |_| {
+        return error.RewriteAccepted;
+    } else |err| {
+        if (err != mantra.RecallError.RevisionImmutable) return err;
+    }
+    print("tube5: rewrite of rev1 refused RevisionImmutable -- GREEN unwelcome path\n", .{});
+
+    // Claim 4: skip refused.
+    if (catalog.append_leaf(tube5.demo_peer, tube5.demo_bolt, 4, tube5.demo_path, body[0..blen], tube5.demo_tilak)) |_| {
+        return error.SkipAccepted;
+    } else |err| {
+        if (err != mantra.RecallError.RevisionOutOfOrder) return err;
+    }
+    print("tube5: skip to rev4 refused RevisionOutOfOrder -- GREEN unwelcome path\n", .{});
+
+    print("tube5: version {s}\n", .{witness_version});
+    print("GREEN: TUBE5 -- app update is a Mantra revision; rollback selects the prior rev.\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}

@@ -8,6 +8,10 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260717.140623` — [send TUBE5 Mantra revision and glass tip](20260717-140623_send-tube5-glass-tip.bron) — Pixel look confirmed; ship to pier
+- `20260717.140320` — [tube05 install proof — no adb device](20260717-140320_tube05-install-no-adb-device.bron) — Pixel on USB; adb still empty; authorize then retry
+- `20260717.135727` — [TUBE5 tip painted on Skate Android glass](20260717-135727_tube5-tip-on-skate-glass.bron) — pack GREEN; host look for tip rev2 next
+- `20260717.135248` — [TUBE5 Mantra-revision witness GREEN](20260717-135248_tube5-mantra-revision-green.bron) — dense rev history + rollback-by-selection; parity wired
 - `20260717.135053` — [Send TUBE4 market-rail GREEN](20260717-135053_send-tube4-market-rail.bron) — commit + push; kg TUBE5 Mantra revision next
 - `20260717.134355` — [TUBE4 market-rail witness GREEN](20260717-134355_tube4-market-rail-green.bron) — Exchange + Neth settle + fetch unlock; parity wired
 - `20260717.134122` — [Send TUBE3 sealed resin-fetch GREEN](20260717-134122_send-tube3-resin-fetch.bron) — commit + push; next TUBE4 market rail

@@ -50,13 +50,14 @@ fn put_line_centered(grid: *skate.Grid, row: u32, text: []const u8) void {
     grid.put_line(row, line[0..cols]);
 }
 
-/// Paint via Skate: title, optional R2 panels, 64 hex chars, tap hint.
+/// Paint via Skate: title, optional R2 panels, optional TUBE5 tip, hex, tap.
 pub fn paint_session_root_hex(
     window: ?*anyopaque,
     hex: *const [64]u8,
     matched: bool,
     tube1_admitted: bool,
     surf: ?*const sala_surf.Surface,
+    tip_line: ?[]const u8,
 ) void {
     if (window == null) return;
     _ = ANativeWindow_setBuffersGeometry(window, 0, 0, format_rgba8888);
@@ -98,6 +99,9 @@ pub fn paint_session_root_hex(
                 put_line_centered(&grid, row, line);
                 row += 1;
             }
+        }
+        if (tip_line) |tip| {
+            put_line_centered(&grid, 5, tip);
         }
     }
     // Hex under the panels; two rows of 32.

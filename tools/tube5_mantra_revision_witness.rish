@@ -1,0 +1,23 @@
+# tube5_mantra_revision_witness.rish — TUBE5: Mantra app revision history.
+#
+# Append Manifest revisions; prior rev stays; rollback is recall of prior.
+# See linengrow/tube5_mantra_revision.rye.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/tube5_mantra_revision_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/tube5_mantra_revision_witness"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/tube5_mantra_revision_witness.rye -femit-bin=${bin}"]
+assert build.ok else "TUBE5 Mantra-revision witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "TUBE5 Mantra-revision witness exited non-zero"
+assert selftest.out contains "GREEN" else "TUBE5 Mantra-revision witness not GREEN"
+assert selftest.out contains "welcome update" else "TUBE5 missing the welcome update path"
+assert selftest.out contains "rollback by selection" else "TUBE5 missing the rollback path"
+assert selftest.out contains "RevisionImmutable" else "TUBE5 missing the rewrite refusal"
+assert selftest.out contains "RevisionOutOfOrder" else "TUBE5 missing the skip refusal"
+
+say "GREEN: TUBE5 Mantra-revision witness passed."
