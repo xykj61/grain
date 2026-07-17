@@ -289,7 +289,7 @@ pub const Interp = struct {
                             .cell => return error.MalformedBoolean,
                         };
                         return switch (flag) {
-                            0 => self.eval(subject, c, depth + 1), // 0 is Nock's own "yes"
+                            0 => self.eval(subject, c, depth + 1), // Nock loobean yes — not Glow ambient (see glow/truth_semantics.rye)
                             1 => self.eval(subject, d, depth + 1), // 1 is Nock's own "no"
                             else => error.MalformedBoolean,
                         };

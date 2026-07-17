@@ -8,6 +8,13 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260717.155335` — [send expression nests and Zig truth ruling then check-in](20260717-155335_send-expression-nests-and-truth.bron) — nests + truth to pier; next seam needs a ruling
+- `20260717.155111` — [?~ then/else arm expressions — decimal and cast](20260717-155111_null-arm-expressions.bron) — ?~ nests 1 0; ?-category arms closed at this width
+- `20260717.154943` — [seat Glow Zig ambient truth · Nock loobean seam-only](20260717-154943_glow-truth-zig-ambient-seated.bron) — ruling + witness + LEXICON; desk GREEN
+- `20260717.154803` — [counsel — Glow loobean vs Zig/Rye bool](20260717-154803_glow-loobean-vs-zig-bool-counsel.bron) — counsel before seating; superseded by 154943 ruling
+- `20260717.154644` — [?- mint/send arm expressions — decimal and cast](20260717-154644_switch-arm-expressions.bron) — ?- nests %mint 1 %send 0; desk GREEN
+- `20260717.154458` — [?: then/else arm expressions — decimal and cast](20260717-154458_conditional-arm-expressions.bron) — ?: nests 1 0 and ^- arms; desk GREEN
+- `20260717.154327` — [first nested value expression — =/ over ^-](20260717-154327_face-nested-cast-expression.bron) — face nests cast-of-literal; desk GREEN
 - `20260717.154204` — [send Glow body-deepen lap then check-in](20260717-154204_send-body-deepen-lap.bron) — deepen batch to pier; next seam needs a ruling
 - `20260717.154131` — [=* named source — = category bodies complete](20260717-154131_alias-named-source-complete.bron) — stock source; deepen lap closed at this width
 - `20260717.154012` — [Glow desk looks run in-jail by Quin](20260717-154012_glow-self-look-in-jail.bron) — no Android; stop asking Keaton to re-run glow_run

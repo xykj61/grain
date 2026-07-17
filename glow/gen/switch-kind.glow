@@ -1,3 +1,3 @@
-::  Exhaustive switch with named mint/send arm faces — brief's kind.cur-record.
-::  Lowered by glow/lower_switch.rye into a Zig switch over arm result faces.
-?-  kind.cur-record  %mint  minted  %send  sent
+::  Exhaustive switch with decimal mint/send arm payloads — kind.cur-record.
+::  1 and 0 are ordinary values, not Hoon loobeans (Glow ambient truth is Zig).
+?-  kind.cur-record  %mint  1  %send  0

@@ -1,0 +1,20 @@
+# glow_truth_semantics_witness.rish — Glow ambient Zig truth; loobean seam-only.
+#
+#   rishi/bin/rishi run tools/glow_truth_semantics_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "glow/bin/truth_semantics_witness"
+
+let build = run ["sh" "-c" "mkdir -p glow/bin && env RYE_ZIG=${zig} rye/bin/rye build glow/truth_semantics_witness.rye -femit-bin=${bin}"]
+assert build.ok else "truth_semantics_witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "truth_semantics_witness exited non-zero"
+assert selftest.out contains "GREEN" else "truth_semantics_witness not GREEN"
+assert selftest.out contains "Zig/POSIX exits" else "truth_semantics_witness missing exit claim"
+assert selftest.out contains "loobean seam" else "truth_semantics_witness missing loobean-seam claim"
+assert selftest.out contains "MalformedLoobean" else "truth_semantics_witness missing refuse claim"
+assert selftest.out contains "Zig bool true" else "truth_semantics_witness missing ambient-bool claim"
+assert selftest.out contains "payloads, not ambient loobeans" else "truth_semantics_witness missing payload claim"
+
+say "GREEN: Glow truth — Zig ambient; Nock loobean only at the named seam."
