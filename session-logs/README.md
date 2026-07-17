@@ -8,6 +8,7 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260717.162620` — [Quin intentionally unpaired — five settled](20260717-162620_quin-intentionally-unpaired.bron) — five boot images; no twin hunt
 - `20260717.162114` — [Quin seated as fifth OS variant](20260717-162114_quin-fifth-os-variant.bron) — beside Reya · Riyo · Trey · Triz; twin open
 - `20260717.161823` — [Glass covers Network · Sensors toggles](20260717-161823_glass-covers-network-sensors.bron) — load-bearing toggles; pack path unchanged
 - `20260717.161727` — [Glow template bron refresh then continue](20260717-161727_glow-template-bron-refresh.bron) — Quin · linux host · Eastern-capable clock in templates
