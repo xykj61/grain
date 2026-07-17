@@ -1,0 +1,13 @@
+format session-log-v1
+stamp 20260717.174151
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Framework 16 AMD Ubuntu 26.04 LTS (Eastern)
+title kg — tree already clean
+prompt kg
+think git status clean · main matches origin · last nib fee0fbf8f0 compass card send
+obs nothing to commit or push · remotes already current
+file session-logs/20260717-174151_kg-tree-already-clean.bron empty-kg record
+git_nib fee0fbf8f0
+recommend keep-going Dexter D2 Pixel look when host install ready

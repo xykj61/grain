@@ -8,6 +8,7 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260717.174151` — [kg — tree already clean](20260717-174151_kg-tree-already-clean.bron) — main at fee0fbf8f0; nothing left to ship
 - `20260717.174036` — [Compass card · foundations compress · send](20260717-174036_compass-card-foundations-compress-send.bron) — decline archive/Bron essays; COMPASS + card; three-prompt ROADMAP align
 - `20260717.173749` — [Witness habitat · markup pipeline · send](20260717-173749_witness-habitat-markup-pipeline-send.bron) — Acme face for happy zone; fusion spine; Cursor-and-the-compass scaffold
 - `20260717.173248` — [Dexter D0+D1 glass send](20260717-173248_dexter-d0-d1-glass-send.bron) — DEXTER line · glow; pack GREEN; D2 next
