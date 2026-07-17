@@ -1,0 +1,17 @@
+# dexter_glass_witness.rish — Dexter D0 welcome path on glass.
+#
+#   rishi/bin/rishi run tools/dexter_glass_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/dexter_glass_witness"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/dexter_glass_witness.rye -femit-bin=${bin}"]
+assert build.ok else "Dexter glass witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "Dexter glass witness exited non-zero"
+assert selftest.out contains "GREEN" else "Dexter glass not GREEN"
+assert selftest.out contains "demo editor submits" else "Dexter glass missing editor claim"
+assert selftest.out contains "DEXTER line" else "Dexter glass missing Skate line claim"
+
+say "GREEN: Dexter D0 glass witness passed — pure editor paints."

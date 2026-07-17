@@ -8,6 +8,8 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260717.173248` — [Dexter D0+D1 glass send](20260717-173248_dexter-d0-d1-glass-send.bron) — DEXTER line · glow; pack GREEN; D2 next
+- `20260717.173042` — [Check-in after Dexter Dill align](20260717-173042_check-in-after-dexter-align.bron) — lean D0 or rest; hold jam and Dill
 - `20260717.172832` — [Align Dexter Dill Glow — research silo ROADMAP send](20260717-172832_align-dexter-dill-glow-send.bron) — active-reviving silo; D0–D2 named; mix held closed
 - `20260717.172720` — [Check-in — Dexter · Dill · Glow GrapheneOS](20260717-172720_check-in-dexter-dill-glow.bron) — Dexter under Brushstroke/Sala; Dill stays gap
 - `20260717.172403` — [Check-in after mix-as-arm](20260717-172403_check-in-after-mix-as-arm.bron) — rest · B2 layout · or jam if appetite
