@@ -4,7 +4,7 @@
 
 **Language:** EN
 **Version:** `20260715` (Pool keystone revival prioritized · Quin voice seated · align pass reconciles the closed ladder)
-**Last updated:** 2026-07-17 (**Compass card** `20260717.173848` — decline foundations archive; COMPASS compressor + Bron card; Dexter D2 still next product look)
+**Last updated:** 2026-07-17 (**Dexter D2** `20260717.174336` — Pixel look GREEN; soft-keyboard drain + B2 layout next check-in)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Lens:** TAME — safety, performance, joy; the Seed Law; [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md)
@@ -196,17 +196,19 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **Align pass — Dexter · Dill · glass input, `20260717.172832`** — compass rose walked. **Seated:** Dexter is an aspect of the **Brushstroke / Sala** stack, not Dill; Dill stays an honest vane gap. World study [`../external-research/20260717-172832_dexter-dill-glow-grapheneos-input.md`](../external-research/20260717-172832_dexter-dill-glow-grapheneos-input.md); reviving silo [`../active-reviving/20260717-172832_dexter-beside-brushstroke-dill-stays-gap.md`](../active-reviving/20260717-172832_dexter-beside-brushstroke-dill-stays-gap.md).
 
-**Dexter D0+D1 on glass, `20260717.173133`** — pure LineEditor (`pond/apps/window_input.rye`, symlinked) fed Android-shaped demo actions; Skate paints `DEXTER line · glow` on row 12; title `SALA B0+B1+DX+R2+T1 GREEN`. Witness GREEN; pack GREEN; parity wired. Soft-keyboard live drain stays later. **Aligned next:** D2 Pixel look (host install); then check-in before B2 layout, `(jam …)`, or Dill kernel.
+**Dexter D0+D1 on glass, `20260717.173133`** — pure LineEditor (`pond/apps/window_input.rye`, symlinked) fed Android-shaped demo actions; Skate paints `DEXTER line · glow` on row 12; title `SALA B0+B1+DX+R2+T1 GREEN`. Witness GREEN; pack GREEN; parity wired. Soft-keyboard live drain stays later.
+
+**Dexter D2 Pixel look GREEN, `20260717.174336`** — Keaton confirmed on device after host install (`tube05_install_proof_onpath_host.rish`): title and `DEXTER line · glow` visible. Dexter-on-glass product lap closed through look. **Aligned next:** check-in — soft-keyboard live drain, B2 layout word, `(jam …)`, or Dill kernel.
 
 **Witness habitat + markup pipeline, `20260717.173427`** — foundations fit study affirms single-strand · sameness · happy-zone practice in the suite; teaching path was the gap. Seats **witness habitat** as Acme synonym (foundations keep *happy zone*). Fusion map holds Scribble→Brix→Bron→Mantra→Sala with Glow under TAME; Udon/Sail/Zuse horizon. Tutorial scaffold [`../manual/tutorials/cursor-and-the-compass.md`](../manual/tutorials/cursor-and-the-compass.md); silo [`../active-designing/20260717-173427_witness-habitat-and-the-markup-pipeline.md`](../active-designing/20260717-173427_witness-habitat-and-the-markup-pipeline.md). Product next remains Dexter D2.
 
 **Align pass — three prompts closed, `20260717.173848`** — compass rose walked against the last three seated laps:
 
-1. **Dexter · Dill · glass** (`172832`/`173133`) — Dexter = Brushstroke/Sala; D0+D1 GREEN; Dill gap; D2 Pixel look still the product next.
+1. **Dexter · Dill · glass** (`172832`/`173133`/`174336`) — Dexter = Brushstroke/Sala; D0+D1+D2 GREEN; Dill gap.
 2. **Witness habitat + markup** (`173427`) — Acme testing face; fusion spine; Cursor-and-the-compass tutorial scaffold.
 3. **Foundations / LLM compress** (`173848`) — **decline** bulk-archive of foundations/context and Bron-essay rewrites (dated_guard · inventory · prior check-in). **Seat** docs compressor [`../docs/COMPASS.md`](../docs/COMPASS.md) + Bron card [`../docs/compass_card.bron`](../docs/compass_card.bron); study [`../external-research/20260717-173848_foundations-archive-bron-compress-for-llm-context.md`](../external-research/20260717-173848_foundations-archive-bron-compress-for-llm-context.md); silo [`../active-designing/20260717-173848_compass-card-and-foundations-compress.md`](../active-designing/20260717-173848_compass-card-and-foundations-compress.md).
 
-**Aligned next (one step):** Dexter D2 Pixel look (host install). Horizon docs: optional thin `docs/TAME.md` / LEXICON core card only if cold-load pain is measured. Hold `(jam …)`, B2 layout word, Dill kernel, M1 Scribble round-trip for check-in.
+**Aligned next:** check-in before soft-keyboard drain, B2 layout word, `(jam …)`, Dill kernel, or M1 Scribble round-trip. Horizon docs: optional thin `docs/TAME.md` / LEXICON core card only if cold-load pain is measured.
 
 ## The Visual Track — Realidream (horizon lane, ladder already named)
 
