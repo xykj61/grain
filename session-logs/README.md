@@ -8,6 +8,8 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260717.133825` — [Send TUBE2 signed publish GREEN](20260717-133825_send-tube2-publish.bron) — commit + push; kg TUBE3 resin fetch next
+- `20260717.131618` — [TUBE2 signed publish witness GREEN](20260717-131618_tube2-publish-green.bron) — Granary name-fact + admit before install; parity wired
 - `20260717.131410` — [Send TUBE1 admission and glass gate GREEN](20260717-131410_send-tube1-glass-pixel.bron) — commit + push; kg TUBE2 next
 - `20260717.131404` — [TUBE1 glass gate seen on the Pixel](20260717-131404_tube1-glass-seen-on-pixel.bron) — install proof GREEN; T1 title confirmed on glass
 - `20260717.131158` — [TUBE1 glass gate wired into NativeActivity onCreate](20260717-131158_tube1-glass-gate-on-create.bron) — R2 paints only after admit; pack GREEN
