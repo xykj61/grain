@@ -8,7 +8,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const expr = @import("expr.rye");
 
-const witness_version = "20260717.164100";
+const witness_version = "20260717.164748";
 
 fn run_selftest(_: std.process.Init) !u8 {
     {
@@ -44,6 +44,13 @@ fn run_selftest(_: std.process.Init) !u8 {
         assert(e.lit == 1);
         print("expr: parse_whole cast literal -- GREEN\n", .{});
     }
+    {
+        const p = try expr.parse_prefix("(lent records)  rest");
+        assert(p.expr.kind == .lent_of);
+        assert(std.mem.eql(u8, expr.face_slice(&p.expr), "records"));
+        assert(std.mem.eql(u8, p.rest, "rest"));
+        print("expr: (lent records) paren form -- GREEN\n", .{});
+    }
     if (expr.parse_whole("42  leftover")) |_| {
         assert(false);
     } else |err| {
@@ -69,7 +76,7 @@ fn run_selftest(_: std.process.Init) !u8 {
         print("expr: named mold refused NamedMoldNotYetLowered -- GREEN\n", .{});
     }
 
-    print("GREEN: shared nest-expression parser — decimal · ^- @uN · face; parens later.\n", .{});
+    print("GREEN: shared nest-expression parser — decimal · ^- @uN · face · (lent …); other parens later.\n", .{});
     _ = witness_version;
     return 0;
 }

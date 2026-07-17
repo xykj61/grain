@@ -8,7 +8,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const lower = @import("lower_face.rye");
 
-const witness_version = "20260717.163004";
+const witness_version = "20260717.164748";
 
 fn run_selftest(init: std.process.Init) !u8 {
     const io = init.io;
@@ -81,12 +81,22 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("lower: \"=/  cur-record=record\" refused NamedMoldNotYetLowered -- GREEN\n", .{});
 
+    const n_lent = try lower.lower_line_welcome("=/  n=@u32  (lent records)", &buf);
+    const rye_lent = buf[0..n_lent];
+    assert(std.mem.indexOf(u8, rye_lent, "const records: []const u32") != null);
+    assert(std.mem.indexOf(u8, rye_lent, "const n: u32 = @intCast(records.len)") != null);
+    print("lower: \"=/  n=@u32  (lent records)\" welcome binds subject length -- GREEN\n", .{});
+
+    const n_lent_u = try lower.lower_line_unwelcome("=/  n=@u32  (lent records)", &buf);
+    assert(std.mem.indexOf(u8, buf[0..n_lent_u], "n == 6") != null);
+    print("lower: \"=/  n=@u32  (lent records)\" unwelcome expects mismatch -- GREEN\n", .{});
+
     if (lower.lower_line_welcome("=/  next-root=@u32  (mix root x)", &buf)) |_| {
         return error.ValueLoweredTooSoon;
     } else |err| {
         if (err != lower.LowerError.ValueNotYetLowered) return err;
     }
-    print("lower: parenthesized value refused ValueNotYetLowered -- GREEN\n", .{});
+    print("lower: other parenthesized value refused ValueNotYetLowered -- GREEN\n", .{});
 
     try cwd.createDirPath(io, "glow/.cache");
     const welcome_path = "glow/.cache/face_root_welcome.rye";
@@ -101,8 +111,12 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, gen_src, "=/  next-root=@u32  ^-  @u32  42") != null);
     print("lower: glow/gen/face-root.glow nests cast under face -- GREEN\n", .{});
 
+    const gen_lent = try cwd.readFileAlloc(io, "glow/gen/face-lent.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_lent, "=/  n=@u32  (lent records)") != null);
+    print("lower: glow/gen/face-lent.glow nests (lent …) under face -- GREEN\n", .{});
+
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: `=/` lowers faces with nested `^-` cast values including @u64 to ordinary Rye.\n", .{});
+    print("GREEN: `=/` lowers faces with nested `^-` and `(lent …)` values to ordinary Rye.\n", .{});
     return 0;
 }
 
