@@ -25,12 +25,12 @@ Language path and device path meet here: Glow's fold (language) becomes an insta
 | **TUBE0** | App-manifest mold validates at the boundary | `tools/tube0_manifest_witness.rish` | GREEN |
 | **TUBE0.5** | Permissions emit; NativeActivity envelope; signed APK with Sala B0 fold; install + `sala_root.txt` on HAWM0 and Pixel 10a | `tools/tube0_5_android_permission_witness.rish` · `tools/tube05_envelope_witness.rish` · `tools/tube05_apk_pack_witness.rish` · `tools/tube05_install_proof_onpath_host.rish` | **GREEN** pack · Sala wire · HAWM0 `20260717.122010` · **Pixel `20260717.123226`** |
 | **TUBE1** | Pool admits an agent iff manifest caps match a grant | `tools/tube1_admission_witness.rish` · glass gate `tube1_glass_gate.rye` | **GREEN** device-free `20260717.131000` · glass + Pixel `20260717.131404` |
-| **TUBE2** | Maker signs app+manifest into Granary; consumer verifies before install | `tools/tube2_publish_witness.rish` · glass `tube2_glass_pub.rye` | **GREEN** device-free `20260717.131500`; glass pack GREEN (host look open) |
-| **TUBE3** | Manifest resin fetched by digest under Comlink seal; verified before admit | `tools/tube3_resin_fetch_witness.rish` | **GREEN** `20260717.133900` (device-free) |
+| **TUBE2** | Maker signs app+manifest into Granary; consumer verifies before install | `tools/tube2_publish_witness.rish` · glass `tube2_glass_pub.rye` | **GREEN** device-free `20260717.131500`; glass + Pixel `20260717.144536` |
+| **TUBE3** | Manifest resin fetched by digest under Comlink seal; verified before admit | `tools/tube3_resin_fetch_witness.rish` · glass `tube3_glass_fetch.rye` | **GREEN** device-free `20260717.133900`; glass pack GREEN (host look open) |
 | **TUBE4** | Price on Exchange, settle via Neth, unlock sealed fetch | `tools/tube4_market_rail_witness.rish` | **GREEN** `20260717.134300` (device-free) |
 | **TUBE5** | Update as a Mantra revision; rollback selects prior rev | `tools/tube5_mantra_revision_witness.rish` · glass tip `tube5_glass_tip.rye` | **GREEN** device-free `20260717.135200`; glass pack + Pixel look `20260717.140600` |
 | **TUBE6** | Whole stack on real GrapheneOS build | — | horizon — needs HAWM2 |
-| **TUBE7** | Packaging + admit on physical Pixel | TUBE0.5 install + TUBE1 glass | **partial** — HAWM3 closed; Pixel install/look GREEN for 0.5+T1; TUBE2–4 not yet on-device |
+| **TUBE7** | Packaging + admit on physical Pixel | TUBE0.5 install + TUBE1 glass | **partial** — HAWM3 closed; Pixel GREEN for 0.5+T1+T2+T5; TUBE3–4 glass still open |
 
 ---
 
@@ -73,7 +73,9 @@ rishi/bin/rishi run tools/tube05_install_proof_onpath_host.rish
 
 **TUBE5 tip on glass GREEN `20260717.140600`:** after admit + R2, `tube5_glass_tip.rye` lands Mantra rev1/rev2 and paints `TUBE5 tip rev2 · 0.2.0`. Install proof GREEN (binds `sala_root.txt`); Keaton confirmed the tip line on Pixel.
 
-**TUBE2 publish on glass (pack GREEN):** after tip + hex, `tube2_glass_pub.rye` runs demo publish + resolve/admit and paints `TUBE2 published · verified` on row 8. Host install + look closes the product claim. Debug keystore under `tools/.cache/tube05/` is host-local, never for publish.
+**TUBE2 publish on glass GREEN `20260717.144536`:** after tip + hex, `tube2_glass_pub.rye` runs demo publish + resolve/admit and paints `TUBE2 published · verified` on row 8. Install proof GREEN; Keaton confirmed on Pixel.
+
+**TUBE3 sealed fetch on glass (pack GREEN):** `tube3_glass_fetch.rye` runs demo publish + Comlink-sealed fetch and paints `TUBE3 sealed · fetch ok` on row 9. Host install + look closes the product claim. Debug keystore under `tools/.cache/tube05/` is host-local, never for publish.
 
 ---
 
