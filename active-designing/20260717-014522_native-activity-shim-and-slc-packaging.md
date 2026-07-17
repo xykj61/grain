@@ -67,19 +67,21 @@ The native-activity shim is that missing precondition, and it belongs beneath TU
 
 | Rung | Name | Gate | State |
 |---|---|---|---|
-| **TUBE0.5** | **First installable Glow APK on GrapheneOS** | TUBE0 (GREEN) · HAWM3 (closed, verified-boot Pixel 10a) | **Host-side packaging GREEN `20260717.021857`** — permission emission, NativeActivity envelope, signed APK with `libglowapp.so` exporting `ANativeActivity_onCreate`. On-device `adb install` and a real Glow fold inside the entry remain the next slice |
+| **TUBE0.5** | **First installable Glow APK on GrapheneOS** | TUBE0 (GREEN) · HAWM3 (closed, verified-boot Pixel 10a) | **Host-side packaging GREEN `20260717.021857`** · **Sala fold wired `20260717.121445`** — permission emission, NativeActivity envelope, signed APK with NDK-linked `libglowapp.so` (arm64+x86_64) whose `ANativeActivity_onCreate` runs Sala B0. On-device `adb install` + `sala_root.txt` proof remain the next slice |
 
 TUBE0.5's host-side half is now checkable. What landed:
 
 - `linengrow/tube_manifest_android_permission.rye` — closed table, assertable permission emission
 - `linengrow/tube_android_manifest.rye` — full AndroidManifest.xml naming Android's own `NativeActivity` (no custom Kotlin/Java), `hasCode=false`, fixed lib `glowapp`
-- `linengrow/glow_native_activity.rye` — the fixed native entry exporting `ANativeActivity_onCreate`
+- `linengrow/sala_b0_fold.rye` — the same three-event demo fold HAWM1 already proved bit-identical
+- `linengrow/glow_native_activity.rye` — the fixed native entry exporting `ANativeActivity_onCreate`; runs Sala B0 and writes `files/sala_root.txt`
+- `rye build-lib` — library emit path used for the static archive before NDK link
 - `tools/tube05_apk_pack_worker.sh` + `tools/tube05_apk_pack_witness.rish` — packs and verifies `tools/.cache/tube05/sala-broadcaster.apk`
 
 ## What remains open
 
-- **On-device install** — `adb install` of the signed APK onto the physical Pixel 10a (and the emulator), then confirming NativeActivity loads the `.so`.
-- **A real Glow fold inside `ANativeActivity_onCreate`** — today's entry is a symbol-shape stub; the next slice hands control to Sala (or any Glow fold) and finishes the activity cleanly.
+- **On-device install** — host one-shot `tools/tube05_install_proof_onpath_host.rish` (HAWM0 with `/dev/kvm` and/or Pixel USB): `adb install -r`, launch NativeActivity, `run-as` read `files/sala_root.txt`, match the HAWM1 demo root.
+- **Activity finish / surface** — onCreate runs the fold today; finishing the activity via the real `ANativeActivity` layout and a first UI surface stay later slices.
 - **APK signing and distribution for publish** stay TUBE2's and TUBE3's own territory (signed weave over Granary, content-addressed resins over Comlink). The debug keystore under `tools/.cache/tube05/` is host-local, never for publish.
 
 ## Gratitude

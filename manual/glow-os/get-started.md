@@ -45,13 +45,14 @@ rishi/bin/rishi run tools/tube05_apk_pack_witness.rish
 # → tools/.cache/tube05/sala-broadcaster.apk
 ```
 
-4. **Install on the phone (next human step)** — with USB debugging on:
+4. **Install and prove the fold (host terminal)** — emulator or Pixel with USB debugging:
 
 ```bash
-tools/.cache/hawm0/android-sdk/platform-tools/adb install -r tools/.cache/tube05/sala-broadcaster.apk
+rishi/bin/rishi run tools/hawm0_boot_onpath_host.rish   # if no device yet
+rishi/bin/rishi run tools/tube05_install_proof_onpath_host.rish
 ```
 
-The APK uses Android's own `NativeActivity` and a Glow-built `libglowapp.so` — no Kotlin transpile. Today's native entry is a symbol-shape stub; wiring a real Glow fold into it is the next code slice.
+The APK uses Android's own `NativeActivity` and a Glow-built `libglowapp.so` — no Kotlin transpile. `ANativeActivity_onCreate` runs the Sala B0 demo fold (same root HAWM1 already proved) and writes `files/sala_root.txt`. The install-proof witness checks that root via `run-as`; ai-jail has neither KVM nor USB.
 
 ### Enclosure (checkable)
 
