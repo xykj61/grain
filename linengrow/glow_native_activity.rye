@@ -8,10 +8,11 @@
 //! (`tube1_glass_gate.rye`), the R2 multi-panel surface
 //! (`sala_r2_surface.rye`), the TUBE5 tip line (`tube5_glass_tip.rye`),
 //! the TUBE2–4 rail lines (`tube2_glass_pub.rye`, `tube3_glass_fetch.rye`,
-//! `tube4_glass_market.rye`).
+//! `tube4_glass_market.rye`), and Sala B1 live-carriage
+//! (`sala_b1_glass_carriage.rye`).
 //! After writing files/sala_root.txt, registers window + input callbacks:
-//! paints panels + tip + rail + session-root hex and finishes on tap.
-//! R2 and TUBE2–5 paint only when TUBE1 admits.
+//! paints panels + tip + rail + B1 + session-root hex and finishes on tap.
+//! R2 and TUBE2–5 + B1 paint only when TUBE1 admits.
 
 const std = @import("std");
 const fold = @import("sala_b0_fold.rye");
@@ -20,6 +21,7 @@ const tube5_tip = @import("tube5_glass_tip.rye");
 const tube2_pub = @import("tube2_glass_pub.rye");
 const tube3_fetch = @import("tube3_glass_fetch.rye");
 const tube4_market = @import("tube4_glass_market.rye");
+const b1_carriage = @import("sala_b1_glass_carriage.rye");
 const r2 = @import("sala_r2_surface.rye");
 const sala_surf = @import("sala_surface.rye");
 const surface = @import("glow_native_surface.rye");
@@ -44,6 +46,9 @@ var g_fetch_ready: bool = false;
 var g_market_line: [tube4_market.market_line_max]u8 = undefined;
 var g_market_len: u32 = 0;
 var g_market_ready: bool = false;
+var g_b1_line: [b1_carriage.carriage_line_max]u8 = undefined;
+var g_b1_len: u32 = 0;
+var g_b1_ready: bool = false;
 
 export fn __zig_probe_stack() callconv(.c) void {}
 
@@ -125,6 +130,7 @@ fn paint_window(_: ?*anyopaque, window: ?*anyopaque) callconv(.c) void {
     const published: ?[]const u8 = if (g_pub_ready) g_pub_line[0..g_pub_len] else null;
     const fetched: ?[]const u8 = if (g_fetch_ready) g_fetch_line[0..g_fetch_len] else null;
     const market: ?[]const u8 = if (g_market_ready) g_market_line[0..g_market_len] else null;
+    const carriage: ?[]const u8 = if (g_b1_ready) g_b1_line[0..g_b1_len] else null;
     surface.paint_session_root_hex(
         window,
         glow_last_session_root_hex[0..64],
@@ -135,6 +141,7 @@ fn paint_window(_: ?*anyopaque, window: ?*anyopaque) callconv(.c) void {
         published,
         fetched,
         market,
+        carriage,
     );
 }
 
@@ -225,5 +232,7 @@ export fn ANativeActivity_onCreate(
     g_fetch_ready = tube3_fetch.run_demo_fetch_line(&g_fetch_line, &g_fetch_len);
     g_market_len = 0;
     g_market_ready = tube4_market.run_demo_market_line(&g_market_line, &g_market_len);
+    g_b1_len = 0;
+    g_b1_ready = b1_carriage.run_demo_carriage(&g_b1_line, &g_b1_len);
     wire_surface_callbacks(activity);
 }

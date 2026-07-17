@@ -1,0 +1,17 @@
+# sala_b1_glass_carriage_witness.rish — Sala B1 welcome path on glass.
+#
+#   rishi/bin/rishi run tools/sala_b1_glass_carriage_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/sala_b1_glass_carriage_witness"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/sala_b1_glass_carriage_witness.rye -femit-bin=${bin}"]
+assert build.ok else "Sala B1 glass carriage witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "Sala B1 glass carriage witness exited non-zero"
+assert selftest.out contains "GREEN" else "Sala B1 glass carriage not GREEN"
+assert selftest.out contains "welcome carriage roots match" else "Sala B1 glass missing carriage claim"
+assert selftest.out contains "SALA B1 carriage" else "Sala B1 glass missing Skate line claim"
+
+say "GREEN: Sala B1 glass carriage witness passed — welcome path paints."

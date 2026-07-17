@@ -1,0 +1,17 @@
+//! linengrow/sala_b1_glass_carriage.rye — Sala B1 line for NativeActivity glass.
+//!
+//! Runs the in-process welcome carriage and returns a short Skate line.
+//! UDP hop stays in sala_broadcast_delivery; glass presents the fold claim.
+
+const std = @import("std");
+const core = @import("sala_b1_carriage_core.rye");
+
+pub const carriage_line_max: u32 = 48;
+
+/// Welcome carriage → status line. Returns false if roots diverge.
+pub fn run_demo_carriage(out_line: *[carriage_line_max]u8, out_len: *u32) bool {
+    const lens = core.run_welcome_carriage() catch return false;
+    const line = std.fmt.bufPrint(out_line, "SALA B1 carriage · {d} ev", .{lens.events}) catch return false;
+    out_len.* = @intCast(line.len);
+    return true;
+}

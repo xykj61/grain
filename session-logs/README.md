@@ -8,6 +8,8 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260717.170335` — [Sala B1 glass carriage send](20260717-170335_sala-b1-glass-carriage-send.bron) — welcome path paints row 11; pack GREEN
+- `20260717.165932` — [Check-in after lent-as-arm](20260717-165932_check-in-after-lent-as-arm.bron) — lean product HAWM/TUBE or one new paren
 - `20260717.165715` — [Glow lent-as-arm closes the form](20260717-165715_glow-lent-as-arm.bron) — ?: ?- ?~ length arms; foundations unmoved
 - `20260717.165200` — [Compass vs Glow surface — check-in](20260717-165200_compass-vs-glow-surface-check-in.bron) — keep foundations; working layer for rune surface
 - `20260717.165112` — [Check-in after lent paren send](20260717-165112_check-in-after-lent-paren.bron) — lean lent-as-arm next
