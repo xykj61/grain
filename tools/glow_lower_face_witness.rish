@@ -21,8 +21,10 @@ assert selftest.out contains "nests cast literal" else "lower_face_witness missi
 assert selftest.out contains "nests u64 cast" else "lower_face_witness missing nested @u64 claim"
 assert selftest.out contains "CastMoldMismatch" else "lower_face_witness missing mold-mismatch refuse"
 assert selftest.out contains "NamedMoldNotYetLowered" else "lower_face_witness missing named-mold refuse"
-assert selftest.out contains "ValueNotYetLowered" else "lower_face_witness missing expression refuse"
+assert selftest.out contains "binds subject length" else "lower_face_witness missing lent value claim"
+assert selftest.out contains "ValueNotYetLowered" else "lower_face_witness missing other-paren refuse"
 assert selftest.out contains "nests cast under face" else "lower_face_witness missing gen desk claim"
+assert selftest.out contains "nests (lent" else "lower_face_witness missing face-lent desk claim"
 
 let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
 assert build_welcome.ok else "face welcome .rye build failed"
@@ -35,4 +37,4 @@ assert build_unwelcome.ok else "face unwelcome .rye build failed"
 let run_unwelcome = run ["sh" "-c" "${unwelcome_bin}; echo EXIT:$?"]
 assert run_unwelcome.out contains "EXIT:1" else "face unwelcome binary did not exit 1"
 
-say "GREEN: Glow `=/` face hop — nested `^-` cast value; welcome 0 / unwelcome 1."
+say "GREEN: Glow `=/` face hop — nested `^-` and `(lent …)`; welcome 0 / unwelcome 1."

@@ -15,7 +15,8 @@ assert selftest.out contains "decimal prefix" else "expr_witness missing decimal
 assert selftest.out contains "nested ^- @u32" else "expr_witness missing @u32 nest claim"
 assert selftest.out contains "nested ^- @u64" else "expr_witness missing @u64 nest claim"
 assert selftest.out contains "bare face" else "expr_witness missing face claim"
-assert selftest.out contains "ExprNotYetLowered" else "expr_witness missing paren refuse"
+assert selftest.out contains "(lent records) paren form" else "expr_witness missing lent paren claim"
+assert selftest.out contains "ExprNotYetLowered" else "expr_witness missing other-paren refuse"
 assert selftest.out contains "parse_whole refuses leftover" else "expr_witness missing whole-rest claim"
 
-say "GREEN: Glow shared nest-expression parser — first general-lexer lap."
+say "GREEN: Glow shared nest-expression parser — lent paren form seated."
