@@ -59,7 +59,7 @@ rishi/bin/rishi run tools/tube05_install_proof_onpath_host.rish
 # → 99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe
 ```
 
-**Still open:** a drawn NativeActivity / Skate surface (onCreate now calls `ANativeActivity_finish` after writing `sala_root.txt` so the blank window does not hang). Debug keystore under `tools/.cache/tube05/` is host-local, never for publish.
+**First surface GREEN on Pixel `20260717.124843`:** `linengrow/glow_native_surface.rye` paints the 64-char Sala root hex on the NativeActivity window (amber on warm dark); Keaton confirmed it on-device. Fold + `sala_root.txt` still land in onCreate before the window callback. **Still open:** Skate / richer UI. Debug keystore under `tools/.cache/tube05/` is host-local, never for publish.
 
 ---
 
