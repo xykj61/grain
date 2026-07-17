@@ -55,6 +55,7 @@ pub fn paint_session_root_hex(
     window: ?*anyopaque,
     hex: *const [64]u8,
     matched: bool,
+    tube1_admitted: bool,
     surf: ?*const sala_surf.Surface,
 ) void {
     if (window == null) return;
@@ -79,22 +80,24 @@ pub fn paint_session_root_hex(
     var grid = skate.Grid.init(allocator, cols, rows) catch return;
     defer allocator.free(grid.cells);
 
-    const title = if (matched) "SALA B0+R2  GREEN" else "SALA B0+R2";
+    const title = if (matched and tube1_admitted) "SALA B0+R2+T1  GREEN" else if (matched) "SALA B0  GREEN" else "SALA B0";
     put_line_centered(&grid, 0, title);
-    put_line_centered(&grid, 1, "surface (Pool x3)");
+    put_line_centered(&grid, 1, if (tube1_admitted) "TUBE1 admitted · Pool x3" else "TUBE1 refused");
     var row: u32 = 2;
-    if (surf) |s| {
-        var p: u32 = 0;
-        while (p < s.count and row < 5) : (p += 1) {
-            const pan = s.panel(p);
-            var line_buf: [64]u8 = undefined;
-            const line = std.fmt.bufPrint(
-                &line_buf,
-                "[{s}] {s}",
-                .{ pan.label_slice(), pan.frame.line(1) },
-            ) catch continue;
-            put_line_centered(&grid, row, line);
-            row += 1;
+    if (tube1_admitted) {
+        if (surf) |s| {
+            var p: u32 = 0;
+            while (p < s.count and row < 5) : (p += 1) {
+                const pan = s.panel(p);
+                var line_buf: [64]u8 = undefined;
+                const line = std.fmt.bufPrint(
+                    &line_buf,
+                    "[{s}] {s}",
+                    .{ pan.label_slice(), pan.frame.line(1) },
+                ) catch continue;
+                put_line_centered(&grid, row, line);
+                row += 1;
+            }
         }
     }
     // Hex under the panels; two rows of 32.

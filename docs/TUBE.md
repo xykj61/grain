@@ -2,7 +2,7 @@
 
 *App = Pool agent. Manifest = bounded mold. Publish = signed fold. Packaging = NativeActivity envelope over Glow-built native code — never a Kotlin transpiler.*
 
-**Status:** Checkable — operator compressor (host-side TUBE0 / TUBE0.5 GREEN)
+**Status:** Checkable — operator compressor (TUBE0 / TUBE0.5 / TUBE1 GREEN)
 **Depth:** guide
 **Ceiling:** ≤150 lines
 **Last updated:** 2026-07-17
@@ -24,7 +24,7 @@ Language path and device path meet here: Glow's fold (language) becomes an insta
 |------|-------|-----------------|-------|
 | **TUBE0** | App-manifest mold validates at the boundary | `tools/tube0_manifest_witness.rish` | GREEN |
 | **TUBE0.5** | Permissions emit; NativeActivity envelope; signed APK with Sala B0 fold; install + `sala_root.txt` on HAWM0 and Pixel 10a | `tools/tube0_5_android_permission_witness.rish` · `tools/tube05_envelope_witness.rish` · `tools/tube05_apk_pack_witness.rish` · `tools/tube05_install_proof_onpath_host.rish` | **GREEN** pack · Sala wire · HAWM0 `20260717.122010` · **Pixel `20260717.123226`** |
-| **TUBE1** | Pool admits an agent iff manifest caps match a grant | — | design (needs agent runtime) |
+| **TUBE1** | Pool admits an agent iff manifest caps match a grant | `tools/tube1_admission_witness.rish` · glass gate `tube1_glass_gate.rye` | **GREEN** device-free `20260717.131000` · glass + Pixel `20260717.131404` |
 | **TUBE2–5** | Signed publish · resins · market · Mantra revisions | — | design |
 | **TUBE6–7** | Whole stack on GrapheneOS build / physical Pixel | — | joins [`HAWM.md`](HAWM.md) |
 
@@ -63,7 +63,9 @@ rishi/bin/rishi run tools/tube05_install_proof_onpath_host.rish
 
 **Thin-view on glass GREEN `20260717.130602`:** R1 path landed; Keaton confirmed ledger lines on Pixel.
 
-**R2 surface on glass GREEN `20260717.130848`:** `sala_r2_surface.rye` hosts ask · receipt · reputation (capability-isolated) onto one `sala_surface.Surface`; Skate paints `[ask] issuer 200` / `[receipt] issuer 250` / `[reputation] issuer 275` above the B0 hex (`SALA B0+R2`). Install proof GREEN (`99b3ae96…e4c5fe`); Keaton confirmed the three panels on Pixel. Debug keystore under `tools/.cache/tube05/` is host-local, never for publish.
+**R2 surface on glass GREEN `20260717.130848`:** `sala_r2_surface.rye` hosts ask · receipt · reputation (capability-isolated) onto one `sala_surface.Surface`; Skate paints `[ask] issuer 200` / `[receipt] issuer 250` / `[reputation] issuer 275` above the B0 hex. Install proof GREEN; Keaton confirmed on Pixel.
+
+**TUBE1 glass gate GREEN `20260717.131404`:** `tube1_glass_gate.rye` admits the sala-broadcaster manifest (three state resources) before R2 paints; title `SALA B0+R2+T1  GREEN` / `TUBE1 admitted · Pool x3`. Install proof GREEN; Keaton confirmed on Pixel. Debug keystore under `tools/.cache/tube05/` is host-local, never for publish.
 
 ---
 
