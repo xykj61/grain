@@ -35,22 +35,25 @@ The full onboarding surface for the four variants lives in the manual: [`manual/
 
 | Layer | Name | What it is | Status |
 |---|---|---|---|
-| Language | **Glow** | the fused Rye-Hoon language; Hoon's runes over TAME-bounded semantics | named and scoped |
+| Language | **Glow** | Hoon's runes over TAME-bounded semantics; emits ordinary `.rye` | desk hops emit GREEN — see [`glow/README.md`](glow/README.md) |
 | Interpreter | **Nock interpreter** | runs Glow's compiled forms | scoped (Nock 4K), not built |
 | Umbrella | **Glow OS** | the whole system | named (formerly "Rye OS") |
 | Variants | **Reya · Riyo · Trey · Triz** | four switchable OS builds, all in Glow | named; see the table above |
 | Kernel spine | state as a pure fold over an append-only log of signed facts | the transition-function model | the stated spine, with running witnesses |
+| App ladder | **TUBE** | Glow app = Pool agent → signed APK on GrapheneOS (HAWM) | TUBE0–5 · TUBE7 GREEN; TUBE6 horizon — [`docs/TUBE.md`](docs/TUBE.md) |
 | Modules | Rishi, Mantra, Comlink, Caravan, Tally, Brix, Bron, Aurora, Pond, Scribble, and more | the running seeds | many green today |
 
-**An honest word on status.** Most of what runs today runs under the project's prior name and is being carried into Glow OS by decision, not yet by a mass rename. The language, the interpreter, and the four variants are named and scoped — real design, real direction — yet not things you can boot quite yet. Every page in this tree marks its own register: what a witness proves, versus what is proposed. Nothing here claims a feature its witnesses do not show. That discipline has a name and a home ([`context/TWO_ROOMS.md`](context/TWO_ROOMS.md)).
+**An honest word on status.** Most of what runs today still lives under the project's prior module names and is being carried into Glow OS by decision, not yet by a mass rename. Glow's **desk already emits** through `glow_run` witnesses; a full OS boot and the Nock interpreter remain horizon. The four variants are named and scoped — real design, real direction — yet not things you can boot quite yet. Every page in this tree marks its own register: what a witness proves, versus what is proposed. Nothing here claims a feature its witnesses do not show. That discipline has a name and a home ([`context/TWO_ROOMS.md`](context/TWO_ROOMS.md)).
 
 ---
 
 ## What You Can Actually Run Today
 
-- **The macOS enclosure** — launch the editor inside a `sandbox-exec` fence, witnessed green on this host: see [`manual/guides/macos-ai-jail-setup.md`](manual/guides/macos-ai-jail-setup.md).
-- **The module seeds** — the Rishi shell REPL, Mantra, Comlink, Scribble, and the rest, each with its own `tools/*.rish` witness.
+- **Glow desk** — eight generator hops lower to Rye and run via [`tools/glow_run.rish`](tools/glow_run.rish); desk witness GREEN — [`glow/README.md`](glow/README.md).
+- **TUBE / HAWM product edge** — installable NativeActivity APK (Sala fold), Pool admit, GrapheneOS-parallel Resource Scope (Storage · Contact), Network Grant, and Sensors Grant (including `OTHER_SENSORS` emission) — [`docs/TUBE.md`](docs/TUBE.md) · [`docs/HAWM.md`](docs/HAWM.md).
+- **The module seeds** — the Rishi shell, Mantra, Comlink, Scribble, and the rest, each with its own `tools/*.rish` witness.
 - **The witness suite** — the parity gates in `tools/` that guard every push; state is proven on metal, not asserted in prose.
+- **The enclosure** — editor inside a host fence where your machine supports it (macOS `sandbox-exec` guide: [`manual/guides/macos-ai-jail-setup.md`](manual/guides/macos-ai-jail-setup.md); this Framework host runs under ai-jail).
 
 ---
 
@@ -65,7 +68,8 @@ Then read, in order:
 
 1. **[`ORGANIZING.md`](ORGANIZING.md)** — where every kind of work lives in this tree.
 2. **[`manual/glow-os/`](manual/glow-os/README.md)** — the Glow OS onboarding rooms and the four variants.
-3. **[`CONTRIBUTING.md`](CONTRIBUTING.md)** — how a contribution arrives: small, signed, component-prefixed, in Radiant voice.
+3. **[`docs/TUBE.md`](docs/TUBE.md)** · **[`glow/README.md`](glow/README.md)** — what the app ladder and language desk prove today.
+4. **[`CONTRIBUTING.md`](CONTRIBUTING.md)** — how a contribution arrives: small, signed, component-prefixed, in Radiant voice.
 
 ---
 

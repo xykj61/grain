@@ -85,7 +85,7 @@ rishi/bin/rishi run tools/tube05_install_proof_onpath_host.rish
 
 **Network Grant GREEN `20260717.160607` · TUBE1 wire `20260717.160828`:** [`../linengrow/glow_network_grant.rye`](../linengrow/glow_network_grant.rye) — clean-room Glow parallel of GrapheneOS Network permission toggle. Binary grant/revoke; refused grant **appears down**. [`admit_manifest_networked`](../linengrow/tube1_admission.rye) requires the grant only when the manifest declares `network`; glass keeps the door live without adding INTERNET to the R2 present path. Manifest emission of `network` + `right_net` → INTERNET stays TUBE0.5.
 
-**Sensors Grant GREEN · TUBE1 wire `20260717.161013`:** [`../linengrow/glow_sensors_grant.rye`](../linengrow/glow_sensors_grant.rye) — GrapheneOS Sensors permission toggle parallel. Binary grant/revoke; refused grant **appears zeroed**. [`admit_manifest_gated`](../linengrow/tube1_admission.rye) stacks Network + Sensors; engages `sensors` only when declared. Glass keeps both toggle doors live on the R2 present path.
+**Sensors Grant GREEN · TUBE1 wire `20260717.161013` · TUBE0.5 emit `20260717.161448`:** [`../linengrow/glow_sensors_grant.rye`](../linengrow/glow_sensors_grant.rye) — GrapheneOS Sensors permission toggle parallel. Binary grant/revoke; refused grant **appears zeroed**. [`admit_manifest_gated`](../linengrow/tube1_admission.rye) stacks Network + Sensors; engages `sensors` only when declared. Glass keeps both toggle doors live on the R2 present path. TUBE0.5 closed table: `sensors` + `right_device` → `android.permission.OTHER_SENSORS`.
 
 ---
 

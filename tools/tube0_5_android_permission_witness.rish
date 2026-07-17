@@ -21,5 +21,6 @@ assert selftest.ok else "TUBE0.5 permission-emission witness exited non-zero"
 assert selftest.out contains "GREEN" else "TUBE0.5 permission-emission witness not GREEN"
 assert selftest.out contains "INTERNET" else "TUBE0.5 missing the network-capability welcome path"
 assert selftest.out contains "BufferTooSmall" else "TUBE0.5 missing the too-small-buffer refusal"
+assert selftest.out contains "OTHER_SENSORS" else "TUBE0.5 missing the sensors-capability path"
 
 say "GREEN: TUBE0.5 permission-emission witness passed."
