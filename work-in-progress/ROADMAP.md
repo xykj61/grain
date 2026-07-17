@@ -4,7 +4,7 @@
 
 **Language:** EN
 **Version:** `20260715` (Pool keystone revival prioritized · Quin voice seated · align pass reconciles the closed ladder)
-**Last updated:** 2026-07-17 (**Glow nested @u64** `20260717.163004` — unsigned cast family closed; Quin unpaired · TUBE6/HAWM2 horizon)
+**Last updated:** 2026-07-17 (**align** `20260717.172832` — Dexter-on-glass named under Brushstroke/Sala; Dill stays gap; mix form closed; jam/tokens held)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Lens:** TAME — safety, performance, joy; the Seed Law; [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md)
@@ -190,9 +190,11 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **Eighth rune head — `=*`, `20260717.150453`** — [`glow/rune_alias.rye`](../glow/rune_alias.rye) completes the `=` trio. Witness GREEN; `parity_ch01` wired.
 
-**Glow generator hop** (sent through `dbf19e2880`) · **nested `@u64` `20260717.163004`** · **shared nest expr `20260717.164350`** · **`(lent …)` paren `20260717.164748`** · **lent-as-arm `20260717.165715`** · **`(mix …)` under `=/` `20260717.171524`** · **mix-as-arm `20260717.171840`** — Hoon `+mix` XOR under face and on `?:` · `?-` · `?~`; desks `face-mix` · `if-mix` · `switch-mix` · `null-mix`; `(jam …)` still refuses. Foundations stay unmoved; `glow/README.md` is the working surface pin. Hold: GrapheneOS-facing code stays Glow/Rye → native.
+**Glow generator hop** (sent through `dbf19e2880`) · **nested `@u64` `20260717.163004`** · **shared nest expr `20260717.164350`** · **`(lent …)` paren `20260717.164748`** · **lent-as-arm `20260717.165715`** · **`(mix …)` under `=/` `20260717.171524`** · **mix-as-arm `20260717.171840`** — Hoon `+mix` XOR under face and on `?:` · `?-` · `?~`; desks `face-mix` · `if-mix` · `switch-mix` · `null-mix`; `(jam …)` still refuses. Foundations stay unmoved; `glow/README.md` is the working surface pin. Hold: GrapheneOS-facing code stays Glow/Rye → native. Glow emits Rye that keeps **TAME root**; a Glow-specific TAME supplement waits until distinct checkable Glow idioms exist beyond the lower.
 
 **Sala B1 welcome carriage on glass, `20260717.170315` · Pixel `20260717.171015`** — HAWM2/TUBE6 remain horizon (full GrapheneOS build). In-process B1 welcome paints `SALA B1 carriage · 3 ev` on NativeActivity Skate row 11; pack GREEN; install proof GREEN; Keaton confirmed on Pixel. UDP live hop stays in `sala_broadcast_delivery.rye`.
+
+**Align pass — Dexter · Dill · glass input, `20260717.172832`** — compass rose walked (foundations → grain → Two Rooms → active-designing / **active-reviving** → TASKS/ROADMAP → green witnesses). Product pin healthy (B1 Pixel GREEN · TUBE1–5 glass). Language pin healthy (`lent` + `mix` closed; `(jam …)` denser nest held). **Seated:** Dexter is an aspect of the **Brushstroke / Sala** stack, not Dill; fuse Dexter with Glow GrapheneOS as named laps D0–D2 when opened; Dill stays an honest vane gap (no nest under Dexter, no rename). World study [`../external-research/20260717-172832_dexter-dill-glow-grapheneos-input.md`](../external-research/20260717-172832_dexter-dill-glow-grapheneos-input.md); reviving silo [`../active-reviving/20260717-172832_dexter-beside-brushstroke-dill-stays-gap.md`](../active-reviving/20260717-172832_dexter-beside-brushstroke-dill-stays-gap.md). **Aligned next:** check-in before opening D0 (Dexter-on-NativeActivity) or a Sala B2 glass layout word; hold `(jam …)`, fuller tokens, HAWM2/TUBE6, and any Dill-parallel kernel door.
 
 ## The Visual Track — Realidream (horizon lane, ladder already named)
 
