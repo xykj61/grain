@@ -8,6 +8,10 @@ let welcome_rye = "glow/.cache/cast_u32_welcome.rye"
 let welcome_bin = "glow/bin/cast_u32_welcome"
 let unwelcome_rye = "glow/.cache/cast_u32_unwelcome.rye"
 let unwelcome_bin = "glow/bin/cast_u32_unwelcome"
+let u8_welcome_rye = "glow/.cache/cast_u8_welcome.rye"
+let u8_welcome_bin = "glow/bin/cast_u8_welcome"
+let u8_unwelcome_rye = "glow/.cache/cast_u8_unwelcome.rye"
+let u8_unwelcome_bin = "glow/bin/cast_u8_unwelcome"
 
 let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/lower_cast_witness.rye -femit-bin=${bin}"]
 assert build.ok else "lower_cast_witness build failed"
@@ -15,10 +19,14 @@ assert build.ok else "lower_cast_witness build failed"
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
 assert selftest.ok else "lower_cast_witness exited non-zero"
 assert selftest.out contains "GREEN" else "lower_cast_witness not GREEN"
-assert selftest.out contains "checked-casts into u32" else "lower_cast_witness missing welcome-emit claim"
+assert selftest.out contains "checked-casts into u32" else "lower_cast_witness missing u32 claim"
+assert selftest.out contains "checked-casts into u8" else "lower_cast_witness missing u8 claim"
+assert selftest.out contains "checked-casts into u16" else "lower_cast_witness missing u16 claim"
+assert selftest.out contains "checked-casts into u64" else "lower_cast_witness missing u64 claim"
 assert selftest.out contains "NamedMoldNotYetLowered" else "lower_cast_witness missing named-mold refuse"
 assert selftest.out contains "AuraNotYetLowered" else "lower_cast_witness missing other-aura refuse"
 assert selftest.out contains "cast-u32.glow" else "lower_cast_witness missing gen desk claim"
+assert selftest.out contains "cast-u8.glow" else "lower_cast_witness missing u8 gen desk claim"
 
 let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
 assert build_welcome.ok else "cast welcome .rye build failed"
@@ -31,4 +39,15 @@ assert build_unwelcome.ok else "cast unwelcome .rye build failed"
 let run_unwelcome = run ["sh" "-c" "${unwelcome_bin}; echo EXIT:$?"]
 assert run_unwelcome.out contains "EXIT:1" else "cast unwelcome binary did not exit 1"
 
-say "GREEN: Glow `^-` cast hop — @u32 lowers to Rye; welcome 0 / unwelcome 1."
+let build_u8_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${u8_welcome_rye} -femit-bin=${u8_welcome_bin}"]
+assert build_u8_welcome.ok else "cast u8 welcome .rye build failed"
+let run_u8_welcome = run ["sh" "-c" "${u8_welcome_bin}; echo EXIT:$?"]
+assert run_u8_welcome.ok else "cast u8 welcome binary failed to launch"
+assert run_u8_welcome.out contains "EXIT:0" else "cast u8 welcome binary did not exit 0"
+
+let build_u8_unwelcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${u8_unwelcome_rye} -femit-bin=${u8_unwelcome_bin}"]
+assert build_u8_unwelcome.ok else "cast u8 unwelcome .rye build failed"
+let run_u8_unwelcome = run ["sh" "-c" "${u8_unwelcome_bin}; echo EXIT:$?"]
+assert run_u8_unwelcome.out contains "EXIT:1" else "cast u8 unwelcome binary did not exit 1"
+
+say "GREEN: Glow `^-` cast hop — @u8 @u16 @u32 @u64 lower to Rye; welcome 0 / unwelcome 1."

@@ -1172,7 +1172,17 @@ let glow_null = run ["rishi/bin/rishi" "run" "tools/glow_lower_null_witness.rish
 assert glow_null.ok else "Glow lower-null witness failed"
 say "GREEN: Glow lower-null witness passed."
 
-say "witness suite: glow_run desk — bound-tick through null-records…"
+say "witness suite: Glow `=.` lowers to Rye — mutate hop…"
+let glow_mut = run ["rishi/bin/rishi" "run" "tools/glow_lower_mutate_witness.rish"]
+assert glow_mut.ok else "Glow lower-mutate witness failed"
+say "GREEN: Glow lower-mutate witness passed."
+
+say "witness suite: Glow `=*` lowers to Rye — alias hop…"
+let glow_alias = run ["rishi/bin/rishi" "run" "tools/glow_lower_alias_witness.rish"]
+assert glow_alias.ok else "Glow lower-alias witness failed"
+say "GREEN: Glow lower-alias witness passed."
+
+say "witness suite: glow_run desk — all eight generator hops…"
 let glow_desk = run ["rishi/bin/rishi" "run" "tools/glow_run_desk_witness.rish"]
 assert glow_desk.ok else "Glow run desk witness failed"
 say "GREEN: glow_run desk witness passed."

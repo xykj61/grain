@@ -1,0 +1,58 @@
+//! glow/lower_mutate_witness.rye — proves `=.` lowers to runnable `.rye`.
+//!
+//!   rye build glow/lower_mutate_witness.rye -femit-bin=glow/bin/lower_mutate_witness
+//!   glow/bin/lower_mutate_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const lower = @import("lower_mutate.rye");
+
+const witness_version = "20260717.152549";
+
+fn run_selftest(init: std.process.Init) !u8 {
+    const io = init.io;
+    const a = init.arena.allocator();
+    const cwd = std.Io.Dir.cwd();
+    var buf: [2048]u8 = undefined;
+
+    const n1 = try lower.lower_line_welcome("=.  root", &buf);
+    const rye1 = buf[0..n1];
+    assert(std.mem.indexOf(u8, rye1, "var root: u32 = 0") != null);
+    assert(std.mem.indexOf(u8, rye1, "root = 7") != null);
+    assert(std.mem.indexOf(u8, rye1, "root == 7") != null);
+    print("lower: \"=.  root\" welcome emit mutates root -- GREEN\n", .{});
+
+    const n2 = try lower.lower_line_unwelcome("=.  root", &buf);
+    const rye2 = buf[0..n2];
+    assert(std.mem.indexOf(u8, rye2, "root == 8") != null);
+    print("lower: \"=.  root\" unwelcome emit expects mismatch -- GREEN\n", .{});
+
+    if (lower.lower_line_welcome("=.  kind.cur-record", &buf)) |_| {
+        return error.WingLoweredTooSoon;
+    } else |err| {
+        if (err != lower.LowerError.WingNotYetLowered) return err;
+    }
+    print("lower: \"=.  kind.cur-record\" refused WingNotYetLowered -- GREEN\n", .{});
+
+    try cwd.createDirPath(io, "glow/.cache");
+    const welcome_path = "glow/.cache/mutate_root_welcome.rye";
+    const unwelcome_path = "glow/.cache/mutate_root_unwelcome.rye";
+    const n3 = try lower.lower_line_welcome("=.  root", &buf);
+    try cwd.writeFile(io, .{ .sub_path = welcome_path, .data = buf[0..n3] });
+    const n4 = try lower.lower_line_unwelcome("=.  root", &buf);
+    try cwd.writeFile(io, .{ .sub_path = unwelcome_path, .data = buf[0..n4] });
+    print("lower: wrote mutate welcome and unwelcome .rye under glow/.cache/ -- GREEN\n", .{});
+
+    const gen_src = try cwd.readFileAlloc(io, "glow/gen/mutate-root.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_src, "=.  root") != null);
+    print("lower: glow/gen/mutate-root.glow carries \"=.  root\" -- GREEN\n", .{});
+
+    print("lower: version {s}\n", .{witness_version});
+    print("GREEN: `=.` lowers root to ordinary Rye.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
+}

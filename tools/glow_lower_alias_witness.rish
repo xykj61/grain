@@ -1,0 +1,34 @@
+# glow_lower_alias_witness.rish — `=*` lowers to Rye; emitted program runs.
+#
+#   rishi/bin/rishi run tools/glow_lower_alias_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "glow/bin/lower_alias_witness"
+let welcome_rye = "glow/.cache/alias_records_welcome.rye"
+let welcome_bin = "glow/bin/alias_records_welcome"
+let unwelcome_rye = "glow/.cache/alias_records_unwelcome.rye"
+let unwelcome_bin = "glow/bin/alias_records_unwelcome"
+
+let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/lower_alias_witness.rye -femit-bin=${bin}"]
+assert build.ok else "lower_alias_witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "lower_alias_witness exited non-zero"
+assert selftest.out contains "GREEN" else "lower_alias_witness not GREEN"
+assert selftest.out contains "aliases source" else "lower_alias_witness missing alias claim"
+assert selftest.out contains "next_root" else "lower_alias_witness missing hyphen map claim"
+assert selftest.out contains "alias-records.glow" else "lower_alias_witness missing gen desk claim"
+assert selftest.out contains "eighth head" else "lower_alias_witness missing complete claim"
+
+let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
+assert build_welcome.ok else "alias welcome .rye build failed"
+let run_welcome = run ["sh" "-c" "${welcome_bin}; echo EXIT:$?"]
+assert run_welcome.ok else "alias welcome binary failed to launch"
+assert run_welcome.out contains "EXIT:0" else "alias welcome binary did not exit 0"
+
+let build_unwelcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${unwelcome_rye} -femit-bin=${unwelcome_bin}"]
+assert build_unwelcome.ok else "alias unwelcome .rye build failed"
+let run_unwelcome = run ["sh" "-c" "${unwelcome_bin}; echo EXIT:$?"]
+assert run_unwelcome.out contains "EXIT:1" else "alias unwelcome binary did not exit 1"
+
+say "GREEN: Glow `=*` alias hop — records lowers to Rye; welcome 0 / unwelcome 1; eight heads emit."

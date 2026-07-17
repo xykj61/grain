@@ -8,7 +8,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const lower = @import("lower_cast.rye");
 
-const witness_version = "20260717.151533";
+const witness_version = "20260717.152801";
 
 fn run_selftest(init: std.process.Init) !u8 {
     const io = init.io;
@@ -27,6 +27,32 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, rye2, "const raw: u64 = 4294967296") != null);
     print("lower: \"^-  @u32\" unwelcome emit uses raw that overflows u32 -- GREEN\n", .{});
 
+    const n_u8 = try lower.lower_line_welcome("^-  @u8", &buf);
+    const rye_u8 = buf[0..n_u8];
+    assert(std.mem.indexOf(u8, rye_u8, "std.math.cast(u8, raw)") != null);
+    print("lower: \"^-  @u8\" welcome emit checked-casts into u8 -- GREEN\n", .{});
+
+    const n_u8b = try lower.lower_line_unwelcome("^-  @u8", &buf);
+    const rye_u8b = buf[0..n_u8b];
+    assert(std.mem.indexOf(u8, rye_u8b, "const raw: u64 = 256") != null);
+    print("lower: \"^-  @u8\" unwelcome emit overflows u8 -- GREEN\n", .{});
+
+    const n_u16 = try lower.lower_line_welcome("^-  @u16", &buf);
+    const rye_u16 = buf[0..n_u16];
+    assert(std.mem.indexOf(u8, rye_u16, "std.math.cast(u16, raw)") != null);
+    print("lower: \"^-  @u16\" welcome emit checked-casts into u16 -- GREEN\n", .{});
+
+    const n_u64 = try lower.lower_line_welcome("^-  @u64", &buf);
+    const rye_u64 = buf[0..n_u64];
+    assert(std.mem.indexOf(u8, rye_u64, "std.math.cast(u64, raw)") != null);
+    assert(std.mem.indexOf(u8, rye_u64, "const raw: u128 = 42") != null);
+    print("lower: \"^-  @u64\" welcome emit checked-casts into u64 -- GREEN\n", .{});
+
+    const n_u64b = try lower.lower_line_unwelcome("^-  @u64", &buf);
+    const rye_u64b = buf[0..n_u64b];
+    assert(std.mem.indexOf(u8, rye_u64b, "18446744073709551616") != null);
+    print("lower: \"^-  @u64\" unwelcome emit overflows u64 from u128 -- GREEN\n", .{});
+
     if (lower.lower_line_welcome("^-  record", &buf)) |_| {
         return error.NamedMoldLoweredTooSoon;
     } else |err| {
@@ -34,12 +60,12 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("lower: \"^-  record\" refused NamedMoldNotYetLowered -- GREEN\n", .{});
 
-    if (lower.lower_line_welcome("^-  @u8", &buf)) |_| {
+    if (lower.lower_line_welcome("^-  @ux", &buf)) |_| {
         return error.AuraLoweredTooSoon;
     } else |err| {
         if (err != lower.LowerError.AuraNotYetLowered) return err;
     }
-    print("lower: \"^-  @u8\" refused AuraNotYetLowered -- GREEN\n", .{});
+    print("lower: \"^-  @ux\" refused AuraNotYetLowered -- GREEN\n", .{});
 
     try cwd.createDirPath(io, "glow/.cache");
     const welcome_path = "glow/.cache/cast_u32_welcome.rye";
@@ -50,12 +76,24 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = unwelcome_path, .data = buf[0..n4] });
     print("lower: wrote cast welcome and unwelcome .rye under glow/.cache/ -- GREEN\n", .{});
 
+    const u8_welcome = "glow/.cache/cast_u8_welcome.rye";
+    const u8_unwelcome = "glow/.cache/cast_u8_unwelcome.rye";
+    const n5 = try lower.lower_line_welcome("^-  @u8", &buf);
+    try cwd.writeFile(io, .{ .sub_path = u8_welcome, .data = buf[0..n5] });
+    const n6 = try lower.lower_line_unwelcome("^-  @u8", &buf);
+    try cwd.writeFile(io, .{ .sub_path = u8_unwelcome, .data = buf[0..n6] });
+    print("lower: wrote @u8 welcome and unwelcome .rye under glow/.cache/ -- GREEN\n", .{});
+
     const gen_src = try cwd.readFileAlloc(io, "glow/gen/cast-u32.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_src, "^-  @u32") != null);
     print("lower: glow/gen/cast-u32.glow carries \"^-  @u32\" -- GREEN\n", .{});
 
+    const gen_u8 = try cwd.readFileAlloc(io, "glow/gen/cast-u8.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_u8, "^-  @u8") != null);
+    print("lower: glow/gen/cast-u8.glow carries \"^-  @u8\" -- GREEN\n", .{});
+
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: `^-` lowers @u32 cast to ordinary Rye.\n", .{});
+    print("GREEN: `^-` lowers @u8 @u16 @u32 @u64 casts to ordinary Rye.\n", .{});
     return 0;
 }
 

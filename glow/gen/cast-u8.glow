@@ -1,0 +1,3 @@
+::  Unsigned aura cast — @u8 at the boundary.
+::  Lowered by glow/lower_cast.rye into ordinary Rye; Rishi stays the shell.
+^-  @u8
