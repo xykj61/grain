@@ -3,7 +3,7 @@
 **Language:** EN
 **Version:** `20260713.221512`
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Status:** Research — reads `vere/old`'s actual source, proposes no code merge yet
+**Status:** Research for understanding — reads `vere/old`'s actual source, proposes no code merge yet
 
 ---
 

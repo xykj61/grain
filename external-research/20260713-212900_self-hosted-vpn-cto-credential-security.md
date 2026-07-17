@@ -3,7 +3,7 @@
 **Language:** EN
 **Version:** `20260713.212900`
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Status:** Living — recommendation, not yet implemented
+**Status:** Vision register — living recommendation, not yet implemented
 
 ---
 

@@ -1,9 +1,10 @@
 # Two Rooms — The Checkable and the Visionary
 
 **Language:** EN
-**Last updated:** 2026-07-05 (seated — doorway witness at parity **153**)
-**Style:** Radiant (see `RADIANT_STYLE.md`)
-**Status:** Seated — reviewed and kept `20260705.203144 UDT`; doorway witness from this stamp forward
+**Last updated:** 2026-07-17 (Quin voice · doorway vocabulary named · living discipline refreshed)
+**Style:** Radiant (see `RADIANT_STYLE.md` · standing voice `QUIN.md`)
+**Voice:** Quin
+**Status:** Seated — checkable-room canon; reviewed and kept `20260705.203144 UDT`; doorway witness from that stamp forward (`tools/two_rooms_doorway.rish`)
 **Ground:** drafted from the second harvest
 ([`external-research/20260703-071712_the-second-harvest.md`](../external-research/20260703-071712_the-second-harvest.md));
 vocabulary companions:
@@ -27,6 +28,11 @@ belongs to the vision register. Trouble begins when the two share a room without
 mocking an image that was doing honest orienting work. The discipline is therefore architectural:
 **give each register a room of its own, and name the room at the door.**
 
+Quin keeps the same law in prose that TAME keeps in code: **witness before narrative** — mark
+what is proven as proven and what is proposed as proposed (`QUIN.md` · root rule **9**, docs and
+implementation stay synced). A living claim about behavior earns the checkable room only when a
+witness binds it; until then it speaks from the vision room, or as honest horizon.
+
 ## The Checkable Room
 
 The checkable room is the bench's world, and its law is already canon: only what a witness can
@@ -38,6 +44,9 @@ Claim vocabulary:
 [`external-research/20260704-024900_claim.md`](../external-research/20260704-024900_claim.md).
 Braid with grain and happy zone:
 [`external-research/20260704-025600_claims-happy-zone-and-grain.md`](../external-research/20260704-025600_claims-happy-zone-and-grain.md).
+
+Landed edges in this room prefer **nib** vocabulary in new prose — product nib · suite nib ·
+git nib — so the pen's place is named without borrowing git's tip metaphor (`LEXICON.md`).
 
 ## The Vision Room
 
@@ -58,6 +67,20 @@ crosses from the vision room to the checkable room by exactly one door — it ea
 and the crossing is recorded like any other graduation. And when visionary material arrives
 carrying a testable spark, the spark is parked to RTAC as a question, so the vision keeps its
 voice and the bench keeps its queue.
+
+**Doorway witness vocabulary.** From seating stamp `20260705.203144` forward, every
+one-clock-stamped page under the doorway roster carries a `**Status:**` line whose first lines
+name the room in words the witness can bind. Accepted room tokens (case-insensitive) are:
+
+| Token | Room |
+|---|---|
+| `checkable` | Checkable room |
+| `vision` | Vision room |
+| `mixed` | Both registers named on purpose |
+| `research for understanding` | Vision-leaning study — orients; seats no fact |
+
+The witness is [`../tools/two_rooms_doorway.rish`](../tools/two_rooms_doorway.rish). A Status that
+says "design" or "study" alone, without one of those tokens, does not yet name the room.
 
 ## How a Session Holds Visionary Material
 

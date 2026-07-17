@@ -5,6 +5,7 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Teacher:** Andrej Karpathy — [LLM Wiki gist](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) · study copy [`../gratitude/karpathy/llm-wiki.md`](../gratitude/karpathy/llm-wiki.md)
 **Keeper:** `tools/living_docs_lint.rish` (ratchet-advisory · seated `c4694f4` · three folds `223300`)
+**Status:** Research for understanding — living-docs lint pattern study; keeper seated; no wiki rewrite claimed
 
 ---
 

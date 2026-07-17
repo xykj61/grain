@@ -3,7 +3,7 @@
 **Language:** EN
 **Version:** `20260713.215200`
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Status:** Research — answers a question, proposes no new compiler component
+**Status:** Research for understanding — answers a question, proposes no new compiler component
 
 ---
 
