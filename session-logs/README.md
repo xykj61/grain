@@ -9,6 +9,7 @@ Living index for the append-only session stream. This table reads **newest first
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
 - `20260717.020613` — [gratitude/grapheneos/ docs mirror finished](20260717-020613_grapheneos-gratitude-mirror-complete.bron) — CLI install guide, features overview, and appreciation README complete the mirror
+- `20260717.022323` — [Dual-door docs orientation — HAWM and TUBE compressors](20260717-022323_dual-door-docs-hawm-tube.bron) — language path and device path meet at packaging; LEXICON seats both ladders
 - `20260717.021857` — [TUBE0.5 host-side packaging GREEN](20260717-021857_tube05-host-side-apk-green.bron) — first Glow NativeActivity APK packed (permission emission, envelope, signed APK)
 - `20260717.014522` — [No Kotlin transpiler; a native-activity shim instead](20260717-014522_native-activity-shim-decision.bron) — Glow stays native for Android; TUBE0.5 named as the missing installable-APK rung
 - `20260717.013213` — [GrapheneOS installed on the physical Pixel 10a](20260717-013213_grapheneos-installed-pixel-10a.bron) — HAWM3 touches real hardware for the first time on the whole ladder
