@@ -8,6 +8,7 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260717.014522` — [No Kotlin transpiler; a native-activity shim instead](20260717-014522_native-activity-shim-decision.bron) — Glow stays native for Android; TUBE0.5 named as the missing installable-APK rung
 - `20260717.013213` — [GrapheneOS installed on the physical Pixel 10a](20260717-013213_grapheneos-installed-pixel-10a.bron) — HAWM3 touches real hardware for the first time on the whole ladder
 
 **Filename (living):** `YYYYMMDD-HHMMSS_short-slug.bron` — no countdown prefix. **Body:** `format session-log-v1` with `stamp` · `editor` · `model` · `voice` · `think` · `obs` · `file` · `recommend`.

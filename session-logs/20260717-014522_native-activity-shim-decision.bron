@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260717.014522
+editor Cursor
+model Sonnet 5 1M Low
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern time convention, context/specs/20260717-003132_eastern-time-framework-host-convention.md
+title No Glow-to-Kotlin transpiler; a native-activity shim named instead
+prompt Keaton asked whether Glow should grow a rune-based DSL that transpiles to Kotlin for SLC apps, or whether a more TAME-guided, bounded deployment path already exists
+think switched to Plan mode since this is a real architectural fork with lasting consequences, not a mechanical step
+think ran an explore subagent across TAME Guidance, the rune spec, TUBE manifest work, and prior GrapheneOS-mapping research before answering
+think found Glow's Android path is already native — Zig cross-compiles straight to aarch64-linux-android/x86_64-linux-android bionic ELF, proven bit-identical on HAWM1
+think a JVM target would fight TAME's own bounded-loops, no-hidden-allocation, and named-error rules for no real gain, since the rune spec's bounded |- trap already lowers cleanly to native code
+think the real gap is packaging, not language — HAWM1/HAWM3 push bare ELF binaries via adb shell exec, which proves correctness yet is not an installable app; Android requires an APK naming a Binder-registered Activity
+think named the fix as one small, fixed, hand-written native-activity shim, never generated, reused verbatim across every app, crossing exactly one JNI seam to the Glow-built .so where all real logic stays
+think named a new rung, TUBE0.5, sitting beneath TUBE6/TUBE7 rather than inside the TUBE1-5 capability pipeline, since it answers a device-hosting question rather than a capability or market one
+obs the decision protects TAME's discipline by choosing the compilation target that already gives bounds and explicit errors for free, rather than asking a second backend to re-earn them against a garbage-collected runtime
+obs the manifest-to-AndroidManifest.xml permission emission is named explicitly as an assertable emission, never a transpilation, since no application logic crosses that particular seam
+file active-designing/20260717-014522_native-activity-shim-and-slc-packaging.md the design brief naming the decision, the architecture, and TUBE0.5
+file work-in-progress/ROADMAP.md new align-pass paragraph names the decision and the new rung
+file work-in-progress/TASKS.md new checked item records the decision in the same shape as the day's other landed items
+file expanding-prompts/20260716-142818_glow-application-framework-and-publishing.md TUBE0.5 added to the canonical TUBE ladder table; TUBE7's own gate marked closed against the now-verified HAWM3
+recommend keep-going — no shim code, JNI glue, or APK build tooling exists yet; the next real step is writing the fifty-line shim and its JNI call, gated on nothing further since both TUBE0 and HAWM3 are already closed
