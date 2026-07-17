@@ -30,7 +30,7 @@ const assert = std.debug.assert;
 const caps = @import("capabilities.rye");
 const tm = @import("tube_manifest.rye");
 
-const tube_manifest_android_permission_version = "20260717.021500";
+const tube_manifest_android_permission_version = "20260717.161448";
 
 /// One row of the closed resource -> Android permission table. `right`
 /// is the exact bit the manifest's own DeclaredCapability must carry
@@ -51,6 +51,8 @@ const permission_table = [_]PermissionRow{
     .{ .resource = "network", .right = caps.right_net, .permission = "android.permission.INTERNET" },
     .{ .resource = "camera", .right = caps.right_device, .permission = "android.permission.CAMERA" },
     .{ .resource = "microphone", .right = caps.right_device, .permission = "android.permission.RECORD_AUDIO" },
+    // GrapheneOS Sensors permission toggle (public name OTHER_SENSORS); pairs with Sensors Grant.
+    .{ .resource = "sensors", .right = caps.right_device, .permission = "android.permission.OTHER_SENSORS" },
     .{ .resource = "location", .right = caps.right_read, .permission = "android.permission.ACCESS_FINE_LOCATION" },
     .{ .resource = "storage", .right = caps.right_read, .permission = "android.permission.READ_EXTERNAL_STORAGE" },
     .{ .resource = "storage", .right = caps.right_write, .permission = "android.permission.WRITE_EXTERNAL_STORAGE" },

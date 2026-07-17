@@ -19,6 +19,8 @@
 //!      each row in the closed table is checked independently.
 //!   4. A too-small output buffer is refused BufferTooSmall rather than
 //!      silently truncating a permission line.
+//!   5. A manifest declaring "sensors" with right_device emits OTHER_SENSORS
+//!      — GrapheneOS Sensors permission toggle (public permission name).
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -27,7 +29,7 @@ const caps = @import("capabilities.rye");
 const tm = @import("tube_manifest.rye");
 const perm = @import("tube_manifest_android_permission.rye");
 
-const witness_version = "20260717.021500";
+const witness_version = "20260717.161448";
 
 fn run_selftest() !u8 {
     // Claim 1: a real, recognized resource emits exactly one line.
@@ -73,6 +75,17 @@ fn run_selftest() !u8 {
         if (err != perm.EmitError.BufferTooSmall) return err;
     }
     print("tube0.5: a too-small output buffer is refused BufferTooSmall -- GREEN unwelcome path.\n", .{});
+
+    // Claim 5: sensors + right_device → GrapheneOS OTHER_SENSORS.
+    var declared_sensors = [_]tm.DeclaredCapability{
+        tm.DeclaredCapability.init("sensors", caps.right_device),
+    };
+    const sensors_manifest = try tm.build("sensors-app", "0.1.0", &declared_sensors, 32);
+    const sensors_written = try perm.render_permission_lines(&sensors_manifest, &out_buf);
+    const sensors_lines = out_buf[0..sensors_written];
+    assert(std.mem.indexOf(u8, sensors_lines, "android.permission.OTHER_SENSORS") != null);
+    assert(std.mem.count(u8, sensors_lines, "uses-permission") == 1);
+    print("tube0.5: sensors capability emits exactly one OTHER_SENSORS permission line -- GREEN sensors path.\n", .{});
 
     print("tube0.5: version {s}\n", .{witness_version});
     print("GREEN: TUBE0.5 emission -- a validated manifest's declared capabilities become exactly their matching AndroidManifest.xml permission lines, nothing inferred, nothing silently dropped past a full buffer.\n", .{});
