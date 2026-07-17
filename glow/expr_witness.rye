@@ -8,7 +8,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const expr = @import("expr.rye");
 
-const witness_version = "20260717.164748";
+const witness_version = "20260717.171300";
 
 fn run_selftest(_: std.process.Init) !u8 {
     {
@@ -51,17 +51,26 @@ fn run_selftest(_: std.process.Init) !u8 {
         assert(std.mem.eql(u8, p.rest, "rest"));
         print("expr: (lent records) paren form -- GREEN\n", .{});
     }
+    {
+        const p = try expr.parse_prefix("(mix root x)  rest");
+        assert(p.expr.kind == .mix_of);
+        assert(std.mem.eql(u8, expr.face_slice(&p.expr), "root"));
+        assert(std.mem.eql(u8, expr.face2_slice(&p.expr), "x"));
+        assert(std.mem.eql(u8, p.rest, "rest"));
+        assert(expr.mix_demo_result() == 6);
+        print("expr: (mix root x) paren form -- GREEN\n", .{});
+    }
     if (expr.parse_whole("42  leftover")) |_| {
         assert(false);
     } else |err| {
         assert(err == expr.ParseError.MalformedExpr);
         print("expr: parse_whole refuses leftover -- GREEN\n", .{});
     }
-    if (expr.parse_prefix("(mix root x)")) |_| {
+    if (expr.parse_prefix("(jam root)")) |_| {
         assert(false);
     } else |err| {
         assert(err == expr.ParseError.ExprNotYetLowered);
-        print("expr: parenthesized form refused ExprNotYetLowered -- GREEN\n", .{});
+        print("expr: other parenthesized form refused ExprNotYetLowered -- GREEN\n", .{});
     }
     if (expr.zig_type_for_mold("@ux")) |_| {
         assert(false);
@@ -76,7 +85,7 @@ fn run_selftest(_: std.process.Init) !u8 {
         print("expr: named mold refused NamedMoldNotYetLowered -- GREEN\n", .{});
     }
 
-    print("GREEN: shared nest-expression parser — decimal · ^- @uN · face · (lent …); other parens later.\n", .{});
+    print("GREEN: shared nest-expression parser — decimal · ^- @uN · face · (lent …) · (mix …); other parens later.\n", .{});
     _ = witness_version;
     return 0;
 }

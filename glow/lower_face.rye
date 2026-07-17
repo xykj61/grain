@@ -2,9 +2,10 @@
 //!
 //! Per active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md:
 //! `=/` is typed let. This hop lowers `next-root=@u32` and bare `tick`, trailing
-//! decimal literals (default 7), nested `^-  @uN  <decimal>`, and `(lent <face>)`
-//! — length of a demo subject, through `expr.rye`. Other parenthesized forms
-//! still refuse. Named molds still refuse.
+//! decimal literals (default 7), nested `^-  @uN  <decimal>`, `(lent <face>)`
+//! — length of a demo subject — and `(mix <face> <face>)` — bitwise XOR of
+//! two demo atoms, through `expr.rye`. Other parenthesized forms still refuse.
+//! Named molds still refuse.
 
 const std = @import("std");
 const rf = @import("rune_face.rye");
@@ -23,7 +24,7 @@ pub const LowerError = rf.ParseError || expr.ParseError || error{
 
 pub const face_default_value: u32 = 7;
 
-const ValueKind = enum { literal, cast_literal, lent_of };
+const ValueKind = enum { literal, cast_literal, lent_of, mix_of };
 
 const BoundValue = struct {
     kind: ValueKind,
@@ -32,6 +33,8 @@ const BoundValue = struct {
     cast_mold_len: usize = 0,
     subject: [rf.max_name_len]u8 = [_]u8{0} ** rf.max_name_len,
     subject_len: usize = 0,
+    subject2: [rf.max_name_len]u8 = [_]u8{0} ** rf.max_name_len,
+    subject2_len: usize = 0,
 };
 
 fn cast_mold_slice(b: *const BoundValue) []const u8 {
@@ -40,6 +43,10 @@ fn cast_mold_slice(b: *const BoundValue) []const u8 {
 
 fn subject_slice(b: *const BoundValue) []const u8 {
     return b.subject[0..b.subject_len];
+}
+
+fn subject2_slice(b: *const BoundValue) []const u8 {
+    return b.subject2[0..b.subject2_len];
 }
 
 fn zig_safe_ident(face: []const u8, out: *[rf.max_name_len]u8) LowerError!usize {
@@ -102,7 +109,7 @@ fn map_expr_err(err: expr.ParseError) LowerError {
     };
 }
 
-/// Trailing value after the face clause: default, decimal, nested `^-`, or `(lent …)`.
+/// Trailing value after the face clause: default, decimal, nested `^-`, `(lent …)`, or `(mix …)`.
 fn bound_value(line: []const u8, face: []const u8, mold: []const u8) LowerError!BoundValue {
     var clause_buf: [rf.max_name_len * 2 + 1]u8 = undefined;
     const clause = try clause_text(face, mold, &clause_buf);
@@ -123,6 +130,14 @@ fn bound_value(line: []const u8, face: []const u8, mold: []const u8) LowerError!
             const sub = expr.face_slice(&e);
             var bound: BoundValue = .{ .kind = .lent_of, .subject_len = sub.len };
             @memcpy(bound.subject[0..sub.len], sub);
+            break :blk bound;
+        },
+        .mix_of => blk: {
+            const left = expr.face_slice(&e);
+            const right = expr.face2_slice(&e);
+            var bound: BoundValue = .{ .kind = .mix_of, .subject_len = left.len, .subject2_len = right.len };
+            @memcpy(bound.subject[0..left.len], left);
+            @memcpy(bound.subject2[0..right.len], right);
             break :blk bound;
         },
     };
@@ -300,6 +315,85 @@ fn emit_cast_u64(
     return @intCast(written.len);
 }
 
+/// `(mix <left> <right>)` under a face — bind demo atoms XOR (Hoon +mix).
+fn emit_mix(
+    glow_label: []const u8,
+    face_mold: []const u8,
+    zig_face: []const u8,
+    left: []const u8,
+    right: []const u8,
+    zig_ty: []const u8,
+    welcome: bool,
+    out: []u8,
+) LowerError!u32 {
+    var zig_left_buf: [rf.max_name_len]u8 = undefined;
+    const left_len = try zig_safe_ident(left, &zig_left_buf);
+    const zig_left = zig_left_buf[0..left_len];
+    var zig_right_buf: [rf.max_name_len]u8 = undefined;
+    const right_len = try zig_safe_ident(right, &zig_right_buf);
+    const zig_right = zig_right_buf[0..right_len];
+    const result = expr.mix_demo_result();
+    const expect: u32 = if (welcome) result else result +% 1;
+    const typed = face_mold.len != 0;
+    if (typed) {
+        const written = std.fmt.bufPrint(out,
+            \\const std = @import("std");
+            \\
+            \\/// Lowered from Glow `=/  {s}={s}  (mix {s} {s})` — face over XOR.
+            \\pub fn main(_: std.process.Init) !u8 {{
+            \\    const {s}: u32 = {d};
+            \\    const {s}: u32 = {d};
+            \\    const {s}: {s} = {s} ^ {s};
+            \\    return if ({s} == {d}) 0 else 1;
+            \\}}
+            \\
+        , .{
+            glow_label,
+            face_mold,
+            left,
+            right,
+            zig_left,
+            expr.mix_demo_left,
+            zig_right,
+            expr.mix_demo_right,
+            zig_face,
+            zig_ty,
+            zig_left,
+            zig_right,
+            zig_face,
+            expect,
+        }) catch return error.Overflow;
+        return @intCast(written.len);
+    }
+    const written = std.fmt.bufPrint(out,
+        \\const std = @import("std");
+        \\
+        \\/// Lowered from Glow `=/  {s}  (mix {s} {s})` — face over XOR.
+        \\pub fn main(_: std.process.Init) !u8 {{
+        \\    const {s}: u32 = {d};
+        \\    const {s}: u32 = {d};
+        \\    const {s}: {s} = {s} ^ {s};
+        \\    return if ({s} == {d}) 0 else 1;
+        \\}}
+        \\
+    , .{
+        glow_label,
+        left,
+        right,
+        zig_left,
+        expr.mix_demo_left,
+        zig_right,
+        expr.mix_demo_right,
+        zig_face,
+        zig_ty,
+        zig_left,
+        zig_right,
+        zig_face,
+        expect,
+    }) catch return error.Overflow;
+    return @intCast(written.len);
+}
+
 /// `(lent <subject>)` under a face — bind the subject's demo `.len`.
 fn emit_lent(
     glow_label: []const u8,
@@ -377,6 +471,10 @@ fn lower_line(line: []const u8, welcome: bool, out: []u8) LowerError!u32 {
         .lent_of => {
             const zig_ty = try zig_type_for_mold(mold);
             return emit_lent(face, mold, zig_face, subject_slice(&bound), zig_ty, welcome, out);
+        },
+        .mix_of => {
+            const zig_ty = try zig_type_for_mold(mold);
+            return emit_mix(face, mold, zig_face, subject_slice(&bound), subject2_slice(&bound), zig_ty, welcome, out);
         },
     }
 }

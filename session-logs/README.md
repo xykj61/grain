@@ -8,6 +8,9 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260717.171524` — [Glow (mix …) under =/ — second paren nest](20260717-171524_glow-mix-paren-under-face.bron) — XOR desk face-mix; jam still refuses
+- `20260717.171232` — [Glow lent seating brief for mix](20260717-171232_glow-lent-mix-seating-brief.bron) — lent code path mapped; mix = Hoon XOR next
+- `20260717.171116` — [Check-in after B1 Pixel look](20260717-171116_check-in-after-b1-pixel.bron) — lean mix paren or B2 glass layout
 - `20260717.171015` — [Sala B1 Pixel look GREEN](20260717-171015_sala-b1-pixel-look-green.bron) — Keaton confirmed title + B1 line on device
 - `20260717.170610` — [Pixel look — Sala B1 glass lines](20260717-170610_pixel-look-sala-b1-glass.bron) — title + row 11 carriage; host install
 - `20260717.170335` — [Sala B1 glass carriage send](20260717-170335_sala-b1-glass-carriage-send.bron) — welcome path paints row 11; pack GREEN

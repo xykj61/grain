@@ -54,6 +54,11 @@ assert facelent.ok else "glow_run face-lent.glow failed"
 assert facelent.out contains "GREEN" else "glow_run face-lent.glow not GREEN"
 assert facelent.out contains "face-lent.glow" else "glow_run face-lent claim missing path"
 
+let facemix = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/face-mix.glow"]
+assert facemix.ok else "glow_run face-mix.glow failed"
+assert facemix.out contains "GREEN" else "glow_run face-mix.glow not GREEN"
+assert facemix.out contains "face-mix.glow" else "glow_run face-mix claim missing path"
+
 let iflent = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/if-lent.glow"]
 assert iflent.ok else "glow_run if-lent.glow failed"
 assert iflent.out contains "GREEN" else "glow_run if-lent.glow not GREEN"
