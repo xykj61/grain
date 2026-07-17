@@ -1,7 +1,7 @@
-# tube1_glass_gate_witness.rish — glass covers declared Storage · Contact.
+# tube1_glass_gate_witness.rish — glass covers scopes + Network · Sensors.
 #
-# Proves the NativeActivity TUBE1 door declares photos + contacts and that
-# matching Resource Scopes cover them (weaker/revoked scopes refuse).
+# Proves the NativeActivity TUBE1 door declares photos + contacts + network
+# + sensors and that covering scopes / live toggles are load-bearing.
 # Device-free. See linengrow/tube1_glass_gate.rye.
 #
 #   rishi/bin/rishi run tools/tube1_glass_gate_witness.rish
@@ -19,5 +19,7 @@ assert selftest.out contains "demo admit opens" else "missing demo admit claim"
 assert selftest.out contains "cover path" else "missing covering scopes claim"
 assert selftest.out contains "Storage Scope weaker" else "missing storage-cover refuse"
 assert selftest.out contains "revoked Contact Scope" else "missing contact-cover refuse"
+assert selftest.out contains "denied Network Grant" else "missing network-cover refuse"
+assert selftest.out contains "revoked Sensors Grant" else "missing sensors-cover refuse"
 
-say "GREEN: TUBE1 glass — Storage + Contact Scopes cover declared resources."
+say "GREEN: TUBE1 glass — Storage + Contact + Network + Sensors cover declared resources."

@@ -1,9 +1,9 @@
 # The Work-in-Progress Stack
 
 **Language:** EN
-**Last updated:** 2026-07-11 (Open Asks civic sight · workbench index)
+**Last updated:** 2026-07-17 (standing voice Quin)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Voice:** Rio 3
+**Voice:** Quin
 **Status:** Foundation
 
 ---

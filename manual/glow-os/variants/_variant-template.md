@@ -7,7 +7,7 @@
 ---
 
 **Navigation:**
-[Hub](../README.md) · [Overview](../overview.md) · [The Four Variants](README.md)
+[Hub](../README.md) · [Overview](../overview.md) · [The Five Variants](README.md)
 · Siblings: `reya.md` · `riyo.md` · `trey.md` · `triz.md`
 
 ---
@@ -39,4 +39,4 @@
 ---
 
 **Navigation:**
-[Hub](../README.md) · [Overview](../overview.md) · [The Four Variants](README.md)
+[Hub](../README.md) · [Overview](../overview.md) · [The Five Variants](README.md)

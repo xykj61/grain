@@ -3,8 +3,8 @@
 **Language:** EN
 **Version:** `20260716.110152` (Glow warm-aura date atom — chronological, later-is-larger)
 **Style:** Radiant (see `context/RADIANT_STYLE.md`)
-**By:** Riyo, in the radiant voice, with **Keaton Dunsford** as coauthor
-**Status:** Living guide — last touched `20260716.110152` (Step 7 gains the Linux multi-identity note, mirroring the macOS one; `tools/generate_jail_local_keys_linux.rish` is the real generator behind it)
+**By:** Quin, in the radiant voice, with **Keaton Dunsford** as coauthor (an earlier living draft season under Riyo's name; standing voice is Quin again from `20260716.040000`)
+**Status:** Living guide — last touched `20260717.161957` (voice line synced to Quin; Step 7 Linux multi-identity note remains)
 
 ---
 
