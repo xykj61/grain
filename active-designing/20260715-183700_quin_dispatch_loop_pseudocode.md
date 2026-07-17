@@ -3,7 +3,7 @@
 **Language:** EN
 **Version:** `20260715.183700` (Pacific)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Status:** Design exploration only — no vane code, no new type landed anywhere. Register: design/research (Two Rooms — proposal, not a bound claim). Every signature quoted below is real, read directly from the four voices' own `_core.rye` files; every Quin-side type is proposed, unbuilt.
+**Status:** Vision register (Two Rooms) — a design exploration only, no vane code, no new type landed anywhere; a proposal, not a bound claim. Every signature quoted below is real, read directly from the four voices' own `_core.rye` files; every Quin-side type is proposed, unbuilt.
 
 ---
 

@@ -41,8 +41,10 @@ fn run_selftest() !u8 {
     // Claim 1: two independent replays agree bit-for-bit.
     const r1 = try sala.replay(log[0..len], &actor_hex, actor_kp.public_key);
     const r2 = try sala.replay(log[0..len], &actor_hex, actor_kp.public_key);
-    assert(r1.events == 3 and r2.events == 3);
-    assert(r1.last_seq == 3 and r2.last_seq == 3);
+    assert(r1.events == 3);
+    assert(r2.events == 3);
+    assert(r1.last_seq == 3);
+    assert(r2.last_seq == 3);
     assert(std.mem.eql(u8, &r1.root, &r2.root));
     print("sala-b0: replayed twice -- 3 events, last seq 3, byte-identical session root -- GREEN determinism path\n", .{});
     print("sala-b0: session root -- {x}\n", .{r1.root});
