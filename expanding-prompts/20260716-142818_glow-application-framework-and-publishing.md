@@ -57,7 +57,7 @@ The mapping, strongest matches first. Every Glow entry is an existing named modu
 | **Per-app network permission** | **Comlink** (sealed datagram) + Pool capability | Moderate | Network access as a named capability an agent must be granted, carried over Comlink's sealed wire rather than an ambient socket |
 | **The enclosure the app runs in** | **Pond** (isolation policy) + **Puddle** (ephemeral sandboxed containers) | Moderate | Under the new Glow vane model Pond narrowed to pure isolation policy; Puddle is the ephemeral-container role — together the "profile" boundary GrapheneOS draws with users/work profiles |
 
-**The honest gap, named plainly:** GrapheneOS's deepest security guarantees are **hardware-rooted** — Titan M2 / hardware memory tagging (MTE), verified boot anchored in a locked bootloader, exploit mitigations in a hardened kernel and libc. Glow's capability model is a strong *software* parallel to the sandbox, but the hardware root of trust is exactly what HAWM2 (a real GrapheneOS build) and HAWM3 (a physical Pixel) exist to reach, and what no emulated rung or software capability table can substitute for. Glow-on-GrapheneOS composes the two: Glow's capability-secured userland *on top of* GrapheneOS's hardware-rooted base, each doing what only it can.
+**The honest gap, named plainly:** GrapheneOS's deepest security guarantees are **hardware-rooted** — Titan M2 / hardware memory tagging (MTE), verified boot anchored in a locked bootloader, exploit mitigations in a hardened kernel and libc. Glow's capability model is a strong *software* parallel to the sandbox — the hardware root of trust is exactly what HAWM2 (a real GrapheneOS build) and HAWM3 (a physical Pixel) exist to reach, and what no emulated rung or software capability table can substitute for. Glow-on-GrapheneOS composes the two: Glow's capability-secured userland *on top of* GrapheneOS's hardware-rooted base, each doing what only it can.
 
 ---
 
@@ -104,7 +104,7 @@ Each rung provable before the next; every rung gated on Pool's own agent runtime
 | **TUBE6** | **On real GrapheneOS (HAWM2)** | The whole TUBE stack running as a Glow userland on a real GrapheneOS build — Glow's capability sandbox atop GrapheneOS's hardware-rooted one | HAWM2 (horizon, needs Linux/KVM + full AOSP build) · TUBE5 |
 | **TUBE7** | **On a physical Pixel (HAWM3)** | The publishing mechanism live on real Titan-class silicon — the two roots of trust (hardware + capability) composed on the actual target device | HAWM3 (horizon, needs a physical Pixel) · TUBE6 |
 
-**The honest register:** TUBE0 is buildable today as a pure value witness (no agent runtime, no device). TUBE1–TUBE5 are gated on Pool's agent runtime — real design, real composition of already-landed modules, but not startable until Glow runs an agent. TUBE6–TUBE7 join this lane to the HAWM ladder's own hardware rungs. Nothing here claims to be GrapheneOS's security; it claims to be Glow's own capability-secured application framework, which *composes with* GrapheneOS's hardware root rather than replacing it.
+**The honest register:** TUBE0 is buildable today as a pure value witness (no agent runtime, no device). TUBE1–TUBE5 are gated on Pool's agent runtime — real design, real composition of already-landed modules, yet not startable until Glow runs an agent. TUBE6–TUBE7 join this lane to the HAWM ladder's own hardware rungs. Nothing here claims to be GrapheneOS's security; it claims to be Glow's own capability-secured application framework, which *composes with* GrapheneOS's hardware root rather than replacing it.
 
 ---
 
@@ -112,7 +112,7 @@ Each rung provable before the next; every rung gated on Pool's own agent runtime
 
 **Recommendation: build TUBE0 next — the app manifest mold — as the single reachable, buildable, device-free first step of the application framework.** It needs no emulator, no agent runtime, no physical Pixel; it is a pure value witness in the exact shape this tree already builds well, and it turns the whole TUBE ladder from horizon into a lane with a green first rung. It also directly exercises the rune design's own mold surface, connecting the language-design thread to the application-framework thread concretely rather than only in prose.
 
-The Sala broadcaster app-layer client (the other open door from HAWM1's close) is a real and worthy lap too, but it is a *specific app*; TUBE0 is the *framework every app rides*, including that one — so the framework earns priority. HAWM2 (real GrapheneOS build) and the physical-Pixel purchase remain genuinely gated on a Linux/KVM full-AOSP build and on hardware not yet in hand, and stay horizon by honest necessity, not by choice.
+The Sala broadcaster app-layer client (the other open door from HAWM1's close) is a real and worthy lap too, yet it is a *specific app*; TUBE0 is the *framework every app rides*, including that one — so the framework earns priority. HAWM2 (real GrapheneOS build) and the physical-Pixel purchase remain genuinely gated on a Linux/KVM full-AOSP build and on hardware not yet in hand, and stay horizon by honest necessity, not by choice.
 
 ## What This Prompt Does Not Do
 

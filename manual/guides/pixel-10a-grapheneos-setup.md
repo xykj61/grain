@@ -54,7 +54,7 @@ Power the phone off completely, then hold the **volume-down** button while power
 
 ## Step 4 — Unlock the Bootloader (Wipes the Phone)
 
-The installer page has an "Unlock bootloader" button. Press it, then **confirm on the phone itself** — use a volume button to move the on-device selection to the unlock/accept option, then the power button to confirm. This wipes everything currently on the device; since you just bought it used, there's nothing here you'd want to keep anyway, but it's worth naming plainly.
+The installer page has an "Unlock bootloader" button. Press it, then **confirm on the phone itself** — use a volume button to move the on-device selection to the unlock/accept option, then the power button to confirm. This wipes everything currently on the device; since you just bought it used, there's nothing here you'd want to keep anyway — worth naming plainly all the same.
 
 ## Step 5 — Download and Flash the GrapheneOS Release
 
