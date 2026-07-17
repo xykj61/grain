@@ -1,0 +1,76 @@
+//! linengrow/tube4_market_rail_witness.rye — proves TUBE4 market acquire.
+//!
+//!   rye build linengrow/tube4_market_rail_witness.rye -femit-bin=linengrow/bin/tube4_market_rail_witness
+//!   linengrow/bin/tube4_market_rail_witness
+//!
+//! Four claims:
+//!   1. Welcome: TUBE2 publish → Exchange list → Neth pay → settle → TUBE3 fetch.
+//!   2. Zero price refused (BadPrice).
+//!   3. Listing digest mismatch against registry refused.
+//!   4. Double settle of the same listing receipt refused.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const gc = @import("granary_core.rye");
+const exchange = @import("exchange_listing.rye");
+const settle = @import("weave_settle_core.rye");
+const vfw = @import("vessel_fetch_wire.rye");
+const tube2 = @import("tube2_publish.rye");
+const tube4 = @import("tube4_market_rail.rye");
+
+const witness_version = "20260717.134300";
+
+fn run_selftest() !u8 {
+    var store = gc.ResinStore.empty();
+    var reg = gc.Registry.empty();
+    var glog: [gc.max_log_bytes]u8 = undefined;
+    var glog_len: u32 = 0;
+    var arrived: [vfw.max_resin_bytes]u8 = undefined;
+
+    // Claim 1: welcome acquire.
+    const acquired = try tube4.run_demo_acquire(&store, &reg, &glog, &glog_len, &arrived);
+    var check: [gc.digest_hex_len]u8 = undefined;
+    gc.digest_hex_of(arrived[0..acquired.fetched_len], &check);
+    assert(std.mem.eql(u8, &check, &acquired.digest));
+    assert(acquired.neth_root[0] != 0 or acquired.neth_root[1] != 0);
+    print("tube4: acquired {s} at {s} mala — Neth settled, resin fetched\n", .{ tube2.demo_path, tube4.demo_price });
+    print("tube4: welcome acquire path -- GREEN\n", .{});
+
+    // Claim 2: zero price refused.
+    var listing: [exchange.max_listing_len]u8 = undefined;
+    if (exchange.sign_listing(exchange.exchange_version, tube2.demo_path, &acquired.digest, "0", &listing)) |_| {
+        return error.ZeroPriceAccepted;
+    } else |err| {
+        if (err != exchange.ListingError.BadPrice) return err;
+    }
+    print("tube4: zero price refused -- GREEN unwelcome path\n", .{});
+
+    // Claim 3: digest mismatch against registry.
+    const wrong = try gc.put_resin(&store, "not the listed app\n");
+    const bad_n = try exchange.sign_listing(exchange.exchange_version, tube2.demo_path, &wrong, tube4.demo_price, &listing);
+    if (exchange.verify_against_registry(listing[0..bad_n], &reg)) |_| {
+        return error.MismatchAccepted;
+    } else |err| {
+        if (err != exchange.ListingError.DigestMismatch) return err;
+    }
+    print("tube4: listing digest mismatch refused -- GREEN unwelcome path\n", .{});
+
+    // Claim 4: double settle refused.
+    var settled = settle.SettledSet.empty();
+    try settle.record_settle(&settled, &acquired.listing_receipt);
+    if (settle.record_settle(&settled, &acquired.listing_receipt)) |_| {
+        return error.DoubleSettleAccepted;
+    } else |err| {
+        if (err != settle.SettleError.DoubleSettle) return err;
+    }
+    print("tube4: double settle refused -- GREEN unwelcome path\n", .{});
+
+    print("tube4: version {s}\n", .{witness_version});
+    print("GREEN: TUBE4 -- market rail prices, Neth-settles, and unlocks a published app resin.\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}
