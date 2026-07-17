@@ -101,7 +101,11 @@ pub const ManifestError = error{
     CapabilityResourceEmpty,
     CapabilityRightsMaskZero,
     IterationBoundZero,
+    Overflow,
 };
+
+/// Maximum bytes for a canonical tube-manifest-v1 resin body.
+pub const max_canonical_bytes: u32 = 512;
 
 // Invariant: name_len <= max_name_len; version_len <= max_name_len;
 // cap_count <= max_declared_caps when active; iteration_bound_max >= 1.
@@ -187,4 +191,42 @@ pub fn build(
     assert(m.cap_count <= max_declared_caps);
     assert(m.iteration_bound_max >= 1);
     return m;
+}
+
+fn append_line(out: []u8, off: *u32, line: []const u8) ManifestError!void {
+    if (off.* + line.len + 1 > out.len) return error.Overflow;
+    tally_copy.copy_disjoint(u8, out[off.*..][0..line.len], line);
+    off.* += @intCast(line.len);
+    out[off.*] = '\n';
+    off.* += 1;
+}
+
+/// Canonical resin bytes for a well-formed Manifest — deterministic fold of
+/// name, version, iteration bound, and every declared capability. Used by
+/// TUBE2 publish so Granary stores the mold, not a free-form bag.
+pub fn write_canonical(m: *const Manifest, out: []u8) ManifestError!u32 {
+    assert(m.cap_count >= 1);
+    assert(m.cap_count <= max_declared_caps);
+    var off: u32 = 0;
+    try append_line(out, &off, "format tube-manifest-v1");
+
+    var line: [128]u8 = undefined;
+    const name_line = std.fmt.bufPrint(&line, "name {s}", .{m.name_slice()}) catch return error.Overflow;
+    try append_line(out, &off, name_line);
+    const ver_line = std.fmt.bufPrint(&line, "version {s}", .{m.version_slice()}) catch return error.Overflow;
+    try append_line(out, &off, ver_line);
+    const bound_line = std.fmt.bufPrint(&line, "iteration_bound {d}", .{m.iteration_bound_max}) catch return error.Overflow;
+    try append_line(out, &off, bound_line);
+
+    var i: u32 = 0;
+    while (i < m.cap_count) : (i += 1) {
+        const dc = &m.caps[i];
+        const cap_line = std.fmt.bufPrint(
+            &line,
+            "cap {s} {d}",
+            .{ dc.resource_slice(), dc.rights_mask },
+        ) catch return error.Overflow;
+        try append_line(out, &off, cap_line);
+    }
+    return off;
 }
