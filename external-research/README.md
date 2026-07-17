@@ -1,7 +1,7 @@
 # The External-Research Stack
 
 **Language:** EN
-**Last updated:** 2026-07-12 (Seam study 4 `054521` — Taler giving lane; four studies complete)
+**Last updated:** 2026-07-17 (OpenVM pairing-hint soundness lessons `144200`)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Foundation
 
@@ -45,6 +45,7 @@ Dated explorations carry `YYYYMMDD-HHMMSS_short-slug.md`; living documents (`REA
 
 | Stamp | Note | Meaning |
 |-------|------|---------|
+| `20260717.144200` | [OpenVM pairing hint — soundness lessons for Glow](20260717-144200_openvm-pairing-hint-soundness-lessons.md) | Today's ZK Security / OpenVM CVE: incomplete subfield check on a prover hint; composition, hint boundaries, cheap membership asserts, AI-triage humility; Zig-native Sigma pin affirmed |
 | `20260715.182500` | [The Glowphone — firmware freedom, the two-body strategy, the honest hardware fork](20260715-182500_glowphone-firmware-freedom-two-body-strategy.md) | No single phone maximizes firmware freedom + hardened security + open AI (July 2026); the strategy is a capable client + the AMD Strix Halo home forge, joined by Comlink. **Refinement `191500`:** the Glowphone is a fully-capable *repairable* modern phone (Fairphone-class), not the ascetic Mantrapod; right-to-repair is a hard requirement met, firmware-freedom scopes to "free where the silicon allows" since state-of-the-art modem/camera blobs cannot be free |
 | `20260715.181500` | [Sala as a broadcast surface — a live session is a fold over a signed, ordered log](20260715-181500_sala-broadcast-live-session-fold.md) | Asciinema × WebSockets × Twitch × Sala × Mycelium × Lattice × Pool: a livestream is Weave/Mantra carried in order by Comlink and folded by Sala; B0–B3 ladder, gated behind Pool P0 |
 | `20260715.172000` | [Pool as the keystone revival — the userspace host, with Realidream as its Landscape](20260715-172000_pool-keystone-revival-realidream-landscape.md) | Prioritizes Gall's role revived as Pool (the host that makes the green spine inhabitable) with Realidream as the Landscape-parallel viewer; first laps P0–R2 named, gated on Keaton's word |
