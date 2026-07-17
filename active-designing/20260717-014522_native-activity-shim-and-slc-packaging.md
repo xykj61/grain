@@ -80,7 +80,7 @@ TUBE0.5's host-side half is now checkable. What landed:
 
 ## What remains open
 
-- **Activity finish / surface** — onCreate runs the fold and writes `sala_root.txt` (proven on HAWM0 and Pixel); finishing the activity via the real `ANativeActivity` layout and a first UI surface stay later slices.
+- **First UI surface** — onCreate runs the fold, writes `sala_root.txt`, and calls `ANativeActivity_finish` (no blank hang). A drawn NativeActivity / Skate surface stays a later slice.
 - **APK signing and distribution for publish** stay TUBE2's and TUBE3's own territory (signed weave over Granary, content-addressed resins over Comlink). The debug keystore under `tools/.cache/tube05/` is host-local, never for publish.
 
 ## Gratitude

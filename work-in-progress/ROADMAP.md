@@ -166,7 +166,9 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **TUBE0.5 on-device install GREEN, `20260717.122010`** — Keaton ran from a plain host terminal: HAWM0 booted KVM-accelerated (`sys.boot_completed=1` in 1s, `model=sdk_gphone64_x86_64 android=16 abi=x86_64 qemu=1`), then `tools/tube05_install_proof_onpath_host.rish` installed `org.glow.app.sala_broadcaster`, launched NativeActivity, and `run-as` read `files/sala_root.txt` = `99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe` — the same HAWM1 demo root. **TUBE0.5's host-side pack and on-emulator install halves are both checkable GREEN.**
 
-**TUBE0.5 on Pixel 10a GREEN, `20260717.123226`** — same install proof on the physical GrapheneOS Pixel (`66041JEA306288`, `product=stallion model=Pixel_10a`): adb authorized after the on-device Allow dialog, APK installed, NativeActivity launched, `sala_root.txt` again `99b3ae96…e4c5fe`. **TUBE0.5 is checkable end to end — pack, HAWM0, and real Titan-class hardware.** NativeActivity surface/finish stays a later slice; debug keystore stays host-local.
+**TUBE0.5 on Pixel 10a GREEN, `20260717.123226`** — same install proof on the physical GrapheneOS Pixel (`66041JEA306288`, `product=stallion model=Pixel_10a`): adb authorized after the on-device Allow dialog, APK installed, NativeActivity launched, `sala_root.txt` again `99b3ae96…e4c5fe`. **TUBE0.5 is checkable end to end — pack, HAWM0, and real Titan-class hardware.**
+
+**NativeActivity finish after fold, `20260717.124029`** — onCreate writes `sala_root.txt` then calls `ANativeActivity_finish` (`-landroid`). Pixel re-proof GREEN — the proof file remains readable; the blank window no longer hangs. A drawn surface stays later; debug keystore stays host-local.
 
 ## The Visual Track — Realidream (horizon lane, ladder already named)
 
