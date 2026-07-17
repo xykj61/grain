@@ -8,7 +8,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const lower = @import("lower_alias.rye");
 
-const witness_version = "20260717.152649";
+const witness_version = "20260717.154037";
 
 fn run_selftest(init: std.process.Init) !u8 {
     const io = init.io;
@@ -16,37 +16,52 @@ fn run_selftest(init: std.process.Init) !u8 {
     const cwd = std.Io.Dir.cwd();
     var buf: [2048]u8 = undefined;
 
-    const n1 = try lower.lower_line_welcome("=*  records", &buf);
+    const n1 = try lower.lower_line_welcome("=*  records  stock", &buf);
     const rye1 = buf[0..n1];
-    assert(std.mem.indexOf(u8, rye1, "const records: *u32 = &source") != null);
+    assert(std.mem.indexOf(u8, rye1, "var stock: u32 = 7") != null);
+    assert(std.mem.indexOf(u8, rye1, "const records: *u32 = &stock") != null);
     assert(std.mem.indexOf(u8, rye1, "records.* == 7") != null);
-    print("lower: \"=*  records\" welcome emit aliases source -- GREEN\n", .{});
+    print("lower: \"=*  records  stock\" welcome aliases named source -- GREEN\n", .{});
 
-    const n2 = try lower.lower_line_unwelcome("=*  records", &buf);
+    const n2 = try lower.lower_line_unwelcome("=*  records  stock", &buf);
     const rye2 = buf[0..n2];
     assert(std.mem.indexOf(u8, rye2, "records.* == 8") != null);
-    print("lower: \"=*  records\" unwelcome emit expects mismatch -- GREEN\n", .{});
+    print("lower: \"=*  records  stock\" unwelcome expects mismatch -- GREEN\n", .{});
 
-    const n3 = try lower.lower_line_welcome("=*  next-root", &buf);
+    const n3 = try lower.lower_line_welcome("=*  records", &buf);
     const rye3 = buf[0..n3];
-    assert(std.mem.indexOf(u8, rye3, "const next_root: *u32 = &source") != null);
-    print("lower: \"=*  next-root\" maps to Zig face next_root -- GREEN\n", .{});
+    assert(std.mem.indexOf(u8, rye3, "var source: u32 = 7") != null);
+    assert(std.mem.indexOf(u8, rye3, "const records: *u32 = &source") != null);
+    print("lower: \"=*  records\" defaults source face to source -- GREEN\n", .{});
+
+    const n4 = try lower.lower_line_welcome("=*  cur  i.records.cur", &buf);
+    const rye4 = buf[0..n4];
+    assert(std.mem.indexOf(u8, rye4, "var i_records_cur: u32 = 7") != null);
+    assert(std.mem.indexOf(u8, rye4, "const cur: *u32 = &i_records_cur") != null);
+    print("lower: \"=*  cur  i.records.cur\" maps to Zig face i_records_cur -- GREEN\n", .{});
+
+    if (lower.lower_line_welcome("=*  records  (head-of list)", &buf)) |_| {
+        return error.SourceLoweredTooSoon;
+    } else |err| {
+        if (err != lower.LowerError.SourceNotYetLowered) return err;
+    }
+    print("lower: parenthesized source refused SourceNotYetLowered -- GREEN\n", .{});
 
     try cwd.createDirPath(io, "glow/.cache");
     const welcome_path = "glow/.cache/alias_records_welcome.rye";
     const unwelcome_path = "glow/.cache/alias_records_unwelcome.rye";
-    const n4 = try lower.lower_line_welcome("=*  records", &buf);
-    try cwd.writeFile(io, .{ .sub_path = welcome_path, .data = buf[0..n4] });
-    const n5 = try lower.lower_line_unwelcome("=*  records", &buf);
-    try cwd.writeFile(io, .{ .sub_path = unwelcome_path, .data = buf[0..n5] });
+    const n5 = try lower.lower_line_welcome("=*  records  stock", &buf);
+    try cwd.writeFile(io, .{ .sub_path = welcome_path, .data = buf[0..n5] });
+    const n6 = try lower.lower_line_unwelcome("=*  records  stock", &buf);
+    try cwd.writeFile(io, .{ .sub_path = unwelcome_path, .data = buf[0..n6] });
     print("lower: wrote alias welcome and unwelcome .rye under glow/.cache/ -- GREEN\n", .{});
 
     const gen_src = try cwd.readFileAlloc(io, "glow/gen/alias-records.glow", a, .limited(4096));
-    assert(std.mem.indexOf(u8, gen_src, "=*  records") != null);
-    print("lower: glow/gen/alias-records.glow carries \"=*  records\" -- GREEN\n", .{});
+    assert(std.mem.indexOf(u8, gen_src, "=*  records  stock") != null);
+    print("lower: glow/gen/alias-records.glow carries named source stock -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: `=*` lowers alias faces to ordinary Rye — eighth head emit complete.\n", .{});
+    print("GREEN: `=*` lowers alias faces with named sources to ordinary Rye — = category bodies complete.\n", .{});
     return 0;
 }
 

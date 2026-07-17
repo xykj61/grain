@@ -23,7 +23,8 @@ let selftest = run ["sh" "-c" "${bin} 2>&1"]
 assert selftest.ok else "lower_trap_witness exited non-zero"
 assert selftest.out contains "GREEN" else "lower_trap_witness not GREEN"
 assert selftest.out contains "bound 10" else "lower_trap_witness missing welcome-emit claim"
-assert selftest.out contains "records.len" else "lower_trap_witness missing lent emit claim"
+assert selftest.out contains "shrinks under records.len" else "lower_trap_witness missing shrinking lent claim"
+assert selftest.out contains "refuses to shrink" else "lower_trap_witness missing non-shrink unwelcome claim"
 assert selftest.out contains "ship_list" else "lower_trap_witness missing hyphen map claim"
 assert selftest.out contains "bound-tick.glow" else "lower_trap_witness missing gen desk claim"
 assert selftest.out contains "lent-tick.glow" else "lower_trap_witness missing lent gen desk claim"
@@ -50,4 +51,4 @@ assert build_lent_unwelcome.ok else "lent unwelcome .rye build failed"
 let run_lent_unwelcome = run ["sh" "-c" "${lent_unwelcome_bin}; echo EXIT:$?"]
 assert run_lent_unwelcome.out contains "EXIT:1" else "lent unwelcome binary did not exit 1"
 
-say "GREEN: Glow `|-` generator hop — literal and lent lower to Rye; welcome 0 / unwelcome 1."
+say "GREEN: Glow `|-` generator hop — literal and shrinking lent fold; welcome 0 / unwelcome 1."

@@ -17,8 +17,9 @@ assert selftest.ok else "lower_switch_witness exited non-zero"
 assert selftest.out contains "GREEN" else "lower_switch_witness not GREEN"
 assert selftest.out contains "mint arm" else "lower_switch_witness missing mint-arm claim"
 assert selftest.out contains "send arm" else "lower_switch_witness missing send-arm claim"
-assert selftest.out contains "SubjectNotYetLowered" else "lower_switch_witness missing refuse claim"
-assert selftest.out contains "switch-kind.glow" else "lower_switch_witness missing gen desk claim"
+assert selftest.out contains "minted/sent" else "lower_switch_witness missing default-arms claim"
+assert selftest.out contains "MalformedArms" else "lower_switch_witness missing partial-arms refuse"
+assert selftest.out contains "named mint/send arms" else "lower_switch_witness missing gen desk claim"
 
 let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
 assert build_welcome.ok else "switch welcome .rye build failed"
@@ -31,4 +32,4 @@ assert build_unwelcome.ok else "switch unwelcome .rye build failed"
 let run_unwelcome = run ["sh" "-c" "${unwelcome_bin}; echo EXIT:$?"]
 assert run_unwelcome.out contains "EXIT:1" else "switch unwelcome binary did not exit 1"
 
-say "GREEN: Glow `?-` switch hop — kind.cur-record lowers to Rye; welcome 0 / unwelcome 1."
+say "GREEN: Glow `?-` switch hop — named mint/send arms; welcome 0 / unwelcome 1."

@@ -1,10 +1,10 @@
 //! glow/lower_conditional.rye — lower a parsed `?:` test to runnable `.rye`.
 //!
 //! Per active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md:
-//! `?:` is if/then/else. This hop lowers two small test shapes already named
-//! by the front-half parser: the brief's `(gth tick 32)` and a bare face
-//! `ready`. Then/else arms are fixed demo returns (0 / 1); a later lap will
-//! lower real arms.
+//! `?:` is if/then/else. This hop lowers `(gth tick 32)` and bare `ready`,
+//! and deepens then/else into named arm faces (optional trailing idents on
+//! the Glow line, or defaults). Arms hold demo values; the if-expression
+//! picks one. Real arm *expressions* stay a later lap.
 
 const std = @import("std");
 const rif = @import("rune_conditional.rye");
@@ -13,12 +13,20 @@ pub const LowerError = rif.ParseError || error{
     Overflow,
     EmptySource,
     TestNotYetLowered,
+    BadIdent,
+    MalformedArms,
 };
 
 pub const gth_welcome_tick: u32 = 40;
 pub const gth_unwelcome_tick: u32 = 10;
+pub const max_arm_len: u32 = 64;
 
 const TestKind = enum { gth_tick_32, ready_face };
+
+const ArmPair = struct {
+    then_face: []const u8,
+    else_face: []const u8,
+};
 
 fn classify_test(test_expr: []const u8) LowerError!TestKind {
     if (std.mem.eql(u8, test_expr, "(gth tick 32)")) return .gth_tick_32;
@@ -26,63 +34,118 @@ fn classify_test(test_expr: []const u8) LowerError!TestKind {
     return error.TestNotYetLowered;
 }
 
-fn emit_gth_program(tick: u32, out: []u8) LowerError!u32 {
+fn is_ident_char(c: u8) bool {
+    if (c >= 'a' and c <= 'z') return true;
+    if (c >= 'A' and c <= 'Z') return true;
+    if (c >= '0' and c <= '9') return true;
+    return c == '-' or c == '_';
+}
+
+fn zig_safe_ident(face: []const u8, out: *[max_arm_len]u8) LowerError!usize {
+    if (face.len == 0 or face.len > max_arm_len) return error.BadIdent;
+    var i: usize = 0;
+    while (i < face.len) : (i += 1) {
+        const c = face[i];
+        const mapped: u8 = if (c == '-') '_' else c;
+        if (i == 0) {
+            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or mapped == '_'))
+                return error.BadIdent;
+        } else {
+            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or (mapped >= '0' and mapped <= '9') or mapped == '_'))
+                return error.BadIdent;
+        }
+        out[i] = mapped;
+    }
+    return face.len;
+}
+
+/// After the test child, optional `then else` bare faces. Defaults when absent.
+fn arm_faces(line: []const u8, test_expr: []const u8) LowerError!ArmPair {
+    const idx = std.mem.indexOf(u8, line, test_expr) orelse return error.MalformedArms;
+    var rest = std.mem.trim(u8, line[idx + test_expr.len ..], " \t\r\n");
+    if (rest.len == 0) {
+        return .{ .then_face = "delivered", .else_face = "dropped" };
+    }
+    var end1: usize = 0;
+    while (end1 < rest.len and is_ident_char(rest[end1])) end1 += 1;
+    if (end1 == 0) return error.MalformedArms;
+    const then_face = rest[0..end1];
+    rest = std.mem.trimStart(u8, rest[end1..], " \t");
+    if (rest.len == 0) return error.MalformedArms;
+    var end2: usize = 0;
+    while (end2 < rest.len and is_ident_char(rest[end2])) end2 += 1;
+    if (end2 == 0) return error.MalformedArms;
+    const else_face = rest[0..end2];
+    rest = std.mem.trimStart(u8, rest[end2..], " \t");
+    if (rest.len != 0) return error.MalformedArms; // no third arm / expressions yet
+    if (then_face[0] >= '0' and then_face[0] <= '9') return error.BadIdent;
+    if (else_face[0] >= '0' and else_face[0] <= '9') return error.BadIdent;
+    return .{ .then_face = then_face, .else_face = else_face };
+}
+
+fn emit_gth_program(tick: u32, then_glow: []const u8, else_glow: []const u8, out: []u8) LowerError!u32 {
+    var then_buf: [max_arm_len]u8 = undefined;
+    var else_buf: [max_arm_len]u8 = undefined;
+    const then_n = try zig_safe_ident(then_glow, &then_buf);
+    const else_n = try zig_safe_ident(else_glow, &else_buf);
+    const then_z = then_buf[0..then_n];
+    const else_z = else_buf[0..else_n];
     const written = std.fmt.bufPrint(out,
         \\const std = @import("std");
         \\
-        \\/// Lowered from Glow `?:  (gth tick 32)` — if/then/else at the boundary.
+        \\/// Lowered from Glow `?:  (gth tick 32)  {s}  {s}` — named then/else arms.
         \\pub fn main(_: std.process.Init) !u8 {{
         \\    const tick: u32 = {d};
-        \\    if (tick > 32) {{
-        \\        return 0;
-        \\    }} else {{
-        \\        return 1;
-        \\    }}
+        \\    const {s}: u32 = 1;
+        \\    const {s}: u32 = 0;
+        \\    const result: u32 = if (tick > 32) {s} else {s};
+        \\    return if (result == {s}) 0 else 1;
         \\}}
         \\
-    , .{tick}) catch return error.Overflow;
+    , .{ then_glow, else_glow, tick, then_z, else_z, then_z, else_z, then_z }) catch return error.Overflow;
     return @intCast(written.len);
 }
 
-fn emit_ready_program(ready: bool, out: []u8) LowerError!u32 {
+fn emit_ready_program(ready: bool, then_glow: []const u8, else_glow: []const u8, out: []u8) LowerError!u32 {
+    var then_buf: [max_arm_len]u8 = undefined;
+    var else_buf: [max_arm_len]u8 = undefined;
+    const then_n = try zig_safe_ident(then_glow, &then_buf);
+    const else_n = try zig_safe_ident(else_glow, &else_buf);
+    const then_z = then_buf[0..then_n];
+    const else_z = else_buf[0..else_n];
     const ready_lit: []const u8 = if (ready) "true" else "false";
     const written = std.fmt.bufPrint(out,
         \\const std = @import("std");
         \\
-        \\/// Lowered from Glow `?:  ready` — bare-face if/then/else.
+        \\/// Lowered from Glow `?:  ready  {s}  {s}` — named then/else arms.
         \\pub fn main(_: std.process.Init) !u8 {{
         \\    const ready: bool = {s};
-        \\    if (ready) {{
-        \\        return 0;
-        \\    }} else {{
-        \\        return 1;
-        \\    }}
+        \\    const {s}: u32 = 1;
+        \\    const {s}: u32 = 0;
+        \\    const result: u32 = if (ready) {s} else {s};
+        \\    return if (result == {s}) 0 else 1;
         \\}}
         \\
-    , .{ready_lit}) catch return error.Overflow;
+    , .{ then_glow, else_glow, ready_lit, then_z, else_z, then_z, else_z, then_z }) catch return error.Overflow;
     return @intCast(written.len);
 }
 
-/// Parse one Glow `?:` line and emit a welcome-path program (then arm / exit 0).
-pub fn lower_line_welcome(line: []const u8, out: []u8) LowerError!u32 {
+fn lower_line(line: []const u8, welcome: bool, out: []u8) LowerError!u32 {
     const trimmed = std.mem.trim(u8, line, " \t\r\n");
     if (trimmed.len == 0) return error.EmptySource;
     const spec = try rif.parse(trimmed);
     const test_expr = rif.test_slice(&spec);
+    const arms = try arm_faces(trimmed, test_expr);
     return switch (try classify_test(test_expr)) {
-        .gth_tick_32 => emit_gth_program(gth_welcome_tick, out),
-        .ready_face => emit_ready_program(true, out),
+        .gth_tick_32 => emit_gth_program(if (welcome) gth_welcome_tick else gth_unwelcome_tick, arms.then_face, arms.else_face, out),
+        .ready_face => emit_ready_program(welcome, arms.then_face, arms.else_face, out),
     };
 }
 
-/// Parse one Glow `?:` line and emit an unwelcome-path program (else arm / exit 1).
+pub fn lower_line_welcome(line: []const u8, out: []u8) LowerError!u32 {
+    return lower_line(line, true, out);
+}
+
 pub fn lower_line_unwelcome(line: []const u8, out: []u8) LowerError!u32 {
-    const trimmed = std.mem.trim(u8, line, " \t\r\n");
-    if (trimmed.len == 0) return error.EmptySource;
-    const spec = try rif.parse(trimmed);
-    const test_expr = rif.test_slice(&spec);
-    return switch (try classify_test(test_expr)) {
-        .gth_tick_32 => emit_gth_program(gth_unwelcome_tick, out),
-        .ready_face => emit_ready_program(false, out),
-    };
+    return lower_line(line, false, out);
 }

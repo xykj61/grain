@@ -1,10 +1,10 @@
 //! glow/lower_face.rye — lower a parsed `=/` face binding to runnable `.rye`.
 //!
 //! Per active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md:
-//! `=/` is typed let. This hop lowers `next-root=@u32` (aura mold) and bare
-//! `tick` to a Zig `const` binding with a demo value. Named molds (e.g.
-//! `record`) refuse until a later lap. The bound value expression is not
-//! lowered yet — the emit supplies a demo initializer.
+//! `=/` is typed let. This hop lowers `next-root=@u32` and bare `tick`, and
+//! deepens the bound value to an optional trailing decimal literal on the
+//! Glow line (default 7 when absent). Parenthesized value expressions refuse
+//! until a later lap. Named molds still refuse.
 
 const std = @import("std");
 const rf = @import("rune_face.rye");
@@ -15,10 +15,11 @@ pub const LowerError = rf.ParseError || error{
     BadIdent,
     NamedMoldNotYetLowered,
     AuraNotYetLowered,
+    ValueNotYetLowered,
+    MalformedValue,
 };
 
-pub const face_welcome_u32: u32 = 7;
-pub const face_unwelcome_expect: u32 = 8;
+pub const face_default_value: u32 = 7;
 
 fn zig_safe_ident(face: []const u8, out: *[rf.max_name_len]u8) LowerError!usize {
     if (face.len == 0 or face.len > rf.max_name_len) return error.BadIdent;
@@ -39,61 +40,95 @@ fn zig_safe_ident(face: []const u8, out: *[rf.max_name_len]u8) LowerError!usize 
 }
 
 fn zig_type_for_mold(mold: []const u8) LowerError![]const u8 {
-    if (mold.len == 0) return "u32"; // bare face — implicit u32 demo
+    if (mold.len == 0) return "u32";
     if (mold[0] != '@') return error.NamedMoldNotYetLowered;
+    if (std.mem.eql(u8, mold, "@u8")) return "u8";
+    if (std.mem.eql(u8, mold, "@u16")) return "u16";
     if (std.mem.eql(u8, mold, "@u32")) return "u32";
+    if (std.mem.eql(u8, mold, "@u64")) return "u64";
     return error.AuraNotYetLowered;
 }
 
-fn lower_spec(spec: rf.FaceSpec, welcome: bool, out: []u8) LowerError!u32 {
+fn clause_text(face: []const u8, mold: []const u8, buf: *[rf.max_name_len * 2 + 1]u8) LowerError![]const u8 {
+    if (mold.len == 0) {
+        if (face.len > buf.len) return error.Overflow;
+        @memcpy(buf[0..face.len], face);
+        return buf[0..face.len];
+    }
+    if (face.len + 1 + mold.len > buf.len) return error.Overflow;
+    @memcpy(buf[0..face.len], face);
+    buf[face.len] = '=';
+    @memcpy(buf[face.len + 1 ..][0..mold.len], mold);
+    return buf[0 .. face.len + 1 + mold.len];
+}
+
+/// Trailing decimal after the face clause, or the default when absent.
+fn bound_value(line: []const u8, face: []const u8, mold: []const u8) LowerError!u32 {
+    var clause_buf: [rf.max_name_len * 2 + 1]u8 = undefined;
+    const clause = try clause_text(face, mold, &clause_buf);
+    const idx = std.mem.indexOf(u8, line, clause) orelse return error.MalformedValue;
+    var rest = std.mem.trim(u8, line[idx + clause.len ..], " \t\r\n");
+    if (rest.len == 0) return face_default_value;
+    if (rest[0] == '(') return error.ValueNotYetLowered;
+    var end: usize = 0;
+    while (end < rest.len and rest[end] >= '0' and rest[end] <= '9') end += 1;
+    if (end == 0) return error.MalformedValue;
+    if (end < rest.len) {
+        const after = std.mem.trimStart(u8, rest[end..], " \t");
+        if (after.len != 0) return error.MalformedValue;
+    }
+    return std.fmt.parseInt(u32, rest[0..end], 10) catch return error.Overflow;
+}
+
+fn emit_binding(glow_label: []const u8, zig_face: []const u8, zig_ty: []const u8, value: u32, expect: u32, typed: bool, mold: []const u8, out: []u8) LowerError!u32 {
+    if (typed) {
+        const written = std.fmt.bufPrint(out,
+            \\const std = @import("std");
+            \\
+            \\/// Lowered from Glow `=/  {s}={s}  {d}` — typed face with bound value.
+            \\pub fn main(_: std.process.Init) !u8 {{
+            \\    const {s}: {s} = {d};
+            \\    return if ({s} == {d}) 0 else 1;
+            \\}}
+            \\
+        , .{ glow_label, mold, value, zig_face, zig_ty, value, zig_face, expect }) catch return error.Overflow;
+        return @intCast(written.len);
+    }
+    const written = std.fmt.bufPrint(out,
+        \\const std = @import("std");
+        \\
+        \\/// Lowered from Glow `=/  {s}  {d}` — bare face with bound value.
+        \\pub fn main(_: std.process.Init) !u8 {{
+        \\    const {s}: {s} = {d};
+        \\    return if ({s} == {d}) 0 else 1;
+        \\}}
+        \\
+    , .{ glow_label, value, zig_face, zig_ty, value, zig_face, expect }) catch return error.Overflow;
+    return @intCast(written.len);
+}
+
+fn lower_line(line: []const u8, welcome: bool, out: []u8) LowerError!u32 {
+    const trimmed = std.mem.trim(u8, line, " \t\r\n");
+    if (trimmed.len == 0) return error.EmptySource;
+    const spec = try rf.parse(trimmed);
     const face = rf.face_slice(&spec);
     const mold = rf.mold_slice(&spec);
     var zig_face_buf: [rf.max_name_len]u8 = undefined;
     const face_len = try zig_safe_ident(face, &zig_face_buf);
     const zig_face = zig_face_buf[0..face_len];
     const zig_ty = try zig_type_for_mold(mold);
-    const value: u32 = face_welcome_u32;
-    const expect: u32 = if (welcome) face_welcome_u32 else face_unwelcome_expect;
-
+    const value = try bound_value(trimmed, face, mold);
+    const expect: u32 = if (welcome) value else value +% 1;
     if (mold.len == 0) {
-        const written = std.fmt.bufPrint(out,
-            \\const std = @import("std");
-            \\
-            \\/// Lowered from Glow `=/  {s}` — bare face binding with a demo value.
-            \\pub fn main(_: std.process.Init) !u8 {{
-            \\    const {s}: {s} = {d};
-            \\    return if ({s} == {d}) 0 else 1;
-            \\}}
-            \\
-        , .{ face, zig_face, zig_ty, value, zig_face, expect }) catch return error.Overflow;
-        return @intCast(written.len);
+        return emit_binding(face, zig_face, zig_ty, value, expect, false, "", out);
     }
-
-    const written = std.fmt.bufPrint(out,
-        \\const std = @import("std");
-        \\
-        \\/// Lowered from Glow `=/  {s}={s}` — typed face binding with a demo value.
-        \\pub fn main(_: std.process.Init) !u8 {{
-        \\    const {s}: {s} = {d};
-        \\    return if ({s} == {d}) 0 else 1;
-        \\}}
-        \\
-    , .{ face, mold, zig_face, zig_ty, value, zig_face, expect }) catch return error.Overflow;
-    return @intCast(written.len);
+    return emit_binding(face, zig_face, zig_ty, value, expect, true, mold, out);
 }
 
-/// Parse one Glow `=/` line and emit a welcome-path program (binding matches).
 pub fn lower_line_welcome(line: []const u8, out: []u8) LowerError!u32 {
-    const trimmed = std.mem.trim(u8, line, " \t\r\n");
-    if (trimmed.len == 0) return error.EmptySource;
-    const spec = try rf.parse(trimmed);
-    return lower_spec(spec, true, out);
+    return lower_line(line, true, out);
 }
 
-/// Parse one Glow `=/` line and emit an unwelcome-path program (expect mismatch).
 pub fn lower_line_unwelcome(line: []const u8, out: []u8) LowerError!u32 {
-    const trimmed = std.mem.trim(u8, line, " \t\r\n");
-    if (trimmed.len == 0) return error.EmptySource;
-    const spec = try rf.parse(trimmed);
-    return lower_spec(spec, false, out);
+    return lower_line(line, false, out);
 }

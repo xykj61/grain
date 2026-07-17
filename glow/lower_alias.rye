@@ -1,10 +1,9 @@
 //! glow/lower_alias.rye — lower a parsed `=*` alias to runnable `.rye`.
 //!
 //! Per active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md:
-//! `=*` is alias, no copy — the last of the three binding siblings. This hop
-//! lowers a face to a Zig pointer at a demo source value (no copy of the
-//! payload). The source wing is not lowered yet; the emit supplies a demo
-//! `source` the alias points at.
+//! `=*` is alias, no copy. This hop lowers a face to a Zig pointer at a named
+//! source (optional trailing wing/ident, default `source`), initialized to a
+//! demo value. Parenthesized sources refuse until a later lap.
 
 const std = @import("std");
 const ra = @import("rune_alias.rye");
@@ -13,17 +12,19 @@ pub const LowerError = ra.ParseError || error{
     Overflow,
     EmptySource,
     BadIdent,
+    SourceNotYetLowered,
+    MalformedSource,
 };
 
 pub const alias_demo_value: u32 = 7;
-pub const alias_unwelcome_expect: u32 = 8;
+pub const max_source_len: u32 = 96;
 
-fn zig_safe_ident(face: []const u8, out: *[ra.max_name_len]u8) LowerError!usize {
-    if (face.len == 0 or face.len > ra.max_name_len) return error.BadIdent;
+fn zig_safe_ident(face: []const u8, out: []u8) LowerError!usize {
+    if (face.len == 0 or face.len > out.len) return error.BadIdent;
     var i: usize = 0;
     while (i < face.len) : (i += 1) {
         const c = face[i];
-        const mapped: u8 = if (c == '-') '_' else c;
+        const mapped: u8 = if (c == '-' or c == '.') '_' else c;
         if (i == 0) {
             if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or mapped == '_'))
                 return error.BadIdent;
@@ -36,41 +37,71 @@ fn zig_safe_ident(face: []const u8, out: *[ra.max_name_len]u8) LowerError!usize 
     return face.len;
 }
 
-fn emit_alias_program(glow_face: []const u8, zig_face: []const u8, expect: u32, out: []u8) LowerError!u32 {
+fn is_wing_char(c: u8) bool {
+    if (c >= 'a' and c <= 'z') return true;
+    if (c >= 'A' and c <= 'Z') return true;
+    if (c >= '0' and c <= '9') return true;
+    return c == '.' or c == '-' or c == '_';
+}
+
+/// Optional trailing source wing after the alias face. Default: `source`.
+fn source_wing(line: []const u8, face: []const u8) LowerError![]const u8 {
+    const idx = std.mem.indexOf(u8, line, face) orelse return error.MalformedSource;
+    var rest = std.mem.trim(u8, line[idx + face.len ..], " \t\r\n");
+    if (rest.len == 0) return "source";
+    if (rest[0] == '(') return error.SourceNotYetLowered;
+    var end: usize = 0;
+    while (end < rest.len and is_wing_char(rest[end])) end += 1;
+    if (end == 0) return error.MalformedSource;
+    if (rest[0] >= '0' and rest[0] <= '9') return error.BadIdent;
+    const after = std.mem.trimStart(u8, rest[end..], " \t");
+    if (after.len != 0) return error.MalformedSource;
+    return rest[0..end];
+}
+
+fn emit_alias_program(
+    glow_face: []const u8,
+    zig_face: []const u8,
+    glow_source: []const u8,
+    zig_source: []const u8,
+    expect: u32,
+    out: []u8,
+) LowerError!u32 {
     const written = std.fmt.bufPrint(out,
         \\const std = @import("std");
         \\
-        \\/// Lowered from Glow `=*  {s}` — alias (no copy) at a demo source.
+        \\/// Lowered from Glow `=*  {s}  {s}` — alias (no copy) at a named source.
         \\pub fn main(_: std.process.Init) !u8 {{
-        \\    var source: u32 = {d};
-        \\    const {s}: *u32 = &source;
+        \\    var {s}: u32 = {d};
+        \\    const {s}: *u32 = &{s};
         \\    return if ({s}.* == {d}) 0 else 1;
         \\}}
         \\
-    , .{ glow_face, alias_demo_value, zig_face, zig_face, expect }) catch return error.Overflow;
+    , .{ glow_face, glow_source, zig_source, alias_demo_value, zig_face, zig_source, zig_face, expect }) catch return error.Overflow;
     return @intCast(written.len);
 }
 
-fn lower_spec(face: []const u8, welcome: bool, out: []u8) LowerError!u32 {
-    var zig_buf: [ra.max_name_len]u8 = undefined;
-    const n = try zig_safe_ident(face, &zig_buf);
-    const zig_face = zig_buf[0..n];
-    const expect: u32 = if (welcome) alias_demo_value else alias_unwelcome_expect;
-    return emit_alias_program(face, zig_face, expect, out);
+fn lower_line(line: []const u8, welcome: bool, out: []u8) LowerError!u32 {
+    const trimmed = std.mem.trim(u8, line, " \t\r\n");
+    if (trimmed.len == 0) return error.EmptySource;
+    const spec = try ra.parse(trimmed);
+    const face = ra.face_slice(&spec);
+    const source = try source_wing(trimmed, face);
+    var face_buf: [ra.max_name_len]u8 = undefined;
+    var source_buf: [max_source_len]u8 = undefined;
+    const face_n = try zig_safe_ident(face, &face_buf);
+    const source_n = try zig_safe_ident(source, &source_buf);
+    const zig_face = face_buf[0..face_n];
+    const zig_source = source_buf[0..source_n];
+    if (std.mem.eql(u8, zig_face, zig_source)) return error.MalformedSource;
+    const expect: u32 = if (welcome) alias_demo_value else alias_demo_value +% 1;
+    return emit_alias_program(face, zig_face, source, zig_source, expect, out);
 }
 
-/// Welcome: alias observes the demo source value.
 pub fn lower_line_welcome(line: []const u8, out: []u8) LowerError!u32 {
-    const trimmed = std.mem.trim(u8, line, " \t\r\n");
-    if (trimmed.len == 0) return error.EmptySource;
-    const spec = try ra.parse(trimmed);
-    return lower_spec(ra.face_slice(&spec), true, out);
+    return lower_line(line, true, out);
 }
 
-/// Unwelcome: expect mismatches the aliased source.
 pub fn lower_line_unwelcome(line: []const u8, out: []u8) LowerError!u32 {
-    const trimmed = std.mem.trim(u8, line, " \t\r\n");
-    if (trimmed.len == 0) return error.EmptySource;
-    const spec = try ra.parse(trimmed);
-    return lower_spec(ra.face_slice(&spec), false, out);
+    return lower_line(line, false, out);
 }

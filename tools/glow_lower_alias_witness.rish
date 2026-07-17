@@ -15,10 +15,12 @@ assert build.ok else "lower_alias_witness build failed"
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
 assert selftest.ok else "lower_alias_witness exited non-zero"
 assert selftest.out contains "GREEN" else "lower_alias_witness not GREEN"
-assert selftest.out contains "aliases source" else "lower_alias_witness missing alias claim"
-assert selftest.out contains "next_root" else "lower_alias_witness missing hyphen map claim"
-assert selftest.out contains "alias-records.glow" else "lower_alias_witness missing gen desk claim"
-assert selftest.out contains "eighth head" else "lower_alias_witness missing complete claim"
+assert selftest.out contains "named source" else "lower_alias_witness missing named-source claim"
+assert selftest.out contains "defaults source" else "lower_alias_witness missing default-source claim"
+assert selftest.out contains "i_records_cur" else "lower_alias_witness missing dotted-source claim"
+assert selftest.out contains "SourceNotYetLowered" else "lower_alias_witness missing source refuse"
+assert selftest.out contains "named source stock" else "lower_alias_witness missing gen desk claim"
+assert selftest.out contains "= category bodies complete" else "lower_alias_witness missing complete claim"
 
 let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
 assert build_welcome.ok else "alias welcome .rye build failed"
@@ -31,4 +33,4 @@ assert build_unwelcome.ok else "alias unwelcome .rye build failed"
 let run_unwelcome = run ["sh" "-c" "${unwelcome_bin}; echo EXIT:$?"]
 assert run_unwelcome.out contains "EXIT:1" else "alias unwelcome binary did not exit 1"
 
-say "GREEN: Glow `=*` alias hop — records lowers to Rye; welcome 0 / unwelcome 1; eight heads emit."
+say "GREEN: Glow `=*` alias hop — named source; welcome 0 / unwelcome 1; = category bodies complete."
