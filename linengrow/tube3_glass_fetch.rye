@@ -1,0 +1,28 @@
+//! linengrow/tube3_glass_fetch.rye — TUBE3 sealed-fetch line for NativeActivity glass.
+//!
+//! Runs the demo publish + Comlink-sealed fetch and returns a short Skate
+//! line. Device-free witness owns unwelcome seals; glass presents the welcome
+//! fetch door.
+
+const std = @import("std");
+const gc = @import("granary_core.rye");
+const vfw = @import("vessel_fetch_wire.rye");
+const tube3 = @import("tube3_resin_fetch.rye");
+
+pub const fetch_line_max: u32 = 48;
+
+/// Publish, sealed-fetch, write a status line. Returns false on any refuse.
+pub fn run_demo_fetch_line(out_line: *[fetch_line_max]u8, out_len: *u32) bool {
+    var store = gc.ResinStore.empty();
+    var reg = gc.Registry.empty();
+    var log: [gc.max_log_bytes]u8 = undefined;
+    var log_len: u32 = 0;
+    var bytes: [vfw.max_resin_bytes]u8 = undefined;
+
+    const fetched = tube3.run_demo_fetch(&store, &reg, &log, &log_len, &bytes) catch return false;
+    if (fetched.len == 0) return false;
+
+    const line = std.fmt.bufPrint(out_line, "TUBE3 sealed · fetch ok", .{}) catch return false;
+    out_len.* = @intCast(line.len);
+    return true;
+}
