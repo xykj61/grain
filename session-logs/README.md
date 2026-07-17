@@ -8,6 +8,7 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260717.175328` — [Glass keyboard · iOS-inspired · align · send](20260717-175328_glass-keyboard-ios-inspired-align-send.bron) — own Skate QWERTY; K0 next; IME/caret gaps named
 - `20260717.174805` — [Dexter D3 live KEY drain · kg](20260717-174805_dexter-d3-live-key-drain-kg.bron) — showSoftInput + KEY→Action; pack GREEN
 - `20260717.174434` — [Check-in after Dexter D2](20260717-174434_check-in-after-dexter-d2.bron) — lean soft-keyboard drain or rest
 - `20260717.174336` — [Dexter D2 Pixel look GREEN · kg](20260717-174336_dexter-d2-pixel-look-green-kg.bron) — Keaton confirmed title + DEXTER line on device

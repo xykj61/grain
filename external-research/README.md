@@ -45,6 +45,7 @@ Dated explorations carry `YYYYMMDD-HHMMSS_short-slug.md`; living documents (`REA
 
 | Stamp | Note | Meaning |
 |-------|------|---------|
+| `20260717.175220` | [Glow English QWERTY glass keyboard — iOS-inspired](20260717-175220_glow-english-qwerty-glass-keyboard-ios-inspired.md) | NativeActivity IME gap; own Skate OSK; public iOS layout notes; clean-room; K0–K5 |
 | `20260717.173848` | [Foundations archive, Bron compress, and LLM context](20260717-173848_foundations-archive-bron-compress-for-llm-context.md) | Decline bulk archive / Bron essays; extend docs compression with COMPASS + Bron compass card; token cost is habit |
 | `20260717.173427` | [Witness habitat, foundations fit, and onboarding gaps](20260717-173427_witness-habitat-foundations-fit-and-onboarding-gaps.md) | Happy zone → **witness habitat** for Acme docs; foundations followed in practice more than teaching; Cursor-and-the-compass tutorial named |
 | `20260717.173427` | [Markup and DSL fusion map — Glow · Brix · Bron](20260717-173427_markup-dsl-fusion-map-glow-brix-bron.md) | One pipeline: Scribble→Brix→Bron→Mantra→Sala; Glow under TAME; Udon/Sail/Zuse horizon; M1–M5 laps |

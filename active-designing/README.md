@@ -47,6 +47,7 @@ Dated briefs carry `YYYYMMDD-HHMMSS_short-slug.md` filenames; this README is the
 
 | Stamp | Brief | Meaning |
 |-------|-------|---------|
+| `20260717.175220` | [Dexter English QWERTY glass keyboard](20260717-175220_dexter-english-qwerty-glass-keyboard.md) | Own Skate OSK (iOS-inspired public layout); decline Graphene IME host; K0–K5; caret blink K3 |
 | `20260717.173848` | [Compass card and foundations compress](20260717-173848_compass-card-and-foundations-compress.md) | Decline archive/Bron-essay rewrite of foundations; seat `docs/COMPASS.md` + `compass_card.bron` for LLM cold-start; raw shelf stays |
 | `20260717.173427` | [Witness habitat and the markup pipeline](20260717-173427_witness-habitat-and-the-markup-pipeline.md) | Seats **witness habitat** as Acme face for happy-zone testing; names Cursor-and-the-compass tutorial gap; holds Scribble→Brix→Bron→Mantra→Sala fusion spine (Udon/Sail/Zuse horizon) |
 | `20260716.093000` | [What Glow and Rye share under the hood — the three-hop bridge](20260716-093000_glow-and-rye-what-shares-under-the-hood.md) | Reads Rye's own real bridge code first (a pure textual `.rye`→`.zig` import-path rewrite, no parser) rather than assuming it, then proposes Glow's own one new hop (`.glow`→`.rye`) stacked on top, unchanged below · names everything shared (toolchain, std, TAME bounds, runtime, targets, witnesses) versus Glow-owned (the rune parser, the lowering pass, auras, the Nock second backend) · a worked example shows the exact Rye a rune would generate, drawn from already-green code, not invented |
