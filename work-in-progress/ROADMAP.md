@@ -214,7 +214,13 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **ZETA3 blinking caret, `20260717.182826`** — `caret_visible_at` + live line glyph `|`; `timerfd` on the activity ALooper repaints every 500ms; witness + pack GREEN; installed on Pixel.
 
-**ZETA Pixel typing + blink look GREEN, `20260717.183345`** — Keaton: we can type. Honest gaps named: wrong keys on some taps (equal-width hit columns vs space-separated paint), tiny font, portrait letterboxing. **Horizon (check-in):** orientation via Sensors/firmware for true portrait/landscape layout; form-factor product names (desktop vs mobile) without colliding with Sala.
+**ZETA Pixel typing + blink look GREEN, `20260717.183345`** — Keaton: we can type. Honest gaps named: wrong keys on some taps (equal-width hit columns vs space-separated paint), tiny font, portrait letterboxing.
+
+**ZETA2b hit boxes + phone density, `20260717.183842`** — label-span `HitMap` matches centered paint; portrait Skate scale 2–5 with bottom-biased origin; device-free witness GREEN; pack GREEN; installed on Pixel for look.
+
+**ZETA2b / ZETA5 Pixel look GREEN, `20260717.184837`** — Keaton: typed and deleted; special-character tab switching worked; typed a `:)`. Keys land; glass keyboard is a real hand path.
+
+**Glow OS · Glow Desk · Glow Glass seated, `20260717.183622`** — Keaton: **Glow OS** unifies; **Glow Desk** = desktop; **Glow Glass** = mobile. Lexicon + silo [`../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md`](../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md). Orientation firmware stays check-in.
 
 **Witness habitat + markup pipeline, `20260717.173427`** — foundations fit study affirms single-strand · sameness · happy-zone practice in the suite; teaching path was the gap. Seats **witness habitat** as Acme synonym (foundations keep *happy zone*). Fusion map holds Scribble→Brix→Bron→Mantra→Sala with Glow under TAME; Udon/Sail/Zuse horizon. Tutorial scaffold [`../manual/tutorials/cursor-and-the-compass.md`](../manual/tutorials/cursor-and-the-compass.md); silo [`../active-designing/20260717-173427_witness-habitat-and-the-markup-pipeline.md`](../active-designing/20260717-173427_witness-habitat-and-the-markup-pipeline.md). Product next remains Dexter D2.
 

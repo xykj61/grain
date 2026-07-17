@@ -1,0 +1,12 @@
+format session-log-v1
+stamp 20260717.184523
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS amd64 (Framework 16 AMD) — Eastern
+title Remind APK install command
+prompt remind of command again please
+think Keaton wants the Pixel install/start command again.
+obs Restated adb install -r + force-stop + am start for sala-broadcaster.
+git_nib abc561dfae
+recommend keep-going Pixel look for ZETA2b when eyes are free
