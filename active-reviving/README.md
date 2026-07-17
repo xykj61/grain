@@ -1,7 +1,7 @@
 # Active Reviving — Re-Growing the Elders into Glow
 
 **Language:** EN
-**Version:** `20260715.213500` (Pacific)
+**Version:** `20260717.172832` (Eastern — Dexter / Dill / glass input revival indexed)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Status:** Living — the home for revivals in motion, sibling to `active-designing/`
@@ -49,6 +49,7 @@ These are already underway, now recognized as revivals rather than one-off desig
 | **Rhyz** | **Kumara** (the Ed25519 identity seam — `tally/kumara.rye` + 72 code files + green witnesses) | [`../external-research/20260714-044428_rhyz-r-vane-identity-reviving-kumara.md`](../external-research/20260714-044428_rhyz-r-vane-identity-reviving-kumara.md) | name confirmed (R-vane, rhizome); Azimuth-tier shape adopted; elder keeps its home + witnesses; living docs migrate on-touch, code migration deferred to proven-supersede |
 | **Sala** | **Realidream** (the unified viewer — its ~18 code/doc references + the roadmap Visual-Track lane) | [`../external-research/20260715-172000_pool-keystone-revival-realidream-landscape.md`](../external-research/20260715-172000_pool-keystone-revival-realidream-landscape.md) | name **confirmed** `20260715.175500` (Sanskrit *śālā*, "hall/abode"; Landscape parallel, runs under Pool); elder keeps its name, references, and lane; code migration deferred to proven-supersede |
 | **Pond** (precedent, already landed) | ai-jail | (the supersede pattern this whole concept generalizes) | superseded on word |
+| **Dexter-on-glass** | Dexter line editor (`pond/apps/window_input.rye`) + NativeActivity glass; **Dill stays an honest gap** (not nested, not renamed) | study [`../external-research/20260717-172832_dexter-dill-glow-grapheneos-input.md`](../external-research/20260717-172832_dexter-dill-glow-grapheneos-input.md); **owned decision** [`20260717-172832_dexter-beside-brushstroke-dill-stays-gap.md`](20260717-172832_dexter-beside-brushstroke-dill-stays-gap.md) | decision seated `20260717.172832` — Dexter aspect of Brushstroke/Sala; fuse with Glow GrapheneOS as D0–D2 when opened; Dill-parallel is a separate future revival |
 
 ## Why This Is the Right Shape
 
