@@ -1,15 +1,37 @@
 # Glow Form-Factor Names and Orientation
 
-*Horizon note from the ZETA Pixel typing look pass. Not seated product law — check-in before branding or firmware work.*
+*Form-factor product names seated by Keaton. Orientation via Sensors stays horizon.*
 
-**Stamp:** `20260717.183425` (Eastern)
-**Status:** Vision / check-in — Two Rooms
+**Stamp:** `20260717.183425` (Eastern) · names seated `20260717.183622`
+**Status:** Mixed — **names Checkable (seated)** · orientation Vision / check-in
 **Voice:** Quin
-**Related:** Pixel typing GREEN `20260717.183345` · Sensors Grant · Sala (= Landscape *viewer* parallel, not phone landscape)
+**Related:** Pixel typing GREEN `20260717.183345` · Sensors Grant · Sala (= Landscape *viewer* parallel, not phone landscape) · Lexicon
 
 ---
 
-## What landed in the look pass
+## Form-factor product names (seated)
+
+Keaton chose the macOS / iOS–shaped family (`20260717.183622`):
+
+| Form | Name | Role |
+|------|------|------|
+| Unification | **Glow OS** | The shared operating system both forms run |
+| Desk | **Glow Desk** | Desktop / workstation form |
+| Hand | **Glow Glass** | Mobile / handheld form (Skate · NativeActivity · ZETA) |
+
+**Glow** remains the language and family stem. **Glow OS** is the unification Desk and Glass share — not a third unrelated product.
+
+**Collision kept:** **Sala** is the Landscape *viewer* parallel (Urbit Landscape). Do not reuse “Landscape” or Sala for phone landscape orientation.
+
+## Orientation (horizon)
+
+**Ask later (check-in):** should Glow Glass expose accelerometer / orientation so layout can honor true portrait vs landscape after rotate?
+
+- Sensors Grant already names the Graphene sensors permission door
+- Auto-rotate as a Glow surface stays later
+- Do **not** open it ahead of ZETA2b hit-box/density work
+
+## What landed in the look pass (context)
 
 Typing and caret blink are GREEN on Pixel. Honest gaps (ZETA2b, Now):
 
@@ -18,30 +40,10 @@ Typing and caret blink are GREEN on Pixel. Honest gaps (ZETA2b, Now):
 
 Those fix with layout math and Skate scale — **no accelerometer required**.
 
-## Orientation (horizon)
-
-**Ask later (check-in):** should Glow expose accelerometer / orientation so glass can honor true portrait vs landscape after rotate?
-
-- Sensors Grant already names the Graphene sensors permission door
-- Auto-rotate as a Glow surface (rune or Pool agent mold → firmware) is a real later ladder
-- Do **not** open it ahead of ZETA2b hit-box/density work
-
-## Form-factor product names (horizon)
-
-**Ask later (check-in):** succinct desktop vs mobile labels in the macOS / iOS shape — same family stem, different form syllable.
-
-| Form | Candidate | Notes |
-|------|-----------|--------|
-| Umbrella | **Glow** | Language + OS family |
-| Desk | **GlowOS** or **Glow Desk** | Closest to “macOS” weight |
-| Hand | **Glow Glass** or **Glow Go** | Glass matches Skate/NativeActivity; Go is market-short |
-
-**Collision to keep:** **Sala** is already the Landscape *viewer* parallel (Urbit Landscape). Do not reuse “Landscape” or Sala for phone landscape orientation.
-
 ## Aligned next
 
-**ZETA2b** — hit boxes, phone density, portrait fill. Orientation and form-factor names wait on check-in.
+**ZETA2b** — hit boxes, phone density, portrait fill on **Glow Glass**. Orientation firmware waits on check-in.
 
 ---
 
-*May every name we market name a form we can hold, and every rotate wait until the keys land true.*
+*May Glow OS hold one soul in two forms — Desk for the table, Glass for the hand.*

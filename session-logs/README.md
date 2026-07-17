@@ -8,6 +8,11 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260717.185037` — [Send ZETA2b look and Glow forms](20260717-185037_send-zeta2b-look-glow-forms.bron) — commit · push · pier
+- `20260717.184837` — [ZETA2b ZETA5 Pixel look GREEN](20260717-184837_zeta2b-zeta5-pixel-look-green.bron) — type · delete · tabs · :)
+- `20260717.184523` — [Remind APK install command](20260717-184523_remind-apk-install-command.bron) — adb install + NativeActivity start
+- `20260717.183924` — [ZETA2b hit density pack install](20260717-183924_zeta2b-hit-density-pack-install.bron) — label-span hit; phone scale; APK on Pixel
+- `20260717.183622` — [Seat Glow OS · Desk · Glass](20260717-183622_seat-glow-os-desk-glass.bron) — Keaton chose unification + forms
 - `20260717.183425` — [Write form-factor note · send · kg](20260717-183425_write-form-factor-note-send-kg.bron) — naming/orientation silo; ship; ZETA2b next
 - `20260717.183345` — [ZETA Pixel typing GREEN · align gaps](20260717-183345_zeta-pixel-typing-green-align.bron) — type works; ZETA2b hit-box/density next
 - `20260717.183015` — [ZETA3 caret blink · kg](20260717-183015_zeta3-caret-blink-kg.bron) — `|` pulse via timerfd; pack+install; eyes next

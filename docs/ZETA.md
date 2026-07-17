@@ -24,9 +24,9 @@ Bare NativeActivity does not attach Graphene/AOSP soft IME reliably. **ZETA** is
 | **ZETA1** | Paint letters mode on Skate; hit boxes | same witness · pack | **GREEN** `20260717.180558` · Pixel look `20260717.180933` |
 | **ZETA2** | Tap → Dexter Action → live line | same witness · pack | **GREEN** `20260717.180933` · Pixel typing look `20260717.183345` |
 | **ZETA3** | Blinking caret on Dexter line | `dexter_glass_witness` · pack · timerfd | **GREEN** `20260717.182826` · Pixel blink look `20260717.183345` |
-| **ZETA2b** | Hit boxes match paint · phone density · portrait fill | ZETA2 | open — wrong keys / tiny / letterbox named |
+| **ZETA2b** | Hit boxes match paint · phone density · portrait fill | same witness · pack | **GREEN** `20260717.183842` · Pixel look `20260717.184837` |
 | **ZETA4** | Emoji mode SLC (bounded) | ZETA2 | open |
-| **ZETA5** | Pixel look — keys + caret + type by tap | ZETA2 · ZETA3 | open |
+| **ZETA5** | Pixel look — keys + caret + type by tap | ZETA2 · ZETA3 · ZETA2b | **GREEN** `20260717.184837` |
 
 ## Hands-on
 

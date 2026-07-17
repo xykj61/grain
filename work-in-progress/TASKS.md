@@ -235,7 +235,8 @@
 - [x] **ZETA1 Pixel look** `20260717.180933` — Keaton: QWERTY visible on glass; taps not live yet (expected before ZETA2).
 - [x] **ZETA2 — Tap → Dexter Action** `20260717.180933` — `hit_test` → `tap_result` → `LineEditor.apply_action`; mode pages + shift latch; device-free drain GREEN; pack GREEN. Pixel typing look next.
 - [x] **ZETA2 Pixel typing look** `20260717.183345` — Keaton: we can type; GREEN for typing. Honest gaps: some keys wrong (hit boxes ≠ painted label widths); font tiny; portrait letterboxing (grid centered, large empty top/bottom).
-- [ ] **ZETA hit-box / density / portrait layout** — map taps to painted key bounds (not equal column slices); raise Skate scale on phone; fill portrait height rather than tiny centered chrome.
+- [x] **ZETA2b — hit boxes match paint · phone density · portrait fill** `20260717.183842` — label-span `HitMap`; portrait Skate scale 2–5 + bottom-biased origin; witness GREEN; pack GREEN.
+- [x] **ZETA2b Pixel look** `20260717.184837` — Keaton: GREEN; typed and deleted; special-character tab switching worked; typed a `:)`.
 - [x] **TAME SLC realign — diagnosis + ledger** `20260717.181715` — [`../active-designing/20260717-181715_tame-slc-rye-audit-ledger.md`](../active-designing/20260717-181715_tame-slc-rye-audit-ledger.md); native advise false GREEN named; ROADMAP/ZETA tidy gate.
 - [x] **TAME advise truth** `20260717.181715` — parenthesize `== false` filters in `tame_style_scan_advise.rish`; selftest native=legacy counts via Rish `lines`/`split` (no Python).
 - [x] **TAME SLC Rye DoD in agent rules** `20260717.181715` — Cursor + Claude `tame-guidance` Definition of Done.
@@ -245,10 +246,10 @@
 - [x] **`kg` = keep going** `20260717.182418` — seated in Cursor + Claude collaboration rules; **send** remains commit·push·merge.
 - [x] **ZETA3 — Blinking caret on Dexter line** `20260717.182826` — `format_dexter_line_live` + `caret_visible_at`; NativeActivity `timerfd` on ALooper; witness + pack GREEN. Pixel blink look next.
 - [x] **ZETA3 Pixel blink look** `20260717.183345` — typing path GREEN with caret (same look pass as ZETA2).
-- [ ] **Horizon — Glow orientation (Sensors → layout)** — check-in; note [`../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md`](../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md).
-- [ ] **Horizon — Glow form-factor product names** — check-in; same note (GlowOS / Glow Desk · Glow Glass / Glow Go); Sala stays viewer parallel.
+- [x] **Glow OS · Glow Desk · Glow Glass** `20260717.183622` — Keaton seated form-factor names; Lexicon + [`../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md`](../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md). Sala stays Landscape *viewer* parallel.
+- [ ] **Horizon — Glow Glass orientation (Sensors → layout)** — check-in; same note.
 - [ ] **ZETA4 — Emoji mode SLC** — bounded frequent set + few tabs.
-- [ ] **ZETA5 — Pixel look keys + caret** — type by tap on device.
+- [x] **ZETA5 — Pixel look keys + caret + type by tap** `20260717.184837` — Keaton: typing, delete, mode tabs, smiley on glass (same look pass as ZETA2b).
 - [ ] **C2 thin TAME compressor** — optional `docs/TAME.md` only if cold-load pain is measured.
 - [ ] **C3 LEXICON core Bron card** — optional; Keaton's word.
 - [ ] **Sala B2 on glass** — audience + back-channel already GREEN device-free; needs a **layout word** (Skate now 14 rows) before paint.

@@ -65,6 +65,18 @@ pub fn label_for(key: layout.Key) []const u8 {
     };
 }
 
+/// Painted character width of one key (ZETA2b hit spans match this).
+pub fn label_char_len(key: layout.Key) u32 {
+    return switch (key) {
+        .char_ => 1,
+        else => blk: {
+            const lab = label_for(key);
+            assert(lab.len > 0);
+            break :blk @intCast(lab.len);
+        },
+    };
+}
+
 /// Write one page row as space-separated labels into out_line. Returns length.
 pub fn format_page_row(page: layout.Page, row_idx: u32, out_line: *[max_line_len]u8) u32 {
     if (page.rows.len == 0) return 0;
@@ -138,14 +150,25 @@ pub fn drain_layout_keys(editor: *dexter.LineEditor, keys: []const layout.Key) v
     assert(editor.len <= dexter.max_line_len);
 }
 
+pub const max_hit_keys: u32 = layout.max_keys_per_row * keyboard_rows;
+
+/// One key's painted rectangle in window pixels (ZETA2b).
+pub const HitKey = struct {
+    x0: i32 = 0,
+    x1: i32 = 0,
+    y0: i32 = 0,
+    y1: i32 = 0,
+    key: layout.Key = .{ .char_ = ' ' },
+};
+
 pub const HitMap = struct {
     origin_x: i32 = 0,
     origin_y: i32 = 0,
     width: i32 = 0,
     height: i32 = 0,
-    row_h: i32 = 0,
     ready: bool = false,
-    page: layout.Page = layout.letters_page,
+    count: u32 = 0,
+    keys: [max_hit_keys]HitKey = [_]HitKey{.{}} ** max_hit_keys,
 
     pub fn contains(self: HitMap, x: i32, y: i32) bool {
         if (!self.ready or self.width <= 0 or self.height <= 0) return false;
@@ -153,69 +176,114 @@ pub const HitMap = struct {
             y >= self.origin_y and y < self.origin_y + self.height;
     }
 
-    /// Hit-test a tap in window coordinates. Returns null when outside the keyboard.
+    /// Hit-test a tap in window coordinates. Returns null when outside a key.
     pub fn hit_test(self: HitMap, x: i32, y: i32) ?layout.Key {
         if (!self.contains(x, y)) return null;
-        // invariant: ready map has positive row height
-        assert(self.row_h > 0);
-        const local_y = y - self.origin_y;
-        const row_idx: u32 = @intCast(@divTrunc(local_y, self.row_h));
-        if (row_idx >= self.page.rows.len) return null;
-        const keys = self.page.rows[row_idx].keys;
-        if (keys.len == 0) return null;
-        const local_x = x - self.origin_x;
-        const key_w = @divTrunc(self.width, @as(i32, @intCast(keys.len)));
-        if (key_w <= 0) return null;
-        var col: i32 = @divTrunc(local_x, key_w);
-        if (col < 0) col = 0;
-        if (col >= keys.len) col = @intCast(keys.len - 1);
-        assert(col >= 0);
-        assert(col < keys.len);
-        return keys[@intCast(col)];
+        var i: u32 = 0;
+        while (i < self.count) : (i += 1) {
+            const hk = self.keys[i];
+            if (x >= hk.x0 and x < hk.x1 and y >= hk.y0 and y < hk.y1) {
+                return hk.key;
+            }
+        }
+        return null;
     }
 };
 
-/// Build a hit map for a keyboard painted at skate rows starting at `row0`.
+/// Build hit boxes matching centered, space-separated paint (ZETA2b).
 pub fn build_hit_map(
     grid_origin_x: i32,
     grid_origin_y: i32,
-    grid_w: i32,
+    cell_pw: i32,
     cell_ph: i32,
+    grid_cols: u32,
     row0: u32,
     page: layout.Page,
 ) HitMap {
-    // invariant: positive cell metrics for hit boxes
-    assert(grid_w > 0);
+    // invariant: positive cell metrics
+    assert(cell_pw > 0);
     assert(cell_ph > 0);
+    assert(grid_cols > 0);
     assert(page.rows.len == keyboard_rows);
-    return .{
+
+    var map: HitMap = .{
         .origin_x = grid_origin_x,
         .origin_y = grid_origin_y + @as(i32, @intCast(row0)) * cell_ph,
-        .width = grid_w,
+        .width = @as(i32, @intCast(grid_cols)) * cell_pw,
         .height = @as(i32, @intCast(keyboard_rows)) * cell_ph,
-        .row_h = cell_ph,
         .ready = true,
-        .page = page,
+        .count = 0,
     };
+
+    var line: [max_line_len]u8 = undefined;
+    var r: u32 = 0;
+    while (r < keyboard_rows) : (r += 1) {
+        const len = format_page_row(page, r, &line);
+        assert(len > 0);
+        assert(len <= grid_cols);
+        const start_col: u32 = (grid_cols - len) / 2;
+        const keys = page.rows[r].keys;
+        var col: u32 = start_col;
+        var ki: u32 = 0;
+        while (ki < keys.len) : (ki += 1) {
+            assert(map.count < max_hit_keys);
+            const lab_len = label_char_len(keys[ki]);
+            const span_end = if (ki + 1 < keys.len) col + lab_len + 1 else col + lab_len;
+            const y0 = map.origin_y + @as(i32, @intCast(r)) * cell_ph;
+            map.keys[map.count] = .{
+                .x0 = grid_origin_x + @as(i32, @intCast(col)) * cell_pw,
+                .x1 = grid_origin_x + @as(i32, @intCast(span_end)) * cell_pw,
+                .y0 = y0,
+                .y1 = y0 + cell_ph,
+                .key = keys[ki],
+            };
+            map.count += 1;
+            col = span_end;
+        }
+    }
+    assert(map.count > 0);
+    return map;
 }
 
-/// Device-free: center of top-left key on a synthetic map returns 'q'.
+/// Device-free: center of painted top-left 'q' (centered row) returns 'q'.
 pub fn letters_top_left_hit_is_q() bool {
-    const map = HitMap{
-        .origin_x = 0,
-        .origin_y = 0,
-        .width = 1000,
-        .height = 400,
-        .row_h = 100,
-        .ready = true,
-        .page = layout.letters_page,
-    };
-    // First key of 10: center x = 50.
-    const key = map.hit_test(50, 50) orelse return false;
+    const grid_cols: u32 = 40;
+    const cell_pw: i32 = 10;
+    const cell_ph: i32 = 20;
+    const map = build_hit_map(0, 0, cell_pw, cell_ph, grid_cols, 0, layout.letters_page);
+    // First letters row is centered; pin the middle of the 'q' span.
+    var line: [max_line_len]u8 = undefined;
+    const len = format_page_row(layout.letters_page, 0, &line);
+    const start = (grid_cols - len) / 2;
+    const qx = @as(i32, @intCast(start)) * cell_pw + @divTrunc(cell_pw, 2);
+    const key = map.hit_test(qx, @divTrunc(cell_ph, 2)) orelse return false;
     return switch (key) {
         .char_ => |ch| ch == 'q',
         else => false,
     };
+}
+
+/// Device-free ZETA2b: `spc` hit width matches painted label (+ gap), not equal columns.
+pub fn letters_space_span_matches_paint() bool {
+    const grid_cols: u32 = 40;
+    const cell_pw: i32 = 10;
+    const cell_ph: i32 = 20;
+    const map = build_hit_map(0, 0, cell_pw, cell_ph, grid_cols, 0, layout.letters_page);
+    const keys = layout.letters_page.rows[3].keys;
+    var i: u32 = 0;
+    while (i < map.count) : (i += 1) {
+        if (map.keys[i].key == .space) {
+            const lab = label_char_len(.space);
+            // Space is not last on row 3 — paint adds one gap cell after the label.
+            const expect_cells: i32 = @intCast(lab + 1);
+            const span = map.keys[i].x1 - map.keys[i].x0;
+            const equal = @divTrunc(map.width, @as(i32, @intCast(keys.len)));
+            // invariant: span follows paint, not equal-width slices
+            assert(span == expect_cells * cell_pw);
+            return span != equal;
+        }
+    }
+    return false;
 }
 
 comptime {
