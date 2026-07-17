@@ -8,6 +8,14 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260717.161357` — [send GrapheneOS product-edge stack then kg](20260717-161357_send-grapheneos-product-edge.bron) — Resource Scope · Network · Sensors · glass cover to pier
+- `20260717.161220` — [Glass covers declared Storage · Contact](20260717-161220_glass-covers-storage-contact.bron) — covering scopes load-bearing; pack path unchanged
+- `20260717.161013` — [Sensors Grant mold + gated TUBE1 admit](20260717-161013_sensors-grant-gated-admit.bron) — appears zeroed; gated door + glass live
+- `20260717.160828` — [Network Grant wired into TUBE1 admit](20260717-160828_tube1-network-grant-wire.bron) — networked door + glass; deny/revoke appear down
+- `20260717.160607` — [Network Grant — GrapheneOS Network toggle parallel](20260717-160607_network-grant-grapheneos-toggle.bron) — binary grant mold GREEN; TUBE1 wire next
+- `20260717.155846` — [Contact Scope + multi-scope admit GREEN](20260717-155846_contact-scope-multi-scope-admit.bron) — Resource Scope stacks Storage + Contact; pack GREEN
+- `20260717.155651` — [TUBE1 admits through Storage Scope](20260717-155651_tube1-storage-scope-wire.bron) — scoped door + glass; pack GREEN
+- `20260717.155520` — [Glow Storage Scope — GrapheneOS parallel in Glow](20260717-155520_glow-storage-scope-grapheneos-parallel.bron) — grant mold GREEN; GrapheneOS path stays Glow
 - `20260717.155335` — [send expression nests and Zig truth ruling then check-in](20260717-155335_send-expression-nests-and-truth.bron) — nests + truth to pier; next seam needs a ruling
 - `20260717.155111` — [?~ then/else arm expressions — decimal and cast](20260717-155111_null-arm-expressions.bron) — ?~ nests 1 0; ?-category arms closed at this width
 - `20260717.154943` — [seat Glow Zig ambient truth · Nock loobean seam-only](20260717-154943_glow-truth-zig-ambient-seated.bron) — ruling + witness + LEXICON; desk GREEN

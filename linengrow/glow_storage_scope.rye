@@ -1,0 +1,111 @@
+//! linengrow/glow_storage_scope.rye — Glow Resource Scope mold.
+//!
+//! One mold for GrapheneOS **Storage Scopes** and **Contact Scopes**
+//! (studied `20260716` in expanding-prompts/20260716-142818): an app sees
+//! only resources it was granted; access ends when the grant is revoked
+//! (uninstall-shaped). Clean-room Glow parallel — bounded (resource, rights)
+//! entries, checked at the boundary, never ambient trust. Resource names
+//! choose the domain (`photos` / `drafts` for storage, `contacts` /
+//! `contact-group-*` for contacts); the mold stays one.
+//!
+//! Reuses caravan/capabilities.rye's own right_* bits (same as TUBE0).
+//! Does not copy GrapheneOS code or docs; gratitude study only.
+//!
+//! Filename keeps `storage_scope` for accrete-never-break; living name is
+//! Resource Scope (Storage · Contact).
+
+const std = @import("std");
+const assert = std.debug.assert;
+const tally_copy = @import("tally_copy.rye");
+const caps = @import("capabilities.rye");
+
+pub const storage_scope_version = "20260717.155846";
+pub const resource_scope_version = storage_scope_version;
+
+pub const max_name_len: u32 = 48;
+pub const max_entries: u32 = 8;
+
+fn buf_len_u32(buf: []const u8) u32 {
+    assert(buf.len <= std.math.maxInt(u32));
+    return @intCast(buf.len);
+}
+
+pub const ScopeEntry = struct {
+    resource: [max_name_len]u8 = undefined,
+    resource_len: u32 = 0,
+    rights_mask: u8 = 0,
+
+    pub fn init(resource: []const u8, rights_mask: u8) ScopeEntry {
+        assert(resource.len <= max_name_len);
+        var e: ScopeEntry = .{};
+        e.resource_len = buf_len_u32(resource);
+        tally_copy.copy_disjoint(u8, e.resource[0..resource.len], resource);
+        e.rights_mask = rights_mask;
+        return e;
+    }
+
+    pub fn resource_slice(self: *const ScopeEntry) []const u8 {
+        const n: usize = @intCast(self.resource_len);
+        return self.resource[0..n];
+    }
+};
+
+pub const ScopeError = error{
+    NoEntries,
+    TooManyEntries,
+    ResourceEmpty,
+    RightsEmpty,
+    ResourceTooLong,
+};
+
+/// Bounded grant of storage-shaped resources. Revoked scopes allow nothing.
+pub const Scope = struct {
+    entries: [max_entries]ScopeEntry = undefined,
+    entry_count: u32 = 0,
+    revoked: bool = false,
+
+    pub fn build(entries: []const ScopeEntry) ScopeError!Scope {
+        if (entries.len == 0) return error.NoEntries;
+        if (entries.len > max_entries) return error.TooManyEntries;
+        var scope: Scope = .{};
+        var i: u32 = 0;
+        while (i < entries.len) : (i += 1) {
+            const e = entries[i];
+            if (e.resource_len == 0) return error.ResourceEmpty;
+            if (e.resource_len > max_name_len) return error.ResourceTooLong;
+            if (e.rights_mask == 0) return error.RightsEmpty;
+            scope.entries[i] = e;
+        }
+        scope.entry_count = @intCast(entries.len);
+        return scope;
+    }
+
+    /// True when `resource` is named in this scope (grant or not).
+    pub fn covers(self: *const Scope, resource: []const u8) bool {
+        if (self.revoked) return false;
+        if (resource.len == 0) return false;
+        var i: u32 = 0;
+        while (i < self.entry_count) : (i += 1) {
+            if (std.mem.eql(u8, self.entries[i].resource_slice(), resource)) return true;
+        }
+        return false;
+    }
+
+    /// True when this scope still grants `need` over `resource`.
+    pub fn allows(self: *const Scope, resource: []const u8, need: u8) bool {
+        if (self.revoked) return false;
+        if (resource.len == 0 or need == 0) return false;
+        var i: u32 = 0;
+        while (i < self.entry_count) : (i += 1) {
+            const e = self.entries[i];
+            if (!std.mem.eql(u8, e.resource_slice(), resource)) continue;
+            if (caps.Rights.contains(e.rights_mask, need)) return true;
+        }
+        return false;
+    }
+
+    /// Uninstall-shaped revoke: every later allows() is false.
+    pub fn revoke(self: *Scope) void {
+        self.revoked = true;
+    }
+};

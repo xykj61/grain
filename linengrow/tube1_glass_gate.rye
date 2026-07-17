@@ -1,22 +1,29 @@
 //! linengrow/tube1_glass_gate.rye — TUBE1 door for the NativeActivity present path.
 //!
-//! Builds the sala-broadcaster TUBE0 manifest (the three R2 state resources)
-//! and a matching Caravan grant, then runs admit_manifest. The glass path
-//! paints R2 only when this door opens — same claim as the device-free
-//! TUBE1 witness, exercised at onCreate.
+//! Builds the sala-broadcaster TUBE0 manifest: three R2 state resources plus
+//! `photos` (Storage Scope) and `contacts` (Contact Scope). Caravan grants
+//! match; Resource Scopes cover those declarations; Network and Sensors
+//! Grants stay live but unused (manifest omits `network` / `sensors`).
+//! APK permission emission stays on the separate TUBE0.5 path — glass does
+//! not emit Android permissions. Paints R2 only when this door opens.
 
 const caps = @import("capabilities.rye");
 const tube = @import("tube_manifest.rye");
+const scope_mod = @import("glow_storage_scope.rye");
+const net_mod = @import("glow_network_grant.rye");
+const sens_mod = @import("glow_sensors_grant.rye");
 const tube1 = @import("tube1_admission.rye");
 
 const rw: u8 = caps.right_read | caps.right_write;
 
-/// True when the demo app's manifest is admitted under a matching grant.
+/// True when admitted under grant + covering Storage · Contact Scopes + Network · Sensors Grants.
 pub fn run_demo_admit() bool {
     const declared = [_]tube.DeclaredCapability{
         tube.DeclaredCapability.init("state-ask", rw),
         tube.DeclaredCapability.init("state-receipt", rw),
         tube.DeclaredCapability.init("state-reputation", rw),
+        tube.DeclaredCapability.init("photos", caps.right_read),
+        tube.DeclaredCapability.init("contacts", caps.right_read),
     };
     const manifest = tube.build("sala-broadcaster", "0.1.0", &declared, 1024) catch return false;
 
@@ -25,6 +32,25 @@ pub fn run_demo_admit() bool {
     agent.grant(caps.Capability.init("state-ask", rw)) catch return false;
     agent.grant(caps.Capability.init("state-receipt", rw)) catch return false;
     agent.grant(caps.Capability.init("state-reputation", rw)) catch return false;
+    agent.grant(caps.Capability.init("photos", caps.right_read)) catch return false;
+    agent.grant(caps.Capability.init("contacts", caps.right_read)) catch return false;
 
-    return tube1.admit_manifest(&table, "sala-broadcaster", &manifest);
+    const storage = scope_mod.Scope.build(&[_]scope_mod.ScopeEntry{
+        scope_mod.ScopeEntry.init("photos", caps.right_read),
+    }) catch return false;
+    const contacts = scope_mod.Scope.build(&[_]scope_mod.ScopeEntry{
+        scope_mod.ScopeEntry.init("contacts", caps.right_read),
+    }) catch return false;
+    const scopes = [_]*const scope_mod.Scope{ &storage, &contacts };
+    const network = net_mod.NetworkGrant.grant();
+    const sensors = sens_mod.SensorsGrant.grant();
+
+    return tube1.admit_manifest_gated(
+        &table,
+        "sala-broadcaster",
+        &manifest,
+        scopes[0..],
+        &network,
+        &sensors,
+    );
 }

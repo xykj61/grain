@@ -1,0 +1,78 @@
+//! linengrow/glow_storage_scope_witness.rye — proves Glow Storage Scope.
+//!
+//!   rye build linengrow/glow_storage_scope_witness.rye \
+//!     -femit-bin=linengrow/bin/glow_storage_scope_witness
+//!   linengrow/bin/glow_storage_scope_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const caps = @import("capabilities.rye");
+const scope = @import("glow_storage_scope.rye");
+
+const witness_version = "20260717.155846";
+
+fn run_selftest() !u8 {
+    const photos = scope.ScopeEntry.init("photos", caps.right_read);
+    const drafts = scope.ScopeEntry.init("drafts", caps.right_read | caps.right_write);
+
+    var s = try scope.Scope.build(&[_]scope.ScopeEntry{ photos, drafts });
+    assert(s.covers("photos"));
+    assert(s.covers("drafts"));
+    assert(!s.covers("contacts"));
+    assert(s.allows("photos", caps.right_read));
+    assert(!s.allows("photos", caps.right_write));
+    assert(s.allows("drafts", caps.right_write));
+    assert(!s.allows("contacts", caps.right_read));
+    print("scope: granted photos/read and drafts/rw; contacts refused -- GREEN\n", .{});
+
+    // Contact Scopes use the same mold (GrapheneOS Contact Scopes parallel).
+    const contacts = try scope.Scope.build(&[_]scope.ScopeEntry{
+        scope.ScopeEntry.init("contacts", caps.right_read),
+        scope.ScopeEntry.init("contact-group-work", caps.right_read),
+    });
+    assert(contacts.covers("contacts"));
+    assert(contacts.allows("contact-group-work", caps.right_read));
+    assert(!contacts.allows("contacts", caps.right_write));
+    print("scope: Contact Scope grants contacts/read; write refused -- GREEN contact path\n", .{});
+
+    if (scope.Scope.build(&[_]scope.ScopeEntry{})) |_| {
+        return error.EmptyScopeAccepted;
+    } else |err| {
+        if (err != scope.ScopeError.NoEntries) return err;
+    }
+    print("scope: empty grant refused NoEntries -- GREEN\n", .{});
+
+    const zero_rights = scope.ScopeEntry.init("photos", 0);
+    if (scope.Scope.build(&[_]scope.ScopeEntry{zero_rights})) |_| {
+        return error.ZeroRightsAccepted;
+    } else |err| {
+        if (err != scope.ScopeError.RightsEmpty) return err;
+    }
+    print("scope: zero-rights entry refused RightsEmpty -- GREEN\n", .{});
+
+    var too_many: [scope.max_entries + 1]scope.ScopeEntry = undefined;
+    var i: u32 = 0;
+    while (i < too_many.len) : (i += 1) {
+        too_many[i] = scope.ScopeEntry.init("photos", caps.right_read);
+    }
+    if (scope.Scope.build(too_many[0..])) |_| {
+        return error.TooManyAccepted;
+    } else |err| {
+        if (err != scope.ScopeError.TooManyEntries) return err;
+    }
+    print("scope: over-ceiling grant refused TooManyEntries -- GREEN\n", .{});
+
+    s.revoke();
+    assert(!s.allows("photos", caps.right_read));
+    assert(!s.allows("drafts", caps.right_write));
+    print("scope: revoke (uninstall-shaped) ends every allow -- GREEN\n", .{});
+
+    print("scope: version {s}\n", .{witness_version});
+    print("GREEN: Glow Resource Scope — Storage + Contact GrapheneOS parallels, device-free.\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}

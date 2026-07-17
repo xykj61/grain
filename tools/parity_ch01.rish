@@ -1197,10 +1197,30 @@ let tube0 = run ["rishi/bin/rishi" "run" "tools/tube0_manifest_witness.rish"]
 assert tube0.ok else "TUBE0 manifest witness failed"
 say "GREEN: TUBE0 manifest witness passed."
 
+say "witness suite: Glow Storage Scope — GrapheneOS-parallel grant mold…"
+let glow_scope = run ["rishi/bin/rishi" "run" "tools/glow_storage_scope_witness.rish"]
+assert glow_scope.ok else "Glow Storage Scope witness failed"
+say "GREEN: Glow Storage Scope witness passed."
+
+say "witness suite: Glow Network Grant — GrapheneOS Network permission toggle…"
+let glow_net = run ["rishi/bin/rishi" "run" "tools/glow_network_grant_witness.rish"]
+assert glow_net.ok else "Glow Network Grant witness failed"
+say "GREEN: Glow Network Grant witness passed."
+
+say "witness suite: Glow Sensors Grant — GrapheneOS Sensors permission toggle…"
+let glow_sens = run ["rishi/bin/rishi" "run" "tools/glow_sensors_grant_witness.rish"]
+assert glow_sens.ok else "Glow Sensors Grant witness failed"
+say "GREEN: Glow Sensors Grant witness passed."
+
 say "witness suite: TUBE1 — admit iff manifest caps match a grant…"
 let tube1 = run ["rishi/bin/rishi" "run" "tools/tube1_admission_witness.rish"]
 assert tube1.ok else "TUBE1 admission witness failed"
 say "GREEN: TUBE1 admission witness passed."
+
+say "witness suite: TUBE1 glass — Storage + Contact Scopes cover declared resources…"
+let tube1_glass = run ["rishi/bin/rishi" "run" "tools/tube1_glass_gate_witness.rish"]
+assert tube1_glass.ok else "TUBE1 glass gate witness failed"
+say "GREEN: TUBE1 glass gate witness passed."
 
 say "witness suite: TUBE2 — signed app+manifest publish into Granary…"
 let tube2 = run ["rishi/bin/rishi" "run" "tools/tube2_publish_witness.rish"]
