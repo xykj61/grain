@@ -20,9 +20,11 @@ assert selftest.out contains "else arm" else "lower_conditional_witness missing 
 assert selftest.out contains "delivered/dropped" else "lower_conditional_witness missing default-arms claim"
 assert selftest.out contains "nests decimal arms" else "lower_conditional_witness missing decimal-arms claim"
 assert selftest.out contains "nests cast arms" else "lower_conditional_witness missing cast-arms claim"
+assert selftest.out contains "nests lent arm" else "lower_conditional_witness missing lent-arm claim"
 assert selftest.out contains "TestNotYetLowered" else "lower_conditional_witness missing refuse claim"
 assert selftest.out contains "ArmNotYetLowered" else "lower_conditional_witness missing arm-refuse claim"
 assert selftest.out contains "decimal then/else arms" else "lower_conditional_witness missing gen desk claim"
+assert selftest.out contains "carries lent then arm" else "lower_conditional_witness missing if-lent desk claim"
 
 let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
 assert build_welcome.ok else "if welcome .rye build failed"
@@ -35,4 +37,4 @@ assert build_unwelcome.ok else "if unwelcome .rye build failed"
 let run_unwelcome = run ["sh" "-c" "${unwelcome_bin}; echo EXIT:$?"]
 assert run_unwelcome.out contains "EXIT:1" else "if unwelcome binary did not exit 1"
 
-say "GREEN: Glow `?:` conditional hop — decimal/cast then/else arms; welcome 0 / unwelcome 1."
+say "GREEN: Glow `?:` conditional hop — decimal/cast/lent then/else arms; welcome 0 / unwelcome 1."

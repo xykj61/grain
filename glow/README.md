@@ -1,9 +1,9 @@
 # Glow — Language Tooling, Grown from Real Design
 
 **Language:** EN
-**Last updated:** 2026-07-17 (`(lent …)` first paren nest form through `expr.rye`)
+**Last updated:** 2026-07-17 (`(lent …)` as face value and arm payload)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Status:** Checkable — eight heads emit · shared `expr.rye` nests incl. `(lent …)` · truth semantics, GREEN
+**Status:** Checkable — eight heads emit · shared `expr.rye` nests incl. `(lent …)` on face and arms · truth semantics, GREEN
 **Ground:** [`active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md`](../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md) · [`20260716-093000_glow-and-rye-what-shares-under-the-hood.md`](../active-designing/20260716-093000_glow-and-rye-what-shares-under-the-hood.md) · truth [`../context/specs/20260717-154943_glow-truth-zig-ambient-nock-loobean-seam.md`](../context/specs/20260717-154943_glow-truth-zig-ambient-nock-loobean-seam.md)
 
 ---
@@ -37,7 +37,7 @@ rishi/bin/rishi run tools/glow_run_desk_witness.rish
 # → GREEN: glow_run desk — all eight generator hops …
 ```
 
-Each hop lowers one named shape from its front-half parser. Under `|-`, `(lent …)` still emits a shrinking-list fold under `face.len`. Nest forms parse once through [`expr.rye`](expr.rye): decimal · nested `^-  @uN  <decimal>` through `@u64` · bare face · **`(lent <face>)`** as a value under `=/` (desk [`gen/face-lent.glow`](gen/face-lent.glow); witness [`../tools/glow_expr_witness.rish`](../tools/glow_expr_witness.rish)). `?:` · `?-` · `?~` arms share decimal/cast/face today; `(lent …)` as an arm payload waits. `=.` takes optional trailing decimals; `=*` takes an optional source wing. Cast hop covers `@u8` · `@u16` · `@u32` · `@u64`. Other parenthesized values (`(mix …)`, …) and a fuller token stream stay later. Generator welcome/unwelcome paths use Zig/POSIX exits (0 / 1), per the Truth section above.
+Each hop lowers one named shape from its front-half parser. Under `|-`, `(lent …)` still emits a shrinking-list fold under `face.len`. Nest forms parse once through [`expr.rye`](expr.rye): decimal · nested `^-  @uN  <decimal>` through `@u64` · bare face · **`(lent <face>)`** as a length payload under `=/` and as then/else or mint/send arms on `?:` · `?-` · `?~` (desk `face-lent` · `if-lent` · `switch-lent` · `null-lent`; witness [`../tools/glow_expr_witness.rish`](../tools/glow_expr_witness.rish)). `=.` takes optional trailing decimals; `=*` takes an optional source wing. Cast hop covers `@u8` · `@u16` · `@u32` · `@u64`. Other parenthesized values (`(mix …)`, …) and a fuller token stream stay later. Foundations and TAME stay the unmoved north star; this README is the working Glow surface pin. Generator welcome/unwelcome paths use Zig/POSIX exits (0 / 1), per the Truth section above.
 
 ---
 

@@ -3,10 +3,10 @@
 //! Per active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md:
 //! `?:` is if/then/else. This hop lowers `(gth tick 32)` and bare `ready`,
 //! with then/else as named faces (defaults delivered/dropped), decimal
-//! literals, or nested `^-  @uN  <decimal>` cast-of-literals — parsed through
-//! `expr.rye`. Arm decimals are payloads, not Hoon loobeans; `ready` emits
-//! Zig `bool`; exits are POSIX (0 success). See glow/truth_semantics.rye.
-//! Other parenthesized arm expressions refuse until a later lap.
+//! literals, nested `^-  @uN  <decimal>`, or `(lent <face>)` — parsed through
+//! `expr.rye`. Arm decimals and lengths are payloads, not Hoon loobeans;
+//! `ready` emits Zig `bool`; exits are POSIX (0 success). See
+//! glow/truth_semantics.rye. Other parenthesized arm expressions refuse.
 
 const std = @import("std");
 const rif = @import("rune_conditional.rye");
@@ -81,8 +81,6 @@ fn parse_one_arm(rest_in: []const u8) LowerError!struct { arm: ArmExpr, rest: []
         error.MalformedExpr => error.MalformedArms,
         else => err,
     };
-    // `(lent …)` opens under `=/` first; arm payload later.
-    if (parsed.expr.kind == .lent_of) return error.ArmNotYetLowered;
     return .{ .arm = parsed.expr, .rest = parsed.rest };
 }
 
@@ -106,7 +104,7 @@ fn expect_then_value(then_arm: *const ArmExpr) u32 {
     return switch (then_arm.kind) {
         .face => 1,
         .literal, .cast_literal => then_arm.lit,
-        .lent_of => unreachable,
+        .lent_of => expr.lent_demo_len,
     };
 }
 
@@ -158,6 +156,33 @@ fn emit_cast_bindings(then_arm: *const ArmExpr, else_arm: *const ArmExpr, out: [
     }
 }
 
+fn emit_one_lent(role: []const u8, arm: *const ArmExpr, out: []u8, at: *usize, prior_subject: ?[]const u8) LowerError!?[]const u8 {
+    if (arm.kind != .lent_of) return prior_subject;
+    const subject = face_slice(arm);
+    var zb: [max_arm_len]u8 = undefined;
+    const zn = try zig_safe_ident(subject, &zb);
+    const zig_sub = zb[0..zn];
+    const need_subject = prior_subject == null or !std.mem.eql(u8, prior_subject.?, subject);
+    if (need_subject) {
+        const sub_line = std.fmt.bufPrint(out[at.*..],
+            "    const {s}: []const u32 = &[_]u32{{ 1, 2, 3, 4, 5 }};\n",
+            .{zig_sub},
+        ) catch return error.Overflow;
+        at.* += sub_line.len;
+    }
+    const arm_line = std.fmt.bufPrint(out[at.*..],
+        "    const {s}: u32 = @intCast({s}.len);\n",
+        .{ role, zig_sub },
+    ) catch return error.Overflow;
+    at.* += arm_line.len;
+    return subject;
+}
+
+fn emit_lent_bindings(then_arm: *const ArmExpr, else_arm: *const ArmExpr, out: []u8, at: *usize) LowerError!void {
+    const after_then = try emit_one_lent("then_arm", then_arm, out, at, null);
+    _ = try emit_one_lent("else_arm", else_arm, out, at, after_then);
+}
+
 fn write_arm_expr(arm: *const ArmExpr, role: enum { then_role, else_role }, out: []u8) LowerError![]const u8 {
     switch (arm.kind) {
         .face => {
@@ -170,13 +195,12 @@ fn write_arm_expr(arm: *const ArmExpr, role: enum { then_role, else_role }, out:
         .literal => {
             return std.fmt.bufPrint(out, "{d}", .{arm.lit}) catch return error.Overflow;
         },
-        .cast_literal => {
+        .cast_literal, .lent_of => {
             return switch (role) {
                 .then_role => "then_arm",
                 .else_role => "else_arm",
             };
         },
-        .lent_of => unreachable,
     }
 }
 
@@ -188,10 +212,11 @@ fn emit_program(
     else_arm: *const ArmExpr,
     out: []u8,
 ) LowerError!u32 {
-    var body: [1536]u8 = undefined;
+    var body: [2048]u8 = undefined;
     var at: usize = 0;
     try emit_face_bindings(then_arm, else_arm, &body, &at);
     try emit_cast_bindings(then_arm, else_arm, &body, &at);
+    try emit_lent_bindings(then_arm, else_arm, &body, &at);
 
     var then_expr_buf: [max_arm_len]u8 = undefined;
     var else_expr_buf: [max_arm_len]u8 = undefined;
