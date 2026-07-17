@@ -94,6 +94,11 @@ pub fn main(init: std.process.Init) !u8 {
         return bridge_to_zig(init, args, "run", "run");
     } else if (std.mem.eql(u8, command, "build")) {
         return bridge_to_zig(init, args, "build-exe", "build");
+    } else if (std.mem.eql(u8, command, "build-lib")) {
+        // Shared/static libraries for seams that export C ABI symbols —
+        // Glow's Android NativeActivity entry (libglowapp.so) is the first
+        // consumer. Flags pass through the same way `build` does.
+        return bridge_to_zig(init, args, "build-lib", "build-lib");
     } else if (std.mem.eql(u8, command, "help") or std.mem.eql(u8, command, "--help")) {
         print_usage();
         return 0;
@@ -109,9 +114,10 @@ fn print_usage() void {
         \\rye {s} — a Zig {s} derivative
         \\
         \\usage:
-        \\  rye version            print the Rye version and toolchain backend
-        \\  rye run <file.rye>     compile and run a single .rye source file
-        \\  rye build <file.rye>   compile a .rye file to a binary (flags pass through)
+        \\  rye version                 print the Rye version and toolchain backend
+        \\  rye run <file.rye>          compile and run a single .rye source file
+        \\  rye build <file.rye>        compile a .rye file to a binary (flags pass through)
+        \\  rye build-lib <file.rye>    compile a .rye file to a library (flags pass through)
         \\
     , .{ rye_version, zig_backend_version });
 }
