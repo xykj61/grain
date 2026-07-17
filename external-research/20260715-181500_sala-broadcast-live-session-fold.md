@@ -3,7 +3,7 @@
 **Language:** EN
 **Version:** `20260715.181500` (Pacific)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Status:** Design → horizon lane, siloed. Register: design (Two Rooms — a proposal, no broadcast code). Sources studied and thanked below; nothing copied. Addressed to a generic Acme Corporation employee.
+**Status:** Vision register — design → horizon lane, siloed. Register: design (Two Rooms — a proposal, no broadcast code). Sources studied and thanked below; nothing copied. Addressed to a generic Acme Corporation employee.
 **Companion:** `20260715-172000_pool-keystone-revival-realidream-landscape.md` (Sala as the Landscape-parallel viewer under Pool — this doc gives Sala a live face); `20260712-093812_mesh-inference-study.md` (the pooled-compute mesh this rides on)
 
 ---

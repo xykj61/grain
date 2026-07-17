@@ -3,7 +3,7 @@
 **Language:** EN
 **Version:** `20260714.001017` (Pacific)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Status:** Design and social-experiment research only. **Not financial, investment, or legal advice.** Nothing here is a deployed system, a token, a securities offering, or a call to move real money. It is an architecture proposal for Keaton to confirm or deny, grounded in what already runs in this tree.
+**Status:** Vision register — design and social-experiment research only. **Not financial, investment, or legal advice.** Nothing here is a deployed system, a token, a securities offering, or a call to move real money. It is an architecture proposal for Keaton to confirm or deny, grounded in what already runs in this tree.
 
 ---
 

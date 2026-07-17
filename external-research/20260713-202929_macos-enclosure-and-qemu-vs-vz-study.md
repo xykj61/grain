@@ -3,7 +3,7 @@
 **Language:** EN
 **Version:** `20260713.202929` (Pacific stamp, this local clone's convention)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Status:** Study — no lap opened, no policy seated
+**Status:** Research for understanding — study only; no lap opened, no policy seated
 
 ---
 

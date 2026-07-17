@@ -3,7 +3,7 @@
 **Language:** EN
 **Version:** `20260714.060412` (corrected — see the note below)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Status:** Scoping — proposes a future TAME_GUIDANCE.md supplement, writes no grammar or code yet
+**Status:** Research for understanding — scoping; proposes a future TAME_GUIDANCE.md supplement, writes no grammar or code yet
 
 ---
 

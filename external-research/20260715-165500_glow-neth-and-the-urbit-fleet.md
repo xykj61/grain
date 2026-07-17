@@ -3,7 +3,7 @@
 **Language:** EN
 **Version:** `20260715.165500` (Pacific)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Status:** Study → design, siloed. Register: design (Two Rooms — proposal, not bound claim). Sources on urbit.org studied and thanked below; no code copied; every idea re-expressed in our own vocabulary. Addressed to a generic Acme Corporation employee.
+**Status:** Research for understanding — study → design, siloed. Register: design (Two Rooms — proposal, not bound claim). Sources on urbit.org studied and thanked below; no code copied; every idea re-expressed in our own vocabulary. Addressed to a generic Acme Corporation employee.
 **Companion:** `../external-research/20260714-041542_ironbeetle-patterns-for-the-neth-ladder.md` (Neth's graduated-trust ladder, now landed and green, which this reconciliation builds on)
 
 ---

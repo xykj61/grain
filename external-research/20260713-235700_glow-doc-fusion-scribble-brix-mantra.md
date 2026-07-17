@@ -3,7 +3,7 @@
 **Language:** EN
 **Version:** `20260713.235700` (Pacific)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Status:** Design research — no code written, no module renamed; proposes roles for Keaton to confirm
+**Status:** Vision register — design research; no code written, no module renamed; proposes roles for Keaton to confirm
 
 ---
 

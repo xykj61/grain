@@ -1,8 +1,9 @@
 # Context Home
 
 **Language:** EN
-**Last updated:** 2026-07-16 (Quin restored as the standing voice; Riyo, who carried it for one day, retired to `archive/`)
+**Last updated:** 2026-07-17 (TWO_ROOMS Quin refresh · five OS variants named in the tree map)
 **Style:** Radiant (see `RADIANT_STYLE.md`)
+**Voice:** Quin
 
 ---
 
@@ -18,7 +19,8 @@ Everything here lives inside the persistent project directory, so it survives ev
 - **`TAME_GUIDANCE.md`** — the operational code supplement (root + Rye / Brix / Rishi). Named like TigerBeetle's `docs/TIGER_STYLE.md`; pairs with `external-research/TAME_GUIDANCE.md` and `gratitude/TIGER_STYLE.md`.
 - **`SIMPLE_LOVABLE_COMPLETE.md`** — how we ship. Simple, lovable, complete at every lap; our distillation of Jason Cohen's method, bound to how Rye OS grows. Source essay in `gratitude/`.
 - **`CIVIC_STYLE.md`** — how we design public benefit. Name the outcome you want, name what the reward measures, keep the two aligned — the civic companion to TAME, Radiant, and SLC.
-- **`QUIN.md`** — **Quin**, the standing voice (also the fifth OS variant beside Reya · Riyo · Trey · Triz, and the Q-vane name), restored after a short season under Riyo's name. The writing-voice seasons under Riyo, Reya 2, and Rio 3 rest retired in [`archive/`](archive/) (`RIYO.md`, `REYA2.md`, `RIO3.md`).
+- **`TWO_ROOMS.md`** — the checkable room and the vision room; name the register at the door; doorway witness vocabulary (`checkable` · `vision` · `mixed` · `research for understanding`). Seated `20260705.203144`; Quin refresh `20260717.163748`.
+- **`QUIN.md`** — **Quin**, the standing voice (also the fifth OS variant beside Reya · Riyo · Trey · Triz, intentionally unpaired — five total settled — and the Q-vane name), restored after a short season under Riyo's name. The writing-voice seasons under Riyo, Reya 2, and Rio 3 rest retired in [`archive/`](archive/) (`RIYO.md`, `REYA2.md`, `RIO3.md`).
 - **`SILO_TECHNIQUE.md`** — the siloing technique: how an outside idea becomes an owned, understood concept in our own voice, with gratitude kept apart and honored. Portable, and meant to travel beside the voice guide and the identity note.
 - **`LEXICON.md`** — module names and one-line meanings; Weave, Dexter, Kumara, Bookie, the open horizons, the **preservation pair** (Amber = cellar software, Amphora = vessel software), and **Kitchen twin** (plain companion to a hard canon). **Nib** vocabulary for landed edges (product · suite · git) — retired *tip* in new prose only.
 
@@ -42,13 +44,14 @@ When a chat or a file stops serving the project, name it gently and let it go. P
 
 ```
 glow-os/
-  README.md       <- the front door: what Glow OS is, the four variants
+  README.md       <- the front door: what Glow OS is, the five variants
   ORGANIZING.md   <- filing guide: tree shape, placement test, one-clock law
   context/        <- this home: disciplines, identity, specs
     RADIANT_STYLE.md
     TAME_GUIDANCE.md
     SIMPLE_LOVABLE_COMPLETE.md
     CIVIC_STYLE.md
+    TWO_ROOMS.md
     QUIN.md
     archive/        <- retired identities (Reya 2, Rio 3, Riyo)
     SILO_TECHNIQUE.md

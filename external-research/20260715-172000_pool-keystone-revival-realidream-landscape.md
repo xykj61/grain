@@ -3,7 +3,7 @@
 **Language:** EN
 **Version:** `20260715.172000` (Pacific)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Status:** Design → decision brief, siloed. Register: design (Two Rooms — a prioritization proposal, not built code). Addressed to a generic Acme Corporation employee.
+**Status:** Vision register — design → decision brief, siloed. Register: design (Two Rooms — a prioritization proposal, not built code). Addressed to a generic Acme Corporation employee.
 **Companion:** `../context/specs/20260713-214400_urbit-parallel-naming-mapping-proposal.md` (which already maps Gall → Pool and Realidream → the Landscape parallel — this brief prioritizes that mapping and names the first laps)
 
 ---

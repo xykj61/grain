@@ -3,7 +3,7 @@
 **Language:** EN
 **Version:** `20260714.005658` (Pacific)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Status:** Witness report — real, run, and green through the core; one host-specific gap fully diagnosed
+**Status:** Checkable-room witness report — real, run, and green through the core; one host-specific gap fully diagnosed
 
 ---
 

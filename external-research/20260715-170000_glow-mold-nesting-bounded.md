@@ -3,7 +3,7 @@
 **Language:** EN
 **Version:** `20260715.170000` (Pacific)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Status:** Scoping — proposes a sixth Glow-supplement surface; writes no grammar or code yet. Register: design (Two Rooms — proposal, not bound claim). Addressed to a generic Acme Corporation employee.
+**Status:** Research for understanding — scoping; proposes a sixth Glow-supplement surface; writes no grammar or code yet. Register: design (Two Rooms — proposal, not bound claim). Addressed to a generic Acme Corporation employee.
 **Companion:** `../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md` (the five surfaces this doc extends to six)
 
 ---

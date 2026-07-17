@@ -3,7 +3,7 @@
 **Language:** EN
 **Version:** `20260715.165000` (Pacific)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Status:** Design → architecture, siloed. Register: design (Two Rooms — a proposal about layering, not a bound claim). Addressed to a generic Acme Corporation employee.
+**Status:** Vision register — design → architecture, siloed. Register: design (Two Rooms — a proposal about layering, not a bound claim). Addressed to a generic Acme Corporation employee.
 **Companion:** `../context/specs/20260713-214400_urbit-parallel-naming-mapping-proposal.md` (the vane-parallel mapping this doc refines with an explicit non-vane layering)
 
 ---

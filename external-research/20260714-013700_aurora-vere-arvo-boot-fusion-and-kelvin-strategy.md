@@ -3,7 +3,7 @@
 **Language:** EN
 **Version:** `20260714.013700`
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Status:** Design and research — no rename, no code, no kelvin number committed
+**Status:** Vision register — design and research; no rename, no code, no kelvin number committed
 **Builds on:** `yonder/20260617-195812_aurora-boot-riscv.md` (Aurora's existing design), `../context/specs/20260713-225658_glow-accepted-riyo-reya-trey-triz-amended.md` (the four kernel variants)
 
 ---
