@@ -1,0 +1,85 @@
+//! linengrow/sala_b1_carriage_core.rye — in-process Sala B1 welcome path.
+//!
+//! Seal → open → reconstruct → append, then replay: follower root matches
+//! the source's own. No UDP, no process spawn — the glass and device-free
+//! door. Live hop stays in sala_broadcast_delivery.rye.
+
+const std = @import("std");
+const kumara = @import("kumara.rye");
+const rc = @import("receipt_core.rye");
+const mc = @import("mala_core.rye");
+const wf = @import("wire_format.rye");
+const sala = @import("sala_session_core.rye");
+
+pub const event_count: u32 = 3;
+
+pub const CarriageLens = struct {
+    events: u32,
+    root: [32]u8,
+};
+
+const stamps = [event_count][]const u8{ "20260715.203501", "20260715.203502", "20260715.203503" };
+const payloads = [event_count][]const u8{ "sala:open session", "sala:type a line", "sala:frame update" };
+
+fn actor() struct { kp: kumara.KeyPair, hex: [mc.pubkey_hex_len]u8 } {
+    const kp = kumara.keypair_from_seed(&mc.issuer_seed);
+    var hex: [mc.pubkey_hex_len]u8 = undefined;
+    mc.hex_of_key(kp.public_key, &hex);
+    return .{ .kp = kp, .hex = hex };
+}
+
+fn event_fields(seq: i64, stamp: []const u8, payload: []const u8, actor_hex: *const [mc.pubkey_hex_len]u8, seq_buf: *[24]u8) rc.FactFields {
+    const seq_text = std.fmt.bufPrint(seq_buf, "{d}", .{seq}) catch unreachable;
+    return .{ .from = actor_hex[0..], .to = actor_hex[0..], .amount = seq_text, .memo = payload, .stamp = stamp };
+}
+
+fn build_event_payload(seq: i64, stamp: []const u8, payload: []const u8, actor_hex: *const [mc.pubkey_hex_len]u8, signer: kumara.KeyPair, out: *[rc.slcl2_payload_header + rc.slcl2_max_fact]u8) !u32 {
+    var seq_buf: [24]u8 = undefined;
+    const fields = event_fields(seq, stamp, payload, actor_hex, &seq_buf);
+    const signed = try mc.sign_fact(fields, signer);
+    return try rc.encode_compact_payload(signed.sig, signed.canonical[0..signed.canonical_len], out);
+}
+
+fn payload_to_line(payload: []const u8, out: *[rc.max_line_len]u8) !u32 {
+    var sig_buf: [kumara.signature_length]u8 = undefined;
+    var fact_buf: [rc.slcl2_max_fact]u8 = undefined;
+    const decoded = try rc.decode_compact_payload(payload, &sig_buf, &fact_buf);
+    const sig = kumara.Signature.fromBytes(sig_buf[0..kumara.signature_length].*);
+    return try rc.format_log_line(sig, fact_buf[0..decoded.fact_len], out);
+}
+
+fn build_source_session(log: *[rc.max_log_len]u8, actor_hex: *const [mc.pubkey_hex_len]u8, signer: kumara.KeyPair) !sala.ReplayResult {
+    var len: u32 = 0;
+    var i: u32 = 0;
+    while (i < event_count) : (i += 1) {
+        len = try sala.append_event(log, len, @as(i64, i + 1), stamps[i], payloads[i], actor_hex, signer);
+    }
+    return try sala.replay(log[0..len], actor_hex, signer.public_key);
+}
+
+/// Welcome carriage: roots match. Device-free and glass-safe.
+pub fn run_welcome_carriage() !CarriageLens {
+    const a = actor();
+    var src_log: [rc.max_log_len]u8 = undefined;
+    const src = try build_source_session(&src_log, &a.hex, a.kp);
+
+    var follower_log: [rc.max_log_len]u8 = undefined;
+    var flen: u32 = 0;
+    var i: u32 = 0;
+    while (i < event_count) : (i += 1) {
+        var payload_buf: [rc.slcl2_payload_header + rc.slcl2_max_fact]u8 = undefined;
+        const plen = try build_event_payload(@as(i64, i + 1), stamps[i], payloads[i], &a.hex, a.kp, &payload_buf);
+        var wire: [@intCast(wf.wire_capacity)]u8 = undefined;
+        const wlen = try wf.seal_message(payload_buf[0..plen], &wire);
+        var opened: [@intCast(wf.max_message)]u8 = undefined;
+        const olen = try wf.open_datagram(wire[0..@intCast(wlen)], &opened);
+        var line_buf: [rc.max_line_len]u8 = undefined;
+        const line_len = try payload_to_line(opened[0..@intCast(olen)], &line_buf);
+        flen = try sala.append_signed_line(&follower_log, flen, line_buf[0..line_len]);
+    }
+    const follower = try sala.replay(follower_log[0..flen], &a.hex, a.kp.public_key);
+    if (follower.events != src.events) return error.EventCountMismatch;
+    if (follower.last_seq != src.last_seq) return error.SeqMismatch;
+    if (!std.mem.eql(u8, &follower.root, &src.root)) return error.RootMismatch;
+    return .{ .events = follower.events, .root = follower.root };
+}
