@@ -248,11 +248,18 @@
 - [x] **ZETA3 Pixel blink look** `20260717.183345` — typing path GREEN with caret (same look pass as ZETA2).
 - [x] **Glow OS · Glow Desk · Glow Glass** `20260717.183622` — Keaton seated form-factor names; Lexicon + [`../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md`](../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md). Sala stays Landscape *viewer* parallel.
 - [ ] **Horizon — Glow Glass orientation (Sensors → layout)** — check-in; same note.
-- [ ] **ZETA4 — Emoji mode SLC** — bounded frequent set + few tabs.
+- [x] **ZETA4 — Emoji mode SLC** `20260717.185520` — Keaton nod: iOS-similar frequent strip + 4 tabs (sm/gn/ht/nt); UTF-8 insert; clean-room monochrome atlas (40 faces); `em`→emoji · ABC back. Witness GREEN.
+- [x] **ZETA4 Pixel look** `20260717.190045` — Keaton: GREEN; emojis worked. Named gap: faces looked same within categories.
+- [x] **ZETA4 distinct glyphs polish** `20260717.190045` — hand-distinct 8×8 per face; witness `atlas_glyphs_are_distinct`; pack + install for eyes.
+- [x] **ZETA4 distinct-glyphs Pixel look** `20260717.190358` — Keaton: GREEN, looks really good.
 - [x] **ZETA5 — Pixel look keys + caret + type by tap** `20260717.184837` — Keaton: typing, delete, mode tabs, smiley on glass (same look pass as ZETA2b).
+- [x] **Waymark JABS for Sala broadcast ladder** `20260717.191030` — draw `sala-broadcast-live-session-fold` → **JABS**; [`../docs/JABS.md`](../docs/JABS.md); always-apply waymark-ladders rules.
+- [x] **JABS2 glass — layout word + audience strip** `20260717.190358` — Skate **20** rows; JABS2 on **14–15**; ZETA keyboard on **16–19**; welcome audience; witness GREEN; pack + install.
+- [x] **JABS2 glass Pixel look** `20260717.190807` — Keaton: GREEN, confirm screen yes.
+- [x] **JABS2 on glass** `20260717.190358` — layout word seated; audience strip painted.
+- [ ] **JABS3 — Inference and economics** — check-in (Quin · MALA).
 - [ ] **C2 thin TAME compressor** — optional `docs/TAME.md` only if cold-load pain is measured.
 - [ ] **C3 LEXICON core Bron card** — optional; Keaton's word.
-- [ ] **Sala B2 on glass** — audience + back-channel already GREEN device-free; needs a **layout word** (Skate now 14 rows) before paint.
 - [ ] **`(jam …)` nest form** — denser paren; held until language appetite returns after Dexter D2.
 - [ ] **Dill-parallel kernel revival** — separate `active-reviving/` brief when a real need opens; not Dexter.
 - [ ] **M1 Scribble↔html round-trip witness** — named in fusion map; opens when Keaton leans doc pipeline.

@@ -1072,6 +1072,11 @@ let sala_b1_glass = run ["rishi/bin/rishi" "run" "tools/sala_b1_glass_carriage_w
 assert sala_b1_glass.ok else "Sala B1 glass carriage witness failed"
 say "GREEN: Sala B1 glass carriage witness passed."
 
+say "witness suite: JABS2 glass — audience strip under layout word…"
+let sala_jabs2_glass = run ["rishi/bin/rishi" "run" "tools/sala_jabs2_glass_audience_witness.rish"]
+assert sala_jabs2_glass.ok else "JABS2 glass audience witness failed"
+say "GREEN: JABS2 glass audience witness passed."
+
 say "witness suite: Dexter D0 glass — pure LineEditor paints Skate…"
 let dexter_glass = run ["rishi/bin/rishi" "run" "tools/dexter_glass_witness.rish"]
 assert dexter_glass.ok else "Dexter glass witness failed"
@@ -1092,10 +1097,10 @@ let sala_r2 = run ["rishi/bin/rishi" "run" "tools/sala_surface_witness.rish"]
 assert sala_r2.ok else "Sala R2 unified-viewer witness failed"
 say "GREEN: Sala R2 unified-viewer witness passed."
 
-say "witness suite: Sala B2 — audience + back-channel (multi-signer chat)…"
-let sala_b2 = run ["rishi/bin/rishi" "run" "tools/sala_backchannel_witness.rish"]
-assert sala_b2.ok else "Sala B2 back-channel witness failed"
-say "GREEN: Sala B2 back-channel witness passed."
+say "witness suite: JABS2 — audience + back-channel (multi-signer chat)…"
+let sala_jabs2 = run ["rishi/bin/rishi" "run" "tools/sala_backchannel_witness.rish"]
+assert sala_jabs2.ok else "JABS2 back-channel witness failed"
+say "GREEN: JABS2 back-channel witness passed."
 
 say "witness suite: Nock core lap 1 — noun, slot addressing, opcodes 0-5, autocons…"
 let nock_lap1 = run ["rishi/bin/rishi" "run" "tools/nock_core_witness.rish"]

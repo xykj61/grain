@@ -1,0 +1,17 @@
+# sala_jabs2_glass_audience_witness.rish — JABS2 glass audience strip.
+#
+#   rishi/bin/rishi run tools/sala_jabs2_glass_audience_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/sala_jabs2_glass_audience_witness"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/sala_jabs2_glass_audience_witness.rye -femit-bin=${bin}"]
+assert build.ok else "JABS2 glass audience witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "JABS2 glass audience witness exited non-zero"
+assert selftest.out contains "GREEN" else "JABS2 glass audience witness not GREEN"
+assert selftest.out contains "audience" else "JABS2 glass missing audience claim"
+assert selftest.out contains "layout rows" else "JABS2 glass missing layout-word claim"
+
+say "GREEN: JABS2 glass audience witness passed."

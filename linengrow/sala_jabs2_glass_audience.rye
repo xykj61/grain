@@ -1,0 +1,78 @@
+//! linengrow/sala_jabs2_glass_audience.rye — JABS2 audience lines for glass.
+//!
+//! Layout word: Skate grows to 20 rows; JABS2 paints rows 14–15;
+//! ZETA keyboard sits on 16–19. Two chat voices from the welcome audience.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const core = @import("sala_jabs2_audience_core.rye");
+const emoji = @import("dexter_glass_emoji.rye");
+const dexter = @import("window_input.rye");
+
+pub const audience_line_max: u32 = 48;
+pub const audience_rows: u32 = 2;
+/// Skate row where the JABS2 strip begins (keyboard follows at +audience_rows).
+pub const skate_row0: u32 = 14;
+pub const keyboard_row0: u32 = 16;
+pub const grid_rows: u32 = 20;
+
+/// Paint a live chat line from a Dexter submit (Skate-safe preview).
+pub fn format_chat_line(prompt: []const u8, out_line: *[audience_line_max]u8, out_len: *u32) bool {
+    assert(prompt.len > 0);
+    assert(prompt.len <= dexter.max_line_len);
+    var preview: [dexter.max_line_len]u8 = undefined;
+    const plen = emoji.skate_preview(prompt, preview[0..]);
+    assert(plen > 0);
+    const line = std.fmt.bufPrint(out_line, "chat · {s}", .{preview[0..plen]}) catch return false;
+    out_len.* = @intCast(line.len);
+    assert(out_len.* > 0);
+    assert(out_len.* <= audience_line_max);
+    return true;
+}
+
+/// Device-free: submit text lands as a chat · line.
+pub fn chat_line_from_glow() bool {
+    var line: [audience_line_max]u8 = undefined;
+    var len: u32 = 0;
+    if (!format_chat_line("glow", &line, &len)) return false;
+    return std.mem.eql(u8, line[0..len], "chat · glow");
+}
+
+/// Welcome audience → two Skate lines. Returns false if roots diverge.
+pub fn run_demo_audience(
+    out_lines: *[audience_rows][audience_line_max]u8,
+    out_lens: *[audience_rows]u32,
+) bool {
+    assert(out_lines.len == audience_rows);
+    const lens = core.run_welcome_audience() catch return false;
+    assert(lens.events == core.event_count);
+    assert(lens.voices == core.voice_count);
+    assert(lens.chats == core.chat_count);
+
+    const a = std.fmt.bufPrint(
+        &out_lines[0],
+        "JABS2 audience · {d} voices · {d} ev",
+        .{ lens.voices, lens.events },
+    ) catch return false;
+    out_lens[0] = @intCast(a.len);
+
+    const b = std.fmt.bufPrint(
+        &out_lines[1],
+        "chat · great to be here · love this",
+        .{},
+    ) catch return false;
+    out_lens[1] = @intCast(b.len);
+
+    assert(out_lens[0] > 0);
+    assert(out_lens[1] > 0);
+    assert(out_lens[0] <= audience_line_max);
+    assert(out_lens[1] <= audience_line_max);
+    return true;
+}
+
+comptime {
+    _ = print;
+    assert(keyboard_row0 == skate_row0 + audience_rows);
+    assert(grid_rows > keyboard_row0 + 3);
+}

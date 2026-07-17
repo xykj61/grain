@@ -1,0 +1,66 @@
+//! linengrow/sala_jabs2_audience_core.rye — in-process JABS2 welcome path.
+//!
+//! Mixed multi-signer session (broadcaster + two viewers' chat). Device-free
+//! and glass-safe. Full five-claim witness stays in sala_backchannel_witness.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const kumara = @import("kumara.rye");
+const rc = @import("receipt_core.rye");
+const mc = @import("mala_core.rye");
+const sala = @import("sala_session_core.rye");
+
+pub const event_count: u32 = 5;
+pub const voice_count: u32 = 3; // caster + 2 viewers
+pub const chat_count: u32 = 2;
+
+pub const AudienceLens = struct {
+    events: u32,
+    voices: u32,
+    chats: u32,
+    root: [32]u8,
+};
+
+const viewer2_seed = [_]u8{0x63} ** kumara.seed_length;
+
+/// Welcome audience: mixed stream replays multi-signer. Device-free.
+pub fn run_welcome_audience() !AudienceLens {
+    const caster_kp = kumara.keypair_from_seed(&mc.issuer_seed);
+    const viewer1_kp = kumara.keypair_from_seed(&mc.holder_seed);
+    const viewer2_kp = kumara.keypair_from_seed(&viewer2_seed);
+    var caster_hex: [mc.pubkey_hex_len]u8 = undefined;
+    var viewer1_hex: [mc.pubkey_hex_len]u8 = undefined;
+    var viewer2_hex: [mc.pubkey_hex_len]u8 = undefined;
+    mc.hex_of_key(caster_kp.public_key, &caster_hex);
+    mc.hex_of_key(viewer1_kp.public_key, &viewer1_hex);
+    mc.hex_of_key(viewer2_kp.public_key, &viewer2_hex);
+
+    var log: [rc.max_log_len]u8 = undefined;
+    var len: u32 = 0;
+    len = try sala.append_event(&log, len, 1, "20260715.210501", "sala:open session", &caster_hex, caster_kp);
+    len = try sala.append_event(&log, len, 2, "20260715.210502", "chat:great to be here", &viewer1_hex, viewer1_kp);
+    len = try sala.append_event(&log, len, 3, "20260715.210503", "sala:frame update", &caster_hex, caster_kp);
+    len = try sala.append_event(&log, len, 4, "20260715.210504", "chat:love this", &viewer2_hex, viewer2_kp);
+    len = try sala.append_event(&log, len, 5, "20260715.210505", "sala:closing", &caster_hex, caster_kp);
+
+    var registry: sala.ActorRegistry = .{};
+    try registry.admit(&caster_hex, caster_kp.public_key);
+    try registry.admit(&viewer1_hex, viewer1_kp.public_key);
+    try registry.admit(&viewer2_hex, viewer2_kp.public_key);
+
+    const r = try sala.replay_multi(log[0..len], &registry);
+    // invariant: welcome audience shape
+    assert(r.events == event_count);
+    assert(r.last_seq == event_count);
+    return .{
+        .events = r.events,
+        .voices = voice_count,
+        .chats = chat_count,
+        .root = r.root,
+    };
+}
+
+comptime {
+    _ = print;
+}

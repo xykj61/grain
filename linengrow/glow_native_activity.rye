@@ -26,6 +26,7 @@ const tube2_pub = @import("tube2_glass_pub.rye");
 const tube3_fetch = @import("tube3_glass_fetch.rye");
 const tube4_market = @import("tube4_glass_market.rye");
 const b1_carriage = @import("sala_b1_glass_carriage.rye");
+const jabs2_audience = @import("sala_jabs2_glass_audience.rye");
 const dexter_glass = @import("dexter_glass_line.rye");
 const dexter_key = @import("dexter_glass_key.rye");
 const kb_paint = @import("dexter_glass_keyboard_paint.rye");
@@ -59,6 +60,9 @@ var g_market_ready: bool = false;
 var g_b1_line: [b1_carriage.carriage_line_max]u8 = undefined;
 var g_b1_len: u32 = 0;
 var g_b1_ready: bool = false;
+var g_jabs2_lines: [jabs2_audience.audience_rows][jabs2_audience.audience_line_max]u8 = undefined;
+var g_jabs2_lens: [jabs2_audience.audience_rows]u32 = .{ 0, 0 };
+var g_jabs2_ready: bool = false;
 var g_dexter_line: [dexter_glass.dexter_line_max]u8 = undefined;
 var g_dexter_len: u32 = 0;
 var g_dexter_ready: bool = false;
@@ -270,7 +274,7 @@ fn apply_glass_layout_key(key: kb_layout.Key) void {
         .action => |action| {
             apply_dexter_action(action);
             switch (key) {
-                .char_, .space => g_kb_shift = false,
+                .char_, .space, .emoji_face => g_kb_shift = false,
                 else => {},
             }
         },
@@ -279,6 +283,15 @@ fn apply_glass_layout_key(key: kb_layout.Key) void {
         },
         .set_mode => |mode| {
             surface.keyboard_mode = mode;
+            g_kb_shift = false;
+            if (mode == .emoji) surface.keyboard_emoji_tab = .smileys;
+            if (g_window) |window| {
+                paint_window(g_activity, window);
+            }
+        },
+        .set_emoji_tab => |tab| {
+            surface.keyboard_mode = .emoji;
+            surface.keyboard_emoji_tab = tab;
             g_kb_shift = false;
             if (g_window) |window| {
                 paint_window(g_activity, window);
@@ -298,6 +311,8 @@ fn paint_window(_: ?*anyopaque, window: ?*anyopaque) callconv(.c) void {
     const market: ?[]const u8 = if (g_market_ready) g_market_line[0..g_market_len] else null;
     const carriage: ?[]const u8 = if (g_b1_ready) g_b1_line[0..g_b1_len] else null;
     const dexter_line: ?[]const u8 = if (g_dexter_ready) g_dexter_line[0..g_dexter_len] else null;
+    const jabs2_0: ?[]const u8 = if (g_jabs2_ready) g_jabs2_lines[0][0..g_jabs2_lens[0]] else null;
+    const jabs2_1: ?[]const u8 = if (g_jabs2_ready) g_jabs2_lines[1][0..g_jabs2_lens[1]] else null;
     surface.paint_session_root_hex(
         window,
         glow_last_session_root_hex[0..64],
@@ -310,6 +325,8 @@ fn paint_window(_: ?*anyopaque, window: ?*anyopaque) callconv(.c) void {
         market,
         carriage,
         dexter_line,
+        jabs2_0,
+        jabs2_1,
     );
 }
 
@@ -420,6 +437,8 @@ export fn ANativeActivity_onCreate(
     g_market_ready = tube4_market.run_demo_market_line(&g_market_line, &g_market_len);
     g_b1_len = 0;
     g_b1_ready = b1_carriage.run_demo_carriage(&g_b1_line, &g_b1_len);
+    g_jabs2_lens = .{ 0, 0 };
+    g_jabs2_ready = jabs2_audience.run_demo_audience(&g_jabs2_lines, &g_jabs2_lens);
     g_dexter_editor.reset();
     g_dexter_held_len = 0;
     g_dexter_len = 0;
