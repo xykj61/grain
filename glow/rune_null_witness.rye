@@ -1,0 +1,59 @@
+//! glow/rune_null_witness.rye — proves the `?~` null-test rune head.
+//!
+//!   rye build glow/rune_null_witness.rye -femit-bin=glow/bin/rune_null_witness
+//!   glow/bin/rune_null_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const rn = @import("rune_null.rye");
+
+const witness_version = "20260717.150200";
+
+fn run_selftest() !u8 {
+    const spec1 = try rn.parse("?~  records.cur");
+    assert(std.mem.eql(u8, rn.subject_slice(&spec1), "records.cur"));
+    print("rune: \"?~  records.cur\" parses to subject \"records.cur\" -- GREEN\n", .{});
+
+    const spec2 = try rn.parse("?~  records.cur  root");
+    assert(std.mem.eql(u8, rn.subject_slice(&spec2), "records.cur"));
+    print("rune: trailing then-arm \"root\" does not confuse the subject scan -- GREEN\n", .{});
+
+    const spec3 = try rn.parse("?~  (head-of list)");
+    assert(std.mem.eql(u8, rn.subject_slice(&spec3), "(head-of list)"));
+    print("rune: \"?~  (head-of list)\" parses parenthesized subject -- GREEN\n", .{});
+
+    if (rn.parse("=/  tick")) |_| {
+        return error.NotANullTestNotCaught;
+    } else |err| {
+        if (err != rn.ParseError.NotANullTest) return err;
+    }
+    print("rune: a non-null-test line refused NotANullTest -- GREEN unwelcome path\n", .{});
+
+    if (rn.parse("?~")) |_| {
+        return error.MissingSubjectNotCaught;
+    } else |err| {
+        if (err != rn.ParseError.MissingSubject) return err;
+    }
+    print("rune: a bare \"?~\" with no subject refused MissingSubject -- GREEN unwelcome path\n", .{});
+
+    if (rn.parse("?~  4bad")) |_| {
+        return error.DigitLedNotCaught;
+    } else |err| {
+        if (err != rn.ParseError.MalformedSubject) return err;
+    }
+    if (rn.parse("?~  ()")) |_| {
+        return error.EmptyParensNotCaught;
+    } else |err| {
+        if (err != rn.ParseError.MalformedSubject) return err;
+    }
+    print("rune: digit-led and empty-parens subjects refused MalformedSubject -- GREEN unwelcome path\n", .{});
+
+    print("rune: version {s}\n", .{witness_version});
+    print("GREEN: the `?~` null-test rune's front half parses -- sixth rune head, `?` category deepened.\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}

@@ -1112,6 +1112,26 @@ let rune_cast = run ["rishi/bin/rishi" "run" "tools/rune_cast_witness.rish"]
 assert rune_cast.ok else "Rune cast witness failed"
 say "GREEN: rune cast witness passed."
 
+say "witness suite: the ?: conditional rune's front half, a third rune category…"
+let rune_if = run ["rishi/bin/rishi" "run" "tools/rune_conditional_witness.rish"]
+assert rune_if.ok else "Rune conditional witness failed"
+say "GREEN: rune conditional witness passed."
+
+say "witness suite: the ?- exhaustive-switch rune's front half…"
+let rune_switch = run ["rishi/bin/rishi" "run" "tools/rune_switch_witness.rish"]
+assert rune_switch.ok else "Rune switch witness failed"
+say "GREEN: rune switch witness passed."
+
+say "witness suite: the =/ face-binding rune's front half…"
+let rune_face = run ["rishi/bin/rishi" "run" "tools/rune_face_witness.rish"]
+assert rune_face.ok else "Rune face witness failed"
+say "GREEN: rune face witness passed."
+
+say "witness suite: the ?~ null-test rune's front half…"
+let rune_null = run ["rishi/bin/rishi" "run" "tools/rune_null_witness.rish"]
+assert rune_null.ok else "Rune null witness failed"
+say "GREEN: rune null witness passed."
+
 say "witness suite: TUBE0 — the Glow app-manifest mold…"
 let tube0 = run ["rishi/bin/rishi" "run" "tools/tube0_manifest_witness.rish"]
 assert tube0.ok else "TUBE0 manifest witness failed"

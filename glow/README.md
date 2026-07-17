@@ -1,25 +1,30 @@
 # Glow — Language Tooling, Grown from Real Design
 
 **Language:** EN
-**Last updated:** 2026-07-16 (the bounded `|-` rune's front half landed — real text, parsed, real mechanism)
+**Last updated:** 2026-07-17 (sixth rune head — `?~` null test)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Status:** Checkable — one small, real parser prototype, GREEN
+**Status:** Checkable — six small rune-head parsers, GREEN
+**Ground:** [`active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md`](../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md)
 
 ---
 
-This is where Glow's own language tooling lives once a design earns real code, rather than staying prose alone. The first tenant is the smallest, most load-bearing piece the [sameness-and-the-rune brief](../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md) named as unbuilt: a real parser for the one rune Glow's own bound discipline changes.
+This is where Glow's own language tooling lives once a design earns real code. Each tenant is one rune's **front half** — real text parsed at the head — connected to a named discipline, never a leap to a general grammar.
 
-| File | Proves |
-|---|---|
-| [`rune_bounded_trap.rye`](rune_bounded_trap.rye) | Parses `\|-  32` and `\|-  (lent records)` — Glow's own bounded-trap rune, both stated shapes — and the checked mechanism a real trap's expansion runs: a counter, checked against the bound, refusing cleanly with `BoundExceeded` rather than looping |
-| [`rune_bounded_trap_witness.rye`](rune_bounded_trap_witness.rye) | Nine claims: both bound shapes parse correctly, a trailing trap body doesn't confuse the scan, three malformed inputs each refuse their own named error, the checked mechanism's welcome and unwelcome paths both prove out, and one end-to-end claim ties parsed text straight through to the exact mechanism the design brief's own RISC-V section already quoted from real disassembly |
+| File | Rune | Proves |
+|---|---|---|
+| [`rune_bounded_trap.rye`](rune_bounded_trap.rye) | `\|-` | Bound shapes `32` and `(lent records)` + checked `run_bounded` / `BoundExceeded` |
+| [`rune_cast.rye`](rune_cast.rye) | `^-` | Mold name — aura (`@u32`) or named mold (`record`) |
+| [`rune_conditional.rye`](rune_conditional.rye) | `?:` | Test expression — parenthesized or bare identifier; then/else not yet |
+| [`rune_switch.rye`](rune_switch.rye) | `?-` | Subject wing (`kind.cur-record`); arm exhaustiveness not yet |
+| [`rune_face.rye`](rune_face.rye) | `=/` | Face + optional mold (`cur-record=record`, `next-root=@u32`); value not yet |
+| [`rune_null.rye`](rune_null.rye) | `?~` | Subject wing (`records.cur`); then/else null arms not yet |
+
+Witnesses: `rune_*_witness.rye` · rish wrappers under `tools/` · wired in `tools/parity_ch01.rish`.
 
 ## What This Is, and Is Not
 
-This closes the one gap the design brief named plainly: *"What remains unbuilt is only the front half: the parser that reads `\|-  (lent ship-list)` and the pass that lowers it to this exact Zig shape."* The front half now parses real text. The back half was never guesswork — it was already disassembled, real RISC-V, from `linengrow/neth_sim.rye`'s own hand-written loop.
-
-This is **not** a general Glow grammar, a lexer for the other twenty-nine runes the design brief's own table names, or a step toward a full compiler. It is exactly what a first, real, load-bearing prototype should be: the smallest slice that proves a real design connects to real code, built once a design earned the right to become one.
+Six heads across four categories: **bar**, **cast**, **conditional** (`?:` · `?-` · `?~`), **bindings** (`=/`). The brief's own two-level Neth-shaped composition can now have every *head* it uses recognized in isolation. It is **not** a general Glow lexer or lowering pass — those stay design until a real need asks.
 
 ---
 
-*May the next rune's own front half arrive the same way this one did — small, real, and connected to a mechanism already proven true, rather than argued and left waiting.*
+*May the next rune's own front half arrive the same way — small, real, and connected to a discipline already named, rather than argued and left waiting.*

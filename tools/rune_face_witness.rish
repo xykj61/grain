@@ -1,0 +1,20 @@
+# rune_face_witness.rish — the `=/` typed-let (face) rune head, proves out.
+#
+# Fifth rune head — opens the `=` bindings category after bar / cast / ?.
+#
+#   rishi/bin/rishi run tools/rune_face_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "glow/bin/rune_face_witness"
+
+let build = run ["sh" "-c" "mkdir -p glow/bin && env RYE_ZIG=${zig} rye/bin/rye build glow/rune_face_witness.rye -femit-bin=${bin}"]
+assert build.ok else "Rune face witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "Rune face witness exited non-zero"
+assert selftest.out contains "GREEN" else "Rune face witness not GREEN"
+assert selftest.out contains "cur-record" else "Rune face witness missing the brief face claim"
+assert selftest.out contains "@u32" else "Rune face witness missing the aura-mold claim"
+assert selftest.out contains "MalformedFace" else "Rune face witness missing the malformed-face unwelcome path"
+
+say "GREEN: rune face witness passed -- a fifth rune head parses (`=/`), `=` category opened."
