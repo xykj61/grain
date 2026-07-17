@@ -46,7 +46,7 @@ The full onboarding surface for the variants lives in the manual: [`manual/glow-
 | App ladder | **TUBE** | Glow app = Pool agent → signed APK on GrapheneOS (HAWM) | TUBE0–5 · TUBE7 GREEN; TUBE6 horizon — [`docs/TUBE.md`](docs/TUBE.md) |
 | Modules | Rishi, Mantra, Comlink, Caravan, Tally, Brix, Bron, Aurora, Pond, Scribble, and more | the running seeds | many green today |
 
-**An honest word on status.** Most of what runs today still lives under the project's prior module names and is being carried into Glow OS by decision, not yet by a mass rename. Glow's **desk already emits** through `glow_run` witnesses; a full OS boot and the Nock interpreter remain horizon. The four variants are named and scoped — real design, real direction — yet not things you can boot quite yet. Every page in this tree marks its own register: what a witness proves, versus what is proposed. Nothing here claims a feature its witnesses do not show. That discipline has a name and a home ([`context/TWO_ROOMS.md`](context/TWO_ROOMS.md)).
+**An honest word on status.** Most of what runs today still lives under the project's prior module names and is being carried into Glow OS by decision, not yet by a mass rename. Glow's **desk already emits** through `glow_run` witnesses; a full OS boot and the Nock interpreter remain horizon. The five variants are named and scoped — real design, real direction — yet not things you can boot quite yet. Every page in this tree marks its own register: what a witness proves, versus what is proposed. Nothing here claims a feature its witnesses do not show. That discipline has a name and a home ([`context/TWO_ROOMS.md`](context/TWO_ROOMS.md)).
 
 ---
 
@@ -70,7 +70,7 @@ Two root configuration files hold what is specific to *your* machine and *your* 
 Then read, in order:
 
 1. **[`ORGANIZING.md`](ORGANIZING.md)** — where every kind of work lives in this tree.
-2. **[`manual/glow-os/`](manual/glow-os/README.md)** — the Glow OS onboarding rooms and the four variants.
+2. **[`manual/glow-os/`](manual/glow-os/README.md)** — the Glow OS onboarding rooms and the five variants.
 3. **[`docs/TUBE.md`](docs/TUBE.md)** · **[`glow/README.md`](glow/README.md)** — what the app ladder and language desk prove today.
 4. **[`CONTRIBUTING.md`](CONTRIBUTING.md)** — how a contribution arrives: small, signed, component-prefixed, in Radiant voice.
 
