@@ -7,19 +7,31 @@ const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 const layout = @import("dexter_glass_keyboard_layout.rye");
+const emoji = @import("dexter_glass_emoji.rye");
 const dexter = @import("window_input.rye");
 const tally_copy = @import("tally_copy.rye");
 
 pub const max_line_len: u32 = 48;
 pub const keyboard_rows: u32 = 4;
 
-/// What a glass key tap means for Dexter / mode (ZETA2).
+/// What a glass key tap means for Dexter / mode (ZETA2 / ZETA4).
 pub const TapResult = union(enum) {
     action: dexter.Action,
     set_mode: layout.Mode,
+    set_emoji_tab: emoji.Tab,
     toggle_shift,
     none,
 };
+
+fn utf8_action(id: u8) dexter.Action {
+    const u = emoji.utf8_for(id);
+    var ins: dexter.Utf8Insert = .{};
+    assert(u.len > 0);
+    assert(u.len <= dexter.max_utf8_insert);
+    ins.len = u.len;
+    tally_copy.copy_disjoint(u8, ins.data[0..u.len], u.slice());
+    return .{ .utf8 = ins };
+}
 
 /// Map a layout key + shift latch into an editor action or mode change.
 pub fn tap_result(key: layout.Key, shift_on: bool) TapResult {
@@ -43,11 +55,13 @@ pub fn tap_result(key: layout.Key, shift_on: bool) TapResult {
         .to_numbers => .{ .set_mode = .numbers },
         .to_letters => .{ .set_mode = .letters },
         .to_symbols => .{ .set_mode = .symbols },
-        .to_emoji => .none, // ZETA4
+        .to_emoji => .{ .set_mode = .emoji },
+        .emoji_face => |id| .{ .action = utf8_action(id) },
+        .emoji_tab => |tab| .{ .set_emoji_tab = tab },
     };
 }
 
-/// ASCII face for one key (Skate-safe).
+/// ASCII / tab label for one key (emoji faces use skate_cell in format_page_row).
 pub fn label_for(key: layout.Key) []const u8 {
     return switch (key) {
         .char_ => |ch| blk: {
@@ -62,13 +76,15 @@ pub fn label_for(key: layout.Key) []const u8 {
         .to_letters => "abc",
         .to_symbols => "#+=",
         .to_emoji => "em",
+        .emoji_face => "",
+        .emoji_tab => |tab| emoji.tab_label(tab),
     };
 }
 
 /// Painted character width of one key (ZETA2b hit spans match this).
 pub fn label_char_len(key: layout.Key) u32 {
     return switch (key) {
-        .char_ => 1,
+        .char_, .emoji_face => 1,
         else => blk: {
             const lab = label_for(key);
             assert(lab.len > 0);
@@ -97,6 +113,11 @@ pub fn format_page_row(page: layout.Page, row_idx: u32, out_line: *[max_line_len
             .char_ => |ch| {
                 if (pos >= max_line_len) break;
                 out_line[pos] = ch;
+                pos += 1;
+            },
+            .emoji_face => |id| {
+                if (pos >= max_line_len) break;
+                out_line[pos] = emoji.skate_cell(id);
                 pos += 1;
             },
             else => {
@@ -139,15 +160,23 @@ pub fn drain_layout_keys(editor: *dexter.LineEditor, keys: []const layout.Key) v
             .action => |action| {
                 editor.apply_action(action);
                 switch (key) {
-                    .char_, .space => shift_on = false,
+                    .char_, .space, .emoji_face => shift_on = false,
                     else => {},
                 }
             },
             .toggle_shift => shift_on = !shift_on,
-            .set_mode, .none => {},
+            .set_mode, .set_emoji_tab, .none => {},
         }
     }
     assert(editor.len <= dexter.max_line_len);
+}
+
+/// Device-free ZETA4: tapping face 0 inserts its UTF-8 into the editor.
+pub fn emoji_face0_inserts_utf8() bool {
+    var editor: dexter.LineEditor = .{};
+    drain_layout_keys(&editor, &[_]layout.Key{.{ .emoji_face = 0 }});
+    const expect = emoji.utf8_for(0).slice();
+    return std.mem.eql(u8, editor.prompt_slice(), expect);
 }
 
 pub const max_hit_keys: u32 = layout.max_keys_per_row * keyboard_rows;

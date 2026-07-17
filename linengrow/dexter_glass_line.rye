@@ -8,6 +8,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const core = @import("dexter_glass_core.rye");
 const dexter = @import("window_input.rye");
+const emoji = @import("dexter_glass_emoji.rye");
 
 pub const dexter_line_max: u32 = 48;
 /// Skate-safe caret face (ZETA3).
@@ -37,10 +38,14 @@ pub fn format_dexter_line_live(
     // invariant: prompt is bounded for Skate chrome
     assert(prompt.len <= dexter.max_line_len);
     assert(out_line.len == dexter_line_max);
+    // ZETA4: curated emoji → atlas cells so Skate can paint faces on the line.
+    var preview: [dexter.max_line_len]u8 = undefined;
+    const preview_len = emoji.skate_preview(prompt, preview[0..]);
+    const shown = preview[0..preview_len];
     const line = if (caret_on)
-        std.fmt.bufPrint(out_line, "DEXTER line · {s}{c}", .{ prompt, caret_glyph }) catch return false
+        std.fmt.bufPrint(out_line, "DEXTER line · {s}{c}", .{ shown, caret_glyph }) catch return false
     else
-        std.fmt.bufPrint(out_line, "DEXTER line · {s}", .{prompt}) catch return false;
+        std.fmt.bufPrint(out_line, "DEXTER line · {s}", .{shown}) catch return false;
     out_len.* = @intCast(line.len);
     assert(out_len.* > 0);
     assert(out_len.* <= dexter_line_max);

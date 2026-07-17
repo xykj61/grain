@@ -11,7 +11,7 @@ const layout = @import("dexter_glass_keyboard_layout.rye");
 const paint = @import("dexter_glass_keyboard_paint.rye");
 const dexter = @import("window_input.rye");
 
-const witness_version = "20260717.183724";
+const witness_version = "20260717.190045";
 
 fn run_selftest(_: std.process.Init) !u8 {
     assert(std.mem.eql(u8, layout.waymark, "ZETA"));
@@ -89,8 +89,25 @@ fn run_selftest(_: std.process.Init) !u8 {
     assert(std.mem.eql(u8, editor.prompt_slice(), "glow 2"));
     print("zeta2: tap drain \"{s}\" -- GREEN\n", .{editor.prompt_slice()});
 
+    // ZETA4: emoji mode — frequent face, UTF-8 insert, tab switch.
+    assert(layout.emoji_frequent_top_left_is_face0());
+    assert(paint.tap_result(.to_emoji, false) == .set_mode);
+    assert(paint.tap_result(.{ .emoji_tab = .hearts }, false) == .set_emoji_tab);
+    assert(paint.emoji_face0_inserts_utf8());
+    var emoji_editor: dexter.LineEditor = .{};
+    paint.drain_layout_keys(&emoji_editor, &[_]layout.Key{
+        .{ .emoji_face = 0 },
+        .delete,
+    });
+    assert(emoji_editor.len == 0);
+    print("zeta4: emoji UTF-8 insert + backspace -- GREEN\n", .{});
+
+    const emoji = @import("dexter_glass_emoji.rye");
+    assert(emoji.atlas_glyphs_are_distinct());
+    print("zeta4: distinct atlas glyphs per face -- GREEN\n", .{});
+
     print("zeta: version {s}\n", .{witness_version});
-    print("GREEN: ZETA0–ZETA2b — layout, label-span hit, tap→Action under waymark ZETA.\n", .{});
+    print("GREEN: ZETA0–ZETA4 — layout, label-span hit, tap→Action, emoji under waymark ZETA.\n", .{});
     return 0;
 }
 
