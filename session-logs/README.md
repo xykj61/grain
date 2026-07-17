@@ -8,6 +8,7 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260717.161727` — [Glow template bron refresh then continue](20260717-161727_glow-template-bron-refresh.bron) — Quin · linux host · Eastern-capable clock in templates
 - `20260717.161626` — [README front-door sync + OTHER_SENSORS send](20260717-161626_readme-sync-and-other-sensors-send.bron) — run-today names Glow desk + TUBE/HAWM
 - `20260717.161448` — [TUBE0.5 sensors emits OTHER_SENSORS](20260717-161448_tube05-sensors-other-sensors-emit.bron) — closed table row; pairs with Sensors Grant
 - `20260717.161357` — [send GrapheneOS product-edge stack then kg](20260717-161357_send-grapheneos-product-edge.bron) — Resource Scope · Network · Sensors · glass cover to pier

@@ -44,15 +44,20 @@ azimuth_planet
 # --- Clock — where your stamps come from ------------------------------------
 # The one-clock naming law takes stamps from the contributor verbatim; this
 # names which wall clock that is, so a reader knows how to read your stamps.
-timezone America/Los_Angeles
-timezone_label Pacific (PDT/PST)
+# Each host may seat its own convention (e.g. Pacific on a macOS clone,
+# Eastern on a Framework Ubuntu host) — see context/specs/ for host notes.
+# Pick the IANA zone your system clock actually uses.
+timezone America/New_York
+timezone_label Eastern (EDT/EST)
 
 # --- Session-log defaults for this clone ------------------------------------
 # The session-logs rule reads these as the default editor/model/voice for logs
-# written from this clone, until you name a change.
+# written from this clone. Record the model that actually produces each log;
+# update this field when the clone switches models. Standing voice is Quin
+# (Reya 2 · Rio 3 · Riyo rest retired in context/archive/).
 editor Cursor
-model Cursor Sonnet 5 1M Medium
-voice Rio 3
+model Cursor Grok 4.5 300k High Fast
+voice Quin
 
 # --- Placeholder identities for examples ------------------------------------
 # Structurally-invalid @p placeholders for docs and commands (never a real
