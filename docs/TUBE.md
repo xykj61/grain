@@ -59,7 +59,9 @@ rishi/bin/rishi run tools/tube05_install_proof_onpath_host.rish
 # → 99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe
 ```
 
-**Surface + Skate on Pixel GREEN `20260717.125858`:** `glow_native_surface.rye` rasterizes Brushstroke Skate onto the ANativeWindow; Keaton confirmed on-device. Fold + `sala_root.txt` still land in onCreate; tap finishes. **Still open:** thin-view / richer Skate frames. Debug keystore under `tools/.cache/tube05/` is host-local, never for publish.
+**Surface + Skate on Pixel GREEN `20260717.125858`:** `glow_native_surface.rye` rasterizes Brushstroke Skate onto the ANativeWindow; Keaton confirmed on-device. Fold + `sala_root.txt` still land in onCreate; tap finishes.
+
+**Thin-view on glass GREEN `20260717.130602`:** `sala_r1_frame.rye` hosts the welcome-path Pool ledger agent and `sala_view.render_ledger` yields the R1 frame; Skate paints those lines above the session-root hex (`SALA B0+R1`). Install proof GREEN (`99b3ae96…e4c5fe`); Keaton confirmed ledger lines on Pixel. Debug keystore under `tools/.cache/tube05/` is host-local, never for publish. **Still open:** R2 multi-panel surface on glass.
 
 ---
 

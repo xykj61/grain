@@ -1,9 +1,10 @@
 //! linengrow/glow_native_surface.rye — Skate grid presented on Android glass.
 //!
-//! Builds a small Brushstroke Skate text grid (title, Sala session-root hex,
-//! tap hint), rasterizes it with skate_grid.rye, and copies pixels into the
-//! locked ANativeWindow. No EGL, no Kotlin — Skate stays OS-free; this file
-//! is only the Android present seam (same role Wayland seed plays on desktop).
+//! Builds a small Brushstroke Skate text grid (title, Sala R1 thin-view lines,
+//! session-root hex, tap hint), rasterizes it with skate_grid.rye, and copies
+//! pixels into the locked ANativeWindow. No EGL, no Kotlin — Skate stays
+//! OS-free; this file is only the Android present seam (same role Wayland seed
+//! plays on desktop).
 //!
 //! Skate writes B/G/R/A; Android WINDOW_FORMAT_RGBA_8888 wants R/G/B/A — colors
 //! are swapped at the Color{} literals so the buffer lands correctly.
@@ -13,6 +14,7 @@ const assert = std.debug.assert;
 // Symlinked beside this file (linengrow/skate_grid.rye → brushstroke/) so Zig's
 // module root stays inside linengrow while Skate remains the one Brushstroke source.
 const skate = @import("skate_grid.rye");
+const view = @import("sala_view.rye");
 
 const WindowBuffer = extern struct {
     width: i32,
@@ -48,8 +50,13 @@ fn put_line_centered(grid: *skate.Grid, row: u32, text: []const u8) void {
     grid.put_line(row, line[0..cols]);
 }
 
-/// Paint via Skate: title, 64 hex chars (two rows), tap hint.
-pub fn paint_session_root_hex(window: ?*anyopaque, hex: *const [64]u8, matched: bool) void {
+/// Paint via Skate: title, optional R1 thin-view lines, 64 hex chars, tap hint.
+pub fn paint_session_root_hex(
+    window: ?*anyopaque,
+    hex: *const [64]u8,
+    matched: bool,
+    frame: ?*const view.Frame,
+) void {
     if (window == null) return;
     _ = ANativeWindow_setBuffersGeometry(window, 0, 0, format_rgba8888);
 
@@ -66,19 +73,27 @@ pub fn paint_session_root_hex(window: ?*anyopaque, hex: *const [64]u8, matched: 
     const cell_pw = skate.cell_w * scale;
     const cell_ph = skate.cell_h * scale;
     const cols: u32 = @intCast(@max(8, @min(80, @divTrunc(w, @as(i32, @intCast(cell_pw))))));
-    const rows: u32 = 8;
+    const rows: u32 = 10;
 
     const allocator = std.heap.page_allocator;
     var grid = skate.Grid.init(allocator, cols, rows) catch return;
     defer allocator.free(grid.cells);
 
-    const title = if (matched) "SALA B0  GREEN" else "SALA B0";
+    const title = if (matched) "SALA B0+R1  GREEN" else "SALA B0+R1";
     put_line_centered(&grid, 0, title);
-    put_line_centered(&grid, 1, "session root (Skate)");
-    // Hex: prefer two rows of 32; on narrow grids, put_line truncates.
-    put_line_centered(&grid, 3, hex[0..32]);
-    put_line_centered(&grid, 4, hex[32..64]);
-    put_line_centered(&grid, 6, "TAP TO CLOSE");
+    put_line_centered(&grid, 1, "thin-view (Pool)");
+    var row: u32 = 2;
+    if (frame) |f| {
+        var i: u32 = 0;
+        while (i < f.count and row < 5) : (i += 1) {
+            put_line_centered(&grid, row, f.line(i));
+            row += 1;
+        }
+    }
+    // Hex under the frame; two rows of 32.
+    put_line_centered(&grid, 6, hex[0..32]);
+    put_line_centered(&grid, 7, hex[32..64]);
+    put_line_centered(&grid, 9, "TAP TO CLOSE");
 
     const bg = rgba(0x1a, 0x14, 0x10);
     const fg = if (matched) rgba(0x7d, 0xc4, 0x8a) else rgba(0xe8, 0xc4, 0x7a);

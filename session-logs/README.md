@@ -8,6 +8,9 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260717.130610` — [Send R1 thin-view on Pixel GREEN](20260717-130610_send-r1-thin-view-pixel.bron) — commit + push; kg R2 multi-panel next
+- `20260717.130602` — [Sala R1 thin-view seen on the Pixel](20260717-130602_r1-thin-view-seen-on-pixel.bron) — install proof GREEN; ledger lines confirmed on glass
+- `20260717.130434` — [Sala R1 thin-view painted on Skate Android glass](20260717-130434_sala-r1-thin-view-on-skate-glass.bron) — pack GREEN; host look for ledger lines next
 - `20260717.130209` — [Send Bron archive fold through 20260716](20260717-130209_send-bron-archive-fold.bron) — commit + push origin and codeberg; kg thin-view next
 - `20260717.130124` — [Archive fold Bron days through 20260716](20260717-130124_archive-bron-days-through-16.bron) — tool accepts .bron; 209 logs folded; today stays flat
 - `20260717.125858` — [Skate look confirmed on the Pixel](20260717-125858_skate-seen-on-pixel.bron) — Skate glyphs on GrapheneOS glass; install proof GREEN

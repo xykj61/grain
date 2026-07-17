@@ -1,0 +1,42 @@
+//! linengrow/sala_r1_frame.rye — Sala R1 demo frame as a callable unit.
+//!
+//! Same Pool-hosted ledger path as sala_view_witness.rye Claim 1, returned as
+//! a thin-view Frame for the NativeActivity present seam. B0 still owns the
+//! session root; R1 owns what Pool hosts painted as lines.
+
+const std = @import("std");
+const kumara = @import("kumara.rye");
+const rc = @import("receipt_core.rye");
+const mc = @import("mala_core.rye");
+const caps = @import("capabilities.rye");
+const pool = @import("pool_host_seam.rye");
+const view = @import("sala_view.rye");
+
+pub const FrameError = view.FrameError || pool.HostError || error{ TableFull, Overflow, InvalidFact };
+
+/// Host the welcome-path ledger agent and render its fold as a bounded frame.
+pub fn run_demo_frame() FrameError!view.Frame {
+    const issuer_kp = kumara.keypair_from_seed(&mc.issuer_seed);
+    const holder_kp = kumara.keypair_from_seed(&mc.holder_seed);
+    var issuer_hex: [mc.pubkey_hex_len]u8 = undefined;
+    var holder_hex: [mc.pubkey_hex_len]u8 = undefined;
+    mc.hex_of_key(issuer_kp.public_key, &issuer_hex);
+    mc.hex_of_key(holder_kp.public_key, &holder_hex);
+
+    var log: [rc.max_log_len]u8 = undefined;
+    const log_len = try mc.build_welcome_log(&log, issuer_kp, holder_kp, &issuer_hex, &holder_hex);
+
+    var table: caps.CapabilityTable = .{};
+    const ledger_agent = try table.add_child("ledger-agent");
+    try ledger_agent.grant(caps.Capability.init(pool.ledger_resource, caps.right_read | caps.right_write));
+    const hosted = try pool.host_ledger_agent(
+        &table,
+        "ledger-agent",
+        log[0..log_len],
+        &issuer_hex,
+        &holder_hex,
+        issuer_kp.public_key,
+        holder_kp.public_key,
+    );
+    return try view.render_ledger("ledger-agent", hosted);
+}
