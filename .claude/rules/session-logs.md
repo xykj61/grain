@@ -32,9 +32,9 @@ Minimum shape (`format session-log-v1`):
 format session-log-v1
 stamp YYYYMMDD.HHMMSS
 editor Cursor
-model Cursor Sonnet 5 1M Medium
+model Cursor Grok 4.5 300k High Fast
 voice Quin
-host macOS 26.6 arm64 (Apple M2) — see context/specs/20260713-211800_local-host-system-hardware-anonymized.md
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern time convention
 title short title
 prompt what Keaton asked
 think step of reasoning
@@ -44,7 +44,7 @@ file path why-one-line
 recommend keep-going|check-in what and why
 ```
 
-- **editor** / **model** / **voice** — which editor and model produced this log. The standing voice is **Quin** (restored `20260716.040000`, after Riyo carried it for one day; Riyo now retired to `context/archive/`, following Reya 2 and Rio 3 before it); record `voice Quin` on new logs, and never rewrite the voice on earlier dated logs. On this local macOS clone (`~/urbit`), the **current model is `Cursor Sonnet 5 1M Medium`** (switched `20260714.045901`; the day's model arc so far: Fable 5 1M Max → Opus 4.8 1M Max (safety-filter auto-switch) → Fable 5 1M Max → Sonnet 5 1M Medium). Record the model that actually produced each log, verbatim; earlier dated logs keep whatever they recorded (`Fable 5 1M Max`, `Opus 4.8 1M Max`, `Cursor Sonnet 5 1M Medium`, or the prior Linux-host `Cursor Grok 4.5`) and are never rewritten. The single source of truth for "current model on this clone" is `GLOW_PROFILE.bron`'s `model` field.
+- **editor** / **model** / **voice** — which editor and model produced this log. The standing voice is **Quin** (restored `20260716.040000`, after Riyo carried it for one day; Riyo now retired to `context/archive/`, following Reya 2 and Rio 3 before it); record `voice Quin` on new logs, and never rewrite the voice on earlier dated logs. **Per host:** the macOS clone's recent arc was Fable 5 1M Max → Opus 4.8 1M Max → Sonnet 5 1M Medium; **this Framework 16 AMD host, from `20260717.122231` after Claude API credits ran out, records `Cursor Grok 4.5 300k High Fast`**. Record the model that actually produced each log, verbatim. Do not rewrite correctly attributed dated logs. When a `model` field was recorded wrong, Keaton may ask to correct those specific lines to the truth — that is a factual fix, not a style rewrite. The single source of truth for "current model on this clone" is `GLOW_PROFILE.bron`'s `model` field.
 - **host** — optional; names the editor/OS/chip combination for this specific machine, anonymized (no serial, hardware UUID, hostname, or username — see `context/specs/20260713-211800_local-host-system-hardware-anonymized.md` for what stays out and why). Omit on hosts where this has never mattered; add it wherever a log's meaning depends on knowing which machine produced it (a sandbox-adaptation session, a hardware-specific witness).
 - **think** — repeatable; step-by-step reasoning.
 - **obs** — decisions and trade-offs.

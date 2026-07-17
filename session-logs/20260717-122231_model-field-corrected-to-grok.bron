@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260717.122231
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern time convention, context/specs/20260717-003132_eastern-time-framework-host-convention.md
+title Model fields corrected to Cursor Grok 4.5 300k High Fast
+prompt Keaton said Claude API credits ran out so the last few rounds used Cursor Grok 4.5 300k High Fast; amend those logs' model fields and send
+think the afternoon TUBE0.5 packaging logs had been mislabeled Cursor Sonnet 5 1M Low from a stale profile default
+think corrected model lines on stamps 121445 121625 121743 121800 and 122010 plus the MD roll-up; updated GLOW_PROFILE.bron and both session-log rules for this Framework host
+obs this is a factual attribution fix on Keaton's word, not a style rewrite of dated prose
+obs also ships the already-drafted TUBE0.5 HAWM0 install GREEN ledger close from 122010
+file session-logs/20260717-121445_sala-fold-wired-tube05-apk.bron model corrected
+file session-logs/20260717-121625_tube05-install-proof-host-witness.bron model corrected
+file session-logs/20260717-121743_tube05-jailed-slice-ready.bron model corrected
+file session-logs/20260717-121800_align-send-ten-batches.bron model corrected
+file session-logs/20260717-121800_align-send-ten-batches.md model corrected
+file session-logs/20260717-122010_tube05-hawm0-install-green.bron model corrected and first send
+file GLOW_PROFILE.bron current model on this host
+recommend keep-going — after send, Pixel USB install proof or NativeActivity surface remain the open doors

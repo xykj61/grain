@@ -67,7 +67,7 @@ The native-activity shim is that missing precondition, and it belongs beneath TU
 
 | Rung | Name | Gate | State |
 |---|---|---|---|
-| **TUBE0.5** | **First installable Glow APK on GrapheneOS** | TUBE0 (GREEN) · HAWM3 (closed, verified-boot Pixel 10a) | **Host-side packaging GREEN `20260717.021857`** · **Sala fold wired `20260717.121445`** — permission emission, NativeActivity envelope, signed APK with NDK-linked `libglowapp.so` (arm64+x86_64) whose `ANativeActivity_onCreate` runs Sala B0. On-device `adb install` + `sala_root.txt` proof remain the next slice |
+| **TUBE0.5** | **First installable Glow APK on GrapheneOS** | TUBE0 (GREEN) · HAWM3 (closed, verified-boot Pixel 10a) | **Host pack GREEN `20260717.021857`** · **Sala fold wired `20260717.121445`** · **HAWM0 install GREEN `20260717.122010`** — APK installed; `sala_root.txt` matched HAWM1 root. Pixel USB path still open; surface/finish later |
 
 TUBE0.5's host-side half is now checkable. What landed:
 
@@ -80,7 +80,7 @@ TUBE0.5's host-side half is now checkable. What landed:
 
 ## What remains open
 
-- **On-device install** — host one-shot `tools/tube05_install_proof_onpath_host.rish` (HAWM0 with `/dev/kvm` and/or Pixel USB): `adb install -r`, launch NativeActivity, `run-as` read `files/sala_root.txt`, match the HAWM1 demo root.
+- **Physical Pixel install** — same host one-shot `tools/tube05_install_proof_onpath_host.rish` with USB debugging on the GrapheneOS Pixel 10a (HAWM0 emulator path already GREEN `20260717.122010`).
 - **Activity finish / surface** — onCreate runs the fold today; finishing the activity via the real `ANativeActivity` layout and a first UI surface stay later slices.
 - **APK signing and distribution for publish** stay TUBE2's and TUBE3's own territory (signed weave over Granary, content-addressed resins over Comlink). The debug keystore under `tools/.cache/tube05/` is host-local, never for publish.
 

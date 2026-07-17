@@ -1,7 +1,7 @@
 format session-log-v1
 stamp 20260717.121800
 editor Cursor
-model Cursor Sonnet 5 1M Low
+model Cursor Grok 4.5 300k High Fast
 voice Quin
 host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern time convention, context/specs/20260717-003132_eastern-time-framework-host-convention.md
 title Align pass and send — ten-batch roll-up, TUBE0.5 host-side GREEN

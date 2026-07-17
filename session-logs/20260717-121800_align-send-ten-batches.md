@@ -1,7 +1,7 @@
 # Ten batches — Pixel · HAWM · TUBE0.5 — then align and send
 
 **Stamp:** `20260717.121800`  
-**Editor:** Cursor · **Model:** Cursor Sonnet 5 1M Low · **Voice:** Quin  
+**Editor:** Cursor · **Model:** Cursor Grok 4.5 300k High Fast · **Voice:** Quin  
 **Host:** Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern time  
 **Format note:** Keaton asked for this batch summary as Markdown. Living session logs remain Bron (`.bron`); this file is an explicit MD roll-up for the arc below.
 
