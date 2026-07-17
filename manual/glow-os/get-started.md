@@ -1,7 +1,7 @@
 # Glow OS — Get Started
 
 **Language:** EN
-**Version:** `20260717.022323` (Eastern) · prior scaffold `20260713.235900`
+**Version:** `20260717.173427` (Eastern) · prior `20260717.022323` · scaffold `20260713.235900`
 **Style:** Radiant (see `../../context/RADIANT_STYLE.md`)
 **Status:** Mixed register (Two Rooms) — real Pixel/HAWM/TUBE0.5 and Rishi paths named first; four OS variants remain scaffold
 
@@ -30,9 +30,10 @@ Manual index with both hubs: [`../README.md`](../README.md).
 
 ### Language path (checkable)
 
-1. **Run your first Rishi witness** — [`../tutorials/first-witness.md`](../tutorials/first-witness.md). This is the teachable language surface today.
-2. **Read the Rishi reference** — [`../reference/rishi-language.md`](../reference/rishi-language.md) (parity **142**).
-3. **Peek at Glow runes** — `glow/rune_bounded_trap.rye` and `glow/rune_cast.rye` are real, witnessed heads. A full Glow beginner tutorial waits on a general parser; until then, treat Glow grammar as design ([`../../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md`](../../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md)).
+1. **Walk the compass once** — [`../tutorials/cursor-and-the-compass.md`](../tutorials/cursor-and-the-compass.md) stitches foundations, **witness habitat** (Acme face for the happy zone), Cursor rules, Bron logging, and send. Scaffold `20260717.173427`.
+2. **Run your first Rishi witness** — [`../tutorials/first-witness.md`](../tutorials/first-witness.md). This is the teachable language surface today.
+3. **Read the Rishi reference** — [`../reference/rishi-language.md`](../reference/rishi-language.md) (parity **142**).
+4. **Peek at Glow runes** — `glow/rune_bounded_trap.rye` and `glow/rune_cast.rye` are real, witnessed heads. A full Glow beginner tutorial waits on a general parser; until then, treat Glow grammar as design ([`../../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md`](../../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md)).
 
 ### Device path (checkable)
 
