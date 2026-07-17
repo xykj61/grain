@@ -10,16 +10,20 @@
 # Read by: tools/glow_host_run.sh
 # See: external-research/20260714-005658_native-arm64-parity-witness-run.md
 # (the RYE_ZIG/RYE_LIB PATH-fallback footgun this file exists to close)
+#
+# Worked hosts in this tree so far: macOS aarch64 · Linux x86_64 (Framework).
+# Fill os/arch for the machine you are on; never copy another host's absolute
+# paths.
 
 # os: macos | linux | (uname -s, lowercased, first word)
-os macos
+os linux
 # arch: aarch64 | x86_64 (uname -m; "arm64" reads as aarch64)
-arch aarch64
+arch x86_64
 
 # Absolute path to the pinned Zig 0.16.0 binary for THIS host's os/arch.
 # Fetch + checksum-verify per rye/README.md before pointing here — never trust
-# an unverified toolchain. See the witness-run doc above for the exact fetch
-# and the official checksum to verify against.
+# an unverified toolchain. After fetch, many clones point at
+# <repo>/vendor/zig-toolchain/zig on this machine.
 rye_zig /absolute/path/to/vendor/zig-toolchain/zig
 
 # Absolute path to rye/lib (Rye's own standard library directory).
@@ -29,5 +33,6 @@ rye_lib /absolute/path/to/rye/lib
 # confirm they match before trusting a build).
 zig_version 0.16.0
 
-# When this file was last confirmed correct on this host (Pacific stamp).
-checked 20260714.005658
+# When this file was last confirmed correct on this host (your one-clock stamp;
+# timezone lives in GLOW_PROFILE.bron, not here).
+checked YYYYMMDD.HHMMSS
