@@ -8,7 +8,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const lower = @import("lower_null.rye");
 
-const witness_version = "20260717.155111";
+const witness_version = "20260717.165400";
 
 fn run_selftest(init: std.process.Init) !u8 {
     const io = init.io;
@@ -68,12 +68,18 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("lower: single then-arm without else refused MalformedArms -- GREEN\n", .{});
 
+    const n_lent = try lower.lower_line_welcome("?~  records.cur  (lent groups)  0", &buf);
+    const rye_lent = buf[0..n_lent];
+    assert(std.mem.indexOf(u8, rye_lent, "const groups: []const u32") != null);
+    assert(std.mem.indexOf(u8, rye_lent, "const then_arm: u32 = @intCast(groups.len)") != null);
+    print("lower: \"?~  …  (lent groups)  0\" welcome nests lent arm -- GREEN\n", .{});
+
     if (lower.lower_line_welcome("?~  records.cur  (mix a b)  0", &buf)) |_| {
         return error.ArmLoweredTooSoon;
     } else |err| {
         if (err != lower.LowerError.ArmNotYetLowered) return err;
     }
-    print("lower: parenthesized arm refused ArmNotYetLowered -- GREEN\n", .{});
+    print("lower: other parenthesized arm refused ArmNotYetLowered -- GREEN\n", .{});
 
     try cwd.createDirPath(io, "glow/.cache");
     const welcome_path = "glow/.cache/null_records_welcome.rye";
@@ -88,8 +94,12 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, gen_src, "?~  records.cur  1  0") != null);
     print("lower: glow/gen/null-records.glow carries decimal then/else arms -- GREEN\n", .{});
 
+    const gen_lent = try cwd.readFileAlloc(io, "glow/gen/null-lent.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_lent, "(lent groups)") != null);
+    print("lower: glow/gen/null-lent.glow carries lent then arm -- GREEN\n", .{});
+
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: `?~` lowers with decimal and cast then/else arms to ordinary Rye.\n", .{});
+    print("GREEN: `?~` lowers with decimal, cast, and lent then/else arms to ordinary Rye.\n", .{});
     return 0;
 }
 

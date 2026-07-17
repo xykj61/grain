@@ -54,6 +54,21 @@ assert facelent.ok else "glow_run face-lent.glow failed"
 assert facelent.out contains "GREEN" else "glow_run face-lent.glow not GREEN"
 assert facelent.out contains "face-lent.glow" else "glow_run face-lent claim missing path"
 
+let iflent = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/if-lent.glow"]
+assert iflent.ok else "glow_run if-lent.glow failed"
+assert iflent.out contains "GREEN" else "glow_run if-lent.glow not GREEN"
+assert iflent.out contains "if-lent.glow" else "glow_run if-lent claim missing path"
+
+let swlent = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/switch-lent.glow"]
+assert swlent.ok else "glow_run switch-lent.glow failed"
+assert swlent.out contains "GREEN" else "glow_run switch-lent.glow not GREEN"
+assert swlent.out contains "switch-lent.glow" else "glow_run switch-lent claim missing path"
+
+let nulllent = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/null-lent.glow"]
+assert nulllent.ok else "glow_run null-lent.glow failed"
+assert nulllent.out contains "GREEN" else "glow_run null-lent.glow not GREEN"
+assert nulllent.out contains "null-lent.glow" else "glow_run null-lent claim missing path"
+
 let nullt = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/null-records.glow"]
 assert nullt.ok else "glow_run null-records.glow failed"
 assert nullt.out contains "GREEN" else "glow_run null-records.glow not GREEN"
