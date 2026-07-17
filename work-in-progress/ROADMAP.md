@@ -4,7 +4,7 @@
 
 **Language:** EN
 **Version:** `20260715` (Pool keystone revival prioritized · Quin voice seated · align pass reconciles the closed ladder)
-**Last updated:** 2026-07-17 (**Dexter D2** `20260717.174336` — Pixel look GREEN; soft-keyboard drain + B2 layout next check-in)
+**Last updated:** 2026-07-17 (**Dexter D3** `20260717.174551` — live KEY drain + showSoftInput; pack GREEN; Pixel typing look next)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Lens:** TAME — safety, performance, joy; the Seed Law; [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md)
@@ -198,17 +198,19 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **Dexter D0+D1 on glass, `20260717.173133`** — pure LineEditor (`pond/apps/window_input.rye`, symlinked) fed Android-shaped demo actions; Skate paints `DEXTER line · glow` on row 12; title `SALA B0+B1+DX+R2+T1 GREEN`. Witness GREEN; pack GREEN; parity wired. Soft-keyboard live drain stays later.
 
-**Dexter D2 Pixel look GREEN, `20260717.174336`** — Keaton confirmed on device after host install (`tube05_install_proof_onpath_host.rish`): title and `DEXTER line · glow` visible. Dexter-on-glass product lap closed through look. **Aligned next:** check-in — soft-keyboard live drain, B2 layout word, `(jam …)`, or Dill kernel.
+**Dexter D2 Pixel look GREEN, `20260717.174336`** — Keaton confirmed on device after host install (`tube05_install_proof_onpath_host.rish`): title and `DEXTER line · glow` visible.
+
+**Dexter D3 live KEY drain, `20260717.174551`** — `dexter_glass_key.rye` + NativeActivity KEY path + `ANativeActivity_showSoftInput`; witness GREEN (demo + live KEY); pack GREEN. **Aligned next:** D3 Pixel typing look (host install); then check-in before B2 layout, `(jam …)`, or Dill kernel.
 
 **Witness habitat + markup pipeline, `20260717.173427`** — foundations fit study affirms single-strand · sameness · happy-zone practice in the suite; teaching path was the gap. Seats **witness habitat** as Acme synonym (foundations keep *happy zone*). Fusion map holds Scribble→Brix→Bron→Mantra→Sala with Glow under TAME; Udon/Sail/Zuse horizon. Tutorial scaffold [`../manual/tutorials/cursor-and-the-compass.md`](../manual/tutorials/cursor-and-the-compass.md); silo [`../active-designing/20260717-173427_witness-habitat-and-the-markup-pipeline.md`](../active-designing/20260717-173427_witness-habitat-and-the-markup-pipeline.md). Product next remains Dexter D2.
 
 **Align pass — three prompts closed, `20260717.173848`** — compass rose walked against the last three seated laps:
 
-1. **Dexter · Dill · glass** (`172832`/`173133`/`174336`) — Dexter = Brushstroke/Sala; D0+D1+D2 GREEN; Dill gap.
+1. **Dexter · Dill · glass** (`172832`/`173133`/`174336`/`174551`) — Dexter = Brushstroke/Sala; D0–D3 GREEN (device-free + pack); D3 Pixel typing look open; Dill gap.
 2. **Witness habitat + markup** (`173427`) — Acme testing face; fusion spine; Cursor-and-the-compass tutorial scaffold.
 3. **Foundations / LLM compress** (`173848`) — **decline** bulk-archive of foundations/context and Bron-essay rewrites (dated_guard · inventory · prior check-in). **Seat** docs compressor [`../docs/COMPASS.md`](../docs/COMPASS.md) + Bron card [`../docs/compass_card.bron`](../docs/compass_card.bron); study [`../external-research/20260717-173848_foundations-archive-bron-compress-for-llm-context.md`](../external-research/20260717-173848_foundations-archive-bron-compress-for-llm-context.md); silo [`../active-designing/20260717-173848_compass-card-and-foundations-compress.md`](../active-designing/20260717-173848_compass-card-and-foundations-compress.md).
 
-**Aligned next:** check-in before soft-keyboard drain, B2 layout word, `(jam …)`, Dill kernel, or M1 Scribble round-trip. Horizon docs: optional thin `docs/TAME.md` / LEXICON core card only if cold-load pain is measured.
+**Aligned next:** Dexter D3 Pixel typing look (host install). Then check-in before B2 layout word, `(jam …)`, Dill kernel, or M1 Scribble round-trip.
 
 ## The Visual Track — Realidream (horizon lane, ladder already named)
 
