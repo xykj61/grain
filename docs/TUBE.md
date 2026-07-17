@@ -59,7 +59,7 @@ rishi/bin/rishi run tools/tube05_install_proof_onpath_host.rish
 # → 99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe
 ```
 
-**Still open:** NativeActivity surface/finish. Debug keystore under `tools/.cache/tube05/` is host-local, never for publish.
+**Still open:** a drawn NativeActivity / Skate surface (onCreate now calls `ANativeActivity_finish` after writing `sala_root.txt` so the blank window does not hang). Debug keystore under `tools/.cache/tube05/` is host-local, never for publish.
 
 ---
 
