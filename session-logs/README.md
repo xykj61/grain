@@ -8,6 +8,8 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260717.013213` — [GrapheneOS installed on the physical Pixel 10a](20260717-013213_grapheneos-installed-pixel-10a.bron) — HAWM3 touches real hardware for the first time on the whole ladder
+
 **Filename (living):** `YYYYMMDD-HHMMSS_short-slug.bron` — no countdown prefix. **Body:** `format session-log-v1` with `stamp` · `editor` · `model` · `voice` · `think` · `obs` · `file` · `recommend`.
 
 **Commit discipline:** ship the log in the **same commit** as the work it records whenever possible. A follow-up commit only for the log is a last resort. Re-align **archived Markdown** with `rye run tools/align_session_logs.rye`.

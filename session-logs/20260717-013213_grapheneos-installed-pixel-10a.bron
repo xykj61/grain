@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260717.013213
+editor Cursor
+model Sonnet 5 1M Low
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern time convention, context/specs/20260717-003132_eastern-time-framework-host-convention.md
+title GrapheneOS installed on the physical Pixel 10a — HAWM3 touches real hardware
+prompt Keaton reported GrapheneOS is installed on the phone and plugged in
+think this is the first HAWM-ladder rung to touch real hardware rather than emulation or a Framework host
+think HAWM0/HAWM1 proved Glow code correct on emulated Android; HAWM3 proves the real Titan M2 and locked bootloader
+think updated context/specs/two-dev-environments-and-mobile-emulation.md HAWM3 row and top-level register to name this real
+think updated work-in-progress/TASKS.md and ROADMAP.md with the same milestone, honestly naming what is still unverified
+think the guide's own Step 8 boot-hash check against GrapheneOS's published value is the one piece not yet confirmed done — named as open rather than assumed
+obs a real flash is not automatically a verified chain of trust; naming that distinction honestly matters more than declaring the rung fully green
+file context/specs/two-dev-environments-and-mobile-emulation.md HAWM3 row and status line now say installed, not merely owned
+file work-in-progress/TASKS.md new checked item records the real-hardware milestone and the open Step 8 question
+file work-in-progress/ROADMAP.md new align-pass paragraph names the milestone and the honest next step
+recommend check-in — ask Keaton whether the Step 8 boot-key hash was checked before calling HAWM3 fully closed, and what he wants next: verify the hash, or move to running Glow/Sala code on the real device
