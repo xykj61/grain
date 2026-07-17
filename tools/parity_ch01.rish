@@ -1116,3 +1116,14 @@ say "witness suite: TUBE0 — the Glow app-manifest mold…"
 let tube0 = run ["rishi/bin/rishi" "run" "tools/tube0_manifest_witness.rish"]
 assert tube0.ok else "TUBE0 manifest witness failed"
 say "GREEN: TUBE0 manifest witness passed."
+
+say "witness suite: TUBE0.5 — manifest capabilities emit as Android permissions…"
+let tube0_5 = run ["rishi/bin/rishi" "run" "tools/tube0_5_android_permission_witness.rish"]
+assert tube0_5.ok else "TUBE0.5 permission-emission witness failed"
+say "GREEN: TUBE0.5 permission-emission witness passed."
+
+say "witness suite: TUBE0.5 — NativeActivity envelope emission…"
+let tube0_5_env = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build linengrow/tube_android_manifest_witness.rye -femit-bin=linengrow/bin/tube_android_manifest_witness && linengrow/bin/tube_android_manifest_witness 2>&1"]
+assert tube0_5_env.ok else "TUBE0.5 NativeActivity envelope witness failed"
+assert tube0_5_env.out contains "GREEN" else "TUBE0.5 NativeActivity envelope witness not GREEN"
+say "GREEN: TUBE0.5 NativeActivity envelope witness passed."

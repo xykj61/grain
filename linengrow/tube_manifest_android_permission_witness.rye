@@ -1,0 +1,84 @@
+//! linengrow/tube_manifest_android_permission_witness.rye — proves the
+//! first real TUBE0.5 claim: a validated manifest emits exactly the
+//! Android permission lines its declared capabilities name, nothing
+//! more, nothing inferred.
+//!
+//!   rye build linengrow/tube_manifest_android_permission_witness.rye \
+//!     -femit-bin=linengrow/bin/tube_manifest_android_permission_witness
+//!   linengrow/bin/tube_manifest_android_permission_witness
+//!
+//! Per active-designing/20260717-014522_native-activity-shim-and-slc-
+//! packaging.md's own TUBE0.5 rung. Four claims:
+//!   1. A manifest declaring "network" with right_net emits exactly the
+//!      INTERNET permission line — the welcome path.
+//!   2. A manifest declaring a resource this table has no row for
+//!      (e.g. an internal-only Glow capability) emits nothing for it —
+//!      silently, by design, not an error.
+//!   3. A manifest declaring "storage" with both right_read and
+//!      right_write emits both storage permission lines, not just one —
+//!      each row in the closed table is checked independently.
+//!   4. A too-small output buffer is refused BufferTooSmall rather than
+//!      silently truncating a permission line.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const caps = @import("capabilities.rye");
+const tm = @import("tube_manifest.rye");
+const perm = @import("tube_manifest_android_permission.rye");
+
+const witness_version = "20260717.021500";
+
+fn run_selftest() !u8 {
+    // Claim 1: a real, recognized resource emits exactly one line.
+    var declared_net = [_]tm.DeclaredCapability{
+        tm.DeclaredCapability.init("network", caps.right_net),
+    };
+    const net_manifest = try tm.build("net-app", "0.1.0", &declared_net, 32);
+    var out_buf: [512]u8 = undefined;
+    const net_written = try perm.render_permission_lines(&net_manifest, &out_buf);
+    const net_lines = out_buf[0..net_written];
+    assert(std.mem.indexOf(u8, net_lines, "android.permission.INTERNET") != null);
+    assert(std.mem.count(u8, net_lines, "uses-permission") == 1);
+    print("tube0.5: network capability emits exactly one INTERNET permission line -- GREEN welcome path.\n", .{});
+
+    // Claim 2: a resource with no table row emits nothing for it.
+    var declared_internal = [_]tm.DeclaredCapability{
+        tm.DeclaredCapability.init("sala-session", caps.right_read | caps.right_write),
+    };
+    const internal_manifest = try tm.build("internal-app", "0.1.0", &declared_internal, 32);
+    const internal_written = try perm.render_permission_lines(&internal_manifest, &out_buf);
+    assert(internal_written == 0);
+    print("tube0.5: an unrecognized (internal-only) resource emits no permission line -- GREEN unwelcome path.\n", .{});
+
+    // Claim 3: two rights over the same resource emit two lines, both
+    // checked independently against the closed table.
+    var declared_storage = [_]tm.DeclaredCapability{
+        tm.DeclaredCapability.init("storage", caps.right_read | caps.right_write),
+    };
+    const storage_manifest = try tm.build("storage-app", "0.1.0", &declared_storage, 32);
+    const storage_written = try perm.render_permission_lines(&storage_manifest, &out_buf);
+    const storage_lines = out_buf[0..storage_written];
+    assert(std.mem.indexOf(u8, storage_lines, "android.permission.READ_EXTERNAL_STORAGE") != null);
+    assert(std.mem.indexOf(u8, storage_lines, "android.permission.WRITE_EXTERNAL_STORAGE") != null);
+    assert(std.mem.count(u8, storage_lines, "uses-permission") == 2);
+    print("tube0.5: read+write storage capability emits both storage permission lines -- GREEN welcome path.\n", .{});
+
+    // Claim 4: a too-small buffer is refused loudly, not truncated.
+    var tiny_buf: [4]u8 = undefined;
+    const overflow = perm.render_permission_lines(&net_manifest, &tiny_buf);
+    if (overflow) |_| {
+        return error.TooSmallBufferAccepted;
+    } else |err| {
+        if (err != perm.EmitError.BufferTooSmall) return err;
+    }
+    print("tube0.5: a too-small output buffer is refused BufferTooSmall -- GREEN unwelcome path.\n", .{});
+
+    print("tube0.5: version {s}\n", .{witness_version});
+    print("GREEN: TUBE0.5 emission -- a validated manifest's declared capabilities become exactly their matching AndroidManifest.xml permission lines, nothing inferred, nothing silently dropped past a full buffer.\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}

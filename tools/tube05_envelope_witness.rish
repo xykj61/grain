@@ -1,0 +1,16 @@
+# tube05_envelope_witness.rish — TUBE0.5 NativeActivity envelope emission.
+#
+#   rishi/bin/rishi run tools/tube05_envelope_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/tube_android_manifest_witness"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/tube_android_manifest_witness.rye -femit-bin=${bin}"]
+assert build.ok else "TUBE0.5 envelope witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "TUBE0.5 envelope witness exited non-zero"
+assert selftest.out contains "GREEN" else "TUBE0.5 envelope witness not GREEN"
+assert selftest.out contains "NativeActivity" else "TUBE0.5 envelope missing NativeActivity claim"
+
+say "GREEN: TUBE0.5 NativeActivity envelope witness passed."

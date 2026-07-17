@@ -1,0 +1,25 @@
+# tube0_5_android_permission_witness.rish — TUBE0.5's first real claim:
+# a validated manifest emits exactly the AndroidManifest.xml permission
+# lines its declared capabilities name.
+#
+# Per active-designing/20260717-014522_native-activity-shim-and-slc-
+# packaging.md's own TUBE0.5 rung: turning TUBE0's manifest mold into
+# Android permission declarations is an assertable emission, never a
+# transpilation. See linengrow/tube_manifest_android_permission.rye.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/tube0_5_android_permission_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/tube_manifest_android_permission_witness"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/tube_manifest_android_permission_witness.rye -femit-bin=${bin}"]
+assert build.ok else "TUBE0.5 permission-emission witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "TUBE0.5 permission-emission witness exited non-zero"
+assert selftest.out contains "GREEN" else "TUBE0.5 permission-emission witness not GREEN"
+assert selftest.out contains "INTERNET" else "TUBE0.5 missing the network-capability welcome path"
+assert selftest.out contains "BufferTooSmall" else "TUBE0.5 missing the too-small-buffer refusal"
+
+say "GREEN: TUBE0.5 permission-emission witness passed."
