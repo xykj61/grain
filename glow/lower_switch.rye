@@ -95,6 +95,7 @@ fn parse_one_arm(rest_in: []const u8) LowerError!struct { arm: ArmExpr, rest: []
         error.MalformedExpr => error.MalformedArms,
         else => err,
     };
+    if (parsed.expr.kind == .mix_of) return error.ArmNotYetLowered;
     return .{ .arm = parsed.expr, .rest = parsed.rest };
 }
 
@@ -122,6 +123,7 @@ fn expect_mint_value(mint_arm: *const ArmExpr) u32 {
         .face => 1,
         .literal, .cast_literal => mint_arm.lit,
         .lent_of => expr.lent_demo_len,
+        .mix_of => unreachable,
     };
 }
 
@@ -218,6 +220,7 @@ fn write_arm_expr(arm: *const ArmExpr, role: enum { mint_role, send_role }, out:
                 .send_role => "send_arm",
             };
         },
+        .mix_of => unreachable,
     }
 }
 

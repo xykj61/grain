@@ -190,9 +190,9 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **Eighth rune head — `=*`, `20260717.150453`** — [`glow/rune_alias.rye`](../glow/rune_alias.rye) completes the `=` trio. Witness GREEN; `parity_ch01` wired.
 
-**Glow generator hop** (sent through `dbf19e2880`) · **nested `@u64` `20260717.163004`** · **shared nest expr `20260717.164350`** · **`(lent …)` paren `20260717.164748`** · **lent-as-arm `20260717.165715`** — `(lent …)` length payload on `?:` · `?-` · `?~` and under `=/`; `(mix …)` still refuses. Foundations stay unmoved; `glow/README.md` is the working surface pin. Hold: GrapheneOS-facing code stays Glow/Rye → native.
+**Glow generator hop** (sent through `dbf19e2880`) · **nested `@u64` `20260717.163004`** · **shared nest expr `20260717.164350`** · **`(lent …)` paren `20260717.164748`** · **lent-as-arm `20260717.165715`** · **`(mix …)` under `=/` `20260717.171524`** — Hoon `+mix` XOR of two demo faces; desk `face-mix`; `(jam …)` and mix-as-arm still refuse. Foundations stay unmoved; `glow/README.md` is the working surface pin. Hold: GrapheneOS-facing code stays Glow/Rye → native.
 
-**Sala B1 welcome carriage on glass, `20260717.170315` · Pixel `20260717.171015`** — HAWM2/TUBE6 remain horizon (full GrapheneOS build). The reachable product lap after lent-as-arm: in-process B1 welcome (`sala_b1_carriage_core.rye`) paints `SALA B1 carriage · 3 ev` on NativeActivity Skate row 11; pack GREEN; device-free glass witness GREEN; install proof GREEN (`99b3ae96…e4c5fe`). Keaton confirmed title + B1 line on the GrapheneOS Pixel. UDP live hop stays in `sala_broadcast_delivery.rye`.
+**Sala B1 welcome carriage on glass, `20260717.170315` · Pixel `20260717.171015`** — HAWM2/TUBE6 remain horizon (full GrapheneOS build). In-process B1 welcome paints `SALA B1 carriage · 3 ev` on NativeActivity Skate row 11; pack GREEN; install proof GREEN; Keaton confirmed on Pixel. UDP live hop stays in `sala_broadcast_delivery.rye`.
 
 ## The Visual Track — Realidream (horizon lane, ladder already named)
 
