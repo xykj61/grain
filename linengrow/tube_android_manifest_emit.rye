@@ -1,0 +1,43 @@
+//! linengrow/tube_android_manifest_emit.rye — writes one AndroidManifest.xml
+//! for the TUBE0.5 packaging path. Builds a small, fixed demo manifest
+//! (sala-broadcaster with network) and emits the NativeActivity envelope
+//! to the path passed as argv[1].
+//!
+//!   rye build linengrow/tube_android_manifest_emit.rye \
+//!     -femit-bin=linengrow/bin/tube_android_manifest_emit
+//!   linengrow/bin/tube_android_manifest_emit path/to/AndroidManifest.xml
+
+const std = @import("std");
+const assert = std.debug.assert;
+const caps = @import("capabilities.rye");
+const tm = @import("tube_manifest.rye");
+const am = @import("tube_android_manifest.rye");
+
+pub fn main(init: std.process.Init) !u8 {
+    const allocator = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(allocator);
+    if (args.len < 2) {
+        std.debug.print("usage: tube_android_manifest_emit <AndroidManifest.xml>\n", .{});
+        return 2;
+    }
+    const out_path = args[1];
+
+    var declared = [_]tm.DeclaredCapability{
+        tm.DeclaredCapability.init("network", caps.right_net),
+    };
+    const manifest = try tm.build("sala-broadcaster", "0.1.0", &declared, 32);
+
+    var buf: [am.max_manifest_xml_bytes]u8 = undefined;
+    const n = try am.render_android_manifest(
+        &manifest,
+        "org.glow.app.sala_broadcaster",
+        am.glow_lib_name,
+        &buf,
+    );
+    assert(n > 0);
+
+    const io = init.io;
+    try std.Io.Dir.cwd().writeFile(io, .{ .sub_path = out_path, .data = buf[0..n] });
+    std.debug.print("tube0.5: wrote {d} bytes to {s}\n", .{ n, out_path });
+    return 0;
+}

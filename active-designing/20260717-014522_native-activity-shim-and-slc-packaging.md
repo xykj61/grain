@@ -2,7 +2,7 @@
 
 **Stamp:** `20260717.014522` · voice Quin, Keaton co-author.
 
-**Status:** Vision register (Two Rooms) — a design decision and its rationale, not yet a witness. Names a new packaging seam between TUBE0 (GREEN) and the HAWM ladder's own hardware rungs; no shim code, no JNI glue, and no APK build tooling exist yet.
+**Status:** Mixed register (Two Rooms) — design decision seated `20260717.014522`; host-side TUBE0.5 packaging **checkable and GREEN** as of `20260717.021857` (permission emission, NativeActivity envelope emission, signed APK with `libglowapp.so`). On-device install and a real Glow fold inside `ANativeActivity_onCreate` remain vision / next slice.
 
 ## The question this answers
 
@@ -67,15 +67,20 @@ The native-activity shim is that missing precondition, and it belongs beneath TU
 
 | Rung | Name | Gate | State |
 |---|---|---|---|
-| **TUBE0.5** | **First installable Glow APK on GrapheneOS** | TUBE0 (GREEN) · HAWM3 (closed, verified-boot Pixel 10a) | horizon — design named here; no shim code, no JNI glue, no APK build tooling written yet |
+| **TUBE0.5** | **First installable Glow APK on GrapheneOS** | TUBE0 (GREEN) · HAWM3 (closed, verified-boot Pixel 10a) | **Host-side packaging GREEN `20260717.021857`** — permission emission, NativeActivity envelope, signed APK with `libglowapp.so` exporting `ANativeActivity_onCreate`. On-device `adb install` and a real Glow fold inside the entry remain the next slice |
 
-TUBE0.5 sits exactly where the plan asked it to: reachable now that both its gates are closed, and honestly still a horizon item until someone writes the fifty lines of shim, the small JNI call, and the manifest-to-`AndroidManifest.xml` emission this brief names but does not yet build.
+TUBE0.5's host-side half is now checkable. What landed:
 
-## What this brief does not resolve
+- `linengrow/tube_manifest_android_permission.rye` — closed table, assertable permission emission
+- `linengrow/tube_android_manifest.rye` — full AndroidManifest.xml naming Android's own `NativeActivity` (no custom Kotlin/Java), `hasCode=false`, fixed lib `glowapp`
+- `linengrow/glow_native_activity.rye` — the fixed native entry exporting `ANativeActivity_onCreate`
+- `tools/tube05_apk_pack_worker.sh` + `tools/tube05_apk_pack_witness.rish` — packs and verifies `tools/.cache/tube05/sala-broadcaster.apk`
 
-- **No shim code exists yet.** This is the design and its rationale, matching how TUBE0 and the rune prototypes were done — research and spec before code, per this tree's own working rhythm.
-- **APK signing and distribution mechanics stay TUBE2's and TUBE3's own territory** (signed weave over Granary, content-addressed resins over Comlink). This brief only names the missing rung beneath that: how a Glow binary becomes an installable app at all, before any question of how it gets published or acquired.
-- **The JNI boundary's exact shape** (which `android_native_app_glue` callbacks Glow's `.so` must export, how the manifest's capability bits map one-to-one onto Android's own permission strings) is real follow-on design work, not yet specified here.
+## What remains open
+
+- **On-device install** — `adb install` of the signed APK onto the physical Pixel 10a (and the emulator), then confirming NativeActivity loads the `.so`.
+- **A real Glow fold inside `ANativeActivity_onCreate`** — today's entry is a symbol-shape stub; the next slice hands control to Sala (or any Glow fold) and finishes the activity cleanly.
+- **APK signing and distribution for publish** stay TUBE2's and TUBE3's own territory (signed weave over Granary, content-addressed resins over Comlink). The debug keystore under `tools/.cache/tube05/` is host-local, never for publish.
 
 ## Gratitude
 
