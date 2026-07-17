@@ -5,14 +5,40 @@
 //! Caravan table for that agent. This is P0's door re-aimed at a Manifest —
 //! no separate agent runtime yet; the host still folds a ledger log when
 //! admission holds.
+//!
+//! Resource Scope doors (GrapheneOS Storage · Contact Scopes parallel):
+//! `admit_manifest_scopes` checks every scope; any covered resource must
+//! pass scope.allows — revoke closes that door. `admit_manifest_scoped`
+//! is the one-scope form.
+//!
+//! Network Grant door (GrapheneOS Network permission toggle parallel):
+//! `admit_manifest_networked` stacks scopes, then requires NetworkGrant
+//! when the manifest declares `network`. Denied or revoked grants refuse
+//! and appear down — they do not block manifests that omit network.
+//!
+//! Sensors Grant door (GrapheneOS Sensors permission toggle parallel):
+//! `admit_manifest_gated` stacks Network + Sensors toggles. Sensors engage
+//! when the manifest declares `sensors`; refused grants appear zeroed.
 
 const std = @import("std");
 const assert = std.debug.assert;
 const caps = @import("capabilities.rye");
 const tube = @import("tube_manifest.rye");
+const scope_mod = @import("glow_storage_scope.rye");
+const net_mod = @import("glow_network_grant.rye");
+const sens_mod = @import("glow_sensors_grant.rye");
 const pool = @import("pool_host_seam.rye");
 const kumara = @import("kumara.rye");
 const mc = @import("mala_core.rye");
+
+/// Manifest resource name that engages the Network Grant door (TUBE0.5 INTERNET).
+pub const network_resource = "network";
+
+/// Manifest resource name that engages the Sensors Grant door.
+pub const sensors_resource = "sensors";
+
+/// Ceiling on how many Resource Scopes one admit may stack (Storage + Contact + …).
+pub const max_scopes_per_admit: u32 = 4;
 
 /// True when every declared capability on the manifest is granted to
 /// `agent_label` on the table (resource name + rights bits both match).
@@ -33,6 +59,99 @@ pub fn admit_manifest(
     return true;
 }
 
+fn scope_admits_manifest(storage: *const scope_mod.Scope, manifest: *const tube.Manifest) bool {
+    if (storage.revoked) return false;
+    var i: u32 = 0;
+    while (i < manifest.cap_count) : (i += 1) {
+        const dc = &manifest.caps[i];
+        const resource = dc.resource_slice();
+        if (!storage.covers(resource)) continue;
+        if (!storage.allows(resource, dc.rights_mask)) return false;
+    }
+    return true;
+}
+
+/// Caravan grant, then every Resource Scope (Storage · Contact · …).
+pub fn admit_manifest_scopes(
+    table: *const caps.CapabilityTable,
+    agent_label: []const u8,
+    manifest: *const tube.Manifest,
+    scopes: []const *const scope_mod.Scope,
+) bool {
+    if (scopes.len > max_scopes_per_admit) return false;
+    if (!admit_manifest(table, agent_label, manifest)) return false;
+    var s: u32 = 0;
+    while (s < scopes.len) : (s += 1) {
+        if (!scope_admits_manifest(scopes[s], manifest)) return false;
+    }
+    return true;
+}
+
+/// One-scope form — Storage or Contact alone.
+pub fn admit_manifest_scoped(
+    table: *const caps.CapabilityTable,
+    agent_label: []const u8,
+    manifest: *const tube.Manifest,
+    storage: *const scope_mod.Scope,
+) bool {
+    const one = [_]*const scope_mod.Scope{storage};
+    return admit_manifest_scopes(table, agent_label, manifest, one[0..]);
+}
+
+fn manifest_declares_network(manifest: *const tube.Manifest) bool {
+    var i: u32 = 0;
+    while (i < manifest.cap_count) : (i += 1) {
+        if (std.mem.eql(u8, manifest.caps[i].resource_slice(), network_resource)) return true;
+    }
+    return false;
+}
+
+/// When the manifest declares `network`, the Network Grant must allow.
+/// Manifests without network leave the grant unused (door stays open).
+fn network_admits_manifest(grant: *const net_mod.NetworkGrant, manifest: *const tube.Manifest) bool {
+    if (!manifest_declares_network(manifest)) return true;
+    return grant.allows();
+}
+
+/// Caravan grant + Resource Scopes + Network Grant (when network is declared).
+pub fn admit_manifest_networked(
+    table: *const caps.CapabilityTable,
+    agent_label: []const u8,
+    manifest: *const tube.Manifest,
+    scopes: []const *const scope_mod.Scope,
+    network: *const net_mod.NetworkGrant,
+) bool {
+    if (!admit_manifest_scopes(table, agent_label, manifest, scopes)) return false;
+    return network_admits_manifest(network, manifest);
+}
+
+fn manifest_declares_sensors(manifest: *const tube.Manifest) bool {
+    var i: u32 = 0;
+    while (i < manifest.cap_count) : (i += 1) {
+        if (std.mem.eql(u8, manifest.caps[i].resource_slice(), sensors_resource)) return true;
+    }
+    return false;
+}
+
+/// When the manifest declares `sensors`, the Sensors Grant must allow.
+fn sensors_admits_manifest(grant: *const sens_mod.SensorsGrant, manifest: *const tube.Manifest) bool {
+    if (!manifest_declares_sensors(manifest)) return true;
+    return grant.allows();
+}
+
+/// Caravan grant + Resource Scopes + Network + Sensors toggles (when declared).
+pub fn admit_manifest_gated(
+    table: *const caps.CapabilityTable,
+    agent_label: []const u8,
+    manifest: *const tube.Manifest,
+    scopes: []const *const scope_mod.Scope,
+    network: *const net_mod.NetworkGrant,
+    sensors: *const sens_mod.SensorsGrant,
+) bool {
+    if (!admit_manifest_networked(table, agent_label, manifest, scopes, network)) return false;
+    return sensors_admits_manifest(sensors, manifest);
+}
+
 /// Host a ledger agent only after the manifest's declarations all match
 /// grants. Refuses `NotAdmitted` when the manifest door fails or when Pool's
 /// own ledger right check fails (same error — the door stayed closed).
@@ -47,6 +166,113 @@ pub fn host_ledger_from_manifest(
     holder_pk: kumara.PublicKey,
 ) pool.HostError!pool.AgentResult {
     if (!admit_manifest(table, agent_label, manifest)) {
+        return error.NotAdmitted;
+    }
+    return pool.host_ledger_agent(
+        table,
+        agent_label,
+        log,
+        issuer_hex,
+        holder_hex,
+        issuer_pk,
+        holder_pk,
+    );
+}
+
+/// Host only when Caravan grant and one Resource Scope both admit.
+pub fn host_ledger_from_manifest_scoped(
+    table: *const caps.CapabilityTable,
+    agent_label: []const u8,
+    manifest: *const tube.Manifest,
+    storage: *const scope_mod.Scope,
+    log: []const u8,
+    issuer_hex: *const [mc.pubkey_hex_len]u8,
+    holder_hex: *const [mc.pubkey_hex_len]u8,
+    issuer_pk: kumara.PublicKey,
+    holder_pk: kumara.PublicKey,
+) pool.HostError!pool.AgentResult {
+    if (!admit_manifest_scoped(table, agent_label, manifest, storage)) {
+        return error.NotAdmitted;
+    }
+    return pool.host_ledger_agent(
+        table,
+        agent_label,
+        log,
+        issuer_hex,
+        holder_hex,
+        issuer_pk,
+        holder_pk,
+    );
+}
+
+/// Host when Caravan grant and every stacked Resource Scope admit.
+pub fn host_ledger_from_manifest_scopes(
+    table: *const caps.CapabilityTable,
+    agent_label: []const u8,
+    manifest: *const tube.Manifest,
+    scopes: []const *const scope_mod.Scope,
+    log: []const u8,
+    issuer_hex: *const [mc.pubkey_hex_len]u8,
+    holder_hex: *const [mc.pubkey_hex_len]u8,
+    issuer_pk: kumara.PublicKey,
+    holder_pk: kumara.PublicKey,
+) pool.HostError!pool.AgentResult {
+    if (!admit_manifest_scopes(table, agent_label, manifest, scopes)) {
+        return error.NotAdmitted;
+    }
+    return pool.host_ledger_agent(
+        table,
+        agent_label,
+        log,
+        issuer_hex,
+        holder_hex,
+        issuer_pk,
+        holder_pk,
+    );
+}
+
+/// Host when Caravan grant, Resource Scopes, and Network Grant (if declared) admit.
+pub fn host_ledger_from_manifest_networked(
+    table: *const caps.CapabilityTable,
+    agent_label: []const u8,
+    manifest: *const tube.Manifest,
+    scopes: []const *const scope_mod.Scope,
+    network: *const net_mod.NetworkGrant,
+    log: []const u8,
+    issuer_hex: *const [mc.pubkey_hex_len]u8,
+    holder_hex: *const [mc.pubkey_hex_len]u8,
+    issuer_pk: kumara.PublicKey,
+    holder_pk: kumara.PublicKey,
+) pool.HostError!pool.AgentResult {
+    if (!admit_manifest_networked(table, agent_label, manifest, scopes, network)) {
+        return error.NotAdmitted;
+    }
+    return pool.host_ledger_agent(
+        table,
+        agent_label,
+        log,
+        issuer_hex,
+        holder_hex,
+        issuer_pk,
+        holder_pk,
+    );
+}
+
+/// Host when Caravan grant, Resource Scopes, Network, and Sensors (if declared) admit.
+pub fn host_ledger_from_manifest_gated(
+    table: *const caps.CapabilityTable,
+    agent_label: []const u8,
+    manifest: *const tube.Manifest,
+    scopes: []const *const scope_mod.Scope,
+    network: *const net_mod.NetworkGrant,
+    sensors: *const sens_mod.SensorsGrant,
+    log: []const u8,
+    issuer_hex: *const [mc.pubkey_hex_len]u8,
+    holder_hex: *const [mc.pubkey_hex_len]u8,
+    issuer_pk: kumara.PublicKey,
+    holder_pk: kumara.PublicKey,
+) pool.HostError!pool.AgentResult {
+    if (!admit_manifest_gated(table, agent_label, manifest, scopes, network, sensors)) {
         return error.NotAdmitted;
     }
     return pool.host_ledger_agent(

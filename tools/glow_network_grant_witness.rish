@@ -1,0 +1,23 @@
+# glow_network_grant_witness.rish — Glow Network Grant (GrapheneOS parallel).
+#
+# Clean-room Glow mold for GrapheneOS Network permission toggle: binary
+# grant/revoke; refused grant appears down. Device-free.
+# See linengrow/glow_network_grant.rye.
+#
+#   rishi/bin/rishi run tools/glow_network_grant_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/glow_network_grant_witness"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/glow_network_grant_witness.rye -femit-bin=${bin}"]
+assert build.ok else "glow_network_grant_witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "glow_network_grant_witness exited non-zero"
+assert selftest.out contains "GREEN" else "glow_network_grant_witness not GREEN"
+assert selftest.out contains "grant admits" else "missing welcome allow claim"
+assert selftest.out contains "deny refuses" else "missing deny claim"
+assert selftest.out contains "appears down" else "missing appears-down claim"
+assert selftest.out contains "revoke" else "missing revoke claim"
+
+say "GREEN: Glow Network Grant — GrapheneOS Network permission toggle parallel."

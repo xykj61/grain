@@ -1,0 +1,48 @@
+//! linengrow/glow_sensors_grant.rye — Glow Sensors Grant mold.
+//!
+//! Clean-room Glow parallel of GrapheneOS's **Sensors permission toggle**
+//! (studied in gratitude/grapheneos/features-overview.md): a binary per-app
+//! grant for sensors not covered by Camera / Microphone / Body Sensors /
+//! Activity Recognition (accelerometer, gyroscope, compass, barometer, …).
+//! Grant admits; revoke (or deny) refuses. When refused, the grant
+//! **appears zeroed** — GrapheneOS returns zeroed sensor values rather than
+//! surfacing a permission error.
+//!
+//! Distinct from Resource Scope (Storage · Contact) and from Network Grant:
+//! same binary shape as Network, different refusal presentation (zeroed vs
+//! down). Manifest may declare `sensors` + `right_device` when a future
+//! TUBE0.5 emission path needs it; this mold is the runtime grant/revoke edge.
+//!
+//! Does not copy GrapheneOS code or docs; gratitude study only.
+
+pub const sensors_grant_version = "20260717.161013";
+
+/// Binary per-app sensors grant. Revoked or denied grants allow nothing.
+pub const SensorsGrant = struct {
+    granted: bool = false,
+
+    /// Install-shaped welcome: sensors allowed until revoke.
+    pub fn grant() SensorsGrant {
+        return .{ .granted = true };
+    }
+
+    /// Explicit deny at build time (install toggle off).
+    pub fn deny() SensorsGrant {
+        return .{ .granted = false };
+    }
+
+    /// True when this grant still admits sensor use.
+    pub fn allows(self: *const SensorsGrant) bool {
+        return self.granted;
+    }
+
+    /// GrapheneOS parallel: refused grant presents as zeroed sensor data.
+    pub fn appears_zeroed(self: *const SensorsGrant) bool {
+        return !self.granted;
+    }
+
+    /// Uninstall-shaped revoke: every later allows() is false.
+    pub fn revoke(self: *SensorsGrant) void {
+        self.granted = false;
+    }
+};

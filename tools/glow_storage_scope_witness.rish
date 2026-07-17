@@ -1,0 +1,24 @@
+# glow_storage_scope_witness.rish — Glow Storage Scope (GrapheneOS parallel).
+#
+# Clean-room Glow mold for GrapheneOS Storage Scopes' shape: grant only named
+# resources; revoke ends access. Device-free. See linengrow/glow_storage_scope.rye.
+#
+#   rishi/bin/rishi run tools/glow_storage_scope_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/glow_storage_scope_witness"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/glow_storage_scope_witness.rye -femit-bin=${bin}"]
+assert build.ok else "glow_storage_scope_witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "glow_storage_scope_witness exited non-zero"
+assert selftest.out contains "GREEN" else "glow_storage_scope_witness not GREEN"
+assert selftest.out contains "granted photos" else "missing welcome allow claim"
+assert selftest.out contains "Contact Scope" else "missing contact-scope claim"
+assert selftest.out contains "NoEntries" else "missing empty-grant refuse"
+assert selftest.out contains "RightsEmpty" else "missing zero-rights refuse"
+assert selftest.out contains "TooManyEntries" else "missing ceiling refuse"
+assert selftest.out contains "revoke" else "missing revoke claim"
+
+say "GREEN: Glow Resource Scope — Storage + Contact GrapheneOS parallels."

@@ -1,0 +1,37 @@
+//! linengrow/glow_network_grant_witness.rye — proves Glow Network Grant.
+//!
+//!   rye build linengrow/glow_network_grant_witness.rye \
+//!     -femit-bin=linengrow/bin/glow_network_grant_witness
+//!   linengrow/bin/glow_network_grant_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const net = @import("glow_network_grant.rye");
+
+const witness_version = "20260717.160607";
+
+fn run_selftest() !u8 {
+    var welcome = net.NetworkGrant.grant();
+    assert(welcome.allows());
+    assert(!welcome.appears_down());
+    print("network: grant admits; does not appear down -- GREEN\n", .{});
+
+    const denied = net.NetworkGrant.deny();
+    assert(!denied.allows());
+    assert(denied.appears_down());
+    print("network: deny refuses and appears down -- GREEN\n", .{});
+
+    welcome.revoke();
+    assert(!welcome.allows());
+    assert(welcome.appears_down());
+    print("network: revoke (uninstall-shaped) ends allow; appears down -- GREEN\n", .{});
+
+    print("network: version {s}\n", .{witness_version});
+    print("GREEN: Glow Network Grant — GrapheneOS Network permission toggle parallel, device-free.\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}
