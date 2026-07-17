@@ -69,8 +69,10 @@ fn run_selftest() !u8 {
     // Claim 1: each agent folds its own state; the two states genuinely differ.
     const ra = try pool.host_agent_on(&table, "agent-a", state_a, log_a[0..log_a_len], &issuer_hex, &holder_hex, issuer_kp.public_key, holder_kp.public_key);
     const rb = try pool.host_agent_on(&table, "agent-b", state_b, log_b[0..log_b_len], &issuer_hex, &holder_hex, issuer_kp.public_key, holder_kp.public_key);
-    assert(ra.balances.issuer == 200 and ra.balances.holder == 800);
-    assert(rb.balances.issuer == 250 and rb.balances.holder == 750);
+    assert(ra.balances.issuer == 200);
+    assert(ra.balances.holder == 800);
+    assert(rb.balances.issuer == 250);
+    assert(rb.balances.holder == 750);
     assert(ra.balances.issuer != rb.balances.issuer);
     print("pool-p1: agent-a folds its own state (issuer {d}), agent-b its own (issuer {d}) -- independent -- GREEN welcome path\n", .{ ra.balances.issuer, rb.balances.issuer });
 

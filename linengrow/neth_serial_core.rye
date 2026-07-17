@@ -32,6 +32,7 @@ const std = @import("std");
 const kumara = @import("kumara.rye");
 const rc = @import("receipt_core.rye");
 const mc = @import("mala_core.rye");
+const tally_copy = @import("tally_copy.rye");
 
 /// The one bound this whole lap exists to assert.
 pub const max_append_bytes: u32 = 768;
@@ -58,7 +59,7 @@ pub fn append_and_reroot(
     if (new_len_usize > log.len) return error.Overflow;
     const new_len: u32 = @intCast(new_len_usize);
 
-    std.mem.copyForwards(u8, log[log_len..new_len], line);
+    tally_copy.copy_disjoint(u8, log[log_len..new_len], line);
 
     const balances = mc.fold_mala_log(log[0..new_len], issuer_hex, holder_hex, issuer_pk, holder_pk) catch return error.FoldFailed;
 

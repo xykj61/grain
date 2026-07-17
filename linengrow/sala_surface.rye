@@ -16,6 +16,7 @@ const std = @import("std");
 const assert = std.debug.assert;
 const view = @import("sala_view.rye");
 const pool = @import("pool_host_seam.rye");
+const tally_copy = @import("tally_copy.rye");
 
 pub const max_panels: u32 = 8;
 pub const max_label_len: u32 = 48;
@@ -42,7 +43,7 @@ pub const Surface = struct {
         if (self.count >= max_panels) return error.TooManyPanels;
         if (label.len > max_label_len) return error.LabelTooLong;
         var new_panel: Panel = .{};
-        std.mem.copyForwards(u8, new_panel.label[0..label.len], label);
+        tally_copy.copy_disjoint(u8, new_panel.label[0..label.len], label);
         new_panel.label_len = @intCast(label.len);
         new_panel.frame = try view.render_ledger(label, result);
         self.panels[self.count] = new_panel;
