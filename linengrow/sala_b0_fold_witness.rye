@@ -1,0 +1,29 @@
+//! linengrow/sala_b0_fold_witness.rye — proves sala_b0_fold.run_demo_fold
+//! returns the same session root HAWM1 already proved on Android.
+//!
+//!   rye build linengrow/sala_b0_fold_witness.rye \
+//!     -femit-bin=linengrow/bin/sala_b0_fold_witness
+//!   linengrow/bin/sala_b0_fold_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const fold = @import("sala_b0_fold.rye");
+
+const witness_version = "20260717.022556";
+
+fn run_selftest() !u8 {
+    const root = try fold.run_demo_fold();
+    var hex: [64]u8 = undefined;
+    fold.root_to_hex(&root, &hex);
+    print("sala-b0-fold: session root -- {s}\n", .{hex[0..]});
+    assert(fold.root_matches_expected(&root));
+    print("sala-b0-fold: root matches HAWM1 expected demo root -- GREEN\n", .{});
+    print("sala-b0-fold: version {s}\n", .{witness_version});
+    print("GREEN: Sala B0 fold unit — same three-event session root the NativeActivity entry will run.\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}

@@ -2,27 +2,70 @@
 //! Glow APK loads. Android's own NativeActivity looks up
 //! `ANativeActivity_onCreate` in `libglowapp.so` and calls it once.
 //!
-//! This is the JNI/native seam named in
-//! active-designing/20260717-014522_native-activity-shim-and-slc-
-//! packaging.md: one small, fixed, never-generated entry point. App
-//! logic does not live here yet — the first TUBE0.5 packaging witness
-//! only proves the APK envelope loads a real `.so` that exports the
-//! symbol Android requires. The next slice wires Sala (or any Glow
-//! fold) into this entry and finishes the activity cleanly.
+//! Per active-designing/20260717-014522_native-activity-shim-and-slc-
+//! packaging.md: one small, fixed, never-generated entry. App logic is
+//! the Sala B0 demo fold (`sala_b0_fold.rye`) — the same three-event
+//! session HAWM1 already proved bit-identical on Android userland.
 //!
-//! Built as a shared library, not an executable:
-//!   vendor/zig-toolchain/zig build-lib -dynamic -target aarch64-linux-android \
-//!     -fPIC -OReleaseSafe -femit-bin=linengrow/bin/libglowapp.so \
-//!     linengrow/glow_native_activity.rye
-//! (Rye's file-extension bridge rewrites the import; Zig compiles.)
+//! Built as a shared library:
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build-lib \
+//!     linengrow/glow_native_activity.rye -dynamic -target aarch64-linux-android \
+//!     -fPIC -OReleaseSafe -femit-bin=linengrow/bin/libglowapp.so
+//!
+//! Result surface for this slice: the fixed demo root is copied into the
+//! exported `glow_last_session_root_hex` buffer (null-terminated ASCII hex)
+//! so a later on-device reader or JNI peek can check it. Host-side
+//! `sala_b0_fold_witness` already proves the same fold matches HAWM1.
 
 const std = @import("std");
+const fold = @import("sala_b0_fold.rye");
 
-/// Android calls this with a real ANativeActivity*. We take opaque
-/// pointers so this tree does not need NDK headers for the packaging
-/// witness — the symbol shape (three arguments, void return, C ABI)
-/// is what the loader requires. A later slice will cast to the real
-/// ANativeActivity layout and hand the window surface to Glow.
+/// Last successful demo-fold root as 64 hex chars + NUL. Zeroed until
+/// onCreate runs the fold successfully. Exported for inspection; not a
+/// general IPC channel.
+export var glow_last_session_root_hex: [65]u8 = [_]u8{0} ** 65;
+
+/// Zig emits calls to `__zig_probe_stack` on some targets. When we NDK-link
+/// a static archive into a real Android .so, Zig's own compiler-rt is often
+/// absent or non-PIC in the cache. A no-op stub is enough for the Sala B0
+/// fold (no huge stack frames). Prefer linking real compiler-rt when the
+/// pack worker can find a PIC android build of it.
+export fn __zig_probe_stack() callconv(.c) void {}
+
+fn record_root(root: *const [32]u8) void {
+    var hex: [64]u8 = undefined;
+    fold.root_to_hex(root, &hex);
+    @memcpy(glow_last_session_root_hex[0..64], &hex);
+    glow_last_session_root_hex[64] = 0;
+}
+
+/// libc open/write — linked via the NDK shared-library step. Avoids Zig's
+/// Io.Dir surface on Android for this one on-device proof file.
+const O_WRONLY: c_int = 1;
+const O_CREAT: c_int = 64;
+const O_TRUNC: c_int = 512;
+extern fn open(path: [*:0]const u8, flags: c_int, mode: c_int) c_int;
+extern fn write(fd: c_int, buf: [*]const u8, n: usize) isize;
+extern fn close(fd: c_int) c_int;
+extern fn mkdir(path: [*:0]const u8, mode: c_int) c_int;
+
+/// Write the session-root hex to the app's own files dir so `adb shell cat`
+/// can prove the fold ran on-device. Path is package-private for
+/// org.glow.app.sala_broadcaster.
+fn write_root_file(hex: *const [64]u8) void {
+    const dir_path = "/data/user/0/org.glow.app.sala_broadcaster/files";
+    const path = "/data/user/0/org.glow.app.sala_broadcaster/files/sala_root.txt";
+    _ = mkdir(dir_path, 0o700);
+    const fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0o600);
+    if (fd < 0) return;
+    defer _ = close(fd);
+    _ = write(fd, hex, 64);
+    _ = write(fd, "\n", 1);
+}
+
+/// Android calls this with a real ANativeActivity*. Opaque pointers keep
+/// this tree free of NDK headers for the packaging witness; finishing the
+/// activity via the real ANativeActivity layout is a later slice.
 export fn ANativeActivity_onCreate(
     activity: ?*anyopaque,
     saved_state: ?*anyopaque,
@@ -31,6 +74,16 @@ export fn ANativeActivity_onCreate(
     _ = activity;
     _ = saved_state;
     _ = saved_state_size;
-    // First packaging slice: export the required symbol. Finishing the
-    // activity and running a Glow fold here is the next real step.
+
+    const root = fold.run_demo_fold() catch {
+        @memset(glow_last_session_root_hex[0..], 0);
+        return;
+    };
+    record_root(&root);
+    write_root_file(glow_last_session_root_hex[0..64]);
+    if (!fold.root_matches_expected(&root)) {
+        // Keep the divergent root in the export for diagnosis; callers
+        // compare against fold.expected_demo_root_hex.
+        return;
+    }
 }

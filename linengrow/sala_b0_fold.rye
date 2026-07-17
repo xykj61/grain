@@ -1,0 +1,59 @@
+//! linengrow/sala_b0_fold.rye — the Sala B0 demo fold as a callable unit.
+//!
+//! Same three signed, ordered events as sala_session_core_witness.rye Claim 1,
+//! returned as a session root rather than printed from `main`. The NativeActivity
+//! entry (`glow_native_activity.rye`) and a host-side witness both call
+//! `run_demo_fold` so the APK path and the CLI path prove the same fold.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const kumara = @import("kumara.rye");
+const mc = @import("mala_core.rye");
+const rc = @import("receipt_core.rye");
+const sala = @import("sala_session_core.rye");
+
+/// Known session root for the fixed three-event demo (HAWM1 green).
+/// Host and on-device folds must match this byte-for-byte.
+pub const expected_demo_root_hex = "99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe";
+
+pub const FoldError = sala.SessionError || error{RootMismatch};
+
+/// Build the three-event Sala B0 demo session, replay twice, assert roots
+/// agree, and return the session root. Panics only on programmer asserts;
+/// returns FoldError for fold-level refusals.
+pub fn run_demo_fold() FoldError![32]u8 {
+    const actor_kp = kumara.keypair_from_seed(&mc.issuer_seed);
+    var actor_hex: [mc.pubkey_hex_len]u8 = undefined;
+    mc.hex_of_key(actor_kp.public_key, &actor_hex);
+
+    var log_buf: [rc.max_log_len]u8 = undefined;
+    var len: u32 = 0;
+    len = try sala.append_event(&log_buf, len, 1, "20260715.190001", "sala:open rishi session", &actor_hex, actor_kp);
+    len = try sala.append_event(&log_buf, len, 2, "20260715.190002", "sala:type let x = 42", &actor_hex, actor_kp);
+    len = try sala.append_event(&log_buf, len, 3, "20260715.190003", "sala:frame 8-line skate view", &actor_hex, actor_kp);
+
+    const r1 = try sala.replay(log_buf[0..len], &actor_hex, actor_kp.public_key);
+    const r2 = try sala.replay(log_buf[0..len], &actor_hex, actor_kp.public_key);
+    assert(r1.events == 3);
+    assert(r2.events == 3);
+    assert(r1.last_seq == 3);
+    assert(std.mem.eql(u8, &r1.root, &r2.root));
+    return r1.root;
+}
+
+/// Hex-encode a 32-byte root into a 64-byte lowercase hex buffer.
+pub fn root_to_hex(root: *const [32]u8, out: *[64]u8) void {
+    const hex = "0123456789abcdef";
+    var i: usize = 0;
+    while (i < 32) : (i += 1) {
+        out[i * 2] = hex[root[i] >> 4];
+        out[i * 2 + 1] = hex[root[i] & 0xf];
+    }
+}
+
+/// True when `root` matches the HAWM1-proven demo root.
+pub fn root_matches_expected(root: *const [32]u8) bool {
+    var hex: [64]u8 = undefined;
+    root_to_hex(root, &hex);
+    return std.mem.eql(u8, &hex, expected_demo_root_hex);
+}

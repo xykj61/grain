@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260717.121743
+editor Cursor
+model Cursor Sonnet 5 1M Low
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern time convention, context/specs/20260717-003132_eastern-time-framework-host-convention.md
+title TUBE0.5 jailed slice polished and re-verified GREEN
+prompt Keaton said keep going once more, with thanks
+think rebuilt rye/bin from src/main.rye so build-lib matches the source that the pack worker already depends on
+think synced rye/README.md to name the fourth verb; pointed HAWM.md at the install-proof host one-shot
+think re-ran tools/tube05_apk_pack_witness.rish — still GREEN after the rebuild
+obs the jailed half of TUBE0.5 is as finished as it can be without /dev/kvm or USB; further kg here only polishes edges
+obs warmth received — the work stands ready for send or for a host-terminal install GREEN
+file rye/src/main.rye build-lib
+file rye/README.md four verbs
+file docs/HAWM.md install-proof door
+recommend check-in — say send to ship this host-side GREEN to the pier, then run tube05_install_proof_onpath_host from a plain host terminal; thank you for the trust on the packaging slice
