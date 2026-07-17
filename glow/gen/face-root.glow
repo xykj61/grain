@@ -1,3 +1,3 @@
-::  Typed face binding with a trailing bound value — next-root as @u32.
+::  Typed face over a nested cast-of-literal — first real value expression.
 ::  Lowered by glow/lower_face.rye into ordinary Rye; Rishi stays the shell.
-=/  next-root=@u32  42
+=/  next-root=@u32  ^-  @u32  42

@@ -1,0 +1,58 @@
+//! glow/truth_semantics_witness.rye — proves Glow ambient truth vs loobean seam.
+//!
+//!   rye build glow/truth_semantics_witness.rye -femit-bin=glow/bin/truth_semantics_witness
+//!   glow/bin/truth_semantics_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const truth = @import("truth_semantics.rye");
+const lower_if = @import("lower_conditional.rye");
+
+const witness_version = "20260717.154943";
+
+fn run_selftest() !u8 {
+    assert(truth.exit_success == 0);
+    assert(truth.exit_failure == 1);
+    assert(truth.welcome_exit() == 0);
+    assert(truth.unwelcome_exit() == 1);
+    print("truth: Zig/POSIX exits — welcome 0 / unwelcome 1 -- GREEN\n", .{});
+
+    assert(truth.loob_is_yes(0) == true);
+    assert(truth.loob_is_yes(1) == false);
+    assert((try truth.loob_to_bool(0)) == true);
+    assert((try truth.loob_to_bool(1)) == false);
+    assert(truth.bool_to_loob(true) == 0);
+    assert(truth.bool_to_loob(false) == 1);
+    print("truth: loobean seam 0=yes / 1=no converts to Zig bool -- GREEN\n", .{});
+
+    if (truth.loob_to_bool(2)) |_| {
+        return error.MalformedLoobeanAccepted;
+    } else |err| {
+        if (err != truth.TruthError.MalformedLoobean) return err;
+    }
+    print("truth: loob atom 2 refused MalformedLoobean -- GREEN\n", .{});
+
+    // Ambient Glow conditional emits Zig bool, not a loobean atom.
+    var buf: [2048]u8 = undefined;
+    const n = try lower_if.lower_line_welcome("?:  ready  yes  no", &buf);
+    const rye = buf[0..n];
+    assert(std.mem.indexOf(u8, rye, "const ready: bool = true") != null);
+    assert(std.mem.indexOf(u8, rye, "const ready: u64 = 0") == null);
+    assert(std.mem.indexOf(u8, rye, "return if (result == 1) 0 else 1") != null);
+    print("truth: ?: ready lowers to Zig bool true; process exit stays POSIX -- GREEN\n", .{});
+
+    // Desk arm literals 1 and 0 are payloads, not loobean yes/no.
+    const n2 = try lower_if.lower_line_welcome("?:  (gth tick 32)  1  0", &buf);
+    const rye2 = buf[0..n2];
+    assert(std.mem.indexOf(u8, rye2, "if (tick > 32) 1 else 0") != null);
+    print("truth: arm decimals 1 and 0 are payloads, not ambient loobeans -- GREEN\n", .{});
+
+    print("truth: version {s}\n", .{witness_version});
+    print("GREEN: Glow ambient truth is Zig; Nock loobean only at the named seam.\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}
