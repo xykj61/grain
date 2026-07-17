@@ -1,0 +1,27 @@
+# glow_run_desk_witness.rish — Rishi hand runs the desk generators.
+#
+# Proves glow_run lowers, builds, and exits 0 for each desk file under glow/gen/.
+#
+#   rishi/bin/rishi run tools/glow_run_desk_witness.rish
+
+let bound = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/bound-tick.glow"]
+assert bound.ok else "glow_run bound-tick.glow failed"
+assert bound.out contains "GREEN" else "glow_run bound-tick.glow not GREEN"
+assert bound.out contains "bound-tick.glow" else "glow_run bound-tick claim missing path"
+
+let lent = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/lent-tick.glow"]
+assert lent.ok else "glow_run lent-tick.glow failed"
+assert lent.out contains "GREEN" else "glow_run lent-tick.glow not GREEN"
+assert lent.out contains "lent-tick.glow" else "glow_run lent-tick claim missing path"
+
+let cast = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cast-u32.glow"]
+assert cast.ok else "glow_run cast-u32.glow failed"
+assert cast.out contains "GREEN" else "glow_run cast-u32.glow not GREEN"
+assert cast.out contains "cast-u32.glow" else "glow_run cast-u32 claim missing path"
+
+let iff = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/if-gth.glow"]
+assert iff.ok else "glow_run if-gth.glow failed"
+assert iff.out contains "GREEN" else "glow_run if-gth.glow not GREEN"
+assert iff.out contains "if-gth.glow" else "glow_run if-gth claim missing path"
+
+say "GREEN: glow_run desk — bound-tick, lent-tick, cast-u32, and if-gth lowered, built, exit 0."

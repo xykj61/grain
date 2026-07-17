@@ -1,8 +1,7 @@
 # glow_lower_trap_witness.rish — `|-` lowers to Rye; emitted program runs.
 #
-# First Glow generator hop: parse a literal bounded trap, emit ordinary
-# `.rye`, rye-build it, prove welcome exit 0 and unwelcome exit 1.
-# Rishi stays the shell that drives the hop.
+# Glow generator hop: parse literal or (lent …) bounds, emit ordinary `.rye`,
+# rye-build, prove welcome exit 0 and unwelcome exit 1. Rishi drives the hop.
 #
 #   rishi/bin/rishi run tools/glow_lower_trap_witness.rish
 
@@ -12,6 +11,10 @@ let welcome_rye = "glow/.cache/bound_tick_welcome.rye"
 let welcome_bin = "glow/bin/bound_tick_welcome"
 let unwelcome_rye = "glow/.cache/bound_tick_unwelcome.rye"
 let unwelcome_bin = "glow/bin/bound_tick_unwelcome"
+let lent_welcome_rye = "glow/.cache/lent_tick_welcome.rye"
+let lent_welcome_bin = "glow/bin/lent_tick_welcome"
+let lent_unwelcome_rye = "glow/.cache/lent_tick_unwelcome.rye"
+let lent_unwelcome_bin = "glow/bin/lent_tick_unwelcome"
 
 let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/lower_trap_witness.rye -femit-bin=${bin}"]
 assert build.ok else "lower_trap_witness build failed"
@@ -20,8 +23,10 @@ let selftest = run ["sh" "-c" "${bin} 2>&1"]
 assert selftest.ok else "lower_trap_witness exited non-zero"
 assert selftest.out contains "GREEN" else "lower_trap_witness not GREEN"
 assert selftest.out contains "bound 10" else "lower_trap_witness missing welcome-emit claim"
-assert selftest.out contains "NotYetLowered" else "lower_trap_witness missing lent refuse"
+assert selftest.out contains "records.len" else "lower_trap_witness missing lent emit claim"
+assert selftest.out contains "ship_list" else "lower_trap_witness missing hyphen map claim"
 assert selftest.out contains "bound-tick.glow" else "lower_trap_witness missing gen desk claim"
+assert selftest.out contains "lent-tick.glow" else "lower_trap_witness missing lent gen desk claim"
 
 let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
 assert build_welcome.ok else "welcome .rye build failed"
@@ -34,4 +39,15 @@ assert build_unwelcome.ok else "unwelcome .rye build failed"
 let run_unwelcome = run ["sh" "-c" "${unwelcome_bin}; echo EXIT:$?"]
 assert run_unwelcome.out contains "EXIT:1" else "unwelcome binary did not exit 1"
 
-say "GREEN: Glow `|-` generator hop — lower to Rye, build, welcome 0 / unwelcome 1."
+let build_lent_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${lent_welcome_rye} -femit-bin=${lent_welcome_bin}"]
+assert build_lent_welcome.ok else "lent welcome .rye build failed"
+let run_lent_welcome = run ["sh" "-c" "${lent_welcome_bin}; echo EXIT:$?"]
+assert run_lent_welcome.ok else "lent welcome binary failed to launch"
+assert run_lent_welcome.out contains "EXIT:0" else "lent welcome binary did not exit 0"
+
+let build_lent_unwelcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${lent_unwelcome_rye} -femit-bin=${lent_unwelcome_bin}"]
+assert build_lent_unwelcome.ok else "lent unwelcome .rye build failed"
+let run_lent_unwelcome = run ["sh" "-c" "${lent_unwelcome_bin}; echo EXIT:$?"]
+assert run_lent_unwelcome.out contains "EXIT:1" else "lent unwelcome binary did not exit 1"
+
+say "GREEN: Glow `|-` generator hop — literal and lent lower to Rye; welcome 0 / unwelcome 1."

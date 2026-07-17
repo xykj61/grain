@@ -1142,10 +1142,25 @@ let rune_alias = run ["rishi/bin/rishi" "run" "tools/rune_alias_witness.rish"]
 assert rune_alias.ok else "Rune alias witness failed"
 say "GREEN: rune alias witness passed."
 
-say "witness suite: Glow `|-` lowers to Rye — first generator hop…"
+say "witness suite: Glow `|-` lowers to Rye — generator hop…"
 let glow_lower = run ["rishi/bin/rishi" "run" "tools/glow_lower_trap_witness.rish"]
 assert glow_lower.ok else "Glow lower-trap witness failed"
 say "GREEN: Glow lower-trap witness passed."
+
+say "witness suite: Glow `^-` lowers to Rye — cast hop…"
+let glow_cast = run ["rishi/bin/rishi" "run" "tools/glow_lower_cast_witness.rish"]
+assert glow_cast.ok else "Glow lower-cast witness failed"
+say "GREEN: Glow lower-cast witness passed."
+
+say "witness suite: Glow `?:` lowers to Rye — conditional hop…"
+let glow_if = run ["rishi/bin/rishi" "run" "tools/glow_lower_conditional_witness.rish"]
+assert glow_if.ok else "Glow lower-conditional witness failed"
+say "GREEN: Glow lower-conditional witness passed."
+
+say "witness suite: glow_run desk — bound-tick, lent-tick, cast-u32, if-gth…"
+let glow_desk = run ["rishi/bin/rishi" "run" "tools/glow_run_desk_witness.rish"]
+assert glow_desk.ok else "Glow run desk witness failed"
+say "GREEN: glow_run desk witness passed."
 
 say "witness suite: TUBE0 — the Glow app-manifest mold…"
 let tube0 = run ["rishi/bin/rishi" "run" "tools/tube0_manifest_witness.rish"]
