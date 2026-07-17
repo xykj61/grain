@@ -8,6 +8,8 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260717.122231` — [Model fields corrected to Cursor Grok 4.5 300k High Fast](20260717-122231_model-field-corrected-to-grok.bron) — Claude credits exhausted; afternoon TUBE0.5 logs re-attributed; Framework host profile updated
+- `20260717.122010` — [TUBE0.5 on-device install GREEN on HAWM0](20260717-122010_tube05-hawm0-install-green.bron) — host HAWM0 boot + install proof; sala_root.txt matches HAWM1 root
 - `20260717.121800` — [Ten batches roll-up — align and send](20260717-121800_align-send-ten-batches.md) ([Bron](20260717-121800_align-send-ten-batches.bron)) — MD summary of Pixel→HAWM3→TUBE0.5 arc; compass align; host install proof named as the one next step
 - `20260717.121743` — [TUBE0.5 jailed slice polished and re-verified GREEN](20260717-121743_tube05-jailed-slice-ready.bron) — rye rebuilt with build-lib; HAWM door + README synced; pack witness still GREEN
 - `20260717.121625` — [TUBE0.5 install-proof host witness ready](20260717-121625_tube05-install-proof-host-witness.bron) — one-shot adb install + sala_root.txt check; jail correctly refuses without a device
@@ -28,6 +30,8 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 | Stamp | Log | Meaning |
 |-------|-----|---------|
+| 20260717.122231 | [Model fields corrected to Cursor Grok 4.5 300k High Fast](20260717-122231_model-field-corrected-to-grok.bron) | False Sonnet labels on afternoon logs fixed; GLOW_PROFILE + session-log rules name Grok on this host |
+| 20260717.122010 | [TUBE0.5 on-device install GREEN on HAWM0](20260717-122010_tube05-hawm0-install-green.bron) | HAWM0 KVM boot + APK install; sala_root.txt = HAWM1 demo root; TUBE0.5 emulator half closed |
 | 20260717.121800 | [Ten batches roll-up — align and send](20260717-121800_align-send-ten-batches.md) | MD arc summary Pixel→HAWM3→TUBE0.5; compass align; one next step = host install proof |
 | 20260717.121743 | [TUBE0.5 jailed slice polished and re-verified GREEN](20260717-121743_tube05-jailed-slice-ready.bron) | rye rebuild + README/HAWM sync; pack witness re-GREEN; jailed packaging slice ready for send |
 | 20260717.121625 | [TUBE0.5 install-proof host witness ready](20260717-121625_tube05-install-proof-host-witness.bron) | Host one-shot for adb install + run-as sala_root proof; in-jail refuse at no-device assert is correct |
