@@ -1,0 +1,62 @@
+//! linengrow/tube5_mantra_revision.rye — TUBE5: app update as a Mantra revision.
+//!
+//! Per expanding-prompts/20260716-142818 rung TUBE5: a new Manifest lands as
+//! the next dense revision in Mantra's append-only bolt catalog; the prior
+//! revision stays; rollback is recalling the earlier revision. Composes
+//! TUBE0 write_canonical with Mantra BoltCatalog.append_leaf / recall.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const caps = @import("capabilities.rye");
+const pool = @import("pool_host_seam.rye");
+const tube = @import("tube_manifest.rye");
+const mantra = @import("recall_lap1.rye");
+
+pub const demo_peer = "glow";
+pub const demo_bolt = "sala-broadcaster";
+pub const demo_path = "manifest";
+pub const demo_tilak = "manifest";
+
+pub const RevisionError = tube.ManifestError || mantra.RecallError;
+
+/// Append one Manifest revision (canonical resin bytes) into the bolt catalog.
+pub fn append_app_revision(
+    catalog: *mantra.BoltCatalog,
+    revision: u32,
+    manifest: *const tube.Manifest,
+) RevisionError!u32 {
+    var body: [tube.max_canonical_bytes]u8 = undefined;
+    const body_len = try tube.write_canonical(manifest, &body);
+    assert(body_len <= mantra.max_resin_bytes);
+    try catalog.append_leaf(demo_peer, demo_bolt, revision, demo_path, body[0..body_len], demo_tilak);
+    return body_len;
+}
+
+/// Recall a prior or current revision's Manifest resin bytes.
+pub fn recall_app_revision(
+    catalog: *const mantra.BoltCatalog,
+    revision: u32,
+    out: *[mantra.max_resin_bytes]u8,
+) RevisionError!u32 {
+    const name = mantra.Name{
+        .peer = demo_peer,
+        .bolt = demo_bolt,
+        .revision = revision,
+        .path = demo_path,
+    };
+    const result = try catalog.recall(name, out);
+    if (result.outcome != .here) return error.PathNotBound;
+    return result.len;
+}
+
+/// Demo: land 0.1.0 as rev1, then 0.2.0 as rev2. Returns both canonical lengths.
+pub fn run_demo_update(catalog: *mantra.BoltCatalog) RevisionError!struct { rev1_len: u32, rev2_len: u32 } {
+    const declared = [_]tube.DeclaredCapability{
+        tube.DeclaredCapability.init(pool.ledger_resource, caps.right_read | caps.right_write),
+    };
+    const m1 = try tube.build("sala-broadcaster", "0.1.0", &declared, 1024);
+    const len1 = try append_app_revision(catalog, 1, &m1);
+    const m2 = try tube.build("sala-broadcaster", "0.2.0", &declared, 1024);
+    const len2 = try append_app_revision(catalog, 2, &m2);
+    return .{ .rev1_len = len1, .rev2_len = len2 };
+}

@@ -5,15 +5,16 @@
 //! Per active-designing/20260717-014522_native-activity-shim-and-slc-
 //! packaging.md: one small, fixed, never-generated entry. App logic is
 //! the Sala B0 demo fold (`sala_b0_fold.rye`), the TUBE1 admit gate
-//! (`tube1_glass_gate.rye`), and the R2 multi-panel surface
-//! (`sala_r2_surface.rye`). After writing files/sala_root.txt, registers
-//! window + input callbacks: paints panels + session-root hex
-//! (glow_native_surface.rye) and finishes on tap. R2 paints only when
-//! TUBE1 admits the app manifest.
+//! (`tube1_glass_gate.rye`), the R2 multi-panel surface
+//! (`sala_r2_surface.rye`), and the TUBE5 tip line (`tube5_glass_tip.rye`).
+//! After writing files/sala_root.txt, registers window + input callbacks:
+//! paints panels + tip + session-root hex (glow_native_surface.rye) and
+//! finishes on tap. R2 and TUBE5 paint only when TUBE1 admits.
 
 const std = @import("std");
 const fold = @import("sala_b0_fold.rye");
 const tube1_gate = @import("tube1_glass_gate.rye");
+const tube5_tip = @import("tube5_glass_tip.rye");
 const r2 = @import("sala_r2_surface.rye");
 const sala_surf = @import("sala_surface.rye");
 const surface = @import("glow_native_surface.rye");
@@ -26,6 +27,9 @@ var g_root_matched: bool = false;
 var g_tube1_admitted: bool = false;
 var g_surface: sala_surf.Surface = .{};
 var g_surface_ready: bool = false;
+var g_tip_line: [tube5_tip.tip_line_max]u8 = undefined;
+var g_tip_len: u32 = 0;
+var g_tip_ready: bool = false;
 
 export fn __zig_probe_stack() callconv(.c) void {}
 
@@ -103,12 +107,14 @@ const motion_action_up: i32 = 1;
 fn paint_window(_: ?*anyopaque, window: ?*anyopaque) callconv(.c) void {
     if (glow_last_session_root_hex[0] == 0) return;
     const surf_ptr: ?*const sala_surf.Surface = if (g_surface_ready) &g_surface else null;
+    const tip: ?[]const u8 = if (g_tip_ready) g_tip_line[0..g_tip_len] else null;
     surface.paint_session_root_hex(
         window,
         glow_last_session_root_hex[0..64],
         g_root_matched,
         g_tube1_admitted,
         surf_ptr,
+        tip,
     );
 }
 
@@ -190,5 +196,8 @@ export fn ANativeActivity_onCreate(
         return;
     };
     g_surface_ready = true;
+
+    g_tip_len = 0;
+    g_tip_ready = tube5_tip.run_demo_tip(&g_tip_line, &g_tip_len);
     wire_surface_callbacks(activity);
 }
