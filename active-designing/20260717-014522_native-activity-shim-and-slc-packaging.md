@@ -80,7 +80,7 @@ TUBE0.5's host-side half is now checkable. What landed:
 
 ## What remains open
 
-- **Richer Skate / thin-view frames** — first surface now presents via Brushstroke Skate (`glow_native_surface.rye` → `skate_grid.rye` → ANativeWindow). Bounded Sala thin-view frames and Realidream-grade views stay later.
+- **R1 thin-view on glass GREEN `20260717.130602`** — Pool-hosted ledger lines via `sala_r1_frame.rye` → `sala_view.render_ledger` → Skate; install proof GREEN; Keaton confirmed on Pixel. **R2 multi-panel surface** on glass and richer Realidream-grade views stay later.
 - **APK signing and distribution for publish** stay TUBE2's and TUBE3's own territory (signed weave over Granary, content-addressed resins over Comlink). The debug keystore under `tools/.cache/tube05/` is host-local, never for publish.
 
 ## Gratitude
