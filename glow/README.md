@@ -1,7 +1,7 @@
 # Glow — Language Tooling, Grown from Real Design
 
 **Language:** EN
-**Last updated:** 2026-07-17 (`?:` · `?-` · `?~` nest decimal/cast arms · Zig truth)
+**Last updated:** 2026-07-17 (nested `^-  @u64` closes unsigned cast family)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Checkable — eight heads emit · nested arm expressions · truth semantics, GREEN
 **Ground:** [`active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md`](../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md) · [`20260716-093000_glow-and-rye-what-shares-under-the-hood.md`](../active-designing/20260716-093000_glow-and-rye-what-shares-under-the-hood.md) · truth [`../context/specs/20260717-154943_glow-truth-zig-ambient-nock-loobean-seam.md`](../context/specs/20260717-154943_glow-truth-zig-ambient-nock-loobean-seam.md)
@@ -37,7 +37,7 @@ rishi/bin/rishi run tools/glow_run_desk_witness.rish
 # → GREEN: glow_run desk — all eight generator hops …
 ```
 
-Each hop lowers one named shape from its front-half parser. `(lent …)` emits a shrinking-list fold under `face.len`. `?:` · `?-` · `?~` arms are named faces (defaults), decimal literals, or nested `^-  @uN  <decimal>`. `=/` and `=.` take optional trailing decimals; `=/` also nests `^-  @uN  <decimal>` with face/cast mold agreement. `=*` takes an optional source wing. Cast hop covers `@u8` · `@u16` · `@u32` · `@u64`. Other parenthesized values and a general Glow lexer stay later. Generator welcome/unwelcome paths use Zig/POSIX exits (0 / 1), per the Truth section above.
+Each hop lowers one named shape from its front-half parser. `(lent …)` emits a shrinking-list fold under `face.len`. `?:` · `?-` · `?~` arms are named faces (defaults), decimal literals, or nested `^-  @uN  <decimal>` including `@u64` (u128 source). `=/` and `=.` take optional trailing decimals; `=/` also nests `^-  @uN  <decimal>` with face/cast mold agreement through `@u64`. `=*` takes an optional source wing. Cast hop covers `@u8` · `@u16` · `@u32` · `@u64`. Other parenthesized values and a general Glow lexer stay later. Generator welcome/unwelcome paths use Zig/POSIX exits (0 / 1), per the Truth section above.
 
 ---
 
