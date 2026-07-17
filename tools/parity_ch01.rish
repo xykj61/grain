@@ -1132,6 +1132,16 @@ let rune_null = run ["rishi/bin/rishi" "run" "tools/rune_null_witness.rish"]
 assert rune_null.ok else "Rune null witness failed"
 say "GREEN: rune null witness passed."
 
+say "witness suite: the =. mutate-one-leg rune's front half…"
+let rune_mutate = run ["rishi/bin/rishi" "run" "tools/rune_mutate_witness.rish"]
+assert rune_mutate.ok else "Rune mutate witness failed"
+say "GREEN: rune mutate witness passed."
+
+say "witness suite: the =* alias rune's front half…"
+let rune_alias = run ["rishi/bin/rishi" "run" "tools/rune_alias_witness.rish"]
+assert rune_alias.ok else "Rune alias witness failed"
+say "GREEN: rune alias witness passed."
+
 say "witness suite: TUBE0 — the Glow app-manifest mold…"
 let tube0 = run ["rishi/bin/rishi" "run" "tools/tube0_manifest_witness.rish"]
 assert tube0.ok else "TUBE0 manifest witness failed"

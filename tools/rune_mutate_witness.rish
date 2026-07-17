@@ -1,0 +1,21 @@
+# rune_mutate_witness.rish — the `=.` mutate-one-leg rune head, proves out.
+#
+# Seventh rune head — deepens the `=` category after =/.
+#
+#   rishi/bin/rishi run tools/rune_mutate_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "glow/bin/rune_mutate_witness"
+
+let build = run ["sh" "-c" "mkdir -p glow/bin && env RYE_ZIG=${zig} rye/bin/rye build glow/rune_mutate_witness.rye -femit-bin=${bin}"]
+assert build.ok else "Rune mutate witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "Rune mutate witness exited non-zero"
+assert selftest.out contains "GREEN" else "Rune mutate witness not GREEN"
+assert selftest.out contains "parses to wing" else "Rune mutate witness missing the root-wing claim"
+assert selftest.out contains "root" else "Rune mutate witness missing root in subject"
+assert selftest.out contains "trailing value" else "Rune mutate witness missing the trailing-value claim"
+assert selftest.out contains "MalformedWing" else "Rune mutate witness missing the malformed-wing unwelcome path"
+
+say "GREEN: rune mutate witness passed -- a seventh rune head parses (`=.`), `=` category deepened."
