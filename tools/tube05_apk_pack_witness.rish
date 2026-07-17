@@ -1,0 +1,39 @@
+# tube05_apk_pack_witness.rish — TUBE0.5 packaging witness: a validated
+# TUBE0 manifest becomes a signed Android APK that names Android's own
+# NativeActivity, carries libglowapp.so (aarch64), and declares exactly
+# the closed-table permissions the manifest's capabilities emit.
+#
+# Per active-designing/20260717-014522_native-activity-shim-and-slc-
+# packaging.md. Host-side only (needs the HAWM0-staged Android SDK
+# build-tools and JDK under tools/.cache/hawm0/); no device required
+# for this witness — on-device install is the next slice.
+#
+#   rishi/bin/rishi run tools/tube05_apk_pack_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+
+say "tube05: proving the NativeActivity envelope emission first…"
+let env_build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/tube_android_manifest_witness.rye -femit-bin=linengrow/bin/tube_android_manifest_witness"]
+assert env_build.ok else "NativeActivity envelope witness failed to build"
+let env_run = run ["sh" "-c" "linengrow/bin/tube_android_manifest_witness 2>&1"]
+assert env_run.ok else "NativeActivity envelope witness exited non-zero"
+assert env_run.out contains "GREEN" else "NativeActivity envelope witness not GREEN"
+say "tube05: NativeActivity envelope emission GREEN"
+
+say "tube05: proving permission emission still GREEN…"
+let perm = run ["rishi/bin/rishi" "run" "tools/tube0_5_android_permission_witness.rish"]
+assert perm.ok else "permission-emission witness failed"
+say "tube05: permission emission GREEN"
+
+say "tube05: packing the first Glow NativeActivity APK…"
+let pack = run ["bash" "-c" "./tools/tube05_apk_pack_worker.sh"]
+say "${pack.out}"
+if (pack.ok == false) then say "tube05: pack stderr — ${pack.err}"
+assert pack.ok else "APK pack worker failed — real reason printed just above"
+assert pack.out contains "GREEN" else "APK pack worker missing GREEN"
+
+let apk = "tools/.cache/tube05/sala-broadcaster.apk"
+let apk_ok = run ["sh" "-c" "test -f ${apk}"]
+assert apk_ok.ok else "signed APK missing at tools/.cache/tube05/sala-broadcaster.apk"
+
+say "GREEN: TUBE0.5 — first installable Glow APK envelope packed (NativeActivity + libglowapp.so + closed-table permissions). On-device install is the next slice."

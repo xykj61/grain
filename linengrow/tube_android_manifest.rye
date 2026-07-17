@@ -1,0 +1,134 @@
+//! linengrow/tube_android_manifest.rye — TUBE0.5's NativeActivity envelope:
+//! emit a complete AndroidManifest.xml from a validated TUBE0 Manifest.
+//!
+//! Per active-designing/20260717-014522_native-activity-shim-and-slc-
+//! packaging.md: the shim is not generated per app. This module emits
+//! the one fixed envelope every Glow app reuses — Android's own
+//! `android.app.NativeActivity` class (no custom Kotlin or Java), with
+//! `android.app.lib_name` pointing at the Glow-built `.so`, plus the
+//! permission lines `tube_manifest_android_permission.rye` already
+//! emits from the manifest's declared capabilities.
+//!
+//! What differs app-to-app is only data crossing the seam: the package
+//! name, the version strings, which `.so` the meta-data names, and
+//! which permission lines the closed table emitted. The Activity class
+//! itself never changes.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const tm = @import("tube_manifest.rye");
+const perm = @import("tube_manifest_android_permission.rye");
+
+const tube_android_manifest_version = "20260717.021800";
+
+/// Default min/target SDK for GrapheneOS/Pixel-line SLC apps — Android 9
+/// (API 28) as the floor GrapheneOS itself still supports on older
+/// devices, API 36 as the platform this host's own HAWM0 SDK already
+/// stages. Named constants rather than buried literals.
+pub const min_sdk_version: u32 = 28;
+pub const target_sdk_version: u32 = 36;
+
+/// The fixed native-library name every Glow APK loads. Matches the
+/// `libglowapp.so` the APK packer places under `lib/<abi>/`. App-specific
+/// logic lives inside that one library; the name itself is fixed so the
+/// NativeActivity meta-data never becomes a per-app codegen target.
+pub const glow_lib_name = "glowapp";
+
+pub const ManifestXmlError = error{
+    BufferTooSmall,
+    PackageEmpty,
+    PackageTooLong,
+    PackageInvalid,
+};
+
+/// Maximum bytes one emitted AndroidManifest.xml may occupy. Sized for
+/// the fixed envelope plus `max_emitted_permissions` permission lines
+/// and the longest allowed TUBE0 name/version — a hard ceiling, never
+/// a growing buffer.
+pub const max_manifest_xml_bytes: u32 = 4096;
+
+/// Maximum bytes in an Android package name (reverse-DNS form).
+pub const max_package_len: u32 = 64;
+
+fn is_package_char(c: u8) bool {
+    return (c >= 'a' and c <= 'z') or
+        (c >= 'A' and c <= 'Z') or
+        (c >= '0' and c <= '9') or
+        c == '.' or
+        c == '_';
+}
+
+fn validate_package(package_name: []const u8) ManifestXmlError!void {
+    if (package_name.len == 0) return error.PackageEmpty;
+    if (package_name.len > max_package_len) return error.PackageTooLong;
+    for (package_name) |c| {
+        if (!is_package_char(c)) return error.PackageInvalid;
+    }
+}
+
+/// Renders a complete AndroidManifest.xml for `manifest` into `out`.
+/// `package_name` is the Android applicationId (reverse-DNS); `lib_name`
+/// is the native library NativeActivity loads (usually `glow_lib_name`).
+/// Returns bytes written. Permission lines come from the closed table in
+/// tube_manifest_android_permission.rye — never inferred.
+pub fn render_android_manifest(
+    manifest: *const tm.Manifest,
+    package_name: []const u8,
+    lib_name: []const u8,
+    out: []u8,
+) ManifestXmlError!u32 {
+    try validate_package(package_name);
+    assert(lib_name.len > 0);
+    assert(lib_name.len <= tm.max_name_len);
+    assert(manifest.cap_count <= tm.max_declared_caps);
+
+    var perm_buf: [1024]u8 = undefined;
+    const perm_written = perm.render_permission_lines(manifest, &perm_buf) catch return error.BufferTooSmall;
+    const perm_lines = perm_buf[0..perm_written];
+
+    const written = std.fmt.bufPrint(
+        out,
+        \\<?xml version="1.0" encoding="utf-8"?>
+        \\<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+        \\    package="{s}"
+        \\    android:versionCode="1"
+        \\    android:versionName="{s}">
+        \\    <uses-sdk
+        \\        android:minSdkVersion="{d}"
+        \\        android:targetSdkVersion="{d}" />
+        \\{s}    <application
+        \\        android:label="{s}"
+        \\        android:hasCode="false"
+        \\        android:extractNativeLibs="true">
+        \\        <activity
+        \\            android:name="android.app.NativeActivity"
+        \\            android:label="{s}"
+        \\            android:exported="true"
+        \\            android:configChanges="orientation|keyboardHidden|screenSize">
+        \\            <meta-data
+        \\                android:name="android.app.lib_name"
+        \\                android:value="{s}" />
+        \\            <intent-filter>
+        \\                <action android:name="android.intent.action.MAIN" />
+        \\                <category android:name="android.intent.category.LAUNCHER" />
+        \\            </intent-filter>
+        \\        </activity>
+        \\    </application>
+        \\</manifest>
+        \\
+    ,
+        .{
+            package_name,
+            manifest.version_slice(),
+            min_sdk_version,
+            target_sdk_version,
+            perm_lines,
+            manifest.name_slice(),
+            manifest.name_slice(),
+            lib_name,
+        },
+    ) catch return error.BufferTooSmall;
+
+    assert(written.len <= max_manifest_xml_bytes);
+    return @intCast(written.len);
+}
