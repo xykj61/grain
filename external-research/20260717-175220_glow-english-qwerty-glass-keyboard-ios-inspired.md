@@ -6,6 +6,7 @@
 **Voice:** Quin
 **Status:** research for understanding — OSK ownership · iOS public layout notes · NativeActivity IME gap (Two Rooms). Addressed to a generic Acme Corporation employee.
 **Companion silo:** [`../active-designing/20260717-175220_dexter-english-qwerty-glass-keyboard.md`](../active-designing/20260717-175220_dexter-english-qwerty-glass-keyboard.md)
+**Waymark:** **ZETA** (drawn `20260717.180025` from `glow-english-qwerty-glass-keyboard-3`) · compressor [`../docs/ZETA.md`](../docs/ZETA.md)
 
 ---
 

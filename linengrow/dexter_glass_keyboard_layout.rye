@@ -1,0 +1,147 @@
+//! linengrow/dexter_glass_keyboard_layout.rye — ZETA0 English layout tables.
+//!
+//! Glow-owned QWERTY pages for the glass keyboard (waymark ZETA). Device-free
+//! data only — paint and tap hit-testing are ZETA1+. iOS-inspired mode family
+//! from public notes; clean-room (no Apple assets).
+
+/// Waymark for this ladder (SHA3-512 over glow-english-qwerty-glass-keyboard-3).
+pub const waymark: []const u8 = "ZETA";
+
+pub const Mode = enum {
+    letters,
+    numbers,
+    symbols,
+};
+
+/// One key face on a page. Specials are named; printables carry a UTF-8 byte.
+pub const Key = union(enum) {
+    char_: u8,
+    shift,
+    delete,
+    space,
+    @"return",
+    to_numbers,
+    to_letters,
+    to_symbols,
+    to_emoji,
+};
+
+pub const max_keys_per_row: u32 = 12;
+pub const max_rows: u32 = 4;
+
+pub const Row = struct {
+    keys: []const Key,
+};
+
+pub const Page = struct {
+    mode: Mode,
+    rows: []const Row,
+};
+
+fn c(ch: u8) Key {
+    return .{ .char_ = ch };
+}
+
+// --- Letters (QWERTY) -------------------------------------------------------
+
+const letters_r0 = [_]Key{ c('q'), c('w'), c('e'), c('r'), c('t'), c('y'), c('u'), c('i'), c('o'), c('p') };
+const letters_r1 = [_]Key{ c('a'), c('s'), c('d'), c('f'), c('g'), c('h'), c('j'), c('k'), c('l') };
+const letters_r2 = [_]Key{ .shift, c('z'), c('x'), c('c'), c('v'), c('b'), c('n'), c('m'), .delete };
+const letters_r3 = [_]Key{ .to_numbers, .to_emoji, .space, .@"return" };
+
+const letters_rows = [_]Row{
+    .{ .keys = &letters_r0 },
+    .{ .keys = &letters_r1 },
+    .{ .keys = &letters_r2 },
+    .{ .keys = &letters_r3 },
+};
+
+pub const letters_page: Page = .{
+    .mode = .letters,
+    .rows = &letters_rows,
+};
+
+// --- Numbers ----------------------------------------------------------------
+
+const numbers_r0 = [_]Key{ c('1'), c('2'), c('3'), c('4'), c('5'), c('6'), c('7'), c('8'), c('9'), c('0') };
+const numbers_r1 = [_]Key{ c('-'), c('/'), c(':'), c(';'), c('('), c(')'), c('$'), c('&'), c('@'), c('"') };
+const numbers_r2 = [_]Key{ .to_symbols, c('.'), c(','), c('?'), c('!'), c('\''), .delete };
+const numbers_r3 = [_]Key{ .to_letters, .to_emoji, .space, .@"return" };
+
+const numbers_rows = [_]Row{
+    .{ .keys = &numbers_r0 },
+    .{ .keys = &numbers_r1 },
+    .{ .keys = &numbers_r2 },
+    .{ .keys = &numbers_r3 },
+};
+
+pub const numbers_page: Page = .{
+    .mode = .numbers,
+    .rows = &numbers_rows,
+};
+
+// --- Symbols ----------------------------------------------------------------
+
+const symbols_r0 = [_]Key{ c('['), c(']'), c('{'), c('}'), c('#'), c('%'), c('^'), c('*'), c('+'), c('=') };
+const symbols_r1 = [_]Key{ c('_'), c('\\'), c('|'), c('~'), c('<'), c('>'), c('`'), c('\''), c('"'), c('.') };
+const symbols_r2 = [_]Key{ .to_numbers, c(','), c('?'), c('!'), c('@'), c('&'), .delete };
+const symbols_r3 = [_]Key{ .to_letters, .to_emoji, .space, .@"return" };
+
+const symbols_rows = [_]Row{
+    .{ .keys = &symbols_r0 },
+    .{ .keys = &symbols_r1 },
+    .{ .keys = &symbols_r2 },
+    .{ .keys = &symbols_r3 },
+};
+
+pub const symbols_page: Page = .{
+    .mode = .symbols,
+    .rows = &symbols_rows,
+};
+
+pub fn page_for(mode: Mode) Page {
+    return switch (mode) {
+        .letters => letters_page,
+        .numbers => numbers_page,
+        .symbols => symbols_page,
+    };
+}
+
+pub fn row_count(page: Page) u32 {
+    return @intCast(page.rows.len);
+}
+
+pub fn key_count(page: Page) u32 {
+    var n: u32 = 0;
+    for (page.rows) |row| {
+        n += @intCast(row.keys.len);
+    }
+    return n;
+}
+
+/// First printable letter on the letters page must be 'q' (QWERTY top-left).
+pub fn letters_top_left_is_q() bool {
+    const page = letters_page;
+    if (page.rows.len == 0 or page.rows[0].keys.len == 0) return false;
+    return switch (page.rows[0].keys[0]) {
+        .char_ => |ch| ch == 'q',
+        else => false,
+    };
+}
+
+/// Numbers page top row is 1..0.
+pub fn numbers_top_row_is_digits() bool {
+    const row = numbers_page.rows[0].keys;
+    if (row.len != 10) return false;
+    var i: u32 = 0;
+    while (i < 10) : (i += 1) {
+        switch (row[i]) {
+            .char_ => |ch| {
+                const expect: u8 = if (i == 9) '0' else @intCast('1' + i);
+                if (ch != expect) return false;
+            },
+            else => return false,
+        }
+    }
+    return true;
+}

@@ -43,7 +43,11 @@ let corpus_size = trim count_run.out
 say "corpus: ${corpus_size} four-letter words from old/doc/spec/flw.txt"
 
 # The ladder needing a mark today. Change this one line to derive the next.
-let input_name = "grapheneos-pixel-mobile-emulation"
+# Seated draws (do not reuse input strings):
+#   grapheneos-pixel-mobile-emulation -> HAWM
+#   glow-application-framework-and-publishing -> TUBE
+#   glow-english-qwerty-glass-keyboard-3 -> ZETA (20260717.180025)
+let input_name = "glow-english-qwerty-glass-keyboard-3"
 
 let hash_run = run ["sh" "-c" "printf '%s' '${input_name}' | openssl dgst -sha3-512 | awk '{print $NF}' | cut -c1-8"]
 assert hash_run.ok else "openssl dgst -sha3-512 failed"
