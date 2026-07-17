@@ -69,7 +69,7 @@ rishi/bin/rishi run tools/tube05_install_proof_onpath_host.rish
 
 **R2 surface on glass GREEN `20260717.130848`:** `sala_r2_surface.rye` hosts ask · receipt · reputation (capability-isolated) onto one `sala_surface.Surface`; Skate paints `[ask] issuer 200` / `[receipt] issuer 250` / `[reputation] issuer 275` above the B0 hex. Install proof GREEN; Keaton confirmed on Pixel.
 
-**TUBE1 glass gate GREEN `20260717.131404` · cover `20260717.161823`:** `tube1_glass_gate.rye` admits sala-broadcaster (state resources + `photos` + `contacts` + `network` + `sensors`) before R2 paints; covering scopes and Network · Sensors toggles are load-bearing. Title `SALA B0+R2+T1  GREEN` / `TUBE1 admitted · Pool x3`. Install proof GREEN; Keaton confirmed on Pixel.
+**TUBE1 glass gate GREEN `20260717.131404` · cover `20260717.161823`:** `tube1_glass_gate.rye` admits sala-broadcaster (state resources + `photos` + `contacts` + `network` + `sensors`) before R2 paints; covering scopes and Network · Sensors toggles are load-bearing. Title (with B1) `SALA B0+B1+R2+T1 GREEN` / `TUBE1 admitted · Pool x3`. Install proof GREEN; Keaton confirmed on Pixel.
 
 **TUBE5 tip on glass GREEN `20260717.140600`:** after admit + R2, `tube5_glass_tip.rye` lands Mantra rev1/rev2 and paints `TUBE5 tip rev2 · 0.2.0`. Install proof GREEN (binds `sala_root.txt`); Keaton confirmed the tip line on Pixel.
 
@@ -79,7 +79,9 @@ rishi/bin/rishi run tools/tube05_install_proof_onpath_host.rish
 
 **TUBE4 market on glass GREEN `20260717.145547`:** `tube4_glass_market.rye` runs demo Exchange+Neth acquire and paints `TUBE4 market · acquired` on row 10. Install proof GREEN; Keaton confirmed on Pixel. Debug keystore under `tools/.cache/tube05/` is host-local, never for publish.
 
-**TUBE7 glass path GREEN `20260717.145547`:** installable APK on GrapheneOS Pixel presents admit + R2 + tip + publish + sealed fetch + market acquire. TUBE6 (real GrapheneOS *build*) stays horizon behind HAWM2.
+**Sala B1 welcome carriage on glass GREEN `20260717.170315`:** device-free B1 (`sala_broadcast_delivery.rye`) already GREEN; glass presents the in-process welcome path (`sala_b1_carriage_core.rye` · `sala_b1_glass_carriage.rye`) as `SALA B1 carriage · 3 ev` on row 11. Witness `tools/sala_b1_glass_carriage_witness.rish` GREEN; pack GREEN. UDP hop stays out of the APK; Pixel look is the host install slice.
+
+**TUBE7 glass path GREEN `20260717.145547`:** installable APK on GrapheneOS Pixel presents admit + R2 + tip + publish + sealed fetch + market acquire. B1 carriage joins that glass stack `20260717.170315`. TUBE6 (real GrapheneOS *build*) stays horizon behind HAWM2.
 
 **Resource Scope (Storage · Contact) GREEN `20260717.155846` · glass cover `20260717.161220`:** [`../linengrow/glow_storage_scope.rye`](../linengrow/glow_storage_scope.rye) — one mold for GrapheneOS Storage Scopes and Contact Scopes. [`admit_manifest_scopes`](../linengrow/tube1_admission.rye) stacks scopes under Caravan grant; revoke refuses. Glass declares `photos` + `contacts` and Scopes cover them (`tube1_glass_gate.rye`); weaker/revoked scopes refuse. APK permission emission stays on the separate TUBE0.5 path. GrapheneOS stays the hardware root; Glow implements the parallels in Glow, never Kotlin.
 
