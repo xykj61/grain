@@ -66,6 +66,8 @@ When we adapt one of these works into Radiant Style, the rewrite lives elsewhere
   - Source: <https://mikrophone.net>
 - **`OpusOggXiph.md`** — the Xiph.Org Foundation's **Opus** codec (RFC 6716) and **Ogg** container, BSD-licensed and royalty-free. Unlike our copyrighted-essay summaries, these are permissive open standards we may and do use directly. Records why Opus-in-Ogg is our open, well-compressed, macOS/Linux-servable audio choice, and names our own four-letter Glow-compatible container mark **`.peal`** (Opus-in-Ogg beneath; the mark stays ours, and avoids confusion with Claude Opus). First audio mark in the tree; seeds a Glow audio Tilak.
   - Source: <https://opus-codec.org/> · <https://xiph.org/ogg/>
+- **`grapheneos/`** — GrapheneOS's own official documentation (web installer, CLI installer, features overview), mirrored verbatim under GrapheneOS's own MIT-style license, which names "software and associated documentation files" together. The real hardening beneath the userland surface this project's HAWM ladder reaches — verified boot, hardened allocator, sandboxing, Titan-class attestation — and the very Pixel 10a boot-key hash Keaton confirmed on the physical device closing HAWM3 (`20260717.013700`). Index: [`grapheneos/README.md`](grapheneos/README.md).
+  - Source: <https://grapheneos.org/>
 
 ### The networking and social study (`985`, `984`)
 
