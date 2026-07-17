@@ -1,4 +1,4 @@
-//! linengrow/tube1_glass_gate_witness.rye — proves glass covers Storage · Contact.
+//! linengrow/tube1_glass_gate_witness.rye — proves glass covers scopes + toggles.
 //!
 //!   rye build linengrow/tube1_glass_gate_witness.rye \
 //!     -femit-bin=linengrow/bin/tube1_glass_gate_witness
@@ -15,7 +15,7 @@ const sens_mod = @import("glow_sensors_grant.rye");
 const tube1 = @import("tube1_admission.rye");
 const glass = @import("tube1_glass_gate.rye");
 
-const witness_version = "20260717.161220";
+const witness_version = "20260717.161823";
 const rw: u8 = caps.right_read | caps.right_write;
 
 fn build_glass_manifest() !tube.Manifest {
@@ -25,6 +25,8 @@ fn build_glass_manifest() !tube.Manifest {
         tube.DeclaredCapability.init("state-reputation", rw),
         tube.DeclaredCapability.init("photos", caps.right_read),
         tube.DeclaredCapability.init("contacts", caps.right_read),
+        tube.DeclaredCapability.init(tube1.network_resource, caps.right_net),
+        tube.DeclaredCapability.init(tube1.sensors_resource, caps.right_device),
     };
     return try tube.build("sala-broadcaster", "0.1.0", &declared, 1024);
 }
@@ -36,11 +38,13 @@ fn grant_glass_table(table: *caps.CapabilityTable) !void {
     try agent.grant(caps.Capability.init("state-reputation", rw));
     try agent.grant(caps.Capability.init("photos", caps.right_read));
     try agent.grant(caps.Capability.init("contacts", caps.right_read));
+    try agent.grant(caps.Capability.init(tube1.network_resource, caps.right_net));
+    try agent.grant(caps.Capability.init(tube1.sensors_resource, caps.right_device));
 }
 
 fn run_selftest() !u8 {
     assert(glass.run_demo_admit());
-    print("glass: demo admit opens with covering photos + contacts scopes -- GREEN\n", .{});
+    print("glass: demo admit opens with covering scopes + live toggles -- GREEN\n", .{});
 
     const manifest = try build_glass_manifest();
     var table: caps.CapabilityTable = .{};
@@ -63,7 +67,7 @@ fn run_selftest() !u8 {
         &network,
         &sensors,
     ));
-    print("glass: gated admit with covering Storage + Contact Scopes -- GREEN cover path\n", .{});
+    print("glass: gated admit with covering Storage + Contact + Network + Sensors -- GREEN cover path\n", .{});
 
     // Storage Scope weaker than photos/read declaration → refuse.
     const storage_weak = try scope_mod.Scope.build(&[_]scope_mod.ScopeEntry{
@@ -96,8 +100,35 @@ fn run_selftest() !u8 {
     ));
     print("glass: revoked Contact Scope refuses covering contacts declaration -- GREEN contact cover\n", .{});
 
+    // Denied Network Grant → refuse (appears down).
+    const net_denied = net_mod.NetworkGrant.deny();
+    assert(!tube1.admit_manifest_gated(
+        &table,
+        "sala-broadcaster",
+        &manifest,
+        scopes_ok[0..],
+        &net_denied,
+        &sensors,
+    ));
+    assert(net_denied.appears_down());
+    print("glass: denied Network Grant refuses and appears down -- GREEN network cover\n", .{});
+
+    // Revoked Sensors Grant → refuse (appears zeroed).
+    var sens_rev = sens_mod.SensorsGrant.grant();
+    sens_rev.revoke();
+    assert(!tube1.admit_manifest_gated(
+        &table,
+        "sala-broadcaster",
+        &manifest,
+        scopes_ok[0..],
+        &network,
+        &sens_rev,
+    ));
+    assert(sens_rev.appears_zeroed());
+    print("glass: revoked Sensors Grant refuses and appears zeroed -- GREEN sensors cover\n", .{});
+
     print("glass: version {s}\n", .{witness_version});
-    print("GREEN: TUBE1 glass — Storage + Contact Scopes cover declared resources.\n", .{});
+    print("GREEN: TUBE1 glass — Storage + Contact + Network + Sensors cover declared resources.\n", .{});
     return 0;
 }
 

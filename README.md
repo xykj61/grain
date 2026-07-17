@@ -6,15 +6,15 @@
 
 ---
 
-Welcome. This repository is **Glow OS** — a body of work developed in the open as a **proposal to [Urbit](https://urbit.org)**, exploring what Urbit could become when its ideas are rebuilt in **Glow**, a language that keeps Hoon's runes over bounded, asserted, statically-disciplined semantics. It descends from `urbit/urbit` as a downstream research repository, and its intent is collaborative: to grow ideas here, prove them with witnesses, and offer the ones that earn their place back upstream as contributions — an infinite game played *with* Urbit, not against it. If you are an Acme Corporation employee opening this tree for the first time, this page is the one calm read that orients you: what Glow OS is, the four variants you can choose between, what actually boots today, and where to go next.
+Welcome. This repository is **Glow OS** — a body of work developed in the open as a **proposal to [Urbit](https://urbit.org)**, exploring what Urbit could become when its ideas are rebuilt in **Glow**, a language that keeps Hoon's runes over bounded, asserted, statically-disciplined semantics. It descends from `urbit/urbit` as a downstream research repository, and its intent is collaborative: to grow ideas here, prove them with witnesses, and offer the ones that earn their place back upstream as contributions — an infinite game played *with* Urbit, not against it. If you are an Acme Corporation employee opening this tree for the first time, this page is the one calm read that orients you: what Glow OS is, the five variants you can choose between, what actually boots today, and where to go next.
 
 Glow OS is one body of work with **one language, one value model, and one law** ([`context/TAME_GUIDANCE.md`](context/TAME_GUIDANCE.md)) — offered to you as a template in which you pick a variant and build. Its stance is a **collaborative, ethical accelerationism**: build ambitiously and in the open, measure honestly, and offer the work upstream as a gift rather than hold it apart (see [`gratitude/TechnoOptimistManifesto.md`](gratitude/TechnoOptimistManifesto.md)).
 
 ---
 
-## The Four Choices
+## The Five Choices
 
-The heart of the template is a choice among **four OS variants**. They are not four different systems — they are **one design, built more than once, on purpose**, the way a careful machine can dual-, tri-, or quad-boot between images that agree on what they do and differ only in how they were made. Choosing among them is choosing how much independent redundancy you want beneath you, not learning four separate systems.
+The heart of the template is a choice among **five OS variants**. They are not five different systems — they are **one design, built more than once, on purpose**, the way a careful machine can dual-, tri-, quad-, or five-boot between images that agree on what they do and differ only in how they were made. Choosing among them is choosing how much independent redundancy you want beneath you, not learning five separate systems.
 
 | Variant | What it is | Status |
 |---|---|---|
@@ -22,12 +22,15 @@ The heart of the template is a choice among **four OS variants**. They are not f
 | **Riyo** | An OS variant; the diverse-redundant twin of Reya | Name confirmed; not yet built |
 | **Trey** | An OS variant; the diverse-redundant twin of Triz | Name confirmed; not yet built |
 | **Triz** | An OS variant; the diverse-redundant twin of Trey | Name confirmed; not yet built |
+| **Quin** | An OS variant; the fifth boot image (unpaired twin for now) | Name confirmed as fifth `20260717.162114`; not yet built |
 
-**Why more than one?** Safety leads every decision in this tree (that is what TAME Guidance means by "safety first"). Two honest, independently-written implementations of the same intent mean a single implementation mistake cannot take down the only copy you have — the same principle as N-version programming, applied at the scale of a whole operating system. The four variants form **two diverse-redundant pairs** — Riyo/Reya and Trey/Triz — where each pair must agree on every externally-visible behavior, checked by one shared witness suite both must pass identically, and may differ only in internal detail. All four names and the two-pair symmetry are confirmed; the one thing still to settle, at build time, is the *shape* of that redundancy (two codebases from one spec, or one codebase with two independently-verified paths), recorded in [`context/specs/20260713-235600_names-awaiting-confirmation.md`](context/specs/20260713-235600_names-awaiting-confirmation.md).
+**Why more than one?** Safety leads every decision in this tree (that is what TAME Guidance means by "safety first"). Two honest, independently-written implementations of the same intent mean a single implementation mistake cannot take down the only copy you have — the same principle as N-version programming, applied at the scale of a whole operating system. Four of the five form **two diverse-redundant pairs** — Riyo/Reya and Trey/Triz — where each pair must agree on every externally-visible behavior, checked by one shared witness suite both must pass identically, and may differ only in internal detail. **Quin** joins as the fifth bootable image; a diverse-redundant twin for Quin stays open until named. The two-pair shape and Quin's fifth seat are recorded in [`context/specs/20260713-235600_names-awaiting-confirmation.md`](context/specs/20260713-235600_names-awaiting-confirmation.md).
 
-**How you would choose one.** A boot reads a signed, verified value naming which variant to wake — the design is in [`external-research/20260714-013700_aurora-vere-arvo-boot-fusion-and-kelvin-strategy.md`](external-research/20260714-013700_aurora-vere-arvo-boot-fusion-and-kelvin-strategy.md). Today the four variants are **named and scoped, not yet bootable**; the selection mechanism is designed as a small, reviewable step, not yet built. When you copy a command from these docs, the ship name in it is always a deliberately invalid placeholder such as `~acme-corp-test-ship` — never a real point on the live network.
+**How you would choose one.** A boot reads a signed, verified value naming which variant to wake — the design is in [`external-research/20260714-013700_aurora-vere-arvo-boot-fusion-and-kelvin-strategy.md`](external-research/20260714-013700_aurora-vere-arvo-boot-fusion-and-kelvin-strategy.md). Today the five variants are **named and scoped, not yet bootable**; the selection mechanism is designed as a small, reviewable step, not yet built. When you copy a command from these docs, the ship name in it is always a deliberately invalid placeholder such as `~acme-corp-test-ship` — never a real point on the live network.
 
-The full onboarding surface for the four variants lives in the manual: [`manual/glow-os/`](manual/glow-os/README.md) — an overview, a getting-started path, and one shared template filled once per variant so all four stay in lockstep.
+**Quin carries more than one hat on purpose.** The same name is the standing writing companion ([`context/QUIN.md`](context/QUIN.md)), the inference **Q-vane** horizon, and now the fifth OS variant — answer to "Quin," "Quin voice," and "Quin, five." Reya 2, Rio 3, and the short writing-voice season under Riyo's name rest in [`context/archive/`](context/archive/).
+
+The full onboarding surface for the variants lives in the manual: [`manual/glow-os/`](manual/glow-os/README.md) — an overview, a getting-started path, and one shared template filled once per variant so all five stay in lockstep.
 
 ---
 
@@ -38,7 +41,7 @@ The full onboarding surface for the four variants lives in the manual: [`manual/
 | Language | **Glow** | Hoon's runes over TAME-bounded semantics; emits ordinary `.rye` | desk hops emit GREEN — see [`glow/README.md`](glow/README.md) |
 | Interpreter | **Nock interpreter** | runs Glow's compiled forms | scoped (Nock 4K), not built |
 | Umbrella | **Glow OS** | the whole system | named (formerly "Rye OS") |
-| Variants | **Reya · Riyo · Trey · Triz** | four switchable OS builds, all in Glow | named; see the table above |
+| Variants | **Reya · Riyo · Trey · Triz · Quin** | five switchable OS builds, all in Glow | named; see the table above |
 | Kernel spine | state as a pure fold over an append-only log of signed facts | the transition-function model | the stated spine, with running witnesses |
 | App ladder | **TUBE** | Glow app = Pool agent → signed APK on GrapheneOS (HAWM) | TUBE0–5 · TUBE7 GREEN; TUBE6 horizon — [`docs/TUBE.md`](docs/TUBE.md) |
 | Modules | Rishi, Mantra, Comlink, Caravan, Tally, Brix, Bron, Aurora, Pond, Scribble, and more | the running seeds | many green today |
@@ -81,4 +84,4 @@ Then read, in order:
 
 ---
 
-*May the front door stay plain. May the four variants read as one system seen four ways. And may you find, on your first read, exactly what you came for.*
+*May the front door stay plain. May the five variants read as one system seen five ways. And may you find, on your first read, exactly what you came for.*
