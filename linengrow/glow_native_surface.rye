@@ -1,7 +1,7 @@
 //! linengrow/glow_native_surface.rye — first drawn Glow surface on Android.
 //!
-//! Locks an ANativeWindow, fills a calm background, and paints the 64-char
-//! Sala session-root hex with a tiny fixed bitmap font. No EGL, no Kotlin —
+//! Locks an ANativeWindow, fills a calm background, paints a title, the
+//! 64-char Sala session-root hex, and a tap hint. No EGL, no Kotlin —
 //! software pixels through NDK libandroid (Apache 2.0 API; our own draw code).
 //!
 //! Called from glow_native_activity when the framework delivers
@@ -10,7 +10,6 @@
 const std = @import("std");
 const assert = std.debug.assert;
 
-/// Matches android/native_window.h ANativeWindow_Buffer (ABI).
 const WindowBuffer = extern struct {
     width: i32,
     height: i32,
@@ -24,22 +23,26 @@ extern fn ANativeWindow_setBuffersGeometry(window: ?*anyopaque, w: i32, h: i32, 
 extern fn ANativeWindow_lock(window: ?*anyopaque, out: *WindowBuffer, dirty: ?*anyopaque) callconv(.c) i32;
 extern fn ANativeWindow_unlockAndPost(window: ?*anyopaque) callconv(.c) i32;
 
-/// WINDOW_FORMAT_RGBA_8888
 const format_rgba8888: i32 = 1;
 
-/// Background — deep warm dark (not flat black).
 const bg_r: u8 = 0x1a;
 const bg_g: u8 = 0x14;
 const bg_b: u8 = 0x10;
-/// Glyph — soft amber on that ground.
-const fg_r: u8 = 0xe8;
-const fg_g: u8 = 0xc4;
-const fg_b: u8 = 0x7a;
+const amber_r: u8 = 0xe8;
+const amber_g: u8 = 0xc4;
+const amber_b: u8 = 0x7a;
+const green_r: u8 = 0x7d;
+const green_g: u8 = 0xc4;
+const green_b: u8 = 0x8a;
+const mute_r: u8 = 0x8a;
+const mute_g: u8 = 0x7a;
+const mute_b: u8 = 0x6a;
 
-/// 5×7 bitmap font for 0-9a-f (and space). Rows are top→bottom; bit0 = left.
 const font_w = 5;
 const font_h = 7;
-const glyph: [17][font_h]u8 = .{
+
+/// 0-9 a-f, space, then S L T P G R N · (for titles / hints).
+const glyph: [25][font_h]u8 = .{
     .{ 0x0e, 0x11, 0x13, 0x15, 0x19, 0x11, 0x0e }, // 0
     .{ 0x04, 0x0c, 0x04, 0x04, 0x04, 0x04, 0x0e }, // 1
     .{ 0x0e, 0x11, 0x01, 0x06, 0x08, 0x10, 0x1f }, // 2
@@ -56,14 +59,34 @@ const glyph: [17][font_h]u8 = .{
     .{ 0x1e, 0x11, 0x11, 0x11, 0x11, 0x11, 0x1e }, // d
     .{ 0x1f, 0x10, 0x10, 0x1e, 0x10, 0x10, 0x1f }, // e
     .{ 0x1f, 0x10, 0x10, 0x1e, 0x10, 0x10, 0x10 }, // f
-    .{ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // space
+    .{ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // space 16
+    .{ 0x0e, 0x11, 0x10, 0x0e, 0x01, 0x11, 0x0e }, // S 17
+    .{ 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x1f }, // L 18
+    .{ 0x1f, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04 }, // T 19
+    .{ 0x1e, 0x11, 0x11, 0x1e, 0x10, 0x10, 0x10 }, // P 20
+    .{ 0x0e, 0x11, 0x10, 0x17, 0x11, 0x11, 0x0e }, // G 21
+    .{ 0x1e, 0x11, 0x11, 0x1e, 0x14, 0x12, 0x11 }, // R 22
+    .{ 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x0e }, // N 23
+    .{ 0x00, 0x00, 0x00, 0x0e, 0x00, 0x00, 0x00 }, // · 24
 };
 
 fn glyph_index(c: u8) usize {
     if (c >= '0' and c <= '9') return c - '0';
     if (c >= 'a' and c <= 'f') return 10 + (c - 'a');
     if (c >= 'A' and c <= 'F') return 10 + (c - 'A');
-    return 16;
+    return switch (c) {
+        ' ', '_' => 16,
+        'S', 's' => 17,
+        'L', 'l' => 18,
+        'T', 't' => 19,
+        'P', 'p' => 20,
+        'G', 'g' => 21,
+        'R', 'r' => 22,
+        'N', 'n' => 23,
+        'O', 'o' => 0, // reuse digit zero
+        '.', 0xb7 => 24,
+        else => 16,
+    };
 }
 
 fn put_pixel(bits: [*]u8, stride: i32, x: i32, y: i32, w: i32, h: i32, r: u8, g: u8, b: u8) void {
@@ -87,29 +110,41 @@ fn fill(bits: [*]u8, stride: i32, w: i32, h: i32, r: u8, g: u8, b: u8) void {
     }
 }
 
-fn draw_char(bits: [*]u8, stride: i32, ox: i32, oy: i32, scale: i32, w: i32, h: i32, c: u8) void {
-    const gi = glyph_index(c);
-    const rows = glyph[gi];
+fn draw_char(bits: [*]u8, stride: i32, ox: i32, oy: i32, scale: i32, w: i32, h: i32, c: u8, r: u8, g: u8, b: u8) void {
+    const rows = glyph[glyph_index(c)];
     var row: i32 = 0;
     while (row < font_h) : (row += 1) {
         const bits_row = rows[@intCast(row)];
         var col: i32 = 0;
         while (col < font_w) : (col += 1) {
-            // bit4 = leftmost column of the 5-wide glyph
             if ((bits_row & (@as(u8, 0x10) >> @intCast(col))) == 0) continue;
             var dy: i32 = 0;
             while (dy < scale) : (dy += 1) {
                 var dx: i32 = 0;
                 while (dx < scale) : (dx += 1) {
-                    put_pixel(bits, stride, ox + col * scale + dx, oy + row * scale + dy, w, h, fg_r, fg_g, fg_b);
+                    put_pixel(bits, stride, ox + col * scale + dx, oy + row * scale + dy, w, h, r, g, b);
                 }
             }
         }
     }
 }
 
-/// Paint the 64 hex chars (two rows of 32) centered-ish near the top.
-pub fn paint_session_root_hex(window: ?*anyopaque, hex: *const [64]u8) void {
+fn draw_text(bits: [*]u8, stride: i32, ox: i32, oy: i32, scale: i32, w: i32, h: i32, text: []const u8, r: u8, g: u8, b: u8) void {
+    const cell_w = font_w * scale + scale;
+    var i: usize = 0;
+    while (i < text.len) : (i += 1) {
+        const x = ox + @as(i32, @intCast(i)) * cell_w;
+        draw_char(bits, stride, x, oy, scale, w, h, text[i], r, g, b);
+    }
+}
+
+fn text_width(len: usize, scale: i32) i32 {
+    const cell_w = font_w * scale + scale;
+    return @as(i32, @intCast(len)) * cell_w;
+}
+
+/// Paint title, 64 hex chars (green when fold matched), and tap hint.
+pub fn paint_session_root_hex(window: ?*anyopaque, hex: *const [64]u8, matched: bool) void {
     if (window == null) return;
     _ = ANativeWindow_setBuffersGeometry(window, 0, 0, format_rgba8888);
 
@@ -126,14 +161,21 @@ pub fn paint_session_root_hex(window: ?*anyopaque, hex: *const [64]u8) void {
     fill(bits, stride, w, h, bg_r, bg_g, bg_b);
 
     const scale: i32 = if (w >= 900) 4 else if (w >= 600) 3 else 2;
-    const cell_w = font_w * scale + scale; // gutter
+    const title_scale = scale + 1;
+    const cell_w = font_w * scale + scale;
     const cell_h = font_h * scale + scale;
-    const cols: i32 = 32;
-    const rows: i32 = 2;
-    const block_w = cols * cell_w;
-    const block_h = rows * cell_h;
+
+    const title = if (matched) "SALA B0  GREEN" else "SALA B0";
+    const title_w = text_width(title.len, title_scale);
+    draw_text(bits, stride, @divTrunc(w - title_w, 2), @divTrunc(h, 10), title_scale, w, h, title, amber_r, amber_g, amber_b);
+
+    const hex_r: u8 = if (matched) green_r else amber_r;
+    const hex_g: u8 = if (matched) green_g else amber_g;
+    const hex_b: u8 = if (matched) green_b else amber_b;
+
+    const block_w = 32 * cell_w;
     const origin_x = @divTrunc(w - block_w, 2);
-    const origin_y = @divTrunc(h, 5);
+    const origin_y = @divTrunc(h, 5) + title_scale * font_h + scale * 4;
 
     var i: usize = 0;
     while (i < 64) : (i += 1) {
@@ -141,7 +183,11 @@ pub fn paint_session_root_hex(window: ?*anyopaque, hex: *const [64]u8) void {
         const row: i32 = @intCast(i / 32);
         const x = origin_x + col * cell_w;
         const y = origin_y + row * cell_h;
-        draw_char(bits, stride, x, y, scale, w, h, hex[i]);
+        draw_char(bits, stride, x, y, scale, w, h, hex[i], hex_r, hex_g, hex_b);
     }
-    _ = block_h;
+
+    const hint = "TAP TO CLOSE";
+    const hint_w = text_width(hint.len, scale);
+    const hint_y = origin_y + 2 * cell_h + scale * 6;
+    draw_text(bits, stride, @divTrunc(w - hint_w, 2), hint_y, scale, w, h, hint, mute_r, mute_g, mute_b);
 }
