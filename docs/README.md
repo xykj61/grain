@@ -3,17 +3,18 @@
 **Status:** Checkable — compression shelf routing
 **Depth:** routing
 **Ceiling:** ≤40 lines
-**Last updated:** 2026-07-17 (HAWM + TUBE compressors)
-**Compresses:** [`active-designing/20260712-221600_docs-compression-layer-design.md`](../active-designing/20260712-221600_docs-compression-layer-design.md)
+**Last updated:** 2026-07-17 (COMPASS + compass_card · HAWM + TUBE)
+**Compresses:** [`active-designing/20260712-221600_docs-compression-layer-design.md`](../active-designing/20260712-221600_docs-compression-layer-design.md) · [`20260717-173848_compass-card-and-foundations-compress.md`](../active-designing/20260717-173848_compass-card-and-foundations-compress.md)
 
 ---
 
 ## Law
 
-- **Raw beneath** — dated notes in `active-designing/`, counsel, Bron logs stay immutable.
+- **Raw beneath** — dated notes in `active-designing/`, counsel, Bron logs, and **foundations/** stay immutable.
 - **Compress above** — these pages distill many sources into operator guides.
 - **Lint keeps honest** — `tools/living_docs_lint.rish` (ratchet-advisory · five duties).
 - **Pages compress the record; they never replace it.**
+- **Bron cards point; they do not rewrite essays** — see [`compass_card.bron`](compass_card.bron).
 
 Docs carry **no load-bearing pins** — every fingerprint cites a witness or META shelf; the doc points, the witness proves.
 
@@ -21,6 +22,8 @@ Docs carry **no load-bearing pins** — every fingerprint cites a witness or MET
 
 | Page | Grade | Role |
 |------|-------|------|
+| [`COMPASS.md`](COMPASS.md) | guide · ≤120 | Day-one rose — foundations · witness habitat · Cursor loop |
+| [`compass_card.bron`](compass_card.bron) | card · paths | Agent cold-start reading order (no essay body) |
 | [`PROVEN_SEAT.md`](PROVEN_SEAT.md) | guide · ≤300 | Proven-seat ladder — Genode G0 through signed-Kumara (not HAWM) |
 | [`HAWM.md`](HAWM.md) | guide · ≤120 | GrapheneOS / Pixel mobile ladder — HAWM0–HAWM3 |
 | [`TUBE.md`](TUBE.md) | guide · ≤150 | App-manifest + NativeActivity APK ladder — TUBE0 / TUBE0.5 |

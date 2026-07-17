@@ -30,7 +30,7 @@ Manual index with both hubs: [`../README.md`](../README.md).
 
 ### Language path (checkable)
 
-1. **Walk the compass once** — [`../tutorials/cursor-and-the-compass.md`](../tutorials/cursor-and-the-compass.md) stitches foundations, **witness habitat** (Acme face for the happy zone), Cursor rules, Bron logging, and send. Scaffold `20260717.173427`.
+1. **Walk the compass once** — compressor [`../../docs/COMPASS.md`](../../docs/COMPASS.md) · card [`../../docs/compass_card.bron`](../../docs/compass_card.bron) · tutorial [`../tutorials/cursor-and-the-compass.md`](../tutorials/cursor-and-the-compass.md). Stitches foundations, **witness habitat** (Acme face for the happy zone), Cursor rules, Bron logging, and send.
 2. **Run your first Rishi witness** — [`../tutorials/first-witness.md`](../tutorials/first-witness.md). This is the teachable language surface today.
 3. **Read the Rishi reference** — [`../reference/rishi-language.md`](../reference/rishi-language.md) (parity **142**).
 4. **Peek at Glow runes** — `glow/rune_bounded_trap.rye` and `glow/rune_cast.rye` are real, witnessed heads. A full Glow beginner tutorial waits on a general parser; until then, treat Glow grammar as design ([`../../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md`](../../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md)).

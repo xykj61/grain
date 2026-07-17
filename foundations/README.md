@@ -1,7 +1,7 @@
 # Foundations
 
 **Language:** EN
-**Last updated:** 2026-07-13 (fresh sitting · docs keeper complete · G2 naming open)
+**Last updated:** 2026-07-17 (day-one COMPASS compressor + compass card pointed; shelf unmoved)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 
 ---
@@ -17,6 +17,8 @@ These rest beneath the specifications. The specs say what to build and how; thes
 **Seam season (`20260712.052806`)** — nib-430 horizon door: universality through the application seam. Wire serves the fold and sameness stay the why; studies 1–4 landed; CapTP-as-fold **declined** [`../context/specs/20260712-054650_captp-as-fold-carriage-declined.md`](../context/specs/20260712-054650_captp-as-fold-carriage-declined.md); giving-lane T0 in [`20260629-014512_money-that-stays-close-to-home.md`](20260629-014512_money-that-stays-close-to-home.md). Living hammock [`../active-designing/seam-season-hammock.md`](../active-designing/seam-season-hammock.md) · counsel [`../counsel/20260712-052806_claude-counsel-three-doors-and-teacher.md`](../counsel/20260712-052806_claude-counsel-three-doors-and-teacher.md).
 
 **Docs compression (`20260712.223300`)** — raw beneath · compress above · keeper honest: [`../docs/`](../docs/README.md) shelf · `living_docs_lint.rish` ratchet-advisory · Karpathy pattern distillation [`../external-research/20260712-223300_living-docs-lint-and-karpathy-wiki-pattern.md`](../external-research/20260712-223300_living-docs-lint-and-karpathy-wiki-pattern.md). Compass step 5–6: [`TASKS.md`](../work-in-progress/TASKS.md) · [`ROADMAP.md`](../work-in-progress/ROADMAP.md).
+
+**Day-one compressor (`20260717.173848`)** — when context is short, open [`../docs/COMPASS.md`](../docs/COMPASS.md) or the Bron card [`../docs/compass_card.bron`](../docs/compass_card.bron). This shelf stays; compressors point and never replace. Study [`../external-research/20260717-173848_foundations-archive-bron-compress-for-llm-context.md`](../external-research/20260717-173848_foundations-archive-bron-compress-for-llm-context.md).
 
 ## What Lives Here
 

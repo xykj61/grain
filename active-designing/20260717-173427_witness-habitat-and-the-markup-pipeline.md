@@ -43,6 +43,7 @@
 - Grain · Two Rooms · TAME
 - Doc fusion `20260713-235700` · Brix vs Bron `20260621-064612`
 - Dexter reviving silo `20260717-172832`
+- Compass card compress `20260717-173848` · [`../docs/COMPASS.md`](../docs/COMPASS.md)
 
 ---
 

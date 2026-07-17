@@ -15,7 +15,7 @@ A single reading order: foundations → rules → first witness → session log 
 
 ## 1. Why We Build
 
-Read [`../../foundations/README.md`](../../foundations/README.md) — sovereignty, calm, the person owns the device. Then the compass habit: [`../../foundations/20260706-185112_follow-our-compass.md`](../../foundations/20260706-185112_follow-our-compass.md).
+Start with the compressor when context is short: [`../../docs/COMPASS.md`](../../docs/COMPASS.md) · Bron cold-start card [`../../docs/compass_card.bron`](../../docs/compass_card.bron). Then the raw shelf: [`../../foundations/README.md`](../../foundations/README.md) — sovereignty, calm, the person owns the device. Compass habit: [`../../foundations/20260706-185112_follow-our-compass.md`](../../foundations/20260706-185112_follow-our-compass.md).
 
 ## 2. How Work Is Shaped
 
