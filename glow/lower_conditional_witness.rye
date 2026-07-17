@@ -75,7 +75,15 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, rye_lent, "result == 5") != null);
     print("lower: \"?:  …  (lent records)  0\" welcome nests lent arm -- GREEN\n", .{});
 
-    if (lower.lower_line_welcome("?:  (gth tick 32)  (mix a b)  0", &buf)) |_| {
+    const n_mix = try lower.lower_line_welcome("?:  (gth tick 32)  (mix root x)  0", &buf);
+    const rye_mix = buf[0..n_mix];
+    assert(std.mem.indexOf(u8, rye_mix, "const root: u32 = 5") != null);
+    assert(std.mem.indexOf(u8, rye_mix, "const x: u32 = 3") != null);
+    assert(std.mem.indexOf(u8, rye_mix, "const then_arm: u32 = root ^ x") != null);
+    assert(std.mem.indexOf(u8, rye_mix, "result == 6") != null);
+    print("lower: \"?:  …  (mix root x)  0\" welcome nests mix arm -- GREEN\n", .{});
+
+    if (lower.lower_line_welcome("?:  (gth tick 32)  (jam root)  0", &buf)) |_| {
         return error.ArmLoweredTooSoon;
     } else |err| {
         if (err != lower.LowerError.ArmNotYetLowered) return err;
@@ -99,8 +107,12 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, gen_lent, "(lent records)") != null);
     print("lower: glow/gen/if-lent.glow carries lent then arm -- GREEN\n", .{});
 
+    const gen_mix = try cwd.readFileAlloc(io, "glow/gen/if-mix.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_mix, "(mix root x)") != null);
+    print("lower: glow/gen/if-mix.glow carries mix then arm -- GREEN\n", .{});
+
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: `?:` lowers with decimal, cast, and lent then/else arms to ordinary Rye.\n", .{});
+    print("GREEN: `?:` lowers with decimal, cast, lent, and mix then/else arms to ordinary Rye.\n", .{});
     return 0;
 }
 

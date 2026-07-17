@@ -64,15 +64,30 @@ assert iflent.ok else "glow_run if-lent.glow failed"
 assert iflent.out contains "GREEN" else "glow_run if-lent.glow not GREEN"
 assert iflent.out contains "if-lent.glow" else "glow_run if-lent claim missing path"
 
+let ifmix = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/if-mix.glow"]
+assert ifmix.ok else "glow_run if-mix.glow failed"
+assert ifmix.out contains "GREEN" else "glow_run if-mix.glow not GREEN"
+assert ifmix.out contains "if-mix.glow" else "glow_run if-mix claim missing path"
+
 let swlent = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/switch-lent.glow"]
 assert swlent.ok else "glow_run switch-lent.glow failed"
 assert swlent.out contains "GREEN" else "glow_run switch-lent.glow not GREEN"
 assert swlent.out contains "switch-lent.glow" else "glow_run switch-lent claim missing path"
 
+let swmix = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/switch-mix.glow"]
+assert swmix.ok else "glow_run switch-mix.glow failed"
+assert swmix.out contains "GREEN" else "glow_run switch-mix.glow not GREEN"
+assert swmix.out contains "switch-mix.glow" else "glow_run switch-mix claim missing path"
+
 let nulllent = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/null-lent.glow"]
 assert nulllent.ok else "glow_run null-lent.glow failed"
 assert nulllent.out contains "GREEN" else "glow_run null-lent.glow not GREEN"
 assert nulllent.out contains "null-lent.glow" else "glow_run null-lent claim missing path"
+
+let nullmix = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/null-mix.glow"]
+assert nullmix.ok else "glow_run null-mix.glow failed"
+assert nullmix.out contains "GREEN" else "glow_run null-mix.glow not GREEN"
+assert nullmix.out contains "null-mix.glow" else "glow_run null-mix claim missing path"
 
 let nullt = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/null-records.glow"]
 assert nullt.ok else "glow_run null-records.glow failed"
