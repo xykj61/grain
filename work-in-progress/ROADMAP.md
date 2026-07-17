@@ -188,7 +188,9 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **Seventh rune head — `=.`, `20260717.150409`** — [`glow/rune_mutate.rye`](../glow/rune_mutate.rye) deepens the `=` category (mutate one leg). Witness GREEN; `parity_ch01` wired.
 
-**Eighth rune head — `=*`, `20260717.150453`** — [`glow/rune_alias.rye`](../glow/rune_alias.rye) completes the `=` trio. Witness GREEN; `parity_ch01` wired. Next language leap (mold `+$` / cores / lowering) is a check-in, not another automatic head.
+**Eighth rune head — `=*`, `20260717.150453`** — [`glow/rune_alias.rye`](../glow/rune_alias.rye) completes the `=` trio. Witness GREEN; `parity_ch01` wired.
+
+**First Glow generator hop, `20260717.151000`** — literal `|-` lowers to ordinary `.rye` ([`glow/lower_trap.rye`](../glow/lower_trap.rye)); desk file [`glow/gen/bound-tick.glow`](../glow/gen/bound-tick.glow); Rishi hand [`tools/glow_run.rish`](../tools/glow_run.rish). Naming hold: Glow = language, Rishi = shell. Next: more heads' lowering, or `(lent …)` — still no general lexer.
 
 ## The Visual Track — Realidream (horizon lane, ladder already named)
 

@@ -1,0 +1,37 @@
+# glow_lower_trap_witness.rish — `|-` lowers to Rye; emitted program runs.
+#
+# First Glow generator hop: parse a literal bounded trap, emit ordinary
+# `.rye`, rye-build it, prove welcome exit 0 and unwelcome exit 1.
+# Rishi stays the shell that drives the hop.
+#
+#   rishi/bin/rishi run tools/glow_lower_trap_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "glow/bin/lower_trap_witness"
+let welcome_rye = "glow/.cache/bound_tick_welcome.rye"
+let welcome_bin = "glow/bin/bound_tick_welcome"
+let unwelcome_rye = "glow/.cache/bound_tick_unwelcome.rye"
+let unwelcome_bin = "glow/bin/bound_tick_unwelcome"
+
+let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/lower_trap_witness.rye -femit-bin=${bin}"]
+assert build.ok else "lower_trap_witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "lower_trap_witness exited non-zero"
+assert selftest.out contains "GREEN" else "lower_trap_witness not GREEN"
+assert selftest.out contains "bound 10" else "lower_trap_witness missing welcome-emit claim"
+assert selftest.out contains "NotYetLowered" else "lower_trap_witness missing lent refuse"
+assert selftest.out contains "bound-tick.glow" else "lower_trap_witness missing gen desk claim"
+
+let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
+assert build_welcome.ok else "welcome .rye build failed"
+let run_welcome = run ["sh" "-c" "${welcome_bin}; echo EXIT:$?"]
+assert run_welcome.ok else "welcome binary failed to launch"
+assert run_welcome.out contains "EXIT:0" else "welcome binary did not exit 0"
+
+let build_unwelcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${unwelcome_rye} -femit-bin=${unwelcome_bin}"]
+assert build_unwelcome.ok else "unwelcome .rye build failed"
+let run_unwelcome = run ["sh" "-c" "${unwelcome_bin}; echo EXIT:$?"]
+assert run_unwelcome.out contains "EXIT:1" else "unwelcome binary did not exit 1"
+
+say "GREEN: Glow `|-` generator hop — lower to Rye, build, welcome 0 / unwelcome 1."
