@@ -1,12 +1,16 @@
 //! glow/expr.rye — shared nest-expression surface for Glow lowers.
 //!
-//! First general-lexer lap: one parser for the already-green nest forms
-//! (decimal · nested `^-  @uN  <decimal>` · bare face). Parenthesized
-//! forms refuse. Not a full token stream yet — other paren values wait.
+//! Nest forms: decimal · nested `^-  @uN  <decimal>` · bare face ·
+//! `(lent <face>)`. Other parenthesized forms refuse. Not a full token
+//! stream yet.
 
 const std = @import("std");
 
 pub const max_name_len: u32 = 64;
+
+/// Demo subject length when a lower emits `(lent …)` as a value — matches
+/// lower_trap.lent_demo_len so trap and face share one ceiling.
+pub const lent_demo_len: u32 = 5;
 
 pub const ParseError = error{
     Overflow,
@@ -17,7 +21,7 @@ pub const ParseError = error{
     NamedMoldNotYetLowered,
 };
 
-pub const Kind = enum { face, literal, cast_literal };
+pub const Kind = enum { face, literal, cast_literal, lent_of };
 
 pub const Expr = struct {
     kind: Kind,
@@ -26,6 +30,11 @@ pub const Expr = struct {
     lit: u32 = 0,
     mold: [max_name_len]u8 = [_]u8{0} ** max_name_len,
     mold_len: usize = 0,
+};
+
+pub const Prefix = struct {
+    expr: Expr,
+    rest: []const u8,
 };
 
 pub fn face_slice(e: *const Expr) []const u8 {
@@ -61,11 +70,28 @@ fn parse_decimal_prefix(rest: []const u8) ParseError!struct { lit: u32, rest: []
     return .{ .lit = lit, .rest = std.mem.trimStart(u8, rest[end..], " \t") };
 }
 
+fn parse_paren(rest: []const u8) ParseError!Prefix {
+    const prefix = "(lent ";
+    if (rest.len > prefix.len and std.mem.eql(u8, rest[0..prefix.len], prefix)) {
+        var end: usize = prefix.len;
+        while (end < rest.len and is_ident_char(rest[end])) end += 1;
+        if (end == prefix.len) return error.MalformedExpr;
+        if (end >= rest.len or rest[end] != ')') return error.MalformedExpr;
+        const ident = rest[prefix.len..end];
+        if (ident[0] >= '0' and ident[0] <= '9') return error.BadIdent;
+        if (ident.len > max_name_len) return error.BadIdent;
+        var e: Expr = .{ .kind = .lent_of, .face_len = ident.len };
+        @memcpy(e.face[0..ident.len], ident);
+        return .{ .expr = e, .rest = std.mem.trimStart(u8, rest[end + 1 ..], " \t") };
+    }
+    return error.ExprNotYetLowered;
+}
+
 /// Parse one nest expression from the start of `rest_in`; return leftover.
-pub fn parse_prefix(rest_in: []const u8) ParseError!struct { expr: Expr, rest: []const u8 } {
+pub fn parse_prefix(rest_in: []const u8) ParseError!Prefix {
     const rest = std.mem.trimStart(u8, rest_in, " \t");
     if (rest.len == 0) return error.MalformedExpr;
-    if (rest[0] == '(') return error.ExprNotYetLowered;
+    if (rest[0] == '(') return parse_paren(rest);
 
     if (rest[0] >= '0' and rest[0] <= '9') {
         const parsed = try parse_decimal_prefix(rest);

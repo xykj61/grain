@@ -2,9 +2,9 @@
 //!
 //! Per active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md:
 //! `=/` is typed let. This hop lowers `next-root=@u32` and bare `tick`, trailing
-//! decimal literals (default 7), and one nested value expression:
-//! `^-  @uN  <decimal>` — a cast-of-literal under the face. Nest forms parse
-//! through `expr.rye`. Other parenthesized forms still refuse. Named molds still refuse.
+//! decimal literals (default 7), nested `^-  @uN  <decimal>`, and `(lent <face>)`
+//! — length of a demo subject, through `expr.rye`. Other parenthesized forms
+//! still refuse. Named molds still refuse.
 
 const std = @import("std");
 const rf = @import("rune_face.rye");
@@ -23,17 +23,23 @@ pub const LowerError = rf.ParseError || expr.ParseError || error{
 
 pub const face_default_value: u32 = 7;
 
-const ValueKind = enum { literal, cast_literal };
+const ValueKind = enum { literal, cast_literal, lent_of };
 
 const BoundValue = struct {
     kind: ValueKind,
-    lit: u32,
+    lit: u32 = 0,
     cast_mold: [rf.max_name_len]u8 = [_]u8{0} ** rf.max_name_len,
     cast_mold_len: usize = 0,
+    subject: [rf.max_name_len]u8 = [_]u8{0} ** rf.max_name_len,
+    subject_len: usize = 0,
 };
 
 fn cast_mold_slice(b: *const BoundValue) []const u8 {
     return b.cast_mold[0..b.cast_mold_len];
+}
+
+fn subject_slice(b: *const BoundValue) []const u8 {
+    return b.subject[0..b.subject_len];
 }
 
 fn zig_safe_ident(face: []const u8, out: *[rf.max_name_len]u8) LowerError!usize {
@@ -96,7 +102,7 @@ fn map_expr_err(err: expr.ParseError) LowerError {
     };
 }
 
-/// Trailing value after the face clause: default, decimal, or nested `^-`.
+/// Trailing value after the face clause: default, decimal, nested `^-`, or `(lent …)`.
 fn bound_value(line: []const u8, face: []const u8, mold: []const u8) LowerError!BoundValue {
     var clause_buf: [rf.max_name_len * 2 + 1]u8 = undefined;
     const clause = try clause_text(face, mold, &clause_buf);
@@ -111,6 +117,12 @@ fn bound_value(line: []const u8, face: []const u8, mold: []const u8) LowerError!
             const cm = expr.mold_slice(&e);
             var bound: BoundValue = .{ .kind = .cast_literal, .lit = e.lit, .cast_mold_len = cm.len };
             @memcpy(bound.cast_mold[0..cm.len], cm);
+            break :blk bound;
+        },
+        .lent_of => blk: {
+            const sub = expr.face_slice(&e);
+            var bound: BoundValue = .{ .kind = .lent_of, .subject_len = sub.len };
+            @memcpy(bound.subject[0..sub.len], sub);
             break :blk bound;
         },
     };
@@ -288,6 +300,50 @@ fn emit_cast_u64(
     return @intCast(written.len);
 }
 
+/// `(lent <subject>)` under a face — bind the subject's demo `.len`.
+fn emit_lent(
+    glow_label: []const u8,
+    face_mold: []const u8,
+    zig_face: []const u8,
+    subject: []const u8,
+    zig_ty: []const u8,
+    welcome: bool,
+    out: []u8,
+) LowerError!u32 {
+    var zig_sub_buf: [rf.max_name_len]u8 = undefined;
+    const sub_len = try zig_safe_ident(subject, &zig_sub_buf);
+    const zig_sub = zig_sub_buf[0..sub_len];
+    const len = expr.lent_demo_len;
+    const expect: u32 = if (welcome) len else len +% 1;
+    const typed = face_mold.len != 0;
+    if (typed) {
+        const written = std.fmt.bufPrint(out,
+            \\const std = @import("std");
+            \\
+            \\/// Lowered from Glow `=/  {s}={s}  (lent {s})` — face over subject length.
+            \\pub fn main(_: std.process.Init) !u8 {{
+            \\    const {s}: []const u32 = &[_]u32{{ 1, 2, 3, 4, 5 }};
+            \\    const {s}: {s} = @intCast({s}.len);
+            \\    return if ({s} == {d}) 0 else 1;
+            \\}}
+            \\
+        , .{ glow_label, face_mold, subject, zig_sub, zig_face, zig_ty, zig_sub, zig_face, expect }) catch return error.Overflow;
+        return @intCast(written.len);
+    }
+    const written = std.fmt.bufPrint(out,
+        \\const std = @import("std");
+        \\
+        \\/// Lowered from Glow `=/  {s}  (lent {s})` — face over subject length.
+        \\pub fn main(_: std.process.Init) !u8 {{
+        \\    const {s}: []const u32 = &[_]u32{{ 1, 2, 3, 4, 5 }};
+        \\    const {s}: {s} = @intCast({s}.len);
+        \\    return if ({s} == {d}) 0 else 1;
+        \\}}
+        \\
+    , .{ glow_label, subject, zig_sub, zig_face, zig_ty, zig_sub, zig_face, expect }) catch return error.Overflow;
+    return @intCast(written.len);
+}
+
 fn lower_line(line: []const u8, welcome: bool, out: []u8) LowerError!u32 {
     const trimmed = std.mem.trim(u8, line, " \t\r\n");
     if (trimmed.len == 0) return error.EmptySource;
@@ -317,6 +373,10 @@ fn lower_line(line: []const u8, welcome: bool, out: []u8) LowerError!u32 {
             }
             const raw = try unwelcome_raw_for(zig_ty);
             return emit_cast(face, mold, zig_face, cast_mold, zig_ty, raw, bound.lit, false, out);
+        },
+        .lent_of => {
+            const zig_ty = try zig_type_for_mold(mold);
+            return emit_lent(face, mold, zig_face, subject_slice(&bound), zig_ty, welcome, out);
         },
     }
 }

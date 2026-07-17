@@ -49,6 +49,11 @@ assert face64.ok else "glow_run face-u64.glow failed"
 assert face64.out contains "GREEN" else "glow_run face-u64.glow not GREEN"
 assert face64.out contains "face-u64.glow" else "glow_run face-u64 claim missing path"
 
+let facelent = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/face-lent.glow"]
+assert facelent.ok else "glow_run face-lent.glow failed"
+assert facelent.out contains "GREEN" else "glow_run face-lent.glow not GREEN"
+assert facelent.out contains "face-lent.glow" else "glow_run face-lent claim missing path"
+
 let nullt = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/null-records.glow"]
 assert nullt.ok else "glow_run null-records.glow failed"
 assert nullt.out contains "GREEN" else "glow_run null-records.glow not GREEN"
@@ -64,5 +69,5 @@ assert alias.ok else "glow_run alias-records.glow failed"
 assert alias.out contains "GREEN" else "glow_run alias-records.glow not GREEN"
 assert alias.out contains "alias-records.glow" else "glow_run alias-records claim missing path"
 
-say "GREEN: glow_run desk — all eight generator hops lowered, built, exit 0."
+say "GREEN: glow_run desk — all desk generators lowered, built, exit 0."
 

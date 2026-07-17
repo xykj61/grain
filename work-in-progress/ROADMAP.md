@@ -190,7 +190,7 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **Eighth rune head — `=*`, `20260717.150453`** — [`glow/rune_alias.rye`](../glow/rune_alias.rye) completes the `=` trio. Witness GREEN; `parity_ch01` wired.
 
-**Glow generator hop** (sent through `dbf19e2880`) · **nested `@u64` `20260717.163004`** · **shared nest expr `20260717.164350`** — first general-lexer lap (`glow/expr.rye`); face/`?:`/`?-`/`?~` share decimal · `^- @uN` · bare face; paren values still later. Hold: GrapheneOS-facing code stays Glow/Rye → native. Next: check-in before other parenthesized values (or a fuller token stream) or HAWM2/TUBE6.
+**Glow generator hop** (sent through `dbf19e2880`) · **nested `@u64` `20260717.163004`** · **shared nest expr `20260717.164350`** · **`(lent …)` paren `20260717.164748`** — first paren nest form through `expr.rye` under `=/`; `(mix …)` still refuses; lent-as-arm later. Hold: GrapheneOS-facing code stays Glow/Rye → native. Next: check-in before next paren op, lent-as-arm, fuller tokens, or HAWM2/TUBE6.
 
 ## The Visual Track — Realidream (horizon lane, ladder already named)
 

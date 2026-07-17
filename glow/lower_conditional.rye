@@ -81,6 +81,8 @@ fn parse_one_arm(rest_in: []const u8) LowerError!struct { arm: ArmExpr, rest: []
         error.MalformedExpr => error.MalformedArms,
         else => err,
     };
+    // `(lent …)` opens under `=/` first; arm payload later.
+    if (parsed.expr.kind == .lent_of) return error.ArmNotYetLowered;
     return .{ .arm = parsed.expr, .rest = parsed.rest };
 }
 
@@ -104,6 +106,7 @@ fn expect_then_value(then_arm: *const ArmExpr) u32 {
     return switch (then_arm.kind) {
         .face => 1,
         .literal, .cast_literal => then_arm.lit,
+        .lent_of => unreachable,
     };
 }
 
@@ -173,6 +176,7 @@ fn write_arm_expr(arm: *const ArmExpr, role: enum { then_role, else_role }, out:
                 .else_role => "else_arm",
             };
         },
+        .lent_of => unreachable,
     }
 }
 
