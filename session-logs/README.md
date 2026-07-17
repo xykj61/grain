@@ -8,6 +8,7 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260717.172403` — [Check-in after mix-as-arm](20260717-172403_check-in-after-mix-as-arm.bron) — rest · B2 layout · or jam if appetite
 - `20260717.171840` — [Glow mix-as-arm send](20260717-171840_glow-mix-as-arm-send.bron) — ?: ?- ?~ XOR arms; mix form closed
 - `20260717.171524` — [Glow (mix …) under =/ — second paren nest](20260717-171524_glow-mix-paren-under-face.bron) — XOR desk face-mix; jam still refuses
 - `20260717.171232` — [Glow lent seating brief for mix](20260717-171232_glow-lent-mix-seating-brief.bron) — lent code path mapped; mix = Hoon XOR next
