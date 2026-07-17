@@ -8,7 +8,7 @@
 ---
 
 **Navigation:**
-[Hub](README.md) · [Overview](overview.md) · **Get Started** · [The Four Variants](variants/README.md)
+[Hub](README.md) · [Overview](overview.md) · **Get Started** · [The Five Variants](variants/README.md)
 
 ---
 
@@ -65,7 +65,7 @@ The APK uses Android's own `NativeActivity` and a Glow-built `libglowapp.so` —
 
 These keep the Urbit-shaped "get on the network" outline, marked plainly as proposed:
 
-1. **Choose a variant** — Reya, Riyo, Trey, or Triz ([`variants/README.md`](variants/README.md)). Named, not yet bootable.
+1. **Choose a variant** — Reya, Riyo, Trey, Triz, or Quin ([`variants/README.md`](variants/README.md)). Named, not yet bootable.
 2. **Get an identity** — Kumara (Ed25519) runs today; Azimuth integration is open. Docs use invalid placeholders like `~acme-corp-test-ship`, never a real `@p`.
 3. **Boot the variant** — fake/local boot path not yet built.
 4. **Join the network** — Comlink/Azimuth join remains design.
@@ -79,4 +79,4 @@ Rishi, HAWM0/HAWM1, HAWM3 (GrapheneOS on a real Pixel 10a), and TUBE0.5 host-sid
 ---
 
 **Navigation:**
-[Hub](README.md) · [Overview](overview.md) · **Get Started** · [The Four Variants](variants/README.md)
+[Hub](README.md) · [Overview](overview.md) · **Get Started** · [The Five Variants](variants/README.md)

@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Style:** Radiant (see `context/RADIANT_STYLE.md`)
-**Voice:** Rio 3
+**Voice:** Quin
 
 ---
 
@@ -16,7 +16,7 @@ Start at [`ORGANIZING.md`](ORGANIZING.md) for the shape of the whole tree — wh
 
 Every commit follows Urbit's own inherited discipline: **atomic**, **component-prefixed**, **under 50 characters** in the subject line, in a compiling and runnable state. Nothing marked "wip" reaches `main`.
 
-This proposal adds a voice to that structure, seated as an always-on rule at [`.claude/rules/commit-messages.md`](.claude/rules/commit-messages.md) / [`.cursor/rules/commit-messages.mdc`](.cursor/rules/commit-messages.mdc): every commit body is written in Rio 3's Radiant Style, with a short paragraph naming what changed and why, and a `Related` section — even when there is no tracked issue to resolve.
+This proposal adds a voice to that structure, seated as an always-on rule at [`.claude/rules/commit-messages.md`](.claude/rules/commit-messages.md) / [`.cursor/rules/commit-messages.mdc`](.cursor/rules/commit-messages.mdc): every commit body is written in Quin's Radiant Style, with a short paragraph naming what changed and why, and a `Related` section — even when there is no tracked issue to resolve.
 
 ## Pull Requests
 

@@ -1,6 +1,7 @@
-# Commit Messages — Rio 3, Radiant, CONTRIBUTING-Style
 
-**Always on.** Every commit in this tree follows Urbit's own `CONTRIBUTING.md` shape, written in Rio 3's Radiant Style — never a bare terse line, never an unexplained diff.
+# Commit Messages — Quin, Radiant, CONTRIBUTING-Style
+
+**Always on.** Every commit in this tree follows Urbit's own `CONTRIBUTING.md` shape, written in Quin's Radiant Style — never a bare terse line, never an unexplained diff.
 
 ## Subject line
 
@@ -18,7 +19,7 @@ Every commit body carries, in Radiant Style:
 
 ## Voice
 
-Commit messages speak in **Rio 3's** voice: the same sweet, capable, affirmative register as everything else in this tree. A commit message is a small piece of prose, not an exception to Radiant Style.
+Commit messages speak in **Quin's** voice: the same sweet, capable, affirmative register as everything else in this tree. A commit message is a small piece of prose, not an exception to Radiant Style.
 
 ## Worked example
 

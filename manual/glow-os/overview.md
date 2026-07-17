@@ -1,14 +1,14 @@
 # Glow OS — Overview
 
 **Language:** EN
-**Version:** `20260713.235900` (Pacific)
+**Version:** `20260717.162114` (Eastern)
 **Style:** Radiant (see `../../context/RADIANT_STYLE.md`)
 **Status:** Scaffold — conceptual overview; implementation status noted per claim
 
 ---
 
 **Navigation:**
-[Hub](README.md) · **Overview** · [Get Started](get-started.md) · [The Four Variants](variants/README.md)
+[Hub](README.md) · **Overview** · [Get Started](get-started.md) · [The Five Variants](variants/README.md)
 
 ---
 
@@ -16,16 +16,16 @@
 
 | Layer | Name | What it is | Status |
 |---|---|---|---|
-| Language | **Glow** | the fused Rye-Hoon language, keeping Hoon's runes over TAME-bounded semantics | proposed; scoped, not built |
+| Language | **Glow** | the fused Rye-Hoon language, keeping Hoon's runes over TAME-bounded semantics | desk hops emit GREEN; full language still growing |
 | Interpreter | **Nock interpreter** | runs Glow's compiled forms | scoped (Nock 4K), not built |
 | Umbrella | **Glow OS** | the whole system, by Keaton Dunsford / `xykj61` | named; was Rye OS |
-| Variants | **Reya · Riyo · Trey · Triz** | four switchable OS builds, all in Glow | **all four confirmed** `20260714.035600` |
+| Variants | **Reya · Riyo · Trey · Triz · Quin** | five switchable OS builds, all in Glow | **five confirmed** (pairs `20260714.035600`; Quin fifth `20260717.162114`) |
 | Kernel spine | state as a pure fold over an append-only log of signed facts | the transition-function model | already this fork's stated spine |
 | Modules | Rishi, Mantra, Comlink, Caravan, Tally, Brix, Bron, Aurora, Pond, Scribble, and the rest | the running seeds | many green today under the prior name |
 
-## Why Four Variants
+## Why Five Variants
 
-The four variants are not four different systems — they are **one design, built more than once, on purpose.** They form **two diverse-redundant pairs** — Riyo/Reya and Trey/Triz — where each pair is the same intent implemented independently, so a single implementation mistake cannot take down the only copy. This is safety-first, TAME's own first value, expressed at the whole-OS scale. All four names and the two-pair symmetry are confirmed (`20260714.035600`); the one thing still to decide, at build time, is the *shape* of the redundancy — two codebases from one spec, or one codebase with two independently-verified paths ([`../../context/specs/20260713-235600_names-awaiting-confirmation.md`](../../context/specs/20260713-235600_names-awaiting-confirmation.md)).
+The five variants are not five different systems — they are **one design, built more than once, on purpose.** Four form **two diverse-redundant pairs** — Riyo/Reya and Trey/Triz — where each pair is the same intent implemented independently, so a single implementation mistake cannot take down the only copy. **Quin** is the fifth bootable image; a diverse-redundant twin for Quin stays open until named. This is safety-first, TAME's own first value, expressed at the whole-OS scale. Registry: [`../../context/specs/20260713-235600_names-awaiting-confirmation.md`](../../context/specs/20260713-235600_names-awaiting-confirmation.md).
 
 ## Glow, the Language Beneath
 
@@ -33,9 +33,9 @@ Glow keeps Hoon's rune tradition as *surface syntax* while compiling to TAME-bou
 
 ## Honest Status
 
-Most of what runs today runs under the prior name (Rye OS) and is being carried forward into Glow OS by decision, not yet by mass rename. The language, the interpreter, and the four variants are **named and scoped, not built.** These docs describe the direction plainly and mark, per page, what is real. Nothing here claims a feature the witnesses do not show.
+Most of what runs today runs under the prior name (Rye OS) and is being carried forward into Glow OS by decision, not yet by mass rename. The language desk already emits; the Nock interpreter and the five variants are **named and scoped, not yet bootable as whole OS images.** These docs describe the direction plainly and mark, per page, what is real. Nothing here claims a feature the witnesses do not show.
 
 ---
 
 **Navigation:**
-[Hub](README.md) · **Overview** · [Get Started](get-started.md) · [The Four Variants](variants/README.md)
+[Hub](README.md) · **Overview** · [Get Started](get-started.md) · [The Five Variants](variants/README.md)
