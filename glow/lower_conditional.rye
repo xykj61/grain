@@ -3,15 +3,16 @@
 //! Per active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md:
 //! `?:` is if/then/else. This hop lowers `(gth tick 32)` and bare `ready`,
 //! with then/else as named faces (defaults delivered/dropped), decimal
-//! literals, or nested `^-  @uN  <decimal>` cast-of-literals. Arm decimals
-//! are payloads, not Hoon loobeans; `ready` emits Zig `bool`; exits are
-//! POSIX (0 success). See glow/truth_semantics.rye. Other parenthesized
-//! arm expressions refuse until a later lap.
+//! literals, or nested `^-  @uN  <decimal>` cast-of-literals — parsed through
+//! `expr.rye`. Arm decimals are payloads, not Hoon loobeans; `ready` emits
+//! Zig `bool`; exits are POSIX (0 success). See glow/truth_semantics.rye.
+//! Other parenthesized arm expressions refuse until a later lap.
 
 const std = @import("std");
 const rif = @import("rune_conditional.rye");
+const expr = @import("expr.rye");
 
-pub const LowerError = rif.ParseError || error{
+pub const LowerError = rif.ParseError || expr.ParseError || error{
     Overflow,
     EmptySource,
     TestNotYetLowered,
@@ -24,20 +25,11 @@ pub const LowerError = rif.ParseError || error{
 
 pub const gth_welcome_tick: u32 = 40;
 pub const gth_unwelcome_tick: u32 = 10;
-pub const max_arm_len: u32 = 64;
+pub const max_arm_len: u32 = expr.max_name_len;
 
 const TestKind = enum { gth_tick_32, ready_face };
 
-const ArmKind = enum { face, literal, cast_literal };
-
-const ArmExpr = struct {
-    kind: ArmKind,
-    face: [max_arm_len]u8 = [_]u8{0} ** max_arm_len,
-    face_len: usize = 0,
-    lit: u32 = 0,
-    mold: [max_arm_len]u8 = [_]u8{0} ** max_arm_len,
-    mold_len: usize = 0,
-};
+const ArmExpr = expr.Expr;
 
 const ArmPair = struct {
     then_arm: ArmExpr,
@@ -48,13 +40,6 @@ fn classify_test(test_expr: []const u8) LowerError!TestKind {
     if (std.mem.eql(u8, test_expr, "(gth tick 32)")) return .gth_tick_32;
     if (std.mem.eql(u8, test_expr, "ready")) return .ready_face;
     return error.TestNotYetLowered;
-}
-
-fn is_ident_char(c: u8) bool {
-    if (c >= 'a' and c <= 'z') return true;
-    if (c >= 'A' and c <= 'Z') return true;
-    if (c >= '0' and c <= '9') return true;
-    return c == '-' or c == '_';
 }
 
 fn zig_safe_ident(face: []const u8, out: *[max_arm_len]u8) LowerError!usize {
@@ -76,65 +61,27 @@ fn zig_safe_ident(face: []const u8, out: *[max_arm_len]u8) LowerError!usize {
 }
 
 fn zig_type_for_mold(mold: []const u8) LowerError![]const u8 {
-    if (mold.len == 0) return error.MalformedArms;
-    if (mold[0] != '@') return error.NamedMoldNotYetLowered;
-    if (std.mem.eql(u8, mold, "@u8")) return "u8";
-    if (std.mem.eql(u8, mold, "@u16")) return "u16";
-    if (std.mem.eql(u8, mold, "@u32")) return "u32";
-    if (std.mem.eql(u8, mold, "@u64")) return "u64";
-    return error.AuraNotYetLowered;
+    return expr.zig_type_for_mold(mold) catch |err| switch (err) {
+        error.MalformedExpr => error.MalformedArms,
+        else => err,
+    };
 }
 
 fn face_slice(a: *const ArmExpr) []const u8 {
-    return a.face[0..a.face_len];
+    return expr.face_slice(a);
 }
 
 fn mold_slice(a: *const ArmExpr) []const u8 {
-    return a.mold[0..a.mold_len];
-}
-
-fn parse_decimal_prefix(rest: []const u8) LowerError!struct { lit: u32, rest: []const u8 } {
-    var end: usize = 0;
-    while (end < rest.len and rest[end] >= '0' and rest[end] <= '9') end += 1;
-    if (end == 0) return error.MalformedArms;
-    const lit = std.fmt.parseInt(u32, rest[0..end], 10) catch return error.Overflow;
-    return .{ .lit = lit, .rest = std.mem.trimStart(u8, rest[end..], " \t") };
+    return expr.mold_slice(a);
 }
 
 fn parse_one_arm(rest_in: []const u8) LowerError!struct { arm: ArmExpr, rest: []const u8 } {
-    const rest = std.mem.trimStart(u8, rest_in, " \t");
-    if (rest.len == 0) return error.MalformedArms;
-    if (rest[0] == '(') return error.ArmNotYetLowered;
-
-    if (rest[0] >= '0' and rest[0] <= '9') {
-        const parsed = try parse_decimal_prefix(rest);
-        return .{ .arm = .{ .kind = .literal, .lit = parsed.lit }, .rest = parsed.rest };
-    }
-
-    if (rest.len >= 2 and rest[0] == '^' and rest[1] == '-') {
-        var after_rune = std.mem.trimStart(u8, rest[2..], " \t");
-        var mold_end: usize = 0;
-        while (mold_end < after_rune.len and after_rune[mold_end] != ' ' and after_rune[mold_end] != '\t')
-            mold_end += 1;
-        const mold = after_rune[0..mold_end];
-        if (mold.len == 0 or mold.len > max_arm_len) return error.MalformedArms;
-        _ = try zig_type_for_mold(mold);
-        const after_mold = std.mem.trimStart(u8, after_rune[mold_end..], " \t");
-        const parsed = try parse_decimal_prefix(after_mold);
-        var arm: ArmExpr = .{ .kind = .cast_literal, .lit = parsed.lit, .mold_len = mold.len };
-        @memcpy(arm.mold[0..mold.len], mold);
-        return .{ .arm = arm, .rest = parsed.rest };
-    }
-
-    var end: usize = 0;
-    while (end < rest.len and is_ident_char(rest[end])) end += 1;
-    if (end == 0) return error.MalformedArms;
-    const face = rest[0..end];
-    if (face[0] >= '0' and face[0] <= '9') return error.BadIdent;
-    if (face.len > max_arm_len) return error.BadIdent;
-    var arm: ArmExpr = .{ .kind = .face, .face_len = face.len };
-    @memcpy(arm.face[0..face.len], face);
-    return .{ .arm = arm, .rest = std.mem.trimStart(u8, rest[end..], " \t") };
+    const parsed = expr.parse_prefix(rest_in) catch |err| return switch (err) {
+        error.ExprNotYetLowered => error.ArmNotYetLowered,
+        error.MalformedExpr => error.MalformedArms,
+        else => err,
+    };
+    return .{ .arm = parsed.expr, .rest = parsed.rest };
 }
 
 fn arm_pair(line: []const u8, test_expr: []const u8) LowerError!ArmPair {

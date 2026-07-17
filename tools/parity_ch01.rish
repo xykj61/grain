@@ -1162,6 +1162,11 @@ let glow_sw = run ["rishi/bin/rishi" "run" "tools/glow_lower_switch_witness.rish
 assert glow_sw.ok else "Glow lower-switch witness failed"
 say "GREEN: Glow lower-switch witness passed."
 
+say "witness suite: Glow shared nest-expression parser — first lexer lap…"
+let glow_expr = run ["rishi/bin/rishi" "run" "tools/glow_expr_witness.rish"]
+assert glow_expr.ok else "Glow expr witness failed"
+say "GREEN: Glow expr witness passed."
+
 say "witness suite: Glow `=/` lowers to Rye — face hop…"
 let glow_face = run ["rishi/bin/rishi" "run" "tools/glow_lower_face_witness.rish"]
 assert glow_face.ok else "Glow lower-face witness failed"

@@ -1,0 +1,106 @@
+//! glow/expr.rye — shared nest-expression surface for Glow lowers.
+//!
+//! First general-lexer lap: one parser for the already-green nest forms
+//! (decimal · nested `^-  @uN  <decimal>` · bare face). Parenthesized
+//! forms refuse. Not a full token stream yet — other paren values wait.
+
+const std = @import("std");
+
+pub const max_name_len: u32 = 64;
+
+pub const ParseError = error{
+    Overflow,
+    MalformedExpr,
+    ExprNotYetLowered,
+    BadIdent,
+    AuraNotYetLowered,
+    NamedMoldNotYetLowered,
+};
+
+pub const Kind = enum { face, literal, cast_literal };
+
+pub const Expr = struct {
+    kind: Kind,
+    face: [max_name_len]u8 = [_]u8{0} ** max_name_len,
+    face_len: usize = 0,
+    lit: u32 = 0,
+    mold: [max_name_len]u8 = [_]u8{0} ** max_name_len,
+    mold_len: usize = 0,
+};
+
+pub fn face_slice(e: *const Expr) []const u8 {
+    return e.face[0..e.face_len];
+}
+
+pub fn mold_slice(e: *const Expr) []const u8 {
+    return e.mold[0..e.mold_len];
+}
+
+fn is_ident_char(c: u8) bool {
+    if (c >= 'a' and c <= 'z') return true;
+    if (c >= 'A' and c <= 'Z') return true;
+    if (c >= '0' and c <= '9') return true;
+    return c == '-' or c == '_';
+}
+
+pub fn zig_type_for_mold(mold: []const u8) ParseError![]const u8 {
+    if (mold.len == 0) return error.MalformedExpr;
+    if (mold[0] != '@') return error.NamedMoldNotYetLowered;
+    if (std.mem.eql(u8, mold, "@u8")) return "u8";
+    if (std.mem.eql(u8, mold, "@u16")) return "u16";
+    if (std.mem.eql(u8, mold, "@u32")) return "u32";
+    if (std.mem.eql(u8, mold, "@u64")) return "u64";
+    return error.AuraNotYetLowered;
+}
+
+fn parse_decimal_prefix(rest: []const u8) ParseError!struct { lit: u32, rest: []const u8 } {
+    var end: usize = 0;
+    while (end < rest.len and rest[end] >= '0' and rest[end] <= '9') end += 1;
+    if (end == 0) return error.MalformedExpr;
+    const lit = std.fmt.parseInt(u32, rest[0..end], 10) catch return error.Overflow;
+    return .{ .lit = lit, .rest = std.mem.trimStart(u8, rest[end..], " \t") };
+}
+
+/// Parse one nest expression from the start of `rest_in`; return leftover.
+pub fn parse_prefix(rest_in: []const u8) ParseError!struct { expr: Expr, rest: []const u8 } {
+    const rest = std.mem.trimStart(u8, rest_in, " \t");
+    if (rest.len == 0) return error.MalformedExpr;
+    if (rest[0] == '(') return error.ExprNotYetLowered;
+
+    if (rest[0] >= '0' and rest[0] <= '9') {
+        const parsed = try parse_decimal_prefix(rest);
+        return .{ .expr = .{ .kind = .literal, .lit = parsed.lit }, .rest = parsed.rest };
+    }
+
+    if (rest.len >= 2 and rest[0] == '^' and rest[1] == '-') {
+        var after_rune = std.mem.trimStart(u8, rest[2..], " \t");
+        var mold_end: usize = 0;
+        while (mold_end < after_rune.len and after_rune[mold_end] != ' ' and after_rune[mold_end] != '\t')
+            mold_end += 1;
+        const mold = after_rune[0..mold_end];
+        if (mold.len == 0 or mold.len > max_name_len) return error.MalformedExpr;
+        _ = try zig_type_for_mold(mold);
+        const after_mold = std.mem.trimStart(u8, after_rune[mold_end..], " \t");
+        const parsed = try parse_decimal_prefix(after_mold);
+        var e: Expr = .{ .kind = .cast_literal, .lit = parsed.lit, .mold_len = mold.len };
+        @memcpy(e.mold[0..mold.len], mold);
+        return .{ .expr = e, .rest = parsed.rest };
+    }
+
+    var end: usize = 0;
+    while (end < rest.len and is_ident_char(rest[end])) end += 1;
+    if (end == 0) return error.MalformedExpr;
+    const face = rest[0..end];
+    if (face[0] >= '0' and face[0] <= '9') return error.BadIdent;
+    if (face.len > max_name_len) return error.BadIdent;
+    var e: Expr = .{ .kind = .face, .face_len = face.len };
+    @memcpy(e.face[0..face.len], face);
+    return .{ .expr = e, .rest = std.mem.trimStart(u8, rest[end..], " \t") };
+}
+
+/// Parse one nest expression that must consume the whole rest.
+pub fn parse_whole(rest_in: []const u8) ParseError!Expr {
+    const parsed = try parse_prefix(rest_in);
+    if (parsed.rest.len != 0) return error.MalformedExpr;
+    return parsed.expr;
+}
