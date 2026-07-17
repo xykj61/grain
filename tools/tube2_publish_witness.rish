@@ -1,0 +1,24 @@
+# tube2_publish_witness.rish — TUBE2: signed app+manifest publish into Granary.
+#
+# Maker publishes a TUBE0 Manifest resin under a signed person/weave name;
+# consumer resolves, clones, and admits (TUBE1) before install. See
+# linengrow/tube2_publish.rye.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/tube2_publish_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/tube2_publish_witness"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/tube2_publish_witness.rye -femit-bin=${bin}"]
+assert build.ok else "TUBE2 publish witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "TUBE2 publish witness exited non-zero"
+assert selftest.out contains "GREEN" else "TUBE2 publish witness not GREEN"
+assert selftest.out contains "welcome publish" else "TUBE2 missing the maker publish path"
+assert selftest.out contains "install after verify" else "TUBE2 missing the consumer install path"
+assert selftest.out contains "lying signature" else "TUBE2 missing the lying-signature refusal"
+assert selftest.out contains "unknown name" else "TUBE2 missing the unknown-name refusal"
+
+say "GREEN: TUBE2 publish witness passed."

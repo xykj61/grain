@@ -1,0 +1,83 @@
+//! linengrow/tube2_publish_witness.rye — proves TUBE2 signed publish.
+//!
+//!   rye build linengrow/tube2_publish_witness.rye -femit-bin=linengrow/bin/tube2_publish_witness
+//!   linengrow/bin/tube2_publish_witness
+//!
+//! Four claims:
+//!   1. Maker publishes a TUBE0 Manifest resin under glow/sala-broadcaster;
+//!      resolve returns the matching resin digest.
+//!   2. Consumer resolves, clones, and admits (TUBE1) — install after verify.
+//!   3. A lying signature is refused at the publish write gate.
+//!   4. An unknown name refuses resolve — no install path.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const gc = @import("granary_core.rye");
+const caps = @import("capabilities.rye");
+const pool = @import("pool_host_seam.rye");
+const tube2 = @import("tube2_publish.rye");
+
+const witness_version = "20260717.131500";
+
+fn run_selftest() !u8 {
+    var store = gc.ResinStore.empty();
+    var reg = gc.Registry.empty();
+    var log: [gc.max_log_bytes]u8 = undefined;
+    var log_len: u32 = 0;
+
+    // Claim 1: maker publish.
+    const published = try tube2.run_demo_publish(&store, &reg, &log, &log_len);
+    const fact = try gc.resolve(&reg, tube2.demo_path);
+    assert(std.mem.eql(u8, fact.resin_digest, &published.digest));
+    assert(std.mem.eql(u8, fact.person, "glow"));
+    assert(std.mem.eql(u8, fact.weave, "sala-broadcaster"));
+    print("tube2: published manifest resin under {s} -- digest matches resolve\n", .{tube2.demo_path});
+    print("tube2: welcome publish path -- GREEN\n", .{});
+
+    // Claim 2: resolve + clone + admit (install door).
+    var table: caps.CapabilityTable = .{};
+    const agent = try table.add_child("ledger-agent");
+    try agent.grant(caps.Capability.init(pool.ledger_resource, caps.right_read | caps.right_write));
+    try tube2.resolve_and_admit(&store, &reg, tube2.demo_path, &published.manifest, &table, "ledger-agent");
+    print("tube2: resolve + clone + TUBE1 admit -- install after verify -- GREEN\n", .{});
+
+    // Claim 3: lying signature refused at publish.
+    var lie_store = gc.ResinStore.empty();
+    const lie_digest = try gc.put_resin(&lie_store, "not a manifest\n");
+    var fact_buf: [gc.max_fact_len]u8 = undefined;
+    const fact_len = try gc.sign_name_fact(gc.granary_version, "glow", "lie", &lie_digest, &fact_buf);
+    // Corrupt the signature hex in place (last field).
+    if (fact_len > 4) {
+        fact_buf[fact_len - 2] = if (fact_buf[fact_len - 2] == '0') '1' else '0';
+    }
+    var lie_reg = gc.Registry.empty();
+    var lie_log: [gc.max_log_bytes]u8 = undefined;
+    var lie_log_len: u32 = 0;
+    const lied = gc.publish(&lie_reg, &lie_log, &lie_log_len, fact_buf[0..fact_len]);
+    if (lied) |_| {
+        return error.LyingPublishAccepted;
+    } else |err| {
+        if (err != gc.NameFactError.VerifyFailed and err != gc.NameFactError.BadHex and err != gc.NameFactError.InvalidFact) {
+            return err;
+        }
+    }
+    print("tube2: lying signature refused at publish write gate -- GREEN unwelcome path\n", .{});
+
+    // Claim 4: unknown name — no install.
+    const unknown = gc.resolve(&reg, "glow/unknown-app");
+    if (unknown) |_| {
+        return error.UnknownResolved;
+    } else |err| {
+        if (err != gc.NameFactError.UnknownName) return err;
+    }
+    print("tube2: unknown name refuses resolve -- no install -- GREEN\n", .{});
+
+    print("tube2: version {s}\n", .{witness_version});
+    print("GREEN: TUBE2 -- maker signs app+manifest into Granary; consumer verifies before install.\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}
