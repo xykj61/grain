@@ -61,8 +61,8 @@ The full onboarding surface for the four variants lives in the manual: [`manual/
 
 Two root configuration files hold what is specific to *your* machine and *your* identity, so the tree itself stays a clean, shareable template:
 
-- **[`GLOW_HOST.template.bron`](GLOW_HOST.template.bron)** — copy to `GLOW_HOST.bron` (kept out of git) and fill in this host's OS, architecture, and toolchain paths. [`tools/glow_host_run.sh`](tools/glow_host_run.sh) reads it and refuses to run against a mismatched toolchain rather than silently reaching for the wrong one.
-- **[`GLOW_PROFILE.template.bron`](GLOW_PROFILE.template.bron)** — copy to `GLOW_PROFILE.bron` (kept out of git) and fill in the professional identity that signs the work: name, forge handles, contact, and the placeholder identities used in examples. The tree's own docs speak to a generic reader; the profile is where the specific "who" lives.
+- **[`GLOW_HOST.template.bron`](GLOW_HOST.template.bron)** — copy to `GLOW_HOST.bron` (kept out of git) and fill in this host's OS, architecture, and toolchain paths (`linux`/`x86_64` and `macos`/`aarch64` are both first-class). [`tools/glow_host_run.sh`](tools/glow_host_run.sh) reads it and refuses to run against a mismatched toolchain rather than silently reaching for the wrong one.
+- **[`GLOW_PROFILE.template.bron`](GLOW_PROFILE.template.bron)** — copy to `GLOW_PROFILE.bron` (kept out of git) and fill in the professional identity that signs the work: name, forge handles, contact, timezone for one-clock stamps, and session-log editor/model/voice defaults (standing voice **Quin**). The tree's own docs speak to a generic reader; the profile is where the specific "who" lives.
 
 Then read, in order:
 
