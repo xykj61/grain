@@ -1,0 +1,30 @@
+//! linengrow/tube1_glass_gate.rye — TUBE1 door for the NativeActivity present path.
+//!
+//! Builds the sala-broadcaster TUBE0 manifest (the three R2 state resources)
+//! and a matching Caravan grant, then runs admit_manifest. The glass path
+//! paints R2 only when this door opens — same claim as the device-free
+//! TUBE1 witness, exercised at onCreate.
+
+const caps = @import("capabilities.rye");
+const tube = @import("tube_manifest.rye");
+const tube1 = @import("tube1_admission.rye");
+
+const rw: u8 = caps.right_read | caps.right_write;
+
+/// True when the demo app's manifest is admitted under a matching grant.
+pub fn run_demo_admit() bool {
+    const declared = [_]tube.DeclaredCapability{
+        tube.DeclaredCapability.init("state-ask", rw),
+        tube.DeclaredCapability.init("state-receipt", rw),
+        tube.DeclaredCapability.init("state-reputation", rw),
+    };
+    const manifest = tube.build("sala-broadcaster", "0.1.0", &declared, 1024) catch return false;
+
+    var table: caps.CapabilityTable = .{};
+    const agent = table.add_child("sala-broadcaster") catch return false;
+    agent.grant(caps.Capability.init("state-ask", rw)) catch return false;
+    agent.grant(caps.Capability.init("state-receipt", rw)) catch return false;
+    agent.grant(caps.Capability.init("state-reputation", rw)) catch return false;
+
+    return tube1.admit_manifest(&table, "sala-broadcaster", &manifest);
+}

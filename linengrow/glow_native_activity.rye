@@ -4,13 +4,16 @@
 //!
 //! Per active-designing/20260717-014522_native-activity-shim-and-slc-
 //! packaging.md: one small, fixed, never-generated entry. App logic is
-//! the Sala B0 demo fold (`sala_b0_fold.rye`) plus the R2 multi-panel
-//! surface (`sala_r2_surface.rye`). After writing files/sala_root.txt,
-//! registers window + input callbacks: paints panels + session-root hex
-//! (glow_native_surface.rye) and finishes on tap.
+//! the Sala B0 demo fold (`sala_b0_fold.rye`), the TUBE1 admit gate
+//! (`tube1_glass_gate.rye`), and the R2 multi-panel surface
+//! (`sala_r2_surface.rye`). After writing files/sala_root.txt, registers
+//! window + input callbacks: paints panels + session-root hex
+//! (glow_native_surface.rye) and finishes on tap. R2 paints only when
+//! TUBE1 admits the app manifest.
 
 const std = @import("std");
 const fold = @import("sala_b0_fold.rye");
+const tube1_gate = @import("tube1_glass_gate.rye");
 const r2 = @import("sala_r2_surface.rye");
 const sala_surf = @import("sala_surface.rye");
 const surface = @import("glow_native_surface.rye");
@@ -20,6 +23,7 @@ export var glow_last_session_root_hex: [65]u8 = [_]u8{0} ** 65;
 var g_activity: ?*anyopaque = null;
 var g_input_queue: ?*anyopaque = null;
 var g_root_matched: bool = false;
+var g_tube1_admitted: bool = false;
 var g_surface: sala_surf.Surface = .{};
 var g_surface_ready: bool = false;
 
@@ -99,7 +103,13 @@ const motion_action_up: i32 = 1;
 fn paint_window(_: ?*anyopaque, window: ?*anyopaque) callconv(.c) void {
     if (glow_last_session_root_hex[0] == 0) return;
     const surf_ptr: ?*const sala_surf.Surface = if (g_surface_ready) &g_surface else null;
-    surface.paint_session_root_hex(window, glow_last_session_root_hex[0..64], g_root_matched, surf_ptr);
+    surface.paint_session_root_hex(
+        window,
+        glow_last_session_root_hex[0..64],
+        g_root_matched,
+        g_tube1_admitted,
+        surf_ptr,
+    );
 }
 
 fn on_input_cb(_: c_int, _: c_int, _: ?*anyopaque) callconv(.c) c_int {
@@ -163,6 +173,16 @@ export fn ANativeActivity_onCreate(
     record_root(&root);
     g_root_matched = fold.root_matches_expected(&root);
     write_root_file(glow_last_session_root_hex[0..64]);
+
+    // TUBE1 door: paint R2 only when the app manifest matches a grant.
+    g_tube1_admitted = tube1_gate.run_demo_admit();
+    if (!g_tube1_admitted) {
+        g_surface = .{};
+        g_surface_ready = false;
+        wire_surface_callbacks(activity);
+        return;
+    }
+
     g_surface = r2.run_demo_surface() catch {
         g_surface = .{};
         g_surface_ready = false;
