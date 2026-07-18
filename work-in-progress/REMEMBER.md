@@ -2,7 +2,7 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Rule: [`.cursor/rules/remember.mdc`](../.cursor/rules/remember.mdc) · [`.claude/rules/remember.md`](../.claude/rules/remember.md).*
 
-**Last refreshed:** `20260718.193122` (Eastern) · voice Quin  
+**Last refreshed:** `20260718.193607` (Eastern) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · SETU5 · HOLD0 · **HOLD1**  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU5 · HOLD0–HOLD1  
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`
@@ -33,8 +33,9 @@ $ADB devices
 $ADB install -r tools/.cache/tube05/sala-broadcaster.apk
 $ADB shell am force-stop org.glow.app.sala_broadcaster
 $ADB shell am start -n org.glow.app.sala_broadcaster/android.app.NativeActivity
-# SETU0→HOLD0 — pull hearth · station · ping gate · Desk hold line
+# SETU0→HOLD1 — pull · station · ping gate · hold line · Skate cells
 rishi/bin/rishi run tools/setu0_hearth_pull_onpath_host.rish
+# device-free Skate cells only:
 rishi/bin/rishi run tools/setu_desk_hold1_witness.rish
 ```
 
@@ -48,7 +49,7 @@ Hold row 1 → Settings: presets · `home ·` · `wire ·` · `cell ·` — all 
 
 | Door | Kind |
 |------|------|
-| Ship HOLD1 Desk Skate hold | **send** |
+| **HOLD Wayland eyes** — Desk Skate window | **check-in** |
 | **SETU6** QEMU/Pixel CDC-NCM lab | **check-in** (parked) |
 | Amber/Amphora Glass↔Desk fuse | **declined** — compose later (`133455`) |
 | JABS3 · TAME Lap 3 | **check-in** |

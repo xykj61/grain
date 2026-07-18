@@ -284,6 +284,8 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **HOLD1 Desk Skate hold GREEN, `20260718.193122`** — approved thin face: HOLD0 chrome on Skate rows 0–1 under SETU0.5 Desk metrics (two rows for UTF-8 width). Next: **send** HOLD1; SETU6 / Wayland eyes stay check-in.
 
+**HOLD1 host Pixel look, `20260718.193607`** — SETU0→HOLD1 chain GREEN on device (`local` · Skate cells). Next: **send** look record; Wayland eyes / SETU6 stay check-in.
+
 **Glow OS · Glow Desk · Glow Glass seated, `20260717.183622`** — Keaton: **Glow OS** unifies; **Glow Desk** = desktop; **Glow Glass** = mobile. Lexicon + silo [`../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md`](../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md). Orientation firmware stays check-in.
 
 **Witness habitat + markup pipeline, `20260717.173427`** — foundations fit study affirms single-strand · sameness · happy-zone practice in the suite; teaching path was the gap. Seats **witness habitat** as Acme synonym (foundations keep *happy zone*). Fusion map holds Scribble→Brix→Bron→Mantra→Sala with Glow under TAME; Udon/Sail/Zuse horizon. Tutorial scaffold [`../manual/tutorials/cursor-and-the-compass.md`](../manual/tutorials/cursor-and-the-compass.md); silo [`../active-designing/20260717-173427_witness-habitat-and-the-markup-pipeline.md`](../active-designing/20260717-173427_witness-habitat-and-the-markup-pipeline.md). Product next remains Dexter D2.
