@@ -8,6 +8,9 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260718.192950` — [Send Acme · Glow · waymark hygiene](20260718-192950_send-acme-glow-waymark-hygiene.bron) — pier ship; HOLD1 build next
+- `20260718.192716` — [Acme · waymark · Glow hygiene](20260718-192716_acme-waymark-glow-hygiene.bron) — eight heads synced; Quin tutorials; HOLD1 next
+- `20260718.192424` — [HOLD1 thin face after ready](20260718-192424_hold1-thin-face-ready.bron) — Desk Skate hold chrome; await approve
 - `20260718.192317` — [Send HOLD0 stale-bin honesty](20260718-192317_send-hold0-stale-bin-honesty.bron) — pier ship; pause; HOLD1 check-in
 - `20260718.192129` — [Optimal path · operator state](20260718-192129_optimal-path-forward-state.bron) — send honesty; optional usb_desk; pause
 - `20260718.190855` — [Explain HOLD0 meaning](20260718-190855_explain-hold0-meaning.bron) — plain read of hold line + host chain

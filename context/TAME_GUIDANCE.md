@@ -1,14 +1,15 @@
 ---
 name: TAME Guidance — Operational Supplement
-description: Checkable coding rules for Rye, Brix, and Rishi — root plus one supplement per language. Pairs with the voiced canon in external-research/TAME_GUIDANCE.md.
+description: Checkable coding rules for Rye, Brix, and Rishi — root plus one supplement per language. Glow keeps the root until its own supplement earns a seat. Pairs with the voiced canon in external-research/TAME_GUIDANCE.md.
 type: reference
 ---
 
 # TAME Guidance — Operational Supplement
 
 **Language:** EN
-**Last updated:** 2026-07-12 (post–Season-B hygiene · living hammock twin · dated_guard)
+**Last updated:** 2026-07-18 (Glow pin + supplement horizon named)
 **Style:** Radiant (see `RADIANT_STYLE.md`)
+**Voice:** Quin
 **Status:** Active — grow by supplement, earned when the language is ready
 
 ---
@@ -22,6 +23,8 @@ Three layers, one discipline — filenames follow TigerBeetle's `docs/TIGER_STYL
 | **Source** | `gratitude/TIGER_STYLE.md` | TigerBeetle team's guide, kept whole and unaltered |
 | **Voiced canon** | `external-research/TAME_GUIDANCE.md` | Our radiant adaptation; Safety, Performance, DX, and the full why |
 | **Operational supplement** | this document | Checkable root + Rye / Brix / Rishi rules for authors and agents |
+| **Glow working pin** | [`../glow/README.md`](../glow/README.md) | Eight rune heads + desk hops today — not a Glow TAME chapter yet |
+| **Glow supplement (horizon)** | [`../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md`](../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md) | Scoping for a future Glow supplement; root still binds Glow authors now |
 
 Read the voiced canon (`external-research/TAME_GUIDANCE.md`) for philosophy and expert Tiger discipline. Read **this file** at the keyboard for what to assert, name, and bound. Organization prose lives in `active-designing/yonder/20260618-184912_growing-a-language.md`.
 
@@ -33,7 +36,7 @@ Cursor and Claude rules (`.cursor/rules/tame-guidance.mdc`, `.claude/rules/tame-
 
 TAME names the order of values that governs every line we write: **safety first, performance second, the joy of the craft third.** That order is a priority — when they pull against each other, safety wins; when safety and performance are equal, joy earns the vote.
 
-This guide makes those values concrete for code. It is organized as **one root** — rules that hold across the whole family — and **a supplement for each language**, added when that language has earned distinct idioms of its own. A supplement that does not exist yet is not overdue: it waits for the language to be real enough to need it.
+This guide makes those values concrete for code. It is organized as **one root** — rules that hold across the whole family — and **a supplement for each language**, added when that language has earned distinct idioms of its own. A supplement that does not exist yet is not overdue: it waits for the language to be real enough to need it. **Glow** already emits eight rune heads under [`../glow/`](../glow/); it keeps this root until a Glow supplement earns its own section here.
 
 The rules here that a machine can check are gathered near the end, in **What We Check, and When** — each one matched to the tool that catches it today, or named as a horizon when it waits for a Zig parser. The checkable rules and the idioms behind them are drawn faithfully from TigerBeetle's own enforcement, `src/tidy.zig`, kept in our gratitude for the team that wrote it.
 

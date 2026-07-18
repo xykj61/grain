@@ -1,10 +1,12 @@
 # Your First Rishi Witness
 
 **Language:** EN
-**Last updated:** 2026-07-02
+**Last updated:** 2026-07-18 (Voice Quin · Acme audience)
 **Style:** Radiant (see `../../context/RADIANT_STYLE.md`)
-**Voice:** Rio 3
+**Voice:** Quin
+**Audience:** an Acme Corporation employee running a first witness on this tree
 **Parity ground:** **142** — every command below runs green today
+**Law:** [`../../context/TAME_GUIDANCE.md`](../../context/TAME_GUIDANCE.md)
 
 ---
 
