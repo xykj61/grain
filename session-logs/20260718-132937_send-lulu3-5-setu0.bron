@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260718.132937
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS amd64 (Framework 16 AMD) — Eastern
+title Send LULU3-5 and SETU0
+prompt send
+think Re-ran LULU3 LULU4 LULU5 SETU0 device-free witnesses — all GREEN before ship.
+think Already on main; commit preference ladder + adb hearth pull; push origin and codeberg.
+obs SETU0 host pull was GREEN on Pixel earlier this hour; SETU1 CDC-NCM stays check-in.
+product_nib SETU0
+suite_nib LULU0-5 SETU0
+file linengrow/hearth_lulu3.rye home_id editor
+file linengrow/hearth_lulu4.rye wire_lane pref
+file linengrow/hearth_lulu5.rye cellular pref
+file linengrow/setu0_hearth_pull.rye Desk pull-parse
+file docs/SETU.md compressor
+file docs/LULU.md · REMEMBER · TASKS · ROADMAP seat
+recommend check-in SETU1 CDC-NCM thin face when Keaton wants live USB sync

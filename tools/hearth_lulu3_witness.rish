@@ -1,0 +1,18 @@
+# hearth_lulu3_witness.rish — LULU3 short home_id editor.
+#
+#   rishi/bin/rishi run tools/hearth_lulu3_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/hearth_lulu3_witness"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/hearth_lulu3_witness.rye -femit-bin=${bin}"]
+assert build.ok else "LULU3 home_id editor witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "LULU3 home_id editor witness exited non-zero"
+assert selftest.out contains "GREEN" else "LULU3 not GREEN"
+assert selftest.out contains "waymark LULU" else "LULU3 missing waymark claim"
+assert selftest.out contains "home line" else "LULU3 missing home-line claim"
+assert selftest.out contains "hearth_home pointer" else "LULU3 missing pointer claim"
+
+say "GREEN: LULU3 Hearth home_id editor witness passed."

@@ -23,6 +23,9 @@ const jabs2_glass = @import("sala_jabs2_glass_audience.rye");
 const hearth = @import("hearth_lulu0.rye");
 const lulu1 = @import("hearth_lulu1.rye");
 const lulu2 = @import("hearth_lulu2.rye");
+const lulu3 = @import("hearth_lulu3.rye");
+const lulu4 = @import("hearth_lulu4.rye");
+const lulu5 = @import("hearth_lulu5.rye");
 const tally_copy = @import("tally_copy.rye");
 
 const WindowBuffer = extern struct {
@@ -91,10 +94,20 @@ pub var keyboard_emoji_tab: kb_emoji.Tab = .smileys;
 pub var active_preset: hearth.DisplayPreset = .scaled_540;
 /// LULU1: short home from Hearth Bron (default kd).
 pub var active_home_id: [hearth.home_id_len]u8 = .{ 'k', 'd' };
+/// LULU4: Wired Glass sync-lane preference (default local).
+pub var active_wire: hearth.WireLane = .local;
+/// LULU5: cellular preference (default off — used-Pixel SLC).
+pub var active_cellular: hearth.Cellular = .off;
 /// LULU2: thin Settings list open (rows 2–5).
 pub var settings_open: bool = false;
 /// LULU2: hit boxes for the four preset lines (valid when settings_open).
 pub var last_preset_hits: [lulu2.preset_count]CloseHit = [_]CloseHit{.{}} ** lulu2.preset_count;
+/// LULU3: editing short home_id (only while settings_open).
+pub var home_editing: bool = false;
+pub var home_draft: lulu3.Draft = .{};
+pub var last_home_hit: CloseHit = .{};
+pub var last_wire_hit: CloseHit = .{};
+pub var last_cell_hit: CloseHit = .{};
 
 fn fill_preset_list_rows(grid: *skate.Grid) void {
     var i: u32 = 0;
@@ -122,6 +135,21 @@ fn fill_admitted_rows(
     if (settings_open) {
         // LULU2: four-line preset list overlays the panel strip.
         fill_preset_list_rows(grid);
+        // LULU3: home row overlays the pub strip while Settings is open.
+        var home_buf: [lulu3.home_line_max]u8 = undefined;
+        const home_line = lulu3.format_home_line(
+            active_home_id[0..],
+            home_editing,
+            &home_draft,
+            &home_buf,
+        ) orelse "home · ??";
+        put_line_centered(grid, lulu3.home_row, home_line);
+        var wire_buf: [lulu4.wire_line_max]u8 = undefined;
+        const wire_line = lulu4.format_wire_line(active_wire, &wire_buf) orelse "wire · ??";
+        put_line_centered(grid, lulu4.wire_row, wire_line);
+        var cell_buf: [lulu5.cell_line_max]u8 = undefined;
+        const cell_line = lulu5.format_cell_line(active_cellular, &cell_buf) orelse "cell · ??";
+        put_line_centered(grid, lulu5.cell_row, cell_line);
     } else {
         var row: u32 = 2;
         if (surf) |s| {
@@ -139,10 +167,10 @@ fn fill_admitted_rows(
             }
         }
         if (tip_line) |tip| put_line_centered(grid, 5, tip);
+        if (pub_line) |published| put_line_centered(grid, 8, published);
+        if (fetch_line) |fetched| put_line_centered(grid, 9, fetched);
+        if (market_line) |market| put_line_centered(grid, 10, market);
     }
-    if (pub_line) |published| put_line_centered(grid, 8, published);
-    if (fetch_line) |fetched| put_line_centered(grid, 9, fetched);
-    if (market_line) |market| put_line_centered(grid, 10, market);
     if (carriage_line) |carriage| put_line_centered(grid, 11, carriage);
     if (dexter_line) |dex| put_line_centered(grid, 12, dex);
     // Layout word: JABS2 audience on 14–15; ZETA keyboard on 16–19.
@@ -284,6 +312,9 @@ fn refresh_touch_hits(
     last_close_hit = .{};
     last_hearth_hit = .{};
     last_preset_hits = [_]CloseHit{.{}} ** lulu2.preset_count;
+    last_home_hit = .{};
+    last_wire_hit = .{};
+    last_cell_hit = .{};
     if (!tube1_admitted) return;
     // invariant: positive cell metrics at the touch seam
     assert(cell_pw > 0);
@@ -318,6 +349,33 @@ fn refresh_touch_hits(
                 .y1 = origin_y + (row + 1) * cell_ph,
             };
         }
+        const hr: i32 = @intCast(lulu3.home_row);
+        last_home_hit = .{
+            .ready = true,
+            .x0 = origin_x,
+            .y0 = origin_y + hr * cell_ph,
+            .x1 = origin_x + grid_w,
+            .y1 = origin_y + (hr + 1) * cell_ph,
+        };
+        const wr: i32 = @intCast(lulu4.wire_row);
+        last_wire_hit = .{
+            .ready = true,
+            .x0 = origin_x,
+            .y0 = origin_y + wr * cell_ph,
+            .x1 = origin_x + grid_w,
+            .y1 = origin_y + (wr + 1) * cell_ph,
+        };
+        const cr: i32 = @intCast(lulu5.cell_row);
+        last_cell_hit = .{
+            .ready = true,
+            .x0 = origin_x,
+            .y0 = origin_y + cr * cell_ph,
+            .x1 = origin_x + grid_w,
+            .y1 = origin_y + (cr + 1) * cell_ph,
+        };
+    } else {
+        home_editing = false;
+        home_draft.clear();
     }
     // Close only on the painted "TAP ABOVE KB TO CLOSE" row (Skate 13).
     const close_row: i32 = 13;
@@ -364,6 +422,9 @@ pub fn paint_session_root_hex(
     last_close_hit = .{};
     last_hearth_hit = .{};
     last_preset_hits = [_]CloseHit{.{}} ** lulu2.preset_count;
+    last_home_hit = .{};
+    last_wire_hit = .{};
+    last_cell_hit = .{};
     if (window == null) return;
     _ = ANativeWindow_setBuffersGeometry(window, 0, 0, format_rgba8888);
     var buf: WindowBuffer = undefined;
