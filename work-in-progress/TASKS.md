@@ -297,6 +297,7 @@
 - [x] **SETU4 sent** `20260718.184449` — `3512444e73` on pier.
 - [x] **SETU5 — device-wire payload bound** `20260718.184537` — kg; framed ping fits virtio max_frame 554; writes `lane_frame.bin`; live QEMU/Pixel lab deferred to SETU6.
 - [x] **Desk Hearth Hold season open · HOLD0 GREEN** `20260718.185147`–`185306` — Desk names station + ping/frame hold line; SETU6 parked; HOLD1 check-in.
+- [x] **HOLD0 stale-bin honesty** `20260718.190720` — local wire ignores leftover ping/frame; host SKIP clears cache bins.
 - [ ] **HOLD1 — Desk Skate chrome from station** — check-in (season next after send).
 - [ ] **SETU6 — QEMU/Pixel CDC-NCM / device-wire lab** — check-in (parked; not Amber-on-Glass).
 - [ ] **Wired Glass SLC metalsmoke** — cellular optional/off; USB sync to Desk; Setu live lane check-in.

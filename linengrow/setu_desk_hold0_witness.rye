@@ -9,7 +9,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const hold0 = @import("setu_desk_hold0.rye");
 
-const witness_version = "20260718.185147";
+const witness_version = "20260718.190720";
 
 fn run_selftest(_: std.process.Init) !u8 {
     assert(std.mem.eql(u8, hold0.waymark, "SETU"));
@@ -21,6 +21,9 @@ fn run_selftest(_: std.process.Init) !u8 {
 
     assert(hold0.fixture_local_empty_hold());
     print("hold0: local empty hold speakable -- GREEN\n", .{});
+
+    assert(hold0.fixture_local_ignores_stale_bins());
+    print("hold0: local ignores stale ping/frame -- GREEN\n", .{});
 
     print("hold0: version {s}\n", .{witness_version});
     print("GREEN: HOLD0 — Desk can name the hearth and frame it holds (device-free).\n", .{});

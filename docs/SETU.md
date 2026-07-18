@@ -5,7 +5,7 @@
 **Status:** Checkable — operator compressor (SETU0–SETU5 · HOLD0 GREEN)  
 **Depth:** guide  
 **Ceiling:** ≤80 lines  
-**Last updated:** 2026-07-18 (HOLD0 Desk hold GREEN)  
+**Last updated:** 2026-07-18 (HOLD0 stale-bin honesty)  
 **Compresses:** [`LULU.md`](LULU.md) · [`../active-designing/20260718-122145_hearth-lulu-display-presets-short-home-and-zeta6-send.md`](../active-designing/20260718-122145_hearth-lulu-display-presets-short-home-and-zeta6-send.md) · season [`../active-designing/20260718-185147_desk-hearth-hold-season.md`](../active-designing/20260718-185147_desk-hearth-hold-season.md) · compose [`../active-designing/20260718-133455_glass-desk-compose-amber-amphora-revive.md`](../active-designing/20260718-133455_glass-desk-compose-amber-amphora-revive.md)
 
 ---
@@ -27,7 +27,7 @@ The fold crosses USB as files, then as a sealed ping, then as an NCM-shaped fram
 | **SETU3** | NCM-shaped wrap | `setu3_ncm_frame_witness` | **GREEN** |
 | **SETU4** | Framed ping live UDP :38502 | `setu4_framed_lane_witness` | **GREEN** |
 | **SETU5** | Fits device max_frame · `lane_frame.bin` | `setu5_device_payload_witness` | **GREEN** `20260718.184537` |
-| **HOLD0** | Desk status: home · preset · wire · ping · frame | `setu_desk_hold0_witness` | **GREEN** `20260718.185306` |
+| **HOLD0** | Desk status · local ignores stale ping/frame | `setu_desk_hold0_witness` | **GREEN** `20260718.190720` |
 | **HOLD1** | Desk Skate chrome from station | — | open — check-in |
 | **SETU6** | QEMU/Pixel CDC-NCM / device-wire lab | — | parked — check-in |
 

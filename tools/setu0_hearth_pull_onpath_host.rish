@@ -83,6 +83,11 @@ assert ping.out contains "GREEN" else "SETU1 lane ping not GREEN"
 
 say "GREEN: SETU1 — lane ping gate held on host path (seal or SKIP)."
 
+# Unarmed wire: drop leftover ping/frame so the host cache matches the station.
+if (ping.out contains "SKIP") then say "setu0-host: clearing stale lane_ping / lane_frame (wire not armed)…"
+if (ping.out contains "SKIP") then let clear = run ["sh" "-c" "rm -f ${cache}/lane_ping.bin ${cache}/lane_frame.bin"]
+if (ping.out contains "SKIP") then assert clear.ok else "failed to clear stale lane bins on SETU1 SKIP"
+
 # HOLD0 — Desk names what the station + held ping/frame already carry.
 let hold_bin = "linengrow/bin/setu_desk_hold0_check"
 say "setu0-host: HOLD0 Desk hold status…"

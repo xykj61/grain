@@ -2,12 +2,14 @@
 //!
 //! Season: Desk Hearth Hold (`20260718.185147`). Desk reads station.bron and
 //! reports whether lane_ping.bin / lane_frame.bin are held — one status line.
+//! When wire_lane is not armed (local), leftover ping/frame files are ignored.
 
 const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 const hearth = @import("hearth_lulu0.rye");
 const setu0 = @import("setu0_hearth_pull.rye");
+const setu1 = @import("setu1_lane_ping.rye");
 const tally_copy = @import("tally_copy.rye");
 
 pub const waymark: []const u8 = setu0.waymark;
@@ -43,6 +45,7 @@ fn field_value(src: []const u8, key: []const u8) ?[]const u8 {
 }
 
 /// Parse station.bron text into hold fields (frame/ping supplied by caller).
+/// Unarmed wire (local) never claims ping/frame — leftovers stay on disk unread.
 pub fn status_from_station(
     station_text: []const u8,
     ping_held: bool,
@@ -54,11 +57,12 @@ pub fn status_from_station(
     hearth.validate_home_id(home) catch return null;
     const preset = hearth.DisplayPreset.from_name(preset_name) orelse return null;
     const wire = hearth.WireLane.from_name(wire_name) orelse return null;
+    const armed = setu1.lane_armed(wire);
     var out: HoldStatus = .{
         .preset = preset,
         .wire = wire,
-        .ping_held = ping_held,
-        .frame_len = frame_len,
+        .ping_held = armed and ping_held,
+        .frame_len = if (armed) frame_len else 0,
     };
     tally_copy.copy_disjoint(u8, out.home_id[0..], home[0..hearth.home_id_len]);
     return out;
@@ -115,6 +119,26 @@ pub fn fixture_local_empty_hold() bool {
     var buf: [status_line_max]u8 = undefined;
     const line = format_hold_line(s, &buf) orelse return false;
     return std.mem.indexOf(u8, line, "ping no") != null and std.mem.indexOf(u8, line, "frame 0") != null;
+}
+
+/// Device-free: local wire ignores leftover ping/frame bytes on disk.
+pub fn fixture_local_ignores_stale_bins() bool {
+    const station =
+        \\format setu-station-v1
+        \\home_id kd
+        \\display_preset scaled_720
+        \\wire_lane local
+        \\waymark SETU
+        \\
+    ;
+    const s = status_from_station(station, true, 289) orelse return false;
+    if (s.ping_held) return false;
+    if (s.frame_len != 0) return false;
+    var buf: [status_line_max]u8 = undefined;
+    const line = format_hold_line(s, &buf) orelse return false;
+    return std.mem.indexOf(u8, line, "local") != null and
+        std.mem.indexOf(u8, line, "ping no") != null and
+        std.mem.indexOf(u8, line, "frame 0") != null;
 }
 
 comptime {

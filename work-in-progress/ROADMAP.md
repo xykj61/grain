@@ -280,6 +280,8 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **SETU5 sent · Desk Hearth Hold · HOLD0 GREEN, `20260718.184733`–`185306`** — pier SETU5. Season open (not SETU6): Desk status line over `station.bron` + held ping/frame. Next: **send** HOLD0; HOLD1 / SETU6 stay check-in.
 
+**HOLD0 host look · stale-bin honesty, `20260718.190639`–`190736`** — Pixel pull closed the season job; local wire no longer claims leftover ping/frame; host SKIP clears cache bins. Next: **send** honesty polish; HOLD1 check-in.
+
 **Glow OS · Glow Desk · Glow Glass seated, `20260717.183622`** — Keaton: **Glow OS** unifies; **Glow Desk** = desktop; **Glow Glass** = mobile. Lexicon + silo [`../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md`](../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md). Orientation firmware stays check-in.
 
 **Witness habitat + markup pipeline, `20260717.173427`** — foundations fit study affirms single-strand · sameness · happy-zone practice in the suite; teaching path was the gap. Seats **witness habitat** as Acme synonym (foundations keep *happy zone*). Fusion map holds Scribble→Brix→Bron→Mantra→Sala with Glow under TAME; Udon/Sail/Zuse horizon. Tutorial scaffold [`../manual/tutorials/cursor-and-the-compass.md`](../manual/tutorials/cursor-and-the-compass.md); silo [`../active-designing/20260717-173427_witness-habitat-and-the-markup-pipeline.md`](../active-designing/20260717-173427_witness-habitat-and-the-markup-pipeline.md). Product next remains Dexter D2.
