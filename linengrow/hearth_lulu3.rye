@@ -1,0 +1,117 @@
+//! linengrow/hearth_lulu3.rye — LULU3: short home_id editor on glass.
+//!
+//! Affirmed next after LULU2 send. Thin face: with the preset list open,
+//! tap `home · xx` to draft two lowercase letters; ^ or ret commits and
+//! persists; del backs up. Pointer file `hearth_home` names the active home.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const hearth = @import("hearth_lulu0.rye");
+
+pub const waymark: []const u8 = hearth.waymark;
+pub const home_row: u32 = 8;
+pub const home_line_max: u32 = 32;
+pub const pointer_name: []const u8 = "hearth_home";
+
+pub const Draft = struct {
+    chars: [hearth.home_id_len]u8 = .{ '_', '_' },
+    len: u32 = 0,
+
+    pub fn clear(self: *Draft) void {
+        self.chars = .{ '_', '_' };
+        self.len = 0;
+    }
+
+    pub fn begin_from(self: *Draft, home_id: []const u8) void {
+        // Empty draft — type a new id; caller may validate home_id separately.
+        _ = home_id;
+        self.clear();
+    }
+
+    /// Accept one ASCII letter (case-folded to lowercase). False when full/bad.
+    pub fn push_letter(self: *Draft, ch: u8) bool {
+        var c = ch;
+        if (c >= 'A' and c <= 'Z') c = c + ('a' - 'A');
+        if (c < 'a' or c > 'z') return false;
+        if (self.len >= hearth.home_id_len) return false;
+        self.chars[self.len] = c;
+        self.len += 1;
+        // invariant: len tracks filled slots
+        assert(self.len <= hearth.home_id_len);
+        return true;
+    }
+
+    pub fn backspace(self: *Draft) void {
+        if (self.len == 0) return;
+        self.len -= 1;
+        self.chars[self.len] = '_';
+    }
+
+    pub fn committed(self: *const Draft) ?[]const u8 {
+        if (self.len != hearth.home_id_len) return null;
+        return self.chars[0..];
+    }
+};
+
+/// `home · kd` or `home · a_` while editing.
+pub fn format_home_line(
+    home_id: []const u8,
+    editing: bool,
+    draft: *const Draft,
+    out: *[home_line_max]u8,
+) ?[]const u8 {
+    if (editing) {
+        const line = std.fmt.bufPrint(
+            out,
+            "home · {c}{c}",
+            .{ draft.chars[0], draft.chars[1] },
+        ) catch return null;
+        assert(line.len <= home_line_max);
+        return line;
+    }
+    hearth.validate_home_id(home_id) catch return null;
+    const line = std.fmt.bufPrint(out, "home · {s}", .{home_id}) catch return null;
+    assert(line.len <= home_line_max);
+    return line;
+}
+
+/// Absolute path `{files_root}/hearth_home` (two-letter pointer).
+pub fn join_home_pointer(
+    files_root: []const u8,
+    out: *[hearth.max_abs_path_len]u8,
+) hearth.HearthError!u32 {
+    if (files_root.len == 0) return error.PathTooLong;
+    const path = std.fmt.bufPrint(out, "{s}/{s}", .{ files_root, pointer_name }) catch return error.PathTooLong;
+    assert(path.len <= hearth.max_abs_path_len);
+    return @intCast(path.len);
+}
+
+/// Device-free: idle and draft lines paint honestly.
+pub fn home_line_paint_honest() bool {
+    var buf: [home_line_max]u8 = undefined;
+    var d: Draft = .{};
+    const idle = format_home_line("kd", false, &d, &buf) orelse return false;
+    if (!std.mem.eql(u8, idle, "home · kd")) return false;
+    _ = d.push_letter('A');
+    _ = d.push_letter('b');
+    const edit = format_home_line("kd", true, &d, &buf) orelse return false;
+    if (!std.mem.eql(u8, edit, "home · ab")) return false;
+    const got = d.committed() orelse return false;
+    return std.mem.eql(u8, got, "ab");
+}
+
+/// Device-free: pointer joins under the files root.
+pub fn pointer_path_honest() bool {
+    const root = "/data/user/0/org.glow.app.sala_broadcaster/files";
+    var path: [hearth.max_abs_path_len]u8 = undefined;
+    const n = join_home_pointer(root, &path) catch return false;
+    const want = root ++ "/hearth_home";
+    return std.mem.eql(u8, path[0..n], want);
+}
+
+comptime {
+    _ = print;
+    assert(home_row == 8);
+    assert(std.mem.eql(u8, waymark, "LULU"));
+}

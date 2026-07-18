@@ -2,10 +2,9 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Rule: [`.cursor/rules/remember.mdc`](../.cursor/rules/remember.mdc) · [`.claude/rules/remember.md`](../.claude/rules/remember.md).*
 
-**Last refreshed:** `20260718.130756` (Eastern) · voice Quin  
-**Product nib:** ZETA6 Pixel GREEN · **LULU0–2 sent** (hold-open perfect)  
-**Suite nib:** ZETA0–6 · LULU0–2  
-
+**Last refreshed:** `20260718.132736` (Eastern) · voice Quin  
+**Product nib:** ZETA6 · LULU0–5 · **SETU0**  
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0  
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`
 
 ---
@@ -18,9 +17,10 @@
 | **TUBE** | App framework / NativeActivity pack | TUBE0.5 APK GREEN |
 | **ZETA** | English QWERTY glass keyboard | ZETA0–6 GREEN (Pixel look) |
 | **JABS** | Sala broadcast live-session fold | JABS0–2 GREEN · JABS3 check-in |
-| **LULU** | Hearth display · short home · Wired Glass | **LULU0–2 sent** · next: Wired Glass · home_id |
+| **LULU** | Hearth · short home · Wired Glass | **LULU0–5 closed** |
+| **SETU** | USB hearth carry Glass↔Desk | **SETU0 GREEN** · SETU1 check-in |
 
-Canon: [`../docs/HAWM.md`](../docs/HAWM.md) · [`../docs/TUBE.md`](../docs/TUBE.md) · [`../docs/ZETA.md`](../docs/ZETA.md) · [`../docs/JABS.md`](../docs/JABS.md) · [`../docs/LULU.md`](../docs/LULU.md)
+Canon: [`../docs/HAWM.md`](../docs/HAWM.md) · [`../docs/TUBE.md`](../docs/TUBE.md) · [`../docs/ZETA.md`](../docs/ZETA.md) · [`../docs/JABS.md`](../docs/JABS.md) · [`../docs/LULU.md`](../docs/LULU.md) · [`../docs/SETU.md`](../docs/SETU.md)
 
 ---
 
@@ -33,32 +33,22 @@ $ADB devices
 $ADB install -r tools/.cache/tube05/sala-broadcaster.apk
 $ADB shell am force-stop org.glow.app.sala_broadcaster
 $ADB shell am start -n org.glow.app.sala_broadcaster/android.app.NativeActivity
+# SETU0 — pull hearth Bron Glass→Desk (Glass must have saved once)
+rishi/bin/rishi run tools/setu0_hearth_pull_onpath_host.rish
 ```
 
 ---
 
-## Phone look (ZETA6 · LULU closed)
+## Phone look (LULU closed)
 
-1. Short tap row 1 → cycle presets (persists).  
-2. Hold row 1 ~½s → list under finger; tap a name to set.  
-3. `ret` = newline; `^` = send.
-
-## Witnesses (device-free)
-
-```bash
-rishi/bin/rishi run tools/hearth_lulu0_witness.rish
-rishi/bin/rishi run tools/hearth_lulu1_witness.rish
-rishi/bin/rishi run tools/hearth_lulu2_witness.rish
-```
-
----
+Hold row 1 → Settings: presets · `home ·` · `wire ·` · `cell ·` — all Pixel GREEN.
 
 ## Open doors
 
 | Door | Kind |
 |------|------|
-| **Wired Glass / Setu** (affirmed next) | **check-in** thin face |
-| **home_id editor** (affirmed next) | **check-in** thin face |
+| Ship LULU3–5 + SETU0 to pier | **send** |
+| **SETU1** CDC-NCM / Comlink | **check-in** |
 | JABS3 · TAME Lap 3 | **check-in** |
 
 ---

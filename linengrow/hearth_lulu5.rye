@@ -1,0 +1,39 @@
+//! linengrow/hearth_lulu5.rye — LULU5: cellular preference on Settings.
+//!
+//! Used-Pixel Wired Glass metalsmoke: `cellular off|optional` in Hearth Bron,
+//! painted on Settings row 10. Default off. Tap toggles + persists. Does not
+//! change radio state yet — preference + chrome only. Live Setu USB is later.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const hearth = @import("hearth_lulu0.rye");
+
+pub const waymark: []const u8 = hearth.waymark;
+pub const cell_row: u32 = 10;
+pub const cell_line_max: u32 = 32;
+
+/// `cell · off` or `cell · optional`.
+pub fn format_cell_line(c: hearth.Cellular, out: *[cell_line_max]u8) ?[]const u8 {
+    const line = std.fmt.bufPrint(out, "cell · {s}", .{c.name()}) catch return null;
+    assert(line.len <= cell_line_max);
+    return line;
+}
+
+pub fn cell_lines_name_modes() bool {
+    var buf: [cell_line_max]u8 = undefined;
+    const a = format_cell_line(.off, &buf) orelse return false;
+    if (!std.mem.eql(u8, a, "cell · off")) return false;
+    const b = format_cell_line(.optional, &buf) orelse return false;
+    return std.mem.eql(u8, b, "cell · optional");
+}
+
+pub fn cell_next_toggles() bool {
+    return hearth.Cellular.off.next() == .optional and hearth.Cellular.optional.next() == .off;
+}
+
+comptime {
+    _ = print;
+    assert(cell_row == 10);
+    assert(std.mem.eql(u8, waymark, "LULU"));
+}

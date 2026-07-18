@@ -1,0 +1,31 @@
+//! linengrow/hearth_lulu5_witness.rye — proves LULU5 cellular preference chrome.
+//!
+//!   rye build linengrow/hearth_lulu5_witness.rye \
+//!     -femit-bin=linengrow/bin/hearth_lulu5_witness
+//!   linengrow/bin/hearth_lulu5_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const lulu5 = @import("hearth_lulu5.rye");
+
+const witness_version = "20260718.132031";
+
+fn run_selftest(_: std.process.Init) !u8 {
+    assert(std.mem.eql(u8, lulu5.waymark, "LULU"));
+    print("lulu5: waymark {s} -- GREEN\n", .{lulu5.waymark});
+
+    assert(lulu5.cell_lines_name_modes());
+    print("lulu5: cell lines name modes -- GREEN\n", .{});
+
+    assert(lulu5.cell_next_toggles());
+    print("lulu5: cell.next toggles off/optional -- GREEN\n", .{});
+
+    print("lulu5: version {s}\n", .{witness_version});
+    print("GREEN: LULU5 — cellular preference under waymark LULU.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
+}

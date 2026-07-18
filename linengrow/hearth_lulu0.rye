@@ -71,6 +71,58 @@ pub const DisplayPreset = enum {
     }
 };
 
+/// Wired Glass preference — where sync is meant to travel (live USB is later).
+pub const WireLane = enum {
+    local,
+    usb_desk,
+
+    pub fn name(self: WireLane) []const u8 {
+        return switch (self) {
+            .local => "local",
+            .usb_desk => "usb_desk",
+        };
+    }
+
+    pub fn from_name(s: []const u8) ?WireLane {
+        if (std.mem.eql(u8, s, "local")) return .local;
+        if (std.mem.eql(u8, s, "usb_desk")) return .usb_desk;
+        return null;
+    }
+
+    pub fn next(self: WireLane) WireLane {
+        return switch (self) {
+            .local => .usb_desk,
+            .usb_desk => .local,
+        };
+    }
+};
+
+/// Used-Pixel SLC: cellular off by default; optional when the plan exists.
+pub const Cellular = enum {
+    off,
+    optional,
+
+    pub fn name(self: Cellular) []const u8 {
+        return switch (self) {
+            .off => "off",
+            .optional => "optional",
+        };
+    }
+
+    pub fn from_name(s: []const u8) ?Cellular {
+        if (std.mem.eql(u8, s, "off")) return .off;
+        if (std.mem.eql(u8, s, "optional")) return .optional;
+        return null;
+    }
+
+    pub fn next(self: Cellular) Cellular {
+        return switch (self) {
+            .off => .optional,
+            .optional => .off,
+        };
+    }
+};
+
 pub const HearthError = error{
     HomeIdBadLen,
     HomeIdBadChar,
@@ -78,6 +130,8 @@ pub const HearthError = error{
     MissingHomeId,
     MissingPreset,
     UnknownPreset,
+    UnknownWire,
+    UnknownCellular,
     BronTooLong,
     PathTooLong,
 };
@@ -86,10 +140,29 @@ pub const HearthError = error{
 pub const Hearth = struct {
     home_id: [home_id_len]u8 = undefined,
     preset: DisplayPreset = .scaled_540,
+    wire: WireLane = .local,
+    cellular: Cellular = .off,
 
     pub fn init(home_id: []const u8, preset: DisplayPreset) HearthError!Hearth {
+        return init_full(home_id, preset, .local, .off);
+    }
+
+    pub fn init_with_wire(
+        home_id: []const u8,
+        preset: DisplayPreset,
+        wire: WireLane,
+    ) HearthError!Hearth {
+        return init_full(home_id, preset, wire, .off);
+    }
+
+    pub fn init_full(
+        home_id: []const u8,
+        preset: DisplayPreset,
+        wire: WireLane,
+        cellular: Cellular,
+    ) HearthError!Hearth {
         try validate_home_id(home_id);
-        var h: Hearth = .{ .preset = preset };
+        var h: Hearth = .{ .preset = preset, .wire = wire, .cellular = cellular };
         tally_copy.copy_disjoint(u8, h.home_id[0..], home_id);
         // invariant: copy preserved length
         assert(h.home_id.len == home_id_len);
@@ -162,10 +235,12 @@ pub fn format_bron(h: Hearth, out: *[max_bron_len]u8) HearthError!u32 {
         \\format {s}
         \\home_id {s}
         \\display_preset {s}
+        \\wire_lane {s}
+        \\cellular {s}
         \\waymark {s}
         \\
     ,
-        .{ format_tag, h.home_id_slice(), h.preset.name(), waymark },
+        .{ format_tag, h.home_id_slice(), h.preset.name(), h.wire.name(), h.cellular.name(), waymark },
     ) catch return error.BronTooLong;
     // invariant: Bron stays under the ceiling
     assert(text.len <= max_bron_len);
@@ -185,11 +260,14 @@ fn trim(s: []const u8) []const u8 {
 }
 
 /// Parse a hearth-lulu0-v1 Bron document into a validated Hearth.
+/// `wire_lane` / `cellular` optional — missing means `.local` / `.off`.
 pub fn parse_bron(src: []const u8) HearthError!Hearth {
     if (src.len > max_bron_len) return error.BronTooLong;
     var saw_format = false;
     var home: ?[]const u8 = null;
     var preset_name: ?[]const u8 = null;
+    var wire: WireLane = .local;
+    var cellular: Cellular = .off;
 
     var line_start: usize = 0;
     while (line_start <= src.len) {
@@ -212,6 +290,10 @@ pub fn parse_bron(src: []const u8) HearthError!Hearth {
             home = val;
         } else if (std.mem.eql(u8, key, "display_preset")) {
             preset_name = val;
+        } else if (std.mem.eql(u8, key, "wire_lane")) {
+            wire = WireLane.from_name(val) orelse return error.UnknownWire;
+        } else if (std.mem.eql(u8, key, "cellular")) {
+            cellular = Cellular.from_name(val) orelse return error.UnknownCellular;
         } else if (std.mem.eql(u8, key, "waymark")) {
             if (!std.mem.eql(u8, val, waymark)) return error.MissingFormat;
         }
@@ -221,7 +303,7 @@ pub fn parse_bron(src: []const u8) HearthError!Hearth {
     const home_id = home orelse return error.MissingHomeId;
     const pname = preset_name orelse return error.MissingPreset;
     const preset = DisplayPreset.from_name(pname) orelse return error.UnknownPreset;
-    return try Hearth.init(home_id, preset);
+    return try Hearth.init_full(home_id, preset, wire, cellular);
 }
 
 /// Device-free: fixture home `kd` + panel_max round-trips Bron.
@@ -232,7 +314,39 @@ pub fn kd_panel_max_round_trip() bool {
     const back = parse_bron(buf[0..n]) catch return false;
     if (!std.mem.eql(u8, back.home_id_slice(), "kd")) return false;
     if (back.preset != .panel_max) return false;
+    if (back.wire != .local) return false;
     return true;
+}
+
+/// Device-free: Bron without wire_lane / cellular still loads defaults.
+pub fn missing_wire_defaults_local() bool {
+    const src =
+        \\format hearth-lulu0-v1
+        \\home_id kd
+        \\display_preset scaled_540
+        \\waymark LULU
+        \\
+    ;
+    const h = parse_bron(src) catch return false;
+    return h.wire == .local and h.cellular == .off;
+}
+
+/// Device-free: usb_desk round-trips.
+pub fn usb_desk_wire_round_trips() bool {
+    const h = Hearth.init_with_wire("kd", .scaled_540, .usb_desk) catch return false;
+    var buf: [max_bron_len]u8 = undefined;
+    const n = format_bron(h, &buf) catch return false;
+    const back = parse_bron(buf[0..n]) catch return false;
+    return back.wire == .usb_desk;
+}
+
+/// Device-free: cellular optional round-trips.
+pub fn cellular_optional_round_trips() bool {
+    const h = Hearth.init_full("kd", .scaled_540, .local, .optional) catch return false;
+    var buf: [max_bron_len]u8 = undefined;
+    const n = format_bron(h, &buf) catch return false;
+    const back = parse_bron(buf[0..n]) catch return false;
+    return back.cellular == .optional;
 }
 
 /// Device-free: bad home ids are refused.

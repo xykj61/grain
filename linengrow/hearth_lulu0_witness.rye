@@ -30,6 +30,15 @@ fn run_selftest(_: std.process.Init) !u8 {
     assert(hearth.preset_next_cycles_closed());
     print("lulu0: preset.next closed cycle N=4 -- GREEN\n", .{});
 
+    assert(hearth.missing_wire_defaults_local());
+    print("lulu0: missing wire_lane defaults local -- GREEN\n", .{});
+
+    assert(hearth.usb_desk_wire_round_trips());
+    print("lulu0: usb_desk wire_lane round-trip -- GREEN\n", .{});
+
+    assert(hearth.cellular_optional_round_trips());
+    print("lulu0: cellular optional round-trip -- GREEN\n", .{});
+
     assert(hearth.kd_panel_max_round_trip());
     const h = try hearth.Hearth.init("kd", .scaled_540);
     var buf: [hearth.max_bron_len]u8 = undefined;

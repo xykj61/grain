@@ -1102,6 +1102,26 @@ let lulu2 = run ["rishi/bin/rishi" "run" "tools/hearth_lulu2_witness.rish"]
 assert lulu2.ok else "LULU2 hearth Settings list witness failed"
 say "GREEN: LULU2 hearth Settings list witness passed."
 
+say "witness suite: LULU3 — short home_id editor…"
+let lulu3 = run ["rishi/bin/rishi" "run" "tools/hearth_lulu3_witness.rish"]
+assert lulu3.ok else "LULU3 hearth home_id editor witness failed"
+say "GREEN: LULU3 hearth home_id editor witness passed."
+
+say "witness suite: LULU4 — thin Wired Glass wire_lane preference…"
+let lulu4 = run ["rishi/bin/rishi" "run" "tools/hearth_lulu4_witness.rish"]
+assert lulu4.ok else "LULU4 hearth wire_lane preference witness failed"
+say "GREEN: LULU4 hearth wire_lane preference witness passed."
+
+say "witness suite: LULU5 — cellular preference…"
+let lulu5 = run ["rishi/bin/rishi" "run" "tools/hearth_lulu5_witness.rish"]
+assert lulu5.ok else "LULU5 hearth cellular preference witness failed"
+say "GREEN: LULU5 hearth cellular preference witness passed."
+
+say "witness suite: SETU0 — Desk parses hearth pulled from Glass…"
+let setu0 = run ["rishi/bin/rishi" "run" "tools/setu0_hearth_pull_witness.rish"]
+assert setu0.ok else "SETU0 hearth pull-parse witness failed"
+say "GREEN: SETU0 hearth pull-parse witness passed."
+
 say "witness suite: Sala R1 — the viewer renders what Pool hosts…"
 let sala_r1 = run ["rishi/bin/rishi" "run" "tools/sala_view_witness.rish"]
 assert sala_r1.ok else "Sala R1 view witness failed"

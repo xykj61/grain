@@ -1,0 +1,31 @@
+//! linengrow/hearth_lulu4_witness.rye — proves LULU4 wire preference chrome.
+//!
+//!   rye build linengrow/hearth_lulu4_witness.rye \
+//!     -femit-bin=linengrow/bin/hearth_lulu4_witness
+//!   linengrow/bin/hearth_lulu4_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const lulu4 = @import("hearth_lulu4.rye");
+
+const witness_version = "20260718.131549";
+
+fn run_selftest(_: std.process.Init) !u8 {
+    assert(std.mem.eql(u8, lulu4.waymark, "LULU"));
+    print("lulu4: waymark {s} -- GREEN\n", .{lulu4.waymark});
+
+    assert(lulu4.wire_lines_name_lanes());
+    print("lulu4: wire lines name lanes -- GREEN\n", .{});
+
+    assert(lulu4.wire_next_toggles());
+    print("lulu4: wire.next toggles local/usb_desk -- GREEN\n", .{});
+
+    print("lulu4: version {s}\n", .{witness_version});
+    print("GREEN: LULU4 — thin Wired Glass wire_lane preference under waymark LULU.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
+}

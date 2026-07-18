@@ -8,6 +8,12 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260718.132937` — [Send LULU3-5 and SETU0](20260718-132937_send-lulu3-5-setu0.bron) — pier ship; SETU1 check-in next
+- `20260718.132736` — [SETU0 affirmed · GREEN host pull](20260718-132736_setu0-affirm-green-host-pull.bron) — adb pulled kd hearth; Desk agree; send next
+- `20260718.132503` — [LULU5 GREEN · preference ladder closed](20260718-132503_lulu5-green-ladder-closed.bron) — cell affirmed; SETU0 check-in next
+- `20260718.132031` — [LULU4 GREEN · LULU5 cellular](20260718-132031_lulu4-green-lulu5-cell.bron) — wire affirmed; cell preference packed
+- `20260718.131549` — [LULU3 GREEN · LULU4 wire_lane](20260718-131549_lulu3-green-lulu4-wire.bron) — home edit affirmed; wire preference packed
+- `20260718.130940` — [LULU3 home_id editor](20260718-130940_lulu3-home-id-editor.bron) — Settings home row · draft · pointer; pack for Pixel
 - `20260718.130756` — [Send LULU·ZETA6 · affirm next](20260718-130756_send-lulu-zeta6-affirm-next.bron) — pier ship; Wired Glass + home_id affirmed next
 - `20260718.130606` — [LULU2 hold-open GREEN · closed](20260718-130606_lulu2-hold-open-green-closed.bron) — perfect; LULU0–2 closed; next check-in or send
 - `20260718.130251` — [LULU2 Pixel GREEN · hold-open](20260718-130251_lulu2-pixel-green-hold-open.bron) — list under finger via timerfd; release quiet

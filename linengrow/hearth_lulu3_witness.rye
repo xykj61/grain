@@ -1,0 +1,38 @@
+//! linengrow/hearth_lulu3_witness.rye — proves LULU3 home_id editor helpers.
+//!
+//!   rye build linengrow/hearth_lulu3_witness.rye \
+//!     -femit-bin=linengrow/bin/hearth_lulu3_witness
+//!   linengrow/bin/hearth_lulu3_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const lulu3 = @import("hearth_lulu3.rye");
+
+const witness_version = "20260718.130940";
+
+fn run_selftest(_: std.process.Init) !u8 {
+    assert(std.mem.eql(u8, lulu3.waymark, "LULU"));
+    print("lulu3: waymark {s} -- GREEN\n", .{lulu3.waymark});
+
+    assert(lulu3.home_line_paint_honest());
+    print("lulu3: home line idle + draft -- GREEN\n", .{});
+
+    assert(lulu3.pointer_path_honest());
+    print("lulu3: hearth_home pointer path -- GREEN\n", .{});
+
+    var d: lulu3.Draft = .{};
+    assert(!d.push_letter('1'));
+    assert(d.push_letter('x'));
+    d.backspace();
+    assert(d.len == 0);
+    print("lulu3: draft refuses digit · backspace -- GREEN\n", .{});
+
+    print("lulu3: version {s}\n", .{witness_version});
+    print("GREEN: LULU3 — short home_id editor under waymark LULU.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
+}

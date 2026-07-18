@@ -1,0 +1,17 @@
+# hearth_lulu4_witness.rish — LULU4 thin Wired Glass wire_lane preference.
+#
+#   rishi/bin/rishi run tools/hearth_lulu4_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/hearth_lulu4_witness"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/hearth_lulu4_witness.rye -femit-bin=${bin}"]
+assert build.ok else "LULU4 wire preference witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "LULU4 wire preference witness exited non-zero"
+assert selftest.out contains "GREEN" else "LULU4 not GREEN"
+assert selftest.out contains "waymark LULU" else "LULU4 missing waymark claim"
+assert selftest.out contains "wire lines" else "LULU4 missing wire-line claim"
+
+say "GREEN: LULU4 Hearth wire_lane preference witness passed."

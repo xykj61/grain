@@ -277,9 +277,15 @@
 - [x] **LULU2 Pixel look** `20260718.130251` — Keaton: GREEN; long-press menu works. Named gap: list waited for release.
 - [x] **LULU2 hold-open** `20260718.130251` — timerfd opens list at 450ms while finger still down; release after hold skips cycle; pack for eyes.
 - [x] **LULU2 hold-open Pixel look** `20260718.130606` — Keaton: GREEN, perfect. **LULU2 rung closed.**
-- [x] **Next doors affirmed** `20260718.130756` — after LULU0–2 send: **Wired Glass / Setu** and **home_id editor** are the seated next check-ins (build only after a further affirm of thin face).
-- [ ] **Wired Glass SLC / Setu** — affirmed next; check-in thin face before build (cellular optional; USB sync to Desk).
-- [ ] **home_id editor on glass** — affirmed next; check-in thin face before build (`kd` fixture until that face lands).
+- [x] **Next doors affirmed** `20260718.130756` — Wired Glass / Setu and home_id editor.
+- [x] **LULU3 — home_id editor** `20260718.130940` — thin face built: Settings list → tap `home · xx` → type two letters → ^/ret commits; `hearth_home` pointer + `{id}/hearth.bron`; witness + pack for Pixel look.
+- [x] **LULU3 Pixel look** `20260718.131549` — Keaton: GREEN; two-letter home title edit worked. **LULU3 rung closed.**
+- [x] **LULU4 — wire_lane preference** `20260718.131549` — Bron `wire_lane local|usb_desk`; Settings row 9 tap toggles + persists; old Bron defaults local; witness + pack. Live USB/Setu still later.
+- [x] **LULU4 Pixel look** `20260718.132031` — Keaton: GREEN; wire toggle works. **LULU4 rung closed.**
+- [x] **LULU5 — cellular preference** `20260718.132031` — Bron `cellular off|optional` (default off); Settings row 10 tap toggles + persists; witness + pack. No radio control yet.
+- [x] **LULU5 Pixel look** `20260718.132503` — Keaton: GREEN; cell toggle works. **LULU0–5 preference ladder closed.**
+- [x] **SETU0 — adb Bron pull Glass→Desk** `20260718.132731` — Keaton affirmed thin face; device-free `setu0_hearth_pull_witness` GREEN; host `setu0_hearth_pull_onpath_host` pulled `kd` · `scaled_720` · `wire local` · `cell optional` from Pixel; Desk agree check GREEN. Compressor [`docs/SETU.md`](../docs/SETU.md).
+- [ ] **SETU1 — CDC-NCM / Comlink** — check-in after SETU0 (live sync).
 - [ ] **Wired Glass SLC metalsmoke** — cellular optional/off; USB sync to Desk; Setu/CDC-NCM check-in.
 - [ ] **JABS3 — Inference and economics** — check-in (Quin · MALA).
 - [ ] **C2 thin TAME compressor** — optional `docs/TAME.md` only if cold-load pain is measured.

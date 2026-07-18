@@ -1,0 +1,17 @@
+# hearth_lulu5_witness.rish — LULU5 cellular preference.
+#
+#   rishi/bin/rishi run tools/hearth_lulu5_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/hearth_lulu5_witness"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/hearth_lulu5_witness.rye -femit-bin=${bin}"]
+assert build.ok else "LULU5 cellular preference witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "LULU5 cellular preference witness exited non-zero"
+assert selftest.out contains "GREEN" else "LULU5 not GREEN"
+assert selftest.out contains "waymark LULU" else "LULU5 missing waymark claim"
+assert selftest.out contains "cell lines" else "LULU5 missing cell-line claim"
+
+say "GREEN: LULU5 Hearth cellular preference witness passed."

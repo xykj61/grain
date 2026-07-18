@@ -1,0 +1,93 @@
+//! linengrow/setu0_hearth_pull.rye — SETU0: Desk parses hearth pulled from Glass.
+//!
+//! Affirmed thin face: USB (adb) carries `hearth_home` + `{id}/hearth.bron`
+//! from the app files dir to Desk; Desk parses Bron. Device-free helpers prove
+//! pointer + Bron agree. Host outer-terminal witness does the real adb pull.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const hearth = @import("hearth_lulu0.rye");
+const lulu3 = @import("hearth_lulu3.rye");
+
+pub const waymark: []const u8 = "SETU";
+pub const pkg: []const u8 = "org.glow.app.sala_broadcaster";
+/// Relative to the app's `files/` dir (run-as cat path).
+pub const rel_pointer: []const u8 = lulu3.pointer_name;
+
+fn is_space(ch: u8) bool {
+    return ch == ' ' or ch == '\t' or ch == '\n' or ch == '\r';
+}
+
+fn trim(s: []const u8) []const u8 {
+    var start: usize = 0;
+    while (start < s.len and is_space(s[start])) : (start += 1) {}
+    var end: usize = s.len;
+    while (end > start and is_space(s[end - 1])) : (end -= 1) {}
+    return s[start..end];
+}
+
+/// Read two-letter home_id from pulled `hearth_home` text.
+pub fn parse_pointer_text(src: []const u8, out: *[hearth.home_id_len]u8) bool {
+    const t = trim(src);
+    if (t.len < hearth.home_id_len) return false;
+    hearth.validate_home_id(t[0..hearth.home_id_len]) catch return false;
+    out.* = t[0..hearth.home_id_len].*;
+    return true;
+}
+
+/// Relative hearth path under files/: `{id}/hearth.bron`.
+pub fn relative_hearth_from_pointer(
+    pointer_text: []const u8,
+    out: *[hearth.max_path_len]u8,
+) ?u32 {
+    var home: [hearth.home_id_len]u8 = undefined;
+    if (!parse_pointer_text(pointer_text, &home)) return null;
+    const n = hearth.relative_hearth_path(home[0..], out) catch return null;
+    return n;
+}
+
+/// True when pulled pointer and Bron name the same home_id and Bron parses.
+pub fn pulled_pair_agrees(pointer_text: []const u8, bron_text: []const u8) bool {
+    var home: [hearth.home_id_len]u8 = undefined;
+    if (!parse_pointer_text(pointer_text, &home)) return false;
+    const h = hearth.parse_bron(bron_text) catch return false;
+    return std.mem.eql(u8, h.home_id_slice(), home[0..]);
+}
+
+/// Device-free: fixture pointer + Bron agree on `kd`.
+pub fn fixture_pair_agrees() bool {
+    const pointer = "kd\n";
+    const bron =
+        \\format hearth-lulu0-v1
+        \\home_id kd
+        \\display_preset scaled_540
+        \\wire_lane local
+        \\cellular off
+        \\waymark LULU
+        \\
+    ;
+    if (!pulled_pair_agrees(pointer, bron)) return false;
+    var path: [hearth.max_path_len]u8 = undefined;
+    const n = relative_hearth_from_pointer(pointer, &path) orelse return false;
+    return std.mem.eql(u8, path[0..n], "kd/hearth.bron");
+}
+
+/// Device-free: mismatched home_id is refused.
+pub fn mismatch_refused() bool {
+    const pointer = "ab\n";
+    const bron =
+        \\format hearth-lulu0-v1
+        \\home_id kd
+        \\display_preset scaled_540
+        \\waymark LULU
+        \\
+    ;
+    return !pulled_pair_agrees(pointer, bron);
+}
+
+comptime {
+    _ = print;
+    assert(std.mem.eql(u8, waymark, "SETU"));
+    assert(std.mem.eql(u8, rel_pointer, "hearth_home"));
+}

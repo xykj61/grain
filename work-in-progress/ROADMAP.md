@@ -4,7 +4,7 @@
 
 **Language:** EN
 **Version:** `20260715` (Pool keystone revival prioritized · Quin voice seated · align pass reconciles the closed ladder)
-**Last updated:** 2026-07-18 (**LULU** + **ZETA6** design seat — display presets · short home · ↑ send)
+**Last updated:** 2026-07-18 (**SETU0** GREEN — adb hearth pull Glass→Desk)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Lens:** TAME — safety, performance, joy; the Seed Law; [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md)
@@ -255,6 +255,16 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 **LULU2 closed, `20260718.130606`** — Keaton: hold-open perfect. Ladder LULU0–2 GREEN on Pixel. Next: Wired Glass/Setu or home_id editor — check-in.
 
 **Send + next doors affirmed, `20260718.130756`** — LULU0–2 + ZETA6 ship to pier. Affirmed next check-ins: **Wired Glass / Setu**, **home_id editor** (thin face before build).
+
+**LULU3 device-free GREEN, `20260718.130940`** — home_id editor on Settings row 8; pointer `hearth_home`; pack for Pixel look. Wired Glass remains the next check-in after LULU3 eyes.
+
+**LULU3 Pixel GREEN · LULU4 packed, `20260718.131549`** — Keaton: home edit GREEN. Thin Wired Glass: `wire_lane` on Settings (preference only). Next: LULU4 Pixel eyes; then Setu USB check-in.
+
+**LULU4 Pixel GREEN · LULU5 packed, `20260718.132031`** — Keaton: wire toggle GREEN. Cellular `off|optional` on Settings (preference only). Next: LULU5 Pixel eyes; then Setu USB check-in.
+
+**LULU5 Pixel GREEN · preference ladder closed, `20260718.132503`** — Keaton: cell toggle GREEN. LULU0–5 Settings prefs closed on Pixel. Next: **SETU0** adb Bron pull — check-in thin face in `docs/LULU.md`; or **send** LULU3–5.
+
+**SETU0 affirmed + GREEN, `20260718.132731`** — Keaton affirmed adb pull thin face. Device-free parse GREEN; host pull on Pixel 10a GREEN (`home_id kd` agrees). Compressor [`docs/SETU.md`](../docs/SETU.md). Next: **send** LULU3–5 + SETU0; or **SETU1** CDC-NCM check-in.
 
 **Glow OS · Glow Desk · Glow Glass seated, `20260717.183622`** — Keaton: **Glow OS** unifies; **Glow Desk** = desktop; **Glow Glass** = mobile. Lexicon + silo [`../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md`](../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md). Orientation firmware stays check-in.
 
