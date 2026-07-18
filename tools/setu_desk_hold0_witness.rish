@@ -1,0 +1,27 @@
+# setu_desk_hold0_witness.rish — HOLD0: Desk status over held hearth.
+#
+#   rishi/bin/rishi run tools/setu_desk_hold0_witness.rish
+#
+# After a SETU host pull (cache filled):
+#   linengrow/bin/setu_desk_hold0_check
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/setu_desk_hold0_witness"
+let check = "linengrow/bin/setu_desk_hold0_check"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/setu_desk_hold0_witness.rye -femit-bin=${bin}"]
+assert build.ok else "HOLD0 desk hold witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "HOLD0 witness exited non-zero"
+assert selftest.out contains "GREEN" else "HOLD0 not GREEN"
+assert selftest.out contains "waymark SETU" else "HOLD0 missing waymark"
+assert selftest.out contains "desk-hearth-hold" else "HOLD0 missing season"
+assert selftest.out contains "usb_desk hold line" else "HOLD0 missing fixture"
+
+# Optional live check when station cache is already present (host pull ran).
+let live = run ["sh" "-c" "if test -f tools/.cache/setu0/station.bron; then mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/setu_desk_hold0_check.rye -femit-bin=${check} && ${check} 2>&1; else echo 'hold0: no station cache — fixture-only GREEN'; fi"]
+assert live.ok else "HOLD0 live/optional check failed"
+say "${live.out}"
+
+say "GREEN: HOLD0 Desk hold witness passed (device-free)."
