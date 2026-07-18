@@ -1,0 +1,29 @@
+//! linengrow/setu5_device_payload_check.rye — write lane_frame.bin for Desk hold.
+//!
+//! Builds the NCM-framed SETU1 ping and writes tools/.cache/setu0/lane_frame.bin
+//! when it fits the Comlink device max_frame.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const Dir = std.Io.Dir;
+const setu3 = @import("setu3_ncm_frame.rye");
+const setu5 = @import("setu5_device_payload.rye");
+
+fn run_check(io: std.Io) !u8 {
+    var frame: [setu3.max_frame]u8 = undefined;
+    const flen = setu5.build_device_payload(&frame) orelse {
+        print("setu5-check: RED — cannot build device payload\n", .{});
+        return 1;
+    };
+    assert(flen <= setu5.device_max_frame);
+    const cwd = Dir.cwd();
+    try cwd.writeFile(io, .{ .sub_path = setu5.lane_frame_path, .data = frame[0..flen] });
+    print("setu5-check: wrote {s} ({d} bytes, max {d})\n", .{ setu5.lane_frame_path, flen, setu5.device_max_frame });
+    print("GREEN: SETU5 — device payload held on Desk.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_check(init.io);
+}
