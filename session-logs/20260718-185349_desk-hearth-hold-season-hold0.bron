@@ -1,0 +1,27 @@
+format session-log-v1
+stamp 20260718.185349
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS amd64 (Framework 16 AMD) — Eastern
+title Desk Hearth Hold season · HOLD0 GREEN
+prompt begin the season if you recommend
+think Declined SETU6 as next kg — finishing edge favors Desk using the fold already held.
+think Opened season brief 20260718.185147 Desk Hearth Hold under waymark SETU.
+think Built HOLD0: parse station.bron · format hold line · device-free witness · optional live check.
+think Wired HOLD0 into setu0 host chain after SETU1 and into parity_ch01 after SETU5.
+think Seated docs SETU · REMEMBER · TASKS · ROADMAP · active-designing README · season Status GREEN.
+obs HOLD0 GREEN 20260718.185306 — live cache: hold · kd · scaled_540 · usb_desk · ping yes · frame 289
+obs SETU6 and HOLD1 remain check-in; season product job for HOLD0 is closed on witness.
+product_nib HOLD0
+suite_nib SETU0-SETU5-HOLD0
+git_nib bda8babd13
+file active-designing/20260718-185147_desk-hearth-hold-season.md season open brief
+file linengrow/setu_desk_hold0.rye status mold
+file linengrow/setu_desk_hold0_witness.rye device-free fixtures
+file linengrow/setu_desk_hold0_check.rye cache hold line
+file tools/setu_desk_hold0_witness.rish rish harness
+file tools/setu0_hearth_pull_onpath_host.rish host HOLD0 after SETU1
+file tools/parity_ch01.rish suite wire
+file docs/SETU.md compressor HOLD0 rung
+recommend keep-going send HOLD0 when Keaton says send; HOLD1 stays check-in

@@ -8,6 +8,9 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260718.185709` — [Send HOLD0 Desk Hearth Hold](20260718-185709_send-hold0-desk-hearth-hold.bron) — pier ship; HOLD1 / SETU6 check-in
+- `20260718.185604` — [What do I need to do](20260718-185604_what-do-i-need-to-do.bron) — send HOLD0; optional host pull; HOLD1 check-in
+- `20260718.185349` — [Desk Hearth Hold · HOLD0 GREEN](20260718-185349_desk-hearth-hold-season-hold0.bron) — season open; Desk hold line; SETU6 parked
 - `20260718.184733` — [Send SETU5 · thoughts](20260718-184733_send-setu5-thoughts.bron) — pier SETU5; SETU6 check-in or pause
 - `20260718.184537` — [SETU5 device payload GREEN](20260718-184537_setu5-device-payload-green.bron) — max_frame 554; lane_frame.bin; send next
 

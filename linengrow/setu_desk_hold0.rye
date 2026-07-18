@@ -1,0 +1,124 @@
+//! linengrow/setu_desk_hold0.rye — HOLD0: Desk status over held hearth + frame.
+//!
+//! Season: Desk Hearth Hold (`20260718.185147`). Desk reads station.bron and
+//! reports whether lane_ping.bin / lane_frame.bin are held — one status line.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const hearth = @import("hearth_lulu0.rye");
+const setu0 = @import("setu0_hearth_pull.rye");
+const tally_copy = @import("tally_copy.rye");
+
+pub const waymark: []const u8 = setu0.waymark;
+pub const season: []const u8 = "desk-hearth-hold";
+pub const status_line_max: u32 = 96;
+
+pub const HoldStatus = struct {
+    home_id: [hearth.home_id_len]u8 = undefined,
+    preset: hearth.DisplayPreset = .scaled_540,
+    wire: hearth.WireLane = .local,
+    ping_held: bool = false,
+    frame_len: u32 = 0,
+
+    pub fn home_id_slice(self: *const HoldStatus) []const u8 {
+        return self.home_id[0..];
+    }
+};
+
+fn field_value(src: []const u8, key: []const u8) ?[]const u8 {
+    var line_start: usize = 0;
+    while (line_start <= src.len) {
+        const rest = src[line_start..];
+        const nl = std.mem.indexOfScalar(u8, rest, '\n');
+        const line_end = if (nl) |n| line_start + n else src.len;
+        const raw = src[line_start..line_end];
+        line_start = if (nl) |_| line_end + 1 else src.len + 1;
+        if (raw.len <= key.len) continue;
+        if (!std.mem.startsWith(u8, raw, key)) continue;
+        if (raw[key.len] != ' ') continue;
+        return std.mem.trim(u8, raw[key.len + 1 ..], " \t\r");
+    }
+    return null;
+}
+
+/// Parse station.bron text into hold fields (frame/ping supplied by caller).
+pub fn status_from_station(
+    station_text: []const u8,
+    ping_held: bool,
+    frame_len: u32,
+) ?HoldStatus {
+    const home = field_value(station_text, "home_id") orelse return null;
+    const preset_name = field_value(station_text, "display_preset") orelse return null;
+    const wire_name = field_value(station_text, "wire_lane") orelse return null;
+    hearth.validate_home_id(home) catch return null;
+    const preset = hearth.DisplayPreset.from_name(preset_name) orelse return null;
+    const wire = hearth.WireLane.from_name(wire_name) orelse return null;
+    var out: HoldStatus = .{
+        .preset = preset,
+        .wire = wire,
+        .ping_held = ping_held,
+        .frame_len = frame_len,
+    };
+    tally_copy.copy_disjoint(u8, out.home_id[0..], home[0..hearth.home_id_len]);
+    return out;
+}
+
+/// `hold · {home} · {preset} · {wire} · ping {yes|no} · frame {n}`
+pub fn format_hold_line(s: HoldStatus, out: *[status_line_max]u8) ?[]const u8 {
+    const ping = if (s.ping_held) "yes" else "no";
+    const line = std.fmt.bufPrint(
+        out,
+        "hold · {s} · {s} · {s} · ping {s} · frame {d}",
+        .{ s.home_id_slice(), s.preset.name(), s.wire.name(), ping, s.frame_len },
+    ) catch return null;
+    assert(line.len <= status_line_max);
+    return line;
+}
+
+/// Device-free: usb_desk station with frame+ping names a full hold line.
+pub fn fixture_hold_line_names_station() bool {
+    const station =
+        \\format setu-station-v1
+        \\home_id kd
+        \\display_preset scaled_540
+        \\wire_lane usb_desk
+        \\cellular off
+        \\waymark SETU
+        \\
+    ;
+    const s = status_from_station(station, true, 289) orelse return false;
+    if (s.wire != .usb_desk) return false;
+    if (!s.ping_held) return false;
+    if (s.frame_len != 289) return false;
+    var buf: [status_line_max]u8 = undefined;
+    const line = format_hold_line(s, &buf) orelse return false;
+    if (std.mem.indexOf(u8, line, "hold ·") == null) return false;
+    if (std.mem.indexOf(u8, line, "kd") == null) return false;
+    if (std.mem.indexOf(u8, line, "usb_desk") == null) return false;
+    if (std.mem.indexOf(u8, line, "ping yes") == null) return false;
+    if (std.mem.indexOf(u8, line, "frame 289") == null) return false;
+    return true;
+}
+
+/// Device-free: local wire with no holds is still speakable.
+pub fn fixture_local_empty_hold() bool {
+    const station =
+        \\format setu-station-v1
+        \\home_id kd
+        \\display_preset scaled_720
+        \\wire_lane local
+        \\waymark SETU
+        \\
+    ;
+    const s = status_from_station(station, false, 0) orelse return false;
+    var buf: [status_line_max]u8 = undefined;
+    const line = format_hold_line(s, &buf) orelse return false;
+    return std.mem.indexOf(u8, line, "ping no") != null and std.mem.indexOf(u8, line, "frame 0") != null;
+}
+
+comptime {
+    _ = print;
+    assert(std.mem.eql(u8, waymark, "SETU"));
+    assert(std.mem.eql(u8, season, "desk-hearth-hold"));
+}

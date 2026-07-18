@@ -1,0 +1,32 @@
+//! linengrow/setu_desk_hold0_witness.rye — proves HOLD0 Desk status.
+//!
+//!   rye build linengrow/setu_desk_hold0_witness.rye \
+//!     -femit-bin=linengrow/bin/setu_desk_hold0_witness
+//!   linengrow/bin/setu_desk_hold0_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const hold0 = @import("setu_desk_hold0.rye");
+
+const witness_version = "20260718.185147";
+
+fn run_selftest(_: std.process.Init) !u8 {
+    assert(std.mem.eql(u8, hold0.waymark, "SETU"));
+    assert(std.mem.eql(u8, hold0.season, "desk-hearth-hold"));
+    print("hold0: waymark {s} season {s} -- GREEN\n", .{ hold0.waymark, hold0.season });
+
+    assert(hold0.fixture_hold_line_names_station());
+    print("hold0: usb_desk hold line -- GREEN\n", .{});
+
+    assert(hold0.fixture_local_empty_hold());
+    print("hold0: local empty hold speakable -- GREEN\n", .{});
+
+    print("hold0: version {s}\n", .{witness_version});
+    print("GREEN: HOLD0 — Desk can name the hearth and frame it holds (device-free).\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
+}
