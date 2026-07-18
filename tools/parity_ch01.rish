@@ -1132,6 +1132,11 @@ let setu1 = run ["rishi/bin/rishi" "run" "tools/setu1_lane_ping_witness.rish"]
 assert setu1.ok else "SETU1 lane ping witness failed"
 say "GREEN: SETU1 lane ping witness passed."
 
+say "witness suite: SETU2 — lane ping over hosted UDP…"
+let setu2 = run ["rishi/bin/rishi" "run" "tools/setu2_lane_wire_witness.rish"]
+assert setu2.ok else "SETU2 lane wire witness failed"
+say "GREEN: SETU2 lane wire witness passed."
+
 say "witness suite: Sala R1 — the viewer renders what Pool hosts…"
 let sala_r1 = run ["rishi/bin/rishi" "run" "tools/sala_view_witness.rish"]
 assert sala_r1.ok else "Sala R1 view witness failed"
