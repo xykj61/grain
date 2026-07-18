@@ -8,6 +8,8 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260718.193658` — [Send HOLD1 host look · check-in](20260718-193658_send-hold1-host-look-checkin.bron) — pier ship; Wayland eyes check-in
+- `20260718.193607` — [HOLD1 host Pixel look GREEN](20260718-193607_hold1-host-pixel-look.bron) — SETU0→HOLD1 on device; send look
 - `20260718.193240` — [Send HOLD1 Desk Skate hold](20260718-193240_send-hold1-desk-skate.bron) — pier ship; SETU6 / Wayland eyes check-in
 - `20260718.193122` — [HOLD1 Desk Skate hold GREEN](20260718-193122_hold1-desk-skate-green.bron) — rows 0–1 on Desk Skate
 - `20260718.192950` — [Send Acme · Glow · waymark hygiene](20260718-192950_send-acme-glow-waymark-hygiene.bron) — pier ship; HOLD1 build next
