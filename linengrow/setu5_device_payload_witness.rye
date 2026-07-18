@@ -1,0 +1,34 @@
+//! linengrow/setu5_device_payload_witness.rye — proves SETU5 device payload bound.
+//!
+//!   rye build linengrow/setu5_device_payload_witness.rye \
+//!     -femit-bin=linengrow/bin/setu5_device_payload_witness
+//!   linengrow/bin/setu5_device_payload_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const setu5 = @import("setu5_device_payload.rye");
+
+const witness_version = "20260718.184513";
+
+fn run_selftest(_: std.process.Init) !u8 {
+    assert(std.mem.eql(u8, setu5.waymark, "SETU"));
+    print("setu5: waymark {s} -- GREEN\n", .{setu5.waymark});
+
+    assert(setu5.fixture_local_blocked());
+    print("setu5: local wire blocked -- GREEN\n", .{});
+
+    assert(setu5.fixture_fits_device_max_frame());
+    print("setu5: framed ping fits device max_frame {d} -- GREEN\n", .{setu5.device_max_frame});
+
+    assert(setu5.fixture_held_frame_reopens());
+    print("setu5: held frame reopens -- GREEN\n", .{});
+
+    print("setu5: version {s}\n", .{witness_version});
+    print("GREEN: SETU5 — NCM-framed ping ready as device-wire payload (device-free).\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
+}

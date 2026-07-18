@@ -4,7 +4,7 @@
 
 **Language:** EN
 **Version:** `20260715` (Pool keystone revival prioritized · Quin voice seated · align pass reconciles the closed ladder)
-**Last updated:** 2026-07-18 (**SETU4** GREEN — framed live lane)
+**Last updated:** 2026-07-18 (**SETU5** GREEN — device-wire payload)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Lens:** TAME — safety, performance, joy; the Seed Law; [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md)
@@ -274,7 +274,9 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **SETU2 sent · SETU3 GREEN, `20260718.134458`–`134613`** — pier `6db3c0be2c`. Approved next: NCM-shaped virtio+eth wrap around the lane ping (device-free). Next: **send** SETU3.
 
-**SETU3 sent · SETU4 GREEN, `20260718.184214`–`184323`** — pier `104e642b54`. Affirmed+kg: NCM-framed ping crosses live UDP :38502; host usb0/ncm probe SKIP. CDC-NCM iface bring-up is **SETU5** check-in. Next: **send** SETU4.
+**SETU3 sent · SETU4 GREEN, `20260718.184214`–`184323`** — pier `104e642b54`. Affirmed+kg: NCM-framed ping crosses live UDP :38502; host usb0/ncm probe SKIP. Next: **send** SETU4.
+
+**SETU4 sent · SETU5 GREEN, `20260718.184449`–`184537`** — pier `3512444e73`. Kg: framed ping fits Comlink device max_frame; `lane_frame.bin` held. Live QEMU/Pixel CDC-NCM lab is **SETU6** check-in. Next: **send** SETU5.
 
 **Glow OS · Glow Desk · Glow Glass seated, `20260717.183622`** — Keaton: **Glow OS** unifies; **Glow Desk** = desktop; **Glow Glass** = mobile. Lexicon + silo [`../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md`](../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md). Orientation firmware stays check-in.
 

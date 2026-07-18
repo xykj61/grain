@@ -1147,6 +1147,11 @@ let setu4 = run ["rishi/bin/rishi" "run" "tools/setu4_framed_lane_witness.rish"]
 assert setu4.ok else "SETU4 framed lane witness failed"
 say "GREEN: SETU4 framed lane witness passed."
 
+say "witness suite: SETU5 — framed ping as device-wire payload…"
+let setu5 = run ["rishi/bin/rishi" "run" "tools/setu5_device_payload_witness.rish"]
+assert setu5.ok else "SETU5 device payload witness failed"
+say "GREEN: SETU5 device payload witness passed."
+
 say "witness suite: Sala R1 — the viewer renders what Pool hosts…"
 let sala_r1 = run ["rishi/bin/rishi" "run" "tools/sala_view_witness.rish"]
 assert sala_r1.ok else "Sala R1 view witness failed"

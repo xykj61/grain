@@ -8,7 +8,11 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260718.184733` — [Send SETU5 · thoughts](20260718-184733_send-setu5-thoughts.bron) — pier SETU5; SETU6 check-in or pause
+- `20260718.184537` — [SETU5 device payload GREEN](20260718-184537_setu5-device-payload-green.bron) — max_frame 554; lane_frame.bin; send next
+
 - `20260718.184449` — [Send SETU4 · kg SETU5](20260718-184449_send-setu4-kg-setu5.bron) — pier SETU4; SETU5 device-wire payload next
+
 - `20260718.184323` — [SETU4 framed live lane GREEN](20260718-184323_setu4-framed-live-lane-green.bron) — framed UDP :38502; gadget SKIP; send next
 
 - `20260718.184214` — [Send SETU3 · affirm kg SETU4](20260718-184214_send-setu3-affirm-kg-setu4.bron) — pier SETU3; SETU4 framed live lane next

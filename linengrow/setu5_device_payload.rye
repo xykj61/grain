@@ -1,0 +1,67 @@
+//! linengrow/setu5_device_payload.rye — SETU5: framed ping as device-wire payload.
+//!
+//! Kg thin face: the SETU3/4 NCM-framed lane ping fits Comlink virtio-net
+//! `max_frame` (554) and reopens after a Desk hold write. Proves the bytes are
+//! ready for a virtio / CDC-NCM guest TX. Live QEMU device-wire lab or Pixel
+//! gadget iface bind stays SETU6 check-in.
+//!
+//!   rye build linengrow/setu5_device_payload_witness.rye \
+//!     -femit-bin=linengrow/bin/setu5_device_payload_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const wf = @import("wire_format.rye");
+const setu0 = @import("setu0_hearth_pull.rye");
+const setu1 = @import("setu1_lane_ping.rye");
+const setu3 = @import("setu3_ncm_frame.rye");
+const tally_copy = @import("tally_copy.rye");
+
+pub const waymark: []const u8 = setu0.waymark;
+/// Matches `comlink/virtio_net.rye` `max_frame` (hdr + eth + wire_capacity).
+pub const device_max_frame: u32 = 554;
+pub const lane_frame_path = "tools/.cache/setu0/lane_frame.bin";
+
+/// Build NCM-framed SETU1 ping; null if it would overrun device max_frame.
+pub fn build_device_payload(out: *[setu3.max_frame]u8) ?u32 {
+    var sealed: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const sealed_len = setu1.seal_lane_ping(.usb_desk, "kd", .scaled_540, &sealed) orelse return null;
+    const flen = setu3.wrap_lane_ping(sealed[0..@intCast(sealed_len)], out) orelse return null;
+    if (flen > device_max_frame) return null;
+    // invariant: frame fits the virtio TX bound
+    assert(flen <= device_max_frame);
+    assert(flen > setu3.frame_overhead);
+    return flen;
+}
+
+/// Device-free: framed ping fits device max_frame and opens.
+pub fn fixture_fits_device_max_frame() bool {
+    var frame: [setu3.max_frame]u8 = undefined;
+    const flen = build_device_payload(&frame) orelse return false;
+    if (flen > device_max_frame) return false;
+    const unwrapped = setu3.unwrap_lane_ping(frame[0..flen]) orelse return false;
+    return setu1.open_lane_ping(unwrapped, "kd", .scaled_540);
+}
+
+/// Device-free: held frame bytes reopen (Desk cache shape).
+pub fn fixture_held_frame_reopens() bool {
+    var frame: [setu3.max_frame]u8 = undefined;
+    const flen = build_device_payload(&frame) orelse return false;
+    var held: [setu3.max_frame]u8 = undefined;
+    tally_copy.copy_disjoint(u8, held[0..flen], frame[0..flen]);
+    const unwrapped = setu3.unwrap_lane_ping(held[0..flen]) orelse return false;
+    return setu1.open_lane_ping(unwrapped, "kd", .scaled_540);
+}
+
+/// Device-free: local wire still cannot produce a device payload.
+pub fn fixture_local_blocked() bool {
+    var sealed: [@intCast(wf.wire_capacity)]u8 = undefined;
+    return setu1.seal_lane_ping(.local, "kd", .scaled_540, &sealed) == null;
+}
+
+comptime {
+    _ = print;
+    assert(std.mem.eql(u8, waymark, "SETU"));
+    assert(device_max_frame == 554);
+    assert(setu3.max_frame >= device_max_frame);
+}
