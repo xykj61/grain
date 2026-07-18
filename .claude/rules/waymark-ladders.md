@@ -19,6 +19,7 @@ Before the first rung is written as `X0` / `X1` / … in TASKS, ROADMAP, compres
 | **TUBE** | `glow-application-framework-and-publishing` | App framework / packaging |
 | **ZETA** | `glow-english-qwerty-glass-keyboard-3` | Glass English QWERTY keyboard |
 | **JABS** | `sala-broadcast-live-session-fold` | Sala broadcast session fold (was bare B0–B3) |
+| **LULU** | `glow-glass-hearth-display-and-wired-sync` | Hearth display presets · short home · Wired Glass |
 
 ## Accrete-never-break
 
