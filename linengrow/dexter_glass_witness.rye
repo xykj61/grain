@@ -31,7 +31,8 @@ fn run_selftest(_: std.process.Init) !u8 {
 
     // Live KEY drain — Android-shaped downs through the same mapper NativeActivity uses.
     assert(key.action_from_key_down(.{ .key_code = key.keycode_a }) != null);
-    assert(key.action_from_key_down(.{ .key_code = key.keycode_enter }).? == .submit);
+    // ZETA6: Enter is newline (matches glass ret); send is the ^ key.
+    assert(key.action_from_key_down(.{ .key_code = key.keycode_enter }).? == .newline);
     assert(key.action_from_key_down(.{ .key_code = key.keycode_del }).? == .backspace);
     const shift_a = key.action_from_key_down(.{
         .key_code = key.keycode_a,
@@ -49,11 +50,13 @@ fn run_selftest(_: std.process.Init) !u8 {
         .{ .key_code = key.keycode_enter },
     };
     key.drain_key_downs(&editor, &downs);
+    assert(!editor.pending_submit);
+    assert(std.mem.eql(u8, editor.prompt_slice(), "hi\n"));
+    editor.apply_action(.submit);
     assert(editor.pending_submit);
-    assert(std.mem.eql(u8, editor.prompt_slice(), "hi"));
     assert(glass.format_dexter_line(editor.prompt_slice(), &line, &len));
     assert(std.mem.indexOf(u8, line[0..len], "DEXTER line") != null);
-    assert(std.mem.indexOf(u8, line[0..len], "hi") != null);
+    assert(std.mem.indexOf(u8, line[0..len], "P1") != null);
     print("dexter-glass: live KEY drain \"{s}\" -- GREEN\n", .{line[0..len]});
 
     // ZETA3 — caret phase + live line with glyph.

@@ -2,9 +2,10 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Rule: [`.cursor/rules/remember.mdc`](../.cursor/rules/remember.mdc) · [`.claude/rules/remember.md`](../.claude/rules/remember.md).*
 
-**Last refreshed:** `20260718.122145` (Eastern) · voice Quin  
-**Product nib:** JABS2 bare-ret chat GREEN · **ZETA6 / LULU design seated** (build next)  
-**Suite nib:** ZETA4–5 GREEN · mode round-trip GREEN  
+**Last refreshed:** `20260718.130756` (Eastern) · voice Quin  
+**Product nib:** ZETA6 Pixel GREEN · **LULU0–2 sent** (hold-open perfect)  
+**Suite nib:** ZETA0–6 · LULU0–2  
+
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`
 
 ---
@@ -13,11 +14,11 @@
 
 | Waymark | Ladder | Now |
 |---------|--------|-----|
-| **HAWM** | GrapheneOS / Pixel SLC | HAWM0–1 GREEN · HAWM3 real Pixel GrapheneOS |
-| **TUBE** | App framework / NativeActivity pack | TUBE0.5 APK GREEN · TUBE1 admitted glass |
-| **ZETA** | English QWERTY glass keyboard | ZETA0–5 GREEN · **ZETA6** ret=newline · ↑=send (design) |
+| **HAWM** | GrapheneOS / Pixel SLC | HAWM0–1 GREEN · HAWM3 real Pixel |
+| **TUBE** | App framework / NativeActivity pack | TUBE0.5 APK GREEN |
+| **ZETA** | English QWERTY glass keyboard | ZETA0–6 GREEN (Pixel look) |
 | **JABS** | Sala broadcast live-session fold | JABS0–2 GREEN · JABS3 check-in |
-| **LULU** | Hearth display · short home · Wired Glass | LULU0+ open · waymark `20260718.122145` |
+| **LULU** | Hearth display · short home · Wired Glass | **LULU0–2 sent** · next: Wired Glass · home_id |
 
 Canon: [`../docs/HAWM.md`](../docs/HAWM.md) · [`../docs/TUBE.md`](../docs/TUBE.md) · [`../docs/ZETA.md`](../docs/ZETA.md) · [`../docs/JABS.md`](../docs/JABS.md) · [`../docs/LULU.md`](../docs/LULU.md)
 
@@ -25,27 +26,30 @@ Canon: [`../docs/HAWM.md`](../docs/HAWM.md) · [`../docs/TUBE.md`](../docs/TUBE.
 
 ## Outer terminal (host shell — not ai-jail)
 
-The jail has **no** `/dev/bus/usb`. Pack inside Cursor; install from a plain host terminal:
-
 ```bash
 cd ~/urbit
 ADB=tools/.cache/hawm0/android-sdk/platform-tools/adb
-$ADB devices   # must show device (not unauthorized)
+$ADB devices
 $ADB install -r tools/.cache/tube05/sala-broadcaster.apk
 $ADB shell am force-stop org.glow.app.sala_broadcaster
 $ADB shell am start -n org.glow.app.sala_broadcaster/android.app.NativeActivity
 ```
 
-Re-pack after glass edits: `rishi/bin/rishi run tools/tube05_apk_pack_witness.rish` (inside jail is fine).
-
 ---
 
-## Phone look (this pack — pre-ZETA6)
+## Phone look (ZETA6 · LULU closed)
 
-1. **ret** — still **submit** until ZETA6 lands; bare ret → `chat ·`; typed → `chat · …`.
-2. **em / 123 → abc** — mode round-trip; app stays open (finish-zone).
-3. **Close** — only `TAP ABOVE KB TO CLOSE` (Skate 13).
-4. After ZETA6: **ret** = newline · **↑** = send.
+1. Short tap row 1 → cycle presets (persists).  
+2. Hold row 1 ~½s → list under finger; tap a name to set.  
+3. `ret` = newline; `^` = send.
+
+## Witnesses (device-free)
+
+```bash
+rishi/bin/rishi run tools/hearth_lulu0_witness.rish
+rishi/bin/rishi run tools/hearth_lulu1_witness.rish
+rishi/bin/rishi run tools/hearth_lulu2_witness.rish
+```
 
 ---
 
@@ -53,24 +57,9 @@ Re-pack after glass edits: `rishi/bin/rishi run tools/tube05_apk_pack_witness.ri
 
 | Door | Kind |
 |------|------|
-| **ZETA6** newline + ↑ send | **kg** (design seated) |
-| **LULU0** Bron hearth `home_id` + preset | **kg** after ZETA6 |
-| Host install if APK rebuilt | **kg** |
-| JABS3 · TAME Lap 3 · Sensors orientation · Setu name | **check-in** |
-| LULU2 Settings UI · Wired Glass metalsmoke | **check-in** |
-
-Silo: [`../active-designing/20260718-122145_hearth-lulu-display-presets-short-home-and-zeta6-send.md`](../active-designing/20260718-122145_hearth-lulu-display-presets-short-home-and-zeta6-send.md)
-
----
-
-## Words
-
-| Word | Means |
-|------|--------|
-| **remember** | Reprint this card |
-| **kg** | Keep going — not ship |
-| **align** | Walk compass · fix plan drift |
-| **send** | Commit · push · merge to pier |
+| **Wired Glass / Setu** (affirmed next) | **check-in** thin face |
+| **home_id editor** (affirmed next) | **check-in** thin face |
+| JABS3 · TAME Lap 3 | **check-in** |
 
 ---
 

@@ -20,6 +20,9 @@ const kb_paint = @import("dexter_glass_keyboard_paint.rye");
 const kb_layout = @import("dexter_glass_keyboard_layout.rye");
 const kb_emoji = @import("dexter_glass_emoji.rye");
 const jabs2_glass = @import("sala_jabs2_glass_audience.rye");
+const hearth = @import("hearth_lulu0.rye");
+const lulu1 = @import("hearth_lulu1.rye");
+const lulu2 = @import("hearth_lulu2.rye");
 const tally_copy = @import("tally_copy.rye");
 
 const WindowBuffer = extern struct {
@@ -78,10 +81,29 @@ pub const CloseHit = struct {
     }
 };
 pub var last_close_hit: CloseHit = .{};
+/// Hearth status row (Skate row 1) — tap cycles display_preset.
+pub var last_hearth_hit: CloseHit = .{};
 /// Current ZETA page (letters / numbers / symbols / emoji). Activity may change this.
 pub var keyboard_mode: kb_layout.Mode = .letters;
 /// Active emoji category tab (ZETA4).
 pub var keyboard_emoji_tab: kb_emoji.Tab = .smileys;
+/// LULU1: active display preset (default scaled_540 — denser glyphs than panel_max).
+pub var active_preset: hearth.DisplayPreset = .scaled_540;
+/// LULU1: short home from Hearth Bron (default kd).
+pub var active_home_id: [hearth.home_id_len]u8 = .{ 'k', 'd' };
+/// LULU2: thin Settings list open (rows 2–5).
+pub var settings_open: bool = false;
+/// LULU2: hit boxes for the four preset lines (valid when settings_open).
+pub var last_preset_hits: [lulu2.preset_count]CloseHit = [_]CloseHit{.{}} ** lulu2.preset_count;
+
+fn fill_preset_list_rows(grid: *skate.Grid) void {
+    var i: u32 = 0;
+    while (i < lulu2.preset_count) : (i += 1) {
+        var buf: [lulu2.list_line_max]u8 = undefined;
+        const line = lulu2.format_list_line(i, active_preset, &buf) orelse continue;
+        put_line_centered(grid, lulu2.list_row0 + i, line);
+    }
+}
 
 fn fill_admitted_rows(
     grid: *skate.Grid,
@@ -97,22 +119,27 @@ fn fill_admitted_rows(
     jabs2_line1: ?[]const u8,
 ) void {
     if (!tube1_admitted) return;
-    var row: u32 = 2;
-    if (surf) |s| {
-        var p: u32 = 0;
-        while (p < s.count and row < 5) : (p += 1) {
-            const pan = s.panel(p);
-            var line_buf: [64]u8 = undefined;
-            const line = std.fmt.bufPrint(
-                &line_buf,
-                "[{s}] {s}",
-                .{ pan.label_slice(), pan.frame.line(1) },
-            ) catch continue;
-            put_line_centered(grid, row, line);
-            row += 1;
+    if (settings_open) {
+        // LULU2: four-line preset list overlays the panel strip.
+        fill_preset_list_rows(grid);
+    } else {
+        var row: u32 = 2;
+        if (surf) |s| {
+            var p: u32 = 0;
+            while (p < s.count and row < 5) : (p += 1) {
+                const pan = s.panel(p);
+                var line_buf: [64]u8 = undefined;
+                const line = std.fmt.bufPrint(
+                    &line_buf,
+                    "[{s}] {s}",
+                    .{ pan.label_slice(), pan.frame.line(1) },
+                ) catch continue;
+                put_line_centered(grid, row, line);
+                row += 1;
+            }
         }
+        if (tip_line) |tip| put_line_centered(grid, 5, tip);
     }
-    if (tip_line) |tip| put_line_centered(grid, 5, tip);
     if (pub_line) |published| put_line_centered(grid, 8, published);
     if (fetch_line) |fetched| put_line_centered(grid, 9, fetched);
     if (market_line) |market| put_line_centered(grid, 10, market);
@@ -210,7 +237,12 @@ fn fill_chrome_rows(
     else
         "SALA B0";
     put_line_centered(grid, 0, title);
-    put_line_centered(grid, 1, if (tube1_admitted) "TUBE1 admitted · Pool x3" else "TUBE1 refused");
+    var hearth_buf: [lulu1.status_line_max]u8 = undefined;
+    const hearth_line = if (tube1_admitted)
+        (lulu1.format_status(active_home_id[0..], active_preset, &hearth_buf) orelse "hearth")
+    else
+        "TUBE1 refused";
+    put_line_centered(grid, 1, hearth_line);
     fill_admitted_rows(
         grid,
         tube1_admitted,
@@ -238,21 +270,6 @@ fn glass_origin_y(portrait: bool, h: i32, grid_h: i32) i32 {
     return @divTrunc(h - grid_h, 5);
 }
 
-/// Portrait fills ~90% height; desk keeps prior width buckets.
-fn glass_cell_scale(w: i32, h: i32, grid_rows: u32) u32 {
-    // invariant: window already locked with positive size
-    assert(w > 0);
-    assert(h > 0);
-    if (h > w) {
-        const want: i32 = @divTrunc(h * 9, 10);
-        const s: i32 = @divTrunc(want, @as(i32, @intCast(grid_rows * skate.cell_h)));
-        return @intCast(@max(2, @min(5, s)));
-    }
-    if (w >= 1080) return 3;
-    if (w >= 720) return 2;
-    return 1;
-}
-
 /// Keyboard + close-hint hit maps for the current paint (window coords).
 fn refresh_touch_hits(
     tube1_admitted: bool,
@@ -265,6 +282,8 @@ fn refresh_touch_hits(
 ) void {
     last_keyboard_hit = .{};
     last_close_hit = .{};
+    last_hearth_hit = .{};
+    last_preset_hits = [_]CloseHit{.{}} ** lulu2.preset_count;
     if (!tube1_admitted) return;
     // invariant: positive cell metrics at the touch seam
     assert(cell_pw > 0);
@@ -278,6 +297,28 @@ fn refresh_touch_hits(
         jabs2_glass.keyboard_row0,
         kb_layout.page_for_tab(keyboard_mode, keyboard_emoji_tab),
     );
+    // Hearth status on Skate row 1 — short tap cycles; long-press opens LULU2.
+    const hearth_row: i32 = 1;
+    last_hearth_hit = .{
+        .ready = true,
+        .x0 = origin_x,
+        .y0 = origin_y + hearth_row * cell_ph,
+        .x1 = origin_x + grid_w,
+        .y1 = origin_y + (hearth_row + 1) * cell_ph,
+    };
+    if (settings_open) {
+        var i: u32 = 0;
+        while (i < lulu2.preset_count) : (i += 1) {
+            const row: i32 = @intCast(lulu2.list_row0 + i);
+            last_preset_hits[i] = .{
+                .ready = true,
+                .x0 = origin_x,
+                .y0 = origin_y + row * cell_ph,
+                .x1 = origin_x + grid_w,
+                .y1 = origin_y + (row + 1) * cell_ph,
+            };
+        }
+    }
     // Close only on the painted "TAP ABOVE KB TO CLOSE" row (Skate 13).
     const close_row: i32 = 13;
     last_close_hit = .{
@@ -289,6 +330,18 @@ fn refresh_touch_hits(
     };
     // invariant: close strip sits above the keyboard
     assert(last_close_hit.y1 <= last_keyboard_hit.origin_y);
+    // invariant: hearth status sits above the close strip
+    assert(last_hearth_hit.y1 < last_close_hit.y0);
+}
+
+/// Which LULU2 list row contains (x,y), if any.
+pub fn preset_hit_index(x: i32, y: i32) ?u32 {
+    if (!settings_open) return null;
+    var i: u32 = 0;
+    while (i < lulu2.preset_count) : (i += 1) {
+        if (last_preset_hits[i].contains(x, y)) return i;
+    }
+    return null;
 }
 
 /// Paint via Skate: title, R2, tip, hex, rail, JABS1, Dexter, JABS2, ZETA, tap.
@@ -309,6 +362,8 @@ pub fn paint_session_root_hex(
 ) void {
     last_keyboard_hit = .{};
     last_close_hit = .{};
+    last_hearth_hit = .{};
+    last_preset_hits = [_]CloseHit{.{}} ** lulu2.preset_count;
     if (window == null) return;
     _ = ANativeWindow_setBuffersGeometry(window, 0, 0, format_rgba8888);
     var buf: WindowBuffer = undefined;
@@ -322,11 +377,16 @@ pub fn paint_session_root_hex(
     assert(h > 0);
     const grid_rows: u32 = jabs2_glass.grid_rows;
     const portrait = h > w;
-    const scale = glass_cell_scale(w, h, grid_rows);
-    const cell_pw: i32 = @intCast(skate.cell_w * scale);
-    const cell_ph: i32 = @intCast(skate.cell_h * scale);
-    // Keyboard paint needs ~32 cols; keep a phone-friendly cap.
-    const cols: u32 = @intCast(@max(32, @min(48, @divTrunc(w, cell_pw))));
+    // LULU1: Hearth preset drives scale / cols (panel_max reads the window).
+    const applied = lulu1.apply_glass(w, h, active_preset, grid_rows);
+    const scale = applied.scale;
+    const cell_pw = applied.cell_pw;
+    const cell_ph = applied.cell_ph;
+    const cols = applied.cols;
+    const grid_w = applied.grid_w;
+    const grid_h = applied.grid_h;
+    // invariant: portrait fill aims under window height
+    assert(grid_h > 0);
     const allocator = std.heap.page_allocator;
     var grid = skate.Grid.init(allocator, cols, grid_rows) catch return;
     defer allocator.free(grid.cells);
@@ -342,10 +402,6 @@ pub fn paint_session_root_hex(
     });
     const bg = rgba(0x1a, 0x14, 0x10);
     const fg = if (matched) rgba(0x7d, 0xc4, 0x8a) else rgba(0xe8, 0xc4, 0x7a);
-    const grid_w: i32 = @intCast(cols * @as(u32, @intCast(cell_pw)));
-    const grid_h: i32 = @intCast(grid_rows * @as(u32, @intCast(cell_ph)));
-    // invariant: portrait fill aims under window height
-    assert(grid_h > 0);
     const grid_stride: u32 = @intCast(grid_w * 4);
     const pixels = allocator.alloc(u8, @intCast(grid_stride * @as(u32, @intCast(grid_h)))) catch return;
     defer allocator.free(pixels);

@@ -1,0 +1,63 @@
+//! linengrow/hearth_lulu0_witness.rye — proves LULU0 Hearth Bron mold.
+//!
+//!   rye build linengrow/hearth_lulu0_witness.rye \
+//!     -femit-bin=linengrow/bin/hearth_lulu0_witness
+//!   linengrow/bin/hearth_lulu0_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const hearth = @import("hearth_lulu0.rye");
+
+const witness_version = "20260718.123900";
+
+fn run_selftest(_: std.process.Init) !u8 {
+    assert(std.mem.eql(u8, hearth.waymark, "LULU"));
+    print("lulu0: waymark {s} -- GREEN\n", .{hearth.waymark});
+
+    assert(hearth.preset_sizes_are_honest());
+    print("lulu0: preset sizes (Pixel aspect + Mantrapod floor) -- GREEN\n", .{});
+
+    assert(hearth.refuses_bad_home_ids());
+    print("lulu0: refuses bad home_id -- GREEN\n", .{});
+
+    assert(hearth.kd_hearth_path_is_short());
+    print("lulu0: path kd/hearth.bron -- GREEN\n", .{});
+
+    assert(hearth.kd_files_join_is_honest());
+    print("lulu0: files join …/kd/hearth.bron -- GREEN\n", .{});
+
+    assert(hearth.preset_next_cycles_closed());
+    print("lulu0: preset.next closed cycle N=4 -- GREEN\n", .{});
+
+    assert(hearth.kd_panel_max_round_trip());
+    const h = try hearth.Hearth.init("kd", .scaled_540);
+    var buf: [hearth.max_bron_len]u8 = undefined;
+    const n = try hearth.format_bron(h, &buf);
+    const back = try hearth.parse_bron(buf[0..n]);
+    assert(back.preset == .scaled_540);
+    print("lulu0: Bron round-trip home_id kd -- GREEN\n", .{});
+
+    // Unknown preset and wrong format refuse.
+    const bad_preset =
+        \\format hearth-lulu0-v1
+        \\home_id kd
+        \\display_preset not_a_preset
+        \\waymark LULU
+        \\
+    ;
+    if (hearth.parse_bron(bad_preset)) |_| {
+        assert(false);
+    } else |err| {
+        assert(err == error.UnknownPreset);
+    }
+    print("lulu0: unknown preset refused -- GREEN\n", .{});
+
+    print("lulu0: version {s}\n", .{witness_version});
+    print("GREEN: LULU0 — Hearth Bron mold (home_id + display_preset) under waymark LULU.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
+}

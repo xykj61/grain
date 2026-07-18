@@ -3,6 +3,7 @@
 //! Glow-owned QWERTY pages for the glass keyboard (waymark ZETA). Device-free
 //! data only — paint and tap hit-testing are ZETA1+. iOS-inspired mode family
 //! from public notes; clean-room (no Apple assets). ZETA4 adds emoji pages.
+//! ZETA6: `ret` = newline; `send` (`^`) = submit.
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -26,6 +27,8 @@ pub const Key = union(enum) {
     delete,
     space,
     @"return",
+    /// ZETA6 upward send — Dexter `.submit` (label `^`).
+    send,
     to_numbers,
     to_letters,
     to_symbols,
@@ -63,7 +66,7 @@ fn face(id: u8) Key {
 const letters_r0 = [_]Key{ c('q'), c('w'), c('e'), c('r'), c('t'), c('y'), c('u'), c('i'), c('o'), c('p') };
 const letters_r1 = [_]Key{ c('a'), c('s'), c('d'), c('f'), c('g'), c('h'), c('j'), c('k'), c('l') };
 const letters_r2 = [_]Key{ .shift, c('z'), c('x'), c('c'), c('v'), c('b'), c('n'), c('m'), .delete };
-const letters_r3 = [_]Key{ .to_numbers, .to_emoji, .space, .@"return" };
+const letters_r3 = [_]Key{ .to_numbers, .to_emoji, .space, .@"return", .send };
 
 const letters_rows = [_]Row{
     .{ .keys = &letters_r0 },
@@ -82,7 +85,7 @@ pub const letters_page: Page = .{
 const numbers_r0 = [_]Key{ c('1'), c('2'), c('3'), c('4'), c('5'), c('6'), c('7'), c('8'), c('9'), c('0') };
 const numbers_r1 = [_]Key{ c('-'), c('/'), c(':'), c(';'), c('('), c(')'), c('$'), c('&'), c('@'), c('"') };
 const numbers_r2 = [_]Key{ .to_symbols, c('.'), c(','), c('?'), c('!'), c('\''), .delete };
-const numbers_r3 = [_]Key{ .to_letters, .to_emoji, .space, .@"return" };
+const numbers_r3 = [_]Key{ .to_letters, .to_emoji, .space, .@"return", .send };
 
 const numbers_rows = [_]Row{
     .{ .keys = &numbers_r0 },
@@ -101,7 +104,7 @@ pub const numbers_page: Page = .{
 const symbols_r0 = [_]Key{ c('['), c(']'), c('{'), c('}'), c('#'), c('%'), c('^'), c('*'), c('+'), c('=') };
 const symbols_r1 = [_]Key{ c('_'), c('\\'), c('|'), c('~'), c('<'), c('>'), c('`'), c('\''), c('"'), c('.') };
 const symbols_r2 = [_]Key{ .to_numbers, c(','), c('?'), c('!'), c('@'), c('&'), .delete };
-const symbols_r3 = [_]Key{ .to_letters, .to_emoji, .space, .@"return" };
+const symbols_r3 = [_]Key{ .to_letters, .to_emoji, .space, .@"return", .send };
 
 const symbols_rows = [_]Row{
     .{ .keys = &symbols_r0 },

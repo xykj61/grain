@@ -193,7 +193,8 @@ pub fn skate_preview(prompt: []const u8, out: []u8) u32 {
             pi += faces[id].utf8.len;
             continue;
         }
-        out[oi] = prompt[pi];
+        // ZETA6: newlines become a Skate-safe slash in the preview.
+        out[oi] = if (prompt[pi] == '\n') '/' else prompt[pi];
         oi += 1;
         pi += 1;
     }

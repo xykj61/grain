@@ -1,0 +1,20 @@
+# hearth_lulu1_witness.rish — LULU1 apply Hearth preset to Skate metrics.
+#
+#   rishi/bin/rishi run tools/hearth_lulu1_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/hearth_lulu1_witness"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/hearth_lulu1_witness.rye -femit-bin=${bin}"]
+assert build.ok else "LULU1 hearth apply witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "LULU1 hearth apply witness exited non-zero"
+assert selftest.out contains "GREEN" else "LULU1 not GREEN"
+assert selftest.out contains "waymark LULU" else "LULU1 missing waymark claim"
+assert selftest.out contains "panel_max reads window" else "LULU1 missing panel_max claim"
+assert selftest.out contains "scaled_540 clamps" else "LULU1 missing scaled_540 clamp claim"
+assert selftest.out contains "enlarges glyphs" else "LULU1 missing enlarge-glyphs claim"
+assert selftest.out contains "mantrapod_floor scale 2" else "LULU1 missing floor claim"
+
+say "GREEN: LULU1 Hearth apply witness passed."

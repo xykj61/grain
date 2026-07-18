@@ -8,6 +8,19 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260718.130756` — [Send LULU·ZETA6 · affirm next](20260718-130756_send-lulu-zeta6-affirm-next.bron) — pier ship; Wired Glass + home_id affirmed next
+- `20260718.130606` — [LULU2 hold-open GREEN · closed](20260718-130606_lulu2-hold-open-green-closed.bron) — perfect; LULU0–2 closed; next check-in or send
+- `20260718.130251` — [LULU2 Pixel GREEN · hold-open](20260718-130251_lulu2-pixel-green-hold-open.bron) — list under finger via timerfd; release quiet
+- `20260718.125835` — [LULU2 Settings list affirmed](20260718-125835_lulu2-settings-list-affirmed.bron) — long-press list · tap select · pack for Pixel
+- `20260718.125639` — [LULU1 persist GREEN · rung closed](20260718-125639_lulu1-persist-green-closed.bron) — restart keeps preset; LULU2 check-in next
+- `20260718.125312` — [LULU1 cycle GREEN · Bron persist](20260718-125312_lulu1-cycle-green-bron-persist.bron) — cycle affirmed; files/kd/hearth.bron save/load
+- `20260718.124821` — [LULU1 status GREEN · tap cycle](20260718-124821_lulu1-status-green-tap-cycle.bron) — status affirmed; tap row 1 cycles presets
+- `20260718.124610` — [LULU1 Pixel GREEN · hearth status](20260718-124610_lulu1-pixel-green-hearth-status.bron) — larger glyphs affirmed; row 1 `kd · scaled_540`
+- `20260718.124259` — [LULU1 Hearth apply GREEN](20260718-124259_lulu1-hearth-apply-green.bron) — apply_glass · scaled_540 default · pack for Pixel
+- `20260718.123900` — [LULU0 Hearth Bron GREEN](20260718-123900_lulu0-hearth-bron-green.bron) — home_id + display_preset mold
+- `20260718.123705` — [ZETA6 Pixel look GREEN](20260718-123705_zeta6-pixel-look-green.bron) — P1–P6 ret · ^ send; thin Skate intentional
+- `20260718.123245` — [remember adb install + restart](20260718-123245_remember-adb-install-restart.bron) — outer-terminal reprint
+- `20260718.122938` — [ZETA6 ret newline · ^ send](20260718-122938_zeta6-ret-newline-send-key.bron) — device-free GREEN; pack for Pixel
 - `20260718.122145` — [LULU · ZETA6 · Hearth align send](20260718-122145_lulu-zeta6-hearth-align-send.bron) — waymark LULU; ret→newline design
 - `20260717.214340` — [JABS2 ret toggle vs cycle](20260717-214340_jabs2-ret-toggle-vs-cycle.bron) — prefer cycle N; gesture check-in
 - `20260717.213745` — [JABS2 bare ret empty chat](20260717-213745_jabs2-bare-ret-empty-chat.bron) — first-tap ret → chat ·
