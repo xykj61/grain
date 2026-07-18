@@ -1,0 +1,24 @@
+# setu4_framed_lane_witness.rish — SETU4: NCM-framed ping over live UDP.
+#
+#   rishi/bin/rishi run tools/setu4_framed_lane_witness.rish
+#
+# Optional host gadget probe (SKIP when no usb0/ncm):
+#   rishi/bin/rishi run tools/setu4_gadget_probe_onpath_host.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/setu4_framed_lane"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/setu4_framed_lane.rye -lc -femit-bin=${bin}"]
+assert build.ok else "SETU4 framed lane build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "SETU4 selftest exited non-zero"
+assert selftest.out contains "GREEN" else "SETU4 selftest not GREEN"
+assert selftest.out contains "waymark SETU" else "SETU4 missing waymark"
+
+let demo = run ["sh" "-c" "${bin} demo 2>&1"]
+assert demo.ok else "SETU4 demo exited non-zero"
+assert demo.out contains "GREEN" else "SETU4 demo not GREEN"
+assert demo.out contains "live localhost UDP" else "SETU4 demo missing live UDP claim"
+
+say "GREEN: SETU4 framed lane witness passed (live UDP stand-in)."

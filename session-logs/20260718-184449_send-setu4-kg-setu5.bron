@@ -1,0 +1,11 @@
+format session-log-v1
+stamp 20260718.184449
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS amd64 (Framework 16 AMD) — Eastern
+title Send SETU4 · kg SETU5
+prompt send and kg
+think Send SETU4 framed live lane; kg into SETU5 as device-wire payload bound for NCM-framed ping before QEMU/Pixel gadget.
+product_nib SETU4
+recommend keep-going SETU5 after pier ship
