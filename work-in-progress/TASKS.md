@@ -287,8 +287,10 @@
 - [x] **SETU0 — adb Bron pull Glass→Desk** `20260718.132731` — Keaton affirmed thin face; device-free `setu0_hearth_pull_witness` GREEN; host `setu0_hearth_pull_onpath_host` pulled `kd` · `scaled_720` · `wire local` · `cell optional` from Pixel; Desk agree check GREEN. Compressor [`docs/SETU.md`](../docs/SETU.md).
 - [x] **SETU0.5 — Desk applies pulled hearth** `20260718.133328` — station line + `tools/.cache/setu0/station.bron` under seated 1920×1080; device-free + host path after SETU0 GREEN; parity_ch01 wired.
 - [x] **Glass↔Desk Amber/Amphora compose-not-fuse** `20260718.133455` — ER + siloed revival; fuse declined; Tilak→resin→Amphora graduation horizon.
-- [x] **SETU1 — usb_desk Comlink lane ping** `20260718.133853`–`134110` — Keaton approved thin face; `local` refuses; `usb_desk` seals+opens via `wire_format` and writes `lane_ping.bin`; host SKIP when station still local; parity_ch01 wired. CDC-NCM deferred to SETU2.
-- [ ] **SETU2 — CDC-NCM gadget lane** — check-in (real USB networking; not Amber-on-Glass).
+- [x] **SETU1 — usb_desk Comlink lane ping** `20260718.133853`–`134110` — Keaton approved thin face; `local` refuses; `usb_desk` seals+opens via `wire_format` and writes `lane_ping.bin`; host SKIP when station still local; parity_ch01 wired. CDC-NCM deferred.
+- [x] **SETU1 sent** `20260718.134246` — `7a1ce3d1ee` on pier.
+- [x] **SETU2 — hosted UDP lane wire** `20260718.134348` — Keaton approved continue; SETU1 ping crosses localhost UDP port 38501 (Glass send · Desk recv demo); CDC-NCM deferred to SETU3; parity_ch01 wired.
+- [ ] **SETU3 — CDC-NCM gadget lane** — check-in (real USB networking; not Amber-on-Glass).
 - [ ] **Wired Glass SLC metalsmoke** — cellular optional/off; USB sync to Desk; Setu live lane check-in.
 - [ ] **JABS3 — Inference and economics** — check-in (Quin · MALA).
 - [ ] **C2 thin TAME compressor** — optional `docs/TAME.md` only if cold-load pain is measured.

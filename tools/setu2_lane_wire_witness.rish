@@ -1,0 +1,21 @@
+# setu2_lane_wire_witness.rish — SETU2: lane ping over hosted UDP.
+#
+#   rishi/bin/rishi run tools/setu2_lane_wire_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/setu2_lane_wire"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/setu2_lane_wire.rye -lc -femit-bin=${bin}"]
+assert build.ok else "SETU2 lane wire build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "SETU2 selftest exited non-zero"
+assert selftest.out contains "GREEN" else "SETU2 selftest not GREEN"
+assert selftest.out contains "waymark SETU" else "SETU2 missing waymark"
+
+let demo = run ["sh" "-c" "${bin} demo 2>&1"]
+assert demo.ok else "SETU2 demo exited non-zero"
+assert demo.out contains "GREEN" else "SETU2 demo not GREEN"
+assert demo.out contains "localhost UDP" else "SETU2 demo missing UDP claim"
+
+say "GREEN: SETU2 lane wire witness passed (hosted UDP stand-in)."

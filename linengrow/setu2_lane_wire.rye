@@ -1,0 +1,146 @@
+//! linengrow/setu2_lane_wire.rye — SETU2: SETU1 lane ping over hosted UDP.
+//!
+//! Approved thin face: the sealed usb_desk ping crosses localhost UDP (Comlink
+//! hosted-wire shape) as the Setu lane stand-in before a real CDC-NCM gadget.
+//! Glass sends; Desk receives and opens. CDC-NCM hardware remains SETU3.
+//!
+//!   rye build linengrow/setu2_lane_wire.rye -lc \
+//!     -femit-bin=linengrow/bin/setu2_lane_wire
+//!   linengrow/bin/setu2_lane_wire selftest
+//!   linengrow/bin/setu2_lane_wire demo
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const c = std.c;
+const wf = @import("wire_format.rye");
+const setu0 = @import("setu0_hearth_pull.rye");
+const setu1 = @import("setu1_lane_ping.rye");
+const hearth = @import("hearth_lulu0.rye");
+
+pub const waymark: []const u8 = setu0.waymark;
+pub const setu2_version = "20260718.134322";
+/// Dedicated Setu lane port (hosted stand-in for CDC-NCM).
+pub const lane_port: u16 = 38501;
+
+const AF_INET: c_uint = 2;
+const SOCK_DGRAM: c_uint = 2;
+const SOL_SOCKET: c_int = 1;
+const SO_REUSEADDR: c_int = 2;
+
+const sockaddr_in = extern struct {
+    sin_family: c_ushort = AF_INET,
+    sin_port: c_ushort,
+    sin_addr: [4]u8 = .{ 127, 0, 0, 1 },
+    sin_zero: [8]u8 = .{0} ** 8,
+};
+
+fn localhost_addr(port: u16) sockaddr_in {
+    return .{ .sin_port = std.mem.nativeToBig(u16, port) };
+}
+
+fn open_socket() !c.fd_t {
+    const fd = c.socket(AF_INET, SOCK_DGRAM, 0);
+    if (fd < 0) return error.SocketFailed;
+    const yes: c_int = 1;
+    _ = c.setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &yes, @sizeOf(c_int));
+    return fd;
+}
+
+fn seal_fixture_ping(buf: *[@intCast(wf.wire_capacity)]u8) !u64 {
+    return setu1.seal_lane_ping(.usb_desk, "kd", .scaled_540, buf) orelse error.SealFailed;
+}
+
+fn run_selftest() !u8 {
+    assert(std.mem.eql(u8, waymark, "SETU"));
+    var buf: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const len = try seal_fixture_ping(&buf);
+    if (!setu1.open_lane_ping(buf[0..@intCast(len)], "kd", .scaled_540)) return error.OpenFailed;
+    print("setu2: waymark {s} -- GREEN\n", .{waymark});
+    print("setu2: selftest seal+open -- GREEN\n", .{});
+    print("setu2: lane port {d}\n", .{lane_port});
+    print("setu2: version {s}\n", .{setu2_version});
+    print("GREEN: SETU2 — lane ping ready for hosted UDP (device-free).\n", .{});
+    return 0;
+}
+
+fn run_send() !u8 {
+    const fd = try open_socket();
+    defer _ = c.close(fd);
+    var buf: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const len = try seal_fixture_ping(&buf);
+    const dest = localhost_addr(lane_port);
+    const sent = c.sendto(fd, &buf, @intCast(len), 0, @ptrCast(&dest), @sizeOf(sockaddr_in));
+    if (sent < 0 or @as(usize, @intCast(sent)) != @as(usize, @intCast(len))) return error.SendFailed;
+    print("setu2: Glass sent lane ping ({d} bytes) to 127.0.0.1:{d}\n", .{ len, lane_port });
+    return 0;
+}
+
+fn run_recv() !u8 {
+    const fd = try open_socket();
+    defer _ = c.close(fd);
+    var bind_addr = localhost_addr(lane_port);
+    if (c.bind(fd, @ptrCast(&bind_addr), @sizeOf(sockaddr_in)) < 0) return error.BindFailed;
+
+    var buf: [@intCast(wf.wire_capacity)]u8 = undefined;
+    var from: sockaddr_in = undefined;
+    var from_len: c.socklen_t = @sizeOf(sockaddr_in);
+    const n = c.recvfrom(fd, &buf, @intCast(wf.wire_capacity), 0, @ptrCast(&from), &from_len);
+    if (n < 0) return error.RecvFailed;
+    const len: u64 = @intCast(n);
+    if (len < wf.off_cipher or len > wf.wire_capacity) {
+        print("setu2: malformed datagram refused\n", .{});
+        return 1;
+    }
+    if (!setu1.open_lane_ping(buf[0..@intCast(len)], "kd", .scaled_540)) {
+        print("setu2: open/verify failed\n", .{});
+        return 1;
+    }
+    print("setu2: Desk opened lane ping from hosted UDP -- GREEN\n", .{});
+    return 0;
+}
+
+fn run_demo(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) !u8 {
+    const recv_argv = try allocator.alloc([]const u8, 2);
+    recv_argv[0] = self_path;
+    recv_argv[1] = "recv";
+    var recv_child = try std.process.spawn(io, .{ .argv = recv_argv });
+
+    var pause = c.timespec{ .sec = 0, .nsec = 50_000_000 };
+    _ = c.nanosleep(&pause, null);
+
+    const send_argv = try allocator.alloc([]const u8, 2);
+    send_argv[0] = self_path;
+    send_argv[1] = "send";
+    var send_child = try std.process.spawn(io, .{ .argv = send_argv });
+
+    const recv_term = try recv_child.wait(io);
+    const send_term = try send_child.wait(io);
+    const recv_code: u8 = switch (recv_term) {
+        .exited => |code| code,
+        else => 255,
+    };
+    const send_code: u8 = switch (send_term) {
+        .exited => |code| code,
+        else => 255,
+    };
+    assert(recv_code == 0);
+    assert(send_code == 0);
+    _ = hearth;
+    print("setu2: demo GREEN — SETU1 lane ping crossed localhost UDP (Setu stand-in).\n", .{});
+    print("GREEN: SETU2 — hosted lane wire carried the ping.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2) {
+        if (std.mem.eql(u8, args[1], "selftest")) return run_selftest();
+        if (std.mem.eql(u8, args[1], "send")) return run_send();
+        if (std.mem.eql(u8, args[1], "recv")) return run_recv();
+        if (std.mem.eql(u8, args[1], "demo")) return run_demo(garden, io, args[0]);
+    }
+    return run_selftest();
+}

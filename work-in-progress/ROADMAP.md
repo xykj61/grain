@@ -4,7 +4,7 @@
 
 **Language:** EN
 **Version:** `20260715` (Pool keystone revival prioritized · Quin voice seated · align pass reconciles the closed ladder)
-**Last updated:** 2026-07-18 (**SETU1** GREEN — usb_desk Comlink lane ping)
+**Last updated:** 2026-07-18 (**SETU2** GREEN — lane ping over hosted UDP)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Lens:** TAME — safety, performance, joy; the Seed Law; [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md)
@@ -268,7 +268,9 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **SETU0.5 GREEN · compose-not-fuse seated, `20260718.133328`–`133455`** — Desk applies pulled Hearth → station card; host path chains after SETU0. ER + siloed revival: do not fuse LULU/SETU into Amber/Amphora; compose later via Tilak→resin→Amphora. Next: **send** SETU0.5 + briefs; or **SETU1** thin lane check-in.
 
-**SETU1 approved + GREEN, `20260718.133853`** — Keaton approved thin face. `usb_desk` seals one Comlink lane ping; `local` refuses; host SKIP when station still local. CDC-NCM renamed **SETU2** check-in. Next: **send** SETU1; or check-in SETU2.
+**SETU1 approved + GREEN, `20260718.133853`** — Keaton approved thin face. `usb_desk` seals one Comlink lane ping; `local` refuses; host SKIP when station still local. CDC-NCM renamed later. Next: **send** SETU1; or continue SETU2.
+
+**SETU1 sent · SETU2 GREEN, `20260718.134246`–`134348`** — pier `7a1ce3d1ee`. Approved continue: SETU1 ping crosses localhost UDP (port 38501) as Setu stand-in. Real CDC-NCM is **SETU3** check-in. Next: **send** SETU2.
 
 **Glow OS · Glow Desk · Glow Glass seated, `20260717.183622`** — Keaton: **Glow OS** unifies; **Glow Desk** = desktop; **Glow Glass** = mobile. Lexicon + silo [`../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md`](../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md). Orientation firmware stays check-in.
 
