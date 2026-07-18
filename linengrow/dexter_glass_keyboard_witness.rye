@@ -112,8 +112,13 @@ fn run_selftest(_: std.process.Init) !u8 {
     assert(paint.emoji_abc_hit_is_to_letters());
     print("zeta: mode round-trip letters↔emoji↔numbers + abc hit -- GREEN\n", .{});
 
+    // ZETA6: ret = newline · ^ = send.
+    assert(paint.letters_bottom_has_ret_and_send());
+    assert(paint.zeta6_ret_newline_send_submits());
+    print("zeta6: ret newline · ^ send -- GREEN\n", .{});
+
     print("zeta: version {s}\n", .{witness_version});
-    print("GREEN: ZETA0–ZETA4 — layout, label-span hit, tap→Action, emoji, mode round-trip under waymark ZETA.\n", .{});
+    print("GREEN: ZETA0–ZETA6 — layout, label-span hit, tap→Action, emoji, mode round-trip, ret/send under waymark ZETA.\n", .{});
     return 0;
 }
 

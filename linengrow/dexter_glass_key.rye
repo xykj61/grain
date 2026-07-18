@@ -40,7 +40,8 @@ fn shifted(meta: i32) bool {
 pub fn action_from_key_down(k: KeyDown) ?dexter.Action {
     // invariant: key codes are non-negative Android ids
     assert(k.key_code >= 0);
-    if (k.key_code == keycode_enter) return .submit;
+    // ZETA6: hardware Enter matches glass ret (newline); send is the ^ key.
+    if (k.key_code == keycode_enter) return .newline;
     if (k.key_code == keycode_del) return .backspace;
     if (k.key_code == keycode_space) return .{ .char_ = ' ' };
     if (k.key_code == keycode_comma) return .{ .char_ = if (shifted(k.meta_state)) '<' else ',' };

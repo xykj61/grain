@@ -1,0 +1,297 @@
+//! linengrow/hearth_lulu0.rye — LULU0: Hearth Bron mold (short home + display preset).
+//!
+//! Waymark LULU. A Hearth record carries `home_id` (exactly two lowercase
+//! letters) and a closed `display_preset` enum. Bron text at the seam;
+//! Skate apply is LULU1. Device-free validation and round-trip only.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const tally_copy = @import("tally_copy.rye");
+
+pub const waymark: []const u8 = "LULU";
+pub const format_tag: []const u8 = "hearth-lulu0-v1";
+pub const home_id_len: u32 = 2;
+pub const max_bron_len: u32 = 512;
+pub const max_path_len: u32 = 32;
+/// Absolute path under an Android/app files root (`…/kd/hearth.bron`).
+pub const max_abs_path_len: u32 = 160;
+
+/// Closed Glass phone presets (20:9 Pixel-class ladder + Mantrapod content floor).
+pub const DisplayPreset = enum {
+    panel_max,
+    scaled_720,
+    scaled_540,
+    mantrapod_floor,
+
+    pub fn name(self: DisplayPreset) []const u8 {
+        return switch (self) {
+            .panel_max => "panel_max",
+            .scaled_720 => "scaled_720",
+            .scaled_540 => "scaled_540",
+            .mantrapod_floor => "mantrapod_floor",
+        };
+    }
+
+    pub fn from_name(s: []const u8) ?DisplayPreset {
+        if (std.mem.eql(u8, s, "panel_max")) return .panel_max;
+        if (std.mem.eql(u8, s, "scaled_720")) return .scaled_720;
+        if (std.mem.eql(u8, s, "scaled_540")) return .scaled_540;
+        if (std.mem.eql(u8, s, "mantrapod_floor")) return .mantrapod_floor;
+        return null;
+    }
+
+    /// Logical width × height for this preset (pixels).
+    pub fn logical_size(self: DisplayPreset) struct { w: u32, h: u32 } {
+        return switch (self) {
+            .panel_max => .{ .w = 1080, .h = 2424 },
+            .scaled_720 => .{ .w = 720, .h = 1616 },
+            .scaled_540 => .{ .w = 540, .h = 1212 },
+            // Content budget: Skate 32×20 @ scale 2 (design-provisional Mantrapod floor).
+            .mantrapod_floor => .{ .w = 512, .h = 640 },
+        };
+    }
+
+    /// True when this preset keeps the Pixel 10a panel aspect (1080:2424).
+    pub fn keeps_panel_aspect(self: DisplayPreset) bool {
+        const sz = self.logical_size();
+        const ref = DisplayPreset.panel_max.logical_size();
+        // invariant: cross-multiply equality
+        return sz.w * ref.h == ref.w * sz.h;
+    }
+
+    /// Closed N-cycle (N=4) — tap hearth chrome advances; Settings list is LULU2.
+    pub fn next(self: DisplayPreset) DisplayPreset {
+        return switch (self) {
+            .panel_max => .scaled_720,
+            .scaled_720 => .scaled_540,
+            .scaled_540 => .mantrapod_floor,
+            .mantrapod_floor => .panel_max,
+        };
+    }
+};
+
+pub const HearthError = error{
+    HomeIdBadLen,
+    HomeIdBadChar,
+    MissingFormat,
+    MissingHomeId,
+    MissingPreset,
+    UnknownPreset,
+    BronTooLong,
+    PathTooLong,
+};
+
+/// Validated hearth preference record.
+pub const Hearth = struct {
+    home_id: [home_id_len]u8 = undefined,
+    preset: DisplayPreset = .scaled_540,
+
+    pub fn init(home_id: []const u8, preset: DisplayPreset) HearthError!Hearth {
+        try validate_home_id(home_id);
+        var h: Hearth = .{ .preset = preset };
+        tally_copy.copy_disjoint(u8, h.home_id[0..], home_id);
+        // invariant: copy preserved length
+        assert(h.home_id.len == home_id_len);
+        return h;
+    }
+
+    pub fn home_id_slice(self: *const Hearth) []const u8 {
+        return self.home_id[0..];
+    }
+};
+
+/// Exactly two lowercase ASCII letters.
+pub fn validate_home_id(home_id: []const u8) HearthError!void {
+    if (home_id.len != home_id_len) return error.HomeIdBadLen;
+    // invariant: length pinned
+    assert(home_id.len == 2);
+    var i: u32 = 0;
+    while (i < home_id_len) : (i += 1) {
+        const ch = home_id[i];
+        if (ch < 'a' or ch > 'z') return error.HomeIdBadChar;
+    }
+}
+
+/// Relative path `{home_id}/hearth.bron` under the short home.
+pub fn relative_hearth_path(home_id: []const u8, out: *[max_path_len]u8) HearthError!u32 {
+    try validate_home_id(home_id);
+    const path = std.fmt.bufPrint(out, "{s}/hearth.bron", .{home_id}) catch return error.PathTooLong;
+    // invariant: path fits the bound
+    assert(path.len <= max_path_len);
+    assert(path.len > home_id_len);
+    return @intCast(path.len);
+}
+
+/// Absolute path `{files_root}/{home_id}/hearth.bron`.
+pub fn join_files_hearth_path(
+    files_root: []const u8,
+    home_id: []const u8,
+    out: *[max_abs_path_len]u8,
+) HearthError!u32 {
+    try validate_home_id(home_id);
+    if (files_root.len == 0) return error.PathTooLong;
+    const path = std.fmt.bufPrint(
+        out,
+        "{s}/{s}/hearth.bron",
+        .{ files_root, home_id },
+    ) catch return error.PathTooLong;
+    // invariant: absolute path fits the bound
+    assert(path.len <= max_abs_path_len);
+    assert(path.len > files_root.len + home_id_len);
+    return @intCast(path.len);
+}
+
+/// Home directory `{files_root}/{home_id}` for mkdir before write.
+pub fn join_files_home_dir(
+    files_root: []const u8,
+    home_id: []const u8,
+    out: *[max_abs_path_len]u8,
+) HearthError!u32 {
+    try validate_home_id(home_id);
+    if (files_root.len == 0) return error.PathTooLong;
+    const path = std.fmt.bufPrint(out, "{s}/{s}", .{ files_root, home_id }) catch return error.PathTooLong;
+    assert(path.len <= max_abs_path_len);
+    return @intCast(path.len);
+}
+
+/// Format a Hearth as Bron text. Returns bytes written.
+pub fn format_bron(h: Hearth, out: *[max_bron_len]u8) HearthError!u32 {
+    const text = std.fmt.bufPrint(
+        out,
+        \\format {s}
+        \\home_id {s}
+        \\display_preset {s}
+        \\waymark {s}
+        \\
+    ,
+        .{ format_tag, h.home_id_slice(), h.preset.name(), waymark },
+    ) catch return error.BronTooLong;
+    // invariant: Bron stays under the ceiling
+    assert(text.len <= max_bron_len);
+    return @intCast(text.len);
+}
+
+fn is_space(ch: u8) bool {
+    return ch == ' ' or ch == '\t';
+}
+
+fn trim(s: []const u8) []const u8 {
+    var start: usize = 0;
+    while (start < s.len and is_space(s[start])) : (start += 1) {}
+    var end: usize = s.len;
+    while (end > start and is_space(s[end - 1])) : (end -= 1) {}
+    return s[start..end];
+}
+
+/// Parse a hearth-lulu0-v1 Bron document into a validated Hearth.
+pub fn parse_bron(src: []const u8) HearthError!Hearth {
+    if (src.len > max_bron_len) return error.BronTooLong;
+    var saw_format = false;
+    var home: ?[]const u8 = null;
+    var preset_name: ?[]const u8 = null;
+
+    var line_start: usize = 0;
+    while (line_start <= src.len) {
+        const rest = src[line_start..];
+        const nl = std.mem.indexOfScalar(u8, rest, '\n');
+        const line_end = if (nl) |n| line_start + n else src.len;
+        const raw = trim(src[line_start..line_end]);
+        line_start = if (nl) |_| line_end + 1 else src.len + 1;
+
+        if (raw.len == 0 or raw[0] == '#') continue;
+        const sp = std.mem.indexOfScalar(u8, raw, ' ') orelse continue;
+        const key = raw[0..sp];
+        const val = trim(raw[sp + 1 ..]);
+        if (val.len == 0) continue;
+
+        if (std.mem.eql(u8, key, "format")) {
+            if (!std.mem.eql(u8, val, format_tag)) return error.MissingFormat;
+            saw_format = true;
+        } else if (std.mem.eql(u8, key, "home_id")) {
+            home = val;
+        } else if (std.mem.eql(u8, key, "display_preset")) {
+            preset_name = val;
+        } else if (std.mem.eql(u8, key, "waymark")) {
+            if (!std.mem.eql(u8, val, waymark)) return error.MissingFormat;
+        }
+    }
+
+    if (!saw_format) return error.MissingFormat;
+    const home_id = home orelse return error.MissingHomeId;
+    const pname = preset_name orelse return error.MissingPreset;
+    const preset = DisplayPreset.from_name(pname) orelse return error.UnknownPreset;
+    return try Hearth.init(home_id, preset);
+}
+
+/// Device-free: fixture home `kd` + panel_max round-trips Bron.
+pub fn kd_panel_max_round_trip() bool {
+    const h = Hearth.init("kd", .panel_max) catch return false;
+    var buf: [max_bron_len]u8 = undefined;
+    const n = format_bron(h, &buf) catch return false;
+    const back = parse_bron(buf[0..n]) catch return false;
+    if (!std.mem.eql(u8, back.home_id_slice(), "kd")) return false;
+    if (back.preset != .panel_max) return false;
+    return true;
+}
+
+/// Device-free: bad home ids are refused.
+pub fn refuses_bad_home_ids() bool {
+    if (Hearth.init("K", .scaled_540)) |_| return false else |_| {}
+    if (Hearth.init("KD", .scaled_540)) |_| return false else |_| {}
+    if (Hearth.init("k1", .scaled_540)) |_| return false else |_| {}
+    if (Hearth.init("abc", .scaled_540)) |_| return false else |_| {}
+    return true;
+}
+
+/// Device-free: Pixel-class presets keep 1080:2424 aspect; floor meets budget.
+pub fn preset_sizes_are_honest() bool {
+    // invariant: panel max matches seated Pixel 10a public numbers
+    const max = DisplayPreset.panel_max.logical_size();
+    assert(max.w == 1080);
+    assert(max.h == 2424);
+    if (!DisplayPreset.panel_max.keeps_panel_aspect()) return false;
+    if (!DisplayPreset.scaled_720.keeps_panel_aspect()) return false;
+    if (!DisplayPreset.scaled_540.keeps_panel_aspect()) return false;
+    // Mantrapod floor is content budget, not panel aspect.
+    if (DisplayPreset.mantrapod_floor.keeps_panel_aspect()) return false;
+    const floor = DisplayPreset.mantrapod_floor.logical_size();
+    if (floor.w < 512) return false;
+    if (floor.h < 640) return false;
+    return true;
+}
+
+/// Device-free: relative path for `kd` is `kd/hearth.bron`.
+pub fn kd_hearth_path_is_short() bool {
+    var path: [max_path_len]u8 = undefined;
+    const n = relative_hearth_path("kd", &path) catch return false;
+    return std.mem.eql(u8, path[0..n], "kd/hearth.bron");
+}
+
+/// Device-free: files-root join lands on `…/kd/hearth.bron`.
+pub fn kd_files_join_is_honest() bool {
+    const root = "/data/user/0/org.glow.app.sala_broadcaster/files";
+    var path: [max_abs_path_len]u8 = undefined;
+    const n = join_files_hearth_path(root, "kd", &path) catch return false;
+    const want = root ++ "/kd/hearth.bron";
+    return std.mem.eql(u8, path[0..n], want);
+}
+
+/// Device-free: four taps return to the start preset.
+pub fn preset_next_cycles_closed() bool {
+    var p: DisplayPreset = .scaled_540;
+    p = p.next();
+    if (p != .mantrapod_floor) return false;
+    p = p.next();
+    if (p != .panel_max) return false;
+    p = p.next();
+    if (p != .scaled_720) return false;
+    p = p.next();
+    return p == .scaled_540;
+}
+
+comptime {
+    _ = print;
+    assert(home_id_len == 2);
+    assert(std.mem.eql(u8, waymark, "LULU"));
+}

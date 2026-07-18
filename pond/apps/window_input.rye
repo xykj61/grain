@@ -6,6 +6,7 @@
 //!
 //! ZETA4: `utf8` inserts a bounded multi-byte sequence (emoji); backspace
 //! prefers a curated face suffix, else one UTF-8 codepoint.
+//! ZETA6: `newline` inserts `\n` for paragraphs; `submit` stays the send action.
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -26,6 +27,7 @@ pub const Action = union(enum) {
     char_: u8,
     utf8: Utf8Insert,
     backspace,
+    newline,
     submit,
 };
 
@@ -63,6 +65,10 @@ pub const LineEditor = struct {
         self.len -= n;
     }
 
+    pub fn push_newline(self: *LineEditor) void {
+        self.push_char('\n');
+    }
+
     pub fn submit(self: *LineEditor) void {
         self.pending_submit = true;
     }
@@ -71,11 +77,22 @@ pub const LineEditor = struct {
         return self.buf[0..self.len];
     }
 
+    /// Count of `\n` bytes in the buffer (ZETA6 paragraph mark).
+    pub fn newline_count(self: *const LineEditor) u32 {
+        var n: u32 = 0;
+        var i: u32 = 0;
+        while (i < self.len) : (i += 1) {
+            if (self.buf[i] == '\n') n += 1;
+        }
+        return n;
+    }
+
     pub fn apply_action(self: *LineEditor, action: Action) void {
         switch (action) {
             .char_ => |ch| self.push_char(ch),
             .utf8 => |u| self.push_utf8(u.slice()),
             .backspace => self.backspace(),
+            .newline => self.push_newline(),
             .submit => self.submit(),
         }
     }

@@ -1,0 +1,51 @@
+//! linengrow/hearth_lulu1_witness.rye — proves LULU1 preset → Skate metrics.
+//!
+//!   rye build linengrow/hearth_lulu1_witness.rye \
+//!     -femit-bin=linengrow/bin/hearth_lulu1_witness
+//!   linengrow/bin/hearth_lulu1_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const lulu1 = @import("hearth_lulu1.rye");
+const hearth = @import("hearth_lulu0.rye");
+
+const witness_version = "20260718.124100";
+
+fn run_selftest(_: std.process.Init) !u8 {
+    assert(std.mem.eql(u8, lulu1.waymark, "LULU"));
+    print("lulu1: waymark {s} -- GREEN\n", .{lulu1.waymark});
+
+    assert(lulu1.panel_max_reads_window());
+    print("lulu1: panel_max reads window -- GREEN\n", .{});
+
+    assert(lulu1.scaled_540_clamps_inside_pixel());
+    print("lulu1: scaled_540 clamps inside Pixel -- GREEN\n", .{});
+
+    assert(lulu1.scaled_540_enlarges_glyphs());
+    print("lulu1: scaled_540 enlarges glyphs vs panel_max -- GREEN\n", .{});
+
+    assert(lulu1.mantrapod_floor_scale_two());
+    print("lulu1: mantrapod_floor scale 2 -- GREEN\n", .{});
+
+    assert(lulu1.status_line_names_hearth());
+    print("lulu1: status kd · scaled_540 -- GREEN\n", .{});
+
+    assert(lulu1.status_follows_preset_next());
+    print("lulu1: status follows preset.next -- GREEN\n", .{});
+
+    const a = lulu1.apply_glass(1080, 2424, .scaled_720, 20);
+    assert(a.cols >= 32);
+    assert(a.scale >= 2);
+    assert(a.grid_h > 0);
+    _ = hearth;
+    print("lulu1: apply_glass scaled_720 cols {d} scale {d} -- GREEN\n", .{ a.cols, a.scale });
+
+    print("lulu1: version {s}\n", .{witness_version});
+    print("GREEN: LULU1 — Hearth preset applies to Skate metrics under waymark LULU.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
+}

@@ -1,0 +1,201 @@
+//! linengrow/hearth_lulu1.rye — LULU1: apply Hearth display preset to Skate metrics.
+//!
+//! Pure viewport + cell-scale from window size and a closed DisplayPreset.
+//! NativeActivity paint calls `apply_glass`; device-free witnesses replay the
+//! same numbers. panel_max reads the live window; lower presets enlarge glyphs.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const hearth = @import("hearth_lulu0.rye");
+const skate = @import("skate_grid.rye");
+
+pub const waymark: []const u8 = hearth.waymark;
+
+/// Skate metrics after a preset is applied (window coords / cell sizes).
+pub const AppliedGlass = struct {
+    logical_w: i32 = 0,
+    logical_h: i32 = 0,
+    scale: u32 = 1,
+    cols: u32 = 32,
+    cell_pw: i32 = 0,
+    cell_ph: i32 = 0,
+    grid_w: i32 = 0,
+    grid_h: i32 = 0,
+};
+
+/// Logical viewport inside the physical window for this preset.
+/// panel_max reads the window; others clamp to the seated preset size.
+pub fn logical_viewport(window_w: i32, window_h: i32, preset: hearth.DisplayPreset) struct { w: i32, h: i32 } {
+    // invariant: positive window
+    assert(window_w > 0);
+    assert(window_h > 0);
+    if (preset == .panel_max) {
+        return .{ .w = window_w, .h = window_h };
+    }
+    const want = preset.logical_size();
+    const w = @min(window_w, @as(i32, @intCast(want.w)));
+    const h = @min(window_h, @as(i32, @intCast(want.h)));
+    // invariant: viewport stays inside the panel
+    assert(w > 0);
+    assert(h > 0);
+    assert(w <= window_w);
+    assert(h <= window_h);
+    return .{ .w = w, .h = h };
+}
+
+/// Portrait fills ~90% of the *logical* height; desk width buckets unchanged.
+pub fn fill_scale(logical_w: i32, logical_h: i32, grid_rows: u32) u32 {
+    // invariant: positive logical size
+    assert(logical_w > 0);
+    assert(logical_h > 0);
+    assert(grid_rows > 0);
+    if (logical_h > logical_w) {
+        const want: i32 = @divTrunc(logical_h * 9, 10);
+        const s: i32 = @divTrunc(want, @as(i32, @intCast(grid_rows * skate.cell_h)));
+        return @intCast(@max(2, @min(5, s)));
+    }
+    if (logical_w >= 1080) return 3;
+    if (logical_w >= 720) return 2;
+    return 1;
+}
+
+/// Cell scale for a preset: panel_max follows the window; lower presets grow glyphs.
+pub fn scale_for_preset(
+    window_w: i32,
+    window_h: i32,
+    preset: hearth.DisplayPreset,
+    grid_rows: u32,
+) u32 {
+    assert(window_w > 0);
+    assert(window_h > 0);
+    if (preset == .mantrapod_floor) {
+        // Seated content-budget scale (Skate 32×20 @ 2).
+        return 2;
+    }
+    const base = fill_scale(window_w, window_h, grid_rows);
+    if (preset == .panel_max) return base;
+    // Lower logical height → larger glyphs on the physical panel (macOS-shaped).
+    const panel_h = hearth.DisplayPreset.panel_max.logical_size().h;
+    const logic_h = preset.logical_size().h;
+    assert(logic_h > 0);
+    const boost: u32 = panel_h / logic_h;
+    // invariant: boost at least 1
+    assert(boost >= 1);
+    const grown = base + boost - 1;
+    return @min(8, @max(base, grown));
+}
+
+/// Full apply: viewport, scale, cols, cell and grid pixel sizes.
+pub fn apply_glass(
+    window_w: i32,
+    window_h: i32,
+    preset: hearth.DisplayPreset,
+    grid_rows: u32,
+) AppliedGlass {
+    assert(window_w > 0);
+    assert(window_h > 0);
+    assert(grid_rows > 0);
+    const view = logical_viewport(window_w, window_h, preset);
+    const scale = scale_for_preset(window_w, window_h, preset, grid_rows);
+    const cell_pw: i32 = @intCast(skate.cell_w * scale);
+    const cell_ph: i32 = @intCast(skate.cell_h * scale);
+    assert(cell_pw > 0);
+    assert(cell_ph > 0);
+    // Cols from physical width so the keyboard stays reachable; floor 32.
+    const cols: u32 = @intCast(@max(32, @min(48, @divTrunc(window_w, cell_pw))));
+    const grid_w: i32 = @intCast(cols * @as(u32, @intCast(cell_pw)));
+    const grid_h: i32 = @intCast(grid_rows * @as(u32, @intCast(cell_ph)));
+    // Shrink scale if the grid would overrun the window height.
+    var out: AppliedGlass = .{
+        .logical_w = view.w,
+        .logical_h = view.h,
+        .scale = scale,
+        .cols = cols,
+        .cell_pw = cell_pw,
+        .cell_ph = cell_ph,
+        .grid_w = grid_w,
+        .grid_h = grid_h,
+    };
+    if (out.grid_h > window_h and out.scale > 1) {
+        out.scale = @max(1, @divTrunc(@as(u32, @intCast(window_h)), grid_rows * skate.cell_h));
+        out.scale = @max(1, @min(out.scale, 8));
+        out.cell_pw = @intCast(skate.cell_w * out.scale);
+        out.cell_ph = @intCast(skate.cell_h * out.scale);
+        out.cols = @intCast(@max(32, @min(48, @divTrunc(window_w, out.cell_pw))));
+        out.grid_w = @intCast(out.cols * @as(u32, @intCast(out.cell_pw)));
+        out.grid_h = @intCast(grid_rows * @as(u32, @intCast(out.cell_ph)));
+    }
+    // invariant: grid has positive extent
+    assert(out.grid_w > 0);
+    assert(out.grid_h > 0);
+    assert(out.cols >= 32);
+    return out;
+}
+
+/// Device-free: panel_max viewport equals the window.
+pub fn panel_max_reads_window() bool {
+    const v = logical_viewport(1080, 2424, .panel_max);
+    return v.w == 1080 and v.h == 2424;
+}
+
+/// Device-free: scaled_540 clamps to seated 540×1212 inside a Pixel panel.
+pub fn scaled_540_clamps_inside_pixel() bool {
+    const v = logical_viewport(1080, 2424, .scaled_540);
+    const want = hearth.DisplayPreset.scaled_540.logical_size();
+    return v.w == @as(i32, @intCast(want.w)) and v.h == @as(i32, @intCast(want.h));
+}
+
+/// Device-free: scaled_540 uses a larger cell scale than panel_max on Pixel size.
+pub fn scaled_540_enlarges_glyphs() bool {
+    const rows: u32 = 20;
+    const panel = scale_for_preset(1080, 2424, .panel_max, rows);
+    const low = scale_for_preset(1080, 2424, .scaled_540, rows);
+    return low > panel;
+}
+
+/// Device-free: mantrapod_floor stays at scale 2 and fits the content budget.
+pub fn mantrapod_floor_scale_two() bool {
+    const rows: u32 = 20;
+    const a = apply_glass(1080, 2424, .mantrapod_floor, rows);
+    if (a.scale != 2) return false;
+    if (a.grid_h > 640) return false;
+    if (a.grid_w > 1080) return false;
+    return true;
+}
+
+pub const status_line_max: u32 = 32;
+
+/// Glass chrome: `{home_id} · {preset}` — proves which Hearth is applied.
+pub fn format_status(
+    home_id: []const u8,
+    preset: hearth.DisplayPreset,
+    out: *[status_line_max]u8,
+) ?[]const u8 {
+    hearth.validate_home_id(home_id) catch return null;
+    const line = std.fmt.bufPrint(out, "{s} · {s}", .{ home_id, preset.name() }) catch return null;
+    // invariant: status fits the Skate chrome bound
+    assert(line.len <= status_line_max);
+    assert(line.len >= home_id.len + 3);
+    return line;
+}
+
+/// Device-free: status line names short home and preset.
+pub fn status_line_names_hearth() bool {
+    var buf: [status_line_max]u8 = undefined;
+    const line = format_status("kd", .scaled_540, &buf) orelse return false;
+    return std.mem.eql(u8, line, "kd · scaled_540");
+}
+
+/// Device-free: status text follows a one-step preset advance.
+pub fn status_follows_preset_next() bool {
+    var buf: [status_line_max]u8 = undefined;
+    const next = hearth.DisplayPreset.scaled_540.next();
+    const line = format_status("kd", next, &buf) orelse return false;
+    return next == .mantrapod_floor and std.mem.eql(u8, line, "kd · mantrapod_floor");
+}
+
+comptime {
+    _ = print;
+    assert(std.mem.eql(u8, waymark, "LULU"));
+}
