@@ -1,0 +1,23 @@
+# setu_desk_hold1_witness.rish — HOLD1: Desk Skate hold chrome.
+#
+#   rishi/bin/rishi run tools/setu_desk_hold1_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/setu_desk_hold1_witness"
+let check = "linengrow/bin/setu_desk_hold1_check"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/setu_desk_hold1_witness.rye -femit-bin=${bin}"]
+assert build.ok else "HOLD1 desk Skate witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "HOLD1 witness exited non-zero"
+assert selftest.out contains "GREEN" else "HOLD1 not GREEN"
+assert selftest.out contains "waymark SETU" else "HOLD1 missing waymark"
+assert selftest.out contains "usb_desk hold on Desk Skate" else "HOLD1 missing usb_desk fixture"
+assert selftest.out contains "local hold on Desk Skate" else "HOLD1 missing local fixture"
+
+let live = run ["sh" "-c" "if test -f tools/.cache/setu0/station.bron; then mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/setu_desk_hold1_check.rye -femit-bin=${check} && ${check} 2>&1; else echo 'hold1: no station cache — fixture-only GREEN'; fi"]
+assert live.ok else "HOLD1 live/optional check failed"
+say "${live.out}"
+
+say "GREEN: HOLD1 Desk Skate hold witness passed (device-free)."

@@ -1157,6 +1157,11 @@ let hold0 = run ["rishi/bin/rishi" "run" "tools/setu_desk_hold0_witness.rish"]
 assert hold0.ok else "HOLD0 desk hold witness failed"
 say "GREEN: HOLD0 desk hold witness passed."
 
+say "witness suite: HOLD1 — Desk Skate hold chrome…"
+let hold1 = run ["rishi/bin/rishi" "run" "tools/setu_desk_hold1_witness.rish"]
+assert hold1.ok else "HOLD1 desk Skate hold witness failed"
+say "GREEN: HOLD1 desk Skate hold witness passed."
+
 say "witness suite: Sala R1 — the viewer renders what Pool hosts…"
 let sala_r1 = run ["rishi/bin/rishi" "run" "tools/sala_view_witness.rish"]
 assert sala_r1.ok else "Sala R1 view witness failed"

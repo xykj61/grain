@@ -1,0 +1,33 @@
+//! linengrow/setu_desk_hold1_witness.rye — proves HOLD1 Desk Skate hold chrome.
+//!
+//!   rye build linengrow/setu_desk_hold1_witness.rye \
+//!     -femit-bin=linengrow/bin/setu_desk_hold1_witness
+//!   linengrow/bin/setu_desk_hold1_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const hold1 = @import("setu_desk_hold1.rye");
+
+const witness_version = "20260718.193122";
+
+fn run_selftest(init: std.process.Init) !u8 {
+    const allocator = init.arena.allocator();
+    assert(std.mem.eql(u8, hold1.waymark, "SETU"));
+    assert(std.mem.eql(u8, hold1.season, "desk-hearth-hold"));
+    print("hold1: waymark {s} season {s} -- GREEN\n", .{ hold1.waymark, hold1.season });
+
+    assert(hold1.fixture_hold_line_on_desk_skate(allocator));
+    print("hold1: usb_desk hold on Desk Skate -- GREEN\n", .{});
+
+    assert(hold1.fixture_local_hold_on_desk_skate(allocator));
+    print("hold1: local hold on Desk Skate -- GREEN\n", .{});
+
+    print("hold1: version {s}\n", .{witness_version});
+    print("GREEN: HOLD1 — Desk paints the hold line on Skate (device-free).\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
+}
