@@ -1,0 +1,20 @@
+# setu0_hearth_pull_witness.rish — SETU0 device-free: Desk parses pulled hearth.
+#
+#   rishi/bin/rishi run tools/setu0_hearth_pull_witness.rish
+#
+# On-device pull (host terminal, adb attached):
+#   rishi/bin/rishi run tools/setu0_hearth_pull_onpath_host.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/setu0_hearth_pull_witness"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/setu0_hearth_pull_witness.rye -femit-bin=${bin}"]
+assert build.ok else "SETU0 hearth pull witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "SETU0 hearth pull witness exited non-zero"
+assert selftest.out contains "GREEN" else "SETU0 not GREEN"
+assert selftest.out contains "waymark SETU" else "SETU0 missing waymark claim"
+assert selftest.out contains "fixture pointer" else "SETU0 missing fixture claim"
+
+say "GREEN: SETU0 Hearth pull-parse witness passed (device-free)."

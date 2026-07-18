@@ -37,6 +37,7 @@ const sala_surf = @import("sala_surface.rye");
 const surface = @import("glow_native_surface.rye");
 const hearth = @import("hearth_lulu0.rye");
 const lulu2 = @import("hearth_lulu2.rye");
+const lulu3 = @import("hearth_lulu3.rye");
 const tally_copy = @import("tally_copy.rye");
 
 /// LULU0→LULU1: default short-home hearth (kd · scaled_540) as Bron at the seam.
@@ -44,6 +45,8 @@ const default_hearth_bron =
     \\format hearth-lulu0-v1
     \\home_id kd
     \\display_preset scaled_540
+    \\wire_lane local
+    \\cellular off
     \\waymark LULU
     \\
 ;
@@ -126,6 +129,8 @@ fn write_root_file(hex: *const [64]u8) void {
 
 fn apply_hearth_record(h: hearth.Hearth) void {
     surface.active_preset = h.preset;
+    surface.active_wire = h.wire;
+    surface.active_cellular = h.cellular;
     tally_copy.copy_disjoint(u8, surface.active_home_id[0..], h.home_id_slice());
 }
 
@@ -139,9 +144,45 @@ fn path_to_c(
     return @ptrCast(out);
 }
 
-fn save_hearth_preference() void {
-    const h = hearth.Hearth.init(surface.active_home_id[0..], surface.active_preset) catch return;
+fn save_home_pointer(home_id: []const u8) void {
+    hearth.validate_home_id(home_id) catch return;
     _ = mkdir(android_files_root, 0o700);
+    var path_buf: [hearth.max_abs_path_len]u8 = undefined;
+    const path_n = lulu3.join_home_pointer(android_files_root, &path_buf) catch return;
+    var path_z: [hearth.max_abs_path_len + 1]u8 = undefined;
+    const path_c = path_to_c(path_buf[0..path_n], &path_z) orelse return;
+    const fd = open(path_c, O_WRONLY | O_CREAT | O_TRUNC, 0o600);
+    if (fd < 0) return;
+    defer _ = close(fd);
+    _ = write(fd, home_id.ptr, home_id.len);
+    _ = write(fd, "\n", 1);
+}
+
+fn read_home_pointer(out: *[hearth.home_id_len]u8) bool {
+    var path_buf: [hearth.max_abs_path_len]u8 = undefined;
+    const path_n = lulu3.join_home_pointer(android_files_root, &path_buf) catch return false;
+    var path_z: [hearth.max_abs_path_len + 1]u8 = undefined;
+    const path_c = path_to_c(path_buf[0..path_n], &path_z) orelse return false;
+    const fd = open(path_c, O_RDONLY, 0);
+    if (fd < 0) return false;
+    defer _ = close(fd);
+    var buf: [8]u8 = undefined;
+    const n = read(fd, &buf, buf.len);
+    if (n < hearth.home_id_len) return false;
+    hearth.validate_home_id(buf[0..hearth.home_id_len]) catch return false;
+    tally_copy.copy_disjoint(u8, out[0..], buf[0..hearth.home_id_len]);
+    return true;
+}
+
+fn save_hearth_preference() void {
+    const h = hearth.Hearth.init_full(
+        surface.active_home_id[0..],
+        surface.active_preset,
+        surface.active_wire,
+        surface.active_cellular,
+    ) catch return;
+    _ = mkdir(android_files_root, 0o700);
+    save_home_pointer(h.home_id_slice());
     var home_buf: [hearth.max_abs_path_len]u8 = undefined;
     const home_n = hearth.join_files_home_dir(
         android_files_root,
@@ -168,11 +209,15 @@ fn save_hearth_preference() void {
 }
 
 fn load_hearth_preference() void {
-    // Prefer disk Bron when present; else seated default (kd · scaled_540).
+    // Pointer names active home; Bron under `{home}/hearth.bron`; else default.
+    var home: [hearth.home_id_len]u8 = .{ 'k', 'd' };
+    if (!read_home_pointer(&home)) {
+        home = .{ 'k', 'd' };
+    }
     var path_buf: [hearth.max_abs_path_len]u8 = undefined;
     const path_n = hearth.join_files_hearth_path(
         android_files_root,
-        "kd",
+        home[0..],
         &path_buf,
     ) catch {
         apply_default_hearth();
@@ -208,6 +253,8 @@ fn apply_default_hearth() void {
         assert(std.mem.eql(u8, surface.active_home_id[0..], "kd"));
     } else |_| {
         surface.active_preset = .scaled_540;
+        surface.active_wire = .local;
+        surface.active_cellular = .off;
         surface.active_home_id = .{ 'k', 'd' };
     }
 }
@@ -356,6 +403,7 @@ fn start_caret_timer() void {
 }
 
 fn apply_dexter_action(action: dexter.Action) void {
+    if (apply_home_edit_action(action)) return;
     g_dexter_editor.apply_action(action);
     if (action == .submit) {
         const prompt = g_dexter_editor.prompt_slice();
@@ -389,9 +437,47 @@ fn apply_dexter_key_down(key_code: i32, meta_state: i32) void {
     apply_dexter_action(action);
 }
 
+fn commit_home_draft() void {
+    const id = surface.home_draft.committed() orelse return;
+    hearth.validate_home_id(id) catch return;
+    tally_copy.copy_disjoint(u8, surface.active_home_id[0..], id);
+    surface.home_editing = false;
+    surface.home_draft.clear();
+    save_hearth_preference();
+    repaint_window();
+}
+
+fn apply_home_edit_action(action: dexter.Action) bool {
+    if (!surface.home_editing) return false;
+    switch (action) {
+        .char_ => |ch| {
+            _ = surface.home_draft.push_letter(ch);
+            repaint_window();
+            return true;
+        },
+        .backspace => {
+            surface.home_draft.backspace();
+            repaint_window();
+            return true;
+        },
+        .submit, .newline => {
+            commit_home_draft();
+            return true;
+        },
+        else => return true, // swallow other keys while editing home
+    }
+}
+
 fn apply_glass_layout_key(key: kb_layout.Key) void {
     switch (kb_paint.tap_result(key, g_kb_shift)) {
         .action => |action| {
+            if (apply_home_edit_action(action)) {
+                switch (key) {
+                    .char_, .space, .emoji_face => g_kb_shift = false,
+                    else => {},
+                }
+                return;
+            }
             apply_dexter_action(action);
             switch (key) {
                 .char_, .space, .emoji_face => g_kb_shift = false,
@@ -528,7 +614,35 @@ fn handle_motion_up(tx: i32, ty: i32) void {
     if (surface.last_keyboard_hit.contains(tx, ty)) return;
     if (surface.preset_hit_index(tx, ty)) |idx| {
         surface.active_preset = lulu2.preset_at(idx);
+        surface.home_editing = false;
+        surface.home_draft.clear();
         surface.settings_open = false;
+        save_hearth_preference();
+        repaint_window();
+        return;
+    }
+    if (surface.last_home_hit.contains(tx, ty)) {
+        // LULU3: tap home row toggles draft; second tap while empty cancels.
+        if (surface.home_editing) {
+            surface.home_editing = false;
+            surface.home_draft.clear();
+        } else {
+            surface.home_editing = true;
+            surface.home_draft.begin_from(surface.active_home_id[0..]);
+        }
+        repaint_window();
+        return;
+    }
+    if (surface.last_wire_hit.contains(tx, ty)) {
+        // LULU4: tap wire row toggles local ↔ usb_desk (preference only).
+        surface.active_wire = surface.active_wire.next();
+        save_hearth_preference();
+        repaint_window();
+        return;
+    }
+    if (surface.last_cell_hit.contains(tx, ty)) {
+        // LULU5: tap cell row toggles off ↔ optional (preference only).
+        surface.active_cellular = surface.active_cellular.next();
         save_hearth_preference();
         repaint_window();
         return;
@@ -549,6 +663,8 @@ fn handle_motion_up(tx: i32, ty: i32) void {
     }
     if (surface.settings_open) {
         surface.settings_open = false;
+        surface.home_editing = false;
+        surface.home_draft.clear();
         repaint_window();
     }
 }

@@ -1,0 +1,41 @@
+//! linengrow/hearth_lulu4.rye — LULU4: thin Wired Glass preference on Settings.
+//!
+//! Declares sync lane (`local` | `usb_desk`) in Hearth Bron and paints it on
+//! Settings row 9. Tap cycles the lane and persists. Live USB/Setu sync is a
+//! later check-in — this rung is preference + chrome only.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const hearth = @import("hearth_lulu0.rye");
+
+pub const waymark: []const u8 = hearth.waymark;
+pub const wire_row: u32 = 9;
+pub const wire_line_max: u32 = 32;
+
+/// `wire · local` or `wire · usb_desk`.
+pub fn format_wire_line(lane: hearth.WireLane, out: *[wire_line_max]u8) ?[]const u8 {
+    const line = std.fmt.bufPrint(out, "wire · {s}", .{lane.name()}) catch return null;
+    assert(line.len <= wire_line_max);
+    return line;
+}
+
+/// Device-free: both lanes paint.
+pub fn wire_lines_name_lanes() bool {
+    var buf: [wire_line_max]u8 = undefined;
+    const a = format_wire_line(.local, &buf) orelse return false;
+    if (!std.mem.eql(u8, a, "wire · local")) return false;
+    const b = format_wire_line(.usb_desk, &buf) orelse return false;
+    return std.mem.eql(u8, b, "wire · usb_desk");
+}
+
+/// Device-free: closed toggle.
+pub fn wire_next_toggles() bool {
+    return hearth.WireLane.local.next() == .usb_desk and hearth.WireLane.usb_desk.next() == .local;
+}
+
+comptime {
+    _ = print;
+    assert(wire_row == 9);
+    assert(std.mem.eql(u8, waymark, "LULU"));
+}

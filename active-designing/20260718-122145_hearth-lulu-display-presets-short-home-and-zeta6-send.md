@@ -3,7 +3,11 @@
 *Owned Glow design: a Hearth preference record (Bron), declared presets (Brix/infuse discipline), waymark **LULU**, and ZETA6 keyboard send — so Glow Glass paragraphs and Glow Desk stations share one short home and one Skate budget down to the Mantrapod floor.*
 
 **Stamp:** `20260718.122145` (Eastern)  
-**Status:** Design — siloed; ZETA6 Pixel GREEN · **LULU0–2 closed** `20260718.130606`  
+**Status:** Design — siloed; ZETA6 Pixel GREEN · **LULU0–5 closed** `20260718.132503` · **SETU0 GREEN** `20260718.132731` · SETU1 check-in  
+
+
+
+
 
 
 
@@ -58,7 +62,11 @@ Keaton’s example home id **`kd`** is the first fixture; schema allows any two 
 | **LULU0** | Bron hearth: `home_id` (exactly 2 `a–z`) + `display_preset` enum; load/store path under short home | **GREEN** `hearth_lulu0_witness` `20260718.123900` |
 | **LULU1** | NativeActivity/Skate **applies** preset → logical size / scale table; panel_max reads window | **GREEN** closed `20260718.125639` |
 | **LULU2** | Glass Settings face lists presets (Pool agent when ready) | **GREEN** closed `20260718.130606` |
-| **Wired Glass** | Metalsmoke: cellular optional/off; USB sync checklist to Desk | Check-in Setu/CDC-NCM |
+| **LULU3** | Short `home_id` editor on glass | **GREEN** Pixel closed `20260718.131549` |
+| **LULU4** | `wire_lane` preference (`local` \| `usb_desk`) on Settings | **GREEN** Pixel closed `20260718.132031` |
+| **LULU5** | `cellular` preference (`off` \| `optional`) on Settings | **GREEN** Pixel closed `20260718.132503` |
+| **SETU0** | adb pull hearth Bron Glass→Desk (USB file path) | **GREEN** device-free + Pixel host `20260718.132731` · [`docs/SETU.md`](../docs/SETU.md) |
+| **SETU1** | Live CDC-NCM / Comlink sync | Check-in after SETU0 |
 
 ### Stack (generalized, not a special-case toggle)
 
@@ -92,8 +100,8 @@ Ojjo is benchmarks. Pool is the app host. Mantra already versions. **Hearth is a
 
 ## Aligned next
 
-1. **Affirmed** `20260718.130756` — next check-ins are **Wired Glass / Setu** and **home_id editor** (propose thin face, then build).  
-2. LULU0–2 + ZETA6 sent to pier with this seating.
+1. **Send** LULU3–5 + SETU0 to the pier (still local vs last ship).  
+2. Or **check-in SETU1** — CDC-NCM / Comlink live sync thin face.
 
 ---
 

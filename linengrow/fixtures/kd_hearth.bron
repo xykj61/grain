@@ -1,5 +1,7 @@
-# LULU0 fixture — short home kd, Pixel panel_max preset.
+# LULU0 fixture — short home kd, Pixel panel_max preset, local wire.
 format hearth-lulu0-v1
 home_id kd
 display_preset panel_max
+wire_lane local
+cellular off
 waymark LULU

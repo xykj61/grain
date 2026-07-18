@@ -2,17 +2,17 @@
 
 *Waymark for Glow Glass / Desk hearth preferences: short two-character home, declared display presets down to the Mantrapod Skate floor, and wire-first sync. Compresses the silo; never replaces it.*
 
-**Status:** Checkable — operator compressor (ladder open)  
+**Status:** Checkable — operator compressor (preference ladder closed · SETU0 GREEN)  
 **Depth:** guide  
 **Ceiling:** ≤80 lines  
-**Last updated:** 2026-07-18 (LULU2 closed — hold-open Pixel GREEN)  
-**Compresses:** [`../active-designing/20260718-122145_hearth-lulu-display-presets-short-home-and-zeta6-send.md`](../active-designing/20260718-122145_hearth-lulu-display-presets-short-home-and-zeta6-send.md) · ER [`../external-research/20260718-122145_pixel10a-resolution-mantrapod-floor-and-wired-glass-slc.md`](../external-research/20260718-122145_pixel10a-resolution-mantrapod-floor-and-wired-glass-slc.md)
+**Last updated:** 2026-07-18 (SETU0 Pixel host GREEN)  
+**Compresses:** [`../active-designing/20260718-122145_hearth-lulu-display-presets-short-home-and-zeta6-send.md`](../active-designing/20260718-122145_hearth-lulu-display-presets-short-home-and-zeta6-send.md) · ER [`../external-research/20260718-122145_pixel10a-resolution-mantrapod-floor-and-wired-glass-slc.md`](../external-research/20260718-122145_pixel10a-resolution-mantrapod-floor-and-wired-glass-slc.md) · Setu [`SETU.md`](SETU.md)
 
 ---
 
 ## Thesis — one Skate budget, one short home
 
-Declare where home is (`kd`) and how dense the glass is (closed presets), so used Pixels without a cellular plan and future Mantrapod e-ink share the same fold. Nix/infuse discipline without Nix: **Brix declares · Bron carries · Tablecloth/Mantra hold · Skate applies**.
+Declare where home is (`kd`) and how dense the glass is (closed presets), so used Pixels without a cellular plan and future Mantrapod e-ink share the same fold. **Brix declares · Bron carries · Tablecloth/Mantra hold · Skate applies**.
 
 **Waymark draw:** input `glow-glass-hearth-display-and-wired-sync` · SHA3-512 · flw.txt → **LULU** (`20260718.122145`).
 
@@ -20,31 +20,26 @@ Declare where home is (`kd`) and how dense the glass is (closed presets), so use
 
 | Rung | Claim | State |
 |------|-------|-------|
-| **LULU0** | Bron hearth: `home_id` + `display_preset` | **GREEN** `20260718.123900` |
-| **LULU1** | Skate/NativeActivity applies preset | **GREEN** persist Pixel `20260718.125639` — closed |
-| **LULU2** | Settings face lists presets | **GREEN** hold-open Pixel `20260718.130606` — rung closed |
-| **Wired Glass** | Cellular optional; USB sync to Desk | affirmed next — check-in before build (Setu) |
-| **home_id editor** | Change short home on glass | affirmed next — check-in before build |
+| **LULU0–5** | Bron · apply · Settings · home · wire · cell | **GREEN** Pixel closed `20260718.132503` |
+| **SETU0** | adb pull hearth Bron Glass→Desk | **GREEN** host Pixel `20260718.132731` |
+| **SETU1** | CDC-NCM / Comlink live sync | open — check-in |
 
-**Sibling (ZETA ladder):** **ZETA6** — `ret` = newline · `^` = send — Pixel **GREEN** `20260718.123705`.
+**Sibling:** **ZETA6** ret=newline · `^`=send — Pixel GREEN. Compressor: [`SETU.md`](SETU.md).
 
-## Hands-on
+## Settings chrome (hold status) — closed
 
-```bash
-rishi/bin/rishi run tools/hearth_lulu0_witness.rish
-rishi/bin/rishi run tools/hearth_lulu1_witness.rish
-rishi/bin/rishi run tools/hearth_lulu2_witness.rish
-# fixture: linengrow/fixtures/kd_hearth.bron
-```
+| Row | Line | Tap |
+|-----|------|-----|
+| 2–5 | presets | set + persist |
+| 8 | `home · xx` | edit two letters |
+| 9 | `wire · local\|usb_desk` | toggle lane |
+| 10 | `cell · off\|optional` | toggle cellular pref |
 
-Pixel 10a panel max (public): **1080×2424 @ 20:9**. Mantrapod panel SKU unsourced; floor = Skate 32×20 @ scale 2 → **512×640** content budget.
+## Setu — affirmed face
 
-## LULU2 — thin face (affirmed)
-
-1. Hold status ~450ms — list appears **while still holding** (timer, not release).  
-2. Tap a named line sets + persists; `>` marks the active preset.  
-3. Short tap status still cycles (LULU1); release after hold-open is quiet.  
-4. No `home_id` editor this rung.
+1. **SETU0** — affirmed and built: host outer-terminal `adb` + `run-as` reads `files/hearth_home` + `files/{id}/hearth.bron`; Desk `setu0_hearth_pull_check` parses and asserts home_ids agree. Device-free parse in `setu0_hearth_pull_witness`; host path `setu0_hearth_pull_onpath_host.rish`.  
+2. **SETU1** — CDC-NCM / Comlink live sync (later; separate check-in).  
+3. No cellular plan required; `cell · off` + `wire · usb_desk` is the intended used-Pixel posture.
 
 ---
 

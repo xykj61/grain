@@ -1,0 +1,57 @@
+# setu0_hearth_pull_onpath_host.rish — SETU0 on-device slice:
+# pull hearth_home + {id}/hearth.bron from Glass over adb USB and parse on Desk.
+#
+# Run OUTSIDE ai-jail, from a plain host terminal — needs adb and an authorized
+# device (Pixel or hawm0 emulator). Glass must have written hearth at least once
+# (any Settings save: preset, home, wire, or cell).
+#
+#   rishi/bin/rishi run tools/setu0_hearth_pull_onpath_host.rish
+
+let android_sdk = "tools/.cache/hawm0/android-sdk"
+let adb = "${android_sdk}/platform-tools/adb"
+let pkg = "org.glow.app.sala_broadcaster"
+let zig = "vendor/zig-toolchain/zig"
+let pull_bin = "linengrow/bin/setu0_hearth_pull_check"
+let cache = "tools/.cache/setu0"
+
+say "setu0-host: confirming an adb device is attached…"
+let unauthorized = run ["sh" "-c" "${adb} devices | grep -c '[[:space:]]unauthorized$'"]
+assert (trim unauthorized.out == "0") else "adb device is unauthorized — unlock and Allow USB debugging"
+let devices = run ["sh" "-c" "${adb} devices | grep -c '[[:space:]]device$'"]
+assert (trim devices.out != "0") else "no adb device — plug in the Pixel or boot hawm0 (host terminal)"
+say "setu0-host: device attached"
+
+say "setu0-host: reading files/hearth_home via run-as…"
+let ptr = run ["sh" "-c" "${adb} shell run-as ${pkg} cat files/hearth_home 2>&1"]
+say "setu0-host: hearth_home — ${ptr.out}"
+if (ptr.ok == false) then say "setu0-host: pointer stderr — ${ptr.err}"
+assert ptr.ok else "could not read hearth_home — open Settings on Glass and toggle wire/cell/home once to save"
+let home_id = run ["sh" "-c" "printf '%s' '${ptr.out}' | tr -d '\\r\\n' | head -c 2"]
+assert (trim home_id.out != "") else "empty home_id from hearth_home"
+say "setu0-host: home_id ${home_id.out}"
+
+say "setu0-host: reading files/${home_id.out}/hearth.bron via run-as…"
+let bron = run ["sh" "-c" "${adb} shell run-as ${pkg} cat files/${home_id.out}/hearth.bron 2>&1"]
+if (bron.ok == false) then say "setu0-host: bron stderr — ${bron.err}"
+assert bron.ok else "could not read hearth.bron for this home_id"
+say "setu0-host: pulled Bron (${bron.out})"
+
+say "setu0-host: building Desk-side agree check…"
+let mkdir = run ["sh" "-c" "mkdir -p ${cache} linengrow/bin"]
+assert mkdir.ok else "mkdir cache failed"
+let write_ptr = run ["sh" "-c" "printf '%s\\n' '${home_id.out}' > ${cache}/hearth_home"]
+assert write_ptr.ok else "write pointer cache failed"
+let write_bron = run ["sh" "-c" "printf '%s' '${bron.out}' > ${cache}/hearth.bron"]
+assert write_bron.ok else "write bron cache failed"
+
+# Thin Zig check: parse cached pair (same helpers as device-free witness).
+let build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build linengrow/setu0_hearth_pull_check.rye -femit-bin=${pull_bin}"]
+if (build.ok == false) then say "setu0-host: build stderr — ${build.err}"
+assert build.ok else "setu0 pull check build failed"
+# Check binary reads fixed cache paths (same pair the host just wrote).
+let check = run ["sh" "-c" "${pull_bin} 2>&1"]
+say "${check.out}"
+assert check.ok else "Desk parse of pulled hearth failed"
+assert check.out contains "GREEN" else "Desk parse not GREEN"
+
+say "GREEN: SETU0 — adb USB carried hearth_home + hearth.bron; Desk parsed and home_ids agree."
