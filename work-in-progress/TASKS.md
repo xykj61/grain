@@ -285,8 +285,10 @@
 - [x] **LULU5 — cellular preference** `20260718.132031` — Bron `cellular off|optional` (default off); Settings row 10 tap toggles + persists; witness + pack. No radio control yet.
 - [x] **LULU5 Pixel look** `20260718.132503` — Keaton: GREEN; cell toggle works. **LULU0–5 preference ladder closed.**
 - [x] **SETU0 — adb Bron pull Glass→Desk** `20260718.132731` — Keaton affirmed thin face; device-free `setu0_hearth_pull_witness` GREEN; host `setu0_hearth_pull_onpath_host` pulled `kd` · `scaled_720` · `wire local` · `cell optional` from Pixel; Desk agree check GREEN. Compressor [`docs/SETU.md`](../docs/SETU.md).
-- [ ] **SETU1 — CDC-NCM / Comlink** — check-in after SETU0 (live sync).
-- [ ] **Wired Glass SLC metalsmoke** — cellular optional/off; USB sync to Desk; Setu/CDC-NCM check-in.
+- [x] **SETU0.5 — Desk applies pulled hearth** `20260718.133328` — station line + `tools/.cache/setu0/station.bron` under seated 1920×1080; device-free + host path after SETU0 GREEN; parity_ch01 wired.
+- [x] **Glass↔Desk Amber/Amphora compose-not-fuse** `20260718.133455` — ER + siloed revival; fuse declined; Tilak→resin→Amphora graduation horizon.
+- [ ] **SETU1 — CDC-NCM / Comlink** — check-in after SETU0.5 (live sync; not Amber-on-Glass).
+- [ ] **Wired Glass SLC metalsmoke** — cellular optional/off; USB sync to Desk; Setu live lane check-in.
 - [ ] **JABS3 — Inference and economics** — check-in (Quin · MALA).
 - [ ] **C2 thin TAME compressor** — optional `docs/TAME.md` only if cold-load pain is measured.
 - [ ] **C3 LEXICON core Bron card** — optional; Keaton's word.

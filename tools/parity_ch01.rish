@@ -1122,6 +1122,11 @@ let setu0 = run ["rishi/bin/rishi" "run" "tools/setu0_hearth_pull_witness.rish"]
 assert setu0.ok else "SETU0 hearth pull-parse witness failed"
 say "GREEN: SETU0 hearth pull-parse witness passed."
 
+say "witness suite: SETU0.5 — Desk applies pulled hearth into a station…"
+let setu05 = run ["rishi/bin/rishi" "run" "tools/setu05_desk_apply_witness.rish"]
+assert setu05.ok else "SETU0.5 desk apply witness failed"
+say "GREEN: SETU0.5 desk apply witness passed."
+
 say "witness suite: Sala R1 — the viewer renders what Pool hosts…"
 let sala_r1 = run ["rishi/bin/rishi" "run" "tools/sala_view_witness.rish"]
 assert sala_r1.ok else "Sala R1 view witness failed"

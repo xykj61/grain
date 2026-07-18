@@ -1,0 +1,163 @@
+//! linengrow/setu05_desk_apply.rye — SETU0.5: Desk applies a pulled Hearth.
+//!
+//! After SETU0 carries hearth_home + hearth.bron over USB, Desk inherits the
+//! fold: parse, apply the display preset under a seated Desk window, and write
+//! a station card. No CDC-NCM yet — the cable's file path earns a Desk home.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const hearth = @import("hearth_lulu0.rye");
+const lulu1 = @import("hearth_lulu1.rye");
+const setu0 = @import("setu0_hearth_pull.rye");
+
+pub const waymark: []const u8 = setu0.waymark;
+pub const station_format: []const u8 = "setu-station-v1";
+/// Seated Desk panel for apply (landscape workstation).
+pub const desk_window_w: i32 = 1920;
+pub const desk_window_h: i32 = 1080;
+pub const desk_grid_rows: u32 = 20;
+pub const station_line_max: u32 = 96;
+pub const max_station_bron_len: u32 = 512;
+
+/// Desk station after applying a pulled Hearth.
+pub const Station = struct {
+    home_id: [hearth.home_id_len]u8 = undefined,
+    preset: hearth.DisplayPreset = .scaled_540,
+    wire: hearth.WireLane = .local,
+    cellular: hearth.Cellular = .off,
+    applied: lulu1.AppliedGlass = .{},
+
+    pub fn home_id_slice(self: *const Station) []const u8 {
+        return self.home_id[0..];
+    }
+};
+
+/// Parse pulled pointer + Bron and apply under the seated Desk window.
+pub fn apply_pulled(
+    pointer_text: []const u8,
+    bron_text: []const u8,
+) ?Station {
+    if (!setu0.pulled_pair_agrees(pointer_text, bron_text)) return null;
+    const h = hearth.parse_bron(bron_text) catch return null;
+    var home: [hearth.home_id_len]u8 = undefined;
+    if (!setu0.parse_pointer_text(pointer_text, &home)) return null;
+    const applied = lulu1.apply_glass(desk_window_w, desk_window_h, h.preset, desk_grid_rows);
+    return .{
+        .home_id = home,
+        .preset = h.preset,
+        .wire = h.wire,
+        .cellular = h.cellular,
+        .applied = applied,
+    };
+}
+
+/// Chrome line: `station · {home} · {preset} · {lw}x{lh} · s{scale}`.
+pub fn format_station_line(s: Station, out: *[station_line_max]u8) ?[]const u8 {
+    const line = std.fmt.bufPrint(
+        out,
+        "station · {s} · {s} · {d}x{d} · s{d}",
+        .{
+            s.home_id_slice(),
+            s.preset.name(),
+            s.applied.logical_w,
+            s.applied.logical_h,
+            s.applied.scale,
+        },
+    ) catch return null;
+    assert(line.len <= station_line_max);
+    return line;
+}
+
+/// Durable Desk card under tools/.cache/setu0/station.bron.
+pub fn format_station_bron(s: Station, out: *[max_station_bron_len]u8) ?u32 {
+    const text = std.fmt.bufPrint(
+        out,
+        \\format {s}
+        \\home_id {s}
+        \\display_preset {s}
+        \\wire_lane {s}
+        \\cellular {s}
+        \\desk_w {d}
+        \\desk_h {d}
+        \\scale {d}
+        \\cols {d}
+        \\logical_w {d}
+        \\logical_h {d}
+        \\waymark {s}
+        \\
+    ,
+        .{
+            station_format,
+            s.home_id_slice(),
+            s.preset.name(),
+            s.wire.name(),
+            s.cellular.name(),
+            desk_window_w,
+            desk_window_h,
+            s.applied.scale,
+            s.applied.cols,
+            s.applied.logical_w,
+            s.applied.logical_h,
+            waymark,
+        },
+    ) catch return null;
+    assert(text.len <= max_station_bron_len);
+    return @intCast(text.len);
+}
+
+/// Device-free: fixture kd · scaled_540 applies on Desk and names station.
+pub fn fixture_station_applies() bool {
+    const pointer = "kd\n";
+    const bron =
+        \\format hearth-lulu0-v1
+        \\home_id kd
+        \\display_preset scaled_540
+        \\wire_lane usb_desk
+        \\cellular off
+        \\waymark LULU
+        \\
+    ;
+    const s = apply_pulled(pointer, bron) orelse return false;
+    if (!std.mem.eql(u8, s.home_id_slice(), "kd")) return false;
+    if (s.preset != .scaled_540) return false;
+    if (s.wire != .usb_desk) return false;
+    // Desk window clamps the preset viewport (same as apply_glass on Glass).
+    const want = hearth.DisplayPreset.scaled_540.logical_size();
+    const expect_w = @min(desk_window_w, @as(i32, @intCast(want.w)));
+    const expect_h = @min(desk_window_h, @as(i32, @intCast(want.h)));
+    if (s.applied.logical_w != expect_w) return false;
+    if (s.applied.logical_h != expect_h) return false;
+    if (s.applied.scale < 1) return false;
+    if (s.applied.cols < 32) return false;
+    var line_buf: [station_line_max]u8 = undefined;
+    const line = format_station_line(s, &line_buf) orelse return false;
+    if (std.mem.indexOf(u8, line, "station ·") == null) return false;
+    if (std.mem.indexOf(u8, line, "kd") == null) return false;
+    if (std.mem.indexOf(u8, line, "scaled_540") == null) return false;
+    var bron_buf: [max_station_bron_len]u8 = undefined;
+    const n = format_station_bron(s, &bron_buf) orelse return false;
+    if (std.mem.indexOf(u8, bron_buf[0..n], "format setu-station-v1") == null) return false;
+    if (std.mem.indexOf(u8, bron_buf[0..n], "wire_lane usb_desk") == null) return false;
+    return true;
+}
+
+/// Device-free: mismatched pull still refuses apply.
+pub fn mismatch_refused() bool {
+    const pointer = "ab\n";
+    const bron =
+        \\format hearth-lulu0-v1
+        \\home_id kd
+        \\display_preset scaled_540
+        \\waymark LULU
+        \\
+    ;
+    return apply_pulled(pointer, bron) == null;
+}
+
+comptime {
+    _ = print;
+    assert(std.mem.eql(u8, waymark, "SETU"));
+    assert(desk_window_w == 1920);
+    assert(desk_window_h == 1080);
+}
