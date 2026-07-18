@@ -1142,6 +1142,11 @@ let setu3 = run ["rishi/bin/rishi" "run" "tools/setu3_ncm_frame_witness.rish"]
 assert setu3.ok else "SETU3 NCM frame witness failed"
 say "GREEN: SETU3 NCM frame witness passed."
 
+say "witness suite: SETU4 — NCM-framed ping over live UDP…"
+let setu4 = run ["rishi/bin/rishi" "run" "tools/setu4_framed_lane_witness.rish"]
+assert setu4.ok else "SETU4 framed lane witness failed"
+say "GREEN: SETU4 framed lane witness passed."
+
 say "witness suite: Sala R1 — the viewer renders what Pool hosts…"
 let sala_r1 = run ["rishi/bin/rishi" "run" "tools/sala_view_witness.rish"]
 assert sala_r1.ok else "Sala R1 view witness failed"

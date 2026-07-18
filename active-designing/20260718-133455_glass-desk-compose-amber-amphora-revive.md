@@ -48,9 +48,10 @@ Glow Glass and Glow Desk will someday carry Tilak-marked hearth/station resins t
 1. **SETU0.5** Desk station apply — GREEN.  
 2. **SETU1** usb_desk Comlink lane ping — GREEN.  
 3. **SETU2** hosted UDP lane stand-in — GREEN.  
-4. **SETU3** NCM-shaped frame — GREEN `20260718.134613`.  
-5. **SETU4** live CDC-NCM gadget — check-in.  
-6. Later word: Tilak mark + resin + Amphora pour for hearth/station.
+4. **SETU3** NCM-shaped frame — GREEN.  
+5. **SETU4** framed ping over live UDP — GREEN `20260718.184323`.  
+6. **SETU5** CDC-NCM gadget iface — check-in.  
+7. Later word: Tilak mark + resin + Amphora pour for hearth/station.
 
 ## Why the revival exists
 

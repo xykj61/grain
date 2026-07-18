@@ -2,10 +2,10 @@
 
 *Waymark for Glow Glass / Desk hearth preferences: short two-character home, declared display presets down to the Mantrapod Skate floor, and wire-first sync. Compresses the silo; never replaces it.*
 
-**Status:** Checkable — operator compressor (preference ladder closed · SETU0–SETU3 GREEN)  
+**Status:** Checkable — operator compressor (preference ladder closed · SETU0–SETU4 GREEN)  
 **Depth:** guide  
 **Ceiling:** ≤80 lines  
-**Last updated:** 2026-07-18 (SETU3 NCM frame GREEN)  
+**Last updated:** 2026-07-18 (SETU4 framed live lane GREEN)  
 **Compresses:** [`../active-designing/20260718-122145_hearth-lulu-display-presets-short-home-and-zeta6-send.md`](../active-designing/20260718-122145_hearth-lulu-display-presets-short-home-and-zeta6-send.md) · ER [`../external-research/20260718-122145_pixel10a-resolution-mantrapod-floor-and-wired-glass-slc.md`](../external-research/20260718-122145_pixel10a-resolution-mantrapod-floor-and-wired-glass-slc.md) · Setu [`SETU.md`](SETU.md) · compose [`../active-designing/20260718-133455_glass-desk-compose-amber-amphora-revive.md`](../active-designing/20260718-133455_glass-desk-compose-amber-amphora-revive.md)
 
 ---
@@ -26,7 +26,8 @@ Declare where home is (`kd`) and how dense the glass is (closed presets), so use
 | **SETU1** | `usb_desk` Comlink lane ping | **GREEN** `20260718.133853` |
 | **SETU2** | Ping over hosted UDP stand-in | **GREEN** `20260718.134348` |
 | **SETU3** | NCM-shaped frame wrap/unwrap | **GREEN** `20260718.134613` |
-| **SETU4** | Live CDC-NCM gadget | open — check-in |
+| **SETU4** | Framed ping over live UDP | **GREEN** `20260718.184323` |
+| **SETU5** | CDC-NCM gadget iface | open — check-in |
 
 **Sibling:** **ZETA6** ret=newline · `^`=send — Pixel GREEN. Compressor: [`SETU.md`](SETU.md).
 
@@ -45,9 +46,10 @@ Declare where home is (`kd`) and how dense the glass is (closed presets), so use
 2. **SETU0.5** — Desk applies under seated 1920×1080 window; writes `tools/.cache/setu0/station.bron`.  
 3. **SETU1** — `usb_desk` seals one Comlink lane ping; `local` refuses/SKIP.  
 4. **SETU2** — ping crosses localhost UDP (Setu stand-in).  
-5. **SETU3** — approved and built: NCM-shaped virtio+eth frame around the ping. Live gadget is **SETU4**.  
-6. Amber/Amphora fuse declined — compose later (`20260718.133455`).  
-7. Intended used-Pixel posture: `cell · off` + `wire · usb_desk`.
+5. **SETU3** — NCM-shaped virtio+eth frame around the ping.  
+6. **SETU4** — affirmed and built: framed ping over live UDP; host gadget probe SKIP. CDC-NCM iface is **SETU5**.  
+7. Amber/Amphora fuse declined — compose later (`20260718.133455`).  
+8. Intended used-Pixel posture: `cell · off` + `wire · usb_desk`.
 
 ---
 

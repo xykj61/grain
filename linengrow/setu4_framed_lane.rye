@@ -1,0 +1,149 @@
+//! linengrow/setu4_framed_lane.rye — SETU4: NCM-framed ping over live UDP.
+//!
+//! Affirmed thin face: the SETU3 NCM-shaped frame carries a SETU1 lane ping
+//! across a real localhost UDP socket (live wire stand-in). Host path may
+//! probe for a USB gadget iface (usb0/ncm) and SKIP when absent. Pixel/QEMU
+//! CDC-NCM bring-up that binds that iface stays the next check-in (SETU5).
+//!
+//!   rye build linengrow/setu4_framed_lane.rye -lc \
+//!     -femit-bin=linengrow/bin/setu4_framed_lane
+//!   linengrow/bin/setu4_framed_lane selftest
+//!   linengrow/bin/setu4_framed_lane demo
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const c = std.c;
+const wf = @import("wire_format.rye");
+const setu0 = @import("setu0_hearth_pull.rye");
+const setu1 = @import("setu1_lane_ping.rye");
+const setu3 = @import("setu3_ncm_frame.rye");
+
+pub const waymark: []const u8 = setu0.waymark;
+pub const setu4_version = "20260718.184238";
+/// Framed Setu lane port (distinct from SETU2 bare-ping port 38501).
+pub const framed_lane_port: u16 = 38502;
+
+const AF_INET: c_uint = 2;
+const SOCK_DGRAM: c_uint = 2;
+const SOL_SOCKET: c_int = 1;
+const SO_REUSEADDR: c_int = 2;
+
+const sockaddr_in = extern struct {
+    sin_family: c_ushort = AF_INET,
+    sin_port: c_ushort,
+    sin_addr: [4]u8 = .{ 127, 0, 0, 1 },
+    sin_zero: [8]u8 = .{0} ** 8,
+};
+
+fn localhost_addr(port: u16) sockaddr_in {
+    return .{ .sin_port = std.mem.nativeToBig(u16, port) };
+}
+
+fn open_socket() !c.fd_t {
+    const fd = c.socket(AF_INET, SOCK_DGRAM, 0);
+    if (fd < 0) return error.SocketFailed;
+    const yes: c_int = 1;
+    _ = c.setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &yes, @sizeOf(c_int));
+    return fd;
+}
+
+fn seal_and_frame(out: *[setu3.max_frame]u8) !u32 {
+    var sealed: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const sealed_len = setu1.seal_lane_ping(.usb_desk, "kd", .scaled_540, &sealed) orelse return error.SealFailed;
+    return setu3.wrap_lane_ping(sealed[0..@intCast(sealed_len)], out) orelse error.WrapFailed;
+}
+
+fn run_selftest() !u8 {
+    assert(std.mem.eql(u8, waymark, "SETU"));
+    var frame: [setu3.max_frame]u8 = undefined;
+    const flen = try seal_and_frame(&frame);
+    const unwrapped = setu3.unwrap_lane_ping(frame[0..flen]) orelse return error.UnwrapFailed;
+    if (!setu1.open_lane_ping(unwrapped, "kd", .scaled_540)) return error.OpenFailed;
+    print("setu4: waymark {s} -- GREEN\n", .{waymark});
+    print("setu4: selftest frame+open -- GREEN\n", .{});
+    print("setu4: framed lane port {d}\n", .{framed_lane_port});
+    print("setu4: version {s}\n", .{setu4_version});
+    print("GREEN: SETU4 — NCM-framed ping ready for live UDP (device-free).\n", .{});
+    return 0;
+}
+
+fn run_send() !u8 {
+    const fd = try open_socket();
+    defer _ = c.close(fd);
+    var frame: [setu3.max_frame]u8 = undefined;
+    const flen = try seal_and_frame(&frame);
+    const dest = localhost_addr(framed_lane_port);
+    const sent = c.sendto(fd, &frame, @intCast(flen), 0, @ptrCast(&dest), @sizeOf(sockaddr_in));
+    if (sent < 0 or @as(usize, @intCast(sent)) != @as(usize, @intCast(flen))) return error.SendFailed;
+    print("setu4: Glass sent NCM-framed ping ({d} bytes) to 127.0.0.1:{d}\n", .{ flen, framed_lane_port });
+    return 0;
+}
+
+fn run_recv() !u8 {
+    const fd = try open_socket();
+    defer _ = c.close(fd);
+    var bind_addr = localhost_addr(framed_lane_port);
+    if (c.bind(fd, @ptrCast(&bind_addr), @sizeOf(sockaddr_in)) < 0) return error.BindFailed;
+
+    var buf: [setu3.max_frame]u8 = undefined;
+    var from: sockaddr_in = undefined;
+    var from_len: c.socklen_t = @sizeOf(sockaddr_in);
+    const n = c.recvfrom(fd, &buf, @intCast(setu3.max_frame), 0, @ptrCast(&from), &from_len);
+    if (n < 0) return error.RecvFailed;
+    const len: usize = @intCast(n);
+    const unwrapped = setu3.unwrap_lane_ping(buf[0..len]) orelse {
+        print("setu4: unwrap refused\n", .{});
+        return 1;
+    };
+    if (!setu1.open_lane_ping(unwrapped, "kd", .scaled_540)) {
+        print("setu4: open/verify failed\n", .{});
+        return 1;
+    }
+    print("setu4: Desk opened NCM-framed ping from live UDP -- GREEN\n", .{});
+    return 0;
+}
+
+fn run_demo(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) !u8 {
+    const recv_argv = try allocator.alloc([]const u8, 2);
+    recv_argv[0] = self_path;
+    recv_argv[1] = "recv";
+    var recv_child = try std.process.spawn(io, .{ .argv = recv_argv });
+
+    var pause = c.timespec{ .sec = 0, .nsec = 50_000_000 };
+    _ = c.nanosleep(&pause, null);
+
+    const send_argv = try allocator.alloc([]const u8, 2);
+    send_argv[0] = self_path;
+    send_argv[1] = "send";
+    var send_child = try std.process.spawn(io, .{ .argv = send_argv });
+
+    const recv_term = try recv_child.wait(io);
+    const send_term = try send_child.wait(io);
+    const recv_code: u8 = switch (recv_term) {
+        .exited => |code| code,
+        else => 255,
+    };
+    const send_code: u8 = switch (send_term) {
+        .exited => |code| code,
+        else => 255,
+    };
+    assert(recv_code == 0);
+    assert(send_code == 0);
+    print("setu4: demo GREEN — NCM-framed lane ping crossed live localhost UDP.\n", .{});
+    print("GREEN: SETU4 — framed live lane carried the ping.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2) {
+        if (std.mem.eql(u8, args[1], "selftest")) return run_selftest();
+        if (std.mem.eql(u8, args[1], "send")) return run_send();
+        if (std.mem.eql(u8, args[1], "recv")) return run_recv();
+        if (std.mem.eql(u8, args[1], "demo")) return run_demo(garden, io, args[0]);
+    }
+    return run_selftest();
+}
