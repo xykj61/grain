@@ -1,0 +1,47 @@
+//! linengrow/setu_desk_hold0_check.rye — print Desk hold status from cache.
+//!
+//! Reads tools/.cache/setu0/station.bron and reports lane_ping.bin /
+//! lane_frame.bin presence and size.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const Dir = std.Io.Dir;
+const hold0 = @import("setu_desk_hold0.rye");
+
+const station_path = "tools/.cache/setu0/station.bron";
+const ping_path = "tools/.cache/setu0/lane_ping.bin";
+const frame_path = "tools/.cache/setu0/lane_frame.bin";
+
+fn file_len(cwd: Dir, io: std.Io, path: []const u8) u32 {
+    var big: [1024]u8 = undefined;
+    const read = cwd.readFile(io, path, &big) catch return 0;
+    return @intCast(read.len);
+}
+
+fn run_check(io: std.Io) !u8 {
+    const cwd = Dir.cwd();
+    var station_buf: [1024]u8 = undefined;
+    const station = cwd.readFile(io, station_path, &station_buf) catch {
+        print("hold0-check: RED — missing {s}\n", .{station_path});
+        return 1;
+    };
+    const ping_len = file_len(cwd, io, ping_path);
+    const frame_len = file_len(cwd, io, frame_path);
+    const s = hold0.status_from_station(station, ping_len > 0, frame_len) orelse {
+        print("hold0-check: RED — station parse failed\n", .{});
+        return 1;
+    };
+    var line_buf: [hold0.status_line_max]u8 = undefined;
+    const line = hold0.format_hold_line(s, &line_buf) orelse {
+        print("hold0-check: RED — status line overflow\n", .{});
+        return 1;
+    };
+    print("hold0-check: {s}\n", .{line});
+    print("GREEN: HOLD0 — Desk named its hearth hold.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_check(init.io);
+}
