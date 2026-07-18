@@ -61,7 +61,7 @@ const Display = struct {
         return .{ .handle = handle.? };
     }
 
-    fn disconnect(self: Display) void {
+    pub fn disconnect(self: Display) void {
         _ = c.wl_display_disconnect(self.handle);
     }
 
@@ -697,6 +697,15 @@ const App = struct {
     fn run(self: *App) !void {
         try self.prepare_surface();
         try self.present_current_frame(true);
+    }
+
+    /// Present and wait until the toplevel asks to close (eyes look).
+    pub fn run_until_close(self: *App) !void {
+        try self.prepare_surface();
+        try self.present_current_frame(true);
+        while (!self.should_close) {
+            try self.dispatch_once(50);
+        }
     }
 
     fn run_redraw(self: *App, lines_b: []const Line) !void {

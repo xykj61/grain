@@ -1,0 +1,55 @@
+//! linengrow/setu_desk_hold_wayland_check.rye — raster hold from station cache.
+//!
+//! Reads tools/.cache/setu0/station.bron and reports Desk raster lit pixels.
+
+const std = @import("std");
+const print = std.debug.print;
+const Dir = std.Io.Dir;
+const hold1 = @import("setu_desk_hold1.rye");
+const hold_wl = @import("setu_desk_hold_wayland.rye");
+
+const station_path = "tools/.cache/setu0/station.bron";
+const ping_path = "tools/.cache/setu0/lane_ping.bin";
+const frame_path = "tools/.cache/setu0/lane_frame.bin";
+
+fn file_len(cwd: Dir, io: std.Io, path: []const u8) u32 {
+    var big: [1024]u8 = undefined;
+    const read = cwd.readFile(io, path, &big) catch return 0;
+    return @intCast(read.len);
+}
+
+fn run_check(init: std.process.Init) !u8 {
+    const io = init.io;
+    const allocator = init.arena.allocator();
+    const cwd = Dir.cwd();
+    var station_buf: [1024]u8 = undefined;
+    const station = cwd.readFile(io, station_path, &station_buf) catch {
+        print("hold-wayland-check: RED — missing {s}\n", .{station_path});
+        return 1;
+    };
+    const ping_len = file_len(cwd, io, ping_path);
+    const frame_len = file_len(cwd, io, frame_path);
+    const lit = hold_wl.raster_hold_lit(allocator, station, ping_len > 0, frame_len) orelse {
+        print("hold-wayland-check: RED — raster failed\n", .{});
+        return 1;
+    };
+    if (lit < hold_wl.min_lit_pixels) {
+        print("hold-wayland-check: RED — lit {d} below {d}\n", .{ lit, hold_wl.min_lit_pixels });
+        return 1;
+    }
+    var chrome_buf: [hold1.chrome_line_max]u8 = undefined;
+    var detail_buf: [hold1.chrome_line_max]u8 = undefined;
+    const lines = hold_wl.fill_present_lines(station, ping_len > 0, frame_len, &chrome_buf, &detail_buf) orelse {
+        print("hold-wayland-check: RED — line fill failed\n", .{});
+        return 1;
+    };
+    print("hold-wayland-check: {s}\n", .{lines.chrome});
+    print("hold-wayland-check: {s}\n", .{lines.detail});
+    print("hold-wayland-check: Desk raster lit {d} -- GREEN\n", .{lit});
+    print("GREEN: HOLD Wayland — Desk raster of held hearth ready.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_check(init);
+}
