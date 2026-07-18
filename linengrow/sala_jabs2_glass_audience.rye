@@ -18,9 +18,17 @@ pub const keyboard_row0: u32 = 16;
 pub const grid_rows: u32 = 20;
 
 /// Paint a live chat line from a Dexter submit (Skate-safe preview).
+/// Empty prompt (bare ret) still lands a chat face — first-tap ret must work.
 pub fn format_chat_line(prompt: []const u8, out_line: *[audience_line_max]u8, out_len: *u32) bool {
-    assert(prompt.len > 0);
+    // invariant: Dexter line bound
     assert(prompt.len <= dexter.max_line_len);
+    if (prompt.len == 0) {
+        const line = std.fmt.bufPrint(out_line, "chat ·", .{}) catch return false;
+        out_len.* = @intCast(line.len);
+        assert(out_len.* > 0);
+        assert(out_len.* <= audience_line_max);
+        return true;
+    }
     var preview: [dexter.max_line_len]u8 = undefined;
     const plen = emoji.skate_preview(prompt, preview[0..]);
     assert(plen > 0);
@@ -37,6 +45,14 @@ pub fn chat_line_from_glow() bool {
     var len: u32 = 0;
     if (!format_chat_line("glow", &line, &len)) return false;
     return std.mem.eql(u8, line[0..len], "chat · glow");
+}
+
+/// Device-free: bare ret (empty prompt) still paints chat ·.
+pub fn chat_line_from_empty_ret() bool {
+    var line: [audience_line_max]u8 = undefined;
+    var len: u32 = 0;
+    if (!format_chat_line("", &line, &len)) return false;
+    return std.mem.eql(u8, line[0..len], "chat ·");
 }
 
 /// Welcome audience → two Skate lines. Returns false if roots diverge.

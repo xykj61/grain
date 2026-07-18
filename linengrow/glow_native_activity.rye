@@ -248,16 +248,18 @@ fn apply_dexter_action(action: dexter.Action) void {
     g_dexter_editor.apply_action(action);
     if (action == .submit) {
         const prompt = g_dexter_editor.prompt_slice();
-        if (prompt.len > 0 and prompt.len <= g_dexter_held.len) {
+        // invariant: held buffer can store any Dexter line, including empty
+        assert(prompt.len <= g_dexter_held.len);
+        if (prompt.len > 0) {
             tally_copy.copy_disjoint(u8, g_dexter_held[0..prompt.len], prompt);
-            g_dexter_held_len = @intCast(prompt.len);
-            assert(g_dexter_held_len == prompt.len);
-            // JABS2: typed line becomes the live audience chat face (paint only).
-            if (g_jabs2_ready) {
-                var chat_len: u32 = 0;
-                if (jabs2_audience.format_chat_line(prompt, &g_jabs2_lines[1], &chat_len)) {
-                    g_jabs2_lens[1] = chat_len;
-                }
+        }
+        g_dexter_held_len = @intCast(prompt.len);
+        assert(g_dexter_held_len == prompt.len);
+        // JABS2: submit always refreshes chat face — bare ret included.
+        if (g_jabs2_ready) {
+            var chat_len: u32 = 0;
+            if (jabs2_audience.format_chat_line(prompt, &g_jabs2_lines[1], &chat_len)) {
+                g_jabs2_lens[1] = chat_len;
             }
         }
         g_dexter_editor.reset();
