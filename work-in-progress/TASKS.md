@@ -293,8 +293,10 @@
 - [x] **SETU2 sent** `20260718.134458` — `6db3c0be2c` on pier.
 - [x] **SETU3 — NCM-shaped frame** `20260718.134613` — Keaton approved; wrap/unwrap SETU1 ping in virtio-net + eth (Comlink lab ethertype 0x1201); bad ethertype refused; live gadget deferred.
 - [x] **SETU3 sent** `20260718.184214` — `104e642b54` on pier.
-- [x] **SETU4 — framed ping over live UDP** `20260718.184323` — Keaton affirmed+kg; NCM frame crosses UDP :38502; host gadget probe SKIP when no usb0/ncm; Pixel/QEMU iface bring-up deferred to SETU5.
-- [ ] **SETU5 — CDC-NCM gadget iface bring-up** — check-in (Pixel/QEMU; not Amber-on-Glass).
+- [x] **SETU4 — framed ping over live UDP** `20260718.184323` — Keaton affirmed+kg; NCM frame crosses UDP :38502; host gadget probe SKIP when no usb0/ncm; Pixel/QEMU iface bring-up deferred.
+- [x] **SETU4 sent** `20260718.184449` — `3512444e73` on pier.
+- [x] **SETU5 — device-wire payload bound** `20260718.184537` — kg; framed ping fits virtio max_frame 554; writes `lane_frame.bin`; live QEMU/Pixel lab deferred to SETU6.
+- [ ] **SETU6 — QEMU/Pixel CDC-NCM / device-wire lab** — check-in (not Amber-on-Glass).
 - [ ] **Wired Glass SLC metalsmoke** — cellular optional/off; USB sync to Desk; Setu live lane check-in.
 - [ ] **JABS3 — Inference and economics** — check-in (Quin · MALA).
 - [ ] **C2 thin TAME compressor** — optional `docs/TAME.md` only if cold-load pain is measured.

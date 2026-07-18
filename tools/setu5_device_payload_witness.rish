@@ -1,0 +1,25 @@
+# setu5_device_payload_witness.rish — SETU5: framed ping as device-wire payload.
+#
+#   rishi/bin/rishi run tools/setu5_device_payload_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/setu5_device_payload_witness"
+let check = "linengrow/bin/setu5_device_payload_check"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin tools/.cache/setu0 && env RYE_ZIG=${zig} rye/bin/rye build linengrow/setu5_device_payload_witness.rye -femit-bin=${bin}"]
+assert build.ok else "SETU5 device payload witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "SETU5 witness exited non-zero"
+assert selftest.out contains "GREEN" else "SETU5 not GREEN"
+assert selftest.out contains "waymark SETU" else "SETU5 missing waymark"
+assert selftest.out contains "fits device max_frame" else "SETU5 missing bound claim"
+
+let build_check = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build linengrow/setu5_device_payload_check.rye -femit-bin=${check}"]
+assert build_check.ok else "SETU5 check build failed"
+let write = run ["sh" "-c" "${check} 2>&1"]
+assert write.ok else "SETU5 check failed"
+assert write.out contains "GREEN" else "SETU5 check not GREEN"
+assert write.out contains "lane_frame.bin" else "SETU5 missing hold path"
+
+say "GREEN: SETU5 device payload witness passed (device-free)."
