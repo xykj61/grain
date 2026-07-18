@@ -4,7 +4,7 @@
 
 **Language:** EN
 **Version:** `20260715` (Pool keystone revival prioritized · Quin voice seated · align pass reconciles the closed ladder)
-**Last updated:** 2026-07-17 (**ZETA Pixel typing GREEN** `20260717.183345` — type works; hit-box/density/portrait next)
+**Last updated:** 2026-07-18 (**LULU** + **ZETA6** design seat — display presets · short home · ↑ send)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Lens:** TAME — safety, performance, joy; the Seed Law; [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md)
@@ -229,6 +229,8 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 **JABS2 live chat face, `20260717.212257`** — Dexter `ret` refreshes audience row as `chat · …` (paint). Witness + pack GREEN; host-terminal install for eyes.
 
 **JABS2 finish-zone + remember, `20260717.213058`–`213242`** — close-hint row 13 only (mode switch no longer finishes the app); mode round-trip GREEN; **remember** word + `REMEMBER.md` card; Acme first-Glow / open-runes note.
+
+**JABS2 bare-ret GREEN · Hearth/LULU/ZETA6 seat, `20260717.213745`–`20260718.122145`** — empty ret → `chat ·` (Pixel confirmed). Design: **ZETA6** ret=newline · ↑=send; waymark **LULU** (hearth display presets, short home `kd`, Wired Glass SLC); Pixel 10a max 1080×2424 @ 20:9; Mantrapod floor = Skate budget provisional; Brix/Bron/Tablecloth stack (not a new vane). Next build: ZETA6 then LULU0.
 
 **Glow OS · Glow Desk · Glow Glass seated, `20260717.183622`** — Keaton: **Glow OS** unifies; **Glow Desk** = desktop; **Glow Glass** = mobile. Lexicon + silo [`../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md`](../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md). Orientation firmware stays check-in.
 

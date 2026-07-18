@@ -3,7 +3,7 @@
 **Status:** Checkable — compression shelf routing
 **Depth:** routing
 **Ceiling:** ≤40 lines
-**Last updated:** 2026-07-17 (ZETA · COMPASS · HAWM · TUBE)
+**Last updated:** 2026-07-18 (LULU · JABS · ZETA · COMPASS · HAWM · TUBE)
 **Compresses:** [`20260712-221600`](../active-designing/20260712-221600_docs-compression-layer-design.md) · [`20260717-173848`](../active-designing/20260717-173848_compass-card-and-foundations-compress.md)
 
 ---
@@ -21,7 +21,9 @@
 |------|-------|------|
 | [`COMPASS.md`](COMPASS.md) | guide · ≤120 | Day-one rose — foundations · witness habitat · Cursor loop |
 | [`compass_card.bron`](compass_card.bron) | card · paths | Agent cold-start reading order (no essay body) |
-| [`ZETA.md`](ZETA.md) | guide · ≤80 | English QWERTY glass keyboard ladder — ZETA0–ZETA5 |
+| [`ZETA.md`](ZETA.md) | guide · ≤80 | English QWERTY glass keyboard ladder — ZETA0–ZETA6 |
+| [`JABS.md`](JABS.md) | guide · ≤80 | Sala broadcast live-session fold — JABS0–JABS3 |
+| [`LULU.md`](LULU.md) | guide · ≤80 | Hearth display presets · short home · Wired Glass |
 | [`PROVEN_SEAT.md`](PROVEN_SEAT.md) | guide · ≤300 | Proven-seat ladder — Genode G0 through signed-Kumara (not HAWM) |
 | [`HAWM.md`](HAWM.md) | guide · ≤120 | GrapheneOS / Pixel mobile ladder — HAWM0–HAWM3 |
 | [`TUBE.md`](TUBE.md) | guide · ≤150 | App-manifest + NativeActivity APK ladder — TUBE0 / TUBE0.5 |
