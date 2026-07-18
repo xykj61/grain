@@ -1,0 +1,18 @@
+# setu3_ncm_frame_witness.rish — SETU3 device-free: NCM-shaped frame.
+#
+#   rishi/bin/rishi run tools/setu3_ncm_frame_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/setu3_ncm_frame_witness"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/setu3_ncm_frame_witness.rye -femit-bin=${bin}"]
+assert build.ok else "SETU3 NCM frame witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "SETU3 NCM frame witness exited non-zero"
+assert selftest.out contains "GREEN" else "SETU3 not GREEN"
+assert selftest.out contains "waymark SETU" else "SETU3 missing waymark"
+assert selftest.out contains "NCM-shaped wrap" else "SETU3 missing wrap claim"
+assert selftest.out contains "bad ethertype refused" else "SETU3 missing refuse claim"
+
+say "GREEN: SETU3 NCM frame witness passed (device-free)."

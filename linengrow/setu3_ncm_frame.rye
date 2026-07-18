@@ -1,0 +1,87 @@
+//! linengrow/setu3_ncm_frame.rye — SETU3: NCM-shaped frame around SETU1 ping.
+//!
+//! Approved thin face: wrap the usb_desk Comlink lane ping in the same
+//! virtio-net + Ethernet header layout Comlink uses on device wire (the
+//! ethernet-over-USB / CDC-NCM packet shape). Unwrap and open. Real gadget
+//! bring-up on Pixel/QEMU stays SETU4.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const wf = @import("wire_format.rye");
+const setu0 = @import("setu0_hearth_pull.rye");
+const setu1 = @import("setu1_lane_ping.rye");
+const tally_copy = @import("tally_copy.rye");
+
+pub const waymark: []const u8 = setu0.waymark;
+/// Matches `comlink/virtio_net.rye` VirtioNetHdr (VERSION_1).
+pub const virtio_net_hdr_len: u32 = 12;
+pub const eth_header_len: u32 = 14;
+/// Same lab ethertype as Comlink device wire.
+pub const setu_ethertype: u16 = 0x1201;
+pub const frame_overhead: u32 = virtio_net_hdr_len + eth_header_len;
+pub const max_frame: u32 = frame_overhead + @as(u32, @intCast(wf.wire_capacity));
+
+/// Wrap a sealed SETU1 ping in an NCM-shaped ethernet frame.
+pub fn wrap_lane_ping(sealed: []const u8, out: *[max_frame]u8) ?u32 {
+    if (sealed.len == 0 or sealed.len > wf.wire_capacity) return null;
+    const total: u32 = frame_overhead + @as(u32, @intCast(sealed.len));
+    if (total > max_frame) return null;
+    @memset(out[0..virtio_net_hdr_len], 0);
+    const eoff = virtio_net_hdr_len;
+    var i: u32 = 0;
+    while (i < 6) : (i += 1) out[eoff + i] = 0xff; // dst broadcast
+    while (i < 12) : (i += 1) out[eoff + i] = 0x10; // src Setu glass
+    out[eoff + 12] = @truncate(setu_ethertype >> 8);
+    out[eoff + 13] = @truncate(setu_ethertype);
+    const poff = eoff + eth_header_len;
+    tally_copy.copy_disjoint(u8, out[poff..][0..sealed.len], sealed);
+    return total;
+}
+
+/// Unwrap frame; returns sealed datagram slice into `frame` or null.
+pub fn unwrap_lane_ping(frame: []const u8) ?[]const u8 {
+    if (frame.len < frame_overhead + wf.off_cipher) return null;
+    if (frame.len > max_frame) return null;
+    const eoff = virtio_net_hdr_len;
+    const et: u16 = (@as(u16, frame[eoff + 12]) << 8) | frame[eoff + 13];
+    if (et != setu_ethertype) return null;
+    return frame[eoff + eth_header_len ..];
+}
+
+/// Seal fixture ping, wrap, unwrap, open — full SETU3 device-free path.
+pub fn fixture_ncm_frame_round_trips() bool {
+    var sealed_buf: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const sealed_len = setu1.seal_lane_ping(.usb_desk, "kd", .scaled_540, &sealed_buf) orelse return false;
+    var frame: [max_frame]u8 = undefined;
+    const flen = wrap_lane_ping(sealed_buf[0..@intCast(sealed_len)], &frame) orelse return false;
+    if (flen <= frame_overhead) return false;
+    const unwrapped = unwrap_lane_ping(frame[0..flen]) orelse return false;
+    if (unwrapped.len != sealed_len) return false;
+    return setu1.open_lane_ping(unwrapped, "kd", .scaled_540);
+}
+
+/// Device-free: wrong ethertype is refused.
+pub fn fixture_bad_ethertype_refused() bool {
+    var sealed_buf: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const sealed_len = setu1.seal_lane_ping(.usb_desk, "kd", .scaled_540, &sealed_buf) orelse return false;
+    var frame: [max_frame]u8 = undefined;
+    const flen = wrap_lane_ping(sealed_buf[0..@intCast(sealed_len)], &frame) orelse return false;
+    frame[virtio_net_hdr_len + 12] = 0x08;
+    frame[virtio_net_hdr_len + 13] = 0x00; // IPv4 ethertype — not Setu
+    return unwrap_lane_ping(frame[0..flen]) == null;
+}
+
+/// Device-free: local wire still cannot produce a frame (gate held).
+pub fn fixture_local_cannot_frame() bool {
+    var sealed_buf: [@intCast(wf.wire_capacity)]u8 = undefined;
+    return setu1.seal_lane_ping(.local, "kd", .scaled_540, &sealed_buf) == null;
+}
+
+comptime {
+    _ = print;
+    assert(std.mem.eql(u8, waymark, "SETU"));
+    assert(virtio_net_hdr_len == 12);
+    assert(eth_header_len == 14);
+    assert(setu_ethertype == 0x1201);
+}
