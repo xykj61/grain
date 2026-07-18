@@ -1,10 +1,11 @@
 # The Manual — Four Rooms for One System
 
 **Language:** EN
-**Last updated:** 2026-07-17 (dual-door hubs: language path · device/HAWM path)
+**Last updated:** 2026-07-18 (Glow eight heads synced · Acme tutorial voice)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
-**Status:** Founded — reference at parity **142**; three tutorials open (first-witness · run-record · Cursor-and-the-compass scaffold); Caravan and Tally reference partial; Glow OS onboarding scaffold under `glow-os/`; Pixel/HAWM/TUBE path indexed
+**Audience:** Acme Corporation employees · operators on this tree
+**Status:** Founded — reference at parity **142**; three tutorials open (first-witness · run-record · Cursor-and-the-compass); Caravan and Tally reference partial; Glow OS onboarding under `glow-os/`; Pixel/HAWM/TUBE/JABS path indexed
 
 ---
 
@@ -26,10 +27,12 @@ The lane grows by the same law as the code: reference specifications open only w
 | [`tutorials/run-record-and-failures.md`](tutorials/run-record-and-failures.md) | Run-record fields and failures | Checkable |
 | [`tutorials/cursor-and-the-compass.md`](tutorials/cursor-and-the-compass.md) | Foundations · witness habitat · Cursor rules · log · send | Mixed — scaffold `20260717.173427` |
 | [`reference/rishi-language.md`](reference/rishi-language.md) | Rishi language reference (parity **142**) | Checkable |
-| [`../glow/`](../glow/) | Bounded `\|-` and `^-` rune prototypes | Checkable (two heads only) |
-| Rune grammar brief | [`../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md`](../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md) | Design — no full Glow tutorial yet |
+| [`../glow/`](../glow/) | Eight rune heads + desk generators (`glow/gen/`) | Checkable — pin [`../glow/README.md`](../glow/README.md) |
+| Acme Glow first code | [`../expanding-prompts/20260717-213242_glow-first-code-beside-glass-and-open-runes.md`](../expanding-prompts/20260717-213242_glow-first-code-beside-glass-and-open-runes.md) | Checkable pointers + open-rune horizon |
+| Rune grammar brief | [`../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md`](../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md) | Design — full Glow textbook still horizon |
+| TAME (law) | [`../context/TAME_GUIDANCE.md`](../context/TAME_GUIDANCE.md) · Glow scope ER [`../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md`](../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md) | Root seated; Glow supplement still horizon |
 
-A beginner Glow-language textbook waits on a general parser. Until then, learn Rishi; read Glow as design plus the two green rune heads.
+A beginner Glow-language textbook waits on a general parser. Until then, learn Rishi; run the eight green rune heads and desk hops in [`../glow/`](../glow/); read the Acme first-code prompt above for which runes still open.
 
 ### Device path (GrapheneOS / Pixel / HAWM / TUBE)
 
