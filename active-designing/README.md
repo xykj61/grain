@@ -1,7 +1,7 @@
 # The Active-Designing Stack
 
 **Language:** EN
-**Last updated:** 2026-07-14 (yonder pass — The Editor 980 + Rye astrology atelier folded to `yonder/` as far-horizon)
+**Last updated:** 2026-07-18 (Glass↔Desk Amber/Amphora compose revive `133455`)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Foundation
 
@@ -47,6 +47,8 @@ Dated briefs carry `YYYYMMDD-HHMMSS_short-slug.md` filenames; this README is the
 
 | Stamp | Brief | Meaning |
 |-------|-------|---------|
+| `20260718.133455` | [Glass↔Desk compose Amber/Amphora — revive](20260718-133455_glass-desk-compose-amber-amphora-revive.md) | Compose later, do not fuse; SETU/LULU stay warm wire; Tilak→resin→Amphora graduation horizon |
+| `20260718.122145` | [Hearth · LULU — display presets, short home, ZETA6](20260718-122145_hearth-lulu-display-presets-short-home-and-zeta6-send.md) | Hearth Bron · LULU0–5 · SETU0; Wired Glass prefs |
 | `20260717.175220` | [Dexter English QWERTY glass keyboard](20260717-175220_dexter-english-qwerty-glass-keyboard.md) | Own Skate OSK (iOS-inspired public layout); decline Graphene IME host; K0–K5; caret blink K3 |
 | `20260717.173848` | [Compass card and foundations compress](20260717-173848_compass-card-and-foundations-compress.md) | Decline archive/Bron-essay rewrite of foundations; seat `docs/COMPASS.md` + `compass_card.bron` for LLM cold-start; raw shelf stays |
 | `20260717.173427` | [Witness habitat and the markup pipeline](20260717-173427_witness-habitat-and-the-markup-pipeline.md) | Seats **witness habitat** as Acme face for happy-zone testing; names Cursor-and-the-compass tutorial gap; holds Scribble→Brix→Bron→Mantra→Sala fusion spine (Udon/Sail/Zuse horizon) |

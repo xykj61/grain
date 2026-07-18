@@ -8,6 +8,11 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260718.133705` — [Send SETU0.5 and compose briefs](20260718-133705_send-setu05-compose-briefs.bron) — pier ship; SETU1 check-in next
+- `20260718.133619` — [Compose briefs + SETU0.5 seat](20260718-133619_compose-briefs-setu05-seat.bron) — ER+revive seated; Desk station GREEN
+- `20260718.133400` — [Fuse Amber Amphora with Glass Desk?](20260718-133400_fuse-amber-amphora-glass-desk.bron) — compose later; finish SETU0.5 first
+- `20260718.133125` — [Where this is going](20260718-133125_where-this-is-going.bron) — Wired Glass → Desk pier → Mantrapod same fold
+- `20260718.133102` — [Thoughts after SETU0 send](20260718-133102_thoughts-after-setu0-send.bron) — wire_lane gap · Desk apply before NCM?
 - `20260718.132937` — [Send LULU3-5 and SETU0](20260718-132937_send-lulu3-5-setu0.bron) — pier ship; SETU1 check-in next
 - `20260718.132736` — [SETU0 affirmed · GREEN host pull](20260718-132736_setu0-affirm-green-host-pull.bron) — adb pulled kd hearth; Desk agree; send next
 - `20260718.132503` — [LULU5 GREEN · preference ladder closed](20260718-132503_lulu5-green-ladder-closed.bron) — cell affirmed; SETU0 check-in next
