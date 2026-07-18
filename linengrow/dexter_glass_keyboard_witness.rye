@@ -106,8 +106,14 @@ fn run_selftest(_: std.process.Init) !u8 {
     assert(emoji.atlas_glyphs_are_distinct());
     print("zeta4: distinct atlas glyphs per face -- GREEN\n", .{});
 
+    // Mode round-trip + emoji chrome abc hit (switch-back after em / 123).
+    assert(paint.mode_round_trip_letters_emoji());
+    assert(paint.mode_round_trip_letters_numbers());
+    assert(paint.emoji_abc_hit_is_to_letters());
+    print("zeta: mode round-trip letters↔emoji↔numbers + abc hit -- GREEN\n", .{});
+
     print("zeta: version {s}\n", .{witness_version});
-    print("GREEN: ZETA0–ZETA4 — layout, label-span hit, tap→Action, emoji under waymark ZETA.\n", .{});
+    print("GREEN: ZETA0–ZETA4 — layout, label-span hit, tap→Action, emoji, mode round-trip under waymark ZETA.\n", .{});
     return 0;
 }
 

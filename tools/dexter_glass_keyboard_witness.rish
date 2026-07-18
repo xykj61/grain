@@ -21,5 +21,6 @@ assert selftest.out contains "tap drain" else "ZETA2 missing tap→Action claim"
 assert selftest.out contains "label-span hit" else "ZETA2b missing label-span hit claim"
 assert selftest.out contains "emoji UTF-8" else "ZETA4 missing emoji UTF-8 claim"
 assert selftest.out contains "distinct atlas" else "ZETA4 missing distinct-atlas claim"
+assert selftest.out contains "mode round-trip" else "ZETA missing mode round-trip claim"
 
-say "GREEN: ZETA0–ZETA4 — layout, label-span hit, tap→Action, and emoji under waymark ZETA."
+say "GREEN: ZETA0–ZETA4 — layout, label-span hit, tap→Action, emoji, mode round-trip under waymark ZETA."

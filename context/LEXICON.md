@@ -1,7 +1,7 @@
 # Lexicon — Module Names and Their Meanings
 
 **Language:** EN
-**Last updated:** 2026-07-17 (**JABS** broadcast waymark · Glow OS/Desk/Glass · ZETA · HAWM · TUBE)
+**Last updated:** 2026-07-17 (**remember** word · **JABS** · Glow OS/Desk/Glass · ZETA · HAWM · TUBE)
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 
 ---
@@ -50,6 +50,10 @@ Living vocabulary for the Rye OS family. Each name teaches its function. Provena
 | **Sensors Grant** | Glow mold for GrapheneOS **Sensors permission toggle** — binary per-app grant; revoke refuses and **appears zeroed**. TUBE1: `admit_manifest_gated`. TUBE0.5: `sensors` → `android.permission.OTHER_SENSORS`. Clean-room; GREEN `20260717.161013` · emit `20260717.161448` — [`../linengrow/glow_sensors_grant.rye`](../linengrow/glow_sensors_grant.rye) · [`../docs/TUBE.md`](../docs/TUBE.md) |
 | **Green** | A witness ran, assertions held, exit zero — machine fact on metal, not mood — plainly [`../external-research/20260710-002544_first-lap-goes-green-plainly.md`](../external-research/20260710-002544_first-lap-goes-green-plainly.md) |
 | **Nib** | The landed edge of the work — the point the pen has reached: **product nib** (civic/product parity pin), **suite nib** (witness-suite parity pin), **git nib** (HEAD commit on the living branch). Seated `20260712.121719`. Prefer **nib** in new prose; *tip* remains readable in old logs |
+| **remember** | Glow word — reprint the living operator card (`work-in-progress/REMEMBER.md`): seated waymarks, outer-terminal adb install, phone look, open doors. Not commit/push. Seated `20260717.213242` · rule [`.cursor/rules/remember.mdc`](../.cursor/rules/remember.mdc) |
+| **kg** | Glow word — **keep going** on the next mechanical lap. Not commit, push, or merge (**send** ships). Rule note in [`.cursor/rules/collaboration.mdc`](../.cursor/rules/collaboration.mdc) |
+| **align** | Glow word — walk the compass rose and reconcile ROADMAP/TASKS with green witnesses. Rule [`.cursor/rules/align.mdc`](../.cursor/rules/align.mdc) |
+| **send** | Glow word — commit · push · merge from client hand to pier. Rule [`.cursor/rules/send-word.mdc`](../.cursor/rules/send-word.mdc) |
 | **Metalsmoke** | The thin edge's few honest integrated checks — world alone can answer, smallest slice, witnessed; happy zone stays in parity — [`active-designing/20260703-013412_metalsmoke.md`](../active-designing/20260703-013412_metalsmoke.md) · plainly [`../external-research/20260710-002017_metalsmoke-plainly.md`](../external-research/20260710-002017_metalsmoke-plainly.md) |
 | **Witness habitat** | Acme-facing name for the foundations' **happy zone** — the fast, isolated suite that proves pure folds and seam contracts; devices and hosts stay on a thin edge with metalsmoke. Prefer in tutorials and expanding-prompts; keep *happy zone* in foundations and gratitude — seated `20260717.173427` · study [`../external-research/20260717-173427_witness-habitat-foundations-fit-and-onboarding-gaps.md`](../external-research/20260717-173427_witness-habitat-foundations-fit-and-onboarding-gaps.md) · silo [`../active-designing/20260717-173427_witness-habitat-and-the-markup-pipeline.md`](../active-designing/20260717-173427_witness-habitat-and-the-markup-pipeline.md) · tutorial [`../manual/tutorials/cursor-and-the-compass.md`](../manual/tutorials/cursor-and-the-compass.md) |
 | **Compass card** | Succinct Bron pointer list for agent cold-start (`docs/compass_card.bron`) — paths only; pairs with Markdown compressor [`../docs/COMPASS.md`](../docs/COMPASS.md). Foundations stay on the raw shelf; cards never rewrite essays — seated `20260717.173848` · silo [`../active-designing/20260717-173848_compass-card-and-foundations-compress.md`](../active-designing/20260717-173848_compass-card-and-foundations-compress.md) |
