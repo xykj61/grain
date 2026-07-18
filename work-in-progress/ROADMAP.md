@@ -4,7 +4,7 @@
 
 **Language:** EN
 **Version:** `20260715` (Pool keystone revival prioritized · Quin voice seated · align pass reconciles the closed ladder)
-**Last updated:** 2026-07-18 (**HOLD0** GREEN — Desk Hearth Hold season)
+**Last updated:** 2026-07-18 (**HOLD1** GREEN — Desk Skate hold chrome)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Lens:** TAME — safety, performance, joy; the Seed Law; [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md)
@@ -281,6 +281,8 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 **SETU5 sent · Desk Hearth Hold · HOLD0 GREEN, `20260718.184733`–`185306`** — pier SETU5. Season open (not SETU6): Desk status line over `station.bron` + held ping/frame. Next: **send** HOLD0; HOLD1 / SETU6 stay check-in.
 
 **HOLD0 host look · stale-bin honesty, `20260718.190639`–`190736`** — Pixel pull closed the season job; local wire no longer claims leftover ping/frame; host SKIP clears cache bins. Next: **send** honesty polish; HOLD1 check-in.
+
+**HOLD1 Desk Skate hold GREEN, `20260718.193122`** — approved thin face: HOLD0 chrome on Skate rows 0–1 under SETU0.5 Desk metrics (two rows for UTF-8 width). Next: **send** HOLD1; SETU6 / Wayland eyes stay check-in.
 
 **Glow OS · Glow Desk · Glow Glass seated, `20260717.183622`** — Keaton: **Glow OS** unifies; **Glow Desk** = desktop; **Glow Glass** = mobile. Lexicon + silo [`../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md`](../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md). Orientation firmware stays check-in.
 

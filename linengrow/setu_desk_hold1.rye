@@ -1,0 +1,155 @@
+//! linengrow/setu_desk_hold1.rye — HOLD1: Desk paints HOLD0 hold on Skate.
+//!
+//! Season: Desk Hearth Hold. Device-free: station → hold chrome → skate_grid
+//! under SETU0.5 Desk metrics. Two rows (UTF-8 · lines exceed 48 cols as one).
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const skate = @import("skate_grid.rye");
+const setu05 = @import("setu05_desk_apply.rye");
+const hold0 = @import("setu_desk_hold0.rye");
+
+pub const waymark: []const u8 = hold0.waymark;
+pub const season: []const u8 = hold0.season;
+pub const hold_row: u32 = 0;
+pub const detail_row: u32 = 1;
+pub const min_cols: u32 = 32;
+pub const chrome_line_max: u32 = 64;
+
+fn field_value(src: []const u8, key: []const u8) ?[]const u8 {
+    var line_start: usize = 0;
+    while (line_start <= src.len) {
+        const rest = src[line_start..];
+        const nl = std.mem.indexOfScalar(u8, rest, '\n');
+        const line_end = if (nl) |n| line_start + n else src.len;
+        const raw = src[line_start..line_end];
+        line_start = if (nl) |_| line_end + 1 else src.len + 1;
+        if (raw.len <= key.len) continue;
+        if (!std.mem.startsWith(u8, raw, key)) continue;
+        if (raw[key.len] != ' ') continue;
+        return std.mem.trim(u8, raw[key.len + 1 ..], " \t\r");
+    }
+    return null;
+}
+
+fn parse_u32(text: []const u8) ?u32 {
+    if (text.len == 0) return null;
+    return std.fmt.parseInt(u32, text, 10) catch null;
+}
+
+/// Desk Skate cols from station.bron; fall back to min_cols.
+pub fn station_cols(station_text: []const u8) u32 {
+    if (field_value(station_text, "cols")) |raw| {
+        if (parse_u32(raw)) |c| {
+            if (c >= min_cols) return c;
+        }
+    }
+    return min_cols;
+}
+
+pub fn desk_rows() u32 {
+    return setu05.desk_grid_rows;
+}
+
+fn row_equals(grid: *const skate.Grid, row: u32, line: []const u8) bool {
+    if (row >= grid.rows) return false;
+    if (line.len == 0 or line.len > grid.cols) return false;
+    const base: usize = @intCast(row * grid.cols);
+    const n: usize = line.len;
+    if (!std.mem.eql(u8, grid.cells[base..][0..n], line[0..n])) return false;
+    var i: usize = n;
+    while (i < grid.cols) : (i += 1) {
+        if (grid.cells[base + i] != ' ') return false;
+    }
+    return true;
+}
+
+/// `hold · {home} · {preset} · {wire}`
+pub fn format_hold_chrome(s: hold0.HoldStatus, out: *[chrome_line_max]u8) ?[]const u8 {
+    const line = std.fmt.bufPrint(
+        out,
+        "hold · {s} · {s} · {s}",
+        .{ s.home_id_slice(), s.preset.name(), s.wire.name() },
+    ) catch return null;
+    assert(line.len <= chrome_line_max);
+    return line;
+}
+
+/// `ping {yes|no} · frame {n}`
+pub fn format_hold_detail(s: hold0.HoldStatus, out: *[chrome_line_max]u8) ?[]const u8 {
+    const ping = if (s.ping_held) "yes" else "no";
+    const line = std.fmt.bufPrint(
+        out,
+        "ping {s} · frame {d}",
+        .{ ping, s.frame_len },
+    ) catch return null;
+    assert(line.len <= chrome_line_max);
+    return line;
+}
+
+/// Paint HOLD0 status onto Desk Skate rows 0–1 (caller owns grid cells).
+pub fn paint_hold_on_grid(
+    grid: *skate.Grid,
+    station_text: []const u8,
+    ping_held: bool,
+    frame_len: u32,
+) bool {
+    if (grid.rows <= detail_row) return false;
+    const s = hold0.status_from_station(station_text, ping_held, frame_len) orelse return false;
+    var chrome_buf: [chrome_line_max]u8 = undefined;
+    var detail_buf: [chrome_line_max]u8 = undefined;
+    const chrome = format_hold_chrome(s, &chrome_buf) orelse return false;
+    const detail = format_hold_detail(s, &detail_buf) orelse return false;
+    if (chrome.len > grid.cols or detail.len > grid.cols) return false;
+    grid.put_line(hold_row, chrome);
+    grid.put_line(detail_row, detail);
+    return row_equals(grid, hold_row, chrome) and row_equals(grid, detail_row, detail);
+}
+
+/// Device-free: usb_desk hold chrome lands on Desk Skate cells.
+pub fn fixture_hold_line_on_desk_skate(allocator: std.mem.Allocator) bool {
+    const station =
+        \\format setu-station-v1
+        \\home_id kd
+        \\display_preset scaled_540
+        \\wire_lane usb_desk
+        \\cellular off
+        \\cols 48
+        \\waymark SETU
+        \\
+    ;
+    const cols = station_cols(station);
+    assert(cols == 48);
+    var grid = skate.Grid.init(allocator, cols, desk_rows()) catch return false;
+    defer allocator.free(grid.cells);
+    if (!paint_hold_on_grid(&grid, station, true, 289)) return false;
+    if (!row_equals(&grid, hold_row, "hold · kd · scaled_540 · usb_desk")) return false;
+    if (!row_equals(&grid, detail_row, "ping yes · frame 289")) return false;
+    return true;
+}
+
+/// Device-free: local wire paints honest empty hold (stale bins ignored).
+pub fn fixture_local_hold_on_desk_skate(allocator: std.mem.Allocator) bool {
+    const station =
+        \\format setu-station-v1
+        \\home_id kd
+        \\display_preset scaled_720
+        \\wire_lane local
+        \\cols 48
+        \\waymark SETU
+        \\
+    ;
+    var grid = skate.Grid.init(allocator, station_cols(station), desk_rows()) catch return false;
+    defer allocator.free(grid.cells);
+    if (!paint_hold_on_grid(&grid, station, true, 289)) return false;
+    return row_equals(&grid, hold_row, "hold · kd · scaled_720 · local") and
+        row_equals(&grid, detail_row, "ping no · frame 0");
+}
+
+comptime {
+    _ = print;
+    assert(std.mem.eql(u8, waymark, "SETU"));
+    assert(desk_rows() == 20);
+    assert(setu05.desk_window_w == 1920);
+}

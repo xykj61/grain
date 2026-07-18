@@ -101,3 +101,17 @@ assert hold.out contains "GREEN" else "HOLD0 desk hold not GREEN"
 assert hold.out contains "hold ·" else "HOLD0 missing hold line"
 
 say "GREEN: HOLD0 — Desk named hearth hold on host path."
+
+# HOLD1 — Desk paints the hold chrome onto a Skate grid (device-free cells).
+let hold1_bin = "linengrow/bin/setu_desk_hold1_check"
+say "setu0-host: HOLD1 Desk Skate hold…"
+let build_hold1 = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build linengrow/setu_desk_hold1_check.rye -femit-bin=${hold1_bin}"]
+if (build_hold1.ok == false) then say "setu0-host: hold1 build stderr — ${build_hold1.err}"
+assert build_hold1.ok else "HOLD1 desk Skate check build failed"
+let hold1 = run ["sh" "-c" "${hold1_bin} 2>&1"]
+say "${hold1.out}"
+assert hold1.ok else "HOLD1 desk Skate check failed"
+assert hold1.out contains "GREEN" else "HOLD1 desk Skate not GREEN"
+assert hold1.out contains "skate row0" else "HOLD1 missing Skate chrome"
+
+say "GREEN: HOLD1 — Desk Skate holds the hearth line on host path."
