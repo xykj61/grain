@@ -1,0 +1,35 @@
+//! linengrow/setu3_ncm_frame_witness.rye — proves SETU3 NCM-shaped frame.
+//!
+//!   rye build linengrow/setu3_ncm_frame_witness.rye \
+//!     -femit-bin=linengrow/bin/setu3_ncm_frame_witness
+//!   linengrow/bin/setu3_ncm_frame_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const setu3 = @import("setu3_ncm_frame.rye");
+
+const witness_version = "20260718.134542";
+
+fn run_selftest(_: std.process.Init) !u8 {
+    assert(std.mem.eql(u8, setu3.waymark, "SETU"));
+    print("setu3: waymark {s} -- GREEN\n", .{setu3.waymark});
+
+    assert(setu3.fixture_local_cannot_frame());
+    print("setu3: local wire cannot frame -- GREEN\n", .{});
+
+    assert(setu3.fixture_bad_ethertype_refused());
+    print("setu3: bad ethertype refused -- GREEN\n", .{});
+
+    assert(setu3.fixture_ncm_frame_round_trips());
+    print("setu3: NCM-shaped wrap/unwrap/open -- GREEN\n", .{});
+
+    print("setu3: ethertype 0x{x:0>4}\n", .{setu3.setu_ethertype});
+    print("setu3: version {s}\n", .{witness_version});
+    print("GREEN: SETU3 — lane ping wears NCM-shaped frame (device-free).\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
+}

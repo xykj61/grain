@@ -3,7 +3,7 @@
 *Owned Glow design: a Hearth preference record (Bron), declared presets (Brix/infuse discipline), waymark **LULU**, and ZETA6 keyboard send — so Glow Glass paragraphs and Glow Desk stations share one short home and one Skate budget down to the Mantrapod floor.*
 
 **Stamp:** `20260718.122145` (Eastern)  
-**Status:** Design — siloed; ZETA6 Pixel GREEN · **LULU0–5 closed** · **SETU0–SETU2 GREEN** `20260718.134348` · SETU3 check-in · Amber/Amphora fuse declined [`20260718-133455`](20260718-133455_glass-desk-compose-amber-amphora-revive.md)  
+**Status:** Design — siloed; ZETA6 Pixel GREEN · **LULU0–5 closed** · **SETU0–SETU3 GREEN** `20260718.134613` · SETU4 check-in · Amber/Amphora fuse declined [`20260718-133455`](20260718-133455_glass-desk-compose-amber-amphora-revive.md)  
 **Voice:** Quin  
 **Research:** [`../external-research/20260718-122145_pixel10a-resolution-mantrapod-floor-and-wired-glass-slc.md`](../external-research/20260718-122145_pixel10a-resolution-mantrapod-floor-and-wired-glass-slc.md) · compose ER [`../external-research/20260718-133455_glass-desk-amber-amphora-compose-not-fuse.md`](../external-research/20260718-133455_glass-desk-amber-amphora-compose-not-fuse.md)  
 **Prompt:** [`../expanding-prompts/20260718-122145_glow-glass-display-short-home-and-dexter-send.md`](../expanding-prompts/20260718-122145_glow-glass-display-short-home-and-dexter-send.md)  
@@ -55,7 +55,8 @@ Keaton’s example home id **`kd`** is the first fixture; schema allows any two 
 | **SETU0.5** | Desk applies pulled Hearth → station card | **GREEN** `20260718.133328` |
 | **SETU1** | `usb_desk` Comlink lane ping; `local` refuses | **GREEN** `20260718.133853` |
 | **SETU2** | Ping over hosted UDP stand-in (port 38501) | **GREEN** `20260718.134348` |
-| **SETU3** | CDC-NCM gadget lane | Check-in after SETU2 |
+| **SETU3** | NCM-shaped virtio+eth frame wrap/unwrap | **GREEN** `20260718.134613` |
+| **SETU4** | Live CDC-NCM gadget bring-up | Check-in after SETU3 |
 
 ### Stack (generalized, not a special-case toggle)
 
@@ -89,8 +90,8 @@ Ojjo is benchmarks. Pool is the app host. Mantra already versions. **Hearth is a
 
 ## Aligned next
 
-1. **Send** SETU2 when Keaton says send.  
-2. Or **check-in SETU3** — CDC-NCM gadget lane (not Amber-on-Glass).
+1. **Send** SETU3 when Keaton says send.  
+2. Or **check-in SETU4** — live CDC-NCM gadget (not Amber-on-Glass).
 
 ---
 
