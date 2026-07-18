@@ -1,0 +1,67 @@
+//! linengrow/setu_desk_hold1_check.rye — paint Desk hold chrome from cache.
+//!
+//! Reads tools/.cache/setu0/station.bron (+ ping/frame presence) and paints
+//! the HOLD0 line onto a Desk-sized Skate grid; prints the painted line.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const Dir = std.Io.Dir;
+const hold0 = @import("setu_desk_hold0.rye");
+const hold1 = @import("setu_desk_hold1.rye");
+const skate = @import("skate_grid.rye");
+
+const station_path = "tools/.cache/setu0/station.bron";
+const ping_path = "tools/.cache/setu0/lane_ping.bin";
+const frame_path = "tools/.cache/setu0/lane_frame.bin";
+
+fn file_len(cwd: Dir, io: std.Io, path: []const u8) u32 {
+    var big: [1024]u8 = undefined;
+    const read = cwd.readFile(io, path, &big) catch return 0;
+    return @intCast(read.len);
+}
+
+fn run_check(init: std.process.Init) !u8 {
+    const io = init.io;
+    const allocator = init.arena.allocator();
+    const cwd = Dir.cwd();
+    var station_buf: [1024]u8 = undefined;
+    const station = cwd.readFile(io, station_path, &station_buf) catch {
+        print("hold1-check: RED — missing {s}\n", .{station_path});
+        return 1;
+    };
+    const ping_len = file_len(cwd, io, ping_path);
+    const frame_len = file_len(cwd, io, frame_path);
+    const cols = hold1.station_cols(station);
+    var grid = skate.Grid.init(allocator, cols, hold1.desk_rows()) catch {
+        print("hold1-check: RED — grid init failed\n", .{});
+        return 1;
+    };
+    if (!hold1.paint_hold_on_grid(&grid, station, ping_len > 0, frame_len)) {
+        print("hold1-check: RED — paint failed\n", .{});
+        return 1;
+    }
+    const s = hold0.status_from_station(station, ping_len > 0, frame_len) orelse {
+        print("hold1-check: RED — station parse failed\n", .{});
+        return 1;
+    };
+    var chrome_buf: [hold1.chrome_line_max]u8 = undefined;
+    var detail_buf: [hold1.chrome_line_max]u8 = undefined;
+    const chrome = hold1.format_hold_chrome(s, &chrome_buf) orelse {
+        print("hold1-check: RED — chrome overflow\n", .{});
+        return 1;
+    };
+    const detail = hold1.format_hold_detail(s, &detail_buf) orelse {
+        print("hold1-check: RED — detail overflow\n", .{});
+        return 1;
+    };
+    print("hold1-check: skate row0 · {s}\n", .{chrome});
+    print("hold1-check: skate row1 · {s}\n", .{detail});
+    print("hold1-check: grid {d}x{d} (Desk rows)\n", .{ cols, hold1.desk_rows() });
+    print("GREEN: HOLD1 — Desk Skate holds the hearth line.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_check(init);
+}
