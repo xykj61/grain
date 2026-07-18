@@ -1,10 +1,12 @@
 # The Run Record and Friendly Failures
 
 **Language:** EN
-**Last updated:** 2026-07-02
+**Last updated:** 2026-07-18 (Voice Quin · Acme audience)
 **Style:** Radiant (see `../../context/RADIANT_STYLE.md`)
-**Voice:** Rio 3
+**Voice:** Quin
+**Audience:** an Acme Corporation employee reading run-record fields after first-witness
 **Parity ground:** **142** — RW-3 and RW-4 green today
+**Law:** [`../../context/TAME_GUIDANCE.md`](../../context/TAME_GUIDANCE.md)
 
 ---
 
