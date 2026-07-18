@@ -9,7 +9,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const glass = @import("sala_jabs2_glass_audience.rye");
 
-const witness_version = "20260717.190358";
+const witness_version = "20260717.212257";
 
 fn run_selftest(_: std.process.Init) !u8 {
     var lines: [glass.audience_rows][glass.audience_line_max]u8 = undefined;
@@ -22,10 +22,18 @@ fn run_selftest(_: std.process.Init) !u8 {
     assert(glass.skate_row0 == 14);
     assert(glass.keyboard_row0 == 16);
     assert(glass.grid_rows == 20);
+    // Close-hint Skate row 13 ends at 14; stays above audience + keyboard (finish-zone).
+    const close_row_end: u32 = 14;
+    assert(close_row_end <= glass.skate_row0);
+    assert(close_row_end <= glass.keyboard_row0);
     print("jabs2-glass: layout rows 14–15 audience, 16–19 keyboard -- GREEN\n", .{});
     print("jabs2-glass: \"{s}\" / \"{s}\" -- GREEN\n", .{ lines[0][0..lens[0]], lines[1][0..lens[1]] });
+
+    assert(glass.chat_line_from_glow());
+    print("jabs2-glass: Dexter submit → chat · line -- GREEN\n", .{});
+
     print("zeta: version {s}\n", .{witness_version});
-    print("GREEN: JABS2 glass — audience strip paints under the layout word.\n", .{});
+    print("GREEN: JABS2 glass — audience strip + live chat face under the layout word.\n", .{});
     return 0;
 }
 

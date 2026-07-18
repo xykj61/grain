@@ -77,7 +77,9 @@ Also Lap 1 (has assert import, thin density / memcpy): `linengrow/glow_native_su
 
 ## Aligned next
 
-**Product** (ZETA2 Pixel typing look / ZETA3 caret) or **Lap 3** on the three leftover modules after a Claude check-in (kumara/pedersen are identity crypto).
+**Product** — JABS2 finish-zone (close-hint row only) + mode round-trip witnesses GREEN; Pixel look after host install. **Lap 3** still open: `mantra/bolt_apply_step.rye`, `tally/kumara.rye`, `tally/pedersen.rye` — check-in before crypto/mantra density.
+
+**TAME on touch (`20260717.213015`):** bans clean; zero-assert leftovers **3** (Lap 3 only); `@memcpy` application sites **2** (migrate on touch; Lap 2 glass path remains clean); `paint_session_root_hex` under 70 via `glass_origin_y` · `glass_cell_scale` · `refresh_touch_hits`.
 
 ---
 

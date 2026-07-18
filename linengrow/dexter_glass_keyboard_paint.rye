@@ -179,6 +179,55 @@ pub fn emoji_face0_inserts_utf8() bool {
     return std.mem.eql(u8, editor.prompt_slice(), expect);
 }
 
+/// Device-free: emoji chrome `abc` hit returns to_letters (mode round-trip).
+pub fn emoji_abc_hit_is_to_letters() bool {
+    const grid_cols: u32 = 40;
+    const cell_pw: i32 = 10;
+    const cell_ph: i32 = 20;
+    const page = layout.page_for_tab(.emoji, .smileys);
+    const map = build_hit_map(0, 0, cell_pw, cell_ph, grid_cols, 0, page);
+    var line: [max_line_len]u8 = undefined;
+    const len = format_page_row(page, 3, &line);
+    // invariant: chrome row paints abc first
+    assert(len >= 3);
+    assert(line[0] == 'a');
+    assert(line[1] == 'b');
+    assert(line[2] == 'c');
+    const start = (grid_cols - len) / 2;
+    const abc_x = @as(i32, @intCast(start)) * cell_pw + cell_pw;
+    const abc_y = 3 * cell_ph + @divTrunc(cell_ph, 2);
+    const key = map.hit_test(abc_x, abc_y) orelse return false;
+    return key == .to_letters;
+}
+
+/// Device-free mode round-trip: letters → emoji → letters via tap_result.
+pub fn mode_round_trip_letters_emoji() bool {
+    switch (tap_result(.to_emoji, false)) {
+        .set_mode => |m| {
+            if (m != .emoji) return false;
+        },
+        else => return false,
+    }
+    return switch (tap_result(.to_letters, false)) {
+        .set_mode => |m| m == .letters,
+        else => false,
+    };
+}
+
+/// Device-free mode round-trip: letters → numbers → letters via tap_result.
+pub fn mode_round_trip_letters_numbers() bool {
+    switch (tap_result(.to_numbers, false)) {
+        .set_mode => |m| {
+            if (m != .numbers) return false;
+        },
+        else => return false,
+    }
+    return switch (tap_result(.to_letters, false)) {
+        .set_mode => |m| m == .letters,
+        else => false,
+    };
+}
+
 pub const max_hit_keys: u32 = layout.max_keys_per_row * keyboard_rows;
 
 /// One key's painted rectangle in window pixels (ZETA2b).
