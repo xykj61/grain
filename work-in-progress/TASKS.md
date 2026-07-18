@@ -300,8 +300,10 @@
 - [x] **HOLD0 stale-bin honesty** `20260718.190720` — local wire ignores leftover ping/frame; host SKIP clears cache bins.
 - [x] **HOLD1 — Desk Skate hold chrome** `20260718.193122` — hold rows 0–1 on Desk metrics; device-free GREEN; host chain after HOLD0.
 - [x] **HOLD1 host Pixel look** `20260718.193607` — full SETU0→HOLD1 chain GREEN on authorized Pixel (`local` wire).
+- [x] **HOLD Wayland eyes** `20260718.193951` — Desk raster lit GREEN; look selftest GREEN; `setu_desk_hold_wayland_look` for compositor eyes.
+- [x] **HOLD Wayland eyes seen** `20260718.194211` — Keaton confirmed hold chrome window on Framework Wayland.
+- [x] **Session-logs archive fold** `20260718.193735` — 165 prior-day logs under `archive/` (kept `20260718` flat).
 - [ ] **SETU6 — QEMU/Pixel CDC-NCM / device-wire lab** — check-in (parked; not Amber-on-Glass).
-- [ ] **HOLD Wayland eyes** — optional host look of Skate window; check-in.
 - [ ] **Wired Glass SLC metalsmoke** — cellular optional/off; USB sync to Desk; Setu live lane check-in.
 - [ ] **JABS3 — Inference and economics** — check-in (Quin · MALA).
 - [ ] **C2 thin TAME compressor** — optional `docs/TAME.md` only if cold-load pain is measured.

@@ -1,0 +1,94 @@
+//! linengrow/setu_desk_hold_wayland.rye — HOLD Wayland eyes: Desk raster of hold.
+//!
+//! Device-free: HOLD1 chrome on a Desk-sized Skate grid, rasterized under
+//! SETU0.5 window metrics — proves glyphs that a Wayland present would show.
+//! Live look: setu_desk_hold_wayland_look.rye (Wayland compositor).
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const skate = @import("skate_grid.rye");
+const setu05 = @import("setu05_desk_apply.rye");
+const hold0 = @import("setu_desk_hold0.rye");
+const hold1 = @import("setu_desk_hold1.rye");
+
+pub const waymark: []const u8 = hold1.waymark;
+pub const season: []const u8 = hold1.season;
+pub const min_lit_pixels: u32 = 200;
+
+const skate_bg = skate.Color{ .r = 0x1a, .g = 0x1a, .b = 0x2e };
+const skate_fg = skate.Color{ .r = 0xe0, .g = 0xe0, .b = 0xe0 };
+/// Pixel scale for Desk raster (matches wayland_seed density class).
+pub const desk_pixel_scale: u32 = 2;
+
+/// Raster lit-pixel count for HOLD1 chrome under Desk window size.
+pub fn raster_hold_lit(
+    allocator: std.mem.Allocator,
+    station_text: []const u8,
+    ping_held: bool,
+    frame_len: u32,
+) ?u32 {
+    const cols = hold1.station_cols(station_text);
+    var grid = skate.Grid.init(allocator, cols, hold1.desk_rows()) catch return null;
+    defer allocator.free(grid.cells);
+    if (!hold1.paint_hold_on_grid(&grid, station_text, ping_held, frame_len)) return null;
+
+    const width: i32 = setu05.desk_window_w;
+    const height: i32 = setu05.desk_window_h;
+    const stride: u32 = @as(u32, @intCast(width)) * 4;
+    const size: u32 = stride * @as(u32, @intCast(height));
+    const pixels = allocator.alloc(u8, @intCast(size)) catch return null;
+    defer allocator.free(pixels);
+    grid.rasterize(pixels, stride, width, height, skate_bg, skate_fg, desk_pixel_scale);
+    return grid.lit_pixel_count(pixels, stride, width, height, skate_bg);
+}
+
+/// Device-free: usb_desk hold chrome lights Desk raster pixels.
+pub fn fixture_usb_desk_raster_lit(allocator: std.mem.Allocator) bool {
+    const station =
+        \\format setu-station-v1
+        \\home_id kd
+        \\display_preset scaled_540
+        \\wire_lane usb_desk
+        \\cols 48
+        \\waymark SETU
+        \\
+    ;
+    const lit = raster_hold_lit(allocator, station, true, 289) orelse return false;
+    return lit >= min_lit_pixels;
+}
+
+/// Device-free: local honest hold still lights glyphs.
+pub fn fixture_local_raster_lit(allocator: std.mem.Allocator) bool {
+    const station =
+        \\format setu-station-v1
+        \\home_id kd
+        \\display_preset scaled_720
+        \\wire_lane local
+        \\cols 48
+        \\waymark SETU
+        \\
+    ;
+    const lit = raster_hold_lit(allocator, station, true, 289) orelse return false;
+    return lit >= min_lit_pixels;
+}
+
+/// Fill Wayland seed Line texts (caller owns chrome/detail buffers).
+pub fn fill_present_lines(
+    station_text: []const u8,
+    ping_held: bool,
+    frame_len: u32,
+    chrome_out: *[hold1.chrome_line_max]u8,
+    detail_out: *[hold1.chrome_line_max]u8,
+) ?struct { chrome: []const u8, detail: []const u8 } {
+    const s = hold0.status_from_station(station_text, ping_held, frame_len) orelse return null;
+    const chrome = hold1.format_hold_chrome(s, chrome_out) orelse return null;
+    const detail = hold1.format_hold_detail(s, detail_out) orelse return null;
+    return .{ .chrome = chrome, .detail = detail };
+}
+
+comptime {
+    _ = print;
+    assert(std.mem.eql(u8, waymark, "SETU"));
+    assert(setu05.desk_window_w == 1920);
+}

@@ -1,0 +1,95 @@
+//! linengrow/setu_desk_hold_wayland_look.rye — present HOLD chrome on Wayland.
+//!
+//!   rye build linengrow/setu_desk_hold_wayland_look.rye \
+//!     brushstroke/xdg-shell-protocol.c -Ibrushstroke \
+//!     -lc -lwayland-client -lxkbcommon -lrt \
+//!     -femit-bin=linengrow/bin/setu_desk_hold_wayland_look
+//!   linengrow/bin/setu_desk_hold_wayland_look selftest
+//!   linengrow/bin/setu_desk_hold_wayland_look   # needs WAYLAND_DISPLAY
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const Dir = std.Io.Dir;
+const wl = @import("wayland_seed.rye");
+const hold1 = @import("setu_desk_hold1.rye");
+const hold_wl = @import("setu_desk_hold_wayland.rye");
+
+const station_path = "tools/.cache/setu0/station.bron";
+const ping_path = "tools/.cache/setu0/lane_ping.bin";
+const frame_path = "tools/.cache/setu0/lane_frame.bin";
+
+fn file_len(cwd: Dir, io: std.Io, path: []const u8) u32 {
+    var big: [1024]u8 = undefined;
+    const read = cwd.readFile(io, path, &big) catch return 0;
+    return @intCast(read.len);
+}
+
+fn fixture_station() []const u8 {
+    return
+        \\format setu-station-v1
+        \\home_id kd
+        \\display_preset scaled_720
+        \\wire_lane local
+        \\cols 48
+        \\waymark SETU
+        \\
+    ;
+}
+
+fn run_selftest(init: std.process.Init) !u8 {
+    const allocator = init.arena.allocator();
+    var chrome_buf: [hold1.chrome_line_max]u8 = undefined;
+    var detail_buf: [hold1.chrome_line_max]u8 = undefined;
+    const lines = hold_wl.fill_present_lines(fixture_station(), false, 0, &chrome_buf, &detail_buf) orelse {
+        print("hold-wayland-look: RED — fixture lines\n", .{});
+        return 1;
+    };
+    const lit = hold_wl.raster_hold_lit(allocator, fixture_station(), false, 0) orelse {
+        print("hold-wayland-look: RED — raster\n", .{});
+        return 1;
+    };
+    assert(lit >= hold_wl.min_lit_pixels);
+    print("hold-wayland-look: selftest {s} / {s} lit {d} -- GREEN\n", .{ lines.chrome, lines.detail, lit });
+    print("GREEN: HOLD Wayland look selftest (no compositor).\n", .{});
+    return 0;
+}
+
+fn run_present(init: std.process.Init) !u8 {
+    const io = init.io;
+    const allocator = init.arena.allocator();
+    const cwd = Dir.cwd();
+    var station_buf: [1024]u8 = undefined;
+    const station = cwd.readFile(io, station_path, &station_buf) catch fixture_station();
+    const ping_len = file_len(cwd, io, ping_path);
+    const frame_len = file_len(cwd, io, frame_path);
+    var chrome_buf: [hold1.chrome_line_max]u8 = undefined;
+    var detail_buf: [hold1.chrome_line_max]u8 = undefined;
+    const filled = hold_wl.fill_present_lines(station, ping_len > 0, frame_len, &chrome_buf, &detail_buf) orelse {
+        print("hold-wayland-look: RED — cannot fill lines\n", .{});
+        return 1;
+    };
+    const Line = wl.SkateLine;
+    var present_lines: [2]Line = .{
+        .{ .text = filled.chrome },
+        .{ .text = filled.detail },
+    };
+    var app = wl.open_surface(allocator, present_lines[0..]) catch {
+        print("hold-wayland-look: RED — Wayland connect failed (set WAYLAND_DISPLAY)\n", .{});
+        return 1;
+    };
+    defer app.display.disconnect();
+    try app.run_until_close();
+    print("hold-wayland-look: presented {s}\n", .{filled.chrome});
+    print("GREEN: HOLD Wayland — hold chrome drawn on compositor.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(init);
+    }
+    return run_present(init);
+}
