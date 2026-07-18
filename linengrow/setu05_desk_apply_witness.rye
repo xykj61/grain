@@ -1,0 +1,32 @@
+//! linengrow/setu05_desk_apply_witness.rye — proves SETU0.5 Desk apply.
+//!
+//!   rye build linengrow/setu05_desk_apply_witness.rye \
+//!     -femit-bin=linengrow/bin/setu05_desk_apply_witness
+//!   linengrow/bin/setu05_desk_apply_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const setu05 = @import("setu05_desk_apply.rye");
+
+const witness_version = "20260718.133300";
+
+fn run_selftest(_: std.process.Init) !u8 {
+    assert(std.mem.eql(u8, setu05.waymark, "SETU"));
+    print("setu05: waymark {s} -- GREEN\n", .{setu05.waymark});
+
+    assert(setu05.fixture_station_applies());
+    print("setu05: fixture station applies on Desk -- GREEN\n", .{});
+
+    assert(setu05.mismatch_refused());
+    print("setu05: home_id mismatch refused -- GREEN\n", .{});
+
+    print("setu05: desk window {d}x{d}\n", .{ setu05.desk_window_w, setu05.desk_window_h });
+    print("setu05: version {s}\n", .{witness_version});
+    print("GREEN: SETU0.5 — Desk applies pulled hearth into a station (device-free).\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
+}

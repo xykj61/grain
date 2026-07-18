@@ -1,0 +1,51 @@
+//! linengrow/setu05_desk_apply_check.rye — apply cached SETU0 pull on Desk.
+//!
+//! Reads tools/.cache/setu0/hearth_home + hearth.bron, applies under the seated
+//! Desk window, writes tools/.cache/setu0/station.bron, prints the station line.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const Dir = std.Io.Dir;
+const hearth = @import("hearth_lulu0.rye");
+const setu05 = @import("setu05_desk_apply.rye");
+
+const ptr_path = "tools/.cache/setu0/hearth_home";
+const bron_path = "tools/.cache/setu0/hearth.bron";
+const station_path = "tools/.cache/setu0/station.bron";
+
+fn run_check(io: std.Io) !u8 {
+    const cwd = Dir.cwd();
+    var ptr_buf: [64]u8 = undefined;
+    const ptr_read = try cwd.readFile(io, ptr_path, &ptr_buf);
+    var bron_buf: [hearth.max_bron_len]u8 = undefined;
+    const bron_read = try cwd.readFile(io, bron_path, &bron_buf);
+    assert(ptr_read.len <= ptr_buf.len);
+    assert(bron_read.len <= bron_buf.len);
+
+    const s = setu05.apply_pulled(ptr_read, bron_read) orelse {
+        print("setu05-check: RED — cannot apply pulled hearth\n", .{});
+        return 1;
+    };
+
+    var line_buf: [setu05.station_line_max]u8 = undefined;
+    const line = setu05.format_station_line(s, &line_buf) orelse {
+        print("setu05-check: RED — station line overflow\n", .{});
+        return 1;
+    };
+    print("setu05-check: {s}\n", .{line});
+
+    var station_buf: [setu05.max_station_bron_len]u8 = undefined;
+    const n = setu05.format_station_bron(s, &station_buf) orelse {
+        print("setu05-check: RED — station Bron overflow\n", .{});
+        return 1;
+    };
+    try cwd.writeFile(io, .{ .sub_path = station_path, .data = station_buf[0..n] });
+    print("setu05-check: wrote {s}\n", .{station_path});
+    print("GREEN: SETU0.5 — Desk station inherits pulled hearth.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_check(init.io);
+}

@@ -55,3 +55,17 @@ assert check.ok else "Desk parse of pulled hearth failed"
 assert check.out contains "GREEN" else "Desk parse not GREEN"
 
 say "GREEN: SETU0 — adb USB carried hearth_home + hearth.bron; Desk parsed and home_ids agree."
+
+# SETU0.5 — Desk applies the pulled fold into a station card.
+let apply_bin = "linengrow/bin/setu05_desk_apply_check"
+say "setu0-host: SETU0.5 Desk apply…"
+let build_apply = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build linengrow/setu05_desk_apply_check.rye -femit-bin=${apply_bin}"]
+if (build_apply.ok == false) then say "setu0-host: apply build stderr — ${build_apply.err}"
+assert build_apply.ok else "SETU0.5 desk apply check build failed"
+let apply = run ["sh" "-c" "${apply_bin} 2>&1"]
+say "${apply.out}"
+assert apply.ok else "Desk apply of pulled hearth failed"
+assert apply.out contains "GREEN" else "Desk apply not GREEN"
+assert apply.out contains "station ·" else "Desk apply missing station line"
+
+say "GREEN: SETU0.5 — Desk station inherits pulled hearth (host path)."

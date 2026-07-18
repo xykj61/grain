@@ -1,0 +1,22 @@
+# setu05_desk_apply_witness.rish — SETU0.5 device-free: Desk applies pulled hearth.
+#
+#   rishi/bin/rishi run tools/setu05_desk_apply_witness.rish
+#
+# After a SETU0 host pull (cache already filled):
+#   rye/bin/rye build linengrow/setu05_desk_apply_check.rye \
+#     -femit-bin=linengrow/bin/setu05_desk_apply_check
+#   linengrow/bin/setu05_desk_apply_check
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/setu05_desk_apply_witness"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/setu05_desk_apply_witness.rye -femit-bin=${bin}"]
+assert build.ok else "SETU0.5 desk apply witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "SETU0.5 desk apply witness exited non-zero"
+assert selftest.out contains "GREEN" else "SETU0.5 not GREEN"
+assert selftest.out contains "waymark SETU" else "SETU0.5 missing waymark claim"
+assert selftest.out contains "fixture station" else "SETU0.5 missing fixture claim"
+
+say "GREEN: SETU0.5 Desk apply witness passed (device-free)."
