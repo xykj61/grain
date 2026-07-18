@@ -1,0 +1,31 @@
+//! linengrow/setu_desk_hold_wayland_witness.rye — HOLD Wayland eyes (headless).
+//!
+//!   rye build linengrow/setu_desk_hold_wayland_witness.rye \
+//!     -femit-bin=linengrow/bin/setu_desk_hold_wayland_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const hold_wl = @import("setu_desk_hold_wayland.rye");
+
+const witness_version = "20260718.193951";
+
+fn run_selftest(init: std.process.Init) !u8 {
+    const allocator = init.arena.allocator();
+    assert(std.mem.eql(u8, hold_wl.waymark, "SETU"));
+    print("hold-wayland: waymark {s} season {s} -- GREEN\n", .{ hold_wl.waymark, hold_wl.season });
+
+    assert(hold_wl.fixture_usb_desk_raster_lit(allocator));
+    print("hold-wayland: usb_desk Desk raster lit -- GREEN\n", .{});
+
+    assert(hold_wl.fixture_local_raster_lit(allocator));
+    print("hold-wayland: local Desk raster lit -- GREEN\n", .{});
+
+    print("hold-wayland: version {s}\n", .{witness_version});
+    print("GREEN: HOLD Wayland — Desk raster of hold chrome ready for present (device-free).\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
+}

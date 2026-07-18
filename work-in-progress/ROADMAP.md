@@ -4,7 +4,7 @@
 
 **Language:** EN
 **Version:** `20260715` (Pool keystone revival prioritized · Quin voice seated · align pass reconciles the closed ladder)
-**Last updated:** 2026-07-18 (**HOLD1** GREEN — Desk Skate hold chrome)
+**Last updated:** 2026-07-18 (**HOLD Wayland** GREEN · session-logs archive)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Lens:** TAME — safety, performance, joy; the Seed Law; [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md)
@@ -285,6 +285,10 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 **HOLD1 Desk Skate hold GREEN, `20260718.193122`** — approved thin face: HOLD0 chrome on Skate rows 0–1 under SETU0.5 Desk metrics (two rows for UTF-8 width). Next: **send** HOLD1; SETU6 / Wayland eyes stay check-in.
 
 **HOLD1 host Pixel look, `20260718.193607`** — SETU0→HOLD1 chain GREEN on device (`local` · Skate cells). Next: **send** look record; Wayland eyes / SETU6 stay check-in.
+
+**HOLD Wayland eyes GREEN · archive fold, `20260718.193735`–`193951`** — Desk raster + look selftest; yesterday's logs folded (165). Next: **send**; SETU6 stays parked; optional compositor eyes via `setu_desk_hold_wayland_look`.
+
+**HOLD Wayland eyes seen · Desk Hearth Hold closed, `20260718.194211`** — Keaton saw hold chrome on Wayland. Season job complete. Next: **SETU6** check-in when ready, or pause.
 
 **Glow OS · Glow Desk · Glow Glass seated, `20260717.183622`** — Keaton: **Glow OS** unifies; **Glow Desk** = desktop; **Glow Glass** = mobile. Lexicon + silo [`../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md`](../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md). Orientation firmware stays check-in.
 

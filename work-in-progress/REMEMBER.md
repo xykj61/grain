@@ -2,9 +2,9 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Rule: [`.cursor/rules/remember.mdc`](../.cursor/rules/remember.mdc) · [`.claude/rules/remember.md`](../.claude/rules/remember.md).*
 
-**Last refreshed:** `20260718.193607` (Eastern) · voice Quin  
-**Product nib:** ZETA6 · LULU0–5 · SETU5 · HOLD0 · **HOLD1**  
-**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU5 · HOLD0–HOLD1  
+**Last refreshed:** `20260718.194211` (Eastern) · voice Quin  
+**Product nib:** ZETA6 · LULU0–5 · SETU5 · HOLD0 · HOLD1 · **HOLD-W** (eyes seen)  
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU5 · HOLD0–HOLD1 · HOLD-W  
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`
 
 ---
@@ -18,7 +18,7 @@
 | **ZETA** | English QWERTY glass keyboard | ZETA0–6 GREEN (Pixel look) |
 | **JABS** | Sala broadcast live-session fold | JABS0–2 GREEN · JABS3 check-in |
 | **LULU** | Hearth · short home · Wired Glass | **LULU0–5 closed** |
-| **SETU** | USB hearth carry Glass↔Desk | **SETU0–SETU5 · HOLD0–HOLD1 GREEN** · SETU6 check-in |
+| **SETU** | USB hearth carry Glass↔Desk | **SETU0–SETU5 · HOLD0–HOLD1 · HOLD-W GREEN** · SETU6 check-in |
 
 Canon: [`../docs/HAWM.md`](../docs/HAWM.md) · [`../docs/TUBE.md`](../docs/TUBE.md) · [`../docs/ZETA.md`](../docs/ZETA.md) · [`../docs/JABS.md`](../docs/JABS.md) · [`../docs/LULU.md`](../docs/LULU.md) · [`../docs/SETU.md`](../docs/SETU.md)
 
@@ -35,8 +35,10 @@ $ADB shell am force-stop org.glow.app.sala_broadcaster
 $ADB shell am start -n org.glow.app.sala_broadcaster/android.app.NativeActivity
 # SETU0→HOLD1 — pull · station · ping gate · hold line · Skate cells
 rishi/bin/rishi run tools/setu0_hearth_pull_onpath_host.rish
-# device-free Skate cells only:
-rishi/bin/rishi run tools/setu_desk_hold1_witness.rish
+# device-free Skate + Wayland raster
+rishi/bin/rishi run tools/setu_desk_hold_wayland_witness.rish
+# eyes (host Wayland session — close the window when done):
+# linengrow/bin/setu_desk_hold_wayland_look
 ```
 
 ---
@@ -49,7 +51,6 @@ Hold row 1 → Settings: presets · `home ·` · `wire ·` · `cell ·` — all 
 
 | Door | Kind |
 |------|------|
-| **HOLD Wayland eyes** — Desk Skate window | **check-in** |
 | **SETU6** QEMU/Pixel CDC-NCM lab | **check-in** (parked) |
 | Amber/Amphora Glass↔Desk fuse | **declined** — compose later (`133455`) |
 | JABS3 · TAME Lap 3 | **check-in** |

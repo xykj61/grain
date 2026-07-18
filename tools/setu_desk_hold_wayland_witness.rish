@@ -1,0 +1,32 @@
+# setu_desk_hold_wayland_witness.rish — HOLD Wayland eyes (Desk raster + look selftest).
+#
+#   rishi/bin/rishi run tools/setu_desk_hold_wayland_witness.rish
+#
+# Optional eyes (host Wayland session):
+#   linengrow/bin/setu_desk_hold_wayland_look
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/setu_desk_hold_wayland_witness"
+let check = "linengrow/bin/setu_desk_hold_wayland_check"
+let look = "linengrow/bin/setu_desk_hold_wayland_look"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/setu_desk_hold_wayland_witness.rye -femit-bin=${bin}"]
+assert build.ok else "HOLD Wayland witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "HOLD Wayland witness exited non-zero"
+assert selftest.out contains "GREEN" else "HOLD Wayland not GREEN"
+assert selftest.out contains "Desk raster lit" else "HOLD Wayland missing raster fixture"
+
+let build_look = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build linengrow/setu_desk_hold_wayland_look.rye brushstroke/xdg-shell-protocol.c -Ibrushstroke -lc -lwayland-client -lxkbcommon -lrt -femit-bin=${look}"]
+assert build_look.ok else "HOLD Wayland look build failed"
+let look_test = run ["sh" "-c" "${look} selftest 2>&1"]
+assert look_test.ok else "HOLD Wayland look selftest failed"
+assert look_test.out contains "GREEN" else "HOLD Wayland look selftest not GREEN"
+say "${look_test.out}"
+
+let live = run ["sh" "-c" "if test -f tools/.cache/setu0/station.bron; then env RYE_ZIG=${zig} rye/bin/rye build linengrow/setu_desk_hold_wayland_check.rye -femit-bin=${check} && ${check} 2>&1; else echo 'hold-wayland: no station cache — fixture-only GREEN'; fi"]
+assert live.ok else "HOLD Wayland live/optional check failed"
+say "${live.out}"
+
+say "GREEN: HOLD Wayland eyes witness passed (device-free raster + look selftest)."

@@ -8,6 +8,9 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260718.194211` — [Send HOLD Wayland · eyes seen](20260718-194211_send-hold-wayland-eyes-seen.bron) — pier ship; season close kg
+- `20260718.193951` — [HOLD Wayland eyes GREEN · archive](20260718-193951_hold-wayland-eyes-green.bron) — Desk raster; fold 165; send next
+- `20260718.193720` — [HOLD Wayland eyes check-in](20260718-193720_hold-wayland-eyes-checkin.bron) — thin face; await approve
 - `20260718.193658` — [Send HOLD1 host look · check-in](20260718-193658_send-hold1-host-look-checkin.bron) — pier ship; Wayland eyes check-in
 - `20260718.193607` — [HOLD1 host Pixel look GREEN](20260718-193607_hold1-host-pixel-look.bron) — SETU0→HOLD1 on device; send look
 - `20260718.193240` — [Send HOLD1 Desk Skate hold](20260718-193240_send-hold1-desk-skate.bron) — pier ship; SETU6 / Wayland eyes check-in
@@ -73,168 +76,168 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 - `20260718.123245` — [remember adb install + restart](20260718-123245_remember-adb-install-restart.bron) — outer-terminal reprint
 - `20260718.122938` — [ZETA6 ret newline · ^ send](20260718-122938_zeta6-ret-newline-send-key.bron) — device-free GREEN; pack for Pixel
 - `20260718.122145` — [LULU · ZETA6 · Hearth align send](20260718-122145_lulu-zeta6-hearth-align-send.bron) — waymark LULU; ret→newline design
-- `20260717.214340` — [JABS2 ret toggle vs cycle](20260717-214340_jabs2-ret-toggle-vs-cycle.bron) — prefer cycle N; gesture check-in
-- `20260717.213745` — [JABS2 bare ret empty chat](20260717-213745_jabs2-bare-ret-empty-chat.bron) — first-tap ret → chat ·
-- `20260717.213242` — [remember rule · Glow first code](20260717-213242_remember-rule-save-glow-first.bron) — REMEMBER card · Acme open-runes note
-- `20260717.213058` — [JABS2 finish-zone + mode round-trip](20260717-213058_jabs2-finish-zone-mode-roundtrip.bron) — close row 13 only; TAME bans GREEN
-- `20260717.212257` — [kg JABS2 live chat face](20260717-212257_kg-jabs2-live-chat-face.bron) — Dexter ret → chat · line; pack GREEN
-- `20260717.205837` — [adb empty — host terminal](20260717-205837_adb-empty-host-terminal.bron) — jail has no /dev/bus/usb
-- `20260717.205718` — [Remind adb reconnect keyboard](20260717-205718_remind-adb-reconnect-keyboard.bron) — install + NativeActivity start
-- `20260717.191417` — [BRB save progress · resume brief](20260717-191417_brb-save-progress-resume-brief.bron) — pier clean; glass season seated
-- `20260717.191030` — [Seat waymark JABS · ZETA4 · JABS2 glass](20260717-191030_seat-waymark-jabs-zeta4-jabs2.bron) — draw JABS; rules; prune; force-push seat
-- `20260717.190646` — [ZETA4 look GREEN · JABS2 glass](20260717-190646_zeta4-look-kg-sala-b2-glass.bron) — glyphs loved; JABS2 rows 14–15 on Pixel
-- `20260717.190139` — [ZETA4 look GREEN · distinct glyphs](20260717-190139_zeta4-look-green-distinct-glyphs.bron) — Pixel GREEN; per-face silhouettes
-- `20260717.185842` — [ZETA4 emoji nod witness install](20260717-185842_zeta4-emoji-nod-witness-install.bron) — atlas · UTF-8 · APK on Pixel
-- `20260717.185037` — [Send ZETA2b look and Glow forms](20260717-185037_send-zeta2b-look-glow-forms.bron) — commit · push · pier
-- `20260717.184837` — [ZETA2b ZETA5 Pixel look GREEN](20260717-184837_zeta2b-zeta5-pixel-look-green.bron) — type · delete · tabs · :)
-- `20260717.183924` — [ZETA2b hit density pack install](20260717-183924_zeta2b-hit-density-pack-install.bron) — label-span hit; phone scale; APK on Pixel
-- `20260717.183622` — [Seat Glow OS · Desk · Glass](20260717-183622_seat-glow-os-desk-glass.bron) — Keaton chose unification + forms
-- `20260717.183425` — [Write form-factor note · send · kg](20260717-183425_write-form-factor-note-send-kg.bron) — naming/orientation silo; ship; ZETA2b next
-- `20260717.183345` — [ZETA Pixel typing GREEN · align gaps](20260717-183345_zeta-pixel-typing-green-align.bron) — type works; ZETA2b hit-box/density next
-- `20260717.183015` — [ZETA3 caret blink · kg](20260717-183015_zeta3-caret-blink-kg.bron) — `|` pulse via timerfd; pack+install; eyes next
-- `20260717.182418` — [TAME Lap 2 · kg means keep going](20260717-182418_tame-lap2-kg-keep-going.bron) — Lap2 GREEN; kg≠send; zero-assert 3 left
-- `20260717.181715` — [TAME SLC realign · Lap 1 GREEN](20260717-181715_tame-slc-realign-lap1.bron) — advise truth; DoD rules; glass asserts; memcpy 0
-- `20260717.180933` — [ZETA2 tap→Action · ZETA1 Pixel look](20260717-180933_zeta2-tap-action-pixel-look.bron) — keyboard visible; taps drain to Dexter; install Success
-- `20260717.180725` — [ZETA1 letters paint + hit · kg](20260717-180725_zeta1-letters-paint-hit-kg.bron) — QWERTY on Skate 14–17; pack GREEN
-- `20260717.180147` — [Seat waymark ZETA and ZETA0 layouts](20260717-180147_waymark-seat-zeta-and-zeta0.bron) — ZETA drawn; layout tables GREEN; ZETA1 next
-- `20260717.175328` — [Glass keyboard · iOS-inspired · align · send](20260717-175328_glass-keyboard-ios-inspired-align-send.bron) — own Skate QWERTY; layout tables next; IME/caret gaps named
-- `20260717.174805` — [Dexter D3 live KEY drain · kg](20260717-174805_dexter-d3-live-key-drain-kg.bron) — showSoftInput + KEY→Action; pack GREEN
-- `20260717.174434` — [Check-in after Dexter D2](20260717-174434_check-in-after-dexter-d2.bron) — lean soft-keyboard drain or rest
-- `20260717.174336` — [Dexter D2 Pixel look GREEN · kg](20260717-174336_dexter-d2-pixel-look-green-kg.bron) — Keaton confirmed title + DEXTER line on device
-- `20260717.174257` — [Guidance — Dexter D2 next](20260717-174257_guidance-dexter-d2-next.bron) — host install + eyes on DEXTER line
-- `20260717.174151` — [kg — tree already clean](20260717-174151_kg-tree-already-clean.bron) — main at fee0fbf8f0; nothing left to ship
-- `20260717.174036` — [Compass card · foundations compress · send](20260717-174036_compass-card-foundations-compress-send.bron) — decline archive/Bron essays; COMPASS + card; three-prompt ROADMAP align
-- `20260717.173749` — [Witness habitat · markup pipeline · send](20260717-173749_witness-habitat-markup-pipeline-send.bron) — Acme face for happy zone; fusion spine; Cursor-and-the-compass scaffold
-- `20260717.173248` — [Dexter D0+D1 glass send](20260717-173248_dexter-d0-d1-glass-send.bron) — DEXTER line · glow; pack GREEN; D2 next
-- `20260717.173042` — [Check-in after Dexter Dill align](20260717-173042_check-in-after-dexter-align.bron) — lean D0 or rest; hold jam and Dill
-- `20260717.172832` — [Align Dexter Dill Glow — research silo ROADMAP send](20260717-172832_align-dexter-dill-glow-send.bron) — active-reviving silo; D0–D2 named; mix held closed
-- `20260717.172720` — [Check-in — Dexter · Dill · Glow GrapheneOS](20260717-172720_check-in-dexter-dill-glow.bron) — Dexter under Brushstroke/Sala; Dill stays gap
-- `20260717.172403` — [Check-in after mix-as-arm](20260717-172403_check-in-after-mix-as-arm.bron) — rest · B2 layout · or jam if appetite
-- `20260717.171840` — [Glow mix-as-arm send](20260717-171840_glow-mix-as-arm-send.bron) — ?: ?- ?~ XOR arms; mix form closed
-- `20260717.171524` — [Glow (mix …) under =/ — second paren nest](20260717-171524_glow-mix-paren-under-face.bron) — XOR desk face-mix; jam still refuses
-- `20260717.171232` — [Glow lent seating brief for mix](20260717-171232_glow-lent-mix-seating-brief.bron) — lent code path mapped; mix = Hoon XOR next
-- `20260717.171116` — [Check-in after B1 Pixel look](20260717-171116_check-in-after-b1-pixel.bron) — lean mix paren or B2 glass layout
-- `20260717.171015` — [Sala B1 Pixel look GREEN](20260717-171015_sala-b1-pixel-look-green.bron) — Keaton confirmed title + B1 line on device
-- `20260717.170610` — [Pixel look — Sala B1 glass lines](20260717-170610_pixel-look-sala-b1-glass.bron) — title + row 11 carriage; host install
-- `20260717.170335` — [Sala B1 glass carriage send](20260717-170335_sala-b1-glass-carriage-send.bron) — welcome path paints row 11; pack GREEN
-- `20260717.165932` — [Check-in after lent-as-arm](20260717-165932_check-in-after-lent-as-arm.bron) — lean product HAWM/TUBE or one new paren
-- `20260717.165715` — [Glow lent-as-arm closes the form](20260717-165715_glow-lent-as-arm.bron) — ?: ?- ?~ length arms; foundations unmoved
-- `20260717.165200` — [Compass vs Glow surface — check-in](20260717-165200_compass-vs-glow-surface-check-in.bron) — keep foundations; working layer for rune surface
-- `20260717.165112` — [Check-in after lent paren send](20260717-165112_check-in-after-lent-paren.bron) — lean lent-as-arm next
-- `20260717.164748` — [Glow (lent …) first paren nest form](20260717-164748_glow-lent-paren-nest-form.bron) — expr lent_of under =/; desk GREEN
-- `20260717.164450` — [Check-in after shared nest expr send](20260717-164450_check-in-after-shared-nest-expr.bron) — paren op vs tokens vs HAWM2
-- `20260717.164350` — [Glow shared nest expr — first general-lexer lap](20260717-164350_glow-shared-nest-expr-first-lexer-lap.bron) — expr.rye; lowers share nests; GREEN
-- `20260717.163946` — [TWO_ROOMS send then check-in](20260717-163946_two-rooms-send-and-check-in.bron) — git nib 26cbe45419; three doors named
-- `20260717.163748` — [TWO_ROOMS Quin refresh and doorway GREEN](20260717-163748_two-rooms-quin-and-doorway-green.bron) — Voice Quin; 25 Status tokens; witness GREEN
-- `20260717.163310` — [Techno-Optimist gratitude to Quin then send Glow @u64](20260717-163310_techno-optimist-quin-and-u64-send.bron) — manifesto Voice Quin; nest @u64 to pier
-- `20260717.163004` — [Nested @u64 closes unsigned cast family](20260717-163004_nested-u64-cast-family.bron) — face + arm nests; desk GREEN
-- `20260717.162620` — [Quin intentionally unpaired — five settled](20260717-162620_quin-intentionally-unpaired.bron) — five boot images; no twin hunt
-- `20260717.162114` — [Quin seated as fifth OS variant](20260717-162114_quin-fifth-os-variant.bron) — beside Reya · Riyo · Trey · Triz; twin open
-- `20260717.161823` — [Glass covers Network · Sensors toggles](20260717-161823_glass-covers-network-sensors.bron) — load-bearing toggles; pack path unchanged
-- `20260717.161727` — [Glow template bron refresh then continue](20260717-161727_glow-template-bron-refresh.bron) — Quin · linux host · Eastern-capable clock in templates
-- `20260717.161626` — [README front-door sync + OTHER_SENSORS send](20260717-161626_readme-sync-and-other-sensors-send.bron) — run-today names Glow desk + TUBE/HAWM
-- `20260717.161448` — [TUBE0.5 sensors emits OTHER_SENSORS](20260717-161448_tube05-sensors-other-sensors-emit.bron) — closed table row; pairs with Sensors Grant
-- `20260717.161357` — [send GrapheneOS product-edge stack then kg](20260717-161357_send-grapheneos-product-edge.bron) — Resource Scope · Network · Sensors · glass cover to pier
-- `20260717.161220` — [Glass covers declared Storage · Contact](20260717-161220_glass-covers-storage-contact.bron) — covering scopes load-bearing; pack path unchanged
-- `20260717.161013` — [Sensors Grant mold + gated TUBE1 admit](20260717-161013_sensors-grant-gated-admit.bron) — appears zeroed; gated door + glass live
-- `20260717.160828` — [Network Grant wired into TUBE1 admit](20260717-160828_tube1-network-grant-wire.bron) — networked door + glass; deny/revoke appear down
-- `20260717.160607` — [Network Grant — GrapheneOS Network toggle parallel](20260717-160607_network-grant-grapheneos-toggle.bron) — binary grant mold GREEN; TUBE1 wire next
-- `20260717.155846` — [Contact Scope + multi-scope admit GREEN](20260717-155846_contact-scope-multi-scope-admit.bron) — Resource Scope stacks Storage + Contact; pack GREEN
-- `20260717.155651` — [TUBE1 admits through Storage Scope](20260717-155651_tube1-storage-scope-wire.bron) — scoped door + glass; pack GREEN
-- `20260717.155520` — [Glow Storage Scope — GrapheneOS parallel in Glow](20260717-155520_glow-storage-scope-grapheneos-parallel.bron) — grant mold GREEN; GrapheneOS path stays Glow
-- `20260717.155335` — [send expression nests and Zig truth ruling then check-in](20260717-155335_send-expression-nests-and-truth.bron) — nests + truth to pier; next seam needs a ruling
-- `20260717.155111` — [?~ then/else arm expressions — decimal and cast](20260717-155111_null-arm-expressions.bron) — ?~ nests 1 0; ?-category arms closed at this width
-- `20260717.154943` — [seat Glow Zig ambient truth · Nock loobean seam-only](20260717-154943_glow-truth-zig-ambient-seated.bron) — ruling + witness + LEXICON; desk GREEN
-- `20260717.154803` — [counsel — Glow loobean vs Zig/Rye bool](20260717-154803_glow-loobean-vs-zig-bool-counsel.bron) — counsel before seating; superseded by 154943 ruling
-- `20260717.154644` — [?- mint/send arm expressions — decimal and cast](20260717-154644_switch-arm-expressions.bron) — ?- nests %mint 1 %send 0; desk GREEN
-- `20260717.154458` — [?: then/else arm expressions — decimal and cast](20260717-154458_conditional-arm-expressions.bron) — ?: nests 1 0 and ^- arms; desk GREEN
-- `20260717.154327` — [first nested value expression — =/ over ^-](20260717-154327_face-nested-cast-expression.bron) — face nests cast-of-literal; desk GREEN
-- `20260717.154204` — [send Glow body-deepen lap then check-in](20260717-154204_send-body-deepen-lap.bron) — deepen batch to pier; next seam needs a ruling
-- `20260717.154131` — [=* named source — = category bodies complete](20260717-154131_alias-named-source-complete.bron) — stock source; deepen lap closed at this width
-- `20260717.154012` — [Glow desk looks run in-jail by Quin](20260717-154012_glow-self-look-in-jail.bron) — no Android; stop asking Keaton to re-run glow_run
-- `20260717.153951` — [=. trailing mutate value deepens GREEN](20260717-153951_mutate-trailing-value.bron) — decimal after root; mutate-root.glow 42
-- `20260717.153900` — [?~ then/else named arms deepen GREEN](20260717-153900_null-named-arms.bron) — root/cont arms; null-records.glow
-- `20260717.153756` — [=/ trailing bound value deepens GREEN](20260717-153756_face-trailing-value.bron) — decimal after face clause; face-root.glow 42
-- `20260717.153656` — [?- mint/send named arms deepen GREEN](20260717-153656_switch-named-arms.bron) — %mint/%send faces; switch-kind.glow
-- `20260717.153609` — [Counsel — do not make Glow the %g vane](20260717-153609_glow-not-g-vane-counsel.bron) — Pool stays Gall-role; Glow stays language
-- `20260717.153525` — [?: then/else named arms deepen GREEN](20260717-153525_conditional-named-arms.bron) — delivered/dropped if-expression; if-gth.glow
-- `20260717.153403` — [Lent emit deepens to shrinking fold GREEN](20260717-153403_lent-shrinking-fold.bron) — while len>0 + slice[1..]; BoundExceeded on non-shrink
-- `20260717.152923` — [send eight-head emit and cast auras](20260717-152923_send-eight-heads-and-auras.bron) — =. · =* · @u8–@u64 to pier
-- `20260717.152847` — [Glow cast auras @u8–@u64 GREEN](20260717-152847_glow-cast-aura-family.bron) — unsigned family; cast-u8.glow; deepen still check-in
-- `20260717.152730` — [Glow =* alias — eight heads emit GREEN](20260717-152730_glow-alias-eight-complete.bron) — no-copy alias; all eight hops via desk
-- `20260717.152622` — [Glow =. mutate lowers to Rye GREEN](20260717-152622_glow-mutate-root-lower.bron) — bare root var write; mutate-root.glow
-- `20260717.152511` — [send Glow generator hops through ?~](20260717-152511_send-glow-hops-through-null.bron) — ?- · =/ · ?~ to pier; kg to =.
-- `20260717.152438` — [Glow ?~ null lowers to Rye GREEN](20260717-152438_glow-null-records-lower.bron) — records.cur optional null-test; null-records.glow
-- `20260717.152245` — [Glow =/ face lowers to Rye GREEN](20260717-152245_glow-face-root-lower.bron) — next-root=@u32 / bare tick; face-root.glow
-- `20260717.152019` — [Glow ?- switch lowers to Rye GREEN](20260717-152019_glow-switch-kind-lower.bron) — kind.cur-record mint/send; switch-kind.glow
-- `20260717.151854` — [send Glow generator hops through ?:](20260717-151854_send-glow-hops-through-if.bron) — lent · cast · conditional to pier; kg to ?-
-- `20260717.151802` — [Glow ?: conditional lowers to Rye GREEN](20260717-151802_glow-conditional-lower.bron) — (gth tick 32) / ready if-else; if-gth.glow
-- `20260717.151634` — [Glow ^- @u32 cast lowers to Rye GREEN](20260717-151634_glow-cast-u32-lower.bron) — checked cast hop; cast-u32.glow via glow_run
-- `20260717.151515` — [glow_run desk witness wired into parity](20260717-151515_glow-run-desk-parity.bron) — bound-tick + lent-tick via Rishi hand
-- `20260717.151403` — [Glow (lent …) bound lowers to Rye GREEN](20260717-151403_glow-lent-bound-lower.bron) — runtime face.len emit; lent-tick.glow via glow_run
-- `20260717.151200` — [Keaton confirmed glow_run bound-tick GREEN](20260717-151200_glow-run-bound-tick-green.bron) — first generator hop closed on his hand
-- `20260717.151000` — [First Glow generator hop — |- lowers to Rye GREEN](20260717-151000_glow-generator-first-hop.bron) — bound-tick.glow via Rishi hand
-- `20260717.150600` — [Glow generator vs Rishi naming — recommendation](20260717-150600_glow-generator-rishi-naming.bron) — keep Rishi shell; glow build + |- lower first
-- `20260717.150453` — [Eighth rune head — =* alias GREEN](20260717-150453_eighth-rune-alias.bron) — = category complete; unsaved with =.
-- `20260717.150409` — [Seventh rune head — =. mutate GREEN](20260717-150409_seventh-rune-mutate.bron) — = category deepened; unsaved
-- `20260717.150309` — [send TUBE glass through TUBE7 and six rune heads](20260717-150309_send-glass-and-rune-heads.bron) — pier holds glass + |- ^- ?: ?- =/ ?~
-- `20260717.150219` — [Sixth rune head — ?~ null test GREEN](20260717-150219_sixth-rune-null.bron) — ? category deepened; composition heads covered; batch unsaved
-- `20260717.150053` — [Fifth rune head — =/ face binding GREEN](20260717-150053_fifth-rune-face.bron) — = category opened; parity wired; batch unsaved
-- `20260717.150005` — [Fourth rune head — ?- exhaustive switch GREEN](20260717-150005_fourth-rune-switch.bron) — subject wing parses; parity wired; batch unsaved
-- `20260717.145912` — [Third rune category — ?: if/then/else head GREEN](20260717-145912_third-rune-conditional.bron) — test child parses; parity wired; batch unsaved
-- `20260717.145547` — [TUBE4 look and TUBE7 glass path GREEN — batch](20260717-145547_tube4-tube7-glass-green-batch.bron) — Pixel rail closed; TUBE6/HAWM2 check-in; send later
-- `20260717.145400` — [TUBE3 look closed; TUBE4 glass painted — batch](20260717-145400_tube3-look-tube4-glass-batch.bron) — pack GREEN; host look for market · acquired; send later
-- `20260717.144620` — [TUBE3 sealed fetch painted on Skate Android glass](20260717-144620_tube3-fetch-on-skate-glass.bron) — pack GREEN; host look for sealed · fetch ok
-- `20260717.144536` — [TUBE2 Pixel look GREEN — send and kg](20260717-144536_tube2-pixel-look-green.bron) — look closed; TUBE3 glass next
-- `20260717.144300` — [send TUBE2 glass and OpenVM silo](20260717-144300_send-tube2-and-openvm-silo.bron) — pier holds glass path + soundness silo
-- `20260717.144200` — [silo OpenVM pairing-hint soundness lessons](20260717-144200_openvm-soundness-silo.bron) — composition · hints · cheap membership; Sigma pin affirmed
-- `20260717.144132` — [pause — save TUBE2 glass progress](20260717-144132_pause-save-tube2-glass.bron) — commit glass path; look still open
-- `20260717.140800` — [TUBE2 publish painted on Skate Android glass](20260717-140800_tube2-pub-on-skate-glass.bron) — pack GREEN; host look for published · verified
-- `20260717.140623` — [send TUBE5 Mantra revision and glass tip](20260717-140623_send-tube5-glass-tip.bron) — Pixel look confirmed; ship to pier
-- `20260717.140320` — [tube05 install proof — no adb device](20260717-140320_tube05-install-no-adb-device.bron) — Pixel on USB; adb still empty; authorize then retry
-- `20260717.135727` — [TUBE5 tip painted on Skate Android glass](20260717-135727_tube5-tip-on-skate-glass.bron) — pack GREEN; host look for tip rev2 next
-- `20260717.135248` — [TUBE5 Mantra-revision witness GREEN](20260717-135248_tube5-mantra-revision-green.bron) — dense rev history + rollback-by-selection; parity wired
-- `20260717.135053` — [Send TUBE4 market-rail GREEN](20260717-135053_send-tube4-market-rail.bron) — commit + push; kg TUBE5 Mantra revision next
-- `20260717.134355` — [TUBE4 market-rail witness GREEN](20260717-134355_tube4-market-rail-green.bron) — Exchange + Neth settle + fetch unlock; parity wired
-- `20260717.134122` — [Send TUBE3 sealed resin-fetch GREEN](20260717-134122_send-tube3-resin-fetch.bron) — commit + push; next TUBE4 market rail
-- `20260717.134037` — [TUBE3 sealed resin-fetch witness GREEN](20260717-134037_tube3-resin-fetch-green.bron) — Comlink seal + published-set gate; parity wired
-- `20260717.133825` — [Send TUBE2 signed publish GREEN](20260717-133825_send-tube2-publish.bron) — commit + push; kg TUBE3 resin fetch next
-- `20260717.131618` — [TUBE2 signed publish witness GREEN](20260717-131618_tube2-publish-green.bron) — Granary name-fact + admit before install; parity wired
-- `20260717.131410` — [Send TUBE1 admission and glass gate GREEN](20260717-131410_send-tube1-glass-pixel.bron) — commit + push; kg TUBE2 next
-- `20260717.131404` — [TUBE1 glass gate seen on the Pixel](20260717-131404_tube1-glass-seen-on-pixel.bron) — install proof GREEN; T1 title confirmed on glass
-- `20260717.131158` — [TUBE1 glass gate wired into NativeActivity onCreate](20260717-131158_tube1-glass-gate-on-create.bron) — R2 paints only after admit; pack GREEN
-- `20260717.131030` — [TUBE1 admission witness GREEN](20260717-131030_tube1-admission-green.bron) — manifest caps must match grant; parity_ch01 wired
-- `20260717.130922` — [Send R2 surface on Pixel GREEN](20260717-130922_send-r2-surface-pixel.bron) — commit + push; kg next after glass present seam
-- `20260717.130848` — [Sala R2 surface seen on the Pixel](20260717-130848_r2-surface-seen-on-pixel.bron) — install proof GREEN; three panels confirmed on glass
-- `20260717.130735` — [Sala R2 multi-panel surface on Skate Android glass](20260717-130735_sala-r2-surface-on-skate-glass.bron) — pack GREEN; host look for three panels next
-- `20260717.130610` — [Send R1 thin-view on Pixel GREEN](20260717-130610_send-r1-thin-view-pixel.bron) — commit + push; kg R2 multi-panel next
-- `20260717.130602` — [Sala R1 thin-view seen on the Pixel](20260717-130602_r1-thin-view-seen-on-pixel.bron) — install proof GREEN; ledger lines confirmed on glass
-- `20260717.130434` — [Sala R1 thin-view painted on Skate Android glass](20260717-130434_sala-r1-thin-view-on-skate-glass.bron) — pack GREEN; host look for ledger lines next
-- `20260717.130209` — [Send Bron archive fold through 20260716](20260717-130209_send-bron-archive-fold.bron) — commit + push origin and codeberg; kg thin-view next
-- `20260717.130124` — [Archive fold Bron days through 20260716](20260717-130124_archive-bron-days-through-16.bron) — tool accepts .bron; 209 logs folded; today stays flat
-- `20260717.125858` — [Skate look confirmed on the Pixel](20260717-125858_skate-seen-on-pixel.bron) — Skate glyphs on GrapheneOS glass; install proof GREEN
-- `20260717.125642` — [Skate grid rasterized onto Android NativeActivity glass](20260717-125642_skate-on-android-glass.bron) — pack GREEN; host look next
-- `20260717.125302` — [Tap to close confirmed on the Pixel](20260717-125302_tap-to-close-confirmed.bron) — chrome + input finish seen on GrapheneOS
-- `20260717.125143` — [Surface chrome — title GREEN, match color, tap to close](20260717-125143_surface-title-tap-close.bron) — pack GREEN; host look next
-- `20260717.124843` — [First NativeActivity surface seen on the Pixel](20260717-124843_surface-seen-on-pixel.bron) — Keaton confirmed hex on GrapheneOS glass; install proof GREEN
-- `20260717.124458` — [First NativeActivity surface paints the Sala root hex](20260717-124458_native-activity-surface-hex.bron) — ANativeWindow software paint; pack GREEN; host look next
-- `20260717.124130` — [What next after TUBE0.5 closed end to end](20260717-124130_what-next-after-tube05.bron) — surface vs rest vs other lanes
-- `20260717.124029` — [ANativeActivity_finish reproven GREEN on the Pixel](20260717-124029_tube05-finish-pixel-reproof-green.bron) — finish after write; install proof still GREEN
-- `20260717.123314` — [ANativeActivity_finish after Sala fold; Pixel GREEN sent](20260717-123314_tube05-finish-after-fold.bron) — e7496585b9 sent; finish + libandroid; pack re-GREEN
-- `20260717.123226` — [TUBE0.5 install GREEN on the physical Pixel 10a](20260717-123226_tube05-pixel-install-green.bron) — stallion / GrapheneOS; sala_root.txt matches HAWM1; TUBE0.5 end to end
-- `20260717.123100` — [Pixel shows adb unauthorized](20260717-123100_adb-unauthorized-pixel.bron) — Allow dialog was the gate; witness error improved
-- `20260717.122450` — [Instructions for next steps after TUBE0.5 HAWM0 GREEN](20260717-122450_next-steps-tube05-pixel.bron) — Pixel USB install proof named as the finishing edge
-- `20260717.122231` — [Model fields corrected to Cursor Grok 4.5 300k High Fast](20260717-122231_model-field-corrected-to-grok.bron) — Claude credits exhausted; afternoon TUBE0.5 logs re-attributed; Framework host profile updated
-- `20260717.122010` — [TUBE0.5 on-device install GREEN on HAWM0](20260717-122010_tube05-hawm0-install-green.bron) — host HAWM0 boot + install proof; sala_root.txt matches HAWM1 root
-- `20260717.121800` — [Ten batches roll-up — align and send](20260717-121800_align-send-ten-batches.md) ([Bron](20260717-121800_align-send-ten-batches.bron)) — MD summary of Pixel→HAWM3→TUBE0.5 arc; compass align; host install proof named as the one next step
-- `20260717.121743` — [TUBE0.5 jailed slice polished and re-verified GREEN](20260717-121743_tube05-jailed-slice-ready.bron) — rye rebuilt with build-lib; HAWM door + README synced; pack witness still GREEN
-- `20260717.121625` — [TUBE0.5 install-proof host witness ready](20260717-121625_tube05-install-proof-host-witness.bron) — one-shot adb install + sala_root.txt check; jail correctly refuses without a device
-- `20260717.121445` — [Sala B0 fold wired into TUBE0.5 NativeActivity APK](20260717-121445_sala-fold-wired-tube05-apk.bron) — pack worker ASCII fix; NDK-linked arm64+x86_64 APK; onCreate runs HAWM1 demo fold; host-side witness GREEN
-- `20260717.020613` — [gratitude/grapheneos/ docs mirror finished](20260717-020613_grapheneos-gratitude-mirror-complete.bron) — CLI install guide, features overview, and appreciation README complete the mirror
-- `20260717.022323` — [Dual-door docs orientation — HAWM and TUBE compressors](20260717-022323_dual-door-docs-hawm-tube.bron) — language path and device path meet at packaging; LEXICON seats both ladders
-- `20260717.021857` — [TUBE0.5 host-side packaging GREEN](20260717-021857_tube05-host-side-apk-green.bron) — first Glow NativeActivity APK packed (permission emission, envelope, signed APK)
-- `20260717.014522` — [No Kotlin transpiler; a native-activity shim instead](20260717-014522_native-activity-shim-decision.bron) — Glow stays native for Android; TUBE0.5 named as the missing installable-APK rung
-- `20260717.013213` — [GrapheneOS installed on the physical Pixel 10a](20260717-013213_grapheneos-installed-pixel-10a.bron) — HAWM3 touches real hardware for the first time on the whole ladder
+- `20260717.214340` — [JABS2 ret toggle vs cycle](archive/20260717/20260717-214340_jabs2-ret-toggle-vs-cycle.bron) — prefer cycle N; gesture check-in
+- `20260717.213745` — [JABS2 bare ret empty chat](archive/20260717/20260717-213745_jabs2-bare-ret-empty-chat.bron) — first-tap ret → chat ·
+- `20260717.213242` — [remember rule · Glow first code](archive/20260717/20260717-213242_remember-rule-save-glow-first.bron) — REMEMBER card · Acme open-runes note
+- `20260717.213058` — [JABS2 finish-zone + mode round-trip](archive/20260717/20260717-213058_jabs2-finish-zone-mode-roundtrip.bron) — close row 13 only; TAME bans GREEN
+- `20260717.212257` — [kg JABS2 live chat face](archive/20260717/20260717-212257_kg-jabs2-live-chat-face.bron) — Dexter ret → chat · line; pack GREEN
+- `20260717.205837` — [adb empty — host terminal](archive/20260717/20260717-205837_adb-empty-host-terminal.bron) — jail has no /dev/bus/usb
+- `20260717.205718` — [Remind adb reconnect keyboard](archive/20260717/20260717-205718_remind-adb-reconnect-keyboard.bron) — install + NativeActivity start
+- `20260717.191417` — [BRB save progress · resume brief](archive/20260717/20260717-191417_brb-save-progress-resume-brief.bron) — pier clean; glass season seated
+- `20260717.191030` — [Seat waymark JABS · ZETA4 · JABS2 glass](archive/20260717/20260717-191030_seat-waymark-jabs-zeta4-jabs2.bron) — draw JABS; rules; prune; force-push seat
+- `20260717.190646` — [ZETA4 look GREEN · JABS2 glass](archive/20260717/20260717-190646_zeta4-look-kg-sala-b2-glass.bron) — glyphs loved; JABS2 rows 14–15 on Pixel
+- `20260717.190139` — [ZETA4 look GREEN · distinct glyphs](archive/20260717/20260717-190139_zeta4-look-green-distinct-glyphs.bron) — Pixel GREEN; per-face silhouettes
+- `20260717.185842` — [ZETA4 emoji nod witness install](archive/20260717/20260717-185842_zeta4-emoji-nod-witness-install.bron) — atlas · UTF-8 · APK on Pixel
+- `20260717.185037` — [Send ZETA2b look and Glow forms](archive/20260717/20260717-185037_send-zeta2b-look-glow-forms.bron) — commit · push · pier
+- `20260717.184837` — [ZETA2b ZETA5 Pixel look GREEN](archive/20260717/20260717-184837_zeta2b-zeta5-pixel-look-green.bron) — type · delete · tabs · :)
+- `20260717.183924` — [ZETA2b hit density pack install](archive/20260717/20260717-183924_zeta2b-hit-density-pack-install.bron) — label-span hit; phone scale; APK on Pixel
+- `20260717.183622` — [Seat Glow OS · Desk · Glass](archive/20260717/20260717-183622_seat-glow-os-desk-glass.bron) — Keaton chose unification + forms
+- `20260717.183425` — [Write form-factor note · send · kg](archive/20260717/20260717-183425_write-form-factor-note-send-kg.bron) — naming/orientation silo; ship; ZETA2b next
+- `20260717.183345` — [ZETA Pixel typing GREEN · align gaps](archive/20260717/20260717-183345_zeta-pixel-typing-green-align.bron) — type works; ZETA2b hit-box/density next
+- `20260717.183015` — [ZETA3 caret blink · kg](archive/20260717/20260717-183015_zeta3-caret-blink-kg.bron) — `|` pulse via timerfd; pack+install; eyes next
+- `20260717.182418` — [TAME Lap 2 · kg means keep going](archive/20260717/20260717-182418_tame-lap2-kg-keep-going.bron) — Lap2 GREEN; kg≠send; zero-assert 3 left
+- `20260717.181715` — [TAME SLC realign · Lap 1 GREEN](archive/20260717/20260717-181715_tame-slc-realign-lap1.bron) — advise truth; DoD rules; glass asserts; memcpy 0
+- `20260717.180933` — [ZETA2 tap→Action · ZETA1 Pixel look](archive/20260717/20260717-180933_zeta2-tap-action-pixel-look.bron) — keyboard visible; taps drain to Dexter; install Success
+- `20260717.180725` — [ZETA1 letters paint + hit · kg](archive/20260717/20260717-180725_zeta1-letters-paint-hit-kg.bron) — QWERTY on Skate 14–17; pack GREEN
+- `20260717.180147` — [Seat waymark ZETA and ZETA0 layouts](archive/20260717/20260717-180147_waymark-seat-zeta-and-zeta0.bron) — ZETA drawn; layout tables GREEN; ZETA1 next
+- `20260717.175328` — [Glass keyboard · iOS-inspired · align · send](archive/20260717/20260717-175328_glass-keyboard-ios-inspired-align-send.bron) — own Skate QWERTY; layout tables next; IME/caret gaps named
+- `20260717.174805` — [Dexter D3 live KEY drain · kg](archive/20260717/20260717-174805_dexter-d3-live-key-drain-kg.bron) — showSoftInput + KEY→Action; pack GREEN
+- `20260717.174434` — [Check-in after Dexter D2](archive/20260717/20260717-174434_check-in-after-dexter-d2.bron) — lean soft-keyboard drain or rest
+- `20260717.174336` — [Dexter D2 Pixel look GREEN · kg](archive/20260717/20260717-174336_dexter-d2-pixel-look-green-kg.bron) — Keaton confirmed title + DEXTER line on device
+- `20260717.174257` — [Guidance — Dexter D2 next](archive/20260717/20260717-174257_guidance-dexter-d2-next.bron) — host install + eyes on DEXTER line
+- `20260717.174151` — [kg — tree already clean](archive/20260717/20260717-174151_kg-tree-already-clean.bron) — main at fee0fbf8f0; nothing left to ship
+- `20260717.174036` — [Compass card · foundations compress · send](archive/20260717/20260717-174036_compass-card-foundations-compress-send.bron) — decline archive/Bron essays; COMPASS + card; three-prompt ROADMAP align
+- `20260717.173749` — [Witness habitat · markup pipeline · send](archive/20260717/20260717-173749_witness-habitat-markup-pipeline-send.bron) — Acme face for happy zone; fusion spine; Cursor-and-the-compass scaffold
+- `20260717.173248` — [Dexter D0+D1 glass send](archive/20260717/20260717-173248_dexter-d0-d1-glass-send.bron) — DEXTER line · glow; pack GREEN; D2 next
+- `20260717.173042` — [Check-in after Dexter Dill align](archive/20260717/20260717-173042_check-in-after-dexter-align.bron) — lean D0 or rest; hold jam and Dill
+- `20260717.172832` — [Align Dexter Dill Glow — research silo ROADMAP send](archive/20260717/20260717-172832_align-dexter-dill-glow-send.bron) — active-reviving silo; D0–D2 named; mix held closed
+- `20260717.172720` — [Check-in — Dexter · Dill · Glow GrapheneOS](archive/20260717/20260717-172720_check-in-dexter-dill-glow.bron) — Dexter under Brushstroke/Sala; Dill stays gap
+- `20260717.172403` — [Check-in after mix-as-arm](archive/20260717/20260717-172403_check-in-after-mix-as-arm.bron) — rest · B2 layout · or jam if appetite
+- `20260717.171840` — [Glow mix-as-arm send](archive/20260717/20260717-171840_glow-mix-as-arm-send.bron) — ?: ?- ?~ XOR arms; mix form closed
+- `20260717.171524` — [Glow (mix …) under =/ — second paren nest](archive/20260717/20260717-171524_glow-mix-paren-under-face.bron) — XOR desk face-mix; jam still refuses
+- `20260717.171232` — [Glow lent seating brief for mix](archive/20260717/20260717-171232_glow-lent-mix-seating-brief.bron) — lent code path mapped; mix = Hoon XOR next
+- `20260717.171116` — [Check-in after B1 Pixel look](archive/20260717/20260717-171116_check-in-after-b1-pixel.bron) — lean mix paren or B2 glass layout
+- `20260717.171015` — [Sala B1 Pixel look GREEN](archive/20260717/20260717-171015_sala-b1-pixel-look-green.bron) — Keaton confirmed title + B1 line on device
+- `20260717.170610` — [Pixel look — Sala B1 glass lines](archive/20260717/20260717-170610_pixel-look-sala-b1-glass.bron) — title + row 11 carriage; host install
+- `20260717.170335` — [Sala B1 glass carriage send](archive/20260717/20260717-170335_sala-b1-glass-carriage-send.bron) — welcome path paints row 11; pack GREEN
+- `20260717.165932` — [Check-in after lent-as-arm](archive/20260717/20260717-165932_check-in-after-lent-as-arm.bron) — lean product HAWM/TUBE or one new paren
+- `20260717.165715` — [Glow lent-as-arm closes the form](archive/20260717/20260717-165715_glow-lent-as-arm.bron) — ?: ?- ?~ length arms; foundations unmoved
+- `20260717.165200` — [Compass vs Glow surface — check-in](archive/20260717/20260717-165200_compass-vs-glow-surface-check-in.bron) — keep foundations; working layer for rune surface
+- `20260717.165112` — [Check-in after lent paren send](archive/20260717/20260717-165112_check-in-after-lent-paren.bron) — lean lent-as-arm next
+- `20260717.164748` — [Glow (lent …) first paren nest form](archive/20260717/20260717-164748_glow-lent-paren-nest-form.bron) — expr lent_of under =/; desk GREEN
+- `20260717.164450` — [Check-in after shared nest expr send](archive/20260717/20260717-164450_check-in-after-shared-nest-expr.bron) — paren op vs tokens vs HAWM2
+- `20260717.164350` — [Glow shared nest expr — first general-lexer lap](archive/20260717/20260717-164350_glow-shared-nest-expr-first-lexer-lap.bron) — expr.rye; lowers share nests; GREEN
+- `20260717.163946` — [TWO_ROOMS send then check-in](archive/20260717/20260717-163946_two-rooms-send-and-check-in.bron) — git nib 26cbe45419; three doors named
+- `20260717.163748` — [TWO_ROOMS Quin refresh and doorway GREEN](archive/20260717/20260717-163748_two-rooms-quin-and-doorway-green.bron) — Voice Quin; 25 Status tokens; witness GREEN
+- `20260717.163310` — [Techno-Optimist gratitude to Quin then send Glow @u64](archive/20260717/20260717-163310_techno-optimist-quin-and-u64-send.bron) — manifesto Voice Quin; nest @u64 to pier
+- `20260717.163004` — [Nested @u64 closes unsigned cast family](archive/20260717/20260717-163004_nested-u64-cast-family.bron) — face + arm nests; desk GREEN
+- `20260717.162620` — [Quin intentionally unpaired — five settled](archive/20260717/20260717-162620_quin-intentionally-unpaired.bron) — five boot images; no twin hunt
+- `20260717.162114` — [Quin seated as fifth OS variant](archive/20260717/20260717-162114_quin-fifth-os-variant.bron) — beside Reya · Riyo · Trey · Triz; twin open
+- `20260717.161823` — [Glass covers Network · Sensors toggles](archive/20260717/20260717-161823_glass-covers-network-sensors.bron) — load-bearing toggles; pack path unchanged
+- `20260717.161727` — [Glow template bron refresh then continue](archive/20260717/20260717-161727_glow-template-bron-refresh.bron) — Quin · linux host · Eastern-capable clock in templates
+- `20260717.161626` — [README front-door sync + OTHER_SENSORS send](archive/20260717/20260717-161626_readme-sync-and-other-sensors-send.bron) — run-today names Glow desk + TUBE/HAWM
+- `20260717.161448` — [TUBE0.5 sensors emits OTHER_SENSORS](archive/20260717/20260717-161448_tube05-sensors-other-sensors-emit.bron) — closed table row; pairs with Sensors Grant
+- `20260717.161357` — [send GrapheneOS product-edge stack then kg](archive/20260717/20260717-161357_send-grapheneos-product-edge.bron) — Resource Scope · Network · Sensors · glass cover to pier
+- `20260717.161220` — [Glass covers declared Storage · Contact](archive/20260717/20260717-161220_glass-covers-storage-contact.bron) — covering scopes load-bearing; pack path unchanged
+- `20260717.161013` — [Sensors Grant mold + gated TUBE1 admit](archive/20260717/20260717-161013_sensors-grant-gated-admit.bron) — appears zeroed; gated door + glass live
+- `20260717.160828` — [Network Grant wired into TUBE1 admit](archive/20260717/20260717-160828_tube1-network-grant-wire.bron) — networked door + glass; deny/revoke appear down
+- `20260717.160607` — [Network Grant — GrapheneOS Network toggle parallel](archive/20260717/20260717-160607_network-grant-grapheneos-toggle.bron) — binary grant mold GREEN; TUBE1 wire next
+- `20260717.155846` — [Contact Scope + multi-scope admit GREEN](archive/20260717/20260717-155846_contact-scope-multi-scope-admit.bron) — Resource Scope stacks Storage + Contact; pack GREEN
+- `20260717.155651` — [TUBE1 admits through Storage Scope](archive/20260717/20260717-155651_tube1-storage-scope-wire.bron) — scoped door + glass; pack GREEN
+- `20260717.155520` — [Glow Storage Scope — GrapheneOS parallel in Glow](archive/20260717/20260717-155520_glow-storage-scope-grapheneos-parallel.bron) — grant mold GREEN; GrapheneOS path stays Glow
+- `20260717.155335` — [send expression nests and Zig truth ruling then check-in](archive/20260717/20260717-155335_send-expression-nests-and-truth.bron) — nests + truth to pier; next seam needs a ruling
+- `20260717.155111` — [?~ then/else arm expressions — decimal and cast](archive/20260717/20260717-155111_null-arm-expressions.bron) — ?~ nests 1 0; ?-category arms closed at this width
+- `20260717.154943` — [seat Glow Zig ambient truth · Nock loobean seam-only](archive/20260717/20260717-154943_glow-truth-zig-ambient-seated.bron) — ruling + witness + LEXICON; desk GREEN
+- `20260717.154803` — [counsel — Glow loobean vs Zig/Rye bool](archive/20260717/20260717-154803_glow-loobean-vs-zig-bool-counsel.bron) — counsel before seating; superseded by 154943 ruling
+- `20260717.154644` — [?- mint/send arm expressions — decimal and cast](archive/20260717/20260717-154644_switch-arm-expressions.bron) — ?- nests %mint 1 %send 0; desk GREEN
+- `20260717.154458` — [?: then/else arm expressions — decimal and cast](archive/20260717/20260717-154458_conditional-arm-expressions.bron) — ?: nests 1 0 and ^- arms; desk GREEN
+- `20260717.154327` — [first nested value expression — =/ over ^-](archive/20260717/20260717-154327_face-nested-cast-expression.bron) — face nests cast-of-literal; desk GREEN
+- `20260717.154204` — [send Glow body-deepen lap then check-in](archive/20260717/20260717-154204_send-body-deepen-lap.bron) — deepen batch to pier; next seam needs a ruling
+- `20260717.154131` — [=* named source — = category bodies complete](archive/20260717/20260717-154131_alias-named-source-complete.bron) — stock source; deepen lap closed at this width
+- `20260717.154012` — [Glow desk looks run in-jail by Quin](archive/20260717/20260717-154012_glow-self-look-in-jail.bron) — no Android; stop asking Keaton to re-run glow_run
+- `20260717.153951` — [=. trailing mutate value deepens GREEN](archive/20260717/20260717-153951_mutate-trailing-value.bron) — decimal after root; mutate-root.glow 42
+- `20260717.153900` — [?~ then/else named arms deepen GREEN](archive/20260717/20260717-153900_null-named-arms.bron) — root/cont arms; null-records.glow
+- `20260717.153756` — [=/ trailing bound value deepens GREEN](archive/20260717/20260717-153756_face-trailing-value.bron) — decimal after face clause; face-root.glow 42
+- `20260717.153656` — [?- mint/send named arms deepen GREEN](archive/20260717/20260717-153656_switch-named-arms.bron) — %mint/%send faces; switch-kind.glow
+- `20260717.153609` — [Counsel — do not make Glow the %g vane](archive/20260717/20260717-153609_glow-not-g-vane-counsel.bron) — Pool stays Gall-role; Glow stays language
+- `20260717.153525` — [?: then/else named arms deepen GREEN](archive/20260717/20260717-153525_conditional-named-arms.bron) — delivered/dropped if-expression; if-gth.glow
+- `20260717.153403` — [Lent emit deepens to shrinking fold GREEN](archive/20260717/20260717-153403_lent-shrinking-fold.bron) — while len>0 + slice[1..]; BoundExceeded on non-shrink
+- `20260717.152923` — [send eight-head emit and cast auras](archive/20260717/20260717-152923_send-eight-heads-and-auras.bron) — =. · =* · @u8–@u64 to pier
+- `20260717.152847` — [Glow cast auras @u8–@u64 GREEN](archive/20260717/20260717-152847_glow-cast-aura-family.bron) — unsigned family; cast-u8.glow; deepen still check-in
+- `20260717.152730` — [Glow =* alias — eight heads emit GREEN](archive/20260717/20260717-152730_glow-alias-eight-complete.bron) — no-copy alias; all eight hops via desk
+- `20260717.152622` — [Glow =. mutate lowers to Rye GREEN](archive/20260717/20260717-152622_glow-mutate-root-lower.bron) — bare root var write; mutate-root.glow
+- `20260717.152511` — [send Glow generator hops through ?~](archive/20260717/20260717-152511_send-glow-hops-through-null.bron) — ?- · =/ · ?~ to pier; kg to =.
+- `20260717.152438` — [Glow ?~ null lowers to Rye GREEN](archive/20260717/20260717-152438_glow-null-records-lower.bron) — records.cur optional null-test; null-records.glow
+- `20260717.152245` — [Glow =/ face lowers to Rye GREEN](archive/20260717/20260717-152245_glow-face-root-lower.bron) — next-root=@u32 / bare tick; face-root.glow
+- `20260717.152019` — [Glow ?- switch lowers to Rye GREEN](archive/20260717/20260717-152019_glow-switch-kind-lower.bron) — kind.cur-record mint/send; switch-kind.glow
+- `20260717.151854` — [send Glow generator hops through ?:](archive/20260717/20260717-151854_send-glow-hops-through-if.bron) — lent · cast · conditional to pier; kg to ?-
+- `20260717.151802` — [Glow ?: conditional lowers to Rye GREEN](archive/20260717/20260717-151802_glow-conditional-lower.bron) — (gth tick 32) / ready if-else; if-gth.glow
+- `20260717.151634` — [Glow ^- @u32 cast lowers to Rye GREEN](archive/20260717/20260717-151634_glow-cast-u32-lower.bron) — checked cast hop; cast-u32.glow via glow_run
+- `20260717.151515` — [glow_run desk witness wired into parity](archive/20260717/20260717-151515_glow-run-desk-parity.bron) — bound-tick + lent-tick via Rishi hand
+- `20260717.151403` — [Glow (lent …) bound lowers to Rye GREEN](archive/20260717/20260717-151403_glow-lent-bound-lower.bron) — runtime face.len emit; lent-tick.glow via glow_run
+- `20260717.151200` — [Keaton confirmed glow_run bound-tick GREEN](archive/20260717/20260717-151200_glow-run-bound-tick-green.bron) — first generator hop closed on his hand
+- `20260717.151000` — [First Glow generator hop — |- lowers to Rye GREEN](archive/20260717/20260717-151000_glow-generator-first-hop.bron) — bound-tick.glow via Rishi hand
+- `20260717.150600` — [Glow generator vs Rishi naming — recommendation](archive/20260717/20260717-150600_glow-generator-rishi-naming.bron) — keep Rishi shell; glow build + |- lower first
+- `20260717.150453` — [Eighth rune head — =* alias GREEN](archive/20260717/20260717-150453_eighth-rune-alias.bron) — = category complete; unsaved with =.
+- `20260717.150409` — [Seventh rune head — =. mutate GREEN](archive/20260717/20260717-150409_seventh-rune-mutate.bron) — = category deepened; unsaved
+- `20260717.150309` — [send TUBE glass through TUBE7 and six rune heads](archive/20260717/20260717-150309_send-glass-and-rune-heads.bron) — pier holds glass + |- ^- ?: ?- =/ ?~
+- `20260717.150219` — [Sixth rune head — ?~ null test GREEN](archive/20260717/20260717-150219_sixth-rune-null.bron) — ? category deepened; composition heads covered; batch unsaved
+- `20260717.150053` — [Fifth rune head — =/ face binding GREEN](archive/20260717/20260717-150053_fifth-rune-face.bron) — = category opened; parity wired; batch unsaved
+- `20260717.150005` — [Fourth rune head — ?- exhaustive switch GREEN](archive/20260717/20260717-150005_fourth-rune-switch.bron) — subject wing parses; parity wired; batch unsaved
+- `20260717.145912` — [Third rune category — ?: if/then/else head GREEN](archive/20260717/20260717-145912_third-rune-conditional.bron) — test child parses; parity wired; batch unsaved
+- `20260717.145547` — [TUBE4 look and TUBE7 glass path GREEN — batch](archive/20260717/20260717-145547_tube4-tube7-glass-green-batch.bron) — Pixel rail closed; TUBE6/HAWM2 check-in; send later
+- `20260717.145400` — [TUBE3 look closed; TUBE4 glass painted — batch](archive/20260717/20260717-145400_tube3-look-tube4-glass-batch.bron) — pack GREEN; host look for market · acquired; send later
+- `20260717.144620` — [TUBE3 sealed fetch painted on Skate Android glass](archive/20260717/20260717-144620_tube3-fetch-on-skate-glass.bron) — pack GREEN; host look for sealed · fetch ok
+- `20260717.144536` — [TUBE2 Pixel look GREEN — send and kg](archive/20260717/20260717-144536_tube2-pixel-look-green.bron) — look closed; TUBE3 glass next
+- `20260717.144300` — [send TUBE2 glass and OpenVM silo](archive/20260717/20260717-144300_send-tube2-and-openvm-silo.bron) — pier holds glass path + soundness silo
+- `20260717.144200` — [silo OpenVM pairing-hint soundness lessons](archive/20260717/20260717-144200_openvm-soundness-silo.bron) — composition · hints · cheap membership; Sigma pin affirmed
+- `20260717.144132` — [pause — save TUBE2 glass progress](archive/20260717/20260717-144132_pause-save-tube2-glass.bron) — commit glass path; look still open
+- `20260717.140800` — [TUBE2 publish painted on Skate Android glass](archive/20260717/20260717-140800_tube2-pub-on-skate-glass.bron) — pack GREEN; host look for published · verified
+- `20260717.140623` — [send TUBE5 Mantra revision and glass tip](archive/20260717/20260717-140623_send-tube5-glass-tip.bron) — Pixel look confirmed; ship to pier
+- `20260717.140320` — [tube05 install proof — no adb device](archive/20260717/20260717-140320_tube05-install-no-adb-device.bron) — Pixel on USB; adb still empty; authorize then retry
+- `20260717.135727` — [TUBE5 tip painted on Skate Android glass](archive/20260717/20260717-135727_tube5-tip-on-skate-glass.bron) — pack GREEN; host look for tip rev2 next
+- `20260717.135248` — [TUBE5 Mantra-revision witness GREEN](archive/20260717/20260717-135248_tube5-mantra-revision-green.bron) — dense rev history + rollback-by-selection; parity wired
+- `20260717.135053` — [Send TUBE4 market-rail GREEN](archive/20260717/20260717-135053_send-tube4-market-rail.bron) — commit + push; kg TUBE5 Mantra revision next
+- `20260717.134355` — [TUBE4 market-rail witness GREEN](archive/20260717/20260717-134355_tube4-market-rail-green.bron) — Exchange + Neth settle + fetch unlock; parity wired
+- `20260717.134122` — [Send TUBE3 sealed resin-fetch GREEN](archive/20260717/20260717-134122_send-tube3-resin-fetch.bron) — commit + push; next TUBE4 market rail
+- `20260717.134037` — [TUBE3 sealed resin-fetch witness GREEN](archive/20260717/20260717-134037_tube3-resin-fetch-green.bron) — Comlink seal + published-set gate; parity wired
+- `20260717.133825` — [Send TUBE2 signed publish GREEN](archive/20260717/20260717-133825_send-tube2-publish.bron) — commit + push; kg TUBE3 resin fetch next
+- `20260717.131618` — [TUBE2 signed publish witness GREEN](archive/20260717/20260717-131618_tube2-publish-green.bron) — Granary name-fact + admit before install; parity wired
+- `20260717.131410` — [Send TUBE1 admission and glass gate GREEN](archive/20260717/20260717-131410_send-tube1-glass-pixel.bron) — commit + push; kg TUBE2 next
+- `20260717.131404` — [TUBE1 glass gate seen on the Pixel](archive/20260717/20260717-131404_tube1-glass-seen-on-pixel.bron) — install proof GREEN; T1 title confirmed on glass
+- `20260717.131158` — [TUBE1 glass gate wired into NativeActivity onCreate](archive/20260717/20260717-131158_tube1-glass-gate-on-create.bron) — R2 paints only after admit; pack GREEN
+- `20260717.131030` — [TUBE1 admission witness GREEN](archive/20260717/20260717-131030_tube1-admission-green.bron) — manifest caps must match grant; parity_ch01 wired
+- `20260717.130922` — [Send R2 surface on Pixel GREEN](archive/20260717/20260717-130922_send-r2-surface-pixel.bron) — commit + push; kg next after glass present seam
+- `20260717.130848` — [Sala R2 surface seen on the Pixel](archive/20260717/20260717-130848_r2-surface-seen-on-pixel.bron) — install proof GREEN; three panels confirmed on glass
+- `20260717.130735` — [Sala R2 multi-panel surface on Skate Android glass](archive/20260717/20260717-130735_sala-r2-surface-on-skate-glass.bron) — pack GREEN; host look for three panels next
+- `20260717.130610` — [Send R1 thin-view on Pixel GREEN](archive/20260717/20260717-130610_send-r1-thin-view-pixel.bron) — commit + push; kg R2 multi-panel next
+- `20260717.130602` — [Sala R1 thin-view seen on the Pixel](archive/20260717/20260717-130602_r1-thin-view-seen-on-pixel.bron) — install proof GREEN; ledger lines confirmed on glass
+- `20260717.130434` — [Sala R1 thin-view painted on Skate Android glass](archive/20260717/20260717-130434_sala-r1-thin-view-on-skate-glass.bron) — pack GREEN; host look for ledger lines next
+- `20260717.130209` — [Send Bron archive fold through 20260716](archive/20260717/20260717-130209_send-bron-archive-fold.bron) — commit + push origin and codeberg; kg thin-view next
+- `20260717.130124` — [Archive fold Bron days through 20260716](archive/20260717/20260717-130124_archive-bron-days-through-16.bron) — tool accepts .bron; 209 logs folded; today stays flat
+- `20260717.125858` — [Skate look confirmed on the Pixel](archive/20260717/20260717-125858_skate-seen-on-pixel.bron) — Skate glyphs on GrapheneOS glass; install proof GREEN
+- `20260717.125642` — [Skate grid rasterized onto Android NativeActivity glass](archive/20260717/20260717-125642_skate-on-android-glass.bron) — pack GREEN; host look next
+- `20260717.125302` — [Tap to close confirmed on the Pixel](archive/20260717/20260717-125302_tap-to-close-confirmed.bron) — chrome + input finish seen on GrapheneOS
+- `20260717.125143` — [Surface chrome — title GREEN, match color, tap to close](archive/20260717/20260717-125143_surface-title-tap-close.bron) — pack GREEN; host look next
+- `20260717.124843` — [First NativeActivity surface seen on the Pixel](archive/20260717/20260717-124843_surface-seen-on-pixel.bron) — Keaton confirmed hex on GrapheneOS glass; install proof GREEN
+- `20260717.124458` — [First NativeActivity surface paints the Sala root hex](archive/20260717/20260717-124458_native-activity-surface-hex.bron) — ANativeWindow software paint; pack GREEN; host look next
+- `20260717.124130` — [What next after TUBE0.5 closed end to end](archive/20260717/20260717-124130_what-next-after-tube05.bron) — surface vs rest vs other lanes
+- `20260717.124029` — [ANativeActivity_finish reproven GREEN on the Pixel](archive/20260717/20260717-124029_tube05-finish-pixel-reproof-green.bron) — finish after write; install proof still GREEN
+- `20260717.123314` — [ANativeActivity_finish after Sala fold; Pixel GREEN sent](archive/20260717/20260717-123314_tube05-finish-after-fold.bron) — e7496585b9 sent; finish + libandroid; pack re-GREEN
+- `20260717.123226` — [TUBE0.5 install GREEN on the physical Pixel 10a](archive/20260717/20260717-123226_tube05-pixel-install-green.bron) — stallion / GrapheneOS; sala_root.txt matches HAWM1; TUBE0.5 end to end
+- `20260717.123100` — [Pixel shows adb unauthorized](archive/20260717/20260717-123100_adb-unauthorized-pixel.bron) — Allow dialog was the gate; witness error improved
+- `20260717.122450` — [Instructions for next steps after TUBE0.5 HAWM0 GREEN](archive/20260717/20260717-122450_next-steps-tube05-pixel.bron) — Pixel USB install proof named as the finishing edge
+- `20260717.122231` — [Model fields corrected to Cursor Grok 4.5 300k High Fast](archive/20260717/20260717-122231_model-field-corrected-to-grok.bron) — Claude credits exhausted; afternoon TUBE0.5 logs re-attributed; Framework host profile updated
+- `20260717.122010` — [TUBE0.5 on-device install GREEN on HAWM0](archive/20260717/20260717-122010_tube05-hawm0-install-green.bron) — host HAWM0 boot + install proof; sala_root.txt matches HAWM1 root
+- `20260717.121800` — [Ten batches roll-up — align and send](archive/20260717/20260717-121800_align-send-ten-batches.md) ([Bron](archive/20260717/20260717-121800_align-send-ten-batches.bron)) — MD summary of Pixel→HAWM3→TUBE0.5 arc; compass align; host install proof named as the one next step
+- `20260717.121743` — [TUBE0.5 jailed slice polished and re-verified GREEN](archive/20260717/20260717-121743_tube05-jailed-slice-ready.bron) — rye rebuilt with build-lib; HAWM door + README synced; pack witness still GREEN
+- `20260717.121625` — [TUBE0.5 install-proof host witness ready](archive/20260717/20260717-121625_tube05-install-proof-host-witness.bron) — one-shot adb install + sala_root.txt check; jail correctly refuses without a device
+- `20260717.121445` — [Sala B0 fold wired into TUBE0.5 NativeActivity APK](archive/20260717/20260717-121445_sala-fold-wired-tube05-apk.bron) — pack worker ASCII fix; NDK-linked arm64+x86_64 APK; onCreate runs HAWM1 demo fold; host-side witness GREEN
+- `20260717.020613` — [gratitude/grapheneos/ docs mirror finished](archive/20260717/20260717-020613_grapheneos-gratitude-mirror-complete.bron) — CLI install guide, features overview, and appreciation README complete the mirror
+- `20260717.022323` — [Dual-door docs orientation — HAWM and TUBE compressors](archive/20260717/20260717-022323_dual-door-docs-hawm-tube.bron) — language path and device path meet at packaging; LEXICON seats both ladders
+- `20260717.021857` — [TUBE0.5 host-side packaging GREEN](archive/20260717/20260717-021857_tube05-host-side-apk-green.bron) — first Glow NativeActivity APK packed (permission emission, envelope, signed APK)
+- `20260717.014522` — [No Kotlin transpiler; a native-activity shim instead](archive/20260717/20260717-014522_native-activity-shim-decision.bron) — Glow stays native for Android; TUBE0.5 named as the missing installable-APK rung
+- `20260717.013213` — [GrapheneOS installed on the physical Pixel 10a](archive/20260717/20260717-013213_grapheneos-installed-pixel-10a.bron) — HAWM3 touches real hardware for the first time on the whole ladder
 
 **Filename (living):** `YYYYMMDD-HHMMSS_short-slug.bron` — no countdown prefix. **Body:** `format session-log-v1` with `stamp` · `editor` · `model` · `voice` · `think` · `obs` · `file` · `recommend`.
 
@@ -246,23 +249,23 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 | Stamp | Log | Meaning |
 |-------|-----|---------|
-| 20260717.125858 | [Skate look confirmed on the Pixel](20260717-125858_skate-seen-on-pixel.bron) | Brushstroke Skate on NativeActivity glass; install proof GREEN |
-| 20260717.125302 | [Tap to close confirmed on the Pixel](20260717-125302_tap-to-close-confirmed.bron) | Title match-green hex tap-finish seen on device; install proof GREEN |
-| 20260717.124843 | [First NativeActivity surface seen on the Pixel](20260717-124843_surface-seen-on-pixel.bron) | Hex visible on GrapheneOS; install proof GREEN; surface lap closed |
-| 20260717.124458 | [First NativeActivity surface paints the Sala root hex](20260717-124458_native-activity-surface-hex.bron) | Software ANativeWindow paint; pack GREEN; host look confirms |
-| 20260717.124029 | [ANativeActivity_finish reproven GREEN on the Pixel](20260717-124029_tube05-finish-pixel-reproof-green.bron) | Finish after sala_root write; Pixel install proof still GREEN |
-| 20260717.123314 | [ANativeActivity_finish after Sala fold; Pixel GREEN sent](20260717-123314_tube05-finish-after-fold.bron) | Sent Pixel close; onCreate finishes after sala_root write; pack witness GREEN |
-| 20260717.123226 | [TUBE0.5 install GREEN on the physical Pixel 10a](20260717-123226_tube05-pixel-install-green.bron) | Real GrapheneOS Pixel; same sala_root as HAWM1; TUBE0.5 closed end to end |
-| 20260717.123100 | [Pixel shows adb unauthorized](20260717-123100_adb-unauthorized-pixel.bron) | Authorize on-device; install witness names unauthorized |
-| 20260717.122450 | [Instructions for next steps after TUBE0.5 HAWM0 GREEN](20260717-122450_next-steps-tube05-pixel.bron) | Pixel USB install proof as the finishing edge after HAWM0 GREEN |
-| 20260717.122231 | [Model fields corrected to Cursor Grok 4.5 300k High Fast](20260717-122231_model-field-corrected-to-grok.bron) | False Sonnet labels on afternoon logs fixed; GLOW_PROFILE + session-log rules name Grok on this host |
-| 20260717.122010 | [TUBE0.5 on-device install GREEN on HAWM0](20260717-122010_tube05-hawm0-install-green.bron) | HAWM0 KVM boot + APK install; sala_root.txt = HAWM1 demo root; TUBE0.5 emulator half closed |
-| 20260717.121800 | [Ten batches roll-up — align and send](20260717-121800_align-send-ten-batches.md) | MD arc summary Pixel→HAWM3→TUBE0.5; compass align; one next step = host install proof |
-| 20260717.121743 | [TUBE0.5 jailed slice polished and re-verified GREEN](20260717-121743_tube05-jailed-slice-ready.bron) | rye rebuild + README/HAWM sync; pack witness re-GREEN; jailed packaging slice ready for send |
-| 20260717.121625 | [TUBE0.5 install-proof host witness ready](20260717-121625_tube05-install-proof-host-witness.bron) | Host one-shot for adb install + run-as sala_root proof; in-jail refuse at no-device assert is correct |
-| 20260717.121445 | [Sala B0 fold wired into TUBE0.5 NativeActivity APK](20260717-121445_sala-fold-wired-tube05-apk.bron) | Pack worker ASCII hygiene after em-dash quote break; Sala B0 inside onCreate; NDK-linked arm64+x86_64 APK; pack witness GREEN; adb proof stays host-terminal |
-| 20260717.004924 | [A radiant pass over today's own docs, and a deeper (still inconclusive) look at the markdown rendering report](20260717-004924_radiant-pass-and-markdown-recheck.bron) | Checked three more content-level hypotheses for the persistent rendering report (stray CRs — found a real gap in the prior control-character scan's own regex range, though CRs weren't present either; stray HTML; fence/bold-marker balance) and ruled all of them out, naming the honest conclusion that the file itself is valid and the issue likely sits in the editor rather than the text. Ran a radiant pass scoped to today's own touched docs, fixing six genuine "but" instances I actually authored today across six files, deliberately leaving pre-existing dated prose, a historical self-referencing bullet, and two legitimate hyphenated compounds untouched |
-| 20260717.003402 | [Eastern time seated for this host; Hoon's real core variance grounds a Glow/Bron/Brix fusion study](20260717-003402_eastern-time-and-hoon-core-variance.bron) | Seated a second, separate per-host stamp convention (Eastern, this Framework host) alongside the macOS clone's own unchanged Pacific one, in a new spec and both rule files; corrected two real stale fields in `GLOW_PROFILE.bron` (model, voice) found along the way. Grounded a real design study in Hoon's own kernel source (`old/pkg/arvo/sys/hoon.hoon`) rather than memory — the real `+$vair` type, the real `++peel`/`++nest` variance mechanics, quoted and line-cited — naming three honest options for whether Glow needs any of it and connecting concretely to Brix's own bond-override direction and to where the question actually lands for Bron (never inside Bron itself) |
+| 20260717.125858 | [Skate look confirmed on the Pixel](archive/20260717/20260717-125858_skate-seen-on-pixel.bron) | Brushstroke Skate on NativeActivity glass; install proof GREEN |
+| 20260717.125302 | [Tap to close confirmed on the Pixel](archive/20260717/20260717-125302_tap-to-close-confirmed.bron) | Title match-green hex tap-finish seen on device; install proof GREEN |
+| 20260717.124843 | [First NativeActivity surface seen on the Pixel](archive/20260717/20260717-124843_surface-seen-on-pixel.bron) | Hex visible on GrapheneOS; install proof GREEN; surface lap closed |
+| 20260717.124458 | [First NativeActivity surface paints the Sala root hex](archive/20260717/20260717-124458_native-activity-surface-hex.bron) | Software ANativeWindow paint; pack GREEN; host look confirms |
+| 20260717.124029 | [ANativeActivity_finish reproven GREEN on the Pixel](archive/20260717/20260717-124029_tube05-finish-pixel-reproof-green.bron) | Finish after sala_root write; Pixel install proof still GREEN |
+| 20260717.123314 | [ANativeActivity_finish after Sala fold; Pixel GREEN sent](archive/20260717/20260717-123314_tube05-finish-after-fold.bron) | Sent Pixel close; onCreate finishes after sala_root write; pack witness GREEN |
+| 20260717.123226 | [TUBE0.5 install GREEN on the physical Pixel 10a](archive/20260717/20260717-123226_tube05-pixel-install-green.bron) | Real GrapheneOS Pixel; same sala_root as HAWM1; TUBE0.5 closed end to end |
+| 20260717.123100 | [Pixel shows adb unauthorized](archive/20260717/20260717-123100_adb-unauthorized-pixel.bron) | Authorize on-device; install witness names unauthorized |
+| 20260717.122450 | [Instructions for next steps after TUBE0.5 HAWM0 GREEN](archive/20260717/20260717-122450_next-steps-tube05-pixel.bron) | Pixel USB install proof as the finishing edge after HAWM0 GREEN |
+| 20260717.122231 | [Model fields corrected to Cursor Grok 4.5 300k High Fast](archive/20260717/20260717-122231_model-field-corrected-to-grok.bron) | False Sonnet labels on afternoon logs fixed; GLOW_PROFILE + session-log rules name Grok on this host |
+| 20260717.122010 | [TUBE0.5 on-device install GREEN on HAWM0](archive/20260717/20260717-122010_tube05-hawm0-install-green.bron) | HAWM0 KVM boot + APK install; sala_root.txt = HAWM1 demo root; TUBE0.5 emulator half closed |
+| 20260717.121800 | [Ten batches roll-up — align and send](archive/20260717/20260717-121800_align-send-ten-batches.md) | MD arc summary Pixel→HAWM3→TUBE0.5; compass align; one next step = host install proof |
+| 20260717.121743 | [TUBE0.5 jailed slice polished and re-verified GREEN](archive/20260717/20260717-121743_tube05-jailed-slice-ready.bron) | rye rebuild + README/HAWM sync; pack witness re-GREEN; jailed packaging slice ready for send |
+| 20260717.121625 | [TUBE0.5 install-proof host witness ready](archive/20260717/20260717-121625_tube05-install-proof-host-witness.bron) | Host one-shot for adb install + run-as sala_root proof; in-jail refuse at no-device assert is correct |
+| 20260717.121445 | [Sala B0 fold wired into TUBE0.5 NativeActivity APK](archive/20260717/20260717-121445_sala-fold-wired-tube05-apk.bron) | Pack worker ASCII hygiene after em-dash quote break; Sala B0 inside onCreate; NDK-linked arm64+x86_64 APK; pack witness GREEN; adb proof stays host-terminal |
+| 20260717.004924 | [A radiant pass over today's own docs, and a deeper (still inconclusive) look at the markdown rendering report](archive/20260717/20260717-004924_radiant-pass-and-markdown-recheck.bron) | Checked three more content-level hypotheses for the persistent rendering report (stray CRs — found a real gap in the prior control-character scan's own regex range, though CRs weren't present either; stray HTML; fence/bold-marker balance) and ruled all of them out, naming the honest conclusion that the file itself is valid and the issue likely sits in the editor rather than the text. Ran a radiant pass scoped to today's own touched docs, fixing six genuine "but" instances I actually authored today across six files, deliberately leaving pre-existing dated prose, a historical self-referencing bullet, and two legitimate hyphenated compounds untouched |
+| 20260717.003402 | [Eastern time seated for this host; Hoon's real core variance grounds a Glow/Bron/Brix fusion study](archive/20260717/20260717-003402_eastern-time-and-hoon-core-variance.bron) | Seated a second, separate per-host stamp convention (Eastern, this Framework host) alongside the macOS clone's own unchanged Pacific one, in a new spec and both rule files; corrected two real stale fields in `GLOW_PROFILE.bron` (model, voice) found along the way. Grounded a real design study in Hoon's own kernel source (`old/pkg/arvo/sys/hoon.hoon`) rather than memory — the real `+$vair` type, the real `++peel`/`++nest` variance mechanics, quoted and line-cited — naming three honest options for whether Glow needs any of it and connecting concretely to Brix's own bond-override direction and to where the question actually lands for Bron (never inside Bron itself) |
 | 20260716.200125 | [A real setup guide for the Pixel 10a, written from GrapheneOS's own current instructions](archive/20260716/20260716-200125_pixel-10a-grapheneos-guide.bron) | Fetched `grapheneos.org/install/web` directly rather than writing from memory — a wrong step risks a bricked or insecure real device. Copied the Pixel 10a's own real verified-boot key hash verbatim; checked this exact host's own state (Ubuntu 24.04 supported, Brave already installed and supported with a Shields caveat) before writing anything host-specific. New `manual/guides/pixel-10a-grapheneos-setup.md`, addressed to a generic Acme Corporation employee per the request, naming plainly that every step is Keaton's own hands and that the guide is unproven until run for real |
 | 20260716.193409 | [A real Pixel arrives — Keaton buys a used Pixel 10a, 128GB, for $325](archive/20260716/20260716-193409_pixel-10a-purchased.bron) | Checked the device's own specs directly (Tensor G4, Titan M2, full GrapheneOS production support, updates through `~2033`) against current retail (`~$450–550` new) to confirm the price is genuinely good, then held it against the go-to-market brief's own three-tier structure — a real, one-generation-newer instance of the Value tier, landing ahead of the flagship purchase the brief's own ordering plans for, which the tier table welcomes rather than conflicts with. HAWM3's device gate is now satisfied; the rung itself stays open until GrapheneOS is actually flashed on it — the next real, human step |
 | 20260716.190324 | [Two pre-existing bans fixed, a third much larger gap found and honestly left open](archive/20260716/20260716-190324_copyforwards-and-compound-assert-fixed.bron) | Chose the pre-existing `copyForwards` RED over a third rune category — migrated all four sites to `tally/copy.rye`'s own `copy_disjoint`, checking each for genuine disjointness first, which surfaced a second pre-existing ban (six compound `assert(X and Y)` sites) split into named halves. Nine touched witnesses rebuilt and reran, all GREEN. The full-chapter rerun then reached a genuinely new halt — three real, minimal `active-designing/` Status-line oversights fixed, which surfaced a much larger, systemic 25-file mismatch across `external-research/` between the doorway scanner's own narrow word list and this tree's actual convention — sized accurately and named honestly rather than fixed unilaterally or ignored |
