@@ -1,0 +1,18 @@
+# setu4_gadget_probe_onpath_host.rish — SETU4 host: probe USB gadget iface.
+#
+# Run on the host (not required for device-free GREEN). Looks for usb0 / ncm*
+# link names that a CDC-NCM gadget would expose. SKIP is honest when absent.
+#
+#   rishi/bin/rishi run tools/setu4_gadget_probe_onpath_host.rish
+
+say "setu4-host: probing for USB gadget / NCM iface…"
+let found = run ["sh" "-c" "ip -o link show 2>/dev/null | grep -E 'usb0|ncm' | head -3 || true"]
+say "setu4-host: ip link match — ${found.out}"
+
+let count = run ["sh" "-c" "ip -o link show 2>/dev/null | grep -cE 'usb0|ncm' || true"]
+if (trim count.out == "0") then say "setu4-host: SKIP — no usb0/ncm iface (Pixel gadget not in NCM mode)"
+if (trim count.out == "0") then say "GREEN: SETU4 — gadget probe held; framed UDP stand-in remains the live claim."
+if (trim count.out == "0") then exit 0
+
+say "setu4-host: gadget-shaped iface present — ${found.out}"
+say "GREEN: SETU4 — host sees a USB/NCM iface (bring-up still SETU5)."
