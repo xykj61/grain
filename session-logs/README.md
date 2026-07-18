@@ -8,6 +8,9 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260718.122145` — [LULU · ZETA6 · Hearth align send](20260718-122145_lulu-zeta6-hearth-align-send.bron) — waymark LULU; ret→newline design
+- `20260717.214340` — [JABS2 ret toggle vs cycle](20260717-214340_jabs2-ret-toggle-vs-cycle.bron) — prefer cycle N; gesture check-in
+- `20260717.213745` — [JABS2 bare ret empty chat](20260717-213745_jabs2-bare-ret-empty-chat.bron) — first-tap ret → chat ·
 - `20260717.213242` — [remember rule · Glow first code](20260717-213242_remember-rule-save-glow-first.bron) — REMEMBER card · Acme open-runes note
 - `20260717.213058` — [JABS2 finish-zone + mode round-trip](20260717-213058_jabs2-finish-zone-mode-roundtrip.bron) — close row 13 only; TAME bans GREEN
 - `20260717.212257` — [kg JABS2 live chat face](20260717-212257_kg-jabs2-live-chat-face.bron) — Dexter ret → chat · line; pack GREEN

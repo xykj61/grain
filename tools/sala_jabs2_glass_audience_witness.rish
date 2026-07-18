@@ -14,5 +14,6 @@ assert selftest.out contains "GREEN" else "JABS2 glass audience witness not GREE
 assert selftest.out contains "audience" else "JABS2 glass missing audience claim"
 assert selftest.out contains "layout rows" else "JABS2 glass missing layout-word claim"
 assert selftest.out contains "Dexter submit" else "JABS2 glass missing live chat-face claim"
+assert selftest.out contains "bare ret" else "JABS2 glass missing bare-ret chat claim"
 
 say "GREEN: JABS2 glass audience witness passed."
