@@ -8,6 +8,13 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260718.192317` — [Send HOLD0 stale-bin honesty](20260718-192317_send-hold0-stale-bin-honesty.bron) — pier ship; pause; HOLD1 check-in
+- `20260718.192129` — [Optimal path · operator state](20260718-192129_optimal-path-forward-state.bron) — send honesty; optional usb_desk; pause
+- `20260718.190855` — [Explain HOLD0 meaning](20260718-190855_explain-hold0-meaning.bron) — plain read of hold line + host chain
+- `20260718.190736` — [HOLD0 stale-bin honesty GREEN](20260718-190736_hold0-stale-bin-honesty.bron) — local ignores leftovers; host SKIP clears
+- `20260718.190639` — [Host HOLD0 look · season close](20260718-190639_host-hold0-look-season-close.bron) — Pixel pull GREEN; stale ping/frame named
+- `20260718.190346` — [adb no device · Pixel USB](20260718-190346_adb-no-device-pixel-attached.bron) — 10a on USB; plugdev/auth then re-pull
+- `20260718.190001` — [Direction after HOLD0](20260718-190001_direction-after-hold0.bron) — host look to close season; HOLD1 check-in
 - `20260718.185709` — [Send HOLD0 Desk Hearth Hold](20260718-185709_send-hold0-desk-hearth-hold.bron) — pier ship; HOLD1 / SETU6 check-in
 - `20260718.185604` — [What do I need to do](20260718-185604_what-do-i-need-to-do.bron) — send HOLD0; optional host pull; HOLD1 check-in
 - `20260718.185349` — [Desk Hearth Hold · HOLD0 GREEN](20260718-185349_desk-hearth-hold-season-hold0.bron) — season open; Desk hold line; SETU6 parked

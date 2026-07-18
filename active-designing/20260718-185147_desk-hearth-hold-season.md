@@ -3,7 +3,7 @@
 *Opened after SETU0–5 closed the warm-wire stand-in ladder. Not SETU6 (QEMU/Pixel CDC-NCM lab). This season makes Desk **use** what the wire already carried.*
 
 **Stamp:** `20260718.185147` (Eastern)  
-**Status:** Checkable — season open; HOLD0 GREEN `20260718.185306`  
+**Status:** Checkable — season open; HOLD0 GREEN `20260718.185306` · stale-bin honesty `20260718.190720`  
 **Voice:** Quin  
 **Why not SETU6:** Finishing edge — gadget/lab is a domain jump; the fold and frame already sit on Desk unread.  
 **Compresses into:** [`../docs/SETU.md`](../docs/SETU.md)  
@@ -21,7 +21,7 @@
 
 | Rung | Claim | State |
 |------|-------|-------|
-| **HOLD0** | Desk status: home · preset · wire · ping held · frame bytes | **GREEN** `20260718.185306` |
+| **HOLD0** | Desk status: home · preset · wire · ping held · frame bytes; local ignores stale bins | **GREEN** `20260718.190720` |
 | **HOLD1** | (horizon) Desk applies station chrome on a Desk Skate surface | check-in |
 | **SETU6** | QEMU/Pixel CDC-NCM lab | parked — other season |
 
