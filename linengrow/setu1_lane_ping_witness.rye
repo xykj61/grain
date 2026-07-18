@@ -1,0 +1,37 @@
+//! linengrow/setu1_lane_ping_witness.rye — proves SETU1 lane ping thin face.
+//!
+//!   rye build linengrow/setu1_lane_ping_witness.rye \
+//!     -femit-bin=linengrow/bin/setu1_lane_ping_witness
+//!   linengrow/bin/setu1_lane_ping_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const setu1 = @import("setu1_lane_ping.rye");
+
+const witness_version = "20260718.133821";
+
+fn run_selftest(_: std.process.Init) !u8 {
+    assert(std.mem.eql(u8, setu1.waymark, "SETU"));
+    print("setu1: waymark {s} -- GREEN\n", .{setu1.waymark});
+
+    assert(setu1.fixture_local_refuses());
+    print("setu1: local wire refuses seal -- GREEN\n", .{});
+
+    assert(setu1.fixture_usb_desk_ping_round_trips());
+    print("setu1: usb_desk Comlink ping round-trips -- GREEN\n", .{});
+
+    assert(setu1.fixture_station_ping_from_pull());
+    print("setu1: station from pull seals ping -- GREEN\n", .{});
+
+    assert(setu1.fixture_sealed_bytes_reopen());
+    print("setu1: sealed bytes reopen after hold -- GREEN\n", .{});
+
+    print("setu1: version {s}\n", .{witness_version});
+    print("GREEN: SETU1 — lane ping arms on usb_desk (device-free).\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
+}
