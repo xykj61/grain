@@ -8,6 +8,11 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260717.213242` — [remember rule · Glow first code](20260717-213242_remember-rule-save-glow-first.bron) — REMEMBER card · Acme open-runes note
+- `20260717.213058` — [JABS2 finish-zone + mode round-trip](20260717-213058_jabs2-finish-zone-mode-roundtrip.bron) — close row 13 only; TAME bans GREEN
+- `20260717.212257` — [kg JABS2 live chat face](20260717-212257_kg-jabs2-live-chat-face.bron) — Dexter ret → chat · line; pack GREEN
+- `20260717.205837` — [adb empty — host terminal](20260717-205837_adb-empty-host-terminal.bron) — jail has no /dev/bus/usb
+- `20260717.205718` — [Remind adb reconnect keyboard](20260717-205718_remind-adb-reconnect-keyboard.bron) — install + NativeActivity start
 - `20260717.191417` — [BRB save progress · resume brief](20260717-191417_brb-save-progress-resume-brief.bron) — pier clean; glass season seated
 - `20260717.191030` — [Seat waymark JABS · ZETA4 · JABS2 glass](20260717-191030_seat-waymark-jabs-zeta4-jabs2.bron) — draw JABS; rules; prune; force-push seat
 - `20260717.190646` — [ZETA4 look GREEN · JABS2 glass](20260717-190646_zeta4-look-kg-sala-b2-glass.bron) — glyphs loved; JABS2 rows 14–15 on Pixel

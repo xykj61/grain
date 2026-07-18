@@ -61,6 +61,23 @@ fn put_line_centered(grid: *skate.Grid, row: u32, text: []const u8) void {
 
 /// Last keyboard hit map from paint (window coords). Soft-reset each paint.
 pub var last_keyboard_hit: kb_paint.HitMap = .{};
+/// Close-hint row only (Skate row 13). Outside-keyboard taps no longer finish the app.
+pub const CloseHit = struct {
+    ready: bool = false,
+    x0: i32 = 0,
+    y0: i32 = 0,
+    x1: i32 = 0,
+    y1: i32 = 0,
+
+    pub fn contains(self: CloseHit, x: i32, y: i32) bool {
+        if (!self.ready) return false;
+        // invariant: positive box when ready
+        assert(self.x1 > self.x0);
+        assert(self.y1 > self.y0);
+        return x >= self.x0 and x < self.x1 and y >= self.y0 and y < self.y1;
+    }
+};
+pub var last_close_hit: CloseHit = .{};
 /// Current ZETA page (letters / numbers / symbols / emoji). Activity may change this.
 pub var keyboard_mode: kb_layout.Mode = .letters;
 /// Active emoji category tab (ZETA4).
@@ -212,6 +229,68 @@ fn fill_chrome_rows(
     put_line_centered(grid, 13, if (tube1_admitted) "TAP ABOVE KB TO CLOSE" else "TAP TO CLOSE");
 }
 
+/// Portrait: hand zone near bottom; desk: soft top bias.
+fn glass_origin_y(portrait: bool, h: i32, grid_h: i32) i32 {
+    // invariant: grid fits the locked window height
+    assert(grid_h > 0);
+    assert(h > 0);
+    if (portrait) return @max(0, h - grid_h - @divTrunc(h, 40));
+    return @divTrunc(h - grid_h, 5);
+}
+
+/// Portrait fills ~90% height; desk keeps prior width buckets.
+fn glass_cell_scale(w: i32, h: i32, grid_rows: u32) u32 {
+    // invariant: window already locked with positive size
+    assert(w > 0);
+    assert(h > 0);
+    if (h > w) {
+        const want: i32 = @divTrunc(h * 9, 10);
+        const s: i32 = @divTrunc(want, @as(i32, @intCast(grid_rows * skate.cell_h)));
+        return @intCast(@max(2, @min(5, s)));
+    }
+    if (w >= 1080) return 3;
+    if (w >= 720) return 2;
+    return 1;
+}
+
+/// Keyboard + close-hint hit maps for the current paint (window coords).
+fn refresh_touch_hits(
+    tube1_admitted: bool,
+    origin_x: i32,
+    origin_y: i32,
+    cell_pw: i32,
+    cell_ph: i32,
+    cols: u32,
+    grid_w: i32,
+) void {
+    last_keyboard_hit = .{};
+    last_close_hit = .{};
+    if (!tube1_admitted) return;
+    // invariant: positive cell metrics at the touch seam
+    assert(cell_pw > 0);
+    assert(cell_ph > 0);
+    last_keyboard_hit = kb_paint.build_hit_map(
+        origin_x,
+        origin_y,
+        cell_pw,
+        cell_ph,
+        cols,
+        jabs2_glass.keyboard_row0,
+        kb_layout.page_for_tab(keyboard_mode, keyboard_emoji_tab),
+    );
+    // Close only on the painted "TAP ABOVE KB TO CLOSE" row (Skate 13).
+    const close_row: i32 = 13;
+    last_close_hit = .{
+        .ready = true,
+        .x0 = origin_x,
+        .y0 = origin_y + close_row * cell_ph,
+        .x1 = origin_x + grid_w,
+        .y1 = origin_y + (close_row + 1) * cell_ph,
+    };
+    // invariant: close strip sits above the keyboard
+    assert(last_close_hit.y1 <= last_keyboard_hit.origin_y);
+}
+
 /// Paint via Skate: title, R2, tip, hex, rail, JABS1, Dexter, JABS2, ZETA, tap.
 pub fn paint_session_root_hex(
     window: ?*anyopaque,
@@ -229,6 +308,7 @@ pub fn paint_session_root_hex(
     jabs2_line1: ?[]const u8,
 ) void {
     last_keyboard_hit = .{};
+    last_close_hit = .{};
     if (window == null) return;
     _ = ANativeWindow_setBuffersGeometry(window, 0, 0, format_rgba8888);
     var buf: WindowBuffer = undefined;
@@ -241,17 +321,12 @@ pub fn paint_session_root_hex(
     assert(w > 0);
     assert(h > 0);
     const grid_rows: u32 = jabs2_glass.grid_rows;
-    // Glow Glass portrait: scale so ~90% of height is chrome; desk keeps prior buckets.
     const portrait = h > w;
-    const scale: u32 = if (portrait) blk: {
-        const want: i32 = @divTrunc(h * 9, 10);
-        const s: i32 = @divTrunc(want, @as(i32, @intCast(grid_rows * skate.cell_h)));
-        break :blk @intCast(@max(2, @min(5, s)));
-    } else if (w >= 1080) 3 else if (w >= 720) 2 else 1;
-    const cell_pw = skate.cell_w * scale;
-    const cell_ph = skate.cell_h * scale;
+    const scale = glass_cell_scale(w, h, grid_rows);
+    const cell_pw: i32 = @intCast(skate.cell_w * scale);
+    const cell_ph: i32 = @intCast(skate.cell_h * scale);
     // Keyboard paint needs ~32 cols; keep a phone-friendly cap.
-    const cols: u32 = @intCast(@max(32, @min(48, @divTrunc(w, @as(i32, @intCast(cell_pw))))));
+    const cols: u32 = @intCast(@max(32, @min(48, @divTrunc(w, cell_pw))));
     const allocator = std.heap.page_allocator;
     var grid = skate.Grid.init(allocator, cols, grid_rows) catch return;
     defer allocator.free(grid.cells);
@@ -267,8 +342,8 @@ pub fn paint_session_root_hex(
     });
     const bg = rgba(0x1a, 0x14, 0x10);
     const fg = if (matched) rgba(0x7d, 0xc4, 0x8a) else rgba(0xe8, 0xc4, 0x7a);
-    const grid_w: i32 = @intCast(cols * cell_pw);
-    const grid_h: i32 = @intCast(grid_rows * cell_ph);
+    const grid_w: i32 = @intCast(cols * @as(u32, @intCast(cell_pw)));
+    const grid_h: i32 = @intCast(grid_rows * @as(u32, @intCast(cell_ph)));
     // invariant: portrait fill aims under window height
     assert(grid_h > 0);
     const grid_stride: u32 = @intCast(grid_w * 4);
@@ -280,22 +355,8 @@ pub fn paint_session_root_hex(
     const bits: [*]u8 = @ptrCast(buf.bits.?);
     fill_window_bg(bits, w, h, stride_px);
     const origin_x = @divTrunc(w - grid_w, 2);
-    // Portrait: sit near the bottom (keyboard hand zone); desk keeps a soft top bias.
-    const origin_y = if (portrait)
-        @max(0, h - grid_h - @divTrunc(h, 40))
-    else
-        @divTrunc(h - grid_h, 5);
-    if (tube1_admitted) {
-        last_keyboard_hit = kb_paint.build_hit_map(
-            origin_x,
-            origin_y,
-            @intCast(cell_pw),
-            @intCast(cell_ph),
-            cols,
-            jabs2_glass.keyboard_row0,
-            kb_layout.page_for_tab(keyboard_mode, keyboard_emoji_tab),
-        );
-    }
+    const origin_y = glass_origin_y(portrait, h, grid_h);
+    refresh_touch_hits(tube1_admitted, origin_x, origin_y, cell_pw, cell_ph, cols, grid_w);
     blit_grid_centered(bits, w, h, stride_px, pixels, grid_w, grid_h, origin_x, origin_y);
 }
 
