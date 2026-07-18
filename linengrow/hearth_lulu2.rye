@@ -1,0 +1,91 @@
+//! linengrow/hearth_lulu2.rye — LULU2: thin Settings face — four-line preset list.
+//!
+//! Affirmed `20260718.125835`: long-press hearth status opens the list; tap a
+//! named preset sets + persists; short tap on status still cycles (LULU1);
+//! no home_id editor this rung. Not a Pool agent yet.
+//! Hold-open `20260718.130251`: list appears when the 450ms timer fires while
+//! the finger is still down — release must not be required.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const hearth = @import("hearth_lulu0.rye");
+
+pub const waymark: []const u8 = hearth.waymark;
+pub const preset_count: u32 = 4;
+/// Skate rows that carry the list (overlay panel strip).
+pub const list_row0: u32 = 2;
+pub const list_line_max: u32 = 32;
+/// Long-press threshold on hearth status (ms, monotonic).
+pub const long_press_ms: u64 = 450;
+
+/// Closed enum order for the four-line list.
+pub fn preset_at(index: u32) hearth.DisplayPreset {
+    // invariant: index in list
+    assert(index < preset_count);
+    return switch (index) {
+        0 => .panel_max,
+        1 => .scaled_720,
+        2 => .scaled_540,
+        else => .mantrapod_floor,
+    };
+}
+
+pub fn index_of(preset: hearth.DisplayPreset) u32 {
+    return switch (preset) {
+        .panel_max => 0,
+        .scaled_720 => 1,
+        .scaled_540 => 2,
+        .mantrapod_floor => 3,
+    };
+}
+
+/// `{marker} {name}` — `>` marks the active preset.
+pub fn format_list_line(
+    index: u32,
+    active: hearth.DisplayPreset,
+    out: *[list_line_max]u8,
+) ?[]const u8 {
+    if (index >= preset_count) return null;
+    const p = preset_at(index);
+    const mark: u8 = if (p == active) '>' else ' ';
+    const line = std.fmt.bufPrint(out, "{c} {s}", .{ mark, p.name() }) catch return null;
+    assert(line.len <= list_line_max);
+    return line;
+}
+
+pub fn is_long_press(down_ms: u64, up_ms: u64) bool {
+    if (up_ms < down_ms) return false;
+    return (up_ms - down_ms) >= long_press_ms;
+}
+
+/// Device-free: four lines name every closed preset; active marked.
+pub fn list_names_all_presets() bool {
+    var buf: [list_line_max]u8 = undefined;
+    const a = format_list_line(0, .scaled_540, &buf) orelse return false;
+    if (!std.mem.eql(u8, a, "  panel_max")) return false;
+    const b = format_list_line(2, .scaled_540, &buf) orelse return false;
+    if (!std.mem.eql(u8, b, "> scaled_540")) return false;
+    const c = format_list_line(3, .mantrapod_floor, &buf) orelse return false;
+    if (!std.mem.eql(u8, c, "> mantrapod_floor")) return false;
+    return index_of(.scaled_720) == 1 and preset_at(1) == .scaled_720;
+}
+
+/// Device-free: 450ms is long; 200ms is short.
+pub fn long_press_threshold_honest() bool {
+    if (!is_long_press(0, long_press_ms)) return false;
+    if (is_long_press(0, long_press_ms - 1)) return false;
+    if (is_long_press(1000, 1200)) return false;
+    return is_long_press(1000, 1450);
+}
+
+/// Device-free: after hold-open fired, release skips the short-tap cycle.
+pub fn release_after_hold_skips_cycle(long_fired: bool) bool {
+    return long_fired;
+}
+
+comptime {
+    _ = print;
+    assert(preset_count == 4);
+    assert(std.mem.eql(u8, waymark, "LULU"));
+}

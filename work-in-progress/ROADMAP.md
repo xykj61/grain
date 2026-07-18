@@ -232,6 +232,30 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **JABS2 bare-ret GREEN · Hearth/LULU/ZETA6 seat, `20260717.213745`–`20260718.122145`** — empty ret → `chat ·` (Pixel confirmed). Design: **ZETA6** ret=newline · ↑=send; waymark **LULU** (hearth display presets, short home `kd`, Wired Glass SLC); Pixel 10a max 1080×2424 @ 20:9; Mantrapod floor = Skate budget provisional; Brix/Bron/Tablecloth stack (not a new vane). Next build: ZETA6 then LULU0.
 
+**ZETA6 device-free GREEN, `20260718.122938`** — `ret` → newline · `^` → submit; multiline Dexter shows `P{n} ·` last line; pack ready for Pixel look. Next: Pixel look, then LULU0.
+
+**ZETA6 Pixel look GREEN, `20260718.123705`** — Keaton: `P1`–`P6` newlines + `^` → chat. Primitive Skate face is intentional SLC; density/presets wait on **LULU**. Next: LULU0 Bron hearth.
+
+**LULU0 GREEN, `20260718.123900`** — Hearth Bron mold: `home_id` + `display_preset` (panel_max · scaled_720 · scaled_540 · mantrapod_floor); path `{id}/hearth.bron`; fixture `kd`. Next: **LULU1** apply in Skate.
+
+**LULU1 device-free GREEN, `20260718.124214`** — `apply_glass` drives Skate scale/cols from Hearth; default `kd` · `scaled_540` via Bron at activity start; pack for Pixel look. Next: Pixel look, then LULU2 check-in.
+
+**LULU1 Pixel look GREEN, `20260718.124528`** — Keaton: glyphs larger under `scaled_540`. Status chrome `kd · scaled_540` on Skate row 1 (`20260718.124610`). Next: LULU2 Settings — check-in.
+
+**LULU1 status + cycle, `20260718.124821`** — Keaton: status chrome GREEN. Tap row 1 advances closed presets (`scaled_540` → `mantrapod_floor` → …). Next: Pixel eyes on cycle; LULU2 Settings check-in.
+
+**LULU1 cycle Pixel + persist, `20260718.125312`** — Keaton: tap-cycle GREEN. Bron save/load at `files/{home}/hearth.bron` so restart keeps the last preset. Next: Pixel eyes on restart; LULU2 Settings check-in.
+
+**LULU1 closed, `20260718.125639`** — Keaton: persist GREEN across force-close + reopen. Next: **LULU2** Settings thin face — check-in (proposal in `docs/LULU.md`).
+
+**LULU2 device-free GREEN, `20260718.125835`** — Keaton affirmed thin face; long-press status toggles four-line list; tap selects + persists; short tap cycles. Next: Pixel look.
+
+**LULU2 Pixel + hold-open, `20260718.130251`** — Keaton: list GREEN; wanted appear-under-finger. One-shot timer opens while holding; release after hold is quiet. Next: Pixel eyes on hold-open.
+
+**LULU2 closed, `20260718.130606`** — Keaton: hold-open perfect. Ladder LULU0–2 GREEN on Pixel. Next: Wired Glass/Setu or home_id editor — check-in.
+
+**Send + next doors affirmed, `20260718.130756`** — LULU0–2 + ZETA6 ship to pier. Affirmed next check-ins: **Wired Glass / Setu**, **home_id editor** (thin face before build).
+
 **Glow OS · Glow Desk · Glow Glass seated, `20260717.183622`** — Keaton: **Glow OS** unifies; **Glow Desk** = desktop; **Glow Glass** = mobile. Lexicon + silo [`../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md`](../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md). Orientation firmware stays check-in.
 
 **Witness habitat + markup pipeline, `20260717.173427`** — foundations fit study affirms single-strand · sameness · happy-zone practice in the suite; teaching path was the gap. Seats **witness habitat** as Acme synonym (foundations keep *happy zone*). Fusion map holds Scribble→Brix→Bron→Mantra→Sala with Glow under TAME; Udon/Sail/Zuse horizon. Tutorial scaffold [`../manual/tutorials/cursor-and-the-compass.md`](../manual/tutorials/cursor-and-the-compass.md); silo [`../active-designing/20260717-173427_witness-habitat-and-the-markup-pipeline.md`](../active-designing/20260717-173427_witness-habitat-and-the-markup-pipeline.md). Product next remains Dexter D2.

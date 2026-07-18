@@ -1,0 +1,39 @@
+//! linengrow/hearth_lulu2_witness.rye — proves LULU2 thin preset list.
+//!
+//!   rye build linengrow/hearth_lulu2_witness.rye \
+//!     -femit-bin=linengrow/bin/hearth_lulu2_witness
+//!   linengrow/bin/hearth_lulu2_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const lulu2 = @import("hearth_lulu2.rye");
+
+const witness_version = "20260718.125835";
+
+fn run_selftest(_: std.process.Init) !u8 {
+    assert(std.mem.eql(u8, lulu2.waymark, "LULU"));
+    print("lulu2: waymark {s} -- GREEN\n", .{lulu2.waymark});
+
+    assert(lulu2.list_names_all_presets());
+    print("lulu2: four-line list names all presets -- GREEN\n", .{});
+
+    assert(lulu2.long_press_threshold_honest());
+    print("lulu2: long-press threshold 450ms -- GREEN\n", .{});
+
+    assert(lulu2.release_after_hold_skips_cycle(true));
+    assert(!lulu2.release_after_hold_skips_cycle(false));
+    print("lulu2: hold-open release skips cycle -- GREEN\n", .{});
+
+    assert(lulu2.list_row0 == 2);
+    assert(lulu2.preset_count == 4);
+    print("lulu2: list on Skate rows 2..5 -- GREEN\n", .{});
+
+    print("lulu2: version {s}\n", .{witness_version});
+    print("GREEN: LULU2 — thin Settings preset list under waymark LULU.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
+}

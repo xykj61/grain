@@ -1,0 +1,21 @@
+# hearth_lulu0_witness.rish — LULU0 Hearth Bron mold.
+#
+#   rishi/bin/rishi run tools/hearth_lulu0_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/hearth_lulu0_witness"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/hearth_lulu0_witness.rye -femit-bin=${bin}"]
+assert build.ok else "LULU0 hearth witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "LULU0 hearth witness exited non-zero"
+assert selftest.out contains "GREEN" else "LULU0 not GREEN"
+assert selftest.out contains "waymark LULU" else "LULU0 missing waymark claim"
+assert selftest.out contains "preset sizes" else "LULU0 missing preset-size claim"
+assert selftest.out contains "refuses bad home_id" else "LULU0 missing home_id refuse claim"
+assert selftest.out contains "kd/hearth.bron" else "LULU0 missing path claim"
+assert selftest.out contains "Bron round-trip" else "LULU0 missing Bron round-trip claim"
+assert selftest.out contains "unknown preset refused" else "LULU0 missing unknown-preset claim"
+
+say "GREEN: LULU0 Hearth Bron mold witness passed."

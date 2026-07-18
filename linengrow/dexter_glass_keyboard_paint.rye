@@ -50,7 +50,9 @@ pub fn tap_result(key: layout.Key, shift_on: bool) TapResult {
         },
         .space => .{ .action = .{ .char_ = ' ' } },
         .delete => .{ .action = .backspace },
-        .@"return" => .{ .action = .submit },
+        // ZETA6: ret inserts newline; ^ (send) submits.
+        .@"return" => .{ .action = .newline },
+        .send => .{ .action = .submit },
         .shift => .toggle_shift,
         .to_numbers => .{ .set_mode = .numbers },
         .to_letters => .{ .set_mode = .letters },
@@ -72,6 +74,7 @@ pub fn label_for(key: layout.Key) []const u8 {
         .delete => "del",
         .space => "spc",
         .@"return" => "ret",
+        .send => "^",
         .to_numbers => "123",
         .to_letters => "abc",
         .to_symbols => "#+=",
@@ -226,6 +229,44 @@ pub fn mode_round_trip_letters_numbers() bool {
         .set_mode => |m| m == .letters,
         else => false,
     };
+}
+
+/// Device-free ZETA6: ret inserts newline; send submits; ret alone does not submit.
+pub fn zeta6_ret_newline_send_submits() bool {
+    switch (tap_result(.@"return", false)) {
+        .action => |a| {
+            if (a != .newline) return false;
+        },
+        else => return false,
+    }
+    switch (tap_result(.send, false)) {
+        .action => |a| {
+            if (a != .submit) return false;
+        },
+        else => return false,
+    }
+    var editor: dexter.LineEditor = .{};
+    drain_layout_keys(&editor, &[_]layout.Key{
+        .{ .char_ = 'a' },
+        .@"return",
+        .{ .char_ = 'b' },
+    });
+    if (!std.mem.eql(u8, editor.prompt_slice(), "a\nb")) return false;
+    if (editor.pending_submit) return false;
+    if (editor.newline_count() != 1) return false;
+    drain_layout_keys(&editor, &[_]layout.Key{.send});
+    return editor.pending_submit;
+}
+
+/// Device-free ZETA6: letters bottom row paints ret and ^ (send).
+pub fn letters_bottom_has_ret_and_send() bool {
+    var line: [max_line_len]u8 = undefined;
+    const len = format_page_row(layout.letters_page, 3, &line);
+    assert(len > 0);
+    const shown = line[0..len];
+    if (std.mem.indexOf(u8, shown, "ret") == null) return false;
+    if (std.mem.indexOf(u8, shown, "^") == null) return false;
+    return true;
 }
 
 pub const max_hit_keys: u32 = layout.max_keys_per_row * keyboard_rows;

@@ -1,0 +1,19 @@
+# hearth_lulu2_witness.rish — LULU2 thin Settings preset list.
+#
+#   rishi/bin/rishi run tools/hearth_lulu2_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/hearth_lulu2_witness"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/hearth_lulu2_witness.rye -femit-bin=${bin}"]
+assert build.ok else "LULU2 hearth list witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "LULU2 hearth list witness exited non-zero"
+assert selftest.out contains "GREEN" else "LULU2 not GREEN"
+assert selftest.out contains "waymark LULU" else "LULU2 missing waymark claim"
+assert selftest.out contains "four-line list" else "LULU2 missing list claim"
+assert selftest.out contains "long-press threshold" else "LULU2 missing long-press claim"
+assert selftest.out contains "hold-open release skips cycle" else "LULU2 missing hold-open claim"
+
+say "GREEN: LULU2 Hearth Settings list witness passed."
