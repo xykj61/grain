@@ -69,3 +69,16 @@ assert apply.out contains "GREEN" else "Desk apply not GREEN"
 assert apply.out contains "station ·" else "Desk apply missing station line"
 
 say "GREEN: SETU0.5 — Desk station inherits pulled hearth (host path)."
+
+# SETU1 — Comlink lane ping when station wire_lane is usb_desk (else SKIP).
+let ping_bin = "linengrow/bin/setu1_lane_ping_check"
+say "setu0-host: SETU1 lane ping…"
+let build_ping = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build linengrow/setu1_lane_ping_check.rye -femit-bin=${ping_bin}"]
+if (build_ping.ok == false) then say "setu0-host: ping build stderr — ${build_ping.err}"
+assert build_ping.ok else "SETU1 lane ping check build failed"
+let ping = run ["sh" "-c" "${ping_bin} 2>&1"]
+say "${ping.out}"
+assert ping.ok else "SETU1 lane ping check failed"
+assert ping.out contains "GREEN" else "SETU1 lane ping not GREEN"
+
+say "GREEN: SETU1 — lane ping gate held on host path (seal or SKIP)."

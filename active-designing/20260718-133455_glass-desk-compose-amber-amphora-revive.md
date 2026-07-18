@@ -45,9 +45,10 @@ Glow Glass and Glow Desk will someday carry Tilak-marked hearth/station resins t
 
 ## Near build order (finishing edge)
 
-1. Seat and witness **SETU0.5** Desk station apply.  
-2. **SETU1** thin live-lane face — check-in (not “Amber on Glass”).  
-3. Only on a later word: Tilak mark + resin + Amphora pour for hearth/station.
+1. **SETU0.5** Desk station apply — GREEN.  
+2. **SETU1** usb_desk Comlink lane ping — GREEN `20260718.133853` (not “Amber on Glass”).  
+3. **SETU2** CDC-NCM gadget — check-in.  
+4. Later word: Tilak mark + resin + Amphora pour for hearth/station.
 
 ## Why the revival exists
 

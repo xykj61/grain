@@ -1,0 +1,19 @@
+# setu1_lane_ping_witness.rish — SETU1 device-free: usb_desk lane ping.
+#
+#   rishi/bin/rishi run tools/setu1_lane_ping_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/setu1_lane_ping_witness"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/setu1_lane_ping_witness.rye -femit-bin=${bin}"]
+assert build.ok else "SETU1 lane ping witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "SETU1 lane ping witness exited non-zero"
+assert selftest.out contains "GREEN" else "SETU1 not GREEN"
+assert selftest.out contains "waymark SETU" else "SETU1 missing waymark claim"
+assert selftest.out contains "local wire refuses" else "SETU1 missing local refuse claim"
+assert selftest.out contains "usb_desk Comlink ping" else "SETU1 missing seal claim"
+assert selftest.out contains "sealed bytes reopen" else "SETU1 missing hold claim"
+
+say "GREEN: SETU1 lane ping witness passed (device-free)."

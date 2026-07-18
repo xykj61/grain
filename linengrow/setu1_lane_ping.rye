@@ -1,0 +1,127 @@
+//! linengrow/setu1_lane_ping.rye — SETU1: Comlink-shaped lane ping (thin face).
+//!
+//! Approved claim: when Hearth `wire_lane` is `usb_desk`, Desk may seal one
+//! bounded ping datagram (home_id + preset) with Comlink's wire_format and open
+//! it back. `local` refuses — the preference earns meaning. CDC-NCM gadget
+//! networking stays a later rung (SETU2), not this lap.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const hearth = @import("hearth_lulu0.rye");
+const setu0 = @import("setu0_hearth_pull.rye");
+const setu05 = @import("setu05_desk_apply.rye");
+const wf = @import("wire_format.rye");
+const tally_copy = @import("tally_copy.rye");
+
+pub const waymark: []const u8 = setu0.waymark;
+pub const ping_format: []const u8 = "setu-lane-ping-v1";
+pub const max_ping_plain: u32 = 256;
+
+/// True only when the Hearth lane preference arms live sync work.
+pub fn lane_armed(wire: hearth.WireLane) bool {
+    return wire == .usb_desk;
+}
+
+/// Plain ping body carried inside a Comlink seal.
+pub fn format_ping_plain(
+    home_id: []const u8,
+    preset: hearth.DisplayPreset,
+    out: *[max_ping_plain]u8,
+) ?u32 {
+    hearth.validate_home_id(home_id) catch return null;
+    const text = std.fmt.bufPrint(
+        out,
+        \\format {s}
+        \\home_id {s}
+        \\display_preset {s}
+        \\waymark {s}
+        \\
+    ,
+        .{ ping_format, home_id, preset.name(), waymark },
+    ) catch return null;
+    assert(text.len <= max_ping_plain);
+    return @intCast(text.len);
+}
+
+/// Seal a ping when the lane is armed; null when wire is local.
+pub fn seal_lane_ping(
+    wire: hearth.WireLane,
+    home_id: []const u8,
+    preset: hearth.DisplayPreset,
+    buf: *[@intCast(wf.wire_capacity)]u8,
+) ?u64 {
+    if (!lane_armed(wire)) return null;
+    var plain: [max_ping_plain]u8 = undefined;
+    const n = format_ping_plain(home_id, preset, &plain) orelse return null;
+    return wf.seal_message(plain[0..n], buf) catch null;
+}
+
+/// Open a sealed ping and confirm home_id + preset match the expected fold.
+pub fn open_lane_ping(
+    sealed: []const u8,
+    expect_home: []const u8,
+    expect_preset: hearth.DisplayPreset,
+) bool {
+    var opened: [wf.max_message]u8 = undefined;
+    const n = wf.open_datagram(sealed, opened[0..]) catch return false;
+    if (n == 0 or n > max_ping_plain) return false;
+    const text = opened[0..@intCast(n)];
+    if (std.mem.indexOf(u8, text, "format setu-lane-ping-v1") == null) return false;
+    if (std.mem.indexOf(u8, text, expect_home) == null) return false;
+    if (std.mem.indexOf(u8, text, expect_preset.name()) == null) return false;
+    if (std.mem.indexOf(u8, text, "waymark SETU") == null) return false;
+    return true;
+}
+
+/// Device-free: usb_desk arms, seals, and opens a ping for kd · scaled_540.
+pub fn fixture_usb_desk_ping_round_trips() bool {
+    if (!lane_armed(.usb_desk)) return false;
+    if (lane_armed(.local)) return false;
+    var buf: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const sealed_len = seal_lane_ping(.usb_desk, "kd", .scaled_540, &buf) orelse return false;
+    if (sealed_len <= wf.off_cipher) return false;
+    return open_lane_ping(buf[0..@intCast(sealed_len)], "kd", .scaled_540);
+}
+
+/// Device-free: local wire never seals.
+pub fn fixture_local_refuses() bool {
+    var buf: [@intCast(wf.wire_capacity)]u8 = undefined;
+    return seal_lane_ping(.local, "kd", .scaled_540, &buf) == null;
+}
+
+/// Device-free: station apply + usb_desk ping from a pulled pair.
+pub fn fixture_station_ping_from_pull() bool {
+    const pointer = "kd\n";
+    const bron =
+        \\format hearth-lulu0-v1
+        \\home_id kd
+        \\display_preset scaled_540
+        \\wire_lane usb_desk
+        \\cellular off
+        \\waymark LULU
+        \\
+    ;
+    const s = setu05.apply_pulled(pointer, bron) orelse return false;
+    if (!lane_armed(s.wire)) return false;
+    var buf: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const sealed_len = seal_lane_ping(s.wire, s.home_id_slice(), s.preset, &buf) orelse return false;
+    return open_lane_ping(buf[0..@intCast(sealed_len)], "kd", .scaled_540);
+}
+
+/// Device-free: sealed ping bytes reopen after a buffer copy (Desk hold shape).
+pub fn fixture_sealed_bytes_reopen() bool {
+    var buf: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const sealed_len = seal_lane_ping(.usb_desk, "kd", .scaled_720, &buf) orelse return false;
+    var held: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const n: usize = @intCast(sealed_len);
+    tally_copy.copy_disjoint(u8, held[0..n], buf[0..n]);
+    return open_lane_ping(held[0..n], "kd", .scaled_720);
+}
+
+comptime {
+    _ = print;
+    assert(std.mem.eql(u8, waymark, "SETU"));
+    assert(lane_armed(.usb_desk));
+    assert(!lane_armed(.local));
+}

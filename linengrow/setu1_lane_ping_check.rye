@@ -1,0 +1,86 @@
+//! linengrow/setu1_lane_ping_check.rye — seal a lane ping from cached station.
+//!
+//! Reads tools/.cache/setu0/station.bron. If wire_lane is local, prints SKIP
+//! (lane not armed). If usb_desk, seals + opens a Comlink ping, writes
+//! tools/.cache/setu0/lane_ping.bin, and prints GREEN.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const Dir = std.Io.Dir;
+const hearth = @import("hearth_lulu0.rye");
+const setu1 = @import("setu1_lane_ping.rye");
+const wf = @import("wire_format.rye");
+
+const station_path = "tools/.cache/setu0/station.bron";
+const ping_path = "tools/.cache/setu0/lane_ping.bin";
+
+fn field_value(src: []const u8, key: []const u8) ?[]const u8 {
+    var line_start: usize = 0;
+    while (line_start <= src.len) {
+        const rest = src[line_start..];
+        const nl = std.mem.indexOfScalar(u8, rest, '\n');
+        const line_end = if (nl) |n| line_start + n else src.len;
+        const raw = src[line_start..line_end];
+        line_start = if (nl) |_| line_end + 1 else src.len + 1;
+        if (raw.len <= key.len) continue;
+        if (!std.mem.startsWith(u8, raw, key)) continue;
+        if (raw[key.len] != ' ') continue;
+        return std.mem.trim(u8, raw[key.len + 1 ..], " \t\r");
+    }
+    return null;
+}
+
+fn run_check(io: std.Io) !u8 {
+    const cwd = Dir.cwd();
+    var big: [1024]u8 = undefined;
+    const read = try cwd.readFile(io, station_path, &big);
+    assert(read.len <= big.len);
+
+    const home = field_value(read, "home_id") orelse {
+        print("setu1-check: RED — missing home_id in station\n", .{});
+        return 1;
+    };
+    const preset_name = field_value(read, "display_preset") orelse {
+        print("setu1-check: RED — missing display_preset in station\n", .{});
+        return 1;
+    };
+    const wire_name = field_value(read, "wire_lane") orelse {
+        print("setu1-check: RED — missing wire_lane in station\n", .{});
+        return 1;
+    };
+    const wire = hearth.WireLane.from_name(wire_name) orelse {
+        print("setu1-check: RED — unknown wire_lane\n", .{});
+        return 1;
+    };
+    const preset = hearth.DisplayPreset.from_name(preset_name) orelse {
+        print("setu1-check: RED — unknown display_preset\n", .{});
+        return 1;
+    };
+
+    if (!setu1.lane_armed(wire)) {
+        print("setu1-check: SKIP — wire_lane {s} (toggle usb_desk on Glass to arm)\n", .{wire_name});
+        print("GREEN: SETU1 — lane not armed; preference gate held.\n", .{});
+        return 0;
+    }
+
+    var buf: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const sealed_len = setu1.seal_lane_ping(wire, home, preset, &buf) orelse {
+        print("setu1-check: RED — seal failed\n", .{});
+        return 1;
+    };
+    const sealed = buf[0..@intCast(sealed_len)];
+    if (!setu1.open_lane_ping(sealed, home, preset)) {
+        print("setu1-check: RED — open/verify failed\n", .{});
+        return 1;
+    }
+    try cwd.writeFile(io, .{ .sub_path = ping_path, .data = sealed });
+    print("setu1-check: sealed ping home {s} · {s} -- GREEN\n", .{ home, preset_name });
+    print("setu1-check: wrote {s} ({d} bytes)\n", .{ ping_path, sealed_len });
+    print("GREEN: SETU1 — usb_desk lane ping sealed on Desk.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_check(init.io);
+}
