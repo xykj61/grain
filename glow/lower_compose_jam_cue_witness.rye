@@ -1,0 +1,78 @@
+//! glow/lower_compose_jam_cue_witness.rye — proves jam→cue cross-line compose.
+//!
+//!   rye build glow/lower_compose_jam_cue_witness.rye -femit-bin=glow/bin/lower_compose_jam_cue_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const lower = @import("lower_compose_jam_cue.rye");
+
+const witness_version = "20260719.145400";
+
+const jam_cue_src =
+    \\::  Cross-line jam then cue (STOA39).
+    \\=/  cell-pack=@u32  (jam from amount)
+    \\=/  right=@u32  (cue cell-pack)
+;
+
+fn run_selftest(init: std.process.Init) !u8 {
+    const io = init.io;
+    const a = init.arena.allocator();
+    const cwd = std.Io.Dir.cwd();
+    var buf: [3072]u8 = undefined;
+
+    assert(lower.looks_like_jam_cue(jam_cue_src));
+    const spec = try lower.parse_jam_cue(jam_cue_src);
+    assert(std.mem.eql(u8, lower.pack_face_slice(&spec), "cell-pack"));
+    assert(std.mem.eql(u8, lower.right_face_slice(&spec), "right"));
+    assert(std.mem.eql(u8, lower.jam_left_slice(&spec), "from"));
+    assert(std.mem.eql(u8, lower.jam_right_slice(&spec), "amount"));
+    print("compose-jam-cue: pack then cue parses -- GREEN\n", .{});
+
+    const n1 = try lower.lower_source_welcome(jam_cue_src, &buf);
+    const rye1 = buf[0..n1];
+    assert(std.mem.indexOf(u8, rye1, "const from: u32 = 5") != null);
+    assert(std.mem.indexOf(u8, rye1, "const amount: u32 = 3") != null);
+    assert(std.mem.indexOf(u8, rye1, "const cell_pack: u32 = (from << 16) | amount") != null);
+    assert(std.mem.indexOf(u8, rye1, "const right: u32 = cell_pack & 0xffff") != null);
+    assert(std.mem.indexOf(u8, rye1, "right == 3") != null);
+    print("compose-jam-cue: welcome builds jam→cue -- GREEN\n", .{});
+
+    const n2 = try lower.lower_source_unwelcome(jam_cue_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n2], "right == 4") != null);
+    print("compose-jam-cue: unwelcome expects mismatch -- GREEN\n", .{});
+
+    if (lower.parse_jam_cue("=/  cell-pack=@u32  (jam from amount)\n=/  right=@u32  (cue other)\n")) |_| {
+        return error.SampleMismatchNotCaught;
+    } else |err| {
+        if (err != lower.LowerError.SampleMismatch) return err;
+    }
+    print("compose-jam-cue: cue subject mismatch refused SampleMismatch -- GREEN\n", .{});
+
+    if (lower.parse_jam_cue("=/  amount  5\n%-  double  amount\n")) |_| {
+        return error.NotAJamCueComposeNotCaught;
+    } else |err| {
+        if (err != lower.LowerError.NotAJamCueCompose and err != lower.LowerError.MoldNotU32) return err;
+    }
+    print("compose-jam-cue: face→call refused NotAJamCueCompose -- GREEN\n", .{});
+
+    try cwd.createDirPath(io, "glow/.cache");
+    const n3 = try lower.lower_source_welcome(jam_cue_src, &buf);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/compose_jam_cue_welcome.rye", .data = buf[0..n3] });
+    const n4 = try lower.lower_source_unwelcome(jam_cue_src, &buf);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/compose_jam_cue_unwelcome.rye", .data = buf[0..n4] });
+    print("compose-jam-cue: wrote welcome and unwelcome .rye under glow/.cache/ -- GREEN\n", .{});
+
+    const gen_src = try cwd.readFileAlloc(io, "glow/gen/compose-jam-cue.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_src, "=/  cell-pack=@u32  (jam from amount)") != null);
+    assert(std.mem.indexOf(u8, gen_src, "=/  right=@u32  (cue cell-pack)") != null);
+    print("compose-jam-cue: glow/gen/compose-jam-cue.glow carries jam→cue -- GREEN\n", .{});
+
+    print("compose-jam-cue: version {s}\n", .{witness_version});
+    print("GREEN: jam→cue cross-line compose lowers to ordinary Rye (STOA39).\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
+}
