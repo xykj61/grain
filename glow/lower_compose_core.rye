@@ -1,16 +1,11 @@
 //! glow/lower_compose_core.rye — lower face→`|%` core compose to one `.rye`.
 //!
-//! STOA18 (four lines) — one arm:
-//!   =/  amount  5
-//!   |%
-//!   ++  double
-//!   --
-//!
-//! STOA19 (five lines) — two arms:
+//! STOA18 (four lines) — one arm · STOA19 (five) — two arms · STOA22 (six) — three:
 //!   =/  amount  5
 //!   |%
 //!   ++  double
 //!   ++  inc
+//!   ++  dec
 //!   --
 //!
 //! Outer face is the sample; the core carries no inner payload.
@@ -125,15 +120,16 @@ fn arm_expect(arm: []const u8, sample: u32) LowerError!u32 {
 }
 
 fn closed_compose_arms(core: *const rk.CoreSpec) LowerError!void {
-    if (core.count == 0 or core.count > 2) return error.NotAComposeCore;
+    if (core.count == 0 or core.count > 3) return error.NotAComposeCore;
     if (!std.mem.eql(u8, rk.arm_at(core, 0), "double")) return error.UnknownArm;
-    if (core.count == 2 and !std.mem.eql(u8, rk.arm_at(core, 1), "inc")) return error.UnknownArm;
+    if (core.count >= 2 and !std.mem.eql(u8, rk.arm_at(core, 1), "inc")) return error.UnknownArm;
+    if (core.count == 3 and !std.mem.eql(u8, rk.arm_at(core, 2), "dec")) return error.UnknownArm;
 }
 
 pub fn parse_compose_core(src: []const u8) LowerError!ComposeCoreSpec {
     var lines: [lower_multi.max_lines][]const u8 = undefined;
     const n = try lower_multi.collect_lines(src, &lines);
-    if (n != 4 and n != 5) return error.NotAComposeCore;
+    if (n < 4 or n > 6) return error.NotAComposeCore;
     if (lines[0].len < 2 or lines[0][0] != '=' or lines[0][1] != '/') return error.NotAComposeCore;
     if (lines[1].len < 2 or lines[1][0] != '|' or lines[1][1] != '%') return error.NotAComposeCore;
 
@@ -141,7 +137,7 @@ pub fn parse_compose_core(src: []const u8) LowerError!ComposeCoreSpec {
     try fill_bare_face(lines[0], &spec);
     if (spec.value != 5) return error.MalformedValue;
 
-    var core_buf: [320]u8 = undefined;
+    var core_buf: [384]u8 = undefined;
     const core_src = try join_core_src(lines[1..n], &core_buf);
     const core = try rk.parse_source(core_src);
     if (rk.has_payload(&core)) return error.CoreHasPayload;
@@ -210,7 +206,7 @@ fn emit_compose_core(spec: *const ComposeCoreSpec, welcome: bool, out: []u8) Low
     const written = std.fmt.bufPrint(out,
         \\const std = @import("std");
         \\
-        \\/// Lowered from Glow face→`|%` compose (STOA18/19).
+        \\/// Lowered from Glow face→`|%` compose (STOA18/19/22).
         \\const Core = struct {{
         \\{s}}};
         \\

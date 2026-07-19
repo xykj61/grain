@@ -1,0 +1,14 @@
+format session-log-v1
+stamp 20260718.233317
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern time convention
+title STOA22 check-in before send
+prompt check in
+think Language nib STOA0-22 GREEN in tree; pier still at STOA21 1a80d295cb
+think Present send vs STOA23 forks and wait — no build this turn
+obs Lean stays ship face-to-three before payload-in-compose or percent-plus
+file session-logs/20260718-233120_stoa22-face-to-three-green.bron prior GREEN claim
+git_nib 1a80d295cb
+recommend check-in Keaton picks send and or STOA23 fork
