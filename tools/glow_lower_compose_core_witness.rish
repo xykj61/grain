@@ -1,13 +1,15 @@
-# glow_lower_compose_core_witness.rish — face→`|%` compose hop (1–2 arms).
+# glow_lower_compose_core_witness.rish — face→`|%` compose hop (1–3 arms).
 #
 #   rishi/bin/rishi run tools/glow_lower_compose_core_witness.rish
 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "glow/bin/lower_compose_core_witness"
-let welcome_rye = "glow/.cache/compose_core_two_welcome.rye"
-let welcome_bin = "glow/bin/compose_core_two_welcome"
-let unwelcome_rye = "glow/.cache/compose_core_two_unwelcome.rye"
-let unwelcome_bin = "glow/bin/compose_core_two_unwelcome"
+let welcome_rye = "glow/.cache/compose_core_three_welcome.rye"
+let welcome_bin = "glow/bin/compose_core_three_welcome"
+let unwelcome_rye = "glow/.cache/compose_core_three_unwelcome.rye"
+let unwelcome_bin = "glow/bin/compose_core_three_unwelcome"
+let two_welcome_rye = "glow/.cache/compose_core_two_welcome.rye"
+let two_welcome_bin = "glow/bin/compose_core_two_welcome"
 let one_welcome_rye = "glow/.cache/compose_core_welcome.rye"
 let one_welcome_bin = "glow/bin/compose_core_welcome"
 
@@ -17,25 +19,30 @@ assert build.ok else "lower_compose_core_witness build failed"
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
 assert selftest.ok else "lower_compose_core_witness exited non-zero"
 assert selftest.out contains "GREEN" else "lower_compose_core_witness not GREEN"
-assert selftest.out contains "two-arm welcome calls" else "lower_compose_core_witness missing two-arm claim"
-assert selftest.out contains "compose-core and compose-core-two" else "lower_compose_core_witness missing desk claim"
+assert selftest.out contains "three-arm welcome calls" else "lower_compose_core_witness missing three-arm claim"
+assert selftest.out contains "compose-core-two and compose-core-three" else "lower_compose_core_witness missing desk claim"
 assert selftest.out contains "UnknownArm" else "lower_compose_core_witness missing UnknownArm"
 assert selftest.out contains "NotAComposeCore" else "lower_compose_core_witness missing NotAComposeCore"
 
 let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
-assert build_welcome.ok else "compose-core-two welcome .rye build failed"
+assert build_welcome.ok else "compose-core-three welcome .rye build failed"
 let run_welcome = run ["sh" "-c" "${welcome_bin}; echo EXIT:$?"]
-assert run_welcome.ok else "compose-core-two welcome binary failed to launch"
-assert run_welcome.out contains "EXIT:0" else "compose-core-two welcome binary did not exit 0"
+assert run_welcome.ok else "compose-core-three welcome binary failed to launch"
+assert run_welcome.out contains "EXIT:0" else "compose-core-three welcome binary did not exit 0"
 
 let build_unwelcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${unwelcome_rye} -femit-bin=${unwelcome_bin}"]
-assert build_unwelcome.ok else "compose-core-two unwelcome .rye build failed"
+assert build_unwelcome.ok else "compose-core-three unwelcome .rye build failed"
 let run_unwelcome = run ["sh" "-c" "${unwelcome_bin}; echo EXIT:$?"]
-assert run_unwelcome.out contains "EXIT:1" else "compose-core-two unwelcome binary did not exit 1"
+assert run_unwelcome.out contains "EXIT:1" else "compose-core-three unwelcome binary did not exit 1"
+
+let build_two = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${two_welcome_rye} -femit-bin=${two_welcome_bin}"]
+assert build_two.ok else "compose-core-two welcome .rye build failed"
+let run_two = run ["sh" "-c" "${two_welcome_bin}; echo EXIT:$?"]
+assert run_two.out contains "EXIT:0" else "compose-core-two welcome binary did not exit 0"
 
 let build_one = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${one_welcome_rye} -femit-bin=${one_welcome_bin}"]
 assert build_one.ok else "compose-core one welcome .rye build failed"
 let run_one = run ["sh" "-c" "${one_welcome_bin}; echo EXIT:$?"]
 assert run_one.out contains "EXIT:0" else "compose-core one welcome binary did not exit 0"
 
-say "GREEN: Glow face→`|%` compose hop — one or two arms; welcome 0 / unwelcome 1; STOA18/19."
+say "GREEN: Glow face→`|%` compose hop — one to three arms; welcome 0 / unwelcome 1; STOA18/19/22."
