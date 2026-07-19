@@ -1,0 +1,78 @@
+//! glow/lower_multi_witness.rye — proves multi-line Glow desks lower to Rye.
+//!
+//!   rye build glow/lower_multi_witness.rye -femit-bin=glow/bin/lower_multi_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const lower = @import("lower_multi.rye");
+
+const witness_version = "20260718.211700";
+
+const multi_src =
+    \\::  Multi-line — two face binds (STOA10).
+    \\=/  from  5
+    \\=/  amount  3
+;
+
+fn run_selftest(init: std.process.Init) !u8 {
+    const io = init.io;
+    const a = init.arena.allocator();
+    const cwd = std.Io.Dir.cwd();
+    var buf: [3072]u8 = undefined;
+
+    const spec = try lower.parse_multi(multi_src);
+    assert(spec.count == 2);
+    assert(std.mem.eql(u8, lower.face_at(&spec, 0), "from"));
+    assert(spec.binds[0].value == 5);
+    assert(std.mem.eql(u8, lower.face_at(&spec, 1), "amount"));
+    assert(spec.binds[1].value == 3);
+    print("multi: two bare face lines parse -- GREEN\n", .{});
+
+    const n1 = try lower.lower_source_welcome(multi_src, &buf);
+    const rye1 = buf[0..n1];
+    assert(std.mem.indexOf(u8, rye1, "const from: u32 = 5") != null);
+    assert(std.mem.indexOf(u8, rye1, "const amount: u32 = 3") != null);
+    assert(std.mem.indexOf(u8, rye1, "from == 5 and amount == 3") != null);
+    print("multi: welcome builds two binds -- GREEN\n", .{});
+
+    const n2 = try lower.lower_source_unwelcome(multi_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n2], "from == 6 and amount == 4") != null);
+    print("multi: unwelcome expects mismatch on each bind -- GREEN\n", .{});
+
+    if (lower.parse_multi("=/  from  5\n")) |_| {
+        return error.NeedMultiNotCaught;
+    } else |err| {
+        if (err != lower.LowerError.NeedMulti) return err;
+    }
+    print("multi: single line refused NeedMulti -- GREEN\n", .{});
+
+    if (lower.parse_multi("=/  from=@u32  5\n=/  amount  3\n")) |_| {
+        return error.NotBareNotCaught;
+    } else |err| {
+        if (err != lower.LowerError.NotBareLiteral) return err;
+    }
+    print("multi: typed mold refused NotBareLiteral -- GREEN\n", .{});
+
+    try cwd.createDirPath(io, "glow/.cache");
+    const welcome_path = "glow/.cache/multi_face_welcome.rye";
+    const unwelcome_path = "glow/.cache/multi_face_unwelcome.rye";
+    const n3 = try lower.lower_source_welcome(multi_src, &buf);
+    try cwd.writeFile(io, .{ .sub_path = welcome_path, .data = buf[0..n3] });
+    const n4 = try lower.lower_source_unwelcome(multi_src, &buf);
+    try cwd.writeFile(io, .{ .sub_path = unwelcome_path, .data = buf[0..n4] });
+    print("multi: wrote welcome and unwelcome .rye under glow/.cache/ -- GREEN\n", .{});
+
+    const gen_src = try cwd.readFileAlloc(io, "glow/gen/multi-face.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_src, "=/  from  5") != null);
+    assert(std.mem.indexOf(u8, gen_src, "=/  amount  3") != null);
+    print("multi: glow/gen/multi-face.glow carries two faces -- GREEN\n", .{});
+
+    print("multi: version {s}\n", .{witness_version});
+    print("GREEN: multi-line bare face desks lower to ordinary Rye (STOA10).\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
+}

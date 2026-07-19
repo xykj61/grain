@@ -1,0 +1,77 @@
+//! glow/lower_compose_witness.rye — proves face→call cross-line compose.
+//!
+//!   rye build glow/lower_compose_witness.rye -femit-bin=glow/bin/lower_compose_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const lower = @import("lower_compose.rye");
+
+const witness_version = "20260718.212000";
+
+const compose_src =
+    \\::  Cross-line — face then one-arg call (STOA11).
+    \\=/  amount  5
+    \\%-  double  amount
+;
+
+fn run_selftest(init: std.process.Init) !u8 {
+    const io = init.io;
+    const a = init.arena.allocator();
+    const cwd = std.Io.Dir.cwd();
+    var buf: [3072]u8 = undefined;
+
+    const spec = try lower.parse_compose(compose_src);
+    assert(std.mem.eql(u8, lower.face_slice(&spec), "amount"));
+    assert(spec.value == 5);
+    assert(std.mem.eql(u8, lower.gate_slice(&spec), "double"));
+    print("compose: face then %- double parses -- GREEN\n", .{});
+
+    const n1 = try lower.lower_source_welcome(compose_src, &buf);
+    const rye1 = buf[0..n1];
+    assert(std.mem.indexOf(u8, rye1, "fn double(sample: u32) u32") != null);
+    assert(std.mem.indexOf(u8, rye1, "const amount: u32 = 5") != null);
+    assert(std.mem.indexOf(u8, rye1, "const called: u32 = double(amount)") != null);
+    assert(std.mem.indexOf(u8, rye1, "called == 10") != null);
+    print("compose: welcome builds face→call -- GREEN\n", .{});
+
+    const n2 = try lower.lower_source_unwelcome(compose_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n2], "called == 11") != null);
+    print("compose: unwelcome expects mismatch -- GREEN\n", .{});
+
+    if (lower.parse_compose("=/  from  5\n=/  amount  3\n")) |_| {
+        return error.NotAComposeNotCaught;
+    } else |err| {
+        if (err != lower.LowerError.NotACompose) return err;
+    }
+    print("compose: two faces refused NotACompose -- GREEN\n", .{});
+
+    if (lower.parse_compose("=/  amount  5\n%-  double  other\n")) |_| {
+        return error.SampleMismatchNotCaught;
+    } else |err| {
+        if (err != lower.LowerError.SampleMismatch) return err;
+    }
+    print("compose: sample mismatch refused SampleMismatch -- GREEN\n", .{});
+
+    try cwd.createDirPath(io, "glow/.cache");
+    const welcome_path = "glow/.cache/compose_call_welcome.rye";
+    const unwelcome_path = "glow/.cache/compose_call_unwelcome.rye";
+    const n3 = try lower.lower_source_welcome(compose_src, &buf);
+    try cwd.writeFile(io, .{ .sub_path = welcome_path, .data = buf[0..n3] });
+    const n4 = try lower.lower_source_unwelcome(compose_src, &buf);
+    try cwd.writeFile(io, .{ .sub_path = unwelcome_path, .data = buf[0..n4] });
+    print("compose: wrote welcome and unwelcome .rye under glow/.cache/ -- GREEN\n", .{});
+
+    const gen_src = try cwd.readFileAlloc(io, "glow/gen/compose-call.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_src, "=/  amount  5") != null);
+    assert(std.mem.indexOf(u8, gen_src, "%-  double  amount") != null);
+    print("compose: glow/gen/compose-call.glow carries face→call -- GREEN\n", .{});
+
+    print("compose: version {s}\n", .{witness_version});
+    print("GREEN: face→call cross-line compose lowers to ordinary Rye (STOA11).\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
+}
