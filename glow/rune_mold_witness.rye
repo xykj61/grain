@@ -1,4 +1,4 @@
-//! glow/rune_mold_witness.rye — proves thin `+$` / `$:` mold parse (STOA74).
+//! glow/rune_mold_witness.rye — proves `+$` / `$:` mold parse (STOA74–75).
 //!
 //!   rye build glow/rune_mold_witness.rye -femit-bin=glow/bin/rune_mold_witness
 //!   glow/bin/rune_mold_witness
@@ -8,18 +8,32 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const rm = @import("rune_mold.rye");
 
-const witness_version = "20260719.190500";
+const witness_version = "20260719.191900";
 
 fn run_selftest() !u8 {
-    const src =
+    const one =
         \\+$  amount-mold
         \\  $:  amount=@u32
         \\  ==
     ;
-    const spec = try rm.parse_source(src);
-    assert(std.mem.eql(u8, rm.name_slice(&spec), "amount-mold"));
-    assert(std.mem.eql(u8, rm.field_slice(&spec), "amount"));
+    const s1 = try rm.parse_source(one);
+    assert(std.mem.eql(u8, rm.name_slice(&s1), "amount-mold"));
+    assert(s1.field_count == 1);
+    assert(std.mem.eql(u8, rm.first_field_slice(&s1), "amount"));
     print("rune: thin +$ amount-mold / $: amount=@u32 parses -- GREEN\n", .{});
+
+    const two =
+        \\+$  pair-mold
+        \\  $:  from=@u32
+        \\      amount=@u32
+        \\  ==
+    ;
+    const s2 = try rm.parse_source(two);
+    assert(std.mem.eql(u8, rm.name_slice(&s2), "pair-mold"));
+    assert(s2.field_count == 2);
+    assert(std.mem.eql(u8, rm.field_slice(&s2, 0), "from"));
+    assert(std.mem.eql(u8, rm.field_slice(&s2, 1), "amount"));
+    print("rune: multi-field +$ pair-mold / $: from amount parses -- GREEN\n", .{});
 
     if (rm.parse_source("^-  @u32")) |_| {
         return error.NotAMoldNotCaught;
@@ -50,7 +64,7 @@ fn run_selftest() !u8 {
     print("rune: missing == refused -- GREEN unwelcome path\n", .{});
 
     print("rune: version {s}\n", .{witness_version});
-    print("GREEN: thin +$ / $: mold front half parses — STOA74.\n", .{});
+    print("GREEN: +$ / $: mold front half parses — STOA74/75.\n", .{});
     return 0;
 }
 

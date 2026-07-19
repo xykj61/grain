@@ -1,0 +1,6 @@
+::  Multi-field +$ / $: two @u32 fields (STOA75).
+::  Lowered by glow/lower_mold.rye into ordinary Rye; Rishi stays the shell.
++$  pair-mold
+  $:  from=@u32
+      amount=@u32
+  ==

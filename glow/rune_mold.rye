@@ -1,17 +1,22 @@
-//! glow/rune_mold.rye — parses Glow's thin `+$` / `$:` mold (STOA74).
+//! glow/rune_mold.rye — parses Glow's `+$` / `$:` mold (STOA74–75).
 //!
 //! Per active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-
 //! riscv.md `$` category: `+$` names a mold; `$:` is a tuple body.
-//! Thin face: one field, mold `@u32` only. `$%` · multi-field · nest stay
-//! later. Shape:
+//! STOA74: one `@u32` field. STOA75: two or three `@u32` fields.
+//! `$%` · named-cast resolve · non-@u32 stay later. Shapes:
 //!   +$  amount-mold
 //!     $:  amount=@u32
+//!     ==
+//!   +$  pair-mold
+//!     $:  from=@u32
+//!         amount=@u32
 //!     ==
 
 const std = @import("std");
 const lower_multi = @import("lower_multi.rye");
 
 pub const max_name_len: u32 = 64;
+pub const max_fields: u32 = 3;
 
 pub const ParseError = error{
     NotAMold,
@@ -23,6 +28,7 @@ pub const ParseError = error{
     FieldTooLong,
     MalformedField,
     MoldNotU32,
+    TooManyFields,
     MissingEnd,
     TrailingJunk,
     TooManyLines,
@@ -33,16 +39,22 @@ pub const ParseError = error{
 pub const MoldSpec = struct {
     name: [max_name_len]u8 = [_]u8{0} ** max_name_len,
     name_len: usize = 0,
-    field: [max_name_len]u8 = [_]u8{0} ** max_name_len,
-    field_len: usize = 0,
+    fields: [max_fields][max_name_len]u8 = [_][max_name_len]u8{[_]u8{0} ** max_name_len} ** max_fields,
+    field_lens: [max_fields]usize = [_]usize{0} ** max_fields,
+    field_count: usize = 0,
 };
 
 pub fn name_slice(spec: *const MoldSpec) []const u8 {
     return spec.name[0..spec.name_len];
 }
 
-pub fn field_slice(spec: *const MoldSpec) []const u8 {
-    return spec.field[0..spec.field_len];
+pub fn field_slice(spec: *const MoldSpec, i: usize) []const u8 {
+    return spec.fields[i][0..spec.field_lens[i]];
+}
+
+/// STOA74 compat: first field only.
+pub fn first_field_slice(spec: *const MoldSpec) []const u8 {
+    return field_slice(spec, 0);
 }
 
 fn is_ident_char(c: u8) bool {
@@ -61,7 +73,7 @@ fn parse_ident(text: []const u8) ParseError![]const u8 {
     return text;
 }
 
-fn parse_field_clause(clause: []const u8) ParseError!struct { face: []const u8, mold: []const u8 } {
+fn parse_field_clause(clause: []const u8) ParseError![]const u8 {
     if (clause.len == 0 or clause.len > max_name_len * 2 + 1) return error.FieldTooLong;
     var eq: ?usize = null;
     var i: usize = 0;
@@ -76,11 +88,29 @@ fn parse_field_clause(clause: []const u8) ParseError!struct { face: []const u8, 
     const mold = clause[e + 1 ..];
     if (mold.len == 0 or mold.len > max_name_len) return error.MalformedField;
     if (!std.mem.eql(u8, mold, "@u32")) return error.MoldNotU32;
-    return .{ .face = face, .mold = mold };
+    return face;
 }
 
-/// Parse a three-line thin mold source (comments/blanks already stripped by
-/// lower_multi.collect_lines).
+fn take_clause(line: []const u8) ParseError![]const u8 {
+    var end: usize = 0;
+    while (end < line.len and line[end] != ' ' and line[end] != '\t') end += 1;
+    const clause = line[0..end];
+    const rest = std.mem.trimStart(u8, line[end..], " \t");
+    if (rest.len != 0) return error.TrailingJunk;
+    if (clause.len == 0) return error.MissingField;
+    return clause;
+}
+
+fn push_field(spec: *MoldSpec, face: []const u8) ParseError!void {
+    if (spec.field_count >= max_fields) return error.TooManyFields;
+    const i = spec.field_count;
+    @memcpy(spec.fields[i][0..face.len], face);
+    spec.field_lens[i] = face.len;
+    spec.field_count += 1;
+}
+
+/// Parse a thin or multi-field mold source (comments/blanks stripped).
+/// Lines: +$ name · $: field · [field…] · ==  (3–5 Glow lines).
 pub fn parse_source(src: []const u8) ParseError!MoldSpec {
     if (src.len == 0) return error.EmptySource;
     var lines: [lower_multi.max_lines][]const u8 = undefined;
@@ -88,8 +118,9 @@ pub fn parse_source(src: []const u8) ParseError!MoldSpec {
         error.TooManyLines => return error.TooManyLines,
         else => return error.EmptySource,
     };
+    // 3 = one field; 4 = two; 5 = three. Last line is always ==.
     if (n < 3) return error.TooFewLines;
-    if (n > 3) return error.TooManyLines;
+    if (n > 5) return error.TooManyLines;
 
     const head = std.mem.trim(u8, lines[0], " \t");
     if (head.len < 2 or !std.mem.eql(u8, head[0..2], "+$")) return error.NotAMold;
@@ -101,24 +132,24 @@ pub fn parse_source(src: []const u8) ParseError!MoldSpec {
     rest = std.mem.trimStart(u8, rest[end..], " \t");
     if (rest.len != 0) return error.TrailingJunk;
 
-    const tup = std.mem.trim(u8, lines[1], " \t");
-    if (tup.len < 2 or !std.mem.eql(u8, tup[0..2], "$:")) return error.MissingTuple;
-    var field_rest = std.mem.trimStart(u8, tup[2..], " \t");
-    if (field_rest.len == 0) return error.MissingField;
-    end = 0;
-    while (end < field_rest.len and field_rest[end] != ' ' and field_rest[end] != '\t') end += 1;
-    const clause = field_rest[0..end];
-    field_rest = std.mem.trimStart(u8, field_rest[end..], " \t");
-    if (field_rest.len != 0) return error.TrailingJunk;
-    const field = try parse_field_clause(clause);
-
-    const closer = std.mem.trim(u8, lines[2], " \t");
+    const closer = std.mem.trim(u8, lines[n - 1], " \t");
     if (!std.mem.eql(u8, closer, "==")) return error.MissingEnd;
 
     var spec: MoldSpec = .{};
     @memcpy(spec.name[0..name.len], name);
     spec.name_len = name.len;
-    @memcpy(spec.field[0..field.face.len], field.face);
-    spec.field_len = field.face.len;
+
+    var li: usize = 1;
+    while (li + 1 < n) : (li += 1) {
+        var body = std.mem.trim(u8, lines[li], " \t");
+        if (li == 1) {
+            if (body.len < 2 or !std.mem.eql(u8, body[0..2], "$:")) return error.MissingTuple;
+            body = std.mem.trimStart(u8, body[2..], " \t");
+        }
+        const clause = try take_clause(body);
+        const face = try parse_field_clause(clause);
+        try push_field(&spec, face);
+    }
+    if (spec.field_count == 0) return error.MissingField;
     return spec;
 }

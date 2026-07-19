@@ -6,6 +6,8 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "glow/bin/lower_mold_witness"
 let welcome_rye = "glow/.cache/mold_amount_welcome.rye"
 let welcome_bin = "glow/bin/mold_amount_welcome"
+let pair_rye = "glow/.cache/mold_pair_welcome.rye"
+let pair_bin = "glow/bin/mold_pair_welcome"
 
 let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/lower_mold_witness.rye -femit-bin=${bin}"]
 assert build.ok else "lower_mold_witness build failed"
@@ -14,6 +16,7 @@ let selftest = run ["sh" "-c" "${bin} 2>&1"]
 assert selftest.ok else "lower_mold_witness exited non-zero"
 assert selftest.out contains "GREEN" else "lower_mold_witness not GREEN"
 assert selftest.out contains "AmountMold" else "lower_mold_witness missing AmountMold"
+assert selftest.out contains "PairMold" else "lower_mold_witness missing PairMold"
 
 let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
 assert build_welcome.ok else "mold welcome .rye build failed"
@@ -21,4 +24,10 @@ let run_welcome = run ["sh" "-c" "${welcome_bin}; echo EXIT:$?"]
 assert run_welcome.ok else "mold welcome binary failed to launch"
 assert run_welcome.out contains "EXIT:0" else "mold welcome binary did not exit 0"
 
-say "GREEN: Glow thin +$ / $: mold hop — AmountMold lowers; welcome exit 0; STOA74."
+let build_pair = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${pair_rye} -femit-bin=${pair_bin}"]
+assert build_pair.ok else "mold pair welcome .rye build failed"
+let run_pair = run ["sh" "-c" "${pair_bin}; echo EXIT:$?"]
+assert run_pair.ok else "mold pair welcome binary failed to launch"
+assert run_pair.out contains "EXIT:0" else "mold pair welcome binary did not exit 0"
+
+say "GREEN: Glow +$ / $: mold hop — AmountMold · PairMold; welcome exit 0; STOA74/75."

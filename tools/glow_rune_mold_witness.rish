@@ -12,6 +12,7 @@ let selftest = run ["sh" "-c" "${bin} 2>&1"]
 assert selftest.ok else "rune_mold_witness exited non-zero"
 assert selftest.out contains "GREEN" else "rune_mold_witness not GREEN"
 assert selftest.out contains "amount-mold" else "rune_mold_witness missing amount-mold"
+assert selftest.out contains "pair-mold" else "rune_mold_witness missing pair-mold"
 assert selftest.out contains "MoldNotU32" else "rune_mold_witness missing MoldNotU32"
 
-say "GREEN: Glow thin +$ / $: mold rune head — one-field @u32; STOA74."
+say "GREEN: Glow +$ / $: mold rune head — one- and multi-field @u32; STOA74/75."

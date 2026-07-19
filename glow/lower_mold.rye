@@ -1,7 +1,8 @@
-//! glow/lower_mold.rye — lower a thin `+$` / `$:` mold to runnable `.rye`.
+//! glow/lower_mold.rye — lower a `+$` / `$:` mold to runnable `.rye`.
 //!
-//! STOA74: one-field `@u32` tuple mold → Zig struct + demo main (amount 5).
-//! `$%` · multi-field · named-cast resolve stay later.
+//! STOA74: one-field `@u32` → Zig struct + demo main (amount 5).
+//! STOA75: two- or three-field `@u32` → struct + demo (5 · 3 · 7).
+//! `$%` · named-cast resolve stay later.
 
 const std = @import("std");
 const rm = @import("rune_mold.rye");
@@ -11,7 +12,7 @@ pub const LowerError = rm.ParseError || error{
     BadIdent,
 };
 
-pub const mold_demo_amount: u32 = 5;
+pub const mold_demo_vals: [rm.max_fields]u32 = .{ 5, 3, 7 };
 
 fn zig_safe_ident(face: []const u8, out: *[rm.max_name_len]u8) LowerError!usize {
     if (face.len == 0 or face.len > rm.max_name_len) return error.BadIdent;
@@ -58,46 +59,53 @@ fn zig_type_name(name: []const u8, out: *[rm.max_name_len]u8) LowerError!usize {
     return o;
 }
 
-fn emit_mold_program(
-    glow_name: []const u8,
-    zig_type: []const u8,
-    zig_field: []const u8,
-    expect: u32,
-    out: []u8,
-) LowerError!u32 {
-    const written = std.fmt.bufPrint(out,
-        \\const std = @import("std");
-        \\
-        \\/// Lowered from Glow `+$ {s}` / `$:` one-field `@u32` (STOA74).
-        \\pub const {s} = struct {{
-        \\    {s}: u32 = 0,
-        \\}};
-        \\
-        \\pub fn main(_: std.process.Init) !u8 {{
-        \\    const m = {s}{{ .{s} = {d} }};
-        \\    return if (m.{s} == {d}) 0 else 1;
-        \\}}
-        \\
-    , .{
-        glow_name,
-        zig_type,
-        zig_field,
-        zig_type,
-        zig_field,
-        expect,
-        zig_field,
-        expect,
-    }) catch return error.Overflow;
-    return @intCast(written.len);
+fn append(out: []u8, used: *usize, chunk: []const u8) LowerError!void {
+    if (used.* + chunk.len > out.len) return error.Overflow;
+    @memcpy(out[used.* ..][0..chunk.len], chunk);
+    used.* += chunk.len;
+}
+
+fn append_fmt(out: []u8, used: *usize, comptime fmt: []const u8, args: anytype) LowerError!void {
+    const written = std.fmt.bufPrint(out[used.*..], fmt, args) catch return error.Overflow;
+    used.* += written.len;
 }
 
 pub fn lower_source_welcome(src: []const u8, out: []u8) LowerError!u32 {
     const spec = try rm.parse_source(src);
     const name = rm.name_slice(&spec);
-    const field = rm.field_slice(&spec);
     var zt: [rm.max_name_len]u8 = undefined;
-    var zf: [rm.max_name_len]u8 = undefined;
     const tn = try zig_type_name(name, &zt);
-    const fn_len = try zig_safe_ident(field, &zf);
-    return emit_mold_program(name, zt[0..tn], zf[0..fn_len], mold_demo_amount, out);
+    const zig_type = zt[0..tn];
+
+    var zf: [rm.max_fields][rm.max_name_len]u8 = undefined;
+    var zf_lens: [rm.max_fields]usize = undefined;
+    var i: usize = 0;
+    while (i < spec.field_count) : (i += 1) {
+        zf_lens[i] = try zig_safe_ident(rm.field_slice(&spec, i), &zf[i]);
+    }
+
+    var used: usize = 0;
+    try append(out, &used, "const std = @import(\"std\");\n\n");
+    try append_fmt(out, &used, "/// Lowered from Glow `+$ {s}` / `$:` @u32 fields (STOA74/75).\n", .{name});
+    try append_fmt(out, &used, "pub const {s} = struct {{\n", .{zig_type});
+    i = 0;
+    while (i < spec.field_count) : (i += 1) {
+        try append_fmt(out, &used, "    {s}: u32 = 0,\n", .{zf[i][0..zf_lens[i]]});
+    }
+    try append(out, &used, "};\n\n");
+    try append(out, &used, "pub fn main(_: std.process.Init) !u8 {\n");
+    try append_fmt(out, &used, "    const m = {s}{{\n", .{zig_type});
+    i = 0;
+    while (i < spec.field_count) : (i += 1) {
+        try append_fmt(out, &used, "        .{s} = {d},\n", .{ zf[i][0..zf_lens[i]], mold_demo_vals[i] });
+    }
+    try append(out, &used, "    };\n");
+    try append(out, &used, "    return if (");
+    i = 0;
+    while (i < spec.field_count) : (i += 1) {
+        if (i != 0) try append(out, &used, " and ");
+        try append_fmt(out, &used, "m.{s} == {d}", .{ zf[i][0..zf_lens[i]], mold_demo_vals[i] });
+    }
+    try append(out, &used, ") 0 else 1;\n}\n");
+    return @intCast(used);
 }
