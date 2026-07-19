@@ -7,7 +7,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const lower = @import("lower_compose_jam_cue.rye");
 
-const witness_version = "20260719.155553";
+const witness_version = "20260719.161949";
 
 const jam_cue_src =
     \\::  Cross-line jam then cue (STOA39).
@@ -65,6 +65,16 @@ const bind_nest_three_jam_cue_src =
     \\=/  amount=@u32  3
     \\=/  note=@u32  7
     \\=/  cell-pack=@u32  (jam (mix from amount) note)
+    \\=/  right=@u32  (cue cell-pack)
+;
+
+const bind_nest_four_jam_cue_src =
+    \\::  Bind four faces then nest-both jam→cue (STOA48).
+    \\=/  from=@u32  5
+    \\=/  amount=@u32  3
+    \\=/  payload=@u32  9
+    \\=/  gate=@u32  1
+    \\=/  cell-pack=@u32  (jam (mix from amount) (mix payload gate))
     \\=/  right=@u32  (cue cell-pack)
 ;
 
@@ -201,6 +211,23 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, rye_three, "right == 7") != null);
     print("compose-jam-cue: welcome builds bind→nest-three-jam→cue -- GREEN\n", .{});
 
+    assert(lower.looks_like_jam_cue(bind_nest_four_jam_cue_src));
+    const nest_four = try lower.parse_jam_cue(bind_nest_four_jam_cue_src);
+    assert(nest_four.has_four_binds);
+    assert(nest_four.nest_both);
+    assert(nest_four.pack_atom_value == 9);
+    assert(nest_four.mix_rr_value == 1);
+    print("compose-jam-cue: bind→nest-four-jam→cue parses -- GREEN\n", .{});
+
+    const n_nest_four = try lower.lower_source_welcome(bind_nest_four_jam_cue_src, &buf);
+    const rye_four = buf[0..n_nest_four];
+    assert(std.mem.indexOf(u8, rye_four, "const payload: u32 = 9") != null);
+    assert(std.mem.indexOf(u8, rye_four, "const gate: u32 = 1") != null);
+    assert(std.mem.indexOf(u8, rye_four, "left_mix: u32 = from ^ amount") != null);
+    assert(std.mem.indexOf(u8, rye_four, "right_mix: u32 = payload ^ gate") != null);
+    assert(std.mem.indexOf(u8, rye_four, "right == 8") != null);
+    print("compose-jam-cue: welcome builds bind→nest-four-jam→cue -- GREEN\n", .{});
+
     if (lower.parse_jam_cue(
         \\=/  cell-pack=@u32  (jam (mix from amount) cell)
         \\=/  right=@u32  (cue cell-pack)
@@ -222,6 +249,18 @@ fn run_selftest(init: std.process.Init) !u8 {
         if (err != lower.LowerError.ValueNotYetLowered) return err;
     }
     print("compose-jam-cue: two-bind distinct pack-right refused ValueNotYetLowered -- GREEN\n", .{});
+
+    if (lower.parse_jam_cue(
+        \\=/  from=@u32  5
+        \\=/  amount=@u32  3
+        \\=/  cell-pack=@u32  (jam (mix from amount) (mix payload gate))
+        \\=/  right=@u32  (cue cell-pack)
+    )) |_| {
+        return error.NestFourNeedsFourBindsNotCaught;
+    } else |err| {
+        if (err != lower.LowerError.ValueNotYetLowered) return err;
+    }
+    print("compose-jam-cue: two-bind distinct nest-both refused ValueNotYetLowered -- GREEN\n", .{});
 
     if (lower.parse_jam_cue(
         \\=/  cell-pack=@u32  (jam other (mix from amount))
@@ -284,6 +323,8 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/compose_bind_nest_both_jam_cue_welcome.rye", .data = buf[0..n8] });
     const n9 = try lower.lower_source_welcome(bind_nest_three_jam_cue_src, &buf);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/compose_bind_nest_three_jam_cue_welcome.rye", .data = buf[0..n9] });
+    const n10 = try lower.lower_source_welcome(bind_nest_four_jam_cue_src, &buf);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/compose_bind_nest_four_jam_cue_welcome.rye", .data = buf[0..n10] });
     print("compose-jam-cue: wrote welcome and unwelcome .rye under glow/.cache/ -- GREEN\n", .{});
 
     const gen_src = try cwd.readFileAlloc(io, "glow/gen/compose-jam-cue.glow", a, .limited(4096));
@@ -314,8 +355,13 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, gen_nest_three, "=/  cell-pack=@u32  (jam (mix from amount) note)") != null);
     print("compose-jam-cue: glow/gen/compose-bind-nest-three-jam-cue.glow carries bind→nest-three-jam→cue -- GREEN\n", .{});
 
+    const gen_nest_four = try cwd.readFileAlloc(io, "glow/gen/compose-bind-nest-four-jam-cue.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_nest_four, "=/  payload=@u32  9") != null);
+    assert(std.mem.indexOf(u8, gen_nest_four, "=/  cell-pack=@u32  (jam (mix from amount) (mix payload gate))") != null);
+    print("compose-jam-cue: glow/gen/compose-bind-nest-four-jam-cue.glow carries bind→nest-four-jam→cue -- GREEN\n", .{});
+
     print("compose-jam-cue: version {s}\n", .{witness_version});
-    print("GREEN: jam→cue through bind→nest-three-jam→cue compose lower to ordinary Rye (STOA39/43–47).\n", .{});
+    print("GREEN: jam→cue through bind→nest-four-jam→cue compose lower to ordinary Rye (STOA39/43–48).\n", .{});
     return 0;
 }
 
