@@ -1,0 +1,208 @@
+//! glow/lower_compose_core_payload.rye — outer face → payload `|%` core.
+//!
+//! Thin STOA24 face (exactly five lines):
+//!   =/  note  7
+//!   |%
+//!   =/  amount  5
+//!   ++  double
+//!   --
+//!
+//! Inner payload may be bare or `@u32`. Arm reads self.amount.
+
+const std = @import("std");
+const rf = @import("rune_face.rye");
+const rk = @import("rune_core.rye");
+const lower_multi = @import("lower_multi.rye");
+
+pub const LowerError = rf.ParseError || rk.ParseError || lower_multi.LowerError || error{
+    Overflow,
+    EmptySource,
+    BadIdent,
+    NotAComposeCorePayload,
+    UnknownArm,
+    NotBareLiteral,
+    MalformedValue,
+    MissingPayload,
+};
+
+pub const outer_expect: u32 = 7;
+pub const arm_expect: u32 = 10;
+
+fn is_digit(ch: u8) bool {
+    return ch >= '0' and ch <= '9';
+}
+
+fn zig_safe_ident(face: []const u8, out: *[rf.max_name_len]u8) LowerError!usize {
+    if (face.len == 0 or face.len > rf.max_name_len) return error.BadIdent;
+    var i: usize = 0;
+    while (i < face.len) : (i += 1) {
+        const ch = face[i];
+        const mapped: u8 = if (ch == '-') '_' else ch;
+        if (i == 0) {
+            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or mapped == '_'))
+                return error.BadIdent;
+        } else {
+            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or (mapped >= '0' and mapped <= '9') or mapped == '_'))
+                return error.BadIdent;
+        }
+        out[i] = mapped;
+    }
+    return face.len;
+}
+
+fn parse_trailing_u32(rest: []const u8) LowerError!u32 {
+    const t = std.mem.trim(u8, rest, " \t\r\n");
+    if (t.len == 0) return error.NotBareLiteral;
+    var i: usize = 0;
+    var v: u32 = 0;
+    while (i < t.len) : (i += 1) {
+        if (!is_digit(t[i])) return error.NotBareLiteral;
+        const d: u32 = t[i] - '0';
+        if (v > (std.math.maxInt(u32) - d) / 10) return error.Overflow;
+        v = v * 10 + d;
+    }
+    return v;
+}
+
+pub const ComposeCorePayloadSpec = struct {
+    outer_face: [rf.max_name_len]u8 = .{0} ** rf.max_name_len,
+    outer_len: usize = 0,
+    outer_value: u32 = 0,
+    payload_face: [rk.max_name_len]u8 = .{0} ** rk.max_name_len,
+    payload_len: usize = 0,
+    payload_value: u32 = 0,
+    payload_typed: bool = false,
+    arm: [rk.max_name_len]u8 = .{0} ** rk.max_name_len,
+    arm_len: usize = 0,
+};
+
+pub fn outer_slice(spec: *const ComposeCorePayloadSpec) []const u8 {
+    return spec.outer_face[0..spec.outer_len];
+}
+
+pub fn payload_slice(spec: *const ComposeCorePayloadSpec) []const u8 {
+    return spec.payload_face[0..spec.payload_len];
+}
+
+pub fn arm_slice(spec: *const ComposeCorePayloadSpec) []const u8 {
+    return spec.arm[0..spec.arm_len];
+}
+
+fn fill_bare_outer(line: []const u8, spec: *ComposeCorePayloadSpec) LowerError!void {
+    const face_spec = try rf.parse(line);
+    const face = rf.face_slice(&face_spec);
+    if (rf.mold_slice(&face_spec).len != 0) return error.NotBareLiteral;
+    const after_head = std.mem.trimStart(u8, line[2..], " \t");
+    if (!std.mem.startsWith(u8, after_head, face)) return error.MalformedValue;
+    const after_face = std.mem.trimStart(u8, after_head[face.len..], " \t");
+    const value = try parse_trailing_u32(after_face);
+    @memcpy(spec.outer_face[0..face.len], face);
+    spec.outer_len = face.len;
+    spec.outer_value = value;
+}
+
+fn join_core_src(lines: []const []const u8, out: []u8) LowerError![]const u8 {
+    var at: usize = 0;
+    var i: usize = 0;
+    while (i < lines.len) : (i += 1) {
+        if (at + lines[i].len + 1 > out.len) return error.Overflow;
+        @memcpy(out[at..][0..lines[i].len], lines[i]);
+        at += lines[i].len;
+        out[at] = '\n';
+        at += 1;
+    }
+    return out[0..at];
+}
+
+pub fn parse_compose_core_payload(src: []const u8) LowerError!ComposeCorePayloadSpec {
+    var lines: [lower_multi.max_lines][]const u8 = undefined;
+    const n = try lower_multi.collect_lines(src, &lines);
+    if (n != 5) return error.NotAComposeCorePayload;
+    if (lines[0].len < 2 or lines[0][0] != '=' or lines[0][1] != '/') return error.NotAComposeCorePayload;
+    if (lines[1].len < 2 or lines[1][0] != '|' or lines[1][1] != '%') return error.NotAComposeCorePayload;
+    if (lines[2].len < 2 or lines[2][0] != '=' or lines[2][1] != '/') return error.NotAComposeCorePayload;
+
+    var spec: ComposeCorePayloadSpec = .{};
+    try fill_bare_outer(lines[0], &spec);
+    if (spec.outer_value != outer_expect) return error.MalformedValue;
+
+    var core_buf: [320]u8 = undefined;
+    const core_src = try join_core_src(lines[1..n], &core_buf);
+    const core = try rk.parse_source(core_src);
+    if (!rk.has_payload(&core)) return error.MissingPayload;
+    if (core.count != 1) return error.NotAComposeCorePayload;
+    const arm = rk.arm_at(&core, 0);
+    if (!std.mem.eql(u8, arm, "double")) return error.UnknownArm;
+    if (core.payload_value != 5) return error.MalformedValue;
+
+    const pface = rk.payload_face_at(&core);
+    @memcpy(spec.payload_face[0..pface.len], pface);
+    spec.payload_len = pface.len;
+    spec.payload_value = core.payload_value;
+    spec.payload_typed = core.payload_typed;
+    @memcpy(spec.arm[0..arm.len], arm);
+    spec.arm_len = arm.len;
+    return spec;
+}
+
+fn emit_compose_core_payload(spec: *const ComposeCorePayloadSpec, welcome: bool, out: []u8) LowerError!u32 {
+    var zo: [rf.max_name_len]u8 = undefined;
+    var zp: [rk.max_name_len]u8 = undefined;
+    var za: [rk.max_name_len]u8 = undefined;
+    const on = try zig_safe_ident(outer_slice(spec), &zo);
+    const pn = try zig_safe_ident(payload_slice(spec), &zp);
+    const an = try zig_safe_ident(arm_slice(spec), &za);
+    const note_expect: u32 = if (welcome) outer_expect else outer_expect +% 1;
+    const dbl_expect: u32 = if (welcome) arm_expect else arm_expect +% 1;
+
+    const field_prefix: []const u8 = if (spec.payload_typed)
+        "    /// Glow payload mold `@u32` (STOA21/24).\n"
+    else
+        "";
+
+    const written = std.fmt.bufPrint(out,
+        \\const std = @import("std");
+        \\
+        \\/// Lowered from Glow face→payload `|%` compose (STOA24).
+        \\const Core = struct {{
+        \\{s}    {s}: u32 = {d},
+        \\    pub fn {s}(self: @This()) u32 {{
+        \\        return self.{s} *% 2;
+        \\    }}
+        \\}};
+        \\
+        \\pub fn main(_: std.process.Init) !u8 {{
+        \\    const {s}: u32 = {d};
+        \\    const core = Core{{}};
+        \\    return if ({s} == {d} and core.{s}() == {d}) 0 else 1;
+        \\}}
+        \\
+    , .{
+        field_prefix,
+        zp[0..pn],
+        spec.payload_value,
+        za[0..an],
+        zp[0..pn],
+        zo[0..on],
+        spec.outer_value,
+        zo[0..on],
+        note_expect,
+        za[0..an],
+        dbl_expect,
+    }) catch return error.Overflow;
+    return @intCast(written.len);
+}
+
+pub fn lower_source_welcome(src: []const u8, out: []u8) LowerError!u32 {
+    const trimmed = std.mem.trim(u8, src, " \t\r\n");
+    if (trimmed.len == 0) return error.EmptySource;
+    const spec = try parse_compose_core_payload(src);
+    return emit_compose_core_payload(&spec, true, out);
+}
+
+pub fn lower_source_unwelcome(src: []const u8, out: []u8) LowerError!u32 {
+    const trimmed = std.mem.trim(u8, src, " \t\r\n");
+    if (trimmed.len == 0) return error.EmptySource;
+    const spec = try parse_compose_core_payload(src);
+    return emit_compose_core_payload(&spec, false, out);
+}

@@ -4,7 +4,7 @@
 
 **Language:** EN
 **Version:** `20260715` (Pool keystone revival prioritized · Quin voice seated · align pass reconciles the closed ladder)
-**Last updated:** 2026-07-18 (**STOA23** GREEN — two-face→add core)
+**Last updated:** 2026-07-18 (**STOA24** GREEN — face→payload compose)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Lens:** TAME — safety, performance, joy; the Seed Law; [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md)
@@ -363,6 +363,10 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 **STOA23 two-face→`|%` add GREEN, `20260718.234122`** — desk `compose-core-add`; `Core.add(from, amount)` → 8. Next: **send**; then **STOA24** check-in (face→payload compose).
 
 **Send STOA23, `20260718.234338`** — two-face→add core on the pier. Next language: **STOA24** check-in (face→payload compose).
+
+**STOA24 face→payload compose GREEN, `20260718.234430`** — outer `note` + inner bare/typed payload + `double`; desk `compose-core-payload`. Next: **send**; then **STOA25** check-in or product pause.
+
+**Send STOA24, `20260718.234632`** — face→payload compose on the pier. Next language: **STOA25** check-in.
 
 **Glow OS · Glow Desk · Glow Glass seated, `20260717.183622`** — Keaton: **Glow OS** unifies; **Glow Desk** = desktop; **Glow Glass** = mobile. Lexicon + silo [`../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md`](../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md). Orientation firmware stays check-in.
 
