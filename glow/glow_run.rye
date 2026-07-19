@@ -4,7 +4,8 @@
 //!   glow/bin/glow_run glow/gen/bound-tick.glow
 //!   # prints the emitted .rye path; Rishi builds and runs it
 //!
-//! Skips `::` comments and blanks; lowers the first supported rune head.
+//! Skips `::` comments and blanks. One rune line uses the head dispatch;
+//! two to four bare `=/` literals share one multi-line lower (STOA10).
 //! Build/run stay in tools/glow_run.rish so Rishi remains the shell.
 
 const std = @import("std");
@@ -25,16 +26,22 @@ const lower_call = @import("lower_call.rye");
 const lower_call2 = @import("lower_call2.rye");
 const lower_call3 = @import("lower_call3.rye");
 const lower_calln = @import("lower_calln.rye");
+const lower_multi = @import("lower_multi.rye");
+const lower_compose = @import("lower_compose.rye");
 
 fn first_glow_line(src: []const u8) ?[]const u8 {
-    var it = std.mem.splitScalar(u8, src, '\n');
-    while (it.next()) |raw| {
-        const line = std.mem.trim(u8, raw, " \t\r");
-        if (line.len == 0) continue;
-        if (line.len >= 2 and line[0] == ':' and line[1] == ':') continue;
-        return line;
-    }
-    return null;
+    var lines: [lower_multi.max_lines][]const u8 = undefined;
+    const n = lower_multi.collect_lines(src, &lines) catch return null;
+    if (n == 0) return null;
+    return lines[0];
+}
+
+fn glow_line_count(src: []const u8) usize {
+    var lines: [lower_multi.max_lines][]const u8 = undefined;
+    return lower_multi.collect_lines(src, &lines) catch |err| switch (err) {
+        error.TooManyLines => lower_multi.max_lines + 1,
+        else => 0,
+    };
 }
 
 fn stem_of(path: []const u8) []const u8 {
@@ -55,13 +62,39 @@ pub fn main(init: std.process.Init) !u8 {
     const glow_path = argv[1];
 
     const src = try cwd.readFileAlloc(io, glow_path, alloc, .limited(64 * 1024));
-    const line = first_glow_line(src) orelse {
+    const line_count = glow_line_count(src);
+    if (line_count == 0) {
         print("glow_run: no Glow line in {s}\n", .{glow_path});
         return 2;
-    };
+    }
+    if (line_count > lower_multi.max_lines) {
+        print("glow_run: too many Glow lines in {s}\n", .{glow_path});
+        return 2;
+    }
 
     var rye_buf: [4096]u8 = undefined;
     const rye_len: u32 = blk: {
+        if (line_count >= 2) {
+            var lines: [lower_multi.max_lines][]const u8 = undefined;
+            const n = lower_multi.collect_lines(src, &lines) catch {
+                print("glow_run: multi-line collect failed in {s}\n", .{glow_path});
+                return 1;
+            };
+            if (n == 2 and lines[1].len >= 2 and lines[1][0] == '%' and lines[1][1] == '-') {
+                break :blk lower_compose.lower_source_welcome(src, &rye_buf) catch |err| {
+                    print("glow_run: compose lower failed ({s})\n", .{@errorName(err)});
+                    return 1;
+                };
+            }
+            break :blk lower_multi.lower_source_welcome(src, &rye_buf) catch |err| {
+                print("glow_run: multi lower failed ({s})\n", .{@errorName(err)});
+                return 1;
+            };
+        }
+        const line = first_glow_line(src) orelse {
+            print("glow_run: no Glow line in {s}\n", .{glow_path});
+            return 2;
+        };
         if (line.len >= 2 and line[0] == '|' and line[1] == '-') {
             break :blk lower_trap.lower_line_welcome(line, &rye_buf) catch |err| {
                 print("glow_run: trap lower failed ({s})\n", .{@errorName(err)});

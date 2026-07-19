@@ -1,0 +1,160 @@
+//! glow/lower_multi.rye — lower a multi-line Glow desk to one `.rye` main.
+//!
+//! Thin STOA10 face: two to four bare `=/  <face>  <decimal>` lines share
+//! one welcome/unwelcome program. Other heads and nest values stay later.
+
+const std = @import("std");
+const rf = @import("rune_face.rye");
+
+pub const max_lines: u32 = 4;
+pub const max_name_len: u32 = rf.max_name_len;
+
+pub const LowerError = rf.ParseError || error{
+    Overflow,
+    EmptySource,
+    BadIdent,
+    NeedMulti,
+    TooManyLines,
+    NotBareLiteral,
+    MalformedValue,
+};
+
+pub const LineBind = struct {
+    face: [max_name_len]u8 = .{0} ** max_name_len,
+    face_len: usize = 0,
+    value: u32 = 0,
+};
+
+pub const MultiSpec = struct {
+    binds: [max_lines]LineBind = [_]LineBind{.{}} ** max_lines,
+    count: usize = 0,
+};
+
+pub fn face_at(spec: *const MultiSpec, i: usize) []const u8 {
+    return spec.binds[i].face[0..spec.binds[i].face_len];
+}
+
+fn is_digit(ch: u8) bool {
+    return ch >= '0' and ch <= '9';
+}
+
+fn zig_safe_ident(face: []const u8, out: *[max_name_len]u8) LowerError!usize {
+    if (face.len == 0 or face.len > max_name_len) return error.BadIdent;
+    var i: usize = 0;
+    while (i < face.len) : (i += 1) {
+        const ch = face[i];
+        const mapped: u8 = if (ch == '-') '_' else ch;
+        if (i == 0) {
+            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or mapped == '_'))
+                return error.BadIdent;
+        } else {
+            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or (mapped >= '0' and mapped <= '9') or mapped == '_'))
+                return error.BadIdent;
+        }
+        out[i] = mapped;
+    }
+    return face.len;
+}
+
+fn parse_trailing_u32(rest: []const u8) LowerError!u32 {
+    const t = std.mem.trim(u8, rest, " \t\r\n");
+    if (t.len == 0) return error.NotBareLiteral;
+    var i: usize = 0;
+    var v: u32 = 0;
+    while (i < t.len) : (i += 1) {
+        if (!is_digit(t[i])) return error.NotBareLiteral;
+        const d: u32 = t[i] - '0';
+        if (v > (std.math.maxInt(u32) - d) / 10) return error.Overflow;
+        v = v * 10 + d;
+    }
+    return v;
+}
+
+/// Collect non-comment Glow lines from a desk source (1–4).
+pub fn collect_lines(src: []const u8, out_lines: *[max_lines][]const u8) LowerError!usize {
+    var count: usize = 0;
+    var it = std.mem.splitScalar(u8, src, '\n');
+    while (it.next()) |raw| {
+        const line = std.mem.trim(u8, raw, " \t\r");
+        if (line.len == 0) continue;
+        if (line.len >= 2 and line[0] == ':' and line[1] == ':') continue;
+        if (count >= max_lines) return error.TooManyLines;
+        out_lines[count] = line;
+        count += 1;
+    }
+    if (count == 0) return error.EmptySource;
+    return count;
+}
+
+pub fn parse_multi(src: []const u8) LowerError!MultiSpec {
+    var lines: [max_lines][]const u8 = undefined;
+    const n = try collect_lines(src, &lines);
+    if (n < 2) return error.NeedMulti;
+
+    var spec: MultiSpec = .{};
+    var i: usize = 0;
+    while (i < n) : (i += 1) {
+        const line = lines[i];
+        const face_spec = try rf.parse(line);
+        const face = rf.face_slice(&face_spec);
+        if (rf.mold_slice(&face_spec).len != 0) return error.NotBareLiteral;
+
+        // Value after `=/  <face>`.
+        const head = "=/";
+        const after_head = std.mem.trimStart(u8, line[head.len..], " \t");
+        if (!std.mem.startsWith(u8, after_head, face)) return error.MalformedValue;
+        const after_face = std.mem.trimStart(u8, after_head[face.len..], " \t");
+        const value = try parse_trailing_u32(after_face);
+
+        @memcpy(spec.binds[spec.count].face[0..face.len], face);
+        spec.binds[spec.count].face_len = face.len;
+        spec.binds[spec.count].value = value;
+        spec.count += 1;
+    }
+    return spec;
+}
+
+fn emit_multi(spec: *const MultiSpec, welcome: bool, out: []u8) LowerError!u32 {
+    var binds: [1536]u8 = undefined;
+    var bat: usize = 0;
+    var checks: [512]u8 = undefined;
+    var cat: usize = 0;
+
+    var i: usize = 0;
+    while (i < spec.count) : (i += 1) {
+        var zb: [max_name_len]u8 = undefined;
+        const face = face_at(spec, i);
+        const zn = try zig_safe_ident(face, &zb);
+        const val = spec.binds[i].value;
+        const expect: u32 = if (welcome) val else val +% 1;
+        const bline = std.fmt.bufPrint(binds[bat..], "    const {s}: u32 = {d};\n", .{ zb[0..zn], val }) catch return error.Overflow;
+        bat += bline.len;
+        if (i > 0) {
+            const and_part = std.fmt.bufPrint(checks[cat..], " and ", .{}) catch return error.Overflow;
+            cat += and_part.len;
+        }
+        const cline = std.fmt.bufPrint(checks[cat..], "{s} == {d}", .{ zb[0..zn], expect }) catch return error.Overflow;
+        cat += cline.len;
+    }
+
+    const written = std.fmt.bufPrint(out,
+        \\const std = @import("std");
+        \\
+        \\/// Lowered from Glow multi-line desk — bare face literals (STOA10).
+        \\pub fn main(_: std.process.Init) !u8 {{
+        \\{s}    return if ({s}) 0 else 1;
+        \\}}
+        \\
+    , .{ binds[0..bat], checks[0..cat] }) catch return error.Overflow;
+    return @intCast(written.len);
+}
+
+pub fn lower_source_welcome(src: []const u8, out: []u8) LowerError!u32 {
+    const spec = try parse_multi(src);
+    return emit_multi(&spec, true, out);
+}
+
+pub fn lower_source_unwelcome(src: []const u8, out: []u8) LowerError!u32 {
+    const spec = try parse_multi(src);
+    return emit_multi(&spec, false, out);
+}
