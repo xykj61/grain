@@ -322,7 +322,9 @@
 - [x] **STOA9 — `%*` named-arg call** `20260718.211343` — sixteenth rune head; closed demo gate `mix` + Sample struct; desk `call-named`. `%` call family closed.
 - [x] **STOA10 — multi-line bare faces** `20260718.211817` — 2–4 `=/  face  decimal` lines → one Rye main; desk `multi-face`; single-line desks unchanged.
 - [x] **STOA11 — face→call compose** `20260718.212131` — `=/` then `%-  double  <same-face>`; desk `compose-call`; sample must match prior face.
-- [ ] **STOA12 — cores / richer composition** — check-in (cores, typed multi-line, `%+` compose).
+- [x] **STOA12 — face→face→`%+` compose** `20260718.221812` — two bare faces then `%+  add  from  amount`; desk `compose-add`; samples must match bind order.
+- [x] **STOA13 — typed multi-line `@u32`** `20260718.223431` — 2–4 `=/  face=@u32  decimal` lines; desk `multi-typed`; bare multi (STOA10) unchanged.
+- [ ] **STOA14 — cores** — check-in (first `|%` / arm desk; season brief before code).
 - [ ] **Dill-parallel kernel revival** — separate `active-reviving/` brief when a real need opens; not Dexter.
 - [ ] **M1 Scribble↔html round-trip witness** — named in fusion map; opens when Keaton leans doc pipeline.
 - [ ] **TAME witness-habitat pairing + Glow supplement** — horizon; needs Keaton's word (H2).

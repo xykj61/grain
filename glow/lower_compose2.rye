@@ -1,0 +1,171 @@
+//! glow/lower_compose2.rye — lower face→face→`%+` compose to one `.rye`.
+//!
+//! Thin STOA12 face (exactly three lines):
+//!   =/  from  5
+//!   =/  amount  3
+//!   %+  add  from  amount
+//!
+//! Both call samples must name the prior faces (order matches binds).
+//! Closed demo gate `add`. Cores stay later.
+
+const std = @import("std");
+const rf = @import("rune_face.rye");
+const r2 = @import("rune_call2.rye");
+const lower_multi = @import("lower_multi.rye");
+
+pub const LowerError = rf.ParseError || r2.ParseError || lower_multi.LowerError || error{
+    Overflow,
+    EmptySource,
+    BadIdent,
+    NotACompose2,
+    SampleMismatch,
+    UnknownGate,
+    NotBareLiteral,
+    MalformedValue,
+};
+
+pub const compose2_expect: u32 = 8;
+
+fn is_digit(ch: u8) bool {
+    return ch >= '0' and ch <= '9';
+}
+
+fn zig_safe_ident(face: []const u8, out: *[rf.max_name_len]u8) LowerError!usize {
+    if (face.len == 0 or face.len > rf.max_name_len) return error.BadIdent;
+    var i: usize = 0;
+    while (i < face.len) : (i += 1) {
+        const ch = face[i];
+        const mapped: u8 = if (ch == '-') '_' else ch;
+        if (i == 0) {
+            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or mapped == '_'))
+                return error.BadIdent;
+        } else {
+            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or (mapped >= '0' and mapped <= '9') or mapped == '_'))
+                return error.BadIdent;
+        }
+        out[i] = mapped;
+    }
+    return face.len;
+}
+
+fn parse_trailing_u32(rest: []const u8) LowerError!u32 {
+    const t = std.mem.trim(u8, rest, " \t\r\n");
+    if (t.len == 0) return error.NotBareLiteral;
+    var i: usize = 0;
+    var v: u32 = 0;
+    while (i < t.len) : (i += 1) {
+        if (!is_digit(t[i])) return error.NotBareLiteral;
+        const d: u32 = t[i] - '0';
+        if (v > (std.math.maxInt(u32) - d) / 10) return error.Overflow;
+        v = v * 10 + d;
+    }
+    return v;
+}
+
+pub const Compose2Spec = struct {
+    a_face: [rf.max_name_len]u8 = .{0} ** rf.max_name_len,
+    a_len: usize = 0,
+    a_value: u32 = 0,
+    b_face: [rf.max_name_len]u8 = .{0} ** rf.max_name_len,
+    b_len: usize = 0,
+    b_value: u32 = 0,
+    gate: [r2.max_name_len]u8 = .{0} ** r2.max_name_len,
+    gate_len: usize = 0,
+};
+
+pub fn a_slice(spec: *const Compose2Spec) []const u8 {
+    return spec.a_face[0..spec.a_len];
+}
+
+pub fn b_slice(spec: *const Compose2Spec) []const u8 {
+    return spec.b_face[0..spec.b_len];
+}
+
+pub fn gate_slice(spec: *const Compose2Spec) []const u8 {
+    return spec.gate[0..spec.gate_len];
+}
+
+fn fill_bare_face(line: []const u8, face_out: *[rf.max_name_len]u8, face_len: *usize, value_out: *u32) LowerError!void {
+    const face_spec = try rf.parse(line);
+    const face = rf.face_slice(&face_spec);
+    if (rf.mold_slice(&face_spec).len != 0) return error.NotBareLiteral;
+    const after_head = std.mem.trimStart(u8, line[2..], " \t");
+    if (!std.mem.startsWith(u8, after_head, face)) return error.MalformedValue;
+    const after_face = std.mem.trimStart(u8, after_head[face.len..], " \t");
+    const value = try parse_trailing_u32(after_face);
+    @memcpy(face_out[0..face.len], face);
+    face_len.* = face.len;
+    value_out.* = value;
+}
+
+pub fn parse_compose2(src: []const u8) LowerError!Compose2Spec {
+    var lines: [lower_multi.max_lines][]const u8 = undefined;
+    const n = try lower_multi.collect_lines(src, &lines);
+    if (n != 3) return error.NotACompose2;
+    if (lines[2].len < 2 or lines[2][0] != '%' or lines[2][1] != '+') return error.NotACompose2;
+
+    var spec: Compose2Spec = .{};
+    try fill_bare_face(lines[0], &spec.a_face, &spec.a_len, &spec.a_value);
+    try fill_bare_face(lines[1], &spec.b_face, &spec.b_len, &spec.b_value);
+
+    const call = try r2.parse(lines[2]);
+    const gate = r2.gate_slice(&call);
+    const sa = r2.a_slice(&call);
+    const sb = r2.b_slice(&call);
+    if (!std.mem.eql(u8, sa, a_slice(&spec))) return error.SampleMismatch;
+    if (!std.mem.eql(u8, sb, b_slice(&spec))) return error.SampleMismatch;
+    if (!std.mem.eql(u8, gate, "add")) return error.UnknownGate;
+    if (spec.a_value != 5 or spec.b_value != 3) return error.MalformedValue;
+
+    @memcpy(spec.gate[0..gate.len], gate);
+    spec.gate_len = gate.len;
+    return spec;
+}
+
+fn emit_compose2(spec: *const Compose2Spec, welcome: bool, out: []u8) LowerError!u32 {
+    var za: [rf.max_name_len]u8 = undefined;
+    var zb: [rf.max_name_len]u8 = undefined;
+    var zg: [r2.max_name_len]u8 = undefined;
+    const an = try zig_safe_ident(a_slice(spec), &za);
+    const bn = try zig_safe_ident(b_slice(spec), &zb);
+    const gn = try zig_safe_ident(gate_slice(spec), &zg);
+    const expect: u32 = if (welcome) compose2_expect else compose2_expect +% 1;
+
+    const written = std.fmt.bufPrint(out,
+        \\const std = @import("std");
+        \\
+        \\/// Lowered from Glow face→face→`%+` compose — cross-line (STOA12).
+        \\fn {s}(left: u32, right: u32) u32 {{
+        \\    return left +% right;
+        \\}}
+        \\
+        \\pub fn main(_: std.process.Init) !u8 {{
+        \\    const {s}: u32 = {d};
+        \\    const {s}: u32 = {d};
+        \\    const called: u32 = {s}({s}, {s});
+        \\    return if (called == {d}) 0 else 1;
+        \\}}
+        \\
+    , .{
+        zg[0..gn],
+        za[0..an],
+        spec.a_value,
+        zb[0..bn],
+        spec.b_value,
+        zg[0..gn],
+        za[0..an],
+        zb[0..bn],
+        expect,
+    }) catch return error.Overflow;
+    return @intCast(written.len);
+}
+
+pub fn lower_source_welcome(src: []const u8, out: []u8) LowerError!u32 {
+    const spec = try parse_compose2(src);
+    return emit_compose2(&spec, true, out);
+}
+
+pub fn lower_source_unwelcome(src: []const u8, out: []u8) LowerError!u32 {
+    const spec = try parse_compose2(src);
+    return emit_compose2(&spec, false, out);
+}

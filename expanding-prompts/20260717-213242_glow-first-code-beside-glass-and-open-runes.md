@@ -38,7 +38,7 @@ Why this one: `(mix …)` is bitwise XOR of two faces — the same *combine two 
 
 Smaller emitters exist (`bound-tick.glow`, `lent-tick.glow`) if you only need to prove the hop. Desk suite: `rishi/bin/rishi run tools/glow_run_desk_witness.rish`.
 
-**Next named language rung:** **STOA12** (cores · richer composition) — after **STOA11** face→call GREEN `20260718.212131`. Living ladder: waymark **STOA** · compressor [`../docs/STOA.md`](../docs/STOA.md).
+**Next named language rung:** **STOA14** (cores) — after **STOA13** typed multi GREEN `20260718.223431`. Living ladder: waymark **STOA** · compressor [`../docs/STOA.md`](../docs/STOA.md).
 
 ---
 
@@ -69,7 +69,7 @@ From the sameness rune brief. These are the heads an Acme reader should treat as
 | **Casts / bind** | `^+` inferred cast · `^=` |
 | **Conditionals** | `?+` default switch · `?=` · `?>` · `?<` |
 | **Calls** | `%-`/`%+`/`%^`/`%*` **GREEN STOA6–9** |
-| **Multi-line** | bare `=/` **GREEN STOA10** · face→`%-` **GREEN STOA11** · cores still open |
+| **Multi-line** | bare **STOA10** · face→`%-` **STOA11** · face→face→`%+` **STOA12** · typed `@u32` **STOA13** · cores still open |
 | **Cells** | `:-`/`:+`/`:^`/`:~` **GREEN STOA2–5** |
 | **Molds** | `+$` `$:` `$%` |
 | **Hints / jets** | `~%` `~/` (+ jet witnesses) |

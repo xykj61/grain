@@ -1,0 +1,162 @@
+//! glow/lower_multi_typed.rye — multi-line typed `=/` desks to one `.rye`.
+//!
+//! Thin STOA13 face: two to four `=/  <face>=@u32  <decimal>` lines share
+//! one welcome/unwelcome program. Bare faces stay on `lower_multi` (STOA10).
+//! Other auras and named molds refuse.
+
+const std = @import("std");
+const rf = @import("rune_face.rye");
+const lower_multi = @import("lower_multi.rye");
+
+pub const max_lines: u32 = lower_multi.max_lines;
+pub const max_name_len: u32 = rf.max_name_len;
+
+pub const LowerError = rf.ParseError || lower_multi.LowerError || error{
+    Overflow,
+    EmptySource,
+    BadIdent,
+    NeedMulti,
+    TooManyLines,
+    NotTypedLiteral,
+    AuraNotYetLowered,
+    NamedMoldNotYetLowered,
+    MalformedValue,
+};
+
+pub const LineBind = struct {
+    face: [max_name_len]u8 = .{0} ** max_name_len,
+    face_len: usize = 0,
+    value: u32 = 0,
+};
+
+pub const MultiTypedSpec = struct {
+    binds: [max_lines]LineBind = [_]LineBind{.{}} ** max_lines,
+    count: usize = 0,
+};
+
+pub fn face_at(spec: *const MultiTypedSpec, i: usize) []const u8 {
+    return spec.binds[i].face[0..spec.binds[i].face_len];
+}
+
+fn is_digit(ch: u8) bool {
+    return ch >= '0' and ch <= '9';
+}
+
+fn zig_safe_ident(face: []const u8, out: *[max_name_len]u8) LowerError!usize {
+    if (face.len == 0 or face.len > max_name_len) return error.BadIdent;
+    var i: usize = 0;
+    while (i < face.len) : (i += 1) {
+        const ch = face[i];
+        const mapped: u8 = if (ch == '-') '_' else ch;
+        if (i == 0) {
+            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or mapped == '_'))
+                return error.BadIdent;
+        } else {
+            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or (mapped >= '0' and mapped <= '9') or mapped == '_'))
+                return error.BadIdent;
+        }
+        out[i] = mapped;
+    }
+    return face.len;
+}
+
+fn parse_trailing_u32(rest: []const u8) LowerError!u32 {
+    const t = std.mem.trim(u8, rest, " \t\r\n");
+    if (t.len == 0) return error.NotTypedLiteral;
+    var i: usize = 0;
+    var v: u32 = 0;
+    while (i < t.len) : (i += 1) {
+        if (!is_digit(t[i])) return error.NotTypedLiteral;
+        const d: u32 = t[i] - '0';
+        if (v > (std.math.maxInt(u32) - d) / 10) return error.Overflow;
+        v = v * 10 + d;
+    }
+    return v;
+}
+
+fn require_u32_mold(mold: []const u8) LowerError!void {
+    if (mold.len == 0) return error.NotTypedLiteral;
+    if (mold[0] != '@') return error.NamedMoldNotYetLowered;
+    if (!std.mem.eql(u8, mold, "@u32")) return error.AuraNotYetLowered;
+}
+
+/// True when the face clause carries a mold (`face=mold`).
+pub fn line_is_typed(line: []const u8) bool {
+    const face_spec = rf.parse(line) catch return false;
+    return rf.mold_slice(&face_spec).len != 0;
+}
+
+pub fn parse_multi_typed(src: []const u8) LowerError!MultiTypedSpec {
+    var lines: [max_lines][]const u8 = undefined;
+    const n = try lower_multi.collect_lines(src, &lines);
+    if (n < 2) return error.NeedMulti;
+
+    var spec: MultiTypedSpec = .{};
+    var i: usize = 0;
+    while (i < n) : (i += 1) {
+        const line = lines[i];
+        const face_spec = try rf.parse(line);
+        const face = rf.face_slice(&face_spec);
+        const mold = rf.mold_slice(&face_spec);
+        try require_u32_mold(mold);
+
+        // Value after `=/  <face>=@u32`.
+        const after_head = std.mem.trimStart(u8, line[2..], " \t");
+        var clause_end: usize = 0;
+        while (clause_end < after_head.len and after_head[clause_end] != ' ' and after_head[clause_end] != '\t')
+            clause_end += 1;
+        const after_clause = std.mem.trimStart(u8, after_head[clause_end..], " \t");
+        const value = try parse_trailing_u32(after_clause);
+
+        @memcpy(spec.binds[spec.count].face[0..face.len], face);
+        spec.binds[spec.count].face_len = face.len;
+        spec.binds[spec.count].value = value;
+        spec.count += 1;
+    }
+    return spec;
+}
+
+fn emit_multi_typed(spec: *const MultiTypedSpec, welcome: bool, out: []u8) LowerError!u32 {
+    var binds: [1536]u8 = undefined;
+    var bat: usize = 0;
+    var checks: [512]u8 = undefined;
+    var cat: usize = 0;
+
+    var i: usize = 0;
+    while (i < spec.count) : (i += 1) {
+        var zb: [max_name_len]u8 = undefined;
+        const face = face_at(spec, i);
+        const zn = try zig_safe_ident(face, &zb);
+        const val = spec.binds[i].value;
+        const expect: u32 = if (welcome) val else val +% 1;
+        const bline = std.fmt.bufPrint(binds[bat..], "    const {s}: u32 = {d};\n", .{ zb[0..zn], val }) catch return error.Overflow;
+        bat += bline.len;
+        if (i > 0) {
+            const and_part = std.fmt.bufPrint(checks[cat..], " and ", .{}) catch return error.Overflow;
+            cat += and_part.len;
+        }
+        const cline = std.fmt.bufPrint(checks[cat..], "{s} == {d}", .{ zb[0..zn], expect }) catch return error.Overflow;
+        cat += cline.len;
+    }
+
+    const written = std.fmt.bufPrint(out,
+        \\const std = @import("std");
+        \\
+        \\/// Lowered from Glow multi-line desk — typed @u32 faces (STOA13).
+        \\pub fn main(_: std.process.Init) !u8 {{
+        \\{s}    return if ({s}) 0 else 1;
+        \\}}
+        \\
+    , .{ binds[0..bat], checks[0..cat] }) catch return error.Overflow;
+    return @intCast(written.len);
+}
+
+pub fn lower_source_welcome(src: []const u8, out: []u8) LowerError!u32 {
+    const spec = try parse_multi_typed(src);
+    return emit_multi_typed(&spec, true, out);
+}
+
+pub fn lower_source_unwelcome(src: []const u8, out: []u8) LowerError!u32 {
+    const spec = try parse_multi_typed(src);
+    return emit_multi_typed(&spec, false, out);
+}
