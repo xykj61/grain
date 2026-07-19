@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260719.194200
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern time convention
+title STOA79 check-in after $% payload
+prompt send and approve next rec
+think STOA78 $% payload seated · next language check-in
+think A cross-desk named-cast — import +$ then ^- by name
+think B multi-face $% payload — [%mint from=@u32 amount=@u32]
+think C Sala B0 rewrite in Glow — large product lap
+obs A closes the cast seam across desks after same-desk STOA77 · jail-reachable finishing edge
+git_nib f0de302057
+product_nib ZETA6
+suite_nib STOA0-78
+recommend check-in — STOA79 A cross-desk named-cast · B multi-face $% payload · C Sala B0 rewrite in Glow
