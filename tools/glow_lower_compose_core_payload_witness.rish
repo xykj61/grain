@@ -17,7 +17,8 @@ assert selftest.ok else "lower_compose_core_payload_witness exited non-zero"
 assert selftest.out contains "GREEN" else "lower_compose_core_payload_witness not GREEN"
 assert selftest.out contains "binds note and payload double" else "lower_compose_core_payload_witness missing welcome claim"
 assert selftest.out contains "cue-of-jam unpack welcome" else "lower_compose_core_payload_witness missing cue-of-jam claim"
-assert selftest.out contains "desks payload nest and cue-jam" else "lower_compose_core_payload_witness missing desk claim"
+assert selftest.out contains "nest-left cue-of-jam unpack welcome" else "lower_compose_core_payload_witness missing nest-left cue-of-jam claim"
+assert selftest.out contains "desks cue-jam and nest-left cue-jam" else "lower_compose_core_payload_witness missing desk claim"
 assert selftest.out contains "no-payload core refused" else "lower_compose_core_payload_witness missing refuse claim"
 
 let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
@@ -31,4 +32,4 @@ assert build_unwelcome.ok else "compose-core-payload unwelcome .rye build failed
 let run_unwelcome = run ["sh" "-c" "${unwelcome_bin}; echo EXIT:$?"]
 assert run_unwelcome.out contains "EXIT:1" else "compose-core-payload unwelcome binary did not exit 1"
 
-say "GREEN: Glow face→payload `|%` hop — nest and cue-of-jam; welcome 0 / unwelcome 1; STOA24/30/61."
+say "GREEN: Glow face→payload `|%` hop — cue-of-jam and nest-left; welcome 0 / unwelcome 1; STOA24/30/61/62."

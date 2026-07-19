@@ -1,0 +1,6 @@
+::  Outer face then payload nest-left cue-of-jam arm (STOA62).
+=/  note  7
+|%
+=/  amount  5
+++  unpack  (cue (jam (mix amount amount) amount))
+--
