@@ -166,6 +166,10 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, gen_cjr, "(cue (jam cell (mix from amount)))") != null);
     print("lower: glow/gen/null-cue-jam-right-nest.glow carries cue nest jam right then arm -- GREEN\n", .{});
 
+    const gen_cjb = try cwd.readFileAlloc(io, "glow/gen/null-cue-jam-both-nest.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_cjb, "(cue (jam (mix from amount) (mix cell gate)))") != null);
+    print("lower: glow/gen/null-cue-jam-both-nest.glow carries cue nest jam both then arm -- GREEN\n", .{});
+
     const gen_nest = try cwd.readFileAlloc(io, "glow/gen/null-jam-nest.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_nest, "(jam (mix from amount) amount)") != null);
     print("lower: glow/gen/null-jam-nest.glow carries nest jam then arm -- GREEN\n", .{});
@@ -179,7 +183,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("lower: glow/gen/null-jam-both-nest.glow carries nest jam both then arm -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: `?~` lowers with decimal, cast, lent, mix, jam, nest jam left/right/both, cue, cue-of-jam, and cue nest jam left/right then/else arms to ordinary Rye.\n", .{});
+    print("GREEN: `?~` lowers with decimal, cast, lent, mix, jam, nest jam left/right/both, cue, cue-of-jam, and cue nest jam left/right/both then/else arms to ordinary Rye.\n", .{});
     return 0;
 }
 

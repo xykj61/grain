@@ -48,6 +48,7 @@ const BoundValue = struct {
     cue_of_jam: bool = false,
     cue_jam_nest_left: bool = false,
     cue_jam_nest_right: bool = false,
+    cue_jam_nest_both: bool = false,
 };
 
 fn cast_mold_slice(b: *const BoundValue) []const u8 {
@@ -155,6 +156,26 @@ fn bound_value(line: []const u8, face: []const u8, mold: []const u8) LowerError!
             break :blk bound;
         },
         .cue_of => blk: {
+            if (expr.cue_jam_is_nest_both(&e)) {
+                const ll = expr.face_slice(&e);
+                const lr = expr.face2_slice(&e);
+                const rl = expr.face3_slice(&e);
+                const rr = expr.face4_slice(&e);
+                var bound: BoundValue = .{
+                    .kind = .cue_of,
+                    .cue_of_jam = true,
+                    .cue_jam_nest_both = true,
+                    .subject_len = ll.len,
+                    .subject2_len = lr.len,
+                    .subject3_len = rl.len,
+                    .subject4_len = rr.len,
+                };
+                @memcpy(bound.subject[0..ll.len], ll);
+                @memcpy(bound.subject2[0..lr.len], lr);
+                @memcpy(bound.subject3[0..rl.len], rl);
+                @memcpy(bound.subject4[0..rr.len], rr);
+                break :blk bound;
+            }
             if (expr.cue_jam_is_nest_left(&e)) {
                 const ml = expr.face_slice(&e);
                 const mr = expr.face2_slice(&e);
@@ -1249,6 +1270,119 @@ fn emit_cue_jam_nest(
     return @intCast(written.len);
 }
 
+/// `(cue (jam (mix <a> <b>) (mix <c> <d>)))` under a face — nest-both pack then unpack.
+fn emit_cue_jam_nest_both(
+    glow_label: []const u8,
+    face_mold: []const u8,
+    zig_face: []const u8,
+    mix_ll: []const u8,
+    mix_lr: []const u8,
+    mix_rl: []const u8,
+    mix_rr: []const u8,
+    zig_ty: []const u8,
+    welcome: bool,
+    out: []u8,
+) LowerError!u32 {
+    var zll: [rf.max_name_len]u8 = undefined;
+    const nll = try zig_safe_ident(mix_ll, &zll);
+    const zig_ll = zll[0..nll];
+    var zlr: [rf.max_name_len]u8 = undefined;
+    const nlr = try zig_safe_ident(mix_lr, &zlr);
+    const zig_lr = zlr[0..nlr];
+    var zrl: [rf.max_name_len]u8 = undefined;
+    const nrl = try zig_safe_ident(mix_rl, &zrl);
+    const zig_rl = zrl[0..nrl];
+    var zrr: [rf.max_name_len]u8 = undefined;
+    const nrr = try zig_safe_ident(mix_rr, &zrr);
+    const zig_rr = zrr[0..nrr];
+    const result = expr.mix_demo_result();
+    const expect: u32 = if (welcome) result else result +% 1;
+    const typed = face_mold.len != 0;
+    if (typed) {
+        const written = std.fmt.bufPrint(out,
+            \\const std = @import("std");
+            \\
+            \\/// Lowered from Glow `=/  {s}={s}  (cue (jam (mix {s} {s}) (mix {s} {s})))` — cue nest jam both.
+            \\pub fn main(_: std.process.Init) !u8 {{
+            \\    const {s}: u32 = {d};
+            \\    const {s}: u32 = {d};
+            \\    const {s}: u32 = {d};
+            \\    const {s}: u32 = {d};
+            \\    const left_mix: u32 = {s} ^ {s};
+            \\    const right_mix: u32 = {s} ^ {s};
+            \\    const cell_pack: u32 = (left_mix << 16) | right_mix;
+            \\    const {s}: {s} = cell_pack & 0xffff;
+            \\    return if ({s} == {d}) 0 else 1;
+            \\}}
+            \\
+        , .{
+            glow_label,
+            face_mold,
+            mix_ll,
+            mix_lr,
+            mix_rl,
+            mix_rr,
+            zig_ll,
+            expr.mix_demo_left,
+            zig_lr,
+            expr.mix_demo_right,
+            zig_rl,
+            expr.mix_demo_left,
+            zig_rr,
+            expr.mix_demo_right,
+            zig_ll,
+            zig_lr,
+            zig_rl,
+            zig_rr,
+            zig_face,
+            zig_ty,
+            zig_face,
+            expect,
+        }) catch return error.Overflow;
+        return @intCast(written.len);
+    }
+    const written = std.fmt.bufPrint(out,
+        \\const std = @import("std");
+        \\
+        \\/// Lowered from Glow `=/  {s}  (cue (jam (mix {s} {s}) (mix {s} {s})))` — cue nest jam both.
+        \\pub fn main(_: std.process.Init) !u8 {{
+        \\    const {s}: u32 = {d};
+        \\    const {s}: u32 = {d};
+        \\    const {s}: u32 = {d};
+        \\    const {s}: u32 = {d};
+        \\    const left_mix: u32 = {s} ^ {s};
+        \\    const right_mix: u32 = {s} ^ {s};
+        \\    const cell_pack: u32 = (left_mix << 16) | right_mix;
+        \\    const {s}: {s} = cell_pack & 0xffff;
+        \\    return if ({s} == {d}) 0 else 1;
+        \\}}
+        \\
+    , .{
+        glow_label,
+        mix_ll,
+        mix_lr,
+        mix_rl,
+        mix_rr,
+        zig_ll,
+        expr.mix_demo_left,
+        zig_lr,
+        expr.mix_demo_right,
+        zig_rl,
+        expr.mix_demo_left,
+        zig_rr,
+        expr.mix_demo_right,
+        zig_ll,
+        zig_lr,
+        zig_rl,
+        zig_rr,
+        zig_face,
+        zig_ty,
+        zig_face,
+        expect,
+    }) catch return error.Overflow;
+    return @intCast(written.len);
+}
+
 /// `(cue (jam <a> (mix <b> <c>)))` under a face — nest-right pack then unpack.
 fn emit_cue_jam_nest_right(
     glow_label: []const u8,
@@ -1644,6 +1778,20 @@ fn lower_line(line: []const u8, welcome: bool, out: []u8) LowerError!u32 {
         },
         .cue_of => {
             const zig_ty = try zig_type_for_mold(mold);
+            if (bound.cue_of_jam and bound.cue_jam_nest_both) {
+                return emit_cue_jam_nest_both(
+                    face,
+                    mold,
+                    zig_face,
+                    subject_slice(&bound),
+                    subject2_slice(&bound),
+                    subject3_slice(&bound),
+                    subject4_slice(&bound),
+                    zig_ty,
+                    welcome,
+                    out,
+                );
+            }
             if (bound.cue_of_jam and bound.cue_jam_nest_left) {
                 return emit_cue_jam_nest(
                     face,

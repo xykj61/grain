@@ -144,7 +144,9 @@ fn open_body_expect(body: *const expr.Expr, sample: u32) LowerError!u32 {
             (sample << 16) | (sample ^ sample)
         else
             (sample << 16) | sample,
-        .cue_of => if (expr.cue_jam_is_nest_left(body))
+        .cue_of => if (expr.cue_jam_is_nest_both(body))
+            (((sample ^ sample) << 16) | (sample ^ sample)) & 0xffff
+        else if (expr.cue_jam_is_nest_left(body))
             (((sample ^ sample) << 16) | sample) & 0xffff
         else if (expr.cue_jam_is_nest_right(body))
             ((sample << 16) | (sample ^ sample)) & 0xffff
@@ -169,7 +171,9 @@ fn emit_open_body(body: *const expr.Expr, out: []u8) LowerError![]const u8 {
             std.fmt.bufPrint(out, "return (sample << 16) | (sample ^ sample);", .{}) catch return error.Overflow
         else
             std.fmt.bufPrint(out, "return (sample << 16) | sample;", .{}) catch return error.Overflow,
-        .cue_of => if (expr.cue_jam_is_nest_left(body))
+        .cue_of => if (expr.cue_jam_is_nest_both(body))
+            std.fmt.bufPrint(out, "return (((sample ^ sample) << 16) | (sample ^ sample)) & 0xffff;", .{}) catch return error.Overflow
+        else if (expr.cue_jam_is_nest_left(body))
             std.fmt.bufPrint(out, "return (((sample ^ sample) << 16) | sample) & 0xffff;", .{}) catch return error.Overflow
         else if (expr.cue_jam_is_nest_right(body))
             std.fmt.bufPrint(out, "return ((sample << 16) | (sample ^ sample)) & 0xffff;", .{}) catch return error.Overflow
