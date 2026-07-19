@@ -1,0 +1,4 @@
+::  Bind faces then inline cue-of-jam — product-shaped one-line round-trip (STOA49).
+=/  from=@u32  5
+=/  amount=@u32  3
+=/  right=@u32  (cue (jam from amount))
