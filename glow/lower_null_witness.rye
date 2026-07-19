@@ -86,7 +86,13 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, rye_jam, "const then_arm: u32 = (from << 16) | amount") != null);
     print("lower: \"?~  …  (jam from amount)  0\" welcome nests jam arm -- GREEN\n", .{});
 
-    if (lower.lower_line_welcome("?~  records.cur  (cue root)  0", &buf)) |_| {
+    const n_cue = try lower.lower_line_welcome("?~  records.cur  (cue cell)  0", &buf);
+    const rye_cue = buf[0..n_cue];
+    assert(std.mem.indexOf(u8, rye_cue, "const cell: u32 = 327683") != null);
+    assert(std.mem.indexOf(u8, rye_cue, "const then_arm: u32 = cell & 0xffff") != null);
+    print("lower: \"?~  …  (cue cell)  0\" welcome nests cue arm -- GREEN\n", .{});
+
+    if (lower.lower_line_welcome("?~  records.cur  (foo root)  0", &buf)) |_| {
         return error.ArmLoweredTooSoon;
     } else |err| {
         if (err != lower.LowerError.ArmNotYetLowered) return err;
@@ -118,8 +124,12 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, gen_jam, "(jam from amount)") != null);
     print("lower: glow/gen/null-jam.glow carries jam then arm -- GREEN\n", .{});
 
+    const gen_cue = try cwd.readFileAlloc(io, "glow/gen/null-cue.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_cue, "(cue cell)") != null);
+    print("lower: glow/gen/null-cue.glow carries cue then arm -- GREEN\n", .{});
+
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: `?~` lowers with decimal, cast, lent, mix, and jam then/else arms to ordinary Rye.\n", .{});
+    print("GREEN: `?~` lowers with decimal, cast, lent, mix, jam, and cue then/else arms to ordinary Rye.\n", .{});
     return 0;
 }
 

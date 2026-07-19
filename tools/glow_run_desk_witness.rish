@@ -64,6 +64,11 @@ assert facejam.ok else "glow_run face-jam.glow failed"
 assert facejam.out contains "GREEN" else "glow_run face-jam.glow not GREEN"
 assert facejam.out contains "face-jam.glow" else "glow_run face-jam claim missing path"
 
+let facecue = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/face-cue.glow"]
+assert facecue.ok else "glow_run face-cue.glow failed"
+assert facecue.out contains "GREEN" else "glow_run face-cue.glow not GREEN"
+assert facecue.out contains "face-cue.glow" else "glow_run face-cue claim missing path"
+
 let iflent = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/if-lent.glow"]
 assert iflent.ok else "glow_run if-lent.glow failed"
 assert iflent.out contains "GREEN" else "glow_run if-lent.glow not GREEN"
@@ -78,6 +83,11 @@ let ifjam = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/if-jam.
 assert ifjam.ok else "glow_run if-jam.glow failed"
 assert ifjam.out contains "GREEN" else "glow_run if-jam.glow not GREEN"
 assert ifjam.out contains "if-jam.glow" else "glow_run if-jam claim missing path"
+
+let ifcue = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/if-cue.glow"]
+assert ifcue.ok else "glow_run if-cue.glow failed"
+assert ifcue.out contains "GREEN" else "glow_run if-cue.glow not GREEN"
+assert ifcue.out contains "if-cue.glow" else "glow_run if-cue claim missing path"
 
 let swlent = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/switch-lent.glow"]
 assert swlent.ok else "glow_run switch-lent.glow failed"
@@ -94,6 +104,11 @@ assert swjam.ok else "glow_run switch-jam.glow failed"
 assert swjam.out contains "GREEN" else "glow_run switch-jam.glow not GREEN"
 assert swjam.out contains "switch-jam.glow" else "glow_run switch-jam claim missing path"
 
+let swcue = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/switch-cue.glow"]
+assert swcue.ok else "glow_run switch-cue.glow failed"
+assert swcue.out contains "GREEN" else "glow_run switch-cue.glow not GREEN"
+assert swcue.out contains "switch-cue.glow" else "glow_run switch-cue claim missing path"
+
 let nulllent = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/null-lent.glow"]
 assert nulllent.ok else "glow_run null-lent.glow failed"
 assert nulllent.out contains "GREEN" else "glow_run null-lent.glow not GREEN"
@@ -108,6 +123,11 @@ let nulljam = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/null-
 assert nulljam.ok else "glow_run null-jam.glow failed"
 assert nulljam.out contains "GREEN" else "glow_run null-jam.glow not GREEN"
 assert nulljam.out contains "null-jam.glow" else "glow_run null-jam claim missing path"
+
+let nullcue = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/null-cue.glow"]
+assert nullcue.ok else "glow_run null-cue.glow failed"
+assert nullcue.out contains "GREEN" else "glow_run null-cue.glow not GREEN"
+assert nullcue.out contains "null-cue.glow" else "glow_run null-cue claim missing path"
 
 let nullt = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/null-records.glow"]
 assert nullt.ok else "glow_run null-records.glow failed"

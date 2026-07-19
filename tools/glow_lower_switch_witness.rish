@@ -23,12 +23,14 @@ assert selftest.out contains "nests cast arms" else "lower_switch_witness missin
 assert selftest.out contains "nests lent arm" else "lower_switch_witness missing lent-arm claim"
 assert selftest.out contains "nests mix arm" else "lower_switch_witness missing mix-arm claim"
 assert selftest.out contains "nests jam arm" else "lower_switch_witness missing jam-arm claim"
+assert selftest.out contains "nests cue arm" else "lower_switch_witness missing cue-arm claim"
 assert selftest.out contains "MalformedArms" else "lower_switch_witness missing partial-arms refuse"
 assert selftest.out contains "ArmNotYetLowered" else "lower_switch_witness missing arm-refuse claim"
 assert selftest.out contains "decimal mint/send arms" else "lower_switch_witness missing gen desk claim"
 assert selftest.out contains "carries lent mint arm" else "lower_switch_witness missing switch-lent desk claim"
 assert selftest.out contains "carries mix mint arm" else "lower_switch_witness missing switch-mix desk claim"
 assert selftest.out contains "carries jam mint arm" else "lower_switch_witness missing switch-jam desk claim"
+assert selftest.out contains "carries cue mint arm" else "lower_switch_witness missing switch-cue desk claim"
 
 let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
 assert build_welcome.ok else "switch welcome .rye build failed"
@@ -41,4 +43,4 @@ assert build_unwelcome.ok else "switch unwelcome .rye build failed"
 let run_unwelcome = run ["sh" "-c" "${unwelcome_bin}; echo EXIT:$?"]
 assert run_unwelcome.out contains "EXIT:1" else "switch unwelcome binary did not exit 1"
 
-say "GREEN: Glow `?-` switch hop — decimal/cast/lent/mix/jam mint/send arms; welcome 0 / unwelcome 1."
+say "GREEN: Glow `?-` switch hop — decimal/cast/lent/mix/jam/cue mint/send arms; welcome 0 / unwelcome 1."

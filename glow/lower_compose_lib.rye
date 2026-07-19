@@ -177,6 +177,7 @@ fn open_expect(body: *const expr.Expr, sample: u32) LowerError!u32 {
         .lent_of => expr.lent_demo_len,
         .mix_of => sample ^ sample,
         .jam_of => (sample << 16) | sample,
+        .cue_of => sample & 0xffff,
     };
 }
 

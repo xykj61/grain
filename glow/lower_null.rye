@@ -4,10 +4,10 @@
 //! `?~` is the null test. This hop lowers `records.cur` with then/else as
 //! named faces (defaults root/cont), decimal literals, nested
 //! `^-  @uN  <decimal>`, `(lent <face>)`, `(mix <face> <face>)`, or
-//! `(jam <face> <face>)` — parsed through `expr.rye`. Arm decimals, lengths,
-//! XOR, and cell-pack results are payloads, not Hoon loobeans; exits are
-//! POSIX (0 success). See glow/truth_semantics.rye. Other parenthesized arms
-//! refuse.
+//! `(jam <face> <face>)`, or `(cue <face>)` — parsed through `expr.rye`. Arm
+//! decimals, lengths, XOR, cell-pack, and cue-unpack results are payloads, not
+//! Hoon loobeans; exits are POSIX (0 success). See glow/truth_semantics.rye.
+//! Other parenthesized arms refuse.
 
 const std = @import("std");
 const rn = @import("rune_null.rye");
@@ -127,6 +127,7 @@ fn expect_then_value(then_arm: *const ArmExpr) u32 {
         .lent_of => expr.lent_demo_len,
         .mix_of => expr.mix_demo_result(),
         .jam_of => expr.jam_demo_result(),
+        .cue_of => expr.cue_demo_result(),
     };
 }
 
@@ -270,6 +271,21 @@ fn emit_jam_bindings(then_arm: *const ArmExpr, else_arm: *const ArmExpr, out: []
     try emit_one_jam("else_arm", else_arm, out, at, &emitted);
 }
 
+fn emit_one_cue(role: []const u8, arm: *const ArmExpr, out: []u8, at: *usize, emitted: *MixEmitted) LowerError!void {
+    if (arm.kind != .cue_of) return;
+    var zb: [max_arm_len]u8 = undefined;
+    const zn = try zig_safe_ident(face_slice(arm), &zb);
+    try emit_mix_atom(zb[0..zn], expr.jam_demo_result(), out, at, emitted);
+    const arm_line = std.fmt.bufPrint(out[at.*..], "    const {s}: u32 = {s} & 0xffff;\n", .{ role, zb[0..zn] }) catch return error.Overflow;
+    at.* += arm_line.len;
+}
+
+fn emit_cue_bindings(then_arm: *const ArmExpr, else_arm: *const ArmExpr, out: []u8, at: *usize) LowerError!void {
+    var emitted: MixEmitted = .{};
+    try emit_one_cue("then_arm", then_arm, out, at, &emitted);
+    try emit_one_cue("else_arm", else_arm, out, at, &emitted);
+}
+
 fn write_arm_expr(arm: *const ArmExpr, role: enum { then_role, else_role }, out: []u8) LowerError![]const u8 {
     switch (arm.kind) {
         .face => {
@@ -282,7 +298,7 @@ fn write_arm_expr(arm: *const ArmExpr, role: enum { then_role, else_role }, out:
         .literal => {
             return std.fmt.bufPrint(out, "{d}", .{arm.lit}) catch return error.Overflow;
         },
-        .cast_literal, .lent_of, .mix_of, .jam_of => {
+        .cast_literal, .lent_of, .mix_of, .jam_of, .cue_of => {
             return switch (role) {
                 .then_role => "then_arm",
                 .else_role => "else_arm",
@@ -309,6 +325,7 @@ fn emit_optional_program(
     try emit_lent_bindings(then_arm, else_arm, &body, &at);
     try emit_mix_bindings(then_arm, else_arm, &body, &at);
     try emit_jam_bindings(then_arm, else_arm, &body, &at);
+    try emit_cue_bindings(then_arm, else_arm, &body, &at);
 
     var then_expr_buf: [max_arm_len]u8 = undefined;
     var else_expr_buf: [max_arm_len]u8 = undefined;
