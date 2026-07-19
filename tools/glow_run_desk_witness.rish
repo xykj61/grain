@@ -339,6 +339,11 @@ assert composejamcue.ok else "glow_run compose-jam-cue.glow failed"
 assert composejamcue.out contains "GREEN" else "glow_run compose-jam-cue.glow not GREEN"
 assert composejamcue.out contains "compose-jam-cue.glow" else "glow_run compose-jam-cue claim missing path"
 
+let composebindjamcue = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/compose-bind-jam-cue.glow"]
+assert composebindjamcue.ok else "glow_run compose-bind-jam-cue.glow failed"
+assert composebindjamcue.out contains "GREEN" else "glow_run compose-bind-jam-cue.glow not GREEN"
+assert composebindjamcue.out contains "compose-bind-jam-cue.glow" else "glow_run compose-bind-jam-cue claim missing path"
+
 let compose2 = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/compose-add.glow"]
 assert compose2.ok else "glow_run compose-add.glow failed"
 assert compose2.out contains "GREEN" else "glow_run compose-add.glow not GREEN"

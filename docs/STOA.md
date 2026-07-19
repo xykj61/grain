@@ -2,10 +2,10 @@
 
 *Waymark for Glow the language: rune heads that lower, nest forms that deepen, composition that grows toward Glow-authored modules. Compresses the working pin; never replaces it.*
 
-**Status:** Checkable — operator compressor (STOA0–STOA42 GREEN)  
+**Status:** Checkable — operator compressor (STOA0–STOA43 GREEN)  
 **Depth:** guide  
 **Ceiling:** ≤80 lines  
-**Last updated:** 2026-07-19 (STOA42 cue nest jam both GREEN)  
+**Last updated:** 2026-07-19 (STOA43 bind→jam→cue GREEN)  
 **Compresses:** [`../glow/README.md`](../glow/README.md) · first-code [`../expanding-prompts/20260717-213242_glow-first-code-beside-glass-and-open-runes.md`](../expanding-prompts/20260717-213242_glow-first-code-beside-glass-and-open-runes.md) · sameness [`../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md`](../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md) · seat [`../active-designing/20260718-202730_stoa-glow-language-waymark.md`](../active-designing/20260718-202730_stoa-glow-language-waymark.md)
 
 ---
@@ -63,18 +63,16 @@ Product glass and wire stay Rye-hosted under their own waymarks. **STOA** names 
 | **STOA40** | `(cue (jam (mix …) …))` nest-left | `glow_expr` · `glow_lower_*` · desks | **GREEN** `20260719.150634` |
 | **STOA41** | `(cue (jam … (mix …)))` nest-right | `glow_expr` · `glow_lower_*` · desks | **GREEN** `20260719.151831` |
 | **STOA42** | `(cue (jam (mix …) (mix …)))` nest-both | `glow_expr` · `glow_lower_*` · desks | **GREEN** `20260719.153013` |
-| **STOA43** | Next language / product | horizon — check-in | horizon |
+| **STOA43** | Bind→jam→cue product multi-line | `glow_lower_compose_jam_cue` · desk | **GREEN** `20260719.153556` |
+| **STOA44** | Next language / product | horizon — check-in | horizon |
 
 ## Hands-on
-
 ```bash
 cd ~/urbit
-rishi/bin/rishi run tools/glow_run.rish glow/gen/face-cue-jam-both-nest.glow
+rishi/bin/rishi run tools/glow_run.rish glow/gen/compose-bind-jam-cue.glow
 rishi/bin/rishi run tools/glow_run_desk_witness.rish
 ```
 
 Sibling product ladders: **ZETA** · **LULU** · **SETU** · **TUBE**. Language door: [`../manual/README.md`](../manual/README.md).
-
----
 
 *May every head lower honestly, and every nest deepen the same language.*

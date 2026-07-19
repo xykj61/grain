@@ -1,0 +1,5 @@
+::  Bind faces then jam→cue — product-shaped pack/unpack (STOA43).
+=/  from=@u32  5
+=/  amount=@u32  3
+=/  cell-pack=@u32  (jam from amount)
+=/  right=@u32  (cue cell-pack)

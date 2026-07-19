@@ -1,10 +1,16 @@
-//! glow/lower_compose_jam_cue.rye — cross-line jam then cue (STOA39).
+//! glow/lower_compose_jam_cue.rye — cross-line jam then cue (STOA39/43).
 //!
-//! Thin face (exactly two typed `=/` lines):
+//! Thin face — two typed lines (STOA39):
 //!   =/  cell-pack=@u32  (jam from amount)
 //!   =/  right=@u32  (cue cell-pack)
 //!
-//! First line packs; second unpacks the prior face. Decimal multi and
+//! Or four typed lines with authored binds (STOA43 product-shaped):
+//!   =/  from=@u32  5
+//!   =/  amount=@u32  3
+//!   =/  cell-pack=@u32  (jam from amount)
+//!   =/  right=@u32  (cue cell-pack)
+//!
+//! First packs; last unpacks the prior face. Decimal multi and
 //! face→call compose stay on their own lowers.
 
 const std = @import("std");
@@ -71,6 +77,9 @@ pub const JamCueSpec = struct {
     jam_left_len: usize = 0,
     jam_right: [rf.max_name_len]u8 = .{0} ** rf.max_name_len,
     jam_right_len: usize = 0,
+    left_value: u32 = expr.jam_demo_left,
+    right_value: u32 = expr.jam_demo_right,
+    has_binds: bool = false,
 };
 
 pub fn pack_face_slice(spec: *const JamCueSpec) []const u8 {
@@ -108,37 +117,63 @@ fn parse_typed_value(line: []const u8, face_out: *[rf.max_name_len]u8) LowerErro
 pub fn looks_like_jam_cue(src: []const u8) bool {
     var lines: [lower_multi.max_lines][]const u8 = undefined;
     const n = lower_multi.collect_lines(src, &lines) catch return false;
-    if (n != 2) return false;
-    if (lines[0].len < 2 or lines[0][0] != '=' or lines[0][1] != '/') return false;
-    if (lines[1].len < 2 or lines[1][0] != '=' or lines[1][1] != '/') return false;
-    return std.mem.indexOf(u8, lines[0], "(jam ") != null and std.mem.indexOf(u8, lines[1], "(cue ") != null;
+    if (n != 2 and n != 4) return false;
+    var i: usize = 0;
+    while (i < n) : (i += 1) {
+        if (lines[i].len < 2 or lines[i][0] != '=' or lines[i][1] != '/') return false;
+    }
+    const jam_i: usize = if (n == 2) 0 else 2;
+    const cue_i: usize = if (n == 2) 1 else 3;
+    return std.mem.indexOf(u8, lines[jam_i], "(jam ") != null and std.mem.indexOf(u8, lines[cue_i], "(cue ") != null;
+}
+
+fn parse_pack_cue(jam_line: []const u8, cue_line: []const u8, spec: *JamCueSpec) LowerError!void {
+    const line_jam = try parse_typed_value(jam_line, &spec.pack_face);
+    spec.pack_face_len = line_jam.face_len;
+    if (line_jam.value.kind != .jam_of) return error.NotAJamCueCompose;
+    if (line_jam.value.left_arg != .face or line_jam.value.right_arg != .face) return error.ValueNotYetLowered;
+
+    var right_buf: [rf.max_name_len]u8 = undefined;
+    const line_cue = try parse_typed_value(cue_line, &right_buf);
+    @memcpy(spec.right_face[0..line_cue.face_len], right_buf[0..line_cue.face_len]);
+    spec.right_face_len = line_cue.face_len;
+    if (line_cue.value.kind != .cue_of) return error.NotAJamCueCompose;
+    if (expr.cue_is_jam(&line_cue.value)) return error.ValueNotYetLowered;
+    if (!std.mem.eql(u8, expr.face_slice(&line_cue.value), pack_face_slice(spec))) return error.SampleMismatch;
+
+    const jl = expr.face_slice(&line_jam.value);
+    const jr = expr.face2_slice(&line_jam.value);
+    @memcpy(spec.jam_left[0..jl.len], jl);
+    spec.jam_left_len = jl.len;
+    @memcpy(spec.jam_right[0..jr.len], jr);
+    spec.jam_right_len = jr.len;
 }
 
 pub fn parse_jam_cue(src: []const u8) LowerError!JamCueSpec {
     var lines: [lower_multi.max_lines][]const u8 = undefined;
     const n = try lower_multi.collect_lines(src, &lines);
-    if (n != 2) return error.NotAJamCueCompose;
+    if (n != 2 and n != 4) return error.NotAJamCueCompose;
 
     var spec: JamCueSpec = .{};
-    const line0 = try parse_typed_value(lines[0], &spec.pack_face);
-    spec.pack_face_len = line0.face_len;
-    if (line0.value.kind != .jam_of) return error.NotAJamCueCompose;
-    if (line0.value.left_arg != .face or line0.value.right_arg != .face) return error.ValueNotYetLowered;
+    if (n == 2) {
+        try parse_pack_cue(lines[0], lines[1], &spec);
+        return spec;
+    }
 
-    var right_buf: [rf.max_name_len]u8 = undefined;
-    const line1 = try parse_typed_value(lines[1], &right_buf);
-    @memcpy(spec.right_face[0..line1.face_len], right_buf[0..line1.face_len]);
-    spec.right_face_len = line1.face_len;
-    if (line1.value.kind != .cue_of) return error.NotAJamCueCompose;
-    if (expr.cue_is_jam(&line1.value)) return error.ValueNotYetLowered;
-    if (!std.mem.eql(u8, expr.face_slice(&line1.value), pack_face_slice(&spec))) return error.SampleMismatch;
+    var left_face: [rf.max_name_len]u8 = undefined;
+    const bind0 = try parse_typed_value(lines[0], &left_face);
+    if (bind0.value.kind != .literal and bind0.value.kind != .cast_literal) return error.NotAJamCueCompose;
+    var right_face: [rf.max_name_len]u8 = undefined;
+    const bind1 = try parse_typed_value(lines[1], &right_face);
+    if (bind1.value.kind != .literal and bind1.value.kind != .cast_literal) return error.NotAJamCueCompose;
 
-    const jl = expr.face_slice(&line0.value);
-    const jr = expr.face2_slice(&line0.value);
-    @memcpy(spec.jam_left[0..jl.len], jl);
-    spec.jam_left_len = jl.len;
-    @memcpy(spec.jam_right[0..jr.len], jr);
-    spec.jam_right_len = jr.len;
+    try parse_pack_cue(lines[2], lines[3], &spec);
+    if (!std.mem.eql(u8, left_face[0..bind0.face_len], jam_left_slice(&spec))) return error.SampleMismatch;
+    if (!std.mem.eql(u8, right_face[0..bind1.face_len], jam_right_slice(&spec))) return error.SampleMismatch;
+
+    spec.left_value = bind0.value.lit;
+    spec.right_value = bind1.value.lit;
+    spec.has_binds = true;
     return spec;
 }
 
@@ -151,12 +186,20 @@ fn emit_jam_cue(spec: *const JamCueSpec, welcome: bool, out: []u8) LowerError!u3
     const jln = try zig_safe_ident(jam_left_slice(spec), &zjl);
     var zjr: [rf.max_name_len]u8 = undefined;
     const jrn = try zig_safe_ident(jam_right_slice(spec), &zjr);
-    const expect: u32 = if (welcome) jam_cue_expect else jam_cue_expect +% 1;
+    const left_v: u32 = if (spec.has_binds) spec.left_value else expr.jam_demo_left;
+    const right_v: u32 = if (spec.has_binds) spec.right_value else expr.jam_demo_right;
+    // Welcome expect is the low 16 of the authored (or demo) pack.
+    const result: u32 = right_v;
+    const expect: u32 = if (welcome) result else result +% 1;
+    const tag: []const u8 = if (spec.has_binds)
+        "bind→jam→cue compose — authored faces then pack unpack (STOA43)"
+    else
+        "jam→cue compose — cross-line pack then unpack (STOA39)";
 
     const written = std.fmt.bufPrint(out,
         \\const std = @import("std");
         \\
-        \\/// Lowered from Glow jam→cue compose — cross-line pack then unpack (STOA39).
+        \\/// Lowered from Glow {s}.
         \\pub fn main(_: std.process.Init) !u8 {{
         \\    const {s}: u32 = {d};
         \\    const {s}: u32 = {d};
@@ -166,10 +209,11 @@ fn emit_jam_cue(spec: *const JamCueSpec, welcome: bool, out: []u8) LowerError!u3
         \\}}
         \\
     , .{
+        tag,
         zjl[0..jln],
-        expr.jam_demo_left,
+        left_v,
         zjr[0..jrn],
-        expr.jam_demo_right,
+        right_v,
         zp[0..pn],
         zjl[0..jln],
         zjr[0..jrn],
