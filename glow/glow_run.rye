@@ -99,6 +99,41 @@ pub fn main(init: std.process.Init) !u8 {
                     return 1;
                 };
             }
+            if (lower_named_cast.looks_like_cross_desk(src)) {
+                const spec = lower_named_cast.parse_cross_desk(src) catch |err| {
+                    print("glow_run: cross-desk named-cast parse failed ({s})\n", .{@errorName(err)});
+                    return 1;
+                };
+                const lib_glow = std.fmt.allocPrint(alloc, "glow/gen/{s}.glow", .{lower_named_cast.stem_slice(&spec)}) catch {
+                    print("glow_run: cross-desk mold path overflow\n", .{});
+                    return 1;
+                };
+                const lib_src = cwd.readFileAlloc(io, lib_glow, alloc, .limited(64 * 1024)) catch {
+                    print("glow_run: cross-desk missing {s}\n", .{lib_glow});
+                    return 1;
+                };
+                _ = lower_named_cast.bind_cross_desk(&spec, lib_src) catch |err| {
+                    print("glow_run: cross-desk bind failed ({s})\n", .{@errorName(err)});
+                    return 1;
+                };
+                var lib_buf: [4096]u8 = undefined;
+                const lib_len = lower_mold.lower_source_library(lib_src, &lib_buf) catch |err| {
+                    print("glow_run: cross-desk mold library lower failed ({s})\n", .{@errorName(err)});
+                    return 1;
+                };
+                var zs: [lower_named_cast.max_stem_len]u8 = undefined;
+                const sn = lower_named_cast.zig_stem(&spec, &zs) catch {
+                    print("glow_run: cross-desk bad stem\n", .{});
+                    return 1;
+                };
+                try cwd.createDirPath(io, "glow/.cache");
+                const lib_rye = try std.fmt.allocPrint(alloc, "glow/.cache/{s}.rye", .{zs[0..sn]});
+                try cwd.writeFile(io, .{ .sub_path = lib_rye, .data = lib_buf[0..lib_len] });
+                break :blk lower_named_cast.lower_cross_desk_welcome(src, lib_src, &rye_buf) catch |err| {
+                    print("glow_run: cross-desk named-cast lower failed ({s})\n", .{@errorName(err)});
+                    return 1;
+                };
+            }
             if (n >= 3 and n <= 5 and lines[0].len >= 2 and lines[0][0] == '+' and lines[0][1] == '$') {
                 break :blk lower_mold.lower_source_welcome(src, &rye_buf) catch |err| {
                     print("glow_run: mold lower failed ({s})\n", .{@errorName(err)});

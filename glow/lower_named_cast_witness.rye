@@ -1,4 +1,4 @@
-//! glow/lower_named_cast_witness.rye — proves same-desk named-cast resolve.
+//! glow/lower_named_cast_witness.rye — proves same-desk and cross-desk named-cast.
 //!
 //!   rye build glow/lower_named_cast_witness.rye -femit-bin=glow/bin/lower_named_cast_witness
 //!   glow/bin/lower_named_cast_witness
@@ -7,8 +7,9 @@ const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 const lower = @import("lower_named_cast.rye");
+const lower_mold = @import("lower_mold.rye");
 
-const witness_version = "20260719.193200";
+const witness_version = "20260719.194400";
 
 const desk_src =
     \\+$  amount-mold
@@ -24,6 +25,22 @@ const mismatch_src =
     \\^-  other-mold
 ;
 
+const cross_src =
+    \\/+  mold-amount
+    \\^-  amount-mold
+;
+
+const lib_src =
+    \\+$  amount-mold
+    \\  $:  amount=@u32
+    \\  ==
+;
+
+const cross_mismatch =
+    \\/+  mold-amount
+    \\^-  other-mold
+;
+
 fn run_selftest(init: std.process.Init) !u8 {
     const io = init.io;
     const cwd = std.Io.Dir.cwd();
@@ -32,11 +49,13 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(lower.looks_like_named_cast(desk_src));
     print("lower: cast-named-amount shape detected -- GREEN\n", .{});
 
+    try cwd.createDirPath(io, "glow/.cache");
+
     const n = try lower.lower_source_welcome(desk_src, &buf);
-    const rye = buf[0..n];
-    assert(std.mem.indexOf(u8, rye, "pub const AmountMold") != null);
-    assert(std.mem.indexOf(u8, rye, "named-cast resolve") != null);
-    assert(std.mem.indexOf(u8, rye, "amount = raw") != null);
+    assert(std.mem.indexOf(u8, buf[0..n], "pub const AmountMold") != null);
+    assert(std.mem.indexOf(u8, buf[0..n], "named-cast resolve") != null);
+    assert(std.mem.indexOf(u8, buf[0..n], "amount = raw") != null);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/cast_named_amount_welcome.rye", .data = buf[0..n] });
     print("lower: +$ amount-mold + ^- amount-mold emits AmountMold cast -- GREEN\n", .{});
 
     if (lower.lower_source_welcome(mismatch_src, &buf)) |_| {
@@ -46,12 +65,30 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("lower: cast name mismatch refused CastMoldMismatch -- GREEN\n", .{});
 
-    try cwd.createDirPath(io, "glow/.cache");
-    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/cast_named_amount_welcome.rye", .data = rye });
-    print("lower: wrote cast_named_amount_welcome.rye -- GREEN\n", .{});
+    assert(lower.looks_like_cross_desk(cross_src));
+    const cross_n = try lower.lower_cross_desk_welcome(cross_src, lib_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..cross_n], "cross-desk named-cast") != null);
+    assert(std.mem.indexOf(u8, buf[0..cross_n], "import(\"mold_amount.rye\")") != null);
+    assert(std.mem.indexOf(u8, buf[0..cross_n], "lib.AmountMold") != null);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/cast_import_amount_welcome.rye", .data = buf[0..cross_n] });
+    print("lower: /+ mold-amount + ^- amount-mold emits cross-desk cast -- GREEN\n", .{});
+
+    if (lower.lower_cross_desk_welcome(cross_mismatch, lib_src, &buf)) |_| {
+        return error.CrossCastMoldMismatchNotCaught;
+    } else |err| {
+        if (err != lower.LowerError.CastMoldMismatch) return err;
+    }
+    print("lower: cross-desk cast name mismatch refused CastMoldMismatch -- GREEN\n", .{});
+
+    const lib_n = try lower_mold.lower_source_library(lib_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..lib_n], "pub const AmountMold") != null);
+    assert(std.mem.indexOf(u8, buf[0..lib_n], "pub fn main") == null);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/mold_amount.rye", .data = buf[0..lib_n] });
+    print("lower: mold-amount library emit has no main -- GREEN\n", .{});
+    print("lower: wrote named-cast welcome .rye under glow/.cache/ -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: named-cast resolve lowers — STOA77; cast-named-amount.glow.\n", .{});
+    print("GREEN: named-cast resolve lowers — STOA77/79; cast-named-amount · cast-import-amount.\n", .{});
     return 0;
 }
 
