@@ -1,0 +1,67 @@
+//! glow/lower_calln_witness.rye — proves `%*` lowers to runnable `.rye`.
+//!
+//!   rye build glow/lower_calln_witness.rye -femit-bin=glow/bin/lower_calln_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const lower = @import("lower_calln.rye");
+
+const witness_version = "20260718.211300";
+
+fn run_selftest(init: std.process.Init) !u8 {
+    const io = init.io;
+    const a = init.arena.allocator();
+    const cwd = std.Io.Dir.cwd();
+    var buf: [3072]u8 = undefined;
+
+    const n1 = try lower.lower_line_welcome("%*  mix  left  right", &buf);
+    const rye1 = buf[0..n1];
+    assert(std.mem.indexOf(u8, rye1, "const Sample = struct { left: u32, right: u32 }") != null);
+    assert(std.mem.indexOf(u8, rye1, "fn mix(sample: Sample) u32") != null);
+    assert(std.mem.indexOf(u8, rye1, "return sample.left +% sample.right;") != null);
+    assert(std.mem.indexOf(u8, rye1, "const left: u32 = 5") != null);
+    assert(std.mem.indexOf(u8, rye1, "const right: u32 = 3") != null);
+    assert(std.mem.indexOf(u8, rye1, "const called: u32 = mix(.{ .left = left, .right = right })") != null);
+    assert(std.mem.indexOf(u8, rye1, "called == 8") != null);
+    print("lower: \"%*  mix  left  right\" welcome builds call -- GREEN\n", .{});
+
+    const n2 = try lower.lower_line_unwelcome("%*  mix  left  right", &buf);
+    assert(std.mem.indexOf(u8, buf[0..n2], "called == 9") != null);
+    print("lower: \"%*  mix  left  right\" unwelcome expects mismatch -- GREEN\n", .{});
+
+    if (lower.lower_line_welcome("%*  mystery  left  right", &buf)) |_| {
+        return error.UnknownGateNotCaught;
+    } else |err| {
+        if (err != lower.LowerError.UnknownGate) return err;
+    }
+    print("lower: unknown gate refused UnknownGate -- GREEN\n", .{});
+
+    if (lower.lower_line_welcome("%*  mix  from  amount", &buf)) |_| {
+        return error.BadNamesNotCaught;
+    } else |err| {
+        if (err != lower.LowerError.BadNames) return err;
+    }
+    print("lower: wrong names refused BadNames -- GREEN\n", .{});
+
+    try cwd.createDirPath(io, "glow/.cache");
+    const welcome_path = "glow/.cache/call_named_welcome.rye";
+    const unwelcome_path = "glow/.cache/call_named_unwelcome.rye";
+    const n3 = try lower.lower_line_welcome("%*  mix  left  right", &buf);
+    try cwd.writeFile(io, .{ .sub_path = welcome_path, .data = buf[0..n3] });
+    const n4 = try lower.lower_line_unwelcome("%*  mix  left  right", &buf);
+    try cwd.writeFile(io, .{ .sub_path = unwelcome_path, .data = buf[0..n4] });
+    print("lower: wrote calln welcome and unwelcome .rye under glow/.cache/ -- GREEN\n", .{});
+
+    const gen_src = try cwd.readFileAlloc(io, "glow/gen/call-named.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_src, "%*  mix  left  right") != null);
+    print("lower: glow/gen/call-named.glow carries call faces -- GREEN\n", .{});
+
+    print("lower: version {s}\n", .{witness_version});
+    print("GREEN: `%*` lowers named-arg calls to ordinary Rye (STOA9).\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
+}

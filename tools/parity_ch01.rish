@@ -1172,6 +1172,11 @@ let setu6 = run ["rishi/bin/rishi" "run" "tools/setu6_device_lab_witness.rish"]
 assert setu6.ok else "SETU6 device lab witness failed"
 say "GREEN: SETU6 device lab witness passed."
 
+say "witness suite: SETU6.5 — lab TX gate…"
+let setu65 = run ["rishi/bin/rishi" "run" "tools/setu65_lab_tx_witness.rish"]
+assert setu65.ok else "SETU6.5 lab TX gate witness failed"
+say "GREEN: SETU6.5 lab TX gate witness passed."
+
 say "witness suite: Sala R1 — the viewer renders what Pool hosts…"
 let sala_r1 = run ["rishi/bin/rishi" "run" "tools/sala_view_witness.rish"]
 assert sala_r1.ok else "Sala R1 view witness failed"
@@ -1292,7 +1297,87 @@ let glow_alias = run ["rishi/bin/rishi" "run" "tools/glow_lower_alias_witness.ri
 assert glow_alias.ok else "Glow lower-alias witness failed"
 say "GREEN: Glow lower-alias witness passed."
 
-say "witness suite: glow_run desk — all eight generator hops…"
+say "witness suite: Glow `:-` rune head — pair cell (STOA2)…"
+let glow_rune_cell = run ["rishi/bin/rishi" "run" "tools/glow_rune_cell_witness.rish"]
+assert glow_rune_cell.ok else "Glow rune-cell witness failed"
+say "GREEN: Glow rune-cell witness passed."
+
+say "witness suite: Glow `:-` lowers to Rye — cell hop…"
+let glow_cell = run ["rishi/bin/rishi" "run" "tools/glow_lower_cell_witness.rish"]
+assert glow_cell.ok else "Glow lower-cell witness failed"
+say "GREEN: Glow lower-cell witness passed."
+
+say "witness suite: Glow `:+` rune head — triple cell (STOA3)…"
+let glow_rune_triple = run ["rishi/bin/rishi" "run" "tools/glow_rune_triple_witness.rish"]
+assert glow_rune_triple.ok else "Glow rune-triple witness failed"
+say "GREEN: Glow rune-triple witness passed."
+
+say "witness suite: Glow `:+` lowers to Rye — triple hop…"
+let glow_triple = run ["rishi/bin/rishi" "run" "tools/glow_lower_triple_witness.rish"]
+assert glow_triple.ok else "Glow lower-triple witness failed"
+say "GREEN: Glow lower-triple witness passed."
+
+say "witness suite: Glow `:^` rune head — quad cell (STOA4)…"
+let glow_rune_quad = run ["rishi/bin/rishi" "run" "tools/glow_rune_quad_witness.rish"]
+assert glow_rune_quad.ok else "Glow rune-quad witness failed"
+say "GREEN: Glow rune-quad witness passed."
+
+say "witness suite: Glow `:^` lowers to Rye — quad hop…"
+let glow_quad = run ["rishi/bin/rishi" "run" "tools/glow_lower_quad_witness.rish"]
+assert glow_quad.ok else "Glow lower-quad witness failed"
+say "GREEN: Glow lower-quad witness passed."
+
+say "witness suite: Glow `:~` rune head — list cell (STOA5)…"
+let glow_rune_list = run ["rishi/bin/rishi" "run" "tools/glow_rune_list_witness.rish"]
+assert glow_rune_list.ok else "Glow rune-list witness failed"
+say "GREEN: Glow rune-list witness passed."
+
+say "witness suite: Glow `:~` lowers to Rye — list hop…"
+let glow_list = run ["rishi/bin/rishi" "run" "tools/glow_lower_list_witness.rish"]
+assert glow_list.ok else "Glow lower-list witness failed"
+say "GREEN: Glow lower-list witness passed."
+
+say "witness suite: Glow `%-` rune head — one-arg call (STOA6)…"
+let glow_rune_call = run ["rishi/bin/rishi" "run" "tools/glow_rune_call_witness.rish"]
+assert glow_rune_call.ok else "Glow rune-call witness failed"
+say "GREEN: Glow rune-call witness passed."
+
+say "witness suite: Glow `%-` lowers to Rye — call hop…"
+let glow_call = run ["rishi/bin/rishi" "run" "tools/glow_lower_call_witness.rish"]
+assert glow_call.ok else "Glow lower-call witness failed"
+say "GREEN: Glow lower-call witness passed."
+
+say "witness suite: Glow `%+` rune head — two-arg call (STOA7)…"
+let glow_rune_call2 = run ["rishi/bin/rishi" "run" "tools/glow_rune_call2_witness.rish"]
+assert glow_rune_call2.ok else "Glow rune-call2 witness failed"
+say "GREEN: Glow rune-call2 witness passed."
+
+say "witness suite: Glow `%+` lowers to Rye — call2 hop…"
+let glow_call2 = run ["rishi/bin/rishi" "run" "tools/glow_lower_call2_witness.rish"]
+assert glow_call2.ok else "Glow lower-call2 witness failed"
+say "GREEN: Glow lower-call2 witness passed."
+
+say "witness suite: Glow `%^` rune head — three-arg call (STOA8)…"
+let glow_rune_call3 = run ["rishi/bin/rishi" "run" "tools/glow_rune_call3_witness.rish"]
+assert glow_rune_call3.ok else "Glow rune-call3 witness failed"
+say "GREEN: Glow rune-call3 witness passed."
+
+say "witness suite: Glow `%^` lowers to Rye — call3 hop…"
+let glow_call3 = run ["rishi/bin/rishi" "run" "tools/glow_lower_call3_witness.rish"]
+assert glow_call3.ok else "Glow lower-call3 witness failed"
+say "GREEN: Glow lower-call3 witness passed."
+
+say "witness suite: Glow `%*` rune head — named-arg call (STOA9)…"
+let glow_rune_calln = run ["rishi/bin/rishi" "run" "tools/glow_rune_calln_witness.rish"]
+assert glow_rune_calln.ok else "Glow rune-calln witness failed"
+say "GREEN: Glow rune-calln witness passed."
+
+say "witness suite: Glow `%*` lowers to Rye — calln hop…"
+let glow_calln = run ["rishi/bin/rishi" "run" "tools/glow_lower_calln_witness.rish"]
+assert glow_calln.ok else "Glow lower-calln witness failed"
+say "GREEN: Glow lower-calln witness passed."
+
+say "witness suite: glow_run desk — all generator hops…"
 let glow_desk = run ["rishi/bin/rishi" "run" "tools/glow_run_desk_witness.rish"]
 assert glow_desk.ok else "Glow run desk witness failed"
 say "GREEN: glow_run desk witness passed."

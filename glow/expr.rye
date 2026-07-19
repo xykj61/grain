@@ -1,8 +1,8 @@
 //! glow/expr.rye — shared nest-expression surface for Glow lowers.
 //!
 //! Nest forms: decimal · nested `^-  @uN  <decimal>` · bare face ·
-//! `(lent <face>)` · `(mix <face> <face>)`. Other parenthesized forms
-//! refuse. Not a full token stream yet.
+//! `(lent <face>)` · `(mix <face> <face>)` · `(jam <face> <face>)`.
+//! Other parenthesized forms refuse. Not a full token stream yet.
 
 const std = @import("std");
 
@@ -16,6 +16,11 @@ pub const lent_demo_len: u32 = 5;
 pub const mix_demo_left: u32 = 5;
 pub const mix_demo_right: u32 = 3;
 
+/// Demo atoms for `(jam a b)` → `(a << 16) | b` — thin cell-pack face
+/// (Hoon +jam of a two-atom cell; not Vere jam/cue bit layout).
+pub const jam_demo_left: u32 = 5;
+pub const jam_demo_right: u32 = 3;
+
 pub const ParseError = error{
     Overflow,
     MalformedExpr,
@@ -25,7 +30,7 @@ pub const ParseError = error{
     NamedMoldNotYetLowered,
 };
 
-pub const Kind = enum { face, literal, cast_literal, lent_of, mix_of };
+pub const Kind = enum { face, literal, cast_literal, lent_of, mix_of, jam_of };
 
 pub const Expr = struct {
     kind: Kind,
@@ -57,6 +62,10 @@ pub fn mold_slice(e: *const Expr) []const u8 {
 
 pub fn mix_demo_result() u32 {
     return mix_demo_left ^ mix_demo_right;
+}
+
+pub fn jam_demo_result() u32 {
+    return (jam_demo_left << 16) | jam_demo_right;
 }
 
 fn is_ident_char(c: u8) bool {
@@ -112,6 +121,19 @@ fn parse_paren(rest: []const u8) ParseError!Prefix {
         const right = try parse_ident(mid);
         if (right.rest.len == 0 or right.rest[0] != ')') return error.MalformedExpr;
         var e: Expr = .{ .kind = .mix_of, .face_len = left.ident.len, .face2_len = right.ident.len };
+        @memcpy(e.face[0..left.ident.len], left.ident);
+        @memcpy(e.face2[0..right.ident.len], right.ident);
+        return .{ .expr = e, .rest = std.mem.trimStart(u8, right.rest[1..], " \t") };
+    }
+
+    const jam_prefix = "(jam ";
+    if (rest.len > jam_prefix.len and std.mem.eql(u8, rest[0..jam_prefix.len], jam_prefix)) {
+        const left = try parse_ident(rest[jam_prefix.len..]);
+        const mid = std.mem.trimStart(u8, left.rest, " \t");
+        if (mid.len == left.rest.len) return error.MalformedExpr;
+        const right = try parse_ident(mid);
+        if (right.rest.len == 0 or right.rest[0] != ')') return error.MalformedExpr;
+        var e: Expr = .{ .kind = .jam_of, .face_len = left.ident.len, .face2_len = right.ident.len };
         @memcpy(e.face[0..left.ident.len], left.ident);
         @memcpy(e.face2[0..right.ident.len], right.ident);
         return .{ .expr = e, .rest = std.mem.trimStart(u8, right.rest[1..], " \t") };

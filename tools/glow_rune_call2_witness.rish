@@ -1,0 +1,17 @@
+# glow_rune_call2_witness.rish — `%+` two-arg call rune head.
+#
+#   rishi/bin/rishi run tools/glow_rune_call2_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "glow/bin/rune_call2_witness"
+
+let build = run ["sh" "-c" "mkdir -p glow/bin && env RYE_ZIG=${zig} rye/bin/rye build glow/rune_call2_witness.rye -femit-bin=${bin}"]
+assert build.ok else "rune_call2_witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "rune_call2_witness exited non-zero"
+assert selftest.out contains "GREEN" else "rune_call2_witness not GREEN"
+assert selftest.out contains "parses gate and samples" else "rune_call2_witness missing call claim"
+assert selftest.out contains "MissingSample" else "rune_call2_witness missing MissingSample"
+
+say "GREEN: Glow `%+` call rune head — gate + two samples; STOA7."

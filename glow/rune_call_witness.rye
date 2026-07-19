@@ -1,0 +1,53 @@
+//! glow/rune_call_witness.rye — proves the `%-` call rune head.
+//!
+//!   rye build glow/rune_call_witness.rye -femit-bin=glow/bin/rune_call_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const rc = @import("rune_call.rye");
+
+const witness_version = "20260718.205900";
+
+fn run_selftest() !u8 {
+    const spec = try rc.parse("%-  double  amount");
+    assert(std.mem.eql(u8, rc.gate_slice(&spec), "double"));
+    assert(std.mem.eql(u8, rc.sample_slice(&spec), "amount"));
+    print("rune: \"%-  double  amount\" parses gate and sample -- GREEN\n", .{});
+
+    if (rc.parse("%+  double  amount")) |_| {
+        return error.NotACallNotCaught;
+    } else |err| {
+        if (err != rc.ParseError.NotACall) return err;
+    }
+    print("rune: %+ refused NotACall -- GREEN\n", .{});
+
+    if (rc.parse("%-  double")) |_| {
+        return error.MissingSampleNotCaught;
+    } else |err| {
+        if (err != rc.ParseError.MissingSample) return err;
+    }
+    print("rune: bare gate refused MissingSample -- GREEN\n", .{});
+
+    if (rc.parse("%-  double  amount  extra")) |_| {
+        return error.ExtraTailNotCaught;
+    } else |err| {
+        if (err != rc.ParseError.ExtraTail) return err;
+    }
+    print("rune: third face refused ExtraTail -- GREEN\n", .{});
+
+    if (rc.parse("%-")) |_| {
+        return error.MissingGateNotCaught;
+    } else |err| {
+        if (err != rc.ParseError.MissingGate) return err;
+    }
+    print("rune: bare %- refused MissingGate -- GREEN\n", .{});
+
+    print("rune: version {s}\n", .{witness_version});
+    print("GREEN: `%-` call rune head parses gate + one sample (STOA6).\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}

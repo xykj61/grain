@@ -1,0 +1,55 @@
+//! glow/rune_call3_witness.rye — proves the `%^` three-arg call rune head.
+//!
+//!   rye build glow/rune_call3_witness.rye -femit-bin=glow/bin/rune_call3_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const r3 = @import("rune_call3.rye");
+
+const witness_version = "20260718.211000";
+
+fn run_selftest() !u8 {
+    const spec = try r3.parse("%^  sum  from  amount  note");
+    assert(std.mem.eql(u8, r3.gate_slice(&spec), "sum"));
+    assert(std.mem.eql(u8, r3.a_slice(&spec), "from"));
+    assert(std.mem.eql(u8, r3.b_slice(&spec), "amount"));
+    assert(std.mem.eql(u8, r3.c_slice(&spec), "note"));
+    print("rune: \"%^  sum  from  amount  note\" parses gate and samples -- GREEN\n", .{});
+
+    if (r3.parse("%+  sum  from  amount  note")) |_| {
+        return error.NotACall3NotCaught;
+    } else |err| {
+        if (err != r3.ParseError.NotACall3) return err;
+    }
+    print("rune: %+ refused NotACall3 -- GREEN\n", .{});
+
+    if (r3.parse("%^  sum  from  amount")) |_| {
+        return error.MissingSampleNotCaught;
+    } else |err| {
+        if (err != r3.ParseError.MissingSample) return err;
+    }
+    print("rune: two samples refused MissingSample -- GREEN\n", .{});
+
+    if (r3.parse("%^  sum  from  amount  note  extra")) |_| {
+        return error.ExtraTailNotCaught;
+    } else |err| {
+        if (err != r3.ParseError.ExtraTail) return err;
+    }
+    print("rune: fifth face refused ExtraTail -- GREEN\n", .{});
+
+    if (r3.parse("%^")) |_| {
+        return error.MissingGateNotCaught;
+    } else |err| {
+        if (err != r3.ParseError.MissingGate) return err;
+    }
+    print("rune: bare %^ refused MissingGate -- GREEN\n", .{});
+
+    print("rune: version {s}\n", .{witness_version});
+    print("GREEN: `%^` call rune head parses gate + three samples (STOA8).\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}

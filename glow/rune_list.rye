@@ -1,0 +1,74 @@
+//! glow/rune_list.rye — parses Glow's `:~` list-cell rune head.
+//!
+//! Per the sameness rune brief `:` category: `:~` builds a list. Twelfth
+//! rune head (STOA5). Shape (1–4 faces, bounded):
+//!   :~  from  amount  note
+//!
+//! Nested values and longer lists stay later.
+
+const std = @import("std");
+
+pub const max_name_len: u32 = 64;
+pub const max_faces: u32 = 4;
+
+pub const ParseError = error{
+    NotAList,
+    MissingFace,
+    TooManyFaces,
+    FaceTooLong,
+    MalformedFace,
+};
+
+pub const ListSpec = struct {
+    faces: [max_faces][max_name_len]u8 = .{.{0} ** max_name_len} ** max_faces,
+    lens: [max_faces]usize = .{0} ** max_faces,
+    count: usize = 0,
+};
+
+pub fn face_at(spec: *const ListSpec, i: usize) []const u8 {
+    return spec.faces[i][0..spec.lens[i]];
+}
+
+fn is_ident_char(ch: u8) bool {
+    if (ch >= 'a' and ch <= 'z') return true;
+    if (ch >= 'A' and ch <= 'Z') return true;
+    if (ch >= '0' and ch <= '9') return true;
+    return ch == '-' or ch == '_';
+}
+
+fn parse_ident(rest: []const u8) ParseError!struct { ident: []const u8, rest: []const u8 } {
+    var end: usize = 0;
+    while (end < rest.len and is_ident_char(rest[end])) end += 1;
+    if (end == 0) return error.MalformedFace;
+    const ident = rest[0..end];
+    if (ident[0] >= '0' and ident[0] <= '9') return error.MalformedFace;
+    if (ident.len > max_name_len) return error.FaceTooLong;
+    return .{ .ident = ident, .rest = rest[end..] };
+}
+
+fn need_ws(before: []const u8, after_trim: []const u8) ParseError!void {
+    if (after_trim.len == 0) return;
+    if (after_trim.len == before.len) return error.MalformedFace;
+}
+
+/// Parses one line of Glow's `:~` rune. One to four bare faces.
+pub fn parse(line: []const u8) ParseError!ListSpec {
+    if (line.len < 2 or !std.mem.eql(u8, line[0..2], ":~")) return error.NotAList;
+
+    var rest = std.mem.trimStart(u8, line[2..], " \t");
+    if (rest.len == 0) return error.MissingFace;
+
+    var spec: ListSpec = .{};
+    while (true) {
+        if (spec.count >= max_faces) return error.TooManyFaces;
+        const parsed = try parse_ident(rest);
+        @memcpy(spec.faces[spec.count][0..parsed.ident.len], parsed.ident);
+        spec.lens[spec.count] = parsed.ident.len;
+        spec.count += 1;
+        const after = std.mem.trimStart(u8, parsed.rest, " \t");
+        if (after.len == 0) break;
+        try need_ws(parsed.rest, after);
+        rest = after;
+    }
+    return spec;
+}

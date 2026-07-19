@@ -304,12 +304,23 @@
 - [x] **HOLD Wayland eyes seen** `20260718.194211` — Keaton confirmed hold chrome window on Framework Wayland.
 - [x] **Session-logs archive fold** `20260718.193735` — 165 prior-day logs under `archive/` (kept `20260718` flat).
 - [x] **SETU6 — device-wire lab harness** `20260718.201232` — payload ready · iface stand-in/armed · `lab.bron`; host probe stand-in GREEN (no usb0/ncm yet).
-- [ ] **SETU6.5 — live framed TX on real usb0/ncm** — check-in (Pixel NCM gadget or QEMU).
+- [x] **SETU6.5 — lab TX gate** `20260718.201601` — stand-in refuses · armed prepares/attempts iface UDP :38503; host SKIP GREEN without usb0/ncm; live “sent” eyes wait on gadget/QEMU.
+- [ ] **SETU live “sent” eyes** — check-in once Pixel CDC-NCM or QEMU exposes usb0/ncm.
 - [ ] **Wired Glass SLC metalsmoke** — cellular optional/off; USB sync to Desk; Setu live lane check-in.
 - [ ] **JABS3 — Inference and economics** — check-in (Quin · MALA).
 - [ ] **C2 thin TAME compressor** — optional `docs/TAME.md` only if cold-load pain is measured.
 - [ ] **C3 LEXICON core Bron card** — optional; Keaton's word.
-- [ ] **`(jam …)` nest form** — denser paren; held until language appetite returns after Dexter D2.
+- [x] **STOA waymark — Glow language SLC ladder** `20260718.202730` — redraw `…-lowering-2` → **STOA** (supersedes same-day **MAIR**); STOA0 claims eight heads + desk + `(lent)`/`(mix)` GREEN; compressor [`../docs/STOA.md`](../docs/STOA.md).
+- [x] **STOA1 — `(jam …)` nest form** `20260718.203000` — `(jam a b)` → `(a << 16) | b` thin cell-pack; face + `?:`/`?-`/`?~` arms; desks `face-jam` · `if-jam` · `switch-jam` · `null-jam`; `(cue …)` still refuses.
+- [x] **STOA2 — `:-` pair cell** `20260718.204500` — ninth rune head; demo pair struct; desk `cell-pair`; glow_run + parity wired.
+- [x] **STOA3 — `:+` triple cell** `20260718.205200` — tenth rune head; demo triple `{p,q,r}`; desk `cell-triple`.
+- [x] **STOA4 — `:^` quad cell** `20260718.205400` — eleventh rune head; demo quad `{p,q,r,s}`; desk `cell-quad`.
+- [x] **STOA5 — `:~` list cell** `20260718.205715` — twelfth rune head; 1–4 faces → Rye `[_]u32` array; desk `cell-list`.
+- [x] **STOA6 — `%-` one-arg call** `20260718.205959` — thirteenth rune head; closed demo gate `double`; desk `call-one`.
+- [x] **STOA7 — `%+` two-arg call** `20260718.210823` — fourteenth rune head; closed demo gate `add`; desk `call-two`.
+- [x] **STOA8 — `%^` three-arg call** `20260718.211059` — fifteenth rune head; closed demo gate `sum`; desk `call-three`.
+- [x] **STOA9 — `%*` named-arg call** `20260718.211343` — sixteenth rune head; closed demo gate `mix` + Sample struct; desk `call-named`. `%` call family closed.
+- [ ] **STOA10 — multi-line / cores** — check-in (composition season).
 - [ ] **Dill-parallel kernel revival** — separate `active-reviving/` brief when a real need opens; not Dexter.
 - [ ] **M1 Scribble↔html round-trip witness** — named in fusion map; opens when Keaton leans doc pipeline.
 - [ ] **TAME witness-habitat pairing + Glow supplement** — horizon; needs Keaton's word (H2).

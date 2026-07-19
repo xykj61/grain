@@ -17,6 +17,14 @@ const lower_face = @import("lower_face.rye");
 const lower_null = @import("lower_null.rye");
 const lower_mutate = @import("lower_mutate.rye");
 const lower_alias = @import("lower_alias.rye");
+const lower_cell = @import("lower_cell.rye");
+const lower_triple = @import("lower_triple.rye");
+const lower_quad = @import("lower_quad.rye");
+const lower_list = @import("lower_list.rye");
+const lower_call = @import("lower_call.rye");
+const lower_call2 = @import("lower_call2.rye");
+const lower_call3 = @import("lower_call3.rye");
+const lower_calln = @import("lower_calln.rye");
 
 fn first_glow_line(src: []const u8) ?[]const u8 {
     var it = std.mem.splitScalar(u8, src, '\n');
@@ -99,6 +107,54 @@ pub fn main(init: std.process.Init) !u8 {
         if (line.len >= 2 and line[0] == '?' and line[1] == '~') {
             break :blk lower_null.lower_line_welcome(line, &rye_buf) catch |err| {
                 print("glow_run: null lower failed ({s})\n", .{@errorName(err)});
+                return 1;
+            };
+        }
+        if (line.len >= 2 and line[0] == ':' and line[1] == '-') {
+            break :blk lower_cell.lower_line_welcome(line, &rye_buf) catch |err| {
+                print("glow_run: cell lower failed ({s})\n", .{@errorName(err)});
+                return 1;
+            };
+        }
+        if (line.len >= 2 and line[0] == ':' and line[1] == '+') {
+            break :blk lower_triple.lower_line_welcome(line, &rye_buf) catch |err| {
+                print("glow_run: triple lower failed ({s})\n", .{@errorName(err)});
+                return 1;
+            };
+        }
+        if (line.len >= 2 and line[0] == ':' and line[1] == '^') {
+            break :blk lower_quad.lower_line_welcome(line, &rye_buf) catch |err| {
+                print("glow_run: quad lower failed ({s})\n", .{@errorName(err)});
+                return 1;
+            };
+        }
+        if (line.len >= 2 and line[0] == ':' and line[1] == '~') {
+            break :blk lower_list.lower_line_welcome(line, &rye_buf) catch |err| {
+                print("glow_run: list lower failed ({s})\n", .{@errorName(err)});
+                return 1;
+            };
+        }
+        if (line.len >= 2 and line[0] == '%' and line[1] == '-') {
+            break :blk lower_call.lower_line_welcome(line, &rye_buf) catch |err| {
+                print("glow_run: call lower failed ({s})\n", .{@errorName(err)});
+                return 1;
+            };
+        }
+        if (line.len >= 2 and line[0] == '%' and line[1] == '+') {
+            break :blk lower_call2.lower_line_welcome(line, &rye_buf) catch |err| {
+                print("glow_run: call2 lower failed ({s})\n", .{@errorName(err)});
+                return 1;
+            };
+        }
+        if (line.len >= 2 and line[0] == '%' and line[1] == '^') {
+            break :blk lower_call3.lower_line_welcome(line, &rye_buf) catch |err| {
+                print("glow_run: call3 lower failed ({s})\n", .{@errorName(err)});
+                return 1;
+            };
+        }
+        if (line.len >= 2 and line[0] == '%' and line[1] == '*') {
+            break :blk lower_calln.lower_line_welcome(line, &rye_buf) catch |err| {
+                print("glow_run: calln lower failed ({s})\n", .{@errorName(err)});
                 return 1;
             };
         }
