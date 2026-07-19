@@ -449,6 +449,11 @@ assert composecorepaycuejam.ok else "glow_run compose-core-payload-cue-jam.glow 
 assert composecorepaycuejam.out contains "GREEN" else "glow_run compose-core-payload-cue-jam.glow not GREEN"
 assert composecorepaycuejam.out contains "compose-core-payload-cue-jam.glow" else "glow_run compose-core-payload-cue-jam claim missing path"
 
+let composecorepaycuejamnest = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/compose-core-payload-cue-jam-nest.glow"]
+assert composecorepaycuejamnest.ok else "glow_run compose-core-payload-cue-jam-nest.glow failed"
+assert composecorepaycuejamnest.out contains "GREEN" else "glow_run compose-core-payload-cue-jam-nest.glow not GREEN"
+assert composecorepaycuejamnest.out contains "compose-core-payload-cue-jam-nest.glow" else "glow_run compose-core-payload-cue-jam-nest claim missing path"
+
 let core3 = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/core-three.glow"]
 
 
