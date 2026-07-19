@@ -1,0 +1,4 @@
+::  Import payload nest library then call pack (STOA31).
+/+  lib-core-payload-nest
+=/  amount  5
+%-  pack  amount

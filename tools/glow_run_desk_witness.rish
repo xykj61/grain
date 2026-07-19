@@ -257,6 +257,11 @@ assert uselibnest.ok else "glow_run use-lib-nest.glow failed"
 assert uselibnest.out contains "GREEN" else "glow_run use-lib-nest.glow not GREEN"
 assert uselibnest.out contains "use-lib-nest.glow" else "glow_run use-lib-nest claim missing path"
 
+let uselibpay = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/use-lib-payload-nest.glow"]
+assert uselibpay.ok else "glow_run use-lib-payload-nest.glow failed"
+assert uselibpay.out contains "GREEN" else "glow_run use-lib-payload-nest.glow not GREEN"
+assert uselibpay.out contains "use-lib-payload-nest.glow" else "glow_run use-lib-payload-nest claim missing path"
+
 let corenest = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/core-nest.glow"]
 assert corenest.ok else "glow_run core-nest.glow failed"
 assert corenest.out contains "GREEN" else "glow_run core-nest.glow not GREEN"

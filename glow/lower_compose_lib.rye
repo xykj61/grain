@@ -10,9 +10,15 @@
 //!   =/  amount  5
 //!   %-  pack  amount
 //!
+//! STOA31 — payload+nest library (arm is `self`, no sample arg):
+//!   /+  lib-core-payload-nest
+//!   =/  amount  5
+//!   %-  pack  amount
+//! Face value must match the library payload; call is `core.pack()`.
+//!
 //! The import stem names `glow/gen/<stem>.glow`. glow_run lowers that desk
 //! as a library (no main) into `glow/.cache/`, then this lower emits a
-//! consumer that imports it and calls `lib.Core.<arm>(face)`.
+//! consumer that imports it and calls the arm.
 
 const std = @import("std");
 const rf = @import("rune_face.rye");
@@ -30,7 +36,6 @@ pub const LowerError = rf.ParseError || rc.ParseError || rk.ParseError || lower_
     UnknownArm,
     NotBareLiteral,
     MalformedValue,
-    LibHasPayload,
     BodyNotYetLowered,
 };
 
@@ -101,6 +106,11 @@ pub const ComposeLibSpec = struct {
     value: u32 = 0,
     gate: [rc.max_name_len]u8 = .{0} ** rc.max_name_len,
     gate_len: usize = 0,
+};
+
+pub const BindResult = struct {
+    expect: u32,
+    has_payload: bool,
 };
 
 pub fn stem_slice(spec: *const ComposeLibSpec) []const u8 {
@@ -180,14 +190,20 @@ fn arm_expect(core: *const rk.CoreSpec, gate: []const u8, sample: u32) LowerErro
     return error.UnknownArm;
 }
 
-/// Bind a parsed library core to the compose desk; refuse payload cores.
-pub fn bind_library(spec: *const ComposeLibSpec, lib_src: []const u8) LowerError!u32 {
+/// Bind a parsed library core to the compose desk.
+/// Payload libraries require the outer face value to match the payload atom.
+pub fn bind_library(spec: *const ComposeLibSpec, lib_src: []const u8) LowerError!BindResult {
     const core = try rk.parse_source(lib_src);
-    if (rk.has_payload(&core)) return error.LibHasPayload;
-    return arm_expect(&core, gate_slice(spec), spec.value);
+    if (rk.has_payload(&core)) {
+        if (spec.value != core.payload_value) return error.MalformedValue;
+        const expect = try arm_expect(&core, gate_slice(spec), core.payload_value);
+        return .{ .expect = expect, .has_payload = true };
+    }
+    const expect = try arm_expect(&core, gate_slice(spec), spec.value);
+    return .{ .expect = expect, .has_payload = false };
 }
 
-fn emit_consumer(spec: *const ComposeLibSpec, expect: u32, out: []u8) LowerError!u32 {
+fn emit_consumer(spec: *const ComposeLibSpec, expect: u32, has_payload: bool, out: []u8) LowerError!u32 {
     var zs: [max_stem_len]u8 = undefined;
     var zf: [rf.max_name_len]u8 = undefined;
     var zg: [rc.max_name_len]u8 = undefined;
@@ -197,6 +213,31 @@ fn emit_consumer(spec: *const ComposeLibSpec, expect: u32, out: []u8) LowerError
     // Split `@` from `import` so rye's bridge does not scan a static path
     // while compiling this lowerer (same discipline as STOA16 lib witness).
     const at = "@";
+    if (has_payload) {
+        const written = std.fmt.bufPrint(out,
+            \\const std = {s}import("std");
+            \\const lib = {s}import("{s}.rye");
+            \\
+            \\/// Lowered from Glow `/+` payload library compose (STOA31).
+            \\pub fn main(_: std.process.Init) !u8 {{
+            \\    const {s}: u32 = {d};
+            \\    const core = lib.Core{{}};
+            \\    return if ({s} == {d} and core.{s}() == {d}) 0 else 1;
+            \\}}
+            \\
+        , .{
+            at,
+            at,
+            zs[0..sn],
+            zf[0..fn_len],
+            spec.value,
+            zf[0..fn_len],
+            spec.value,
+            zg[0..gn],
+            expect,
+        }) catch return error.Overflow;
+        return @intCast(written.len);
+    }
     const written = std.fmt.bufPrint(out,
         \\const std = {s}import("std");
         \\const lib = {s}import("{s}.rye");
@@ -224,14 +265,14 @@ pub fn lower_source_welcome(src: []const u8, lib_src: []const u8, out: []u8) Low
     const trimmed = std.mem.trim(u8, src, " \t\r\n");
     if (trimmed.len == 0) return error.EmptySource;
     const spec = try parse_compose_lib(src);
-    const expect = try bind_library(&spec, lib_src);
-    return emit_consumer(&spec, expect, out);
+    const bound = try bind_library(&spec, lib_src);
+    return emit_consumer(&spec, bound.expect, bound.has_payload, out);
 }
 
 pub fn lower_source_unwelcome(src: []const u8, lib_src: []const u8, out: []u8) LowerError!u32 {
     const trimmed = std.mem.trim(u8, src, " \t\r\n");
     if (trimmed.len == 0) return error.EmptySource;
     const spec = try parse_compose_lib(src);
-    const base = try bind_library(&spec, lib_src);
-    return emit_consumer(&spec, base +% 1, out);
+    const bound = try bind_library(&spec, lib_src);
+    return emit_consumer(&spec, bound.expect +% 1, bound.has_payload, out);
 }
