@@ -4,6 +4,7 @@
 //! STOA76: `$%` cold-atom tags with unit payload → Zig enum + demo main.
 //! STOA78: `$%` arms with one-face `@u32` payload → Zig union(enum).
 //! Named-cast resolve: `lower_named_cast.rye` (STOA77).
+//! Library emit (no main) is STOA79 for `/+` mold import.
 
 const std = @import("std");
 const rm = @import("rune_mold.rye");
@@ -11,6 +12,7 @@ const rm = @import("rune_mold.rye");
 pub const LowerError = rm.ParseError || error{
     Overflow,
     BadIdent,
+    EmptySource,
 };
 
 pub const mold_demo_vals: [rm.max_fields]u32 = .{ 5, 3, 7 };
@@ -70,7 +72,7 @@ fn append_fmt(out: []u8, used: *usize, comptime fmt: []const u8, args: anytype) 
     used.* += written.len;
 }
 
-fn lower_tuple(spec: *const rm.MoldSpec, zig_type: []const u8, out: []u8) LowerError!u32 {
+fn emit_tuple_type(spec: *const rm.MoldSpec, zig_type: []const u8, out: []u8, used: *usize, library: bool) LowerError!void {
     const name = rm.name_slice(spec);
     var zf: [rm.max_fields][rm.max_name_len]u8 = undefined;
     var zf_lens: [rm.max_fields]usize = undefined;
@@ -79,15 +81,31 @@ fn lower_tuple(spec: *const rm.MoldSpec, zig_type: []const u8, out: []u8) LowerE
         zf_lens[i] = try zig_safe_ident(rm.field_slice(spec, i), &zf[i]);
     }
 
-    var used: usize = 0;
-    try append(out, &used, "const std = @import(\"std\");\n\n");
-    try append_fmt(out, &used, "/// Lowered from Glow `+$ {s}` / `$:` @u32 fields (STOA74/75).\n", .{name});
-    try append_fmt(out, &used, "pub const {s} = struct {{\n", .{zig_type});
+    try append(out, used, "const std = @import(\"std\");\n\n");
+    if (library) {
+        try append_fmt(out, used, "/// Lowered from Glow `+$ {s}` library (STOA79).\n", .{name});
+    } else {
+        try append_fmt(out, used, "/// Lowered from Glow `+$ {s}` / `$:` @u32 fields (STOA74/75).\n", .{name});
+    }
+    try append_fmt(out, used, "pub const {s} = struct {{\n", .{zig_type});
     i = 0;
     while (i < spec.field_count) : (i += 1) {
-        try append_fmt(out, &used, "    {s}: u32 = 0,\n", .{zf[i][0..zf_lens[i]]});
+        try append_fmt(out, used, "    {s}: u32 = 0,\n", .{zf[i][0..zf_lens[i]]});
     }
-    try append(out, &used, "};\n\n");
+    try append(out, used, "};\n");
+}
+
+fn lower_tuple(spec: *const rm.MoldSpec, zig_type: []const u8, out: []u8) LowerError!u32 {
+    var zf: [rm.max_fields][rm.max_name_len]u8 = undefined;
+    var zf_lens: [rm.max_fields]usize = undefined;
+    var i: usize = 0;
+    while (i < spec.field_count) : (i += 1) {
+        zf_lens[i] = try zig_safe_ident(rm.field_slice(spec, i), &zf[i]);
+    }
+
+    var used: usize = 0;
+    try emit_tuple_type(spec, zig_type, out, &used, false);
+    try append(out, &used, "\n");
     try append(out, &used, "pub fn main(_: std.process.Init) !u8 {\n");
     try append_fmt(out, &used, "    const m = {s}{{\n", .{zig_type});
     i = 0;
@@ -225,6 +243,8 @@ fn lower_tagged(spec: *const rm.MoldSpec, zig_type: []const u8, out: []u8) Lower
 }
 
 pub fn lower_source_welcome(src: []const u8, out: []u8) LowerError!u32 {
+    const trimmed = std.mem.trim(u8, src, " \t\r\n");
+    if (trimmed.len == 0) return error.EmptySource;
     const spec = try rm.parse_source(src);
     const name = rm.name_slice(&spec);
     var type_buf: [rm.max_name_len]u8 = undefined;
@@ -234,4 +254,22 @@ pub fn lower_source_welcome(src: []const u8, out: []u8) LowerError!u32 {
         .tuple => lower_tuple(&spec, zig_type, out),
         .tagged => lower_tagged(&spec, zig_type, out),
     };
+}
+
+/// Importable mold — type only, no `main` (STOA79 cross-desk `/+`).
+pub fn lower_source_library(src: []const u8, out: []u8) LowerError!u32 {
+    const trimmed = std.mem.trim(u8, src, " \t\r\n");
+    if (trimmed.len == 0) return error.EmptySource;
+    const spec = try rm.parse_source(src);
+    if (spec.body != .tuple) {
+        // Tagged library emit stays later; cross-desk cast uses `$:` molds this lap.
+        return error.BadIdent;
+    }
+    const name = rm.name_slice(&spec);
+    var type_buf: [rm.max_name_len]u8 = undefined;
+    const tn = try zig_type_name(name, &type_buf);
+    var used: usize = 0;
+    try emit_tuple_type(&spec, type_buf[0..tn], out, &used, true);
+    try append(out, &used, "\n");
+    return @intCast(used);
 }

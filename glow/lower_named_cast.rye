@@ -1,11 +1,10 @@
-//! glow/lower_named_cast.rye — resolve `^-  <name>` against a same-desk `+$`.
+//! glow/lower_named_cast.rye — resolve `^-  <name>` against a `+$` mold.
 //!
-//! STOA77: desk defines a one-field `@u32` `$:` mold, then casts by that name.
-//! Tagged `$%` named-cast · cross-desk import stay later.
+//! STOA77: same-desk `+$` … `==` then `^-`.
+//! STOA79: cross-desk `/+  <mold-desk>` then `^-  <mold-name>`.
+//! Tagged `$%` named-cast · multi-face payload cast stay later.
 //!
-//!   +$  amount-mold
-//!     $:  amount=@u32
-//!     ==
+//!   /+  mold-amount
 //!   ^-  amount-mold
 
 const std = @import("std");
@@ -13,17 +12,34 @@ const rm = @import("rune_mold.rye");
 const rc = @import("rune_cast.rye");
 const lower_multi = @import("lower_multi.rye");
 
+pub const max_stem_len: u32 = 64;
+
 pub const LowerError = rm.ParseError || rc.ParseError || error{
     Overflow,
     EmptySource,
     BadIdent,
     CastMoldMismatch,
     NamedCastNeedsTuple,
+    NotACrossDesk,
     TooFewLines,
     TooManyLines,
 };
 
 pub const named_cast_demo: u32 = 5;
+
+pub const CrossDeskSpec = struct {
+    stem: [max_stem_len]u8 = .{0} ** max_stem_len,
+    stem_len: usize = 0,
+    cast_mold: [rm.max_name_len]u8 = .{0} ** rm.max_name_len,
+    cast_mold_len: usize = 0,
+};
+
+fn is_stem_char(ch: u8) bool {
+    if (ch >= 'a' and ch <= 'z') return true;
+    if (ch >= 'A' and ch <= 'Z') return true;
+    if (ch >= '0' and ch <= '9') return true;
+    return ch == '-' or ch == '_';
+}
 
 fn zig_safe_ident(face: []const u8, out: *[rm.max_name_len]u8) LowerError!usize {
     if (face.len == 0 or face.len > rm.max_name_len) return error.BadIdent;
@@ -69,6 +85,32 @@ fn zig_type_name(name: []const u8, out: *[rm.max_name_len]u8) LowerError!usize {
     return o;
 }
 
+fn parse_import_stem(line: []const u8) LowerError![]const u8 {
+    if (line.len < 2 or line[0] != '/' or line[1] != '+') return error.NotACrossDesk;
+    const after = std.mem.trimStart(u8, line[2..], " \t");
+    if (after.len == 0 or after.len == line[2..].len) return error.NotACrossDesk;
+    var end: usize = 0;
+    while (end < after.len and is_stem_char(after[end])) end += 1;
+    if (end == 0) return error.BadIdent;
+    if (after[0] >= '0' and after[0] <= '9') return error.BadIdent;
+    if (end > max_stem_len) return error.BadIdent;
+    const tail = std.mem.trimStart(u8, after[end..], " \t");
+    if (tail.len != 0) return error.NotACrossDesk;
+    return after[0..end];
+}
+
+pub fn stem_slice(spec: *const CrossDeskSpec) []const u8 {
+    return spec.stem[0..spec.stem_len];
+}
+
+pub fn cast_mold_slice(spec: *const CrossDeskSpec) []const u8 {
+    return spec.cast_mold[0..spec.cast_mold_len];
+}
+
+pub fn zig_stem(spec: *const CrossDeskSpec, out: *[max_stem_len]u8) LowerError!usize {
+    return zig_safe_ident(stem_slice(spec), out);
+}
+
 /// True when a multi-line desk is `+$` … `==` followed by `^-  <name>`.
 pub fn looks_like_named_cast(src: []const u8) bool {
     var lines: [lower_multi.max_lines][]const u8 = undefined;
@@ -77,6 +119,44 @@ pub fn looks_like_named_cast(src: []const u8) bool {
     if (lines[0].len < 2 or lines[0][0] != '+' or lines[0][1] != '$') return false;
     const last = lines[n - 1];
     return last.len >= 2 and last[0] == '^' and last[1] == '-';
+}
+
+/// True when desk is `/+  <stem>` then `^-  <mold-name>`.
+pub fn looks_like_cross_desk(src: []const u8) bool {
+    var lines: [lower_multi.max_lines][]const u8 = undefined;
+    const n = lower_multi.collect_lines(src, &lines) catch return false;
+    if (n != 2) return false;
+    if (lines[0].len < 2 or lines[0][0] != '/' or lines[0][1] != '+') return false;
+    return lines[1].len >= 2 and lines[1][0] == '^' and lines[1][1] == '-';
+}
+
+pub fn parse_cross_desk(src: []const u8) LowerError!CrossDeskSpec {
+    var lines: [lower_multi.max_lines][]const u8 = undefined;
+    const n = lower_multi.collect_lines(src, &lines) catch |err| switch (err) {
+        error.TooManyLines => return error.TooManyLines,
+        else => return error.EmptySource,
+    };
+    if (n != 2) return error.NotACrossDesk;
+    var spec: CrossDeskSpec = .{};
+    const stem = try parse_import_stem(lines[0]);
+    @memcpy(spec.stem[0..stem.len], stem);
+    spec.stem_len = stem.len;
+    const cast_spec = try rc.parse(lines[1]);
+    const mold = rc.mold_slice(&cast_spec);
+    if (mold.len == 0 or mold.len > rm.max_name_len) return error.BadIdent;
+    if (mold[0] == '@') return error.NamedCastNeedsTuple;
+    @memcpy(spec.cast_mold[0..mold.len], mold);
+    spec.cast_mold_len = mold.len;
+    return spec;
+}
+
+pub fn bind_cross_desk(spec: *const CrossDeskSpec, lib_src: []const u8) LowerError!rm.MoldSpec {
+    const mold_spec = try rm.parse_source(lib_src);
+    if (mold_spec.body != .tuple) return error.NamedCastNeedsTuple;
+    if (mold_spec.field_count != 1) return error.NamedCastNeedsTuple;
+    const mold_name = rm.name_slice(&mold_spec);
+    if (!std.mem.eql(u8, cast_mold_slice(spec), mold_name)) return error.CastMoldMismatch;
+    return mold_spec;
 }
 
 pub fn lower_source_welcome(src: []const u8, out: []u8) LowerError!u32 {
@@ -139,6 +219,45 @@ pub fn lower_source_welcome(src: []const u8, out: []u8) LowerError!u32 {
         cast_mold,
         zt[0..tn],
         zf[0..fn_len],
+        named_cast_demo,
+        zt[0..tn],
+        zf[0..fn_len],
+        zf[0..fn_len],
+        named_cast_demo,
+    }) catch return error.Overflow;
+    return @intCast(written.len);
+}
+
+pub fn lower_cross_desk_welcome(src: []const u8, lib_src: []const u8, out: []u8) LowerError!u32 {
+    if (src.len == 0) return error.EmptySource;
+    const spec = try parse_cross_desk(src);
+    const mold_spec = try bind_cross_desk(&spec, lib_src);
+    const mold_name = rm.name_slice(&mold_spec);
+    const field = rm.first_field_slice(&mold_spec);
+    var zs: [max_stem_len]u8 = undefined;
+    var zt: [rm.max_name_len]u8 = undefined;
+    var zf: [rm.max_name_len]u8 = undefined;
+    const sn = try zig_stem(&spec, &zs);
+    const tn = try zig_type_name(mold_name, &zt);
+    const fn_len = try zig_safe_ident(field, &zf);
+    const at = "@";
+    const written = std.fmt.bufPrint(out,
+        \\const std = {s}import("std");
+        \\const lib = {s}import("{s}.rye");
+        \\
+        \\/// Lowered from Glow `/+ {s}` + `^-  {s}` — cross-desk named-cast (STOA79).
+        \\pub fn main(_: std.process.Init) !u8 {{
+        \\    const raw: u32 = {d};
+        \\    const casted: lib.{s} = .{{ .{s} = raw }};
+        \\    return if (casted.{s} == {d}) 0 else 1;
+        \\}}
+        \\
+    , .{
+        at,
+        at,
+        zs[0..sn],
+        stem_slice(&spec),
+        cast_mold_slice(&spec),
         named_cast_demo,
         zt[0..tn],
         zf[0..fn_len],

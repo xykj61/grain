@@ -1,4 +1,4 @@
-# glow_lower_named_cast_witness.rish — same-desk `^-` named-cast resolve (STOA77).
+# glow_lower_named_cast_witness.rish — same-desk + cross-desk named-cast (STOA77/79).
 #
 #   rishi/bin/rishi run tools/glow_lower_named_cast_witness.rish
 
@@ -6,6 +6,8 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "glow/bin/lower_named_cast_witness"
 let welcome_rye = "glow/.cache/cast_named_amount_welcome.rye"
 let welcome_bin = "glow/bin/cast_named_amount_welcome"
+let import_rye = "glow/.cache/cast_import_amount_welcome.rye"
+let import_bin = "glow/bin/cast_import_amount_welcome"
 
 let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/lower_named_cast_witness.rye -femit-bin=${bin}"]
 assert build.ok else "lower_named_cast_witness build failed"
@@ -15,6 +17,7 @@ assert selftest.ok else "lower_named_cast_witness exited non-zero"
 assert selftest.out contains "GREEN" else "lower_named_cast_witness not GREEN"
 assert selftest.out contains "AmountMold" else "lower_named_cast_witness missing AmountMold"
 assert selftest.out contains "CastMoldMismatch" else "lower_named_cast_witness missing CastMoldMismatch"
+assert selftest.out contains "cross-desk" else "lower_named_cast_witness missing cross-desk"
 
 let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
 assert build_welcome.ok else "named-cast welcome .rye build failed"
@@ -22,4 +25,10 @@ let run_welcome = run ["sh" "-c" "${welcome_bin}; echo EXIT:$?"]
 assert run_welcome.ok else "named-cast welcome binary failed to launch"
 assert run_welcome.out contains "EXIT:0" else "named-cast welcome binary did not exit 0"
 
-say "GREEN: Glow named-cast resolve — AmountMold from same-desk +$; welcome exit 0; STOA77."
+let build_import = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${import_rye} -femit-bin=${import_bin}"]
+assert build_import.ok else "cross-desk named-cast welcome .rye build failed"
+let run_import = run ["sh" "-c" "${import_bin}; echo EXIT:$?"]
+assert run_import.ok else "cross-desk named-cast welcome binary failed to launch"
+assert run_import.out contains "EXIT:0" else "cross-desk named-cast welcome binary did not exit 0"
+
+say "GREEN: Glow named-cast — same-desk + cross-desk AmountMold; welcome exit 0; STOA77/79."
