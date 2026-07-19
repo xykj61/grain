@@ -1,9 +1,8 @@
 # STOA — Glow language SLC ladder
 *Waymark for Glow the language: rune heads that lower, nest forms that deepen, composition that grows toward Glow-authored modules. Compresses the working pin; never replaces it.*
-**Status:** Checkable — STOA0–STOA66 GREEN · 2026-07-19 (`/+` payload nest-left cue-of-jam) · guide · ≤80  
+**Status:** Checkable — STOA0–STOA67 GREEN · 2026-07-19 (`/+` payload nest-right cue-of-jam) · guide · ≤80  
 **Compresses:** [`../glow/README.md`](../glow/README.md) · first-code [`../expanding-prompts/20260717-213242_glow-first-code-beside-glass-and-open-runes.md`](../expanding-prompts/20260717-213242_glow-first-code-beside-glass-and-open-runes.md) · sameness [`../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md`](../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md) · seat [`../active-designing/20260718-202730_stoa-glow-language-waymark.md`](../active-designing/20260718-202730_stoa-glow-language-waymark.md)
 Product glass stays Rye-hosted. **STOA** names the language path (eight GREEN heads = SLC Lap). **Waymark draw:** `glow-language-rune-heads-nest-and-lowering-2` · SHA3-512 · flw.txt → **STOA** (`tools/waymark_derive.rish`, `20260718.202730`; first draw **MAIR** superseded same day).
-## Rung table
 | Rung | Claim | Witness / gate | State |
 |------|-------|----------------|-------|
 | **STOA0** | Eight rune heads + desk hop · `(lent)` · `(mix)` | `glow_run_desk_witness` · `glow_expr_witness` | **GREEN** (claimed `20260718.202730`) |
@@ -73,8 +72,9 @@ Product glass stays Rye-hosted. **STOA** names the language path (eight GREEN he
 | **STOA64** | Face→payload nest-both cue-of-jam | `glow_lower_compose_core_payload` · desk | **GREEN** `20260719.173215` |
 | **STOA65** | `/+` payload cue-of-jam library | `glow_lower_compose_lib` · desk | **GREEN** `20260719.173708` |
 | **STOA66** | `/+` payload nest-left cue-of-jam | `glow_lower_compose_lib` · desk | **GREEN** `20260719.174116` |
-| **STOA67** | Next language / product | horizon — check-in | horizon |
+| **STOA67** | `/+` payload nest-right cue-of-jam | `glow_lower_compose_lib` · desk | **GREEN** `20260719.174531` |
+| **STOA68** | Next language / product | horizon — check-in | horizon |
 ```bash
-cd ~/urbit && rishi/bin/rishi run tools/glow_run.rish glow/gen/use-lib-payload-cue-jam-nest.glow && rishi/bin/rishi run tools/glow_run_desk_witness.rish
+cd ~/urbit && rishi/bin/rishi run tools/glow_run.rish glow/gen/use-lib-payload-cue-jam-right-nest.glow && rishi/bin/rishi run tools/glow_run_desk_witness.rish
 ```
 Sibling: **ZETA** · **LULU** · **SETU** · **TUBE**. *May every head lower, and every nest deepen the same language.*
