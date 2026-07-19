@@ -194,6 +194,12 @@ assert core2.ok else "glow_run core-two.glow failed"
 assert core2.out contains "GREEN" else "glow_run core-two.glow not GREEN"
 assert core2.out contains "core-two.glow" else "glow_run core-two claim missing path"
 
+let corepay = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/core-payload.glow"]
+assert corepay.ok else "glow_run core-payload.glow failed"
+assert corepay.out contains "GREEN" else "glow_run core-payload.glow not GREEN"
+assert corepay.out contains "core-payload.glow" else "glow_run core-payload claim missing path"
+
 say "GREEN: glow_run desk — all desk generators lowered, built, exit 0."
+
 
 

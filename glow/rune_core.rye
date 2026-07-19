@@ -1,15 +1,16 @@
 //! glow/rune_core.rye — parses Glow's thin `|%` … `++` … `--` core.
 //!
-//! STOA14: one arm. STOA15: one or two arms. Shape:
+//! STOA14/15: one or two arms. STOA17: optional payload face before arms:
 //!   |%
+//!   =/  amount  5
 //!   ++  double
-//!   ++  inc
 //!   --
 //!
-//! Samples, variance, and three-plus arms stay later.
+//! Typed molds, three-plus arms, and variance stay later.
 
 const std = @import("std");
 const lower_multi = @import("lower_multi.rye");
+const rf = @import("rune_face.rye");
 
 pub const max_name_len: u32 = 64;
 pub const max_arms: u32 = 2;
@@ -22,6 +23,10 @@ pub const ParseError = error{
     MalformedName,
     TooManyLines,
     TooManyArms,
+    TooManyPayloads,
+    PayloadAfterArm,
+    NotBarePayload,
+    MalformedPayload,
     EmptySource,
 };
 
@@ -29,10 +34,21 @@ pub const CoreSpec = struct {
     arms: [max_arms][max_name_len]u8 = .{.{0} ** max_name_len} ** max_arms,
     lens: [max_arms]usize = .{0} ** max_arms,
     count: usize = 0,
+    payload_face: [max_name_len]u8 = .{0} ** max_name_len,
+    payload_len: usize = 0,
+    payload_value: u32 = 0,
 };
 
 pub fn arm_at(spec: *const CoreSpec, i: usize) []const u8 {
     return spec.arms[i][0..spec.lens[i]];
+}
+
+pub fn payload_face_at(spec: *const CoreSpec) []const u8 {
+    return spec.payload_face[0..spec.payload_len];
+}
+
+pub fn has_payload(spec: *const CoreSpec) bool {
+    return spec.payload_len != 0;
 }
 
 fn is_ident_char(ch: u8) bool {
@@ -40,6 +56,10 @@ fn is_ident_char(ch: u8) bool {
     if (ch >= 'A' and ch <= 'Z') return true;
     if (ch >= '0' and ch <= '9') return true;
     return ch == '-' or ch == '_';
+}
+
+fn is_digit(ch: u8) bool {
+    return ch >= '0' and ch <= '9';
 }
 
 fn parse_ident(rest: []const u8) ParseError!struct { ident: []const u8, rest: []const u8 } {
@@ -63,7 +83,35 @@ fn parse_arm_line(line: []const u8) ParseError![]const u8 {
     return parsed.ident;
 }
 
-/// Parses a thin core desk: `|%`, one or two `++` arms, `--`.
+fn parse_trailing_u32(rest: []const u8) ParseError!u32 {
+    const t = std.mem.trim(u8, rest, " \t\r\n");
+    if (t.len == 0) return error.MalformedPayload;
+    var i: usize = 0;
+    var v: u32 = 0;
+    while (i < t.len) : (i += 1) {
+        if (!is_digit(t[i])) return error.MalformedPayload;
+        const d: u32 = t[i] - '0';
+        if (v > (std.math.maxInt(u32) - d) / 10) return error.MalformedPayload;
+        v = v * 10 + d;
+    }
+    return v;
+}
+
+fn parse_payload_line(line: []const u8) ParseError!struct { face: []const u8, value: u32 } {
+    const face_spec = rf.parse(line) catch return error.NotBarePayload;
+    const face = rf.face_slice(&face_spec);
+    if (rf.mold_slice(&face_spec).len != 0) return error.NotBarePayload;
+    if (face.len == 0) return error.NotBarePayload;
+
+    const head = "=/";
+    const after_head = std.mem.trimStart(u8, line[head.len..], " \t");
+    if (!std.mem.startsWith(u8, after_head, face)) return error.MalformedPayload;
+    const after_face = std.mem.trimStart(u8, after_head[face.len..], " \t");
+    const value = try parse_trailing_u32(after_face);
+    return .{ .face = face, .value = value };
+}
+
+/// Parses a thin core desk: `|%`, optional one `=/` payload, one or two `++` arms, `--`.
 pub fn parse_source(src: []const u8) ParseError!CoreSpec {
     var lines: [lower_multi.max_lines][]const u8 = undefined;
     const n = lower_multi.collect_lines(src, &lines) catch |err| switch (err) {
@@ -75,17 +123,31 @@ pub fn parse_source(src: []const u8) ParseError!CoreSpec {
     if (!std.mem.eql(u8, lines[0], "|%")) return error.NotACore;
     if (!std.mem.eql(u8, lines[n - 1], "--")) return error.NotACore;
 
-    const arm_count = n - 2;
-    if (arm_count == 0) return error.MissingArm;
-    if (arm_count > max_arms) return error.TooManyArms;
-
     var spec: CoreSpec = .{};
-    var i: usize = 0;
-    while (i < arm_count) : (i += 1) {
-        const arm = try parse_arm_line(lines[i + 1]);
-        @memcpy(spec.arms[spec.count][0..arm.len], arm);
-        spec.lens[spec.count] = arm.len;
-        spec.count += 1;
+    var saw_arm = false;
+    var i: usize = 1;
+    while (i + 1 < n) : (i += 1) {
+        const line = lines[i];
+        if (line.len >= 2 and line[0] == '=' and line[1] == '/') {
+            if (saw_arm) return error.PayloadAfterArm;
+            if (has_payload(&spec)) return error.TooManyPayloads;
+            const payload = try parse_payload_line(line);
+            @memcpy(spec.payload_face[0..payload.face.len], payload.face);
+            spec.payload_len = payload.face.len;
+            spec.payload_value = payload.value;
+            continue;
+        }
+        if (line.len >= 2 and line[0] == '+' and line[1] == '+') {
+            if (spec.count >= max_arms) return error.TooManyArms;
+            const arm = try parse_arm_line(line);
+            @memcpy(spec.arms[spec.count][0..arm.len], arm);
+            spec.lens[spec.count] = arm.len;
+            spec.count += 1;
+            saw_arm = true;
+            continue;
+        }
+        return error.NotACore;
     }
+    if (spec.count == 0) return error.MissingArm;
     return spec;
 }
