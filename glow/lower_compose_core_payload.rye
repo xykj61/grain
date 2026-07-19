@@ -35,6 +35,13 @@
 //!   ++  unpack  (cue (jam amount (mix amount amount)))
 //!   --
 //!
+//! STOA64 — nest-both cue-of-jam under payload:
+//!   =/  note  7
+//!   |%
+//!   =/  amount  5
+//!   ++  unpack  (cue (jam (mix amount amount) (mix amount amount)))
+//!   --
+//!
 //! Inner payload may be bare or `@u32`. Closed arm reads self.amount *% 2;
 //! open nest arm bodies use the payload face.
 
