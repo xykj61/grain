@@ -22,11 +22,13 @@ After SETU6.5 + STOA0–9 shipped to the pier (`812e36ff01`), the language path 
 
 ## Landed next
 
-**STOA11** face→`%-` compose GREEN `20260718.212131` — desk `compose-call`.
+**STOA11** face→`%-` compose GREEN `20260718.212131` — desk `compose-call`.  
+**STOA12** face→face→`%+` compose GREEN `20260718.221812` — desk `compose-add` (approved thin face A).  
+**STOA13** typed multi-line `@u32` GREEN `20260718.223431` — desk `multi-typed`.
 
-## Held for STOA12+
+## Held for STOA14+
 
-Typed multi-line molds · cores · `%+` compose · `(cue …)` · nested jam across lines.
+Cores · `(cue …)` · nested jam across lines · other auras in multi-line.
 
 ---
 

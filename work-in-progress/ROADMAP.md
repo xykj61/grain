@@ -4,7 +4,7 @@
 
 **Language:** EN
 **Version:** `20260715` (Pool keystone revival prioritized · Quin voice seated · align pass reconciles the closed ladder)
-**Last updated:** 2026-07-18 (**STOA11** GREEN — face→call compose)
+**Last updated:** 2026-07-18 (**STOA13** GREEN — typed multi-line `@u32`)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Lens:** TAME — safety, performance, joy; the Seed Law; [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md)
@@ -321,6 +321,10 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 **STOA10 multi-line bare faces GREEN, `20260718.211817`** — 2–4 `=/  face  decimal` lines share one Rye main; desk `multi-face`; single-line path unchanged. Next language: **STOA11** check-in (cores · cross-line composition).
 
 **STOA11 face→call compose GREEN, `20260718.212131`** — `=/  amount  5` then `%-  double  amount` share one main; desk `compose-call`. Next language: **STOA12** check-in (cores · typed multi-line · richer compose).
+
+**STOA12 face→face→`%+` compose GREEN, `20260718.221812`** — approved thin face A: two binds then `%+  add  from  amount`; desk `compose-add`. Next language: **STOA13** check-in (cores · typed multi-line).
+
+**STOA13 typed multi-line `@u32` GREEN, `20260718.223431`** — 2–4 typed face lines; desk `multi-typed`; bare multi unchanged. Next language: **STOA14** check-in (cores — brief before code).
 
 **Glow OS · Glow Desk · Glow Glass seated, `20260717.183622`** — Keaton: **Glow OS** unifies; **Glow Desk** = desktop; **Glow Glass** = mobile. Lexicon + silo [`../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md`](../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md). Orientation firmware stays check-in.
 

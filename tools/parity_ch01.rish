@@ -1387,6 +1387,16 @@ let glow_compose = run ["rishi/bin/rishi" "run" "tools/glow_lower_compose_witnes
 assert glow_compose.ok else "Glow lower-compose witness failed"
 say "GREEN: Glow lower-compose witness passed."
 
+say "witness suite: Glow compose2 — face→face→`%+` (STOA12)…"
+let glow_compose2 = run ["rishi/bin/rishi" "run" "tools/glow_lower_compose2_witness.rish"]
+assert glow_compose2.ok else "Glow lower-compose2 witness failed"
+say "GREEN: Glow lower-compose2 witness passed."
+
+say "witness suite: Glow typed multi-line — @u32 desks (STOA13)…"
+let glow_typed = run ["rishi/bin/rishi" "run" "tools/glow_lower_multi_typed_witness.rish"]
+assert glow_typed.ok else "Glow lower-multi-typed witness failed"
+say "GREEN: Glow lower-multi-typed witness passed."
+
 say "witness suite: glow_run desk — all generator hops…"
 let glow_desk = run ["rishi/bin/rishi" "run" "tools/glow_run_desk_witness.rish"]
 assert glow_desk.ok else "Glow run desk witness failed"

@@ -1,0 +1,78 @@
+//! glow/lower_multi_typed_witness.rye — proves typed multi-line desks.
+//!
+//!   rye build glow/lower_multi_typed_witness.rye -femit-bin=glow/bin/lower_multi_typed_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const lower = @import("lower_multi_typed.rye");
+
+const witness_version = "20260718.223300";
+
+const typed_src =
+    \\::  Typed multi-line — @u32 faces (STOA13).
+    \\=/  from=@u32  5
+    \\=/  amount=@u32  3
+;
+
+fn run_selftest(init: std.process.Init) !u8 {
+    const io = init.io;
+    const a = init.arena.allocator();
+    const cwd = std.Io.Dir.cwd();
+    var buf: [3072]u8 = undefined;
+
+    const spec = try lower.parse_multi_typed(typed_src);
+    assert(spec.count == 2);
+    assert(std.mem.eql(u8, lower.face_at(&spec, 0), "from"));
+    assert(spec.binds[0].value == 5);
+    assert(std.mem.eql(u8, lower.face_at(&spec, 1), "amount"));
+    assert(spec.binds[1].value == 3);
+    print("typed-multi: two @u32 face lines parse -- GREEN\n", .{});
+
+    const n1 = try lower.lower_source_welcome(typed_src, &buf);
+    const rye1 = buf[0..n1];
+    assert(std.mem.indexOf(u8, rye1, "const from: u32 = 5") != null);
+    assert(std.mem.indexOf(u8, rye1, "const amount: u32 = 3") != null);
+    assert(std.mem.indexOf(u8, rye1, "from == 5 and amount == 3") != null);
+    print("typed-multi: welcome builds two typed binds -- GREEN\n", .{});
+
+    const n2 = try lower.lower_source_unwelcome(typed_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n2], "from == 6 and amount == 4") != null);
+    print("typed-multi: unwelcome expects mismatch -- GREEN\n", .{});
+
+    if (lower.parse_multi_typed("=/  from  5\n=/  amount  3\n")) |_| {
+        return error.NotTypedNotCaught;
+    } else |err| {
+        if (err != lower.LowerError.NotTypedLiteral) return err;
+    }
+    print("typed-multi: bare faces refused NotTypedLiteral -- GREEN\n", .{});
+
+    if (lower.parse_multi_typed("=/  from=@u8  5\n=/  amount=@u32  3\n")) |_| {
+        return error.AuraNotCaught;
+    } else |err| {
+        if (err != lower.LowerError.AuraNotYetLowered) return err;
+    }
+    print("typed-multi: @u8 refused AuraNotYetLowered -- GREEN\n", .{});
+
+    try cwd.createDirPath(io, "glow/.cache");
+    const welcome_path = "glow/.cache/multi_typed_welcome.rye";
+    const unwelcome_path = "glow/.cache/multi_typed_unwelcome.rye";
+    const n3 = try lower.lower_source_welcome(typed_src, &buf);
+    try cwd.writeFile(io, .{ .sub_path = welcome_path, .data = buf[0..n3] });
+    const n4 = try lower.lower_source_unwelcome(typed_src, &buf);
+    try cwd.writeFile(io, .{ .sub_path = unwelcome_path, .data = buf[0..n4] });
+    print("typed-multi: wrote welcome and unwelcome .rye under glow/.cache/ -- GREEN\n", .{});
+
+    const gen_src = try cwd.readFileAlloc(io, "glow/gen/multi-typed.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_src, "=/  from=@u32  5") != null);
+    assert(std.mem.indexOf(u8, gen_src, "=/  amount=@u32  3") != null);
+    print("typed-multi: glow/gen/multi-typed.glow carries typed faces -- GREEN\n", .{});
+
+    print("typed-multi: version {s}\n", .{witness_version});
+    print("GREEN: typed multi-line @u32 desks lower to ordinary Rye (STOA13).\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
+}

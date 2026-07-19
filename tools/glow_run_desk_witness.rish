@@ -174,5 +174,15 @@ assert compose.ok else "glow_run compose-call.glow failed"
 assert compose.out contains "GREEN" else "glow_run compose-call.glow not GREEN"
 assert compose.out contains "compose-call.glow" else "glow_run compose-call claim missing path"
 
+let compose2 = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/compose-add.glow"]
+assert compose2.ok else "glow_run compose-add.glow failed"
+assert compose2.out contains "GREEN" else "glow_run compose-add.glow not GREEN"
+assert compose2.out contains "compose-add.glow" else "glow_run compose-add claim missing path"
+
+let typed = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/multi-typed.glow"]
+assert typed.ok else "glow_run multi-typed.glow failed"
+assert typed.out contains "GREEN" else "glow_run multi-typed.glow not GREEN"
+assert typed.out contains "multi-typed.glow" else "glow_run multi-typed claim missing path"
+
 say "GREEN: glow_run desk — all desk generators lowered, built, exit 0."
 

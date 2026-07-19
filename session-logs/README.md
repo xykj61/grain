@@ -8,6 +8,12 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260718.223834` — [Send STOA12-13 approve cores](20260718-223834_send-stoa12-13-approve-cores.bron) — pier ship; STOA14 brief+thin next
+- `20260718.223657` — [STOA14 cores check-in](20260718-223657_stoa14-cores-checkin.bron) — send vs thin battery vs brief-first
+
+- `20260718.223431` — [STOA13 typed multi GREEN](20260718-223431_stoa13-typed-multi-green.bron) — @u32 multi-line; desk multi-typed
+- `20260718.221812` — [STOA12 compose add GREEN](20260718-221812_stoa12-compose-add-green.bron) — face→face→%+; desk compose-add
+- `20260718.221622` — [STOA12 check-in after send](20260718-221622_stoa12-checkin-after-send.bron) — cores vs typed multi vs %+ compose
 - `20260718.221526` — [Send STOA10-11 compose](20260718-221526_send-stoa10-11-compose.bron) — pier ship; multi-line + face→call
 - `20260718.212131` — [STOA11 compose call GREEN](20260718-212131_stoa11-compose-call-green.bron) — face→%-; desk compose-call
 - `20260718.211817` — [STOA10 multi-line GREEN](20260718-211817_stoa10-multi-line-green.bron) — 2–4 bare faces; desk multi-face
