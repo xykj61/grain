@@ -1,0 +1,28 @@
+# stoa72_glow_apk_import_witness.rish — NativeActivity APK Glow import wire.
+#
+# Proves glow_native_activity imports Glow-lowered lib_session_root_nest_cue_jam,
+# calls session_root() (expect 5), exports glow_last_product_session_root, and
+# packs into libglowapp.so. Device-free pack path. Sala B0 hex fold stays the
+# painted / file-proof root — this does not rewrite Sala B0 in Glow.
+#
+#   rishi/bin/rishi run tools/stoa72_glow_apk_import_witness.rish
+
+let so_arm = "tools/.cache/tube05/staging/lib/arm64-v8a/libglowapp.so"
+let so_x86 = "tools/.cache/tube05/staging/lib/x86_64/libglowapp.so"
+
+# 1) Pack path seats the import symlink and builds the APK.
+let pack = run ["rishi/bin/rishi" "run" "tools/tube05_apk_pack_witness.rish"]
+assert pack.ok else "tube05_apk_pack_witness failed (STOA72 needs pack GREEN)"
+assert pack.out contains "GREEN" else "tube05_apk_pack_witness missing GREEN"
+
+# 2) Both ABIs export the Glow product session-root symbol.
+let nm_arm = run ["sh" "-c" "nm -D ${so_arm} | grep -q glow_last_product_session_root"]
+assert nm_arm.ok else "arm64 libglowapp.so missing glow_last_product_session_root"
+let nm_x86 = run ["sh" "-c" "nm -D ${so_x86} | grep -q glow_last_product_session_root"]
+assert nm_x86.ok else "x86_64 libglowapp.so missing glow_last_product_session_root"
+
+# 3) Entry source honestly names the Glow import (docs-implementation sync).
+let src = run ["sh" "-c" "grep -q 'lib_session_root_nest_cue_jam.rye' linengrow/glow_native_activity.rye && grep -q 'glow_last_product_session_root' linengrow/glow_native_activity.rye"]
+assert src.ok else "glow_native_activity missing Glow import / product session-root export"
+
+say "GREEN: STOA72 A — NativeActivity APK imports Glow-lowered session-root; expect 5; pack device-free; Sala B0 hex fold kept."

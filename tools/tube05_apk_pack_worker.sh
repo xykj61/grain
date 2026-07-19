@@ -75,6 +75,8 @@ build_android_so() {
     || die "${so_out} missing ANativeActivity_onCreate"
   nm -D "$so_out" | grep -q 'glow_last_session_root_hex' \
     || die "${so_out} missing glow_last_session_root_hex"
+  nm -D "$so_out" | grep -q 'glow_last_product_session_root' \
+    || die "${so_out} missing glow_last_product_session_root (STOA72 Glow import)"
   readelf -d "$so_out" | grep -q 'NEEDED.*libc.so' \
     || die "${so_out} missing DT_NEEDED libc.so"
   if nm -D "$so_out" | grep -q ' U __tls_get_addr$'; then
