@@ -1,0 +1,27 @@
+# glow_lower_core_lib_witness.rish — library emit (no main) + consumer run.
+#
+#   rishi/bin/rishi run tools/glow_lower_core_lib_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "glow/bin/lower_core_lib_witness"
+let lib_rye = "glow/.cache/lib_core_double.rye"
+let use_rye = "glow/.cache/lib_core_double_use.rye"
+let use_bin = "glow/bin/lib_core_double_use"
+
+let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/lower_core_lib_witness.rye -femit-bin=${bin}"]
+assert build.ok else "lower_core_lib_witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "lower_core_lib_witness exited non-zero"
+assert selftest.out contains "GREEN" else "lower_core_lib_witness not GREEN"
+assert selftest.out contains "no main" else "lower_core_lib_witness missing no-main claim"
+assert selftest.out contains "carries library battery" else "lower_core_lib_witness missing desk claim"
+
+# Consumer imports the library file from the same cache directory.
+let build_use = run ["sh" "-c" "cd glow/.cache && env RYE_ZIG=../../${zig} ../../rye/bin/rye build lib_core_double_use.rye -femit-bin=../bin/lib_core_double_use"]
+assert build_use.ok else "library consumer .rye build failed"
+let run_use = run ["sh" "-c" "${use_bin}; echo EXIT:$?"]
+assert run_use.ok else "library consumer failed to launch"
+assert run_use.out contains "EXIT:0" else "library consumer did not exit 0"
+
+say "GREEN: Glow `|%` library hop — Core importable; consumer exit 0; STOA16."

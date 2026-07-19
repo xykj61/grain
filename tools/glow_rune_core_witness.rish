@@ -11,7 +11,9 @@ assert build.ok else "rune_core_witness build failed"
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
 assert selftest.ok else "rune_core_witness exited non-zero"
 assert selftest.out contains "GREEN" else "rune_core_witness not GREEN"
-assert selftest.out contains "parses arm" else "rune_core_witness missing arm claim"
+assert selftest.out contains "one-arm double parses" else "rune_core_witness missing one-arm claim"
+assert selftest.out contains "two-arm double" else "rune_core_witness missing two-arm claim"
 assert selftest.out contains "NotACore" else "rune_core_witness missing NotACore"
 
-say "GREEN: Glow `|%` thin core — one named arm; STOA14."
+say "GREEN: Glow `|%` thin core — one or two named arms; STOA14/15."
+

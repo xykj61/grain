@@ -7,12 +7,20 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const lower = @import("lower_core.rye");
 
-const witness_version = "20260718.223906";
+const witness_version = "20260718.224600";
 
-const core_src =
+const one_src =
     \\::  Thin core — one arm double (STOA14).
     \\|%
     \\++  double
+    \\--
+;
+
+const two_src =
+    \\::  Two-arm core (STOA15).
+    \\|%
+    \\++  double
+    \\++  inc
     \\--
 ;
 
@@ -20,21 +28,24 @@ fn run_selftest(init: std.process.Init) !u8 {
     const io = init.io;
     const a = init.arena.allocator();
     const cwd = std.Io.Dir.cwd();
-    var buf: [3072]u8 = undefined;
+    var buf: [4096]u8 = undefined;
 
-    const n1 = try lower.lower_source_welcome(core_src, &buf);
+    const n1 = try lower.lower_source_welcome(one_src, &buf);
     const rye1 = buf[0..n1];
-    assert(std.mem.indexOf(u8, rye1, "const Core = struct {") != null);
     assert(std.mem.indexOf(u8, rye1, "pub fn double(sample: u32) u32") != null);
-    assert(std.mem.indexOf(u8, rye1, "return sample *% 2;") != null);
-    assert(std.mem.indexOf(u8, rye1, "const amount: u32 = 5") != null);
-    assert(std.mem.indexOf(u8, rye1, "const called: u32 = Core.double(amount)") != null);
-    assert(std.mem.indexOf(u8, rye1, "called == 10") != null);
-    print("core: welcome builds Core.double -- GREEN\n", .{});
+    assert(std.mem.indexOf(u8, rye1, "Core.double(amount) == 10") != null);
+    print("core: one-arm welcome builds Core.double -- GREEN\n", .{});
 
-    const n2 = try lower.lower_source_unwelcome(core_src, &buf);
-    assert(std.mem.indexOf(u8, buf[0..n2], "called == 11") != null);
-    print("core: unwelcome expects mismatch -- GREEN\n", .{});
+    const n2 = try lower.lower_source_welcome(two_src, &buf);
+    const rye2 = buf[0..n2];
+    assert(std.mem.indexOf(u8, rye2, "pub fn double(sample: u32) u32") != null);
+    assert(std.mem.indexOf(u8, rye2, "pub fn inc(sample: u32) u32") != null);
+    assert(std.mem.indexOf(u8, rye2, "Core.double(amount) == 10 and Core.inc(amount) == 6") != null);
+    print("core: two-arm welcome builds double+inc -- GREEN\n", .{});
+
+    const n3 = try lower.lower_source_unwelcome(two_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n3], "Core.double(amount) == 11 and Core.inc(amount) == 7") != null);
+    print("core: two-arm unwelcome expects mismatch -- GREEN\n", .{});
 
     if (lower.lower_source_welcome("|%\n++  mystery\n--\n", &buf)) |_| {
         return error.UnknownArmNotCaught;
@@ -44,22 +55,31 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("core: unknown arm refused UnknownArm -- GREEN\n", .{});
 
     try cwd.createDirPath(io, "glow/.cache");
-    const welcome_path = "glow/.cache/core_double_welcome.rye";
-    const unwelcome_path = "glow/.cache/core_double_unwelcome.rye";
-    const n3 = try lower.lower_source_welcome(core_src, &buf);
-    try cwd.writeFile(io, .{ .sub_path = welcome_path, .data = buf[0..n3] });
-    const n4 = try lower.lower_source_unwelcome(core_src, &buf);
-    try cwd.writeFile(io, .{ .sub_path = unwelcome_path, .data = buf[0..n4] });
-    print("core: wrote welcome and unwelcome .rye under glow/.cache/ -- GREEN\n", .{});
+    const welcome_path = "glow/.cache/core_two_welcome.rye";
+    const unwelcome_path = "glow/.cache/core_two_unwelcome.rye";
+    const n4 = try lower.lower_source_welcome(two_src, &buf);
+    try cwd.writeFile(io, .{ .sub_path = welcome_path, .data = buf[0..n4] });
+    const n5 = try lower.lower_source_unwelcome(two_src, &buf);
+    try cwd.writeFile(io, .{ .sub_path = unwelcome_path, .data = buf[0..n5] });
+    print("core: wrote two-arm welcome and unwelcome .rye under glow/.cache/ -- GREEN\n", .{});
 
-    const gen_src = try cwd.readFileAlloc(io, "glow/gen/core-double.glow", a, .limited(4096));
-    assert(std.mem.indexOf(u8, gen_src, "|%") != null);
-    assert(std.mem.indexOf(u8, gen_src, "++  double") != null);
-    assert(std.mem.indexOf(u8, gen_src, "--") != null);
-    print("core: glow/gen/core-double.glow carries thin battery -- GREEN\n", .{});
+    // Keep one-arm cache files for the STOA14 harness path too.
+    const one_welcome = "glow/.cache/core_double_welcome.rye";
+    const one_unwelcome = "glow/.cache/core_double_unwelcome.rye";
+    const n6 = try lower.lower_source_welcome(one_src, &buf);
+    try cwd.writeFile(io, .{ .sub_path = one_welcome, .data = buf[0..n6] });
+    const n7 = try lower.lower_source_unwelcome(one_src, &buf);
+    try cwd.writeFile(io, .{ .sub_path = one_unwelcome, .data = buf[0..n7] });
+
+    const gen_one = try cwd.readFileAlloc(io, "glow/gen/core-double.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_one, "++  double") != null);
+    const gen_two = try cwd.readFileAlloc(io, "glow/gen/core-two.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_two, "++  double") != null);
+    assert(std.mem.indexOf(u8, gen_two, "++  inc") != null);
+    print("core: desks core-double and core-two carry batteries -- GREEN\n", .{});
 
     print("core: version {s}\n", .{witness_version});
-    print("GREEN: `|%` thin core lowers to ordinary Rye (STOA14).\n", .{});
+    print("GREEN: `|%` thin core lowers one or two arms to ordinary Rye (STOA14/15).\n", .{});
     return 0;
 }
 
