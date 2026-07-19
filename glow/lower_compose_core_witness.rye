@@ -7,13 +7,22 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const lower = @import("lower_compose_core.rye");
 
-const witness_version = "20260718.230846";
+const witness_version = "20260718.231511";
 
-const src =
+const one_src =
     \\::  Face then thin core arm (STOA18).
     \\=/  amount  5
     \\|%
     \\++  double
+    \\--
+;
+
+const two_src =
+    \\::  Face then two-arm core (STOA19).
+    \\=/  amount  5
+    \\|%
+    \\++  double
+    \\++  inc
     \\--
 ;
 
@@ -23,16 +32,19 @@ fn run_selftest(init: std.process.Init) !u8 {
     const cwd = std.Io.Dir.cwd();
     var buf: [3072]u8 = undefined;
 
-    const n1 = try lower.lower_source_welcome(src, &buf);
-    const rye1 = buf[0..n1];
-    assert(std.mem.indexOf(u8, rye1, "const amount: u32 = 5") != null);
-    assert(std.mem.indexOf(u8, rye1, "pub fn double(sample: u32) u32") != null);
-    assert(std.mem.indexOf(u8, rye1, "Core.double(amount) == 10") != null);
+    const n1 = try lower.lower_source_welcome(one_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n1], "Core.double(amount) == 10") != null);
     print("compose-core: welcome binds amount and calls Core.double -- GREEN\n", .{});
 
-    const n2 = try lower.lower_source_unwelcome(src, &buf);
-    assert(std.mem.indexOf(u8, buf[0..n2], "Core.double(amount) == 11") != null);
-    print("compose-core: unwelcome expects mismatch -- GREEN\n", .{});
+    const n2 = try lower.lower_source_welcome(two_src, &buf);
+    const rye2 = buf[0..n2];
+    assert(std.mem.indexOf(u8, rye2, "pub fn inc(sample: u32) u32") != null);
+    assert(std.mem.indexOf(u8, rye2, "Core.double(amount) == 10 and Core.inc(amount) == 6") != null);
+    print("compose-core: two-arm welcome calls double+inc -- GREEN\n", .{});
+
+    const n3 = try lower.lower_source_unwelcome(two_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n3], "Core.inc(amount) == 7") != null);
+    print("compose-core: two-arm unwelcome expects mismatch -- GREEN\n", .{});
 
     if (lower.lower_source_welcome(
         \\=/  amount  5
@@ -44,7 +56,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     } else |err| {
         if (err != lower.LowerError.UnknownArm) return err;
     }
-    print("compose-core: non-double arm refused UnknownArm -- GREEN\n", .{});
+    print("compose-core: non-double first arm refused UnknownArm -- GREEN\n", .{});
 
     if (lower.lower_source_welcome(
         \\=/  amount  5
@@ -57,20 +69,22 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("compose-core: face→%- refused NotAComposeCore -- GREEN\n", .{});
 
     try cwd.createDirPath(io, "glow/.cache");
-    const n3 = try lower.lower_source_welcome(src, &buf);
-    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/compose_core_welcome.rye", .data = buf[0..n3] });
-    const n4 = try lower.lower_source_unwelcome(src, &buf);
-    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/compose_core_unwelcome.rye", .data = buf[0..n4] });
-    print("compose-core: wrote welcome and unwelcome under glow/.cache/ -- GREEN\n", .{});
+    const n4 = try lower.lower_source_welcome(two_src, &buf);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/compose_core_two_welcome.rye", .data = buf[0..n4] });
+    const n5 = try lower.lower_source_unwelcome(two_src, &buf);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/compose_core_two_unwelcome.rye", .data = buf[0..n5] });
+    const n6 = try lower.lower_source_welcome(one_src, &buf);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/compose_core_welcome.rye", .data = buf[0..n6] });
+    print("compose-core: wrote one-arm and two-arm caches -- GREEN\n", .{});
 
-    const gen = try cwd.readFileAlloc(io, "glow/gen/compose-core.glow", a, .limited(4096));
-    assert(std.mem.indexOf(u8, gen, "=/  amount  5") != null);
-    assert(std.mem.indexOf(u8, gen, "|%") != null);
-    assert(std.mem.indexOf(u8, gen, "++  double") != null);
-    print("compose-core: glow/gen/compose-core.glow carries face→core -- GREEN\n", .{});
+    const gen1 = try cwd.readFileAlloc(io, "glow/gen/compose-core.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen1, "++  double") != null);
+    const gen2 = try cwd.readFileAlloc(io, "glow/gen/compose-core-two.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen2, "++  inc") != null);
+    print("compose-core: desks compose-core and compose-core-two carry face→core -- GREEN\n", .{});
 
     print("compose-core: version {s}\n", .{witness_version});
-    print("GREEN: face→`|%` compose lowers to ordinary Rye (STOA18).\n", .{});
+    print("GREEN: face→`|%` compose lowers one or two arms (STOA18/19).\n", .{});
     return 0;
 }
 

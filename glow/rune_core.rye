@@ -1,19 +1,16 @@
 //! glow/rune_core.rye — parses Glow's thin `|%` … `++` … `--` core.
 //!
-//! STOA14/15: one or two arms. STOA17: optional payload face before arms:
-//!   |%
-//!   =/  amount  5
-//!   ++  double
-//!   --
+//! STOA14/15: one or two arms. STOA17: optional payload face before arms.
+//! STOA20: up to three arms (`double` · `inc` · `dec`).
 //!
-//! Typed molds, three-plus arms, and variance stay later.
+//! Typed molds and variance stay later.
 
 const std = @import("std");
 const lower_multi = @import("lower_multi.rye");
 const rf = @import("rune_face.rye");
 
 pub const max_name_len: u32 = 64;
-pub const max_arms: u32 = 2;
+pub const max_arms: u32 = 3;
 
 pub const ParseError = error{
     NotACore,

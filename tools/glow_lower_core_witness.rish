@@ -4,10 +4,12 @@
 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "glow/bin/lower_core_witness"
-let welcome_rye = "glow/.cache/core_payload_welcome.rye"
-let welcome_bin = "glow/bin/core_payload_welcome"
-let unwelcome_rye = "glow/.cache/core_payload_unwelcome.rye"
-let unwelcome_bin = "glow/bin/core_payload_unwelcome"
+let welcome_rye = "glow/.cache/core_three_welcome.rye"
+let welcome_bin = "glow/bin/core_three_welcome"
+let unwelcome_rye = "glow/.cache/core_three_unwelcome.rye"
+let unwelcome_bin = "glow/bin/core_three_unwelcome"
+let payload_welcome_rye = "glow/.cache/core_payload_welcome.rye"
+let payload_welcome_bin = "glow/bin/core_payload_welcome"
 let two_welcome_rye = "glow/.cache/core_two_welcome.rye"
 let two_welcome_bin = "glow/bin/core_two_welcome"
 let one_welcome_rye = "glow/.cache/core_double_welcome.rye"
@@ -19,20 +21,25 @@ assert build.ok else "lower_core_witness build failed"
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
 assert selftest.ok else "lower_core_witness exited non-zero"
 assert selftest.out contains "GREEN" else "lower_core_witness not GREEN"
-assert selftest.out contains "payload welcome builds" else "lower_core_witness missing payload claim"
-assert selftest.out contains "desks core-double core-two core-payload" else "lower_core_witness missing desk claim"
+assert selftest.out contains "three-arm welcome builds" else "lower_core_witness missing three-arm claim"
+assert selftest.out contains "desks core-three and core-payload" else "lower_core_witness missing desk claim"
 assert selftest.out contains "UnknownArm" else "lower_core_witness missing UnknownArm"
 
 let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
-assert build_welcome.ok else "core payload welcome .rye build failed"
+assert build_welcome.ok else "core three welcome .rye build failed"
 let run_welcome = run ["sh" "-c" "${welcome_bin}; echo EXIT:$?"]
-assert run_welcome.ok else "core payload welcome binary failed to launch"
-assert run_welcome.out contains "EXIT:0" else "core payload welcome binary did not exit 0"
+assert run_welcome.ok else "core three welcome binary failed to launch"
+assert run_welcome.out contains "EXIT:0" else "core three welcome binary did not exit 0"
 
 let build_unwelcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${unwelcome_rye} -femit-bin=${unwelcome_bin}"]
-assert build_unwelcome.ok else "core payload unwelcome .rye build failed"
+assert build_unwelcome.ok else "core three unwelcome .rye build failed"
 let run_unwelcome = run ["sh" "-c" "${unwelcome_bin}; echo EXIT:$?"]
-assert run_unwelcome.out contains "EXIT:1" else "core payload unwelcome binary did not exit 1"
+assert run_unwelcome.out contains "EXIT:1" else "core three unwelcome binary did not exit 1"
+
+let build_payload = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${payload_welcome_rye} -femit-bin=${payload_welcome_bin}"]
+assert build_payload.ok else "core payload welcome .rye build failed"
+let run_payload = run ["sh" "-c" "${payload_welcome_bin}; echo EXIT:$?"]
+assert run_payload.out contains "EXIT:0" else "core payload welcome binary did not exit 0"
 
 let build_two = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${two_welcome_rye} -femit-bin=${two_welcome_bin}"]
 assert build_two.ok else "core two welcome .rye build failed"
@@ -44,6 +51,4 @@ assert build_one.ok else "core one welcome .rye build failed"
 let run_one = run ["sh" "-c" "${one_welcome_bin}; echo EXIT:$?"]
 assert run_one.out contains "EXIT:0" else "core one welcome binary did not exit 0"
 
-say "GREEN: Glow `|%` core hop — arms and payload; welcome 0 / unwelcome 1; STOA14/15/17."
-
-
+say "GREEN: Glow `|%` core hop — up to three arms and payload; welcome 0 / unwelcome 1; STOA14/15/17/20."
