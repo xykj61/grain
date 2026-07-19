@@ -2,17 +2,14 @@
 
 *Waymark for Glow the language: rune heads that lower, nest forms that deepen, composition that grows toward Glow-authored modules. Compresses the working pin; never replaces it.*
 
-**Status:** Checkable — operator compressor (STOA0–STOA51 GREEN)  
+**Status:** Checkable — operator compressor (STOA0–STOA52 GREEN)  
 **Depth:** guide  
 **Ceiling:** ≤80 lines  
-**Last updated:** 2026-07-19 (STOA51 bind→inline nest-right cue-of-jam GREEN)  
+**Last updated:** 2026-07-19 (STOA52 bind→inline nest-both cue-of-jam GREEN)  
 **Compresses:** [`../glow/README.md`](../glow/README.md) · first-code [`../expanding-prompts/20260717-213242_glow-first-code-beside-glass-and-open-runes.md`](../expanding-prompts/20260717-213242_glow-first-code-beside-glass-and-open-runes.md) · sameness [`../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md`](../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md) · seat [`../active-designing/20260718-202730_stoa-glow-language-waymark.md`](../active-designing/20260718-202730_stoa-glow-language-waymark.md)
 ## Thesis — name the language lap
-
 Product glass and wire stay Rye-hosted under their own waymarks. **STOA** names the language path so eight GREEN heads count as an SLC Lap, and every nest or composition rung has a home beside them — not a rewrite of SETU or ZETA.
-
 **Waymark draw:** input `glow-language-rune-heads-nest-and-lowering-2` · SHA3-512 · flw.txt → **STOA** (`tools/waymark_derive.rish`, `20260718.202730`). First draw **MAIR** (`…-lowering`, `20260718.202414`) superseded same day by Keaton’s redraw.
-
 ## Rung table
 
 | Rung | Claim | Witness / gate | State |
@@ -69,12 +66,13 @@ Product glass and wire stay Rye-hosted under their own waymarks. **STOA** names 
 | **STOA49** | Bind→inline cue-of-jam product | `glow_lower_compose_jam_cue` · desk | **GREEN** `20260719.162549` |
 | **STOA50** | Bind→inline nest-left cue-of-jam | `glow_lower_compose_jam_cue` · desk | **GREEN** `20260719.163125` |
 | **STOA51** | Bind→inline nest-right cue-of-jam | `glow_lower_compose_jam_cue` · desk | **GREEN** `20260719.163527` |
-| **STOA52** | Next language / product | horizon — check-in | horizon |
+| **STOA52** | Bind→inline nest-both cue-of-jam | `glow_lower_compose_jam_cue` · desk | **GREEN** `20260719.163945` |
+| **STOA53** | Next language / product | horizon — check-in | horizon |
 ## Hands-on
 ```bash
 cd ~/urbit
-rishi/bin/rishi run tools/glow_run.rish glow/gen/compose-bind-inline-nest-right-cue-jam.glow
+rishi/bin/rishi run tools/glow_run.rish glow/gen/compose-bind-inline-nest-both-cue-jam.glow
 rishi/bin/rishi run tools/glow_run_desk_witness.rish
 ```
-Sibling ladders: **ZETA** · **LULU** · **SETU** · **TUBE**. Door: [`../manual/README.md`](../manual/README.md).
+Sibling: **ZETA** · **LULU** · **SETU** · **TUBE**. Door: [`../manual/README.md`](../manual/README.md).
 *May every head lower honestly, and every nest deepen the same language.*
