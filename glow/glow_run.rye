@@ -158,7 +158,7 @@ pub fn main(init: std.process.Init) !u8 {
                     return 1;
                 };
             }
-            if ((n == 2 or n == 4 or n == 5 or n == 6) and lower_compose_jam_cue.looks_like_jam_cue(src)) {
+            if ((n == 2 or n == 3 or n == 4 or n == 5 or n == 6) and lower_compose_jam_cue.looks_like_jam_cue(src)) {
                 break :blk lower_compose_jam_cue.lower_source_welcome(src, &rye_buf) catch |err| {
                     print("glow_run: compose jam-cue lower failed ({s})\n", .{@errorName(err)});
                     return 1;
