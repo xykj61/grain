@@ -15,10 +15,12 @@ assert selftest.out contains "one-arm double parses" else "rune_core_witness mis
 assert selftest.out contains "two-arm double" else "rune_core_witness missing two-arm claim"
 assert selftest.out contains "three-arm double" else "rune_core_witness missing three-arm claim"
 assert selftest.out contains "payload amount+double parses" else "rune_core_witness missing payload claim"
+assert selftest.out contains "typed @u32 payload parses" else "rune_core_witness missing typed payload claim"
+assert selftest.out contains "AuraNotYetLowered" else "rune_core_witness missing AuraNotYetLowered"
 assert selftest.out contains "PayloadAfterArm" else "rune_core_witness missing PayloadAfterArm"
 assert selftest.out contains "NotACore" else "rune_core_witness missing NotACore"
 
-say "GREEN: Glow `|%` thin core — up to three arms and optional payload; STOA14/15/17/20."
+say "GREEN: Glow `|%` thin core — arms and bare or typed @u32 payload; STOA14/15/17/20/21."
 
 
 

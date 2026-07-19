@@ -7,7 +7,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const rk = @import("rune_core.rye");
 
-const witness_version = "20260718.231511";
+const witness_version = "20260718.232419";
 
 const one_src =
     \\::  Thin core — one arm double (STOA14).
@@ -41,6 +41,14 @@ const payload_src =
     \\--
 ;
 
+const typed_payload_src =
+    \\::  Core with typed payload (STOA21).
+    \\|%
+    \\=/  amount=@u32  5
+    \\++  double
+    \\--
+;
+
 fn run_selftest() !u8 {
     const one = try rk.parse_source(one_src);
     assert(one.count == 1);
@@ -66,10 +74,31 @@ fn run_selftest() !u8 {
     const pay = try rk.parse_source(payload_src);
     assert(pay.count == 1);
     assert(rk.has_payload(&pay));
+    assert(!pay.payload_typed);
     assert(std.mem.eql(u8, rk.payload_face_at(&pay), "amount"));
     assert(pay.payload_value == 5);
     assert(std.mem.eql(u8, rk.arm_at(&pay, 0), "double"));
     print("core: payload amount+double parses -- GREEN\n", .{});
+
+    const typed = try rk.parse_source(typed_payload_src);
+    assert(typed.count == 1);
+    assert(rk.has_payload(&typed));
+    assert(typed.payload_typed);
+    assert(std.mem.eql(u8, rk.payload_face_at(&typed), "amount"));
+    assert(typed.payload_value == 5);
+    print("core: typed @u32 payload parses -- GREEN\n", .{});
+
+    if (rk.parse_source(
+        \\|%
+        \\=/  amount=@u8  5
+        \\++  double
+        \\--
+    )) |_| {
+        return error.AuraNotYetLoweredNotCaught;
+    } else |err| {
+        if (err != rk.ParseError.AuraNotYetLowered) return err;
+    }
+    print("core: @u8 payload refused AuraNotYetLowered -- GREEN\n", .{});
 
     if (rk.parse_source(
         \\|%
@@ -91,7 +120,7 @@ fn run_selftest() !u8 {
     print("core: face desk refused NotACore -- GREEN\n", .{});
 
     print("core: version {s}\n", .{witness_version});
-    print("GREEN: `|%` thin core parses up to three arms and optional payload (STOA14/15/17/20).\n", .{});
+    print("GREEN: `|%` thin core parses arms and bare or typed @u32 payload (STOA14/15/17/20/21).\n", .{});
     return 0;
 }
 

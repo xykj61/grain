@@ -8,6 +8,9 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260718.232925` — [Send STOA21 check-in](20260718-232925_send-stoa21-checkin.bron) — pier ship; STOA22 forks next
+- `20260718.232724` — [STOA21 check-in before send](20260718-232724_stoa21-checkin-before-send.bron) — pier lag; STOA22 forks open
+- `20260718.232419` — [STOA21 typed payload GREEN](20260718-232419_stoa21-typed-payload-green.bron) — amount=@u32 on |%; await send
 - `20260718.232145` — [Send STOA19-20 check-in](20260718-232145_send-stoa19-20-checkin.bron) — pier ship; STOA21 forks next
 - `20260718.231814` — [STOA19-20 check-in before send](20260718-231814_stoa19-20-checkin-before-send.bron) — pier lag; STOA21 forks open
 - `20260718.231511` — [STOA19-20 compose three GREEN](20260718-231511_stoa19-20-compose-three-green.bron) — face→two-arm + three-arm; await send

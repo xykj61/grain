@@ -7,7 +7,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const lower = @import("lower_core.rye");
 
-const witness_version = "20260718.231511";
+const witness_version = "20260718.232419";
 
 const one_src =
     \\::  Thin core — one arm double (STOA14).
@@ -41,6 +41,14 @@ const payload_src =
     \\--
 ;
 
+const typed_payload_src =
+    \\::  Core with typed payload (STOA21).
+    \\|%
+    \\=/  amount=@u32  5
+    \\++  double
+    \\--
+;
+
 fn run_selftest(init: std.process.Init) !u8 {
     const io = init.io;
     const a = init.arena.allocator();
@@ -65,8 +73,19 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, buf[0..n4], "core.double() == 10") != null);
     print("core: payload welcome builds self.amount double -- GREEN\n", .{});
 
-    const n5 = try lower.lower_source_unwelcome(three_src, &buf);
-    assert(std.mem.indexOf(u8, buf[0..n5], "Core.dec(amount) == 5") != null);
+    const n5 = try lower.lower_source_welcome(typed_payload_src, &buf);
+    const rye5 = buf[0..n5];
+    assert(std.mem.indexOf(u8, rye5, "Glow payload mold `@u32`") != null);
+    assert(std.mem.indexOf(u8, rye5, "amount: u32 = 5") != null);
+    assert(std.mem.indexOf(u8, rye5, "core.double() == 10") != null);
+    print("core: typed @u32 payload welcome builds self.amount -- GREEN\n", .{});
+
+    const n6 = try lower.lower_source_unwelcome(typed_payload_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n6], "core.double() == 11") != null);
+    print("core: typed payload unwelcome expects mismatch -- GREEN\n", .{});
+
+    const n7 = try lower.lower_source_unwelcome(three_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n7], "Core.dec(amount) == 5") != null);
     print("core: three-arm unwelcome expects mismatch -- GREEN\n", .{});
 
     if (lower.lower_source_welcome("|%\n++  mystery\n--\n", &buf)) |_| {
@@ -77,28 +96,30 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("core: unknown arm refused UnknownArm -- GREEN\n", .{});
 
     try cwd.createDirPath(io, "glow/.cache");
-    const n6 = try lower.lower_source_welcome(three_src, &buf);
-    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/core_three_welcome.rye", .data = buf[0..n6] });
-    const n7 = try lower.lower_source_unwelcome(three_src, &buf);
-    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/core_three_unwelcome.rye", .data = buf[0..n7] });
-    const n8 = try lower.lower_source_welcome(payload_src, &buf);
-    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/core_payload_welcome.rye", .data = buf[0..n8] });
-    const n9 = try lower.lower_source_unwelcome(payload_src, &buf);
-    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/core_payload_unwelcome.rye", .data = buf[0..n9] });
-    const n10 = try lower.lower_source_welcome(two_src, &buf);
-    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/core_two_welcome.rye", .data = buf[0..n10] });
-    const n11 = try lower.lower_source_welcome(one_src, &buf);
-    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/core_double_welcome.rye", .data = buf[0..n11] });
-    print("core: wrote three-arm payload and battery caches -- GREEN\n", .{});
+    const n8 = try lower.lower_source_welcome(typed_payload_src, &buf);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/core_payload_typed_welcome.rye", .data = buf[0..n8] });
+    const n9 = try lower.lower_source_unwelcome(typed_payload_src, &buf);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/core_payload_typed_unwelcome.rye", .data = buf[0..n9] });
+    const n10 = try lower.lower_source_welcome(three_src, &buf);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/core_three_welcome.rye", .data = buf[0..n10] });
+    const n11 = try lower.lower_source_unwelcome(three_src, &buf);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/core_three_unwelcome.rye", .data = buf[0..n11] });
+    const n12 = try lower.lower_source_welcome(payload_src, &buf);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/core_payload_welcome.rye", .data = buf[0..n12] });
+    const n13 = try lower.lower_source_welcome(two_src, &buf);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/core_two_welcome.rye", .data = buf[0..n13] });
+    const n14 = try lower.lower_source_welcome(one_src, &buf);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/core_double_welcome.rye", .data = buf[0..n14] });
+    print("core: wrote typed-payload three-arm and battery caches -- GREEN\n", .{});
 
     const gen_three = try cwd.readFileAlloc(io, "glow/gen/core-three.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_three, "++  dec") != null);
-    const gen_pay = try cwd.readFileAlloc(io, "glow/gen/core-payload.glow", a, .limited(4096));
-    assert(std.mem.indexOf(u8, gen_pay, "=/  amount  5") != null);
-    print("core: desks core-three and core-payload carry batteries -- GREEN\n", .{});
+    const gen_typed = try cwd.readFileAlloc(io, "glow/gen/core-payload-typed.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_typed, "=/  amount=@u32  5") != null);
+    print("core: desks core-three and core-payload-typed carry batteries -- GREEN\n", .{});
 
     print("core: version {s}\n", .{witness_version});
-    print("GREEN: `|%` thin core lowers up to three arms and optional payload (STOA14/15/17/20).\n", .{});
+    print("GREEN: `|%` thin core lowers arms and bare or typed @u32 payload (STOA14/15/17/20/21).\n", .{});
     return 0;
 }
 

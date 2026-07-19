@@ -214,7 +214,13 @@ assert core3.ok else "glow_run core-three.glow failed"
 assert core3.out contains "GREEN" else "glow_run core-three.glow not GREEN"
 assert core3.out contains "core-three.glow" else "glow_run core-three claim missing path"
 
+let coretyped = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/core-payload-typed.glow"]
+assert coretyped.ok else "glow_run core-payload-typed.glow failed"
+assert coretyped.out contains "GREEN" else "glow_run core-payload-typed.glow not GREEN"
+assert coretyped.out contains "core-payload-typed.glow" else "glow_run core-payload-typed claim missing path"
+
 say "GREEN: glow_run desk — all desk generators lowered, built, exit 0."
+
 
 
 
