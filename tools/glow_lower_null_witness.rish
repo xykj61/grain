@@ -24,6 +24,7 @@ assert selftest.out contains "nests lent arm" else "lower_null_witness missing l
 assert selftest.out contains "nests mix arm" else "lower_null_witness missing mix-arm claim"
 assert selftest.out contains "nests jam arm" else "lower_null_witness missing jam-arm claim"
 assert selftest.out contains "nests cue arm" else "lower_null_witness missing cue-arm claim"
+assert selftest.out contains "nest jam arm refused" else "lower_null_witness missing nest-jam refuse"
 assert selftest.out contains "MalformedArms" else "lower_null_witness missing partial-arms refuse"
 assert selftest.out contains "ArmNotYetLowered" else "lower_null_witness missing arm-refuse claim"
 assert selftest.out contains "decimal then/else arms" else "lower_null_witness missing gen desk claim"

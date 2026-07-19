@@ -346,12 +346,18 @@ fn emit_ready(ready: bool, then_arm: *const ArmExpr, else_arm: *const ArmExpr, o
     return emit_program("ready", prelude, "ready", then_arm, else_arm, out);
 }
 
+fn refuse_nest_jam_arm(arm: *const ArmExpr) LowerError!void {
+    if (expr.jam_has_nest_arg(arm)) return error.ArmNotYetLowered;
+}
+
 fn lower_line(line: []const u8, welcome: bool, out: []u8) LowerError!u32 {
     const trimmed = std.mem.trim(u8, line, " \t\r\n");
     if (trimmed.len == 0) return error.EmptySource;
     const spec = try rif.parse(trimmed);
     const test_expr = rif.test_slice(&spec);
     var arms = try arm_pair(trimmed, test_expr);
+    try refuse_nest_jam_arm(&arms.then_arm);
+    try refuse_nest_jam_arm(&arms.else_arm);
     return switch (try classify_test(test_expr)) {
         .gth_tick_32 => emit_gth(if (welcome) gth_welcome_tick else gth_unwelcome_tick, &arms.then_arm, &arms.else_arm, out),
         .ready_face => emit_ready(welcome, &arms.then_arm, &arms.else_arm, out),
