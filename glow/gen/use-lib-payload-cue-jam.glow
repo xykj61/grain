@@ -1,0 +1,4 @@
+::  Import payload cue-jam library then call unpack (STOA65).
+/+  lib-core-payload-cue-jam
+=/  amount  5
+%-  unpack  amount
