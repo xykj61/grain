@@ -1,0 +1,95 @@
+//! glow/lower_compose_core_payload_witness.rye — face→payload `|%`.
+//!
+//!   rye build glow/lower_compose_core_payload_witness.rye -femit-bin=glow/bin/lower_compose_core_payload_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const lower = @import("lower_compose_core_payload.rye");
+
+const witness_version = "20260718.234430";
+
+const bare_src =
+    \\::  Outer face then payload core (STOA24).
+    \\=/  note  7
+    \\|%
+    \\=/  amount  5
+    \\++  double
+    \\--
+;
+
+const typed_src =
+    \\::  Outer face then typed payload core (STOA24).
+    \\=/  note  7
+    \\|%
+    \\=/  amount=@u32  5
+    \\++  double
+    \\--
+;
+
+fn run_selftest(init: std.process.Init) !u8 {
+    const io = init.io;
+    const a = init.arena.allocator();
+    const cwd = std.Io.Dir.cwd();
+    var buf: [4096]u8 = undefined;
+
+    const n1 = try lower.lower_source_welcome(bare_src, &buf);
+    const rye1 = buf[0..n1];
+    assert(std.mem.indexOf(u8, rye1, "const note: u32 = 7") != null);
+    assert(std.mem.indexOf(u8, rye1, "amount: u32 = 5") != null);
+    assert(std.mem.indexOf(u8, rye1, "note == 7 and core.double() == 10") != null);
+    print("compose-core-payload: welcome binds note and payload double -- GREEN\n", .{});
+
+    const n2 = try lower.lower_source_welcome(typed_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n2], "Glow payload mold `@u32`") != null);
+    assert(std.mem.indexOf(u8, buf[0..n2], "note == 7 and core.double() == 10") != null);
+    print("compose-core-payload: typed @u32 inner payload welcome -- GREEN\n", .{});
+
+    const n3 = try lower.lower_source_unwelcome(bare_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n3], "note == 8 and core.double() == 11") != null);
+    print("compose-core-payload: unwelcome expects mismatch -- GREEN\n", .{});
+
+    if (lower.lower_source_welcome(
+        \\=/  note  7
+        \\|%
+        \\++  double
+        \\--
+    , &buf)) |_| {
+        return error.MissingPayloadNotCaught;
+    } else |err| {
+        if (err != lower.LowerError.MissingPayload and err != lower.LowerError.NotAComposeCorePayload) return err;
+    }
+    print("compose-core-payload: no-payload core refused -- GREEN\n", .{});
+
+    if (lower.lower_source_welcome(
+        \\=/  amount  5
+        \\|%
+        \\++  double
+        \\--
+    , &buf)) |_| {
+        return error.NotAComposeCorePayloadNotCaught;
+    } else |err| {
+        if (err != lower.LowerError.NotAComposeCorePayload) return err;
+    }
+    print("compose-core-payload: one-face no-payload refused NotAComposeCorePayload -- GREEN\n", .{});
+
+    try cwd.createDirPath(io, "glow/.cache");
+    const n4 = try lower.lower_source_welcome(bare_src, &buf);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/compose_core_payload_welcome.rye", .data = buf[0..n4] });
+    const n5 = try lower.lower_source_unwelcome(bare_src, &buf);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/compose_core_payload_unwelcome.rye", .data = buf[0..n5] });
+    print("compose-core-payload: wrote welcome and unwelcome under glow/.cache/ -- GREEN\n", .{});
+
+    const gen = try cwd.readFileAlloc(io, "glow/gen/compose-core-payload.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen, "=/  note  7") != null);
+    assert(std.mem.indexOf(u8, gen, "=/  amount  5") != null);
+    print("compose-core-payload: glow/gen/compose-core-payload.glow carries face→payload -- GREEN\n", .{});
+
+    print("compose-core-payload: version {s}\n", .{witness_version});
+    print("GREEN: face→payload `|%` compose lowers to ordinary Rye (STOA24).\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
+}

@@ -1422,7 +1422,13 @@ let glow_compose_core_add = run ["rishi/bin/rishi" "run" "tools/glow_lower_compo
 assert glow_compose_core_add.ok else "Glow lower-compose-core-add witness failed"
 say "GREEN: Glow lower-compose-core-add witness passed."
 
+say "witness suite: Glow face→payload `|%` compose (STOA24)…"
+let glow_compose_core_payload = run ["rishi/bin/rishi" "run" "tools/glow_lower_compose_core_payload_witness.rish"]
+assert glow_compose_core_payload.ok else "Glow lower-compose-core-payload witness failed"
+say "GREEN: Glow lower-compose-core-payload witness passed."
+
 say "witness suite: glow_run desk — all generator hops…"
+
 
 
 let glow_desk = run ["rishi/bin/rishi" "run" "tools/glow_run_desk_witness.rish"]
