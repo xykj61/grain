@@ -8,7 +8,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const rm = @import("rune_mold.rye");
 
-const witness_version = "20260719.192600";
+const witness_version = "20260719.193800";
 
 fn run_selftest() !u8 {
     const one =
@@ -46,6 +46,21 @@ fn run_selftest() !u8 {
     assert(std.mem.eql(u8, rm.field_slice(&s3, 1), "send"));
     print("rune: thin +$ / $% kind-mold mint/send parses -- GREEN\n", .{});
 
+    const payload =
+        \\+$  xact-mold
+        \\  $%  [%mint amount=@u32]
+        \\      [%send ~]
+        \\  ==
+    ;
+    const s4 = try rm.parse_source(payload);
+    assert(s4.body == .tagged);
+    assert(s4.field_count == 2);
+    assert(std.mem.eql(u8, rm.field_slice(&s4, 0), "mint"));
+    assert(rm.arm_has_payload(&s4, 0));
+    assert(std.mem.eql(u8, rm.payload_slice(&s4, 0), "amount"));
+    assert(!rm.arm_has_payload(&s4, 1));
+    print("rune: +$ / $% xact-mold payload arm parses -- GREEN\n", .{});
+
     if (rm.parse_source(
         \\+$  amount-mold
         \\  $:  amount=@u64
@@ -69,7 +84,7 @@ fn run_selftest() !u8 {
     print("rune: single $% tag refused TooFewTags -- GREEN\n", .{});
 
     print("rune: version {s}\n", .{witness_version});
-    print("GREEN: +$ / $: / $% mold front half parses — STOA74/75/76.\n", .{});
+    print("GREEN: +$ / $: / $% mold front half parses — STOA74/75/76/78.\n", .{});
     return 0;
 }
 

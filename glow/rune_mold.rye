@@ -1,10 +1,11 @@
-//! glow/rune_mold.rye — parses Glow's `+$` / `$:` / `$%` mold (STOA74–76).
+//! glow/rune_mold.rye — parses Glow's `+$` / `$:` / `$%` mold (STOA74–78).
 //!
 //! `$:` tuple of `@u32` fields (1–3). `$%` tagged union of cold atoms with
-//! unit payload `[%tag ~]` (2–3 tags). Named-cast resolve · payload arms later.
+//! unit payload `[%tag ~]` or one-face `@u32` payload `[%tag face=@u32]`
+//! (2–3 tags). Cross-desk named-cast · richer payloads stay later.
 //!
-//!   +$  kind-mold
-//!     $%  [%mint ~]
+//!   +$  xact-mold
+//!     $%  [%mint amount=@u32]
 //!         [%send ~]
 //!     ==
 
@@ -44,6 +45,9 @@ pub const MoldSpec = struct {
     body: BodyKind = .tuple,
     fields: [max_fields][max_name_len]u8 = [_][max_name_len]u8{[_]u8{0} ** max_name_len} ** max_fields,
     field_lens: [max_fields]usize = [_]usize{0} ** max_fields,
+    /// For `$%` arms: payload face name length; 0 means unit `~`.
+    payload_lens: [max_fields]usize = [_]usize{0} ** max_fields,
+    payloads: [max_fields][max_name_len]u8 = [_][max_name_len]u8{[_]u8{0} ** max_name_len} ** max_fields,
     field_count: usize = 0,
 };
 
@@ -57,6 +61,22 @@ pub fn field_slice(spec: *const MoldSpec, i: usize) []const u8 {
 
 pub fn first_field_slice(spec: *const MoldSpec) []const u8 {
     return field_slice(spec, 0);
+}
+
+pub fn payload_slice(spec: *const MoldSpec, i: usize) []const u8 {
+    return spec.payloads[i][0..spec.payload_lens[i]];
+}
+
+pub fn arm_has_payload(spec: *const MoldSpec, i: usize) bool {
+    return spec.payload_lens[i] != 0;
+}
+
+pub fn any_payload(spec: *const MoldSpec) bool {
+    var i: usize = 0;
+    while (i < spec.field_count) : (i += 1) {
+        if (arm_has_payload(spec, i)) return true;
+    }
+    return false;
 }
 
 fn is_ident_char(c: u8) bool {
@@ -93,8 +113,13 @@ fn parse_field_clause(clause: []const u8) ParseError![]const u8 {
     return face;
 }
 
-/// `[%mint ~]` → tag name `mint` (unit payload only this lap).
-fn parse_tag_arm(clause: []const u8) ParseError![]const u8 {
+const TagArm = struct {
+    tag: []const u8,
+    payload: ?[]const u8,
+};
+
+/// `[%mint ~]` or `[%mint amount=@u32]`.
+fn parse_tag_arm(clause: []const u8) ParseError!TagArm {
     var t = std.mem.trim(u8, clause, " \t");
     if (t.len < 6) return error.MalformedTag; // [%x ~] min
     if (t[0] != '[') return error.MalformedTag;
@@ -106,12 +131,14 @@ fn parse_tag_arm(clause: []const u8) ParseError![]const u8 {
     if (end == 1) return error.MissingTag;
     const tag = try parse_ident(t[1..end]);
     const rest = std.mem.trimStart(u8, t[end..], " \t");
-    if (!std.mem.eql(u8, rest, "~")) return error.MalformedTag;
-    return tag;
+    if (rest.len == 0) return error.MalformedTag;
+    if (std.mem.eql(u8, rest, "~")) return .{ .tag = tag, .payload = null };
+    const face = try parse_field_clause(rest);
+    return .{ .tag = tag, .payload = face };
 }
 
 fn take_rest_of_line(line: []const u8) ParseError![]const u8 {
-    // Tagged arms may contain spaces: [%mint ~]
+    // Tagged arms may contain spaces: [%mint amount=@u32]
     const trimmed = std.mem.trim(u8, line, " \t");
     if (trimmed.len == 0) return error.MissingField;
     return trimmed;
@@ -132,6 +159,20 @@ fn push_name(spec: *MoldSpec, face: []const u8) ParseError!void {
     const i = spec.field_count;
     @memcpy(spec.fields[i][0..face.len], face);
     spec.field_lens[i] = face.len;
+    spec.field_count += 1;
+}
+
+fn push_tag(spec: *MoldSpec, tag: []const u8, payload: ?[]const u8) ParseError!void {
+    if (spec.field_count >= max_fields) return error.TooManyFields;
+    const i = spec.field_count;
+    @memcpy(spec.fields[i][0..tag.len], tag);
+    spec.field_lens[i] = tag.len;
+    if (payload) |face| {
+        @memcpy(spec.payloads[i][0..face.len], face);
+        spec.payload_lens[i] = face.len;
+    } else {
+        spec.payload_lens[i] = 0;
+    }
     spec.field_count += 1;
 }
 
@@ -175,8 +216,8 @@ pub fn parse_source(src: []const u8) ParseError!MoldSpec {
                 body = std.mem.trimStart(u8, body[2..], " \t");
             }
             const arm = try take_rest_of_line(body);
-            const tag = try parse_tag_arm(arm);
-            try push_name(&spec, tag);
+            const parsed = try parse_tag_arm(arm);
+            try push_tag(&spec, parsed.tag, parsed.payload);
         }
         if (spec.field_count < 2) return error.TooFewTags;
         return spec;

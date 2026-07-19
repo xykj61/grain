@@ -10,6 +10,8 @@ let pair_rye = "glow/.cache/mold_pair_welcome.rye"
 let pair_bin = "glow/bin/mold_pair_welcome"
 let kind_rye = "glow/.cache/mold_kind_welcome.rye"
 let kind_bin = "glow/bin/mold_kind_welcome"
+let xact_rye = "glow/.cache/mold_xact_welcome.rye"
+let xact_bin = "glow/bin/mold_xact_welcome"
 
 let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/lower_mold_witness.rye -femit-bin=${bin}"]
 assert build.ok else "lower_mold_witness build failed"
@@ -20,6 +22,7 @@ assert selftest.out contains "GREEN" else "lower_mold_witness not GREEN"
 assert selftest.out contains "AmountMold" else "lower_mold_witness missing AmountMold"
 assert selftest.out contains "PairMold" else "lower_mold_witness missing PairMold"
 assert selftest.out contains "KindMold" else "lower_mold_witness missing KindMold"
+assert selftest.out contains "XactMold" else "lower_mold_witness missing XactMold"
 
 let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
 assert build_welcome.ok else "mold welcome .rye build failed"
@@ -39,4 +42,10 @@ let run_kind = run ["sh" "-c" "${kind_bin}; echo EXIT:$?"]
 assert run_kind.ok else "mold kind welcome binary failed to launch"
 assert run_kind.out contains "EXIT:0" else "mold kind welcome binary did not exit 0"
 
-say "GREEN: Glow +$ / $: / $% mold hop — AmountMold · PairMold · KindMold; STOA74/75/76."
+let build_xact = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${xact_rye} -femit-bin=${xact_bin}"]
+assert build_xact.ok else "mold xact welcome .rye build failed"
+let run_xact = run ["sh" "-c" "${xact_bin}; echo EXIT:$?"]
+assert run_xact.ok else "mold xact welcome binary failed to launch"
+assert run_xact.out contains "EXIT:0" else "mold xact welcome binary did not exit 0"
+
+say "GREEN: Glow +$ / $: / $% mold hop — AmountMold · PairMold · KindMold · XactMold; STOA74–78."
