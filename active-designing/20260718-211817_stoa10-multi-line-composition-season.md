@@ -24,11 +24,12 @@ After SETU6.5 + STOA0–9 shipped to the pier (`812e36ff01`), the language path 
 
 **STOA11** face→`%-` compose GREEN `20260718.212131` — desk `compose-call`.  
 **STOA12** face→face→`%+` compose GREEN `20260718.221812` — desk `compose-add` (approved thin face A).  
-**STOA13** typed multi-line `@u32` GREEN `20260718.223431` — desk `multi-typed`.
+**STOA13** typed multi-line `@u32` GREEN `20260718.223431` — desk `multi-typed`.  
+**STOA14** thin `|%` core GREEN `20260718.224030` — desk `core-double` · brief `20260718-223906`.
 
-## Held for STOA14+
+## Held for STOA15+
 
-Cores · `(cue …)` · nested jam across lines · other auras in multi-line.
+Payload · multi-arm · library emit · `(cue …)` · nested jam · other auras in multi-line.
 
 ---
 

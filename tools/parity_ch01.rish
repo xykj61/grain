@@ -1397,6 +1397,16 @@ let glow_typed = run ["rishi/bin/rishi" "run" "tools/glow_lower_multi_typed_witn
 assert glow_typed.ok else "Glow lower-multi-typed witness failed"
 say "GREEN: Glow lower-multi-typed witness passed."
 
+say "witness suite: Glow `|%` thin core — rune head (STOA14)…"
+let glow_rune_core = run ["rishi/bin/rishi" "run" "tools/glow_rune_core_witness.rish"]
+assert glow_rune_core.ok else "Glow rune-core witness failed"
+say "GREEN: Glow rune-core witness passed."
+
+say "witness suite: Glow `|%` thin core — lower hop (STOA14)…"
+let glow_core = run ["rishi/bin/rishi" "run" "tools/glow_lower_core_witness.rish"]
+assert glow_core.ok else "Glow lower-core witness failed"
+say "GREEN: Glow lower-core witness passed."
+
 say "witness suite: glow_run desk — all generator hops…"
 let glow_desk = run ["rishi/bin/rishi" "run" "tools/glow_run_desk_witness.rish"]
 assert glow_desk.ok else "Glow run desk witness failed"

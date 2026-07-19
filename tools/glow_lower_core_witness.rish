@@ -1,0 +1,33 @@
+# glow_lower_core_witness.rish — thin `|%` core lowers to Rye.
+#
+#   rishi/bin/rishi run tools/glow_lower_core_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "glow/bin/lower_core_witness"
+let welcome_rye = "glow/.cache/core_double_welcome.rye"
+let welcome_bin = "glow/bin/core_double_welcome"
+let unwelcome_rye = "glow/.cache/core_double_unwelcome.rye"
+let unwelcome_bin = "glow/bin/core_double_unwelcome"
+
+let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/lower_core_witness.rye -femit-bin=${bin}"]
+assert build.ok else "lower_core_witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "lower_core_witness exited non-zero"
+assert selftest.out contains "GREEN" else "lower_core_witness not GREEN"
+assert selftest.out contains "welcome builds Core" else "lower_core_witness missing welcome claim"
+assert selftest.out contains "carries thin battery" else "lower_core_witness missing desk claim"
+assert selftest.out contains "UnknownArm" else "lower_core_witness missing UnknownArm"
+
+let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
+assert build_welcome.ok else "core welcome .rye build failed"
+let run_welcome = run ["sh" "-c" "${welcome_bin}; echo EXIT:$?"]
+assert run_welcome.ok else "core welcome binary failed to launch"
+assert run_welcome.out contains "EXIT:0" else "core welcome binary did not exit 0"
+
+let build_unwelcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${unwelcome_rye} -femit-bin=${unwelcome_bin}"]
+assert build_unwelcome.ok else "core unwelcome .rye build failed"
+let run_unwelcome = run ["sh" "-c" "${unwelcome_bin}; echo EXIT:$?"]
+assert run_unwelcome.out contains "EXIT:1" else "core unwelcome binary did not exit 1"
+
+say "GREEN: Glow `|%` core hop — double arm; welcome 0 / unwelcome 1; STOA14."

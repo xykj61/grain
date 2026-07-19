@@ -1,0 +1,83 @@
+//! glow/lower_core.rye — lower a thin `|%` core to runnable `.rye`.
+//!
+//! Thin STOA14 face: one closed arm `double` → struct method + demo call
+//! (sample 5 → expect 10). Unknown arms refuse.
+
+const std = @import("std");
+const rk = @import("rune_core.rye");
+
+pub const LowerError = rk.ParseError || error{
+    Overflow,
+    EmptySource,
+    BadIdent,
+    UnknownArm,
+};
+
+pub const core_demo_sample: u32 = 5;
+pub const core_demo_expect: u32 = 10;
+
+fn zig_safe_ident(face: []const u8, out: *[rk.max_name_len]u8) LowerError!usize {
+    if (face.len == 0 or face.len > rk.max_name_len) return error.BadIdent;
+    var i: usize = 0;
+    while (i < face.len) : (i += 1) {
+        const ch = face[i];
+        const mapped: u8 = if (ch == '-') '_' else ch;
+        if (i == 0) {
+            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or mapped == '_'))
+                return error.BadIdent;
+        } else {
+            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or (mapped >= '0' and mapped <= '9') or mapped == '_'))
+                return error.BadIdent;
+        }
+        out[i] = mapped;
+    }
+    return face.len;
+}
+
+fn emit_core(spec: *const rk.CoreSpec, welcome: bool, out: []u8) LowerError!u32 {
+    const arm = rk.arm_slice(spec);
+    if (!std.mem.eql(u8, arm, "double")) return error.UnknownArm;
+
+    var za: [rk.max_name_len]u8 = undefined;
+    const an = try zig_safe_ident(arm, &za);
+    const expect: u32 = if (welcome) core_demo_expect else core_demo_expect +% 1;
+
+    const written = std.fmt.bufPrint(out,
+        \\const std = @import("std");
+        \\
+        \\/// Lowered from Glow `|%` / `++  {s}` / `--` — thin core (STOA14).
+        \\const Core = struct {{
+        \\    pub fn {s}(sample: u32) u32 {{
+        \\        return sample *% 2;
+        \\    }}
+        \\}};
+        \\
+        \\pub fn main(_: std.process.Init) !u8 {{
+        \\    const amount: u32 = {d};
+        \\    const called: u32 = Core.{s}(amount);
+        \\    return if (called == {d}) 0 else 1;
+        \\}}
+        \\
+    , .{
+        arm,
+        za[0..an],
+        core_demo_sample,
+        za[0..an],
+        expect,
+    }) catch return error.Overflow;
+    return @intCast(written.len);
+}
+
+pub fn lower_source_welcome(src: []const u8, out: []u8) LowerError!u32 {
+    const trimmed = std.mem.trim(u8, src, " \t\r\n");
+    if (trimmed.len == 0) return error.EmptySource;
+    const spec = try rk.parse_source(src);
+    return emit_core(&spec, true, out);
+}
+
+pub fn lower_source_unwelcome(src: []const u8, out: []u8) LowerError!u32 {
+    const trimmed = std.mem.trim(u8, src, " \t\r\n");
+    if (trimmed.len == 0) return error.EmptySource;
+    const spec = try rk.parse_source(src);
+    return emit_core(&spec, false, out);
+}

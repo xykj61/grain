@@ -1,0 +1,77 @@
+//! glow/rune_core.rye — parses Glow's thin `|%` … `++` … `--` core.
+//!
+//! Seventeenth rune head shape (STOA14). Exactly three lines:
+//!   |%
+//!   ++  double
+//!   --
+//!
+//! Multi-arm batteries, samples, and variance stay later.
+
+const std = @import("std");
+const lower_multi = @import("lower_multi.rye");
+
+pub const max_name_len: u32 = 64;
+
+pub const ParseError = error{
+    NotACore,
+    MissingArm,
+    ExtraTail,
+    NameTooLong,
+    MalformedName,
+    TooManyLines,
+    EmptySource,
+};
+
+pub const CoreSpec = struct {
+    arm: [max_name_len]u8 = .{0} ** max_name_len,
+    arm_len: usize = 0,
+};
+
+pub fn arm_slice(spec: *const CoreSpec) []const u8 {
+    return spec.arm[0..spec.arm_len];
+}
+
+fn is_ident_char(ch: u8) bool {
+    if (ch >= 'a' and ch <= 'z') return true;
+    if (ch >= 'A' and ch <= 'Z') return true;
+    if (ch >= '0' and ch <= '9') return true;
+    return ch == '-' or ch == '_';
+}
+
+fn parse_ident(rest: []const u8) ParseError!struct { ident: []const u8, rest: []const u8 } {
+    var end: usize = 0;
+    while (end < rest.len and is_ident_char(rest[end])) end += 1;
+    if (end == 0) return error.MalformedName;
+    const ident = rest[0..end];
+    if (ident[0] >= '0' and ident[0] <= '9') return error.MalformedName;
+    if (ident.len > max_name_len) return error.NameTooLong;
+    return .{ .ident = ident, .rest = rest[end..] };
+}
+
+/// Parses a three-line thin core desk source.
+pub fn parse_source(src: []const u8) ParseError!CoreSpec {
+    var lines: [lower_multi.max_lines][]const u8 = undefined;
+    const n = lower_multi.collect_lines(src, &lines) catch |err| switch (err) {
+        error.TooManyLines => return error.TooManyLines,
+        error.EmptySource => return error.EmptySource,
+        else => return error.NotACore,
+    };
+    if (n != 3) return error.NotACore;
+    if (!std.mem.eql(u8, lines[0], "|%")) return error.NotACore;
+    if (!std.mem.eql(u8, lines[2], "--")) return error.NotACore;
+
+    const arm_line = lines[1];
+    if (arm_line.len < 2 or !std.mem.eql(u8, arm_line[0..2], "++")) return error.MissingArm;
+    const after_plus = std.mem.trimStart(u8, arm_line[2..], " \t");
+    if (after_plus.len == 0) return error.MissingArm;
+    if (after_plus.len == arm_line[2..].len) return error.MalformedName;
+
+    const parsed = try parse_ident(after_plus);
+    const tail = std.mem.trimStart(u8, parsed.rest, " \t");
+    if (tail.len != 0) return error.ExtraTail;
+
+    var spec: CoreSpec = .{};
+    @memcpy(spec.arm[0..parsed.ident.len], parsed.ident);
+    spec.arm_len = parsed.ident.len;
+    return spec;
+}

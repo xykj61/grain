@@ -1,0 +1,17 @@
+# glow_rune_core_witness.rish — thin `|%` core shape.
+#
+#   rishi/bin/rishi run tools/glow_rune_core_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "glow/bin/rune_core_witness"
+
+let build = run ["sh" "-c" "mkdir -p glow/bin && env RYE_ZIG=${zig} rye/bin/rye build glow/rune_core_witness.rye -femit-bin=${bin}"]
+assert build.ok else "rune_core_witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "rune_core_witness exited non-zero"
+assert selftest.out contains "GREEN" else "rune_core_witness not GREEN"
+assert selftest.out contains "parses arm" else "rune_core_witness missing arm claim"
+assert selftest.out contains "NotACore" else "rune_core_witness missing NotACore"
+
+say "GREEN: Glow `|%` thin core — one named arm; STOA14."
