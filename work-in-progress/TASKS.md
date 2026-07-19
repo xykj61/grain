@@ -341,8 +341,9 @@
 - [x] **STOA71 — NativeActivity-path Glow import seam (lean A)** `20260719.182120` — linengrow `@import` of Glow-lowered `lib_session_root_nest_cue_jam`; `session_root() == 5`; device-free; APK wire stays later.
 - [x] **STOA72 — NativeActivity APK Glow import wire (lean A)** `20260719.182648` — `glow_native_activity` imports lowered session-root; expect **5**; exports `glow_last_product_session_root`; pack GREEN; Sala B0 hex fold kept.
 - [x] **STOA73 — product-root write path (lean A, device-free half)** `20260719.184836` — onCreate writes `files/glow_product_root.txt` with **5**; pack GREEN; host install witness `stoa73_product_root_install_onpath_host.rish` ready (needs outer terminal).
+- [x] **STOA73 — Pixel product-root install eyes** `20260719.191719` — Keaton host: `glow_product_root.txt` = **5**; Sala B0 hex still present; install witness GREEN on GrapheneOS Pixel.
 - [x] **STOA74 — thin `+$` / `$:` one-field `@u32` mold (lean B)** `20260719.190825` — host install A jail-blocked; molds: `rune_mold` · `lower_mold` · desk `mold-amount` → `AmountMold`; welcome exit 0.
-- [ ] **STOA75 — next language / product** — check-in (host install eyes · `$%` · named-cast resolve · Sala B0 rewrite stay later).
+- [ ] **STOA75 — next language / product** — check-in (multi-field `$:` · `$%` · named-cast resolve · Sala B0 rewrite stay later).
 - [ ] **Dill-parallel kernel revival** — separate `active-reviving/` brief when a real need opens; not Dexter.
 - [ ] **M1 Scribble↔html round-trip witness** — named in fusion map; opens when Keaton leans doc pipeline.
 - [ ] **TAME witness-habitat pairing + Glow supplement** — horizon; needs Keaton's word (H2).
