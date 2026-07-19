@@ -2,9 +2,9 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Rule: [`.cursor/rules/remember.mdc`](../.cursor/rules/remember.mdc) · [`.claude/rules/remember.md`](../.claude/rules/remember.md).*
 
-**Last refreshed:** `20260718.194211` (Eastern) · voice Quin  
-**Product nib:** ZETA6 · LULU0–5 · SETU5 · HOLD0 · HOLD1 · **HOLD-W** (eyes seen)  
-**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU5 · HOLD0–HOLD1 · HOLD-W  
+**Last refreshed:** `20260718.201232` (Eastern) · voice Quin  
+**Product nib:** ZETA6 · LULU0–5 · **SETU6** · HOLD0–HOLD1 · HOLD-W  
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6 · HOLD0–HOLD1 · HOLD-W  
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`
 
 ---
@@ -18,7 +18,7 @@
 | **ZETA** | English QWERTY glass keyboard | ZETA0–6 GREEN (Pixel look) |
 | **JABS** | Sala broadcast live-session fold | JABS0–2 GREEN · JABS3 check-in |
 | **LULU** | Hearth · short home · Wired Glass | **LULU0–5 closed** |
-| **SETU** | USB hearth carry Glass↔Desk | **SETU0–SETU5 · HOLD0–HOLD1 · HOLD-W GREEN** · SETU6 check-in |
+| **SETU** | USB hearth carry Glass↔Desk | **SETU0–SETU6 · HOLD0–HOLD1 · HOLD-W GREEN** · SETU6.5 check-in |
 
 Canon: [`../docs/HAWM.md`](../docs/HAWM.md) · [`../docs/TUBE.md`](../docs/TUBE.md) · [`../docs/ZETA.md`](../docs/ZETA.md) · [`../docs/JABS.md`](../docs/JABS.md) · [`../docs/LULU.md`](../docs/LULU.md) · [`../docs/SETU.md`](../docs/SETU.md)
 
@@ -51,7 +51,7 @@ Hold row 1 → Settings: presets · `home ·` · `wire ·` · `cell ·` — all 
 
 | Door | Kind |
 |------|------|
-| **SETU6** QEMU/Pixel CDC-NCM lab | **check-in** (parked) |
+| **SETU6.5** live framed TX on usb0/ncm | **check-in** (needs gadget/QEMU) |
 | Amber/Amphora Glass↔Desk fuse | **declined** — compose later (`133455`) |
 | JABS3 · TAME Lap 3 | **check-in** |
 

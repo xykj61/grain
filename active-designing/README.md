@@ -1,7 +1,7 @@
 # The Active-Designing Stack
 
 **Language:** EN
-**Last updated:** 2026-07-18 (Desk Hearth Hold season · HOLD0 `185147`/`185306`)
+**Last updated:** 2026-07-18 (SETU6 lab harness `201232`)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Foundation
 
@@ -47,7 +47,8 @@ Dated briefs carry `YYYYMMDD-HHMMSS_short-slug.md` filenames; this README is the
 
 | Stamp | Brief | Meaning |
 |-------|-------|---------|
-| `20260718.185147` | [Desk Hearth Hold — season open](20260718-185147_desk-hearth-hold-season.md) | Desk names held station + ping/frame; HOLD0 GREEN; SETU6 parked; HOLD1 check-in |
+| `20260718.201232` | [SETU6 — device-wire lab harness](20260718-201232_setu6-device-wire-lab.md) | Lab card · stand-in/armed; live TX = SETU6.5 |
+| `20260718.185147` | [Desk Hearth Hold — season open](20260718-185147_desk-hearth-hold-season.md) | HOLD0–HOLD1 · HOLD-W closed on eyes; SETU6 opened after |
 | `20260718.133455` | [Glass↔Desk compose Amber/Amphora — revive](20260718-133455_glass-desk-compose-amber-amphora-revive.md) | Compose later, do not fuse; SETU/LULU stay warm wire; Tilak→resin→Amphora graduation horizon |
 | `20260718.122145` | [Hearth · LULU — display presets, short home, ZETA6](20260718-122145_hearth-lulu-display-presets-short-home-and-zeta6-send.md) | Hearth Bron · LULU0–5 · SETU0; Wired Glass prefs |
 | `20260717.175220` | [Dexter English QWERTY glass keyboard](20260717-175220_dexter-english-qwerty-glass-keyboard.md) | Own Skate OSK (iOS-inspired public layout); decline Graphene IME host; K0–K5; caret blink K3 |

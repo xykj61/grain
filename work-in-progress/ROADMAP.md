@@ -4,7 +4,7 @@
 
 **Language:** EN
 **Version:** `20260715` (Pool keystone revival prioritized · Quin voice seated · align pass reconciles the closed ladder)
-**Last updated:** 2026-07-18 (**HOLD Wayland** GREEN · session-logs archive)
+**Last updated:** 2026-07-18 (**SETU6** GREEN — device-wire lab harness)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Lens:** TAME — safety, performance, joy; the Seed Law; [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md)
@@ -289,6 +289,8 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 **HOLD Wayland eyes GREEN · archive fold, `20260718.193735`–`193951`** — Desk raster + look selftest; yesterday's logs folded (165). Next: **send**; SETU6 stays parked; optional compositor eyes via `setu_desk_hold_wayland_look`.
 
 **HOLD Wayland eyes seen · Desk Hearth Hold closed, `20260718.194211`** — Keaton saw hold chrome on Wayland. Season job complete. Next: **SETU6** check-in when ready, or pause.
+
+**SETU6 lab harness GREEN, `20260718.201232`** — approved: payload ready · iface classified · stand-in on this host (Pixel still charging+debug). Next: **send**; SETU6.5 live TX check-in when gadget/QEMU chosen.
 
 **Glow OS · Glow Desk · Glow Glass seated, `20260717.183622`** — Keaton: **Glow OS** unifies; **Glow Desk** = desktop; **Glow Glass** = mobile. Lexicon + silo [`../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md`](../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md). Orientation firmware stays check-in.
 

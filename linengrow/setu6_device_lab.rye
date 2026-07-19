@@ -1,0 +1,126 @@
+//! linengrow/setu6_device_lab.rye — SETU6: device-wire lab harness.
+//!
+//! Approved thin face: Desk proves the SETU5 payload is lab-ready and classifies
+//! the host gadget iface (none → stand-in · usb0/ncm → armed). Live CDC-NCM TX
+//! over a real iface stays the next kg once Pixel/QEMU exposes one.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const setu0 = @import("setu0_hearth_pull.rye");
+const setu3 = @import("setu3_ncm_frame.rye");
+const setu5 = @import("setu5_device_payload.rye");
+const tally_copy = @import("tally_copy.rye");
+
+pub const waymark: []const u8 = setu0.waymark;
+pub const lab_format: []const u8 = "setu-lab-v1";
+pub const lab_bron_path = "tools/.cache/setu0/lab.bron";
+pub const status_line_max: u32 = 96;
+pub const iface_name_max: u32 = 16;
+pub const max_lab_bron_len: u32 = 256;
+
+pub const LabMode = enum {
+    stand_in,
+    armed,
+
+    pub fn name(self: LabMode) []const u8 {
+        return switch (self) {
+            .stand_in => "stand-in",
+            .armed => "armed",
+        };
+    }
+};
+
+pub const LabStatus = struct {
+    payload_ready: bool = false,
+    payload_len: u32 = 0,
+    iface: [iface_name_max]u8 = .{' '} ** iface_name_max,
+    iface_len: u32 = 0,
+    mode: LabMode = .stand_in,
+
+    pub fn iface_slice(self: *const LabStatus) []const u8 {
+        if (self.iface_len == 0) return "none";
+        return self.iface[0..self.iface_len];
+    }
+};
+
+/// Build lab status from SETU5 payload + optional iface name (empty → none).
+pub fn make_lab_status(iface_name: []const u8) ?LabStatus {
+    var frame: [setu3.max_frame]u8 = undefined;
+    const flen = setu5.build_device_payload(&frame) orelse return null;
+    var out: LabStatus = .{
+        .payload_ready = true,
+        .payload_len = flen,
+        .mode = if (iface_name.len == 0) .stand_in else .armed,
+    };
+    if (iface_name.len > 0) {
+        if (iface_name.len > iface_name_max) return null;
+        tally_copy.copy_disjoint(u8, out.iface[0..iface_name.len], iface_name);
+        out.iface_len = @intCast(iface_name.len);
+    }
+    return out;
+}
+
+/// `lab · payload {yes|no} · {n}b · iface {name|none} · {stand-in|armed}`
+pub fn format_lab_line(s: LabStatus, out: *[status_line_max]u8) ?[]const u8 {
+    const ready = if (s.payload_ready) "yes" else "no";
+    const line = std.fmt.bufPrint(
+        out,
+        "lab · payload {s} · {d}b · iface {s} · {s}",
+        .{ ready, s.payload_len, s.iface_slice(), s.mode.name() },
+    ) catch return null;
+    assert(line.len <= status_line_max);
+    return line;
+}
+
+pub fn format_lab_bron(s: LabStatus, out: *[max_lab_bron_len]u8) ?u32 {
+    const text = std.fmt.bufPrint(
+        out,
+        \\format {s}
+        \\payload_ready {s}
+        \\payload_len {d}
+        \\iface {s}
+        \\mode {s}
+        \\waymark {s}
+        \\
+    ,
+        .{
+            lab_format,
+            if (s.payload_ready) "yes" else "no",
+            s.payload_len,
+            s.iface_slice(),
+            s.mode.name(),
+            waymark,
+        },
+    ) catch return null;
+    assert(text.len <= max_lab_bron_len);
+    return @intCast(text.len);
+}
+
+/// Device-free: no iface → stand-in lab with ready payload.
+pub fn fixture_stand_in_lab_ready() bool {
+    const s = make_lab_status("") orelse return false;
+    if (!s.payload_ready) return false;
+    if (s.mode != .stand_in) return false;
+    if (s.payload_len == 0 or s.payload_len > setu5.device_max_frame) return false;
+    var buf: [status_line_max]u8 = undefined;
+    const line = format_lab_line(s, &buf) orelse return false;
+    return std.mem.indexOf(u8, line, "stand-in") != null and
+        std.mem.indexOf(u8, line, "iface none") != null and
+        std.mem.indexOf(u8, line, "payload yes") != null;
+}
+
+/// Device-free: named usb0 → armed mode.
+pub fn fixture_armed_when_iface() bool {
+    const s = make_lab_status("usb0") orelse return false;
+    if (s.mode != .armed) return false;
+    var buf: [status_line_max]u8 = undefined;
+    const line = format_lab_line(s, &buf) orelse return false;
+    return std.mem.indexOf(u8, line, "iface usb0") != null and
+        std.mem.indexOf(u8, line, "armed") != null;
+}
+
+comptime {
+    _ = print;
+    assert(std.mem.eql(u8, waymark, "SETU"));
+}

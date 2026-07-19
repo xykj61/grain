@@ -2,19 +2,19 @@
 
 *Waymark for wire-first sync: pull · apply · ping · UDP · NCM frame · live framed socket · device-wire payload · Desk hold status — before Pixel/QEMU gadget bind.*
 
-**Status:** Checkable — operator compressor (SETU0–SETU5 · HOLD0–HOLD1 GREEN)  
+**Status:** Checkable — operator compressor (SETU0–SETU6 · HOLD0–HOLD1 · HOLD-W GREEN)  
 **Depth:** guide  
 **Ceiling:** ≤80 lines  
-**Last updated:** 2026-07-18 (HOLD Wayland eyes)  
+**Last updated:** 2026-07-18 (SETU6 lab harness)  
 **Compresses:** [`LULU.md`](LULU.md) · [`../active-designing/20260718-122145_hearth-lulu-display-presets-short-home-and-zeta6-send.md`](../active-designing/20260718-122145_hearth-lulu-display-presets-short-home-and-zeta6-send.md) · season [`../active-designing/20260718-185147_desk-hearth-hold-season.md`](../active-designing/20260718-185147_desk-hearth-hold-season.md) · compose [`../active-designing/20260718-133455_glass-desk-compose-amber-amphora-revive.md`](../active-designing/20260718-133455_glass-desk-compose-amber-amphora-revive.md)
 
 ---
 
 ## Thesis — the cable that installs can carry home
 
-The fold crosses USB as files, then as a sealed ping, then as an NCM-shaped frame on a live socket, then as a virtio-sized device payload (`lane_frame.bin`). Desk names that hold in one status line (**HOLD0**). Live CDC-NCM iface / QEMU device-wire lab bind is **SETU6** (parked).
+The fold crosses USB as files, then as a sealed ping, then as an NCM-shaped frame on a live socket, then as a virtio-sized device payload (`lane_frame.bin`). Desk names that hold in one status line (**HOLD0**). **SETU6** seats the device-wire lab harness (payload ready · iface classified). Live CDC-NCM TX waits until Pixel/QEMU exposes `usb0`/`ncm`.
 
-**Waymark:** **SETU**. Sibling **LULU** owns the preference mold. Season: Desk Hearth Hold.
+**Waymark:** **SETU**. Sibling **LULU** owns the preference mold.
 
 ## Rung table
 
@@ -30,17 +30,16 @@ The fold crosses USB as files, then as a sealed ping, then as an NCM-shaped fram
 | **HOLD0** | Desk status · local ignores stale ping/frame | `setu_desk_hold0_witness` | **GREEN** `20260718.190720` |
 | **HOLD1** | Desk Skate: hold chrome rows 0–1 | `setu_desk_hold1_witness` | **GREEN** `20260718.193122` |
 | **HOLD-W** | Desk Wayland eyes: raster + look; eyes seen | `setu_desk_hold_wayland_witness` | **GREEN** `20260718.194211` |
-| **SETU6** | QEMU/Pixel CDC-NCM / device-wire lab | — | parked — check-in |
+| **SETU6** | Lab harness: payload ready · iface stand-in/armed | `setu6_device_lab_witness` | **GREEN** `20260718.201232` |
+| **SETU6.5** | Live framed TX on real usb0/ncm | — | open — needs gadget/QEMU |
 
 ## Hands-on
 
 ```bash
 cd ~/urbit
-rishi/bin/rishi run tools/setu_desk_hold1_witness.rish
-rishi/bin/rishi run tools/setu_desk_hold_wayland_witness.rish
-# eyes (host Wayland): linengrow/bin/setu_desk_hold_wayland_look
-# host (Pixel attached): pull → HOLD1 Skate cells
-rishi/bin/rishi run tools/setu0_hearth_pull_onpath_host.rish
+rishi/bin/rishi run tools/setu6_device_lab_witness.rish
+rishi/bin/rishi run tools/setu6_lab_probe_onpath_host.rish
+# eyes: linengrow/bin/setu_desk_hold_wayland_look
 ```
 
 ---

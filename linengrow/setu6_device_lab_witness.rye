@@ -1,0 +1,30 @@
+//! linengrow/setu6_device_lab_witness.rye — proves SETU6 lab harness.
+//!
+//!   rye build linengrow/setu6_device_lab_witness.rye \
+//!     -femit-bin=linengrow/bin/setu6_device_lab_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const setu6 = @import("setu6_device_lab.rye");
+
+const witness_version = "20260718.201232";
+
+fn run_selftest(_: std.process.Init) !u8 {
+    assert(std.mem.eql(u8, setu6.waymark, "SETU"));
+    print("setu6: waymark {s} -- GREEN\n", .{setu6.waymark});
+
+    assert(setu6.fixture_stand_in_lab_ready());
+    print("setu6: stand-in lab ready -- GREEN\n", .{});
+
+    assert(setu6.fixture_armed_when_iface());
+    print("setu6: armed when iface named -- GREEN\n", .{});
+
+    print("setu6: version {s}\n", .{witness_version});
+    print("GREEN: SETU6 — device-wire lab harness seated (device-free).\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
+}
