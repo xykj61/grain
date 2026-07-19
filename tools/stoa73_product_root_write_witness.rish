@@ -1,0 +1,24 @@
+# stoa73_product_root_write_witness.rish — STOA73 A device-free half:
+# NativeActivity writes files/glow_product_root.txt with Glow session_root
+# (expect 5). Pack GREEN. Host install proof is the companion onpath script.
+#
+#   rishi/bin/rishi run tools/stoa73_product_root_write_witness.rish
+# Host (device attached):
+#   rishi/bin/rishi run tools/stoa73_product_root_install_onpath_host.rish
+
+let so_arm = "tools/.cache/tube05/staging/lib/arm64-v8a/libglowapp.so"
+
+# 1) Pack with Glow import + product-root write path.
+let pack = run ["rishi/bin/rishi" "run" "tools/stoa72_glow_apk_import_witness.rish"]
+assert pack.ok else "stoa72 pack path failed — STOA73 needs APK import wire GREEN"
+assert pack.out contains "GREEN" else "stoa72 pack path missing GREEN"
+
+# 2) Source honestly writes glow_product_root.txt and expect-5 path.
+let src = run ["sh" "-c" "grep -q 'glow_product_root.txt' linengrow/glow_native_activity.rye && grep -q 'write_product_root_file' linengrow/glow_native_activity.rye && grep -q 'product_root == 5' linengrow/glow_native_activity.rye"]
+assert src.ok else "glow_native_activity missing product-root write / expect-5"
+
+# 3) Packed .so carries the filename string (onCreate write path linked in).
+let so_str = run ["sh" "-c" "strings ${so_arm} | grep -q glow_product_root.txt"]
+assert so_str.ok else "arm64 libglowapp.so missing glow_product_root.txt string"
+
+say "GREEN: STOA73 A — NativeActivity writes glow_product_root.txt (expect 5); pack device-free. Host: rishi/bin/rishi run tools/stoa73_product_root_install_onpath_host.rish"
