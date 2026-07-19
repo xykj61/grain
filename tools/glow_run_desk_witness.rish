@@ -199,7 +199,13 @@ assert corepay.ok else "glow_run core-payload.glow failed"
 assert corepay.out contains "GREEN" else "glow_run core-payload.glow not GREEN"
 assert corepay.out contains "core-payload.glow" else "glow_run core-payload claim missing path"
 
+let composecore = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/compose-core.glow"]
+assert composecore.ok else "glow_run compose-core.glow failed"
+assert composecore.out contains "GREEN" else "glow_run compose-core.glow not GREEN"
+assert composecore.out contains "compose-core.glow" else "glow_run compose-core claim missing path"
+
 say "GREEN: glow_run desk — all desk generators lowered, built, exit 0."
+
 
 
 

@@ -1,0 +1,176 @@
+//! glow/lower_compose_core.rye — lower face→`|%` core compose to one `.rye`.
+//!
+//! Thin STOA18 face (exactly four lines):
+//!   =/  amount  5
+//!   |%
+//!   ++  double
+//!   --
+//!
+//! Outer face is the sample; the core carries one closed arm and no payload.
+
+const std = @import("std");
+const rf = @import("rune_face.rye");
+const rk = @import("rune_core.rye");
+const lower_multi = @import("lower_multi.rye");
+
+pub const LowerError = rf.ParseError || rk.ParseError || lower_multi.LowerError || error{
+    Overflow,
+    EmptySource,
+    BadIdent,
+    NotAComposeCore,
+    UnknownArm,
+    NotBareLiteral,
+    MalformedValue,
+    CoreHasPayload,
+};
+
+pub const compose_core_expect: u32 = 10;
+
+fn is_digit(ch: u8) bool {
+    return ch >= '0' and ch <= '9';
+}
+
+fn zig_safe_ident(face: []const u8, out: *[rf.max_name_len]u8) LowerError!usize {
+    if (face.len == 0 or face.len > rf.max_name_len) return error.BadIdent;
+    var i: usize = 0;
+    while (i < face.len) : (i += 1) {
+        const ch = face[i];
+        const mapped: u8 = if (ch == '-') '_' else ch;
+        if (i == 0) {
+            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or mapped == '_'))
+                return error.BadIdent;
+        } else {
+            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or (mapped >= '0' and mapped <= '9') or mapped == '_'))
+                return error.BadIdent;
+        }
+        out[i] = mapped;
+    }
+    return face.len;
+}
+
+fn parse_trailing_u32(rest: []const u8) LowerError!u32 {
+    const t = std.mem.trim(u8, rest, " \t\r\n");
+    if (t.len == 0) return error.NotBareLiteral;
+    var i: usize = 0;
+    var v: u32 = 0;
+    while (i < t.len) : (i += 1) {
+        if (!is_digit(t[i])) return error.NotBareLiteral;
+        const d: u32 = t[i] - '0';
+        if (v > (std.math.maxInt(u32) - d) / 10) return error.Overflow;
+        v = v * 10 + d;
+    }
+    return v;
+}
+
+pub const ComposeCoreSpec = struct {
+    face: [rf.max_name_len]u8 = .{0} ** rf.max_name_len,
+    face_len: usize = 0,
+    value: u32 = 0,
+    arm: [rk.max_name_len]u8 = .{0} ** rk.max_name_len,
+    arm_len: usize = 0,
+};
+
+pub fn face_slice(spec: *const ComposeCoreSpec) []const u8 {
+    return spec.face[0..spec.face_len];
+}
+
+pub fn arm_slice(spec: *const ComposeCoreSpec) []const u8 {
+    return spec.arm[0..spec.arm_len];
+}
+
+fn fill_bare_face(line: []const u8, spec: *ComposeCoreSpec) LowerError!void {
+    const face_spec = try rf.parse(line);
+    const face = rf.face_slice(&face_spec);
+    if (rf.mold_slice(&face_spec).len != 0) return error.NotBareLiteral;
+    const after_head = std.mem.trimStart(u8, line[2..], " \t");
+    if (!std.mem.startsWith(u8, after_head, face)) return error.MalformedValue;
+    const after_face = std.mem.trimStart(u8, after_head[face.len..], " \t");
+    const value = try parse_trailing_u32(after_face);
+    @memcpy(spec.face[0..face.len], face);
+    spec.face_len = face.len;
+    spec.value = value;
+}
+
+fn join_core_src(lines: []const []const u8, out: []u8) LowerError![]const u8 {
+    var at: usize = 0;
+    var i: usize = 0;
+    while (i < lines.len) : (i += 1) {
+        if (at + lines[i].len + 1 > out.len) return error.Overflow;
+        @memcpy(out[at..][0..lines[i].len], lines[i]);
+        at += lines[i].len;
+        out[at] = '\n';
+        at += 1;
+    }
+    return out[0..at];
+}
+
+pub fn parse_compose_core(src: []const u8) LowerError!ComposeCoreSpec {
+    var lines: [lower_multi.max_lines][]const u8 = undefined;
+    const n = try lower_multi.collect_lines(src, &lines);
+    if (n != 4) return error.NotAComposeCore;
+    if (lines[0].len < 2 or lines[0][0] != '=' or lines[0][1] != '/') return error.NotAComposeCore;
+    if (lines[1].len < 2 or lines[1][0] != '|' or lines[1][1] != '%') return error.NotAComposeCore;
+
+    var spec: ComposeCoreSpec = .{};
+    try fill_bare_face(lines[0], &spec);
+    if (spec.value != 5) return error.MalformedValue;
+
+    var core_buf: [256]u8 = undefined;
+    const core_src = try join_core_src(lines[1..n], &core_buf);
+    const core = try rk.parse_source(core_src);
+    if (rk.has_payload(&core)) return error.CoreHasPayload;
+    if (core.count != 1) return error.NotAComposeCore;
+    const arm = rk.arm_at(&core, 0);
+    if (!std.mem.eql(u8, arm, "double")) return error.UnknownArm;
+
+    @memcpy(spec.arm[0..arm.len], arm);
+    spec.arm_len = arm.len;
+    return spec;
+}
+
+fn emit_compose_core(spec: *const ComposeCoreSpec, welcome: bool, out: []u8) LowerError!u32 {
+    var zf: [rf.max_name_len]u8 = undefined;
+    var za: [rk.max_name_len]u8 = undefined;
+    const fn_len = try zig_safe_ident(face_slice(spec), &zf);
+    const an = try zig_safe_ident(arm_slice(spec), &za);
+    const expect: u32 = if (welcome) compose_core_expect else compose_core_expect +% 1;
+
+    const written = std.fmt.bufPrint(out,
+        \\const std = @import("std");
+        \\
+        \\/// Lowered from Glow face→`|%` compose (STOA18).
+        \\const Core = struct {{
+        \\    pub fn {s}(sample: u32) u32 {{
+        \\        return sample *% 2;
+        \\    }}
+        \\}};
+        \\
+        \\pub fn main(_: std.process.Init) !u8 {{
+        \\    const {s}: u32 = {d};
+        \\    return if (Core.{s}({s}) == {d}) 0 else 1;
+        \\}}
+        \\
+    , .{
+        za[0..an],
+        zf[0..fn_len],
+        spec.value,
+        za[0..an],
+        zf[0..fn_len],
+        expect,
+    }) catch return error.Overflow;
+    return @intCast(written.len);
+}
+
+pub fn lower_source_welcome(src: []const u8, out: []u8) LowerError!u32 {
+    const trimmed = std.mem.trim(u8, src, " \t\r\n");
+    if (trimmed.len == 0) return error.EmptySource;
+    const spec = try parse_compose_core(src);
+    return emit_compose_core(&spec, true, out);
+}
+
+pub fn lower_source_unwelcome(src: []const u8, out: []u8) LowerError!u32 {
+    const trimmed = std.mem.trim(u8, src, " \t\r\n");
+    if (trimmed.len == 0) return error.EmptySource;
+    const spec = try parse_compose_core(src);
+    return emit_compose_core(&spec, false, out);
+}
