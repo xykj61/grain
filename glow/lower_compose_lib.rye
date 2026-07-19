@@ -36,6 +36,12 @@
 //!   =/  amount  5
 //!   %-  unpack  amount
 //!
+//! STOA65 — payload cue-of-jam library (arm is `self`, no sample arg):
+//!   /+  lib-core-payload-cue-jam
+//!   =/  amount  5
+//!   %-  unpack  amount
+//! Face value must match the library payload; call is `core.unpack()`.
+//!
 //! The import stem names `glow/gen/<stem>.glow`. glow_run lowers that desk
 //! as a library (no main) into `glow/.cache/`, then this lower emits a
 //! consumer that imports it and calls the arm.
