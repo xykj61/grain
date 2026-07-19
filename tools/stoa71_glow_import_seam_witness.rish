@@ -1,0 +1,39 @@
+# stoa71_glow_import_seam_witness.rish — NativeActivity-path Glow import seam.
+#
+# Proves a linengrow Rye consumer (same @import shape NativeActivity uses)
+# can load Glow-lowered lib_session_root_nest_cue_jam and get session_root()==5.
+# Device-free. Does not wire the APK yet.
+#
+#   rishi/bin/rishi run tools/stoa71_glow_import_seam_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let cache_lib = "glow/.cache/lib_session_root_nest_cue_jam.rye"
+let link_lib = "linengrow/lib_session_root_nest_cue_jam.rye"
+let consumer = "linengrow/stoa71_glow_import_seam.rye"
+let bin = "linengrow/bin/stoa71_glow_import_seam"
+
+# 1) Lower the STOA70 library desk (seats glow/.cache library rye, no main).
+let desk = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/use-lib-session-root-nest-cue-jam.glow"]
+assert desk.ok else "glow_run use-lib-session-root-nest-cue-jam.glow failed"
+assert desk.out contains "GREEN" else "glow_run use-lib-session-root-nest-cue-jam.glow not GREEN"
+
+# 2) Cache is a library module (Core + session_root, no main).
+let cache_check = run ["sh" "-c" "test -f ${cache_lib} && grep -q 'pub const Core' ${cache_lib} && grep -q 'pub fn session_root' ${cache_lib} && ! grep -q 'pub fn main' ${cache_lib}"]
+assert cache_check.ok else "Glow-lowered session-root library missing or not library-shaped"
+
+# 3) Seat the NativeActivity-path import symlink (witness-only; gitignored).
+let link = run ["sh" "-c" "ln -sfn ../glow/.cache/lib_session_root_nest_cue_jam.rye ${link_lib}"]
+assert link.ok else "failed to seat linengrow → glow/.cache import symlink"
+
+# 4) Build and run the linengrow consumer.
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build ${consumer} -femit-bin=${bin}"]
+assert build.ok else "stoa71_glow_import_seam build failed"
+
+# std.debug.print lands on stderr — merge so GREEN is visible to rish.
+let run_bin = run ["sh" "-c" "${bin} 2>&1; echo EXIT:$?"]
+assert run_bin.ok else "stoa71_glow_import_seam binary failed to launch"
+assert run_bin.out contains "EXIT:0" else "stoa71_glow_import_seam did not exit 0"
+assert run_bin.out contains "GREEN" else "stoa71_glow_import_seam missing GREEN"
+assert run_bin.out contains "expect 5" else "stoa71_glow_import_seam missing expect 5"
+
+say "GREEN: STOA71 A — NativeActivity-path import of Glow-lowered session-root; expect 5; device-free."
