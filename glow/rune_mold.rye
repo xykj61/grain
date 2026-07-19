@@ -1,0 +1,124 @@
+//! glow/rune_mold.rye — parses Glow's thin `+$` / `$:` mold (STOA74).
+//!
+//! Per active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-
+//! riscv.md `$` category: `+$` names a mold; `$:` is a tuple body.
+//! Thin face: one field, mold `@u32` only. `$%` · multi-field · nest stay
+//! later. Shape:
+//!   +$  amount-mold
+//!     $:  amount=@u32
+//!     ==
+
+const std = @import("std");
+const lower_multi = @import("lower_multi.rye");
+
+pub const max_name_len: u32 = 64;
+
+pub const ParseError = error{
+    NotAMold,
+    MissingName,
+    NameTooLong,
+    MalformedName,
+    MissingTuple,
+    MissingField,
+    FieldTooLong,
+    MalformedField,
+    MoldNotU32,
+    MissingEnd,
+    TrailingJunk,
+    TooManyLines,
+    TooFewLines,
+    EmptySource,
+};
+
+pub const MoldSpec = struct {
+    name: [max_name_len]u8 = [_]u8{0} ** max_name_len,
+    name_len: usize = 0,
+    field: [max_name_len]u8 = [_]u8{0} ** max_name_len,
+    field_len: usize = 0,
+};
+
+pub fn name_slice(spec: *const MoldSpec) []const u8 {
+    return spec.name[0..spec.name_len];
+}
+
+pub fn field_slice(spec: *const MoldSpec) []const u8 {
+    return spec.field[0..spec.field_len];
+}
+
+fn is_ident_char(c: u8) bool {
+    if (c >= 'a' and c <= 'z') return true;
+    if (c >= 'A' and c <= 'Z') return true;
+    if (c >= '0' and c <= '9') return true;
+    return c == '-' or c == '_';
+}
+
+fn parse_ident(text: []const u8) ParseError![]const u8 {
+    if (text.len == 0 or text.len > max_name_len) return error.MalformedName;
+    if (text[0] >= '0' and text[0] <= '9') return error.MalformedName;
+    for (text) |c| {
+        if (!is_ident_char(c)) return error.MalformedName;
+    }
+    return text;
+}
+
+fn parse_field_clause(clause: []const u8) ParseError!struct { face: []const u8, mold: []const u8 } {
+    if (clause.len == 0 or clause.len > max_name_len * 2 + 1) return error.FieldTooLong;
+    var eq: ?usize = null;
+    var i: usize = 0;
+    while (i < clause.len) : (i += 1) {
+        if (clause[i] == '=') {
+            eq = i;
+            break;
+        }
+    }
+    const e = eq orelse return error.MalformedField;
+    const face = try parse_ident(clause[0..e]);
+    const mold = clause[e + 1 ..];
+    if (mold.len == 0 or mold.len > max_name_len) return error.MalformedField;
+    if (!std.mem.eql(u8, mold, "@u32")) return error.MoldNotU32;
+    return .{ .face = face, .mold = mold };
+}
+
+/// Parse a three-line thin mold source (comments/blanks already stripped by
+/// lower_multi.collect_lines).
+pub fn parse_source(src: []const u8) ParseError!MoldSpec {
+    if (src.len == 0) return error.EmptySource;
+    var lines: [lower_multi.max_lines][]const u8 = undefined;
+    const n = lower_multi.collect_lines(src, &lines) catch |err| switch (err) {
+        error.TooManyLines => return error.TooManyLines,
+        else => return error.EmptySource,
+    };
+    if (n < 3) return error.TooFewLines;
+    if (n > 3) return error.TooManyLines;
+
+    const head = std.mem.trim(u8, lines[0], " \t");
+    if (head.len < 2 or !std.mem.eql(u8, head[0..2], "+$")) return error.NotAMold;
+    var rest = std.mem.trimStart(u8, head[2..], " \t");
+    if (rest.len == 0) return error.MissingName;
+    var end: usize = 0;
+    while (end < rest.len and rest[end] != ' ' and rest[end] != '\t') end += 1;
+    const name = try parse_ident(rest[0..end]);
+    rest = std.mem.trimStart(u8, rest[end..], " \t");
+    if (rest.len != 0) return error.TrailingJunk;
+
+    const tup = std.mem.trim(u8, lines[1], " \t");
+    if (tup.len < 2 or !std.mem.eql(u8, tup[0..2], "$:")) return error.MissingTuple;
+    var field_rest = std.mem.trimStart(u8, tup[2..], " \t");
+    if (field_rest.len == 0) return error.MissingField;
+    end = 0;
+    while (end < field_rest.len and field_rest[end] != ' ' and field_rest[end] != '\t') end += 1;
+    const clause = field_rest[0..end];
+    field_rest = std.mem.trimStart(u8, field_rest[end..], " \t");
+    if (field_rest.len != 0) return error.TrailingJunk;
+    const field = try parse_field_clause(clause);
+
+    const closer = std.mem.trim(u8, lines[2], " \t");
+    if (!std.mem.eql(u8, closer, "==")) return error.MissingEnd;
+
+    var spec: MoldSpec = .{};
+    @memcpy(spec.name[0..name.len], name);
+    spec.name_len = name.len;
+    @memcpy(spec.field[0..field.face.len], field.face);
+    spec.field_len = field.face.len;
+    return spec;
+}

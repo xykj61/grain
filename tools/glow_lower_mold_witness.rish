@@ -1,0 +1,24 @@
+# glow_lower_mold_witness.rish — thin `+$` / `$:` lowers to Rye (STOA74).
+#
+#   rishi/bin/rishi run tools/glow_lower_mold_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "glow/bin/lower_mold_witness"
+let welcome_rye = "glow/.cache/mold_amount_welcome.rye"
+let welcome_bin = "glow/bin/mold_amount_welcome"
+
+let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/lower_mold_witness.rye -femit-bin=${bin}"]
+assert build.ok else "lower_mold_witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "lower_mold_witness exited non-zero"
+assert selftest.out contains "GREEN" else "lower_mold_witness not GREEN"
+assert selftest.out contains "AmountMold" else "lower_mold_witness missing AmountMold"
+
+let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
+assert build_welcome.ok else "mold welcome .rye build failed"
+let run_welcome = run ["sh" "-c" "${welcome_bin}; echo EXIT:$?"]
+assert run_welcome.ok else "mold welcome binary failed to launch"
+assert run_welcome.out contains "EXIT:0" else "mold welcome binary did not exit 0"
+
+say "GREEN: Glow thin +$ / $: mold hop — AmountMold lowers; welcome exit 0; STOA74."

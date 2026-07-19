@@ -1,0 +1,5 @@
+::  Thin +$ / $: one-field @u32 mold (STOA74).
+::  Lowered by glow/lower_mold.rye into ordinary Rye; Rishi stays the shell.
++$  amount-mold
+  $:  amount=@u32
+  ==

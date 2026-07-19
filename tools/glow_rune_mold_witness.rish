@@ -1,0 +1,17 @@
+# glow_rune_mold_witness.rish — thin `+$` / `$:` mold rune head (STOA74).
+#
+#   rishi/bin/rishi run tools/glow_rune_mold_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "glow/bin/rune_mold_witness"
+
+let build = run ["sh" "-c" "mkdir -p glow/bin && env RYE_ZIG=${zig} rye/bin/rye build glow/rune_mold_witness.rye -femit-bin=${bin}"]
+assert build.ok else "rune_mold_witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "rune_mold_witness exited non-zero"
+assert selftest.out contains "GREEN" else "rune_mold_witness not GREEN"
+assert selftest.out contains "amount-mold" else "rune_mold_witness missing amount-mold"
+assert selftest.out contains "MoldNotU32" else "rune_mold_witness missing MoldNotU32"
+
+say "GREEN: Glow thin +$ / $: mold rune head — one-field @u32; STOA74."
