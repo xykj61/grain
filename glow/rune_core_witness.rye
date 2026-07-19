@@ -38,6 +38,20 @@ const nest_src =
     \\--
 ;
 
+const jam_nest_src =
+    \\::  Open arm nest jam body (STOA35).
+    \\|%
+    \\++  nest  (jam (mix sample sample) sample)
+    \\--
+;
+
+const jam_right_nest_src =
+    \\::  Open arm nest jam right (STOA36).
+    \\|%
+    \\++  nest  (jam sample (mix sample sample))
+    \\--
+;
+
 const mix_src =
     \\::  Open arm nest body — mix (STOA27).
     \\|%
@@ -137,6 +151,19 @@ fn run_selftest() !u8 {
     assert(rk.arm_has_body(&nest, 0));
     assert(rk.arm_body_at(&nest, 0).kind == .jam_of);
     print("core: nest jam arm parses -- GREEN\n", .{});
+
+    const jam_nest = try rk.parse_source(jam_nest_src);
+    assert(jam_nest.count == 1);
+    assert(rk.arm_has_body(&jam_nest, 0));
+    assert(rk.arm_body_at(&jam_nest, 0).kind == .jam_of);
+    assert(rk.arm_body_at(&jam_nest, 0).left_arg == .mix_of);
+    print("core: nest jam-of-mix arm parses -- GREEN\n", .{});
+
+    const jam_rn = try rk.parse_source(jam_right_nest_src);
+    assert(jam_rn.count == 1);
+    assert(rk.arm_body_at(&jam_rn, 0).kind == .jam_of);
+    assert(rk.arm_body_at(&jam_rn, 0).right_arg == .mix_of);
+    print("core: nest jam-right-mix arm parses -- GREEN\n", .{});
 
     const mix = try rk.parse_source(mix_src);
     assert(mix.count == 1);

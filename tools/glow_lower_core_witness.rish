@@ -25,6 +25,8 @@ assert selftest.ok else "lower_core_witness exited non-zero"
 assert selftest.out contains "GREEN" else "lower_core_witness not GREEN"
 assert selftest.out contains "typed @u32 payload welcome" else "lower_core_witness missing typed payload claim"
 assert selftest.out contains "desks core-three core-payload-typed" else "lower_core_witness missing desk claim"
+assert selftest.out contains "nest jam-of-mix welcome" else "lower_core_witness missing nest jam-of-mix claim"
+assert selftest.out contains "nest jam-right-mix welcome" else "lower_core_witness missing nest jam-right-mix claim"
 assert selftest.out contains "UnknownArm" else "lower_core_witness missing UnknownArm"
 
 let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]

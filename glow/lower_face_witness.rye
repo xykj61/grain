@@ -139,6 +139,16 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, buf[0..n_nest_u], "nested == 393220") != null);
     print("lower: \"=/  nested=@u32  (jam (mix from amount) amount)\" unwelcome expects mismatch -- GREEN\n", .{});
 
+    const n_rn = try lower.lower_line_welcome("=/  nested=@u32  (jam cell (mix from amount))", &buf);
+    const rye_rn = buf[0..n_rn];
+    assert(std.mem.indexOf(u8, rye_rn, "const cell: u32 = 5") != null);
+    assert(std.mem.indexOf(u8, rye_rn, "const from: u32 = 5") != null);
+    assert(std.mem.indexOf(u8, rye_rn, "const amount: u32 = 3") != null);
+    assert(std.mem.indexOf(u8, rye_rn, "const right_mix: u32 = from ^ amount") != null);
+    assert(std.mem.indexOf(u8, rye_rn, "const nested: u32 = (cell << 16) | right_mix") != null);
+    assert(std.mem.indexOf(u8, rye_rn, "nested == 327686") != null);
+    print("lower: \"=/  nested=@u32  (jam cell (mix from amount))\" welcome binds nest jam right -- GREEN\n", .{});
+
     if (lower.lower_line_welcome("=/  next-root=@u32  (foo root)", &buf)) |_| {
         return error.ValueLoweredTooSoon;
     } else |err| {
@@ -179,8 +189,12 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, gen_nest, "=/  nested=@u32  (jam (mix from amount) amount)") != null);
     print("lower: glow/gen/face-jam-nest.glow nests jam-of-mix under face -- GREEN\n", .{});
 
+    const gen_rn = try cwd.readFileAlloc(io, "glow/gen/face-jam-right-nest.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_rn, "=/  nested=@u32  (jam cell (mix from amount))") != null);
+    print("lower: glow/gen/face-jam-right-nest.glow nests jam-right-mix under face -- GREEN\n", .{});
+
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: `=/` lowers faces with nested `^-`, `(lent …)`, `(mix …)`, `(jam …)`, nest jam, and `(cue …)` values to ordinary Rye.\n", .{});
+    print("GREEN: `=/` lowers faces with nested `^-`, `(lent …)`, `(mix …)`, `(jam …)`, nest jam left/right, and `(cue …)` values to ordinary Rye.\n", .{});
     return 0;
 }
 

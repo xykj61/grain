@@ -19,8 +19,10 @@ assert selftest.out contains "typed @u32 payload parses" else "rune_core_witness
 assert selftest.out contains "AuraNotYetLowered" else "rune_core_witness missing AuraNotYetLowered"
 assert selftest.out contains "PayloadAfterArm" else "rune_core_witness missing PayloadAfterArm"
 assert selftest.out contains "NotACore" else "rune_core_witness missing NotACore"
+assert selftest.out contains "nest jam-of-mix arm parses" else "rune_core_witness missing nest jam-of-mix claim"
+assert selftest.out contains "nest jam-right-mix arm parses" else "rune_core_witness missing nest jam-right-mix claim"
 
-say "GREEN: Glow `|%` thin core — arms and bare or typed @u32 payload; STOA14/15/17/20/21."
+say "GREEN: Glow `|%` thin core — arms and bare or typed @u32 payload; STOA14/15/17/20/21/35/36."
 
 
 

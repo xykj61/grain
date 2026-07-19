@@ -136,7 +136,12 @@ fn open_body_expect(body: *const expr.Expr, sample: u32) LowerError!u32 {
         .face => sample,
         .lent_of => expr.lent_demo_len,
         .mix_of => sample ^ sample,
-        .jam_of => (sample << 16) | sample,
+        .jam_of => if (body.left_arg == .mix_of)
+            ((sample ^ sample) << 16) | sample
+        else if (body.right_arg == .mix_of)
+            (sample << 16) | (sample ^ sample)
+        else
+            (sample << 16) | sample,
         .cue_of => sample & 0xffff,
     };
 }
@@ -147,7 +152,12 @@ fn emit_open_body(body: *const expr.Expr, out: []u8) LowerError![]const u8 {
         .face => std.fmt.bufPrint(out, "return sample;", .{}) catch return error.Overflow,
         .lent_of => std.fmt.bufPrint(out, "return {d};", .{expr.lent_demo_len}) catch return error.Overflow,
         .mix_of => std.fmt.bufPrint(out, "return sample ^ sample;", .{}) catch return error.Overflow,
-        .jam_of => std.fmt.bufPrint(out, "return (sample << 16) | sample;", .{}) catch return error.Overflow,
+        .jam_of => if (body.left_arg == .mix_of)
+            std.fmt.bufPrint(out, "return ((sample ^ sample) << 16) | sample;", .{}) catch return error.Overflow
+        else if (body.right_arg == .mix_of)
+            std.fmt.bufPrint(out, "return (sample << 16) | (sample ^ sample);", .{}) catch return error.Overflow
+        else
+            std.fmt.bufPrint(out, "return (sample << 16) | sample;", .{}) catch return error.Overflow,
         .cue_of => std.fmt.bufPrint(out, "return sample & 0xffff;", .{}) catch return error.Overflow,
     };
 }

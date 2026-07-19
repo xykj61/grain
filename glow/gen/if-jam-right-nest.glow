@@ -1,0 +1,2 @@
+::  Conditional with nest jam right then-arm.
+?:  (gth tick 32)  (jam cell (mix from amount))  0
