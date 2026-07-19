@@ -204,7 +204,18 @@ assert composecore.ok else "glow_run compose-core.glow failed"
 assert composecore.out contains "GREEN" else "glow_run compose-core.glow not GREEN"
 assert composecore.out contains "compose-core.glow" else "glow_run compose-core claim missing path"
 
+let composecore2 = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/compose-core-two.glow"]
+assert composecore2.ok else "glow_run compose-core-two.glow failed"
+assert composecore2.out contains "GREEN" else "glow_run compose-core-two.glow not GREEN"
+assert composecore2.out contains "compose-core-two.glow" else "glow_run compose-core-two claim missing path"
+
+let core3 = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/core-three.glow"]
+assert core3.ok else "glow_run core-three.glow failed"
+assert core3.out contains "GREEN" else "glow_run core-three.glow not GREEN"
+assert core3.out contains "core-three.glow" else "glow_run core-three claim missing path"
+
 say "GREEN: glow_run desk — all desk generators lowered, built, exit 0."
+
 
 
 

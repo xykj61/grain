@@ -90,6 +90,7 @@ pub fn parse_multi_typed(src: []const u8) LowerError!MultiTypedSpec {
     var lines: [max_lines][]const u8 = undefined;
     const n = try lower_multi.collect_lines(src, &lines);
     if (n < 2) return error.NeedMulti;
+    if (n > lower_multi.max_bare_multi) return error.TooManyLines;
 
     var spec: MultiTypedSpec = .{};
     var i: usize = 0;

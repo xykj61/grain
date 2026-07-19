@@ -329,7 +329,9 @@
 - [x] **STOA16 — library emit** `20260718.225150` — Core only, no `main`; desk `lib-core-double`; consumer `@import` exit 0.
 - [x] **STOA17 — core payload** `20260718.225931` — `|%` / `=/ amount 5` / `++ double` / `--`; desk `core-payload`; arms use `self.amount`.
 - [x] **STOA18 — face→core compose** `20260718.230846` — outer `=/` then thin `|%` battery; desk `compose-core`; `Core.double(amount)`.
-- [ ] **STOA19 — 3+ arms / typed payload / richer compose** — check-in.
+- [x] **STOA19 — face→two-arm compose** `20260718.231511` — desk `compose-core-two`; `max_lines` 5.
+- [x] **STOA20 — three-arm battery** `20260718.231511` — `++ dec`; desk `core-three`; `max_arms` 3.
+- [ ] **STOA21 — typed payload / face→3 / richer compose** — check-in.
 - [ ] **Dill-parallel kernel revival** — separate `active-reviving/` brief when a real need opens; not Dexter.
 - [ ] **M1 Scribble↔html round-trip witness** — named in fusion map; opens when Keaton leans doc pipeline.
 - [ ] **TAME witness-habitat pairing + Glow supplement** — horizon; needs Keaton's word (H2).

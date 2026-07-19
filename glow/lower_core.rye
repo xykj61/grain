@@ -2,6 +2,7 @@
 //!
 //! STOA14: one closed arm `double`. STOA15: `double` and/or `inc`.
 //! STOA17: optional `=/` payload face; arms read `self.<face>`.
+//! STOA20: closed arm `dec` (sample -% 1) for three-arm batteries.
 //! Without payload, arms still take `sample: u32` (demo 5).
 //! Library emit (no main) is STOA16 (`lower_source_library`).
 
@@ -38,6 +39,7 @@ fn zig_safe_ident(face: []const u8, out: *[rk.max_name_len]u8) LowerError!usize 
 fn arm_body_sample(arm: []const u8) LowerError![]const u8 {
     if (std.mem.eql(u8, arm, "double")) return "return sample *% 2;";
     if (std.mem.eql(u8, arm, "inc")) return "return sample +% 1;";
+    if (std.mem.eql(u8, arm, "dec")) return "return sample -% 1;";
     return error.UnknownArm;
 }
 
@@ -48,12 +50,16 @@ fn arm_body_payload(arm: []const u8, face_zig: []const u8, out: []u8) LowerError
     if (std.mem.eql(u8, arm, "inc")) {
         return std.fmt.bufPrint(out, "return self.{s} +% 1;", .{face_zig}) catch return error.Overflow;
     }
+    if (std.mem.eql(u8, arm, "dec")) {
+        return std.fmt.bufPrint(out, "return self.{s} -% 1;", .{face_zig}) catch return error.Overflow;
+    }
     return error.UnknownArm;
 }
 
 fn arm_expect(arm: []const u8, sample: u32) LowerError!u32 {
     if (std.mem.eql(u8, arm, "double")) return sample *% 2;
     if (std.mem.eql(u8, arm, "inc")) return sample +% 1;
+    if (std.mem.eql(u8, arm, "dec")) return sample -% 1;
     return error.UnknownArm;
 }
 
