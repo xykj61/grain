@@ -7,7 +7,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const lower = @import("lower_compose_jam_cue.rye");
 
-const witness_version = "20260719.153200";
+const witness_version = "20260719.153800";
 
 const jam_cue_src =
     \\::  Cross-line jam then cue (STOA39).
@@ -20,6 +20,20 @@ const bind_jam_cue_src =
     \\=/  from=@u32  5
     \\=/  amount=@u32  3
     \\=/  cell-pack=@u32  (jam from amount)
+    \\=/  right=@u32  (cue cell-pack)
+;
+
+const bind_nest_jam_cue_src =
+    \\::  Bind faces then nest jam→cue (STOA44).
+    \\=/  from=@u32  5
+    \\=/  amount=@u32  3
+    \\=/  cell-pack=@u32  (jam (mix from amount) amount)
+    \\=/  right=@u32  (cue cell-pack)
+;
+
+const nest_jam_cue_src =
+    \\::  Nest jam then cue (STOA44).
+    \\=/  cell-pack=@u32  (jam (mix from amount) amount)
     \\=/  right=@u32  (cue cell-pack)
 ;
 
@@ -66,6 +80,37 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, rye_bind, "right == 3") != null);
     print("compose-jam-cue: welcome builds bind→jam→cue -- GREEN\n", .{});
 
+    assert(lower.looks_like_jam_cue(bind_nest_jam_cue_src));
+    const nest_bind = try lower.parse_jam_cue(bind_nest_jam_cue_src);
+    assert(nest_bind.has_binds);
+    assert(nest_bind.nest_left);
+    print("compose-jam-cue: bind→nest-jam→cue parses -- GREEN\n", .{});
+
+    const n_nest_bind = try lower.lower_source_welcome(bind_nest_jam_cue_src, &buf);
+    const rye_nest_bind = buf[0..n_nest_bind];
+    assert(std.mem.indexOf(u8, rye_nest_bind, "left_mix: u32 = from ^ amount") != null);
+    assert(std.mem.indexOf(u8, rye_nest_bind, "cell_pack: u32 = (left_mix << 16) | amount") != null);
+    assert(std.mem.indexOf(u8, rye_nest_bind, "right == 3") != null);
+    print("compose-jam-cue: welcome builds bind→nest-jam→cue -- GREEN\n", .{});
+
+    assert(lower.looks_like_jam_cue(nest_jam_cue_src));
+    const nest_spec = try lower.parse_jam_cue(nest_jam_cue_src);
+    assert(nest_spec.nest_left);
+    assert(!nest_spec.has_binds);
+    const n_nest = try lower.lower_source_welcome(nest_jam_cue_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n_nest], "left_mix: u32 = from ^ amount") != null);
+    print("compose-jam-cue: welcome builds nest-jam→cue -- GREEN\n", .{});
+
+    if (lower.parse_jam_cue(
+        \\=/  cell-pack=@u32  (jam (mix from amount) cell)
+        \\=/  right=@u32  (cue cell-pack)
+    )) |_| {
+        return error.NestPackRightNotCaught;
+    } else |err| {
+        if (err != lower.LowerError.ValueNotYetLowered) return err;
+    }
+    print("compose-jam-cue: nest pack-right mismatch refused ValueNotYetLowered -- GREEN\n", .{});
+
     if (lower.parse_jam_cue("=/  cell-pack=@u32  (jam from amount)\n=/  right=@u32  (cue other)\n")) |_| {
         return error.SampleMismatchNotCaught;
     } else |err| {
@@ -99,6 +144,8 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/compose_jam_cue_unwelcome.rye", .data = buf[0..n4] });
     const n5 = try lower.lower_source_welcome(bind_jam_cue_src, &buf);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/compose_bind_jam_cue_welcome.rye", .data = buf[0..n5] });
+    const n6 = try lower.lower_source_welcome(bind_nest_jam_cue_src, &buf);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/compose_bind_nest_jam_cue_welcome.rye", .data = buf[0..n6] });
     print("compose-jam-cue: wrote welcome and unwelcome .rye under glow/.cache/ -- GREEN\n", .{});
 
     const gen_src = try cwd.readFileAlloc(io, "glow/gen/compose-jam-cue.glow", a, .limited(4096));
@@ -112,8 +159,12 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, gen_bind, "=/  cell-pack=@u32  (jam from amount)") != null);
     print("compose-jam-cue: glow/gen/compose-bind-jam-cue.glow carries bind→jam→cue -- GREEN\n", .{});
 
+    const gen_nest = try cwd.readFileAlloc(io, "glow/gen/compose-bind-nest-jam-cue.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_nest, "=/  cell-pack=@u32  (jam (mix from amount) amount)") != null);
+    print("compose-jam-cue: glow/gen/compose-bind-nest-jam-cue.glow carries bind→nest-jam→cue -- GREEN\n", .{});
+
     print("compose-jam-cue: version {s}\n", .{witness_version});
-    print("GREEN: jam→cue and bind→jam→cue compose lower to ordinary Rye (STOA39/43).\n", .{});
+    print("GREEN: jam→cue, bind→jam→cue, and bind→nest-jam→cue compose lower to ordinary Rye (STOA39/43/44).\n", .{});
     return 0;
 }
 

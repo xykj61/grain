@@ -8,6 +8,8 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260719.154122` — [STOA44 bind→nest-jam→cue send](20260719-154122_stoa44-bind-nest-jam-cue-send.bron) — ship nest product compose; then STOA45 check-in
+- `20260719.154112` — [STOA44 bind→nest-jam→cue GREEN](20260719-154112_stoa44-bind-nest-jam-cue-green.bron) — authored nest pack unpack; await send
 - `20260719.153620` — [STOA43 bind→jam→cue send](20260719-153620_stoa43-bind-jam-cue-send.bron) — ship product multi-line; then STOA44 check-in
 - `20260719.153556` — [STOA43 bind→jam→cue GREEN](20260719-153556_stoa43-bind-jam-cue-green.bron) — authored bind pack unpack; await send
 - `20260719.153019` — [STOA42 cue nest jam both send](20260719-153019_stoa42-cue-nest-jam-both-send.bron) — ship nest-both cue; then STOA43 check-in
