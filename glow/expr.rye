@@ -3,6 +3,7 @@
 //! Nest forms: decimal · nested `^-  @uN  <decimal>` · bare face ·
 //! `(lent <face>)` · `(mix <face> <face>)` · `(jam <face> <face>)` ·
 //! `(jam (mix <face> <face>) <face>)` — one-deep nest left under jam ·
+//! `(jam <face> (mix <face> <face>))` — one-deep nest right under jam ·
 //! `(cue <face>)` — thin unpack of a jam cell-pack (low 16 bits).
 //! Other parenthesized forms refuse. Not a full token stream yet.
 
@@ -43,7 +44,7 @@ pub const Expr = struct {
     face_len: usize = 0,
     face2: [max_name_len]u8 = [_]u8{0} ** max_name_len,
     face2_len: usize = 0,
-    /// Jam right face when `left_arg == .mix_of` (mix occupies face/face2).
+    /// Third face: jam-right when left is mix, or mix-right when right is mix.
     face3: [max_name_len]u8 = [_]u8{0} ** max_name_len,
     face3_len: usize = 0,
     left_arg: ArgKind = .face,
@@ -85,6 +86,19 @@ pub fn jam_demo_result() u32 {
 /// `(jam (mix a b) c)` demo — mix result packed with right atom.
 pub fn jam_nest_demo_result() u32 {
     return (mix_demo_result() << 16) | jam_demo_right;
+}
+
+/// `(jam a (mix b c))` demo — left atom packed with mix result.
+pub fn jam_nest_right_demo_result() u32 {
+    return (jam_demo_left << 16) | mix_demo_result();
+}
+
+/// Demo expect for any thin jam form (flat · left-mix · right-mix).
+pub fn jam_expect(e: *const Expr) u32 {
+    if (e.kind != .jam_of) return jam_demo_result();
+    if (e.left_arg == .mix_of) return jam_nest_demo_result();
+    if (e.right_arg == .mix_of) return jam_nest_right_demo_result();
+    return jam_demo_result();
 }
 
 /// Thin `(cue cell)` — low 16 bits of a jam cell-pack (the right atom).
@@ -195,9 +209,8 @@ fn parse_paren(rest: []const u8) ParseError!Prefix {
         if (mid.len == 0) return error.MalformedExpr;
         const right = try parse_nest_arg(mid);
         if (right.rest.len == 0 or right.rest[0] != ')') return error.MalformedExpr;
-        // Thin STOA33: left may be `(mix a b)`; right stays a bare face.
-        if (right.kind != .face) return error.ExprNotYetLowered;
-        if (left.kind == .mix_of) {
+        // One-deep: left mix + face, or face + right mix. Both-mix stays later.
+        if (left.kind == .mix_of and right.kind == .face) {
             var e: Expr = .{
                 .kind = .jam_of,
                 .left_arg = .mix_of,
@@ -211,6 +224,21 @@ fn parse_paren(rest: []const u8) ParseError!Prefix {
             @memcpy(e.face3[0..right.face.len], right.face);
             return .{ .expr = e, .rest = std.mem.trimStart(u8, right.rest[1..], " \t") };
         }
+        if (left.kind == .face and right.kind == .mix_of) {
+            var e: Expr = .{
+                .kind = .jam_of,
+                .left_arg = .face,
+                .right_arg = .mix_of,
+                .face_len = left.face.len,
+                .face2_len = right.face.len,
+                .face3_len = right.face2.len,
+            };
+            @memcpy(e.face[0..left.face.len], left.face);
+            @memcpy(e.face2[0..right.face.len], right.face);
+            @memcpy(e.face3[0..right.face2.len], right.face2);
+            return .{ .expr = e, .rest = std.mem.trimStart(u8, right.rest[1..], " \t") };
+        }
+        if (left.kind != .face or right.kind != .face) return error.ExprNotYetLowered;
         var e: Expr = .{ .kind = .jam_of, .face_len = left.face.len, .face2_len = right.face.len };
         @memcpy(e.face[0..left.face.len], left.face);
         @memcpy(e.face2[0..right.face.len], right.face);

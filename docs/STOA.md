@@ -2,10 +2,10 @@
 
 *Waymark for Glow the language: rune heads that lower, nest forms that deepen, composition that grows toward Glow-authored modules. Compresses the working pin; never replaces it.*
 
-**Status:** Checkable — operator compressor (STOA0–STOA33 GREEN)  
+**Status:** Checkable — operator compressor (STOA0–STOA36 GREEN)  
 **Depth:** guide  
 **Ceiling:** ≤80 lines  
-**Last updated:** 2026-07-19 (STOA33 nest jam GREEN)  
+**Last updated:** 2026-07-19 (STOA36 nest jam right GREEN)  
 **Compresses:** [`../glow/README.md`](../glow/README.md) · first-code [`../expanding-prompts/20260717-213242_glow-first-code-beside-glass-and-open-runes.md`](../expanding-prompts/20260717-213242_glow-first-code-beside-glass-and-open-runes.md) · sameness [`../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md`](../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md) · seat [`../active-designing/20260718-202730_stoa-glow-language-waymark.md`](../active-designing/20260718-202730_stoa-glow-language-waymark.md)
 
 ---
@@ -54,13 +54,16 @@ Product glass and wire stay Rye-hosted under their own waymarks. **STOA** names 
 | **STOA31** | `/+` payload library | `glow_lower_compose_lib` · desk | **GREEN** `20260719.001148` |
 | **STOA32** | `(cue <face>)` thin unpack · desks | `glow_expr` · `glow_lower_*` · desk | **GREEN** `20260719.002221` |
 | **STOA33** | `(jam (mix …) …)` one-deep nest · face | `glow_expr` · `glow_lower_face` · desk | **GREEN** `20260719.002726` |
-| **STOA34** | Next language / product | horizon — check-in | horizon |
+| **STOA34** | Nest jam under `?:`/`?-`/`?~` arms | `glow_lower_*` · desks | **GREEN** `20260719.005207` |
+| **STOA35** | Nest jam under open `++` | `glow_rune_core` · `glow_lower_core` · desk | **GREEN** `20260719.005650` |
+| **STOA36** | `(jam … (mix …))` nest right | `glow_expr` · `glow_lower_*` · desks | **GREEN** `20260719.010409` |
+| **STOA37** | Next language / product | horizon — check-in | horizon |
 
 ## Hands-on
 
 ```bash
 cd ~/urbit
-rishi/bin/rishi run tools/glow_run.rish glow/gen/face-jam-nest.glow
+rishi/bin/rishi run tools/glow_run.rish glow/gen/face-jam-right-nest.glow
 rishi/bin/rishi run tools/glow_run_desk_witness.rish
 ```
 

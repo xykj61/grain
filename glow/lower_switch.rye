@@ -81,6 +81,10 @@ fn face2_slice(a: *const ArmExpr) []const u8 {
     return expr.face2_slice(a);
 }
 
+fn face3_slice(a: *const ArmExpr) []const u8 {
+    return expr.face3_slice(a);
+}
+
 fn mold_slice(a: *const ArmExpr) []const u8 {
     return expr.mold_slice(a);
 }
@@ -128,14 +132,14 @@ fn expect_mint_value(mint_arm: *const ArmExpr) u32 {
         .literal, .cast_literal => mint_arm.lit,
         .lent_of => expr.lent_demo_len,
         .mix_of => expr.mix_demo_result(),
-        .jam_of => expr.jam_demo_result(),
+        .jam_of => expr.jam_expect(mint_arm),
         .cue_of => expr.cue_demo_result(),
     };
 }
 
 const MixEmitted = struct {
-    slots: [4][max_arm_len]u8 = undefined,
-    lens: [4]usize = .{0} ** 4,
+    slots: [6][max_arm_len]u8 = undefined,
+    lens: [6]usize = .{0} ** 6,
     n: usize = 0,
 
     fn contains(self: *const MixEmitted, name: []const u8) bool {
@@ -257,6 +261,42 @@ fn emit_mix_bindings(mint_arm: *const ArmExpr, send_arm: *const ArmExpr, out: []
 
 fn emit_one_jam(role: []const u8, arm: *const ArmExpr, out: []u8, at: *usize, emitted: *MixEmitted) LowerError!void {
     if (arm.kind != .jam_of) return;
+    if (arm.left_arg == .mix_of) {
+        var zl: [max_arm_len]u8 = undefined;
+        const ln = try zig_safe_ident(face_slice(arm), &zl);
+        var zr: [max_arm_len]u8 = undefined;
+        const rn = try zig_safe_ident(face2_slice(arm), &zr);
+        var zj: [max_arm_len]u8 = undefined;
+        const jn = try zig_safe_ident(face3_slice(arm), &zj);
+        try emit_mix_atom(zl[0..ln], expr.mix_demo_left, out, at, emitted);
+        try emit_mix_atom(zr[0..rn], expr.mix_demo_right, out, at, emitted);
+        try emit_mix_atom(zj[0..jn], expr.jam_demo_right, out, at, emitted);
+        var mix_name_buf: [max_arm_len + 16]u8 = undefined;
+        const mix_name = std.fmt.bufPrint(&mix_name_buf, "{s}_left_mix", .{role}) catch return error.Overflow;
+        const mix_line = std.fmt.bufPrint(out[at.*..], "    const {s}: u32 = {s} ^ {s};\n", .{ mix_name, zl[0..ln], zr[0..rn] }) catch return error.Overflow;
+        at.* += mix_line.len;
+        const arm_line = std.fmt.bufPrint(out[at.*..], "    const {s}: u32 = ({s} << 16) | {s};\n", .{ role, mix_name, zj[0..jn] }) catch return error.Overflow;
+        at.* += arm_line.len;
+        return;
+    }
+    if (arm.right_arg == .mix_of) {
+        var zl: [max_arm_len]u8 = undefined;
+        const ln = try zig_safe_ident(face_slice(arm), &zl);
+        var zm: [max_arm_len]u8 = undefined;
+        const mn = try zig_safe_ident(face2_slice(arm), &zm);
+        var zr: [max_arm_len]u8 = undefined;
+        const rn = try zig_safe_ident(face3_slice(arm), &zr);
+        try emit_mix_atom(zl[0..ln], expr.jam_demo_left, out, at, emitted);
+        try emit_mix_atom(zm[0..mn], expr.mix_demo_left, out, at, emitted);
+        try emit_mix_atom(zr[0..rn], expr.mix_demo_right, out, at, emitted);
+        var mix_name_buf: [max_arm_len + 16]u8 = undefined;
+        const mix_name = std.fmt.bufPrint(&mix_name_buf, "{s}_right_mix", .{role}) catch return error.Overflow;
+        const mix_line = std.fmt.bufPrint(out[at.*..], "    const {s}: u32 = {s} ^ {s};\n", .{ mix_name, zm[0..mn], zr[0..rn] }) catch return error.Overflow;
+        at.* += mix_line.len;
+        const arm_line = std.fmt.bufPrint(out[at.*..], "    const {s}: u32 = ({s} << 16) | {s};\n", .{ role, zl[0..ln], mix_name }) catch return error.Overflow;
+        at.* += arm_line.len;
+        return;
+    }
     var zl: [max_arm_len]u8 = undefined;
     const ln = try zig_safe_ident(face_slice(arm), &zl);
     var zr: [max_arm_len]u8 = undefined;
@@ -348,10 +388,6 @@ fn emit_kind_program(tag: []const u8, mint_arm: *const ArmExpr, send_arm: *const
     return @intCast(written.len);
 }
 
-fn refuse_nest_jam_arm(arm: *const ArmExpr) LowerError!void {
-    if (expr.jam_has_nest_arg(arm)) return error.ArmNotYetLowered;
-}
-
 fn lower_line(line: []const u8, welcome: bool, out: []u8) LowerError!u32 {
     const trimmed = std.mem.trim(u8, line, " \t\r\n");
     if (trimmed.len == 0) return error.EmptySource;
@@ -359,8 +395,6 @@ fn lower_line(line: []const u8, welcome: bool, out: []u8) LowerError!u32 {
     const subject = rsw.subject_slice(&spec);
     _ = try classify_subject(subject);
     var arms = try arm_pair(trimmed, subject);
-    try refuse_nest_jam_arm(&arms.mint_arm);
-    try refuse_nest_jam_arm(&arms.send_arm);
     const tag: []const u8 = if (welcome) "mint" else "send";
     return emit_kind_program(tag, &arms.mint_arm, &arms.send_arm, out);
 }

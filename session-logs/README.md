@@ -8,6 +8,11 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260719.010738` — [STOA34–36 nest jam send](20260719-010738_stoa34-36-nest-jam-send.bron) — ship nest jam left/right; STOA37 check-in
+- `20260719.010610` — [STOA36 desk GREEN · kg pause](20260719-010610_stoa36-desk-green-kg-pause.bron) — full desk suite GREEN; send / STOA37 check-in
+- `20260719.010409` — [STOA36 nest jam right GREEN](20260719-010409_stoa36-nest-jam-right-green.bron) — jam right mix; await send with STOA34–35
+- `20260719.005650` — [STOA35 nest jam open core GREEN](20260719-005650_stoa35-nest-jam-open-core-green.bron) — ++ nest jam; await send with STOA34
+- `20260719.005207` — [STOA34 nest jam arms GREEN](20260719-005207_stoa34-nest-jam-arms-green.bron) — ?:/?-/~ nest jam; await send
 - `20260719.004851` — [Send STOA33 nest jam face](20260719-004851_send-stoa33-nest-jam.bron) — pier ship; STOA34 nest jam arms
 - `20260719.002726` — [STOA33 nest jam face GREEN](20260719-002726_stoa33-nest-jam-face-green.bron) — jam-of-mix face; await send
 - `20260719.002221` — [Send STOA32 cue nest GREEN](20260719-002221_send-stoa32-cue-nest.bron) — (cue …) desks; STOA33 check-in

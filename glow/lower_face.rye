@@ -41,6 +41,7 @@ const BoundValue = struct {
     subject3: [rf.max_name_len]u8 = [_]u8{0} ** rf.max_name_len,
     subject3_len: usize = 0,
     jam_left_mix: bool = false,
+    jam_right_mix: bool = false,
 };
 
 fn cast_mold_slice(b: *const BoundValue) []const u8 {
@@ -166,6 +167,22 @@ fn bound_value(line: []const u8, face: []const u8, mold: []const u8) LowerError!
                 @memcpy(bound.subject[0..mix_l.len], mix_l);
                 @memcpy(bound.subject2[0..mix_r.len], mix_r);
                 @memcpy(bound.subject3[0..jam_r.len], jam_r);
+                break :blk bound;
+            }
+            if (e.right_arg == .mix_of) {
+                const jam_l = expr.face_slice(&e);
+                const mix_l = expr.face2_slice(&e);
+                const mix_r = expr.face3_slice(&e);
+                var bound: BoundValue = .{
+                    .kind = .jam_of,
+                    .jam_right_mix = true,
+                    .subject_len = jam_l.len,
+                    .subject2_len = mix_l.len,
+                    .subject3_len = mix_r.len,
+                };
+                @memcpy(bound.subject[0..jam_l.len], jam_l);
+                @memcpy(bound.subject2[0..mix_l.len], mix_l);
+                @memcpy(bound.subject3[0..mix_r.len], mix_r);
                 break :blk bound;
             }
             const left = expr.face_slice(&e);
@@ -590,6 +607,167 @@ fn emit_jam_nest(
     return @intCast(written.len);
 }
 
+/// `(jam <a> (mix <b> <c>))` under a face — cell-pack with nest right.
+fn emit_jam_right_nest(
+    glow_label: []const u8,
+    face_mold: []const u8,
+    zig_face: []const u8,
+    jam_left: []const u8,
+    mix_left: []const u8,
+    mix_right: []const u8,
+    zig_ty: []const u8,
+    welcome: bool,
+    out: []u8,
+) LowerError!u32 {
+    var zl: [rf.max_name_len]u8 = undefined;
+    const ln = try zig_safe_ident(jam_left, &zl);
+    const zig_jl = zl[0..ln];
+    var zm: [rf.max_name_len]u8 = undefined;
+    const mn = try zig_safe_ident(mix_left, &zm);
+    const zig_ml = zm[0..mn];
+    var zr: [rf.max_name_len]u8 = undefined;
+    const rn = try zig_safe_ident(mix_right, &zr);
+    const zig_mr = zr[0..rn];
+    const result = expr.jam_nest_right_demo_result();
+    const expect: u32 = if (welcome) result else result +% 1;
+    const typed = face_mold.len != 0;
+    const same_jl_ml = std.mem.eql(u8, zig_jl, zig_ml);
+    if (typed) {
+        if (same_jl_ml) {
+            const written = std.fmt.bufPrint(out,
+                \\const std = @import("std");
+                \\
+                \\/// Lowered from Glow `=/  {s}={s}  (jam {s} (mix {s} {s}))` — nest jam right.
+                \\pub fn main(_: std.process.Init) !u8 {{
+                \\    const {s}: u32 = {d};
+                \\    const {s}: u32 = {d};
+                \\    const right_mix: u32 = {s} ^ {s};
+                \\    const {s}: {s} = ({s} << 16) | right_mix;
+                \\    return if ({s} == {d}) 0 else 1;
+                \\}}
+                \\
+            , .{
+                glow_label,
+                face_mold,
+                jam_left,
+                mix_left,
+                mix_right,
+                zig_jl,
+                expr.jam_demo_left,
+                zig_mr,
+                expr.mix_demo_right,
+                zig_jl,
+                zig_mr,
+                zig_face,
+                zig_ty,
+                zig_jl,
+                zig_face,
+                expect,
+            }) catch return error.Overflow;
+            return @intCast(written.len);
+        }
+        const written = std.fmt.bufPrint(out,
+            \\const std = @import("std");
+            \\
+            \\/// Lowered from Glow `=/  {s}={s}  (jam {s} (mix {s} {s}))` — nest jam right.
+            \\pub fn main(_: std.process.Init) !u8 {{
+            \\    const {s}: u32 = {d};
+            \\    const {s}: u32 = {d};
+            \\    const {s}: u32 = {d};
+            \\    const right_mix: u32 = {s} ^ {s};
+            \\    const {s}: {s} = ({s} << 16) | right_mix;
+            \\    return if ({s} == {d}) 0 else 1;
+            \\}}
+            \\
+        , .{
+            glow_label,
+            face_mold,
+            jam_left,
+            mix_left,
+            mix_right,
+            zig_jl,
+            expr.jam_demo_left,
+            zig_ml,
+            expr.mix_demo_left,
+            zig_mr,
+            expr.mix_demo_right,
+            zig_ml,
+            zig_mr,
+            zig_face,
+            zig_ty,
+            zig_jl,
+            zig_face,
+            expect,
+        }) catch return error.Overflow;
+        return @intCast(written.len);
+    }
+    if (same_jl_ml) {
+        const written = std.fmt.bufPrint(out,
+            \\const std = @import("std");
+            \\
+            \\/// Lowered from Glow `=/  {s}  (jam {s} (mix {s} {s}))` — nest jam right.
+            \\pub fn main(_: std.process.Init) !u8 {{
+            \\    const {s}: u32 = {d};
+            \\    const {s}: u32 = {d};
+            \\    const right_mix: u32 = {s} ^ {s};
+            \\    const {s}: {s} = ({s} << 16) | right_mix;
+            \\    return if ({s} == {d}) 0 else 1;
+            \\}}
+            \\
+        , .{
+            glow_label,
+            jam_left,
+            mix_left,
+            mix_right,
+            zig_jl,
+            expr.jam_demo_left,
+            zig_mr,
+            expr.mix_demo_right,
+            zig_jl,
+            zig_mr,
+            zig_face,
+            zig_ty,
+            zig_jl,
+            zig_face,
+            expect,
+        }) catch return error.Overflow;
+        return @intCast(written.len);
+    }
+    const written = std.fmt.bufPrint(out,
+        \\const std = @import("std");
+        \\
+        \\/// Lowered from Glow `=/  {s}  (jam {s} (mix {s} {s}))` — nest jam right.
+        \\pub fn main(_: std.process.Init) !u8 {{
+        \\    const {s}: u32 = {d};
+        \\    const {s}: u32 = {d};
+        \\    const {s}: u32 = {d};
+        \\    const right_mix: u32 = {s} ^ {s};
+        \\    const {s}: {s} = ({s} << 16) | right_mix;
+        \\    return if ({s} == {d}) 0 else 1;
+        \\}}
+        \\
+    , .{
+        glow_label,
+        jam_left,
+        mix_left,
+        mix_right,
+        zig_jl,
+        expr.jam_demo_left,
+        zig_ml,
+        expr.mix_demo_left,
+        zig_mr,
+        expr.mix_demo_right,
+        zig_ml,
+        zig_mr,
+        zig_face,
+        zig_ty,
+        zig_jl,
+        zig_face,
+        expect,
+    }) catch return error.Overflow;
+    return @intCast(written.len);
+}
+
 /// `(jam <left> <right>)` under a face — thin cell-pack `(a << 16) | b`.
 fn emit_jam(
     glow_label: []const u8,
@@ -820,6 +998,19 @@ fn lower_line(line: []const u8, welcome: bool, out: []u8) LowerError!u32 {
             const zig_ty = try zig_type_for_mold(mold);
             if (bound.jam_left_mix) {
                 return emit_jam_nest(
+                    face,
+                    mold,
+                    zig_face,
+                    subject_slice(&bound),
+                    subject2_slice(&bound),
+                    subject3_slice(&bound),
+                    zig_ty,
+                    welcome,
+                    out,
+                );
+            }
+            if (bound.jam_right_mix) {
+                return emit_jam_right_nest(
                     face,
                     mold,
                     zig_face,
