@@ -8,6 +8,13 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260719.000619` — [Send STOA25-29 STOA30 check-in](20260719-000619_send-stoa25-29-stoa30-checkin.bron) — pier ship; STOA30 payload+open next
+- `20260719.000324` — [STOA29 nest library compose GREEN](20260719-000324_stoa29-nest-library-compose-green.bron) — /+ jam pack battery; await send
+- `20260719.000132` — [STOA28 face-to-open-core GREEN](20260719-000132_stoa28-face-to-open-core-green.bron) — face→nest pack compose; await send
+- `20260718.235804` — [STOA27 nest arm body GREEN](20260718-235804_stoa27-nest-arm-body-green.bron) — jam/mix/lent/cast ++ bodies; await send
+- `20260718.235530` — [STOA26 library compose GREEN](20260718-235530_stoa26-library-compose-green.bron) — /+ import open arm; await send
+- `20260718.235220` — [STOA25 open arm body GREEN](20260718-235220_stoa25-open-arm-body-green.bron) — authored ++ sample/literal; await send
+- `20260718.234809` — [STOA25 language until product direction](20260718-234809_stoa25-language-until-product-direction.bron) — north star: Glow-authored product
 - `20260718.234632` — [Send STOA24 STOA25 check-in](20260718-234632_send-stoa24-stoa25-checkin.bron) — pier ship; STOA25 forks next
 - `20260718.234430` — [STOA24 face-to-payload GREEN](20260718-234430_stoa24-face-to-payload-green.bron) — compose-core-payload; await send
 - `20260718.234338` — [Send STOA23 check-in](20260718-234338_send-stoa23-checkin.bron) — pier ship; STOA24 forks next

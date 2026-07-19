@@ -7,13 +7,21 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const lower = @import("lower_compose_core.rye");
 
-const witness_version = "20260718.233120";
+const witness_version = "20260719.000132";
 
 const one_src =
     \\::  Face then thin core arm (STOA18).
     \\=/  amount  5
     \\|%
     \\++  double
+    \\--
+;
+
+const nest_src =
+    \\::  Face then open nest arm (STOA28).
+    \\=/  amount  5
+    \\|%
+    \\++  pack  (jam sample sample)
     \\--
 ;
 
@@ -72,6 +80,29 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("compose-core: non-double first arm refused UnknownArm -- GREEN\n", .{});
 
+    const n_nest = try lower.lower_source_welcome(nest_src, &buf);
+    const rye_nest = buf[0..n_nest];
+    assert(std.mem.indexOf(u8, rye_nest, "return (sample << 16) | sample;") != null);
+    assert(std.mem.indexOf(u8, rye_nest, "Core.pack(amount) == 327685") != null);
+    print("compose-core: open nest welcome calls Core.pack -- GREEN\n", .{});
+
+    const n_nest_u = try lower.lower_source_unwelcome(nest_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n_nest_u], "Core.pack(amount) == 327686") != null);
+    print("compose-core: open nest unwelcome expects mismatch -- GREEN\n", .{});
+
+    if (lower.lower_source_welcome(
+        \\=/  amount  5
+        \\|%
+        \\++  double
+        \\++  id  sample
+        \\--
+    , &buf)) |_| {
+        return error.MixedArmsNotCaught;
+    } else |err| {
+        if (err != lower.LowerError.MixedArms) return err;
+    }
+    print("compose-core: mixed closed+open refused MixedArms -- GREEN\n", .{});
+
     if (lower.lower_source_welcome(
         \\=/  amount  5
         \\%-  double  amount
@@ -91,16 +122,20 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/compose_core_two_welcome.rye", .data = buf[0..n7] });
     const n8 = try lower.lower_source_welcome(one_src, &buf);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/compose_core_welcome.rye", .data = buf[0..n8] });
-    print("compose-core: wrote one two and three-arm caches -- GREEN\n", .{});
+    const n9 = try lower.lower_source_welcome(nest_src, &buf);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/compose_core_nest_welcome.rye", .data = buf[0..n9] });
+    print("compose-core: wrote one two three and nest-arm caches -- GREEN\n", .{});
 
     const gen3 = try cwd.readFileAlloc(io, "glow/gen/compose-core-three.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen3, "++  dec") != null);
     const gen2 = try cwd.readFileAlloc(io, "glow/gen/compose-core-two.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen2, "++  inc") != null);
-    print("compose-core: desks compose-core-two and compose-core-three carry face→core -- GREEN\n", .{});
+    const gen_nest = try cwd.readFileAlloc(io, "glow/gen/compose-core-nest.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_nest, "(jam sample sample)") != null);
+    print("compose-core: desks compose-core-two three and nest carry face→core -- GREEN\n", .{});
 
     print("compose-core: version {s}\n", .{witness_version});
-    print("GREEN: face→`|%` compose lowers one to three arms (STOA18/19/22).\n", .{});
+    print("GREEN: face→`|%` compose lowers closed and open nest arms (STOA18/19/22/28).\n", .{});
     return 0;
 }
 
