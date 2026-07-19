@@ -52,8 +52,10 @@ say "corpus: ${corpus_size} four-letter words from old/doc/spec/flw.txt"
 #   glow-english-qwerty-glass-keyboard-3 -> ZETA (20260717.180025)
 #   sala-broadcast-live-session-fold -> JABS (20260717.191030)
 #   glow-glass-hearth-display-and-wired-sync -> LULU (20260718.122145)
-# Placeholder below is the most recent seat (LULU); change it when drawing the next.
-let input_name = "glow-glass-hearth-display-and-wired-sync"
+#   glow-language-rune-heads-nest-and-lowering -> MAIR (20260718.202414; superseded same day)
+#   glow-language-rune-heads-nest-and-lowering-2 -> STOA (20260718.202730)
+# Placeholder below is the most recent seat (STOA); change it when drawing the next.
+let input_name = "glow-language-rune-heads-nest-and-lowering-2"
 
 let hash_run = run ["sh" "-c" "printf '%s' '${input_name}' | openssl dgst -sha3-512 | awk '{print $NF}' | cut -c1-8"]
 assert hash_run.ok else "openssl dgst -sha3-512 failed"
@@ -75,7 +77,7 @@ assert (word_val != "") else "empty word at derived index -- corpus or index mat
 # Existing proper names this scheme must never echo (four-letter Lexicon
 # identities + seated waymarks). Seated waymarks also live in
 # .cursor/rules/waymark-ladders.mdc — if the word matches, append -2 and redraw.
-let exclude_check = run ["sh" "-c" "echo '${word_val}' | grep -qxE '(BRIX|BRON|POND|MALA|SALA|POOL|QUIN|RIYO|REYA|TREY|TERA|TRIZ|OJJO|GLOW|RHYZ|PEAL|HAWM|TUBE|ZETA|JABS|LULU)'"]
+let exclude_check = run ["sh" "-c" "echo '${word_val}' | grep -qxE '(BRIX|BRON|POND|MALA|SALA|POOL|QUIN|RIYO|REYA|TREY|TERA|TRIZ|OJJO|GLOW|RHYZ|PEAL|HAWM|TUBE|ZETA|JABS|LULU|SETU|MAIR|STOA)'"]
 assert (exclude_check.ok == false) else "derived waymark collides with an already-seated name -- append -2 to input_name above and rerun"
 
 say ""

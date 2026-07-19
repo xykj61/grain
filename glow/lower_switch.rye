@@ -4,10 +4,11 @@
 //! `?-` is the exhaustive switch over a cold-atom-tagged subject. This hop
 //! lowers `kind.cur-record` to a Zig switch over `.mint` / `.send`. Arms are
 //! named faces (defaults minted/sent), decimal literals, nested
-//! `^-  @uN  <decimal>`, `(lent <face>)`, or `(mix <face> <face>)` after
-//! `%mint` / `%send` — parsed through `expr.rye`. Arm decimals, lengths, and
-//! XOR results are payloads, not Hoon loobeans; exits are POSIX (0 success).
-//! See glow/truth_semantics.rye. Other parenthesized arm expressions refuse.
+//! `^-  @uN  <decimal>`, `(lent <face>)`, `(mix <face> <face>)`, or
+//! `(jam <face> <face>)` after `%mint` / `%send` — parsed through `expr.rye`.
+//! Arm decimals, lengths, XOR, and cell-pack results are payloads, not Hoon
+//! loobeans; exits are POSIX (0 success). See glow/truth_semantics.rye. Other
+//! parenthesized arm expressions refuse.
 
 const std = @import("std");
 const rsw = @import("rune_switch.rye");
@@ -127,6 +128,7 @@ fn expect_mint_value(mint_arm: *const ArmExpr) u32 {
         .literal, .cast_literal => mint_arm.lit,
         .lent_of => expr.lent_demo_len,
         .mix_of => expr.mix_demo_result(),
+        .jam_of => expr.jam_demo_result(),
     };
 }
 
@@ -252,6 +254,24 @@ fn emit_mix_bindings(mint_arm: *const ArmExpr, send_arm: *const ArmExpr, out: []
     try emit_one_mix("send_arm", send_arm, out, at, &emitted);
 }
 
+fn emit_one_jam(role: []const u8, arm: *const ArmExpr, out: []u8, at: *usize, emitted: *MixEmitted) LowerError!void {
+    if (arm.kind != .jam_of) return;
+    var zl: [max_arm_len]u8 = undefined;
+    const ln = try zig_safe_ident(face_slice(arm), &zl);
+    var zr: [max_arm_len]u8 = undefined;
+    const rn = try zig_safe_ident(face2_slice(arm), &zr);
+    try emit_mix_atom(zl[0..ln], expr.jam_demo_left, out, at, emitted);
+    try emit_mix_atom(zr[0..rn], expr.jam_demo_right, out, at, emitted);
+    const arm_line = std.fmt.bufPrint(out[at.*..], "    const {s}: u32 = ({s} << 16) | {s};\n", .{ role, zl[0..ln], zr[0..rn] }) catch return error.Overflow;
+    at.* += arm_line.len;
+}
+
+fn emit_jam_bindings(mint_arm: *const ArmExpr, send_arm: *const ArmExpr, out: []u8, at: *usize) LowerError!void {
+    var emitted: MixEmitted = .{};
+    try emit_one_jam("mint_arm", mint_arm, out, at, &emitted);
+    try emit_one_jam("send_arm", send_arm, out, at, &emitted);
+}
+
 fn write_arm_expr(arm: *const ArmExpr, role: enum { mint_role, send_role }, out: []u8) LowerError![]const u8 {
     switch (arm.kind) {
         .face => {
@@ -264,7 +284,7 @@ fn write_arm_expr(arm: *const ArmExpr, role: enum { mint_role, send_role }, out:
         .literal => {
             return std.fmt.bufPrint(out, "{d}", .{arm.lit}) catch return error.Overflow;
         },
-        .cast_literal, .lent_of, .mix_of => {
+        .cast_literal, .lent_of, .mix_of, .jam_of => {
             return switch (role) {
                 .mint_role => "mint_arm",
                 .send_role => "send_arm",
@@ -280,6 +300,7 @@ fn emit_kind_program(tag: []const u8, mint_arm: *const ArmExpr, send_arm: *const
     try emit_cast_bindings(mint_arm, send_arm, &body, &at);
     try emit_lent_bindings(mint_arm, send_arm, &body, &at);
     try emit_mix_bindings(mint_arm, send_arm, &body, &at);
+    try emit_jam_bindings(mint_arm, send_arm, &body, &at);
 
     var mint_expr_buf: [max_arm_len]u8 = undefined;
     var send_expr_buf: [max_arm_len]u8 = undefined;

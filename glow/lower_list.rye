@@ -1,0 +1,91 @@
+//! glow/lower_list.rye — lower a parsed `:~` list cell to runnable `.rye`.
+//!
+//! Thin STOA5 face: 1–4 demo atoms into a Zig array (same demo ladder as
+//! pair/triple/quad: 5, 3, 1, 2).
+
+const std = @import("std");
+const rl = @import("rune_list.rye");
+
+pub const LowerError = rl.ParseError || error{
+    Overflow,
+    EmptySource,
+    BadIdent,
+};
+
+pub const list_demos: [rl.max_faces]u32 = .{ 5, 3, 1, 2 };
+
+fn zig_safe_ident(face: []const u8, out: *[rl.max_name_len]u8) LowerError!usize {
+    if (face.len == 0 or face.len > rl.max_name_len) return error.BadIdent;
+    var i: usize = 0;
+    while (i < face.len) : (i += 1) {
+        const ch = face[i];
+        const mapped: u8 = if (ch == '-') '_' else ch;
+        if (i == 0) {
+            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or mapped == '_'))
+                return error.BadIdent;
+        } else {
+            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or (mapped >= '0' and mapped <= '9') or mapped == '_'))
+                return error.BadIdent;
+        }
+        out[i] = mapped;
+    }
+    return face.len;
+}
+
+fn emit_list_program(spec: *const rl.ListSpec, welcome: bool, out: []u8) LowerError!u32 {
+    var binds: [1024]u8 = undefined;
+    var bat: usize = 0;
+    var i: usize = 0;
+    while (i < spec.count) : (i += 1) {
+        var zb: [rl.max_name_len]u8 = undefined;
+        const face = rl.face_at(spec, i);
+        const zn = try zig_safe_ident(face, &zb);
+        const line = std.fmt.bufPrint(binds[bat..], "    const {s}: u32 = {d};\n", .{ zb[0..zn], list_demos[i] }) catch return error.Overflow;
+        bat += line.len;
+    }
+
+    var arr_inner: [256]u8 = undefined;
+    var ait: usize = 0;
+    i = 0;
+    while (i < spec.count) : (i += 1) {
+        var zb: [rl.max_name_len]u8 = undefined;
+        const zn = try zig_safe_ident(rl.face_at(spec, i), &zb);
+        if (i > 0) {
+            if (ait + 2 > arr_inner.len) return error.Overflow;
+            arr_inner[ait] = ',';
+            arr_inner[ait + 1] = ' ';
+            ait += 2;
+        }
+        if (ait + zn > arr_inner.len) return error.Overflow;
+        @memcpy(arr_inner[ait..][0..zn], zb[0..zn]);
+        ait += zn;
+    }
+
+    const expect0: u32 = if (welcome) list_demos[0] else list_demos[0] +% 1;
+    const written = std.fmt.bufPrint(out,
+        \\const std = @import("std");
+        \\
+        \\/// Lowered from Glow `:~` — bounded list cell of demo atoms.
+        \\pub fn main(_: std.process.Init) !u8 {{
+        \\{s}    const items = [_]u32{{ {s} }};
+        \\    return if (items.len == {d} and items[0] == {d}) 0 else 1;
+        \\}}
+        \\
+    , .{ binds[0..bat], arr_inner[0..ait], spec.count, expect0 }) catch return error.Overflow;
+    return @intCast(written.len);
+}
+
+fn lower_line(line: []const u8, welcome: bool, out: []u8) LowerError!u32 {
+    const trimmed = std.mem.trim(u8, line, " \t\r\n");
+    if (trimmed.len == 0) return error.EmptySource;
+    const spec = try rl.parse(trimmed);
+    return emit_list_program(&spec, welcome, out);
+}
+
+pub fn lower_line_welcome(line: []const u8, out: []u8) LowerError!u32 {
+    return lower_line(line, true, out);
+}
+
+pub fn lower_line_unwelcome(line: []const u8, out: []u8) LowerError!u32 {
+    return lower_line(line, false, out);
+}

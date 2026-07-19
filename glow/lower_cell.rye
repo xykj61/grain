@@ -1,0 +1,93 @@
+//! glow/lower_cell.rye — lower a parsed `:-` pair cell to runnable `.rye`.
+//!
+//! Thin STOA2 face: two demo atoms into a Zig pair struct (same demo values
+//! as `(jam …)`). Not a full noun cell / jam bit layout.
+
+const std = @import("std");
+const rc = @import("rune_cell.rye");
+
+pub const LowerError = rc.ParseError || error{
+    Overflow,
+    EmptySource,
+    BadIdent,
+};
+
+pub const cell_demo_left: u32 = 5;
+pub const cell_demo_right: u32 = 3;
+
+fn zig_safe_ident(face: []const u8, out: *[rc.max_name_len]u8) LowerError!usize {
+    if (face.len == 0 or face.len > rc.max_name_len) return error.BadIdent;
+    var i: usize = 0;
+    while (i < face.len) : (i += 1) {
+        const c = face[i];
+        const mapped: u8 = if (c == '-') '_' else c;
+        if (i == 0) {
+            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or mapped == '_'))
+                return error.BadIdent;
+        } else {
+            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or (mapped >= '0' and mapped <= '9') or mapped == '_'))
+                return error.BadIdent;
+        }
+        out[i] = mapped;
+    }
+    return face.len;
+}
+
+fn emit_cell_program(
+    glow_left: []const u8,
+    glow_right: []const u8,
+    zig_left: []const u8,
+    zig_right: []const u8,
+    expect_p: u32,
+    expect_q: u32,
+    out: []u8,
+) LowerError!u32 {
+    const written = std.fmt.bufPrint(out,
+        \\const std = @import("std");
+        \\
+        \\/// Lowered from Glow `:-  {s}  {s}` — pair cell of two demo atoms.
+        \\pub fn main(_: std.process.Init) !u8 {{
+        \\    const Pair = struct {{ p: u32, q: u32 }};
+        \\    const {s}: u32 = {d};
+        \\    const {s}: u32 = {d};
+        \\    const pair: Pair = .{{ .p = {s}, .q = {s} }};
+        \\    return if (pair.p == {d} and pair.q == {d}) 0 else 1;
+        \\}}
+        \\
+    , .{
+        glow_left,
+        glow_right,
+        zig_left,
+        cell_demo_left,
+        zig_right,
+        cell_demo_right,
+        zig_left,
+        zig_right,
+        expect_p,
+        expect_q,
+    }) catch return error.Overflow;
+    return @intCast(written.len);
+}
+
+fn lower_line(line: []const u8, welcome: bool, out: []u8) LowerError!u32 {
+    const trimmed = std.mem.trim(u8, line, " \t\r\n");
+    if (trimmed.len == 0) return error.EmptySource;
+    const spec = try rc.parse(trimmed);
+    const left = rc.left_slice(&spec);
+    const right = rc.right_slice(&spec);
+    var zl: [rc.max_name_len]u8 = undefined;
+    var zr: [rc.max_name_len]u8 = undefined;
+    const ln = try zig_safe_ident(left, &zl);
+    const rn = try zig_safe_ident(right, &zr);
+    const expect_p: u32 = if (welcome) cell_demo_left else cell_demo_left +% 1;
+    const expect_q: u32 = cell_demo_right;
+    return emit_cell_program(left, right, zl[0..ln], zr[0..rn], expect_p, expect_q, out);
+}
+
+pub fn lower_line_welcome(line: []const u8, out: []u8) LowerError!u32 {
+    return lower_line(line, true, out);
+}
+
+pub fn lower_line_unwelcome(line: []const u8, out: []u8) LowerError!u32 {
+    return lower_line(line, false, out);
+}

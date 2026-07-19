@@ -1,0 +1,72 @@
+//! glow/rune_cell.rye — parses Glow's `:-` pair-cell rune head.
+//!
+//! Per active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md's
+//! `:` category: `:-` builds a pair. Ninth rune head (STOA2). Shape:
+//!   :-  from  amount
+//!
+//! Faces only — nested values stay later. Taller cell `:+` is STOA3
+//! (`rune_triple.rye`).
+
+const std = @import("std");
+
+pub const max_name_len: u32 = 64;
+
+pub const ParseError = error{
+    NotACell,
+    MissingLeft,
+    MissingRight,
+    FaceTooLong,
+    MalformedFace,
+    TrailingJunk,
+};
+
+pub const CellSpec = struct {
+    left: [max_name_len]u8 = [_]u8{0} ** max_name_len,
+    left_len: usize = 0,
+    right: [max_name_len]u8 = [_]u8{0} ** max_name_len,
+    right_len: usize = 0,
+};
+
+pub fn left_slice(spec: *const CellSpec) []const u8 {
+    return spec.left[0..spec.left_len];
+}
+
+pub fn right_slice(spec: *const CellSpec) []const u8 {
+    return spec.right[0..spec.right_len];
+}
+
+fn is_ident_char(c: u8) bool {
+    if (c >= 'a' and c <= 'z') return true;
+    if (c >= 'A' and c <= 'Z') return true;
+    if (c >= '0' and c <= '9') return true;
+    return c == '-' or c == '_';
+}
+
+fn parse_ident(rest: []const u8) ParseError!struct { ident: []const u8, rest: []const u8 } {
+    var end: usize = 0;
+    while (end < rest.len and is_ident_char(rest[end])) end += 1;
+    if (end == 0) return error.MalformedFace;
+    const ident = rest[0..end];
+    if (ident[0] >= '0' and ident[0] <= '9') return error.MalformedFace;
+    if (ident.len > max_name_len) return error.FaceTooLong;
+    return .{ .ident = ident, .rest = rest[end..] };
+}
+
+/// Parses one line of Glow's `:-` rune. Two bare faces; nothing else yet.
+pub fn parse(line: []const u8) ParseError!CellSpec {
+    if (line.len < 2 or !std.mem.eql(u8, line[0..2], ":-")) return error.NotACell;
+
+    var rest = std.mem.trimStart(u8, line[2..], " \t");
+    if (rest.len == 0) return error.MissingLeft;
+    const left = try parse_ident(rest);
+    rest = std.mem.trimStart(u8, left.rest, " \t");
+    if (rest.len == 0 or rest.len == left.rest.len) return error.MissingRight;
+    const right = try parse_ident(rest);
+    rest = std.mem.trimStart(u8, right.rest, " \t");
+    if (rest.len != 0) return error.TrailingJunk;
+
+    var spec: CellSpec = .{ .left_len = left.ident.len, .right_len = right.ident.len };
+    @memcpy(spec.left[0..left.ident.len], left.ident);
+    @memcpy(spec.right[0..right.ident.len], right.ident);
+    return spec;
+}
