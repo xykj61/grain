@@ -134,6 +134,19 @@ fn write_root_file(hex: *const [64]u8) void {
     _ = write(fd, "\n", 1);
 }
 
+/// STOA73: Glow product session-root as decimal ASCII for run-as install proof.
+/// Distinct from sala_root.txt (Sala B0 64-hex). Expect body "5\n".
+fn write_product_root_file(root: u32) void {
+    const path = android_files_root ++ "/glow_product_root.txt";
+    _ = mkdir(android_files_root, 0o700);
+    const fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0o600);
+    if (fd < 0) return;
+    defer _ = close(fd);
+    var buf: [16]u8 = undefined;
+    const n = std.fmt.bufPrint(&buf, "{d}\n", .{root}) catch return;
+    _ = write(fd, n.ptr, n.len);
+}
+
 fn apply_hearth_record(h: hearth.Hearth) void {
     surface.active_preset = h.preset;
     surface.active_wire = h.wire;
@@ -754,6 +767,7 @@ export fn ANativeActivity_onCreate(
     const product_root = glow_core.session_root();
     assert(product_root == 5);
     glow_last_product_session_root = product_root;
+    write_product_root_file(product_root);
 
     const root = fold.run_demo_fold() catch {
         @memset(glow_last_session_root_hex[0..], 0);
