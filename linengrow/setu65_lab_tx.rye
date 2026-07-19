@@ -1,0 +1,160 @@
+//! linengrow/setu65_lab_tx.rye — SETU6.5: lab TX gate for framed device payload.
+//!
+//! Approved thin face: stand-in lab refuses TX; armed lab prepares the SETU5
+//! frame and attempts an iface-bound UDP datagram send (port 38503). Host SKIP
+//! when stand-in (no usb0/ncm). Sent GREEN needs a real gadget/QEMU iface.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const c = std.c;
+const setu0 = @import("setu0_hearth_pull.rye");
+const setu1 = @import("setu1_lane_ping.rye");
+const setu3 = @import("setu3_ncm_frame.rye");
+const setu5 = @import("setu5_device_payload.rye");
+const setu6 = @import("setu6_device_lab.rye");
+const tally_copy = @import("tally_copy.rye");
+
+pub const waymark: []const u8 = setu0.waymark;
+pub const lab_tx_path = "tools/.cache/setu0/lab_tx.bin";
+pub const lab_tx_port: u16 = 38503;
+
+const AF_INET: c_uint = 2;
+const SOCK_DGRAM: c_uint = 2;
+const SOL_SOCKET: c_int = 1;
+const SO_BINDTODEVICE: c_int = 25;
+const SO_REUSEADDR: c_int = 2;
+
+pub const TxResult = enum {
+    refused_stand_in,
+    prepared,
+    sent,
+    send_failed,
+
+    pub fn name(self: TxResult) []const u8 {
+        return switch (self) {
+            .refused_stand_in => "refused",
+            .prepared => "prepared",
+            .sent => "sent",
+            .send_failed => "send-failed",
+        };
+    }
+};
+
+pub const TxReport = struct {
+    result: TxResult = .refused_stand_in,
+    frame_len: u32 = 0,
+    iface_len: u32 = 0,
+    iface: [setu6.iface_name_max]u8 = .{' '} ** setu6.iface_name_max,
+
+    pub fn iface_slice(self: *const TxReport) []const u8 {
+        if (self.iface_len == 0) return "none";
+        return self.iface[0..self.iface_len];
+    }
+};
+
+pub fn prepare_frame(out: *[setu3.max_frame]u8) ?u32 {
+    return setu5.build_device_payload(out);
+}
+
+pub fn tx_allowed(mode: setu6.LabMode) bool {
+    return mode == .armed;
+}
+
+fn copy_iface(report: *TxReport, iface: []const u8) void {
+    const n = @min(iface.len, setu6.iface_name_max);
+    if (n == 0) {
+        report.iface_len = 0;
+        return;
+    }
+    tally_copy.copy_disjoint(u8, report.iface[0..n], iface[0..n]);
+    report.iface_len = @intCast(n);
+}
+
+/// Gate: stand-in → refused; armed → prepare frame (no socket yet).
+pub fn gate_prepare(mode: setu6.LabMode, iface: []const u8, out: *[setu3.max_frame]u8) TxReport {
+    var report: TxReport = .{};
+    copy_iface(&report, iface);
+    if (!tx_allowed(mode)) {
+        report.result = .refused_stand_in;
+        return report;
+    }
+    const flen = prepare_frame(out) orelse {
+        report.result = .send_failed;
+        return report;
+    };
+    report.frame_len = flen;
+    report.result = .prepared;
+    return report;
+}
+
+const sockaddr_in = extern struct {
+    sin_family: c_ushort = AF_INET,
+    sin_port: c_ushort,
+    sin_addr: [4]u8 = .{ 255, 255, 255, 255 },
+    sin_zero: [8]u8 = .{0} ** 8,
+};
+
+/// Armed TX: BINDTODEVICE + UDP broadcast of the framed payload.
+pub fn attempt_iface_tx(mode: setu6.LabMode, iface: []const u8) TxReport {
+    var frame: [setu3.max_frame]u8 = undefined;
+    var report = gate_prepare(mode, iface, &frame);
+    if (report.result != .prepared) return report;
+    if (iface.len == 0 or iface.len > setu6.iface_name_max) {
+        report.result = .send_failed;
+        return report;
+    }
+
+    const fd = c.socket(AF_INET, SOCK_DGRAM, 0);
+    if (fd < 0) {
+        report.result = .send_failed;
+        return report;
+    }
+    defer _ = c.close(fd);
+
+    const yes: c_int = 1;
+    _ = c.setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &yes, @sizeOf(c_int));
+    var ifname: [setu6.iface_name_max + 1]u8 = .{0} ** (setu6.iface_name_max + 1);
+    tally_copy.copy_disjoint(u8, ifname[0..iface.len], iface);
+    if (c.setsockopt(fd, SOL_SOCKET, SO_BINDTODEVICE, &ifname, @intCast(iface.len + 1)) != 0) {
+        report.result = .send_failed;
+        return report;
+    }
+
+    var addr = sockaddr_in{ .sin_port = std.mem.nativeToBig(u16, lab_tx_port) };
+    const sent = c.sendto(
+        fd,
+        frame[0..report.frame_len].ptr,
+        report.frame_len,
+        0,
+        @ptrCast(&addr),
+        @sizeOf(sockaddr_in),
+    );
+    if (sent < 0 or @as(u32, @intCast(sent)) != report.frame_len) {
+        report.result = .send_failed;
+        return report;
+    }
+    report.result = .sent;
+    return report;
+}
+
+pub fn fixture_stand_in_refuses() bool {
+    var frame: [setu3.max_frame]u8 = undefined;
+    const r = gate_prepare(.stand_in, "", &frame);
+    return r.result == .refused_stand_in and r.frame_len == 0;
+}
+
+pub fn fixture_armed_prepares() bool {
+    var frame: [setu3.max_frame]u8 = undefined;
+    const r = gate_prepare(.armed, "usb0", &frame);
+    if (r.result != .prepared) return false;
+    if (r.frame_len == 0 or r.frame_len > setu5.device_max_frame) return false;
+    const unwrapped = setu3.unwrap_lane_ping(frame[0..r.frame_len]) orelse return false;
+    return setu1.open_lane_ping(unwrapped, "kd", .scaled_540);
+}
+
+comptime {
+    _ = print;
+    assert(std.mem.eql(u8, waymark, "SETU"));
+    assert(lab_tx_port == 38503);
+}

@@ -1,0 +1,21 @@
+# setu65_lab_tx_onpath_host.rish — SETU6.5 host: TX gate after lab probe.
+#
+# Run on the host after SETU6 probe has written lab.bron.
+# Stand-in → SKIP GREEN. Armed → attempt iface-bound UDP :38503.
+#
+#   rishi/bin/rishi run tools/setu6_lab_probe_onpath_host.rish
+#   rishi/bin/rishi run tools/setu65_lab_tx_onpath_host.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let check = "linengrow/bin/setu65_lab_tx_check"
+
+say "setu65-host: building lab TX check…"
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/setu65_lab_tx_check.rye -lc -femit-bin=${check}"]
+assert build.ok else "SETU6.5 lab TX check build failed"
+
+say "setu65-host: attempting TX from lab.bron…"
+let tx = run ["sh" "-c" "${check} 2>&1"]
+say "${tx.out}"
+assert tx.ok else "SETU6.5 lab TX check failed"
+assert tx.out contains "GREEN" else "SETU6.5 check not GREEN"
+say "GREEN: SETU6.5 — host TX gate path complete."

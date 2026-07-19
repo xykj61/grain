@@ -2,7 +2,7 @@
 #
 # Run on the host. Looks for usb0 / ncm* (CDC-NCM gadget shape). Writes
 # tools/.cache/setu0/lab.bron. Stand-in GREEN when absent; armed when present.
-# Live frame TX over that iface stays a later kg.
+# Live frame TX over that iface: SETU6.5 onpath after this probe.
 #
 #   rishi/bin/rishi run tools/setu6_lab_probe_onpath_host.rish
 
@@ -32,4 +32,4 @@ let armed = run ["sh" "-c" "${check} ${iface} 2>&1"]
 say "${armed.out}"
 assert armed.ok else "SETU6 armed lab check failed"
 assert armed.out contains "armed" else "SETU6 expected armed"
-say "GREEN: SETU6 — lab harness armed on ${iface} (live TX still later kg)."
+say "GREEN: SETU6 — lab harness armed on ${iface} (run SETU6.5 onpath for TX)."

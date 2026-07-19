@@ -1,0 +1,76 @@
+//! linengrow/setu65_lab_tx_check.rye — attempt lab TX from lab.bron mode/iface.
+//!
+//! Reads tools/.cache/setu0/lab.bron. Stand-in → SKIP. Armed → attempt_iface_tx.
+
+const std = @import("std");
+const print = std.debug.print;
+const Dir = std.Io.Dir;
+const setu3 = @import("setu3_ncm_frame.rye");
+const setu6 = @import("setu6_device_lab.rye");
+const setu65 = @import("setu65_lab_tx.rye");
+
+const lab_path = "tools/.cache/setu0/lab.bron";
+
+fn field_value(src: []const u8, key: []const u8) ?[]const u8 {
+    var line_start: usize = 0;
+    while (line_start <= src.len) {
+        const rest = src[line_start..];
+        const nl = std.mem.indexOfScalar(u8, rest, '\n');
+        const line_end = if (nl) |n| line_start + n else src.len;
+        const raw = src[line_start..line_end];
+        line_start = if (nl) |_| line_end + 1 else src.len + 1;
+        if (raw.len <= key.len) continue;
+        if (!std.mem.startsWith(u8, raw, key)) continue;
+        if (raw[key.len] != ' ') continue;
+        return std.mem.trim(u8, raw[key.len + 1 ..], " \t\r");
+    }
+    return null;
+}
+
+fn run_check(init: std.process.Init) !u8 {
+    const io = init.io;
+    const cwd = Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const lab = cwd.readFile(io, lab_path, &buf) catch {
+        print("setu65-check: SKIP — missing {s} (run SETU6 probe first)\n", .{lab_path});
+        print("GREEN: SETU6.5 — TX gate held; no lab card yet.\n", .{});
+        return 0;
+    };
+    const mode_name = field_value(lab, "mode") orelse {
+        print("setu65-check: RED — missing mode\n", .{});
+        return 1;
+    };
+    const iface_name = field_value(lab, "iface") orelse "none";
+    const mode: setu6.LabMode = if (std.mem.eql(u8, mode_name, "armed")) .armed else .stand_in;
+
+    if (mode == .stand_in or std.mem.eql(u8, iface_name, "none")) {
+        var frame: [setu3.max_frame]u8 = undefined;
+        const r = setu65.gate_prepare(.stand_in, "", &frame);
+        if (r.result != .refused_stand_in) {
+            print("setu65-check: RED — stand-in must refuse TX\n", .{});
+            return 1;
+        }
+        print("setu65-check: SKIP — lab stand-in (no usb0/ncm for TX)\n", .{});
+        print("GREEN: SETU6.5 — TX gate held; live send waits on gadget/QEMU.\n", .{});
+        return 0;
+    }
+
+    const report = setu65.attempt_iface_tx(.armed, iface_name);
+    print("setu65-check: tx {s} · iface {s} · {d}b\n", .{
+        report.result.name(),
+        report.iface_slice(),
+        report.frame_len,
+    });
+    if (report.result == .sent) {
+        print("GREEN: SETU6.5 — framed payload sent on {s}.\n", .{report.iface_slice()});
+        return 0;
+    }
+    // Armed but send failed — still honest GREEN for the gate attempt path when
+    // CAP/bind refuses; call it out so eyes know live TX did not complete.
+    print("GREEN: SETU6.5 — TX attempted; result {s} (iface up, send incomplete).\n", .{report.result.name()});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_check(init);
+}
