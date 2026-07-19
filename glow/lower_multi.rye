@@ -1,12 +1,14 @@
 //! glow/lower_multi.rye — lower a multi-line Glow desk to one `.rye` main.
 //!
 //! Thin STOA10 face: two to four bare `=/  <face>  <decimal>` lines share
-//! one welcome/unwelcome program. Other heads and nest values stay later.
+//! one welcome/unwelcome program. Collect allows five lines so face→two-arm
+//! cores and three-arm batteries fit (STOA19/20); bare multi still caps at 4.
 
 const std = @import("std");
 const rf = @import("rune_face.rye");
 
-pub const max_lines: u32 = 4;
+pub const max_lines: u32 = 5;
+pub const max_bare_multi: u32 = 4;
 pub const max_name_len: u32 = rf.max_name_len;
 
 pub const LowerError = rf.ParseError || error{
@@ -90,6 +92,7 @@ pub fn parse_multi(src: []const u8) LowerError!MultiSpec {
     var lines: [max_lines][]const u8 = undefined;
     const n = try collect_lines(src, &lines);
     if (n < 2) return error.NeedMulti;
+    if (n > max_bare_multi) return error.TooManyLines;
 
     var spec: MultiSpec = .{};
     var i: usize = 0;
