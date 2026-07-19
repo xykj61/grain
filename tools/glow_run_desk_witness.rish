@@ -224,6 +224,11 @@ assert composecorepay.ok else "glow_run compose-core-payload.glow failed"
 assert composecorepay.out contains "GREEN" else "glow_run compose-core-payload.glow not GREEN"
 assert composecorepay.out contains "compose-core-payload.glow" else "glow_run compose-core-payload claim missing path"
 
+let composecorepaynest = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/compose-core-payload-nest.glow"]
+assert composecorepaynest.ok else "glow_run compose-core-payload-nest.glow failed"
+assert composecorepaynest.out contains "GREEN" else "glow_run compose-core-payload-nest.glow not GREEN"
+assert composecorepaynest.out contains "compose-core-payload-nest.glow" else "glow_run compose-core-payload-nest claim missing path"
+
 let core3 = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/core-three.glow"]
 
 

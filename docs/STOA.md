@@ -2,10 +2,10 @@
 
 *Waymark for Glow the language: rune heads that lower, nest forms that deepen, composition that grows toward Glow-authored modules. Compresses the working pin; never replaces it.*
 
-**Status:** Checkable — operator compressor (STOA0–STOA29 GREEN)  
+**Status:** Checkable — operator compressor (STOA0–STOA30 GREEN)  
 **Depth:** guide  
 **Ceiling:** ≤80 lines  
-**Last updated:** 2026-07-19 (STOA29 `/+` nest library GREEN)  
+**Last updated:** 2026-07-19 (STOA30 payload+open compose GREEN)  
 **Compresses:** [`../glow/README.md`](../glow/README.md) · first-code [`../expanding-prompts/20260717-213242_glow-first-code-beside-glass-and-open-runes.md`](../expanding-prompts/20260717-213242_glow-first-code-beside-glass-and-open-runes.md) · sameness [`../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md`](../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md) · seat [`../active-designing/20260718-202730_stoa-glow-language-waymark.md`](../active-designing/20260718-202730_stoa-glow-language-waymark.md)
 
 ---
@@ -50,13 +50,14 @@ Product glass and wire stay Rye-hosted under their own waymarks. **STOA** names 
 | **STOA27** | Nest `++` arm body | `glow_rune_core` · `glow_lower_core` · desk | **GREEN** `20260718.235804` |
 | **STOA28** | Face→open `|%` | `glow_lower_compose_core` · desk | **GREEN** `20260719.000132` |
 | **STOA29** | `/+` nest library | `glow_lower_compose_lib` · desk | **GREEN** `20260719.000324` |
-| **STOA30** | Next language / product | horizon — check-in | horizon |
+| **STOA30** | Payload+open `|%` | `glow_lower_compose_core_payload` · desk | **GREEN** `20260719.000745` |
+| **STOA31** | Next language / product | horizon — check-in | horizon |
 
 ## Hands-on
 
 ```bash
 cd ~/urbit
-rishi/bin/rishi run tools/glow_run.rish glow/gen/use-lib-nest.glow
+rishi/bin/rishi run tools/glow_run.rish glow/gen/compose-core-payload-nest.glow
 rishi/bin/rishi run tools/glow_run_desk_witness.rish
 ```
 

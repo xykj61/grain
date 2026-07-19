@@ -70,7 +70,7 @@ From the sameness rune brief. These are the heads an Acme reader should treat as
 | **Conditionals** | `?+` default switch · `?=` · `?>` · `?<` |
 | **Calls** | `%-`/`%+`/`%^`/`%*` **GREEN STOA6–9** |
 | **Multi-line** | bare **STOA10** · compose **STOA11–12** · typed `@u32` **STOA13** |
-| **Cores** | arms through three **STOA14–15/20** · library **STOA16** · bare/typed payload **STOA17/21** · face→core one/two/three **STOA18–19/22** · two-face→add **STOA23** · face→payload **STOA24** · open `++` body **STOA25** · `/+` library compose **STOA26** · nest `++` body **STOA27** · face→open `|%` **STOA28** · `/+` nest library **STOA29** |
+| **Cores** | arms through three **STOA14–15/20** · library **STOA16** · bare/typed payload **STOA17/21** · face→core one/two/three **STOA18–19/22** · two-face→add **STOA23** · face→payload **STOA24** · open `++` body **STOA25** · `/+` library compose **STOA26** · nest `++` body **STOA27** · face→open `|%` **STOA28** · `/+` nest library **STOA29** · payload+open **STOA30** |
 | **Cells** | `:-`/`:+`/`:^`/`:~` **GREEN STOA2–5** |
 | **Molds** | `+$` `$:` `$%` |
 | **Hints / jets** | `~%` `~/` (+ jet witnesses) |

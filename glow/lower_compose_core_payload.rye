@@ -7,11 +7,20 @@
 //!   ++  double
 //!   --
 //!
-//! Inner payload may be bare or `@u32`. Arm reads self.amount.
+//! STOA30 — same shape with an open/nest arm:
+//!   =/  note  7
+//!   |%
+//!   =/  amount  5
+//!   ++  pack  (jam amount amount)
+//!   --
+//!
+//! Inner payload may be bare or `@u32`. Closed arm reads self.amount *% 2;
+//! open nest arm bodies use the payload face.
 
 const std = @import("std");
 const rf = @import("rune_face.rye");
 const rk = @import("rune_core.rye");
+const expr = @import("expr.rye");
 const lower_multi = @import("lower_multi.rye");
 
 pub const LowerError = rf.ParseError || rk.ParseError || lower_multi.LowerError || error{
@@ -26,7 +35,7 @@ pub const LowerError = rf.ParseError || rk.ParseError || lower_multi.LowerError 
 };
 
 pub const outer_expect: u32 = 7;
-pub const arm_expect: u32 = 10;
+pub const closed_arm_expect: u32 = 10;
 
 fn is_digit(ch: u8) bool {
     return ch >= '0' and ch <= '9';
@@ -74,6 +83,8 @@ pub const ComposeCorePayloadSpec = struct {
     payload_typed: bool = false,
     arm: [rk.max_name_len]u8 = .{0} ** rk.max_name_len,
     arm_len: usize = 0,
+    body: expr.Expr = .{ .kind = .literal },
+    has_body: bool = false,
 };
 
 pub fn outer_slice(spec: *const ComposeCorePayloadSpec) []const u8 {
@@ -114,6 +125,26 @@ fn join_core_src(lines: []const []const u8, out: []u8) LowerError![]const u8 {
     return out[0..at];
 }
 
+fn open_body_expect(body: *const expr.Expr, sample: u32) LowerError!u32 {
+    return switch (body.kind) {
+        .literal, .cast_literal => body.lit,
+        .face => sample,
+        .lent_of => expr.lent_demo_len,
+        .mix_of => sample ^ sample,
+        .jam_of => (sample << 16) | sample,
+    };
+}
+
+fn emit_open_body(body: *const expr.Expr, face_zig: []const u8, out: []u8) LowerError![]const u8 {
+    return switch (body.kind) {
+        .literal, .cast_literal => std.fmt.bufPrint(out, "return {d};", .{body.lit}) catch return error.Overflow,
+        .face => std.fmt.bufPrint(out, "return self.{s};", .{face_zig}) catch return error.Overflow,
+        .lent_of => std.fmt.bufPrint(out, "return {d};", .{expr.lent_demo_len}) catch return error.Overflow,
+        .mix_of => std.fmt.bufPrint(out, "return self.{s} ^ self.{s};", .{ face_zig, face_zig }) catch return error.Overflow,
+        .jam_of => std.fmt.bufPrint(out, "return (self.{s} << 16) | self.{s};", .{ face_zig, face_zig }) catch return error.Overflow,
+    };
+}
+
 pub fn parse_compose_core_payload(src: []const u8) LowerError!ComposeCorePayloadSpec {
     var lines: [lower_multi.max_lines][]const u8 = undefined;
     const n = try lower_multi.collect_lines(src, &lines);
@@ -126,14 +157,20 @@ pub fn parse_compose_core_payload(src: []const u8) LowerError!ComposeCorePayload
     try fill_bare_outer(lines[0], &spec);
     if (spec.outer_value != outer_expect) return error.MalformedValue;
 
-    var core_buf: [320]u8 = undefined;
+    var core_buf: [384]u8 = undefined;
     const core_src = try join_core_src(lines[1..n], &core_buf);
     const core = try rk.parse_source(core_src);
     if (!rk.has_payload(&core)) return error.MissingPayload;
     if (core.count != 1) return error.NotAComposeCorePayload;
-    const arm = rk.arm_at(&core, 0);
-    if (!std.mem.eql(u8, arm, "double")) return error.UnknownArm;
     if (core.payload_value != 5) return error.MalformedValue;
+
+    const arm = rk.arm_at(&core, 0);
+    if (rk.arm_has_body(&core, 0)) {
+        spec.body = rk.arm_body_at(&core, 0).*;
+        spec.has_body = true;
+    } else if (!std.mem.eql(u8, arm, "double")) {
+        return error.UnknownArm;
+    }
 
     const pface = rk.payload_face_at(&core);
     @memcpy(spec.payload_face[0..pface.len], pface);
@@ -153,7 +190,20 @@ fn emit_compose_core_payload(spec: *const ComposeCorePayloadSpec, welcome: bool,
     const pn = try zig_safe_ident(payload_slice(spec), &zp);
     const an = try zig_safe_ident(arm_slice(spec), &za);
     const note_expect: u32 = if (welcome) outer_expect else outer_expect +% 1;
-    const dbl_expect: u32 = if (welcome) arm_expect else arm_expect +% 1;
+    const base_arm: u32 = if (spec.has_body)
+        try open_body_expect(&spec.body, spec.payload_value)
+    else
+        closed_arm_expect;
+    const arm_expect_v: u32 = if (welcome) base_arm else base_arm +% 1;
+
+    var body_buf: [128]u8 = undefined;
+    const method_body: []const u8 = if (spec.has_body)
+        try emit_open_body(&spec.body, zp[0..pn], &body_buf)
+    else
+        blk: {
+            const printed = std.fmt.bufPrint(&body_buf, "return self.{s} *% 2;", .{zp[0..pn]}) catch return error.Overflow;
+            break :blk printed;
+        };
 
     const field_prefix: []const u8 = if (spec.payload_typed)
         "    /// Glow payload mold `@u32` (STOA21/24).\n"
@@ -163,11 +213,11 @@ fn emit_compose_core_payload(spec: *const ComposeCorePayloadSpec, welcome: bool,
     const written = std.fmt.bufPrint(out,
         \\const std = @import("std");
         \\
-        \\/// Lowered from Glow face→payload `|%` compose (STOA24).
+        \\/// Lowered from Glow face→payload `|%` compose (STOA24/30).
         \\const Core = struct {{
         \\{s}    {s}: u32 = {d},
         \\    pub fn {s}(self: @This()) u32 {{
-        \\        return self.{s} *% 2;
+        \\        {s}
         \\    }}
         \\}};
         \\
@@ -182,13 +232,13 @@ fn emit_compose_core_payload(spec: *const ComposeCorePayloadSpec, welcome: bool,
         zp[0..pn],
         spec.payload_value,
         za[0..an],
-        zp[0..pn],
+        method_body,
         zo[0..on],
         spec.outer_value,
         zo[0..on],
         note_expect,
         za[0..an],
-        dbl_expect,
+        arm_expect_v,
     }) catch return error.Overflow;
     return @intCast(written.len);
 }
