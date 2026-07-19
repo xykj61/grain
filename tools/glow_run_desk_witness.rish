@@ -477,6 +477,11 @@ assert uselibpay.ok else "glow_run use-lib-payload-nest.glow failed"
 assert uselibpay.out contains "GREEN" else "glow_run use-lib-payload-nest.glow not GREEN"
 assert uselibpay.out contains "use-lib-payload-nest.glow" else "glow_run use-lib-payload-nest claim missing path"
 
+let uselibcuejam = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/use-lib-cue-jam.glow"]
+assert uselibcuejam.ok else "glow_run use-lib-cue-jam.glow failed"
+assert uselibcuejam.out contains "GREEN" else "glow_run use-lib-cue-jam.glow not GREEN"
+assert uselibcuejam.out contains "use-lib-cue-jam.glow" else "glow_run use-lib-cue-jam claim missing path"
+
 let corenest = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/core-nest.glow"]
 assert corenest.ok else "glow_run core-nest.glow failed"
 assert corenest.out contains "GREEN" else "glow_run core-nest.glow not GREEN"
