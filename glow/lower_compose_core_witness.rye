@@ -7,7 +7,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const lower = @import("lower_compose_core.rye");
 
-const witness_version = "20260719.165404";
+const witness_version = "20260719.165724";
 
 const one_src =
     \\::  Face then thin core arm (STOA18).
@@ -46,6 +46,14 @@ const cue_jam_right_src =
     \\=/  amount  5
     \\|%
     \\++  unpack  (cue (jam sample (mix sample sample)))
+    \\--
+;
+
+const cue_jam_both_src =
+    \\::  Face then nest-both cue-of-jam arm (STOA56).
+    \\=/  amount  5
+    \\|%
+    \\++  unpack  (cue (jam (mix sample sample) (mix sample sample)))
     \\--
 ;
 
@@ -144,6 +152,16 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, buf[0..n_cue_right_u], "Core.unpack(amount) == 1") != null);
     print("compose-core: nest-right cue-of-jam unwelcome expects mismatch -- GREEN\n", .{});
 
+    const n_cue_both = try lower.lower_source_welcome(cue_jam_both_src, &buf);
+    const rye_cue_both = buf[0..n_cue_both];
+    assert(std.mem.indexOf(u8, rye_cue_both, "return (((sample ^ sample) << 16) | (sample ^ sample)) & 0xffff;") != null);
+    assert(std.mem.indexOf(u8, rye_cue_both, "Core.unpack(amount) == 0") != null);
+    print("compose-core: nest-both cue-of-jam welcome calls Core.unpack -- GREEN\n", .{});
+
+    const n_cue_both_u = try lower.lower_source_unwelcome(cue_jam_both_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n_cue_both_u], "Core.unpack(amount) == 1") != null);
+    print("compose-core: nest-both cue-of-jam unwelcome expects mismatch -- GREEN\n", .{});
+
     if (lower.lower_source_welcome(
         \\=/  amount  5
         \\|%
@@ -184,7 +202,9 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/compose_core_cue_jam_nest_welcome.rye", .data = buf[0..n11] });
     const n12 = try lower.lower_source_welcome(cue_jam_right_src, &buf);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/compose_core_cue_jam_right_welcome.rye", .data = buf[0..n12] });
-    print("compose-core: wrote nest cue-jam left and right caches -- GREEN\n", .{});
+    const n13 = try lower.lower_source_welcome(cue_jam_both_src, &buf);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/compose_core_cue_jam_both_welcome.rye", .data = buf[0..n13] });
+    print("compose-core: wrote nest cue-jam left right and both caches -- GREEN\n", .{});
 
     const gen3 = try cwd.readFileAlloc(io, "glow/gen/compose-core-three.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen3, "++  dec") != null);
@@ -198,10 +218,12 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, gen_cue_nest, "(cue (jam (mix sample sample) sample))") != null);
     const gen_cue_right = try cwd.readFileAlloc(io, "glow/gen/compose-core-cue-jam-right-nest.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_cue_right, "(cue (jam sample (mix sample sample)))") != null);
-    print("compose-core: desks nest cue-jam left and right carry face→core -- GREEN\n", .{});
+    const gen_cue_both = try cwd.readFileAlloc(io, "glow/gen/compose-core-cue-jam-both-nest.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_cue_both, "(cue (jam (mix sample sample) (mix sample sample)))") != null);
+    print("compose-core: desks nest cue-jam left right and both carry face→core -- GREEN\n", .{});
 
     print("compose-core: version {s}\n", .{witness_version});
-    print("GREEN: face→`|%` compose lowers cue-of-jam nest-left and nest-right (STOA53/54/55).\n", .{});
+    print("GREEN: face→`|%` compose lowers cue-of-jam nest-left right and both (STOA53/54/55/56).\n", .{});
     return 0;
 }
 
