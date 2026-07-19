@@ -1,0 +1,16 @@
+format session-log-v1
+stamp 20260718.224511
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern time convention
+title Send STOA14 approve B then D
+prompt approve all in your rec order
+think A send STOA14; then B two-arm battery; then D library emit without main.
+think Skip C face-to-core compose per lean order A then B then D.
+obs Pier will hold first core; two-arm then importable unit deepen the battery season.
+file session-logs/20260718-224511_send-stoa14-approve-b-d.bron this send
+product_nib SETU6.5
+suite_nib STOA14
+git_nib 4d3e049a52
+recommend keep-going STOA15 two-arm after push

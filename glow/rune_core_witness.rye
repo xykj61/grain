@@ -1,0 +1,52 @@
+//! glow/rune_core_witness.rye — proves the thin `|%` core shape.
+//!
+//!   rye build glow/rune_core_witness.rye -femit-bin=glow/bin/rune_core_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const rk = @import("rune_core.rye");
+
+const witness_version = "20260718.223906";
+
+const core_src =
+    \\::  Thin core — one arm double (STOA14).
+    \\|%
+    \\++  double
+    \\--
+;
+
+fn run_selftest() !u8 {
+    const spec = try rk.parse_source(core_src);
+    assert(std.mem.eql(u8, rk.arm_slice(&spec), "double"));
+    print("core: \"|% / ++ double / --\" parses arm -- GREEN\n", .{});
+
+    if (rk.parse_source("=/  amount  5\n=/  note  3\n")) |_| {
+        return error.NotACoreNotCaught;
+    } else |err| {
+        if (err != rk.ParseError.NotACore) return err;
+    }
+    print("core: face desk refused NotACore -- GREEN\n", .{});
+
+    if (rk.parse_source("|%\n++  double\n++  extra\n--\n")) |_| {
+        return error.TooManyNotCaught;
+    } else |err| {
+        if (err != rk.ParseError.TooManyLines and err != rk.ParseError.NotACore) return err;
+    }
+    print("core: four lines refused -- GREEN\n", .{});
+
+    if (rk.parse_source("|%\n++\n--\n")) |_| {
+        return error.MissingArmNotCaught;
+    } else |err| {
+        if (err != rk.ParseError.MissingArm and err != rk.ParseError.MalformedName) return err;
+    }
+    print("core: bare ++ refused MissingArm -- GREEN\n", .{});
+
+    print("core: version {s}\n", .{witness_version});
+    print("GREEN: `|%` thin core parses one named arm (STOA14).\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}
