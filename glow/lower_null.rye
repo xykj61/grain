@@ -364,6 +364,28 @@ fn emit_one_cue(role: []const u8, arm: *const ArmExpr, out: []u8, at: *usize, em
         at.* += arm_line.len;
         return;
     }
+    if (expr.cue_jam_is_nest_right(arm)) {
+        var zl: [max_arm_len]u8 = undefined;
+        const ln = try zig_safe_ident(face_slice(arm), &zl);
+        var zm: [max_arm_len]u8 = undefined;
+        const mn = try zig_safe_ident(face2_slice(arm), &zm);
+        var zr: [max_arm_len]u8 = undefined;
+        const mrn = try zig_safe_ident(face3_slice(arm), &zr);
+        try emit_mix_atom(zl[0..ln], expr.jam_demo_left, out, at, emitted);
+        try emit_mix_atom(zm[0..mn], expr.mix_demo_left, out, at, emitted);
+        try emit_mix_atom(zr[0..mrn], expr.mix_demo_right, out, at, emitted);
+        var mix_buf: [max_arm_len + 16]u8 = undefined;
+        const mix_name = std.fmt.bufPrint(&mix_buf, "{s}_right_mix", .{role}) catch return error.Overflow;
+        const mix_line = std.fmt.bufPrint(out[at.*..], "    const {s}: u32 = {s} ^ {s};\n", .{ mix_name, zm[0..mn], zr[0..mrn] }) catch return error.Overflow;
+        at.* += mix_line.len;
+        var pack_buf: [max_arm_len + 16]u8 = undefined;
+        const pack_name = std.fmt.bufPrint(&pack_buf, "{s}_packed", .{role}) catch return error.Overflow;
+        const pack_line = std.fmt.bufPrint(out[at.*..], "    const {s}: u32 = ({s} << 16) | {s};\n", .{ pack_name, zl[0..ln], mix_name }) catch return error.Overflow;
+        at.* += pack_line.len;
+        const arm_line = std.fmt.bufPrint(out[at.*..], "    const {s}: u32 = {s} & 0xffff;\n", .{ role, pack_name }) catch return error.Overflow;
+        at.* += arm_line.len;
+        return;
+    }
     if (expr.cue_is_jam(arm)) {
         var zl: [max_arm_len]u8 = undefined;
         const ln = try zig_safe_ident(face_slice(arm), &zl);

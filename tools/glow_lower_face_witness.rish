@@ -37,6 +37,7 @@ assert selftest.out contains "nests (jam" else "lower_face_witness missing face-
 assert selftest.out contains "nests (cue" else "lower_face_witness missing face-cue desk claim"
 assert selftest.out contains "nests cue-of-jam" else "lower_face_witness missing face-cue-jam desk claim"
 assert selftest.out contains "nests cue nest jam" else "lower_face_witness missing face-cue-jam-nest desk claim"
+assert selftest.out contains "nests cue nest jam right" else "lower_face_witness missing face-cue-jam-right-nest desk claim"
 assert selftest.out contains "nests jam-of-mix" else "lower_face_witness missing face-jam-nest desk claim"
 assert selftest.out contains "nests jam-right-mix" else "lower_face_witness missing face-jam-right-nest desk claim"
 assert selftest.out contains "nests jam-both-mix" else "lower_face_witness missing face-jam-both-nest desk claim"

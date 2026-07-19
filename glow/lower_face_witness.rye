@@ -140,6 +140,13 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, rye_cjn, "right == 3") != null);
     print("lower: \"=/  right=@u32  (cue (jam (mix from amount) amount))\" welcome binds cue nest jam -- GREEN\n", .{});
 
+    const n_cjr = try lower.lower_line_welcome("=/  right=@u32  (cue (jam cell (mix from amount)))", &buf);
+    const rye_cjr = buf[0..n_cjr];
+    assert(std.mem.indexOf(u8, rye_cjr, "const right_mix: u32 = from ^ amount") != null);
+    assert(std.mem.indexOf(u8, rye_cjr, "const cell_pack: u32 = (cell << 16) | right_mix") != null);
+    assert(std.mem.indexOf(u8, rye_cjr, "right == 6") != null);
+    print("lower: \"=/  right=@u32  (cue (jam cell (mix from amount)))\" welcome binds cue nest jam right -- GREEN\n", .{});
+
     const n_nest = try lower.lower_line_welcome("=/  nested=@u32  (jam (mix from amount) amount)", &buf);
     const rye_nest = buf[0..n_nest];
     assert(std.mem.indexOf(u8, rye_nest, "const from: u32 = 5") != null);
@@ -214,6 +221,10 @@ fn run_selftest(init: std.process.Init) !u8 {
     const gen_cjn = try cwd.readFileAlloc(io, "glow/gen/face-cue-jam-nest.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_cjn, "=/  right=@u32  (cue (jam (mix from amount) amount))") != null);
     print("lower: glow/gen/face-cue-jam-nest.glow nests cue nest jam under face -- GREEN\n", .{});
+
+    const gen_cjr = try cwd.readFileAlloc(io, "glow/gen/face-cue-jam-right-nest.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_cjr, "=/  right=@u32  (cue (jam cell (mix from amount)))") != null);
+    print("lower: glow/gen/face-cue-jam-right-nest.glow nests cue nest jam right under face -- GREEN\n", .{});
 
     const gen_nest = try cwd.readFileAlloc(io, "glow/gen/face-jam-nest.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_nest, "=/  nested=@u32  (jam (mix from amount) amount)") != null);

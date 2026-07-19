@@ -84,6 +84,8 @@ fn open_body_expect(body: *const expr.Expr, sample: u32) LowerError!u32 {
             (sample << 16) | sample,
         .cue_of => if (expr.cue_jam_is_nest_left(body))
             (((sample ^ sample) << 16) | sample) & 0xffff
+        else if (expr.cue_jam_is_nest_right(body))
+            ((sample << 16) | (sample ^ sample)) & 0xffff
         else if (expr.cue_is_jam(body))
             ((sample << 16) | sample) & 0xffff
         else
@@ -128,6 +130,11 @@ fn emit_open_body(body: *const expr.Expr, payload: bool, face_zig: []const u8, o
                 std.fmt.bufPrint(out, "return (((self.{s} ^ self.{s}) << 16) | self.{s}) & 0xffff;", .{ atom, atom, atom }) catch return error.Overflow
             else
                 std.fmt.bufPrint(out, "return (((sample ^ sample) << 16) | sample) & 0xffff;", .{}) catch return error.Overflow
+        else if (expr.cue_jam_is_nest_right(body))
+            if (payload)
+                std.fmt.bufPrint(out, "return ((self.{s} << 16) | (self.{s} ^ self.{s})) & 0xffff;", .{ atom, atom, atom }) catch return error.Overflow
+            else
+                std.fmt.bufPrint(out, "return ((sample << 16) | (sample ^ sample)) & 0xffff;", .{}) catch return error.Overflow
         else if (expr.cue_is_jam(body))
             if (payload)
                 std.fmt.bufPrint(out, "return ((self.{s} << 16) | self.{s}) & 0xffff;", .{ atom, atom }) catch return error.Overflow
