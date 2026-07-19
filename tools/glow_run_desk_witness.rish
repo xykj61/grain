@@ -184,5 +184,10 @@ assert typed.ok else "glow_run multi-typed.glow failed"
 assert typed.out contains "GREEN" else "glow_run multi-typed.glow not GREEN"
 assert typed.out contains "multi-typed.glow" else "glow_run multi-typed claim missing path"
 
+let core = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/core-double.glow"]
+assert core.ok else "glow_run core-double.glow failed"
+assert core.out contains "GREEN" else "glow_run core-double.glow not GREEN"
+assert core.out contains "core-double.glow" else "glow_run core-double claim missing path"
+
 say "GREEN: glow_run desk — all desk generators lowered, built, exit 0."
 

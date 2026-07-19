@@ -1,0 +1,68 @@
+//! glow/lower_core_witness.rye — proves thin `|%` core lowers to Rye.
+//!
+//!   rye build glow/lower_core_witness.rye -femit-bin=glow/bin/lower_core_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const lower = @import("lower_core.rye");
+
+const witness_version = "20260718.223906";
+
+const core_src =
+    \\::  Thin core — one arm double (STOA14).
+    \\|%
+    \\++  double
+    \\--
+;
+
+fn run_selftest(init: std.process.Init) !u8 {
+    const io = init.io;
+    const a = init.arena.allocator();
+    const cwd = std.Io.Dir.cwd();
+    var buf: [3072]u8 = undefined;
+
+    const n1 = try lower.lower_source_welcome(core_src, &buf);
+    const rye1 = buf[0..n1];
+    assert(std.mem.indexOf(u8, rye1, "const Core = struct {") != null);
+    assert(std.mem.indexOf(u8, rye1, "pub fn double(sample: u32) u32") != null);
+    assert(std.mem.indexOf(u8, rye1, "return sample *% 2;") != null);
+    assert(std.mem.indexOf(u8, rye1, "const amount: u32 = 5") != null);
+    assert(std.mem.indexOf(u8, rye1, "const called: u32 = Core.double(amount)") != null);
+    assert(std.mem.indexOf(u8, rye1, "called == 10") != null);
+    print("core: welcome builds Core.double -- GREEN\n", .{});
+
+    const n2 = try lower.lower_source_unwelcome(core_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n2], "called == 11") != null);
+    print("core: unwelcome expects mismatch -- GREEN\n", .{});
+
+    if (lower.lower_source_welcome("|%\n++  mystery\n--\n", &buf)) |_| {
+        return error.UnknownArmNotCaught;
+    } else |err| {
+        if (err != lower.LowerError.UnknownArm) return err;
+    }
+    print("core: unknown arm refused UnknownArm -- GREEN\n", .{});
+
+    try cwd.createDirPath(io, "glow/.cache");
+    const welcome_path = "glow/.cache/core_double_welcome.rye";
+    const unwelcome_path = "glow/.cache/core_double_unwelcome.rye";
+    const n3 = try lower.lower_source_welcome(core_src, &buf);
+    try cwd.writeFile(io, .{ .sub_path = welcome_path, .data = buf[0..n3] });
+    const n4 = try lower.lower_source_unwelcome(core_src, &buf);
+    try cwd.writeFile(io, .{ .sub_path = unwelcome_path, .data = buf[0..n4] });
+    print("core: wrote welcome and unwelcome .rye under glow/.cache/ -- GREEN\n", .{});
+
+    const gen_src = try cwd.readFileAlloc(io, "glow/gen/core-double.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_src, "|%") != null);
+    assert(std.mem.indexOf(u8, gen_src, "++  double") != null);
+    assert(std.mem.indexOf(u8, gen_src, "--") != null);
+    print("core: glow/gen/core-double.glow carries thin battery -- GREEN\n", .{});
+
+    print("core: version {s}\n", .{witness_version});
+    print("GREEN: `|%` thin core lowers to ordinary Rye (STOA14).\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
+}

@@ -30,6 +30,7 @@ const lower_multi = @import("lower_multi.rye");
 const lower_compose = @import("lower_compose.rye");
 const lower_compose2 = @import("lower_compose2.rye");
 const lower_multi_typed = @import("lower_multi_typed.rye");
+const lower_core = @import("lower_core.rye");
 
 fn first_glow_line(src: []const u8) ?[]const u8 {
     var lines: [lower_multi.max_lines][]const u8 = undefined;
@@ -82,6 +83,12 @@ pub fn main(init: std.process.Init) !u8 {
                 print("glow_run: multi-line collect failed in {s}\n", .{glow_path});
                 return 1;
             };
+            if (n >= 2 and lines[0].len >= 2 and lines[0][0] == '|' and lines[0][1] == '%') {
+                break :blk lower_core.lower_source_welcome(src, &rye_buf) catch |err| {
+                    print("glow_run: core lower failed ({s})\n", .{@errorName(err)});
+                    return 1;
+                };
+            }
             if (n == 2 and lines[1].len >= 2 and lines[1][0] == '%' and lines[1][1] == '-') {
                 break :blk lower_compose.lower_source_welcome(src, &rye_buf) catch |err| {
                     print("glow_run: compose lower failed ({s})\n", .{@errorName(err)});

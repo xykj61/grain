@@ -4,7 +4,7 @@
 
 **Language:** EN
 **Version:** `20260715` (Pool keystone revival prioritized · Quin voice seated · align pass reconciles the closed ladder)
-**Last updated:** 2026-07-18 (**STOA13** GREEN — typed multi-line `@u32`)
+**Last updated:** 2026-07-18 (**STOA14** GREEN — thin `|%` core)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Lens:** TAME — safety, performance, joy; the Seed Law; [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md)
@@ -325,6 +325,10 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 **STOA12 face→face→`%+` compose GREEN, `20260718.221812`** — approved thin face A: two binds then `%+  add  from  amount`; desk `compose-add`. Next language: **STOA13** check-in (cores · typed multi-line).
 
 **STOA13 typed multi-line `@u32` GREEN, `20260718.223431`** — 2–4 typed face lines; desk `multi-typed`; bare multi unchanged. Next language: **STOA14** check-in (cores — brief before code).
+
+**Send STOA12–13, `20260718.223834`** — pier at `4d3e049a52`. Approved A→C→B for cores.
+
+**STOA14 thin `|%` core GREEN, `20260718.224030`** — brief seated; desk `core-double` (`++ double`); no variance. Next language: **STOA15** check-in (payload · multi-arm · library emit).
 
 **Glow OS · Glow Desk · Glow Glass seated, `20260717.183622`** — Keaton: **Glow OS** unifies; **Glow Desk** = desktop; **Glow Glass** = mobile. Lexicon + silo [`../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md`](../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md). Orientation firmware stays check-in.
 
