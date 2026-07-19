@@ -1,0 +1,129 @@
+//! glow/lower_compose_lib_witness.rye — proves `/+` library compose.
+//!
+//!   rye build glow/lower_compose_lib_witness.rye -femit-bin=glow/bin/lower_compose_lib_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const lower = @import("lower_compose_lib.rye");
+
+const witness_version = "20260719.000324";
+
+const use_src =
+    \\::  Import Glow library then call open arm (STOA26).
+    \\/+  lib-core-open
+    \\=/  amount  5
+    \\%-  id  amount
+;
+
+const lib_src =
+    \\::  Library open arm (STOA26).
+    \\|%
+    \\++  id  sample
+    \\--
+;
+
+const use_nest_src =
+    \\::  Import nest library then call pack (STOA29).
+    \\/+  lib-core-nest
+    \\=/  amount  5
+    \\%-  pack  amount
+;
+
+const lib_nest_src =
+    \\::  Library nest arm (STOA29).
+    \\|%
+    \\++  pack  (jam sample sample)
+    \\--
+;
+
+fn run_selftest(init: std.process.Init) !u8 {
+    const io = init.io;
+    const a = init.arena.allocator();
+    const cwd = std.Io.Dir.cwd();
+    var buf: [4096]u8 = undefined;
+
+    const spec = try lower.parse_compose_lib(use_src);
+    assert(std.mem.eql(u8, lower.stem_slice(&spec), "lib-core-open"));
+    assert(std.mem.eql(u8, lower.face_slice(&spec), "amount"));
+    assert(spec.value == 5);
+    assert(std.mem.eql(u8, lower.gate_slice(&spec), "id"));
+    print("compose-lib: /+ face %- parses -- GREEN\n", .{});
+
+    const expect = try lower.bind_library(&spec, lib_src);
+    assert(expect == 5);
+    print("compose-lib: open arm id expects sample -- GREEN\n", .{});
+
+    const n1 = try lower.lower_source_welcome(use_src, lib_src, &buf);
+    const rye1 = buf[0..n1];
+    assert(std.mem.indexOf(u8, rye1, "import(\"lib_core_open.rye\")") != null);
+    assert(std.mem.indexOf(u8, rye1, "lib.Core.id(amount) == 5") != null);
+    assert(std.mem.indexOf(u8, rye1, "pub fn main") != null);
+    print("compose-lib: welcome imports lib and calls Core.id -- GREEN\n", .{});
+
+    const n2 = try lower.lower_source_unwelcome(use_src, lib_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n2], "lib.Core.id(amount) == 6") != null);
+    print("compose-lib: unwelcome expects mismatch -- GREEN\n", .{});
+
+    if (lower.parse_compose_lib(
+        \\/+  lib-core-open
+        \\=/  amount  5
+        \\%-  id  other
+    )) |_| {
+        return error.SampleMismatchNotCaught;
+    } else |err| {
+        if (err != lower.LowerError.SampleMismatch) return err;
+    }
+    print("compose-lib: sample mismatch refused -- GREEN\n", .{});
+
+    if (lower.bind_library(&spec,
+        \\|%
+        \\++  double
+        \\--
+    )) |_| {
+        return error.UnknownArmNotCaught;
+    } else |err| {
+        if (err != lower.LowerError.UnknownArm) return err;
+    }
+    print("compose-lib: missing arm refused UnknownArm -- GREEN\n", .{});
+
+    const nest_spec = try lower.parse_compose_lib(use_nest_src);
+    assert(std.mem.eql(u8, lower.stem_slice(&nest_spec), "lib-core-nest"));
+    assert(std.mem.eql(u8, lower.gate_slice(&nest_spec), "pack"));
+    const nest_expect = try lower.bind_library(&nest_spec, lib_nest_src);
+    assert(nest_expect == 327685);
+    print("compose-lib: nest pack expects jam -- GREEN\n", .{});
+
+    const n_nest = try lower.lower_source_welcome(use_nest_src, lib_nest_src, &buf);
+    const rye_nest = buf[0..n_nest];
+    assert(std.mem.indexOf(u8, rye_nest, "import(\"lib_core_nest.rye\")") != null);
+    assert(std.mem.indexOf(u8, rye_nest, "lib.Core.pack(amount) == 327685") != null);
+    print("compose-lib: nest welcome imports lib and calls Core.pack -- GREEN\n", .{});
+
+    try cwd.createDirPath(io, "glow/.cache");
+    const n3 = try lower.lower_source_welcome(use_src, lib_src, &buf);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/use_lib_open_welcome.rye", .data = buf[0..n3] });
+    const n4 = try lower.lower_source_welcome(use_nest_src, lib_nest_src, &buf);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/use_lib_nest_welcome.rye", .data = buf[0..n4] });
+    print("compose-lib: wrote open and nest consumer caches -- GREEN\n", .{});
+
+    const gen_use = try cwd.readFileAlloc(io, "glow/gen/use-lib-open.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_use, "/+  lib-core-open") != null);
+    assert(std.mem.indexOf(u8, gen_use, "%-  id  amount") != null);
+    const gen_lib = try cwd.readFileAlloc(io, "glow/gen/lib-core-open.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_lib, "++  id  sample") != null);
+    const gen_use_nest = try cwd.readFileAlloc(io, "glow/gen/use-lib-nest.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_use_nest, "/+  lib-core-nest") != null);
+    assert(std.mem.indexOf(u8, gen_use_nest, "%-  pack  amount") != null);
+    const gen_lib_nest = try cwd.readFileAlloc(io, "glow/gen/lib-core-nest.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_lib_nest, "(jam sample sample)") != null);
+    print("compose-lib: desks use/lib-core-open and use/lib-core-nest carry import -- GREEN\n", .{});
+
+    print("compose-lib: version {s}\n", .{witness_version});
+    print("GREEN: `/+` Glow library compose lowers open and nest-arm calls (STOA26/29).\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
+}

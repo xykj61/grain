@@ -8,11 +8,18 @@
 //!   ++  dec
 //!   --
 //!
+//! STOA28 — face→open/nest arm (four lines):
+//!   =/  amount  5
+//!   |%
+//!   ++  pack  (jam sample sample)
+//!   --
+//!
 //! Outer face is the sample; the core carries no inner payload.
 
 const std = @import("std");
 const rf = @import("rune_face.rye");
 const rk = @import("rune_core.rye");
+const expr = @import("expr.rye");
 const lower_multi = @import("lower_multi.rye");
 
 pub const LowerError = rf.ParseError || rk.ParseError || lower_multi.LowerError || error{
@@ -21,6 +28,7 @@ pub const LowerError = rf.ParseError || rk.ParseError || lower_multi.LowerError 
     BadIdent,
     NotAComposeCore,
     UnknownArm,
+    MixedArms,
     NotBareLiteral,
     MalformedValue,
     CoreHasPayload,
@@ -68,7 +76,10 @@ pub const ComposeCoreSpec = struct {
     value: u32 = 0,
     arms: [rk.max_arms][rk.max_name_len]u8 = .{.{0} ** rk.max_name_len} ** rk.max_arms,
     lens: [rk.max_arms]usize = .{0} ** rk.max_arms,
+    bodies: [rk.max_arms]expr.Expr = [_]expr.Expr{.{ .kind = .literal }} ** rk.max_arms,
+    has_body: [rk.max_arms]bool = .{false} ** rk.max_arms,
     count: usize = 0,
+    is_open: bool = false,
 };
 
 pub fn face_slice(spec: *const ComposeCoreSpec) []const u8 {
@@ -105,18 +116,38 @@ fn join_core_src(lines: []const []const u8, out: []u8) LowerError![]const u8 {
     return out[0..at];
 }
 
-fn arm_body(arm: []const u8) LowerError![]const u8 {
+fn arm_body_closed(arm: []const u8) LowerError![]const u8 {
     if (std.mem.eql(u8, arm, "double")) return "return sample *% 2;";
     if (std.mem.eql(u8, arm, "inc")) return "return sample +% 1;";
     if (std.mem.eql(u8, arm, "dec")) return "return sample -% 1;";
     return error.UnknownArm;
 }
 
-fn arm_expect(arm: []const u8, sample: u32) LowerError!u32 {
+fn arm_expect_closed(arm: []const u8, sample: u32) LowerError!u32 {
     if (std.mem.eql(u8, arm, "double")) return sample *% 2;
     if (std.mem.eql(u8, arm, "inc")) return sample +% 1;
     if (std.mem.eql(u8, arm, "dec")) return sample -% 1;
     return error.UnknownArm;
+}
+
+fn open_body_expect(body: *const expr.Expr, sample: u32) LowerError!u32 {
+    return switch (body.kind) {
+        .literal, .cast_literal => body.lit,
+        .face => sample,
+        .lent_of => expr.lent_demo_len,
+        .mix_of => sample ^ sample,
+        .jam_of => (sample << 16) | sample,
+    };
+}
+
+fn emit_open_body(body: *const expr.Expr, out: []u8) LowerError![]const u8 {
+    return switch (body.kind) {
+        .literal, .cast_literal => std.fmt.bufPrint(out, "return {d};", .{body.lit}) catch return error.Overflow,
+        .face => std.fmt.bufPrint(out, "return sample;", .{}) catch return error.Overflow,
+        .lent_of => std.fmt.bufPrint(out, "return {d};", .{expr.lent_demo_len}) catch return error.Overflow,
+        .mix_of => std.fmt.bufPrint(out, "return sample ^ sample;", .{}) catch return error.Overflow,
+        .jam_of => std.fmt.bufPrint(out, "return (sample << 16) | sample;", .{}) catch return error.Overflow,
+    };
 }
 
 fn closed_compose_arms(core: *const rk.CoreSpec) LowerError!void {
@@ -124,6 +155,17 @@ fn closed_compose_arms(core: *const rk.CoreSpec) LowerError!void {
     if (!std.mem.eql(u8, rk.arm_at(core, 0), "double")) return error.UnknownArm;
     if (core.count >= 2 and !std.mem.eql(u8, rk.arm_at(core, 1), "inc")) return error.UnknownArm;
     if (core.count == 3 and !std.mem.eql(u8, rk.arm_at(core, 2), "dec")) return error.UnknownArm;
+}
+
+fn classify_open(core: *const rk.CoreSpec) LowerError!bool {
+    var open_count: usize = 0;
+    var i: usize = 0;
+    while (i < core.count) : (i += 1) {
+        if (rk.arm_has_body(core, i)) open_count += 1;
+    }
+    if (open_count == 0) return false;
+    if (open_count != core.count) return error.MixedArms;
+    return true;
 }
 
 pub fn parse_compose_core(src: []const u8) LowerError!ComposeCoreSpec {
@@ -141,13 +183,19 @@ pub fn parse_compose_core(src: []const u8) LowerError!ComposeCoreSpec {
     const core_src = try join_core_src(lines[1..n], &core_buf);
     const core = try rk.parse_source(core_src);
     if (rk.has_payload(&core)) return error.CoreHasPayload;
-    try closed_compose_arms(&core);
+    const is_open = try classify_open(&core);
+    if (!is_open) try closed_compose_arms(&core);
+    spec.is_open = is_open;
 
     var i: usize = 0;
     while (i < core.count) : (i += 1) {
         const arm = rk.arm_at(&core, i);
         @memcpy(spec.arms[spec.count][0..arm.len], arm);
         spec.lens[spec.count] = arm.len;
+        if (rk.arm_has_body(&core, i)) {
+            spec.bodies[spec.count] = rk.arm_body_at(&core, i).*;
+            spec.has_body[spec.count] = true;
+        }
         spec.count += 1;
     }
     return spec;
@@ -155,12 +203,16 @@ pub fn parse_compose_core(src: []const u8) LowerError!ComposeCoreSpec {
 
 fn emit_methods(spec: *const ComposeCoreSpec, out: []u8) LowerError!usize {
     var at: usize = 0;
+    var body_buf: [128]u8 = undefined;
     var i: usize = 0;
     while (i < spec.count) : (i += 1) {
         const arm = arm_at(spec, i);
         var za: [rk.max_name_len]u8 = undefined;
         const an = try zig_safe_ident(arm, &za);
-        const body = try arm_body(arm);
+        const body: []const u8 = if (spec.is_open)
+            try emit_open_body(&spec.bodies[i], &body_buf)
+        else
+            try arm_body_closed(arm);
         const chunk = std.fmt.bufPrint(out[at..],
             \\    pub fn {s}(sample: u32) u32 {{
             \\        {s}
@@ -179,7 +231,10 @@ fn emit_checks(spec: *const ComposeCoreSpec, welcome: bool, face_zig: []const u8
         const arm = arm_at(spec, i);
         var za: [rk.max_name_len]u8 = undefined;
         const an = try zig_safe_ident(arm, &za);
-        const base = try arm_expect(arm, spec.value);
+        const base: u32 = if (spec.is_open)
+            try open_body_expect(&spec.bodies[i], spec.value)
+        else
+            try arm_expect_closed(arm, spec.value);
         const expect: u32 = if (welcome) base else base +% 1;
         if (i > 0) {
             const and_part = std.fmt.bufPrint(out[at..], " and ", .{}) catch return error.Overflow;
@@ -206,7 +261,7 @@ fn emit_compose_core(spec: *const ComposeCoreSpec, welcome: bool, out: []u8) Low
     const written = std.fmt.bufPrint(out,
         \\const std = @import("std");
         \\
-        \\/// Lowered from Glow face→`|%` compose (STOA18/19/22).
+        \\/// Lowered from Glow face→`|%` compose (STOA18/19/22/28).
         \\const Core = struct {{
         \\{s}}};
         \\

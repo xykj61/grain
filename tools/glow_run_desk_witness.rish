@@ -237,6 +237,31 @@ assert coretyped.ok else "glow_run core-payload-typed.glow failed"
 assert coretyped.out contains "GREEN" else "glow_run core-payload-typed.glow not GREEN"
 assert coretyped.out contains "core-payload-typed.glow" else "glow_run core-payload-typed claim missing path"
 
+let coreopen = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/core-open.glow"]
+assert coreopen.ok else "glow_run core-open.glow failed"
+assert coreopen.out contains "GREEN" else "glow_run core-open.glow not GREEN"
+assert coreopen.out contains "core-open.glow" else "glow_run core-open claim missing path"
+
+let uselib = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/use-lib-open.glow"]
+assert uselib.ok else "glow_run use-lib-open.glow failed"
+assert uselib.out contains "GREEN" else "glow_run use-lib-open.glow not GREEN"
+assert uselib.out contains "use-lib-open.glow" else "glow_run use-lib-open claim missing path"
+
+let uselibnest = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/use-lib-nest.glow"]
+assert uselibnest.ok else "glow_run use-lib-nest.glow failed"
+assert uselibnest.out contains "GREEN" else "glow_run use-lib-nest.glow not GREEN"
+assert uselibnest.out contains "use-lib-nest.glow" else "glow_run use-lib-nest claim missing path"
+
+let corenest = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/core-nest.glow"]
+assert corenest.ok else "glow_run core-nest.glow failed"
+assert corenest.out contains "GREEN" else "glow_run core-nest.glow not GREEN"
+assert corenest.out contains "core-nest.glow" else "glow_run core-nest claim missing path"
+
+let composecorenest = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/compose-core-nest.glow"]
+assert composecorenest.ok else "glow_run compose-core-nest.glow failed"
+assert composecorenest.out contains "GREEN" else "glow_run compose-core-nest.glow not GREEN"
+assert composecorenest.out contains "compose-core-nest.glow" else "glow_run compose-core-nest claim missing path"
+
 say "GREEN: glow_run desk — all desk generators lowered, built, exit 0."
 
 
