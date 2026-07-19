@@ -59,6 +59,11 @@ assert facemix.ok else "glow_run face-mix.glow failed"
 assert facemix.out contains "GREEN" else "glow_run face-mix.glow not GREEN"
 assert facemix.out contains "face-mix.glow" else "glow_run face-mix claim missing path"
 
+let facejam = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/face-jam.glow"]
+assert facejam.ok else "glow_run face-jam.glow failed"
+assert facejam.out contains "GREEN" else "glow_run face-jam.glow not GREEN"
+assert facejam.out contains "face-jam.glow" else "glow_run face-jam claim missing path"
+
 let iflent = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/if-lent.glow"]
 assert iflent.ok else "glow_run if-lent.glow failed"
 assert iflent.out contains "GREEN" else "glow_run if-lent.glow not GREEN"
@@ -68,6 +73,11 @@ let ifmix = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/if-mix.
 assert ifmix.ok else "glow_run if-mix.glow failed"
 assert ifmix.out contains "GREEN" else "glow_run if-mix.glow not GREEN"
 assert ifmix.out contains "if-mix.glow" else "glow_run if-mix claim missing path"
+
+let ifjam = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/if-jam.glow"]
+assert ifjam.ok else "glow_run if-jam.glow failed"
+assert ifjam.out contains "GREEN" else "glow_run if-jam.glow not GREEN"
+assert ifjam.out contains "if-jam.glow" else "glow_run if-jam claim missing path"
 
 let swlent = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/switch-lent.glow"]
 assert swlent.ok else "glow_run switch-lent.glow failed"
@@ -79,6 +89,11 @@ assert swmix.ok else "glow_run switch-mix.glow failed"
 assert swmix.out contains "GREEN" else "glow_run switch-mix.glow not GREEN"
 assert swmix.out contains "switch-mix.glow" else "glow_run switch-mix claim missing path"
 
+let swjam = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/switch-jam.glow"]
+assert swjam.ok else "glow_run switch-jam.glow failed"
+assert swjam.out contains "GREEN" else "glow_run switch-jam.glow not GREEN"
+assert swjam.out contains "switch-jam.glow" else "glow_run switch-jam claim missing path"
+
 let nulllent = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/null-lent.glow"]
 assert nulllent.ok else "glow_run null-lent.glow failed"
 assert nulllent.out contains "GREEN" else "glow_run null-lent.glow not GREEN"
@@ -88,6 +103,11 @@ let nullmix = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/null-
 assert nullmix.ok else "glow_run null-mix.glow failed"
 assert nullmix.out contains "GREEN" else "glow_run null-mix.glow not GREEN"
 assert nullmix.out contains "null-mix.glow" else "glow_run null-mix claim missing path"
+
+let nulljam = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/null-jam.glow"]
+assert nulljam.ok else "glow_run null-jam.glow failed"
+assert nulljam.out contains "GREEN" else "glow_run null-jam.glow not GREEN"
+assert nulljam.out contains "null-jam.glow" else "glow_run null-jam claim missing path"
 
 let nullt = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/null-records.glow"]
 assert nullt.ok else "glow_run null-records.glow failed"
@@ -103,6 +123,46 @@ let alias = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/alias-r
 assert alias.ok else "glow_run alias-records.glow failed"
 assert alias.out contains "GREEN" else "glow_run alias-records.glow not GREEN"
 assert alias.out contains "alias-records.glow" else "glow_run alias-records claim missing path"
+
+let cell = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cell-pair.glow"]
+assert cell.ok else "glow_run cell-pair.glow failed"
+assert cell.out contains "GREEN" else "glow_run cell-pair.glow not GREEN"
+assert cell.out contains "cell-pair.glow" else "glow_run cell-pair claim missing path"
+
+let triple = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cell-triple.glow"]
+assert triple.ok else "glow_run cell-triple.glow failed"
+assert triple.out contains "GREEN" else "glow_run cell-triple.glow not GREEN"
+assert triple.out contains "cell-triple.glow" else "glow_run cell-triple claim missing path"
+
+let quad = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cell-quad.glow"]
+assert quad.ok else "glow_run cell-quad.glow failed"
+assert quad.out contains "GREEN" else "glow_run cell-quad.glow not GREEN"
+assert quad.out contains "cell-quad.glow" else "glow_run cell-quad claim missing path"
+
+let list = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cell-list.glow"]
+assert list.ok else "glow_run cell-list.glow failed"
+assert list.out contains "GREEN" else "glow_run cell-list.glow not GREEN"
+assert list.out contains "cell-list.glow" else "glow_run cell-list claim missing path"
+
+let call = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/call-one.glow"]
+assert call.ok else "glow_run call-one.glow failed"
+assert call.out contains "GREEN" else "glow_run call-one.glow not GREEN"
+assert call.out contains "call-one.glow" else "glow_run call-one claim missing path"
+
+let call2 = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/call-two.glow"]
+assert call2.ok else "glow_run call-two.glow failed"
+assert call2.out contains "GREEN" else "glow_run call-two.glow not GREEN"
+assert call2.out contains "call-two.glow" else "glow_run call-two claim missing path"
+
+let call3 = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/call-three.glow"]
+assert call3.ok else "glow_run call-three.glow failed"
+assert call3.out contains "GREEN" else "glow_run call-three.glow not GREEN"
+assert call3.out contains "call-three.glow" else "glow_run call-three claim missing path"
+
+let calln = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/call-named.glow"]
+assert calln.ok else "glow_run call-named.glow failed"
+assert calln.out contains "GREEN" else "glow_run call-named.glow not GREEN"
+assert calln.out contains "call-named.glow" else "glow_run call-named claim missing path"
 
 say "GREEN: glow_run desk — all desk generators lowered, built, exit 0."
 

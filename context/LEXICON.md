@@ -1,7 +1,7 @@
 # Lexicon — Module Names and Their Meanings
 
 **Language:** EN
-**Last updated:** 2026-07-18 (**LULU** hearth waymark · **Hearth** · ZETA6 send design · remember · JABS · Glow OS)
+**Last updated:** 2026-07-18 (**STOA** Glow language waymark · **LULU** · **Hearth** · ZETA6 · remember · JABS · Glow OS)
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 
 ---
@@ -42,6 +42,7 @@ Living vocabulary for the Rye OS family. Each name teaches its function. Provena
 | **ZETA** | Waymark for the Glow English QWERTY **glass keyboard** ladder (ZETA0 layout tables · ZETA1–5 paint/tap/caret/emoji/Pixel). Drawn `20260717.180025` from `glow-english-qwerty-glass-keyboard-3` via `tools/waymark_derive.rish`. Compressor [`../docs/ZETA.md`](../docs/ZETA.md) · silo [`../active-designing/20260717-175220_dexter-english-qwerty-glass-keyboard.md`](../active-designing/20260717-175220_dexter-english-qwerty-glass-keyboard.md) |
 | **JABS** | Waymark for the Sala **broadcast live-session fold** ladder (JABS0 session-as-log · JABS1 live carriage · JABS2 audience + back-channel · JABS3 inference/economics). Drawn `20260717.191030` from `sala-broadcast-live-session-fold`. Draft letter was bare `B0`–`B3`. Compressor [`../docs/JABS.md`](../docs/JABS.md) · study [`../external-research/20260715-181500_sala-broadcast-live-session-fold.md`](../external-research/20260715-181500_sala-broadcast-live-session-fold.md) |
 | **LULU** | Waymark for **Hearth** display presets, short two-character home, and Wired Glass sync (`glow-glass-hearth-display-and-wired-sync`). Drawn `20260718.122145`. Compressor [`../docs/LULU.md`](../docs/LULU.md) · silo [`../active-designing/20260718-122145_hearth-lulu-display-presets-short-home-and-zeta6-send.md`](../active-designing/20260718-122145_hearth-lulu-display-presets-short-home-and-zeta6-send.md) |
+| **STOA** | Waymark for the **Glow language** SLC ladder (rune heads · nest forms · composition toward Glow-authored modules). Drawn `20260718.202730` from `glow-language-rune-heads-nest-and-lowering-2` via `tools/waymark_derive.rish`. Supersedes same-day draw **MAIR**. Distinct from product glass/wire (ZETA · LULU · SETU) and from app packaging (**TUBE**). Compressor [`../docs/STOA.md`](../docs/STOA.md) · pin [`../glow/README.md`](../glow/README.md) |
 | **Hearth** | Bron preference mold — `home_id` (two lowercase letters, e.g. `kd`) + `display_preset` enum; Nix/infuse *discipline* via Brix declare / Tablecloth-Mantra hold / Skate apply. Not a new kernel vane. Seated design `20260718.122145` |
 | **Glow truth** | Ambient Glow yes/no follows **Zig / Rye** (`bool`, exit 0 = success). Hoon/Nock **loobean** (0 = yes, 1 = no) is **seam-only** — convert with `glow/truth_semantics.rye`, never ambient. Seated `20260717.154943` — [`specs/20260717-154943_glow-truth-zig-ambient-nock-loobean-seam.md`](specs/20260717-154943_glow-truth-zig-ambient-nock-loobean-seam.md) · witness [`../tools/glow_truth_semantics_witness.rish`](../tools/glow_truth_semantics_witness.rish) |
 | **Loobean** | Nock/Hoon flag atom: **0 = yes**, **1 = no**. Real inside [`../nock/`](../nock/) and at the Glow↔Nock seam; **not** Glow ambient truth — [`specs/20260717-154943_glow-truth-zig-ambient-nock-loobean-seam.md`](specs/20260717-154943_glow-truth-zig-ambient-nock-loobean-seam.md) |

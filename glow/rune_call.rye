@@ -1,0 +1,81 @@
+//! glow/rune_call.rye — parses Glow's `%-` one-argument call rune head.
+//!
+//! Per the sameness rune brief `%` category: `%-` calls a gate with one
+//! sample. Thirteenth rune head (STOA6). Shape:
+//!   %-  double  amount
+//!
+//! Two-arg `%+` is STOA7 (`rune_call2.rye`). `%^` `%*`, cores, nest later.
+
+const std = @import("std");
+
+pub const max_name_len: u32 = 64;
+
+pub const ParseError = error{
+    NotACall,
+    MissingGate,
+    MissingSample,
+    ExtraTail,
+    NameTooLong,
+    MalformedName,
+};
+
+pub const CallSpec = struct {
+    gate: [max_name_len]u8 = .{0} ** max_name_len,
+    gate_len: usize = 0,
+    sample: [max_name_len]u8 = .{0} ** max_name_len,
+    sample_len: usize = 0,
+};
+
+pub fn gate_slice(spec: *const CallSpec) []const u8 {
+    return spec.gate[0..spec.gate_len];
+}
+
+pub fn sample_slice(spec: *const CallSpec) []const u8 {
+    return spec.sample[0..spec.sample_len];
+}
+
+fn is_ident_char(ch: u8) bool {
+    if (ch >= 'a' and ch <= 'z') return true;
+    if (ch >= 'A' and ch <= 'Z') return true;
+    if (ch >= '0' and ch <= '9') return true;
+    return ch == '-' or ch == '_';
+}
+
+fn parse_ident(rest: []const u8) ParseError!struct { ident: []const u8, rest: []const u8 } {
+    var end: usize = 0;
+    while (end < rest.len and is_ident_char(rest[end])) end += 1;
+    if (end == 0) return error.MalformedName;
+    const ident = rest[0..end];
+    if (ident[0] >= '0' and ident[0] <= '9') return error.MalformedName;
+    if (ident.len > max_name_len) return error.NameTooLong;
+    return .{ .ident = ident, .rest = rest[end..] };
+}
+
+fn need_ws(before: []const u8, after_trim: []const u8) ParseError!void {
+    if (after_trim.len == 0) return;
+    if (after_trim.len == before.len) return error.MalformedName;
+}
+
+/// Parses one line of Glow's `%-` rune. Gate face, then one sample face.
+pub fn parse(line: []const u8) ParseError!CallSpec {
+    if (line.len < 2 or !std.mem.eql(u8, line[0..2], "%-")) return error.NotACall;
+
+    const rest = std.mem.trimStart(u8, line[2..], " \t");
+    if (rest.len == 0) return error.MissingGate;
+
+    const gate = try parse_ident(rest);
+    var after = std.mem.trimStart(u8, gate.rest, " \t");
+    if (after.len == 0) return error.MissingSample;
+    try need_ws(gate.rest, after);
+
+    const sample = try parse_ident(after);
+    after = std.mem.trimStart(u8, sample.rest, " \t");
+    if (after.len != 0) return error.ExtraTail;
+
+    var spec: CallSpec = .{};
+    @memcpy(spec.gate[0..gate.ident.len], gate.ident);
+    spec.gate_len = gate.ident.len;
+    @memcpy(spec.sample[0..sample.ident.len], sample.ident);
+    spec.sample_len = sample.ident.len;
+    return spec;
+}

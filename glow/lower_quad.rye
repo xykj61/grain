@@ -1,0 +1,131 @@
+//! glow/lower_quad.rye — lower a parsed `:^` quad cell to runnable `.rye`.
+//!
+//! Thin STOA4 face: four demo atoms into a Zig quad struct.
+
+const std = @import("std");
+const rq = @import("rune_quad.rye");
+
+pub const LowerError = rq.ParseError || error{
+    Overflow,
+    EmptySource,
+    BadIdent,
+};
+
+pub const quad_demo_a: u32 = 5;
+pub const quad_demo_b: u32 = 3;
+pub const quad_demo_c: u32 = 1;
+pub const quad_demo_d: u32 = 2;
+
+fn zig_safe_ident(face: []const u8, out: *[rq.max_name_len]u8) LowerError!usize {
+    if (face.len == 0 or face.len > rq.max_name_len) return error.BadIdent;
+    var i: usize = 0;
+    while (i < face.len) : (i += 1) {
+        const ch = face[i];
+        const mapped: u8 = if (ch == '-') '_' else ch;
+        if (i == 0) {
+            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or mapped == '_'))
+                return error.BadIdent;
+        } else {
+            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or (mapped >= '0' and mapped <= '9') or mapped == '_'))
+                return error.BadIdent;
+        }
+        out[i] = mapped;
+    }
+    return face.len;
+}
+
+fn emit_quad_program(
+    ga: []const u8,
+    gb: []const u8,
+    gc: []const u8,
+    gd: []const u8,
+    za: []const u8,
+    zb: []const u8,
+    zc: []const u8,
+    zd: []const u8,
+    ep: u32,
+    eq: u32,
+    er: u32,
+    es: u32,
+    out: []u8,
+) LowerError!u32 {
+    const written = std.fmt.bufPrint(out,
+        \\const std = @import("std");
+        \\
+        \\/// Lowered from Glow `:^  {s}  {s}  {s}  {s}` — quad cell of demo atoms.
+        \\pub fn main(_: std.process.Init) !u8 {{
+        \\    const Quad = struct {{ p: u32, q: u32, r: u32, s: u32 }};
+        \\    const {s}: u32 = {d};
+        \\    const {s}: u32 = {d};
+        \\    const {s}: u32 = {d};
+        \\    const {s}: u32 = {d};
+        \\    const quad: Quad = .{{ .p = {s}, .q = {s}, .r = {s}, .s = {s} }};
+        \\    return if (quad.p == {d} and quad.q == {d} and quad.r == {d} and quad.s == {d}) 0 else 1;
+        \\}}
+        \\
+    , .{
+        ga,
+        gb,
+        gc,
+        gd,
+        za,
+        quad_demo_a,
+        zb,
+        quad_demo_b,
+        zc,
+        quad_demo_c,
+        zd,
+        quad_demo_d,
+        za,
+        zb,
+        zc,
+        zd,
+        ep,
+        eq,
+        er,
+        es,
+    }) catch return error.Overflow;
+    return @intCast(written.len);
+}
+
+fn lower_line(line: []const u8, welcome: bool, out: []u8) LowerError!u32 {
+    const trimmed = std.mem.trim(u8, line, " \t\r\n");
+    if (trimmed.len == 0) return error.EmptySource;
+    const spec = try rq.parse(trimmed);
+    const ga = rq.a_slice(&spec);
+    const gb = rq.b_slice(&spec);
+    const gc = rq.c_slice(&spec);
+    const gd = rq.d_slice(&spec);
+    var za: [rq.max_name_len]u8 = undefined;
+    var zb: [rq.max_name_len]u8 = undefined;
+    var zc: [rq.max_name_len]u8 = undefined;
+    var zd: [rq.max_name_len]u8 = undefined;
+    const an = try zig_safe_ident(ga, &za);
+    const bn = try zig_safe_ident(gb, &zb);
+    const cn = try zig_safe_ident(gc, &zc);
+    const dn = try zig_safe_ident(gd, &zd);
+    const ep: u32 = if (welcome) quad_demo_a else quad_demo_a +% 1;
+    return emit_quad_program(
+        ga,
+        gb,
+        gc,
+        gd,
+        za[0..an],
+        zb[0..bn],
+        zc[0..cn],
+        zd[0..dn],
+        ep,
+        quad_demo_b,
+        quad_demo_c,
+        quad_demo_d,
+        out,
+    );
+}
+
+pub fn lower_line_welcome(line: []const u8, out: []u8) LowerError!u32 {
+    return lower_line(line, true, out);
+}
+
+pub fn lower_line_unwelcome(line: []const u8, out: []u8) LowerError!u32 {
+    return lower_line(line, false, out);
+}

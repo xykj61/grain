@@ -42,6 +42,7 @@ A beginner Glow-language textbook waits on a general parser. Until then, learn R
 | [`../docs/COMPASS.md`](../docs/COMPASS.md) | Day-one rose compressor · [`compass_card.bron`](../docs/compass_card.bron) | Checkable compress |
 | [`../docs/HAWM.md`](../docs/HAWM.md) | HAWM ladder compressor | Checkable compress |
 | [`../docs/TUBE.md`](../docs/TUBE.md) | App-manifest + NativeActivity APK compressor | Checkable compress |
+| [`../docs/STOA.md`](../docs/STOA.md) | Glow language SLC compressor (STOA0–3) | Checkable compress |
 | [`../gratitude/grapheneos/`](../gratitude/grapheneos/) | Upstream GrapheneOS docs (MIT mirror) | Study library |
 | [`glow-os/`](glow-os/) | Glow OS onboarding hub (variants still scaffold) | Mixed — see Get Started for real vs proposed |
 

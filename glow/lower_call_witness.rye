@@ -1,0 +1,58 @@
+//! glow/lower_call_witness.rye — proves `%-` lowers to runnable `.rye`.
+//!
+//!   rye build glow/lower_call_witness.rye -femit-bin=glow/bin/lower_call_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const lower = @import("lower_call.rye");
+
+const witness_version = "20260718.205900";
+
+fn run_selftest(init: std.process.Init) !u8 {
+    const io = init.io;
+    const a = init.arena.allocator();
+    const cwd = std.Io.Dir.cwd();
+    var buf: [3072]u8 = undefined;
+
+    const n1 = try lower.lower_line_welcome("%-  double  amount", &buf);
+    const rye1 = buf[0..n1];
+    assert(std.mem.indexOf(u8, rye1, "fn double(sample: u32) u32") != null);
+    assert(std.mem.indexOf(u8, rye1, "return sample *% 2;") != null);
+    assert(std.mem.indexOf(u8, rye1, "const amount: u32 = 5") != null);
+    assert(std.mem.indexOf(u8, rye1, "const called: u32 = double(amount)") != null);
+    assert(std.mem.indexOf(u8, rye1, "called == 10") != null);
+    print("lower: \"%-  double  amount\" welcome builds call -- GREEN\n", .{});
+
+    const n2 = try lower.lower_line_unwelcome("%-  double  amount", &buf);
+    assert(std.mem.indexOf(u8, buf[0..n2], "called == 11") != null);
+    print("lower: \"%-  double  amount\" unwelcome expects mismatch -- GREEN\n", .{});
+
+    if (lower.lower_line_welcome("%-  mystery  amount", &buf)) |_| {
+        return error.UnknownGateNotCaught;
+    } else |err| {
+        if (err != lower.LowerError.UnknownGate) return err;
+    }
+    print("lower: unknown gate refused UnknownGate -- GREEN\n", .{});
+
+    try cwd.createDirPath(io, "glow/.cache");
+    const welcome_path = "glow/.cache/call_one_welcome.rye";
+    const unwelcome_path = "glow/.cache/call_one_unwelcome.rye";
+    const n3 = try lower.lower_line_welcome("%-  double  amount", &buf);
+    try cwd.writeFile(io, .{ .sub_path = welcome_path, .data = buf[0..n3] });
+    const n4 = try lower.lower_line_unwelcome("%-  double  amount", &buf);
+    try cwd.writeFile(io, .{ .sub_path = unwelcome_path, .data = buf[0..n4] });
+    print("lower: wrote call welcome and unwelcome .rye under glow/.cache/ -- GREEN\n", .{});
+
+    const gen_src = try cwd.readFileAlloc(io, "glow/gen/call-one.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_src, "%-  double  amount") != null);
+    print("lower: glow/gen/call-one.glow carries call faces -- GREEN\n", .{});
+
+    print("lower: version {s}\n", .{witness_version});
+    print("GREEN: `%-` lowers one-arg calls to ordinary Rye (STOA6).\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
+}

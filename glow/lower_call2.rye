@@ -1,0 +1,105 @@
+//! glow/lower_call2.rye — lower a parsed `%+` call to runnable `.rye`.
+//!
+//! Thin STOA7 face: closed demo gate `add` (a +% b) with demo atoms 5 and
+//! 3 → expect 8. Unknown gates refuse at lower time.
+
+const std = @import("std");
+const r2 = @import("rune_call2.rye");
+
+pub const LowerError = r2.ParseError || error{
+    Overflow,
+    EmptySource,
+    BadIdent,
+    UnknownGate,
+};
+
+pub const call2_demo_a: u32 = 5;
+pub const call2_demo_b: u32 = 3;
+pub const call2_demo_expect: u32 = 8;
+
+fn zig_safe_ident(face: []const u8, out: *[r2.max_name_len]u8) LowerError!usize {
+    if (face.len == 0 or face.len > r2.max_name_len) return error.BadIdent;
+    var i: usize = 0;
+    while (i < face.len) : (i += 1) {
+        const ch = face[i];
+        const mapped: u8 = if (ch == '-') '_' else ch;
+        if (i == 0) {
+            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or mapped == '_'))
+                return error.BadIdent;
+        } else {
+            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or (mapped >= '0' and mapped <= '9') or mapped == '_'))
+                return error.BadIdent;
+        }
+        out[i] = mapped;
+    }
+    return face.len;
+}
+
+fn emit_call2_program(
+    glow_gate: []const u8,
+    glow_a: []const u8,
+    glow_b: []const u8,
+    zig_gate: []const u8,
+    zig_a: []const u8,
+    zig_b: []const u8,
+    expect: u32,
+    out: []u8,
+) LowerError!u32 {
+    if (!std.mem.eql(u8, glow_gate, "add")) return error.UnknownGate;
+
+    const written = std.fmt.bufPrint(out,
+        \\const std = @import("std");
+        \\
+        \\/// Lowered from Glow `%+  {s}  {s}  {s}` — two-arg call of demo gate.
+        \\fn {s}(left: u32, right: u32) u32 {{
+        \\    return left +% right;
+        \\}}
+        \\
+        \\pub fn main(_: std.process.Init) !u8 {{
+        \\    const {s}: u32 = {d};
+        \\    const {s}: u32 = {d};
+        \\    const called: u32 = {s}({s}, {s});
+        \\    return if (called == {d}) 0 else 1;
+        \\}}
+        \\
+    , .{
+        glow_gate,
+        glow_a,
+        glow_b,
+        zig_gate,
+        zig_a,
+        call2_demo_a,
+        zig_b,
+        call2_demo_b,
+        zig_gate,
+        zig_a,
+        zig_b,
+        expect,
+    }) catch return error.Overflow;
+    return @intCast(written.len);
+}
+
+fn lower_line(line: []const u8, welcome: bool, out: []u8) LowerError!u32 {
+    const trimmed = std.mem.trim(u8, line, " \t\r\n");
+    if (trimmed.len == 0) return error.EmptySource;
+    const spec = try r2.parse(trimmed);
+    const gate = r2.gate_slice(&spec);
+    const a = r2.a_slice(&spec);
+    const b = r2.b_slice(&spec);
+    var zg: [r2.max_name_len]u8 = undefined;
+    var za: [r2.max_name_len]u8 = undefined;
+    var zb: [r2.max_name_len]u8 = undefined;
+    const gn = try zig_safe_ident(gate, &zg);
+    const an = try zig_safe_ident(a, &za);
+    const bn = try zig_safe_ident(b, &zb);
+    const expect: u32 = if (welcome) call2_demo_expect else call2_demo_expect +% 1;
+    return emit_call2_program(gate, a, b, zg[0..gn], za[0..an], zb[0..bn], expect, out);
+}
+
+pub fn lower_line_welcome(line: []const u8, out: []u8) LowerError!u32 {
+    return lower_line(line, true, out);
+}
+
+pub fn lower_line_unwelcome(line: []const u8, out: []u8) LowerError!u32 {
+    return lower_line(line, false, out);
+}

@@ -1,0 +1,47 @@
+//! glow/rune_triple_witness.rye — proves the `:+` triple-cell rune head.
+//!
+//!   rye build glow/rune_triple_witness.rye -femit-bin=glow/bin/rune_triple_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const rt = @import("rune_triple.rye");
+
+const witness_version = "20260718.205200";
+
+fn run_selftest() !u8 {
+    const spec1 = try rt.parse(":+  from  amount  note");
+    assert(std.mem.eql(u8, rt.a_slice(&spec1), "from"));
+    assert(std.mem.eql(u8, rt.b_slice(&spec1), "amount"));
+    assert(std.mem.eql(u8, rt.c_slice(&spec1), "note"));
+    print("rune: \":+  from  amount  note\" parses triple faces -- GREEN\n", .{});
+
+    if (rt.parse(":-  from  amount")) |_| {
+        return error.NotATripleNotCaught;
+    } else |err| {
+        if (err != rt.ParseError.NotATriple) return err;
+    }
+    print("rune: pair cell refused NotATriple -- GREEN\n", .{});
+
+    if (rt.parse(":+  from  amount")) |_| {
+        return error.MissingThirdNotCaught;
+    } else |err| {
+        if (err != rt.ParseError.MissingThird) return err;
+    }
+    print("rune: missing third face refused MissingThird -- GREEN\n", .{});
+
+    if (rt.parse(":+  from  amount  note  extra")) |_| {
+        return error.TrailingJunkNotCaught;
+    } else |err| {
+        if (err != rt.ParseError.TrailingJunk) return err;
+    }
+    print("rune: trailing junk refused TrailingJunk -- GREEN\n", .{});
+
+    print("rune: version {s}\n", .{witness_version});
+    print("GREEN: `:+` triple-cell rune head parses three faces (STOA3).\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}

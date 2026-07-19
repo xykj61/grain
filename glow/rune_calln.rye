@@ -1,0 +1,91 @@
+//! glow/rune_calln.rye — parses Glow's `%*` named-argument call rune head.
+//!
+//! Per the sameness rune brief `%` category: `%*` calls a gate with named
+//! samples. Sixteenth rune head (STOA9). Thin one-line shape (exactly two
+//! named faces):
+//!   %*  mix  left  right
+//!
+//! Multi-line named samples, cores, and nested values stay later.
+
+const std = @import("std");
+
+pub const max_name_len: u32 = 64;
+pub const max_names: u32 = 2;
+
+pub const ParseError = error{
+    NotACallN,
+    MissingGate,
+    MissingName,
+    ExtraTail,
+    NameTooLong,
+    MalformedName,
+};
+
+pub const CallNSpec = struct {
+    gate: [max_name_len]u8 = .{0} ** max_name_len,
+    gate_len: usize = 0,
+    names: [max_names][max_name_len]u8 = .{.{0} ** max_name_len} ** max_names,
+    lens: [max_names]usize = .{0} ** max_names,
+    count: usize = 0,
+};
+
+pub fn gate_slice(spec: *const CallNSpec) []const u8 {
+    return spec.gate[0..spec.gate_len];
+}
+
+pub fn name_at(spec: *const CallNSpec, i: usize) []const u8 {
+    return spec.names[i][0..spec.lens[i]];
+}
+
+fn is_ident_char(ch: u8) bool {
+    if (ch >= 'a' and ch <= 'z') return true;
+    if (ch >= 'A' and ch <= 'Z') return true;
+    if (ch >= '0' and ch <= '9') return true;
+    return ch == '-' or ch == '_';
+}
+
+fn parse_ident(rest: []const u8) ParseError!struct { ident: []const u8, rest: []const u8 } {
+    var end: usize = 0;
+    while (end < rest.len and is_ident_char(rest[end])) end += 1;
+    if (end == 0) return error.MalformedName;
+    const ident = rest[0..end];
+    if (ident[0] >= '0' and ident[0] <= '9') return error.MalformedName;
+    if (ident.len > max_name_len) return error.NameTooLong;
+    return .{ .ident = ident, .rest = rest[end..] };
+}
+
+fn need_ws(before: []const u8, after_trim: []const u8) ParseError!void {
+    if (after_trim.len == 0) return;
+    if (after_trim.len == before.len) return error.MalformedName;
+}
+
+/// Parses one line of Glow's `%*` rune. Gate face, then exactly two names.
+pub fn parse(line: []const u8) ParseError!CallNSpec {
+    if (line.len < 2 or !std.mem.eql(u8, line[0..2], "%*")) return error.NotACallN;
+
+    const rest = std.mem.trimStart(u8, line[2..], " \t");
+    if (rest.len == 0) return error.MissingGate;
+
+    const gate = try parse_ident(rest);
+    var after = std.mem.trimStart(u8, gate.rest, " \t");
+    if (after.len == 0) return error.MissingName;
+    try need_ws(gate.rest, after);
+
+    var spec: CallNSpec = .{};
+    @memcpy(spec.gate[0..gate.ident.len], gate.ident);
+    spec.gate_len = gate.ident.len;
+
+    while (spec.count < max_names) {
+        const parsed = try parse_ident(after);
+        @memcpy(spec.names[spec.count][0..parsed.ident.len], parsed.ident);
+        spec.lens[spec.count] = parsed.ident.len;
+        spec.count += 1;
+        after = std.mem.trimStart(u8, parsed.rest, " \t");
+        if (spec.count < max_names) {
+            if (after.len == 0) return error.MissingName;
+            try need_ws(parsed.rest, after);
+        }
+    }
+    if (after.len != 0) return error.ExtraTail;
+    return spec;
+}

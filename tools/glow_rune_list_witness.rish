@@ -1,0 +1,17 @@
+# glow_rune_list_witness.rish — `:~` list-cell rune head.
+#
+#   rishi/bin/rishi run tools/glow_rune_list_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "glow/bin/rune_list_witness"
+
+let build = run ["sh" "-c" "mkdir -p glow/bin && env RYE_ZIG=${zig} rye/bin/rye build glow/rune_list_witness.rye -femit-bin=${bin}"]
+assert build.ok else "rune_list_witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "rune_list_witness exited non-zero"
+assert selftest.out contains "GREEN" else "rune_list_witness not GREEN"
+assert selftest.out contains "parses list faces" else "rune_list_witness missing list claim"
+assert selftest.out contains "TooManyFaces" else "rune_list_witness missing TooManyFaces"
+
+say "GREEN: Glow `:~` list-cell rune head — 1–4 faces; STOA5."

@@ -1,0 +1,51 @@
+//! glow/lower_triple_witness.rye — proves `:+` lowers to runnable `.rye`.
+//!
+//!   rye build glow/lower_triple_witness.rye -femit-bin=glow/bin/lower_triple_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const lower = @import("lower_triple.rye");
+
+const witness_version = "20260718.205200";
+
+fn run_selftest(init: std.process.Init) !u8 {
+    const io = init.io;
+    const a = init.arena.allocator();
+    const cwd = std.Io.Dir.cwd();
+    var buf: [2048]u8 = undefined;
+
+    const n1 = try lower.lower_line_welcome(":+  from  amount  note", &buf);
+    const rye1 = buf[0..n1];
+    assert(std.mem.indexOf(u8, rye1, "const from: u32 = 5") != null);
+    assert(std.mem.indexOf(u8, rye1, "const amount: u32 = 3") != null);
+    assert(std.mem.indexOf(u8, rye1, "const note: u32 = 1") != null);
+    assert(std.mem.indexOf(u8, rye1, "const trip: Triple") != null);
+    assert(std.mem.indexOf(u8, rye1, "trip.p == 5 and trip.q == 3 and trip.r == 1") != null);
+    print("lower: \":+  from  amount  note\" welcome builds triple -- GREEN\n", .{});
+
+    const n2 = try lower.lower_line_unwelcome(":+  from  amount  note", &buf);
+    assert(std.mem.indexOf(u8, buf[0..n2], "trip.p == 6") != null);
+    print("lower: \":+  from  amount  note\" unwelcome expects mismatch -- GREEN\n", .{});
+
+    try cwd.createDirPath(io, "glow/.cache");
+    const welcome_path = "glow/.cache/cell_triple_welcome.rye";
+    const unwelcome_path = "glow/.cache/cell_triple_unwelcome.rye";
+    const n3 = try lower.lower_line_welcome(":+  from  amount  note", &buf);
+    try cwd.writeFile(io, .{ .sub_path = welcome_path, .data = buf[0..n3] });
+    const n4 = try lower.lower_line_unwelcome(":+  from  amount  note", &buf);
+    try cwd.writeFile(io, .{ .sub_path = unwelcome_path, .data = buf[0..n4] });
+    print("lower: wrote triple welcome and unwelcome .rye under glow/.cache/ -- GREEN\n", .{});
+
+    const gen_src = try cwd.readFileAlloc(io, "glow/gen/cell-triple.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_src, ":+  from  amount  note") != null);
+    print("lower: glow/gen/cell-triple.glow carries triple faces -- GREEN\n", .{});
+
+    print("lower: version {s}\n", .{witness_version});
+    print("GREEN: `:+` lowers triple cells to ordinary Rye (STOA3).\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
+}

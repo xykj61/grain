@@ -1,0 +1,18 @@
+# glow_rune_cell_witness.rish — `:-` pair-cell rune head.
+#
+#   rishi/bin/rishi run tools/glow_rune_cell_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "glow/bin/rune_cell_witness"
+
+let build = run ["sh" "-c" "mkdir -p glow/bin && env RYE_ZIG=${zig} rye/bin/rye build glow/rune_cell_witness.rye -femit-bin=${bin}"]
+assert build.ok else "rune_cell_witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "rune_cell_witness exited non-zero"
+assert selftest.out contains "GREEN" else "rune_cell_witness not GREEN"
+assert selftest.out contains "parses pair faces" else "rune_cell_witness missing pair claim"
+assert selftest.out contains "MissingRight" else "rune_cell_witness missing MissingRight"
+assert selftest.out contains "TrailingJunk" else "rune_cell_witness missing TrailingJunk"
+
+say "GREEN: Glow `:-` pair-cell rune head — two faces; STOA2."

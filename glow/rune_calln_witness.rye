@@ -1,0 +1,55 @@
+//! glow/rune_calln_witness.rye — proves the `%*` named-arg call rune head.
+//!
+//!   rye build glow/rune_calln_witness.rye -femit-bin=glow/bin/rune_calln_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const rn = @import("rune_calln.rye");
+
+const witness_version = "20260718.211300";
+
+fn run_selftest() !u8 {
+    const spec = try rn.parse("%*  mix  left  right");
+    assert(std.mem.eql(u8, rn.gate_slice(&spec), "mix"));
+    assert(spec.count == 2);
+    assert(std.mem.eql(u8, rn.name_at(&spec, 0), "left"));
+    assert(std.mem.eql(u8, rn.name_at(&spec, 1), "right"));
+    print("rune: \"%*  mix  left  right\" parses gate and names -- GREEN\n", .{});
+
+    if (rn.parse("%^  mix  left  right")) |_| {
+        return error.NotACallNNotCaught;
+    } else |err| {
+        if (err != rn.ParseError.NotACallN) return err;
+    }
+    print("rune: %^ refused NotACallN -- GREEN\n", .{});
+
+    if (rn.parse("%*  mix  left")) |_| {
+        return error.MissingNameNotCaught;
+    } else |err| {
+        if (err != rn.ParseError.MissingName) return err;
+    }
+    print("rune: one name refused MissingName -- GREEN\n", .{});
+
+    if (rn.parse("%*  mix  left  right  extra")) |_| {
+        return error.ExtraTailNotCaught;
+    } else |err| {
+        if (err != rn.ParseError.ExtraTail) return err;
+    }
+    print("rune: third name refused ExtraTail -- GREEN\n", .{});
+
+    if (rn.parse("%*")) |_| {
+        return error.MissingGateNotCaught;
+    } else |err| {
+        if (err != rn.ParseError.MissingGate) return err;
+    }
+    print("rune: bare %* refused MissingGate -- GREEN\n", .{});
+
+    print("rune: version {s}\n", .{witness_version});
+    print("GREEN: `%*` call rune head parses gate + two names (STOA9).\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}
