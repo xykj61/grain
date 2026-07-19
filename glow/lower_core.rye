@@ -4,11 +4,15 @@
 //! STOA17: optional bare `=/` payload; arms read `self.<face>`.
 //! STOA20: closed arm `dec` (sample -% 1) for three-arm batteries.
 //! STOA21: optional typed payload `=/  face=@u32  <decimal>`.
-//! Without payload, arms still take `sample: u32` (demo 5).
+//! STOA25: open arm body — authored nest expr (`sample` / payload face ·
+//! literal). STOA27: `(mix …)` · `(jam …)` · `(lent …)` · `^-` cast bodies.
+//! Closed arms keep an empty body.
+//! Without payload, closed arms still take `sample: u32` (demo 5).
 //! Library emit (no main) is STOA16 (`lower_source_library`).
 
 const std = @import("std");
 const rk = @import("rune_core.rye");
+const expr = @import("expr.rye");
 
 pub const LowerError = rk.ParseError || error{
     Overflow,
@@ -57,11 +61,41 @@ fn arm_body_payload(arm: []const u8, face_zig: []const u8, out: []u8) LowerError
     return error.UnknownArm;
 }
 
-fn arm_expect(arm: []const u8, sample: u32) LowerError!u32 {
+fn arm_expect_closed(arm: []const u8, sample: u32) LowerError!u32 {
     if (std.mem.eql(u8, arm, "double")) return sample *% 2;
     if (std.mem.eql(u8, arm, "inc")) return sample +% 1;
     if (std.mem.eql(u8, arm, "dec")) return sample -% 1;
     return error.UnknownArm;
+}
+
+fn open_body_expect(body: *const expr.Expr, sample: u32) LowerError!u32 {
+    return switch (body.kind) {
+        .literal, .cast_literal => body.lit,
+        .face => sample,
+        .lent_of => expr.lent_demo_len,
+        .mix_of => sample ^ sample,
+        .jam_of => (sample << 16) | sample,
+    };
+}
+
+fn emit_open_body(body: *const expr.Expr, payload: bool, face_zig: []const u8, out: []u8) LowerError![]const u8 {
+    const atom: []const u8 = if (payload) face_zig else "sample";
+    return switch (body.kind) {
+        .literal, .cast_literal => std.fmt.bufPrint(out, "return {d};", .{body.lit}) catch return error.Overflow,
+        .face => if (payload)
+            std.fmt.bufPrint(out, "return self.{s};", .{atom}) catch return error.Overflow
+        else
+            std.fmt.bufPrint(out, "return sample;", .{}) catch return error.Overflow,
+        .lent_of => std.fmt.bufPrint(out, "return {d};", .{expr.lent_demo_len}) catch return error.Overflow,
+        .mix_of => if (payload)
+            std.fmt.bufPrint(out, "return self.{s} ^ self.{s};", .{ atom, atom }) catch return error.Overflow
+        else
+            std.fmt.bufPrint(out, "return sample ^ sample;", .{}) catch return error.Overflow,
+        .jam_of => if (payload)
+            std.fmt.bufPrint(out, "return (self.{s} << 16) | self.{s};", .{ atom, atom }) catch return error.Overflow
+        else
+            std.fmt.bufPrint(out, "return (sample << 16) | sample;", .{}) catch return error.Overflow,
+    };
 }
 
 fn demo_sample(spec: *const rk.CoreSpec) u32 {
@@ -81,7 +115,9 @@ fn emit_arm_methods(spec: *const rk.CoreSpec, out: []u8) LowerError!usize {
         const arm = rk.arm_at(spec, i);
         var za: [rk.max_name_len]u8 = undefined;
         const an = try zig_safe_ident(arm, &za);
-        const body: []const u8 = if (payload)
+        const body: []const u8 = if (rk.arm_has_body(spec, i))
+            try emit_open_body(rk.arm_body_at(spec, i), payload, zf[0..fn_len], &body_buf)
+        else if (payload)
             try arm_body_payload(arm, zf[0..fn_len], &body_buf)
         else
             try arm_body_sample(arm);
@@ -113,7 +149,10 @@ fn emit_checks(spec: *const rk.CoreSpec, welcome: bool, out: []u8) LowerError!us
         const arm = rk.arm_at(spec, i);
         var za: [rk.max_name_len]u8 = undefined;
         const an = try zig_safe_ident(arm, &za);
-        const base = try arm_expect(arm, sample);
+        const base: u32 = if (rk.arm_has_body(spec, i))
+            try open_body_expect(rk.arm_body_at(spec, i), sample)
+        else
+            try arm_expect_closed(arm, sample);
         const expect: u32 = if (welcome) base else base +% 1;
         if (i > 0) {
             const and_part = std.fmt.bufPrint(out[at..], " and ", .{}) catch return error.Overflow;
@@ -188,7 +227,7 @@ fn emit_core_program(spec: *const rk.CoreSpec, welcome: bool, with_main: bool, o
     const written = std.fmt.bufPrint(out,
         \\const std = @import("std");
         \\
-        \\/// Lowered from Glow `|%` thin core — battery arms (STOA14/15).
+        \\/// Lowered from Glow `|%` thin core — battery arms (STOA14/15/25).
         \\const Core = struct {{
         \\{s}}};
         \\

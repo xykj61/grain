@@ -6,13 +6,42 @@ const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 const rk = @import("rune_core.rye");
+const expr = @import("expr.rye");
 
-const witness_version = "20260718.232419";
+const witness_version = "20260718.235700";
 
 const one_src =
     \\::  Thin core — one arm double (STOA14).
     \\|%
     \\++  double
+    \\--
+;
+
+const open_src =
+    \\::  Open arm body — sample face (STOA25).
+    \\|%
+    \\++  id  sample
+    \\--
+;
+
+const open_lit_src =
+    \\::  Open arm body — literal (STOA25).
+    \\|%
+    \\++  five  5
+    \\--
+;
+
+const nest_src =
+    \\::  Open arm nest body — jam (STOA27).
+    \\|%
+    \\++  pack  (jam sample sample)
+    \\--
+;
+
+const mix_src =
+    \\::  Open arm nest body — mix (STOA27).
+    \\|%
+    \\++  fold  (mix sample sample)
     \\--
 ;
 
@@ -88,6 +117,54 @@ fn run_selftest() !u8 {
     assert(typed.payload_value == 5);
     print("core: typed @u32 payload parses -- GREEN\n", .{});
 
+    const open = try rk.parse_source(open_src);
+    assert(open.count == 1);
+    assert(rk.arm_has_body(&open, 0));
+    assert(std.mem.eql(u8, rk.arm_at(&open, 0), "id"));
+    assert(rk.arm_body_at(&open, 0).kind == .face);
+    assert(std.mem.eql(u8, expr.face_slice(rk.arm_body_at(&open, 0)), "sample"));
+    print("core: open arm id sample parses -- GREEN\n", .{});
+
+    const open_lit = try rk.parse_source(open_lit_src);
+    assert(open_lit.count == 1);
+    assert(rk.arm_has_body(&open_lit, 0));
+    assert(rk.arm_body_at(&open_lit, 0).kind == .literal);
+    assert(rk.arm_body_at(&open_lit, 0).lit == 5);
+    print("core: open arm literal parses -- GREEN\n", .{});
+
+    const nest = try rk.parse_source(nest_src);
+    assert(nest.count == 1);
+    assert(rk.arm_has_body(&nest, 0));
+    assert(rk.arm_body_at(&nest, 0).kind == .jam_of);
+    print("core: nest jam arm parses -- GREEN\n", .{});
+
+    const mix = try rk.parse_source(mix_src);
+    assert(mix.count == 1);
+    assert(rk.arm_body_at(&mix, 0).kind == .mix_of);
+    print("core: nest mix arm parses -- GREEN\n", .{});
+
+    if (rk.parse_source(
+        \\|%
+        \\++  id  other
+        \\--
+    )) |_| {
+        return error.BadBodyFaceNotCaught;
+    } else |err| {
+        if (err != rk.ParseError.BadBodyFace) return err;
+    }
+    print("core: bad body face refused BadBodyFace -- GREEN\n", .{});
+
+    if (rk.parse_source(
+        \\|%
+        \\++  fold  (mix sample other)
+        \\--
+    )) |_| {
+        return error.BadNestFaceNotCaught;
+    } else |err| {
+        if (err != rk.ParseError.BadBodyFace) return err;
+    }
+    print("core: nest bad face refused BadBodyFace -- GREEN\n", .{});
+
     if (rk.parse_source(
         \\|%
         \\=/  amount=@u8  5
@@ -120,7 +197,7 @@ fn run_selftest() !u8 {
     print("core: face desk refused NotACore -- GREEN\n", .{});
 
     print("core: version {s}\n", .{witness_version});
-    print("GREEN: `|%` thin core parses arms and bare or typed @u32 payload (STOA14/15/17/20/21).\n", .{});
+    print("GREEN: `|%` thin core parses closed arms, open and nest bodies, bare or typed @u32 payload (STOA14/15/17/20/21/25/27).\n", .{});
     return 0;
 }
 

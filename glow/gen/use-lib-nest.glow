@@ -1,0 +1,4 @@
+::  Import nest library then call pack (STOA29).
+/+  lib-core-nest
+=/  amount  5
+%-  pack  amount

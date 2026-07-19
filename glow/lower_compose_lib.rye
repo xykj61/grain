@@ -1,0 +1,237 @@
+//! glow/lower_compose_lib.rye — `/+` Glow library → face → `%-` call.
+//!
+//! Thin STOA26 face (exactly three lines):
+//!   /+  lib-core-open
+//!   =/  amount  5
+//!   %-  id  amount
+//!
+//! STOA29 — same shape over a nest-arm library:
+//!   /+  lib-core-nest
+//!   =/  amount  5
+//!   %-  pack  amount
+//!
+//! The import stem names `glow/gen/<stem>.glow`. glow_run lowers that desk
+//! as a library (no main) into `glow/.cache/`, then this lower emits a
+//! consumer that imports it and calls `lib.Core.<arm>(face)`.
+
+const std = @import("std");
+const rf = @import("rune_face.rye");
+const rc = @import("rune_call.rye");
+const rk = @import("rune_core.rye");
+const expr = @import("expr.rye");
+const lower_multi = @import("lower_multi.rye");
+
+pub const LowerError = rf.ParseError || rc.ParseError || rk.ParseError || lower_multi.LowerError || error{
+    Overflow,
+    EmptySource,
+    BadIdent,
+    NotAComposeLib,
+    SampleMismatch,
+    UnknownArm,
+    NotBareLiteral,
+    MalformedValue,
+    LibHasPayload,
+    BodyNotYetLowered,
+};
+
+pub const max_stem_len: u32 = 64;
+
+fn is_digit(ch: u8) bool {
+    return ch >= '0' and ch <= '9';
+}
+
+fn is_stem_char(ch: u8) bool {
+    if (ch >= 'a' and ch <= 'z') return true;
+    if (ch >= 'A' and ch <= 'Z') return true;
+    if (ch >= '0' and ch <= '9') return true;
+    return ch == '-' or ch == '_';
+}
+
+fn zig_safe_ident(face: []const u8, out: *[rf.max_name_len]u8) LowerError!usize {
+    if (face.len == 0 or face.len > rf.max_name_len) return error.BadIdent;
+    var i: usize = 0;
+    while (i < face.len) : (i += 1) {
+        const ch = face[i];
+        const mapped: u8 = if (ch == '-') '_' else ch;
+        if (i == 0) {
+            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or mapped == '_'))
+                return error.BadIdent;
+        } else {
+            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or (mapped >= '0' and mapped <= '9') or mapped == '_'))
+                return error.BadIdent;
+        }
+        out[i] = mapped;
+    }
+    return face.len;
+}
+
+fn parse_trailing_u32(rest: []const u8) LowerError!u32 {
+    const t = std.mem.trim(u8, rest, " \t\r\n");
+    if (t.len == 0) return error.NotBareLiteral;
+    var i: usize = 0;
+    var v: u32 = 0;
+    while (i < t.len) : (i += 1) {
+        if (!is_digit(t[i])) return error.NotBareLiteral;
+        const d: u32 = t[i] - '0';
+        if (v > (std.math.maxInt(u32) - d) / 10) return error.Overflow;
+        v = v * 10 + d;
+    }
+    return v;
+}
+
+fn parse_import_line(line: []const u8) LowerError![]const u8 {
+    if (line.len < 2 or line[0] != '/' or line[1] != '+') return error.NotAComposeLib;
+    const after = std.mem.trimStart(u8, line[2..], " \t");
+    if (after.len == 0 or after.len == line[2..].len) return error.NotAComposeLib;
+    var end: usize = 0;
+    while (end < after.len and is_stem_char(after[end])) end += 1;
+    if (end == 0) return error.BadIdent;
+    if (after[0] >= '0' and after[0] <= '9') return error.BadIdent;
+    if (end > max_stem_len) return error.BadIdent;
+    const tail = std.mem.trimStart(u8, after[end..], " \t");
+    if (tail.len != 0) return error.NotAComposeLib;
+    return after[0..end];
+}
+
+pub const ComposeLibSpec = struct {
+    stem: [max_stem_len]u8 = .{0} ** max_stem_len,
+    stem_len: usize = 0,
+    face: [rf.max_name_len]u8 = .{0} ** rf.max_name_len,
+    face_len: usize = 0,
+    value: u32 = 0,
+    gate: [rc.max_name_len]u8 = .{0} ** rc.max_name_len,
+    gate_len: usize = 0,
+};
+
+pub fn stem_slice(spec: *const ComposeLibSpec) []const u8 {
+    return spec.stem[0..spec.stem_len];
+}
+
+pub fn face_slice(spec: *const ComposeLibSpec) []const u8 {
+    return spec.face[0..spec.face_len];
+}
+
+pub fn gate_slice(spec: *const ComposeLibSpec) []const u8 {
+    return spec.gate[0..spec.gate_len];
+}
+
+/// Rye/Zig stem: hyphens become underscores.
+pub fn zig_stem(spec: *const ComposeLibSpec, out: *[max_stem_len]u8) LowerError!usize {
+    return zig_safe_ident(stem_slice(spec), out);
+}
+
+fn fill_bare_face(line: []const u8, spec: *ComposeLibSpec) LowerError!void {
+    const face_spec = try rf.parse(line);
+    const face = rf.face_slice(&face_spec);
+    if (rf.mold_slice(&face_spec).len != 0) return error.NotBareLiteral;
+    const after_head = std.mem.trimStart(u8, line[2..], " \t");
+    if (!std.mem.startsWith(u8, after_head, face)) return error.MalformedValue;
+    const after_face = std.mem.trimStart(u8, after_head[face.len..], " \t");
+    const value = try parse_trailing_u32(after_face);
+    @memcpy(spec.face[0..face.len], face);
+    spec.face_len = face.len;
+    spec.value = value;
+}
+
+pub fn parse_compose_lib(src: []const u8) LowerError!ComposeLibSpec {
+    var lines: [lower_multi.max_lines][]const u8 = undefined;
+    const n = try lower_multi.collect_lines(src, &lines);
+    if (n != 3) return error.NotAComposeLib;
+    if (lines[2].len < 2 or lines[2][0] != '%' or lines[2][1] != '-') return error.NotAComposeLib;
+
+    var spec: ComposeLibSpec = .{};
+    const stem = try parse_import_line(lines[0]);
+    @memcpy(spec.stem[0..stem.len], stem);
+    spec.stem_len = stem.len;
+    try fill_bare_face(lines[1], &spec);
+    const call = try rc.parse(lines[2]);
+    const gate = rc.gate_slice(&call);
+    const sample = rc.sample_slice(&call);
+    if (!std.mem.eql(u8, sample, face_slice(&spec))) return error.SampleMismatch;
+    @memcpy(spec.gate[0..gate.len], gate);
+    spec.gate_len = gate.len;
+    return spec;
+}
+
+fn closed_expect(arm: []const u8, sample: u32) LowerError!u32 {
+    if (std.mem.eql(u8, arm, "double")) return sample *% 2;
+    if (std.mem.eql(u8, arm, "inc")) return sample +% 1;
+    if (std.mem.eql(u8, arm, "dec")) return sample -% 1;
+    return error.UnknownArm;
+}
+
+fn open_expect(body: *const expr.Expr, sample: u32) LowerError!u32 {
+    return switch (body.kind) {
+        .literal, .cast_literal => body.lit,
+        .face => sample,
+        .lent_of => expr.lent_demo_len,
+        .mix_of => sample ^ sample,
+        .jam_of => (sample << 16) | sample,
+    };
+}
+
+fn arm_expect(core: *const rk.CoreSpec, gate: []const u8, sample: u32) LowerError!u32 {
+    var i: usize = 0;
+    while (i < core.count) : (i += 1) {
+        if (!std.mem.eql(u8, rk.arm_at(core, i), gate)) continue;
+        if (rk.arm_has_body(core, i)) return open_expect(rk.arm_body_at(core, i), sample);
+        return closed_expect(gate, sample);
+    }
+    return error.UnknownArm;
+}
+
+/// Bind a parsed library core to the compose desk; refuse payload cores.
+pub fn bind_library(spec: *const ComposeLibSpec, lib_src: []const u8) LowerError!u32 {
+    const core = try rk.parse_source(lib_src);
+    if (rk.has_payload(&core)) return error.LibHasPayload;
+    return arm_expect(&core, gate_slice(spec), spec.value);
+}
+
+fn emit_consumer(spec: *const ComposeLibSpec, expect: u32, out: []u8) LowerError!u32 {
+    var zs: [max_stem_len]u8 = undefined;
+    var zf: [rf.max_name_len]u8 = undefined;
+    var zg: [rc.max_name_len]u8 = undefined;
+    const sn = try zig_stem(spec, &zs);
+    const fn_len = try zig_safe_ident(face_slice(spec), &zf);
+    const gn = try zig_safe_ident(gate_slice(spec), &zg);
+    // Split `@` from `import` so rye's bridge does not scan a static path
+    // while compiling this lowerer (same discipline as STOA16 lib witness).
+    const at = "@";
+    const written = std.fmt.bufPrint(out,
+        \\const std = {s}import("std");
+        \\const lib = {s}import("{s}.rye");
+        \\
+        \\/// Lowered from Glow `/+` library compose (STOA26).
+        \\pub fn main(_: std.process.Init) !u8 {{
+        \\    const {s}: u32 = {d};
+        \\    return if (lib.Core.{s}({s}) == {d}) 0 else 1;
+        \\}}
+        \\
+    , .{
+        at,
+        at,
+        zs[0..sn],
+        zf[0..fn_len],
+        spec.value,
+        zg[0..gn],
+        zf[0..fn_len],
+        expect,
+    }) catch return error.Overflow;
+    return @intCast(written.len);
+}
+
+pub fn lower_source_welcome(src: []const u8, lib_src: []const u8, out: []u8) LowerError!u32 {
+    const trimmed = std.mem.trim(u8, src, " \t\r\n");
+    if (trimmed.len == 0) return error.EmptySource;
+    const spec = try parse_compose_lib(src);
+    const expect = try bind_library(&spec, lib_src);
+    return emit_consumer(&spec, expect, out);
+}
+
+pub fn lower_source_unwelcome(src: []const u8, lib_src: []const u8, out: []u8) LowerError!u32 {
+    const trimmed = std.mem.trim(u8, src, " \t\r\n");
+    if (trimmed.len == 0) return error.EmptySource;
+    const spec = try parse_compose_lib(src);
+    const base = try bind_library(&spec, lib_src);
+    return emit_consumer(&spec, base +% 1, out);
+}

@@ -32,6 +32,7 @@ const lower_compose2 = @import("lower_compose2.rye");
 const lower_compose_core = @import("lower_compose_core.rye");
 const lower_compose_core_add = @import("lower_compose_core_add.rye");
 const lower_compose_core_payload = @import("lower_compose_core_payload.rye");
+const lower_compose_lib = @import("lower_compose_lib.rye");
 const lower_multi_typed = @import("lower_multi_typed.rye");
 const lower_core = @import("lower_core.rye");
 
@@ -92,6 +93,37 @@ pub fn main(init: std.process.Init) !u8 {
             if (n >= 2 and lines[0].len >= 2 and lines[0][0] == '|' and lines[0][1] == '%') {
                 break :blk lower_core.lower_source_welcome(src, &rye_buf) catch |err| {
                     print("glow_run: core lower failed ({s})\n", .{@errorName(err)});
+                    return 1;
+                };
+            }
+            if (n == 3 and lines[0].len >= 2 and lines[0][0] == '/' and lines[0][1] == '+') {
+                const spec = lower_compose_lib.parse_compose_lib(src) catch |err| {
+                    print("glow_run: compose-lib parse failed ({s})\n", .{@errorName(err)});
+                    return 1;
+                };
+                const lib_glow = std.fmt.allocPrint(alloc, "glow/gen/{s}.glow", .{lower_compose_lib.stem_slice(&spec)}) catch {
+                    print("glow_run: compose-lib stem path overflow\n", .{});
+                    return 1;
+                };
+                const lib_src = cwd.readFileAlloc(io, lib_glow, alloc, .limited(64 * 1024)) catch {
+                    print("glow_run: compose-lib missing {s}\n", .{lib_glow});
+                    return 1;
+                };
+                var lib_buf: [4096]u8 = undefined;
+                const lib_len = lower_core.lower_source_library(lib_src, &lib_buf) catch |err| {
+                    print("glow_run: compose-lib library lower failed ({s})\n", .{@errorName(err)});
+                    return 1;
+                };
+                var zs: [lower_compose_lib.max_stem_len]u8 = undefined;
+                const sn = lower_compose_lib.zig_stem(&spec, &zs) catch {
+                    print("glow_run: compose-lib bad stem\n", .{});
+                    return 1;
+                };
+                try cwd.createDirPath(io, "glow/.cache");
+                const lib_rye = try std.fmt.allocPrint(alloc, "glow/.cache/{s}.rye", .{zs[0..sn]});
+                try cwd.writeFile(io, .{ .sub_path = lib_rye, .data = lib_buf[0..lib_len] });
+                break :blk lower_compose_lib.lower_source_welcome(src, lib_src, &rye_buf) catch |err| {
+                    print("glow_run: compose-lib lower failed ({s})\n", .{@errorName(err)});
                     return 1;
                 };
             }
