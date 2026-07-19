@@ -1,0 +1,31 @@
+# glow_lower_compose_lib_witness.rish — `/+` library compose hop.
+#
+#   rishi/bin/rishi run tools/glow_lower_compose_lib_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "glow/bin/lower_compose_lib_witness"
+let welcome_bin = "glow/bin/use_lib_cue_jam_welcome"
+
+let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/lower_compose_lib_witness.rye -femit-bin=${bin}"]
+assert build.ok else "lower_compose_lib_witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "lower_compose_lib_witness exited non-zero"
+assert selftest.out contains "GREEN" else "lower_compose_lib_witness not GREEN"
+assert selftest.out contains "cue-jam welcome" else "lower_compose_lib_witness missing cue-jam claim"
+assert selftest.out contains "desks open nest payload and cue-jam" else "lower_compose_lib_witness missing desk claim"
+assert selftest.out contains "sample mismatch" else "lower_compose_lib_witness missing sample mismatch"
+assert selftest.out contains "UnknownArm" else "lower_compose_lib_witness missing UnknownArm"
+
+# glow_run seats the library rye beside the consumer cache the selftest wrote.
+let desk = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/use-lib-cue-jam.glow"]
+assert desk.ok else "glow_run use-lib-cue-jam.glow failed"
+assert desk.out contains "GREEN" else "glow_run use-lib-cue-jam.glow not GREEN"
+
+let build_welcome = run ["sh" "-c" "cd glow/.cache && env RYE_ZIG=../../${zig} ../../rye/bin/rye build use_lib_cue_jam_welcome.rye -femit-bin=../bin/use_lib_cue_jam_welcome"]
+assert build_welcome.ok else "use-lib-cue-jam welcome .rye build failed"
+let run_welcome = run ["sh" "-c" "${welcome_bin}; echo EXIT:$?"]
+assert run_welcome.ok else "use-lib-cue-jam welcome binary failed to launch"
+assert run_welcome.out contains "EXIT:0" else "use-lib-cue-jam welcome binary did not exit 0"
+
+say "GREEN: Glow `/+` library compose hop — open nest payload cue-of-jam; welcome 0; STOA26/29/31/57."

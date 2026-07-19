@@ -7,7 +7,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const lower = @import("lower_compose_lib.rye");
 
-const witness_version = "20260719.001148";
+const witness_version = "20260719.170057";
 
 const use_src =
     \\::  Import Glow library then call open arm (STOA26).
@@ -49,6 +49,20 @@ const lib_pay_src =
     \\|%
     \\=/  amount  5
     \\++  pack  (jam amount amount)
+    \\--
+;
+
+const use_cue_src =
+    \\::  Import cue-jam library then call unpack (STOA57).
+    \\/+  lib-core-cue-jam
+    \\=/  amount  5
+    \\%-  unpack  amount
+;
+
+const lib_cue_src =
+    \\::  Library cue-of-jam arm (STOA57).
+    \\|%
+    \\++  unpack  (cue (jam sample sample))
     \\--
 ;
 
@@ -143,6 +157,24 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("compose-lib: face/payload mismatch refused MalformedValue -- GREEN\n", .{});
 
+    const cue_spec = try lower.parse_compose_lib(use_cue_src);
+    assert(std.mem.eql(u8, lower.stem_slice(&cue_spec), "lib-core-cue-jam"));
+    assert(std.mem.eql(u8, lower.gate_slice(&cue_spec), "unpack"));
+    const cue_bound = try lower.bind_library(&cue_spec, lib_cue_src);
+    assert(cue_bound.expect == 5);
+    assert(!cue_bound.has_payload);
+    print("compose-lib: cue-of-jam unpack expects low half -- GREEN\n", .{});
+
+    const n_cue = try lower.lower_source_welcome(use_cue_src, lib_cue_src, &buf);
+    const rye_cue = buf[0..n_cue];
+    assert(std.mem.indexOf(u8, rye_cue, "import(\"lib_core_cue_jam.rye\")") != null);
+    assert(std.mem.indexOf(u8, rye_cue, "lib.Core.unpack(amount) == 5") != null);
+    print("compose-lib: cue-jam welcome imports lib and calls Core.unpack -- GREEN\n", .{});
+
+    const n_cue_u = try lower.lower_source_unwelcome(use_cue_src, lib_cue_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n_cue_u], "lib.Core.unpack(amount) == 6") != null);
+    print("compose-lib: cue-jam unwelcome expects mismatch -- GREEN\n", .{});
+
     try cwd.createDirPath(io, "glow/.cache");
     const n3 = try lower.lower_source_welcome(use_src, lib_src, &buf);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/use_lib_open_welcome.rye", .data = buf[0..n3] });
@@ -150,7 +182,9 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/use_lib_nest_welcome.rye", .data = buf[0..n4] });
     const n5 = try lower.lower_source_welcome(use_pay_src, lib_pay_src, &buf);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/use_lib_payload_nest_welcome.rye", .data = buf[0..n5] });
-    print("compose-lib: wrote open nest and payload consumer caches -- GREEN\n", .{});
+    const n6 = try lower.lower_source_welcome(use_cue_src, lib_cue_src, &buf);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/use_lib_cue_jam_welcome.rye", .data = buf[0..n6] });
+    print("compose-lib: wrote open nest payload and cue-jam consumer caches -- GREEN\n", .{});
 
     const gen_use = try cwd.readFileAlloc(io, "glow/gen/use-lib-open.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_use, "/+  lib-core-open") != null);
@@ -165,10 +199,14 @@ fn run_selftest(init: std.process.Init) !u8 {
     const gen_lib_pay = try cwd.readFileAlloc(io, "glow/gen/lib-core-payload-nest.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_lib_pay, "=/  amount  5") != null);
     assert(std.mem.indexOf(u8, gen_lib_pay, "(jam amount amount)") != null);
-    print("compose-lib: desks open nest and payload-nest carry import -- GREEN\n", .{});
+    const gen_use_cue = try cwd.readFileAlloc(io, "glow/gen/use-lib-cue-jam.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_use_cue, "/+  lib-core-cue-jam") != null);
+    const gen_lib_cue = try cwd.readFileAlloc(io, "glow/gen/lib-core-cue-jam.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_lib_cue, "(cue (jam sample sample))") != null);
+    print("compose-lib: desks open nest payload and cue-jam carry import -- GREEN\n", .{});
 
     print("compose-lib: version {s}\n", .{witness_version});
-    print("GREEN: `/+` Glow library compose lowers open nest and payload arms (STOA26/29/31).\n", .{});
+    print("GREEN: `/+` Glow library compose lowers open nest payload and cue-of-jam (STOA26/29/31/57).\n", .{});
     return 0;
 }
 
