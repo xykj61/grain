@@ -1,0 +1,5 @@
+::  Face then nest-both cue-of-jam arm (STOA56).
+=/  amount  5
+|%
+++  unpack  (cue (jam (mix sample sample) (mix sample sample)))
+--

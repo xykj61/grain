@@ -32,6 +32,12 @@
 //!   ++  unpack  (cue (jam sample (mix sample sample)))
 //!   --
 //!
+//! STOA56 — face→nest-both cue-of-jam (four lines):
+//!   =/  amount  5
+//!   |%
+//!   ++  unpack  (cue (jam (mix sample sample) (mix sample sample)))
+//!   --
+//!
 //! Outer face is the sample; the core carries no inner payload.
 
 const std = @import("std");

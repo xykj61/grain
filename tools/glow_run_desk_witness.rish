@@ -537,6 +537,11 @@ assert composecorecuejamright.ok else "glow_run compose-core-cue-jam-right-nest.
 assert composecorecuejamright.out contains "GREEN" else "glow_run compose-core-cue-jam-right-nest.glow not GREEN"
 assert composecorecuejamright.out contains "compose-core-cue-jam-right-nest.glow" else "glow_run compose-core-cue-jam-right-nest claim missing path"
 
+let composecorecuejamboth = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/compose-core-cue-jam-both-nest.glow"]
+assert composecorecuejamboth.ok else "glow_run compose-core-cue-jam-both-nest.glow failed"
+assert composecorecuejamboth.out contains "GREEN" else "glow_run compose-core-cue-jam-both-nest.glow not GREEN"
+assert composecorecuejamboth.out contains "compose-core-cue-jam-both-nest.glow" else "glow_run compose-core-cue-jam-both-nest claim missing path"
+
 say "GREEN: glow_run desk — all desk generators lowered, built, exit 0."
 
 
