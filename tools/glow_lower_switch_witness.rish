@@ -37,6 +37,7 @@ assert selftest.out contains "carries jam mint arm" else "lower_switch_witness m
 assert selftest.out contains "carries cue mint arm" else "lower_switch_witness missing switch-cue desk claim"
 assert selftest.out contains "carries cue-of-jam mint arm" else "lower_switch_witness missing switch-cue-jam desk claim"
 assert selftest.out contains "carries cue nest jam mint arm" else "lower_switch_witness missing switch-cue-jam-nest desk claim"
+assert selftest.out contains "carries cue nest jam right mint arm" else "lower_switch_witness missing switch-cue-jam-right-nest desk claim"
 assert selftest.out contains "carries nest jam mint arm" else "lower_switch_witness missing switch-jam-nest desk claim"
 assert selftest.out contains "carries nest jam right mint arm" else "lower_switch_witness missing switch-jam-right-nest desk claim"
 assert selftest.out contains "carries nest jam both mint arm" else "lower_switch_witness missing switch-jam-both-nest desk claim"

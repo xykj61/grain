@@ -24,7 +24,8 @@ assert selftest.out contains "(jam (mix from amount) (mix cell gate)) nest-both 
 assert selftest.out contains "(cue cell) paren form" else "expr_witness missing cue paren claim"
 assert selftest.out contains "(cue (jam from amount)) nest form" else "expr_witness missing cue-of-jam claim"
 assert selftest.out contains "(cue (jam (mix from amount) amount)) nest-left form" else "expr_witness missing cue nest jam claim"
+assert selftest.out contains "(cue (jam cell (mix from amount))) nest-right form" else "expr_witness missing cue nest jam right claim"
 assert selftest.out contains "ExprNotYetLowered" else "expr_witness missing other-paren refuse"
 assert selftest.out contains "parse_whole refuses leftover" else "expr_witness missing whole-rest claim"
 
-say "GREEN: Glow shared nest-expression parser — lent, mix, jam, nest jam left/right/both, cue, cue-of-jam, and cue nest jam left seated."
+say "GREEN: Glow shared nest-expression parser — lent, mix, jam, nest jam left/right/both, cue, cue-of-jam, and cue nest jam left/right seated."

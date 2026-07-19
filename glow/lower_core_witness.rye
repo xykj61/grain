@@ -65,6 +65,13 @@ const cue_jam_nest_src =
     \\--
 ;
 
+const cue_jam_right_nest_src =
+    \\::  Open arm cue nest jam right (STOA41).
+    \\|%
+    \\++  unpack  (cue (jam sample (mix sample sample)))
+    \\--
+;
+
 const two_src =
     \\::  Two-arm core (STOA15).
     \\|%
@@ -190,6 +197,12 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, rye_cjn, "Core.unpack(amount) == 5") != null);
     print("core: cue nest jam welcome builds unpack -- GREEN\n", .{});
 
+    const n_cjr = try lower.lower_source_welcome(cue_jam_right_nest_src, &buf);
+    const rye_cjr = buf[0..n_cjr];
+    assert(std.mem.indexOf(u8, rye_cjr, "return ((sample << 16) | (sample ^ sample)) & 0xffff;") != null);
+    assert(std.mem.indexOf(u8, rye_cjr, "Core.unpack(amount) == 0") != null);
+    print("core: cue nest jam right welcome builds unpack -- GREEN\n", .{});
+
     try cwd.createDirPath(io, "glow/.cache");
     const n10 = try lower.lower_source_welcome(typed_payload_src, &buf);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/core_payload_typed_welcome.rye", .data = buf[0..n10] });
@@ -231,10 +244,12 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, gen_cj, "(cue (jam sample sample))") != null);
     const gen_cjn = try cwd.readFileAlloc(io, "glow/gen/core-cue-jam-nest.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_cjn, "(cue (jam (mix sample sample) sample))") != null);
+    const gen_cjr = try cwd.readFileAlloc(io, "glow/gen/core-cue-jam-right-nest.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_cjr, "(cue (jam sample (mix sample sample)))") != null);
     print("core: desks core-three core-payload-typed core-open core-nest core-jam-* core-cue-jam* carry batteries -- GREEN\n", .{});
 
     print("core: version {s}\n", .{witness_version});
-    print("GREEN: `|%` thin core lowers closed arms, open and nest bodies, bare or typed @u32 payload (STOA14/15/17/20/21/25/27/35/36/37/38/40).\n", .{});
+    print("GREEN: `|%` thin core lowers closed arms, open and nest bodies, bare or typed @u32 payload (STOA14/15/17/20/21/25/27/35/36/37/38/40/41).\n", .{});
     return 0;
 }
 
