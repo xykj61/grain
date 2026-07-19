@@ -1,0 +1,149 @@
+//! glow/lower_named_cast.rye — resolve `^-  <name>` against a same-desk `+$`.
+//!
+//! STOA77: desk defines a one-field `@u32` `$:` mold, then casts by that name.
+//! Tagged `$%` named-cast · cross-desk import stay later.
+//!
+//!   +$  amount-mold
+//!     $:  amount=@u32
+//!     ==
+//!   ^-  amount-mold
+
+const std = @import("std");
+const rm = @import("rune_mold.rye");
+const rc = @import("rune_cast.rye");
+const lower_multi = @import("lower_multi.rye");
+
+pub const LowerError = rm.ParseError || rc.ParseError || error{
+    Overflow,
+    EmptySource,
+    BadIdent,
+    CastMoldMismatch,
+    NamedCastNeedsTuple,
+    TooFewLines,
+    TooManyLines,
+};
+
+pub const named_cast_demo: u32 = 5;
+
+fn zig_safe_ident(face: []const u8, out: *[rm.max_name_len]u8) LowerError!usize {
+    if (face.len == 0 or face.len > rm.max_name_len) return error.BadIdent;
+    var i: usize = 0;
+    while (i < face.len) : (i += 1) {
+        const c = face[i];
+        const mapped: u8 = if (c == '-') '_' else c;
+        if (i == 0) {
+            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or mapped == '_'))
+                return error.BadIdent;
+        } else {
+            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or (mapped >= '0' and mapped <= '9') or mapped == '_'))
+                return error.BadIdent;
+        }
+        out[i] = mapped;
+    }
+    return face.len;
+}
+
+fn zig_type_name(name: []const u8, out: *[rm.max_name_len]u8) LowerError!usize {
+    if (name.len == 0 or name.len > rm.max_name_len) return error.BadIdent;
+    var o: usize = 0;
+    var cap = true;
+    for (name) |c| {
+        if (c == '-' or c == '_') {
+            cap = true;
+            continue;
+        }
+        if (o >= rm.max_name_len) return error.BadIdent;
+        var ch = c;
+        if (cap) {
+            if (ch >= 'a' and ch <= 'z') ch = ch - ('a' - 'A');
+            cap = false;
+        }
+        if (o == 0) {
+            if (!((ch >= 'A' and ch <= 'Z') or (ch >= 'a' and ch <= 'z') or ch == '_'))
+                return error.BadIdent;
+        }
+        out[o] = ch;
+        o += 1;
+    }
+    if (o == 0) return error.BadIdent;
+    return o;
+}
+
+/// True when a multi-line desk is `+$` … `==` followed by `^-  <name>`.
+pub fn looks_like_named_cast(src: []const u8) bool {
+    var lines: [lower_multi.max_lines][]const u8 = undefined;
+    const n = lower_multi.collect_lines(src, &lines) catch return false;
+    if (n < 4 or n > 5) return false;
+    if (lines[0].len < 2 or lines[0][0] != '+' or lines[0][1] != '$') return false;
+    const last = lines[n - 1];
+    return last.len >= 2 and last[0] == '^' and last[1] == '-';
+}
+
+pub fn lower_source_welcome(src: []const u8, out: []u8) LowerError!u32 {
+    if (src.len == 0) return error.EmptySource;
+    var lines: [lower_multi.max_lines][]const u8 = undefined;
+    const n = lower_multi.collect_lines(src, &lines) catch |err| switch (err) {
+        error.TooManyLines => return error.TooManyLines,
+        else => return error.EmptySource,
+    };
+    if (n < 4) return error.TooFewLines;
+    if (n > 5) return error.TooManyLines;
+
+    // Mold body is all but the final cast line.
+    var mold_src: [2048]u8 = undefined;
+    var mold_len: usize = 0;
+    var i: usize = 0;
+    while (i + 1 < n) : (i += 1) {
+        if (mold_len != 0) {
+            if (mold_len >= mold_src.len) return error.Overflow;
+            mold_src[mold_len] = '\n';
+            mold_len += 1;
+        }
+        const line = lines[i];
+        if (mold_len + line.len > mold_src.len) return error.Overflow;
+        @memcpy(mold_src[mold_len..][0..line.len], line);
+        mold_len += line.len;
+    }
+
+    const mold_spec = try rm.parse_source(mold_src[0..mold_len]);
+    if (mold_spec.body != .tuple) return error.NamedCastNeedsTuple;
+    if (mold_spec.field_count != 1) return error.NamedCastNeedsTuple;
+
+    const cast_spec = try rc.parse(lines[n - 1]);
+    const cast_mold = rc.mold_slice(&cast_spec);
+    const mold_name = rm.name_slice(&mold_spec);
+    if (!std.mem.eql(u8, cast_mold, mold_name)) return error.CastMoldMismatch;
+
+    const field = rm.first_field_slice(&mold_spec);
+    var zt: [rm.max_name_len]u8 = undefined;
+    var zf: [rm.max_name_len]u8 = undefined;
+    const tn = try zig_type_name(mold_name, &zt);
+    const fn_len = try zig_safe_ident(field, &zf);
+
+    const written = std.fmt.bufPrint(out,
+        \\const std = @import("std");
+        \\
+        \\/// Lowered from Glow `+$ {s}` + `^-  {s}` — named-cast resolve (STOA77).
+        \\pub const {s} = struct {{
+        \\    {s}: u32 = 0,
+        \\}};
+        \\
+        \\pub fn main(_: std.process.Init) !u8 {{
+        \\    const raw: u32 = {d};
+        \\    const casted: {s} = .{{ .{s} = raw }};
+        \\    return if (casted.{s} == {d}) 0 else 1;
+        \\}}
+        \\
+    , .{
+        mold_name,
+        cast_mold,
+        zt[0..tn],
+        zf[0..fn_len],
+        named_cast_demo,
+        zt[0..tn],
+        zf[0..fn_len],
+        zf[0..fn_len],
+        named_cast_demo,
+    }) catch return error.Overflow;
+    return @intCast(written.len);
+}

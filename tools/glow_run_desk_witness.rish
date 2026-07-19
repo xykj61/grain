@@ -627,6 +627,11 @@ assert moldkind.ok else "glow_run mold-kind.glow failed"
 assert moldkind.out contains "GREEN" else "glow_run mold-kind.glow not GREEN"
 assert moldkind.out contains "mold-kind.glow" else "glow_run mold-kind claim missing path"
 
+let castnamed = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cast-named-amount.glow"]
+assert castnamed.ok else "glow_run cast-named-amount.glow failed"
+assert castnamed.out contains "GREEN" else "glow_run cast-named-amount.glow not GREEN"
+assert castnamed.out contains "cast-named-amount.glow" else "glow_run cast-named-amount claim missing path"
+
 say "GREEN: glow_run desk — all desk generators lowered, built, exit 0."
 
 
