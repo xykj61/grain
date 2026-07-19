@@ -1,0 +1,5 @@
+::  Bind faces then nest-both jam→cue — product-shaped nest-both pack/unpack (STOA46).
+=/  from=@u32  5
+=/  amount=@u32  3
+=/  cell-pack=@u32  (jam (mix from amount) (mix from amount))
+=/  right=@u32  (cue cell-pack)

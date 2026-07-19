@@ -354,6 +354,11 @@ assert composebindnestrightjamcue.ok else "glow_run compose-bind-nest-right-jam-
 assert composebindnestrightjamcue.out contains "GREEN" else "glow_run compose-bind-nest-right-jam-cue.glow not GREEN"
 assert composebindnestrightjamcue.out contains "compose-bind-nest-right-jam-cue.glow" else "glow_run compose-bind-nest-right-jam-cue claim missing path"
 
+let composebindnestbothjamcue = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/compose-bind-nest-both-jam-cue.glow"]
+assert composebindnestbothjamcue.ok else "glow_run compose-bind-nest-both-jam-cue.glow failed"
+assert composebindnestbothjamcue.out contains "GREEN" else "glow_run compose-bind-nest-both-jam-cue.glow not GREEN"
+assert composebindnestbothjamcue.out contains "compose-bind-nest-both-jam-cue.glow" else "glow_run compose-bind-nest-both-jam-cue claim missing path"
+
 let compose2 = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/compose-add.glow"]
 assert compose2.ok else "glow_run compose-add.glow failed"
 assert compose2.out contains "GREEN" else "glow_run compose-add.glow not GREEN"
