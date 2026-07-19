@@ -4,7 +4,7 @@
 
 **Language:** EN
 **Version:** `20260715` (Pool keystone revival prioritized · Quin voice seated · align pass reconciles the closed ladder)
-**Last updated:** 2026-07-19 (**STOA0–74** GREEN — thin +$ / $: mold; nest trios closed through STOA68)
+**Last updated:** 2026-07-19 (**STOA0–75** GREEN — multi-field +$ / $: mold; nest trios closed through STOA68)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Lens:** TAME — safety, performance, joy; the Seed Law; [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md)
@@ -383,6 +383,8 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 **STOA74 thin `+$` / `$:` mold GREEN, `20260719.190825`** — lean B (host install A still jail-blocked): one-field `@u32` tuple mold; parse · lower to `AmountMold` · desk `mold-amount` · full desk suite GREEN. `$%` · multi-field · named-cast resolve stay later. Next language: **STOA75** check-in.
 
 **STOA73 Pixel product-root install eyes GREEN, `20260719.191719`** — Keaton outer terminal: install witness GREEN on GrapheneOS Pixel — `glow_product_root.txt` = **5**; Sala B0 hex still present. Glass import path closed end to end (write · pack · device).
+
+**STOA75 multi-field `+$` / `$:` mold GREEN, `20260719.192241`** — lean A: two-field `@u32` tuple (`mold-pair` → `PairMold`); one- and three-field capacity; full desk suite GREEN. `$%` · named-cast resolve stay later. Next language: **STOA76** check-in.
 
 **Glow OS · Glow Desk · Glow Glass seated, `20260717.183622`** — Keaton: **Glow OS** unifies; **Glow Desk** = desktop; **Glow Glass** = mobile. Lexicon + silo [`../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md`](../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md). Orientation firmware stays check-in.
 
