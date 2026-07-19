@@ -632,6 +632,11 @@ assert moldxact.ok else "glow_run mold-xact.glow failed"
 assert moldxact.out contains "GREEN" else "glow_run mold-xact.glow not GREEN"
 assert moldxact.out contains "mold-xact.glow" else "glow_run mold-xact claim missing path"
 
+let moldxfer = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/mold-xfer.glow"]
+assert moldxfer.ok else "glow_run mold-xfer.glow failed"
+assert moldxfer.out contains "GREEN" else "glow_run mold-xfer.glow not GREEN"
+assert moldxfer.out contains "mold-xfer.glow" else "glow_run mold-xfer claim missing path"
+
 let castnamed = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cast-named-amount.glow"]
 assert castnamed.ok else "glow_run cast-named-amount.glow failed"
 assert castnamed.out contains "GREEN" else "glow_run cast-named-amount.glow not GREEN"

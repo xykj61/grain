@@ -8,7 +8,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const rm = @import("rune_mold.rye");
 
-const witness_version = "20260719.193800";
+const witness_version = "20260719.194808";
 
 fn run_selftest() !u8 {
     const one =
@@ -57,9 +57,24 @@ fn run_selftest() !u8 {
     assert(s4.field_count == 2);
     assert(std.mem.eql(u8, rm.field_slice(&s4, 0), "mint"));
     assert(rm.arm_has_payload(&s4, 0));
+    assert(rm.payload_count(&s4, 0) == 1);
     assert(std.mem.eql(u8, rm.payload_slice(&s4, 0), "amount"));
     assert(!rm.arm_has_payload(&s4, 1));
     print("rune: +$ / $% xact-mold payload arm parses -- GREEN\n", .{});
+
+    const multi =
+        \\+$  xfer-mold
+        \\  $%  [%mint from=@u32 amount=@u32]
+        \\      [%send ~]
+        \\  ==
+    ;
+    const s5 = try rm.parse_source(multi);
+    assert(s5.body == .tagged);
+    assert(rm.payload_count(&s5, 0) == 2);
+    assert(std.mem.eql(u8, rm.payload_face_slice(&s5, 0, 0), "from"));
+    assert(std.mem.eql(u8, rm.payload_face_slice(&s5, 0, 1), "amount"));
+    assert(!rm.arm_has_payload(&s5, 1));
+    print("rune: +$ / $% xfer-mold multi-face payload parses -- GREEN\n", .{});
 
     if (rm.parse_source(
         \\+$  amount-mold
@@ -84,7 +99,7 @@ fn run_selftest() !u8 {
     print("rune: single $% tag refused TooFewTags -- GREEN\n", .{});
 
     print("rune: version {s}\n", .{witness_version});
-    print("GREEN: +$ / $: / $% mold front half parses — STOA74/75/76/78.\n", .{});
+    print("GREEN: +$ / $: / $% mold front half parses — STOA74/75/76/78/80.\n", .{});
     return 0;
 }
 

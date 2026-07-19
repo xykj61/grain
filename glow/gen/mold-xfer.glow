@@ -1,0 +1,6 @@
+::  +$ / $% multi-face payload — mint carries from+amount @u32; send unit (STOA80).
+::  Lowered by glow/lower_mold.rye into ordinary Rye; Rishi stays the shell.
++$  xfer-mold
+  $%  [%mint from=@u32 amount=@u32]
+      [%send ~]
+  ==

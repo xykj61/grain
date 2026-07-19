@@ -3,6 +3,7 @@
 //! STOA74–75: `$:` `@u32` fields → Zig struct + demo main.
 //! STOA76: `$%` cold-atom tags with unit payload → Zig enum + demo main.
 //! STOA78: `$%` arms with one-face `@u32` payload → Zig union(enum).
+//! STOA80: `$%` arms with multi-face `@u32` payload → same union shape.
 //! Named-cast resolve: `lower_named_cast.rye` (STOA77).
 //! Library emit (no main) is STOA79 for `/+` mold import.
 
@@ -161,27 +162,31 @@ fn lower_tagged_payload(spec: *const rm.MoldSpec, zig_type: []const u8, out: []u
     const name = rm.name_slice(spec);
     var zt: [rm.max_fields][rm.max_name_len]u8 = undefined;
     var zt_lens: [rm.max_fields]usize = undefined;
-    var zp: [rm.max_fields][rm.max_name_len]u8 = undefined;
-    var zp_lens: [rm.max_fields]usize = undefined;
+    var zp: [rm.max_fields][rm.max_payload_faces][rm.max_name_len]u8 = undefined;
+    var zp_lens: [rm.max_fields][rm.max_payload_faces]usize = undefined;
+    var zp_counts: [rm.max_fields]usize = undefined;
     var i: usize = 0;
     while (i < spec.field_count) : (i += 1) {
         zt_lens[i] = try zig_safe_ident(rm.field_slice(spec, i), &zt[i]);
-        if (rm.arm_has_payload(spec, i)) {
-            zp_lens[i] = try zig_safe_ident(rm.payload_slice(spec, i), &zp[i]);
-        } else {
-            zp_lens[i] = 0;
+        zp_counts[i] = rm.payload_count(spec, i);
+        var fi: usize = 0;
+        while (fi < zp_counts[i]) : (fi += 1) {
+            zp_lens[i][fi] = try zig_safe_ident(rm.payload_face_slice(spec, i, fi), &zp[i][fi]);
         }
     }
 
     var used: usize = 0;
     try append(out, &used, "const std = @import(\"std\");\n\n");
-    try append_fmt(out, &used, "/// Lowered from Glow `+$ {s}` / `$%` payload arms (STOA78).\n", .{name});
+    try append_fmt(out, &used, "/// Lowered from Glow `+$ {s}` / `$%` payload arms (STOA78/80).\n", .{name});
     try append_fmt(out, &used, "pub const {s} = union(enum) {{\n", .{zig_type});
     i = 0;
     while (i < spec.field_count) : (i += 1) {
-        if (zp_lens[i] != 0) {
+        if (zp_counts[i] != 0) {
             try append_fmt(out, &used, "    {s}: struct {{\n", .{zt[i][0..zt_lens[i]]});
-            try append_fmt(out, &used, "        {s}: u32 = 0,\n", .{zp[i][0..zp_lens[i]]});
+            var fi: usize = 0;
+            while (fi < zp_counts[i]) : (fi += 1) {
+                try append_fmt(out, &used, "        {s}: u32 = 0,\n", .{zp[i][fi][0..zp_lens[i][fi]]});
+            }
             try append(out, &used, "    },\n");
         } else {
             try append_fmt(out, &used, "    {s},\n", .{zt[i][0..zt_lens[i]]});
@@ -192,38 +197,49 @@ fn lower_tagged_payload(spec: *const rm.MoldSpec, zig_type: []const u8, out: []u
 
     // Demo: first payload arm (or first arm) + second arm for contrast.
     var demo_i: usize = 0;
-    while (demo_i < spec.field_count and zp_lens[demo_i] == 0) : (demo_i += 1) {}
+    while (demo_i < spec.field_count and zp_counts[demo_i] == 0) : (demo_i += 1) {}
     if (demo_i >= spec.field_count) demo_i = 0;
 
-    if (zp_lens[demo_i] != 0) {
-        try append_fmt(out, &used, "    const a: {s} = .{{ .{s} = .{{ .{s} = {d} }} }};\n", .{
+    if (zp_counts[demo_i] != 0) {
+        try append_fmt(out, &used, "    const a: {s} = .{{ .{s} = .{{ ", .{
             zig_type,
             zt[demo_i][0..zt_lens[demo_i]],
-            zp[demo_i][0..zp_lens[demo_i]],
-            mold_demo_vals[0],
         });
+        var fi: usize = 0;
+        while (fi < zp_counts[demo_i]) : (fi += 1) {
+            if (fi != 0) try append(out, &used, ", ");
+            try append_fmt(out, &used, ".{s} = {d}", .{ zp[demo_i][fi][0..zp_lens[demo_i][fi]], mold_demo_vals[fi] });
+        }
+        try append(out, &used, " } };\n");
     } else {
         try append_fmt(out, &used, "    const a: {s} = .{s};\n", .{ zig_type, zt[demo_i][0..zt_lens[demo_i]] });
     }
 
     const other: usize = if (demo_i == 0) 1 else 0;
-    if (zp_lens[other] != 0) {
-        try append_fmt(out, &used, "    const b: {s} = .{{ .{s} = .{{ .{s} = {d} }} }};\n", .{
+    if (zp_counts[other] != 0) {
+        try append_fmt(out, &used, "    const b: {s} = .{{ .{s} = .{{ ", .{
             zig_type,
             zt[other][0..zt_lens[other]],
-            zp[other][0..zp_lens[other]],
-            mold_demo_vals[1],
         });
+        var fi: usize = 0;
+        while (fi < zp_counts[other]) : (fi += 1) {
+            if (fi != 0) try append(out, &used, ", ");
+            try append_fmt(out, &used, ".{s} = {d}", .{ zp[other][fi][0..zp_lens[other][fi]], mold_demo_vals[fi] });
+        }
+        try append(out, &used, " } };\n");
     } else {
         try append_fmt(out, &used, "    const b: {s} = .{s};\n", .{ zig_type, zt[other][0..zt_lens[other]] });
     }
 
     try append(out, &used, "    return switch (a) {\n");
-    if (zp_lens[demo_i] != 0) {
-        try append_fmt(out, &used, "        .{s} => |m| if (m.{s} == {d} and std.meta.activeTag(b) == .{s}) 0 else 1,\n", .{
-            zt[demo_i][0..zt_lens[demo_i]],
-            zp[demo_i][0..zp_lens[demo_i]],
-            mold_demo_vals[0],
+    if (zp_counts[demo_i] != 0) {
+        try append_fmt(out, &used, "        .{s} => |m| if (", .{zt[demo_i][0..zt_lens[demo_i]]});
+        var fi: usize = 0;
+        while (fi < zp_counts[demo_i]) : (fi += 1) {
+            if (fi != 0) try append(out, &used, " and ");
+            try append_fmt(out, &used, "m.{s} == {d}", .{ zp[demo_i][fi][0..zp_lens[demo_i][fi]], mold_demo_vals[fi] });
+        }
+        try append_fmt(out, &used, " and std.meta.activeTag(b) == .{s}) 0 else 1,\n", .{
             zt[other][0..zt_lens[other]],
         });
     } else {
