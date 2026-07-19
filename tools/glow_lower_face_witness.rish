@@ -27,6 +27,7 @@ assert selftest.out contains "welcome binds cell-pack" else "lower_face_witness 
 assert selftest.out contains "welcome binds unpack" else "lower_face_witness missing cue value claim"
 assert selftest.out contains "welcome binds nest jam" else "lower_face_witness missing nest jam value claim"
 assert selftest.out contains "welcome binds nest jam right" else "lower_face_witness missing nest jam right value claim"
+assert selftest.out contains "welcome binds nest jam both" else "lower_face_witness missing nest jam both value claim"
 assert selftest.out contains "ValueNotYetLowered" else "lower_face_witness missing other-paren refuse"
 assert selftest.out contains "nests cast under face" else "lower_face_witness missing gen desk claim"
 assert selftest.out contains "nests (lent" else "lower_face_witness missing face-lent desk claim"
@@ -35,6 +36,7 @@ assert selftest.out contains "nests (jam" else "lower_face_witness missing face-
 assert selftest.out contains "nests (cue" else "lower_face_witness missing face-cue desk claim"
 assert selftest.out contains "nests jam-of-mix" else "lower_face_witness missing face-jam-nest desk claim"
 assert selftest.out contains "nests jam-right-mix" else "lower_face_witness missing face-jam-right-nest desk claim"
+assert selftest.out contains "nests jam-both-mix" else "lower_face_witness missing face-jam-both-nest desk claim"
 
 let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
 assert build_welcome.ok else "face welcome .rye build failed"
@@ -47,4 +49,4 @@ assert build_unwelcome.ok else "face unwelcome .rye build failed"
 let run_unwelcome = run ["sh" "-c" "${unwelcome_bin}; echo EXIT:$?"]
 assert run_unwelcome.out contains "EXIT:1" else "face unwelcome binary did not exit 1"
 
-say "GREEN: Glow `=/` face hop — nested `^-`, `(lent …)`, `(mix …)`, `(jam …)`, nest jam left/right, and `(cue …)`; welcome 0 / unwelcome 1."
+say "GREEN: Glow `=/` face hop — nested `^-`, `(lent …)`, `(mix …)`, `(jam …)`, nest jam left/right/both, and `(cue …)`; welcome 0 / unwelcome 1."
