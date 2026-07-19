@@ -126,7 +126,13 @@ fn check_open_body(spec: *const CoreSpec, body: *const expr.Expr) ParseError!voi
     switch (body.kind) {
         .literal, .cast_literal => {},
         .face, .lent_of, .cue_of => try check_body_face(spec, expr.face_slice(body)),
-        .mix_of, .jam_of => {
+        .mix_of => {
+            try check_body_face(spec, expr.face_slice(body));
+            try check_body_face(spec, expr.face2_slice(body));
+        },
+        .jam_of => {
+            // Nest jam args under open `++` stay later (face hop seats STOA33).
+            if (expr.jam_has_nest_arg(body)) return error.BodyNotYetLowered;
             try check_body_face(spec, expr.face_slice(body));
             try check_body_face(spec, expr.face2_slice(body));
         },

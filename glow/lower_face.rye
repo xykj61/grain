@@ -5,6 +5,7 @@
 //! decimal literals (default 7), nested `^-  @uN  <decimal>`, `(lent <face>)`
 //! — length of a demo subject — `(mix <face> <face>)` — bitwise XOR of two
 //! demo atoms — `(jam <face> <face>)` — thin cell-pack `(a << 16) | b` —
+//! `(jam (mix <face> <face>) <face>)` — one-deep nest left under jam —
 //! and `(cue <face>)` — low 16 bits of a jam pack, through `expr.rye`.
 //! Other parenthesized forms still refuse.
 //! Named molds still refuse.
@@ -37,6 +38,9 @@ const BoundValue = struct {
     subject_len: usize = 0,
     subject2: [rf.max_name_len]u8 = [_]u8{0} ** rf.max_name_len,
     subject2_len: usize = 0,
+    subject3: [rf.max_name_len]u8 = [_]u8{0} ** rf.max_name_len,
+    subject3_len: usize = 0,
+    jam_left_mix: bool = false,
 };
 
 fn cast_mold_slice(b: *const BoundValue) []const u8 {
@@ -49,6 +53,10 @@ fn subject_slice(b: *const BoundValue) []const u8 {
 
 fn subject2_slice(b: *const BoundValue) []const u8 {
     return b.subject2[0..b.subject2_len];
+}
+
+fn subject3_slice(b: *const BoundValue) []const u8 {
+    return b.subject3[0..b.subject3_len];
 }
 
 fn zig_safe_ident(face: []const u8, out: *[rf.max_name_len]u8) LowerError!usize {
@@ -112,7 +120,7 @@ fn map_expr_err(err: expr.ParseError) LowerError {
 }
 
 /// Trailing value after the face clause: default, decimal, nested `^-`,
-/// `(lent …)`, `(mix …)`, `(jam …)`, or `(cue …)`.
+/// `(lent …)`, `(mix …)`, `(jam …)`, nest jam, or `(cue …)`.
 fn bound_value(line: []const u8, face: []const u8, mold: []const u8) LowerError!BoundValue {
     var clause_buf: [rf.max_name_len * 2 + 1]u8 = undefined;
     const clause = try clause_text(face, mold, &clause_buf);
@@ -144,6 +152,22 @@ fn bound_value(line: []const u8, face: []const u8, mold: []const u8) LowerError!
             break :blk bound;
         },
         .jam_of => blk: {
+            if (e.left_arg == .mix_of) {
+                const mix_l = expr.face_slice(&e);
+                const mix_r = expr.face2_slice(&e);
+                const jam_r = expr.face3_slice(&e);
+                var bound: BoundValue = .{
+                    .kind = .jam_of,
+                    .jam_left_mix = true,
+                    .subject_len = mix_l.len,
+                    .subject2_len = mix_r.len,
+                    .subject3_len = jam_r.len,
+                };
+                @memcpy(bound.subject[0..mix_l.len], mix_l);
+                @memcpy(bound.subject2[0..mix_r.len], mix_r);
+                @memcpy(bound.subject3[0..jam_r.len], jam_r);
+                break :blk bound;
+            }
             const left = expr.face_slice(&e);
             const right = expr.face2_slice(&e);
             var bound: BoundValue = .{ .kind = .jam_of, .subject_len = left.len, .subject2_len = right.len };
@@ -405,6 +429,167 @@ fn emit_mix(
     return @intCast(written.len);
 }
 
+/// `(jam (mix <a> <b>) <c>)` under a face — nest left then cell-pack.
+fn emit_jam_nest(
+    glow_label: []const u8,
+    face_mold: []const u8,
+    zig_face: []const u8,
+    mix_left: []const u8,
+    mix_right: []const u8,
+    jam_right: []const u8,
+    zig_ty: []const u8,
+    welcome: bool,
+    out: []u8,
+) LowerError!u32 {
+    var zl: [rf.max_name_len]u8 = undefined;
+    const ln = try zig_safe_ident(mix_left, &zl);
+    const zig_ml = zl[0..ln];
+    var zr: [rf.max_name_len]u8 = undefined;
+    const rn = try zig_safe_ident(mix_right, &zr);
+    const zig_mr = zr[0..rn];
+    var zj: [rf.max_name_len]u8 = undefined;
+    const jn = try zig_safe_ident(jam_right, &zj);
+    const zig_jr = zj[0..jn];
+    const result = expr.jam_nest_demo_result();
+    const expect: u32 = if (welcome) result else result +% 1;
+    const typed = face_mold.len != 0;
+    const same_mr_jr = std.mem.eql(u8, zig_mr, zig_jr);
+    if (typed) {
+        if (same_mr_jr) {
+            const written = std.fmt.bufPrint(out,
+                \\const std = @import("std");
+                \\
+                \\/// Lowered from Glow `=/  {s}={s}  (jam (mix {s} {s}) {s})` — nest jam.
+                \\pub fn main(_: std.process.Init) !u8 {{
+                \\    const {s}: u32 = {d};
+                \\    const {s}: u32 = {d};
+                \\    const left_mix: u32 = {s} ^ {s};
+                \\    const {s}: {s} = (left_mix << 16) | {s};
+                \\    return if ({s} == {d}) 0 else 1;
+                \\}}
+                \\
+            , .{
+                glow_label,
+                face_mold,
+                mix_left,
+                mix_right,
+                jam_right,
+                zig_ml,
+                expr.mix_demo_left,
+                zig_mr,
+                expr.mix_demo_right,
+                zig_ml,
+                zig_mr,
+                zig_face,
+                zig_ty,
+                zig_jr,
+                zig_face,
+                expect,
+            }) catch return error.Overflow;
+            return @intCast(written.len);
+        }
+        const written = std.fmt.bufPrint(out,
+            \\const std = @import("std");
+            \\
+            \\/// Lowered from Glow `=/  {s}={s}  (jam (mix {s} {s}) {s})` — nest jam.
+            \\pub fn main(_: std.process.Init) !u8 {{
+            \\    const {s}: u32 = {d};
+            \\    const {s}: u32 = {d};
+            \\    const {s}: u32 = {d};
+            \\    const left_mix: u32 = {s} ^ {s};
+            \\    const {s}: {s} = (left_mix << 16) | {s};
+            \\    return if ({s} == {d}) 0 else 1;
+            \\}}
+            \\
+        , .{
+            glow_label,
+            face_mold,
+            mix_left,
+            mix_right,
+            jam_right,
+            zig_ml,
+            expr.mix_demo_left,
+            zig_mr,
+            expr.mix_demo_right,
+            zig_jr,
+            expr.jam_demo_right,
+            zig_ml,
+            zig_mr,
+            zig_face,
+            zig_ty,
+            zig_jr,
+            zig_face,
+            expect,
+        }) catch return error.Overflow;
+        return @intCast(written.len);
+    }
+    if (same_mr_jr) {
+        const written = std.fmt.bufPrint(out,
+            \\const std = @import("std");
+            \\
+            \\/// Lowered from Glow `=/  {s}  (jam (mix {s} {s}) {s})` — nest jam.
+            \\pub fn main(_: std.process.Init) !u8 {{
+            \\    const {s}: u32 = {d};
+            \\    const {s}: u32 = {d};
+            \\    const left_mix: u32 = {s} ^ {s};
+            \\    const {s}: {s} = (left_mix << 16) | {s};
+            \\    return if ({s} == {d}) 0 else 1;
+            \\}}
+            \\
+        , .{
+            glow_label,
+            mix_left,
+            mix_right,
+            jam_right,
+            zig_ml,
+            expr.mix_demo_left,
+            zig_mr,
+            expr.mix_demo_right,
+            zig_ml,
+            zig_mr,
+            zig_face,
+            zig_ty,
+            zig_jr,
+            zig_face,
+            expect,
+        }) catch return error.Overflow;
+        return @intCast(written.len);
+    }
+    const written = std.fmt.bufPrint(out,
+        \\const std = @import("std");
+        \\
+        \\/// Lowered from Glow `=/  {s}  (jam (mix {s} {s}) {s})` — nest jam.
+        \\pub fn main(_: std.process.Init) !u8 {{
+        \\    const {s}: u32 = {d};
+        \\    const {s}: u32 = {d};
+        \\    const {s}: u32 = {d};
+        \\    const left_mix: u32 = {s} ^ {s};
+        \\    const {s}: {s} = (left_mix << 16) | {s};
+        \\    return if ({s} == {d}) 0 else 1;
+        \\}}
+        \\
+    , .{
+        glow_label,
+        mix_left,
+        mix_right,
+        jam_right,
+        zig_ml,
+        expr.mix_demo_left,
+        zig_mr,
+        expr.mix_demo_right,
+        zig_jr,
+        expr.jam_demo_right,
+        zig_ml,
+        zig_mr,
+        zig_face,
+        zig_ty,
+        zig_jr,
+        zig_face,
+        expect,
+    }) catch return error.Overflow;
+    return @intCast(written.len);
+}
+
 /// `(jam <left> <right>)` under a face — thin cell-pack `(a << 16) | b`.
 fn emit_jam(
     glow_label: []const u8,
@@ -633,6 +818,19 @@ fn lower_line(line: []const u8, welcome: bool, out: []u8) LowerError!u32 {
         },
         .jam_of => {
             const zig_ty = try zig_type_for_mold(mold);
+            if (bound.jam_left_mix) {
+                return emit_jam_nest(
+                    face,
+                    mold,
+                    zig_face,
+                    subject_slice(&bound),
+                    subject2_slice(&bound),
+                    subject3_slice(&bound),
+                    zig_ty,
+                    welcome,
+                    out,
+                );
+            }
             return emit_jam(face, mold, zig_face, subject_slice(&bound), subject2_slice(&bound), zig_ty, welcome, out);
         },
         .cue_of => {

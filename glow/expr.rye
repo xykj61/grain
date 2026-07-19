@@ -2,6 +2,7 @@
 //!
 //! Nest forms: decimal · nested `^-  @uN  <decimal>` · bare face ·
 //! `(lent <face>)` · `(mix <face> <face>)` · `(jam <face> <face>)` ·
+//! `(jam (mix <face> <face>) <face>)` — one-deep nest left under jam ·
 //! `(cue <face>)` — thin unpack of a jam cell-pack (low 16 bits).
 //! Other parenthesized forms refuse. Not a full token stream yet.
 
@@ -33,12 +34,20 @@ pub const ParseError = error{
 
 pub const Kind = enum { face, literal, cast_literal, lent_of, mix_of, jam_of, cue_of };
 
+/// One-deep nest arg under `(jam …)` — face, or `(mix a b)` as left.
+pub const ArgKind = enum { face, mix_of };
+
 pub const Expr = struct {
     kind: Kind,
     face: [max_name_len]u8 = [_]u8{0} ** max_name_len,
     face_len: usize = 0,
     face2: [max_name_len]u8 = [_]u8{0} ** max_name_len,
     face2_len: usize = 0,
+    /// Jam right face when `left_arg == .mix_of` (mix occupies face/face2).
+    face3: [max_name_len]u8 = [_]u8{0} ** max_name_len,
+    face3_len: usize = 0,
+    left_arg: ArgKind = .face,
+    right_arg: ArgKind = .face,
     lit: u32 = 0,
     mold: [max_name_len]u8 = [_]u8{0} ** max_name_len,
     mold_len: usize = 0,
@@ -57,6 +66,10 @@ pub fn face2_slice(e: *const Expr) []const u8 {
     return e.face2[0..e.face2_len];
 }
 
+pub fn face3_slice(e: *const Expr) []const u8 {
+    return e.face3[0..e.face3_len];
+}
+
 pub fn mold_slice(e: *const Expr) []const u8 {
     return e.mold[0..e.mold_len];
 }
@@ -69,9 +82,18 @@ pub fn jam_demo_result() u32 {
     return (jam_demo_left << 16) | jam_demo_right;
 }
 
+/// `(jam (mix a b) c)` demo — mix result packed with right atom.
+pub fn jam_nest_demo_result() u32 {
+    return (mix_demo_result() << 16) | jam_demo_right;
+}
+
 /// Thin `(cue cell)` — low 16 bits of a jam cell-pack (the right atom).
 pub fn cue_demo_result() u32 {
     return jam_demo_right;
+}
+
+pub fn jam_has_nest_arg(e: *const Expr) bool {
+    return e.kind == .jam_of and (e.left_arg != .face or e.right_arg != .face);
 }
 
 fn is_ident_char(c: u8) bool {
@@ -109,6 +131,38 @@ fn parse_decimal_prefix(rest: []const u8) ParseError!struct { lit: u32, rest: []
     return .{ .lit = lit, .rest = std.mem.trimStart(u8, rest[end..], " \t") };
 }
 
+const NestArg = struct {
+    kind: ArgKind,
+    face: []const u8,
+    face2: []const u8,
+    rest: []const u8,
+};
+
+/// Face, or one-deep `(mix a b)` — other nest args stay later.
+fn parse_nest_arg(rest_in: []const u8) ParseError!NestArg {
+    const rest = std.mem.trimStart(u8, rest_in, " \t");
+    if (rest.len == 0) return error.MalformedExpr;
+    if (rest[0] == '(') {
+        const mix_prefix = "(mix ";
+        if (rest.len > mix_prefix.len and std.mem.eql(u8, rest[0..mix_prefix.len], mix_prefix)) {
+            const left = try parse_ident(rest[mix_prefix.len..]);
+            const mid = std.mem.trimStart(u8, left.rest, " \t");
+            if (mid.len == left.rest.len) return error.MalformedExpr;
+            const right = try parse_ident(mid);
+            if (right.rest.len == 0 or right.rest[0] != ')') return error.MalformedExpr;
+            return .{
+                .kind = .mix_of,
+                .face = left.ident,
+                .face2 = right.ident,
+                .rest = std.mem.trimStart(u8, right.rest[1..], " \t"),
+            };
+        }
+        return error.ExprNotYetLowered;
+    }
+    const id = try parse_ident(rest);
+    return .{ .kind = .face, .face = id.ident, .face2 = "", .rest = id.rest };
+}
+
 fn parse_paren(rest: []const u8) ParseError!Prefix {
     const lent_prefix = "(lent ";
     if (rest.len > lent_prefix.len and std.mem.eql(u8, rest[0..lent_prefix.len], lent_prefix)) {
@@ -134,14 +188,32 @@ fn parse_paren(rest: []const u8) ParseError!Prefix {
 
     const jam_prefix = "(jam ";
     if (rest.len > jam_prefix.len and std.mem.eql(u8, rest[0..jam_prefix.len], jam_prefix)) {
-        const left = try parse_ident(rest[jam_prefix.len..]);
+        const left = try parse_nest_arg(rest[jam_prefix.len..]);
         const mid = std.mem.trimStart(u8, left.rest, " \t");
-        if (mid.len == left.rest.len) return error.MalformedExpr;
-        const right = try parse_ident(mid);
+        // Face args need a whitespace separator; nest-left already trimmed past `)`.
+        if (left.kind == .face and mid.len == left.rest.len) return error.MalformedExpr;
+        if (mid.len == 0) return error.MalformedExpr;
+        const right = try parse_nest_arg(mid);
         if (right.rest.len == 0 or right.rest[0] != ')') return error.MalformedExpr;
-        var e: Expr = .{ .kind = .jam_of, .face_len = left.ident.len, .face2_len = right.ident.len };
-        @memcpy(e.face[0..left.ident.len], left.ident);
-        @memcpy(e.face2[0..right.ident.len], right.ident);
+        // Thin STOA33: left may be `(mix a b)`; right stays a bare face.
+        if (right.kind != .face) return error.ExprNotYetLowered;
+        if (left.kind == .mix_of) {
+            var e: Expr = .{
+                .kind = .jam_of,
+                .left_arg = .mix_of,
+                .right_arg = .face,
+                .face_len = left.face.len,
+                .face2_len = left.face2.len,
+                .face3_len = right.face.len,
+            };
+            @memcpy(e.face[0..left.face.len], left.face);
+            @memcpy(e.face2[0..left.face2.len], left.face2);
+            @memcpy(e.face3[0..right.face.len], right.face);
+            return .{ .expr = e, .rest = std.mem.trimStart(u8, right.rest[1..], " \t") };
+        }
+        var e: Expr = .{ .kind = .jam_of, .face_len = left.face.len, .face2_len = right.face.len };
+        @memcpy(e.face[0..left.face.len], left.face);
+        @memcpy(e.face2[0..right.face.len], right.face);
         return .{ .expr = e, .rest = std.mem.trimStart(u8, right.rest[1..], " \t") };
     }
 

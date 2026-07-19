@@ -69,6 +69,11 @@ assert facecue.ok else "glow_run face-cue.glow failed"
 assert facecue.out contains "GREEN" else "glow_run face-cue.glow not GREEN"
 assert facecue.out contains "face-cue.glow" else "glow_run face-cue claim missing path"
 
+let facejamnest = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/face-jam-nest.glow"]
+assert facejamnest.ok else "glow_run face-jam-nest.glow failed"
+assert facejamnest.out contains "GREEN" else "glow_run face-jam-nest.glow not GREEN"
+assert facejamnest.out contains "face-jam-nest.glow" else "glow_run face-jam-nest claim missing path"
+
 let iflent = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/if-lent.glow"]
 assert iflent.ok else "glow_run if-lent.glow failed"
 assert iflent.out contains "GREEN" else "glow_run if-lent.glow not GREEN"
