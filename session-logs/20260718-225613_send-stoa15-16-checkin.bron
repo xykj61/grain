@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260718.225613
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern time convention
+title Send STOA15-16 check-in
+prompt send and check in
+think Commit and push STOA15 two-arm and STOA16 library with session logs and living docs
+think Already on main — ship is commit then push origin and codeberg; no separate merge branch
+think After pier lands present STOA17 forks and wait
+obs Witnesses were GREEN before send — core-two desk, library consumer exit 0, full glow_run desk
+obs Fork C face-to-core from prior check-in becomes one STOA17 option beside payload and three-plus arms
+file glow/gen/core-two.glow STOA15 desk
+file glow/gen/lib-core-double.glow STOA16 battery
+file tools/glow_lower_core_lib_witness.rish library hop
+file docs/STOA.md STOA15-16 GREEN
+recommend check-in STOA17 forks after pier push

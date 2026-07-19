@@ -1,0 +1,74 @@
+//! glow/lower_core_lib_witness.rye — proves library emit (no main).
+//!
+//!   rye build glow/lower_core_lib_witness.rye -femit-bin=glow/bin/lower_core_lib_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const lower = @import("lower_core.rye");
+
+const witness_version = "20260718.224600";
+
+const lib_src =
+    \\::  Library core — no main (STOA16).
+    \\|%
+    \\++  double
+    \\--
+;
+
+fn append(out: []u8, pos: *usize, chunk: []const u8) !void {
+    if (pos.* + chunk.len > out.len) return error.BufferTooSmall;
+    @memcpy(out[pos.*..][0..chunk.len], chunk);
+    pos.* += chunk.len;
+}
+
+fn write_consumer(out: []u8) !usize {
+    // Build the consumer at runtime so rye's bridge does not scan a
+    // static import path that is not present until we write the lib file.
+    var pos: usize = 0;
+    try append(out, &pos, "const std = ");
+    try append(out, &pos, "@");
+    try append(out, &pos, "import(\"std\");\n");
+    try append(out, &pos, "const lib = ");
+    try append(out, &pos, "@");
+    try append(out, &pos, "import(\"lib_core_double.rye\");\n\n");
+    try append(out, &pos, "pub fn main(_: std.process.Init) !u8 {\n");
+    try append(out, &pos, "    const amount: u32 = 5;\n");
+    try append(out, &pos, "    return if (lib.Core.double(amount) == 10) 0 else 1;\n");
+    try append(out, &pos, "}\n");
+    return pos;
+}
+
+fn run_selftest(init: std.process.Init) !u8 {
+    const io = init.io;
+    const a = init.arena.allocator();
+    const cwd = std.Io.Dir.cwd();
+    var buf: [3072]u8 = undefined;
+    var consumer_buf: [512]u8 = undefined;
+
+    const n1 = try lower.lower_source_library(lib_src, &buf);
+    const rye1 = buf[0..n1];
+    assert(std.mem.indexOf(u8, rye1, "pub const Core = struct") != null);
+    assert(std.mem.indexOf(u8, rye1, "pub fn double(sample: u32) u32") != null);
+    assert(std.mem.indexOf(u8, rye1, "pub fn main") == null);
+    print("lib: library emit has Core and no main -- GREEN\n", .{});
+
+    const n_use = try write_consumer(&consumer_buf);
+    try cwd.createDirPath(io, "glow/.cache");
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/lib_core_double.rye", .data = rye1 });
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/lib_core_double_use.rye", .data = consumer_buf[0..n_use] });
+    print("lib: wrote library and consumer under glow/.cache/ -- GREEN\n", .{});
+
+    const gen_src = try cwd.readFileAlloc(io, "glow/gen/lib-core-double.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_src, "|%") != null);
+    assert(std.mem.indexOf(u8, gen_src, "++  double") != null);
+    print("lib: glow/gen/lib-core-double.glow carries library battery -- GREEN\n", .{});
+
+    print("lib: version {s}\n", .{witness_version});
+    print("GREEN: `|%` library emit has no main (STOA16).\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
+}
