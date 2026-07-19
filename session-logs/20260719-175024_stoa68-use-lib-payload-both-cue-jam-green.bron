@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260719.175024
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern time convention
+title STOA68 /+ payload nest-both cue-of-jam GREEN
+prompt send and approve next rec
+think Approve STOA68 A — `/+` payload nest-both cue-of-jam library compose.
+think Desks use-lib-payload-cue-jam-both-nest.glow + lib-core-payload-cue-jam-both-nest.glow — unpack=(cue (jam (mix amount amount) (mix amount amount))).
+think Expect unpack=0 with has_payload; unwelcome unpack=1; call is core.unpack().
+think Run glow_lower_compose_lib_witness.rish GREEN; desk smoke exit 0; full desk suite GREEN.
+obs Nest-both closes the `/+` payload cue-jam nest trio; STOA69 check-in leans A richer product desk.
+file glow/gen/use-lib-payload-cue-jam-both-nest.glow consumer desk
+file glow/gen/lib-core-payload-cue-jam-both-nest.glow library desk
+file glow/lower_compose_lib.rye STOA68 header
+file glow/lower_compose_lib_witness.rye nest-both payload cue-jam cases
+file tools/glow_lower_compose_lib_witness.rish nest-both asserts
+file tools/glow_run_desk_witness.rish nest-both desk wire
+file docs/STOA.md STOA68 GREEN STOA69 horizon ≤80
+file glow/README.md STOA68 mention
+file expanding-prompts/20260717-213242_glow-first-code-beside-glass-and-open-runes.md STOA68 mention
+recommend keep-going seat and send STOA68
