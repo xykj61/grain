@@ -1,0 +1,103 @@
+//! glow/lower_mold.rye — lower a thin `+$` / `$:` mold to runnable `.rye`.
+//!
+//! STOA74: one-field `@u32` tuple mold → Zig struct + demo main (amount 5).
+//! `$%` · multi-field · named-cast resolve stay later.
+
+const std = @import("std");
+const rm = @import("rune_mold.rye");
+
+pub const LowerError = rm.ParseError || error{
+    Overflow,
+    BadIdent,
+};
+
+pub const mold_demo_amount: u32 = 5;
+
+fn zig_safe_ident(face: []const u8, out: *[rm.max_name_len]u8) LowerError!usize {
+    if (face.len == 0 or face.len > rm.max_name_len) return error.BadIdent;
+    var i: usize = 0;
+    while (i < face.len) : (i += 1) {
+        const c = face[i];
+        const mapped: u8 = if (c == '-') '_' else c;
+        if (i == 0) {
+            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or mapped == '_'))
+                return error.BadIdent;
+        } else {
+            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or (mapped >= '0' and mapped <= '9') or mapped == '_'))
+                return error.BadIdent;
+        }
+        out[i] = mapped;
+    }
+    return face.len;
+}
+
+/// `amount-mold` → `AmountMold` (hyphen parts title-cased).
+fn zig_type_name(name: []const u8, out: *[rm.max_name_len]u8) LowerError!usize {
+    if (name.len == 0 or name.len > rm.max_name_len) return error.BadIdent;
+    var o: usize = 0;
+    var cap = true;
+    for (name) |c| {
+        if (c == '-' or c == '_') {
+            cap = true;
+            continue;
+        }
+        if (o >= rm.max_name_len) return error.BadIdent;
+        var ch = c;
+        if (cap) {
+            if (ch >= 'a' and ch <= 'z') ch = ch - ('a' - 'A');
+            cap = false;
+        }
+        if (o == 0) {
+            if (!((ch >= 'A' and ch <= 'Z') or (ch >= 'a' and ch <= 'z') or ch == '_'))
+                return error.BadIdent;
+        }
+        out[o] = ch;
+        o += 1;
+    }
+    if (o == 0) return error.BadIdent;
+    return o;
+}
+
+fn emit_mold_program(
+    glow_name: []const u8,
+    zig_type: []const u8,
+    zig_field: []const u8,
+    expect: u32,
+    out: []u8,
+) LowerError!u32 {
+    const written = std.fmt.bufPrint(out,
+        \\const std = @import("std");
+        \\
+        \\/// Lowered from Glow `+$ {s}` / `$:` one-field `@u32` (STOA74).
+        \\pub const {s} = struct {{
+        \\    {s}: u32 = 0,
+        \\}};
+        \\
+        \\pub fn main(_: std.process.Init) !u8 {{
+        \\    const m = {s}{{ .{s} = {d} }};
+        \\    return if (m.{s} == {d}) 0 else 1;
+        \\}}
+        \\
+    , .{
+        glow_name,
+        zig_type,
+        zig_field,
+        zig_type,
+        zig_field,
+        expect,
+        zig_field,
+        expect,
+    }) catch return error.Overflow;
+    return @intCast(written.len);
+}
+
+pub fn lower_source_welcome(src: []const u8, out: []u8) LowerError!u32 {
+    const spec = try rm.parse_source(src);
+    const name = rm.name_slice(&spec);
+    const field = rm.field_slice(&spec);
+    var zt: [rm.max_name_len]u8 = undefined;
+    var zf: [rm.max_name_len]u8 = undefined;
+    const tn = try zig_type_name(name, &zt);
+    const fn_len = try zig_safe_ident(field, &zf);
+    return emit_mold_program(name, zt[0..tn], zf[0..fn_len], mold_demo_amount, out);
+}
