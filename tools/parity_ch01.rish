@@ -1412,7 +1412,13 @@ let glow_core_lib = run ["rishi/bin/rishi" "run" "tools/glow_lower_core_lib_witn
 assert glow_core_lib.ok else "Glow lower-core-lib witness failed"
 say "GREEN: Glow lower-core-lib witness passed."
 
+say "witness suite: Glow face→`|%` compose (STOA18)…"
+let glow_compose_core = run ["rishi/bin/rishi" "run" "tools/glow_lower_compose_core_witness.rish"]
+assert glow_compose_core.ok else "Glow lower-compose-core witness failed"
+say "GREEN: Glow lower-compose-core witness passed."
+
 say "witness suite: glow_run desk — all generator hops…"
+
 let glow_desk = run ["rishi/bin/rishi" "run" "tools/glow_run_desk_witness.rish"]
 assert glow_desk.ok else "Glow run desk witness failed"
 say "GREEN: glow_run desk witness passed."
