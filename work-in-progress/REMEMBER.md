@@ -2,22 +2,22 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Rule: [`.cursor/rules/remember.mdc`](../.cursor/rules/remember.mdc) · [`.claude/rules/remember.md`](../.claude/rules/remember.md).*
 
-**Last refreshed:** `20260719.190825` (Eastern) · voice Quin  
+**Last refreshed:** `20260719.191719` (Eastern) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5** · HOLD0–HOLD1 · HOLD-W  
 **Language nib:** **STOA0–74** GREEN · STOA75 open  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W · STOA0–74  
-**Git nib:** `6c36806299` STOA74 thin +$ / $: mold  
+**Git nib:** *(pin after seat)* STOA73 Pixel product-root eyes  
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`
 
 ---
 
 ## Now (language)
 
-**STOA74** thin `+$` / `$:` one-field `@u32` mold GREEN `20260719.190825` — desk `mold-amount` → `AmountMold`; host install A stayed jail-blocked so lean B molds landed. Next door: **STOA75** check-in.
+**STOA73** Pixel install eyes GREEN `20260719.191719` — `glow_product_root.txt` = **5**; Sala B0 hex still present. Language nib still **STOA74** molds; next door: **STOA75** check-in (multi-field `$:` recommended).
 
-Smoke: `rishi/bin/rishi run tools/glow_lower_mold_witness.rish`
+Smoke: `rishi/bin/rishi run tools/stoa73_product_root_install_onpath_host.rish`
 
-Pitfalls: one field `@u32` only · `$%` / multi-field / named-cast resolve stay later. Hold: host install eyes · `$%` · Sala B0 rewrite · token stream.
+Pitfalls: need outer-terminal adb · product file is ASCII **5**. Hold: `$%` · multi-field · named-cast · Sala B0 rewrite.
 
 ---
 
@@ -31,7 +31,7 @@ Pitfalls: one field `@u32` only · `$%` / multi-field / named-cast resolve stay 
 | **JABS** | Sala broadcast live-session fold | JABS0–2 GREEN · JABS3 check-in |
 | **LULU** | Hearth · short home · Wired Glass | **LULU0–5 closed** |
 | **SETU** | USB hearth carry Glass↔Desk | **SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W GREEN** · live “sent” eyes check-in |
-| **STOA** | Glow language SLC · nest · composition | **STOA0–74 GREEN** · thin +$ / $: mold · STOA75 next |
+| **STOA** | Glow language SLC · nest · composition | **STOA0–74 GREEN** · Pixel product-root eyes · STOA75 next |
 
 Canon: [`../docs/HAWM.md`](../docs/HAWM.md) · [`../docs/TUBE.md`](../docs/TUBE.md) · [`../docs/ZETA.md`](../docs/ZETA.md) · [`../docs/JABS.md`](../docs/JABS.md) · [`../docs/LULU.md`](../docs/LULU.md) · [`../docs/SETU.md`](../docs/SETU.md) · [`../docs/STOA.md`](../docs/STOA.md)
 
@@ -70,8 +70,7 @@ Hold row 1 → Settings: presets · `home ·` · `wire ·` · `cell ·` — all 
 
 | Door | Kind |
 |------|------|
-| **STOA73** host install product-root eyes | **check-in** (outer terminal) |
-| **STOA75** next language ($% · named-cast · …) | **check-in** |
+| **STOA75** next language (multi-field $: · $% · …) | **check-in** |
 | Live SETU6.5 **sent** on usb0/ncm | **check-in** (needs gadget/QEMU) |
 | Amber/Amphora Glass↔Desk fuse | **declined** — compose later (`133455`) |
 | JABS3 · TAME Lap 3 | **check-in** |

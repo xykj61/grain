@@ -77,7 +77,7 @@ From the sameness rune brief. These are the heads an Acme reader should treat as
 | **Nest / surface** | richer multi-line nest values · general token stream · deeper product desks |
 | **Auras** | `@ux` · `@p` · `@da` · `@t` (unsigned `@uN` only today) |
 
-**Glass-critical gap in one line:** Skate paint + Dexter drain + JABS chat still need richer arm bodies and fuller molds. **STOA71–74** GREEN: glass import path through product-root write, plus thin `+$` / `$:` `@u32` mold. Host install eyes · `$%` · named-cast resolve · Sala B0-in-Glow stay **STOA75+**.
+**Glass-critical gap in one line:** Skate paint + Dexter drain + JABS chat still need richer arm bodies and fuller molds. **STOA71–74** GREEN: glass import path through product-root write, plus thin `+$` / `$:` `@u32` mold. Pixel product-root install eyes GREEN. `$%` · multi-field · named-cast resolve · Sala B0-in-Glow stay **STOA75+**.
 
 ---
 
