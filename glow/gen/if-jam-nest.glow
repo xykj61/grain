@@ -1,0 +1,2 @@
+::  Conditional with nest jam then-arm — (jam (mix …) …) payload.
+?:  (gth tick 32)  (jam (mix from amount) amount)  0
