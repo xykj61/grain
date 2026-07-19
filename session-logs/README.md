@@ -8,6 +8,8 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260719.195255` — [STOA81 check-in after multi-face $%](20260719-195255_stoa81-check-in.bron) — lean A tagged named-cast
+- `20260719.195240` — [STOA80 multi-face $% payload send](20260719-195240_stoa80-multi-face-percent-send.bron) — pin b4ae1128cb; then STOA81 check-in
 - `20260719.195216` — [STOA80 multi-face $% payload GREEN](20260719-195216_stoa80-multi-face-percent-green.bron) — XferMold from+amount; await send
 - `20260719.194745` — [STOA80 check-in after cross-desk cast](20260719-194745_stoa80-check-in.bron) — lean A multi-face $% payload
 - `20260719.194730` — [STOA79 cross-desk named-cast send](20260719-194730_stoa79-cross-desk-cast-send.bron) — pin 1ef344cc08; then STOA80 check-in
