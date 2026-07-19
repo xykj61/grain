@@ -2,8 +2,7 @@
 
 *Waymark for Glow the language: rune heads that lower, nest forms that deepen, composition that grows toward Glow-authored modules. Compresses the working pin; never replaces it.*
 
-**Status:** Checkable — STOA0–STOA57 GREEN · 2026-07-19 (`/+` cue-of-jam)  
-**Depth:** guide · **Ceiling:** ≤80 lines  
+**Status:** Checkable — STOA0–STOA58 GREEN · 2026-07-19 (`/+` nest-left cue-of-jam) · guide · ≤80  
 **Compresses:** [`../glow/README.md`](../glow/README.md) · first-code [`../expanding-prompts/20260717-213242_glow-first-code-beside-glass-and-open-runes.md`](../expanding-prompts/20260717-213242_glow-first-code-beside-glass-and-open-runes.md) · sameness [`../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md`](../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md) · seat [`../active-designing/20260718-202730_stoa-glow-language-waymark.md`](../active-designing/20260718-202730_stoa-glow-language-waymark.md)
 ## Thesis — name the language lap
 Product glass and wire stay Rye-hosted under their own waymarks. **STOA** names the language path so eight GREEN heads count as an SLC Lap, and every nest or composition rung has a home beside them — not a rewrite of SETU or ZETA.
@@ -69,11 +68,12 @@ Product glass and wire stay Rye-hosted under their own waymarks. **STOA** names 
 | **STOA55** | Face→nest-right cue-of-jam | `glow_lower_compose_core` · desk | **GREEN** `20260719.165404` |
 | **STOA56** | Face→nest-both cue-of-jam | `glow_lower_compose_core` · desk | **GREEN** `20260719.165724` |
 | **STOA57** | `/+` cue-of-jam library | `glow_lower_compose_lib` · desk | **GREEN** `20260719.170057` |
-| **STOA58** | Next language / product | horizon — check-in | horizon |
+| **STOA58** | `/+` nest-left cue-of-jam | `glow_lower_compose_lib` · desk | **GREEN** `20260719.170718` |
+| **STOA59** | Next language / product | horizon — check-in | horizon |
 ## Hands-on
 ```bash
 cd ~/urbit
-rishi/bin/rishi run tools/glow_run.rish glow/gen/use-lib-cue-jam.glow
+rishi/bin/rishi run tools/glow_run.rish glow/gen/use-lib-cue-jam-nest.glow
 rishi/bin/rishi run tools/glow_run_desk_witness.rish
 ```
 Sibling: **ZETA** · **LULU** · **SETU** · **TUBE**. Door: [`../manual/README.md`](../manual/README.md).
