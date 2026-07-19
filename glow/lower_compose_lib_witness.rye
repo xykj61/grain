@@ -7,7 +7,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const lower = @import("lower_compose_lib.rye");
 
-const witness_version = "20260719.175024";
+const witness_version = "20260719.180837";
 
 const use_src =
     \\::  Import Glow library then call open arm (STOA26).
@@ -165,6 +165,21 @@ const lib_pay_cue_both_src =
     \\|%
     \\=/  amount  5
     \\++  unpack  (cue (jam (mix amount amount) (mix amount amount)))
+    \\--
+;
+
+const use_next_root_src =
+    \\::  Import next-root product library then call next-root (STOA69).
+    \\/+  lib-next-root-cue-jam
+    \\=/  root  5
+    \\%-  next-root  root
+;
+
+const lib_next_root_src =
+    \\::  Library next-root product arm (STOA69).
+    \\|%
+    \\=/  root  5
+    \\++  next-root  (cue (jam root root))
     \\--
 ;
 
@@ -407,6 +422,26 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, buf[0..n_pay_cue_both_u], "amount == 5 and core.unpack() == 1") != null);
     print("compose-lib: payload nest-both cue-jam unwelcome expects mismatch -- GREEN\n", .{});
 
+    const next_root_spec = try lower.parse_compose_lib(use_next_root_src);
+    assert(std.mem.eql(u8, lower.stem_slice(&next_root_spec), "lib-next-root-cue-jam"));
+    assert(std.mem.eql(u8, lower.gate_slice(&next_root_spec), "next-root"));
+    assert(std.mem.eql(u8, lower.face_slice(&next_root_spec), "root"));
+    const next_root_bound = try lower.bind_library(&next_root_spec, lib_next_root_src);
+    assert(next_root_bound.expect == 5);
+    assert(next_root_bound.has_payload);
+    print("compose-lib: next-root product unpack expects low half -- GREEN\n", .{});
+
+    const n_next_root = try lower.lower_source_welcome(use_next_root_src, lib_next_root_src, &buf);
+    const rye_next_root = buf[0..n_next_root];
+    assert(std.mem.indexOf(u8, rye_next_root, "import(\"lib_next_root_cue_jam.rye\")") != null);
+    assert(std.mem.indexOf(u8, rye_next_root, "const core = lib.Core{}") != null);
+    assert(std.mem.indexOf(u8, rye_next_root, "root == 5 and core.next_root() == 5") != null);
+    print("compose-lib: next-root product welcome constructs Core and calls next_root -- GREEN\n", .{});
+
+    const n_next_root_u = try lower.lower_source_unwelcome(use_next_root_src, lib_next_root_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n_next_root_u], "root == 5 and core.next_root() == 6") != null);
+    print("compose-lib: next-root product unwelcome expects mismatch -- GREEN\n", .{});
+
     try cwd.createDirPath(io, "glow/.cache");
     const n3 = try lower.lower_source_welcome(use_src, lib_src, &buf);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/use_lib_open_welcome.rye", .data = buf[0..n3] });
@@ -430,7 +465,9 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/use_lib_payload_cue_jam_right_welcome.rye", .data = buf[0..n12] });
     const n13 = try lower.lower_source_welcome(use_pay_cue_both_src, lib_pay_cue_both_src, &buf);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/use_lib_payload_cue_jam_both_welcome.rye", .data = buf[0..n13] });
-    print("compose-lib: wrote payload nest-both cue-jam consumer cache -- GREEN\n", .{});
+    const n14 = try lower.lower_source_welcome(use_next_root_src, lib_next_root_src, &buf);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/use_lib_next_root_cue_jam_welcome.rye", .data = buf[0..n14] });
+    print("compose-lib: wrote next-root product consumer cache -- GREEN\n", .{});
 
     const gen_use = try cwd.readFileAlloc(io, "glow/gen/use-lib-open.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_use, "/+  lib-core-open") != null);
@@ -481,10 +518,16 @@ fn run_selftest(init: std.process.Init) !u8 {
     const gen_lib_pay_cue_both = try cwd.readFileAlloc(io, "glow/gen/lib-core-payload-cue-jam-both-nest.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_lib_pay_cue_both, "=/  amount  5") != null);
     assert(std.mem.indexOf(u8, gen_lib_pay_cue_both, "(cue (jam (mix amount amount) (mix amount amount)))") != null);
-    print("compose-lib: desks payload nest-both cue-jam carry import -- GREEN\n", .{});
+    const gen_use_next_root = try cwd.readFileAlloc(io, "glow/gen/use-lib-next-root-cue-jam.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_use_next_root, "/+  lib-next-root-cue-jam") != null);
+    assert(std.mem.indexOf(u8, gen_use_next_root, "%-  next-root  root") != null);
+    const gen_lib_next_root = try cwd.readFileAlloc(io, "glow/gen/lib-next-root-cue-jam.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_lib_next_root, "=/  root  5") != null);
+    assert(std.mem.indexOf(u8, gen_lib_next_root, "++  next-root  (cue (jam root root))") != null);
+    print("compose-lib: desks next-root product carry import -- GREEN\n", .{});
 
     print("compose-lib: version {s}\n", .{witness_version});
-    print("GREEN: `/+` Glow library compose lowers payload nest-both cue-of-jam (STOA57–60/65–68).\n", .{});
+    print("GREEN: `/+` Glow library compose lowers next-root product desk (STOA57–60/65–69).\n", .{});
     return 0;
 }
 

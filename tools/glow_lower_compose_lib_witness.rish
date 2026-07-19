@@ -4,7 +4,7 @@
 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "glow/bin/lower_compose_lib_witness"
-let welcome_bin = "glow/bin/use_lib_payload_cue_jam_both_welcome"
+let welcome_bin = "glow/bin/use_lib_next_root_cue_jam_welcome"
 
 let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/lower_compose_lib_witness.rye -femit-bin=${bin}"]
 assert build.ok else "lower_compose_lib_witness build failed"
@@ -12,21 +12,21 @@ assert build.ok else "lower_compose_lib_witness build failed"
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
 assert selftest.ok else "lower_compose_lib_witness exited non-zero"
 assert selftest.out contains "GREEN" else "lower_compose_lib_witness not GREEN"
-assert selftest.out contains "payload nest-right cue-jam welcome" else "lower_compose_lib_witness missing payload nest-right cue-jam claim"
 assert selftest.out contains "payload nest-both cue-jam welcome" else "lower_compose_lib_witness missing payload nest-both cue-jam claim"
-assert selftest.out contains "desks payload nest-both cue-jam" else "lower_compose_lib_witness missing desk claim"
+assert selftest.out contains "next-root product welcome" else "lower_compose_lib_witness missing next-root product claim"
+assert selftest.out contains "desks next-root product" else "lower_compose_lib_witness missing desk claim"
 assert selftest.out contains "sample mismatch" else "lower_compose_lib_witness missing sample mismatch"
 assert selftest.out contains "UnknownArm" else "lower_compose_lib_witness missing UnknownArm"
 
 # glow_run seats the library rye beside the consumer cache the selftest wrote.
-let desk = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/use-lib-payload-cue-jam-both-nest.glow"]
-assert desk.ok else "glow_run use-lib-payload-cue-jam-both-nest.glow failed"
-assert desk.out contains "GREEN" else "glow_run use-lib-payload-cue-jam-both-nest.glow not GREEN"
+let desk = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/use-lib-next-root-cue-jam.glow"]
+assert desk.ok else "glow_run use-lib-next-root-cue-jam.glow failed"
+assert desk.out contains "GREEN" else "glow_run use-lib-next-root-cue-jam.glow not GREEN"
 
-let build_welcome = run ["sh" "-c" "cd glow/.cache && env RYE_ZIG=../../${zig} ../../rye/bin/rye build use_lib_payload_cue_jam_both_welcome.rye -femit-bin=../bin/use_lib_payload_cue_jam_both_welcome"]
-assert build_welcome.ok else "use-lib-payload-cue-jam-both-nest welcome .rye build failed"
+let build_welcome = run ["sh" "-c" "cd glow/.cache && env RYE_ZIG=../../${zig} ../../rye/bin/rye build use_lib_next_root_cue_jam_welcome.rye -femit-bin=../bin/use_lib_next_root_cue_jam_welcome"]
+assert build_welcome.ok else "use-lib-next-root-cue-jam welcome .rye build failed"
 let run_welcome = run ["sh" "-c" "${welcome_bin}; echo EXIT:$?"]
-assert run_welcome.ok else "use-lib-payload-cue-jam-both-nest welcome binary failed to launch"
-assert run_welcome.out contains "EXIT:0" else "use-lib-payload-cue-jam-both-nest welcome binary did not exit 0"
+assert run_welcome.ok else "use-lib-next-root-cue-jam welcome binary failed to launch"
+assert run_welcome.out contains "EXIT:0" else "use-lib-next-root-cue-jam welcome binary did not exit 0"
 
-say "GREEN: Glow `/+` library compose hop — payload nest-both cue-of-jam; welcome 0; STOA57–60/65–68."
+say "GREEN: Glow `/+` library compose hop — next-root product desk; welcome 0; STOA57–60/65–69."

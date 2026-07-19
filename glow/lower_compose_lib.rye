@@ -57,6 +57,12 @@
 //!   =/  amount  5
 //!   %-  unpack  amount
 //!
+//! STOA69 — next-root product desk (payload + `/+` + cue-of-jam):
+//!   /+  lib-next-root-cue-jam
+//!   =/  root  5
+//!   %-  next-root  root
+//! Face `root` matches library payload; call is `core.next_root()`.
+//!
 //! The import stem names `glow/gen/<stem>.glow`. glow_run lowers that desk
 //! as a library (no main) into `glow/.cache/`, then this lower emits a
 //! consumer that imports it and calls the arm.
