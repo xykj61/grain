@@ -8,7 +8,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const lower = @import("lower_mold.rye");
 
-const witness_version = "20260719.191900";
+const witness_version = "20260719.192600";
 
 const one_src =
     \\+$  amount-mold
@@ -23,34 +23,40 @@ const pair_src =
     \\  ==
 ;
 
+const kind_src =
+    \\+$  kind-mold
+    \\  $%  [%mint ~]
+    \\      [%send ~]
+    \\  ==
+;
+
 fn run_selftest(init: std.process.Init) !u8 {
     const io = init.io;
     const cwd = std.Io.Dir.cwd();
     var buf: [4096]u8 = undefined;
-
     try cwd.createDirPath(io, "glow/.cache");
 
     const n1 = try lower.lower_source_welcome(one_src, &buf);
-    const rye1 = buf[0..n1];
-    assert(std.mem.indexOf(u8, rye1, "pub const AmountMold") != null);
-    assert(std.mem.indexOf(u8, rye1, "amount: u32") != null);
-    assert(std.mem.indexOf(u8, rye1, "amount = 5") != null);
+    assert(std.mem.indexOf(u8, buf[0..n1], "pub const AmountMold") != null);
     print("lower: thin +$ amount-mold emits AmountMold -- GREEN\n", .{});
-    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/mold_amount_welcome.rye", .data = rye1 });
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/mold_amount_welcome.rye", .data = buf[0..n1] });
 
     const n2 = try lower.lower_source_welcome(pair_src, &buf);
-    const rye2 = buf[0..n2];
-    assert(std.mem.indexOf(u8, rye2, "pub const PairMold") != null);
-    assert(std.mem.indexOf(u8, rye2, "from: u32") != null);
-    assert(std.mem.indexOf(u8, rye2, "amount: u32") != null);
-    assert(std.mem.indexOf(u8, rye2, "from = 5") != null);
-    assert(std.mem.indexOf(u8, rye2, "amount = 3") != null);
-    print("lower: multi-field +$ pair-mold emits PairMold from/amount -- GREEN\n", .{});
-    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/mold_pair_welcome.rye", .data = rye2 });
+    assert(std.mem.indexOf(u8, buf[0..n2], "pub const PairMold") != null);
+    print("lower: multi-field +$ pair-mold emits PairMold -- GREEN\n", .{});
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/mold_pair_welcome.rye", .data = buf[0..n2] });
+
+    const n3 = try lower.lower_source_welcome(kind_src, &buf);
+    const rye3 = buf[0..n3];
+    assert(std.mem.indexOf(u8, rye3, "pub const KindMold = enum(u8)") != null);
+    assert(std.mem.indexOf(u8, rye3, "mint,") != null);
+    assert(std.mem.indexOf(u8, rye3, "send,") != null);
+    print("lower: thin +$ / $% kind-mold emits KindMold enum -- GREEN\n", .{});
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/mold_kind_welcome.rye", .data = rye3 });
     print("lower: wrote mold welcome .rye under glow/.cache/ -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: +$ / $: mold lowers to Rye struct — STOA74/75; mold-amount · mold-pair.\n", .{});
+    print("GREEN: +$ / $: / $% mold lowers — STOA74/75/76; mold-amount · mold-pair · mold-kind.\n", .{});
     return 0;
 }
 

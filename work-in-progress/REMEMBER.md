@@ -2,22 +2,22 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Rule: [`.cursor/rules/remember.mdc`](../.cursor/rules/remember.mdc) · [`.claude/rules/remember.md`](../.claude/rules/remember.md).*
 
-**Last refreshed:** `20260719.192241` (Eastern) · voice Quin  
+**Last refreshed:** `20260719.192936` (Eastern) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5** · HOLD0–HOLD1 · HOLD-W  
-**Language nib:** **STOA0–75** GREEN · STOA76 open  
-**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W · STOA0–75  
-**Git nib:** `fa537d1c10` STOA75 multi-field +$ / $: mold  
+**Language nib:** **STOA0–76** GREEN · STOA77 open  
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W · STOA0–76  
+**Git nib:** *(pin after seat)* STOA76 thin +$ / $% tagged mold  
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`
 
 ---
 
 ## Now (language)
 
-**STOA75** multi-field `+$` / `$:` `@u32` mold GREEN `20260719.192241` — desk `mold-pair` → `PairMold` (`from` · `amount`); one-field path kept. Next door: **STOA76** check-in.
+**STOA76** thin `+$` / `$%` tagged-union mold GREEN `20260719.192936` — desk `mold-kind` → `KindMold` enum (`mint` · `send`); unit payload only. Next door: **STOA77** check-in.
 
 Smoke: `rishi/bin/rishi run tools/glow_lower_mold_witness.rish`
 
-Pitfalls: `@u32` fields only · max three fields this lap. Hold: `$%` · named-cast resolve · Sala B0 rewrite.
+Pitfalls: unit `[%tag ~]` only · two tags minimum. Hold: payload arms · named-cast resolve · Sala B0 rewrite.
 
 ---
 
@@ -31,7 +31,7 @@ Pitfalls: `@u32` fields only · max three fields this lap. Hold: `$%` · named-c
 | **JABS** | Sala broadcast live-session fold | JABS0–2 GREEN · JABS3 check-in |
 | **LULU** | Hearth · short home · Wired Glass | **LULU0–5 closed** |
 | **SETU** | USB hearth carry Glass↔Desk | **SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W GREEN** · live “sent” eyes check-in |
-| **STOA** | Glow language SLC · nest · composition | **STOA0–75 GREEN** · multi-field mold · STOA76 next |
+| **STOA** | Glow language SLC · nest · composition | **STOA0–76 GREEN** · $% tagged mold · STOA77 next |
 
 Canon: [`../docs/HAWM.md`](../docs/HAWM.md) · [`../docs/TUBE.md`](../docs/TUBE.md) · [`../docs/ZETA.md`](../docs/ZETA.md) · [`../docs/JABS.md`](../docs/JABS.md) · [`../docs/LULU.md`](../docs/LULU.md) · [`../docs/SETU.md`](../docs/SETU.md) · [`../docs/STOA.md`](../docs/STOA.md)
 
@@ -70,7 +70,7 @@ Hold row 1 → Settings: presets · `home ·` · `wire ·` · `cell ·` — all 
 
 | Door | Kind |
 |------|------|
-| **STOA76** next language ($% · named-cast · …) | **check-in** |
+| **STOA77** next language (named-cast · payload $% · …) | **check-in** |
 | Live SETU6.5 **sent** on usb0/ncm | **check-in** (needs gadget/QEMU) |
 | Amber/Amphora Glass↔Desk fuse | **declined** — compose later (`133455`) |
 | JABS3 · TAME Lap 3 | **check-in** |

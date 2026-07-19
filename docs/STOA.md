@@ -1,4 +1,4 @@
-# STOA — Glow SLC · nest · product · ≤80 · STOA0–75 GREEN · 2026-07-19 (multi-field mold) · draw → **STOA**
+# STOA — Glow SLC · nest · product · ≤80 · STOA0–76 GREEN · 2026-07-19 ($% mold) · draw → **STOA**
 | Rung | Claim | Witness / gate | State |
 |------|-------|----------------|-------|
 | **STOA0** | Eight rune heads + desk hop · `(lent)` · `(mix)` | `glow_run_desk_witness` · `glow_expr_witness` | **GREEN** (claimed `20260718.202730`) |
@@ -76,5 +76,6 @@
 | **STOA72** | NativeActivity APK Glow import wire | `stoa72_glow_apk_import_witness` · pack | **GREEN** `20260719.182648` |
 | **STOA73** | product-root write + Pixel install (expect 5) | write · `stoa73_…_install_onpath_host` | **GREEN** write `184836` · eyes `191719` |
 | **STOA74–75** | `+$` / `$:` `@u32` mold (1–3 fields) | `glow_rune_mold` · `glow_lower_mold` · desk | **GREEN** `190825` · `192241` |
-| **STOA76** | Next language / product | horizon — check-in | horizon |
+| **STOA76** | thin `+$` / `$%` tagged-union mold | `glow_rune_mold` · `glow_lower_mold` · desk | **GREEN** `20260719.192936` |
+| **STOA77** | Next language / product | horizon — check-in | horizon |
 Smoke: `rishi/bin/rishi run tools/glow_lower_mold_witness.rish` · Sibling: **ZETA** · **LULU** · **SETU** · **TUBE**.
