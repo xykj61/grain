@@ -1,0 +1,2 @@
+::  Conditional with cue-of-jam then-arm — (cue (jam …)).
+?:  (gth tick 32)  (cue (jam from amount))  0

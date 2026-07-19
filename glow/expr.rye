@@ -5,7 +5,8 @@
 //! `(jam (mix <face> <face>) <face>)` — one-deep nest left under jam ·
 //! `(jam <face> (mix <face> <face>))` — one-deep nest right under jam ·
 //! `(jam (mix …) (mix …))` — one-deep nest both under jam ·
-//! `(cue <face>)` — thin unpack of a jam cell-pack (low 16 bits).
+//! `(cue <face>)` — thin unpack of a jam cell-pack (low 16 bits) ·
+//! `(cue (jam <face> <face>))` — one-deep cue-of-jam round-trip.
 //! Other parenthesized forms refuse. Not a full token stream yet.
 
 const std = @import("std");
@@ -39,6 +40,9 @@ pub const Kind = enum { face, literal, cast_literal, lent_of, mix_of, jam_of, cu
 /// One-deep nest arg under `(jam …)` — face, or `(mix a b)` as left.
 pub const ArgKind = enum { face, mix_of };
 
+/// Subject under `(cue …)` — face, or flat `(jam a b)`.
+pub const CueArg = enum { face, jam_of };
+
 pub const Expr = struct {
     kind: Kind,
     face: [max_name_len]u8 = [_]u8{0} ** max_name_len,
@@ -54,6 +58,7 @@ pub const Expr = struct {
     face4_len: usize = 0,
     left_arg: ArgKind = .face,
     right_arg: ArgKind = .face,
+    cue_arg: CueArg = .face,
     lit: u32 = 0,
     mold: [max_name_len]u8 = [_]u8{0} ** max_name_len,
     mold_len: usize = 0,
@@ -120,9 +125,19 @@ pub fn jam_expect(e: *const Expr) u32 {
     return jam_demo_result();
 }
 
-/// Thin `(cue cell)` — low 16 bits of a jam cell-pack (the right atom).
+/// Thin `(cue cell)` / `(cue (jam …))` — low 16 bits of a jam cell-pack.
 pub fn cue_demo_result() u32 {
     return jam_demo_right;
+}
+
+pub fn cue_is_jam(e: *const Expr) bool {
+    return e.kind == .cue_of and e.cue_arg == .jam_of;
+}
+
+/// Demo expect for cue (face cell or flat jam subject).
+pub fn cue_expect(e: *const Expr) u32 {
+    _ = e;
+    return cue_demo_result();
 }
 
 pub fn jam_has_nest_arg(e: *const Expr) bool {
@@ -282,7 +297,29 @@ fn parse_paren(rest: []const u8) ParseError!Prefix {
 
     const cue_prefix = "(cue ";
     if (rest.len > cue_prefix.len and std.mem.eql(u8, rest[0..cue_prefix.len], cue_prefix)) {
-        const after = try parse_ident(rest[cue_prefix.len..]);
+        const after_cue = std.mem.trimStart(u8, rest[cue_prefix.len..], " \t");
+        const cue_jam_prefix = "(jam ";
+        if (after_cue.len > cue_jam_prefix.len and std.mem.eql(u8, after_cue[0..cue_jam_prefix.len], cue_jam_prefix)) {
+            // One-deep flat jam only — nest mix under cue-jam stays later.
+            const left = try parse_ident(after_cue[cue_jam_prefix.len..]);
+            const mid = std.mem.trimStart(u8, left.rest, " \t");
+            if (mid.len == left.rest.len) return error.MalformedExpr;
+            const right = try parse_ident(mid);
+            if (right.rest.len == 0 or right.rest[0] != ')') return error.MalformedExpr;
+            const after_jam = std.mem.trimStart(u8, right.rest[1..], " \t");
+            if (after_jam.len == 0 or after_jam[0] != ')') return error.MalformedExpr;
+            var e: Expr = .{
+                .kind = .cue_of,
+                .cue_arg = .jam_of,
+                .face_len = left.ident.len,
+                .face2_len = right.ident.len,
+            };
+            @memcpy(e.face[0..left.ident.len], left.ident);
+            @memcpy(e.face2[0..right.ident.len], right.ident);
+            return .{ .expr = e, .rest = std.mem.trimStart(u8, after_jam[1..], " \t") };
+        }
+        if (after_cue.len > 0 and after_cue[0] == '(') return error.ExprNotYetLowered;
+        const after = try parse_ident(after_cue);
         if (after.rest.len == 0 or after.rest[0] != ')') return error.MalformedExpr;
         var e: Expr = .{ .kind = .cue_of, .face_len = after.ident.len };
         @memcpy(e.face[0..after.ident.len], after.ident);

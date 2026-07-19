@@ -22,6 +22,7 @@ assert selftest.out contains "NotACore" else "rune_core_witness missing NotACore
 assert selftest.out contains "nest jam-of-mix arm parses" else "rune_core_witness missing nest jam-of-mix claim"
 assert selftest.out contains "nest jam-right-mix arm parses" else "rune_core_witness missing nest jam-right-mix claim"
 assert selftest.out contains "nest jam-both-mix arm parses" else "rune_core_witness missing nest jam-both-mix claim"
+assert selftest.out contains "cue-of-jam arm parses" else "rune_core_witness missing cue-of-jam claim"
 
 say "GREEN: Glow `|%` thin core — arms and bare or typed @u32 payload; STOA14/15/17/20/21/35/36/37."
 

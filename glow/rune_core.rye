@@ -125,7 +125,13 @@ fn check_body_face(spec: *const CoreSpec, face: []const u8) ParseError!void {
 fn check_open_body(spec: *const CoreSpec, body: *const expr.Expr) ParseError!void {
     switch (body.kind) {
         .literal, .cast_literal => {},
-        .face, .lent_of, .cue_of => try check_body_face(spec, expr.face_slice(body)),
+        .face, .lent_of => try check_body_face(spec, expr.face_slice(body)),
+        .cue_of => {
+            try check_body_face(spec, expr.face_slice(body));
+            if (expr.cue_is_jam(body)) {
+                try check_body_face(spec, expr.face2_slice(body));
+            }
+        },
         .mix_of => {
             try check_body_face(spec, expr.face_slice(body));
             try check_body_face(spec, expr.face2_slice(body));
