@@ -7,7 +7,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const lower = @import("lower_compose_core_payload.rye");
 
-const witness_version = "20260719.172625";
+const witness_version = "20260719.173215";
 
 const bare_src =
     \\::  Outer face then payload core (STOA24).
@@ -60,6 +60,15 @@ const cue_jam_right_src =
     \\|%
     \\=/  amount  5
     \\++  unpack  (cue (jam amount (mix amount amount)))
+    \\--
+;
+
+const cue_jam_both_src =
+    \\::  Outer face then payload nest-both cue-of-jam arm (STOA64).
+    \\=/  note  7
+    \\|%
+    \\=/  amount  5
+    \\++  unpack  (cue (jam (mix amount amount) (mix amount amount)))
     \\--
 ;
 
@@ -149,6 +158,16 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, buf[0..n_cue_right_u], "note == 8 and core.unpack() == 1") != null);
     print("compose-core-payload: nest-right cue-of-jam unpack unwelcome -- GREEN\n", .{});
 
+    const n_cue_both = try lower.lower_source_welcome(cue_jam_both_src, &buf);
+    const rye_cue_both = buf[0..n_cue_both];
+    assert(std.mem.indexOf(u8, rye_cue_both, "return (((self.amount ^ self.amount) << 16) | (self.amount ^ self.amount)) & 0xffff;") != null);
+    assert(std.mem.indexOf(u8, rye_cue_both, "note == 7 and core.unpack() == 0") != null);
+    print("compose-core-payload: nest-both cue-of-jam unpack welcome -- GREEN\n", .{});
+
+    const n_cue_both_u = try lower.lower_source_unwelcome(cue_jam_both_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n_cue_both_u], "note == 8 and core.unpack() == 1") != null);
+    print("compose-core-payload: nest-both cue-of-jam unpack unwelcome -- GREEN\n", .{});
+
     try cwd.createDirPath(io, "glow/.cache");
     const n4 = try lower.lower_source_welcome(bare_src, &buf);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/compose_core_payload_welcome.rye", .data = buf[0..n4] });
@@ -162,7 +181,9 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/compose_core_payload_cue_jam_nest_welcome.rye", .data = buf[0..n8] });
     const n9 = try lower.lower_source_welcome(cue_jam_right_src, &buf);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/compose_core_payload_cue_jam_right_welcome.rye", .data = buf[0..n9] });
-    print("compose-core-payload: wrote nest-left and nest-right cue-jam under glow/.cache/ -- GREEN\n", .{});
+    const n10 = try lower.lower_source_welcome(cue_jam_both_src, &buf);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/compose_core_payload_cue_jam_both_welcome.rye", .data = buf[0..n10] });
+    print("compose-core-payload: wrote nest cue-jam trio under glow/.cache/ -- GREEN\n", .{});
 
     const gen = try cwd.readFileAlloc(io, "glow/gen/compose-core-payload.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen, "=/  note  7") != null);
@@ -175,10 +196,12 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, gen_cue_nest, "(cue (jam (mix amount amount) amount))") != null);
     const gen_cue_right = try cwd.readFileAlloc(io, "glow/gen/compose-core-payload-cue-jam-right-nest.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_cue_right, "(cue (jam amount (mix amount amount)))") != null);
-    print("compose-core-payload: desks nest-left and nest-right cue-jam carry face→payload -- GREEN\n", .{});
+    const gen_cue_both = try cwd.readFileAlloc(io, "glow/gen/compose-core-payload-cue-jam-both-nest.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_cue_both, "(cue (jam (mix amount amount) (mix amount amount)))") != null);
+    print("compose-core-payload: desks nest cue-jam trio carry face→payload -- GREEN\n", .{});
 
     print("compose-core-payload: version {s}\n", .{witness_version});
-    print("GREEN: face→payload `|%` compose lowers nest-left and nest-right cue-of-jam (STOA61/62/63).\n", .{});
+    print("GREEN: face→payload `|%` compose lowers nest cue-of-jam trio (STOA61–64).\n", .{});
     return 0;
 }
 
