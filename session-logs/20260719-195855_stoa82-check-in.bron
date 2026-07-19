@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260719.195855
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern time convention
+title STOA82 check-in after tagged named-cast
+prompt send and approve next rec
+think STOA81 tagged named-cast seated · next language check-in
+think A payload $% named-cast — ^- against xact-mold / xfer-mold
+think B Sala B0 rewrite in Glow — large product lap
+think C general token stream — language-wide widen
+obs A closes NamedCastPayloadNotYet after unit tagged cast GREEN · jail-reachable finishing edge
+git_nib 95c6ccfb90
+product_nib ZETA6
+suite_nib STOA0-81
+recommend check-in — STOA82 A payload $% named-cast · B Sala B0 rewrite in Glow · C general token stream
