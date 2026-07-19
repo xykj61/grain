@@ -1,0 +1,34 @@
+# glow_lower_compose_core_add_witness.rish — two faces → Core.add hop.
+#
+#   rishi/bin/rishi run tools/glow_lower_compose_core_add_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "glow/bin/lower_compose_core_add_witness"
+let welcome_rye = "glow/.cache/compose_core_add_welcome.rye"
+let welcome_bin = "glow/bin/compose_core_add_welcome"
+let unwelcome_rye = "glow/.cache/compose_core_add_unwelcome.rye"
+let unwelcome_bin = "glow/bin/compose_core_add_unwelcome"
+
+let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/lower_compose_core_add_witness.rye -femit-bin=${bin}"]
+assert build.ok else "lower_compose_core_add_witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "lower_compose_core_add_witness exited non-zero"
+assert selftest.out contains "GREEN" else "lower_compose_core_add_witness not GREEN"
+assert selftest.out contains "calls Core.add" else "lower_compose_core_add_witness missing welcome claim"
+assert selftest.out contains "two-face→add" else "lower_compose_core_add_witness missing desk claim"
+assert selftest.out contains "UnknownArm" else "lower_compose_core_add_witness missing UnknownArm"
+assert selftest.out contains "NotAComposeCoreAdd" else "lower_compose_core_add_witness missing NotAComposeCoreAdd"
+
+let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
+assert build_welcome.ok else "compose-core-add welcome .rye build failed"
+let run_welcome = run ["sh" "-c" "${welcome_bin}; echo EXIT:$?"]
+assert run_welcome.ok else "compose-core-add welcome binary failed to launch"
+assert run_welcome.out contains "EXIT:0" else "compose-core-add welcome binary did not exit 0"
+
+let build_unwelcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${unwelcome_rye} -femit-bin=${unwelcome_bin}"]
+assert build_unwelcome.ok else "compose-core-add unwelcome .rye build failed"
+let run_unwelcome = run ["sh" "-c" "${unwelcome_bin}; echo EXIT:$?"]
+assert run_unwelcome.out contains "EXIT:1" else "compose-core-add unwelcome binary did not exit 1"
+
+say "GREEN: Glow two-face→`|%` add hop — welcome 0 / unwelcome 1; STOA23."

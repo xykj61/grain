@@ -1,0 +1,83 @@
+//! glow/lower_compose_core_add_witness.rye — two faces → Core.add.
+//!
+//!   rye build glow/lower_compose_core_add_witness.rye -femit-bin=glow/bin/lower_compose_core_add_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const lower = @import("lower_compose_core_add.rye");
+
+const witness_version = "20260718.234122";
+
+const src =
+    \\::  Two faces then two-arg core arm (STOA23).
+    \\=/  from  5
+    \\=/  amount  3
+    \\|%
+    \\++  add
+    \\--
+;
+
+fn run_selftest(init: std.process.Init) !u8 {
+    const io = init.io;
+    const a = init.arena.allocator();
+    const cwd = std.Io.Dir.cwd();
+    var buf: [3072]u8 = undefined;
+
+    const n1 = try lower.lower_source_welcome(src, &buf);
+    const rye1 = buf[0..n1];
+    assert(std.mem.indexOf(u8, rye1, "const from: u32 = 5") != null);
+    assert(std.mem.indexOf(u8, rye1, "const amount: u32 = 3") != null);
+    assert(std.mem.indexOf(u8, rye1, "pub fn add(a: u32, b: u32) u32") != null);
+    assert(std.mem.indexOf(u8, rye1, "Core.add(from, amount) == 8") != null);
+    print("compose-core-add: welcome binds two faces and calls Core.add -- GREEN\n", .{});
+
+    const n2 = try lower.lower_source_unwelcome(src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n2], "Core.add(from, amount) == 9") != null);
+    print("compose-core-add: unwelcome expects mismatch -- GREEN\n", .{});
+
+    if (lower.lower_source_welcome(
+        \\=/  from  5
+        \\=/  amount  3
+        \\|%
+        \\++  double
+        \\--
+    , &buf)) |_| {
+        return error.UnknownArmNotCaught;
+    } else |err| {
+        if (err != lower.LowerError.UnknownArm) return err;
+    }
+    print("compose-core-add: non-add arm refused UnknownArm -- GREEN\n", .{});
+
+    if (lower.lower_source_welcome(
+        \\=/  amount  5
+        \\|%
+        \\++  double
+        \\--
+    , &buf)) |_| {
+        return error.NotAComposeCoreAddNotCaught;
+    } else |err| {
+        if (err != lower.LowerError.NotAComposeCoreAdd) return err;
+    }
+    print("compose-core-add: one-face compose refused NotAComposeCoreAdd -- GREEN\n", .{});
+
+    try cwd.createDirPath(io, "glow/.cache");
+    const n3 = try lower.lower_source_welcome(src, &buf);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/compose_core_add_welcome.rye", .data = buf[0..n3] });
+    const n4 = try lower.lower_source_unwelcome(src, &buf);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/compose_core_add_unwelcome.rye", .data = buf[0..n4] });
+    print("compose-core-add: wrote welcome and unwelcome under glow/.cache/ -- GREEN\n", .{});
+
+    const gen = try cwd.readFileAlloc(io, "glow/gen/compose-core-add.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen, "=/  from  5") != null);
+    assert(std.mem.indexOf(u8, gen, "++  add") != null);
+    print("compose-core-add: glow/gen/compose-core-add.glow carries two-face→add -- GREEN\n", .{});
+
+    print("compose-core-add: version {s}\n", .{witness_version});
+    print("GREEN: two faces→`|%` add compose lowers to ordinary Rye (STOA23).\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
+}

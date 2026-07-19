@@ -1,0 +1,14 @@
+format session-log-v1
+stamp 20260718.234311
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern time convention
+title STOA23 check-in before send
+prompt check in
+think Language nib STOA0-23 GREEN in tree; pier still at STOA22 6df26bc62c
+think Present send vs STOA24 forks and wait — no build this turn
+obs Lean stays ship two-face add before face-to-payload compose
+file session-logs/20260718-234122_stoa23-two-face-add-green.bron prior GREEN claim
+git_nib 6df26bc62c
+recommend check-in Keaton picks send and or STOA24 fork

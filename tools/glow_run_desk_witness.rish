@@ -214,7 +214,13 @@ assert composecore3.ok else "glow_run compose-core-three.glow failed"
 assert composecore3.out contains "GREEN" else "glow_run compose-core-three.glow not GREEN"
 assert composecore3.out contains "compose-core-three.glow" else "glow_run compose-core-three claim missing path"
 
+let composecoreadd = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/compose-core-add.glow"]
+assert composecoreadd.ok else "glow_run compose-core-add.glow failed"
+assert composecoreadd.out contains "GREEN" else "glow_run compose-core-add.glow not GREEN"
+assert composecoreadd.out contains "compose-core-add.glow" else "glow_run compose-core-add claim missing path"
+
 let core3 = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/core-three.glow"]
+
 
 assert core3.ok else "glow_run core-three.glow failed"
 assert core3.out contains "GREEN" else "glow_run core-three.glow not GREEN"
