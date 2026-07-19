@@ -2,22 +2,22 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Rule: [`.cursor/rules/remember.mdc`](../.cursor/rules/remember.mdc) · [`.claude/rules/remember.md`](../.claude/rules/remember.md).*
 
-**Last refreshed:** `20260719.175835` (Eastern) · voice Quin  
+**Last refreshed:** `20260719.181143` (Eastern) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5** · HOLD0–HOLD1 · HOLD-W  
-**Language nib:** **STOA0–68** GREEN · STOA69 check-in (lean A product desk)  
-**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W · STOA0–68  
-**Git nib:** `f0526b6b18` STOA68 `/+` payload nest-both cue-of-jam  
+**Language nib:** **STOA0–69** GREEN · STOA70 open  
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W · STOA0–69  
+**Git nib:** *(pin after seat)* STOA69 next-root product desk  
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`
 
 ---
 
 ## Now (language)
 
-**STOA68** closed the `/+` payload cue-jam nest trio. **STOA69** check-in `20260719.175835` — nest polarity ladders are finished; next need is product-shaped Glow, not another thin compose rung.
+**STOA69** next-root product desk GREEN `20260719.180837` — import `lib-next-root-cue-jam`, call `next-root` on payload `root` via `(cue (jam root root))`. Next door: **STOA70** check-in.
 
-Smoke: `rishi/bin/rishi run tools/glow_run.rish glow/gen/use-lib-payload-cue-jam-both-nest.glow`
+Smoke: `rishi/bin/rishi run tools/glow_run.rish glow/gen/use-lib-next-root-cue-jam.glow`
 
-Still needed (named, not yet GREEN): one richer product desk toward glass import · molds/auras/hints when a desk demands them · NativeActivity import seam · Glow TAME · general token stream later.
+Pitfalls: face/payload **5** · `next_root()` **5**. Hold: NativeActivity import · molds · Sala B0-in-Glow · token stream.
 
 ---
 
@@ -31,7 +31,7 @@ Still needed (named, not yet GREEN): one richer product desk toward glass import
 | **JABS** | Sala broadcast live-session fold | JABS0–2 GREEN · JABS3 check-in |
 | **LULU** | Hearth · short home · Wired Glass | **LULU0–5 closed** |
 | **SETU** | USB hearth carry Glass↔Desk | **SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W GREEN** · live “sent” eyes check-in |
-| **STOA** | Glow language SLC · nest · composition | **STOA0–68 GREEN** · nest trios closed · STOA69 product-desk check-in |
+| **STOA** | Glow language SLC · nest · composition | **STOA0–69 GREEN** · next-root product desk · STOA70 next |
 
 Canon: [`../docs/HAWM.md`](../docs/HAWM.md) · [`../docs/TUBE.md`](../docs/TUBE.md) · [`../docs/ZETA.md`](../docs/ZETA.md) · [`../docs/JABS.md`](../docs/JABS.md) · [`../docs/LULU.md`](../docs/LULU.md) · [`../docs/SETU.md`](../docs/SETU.md) · [`../docs/STOA.md`](../docs/STOA.md)
 
@@ -67,7 +67,7 @@ Hold row 1 → Settings: presets · `home ·` · `wire ·` · `cell ·` — all 
 
 | Door | Kind |
 |------|------|
-| **STOA69** richer product desk (lean A) | **check-in** — approve shape before kg |
+| **STOA70** next language toward glass import | **check-in** |
 | Live SETU6.5 **sent** on usb0/ncm | **check-in** (needs gadget/QEMU) |
 | Amber/Amphora Glass↔Desk fuse | **declined** — compose later (`133455`) |
 | JABS3 · TAME Lap 3 | **check-in** |
