@@ -8,6 +8,8 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260719.192329` — [STOA75 multi-field +$ / $: mold send](20260719-192329_stoa75-multi-field-mold-send.bron) — ship multi-field mold; then STOA76 check-in
+- `20260719.192241` — [STOA75 multi-field +$ / $: mold GREEN](20260719-192241_stoa75-multi-field-mold-green.bron) — PairMold desk; await send
 - `20260719.191719` — [STOA73 Pixel product-root install eyes GREEN](20260719-191719_stoa73-pixel-product-root-eyes.bron) — on-device expect 5; Sala hex kept
 - `20260719.191208` — [Pixel adb no device on host install](20260719-191208_pixel-adb-no-device.bron) — attach Pixel then re-run install
 - `20260719.191101` — [Pixel STOA73 install instructions](20260719-191101_pixel-stoa73-install-instructions.bron) — outer-terminal product-root eyes
