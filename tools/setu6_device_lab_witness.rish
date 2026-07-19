@@ -1,0 +1,29 @@
+# setu6_device_lab_witness.rish — SETU6: device-wire lab harness.
+#
+#   rishi/bin/rishi run tools/setu6_device_lab_witness.rish
+#
+# Host iface classify + lab.bron:
+#   rishi/bin/rishi run tools/setu6_lab_probe_onpath_host.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/setu6_device_lab_witness"
+let check = "linengrow/bin/setu6_device_lab_check"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/setu6_device_lab_witness.rye -femit-bin=${bin}"]
+assert build.ok else "SETU6 lab witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "SETU6 witness exited non-zero"
+assert selftest.out contains "GREEN" else "SETU6 not GREEN"
+assert selftest.out contains "stand-in lab ready" else "SETU6 missing stand-in fixture"
+assert selftest.out contains "armed when iface" else "SETU6 missing armed fixture"
+
+let build_check = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build linengrow/setu6_device_lab_check.rye -femit-bin=${check}"]
+assert build_check.ok else "SETU6 lab check build failed"
+let stand = run ["sh" "-c" "${check} 2>&1"]
+assert stand.ok else "SETU6 stand-in check failed"
+assert stand.out contains "stand-in" else "SETU6 check missing stand-in"
+assert stand.out contains "GREEN" else "SETU6 check not GREEN"
+say "${stand.out}"
+
+say "GREEN: SETU6 device-wire lab witness passed (device-free)."

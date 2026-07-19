@@ -303,7 +303,8 @@
 - [x] **HOLD Wayland eyes** `20260718.193951` — Desk raster lit GREEN; look selftest GREEN; `setu_desk_hold_wayland_look` for compositor eyes.
 - [x] **HOLD Wayland eyes seen** `20260718.194211` — Keaton confirmed hold chrome window on Framework Wayland.
 - [x] **Session-logs archive fold** `20260718.193735` — 165 prior-day logs under `archive/` (kept `20260718` flat).
-- [ ] **SETU6 — QEMU/Pixel CDC-NCM / device-wire lab** — check-in (parked; not Amber-on-Glass).
+- [x] **SETU6 — device-wire lab harness** `20260718.201232` — payload ready · iface stand-in/armed · `lab.bron`; host probe stand-in GREEN (no usb0/ncm yet).
+- [ ] **SETU6.5 — live framed TX on real usb0/ncm** — check-in (Pixel NCM gadget or QEMU).
 - [ ] **Wired Glass SLC metalsmoke** — cellular optional/off; USB sync to Desk; Setu live lane check-in.
 - [ ] **JABS3 — Inference and economics** — check-in (Quin · MALA).
 - [ ] **C2 thin TAME compressor** — optional `docs/TAME.md` only if cold-load pain is measured.

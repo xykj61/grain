@@ -8,6 +8,10 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260718.201510` — [Send SETU6 lab harness](20260718-201510_send-setu6-lab-harness.bron) — pier ship; SETU6.5 check-in
+- `20260718.201446` — [Phone needed for SETU6?](20260718-201446_phone-needed-for-setu6.bron) — no for stand-in; SETU6.5 later
+- `20260718.201232` — [SETU6 lab harness GREEN](20260718-201232_setu6-lab-harness-green.bron) — stand-in; payload 289b; send next
+- `20260718.194250` — [SETU6 check-in after season close](20260718-194250_setu6-checkin-after-season-close.bron) — CDC-NCM lab; await approve
 - `20260718.194211` — [Send HOLD Wayland · eyes seen](20260718-194211_send-hold-wayland-eyes-seen.bron) — pier ship; season close kg
 - `20260718.193951` — [HOLD Wayland eyes GREEN · archive](20260718-193951_hold-wayland-eyes-green.bron) — Desk raster; fold 165; send next
 - `20260718.193720` — [HOLD Wayland eyes check-in](20260718-193720_hold-wayland-eyes-checkin.bron) — thin face; await approve
