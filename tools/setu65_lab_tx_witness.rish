@@ -1,0 +1,29 @@
+# setu65_lab_tx_witness.rish — SETU6.5: lab TX gate witness.
+#
+#   rishi/bin/rishi run tools/setu65_lab_tx_witness.rish
+#
+# Host TX attempt after SETU6 probe:
+#   rishi/bin/rishi run tools/setu65_lab_tx_onpath_host.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/setu65_lab_tx_witness"
+let check = "linengrow/bin/setu65_lab_tx_check"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/setu65_lab_tx_witness.rye -lc -femit-bin=${bin}"]
+assert build.ok else "SETU6.5 lab TX witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "SETU6.5 witness exited non-zero"
+assert selftest.out contains "GREEN" else "SETU6.5 not GREEN"
+assert selftest.out contains "stand-in refuses" else "SETU6.5 missing stand-in refuse"
+assert selftest.out contains "armed prepares" else "SETU6.5 missing armed prepare"
+say "${selftest.out}"
+
+let build_check = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build linengrow/setu65_lab_tx_check.rye -lc -femit-bin=${check}"]
+assert build_check.ok else "SETU6.5 lab TX check build failed"
+let stand = run ["sh" "-c" "${check} 2>&1"]
+assert stand.ok else "SETU6.5 check failed"
+assert stand.out contains "GREEN" else "SETU6.5 check not GREEN"
+say "${stand.out}"
+
+say "GREEN: SETU6.5 lab TX gate witness passed (device-free)."
