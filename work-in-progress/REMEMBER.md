@@ -2,22 +2,22 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Rule: [`.cursor/rules/remember.mdc`](../.cursor/rules/remember.mdc) · [`.claude/rules/remember.md`](../.claude/rules/remember.md).*
 
-**Last refreshed:** `20260719.174844` (Eastern) · voice Quin  
+**Last refreshed:** `20260719.175326` (Eastern) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5** · HOLD0–HOLD1 · HOLD-W  
-**Language nib:** **STOA0–67** GREEN · STOA68 open  
-**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W · STOA0–67  
-**Git nib:** `8e913d8871` STOA67 `/+` payload nest-right cue-of-jam  
+**Language nib:** **STOA0–68** GREEN · STOA69 open  
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W · STOA0–68  
+**Git nib:** *(pin after seat)* STOA68 `/+` payload nest-both cue-of-jam  
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`
 
 ---
 
 ## Now (language)
 
-**STOA67** `/+` payload nest-right cue-of-jam GREEN `20260719.174531` — import `lib-core-payload-cue-jam-right-nest`, unpack `(cue (jam amount (mix amount amount)))`. Next door: **STOA68** check-in.
+**STOA68** `/+` payload nest-both cue-of-jam GREEN `20260719.175024` — import `lib-core-payload-cue-jam-both-nest`, unpack `(cue (jam (mix amount amount) (mix amount amount)))`. Next door: **STOA69** check-in.
 
-Smoke: `rishi/bin/rishi run tools/glow_run.rish glow/gen/use-lib-payload-cue-jam-right-nest.glow`
+Smoke: `rishi/bin/rishi run tools/glow_run.rish glow/gen/use-lib-payload-cue-jam-both-nest.glow`
 
-Pitfalls: face/payload **5** · unpack **0** · call `core.unpack()`. Nest-both stays later.
+Pitfalls: face/payload **5** · unpack **0** · call `core.unpack()`. `/+` payload cue-jam nest trio closed.
 
 ---
 
@@ -31,7 +31,7 @@ Pitfalls: face/payload **5** · unpack **0** · call `core.unpack()`. Nest-both 
 | **JABS** | Sala broadcast live-session fold | JABS0–2 GREEN · JABS3 check-in |
 | **LULU** | Hearth · short home · Wired Glass | **LULU0–5 closed** |
 | **SETU** | USB hearth carry Glass↔Desk | **SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W GREEN** · live “sent” eyes check-in |
-| **STOA** | Glow language SLC · nest · composition | **STOA0–67 GREEN** · `/+` payload nest-right cue-of-jam · STOA68 next |
+| **STOA** | Glow language SLC · nest · composition | **STOA0–68 GREEN** · `/+` payload nest-both cue-of-jam · STOA69 next |
 
 Canon: [`../docs/HAWM.md`](../docs/HAWM.md) · [`../docs/TUBE.md`](../docs/TUBE.md) · [`../docs/ZETA.md`](../docs/ZETA.md) · [`../docs/JABS.md`](../docs/JABS.md) · [`../docs/LULU.md`](../docs/LULU.md) · [`../docs/SETU.md`](../docs/SETU.md) · [`../docs/STOA.md`](../docs/STOA.md)
 
@@ -67,7 +67,7 @@ Hold row 1 → Settings: presets · `home ·` · `wire ·` · `cell ·` — all 
 
 | Door | Kind |
 |------|------|
-| **STOA68** next language toward product-in-Glow | **check-in** |
+| **STOA69** next language toward product-in-Glow | **check-in** |
 | Live SETU6.5 **sent** on usb0/ncm | **check-in** (needs gadget/QEMU) |
 | Amber/Amphora Glass↔Desk fuse | **declined** — compose later (`133455`) |
 | JABS3 · TAME Lap 3 | **check-in** |
