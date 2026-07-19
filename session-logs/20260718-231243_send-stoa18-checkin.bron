@@ -1,0 +1,16 @@
+format session-log-v1
+stamp 20260718.231243
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern time convention
+title Send STOA18 check-in
+prompt approve all recs
+think Last check-in leaned only A — send STOA18; no further build order was named
+think Commit face-to-core lower desk witnesses docs and session logs; push origin and codeberg
+think After pier lands present STOA19 forks and wait
+obs Witnesses were GREEN before send — compose-core welcome 0 unwelcome 1 desk hop
+file glow/lower_compose_core.rye face to core lower
+file glow/gen/compose-core.glow STOA18 desk
+file docs/STOA.md STOA18 GREEN
+recommend check-in STOA19 forks after pier push
