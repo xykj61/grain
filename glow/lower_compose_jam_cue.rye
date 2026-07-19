@@ -1,4 +1,4 @@
-//! glow/lower_compose_jam_cue.rye — cross-line jam then cue (STOA39/43–51).
+//! glow/lower_compose_jam_cue.rye — cross-line jam then cue (STOA39/43–52).
 //!
 //! Thin face — two typed lines (STOA39):
 //!   =/  cell-pack=@u32  (jam from amount)
@@ -48,6 +48,11 @@
 //!   =/  from=@u32  5
 //!   =/  amount=@u32  3
 //!   =/  right=@u32  (cue (jam from (mix from amount)))
+//!
+//! Bind→inline nest-both cue-of-jam (STOA52) — right mix reuses left mix pair:
+//!   =/  from=@u32  5
+//!   =/  amount=@u32  3
+//!   =/  right=@u32  (cue (jam (mix from amount) (mix from amount)))
 //!
 //! First packs; last unpacks the prior face. Decimal multi and
 //! face→call compose stay on their own lowers.
@@ -364,8 +369,25 @@ pub fn parse_jam_cue(src: []const u8) LowerError!JamCueSpec {
             @memcpy(spec.pack_atom[0..mr.len], mr);
             spec.pack_atom_len = mr.len;
             spec.nest_right = true;
+        } else if (expr.cue_jam_is_nest_both(&line_cue.value)) {
+            // Nest-both thin: (cue (jam (mix a b) (mix c d))) with c==a and d==b.
+            const jl = expr.face_slice(&line_cue.value);
+            const jr = expr.face2_slice(&line_cue.value);
+            const rl = expr.face3_slice(&line_cue.value);
+            const rr = expr.face4_slice(&line_cue.value);
+            if (!std.mem.eql(u8, jl, rl) or !std.mem.eql(u8, jr, rr)) return error.ValueNotYetLowered;
+            if (!std.mem.eql(u8, face0[0..bind0.face_len], jl)) return error.SampleMismatch;
+            if (!std.mem.eql(u8, face1[0..bind1.face_len], jr)) return error.SampleMismatch;
+            @memcpy(spec.jam_left[0..jl.len], jl);
+            spec.jam_left_len = jl.len;
+            @memcpy(spec.jam_right[0..jr.len], jr);
+            spec.jam_right_len = jr.len;
+            @memcpy(spec.pack_atom[0..rl.len], rl);
+            spec.pack_atom_len = rl.len;
+            @memcpy(spec.mix_rr[0..rr.len], rr);
+            spec.mix_rr_len = rr.len;
+            spec.nest_both = true;
         } else {
-            // Nest-both under binds stays later.
             return error.ValueNotYetLowered;
         }
 
@@ -481,7 +503,9 @@ fn emit_jam_cue(spec: *const JamCueSpec, welcome: bool, out: []u8) LowerError!u3
     // Flat/nest-left: low 16 is pack-right atom. Nest-right/both: low 16 is mix.
     const result: u32 = if (spec.nest_right or spec.nest_both) right_mix_v else atom_v;
     const expect: u32 = if (welcome) result else result +% 1;
-    const tag: []const u8 = if (spec.inline_cue_jam and spec.nest_right)
+    const tag: []const u8 = if (spec.inline_cue_jam and spec.nest_both)
+        "bind→inline-nest-both-cue-jam compose — authored faces then nest-both cue-of-jam (STOA52)"
+    else if (spec.inline_cue_jam and spec.nest_right)
         "bind→inline-nest-right-cue-jam compose — authored faces then nest-right cue-of-jam (STOA51)"
     else if (spec.inline_cue_jam and spec.nest_left)
         "bind→inline-nest-cue-jam compose — authored faces then nest-left cue-of-jam (STOA50)"
@@ -509,6 +533,39 @@ fn emit_jam_cue(spec: *const JamCueSpec, welcome: bool, out: []u8) LowerError!u3
         "jam→cue compose — cross-line pack then unpack (STOA39)";
 
     if (spec.inline_cue_jam) {
+        if (spec.nest_both) {
+            const written = std.fmt.bufPrint(out,
+                \\const std = @import("std");
+                \\
+                \\/// Lowered from Glow {s}.
+                \\pub fn main(_: std.process.Init) !u8 {{
+                \\    const {s}: u32 = {d};
+                \\    const {s}: u32 = {d};
+                \\    const left_mix: u32 = {s} ^ {s};
+                \\    const right_mix: u32 = {s} ^ {s};
+                \\    const {s}: u32 = (left_mix << 16) | right_mix;
+                \\    const {s}: u32 = {s} & 0xffff;
+                \\    return if ({s} == {d}) 0 else 1;
+                \\}}
+                \\
+            , .{
+                tag,
+                zjl[0..jln],
+                left_v,
+                zjr[0..jrn],
+                right_v,
+                zjl[0..jln],
+                zjr[0..jrn],
+                zjl[0..jln],
+                zjr[0..jrn],
+                zp[0..pn],
+                zr[0..rn],
+                zp[0..pn],
+                zr[0..rn],
+                expect,
+            }) catch return error.Overflow;
+            return @intCast(written.len);
+        }
         if (spec.nest_right) {
             const written = std.fmt.bufPrint(out,
                 \\const std = @import("std");

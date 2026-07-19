@@ -7,7 +7,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const lower = @import("lower_compose_jam_cue.rye");
 
-const witness_version = "20260719.163527";
+const witness_version = "20260719.163945";
 
 const jam_cue_src =
     \\::  Cross-line jam then cue (STOA39).
@@ -97,6 +97,13 @@ const bind_inline_nest_right_cue_jam_src =
     \\=/  from=@u32  5
     \\=/  amount=@u32  3
     \\=/  right=@u32  (cue (jam from (mix from amount)))
+;
+
+const bind_inline_nest_both_cue_jam_src =
+    \\::  Bind faces then inline nest-both cue-of-jam (STOA52).
+    \\=/  from=@u32  5
+    \\=/  amount=@u32  3
+    \\=/  right=@u32  (cue (jam (mix from amount) (mix from amount)))
 ;
 
 const nest_both_jam_cue_src =
@@ -294,16 +301,22 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, rye_inr, "right == 6") != null);
     print("compose-jam-cue: welcome builds bind→inline-nest-right-cue-jam -- GREEN\n", .{});
 
-    if (lower.parse_jam_cue(
-        \\=/  from=@u32  5
-        \\=/  amount=@u32  3
-        \\=/  right=@u32  (cue (jam (mix from amount) (mix from amount)))
-    )) |_| {
-        return error.InlineNestBothNotCaught;
-    } else |err| {
-        if (err != lower.LowerError.ValueNotYetLowered) return err;
-    }
-    print("compose-jam-cue: inline nest-both cue-of-jam refused ValueNotYetLowered -- GREEN\n", .{});
+    assert(lower.looks_like_jam_cue(bind_inline_nest_both_cue_jam_src));
+    const inline_nest_both = try lower.parse_jam_cue(bind_inline_nest_both_cue_jam_src);
+    assert(inline_nest_both.inline_cue_jam);
+    assert(inline_nest_both.nest_both);
+    assert(!inline_nest_both.nest_left);
+    assert(!inline_nest_both.nest_right);
+    print("compose-jam-cue: bind→inline-nest-both-cue-jam parses -- GREEN\n", .{});
+
+    const n_inline_nest_both = try lower.lower_source_welcome(bind_inline_nest_both_cue_jam_src, &buf);
+    const rye_inb = buf[0..n_inline_nest_both];
+    assert(std.mem.indexOf(u8, rye_inb, "nest-both cue-of-jam") != null);
+    assert(std.mem.indexOf(u8, rye_inb, "left_mix: u32 = from ^ amount") != null);
+    assert(std.mem.indexOf(u8, rye_inb, "right_mix: u32 = from ^ amount") != null);
+    assert(std.mem.indexOf(u8, rye_inb, "cell_pack: u32 = (left_mix << 16) | right_mix") != null);
+    assert(std.mem.indexOf(u8, rye_inb, "right == 6") != null);
+    print("compose-jam-cue: welcome builds bind→inline-nest-both-cue-jam -- GREEN\n", .{});
 
     if (lower.parse_jam_cue(
         \\=/  from=@u32  5
@@ -326,6 +339,17 @@ fn run_selftest(init: std.process.Init) !u8 {
         if (err != lower.LowerError.ValueNotYetLowered) return err;
     }
     print("compose-jam-cue: inline nest jam-left mismatch refused ValueNotYetLowered -- GREEN\n", .{});
+
+    if (lower.parse_jam_cue(
+        \\=/  from=@u32  5
+        \\=/  amount=@u32  3
+        \\=/  right=@u32  (cue (jam (mix from amount) (mix from note)))
+    )) |_| {
+        return error.InlineNestBothPairNotCaught;
+    } else |err| {
+        if (err != lower.LowerError.ValueNotYetLowered) return err;
+    }
+    print("compose-jam-cue: inline nest-both pair mismatch refused ValueNotYetLowered -- GREEN\n", .{});
 
     if (lower.parse_jam_cue(
         \\=/  cell-pack=@u32  (jam (mix from amount) cell)
@@ -430,6 +454,8 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/compose_bind_inline_nest_cue_jam_welcome.rye", .data = buf[0..n12] });
     const n13 = try lower.lower_source_welcome(bind_inline_nest_right_cue_jam_src, &buf);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/compose_bind_inline_nest_right_cue_jam_welcome.rye", .data = buf[0..n13] });
+    const n14 = try lower.lower_source_welcome(bind_inline_nest_both_cue_jam_src, &buf);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/compose_bind_inline_nest_both_cue_jam_welcome.rye", .data = buf[0..n14] });
     print("compose-jam-cue: wrote welcome and unwelcome .rye under glow/.cache/ -- GREEN\n", .{});
 
     const gen_src = try cwd.readFileAlloc(io, "glow/gen/compose-jam-cue.glow", a, .limited(4096));
@@ -477,8 +503,12 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, gen_inline_nest_right, "=/  right=@u32  (cue (jam from (mix from amount)))") != null);
     print("compose-jam-cue: glow/gen/compose-bind-inline-nest-right-cue-jam.glow carries bind→inline-nest-right-cue-jam -- GREEN\n", .{});
 
+    const gen_inline_nest_both = try cwd.readFileAlloc(io, "glow/gen/compose-bind-inline-nest-both-cue-jam.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_inline_nest_both, "=/  right=@u32  (cue (jam (mix from amount) (mix from amount)))") != null);
+    print("compose-jam-cue: glow/gen/compose-bind-inline-nest-both-cue-jam.glow carries bind→inline-nest-both-cue-jam -- GREEN\n", .{});
+
     print("compose-jam-cue: version {s}\n", .{witness_version});
-    print("GREEN: jam→cue through bind→inline-nest-right-cue-jam compose lower to ordinary Rye (STOA39/43–51).\n", .{});
+    print("GREEN: jam→cue through bind→inline-nest-both-cue-jam compose lower to ordinary Rye (STOA39/43–52).\n", .{});
     return 0;
 }
 
