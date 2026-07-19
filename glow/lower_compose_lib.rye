@@ -31,6 +31,11 @@
 //!   =/  amount  5
 //!   %-  unpack  amount
 //!
+//! STOA60 — nest-both cue-of-jam library:
+//!   /+  lib-core-cue-jam-both-nest
+//!   =/  amount  5
+//!   %-  unpack  amount
+//!
 //! The import stem names `glow/gen/<stem>.glow`. glow_run lowers that desk
 //! as a library (no main) into `glow/.cache/`, then this lower emits a
 //! consumer that imports it and calls the arm.

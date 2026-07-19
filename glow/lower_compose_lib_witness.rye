@@ -7,7 +7,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const lower = @import("lower_compose_lib.rye");
 
-const witness_version = "20260719.171131";
+const witness_version = "20260719.171500";
 
 const use_src =
     \\::  Import Glow library then call open arm (STOA26).
@@ -91,6 +91,20 @@ const lib_cue_right_src =
     \\::  Library nest-right cue-of-jam arm (STOA59).
     \\|%
     \\++  unpack  (cue (jam sample (mix sample sample)))
+    \\--
+;
+
+const use_cue_both_src =
+    \\::  Import nest-both cue-jam library then call unpack (STOA60).
+    \\/+  lib-core-cue-jam-both-nest
+    \\=/  amount  5
+    \\%-  unpack  amount
+;
+
+const lib_cue_both_src =
+    \\::  Library nest-both cue-of-jam arm (STOA60).
+    \\|%
+    \\++  unpack  (cue (jam (mix sample sample) (mix sample sample)))
     \\--
 ;
 
@@ -239,6 +253,24 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, buf[0..n_cue_right_u], "lib.Core.unpack(amount) == 1") != null);
     print("compose-lib: nest-right cue-jam unwelcome expects mismatch -- GREEN\n", .{});
 
+    const cue_both_spec = try lower.parse_compose_lib(use_cue_both_src);
+    assert(std.mem.eql(u8, lower.stem_slice(&cue_both_spec), "lib-core-cue-jam-both-nest"));
+    assert(std.mem.eql(u8, lower.gate_slice(&cue_both_spec), "unpack"));
+    const cue_both_bound = try lower.bind_library(&cue_both_spec, lib_cue_both_src);
+    assert(cue_both_bound.expect == 0);
+    assert(!cue_both_bound.has_payload);
+    print("compose-lib: nest-both cue-of-jam unpack expects zero -- GREEN\n", .{});
+
+    const n_cue_both = try lower.lower_source_welcome(use_cue_both_src, lib_cue_both_src, &buf);
+    const rye_cue_both = buf[0..n_cue_both];
+    assert(std.mem.indexOf(u8, rye_cue_both, "import(\"lib_core_cue_jam_both_nest.rye\")") != null);
+    assert(std.mem.indexOf(u8, rye_cue_both, "lib.Core.unpack(amount) == 0") != null);
+    print("compose-lib: nest-both cue-jam welcome imports lib and calls Core.unpack -- GREEN\n", .{});
+
+    const n_cue_both_u = try lower.lower_source_unwelcome(use_cue_both_src, lib_cue_both_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n_cue_both_u], "lib.Core.unpack(amount) == 1") != null);
+    print("compose-lib: nest-both cue-jam unwelcome expects mismatch -- GREEN\n", .{});
+
     try cwd.createDirPath(io, "glow/.cache");
     const n3 = try lower.lower_source_welcome(use_src, lib_src, &buf);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/use_lib_open_welcome.rye", .data = buf[0..n3] });
@@ -252,7 +284,9 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/use_lib_cue_jam_nest_welcome.rye", .data = buf[0..n7] });
     const n8 = try lower.lower_source_welcome(use_cue_right_src, lib_cue_right_src, &buf);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/use_lib_cue_jam_right_welcome.rye", .data = buf[0..n8] });
-    print("compose-lib: wrote nest-left and nest-right cue-jam consumer caches -- GREEN\n", .{});
+    const n9 = try lower.lower_source_welcome(use_cue_both_src, lib_cue_both_src, &buf);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/use_lib_cue_jam_both_welcome.rye", .data = buf[0..n9] });
+    print("compose-lib: wrote nest-left right and both cue-jam consumer caches -- GREEN\n", .{});
 
     const gen_use = try cwd.readFileAlloc(io, "glow/gen/use-lib-open.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_use, "/+  lib-core-open") != null);
@@ -279,10 +313,14 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, gen_use_cue_right, "/+  lib-core-cue-jam-right-nest") != null);
     const gen_lib_cue_right = try cwd.readFileAlloc(io, "glow/gen/lib-core-cue-jam-right-nest.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_lib_cue_right, "(cue (jam sample (mix sample sample)))") != null);
-    print("compose-lib: desks nest-left and nest-right cue-jam carry import -- GREEN\n", .{});
+    const gen_use_cue_both = try cwd.readFileAlloc(io, "glow/gen/use-lib-cue-jam-both-nest.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_use_cue_both, "/+  lib-core-cue-jam-both-nest") != null);
+    const gen_lib_cue_both = try cwd.readFileAlloc(io, "glow/gen/lib-core-cue-jam-both-nest.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_lib_cue_both, "(cue (jam (mix sample sample) (mix sample sample)))") != null);
+    print("compose-lib: desks nest-left right and both cue-jam carry import -- GREEN\n", .{});
 
     print("compose-lib: version {s}\n", .{witness_version});
-    print("GREEN: `/+` Glow library compose lowers nest-left and nest-right cue-of-jam (STOA57/58/59).\n", .{});
+    print("GREEN: `/+` Glow library compose lowers nest-left right and both cue-of-jam (STOA57/58/59/60).\n", .{});
     return 0;
 }
 
