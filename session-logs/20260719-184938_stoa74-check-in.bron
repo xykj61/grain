@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260719.184938
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern time convention
+title STOA74 check-in after product-root write
+prompt send and approve next rec
+think STOA73 product-root write path seated and pushed · next language check-in
+think A host install product-root eyes — run stoa73_product_root_install_onpath_host from outer terminal
+think B molds when a desk first demands typed shapes beyond @u32
+think C Sala B0 rewrite in Glow — large product lap
+obs A finishes the original on-device half · needs host adb/KVM · not jail-reachable
+git_nib 29172affcc
+product_nib ZETA6
+suite_nib STOA0-73
+recommend check-in — STOA74 A host install product-root eyes · B molds · C Sala B0 rewrite in Glow
