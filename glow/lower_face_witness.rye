@@ -149,6 +149,14 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, rye_rn, "nested == 327686") != null);
     print("lower: \"=/  nested=@u32  (jam cell (mix from amount))\" welcome binds nest jam right -- GREEN\n", .{});
 
+    const n_both = try lower.lower_line_welcome("=/  nested=@u32  (jam (mix from amount) (mix cell gate))", &buf);
+    const rye_both = buf[0..n_both];
+    assert(std.mem.indexOf(u8, rye_both, "const left_mix: u32 = from ^ amount") != null);
+    assert(std.mem.indexOf(u8, rye_both, "const right_mix: u32 = cell ^ gate") != null);
+    assert(std.mem.indexOf(u8, rye_both, "const nested: u32 = (left_mix << 16) | right_mix") != null);
+    assert(std.mem.indexOf(u8, rye_both, "nested == 393222") != null);
+    print("lower: \"=/  nested=@u32  (jam (mix from amount) (mix cell gate))\" welcome binds nest jam both -- GREEN\n", .{});
+
     if (lower.lower_line_welcome("=/  next-root=@u32  (foo root)", &buf)) |_| {
         return error.ValueLoweredTooSoon;
     } else |err| {
@@ -193,8 +201,12 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, gen_rn, "=/  nested=@u32  (jam cell (mix from amount))") != null);
     print("lower: glow/gen/face-jam-right-nest.glow nests jam-right-mix under face -- GREEN\n", .{});
 
+    const gen_both = try cwd.readFileAlloc(io, "glow/gen/face-jam-both-nest.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_both, "=/  nested=@u32  (jam (mix from amount) (mix cell gate))") != null);
+    print("lower: glow/gen/face-jam-both-nest.glow nests jam-both-mix under face -- GREEN\n", .{});
+
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: `=/` lowers faces with nested `^-`, `(lent …)`, `(mix …)`, `(jam …)`, nest jam left/right, and `(cue …)` values to ordinary Rye.\n", .{});
+    print("GREEN: `=/` lowers faces with nested `^-`, `(lent …)`, `(mix …)`, `(jam …)`, nest jam left/right/both, and `(cue …)` values to ordinary Rye.\n", .{});
     return 0;
 }
 

@@ -136,6 +136,9 @@ fn check_open_body(spec: *const CoreSpec, body: *const expr.Expr) ParseError!voi
             if (expr.jam_has_nest_arg(body)) {
                 try check_body_face(spec, expr.face3_slice(body));
             }
+            if (expr.jam_is_both_mix(body)) {
+                try check_body_face(spec, expr.face4_slice(body));
+            }
         },
     }
 }

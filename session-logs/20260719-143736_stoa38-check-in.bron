@@ -1,0 +1,14 @@
+format session-log-v1
+stamp 20260719.143736
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern time convention
+title STOA38 check-in — cue-of-jam shape
+prompt check in
+think STOA37 GREEN unsent · name STOA38 before kg
+think weigh multi-line bind-then-cue vs nest (cue (jam …)) vs send-first
+obs lean send then multi-line round-trip desk — cue stays face-only
+file work-in-progress/REMEMBER.md STOA38 door
+file glow/gen/face-cue.glow face-jam.glow separate desks today
+recommend check-in — send STOA37 · then approve STOA38 shape
