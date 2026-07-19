@@ -1,0 +1,5 @@
+::  Library payload nest-both cue-of-jam arm (STOA68).
+|%
+=/  amount  5
+++  unpack  (cue (jam (mix amount amount) (mix amount amount)))
+--

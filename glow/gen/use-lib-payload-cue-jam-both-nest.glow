@@ -1,0 +1,4 @@
+::  Import payload nest-both cue-jam library then call unpack (STOA68).
+/+  lib-core-payload-cue-jam-both-nest
+=/  amount  5
+%-  unpack  amount
