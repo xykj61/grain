@@ -4,8 +4,9 @@
 //! `=/` is typed let. This hop lowers `next-root=@u32` and bare `tick`, trailing
 //! decimal literals (default 7), nested `^-  @uN  <decimal>`, `(lent <face>)`
 //! — length of a demo subject — `(mix <face> <face>)` — bitwise XOR of two
-//! demo atoms — and `(jam <face> <face>)` — thin cell-pack
-//! `(a << 16) | b`, through `expr.rye`. Other parenthesized forms still refuse.
+//! demo atoms — `(jam <face> <face>)` — thin cell-pack `(a << 16) | b` —
+//! and `(cue <face>)` — low 16 bits of a jam pack, through `expr.rye`.
+//! Other parenthesized forms still refuse.
 //! Named molds still refuse.
 
 const std = @import("std");
@@ -25,7 +26,7 @@ pub const LowerError = rf.ParseError || expr.ParseError || error{
 
 pub const face_default_value: u32 = 7;
 
-const ValueKind = enum { literal, cast_literal, lent_of, mix_of, jam_of };
+const ValueKind = enum { literal, cast_literal, lent_of, mix_of, jam_of, cue_of };
 
 const BoundValue = struct {
     kind: ValueKind,
@@ -111,7 +112,7 @@ fn map_expr_err(err: expr.ParseError) LowerError {
 }
 
 /// Trailing value after the face clause: default, decimal, nested `^-`,
-/// `(lent …)`, `(mix …)`, or `(jam …)`.
+/// `(lent …)`, `(mix …)`, `(jam …)`, or `(cue …)`.
 fn bound_value(line: []const u8, face: []const u8, mold: []const u8) LowerError!BoundValue {
     var clause_buf: [rf.max_name_len * 2 + 1]u8 = undefined;
     const clause = try clause_text(face, mold, &clause_buf);
@@ -128,9 +129,9 @@ fn bound_value(line: []const u8, face: []const u8, mold: []const u8) LowerError!
             @memcpy(bound.cast_mold[0..cm.len], cm);
             break :blk bound;
         },
-        .lent_of => blk: {
+        .lent_of, .cue_of => blk: {
             const sub = expr.face_slice(&e);
-            var bound: BoundValue = .{ .kind = .lent_of, .subject_len = sub.len };
+            var bound: BoundValue = .{ .kind = if (e.kind == .cue_of) .cue_of else .lent_of, .subject_len = sub.len };
             @memcpy(bound.subject[0..sub.len], sub);
             break :blk bound;
         },
@@ -527,6 +528,71 @@ fn emit_lent(
     return @intCast(written.len);
 }
 
+/// `(cue <cell>)` under a face — low 16 bits of a jam cell-pack.
+fn emit_cue(
+    glow_label: []const u8,
+    face_mold: []const u8,
+    zig_face: []const u8,
+    subject: []const u8,
+    zig_ty: []const u8,
+    welcome: bool,
+    out: []u8,
+) LowerError!u32 {
+    var zig_sub_buf: [rf.max_name_len]u8 = undefined;
+    const sub_len = try zig_safe_ident(subject, &zig_sub_buf);
+    const zig_sub = zig_sub_buf[0..sub_len];
+    const result = expr.cue_demo_result();
+    const expect: u32 = if (welcome) result else result +% 1;
+    const typed = face_mold.len != 0;
+    if (typed) {
+        const written = std.fmt.bufPrint(out,
+            \\const std = @import("std");
+            \\
+            \\/// Lowered from Glow `=/  {s}={s}  (cue {s})` — face over cue unpack.
+            \\pub fn main(_: std.process.Init) !u8 {{
+            \\    const {s}: u32 = {d};
+            \\    const {s}: {s} = {s} & 0xffff;
+            \\    return if ({s} == {d}) 0 else 1;
+            \\}}
+            \\
+        , .{
+            glow_label,
+            face_mold,
+            subject,
+            zig_sub,
+            expr.jam_demo_result(),
+            zig_face,
+            zig_ty,
+            zig_sub,
+            zig_face,
+            expect,
+        }) catch return error.Overflow;
+        return @intCast(written.len);
+    }
+    const written = std.fmt.bufPrint(out,
+        \\const std = @import("std");
+        \\
+        \\/// Lowered from Glow `=/  {s}  (cue {s})` — face over cue unpack.
+        \\pub fn main(_: std.process.Init) !u8 {{
+        \\    const {s}: u32 = {d};
+        \\    const {s}: {s} = {s} & 0xffff;
+        \\    return if ({s} == {d}) 0 else 1;
+        \\}}
+        \\
+    , .{
+        glow_label,
+        subject,
+        zig_sub,
+        expr.jam_demo_result(),
+        zig_face,
+        zig_ty,
+        zig_sub,
+        zig_face,
+        expect,
+    }) catch return error.Overflow;
+    return @intCast(written.len);
+}
+
 fn lower_line(line: []const u8, welcome: bool, out: []u8) LowerError!u32 {
     const trimmed = std.mem.trim(u8, line, " \t\r\n");
     if (trimmed.len == 0) return error.EmptySource;
@@ -568,6 +634,10 @@ fn lower_line(line: []const u8, welcome: bool, out: []u8) LowerError!u32 {
         .jam_of => {
             const zig_ty = try zig_type_for_mold(mold);
             return emit_jam(face, mold, zig_face, subject_slice(&bound), subject2_slice(&bound), zig_ty, welcome, out);
+        },
+        .cue_of => {
+            const zig_ty = try zig_type_for_mold(mold);
+            return emit_cue(face, mold, zig_face, subject_slice(&bound), zig_ty, welcome, out);
         },
     }
 }
