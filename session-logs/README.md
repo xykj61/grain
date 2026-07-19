@@ -8,6 +8,7 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260719.193538` — [STOA77 same-desk named-cast resolve GREEN](20260719-193538_stoa77-named-cast-green.bron) — AmountMold from +$ then ^-; await send
 - `20260719.193036` — [STOA77 check-in after $% mold](20260719-193036_stoa77-check-in.bron) — lean A named-cast resolve
 - `20260719.193002` — [STOA76 thin +$ / $% tagged mold send](20260719-193002_stoa76-tagged-mold-send.bron) — ship $% mold; then STOA77 check-in
 - `20260719.192936` — [STOA76 thin +$ / $% tagged mold GREEN](20260719-192936_stoa76-tagged-mold-green.bron) — KindMold desk; await send

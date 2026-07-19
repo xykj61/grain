@@ -1,0 +1,6 @@
+::  Named-cast resolve — same-desk +$ amount-mold then ^- amount-mold (STOA77).
+::  Lowered by glow/lower_named_cast.rye into ordinary Rye; Rishi stays the shell.
++$  amount-mold
+  $:  amount=@u32
+  ==
+^-  amount-mold
