@@ -1,0 +1,6 @@
+::  Outer face then payload cue-of-jam arm (STOA61).
+=/  note  7
+|%
+=/  amount  5
+++  unpack  (cue (jam amount amount))
+--

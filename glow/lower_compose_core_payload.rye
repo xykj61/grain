@@ -14,6 +14,13 @@
 //!   ++  pack  (jam amount amount)
 //!   --
 //!
+//! STOA61 — same shape with cue-of-jam arm:
+//!   =/  note  7
+//!   |%
+//!   =/  amount  5
+//!   ++  unpack  (cue (jam amount amount))
+//!   --
+//!
 //! Inner payload may be bare or `@u32`. Closed arm reads self.amount *% 2;
 //! open nest arm bodies use the payload face.
 
@@ -247,7 +254,7 @@ fn emit_compose_core_payload(spec: *const ComposeCorePayloadSpec, welcome: bool,
     const written = std.fmt.bufPrint(out,
         \\const std = @import("std");
         \\
-        \\/// Lowered from Glow face→payload `|%` compose (STOA24/30).
+        \\/// Lowered from Glow face→payload `|%` compose (STOA24/30/61).
         \\const Core = struct {{
         \\{s}    {s}: u32 = {d},
         \\    pub fn {s}(self: @This()) u32 {{
