@@ -1,9 +1,10 @@
 //! glow/rune_core.rye — parses Glow's thin `|%` … `++` … `--` core.
 //!
-//! STOA14/15: one or two arms. STOA17: optional payload face before arms.
+//! STOA14/15: one or two arms. STOA17: optional bare payload face before arms.
 //! STOA20: up to three arms (`double` · `inc` · `dec`).
+//! STOA21: optional typed payload `=/  face=@u32  <decimal>`.
 //!
-//! Typed molds and variance stay later.
+//! Other auras and variance stay later.
 
 const std = @import("std");
 const lower_multi = @import("lower_multi.rye");
@@ -23,6 +24,8 @@ pub const ParseError = error{
     TooManyPayloads,
     PayloadAfterArm,
     NotBarePayload,
+    AuraNotYetLowered,
+    NamedMoldNotYetLowered,
     MalformedPayload,
     EmptySource,
 };
@@ -34,6 +37,7 @@ pub const CoreSpec = struct {
     payload_face: [max_name_len]u8 = .{0} ** max_name_len,
     payload_len: usize = 0,
     payload_value: u32 = 0,
+    payload_typed: bool = false,
 };
 
 pub fn arm_at(spec: *const CoreSpec, i: usize) []const u8 {
@@ -94,21 +98,27 @@ fn parse_trailing_u32(rest: []const u8) ParseError!u32 {
     return v;
 }
 
-fn parse_payload_line(line: []const u8) ParseError!struct { face: []const u8, value: u32 } {
-    const face_spec = rf.parse(line) catch return error.NotBarePayload;
+fn parse_payload_line(line: []const u8) ParseError!struct { face: []const u8, value: u32, typed: bool } {
+    const face_spec = rf.parse(line) catch return error.MalformedPayload;
     const face = rf.face_slice(&face_spec);
-    if (rf.mold_slice(&face_spec).len != 0) return error.NotBarePayload;
-    if (face.len == 0) return error.NotBarePayload;
+    if (face.len == 0) return error.MalformedPayload;
+    const mold = rf.mold_slice(&face_spec);
+    const typed = mold.len != 0;
+    if (typed) {
+        if (mold[0] != '@') return error.NamedMoldNotYetLowered;
+        if (!std.mem.eql(u8, mold, "@u32")) return error.AuraNotYetLowered;
+    }
 
-    const head = "=/";
-    const after_head = std.mem.trimStart(u8, line[head.len..], " \t");
-    if (!std.mem.startsWith(u8, after_head, face)) return error.MalformedPayload;
-    const after_face = std.mem.trimStart(u8, after_head[face.len..], " \t");
-    const value = try parse_trailing_u32(after_face);
-    return .{ .face = face, .value = value };
+    const after_head = std.mem.trimStart(u8, line[2..], " \t");
+    var clause_end: usize = 0;
+    while (clause_end < after_head.len and after_head[clause_end] != ' ' and after_head[clause_end] != '\t')
+        clause_end += 1;
+    const after_clause = std.mem.trimStart(u8, after_head[clause_end..], " \t");
+    const value = try parse_trailing_u32(after_clause);
+    return .{ .face = face, .value = value, .typed = typed };
 }
 
-/// Parses a thin core desk: `|%`, optional one `=/` payload, one or two `++` arms, `--`.
+/// Parses a thin core desk: `|%`, optional one `=/` payload, up to three `++` arms, `--`.
 pub fn parse_source(src: []const u8) ParseError!CoreSpec {
     var lines: [lower_multi.max_lines][]const u8 = undefined;
     const n = lower_multi.collect_lines(src, &lines) catch |err| switch (err) {
@@ -132,6 +142,7 @@ pub fn parse_source(src: []const u8) ParseError!CoreSpec {
             @memcpy(spec.payload_face[0..payload.face.len], payload.face);
             spec.payload_len = payload.face.len;
             spec.payload_value = payload.value;
+            spec.payload_typed = payload.typed;
             continue;
         }
         if (line.len >= 2 and line[0] == '+' and line[1] == '+') {
