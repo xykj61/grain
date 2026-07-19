@@ -396,6 +396,8 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA80 multi-face `$%` payload GREEN, `20260719.195216`** — lean A: desk `mold-xfer` → `XferMold` (`[%mint from=@u32 amount=@u32]` · `[%send ~]`); one-face `mold-xact` kept. Tagged named-cast stay later. Next language: **STOA81** check-in.
 
+**STOA81 tagged named-cast GREEN, `20260719.195819`** — lean A: same-desk `cast-named-kind` and cross-desk `cast-import-kind` cast unit `$%` to `KindMold` via `@enumFromInt`; mold library emit covers unit `$%`. Payload `$%` cast stay later. Next language: **STOA82** check-in.
+
 **Glow OS · Glow Desk · Glow Glass seated, `20260717.183622`** — Keaton: **Glow OS** unifies; **Glow Desk** = desktop; **Glow Glass** = mobile. Lexicon + silo [`../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md`](../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md). Orientation firmware stays check-in.
 
 **Witness habitat + markup pipeline, `20260717.173427`** — foundations fit study affirms single-strand · sameness · happy-zone practice in the suite; teaching path was the gap. Seats **witness habitat** as Acme synonym (foundations keep *happy zone*). Fusion map holds Scribble→Brix→Bron→Mantra→Sala with Glow under TAME; Udon/Sail/Zuse horizon. Tutorial scaffold [`../manual/tutorials/cursor-and-the-compass.md`](../manual/tutorials/cursor-and-the-compass.md); silo [`../active-designing/20260717-173427_witness-habitat-and-the-markup-pipeline.md`](../active-designing/20260717-173427_witness-habitat-and-the-markup-pipeline.md). Product next remains Dexter D2.

@@ -1,11 +1,15 @@
 //! glow/lower_named_cast.rye — resolve `^-  <name>` against a `+$` mold.
 //!
-//! STOA77: same-desk `+$` … `==` then `^-`.
-//! STOA79: cross-desk `/+  <mold-desk>` then `^-  <mold-name>`.
-//! Tagged `$%` named-cast · multi-face payload cast stay later.
+//! STOA77: same-desk `+$` / `$:` then `^-`.
+//! STOA79: cross-desk `/+` then `^-` for `$:` molds.
+//! STOA81: same-desk · cross-desk `^-` against unit `$%` molds.
+//! Payload `$%` named-cast stay later.
 //!
-//!   /+  mold-amount
-//!   ^-  amount-mold
+//!   +$  kind-mold
+//!     $%  [%mint ~]
+//!         [%send ~]
+//!     ==
+//!   ^-  kind-mold
 
 const std = @import("std");
 const rm = @import("rune_mold.rye");
@@ -20,6 +24,7 @@ pub const LowerError = rm.ParseError || rc.ParseError || error{
     BadIdent,
     CastMoldMismatch,
     NamedCastNeedsTuple,
+    NamedCastPayloadNotYet,
     NotACrossDesk,
     TooFewLines,
     TooManyLines,
@@ -152,25 +157,20 @@ pub fn parse_cross_desk(src: []const u8) LowerError!CrossDeskSpec {
 
 pub fn bind_cross_desk(spec: *const CrossDeskSpec, lib_src: []const u8) LowerError!rm.MoldSpec {
     const mold_spec = try rm.parse_source(lib_src);
-    if (mold_spec.body != .tuple) return error.NamedCastNeedsTuple;
-    if (mold_spec.field_count != 1) return error.NamedCastNeedsTuple;
     const mold_name = rm.name_slice(&mold_spec);
     if (!std.mem.eql(u8, cast_mold_slice(spec), mold_name)) return error.CastMoldMismatch;
+    switch (mold_spec.body) {
+        .tuple => {
+            if (mold_spec.field_count != 1) return error.NamedCastNeedsTuple;
+        },
+        .tagged => {
+            if (rm.any_payload(&mold_spec)) return error.NamedCastPayloadNotYet;
+        },
+    }
     return mold_spec;
 }
 
-pub fn lower_source_welcome(src: []const u8, out: []u8) LowerError!u32 {
-    if (src.len == 0) return error.EmptySource;
-    var lines: [lower_multi.max_lines][]const u8 = undefined;
-    const n = lower_multi.collect_lines(src, &lines) catch |err| switch (err) {
-        error.TooManyLines => return error.TooManyLines,
-        else => return error.EmptySource,
-    };
-    if (n < 4) return error.TooFewLines;
-    if (n > 5) return error.TooManyLines;
-
-    // Mold body is all but the final cast line.
-    var mold_src: [2048]u8 = undefined;
+fn collect_mold_src(lines: []const []const u8, n: usize, mold_src: *[2048]u8) LowerError!usize {
     var mold_len: usize = 0;
     var i: usize = 0;
     while (i + 1 < n) : (i += 1) {
@@ -184,22 +184,14 @@ pub fn lower_source_welcome(src: []const u8, out: []u8) LowerError!u32 {
         @memcpy(mold_src[mold_len..][0..line.len], line);
         mold_len += line.len;
     }
+    return mold_len;
+}
 
-    const mold_spec = try rm.parse_source(mold_src[0..mold_len]);
-    if (mold_spec.body != .tuple) return error.NamedCastNeedsTuple;
-    if (mold_spec.field_count != 1) return error.NamedCastNeedsTuple;
-
-    const cast_spec = try rc.parse(lines[n - 1]);
-    const cast_mold = rc.mold_slice(&cast_spec);
-    const mold_name = rm.name_slice(&mold_spec);
-    if (!std.mem.eql(u8, cast_mold, mold_name)) return error.CastMoldMismatch;
-
-    const field = rm.first_field_slice(&mold_spec);
+fn emit_tuple_cast(mold_name: []const u8, cast_mold: []const u8, field: []const u8, out: []u8) LowerError!u32 {
     var zt: [rm.max_name_len]u8 = undefined;
     var zf: [rm.max_name_len]u8 = undefined;
     const tn = try zig_type_name(mold_name, &zt);
     const fn_len = try zig_safe_ident(field, &zf);
-
     const written = std.fmt.bufPrint(out,
         \\const std = @import("std");
         \\
@@ -228,16 +220,83 @@ pub fn lower_source_welcome(src: []const u8, out: []u8) LowerError!u32 {
     return @intCast(written.len);
 }
 
-pub fn lower_cross_desk_welcome(src: []const u8, lib_src: []const u8, out: []u8) LowerError!u32 {
+fn emit_tagged_unit_cast(spec: *const rm.MoldSpec, cast_mold: []const u8, out: []u8) LowerError!u32 {
+    const mold_name = rm.name_slice(spec);
+    var zt: [rm.max_name_len]u8 = undefined;
+    var ztag: [rm.max_name_len]u8 = undefined;
+    const tn = try zig_type_name(mold_name, &zt);
+    const tag0 = rm.field_slice(spec, 0);
+    const tlen = try zig_safe_ident(tag0, &ztag);
+
+    var used: usize = 0;
+    const hdr = std.fmt.bufPrint(out[used..],
+        \\const std = @import("std");
+        \\
+        \\/// Lowered from Glow `+$ {s}` + `^-  {s}` — tagged named-cast (STOA81).
+        \\pub const {s} = enum(u8) {{
+        \\
+    , .{ mold_name, cast_mold, zt[0..tn] }) catch return error.Overflow;
+    used += hdr.len;
+
+    var i: usize = 0;
+    while (i < spec.field_count) : (i += 1) {
+        var zf: [rm.max_name_len]u8 = undefined;
+        const fl = try zig_safe_ident(rm.field_slice(spec, i), &zf);
+        const line = std.fmt.bufPrint(out[used..], "    {s},\n", .{zf[0..fl]}) catch return error.Overflow;
+        used += line.len;
+    }
+    const foot = std.fmt.bufPrint(out[used..],
+        \\}};
+        \\
+        \\pub fn main(_: std.process.Init) !u8 {{
+        \\    const raw: u8 = 0;
+        \\    const casted: {s} = @enumFromInt(raw);
+        \\    return if (casted == .{s}) 0 else 1;
+        \\}}
+        \\
+    , .{ zt[0..tn], ztag[0..tlen] }) catch return error.Overflow;
+    used += foot.len;
+    return @intCast(used);
+}
+
+pub fn lower_source_welcome(src: []const u8, out: []u8) LowerError!u32 {
     if (src.len == 0) return error.EmptySource;
-    const spec = try parse_cross_desk(src);
-    const mold_spec = try bind_cross_desk(&spec, lib_src);
+    var lines: [lower_multi.max_lines][]const u8 = undefined;
+    const n = lower_multi.collect_lines(src, &lines) catch |err| switch (err) {
+        error.TooManyLines => return error.TooManyLines,
+        else => return error.EmptySource,
+    };
+    if (n < 4) return error.TooFewLines;
+    if (n > 5) return error.TooManyLines;
+
+    var mold_src: [2048]u8 = undefined;
+    const mold_len = try collect_mold_src(lines[0..n], n, &mold_src);
+    const mold_spec = try rm.parse_source(mold_src[0..mold_len]);
+
+    const cast_spec = try rc.parse(lines[n - 1]);
+    const cast_mold = rc.mold_slice(&cast_spec);
     const mold_name = rm.name_slice(&mold_spec);
-    const field = rm.first_field_slice(&mold_spec);
+    if (!std.mem.eql(u8, cast_mold, mold_name)) return error.CastMoldMismatch;
+
+    return switch (mold_spec.body) {
+        .tuple => {
+            if (mold_spec.field_count != 1) return error.NamedCastNeedsTuple;
+            return emit_tuple_cast(mold_name, cast_mold, rm.first_field_slice(&mold_spec), out);
+        },
+        .tagged => {
+            if (rm.any_payload(&mold_spec)) return error.NamedCastPayloadNotYet;
+            return emit_tagged_unit_cast(&mold_spec, cast_mold, out);
+        },
+    };
+}
+
+fn emit_cross_tuple(spec: *const CrossDeskSpec, mold_spec: *const rm.MoldSpec, out: []u8) LowerError!u32 {
+    const mold_name = rm.name_slice(mold_spec);
+    const field = rm.first_field_slice(mold_spec);
     var zs: [max_stem_len]u8 = undefined;
     var zt: [rm.max_name_len]u8 = undefined;
     var zf: [rm.max_name_len]u8 = undefined;
-    const sn = try zig_stem(&spec, &zs);
+    const sn = try zig_stem(spec, &zs);
     const tn = try zig_type_name(mold_name, &zt);
     const fn_len = try zig_safe_ident(field, &zf);
     const at = "@";
@@ -256,8 +315,8 @@ pub fn lower_cross_desk_welcome(src: []const u8, lib_src: []const u8, out: []u8)
         at,
         at,
         zs[0..sn],
-        stem_slice(&spec),
-        cast_mold_slice(&spec),
+        stem_slice(spec),
+        cast_mold_slice(spec),
         named_cast_demo,
         zt[0..tn],
         zf[0..fn_len],
@@ -265,4 +324,46 @@ pub fn lower_cross_desk_welcome(src: []const u8, lib_src: []const u8, out: []u8)
         named_cast_demo,
     }) catch return error.Overflow;
     return @intCast(written.len);
+}
+
+fn emit_cross_tagged(spec: *const CrossDeskSpec, mold_spec: *const rm.MoldSpec, out: []u8) LowerError!u32 {
+    const mold_name = rm.name_slice(mold_spec);
+    var zs: [max_stem_len]u8 = undefined;
+    var zt: [rm.max_name_len]u8 = undefined;
+    var ztag: [rm.max_name_len]u8 = undefined;
+    const sn = try zig_stem(spec, &zs);
+    const tn = try zig_type_name(mold_name, &zt);
+    const tlen = try zig_safe_ident(rm.field_slice(mold_spec, 0), &ztag);
+    const at = "@";
+    const written = std.fmt.bufPrint(out,
+        \\const std = {s}import("std");
+        \\const lib = {s}import("{s}.rye");
+        \\
+        \\/// Lowered from Glow `/+ {s}` + `^-  {s}` — cross-desk tagged named-cast (STOA81).
+        \\pub fn main(_: std.process.Init) !u8 {{
+        \\    const raw: u8 = 0;
+        \\    const casted: lib.{s} = @enumFromInt(raw);
+        \\    return if (casted == .{s}) 0 else 1;
+        \\}}
+        \\
+    , .{
+        at,
+        at,
+        zs[0..sn],
+        stem_slice(spec),
+        cast_mold_slice(spec),
+        zt[0..tn],
+        ztag[0..tlen],
+    }) catch return error.Overflow;
+    return @intCast(written.len);
+}
+
+pub fn lower_cross_desk_welcome(src: []const u8, lib_src: []const u8, out: []u8) LowerError!u32 {
+    if (src.len == 0) return error.EmptySource;
+    const spec = try parse_cross_desk(src);
+    const mold_spec = try bind_cross_desk(&spec, lib_src);
+    return switch (mold_spec.body) {
+        .tuple => emit_cross_tuple(&spec, &mold_spec, out),
+        .tagged => emit_cross_tagged(&spec, &mold_spec, out),
+    };
 }
