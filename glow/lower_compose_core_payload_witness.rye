@@ -7,7 +7,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const lower = @import("lower_compose_core_payload.rye");
 
-const witness_version = "20260719.000745";
+const witness_version = "20260719.171844";
 
 const bare_src =
     \\::  Outer face then payload core (STOA24).
@@ -33,6 +33,15 @@ const nest_src =
     \\|%
     \\=/  amount  5
     \\++  pack  (jam amount amount)
+    \\--
+;
+
+const cue_jam_src =
+    \\::  Outer face then payload cue-of-jam arm (STOA61).
+    \\=/  note  7
+    \\|%
+    \\=/  amount  5
+    \\++  unpack  (cue (jam amount amount))
     \\--
 ;
 
@@ -92,6 +101,16 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, buf[0..n_nest_u], "note == 8 and core.pack() == 327686") != null);
     print("compose-core-payload: nest pack unwelcome -- GREEN\n", .{});
 
+    const n_cue = try lower.lower_source_welcome(cue_jam_src, &buf);
+    const rye_cue = buf[0..n_cue];
+    assert(std.mem.indexOf(u8, rye_cue, "return ((self.amount << 16) | self.amount) & 0xffff;") != null);
+    assert(std.mem.indexOf(u8, rye_cue, "note == 7 and core.unpack() == 5") != null);
+    print("compose-core-payload: cue-of-jam unpack welcome -- GREEN\n", .{});
+
+    const n_cue_u = try lower.lower_source_unwelcome(cue_jam_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n_cue_u], "note == 8 and core.unpack() == 6") != null);
+    print("compose-core-payload: cue-of-jam unpack unwelcome -- GREEN\n", .{});
+
     try cwd.createDirPath(io, "glow/.cache");
     const n4 = try lower.lower_source_welcome(bare_src, &buf);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/compose_core_payload_welcome.rye", .data = buf[0..n4] });
@@ -99,17 +118,21 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/compose_core_payload_unwelcome.rye", .data = buf[0..n5] });
     const n6 = try lower.lower_source_welcome(nest_src, &buf);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/compose_core_payload_nest_welcome.rye", .data = buf[0..n6] });
-    print("compose-core-payload: wrote welcome unwelcome and nest under glow/.cache/ -- GREEN\n", .{});
+    const n7 = try lower.lower_source_welcome(cue_jam_src, &buf);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/compose_core_payload_cue_jam_welcome.rye", .data = buf[0..n7] });
+    print("compose-core-payload: wrote welcome nest and cue-jam under glow/.cache/ -- GREEN\n", .{});
 
     const gen = try cwd.readFileAlloc(io, "glow/gen/compose-core-payload.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen, "=/  note  7") != null);
     assert(std.mem.indexOf(u8, gen, "=/  amount  5") != null);
     const gen_nest = try cwd.readFileAlloc(io, "glow/gen/compose-core-payload-nest.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_nest, "(jam amount amount)") != null);
-    print("compose-core-payload: desks compose-core-payload and nest carry face→payload -- GREEN\n", .{});
+    const gen_cue = try cwd.readFileAlloc(io, "glow/gen/compose-core-payload-cue-jam.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_cue, "(cue (jam amount amount))") != null);
+    print("compose-core-payload: desks payload nest and cue-jam carry face→payload -- GREEN\n", .{});
 
     print("compose-core-payload: version {s}\n", .{witness_version});
-    print("GREEN: face→payload `|%` compose lowers closed and open nest arms (STOA24/30).\n", .{});
+    print("GREEN: face→payload `|%` compose lowers nest and cue-of-jam arms (STOA24/30/61).\n", .{});
     return 0;
 }
 
