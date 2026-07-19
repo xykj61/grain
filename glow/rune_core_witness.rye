@@ -80,6 +80,13 @@ const cue_jam_right_nest_src =
     \\--
 ;
 
+const cue_jam_both_nest_src =
+    \\::  Open arm cue nest jam both (STOA42).
+    \\|%
+    \\++  unpack  (cue (jam (mix sample sample) (mix sample sample)))
+    \\--
+;
+
 const mix_src =
     \\::  Open arm nest body — mix (STOA27).
     \\|%
@@ -217,6 +224,12 @@ fn run_selftest() !u8 {
     assert(rk.arm_body_at(&cue_jam_rn, 0).kind == .cue_of);
     assert(expr.cue_jam_is_nest_right(rk.arm_body_at(&cue_jam_rn, 0)));
     print("core: cue nest jam right arm parses -- GREEN\n", .{});
+
+    const cue_jam_both = try rk.parse_source(cue_jam_both_nest_src);
+    assert(cue_jam_both.count == 1);
+    assert(rk.arm_body_at(&cue_jam_both, 0).kind == .cue_of);
+    assert(expr.cue_jam_is_nest_both(rk.arm_body_at(&cue_jam_both, 0)));
+    print("core: cue nest jam both arm parses -- GREEN\n", .{});
 
     const mix = try rk.parse_source(mix_src);
     assert(mix.count == 1);

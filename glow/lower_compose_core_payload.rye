@@ -139,7 +139,9 @@ fn open_body_expect(body: *const expr.Expr, sample: u32) LowerError!u32 {
             (sample << 16) | (sample ^ sample)
         else
             (sample << 16) | sample,
-        .cue_of => if (expr.cue_jam_is_nest_left(body))
+        .cue_of => if (expr.cue_jam_is_nest_both(body))
+            (((sample ^ sample) << 16) | (sample ^ sample)) & 0xffff
+        else if (expr.cue_jam_is_nest_left(body))
             (((sample ^ sample) << 16) | sample) & 0xffff
         else if (expr.cue_jam_is_nest_right(body))
             ((sample << 16) | (sample ^ sample)) & 0xffff
@@ -164,7 +166,9 @@ fn emit_open_body(body: *const expr.Expr, face_zig: []const u8, out: []u8) Lower
             std.fmt.bufPrint(out, "return (self.{s} << 16) | (self.{s} ^ self.{s});", .{ face_zig, face_zig, face_zig }) catch return error.Overflow
         else
             std.fmt.bufPrint(out, "return (self.{s} << 16) | self.{s};", .{ face_zig, face_zig }) catch return error.Overflow,
-        .cue_of => if (expr.cue_jam_is_nest_left(body))
+        .cue_of => if (expr.cue_jam_is_nest_both(body))
+            std.fmt.bufPrint(out, "return (((self.{s} ^ self.{s}) << 16) | (self.{s} ^ self.{s})) & 0xffff;", .{ face_zig, face_zig, face_zig, face_zig }) catch return error.Overflow
+        else if (expr.cue_jam_is_nest_left(body))
             std.fmt.bufPrint(out, "return (((self.{s} ^ self.{s}) << 16) | self.{s}) & 0xffff;", .{ face_zig, face_zig, face_zig }) catch return error.Overflow
         else if (expr.cue_jam_is_nest_right(body))
             std.fmt.bufPrint(out, "return ((self.{s} << 16) | (self.{s} ^ self.{s})) & 0xffff;", .{ face_zig, face_zig, face_zig }) catch return error.Overflow

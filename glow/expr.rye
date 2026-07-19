@@ -143,11 +143,15 @@ pub fn cue_jam_is_nest_right(e: *const Expr) bool {
     return cue_is_jam(e) and e.left_arg == .face and e.right_arg == .mix_of;
 }
 
+pub fn cue_jam_is_nest_both(e: *const Expr) bool {
+    return cue_is_jam(e) and e.left_arg == .mix_of and e.right_arg == .mix_of;
+}
+
 /// Demo expect for cue — low 16 of the subject cell-pack.
 pub fn cue_expect(e: *const Expr) u32 {
     if (!cue_is_jam(e)) return cue_demo_result();
     if (cue_jam_is_nest_left(e)) return jam_demo_right;
-    if (cue_jam_is_nest_right(e)) return mix_demo_result();
+    if (cue_jam_is_nest_right(e) or cue_jam_is_nest_both(e)) return mix_demo_result();
     return jam_demo_right;
 }
 
@@ -319,7 +323,24 @@ fn parse_paren(rest: []const u8) ParseError!Prefix {
             if (right.rest.len == 0 or right.rest[0] != ')') return error.MalformedExpr;
             const after_jam = std.mem.trimStart(u8, right.rest[1..], " \t");
             if (after_jam.len == 0 or after_jam[0] != ')') return error.MalformedExpr;
-            // Flat jam · nest-left mix · nest-right mix. Nest-both under cue stays later.
+            // Flat jam · nest-left · nest-right · nest-both under cue.
+            if (left.kind == .mix_of and right.kind == .mix_of) {
+                var e: Expr = .{
+                    .kind = .cue_of,
+                    .cue_arg = .jam_of,
+                    .left_arg = .mix_of,
+                    .right_arg = .mix_of,
+                    .face_len = left.face.len,
+                    .face2_len = left.face2.len,
+                    .face3_len = right.face.len,
+                    .face4_len = right.face2.len,
+                };
+                @memcpy(e.face[0..left.face.len], left.face);
+                @memcpy(e.face2[0..left.face2.len], left.face2);
+                @memcpy(e.face3[0..right.face.len], right.face);
+                @memcpy(e.face4[0..right.face2.len], right.face2);
+                return .{ .expr = e, .rest = std.mem.trimStart(u8, after_jam[1..], " \t") };
+            }
             if (left.kind == .mix_of and right.kind == .face) {
                 var e: Expr = .{
                     .kind = .cue_of,

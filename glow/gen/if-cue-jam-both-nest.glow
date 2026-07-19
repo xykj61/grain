@@ -1,0 +1,2 @@
+::  Conditional with cue of nest jam both then-arm.
+?:  (gth tick 32)  (cue (jam (mix from amount) (mix cell gate)))  0

@@ -72,6 +72,13 @@ const cue_jam_right_nest_src =
     \\--
 ;
 
+const cue_jam_both_nest_src =
+    \\::  Open arm cue nest jam both (STOA42).
+    \\|%
+    \\++  unpack  (cue (jam (mix sample sample) (mix sample sample)))
+    \\--
+;
+
 const two_src =
     \\::  Two-arm core (STOA15).
     \\|%
@@ -203,6 +210,12 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, rye_cjr, "Core.unpack(amount) == 0") != null);
     print("core: cue nest jam right welcome builds unpack -- GREEN\n", .{});
 
+    const n_cjb = try lower.lower_source_welcome(cue_jam_both_nest_src, &buf);
+    const rye_cjb = buf[0..n_cjb];
+    assert(std.mem.indexOf(u8, rye_cjb, "return (((sample ^ sample) << 16) | (sample ^ sample)) & 0xffff;") != null);
+    assert(std.mem.indexOf(u8, rye_cjb, "Core.unpack(amount) == 0") != null);
+    print("core: cue nest jam both welcome builds unpack -- GREEN\n", .{});
+
     try cwd.createDirPath(io, "glow/.cache");
     const n10 = try lower.lower_source_welcome(typed_payload_src, &buf);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/core_payload_typed_welcome.rye", .data = buf[0..n10] });
@@ -246,10 +259,12 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, gen_cjn, "(cue (jam (mix sample sample) sample))") != null);
     const gen_cjr = try cwd.readFileAlloc(io, "glow/gen/core-cue-jam-right-nest.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_cjr, "(cue (jam sample (mix sample sample)))") != null);
+    const gen_cjb = try cwd.readFileAlloc(io, "glow/gen/core-cue-jam-both-nest.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_cjb, "(cue (jam (mix sample sample) (mix sample sample)))") != null);
     print("core: desks core-three core-payload-typed core-open core-nest core-jam-* core-cue-jam* carry batteries -- GREEN\n", .{});
 
     print("core: version {s}\n", .{witness_version});
-    print("GREEN: `|%` thin core lowers closed arms, open and nest bodies, bare or typed @u32 payload (STOA14/15/17/20/21/25/27/35/36/37/38/40/41).\n", .{});
+    print("GREEN: `|%` thin core lowers closed arms, open and nest bodies, bare or typed @u32 payload (STOA14/15/17/20/21/25/27/35/36/37/38/40/41/42).\n", .{});
     return 0;
 }
 
