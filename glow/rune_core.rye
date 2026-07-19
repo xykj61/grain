@@ -131,7 +131,7 @@ fn check_open_body(spec: *const CoreSpec, body: *const expr.Expr) ParseError!voi
             if (expr.cue_is_jam(body)) {
                 try check_body_face(spec, expr.face2_slice(body));
             }
-            if (expr.cue_jam_is_nest_left(body)) {
+            if (expr.cue_jam_is_nest_left(body) or expr.cue_jam_is_nest_right(body)) {
                 try check_body_face(spec, expr.face3_slice(body));
             }
         },

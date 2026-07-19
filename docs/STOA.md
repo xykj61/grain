@@ -2,10 +2,10 @@
 
 *Waymark for Glow the language: rune heads that lower, nest forms that deepen, composition that grows toward Glow-authored modules. Compresses the working pin; never replaces it.*
 
-**Status:** Checkable — operator compressor (STOA0–STOA40 GREEN)  
+**Status:** Checkable — operator compressor (STOA0–STOA41 GREEN)  
 **Depth:** guide  
 **Ceiling:** ≤80 lines  
-**Last updated:** 2026-07-19 (STOA40 cue nest jam left GREEN)  
+**Last updated:** 2026-07-19 (STOA41 cue nest jam right GREEN)  
 **Compresses:** [`../glow/README.md`](../glow/README.md) · first-code [`../expanding-prompts/20260717-213242_glow-first-code-beside-glass-and-open-runes.md`](../expanding-prompts/20260717-213242_glow-first-code-beside-glass-and-open-runes.md) · sameness [`../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md`](../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md) · seat [`../active-designing/20260718-202730_stoa-glow-language-waymark.md`](../active-designing/20260718-202730_stoa-glow-language-waymark.md)
 
 ---
@@ -61,13 +61,14 @@ Product glass and wire stay Rye-hosted under their own waymarks. **STOA** names 
 | **STOA38** | `(cue (jam …))` nest round-trip | `glow_expr` · `glow_lower_*` · desks | **GREEN** `20260719.144929` |
 | **STOA39** | Cross-line jam→cue compose | `glow_lower_compose_jam_cue` · desk | **GREEN** `20260719.145738` |
 | **STOA40** | `(cue (jam (mix …) …))` nest-left | `glow_expr` · `glow_lower_*` · desks | **GREEN** `20260719.150634` |
-| **STOA41** | Next language / product | horizon — check-in | horizon |
+| **STOA41** | `(cue (jam … (mix …)))` nest-right | `glow_expr` · `glow_lower_*` · desks | **GREEN** `20260719.151831` |
+| **STOA42** | Next language / product | horizon — check-in | horizon |
 
 ## Hands-on
 
 ```bash
 cd ~/urbit
-rishi/bin/rishi run tools/glow_run.rish glow/gen/face-cue-jam-nest.glow
+rishi/bin/rishi run tools/glow_run.rish glow/gen/face-cue-jam-right-nest.glow
 rishi/bin/rishi run tools/glow_run_desk_witness.rish
 ```
 

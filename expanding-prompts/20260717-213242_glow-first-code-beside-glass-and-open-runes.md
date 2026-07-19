@@ -70,11 +70,11 @@ From the sameness rune brief. These are the heads an Acme reader should treat as
 | **Conditionals** | `?+` default switch · `?=` · `?>` · `?<` |
 | **Calls** | `%-`/`%+`/`%^`/`%*` **GREEN STOA6–9** |
 | **Multi-line** | bare **STOA10** · compose **STOA11–12** · typed `@u32` **STOA13** |
-| **Cores** | arms through three **STOA14–15/20** · library **STOA16** · bare/typed payload **STOA17/21** · face→core one/two/three **STOA18–19/22** · two-face→add **STOA23** · face→payload **STOA24** · open `++` body **STOA25** · `/+` library compose **STOA26** · nest `++` body **STOA27** · face→open `|%` **STOA28** · `/+` nest library **STOA29** · payload+open **STOA30** · `/+` payload library **STOA31** · `(cue …)` nest **STOA32** · nest jam face **STOA33** · nest jam arms **STOA34** · nest jam open `++` **STOA35** · nest jam right **STOA36** · nest jam both **STOA37** · cue-of-jam **STOA38** · jam→cue compose **STOA39** · cue nest jam left **STOA40** |
+| **Cores** | arms through three **STOA14–15/20** · library **STOA16** · bare/typed payload **STOA17/21** · face→core one/two/three **STOA18–19/22** · two-face→add **STOA23** · face→payload **STOA24** · open `++` body **STOA25** · `/+` library compose **STOA26** · nest `++` body **STOA27** · face→open `|%` **STOA28** · `/+` nest library **STOA29** · payload+open **STOA30** · `/+` payload library **STOA31** · `(cue …)` nest **STOA32** · nest jam face **STOA33** · nest jam arms **STOA34** · nest jam open `++` **STOA35** · nest jam right **STOA36** · nest jam both **STOA37** · cue-of-jam **STOA38** · jam→cue compose **STOA39** · cue nest jam left **STOA40** · cue nest jam right **STOA41** |
 | **Cells** | `:-`/`:+`/`:^`/`:~` **GREEN STOA2–5** |
 | **Molds** | `+$` `$:` `$%` |
 | **Hints / jets** | `~%` `~/` (+ jet witnesses) |
-| **Nest / surface** | cue nest-right/both · richer multi-line nest values · general token stream · product-shaped desks |
+| **Nest / surface** | cue nest-both · richer multi-line nest values · general token stream · product-shaped desks |
 | **Auras** | `@ux` · `@p` · `@da` · `@t` (unsigned `@uN` only today) |
 
 **Glass-critical gap in one line:** Skate paint + Dexter drain + JABS chat still need molds, richer arm bodies, and a NativeActivity import seam. Glow now emits cores · open `++` bodies · `/+` Glow→Glow library compose (**STOA26**) — still not a module the APK imports.
