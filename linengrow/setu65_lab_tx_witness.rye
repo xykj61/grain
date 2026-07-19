@@ -1,0 +1,30 @@
+//! linengrow/setu65_lab_tx_witness.rye — proves SETU6.5 lab TX gate.
+//!
+//!   rye build linengrow/setu65_lab_tx_witness.rye -lc \
+//!     -femit-bin=linengrow/bin/setu65_lab_tx_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const setu65 = @import("setu65_lab_tx.rye");
+
+const witness_version = "20260718.201601";
+
+fn run_selftest(_: std.process.Init) !u8 {
+    assert(std.mem.eql(u8, setu65.waymark, "SETU"));
+    print("setu65: waymark {s} -- GREEN\n", .{setu65.waymark});
+
+    assert(setu65.fixture_stand_in_refuses());
+    print("setu65: stand-in refuses TX -- GREEN\n", .{});
+
+    assert(setu65.fixture_armed_prepares());
+    print("setu65: armed prepares framed payload -- GREEN\n", .{});
+
+    print("setu65: version {s}\n", .{witness_version});
+    print("GREEN: SETU6.5 — lab TX gate seated (device-free).\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
+}

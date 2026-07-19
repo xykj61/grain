@@ -1,0 +1,28 @@
+format session-log-v1
+stamp 20260718.201826
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern time convention
+title SETU6.5 lab TX gate GREEN
+prompt approve
+think Keaton approved SETU6.5 thin face after SETU6 send cee244c6fd.
+think Built setu65_lab_tx gate · witness · check · host onpath · brief 201601.
+think Stand-in refuses TX; armed prepares SETU5 frame and attempts BINDTODEVICE UDP 38503.
+obs Device-free witness GREEN; host SKIP GREEN without usb0/ncm — honest for this Pixel.
+obs Wired parity_ch01 · docs/SETU · REMEMBER · TASKS · ROADMAP; live sent eyes stay open door.
+file linengrow/setu65_lab_tx.rye gate prepare and iface TX
+file linengrow/setu65_lab_tx_witness.rye device-free fixtures
+file linengrow/setu65_lab_tx_check.rye lab.bron driven attempt
+file tools/setu65_lab_tx_witness.rish harness with -lc
+file tools/setu65_lab_tx_onpath_host.rish host SKIP or attempt
+file active-designing/20260718-201601_setu65-lab-tx-gate.md thin face brief
+file docs/SETU.md SETU6.5 GREEN row
+file tools/parity_ch01.rish suite wire
+file work-in-progress/REMEMBER.md product nib SETU6.5
+file work-in-progress/TASKS.md gate checked; sent eyes open
+file work-in-progress/ROADMAP.md 201601 Now line
+product_nib SETU6.5
+suite_nib SETU6.5
+git_nib cee244c6fd
+recommend keep-going send SETU6.5 when ready
