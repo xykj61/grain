@@ -1,0 +1,15 @@
+format session-log-v1
+stamp 20260718.233813
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern time convention
+title Send STOA22 check-in
+prompt approve rec
+think Approved lean A — send STOA22 face-to-three-arm compose
+think Commit and push origin plus codeberg; already on main
+think After pier lands present STOA23 forks and wait
+obs Witnesses were GREEN before send — compose-core-three desk hop
+file glow/gen/compose-core-three.glow STOA22 desk
+file glow/lower_multi.rye max_lines 6
+recommend check-in STOA23 forks after pier push
