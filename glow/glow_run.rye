@@ -36,6 +36,7 @@ const lower_compose_core_payload = @import("lower_compose_core_payload.rye");
 const lower_compose_lib = @import("lower_compose_lib.rye");
 const lower_multi_typed = @import("lower_multi_typed.rye");
 const lower_core = @import("lower_core.rye");
+const lower_mold = @import("lower_mold.rye");
 
 
 
@@ -91,6 +92,12 @@ pub fn main(init: std.process.Init) !u8 {
                 print("glow_run: multi-line collect failed in {s}\n", .{glow_path});
                 return 1;
             };
+            if (n == 3 and lines[0].len >= 2 and lines[0][0] == '+' and lines[0][1] == '$') {
+                break :blk lower_mold.lower_source_welcome(src, &rye_buf) catch |err| {
+                    print("glow_run: mold lower failed ({s})\n", .{@errorName(err)});
+                    return 1;
+                };
+            }
             if (n >= 2 and lines[0].len >= 2 and lines[0][0] == '|' and lines[0][1] == '%') {
                 break :blk lower_core.lower_source_welcome(src, &rye_buf) catch |err| {
                     print("glow_run: core lower failed ({s})\n", .{@errorName(err)});

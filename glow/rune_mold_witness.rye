@@ -1,0 +1,59 @@
+//! glow/rune_mold_witness.rye — proves thin `+$` / `$:` mold parse (STOA74).
+//!
+//!   rye build glow/rune_mold_witness.rye -femit-bin=glow/bin/rune_mold_witness
+//!   glow/bin/rune_mold_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const rm = @import("rune_mold.rye");
+
+const witness_version = "20260719.190500";
+
+fn run_selftest() !u8 {
+    const src =
+        \\+$  amount-mold
+        \\  $:  amount=@u32
+        \\  ==
+    ;
+    const spec = try rm.parse_source(src);
+    assert(std.mem.eql(u8, rm.name_slice(&spec), "amount-mold"));
+    assert(std.mem.eql(u8, rm.field_slice(&spec), "amount"));
+    print("rune: thin +$ amount-mold / $: amount=@u32 parses -- GREEN\n", .{});
+
+    if (rm.parse_source("^-  @u32")) |_| {
+        return error.NotAMoldNotCaught;
+    } else |err| {
+        if (err != rm.ParseError.NotAMold and err != rm.ParseError.TooFewLines) return err;
+    }
+    print("rune: non-mold source refused -- GREEN unwelcome path\n", .{});
+
+    if (rm.parse_source(
+        \\+$  amount-mold
+        \\  $:  amount=@u64
+        \\  ==
+    )) |_| {
+        return error.MoldNotU32NotCaught;
+    } else |err| {
+        if (err != rm.ParseError.MoldNotU32) return err;
+    }
+    print("rune: non-@u32 field refused MoldNotU32 -- GREEN\n", .{});
+
+    if (rm.parse_source(
+        \\+$  amount-mold
+        \\  $:  amount=@u32
+    )) |_| {
+        return error.MissingEndNotCaught;
+    } else |err| {
+        if (err != rm.ParseError.TooFewLines and err != rm.ParseError.MissingEnd) return err;
+    }
+    print("rune: missing == refused -- GREEN unwelcome path\n", .{});
+
+    print("rune: version {s}\n", .{witness_version});
+    print("GREEN: thin +$ / $: mold front half parses — STOA74.\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}

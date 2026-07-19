@@ -1,0 +1,42 @@
+//! glow/lower_mold_witness.rye — proves thin mold lowers to runnable `.rye`.
+//!
+//!   rye build glow/lower_mold_witness.rye -femit-bin=glow/bin/lower_mold_witness
+//!   glow/bin/lower_mold_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const lower = @import("lower_mold.rye");
+
+const witness_version = "20260719.190500";
+
+const desk_src =
+    \\+$  amount-mold
+    \\  $:  amount=@u32
+    \\  ==
+;
+
+fn run_selftest(init: std.process.Init) !u8 {
+    const io = init.io;
+    const cwd = std.Io.Dir.cwd();
+    var buf: [2048]u8 = undefined;
+
+    const n = try lower.lower_source_welcome(desk_src, &buf);
+    const rye = buf[0..n];
+    assert(std.mem.indexOf(u8, rye, "pub const AmountMold") != null);
+    assert(std.mem.indexOf(u8, rye, "amount: u32") != null);
+    assert(std.mem.indexOf(u8, rye, "amount = 5") != null);
+    print("lower: thin +$ amount-mold emits AmountMold amount:u32 demo 5 -- GREEN\n", .{});
+
+    try cwd.createDirPath(io, "glow/.cache");
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/mold_amount_welcome.rye", .data = rye });
+    print("lower: wrote mold_amount_welcome.rye under glow/.cache/ -- GREEN\n", .{});
+
+    print("lower: version {s}\n", .{witness_version});
+    print("GREEN: thin +$ / $: mold lowers to Rye struct — STOA74; mold-amount.glow.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
+}
