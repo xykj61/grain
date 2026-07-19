@@ -19,14 +19,17 @@ assert selftest.out contains "welcome builds jam" else "lower_compose_jam_cue_wi
 assert selftest.out contains "welcome builds bind" else "lower_compose_jam_cue_witness missing bind welcome claim"
 assert selftest.out contains "welcome builds bind→nest" else "lower_compose_jam_cue_witness missing nest bind welcome claim"
 assert selftest.out contains "welcome builds bind→nest-right" else "lower_compose_jam_cue_witness missing nest-right bind welcome claim"
+assert selftest.out contains "welcome builds bind→nest-both" else "lower_compose_jam_cue_witness missing nest-both bind welcome claim"
 assert selftest.out contains "carries jam" else "lower_compose_jam_cue_witness missing desk claim"
 assert selftest.out contains "carries bind" else "lower_compose_jam_cue_witness missing bind desk claim"
 assert selftest.out contains "carries bind→nest" else "lower_compose_jam_cue_witness missing nest bind desk claim"
 assert selftest.out contains "carries bind→nest-right" else "lower_compose_jam_cue_witness missing nest-right bind desk claim"
+assert selftest.out contains "carries bind→nest-both" else "lower_compose_jam_cue_witness missing nest-both bind desk claim"
 assert selftest.out contains "SampleMismatch" else "lower_compose_jam_cue_witness missing SampleMismatch"
 assert selftest.out contains "bind face mismatch" else "lower_compose_jam_cue_witness missing bind face mismatch"
 assert selftest.out contains "nest pack-right mismatch" else "lower_compose_jam_cue_witness missing nest pack-right refuse"
 assert selftest.out contains "nest jam-left mismatch" else "lower_compose_jam_cue_witness missing nest jam-left refuse"
+assert selftest.out contains "nest-both pair mismatch" else "lower_compose_jam_cue_witness missing nest-both pair refuse"
 
 let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
 assert build_welcome.ok else "compose jam-cue welcome .rye build failed"
@@ -39,4 +42,4 @@ assert build_unwelcome.ok else "compose jam-cue unwelcome .rye build failed"
 let run_unwelcome = run ["sh" "-c" "${unwelcome_bin}; echo EXIT:$?"]
 assert run_unwelcome.out contains "EXIT:1" else "compose jam-cue unwelcome binary did not exit 1"
 
-say "GREEN: Glow compose jam→cue hop — flat, bind, nest-left, and nest-right pack→unpack; welcome 0 / unwelcome 1; STOA39/43/44/45."
+say "GREEN: Glow compose jam→cue hop — flat, bind, nest-left, nest-right, and nest-both pack→unpack; welcome 0 / unwelcome 1; STOA39/43–46."
