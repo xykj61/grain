@@ -8,6 +8,7 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260719.194711` — [STOA79 cross-desk named-cast GREEN](20260719-194711_stoa79-cross-desk-cast-green.bron) — /+ mold-amount then ^-; await send
 - `20260719.194200` — [STOA79 check-in after $% payload](20260719-194200_stoa79-check-in.bron) — lean A cross-desk named-cast
 - `20260719.194145` — [STOA78 $% payload arms send](20260719-194145_stoa78-percent-payload-send.bron) — pin f0de302057; then STOA79 check-in
 - `20260719.193907` — [STOA78 $% payload arms GREEN](20260719-193907_stoa78-percent-payload-green.bron) — XactMold union; await send

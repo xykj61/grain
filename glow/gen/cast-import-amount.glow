@@ -1,0 +1,4 @@
+::  Cross-desk named-cast — import mold-amount then ^- amount-mold (STOA79).
+::  Lowered by glow/lower_named_cast.rye; mold library has no main.
+/+  mold-amount
+^-  amount-mold
