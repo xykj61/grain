@@ -8,6 +8,7 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260719.190913` — [STOA75 check-in after thin mold](20260719-190913_stoa75-check-in.bron) — lean A multi-field $:
 - `20260719.190842` — [STOA74 thin +$ / $: mold send](20260719-190842_stoa74-thin-mold-send.bron) — ship thin mold; then STOA75 check-in
 - `20260719.190825` — [STOA74 thin +$ / $: mold GREEN](20260719-190825_stoa74-thin-mold-green.bron) — AmountMold desk; await send
 - `20260719.184938` — [STOA74 check-in after product-root write](20260719-184938_stoa74-check-in.bron) — lean A host install product-root eyes
