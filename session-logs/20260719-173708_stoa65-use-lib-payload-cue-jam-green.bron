@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260719.173708
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern time convention
+title STOA65 /+ payload cue-of-jam GREEN
+prompt send and approve next rec
+think Approve STOA65 A — `/+` payload cue-of-jam library compose.
+think Desks use-lib-payload-cue-jam.glow + lib-core-payload-cue-jam.glow — outer amount=5, payload amount=5, unpack=(cue (jam amount amount)).
+think Expect unpack=5 with has_payload; unwelcome unpack=6; call is core.unpack().
+think Run glow_lower_compose_lib_witness.rish GREEN; desk smoke exit 0; full desk suite GREEN.
+obs Flat `/+` payload cue-jam opens the import-payload cue-jam ladder; STOA66 check-in leans A nest-left.
+file glow/gen/use-lib-payload-cue-jam.glow consumer desk
+file glow/gen/lib-core-payload-cue-jam.glow library desk
+file glow/lower_compose_lib.rye STOA65 header
+file glow/lower_compose_lib_witness.rye payload cue-jam cases expect 5
+file tools/glow_lower_compose_lib_witness.rish payload cue-jam asserts
+file tools/glow_run_desk_witness.rish payload cue-jam desk wire
+file docs/STOA.md STOA65 GREEN STOA66 horizon ≤80
+file glow/README.md STOA65 mention
+file expanding-prompts/20260717-213242_glow-first-code-beside-glass-and-open-runes.md STOA65 mention
+recommend keep-going seat and send STOA65
