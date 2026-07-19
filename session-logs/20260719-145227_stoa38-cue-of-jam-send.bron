@@ -1,0 +1,13 @@
+format session-log-v1
+stamp 20260719.145227
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern time convention
+title STOA38 cue-of-jam send
+prompt send and approve — STOA38 then STOA39 multi-line jam-cue
+think ship cue-of-jam nest · then kg multi-line bind jam cue
+obs desk suite GREEN before send
+file glow/expr.rye cue_arg jam_of
+file glow/gen/face-cue-jam.glow pin desk
+recommend keep-going — STOA39 compose nest after push

@@ -126,6 +126,13 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, buf[0..n_cue_u], "amount == 4") != null);
     print("lower: \"=/  amount=@u32  (cue cell)\" unwelcome expects mismatch -- GREEN\n", .{});
 
+    const n_cj = try lower.lower_line_welcome("=/  right=@u32  (cue (jam from amount))", &buf);
+    const rye_cj = buf[0..n_cj];
+    assert(std.mem.indexOf(u8, rye_cj, "const cell_pack: u32 = (from << 16) | amount") != null);
+    assert(std.mem.indexOf(u8, rye_cj, "const right: u32 = cell_pack & 0xffff") != null);
+    assert(std.mem.indexOf(u8, rye_cj, "right == 3") != null);
+    print("lower: \"=/  right=@u32  (cue (jam from amount))\" welcome binds cue-of-jam -- GREEN\n", .{});
+
     const n_nest = try lower.lower_line_welcome("=/  nested=@u32  (jam (mix from amount) amount)", &buf);
     const rye_nest = buf[0..n_nest];
     assert(std.mem.indexOf(u8, rye_nest, "const from: u32 = 5") != null);
@@ -193,6 +200,10 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, gen_cue, "=/  amount=@u32  (cue cell)") != null);
     print("lower: glow/gen/face-cue.glow nests (cue …) under face -- GREEN\n", .{});
 
+    const gen_cj = try cwd.readFileAlloc(io, "glow/gen/face-cue-jam.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_cj, "=/  right=@u32  (cue (jam from amount))") != null);
+    print("lower: glow/gen/face-cue-jam.glow nests cue-of-jam under face -- GREEN\n", .{});
+
     const gen_nest = try cwd.readFileAlloc(io, "glow/gen/face-jam-nest.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_nest, "=/  nested=@u32  (jam (mix from amount) amount)") != null);
     print("lower: glow/gen/face-jam-nest.glow nests jam-of-mix under face -- GREEN\n", .{});
@@ -206,8 +217,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("lower: glow/gen/face-jam-both-nest.glow nests jam-both-mix under face -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: `=/` lowers faces with nested `^-`, `(lent …)`, `(mix …)`, `(jam …)`, nest jam left/right/both, and `(cue …)` values to ordinary Rye.\n", .{});
-    return 0;
+    print("GREEN: `=/` lowers faces with nested `^-`, `(lent …)`, `(mix …)`, `(jam …)`, nest jam left/right/both, `(cue …)`, and cue-of-jam values to ordinary Rye.\n", .{});    return 0;
 }
 
 pub fn main(init: std.process.Init) !u8 {

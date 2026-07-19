@@ -69,6 +69,11 @@ assert facecue.ok else "glow_run face-cue.glow failed"
 assert facecue.out contains "GREEN" else "glow_run face-cue.glow not GREEN"
 assert facecue.out contains "face-cue.glow" else "glow_run face-cue claim missing path"
 
+let facecuejam = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/face-cue-jam.glow"]
+assert facecuejam.ok else "glow_run face-cue-jam.glow failed"
+assert facecuejam.out contains "GREEN" else "glow_run face-cue-jam.glow not GREEN"
+assert facecuejam.out contains "face-cue-jam.glow" else "glow_run face-cue-jam claim missing path"
+
 let facejamnest = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/face-jam-nest.glow"]
 assert facejamnest.ok else "glow_run face-jam-nest.glow failed"
 assert facejamnest.out contains "GREEN" else "glow_run face-jam-nest.glow not GREEN"
@@ -103,6 +108,11 @@ let ifcue = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/if-cue.
 assert ifcue.ok else "glow_run if-cue.glow failed"
 assert ifcue.out contains "GREEN" else "glow_run if-cue.glow not GREEN"
 assert ifcue.out contains "if-cue.glow" else "glow_run if-cue claim missing path"
+
+let ifcuejam = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/if-cue-jam.glow"]
+assert ifcuejam.ok else "glow_run if-cue-jam.glow failed"
+assert ifcuejam.out contains "GREEN" else "glow_run if-cue-jam.glow not GREEN"
+assert ifcuejam.out contains "if-cue-jam.glow" else "glow_run if-cue-jam claim missing path"
 
 let ifjamnest = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/if-jam-nest.glow"]
 assert ifjamnest.ok else "glow_run if-jam-nest.glow failed"
@@ -139,6 +149,11 @@ assert swcue.ok else "glow_run switch-cue.glow failed"
 assert swcue.out contains "GREEN" else "glow_run switch-cue.glow not GREEN"
 assert swcue.out contains "switch-cue.glow" else "glow_run switch-cue claim missing path"
 
+let swcuejam = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/switch-cue-jam.glow"]
+assert swcuejam.ok else "glow_run switch-cue-jam.glow failed"
+assert swcuejam.out contains "GREEN" else "glow_run switch-cue-jam.glow not GREEN"
+assert swcuejam.out contains "switch-cue-jam.glow" else "glow_run switch-cue-jam claim missing path"
+
 let swjamnest = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/switch-jam-nest.glow"]
 assert swjamnest.ok else "glow_run switch-jam-nest.glow failed"
 assert swjamnest.out contains "GREEN" else "glow_run switch-jam-nest.glow not GREEN"
@@ -173,6 +188,11 @@ let nullcue = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/null-
 assert nullcue.ok else "glow_run null-cue.glow failed"
 assert nullcue.out contains "GREEN" else "glow_run null-cue.glow not GREEN"
 assert nullcue.out contains "null-cue.glow" else "glow_run null-cue claim missing path"
+
+let nullcuejam = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/null-cue-jam.glow"]
+assert nullcuejam.ok else "glow_run null-cue-jam.glow failed"
+assert nullcuejam.out contains "GREEN" else "glow_run null-cue-jam.glow not GREEN"
+assert nullcuejam.out contains "null-cue-jam.glow" else "glow_run null-cue-jam claim missing path"
 
 let nulljamnest = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/null-jam-nest.glow"]
 assert nulljamnest.ok else "glow_run null-jam-nest.glow failed"
@@ -361,6 +381,11 @@ let corejamboth = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/c
 assert corejamboth.ok else "glow_run core-jam-both-nest.glow failed"
 assert corejamboth.out contains "GREEN" else "glow_run core-jam-both-nest.glow not GREEN"
 assert corejamboth.out contains "core-jam-both-nest.glow" else "glow_run core-jam-both-nest claim missing path"
+
+let corecuejam = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/core-cue-jam.glow"]
+assert corecuejam.ok else "glow_run core-cue-jam.glow failed"
+assert corecuejam.out contains "GREEN" else "glow_run core-cue-jam.glow not GREEN"
+assert corecuejam.out contains "core-cue-jam.glow" else "glow_run core-cue-jam claim missing path"
 
 let composecorenest = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/compose-core-nest.glow"]
 assert composecorenest.ok else "glow_run compose-core-nest.glow failed"

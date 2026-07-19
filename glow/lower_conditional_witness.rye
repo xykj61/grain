@@ -97,6 +97,13 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, rye_cue, "result == 3") != null);
     print("lower: \"?:  …  (cue cell)  0\" welcome nests cue arm -- GREEN\n", .{});
 
+    const n_cj = try lower.lower_line_welcome("?:  (gth tick 32)  (cue (jam from amount))  0", &buf);
+    const rye_cj = buf[0..n_cj];
+    assert(std.mem.indexOf(u8, rye_cj, "const then_arm_packed: u32 = (from << 16) | amount") != null);
+    assert(std.mem.indexOf(u8, rye_cj, "const then_arm: u32 = then_arm_packed & 0xffff") != null);
+    assert(std.mem.indexOf(u8, rye_cj, "result == 3") != null);
+    print("lower: \"?:  …  (cue (jam from amount))  0\" welcome nests cue-of-jam arm -- GREEN\n", .{});
+
     const n_nest = try lower.lower_line_welcome("?:  (gth tick 32)  (jam (mix from amount) amount)  0", &buf);
     const rye_nest = buf[0..n_nest];
     assert(std.mem.indexOf(u8, rye_nest, "const from: u32 = 5") != null);
@@ -156,6 +163,10 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, gen_cue, "(cue cell)") != null);
     print("lower: glow/gen/if-cue.glow carries cue then arm -- GREEN\n", .{});
 
+    const gen_cj = try cwd.readFileAlloc(io, "glow/gen/if-cue-jam.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_cj, "(cue (jam from amount))") != null);
+    print("lower: glow/gen/if-cue-jam.glow carries cue-of-jam then arm -- GREEN\n", .{});
+
     const gen_nest = try cwd.readFileAlloc(io, "glow/gen/if-jam-nest.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_nest, "(jam (mix from amount) amount)") != null);
     print("lower: glow/gen/if-jam-nest.glow carries nest jam then arm -- GREEN\n", .{});
@@ -169,7 +180,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("lower: glow/gen/if-jam-both-nest.glow carries nest jam both then arm -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: `?:` lowers with decimal, cast, lent, mix, jam, nest jam left/right/both, and cue then/else arms to ordinary Rye.\n", .{});
+    print("GREEN: `?:` lowers with decimal, cast, lent, mix, jam, nest jam left/right/both, cue, and cue-of-jam then/else arms to ordinary Rye.\n", .{});
     return 0;
 }
 

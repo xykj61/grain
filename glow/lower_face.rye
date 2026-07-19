@@ -45,6 +45,7 @@ const BoundValue = struct {
     jam_left_mix: bool = false,
     jam_right_mix: bool = false,
     jam_both_mix: bool = false,
+    cue_of_jam: bool = false,
 };
 
 fn cast_mold_slice(b: *const BoundValue) []const u8 {
@@ -145,9 +146,28 @@ fn bound_value(line: []const u8, face: []const u8, mold: []const u8) LowerError!
             @memcpy(bound.cast_mold[0..cm.len], cm);
             break :blk bound;
         },
-        .lent_of, .cue_of => blk: {
+        .lent_of => blk: {
             const sub = expr.face_slice(&e);
-            var bound: BoundValue = .{ .kind = if (e.kind == .cue_of) .cue_of else .lent_of, .subject_len = sub.len };
+            var bound: BoundValue = .{ .kind = .lent_of, .subject_len = sub.len };
+            @memcpy(bound.subject[0..sub.len], sub);
+            break :blk bound;
+        },
+        .cue_of => blk: {
+            if (expr.cue_is_jam(&e)) {
+                const jl = expr.face_slice(&e);
+                const jr = expr.face2_slice(&e);
+                var bound: BoundValue = .{
+                    .kind = .cue_of,
+                    .cue_of_jam = true,
+                    .subject_len = jl.len,
+                    .subject2_len = jr.len,
+                };
+                @memcpy(bound.subject[0..jl.len], jl);
+                @memcpy(bound.subject2[0..jr.len], jr);
+                break :blk bound;
+            }
+            const sub = expr.face_slice(&e);
+            var bound: BoundValue = .{ .kind = .cue_of, .subject_len = sub.len };
             @memcpy(bound.subject[0..sub.len], sub);
             break :blk bound;
         },
@@ -1028,6 +1048,87 @@ fn emit_lent(
     return @intCast(written.len);
 }
 
+/// `(cue (jam <a> <b>))` under a face — pack then unpack low 16.
+fn emit_cue_jam(
+    glow_label: []const u8,
+    face_mold: []const u8,
+    zig_face: []const u8,
+    jam_left: []const u8,
+    jam_right: []const u8,
+    zig_ty: []const u8,
+    welcome: bool,
+    out: []u8,
+) LowerError!u32 {
+    var zl: [rf.max_name_len]u8 = undefined;
+    const ln = try zig_safe_ident(jam_left, &zl);
+    const zig_jl = zl[0..ln];
+    var zr: [rf.max_name_len]u8 = undefined;
+    const rn = try zig_safe_ident(jam_right, &zr);
+    const zig_jr = zr[0..rn];
+    const result = expr.cue_demo_result();
+    const expect: u32 = if (welcome) result else result +% 1;
+    const typed = face_mold.len != 0;
+    if (typed) {
+        const written = std.fmt.bufPrint(out,
+            \\const std = @import("std");
+            \\
+            \\/// Lowered from Glow `=/  {s}={s}  (cue (jam {s} {s}))` — cue-of-jam.
+            \\pub fn main(_: std.process.Init) !u8 {{
+            \\    const {s}: u32 = {d};
+            \\    const {s}: u32 = {d};
+            \\    const cell_pack: u32 = ({s} << 16) | {s};
+            \\    const {s}: {s} = cell_pack & 0xffff;
+            \\    return if ({s} == {d}) 0 else 1;
+            \\}}
+            \\
+        , .{
+            glow_label,
+            face_mold,
+            jam_left,
+            jam_right,
+            zig_jl,
+            expr.jam_demo_left,
+            zig_jr,
+            expr.jam_demo_right,
+            zig_jl,
+            zig_jr,
+            zig_face,
+            zig_ty,
+            zig_face,
+            expect,
+        }) catch return error.Overflow;
+        return @intCast(written.len);
+    }
+    const written = std.fmt.bufPrint(out,
+        \\const std = @import("std");
+        \\
+        \\/// Lowered from Glow `=/  {s}  (cue (jam {s} {s}))` — cue-of-jam.
+        \\pub fn main(_: std.process.Init) !u8 {{
+        \\    const {s}: u32 = {d};
+        \\    const {s}: u32 = {d};
+        \\    const cell_pack: u32 = ({s} << 16) | {s};
+        \\    const {s}: {s} = cell_pack & 0xffff;
+        \\    return if ({s} == {d}) 0 else 1;
+        \\}}
+        \\
+    , .{
+        glow_label,
+        jam_left,
+        jam_right,
+        zig_jl,
+        expr.jam_demo_left,
+        zig_jr,
+        expr.jam_demo_right,
+        zig_jl,
+        zig_jr,
+        zig_face,
+        zig_ty,
+        zig_face,
+        expect,
+    }) catch return error.Overflow;
+    return @intCast(written.len);
+}
+
 /// `(cue <cell>)` under a face — low 16 bits of a jam cell-pack.
 fn emit_cue(
     glow_label: []const u8,
@@ -1177,6 +1278,18 @@ fn lower_line(line: []const u8, welcome: bool, out: []u8) LowerError!u32 {
         },
         .cue_of => {
             const zig_ty = try zig_type_for_mold(mold);
+            if (bound.cue_of_jam) {
+                return emit_cue_jam(
+                    face,
+                    mold,
+                    zig_face,
+                    subject_slice(&bound),
+                    subject2_slice(&bound),
+                    zig_ty,
+                    welcome,
+                    out,
+                );
+            }
             return emit_cue(face, mold, zig_face, subject_slice(&bound), zig_ty, welcome, out);
         },
     }
