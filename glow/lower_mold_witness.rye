@@ -8,7 +8,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const lower = @import("lower_mold.rye");
 
-const witness_version = "20260719.192600";
+const witness_version = "20260719.193800";
 
 const one_src =
     \\+$  amount-mold
@@ -26,6 +26,13 @@ const pair_src =
 const kind_src =
     \\+$  kind-mold
     \\  $%  [%mint ~]
+    \\      [%send ~]
+    \\  ==
+;
+
+const xact_src =
+    \\+$  xact-mold
+    \\  $%  [%mint amount=@u32]
     \\      [%send ~]
     \\  ==
 ;
@@ -53,10 +60,19 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, rye3, "send,") != null);
     print("lower: thin +$ / $% kind-mold emits KindMold enum -- GREEN\n", .{});
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/mold_kind_welcome.rye", .data = rye3 });
+
+    const n4 = try lower.lower_source_welcome(xact_src, &buf);
+    const rye4 = buf[0..n4];
+    assert(std.mem.indexOf(u8, rye4, "pub const XactMold = union(enum)") != null);
+    assert(std.mem.indexOf(u8, rye4, "mint: struct") != null);
+    assert(std.mem.indexOf(u8, rye4, "amount: u32") != null);
+    assert(std.mem.indexOf(u8, rye4, "payload arms") != null);
+    print("lower: +$ / $% xact-mold emits XactMold union -- GREEN\n", .{});
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/mold_xact_welcome.rye", .data = rye4 });
     print("lower: wrote mold welcome .rye under glow/.cache/ -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: +$ / $: / $% mold lowers — STOA74/75/76; mold-amount · mold-pair · mold-kind.\n", .{});
+    print("GREEN: +$ / $: / $% mold lowers — STOA74–78; mold-amount · mold-pair · mold-kind · mold-xact.\n", .{});
     return 0;
 }
 

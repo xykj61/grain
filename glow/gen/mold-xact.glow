@@ -1,0 +1,6 @@
+::  +$ / $% payload arms — mint carries amount=@u32; send stays unit (STOA78).
+::  Lowered by glow/lower_mold.rye into ordinary Rye; Rishi stays the shell.
++$  xact-mold
+  $%  [%mint amount=@u32]
+      [%send ~]
+  ==

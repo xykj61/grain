@@ -17,4 +17,4 @@ assert selftest.out contains "kind-mold" else "rune_mold_witness missing kind-mo
 assert selftest.out contains "MoldNotU32" else "rune_mold_witness missing MoldNotU32"
 assert selftest.out contains "TooFewTags" else "rune_mold_witness missing TooFewTags"
 
-say "GREEN: Glow +$ / $: / $% mold rune head — tuple and tagged; STOA74/75/76."
+say "GREEN: Glow +$ / $: / $% mold rune head — tuple and tagged; STOA74–78."
