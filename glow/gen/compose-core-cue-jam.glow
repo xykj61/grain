@@ -1,0 +1,5 @@
+::  Face then cue-of-jam arm — product core round-trip (STOA53).
+=/  amount  5
+|%
+++  unpack  (cue (jam sample sample))
+--
