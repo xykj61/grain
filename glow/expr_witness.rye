@@ -115,6 +115,16 @@ fn run_selftest(_: std.process.Init) !u8 {
         assert(expr.cue_demo_result() == 3);
         print("expr: (cue cell) paren form -- GREEN\n", .{});
     }
+    {
+        const p = try expr.parse_prefix("(cue (jam from amount))  rest");
+        assert(p.expr.kind == .cue_of);
+        assert(expr.cue_is_jam(&p.expr));
+        assert(std.mem.eql(u8, expr.face_slice(&p.expr), "from"));
+        assert(std.mem.eql(u8, expr.face2_slice(&p.expr), "amount"));
+        assert(std.mem.eql(u8, p.rest, "rest"));
+        assert(expr.cue_expect(&p.expr) == 3);
+        print("expr: (cue (jam from amount)) nest form -- GREEN\n", .{});
+    }
     if (expr.parse_whole("42  leftover")) |_| {
         assert(false);
     } else |err| {
@@ -140,7 +150,7 @@ fn run_selftest(_: std.process.Init) !u8 {
         print("expr: named mold refused NamedMoldNotYetLowered -- GREEN\n", .{});
     }
 
-    print("GREEN: shared nest-expression parser — decimal · ^- @uN · face · (lent …) · (mix …) · (jam …) · nest jam left/right/both · (cue …); other parens later.\n", .{});
+    print("GREEN: shared nest-expression parser — decimal · ^- @uN · face · (lent …) · (mix …) · (jam …) · nest jam left/right/both · (cue …) · cue-of-jam; other parens later.\n", .{});
 
     _ = witness_version;
     return 0;
