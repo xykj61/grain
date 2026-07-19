@@ -1,4 +1,4 @@
-# STOA — Glow language SLC · nest · product · ≤80 · STOA0–72 GREEN · 2026-07-19 (APK import)
+# STOA — Glow language SLC · nest · product · ≤80 · STOA0–73 GREEN · 2026-07-19 (product-root write)
 Product glass stays Rye-hosted. **STOA** names the language path (eight GREEN heads = SLC Lap). **Waymark draw:** `glow-language-rune-heads-nest-and-lowering-2` → **STOA** (`20260718.202730`; **MAIR** superseded).
 | Rung | Claim | Witness / gate | State |
 |------|-------|----------------|-------|
@@ -75,5 +75,6 @@ Product glass stays Rye-hosted. **STOA** names the language path (eight GREEN he
 | **STOA70** | session-root nest-left product desk | `glow_lower_compose_lib` · desk | **GREEN** `20260719.181259` |
 | **STOA71** | NativeActivity-path Glow import seam | `stoa71_glow_import_seam_witness` | **GREEN** `20260719.182120` |
 | **STOA72** | NativeActivity APK Glow import wire | `stoa72_glow_apk_import_witness` · pack | **GREEN** `20260719.182648` |
-| **STOA73** | Next language / product | horizon — check-in | horizon |
-Smoke: `rishi/bin/rishi run tools/stoa72_glow_apk_import_witness.rish` · Sibling: **ZETA** · **LULU** · **SETU** · **TUBE**.
+| **STOA73** | product-root write path (expect 5) | `stoa73_product_root_write_witness` · pack | **GREEN** `20260719.184836` |
+| **STOA74** | Next language / product | horizon — check-in | horizon |
+Smoke: `rishi/bin/rishi run tools/stoa73_product_root_write_witness.rish` · Sibling: **ZETA** · **LULU** · **SETU** · **TUBE**.

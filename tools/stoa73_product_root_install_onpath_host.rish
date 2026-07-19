@@ -1,0 +1,63 @@
+# stoa73_product_root_install_onpath_host.rish — STOA73 A on-device half:
+# install the signed APK, launch NativeActivity, prove onCreate wrote
+# files/glow_product_root.txt with decimal 5 (Glow session_root).
+# Also re-checks Sala B0 sala_root.txt so the product root does not
+# displace the existing install proof.
+#
+# Run OUTSIDE ai-jail, from a plain host terminal — needs adb and either
+# hawm0 (rishi/bin/rishi run tools/hawm0_boot_onpath_host.rish) or Pixel USB.
+# Pack first:
+#   rishi/bin/rishi run tools/stoa73_product_root_write_witness.rish
+#
+#   rishi/bin/rishi run tools/stoa73_product_root_install_onpath_host.rish
+
+let android_sdk = "tools/.cache/hawm0/android-sdk"
+let adb = "${android_sdk}/platform-tools/adb"
+let apk = "tools/.cache/tube05/sala-broadcaster.apk"
+let pkg = "org.glow.app.sala_broadcaster"
+let expected_sala = "99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe"
+let expected_product = "5"
+
+say "stoa73-install: confirming an adb device is attached…"
+let unauthorized = run ["sh" "-c" "${adb} devices | grep -c '[[:space:]]unauthorized$'"]
+assert (trim unauthorized.out == "0") else "adb device is unauthorized — unlock and tap Allow USB debugging"
+let devices = run ["sh" "-c" "${adb} devices | grep -c '[[:space:]]device$'"]
+assert (trim devices.out != "0") else "no adb device — boot hawm0 (host) or plug in the Pixel with USB debugging on"
+say "stoa73-install: device attached"
+
+say "stoa73-install: confirming the signed APK is present…"
+let apk_ok = run ["sh" "-c" "test -f ${apk}"]
+assert apk_ok.ok else "missing ${apk} — run rishi/bin/rishi run tools/stoa73_product_root_write_witness.rish first"
+say "stoa73-install: APK present"
+
+say "stoa73-install: adb install -r…"
+let install = run ["sh" "-c" "${adb} install -r ${apk} 2>&1"]
+say "${install.out}"
+if (install.ok == false) then say "stoa73-install: install stderr — ${install.err}"
+assert install.ok else "adb install failed"
+assert install.out contains "Success" else "adb install did not report Success"
+say "stoa73-install: installed"
+
+say "stoa73-install: launching NativeActivity…"
+let stop = run ["sh" "-c" "${adb} shell am force-stop ${pkg}"]
+assert stop.ok else "force-stop failed"
+let start = run ["sh" "-c" "${adb} shell am start -n ${pkg}/android.app.NativeActivity 2>&1"]
+say "${start.out}"
+assert start.ok else "am start failed"
+let wait = run ["sh" "-c" "sleep 2"]
+assert wait.ok else "sleep failed"
+
+say "stoa73-install: reading files/glow_product_root.txt via run-as…"
+let product = run ["sh" "-c" "${adb} shell run-as ${pkg} cat files/glow_product_root.txt 2>&1"]
+say "stoa73-install: glow_product_root.txt — ${product.out}"
+if (product.ok == false) then say "stoa73-install: product stderr — ${product.err}"
+assert product.ok else "could not read glow_product_root.txt"
+assert product.out contains "${expected_product}" else "RED: glow_product_root.txt does not contain 5"
+
+say "stoa73-install: re-checking files/sala_root.txt (Sala B0 still present)…"
+let sala = run ["sh" "-c" "${adb} shell run-as ${pkg} cat files/sala_root.txt 2>&1"]
+say "stoa73-install: sala_root.txt — ${sala.out}"
+assert sala.ok else "could not read sala_root.txt"
+assert sala.out contains "${expected_sala}" else "RED: sala_root.txt lost the HAWM1 demo root"
+
+say "GREEN: STOA73 A — on-device Glow product-root is 5; Sala B0 hex root still present."

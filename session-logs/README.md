@@ -8,6 +8,8 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260719.184915` — [STOA73 product-root write path send](20260719-184915_stoa73-product-root-write-send.bron) — ship write path; then STOA74 check-in
+- `20260719.184836` — [STOA73 product-root write path GREEN](20260719-184836_stoa73-product-root-write-green.bron) — glow_product_root.txt expect 5; await send
 - `20260719.182754` — [STOA73 check-in after APK import wire](20260719-182754_stoa73-check-in.bron) — lean A on-device product-root proof
 - `20260719.182724` — [STOA72 NativeActivity APK Glow import wire send](20260719-182724_stoa72-glow-apk-import-send.bron) — ship APK import wire; then STOA73 check-in
 - `20260719.182648` — [STOA72 NativeActivity APK Glow import wire GREEN](20260719-182648_stoa72-glow-apk-import-green.bron) — pack expect 5; await send

@@ -340,7 +340,8 @@
 - [x] **STOA70 — session-root nest-left product desk (lean A)** `20260719.181259` — `use-lib-session-root-nest-cue-jam` · `lib-session-root-nest-cue-jam`; nest-left cue-of-jam arm `session-root`; expect **5**.
 - [x] **STOA71 — NativeActivity-path Glow import seam (lean A)** `20260719.182120` — linengrow `@import` of Glow-lowered `lib_session_root_nest_cue_jam`; `session_root() == 5`; device-free; APK wire stays later.
 - [x] **STOA72 — NativeActivity APK Glow import wire (lean A)** `20260719.182648` — `glow_native_activity` imports lowered session-root; expect **5**; exports `glow_last_product_session_root`; pack GREEN; Sala B0 hex fold kept.
-- [ ] **STOA73 — next language / product** — check-in (molds · on-device product-root · Sala B0 rewrite stay later).
+- [x] **STOA73 — product-root write path (lean A, device-free half)** `20260719.184836` — onCreate writes `files/glow_product_root.txt` with **5**; pack GREEN; host install witness `stoa73_product_root_install_onpath_host.rish` ready (needs outer terminal).
+- [ ] **STOA74 — next language / product** — check-in (host install eyes · molds · Sala B0 rewrite stay later).
 - [ ] **Dill-parallel kernel revival** — separate `active-reviving/` brief when a real need opens; not Dexter.
 - [ ] **M1 Scribble↔html round-trip witness** — named in fusion map; opens when Keaton leans doc pipeline.
 - [ ] **TAME witness-habitat pairing + Glow supplement** — horizon; needs Keaton's word (H2).
