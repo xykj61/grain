@@ -1,4 +1,4 @@
-# glow_lower_named_cast_witness.rish — same-desk + cross-desk named-cast (STOA77/79).
+# glow_lower_named_cast_witness.rish — `$:` + unit `$%` named-cast (STOA77/79/81).
 #
 #   rishi/bin/rishi run tools/glow_lower_named_cast_witness.rish
 
@@ -8,6 +8,10 @@ let welcome_rye = "glow/.cache/cast_named_amount_welcome.rye"
 let welcome_bin = "glow/bin/cast_named_amount_welcome"
 let import_rye = "glow/.cache/cast_import_amount_welcome.rye"
 let import_bin = "glow/bin/cast_import_amount_welcome"
+let kind_rye = "glow/.cache/cast_named_kind_welcome.rye"
+let kind_bin = "glow/bin/cast_named_kind_welcome"
+let import_kind_rye = "glow/.cache/cast_import_kind_welcome.rye"
+let import_kind_bin = "glow/bin/cast_import_kind_welcome"
 
 let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/lower_named_cast_witness.rye -femit-bin=${bin}"]
 assert build.ok else "lower_named_cast_witness build failed"
@@ -16,8 +20,9 @@ let selftest = run ["sh" "-c" "${bin} 2>&1"]
 assert selftest.ok else "lower_named_cast_witness exited non-zero"
 assert selftest.out contains "GREEN" else "lower_named_cast_witness not GREEN"
 assert selftest.out contains "AmountMold" else "lower_named_cast_witness missing AmountMold"
+assert selftest.out contains "KindMold" else "lower_named_cast_witness missing KindMold"
 assert selftest.out contains "CastMoldMismatch" else "lower_named_cast_witness missing CastMoldMismatch"
-assert selftest.out contains "cross-desk" else "lower_named_cast_witness missing cross-desk"
+assert selftest.out contains "tagged" else "lower_named_cast_witness missing tagged"
 
 let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
 assert build_welcome.ok else "named-cast welcome .rye build failed"
@@ -31,4 +36,16 @@ let run_import = run ["sh" "-c" "${import_bin}; echo EXIT:$?"]
 assert run_import.ok else "cross-desk named-cast welcome binary failed to launch"
 assert run_import.out contains "EXIT:0" else "cross-desk named-cast welcome binary did not exit 0"
 
-say "GREEN: Glow named-cast — same-desk + cross-desk AmountMold; welcome exit 0; STOA77/79."
+let build_kind = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${kind_rye} -femit-bin=${kind_bin}"]
+assert build_kind.ok else "tagged named-cast welcome .rye build failed"
+let run_kind = run ["sh" "-c" "${kind_bin}; echo EXIT:$?"]
+assert run_kind.ok else "tagged named-cast welcome binary failed to launch"
+assert run_kind.out contains "EXIT:0" else "tagged named-cast welcome binary did not exit 0"
+
+let build_import_kind = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${import_kind_rye} -femit-bin=${import_kind_bin}"]
+assert build_import_kind.ok else "cross-desk tagged named-cast welcome .rye build failed"
+let run_import_kind = run ["sh" "-c" "${import_kind_bin}; echo EXIT:$?"]
+assert run_import_kind.ok else "cross-desk tagged named-cast welcome binary failed to launch"
+assert run_import_kind.out contains "EXIT:0" else "cross-desk tagged named-cast welcome binary did not exit 0"
+
+say "GREEN: Glow named-cast — $: + unit $% same-desk and cross-desk; welcome exit 0; STOA77/79/81."

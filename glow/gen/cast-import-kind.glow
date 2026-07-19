@@ -1,0 +1,4 @@
+::  Cross-desk tagged named-cast — import mold-kind then ^- kind-mold (STOA81).
+::  Lowered by glow/lower_named_cast.rye; mold library has no main.
+/+  mold-kind
+^-  kind-mold

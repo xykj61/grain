@@ -1,4 +1,4 @@
-//! glow/lower_named_cast_witness.rye — proves same-desk and cross-desk named-cast.
+//! glow/lower_named_cast_witness.rye — proves `$:` and unit `$%` named-cast.
 //!
 //!   rye build glow/lower_named_cast_witness.rye -femit-bin=glow/bin/lower_named_cast_witness
 //!   glow/bin/lower_named_cast_witness
@@ -9,7 +9,7 @@ const print = std.debug.print;
 const lower = @import("lower_named_cast.rye");
 const lower_mold = @import("lower_mold.rye");
 
-const witness_version = "20260719.194400";
+const witness_version = "20260719.195417";
 
 const desk_src =
     \\+$  amount-mold
@@ -23,6 +23,14 @@ const mismatch_src =
     \\  $:  amount=@u32
     \\  ==
     \\^-  other-mold
+;
+
+const tagged_src =
+    \\+$  kind-mold
+    \\  $%  [%mint ~]
+    \\      [%send ~]
+    \\  ==
+    \\^-  kind-mold
 ;
 
 const cross_src =
@@ -41,15 +49,26 @@ const cross_mismatch =
     \\^-  other-mold
 ;
 
+const cross_kind_src =
+    \\/+  mold-kind
+    \\^-  kind-mold
+;
+
+const lib_kind_src =
+    \\+$  kind-mold
+    \\  $%  [%mint ~]
+    \\      [%send ~]
+    \\  ==
+;
+
 fn run_selftest(init: std.process.Init) !u8 {
     const io = init.io;
     const cwd = std.Io.Dir.cwd();
     var buf: [4096]u8 = undefined;
+    try cwd.createDirPath(io, "glow/.cache");
 
     assert(lower.looks_like_named_cast(desk_src));
     print("lower: cast-named-amount shape detected -- GREEN\n", .{});
-
-    try cwd.createDirPath(io, "glow/.cache");
 
     const n = try lower.lower_source_welcome(desk_src, &buf);
     assert(std.mem.indexOf(u8, buf[0..n], "pub const AmountMold") != null);
@@ -64,6 +83,14 @@ fn run_selftest(init: std.process.Init) !u8 {
         if (err != lower.LowerError.CastMoldMismatch) return err;
     }
     print("lower: cast name mismatch refused CastMoldMismatch -- GREEN\n", .{});
+
+    assert(lower.looks_like_named_cast(tagged_src));
+    const tn = try lower.lower_source_welcome(tagged_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..tn], "pub const KindMold = enum(u8)") != null);
+    assert(std.mem.indexOf(u8, buf[0..tn], "tagged named-cast") != null);
+    assert(std.mem.indexOf(u8, buf[0..tn], "@enumFromInt") != null);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/cast_named_kind_welcome.rye", .data = buf[0..tn] });
+    print("lower: +$ kind-mold + ^- kind-mold emits KindMold tagged cast -- GREEN\n", .{});
 
     assert(lower.looks_like_cross_desk(cross_src));
     const cross_n = try lower.lower_cross_desk_welcome(cross_src, lib_src, &buf);
@@ -80,15 +107,27 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("lower: cross-desk cast name mismatch refused CastMoldMismatch -- GREEN\n", .{});
 
+    const cross_kind_n = try lower.lower_cross_desk_welcome(cross_kind_src, lib_kind_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..cross_kind_n], "cross-desk tagged named-cast") != null);
+    assert(std.mem.indexOf(u8, buf[0..cross_kind_n], "import(\"mold_kind.rye\")") != null);
+    assert(std.mem.indexOf(u8, buf[0..cross_kind_n], "lib.KindMold") != null);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/cast_import_kind_welcome.rye", .data = buf[0..cross_kind_n] });
+    print("lower: /+ mold-kind + ^- kind-mold emits cross-desk tagged cast -- GREEN\n", .{});
+
     const lib_n = try lower_mold.lower_source_library(lib_src, &buf);
     assert(std.mem.indexOf(u8, buf[0..lib_n], "pub const AmountMold") != null);
     assert(std.mem.indexOf(u8, buf[0..lib_n], "pub fn main") == null);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/mold_amount.rye", .data = buf[0..lib_n] });
-    print("lower: mold-amount library emit has no main -- GREEN\n", .{});
+
+    const lib_kind_n = try lower_mold.lower_source_library(lib_kind_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..lib_kind_n], "pub const KindMold = enum(u8)") != null);
+    assert(std.mem.indexOf(u8, buf[0..lib_kind_n], "pub fn main") == null);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/mold_kind.rye", .data = buf[0..lib_kind_n] });
+    print("lower: mold libraries emit with no main -- GREEN\n", .{});
     print("lower: wrote named-cast welcome .rye under glow/.cache/ -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: named-cast resolve lowers — STOA77/79; cast-named-amount · cast-import-amount.\n", .{});
+    print("GREEN: named-cast resolve lowers — STOA77/79/81; amount · kind · import desks.\n", .{});
     return 0;
 }
 

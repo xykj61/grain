@@ -124,7 +124,7 @@ fn lower_tuple(spec: *const rm.MoldSpec, zig_type: []const u8, out: []u8) LowerE
     return @intCast(used);
 }
 
-fn lower_tagged_unit(spec: *const rm.MoldSpec, zig_type: []const u8, out: []u8) LowerError!u32 {
+fn emit_tagged_unit_type(spec: *const rm.MoldSpec, zig_type: []const u8, out: []u8, used: *usize, library: bool) LowerError!void {
     const name = rm.name_slice(spec);
     var zt: [rm.max_fields][rm.max_name_len]u8 = undefined;
     var zt_lens: [rm.max_fields]usize = undefined;
@@ -133,15 +133,31 @@ fn lower_tagged_unit(spec: *const rm.MoldSpec, zig_type: []const u8, out: []u8) 
         zt_lens[i] = try zig_safe_ident(rm.field_slice(spec, i), &zt[i]);
     }
 
-    var used: usize = 0;
-    try append(out, &used, "const std = @import(\"std\");\n\n");
-    try append_fmt(out, &used, "/// Lowered from Glow `+$ {s}` / `$%` cold tags (STOA76).\n", .{name});
-    try append_fmt(out, &used, "pub const {s} = enum(u8) {{\n", .{zig_type});
+    try append(out, used, "const std = @import(\"std\");\n\n");
+    if (library) {
+        try append_fmt(out, used, "/// Lowered from Glow `+$ {s}` / `$%` library (STOA81).\n", .{name});
+    } else {
+        try append_fmt(out, used, "/// Lowered from Glow `+$ {s}` / `$%` cold tags (STOA76).\n", .{name});
+    }
+    try append_fmt(out, used, "pub const {s} = enum(u8) {{\n", .{zig_type});
     i = 0;
     while (i < spec.field_count) : (i += 1) {
-        try append_fmt(out, &used, "    {s},\n", .{zt[i][0..zt_lens[i]]});
+        try append_fmt(out, used, "    {s},\n", .{zt[i][0..zt_lens[i]]});
     }
-    try append(out, &used, "};\n\n");
+    try append(out, used, "};\n");
+}
+
+fn lower_tagged_unit(spec: *const rm.MoldSpec, zig_type: []const u8, out: []u8) LowerError!u32 {
+    var zt: [rm.max_fields][rm.max_name_len]u8 = undefined;
+    var zt_lens: [rm.max_fields]usize = undefined;
+    var i: usize = 0;
+    while (i < spec.field_count) : (i += 1) {
+        zt_lens[i] = try zig_safe_ident(rm.field_slice(spec, i), &zt[i]);
+    }
+
+    var used: usize = 0;
+    try emit_tagged_unit_type(spec, zig_type, out, &used, false);
+    try append(out, &used, "\n");
     try append(out, &used, "pub fn main(_: std.process.Init) !u8 {\n");
     try append_fmt(out, &used, "    const a: {s} = .{s};\n", .{ zig_type, zt[0][0..zt_lens[0]] });
     try append_fmt(out, &used, "    const b: {s} = .{s};\n", .{ zig_type, zt[1][0..zt_lens[1]] });
@@ -272,20 +288,22 @@ pub fn lower_source_welcome(src: []const u8, out: []u8) LowerError!u32 {
     };
 }
 
-/// Importable mold — type only, no `main` (STOA79 cross-desk `/+`).
+/// Importable mold — type only, no `main` (STOA79 `$:` · STOA81 unit `$%`).
 pub fn lower_source_library(src: []const u8, out: []u8) LowerError!u32 {
     const trimmed = std.mem.trim(u8, src, " \t\r\n");
     if (trimmed.len == 0) return error.EmptySource;
     const spec = try rm.parse_source(src);
-    if (spec.body != .tuple) {
-        // Tagged library emit stays later; cross-desk cast uses `$:` molds this lap.
-        return error.BadIdent;
-    }
     const name = rm.name_slice(&spec);
     var type_buf: [rm.max_name_len]u8 = undefined;
     const tn = try zig_type_name(name, &type_buf);
     var used: usize = 0;
-    try emit_tuple_type(&spec, type_buf[0..tn], out, &used, true);
+    switch (spec.body) {
+        .tuple => try emit_tuple_type(&spec, type_buf[0..tn], out, &used, true),
+        .tagged => {
+            if (rm.any_payload(&spec)) return error.BadIdent;
+            try emit_tagged_unit_type(&spec, type_buf[0..tn], out, &used, true);
+        },
+    }
     try append(out, &used, "\n");
     return @intCast(used);
 }
