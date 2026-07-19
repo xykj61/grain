@@ -352,6 +352,10 @@ fn emit_optional_program(
     return @intCast(written.len);
 }
 
+fn refuse_nest_jam_arm(arm: *const ArmExpr) LowerError!void {
+    if (expr.jam_has_nest_arg(arm)) return error.ArmNotYetLowered;
+}
+
 fn lower_line(line: []const u8, welcome: bool, out: []u8) LowerError!u32 {
     const trimmed = std.mem.trim(u8, line, " \t\r\n");
     if (trimmed.len == 0) return error.EmptySource;
@@ -359,6 +363,8 @@ fn lower_line(line: []const u8, welcome: bool, out: []u8) LowerError!u32 {
     const subject = rn.subject_slice(&spec);
     _ = try classify_subject(subject);
     var arms = try arm_pair(trimmed, subject);
+    try refuse_nest_jam_arm(&arms.then_arm);
+    try refuse_nest_jam_arm(&arms.else_arm);
     var zig_buf: [rn.max_subject_len]u8 = undefined;
     const n = try zig_safe_wing(subject, &zig_buf);
     const zig_face = zig_buf[0..n];

@@ -97,6 +97,13 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, rye_cue, "result == 3") != null);
     print("lower: \"?:  …  (cue cell)  0\" welcome nests cue arm -- GREEN\n", .{});
 
+    if (lower.lower_line_welcome("?:  (gth tick 32)  (jam (mix from amount) amount)  0", &buf)) |_| {
+        return error.ArmLoweredTooSoon;
+    } else |err| {
+        if (err != lower.LowerError.ArmNotYetLowered) return err;
+    }
+    print("lower: nest jam arm refused ArmNotYetLowered -- GREEN\n", .{});
+
     if (lower.lower_line_welcome("?:  (gth tick 32)  (foo root)  0", &buf)) |_| {
         return error.ArmLoweredTooSoon;
     } else |err| {

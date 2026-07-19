@@ -348,6 +348,10 @@ fn emit_kind_program(tag: []const u8, mint_arm: *const ArmExpr, send_arm: *const
     return @intCast(written.len);
 }
 
+fn refuse_nest_jam_arm(arm: *const ArmExpr) LowerError!void {
+    if (expr.jam_has_nest_arg(arm)) return error.ArmNotYetLowered;
+}
+
 fn lower_line(line: []const u8, welcome: bool, out: []u8) LowerError!u32 {
     const trimmed = std.mem.trim(u8, line, " \t\r\n");
     if (trimmed.len == 0) return error.EmptySource;
@@ -355,6 +359,8 @@ fn lower_line(line: []const u8, welcome: bool, out: []u8) LowerError!u32 {
     const subject = rsw.subject_slice(&spec);
     _ = try classify_subject(subject);
     var arms = try arm_pair(trimmed, subject);
+    try refuse_nest_jam_arm(&arms.mint_arm);
+    try refuse_nest_jam_arm(&arms.send_arm);
     const tag: []const u8 = if (welcome) "mint" else "send";
     return emit_kind_program(tag, &arms.mint_arm, &arms.send_arm, out);
 }
