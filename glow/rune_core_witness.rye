@@ -7,7 +7,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const rk = @import("rune_core.rye");
 
-const witness_version = "20260718.224600";
+const witness_version = "20260718.225931";
 
 const one_src =
     \\::  Thin core — one arm double (STOA14).
@@ -24,17 +24,47 @@ const two_src =
     \\--
 ;
 
+const payload_src =
+    \\::  Core with payload (STOA17).
+    \\|%
+    \\=/  amount  5
+    \\++  double
+    \\--
+;
+
 fn run_selftest() !u8 {
     const one = try rk.parse_source(one_src);
     assert(one.count == 1);
+    assert(!rk.has_payload(&one));
     assert(std.mem.eql(u8, rk.arm_at(&one, 0), "double"));
     print("core: one-arm double parses -- GREEN\n", .{});
 
     const two = try rk.parse_source(two_src);
     assert(two.count == 2);
+    assert(!rk.has_payload(&two));
     assert(std.mem.eql(u8, rk.arm_at(&two, 0), "double"));
     assert(std.mem.eql(u8, rk.arm_at(&two, 1), "inc"));
     print("core: two-arm double+inc parses -- GREEN\n", .{});
+
+    const pay = try rk.parse_source(payload_src);
+    assert(pay.count == 1);
+    assert(rk.has_payload(&pay));
+    assert(std.mem.eql(u8, rk.payload_face_at(&pay), "amount"));
+    assert(pay.payload_value == 5);
+    assert(std.mem.eql(u8, rk.arm_at(&pay, 0), "double"));
+    print("core: payload amount+double parses -- GREEN\n", .{});
+
+    if (rk.parse_source(
+        \\|%
+        \\++  double
+        \\=/  amount  5
+        \\--
+    )) |_| {
+        return error.PayloadAfterArmNotCaught;
+    } else |err| {
+        if (err != rk.ParseError.PayloadAfterArm) return err;
+    }
+    print("core: payload after arm refused PayloadAfterArm -- GREEN\n", .{});
 
     if (rk.parse_source("=/  amount  5\n=/  note  3\n")) |_| {
         return error.NotACoreNotCaught;
@@ -43,15 +73,8 @@ fn run_selftest() !u8 {
     }
     print("core: face desk refused NotACore -- GREEN\n", .{});
 
-    if (rk.parse_source("|%\n++\n--\n")) |_| {
-        return error.MissingArmNotCaught;
-    } else |err| {
-        if (err != rk.ParseError.MissingArm and err != rk.ParseError.MalformedName) return err;
-    }
-    print("core: bare ++ refused MissingArm -- GREEN\n", .{});
-
     print("core: version {s}\n", .{witness_version});
-    print("GREEN: `|%` thin core parses one or two named arms (STOA14/15).\n", .{});
+    print("GREEN: `|%` thin core parses arms and optional payload (STOA14/15/17).\n", .{});
     return 0;
 }
 

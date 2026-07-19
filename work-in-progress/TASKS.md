@@ -327,7 +327,8 @@
 - [x] **STOA14 — thin `|%` core** `20260718.224030` — brief then `|%` / `++ double` / `--`; desk `core-double`; no Hoon variance.
 - [x] **STOA15 — two-arm battery** `20260718.225150` — `|%` / `++ double` / `++ inc` / `--`; desk `core-two`; welcome asserts both arms.
 - [x] **STOA16 — library emit** `20260718.225150` — Core only, no `main`; desk `lib-core-double`; consumer `@import` exit 0.
-- [ ] **STOA17 — payload / face→core / 3+ arms** — check-in.
+- [x] **STOA17 — core payload** `20260718.225931` — `|%` / `=/ amount 5` / `++ double` / `--`; desk `core-payload`; arms use `self.amount`.
+- [ ] **STOA18 — face→core / 3+ arms / typed payload** — check-in.
 - [ ] **Dill-parallel kernel revival** — separate `active-reviving/` brief when a real need opens; not Dexter.
 - [ ] **M1 Scribble↔html round-trip witness** — named in fusion map; opens when Keaton leans doc pipeline.
 - [ ] **TAME witness-habitat pairing + Glow supplement** — horizon; needs Keaton's word (H2).

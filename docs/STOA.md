@@ -2,10 +2,10 @@
 
 *Waymark for Glow the language: rune heads that lower, nest forms that deepen, composition that grows toward Glow-authored modules. Compresses the working pin; never replaces it.*
 
-**Status:** Checkable — operator compressor (STOA0–STOA16 GREEN)  
+**Status:** Checkable — operator compressor (STOA0–STOA17 GREEN)  
 **Depth:** guide  
 **Ceiling:** ≤80 lines  
-**Last updated:** 2026-07-18 (STOA15–16 two-arm + library GREEN)  
+**Last updated:** 2026-07-18 (STOA17 core payload GREEN)  
 **Compresses:** [`../glow/README.md`](../glow/README.md) · first-code [`../expanding-prompts/20260717-213242_glow-first-code-beside-glass-and-open-runes.md`](../expanding-prompts/20260717-213242_glow-first-code-beside-glass-and-open-runes.md) · sameness [`../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md`](../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md) · seat [`../active-designing/20260718-202730_stoa-glow-language-waymark.md`](../active-designing/20260718-202730_stoa-glow-language-waymark.md)
 
 ---
@@ -37,14 +37,14 @@ Product glass and wire stay Rye-hosted under their own waymarks. **STOA** names 
 | **STOA14** | Thin `|%` / `++` / `--` core | `glow_rune_core` · `glow_lower_core` · desk | **GREEN** `20260718.224030` |
 | **STOA15** | Two-arm battery (`double` · `inc`) | `glow_rune_core` · `glow_lower_core` · desk | **GREEN** `20260718.225150` |
 | **STOA16** | Library emit (no `main`) | `glow_lower_core_lib` · consumer | **GREEN** `20260718.225150` |
-| **STOA17** | Payload · face→core · 3+ arms | horizon — check-in | horizon |
+| **STOA17** | Core payload `=/` sample | `glow_rune_core` · `glow_lower_core` · desk | **GREEN** `20260718.225931` |
+| **STOA18** | Face→core · 3+ arms · typed payload | horizon — check-in | horizon |
 
 ## Hands-on
 
 ```bash
 cd ~/urbit
-rishi/bin/rishi run tools/glow_run.rish glow/gen/core-two.glow
-rishi/bin/rishi run tools/glow_lower_core_lib_witness.rish
+rishi/bin/rishi run tools/glow_run.rish glow/gen/core-payload.glow
 rishi/bin/rishi run tools/glow_run_desk_witness.rish
 ```
 
