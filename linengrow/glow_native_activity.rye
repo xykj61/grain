@@ -20,6 +20,9 @@ const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 const fold = @import("sala_b0_fold.rye");
+/// Glow-lowered session-root (STOA70 desk → STOA71/72 import seam).
+/// Witness seats linengrow/lib_session_root_nest_cue_jam.rye → glow/.cache.
+const glow_session = @import("lib_session_root_nest_cue_jam.rye");
 const tube1_gate = @import("tube1_glass_gate.rye");
 const tube5_tip = @import("tube5_glass_tip.rye");
 const tube2_pub = @import("tube2_glass_pub.rye");
@@ -52,6 +55,10 @@ const default_hearth_bron =
 ;
 
 export var glow_last_session_root_hex: [65]u8 = [_]u8{0} ** 65;
+
+/// Glow product session-root (u32 from lowered nest cue-jam; expect 5).
+/// Distinct from Sala B0's 32-byte hex root in glow_last_session_root_hex.
+export var glow_last_product_session_root: u32 = 0;
 
 var g_activity: ?*anyopaque = null;
 var g_input_queue: ?*anyopaque = null;
@@ -740,6 +747,13 @@ export fn ANativeActivity_onCreate(
 ) callconv(.c) void {
     _ = saved_state;
     _ = saved_state_size;
+
+    // STOA72 A: NativeActivity compiles and calls Glow-lowered session-root.
+    // Expect 5. Sala B0 hex fold below stays the painted / file-proof root.
+    const glow_core = glow_session.Core{};
+    const product_root = glow_core.session_root();
+    assert(product_root == 5);
+    glow_last_product_session_root = product_root;
 
     const root = fold.run_demo_fold() catch {
         @memset(glow_last_session_root_hex[0..], 0);

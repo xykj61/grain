@@ -2,22 +2,22 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Rule: [`.cursor/rules/remember.mdc`](../.cursor/rules/remember.mdc) · [`.claude/rules/remember.md`](../.claude/rules/remember.md).*
 
-**Last refreshed:** `20260719.182138` (Eastern) · voice Quin  
+**Last refreshed:** `20260719.182648` (Eastern) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5** · HOLD0–HOLD1 · HOLD-W  
-**Language nib:** **STOA0–71** GREEN · STOA72 open  
-**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W · STOA0–71  
-**Git nib:** `dde4748475` STOA71 NativeActivity-path Glow import seam  
+**Language nib:** **STOA0–72** GREEN · STOA73 open  
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W · STOA0–72  
+**Git nib:** *(pin after seat)* STOA72 NativeActivity APK Glow import wire  
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`
 
 ---
 
 ## Now (language)
 
-**STOA71** NativeActivity-path Glow import seam GREEN `20260719.182120` — linengrow consumer `@import`s Glow-lowered `lib_session_root_nest_cue_jam`, asserts `session_root() == 5`. Device-free. Does not claim APK wire yet. Next door: **STOA72** check-in.
+**STOA72** NativeActivity APK Glow import wire GREEN `20260719.182648` — `glow_native_activity` `@import`s Glow-lowered session-root, asserts expect **5**, exports `glow_last_product_session_root`; pack GREEN both ABIs. Sala B0 hex fold stays painted/file root. Next door: **STOA73** check-in.
 
-Smoke: `rishi/bin/rishi run tools/stoa71_glow_import_seam_witness.rish`
+Smoke: `rishi/bin/rishi run tools/stoa72_glow_apk_import_witness.rish`
 
-Pitfalls: symlink is witness-seated + gitignored · `std.debug.print` is stderr · expect **5**. Hold: APK wire of same import · molds · Sala B0 rewrite · token stream.
+Pitfalls: pack seats gitignored symlink · product root is u32 **5** not Sala hex · install/eyes still separate. Hold: molds · Sala B0 rewrite · token stream · on-device product-root proof.
 
 ---
 
@@ -31,7 +31,7 @@ Pitfalls: symlink is witness-seated + gitignored · `std.debug.print` is stderr 
 | **JABS** | Sala broadcast live-session fold | JABS0–2 GREEN · JABS3 check-in |
 | **LULU** | Hearth · short home · Wired Glass | **LULU0–5 closed** |
 | **SETU** | USB hearth carry Glass↔Desk | **SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W GREEN** · live “sent” eyes check-in |
-| **STOA** | Glow language SLC · nest · composition | **STOA0–71 GREEN** · NativeActivity-path import seam · STOA72 next |
+| **STOA** | Glow language SLC · nest · composition | **STOA0–72 GREEN** · APK Glow import wire · STOA73 next |
 
 Canon: [`../docs/HAWM.md`](../docs/HAWM.md) · [`../docs/TUBE.md`](../docs/TUBE.md) · [`../docs/ZETA.md`](../docs/ZETA.md) · [`../docs/JABS.md`](../docs/JABS.md) · [`../docs/LULU.md`](../docs/LULU.md) · [`../docs/SETU.md`](../docs/SETU.md) · [`../docs/STOA.md`](../docs/STOA.md)
 
@@ -67,7 +67,7 @@ Hold row 1 → Settings: presets · `home ·` · `wire ·` · `cell ·` — all 
 
 | Door | Kind |
 |------|------|
-| **STOA72** next language (APK wire · molds · …) | **check-in** |
+| **STOA73** next language (molds · on-device · …) | **check-in** |
 | Live SETU6.5 **sent** on usb0/ncm | **check-in** (needs gadget/QEMU) |
 | Amber/Amphora Glass↔Desk fuse | **declined** — compose later (`133455`) |
 | JABS3 · TAME Lap 3 | **check-in** |
