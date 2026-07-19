@@ -1,0 +1,4 @@
+::  Import nest-left cue-jam library then call unpack (STOA58).
+/+  lib-core-cue-jam-nest
+=/  amount  5
+%-  unpack  amount
