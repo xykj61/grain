@@ -331,7 +331,8 @@
 - [x] **STOA18 — face→core compose** `20260718.230846` — outer `=/` then thin `|%` battery; desk `compose-core`; `Core.double(amount)`.
 - [x] **STOA19 — face→two-arm compose** `20260718.231511` — desk `compose-core-two`; `max_lines` 5.
 - [x] **STOA20 — three-arm battery** `20260718.231511` — `++ dec`; desk `core-three`; `max_arms` 3.
-- [ ] **STOA21 — typed payload / face→3 / richer compose** — check-in.
+- [x] **STOA21 — typed `@u32` payload** `20260718.232419` — desk `core-payload-typed`; bare payload unchanged; other auras refuse.
+- [ ] **STOA22 — face→3 / richer compose** — check-in.
 - [ ] **Dill-parallel kernel revival** — separate `active-reviving/` brief when a real need opens; not Dexter.
 - [ ] **M1 Scribble↔html round-trip witness** — named in fusion map; opens when Keaton leans doc pipeline.
 - [ ] **TAME witness-habitat pairing + Glow supplement** — horizon; needs Keaton's word (H2).

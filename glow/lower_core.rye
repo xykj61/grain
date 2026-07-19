@@ -1,8 +1,9 @@
 //! glow/lower_core.rye — lower a thin `|%` core to runnable `.rye`.
 //!
 //! STOA14: one closed arm `double`. STOA15: `double` and/or `inc`.
-//! STOA17: optional `=/` payload face; arms read `self.<face>`.
+//! STOA17: optional bare `=/` payload; arms read `self.<face>`.
 //! STOA20: closed arm `dec` (sample -% 1) for three-arm batteries.
+//! STOA21: optional typed payload `=/  face=@u32  <decimal>`.
 //! Without payload, arms still take `sample: u32` (demo 5).
 //! Library emit (no main) is STOA16 (`lower_source_library`).
 
@@ -131,6 +132,15 @@ fn emit_payload_field(spec: *const rk.CoreSpec, out: []u8) LowerError!usize {
     if (!rk.has_payload(spec)) return 0;
     var zf: [rk.max_name_len]u8 = undefined;
     const fn_len = try zig_safe_ident(rk.payload_face_at(spec), &zf);
+    // Bare and `@u32` payloads both lower to an ordinary u32 field (STOA17/21).
+    if (spec.payload_typed) {
+        const chunk = std.fmt.bufPrint(out,
+            \\    /// Glow payload mold `@u32` (STOA21).
+            \\    {s}: u32 = {d},
+            \\
+        , .{ zf[0..fn_len], spec.payload_value }) catch return error.Overflow;
+        return chunk.len;
+    }
     const chunk = std.fmt.bufPrint(out,
         \\    {s}: u32 = {d},
         \\
