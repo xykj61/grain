@@ -7,19 +7,34 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const rk = @import("rune_core.rye");
 
-const witness_version = "20260718.223906";
+const witness_version = "20260718.224600";
 
-const core_src =
+const one_src =
     \\::  Thin core — one arm double (STOA14).
     \\|%
     \\++  double
     \\--
 ;
 
+const two_src =
+    \\::  Two-arm core (STOA15).
+    \\|%
+    \\++  double
+    \\++  inc
+    \\--
+;
+
 fn run_selftest() !u8 {
-    const spec = try rk.parse_source(core_src);
-    assert(std.mem.eql(u8, rk.arm_slice(&spec), "double"));
-    print("core: \"|% / ++ double / --\" parses arm -- GREEN\n", .{});
+    const one = try rk.parse_source(one_src);
+    assert(one.count == 1);
+    assert(std.mem.eql(u8, rk.arm_at(&one, 0), "double"));
+    print("core: one-arm double parses -- GREEN\n", .{});
+
+    const two = try rk.parse_source(two_src);
+    assert(two.count == 2);
+    assert(std.mem.eql(u8, rk.arm_at(&two, 0), "double"));
+    assert(std.mem.eql(u8, rk.arm_at(&two, 1), "inc"));
+    print("core: two-arm double+inc parses -- GREEN\n", .{});
 
     if (rk.parse_source("=/  amount  5\n=/  note  3\n")) |_| {
         return error.NotACoreNotCaught;
@@ -27,13 +42,6 @@ fn run_selftest() !u8 {
         if (err != rk.ParseError.NotACore) return err;
     }
     print("core: face desk refused NotACore -- GREEN\n", .{});
-
-    if (rk.parse_source("|%\n++  double\n++  extra\n--\n")) |_| {
-        return error.TooManyNotCaught;
-    } else |err| {
-        if (err != rk.ParseError.TooManyLines and err != rk.ParseError.NotACore) return err;
-    }
-    print("core: four lines refused -- GREEN\n", .{});
 
     if (rk.parse_source("|%\n++\n--\n")) |_| {
         return error.MissingArmNotCaught;
@@ -43,7 +51,7 @@ fn run_selftest() !u8 {
     print("core: bare ++ refused MissingArm -- GREEN\n", .{});
 
     print("core: version {s}\n", .{witness_version});
-    print("GREEN: `|%` thin core parses one named arm (STOA14).\n", .{});
+    print("GREEN: `|%` thin core parses one or two named arms (STOA14/15).\n", .{});
     return 0;
 }
 

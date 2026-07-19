@@ -325,7 +325,9 @@
 - [x] **STOA12 — face→face→`%+` compose** `20260718.221812` — two bare faces then `%+  add  from  amount`; desk `compose-add`; samples must match bind order.
 - [x] **STOA13 — typed multi-line `@u32`** `20260718.223431` — 2–4 `=/  face=@u32  decimal` lines; desk `multi-typed`; bare multi (STOA10) unchanged.
 - [x] **STOA14 — thin `|%` core** `20260718.224030` — brief then `|%` / `++ double` / `--`; desk `core-double`; no Hoon variance.
-- [ ] **STOA15 — payload / multi-arm / library** — check-in (sample, two arms, or emit without `main`).
+- [x] **STOA15 — two-arm battery** `20260718.225150` — `|%` / `++ double` / `++ inc` / `--`; desk `core-two`; welcome asserts both arms.
+- [x] **STOA16 — library emit** `20260718.225150` — Core only, no `main`; desk `lib-core-double`; consumer `@import` exit 0.
+- [ ] **STOA17 — payload / face→core / 3+ arms** — check-in.
 - [ ] **Dill-parallel kernel revival** — separate `active-reviving/` brief when a real need opens; not Dexter.
 - [ ] **M1 Scribble↔html round-trip witness** — named in fusion map; opens when Keaton leans doc pipeline.
 - [ ] **TAME witness-habitat pairing + Glow supplement** — horizon; needs Keaton's word (H2).

@@ -38,9 +38,9 @@ Exactly three Glow lines, no payload sample yet:
 - Welcome exit 0 / unwelcome exit 1
 - Desk `glow/gen/core-double.glow` on the desk hop
 
-## Held for STOA15+
+## Held for STOA15+ (landed `20260718.225150`)
 
-Payload/sample · two-arm batteries · face→core compose · library emit (no `main`) for NativeActivity.
+Two-arm batteries and library emit (no `main`) landed as **STOA15–16**. Still held: payload/sample · face→core compose · three-plus arms.
 
 ---
 

@@ -4,7 +4,7 @@
 
 **Language:** EN
 **Version:** `20260715` (Pool keystone revival prioritized · Quin voice seated · align pass reconciles the closed ladder)
-**Last updated:** 2026-07-18 (**STOA14** GREEN — thin `|%` core)
+**Last updated:** 2026-07-18 (**STOA15–16** GREEN — two-arm core · library emit)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Lens:** TAME — safety, performance, joy; the Seed Law; [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md)
@@ -329,6 +329,14 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 **Send STOA12–13, `20260718.223834`** — pier at `4d3e049a52`. Approved A→C→B for cores.
 
 **STOA14 thin `|%` core GREEN, `20260718.224030`** — brief seated; desk `core-double` (`++ double`); no variance. Next language: **STOA15** check-in (payload · multi-arm · library emit).
+
+**Send STOA14, `20260718.224511`** — pier at `b850c94b90`. Approved A→B→D (send · two-arm · library; skip face→core).
+
+**STOA15 two-arm battery GREEN, `20260718.225150`** — `++ double` · `++ inc`; desk `core-two`; cap two arms. Next: **STOA16** library in the same approve pass.
+
+**STOA16 library emit GREEN, `20260718.225150`** — `lower_source_library` (no `main`); desk `lib-core-double`; consumer exit 0. Next language: **send** STOA15–16; then **STOA17** check-in (payload · face→core · 3+ arms).
+
+**Send STOA15–16, `20260718.225613`** — two-arm battery + library emit on the pier. Next language: **STOA17** check-in (payload · face→core · 3+ arms).
 
 **Glow OS · Glow Desk · Glow Glass seated, `20260717.183622`** — Keaton: **Glow OS** unifies; **Glow Desk** = desktop; **Glow Glass** = mobile. Lexicon + silo [`../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md`](../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md). Orientation firmware stays check-in.
 

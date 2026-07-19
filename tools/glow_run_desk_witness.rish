@@ -189,5 +189,11 @@ assert core.ok else "glow_run core-double.glow failed"
 assert core.out contains "GREEN" else "glow_run core-double.glow not GREEN"
 assert core.out contains "core-double.glow" else "glow_run core-double claim missing path"
 
+let core2 = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/core-two.glow"]
+assert core2.ok else "glow_run core-two.glow failed"
+assert core2.out contains "GREEN" else "glow_run core-two.glow not GREEN"
+assert core2.out contains "core-two.glow" else "glow_run core-two claim missing path"
+
 say "GREEN: glow_run desk — all desk generators lowered, built, exit 0."
+
 

@@ -1402,10 +1402,15 @@ let glow_rune_core = run ["rishi/bin/rishi" "run" "tools/glow_rune_core_witness.
 assert glow_rune_core.ok else "Glow rune-core witness failed"
 say "GREEN: Glow rune-core witness passed."
 
-say "witness suite: Glow `|%` thin core — lower hop (STOA14)…"
+say "witness suite: Glow `|%` thin core — lower hop (STOA14/15)…"
 let glow_core = run ["rishi/bin/rishi" "run" "tools/glow_lower_core_witness.rish"]
 assert glow_core.ok else "Glow lower-core witness failed"
 say "GREEN: Glow lower-core witness passed."
+
+say "witness suite: Glow `|%` library emit — no main (STOA16)…"
+let glow_core_lib = run ["rishi/bin/rishi" "run" "tools/glow_lower_core_lib_witness.rish"]
+assert glow_core_lib.ok else "Glow lower-core-lib witness failed"
+say "GREEN: Glow lower-core-lib witness passed."
 
 say "witness suite: glow_run desk — all generator hops…"
 let glow_desk = run ["rishi/bin/rishi" "run" "tools/glow_run_desk_witness.rish"]
