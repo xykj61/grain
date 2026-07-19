@@ -1,7 +1,8 @@
 //! glow/lower_core.rye — lower a thin `|%` core to runnable `.rye`.
 //!
 //! STOA14: one closed arm `double`. STOA15: `double` and/or `inc`.
-//! Demo sample 5 → double 10, inc 6. Unknown arms refuse.
+//! STOA17: optional `=/` payload face; arms read `self.<face>`.
+//! Without payload, arms still take `sample: u32` (demo 5).
 //! Library emit (no main) is STOA16 (`lower_source_library`).
 
 const std = @import("std");
@@ -34,32 +35,63 @@ fn zig_safe_ident(face: []const u8, out: *[rk.max_name_len]u8) LowerError!usize 
     return face.len;
 }
 
-fn arm_body(arm: []const u8) LowerError![]const u8 {
+fn arm_body_sample(arm: []const u8) LowerError![]const u8 {
     if (std.mem.eql(u8, arm, "double")) return "return sample *% 2;";
     if (std.mem.eql(u8, arm, "inc")) return "return sample +% 1;";
     return error.UnknownArm;
 }
 
-fn arm_expect(arm: []const u8) LowerError!u32 {
-    if (std.mem.eql(u8, arm, "double")) return 10;
-    if (std.mem.eql(u8, arm, "inc")) return 6;
+fn arm_body_payload(arm: []const u8, face_zig: []const u8, out: []u8) LowerError![]const u8 {
+    if (std.mem.eql(u8, arm, "double")) {
+        return std.fmt.bufPrint(out, "return self.{s} *% 2;", .{face_zig}) catch return error.Overflow;
+    }
+    if (std.mem.eql(u8, arm, "inc")) {
+        return std.fmt.bufPrint(out, "return self.{s} +% 1;", .{face_zig}) catch return error.Overflow;
+    }
     return error.UnknownArm;
+}
+
+fn arm_expect(arm: []const u8, sample: u32) LowerError!u32 {
+    if (std.mem.eql(u8, arm, "double")) return sample *% 2;
+    if (std.mem.eql(u8, arm, "inc")) return sample +% 1;
+    return error.UnknownArm;
+}
+
+fn demo_sample(spec: *const rk.CoreSpec) u32 {
+    if (rk.has_payload(spec)) return spec.payload_value;
+    return core_demo_sample;
 }
 
 fn emit_arm_methods(spec: *const rk.CoreSpec, out: []u8) LowerError!usize {
     var at: usize = 0;
+    var body_buf: [128]u8 = undefined;
+    var zf: [rk.max_name_len]u8 = undefined;
+    const payload = rk.has_payload(spec);
+    const fn_len = if (payload) try zig_safe_ident(rk.payload_face_at(spec), &zf) else 0;
+
     var i: usize = 0;
     while (i < spec.count) : (i += 1) {
         const arm = rk.arm_at(spec, i);
         var za: [rk.max_name_len]u8 = undefined;
         const an = try zig_safe_ident(arm, &za);
-        const body = try arm_body(arm);
-        const chunk = std.fmt.bufPrint(out[at..],
-            \\    pub fn {s}(sample: u32) u32 {{
-            \\        {s}
-            \\    }}
-            \\
-        , .{ za[0..an], body }) catch return error.Overflow;
+        const body: []const u8 = if (payload)
+            try arm_body_payload(arm, zf[0..fn_len], &body_buf)
+        else
+            try arm_body_sample(arm);
+        const chunk = if (payload)
+            std.fmt.bufPrint(out[at..],
+                \\    pub fn {s}(self: @This()) u32 {{
+                \\        {s}
+                \\    }}
+                \\
+            , .{ za[0..an], body }) catch return error.Overflow
+        else
+            std.fmt.bufPrint(out[at..],
+                \\    pub fn {s}(sample: u32) u32 {{
+                \\        {s}
+                \\    }}
+                \\
+            , .{ za[0..an], body }) catch return error.Overflow;
         at += chunk.len;
     }
     return at;
@@ -67,24 +99,42 @@ fn emit_arm_methods(spec: *const rk.CoreSpec, out: []u8) LowerError!usize {
 
 fn emit_checks(spec: *const rk.CoreSpec, welcome: bool, out: []u8) LowerError!usize {
     var at: usize = 0;
+    const sample = demo_sample(spec);
+    const payload = rk.has_payload(spec);
     var i: usize = 0;
     while (i < spec.count) : (i += 1) {
         const arm = rk.arm_at(spec, i);
         var za: [rk.max_name_len]u8 = undefined;
         const an = try zig_safe_ident(arm, &za);
-        const base = try arm_expect(arm);
+        const base = try arm_expect(arm, sample);
         const expect: u32 = if (welcome) base else base +% 1;
         if (i > 0) {
             const and_part = std.fmt.bufPrint(out[at..], " and ", .{}) catch return error.Overflow;
             at += and_part.len;
         }
-        const chunk = std.fmt.bufPrint(out[at..], "Core.{s}(amount) == {d}", .{ za[0..an], expect }) catch return error.Overflow;
+        const chunk = if (payload)
+            std.fmt.bufPrint(out[at..], "core.{s}() == {d}", .{ za[0..an], expect }) catch return error.Overflow
+        else
+            std.fmt.bufPrint(out[at..], "Core.{s}(amount) == {d}", .{ za[0..an], expect }) catch return error.Overflow;
         at += chunk.len;
     }
     return at;
 }
 
+fn emit_payload_field(spec: *const rk.CoreSpec, out: []u8) LowerError!usize {
+    if (!rk.has_payload(spec)) return 0;
+    var zf: [rk.max_name_len]u8 = undefined;
+    const fn_len = try zig_safe_ident(rk.payload_face_at(spec), &zf);
+    const chunk = std.fmt.bufPrint(out,
+        \\    {s}: u32 = {d},
+        \\
+    , .{ zf[0..fn_len], spec.payload_value }) catch return error.Overflow;
+    return chunk.len;
+}
+
 fn emit_core_program(spec: *const rk.CoreSpec, welcome: bool, with_main: bool, out: []u8) LowerError!u32 {
+    var field: [256]u8 = undefined;
+    const flen = try emit_payload_field(spec, &field);
     var methods: [1024]u8 = undefined;
     const mlen = try emit_arm_methods(spec, &methods);
 
@@ -92,16 +142,33 @@ fn emit_core_program(spec: *const rk.CoreSpec, welcome: bool, with_main: bool, o
         const written = std.fmt.bufPrint(out,
             \\const std = @import("std");
             \\
-            \\/// Lowered from Glow `|%` library core — no main (STOA16).
+            \\/// Lowered from Glow `|%` library core — no main (STOA16/17).
             \\pub const Core = struct {{
-            \\{s}}};
+            \\{s}{s}}};
             \\
-        , .{methods[0..mlen]}) catch return error.Overflow;
+        , .{ field[0..flen], methods[0..mlen] }) catch return error.Overflow;
         return @intCast(written.len);
     }
 
     var checks: [512]u8 = undefined;
     const clen = try emit_checks(spec, welcome, &checks);
+    if (rk.has_payload(spec)) {
+        const written = std.fmt.bufPrint(out,
+            \\const std = @import("std");
+            \\
+            \\/// Lowered from Glow `|%` core with payload (STOA17).
+            \\const Core = struct {{
+            \\{s}{s}}};
+            \\
+            \\pub fn main(_: std.process.Init) !u8 {{
+            \\    const core = Core{{}};
+            \\    return if ({s}) 0 else 1;
+            \\}}
+            \\
+        , .{ field[0..flen], methods[0..mlen], checks[0..clen] }) catch return error.Overflow;
+        return @intCast(written.len);
+    }
+
     const written = std.fmt.bufPrint(out,
         \\const std = @import("std");
         \\

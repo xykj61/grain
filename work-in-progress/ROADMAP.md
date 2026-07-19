@@ -4,7 +4,7 @@
 
 **Language:** EN
 **Version:** `20260715` (Pool keystone revival prioritized · Quin voice seated · align pass reconciles the closed ladder)
-**Last updated:** 2026-07-18 (**STOA15–16** GREEN — two-arm core · library emit)
+**Last updated:** 2026-07-18 (**STOA17** GREEN — core payload sample)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Lens:** TAME — safety, performance, joy; the Seed Law; [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md)
@@ -337,6 +337,10 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 **STOA16 library emit GREEN, `20260718.225150`** — `lower_source_library` (no `main`); desk `lib-core-double`; consumer exit 0. Next language: **send** STOA15–16; then **STOA17** check-in (payload · face→core · 3+ arms).
 
 **Send STOA15–16, `20260718.225613`** — two-arm battery + library emit on the pier. Next language: **STOA17** check-in (payload · face→core · 3+ arms).
+
+**STOA17 core payload GREEN, `20260718.225931`** — `|%` / `=/ amount 5` / `++ double` / `--`; desk `core-payload`; arms read `self.amount`. Next: **send**; then **STOA18** check-in (face→core · 3+ arms · typed payload).
+
+**Send STOA17, `20260718.230754`** — payload core on the pier. Next: **STOA18** face→core (approved A→B).
 
 **Glow OS · Glow Desk · Glow Glass seated, `20260717.183622`** — Keaton: **Glow OS** unifies; **Glow Desk** = desktop; **Glow Glass** = mobile. Lexicon + silo [`../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md`](../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md). Orientation firmware stays check-in.
 

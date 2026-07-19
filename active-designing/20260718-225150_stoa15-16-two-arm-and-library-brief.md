@@ -30,7 +30,7 @@ Same `|%` / `++` / `--` shape; `lower_source_library` emits `pub const Core` onl
 
 ## Not in these faces
 
-Payload/sample molds · three-plus arms · face→core compose · wet cores · variance.
+Payload landed as **STOA17**. Still held: three-plus arms · face→core compose · typed payload molds · wet cores · variance.
 
 ---
 

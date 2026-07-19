@@ -1,0 +1,14 @@
+format session-log-v1
+stamp 20260718.230550
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern time convention
+title STOA17 check-in before send
+prompt check in
+think Language nib STOA0-17 GREEN in the working tree; pier still at STOA15-16 3fdd795280
+think Present send vs STOA18 forks and wait — no build this turn
+obs Face-to-core remains the lean compose next after payload lands on the pier
+obs Unsent STOA17 should ship before or with the next language lap
+file session-logs/20260718-225931_stoa17-core-payload-green.bron prior GREEN claim
+recommend check-in Keaton picks send and or STOA18 fork
