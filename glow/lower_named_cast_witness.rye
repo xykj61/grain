@@ -1,0 +1,60 @@
+//! glow/lower_named_cast_witness.rye — proves same-desk named-cast resolve.
+//!
+//!   rye build glow/lower_named_cast_witness.rye -femit-bin=glow/bin/lower_named_cast_witness
+//!   glow/bin/lower_named_cast_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const lower = @import("lower_named_cast.rye");
+
+const witness_version = "20260719.193200";
+
+const desk_src =
+    \\+$  amount-mold
+    \\  $:  amount=@u32
+    \\  ==
+    \\^-  amount-mold
+;
+
+const mismatch_src =
+    \\+$  amount-mold
+    \\  $:  amount=@u32
+    \\  ==
+    \\^-  other-mold
+;
+
+fn run_selftest(init: std.process.Init) !u8 {
+    const io = init.io;
+    const cwd = std.Io.Dir.cwd();
+    var buf: [4096]u8 = undefined;
+
+    assert(lower.looks_like_named_cast(desk_src));
+    print("lower: cast-named-amount shape detected -- GREEN\n", .{});
+
+    const n = try lower.lower_source_welcome(desk_src, &buf);
+    const rye = buf[0..n];
+    assert(std.mem.indexOf(u8, rye, "pub const AmountMold") != null);
+    assert(std.mem.indexOf(u8, rye, "named-cast resolve") != null);
+    assert(std.mem.indexOf(u8, rye, "amount = raw") != null);
+    print("lower: +$ amount-mold + ^- amount-mold emits AmountMold cast -- GREEN\n", .{});
+
+    if (lower.lower_source_welcome(mismatch_src, &buf)) |_| {
+        return error.CastMoldMismatchNotCaught;
+    } else |err| {
+        if (err != lower.LowerError.CastMoldMismatch) return err;
+    }
+    print("lower: cast name mismatch refused CastMoldMismatch -- GREEN\n", .{});
+
+    try cwd.createDirPath(io, "glow/.cache");
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/cast_named_amount_welcome.rye", .data = rye });
+    print("lower: wrote cast_named_amount_welcome.rye -- GREEN\n", .{});
+
+    print("lower: version {s}\n", .{witness_version});
+    print("GREEN: named-cast resolve lowers — STOA77; cast-named-amount.glow.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
+}
