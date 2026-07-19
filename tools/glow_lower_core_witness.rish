@@ -29,6 +29,7 @@ assert selftest.out contains "nest jam-of-mix welcome" else "lower_core_witness 
 assert selftest.out contains "nest jam-right-mix welcome" else "lower_core_witness missing nest jam-right-mix claim"
 assert selftest.out contains "nest jam-both-mix welcome" else "lower_core_witness missing nest jam-both-mix claim"
 assert selftest.out contains "cue-of-jam welcome" else "lower_core_witness missing cue-of-jam claim"
+assert selftest.out contains "cue nest jam welcome" else "lower_core_witness missing cue nest jam claim"
 assert selftest.out contains "UnknownArm" else "lower_core_witness missing UnknownArm"
 
 let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]

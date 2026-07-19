@@ -184,7 +184,9 @@ fn open_expect(body: *const expr.Expr, sample: u32) LowerError!u32 {
             (sample << 16) | (sample ^ sample)
         else
             (sample << 16) | sample,
-        .cue_of => if (expr.cue_is_jam(body))
+        .cue_of => if (expr.cue_jam_is_nest_left(body))
+            (((sample ^ sample) << 16) | sample) & 0xffff
+        else if (expr.cue_is_jam(body))
             ((sample << 16) | sample) & 0xffff
         else
             sample & 0xffff,

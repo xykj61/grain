@@ -125,6 +125,17 @@ fn run_selftest(_: std.process.Init) !u8 {
         assert(expr.cue_expect(&p.expr) == 3);
         print("expr: (cue (jam from amount)) nest form -- GREEN\n", .{});
     }
+    {
+        const p = try expr.parse_prefix("(cue (jam (mix from amount) amount))  rest");
+        assert(p.expr.kind == .cue_of);
+        assert(expr.cue_jam_is_nest_left(&p.expr));
+        assert(std.mem.eql(u8, expr.face_slice(&p.expr), "from"));
+        assert(std.mem.eql(u8, expr.face2_slice(&p.expr), "amount"));
+        assert(std.mem.eql(u8, expr.face3_slice(&p.expr), "amount"));
+        assert(std.mem.eql(u8, p.rest, "rest"));
+        assert(expr.cue_expect(&p.expr) == 3);
+        print("expr: (cue (jam (mix from amount) amount)) nest-left form -- GREEN\n", .{});
+    }
     if (expr.parse_whole("42  leftover")) |_| {
         assert(false);
     } else |err| {

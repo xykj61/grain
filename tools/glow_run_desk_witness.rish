@@ -74,6 +74,11 @@ assert facecuejam.ok else "glow_run face-cue-jam.glow failed"
 assert facecuejam.out contains "GREEN" else "glow_run face-cue-jam.glow not GREEN"
 assert facecuejam.out contains "face-cue-jam.glow" else "glow_run face-cue-jam claim missing path"
 
+let facecuejamnest = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/face-cue-jam-nest.glow"]
+assert facecuejamnest.ok else "glow_run face-cue-jam-nest.glow failed"
+assert facecuejamnest.out contains "GREEN" else "glow_run face-cue-jam-nest.glow not GREEN"
+assert facecuejamnest.out contains "face-cue-jam-nest.glow" else "glow_run face-cue-jam-nest claim missing path"
+
 let facejamnest = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/face-jam-nest.glow"]
 assert facejamnest.ok else "glow_run face-jam-nest.glow failed"
 assert facejamnest.out contains "GREEN" else "glow_run face-jam-nest.glow not GREEN"
@@ -113,6 +118,11 @@ let ifcuejam = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/if-c
 assert ifcuejam.ok else "glow_run if-cue-jam.glow failed"
 assert ifcuejam.out contains "GREEN" else "glow_run if-cue-jam.glow not GREEN"
 assert ifcuejam.out contains "if-cue-jam.glow" else "glow_run if-cue-jam claim missing path"
+
+let ifcuejamnest = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/if-cue-jam-nest.glow"]
+assert ifcuejamnest.ok else "glow_run if-cue-jam-nest.glow failed"
+assert ifcuejamnest.out contains "GREEN" else "glow_run if-cue-jam-nest.glow not GREEN"
+assert ifcuejamnest.out contains "if-cue-jam-nest.glow" else "glow_run if-cue-jam-nest claim missing path"
 
 let ifjamnest = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/if-jam-nest.glow"]
 assert ifjamnest.ok else "glow_run if-jam-nest.glow failed"
@@ -154,6 +164,11 @@ assert swcuejam.ok else "glow_run switch-cue-jam.glow failed"
 assert swcuejam.out contains "GREEN" else "glow_run switch-cue-jam.glow not GREEN"
 assert swcuejam.out contains "switch-cue-jam.glow" else "glow_run switch-cue-jam claim missing path"
 
+let swcuejamnest = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/switch-cue-jam-nest.glow"]
+assert swcuejamnest.ok else "glow_run switch-cue-jam-nest.glow failed"
+assert swcuejamnest.out contains "GREEN" else "glow_run switch-cue-jam-nest.glow not GREEN"
+assert swcuejamnest.out contains "switch-cue-jam-nest.glow" else "glow_run switch-cue-jam-nest claim missing path"
+
 let swjamnest = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/switch-jam-nest.glow"]
 assert swjamnest.ok else "glow_run switch-jam-nest.glow failed"
 assert swjamnest.out contains "GREEN" else "glow_run switch-jam-nest.glow not GREEN"
@@ -193,6 +208,11 @@ let nullcuejam = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/nu
 assert nullcuejam.ok else "glow_run null-cue-jam.glow failed"
 assert nullcuejam.out contains "GREEN" else "glow_run null-cue-jam.glow not GREEN"
 assert nullcuejam.out contains "null-cue-jam.glow" else "glow_run null-cue-jam claim missing path"
+
+let nullcuejamnest = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/null-cue-jam-nest.glow"]
+assert nullcuejamnest.ok else "glow_run null-cue-jam-nest.glow failed"
+assert nullcuejamnest.out contains "GREEN" else "glow_run null-cue-jam-nest.glow not GREEN"
+assert nullcuejamnest.out contains "null-cue-jam-nest.glow" else "glow_run null-cue-jam-nest claim missing path"
 
 let nulljamnest = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/null-jam-nest.glow"]
 assert nulljamnest.ok else "glow_run null-jam-nest.glow failed"
@@ -391,6 +411,11 @@ let corecuejam = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/co
 assert corecuejam.ok else "glow_run core-cue-jam.glow failed"
 assert corecuejam.out contains "GREEN" else "glow_run core-cue-jam.glow not GREEN"
 assert corecuejam.out contains "core-cue-jam.glow" else "glow_run core-cue-jam claim missing path"
+
+let corecuejamnest = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/core-cue-jam-nest.glow"]
+assert corecuejamnest.ok else "glow_run core-cue-jam-nest.glow failed"
+assert corecuejamnest.out contains "GREEN" else "glow_run core-cue-jam-nest.glow not GREEN"
+assert corecuejamnest.out contains "core-cue-jam-nest.glow" else "glow_run core-cue-jam-nest claim missing path"
 
 let composecorenest = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/compose-core-nest.glow"]
 assert composecorenest.ok else "glow_run compose-core-nest.glow failed"
