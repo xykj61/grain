@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260718.201232
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS amd64 (Framework 16 AMD) — Eastern
+title SETU6 lab harness GREEN
+prompt approve
+think Approved SETU6; Pixel still 18d1:4ee7 charging+debug — no usb0/ncm. Thin face = lab harness not live TX.
+think Seated make_lab_status · lab.bron · stand-in/armed fixtures · host probe; SETU6.5 for live framed TX.
+obs Witness + host probe GREEN: lab · payload yes · 289b · iface none · stand-in
+product_nib SETU6
+suite_nib SETU0-SETU6
+git_nib e303a99155
+file linengrow/setu6_device_lab.rye lab mold
+file tools/setu6_device_lab_witness.rish device-free
+file tools/setu6_lab_probe_onpath_host.rish host classify
+file active-designing/20260718-201232_setu6-device-wire-lab.md season brief
+recommend keep-going send SETU6; SETU6.5 check-in when gadget path chosen
