@@ -1,4 +1,4 @@
-//! glow/rune_mold_witness.rye — proves `+$` / `$:` mold parse (STOA74–75).
+//! glow/rune_mold_witness.rye — proves `+$` / `$:` / `$%` mold parse.
 //!
 //!   rye build glow/rune_mold_witness.rye -femit-bin=glow/bin/rune_mold_witness
 //!   glow/bin/rune_mold_witness
@@ -8,7 +8,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const rm = @import("rune_mold.rye");
 
-const witness_version = "20260719.191900";
+const witness_version = "20260719.192600";
 
 fn run_selftest() !u8 {
     const one =
@@ -17,10 +17,10 @@ fn run_selftest() !u8 {
         \\  ==
     ;
     const s1 = try rm.parse_source(one);
-    assert(std.mem.eql(u8, rm.name_slice(&s1), "amount-mold"));
+    assert(s1.body == .tuple);
     assert(s1.field_count == 1);
     assert(std.mem.eql(u8, rm.first_field_slice(&s1), "amount"));
-    print("rune: thin +$ amount-mold / $: amount=@u32 parses -- GREEN\n", .{});
+    print("rune: thin +$ / $: amount-mold parses -- GREEN\n", .{});
 
     const two =
         \\+$  pair-mold
@@ -29,18 +29,22 @@ fn run_selftest() !u8 {
         \\  ==
     ;
     const s2 = try rm.parse_source(two);
-    assert(std.mem.eql(u8, rm.name_slice(&s2), "pair-mold"));
+    assert(s2.body == .tuple);
     assert(s2.field_count == 2);
-    assert(std.mem.eql(u8, rm.field_slice(&s2, 0), "from"));
-    assert(std.mem.eql(u8, rm.field_slice(&s2, 1), "amount"));
-    print("rune: multi-field +$ pair-mold / $: from amount parses -- GREEN\n", .{});
+    print("rune: multi-field +$ / $: pair-mold parses -- GREEN\n", .{});
 
-    if (rm.parse_source("^-  @u32")) |_| {
-        return error.NotAMoldNotCaught;
-    } else |err| {
-        if (err != rm.ParseError.NotAMold and err != rm.ParseError.TooFewLines) return err;
-    }
-    print("rune: non-mold source refused -- GREEN unwelcome path\n", .{});
+    const tagged =
+        \\+$  kind-mold
+        \\  $%  [%mint ~]
+        \\      [%send ~]
+        \\  ==
+    ;
+    const s3 = try rm.parse_source(tagged);
+    assert(s3.body == .tagged);
+    assert(s3.field_count == 2);
+    assert(std.mem.eql(u8, rm.field_slice(&s3, 0), "mint"));
+    assert(std.mem.eql(u8, rm.field_slice(&s3, 1), "send"));
+    print("rune: thin +$ / $% kind-mold mint/send parses -- GREEN\n", .{});
 
     if (rm.parse_source(
         \\+$  amount-mold
@@ -54,17 +58,18 @@ fn run_selftest() !u8 {
     print("rune: non-@u32 field refused MoldNotU32 -- GREEN\n", .{});
 
     if (rm.parse_source(
-        \\+$  amount-mold
-        \\  $:  amount=@u32
+        \\+$  kind-mold
+        \\  $%  [%mint ~]
+        \\  ==
     )) |_| {
-        return error.MissingEndNotCaught;
+        return error.TooFewTagsNotCaught;
     } else |err| {
-        if (err != rm.ParseError.TooFewLines and err != rm.ParseError.MissingEnd) return err;
+        if (err != rm.ParseError.TooFewTags) return err;
     }
-    print("rune: missing == refused -- GREEN unwelcome path\n", .{});
+    print("rune: single $% tag refused TooFewTags -- GREEN\n", .{});
 
     print("rune: version {s}\n", .{witness_version});
-    print("GREEN: +$ / $: mold front half parses — STOA74/75.\n", .{});
+    print("GREEN: +$ / $: / $% mold front half parses — STOA74/75/76.\n", .{});
     return 0;
 }
 

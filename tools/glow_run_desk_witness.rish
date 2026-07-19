@@ -622,6 +622,11 @@ assert moldpair.ok else "glow_run mold-pair.glow failed"
 assert moldpair.out contains "GREEN" else "glow_run mold-pair.glow not GREEN"
 assert moldpair.out contains "mold-pair.glow" else "glow_run mold-pair claim missing path"
 
+let moldkind = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/mold-kind.glow"]
+assert moldkind.ok else "glow_run mold-kind.glow failed"
+assert moldkind.out contains "GREEN" else "glow_run mold-kind.glow not GREEN"
+assert moldkind.out contains "mold-kind.glow" else "glow_run mold-kind claim missing path"
+
 say "GREEN: glow_run desk — all desk generators lowered, built, exit 0."
 
 

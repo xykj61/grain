@@ -1,0 +1,6 @@
+::  Thin +$ / $% tagged-union mold — cold atoms with unit payload (STOA76).
+::  Lowered by glow/lower_mold.rye into ordinary Rye; Rishi stays the shell.
++$  kind-mold
+  $%  [%mint ~]
+      [%send ~]
+  ==

@@ -1,8 +1,8 @@
-//! glow/lower_mold.rye — lower a `+$` / `$:` mold to runnable `.rye`.
+//! glow/lower_mold.rye — lower a `+$` / `$:` / `$%` mold to runnable `.rye`.
 //!
-//! STOA74: one-field `@u32` → Zig struct + demo main (amount 5).
-//! STOA75: two- or three-field `@u32` → struct + demo (5 · 3 · 7).
-//! `$%` · named-cast resolve stay later.
+//! STOA74–75: `$:` `@u32` fields → Zig struct + demo main.
+//! STOA76: `$%` cold-atom tags with unit payload → Zig enum + demo main.
+//! Named-cast resolve · payload arms stay later.
 
 const std = @import("std");
 const rm = @import("rune_mold.rye");
@@ -32,7 +32,6 @@ fn zig_safe_ident(face: []const u8, out: *[rm.max_name_len]u8) LowerError!usize 
     return face.len;
 }
 
-/// `amount-mold` → `AmountMold` (hyphen parts title-cased).
 fn zig_type_name(name: []const u8, out: *[rm.max_name_len]u8) LowerError!usize {
     if (name.len == 0 or name.len > rm.max_name_len) return error.BadIdent;
     var o: usize = 0;
@@ -70,18 +69,13 @@ fn append_fmt(out: []u8, used: *usize, comptime fmt: []const u8, args: anytype) 
     used.* += written.len;
 }
 
-pub fn lower_source_welcome(src: []const u8, out: []u8) LowerError!u32 {
-    const spec = try rm.parse_source(src);
-    const name = rm.name_slice(&spec);
-    var zt: [rm.max_name_len]u8 = undefined;
-    const tn = try zig_type_name(name, &zt);
-    const zig_type = zt[0..tn];
-
+fn lower_tuple(spec: *const rm.MoldSpec, zig_type: []const u8, out: []u8) LowerError!u32 {
+    const name = rm.name_slice(spec);
     var zf: [rm.max_fields][rm.max_name_len]u8 = undefined;
     var zf_lens: [rm.max_fields]usize = undefined;
     var i: usize = 0;
     while (i < spec.field_count) : (i += 1) {
-        zf_lens[i] = try zig_safe_ident(rm.field_slice(&spec, i), &zf[i]);
+        zf_lens[i] = try zig_safe_ident(rm.field_slice(spec, i), &zf[i]);
     }
 
     var used: usize = 0;
@@ -108,4 +102,51 @@ pub fn lower_source_welcome(src: []const u8, out: []u8) LowerError!u32 {
     }
     try append(out, &used, ") 0 else 1;\n}\n");
     return @intCast(used);
+}
+
+fn lower_tagged(spec: *const rm.MoldSpec, zig_type: []const u8, out: []u8) LowerError!u32 {
+    const name = rm.name_slice(spec);
+    var zt: [rm.max_fields][rm.max_name_len]u8 = undefined;
+    var zt_lens: [rm.max_fields]usize = undefined;
+    var i: usize = 0;
+    while (i < spec.field_count) : (i += 1) {
+        zt_lens[i] = try zig_safe_ident(rm.field_slice(spec, i), &zt[i]);
+    }
+
+    var used: usize = 0;
+    try append(out, &used, "const std = @import(\"std\");\n\n");
+    try append_fmt(out, &used, "/// Lowered from Glow `+$ {s}` / `$%` cold tags (STOA76).\n", .{name});
+    try append_fmt(out, &used, "pub const {s} = enum(u8) {{\n", .{zig_type});
+    i = 0;
+    while (i < spec.field_count) : (i += 1) {
+        try append_fmt(out, &used, "    {s},\n", .{zt[i][0..zt_lens[i]]});
+    }
+    try append(out, &used, "};\n\n");
+    try append(out, &used, "pub fn main(_: std.process.Init) !u8 {\n");
+    // Demo: first tag constructed; all tags distinct via ordinal check.
+    try append_fmt(out, &used, "    const a: {s} = .{s};\n", .{ zig_type, zt[0][0..zt_lens[0]] });
+    try append_fmt(out, &used, "    const b: {s} = .{s};\n", .{ zig_type, zt[1][0..zt_lens[1]] });
+    try append(out, &used, "    return if (a != b");
+    i = 0;
+    while (i < spec.field_count) : (i += 1) {
+        try append_fmt(out, &used, " and @intFromEnum({s}.{s}) == {d}", .{
+            zig_type,
+            zt[i][0..zt_lens[i]],
+            i,
+        });
+    }
+    try append(out, &used, ") 0 else 1;\n}\n");
+    return @intCast(used);
+}
+
+pub fn lower_source_welcome(src: []const u8, out: []u8) LowerError!u32 {
+    const spec = try rm.parse_source(src);
+    const name = rm.name_slice(&spec);
+    var type_buf: [rm.max_name_len]u8 = undefined;
+    const tn = try zig_type_name(name, &type_buf);
+    const zig_type = type_buf[0..tn];
+    return switch (spec.body) {
+        .tuple => lower_tuple(&spec, zig_type, out),
+        .tagged => lower_tagged(&spec, zig_type, out),
+    };
 }
