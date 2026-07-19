@@ -79,6 +79,11 @@ assert facejamrn.ok else "glow_run face-jam-right-nest.glow failed"
 assert facejamrn.out contains "GREEN" else "glow_run face-jam-right-nest.glow not GREEN"
 assert facejamrn.out contains "face-jam-right-nest.glow" else "glow_run face-jam-right-nest claim missing path"
 
+let facejamboth = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/face-jam-both-nest.glow"]
+assert facejamboth.ok else "glow_run face-jam-both-nest.glow failed"
+assert facejamboth.out contains "GREEN" else "glow_run face-jam-both-nest.glow not GREEN"
+assert facejamboth.out contains "face-jam-both-nest.glow" else "glow_run face-jam-both-nest claim missing path"
+
 let iflent = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/if-lent.glow"]
 assert iflent.ok else "glow_run if-lent.glow failed"
 assert iflent.out contains "GREEN" else "glow_run if-lent.glow not GREEN"
@@ -108,6 +113,11 @@ let ifjamrn = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/if-ja
 assert ifjamrn.ok else "glow_run if-jam-right-nest.glow failed"
 assert ifjamrn.out contains "GREEN" else "glow_run if-jam-right-nest.glow not GREEN"
 assert ifjamrn.out contains "if-jam-right-nest.glow" else "glow_run if-jam-right-nest claim missing path"
+
+let ifjamboth = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/if-jam-both-nest.glow"]
+assert ifjamboth.ok else "glow_run if-jam-both-nest.glow failed"
+assert ifjamboth.out contains "GREEN" else "glow_run if-jam-both-nest.glow not GREEN"
+assert ifjamboth.out contains "if-jam-both-nest.glow" else "glow_run if-jam-both-nest claim missing path"
 
 let swlent = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/switch-lent.glow"]
 assert swlent.ok else "glow_run switch-lent.glow failed"
@@ -139,6 +149,11 @@ assert swjamrn.ok else "glow_run switch-jam-right-nest.glow failed"
 assert swjamrn.out contains "GREEN" else "glow_run switch-jam-right-nest.glow not GREEN"
 assert swjamrn.out contains "switch-jam-right-nest.glow" else "glow_run switch-jam-right-nest claim missing path"
 
+let swjamboth = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/switch-jam-both-nest.glow"]
+assert swjamboth.ok else "glow_run switch-jam-both-nest.glow failed"
+assert swjamboth.out contains "GREEN" else "glow_run switch-jam-both-nest.glow not GREEN"
+assert swjamboth.out contains "switch-jam-both-nest.glow" else "glow_run switch-jam-both-nest claim missing path"
+
 let nulllent = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/null-lent.glow"]
 assert nulllent.ok else "glow_run null-lent.glow failed"
 assert nulllent.out contains "GREEN" else "glow_run null-lent.glow not GREEN"
@@ -168,6 +183,11 @@ let nulljamrn = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/nul
 assert nulljamrn.ok else "glow_run null-jam-right-nest.glow failed"
 assert nulljamrn.out contains "GREEN" else "glow_run null-jam-right-nest.glow not GREEN"
 assert nulljamrn.out contains "null-jam-right-nest.glow" else "glow_run null-jam-right-nest claim missing path"
+
+let nulljamboth = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/null-jam-both-nest.glow"]
+assert nulljamboth.ok else "glow_run null-jam-both-nest.glow failed"
+assert nulljamboth.out contains "GREEN" else "glow_run null-jam-both-nest.glow not GREEN"
+assert nulljamboth.out contains "null-jam-both-nest.glow" else "glow_run null-jam-both-nest claim missing path"
 
 let nullt = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/null-records.glow"]
 assert nullt.ok else "glow_run null-records.glow failed"
@@ -336,6 +356,11 @@ let corejamrn = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cor
 assert corejamrn.ok else "glow_run core-jam-right-nest.glow failed"
 assert corejamrn.out contains "GREEN" else "glow_run core-jam-right-nest.glow not GREEN"
 assert corejamrn.out contains "core-jam-right-nest.glow" else "glow_run core-jam-right-nest claim missing path"
+
+let corejamboth = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/core-jam-both-nest.glow"]
+assert corejamboth.ok else "glow_run core-jam-both-nest.glow failed"
+assert corejamboth.out contains "GREEN" else "glow_run core-jam-both-nest.glow not GREEN"
+assert corejamboth.out contains "core-jam-both-nest.glow" else "glow_run core-jam-both-nest claim missing path"
 
 let composecorenest = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/compose-core-nest.glow"]
 assert composecorenest.ok else "glow_run compose-core-nest.glow failed"

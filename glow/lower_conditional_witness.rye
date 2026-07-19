@@ -112,6 +112,14 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, rye_rn, "result == 327686") != null);
     print("lower: \"?:  …  (jam cell (mix from amount))  0\" welcome nests nest jam right arm -- GREEN\n", .{});
 
+    const n_both = try lower.lower_line_welcome("?:  (gth tick 32)  (jam (mix from amount) (mix cell gate))  0", &buf);
+    const rye_both = buf[0..n_both];
+    assert(std.mem.indexOf(u8, rye_both, "const then_arm_left_mix: u32 = from ^ amount") != null);
+    assert(std.mem.indexOf(u8, rye_both, "const then_arm_right_mix: u32 = cell ^ gate") != null);
+    assert(std.mem.indexOf(u8, rye_both, "const then_arm: u32 = (then_arm_left_mix << 16) | then_arm_right_mix") != null);
+    assert(std.mem.indexOf(u8, rye_both, "result == 393222") != null);
+    print("lower: \"?:  …  (jam (mix from amount) (mix cell gate))  0\" welcome nests nest jam both arm -- GREEN\n", .{});
+
     if (lower.lower_line_welcome("?:  (gth tick 32)  (foo root)  0", &buf)) |_| {
         return error.ArmLoweredTooSoon;
     } else |err| {
@@ -156,8 +164,12 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, gen_rn, "(jam cell (mix from amount))") != null);
     print("lower: glow/gen/if-jam-right-nest.glow carries nest jam right then arm -- GREEN\n", .{});
 
+    const gen_both = try cwd.readFileAlloc(io, "glow/gen/if-jam-both-nest.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_both, "(jam (mix from amount) (mix cell gate))") != null);
+    print("lower: glow/gen/if-jam-both-nest.glow carries nest jam both then arm -- GREEN\n", .{});
+
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: `?:` lowers with decimal, cast, lent, mix, jam, nest jam left/right, and cue then/else arms to ordinary Rye.\n", .{});
+    print("GREEN: `?:` lowers with decimal, cast, lent, mix, jam, nest jam left/right/both, and cue then/else arms to ordinary Rye.\n", .{});
     return 0;
 }
 

@@ -4,6 +4,7 @@
 //! `(lent <face>)` · `(mix <face> <face>)` · `(jam <face> <face>)` ·
 //! `(jam (mix <face> <face>) <face>)` — one-deep nest left under jam ·
 //! `(jam <face> (mix <face> <face>))` — one-deep nest right under jam ·
+//! `(jam (mix …) (mix …))` — one-deep nest both under jam ·
 //! `(cue <face>)` — thin unpack of a jam cell-pack (low 16 bits).
 //! Other parenthesized forms refuse. Not a full token stream yet.
 
@@ -44,9 +45,13 @@ pub const Expr = struct {
     face_len: usize = 0,
     face2: [max_name_len]u8 = [_]u8{0} ** max_name_len,
     face2_len: usize = 0,
-    /// Third face: jam-right when left is mix, or mix-right when right is mix.
+    /// Third face: jam-right when left is mix, mix-left when right is mix,
+    /// or right-mix left when both are mix.
     face3: [max_name_len]u8 = [_]u8{0} ** max_name_len,
     face3_len: usize = 0,
+    /// Fourth face: right-mix right when both jam args are mix.
+    face4: [max_name_len]u8 = [_]u8{0} ** max_name_len,
+    face4_len: usize = 0,
     left_arg: ArgKind = .face,
     right_arg: ArgKind = .face,
     lit: u32 = 0,
@@ -71,6 +76,10 @@ pub fn face3_slice(e: *const Expr) []const u8 {
     return e.face3[0..e.face3_len];
 }
 
+pub fn face4_slice(e: *const Expr) []const u8 {
+    return e.face4[0..e.face4_len];
+}
+
 pub fn mold_slice(e: *const Expr) []const u8 {
     return e.mold[0..e.mold_len];
 }
@@ -93,9 +102,19 @@ pub fn jam_nest_right_demo_result() u32 {
     return (jam_demo_left << 16) | mix_demo_result();
 }
 
-/// Demo expect for any thin jam form (flat · left-mix · right-mix).
+/// `(jam (mix a b) (mix c d))` demo — mix packed with mix (both demo 5^3).
+pub fn jam_nest_both_demo_result() u32 {
+    return (mix_demo_result() << 16) | mix_demo_result();
+}
+
+pub fn jam_is_both_mix(e: *const Expr) bool {
+    return e.kind == .jam_of and e.left_arg == .mix_of and e.right_arg == .mix_of;
+}
+
+/// Demo expect for any thin jam form (flat · left · right · both mix).
 pub fn jam_expect(e: *const Expr) u32 {
     if (e.kind != .jam_of) return jam_demo_result();
+    if (jam_is_both_mix(e)) return jam_nest_both_demo_result();
     if (e.left_arg == .mix_of) return jam_nest_demo_result();
     if (e.right_arg == .mix_of) return jam_nest_right_demo_result();
     return jam_demo_result();
@@ -209,7 +228,23 @@ fn parse_paren(rest: []const u8) ParseError!Prefix {
         if (mid.len == 0) return error.MalformedExpr;
         const right = try parse_nest_arg(mid);
         if (right.rest.len == 0 or right.rest[0] != ')') return error.MalformedExpr;
-        // One-deep: left mix + face, or face + right mix. Both-mix stays later.
+        // One-deep: both mix · left mix · right mix · flat faces.
+        if (left.kind == .mix_of and right.kind == .mix_of) {
+            var e: Expr = .{
+                .kind = .jam_of,
+                .left_arg = .mix_of,
+                .right_arg = .mix_of,
+                .face_len = left.face.len,
+                .face2_len = left.face2.len,
+                .face3_len = right.face.len,
+                .face4_len = right.face2.len,
+            };
+            @memcpy(e.face[0..left.face.len], left.face);
+            @memcpy(e.face2[0..left.face2.len], left.face2);
+            @memcpy(e.face3[0..right.face.len], right.face);
+            @memcpy(e.face4[0..right.face2.len], right.face2);
+            return .{ .expr = e, .rest = std.mem.trimStart(u8, right.rest[1..], " \t") };
+        }
         if (left.kind == .mix_of and right.kind == .face) {
             var e: Expr = .{
                 .kind = .jam_of,

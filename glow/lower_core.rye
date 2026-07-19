@@ -74,7 +74,9 @@ fn open_body_expect(body: *const expr.Expr, sample: u32) LowerError!u32 {
         .face => sample,
         .lent_of => expr.lent_demo_len,
         .mix_of => sample ^ sample,
-        .jam_of => if (body.left_arg == .mix_of)
+        .jam_of => if (expr.jam_is_both_mix(body))
+            ((sample ^ sample) << 16) | (sample ^ sample)
+        else if (body.left_arg == .mix_of)
             ((sample ^ sample) << 16) | sample
         else if (body.right_arg == .mix_of)
             (sample << 16) | (sample ^ sample)
@@ -97,7 +99,12 @@ fn emit_open_body(body: *const expr.Expr, payload: bool, face_zig: []const u8, o
             std.fmt.bufPrint(out, "return self.{s} ^ self.{s};", .{ atom, atom }) catch return error.Overflow
         else
             std.fmt.bufPrint(out, "return sample ^ sample;", .{}) catch return error.Overflow,
-        .jam_of => if (body.left_arg == .mix_of)
+        .jam_of => if (expr.jam_is_both_mix(body))
+            if (payload)
+                std.fmt.bufPrint(out, "return ((self.{s} ^ self.{s}) << 16) | (self.{s} ^ self.{s});", .{ atom, atom, atom, atom }) catch return error.Overflow
+            else
+                std.fmt.bufPrint(out, "return ((sample ^ sample) << 16) | (sample ^ sample);", .{}) catch return error.Overflow
+        else if (body.left_arg == .mix_of)
             if (payload)
                 std.fmt.bufPrint(out, "return ((self.{s} ^ self.{s}) << 16) | self.{s};", .{ atom, atom, atom }) catch return error.Overflow
             else

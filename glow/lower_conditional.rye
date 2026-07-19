@@ -81,6 +81,10 @@ fn face3_slice(a: *const ArmExpr) []const u8 {
     return expr.face3_slice(a);
 }
 
+fn face4_slice(a: *const ArmExpr) []const u8 {
+    return expr.face4_slice(a);
+}
+
 fn mold_slice(a: *const ArmExpr) []const u8 {
     return expr.mold_slice(a);
 }
@@ -245,6 +249,31 @@ fn emit_mix_bindings(then_arm: *const ArmExpr, else_arm: *const ArmExpr, out: []
 
 fn emit_one_jam(role: []const u8, arm: *const ArmExpr, out: []u8, at: *usize, emitted: *MixEmitted) LowerError!void {
     if (arm.kind != .jam_of) return;
+    if (expr.jam_is_both_mix(arm)) {
+        var zll: [max_arm_len]u8 = undefined;
+        const nll = try zig_safe_ident(face_slice(arm), &zll);
+        var zlr: [max_arm_len]u8 = undefined;
+        const nlr = try zig_safe_ident(face2_slice(arm), &zlr);
+        var zrl: [max_arm_len]u8 = undefined;
+        const nrl = try zig_safe_ident(face3_slice(arm), &zrl);
+        var zrr: [max_arm_len]u8 = undefined;
+        const nrr = try zig_safe_ident(face4_slice(arm), &zrr);
+        try emit_mix_atom(zll[0..nll], expr.mix_demo_left, out, at, emitted);
+        try emit_mix_atom(zlr[0..nlr], expr.mix_demo_right, out, at, emitted);
+        try emit_mix_atom(zrl[0..nrl], expr.mix_demo_left, out, at, emitted);
+        try emit_mix_atom(zrr[0..nrr], expr.mix_demo_right, out, at, emitted);
+        var left_buf: [max_arm_len + 16]u8 = undefined;
+        const left_name = std.fmt.bufPrint(&left_buf, "{s}_left_mix", .{role}) catch return error.Overflow;
+        const left_line = std.fmt.bufPrint(out[at.*..], "    const {s}: u32 = {s} ^ {s};\n", .{ left_name, zll[0..nll], zlr[0..nlr] }) catch return error.Overflow;
+        at.* += left_line.len;
+        var right_buf: [max_arm_len + 16]u8 = undefined;
+        const right_name = std.fmt.bufPrint(&right_buf, "{s}_right_mix", .{role}) catch return error.Overflow;
+        const right_line = std.fmt.bufPrint(out[at.*..], "    const {s}: u32 = {s} ^ {s};\n", .{ right_name, zrl[0..nrl], zrr[0..nrr] }) catch return error.Overflow;
+        at.* += right_line.len;
+        const arm_line = std.fmt.bufPrint(out[at.*..], "    const {s}: u32 = ({s} << 16) | {s};\n", .{ role, left_name, right_name }) catch return error.Overflow;
+        at.* += arm_line.len;
+        return;
+    }
     if (arm.left_arg == .mix_of) {
         var zl: [max_arm_len]u8 = undefined;
         const ln = try zig_safe_ident(face_slice(arm), &zl);
