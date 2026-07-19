@@ -7,7 +7,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const lower = @import("lower_compose_jam_cue.rye");
 
-const witness_version = "20260719.161949";
+const witness_version = "20260719.162549";
 
 const jam_cue_src =
     \\::  Cross-line jam then cue (STOA39).
@@ -76,6 +76,13 @@ const bind_nest_four_jam_cue_src =
     \\=/  gate=@u32  1
     \\=/  cell-pack=@u32  (jam (mix from amount) (mix payload gate))
     \\=/  right=@u32  (cue cell-pack)
+;
+
+const bind_inline_cue_jam_src =
+    \\::  Bind faces then inline cue-of-jam (STOA49).
+    \\=/  from=@u32  5
+    \\=/  amount=@u32  3
+    \\=/  right=@u32  (cue (jam from amount))
 ;
 
 const nest_both_jam_cue_src =
@@ -228,6 +235,33 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, rye_four, "right == 8") != null);
     print("compose-jam-cue: welcome builds bind→nest-four-jam→cue -- GREEN\n", .{});
 
+    assert(lower.looks_like_jam_cue(bind_inline_cue_jam_src));
+    const inline_spec = try lower.parse_jam_cue(bind_inline_cue_jam_src);
+    assert(inline_spec.inline_cue_jam);
+    assert(inline_spec.has_binds);
+    assert(!inline_spec.nest_left);
+    print("compose-jam-cue: bind→inline-cue-jam parses -- GREEN\n", .{});
+
+    const n_inline = try lower.lower_source_welcome(bind_inline_cue_jam_src, &buf);
+    const rye_inline = buf[0..n_inline];
+    assert(std.mem.indexOf(u8, rye_inline, "one-line cue-of-jam") != null);
+    assert(std.mem.indexOf(u8, rye_inline, "const from: u32 = 5") != null);
+    assert(std.mem.indexOf(u8, rye_inline, "const amount: u32 = 3") != null);
+    assert(std.mem.indexOf(u8, rye_inline, "cell_pack: u32 = (from << 16) | amount") != null);
+    assert(std.mem.indexOf(u8, rye_inline, "right == 3") != null);
+    print("compose-jam-cue: welcome builds bind→inline-cue-jam -- GREEN\n", .{});
+
+    if (lower.parse_jam_cue(
+        \\=/  from=@u32  5
+        \\=/  amount=@u32  3
+        \\=/  right=@u32  (cue (jam (mix from amount) amount))
+    )) |_| {
+        return error.InlineNestNotCaught;
+    } else |err| {
+        if (err != lower.LowerError.ValueNotYetLowered) return err;
+    }
+    print("compose-jam-cue: inline nest cue-of-jam refused ValueNotYetLowered -- GREEN\n", .{});
+
     if (lower.parse_jam_cue(
         \\=/  cell-pack=@u32  (jam (mix from amount) cell)
         \\=/  right=@u32  (cue cell-pack)
@@ -325,6 +359,8 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/compose_bind_nest_three_jam_cue_welcome.rye", .data = buf[0..n9] });
     const n10 = try lower.lower_source_welcome(bind_nest_four_jam_cue_src, &buf);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/compose_bind_nest_four_jam_cue_welcome.rye", .data = buf[0..n10] });
+    const n11 = try lower.lower_source_welcome(bind_inline_cue_jam_src, &buf);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/compose_bind_inline_cue_jam_welcome.rye", .data = buf[0..n11] });
     print("compose-jam-cue: wrote welcome and unwelcome .rye under glow/.cache/ -- GREEN\n", .{});
 
     const gen_src = try cwd.readFileAlloc(io, "glow/gen/compose-jam-cue.glow", a, .limited(4096));
@@ -360,8 +396,12 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, gen_nest_four, "=/  cell-pack=@u32  (jam (mix from amount) (mix payload gate))") != null);
     print("compose-jam-cue: glow/gen/compose-bind-nest-four-jam-cue.glow carries bind→nest-four-jam→cue -- GREEN\n", .{});
 
+    const gen_inline = try cwd.readFileAlloc(io, "glow/gen/compose-bind-inline-cue-jam.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_inline, "=/  right=@u32  (cue (jam from amount))") != null);
+    print("compose-jam-cue: glow/gen/compose-bind-inline-cue-jam.glow carries bind→inline-cue-jam -- GREEN\n", .{});
+
     print("compose-jam-cue: version {s}\n", .{witness_version});
-    print("GREEN: jam→cue through bind→nest-four-jam→cue compose lower to ordinary Rye (STOA39/43–48).\n", .{});
+    print("GREEN: jam→cue through bind→inline-cue-jam compose lower to ordinary Rye (STOA39/43–49).\n", .{});
     return 0;
 }
 
