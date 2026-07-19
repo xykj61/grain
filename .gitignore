@@ -90,6 +90,8 @@
 /mantra/bin/
 /aurora/.build/
 /linengrow/bin/
+# Witness-seated symlink into glow/.cache (STOA71 A import seam).
+/linengrow/lib_session_root_nest_cue_jam.rye
 /dimeroll/bin/
 /lattice/bin/
 /lantern/bin/

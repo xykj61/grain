@@ -2,10 +2,10 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Rule: [`.cursor/rules/remember.mdc`](../.cursor/rules/remember.mdc) · [`.claude/rules/remember.md`](../.claude/rules/remember.md).*
 
-**Last refreshed:** `20260719.181703` (Eastern) · voice Quin  
+**Last refreshed:** `20260719.182138` (Eastern) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5** · HOLD0–HOLD1 · HOLD-W  
-**Language nib:** **STOA0–70** GREEN · STOA71 open  
-**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W · STOA0–70  
+**Language nib:** **STOA0–71** GREEN · STOA72 open  
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W · STOA0–71  
 **Git nib:** `15acd38c75` STOA70 session-root nest-left product desk  
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`
 
@@ -13,11 +13,11 @@
 
 ## Now (language)
 
-**STOA70** session-root nest-left product desk GREEN `20260719.181259` — import `lib-session-root-nest-cue-jam`, call `session-root` via `(cue (jam (mix root root) root))`. Next door: **STOA71** check-in.
+**STOA71** NativeActivity-path Glow import seam GREEN `20260719.182120` — linengrow consumer `@import`s Glow-lowered `lib_session_root_nest_cue_jam`, asserts `session_root() == 5`. Device-free. Does not claim APK wire yet. Next door: **STOA72** check-in.
 
-Smoke: `rishi/bin/rishi run tools/glow_run.rish glow/gen/use-lib-session-root-nest-cue-jam.glow`
+Smoke: `rishi/bin/rishi run tools/stoa71_glow_import_seam_witness.rish`
 
-Pitfalls: face/payload **5** · `session_root()` **5**. Hold: NativeActivity import · molds · Sala B0 rewrite · token stream.
+Pitfalls: symlink is witness-seated + gitignored · `std.debug.print` is stderr · expect **5**. Hold: APK wire of same import · molds · Sala B0 rewrite · token stream.
 
 ---
 
@@ -31,7 +31,7 @@ Pitfalls: face/payload **5** · `session_root()` **5**. Hold: NativeActivity imp
 | **JABS** | Sala broadcast live-session fold | JABS0–2 GREEN · JABS3 check-in |
 | **LULU** | Hearth · short home · Wired Glass | **LULU0–5 closed** |
 | **SETU** | USB hearth carry Glass↔Desk | **SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W GREEN** · live “sent” eyes check-in |
-| **STOA** | Glow language SLC · nest · composition | **STOA0–70 GREEN** · session-root product desk · STOA71 next |
+| **STOA** | Glow language SLC · nest · composition | **STOA0–71 GREEN** · NativeActivity-path import seam · STOA72 next |
 
 Canon: [`../docs/HAWM.md`](../docs/HAWM.md) · [`../docs/TUBE.md`](../docs/TUBE.md) · [`../docs/ZETA.md`](../docs/ZETA.md) · [`../docs/JABS.md`](../docs/JABS.md) · [`../docs/LULU.md`](../docs/LULU.md) · [`../docs/SETU.md`](../docs/SETU.md) · [`../docs/STOA.md`](../docs/STOA.md)
 
@@ -67,7 +67,7 @@ Hold row 1 → Settings: presets · `home ·` · `wire ·` · `cell ·` — all 
 
 | Door | Kind |
 |------|------|
-| **STOA71** next language toward glass import | **check-in** |
+| **STOA72** next language (APK wire · molds · …) | **check-in** |
 | Live SETU6.5 **sent** on usb0/ncm | **check-in** (needs gadget/QEMU) |
 | Amber/Amphora Glass↔Desk fuse | **declined** — compose later (`133455`) |
 | JABS3 · TAME Lap 3 | **check-in** |

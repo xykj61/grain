@@ -1,0 +1,20 @@
+//! linengrow/stoa71_glow_import_seam.rye — STOA71 A
+//!
+//! NativeActivity-path import of a Glow-lowered session-root module.
+//! Honest Two Rooms: imports lowered Rye from glow/.cache (via symlink),
+//! not .glow source. Sala B0 fold and glow_native_activity stay untouched.
+//!
+//!   rishi/bin/rishi run tools/stoa71_glow_import_seam_witness.rish
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const lib = @import("lib_session_root_nest_cue_jam.rye");
+
+pub fn main(_: std.process.Init) !u8 {
+    const core = lib.Core{};
+    const got = core.session_root();
+    assert(got == 5);
+    print("GREEN: STOA71 A — NativeActivity-path import of Glow-lowered session-root (expect 5, got {d})\n", .{got});
+    return 0;
+}

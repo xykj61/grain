@@ -4,7 +4,7 @@
 
 **Language:** EN
 **Version:** `20260715` (Pool keystone revival prioritized · Quin voice seated · align pass reconciles the closed ladder)
-**Last updated:** 2026-07-19 (**STOA0–70** GREEN — session-root product desk; nest trios closed through STOA68)
+**Last updated:** 2026-07-19 (**STOA0–71** GREEN — NativeActivity-path Glow import seam; nest trios closed through STOA68)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Lens:** TAME — safety, performance, joy; the Seed Law; [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md)
@@ -373,6 +373,8 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 **STOA69 next-root product desk GREEN, `20260719.180837`** — aligned lean A: `lib-next-root-cue-jam` · `use-lib-next-root-cue-jam` (payload `root` + `/+` + cue-of-jam `next-root`). Expect **5**. Hold: molds · token stream · NativeActivity import · rewriting Sala B0 in Glow. Next language: **STOA70** check-in.
 
 **STOA70 session-root nest-left product desk GREEN, `20260719.181259`** — lean A: `lib-session-root-nest-cue-jam` · `use-lib-session-root-nest-cue-jam` (combine left · continuing root right · cue recovers root). Expect **5**. Story shape past next-root; not Sala B0 rewrite. Next language: **STOA71** check-in.
+
+**STOA71 NativeActivity-path Glow import seam GREEN, `20260719.182120`** — lean A: linengrow consumer `@import`s Glow-lowered `lib_session_root_nest_cue_jam` and asserts `session_root() == 5`. Witness seats gitignored symlink into `glow/.cache`. Honest Two Rooms: lowered Rye path, not `.glow` source; APK/`glow_native_activity` untouched. Next language: **STOA72** check-in.
 
 **Glow OS · Glow Desk · Glow Glass seated, `20260717.183622`** — Keaton: **Glow OS** unifies; **Glow Desk** = desktop; **Glow Glass** = mobile. Lexicon + silo [`../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md`](../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md). Orientation firmware stays check-in.
 
