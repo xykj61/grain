@@ -8,6 +8,7 @@ title STOA38 cue-of-jam send
 prompt send and approve — STOA38 then STOA39 multi-line jam-cue
 think ship cue-of-jam nest · then kg multi-line bind jam cue
 obs desk suite GREEN before send
+git_nib b34801bb9f
 file glow/expr.rye cue_arg jam_of
 file glow/gen/face-cue-jam.glow pin desk
 recommend keep-going — STOA39 compose nest after push
