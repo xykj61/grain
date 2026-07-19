@@ -20,10 +20,11 @@ let selftest = run ["sh" "-c" "${bin} 2>&1"]
 assert selftest.ok else "lower_compose_core_witness exited non-zero"
 assert selftest.out contains "GREEN" else "lower_compose_core_witness not GREEN"
 assert selftest.out contains "three-arm welcome calls" else "lower_compose_core_witness missing three-arm claim"
-assert selftest.out contains "desks nest cue-jam left and right" else "lower_compose_core_witness missing desk claim"
+assert selftest.out contains "desks nest cue-jam left right and both" else "lower_compose_core_witness missing desk claim"
 assert selftest.out contains "cue-of-jam welcome" else "lower_compose_core_witness missing cue-of-jam claim"
 assert selftest.out contains "nest-left cue-of-jam welcome" else "lower_compose_core_witness missing nest-left cue-of-jam claim"
 assert selftest.out contains "nest-right cue-of-jam welcome" else "lower_compose_core_witness missing nest-right cue-of-jam claim"
+assert selftest.out contains "nest-both cue-of-jam welcome" else "lower_compose_core_witness missing nest-both cue-of-jam claim"
 assert selftest.out contains "UnknownArm" else "lower_compose_core_witness missing UnknownArm"
 assert selftest.out contains "NotAComposeCore" else "lower_compose_core_witness missing NotAComposeCore"
 
@@ -48,4 +49,4 @@ assert build_one.ok else "compose-core one welcome .rye build failed"
 let run_one = run ["sh" "-c" "${one_welcome_bin}; echo EXIT:$?"]
 assert run_one.out contains "EXIT:0" else "compose-core one welcome binary did not exit 0"
 
-say "GREEN: Glow face→`|%` compose hop — cue-of-jam nest-left and nest-right; welcome 0 / unwelcome 1; STOA18/19/22/28/53/54/55."
+say "GREEN: Glow face→`|%` compose hop — cue-of-jam nest-left right and both; welcome 0 / unwelcome 1; STOA18/19/22/28/53/54/55/56."
