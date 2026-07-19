@@ -5,7 +5,7 @@
 //!   %-  double  amount
 //!
 //! The call sample must name the prior face. Closed demo gate `double`.
-//! Cores and richer composition stay later.
+//! Two-face `%+` compose is STOA12 (`lower_compose2.rye`). Cores stay later.
 
 const std = @import("std");
 const rf = @import("rune_face.rye");

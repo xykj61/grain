@@ -1,0 +1,82 @@
+//! glow/lower_compose2_witness.rye — proves face→face→`%+` compose.
+//!
+//!   rye build glow/lower_compose2_witness.rye -femit-bin=glow/bin/lower_compose2_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const lower = @import("lower_compose2.rye");
+
+const witness_version = "20260718.221800";
+
+const compose2_src =
+    \\::  Cross-line — two faces then %+ add (STOA12).
+    \\=/  from  5
+    \\=/  amount  3
+    \\%+  add  from  amount
+;
+
+fn run_selftest(init: std.process.Init) !u8 {
+    const io = init.io;
+    const a = init.arena.allocator();
+    const cwd = std.Io.Dir.cwd();
+    var buf: [3072]u8 = undefined;
+
+    const spec = try lower.parse_compose2(compose2_src);
+    assert(std.mem.eql(u8, lower.a_slice(&spec), "from"));
+    assert(spec.a_value == 5);
+    assert(std.mem.eql(u8, lower.b_slice(&spec), "amount"));
+    assert(spec.b_value == 3);
+    assert(std.mem.eql(u8, lower.gate_slice(&spec), "add"));
+    print("compose2: two faces then %+ add parses -- GREEN\n", .{});
+
+    const n1 = try lower.lower_source_welcome(compose2_src, &buf);
+    const rye1 = buf[0..n1];
+    assert(std.mem.indexOf(u8, rye1, "fn add(left: u32, right: u32) u32") != null);
+    assert(std.mem.indexOf(u8, rye1, "const from: u32 = 5") != null);
+    assert(std.mem.indexOf(u8, rye1, "const amount: u32 = 3") != null);
+    assert(std.mem.indexOf(u8, rye1, "const called: u32 = add(from, amount)") != null);
+    assert(std.mem.indexOf(u8, rye1, "called == 8") != null);
+    print("compose2: welcome builds face→face→call -- GREEN\n", .{});
+
+    const n2 = try lower.lower_source_unwelcome(compose2_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n2], "called == 9") != null);
+    print("compose2: unwelcome expects mismatch -- GREEN\n", .{});
+
+    if (lower.parse_compose2("=/  from  5\n=/  amount  3\n")) |_| {
+        return error.NotACompose2NotCaught;
+    } else |err| {
+        if (err != lower.LowerError.NotACompose2) return err;
+    }
+    print("compose2: two faces only refused NotACompose2 -- GREEN\n", .{});
+
+    if (lower.parse_compose2("=/  from  5\n=/  amount  3\n%+  add  amount  from\n")) |_| {
+        return error.SampleMismatchNotCaught;
+    } else |err| {
+        if (err != lower.LowerError.SampleMismatch) return err;
+    }
+    print("compose2: sample order mismatch refused SampleMismatch -- GREEN\n", .{});
+
+    try cwd.createDirPath(io, "glow/.cache");
+    const welcome_path = "glow/.cache/compose_add_welcome.rye";
+    const unwelcome_path = "glow/.cache/compose_add_unwelcome.rye";
+    const n3 = try lower.lower_source_welcome(compose2_src, &buf);
+    try cwd.writeFile(io, .{ .sub_path = welcome_path, .data = buf[0..n3] });
+    const n4 = try lower.lower_source_unwelcome(compose2_src, &buf);
+    try cwd.writeFile(io, .{ .sub_path = unwelcome_path, .data = buf[0..n4] });
+    print("compose2: wrote welcome and unwelcome .rye under glow/.cache/ -- GREEN\n", .{});
+
+    const gen_src = try cwd.readFileAlloc(io, "glow/gen/compose-add.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_src, "=/  from  5") != null);
+    assert(std.mem.indexOf(u8, gen_src, "=/  amount  3") != null);
+    assert(std.mem.indexOf(u8, gen_src, "%+  add  from  amount") != null);
+    print("compose2: glow/gen/compose-add.glow carries face→face→call -- GREEN\n", .{});
+
+    print("compose2: version {s}\n", .{witness_version});
+    print("GREEN: face→face→`%+` compose lowers to ordinary Rye (STOA12).\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
+}

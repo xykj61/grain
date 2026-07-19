@@ -28,6 +28,8 @@ const lower_call3 = @import("lower_call3.rye");
 const lower_calln = @import("lower_calln.rye");
 const lower_multi = @import("lower_multi.rye");
 const lower_compose = @import("lower_compose.rye");
+const lower_compose2 = @import("lower_compose2.rye");
+const lower_multi_typed = @import("lower_multi_typed.rye");
 
 fn first_glow_line(src: []const u8) ?[]const u8 {
     var lines: [lower_multi.max_lines][]const u8 = undefined;
@@ -83,6 +85,18 @@ pub fn main(init: std.process.Init) !u8 {
             if (n == 2 and lines[1].len >= 2 and lines[1][0] == '%' and lines[1][1] == '-') {
                 break :blk lower_compose.lower_source_welcome(src, &rye_buf) catch |err| {
                     print("glow_run: compose lower failed ({s})\n", .{@errorName(err)});
+                    return 1;
+                };
+            }
+            if (n == 3 and lines[2].len >= 2 and lines[2][0] == '%' and lines[2][1] == '+') {
+                break :blk lower_compose2.lower_source_welcome(src, &rye_buf) catch |err| {
+                    print("glow_run: compose2 lower failed ({s})\n", .{@errorName(err)});
+                    return 1;
+                };
+            }
+            if (lower_multi_typed.line_is_typed(lines[0])) {
+                break :blk lower_multi_typed.lower_source_welcome(src, &rye_buf) catch |err| {
+                    print("glow_run: typed multi lower failed ({s})\n", .{@errorName(err)});
                     return 1;
                 };
             }
