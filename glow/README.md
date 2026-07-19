@@ -1,11 +1,11 @@
 # Glow — Language Tooling, Grown from Real Design
 
 **Language:** EN
-**Last updated:** 2026-07-18 (**STOA9** `%*` call · TAME + Acme first-code pointers)
+**Last updated:** 2026-07-18 (**STOA11** face→call compose · TAME + Acme first-code pointers)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Audience:** Acme Corporation employees reading the working Glow pin
-**Status:** Checkable — **STOA0–9** sixteen heads emit · nests · cells · full `%` calls · truth semantics, GREEN
+**Status:** Checkable — **STOA0–11** sixteen heads · multi-line · face→call compose · nests · cells · `%` calls · truth, GREEN
 **Waymark:** **STOA** — compressor [`../docs/STOA.md`](../docs/STOA.md) · seat [`../active-designing/20260718-202730_stoa-glow-language-waymark.md`](../active-designing/20260718-202730_stoa-glow-language-waymark.md)
 **Ground:** [`active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md`](../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md) · [`20260716-093000_glow-and-rye-what-shares-under-the-hood.md`](../active-designing/20260716-093000_glow-and-rye-what-shares-under-the-hood.md) · truth [`../context/specs/20260717-154943_glow-truth-zig-ambient-nock-loobean-seam.md`](../context/specs/20260717-154943_glow-truth-zig-ambient-nock-loobean-seam.md)
 **Law:** [`../context/TAME_GUIDANCE.md`](../context/TAME_GUIDANCE.md) (root) · Glow supplement still horizon — scoping [`../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md`](../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md)
@@ -42,15 +42,15 @@ Glow is the **language** (Hoon-parallel). Rishi is the **shell** (Dojo-parallel)
 
 ## Generator hop
 
-All sixteen heads lower today. Desk files live under [`gen/`](gen/). Rishi hand: [`../tools/glow_run.rish`](../tools/glow_run.rish) · desk witness: [`../tools/glow_run_desk_witness.rish`](../tools/glow_run_desk_witness.rish).
+All sixteen heads lower today; multi-line desks share one Rye main via [`lower_multi.rye`](lower_multi.rye) (bare faces) or [`lower_compose.rye`](lower_compose.rye) (face→`%-`). Desk files live under [`gen/`](gen/). Rishi hand: [`../tools/glow_run.rish`](../tools/glow_run.rish) · desk witness: [`../tools/glow_run_desk_witness.rish`](../tools/glow_run_desk_witness.rish).
 
 ```bash
-rishi/bin/rishi run tools/glow_run.rish glow/gen/call-named.glow
+rishi/bin/rishi run tools/glow_run.rish glow/gen/compose-call.glow
 rishi/bin/rishi run tools/glow_run_desk_witness.rish
 # → GREEN: glow_run desk — all desk generators …
 ```
 
-Each hop lowers one named shape from its front-half parser. Under `|-`, `(lent …)` still emits a shrinking-list fold under `face.len`. Nest forms parse once through [`expr.rye`](expr.rye): decimal · nested `^-  @uN  <decimal>` through `@u64` · bare face · **`(lent <face>)`** · **`(mix <face> <face>)`** · **`(jam <face> <face>)`** under `=/` and arms (desks as before; witness [`../tools/glow_expr_witness.rish`](../tools/glow_expr_witness.rish)). Cell heads: **`:-`** pair · **`:+`** triple · **`:^`** quad · **`:~`** list (desks `cell-pair` · `cell-triple` · `cell-quad` · `cell-list`). Calls: **`%-`** `double` · **`%+`** `add` · **`%^`** `sum` · **`%*`** named `mix` (desks `call-one` · `call-two` · `call-three` · `call-named`). `=.` takes optional trailing decimals; `=*` takes an optional source wing. Cast hop covers `@u8` · `@u16` · `@u32` · `@u64`. `(cue …)`, nested jam, cores, and multi-line stay **STOA10+**. Generator welcome/unwelcome paths use Zig/POSIX exits (0 / 1), per the Truth section above.
+Each single-line hop lowers one named shape from its front-half parser. Under `|-`, `(lent …)` still emits a shrinking-list fold under `face.len`. Nest forms parse once through [`expr.rye`](expr.rye): decimal · nested `^-  @uN  <decimal>` through `@u64` · bare face · **`(lent <face>)`** · **`(mix <face> <face>)`** · **`(jam <face> <face>)`** under `=/` and arms (desks as before; witness [`../tools/glow_expr_witness.rish`](../tools/glow_expr_witness.rish)). Cell heads: **`:-`** pair · **`:+`** triple · **`:^`** quad · **`:~`** list. Calls: **`%-`** · **`%+`** · **`%^`** · **`%*`**. Multi-line: `multi-face` (STOA10) · `compose-call` (STOA11). `=.` takes optional trailing decimals; `=*` takes an optional source wing. Cast hop covers `@u8` · `@u16` · `@u32` · `@u64`. `(cue …)`, nested jam, typed multi-line, cores, and richer cross-line stay **STOA12+**. Generator welcome/unwelcome paths use Zig/POSIX exits (0 / 1), per the Truth section above.
 
 ---
 

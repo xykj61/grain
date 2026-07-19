@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260718.221526
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern time convention
+title Send STOA10-11 compose
+prompt send
+think Ship multi-line bare faces and face-to-call compose on main after GREEN witnesses.
+think One commit covers STOA10 and STOA11; already on main so push origin and codeberg.
+obs Composition season thin faces landed; STOA12 cores remains check-in.
+file glow/lower_multi.rye STOA10
+file glow/lower_compose.rye STOA11
+file glow/gen/multi-face.glow desk
+file glow/gen/compose-call.glow desk
+product_nib SETU6.5
+suite_nib STOA11
+git_nib 812e36ff01
+recommend check-in STOA12 cores

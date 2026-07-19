@@ -164,5 +164,15 @@ assert calln.ok else "glow_run call-named.glow failed"
 assert calln.out contains "GREEN" else "glow_run call-named.glow not GREEN"
 assert calln.out contains "call-named.glow" else "glow_run call-named claim missing path"
 
+let multi = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/multi-face.glow"]
+assert multi.ok else "glow_run multi-face.glow failed"
+assert multi.out contains "GREEN" else "glow_run multi-face.glow not GREEN"
+assert multi.out contains "multi-face.glow" else "glow_run multi-face claim missing path"
+
+let compose = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/compose-call.glow"]
+assert compose.ok else "glow_run compose-call.glow failed"
+assert compose.out contains "GREEN" else "glow_run compose-call.glow not GREEN"
+assert compose.out contains "compose-call.glow" else "glow_run compose-call claim missing path"
+
 say "GREEN: glow_run desk — all desk generators lowered, built, exit 0."
 
