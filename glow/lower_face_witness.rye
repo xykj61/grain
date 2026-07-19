@@ -115,7 +115,18 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, buf[0..n_jam_u], "jammed == 327684") != null);
     print("lower: \"=/  jammed=@u32  (jam from amount)\" unwelcome expects mismatch -- GREEN\n", .{});
 
-    if (lower.lower_line_welcome("=/  next-root=@u32  (cue root)", &buf)) |_| {
+    const n_cue = try lower.lower_line_welcome("=/  amount=@u32  (cue cell)", &buf);
+    const rye_cue = buf[0..n_cue];
+    assert(std.mem.indexOf(u8, rye_cue, "const cell: u32 = 327683") != null);
+    assert(std.mem.indexOf(u8, rye_cue, "const amount: u32 = cell & 0xffff") != null);
+    assert(std.mem.indexOf(u8, rye_cue, "amount == 3") != null);
+    print("lower: \"=/  amount=@u32  (cue cell)\" welcome binds unpack -- GREEN\n", .{});
+
+    const n_cue_u = try lower.lower_line_unwelcome("=/  amount=@u32  (cue cell)", &buf);
+    assert(std.mem.indexOf(u8, buf[0..n_cue_u], "amount == 4") != null);
+    print("lower: \"=/  amount=@u32  (cue cell)\" unwelcome expects mismatch -- GREEN\n", .{});
+
+    if (lower.lower_line_welcome("=/  next-root=@u32  (foo root)", &buf)) |_| {
         return error.ValueLoweredTooSoon;
     } else |err| {
         if (err != lower.LowerError.ValueNotYetLowered) return err;
@@ -147,8 +158,12 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, gen_jam, "=/  jammed=@u32  (jam from amount)") != null);
     print("lower: glow/gen/face-jam.glow nests (jam …) under face -- GREEN\n", .{});
 
+    const gen_cue = try cwd.readFileAlloc(io, "glow/gen/face-cue.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_cue, "=/  amount=@u32  (cue cell)") != null);
+    print("lower: glow/gen/face-cue.glow nests (cue …) under face -- GREEN\n", .{});
+
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: `=/` lowers faces with nested `^-`, `(lent …)`, `(mix …)`, and `(jam …)` values to ordinary Rye.\n", .{});
+    print("GREEN: `=/` lowers faces with nested `^-`, `(lent …)`, `(mix …)`, `(jam …)`, and `(cue …)` values to ordinary Rye.\n", .{});
     return 0;
 }
 

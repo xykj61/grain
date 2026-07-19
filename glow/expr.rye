@@ -1,7 +1,8 @@
 //! glow/expr.rye — shared nest-expression surface for Glow lowers.
 //!
 //! Nest forms: decimal · nested `^-  @uN  <decimal>` · bare face ·
-//! `(lent <face>)` · `(mix <face> <face>)` · `(jam <face> <face>)`.
+//! `(lent <face>)` · `(mix <face> <face>)` · `(jam <face> <face>)` ·
+//! `(cue <face>)` — thin unpack of a jam cell-pack (low 16 bits).
 //! Other parenthesized forms refuse. Not a full token stream yet.
 
 const std = @import("std");
@@ -30,7 +31,7 @@ pub const ParseError = error{
     NamedMoldNotYetLowered,
 };
 
-pub const Kind = enum { face, literal, cast_literal, lent_of, mix_of, jam_of };
+pub const Kind = enum { face, literal, cast_literal, lent_of, mix_of, jam_of, cue_of };
 
 pub const Expr = struct {
     kind: Kind,
@@ -66,6 +67,11 @@ pub fn mix_demo_result() u32 {
 
 pub fn jam_demo_result() u32 {
     return (jam_demo_left << 16) | jam_demo_right;
+}
+
+/// Thin `(cue cell)` — low 16 bits of a jam cell-pack (the right atom).
+pub fn cue_demo_result() u32 {
+    return jam_demo_right;
 }
 
 fn is_ident_char(c: u8) bool {
@@ -137,6 +143,15 @@ fn parse_paren(rest: []const u8) ParseError!Prefix {
         @memcpy(e.face[0..left.ident.len], left.ident);
         @memcpy(e.face2[0..right.ident.len], right.ident);
         return .{ .expr = e, .rest = std.mem.trimStart(u8, right.rest[1..], " \t") };
+    }
+
+    const cue_prefix = "(cue ";
+    if (rest.len > cue_prefix.len and std.mem.eql(u8, rest[0..cue_prefix.len], cue_prefix)) {
+        const after = try parse_ident(rest[cue_prefix.len..]);
+        if (after.rest.len == 0 or after.rest[0] != ')') return error.MalformedExpr;
+        var e: Expr = .{ .kind = .cue_of, .face_len = after.ident.len };
+        @memcpy(e.face[0..after.ident.len], after.ident);
+        return .{ .expr = e, .rest = std.mem.trimStart(u8, after.rest[1..], " \t") };
     }
 
     return error.ExprNotYetLowered;
