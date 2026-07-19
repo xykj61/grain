@@ -7,7 +7,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const lower = @import("lower_compose_lib.rye");
 
-const witness_version = "20260719.180837";
+const witness_version = "20260719.181259";
 
 const use_src =
     \\::  Import Glow library then call open arm (STOA26).
@@ -180,6 +180,21 @@ const lib_next_root_src =
     \\|%
     \\=/  root  5
     \\++  next-root  (cue (jam root root))
+    \\--
+;
+
+const use_session_root_src =
+    \\::  Import session-root product library then call session-root (STOA70).
+    \\/+  lib-session-root-nest-cue-jam
+    \\=/  root  5
+    \\%-  session-root  root
+;
+
+const lib_session_root_src =
+    \\::  Library session-root product arm (STOA70).
+    \\|%
+    \\=/  root  5
+    \\++  session-root  (cue (jam (mix root root) root))
     \\--
 ;
 
@@ -442,6 +457,26 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, buf[0..n_next_root_u], "root == 5 and core.next_root() == 6") != null);
     print("compose-lib: next-root product unwelcome expects mismatch -- GREEN\n", .{});
 
+    const session_root_spec = try lower.parse_compose_lib(use_session_root_src);
+    assert(std.mem.eql(u8, lower.stem_slice(&session_root_spec), "lib-session-root-nest-cue-jam"));
+    assert(std.mem.eql(u8, lower.gate_slice(&session_root_spec), "session-root"));
+    assert(std.mem.eql(u8, lower.face_slice(&session_root_spec), "root"));
+    const session_root_bound = try lower.bind_library(&session_root_spec, lib_session_root_src);
+    assert(session_root_bound.expect == 5);
+    assert(session_root_bound.has_payload);
+    print("compose-lib: session-root product unpack expects low half -- GREEN\n", .{});
+
+    const n_session_root = try lower.lower_source_welcome(use_session_root_src, lib_session_root_src, &buf);
+    const rye_session_root = buf[0..n_session_root];
+    assert(std.mem.indexOf(u8, rye_session_root, "import(\"lib_session_root_nest_cue_jam.rye\")") != null);
+    assert(std.mem.indexOf(u8, rye_session_root, "const core = lib.Core{}") != null);
+    assert(std.mem.indexOf(u8, rye_session_root, "root == 5 and core.session_root() == 5") != null);
+    print("compose-lib: session-root product welcome constructs Core and calls session_root -- GREEN\n", .{});
+
+    const n_session_root_u = try lower.lower_source_unwelcome(use_session_root_src, lib_session_root_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n_session_root_u], "root == 5 and core.session_root() == 6") != null);
+    print("compose-lib: session-root product unwelcome expects mismatch -- GREEN\n", .{});
+
     try cwd.createDirPath(io, "glow/.cache");
     const n3 = try lower.lower_source_welcome(use_src, lib_src, &buf);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/use_lib_open_welcome.rye", .data = buf[0..n3] });
@@ -467,7 +502,9 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/use_lib_payload_cue_jam_both_welcome.rye", .data = buf[0..n13] });
     const n14 = try lower.lower_source_welcome(use_next_root_src, lib_next_root_src, &buf);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/use_lib_next_root_cue_jam_welcome.rye", .data = buf[0..n14] });
-    print("compose-lib: wrote next-root product consumer cache -- GREEN\n", .{});
+    const n15 = try lower.lower_source_welcome(use_session_root_src, lib_session_root_src, &buf);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/use_lib_session_root_nest_cue_jam_welcome.rye", .data = buf[0..n15] });
+    print("compose-lib: wrote session-root product consumer cache -- GREEN\n", .{});
 
     const gen_use = try cwd.readFileAlloc(io, "glow/gen/use-lib-open.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_use, "/+  lib-core-open") != null);
@@ -524,10 +561,16 @@ fn run_selftest(init: std.process.Init) !u8 {
     const gen_lib_next_root = try cwd.readFileAlloc(io, "glow/gen/lib-next-root-cue-jam.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_lib_next_root, "=/  root  5") != null);
     assert(std.mem.indexOf(u8, gen_lib_next_root, "++  next-root  (cue (jam root root))") != null);
-    print("compose-lib: desks next-root product carry import -- GREEN\n", .{});
+    const gen_use_session_root = try cwd.readFileAlloc(io, "glow/gen/use-lib-session-root-nest-cue-jam.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_use_session_root, "/+  lib-session-root-nest-cue-jam") != null);
+    assert(std.mem.indexOf(u8, gen_use_session_root, "%-  session-root  root") != null);
+    const gen_lib_session_root = try cwd.readFileAlloc(io, "glow/gen/lib-session-root-nest-cue-jam.glow", a, .limited(4096));
+    assert(std.mem.indexOf(u8, gen_lib_session_root, "=/  root  5") != null);
+    assert(std.mem.indexOf(u8, gen_lib_session_root, "++  session-root  (cue (jam (mix root root) root))") != null);
+    print("compose-lib: desks session-root product carry import -- GREEN\n", .{});
 
     print("compose-lib: version {s}\n", .{witness_version});
-    print("GREEN: `/+` Glow library compose lowers next-root product desk (STOA57–60/65–69).\n", .{});
+    print("GREEN: `/+` Glow library compose lowers session-root product desk (STOA57–60/65–70).\n", .{});
     return 0;
 }
 

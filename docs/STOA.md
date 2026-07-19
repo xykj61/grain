@@ -1,5 +1,4 @@
-# STOA — Glow language SLC · nest · composition · product desk; ≤80 · pin glow/README · first-code · seat
-**Status:** Checkable — STOA0–STOA69 GREEN · 2026-07-19 (next-root product desk) · guide  
+# STOA — Glow language SLC · nest · product · ≤80 · STOA0–70 GREEN · 2026-07-19 (session-root)
 Product glass stays Rye-hosted. **STOA** names the language path (eight GREEN heads = SLC Lap). **Waymark draw:** `glow-language-rune-heads-nest-and-lowering-2` → **STOA** (`20260718.202730`; **MAIR** superseded).
 | Rung | Claim | Witness / gate | State |
 |------|-------|----------------|-------|
@@ -73,8 +72,9 @@ Product glass stays Rye-hosted. **STOA** names the language path (eight GREEN he
 | **STOA67** | `/+` payload nest-right cue-of-jam | `glow_lower_compose_lib` · desk | **GREEN** `20260719.174531` |
 | **STOA68** | `/+` payload nest-both cue-of-jam | `glow_lower_compose_lib` · desk | **GREEN** `20260719.175024` |
 | **STOA69** | next-root product desk (`/+` · payload · cue-jam) | `glow_lower_compose_lib` · desk | **GREEN** `20260719.180837` |
-| **STOA70** | Next language / product | horizon — check-in | horizon |
+| **STOA70** | session-root nest-left product desk | `glow_lower_compose_lib` · desk | **GREEN** `20260719.181259` |
+| **STOA71** | Next language / product | horizon — check-in | horizon |
 ```bash
-cd ~/urbit && rishi/bin/rishi run tools/glow_run.rish glow/gen/use-lib-next-root-cue-jam.glow && rishi/bin/rishi run tools/glow_run_desk_witness.rish
+cd ~/urbit && rishi/bin/rishi run tools/glow_run.rish glow/gen/use-lib-session-root-nest-cue-jam.glow && rishi/bin/rishi run tools/glow_run_desk_witness.rish
 ```
 Sibling: **ZETA** · **LULU** · **SETU** · **TUBE**.

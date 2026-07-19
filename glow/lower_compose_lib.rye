@@ -63,6 +63,12 @@
 //!   %-  next-root  root
 //! Face `root` matches library payload; call is `core.next_root()`.
 //!
+//! STOA70 — session-root product desk (nest-left cue-of-jam):
+//!   /+  lib-session-root-nest-cue-jam
+//!   =/  root  5
+//!   %-  session-root  root
+//! Combine sits left; continuing root right; cue recovers root.
+//!
 //! The import stem names `glow/gen/<stem>.glow`. glow_run lowers that desk
 //! as a library (no main) into `glow/.cache/`, then this lower emits a
 //! consumer that imports it and calls the arm.

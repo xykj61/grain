@@ -337,7 +337,8 @@
 - [x] **STOA24 — face→payload compose** `20260718.234430` — desk `compose-core-payload`; outer note + inner payload double.
 - [x] **STOA25–68 — language ladder through `/+` payload nest-both cue-of-jam** `20260719.175024` — open `++` · `/+` · cue/jam nests · face→payload · `/+` payload nest trios GREEN; compressor [`../docs/STOA.md`](../docs/STOA.md); language nib per REMEMBER (plan caught up from STOA25 open).
 - [x] **STOA69 — next-root product desk (lean A)** `20260719.180837` — `use-lib-next-root-cue-jam` · `lib-next-root-cue-jam`; payload `root` + `/+` + cue-of-jam arm `next-root`; expect **5**.
-- [ ] **STOA70 — next language / product** — check-in (NativeActivity import · molds · richer Sala fold stay later).
+- [x] **STOA70 — session-root nest-left product desk (lean A)** `20260719.181259` — `use-lib-session-root-nest-cue-jam` · `lib-session-root-nest-cue-jam`; nest-left cue-of-jam arm `session-root`; expect **5**.
+- [ ] **STOA71 — next language / product** — check-in (NativeActivity import · molds · Sala B0 rewrite stay later).
 - [ ] **Dill-parallel kernel revival** — separate `active-reviving/` brief when a real need opens; not Dexter.
 - [ ] **M1 Scribble↔html round-trip witness** — named in fusion map; opens when Keaton leans doc pipeline.
 - [ ] **TAME witness-habitat pairing + Glow supplement** — horizon; needs Keaton's word (H2).

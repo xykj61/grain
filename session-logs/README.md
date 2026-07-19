@@ -8,6 +8,8 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260719.181703` — [STOA70 session-root nest-left product desk send](20260719-181703_stoa70-session-root-nest-product-send.bron) — ship session-root; then STOA71 check-in
+- `20260719.181259` — [STOA70 session-root nest-left product desk GREEN](20260719-181259_stoa70-session-root-nest-product-green.bron) — session-root expect 5; await send
 - `20260719.181143` — [STOA69 next-root product desk send](20260719-181143_stoa69-next-root-product-desk-send.bron) — ship next-root; then STOA70 check-in
 - `20260719.180837` — [STOA69 next-root product desk GREEN](20260719-180837_stoa69-next-root-product-desk-green.bron) — next-root expect 5; await send
 - `20260719.175835` — [STOA69 Glow language need check-in](20260719-175835_stoa69-glow-language-need-check-in.bron) — nest trios closed; lean A product desk

@@ -542,6 +542,11 @@ assert uselibnextroot.ok else "glow_run use-lib-next-root-cue-jam.glow failed"
 assert uselibnextroot.out contains "GREEN" else "glow_run use-lib-next-root-cue-jam.glow not GREEN"
 assert uselibnextroot.out contains "use-lib-next-root-cue-jam.glow" else "glow_run use-lib-next-root-cue-jam claim missing path"
 
+let uselibsessionroot = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/use-lib-session-root-nest-cue-jam.glow"]
+assert uselibsessionroot.ok else "glow_run use-lib-session-root-nest-cue-jam.glow failed"
+assert uselibsessionroot.out contains "GREEN" else "glow_run use-lib-session-root-nest-cue-jam.glow not GREEN"
+assert uselibsessionroot.out contains "use-lib-session-root-nest-cue-jam.glow" else "glow_run use-lib-session-root-nest-cue-jam claim missing path"
+
 let corenest = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/core-nest.glow"]
 assert corenest.ok else "glow_run core-nest.glow failed"
 assert corenest.out contains "GREEN" else "glow_run core-nest.glow not GREEN"

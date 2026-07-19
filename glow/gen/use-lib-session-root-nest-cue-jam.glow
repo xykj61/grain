@@ -1,0 +1,4 @@
+::  Import session-root product library then call session-root (STOA70).
+/+  lib-session-root-nest-cue-jam
+=/  root  5
+%-  session-root  root
