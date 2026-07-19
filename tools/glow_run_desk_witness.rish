@@ -487,6 +487,11 @@ assert uselibcuejamnest.ok else "glow_run use-lib-cue-jam-nest.glow failed"
 assert uselibcuejamnest.out contains "GREEN" else "glow_run use-lib-cue-jam-nest.glow not GREEN"
 assert uselibcuejamnest.out contains "use-lib-cue-jam-nest.glow" else "glow_run use-lib-cue-jam-nest claim missing path"
 
+let uselibcuejamright = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/use-lib-cue-jam-right-nest.glow"]
+assert uselibcuejamright.ok else "glow_run use-lib-cue-jam-right-nest.glow failed"
+assert uselibcuejamright.out contains "GREEN" else "glow_run use-lib-cue-jam-right-nest.glow not GREEN"
+assert uselibcuejamright.out contains "use-lib-cue-jam-right-nest.glow" else "glow_run use-lib-cue-jam-right-nest claim missing path"
+
 let corenest = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/core-nest.glow"]
 assert corenest.ok else "glow_run core-nest.glow failed"
 assert corenest.out contains "GREEN" else "glow_run core-nest.glow not GREEN"
