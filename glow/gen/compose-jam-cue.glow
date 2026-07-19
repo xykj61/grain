@@ -1,0 +1,3 @@
+::  Cross-line jam then cue — pack, then unpack prior face (STOA39).
+=/  cell-pack=@u32  (jam from amount)
+=/  right=@u32  (cue cell-pack)

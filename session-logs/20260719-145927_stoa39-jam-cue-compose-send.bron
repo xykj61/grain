@@ -1,0 +1,12 @@
+format session-log-v1
+stamp 20260719.145927
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern time convention
+title STOA39 jam→cue compose send
+prompt send and approve STOA40
+think ship cross-line jam→cue · then STOA40 cue of nest jam left
+obs desk suite GREEN before send
+file glow/lower_compose_jam_cue.rye compose hop
+recommend keep-going — STOA40 (cue (jam (mix …) …)) after push

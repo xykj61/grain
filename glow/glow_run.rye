@@ -29,6 +29,7 @@ const lower_calln = @import("lower_calln.rye");
 const lower_multi = @import("lower_multi.rye");
 const lower_compose = @import("lower_compose.rye");
 const lower_compose2 = @import("lower_compose2.rye");
+const lower_compose_jam_cue = @import("lower_compose_jam_cue.rye");
 const lower_compose_core = @import("lower_compose_core.rye");
 const lower_compose_core_add = @import("lower_compose_core_add.rye");
 const lower_compose_core_payload = @import("lower_compose_core_payload.rye");
@@ -154,6 +155,12 @@ pub fn main(init: std.process.Init) !u8 {
             if (n == 3 and lines[2].len >= 2 and lines[2][0] == '%' and lines[2][1] == '+') {
                 break :blk lower_compose2.lower_source_welcome(src, &rye_buf) catch |err| {
                     print("glow_run: compose2 lower failed ({s})\n", .{@errorName(err)});
+                    return 1;
+                };
+            }
+            if (n == 2 and lower_compose_jam_cue.looks_like_jam_cue(src)) {
+                break :blk lower_compose_jam_cue.lower_source_welcome(src, &rye_buf) catch |err| {
+                    print("glow_run: compose jam-cue lower failed ({s})\n", .{@errorName(err)});
                     return 1;
                 };
             }
