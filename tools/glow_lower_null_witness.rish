@@ -36,6 +36,7 @@ assert selftest.out contains "carries mix then arm" else "lower_null_witness mis
 assert selftest.out contains "carries jam then arm" else "lower_null_witness missing null-jam desk claim"
 assert selftest.out contains "carries cue then arm" else "lower_null_witness missing null-cue desk claim"
 assert selftest.out contains "carries cue-of-jam then arm" else "lower_null_witness missing null-cue-jam desk claim"
+assert selftest.out contains "carries cue nest jam then arm" else "lower_null_witness missing null-cue-jam-nest desk claim"
 assert selftest.out contains "carries nest jam then arm" else "lower_null_witness missing null-jam-nest desk claim"
 assert selftest.out contains "carries nest jam right then arm" else "lower_null_witness missing null-jam-right-nest desk claim"
 assert selftest.out contains "carries nest jam both then arm" else "lower_null_witness missing null-jam-both-nest desk claim"

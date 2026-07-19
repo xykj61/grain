@@ -344,6 +344,28 @@ fn emit_jam_bindings(mint_arm: *const ArmExpr, send_arm: *const ArmExpr, out: []
 
 fn emit_one_cue(role: []const u8, arm: *const ArmExpr, out: []u8, at: *usize, emitted: *MixEmitted) LowerError!void {
     if (arm.kind != .cue_of) return;
+    if (expr.cue_jam_is_nest_left(arm)) {
+        var zml: [max_arm_len]u8 = undefined;
+        const mln = try zig_safe_ident(face_slice(arm), &zml);
+        var zmr: [max_arm_len]u8 = undefined;
+        const mrn = try zig_safe_ident(face2_slice(arm), &zmr);
+        var zjr: [max_arm_len]u8 = undefined;
+        const jrn = try zig_safe_ident(face3_slice(arm), &zjr);
+        try emit_mix_atom(zml[0..mln], expr.mix_demo_left, out, at, emitted);
+        try emit_mix_atom(zmr[0..mrn], expr.mix_demo_right, out, at, emitted);
+        try emit_mix_atom(zjr[0..jrn], expr.jam_demo_right, out, at, emitted);
+        var mix_buf: [max_arm_len + 16]u8 = undefined;
+        const mix_name = std.fmt.bufPrint(&mix_buf, "{s}_left_mix", .{role}) catch return error.Overflow;
+        const mix_line = std.fmt.bufPrint(out[at.*..], "    const {s}: u32 = {s} ^ {s};\n", .{ mix_name, zml[0..mln], zmr[0..mrn] }) catch return error.Overflow;
+        at.* += mix_line.len;
+        var pack_buf: [max_arm_len + 16]u8 = undefined;
+        const pack_name = std.fmt.bufPrint(&pack_buf, "{s}_packed", .{role}) catch return error.Overflow;
+        const pack_line = std.fmt.bufPrint(out[at.*..], "    const {s}: u32 = ({s} << 16) | {s};\n", .{ pack_name, mix_name, zjr[0..jrn] }) catch return error.Overflow;
+        at.* += pack_line.len;
+        const arm_line = std.fmt.bufPrint(out[at.*..], "    const {s}: u32 = {s} & 0xffff;\n", .{ role, pack_name }) catch return error.Overflow;
+        at.* += arm_line.len;
+        return;
+    }
     if (expr.cue_is_jam(arm)) {
         var zl: [max_arm_len]u8 = undefined;
         const ln = try zig_safe_ident(face_slice(arm), &zl);
