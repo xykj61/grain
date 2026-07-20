@@ -8,6 +8,7 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260720.145715` — [STOA108 $% tag nest vs barket map](20260720-145715_stoa108-tag-nest-vs-barket-map.bron) — lean A assert_tag_nests; barket held
 - `20260720.043453` — [STOA107 nest/type thin implement GREEN](20260720-043453_stoa107-nest-type-thin-green.bron) — SampleDoesNotNest · bartis wire; await send
 - `20260720.043234` — [STOA106 send complete](20260720-043234_stoa106-send-complete.bron) — origin main at 222c2458d4f4
 - `20260720.043140` — [STOA107 nest/type thin implement map](20260720-043140_stoa107-nest-type-thin-map.bron) — bartis dry-aura nest assert; barket/wet held
