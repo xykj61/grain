@@ -1,0 +1,13 @@
+format session-log-v1
+stamp 20260719.224948
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Cursor iOS / cloud sandbox — Eastern time convention (handoff season)
+title STOA94 send complete
+prompt send then kg
+think Fast-forward merged STOA94 to main at 5d5e4856a0; pushed origin main.
+think kg takes STOA95 lean A — mold-only +$ peek via tokens (dispatch widen).
+obs codeberg remote still unwired on this sandbox.
+file session-logs/20260719-224948_stoa94-send-complete.bron this send confirmation
+recommend keep-going STOA95 lean A looks_like_mold_only wire in glow_run

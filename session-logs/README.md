@@ -8,6 +8,8 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260719.225321` — [STOA95 mold-only peek GREEN](20260719-225321_stoa95-mold-only-peek-green.bron) — looks_like_mold_only wire; await send
+- `20260719.224948` — [STOA94 send complete](20260719-224948_stoa94-send-complete.bron) — origin main at 5d5e4856a0
 - `20260719.224520` — [STOA94 same-desk mold-body tokens GREEN](20260719-224520_stoa94-same-desk-mold-body-green.bron) — named_cast_parts mold span; await send
 - `20260719.224130` — [STOA93 send complete](20260719-224130_stoa93-send-complete.bron) — origin main at 1dabeed7b6
 - `20260720.024223` — [STOA94 same-desk mold-body tokens plan seated](20260720-024223_stoa94-same-desk-mold-body-plan.bron) — NamedCastParts span + still rm.parse_source; no token→MoldSpec
