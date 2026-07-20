@@ -16,6 +16,7 @@
 //! STOA135: `quad-mold` identity lowers as `QuadMold` struct · baked from 5 amount 3 fee 1 nonce 2.
 //! STOA136: `triple-mold` call body `%-  flip` → TripleMold swap · baked 5/3/1 → 3/5/1.
 //! STOA137: `quad-mold` call body `%-  flip` → QuadMold swap · baked 5/3/1/2 → 3/5/1/2.
+//! STOA138: `penta-mold` identity lowers as `PentaMold` struct · baked from 5 amount 3 fee 1 nonce 2 memo 7.
 //! STOA127: `kind-mold` call body `%-  flip` → KindMold switch · baked `.mint` → `.send`.
 //! STOA128: `xact-mold` call body `%-  flip` → XactMold switch · baked mint/5 → `.send`.
 //! STOA129: `xfer-mold` call body `%-  flip` → XferMold switch · baked mint/5/3 → `.send`.
@@ -48,6 +49,11 @@ pub const bartis_quad_demo_from: u32 = 5;
 pub const bartis_quad_demo_amount: u32 = 3;
 pub const bartis_quad_demo_fee: u32 = 1;
 pub const bartis_quad_demo_nonce: u32 = 2;
+pub const bartis_penta_demo_from: u32 = 5;
+pub const bartis_penta_demo_amount: u32 = 3;
+pub const bartis_penta_demo_fee: u32 = 1;
+pub const bartis_penta_demo_nonce: u32 = 2;
+pub const bartis_penta_demo_memo: u32 = 7;
 
 fn zig_safe_ident(face: []const u8, out: *[rb.max_face_len]u8) LowerError!u32 {
     assert(face.len <= rb.max_face_len); // precondition: face within name budget
@@ -163,6 +169,11 @@ fn is_triple_sample(spec: *const rb.GateSpec) bool {
 fn is_quad_sample(spec: *const rb.GateSpec) bool {
     if (spec.mold_name_len == 0) return false;
     return nest_type.is_quad_named_mold(rb.mold_name_slice(spec));
+}
+
+fn is_penta_sample(spec: *const rb.GateSpec) bool {
+    if (spec.mold_name_len == 0) return false;
+    return nest_type.is_penta_named_mold(rb.mold_name_slice(spec));
 }
 
 /// STOA123: closed unit `$%` kind-mold identity → KindMold enum · baked `.mint`.
@@ -357,6 +368,29 @@ fn emit_quad_identity(out: []u8, zface: []const u8, comment: []const u8) LowerEr
     return used;
 }
 
+/// STOA138: closed five-field `$:` penta-mold → PentaMold struct · baked 5/3/1/2/7.
+fn emit_penta_identity(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
+    var used: u32 = 0;
+    try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
+    try append_print(out, &used, "pub const PentaMold = struct {{\n", .{});
+    try append_print(out, &used, "    from: u32 = 0,\n", .{});
+    try append_print(out, &used, "    amount: u32 = 0,\n", .{});
+    try append_print(out, &used, "    fee: u32 = 0,\n", .{});
+    try append_print(out, &used, "    nonce: u32 = 0,\n", .{});
+    try append_print(out, &used, "    memo: u32 = 0,\n", .{});
+    try append_print(out, &used, "}};\n\n", .{});
+    try append_print(out, &used, "/// {s}\n", .{comment});
+    try append_print(out, &used, "fn bartis_gate({s}: PentaMold) PentaMold {{\n", .{zface});
+    try append_print(out, &used, "    return {s};\n", .{zface});
+    try append_print(out, &used, "}}\n\n", .{});
+    try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
+    try append_print(out, &used, "    const {s}: PentaMold = .{{ .from = {d}, .amount = {d}, .fee = {d}, .nonce = {d}, .memo = {d} }};\n", .{ zface, bartis_penta_demo_from, bartis_penta_demo_amount, bartis_penta_demo_fee, bartis_penta_demo_nonce, bartis_penta_demo_memo });
+    try append_print(out, &used, "    const got = bartis_gate({s});\n", .{zface});
+    try append_print(out, &used, "    return if (got.from == {d} and got.amount == {d} and got.fee == {d} and got.nonce == {d} and got.memo == {d}) 0 else 1;\n", .{ bartis_penta_demo_from, bartis_penta_demo_amount, bartis_penta_demo_fee, bartis_penta_demo_nonce, bartis_penta_demo_memo });
+    try append_print(out, &used, "}}\n", .{});
+    return used;
+}
+
 /// STOA131: closed multi-field `$:` pair-mold call body → PairMold flip · baked 3/5.
 fn emit_pair_call_body(out: []u8, zface: []const u8, gate: []const u8, comment: []const u8) LowerError!u32 {
     assert(rb.is_pair_call_gate(gate)); // parse/lower pin — flip only today
@@ -533,6 +567,18 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
         }
     }
 
+    // STOA138: penta-mold gate identity — five slots 5/3/1/2/7.
+    if (is_penta_sample(spec)) {
+        switch (spec.body) {
+            .identity => {
+                var comment_buf: [160]u8 = undefined;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` bartis — PentaMold identity (STOA138).", .{ face, mold }) catch return error.Overflow;
+                return emit_penta_identity(out, zface, comment);
+            },
+            .call_one => return error.BodyGateNotYetLowered,
+        }
+    }
+
     const expect = try expect_for(spec);
     var used: u32 = 0;
 
@@ -560,7 +606,7 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
 }
 
 fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
-    if (is_kind_sample(spec) or is_xact_sample(spec) or is_xfer_sample(spec) or is_pair_sample(spec) or is_triple_sample(spec) or is_quad_sample(spec)) return error.SampleDoesNotNest;
+    if (is_kind_sample(spec) or is_xact_sample(spec) or is_xfer_sample(spec) or is_pair_sample(spec) or is_triple_sample(spec) or is_quad_sample(spec) or is_penta_sample(spec)) return error.SampleDoesNotNest;
     const face = rb.face_slice(spec);
     assert(face.len > 0); // invariant: spec carries a non-empty face
     const mold = sample_mold_label(spec);
