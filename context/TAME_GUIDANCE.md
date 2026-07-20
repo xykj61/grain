@@ -7,7 +7,7 @@ type: reference
 # TAME Guidance — Operational Supplement
 
 **Language:** EN
-**Last updated:** 2026-07-19 (Glow G0–G5 pin · G4 close · G5 Nock family notes STOA98)
+**Last updated:** 2026-07-19 (Glow G0–G5 · bartis horizon wording STOA99)
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 **Voice:** Quin
 **Status:** Active — grow by supplement, earned when the language is ready
@@ -23,7 +23,7 @@ Three layers, one discipline — filenames follow TigerBeetle's `docs/TIGER_STYL
 | **Source** | `gratitude/TIGER_STYLE.md` | TigerBeetle team's guide, kept whole and unaltered |
 | **Voiced canon** | `external-research/TAME_GUIDANCE.md` | Our radiant adaptation; Safety, Performance, DX, and the full why |
 | **Operational supplement** | this document | Checkable root + Rye / Brix / Rishi rules for authors and agents |
-| **Glow working pin** | [`../glow/README.md`](../glow/README.md) · alphabet · argv · token lower · G5 Nock | Fixture desks + asserts · G0–G5 · **G4** token→`MoldSpec` (STOA93–97) · **G5** Nock second-backend notes beside truth families (STOA98) — full Glow supplement still horizon |
+| **Glow working pin** | [`../glow/README.md`](../glow/README.md) · alphabet · argv · token · G5 Nock · bartis | Fixture desks + asserts · G0–G5 · **G4** MoldSpec · **G5** Nock notes (STOA98) · **bartis horizon wording** (STOA99) — `|=` not tokenized yet |
 | **Glow supplement (horizon)** | [`../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md`](../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md) | Scoping for a future Glow supplement; root still binds Glow authors now |
 
 Read the voiced canon (`external-research/TAME_GUIDANCE.md`) for philosophy and expert Tiger discipline. Read **this file** at the keyboard for what to assert, name, and bound. Organization prose lives in `active-designing/yonder/20260618-184912_growing-a-language.md`.
@@ -88,6 +88,18 @@ Primary path stays Glow→Rye→Zig→**RISC-V**. **Nock** is the second backend
 | *(none yet)* | jets | No GREEN Glow family is jet-touching until a Glow→Nock emit or jet table seats; add the family row here that lap. |
 
 G5 brief: [`../active-designing/20260720-033200_stoa98-g5-nock-second-backend-family-notes.md`](../active-designing/20260720-033200_stoa98-g5-nock-second-backend-family-notes.md). Witness: `tools/glow_g5_nock_family_notes_witness.rish`.
+
+### Glow — bartis horizon wording (STOA99)
+
+`|=` spoken **bartis** is the Hoon/Glow one-arm core with a typed **sample**. Language docs say **Glow gate** or **bartis gate** — never bare itinerary **Gate** ([`LEXICON.md`](LEXICON.md)). The digraph stays **out** of `glow/tokens.rye` `match_rune2` (alphabet witness refuses `|=` and `|^`). G3 `sample-u32.glow` already supplies one `@u32` from Rishi argv without bartis spelling — keep that precursor; do not pretend argv is bartis.
+
+| Hold | Until |
+|------|--------|
+| Tokenize / lower free `|=` | An implement lap adds digraph + G1 row + thin sample parse together |
+| Wet / gold polymorphic cores | Nest/type surface per cores port-order brief |
+| Sala B0 in Glow | Framework / product season — not this wording pin |
+
+Brief: [`../active-designing/20260720-033340_stoa99-bartis-horizon-wording.md`](../active-designing/20260720-033340_stoa99-bartis-horizon-wording.md). Witness: `tools/glow_bartis_horizon_witness.rish`.
 
 Cursor and Claude rules (`.cursor/rules/tame-guidance.mdc`, `.claude/rules/tame-guidance.md`) point here. Root rule **9** (docs and implementation stay synced) has its own always-on agent rule pair: `.cursor/rules/docs-implementation-sync.mdc`, `.claude/rules/docs-implementation-sync.md`.
 
