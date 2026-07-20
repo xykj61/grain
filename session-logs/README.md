@@ -8,6 +8,8 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260720.183105` — [STOA121 send complete](20260720-183105_stoa121-send-complete.bron) — origin main language claim c33f775cd2 · tip 689a374a73
+- `20260720.183105` — [STOA122 next map after barket wet-through](20260720-183105_stoa122-next-map.bron) — thicker doors; compass pick next
 - `20260720.183032` — [STOA121 barket wet-through-nests GREEN](20260720-183032_stoa121-barket-wet-nests-green.bron) — |^ is_wet=true under stated mold; await send
 - `20260720.182857` — [STOA120 send complete](20260720-182857_stoa120-send-complete.bron) — origin main language claim 7ef2eb5e15 · tip 8fd29c32bb
 - `20260720.182857` — [STOA121 barket wet-through-nests map](20260720-182857_stoa121-barket-wet-nests-map.bron) — lean A |^ is_wet=true under stated mold
