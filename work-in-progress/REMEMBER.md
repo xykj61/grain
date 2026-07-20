@@ -2,11 +2,11 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Rule: [`.cursor/rules/remember.mdc`](../.cursor/rules/remember.mdc) · [`.claude/rules/remember.md`](../.claude/rules/remember.md).*
 
-**Last refreshed:** `20260719.223110` (Eastern) · voice Quin  
+**Last refreshed:** `20260719.223610` (Eastern) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5** · HOLD0–HOLD1 · HOLD-W  
-**Language nib:** **STOA0–92** GREEN · STOA93 open  
-**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W · STOA0–92  
-**Git nib:** (refresh after send) STOA92 thin argv `@u32` G3  
+**Language nib:** **STOA0–93** GREEN · STOA94 open  
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W · STOA0–93  
+**Git nib:** (refresh after send) STOA93 token-driven cross-desk G4  
 
 **Season:** Cursor iOS / cloud — **Glow language TAME only** (no adb). Handoff [`20260719-204650_cursor-ios-handoff-glow-language.md`](20260719-204650_cursor-ios-handoff-glow-language.md).  
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`
@@ -15,19 +15,16 @@
 
 ## Now (language)
 
-**STOA92** GREEN · thin generator `sample-u32.glow` reads one `@u32` from Rishi argv; fixture `cast-u32.glow` kept.  
-**STOA93** next — lean A plan seated: token-driven cross-desk parse (G4) · [`../active-designing/20260720-023513_stoa93-token-driven-lower-slice-g4-plan.md`](../active-designing/20260720-023513_stoa93-token-driven-lower-slice-g4-plan.md).  
-**Cores / port:** dry cores fit TAME · wet/gold hold · L→R→G.
-
-Alphabet G0–G2 · G3 GREEN · G4 plan [`../active-designing/20260720-023513_stoa93-token-driven-lower-slice-g4-plan.md`](../active-designing/20260720-023513_stoa93-token-driven-lower-slice-g4-plan.md).
+**STOA93** GREEN · cross-desk named-cast parse walks `tokens.cross_desk_parts`.  
+**STOA94** next — check-in (same-desk mold-body from tokens · tidy mold · Sala B0).
 
 ```bash
-rishi/bin/rishi run tools/glow_run.rish glow/gen/cast-u32.glow
-rishi/bin/rishi run tools/glow_run.rish glow/gen/sample-u32.glow 42
-rishi/bin/rishi run tools/glow_sample_argv_witness.rish
+rishi/bin/rishi run tools/glow_tokens_witness.rish
+rishi/bin/rishi run tools/glow_lower_named_cast_witness.rish
+rishi/bin/rishi run tools/glow_run_desk_witness.rish
 ```
 
-Hold on iOS: token lower · tidy mold. Defer Pixel/SETU adb to Framework outer terminal.
+Hold on iOS: same-desk mold-body tokens · tidy mold. Defer Pixel/SETU adb to Framework.
 
 ---
 
@@ -40,8 +37,8 @@ Hold on iOS: token lower · tidy mold. Defer Pixel/SETU adb to Framework outer t
 | **ZETA** | English QWERTY glass keyboard | ZETA0–6 GREEN (Pixel look) |
 | **JABS** | Sala broadcast live-session fold | JABS0–2 GREEN · JABS3 check-in |
 | **LULU** | Hearth · short home · Wired Glass | **LULU0–5 closed** |
-| **SETU** | USB hearth carry Glass↔Desk | **SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W GREEN** · live “sent” eyes check-in |
-| **STOA** | Glow language SLC · nest · composition | **STOA0–92 GREEN** · STOA93 next |
+| **SETU** | USB hearth carry Glass↔Desk | **SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W GREEN** |
+| **STOA** | Glow language SLC · nest · composition | **STOA0–93 GREEN** · STOA94 next |
 
 Canon: [`../docs/HAWM.md`](../docs/HAWM.md) · [`../docs/TUBE.md`](../docs/TUBE.md) · [`../docs/ZETA.md`](../docs/ZETA.md) · [`../docs/JABS.md`](../docs/JABS.md) · [`../docs/LULU.md`](../docs/LULU.md) · [`../docs/SETU.md`](../docs/SETU.md) · [`../docs/STOA.md`](../docs/STOA.md)
 
@@ -55,26 +52,16 @@ ADB=tools/.cache/hawm0/android-sdk/platform-tools/adb
 $ADB devices
 rishi/bin/rishi run tools/stoa73_product_root_install_onpath_host.rish
 $ADB install -r tools/.cache/tube05/sala-broadcaster.apk
-$ADB shell am force-stop org.glow.app.sala_broadcaster
-$ADB shell am start -n org.glow.app.sala_broadcaster/android.app.NativeActivity
-rishi/bin/rishi run tools/setu0_hearth_pull_onpath_host.rish
-rishi/bin/rishi run tools/setu6_lab_probe_onpath_host.rish
-rishi/bin/rishi run tools/setu65_lab_tx_onpath_host.rish
-rishi/bin/rishi run tools/setu_desk_hold_wayland_witness.rish
 ```
 
 ---
-
-## Phone look (LULU closed)
-
-Hold row 1 → Settings: presets · `home ·` · `wire ·` · `cell ·` — all Pixel GREEN.
 
 ## Open doors
 
 | Door | Kind |
 |------|------|
-| **STOA93** G4 token-driven cross-desk parse (plan seated) | **keep-going** implement · or redirect |
-| Wet/gold core polymorphism | **held** (design seated) |
+| **STOA94** same-desk mold-body tokens · tidy mold · Sala B0 | **check-in** — iOS season |
+| Wet/gold core polymorphism | **held** |
 | Live SETU6.5 **sent** on usb0/ncm | **check-in** — Framework host |
 | JABS3 · TAME Lap 3 | **check-in** |
 

@@ -10,6 +10,8 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 - `20260720.023513` — [STOA93 G4 token-driven lower slice plan seated](20260720-023513_stoa93-g4-token-lower-plan.bron) — cross-desk parse via tokens; peeks stay; no bartis
 - `20260720.022956` — [STOA92 G3 thin argv sample plan seated](20260720-022956_stoa92-g3-thin-argv-plan.bron) — Rishi forwards @u32; fixture cast-u32 kept; no bartis
+- `20260719.224027` — [STOA93 token-driven cross-desk parse GREEN](20260719-224027_stoa93-token-driven-lower-green.bron) — cross_desk_parts; await send
+- `20260719.223610` — [STOA92 send complete](20260719-223610_stoa92-send-complete.bron) — origin main at 7c6f5e9b6d
 - `20260719.223351` — [STOA92 thin argv sample G3 GREEN](20260719-223351_stoa92-argv-sample-g3-green.bron) — sample-u32 reads Rishi argv; await send
 - `20260719.223110` — [STOA91 send complete](20260719-223110_stoa91-send-complete.bron) — origin main at 1022d8cab1
 - `20260719.222752` — [STOA91 TAME alphabet pin G2 GREEN](20260719-222752_stoa91-tame-alphabet-pin-green.bron) — family index in TAME_GUIDANCE; await send
