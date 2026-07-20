@@ -8,12 +8,19 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const lower = @import("lower_mold.rye");
 
-const witness_version = "20260719.194808";
+const witness_version = "20260719.225100";
 
 const one_src =
     \\+$  amount-mold
     \\  $:  amount=@u32
     \\  ==
+;
+
+const named_cast_src =
+    \\+$  amount-mold
+    \\  $:  amount=@u32
+    \\  ==
+    \\^-  amount-mold
 ;
 
 const pair_src =
@@ -50,6 +57,11 @@ fn run_selftest(init: std.process.Init) !u8 {
     var buf: [4096]u8 = undefined;
     try cwd.createDirPath(io, "glow/.cache");
 
+    assert(lower.looks_like_mold_only(one_src));
+    assert(lower.looks_like_mold_only(pair_src));
+    assert(!lower.looks_like_mold_only(named_cast_src));
+    print("lower: mold-only peek via tokens (glow_run wire) -- GREEN\n", .{});
+
     const n1 = try lower.lower_source_welcome(one_src, &buf);
     assert(std.mem.indexOf(u8, buf[0..n1], "pub const AmountMold") != null);
     print("lower: thin +$ amount-mold emits AmountMold -- GREEN\n", .{});
@@ -85,7 +97,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("lower: wrote mold welcome .rye under glow/.cache/ -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: +$ / $: / $% mold lowers — STOA74–80; mold-amount · mold-pair · mold-kind · mold-xact · mold-xfer.\n", .{});
+    print("GREEN: +$ / $: / $% mold lowers — STOA74–80 · STOA95 mold-only peek; mold-amount · mold-pair · mold-kind · mold-xact · mold-xfer.\n", .{});
     return 0;
 }
 
