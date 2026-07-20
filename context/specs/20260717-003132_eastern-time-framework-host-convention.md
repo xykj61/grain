@@ -13,7 +13,9 @@
 
 [`20260627-102012_one-clock-naming-law.md`](20260627-102012_one-clock-naming-law.md) names the shape of a stamp — `YYYYMMDD.HHMMSS`, one clock, supplied verbatim by Keaton — but names no timezone. [`20260713-201910_pacific-time-local-clone-convention.md`](20260713-201910_pacific-time-local-clone-convention.md) filled that silence for the macOS clone with Pacific Time. This document fills it, separately and explicitly, for a different real machine: **this Framework 16 AMD laptop, running Ubuntu, switched by Keaton's own hand from Pacific to Eastern Time (New York).**
 
-**This host's stamps are Eastern Time, from `20260717.003132` forward.** Eastern Daylight Time (`UTC-4`) from mid-March to early November; Eastern Standard Time (`UTC-5`) the rest of the year. `TZ=America/New_York` on this machine resolves to the correct offset for either half of the year.
+**This host's stamps were Eastern Time, from `20260717.003132` forward through the day before the UDT switch.** Eastern Daylight Time (`UTC-4`) from mid-March to early November; Eastern Standard Time (`UTC-5`) the rest of the year. `TZ=America/New_York` on this machine resolves to the correct offset for either half of the year.
+
+**Later switch:** from `20260720.232932` forward on this same Framework host, Keaton set the system clock to **UDT** (UTC). Living stamps follow [`20260720-232932_udt-framework-host-convention.md`](20260720-232932_udt-framework-host-convention.md). Eastern-era stamps on this host are never rewritten.
 
 ## Why It Is Shaped This Way
 
