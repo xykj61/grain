@@ -395,6 +395,7 @@
 - [x] **STOA124 — xact-mold gate sample** `20260720.184304` — payload `$%` identity · XactMold · baked `.mint` amount 5; xfer-mold refuse; call-body/argv/gold/Sala B0 held.
 - [x] **STOA125 — xfer-mold gate sample** `20260720.184953` — multi-face payload `$%` · XferMold · baked `.mint` from 5 amount 3; pair-mold refuse; call-body/argv/gold/Sala B0 held.
 - [x] **STOA126 — pair-mold gate sample** `20260720.185502` — multi-field `$:` · PairMold · baked from 5 amount 3; triple-mold refuse; call-body/argv/gold/Sala B0 held.
+- [x] **STOA127 — kind-mold flip call-body** `20260720.190544` — closed unit `$%` flip · KindMold switch · baked `.mint` → `.send`; double under kind / flip under `@u32` refuse; call-body under xact/xfer/pair · argv · gold · Sala B0 held.
 - [x] **Cursor iOS handoff · core polymorphism + port order** `20260719.204650` — handoff [`20260719-204650_cursor-ios-handoff-glow-language.md`](20260719-204650_cursor-ios-handoff-glow-language.md); dry cores fit TAME · wet/gold hold · port L→R→G [`../active-designing/20260719-204650_hoon-core-polymorphism-tame-and-port-order.md`](../active-designing/20260719-204650_hoon-core-polymorphism-tame-and-port-order.md); iOS season = language-only (no adb).
 - [ ] **Dill-parallel kernel revival** — separate `active-reviving/` brief when a real need opens; not Dexter.
 - [ ] **M1 Scribble↔html round-trip witness** — named in fusion map; opens when Keaton leans doc pipeline.
