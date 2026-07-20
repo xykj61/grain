@@ -10,6 +10,7 @@
 //! STOA125: `xfer-mold` identity lowers as `XferMold` union · baked `.mint` from 5 amount 3.
 //! STOA126: `pair-mold` identity lowers as `PairMold` struct · baked from 5 amount 3.
 //! STOA127: `kind-mold` call body `%-  flip` → KindMold switch · baked `.mint` → `.send`.
+//! STOA128: `xact-mold` call body `%-  flip` → XactMold switch · baked mint/5 → `.send`.
 //! Gate function named `barket_gate`. Ambient gold held.
 
 const std = @import("std");
@@ -170,6 +171,29 @@ fn emit_xact_identity(out: []u8, zface: []const u8, comment: []const u8) LowerEr
     return used;
 }
 
+/// STOA128: closed payload `$%` xact-mold call body → XactMold flip · baked `.send`.
+fn emit_xact_call_body(out: []u8, zface: []const u8, gate: []const u8, comment: []const u8) LowerError!u32 {
+    assert(rb.is_xact_call_gate(gate)); // parse/lower pin — flip only today
+    var used: u32 = 0;
+    try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
+    try append_print(out, &used, "pub const XactMold = union(enum) {{\n", .{});
+    try append_print(out, &used, "    mint: struct {{ amount: u32 = 0 }},\n", .{});
+    try append_print(out, &used, "    send,\n", .{});
+    try append_print(out, &used, "}};\n\n", .{});
+    try append_print(out, &used, "/// {s}\n", .{comment});
+    try append_print(out, &used, "fn barket_gate({s}: XactMold) XactMold {{\n", .{zface});
+    try append_print(out, &used, "    return switch ({s}) {{ .mint => .send, .send => .{{ .mint = .{{ .amount = 0 }} }} }};\n", .{zface});
+    try append_print(out, &used, "}}\n\n", .{});
+    try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
+    try append_print(out, &used, "    const {s}: XactMold = .{{ .mint = .{{ .amount = {d} }} }};\n", .{ zface, barket_demo_sample });
+    try append_print(out, &used, "    return switch (barket_gate({s})) {{\n", .{zface});
+    try append_print(out, &used, "        .send => 0,\n", .{});
+    try append_print(out, &used, "        .mint => 1,\n", .{});
+    try append_print(out, &used, "    }};\n", .{});
+    try append_print(out, &used, "}}\n", .{});
+    return used;
+}
+
 /// STOA125: closed multi-face payload `$%` xfer-mold → XferMold · baked mint/5/3.
 fn emit_xfer_identity(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
     var used: u32 = 0;
@@ -263,10 +287,20 @@ fn emit(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
     }
 
     if (is_xact_sample(spec)) {
-        if (spec.body == .call_one) return error.BodyGateNotYetLowered;
-        var comment_buf: [160]u8 = undefined;
-        const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` barket — XactMold identity (STOA124).", .{ face, mold }) catch return error.Overflow;
-        return emit_xact_identity(out, zface, comment);
+        switch (spec.body) {
+            .header_only, .identity => {
+                var comment_buf: [160]u8 = undefined;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` barket — XactMold identity (STOA124).", .{ face, mold }) catch return error.Overflow;
+                return emit_xact_identity(out, zface, comment);
+            },
+            .call_one => {
+                const gate = rb.gate_slice(spec);
+                if (!rb.is_xact_call_gate(gate)) return error.BodyGateNotYetLowered;
+                var comment_buf: [192]u8 = undefined;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` / `%-  {s}  {s}` — XactMold call body (STOA128).", .{ face, mold, gate, face }) catch return error.Overflow;
+                return emit_xact_call_body(out, zface, gate, comment);
+            },
+        }
     }
 
     if (is_xfer_sample(spec)) {

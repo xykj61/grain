@@ -4,7 +4,7 @@
 //!   - header-only (STOA112)
 //!   - identity body face (STOA113)
 //!   - call body: `%-  <gate>  <sample-face>` (STOA115–116)
-//! Closed demo gates: `double` · `inc` · `dec` (`@u32`) · `flip` (kind-mold · STOA127).
+//! Closed demo gates: `double` · `inc` · `dec` (`@u32`) · `flip` (kind · STOA127 · xact · STOA128).
 //! STOA117: TAME tidy — copy_disjoint · parse_body split.
 //! STOA118: closed named mold `amount-mold` (one-field `$:` ≡ `@u32` lower).
 //! STOA120: expansion calls `assert_sample_wet_nests` at the mold seam.
@@ -15,6 +15,7 @@
 //! STOA125: closed allowlist adds multi-face payload `$%` `xfer-mold` (identity lower).
 //! STOA126: closed allowlist adds multi-field `$:` `pair-mold` (identity lower).
 //! STOA127: closed call-body under kind-mold — `flip` (mint↔send).
+//! STOA128: closed call-body under xact-mold — `flip` (mint↔send).
 //! Sample nests under `@u32` / named allowlist via nest_type; ambient gold held.
 //! Token-driven via tokens.rye. Open `$:` beyond pair barket samples held.
 
@@ -84,6 +85,11 @@ pub fn is_closed_call_gate(gate: []const u8) bool {
 
 /// True when `gate` is the closed kind-mold call-body gate (STOA127).
 pub fn is_kind_call_gate(gate: []const u8) bool {
+    return std.mem.eql(u8, gate, "flip");
+}
+
+/// True when `gate` is the closed xact-mold call-body gate (STOA128).
+pub fn is_xact_call_gate(gate: []const u8) bool {
     return std.mem.eql(u8, gate, "flip");
 }
 
