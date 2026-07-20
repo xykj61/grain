@@ -2,23 +2,22 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Rule: [`.cursor/rules/remember.mdc`](../.cursor/rules/remember.mdc) · [`.claude/rules/remember.md`](../.claude/rules/remember.md).*
 
-**Last refreshed:** `20260719.195819` (Eastern) · voice Quin  
+**Last refreshed:** `20260719.200508` (Eastern) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5** · HOLD0–HOLD1 · HOLD-W  
-**Language nib:** **STOA0–81** GREEN · STOA82 open  
-**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W · STOA0–81  
-**Git nib:** `95c6ccfb90` STOA81 tagged named-cast  
- 
+**Language nib:** **STOA0–82** GREEN · STOA83 open  
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W · STOA0–82  
+**Git nib:** *(pin after seat)* STOA82 payload $% named-cast  
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`
 
 ---
 
 ## Now (language)
 
-**STOA81** tagged named-cast GREEN `20260719.195819` — same-desk `cast-named-kind` and cross-desk `cast-import-kind` → `KindMold` via `@enumFromInt`; unit `$%` only. Next door: **STOA82** check-in.
+**STOA82** payload `$%` named-cast GREEN `20260719.200508` — same-desk `cast-named-xact` and cross-desk `cast-import-xact` → `XactMold` union cast; mold library covers payload `$%`. Next door: **STOA83** check-in.
 
 Smoke: `rishi/bin/rishi run tools/glow_lower_named_cast_witness.rish`
 
-Pitfalls: unit tags only · payload `$%` cast refused. Hold: payload `$%` cast · Sala B0 rewrite.
+Pitfalls: first payload arm is the cast target · multi-face vals 5·3·7. Hold: Sala B0 rewrite · general token stream.
 
 ---
 
@@ -32,7 +31,7 @@ Pitfalls: unit tags only · payload `$%` cast refused. Hold: payload `$%` cast �
 | **JABS** | Sala broadcast live-session fold | JABS0–2 GREEN · JABS3 check-in |
 | **LULU** | Hearth · short home · Wired Glass | **LULU0–5 closed** |
 | **SETU** | USB hearth carry Glass↔Desk | **SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W GREEN** · live “sent” eyes check-in |
-| **STOA** | Glow language SLC · nest · composition | **STOA0–81 GREEN** · tagged cast · STOA82 next |
+| **STOA** | Glow language SLC · nest · composition | **STOA0–82 GREEN** · payload cast · STOA83 next |
 
 Canon: [`../docs/HAWM.md`](../docs/HAWM.md) · [`../docs/TUBE.md`](../docs/TUBE.md) · [`../docs/ZETA.md`](../docs/ZETA.md) · [`../docs/JABS.md`](../docs/JABS.md) · [`../docs/LULU.md`](../docs/LULU.md) · [`../docs/SETU.md`](../docs/SETU.md) · [`../docs/STOA.md`](../docs/STOA.md)
 
@@ -71,7 +70,7 @@ Hold row 1 → Settings: presets · `home ·` · `wire ·` · `cell ·` — all 
 
 | Door | Kind |
 |------|------|
-| **STOA82** next language (payload `$%` cast · Sala B0 · …) | **check-in** |
+| **STOA83** next language (Sala B0 · token stream · …) | **check-in** |
 | Live SETU6.5 **sent** on usb0/ncm | **check-in** (needs gadget/QEMU) |
 | Amber/Amphora Glass↔Desk fuse | **declined** — compose later (`133455`) |
 | JABS3 · TAME Lap 3 | **check-in** |
