@@ -24,7 +24,8 @@
 //! STOA137: closed call-body under quad-mold — `flip` (from↔amount · fee/nonce stay).
 //! STOA138: closed allowlist adds five-field `$:` `penta-mold` (identity lower).
 //! STOA139: closed call-body under penta-mold — `flip` (from↔amount · fee/nonce/memo stay).
-//! Nesting / gold · open `$:` beyond penta bartis samples held.
+//! STOA140: closed allowlist adds six-field `$:` `hexa-mold` (identity lower).
+//! Nesting / gold · open `$:` beyond hexa bartis samples held.
 //!
 //! Parse shape (token stream):
 //!   1. skip leading newlines

@@ -4,7 +4,7 @@
 //! directly to build MoldSpec, retiring lower_multi.collect_lines and
 //! byte-level head parsing inside parse_source.
 //!
-//! `$:` tuple of `@u32` fields (1–5). `$%` tagged union of cold atoms with
+//! `$:` tuple of `@u32` fields (1–6). `$%` tagged union of cold atoms with
 //! unit payload `[%tag ~]` or one-to-three-face `@u32` payload
 //! `[%tag face=@u32 …]` (2–3 tags). Tagged named-cast stay later.
 //!
@@ -19,7 +19,7 @@ const tokens = @import("tokens.rye");
 const tally_copy = @import("tally_copy.rye");
 
 pub const max_name_len: u32 = 64;
-pub const max_fields: u32 = 5;
+pub const max_fields: u32 = 6;
 pub const max_payload_faces: u32 = 3;
 
 pub const BodyKind = enum { tuple, tagged };
@@ -153,7 +153,7 @@ fn push_tag_faces(spec: *MoldSpec, tag: []const u8, faces: []const []const u8) P
 }
 
 /// Parse mold source via token stream (STOA97 token→MoldSpec).
-/// Accepts `$:` tuples (1–5 `@u32` fields) and `$%` tagged unions
+/// Accepts `$:` tuples (1–6 `@u32` fields) and `$%` tagged unions
 /// (2–3 arms, each `[%tag ~]` or `[%tag face=@u32 …]`).
 /// Same public signature as before: `parse_source(src) ParseError!MoldSpec`.
 pub fn parse_source(src: []const u8) ParseError!MoldSpec {

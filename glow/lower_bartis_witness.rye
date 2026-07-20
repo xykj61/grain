@@ -319,12 +319,41 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(spec_penta.body == .identity);
     print("lower: glow/gen/gate-penta.glow carries penta-mold -- GREEN\n", .{});
 
-    if (lower.lower_source_welcome("|=  sample=hexa-mold\nsample\n", &buf)) |_| {
-        return error.HexaMoldLoweredTooSoon;
+    // STOA140: hexa-mold identity lowers as HexaMold.
+    const hexa_src = "|=  sample=hexa-mold\nsample\n";
+    const n_hexa = try lower.lower_source_welcome(hexa_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n_hexa], "bartis_gate") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_hexa], "HexaMold") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_hexa], "tag") != null);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_hexa_welcome.rye", .data = buf[0..n_hexa] });
+    print("lower: hexa-mold bartis lowers to HexaMold identity -- GREEN\n", .{});
+
+    const gen_hexa = try cwd.readFileAlloc(io, "glow/gen/gate-hexa.glow", a, .limited(4096));
+    const spec_hexa = try rb.parse_source(gen_hexa);
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_hexa), "hexa-mold"));
+    assert(spec_hexa.body == .identity);
+    print("lower: glow/gen/gate-hexa.glow carries hexa-mold -- GREEN\n", .{});
+
+    if (lower.lower_source_welcome("|=  sample=hepta-mold\nsample\n", &buf)) |_| {
+        return error.HeptaMoldLoweredTooSoon;
     } else |err| {
         if (err != lower.LowerError.SampleDoesNotNest) return err;
     }
-    print("lower: hexa-mold bartis refused SampleDoesNotNest -- GREEN\n", .{});
+    print("lower: hepta-mold bartis refused SampleDoesNotNest -- GREEN\n", .{});
+
+    if (lower.lower_source_welcome("|=  sample=hexa-mold\n%-  flip  sample\n", &buf)) |_| {
+        return error.HexaFlipCallBodyLoweredTooSoon;
+    } else |err| {
+        if (err != lower.LowerError.BodyGateNotYetLowered) return err;
+    }
+    print("lower: hexa-mold flip call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
+
+    if (lower.lower_source_argv_sample("|=  sample=hexa-mold\nsample\n", &buf)) |_| {
+        return error.HexaArgvLoweredTooSoon;
+    } else |err| {
+        if (err != lower.LowerError.SampleDoesNotNest) return err;
+    }
+    print("lower: hexa-mold argv refused SampleDoesNotNest -- GREEN\n", .{});
 
     if (lower.lower_source_argv_sample("|=  sample=triple-mold\nsample\n", &buf)) |_| {
         return error.TripleArgvLoweredTooSoon;
@@ -533,7 +562,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("lower: glow/gen/gate-count.glow carries count-mold -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: Glow `|=` bartis — identity · argv · call-body · amount-mold · amount argv · count-mold · count argv · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · pair flip · triple-mold · triple flip · quad-mold · quad flip · penta-mold · penta flip · nesting-nests (STOA100–139).\n", .{});
+    print("GREEN: Glow `|=` bartis — identity · argv · call-body · amount-mold · amount argv · count-mold · count argv · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · pair flip · triple-mold · triple flip · quad-mold · quad flip · penta-mold · penta flip · hexa-mold · nesting-nests (STOA100–140).\n", .{});
     return 0;
 }
 

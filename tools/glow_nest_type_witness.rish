@@ -2,8 +2,8 @@
 #
 # Proves stated aura · $% tag · named-mold · nesting-sample refuse (STOA110) ·
 # nesting-sample accept under stated closed molds (STOA119) · count-mold (STOA122) ·
-# kind-mold (STOA123) · xact-mold (STOA124) · xfer-mold (STOA125) · pair-mold (STOA126) · triple-mold (STOA134) · quad-mold (STOA135) · penta-mold (STOA138) · stated/nesting/gold (STOA130).
-# Ambient gold · open `$:` (hexa-mold) gate samples stay held.
+# kind-mold (STOA123) · xact-mold (STOA124) · xfer-mold (STOA125) · pair-mold (STOA126) · triple-mold (STOA134) · quad-mold (STOA135) · penta-mold (STOA138) · hexa-mold (STOA140) · stated/nesting/gold (STOA130).
+# Ambient gold · open `$:` (hepta-mold) gate samples stay held.
 #
 #   rishi/bin/rishi run tools/glow_nest_type_witness.rish
 
@@ -35,7 +35,8 @@ assert selftest.out contains "gate-pair.glow" else "nest_type_witness missing pa
 assert selftest.out contains "gate-triple.glow" else "nest_type_witness missing triple-mold accept"
 assert selftest.out contains "gate-quad.glow" else "nest_type_witness missing quad-mold accept"
 assert selftest.out contains "gate-penta.glow" else "nest_type_witness missing penta-mold accept"
-assert selftest.out contains "gate-kind-refuse.glow" else "nest_type_witness missing hexa-mold refuse"
+assert selftest.out contains "gate-hexa.glow" else "nest_type_witness missing hexa-mold accept"
+assert selftest.out contains "gate-kind-refuse.glow" else "nest_type_witness missing hepta-mold refuse"
 assert selftest.out contains "is_nesting=false" else "nest_type_witness missing stated nesting-refuse accept"
 assert selftest.out contains "is_nesting=true" else "nest_type_witness missing nesting-refuse claim"
 assert selftest.out contains "nesting @u32 under @u32" else "nest_type_witness missing nesting aura accept"
@@ -50,7 +51,8 @@ assert selftest.out contains "nesting pair-mold under pair-mold" else "nest_type
 assert selftest.out contains "nesting triple-mold under triple-mold" else "nest_type_witness missing nesting triple-mold accept"
 assert selftest.out contains "nesting quad-mold under quad-mold" else "nest_type_witness missing nesting quad-mold accept"
 assert selftest.out contains "nesting penta-mold under penta-mold" else "nest_type_witness missing nesting penta-mold accept"
-assert selftest.out contains "nesting hexa-mold" else "nest_type_witness missing nesting hexa-mold refuse"
+assert selftest.out contains "nesting hexa-mold under hexa-mold" else "nest_type_witness missing nesting hexa-mold accept"
+assert selftest.out contains "nesting hepta-mold" else "nest_type_witness missing nesting hepta-mold refuse"
 assert selftest.out contains "nesting-nests" else "nest_type_witness missing nesting-nests claim"
 assert selftest.out contains "count-mold" else "nest_type_witness missing count-mold claim"
 assert selftest.out contains "KindMold" else "nest_type_witness missing KindMold lower claim"
@@ -60,6 +62,7 @@ assert selftest.out contains "PairMold" else "nest_type_witness missing PairMold
 assert selftest.out contains "TripleMold" else "nest_type_witness missing TripleMold lower claim"
 assert selftest.out contains "QuadMold" else "nest_type_witness missing QuadMold lower claim"
 assert selftest.out contains "PentaMold" else "nest_type_witness missing PentaMold lower claim"
+assert selftest.out contains "HexaMold" else "nest_type_witness missing HexaMold lower claim"
 
 # Sibling horizons stay GREEN.
 let surface = run ["sh" "-c" "rishi/bin/rishi run tools/glow_nest_type_surface_witness.rish"]
@@ -75,4 +78,4 @@ assert bartis.ok else "glow_lower_bartis_witness failed under nest implement"
 assert bartis.out contains "GREEN" else "glow_lower_bartis_witness not GREEN"
 assert bartis.out contains "SampleDoesNotNest" else "glow_lower_bartis_witness missing nest refuse"
 
-say "GREEN: Glow nest/type — stated aura · $% tag · amount-mold · count-mold · kind-mold · xact-mold · xfer-mold · pair-mold · triple-mold · quad-mold · penta-mold · nesting refuse · nesting-nests; STOA107–110/119/122–126/130/134–135/138."
+say "GREEN: Glow nest/type — stated aura · $% tag · amount-mold · count-mold · kind-mold · xact-mold · xfer-mold · pair-mold · triple-mold · quad-mold · penta-mold · hexa-mold · nesting refuse · nesting-nests; STOA107–110/119/122–126/130/134–135/138/140."
