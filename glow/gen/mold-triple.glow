@@ -1,0 +1,7 @@
+::  Multi-field +$ / $: three @u32 fields (STOA134).
+::  Lowered by glow/lower_mold.rye into ordinary Rye; Rishi stays the shell.
++$  triple-mold
+  $:  from=@u32
+      amount=@u32
+      fee=@u32
+  ==

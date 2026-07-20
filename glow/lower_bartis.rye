@@ -12,6 +12,7 @@
 //! STOA124: `xact-mold` identity lowers as `XactMold` union · baked `.mint` amount 5.
 //! STOA125: `xfer-mold` identity lowers as `XferMold` union · baked `.mint` from 5 amount 3.
 //! STOA126: `pair-mold` identity lowers as `PairMold` struct · baked from 5 amount 3.
+//! STOA134: `triple-mold` identity lowers as `TripleMold` struct · baked from 5 amount 3 fee 1.
 //! STOA127: `kind-mold` call body `%-  flip` → KindMold switch · baked `.mint` → `.send`.
 //! STOA128: `xact-mold` call body `%-  flip` → XactMold switch · baked mint/5 → `.send`.
 //! STOA129: `xfer-mold` call body `%-  flip` → XferMold switch · baked mint/5/3 → `.send`.
@@ -37,6 +38,9 @@ pub const bartis_xfer_demo_amount: u32 = 3;
 /// Baked multi-field pair (matches mold-pair welcome · STOA126).
 pub const bartis_pair_demo_from: u32 = 5;
 pub const bartis_pair_demo_amount: u32 = 3;
+pub const bartis_triple_demo_from: u32 = 5;
+pub const bartis_triple_demo_amount: u32 = 3;
+pub const bartis_triple_demo_fee: u32 = 1;
 
 fn zig_safe_ident(face: []const u8, out: *[rb.max_face_len]u8) LowerError!u32 {
     assert(face.len <= rb.max_face_len); // precondition: face within name budget
@@ -142,6 +146,11 @@ fn is_xfer_sample(spec: *const rb.GateSpec) bool {
 fn is_pair_sample(spec: *const rb.GateSpec) bool {
     if (spec.mold_name_len == 0) return false;
     return nest_type.is_pair_named_mold(rb.mold_name_slice(spec));
+}
+
+fn is_triple_sample(spec: *const rb.GateSpec) bool {
+    if (spec.mold_name_len == 0) return false;
+    return nest_type.is_triple_named_mold(rb.mold_name_slice(spec));
 }
 
 /// STOA123: closed unit `$%` kind-mold identity → KindMold enum · baked `.mint`.
@@ -293,6 +302,27 @@ fn emit_pair_identity(out: []u8, zface: []const u8, comment: []const u8) LowerEr
     return used;
 }
 
+/// STOA134: closed three-field `$:` triple-mold → TripleMold struct · baked 5/3/1.
+fn emit_triple_identity(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
+    var used: u32 = 0;
+    try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
+    try append_print(out, &used, "pub const TripleMold = struct {{\n", .{});
+    try append_print(out, &used, "    from: u32 = 0,\n", .{});
+    try append_print(out, &used, "    amount: u32 = 0,\n", .{});
+    try append_print(out, &used, "    fee: u32 = 0,\n", .{});
+    try append_print(out, &used, "}};\n\n", .{});
+    try append_print(out, &used, "/// {s}\n", .{comment});
+    try append_print(out, &used, "fn bartis_gate({s}: TripleMold) TripleMold {{\n", .{zface});
+    try append_print(out, &used, "    return {s};\n", .{zface});
+    try append_print(out, &used, "}}\n\n", .{});
+    try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
+    try append_print(out, &used, "    const {s}: TripleMold = .{{ .from = {d}, .amount = {d}, .fee = {d} }};\n", .{ zface, bartis_triple_demo_from, bartis_triple_demo_amount, bartis_triple_demo_fee });
+    try append_print(out, &used, "    const got = bartis_gate({s});\n", .{zface});
+    try append_print(out, &used, "    return if (got.from == {d} and got.amount == {d} and got.fee == {d}) 0 else 1;\n", .{ bartis_triple_demo_from, bartis_triple_demo_amount, bartis_triple_demo_fee });
+    try append_print(out, &used, "}}\n", .{});
+    return used;
+}
+
 /// STOA131: closed multi-field `$:` pair-mold call body → PairMold flip · baked 3/5.
 fn emit_pair_call_body(out: []u8, zface: []const u8, gate: []const u8, comment: []const u8) LowerError!u32 {
     assert(rb.is_pair_call_gate(gate)); // parse/lower pin — flip only today
@@ -390,6 +420,13 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
         }
     }
 
+    if (is_triple_sample(spec)) {
+        if (spec.body != .identity) return error.BodyGateNotYetLowered;
+        var comment_buf: [160]u8 = undefined;
+        const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` bartis — TripleMold identity (STOA134).", .{ face, mold }) catch return error.Overflow;
+        return emit_triple_identity(out, zface, comment);
+    }
+
     const expect = try expect_for(spec);
     var used: u32 = 0;
 
@@ -417,7 +454,7 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
 }
 
 fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
-    if (is_kind_sample(spec) or is_xact_sample(spec) or is_xfer_sample(spec) or is_pair_sample(spec)) return error.SampleDoesNotNest;
+    if (is_kind_sample(spec) or is_xact_sample(spec) or is_xfer_sample(spec) or is_pair_sample(spec) or is_triple_sample(spec)) return error.SampleDoesNotNest;
     const face = rb.face_slice(spec);
     assert(face.len > 0); // invariant: spec carries a non-empty face
     const mold = sample_mold_label(spec);

@@ -504,7 +504,9 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA132 amount-mold argv GREEN, `20260720.193805`** — lean A (compass): u32-shaped named-mold argv generators beside fixtures; glow_run stem; pair argv refuse; count argv · tagged/pair argv · gold · Sala B0 held. Brief [`active-designing/20260720-193805_stoa132-amount-argv.md`](../active-designing/20260720-193805_stoa132-amount-argv.md). Next language: **STOA133** count-mold argv.
 
-**STOA133 count-mold argv GREEN, `20260720.194143`** — lean A (compass): twin u32-shaped named-mold argv generators beside fixtures; glow_run stem; tagged/pair argv · gold · Sala B0 held. Brief [`active-designing/20260720-194143_stoa133-count-argv.md`](../active-designing/20260720-194143_stoa133-count-argv.md). Next language: **STOA134** map (gold · tagged/pair argv · triple-mold · Sala B0 still held).
+**STOA133 count-mold argv GREEN, `20260720.194143`** — lean A (compass): twin u32-shaped named-mold argv generators beside fixtures; glow_run stem; tagged/pair argv · gold · Sala B0 held. Brief [`active-designing/20260720-194143_stoa133-count-argv.md`](../active-designing/20260720-194143_stoa133-count-argv.md). Next language: **STOA134** triple-mold gate.
+
+**STOA134 triple-mold gate sample GREEN, `20260720.194437`** — lean A (compass): closed three-field `$:` identity · TripleMold · baked 5/3/1; quad refuse; call-body/argv under triple · gold · Sala B0 held. Brief [`active-designing/20260720-194437_stoa134-triple-mold-gate.md`](../active-designing/20260720-194437_stoa134-triple-mold-gate.md). Next language: **STOA135** map (gold · tagged/pair/triple argv · call-body under triple · quad-mold · Sala B0 still held).
 
 **Glow OS · Glow Desk · Glow Glass seated, `20260717.183622`** — Keaton: **Glow OS** unifies; **Glow Desk** = desktop; **Glow Glass** = mobile. Lexicon + silo [`../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md`](../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md). Orientation firmware stays check-in.
 

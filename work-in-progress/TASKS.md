@@ -402,6 +402,7 @@
 - [x] **STOA131 — pair-mold flip call-body** `20260720.193357` — closed multi-field `$:` flip · PairMold swap · baked 5/3 → 3/5; double under pair / flip under `@u32` refuse; argv · gold · Sala B0 held.
 - [x] **STOA132 — amount-mold argv sample** `20260720.193805` — generator desks beside fixtures · glow_run stem · pair argv refuse; count argv · tagged/pair argv · gold · Sala B0 held.
 - [x] **STOA133 — count-mold argv sample** `20260720.194143` — twin generator desks beside fixtures · glow_run stem; tagged/pair argv · gold · Sala B0 held.
+- [x] **STOA134 — triple-mold gate sample** `20260720.194437` — three-field `$:` · TripleMold · baked 5/3/1; quad refuse; call-body/argv under triple · gold · Sala B0 held.
 - [x] **Cursor iOS handoff · core polymorphism + port order** `20260719.204650` — handoff [`20260719-204650_cursor-ios-handoff-glow-language.md`](20260719-204650_cursor-ios-handoff-glow-language.md); dry cores fit TAME · wet/gold hold · port L→R→G [`../active-designing/20260719-204650_hoon-core-polymorphism-tame-and-port-order.md`](../active-designing/20260719-204650_hoon-core-polymorphism-tame-and-port-order.md); iOS season = language-only (no adb).
 - [ ] **Dill-parallel kernel revival** — separate `active-reviving/` brief when a real need opens; not Dexter.
 - [ ] **M1 Scribble↔html round-trip witness** — named in fusion map; opens when Keaton leans doc pipeline.
