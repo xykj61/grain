@@ -350,7 +350,8 @@
 - [x] **STOA79 — cross-desk named-cast (lean A)** `20260719.194711` — desk `cast-import-amount` `/+ mold-amount` then `^- amount-mold` → `lib.AmountMold`; mold library no `main`; full desk suite GREEN.
 - [x] **STOA80 — multi-face `$%` payload (lean A)** `20260719.195216` — desk `mold-xfer` → `XferMold` (`from`·`amount` on `mint`; `send` unit); one-face kept; full desk suite GREEN.
 - [x] **STOA81 — tagged named-cast (lean A)** `20260719.195819` — same-desk `cast-named-kind` · cross-desk `cast-import-kind` → `KindMold` `@enumFromInt`; unit `$%` only; full desk suite GREEN.
-- [ ] **STOA82 — next language / product** — check-in (payload `$%` cast · Sala B0 rewrite stay later).
+- [x] **STOA82 — payload `$%` named-cast (lean A)** `20260719.200508` — same-desk `cast-named-xact` · cross-desk `cast-import-xact` → `XactMold` union; mold library covers payload `$%`; full desk suite GREEN.
+- [ ] **STOA83 — next language / product** — check-in (Sala B0 rewrite · general token stream stay later).
 - [ ] **Dill-parallel kernel revival** — separate `active-reviving/` brief when a real need opens; not Dexter.
 - [ ] **M1 Scribble↔html round-trip witness** — named in fusion map; opens when Keaton leans doc pipeline.
 - [ ] **TAME witness-habitat pairing + Glow supplement** — horizon; needs Keaton's word (H2).

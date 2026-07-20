@@ -1,4 +1,4 @@
-//! glow/lower_named_cast_witness.rye — proves `$:` and unit `$%` named-cast.
+//! glow/lower_named_cast_witness.rye — proves `$:` · unit `$%` · payload `$%` named-cast.
 //!
 //!   rye build glow/lower_named_cast_witness.rye -femit-bin=glow/bin/lower_named_cast_witness
 //!   glow/bin/lower_named_cast_witness
@@ -9,7 +9,7 @@ const print = std.debug.print;
 const lower = @import("lower_named_cast.rye");
 const lower_mold = @import("lower_mold.rye");
 
-const witness_version = "20260719.195417";
+const witness_version = "20260719.195956";
 
 const desk_src =
     \\+$  amount-mold
@@ -57,6 +57,26 @@ const cross_kind_src =
 const lib_kind_src =
     \\+$  kind-mold
     \\  $%  [%mint ~]
+    \\      [%send ~]
+    \\  ==
+;
+
+const payload_src =
+    \\+$  xact-mold
+    \\  $%  [%mint amount=@u32]
+    \\      [%send ~]
+    \\  ==
+    \\^-  xact-mold
+;
+
+const cross_xact_src =
+    \\/+  mold-xact
+    \\^-  xact-mold
+;
+
+const lib_xact_src =
+    \\+$  xact-mold
+    \\  $%  [%mint amount=@u32]
     \\      [%send ~]
     \\  ==
 ;
@@ -114,6 +134,21 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/cast_import_kind_welcome.rye", .data = buf[0..cross_kind_n] });
     print("lower: /+ mold-kind + ^- kind-mold emits cross-desk tagged cast -- GREEN\n", .{});
 
+    assert(lower.looks_like_named_cast(payload_src));
+    const pn = try lower.lower_source_welcome(payload_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..pn], "pub const XactMold = union(enum)") != null);
+    assert(std.mem.indexOf(u8, buf[0..pn], "payload tagged named-cast") != null);
+    assert(std.mem.indexOf(u8, buf[0..pn], "amount: u32") != null);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/cast_named_xact_welcome.rye", .data = buf[0..pn] });
+    print("lower: +$ xact-mold + ^- xact-mold emits XactMold payload cast -- GREEN\n", .{});
+
+    const cross_xact_n = try lower.lower_cross_desk_welcome(cross_xact_src, lib_xact_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..cross_xact_n], "cross-desk payload tagged named-cast") != null);
+    assert(std.mem.indexOf(u8, buf[0..cross_xact_n], "import(\"mold_xact.rye\")") != null);
+    assert(std.mem.indexOf(u8, buf[0..cross_xact_n], "lib.XactMold") != null);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/cast_import_xact_welcome.rye", .data = buf[0..cross_xact_n] });
+    print("lower: /+ mold-xact + ^- xact-mold emits cross-desk payload cast -- GREEN\n", .{});
+
     const lib_n = try lower_mold.lower_source_library(lib_src, &buf);
     assert(std.mem.indexOf(u8, buf[0..lib_n], "pub const AmountMold") != null);
     assert(std.mem.indexOf(u8, buf[0..lib_n], "pub fn main") == null);
@@ -123,11 +158,16 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, buf[0..lib_kind_n], "pub const KindMold = enum(u8)") != null);
     assert(std.mem.indexOf(u8, buf[0..lib_kind_n], "pub fn main") == null);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/mold_kind.rye", .data = buf[0..lib_kind_n] });
+
+    const lib_xact_n = try lower_mold.lower_source_library(lib_xact_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..lib_xact_n], "pub const XactMold = union(enum)") != null);
+    assert(std.mem.indexOf(u8, buf[0..lib_xact_n], "pub fn main") == null);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/mold_xact.rye", .data = buf[0..lib_xact_n] });
     print("lower: mold libraries emit with no main -- GREEN\n", .{});
     print("lower: wrote named-cast welcome .rye under glow/.cache/ -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: named-cast resolve lowers — STOA77/79/81; amount · kind · import desks.\n", .{});
+    print("GREEN: named-cast resolve lowers — STOA77/79/81/82; amount · kind · xact · import desks.\n", .{});
     return 0;
 }
 

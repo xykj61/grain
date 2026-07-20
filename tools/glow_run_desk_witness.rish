@@ -657,6 +657,16 @@ assert castimportkind.ok else "glow_run cast-import-kind.glow failed"
 assert castimportkind.out contains "GREEN" else "glow_run cast-import-kind.glow not GREEN"
 assert castimportkind.out contains "cast-import-kind.glow" else "glow_run cast-import-kind claim missing path"
 
+let castnamedxact = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cast-named-xact.glow"]
+assert castnamedxact.ok else "glow_run cast-named-xact.glow failed"
+assert castnamedxact.out contains "GREEN" else "glow_run cast-named-xact.glow not GREEN"
+assert castnamedxact.out contains "cast-named-xact.glow" else "glow_run cast-named-xact claim missing path"
+
+let castimportxact = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cast-import-xact.glow"]
+assert castimportxact.ok else "glow_run cast-import-xact.glow failed"
+assert castimportxact.out contains "GREEN" else "glow_run cast-import-xact.glow not GREEN"
+assert castimportxact.out contains "cast-import-xact.glow" else "glow_run cast-import-xact claim missing path"
+
 say "GREEN: glow_run desk — all desk generators lowered, built, exit 0."
 
 

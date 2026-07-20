@@ -3,7 +3,7 @@
 //! STOA77: same-desk `+$` / `$:` then `^-`.
 //! STOA79: cross-desk `/+` then `^-` for `$:` molds.
 //! STOA81: same-desk · cross-desk `^-` against unit `$%` molds.
-//! Payload `$%` named-cast stay later.
+//! STOA82: same-desk · cross-desk `^-` against payload `$%` molds.
 //!
 //!   +$  kind-mold
 //!     $%  [%mint ~]
@@ -24,7 +24,7 @@ pub const LowerError = rm.ParseError || rc.ParseError || error{
     BadIdent,
     CastMoldMismatch,
     NamedCastNeedsTuple,
-    NamedCastPayloadNotYet,
+    NamedCastNeedsPayloadArm,
     NotACrossDesk,
     TooFewLines,
     TooManyLines,
@@ -163,9 +163,7 @@ pub fn bind_cross_desk(spec: *const CrossDeskSpec, lib_src: []const u8) LowerErr
         .tuple => {
             if (mold_spec.field_count != 1) return error.NamedCastNeedsTuple;
         },
-        .tagged => {
-            if (rm.any_payload(&mold_spec)) return error.NamedCastPayloadNotYet;
-        },
+        .tagged => {},
     }
     return mold_spec;
 }
@@ -259,6 +257,107 @@ fn emit_tagged_unit_cast(spec: *const rm.MoldSpec, cast_mold: []const u8, out: [
     return @intCast(used);
 }
 
+fn first_payload_arm(spec: *const rm.MoldSpec) LowerError!usize {
+    var i: usize = 0;
+    while (i < spec.field_count) : (i += 1) {
+        if (rm.arm_has_payload(spec, i)) return i;
+    }
+    return error.NamedCastNeedsPayloadArm;
+}
+
+const payload_demo_vals: [rm.max_payload_faces]u32 = .{ 5, 3, 7 };
+
+fn emit_tagged_payload_cast(spec: *const rm.MoldSpec, cast_mold: []const u8, out: []u8) LowerError!u32 {
+    const mold_name = rm.name_slice(spec);
+    const demo_i = try first_payload_arm(spec);
+    var zt: [rm.max_name_len]u8 = undefined;
+    var ztag: [rm.max_name_len]u8 = undefined;
+    const tn = try zig_type_name(mold_name, &zt);
+    const tlen = try zig_safe_ident(rm.field_slice(spec, demo_i), &ztag);
+    const face_count = rm.payload_count(spec, demo_i);
+
+    var used: usize = 0;
+    const hdr = std.fmt.bufPrint(out[used..],
+        \\const std = @import("std");
+        \\
+        \\/// Lowered from Glow `+$ {s}` + `^-  {s}` — payload tagged named-cast (STOA82).
+        \\pub const {s} = union(enum) {{
+        \\
+    , .{ mold_name, cast_mold, zt[0..tn] }) catch return error.Overflow;
+    used += hdr.len;
+
+    var i: usize = 0;
+    while (i < spec.field_count) : (i += 1) {
+        var zarm: [rm.max_name_len]u8 = undefined;
+        const al = try zig_safe_ident(rm.field_slice(spec, i), &zarm);
+        if (rm.arm_has_payload(spec, i)) {
+            const open = std.fmt.bufPrint(out[used..], "    {s}: struct {{\n", .{zarm[0..al]}) catch return error.Overflow;
+            used += open.len;
+            var fi: usize = 0;
+            while (fi < rm.payload_count(spec, i)) : (fi += 1) {
+                var zf: [rm.max_name_len]u8 = undefined;
+                const fl = try zig_safe_ident(rm.payload_face_slice(spec, i, fi), &zf);
+                const face = std.fmt.bufPrint(out[used..], "        {s}: u32 = 0,\n", .{zf[0..fl]}) catch return error.Overflow;
+                used += face.len;
+            }
+            const close = std.fmt.bufPrint(out[used..], "    }},\n", .{}) catch return error.Overflow;
+            used += close.len;
+        } else {
+            const line = std.fmt.bufPrint(out[used..], "    {s},\n", .{zarm[0..al]}) catch return error.Overflow;
+            used += line.len;
+        }
+    }
+
+    const mid = std.fmt.bufPrint(out[used..],
+        \\}};
+        \\
+        \\pub fn main(_: std.process.Init) !u8 {{
+        \\    const casted: {s} = .{{ .{s} = .{{ 
+    , .{ zt[0..tn], ztag[0..tlen] }) catch return error.Overflow;
+    used += mid.len;
+
+    var fi: usize = 0;
+    while (fi < face_count) : (fi += 1) {
+        var zf: [rm.max_name_len]u8 = undefined;
+        const fl = try zig_safe_ident(rm.payload_face_slice(spec, demo_i, fi), &zf);
+        if (fi != 0) {
+            const sep = std.fmt.bufPrint(out[used..], ", ", .{}) catch return error.Overflow;
+            used += sep.len;
+        }
+        const face = std.fmt.bufPrint(out[used..], ".{s} = {d}", .{ zf[0..fl], payload_demo_vals[fi] }) catch return error.Overflow;
+        used += face.len;
+    }
+
+    const foot_open = std.fmt.bufPrint(out[used..],
+        \\ }} }};
+        \\    return switch (casted) {{
+        \\        .{s} => |m| if (
+    , .{ztag[0..tlen]}) catch return error.Overflow;
+    used += foot_open.len;
+
+    fi = 0;
+    while (fi < face_count) : (fi += 1) {
+        var zf: [rm.max_name_len]u8 = undefined;
+        const fl = try zig_safe_ident(rm.payload_face_slice(spec, demo_i, fi), &zf);
+        if (fi != 0) {
+            const and_sep = std.fmt.bufPrint(out[used..], " and ", .{}) catch return error.Overflow;
+            used += and_sep.len;
+        }
+        const chk = std.fmt.bufPrint(out[used..], "m.{s} == {d}", .{ zf[0..fl], payload_demo_vals[fi] }) catch return error.Overflow;
+        used += chk.len;
+    }
+
+    const foot = std.fmt.bufPrint(out[used..],
+        \\) 0 else 1,
+        \\        else => 1,
+        \\    }};
+        \\}}
+        \\
+    , .{}) catch return error.Overflow;
+    used += foot.len;
+    return @intCast(used);
+}
+
 pub fn lower_source_welcome(src: []const u8, out: []u8) LowerError!u32 {
     if (src.len == 0) return error.EmptySource;
     var lines: [lower_multi.max_lines][]const u8 = undefined;
@@ -284,7 +383,7 @@ pub fn lower_source_welcome(src: []const u8, out: []u8) LowerError!u32 {
             return emit_tuple_cast(mold_name, cast_mold, rm.first_field_slice(&mold_spec), out);
         },
         .tagged => {
-            if (rm.any_payload(&mold_spec)) return error.NamedCastPayloadNotYet;
+            if (rm.any_payload(&mold_spec)) return emit_tagged_payload_cast(&mold_spec, cast_mold, out);
             return emit_tagged_unit_cast(&mold_spec, cast_mold, out);
         },
     };
@@ -326,7 +425,7 @@ fn emit_cross_tuple(spec: *const CrossDeskSpec, mold_spec: *const rm.MoldSpec, o
     return @intCast(written.len);
 }
 
-fn emit_cross_tagged(spec: *const CrossDeskSpec, mold_spec: *const rm.MoldSpec, out: []u8) LowerError!u32 {
+fn emit_cross_tagged_unit(spec: *const CrossDeskSpec, mold_spec: *const rm.MoldSpec, out: []u8) LowerError!u32 {
     const mold_name = rm.name_slice(mold_spec);
     var zs: [max_stem_len]u8 = undefined;
     var zt: [rm.max_name_len]u8 = undefined;
@@ -356,6 +455,84 @@ fn emit_cross_tagged(spec: *const CrossDeskSpec, mold_spec: *const rm.MoldSpec, 
         ztag[0..tlen],
     }) catch return error.Overflow;
     return @intCast(written.len);
+}
+
+fn emit_cross_tagged_payload(spec: *const CrossDeskSpec, mold_spec: *const rm.MoldSpec, out: []u8) LowerError!u32 {
+    const mold_name = rm.name_slice(mold_spec);
+    const demo_i = try first_payload_arm(mold_spec);
+    var zs: [max_stem_len]u8 = undefined;
+    var zt: [rm.max_name_len]u8 = undefined;
+    var ztag: [rm.max_name_len]u8 = undefined;
+    const sn = try zig_stem(spec, &zs);
+    const tn = try zig_type_name(mold_name, &zt);
+    const tlen = try zig_safe_ident(rm.field_slice(mold_spec, demo_i), &ztag);
+    const face_count = rm.payload_count(mold_spec, demo_i);
+    const at = "@";
+
+    var used: usize = 0;
+    const hdr = std.fmt.bufPrint(out[used..],
+        \\const std = {s}import("std");
+        \\const lib = {s}import("{s}.rye");
+        \\
+        \\/// Lowered from Glow `/+ {s}` + `^-  {s}` — cross-desk payload tagged named-cast (STOA82).
+        \\pub fn main(_: std.process.Init) !u8 {{
+        \\    const casted: lib.{s} = .{{ .{s} = .{{ 
+    , .{
+        at,
+        at,
+        zs[0..sn],
+        stem_slice(spec),
+        cast_mold_slice(spec),
+        zt[0..tn],
+        ztag[0..tlen],
+    }) catch return error.Overflow;
+    used += hdr.len;
+
+    var fi: usize = 0;
+    while (fi < face_count) : (fi += 1) {
+        var zf: [rm.max_name_len]u8 = undefined;
+        const fl = try zig_safe_ident(rm.payload_face_slice(mold_spec, demo_i, fi), &zf);
+        if (fi != 0) {
+            const sep = std.fmt.bufPrint(out[used..], ", ", .{}) catch return error.Overflow;
+            used += sep.len;
+        }
+        const face = std.fmt.bufPrint(out[used..], ".{s} = {d}", .{ zf[0..fl], payload_demo_vals[fi] }) catch return error.Overflow;
+        used += face.len;
+    }
+
+    const mid = std.fmt.bufPrint(out[used..],
+        \\ }} }};
+        \\    return switch (casted) {{
+        \\        .{s} => |m| if (
+    , .{ztag[0..tlen]}) catch return error.Overflow;
+    used += mid.len;
+
+    fi = 0;
+    while (fi < face_count) : (fi += 1) {
+        var zf: [rm.max_name_len]u8 = undefined;
+        const fl = try zig_safe_ident(rm.payload_face_slice(mold_spec, demo_i, fi), &zf);
+        if (fi != 0) {
+            const and_sep = std.fmt.bufPrint(out[used..], " and ", .{}) catch return error.Overflow;
+            used += and_sep.len;
+        }
+        const chk = std.fmt.bufPrint(out[used..], "m.{s} == {d}", .{ zf[0..fl], payload_demo_vals[fi] }) catch return error.Overflow;
+        used += chk.len;
+    }
+
+    const foot = std.fmt.bufPrint(out[used..],
+        \\) 0 else 1,
+        \\        else => 1,
+        \\    }};
+        \\}}
+        \\
+    , .{}) catch return error.Overflow;
+    used += foot.len;
+    return @intCast(used);
+}
+
+fn emit_cross_tagged(spec: *const CrossDeskSpec, mold_spec: *const rm.MoldSpec, out: []u8) LowerError!u32 {
+    if (rm.any_payload(mold_spec)) return emit_cross_tagged_payload(spec, mold_spec, out);
+    return emit_cross_tagged_unit(spec, mold_spec, out);
 }
 
 pub fn lower_cross_desk_welcome(src: []const u8, lib_src: []const u8, out: []u8) LowerError!u32 {
