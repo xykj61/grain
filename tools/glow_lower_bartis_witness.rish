@@ -35,7 +35,9 @@ assert selftest.out contains "amount-mold" else "lower_bartis_witness missing am
 assert selftest.out contains "gate-amount.glow" else "lower_bartis_witness missing gate-amount desk"
 assert selftest.out contains "count-mold" else "lower_bartis_witness missing count-mold claim"
 assert selftest.out contains "gate-count.glow" else "lower_bartis_witness missing gate-count desk"
-assert selftest.out contains "kind-mold" else "lower_bartis_witness missing kind-mold refuse"
+assert selftest.out contains "KindMold" else "lower_bartis_witness missing KindMold claim"
+assert selftest.out contains "gate-kind.glow" else "lower_bartis_witness missing gate-kind desk"
+assert selftest.out contains "xact-mold" else "lower_bartis_witness missing xact-mold refuse"
 
 let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
 assert build_welcome.ok else "bartis welcome .rye build failed"
@@ -123,4 +125,13 @@ let run_cnt = run ["sh" "-c" "${cnt_bin}; echo EXIT:$?"]
 assert run_cnt.ok else "bartis count-mold welcome binary failed to launch"
 assert run_cnt.out contains "EXIT:0" else "bartis count-mold welcome binary did not exit 0"
 
-say "GREEN: Glow `|=` bartis — STOA100–109 · STOA120 · STOA122 identity · argv · call-body · amount-mold · count-mold · nest SampleDoesNotNest."
+# STOA123: kind-mold welcome binary exits 0.
+let kind_rye = "glow/.cache/gate_kind_welcome.rye"
+let kind_bin = "glow/bin/gate_kind_welcome"
+let build_kind = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${kind_rye} -femit-bin=${kind_bin}"]
+assert build_kind.ok else "bartis kind-mold welcome .rye build failed"
+let run_kind = run ["sh" "-c" "${kind_bin}; echo EXIT:$?"]
+assert run_kind.ok else "bartis kind-mold welcome binary failed to launch"
+assert run_kind.out contains "EXIT:0" else "bartis kind-mold welcome binary did not exit 0"
+
+say "GREEN: Glow `|=` bartis — STOA100–123 identity · argv · call-body · amount-mold · count-mold · kind-mold · nest SampleDoesNotNest."

@@ -8,11 +8,13 @@
 //! STOA105: TAME tidy — assert · u32 · append_print · split emitters.
 //! STOA107: nest/type surface — non-`@u32` sample refuses `SampleDoesNotNest`.
 //! STOA109 / STOA122: named molds `amount-mold` · `count-mold` lower as `@u32`.
+//! STOA123: `kind-mold` identity lowers as `KindMold` enum · baked `.mint`.
 //! Gate function named `bartis_gate` to avoid collisions with the sample face.
 
 const std = @import("std");
 const assert = std.debug.assert;
 const rb = @import("rune_bartis.rye");
+const nest_type = @import("nest_type.rye");
 
 pub const LowerError = rb.ParseError || error{Overflow};
 
@@ -107,6 +109,30 @@ fn sample_mold_label(spec: *const rb.GateSpec) []const u8 {
     return rb.mold_name_slice(spec);
 }
 
+fn is_kind_sample(spec: *const rb.GateSpec) bool {
+    if (spec.mold_name_len == 0) return false;
+    return nest_type.is_kind_named_mold(rb.mold_name_slice(spec));
+}
+
+/// STOA123: closed unit `$%` kind-mold identity → KindMold enum · baked `.mint`.
+fn emit_kind_identity(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
+    var used: u32 = 0;
+    try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
+    try append_print(out, &used, "pub const KindMold = enum(u8) {{\n", .{});
+    try append_print(out, &used, "    mint,\n", .{});
+    try append_print(out, &used, "    send,\n", .{});
+    try append_print(out, &used, "}};\n\n", .{});
+    try append_print(out, &used, "/// {s}\n", .{comment});
+    try append_print(out, &used, "fn bartis_gate({s}: KindMold) KindMold {{\n", .{zface});
+    try append_print(out, &used, "    return {s};\n", .{zface});
+    try append_print(out, &used, "}}\n\n", .{});
+    try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
+    try append_print(out, &used, "    const {s}: KindMold = .mint;\n", .{zface});
+    try append_print(out, &used, "    return if (bartis_gate({s}) == .mint) 0 else 1;\n", .{zface});
+    try append_print(out, &used, "}}\n", .{});
+    return used;
+}
+
 fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
     const face = rb.face_slice(spec);
     assert(face.len > 0); // invariant: spec carries a non-empty face
@@ -114,6 +140,14 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
     var zig_face_buf: [rb.max_face_len]u8 = undefined;
     const zn = try zig_safe_ident(face, &zig_face_buf);
     const zface = zig_face_buf[0..@as(usize, @intCast(zn))];
+
+    if (is_kind_sample(spec)) {
+        if (spec.body != .identity) return error.BodyGateNotYetLowered;
+        var comment_buf: [160]u8 = undefined;
+        const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` bartis — KindMold identity (STOA123).", .{ face, mold }) catch return error.Overflow;
+        return emit_kind_identity(out, zface, comment);
+    }
+
     const expect = try expect_for(spec);
     var used: u32 = 0;
 
@@ -141,6 +175,7 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
 }
 
 fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
+    if (is_kind_sample(spec)) return error.SampleDoesNotNest;
     const face = rb.face_slice(spec);
     assert(face.len > 0); // invariant: spec carries a non-empty face
     const mold = sample_mold_label(spec);

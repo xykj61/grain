@@ -10,7 +10,8 @@
 //!   - STOA120: barket/bartis expansion call `assert_sample_wet_nests`
 //!   - STOA121: barket passes `is_wet=true` through wet-nests under stated molds
 //!   - STOA122: closed named-mold allowlist adds `count-mold` beside `amount-mold`
-//! Ambient gold / free polymorphism · new wet tokens · `kind-mold` gate samples stay held.
+//!   - STOA123: closed allowlist adds unit `$%` `kind-mold` gate samples
+//! Ambient gold / free polymorphism · payload `$%` (`xact-mold`) gate samples stay held.
 //!
 //! Bartis calls wet-nests dry (`false`). Barket calls wet-nests wet (`true`).
 //! STOA110 `assert_sample_not_wet(true)` refuse stays on the nest_type witness.
@@ -19,11 +20,13 @@ const std = @import("std");
 const assert = std.debug.assert;
 const rune_mold = @import("rune_mold.rye");
 
-pub const nest_type_version = "20260720.183259";
+pub const nest_type_version = "20260720.183837";
 
-/// Closed named molds welcome in gate samples (one-field `$:` ≡ `@u32`).
+/// Closed named molds welcome in gate samples.
+/// `$:` one-field ≡ `@u32`: amount · count. Unit `$%`: kind-mold.
 pub const bartis_named_mold_amount = "amount-mold";
 pub const bartis_named_mold_count = "count-mold";
+pub const bartis_named_mold_kind = "kind-mold";
 
 pub const NestError = error{
     SampleDoesNotNest,
@@ -56,21 +59,36 @@ pub fn assert_tag_nests(tag: []const u8, spec: *const rune_mold.MoldSpec) NestEr
     return error.SampleDoesNotNest;
 }
 
-/// Assert `mold_name` is on the closed named-mold allowlist (STOA109 · STOA122).
+/// Assert `mold_name` is on the closed gate-sample allowlist (STOA109 · STOA122 · STOA123).
 pub fn assert_bartis_named_mold(mold_name: []const u8) NestError!void {
     assert(mold_name.len > 0); // precondition: mold name non-empty
     if (std.mem.eql(u8, mold_name, bartis_named_mold_amount)) return;
     if (std.mem.eql(u8, mold_name, bartis_named_mold_count)) return;
+    if (std.mem.eql(u8, mold_name, bartis_named_mold_kind)) return;
     return error.SampleDoesNotNest;
 }
 
-/// Assert `mold_name` nests under a `$:` MoldSpec that matches the closed gate shape.
-/// Welcome shape: allowlisted name, body `.tuple`, one field.
+/// True when `mold_name` is the closed unit `$%` kind-mold.
+pub fn is_kind_named_mold(mold_name: []const u8) bool {
+    return std.mem.eql(u8, mold_name, bartis_named_mold_kind);
+}
+
+/// Assert `mold_name` nests under a `$:` MoldSpec (amount/count shape).
 pub fn assert_named_mold_nests(mold_name: []const u8, spec: *const rune_mold.MoldSpec) NestError!void {
+    if (is_kind_named_mold(mold_name)) return error.SampleDoesNotNest;
     try assert_bartis_named_mold(mold_name);
     if (!std.mem.eql(u8, rune_mold.name_slice(spec), mold_name)) return error.SampleDoesNotNest;
     if (spec.body != .tuple) return error.SampleDoesNotNest;
     if (spec.field_count != 1) return error.SampleDoesNotNest;
+}
+
+/// Assert `mold_name` nests under a unit `$%` MoldSpec (kind-mold shape · STOA123).
+pub fn assert_kind_mold_nests(mold_name: []const u8, spec: *const rune_mold.MoldSpec) NestError!void {
+    if (!is_kind_named_mold(mold_name)) return error.SampleDoesNotNest;
+    if (!std.mem.eql(u8, rune_mold.name_slice(spec), mold_name)) return error.SampleDoesNotNest;
+    if (spec.body != .tagged) return error.SampleDoesNotNest;
+    if (spec.field_count < 1) return error.SampleDoesNotNest;
+    if (rune_mold.any_payload(spec)) return error.SampleDoesNotNest;
 }
 
 /// Assert a sample claim is dry. Wet-flagged claims refuse `SampleDoesNotNest`.
@@ -83,7 +101,7 @@ pub fn assert_sample_not_wet(is_wet: bool) NestError!void {
 /// Wet-sample accept under a stated closed mold (STOA119).
 /// Dry (`is_wet=false`): no-op success.
 /// Wet (`is_wet=true`): sample must nest under `stated_mold` via aura equality
-/// (`@…`) or the closed named-mold allowlist (`amount-mold` · `count-mold`).
+/// (`@…`) or the closed named-mold allowlist (`amount-mold` · `count-mold` · `kind-mold`).
 pub fn assert_sample_wet_nests(is_wet: bool, sample: []const u8, stated_mold: []const u8) NestError!void {
     if (!is_wet) return;
     assert(sample.len > 0); // precondition: wet sample non-empty
