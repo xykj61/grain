@@ -68,9 +68,9 @@ if compound.out != "" then say "BAN [compound assert — split so the failing ha
 if compound.out != "" then say compound.out
 assert compound.out == "" else "TAME ban: compound assert"
 
-# Glow TAME overflow seat (STOA96 / STOA105): style roster sits at Rishi's
-# 256-file ceiling with tokens + lower_named_cast. lower_mold and lower_bartis
-# ride one-file ban passes.
+# Glow TAME overflow seat (STOA96 / STOA105 / STOA117): style roster sits at
+# Rishi's 256-file ceiling with tokens + lower_named_cast. lower_mold,
+# lower_bartis, and lower_barket ride one-file ban passes.
 let mold = "glow/lower_mold.rye"
 assert ((read-file mold) contains ") == error.") == false else "TAME ban on lower_mold: ) == error."
 assert ((read-file mold) contains ") != error.") == false else "TAME ban on lower_mold: ) != error."
@@ -99,4 +99,18 @@ assert ((read-file bartis) contains "dbg(") == false else "TAME ban on lower_bar
 let bartis_compound = run ["sh" "-c" "grep -Hn 'assert(.* and .*)' glow/lower_bartis.rye 2>/dev/null | head -8"]
 assert bartis_compound.out == "" else "TAME ban on lower_bartis: compound assert"
 
-say "GREEN: TAME style bans clean on scan roster · lower_mold · lower_bartis overflow seats."
+let barket = "glow/lower_barket.rye"
+assert ((read-file barket) contains ") == error.") == false else "TAME ban on lower_barket: ) == error."
+assert ((read-file barket) contains ") != error.") == false else "TAME ban on lower_barket: ) != error."
+assert ((read-file barket) contains "std.debug.assert(") == false else "TAME ban on lower_barket: std.debug.assert("
+assert ((read-file barket) contains "Self = @This()") == false else "TAME ban on lower_barket: Self = @This()"
+assert ((read-file barket) contains "usingnamespace") == false else "TAME ban on lower_barket: usingnamespace"
+assert ((read-file barket) contains "!comptime") == false else "TAME ban on lower_barket: !comptime"
+assert ((read-file barket) contains "copyForwards") == false else "TAME ban on lower_barket: copyForwards"
+assert ((read-file barket) contains "copyBackwards") == false else "TAME ban on lower_barket: copyBackwards"
+assert ((read-file barket) contains "FIXME") == false else "TAME ban on lower_barket: FIXME"
+assert ((read-file barket) contains "dbg(") == false else "TAME ban on lower_barket: dbg("
+let barket_compound = run ["sh" "-c" "grep -Hn 'assert(.* and .*)' glow/lower_barket.rye 2>/dev/null | head -8"]
+assert barket_compound.out == "" else "TAME ban on lower_barket: compound assert"
+
+say "GREEN: TAME style bans clean on scan roster · lower_mold · lower_bartis · lower_barket overflow seats."

@@ -1,4 +1,4 @@
-//! glow/rune_barket_witness.rye — proves barket parse (STOA112–116).
+//! glow/rune_barket_witness.rye — proves barket parse (STOA112–117).
 //!
 //!   rye build glow/rune_barket_witness.rye -femit-bin=glow/bin/rune_barket_witness
 //!   glow/bin/rune_barket_witness
@@ -8,7 +8,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const rb = @import("rune_barket.rye");
 
-const witness_version = "20260720.180445";
+const witness_version = "20260720.180900";
 
 fn run_selftest(init: std.process.Init) !u8 {
     _ = init;
@@ -64,7 +64,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("barket: |= refused NotABarket -- GREEN\n", .{});
 
-    print("GREEN: Glow barket parse — dry header · identity · call-body trio; STOA112–116.\n", .{});
+    print("GREEN: Glow barket parse — dry header · identity · call-body trio · parse_body; STOA112–117.\n", .{});
     _ = witness_version;
     return 0;
 }
