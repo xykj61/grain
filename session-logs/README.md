@@ -8,6 +8,7 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260720.150042` — [STOA109 named-mold bartis vs barket map](20260720-150042_stoa109-named-mold-vs-barket-map.bron) — lean A sample=amount-mold; barket held
 - `20260720.145715` — [STOA108 $% tag nest vs barket map](20260720-145715_stoa108-tag-nest-vs-barket-map.bron) — lean A assert_tag_nests; barket held
 - `20260720.145928` — [STOA108 nest/type $% tag nest GREEN](20260720-145928_stoa108-tag-nest-green.bron) — assert_tag_nests · mold-kind; await send
 - `20260720.145753` — [STOA107 send complete](20260720-145753_stoa107-send-complete.bron) — origin main at 3feeed801dfa
