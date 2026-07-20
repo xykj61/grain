@@ -1,0 +1,4 @@
+::  Thin bartis — sample=octa-mold through closed flip call body (STOA145).
+::  OctaMold flip: from↔amount · fee nonce memo tag to via stay; baked 5/3/1/2/7/4/6/8 → expect 3/5/1/2/7/4/6/8.
+|=  sample=octa-mold
+%-  flip  sample

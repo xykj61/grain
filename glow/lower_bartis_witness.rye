@@ -402,12 +402,29 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("lower: hepta-mold argv refused SampleDoesNotNest -- GREEN\n", .{});
 
-    if (lower.lower_source_welcome("|=  sample=octa-mold\n%-  flip  sample\n", &buf)) |_| {
-        return error.OctaFlipCallBodyLoweredTooSoon;
+    // STOA145: octa-mold flip call-body lowers as OctaMold swap · baked 3/5/1/2/7/4/6/8.
+    const octa_flip_src = "|=  sample=octa-mold\n%-  flip  sample\n";
+    const n_otf = try lower.lower_source_welcome(octa_flip_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n_otf], "OctaMold") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_otf], ".from = sample.amount") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_otf], "got.from == 3") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_otf], "got.via == 8") != null);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_octa_flip_welcome.rye", .data = buf[0..n_otf] });
+    print("lower: octa-mold call-body flip lowers to OctaMold swap expect 3/5/1/2/7/4/6/8 -- GREEN\n", .{});
+
+    const gen_otf = try cwd.readFileAlloc(io, "glow/gen/gate-octa-flip.glow", a, .limited(4096));
+    const spec_otf = try rb.parse_source(gen_otf);
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_otf), "octa-mold"));
+    assert(spec_otf.body == .call_one);
+    assert(std.mem.eql(u8, rb.gate_slice(&spec_otf), "flip"));
+    print("lower: glow/gen/gate-octa-flip.glow carries octa-mold flip call-body -- GREEN\n", .{});
+
+    if (lower.lower_source_welcome("|=  sample=octa-mold\n%-  double  sample\n", &buf)) |_| {
+        return error.OctaDoubleCallBodyLoweredTooSoon;
     } else |err| {
         if (err != lower.LowerError.BodyGateNotYetLowered) return err;
     }
-    print("lower: octa-mold flip call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
+    print("lower: octa-mold double call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
 
     if (lower.lower_source_argv_sample("|=  sample=octa-mold\nsample\n", &buf)) |_| {
         return error.OctaArgvLoweredTooSoon;
@@ -654,7 +671,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("lower: glow/gen/gate-count.glow carries count-mold -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: Glow `|=` bartis — identity · argv · call-body · amount-mold · amount argv · count-mold · count argv · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · pair flip · triple-mold · triple flip · quad-mold · quad flip · penta-mold · penta flip · hexa-mold · hexa flip · hepta-mold · hepta flip · octa-mold · nesting-nests (STOA100–144).\n", .{});
+    print("GREEN: Glow `|=` bartis — identity · argv · call-body · amount-mold · amount argv · count-mold · count argv · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · pair flip · triple-mold · triple flip · quad-mold · quad flip · penta-mold · penta flip · hexa-mold · hexa flip · hepta-mold · hepta flip · octa-mold · octa flip · nesting-nests (STOA100–145).\n", .{});
     return 0;
 }
 

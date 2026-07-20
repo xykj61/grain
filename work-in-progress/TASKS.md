@@ -413,6 +413,7 @@
 - [x] **STOA142 — hepta-mold gate sample** `20260720.224116` — seven-field `$:` · HeptaMold · baked 5/3/1/2/7/4/6; octa refuse; call-body/argv under hepta · gold · Sala B0 held.
 - [x] **STOA143 — hepta-mold flip call-body** `20260720.224734` — closed `%-  flip` · from↔amount · fee/nonce/memo/tag/to stay · baked 5/3/1/2/7/4/6 → 3/5/1/2/7/4/6; double under hepta refuse; argv · gold · Sala B0 held.
 - [x] **STOA144 — octa-mold gate sample** `20260720.225448` — eight-field `$:` · OctaMold · baked 5/3/1/2/7/4/6/8; nona refuse; call-body/argv under octa · gold · Sala B0 held.
+- [x] **STOA145 — octa-mold flip call-body** `20260720.230219` — closed `%-  flip` · from↔amount · fee/nonce/memo/tag/to/via stay · baked 5/3/1/2/7/4/6/8 → 3/5/1/2/7/4/6/8; double under octa refuse; argv · gold · Sala B0 held.
 - [x] **Cursor iOS handoff · core polymorphism + port order** `20260719.204650` — handoff [`20260719-204650_cursor-ios-handoff-glow-language.md`](20260719-204650_cursor-ios-handoff-glow-language.md); dry cores fit TAME · wet/gold hold · port L→R→G [`../active-designing/20260719-204650_hoon-core-polymorphism-tame-and-port-order.md`](../active-designing/20260719-204650_hoon-core-polymorphism-tame-and-port-order.md); iOS season = language-only (no adb).
 - [ ] **Dill-parallel kernel revival** — separate `active-reviving/` brief when a real need opens; not Dexter.
 - [ ] **M1 Scribble↔html round-trip witness** — named in fusion map; opens when Keaton leans doc pipeline.
