@@ -1,0 +1,4 @@
+::  Thin barket — sample=triple-mold through closed flip call body (STOA136).
+::  TripleMold flip: from↔amount · fee stays; baked 5/3/1 → expect 3/5/1.
+|^  sample=triple-mold
+%-  flip  sample
