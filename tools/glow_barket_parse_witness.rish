@@ -1,8 +1,7 @@
-# glow_barket_parse_witness.rish — barket parse (STOA112–113).
+# glow_barket_parse_witness.rish — barket parse (STOA112–116).
 #
-# Proves dry-shaped |^ header and identity body parse into BarketSpec,
-# call body refuses BodyNotYetLowered, wrong aura refuses SampleDoesNotNest.
-# Lower lands at STOA113 (sibling binder).
+# Proves dry-shaped |^ header, identity, and closed call-body trio
+# (double · inc · dec); unknown gates refuse BodyGateNotYetLowered.
 #
 #   rishi/bin/rishi run tools/glow_barket_parse_witness.rish
 
@@ -10,8 +9,8 @@ let tame = "context/TAME_GUIDANCE.md"
 let zig = "vendor/zig-toolchain/zig"
 let bin = "glow/bin/rune_barket_witness"
 
-let tame_pin = run ["sh" "-c" "grep -F 'STOA112' ${tame}"]
-assert tame_pin.ok else "TAME missing STOA112 barket parse"
+let tame_pin = run ["sh" "-c" "grep -F 'STOA116' ${tame}"]
+assert tame_pin.ok else "TAME missing STOA116 barket call-body trio"
 
 let has_parse = run ["sh" "-c" "test -f glow/rune_barket.rye; echo $?"]
 assert trim has_parse.out == "0" else "glow/rune_barket.rye must exist (STOA112)"
@@ -26,6 +25,8 @@ assert selftest.out contains "SampleDoesNotNest" else "rune_barket_witness missi
 assert selftest.out contains "NotABarket" else "rune_barket_witness missing NotABarket"
 assert selftest.out contains "identity body" else "rune_barket_witness missing identity body claim"
 assert selftest.out contains "call-body double" else "rune_barket_witness missing call-body double claim"
+assert selftest.out contains "call-body inc" else "rune_barket_witness missing call-body inc claim"
+assert selftest.out contains "call-body dec" else "rune_barket_witness missing call-body dec claim"
 assert selftest.out contains "BodyGateNotYetLowered" else "rune_barket_witness missing unknown-gate refuse"
 
 # Tokenize sibling stays GREEN.
@@ -33,4 +34,4 @@ let tok = run ["sh" "-c" "rishi/bin/rishi run tools/glow_barket_tokenize_witness
 assert tok.ok else "glow_barket_tokenize_witness failed under barket parse"
 assert tok.out contains "GREEN" else "glow_barket_tokenize_witness not GREEN"
 
-say "GREEN: Glow barket parse — dry header · identity · call-body double; STOA112–115."
+say "GREEN: Glow barket parse — dry header · identity · call-body trio; STOA112–116."

@@ -1,0 +1,4 @@
+::  Thin barket generator (STOA116): dec call body; sample from Rishi argv.
+::  Matching fixture desk: gate-barket-dec.glow (baked welcome).
+|^  sample=@u32
+%-  dec  sample
