@@ -1,0 +1,118 @@
+//! glow/rune_assert.rye — parses Glow `?>` / `?<` assertion rune heads (STOA88).
+//!
+//! Hoon parallels (docs.urbit.org/hoon/rune/wut):
+//!   `?>` wutgar — positive assertion; expands to `?.(p !! q)`
+//!   `?<` wutgal — negative assertion; expands to `?:(p !! q)`
+//!
+//! Thin Glow shape this lap (one line):
+//!   ?>  (gth tick 32)  1
+//!   ?<  (gth tick 32)  1
+//!
+//! Test child: `(gth tick 32)` only. Body: decimal literal.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const tally_copy = @import("tally_copy.rye");
+
+pub const max_test_len: u32 = 96;
+
+pub const ParseError = error{
+    NotAnAssert,
+    MissingTest,
+    MissingBody,
+    TestTooLong,
+    MalformedTest,
+    MalformedBody,
+    TrailingJunk,
+};
+
+pub const Polarity = enum { positive, negative };
+
+/// Invariant: test_len <= max_test_len; body is a decimal payload.
+pub const AssertSpec = struct {
+    polarity: Polarity = .positive,
+    test_expr: [max_test_len]u8 = [_]u8{0} ** max_test_len,
+    test_len: u32 = 0,
+    body: u32 = 0,
+};
+
+pub fn test_slice(spec: *const AssertSpec) []const u8 {
+    assert(spec.test_len <= max_test_len); // invariant
+    return spec.test_expr[0..@as(usize, @intCast(spec.test_len))];
+}
+
+const Cut = struct {
+    expr: []const u8,
+    after: []const u8,
+};
+
+fn cut_test(rest: []const u8) ParseError!Cut {
+    if (rest.len == 0) return error.MissingTest;
+    var end: u32 = 0;
+    var depth: i32 = 0;
+    const rest_len: u32 = @intCast(rest.len);
+    while (end < rest_len) {
+        const c = rest[@as(usize, @intCast(end))];
+        if (c == '(') {
+            depth += 1;
+        } else if (c == ')') {
+            depth -= 1;
+            if (depth < 0) return error.MalformedTest;
+        } else if (depth == 0 and (c == ' ' or c == '\t')) {
+            break;
+        }
+        end += 1;
+    }
+    if (depth != 0) return error.MalformedTest;
+    if (end == 0) return error.MissingTest;
+    const expr = rest[0..@as(usize, @intCast(end))];
+    const after = std.mem.trimStart(u8, rest[@as(usize, @intCast(end))..], " \t");
+    return .{ .expr = expr, .after = after };
+}
+
+fn parse_decimal(text: []const u8) ParseError!u32 {
+    if (text.len == 0) return error.MalformedBody;
+    var v: u32 = 0;
+    for (text) |c| {
+        if (c < '0' or c > '9') return error.MalformedBody;
+        const d: u32 = c - '0';
+        if (v > (std.math.maxInt(u32) - d) / 10) return error.MalformedBody;
+        v = v * 10 + d;
+    }
+    return v;
+}
+
+/// Parses one Glow assertion line: `?>` or `?<` + test + decimal body.
+pub fn parse(line: []const u8) ParseError!AssertSpec {
+    if (line.len < 2) return error.NotAnAssert;
+    const polarity: Polarity = blk: {
+        if (line[0] == '?' and line[1] == '>') break :blk .positive;
+        if (line[0] == '?' and line[1] == '<') break :blk .negative;
+        return error.NotAnAssert;
+    };
+    const rest = std.mem.trimStart(u8, line[2..], " \t");
+    const cut = try cut_test(rest);
+    if (cut.expr.len > max_test_len) return error.TestTooLong;
+    if (cut.expr[0] != '(') return error.MalformedTest;
+    assert(cut.expr.len >= 2); // precondition: parenthesized
+    if (cut.expr[cut.expr.len - 1] != ')') return error.MalformedTest;
+    if (!std.mem.eql(u8, cut.expr, "(gth tick 32)")) return error.MalformedTest;
+    if (cut.after.len == 0) return error.MissingBody;
+
+    var body_end: u32 = 0;
+    const after_len: u32 = @intCast(cut.after.len);
+    while (body_end < after_len) {
+        const c = cut.after[@as(usize, @intCast(body_end))];
+        if (c == ' ' or c == '\t') break;
+        body_end += 1;
+    }
+    const body_text = cut.after[0..@as(usize, @intCast(body_end))];
+    const tail = std.mem.trimStart(u8, cut.after[@as(usize, @intCast(body_end))..], " \t");
+    if (tail.len != 0) return error.TrailingJunk;
+    const body = try parse_decimal(body_text);
+
+    var spec: AssertSpec = .{ .polarity = polarity, .body = body };
+    tally_copy.copy_disjoint(u8, spec.test_expr[0..cut.expr.len], cut.expr);
+    spec.test_len = @intCast(cut.expr.len);
+    return spec;
+}
