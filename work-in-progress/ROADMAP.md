@@ -516,7 +516,9 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA138 penta-mold gate sample GREEN, `20260720.215530`** — lean A (compass): closed five-field `$:` identity · PentaMold · baked 5/3/1/2/7 memo; hexa refuse; call-body under penta · tagged argv · gold · Sala B0 held. Brief [`active-designing/20260720-200416_stoa138-penta-mold-gate.md`](../active-designing/20260720-200416_stoa138-penta-mold-gate.md). Sent `3f5ed81211` · PR #50.
 
-**STOA139 penta-mold flip call-body GREEN, `20260720.221625`** — lean A (compass): closed `%-  flip` under penta-mold · from↔amount · fee/nonce/memo stay · baked 5/3/1/2/7 → 3/5/1/2/7; double under penta refuse; argv · gold · Sala B0 held. Brief [`active-designing/20260720-215636_stoa139-penta-flip.md`](../active-designing/20260720-215636_stoa139-penta-flip.md). Next language: **STOA140** map (hexa-mold · tagged argv · gold · Sala B0 still held).
+**STOA139 penta-mold flip call-body GREEN, `20260720.221625`** — lean A (compass): closed `%-  flip` under penta-mold · from↔amount · fee/nonce/memo stay · baked 5/3/1/2/7 → 3/5/1/2/7; double under penta refuse; argv · gold · Sala B0 held. Brief [`active-designing/20260720-215636_stoa139-penta-flip.md`](../active-designing/20260720-215636_stoa139-penta-flip.md). Sent `069e747e49` · PR #51.
+
+**STOA140 hexa-mold gate sample mapped, `20260720.221703`** — lean A (compass): closed six-field `$:` identity · HexaMold · baked 5/3/1/2/7/4 tag; hepta refuse; call-body under hexa · tagged argv · gold · Sala B0 held. Brief [`active-designing/20260720-221703_stoa140-hexa-mold-gate.md`](../active-designing/20260720-221703_stoa140-hexa-mold-gate.md). Next: seat when GREEN.
 
 **Glow OS · Glow Desk · Glow Glass seated, `20260717.183622`** — Keaton: **Glow OS** unifies; **Glow Desk** = desktop; **Glow Glass** = mobile. Lexicon + silo [`../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md`](../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md). Orientation firmware stays check-in.
 

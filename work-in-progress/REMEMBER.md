@@ -2,11 +2,11 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Rule: [`.cursor/rules/remember.mdc`](../.cursor/rules/remember.mdc) · [`.claude/rules/remember.md`](../.claude/rules/remember.md).*
 
-**Last refreshed:** `20260720.221625` (UTC cloud) · voice Quin  
+**Last refreshed:** `20260720.221703` (UTC cloud) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5** · HOLD0–HOLD1 · HOLD-W  
 **Language nib:** **STOA0–139** GREEN · STOA140 open  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W · STOA0–139  
-**Git nib:** *(pin after send)* — STOA139 penta-mold flip  
+**Git nib:** `069e747e49` — STOA139 penta-mold flip  
 
 
 **Season:** Cursor iOS / cloud — **Glow language TAME only** (no adb). Handoff [`20260719-204650_cursor-ios-handoff-glow-language.md`](20260719-204650_cursor-ios-handoff-glow-language.md).  
@@ -16,7 +16,7 @@
 
 ## Now (language)
 
-**STOA139** seated · penta-mold flip (`%-  flip` · from↔amount · fee/nonce/memo stay · 5/3/1/2/7 → 3/5/1/2/7).  
+**STOA139** seated · penta-mold flip (`%-  flip` · from↔amount · fee/nonce/memo stay · 5/3/1/2/7 → 3/5/1/2/7) · claim `069e747e49`.  
 **STOA140** next — lean A map: **hexa-mold** gate identity (Sala B0 Framework).
 
 ```bash
@@ -61,7 +61,7 @@ $ADB install -r tools/.cache/tube05/sala-broadcaster.apk
 
 | Door | Kind |
 |------|------|
-| **STOA140** hexa-mold gate identity (lean A) · tagged argv · gold held | **open** — map next; Sala B0 Framework |
+| **STOA140** hexa-mold gate identity (lean A) · tagged argv · gold held | **open** — map seated; Sala B0 Framework |
 | Glow nesting syntax · ambient gold | **held** |
 | Live SETU6.5 **sent** on usb0/ncm | **check-in** — Framework host |
 | JABS3 · TAME Lap 3 | **check-in** |
