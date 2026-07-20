@@ -1,7 +1,7 @@
 # Lexicon — Module Names and Their Meanings
 
 **Language:** EN
-**Last updated:** 2026-07-18 (**STOA** Glow language waymark · **LULU** · **Hearth** · ZETA6 · remember · JABS · Glow OS)
+**Last updated:** 2026-07-19 (**STOA89** rune pronunciation · fixture desk · Glow gate · generators horizon)
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 
 ---
@@ -12,7 +12,11 @@ Living vocabulary for the Rye OS family. Each name teaches its function. Provena
 
 | Term | One line |
 |------|----------|
-| **Gate** | A named precondition on the itinerary that only a ruling, a word, or a landed event opens — gates belong to Kaeden; [`specs/20260704-020800_one-word-one-gate.md`](specs/20260704-020800_one-word-one-gate.md) |
+| **Gate** | A named precondition on the itinerary that only a ruling, a word, or a landed event opens — gates belong to Kaeden; [`specs/20260704-020800_one-word-one-gate.md`](specs/20260704-020800_one-word-one-gate.md). **Not** a Hoon/Glow one-arm core — say **Glow gate** / **bartis gate** for that parallel |
+| **Glow gate** | Hoon parallel: one-arm core with a typed **sample** (`\|=`, spoken **bartis**). Language docs always say **Glow gate** or **bartis gate** — never bare **Gate** (itinerary). Seated `20260719.204001` — [`../active-designing/20260719-204001_glow-rune-pronunciation-alphabet-riscv-and-generators.md`](../active-designing/20260719-204001_glow-rune-pronunciation-alphabet-riscv-and-generators.md) |
+| **Fixture desk** | A `.glow` under `glow/gen/` with a **baked sample** for witnesses and `glow_run` — today's suite. Distinct from a parameterized **generator**. Seated `20260719.204001` |
+| **Generator** (Glow) | Horizon: a Glow program whose **sample** arrives from outside (Rishi argv / typed hand-off) — Urbit `/gen` parallel. Fixture desks remain beside generators. Seated `20260719.204001` · Acme hand [`../expanding-prompts/20260719-204001_glow-fixture-desks-and-parameterized-generators.md`](../expanding-prompts/20260719-204001_glow-fixture-desks-and-parameterized-generators.md) |
+| **Sample** (Glow) | The typed argument face of a Glow gate (`\|=`). Not an itinerary word. Seated `20260719.204001` |
 | **Witness** | A program that proves a claim on metal and answers green or red — the trio (`parity.rish`, `parity-selftest.rish`, `additive-gate.rish`) guards every push |
 | **Claim** | A bounded, falsifiable proposition one witness binds — lap, seam, or invariant; [`external-research/20260704-024900_claim.md`](../external-research/20260704-024900_claim.md) |
 | **Two rooms** | Every sentence is checkable or visionary, and says which at the door — [`TWO_ROOMS.md`](TWO_ROOMS.md) · seated `20260705.203144` |
@@ -45,6 +49,7 @@ Living vocabulary for the Rye OS family. Each name teaches its function. Provena
 | **STOA** | Waymark for the **Glow language** SLC ladder (rune heads · nest forms · composition toward Glow-authored modules). Drawn `20260718.202730` from `glow-language-rune-heads-nest-and-lowering-2` via `tools/waymark_derive.rish`. Supersedes same-day draw **MAIR**. Distinct from product glass/wire (ZETA · LULU · SETU) and from app packaging (**TUBE**). Compressor [`../docs/STOA.md`](../docs/STOA.md) · pin [`../glow/README.md`](../glow/README.md) |
 | **Hearth** | Bron preference mold — `home_id` (two lowercase letters, e.g. `kd`) + `display_preset` enum; Nix/infuse *discipline* via Brix declare / Tablecloth-Mantra hold / Skate apply. Not a new kernel vane. Seated design `20260718.122145` |
 | **Glow truth** | Ambient Glow yes/no follows **Zig / Rye** (`bool`, exit 0 = success). Hoon/Nock **loobean** (0 = yes, 1 = no) is **seam-only** — convert with `glow/truth_semantics.rye`, never ambient. Seated `20260717.154943` — [`specs/20260717-154943_glow-truth-zig-ambient-nock-loobean-seam.md`](specs/20260717-154943_glow-truth-zig-ambient-nock-loobean-seam.md) · witness [`../tools/glow_truth_semantics_witness.rish`](../tools/glow_truth_semantics_witness.rish) |
+| **Rune alphabet** | Hoon's one-syllable ASCII glyph names (bar · wut · tis · ket · …), adopted as Glow canon so digraphs stay speakable (**wutgar** `?>`, **barhep** `\|-`). Study Urbit Hoon School; restate in Radiant/TAME Glow docs. Seated `20260719.204001` — [`../active-designing/20260719-204001_glow-rune-pronunciation-alphabet-riscv-and-generators.md`](../active-designing/20260719-204001_glow-rune-pronunciation-alphabet-riscv-and-generators.md) |
 | **Loobean** | Nock/Hoon flag atom: **0 = yes**, **1 = no**. Real inside [`../nock/`](../nock/) and at the Glow↔Nock seam; **not** Glow ambient truth — [`specs/20260717-154943_glow-truth-zig-ambient-nock-loobean-seam.md`](specs/20260717-154943_glow-truth-zig-ambient-nock-loobean-seam.md) |
 | **Resource Scope** | Glow mold for GrapheneOS **Storage Scopes** and **Contact Scopes** — grant only named resources; revoke ends access. Same type, domain by resource name. Clean-room; GREEN `20260717.155846` — [`../linengrow/glow_storage_scope.rye`](../linengrow/glow_storage_scope.rye) · [`../docs/TUBE.md`](../docs/TUBE.md) |
 | **Storage Scope** | Resource Scope used for storage-shaped resources (`photos`, `drafts`, …) — see **Resource Scope** |
