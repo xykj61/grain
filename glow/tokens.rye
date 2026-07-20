@@ -7,8 +7,8 @@
 //! STOA93: cross-desk named-cast parse joins the lexer→lower seam
 //! (`cross_desk_parts`).
 //! STOA94: same-desk named-cast mold-body span via `named_cast_parts`.
-//! STOA95: mold-only `+$` dispatch peek via `looks_like_mold_only`;
-//! other lowers may still parse bytes.
+//! STOA95: mold-only `+$` dispatch peek via `looks_like_mold_only`.
+//! STOA97: `rune_mold.parse_source` consumes this stream → MoldSpec.
 //!
 //!   +$  xact-mold
 //!     $%  [%mint amount=@u32]
