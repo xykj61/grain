@@ -4,7 +4,7 @@
 
 **Language:** EN
 **Version:** `20260715` (Pool keystone revival prioritized · Quin voice seated · align pass reconciles the closed ladder)
-**Last updated:** 2026-07-20 (**STOA0–114** GREEN — barket argv sample; identity lower; parse; tokenize)
+**Last updated:** 2026-07-20 (**STOA0–115** GREEN — barket call-body double; argv; identity lower)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Lens:** TAME — safety, performance, joy; the Seed Law; [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md)
@@ -467,6 +467,8 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 **STOA113 barket identity lower GREEN, `20260720.175115`** — lean A (compass): `barket_gate` · fixture `gate-barket-sample` exits 0 · `glow_run` `|^` arm; call-body/argv/wet accept · Sala B0 held. Brief [`active-designing/20260720-175115_stoa113-barket-lower.md`](../active-designing/20260720-175115_stoa113-barket-lower.md). Next language: **STOA114** check-in (barket argv or call-body · wet accept · Sala B0).
 
 **STOA114 barket argv sample GREEN, `20260720.175643`** — lean A (compass): `lower_source_argv_sample` · generator `gate-barket-sample-u32` · `glow_run --sample-argv`; call-body/wet accept · Sala B0 held. Brief [`active-designing/20260720-175643_stoa114-barket-argv.md`](../active-designing/20260720-175643_stoa114-barket-argv.md). Next language: **STOA115** check-in (barket call-body · wet accept · Sala B0).
+
+**STOA115 barket call-body double GREEN, `20260720.180047`** — lean A (compass): `%-  double` → `*% 2` · fixture + argv generator; `inc`/`dec`/wet accept · Sala B0 held. Brief [`active-designing/20260720-180047_stoa115-barket-call-body.md`](../active-designing/20260720-180047_stoa115-barket-call-body.md). Next language: **STOA116** check-in (barket inc/dec · wet accept · Sala B0).
 
 **Glow OS · Glow Desk · Glow Glass seated, `20260717.183622`** — Keaton: **Glow OS** unifies; **Glow Desk** = desktop; **Glow Glass** = mobile. Lexicon + silo [`../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md`](../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md). Orientation firmware stays check-in.
 
