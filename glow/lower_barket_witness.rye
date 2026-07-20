@@ -479,12 +479,29 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("lower: octa-mold argv refused SampleDoesNotNest -- GREEN\n", .{});
 
-    if (lower.lower_source_welcome("|^  sample=nona-mold\n%-  flip  sample\n", &buf)) |_| {
-        return error.NonaFlipCallBodyLoweredTooSoon;
+    // STOA147: nona-mold flip call-body lowers as NonaMold swap · baked 3/5/1/2/7/4/6/8/9.
+    const nona_flip_src = "|^  sample=nona-mold\n%-  flip  sample\n";
+    const n_nnf = try lower.lower_source_welcome(nona_flip_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n_nnf], "NonaMold") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_nnf], ".from = sample.amount") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_nnf], "got.from == 3") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_nnf], "got.ref == 9") != null);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_nona_flip_welcome.rye", .data = buf[0..n_nnf] });
+    print("lower: nona-mold call-body flip lowers to NonaMold swap expect 3/5/1/2/7/4/6/8/9 -- GREEN\n", .{});
+
+    const gen_nnf = try cwd.readFileAlloc(io, "glow/gen/gate-barket-nona-flip.glow", a, .limited(4096));
+    const spec_nnf = try rb.parse_source(gen_nnf);
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_nnf), "nona-mold"));
+    assert(spec_nnf.body == .call_one);
+    assert(std.mem.eql(u8, rb.gate_slice(&spec_nnf), "flip"));
+    print("lower: glow/gen/gate-barket-nona-flip.glow carries nona-mold flip call-body -- GREEN\n", .{});
+
+    if (lower.lower_source_welcome("|^  sample=nona-mold\n%-  double  sample\n", &buf)) |_| {
+        return error.NonaDoubleCallBodyLoweredTooSoon;
     } else |err| {
         if (err != lower.LowerError.BodyGateNotYetLowered) return err;
     }
-    print("lower: nona-mold flip call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
+    print("lower: nona-mold double call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
 
     if (lower.lower_source_argv_sample("|^  sample=nona-mold\nsample\n", &buf)) |_| {
         return error.NonaArgvLoweredTooSoon;
@@ -731,7 +748,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("lower: glow/gen/gate-barket-count.glow carries count-mold -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: Glow `|^` barket — identity · argv · call-body · amount-mold · amount argv · count-mold · count argv · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · pair flip · triple-mold · triple flip · quad-mold · quad flip · penta-mold · penta flip · hexa-mold · hexa flip · hepta-mold · hepta flip · octa-mold · octa flip · nona-mold · nesting-through-nests; STOA113–146.\n", .{});
+    print("GREEN: Glow `|^` barket — identity · argv · call-body · amount-mold · amount argv · count-mold · count argv · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · pair flip · triple-mold · triple flip · quad-mold · quad flip · penta-mold · penta flip · hexa-mold · hexa flip · hepta-mold · hepta flip · octa-mold · octa flip · nona-mold · nona flip · nesting-through-nests; STOA113–147.\n", .{});
     return 0;
 }
 
