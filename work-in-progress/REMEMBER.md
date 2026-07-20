@@ -2,11 +2,11 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Rule: [`.cursor/rules/remember.mdc`](../.cursor/rules/remember.mdc) · [`.claude/rules/remember.md`](../.claude/rules/remember.md).*
 
-**Last refreshed:** `20260720.042931` (UTC cloud · Eastern season) · voice Quin  
+**Last refreshed:** `20260720.043234` (UTC cloud · Eastern season) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5** · HOLD0–HOLD1 · HOLD-W  
 **Language nib:** **STOA0–106** GREEN · STOA107 open  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W · STOA0–106  
-**Git nib:** (refresh after send) STOA106 nest/type surface wording  
+**Git nib:** `222c2458d4f4` STOA106 nest/type surface wording on main  
 
 **Season:** Cursor iOS / cloud — **Glow language TAME only** (no adb). Handoff [`20260719-204650_cursor-ios-handoff-glow-language.md`](20260719-204650_cursor-ios-handoff-glow-language.md).  
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`
@@ -15,8 +15,8 @@
 
 ## Now (language)
 
-**STOA106** GREEN · nest/type surface wording (wet samples held).  
-**STOA107** next — check-in (barket implement · nest/type implement · Sala B0).
+**STOA106** sent · nest/type surface wording.  
+**STOA107** next — lean A thin nest/type implement (dry aura assert).
 
 ```bash
 rishi/bin/rishi run tools/glow_nest_type_surface_witness.rish
