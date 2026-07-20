@@ -1,4 +1,4 @@
-//! glow/lower_bartis_witness.rye — proves `|=` bartis lowers to runnable `.rye` (STOA100).
+//! glow/lower_bartis_witness.rye — proves `|=` bartis lowers to runnable `.rye` (STOA100–101).
 //!
 //!   rye build glow/lower_bartis_witness.rye -femit-bin=glow/bin/lower_bartis_witness
 //!   glow/bin/lower_bartis_witness
@@ -9,7 +9,7 @@ const print = std.debug.print;
 const lower = @import("lower_bartis.rye");
 const rb = @import("rune_bartis.rye");
 
-const witness_version = "20260720.033852";
+const witness_version = "20260720.040200";
 
 fn run_selftest(init: std.process.Init) !u8 {
     const io = init.io;
@@ -63,8 +63,25 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.eql(u8, face, "sample"));
     print("lower: glow/gen/gate-sample.glow carries sample face -- GREEN\n", .{});
 
+    // STOA101: argv-sample emit reads process argv and keeps the gate fn.
+    const n4 = try lower.lower_source_argv_sample(gate_src, &buf);
+    const rye_argv = buf[0..n4];
+    assert(std.mem.indexOf(u8, rye_argv, "bartis_gate") != null);
+    assert(std.mem.indexOf(u8, rye_argv, "minimal.args") != null);
+    assert(std.mem.indexOf(u8, rye_argv, "parseInt(u32") != null);
+    assert(std.mem.indexOf(u8, rye_argv, "const sample: u32 = 5") == null);
+    print("lower: argv-sample emit reads minimal.args / parseInt(u32) -- GREEN\n", .{});
+
+    const gen_argv_src = try cwd.readFileAlloc(io, "glow/gen/gate-sample-u32.glow", a, .limited(4096));
+    const spec_argv = try rb.parse_source(gen_argv_src);
+    assert(std.mem.eql(u8, rb.face_slice(&spec_argv), "sample"));
+    print("lower: glow/gen/gate-sample-u32.glow carries sample face -- GREEN\n", .{});
+
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_sample_argv.rye", .data = rye_argv });
+    print("lower: wrote bartis argv .rye under glow/.cache/ -- GREEN\n", .{});
+
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: Glow `|=` bartis thin identity gate lowers to Rye; baked sample 5 exits 0 (STOA100).\n", .{});
+    print("GREEN: Glow `|=` bartis identity gate lowers to Rye; baked 5 (STOA100) + argv sample (STOA101).\n", .{});
     return 0;
 }
 

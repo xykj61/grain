@@ -113,7 +113,7 @@ pub fn lower_line_unwelcome(line: []const u8, out: []u8) LowerError!u32 {
 }
 
 /// Emit a program whose sample is one decimal `@u32` from process argv (G3).
-/// Not bartis — `|=` stays horizon; Rishi forwards the word to the binary.
+/// Cast path — not bartis; bartis argv lives in `lower_bartis` (STOA101).
 fn emit_from_argv_u32(mold: []const u8, out: []u8) LowerError!u32 {
     const written = std.fmt.bufPrint(out,
         \\const std = @import("std");

@@ -98,8 +98,9 @@ pub fn main(init: std.process.Init) !u8 {
         print("glow_run: too many Glow lines in {s}\n", .{glow_path});
         return 2;
     }
-    if (sample_argv and line_count != 1) {
-        print("glow_run: --sample-argv needs one Glow line in {s}\n", .{glow_path});
+    // G3 cast is one line; STOA101 bartis argv is two live lines (`|=` + body).
+    if (sample_argv and line_count != 1 and line_count != 2) {
+        print("glow_run: --sample-argv needs one cast line or a 2-line bartis in {s}\n", .{glow_path});
         return 2;
     }
 
@@ -159,10 +160,20 @@ pub fn main(init: std.process.Init) !u8 {
                 };
             }
             if (n == 2 and lines[0].len >= 2 and lines[0][0] == '|' and lines[0][1] == '=') {
+                if (sample_argv) {
+                    break :blk lower_bartis.lower_source_argv_sample(src, &rye_buf) catch |err| {
+                        print("glow_run: bartis argv-sample lower failed ({s})\n", .{@errorName(err)});
+                        return 1;
+                    };
+                }
                 break :blk lower_bartis.lower_source_welcome(src, &rye_buf) catch |err| {
                     print("glow_run: bartis lower failed ({s})\n", .{@errorName(err)});
                     return 1;
                 };
+            }
+            if (sample_argv) {
+                print("glow_run: --sample-argv multi-line only supports |= bartis today\n", .{});
+                return 2;
             }
             if (n >= 2 and lines[0].len >= 2 and lines[0][0] == '|' and lines[0][1] == '%') {
                 break :blk lower_core.lower_source_welcome(src, &rye_buf) catch |err| {
@@ -271,7 +282,7 @@ pub fn main(init: std.process.Init) !u8 {
             };
         }
         if (sample_argv) {
-            print("glow_run: --sample-argv only supports ^-  @u32 today\n", .{});
+            print("glow_run: --sample-argv only supports ^-  @u32 or |= bartis today\n", .{});
             return 2;
         }
         if (line.len >= 2 and line[0] == '?' and line[1] == ':') {

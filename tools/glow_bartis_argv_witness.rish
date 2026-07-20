@@ -1,0 +1,57 @@
+# glow_bartis_argv_witness.rish — bartis identity gate with @u32 sample from argv (STOA101).
+#
+# Fixture gate-sample stays argv-free; generator gate-sample-u32 reads process argv.
+#
+#   rishi/bin/rishi run tools/glow_bartis_argv_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+
+# 1. Matching fixture still GREEN with no argv.
+let fixture = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/gate-sample.glow"]
+assert fixture.ok else "fixture gate-sample.glow failed"
+assert fixture.out contains "GREEN" else "fixture gate-sample.glow not GREEN"
+assert fixture.out contains "gate-sample.glow" else "fixture claim missing path"
+
+# 2. Generator welcome — sample 5 (matches fixture baked constant).
+let gen5 = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/gate-sample-u32.glow" "5"]
+assert gen5.ok else "gate-sample-u32.glow 5 failed"
+assert gen5.out contains "GREEN" else "gate-sample-u32.glow 5 not GREEN"
+assert gen5.out contains "gate-sample-u32.glow" else "gate-sample-u32.glow 5 missing path"
+
+# 3. Different sample proves parameterization.
+let gen7 = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/gate-sample-u32.glow" "7"]
+assert gen7.ok else "gate-sample-u32.glow 7 failed"
+assert gen7.out contains "GREEN" else "gate-sample-u32.glow 7 not GREEN"
+
+# 4. Arity refuse — generator desk without sample.
+let no_sample = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/gate-sample-u32.glow"]
+assert (no_sample.ok == false) else "gate-sample-u32.glow without sample must refuse"
+
+# 5. Parse refuse — bad decimal on the built binary.
+let bad = run ["sh" "-c" "glow/bin/gate-sample-u32 not-a-u32 >/dev/null 2>&1; echo EXIT:$?"]
+assert bad.out contains "EXIT:2" else "gate-sample-u32 bad decimal must exit 2"
+
+# 6. Emit pin — argv path vs baked fixture.
+let emit_argv = run ["sh" "-c" "glow/bin/glow_run --sample-argv glow/gen/gate-sample-u32.glow"]
+assert emit_argv.ok else "bartis argv-sample lower failed"
+let rye_argv = trim emit_argv.out
+let scan_args = run ["sh" "-c" "grep -c 'minimal.args' ${rye_argv} | tr -d ' '"]
+assert trim scan_args.out != "0" else "argv emit missing minimal.args"
+let scan_parse = run ["sh" "-c" "grep -c 'parseInt(u32' ${rye_argv} | tr -d ' '"]
+assert trim scan_parse.out != "0" else "argv emit missing parseInt(u32"
+let scan_gate = run ["sh" "-c" "grep -c 'bartis_gate' ${rye_argv} | tr -d ' '"]
+assert trim scan_gate.out != "0" else "argv emit missing bartis_gate"
+
+let emit_fix = run ["sh" "-c" "glow/bin/glow_run glow/gen/gate-sample.glow"]
+assert emit_fix.ok else "fixture lower failed"
+let rye_fix = trim emit_fix.out
+let scan_fix = run ["sh" "-c" "grep -c 'const sample: u32 = 5' ${rye_fix} | tr -d ' '"]
+assert trim scan_fix.out == "1" else "fixture emit must keep baked sample 5"
+let scan_no_argv = run ["sh" "-c" "grep -c 'minimal.args' ${rye_fix} | tr -d ' '"]
+assert trim scan_no_argv.out == "0" else "fixture emit must not read argv"
+
+# 7. Cast G3 generator stays GREEN beside bartis argv.
+let cast_gen = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/sample-u32.glow" "42"]
+assert cast_gen.ok else "sample-u32.glow 42 must stay GREEN beside bartis argv"
+
+say "GREEN: Glow bartis argv — fixture gate-sample; generator gate-sample-u32 reads one @u32 from Rishi argv; STOA101."
