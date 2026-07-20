@@ -518,7 +518,9 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA139 penta-mold flip call-body GREEN, `20260720.221625`** — lean A (compass): closed `%-  flip` under penta-mold · from↔amount · fee/nonce/memo stay · baked 5/3/1/2/7 → 3/5/1/2/7; double under penta refuse; argv · gold · Sala B0 held. Brief [`active-designing/20260720-215636_stoa139-penta-flip.md`](../active-designing/20260720-215636_stoa139-penta-flip.md). Sent `069e747e49` · PR #51.
 
-**STOA140 hexa-mold gate sample GREEN, `20260720.222338`** — lean A (compass): closed six-field `$:` identity · HexaMold · baked 5/3/1/2/7/4 tag; hepta refuse; call-body under hexa · tagged argv · gold · Sala B0 held. Brief [`active-designing/20260720-221703_stoa140-hexa-mold-gate.md`](../active-designing/20260720-221703_stoa140-hexa-mold-gate.md). Next language: **STOA141** map (hexa flip · hepta-mold · tagged argv · gold · Sala B0 still held).
+**STOA140 hexa-mold gate sample GREEN, `20260720.222338`** — lean A (compass): closed six-field `$:` identity · HexaMold · baked 5/3/1/2/7/4 tag; hepta refuse; call-body under hexa · tagged argv · gold · Sala B0 held. Brief [`active-designing/20260720-221703_stoa140-hexa-mold-gate.md`](../active-designing/20260720-221703_stoa140-hexa-mold-gate.md). Sent `33922c54c8` · PR #52.
+
+**STOA141 hexa-mold flip call-body mapped, `20260720.222406`** — lean A (compass): closed `%-  flip` under hexa-mold · from↔amount · fee/nonce/memo/tag stay · baked 5/3/1/2/7/4 → 3/5/1/2/7/4; double under hexa / hepta refuse; argv · gold · Sala B0 held. Brief [`active-designing/20260720-222406_stoa141-hexa-flip.md`](../active-designing/20260720-222406_stoa141-hexa-flip.md). Next: seat when GREEN.
 
 **Glow OS · Glow Desk · Glow Glass seated, `20260717.183622`** — Keaton: **Glow OS** unifies; **Glow Desk** = desktop; **Glow Glass** = mobile. Lexicon + silo [`../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md`](../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md). Orientation firmware stays check-in.
 
