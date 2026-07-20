@@ -4,8 +4,8 @@
 //! Argv identity: reads one `@u32` from process argv (STOA114).
 //! Call body: double → *% 2 (STOA115) · inc → +% 1 · dec → -% 1 (STOA116).
 //! STOA117: TAME tidy — assert · u32 · append_print · split emitters.
-//! STOA118: named mold `amount-mold` lowers as `@u32` (one-field `$:` ≡ dry aura).
-//! Gate function named `barket_gate`. Wet/gold accept held.
+//! STOA118 / STOA122: named molds `amount-mold` · `count-mold` lower as `@u32`.
+//! Gate function named `barket_gate`. Ambient gold held.
 
 const std = @import("std");
 const assert = std.debug.assert;

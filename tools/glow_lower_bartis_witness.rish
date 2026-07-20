@@ -33,6 +33,8 @@ assert selftest.out contains "BodyGateNotYetLowered" else "lower_bartis_witness 
 assert selftest.out contains "BodySampleMismatch" else "lower_bartis_witness missing sample-mismatch refuse"
 assert selftest.out contains "amount-mold" else "lower_bartis_witness missing amount-mold claim"
 assert selftest.out contains "gate-amount.glow" else "lower_bartis_witness missing gate-amount desk"
+assert selftest.out contains "count-mold" else "lower_bartis_witness missing count-mold claim"
+assert selftest.out contains "gate-count.glow" else "lower_bartis_witness missing gate-count desk"
 assert selftest.out contains "kind-mold" else "lower_bartis_witness missing kind-mold refuse"
 
 let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
@@ -112,4 +114,13 @@ assert run_amt.out contains "EXIT:0" else "bartis amount-mold welcome binary did
 let wet_wire = run ["sh" "-c" "grep -c 'assert_sample_wet_nests' glow/rune_bartis.rye | tr -d ' '"]
 assert trim wet_wire.out != "0" else "glow/rune_bartis.rye must call assert_sample_wet_nests"
 
-say "GREEN: Glow `|=` bartis — STOA100–109 · STOA120 identity · argv · call-body · amount-mold · wet-nests wire · nest SampleDoesNotNest."
+# STOA122: count-mold welcome binary exits 0.
+let cnt_rye = "glow/.cache/gate_count_welcome.rye"
+let cnt_bin = "glow/bin/gate_count_welcome"
+let build_cnt = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${cnt_rye} -femit-bin=${cnt_bin}"]
+assert build_cnt.ok else "bartis count-mold welcome .rye build failed"
+let run_cnt = run ["sh" "-c" "${cnt_bin}; echo EXIT:$?"]
+assert run_cnt.ok else "bartis count-mold welcome binary failed to launch"
+assert run_cnt.out contains "EXIT:0" else "bartis count-mold welcome binary did not exit 0"
+
+say "GREEN: Glow `|=` bartis — STOA100–109 · STOA120 · STOA122 identity · argv · call-body · amount-mold · count-mold · nest SampleDoesNotNest."
