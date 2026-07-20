@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260720.234015
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — UDT (UTC) time convention
+title Privacy audit before live-sent send
+prompt audit privacy of IPs ports before send then check-in
+think Port 38503 already public SETU6.5 lab constant — keep.
+think enx plus twelve hex digits embeds USB NIC MAC — redact to enx-star per host anonymization law.
+think USB-tether gateway is RFC1918 host-local — redact concrete octets; not internet-routable but fingerprints a session.
+think USB VID/PID 18d1:4eec is public Google Pixel mode id — keep.
+think lab.bron under tools/.cache already gitignored — no change.
+think Historical Pixel serial 66041 already in dated ROADMAP/TASKS — accrete-never-break; not expanded this send.
+obs Redacted living prose then send; check-in next after push.
+file active-designing/20260720-233805_setu65-live-sent-enx-green.md redacted claim
+file work-in-progress/REMEMBER.md redacted season line
+recommend check-in after send — next Framework or language door
