@@ -8,6 +8,8 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260720.183524` — [STOA122 count-mold named allowlist GREEN](20260720-183524_stoa122-count-mold-green.bron) — amount · count closed set; await send
+- `20260720.183259` — [STOA122 count-mold named allowlist map](20260720-183259_stoa122-count-mold-map.bron) — lean A second closed named mold
 - `20260720.183105` — [STOA121 send complete](20260720-183105_stoa121-send-complete.bron) — origin main language claim c33f775cd2 · tip 689a374a73
 - `20260720.183105` — [STOA122 next map after barket wet-through](20260720-183105_stoa122-next-map.bron) — thicker doors; compass pick next
 - `20260720.183032` — [STOA121 barket wet-through-nests GREEN](20260720-183032_stoa121-barket-wet-nests-green.bron) — |^ is_wet=true under stated mold; await send
