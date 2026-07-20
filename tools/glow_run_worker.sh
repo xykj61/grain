@@ -21,17 +21,20 @@ test -n "$GLOW" || {
 STEM=$(basename "$GLOW" .glow)
 BIN="glow/bin/$STEM"
 
-if [ "$STEM" = "sample-u32" ]; then
+case "$STEM" in
+sample-u32|gate-sample-u32)
   test -n "$SAMPLE" || {
-    echo "FAIL: sample-u32.glow needs one @u32 sample decimal"
+    echo "FAIL: ${STEM}.glow needs one @u32 sample decimal"
     exit 2
   }
-else
+  ;;
+*)
   test -z "$SAMPLE" || {
-    echo "FAIL: only sample-u32.glow takes a sample decimal"
+    echo "FAIL: only sample-u32.glow or gate-sample-u32.glow take a sample decimal"
     exit 2
   }
-fi
+  ;;
+esac
 
 mkdir -p glow/bin glow/.cache
 env RYE_ZIG="$ZIG" rye/bin/rye build glow/glow_run.rye -femit-bin=glow/bin/glow_run

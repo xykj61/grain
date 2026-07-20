@@ -45,4 +45,10 @@ let lower = run ["sh" "-c" "rishi/bin/rishi run tools/glow_lower_bartis_witness.
 assert lower.ok else "glow_lower_bartis_witness failed"
 assert lower.out contains "GREEN" else "glow_lower_bartis_witness not GREEN"
 
-say "GREEN: Glow bartis implement — |= tokenized, thin identity gate lowers, exits 0; STOA100."
+# STOA101 argv deepen stays GREEN beside the identity fixture.
+let argv = run ["sh" "-c" "rishi/bin/rishi run tools/glow_bartis_argv_witness.rish"]
+assert argv.ok else "glow_bartis_argv_witness failed under bartis deepen"
+assert argv.out contains "GREEN" else "glow_bartis_argv_witness not GREEN"
+assert argv.out contains "STOA101" else "glow_bartis_argv_witness missing STOA101"
+
+say "GREEN: Glow bartis implement — |= tokenized, identity + argv sample; STOA100–101."

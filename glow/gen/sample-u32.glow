@@ -1,3 +1,4 @@
 ::  Thin parameterized generator (G3 / STOA92): one @u32 sample from Rishi argv.
-::  Matching fixture desk: cast-u32.glow (baked welcome). Not bartis — |= horizon.
+::  Matching fixture desk: cast-u32.glow (baked welcome). Cast path — not bartis
+::  (bartis argv generator: gate-sample-u32.glow / STOA101).
 ^-  @u32
