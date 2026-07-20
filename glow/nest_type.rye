@@ -1,23 +1,45 @@
-//! glow/nest_type.rye — thin nest/type surface (STOA107).
+//! glow/nest_type.rye — nest/type surface (STOA107–108).
 //!
-//! Expansion-time check: a sample aura nests under a stated mold aura.
-//! This lap is dry equality only (`@u32` under `@u32`). Wet samples,
-//! `$%` tag nest, named-mold samples, and barket stay held.
+//! Expansion-time checks that a sample nests under a stated mold:
+//!   - STOA107: dry aura equality (`@u32` under `@u32`)
+//!   - STOA108: unit `$%` tag membership (`mint` under kind-mold)
+//! Wet samples, named-mold bartis samples, and barket stay held.
 //!
-//! Called from bartis parse so refuse carries `SampleDoesNotNest`.
+//! Bartis calls `assert_aura_nests`; tag nest is proven against MoldSpec.
 
 const std = @import("std");
 const assert = std.debug.assert;
+const rune_mold = @import("rune_mold.rye");
 
-pub const nest_type_version = "20260720.043251";
+pub const nest_type_version = "20260720.145814";
 
 pub const NestError = error{
     SampleDoesNotNest,
 };
 
-/// Assert `sample_aura` nests under `stated_mold` (dry aura equality this lap).
+/// Assert `sample_aura` nests under `stated_mold` (dry aura equality).
 pub fn assert_aura_nests(sample_aura: []const u8, stated_mold: []const u8) NestError!void {
     assert(sample_aura.len > 0); // precondition: sample aura non-empty
     assert(stated_mold.len > 0); // precondition: stated mold non-empty
     if (!std.mem.eql(u8, sample_aura, stated_mold)) return error.SampleDoesNotNest;
+}
+
+/// Strip one leading `%` so callers may pass `%mint` or `mint`.
+fn tag_name(tag: []const u8) []const u8 {
+    if (tag.len > 0 and tag[0] == '%') return tag[1..];
+    return tag;
+}
+
+/// Assert `tag` nests under a `$%` MoldSpec (unit membership this lap).
+/// `tag` may be bare (`mint`) or percent-spelled (`%mint`).
+pub fn assert_tag_nests(tag: []const u8, spec: *const rune_mold.MoldSpec) NestError!void {
+    assert(tag.len > 0); // precondition: tag token non-empty
+    const name = tag_name(tag);
+    assert(name.len > 0); // precondition: bare tag non-empty after strip
+    if (spec.body != .tagged) return error.SampleDoesNotNest;
+    var i: usize = 0;
+    while (i < spec.field_count) : (i += 1) {
+        if (std.mem.eql(u8, rune_mold.field_slice(spec, i), name)) return;
+    }
+    return error.SampleDoesNotNest;
 }
