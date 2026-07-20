@@ -2,11 +2,11 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Rule: [`.cursor/rules/remember.mdc`](../.cursor/rules/remember.mdc) · [`.claude/rules/remember.md`](../.claude/rules/remember.md).*
 
-**Last refreshed:** `20260720.225448` (UTC cloud) · voice Quin  
+**Last refreshed:** `20260720.225659` (UTC cloud) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5** · HOLD0–HOLD1 · HOLD-W  
 **Language nib:** **STOA0–144** GREEN · STOA145 open  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W · STOA0–144  
-**Git nib:** *(pin after send)* — STOA144 octa-mold gate  
+**Git nib:** `a7f22cfcb7` — STOA144 octa-mold gate  
 
 
 **Season:** Cursor iOS / cloud — **Glow language TAME only** (no adb). Handoff [`20260719-204650_cursor-ios-handoff-glow-language.md`](20260719-204650_cursor-ios-handoff-glow-language.md).  
@@ -18,7 +18,7 @@
 
 **STOA144** seated · octa-mold gate identity (OctaMold · baked 5/3/1/2/7/4/6/8 via · nona refuse · flip/argv under octa held).  
 **Shape** seated as Glow OS surface word · mold stays Hoon study / desk suffix (`20260720.223226`).  
-**STOA145** next — lean A check-in after send (call-body under octa · or next closed widen).
+**STOA145** next — lean A map: **octa-mold flip** call-body (Sala B0 Framework).
 
 ```bash
 rishi/bin/rishi run tools/glow_nest_type_witness.rish
@@ -62,7 +62,7 @@ $ADB install -r tools/.cache/tube05/sala-broadcaster.apk
 
 | Door | Kind |
 |------|------|
-| **STOA145** next lean after octa identity · tagged argv · gold held | **open** — map after send; Sala B0 Framework |
+| **STOA145** octa-mold flip call-body (lean A) · nona-mold · tagged argv · gold held | **open** — map seated; Sala B0 Framework |
 | Glow nesting syntax · ambient gold | **held** |
 | Live SETU6.5 **sent** on usb0/ncm | **check-in** — Framework host |
 | JABS3 · TAME Lap 3 | **check-in** |
