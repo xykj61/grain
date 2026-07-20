@@ -1,0 +1,12 @@
+format session-log-v1
+stamp 20260720.224907
+editor Cursor
+model Cursor Grok 4.5
+voice Quin
+host Linux cloud agent xykj61/urbit — UTC stamps this STOA arc
+title STOA143 approved and sent
+prompt kg
+think Compass approve: barket · bartis GREEN; draft PR 56; FF-send main.
+obs Language claim d7a4c1653f on origin/main.
+git_nib d7a4c1653f
+recommend keep-going seat STOA144 after map brief lands
