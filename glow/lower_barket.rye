@@ -20,6 +20,7 @@
 //! STOA142: `hepta-mold` identity lowers as `HeptaMold` struct · baked from 5 amount 3 fee 1 nonce 2 memo 7 tag 4 to 6.
 //! STOA143: `hepta-mold` call body `%-  flip` → HeptaMold swap · baked 5/3/1/2/7/4/6 → 3/5/1/2/7/4/6.
 //! STOA144: `octa-mold` identity lowers as `OctaMold` struct · baked from 5 amount 3 fee 1 nonce 2 memo 7 tag 4 to 6 via 8.
+//! STOA145: `octa-mold` call body `%-  flip` → OctaMold swap · baked 5/3/1/2/7/4/6/8 → 3/5/1/2/7/4/6/8.
 //! STOA127: `kind-mold` call body `%-  flip` → KindMold switch · baked `.mint` → `.send`.
 //! STOA128: `xact-mold` call body `%-  flip` → XactMold switch · baked mint/5 → `.send`.
 //! STOA129: `xfer-mold` call body `%-  flip` → XferMold switch · baked mint/5/3 → `.send`.
@@ -622,6 +623,33 @@ fn emit_hepta_call_body(out: []u8, zface: []const u8, gate: []const u8, comment:
     return used;
 }
 
+/// STOA145: closed eight-field `$:` octa-mold call body → OctaMold flip · baked 3/5/1/2/7/4/6/8.
+fn emit_octa_call_body(out: []u8, zface: []const u8, gate: []const u8, comment: []const u8) LowerError!u32 {
+    assert(rb.is_octa_call_gate(gate)); // parse/lower pin — flip only today
+    var used: u32 = 0;
+    try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
+    try append_print(out, &used, "pub const OctaMold = struct {{\n", .{});
+    try append_print(out, &used, "    from: u32 = 0,\n", .{});
+    try append_print(out, &used, "    amount: u32 = 0,\n", .{});
+    try append_print(out, &used, "    fee: u32 = 0,\n", .{});
+    try append_print(out, &used, "    nonce: u32 = 0,\n", .{});
+    try append_print(out, &used, "    memo: u32 = 0,\n", .{});
+    try append_print(out, &used, "    tag: u32 = 0,\n", .{});
+    try append_print(out, &used, "    to: u32 = 0,\n", .{});
+    try append_print(out, &used, "    via: u32 = 0,\n", .{});
+    try append_print(out, &used, "}};\n\n", .{});
+    try append_print(out, &used, "/// {s}\n", .{comment});
+    try append_print(out, &used, "fn barket_gate({s}: OctaMold) OctaMold {{\n", .{zface});
+    try append_print(out, &used, "    return .{{ .from = {s}.amount, .amount = {s}.from, .fee = {s}.fee, .nonce = {s}.nonce, .memo = {s}.memo, .tag = {s}.tag, .to = {s}.to, .via = {s}.via }};\n", .{ zface, zface, zface, zface, zface, zface, zface, zface });
+    try append_print(out, &used, "}}\n\n", .{});
+    try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
+    try append_print(out, &used, "    const {s}: OctaMold = .{{ .from = {d}, .amount = {d}, .fee = {d}, .nonce = {d}, .memo = {d}, .tag = {d}, .to = {d}, .via = {d} }};\n", .{ zface, barket_octa_demo_from, barket_octa_demo_amount, barket_octa_demo_fee, barket_octa_demo_nonce, barket_octa_demo_memo, barket_octa_demo_tag, barket_octa_demo_to, barket_octa_demo_via });
+    try append_print(out, &used, "    const got = barket_gate({s});\n", .{zface});
+    try append_print(out, &used, "    return if (got.from == {d} and got.amount == {d} and got.fee == {d} and got.nonce == {d} and got.memo == {d} and got.tag == {d} and got.to == {d} and got.via == {d}) 0 else 1;\n", .{ barket_octa_demo_amount, barket_octa_demo_from, barket_octa_demo_fee, barket_octa_demo_nonce, barket_octa_demo_memo, barket_octa_demo_tag, barket_octa_demo_to, barket_octa_demo_via });
+    try append_print(out, &used, "}}\n", .{});
+    return used;
+}
+
 fn emit_gate_fn(out: []u8, used: *u32, zface: []const u8, body_return: []const u8, comment: []const u8) LowerError!void {
     try append_print(out, used, "/// {s}\n", .{comment});
     try append_print(out, used, "fn barket_gate({s}: u32) u32 {{\n", .{zface});
@@ -811,7 +839,7 @@ fn emit(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
         }
     }
 
-    // STOA144: octa-mold gate identity — eight slots 5/3/1/2/7/4/6/8.
+    // STOA144 / STOA145: octa-mold identity · flip call-body — eight slots 5/3/1/2/7/4/6/8.
     if (is_octa_sample(spec)) {
         switch (spec.body) {
             .header_only, .identity => {
@@ -819,7 +847,13 @@ fn emit(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
                 const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` barket — OctaMold identity (STOA144).", .{ face, mold }) catch return error.Overflow;
                 return emit_octa_identity(out, zface, comment);
             },
-            .call_one => return error.BodyGateNotYetLowered,
+            .call_one => {
+                const gate = rb.gate_slice(spec);
+                if (!rb.is_octa_call_gate(gate)) return error.BodyGateNotYetLowered;
+                var comment_buf: [192]u8 = undefined;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` / `%-  {s}  {s}` — OctaMold call body (STOA145).", .{ face, mold, gate, face }) catch return error.Overflow;
+                return emit_octa_call_body(out, zface, gate, comment);
+            },
         }
     }
 

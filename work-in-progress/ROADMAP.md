@@ -528,7 +528,7 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA144 octa-mold gate sample GREEN, `20260720.225448`** — lean A (compass): closed eight-field `$:` identity · OctaMold · baked 5/3/1/2/7/4/6/8 via; nona refuse; call-body under octa · tagged argv · gold · Sala B0 held. Brief [`active-designing/20260720-224907_stoa144-octa-mold-gate.md`](../active-designing/20260720-224907_stoa144-octa-mold-gate.md). Sent `a7f22cfcb7` · PR #58.
 
-**STOA145 octa-mold flip call-body mapped, `20260720.225659`** — lean A (compass): closed `%-  flip` under octa-mold · from↔amount · fee/nonce/memo/tag/to/via stay · baked 5/3/1/2/7/4/6/8 → 3/5/1/2/7/4/6/8; double under octa / nona refuse; argv · gold · Sala B0 held. Brief [`active-designing/20260720-225659_stoa145-octa-flip.md`](../active-designing/20260720-225659_stoa145-octa-flip.md). Next: seat when GREEN.
+**STOA145 octa-mold flip call-body GREEN, `20260720.230219`** — lean A (compass): closed `%-  flip` under octa-mold · from↔amount · fee/nonce/memo/tag/to/via stay · baked 5/3/1/2/7/4/6/8 → 3/5/1/2/7/4/6/8; double under octa refuse; argv · gold · Sala B0 held. Brief [`active-designing/20260720-225659_stoa145-octa-flip.md`](../active-designing/20260720-225659_stoa145-octa-flip.md). Await send.
 
 **Glow OS shape vocabulary seated, `20260720.223226`** — living prose: **shape** is the Glow OS / citizen word for a bounded normalizer; **mold** stays Hoon study and today's desk suffix until a rename lap. Brief [`active-designing/20260720-223226_glow-os-shape-not-mold.md`](../active-designing/20260720-223226_glow-os-shape-not-mold.md) · LEXICON Shape · Mold rows.
 
