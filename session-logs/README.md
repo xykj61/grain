@@ -8,6 +8,7 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260720.234155` — [Live-sent send and next check-in](20260720-234155_live-sent-send-next-check-in.bron) — pin d2f3084c7d; next door check-in
 - `20260720.234015` — [Privacy audit before live-sent send](20260720-234015_privacy-audit-before-live-sent-send.bron) — redact MAC/IP; keep lab port 38503
 - `20260720.233805` — [SETU6.5 live-sent enx GREEN](20260720-233805_setu65-live-sent-enx-green.bron) — enx* CDC-NCM → tether gateway :38503 sent
 - `20260720.233344` — [Pixel connected · NCM pending](20260720-233344_pixel-connected-ncm-pending.bron) — adb was up; need USB tethering then kg
