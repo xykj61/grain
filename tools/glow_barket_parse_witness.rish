@@ -38,11 +38,12 @@ assert selftest.out contains "sample=quad-mold accepts" else "rune_barket_witnes
 assert selftest.out contains "sample=penta-mold accepts" else "rune_barket_witness missing penta-mold accept"
 assert selftest.out contains "sample=hexa-mold accepts" else "rune_barket_witness missing hexa-mold accept"
 assert selftest.out contains "sample=hepta-mold accepts" else "rune_barket_witness missing hepta-mold accept"
-assert selftest.out contains "sample=octa-mold refused" else "rune_barket_witness missing octa-mold refuse"
+assert selftest.out contains "sample=octa-mold accepts" else "rune_barket_witness missing octa-mold accept"
+assert selftest.out contains "sample=nona-mold refused" else "rune_barket_witness missing nona-mold refuse"
 
 # Tokenize sibling stays GREEN.
 let tok = run ["sh" "-c" "rishi/bin/rishi run tools/glow_barket_tokenize_witness.rish"]
 assert tok.ok else "glow_barket_tokenize_witness failed under barket parse"
 assert tok.out contains "GREEN" else "glow_barket_tokenize_witness not GREEN"
 
-say "GREEN: Glow barket parse — stated header · identity · call-body trio · amount-mold · count-mold · kind-mold · xact-mold · xfer-mold · pair-mold · triple-mold · quad-mold · penta-mold · hexa-mold · hepta-mold · nesting-through-nests; STOA112–135/138/140/142."
+say "GREEN: Glow barket parse — stated header · identity · call-body trio · amount-mold · count-mold · kind-mold · xact-mold · xfer-mold · pair-mold · triple-mold · quad-mold · penta-mold · hexa-mold · hepta-mold · octa-mold · nesting-through-nests; STOA112–135/138/140/142/144."
