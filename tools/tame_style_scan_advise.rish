@@ -6,7 +6,7 @@
 # Run from the repository root:
 #   rishi/bin/rishi run tools/tame_style_scan_advise.rish
 
-let roster = run ["sh" "-c" "find mantra caravan linengrow comlink rishi/src tally aurora pond brushstroke rye/src -name '*.rye' ! -type l 2>/dev/null | sort"]
+let roster = run ["sh" "-c" "find mantra caravan linengrow comlink rishi/src tally aurora pond brushstroke rye/src glow/tokens.rye glow/tokens_witness.rye -name '*.rye' ! -type l 2>/dev/null | sort"]
 assert roster.ok else "tame_style_scan_advise: find roster failed"
 
 let file_lines = lines roster.out
@@ -19,7 +19,7 @@ let memcpy_canonical = length (where (lines (read-file "tally/copy.rye")) as ln:
 let memcpy_app_run = run ["sh" "-c" "echo $((${memcpy_expr} - ${memcpy_canonical}))"]
 let memcpy_app = memcpy_app_run.out
 
-let camel_run = run ["sh" "-c" "grep -hE '^( *)?(pub )?fn [a-z]+[A-Z]' $(find mantra caravan linengrow comlink rishi/src tally aurora pond brushstroke rye/src -name '*.rye' ! -type l 2>/dev/null) 2>/dev/null | wc -l | tr -d ' '"]
+let camel_run = run ["sh" "-c" "grep -hE '^( *)?(pub )?fn [a-z]+[A-Z]' $(find mantra caravan linengrow comlink rishi/src tally aurora pond brushstroke rye/src glow/tokens.rye glow/tokens_witness.rye -name '*.rye' ! -type l 2>/dev/null) 2>/dev/null | wc -l | tr -d ' '"]
 
 let per_parseint = map files as f: length (where (lines (read-file f)) as ln: ln contains "parseInt(")
 let per_parseint_str = map per_parseint as n: "${n}"
