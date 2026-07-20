@@ -8,6 +8,8 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260720.033852` — [STOA100 thin bartis implement GREEN](20260720-033852_stoa100-bartis-implement.bron) — |= tokenized, identity gate lowers, baked sample 5 exits 0; all witnesses GREEN
+- `20260720.033500` — [STOA100 bartis first-lap survey](20260720-033500_stoa100-bartis-first-lap-survey.bron) — tokens/dispatch/demo-gate/alphabet analysis; thinnest fixture-desk claim
 - `20260719.233340` — [STOA99 bartis horizon wording GREEN](20260719-233340_stoa99-bartis-horizon-green.bron) — Glow gate named; await send
 - `20260719.233327` — [STOA98 send complete](20260719-233327_stoa98-send-complete.bron) — origin main at 620a7cb58f
 - `20260719.233200` — [STOA98 G5 Nock family notes GREEN](20260719-233200_stoa98-g5-nock-notes-green.bron) — wut truth pin; await send
