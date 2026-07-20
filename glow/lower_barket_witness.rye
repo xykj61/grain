@@ -1,0 +1,85 @@
+//! glow/lower_barket_witness.rye — proves `|^` barket lowers to runnable `.rye` (STOA113).
+//!
+//!   rye build glow/lower_barket_witness.rye -femit-bin=glow/bin/lower_barket_witness
+//!   glow/bin/lower_barket_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const lower = @import("lower_barket.rye");
+const rb = @import("rune_barket.rye");
+
+const witness_version = "20260720.175115";
+
+fn run_selftest(init: std.process.Init) !u8 {
+    const io = init.io;
+    const a = init.arena.allocator();
+    const cwd = std.Io.Dir.cwd();
+    var buf: [2048]u8 = undefined;
+
+    // Identity body lowers to Rye with barket_gate fn and baked sample 5.
+    const gate_src = "|^  sample=@u32\nsample\n";
+    const n1 = try lower.lower_source_welcome(gate_src, &buf);
+    const rye1 = buf[0..n1];
+    assert(std.mem.indexOf(u8, rye1, "barket_gate") != null);
+    assert(std.mem.indexOf(u8, rye1, "sample: u32) u32") != null);
+    assert(std.mem.indexOf(u8, rye1, "const sample: u32 = 5") != null);
+    assert(std.mem.indexOf(u8, rye1, "barket_gate(sample) == 5") != null);
+    print("lower: identity barket lowers to Rye barket_gate fn -- GREEN\n", .{});
+
+    // Header-only also lowers (STOA112 parse shape kept).
+    const header_src = "|^  sample=@u32\n";
+    const n_h = try lower.lower_source_welcome(header_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n_h], "barket_gate") != null);
+    print("lower: header-only barket lowers to identity -- GREEN\n", .{});
+
+    // Comment header is stripped cleanly by tokenizer.
+    const with_comment = "::\n|^  sample=@u32\nsample\n";
+    const n2 = try lower.lower_source_welcome(with_comment, &buf);
+    assert(n2 > 0);
+    print("lower: barket source with comment line parses cleanly -- GREEN\n", .{});
+
+    // Refuse aura other than @u32.
+    if (lower.lower_source_welcome("|^  sample=@u64\nsample\n", &buf)) |_| {
+        return error.AuraLoweredTooSoon;
+    } else |err| {
+        if (err != lower.LowerError.SampleDoesNotNest) return err;
+    }
+    print("lower: @u64 barket refused SampleDoesNotNest -- GREEN\n", .{});
+
+    // Refuse body face mismatch.
+    if (lower.lower_source_welcome("|^  sample=@u32\nother\n", &buf)) |_| {
+        return error.BodyMismatchLowered;
+    } else |err| {
+        if (err != lower.LowerError.BodyFaceMismatch) return err;
+    }
+    print("lower: body face mismatch refused BodyFaceMismatch -- GREEN\n", .{});
+
+    // Call body still held.
+    if (lower.lower_source_welcome("|^  sample=@u32\n%-  double  sample\n", &buf)) |_| {
+        return error.CallBodyLoweredTooSoon;
+    } else |err| {
+        if (err != lower.LowerError.BodyNotYetLowered) return err;
+    }
+    print("lower: call-body barket refused BodyNotYetLowered -- GREEN\n", .{});
+
+    // Fixture desk parses as identity.
+    try cwd.createDirPath(io, "glow/.cache");
+    const gen_src = try cwd.readFileAlloc(io, "glow/gen/gate-barket-sample.glow", a, .limited(4096));
+    const spec = try rb.parse_source(gen_src);
+    assert(std.mem.eql(u8, rb.face_slice(&spec), "sample"));
+    assert(spec.body == .identity);
+    print("lower: glow/gen/gate-barket-sample.glow carries sample face -- GREEN\n", .{});
+
+    const n3 = try lower.lower_source_welcome(gen_src, &buf);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_sample_welcome.rye", .data = buf[0..n3] });
+    print("lower: wrote barket welcome .rye under glow/.cache/ -- GREEN\n", .{});
+
+    print("lower: version {s}\n", .{witness_version});
+    print("GREEN: Glow `|^` barket — identity lower · fixture desk; STOA113.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
+}

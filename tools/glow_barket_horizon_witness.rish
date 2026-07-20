@@ -28,9 +28,9 @@ assert lex_barket.ok else "LEXICON missing barket"
 let readme_h = run ["sh" "-c" "grep -F 'barket' ${readme}"]
 assert readme_h.ok else "glow/README must name barket"
 
-# Parse lap GREEN (sibling-binds tokenize); lower still held.
-let parse = run ["sh" "-c" "rishi/bin/rishi run tools/glow_barket_parse_witness.rish"]
-assert parse.ok else "glow_barket_parse_witness failed under horizon artifact check"
-assert parse.out contains "GREEN" else "glow_barket_parse_witness not GREEN"
+# Lower lap GREEN (sibling-binds parse + tokenize); wet accept held.
+let lower = run ["sh" "-c" "rishi/bin/rishi run tools/glow_barket_lower_witness.rish"]
+assert lower.ok else "glow_barket_lower_witness failed under horizon artifact check"
+assert lower.out contains "GREEN" else "glow_barket_lower_witness not GREEN"
 
-say "GREEN: Glow barket horizon wording artifact — STOA102 brief held; parse GREEN (STOA111–112)."
+say "GREEN: Glow barket horizon wording artifact — STOA102 brief held; lower GREEN (STOA111–113)."

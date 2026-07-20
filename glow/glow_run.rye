@@ -42,6 +42,7 @@ const lower_core = @import("lower_core.rye");
 const lower_mold = @import("lower_mold.rye");
 const lower_named_cast = @import("lower_named_cast.rye");
 const lower_bartis = @import("lower_bartis.rye");
+const lower_barket = @import("lower_barket.rye");
 
 
 
@@ -168,6 +169,16 @@ pub fn main(init: std.process.Init) !u8 {
                 }
                 break :blk lower_bartis.lower_source_welcome(src, &rye_buf) catch |err| {
                     print("glow_run: bartis lower failed ({s})\n", .{@errorName(err)});
+                    return 1;
+                };
+            }
+            if (n == 2 and lines[0].len >= 2 and lines[0][0] == '|' and lines[0][1] == '^') {
+                if (sample_argv) {
+                    print("glow_run: --sample-argv barket not yet supported\n", .{});
+                    return 2;
+                }
+                break :blk lower_barket.lower_source_welcome(src, &rye_buf) catch |err| {
+                    print("glow_run: barket lower failed ({s})\n", .{@errorName(err)});
                     return 1;
                 };
             }
