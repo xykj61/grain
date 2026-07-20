@@ -407,6 +407,7 @@
 - [x] **STOA136 — triple-mold flip call-body** `20260720.195742` — closed `%-  flip` · from↔amount · fee stays · baked 5/3/1 → 3/5/1; double under triple / quad flip refuse; argv · gold · Sala B0 held.
 - [x] **STOA137 — quad-mold flip call-body** `20260720.200022` — closed `%-  flip` · from↔amount · fee/nonce stay · baked 5/3/1/2 → 3/5/1/2; double under quad refuse; argv · gold · Sala B0 held.
 - [x] **STOA138 — penta-mold gate sample** `20260720.215530` — five-field `$:` · PentaMold · baked 5/3/1/2/7; hexa refuse; call-body/argv under penta · gold · Sala B0 held.
+- [x] **STOA139 — penta-mold flip call-body** `20260720.221625` — closed `%-  flip` · from↔amount · fee/nonce/memo stay · baked 5/3/1/2/7 → 3/5/1/2/7; double under penta refuse; argv · gold · Sala B0 held.
 - [x] **Cursor iOS handoff · core polymorphism + port order** `20260719.204650` — handoff [`20260719-204650_cursor-ios-handoff-glow-language.md`](20260719-204650_cursor-ios-handoff-glow-language.md); dry cores fit TAME · wet/gold hold · port L→R→G [`../active-designing/20260719-204650_hoon-core-polymorphism-tame-and-port-order.md`](../active-designing/20260719-204650_hoon-core-polymorphism-tame-and-port-order.md); iOS season = language-only (no adb).
 - [ ] **Dill-parallel kernel revival** — separate `active-reviving/` brief when a real need opens; not Dexter.
 - [ ] **M1 Scribble↔html round-trip witness** — named in fusion map; opens when Keaton leans doc pipeline.

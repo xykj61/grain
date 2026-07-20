@@ -52,7 +52,9 @@ assert selftest.out contains "hexa-mold" else "lower_bartis_witness missing hexa
 assert selftest.out contains "triple-mold argv refused" else "lower_bartis_witness missing triple argv refuse"
 assert selftest.out contains "quad-mold argv refused" else "lower_bartis_witness missing quad argv refuse"
 assert selftest.out contains "penta-mold argv refused" else "lower_bartis_witness missing penta argv refuse"
-assert selftest.out contains "penta-mold flip call-body refused" else "lower_bartis_witness missing penta flip refuse"
+assert selftest.out contains "gate-penta-flip.glow" else "lower_bartis_witness missing penta-flip desk"
+assert selftest.out contains "penta-mold call-body flip" else "lower_bartis_witness missing penta flip claim"
+assert selftest.out contains "penta-mold double call-body refused" else "lower_bartis_witness missing penta double refuse"
 assert selftest.out contains "gate-triple-flip.glow" else "lower_bartis_witness missing triple-flip desk"
 assert selftest.out contains "triple-mold call-body flip" else "lower_bartis_witness missing triple flip claim"
 assert selftest.out contains "triple-mold double call-body refused" else "lower_bartis_witness missing triple double refuse"
@@ -294,4 +296,13 @@ let run_qf = run ["sh" "-c" "${quad_flip_bin}; echo EXIT:$?"]
 assert run_qf.ok else "bartis quad-mold flip welcome binary failed to launch"
 assert run_qf.out contains "EXIT:0" else "bartis quad-mold flip welcome binary did not exit 0"
 
-say "GREEN: Glow `|=` bartis — STOA100–138 identity · argv · call-body · amount-mold · amount argv · count-mold · count argv · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · pair flip · triple-mold · triple flip · quad-mold · quad flip · penta-mold · stated nesting · nest SampleDoesNotNest."
+# STOA139: penta-mold flip call-body welcome binary exits 0.
+let penta_flip_rye = "glow/.cache/gate_penta_flip_welcome.rye"
+let penta_flip_bin = "glow/bin/gate_penta_flip_welcome"
+let build_pfenta = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${penta_flip_rye} -femit-bin=${penta_flip_bin}"]
+assert build_pfenta.ok else "bartis penta-mold flip welcome .rye build failed"
+let run_pfenta = run ["sh" "-c" "${penta_flip_bin}; echo EXIT:$?"]
+assert run_pfenta.ok else "bartis penta-mold flip welcome binary failed to launch"
+assert run_pfenta.out contains "EXIT:0" else "bartis penta-mold flip welcome binary did not exit 0"
+
+say "GREEN: Glow `|=` bartis — STOA100–139 identity · argv · call-body · amount-mold · amount argv · count-mold · count argv · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · pair flip · triple-mold · triple flip · quad-mold · quad flip · penta-mold · penta flip · stated nesting · nest SampleDoesNotNest."
