@@ -7,7 +7,7 @@ type: reference
 # TAME Guidance — Operational Supplement
 
 **Language:** EN
-**Last updated:** 2026-07-19 (Glow asserts · alphabet G0–G1 closed table STOA90)
+**Last updated:** 2026-07-19 (Glow asserts · alphabet G0–G2 TAME pin STOA91)
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 **Voice:** Quin
 **Status:** Active — grow by supplement, earned when the language is ready
@@ -23,7 +23,7 @@ Three layers, one discipline — filenames follow TigerBeetle's `docs/TIGER_STYL
 | **Source** | `gratitude/TIGER_STYLE.md` | TigerBeetle team's guide, kept whole and unaltered |
 | **Voiced canon** | `external-research/TAME_GUIDANCE.md` | Our radiant adaptation; Safety, Performance, DX, and the full why |
 | **Operational supplement** | this document | Checkable root + Rye / Brix / Rishi rules for authors and agents |
-| **Glow working pin** | [`../glow/README.md`](../glow/README.md) · assertion runes · closed alphabet G1 | Fixture desks + `?>` / `?<` (STOA88) · G0 roadmap (STOA89) · **25-head closed table** (STOA90) — full Glow supplement still horizon |
+| **Glow working pin** | [`../glow/README.md`](../glow/README.md) · assertion runes · alphabet + family index | Fixture desks + `?>` / `?<` (STOA88) · G0–G2 alphabet pin (STOA89–91) · **25-head closed table** — full Glow supplement still horizon |
 | **Glow supplement (horizon)** | [`../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md`](../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md) | Scoping for a future Glow supplement; root still binds Glow authors now |
 
 Read the voiced canon (`external-research/TAME_GUIDANCE.md`) for philosophy and expert Tiger discipline. Read **this file** at the keyboard for what to assert, name, and bound. Organization prose lives in `active-designing/yonder/20260618-184912_growing-a-language.md`.
@@ -43,9 +43,40 @@ Hoon's positive and negative assertion runes — [`?>` wutgar](https://docs.urbi
 
 **Not yet:** `?=` type-match asserts, general boolean tests, or inference that refines subject type across the assertion (Hoon's full power). Those wait on richer nest/type surface.
 
-### Glow — rune alphabet and fixture desks (working pin, STOA89)
+### Glow — rune alphabet and fixture desks (working pin, STOA89–91)
 
-Glow adopts Hoon's one-syllable glyph alphabet so digraphs stay speakable (**wutgar**, **barhep**, …). Primary compile path is Glow→Rye→Zig→**RISC-V**; Nock is a second backend at a seam. Today's `glow/gen/` files are **fixture desks** (baked sample); parameterized **generators** (sample from Rishi argv) are horizon. Canon: [`../active-designing/20260719-204001_glow-rune-pronunciation-alphabet-riscv-and-generators.md`](../active-designing/20260719-204001_glow-rune-pronunciation-alphabet-riscv-and-generators.md). **G1 closed table** (25 GREEN heads): [`../active-designing/20260719-220814_glow-rune-pronunciation-closed-table.md`](../active-designing/20260719-220814_glow-rune-pronunciation-closed-table.md) · witness `../tools/glow_rune_alphabet_witness.rish`. Argv sample remains G3.
+Glow adopts Hoon's one-syllable glyph alphabet so digraphs stay speakable. Primary compile path is Glow→Rye→Zig→**RISC-V**; Nock is a second backend at a seam. Today's `glow/gen/` files are **fixture desks** (baked sample); parameterized **generators** (sample from Rishi argv) are horizon. Canon: [`../active-designing/20260719-204001_glow-rune-pronunciation-alphabet-riscv-and-generators.md`](../active-designing/20260719-204001_glow-rune-pronunciation-alphabet-riscv-and-generators.md). **G1 closed table** (25 GREEN heads): [`../active-designing/20260719-220814_glow-rune-pronunciation-closed-table.md`](../active-designing/20260719-220814_glow-rune-pronunciation-closed-table.md) · witness `../tools/glow_rune_alphabet_witness.rish`. Argv sample remains G3.
+
+#### Glyph alphabet (compact)
+
+Speak a digraph by concatenating the two glyph names (stress the first). Study attribution: [Hoon School — Pronouncing Hoon](https://docs.urbit.org/build-on-urbit/hoon-school). Glow does not invent a second alphabet.
+
+| Name | Glyph | Name | Glyph | Name | Glyph | Name | Glyph |
+|------|-------|------|-------|------|-------|------|-------|
+| bar | `\|` | wut | `?` | tis | `=` | ket | `^` |
+| col | `:` | cen | `%` | buc | `$` | fas | `/` |
+| lus | `+` | hep | `-` | gar | `>` | gal | `<` |
+| sig | `~` | tar | `*` | dot | `.` | mic | `;` |
+
+#### Family index (GREEN heads only)
+
+Full per-rune rows (meaning · RISC-V/TAME note) live in the G1 closed table. This index names the family and its tokenized heads — not Hoon's full ~200-rune dump.
+
+| Family | Glyph | GREEN heads | Spoken examples |
+|--------|-------|-------------|-----------------|
+| **bar** | `\|` | `\|-` · `\|%` | barhep · barcen |
+| **lus** / **hep** | `+` / `-` | `++` · `--` (core delimiters) | luslus · hephep |
+| **ket** | `^` | `^-` | kethep |
+| **tis** | `=` | `=/` · `=.` · `=*` | tisfas · tisdot · tistar |
+| **wut** | `?` | `?:` · `?-` · `?~` · `?>` · `?<` | wutcol · wuthep · wutsig · **wutgar** · **wutgal** |
+| **col** | `:` | `:-` · `:+` · `:^` · `:~` | colhep · collus · colket · colsig |
+| **cen** | `%` | `%-` · `%+` · `%^` · `%*` | cenhep · cenlus · cenket · centar |
+| **buc** | `$` | `+$` · `$:` · `$%` | lusbuc · buccol · buccen |
+| **fas** | `/` | `/+` | faslus |
+
+**Horizon (not in `tokens.rye`):** `|=` bartis · `|^` barket · sig hints `~%` · `~/`.
+
+**Authoring law:** when you seat a new Glow rune, add its digraph to `glow/tokens.rye` `match_rune2`, a row to the G1 closed table, and a spoken example here in the matching family — same lap, or the alphabet witness goes red.
 
 Cursor and Claude rules (`.cursor/rules/tame-guidance.mdc`, `.claude/rules/tame-guidance.md`) point here. Root rule **9** (docs and implementation stay synced) has its own always-on agent rule pair: `.cursor/rules/docs-implementation-sync.mdc`, `.claude/rules/docs-implementation-sync.md`.
 
