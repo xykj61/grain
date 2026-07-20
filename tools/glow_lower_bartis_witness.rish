@@ -1,0 +1,32 @@
+# glow_lower_bartis_witness.rish — `|=` bartis lowers to Rye; emitted program runs.
+#
+# Proves rune_bartis parses the identity gate, lower_bartis emits correct Rye,
+# and the welcome binary exits 0 with baked sample 5.
+#
+#   rishi/bin/rishi run tools/glow_lower_bartis_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "glow/bin/lower_bartis_witness"
+let welcome_rye = "glow/.cache/gate_sample_welcome.rye"
+let welcome_bin = "glow/bin/gate_sample_welcome"
+
+let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/lower_bartis_witness.rye -femit-bin=${bin}"]
+assert build.ok else "lower_bartis_witness build failed: ${build.err}${build.out}"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "lower_bartis_witness exited non-zero"
+assert selftest.out contains "GREEN" else "lower_bartis_witness not GREEN"
+assert selftest.out contains "identity gate" else "lower_bartis_witness missing identity claim"
+assert selftest.out contains "comment line" else "lower_bartis_witness missing comment-line claim"
+assert selftest.out contains "AuraNotYetLowered" else "lower_bartis_witness missing aura-refuse claim"
+assert selftest.out contains "BodyFaceMismatch" else "lower_bartis_witness missing mismatch-refuse claim"
+assert selftest.out contains "gate-sample.glow" else "lower_bartis_witness missing gen desk claim"
+
+let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
+assert build_welcome.ok else "bartis welcome .rye build failed"
+
+let run_welcome = run ["sh" "-c" "${welcome_bin}; echo EXIT:$?"]
+assert run_welcome.ok else "bartis welcome binary failed to launch"
+assert run_welcome.out contains "EXIT:0" else "bartis welcome binary did not exit 0"
+
+say "GREEN: Glow `|=` bartis thin identity gate — STOA100 implemented; baked sample 5 exits 0."

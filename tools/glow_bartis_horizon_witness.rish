@@ -1,44 +1,48 @@
-# glow_bartis_horizon_witness.rish — bartis horizon wording pin (STOA99).
+# glow_bartis_horizon_witness.rish — bartis implement witness (STOA100 GREEN).
 #
-# Binds TAME bartis section + brief; proves |= / |^ stay out of tokens.rye.
-# Device-free. Does not implement bartis.
+# Proves |= bartis is tokenized, the thin identity gate lowers, and the welcome
+# binary exits 0. Replaces the STOA99 horizon check now that STOA100 is GREEN.
 #
 #   rishi/bin/rishi run tools/glow_bartis_horizon_witness.rish
 
 let tame = "context/TAME_GUIDANCE.md"
-let brief = "active-designing/20260720-033340_stoa99-bartis-horizon-wording.md"
 let tokens = "glow/tokens.rye"
-let lexicon = "context/LEXICON.md"
+let g1_brief = "active-designing/20260720-033852_glow-bartis-g1-row.md"
+let horizon_brief = "active-designing/20260720-033340_stoa99-bartis-horizon-wording.md"
 let readme = "glow/README.md"
 
-let tame_pin = run ["sh" "-c" "grep -F 'bartis horizon wording (STOA99)' ${tame}"]
-assert tame_pin.ok else "TAME missing STOA99 bartis horizon heading"
-assert tame_pin.out contains "STOA99" else "TAME bartis heading missing STOA99"
+# TAME now carries STOA100 implement note.
+let tame_pin = run ["sh" "-c" "grep -F 'STOA100' ${tame}"]
+assert tame_pin.ok else "TAME missing STOA100 bartis implement"
 
-let tame_gate = run ["sh" "-c" "grep -F 'Glow gate' ${tame} | grep -F 'bartis gate'"]
-assert tame_gate.ok else "TAME bartis pin must name Glow gate / bartis gate"
+# tokens.rye now tokenizes |= (STOA100 implement).
+let has_bartis = run ["sh" "-c" "awk '/const pairs =/,/};/' ${tokens} | grep -F '|='"]
+assert has_bartis.ok else "tokens.rye must now tokenize |= (STOA100)"
 
-let tame_sample = run ["sh" "-c" "grep -F 'sample-u32' ${tame}"]
-assert tame_sample.ok else "TAME bartis pin must name sample-u32 precursor"
-
-let brief_ok = run ["sh" "-c" "test -f ${brief} && grep -F 'STOA99' ${brief} && grep -F 'bartis' ${brief} && grep -F 'Glow gate' ${brief}"]
-assert brief_ok.ok else "bartis horizon brief missing or incomplete"
-
-# Digraphs must stay out of match_rune2 (same refusal as alphabet worker).
-let no_bartis = run ["sh" "-c" "awk '/const pairs =/,/};/' ${tokens} | grep -F '|=' >/dev/null; echo $?"]
-assert trim no_bartis.out == "1" else "tokens.rye must not tokenize |="
+# |^ barket stays horizon.
 let no_barket = run ["sh" "-c" "awk '/const pairs =/,/};/' ${tokens} | grep -F '|^' >/dev/null; echo $?"]
 assert trim no_barket.out == "1" else "tokens.rye must not tokenize |^"
 
-let lex_gate = run ["sh" "-c" "grep -F '**Glow gate**' ${lexicon} && grep -F 'bartis' ${lexicon}"]
-assert lex_gate.ok else "LEXICON must seat Glow gate / bartis"
+# New G1 row brief exists and names bartis.
+let brief_ok = run ["sh" "-c" "test -f ${g1_brief} && grep -F 'bartis' ${g1_brief}"]
+assert brief_ok.ok else "bartis G1 row brief missing or incomplete"
 
+# STOA99 horizon brief still exists as dated artifact.
+let horizon_ok = run ["sh" "-c" "test -f ${horizon_brief}"]
+assert horizon_ok.ok else "STOA99 horizon brief missing"
+
+# README names bartis (GREEN mention expected).
 let readme_h = run ["sh" "-c" "grep -F 'bartis' ${readme}"]
-assert readme_h.ok else "glow/README must name bartis horizon"
+assert readme_h.ok else "glow/README must name bartis"
 
-# Alphabet gate still refuses bartis and binds G1/G2.
+# Alphabet witness GREEN (now expects 26 digraphs).
 let alpha = run ["sh" "-c" "rishi/bin/rishi run tools/glow_rune_alphabet_witness.rish"]
-assert alpha.ok else "glow_rune_alphabet_witness failed under bartis horizon"
+assert alpha.ok else "glow_rune_alphabet_witness failed under bartis implement"
 assert alpha.out contains "GREEN" else "glow_rune_alphabet_witness not GREEN"
 
-say "GREEN: Glow bartis horizon wording — |= held · Glow gate named; STOA99."
+# Bartis lower witness GREEN.
+let lower = run ["sh" "-c" "rishi/bin/rishi run tools/glow_lower_bartis_witness.rish"]
+assert lower.ok else "glow_lower_bartis_witness failed"
+assert lower.out contains "GREEN" else "glow_lower_bartis_witness not GREEN"
+
+say "GREEN: Glow bartis implement — |= tokenized, thin identity gate lowers, exits 0; STOA100."
