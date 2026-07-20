@@ -8,6 +8,8 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260720.151450` — [STOA112 barket parse vs Sala B0 map](20260720-151450_stoa112-barket-parse-map.bron) — check-in before thin parse; lower/wet/Sala held
+- `20260720.151450` — [STOA111 send complete](20260720-151450_stoa111-send-complete.bron) — origin main at eb2a65794210
 - `20260720.151247` — [STOA111 barket tokenize GREEN](20260720-151247_stoa111-barket-tokenize-green.bron) — |^ → 27; parse/lower held; await send
 - `20260720.151046` — [STOA110 send complete](20260720-151046_stoa110-send-complete.bron) — origin main at 8b181a4f46ab
 - `20260720.150956` — [STOA111 barket tokenize vs Sala B0 map](20260720-150956_stoa111-barket-tokenize-map.bron) — lean A tokenize-only step 2; parse/lower held
