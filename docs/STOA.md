@@ -87,4 +87,5 @@
 | **STOA112** | Barket header parse (dry demo) | `glow_barket_parse_witness` · tokenize | **GREEN** `20260720.174115` |
 | **STOA113** | Barket identity lower (`barket_gate`) | `glow_barket_lower_witness` · `glow_run` | **GREEN** `20260720.175115` |
 | **STOA114** | Barket argv sample | `glow_barket_lower_witness` · `--sample-argv` | **GREEN** `20260720.175643` |
+| **STOA115** | Barket call-body double | `glow_barket_lower_witness` · `glow_run` | **GREEN** `20260720.180047` |
 Smoke: `glow_barket_lower_witness` · `glow_barket_parse_witness` · `glow_nest_type_witness` · `glow_lower_bartis_witness` · Sibling: **ZETA** · **LULU** · **SETU** · **TUBE**.
