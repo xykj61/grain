@@ -1,7 +1,7 @@
 # Lexicon — Module Names and Their Meanings
 
 **Language:** EN
-**Last updated:** 2026-07-19 (**STOA89** alphabet · dry/wet cores · Cursor iOS handoff)
+**Last updated:** 2026-07-20 (**STOA102** barket horizon · dry bartis GREEN)
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 
 ---
@@ -14,10 +14,11 @@ Living vocabulary for the Rye OS family. Each name teaches its function. Provena
 |------|----------|
 | **Gate** | A named precondition on the itinerary that only a ruling, a word, or a landed event opens — gates belong to Kaeden; [`specs/20260704-020800_one-word-one-gate.md`](specs/20260704-020800_one-word-one-gate.md). **Not** a Hoon/Glow one-arm core — say **Glow gate** / **bartis gate** for that parallel |
 | **Glow gate** | Hoon parallel: one-arm core with a typed **sample** (`\|=`, spoken **bartis**). Language docs always say **Glow gate** or **bartis gate** — never bare **Gate** (itinerary). Seated `20260719.204001` — [`../active-designing/20260719-204001_glow-rune-pronunciation-alphabet-riscv-and-generators.md`](../active-designing/20260719-204001_glow-rune-pronunciation-alphabet-riscv-and-generators.md) |
+| **Barket** | Spoken name for Hoon/Glow `\|^` — wet-gate constructor. **Horizon** for Glow (untokenized); dry bartis carries one-arm work today. Seated `20260720.040700` — [`../active-designing/20260720-040700_stoa102-barket-horizon-wording.md`](../active-designing/20260720-040700_stoa102-barket-horizon-wording.md) |
 | **Dry core** | Glow-welcome Hoon parallel: typed sample, named arms, bounded trap — expansion asserts under TAME. Seated `20260719.204650` |
 | **Wet / gold polymorphism** | Hoon core variance where sample type flexes in the type system — **held** for Glow until nest can check at expansion; re-express with explicit molds in Rye/Glow. Seated `20260719.204650` — [`../active-designing/20260719-204650_hoon-core-polymorphism-tame-and-port-order.md`](../active-designing/20260719-204650_hoon-core-polymorphism-tame-and-port-order.md) |
 | **Fixture desk** | A `.glow` under `glow/gen/` with a **baked sample** for witnesses and `glow_run` — today's suite. Distinct from a parameterized **generator**. Seated `20260719.204001` |
-| **Generator** (Glow) | Horizon: a Glow program whose **sample** arrives from outside (Rishi argv / typed hand-off) — Urbit `/gen` parallel. Fixture desks remain beside generators. Seated `20260719.204001` · Acme hand [`../expanding-prompts/20260719-204001_glow-fixture-desks-and-parameterized-generators.md`](../expanding-prompts/20260719-204001_glow-fixture-desks-and-parameterized-generators.md) |
+| **Generator** (Glow) | A Glow program whose **sample** arrives from outside (Rishi argv / typed hand-off) — Urbit `/gen` parallel. GREEN for cast `sample-u32` (STOA92) and bartis `gate-sample-u32` (STOA101); fixtures remain beside generators. Seated `20260719.204001` · Acme hand [`../expanding-prompts/20260719-204001_glow-fixture-desks-and-parameterized-generators.md`](../expanding-prompts/20260719-204001_glow-fixture-desks-and-parameterized-generators.md) |
 | **Sample** (Glow) | The typed argument face of a Glow gate (`\|=`). Not an itinerary word. Seated `20260719.204001` |
 | **Witness** | A program that proves a claim on metal and answers green or red — the trio (`parity.rish`, `parity-selftest.rish`, `additive-gate.rish`) guards every push |
 | **Claim** | A bounded, falsifiable proposition one witness binds — lap, seam, or invariant; [`external-research/20260704-024900_claim.md`](../external-research/20260704-024900_claim.md) |
