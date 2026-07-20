@@ -1,4 +1,4 @@
-//! glow/rune_bartis.rye — parses Glow's `|=` bartis gate rune (STOA100–109).
+//! glow/rune_bartis.rye — parses Glow's `|=` bartis gate rune (STOA100–109 · STOA120).
 //!
 //! Thin one-arm gate: `|=  sample=@u32` or `|=  sample=amount-mold` on line one,
 //! then either:
@@ -10,6 +10,7 @@
 //! STOA107: nest/type — sample aura nests under `@u32` via nest_type;
 //!   refuse is `SampleDoesNotNest`.
 //! STOA109: closed named mold `amount-mold` (one-field `$:` ≡ `@u32` lower).
+//! STOA120: expansion calls `assert_sample_wet_nests(false, …)` (dry no-op wire).
 //! Wet / gold · `kind-mold` bartis samples held.
 //!
 //! Parse shape (token stream):
@@ -153,15 +154,23 @@ pub fn parse_source(src: []const u8) ParseError!GateSpec {
     if (i >= n) return error.MissingAura;
     const mold_tok = toks[@as(usize, @intCast(i))];
     var named_mold: ?[]const u8 = null;
+    var sample_text: []const u8 = undefined;
+    var stated_mold: []const u8 = undefined;
     if (mold_tok.kind == .aura) {
         const aura_text = tokens.slice_of(src, mold_tok);
         nest_type.assert_aura_nests(aura_text, "@u32") catch return error.SampleDoesNotNest;
+        sample_text = aura_text;
+        stated_mold = "@u32";
     } else if (mold_tok.kind == .ident) {
         const mold_text = tokens.slice_of(src, mold_tok);
         if (mold_text.len == 0 or mold_text.len > max_mold_len) return error.MissingAura;
         nest_type.assert_bartis_named_mold(mold_text) catch return error.SampleDoesNotNest;
         named_mold = mold_text;
+        sample_text = mold_text;
+        stated_mold = mold_text;
     } else return error.MissingAura;
+    // STOA120: wet-nests API seated at expansion (dry no-op until wet spelling).
+    nest_type.assert_sample_wet_nests(false, sample_text, stated_mold) catch return error.SampleDoesNotNest;
     i += 1;
 
     // Newline(s) — end of first line.

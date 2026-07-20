@@ -9,7 +9,7 @@ const print = std.debug.print;
 const lower = @import("lower_bartis.rye");
 const rb = @import("rune_bartis.rye");
 
-const witness_version = "20260720.150155";
+const witness_version = "20260720.182450";
 
 fn run_selftest(init: std.process.Init) !u8 {
     const io = init.io;
@@ -179,7 +179,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("lower: kind-mold bartis refused SampleDoesNotNest -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: Glow `|=` bartis — identity · argv · call-body · named-mold amount-mold (STOA100–109).\n", .{});
+    print("GREEN: Glow `|=` bartis — identity · argv · call-body · amount-mold · wet-nests wire (STOA100–109 · STOA120).\n", .{});
     return 0;
 }
 
