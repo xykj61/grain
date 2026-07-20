@@ -1,4 +1,4 @@
-::  Refuse desk — sample=penta-mold is open multi-field $:; not gate-welcome this lap (STOA135).
+::  Refuse desk — sample=hexa-mold is open multi-field $:; not gate-welcome this lap (STOA138).
 ::  Parse-only; do not glow_run — nest/type refuses SampleDoesNotNest.
-|^  sample=penta-mold
+|^  sample=hexa-mold
 sample

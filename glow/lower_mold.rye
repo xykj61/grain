@@ -25,7 +25,7 @@ pub const LowerError = rm.ParseError || error{
     EmptySource,
 };
 
-pub const mold_demo_vals: [rm.max_fields]u32 = .{ 5, 3, 7, 2 };
+pub const mold_demo_vals: [rm.max_fields]u32 = .{ 5, 3, 7, 2, 7 };
 
 fn zig_safe_ident(face: []const u8, out: *[rm.max_name_len]u8) LowerError!u32 {
     assert(face.len <= rm.max_name_len); // precondition: face within name budget
