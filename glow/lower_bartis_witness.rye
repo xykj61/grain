@@ -9,7 +9,7 @@ const print = std.debug.print;
 const lower = @import("lower_bartis.rye");
 const rb = @import("rune_bartis.rye");
 
-const witness_version = "20260720.041800";
+const witness_version = "20260720.042300";
 
 fn run_selftest(init: std.process.Init) !u8 {
     const io = init.io;
@@ -157,7 +157,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("lower: glow/gen/gate-dec.glow carries call-body dec -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: Glow `|=` bartis — identity · argv · call-body double/inc/dec (STOA100–104).\n", .{});
+    print("GREEN: Glow `|=` bartis — identity · argv · call-body · STOA105 TAME tidy (STOA100–105).\n", .{});
     return 0;
 }
 

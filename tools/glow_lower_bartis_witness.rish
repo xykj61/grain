@@ -82,4 +82,18 @@ let run_dec = run ["sh" "-c" "${dec_bin}; echo EXIT:$?"]
 assert run_dec.ok else "bartis dec welcome binary failed to launch"
 assert run_dec.out contains "EXIT:0" else "bartis dec welcome binary did not exit 0"
 
-say "GREEN: Glow `|=` bartis — STOA100–104 identity · argv · call-body double/inc/dec."
+# TAME surface gates (STOA105).
+let width = run ["sh" "-c" "grep 'usize' glow/lower_bartis.rye 2>/dev/null | grep -v '@intCast' | grep -v '@as(usize' | wc -l | tr -d ' '"]
+assert trim width.out == "0" else "glow/lower_bartis.rye still carries authored usize"
+let assert_import = run ["sh" "-c" "grep -c 'const assert = std.debug.assert' glow/lower_bartis.rye | tr -d ' '"]
+assert trim assert_import.out == "1" else "glow/lower_bartis.rye must import assert once"
+let memcpy_l = run ["sh" "-c" "grep -c '@memcpy(' glow/lower_bartis.rye | tr -d ' '"]
+assert trim memcpy_l.out == "0" else "glow/lower_bartis.rye must not use memcpy"
+let memcpy_r = run ["sh" "-c" "grep -c '@memcpy(' glow/rune_bartis.rye | tr -d ' '"]
+assert trim memcpy_r.out == "0" else "glow/rune_bartis.rye must not use memcpy"
+let copy_d = run ["sh" "-c" "grep -c 'copy_disjoint' glow/rune_bartis.rye | tr -d ' '"]
+assert trim copy_d.out != "0" else "glow/rune_bartis.rye must use copy_disjoint"
+let append_p = run ["sh" "-c" "grep -c 'fn append_print' glow/lower_bartis.rye | tr -d ' '"]
+assert trim append_p.out == "1" else "glow/lower_bartis.rye must define append_print"
+
+say "GREEN: Glow `|=` bartis — STOA100–104 identity · argv · call-body · STOA105 TAME tidy."

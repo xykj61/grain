@@ -1,10 +1,11 @@
-//! glow/lower_bartis.rye — lower a thin `|=` bartis gate to runnable `.rye` (STOA100–104).
+//! glow/lower_bartis.rye — lower a thin `|=` bartis gate to runnable `.rye` (STOA100–105).
 //!
 //! Identity gate: `|=  sample=@u32` / `sample` — takes u32 and returns it.
 //! Call body: `|=  sample=@u32` / `%-  <gate>  sample` — closed demos:
 //!   double → *% 2 (STOA103) · inc → +% 1 · dec → -% 1 (STOA104).
 //! STOA100: baked demo sample 5; identity exits 0 when bartis_gate(5) == 5.
 //! STOA101: argv sample path — main reads one decimal `@u32` and checks the body result.
+//! STOA105: TAME tidy — assert · u32 · append_print · split emitters.
 //! Gate function named `bartis_gate` to avoid collisions with the sample face.
 
 const std = @import("std");
@@ -18,12 +19,13 @@ pub const bartis_demo_sample: u32 = 5;
 /// Expected result for identity body with baked sample.
 pub const bartis_identity_expect: u32 = 5;
 
-fn zig_safe_ident(face: []const u8, out: *[rb.max_face_len]u8) LowerError!usize {
-    assert(face.len <= rb.max_face_len); // precondition: caller checked length
-    if (face.len == 0) return error.MissingFace;
-    var i: usize = 0;
-    while (i < face.len) : (i += 1) {
-        const c = face[i];
+fn zig_safe_ident(face: []const u8, out: *[rb.max_face_len]u8) LowerError!u32 {
+    assert(face.len <= rb.max_face_len); // precondition: face within name budget
+    if (face.len == 0 or face.len > rb.max_face_len) return error.MissingFace;
+    const n: u32 = @intCast(face.len);
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        const c = face[@as(usize, @intCast(i))];
         const mapped: u8 = if (c == '-') '_' else c;
         if (i == 0) {
             if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or mapped == '_'))
@@ -32,9 +34,18 @@ fn zig_safe_ident(face: []const u8, out: *[rb.max_face_len]u8) LowerError!usize 
             if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or (mapped >= '0' and mapped <= '9') or mapped == '_'))
                 return error.MissingFace;
         }
-        out[i] = mapped;
+        out[@as(usize, @intCast(i))] = mapped;
     }
-    return face.len;
+    return n;
+}
+
+fn append_print(out: []u8, used: *u32, comptime fmt: []const u8, args: anytype) LowerError!void {
+    assert(used.* <= out.len); // invariant: cursor inside buffer
+    const slice = out[@as(usize, @intCast(used.*))..];
+    const written = std.fmt.bufPrint(slice, fmt, args) catch return error.Overflow;
+    const n: u32 = @intCast(written.len);
+    assert(used.* + n <= out.len); // postcondition: write fits
+    used.* += n;
 }
 
 /// Zig expression fragment after `return {zface}` for a closed call-body gate.
@@ -59,50 +70,66 @@ fn expect_for(spec: *const rb.GateSpec) LowerError!u32 {
     };
 }
 
+fn emit_prelude(out: []u8, used: *u32) LowerError!void {
+    try append_print(out, used, "const std = @import(\"std\");\n\n", .{});
+}
+
+fn emit_gate_fn(out: []u8, used: *u32, face: []const u8, zface: []const u8, body_return: []const u8, comment: []const u8) LowerError!void {
+    try append_print(out, used, "/// {s}\n", .{comment});
+    try append_print(out, used, "fn bartis_gate({s}: u32) u32 {{\n", .{zface});
+    try append_print(out, used, "    return {s};\n", .{body_return});
+    try append_print(out, used, "}}\n\n", .{});
+    _ = face;
+}
+
+fn emit_welcome_main(out: []u8, used: *u32, zface: []const u8, expect: u32) LowerError!void {
+    try append_print(out, used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
+    try append_print(out, used, "    const {s}: u32 = {d};\n", .{ zface, bartis_demo_sample });
+    try append_print(out, used, "    return if (bartis_gate({s}) == {d}) 0 else 1;\n", .{ zface, expect });
+    try append_print(out, used, "}}\n", .{});
+}
+
+fn emit_argv_main(out: []u8, used: *u32, zface: []const u8, expect_expr: []const u8) LowerError!void {
+    try append_print(out, used, "pub fn main(init: std.process.Init) !u8 {{\n", .{});
+    try append_print(out, used, "    const alloc = init.arena.allocator();\n", .{});
+    try append_print(out, used, "    const argv = try init.minimal.args.toSlice(alloc);\n", .{});
+    try append_print(out, used, "    if (argv.len < 2) return 2;\n", .{});
+    try append_print(out, used, "    const {s} = std.fmt.parseInt(u32, argv[1], 10) catch return 2;\n", .{zface});
+    try append_print(out, used, "    const expect: u32 = {s};\n", .{expect_expr});
+    try append_print(out, used, "    return if (bartis_gate({s}) == expect) 0 else 1;\n", .{zface});
+    try append_print(out, used, "}}\n", .{});
+}
+
 fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
     const face = rb.face_slice(spec);
     assert(face.len > 0); // invariant: spec carries a non-empty face
     var zig_face_buf: [rb.max_face_len]u8 = undefined;
     const zn = try zig_safe_ident(face, &zig_face_buf);
-    const zface = zig_face_buf[0..zn];
+    const zface = zig_face_buf[0..@as(usize, @intCast(zn))];
     const expect = try expect_for(spec);
+    var used: u32 = 0;
 
-    const written = switch (spec.body) {
-        .identity => std.fmt.bufPrint(out,
-            \\const std = @import("std");
-            \\
-            \\/// Lowered from Glow `|=  {s}=@u32` bartis gate — identity (STOA100).
-            \\fn bartis_gate({s}: u32) u32 {{
-            \\    return {s};
-            \\}}
-            \\
-            \\pub fn main(_: std.process.Init) !u8 {{
-            \\    const {s}: u32 = {d};
-            \\    return if (bartis_gate({s}) == {d}) 0 else 1;
-            \\}}
-            \\
-        , .{ face, zface, zface, zface, bartis_demo_sample, zface, expect }) catch return error.Overflow,
-        .call_one => blk: {
+    try emit_prelude(out, &used);
+    switch (spec.body) {
+        .identity => {
+            var comment_buf: [128]u8 = undefined;
+            const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}=@u32` bartis gate — identity (STOA100).", .{face}) catch return error.Overflow;
+            try emit_gate_fn(out, &used, face, zface, zface, comment);
+            try emit_welcome_main(out, &used, zface, expect);
+        },
+        .call_one => {
             const gate = rb.gate_slice(spec);
             assert(rb.is_closed_call_gate(gate)); // parse pin
             const op = try call_op_expr(gate);
-            break :blk std.fmt.bufPrint(out,
-                \\const std = @import("std");
-                \\
-                \\/// Lowered from Glow `|=  {s}=@u32` / `%-  {s}  {s}` — call body (STOA103–104).
-                \\fn bartis_gate({s}: u32) u32 {{
-                \\    return {s}{s};
-                \\}}
-                \\
-                \\pub fn main(_: std.process.Init) !u8 {{
-                \\    const {s}: u32 = {d};
-                \\    return if (bartis_gate({s}) == {d}) 0 else 1;
-                \\}}
-                \\
-            , .{ face, gate, face, zface, zface, op, zface, bartis_demo_sample, zface, expect }) catch return error.Overflow;
+            var body_buf: [96]u8 = undefined;
+            const body_return = std.fmt.bufPrint(&body_buf, "{s}{s}", .{ zface, op }) catch return error.Overflow;
+            var comment_buf: [160]u8 = undefined;
+            const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}=@u32` / `%-  {s}  {s}` — call body (STOA103–104).", .{ face, gate, face }) catch return error.Overflow;
+            try emit_gate_fn(out, &used, face, zface, body_return, comment);
+            try emit_welcome_main(out, &used, zface, expect);
         },
-    };
-    return @intCast(written.len);
+    }
+    return used;
 }
 
 fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
@@ -110,51 +137,32 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
     assert(face.len > 0); // invariant: spec carries a non-empty face
     var zig_face_buf: [rb.max_face_len]u8 = undefined;
     const zn = try zig_safe_ident(face, &zig_face_buf);
-    const zface = zig_face_buf[0..zn];
+    const zface = zig_face_buf[0..@as(usize, @intCast(zn))];
+    var used: u32 = 0;
 
-    const written = switch (spec.body) {
-        .identity => std.fmt.bufPrint(out,
-            \\const std = @import("std");
-            \\
-            \\/// Lowered from Glow `|=  {s}=@u32` bartis gate — argv sample (STOA101).
-            \\fn bartis_gate({s}: u32) u32 {{
-            \\    return {s};
-            \\}}
-            \\
-            \\pub fn main(init: std.process.Init) !u8 {{
-            \\    const alloc = init.arena.allocator();
-            \\    const argv = try init.minimal.args.toSlice(alloc);
-            \\    if (argv.len < 2) return 2;
-            \\    const {s} = std.fmt.parseInt(u32, argv[1], 10) catch return 2;
-            \\    return if (bartis_gate({s}) == {s}) 0 else 1;
-            \\}}
-            \\
-        , .{ face, zface, zface, zface, zface, zface }) catch return error.Overflow,
-        .call_one => blk: {
+    try emit_prelude(out, &used);
+    switch (spec.body) {
+        .identity => {
+            var comment_buf: [128]u8 = undefined;
+            const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}=@u32` bartis gate — argv sample (STOA101).", .{face}) catch return error.Overflow;
+            try emit_gate_fn(out, &used, face, zface, zface, comment);
+            try emit_argv_main(out, &used, zface, zface);
+        },
+        .call_one => {
             const gate = rb.gate_slice(spec);
             assert(rb.is_closed_call_gate(gate)); // parse pin
             const op = try call_op_expr(gate);
-            break :blk std.fmt.bufPrint(out,
-                \\const std = @import("std");
-                \\
-                \\/// Lowered from Glow `|=  {s}=@u32` / `%-  {s}  {s}` — argv call body (STOA103–104).
-                \\fn bartis_gate({s}: u32) u32 {{
-                \\    return {s}{s};
-                \\}}
-                \\
-                \\pub fn main(init: std.process.Init) !u8 {{
-                \\    const alloc = init.arena.allocator();
-                \\    const argv = try init.minimal.args.toSlice(alloc);
-                \\    if (argv.len < 2) return 2;
-                \\    const {s} = std.fmt.parseInt(u32, argv[1], 10) catch return 2;
-                \\    const expect: u32 = {s}{s};
-                \\    return if (bartis_gate({s}) == expect) 0 else 1;
-                \\}}
-                \\
-            , .{ face, gate, face, zface, zface, op, zface, zface, op, zface }) catch return error.Overflow;
+            var body_buf: [96]u8 = undefined;
+            const body_return = std.fmt.bufPrint(&body_buf, "{s}{s}", .{ zface, op }) catch return error.Overflow;
+            var expect_buf: [96]u8 = undefined;
+            const expect_expr = std.fmt.bufPrint(&expect_buf, "{s}{s}", .{ zface, op }) catch return error.Overflow;
+            var comment_buf: [160]u8 = undefined;
+            const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}=@u32` / `%-  {s}  {s}` — argv call body (STOA103–104).", .{ face, gate, face }) catch return error.Overflow;
+            try emit_gate_fn(out, &used, face, zface, body_return, comment);
+            try emit_argv_main(out, &used, zface, expect_expr);
         },
-    };
-    return @intCast(written.len);
+    }
+    return used;
 }
 
 /// Parse a bartis source and emit a welcome-path program (baked sample 5).

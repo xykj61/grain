@@ -4,7 +4,7 @@
 
 **Language:** EN
 **Version:** `20260715` (Pool keystone revival prioritized · Quin voice seated · align pass reconciles the closed ladder)
-**Last updated:** 2026-07-20 (**STOA0–104** GREEN — bartis call-body double/inc/dec; barket horizon)
+**Last updated:** 2026-07-20 (**STOA0–105** GREEN — bartis TAME tidy; call-body trio; barket horizon)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Lens:** TAME — safety, performance, joy; the Seed Law; [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md)
@@ -447,6 +447,8 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 **STOA103 bartis call-body double GREEN, `20260720.040800`** — lean A (compass): `|=  sample=@u32` / `%-  double  sample`; fixture + argv; baked 5 → 10; closed demo gate only. Brief [`active-designing/20260720-040800_glow-bartis-call-body.md`](../active-designing/20260720-040800_glow-bartis-call-body.md). Next language: **STOA104** check-in (wider call-body set · nest · Sala B0).
 
 **STOA104 bartis call-body inc/dec GREEN, `20260720.041800`** — lean A (compass): widen closed set to `inc` / `dec` beside `double`; fixtures + argv; baked 5→6 / 5→4. Brief [`active-designing/20260720-041800_glow-bartis-call-body-inc-dec.md`](../active-designing/20260720-041800_glow-bartis-call-body-inc-dec.md). Next language: **STOA105** check-in (nest surface · barket implement · Sala B0).
+
+**STOA105 bartis TAME tidy GREEN, `20260720.042300`** — lean A (compass): `append_print` · u32 · `copy_disjoint` · overflow seat · width list; desks unchanged. Brief [`active-designing/20260720-042300_glow-bartis-tame-tidy.md`](../active-designing/20260720-042300_glow-bartis-tame-tidy.md). Next language: **STOA106** check-in (nest surface · barket implement · Sala B0).
 
 **Glow OS · Glow Desk · Glow Glass seated, `20260717.183622`** — Keaton: **Glow OS** unifies; **Glow Desk** = desktop; **Glow Glass** = mobile. Lexicon + silo [`../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md`](../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md). Orientation firmware stays check-in.
 
