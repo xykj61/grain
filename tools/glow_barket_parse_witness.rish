@@ -9,8 +9,8 @@ let tame = "context/TAME_GUIDANCE.md"
 let zig = "vendor/zig-toolchain/zig"
 let bin = "glow/bin/rune_barket_witness"
 
-let tame_pin = run ["sh" "-c" "grep -F 'STOA117' ${tame}"]
-assert tame_pin.ok else "TAME missing STOA117 barket TAME tidy"
+let tame_pin = run ["sh" "-c" "grep -F 'STOA118' ${tame}"]
+assert tame_pin.ok else "TAME missing STOA118 named-mold barket"
 
 let has_parse = run ["sh" "-c" "test -f glow/rune_barket.rye; echo $?"]
 assert trim has_parse.out == "0" else "glow/rune_barket.rye must exist (STOA112)"
@@ -28,10 +28,12 @@ assert selftest.out contains "call-body double" else "rune_barket_witness missin
 assert selftest.out contains "call-body inc" else "rune_barket_witness missing call-body inc claim"
 assert selftest.out contains "call-body dec" else "rune_barket_witness missing call-body dec claim"
 assert selftest.out contains "BodyGateNotYetLowered" else "rune_barket_witness missing unknown-gate refuse"
+assert selftest.out contains "amount-mold" else "rune_barket_witness missing amount-mold claim"
+assert selftest.out contains "kind-mold" else "rune_barket_witness missing kind-mold refuse"
 
 # Tokenize sibling stays GREEN.
 let tok = run ["sh" "-c" "rishi/bin/rishi run tools/glow_barket_tokenize_witness.rish"]
 assert tok.ok else "glow_barket_tokenize_witness failed under barket parse"
 assert tok.out contains "GREEN" else "glow_barket_tokenize_witness not GREEN"
 
-say "GREEN: Glow barket parse — dry header · identity · call-body trio · parse_body; STOA112–117."
+say "GREEN: Glow barket parse — dry header · identity · call-body trio · amount-mold; STOA112–118."

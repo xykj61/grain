@@ -1,4 +1,4 @@
-//! glow/rune_barket_witness.rye — proves barket parse (STOA112–117).
+//! glow/rune_barket_witness.rye — proves barket parse (STOA112–118).
 //!
 //!   rye build glow/rune_barket_witness.rye -femit-bin=glow/bin/rune_barket_witness
 //!   glow/bin/rune_barket_witness
@@ -8,7 +8,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const rb = @import("rune_barket.rye");
 
-const witness_version = "20260720.180900";
+const witness_version = "20260720.181347";
 
 fn run_selftest(init: std.process.Init) !u8 {
     _ = init;
@@ -56,6 +56,19 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("barket: @u64 refused SampleDoesNotNest -- GREEN\n", .{});
 
+    // STOA118: named mold amount-mold accepts; kind-mold refuses.
+    const amt = try rb.parse_source("|^  sample=amount-mold\nsample\n");
+    assert(amt.body == .identity);
+    assert(std.mem.eql(u8, rb.mold_name_slice(&amt), "amount-mold"));
+    print("barket: sample=amount-mold accepts -- GREEN\n", .{});
+
+    if (rb.parse_source("|^  sample=kind-mold\nsample\n")) |_| {
+        return error.BarketKindMoldAcceptedTooSoon;
+    } else |err| {
+        if (err != rb.ParseError.SampleDoesNotNest) return err;
+    }
+    print("barket: sample=kind-mold refused SampleDoesNotNest -- GREEN\n", .{});
+
     // Bartis rune refuses NotABarket.
     if (rb.parse_source("|=  sample=@u32\nsample\n")) |_| {
         return error.BartisAcceptedAsBarket;
@@ -64,7 +77,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("barket: |= refused NotABarket -- GREEN\n", .{});
 
-    print("GREEN: Glow barket parse — dry header · identity · call-body trio · parse_body; STOA112–117.\n", .{});
+    print("GREEN: Glow barket parse — dry header · identity · call-body trio · amount-mold; STOA112–118.\n", .{});
     _ = witness_version;
     return 0;
 }
