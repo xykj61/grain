@@ -359,7 +359,8 @@
 - [x] **STOA88 — Glow `?>` / `?<` TAME assertion runes** `20260719.203207` — Hoon wutgar/wutgal parallel; desks `assert-true` · `assert-false`; lower to unqualified Rye `assert`; TAME_GUIDANCE Glow pin; desk suite GREEN.
 - [x] **STOA89 — rune pronunciation alphabet · RISC-V notes · fixture/generator wording** `20260719.204001` — adopt Hoon glyph alphabet as Glow canon; seat roadmap G0–G5; Lexicon **Fixture desk** · **Generator** · **Sample** · **Glow gate** · **Rune alphabet**; Acme expanding-prompt; token-driven lower held for STOA90+.
 - [x] **STOA90 — closed pronunciation table G1** `20260719.220814` — 25 GREEN heads (glyph · spoken · family · meaning · RISC-V/TAME); bound to `glow/tokens.rye` `match_rune2` via `tools/glow_rune_alphabet_witness.rish`; `|=` / `|^` named horizon.
-- [ ] **STOA91 — next language / product** — check-in (TAME alphabet pin grow G2 · thin argv sample G3 · token-driven lower · tidy `lower_mold` · Sala B0).
+- [x] **STOA91 — TAME alphabet pin G2** `20260719.222657` — grow `context/TAME_GUIDANCE.md` Glow pin: compact glyph alphabet + family index (GREEN heads only); witness asserts pin ↔ G1 table; not a full Hoon dump.
+- [ ] **STOA92 — next language / product** — check-in (thin argv sample G3 · token-driven lower · tidy `lower_mold` · Sala B0).
 - [x] **Cursor iOS handoff · core polymorphism + port order** `20260719.204650` — handoff [`20260719-204650_cursor-ios-handoff-glow-language.md`](20260719-204650_cursor-ios-handoff-glow-language.md); dry cores fit TAME · wet/gold hold · port L→R→G [`../active-designing/20260719-204650_hoon-core-polymorphism-tame-and-port-order.md`](../active-designing/20260719-204650_hoon-core-polymorphism-tame-and-port-order.md); iOS season = language-only (no adb).
 - [ ] **Dill-parallel kernel revival** — separate `active-reviving/` brief when a real need opens; not Dexter.
 - [ ] **M1 Scribble↔html round-trip witness** — named in fusion map; opens when Keaton leans doc pipeline.

@@ -85,4 +85,33 @@ grep -F 'STOA90' "$TABLE" >/dev/null || {
   exit 1
 }
 
+# --- G2: TAME_GUIDANCE Glow pin carries alphabet + family index ---
+TAME="$ROOT/context/TAME_GUIDANCE.md"
+grep -F 'Family index (GREEN heads only)' "$TAME" >/dev/null || {
+  echo 'FAIL: TAME_GUIDANCE missing Family index (G2)'
+  exit 1
+}
+grep -F 'Glyph alphabet (compact)' "$TAME" >/dev/null || {
+  echo 'FAIL: TAME_GUIDANCE missing Glyph alphabet (G2)'
+  exit 1
+}
+grep -F 'STOA91' "$TAME" >/dev/null || {
+  echo 'FAIL: TAME_GUIDANCE must name STOA91'
+  exit 1
+}
+grep -F '20260719-220814_glow-rune-pronunciation-closed-table.md' "$TAME" >/dev/null || {
+  echo 'FAIL: TAME_GUIDANCE must link G1 closed table'
+  exit 1
+}
+for spoken in barhep wutgar faslus kethep barcen; do
+  grep -F "$spoken" "$TAME" >/dev/null || {
+    echo "FAIL: TAME family index missing $spoken"
+    exit 1
+  }
+done
+grep -F 'bartis' "$TAME" >/dev/null || {
+  echo 'FAIL: TAME pin must name horizon bartis'
+  exit 1
+}
+
 echo OK
