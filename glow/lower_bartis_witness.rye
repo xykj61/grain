@@ -388,19 +388,36 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("lower: quad-mold double call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
 
-    if (lower.lower_source_welcome("|=  sample=penta-mold\n%-  flip  sample\n", &buf)) |_| {
-        return error.PentaFlipCallBodyLoweredTooSoon;
-    } else |err| {
-        if (err != lower.LowerError.BodyGateNotYetLowered) return err;
-    }
-    print("lower: penta-mold flip call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
-
     if (lower.lower_source_argv_sample("|=  sample=penta-mold\nsample\n", &buf)) |_| {
         return error.PentaArgvLoweredTooSoon;
     } else |err| {
         if (err != lower.LowerError.SampleDoesNotNest) return err;
     }
     print("lower: penta-mold argv refused SampleDoesNotNest -- GREEN\n", .{});
+
+    // STOA139: penta-mold flip call-body lowers as PentaMold swap · baked 3/5/1/2/7.
+    const penta_flip_src = "|=  sample=penta-mold\n%-  flip  sample\n";
+    const n_pnf = try lower.lower_source_welcome(penta_flip_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n_pnf], "PentaMold") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_pnf], ".from = sample.amount") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_pnf], "got.from == 3") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_pnf], "got.memo == 7") != null);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_penta_flip_welcome.rye", .data = buf[0..n_pnf] });
+    print("lower: penta-mold call-body flip lowers to PentaMold swap expect 3/5/1/2/7 -- GREEN\n", .{});
+
+    const gen_pnf = try cwd.readFileAlloc(io, "glow/gen/gate-penta-flip.glow", a, .limited(4096));
+    const spec_pnf = try rb.parse_source(gen_pnf);
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_pnf), "penta-mold"));
+    assert(spec_pnf.body == .call_one);
+    assert(std.mem.eql(u8, rb.gate_slice(&spec_pnf), "flip"));
+    print("lower: glow/gen/gate-penta-flip.glow carries penta-mold flip call-body -- GREEN\n", .{});
+
+    if (lower.lower_source_welcome("|=  sample=penta-mold\n%-  double  sample\n", &buf)) |_| {
+        return error.PentaDoubleCallBodyLoweredTooSoon;
+    } else |err| {
+        if (err != lower.LowerError.BodyGateNotYetLowered) return err;
+    }
+    print("lower: penta-mold double call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
 
     // STOA127: kind-mold flip call-body lowers as KindMold switch · baked .send.
     const kind_flip_src = "|=  sample=kind-mold\n%-  flip  sample\n";
@@ -516,7 +533,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("lower: glow/gen/gate-count.glow carries count-mold -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: Glow `|=` bartis — identity · argv · call-body · amount-mold · amount argv · count-mold · count argv · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · pair flip · triple-mold · triple flip · quad-mold · quad flip · penta-mold · nesting-nests (STOA100–138).\n", .{});
+    print("GREEN: Glow `|=` bartis — identity · argv · call-body · amount-mold · amount argv · count-mold · count argv · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · pair flip · triple-mold · triple flip · quad-mold · quad flip · penta-mold · penta flip · nesting-nests (STOA100–139).\n", .{});
     return 0;
 }
 

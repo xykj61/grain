@@ -4,7 +4,7 @@
 //!   - header-only (STOA112)
 //!   - identity body face (STOA113)
 //!   - call body: `%-  <gate>  <sample-face>` (STOA115–116)
-//! Closed demo gates: `double` · `inc` · `dec` (`@u32`) · `flip` (kind · xact · xfer · pair · triple · quad · STOA127–131/136–137).
+//! Closed demo gates: `double` · `inc` · `dec` (`@u32`) · `flip` (kind · xact · xfer · pair · triple · quad · penta · STOA127–131/136–139).
 //! STOA117: TAME tidy — copy_disjoint · parse_body split.
 //! STOA118: closed named mold `amount-mold` (one-field `$:` ≡ `@u32` lower).
 //! STOA120: expansion calls `assert_sample_nesting_nests` at the mold seam.
@@ -23,6 +23,7 @@
 //! STOA136: closed call-body under triple-mold — `flip` (from↔amount · fee stays).
 //! STOA137: closed call-body under quad-mold — `flip` (from↔amount · fee/nonce stay).
 //! STOA138: closed allowlist adds five-field `$:` `penta-mold` (identity lower).
+//! STOA139: closed call-body under penta-mold — `flip` (from↔amount · fee/nonce/memo stay).
 //! Sample nests under `@u32` / named allowlist via nest_type; ambient gold held.
 //! Token-driven via tokens.rye. Open `$:` beyond penta barket samples held.
 
@@ -117,6 +118,11 @@ pub fn is_triple_call_gate(gate: []const u8) bool {
 
 /// Closed call-body gates under quad-mold (STOA137) — `flip` only today.
 pub fn is_quad_call_gate(gate: []const u8) bool {
+    return std.mem.eql(u8, gate, "flip");
+}
+
+/// Closed call-body gates under penta-mold (STOA139) — `flip` only today.
+pub fn is_penta_call_gate(gate: []const u8) bool {
     return std.mem.eql(u8, gate, "flip");
 }
 
