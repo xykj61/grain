@@ -1,0 +1,4 @@
+::  Thin barket — sample=xfer-mold through closed flip call body (STOA129).
+::  XferMold flip: .mint → .send; baked expect .send.
+|^  sample=xfer-mold
+%-  flip  sample

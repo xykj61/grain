@@ -1,0 +1,42 @@
+# session_logs_index_prepend.rish — prepend newest-first rows to session-logs/README.md
+#
+# Replaces ephemeral python heredocs used during STOA pin sends. Reads markdown
+# bullet lines from tools/.cache/session_logs_index_rows.txt and inserts them
+# immediately before the first living index row (`- \`YYYYMMDD.`).
+#
+#   mkdir -p tools/.cache
+#   printf '%s\n' '- `20260720.192038` — [title](file.bron) — meaning' \
+#     > tools/.cache/session_logs_index_rows.txt
+#   rishi/bin/rishi run tools/session_logs_index_prepend.rish
+
+let index = "session-logs/README.md"
+let rows_file = "tools/.cache/session_logs_index_rows.txt"
+let awk_prog = "tools/fixtures/session_logs_index_prepend.awk"
+
+let have_index = run ["test" "-f" index]
+assert have_index.ok else "session-logs/README.md missing"
+
+let have_rows = run ["test" "-f" rows_file]
+assert have_rows.ok else "missing ${rows_file} — write one markdown bullet per line first"
+
+let have_awk = run ["test" "-f" awk_prog]
+assert have_awk.ok else "missing ${awk_prog}"
+
+let rows = read-file rows_file
+assert (rows contains "- `") else "rows file must contain at least one markdown bullet starting with - `"
+
+let before = run ["md5sum" index]
+assert before.ok else "could not checksum session-logs/README.md"
+
+let apply = run ["sh" "-c" "awk -f ${awk_prog} ${rows_file} ${index} > ${index}.tmp && mv ${index}.tmp ${index}"]
+assert apply.ok else "session_logs_index_prepend awk failed: ${apply.err}${apply.out}"
+
+let after = run ["md5sum" index]
+assert after.ok else "could not checksum session-logs/README.md after prepend"
+assert after.out != before.out else "session-logs/README.md unchanged — marker row not found?"
+
+let first = run ["sh" "-c" "head -n 20 ${index}"]
+assert first.ok else "could not read updated index"
+assert first.out contains "- `" else "updated index missing bullet rows"
+
+say "GREEN: session-logs/README.md prepended newest-first rows from ${rows_file}."
