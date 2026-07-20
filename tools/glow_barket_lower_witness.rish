@@ -1,7 +1,7 @@
 # glow_barket_lower_witness.rish — `|^` barket lowers to Rye; emitted program runs.
 #
 # Proves identity (STOA113), argv (STOA114), call-body trio (STOA115–116),
-# TAME tidy (STOA117), named-mold (STOA118/122), wet-through-nests (STOA121): barket_gate emit,
+# TAME tidy (STOA117), named-mold (STOA118/122), nesting-through-nests (STOA121/130): barket_gate emit,
 # fixtures/generators, welcome exit 0, argv exit 0, ban overflow seat.
 #
 #   rishi/bin/rishi run tools/glow_barket_lower_witness.rish
@@ -26,8 +26,8 @@ let dec_bin = "glow/bin/gate_barket_dec_welcome"
 let dec_argv_rye = "glow/.cache/gate_barket_dec_argv.rye"
 let dec_argv_bin = "glow/bin/gate_barket_dec_argv"
 
-let tame_pin = run ["sh" "-c" "grep -F 'STOA129' ${tame}"]
-assert tame_pin.ok else "TAME missing STOA129 xfer-mold flip call-body"
+let tame_pin = run ["sh" "-c" "grep -F 'STOA130' ${tame}"]
+assert tame_pin.ok else "TAME missing STOA130 stated nesting gold vocabulary"
 
 let has_lower = run ["sh" "-c" "test -f glow/lower_barket.rye; echo $?"]
 assert trim has_lower.out == "0" else "glow/lower_barket.rye must exist"
@@ -162,11 +162,11 @@ let run_amt = run ["sh" "-c" "${amt_bin}; echo EXIT:$?"]
 assert run_amt.ok else "barket amount-mold welcome binary failed to launch"
 assert run_amt.out contains "EXIT:0" else "barket amount-mold welcome binary did not exit 0"
 
-# STOA121: barket passes is_wet=true through wet-nests; no dry not_wet pin.
-let wet_wire = run ["sh" "-c" "grep -c 'assert_sample_wet_nests(true' glow/rune_barket.rye | tr -d ' '"]
-assert trim wet_wire.out != "0" else "glow/rune_barket.rye must call assert_sample_wet_nests(true, …)"
-let dry_pin = run ["sh" "-c" "grep -c 'assert_sample_not_wet(false)' glow/rune_barket.rye | tr -d ' '"]
-assert trim dry_pin.out == "0" else "glow/rune_barket.rye must drop assert_sample_not_wet(false)"
+# STOA121 / STOA130: barket passes is_nesting=true through nesting-nests; no stated not_nesting pin.
+let wet_wire = run ["sh" "-c" "grep -c 'assert_sample_nesting_nests(true' glow/rune_barket.rye | tr -d ' '"]
+assert trim wet_wire.out != "0" else "glow/rune_barket.rye must call assert_sample_nesting_nests(true, …)"
+let dry_pin = run ["sh" "-c" "grep -c 'assert_sample_not_nesting(false)' glow/rune_barket.rye | tr -d ' '"]
+assert trim dry_pin.out == "0" else "glow/rune_barket.rye must drop assert_sample_not_nesting(false)"
 
 # STOA122: count-mold welcome binary exits 0.
 let cnt_rye = "glow/.cache/gate_barket_count_welcome.rye"
@@ -240,4 +240,4 @@ let run_xff = run ["sh" "-c" "${xfer_flip_bin}; echo EXIT:$?"]
 assert run_xff.ok else "barket xfer-mold flip welcome binary failed to launch"
 assert run_xff.out contains "EXIT:0" else "barket xfer-mold flip welcome binary did not exit 0"
 
-say "GREEN: Glow barket lower — identity · argv · call-body · amount-mold · count-mold · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · wet-through-nests; STOA113–129."
+say "GREEN: Glow barket lower — identity · argv · call-body · amount-mold · count-mold · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · nesting-through-nests; STOA113–130."
