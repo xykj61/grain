@@ -64,8 +64,12 @@ assert selftest.out contains "XferMold" else "lower_barket_witness missing XferM
 assert selftest.out contains "gate-barket-xfer.glow" else "lower_barket_witness missing xfer fixture"
 assert selftest.out contains "PairMold" else "lower_barket_witness missing PairMold claim"
 assert selftest.out contains "gate-barket-pair.glow" else "lower_barket_witness missing pair fixture"
-assert selftest.out contains "gate-barket-kind-refuse.glow" else "lower_barket_witness missing triple refuse desk"
-assert selftest.out contains "triple-mold" else "lower_barket_witness missing triple-mold refuse"
+assert selftest.out contains "gate-barket-kind-refuse.glow" else "lower_barket_witness missing quad refuse desk"
+assert selftest.out contains "quad-mold" else "lower_barket_witness missing quad-mold refuse"
+assert selftest.out contains "gate-barket-triple.glow" else "lower_barket_witness missing triple fixture"
+assert selftest.out contains "TripleMold" else "lower_barket_witness missing TripleMold claim"
+assert selftest.out contains "triple-mold flip call-body refused" else "lower_barket_witness missing triple flip refuse"
+assert selftest.out contains "triple-mold argv refused" else "lower_barket_witness missing triple argv refuse"
 assert selftest.out contains "call-body flip" else "lower_barket_witness missing kind flip claim"
 assert selftest.out contains "gate-barket-kind-flip.glow" else "lower_barket_witness missing kind-flip desk"
 assert selftest.out contains "gate-barket-xact-flip.glow" else "lower_barket_witness missing xact-flip desk"
@@ -238,6 +242,15 @@ let run_pair = run ["sh" "-c" "${pair_bin}; echo EXIT:$?"]
 assert run_pair.ok else "barket pair-mold welcome binary failed to launch"
 assert run_pair.out contains "EXIT:0" else "barket pair-mold welcome binary did not exit 0"
 
+# STOA134: triple-mold welcome binary exits 0.
+let triple_rye = "glow/.cache/gate_barket_triple_welcome.rye"
+let triple_bin = "glow/bin/gate_barket_triple_welcome"
+let build_triple = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${triple_rye} -femit-bin=${triple_bin}"]
+assert build_triple.ok else "barket triple-mold welcome .rye build failed: ${build_triple.err}${build_triple.out}"
+let run_triple = run ["sh" "-c" "${triple_bin}; echo EXIT:$?"]
+assert run_triple.ok else "barket triple-mold welcome binary failed to launch"
+assert run_triple.out contains "EXIT:0" else "barket triple-mold welcome binary did not exit 0"
+
 # STOA127: kind-mold flip call-body welcome binary exits 0.
 let kind_flip_rye = "glow/.cache/gate_barket_kind_flip_welcome.rye"
 let kind_flip_bin = "glow/bin/gate_barket_kind_flip_welcome"
@@ -274,4 +287,4 @@ let run_pf = run ["sh" "-c" "${pair_flip_bin}; echo EXIT:$?"]
 assert run_pf.ok else "barket pair-mold flip welcome binary failed to launch"
 assert run_pf.out contains "EXIT:0" else "barket pair-mold flip welcome binary did not exit 0"
 
-say "GREEN: Glow barket lower — identity · argv · call-body · amount-mold · amount argv · count-mold · count argv · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · pair flip · nesting-through-nests; STOA113–133."
+say "GREEN: Glow barket lower — identity · argv · call-body · amount-mold · amount argv · count-mold · count argv · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · pair flip · triple-mold · nesting-through-nests; STOA113–134."

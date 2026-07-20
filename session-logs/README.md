@@ -8,6 +8,8 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260720.195028` — [STOA134 triple-mold gate GREEN](20260720-195028_stoa134-triple-mold-green.bron) — TripleMold identity · baked 5/3/1; await send
+- `20260720.194437` — [STOA134 triple-mold gate identity map](20260720-194437_stoa134-triple-mold-map.bron) — lean A closed three-field $: gate sample
 - `20260720.194422` — [STOA133 approved and sent](20260720-194422_stoa133-approved-sent.bron) — claim df051870f7
 - `20260720.194421` — [STOA133 send complete](20260720-194421_stoa133-send-complete.bron) — origin main language claim df051870f7
 - `20260720.194421` — [STOA134 next map after count argv](20260720-194421_stoa134-next-map.bron) — gold vs tagged argv vs triple; compass pick
