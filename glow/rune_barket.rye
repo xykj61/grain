@@ -1,20 +1,12 @@
-//! glow/rune_barket.rye — parses Glow's `|^` barket (STOA112–113).
+//! glow/rune_barket.rye — parses Glow's `|^` barket (STOA112–115).
 //!
-//! Dry-shaped demo: `|^  sample=@u32` header, optional identity body face.
-//! STOA112: header-only accepts into BarketSpec.
-//! STOA113: identity body (matching sample face) also accepts; lower emits.
-//! Non-identity body tokens refuse `BodyNotYetLowered`.
+//! Dry-shaped demo: `|^  sample=@u32` header, then either:
+//!   - header-only (STOA112)
+//!   - identity body face (STOA113)
+//!   - call body: `%-  double  <sample-face>` (STOA115)
+//! Closed demo gate this lap: `double` only (inc/dec held).
 //! Sample aura nests under `@u32` via nest_type; wet/gold accept held.
 //! Token-driven via tokens.rye. Named-mold barket samples held.
-//!
-//! Parse shape (token stream):
-//!   1. skip leading newlines
-//!   2. rune2 `|^`
-//!   3. ident (sample face name)
-//!   4. equals
-//!   5. aura `@u32` (else SampleDoesNotNest)
-//!   6. newline(s)
-//!   7. end → header-only · or identity ident matching face · else BodyNotYetLowered
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -23,6 +15,7 @@ const tally_copy = @import("tally_copy.rye");
 const nest_type = @import("nest_type.rye");
 
 pub const max_face_len: u32 = tokens.max_name_len;
+pub const max_gate_len: u32 = tokens.max_name_len;
 
 pub const ParseError = error{
     EmptySource,
@@ -32,6 +25,9 @@ pub const ParseError = error{
     MissingAura,
     SampleDoesNotNest,
     BodyFaceMismatch,
+    BodyGateNotYetLowered,
+    BodySampleMismatch,
+    MalformedBody,
     BodyNotYetLowered,
     TooManyTokens,
     BadToken,
@@ -40,13 +36,16 @@ pub const ParseError = error{
 pub const BodyKind = enum {
     header_only,
     identity,
+    call_one,
 };
 
-/// A parsed thin barket: sample face + optional identity body.
+/// A parsed thin barket: sample face + optional identity/call body.
 pub const BarketSpec = struct {
     face: [max_face_len]u8 = [_]u8{0} ** max_face_len,
     face_len: u32 = 0,
     body: BodyKind = .header_only,
+    gate: [max_gate_len]u8 = [_]u8{0} ** max_gate_len,
+    gate_len: u32 = 0,
 };
 
 pub fn face_slice(spec: *const BarketSpec) []const u8 {
@@ -54,7 +53,17 @@ pub fn face_slice(spec: *const BarketSpec) []const u8 {
     return spec.face[0..spec.face_len];
 }
 
-/// Parse a barket source into a BarketSpec (header-only or identity body).
+pub fn gate_slice(spec: *const BarketSpec) []const u8 {
+    assert(spec.gate_len <= max_gate_len); // invariant: gate fits in buffer
+    return spec.gate[0..spec.gate_len];
+}
+
+/// True when `gate` is a closed demo one-arg gate accepted in a barket call body.
+pub fn is_closed_call_gate(gate: []const u8) bool {
+    return std.mem.eql(u8, gate, "double");
+}
+
+/// Parse a barket source into a BarketSpec.
 pub fn parse_source(src: []const u8) ParseError!BarketSpec {
     if (src.len == 0) return error.EmptySource;
     var buf: [tokens.max_tokens]tokens.Token = undefined;
@@ -106,8 +115,27 @@ pub fn parse_source(src: []const u8) ParseError!BarketSpec {
         if (!std.mem.eql(u8, body_text, face_text)) return error.BodyFaceMismatch;
         i += 1;
         while (i < n and toks[@as(usize, @intCast(i))].kind == .newline) : (i += 1) {}
-        if (i < n) return error.BodyNotYetLowered;
+        if (i < n) return error.MalformedBody;
         spec.body = .identity;
+        return spec;
+    }
+
+    if (toks[@as(usize, @intCast(i))].kind == .rune2 and std.mem.eql(u8, tokens.slice_of(src, toks[@as(usize, @intCast(i))]), "%-")) {
+        i += 1;
+        if (i >= n or toks[@as(usize, @intCast(i))].kind != .ident) return error.MalformedBody;
+        const gate_text = tokens.slice_of(src, toks[@as(usize, @intCast(i))]);
+        if (gate_text.len == 0 or gate_text.len > max_gate_len) return error.MalformedBody;
+        if (!is_closed_call_gate(gate_text)) return error.BodyGateNotYetLowered;
+        i += 1;
+        if (i >= n or toks[@as(usize, @intCast(i))].kind != .ident) return error.MalformedBody;
+        const call_sample = tokens.slice_of(src, toks[@as(usize, @intCast(i))]);
+        if (!std.mem.eql(u8, call_sample, face_text)) return error.BodySampleMismatch;
+        i += 1;
+        while (i < n and toks[@as(usize, @intCast(i))].kind == .newline) : (i += 1) {}
+        if (i < n) return error.MalformedBody;
+        spec.body = .call_one;
+        tally_copy.copy_disjoint(u8, spec.gate[0..gate_text.len], gate_text);
+        spec.gate_len = @intCast(gate_text.len);
         return spec;
     }
 

@@ -1,4 +1,4 @@
-//! glow/lower_barket_witness.rye — proves `|^` barket lowers to runnable `.rye` (STOA113–114).
+//! glow/lower_barket_witness.rye — proves `|^` barket lowers to runnable `.rye` (STOA113–115).
 //!
 //!   rye build glow/lower_barket_witness.rye -femit-bin=glow/bin/lower_barket_witness
 //!   glow/bin/lower_barket_witness
@@ -9,7 +9,7 @@ const print = std.debug.print;
 const lower = @import("lower_barket.rye");
 const rb = @import("rune_barket.rye");
 
-const witness_version = "20260720.175643";
+const witness_version = "20260720.180047";
 
 fn run_selftest(init: std.process.Init) !u8 {
     const io = init.io;
@@ -55,15 +55,31 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("lower: body face mismatch refused BodyFaceMismatch -- GREEN\n", .{});
 
-    // Call body still held.
-    if (lower.lower_source_welcome("|^  sample=@u32\n%-  double  sample\n", &buf)) |_| {
-        return error.CallBodyLoweredTooSoon;
-    } else |err| {
-        if (err != lower.LowerError.BodyNotYetLowered) return err;
-    }
-    print("lower: call-body barket refused BodyNotYetLowered -- GREEN\n", .{});
+    // STOA115: call body double lowers to *% 2 with expect 10.
+    const call_src = "|^  sample=@u32\n%-  double  sample\n";
+    const n_call = try lower.lower_source_welcome(call_src, &buf);
+    const rye_call = buf[0..n_call];
+    assert(std.mem.indexOf(u8, rye_call, "*% 2") != null);
+    assert(std.mem.indexOf(u8, rye_call, "barket_gate(sample) == 10") != null);
+    print("lower: call-body double lowers to *% 2 expect 10 -- GREEN\n", .{});
 
-    // Fixture desk parses as identity.
+    // Refuse unknown call-body gate (inc/dec/mix still held).
+    if (lower.lower_source_welcome("|^  sample=@u32\n%-  mix  sample\n", &buf)) |_| {
+        return error.BodyGateLoweredTooSoon;
+    } else |err| {
+        if (err != lower.LowerError.BodyGateNotYetLowered) return err;
+    }
+    print("lower: unknown call-body gate refused BodyGateNotYetLowered -- GREEN\n", .{});
+
+    // Refuse call-body sample face mismatch.
+    if (lower.lower_source_welcome("|^  sample=@u32\n%-  double  other\n", &buf)) |_| {
+        return error.BodySampleLowered;
+    } else |err| {
+        if (err != lower.LowerError.BodySampleMismatch) return err;
+    }
+    print("lower: call-body sample mismatch refused BodySampleMismatch -- GREEN\n", .{});
+
+    // Fixture desks.
     try cwd.createDirPath(io, "glow/.cache");
     const gen_src = try cwd.readFileAlloc(io, "glow/gen/gate-barket-sample.glow", a, .limited(4096));
     const spec = try rb.parse_source(gen_src);
@@ -75,7 +91,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_sample_welcome.rye", .data = buf[0..n3] });
     print("lower: wrote barket welcome .rye under glow/.cache/ -- GREEN\n", .{});
 
-    // STOA114: argv-sample emit reads process argv and keeps the gate fn.
+    // STOA114: argv-sample emit.
     const n4 = try lower.lower_source_argv_sample(gate_src, &buf);
     const rye_argv = buf[0..n4];
     assert(std.mem.indexOf(u8, rye_argv, "barket_gate") != null);
@@ -93,8 +109,31 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_sample_argv.rye", .data = rye_argv });
     print("lower: wrote barket argv .rye under glow/.cache/ -- GREEN\n", .{});
 
+    // STOA115 fixtures + argv call-body emit.
+    const gen_double = try cwd.readFileAlloc(io, "glow/gen/gate-barket-double.glow", a, .limited(4096));
+    const spec_d = try rb.parse_source(gen_double);
+    assert(spec_d.body == .call_one);
+    assert(std.mem.eql(u8, rb.gate_slice(&spec_d), "double"));
+    print("lower: glow/gen/gate-barket-double.glow carries call-body double -- GREEN\n", .{});
+
+    const n_call_w = try lower.lower_source_welcome(call_src, &buf);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_double_welcome.rye", .data = buf[0..n_call_w] });
+    print("lower: wrote barket call-body welcome .rye under glow/.cache/ -- GREEN\n", .{});
+
+    const n_call_argv = try lower.lower_source_argv_sample(call_src, &buf);
+    const rye_call_argv = buf[0..n_call_argv];
+    assert(std.mem.indexOf(u8, rye_call_argv, "*% 2") != null);
+    assert(std.mem.indexOf(u8, rye_call_argv, "minimal.args") != null);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_double_argv.rye", .data = rye_call_argv });
+    print("lower: wrote barket call-body argv .rye under glow/.cache/ -- GREEN\n", .{});
+
+    const gen_double_u32 = try cwd.readFileAlloc(io, "glow/gen/gate-barket-double-u32.glow", a, .limited(4096));
+    const spec_du = try rb.parse_source(gen_double_u32);
+    assert(spec_du.body == .call_one);
+    print("lower: glow/gen/gate-barket-double-u32.glow carries call-body double -- GREEN\n", .{});
+
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: Glow `|^` barket — identity · argv-sample; STOA113–114.\n", .{});
+    print("GREEN: Glow `|^` barket — identity · argv-sample · call-body double; STOA113–115.\n", .{});
     return 0;
 }
 

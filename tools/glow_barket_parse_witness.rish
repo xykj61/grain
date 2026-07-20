@@ -22,14 +22,15 @@ assert build.ok else "rune_barket_witness build failed: ${build.err}${build.out}
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
 assert selftest.ok else "rune_barket_witness exited non-zero: ${selftest.err}${selftest.out}"
 assert selftest.out contains "GREEN" else "rune_barket_witness not GREEN"
-assert selftest.out contains "BodyNotYetLowered" else "rune_barket_witness missing BodyNotYetLowered"
 assert selftest.out contains "SampleDoesNotNest" else "rune_barket_witness missing SampleDoesNotNest"
 assert selftest.out contains "NotABarket" else "rune_barket_witness missing NotABarket"
 assert selftest.out contains "identity body" else "rune_barket_witness missing identity body claim"
+assert selftest.out contains "call-body double" else "rune_barket_witness missing call-body double claim"
+assert selftest.out contains "BodyGateNotYetLowered" else "rune_barket_witness missing unknown-gate refuse"
 
 # Tokenize sibling stays GREEN.
 let tok = run ["sh" "-c" "rishi/bin/rishi run tools/glow_barket_tokenize_witness.rish"]
 assert tok.ok else "glow_barket_tokenize_witness failed under barket parse"
 assert tok.out contains "GREEN" else "glow_barket_tokenize_witness not GREEN"
 
-say "GREEN: Glow barket parse — dry header · identity; BodyNotYetLowered for call body; STOA112–113."
+say "GREEN: Glow barket parse — dry header · identity · call-body double; STOA112–115."

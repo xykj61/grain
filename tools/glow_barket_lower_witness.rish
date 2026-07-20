@@ -1,7 +1,7 @@
 # glow_barket_lower_witness.rish — `|^` barket lowers to Rye; emitted program runs.
 #
-# Proves identity welcome (STOA113) and argv-sample (STOA114): barket_gate emit,
-# fixture + generator desks, welcome exit 0, argv exit 0 with sample 9.
+# Proves identity (STOA113), argv (STOA114), and call-body double (STOA115):
+# barket_gate emit, fixtures/generators, welcome exit 0, argv exit 0.
 #
 #   rishi/bin/rishi run tools/glow_barket_lower_witness.rish
 
@@ -12,9 +12,13 @@ let welcome_rye = "glow/.cache/gate_barket_sample_welcome.rye"
 let welcome_bin = "glow/bin/gate_barket_sample_welcome"
 let argv_rye = "glow/.cache/gate_barket_sample_argv.rye"
 let argv_bin = "glow/bin/gate_barket_sample_argv"
+let call_rye = "glow/.cache/gate_barket_double_welcome.rye"
+let call_bin = "glow/bin/gate_barket_double_welcome"
+let call_argv_rye = "glow/.cache/gate_barket_double_argv.rye"
+let call_argv_bin = "glow/bin/gate_barket_double_argv"
 
-let tame_pin = run ["sh" "-c" "grep -F 'STOA114' ${tame}"]
-assert tame_pin.ok else "TAME missing STOA114 barket argv"
+let tame_pin = run ["sh" "-c" "grep -F 'STOA115' ${tame}"]
+assert tame_pin.ok else "TAME missing STOA115 barket call-body"
 
 let has_lower = run ["sh" "-c" "test -f glow/lower_barket.rye; echo $?"]
 assert trim has_lower.out == "0" else "glow/lower_barket.rye must exist"
@@ -27,32 +31,45 @@ assert selftest.ok else "lower_barket_witness exited non-zero: ${selftest.err}${
 assert selftest.out contains "GREEN" else "lower_barket_witness not GREEN"
 assert selftest.out contains "barket_gate" else "lower_barket_witness missing barket_gate"
 assert selftest.out contains "SampleDoesNotNest" else "lower_barket_witness missing nest refuse"
-assert selftest.out contains "BodyNotYetLowered" else "lower_barket_witness missing call-body hold"
+assert selftest.out contains "BodyGateNotYetLowered" else "lower_barket_witness missing unknown-gate refuse"
+assert selftest.out contains "BodySampleMismatch" else "lower_barket_witness missing sample-mismatch refuse"
 assert selftest.out contains "gate-barket-sample.glow" else "lower_barket_witness missing fixture desk"
 assert selftest.out contains "argv-sample" else "lower_barket_witness missing argv-sample claim"
 assert selftest.out contains "gate-barket-sample-u32.glow" else "lower_barket_witness missing argv gen desk"
+assert selftest.out contains "call-body double" else "lower_barket_witness missing call-body claim"
+assert selftest.out contains "gate-barket-double.glow" else "lower_barket_witness missing double fixture"
+assert selftest.out contains "gate-barket-double-u32.glow" else "lower_barket_witness missing double argv gen"
 
 let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
 assert build_welcome.ok else "barket welcome .rye build failed: ${build_welcome.err}${build_welcome.out}"
-
 let run_welcome = run ["sh" "-c" "${welcome_bin}; echo EXIT:$?"]
 assert run_welcome.ok else "barket welcome binary failed to launch"
 assert run_welcome.out contains "EXIT:0" else "barket welcome binary did not exit 0"
 
 let build_argv = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${argv_rye} -femit-bin=${argv_bin}"]
 assert build_argv.ok else "barket argv .rye build failed: ${build_argv.err}${build_argv.out}"
-
 let run_argv = run ["sh" "-c" "${argv_bin} 9; echo EXIT:$?"]
 assert run_argv.ok else "barket argv binary failed to launch"
 assert run_argv.out contains "EXIT:0" else "barket argv binary did not exit 0 with sample 9"
 
-# Parse sibling GREEN.
+let build_call = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${call_rye} -femit-bin=${call_bin}"]
+assert build_call.ok else "barket call-body welcome .rye build failed: ${build_call.err}${build_call.out}"
+let run_call = run ["sh" "-c" "${call_bin}; echo EXIT:$?"]
+assert run_call.ok else "barket call-body welcome binary failed to launch"
+assert run_call.out contains "EXIT:0" else "barket call-body welcome binary did not exit 0"
+
+let build_call_argv = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${call_argv_rye} -femit-bin=${call_argv_bin}"]
+assert build_call_argv.ok else "barket call-body argv .rye build failed: ${build_call_argv.err}${build_call_argv.out}"
+let run_call_argv = run ["sh" "-c" "${call_argv_bin} 7; echo EXIT:$?"]
+assert run_call_argv.ok else "barket call-body argv binary failed to launch"
+assert run_call_argv.out contains "EXIT:0" else "barket call-body argv binary did not exit 0 with sample 7"
+
 let parse = run ["sh" "-c" "rishi/bin/rishi run tools/glow_barket_parse_witness.rish"]
-assert parse.ok else "glow_barket_parse_witness failed under barket argv"
+assert parse.ok else "glow_barket_parse_witness failed under barket call-body"
 assert parse.out contains "GREEN" else "glow_barket_parse_witness not GREEN"
 
 let bartis = run ["sh" "-c" "rishi/bin/rishi run tools/glow_lower_bartis_witness.rish"]
-assert bartis.ok else "glow_lower_bartis_witness failed under barket argv"
+assert bartis.ok else "glow_lower_bartis_witness failed under barket call-body"
 assert bartis.out contains "GREEN" else "glow_lower_bartis_witness not GREEN"
 
-say "GREEN: Glow barket lower — barket_gate identity · argv-sample; STOA113–114."
+say "GREEN: Glow barket lower — identity · argv · call-body double; STOA113–115."

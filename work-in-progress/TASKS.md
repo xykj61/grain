@@ -383,6 +383,7 @@
 - [x] **STOA112 — barket header parse** `20260720.174115` — dry `|^  sample=@u32` → `BarketSpec`; body `BodyNotYetLowered`; `@u64` `SampleDoesNotNest`; lower held; ambient wet/gold accept · Sala B0 held.
 - [x] **STOA113 — barket identity lower** `20260720.175115` — `barket_gate` emit; fixture `gate-barket-sample`; `glow_run` `|^` arm; call-body/argv/wet accept · Sala B0 held.
 - [x] **STOA114 — barket argv sample** `20260720.175643` — `lower_source_argv_sample`; generator `gate-barket-sample-u32`; `glow_run --sample-argv`; call-body/wet accept · Sala B0 held.
+- [x] **STOA115 — barket call-body double** `20260720.180047` — `%-  double` → `*% 2`; fixture + argv generator; `inc`/`dec`/wet accept · Sala B0 held.
 - [x] **Cursor iOS handoff · core polymorphism + port order** `20260719.204650` — handoff [`20260719-204650_cursor-ios-handoff-glow-language.md`](20260719-204650_cursor-ios-handoff-glow-language.md); dry cores fit TAME · wet/gold hold · port L→R→G [`../active-designing/20260719-204650_hoon-core-polymorphism-tame-and-port-order.md`](../active-designing/20260719-204650_hoon-core-polymorphism-tame-and-port-order.md); iOS season = language-only (no adb).
 - [ ] **Dill-parallel kernel revival** — separate `active-reviving/` brief when a real need opens; not Dexter.
 - [ ] **M1 Scribble↔html round-trip witness** — named in fusion map; opens when Keaton leans doc pipeline.

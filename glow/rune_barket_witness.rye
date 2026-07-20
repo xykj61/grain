@@ -1,4 +1,4 @@
-//! glow/rune_barket_witness.rye — proves barket parse (STOA112–113).
+//! glow/rune_barket_witness.rye — proves barket parse (STOA112–115).
 //!
 //!   rye build glow/rune_barket_witness.rye -femit-bin=glow/bin/rune_barket_witness
 //!   glow/bin/rune_barket_witness
@@ -8,7 +8,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const rb = @import("rune_barket.rye");
 
-const witness_version = "20260720.175115";
+const witness_version = "20260720.180047";
 
 fn run_selftest(init: std.process.Init) !u8 {
     _ = init;
@@ -24,13 +24,19 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(id.body == .identity);
     print("barket: identity body accepts -- GREEN\n", .{});
 
-    // Call body refuses BodyNotYetLowered.
-    if (rb.parse_source("|^  sample=@u32\n%-  double  sample\n")) |_| {
-        return error.BarketBodyAcceptedTooSoon;
+    // Call body double accepts (STOA115).
+    const call = try rb.parse_source("|^  sample=@u32\n%-  double  sample\n");
+    assert(call.body == .call_one);
+    assert(std.mem.eql(u8, rb.gate_slice(&call), "double"));
+    print("barket: call-body double accepts -- GREEN\n", .{});
+
+    // Unknown call gate refuses BodyGateNotYetLowered.
+    if (rb.parse_source("|^  sample=@u32\n%-  mix  sample\n")) |_| {
+        return error.BarketGateAcceptedTooSoon;
     } else |err| {
-        if (err != rb.ParseError.BodyNotYetLowered) return err;
+        if (err != rb.ParseError.BodyGateNotYetLowered) return err;
     }
-    print("barket: call body refused BodyNotYetLowered -- GREEN\n", .{});
+    print("barket: unknown call gate refused BodyGateNotYetLowered -- GREEN\n", .{});
 
     // Wrong aura refuses SampleDoesNotNest.
     if (rb.parse_source("|^  sample=@u64\n")) |_| {
@@ -48,7 +54,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("barket: |= refused NotABarket -- GREEN\n", .{});
 
-    print("GREEN: Glow barket parse — dry header · identity · BodyNotYetLowered; STOA112–113.\n", .{});
+    print("GREEN: Glow barket parse — dry header · identity · call-body double; STOA112–115.\n", .{});
     _ = witness_version;
     return 0;
 }
