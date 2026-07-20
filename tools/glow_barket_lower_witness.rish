@@ -69,7 +69,9 @@ assert selftest.out contains "octa-mold" else "lower_barket_witness missing octa
 assert selftest.out contains "gate-barket-hepta.glow" else "lower_barket_witness missing hepta fixture"
 assert selftest.out contains "HeptaMold" else "lower_barket_witness missing HeptaMold claim"
 assert selftest.out contains "hepta-mold argv refused" else "lower_barket_witness missing hepta argv refuse"
-assert selftest.out contains "hepta-mold flip call-body refused" else "lower_barket_witness missing hepta flip refuse"
+assert selftest.out contains "gate-barket-hepta-flip.glow" else "lower_barket_witness missing hepta-flip desk"
+assert selftest.out contains "hepta-mold call-body flip" else "lower_barket_witness missing hepta flip claim"
+assert selftest.out contains "hepta-mold double call-body refused" else "lower_barket_witness missing hepta double refuse"
 assert selftest.out contains "gate-barket-triple.glow" else "lower_barket_witness missing triple fixture"
 assert selftest.out contains "TripleMold" else "lower_barket_witness missing TripleMold claim"
 assert selftest.out contains "gate-barket-quad.glow" else "lower_barket_witness missing quad fixture"
@@ -383,4 +385,13 @@ let run_hxf = run ["sh" "-c" "${hexa_flip_bin}; echo EXIT:$?"]
 assert run_hxf.ok else "barket hexa-mold flip welcome binary failed to launch"
 assert run_hxf.out contains "EXIT:0" else "barket hexa-mold flip welcome binary did not exit 0"
 
-say "GREEN: Glow barket lower — identity · argv · call-body · amount-mold · amount argv · count-mold · count argv · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · pair flip · triple-mold · triple flip · quad-mold · quad flip · penta-mold · penta flip · hexa-mold · hexa flip · hepta-mold · nesting-through-nests; STOA113–142."
+# STOA143: hepta-mold flip call-body welcome binary exits 0.
+let hepta_flip_rye = "glow/.cache/gate_barket_hepta_flip_welcome.rye"
+let hepta_flip_bin = "glow/bin/gate_barket_hepta_flip_welcome"
+let build_htf = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${hepta_flip_rye} -femit-bin=${hepta_flip_bin}"]
+assert build_htf.ok else "barket hepta-mold flip welcome .rye build failed: ${build_htf.err}${build_htf.out}"
+let run_htf = run ["sh" "-c" "${hepta_flip_bin}; echo EXIT:$?"]
+assert run_htf.ok else "barket hepta-mold flip welcome binary failed to launch"
+assert run_htf.out contains "EXIT:0" else "barket hepta-mold flip welcome binary did not exit 0"
+
+say "GREEN: Glow barket lower — identity · argv · call-body · amount-mold · amount argv · count-mold · count argv · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · pair flip · triple-mold · triple flip · quad-mold · quad flip · penta-mold · penta flip · hexa-mold · hexa flip · hepta-mold · hepta flip · nesting-through-nests; STOA113–143."

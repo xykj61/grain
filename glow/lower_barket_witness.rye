@@ -387,12 +387,29 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("lower: glow/gen/gate-barket-kind-refuse.glow (octa-mold) refuses SampleDoesNotNest -- GREEN\n", .{});
 
-    if (lower.lower_source_welcome("|^  sample=hepta-mold\n%-  flip  sample\n", &buf)) |_| {
-        return error.HeptaFlipCallBodyLoweredTooSoon;
+    // STOA143: hepta-mold flip call-body lowers as HeptaMold swap · baked 3/5/1/2/7/4/6.
+    const hepta_flip_src = "|^  sample=hepta-mold\n%-  flip  sample\n";
+    const n_htf = try lower.lower_source_welcome(hepta_flip_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n_htf], "HeptaMold") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_htf], ".from = sample.amount") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_htf], "got.from == 3") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_htf], "got.to == 6") != null);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_hepta_flip_welcome.rye", .data = buf[0..n_htf] });
+    print("lower: hepta-mold call-body flip lowers to HeptaMold swap expect 3/5/1/2/7/4/6 -- GREEN\n", .{});
+
+    const gen_htf = try cwd.readFileAlloc(io, "glow/gen/gate-barket-hepta-flip.glow", a, .limited(4096));
+    const spec_htf = try rb.parse_source(gen_htf);
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_htf), "hepta-mold"));
+    assert(spec_htf.body == .call_one);
+    assert(std.mem.eql(u8, rb.gate_slice(&spec_htf), "flip"));
+    print("lower: glow/gen/gate-barket-hepta-flip.glow carries hepta-mold flip call-body -- GREEN\n", .{});
+
+    if (lower.lower_source_welcome("|^  sample=hepta-mold\n%-  double  sample\n", &buf)) |_| {
+        return error.HeptaDoubleCallBodyLoweredTooSoon;
     } else |err| {
         if (err != lower.LowerError.BodyGateNotYetLowered) return err;
     }
-    print("lower: hepta-mold flip call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
+    print("lower: hepta-mold double call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
 
     if (lower.lower_source_argv_sample("|^  sample=hepta-mold\nsample\n", &buf)) |_| {
         return error.HeptaArgvLoweredTooSoon;
@@ -639,7 +656,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("lower: glow/gen/gate-barket-count.glow carries count-mold -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: Glow `|^` barket — identity · argv · call-body · amount-mold · amount argv · count-mold · count argv · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · pair flip · triple-mold · triple flip · quad-mold · quad flip · penta-mold · penta flip · hexa-mold · hexa flip · hepta-mold · nesting-through-nests; STOA113–142.\n", .{});
+    print("GREEN: Glow `|^` barket — identity · argv · call-body · amount-mold · amount argv · count-mold · count argv · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · pair flip · triple-mold · triple flip · quad-mold · quad flip · penta-mold · penta flip · hexa-mold · hexa flip · hepta-mold · hepta flip · nesting-through-nests; STOA113–143.\n", .{});
     return 0;
 }
 
