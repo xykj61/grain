@@ -124,9 +124,9 @@ let run_amt = run ["sh" "-c" "${amt_bin}; echo EXIT:$?"]
 assert run_amt.ok else "bartis amount-mold welcome binary failed to launch"
 assert run_amt.out contains "EXIT:0" else "bartis amount-mold welcome binary did not exit 0"
 
-# STOA120: expansion seats assert_sample_wet_nests (dry no-op wire).
-let wet_wire = run ["sh" "-c" "grep -c 'assert_sample_wet_nests' glow/rune_bartis.rye | tr -d ' '"]
-assert trim wet_wire.out != "0" else "glow/rune_bartis.rye must call assert_sample_wet_nests"
+# STOA120 / STOA130: expansion seats assert_sample_nesting_nests (stated no-op wire).
+let wet_wire = run ["sh" "-c" "grep -c 'assert_sample_nesting_nests' glow/rune_bartis.rye | tr -d ' '"]
+assert trim wet_wire.out != "0" else "glow/rune_bartis.rye must call assert_sample_nesting_nests"
 
 # STOA122: count-mold welcome binary exits 0.
 let cnt_rye = "glow/.cache/gate_count_welcome.rye"
@@ -200,4 +200,4 @@ let run_xff = run ["sh" "-c" "${xfer_flip_bin}; echo EXIT:$?"]
 assert run_xff.ok else "bartis xfer-mold flip welcome binary failed to launch"
 assert run_xff.out contains "EXIT:0" else "bartis xfer-mold flip welcome binary did not exit 0"
 
-say "GREEN: Glow `|=` bartis — STOA100–129 identity · argv · call-body · amount-mold · count-mold · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · nest SampleDoesNotNest."
+say "GREEN: Glow `|=` bartis — STOA100–130 identity · argv · call-body · amount-mold · count-mold · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · stated nesting · nest SampleDoesNotNest."

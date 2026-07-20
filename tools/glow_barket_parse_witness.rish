@@ -40,4 +40,4 @@ let tok = run ["sh" "-c" "rishi/bin/rishi run tools/glow_barket_tokenize_witness
 assert tok.ok else "glow_barket_tokenize_witness failed under barket parse"
 assert tok.out contains "GREEN" else "glow_barket_tokenize_witness not GREEN"
 
-say "GREEN: Glow barket parse — dry header · identity · call-body trio · amount-mold · count-mold · kind-mold · xact-mold · xfer-mold · pair-mold · wet-through-nests; STOA112–126."
+say "GREEN: Glow barket parse — stated header · identity · call-body trio · amount-mold · count-mold · kind-mold · xact-mold · xfer-mold · pair-mold · nesting-through-nests; STOA112–126/130."
