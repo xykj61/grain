@@ -1,8 +1,8 @@
 # glow_barket_lower_witness.rish — `|^` barket lowers to Rye; emitted program runs.
 #
-# Proves identity (STOA113), argv (STOA114), call-body double (STOA115),
-# and call-body inc/dec (STOA116): barket_gate emit, fixtures/generators,
-# welcome exit 0, argv exit 0.
+# Proves identity (STOA113), argv (STOA114), call-body trio (STOA115–116),
+# and TAME tidy (STOA117): barket_gate emit, fixtures/generators, welcome
+# exit 0, argv exit 0, append_print · parse_body · ban overflow seat.
 #
 #   rishi/bin/rishi run tools/glow_barket_lower_witness.rish
 
@@ -26,8 +26,8 @@ let dec_bin = "glow/bin/gate_barket_dec_welcome"
 let dec_argv_rye = "glow/.cache/gate_barket_dec_argv.rye"
 let dec_argv_bin = "glow/bin/gate_barket_dec_argv"
 
-let tame_pin = run ["sh" "-c" "grep -F 'STOA116' ${tame}"]
-assert tame_pin.ok else "TAME missing STOA116 barket call-body trio"
+let tame_pin = run ["sh" "-c" "grep -F 'STOA117' ${tame}"]
+assert tame_pin.ok else "TAME missing STOA117 barket TAME tidy"
 
 let has_lower = run ["sh" "-c" "test -f glow/lower_barket.rye; echo $?"]
 assert trim has_lower.out == "0" else "glow/lower_barket.rye must exist"
@@ -106,7 +106,31 @@ assert parse.ok else "glow_barket_parse_witness failed under barket call-body tr
 assert parse.out contains "GREEN" else "glow_barket_parse_witness not GREEN"
 
 let bartis = run ["sh" "-c" "rishi/bin/rishi run tools/glow_lower_bartis_witness.rish"]
-assert bartis.ok else "glow_lower_bartis_witness failed under barket call-body trio"
+assert bartis.ok else "glow_lower_bartis_witness failed under barket TAME tidy"
 assert bartis.out contains "GREEN" else "glow_lower_bartis_witness not GREEN"
 
-say "GREEN: Glow barket lower — identity · argv · call-body trio; STOA113–116."
+# TAME surface gates (STOA117).
+let width = run ["sh" "-c" "grep 'usize' glow/lower_barket.rye 2>/dev/null | grep -v '@intCast' | grep -v '@as(usize' | wc -l | tr -d ' '"]
+assert trim width.out == "0" else "glow/lower_barket.rye still carries authored usize"
+let assert_import = run ["sh" "-c" "grep -c 'const assert = std.debug.assert' glow/lower_barket.rye | tr -d ' '"]
+assert trim assert_import.out == "1" else "glow/lower_barket.rye must import assert once"
+let memcpy_l = run ["sh" "-c" "grep -c '@memcpy(' glow/lower_barket.rye | tr -d ' '"]
+assert trim memcpy_l.out == "0" else "glow/lower_barket.rye must not use memcpy"
+let memcpy_r = run ["sh" "-c" "grep -c '@memcpy(' glow/rune_barket.rye | tr -d ' '"]
+assert trim memcpy_r.out == "0" else "glow/rune_barket.rye must not use memcpy"
+let copy_d = run ["sh" "-c" "grep -c 'copy_disjoint' glow/rune_barket.rye | tr -d ' '"]
+assert trim copy_d.out != "0" else "glow/rune_barket.rye must use copy_disjoint"
+let append_p = run ["sh" "-c" "grep -c 'fn append_print' glow/lower_barket.rye | tr -d ' '"]
+assert trim append_p.out == "1" else "glow/lower_barket.rye must define append_print"
+let parse_b = run ["sh" "-c" "grep -c 'fn parse_body' glow/rune_barket.rye | tr -d ' '"]
+assert trim parse_b.out == "1" else "glow/rune_barket.rye must define parse_body"
+let emit_w = run ["sh" "-c" "grep -c 'fn emit_welcome_main' glow/lower_barket.rye | tr -d ' '"]
+assert trim emit_w.out == "1" else "glow/lower_barket.rye must define emit_welcome_main"
+let emit_a = run ["sh" "-c" "grep -c 'fn emit_argv_main' glow/lower_barket.rye | tr -d ' '"]
+assert trim emit_a.out == "1" else "glow/lower_barket.rye must define emit_argv_main"
+
+let bans = run ["sh" "-c" "rishi/bin/rishi run tools/tame_style_scan_bans.rish"]
+assert bans.ok else "tame_style_scan_bans failed under barket tidy"
+assert bans.out contains "lower_barket" else "tame_style_scan_bans missing lower_barket overflow seat"
+
+say "GREEN: Glow barket lower — identity · argv · call-body trio · TAME tidy; STOA113–117."

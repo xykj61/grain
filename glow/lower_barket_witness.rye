@@ -1,4 +1,4 @@
-//! glow/lower_barket_witness.rye — proves `|^` barket lowers to runnable `.rye` (STOA113–116).
+//! glow/lower_barket_witness.rye — proves `|^` barket lowers to runnable `.rye` (STOA113–117).
 //!
 //!   rye build glow/lower_barket_witness.rye -femit-bin=glow/bin/lower_barket_witness
 //!   glow/bin/lower_barket_witness
@@ -9,7 +9,7 @@ const print = std.debug.print;
 const lower = @import("lower_barket.rye");
 const rb = @import("rune_barket.rye");
 
-const witness_version = "20260720.180445";
+const witness_version = "20260720.180900";
 
 fn run_selftest(init: std.process.Init) !u8 {
     const io = init.io;
@@ -187,7 +187,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("lower: glow/gen/gate-barket-dec-u32.glow carries call-body dec -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: Glow `|^` barket — identity · argv-sample · call-body trio; STOA113–116.\n", .{});
+    print("GREEN: Glow `|^` barket — identity · argv-sample · call-body trio · TAME tidy; STOA113–117.\n", .{});
     return 0;
 }
 

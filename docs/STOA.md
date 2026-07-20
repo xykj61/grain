@@ -89,4 +89,5 @@
 | **STOA114** | Barket argv sample | `glow_barket_lower_witness` · `--sample-argv` | **GREEN** `20260720.175643` |
 | **STOA115** | Barket call-body double | `glow_barket_lower_witness` · `glow_run` | **GREEN** `20260720.180047` |
 | **STOA116** | Barket call-body inc/dec | `glow_barket_lower_witness` · `glow_run` | **GREEN** `20260720.180445` |
+| **STOA117** | Barket TAME tidy | `glow_barket_lower_witness` · `tame_style_scan_bans` | **GREEN** `20260720.180900` |
 Smoke: `glow_barket_lower_witness` · `glow_barket_parse_witness` · `glow_nest_type_witness` · `glow_lower_bartis_witness` · Sibling: **ZETA** · **LULU** · **SETU** · **TUBE**.
