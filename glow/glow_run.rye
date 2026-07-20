@@ -6,8 +6,9 @@
 //!
 //! Skips `::` comments and blanks. One rune line uses the head dispatch;
 //! two to four bare `=/` literals share one multi-line lower (STOA10).
-//! Same-desk named-cast dispatch peeks the shared token stream (STOA84).
-//! Build/run stay in tools/glow_run.rish so Rishi remains the shell.
+//! Named-cast dispatch peeks the shared token stream (STOA84 same-desk ·
+//! STOA85 cross-desk). Build/run stay in tools/glow_run.rish.
+
 
 const std = @import("std");
 const print = std.debug.print;

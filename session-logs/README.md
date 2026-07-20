@@ -8,6 +8,7 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260719.201500` — [STOA85 cross-desk token peek GREEN](20260719-201500_stoa85-cross-desk-token-peek-green.bron) — /+ then ^- peek; await send
 - `20260719.201420` — [STOA85 check-in after named-cast token peek](20260719-201420_stoa85-check-in.bron) — lean A cross-desk token peek
 - `20260719.201411` — [STOA84 named-cast token peek send](20260719-201411_stoa84-named-cast-token-peek-send.bron) — pin 0316619e39; then STOA85 check-in
 - `20260719.201027` — [STOA84 named-cast token peek GREEN](20260719-201027_stoa84-named-cast-token-peek-green.bron) — glow_run wire; await send
