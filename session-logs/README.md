@@ -8,6 +8,7 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260720.040546` — [STOA100 send + STOA101 lean A approve](20260720-040546_stoa100-send-stoa101-approve.bron) — main 7e5970f715; argv bartis PR await send
 - `20260720.040533` — [STOA101 bartis argv sample GREEN](20260720-040533_stoa101-bartis-argv-green.bron) — generator gate-sample-u32; fixture stays baked; await send
 - `20260720.040050` — [STOA100 send complete](20260720-040050_stoa100-send-complete.bron) — origin main at 7e5970f71529
 - `20260720.040025` — [STOA100 living docs close](20260720-040025_stoa100-living-close.bron) — STOA.md · TASKS · REMEMBER · ROADMAP; await send
