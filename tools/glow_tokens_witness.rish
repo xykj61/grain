@@ -17,11 +17,13 @@ assert selftest.out contains "BadToken" else "tokens_witness missing BadToken"
 assert selftest.out contains "comments skipped" else "tokens_witness missing comment claim"
 assert selftest.out contains "named-cast peek" else "tokens_witness missing named-cast peek"
 assert selftest.out contains "named-cast parts" else "tokens_witness missing named-cast parts"
+assert selftest.out contains "mold-only peek" else "tokens_witness missing mold-only peek"
 assert selftest.out contains "cross-desk peek" else "tokens_witness missing cross-desk peek"
 assert selftest.out contains "cross-desk parts" else "tokens_witness missing cross-desk parts"
 assert selftest.out contains "TAME u32 spans" else "tokens_witness missing TAME u32 claim"
 assert selftest.out contains "STOA93" else "tokens_witness missing STOA93"
 assert selftest.out contains "STOA94" else "tokens_witness missing STOA94"
+assert selftest.out contains "STOA95" else "tokens_witness missing STOA95"
 
 # Width gate on the first Glow TAME surface (seam casts blessed).
 let width = run ["sh" "-c" "grep 'usize' glow/tokens.rye 2>/dev/null | grep -v '@intCast' | grep -v '@as(usize' | wc -l | tr -d ' '"]
@@ -31,4 +33,4 @@ assert trim width.out == "0" else "glow/tokens.rye still carries authored usize"
 let assert_import = run ["sh" "-c" "grep -c 'const assert = std.debug.assert' glow/tokens.rye | tr -d ' '"]
 assert trim assert_import.out == "1" else "glow/tokens.rye must import assert once"
 
-say "GREEN: Glow token stream — TAME tidy · cross-desk · same-desk mold-body; STOA86/93/94."
+say "GREEN: Glow token stream — TAME tidy · cross-desk · same-desk · mold-only peek; STOA86/93/94/95."

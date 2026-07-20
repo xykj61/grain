@@ -2,11 +2,11 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Rule: [`.cursor/rules/remember.mdc`](../.cursor/rules/remember.mdc) · [`.claude/rules/remember.md`](../.claude/rules/remember.md).*
 
-**Last refreshed:** `20260719.224451` (Eastern) · voice Quin  
+**Last refreshed:** `20260719.225100` (Eastern) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5** · HOLD0–HOLD1 · HOLD-W  
-**Language nib:** **STOA0–94** GREEN · STOA95 open  
-**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W · STOA0–94  
-**Git nib:** (refresh after send) STOA94 same-desk mold-body G4  
+**Language nib:** **STOA0–95** GREEN · STOA96 open  
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W · STOA0–95  
+**Git nib:** (refresh after send) STOA95 mold-only `+$` peek  
 
 **Season:** Cursor iOS / cloud — **Glow language TAME only** (no adb). Handoff [`20260719-204650_cursor-ios-handoff-glow-language.md`](20260719-204650_cursor-ios-handoff-glow-language.md).  
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`
@@ -15,8 +15,8 @@
 
 ## Now (language)
 
-**STOA94** GREEN · same-desk named-cast mold-body walks `tokens.named_cast_parts`.  
-**STOA95** next — check-in (mold-only `+$` peek · tidy mold · Sala B0).
+**STOA95** GREEN · mold-only `+$` dispatch walks `tokens.looks_like_mold_only`.  
+**STOA96** next — check-in (tidy `lower_mold` · token→`MoldSpec` · Sala B0).
 
 ```bash
 rishi/bin/rishi run tools/glow_tokens_witness.rish
@@ -24,7 +24,7 @@ rishi/bin/rishi run tools/glow_lower_named_cast_witness.rish
 rishi/bin/rishi run tools/glow_run_desk_witness.rish
 ```
 
-Hold on iOS: mold-only `+$` peek · tidy mold. Defer Pixel/SETU adb to Framework.
+Hold on iOS: tidy `lower_mold` · token→`MoldSpec`. Defer Pixel/SETU adb to Framework.
 
 ---
 
@@ -38,7 +38,7 @@ Hold on iOS: mold-only `+$` peek · tidy mold. Defer Pixel/SETU adb to Framework
 | **JABS** | Sala broadcast live-session fold | JABS0–2 GREEN · JABS3 check-in |
 | **LULU** | Hearth · short home · Wired Glass | **LULU0–5 closed** |
 | **SETU** | USB hearth carry Glass↔Desk | **SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W GREEN** |
-| **STOA** | Glow language SLC · nest · composition | **STOA0–94 GREEN** · STOA95 next |
+| **STOA** | Glow language SLC · nest · composition | **STOA0–95 GREEN** · STOA96 next |
 
 Canon: [`../docs/HAWM.md`](../docs/HAWM.md) · [`../docs/TUBE.md`](../docs/TUBE.md) · [`../docs/ZETA.md`](../docs/ZETA.md) · [`../docs/JABS.md`](../docs/JABS.md) · [`../docs/LULU.md`](../docs/LULU.md) · [`../docs/SETU.md`](../docs/SETU.md) · [`../docs/STOA.md`](../docs/STOA.md)
 
@@ -60,7 +60,7 @@ $ADB install -r tools/.cache/tube05/sala-broadcaster.apk
 
 | Door | Kind |
 |------|------|
-| **STOA95** mold-only `+$` peek · tidy mold · Sala B0 | **check-in** — iOS season |
+| **STOA96** tidy `lower_mold` · token→`MoldSpec` · Sala B0 | **check-in** — iOS season |
 | Wet/gold core polymorphism | **held** |
 | Live SETU6.5 **sent** on usb0/ncm | **check-in** — Framework host |
 | JABS3 · TAME Lap 3 | **check-in** |

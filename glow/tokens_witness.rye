@@ -8,7 +8,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const tokens = @import("tokens.rye");
 
-const witness_version = "20260719.224451";
+const witness_version = "20260719.225100";
 
 /// Same shape as glow/gen/cast-named-xact.glow (comments stripped by lexer).
 const xact_desk =
@@ -147,6 +147,12 @@ fn run_selftest() !u8 {
     assert(tokens.named_cast_parts(cross_desk) == null);
     print("tokens: named-cast parts (lexer→lower mold-body) -- GREEN\n", .{});
 
+    assert(tokens.looks_like_mold_only(mold_only));
+    assert(!tokens.looks_like_mold_only(amount_cast));
+    assert(!tokens.looks_like_mold_only(xact_desk));
+    assert(!tokens.looks_like_mold_only(cross_desk));
+    print("tokens: mold-only peek (glow_run wire) -- GREEN\n", .{});
+
     assert(tokens.looks_like_cross_desk(cross_desk));
     assert(!tokens.looks_like_cross_desk(xact_desk));
     assert(!tokens.looks_like_cross_desk(amount_cast));
@@ -167,7 +173,7 @@ fn run_selftest() !u8 {
     print("tokens: TAME u32 spans -- GREEN\n", .{});
 
     print("tokens: version {s}\n", .{witness_version});
-    print("GREEN: Glow token stream — STOA86 tidy · STOA93 cross-desk · STOA94 same-desk mold-body; assert · u32 · split lex.\n", .{});
+    print("GREEN: Glow token stream — STOA86 tidy · STOA93 cross-desk · STOA94 same-desk · STOA95 mold-only peek; assert · u32 · split lex.\n", .{});
     return 0;
 }
 

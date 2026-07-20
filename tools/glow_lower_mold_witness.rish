@@ -26,6 +26,8 @@ assert selftest.out contains "PairMold" else "lower_mold_witness missing PairMol
 assert selftest.out contains "KindMold" else "lower_mold_witness missing KindMold"
 assert selftest.out contains "XactMold" else "lower_mold_witness missing XactMold"
 assert selftest.out contains "XferMold" else "lower_mold_witness missing XferMold"
+assert selftest.out contains "mold-only peek" else "lower_mold_witness missing mold-only peek"
+assert selftest.out contains "STOA95" else "lower_mold_witness missing STOA95"
 
 let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
 assert build_welcome.ok else "mold welcome .rye build failed"
@@ -57,4 +59,4 @@ let run_xfer = run ["sh" "-c" "${xfer_bin}; echo EXIT:$?"]
 assert run_xfer.ok else "mold xfer welcome binary failed to launch"
 assert run_xfer.out contains "EXIT:0" else "mold xfer welcome binary did not exit 0"
 
-say "GREEN: Glow +$ / $: / $% mold hop — AmountMold · PairMold · KindMold · XactMold · XferMold; STOA74–80."
+say "GREEN: Glow +$ / $: / $% mold hop — AmountMold · PairMold · KindMold · XactMold · XferMold; STOA74–80 · STOA95 peek."
