@@ -127,12 +127,15 @@ fn run_selftest(init: std.process.Init) !u8 {
     try nest_type.assert_bartis_named_mold("octa-mold");
     print("nest: octa-mold bartis named mold accepts -- GREEN\n", .{});
 
-    if (nest_type.assert_bartis_named_mold("nona-mold")) |_| {
-        return error.NonaMoldBartisAccepted;
+    try nest_type.assert_bartis_named_mold("nona-mold");
+    print("nest: nona-mold bartis named mold accepts -- GREEN\n", .{});
+
+    if (nest_type.assert_bartis_named_mold("deca-mold")) |_| {
+        return error.DecaMoldBartisAccepted;
     } else |err| {
         if (err != nest_type.NestError.SampleDoesNotNest) return err;
     }
-    print("nest: nona-mold bartis named mold refused SampleDoesNotNest -- GREEN\n", .{});
+    print("nest: deca-mold bartis named mold refused SampleDoesNotNest -- GREEN\n", .{});
 
     const n_amt = try lower.lower_source_welcome("|=  sample=amount-mold\nsample\n", &buf);
     assert(n_amt > 0);
@@ -196,13 +199,18 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.eql(u8, rb.mold_name_slice(&octa_spec), "octa-mold"));
     print("nest: glow/gen/gate-octa.glow accepts named mold -- GREEN\n", .{});
 
-    const nona_refuse = try cwd.readFileAlloc(io, "glow/gen/gate-kind-refuse.glow", a, .limited(4096));
-    if (rb.parse_source(nona_refuse)) |_| {
-        return error.NonaRefuseDeskAccepted;
+    const nona_desk = try cwd.readFileAlloc(io, "glow/gen/gate-nona.glow", a, .limited(4096));
+    const nona_spec = try rb.parse_source(nona_desk);
+    assert(std.mem.eql(u8, rb.mold_name_slice(&nona_spec), "nona-mold"));
+    print("nest: glow/gen/gate-nona.glow accepts named mold -- GREEN\n", .{});
+
+    const deca_refuse = try cwd.readFileAlloc(io, "glow/gen/gate-kind-refuse.glow", a, .limited(4096));
+    if (rb.parse_source(deca_refuse)) |_| {
+        return error.DecaRefuseDeskAccepted;
     } else |err| {
         if (err != rb.ParseError.SampleDoesNotNest) return err;
     }
-    print("nest: glow/gen/gate-kind-refuse.glow (nona-mold) refused SampleDoesNotNest -- GREEN\n", .{});
+    print("nest: glow/gen/gate-kind-refuse.glow (deca-mold) refused SampleDoesNotNest -- GREEN\n", .{});
 
     // STOA122: second closed named mold count-mold.
     const count_src = try cwd.readFileAlloc(io, "glow/gen/mold-count.glow", a, .limited(4096));
@@ -344,6 +352,18 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, buf[0..n_octa], "via: u32") != null);
     print("nest: bartis sample=octa-mold lowers as OctaMold identity -- GREEN\n", .{});
 
+    // STOA146: nine-field $: nona-mold shape.
+    const nona_mold_src = try cwd.readFileAlloc(io, "glow/gen/mold-nona.glow", a, .limited(4096));
+    const nona_mold = try rm.parse_source(nona_mold_src);
+    try nest_type.assert_nona_mold_nests("nona-mold", &nona_mold);
+    print("nest: nona-mold MoldSpec nests as nine-field $: -- GREEN\n", .{});
+
+    const n_nona = try lower.lower_source_welcome("|=  sample=nona-mold\nsample\n", &buf);
+    assert(n_nona > 0);
+    assert(std.mem.indexOf(u8, buf[0..n_nona], "NonaMold") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_nona], "ref: u32") != null);
+    print("nest: bartis sample=nona-mold lowers as NonaMold identity -- GREEN\n", .{});
+
     // STOA110 / STOA130: nesting-flagged sample claims refuse; stated claims accept.
     try nest_type.assert_sample_not_nesting(false);
     print("nest: stated sample claim (is_nesting=false) accepts -- GREEN\n", .{});
@@ -412,12 +432,15 @@ fn run_selftest(init: std.process.Init) !u8 {
     try nest_type.assert_sample_nesting_nests(true, "octa-mold", "octa-mold");
     print("nest: nesting octa-mold under octa-mold accepts -- GREEN\n", .{});
 
-    if (nest_type.assert_sample_nesting_nests(true, "nona-mold", "nona-mold")) |_| {
-        return error.NestingNonaMoldAcceptedTooSoon;
+    try nest_type.assert_sample_nesting_nests(true, "nona-mold", "nona-mold");
+    print("nest: nesting nona-mold under nona-mold accepts -- GREEN\n", .{});
+
+    if (nest_type.assert_sample_nesting_nests(true, "deca-mold", "deca-mold")) |_| {
+        return error.NestingDecaMoldAcceptedTooSoon;
     } else |err| {
         if (err != nest_type.NestError.SampleDoesNotNest) return err;
     }
-    print("nest: nesting nona-mold refused SampleDoesNotNest -- GREEN\n", .{});
+    print("nest: nesting deca-mold refused SampleDoesNotNest -- GREEN\n", .{});
 
     // Stated bartis path still holds beside nesting refuse + nesting-nests.
     const n_dry = try lower.lower_source_welcome("|=  sample=@u32\nsample\n", &buf);
@@ -425,7 +448,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("nest: stated bartis still lowers under nesting-refuse pin -- GREEN\n", .{});
 
     print("nest: version {s}\n", .{witness_version});
-    print("GREEN: Glow nest/type — stated aura · $% tag · named-mold · count-mold · kind-mold · xact-mold · xfer-mold · pair-mold · triple-mold · quad-mold · penta-mold · hexa-mold · hepta-mold · octa-mold · nesting refuse · nesting-nests; STOA107–110/119/122–126/130/134–135/138/140/142/144.\n", .{});
+    print("GREEN: Glow nest/type — stated aura · $% tag · named-mold · count-mold · kind-mold · xact-mold · xfer-mold · pair-mold · triple-mold · quad-mold · penta-mold · hexa-mold · hepta-mold · octa-mold · nona-mold · nesting refuse · nesting-nests; STOA107–110/119/122–126/130/134–135/138/140/142/144/146.\n", .{});
     return 0;
 }
 
