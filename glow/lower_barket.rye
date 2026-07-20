@@ -15,6 +15,7 @@
 //! STOA137: `quad-mold` call body `%-  flip` → QuadMold swap · baked 5/3/1/2 → 3/5/1/2.
 //! STOA138: `penta-mold` identity lowers as `PentaMold` struct · baked from 5 amount 3 fee 1 nonce 2 memo 7.
 //! STOA139: `penta-mold` call body `%-  flip` → PentaMold swap · baked 5/3/1/2/7 → 3/5/1/2/7.
+//! STOA140: `hexa-mold` identity lowers as `HexaMold` struct · baked from 5 amount 3 fee 1 nonce 2 memo 7 tag 4.
 //! STOA127: `kind-mold` call body `%-  flip` → KindMold switch · baked `.mint` → `.send`.
 //! STOA128: `xact-mold` call body `%-  flip` → XactMold switch · baked mint/5 → `.send`.
 //! STOA129: `xfer-mold` call body `%-  flip` → XferMold switch · baked mint/5/3 → `.send`.
@@ -55,6 +56,12 @@ pub const barket_penta_demo_amount: u32 = 3;
 pub const barket_penta_demo_fee: u32 = 1;
 pub const barket_penta_demo_nonce: u32 = 2;
 pub const barket_penta_demo_memo: u32 = 7;
+pub const barket_hexa_demo_from: u32 = 5;
+pub const barket_hexa_demo_amount: u32 = 3;
+pub const barket_hexa_demo_fee: u32 = 1;
+pub const barket_hexa_demo_nonce: u32 = 2;
+pub const barket_hexa_demo_memo: u32 = 7;
+pub const barket_hexa_demo_tag: u32 = 4;
 
 fn zig_safe_ident(face: []const u8, out: *[rb.max_face_len]u8) LowerError!u32 {
     assert(face.len <= rb.max_face_len); // precondition: face within name budget
@@ -144,6 +151,11 @@ fn is_quad_sample(spec: *const rb.BarketSpec) bool {
 fn is_penta_sample(spec: *const rb.BarketSpec) bool {
     if (spec.mold_name_len == 0) return false;
     return nest_type.is_penta_named_mold(rb.mold_name_slice(spec));
+}
+
+fn is_hexa_sample(spec: *const rb.BarketSpec) bool {
+    if (spec.mold_name_len == 0) return false;
+    return nest_type.is_hexa_named_mold(rb.mold_name_slice(spec));
 }
 
 fn emit_prelude(out: []u8, used: *u32) LowerError!void {
@@ -361,6 +373,30 @@ fn emit_penta_identity(out: []u8, zface: []const u8, comment: []const u8) LowerE
     try append_print(out, &used, "    const {s}: PentaMold = .{{ .from = {d}, .amount = {d}, .fee = {d}, .nonce = {d}, .memo = {d} }};\n", .{ zface, barket_penta_demo_from, barket_penta_demo_amount, barket_penta_demo_fee, barket_penta_demo_nonce, barket_penta_demo_memo });
     try append_print(out, &used, "    const got = barket_gate({s});\n", .{zface});
     try append_print(out, &used, "    return if (got.from == {d} and got.amount == {d} and got.fee == {d} and got.nonce == {d} and got.memo == {d}) 0 else 1;\n", .{ barket_penta_demo_from, barket_penta_demo_amount, barket_penta_demo_fee, barket_penta_demo_nonce, barket_penta_demo_memo });
+    try append_print(out, &used, "}}\n", .{});
+    return used;
+}
+
+/// STOA140: closed six-field `$:` hexa-mold → HexaMold struct · baked 5/3/1/2/7/4.
+fn emit_hexa_identity(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
+    var used: u32 = 0;
+    try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
+    try append_print(out, &used, "pub const HexaMold = struct {{\n", .{});
+    try append_print(out, &used, "    from: u32 = 0,\n", .{});
+    try append_print(out, &used, "    amount: u32 = 0,\n", .{});
+    try append_print(out, &used, "    fee: u32 = 0,\n", .{});
+    try append_print(out, &used, "    nonce: u32 = 0,\n", .{});
+    try append_print(out, &used, "    memo: u32 = 0,\n", .{});
+    try append_print(out, &used, "    tag: u32 = 0,\n", .{});
+    try append_print(out, &used, "}};\n\n", .{});
+    try append_print(out, &used, "/// {s}\n", .{comment});
+    try append_print(out, &used, "fn barket_gate({s}: HexaMold) HexaMold {{\n", .{zface});
+    try append_print(out, &used, "    return {s};\n", .{zface});
+    try append_print(out, &used, "}}\n\n", .{});
+    try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
+    try append_print(out, &used, "    const {s}: HexaMold = .{{ .from = {d}, .amount = {d}, .fee = {d}, .nonce = {d}, .memo = {d}, .tag = {d} }};\n", .{ zface, barket_hexa_demo_from, barket_hexa_demo_amount, barket_hexa_demo_fee, barket_hexa_demo_nonce, barket_hexa_demo_memo, barket_hexa_demo_tag });
+    try append_print(out, &used, "    const got = barket_gate({s});\n", .{zface});
+    try append_print(out, &used, "    return if (got.from == {d} and got.amount == {d} and got.fee == {d} and got.nonce == {d} and got.memo == {d} and got.tag == {d}) 0 else 1;\n", .{ barket_hexa_demo_from, barket_hexa_demo_amount, barket_hexa_demo_fee, barket_hexa_demo_nonce, barket_hexa_demo_memo, barket_hexa_demo_tag });
     try append_print(out, &used, "}}\n", .{});
     return used;
 }
@@ -608,6 +644,18 @@ fn emit(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
         }
     }
 
+    // STOA140: hexa-mold gate identity — six slots 5/3/1/2/7/4.
+    if (is_hexa_sample(spec)) {
+        switch (spec.body) {
+            .header_only, .identity => {
+                var comment_buf: [160]u8 = undefined;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` barket — HexaMold identity (STOA140).", .{ face, mold }) catch return error.Overflow;
+                return emit_hexa_identity(out, zface, comment);
+            },
+            .call_one => return error.BodyGateNotYetLowered,
+        }
+    }
+
     const expect = try expect_for(spec);
     var used: u32 = 0;
 
@@ -635,7 +683,7 @@ fn emit(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
 }
 
 fn emit_argv(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
-    if (is_kind_sample(spec) or is_xact_sample(spec) or is_xfer_sample(spec) or is_pair_sample(spec) or is_triple_sample(spec) or is_quad_sample(spec) or is_penta_sample(spec)) return error.SampleDoesNotNest;
+    if (is_kind_sample(spec) or is_xact_sample(spec) or is_xfer_sample(spec) or is_pair_sample(spec) or is_triple_sample(spec) or is_quad_sample(spec) or is_penta_sample(spec) or is_hexa_sample(spec)) return error.SampleDoesNotNest;
     const face = rb.face_slice(spec);
     assert(face.len > 0); // invariant: spec carries a non-empty face
     const mold = sample_mold_label(spec);

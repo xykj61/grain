@@ -1,0 +1,10 @@
+::  Multi-field +$ / $: six @u32 fields (STOA140).
+::  Lowered by glow/lower_mold.rye into ordinary Rye; Rishi stays the shell.
++$  hexa-mold
+  $:  from=@u32
+      amount=@u32
+      fee=@u32
+      nonce=@u32
+      memo=@u32
+      tag=@u32
+  ==
