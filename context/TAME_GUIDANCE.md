@@ -7,7 +7,7 @@ type: reference
 # TAME Guidance — Operational Supplement
 
 **Language:** EN
-**Last updated:** 2026-07-19 (Glow tokens first TAME roster surface · STOA86)
+**Last updated:** 2026-07-19 (Glow tokens + named-cast TAME surfaces · STOA86–87)
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 **Voice:** Quin
 **Status:** Active — grow by supplement, earned when the language is ready
