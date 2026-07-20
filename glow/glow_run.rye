@@ -72,10 +72,20 @@ pub fn main(init: std.process.Init) !u8 {
     const cwd = std.Io.Dir.cwd();
     const argv = try init.minimal.args.toSlice(alloc);
     if (argv.len < 2) {
-        print("usage: glow_run <file.glow>\n", .{});
+        print("usage: glow_run [--sample-argv] <file.glow>\n", .{});
         return 2;
     }
-    const glow_path = argv[1];
+    var sample_argv = false;
+    var path_i: usize = 1;
+    if (std.mem.eql(u8, argv[1], "--sample-argv")) {
+        sample_argv = true;
+        path_i = 2;
+        if (argv.len < 3) {
+            print("usage: glow_run --sample-argv <file.glow>\n", .{});
+            return 2;
+        }
+    }
+    const glow_path = argv[path_i];
 
     const src = try cwd.readFileAlloc(io, glow_path, alloc, .limited(64 * 1024));
     const line_count = glow_line_count(src);
@@ -85,6 +95,10 @@ pub fn main(init: std.process.Init) !u8 {
     }
     if (line_count > lower_multi.max_lines) {
         print("glow_run: too many Glow lines in {s}\n", .{glow_path});
+        return 2;
+    }
+    if (sample_argv and line_count != 1) {
+        print("glow_run: --sample-argv needs one Glow line in {s}\n", .{glow_path});
         return 2;
     }
 
@@ -238,10 +252,20 @@ pub fn main(init: std.process.Init) !u8 {
             };
         }
         if (line.len >= 2 and line[0] == '^' and line[1] == '-') {
+            if (sample_argv) {
+                break :blk lower_cast.lower_line_argv_sample(line, &rye_buf) catch |err| {
+                    print("glow_run: argv-sample cast lower failed ({s})\n", .{@errorName(err)});
+                    return 1;
+                };
+            }
             break :blk lower_cast.lower_line_welcome(line, &rye_buf) catch |err| {
                 print("glow_run: cast lower failed ({s})\n", .{@errorName(err)});
                 return 1;
             };
+        }
+        if (sample_argv) {
+            print("glow_run: --sample-argv only supports ^-  @u32 today\n", .{});
+            return 2;
         }
         if (line.len >= 2 and line[0] == '?' and line[1] == ':') {
             break :blk lower_if.lower_line_welcome(line, &rye_buf) catch |err| {
