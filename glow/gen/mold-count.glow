@@ -1,0 +1,5 @@
+::  Thin +$ / $: one-field @u32 mold (STOA122) — second closed named mold.
+::  Parallel to amount-mold; lowers as @u32 identity on bartis/barket samples.
++$  count-mold
+  $:  count=@u32
+  ==

@@ -9,7 +9,7 @@ const print = std.debug.print;
 const lower = @import("lower_barket.rye");
 const rb = @import("rune_barket.rye");
 
-const witness_version = "20260720.182915";
+const witness_version = "20260720.183259";
 
 fn run_selftest(init: std.process.Init) !u8 {
     const io = init.io;
@@ -216,8 +216,22 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("lower: glow/gen/gate-barket-kind-refuse.glow refuses SampleDoesNotNest -- GREEN\n", .{});
 
+    // STOA122: second closed named mold count-mold.
+    const count_src = "|^  sample=count-mold\nsample\n";
+    const n_cnt = try lower.lower_source_welcome(count_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n_cnt], "barket_gate") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_cnt], "count-mold") != null);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_count_welcome.rye", .data = buf[0..n_cnt] });
+    print("lower: count-mold barket lowers to u32 identity -- GREEN\n", .{});
+
+    const gen_cnt = try cwd.readFileAlloc(io, "glow/gen/gate-barket-count.glow", a, .limited(4096));
+    const spec_cnt = try rb.parse_source(gen_cnt);
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_cnt), "count-mold"));
+    assert(spec_cnt.body == .identity);
+    print("lower: glow/gen/gate-barket-count.glow carries count-mold -- GREEN\n", .{});
+
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: Glow `|^` barket — identity · argv · call-body · amount-mold · wet-through-nests; STOA113–121.\n", .{});
+    print("GREEN: Glow `|^` barket — identity · argv · call-body · amount-mold · count-mold · wet-through-nests; STOA113–122.\n", .{});
     return 0;
 }
 
