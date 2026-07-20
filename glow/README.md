@@ -1,11 +1,11 @@
 # Glow — Language Tooling, Grown from Real Design
 
 **Language:** EN
-**Last updated:** 2026-07-20 (**STOA143** hepta-mold flip call-body GREEN)
+**Last updated:** 2026-07-20 (**STOA144** octa-mold gate sample GREEN)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Audience:** Acme Corporation employees reading the working Glow pin
-**Status:** Checkable — **STOA0–31** sixteen heads · `/+` payload import · payload+open `|%` · nest `++` bodies · library · multi-line · compose · nests · cells · `%` calls · truth · **STOA100–109** `|=` bartis GREEN · **STOA102/111–118** `|^` barket through named-mold GREEN · **STOA106–110/119–143** nest/type nesting-nests · expansion wire · barket nesting-through · count-mold · kind-mold · xact-mold · xfer-mold · pair-mold · triple-mold · quad-mold · penta-mold · hexa-mold · hepta-mold · kind/xact/xfer/pair/triple/quad/penta/hexa/hepta flip call-body · stated/nesting/gold vocabulary · amount/count argv GREEN
+**Status:** Checkable — **STOA0–31** sixteen heads · `/+` payload import · payload+open `|%` · nest `++` bodies · library · multi-line · compose · nests · cells · `%` calls · truth · **STOA100–109** `|=` bartis GREEN · **STOA102/111–118** `|^` barket through named-mold GREEN · **STOA106–110/119–144** nest/type nesting-nests · expansion wire · barket nesting-through · count-mold · kind-mold · xact-mold · xfer-mold · pair-mold · triple-mold · quad-mold · penta-mold · hexa-mold · hepta-mold · octa-mold · kind/xact/xfer/pair/triple/quad/penta/hexa/hepta flip call-body · stated/nesting/gold vocabulary · amount/count argv GREEN
 **Waymark:** **STOA** — compressor [`../docs/STOA.md`](../docs/STOA.md) · seat [`../active-designing/20260718-202730_stoa-glow-language-waymark.md`](../active-designing/20260718-202730_stoa-glow-language-waymark.md)
 **Ground:** [`active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md`](../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md) · [`20260716-093000_glow-and-rye-what-shares-under-the-hood.md`](../active-designing/20260716-093000_glow-and-rye-what-shares-under-the-hood.md) · truth [`../context/specs/20260717-154943_glow-truth-zig-ambient-nock-loobean-seam.md`](../context/specs/20260717-154943_glow-truth-zig-ambient-nock-loobean-seam.md)
 **Law:** [`../context/TAME_GUIDANCE.md`](../context/TAME_GUIDANCE.md) (root) · Glow supplement still horizon — scoping [`../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md`](../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md)

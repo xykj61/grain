@@ -28,7 +28,8 @@
 //! STOA141: closed call-body under hexa-mold — `flip` (from↔amount · fee/nonce/memo/tag stay).
 //! STOA142: closed allowlist adds seven-field `$:` `hepta-mold` (identity lower).
 //! STOA143: closed call-body under hepta-mold — `flip` (from↔amount · fee/nonce/memo/tag/to stay).
-//! Nesting / gold · open `$:` beyond hepta bartis samples held.
+//! STOA144: closed allowlist adds eight-field `$:` `octa-mold` (identity lower).
+//! Nesting / gold · open `$:` beyond octa bartis samples held.
 //!
 //! Parse shape (token stream):
 //!   1. skip leading newlines
