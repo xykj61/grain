@@ -1267,6 +1267,11 @@ let glow_if = run ["rishi/bin/rishi" "run" "tools/glow_lower_conditional_witness
 assert glow_if.ok else "Glow lower-conditional witness failed"
 say "GREEN: Glow lower-conditional witness passed."
 
+say "witness suite: Glow `?>` / `?<` TAME assertion runes…"
+let glow_assert = run ["rishi/bin/rishi" "run" "tools/glow_lower_assert_witness.rish"]
+assert glow_assert.ok else "Glow lower-assert witness failed"
+say "GREEN: Glow lower-assert witness passed."
+
 say "witness suite: Glow `?-` lowers to Rye — switch hop…"
 let glow_sw = run ["rishi/bin/rishi" "run" "tools/glow_lower_switch_witness.rish"]
 assert glow_sw.ok else "Glow lower-switch witness failed"

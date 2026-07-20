@@ -1,0 +1,68 @@
+//! glow/lower_assert_witness.rye — proves Glow `?>` / `?<` TAME asserts (STOA88).
+//!
+//!   rye build glow/lower_assert_witness.rye -femit-bin=glow/bin/lower_assert_witness
+//!   glow/bin/lower_assert_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const ra = @import("rune_assert.rye");
+const lower = @import("lower_assert.rye");
+
+const witness_version = "20260719.203207";
+
+const true_line = "?>  (gth tick 32)  1";
+const false_line = "?<  (gth tick 32)  1";
+
+fn run_selftest(init: std.process.Init) !u8 {
+    const io = init.io;
+    const cwd = std.Io.Dir.cwd();
+    var buf: [2048]u8 = undefined;
+    try cwd.createDirPath(io, "glow/.cache");
+
+    const sp = try ra.parse(true_line);
+    assert(sp.polarity == .positive);
+    assert(std.mem.eql(u8, ra.test_slice(&sp), "(gth tick 32)"));
+    assert(sp.body == 1);
+    print("assert: ?> parse — GREEN\n", .{});
+
+    const sn = try ra.parse(false_line);
+    assert(sn.polarity == .negative);
+    assert(sn.body == 1);
+    print("assert: ?< parse — GREEN\n", .{});
+
+    if (ra.parse("?:  (gth tick 32)  1")) |_| {
+        return error.NotAnAssertNotCaught;
+    } else |err| {
+        assert(err == ra.ParseError.NotAnAssert);
+    }
+    print("assert: ?: refused as assert — GREEN\n", .{});
+
+    const n_true = try lower.lower_line_welcome(true_line, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n_true], "const assert = std.debug.assert") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_true], "assert(tick > 32)") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_true], "const body: u32 = 1") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_true], "return if (body == 1) 0 else 1") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_true], "tick: u32 = 40") != null);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/assert_true_welcome.rye", .data = buf[0..n_true] });
+    print("assert: ?> welcome emit — GREEN\n", .{});
+
+    const n_false = try lower.lower_line_welcome(false_line, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n_false], "assert(tick <= 32)") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_false], "tick: u32 = 10") != null);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/assert_false_welcome.rye", .data = buf[0..n_false] });
+    print("assert: ?< welcome emit — GREEN\n", .{});
+
+    const n_un = try lower.lower_line_unwelcome(true_line, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n_un], "tick: u32 = 10") != null);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/assert_true_unwelcome.rye", .data = buf[0..n_un] });
+    print("assert: ?> unwelcome tick — GREEN\n", .{});
+
+    print("assert: version {s}\n", .{witness_version});
+    print("GREEN: Glow ?> / ?< TAME assertion runes — STOA88; Hoon wutgar/wutgal parallel.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
+}

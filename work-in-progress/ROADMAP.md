@@ -410,6 +410,8 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA87 TAME tidy named-cast lower GREEN, `20260719.202541`** — lean A: rewrite `glow/lower_named_cast.rye` with assert, `u32` spans, `copy_disjoint`, and split payload emitters under 70 lines; seat on style/width roster. Token-driven lowers · tidy `lower_mold` · Sala B0 stay later. Next language: **STOA88** check-in.
 
+**STOA88 Glow `?>` / `?<` TAME assertion runes GREEN, `20260719.203207`** — Hoon wutgar/wutgal parallel: desks `assert-true` · `assert-false` lower to unqualified Rye `assert`; seated in `context/TAME_GUIDANCE.md` Glow pin. Token-driven lowers · tidy `lower_mold` · Sala B0 stay later. Next language: **STOA89** check-in.
+
 **Glow OS · Glow Desk · Glow Glass seated, `20260717.183622`** — Keaton: **Glow OS** unifies; **Glow Desk** = desktop; **Glow Glass** = mobile. Lexicon + silo [`../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md`](../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md). Orientation firmware stays check-in.
 
 **Witness habitat + markup pipeline, `20260717.173427`** — foundations fit study affirms single-strand · sameness · happy-zone practice in the suite; teaching path was the gap. Seats **witness habitat** as Acme synonym (foundations keep *happy zone*). Fusion map holds Scribble→Brix→Bron→Mantra→Sala with Glow under TAME; Udon/Sail/Zuse horizon. Tutorial scaffold [`../manual/tutorials/cursor-and-the-compass.md`](../manual/tutorials/cursor-and-the-compass.md); silo [`../active-designing/20260717-173427_witness-habitat-and-the-markup-pipeline.md`](../active-designing/20260717-173427_witness-habitat-and-the-markup-pipeline.md). Product next remains Dexter D2.

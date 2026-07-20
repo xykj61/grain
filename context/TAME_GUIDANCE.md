@@ -7,7 +7,7 @@ type: reference
 # TAME Guidance — Operational Supplement
 
 **Language:** EN
-**Last updated:** 2026-07-19 (Glow tokens + named-cast TAME surfaces · STOA86–87)
+**Last updated:** 2026-07-19 (Glow `?>` / `?<` assertion runes · STOA88)
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 **Voice:** Quin
 **Status:** Active — grow by supplement, earned when the language is ready
@@ -23,10 +23,25 @@ Three layers, one discipline — filenames follow TigerBeetle's `docs/TIGER_STYL
 | **Source** | `gratitude/TIGER_STYLE.md` | TigerBeetle team's guide, kept whole and unaltered |
 | **Voiced canon** | `external-research/TAME_GUIDANCE.md` | Our radiant adaptation; Safety, Performance, DX, and the full why |
 | **Operational supplement** | this document | Checkable root + Rye / Brix / Rishi rules for authors and agents |
-| **Glow working pin** | [`../glow/README.md`](../glow/README.md) | Eight rune heads + desk hops today — not a Glow TAME chapter yet |
+| **Glow working pin** | [`../glow/README.md`](../glow/README.md) · assertion runes below | Desk hops + `?>` / `?<` TAME asserts (STOA88) — full Glow supplement still horizon |
 | **Glow supplement (horizon)** | [`../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md`](../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md) | Scoping for a future Glow supplement; root still binds Glow authors now |
 
 Read the voiced canon (`external-research/TAME_GUIDANCE.md`) for philosophy and expert Tiger discipline. Read **this file** at the keyboard for what to assert, name, and bound. Organization prose lives in `active-designing/yonder/20260618-184912_growing-a-language.md`.
+
+### Glow — assertion conditional runes (working pin, STOA88)
+
+Hoon's positive and negative assertion runes — [`?>` wutgar](https://docs.urbit.org/hoon/rune/wut.md) and [`?<` wutgal](https://docs.urbit.org/hoon/rune/wut.md) — are Glow's TAME assert surface in the language itself. They are not a separate dialect from Rye's bare `assert`; they lower into it.
+
+| Glow | Hoon name | Meaning | Lowers to |
+|------|-----------|---------|-----------|
+| `?>  p  q` | wutgar | *p* must hold; then *q* | `assert(p);` then body *q* |
+| `?<  p  q` | wutgal | *p* must not hold; then *q* | `assert(!p);` then body *q* |
+
+**Thin shape today:** test child `(gth tick 32)` only; body a decimal. Desks `glow/gen/assert-true.glow` · `assert-false.glow`. Witness: `tools/glow_lower_assert_witness.rish`.
+
+**Authoring law for Glow that emits Rye:** the lowered file keeps the TAME opening triad (`const assert = std.debug.assert`) and uses unqualified `assert(...)` with a `//` why — the same density rule as hosted Rye. Glow authors reach for `?>` / `?<` in `.glow` desks when the check belongs in the Glow spelling; they do not invent a third assert keyword.
+
+**Not yet:** `?=` type-match asserts, general boolean tests, or inference that refines subject type across the assertion (Hoon's full power). Those wait on richer nest/type surface.
 
 Cursor and Claude rules (`.cursor/rules/tame-guidance.mdc`, `.claude/rules/tame-guidance.md`) point here. Root rule **9** (docs and implementation stay synced) has its own always-on agent rule pair: `.cursor/rules/docs-implementation-sync.mdc`, `.claude/rules/docs-implementation-sync.md`.
 

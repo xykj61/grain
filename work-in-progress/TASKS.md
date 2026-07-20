@@ -356,7 +356,8 @@
 - [x] **STOA85 — cross-desk named-cast peek via tokens (lean A)** `20260719.201500` — `tokens.looks_like_cross_desk` drives `/+` then `^-` dispatch; `lower_named_cast` delegates; same-desk and mold-only stay false; full desk suite GREEN.
 - [x] **STOA86 — TAME tidy token stream (lean A)** `20260719.201942` — `glow/tokens.rye` assert contracts · `u32` spans · split lex under 70 lines; `tokens` + witness on style/width roster; desk suite GREEN. Whole `glow/` tree still later.
 - [x] **STOA87 — TAME tidy named-cast lower (lean A)** `20260719.202541` — `glow/lower_named_cast.rye` assert · `u32` · `copy_disjoint` · split emitters under 70; on style/width roster; desk suite GREEN.
-- [ ] **STOA88 — next language / product** — check-in (token-driven lower slice · tidy `lower_mold` · Sala B0).
+- [x] **STOA88 — Glow `?>` / `?<` TAME assertion runes** `20260719.203207` — Hoon wutgar/wutgal parallel; desks `assert-true` · `assert-false`; lower to unqualified Rye `assert`; TAME_GUIDANCE Glow pin; desk suite GREEN.
+- [ ] **STOA89 — next language / product** — check-in (token-driven lower · tidy `lower_mold` · Sala B0).
 - [ ] **Dill-parallel kernel revival** — separate `active-reviving/` brief when a real need opens; not Dexter.
 - [ ] **M1 Scribble↔html round-trip witness** — named in fusion map; opens when Keaton leans doc pipeline.
 - [ ] **TAME witness-habitat pairing + Glow supplement** — horizon; needs Keaton's word (H2).

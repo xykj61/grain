@@ -667,6 +667,16 @@ assert castimportxact.ok else "glow_run cast-import-xact.glow failed"
 assert castimportxact.out contains "GREEN" else "glow_run cast-import-xact.glow not GREEN"
 assert castimportxact.out contains "cast-import-xact.glow" else "glow_run cast-import-xact claim missing path"
 
+let asserttrue = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/assert-true.glow"]
+assert asserttrue.ok else "glow_run assert-true.glow failed"
+assert asserttrue.out contains "GREEN" else "glow_run assert-true.glow not GREEN"
+assert asserttrue.out contains "assert-true.glow" else "glow_run assert-true claim missing path"
+
+let assertfalse = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/assert-false.glow"]
+assert assertfalse.ok else "glow_run assert-false.glow failed"
+assert assertfalse.out contains "GREEN" else "glow_run assert-false.glow not GREEN"
+assert assertfalse.out contains "assert-false.glow" else "glow_run assert-false claim missing path"
+
 say "GREEN: glow_run desk — all desk generators lowered, built, exit 0."
 
 
