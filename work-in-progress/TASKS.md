@@ -372,6 +372,7 @@
 - [x] **STOA101 — bartis argv sample** `20260720.040200` — generator `gate-sample-u32.glow` reads one `@u32` from Rishi argv; fixture stays baked; `glow_bartis_argv_witness` GREEN. Wet/gold · `|^` · Sala B0 held.
 - [x] **STOA102 — barket horizon wording** `20260720.040700` — `|^` spoken **barket**; digraph stays out of tokens; wet/gold held; Lexicon + TAME pin; `glow_barket_horizon_witness` GREEN. Sala B0 held.
 - [x] **STOA103 — bartis call body** `20260720.040800` — `%-  double  sample` body; fixtures `gate-double` / generator `gate-double-u32`; expect `sample *% 2`; unknown gates refuse. Wet/gold · barket lower · Sala B0 held.
+- [x] **STOA104 — bartis call body inc/dec** `20260720.041800` — closed trio `double` · `inc` · `dec`; fixtures + argv generators; baked 5→6 / 5→4; `mix` still refuses. Wet/gold · barket · Sala B0 held.
 - [x] **Cursor iOS handoff · core polymorphism + port order** `20260719.204650` — handoff [`20260719-204650_cursor-ios-handoff-glow-language.md`](20260719-204650_cursor-ios-handoff-glow-language.md); dry cores fit TAME · wet/gold hold · port L→R→G [`../active-designing/20260719-204650_hoon-core-polymorphism-tame-and-port-order.md`](../active-designing/20260719-204650_hoon-core-polymorphism-tame-and-port-order.md); iOS season = language-only (no adb).
 - [ ] **Dill-parallel kernel revival** — separate `active-reviving/` brief when a real need opens; not Dexter.
 - [ ] **M1 Scribble↔html round-trip witness** — named in fusion map; opens when Keaton leans doc pipeline.

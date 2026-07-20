@@ -687,6 +687,16 @@ assert gatedouble.ok else "glow_run gate-double.glow failed"
 assert gatedouble.out contains "GREEN" else "glow_run gate-double.glow not GREEN"
 assert gatedouble.out contains "gate-double.glow" else "glow_run gate-double claim missing path"
 
+let gateinc = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/gate-inc.glow"]
+assert gateinc.ok else "glow_run gate-inc.glow failed"
+assert gateinc.out contains "GREEN" else "glow_run gate-inc.glow not GREEN"
+assert gateinc.out contains "gate-inc.glow" else "glow_run gate-inc claim missing path"
+
+let gatedec = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/gate-dec.glow"]
+assert gatedec.ok else "glow_run gate-dec.glow failed"
+assert gatedec.out contains "GREEN" else "glow_run gate-dec.glow not GREEN"
+assert gatedec.out contains "gate-dec.glow" else "glow_run gate-dec claim missing path"
+
 say "GREEN: glow_run desk — all desk generators lowered, built, exit 0."
 
 
