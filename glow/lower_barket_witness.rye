@@ -9,13 +9,13 @@ const print = std.debug.print;
 const lower = @import("lower_barket.rye");
 const rb = @import("rune_barket.rye");
 
-const witness_version = "20260720.184304";
+const witness_version = "20260720.184953";
 
 fn run_selftest(init: std.process.Init) !u8 {
     const io = init.io;
     const a = init.arena.allocator();
     const cwd = std.Io.Dir.cwd();
-    var buf: [2048]u8 = undefined;
+    var buf: [4096]u8 = undefined;
 
     // Identity body lowers to Rye with barket_gate fn and baked sample 5.
     const gate_src = "|^  sample=@u32\nsample\n";
@@ -232,13 +232,30 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(spec_xact.body == .identity);
     print("lower: glow/gen/gate-barket-xact.glow carries xact-mold -- GREEN\n", .{});
 
-    const gen_xfer = try cwd.readFileAlloc(io, "glow/gen/gate-barket-kind-refuse.glow", a, .limited(4096));
-    if (rb.parse_source(gen_xfer)) |_| {
-        return error.XferRefuseDeskAccepted;
+    // STOA125: xfer-mold identity lowers as XferMold.
+    const xfer_src = "|^  sample=xfer-mold\nsample\n";
+    const n_xfer = try lower.lower_source_welcome(xfer_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n_xfer], "barket_gate") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_xfer], "XferMold") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_xfer], ".mint") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_xfer], "from") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_xfer], "amount") != null);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_xfer_welcome.rye", .data = buf[0..n_xfer] });
+    print("lower: xfer-mold barket lowers to XferMold identity -- GREEN\n", .{});
+
+    const gen_xfer = try cwd.readFileAlloc(io, "glow/gen/gate-barket-xfer.glow", a, .limited(4096));
+    const spec_xfer = try rb.parse_source(gen_xfer);
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_xfer), "xfer-mold"));
+    assert(spec_xfer.body == .identity);
+    print("lower: glow/gen/gate-barket-xfer.glow carries xfer-mold -- GREEN\n", .{});
+
+    const gen_pair = try cwd.readFileAlloc(io, "glow/gen/gate-barket-kind-refuse.glow", a, .limited(4096));
+    if (rb.parse_source(gen_pair)) |_| {
+        return error.PairRefuseDeskAccepted;
     } else |err| {
         if (err != rb.ParseError.SampleDoesNotNest) return err;
     }
-    print("lower: glow/gen/gate-barket-kind-refuse.glow (xfer-mold) refuses SampleDoesNotNest -- GREEN\n", .{});
+    print("lower: glow/gen/gate-barket-kind-refuse.glow (pair-mold) refuses SampleDoesNotNest -- GREEN\n", .{});
 
     if (lower.lower_source_welcome("|^  sample=kind-mold\n%-  double  sample\n", &buf)) |_| {
         return error.KindCallBodyLoweredTooSoon;
@@ -253,6 +270,13 @@ fn run_selftest(init: std.process.Init) !u8 {
         if (err != lower.LowerError.BodyGateNotYetLowered) return err;
     }
     print("lower: xact-mold call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
+
+    if (lower.lower_source_welcome("|^  sample=xfer-mold\n%-  double  sample\n", &buf)) |_| {
+        return error.XferCallBodyLoweredTooSoon;
+    } else |err| {
+        if (err != lower.LowerError.BodyGateNotYetLowered) return err;
+    }
+    print("lower: xfer-mold call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
 
     // STOA122: second closed named mold count-mold.
     const count_src = "|^  sample=count-mold\nsample\n";
@@ -269,7 +293,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("lower: glow/gen/gate-barket-count.glow carries count-mold -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: Glow `|^` barket — identity · argv · call-body · amount-mold · count-mold · kind-mold · xact-mold · wet-through-nests; STOA113–124.\n", .{});
+    print("GREEN: Glow `|^` barket — identity · argv · call-body · amount-mold · count-mold · kind-mold · xact-mold · xfer-mold · wet-through-nests; STOA113–125.\n", .{});
     return 0;
 }
 

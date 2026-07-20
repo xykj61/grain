@@ -39,7 +39,9 @@ assert selftest.out contains "KindMold" else "lower_bartis_witness missing KindM
 assert selftest.out contains "gate-kind.glow" else "lower_bartis_witness missing gate-kind desk"
 assert selftest.out contains "XactMold" else "lower_bartis_witness missing XactMold claim"
 assert selftest.out contains "gate-xact.glow" else "lower_bartis_witness missing gate-xact desk"
-assert selftest.out contains "xfer-mold" else "lower_bartis_witness missing xfer-mold refuse"
+assert selftest.out contains "XferMold" else "lower_bartis_witness missing XferMold claim"
+assert selftest.out contains "gate-xfer.glow" else "lower_bartis_witness missing gate-xfer desk"
+assert selftest.out contains "pair-mold" else "lower_bartis_witness missing pair-mold refuse"
 
 let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
 assert build_welcome.ok else "bartis welcome .rye build failed"
@@ -145,4 +147,13 @@ let run_xact = run ["sh" "-c" "${xact_bin}; echo EXIT:$?"]
 assert run_xact.ok else "bartis xact-mold welcome binary failed to launch"
 assert run_xact.out contains "EXIT:0" else "bartis xact-mold welcome binary did not exit 0"
 
-say "GREEN: Glow `|=` bartis — STOA100–124 identity · argv · call-body · amount-mold · count-mold · kind-mold · xact-mold · nest SampleDoesNotNest."
+# STOA125: xfer-mold welcome binary exits 0.
+let xfer_rye = "glow/.cache/gate_xfer_welcome.rye"
+let xfer_bin = "glow/bin/gate_xfer_welcome"
+let build_xfer = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${xfer_rye} -femit-bin=${xfer_bin}"]
+assert build_xfer.ok else "bartis xfer-mold welcome .rye build failed"
+let run_xfer = run ["sh" "-c" "${xfer_bin}; echo EXIT:$?"]
+assert run_xfer.ok else "bartis xfer-mold welcome binary failed to launch"
+assert run_xfer.out contains "EXIT:0" else "bartis xfer-mold welcome binary did not exit 0"
+
+say "GREEN: Glow `|=` bartis — STOA100–125 identity · argv · call-body · amount-mold · count-mold · kind-mold · xact-mold · xfer-mold · nest SampleDoesNotNest."

@@ -12,8 +12,9 @@
 //! STOA122: closed allowlist adds `count-mold` beside `amount-mold`.
 //! STOA123: closed allowlist adds unit `$%` `kind-mold` (identity lower).
 //! STOA124: closed allowlist adds payload `$%` `xact-mold` (identity lower).
+//! STOA125: closed allowlist adds multi-face payload `$%` `xfer-mold` (identity lower).
 //! Sample nests under `@u32` / named allowlist via nest_type; ambient gold held.
-//! Token-driven via tokens.rye. Multi-face payload `$%` (`xfer-mold`) barket samples held.
+//! Token-driven via tokens.rye. Open `$:` beyond amount/count barket samples held.
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -142,7 +143,7 @@ pub fn parse_source(src: []const u8) ParseError!BarketSpec {
     if (i >= n or toks[@as(usize, @intCast(i))].kind != .equals) return error.MissingEquals;
     i += 1;
 
-    // Sample mold — aura `@u32` or closed named amount/count/kind/xact-mold.
+    // Sample mold — aura `@u32` or closed named amount/count/kind/xact/xfer-mold.
     if (i >= n) return error.MissingAura;
     const mold_tok = toks[@as(usize, @intCast(i))];
     var named_mold: ?[]const u8 = null;
