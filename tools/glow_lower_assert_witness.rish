@@ -1,0 +1,49 @@
+# glow_lower_assert_witness.rish — Glow ?> / ?< TAME assertion runes (STOA88).
+#
+#   rishi/bin/rishi run tools/glow_lower_assert_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "glow/bin/lower_assert_witness"
+let true_rye = "glow/.cache/assert_true_welcome.rye"
+let true_bin = "glow/bin/assert_true_welcome"
+let false_rye = "glow/.cache/assert_false_welcome.rye"
+let false_bin = "glow/bin/assert_false_welcome"
+let un_rye = "glow/.cache/assert_true_unwelcome.rye"
+let un_bin = "glow/bin/assert_true_unwelcome"
+
+let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/lower_assert_witness.rye -femit-bin=${bin}"]
+assert build.ok else "lower_assert_witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "lower_assert_witness exited non-zero"
+assert selftest.out contains "GREEN" else "lower_assert_witness not GREEN"
+assert selftest.out contains "?>" else "lower_assert_witness missing ?>"
+assert selftest.out contains "?<" else "lower_assert_witness missing ?<"
+assert selftest.out contains "STOA88" else "lower_assert_witness missing STOA88"
+
+let build_true = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${true_rye} -femit-bin=${true_bin}"]
+assert build_true.ok else "assert-true welcome .rye build failed"
+let run_true = run ["sh" "-c" "${true_bin}; echo EXIT:$?"]
+assert run_true.ok else "assert-true welcome failed to launch"
+assert run_true.out contains "EXIT:0" else "assert-true welcome did not exit 0"
+
+let build_false = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${false_rye} -femit-bin=${false_bin}"]
+assert build_false.ok else "assert-false welcome .rye build failed"
+let run_false = run ["sh" "-c" "${false_bin}; echo EXIT:$?"]
+assert run_false.ok else "assert-false welcome failed to launch"
+assert run_false.out contains "EXIT:0" else "assert-false welcome did not exit 0"
+
+# Unwelcome ?> must crash the assert (non-zero / panic).
+let build_un = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${un_rye} -femit-bin=${un_bin}"]
+assert build_un.ok else "assert-true unwelcome .rye build failed"
+let run_un = run ["sh" "-c" "${un_bin} >/dev/null 2>&1; echo EXIT:$?"]
+assert run_un.out contains "EXIT:" else "assert-true unwelcome produced no exit"
+assert (run_un.out contains "EXIT:0") == false else "assert-true unwelcome must not exit 0"
+
+# TAME surface gates (own witness — global roster at 256 ceiling).
+let width = run ["sh" "-c" "grep 'usize' glow/lower_assert.rye glow/rune_assert.rye 2>/dev/null | grep -v '@intCast' | grep -v '@as(usize' | wc -l | tr -d ' '"]
+assert trim width.out == "0" else "assert modules still carry authored usize"
+let assert_import = run ["sh" "-c" "grep -c '^const assert = std.debug.assert;' glow/lower_assert.rye | tr -d ' '"]
+assert trim assert_import.out == "1" else "lower_assert must import assert once"
+
+say "GREEN: Glow ?> / ?< TAME assertion runes — Hoon wutgar/wutgal; STOA88."

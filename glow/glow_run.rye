@@ -15,6 +15,7 @@ const print = std.debug.print;
 const lower_trap = @import("lower_trap.rye");
 const lower_cast = @import("lower_cast.rye");
 const lower_if = @import("lower_conditional.rye");
+const lower_assert = @import("lower_assert.rye");
 const lower_sw = @import("lower_switch.rye");
 const lower_face = @import("lower_face.rye");
 const lower_null = @import("lower_null.rye");
@@ -245,6 +246,12 @@ pub fn main(init: std.process.Init) !u8 {
         if (line.len >= 2 and line[0] == '?' and line[1] == ':') {
             break :blk lower_if.lower_line_welcome(line, &rye_buf) catch |err| {
                 print("glow_run: conditional lower failed ({s})\n", .{@errorName(err)});
+                return 1;
+            };
+        }
+        if (line.len >= 2 and line[0] == '?' and (line[1] == '>' or line[1] == '<')) {
+            break :blk lower_assert.lower_line_welcome(line, &rye_buf) catch |err| {
+                print("glow_run: assert lower failed ({s})\n", .{@errorName(err)});
                 return 1;
             };
         }

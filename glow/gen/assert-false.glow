@@ -1,0 +1,3 @@
+::  Negative assertion — Hoon ?< wutgal parallel (STOA88).
+::  Lowered by glow/lower_assert.rye into Rye assert; Rishi stays the shell.
+?<  (gth tick 32)  1

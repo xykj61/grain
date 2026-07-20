@@ -1,0 +1,115 @@
+//! glow/lower_assert.rye — lower Glow `?>` / `?<` to Rye `assert` (STOA88).
+//!
+//! Hoon: `?> p q` → crash unless p; `?< p q` → crash if p.
+//! Glow ambient truth is Zig bool / comparison — not Hoon loobeans.
+//! Emitted programs use unqualified `assert` (TAME opening triad).
+//!
+//!   ?>  (gth tick 32)  1
+//!   ?<  (gth tick 32)  1
+
+const std = @import("std");
+const assert = std.debug.assert;
+const ra = @import("rune_assert.rye");
+
+pub const LowerError = ra.ParseError || error{
+    Overflow,
+    EmptySource,
+};
+
+/// Welcome tick saturates `(gth tick 32)` true.
+pub const gth_welcome_tick: u32 = 40;
+/// Unwelcome tick leaves `(gth tick 32)` false.
+pub const gth_unwelcome_tick: u32 = 10;
+
+fn append_print(out: []u8, used: *u32, comptime fmt: []const u8, args: anytype) LowerError!void {
+    assert(used.* <= out.len); // invariant
+    const slice = out[@as(usize, @intCast(used.*))..];
+    const written = std.fmt.bufPrint(slice, fmt, args) catch return error.Overflow;
+    const n: u32 = @intCast(written.len);
+    assert(used.* + n <= out.len); // postcondition
+    used.* += n;
+}
+
+fn emit_assert(spec: *const ra.AssertSpec, tick: u32, out: []u8) LowerError!u32 {
+    assert(out.len >= 1); // precondition
+    const test_expr = ra.test_slice(spec);
+    assert(std.mem.eql(u8, test_expr, "(gth tick 32)")); // invariant: thin test pin
+    var used: u32 = 0;
+    const rune: []const u8 = switch (spec.polarity) {
+        .positive => "?>",
+        .negative => "?<",
+    };
+    try append_print(out, &used,
+        \\const std = @import("std");
+        \\const assert = std.debug.assert;
+        \\
+        \\/// Lowered from Glow `{s}  {s}  {d}` — TAME assertion rune (STOA88).
+        \\pub fn main(_: std.process.Init) !u8 {{
+        \\    const tick: u32 = {d};
+        \\
+    , .{ rune, test_expr, spec.body, tick });
+    switch (spec.polarity) {
+        .positive => try append_print(out, &used,
+            \\    assert(tick > 32); // ?> (gth tick 32) — must hold
+            \\
+        , .{}),
+        .negative => try append_print(out, &used,
+            \\    assert(tick <= 32); // ?< (gth tick 32) — must not hold
+            \\
+        , .{}),
+    }
+    // Body is the Glow payload; POSIX exit 0 means the assertion held.
+    try append_print(out, &used,
+        \\    const body: u32 = {d};
+        \\    return if (body == {d}) 0 else 1;
+        \\}}
+        \\
+    , .{ spec.body, spec.body });
+    return used;
+}
+
+fn welcome_tick(polarity: ra.Polarity) u32 {
+    // ?> needs (gth) true; ?< needs (gth) false.
+    return switch (polarity) {
+        .positive => gth_welcome_tick,
+        .negative => gth_unwelcome_tick,
+    };
+}
+
+fn unwelcome_tick(polarity: ra.Polarity) u32 {
+    return switch (polarity) {
+        .positive => gth_unwelcome_tick,
+        .negative => gth_welcome_tick,
+    };
+}
+
+pub fn lower_line_welcome(line: []const u8, out: []u8) LowerError!u32 {
+    if (line.len == 0) return error.EmptySource;
+    const spec = try ra.parse(line);
+    return emit_assert(&spec, welcome_tick(spec.polarity), out);
+}
+
+pub fn lower_line_unwelcome(line: []const u8, out: []u8) LowerError!u32 {
+    if (line.len == 0) return error.EmptySource;
+    const spec = try ra.parse(line);
+    return emit_assert(&spec, unwelcome_tick(spec.polarity), out);
+}
+
+pub fn lower_source_welcome(src: []const u8, out: []u8) LowerError!u32 {
+    if (src.len == 0) return error.EmptySource;
+    assert(src.len <= std.math.maxInt(u32)); // precondition: hosted desk
+    // First non-comment Glow line.
+    var i: u32 = 0;
+    const src_len: u32 = @intCast(src.len);
+    while (i < src_len) {
+        const rest = src[@as(usize, @intCast(i))..];
+        const nl_opt = std.mem.indexOfScalar(u8, rest, '\n');
+        const nl: u32 = if (nl_opt) |n| @intCast(n) else src_len - i;
+        const line = std.mem.trim(u8, rest[0..@as(usize, @intCast(nl))], " \t\r");
+        i += nl + 1;
+        if (line.len == 0) continue;
+        if (line.len >= 2 and line[0] == ':' and line[1] == ':') continue;
+        return lower_line_welcome(line, out);
+    }
+    return error.EmptySource;
+}
