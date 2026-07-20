@@ -1,0 +1,51 @@
+//! glow/rune_barket_witness.rye — proves barket header parse (STOA112).
+//!
+//!   rye build glow/rune_barket_witness.rye -femit-bin=glow/bin/rune_barket_witness
+//!   glow/bin/rune_barket_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const rb = @import("rune_barket.rye");
+
+const witness_version = "20260720.174115";
+
+fn run_selftest(init: std.process.Init) !u8 {
+    _ = init;
+
+    // Header-only dry barket accepts.
+    const ok = try rb.parse_source("|^  sample=@u32\n");
+    assert(std.mem.eql(u8, rb.face_slice(&ok), "sample"));
+    print("barket: header |^ sample=@u32 accepts -- GREEN\n", .{});
+
+    // Body present refuses BodyNotYetLowered (lower held).
+    if (rb.parse_source("|^  sample=@u32\nsample\n")) |_| {
+        return error.BarketBodyAcceptedTooSoon;
+    } else |err| {
+        if (err != rb.ParseError.BodyNotYetLowered) return err;
+    }
+    print("barket: body refused BodyNotYetLowered -- GREEN\n", .{});
+
+    // Wrong aura refuses SampleDoesNotNest.
+    if (rb.parse_source("|^  sample=@u64\n")) |_| {
+        return error.BarketNestAcceptedTooSoon;
+    } else |err| {
+        if (err != rb.ParseError.SampleDoesNotNest) return err;
+    }
+    print("barket: @u64 refused SampleDoesNotNest -- GREEN\n", .{});
+
+    // Bartis rune refuses NotABarket.
+    if (rb.parse_source("|=  sample=@u32\nsample\n")) |_| {
+        return error.BartisAcceptedAsBarket;
+    } else |err| {
+        if (err != rb.ParseError.NotABarket) return err;
+    }
+    print("barket: |= refused NotABarket -- GREEN\n", .{});
+
+    print("GREEN: Glow barket parse — dry header · BodyNotYetLowered · SampleDoesNotNest; STOA112.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
+}
