@@ -25,6 +25,10 @@ assert selftest.out contains "argv-sample" else "lower_bartis_witness missing ar
 assert selftest.out contains "gate-sample-u32.glow" else "lower_bartis_witness missing argv gen desk claim"
 assert selftest.out contains "call-body double" else "lower_bartis_witness missing call-body claim"
 assert selftest.out contains "gate-double.glow" else "lower_bartis_witness missing gate-double desk claim"
+assert selftest.out contains "call-body inc" else "lower_bartis_witness missing call-body inc claim"
+assert selftest.out contains "call-body dec" else "lower_bartis_witness missing call-body dec claim"
+assert selftest.out contains "gate-inc.glow" else "lower_bartis_witness missing gate-inc desk claim"
+assert selftest.out contains "gate-dec.glow" else "lower_bartis_witness missing gate-dec desk claim"
 assert selftest.out contains "BodyGateNotYetLowered" else "lower_bartis_witness missing unknown-gate refuse"
 assert selftest.out contains "BodySampleMismatch" else "lower_bartis_witness missing sample-mismatch refuse"
 
@@ -62,4 +66,20 @@ let run_call_argv = run ["sh" "-c" "${call_argv_bin} 7; echo EXIT:$?"]
 assert run_call_argv.ok else "bartis call-body argv binary failed to launch"
 assert run_call_argv.out contains "EXIT:0" else "bartis call-body argv binary did not exit 0 with sample 7"
 
-say "GREEN: Glow `|=` bartis — STOA100 baked 5 · STOA101 argv · STOA103 call-body double."
+let inc_rye = "glow/.cache/gate_inc_welcome.rye"
+let inc_bin = "glow/bin/gate_inc_welcome"
+let build_inc = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${inc_rye} -femit-bin=${inc_bin}"]
+assert build_inc.ok else "bartis inc welcome .rye build failed"
+let run_inc = run ["sh" "-c" "${inc_bin}; echo EXIT:$?"]
+assert run_inc.ok else "bartis inc welcome binary failed to launch"
+assert run_inc.out contains "EXIT:0" else "bartis inc welcome binary did not exit 0"
+
+let dec_rye = "glow/.cache/gate_dec_welcome.rye"
+let dec_bin = "glow/bin/gate_dec_welcome"
+let build_dec = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${dec_rye} -femit-bin=${dec_bin}"]
+assert build_dec.ok else "bartis dec welcome .rye build failed"
+let run_dec = run ["sh" "-c" "${dec_bin}; echo EXIT:$?"]
+assert run_dec.ok else "bartis dec welcome binary failed to launch"
+assert run_dec.out contains "EXIT:0" else "bartis dec welcome binary did not exit 0"
+
+say "GREEN: Glow `|=` bartis — STOA100–104 identity · argv · call-body double/inc/dec."

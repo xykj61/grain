@@ -1,4 +1,4 @@
-# STOA — Glow SLC · nest · product · ≤80 · STOA0–103 GREEN · 2026-07-20 (G0–G5 · bartis) · draw → **STOA**
+# STOA — Glow SLC · nest · product · ≤80 · STOA0–104 GREEN · 2026-07-20 (G0–G5 · bartis) · draw → **STOA**
 | Rung | Claim | Witness / gate | State |
 |------|-------|----------------|-------|
 | **STOA0** | Eight rune heads + desk hop · `(lent)` · `(mix)` | `glow_run_desk_witness` · `glow_expr_witness` | **GREEN** (claimed `20260718.202730`) |
@@ -77,5 +77,5 @@
 | **STOA73** | product-root write + Pixel install (expect 5) | write · `stoa73_…_install_onpath_host` | **GREEN** write `184836` · eyes `191719` |
 | **STOA74–75** | `+$` / `$:` `@u32` mold (1–3 fields) | `glow_rune_mold` · `glow_lower_mold` · desk | **GREEN** `190825` · `192241` |
 | **STOA76–83** | `$%` · cast · payload · multi · tag/pay · token stream | mold · named-cast · tokens | **GREEN** `192936`…`200706` |
-| **STOA84–103** | Cast · alphabet · G4–G5 · bartis call | tokens · G5 · bartis | **GREEN** `201027`…`040800` |
+| **STOA84–104** | Cast · alphabet · G4–G5 · bartis trio | tokens · G5 · bartis | **GREEN** `201027`…`041800` |
 Smoke: `glow_lower_bartis_witness` · Sibling: **ZETA** · **LULU** · **SETU** · **TUBE**.

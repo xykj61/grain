@@ -1,8 +1,9 @@
-//! glow/rune_bartis.rye — parses Glow's `|=` bartis gate rune (STOA100–103).
+//! glow/rune_bartis.rye — parses Glow's `|=` bartis gate rune (STOA100–104).
 //!
 //! Thin one-arm gate: `|=  sample=@u32` on line one, then either:
 //!   - identity body: bare face matching the sample (STOA100)
-//!   - call body: `%-  double  <sample-face>` (STOA103) — closed demo gate only
+//!   - call body: `%-  <gate>  <sample-face>` (STOA103–104)
+//! Closed demo gates: `double` · `inc` · `dec` (same pins as STOA6 / core arms).
 //! Token-driven via tokens.rye. Only `@u32` aura accepted this lap.
 //! Wet / gold polymorphic cores held until a richer nest surface earns them.
 //!
@@ -60,6 +61,11 @@ pub fn face_slice(spec: *const GateSpec) []const u8 {
 pub fn gate_slice(spec: *const GateSpec) []const u8 {
     assert(spec.gate_len <= max_gate_len); // invariant: gate fits in buffer
     return spec.gate[0..spec.gate_len];
+}
+
+/// True when `gate` is a closed demo one-arg gate accepted in a bartis call body.
+pub fn is_closed_call_gate(gate: []const u8) bool {
+    return std.mem.eql(u8, gate, "double") or std.mem.eql(u8, gate, "inc") or std.mem.eql(u8, gate, "dec");
 }
 
 /// Parse a 2-line (plus optional `::` comments) bartis source into a GateSpec.
@@ -124,8 +130,8 @@ pub fn parse_source(src: []const u8) ParseError!GateSpec {
         if (i >= n or toks[i].kind != .ident) return error.MalformedBody;
         const gate_text = tokens.slice_of(src, toks[i]);
         if (gate_text.len == 0 or gate_text.len > max_gate_len) return error.MalformedBody;
-        // Closed demo gate only this lap — same pin as STOA6 `%-  double`.
-        if (!std.mem.eql(u8, gate_text, "double")) return error.BodyGateNotYetLowered;
+        // Closed demo gates — double (STOA103) · inc · dec (STOA104).
+        if (!is_closed_call_gate(gate_text)) return error.BodyGateNotYetLowered;
         i += 1;
         if (i >= n or toks[i].kind != .ident) return error.MalformedBody;
         const call_sample = tokens.slice_of(src, toks[i]);
