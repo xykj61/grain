@@ -8,6 +8,7 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260719.220955` — [STOA90 G1 closed pronunciation table GREEN](20260719-220955_stoa90-g1-alphabet-green.bron) — 25 heads bound to tokens.rye; await send
 - `20260719.204820` — [iOS handoff send complete](20260719-204820_ios-handoff-send-complete.bron) — origin + codeberg at 9da6c6ef3d
 - `20260719.204759` — [Cursor iOS handoff and core port order](20260719-204759_cursor-ios-handoff-and-core-port.bron) — dry cores fit; wet hold; await send
 - `20260719.204500` — [STOA89 send complete](20260719-204500_stoa89-send-complete.bron) — origin + codeberg at bcf3780543
