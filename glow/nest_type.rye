@@ -1,4 +1,4 @@
-//! glow/nest_type.rye — nest/type surface (STOA107–110).
+//! glow/nest_type.rye — nest/type surface (STOA107–110 · STOA118–119).
 //!
 //! Expansion-time checks that a sample nests under a stated mold:
 //!   - STOA107: dry aura equality (`@u32` under `@u32`)
@@ -6,15 +6,17 @@
 //!   - STOA109: closed named-mold bartis sample (`amount-mold` one-field `$:`)
 //!   - STOA110: wet-sample refuse — wet-flagged claims do not nest (no Glow wet syntax)
 //!   - STOA118: same closed named mold on barket samples
-//! Ambient wet/gold accept and `kind-mold` gate samples stay held.
+//!   - STOA119: wet-sample accept under a stated closed mold (`assert_sample_wet_nests`)
+//! Ambient gold / free polymorphism · Glow wet syntax · `kind-mold` gate samples stay held.
 //!
 //! Bartis and barket call `assert_aura_nests` / `assert_bartis_named_mold`.
+//! Dry gates still hardcode `assert_sample_not_wet(false)`.
 
 const std = @import("std");
 const assert = std.debug.assert;
 const rune_mold = @import("rune_mold.rye");
 
-pub const nest_type_version = "20260720.150635";
+pub const nest_type_version = "20260720.181950";
 
 /// Closed named mold welcome in bartis samples this lap (one-field `$:` ≡ `@u32`).
 pub const bartis_named_mold_amount = "amount-mold";
@@ -66,8 +68,25 @@ pub fn assert_named_mold_nests(mold_name: []const u8, spec: *const rune_mold.Mol
 }
 
 /// Assert a sample claim is dry. Wet-flagged claims refuse `SampleDoesNotNest`.
-/// STOA102 step 1 / STOA110: expansion refuse for wet samples — no Glow wet spelling,
-/// no ambient gold accept, no barket tokenize this lap.
+/// STOA102 step 1 / STOA110: unconditional refuse for wet samples — kept beside
+/// STOA119 mold-bounded wet accept (`assert_sample_wet_nests`).
 pub fn assert_sample_not_wet(is_wet: bool) NestError!void {
     if (is_wet) return error.SampleDoesNotNest;
+}
+
+/// Wet-sample accept under a stated closed mold (STOA119).
+/// Dry (`is_wet=false`): no-op success.
+/// Wet (`is_wet=true`): sample must nest under `stated_mold` via aura equality
+/// (`@…`) or the closed named-mold allowlist (`amount-mold`).
+pub fn assert_sample_wet_nests(is_wet: bool, sample: []const u8, stated_mold: []const u8) NestError!void {
+    if (!is_wet) return;
+    assert(sample.len > 0); // precondition: wet sample non-empty
+    assert(stated_mold.len > 0); // precondition: stated mold non-empty
+    if (sample[0] == '@' or stated_mold[0] == '@') {
+        try assert_aura_nests(sample, stated_mold);
+        return;
+    }
+    try assert_bartis_named_mold(sample);
+    try assert_bartis_named_mold(stated_mold);
+    if (!std.mem.eql(u8, sample, stated_mold)) return error.SampleDoesNotNest;
 }

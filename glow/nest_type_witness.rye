@@ -1,4 +1,4 @@
-//! glow/nest_type_witness.rye — proves nest/type surface (STOA107–110).
+//! glow/nest_type_witness.rye — proves nest/type surface (STOA107–110 · STOA119).
 //!
 //!   rye build glow/nest_type_witness.rye -femit-bin=glow/bin/nest_type_witness
 //!   glow/bin/nest_type_witness
@@ -11,7 +11,7 @@ const rb = @import("rune_bartis.rye");
 const lower = @import("lower_bartis.rye");
 const rm = @import("rune_mold.rye");
 
-const witness_version = "20260720.150635";
+const witness_version = "20260720.181950";
 
 fn run_selftest(init: std.process.Init) !u8 {
     const a = init.arena.allocator();
@@ -135,13 +135,37 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("nest: wet sample claim (is_wet=true) refused SampleDoesNotNest -- GREEN\n", .{});
 
-    // Dry bartis path still holds beside wet refuse.
+    // STOA119: wet accept under stated closed molds; refuse mismatches.
+    try nest_type.assert_sample_wet_nests(false, "@u32", "@u32");
+    print("nest: wet-nests dry no-op (is_wet=false) accepts -- GREEN\n", .{});
+
+    try nest_type.assert_sample_wet_nests(true, "@u32", "@u32");
+    print("nest: wet @u32 under @u32 accepts -- GREEN\n", .{});
+
+    try nest_type.assert_sample_wet_nests(true, "amount-mold", "amount-mold");
+    print("nest: wet amount-mold under amount-mold accepts -- GREEN\n", .{});
+
+    if (nest_type.assert_sample_wet_nests(true, "@u64", "@u32")) |_| {
+        return error.WetAuraMismatchAccepted;
+    } else |err| {
+        if (err != nest_type.NestError.SampleDoesNotNest) return err;
+    }
+    print("nest: wet @u64 under @u32 refused SampleDoesNotNest -- GREEN\n", .{});
+
+    if (nest_type.assert_sample_wet_nests(true, "kind-mold", "kind-mold")) |_| {
+        return error.WetKindMoldAcceptedTooSoon;
+    } else |err| {
+        if (err != nest_type.NestError.SampleDoesNotNest) return err;
+    }
+    print("nest: wet kind-mold refused SampleDoesNotNest -- GREEN\n", .{});
+
+    // Dry bartis path still holds beside wet refuse + wet-nests.
     const n_dry = try lower.lower_source_welcome("|=  sample=@u32\nsample\n", &buf);
     assert(n_dry > 0);
     print("nest: dry bartis still lowers under wet-refuse pin -- GREEN\n", .{});
 
     print("nest: version {s}\n", .{witness_version});
-    print("GREEN: Glow nest/type — dry aura · $% tag · named-mold · wet refuse; SampleDoesNotNest; STOA107–110.\n", .{});
+    print("GREEN: Glow nest/type — dry aura · $% tag · named-mold · wet refuse · wet-nests; STOA107–110/119.\n", .{});
     return 0;
 }
 

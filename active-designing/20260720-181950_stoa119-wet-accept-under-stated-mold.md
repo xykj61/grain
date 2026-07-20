@@ -6,8 +6,8 @@
 **Version:** `20260720.181950` (UTC · cloud host)  
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
 **Voice:** Quin  
-**Status:** Design — claim seated; implement next under lean A  
-**Register:** Design until `tools/glow_nest_type_witness.rish` binds accept+refuse under wet flag  
+**Status:** Checkable — bound by `tools/glow_nest_type_witness.rish`  
+**Register:** Checkable (Two Rooms) — wet-nests accept×2 molds · refuse×2 · STOA110 refuse held  
 **Grounds in:** [`20260720-040700_stoa102-barket-horizon-wording.md`](20260720-040700_stoa102-barket-horizon-wording.md) · [`20260720-042931_stoa106-nest-type-surface-wording.md`](20260720-042931_stoa106-nest-type-surface-wording.md) · [`20260720-150635_stoa110-wet-refuse-nest.md`](20260720-150635_stoa110-wet-refuse-nest.md) · [`20260720-181347_stoa118-named-mold-barket.md`](20260720-181347_stoa118-named-mold-barket.md)
 
 **dated_guard:** Do **not** edit the dated STOA102 / STOA106 / STOA110 wording artifacts. Seat this lap in *this* brief and living pins when GREEN.
