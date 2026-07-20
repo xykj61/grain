@@ -6,9 +6,10 @@
 # Fixture (baked sample):
 #   rishi/bin/rishi run tools/glow_run.rish glow/gen/cast-u32.glow
 #
-# Generator (one @u32 sample from argv — G3 cast / STOA101 bartis):
+# Generator (one @u32 sample from argv — G3 cast / STOA101–103 bartis):
 #   rishi/bin/rishi run tools/glow_run.rish glow/gen/sample-u32.glow 42
 #   rishi/bin/rishi run tools/glow_run.rish glow/gen/gate-sample-u32.glow 7
+#   rishi/bin/rishi run tools/glow_run.rish glow/gen/gate-double-u32.glow 7
 
 let zig = "vendor/zig-toolchain/zig"
 assert (args.len != 0) else "usage: rishi run tools/glow_run.rish <file.glow> [<sample-u32-decimal>]"
