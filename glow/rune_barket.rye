@@ -1,0 +1,93 @@
+//! glow/rune_barket.rye — parses Glow's `|^` barket header (STOA112).
+//!
+//! Thin dry-shaped demo: `|^  sample=@u32` on one line, no body.
+//! Body tokens refuse `BodyNotYetLowered` — lower stays held (STOA102 step 4).
+//! Sample aura nests under `@u32` via nest_type; wet/gold accept held.
+//! Token-driven via tokens.rye. Named-mold barket samples held.
+//!
+//! Parse shape (token stream):
+//!   1. skip leading newlines
+//!   2. rune2 `|^`
+//!   3. ident (sample face name)
+//!   4. equals
+//!   5. aura `@u32` (else SampleDoesNotNest)
+//!   6. newline(s) or end — header-only accept
+//!   7. any further live token → BodyNotYetLowered
+
+const std = @import("std");
+const assert = std.debug.assert;
+const tokens = @import("tokens.rye");
+const tally_copy = @import("tally_copy.rye");
+const nest_type = @import("nest_type.rye");
+
+pub const max_face_len: u32 = tokens.max_name_len;
+
+pub const ParseError = error{
+    EmptySource,
+    NotABarket,
+    MissingFace,
+    MissingEquals,
+    MissingAura,
+    SampleDoesNotNest,
+    BodyNotYetLowered,
+    TooManyTokens,
+    BadToken,
+};
+
+/// A parsed thin barket header: sample face only (no body this lap).
+pub const BarketSpec = struct {
+    face: [max_face_len]u8 = [_]u8{0} ** max_face_len,
+    face_len: u32 = 0,
+};
+
+pub fn face_slice(spec: *const BarketSpec) []const u8 {
+    assert(spec.face_len <= max_face_len); // invariant: face fits in buffer
+    return spec.face[0..spec.face_len];
+}
+
+/// Parse a header-only barket source into a BarketSpec.
+/// Tokenizer strips comment lines and blank lines; parse sees only live tokens.
+pub fn parse_source(src: []const u8) ParseError!BarketSpec {
+    if (src.len == 0) return error.EmptySource;
+    var buf: [tokens.max_tokens]tokens.Token = undefined;
+    const n = tokens.tokenize(src, &buf) catch |err| switch (err) {
+        error.TooManyTokens => return error.TooManyTokens,
+        error.BadToken => return error.BadToken,
+        error.EmptySource => return error.EmptySource,
+    };
+    assert(n <= tokens.max_tokens); // postcondition: tokenize bound
+    const toks = buf[0..n];
+    var i: u32 = 0;
+
+    while (i < n and toks[@as(usize, @intCast(i))].kind == .newline) : (i += 1) {}
+    if (i >= n) return error.NotABarket;
+
+    const rune_tok = toks[@as(usize, @intCast(i))];
+    if (rune_tok.kind != .rune2) return error.NotABarket;
+    if (!std.mem.eql(u8, tokens.slice_of(src, rune_tok), "|^")) return error.NotABarket;
+    i += 1;
+
+    if (i >= n or toks[@as(usize, @intCast(i))].kind != .ident) return error.MissingFace;
+    const face_text = tokens.slice_of(src, toks[@as(usize, @intCast(i))]);
+    if (face_text.len == 0 or face_text.len > max_face_len) return error.MissingFace;
+    i += 1;
+
+    if (i >= n or toks[@as(usize, @intCast(i))].kind != .equals) return error.MissingEquals;
+    i += 1;
+
+    if (i >= n or toks[@as(usize, @intCast(i))].kind != .aura) return error.MissingAura;
+    const aura_text = tokens.slice_of(src, toks[@as(usize, @intCast(i))]);
+    nest_type.assert_aura_nests(aura_text, "@u32") catch return error.SampleDoesNotNest;
+    // Dry claim only this lap — wet accept still held (STOA110 refuse is GREEN).
+    nest_type.assert_sample_not_wet(false) catch return error.SampleDoesNotNest;
+    i += 1;
+
+    while (i < n and toks[@as(usize, @intCast(i))].kind == .newline) : (i += 1) {}
+    if (i < n) return error.BodyNotYetLowered;
+
+    var spec: BarketSpec = .{};
+    assert(face_text.len <= max_face_len); // precondition held by check above
+    tally_copy.copy_disjoint(u8, spec.face[0..face_text.len], face_text);
+    spec.face_len = @intCast(face_text.len);
+    return spec;
+}

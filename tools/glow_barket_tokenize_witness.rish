@@ -1,7 +1,7 @@
 # glow_barket_tokenize_witness.rish — barket tokenize (STOA111).
 #
 # Proves |^ barket is in match_rune2, G1 barket brief seats **27**, alphabet
-# GREEN at 27, and parse/lower stay absent. Ambient wet/gold accept held.
+# GREEN at 27, and lower stays absent. Parse lands at STOA112; ambient wet accept held.
 #
 #   rishi/bin/rishi run tools/glow_barket_tokenize_witness.rish
 
@@ -42,9 +42,9 @@ assert lex_barket.ok else "LEXICON missing barket"
 let readme_h = run ["sh" "-c" "grep -F 'barket' ${readme}"]
 assert readme_h.ok else "glow/README must name barket"
 
-# No parse/lower modules this lap.
-let no_parse = run ["sh" "-c" "test ! -f glow/rune_barket.rye && test ! -f glow/lower_barket.rye; echo $?"]
-assert trim no_parse.out == "0" else "barket parse/lower must stay absent (STOA111 tokenize-only)"
+# Lower still held (STOA112 parse may exist; STOA102 step 4 stays open).
+let no_lower = run ["sh" "-c" "test ! -f glow/lower_barket.rye; echo $?"]
+assert trim no_lower.out == "0" else "barket lower must stay absent"
 
 # Alphabet + bartis siblings GREEN.
 let alpha = run ["sh" "-c" "rishi/bin/rishi run tools/glow_rune_alphabet_witness.rish"]
@@ -56,4 +56,4 @@ let bartis = run ["sh" "-c" "rishi/bin/rishi run tools/glow_lower_bartis_witness
 assert bartis.ok else "glow_lower_bartis_witness failed under barket tokenize"
 assert bartis.out contains "GREEN" else "glow_lower_bartis_witness not GREEN"
 
-say "GREEN: Glow barket tokenize — |^ in match_rune2; 27 heads; parse/lower held; STOA111."
+say "GREEN: Glow barket tokenize — |^ in match_rune2; 27 heads; lower held; STOA111."
