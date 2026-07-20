@@ -430,6 +430,8 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA95 mold-only `+$` peek via tokens GREEN, `20260719.225100`** — lean A: `tokens.looks_like_mold_only` drives mold dispatch; `lower_mold` delegates; `glow_run` retires byte `+$` digraph arm; named-cast/cross-desk still win first. Next language: **STOA96** check-in (tidy `lower_mold` · token→`MoldSpec` · Sala B0).
 
+**STOA96 TAME tidy `lower_mold` GREEN, `20260719.231400`** — lean A: assert · u32 · append_print · split emitters; width-check + one-file ban overflow seat (256 roster ceiling). Next language: **STOA97** check-in (token→`MoldSpec` · Sala B0).
+
 **Glow OS · Glow Desk · Glow Glass seated, `20260717.183622`** — Keaton: **Glow OS** unifies; **Glow Desk** = desktop; **Glow Glass** = mobile. Lexicon + silo [`../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md`](../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md). Orientation firmware stays check-in.
 
 **Witness habitat + markup pipeline, `20260717.173427`** — foundations fit study affirms single-strand · sameness · happy-zone practice in the suite; teaching path was the gap. Seats **witness habitat** as Acme synonym (foundations keep *happy zone*). Fusion map holds Scribble→Brix→Bron→Mantra→Sala with Glow under TAME; Udon/Sail/Zuse horizon. Tutorial scaffold [`../manual/tutorials/cursor-and-the-compass.md`](../manual/tutorials/cursor-and-the-compass.md); silo [`../active-designing/20260717-173427_witness-habitat-and-the-markup-pipeline.md`](../active-designing/20260717-173427_witness-habitat-and-the-markup-pipeline.md). Product next remains Dexter D2.
