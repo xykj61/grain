@@ -7,7 +7,7 @@ type: reference
 # TAME Guidance — Operational Supplement
 
 **Language:** EN
-**Last updated:** 2026-07-20 (Glow G0–G5 · bartis STOA100–105 · barket STOA102 · nest/type STOA106–108)
+**Last updated:** 2026-07-20 (Glow G0–G5 · bartis STOA100–109 · barket STOA102 · nest/type STOA106–109)
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 **Voice:** Quin
 **Status:** Active — grow by supplement, earned when the language is ready
@@ -23,7 +23,7 @@ Three layers, one discipline — filenames follow TigerBeetle's `docs/TIGER_STYL
 | **Source** | `gratitude/TIGER_STYLE.md` | TigerBeetle team's guide, kept whole and unaltered |
 | **Voiced canon** | `external-research/TAME_GUIDANCE.md` | Our radiant adaptation; Safety, Performance, DX, and the full why |
 | **Operational supplement** | this document | Checkable root + Rye / Brix / Rishi rules for authors and agents |
-| **Glow working pin** | [`../glow/README.md`](../glow/README.md) · alphabet · argv · token · G5 Nock · bartis · barket · nest/type | Fixture desks + asserts · G0–G5 · **bartis** STOA100–105 · **barket** (STOA102) · **nest/type** STOA106–108 |
+| **Glow working pin** | [`../glow/README.md`](../glow/README.md) · alphabet · argv · token · G5 Nock · bartis · barket · nest/type | Fixture desks + asserts · G0–G5 · **bartis** STOA100–109 · **barket** (STOA102) · **nest/type** STOA106–109 |
 | **Glow supplement (horizon)** | [`../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md`](../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md) | Scoping for a future Glow supplement; root still binds Glow authors now |
 
 Read the voiced canon (`external-research/TAME_GUIDANCE.md`) for philosophy and expert Tiger discipline. Read **this file** at the keyboard for what to assert, name, and bound. Organization prose lives in `active-designing/yonder/20260618-184912_growing-a-language.md`.
@@ -89,9 +89,9 @@ Primary path stays Glow→Rye→Zig→**RISC-V**. **Nock** is the second backend
 
 G5 brief: [`../active-designing/20260720-033200_stoa98-g5-nock-second-backend-family-notes.md`](../active-designing/20260720-033200_stoa98-g5-nock-second-backend-family-notes.md). Witness: `tools/glow_g5_nock_family_notes_witness.rish`.
 
-### Glow — bartis (STOA100–105) · barket (STOA102) · nest/type (STOA106–108 GREEN)
+### Glow — bartis (STOA100–109) · barket (STOA102) · nest/type (STOA106–109 GREEN)
 
-`|=` spoken **bartis** is the Hoon/Glow **dry** one-arm core with a typed **sample**. Language docs say **Glow gate** or **bartis gate** — never bare itinerary **Gate** ([`LEXICON.md`](LEXICON.md)). **STOA100–101** seat identity + argv. **STOA103–104** deepen the body to closed one-arg calls: `double` · `inc` · `dec`. **STOA105** TAME-tidies `rune_bartis` / `lower_bartis` (u32 · `append_print` · `copy_disjoint` · overflow seat). `|^` spoken **barket** stays horizon (**STOA102**) — untokenized. **STOA106** seats **nest/type surface** wording. **STOA107** lands dry-aura `assert_aura_nests` · bartis `SampleDoesNotNest`. **STOA108** lands unit `$%` `assert_tag_nests` against MoldSpec (`mold-kind`); wet/gold still held.
+`|=` spoken **bartis** is the Hoon/Glow **dry** one-arm core with a typed **sample**. Language docs say **Glow gate** or **bartis gate** — never bare itinerary **Gate** ([`LEXICON.md`](LEXICON.md)). **STOA100–101** seat identity + argv. **STOA103–104** deepen the body to closed one-arg calls: `double` · `inc` · `dec`. **STOA105** TAME-tidies `rune_bartis` / `lower_bartis`. `|^` spoken **barket** stays horizon (**STOA102**) — untokenized. **STOA106–108** seat nest/type wording · dry-aura · unit `$%` tag nest. **STOA109** wires closed named mold **`amount-mold`** into bartis (`sample=amount-mold` ≡ `@u32` lower); `kind-mold` bartis samples refuse; wet/gold still held.
 
 | Status | Item |
 |--------|------|
@@ -104,12 +104,13 @@ G5 brief: [`../active-designing/20260720-033200_stoa98-g5-nock-second-backend-fa
 | **STOA106 GREEN** | Nest/type surface wording — wet-sample precondition named · wet/gold held · barket still untokenized |
 | **STOA107 GREEN** | Nest/type thin implement — dry aura equality · `SampleDoesNotNest` · bartis wire · refuse desk |
 | **STOA108 GREEN** | Nest/type `$%` tag nest — `assert_tag_nests` · mold-kind accept · `%burn` refuse |
-| Still held | Wet / gold polymorphic cores — richer nest than dry aura / unit tag membership |
+| **STOA109 GREEN** | Named-mold bartis — `sample=amount-mold` · `gate-amount` · `kind-mold` refuse |
+| Still held | Wet / gold polymorphic cores — richer nest than dry aura / unit tag / closed named mold |
 | Still held | `\|^` barket tokenize / lower |
 | Still held | Open bartis call-body gate set beyond `double` · `inc` · `dec` |
 | Still held | Sala B0 in Glow — framework / product season |
 
-G1 row brief (STOA100): [`../active-designing/20260720-033852_glow-bartis-g1-row.md`](../active-designing/20260720-033852_glow-bartis-g1-row.md). Argv brief (STOA101): [`../active-designing/20260720-040200_glow-bartis-argv-sample.md`](../active-designing/20260720-040200_glow-bartis-argv-sample.md). Barket horizon (STOA102): [`../active-designing/20260720-040700_stoa102-barket-horizon-wording.md`](../active-designing/20260720-040700_stoa102-barket-horizon-wording.md). Call body (STOA103): [`../active-designing/20260720-040800_glow-bartis-call-body.md`](../active-designing/20260720-040800_glow-bartis-call-body.md). Inc/dec (STOA104): [`../active-designing/20260720-041800_glow-bartis-call-body-inc-dec.md`](../active-designing/20260720-041800_glow-bartis-call-body-inc-dec.md). Tidy (STOA105): [`../active-designing/20260720-042300_glow-bartis-tame-tidy.md`](../active-designing/20260720-042300_glow-bartis-tame-tidy.md). Nest/type wording (STOA106): [`../active-designing/20260720-042931_stoa106-nest-type-surface-wording.md`](../active-designing/20260720-042931_stoa106-nest-type-surface-wording.md). Nest/type thin implement (STOA107): [`../active-designing/20260720-043251_stoa107-nest-type-thin-implement.md`](../active-designing/20260720-043251_stoa107-nest-type-thin-implement.md). Nest/type tag nest (STOA108): [`../active-designing/20260720-145814_stoa108-nest-type-tag-nest.md`](../active-designing/20260720-145814_stoa108-nest-type-tag-nest.md). Witnesses: `tools/glow_bartis_argv_witness.rish` · `tools/glow_barket_horizon_witness.rish` · `tools/glow_lower_bartis_witness.rish` · `tools/glow_nest_type_surface_witness.rish` · `tools/glow_nest_type_witness.rish`.
+G1 row brief (STOA100): [`../active-designing/20260720-033852_glow-bartis-g1-row.md`](../active-designing/20260720-033852_glow-bartis-g1-row.md). Argv brief (STOA101): [`../active-designing/20260720-040200_glow-bartis-argv-sample.md`](../active-designing/20260720-040200_glow-bartis-argv-sample.md). Barket horizon (STOA102): [`../active-designing/20260720-040700_stoa102-barket-horizon-wording.md`](../active-designing/20260720-040700_stoa102-barket-horizon-wording.md). Call body (STOA103): [`../active-designing/20260720-040800_glow-bartis-call-body.md`](../active-designing/20260720-040800_glow-bartis-call-body.md). Inc/dec (STOA104): [`../active-designing/20260720-041800_glow-bartis-call-body-inc-dec.md`](../active-designing/20260720-041800_glow-bartis-call-body-inc-dec.md). Tidy (STOA105): [`../active-designing/20260720-042300_glow-bartis-tame-tidy.md`](../active-designing/20260720-042300_glow-bartis-tame-tidy.md). Nest/type wording (STOA106): [`../active-designing/20260720-042931_stoa106-nest-type-surface-wording.md`](../active-designing/20260720-042931_stoa106-nest-type-surface-wording.md). Nest/type thin implement (STOA107): [`../active-designing/20260720-043251_stoa107-nest-type-thin-implement.md`](../active-designing/20260720-043251_stoa107-nest-type-thin-implement.md). Nest/type tag nest (STOA108): [`../active-designing/20260720-145814_stoa108-nest-type-tag-nest.md`](../active-designing/20260720-145814_stoa108-nest-type-tag-nest.md). Named-mold bartis (STOA109): [`../active-designing/20260720-150155_stoa109-named-mold-bartis.md`](../active-designing/20260720-150155_stoa109-named-mold-bartis.md). Witnesses: `tools/glow_bartis_argv_witness.rish` · `tools/glow_barket_horizon_witness.rish` · `tools/glow_lower_bartis_witness.rish` · `tools/glow_nest_type_surface_witness.rish` · `tools/glow_nest_type_witness.rish`.
 
 Cursor and Claude rules (`.cursor/rules/tame-guidance.mdc`, `.claude/rules/tame-guidance.md`) point here. Root rule **9** (docs and implementation stay synced) has its own always-on agent rule pair: `.cursor/rules/docs-implementation-sync.mdc`, `.claude/rules/docs-implementation-sync.md`.
 

@@ -31,6 +31,9 @@ assert selftest.out contains "gate-inc.glow" else "lower_bartis_witness missing 
 assert selftest.out contains "gate-dec.glow" else "lower_bartis_witness missing gate-dec desk claim"
 assert selftest.out contains "BodyGateNotYetLowered" else "lower_bartis_witness missing unknown-gate refuse"
 assert selftest.out contains "BodySampleMismatch" else "lower_bartis_witness missing sample-mismatch refuse"
+assert selftest.out contains "amount-mold" else "lower_bartis_witness missing amount-mold claim"
+assert selftest.out contains "gate-amount.glow" else "lower_bartis_witness missing gate-amount desk"
+assert selftest.out contains "kind-mold" else "lower_bartis_witness missing kind-mold refuse"
 
 let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
 assert build_welcome.ok else "bartis welcome .rye build failed"
@@ -96,4 +99,13 @@ assert trim copy_d.out != "0" else "glow/rune_bartis.rye must use copy_disjoint"
 let append_p = run ["sh" "-c" "grep -c 'fn append_print' glow/lower_bartis.rye | tr -d ' '"]
 assert trim append_p.out == "1" else "glow/lower_bartis.rye must define append_print"
 
-say "GREEN: Glow `|=` bartis — STOA100–107 identity · argv · call-body · nest SampleDoesNotNest · TAME tidy."
+# STOA109: named-mold welcome binary exits 0.
+let amt_rye = "glow/.cache/gate_amount_welcome.rye"
+let amt_bin = "glow/bin/gate_amount_welcome"
+let build_amt = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${amt_rye} -femit-bin=${amt_bin}"]
+assert build_amt.ok else "bartis amount-mold welcome .rye build failed"
+let run_amt = run ["sh" "-c" "${amt_bin}; echo EXIT:$?"]
+assert run_amt.ok else "bartis amount-mold welcome binary failed to launch"
+assert run_amt.out contains "EXIT:0" else "bartis amount-mold welcome binary did not exit 0"
+
+say "GREEN: Glow `|=` bartis — STOA100–109 identity · argv · call-body · amount-mold · nest SampleDoesNotNest."
