@@ -18,11 +18,9 @@ assert tame_pin.ok else "TAME missing STOA106 nest/type surface"
 let tame_nest = run ["sh" "-c" "grep -F 'nest/type surface' ${tame}"]
 assert tame_nest.ok else "TAME missing nest/type surface phrase"
 
-# tokens.rye MUST tokenize |^ as of STOA111; lower stays absent (parse at STOA112).
+# tokens.rye MUST tokenize |^ as of STOA111 (parse/lower land at STOA112–113).
 let has_barket = run ["sh" "-c" "awk '/const pairs =/,/};/' ${tokens} | grep -F '|^'"]
 assert has_barket.ok else "tokens.rye must tokenize |^ (STOA111)"
-let no_barket_lower = run ["sh" "-c" "test ! -f glow/lower_barket.rye; echo $?"]
-assert trim no_barket_lower.out == "0" else "barket lower must stay absent"
 
 # |= bartis remains tokenized (STOA100+) — nest wording does not undo bartis.
 let has_bartis = run ["sh" "-c" "awk '/const pairs =/,/};/' ${tokens} | grep -F '|='"]
@@ -53,4 +51,4 @@ let bartis = run ["sh" "-c" "rishi/bin/rishi run tools/glow_lower_bartis_witness
 assert bartis.ok else "glow_lower_bartis_witness failed under nest/type wording"
 assert bartis.out contains "GREEN" else "glow_lower_bartis_witness not GREEN"
 
-say "GREEN: Glow nest/type surface wording — wet samples held; barket tokenized; lower held; bartis GREEN; STOA106+."
+say "GREEN: Glow nest/type surface wording — wet samples held; barket tokenized; bartis GREEN; STOA106+."

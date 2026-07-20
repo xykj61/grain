@@ -1,0 +1,47 @@
+# glow_barket_lower_witness.rish — `|^` barket lowers to Rye; emitted program runs.
+#
+# Proves rune_barket parses identity, lower_barket emits barket_gate, fixture
+# desk lowers, and the welcome binary exits 0 with baked sample 5.
+#
+#   rishi/bin/rishi run tools/glow_barket_lower_witness.rish
+
+let tame = "context/TAME_GUIDANCE.md"
+let zig = "vendor/zig-toolchain/zig"
+let bin = "glow/bin/lower_barket_witness"
+let welcome_rye = "glow/.cache/gate_barket_sample_welcome.rye"
+let welcome_bin = "glow/bin/gate_barket_sample_welcome"
+
+let tame_pin = run ["sh" "-c" "grep -F 'STOA113' ${tame}"]
+assert tame_pin.ok else "TAME missing STOA113 barket lower"
+
+let has_lower = run ["sh" "-c" "test -f glow/lower_barket.rye; echo $?"]
+assert trim has_lower.out == "0" else "glow/lower_barket.rye must exist (STOA113)"
+
+let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/lower_barket_witness.rye -femit-bin=${bin}"]
+assert build.ok else "lower_barket_witness build failed: ${build.err}${build.out}"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "lower_barket_witness exited non-zero: ${selftest.err}${selftest.out}"
+assert selftest.out contains "GREEN" else "lower_barket_witness not GREEN"
+assert selftest.out contains "barket_gate" else "lower_barket_witness missing barket_gate"
+assert selftest.out contains "SampleDoesNotNest" else "lower_barket_witness missing nest refuse"
+assert selftest.out contains "BodyNotYetLowered" else "lower_barket_witness missing call-body hold"
+assert selftest.out contains "gate-barket-sample.glow" else "lower_barket_witness missing fixture desk"
+
+let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
+assert build_welcome.ok else "barket welcome .rye build failed: ${build_welcome.err}${build_welcome.out}"
+
+let run_welcome = run ["sh" "-c" "${welcome_bin}; echo EXIT:$?"]
+assert run_welcome.ok else "barket welcome binary failed to launch"
+assert run_welcome.out contains "EXIT:0" else "barket welcome binary did not exit 0"
+
+# Parse sibling GREEN (no longer asserts lower absent).
+let parse = run ["sh" "-c" "rishi/bin/rishi run tools/glow_barket_parse_witness.rish"]
+assert parse.ok else "glow_barket_parse_witness failed under barket lower"
+assert parse.out contains "GREEN" else "glow_barket_parse_witness not GREEN"
+
+let bartis = run ["sh" "-c" "rishi/bin/rishi run tools/glow_lower_bartis_witness.rish"]
+assert bartis.ok else "glow_lower_bartis_witness failed under barket lower"
+assert bartis.out contains "GREEN" else "glow_lower_bartis_witness not GREEN"
+
+say "GREEN: Glow barket lower — barket_gate identity; fixture exits 0; STOA113."

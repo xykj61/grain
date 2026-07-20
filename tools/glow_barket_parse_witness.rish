@@ -1,8 +1,8 @@
-# glow_barket_parse_witness.rish — barket header parse (STOA112).
+# glow_barket_parse_witness.rish — barket parse (STOA112–113).
 #
-# Proves dry-shaped |^ header parses into BarketSpec, body refuses
-# BodyNotYetLowered, wrong aura refuses SampleDoesNotNest, and lower
-# stays absent. Ambient wet/gold accept held.
+# Proves dry-shaped |^ header and identity body parse into BarketSpec,
+# call body refuses BodyNotYetLowered, wrong aura refuses SampleDoesNotNest.
+# Lower lands at STOA113 (sibling binder).
 #
 #   rishi/bin/rishi run tools/glow_barket_parse_witness.rish
 
@@ -10,15 +10,11 @@ let tame = "context/TAME_GUIDANCE.md"
 let zig = "vendor/zig-toolchain/zig"
 let bin = "glow/bin/rune_barket_witness"
 
-# TAME carries STOA112 barket parse note.
 let tame_pin = run ["sh" "-c" "grep -F 'STOA112' ${tame}"]
 assert tame_pin.ok else "TAME missing STOA112 barket parse"
 
-# Parse module present; lower still held.
 let has_parse = run ["sh" "-c" "test -f glow/rune_barket.rye; echo $?"]
 assert trim has_parse.out == "0" else "glow/rune_barket.rye must exist (STOA112)"
-let no_lower = run ["sh" "-c" "test ! -f glow/lower_barket.rye; echo $?"]
-assert trim no_lower.out == "0" else "glow/lower_barket.rye must stay absent"
 
 let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/rune_barket_witness.rye -femit-bin=${bin}"]
 assert build.ok else "rune_barket_witness build failed: ${build.err}${build.out}"
@@ -29,14 +25,11 @@ assert selftest.out contains "GREEN" else "rune_barket_witness not GREEN"
 assert selftest.out contains "BodyNotYetLowered" else "rune_barket_witness missing BodyNotYetLowered"
 assert selftest.out contains "SampleDoesNotNest" else "rune_barket_witness missing SampleDoesNotNest"
 assert selftest.out contains "NotABarket" else "rune_barket_witness missing NotABarket"
+assert selftest.out contains "identity body" else "rune_barket_witness missing identity body claim"
 
-# Tokenize sibling stays GREEN (lower-only hold after STOA112).
+# Tokenize sibling stays GREEN.
 let tok = run ["sh" "-c" "rishi/bin/rishi run tools/glow_barket_tokenize_witness.rish"]
 assert tok.ok else "glow_barket_tokenize_witness failed under barket parse"
 assert tok.out contains "GREEN" else "glow_barket_tokenize_witness not GREEN"
 
-let bartis = run ["sh" "-c" "rishi/bin/rishi run tools/glow_lower_bartis_witness.rish"]
-assert bartis.ok else "glow_lower_bartis_witness failed under barket parse"
-assert bartis.out contains "GREEN" else "glow_lower_bartis_witness not GREEN"
-
-say "GREEN: Glow barket parse — dry header BarketSpec; BodyNotYetLowered; lower held; STOA112."
+say "GREEN: Glow barket parse — dry header · identity; BodyNotYetLowered for call body; STOA112–113."

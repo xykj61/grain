@@ -1,0 +1,73 @@
+//! glow/lower_barket.rye — lower a thin `|^` barket to runnable `.rye` (STOA113).
+//!
+//! Identity gate: `|^  sample=@u32` (header-only or identity body) — takes u32
+//! and returns it. Gate function named `barket_gate`.
+//! Baked demo sample 5; welcome exits 0 when barket_gate(5) == 5.
+//! Call-body barket · argv sample · wet/gold accept held.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const rb = @import("rune_barket.rye");
+
+pub const LowerError = rb.ParseError || error{Overflow};
+
+/// Baked welcome sample for fixture desks (matches bartis demo sample).
+pub const barket_demo_sample: u32 = 5;
+/// Expected result for identity body with baked sample.
+pub const barket_identity_expect: u32 = 5;
+
+fn zig_safe_ident(face: []const u8, out: *[rb.max_face_len]u8) LowerError!u32 {
+    assert(face.len <= rb.max_face_len); // precondition: face within name budget
+    if (face.len == 0 or face.len > rb.max_face_len) return error.MissingFace;
+    const n: u32 = @intCast(face.len);
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        const c = face[@as(usize, @intCast(i))];
+        const mapped: u8 = if (c == '-') '_' else c;
+        if (i == 0) {
+            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or mapped == '_'))
+                return error.MissingFace;
+        } else {
+            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or (mapped >= '0' and mapped <= '9') or mapped == '_'))
+                return error.MissingFace;
+        }
+        out[@as(usize, @intCast(i))] = mapped;
+    }
+    return n;
+}
+
+fn append_print(out: []u8, used: *u32, comptime fmt: []const u8, args: anytype) LowerError!void {
+    assert(used.* <= out.len); // invariant: cursor inside buffer
+    const slice = out[@as(usize, @intCast(used.*))..];
+    const written = std.fmt.bufPrint(slice, fmt, args) catch return error.Overflow;
+    const n: u32 = @intCast(written.len);
+    assert(used.* + n <= out.len); // postcondition: write fits
+    used.* += n;
+}
+
+fn emit(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
+    const face = rb.face_slice(spec);
+    assert(face.len > 0); // invariant: spec carries a non-empty face
+    assert(spec.body == .header_only or spec.body == .identity); // parse pin
+    var zig_face_buf: [rb.max_face_len]u8 = undefined;
+    const zn = try zig_safe_ident(face, &zig_face_buf);
+    const zface = zig_face_buf[0..@as(usize, @intCast(zn))];
+    var used: u32 = 0;
+
+    try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
+    try append_print(out, &used, "/// Lowered from Glow `|^  {s}=@u32` barket — identity (STOA113).\n", .{face});
+    try append_print(out, &used, "fn barket_gate({s}: u32) u32 {{\n", .{zface});
+    try append_print(out, &used, "    return {s};\n", .{zface});
+    try append_print(out, &used, "}}\n\n", .{});
+    try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
+    try append_print(out, &used, "    const {s}: u32 = {d};\n", .{ zface, barket_demo_sample });
+    try append_print(out, &used, "    return if (barket_gate({s}) == {d}) 0 else 1;\n", .{ zface, barket_identity_expect });
+    try append_print(out, &used, "}}\n", .{});
+    return used;
+}
+
+/// Parse a barket source and emit a welcome-path program (baked sample 5).
+pub fn lower_source_welcome(src: []const u8, out: []u8) LowerError!u32 {
+    const spec = try rb.parse_source(src);
+    return emit(&spec, out);
+}
