@@ -9,7 +9,7 @@ const print = std.debug.print;
 const lower = @import("lower_named_cast.rye");
 const lower_mold = @import("lower_mold.rye");
 
-const witness_version = "20260719.195956";
+const witness_version = "20260719.223610";
 
 const desk_src =
     \\+$  amount-mold
@@ -36,6 +36,11 @@ const tagged_src =
 const cross_src =
     \\/+  mold-amount
     \\^-  amount-mold
+;
+
+const cross_aura =
+    \\/+  mold-amount
+    \\^-  @u32
 ;
 
 const lib_src =
@@ -113,6 +118,18 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("lower: +$ kind-mold + ^- kind-mold emits KindMold tagged cast -- GREEN\n", .{});
 
     assert(lower.looks_like_cross_desk(cross_src));
+    const cross_spec = try lower.parse_cross_desk(cross_src);
+    assert(std.mem.eql(u8, lower.stem_slice(&cross_spec), "mold-amount"));
+    assert(std.mem.eql(u8, lower.cast_mold_slice(&cross_spec), "amount-mold"));
+    print("lower: parse_cross_desk token-driven stem/mold -- GREEN\n", .{});
+
+    if (lower.parse_cross_desk(cross_aura)) |_| {
+        return error.AuraCastAccepted;
+    } else |err| {
+        if (err != lower.LowerError.NamedCastNeedsTuple) return err;
+    }
+    print("lower: cross-desk aura cast refused NamedCastNeedsTuple -- GREEN\n", .{});
+
     const cross_n = try lower.lower_cross_desk_welcome(cross_src, lib_src, &buf);
     assert(std.mem.indexOf(u8, buf[0..cross_n], "cross-desk named-cast") != null);
     assert(std.mem.indexOf(u8, buf[0..cross_n], "import(\"mold_amount.rye\")") != null);
@@ -167,7 +184,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("lower: wrote named-cast welcome .rye under glow/.cache/ -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: named-cast resolve lowers — STOA77/79/81/82; amount · kind · xact · import desks.\n", .{});
+    print("GREEN: named-cast resolve lowers — STOA93 token-driven cross-desk parse; amount · kind · xact · import desks.\n", .{});
     return 0;
 }
 

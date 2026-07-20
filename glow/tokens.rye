@@ -1,10 +1,11 @@
-//! glow/tokens.rye — bounded shared Glow token stream (STOA83–86).
+//! glow/tokens.rye — bounded shared Glow token stream (STOA83–86 · STOA93).
 //!
 //! Classifies desk bytes into a fixed-cap token array (kind + byte span).
 //! Skips `::` line comments and spaces/tabs. Newlines stay significant.
 //! STOA84–85: named-cast peeks for glow_run dispatch.
 //! STOA86: TAME tidy — assert contracts, u32 spans, split lex steps.
-//! Full lowers still parse source bytes.
+//! STOA93: cross-desk named-cast parse joins the lexer→lower seam
+//! (`cross_desk_parts`); other lowers may still parse bytes.
 //!
 //!   +$  xact-mold
 //!     $%  [%mint amount=@u32]
@@ -319,16 +320,45 @@ pub fn looks_like_named_cast(src: []const u8) bool {
     return rune2_is(src, last, "^-");
 }
 
-/// True when the token stream is a cross-desk named-cast desk:
-/// exactly 2 Glow lines, head `/+`, last line head `^-` (STOA85 peek).
-pub fn looks_like_cross_desk(src: []const u8) bool {
+/// Spans into `src` for a cross-desk named-cast consumer desk (STOA93).
+pub const CrossDeskParts = struct {
+    stem: Token = .{},
+    mold: Token = .{},
+};
+
+/// Exactly two Glow lines: `/+ <stem>` then `^- <mold-name>`.
+/// Returns null when the shape fails — peek and parse share this gate.
+pub fn cross_desk_parts(src: []const u8) ?CrossDeskParts {
     var buf: [max_tokens]Token = undefined;
-    const n = tokenize(src, &buf) catch return false;
+    const n = tokenize(src, &buf) catch return null;
     assert(n <= max_tokens); // postcondition: tokenize bound
     const toks = buf[0..n];
-    if (glow_line_count(toks) != 2) return false;
-    const head = first_content(toks) orelse return false;
-    if (!rune2_is(src, head, "/+")) return false;
-    const last = last_line_head(toks) orelse return false;
-    return rune2_is(src, last, "^-");
+    if (glow_line_count(toks) != 2) return null;
+
+    var i: u32 = 0;
+    while (i < n and toks[i].kind == .newline) : (i += 1) {}
+    if (i >= n) return null;
+    if (!rune2_is(src, toks[i], "/+")) return null;
+    i += 1;
+    if (i >= n or toks[i].kind != .ident) return null;
+    const stem = toks[i];
+    i += 1;
+    if (i >= n or toks[i].kind != .newline) return null;
+    while (i < n and toks[i].kind == .newline) : (i += 1) {}
+    if (i >= n) return null;
+    if (!rune2_is(src, toks[i], "^-")) return null;
+    i += 1;
+    // Named mold is ident; aura (`@u32`) is also a mold token — parse refuses it later.
+    if (i >= n or (toks[i].kind != .ident and toks[i].kind != .aura)) return null;
+    const mold = toks[i];
+    i += 1;
+    while (i < n) : (i += 1) {
+        if (toks[i].kind != .newline) return null;
+    }
+    return .{ .stem = stem, .mold = mold };
+}
+
+/// True when the token stream is a cross-desk named-cast desk (STOA85 peek · STOA93 parse).
+pub fn looks_like_cross_desk(src: []const u8) bool {
+    return cross_desk_parts(src) != null;
 }
