@@ -8,12 +8,13 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260720.151247` — [STOA111 barket tokenize GREEN](20260720-151247_stoa111-barket-tokenize-green.bron) — |^ → 27; parse/lower held; await send
+- `20260720.151046` — [STOA110 send complete](20260720-151046_stoa110-send-complete.bron) — origin main at 8b181a4f46ab
 - `20260720.150956` — [STOA111 barket tokenize vs Sala B0 map](20260720-150956_stoa111-barket-tokenize-map.bron) — lean A tokenize-only step 2; parse/lower held
+- `20260720.150837` — [STOA110 wet-refuse nest GREEN](20260720-150837_stoa110-wet-refuse-nest-green.bron) — assert_sample_not_wet; await send
 - `20260720.150538` — [STOA110 wet-refuse nest vs barket map](20260720-150538_stoa110-wet-refuse-vs-barket-map.bron) — lean A wet refuse first; barket held
 - `20260720.150042` — [STOA109 named-mold bartis vs barket map](20260720-150042_stoa109-named-mold-vs-barket-map.bron) — lean A sample=amount-mold; barket held
 - `20260720.145715` — [STOA108 $% tag nest vs barket map](20260720-145715_stoa108-tag-nest-vs-barket-map.bron) — lean A assert_tag_nests; barket held
-- `20260720.151046` — [STOA110 send complete](20260720-151046_stoa110-send-complete.bron) — origin main at 8b181a4f46ab
-- `20260720.150837` — [STOA110 wet-refuse nest GREEN](20260720-150837_stoa110-wet-refuse-nest-green.bron) — assert_sample_not_wet; await send
 - `20260720.150618` — [STOA109 send complete](20260720-150618_stoa109-send-complete.bron) — origin main at 8e7bb3cbc3fa
 - `20260720.150429` — [STOA109 named-mold bartis GREEN](20260720-150429_stoa109-named-mold-bartis-green.bron) — sample=amount-mold · kind refuse; await send
 - `20260720.150127` — [STOA108 send complete](20260720-150127_stoa108-send-complete.bron) — origin main at a98ebdc488be
