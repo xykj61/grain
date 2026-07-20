@@ -304,13 +304,42 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(spec_pair.body == .identity);
     print("lower: glow/gen/gate-barket-pair.glow carries pair-mold -- GREEN\n", .{});
 
-    const gen_triple = try cwd.readFileAlloc(io, "glow/gen/gate-barket-kind-refuse.glow", a, .limited(4096));
-    if (rb.parse_source(gen_triple)) |_| {
-        return error.TripleRefuseDeskAccepted;
+    // STOA134: triple-mold identity lowers as TripleMold.
+    const triple_src = "|^  sample=triple-mold\nsample\n";
+    const n_triple = try lower.lower_source_welcome(triple_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n_triple], "barket_gate") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_triple], "TripleMold") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_triple], "fee") != null);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_triple_welcome.rye", .data = buf[0..n_triple] });
+    print("lower: triple-mold barket lowers to TripleMold identity -- GREEN\n", .{});
+
+    const gen_triple = try cwd.readFileAlloc(io, "glow/gen/gate-barket-triple.glow", a, .limited(4096));
+    const spec_triple = try rb.parse_source(gen_triple);
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_triple), "triple-mold"));
+    assert(spec_triple.body == .identity);
+    print("lower: glow/gen/gate-barket-triple.glow carries triple-mold -- GREEN\n", .{});
+
+    const gen_quad = try cwd.readFileAlloc(io, "glow/gen/gate-barket-kind-refuse.glow", a, .limited(4096));
+    if (rb.parse_source(gen_quad)) |_| {
+        return error.QuadRefuseDeskAccepted;
     } else |err| {
         if (err != rb.ParseError.SampleDoesNotNest) return err;
     }
-    print("lower: glow/gen/gate-barket-kind-refuse.glow (triple-mold) refuses SampleDoesNotNest -- GREEN\n", .{});
+    print("lower: glow/gen/gate-barket-kind-refuse.glow (quad-mold) refuses SampleDoesNotNest -- GREEN\n", .{});
+
+    if (lower.lower_source_welcome("|^  sample=triple-mold\n%-  flip  sample\n", &buf)) |_| {
+        return error.TripleFlipCallBodyLoweredTooSoon;
+    } else |err| {
+        if (err != lower.LowerError.BodyGateNotYetLowered) return err;
+    }
+    print("lower: triple-mold flip call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
+
+    if (lower.lower_source_argv_sample("|^  sample=triple-mold\nsample\n", &buf)) |_| {
+        return error.TripleArgvLoweredTooSoon;
+    } else |err| {
+        if (err != lower.LowerError.SampleDoesNotNest) return err;
+    }
+    print("lower: triple-mold argv refused SampleDoesNotNest -- GREEN\n", .{});
 
     // STOA127: kind-mold flip call-body lowers as KindMold switch · baked .send.
     const kind_flip_src = "|^  sample=kind-mold\n%-  flip  sample\n";
@@ -426,7 +455,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("lower: glow/gen/gate-barket-count.glow carries count-mold -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: Glow `|^` barket — identity · argv · call-body · amount-mold · amount argv · count-mold · count argv · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · pair flip · nesting-through-nests; STOA113–133.\n", .{});
+    print("GREEN: Glow `|^` barket — identity · argv · call-body · amount-mold · amount argv · count-mold · count argv · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · pair flip · triple-mold · nesting-through-nests; STOA113–134.\n", .{});
     return 0;
 }
 

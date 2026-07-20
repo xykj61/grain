@@ -43,7 +43,10 @@ assert selftest.out contains "XferMold" else "lower_bartis_witness missing XferM
 assert selftest.out contains "gate-xfer.glow" else "lower_bartis_witness missing gate-xfer desk"
 assert selftest.out contains "PairMold" else "lower_bartis_witness missing PairMold claim"
 assert selftest.out contains "gate-pair.glow" else "lower_bartis_witness missing gate-pair desk"
-assert selftest.out contains "triple-mold" else "lower_bartis_witness missing triple-mold refuse"
+assert selftest.out contains "gate-triple.glow" else "lower_bartis_witness missing gate-triple desk"
+assert selftest.out contains "quad-mold" else "lower_bartis_witness missing quad-mold refuse"
+assert selftest.out contains "triple-mold flip call-body refused" else "lower_bartis_witness missing triple flip refuse"
+assert selftest.out contains "triple-mold argv refused" else "lower_bartis_witness missing triple argv refuse"
 assert selftest.out contains "call-body flip" else "lower_bartis_witness missing kind flip claim"
 assert selftest.out contains "gate-kind-flip.glow" else "lower_bartis_witness missing kind-flip desk"
 assert selftest.out contains "gate-xact-flip.glow" else "lower_bartis_witness missing xact-flip desk"
@@ -198,6 +201,15 @@ let run_pair = run ["sh" "-c" "${pair_bin}; echo EXIT:$?"]
 assert run_pair.ok else "bartis pair-mold welcome binary failed to launch"
 assert run_pair.out contains "EXIT:0" else "bartis pair-mold welcome binary did not exit 0"
 
+# STOA134: triple-mold welcome binary exits 0.
+let triple_rye = "glow/.cache/gate_triple_welcome.rye"
+let triple_bin = "glow/bin/gate_triple_welcome"
+let build_triple = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${triple_rye} -femit-bin=${triple_bin}"]
+assert build_triple.ok else "bartis triple-mold welcome .rye build failed"
+let run_triple = run ["sh" "-c" "${triple_bin}; echo EXIT:$?"]
+assert run_triple.ok else "bartis triple-mold welcome binary failed to launch"
+assert run_triple.out contains "EXIT:0" else "bartis triple-mold welcome binary did not exit 0"
+
 # STOA127: kind-mold flip call-body welcome binary exits 0.
 let kind_flip_rye = "glow/.cache/gate_kind_flip_welcome.rye"
 let kind_flip_bin = "glow/bin/gate_kind_flip_welcome"
@@ -234,4 +246,4 @@ let run_pf = run ["sh" "-c" "${pair_flip_bin}; echo EXIT:$?"]
 assert run_pf.ok else "bartis pair-mold flip welcome binary failed to launch"
 assert run_pf.out contains "EXIT:0" else "bartis pair-mold flip welcome binary did not exit 0"
 
-say "GREEN: Glow `|=` bartis — STOA100–133 identity · argv · call-body · amount-mold · amount argv · count-mold · count argv · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · pair flip · stated nesting · nest SampleDoesNotNest."
+say "GREEN: Glow `|=` bartis — STOA100–134 identity · argv · call-body · amount-mold · amount argv · count-mold · count argv · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · pair flip · triple-mold · stated nesting · nest SampleDoesNotNest."

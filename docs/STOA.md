@@ -106,4 +106,5 @@
 | **STOA131** | Pair-mold flip call-body | `glow_barket_lower_witness` · bartis | **GREEN** `20260720.193357` |
 | **STOA132** | Amount-mold argv sample | `glow_barket_lower_witness` · bartis · glow_run | **GREEN** `20260720.193805` |
 | **STOA133** | Count-mold argv sample | `glow_barket_lower_witness` · bartis · glow_run | **GREEN** `20260720.194143` |
+| **STOA134** | Triple-mold gate sample | `glow_nest_type_witness` · barket · bartis | **GREEN** `20260720.194437` |
 Smoke: `glow_barket_lower_witness` · `glow_barket_parse_witness` · `glow_nest_type_witness` · `glow_lower_bartis_witness` · Sibling: **ZETA** · **LULU** · **SETU** · **TUBE**.
