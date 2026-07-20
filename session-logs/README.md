@@ -8,6 +8,7 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260720.224734` — [STOA143 hepta-mold flip GREEN](20260720-224734_stoa143-hepta-flip-green.bron) — from↔amount · fee/nonce/memo/tag/to stay; await send
 - `20260720.223440` — [STOA140 hexa-mold seat map for STOA142](20260720-223440_stoa140-hexa-mirror-map.bron) — claim 33922c54c8 edit checklist · hepta mirror keys
 - `20260720.223012` — [Mold vocabulary search — keep Hoon word](20260720-223012_mold-vocabulary-search.bron) — no Glow-native mold rename found; STOA130 renamed wet/dry only
 - `20260720.224210` — [kg STOA142 complete · STOA143 mapped](20260720-224210_kg-stoa142-complete.bron) — hepta-mold sent; hepta flip mapped

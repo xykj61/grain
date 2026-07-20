@@ -21,6 +21,7 @@
 //! STOA140: `hexa-mold` identity lowers as `HexaMold` struct · baked from 5 amount 3 fee 1 nonce 2 memo 7 tag 4.
 //! STOA141: `hexa-mold` call body `%-  flip` → HexaMold swap · baked 5/3/1/2/7/4 → 3/5/1/2/7/4.
 //! STOA142: `hepta-mold` identity lowers as `HeptaMold` struct · baked from 5 amount 3 fee 1 nonce 2 memo 7 tag 4 to 6.
+//! STOA143: `hepta-mold` call body `%-  flip` → HeptaMold swap · baked 5/3/1/2/7/4/6 → 3/5/1/2/7/4/6.
 //! STOA127: `kind-mold` call body `%-  flip` → KindMold switch · baked `.mint` → `.send`.
 //! STOA128: `xact-mold` call body `%-  flip` → XactMold switch · baked mint/5 → `.send`.
 //! STOA129: `xfer-mold` call body `%-  flip` → XferMold switch · baked mint/5/3 → `.send`.
@@ -582,6 +583,32 @@ fn emit_hexa_call_body(out: []u8, zface: []const u8, gate: []const u8, comment: 
     return used;
 }
 
+/// STOA143: closed seven-field `$:` hepta-mold call body → HeptaMold flip · baked 3/5/1/2/7/4/6.
+fn emit_hepta_call_body(out: []u8, zface: []const u8, gate: []const u8, comment: []const u8) LowerError!u32 {
+    assert(rb.is_hepta_call_gate(gate)); // parse/lower pin — flip only today
+    var used: u32 = 0;
+    try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
+    try append_print(out, &used, "pub const HeptaMold = struct {{\n", .{});
+    try append_print(out, &used, "    from: u32 = 0,\n", .{});
+    try append_print(out, &used, "    amount: u32 = 0,\n", .{});
+    try append_print(out, &used, "    fee: u32 = 0,\n", .{});
+    try append_print(out, &used, "    nonce: u32 = 0,\n", .{});
+    try append_print(out, &used, "    memo: u32 = 0,\n", .{});
+    try append_print(out, &used, "    tag: u32 = 0,\n", .{});
+    try append_print(out, &used, "    to: u32 = 0,\n", .{});
+    try append_print(out, &used, "}};\n\n", .{});
+    try append_print(out, &used, "/// {s}\n", .{comment});
+    try append_print(out, &used, "fn bartis_gate({s}: HeptaMold) HeptaMold {{\n", .{zface});
+    try append_print(out, &used, "    return .{{ .from = {s}.amount, .amount = {s}.from, .fee = {s}.fee, .nonce = {s}.nonce, .memo = {s}.memo, .tag = {s}.tag, .to = {s}.to }};\n", .{ zface, zface, zface, zface, zface, zface, zface });
+    try append_print(out, &used, "}}\n\n", .{});
+    try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
+    try append_print(out, &used, "    const {s}: HeptaMold = .{{ .from = {d}, .amount = {d}, .fee = {d}, .nonce = {d}, .memo = {d}, .tag = {d}, .to = {d} }};\n", .{ zface, bartis_hepta_demo_from, bartis_hepta_demo_amount, bartis_hepta_demo_fee, bartis_hepta_demo_nonce, bartis_hepta_demo_memo, bartis_hepta_demo_tag, bartis_hepta_demo_to });
+    try append_print(out, &used, "    const got = bartis_gate({s});\n", .{zface});
+    try append_print(out, &used, "    return if (got.from == {d} and got.amount == {d} and got.fee == {d} and got.nonce == {d} and got.memo == {d} and got.tag == {d} and got.to == {d}) 0 else 1;\n", .{ bartis_hepta_demo_amount, bartis_hepta_demo_from, bartis_hepta_demo_fee, bartis_hepta_demo_nonce, bartis_hepta_demo_memo, bartis_hepta_demo_tag, bartis_hepta_demo_to });
+    try append_print(out, &used, "}}\n", .{});
+    return used;
+}
+
 fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
     const face = rb.face_slice(spec);
     assert(face.len > 0); // invariant: spec carries a non-empty face
@@ -728,7 +755,7 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
         }
     }
 
-    // STOA142: hepta-mold gate identity — seven slots 5/3/1/2/7/4/6.
+    // STOA142 / STOA143: hepta-mold identity · flip call-body — seven slots 5/3/1/2/7/4/6.
     if (is_hepta_sample(spec)) {
         switch (spec.body) {
             .identity => {
@@ -736,7 +763,13 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
                 const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` bartis — HeptaMold identity (STOA142).", .{ face, mold }) catch return error.Overflow;
                 return emit_hepta_identity(out, zface, comment);
             },
-            .call_one => return error.BodyGateNotYetLowered,
+            .call_one => {
+                const gate = rb.gate_slice(spec);
+                if (!rb.is_hepta_call_gate(gate)) return error.BodyGateNotYetLowered;
+                var comment_buf: [192]u8 = undefined;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` / `%-  {s}  {s}` — HeptaMold call body (STOA143).", .{ face, mold, gate, face }) catch return error.Overflow;
+                return emit_hepta_call_body(out, zface, gate, comment);
+            },
         }
     }
 
