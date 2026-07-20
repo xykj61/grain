@@ -8,6 +8,8 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260719.203130` — [STOA88 check-in after TAME tidy named-cast](20260719-203130_stoa88-check-in.bron) — lean A token-driven lower slice
+- `20260719.203117` — [STOA87 TAME tidy named-cast send](20260719-203117_stoa87-tame-tidy-named-cast-send.bron) — pin 376c2996b1; then STOA88 check-in
 - `20260719.202541` — [STOA87 TAME tidy named-cast GREEN](20260719-202541_stoa87-tame-tidy-named-cast-green.bron) — assert · u32 · copy_disjoint; await send
 - `20260719.202420` — [STOA87 check-in after TAME tidy tokens](20260719-202420_stoa87-check-in.bron) — lean A tidy lower_named_cast
 - `20260719.202411` — [STOA86 TAME tidy tokens send](20260719-202411_stoa86-tame-tidy-tokens-send.bron) — pin 114d683bb1; then STOA87 check-in
