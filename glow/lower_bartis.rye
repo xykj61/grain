@@ -7,6 +7,7 @@
 //! STOA101: argv sample path — main reads one decimal `@u32` and checks the body result.
 //! STOA105: TAME tidy — assert · u32 · append_print · split emitters.
 //! STOA107: nest/type surface — non-`@u32` sample refuses `SampleDoesNotNest`.
+//! STOA109: named mold `amount-mold` lowers as `@u32` (one-field `$:` ≡ dry aura).
 //! Gate function named `bartis_gate` to avoid collisions with the sample face.
 
 const std = @import("std");
@@ -101,9 +102,15 @@ fn emit_argv_main(out: []u8, used: *u32, zface: []const u8, expect_expr: []const
     try append_print(out, used, "}}\n", .{});
 }
 
+fn sample_mold_label(spec: *const rb.GateSpec) []const u8 {
+    if (spec.mold_name_len == 0) return "@u32";
+    return rb.mold_name_slice(spec);
+}
+
 fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
     const face = rb.face_slice(spec);
     assert(face.len > 0); // invariant: spec carries a non-empty face
+    const mold = sample_mold_label(spec);
     var zig_face_buf: [rb.max_face_len]u8 = undefined;
     const zn = try zig_safe_ident(face, &zig_face_buf);
     const zface = zig_face_buf[0..@as(usize, @intCast(zn))];
@@ -113,8 +120,8 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
     try emit_prelude(out, &used);
     switch (spec.body) {
         .identity => {
-            var comment_buf: [128]u8 = undefined;
-            const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}=@u32` bartis gate — identity (STOA100).", .{face}) catch return error.Overflow;
+            var comment_buf: [160]u8 = undefined;
+            const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` bartis gate — identity (STOA100/109).", .{ face, mold }) catch return error.Overflow;
             try emit_gate_fn(out, &used, face, zface, zface, comment);
             try emit_welcome_main(out, &used, zface, expect);
         },
@@ -124,8 +131,8 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             const op = try call_op_expr(gate);
             var body_buf: [96]u8 = undefined;
             const body_return = std.fmt.bufPrint(&body_buf, "{s}{s}", .{ zface, op }) catch return error.Overflow;
-            var comment_buf: [160]u8 = undefined;
-            const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}=@u32` / `%-  {s}  {s}` — call body (STOA103–104).", .{ face, gate, face }) catch return error.Overflow;
+            var comment_buf: [192]u8 = undefined;
+            const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` / `%-  {s}  {s}` — call body (STOA103–104).", .{ face, mold, gate, face }) catch return error.Overflow;
             try emit_gate_fn(out, &used, face, zface, body_return, comment);
             try emit_welcome_main(out, &used, zface, expect);
         },
@@ -136,6 +143,7 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
 fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
     const face = rb.face_slice(spec);
     assert(face.len > 0); // invariant: spec carries a non-empty face
+    const mold = sample_mold_label(spec);
     var zig_face_buf: [rb.max_face_len]u8 = undefined;
     const zn = try zig_safe_ident(face, &zig_face_buf);
     const zface = zig_face_buf[0..@as(usize, @intCast(zn))];
@@ -144,8 +152,8 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
     try emit_prelude(out, &used);
     switch (spec.body) {
         .identity => {
-            var comment_buf: [128]u8 = undefined;
-            const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}=@u32` bartis gate — argv sample (STOA101).", .{face}) catch return error.Overflow;
+            var comment_buf: [160]u8 = undefined;
+            const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` bartis gate — argv sample (STOA101/109).", .{ face, mold }) catch return error.Overflow;
             try emit_gate_fn(out, &used, face, zface, zface, comment);
             try emit_argv_main(out, &used, zface, zface);
         },
@@ -157,8 +165,8 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             const body_return = std.fmt.bufPrint(&body_buf, "{s}{s}", .{ zface, op }) catch return error.Overflow;
             var expect_buf: [96]u8 = undefined;
             const expect_expr = std.fmt.bufPrint(&expect_buf, "{s}{s}", .{ zface, op }) catch return error.Overflow;
-            var comment_buf: [160]u8 = undefined;
-            const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}=@u32` / `%-  {s}  {s}` — argv call body (STOA103–104).", .{ face, gate, face }) catch return error.Overflow;
+            var comment_buf: [192]u8 = undefined;
+            const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` / `%-  {s}  {s}` — argv call body (STOA103–104).", .{ face, mold, gate, face }) catch return error.Overflow;
             try emit_gate_fn(out, &used, face, zface, body_return, comment);
             try emit_argv_main(out, &used, zface, expect_expr);
         },

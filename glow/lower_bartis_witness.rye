@@ -9,7 +9,7 @@ const print = std.debug.print;
 const lower = @import("lower_bartis.rye");
 const rb = @import("rune_bartis.rye");
 
-const witness_version = "20260720.043251";
+const witness_version = "20260720.150155";
 
 fn run_selftest(init: std.process.Init) !u8 {
     const io = init.io;
@@ -156,8 +156,30 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.eql(u8, rb.gate_slice(&spec_dec), "dec"));
     print("lower: glow/gen/gate-dec.glow carries call-body dec -- GREEN\n", .{});
 
+    // STOA109: named mold amount-mold lowers as u32 identity.
+    const amount_src = "|=  sample=amount-mold\nsample\n";
+    const n_amt = try lower.lower_source_welcome(amount_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n_amt], "bartis_gate") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_amt], "sample: u32) u32") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_amt], "amount-mold") != null);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_amount_welcome.rye", .data = buf[0..n_amt] });
+    print("lower: amount-mold bartis lowers to u32 identity -- GREEN\n", .{});
+
+    const gen_amt = try cwd.readFileAlloc(io, "glow/gen/gate-amount.glow", a, .limited(4096));
+    const spec_amt = try rb.parse_source(gen_amt);
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_amt), "amount-mold"));
+    assert(spec_amt.body == .identity);
+    print("lower: glow/gen/gate-amount.glow carries amount-mold -- GREEN\n", .{});
+
+    if (lower.lower_source_welcome("|=  sample=kind-mold\nsample\n", &buf)) |_| {
+        return error.KindMoldLoweredTooSoon;
+    } else |err| {
+        if (err != lower.LowerError.SampleDoesNotNest) return err;
+    }
+    print("lower: kind-mold bartis refused SampleDoesNotNest -- GREEN\n", .{});
+
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: Glow `|=` bartis — identity · argv · call-body · nest/type SampleDoesNotNest (STOA100–107).\n", .{});
+    print("GREEN: Glow `|=` bartis — identity · argv · call-body · named-mold amount-mold (STOA100–109).\n", .{});
     return 0;
 }
 

@@ -1,17 +1,21 @@
-//! glow/nest_type.rye — nest/type surface (STOA107–108).
+//! glow/nest_type.rye — nest/type surface (STOA107–109).
 //!
 //! Expansion-time checks that a sample nests under a stated mold:
 //!   - STOA107: dry aura equality (`@u32` under `@u32`)
 //!   - STOA108: unit `$%` tag membership (`mint` under kind-mold)
-//! Wet samples, named-mold bartis samples, and barket stay held.
+//!   - STOA109: closed named-mold bartis sample (`amount-mold` one-field `$:`)
+//! Wet samples, `kind-mold` bartis samples, and barket stay held.
 //!
-//! Bartis calls `assert_aura_nests`; tag nest is proven against MoldSpec.
+//! Bartis calls `assert_aura_nests` / `assert_bartis_named_mold`.
 
 const std = @import("std");
 const assert = std.debug.assert;
 const rune_mold = @import("rune_mold.rye");
 
-pub const nest_type_version = "20260720.145814";
+pub const nest_type_version = "20260720.150155";
+
+/// Closed named mold welcome in bartis samples this lap (one-field `$:` ≡ `@u32`).
+pub const bartis_named_mold_amount = "amount-mold";
 
 pub const NestError = error{
     SampleDoesNotNest,
@@ -30,7 +34,7 @@ fn tag_name(tag: []const u8) []const u8 {
     return tag;
 }
 
-/// Assert `tag` nests under a `$%` MoldSpec (unit membership this lap).
+/// Assert `tag` nests under a `$%` MoldSpec (unit membership).
 /// `tag` may be bare (`mint`) or percent-spelled (`%mint`).
 pub fn assert_tag_nests(tag: []const u8, spec: *const rune_mold.MoldSpec) NestError!void {
     assert(tag.len > 0); // precondition: tag token non-empty
@@ -42,4 +46,19 @@ pub fn assert_tag_nests(tag: []const u8, spec: *const rune_mold.MoldSpec) NestEr
         if (std.mem.eql(u8, rune_mold.field_slice(spec, i), name)) return;
     }
     return error.SampleDoesNotNest;
+}
+
+/// Assert `mold_name` is the closed bartis-welcome named mold this lap.
+pub fn assert_bartis_named_mold(mold_name: []const u8) NestError!void {
+    assert(mold_name.len > 0); // precondition: mold name non-empty
+    if (!std.mem.eql(u8, mold_name, bartis_named_mold_amount)) return error.SampleDoesNotNest;
+}
+
+/// Assert `mold_name` nests under a `$:` MoldSpec that matches the closed bartis shape.
+/// Welcome shape this lap: name `amount-mold`, body `.tuple`, one field.
+pub fn assert_named_mold_nests(mold_name: []const u8, spec: *const rune_mold.MoldSpec) NestError!void {
+    try assert_bartis_named_mold(mold_name);
+    if (!std.mem.eql(u8, rune_mold.name_slice(spec), mold_name)) return error.SampleDoesNotNest;
+    if (spec.body != .tuple) return error.SampleDoesNotNest;
+    if (spec.field_count != 1) return error.SampleDoesNotNest;
 }
