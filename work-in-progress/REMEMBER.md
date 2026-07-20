@@ -2,11 +2,11 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Rule: [`.cursor/rules/remember.mdc`](../.cursor/rules/remember.mdc) · [`.claude/rules/remember.md`](../.claude/rules/remember.md).*
 
-**Last refreshed:** `20260720.190544` (UTC cloud · Eastern season) · voice Quin  
+**Last refreshed:** `20260720.190941` (UTC cloud · Eastern season) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5** · HOLD0–HOLD1 · HOLD-W  
 **Language nib:** **STOA0–127** GREEN · STOA128 open  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W · STOA0–127  
-**Git nib:** *(seated on send)* — STOA127 kind-mold flip call-body  
+**Git nib:** `03f39d2eff` — STOA127 kind-mold flip call-body  
  
 
 **Season:** Cursor iOS / cloud — **Glow language TAME only** (no adb). Handoff [`20260719-204650_cursor-ios-handoff-glow-language.md`](20260719-204650_cursor-ios-handoff-glow-language.md).  
@@ -16,8 +16,8 @@
 
 ## Now (language)
 
-**STOA127** seating · kind-mold flip call-body (`KindMold` switch · baked `.mint` → `.send`).  
-**STOA128** next — compass pick: gold · call-body under xact/xfer/pair · argv · Sala B0 Framework.
+**STOA127** sent · kind-mold flip call-body (`KindMold` switch · baked `.mint` → `.send`).  
+**STOA128** next — compass pick: gold · call-body under xact (Sala B0 Framework).
 
 ```bash
 rishi/bin/rishi run tools/glow_nest_type_witness.rish
