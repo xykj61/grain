@@ -334,12 +334,41 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(spec_hexa.body == .identity);
     print("lower: glow/gen/gate-hexa.glow carries hexa-mold -- GREEN\n", .{});
 
-    if (lower.lower_source_welcome("|=  sample=hepta-mold\nsample\n", &buf)) |_| {
-        return error.HeptaMoldLoweredTooSoon;
+    // STOA142: hepta-mold identity lowers as HeptaMold.
+    const hepta_src = "|=  sample=hepta-mold\nsample\n";
+    const n_hepta = try lower.lower_source_welcome(hepta_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n_hepta], "bartis_gate") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_hepta], "HeptaMold") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_hepta], "to: u32") != null);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_hepta_welcome.rye", .data = buf[0..n_hepta] });
+    print("lower: hepta-mold bartis lowers to HeptaMold identity -- GREEN\n", .{});
+
+    const gen_hepta = try cwd.readFileAlloc(io, "glow/gen/gate-hepta.glow", a, .limited(4096));
+    const spec_hepta = try rb.parse_source(gen_hepta);
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_hepta), "hepta-mold"));
+    assert(spec_hepta.body == .identity);
+    print("lower: glow/gen/gate-hepta.glow carries hepta-mold -- GREEN\n", .{});
+
+    if (lower.lower_source_welcome("|=  sample=octa-mold\nsample\n", &buf)) |_| {
+        return error.OctaMoldLoweredTooSoon;
     } else |err| {
         if (err != lower.LowerError.SampleDoesNotNest) return err;
     }
-    print("lower: hepta-mold bartis refused SampleDoesNotNest -- GREEN\n", .{});
+    print("lower: octa-mold bartis refused SampleDoesNotNest -- GREEN\n", .{});
+
+    if (lower.lower_source_welcome("|=  sample=hepta-mold\n%-  flip  sample\n", &buf)) |_| {
+        return error.HeptaFlipCallBodyLoweredTooSoon;
+    } else |err| {
+        if (err != lower.LowerError.BodyGateNotYetLowered) return err;
+    }
+    print("lower: hepta-mold flip call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
+
+    if (lower.lower_source_argv_sample("|=  sample=hepta-mold\nsample\n", &buf)) |_| {
+        return error.HeptaArgvLoweredTooSoon;
+    } else |err| {
+        if (err != lower.LowerError.SampleDoesNotNest) return err;
+    }
+    print("lower: hepta-mold argv refused SampleDoesNotNest -- GREEN\n", .{});
 
     // STOA141: hexa-mold flip call-body lowers as HexaMold swap · baked 3/5/1/2/7/4.
     const hexa_flip_src = "|=  sample=hexa-mold\n%-  flip  sample\n";
@@ -579,7 +608,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("lower: glow/gen/gate-count.glow carries count-mold -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: Glow `|=` bartis — identity · argv · call-body · amount-mold · amount argv · count-mold · count argv · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · pair flip · triple-mold · triple flip · quad-mold · quad flip · penta-mold · penta flip · hexa-mold · hexa flip · nesting-nests (STOA100–141).\n", .{});
+    print("GREEN: Glow `|=` bartis — identity · argv · call-body · amount-mold · amount argv · count-mold · count argv · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · pair flip · triple-mold · triple flip · quad-mold · quad flip · penta-mold · penta flip · hexa-mold · hexa flip · hepta-mold · nesting-nests (STOA100–142).\n", .{});
     return 0;
 }
 

@@ -10,6 +10,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 - `20260720.223440` — [STOA140 hexa-mold seat map for STOA142](20260720-223440_stoa140-hexa-mirror-map.bron) — claim 33922c54c8 edit checklist · hepta mirror keys
 - `20260720.223012` — [Mold vocabulary search — keep Hoon word](20260720-223012_mold-vocabulary-search.bron) — no Glow-native mold rename found; STOA130 renamed wet/dry only
+- `20260720.224116` — [STOA142 hepta-mold gate GREEN](20260720-224116_stoa142-hepta-mold-green.bron) — HeptaMold identity · baked 5/3/1/2/7/4/6; await send
 - `20260720.223226` — [Glow OS shape vocabulary seated](20260720-223226_glow-os-shape-seated.bron) — shape surface · mold study; desk rename horizon
 - `20260720.223052` — [Glow OS word other than mold](20260720-223052_glow-os-word-than-mold.bron) — recommend shape · norm · rupa; rename is check-in
 - `20260720.222829` — [Finish STOA140 pin then seat STOA141](20260720-222829_finish-stoa140-pin.bron) — pin leftovers · hexa flip sent · STOA142 mapped
