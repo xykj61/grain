@@ -14,6 +14,7 @@
 //! STOA126: `pair-mold` identity lowers as `PairMold` struct · baked from 5 amount 3.
 //! STOA134: `triple-mold` identity lowers as `TripleMold` struct · baked from 5 amount 3 fee 1.
 //! STOA135: `quad-mold` identity lowers as `QuadMold` struct · baked from 5 amount 3 fee 1 nonce 2.
+//! STOA136: `triple-mold` call body `%-  flip` → TripleMold swap · baked 5/3/1 → 3/5/1.
 //! STOA127: `kind-mold` call body `%-  flip` → KindMold switch · baked `.mint` → `.send`.
 //! STOA128: `xact-mold` call body `%-  flip` → XactMold switch · baked mint/5 → `.send`.
 //! STOA129: `xfer-mold` call body `%-  flip` → XferMold switch · baked mint/5/3 → `.send`.
@@ -376,6 +377,28 @@ fn emit_pair_call_body(out: []u8, zface: []const u8, gate: []const u8, comment: 
     return used;
 }
 
+/// STOA136: closed three-field `$:` triple-mold call body → TripleMold flip · baked 3/5/1.
+fn emit_triple_call_body(out: []u8, zface: []const u8, gate: []const u8, comment: []const u8) LowerError!u32 {
+    assert(rb.is_triple_call_gate(gate)); // parse/lower pin — flip only today
+    var used: u32 = 0;
+    try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
+    try append_print(out, &used, "pub const TripleMold = struct {{\n", .{});
+    try append_print(out, &used, "    from: u32 = 0,\n", .{});
+    try append_print(out, &used, "    amount: u32 = 0,\n", .{});
+    try append_print(out, &used, "    fee: u32 = 0,\n", .{});
+    try append_print(out, &used, "}};\n\n", .{});
+    try append_print(out, &used, "/// {s}\n", .{comment});
+    try append_print(out, &used, "fn bartis_gate({s}: TripleMold) TripleMold {{\n", .{zface});
+    try append_print(out, &used, "    return .{{ .from = {s}.amount, .amount = {s}.from, .fee = {s}.fee }};\n", .{ zface, zface, zface });
+    try append_print(out, &used, "}}\n\n", .{});
+    try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
+    try append_print(out, &used, "    const {s}: TripleMold = .{{ .from = {d}, .amount = {d}, .fee = {d} }};\n", .{ zface, bartis_triple_demo_from, bartis_triple_demo_amount, bartis_triple_demo_fee });
+    try append_print(out, &used, "    const got = bartis_gate({s});\n", .{zface});
+    try append_print(out, &used, "    return if (got.from == {d} and got.amount == {d} and got.fee == {d}) 0 else 1;\n", .{ bartis_triple_demo_amount, bartis_triple_demo_from, bartis_triple_demo_fee });
+    try append_print(out, &used, "}}\n", .{});
+    return used;
+}
+
 fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
     const face = rb.face_slice(spec);
     assert(face.len > 0); // invariant: spec carries a non-empty face
@@ -453,10 +476,20 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
     }
 
     if (is_triple_sample(spec)) {
-        if (spec.body != .identity) return error.BodyGateNotYetLowered;
-        var comment_buf: [160]u8 = undefined;
-        const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` bartis — TripleMold identity (STOA134).", .{ face, mold }) catch return error.Overflow;
-        return emit_triple_identity(out, zface, comment);
+        switch (spec.body) {
+            .identity => {
+                var comment_buf: [160]u8 = undefined;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` bartis — TripleMold identity (STOA134).", .{ face, mold }) catch return error.Overflow;
+                return emit_triple_identity(out, zface, comment);
+            },
+            .call_one => {
+                const gate = rb.gate_slice(spec);
+                if (!rb.is_triple_call_gate(gate)) return error.BodyGateNotYetLowered;
+                var comment_buf: [192]u8 = undefined;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` / `%-  {s}  {s}` — TripleMold call body (STOA136).", .{ face, mold, gate, face }) catch return error.Overflow;
+                return emit_triple_call_body(out, zface, gate, comment);
+            },
+        }
     }
 
     if (is_quad_sample(spec)) {
