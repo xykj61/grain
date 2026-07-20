@@ -9,7 +9,7 @@ const print = std.debug.print;
 const lower = @import("lower_barket.rye");
 const rb = @import("rune_barket.rye");
 
-const witness_version = "20260720.190544";
+const witness_version = "20260720.191033";
 
 fn run_selftest(init: std.process.Init) !u8 {
     const io = init.io;
@@ -303,12 +303,28 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("lower: @u32 flip call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
 
+    // STOA128: xact-mold flip call-body lowers as XactMold switch · baked .send.
+    const xact_flip_src = "|^  sample=xact-mold\n%-  flip  sample\n";
+    const n_xf = try lower.lower_source_welcome(xact_flip_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n_xf], "XactMold") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_xf], ".mint => .send") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_xf], ".send => 0") != null);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_xact_flip_welcome.rye", .data = buf[0..n_xf] });
+    print("lower: xact-mold call-body flip lowers to XactMold switch expect .send -- GREEN\n", .{});
+
+    const gen_xf = try cwd.readFileAlloc(io, "glow/gen/gate-barket-xact-flip.glow", a, .limited(4096));
+    const spec_xf = try rb.parse_source(gen_xf);
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_xf), "xact-mold"));
+    assert(spec_xf.body == .call_one);
+    assert(std.mem.eql(u8, rb.gate_slice(&spec_xf), "flip"));
+    print("lower: glow/gen/gate-barket-xact-flip.glow carries xact-mold flip call-body -- GREEN\n", .{});
+
     if (lower.lower_source_welcome("|^  sample=xact-mold\n%-  double  sample\n", &buf)) |_| {
-        return error.XactCallBodyLoweredTooSoon;
+        return error.XactDoubleCallBodyLoweredTooSoon;
     } else |err| {
         if (err != lower.LowerError.BodyGateNotYetLowered) return err;
     }
-    print("lower: xact-mold call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
+    print("lower: xact-mold double call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
 
     if (lower.lower_source_welcome("|^  sample=xfer-mold\n%-  double  sample\n", &buf)) |_| {
         return error.XferCallBodyLoweredTooSoon;
@@ -317,12 +333,26 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("lower: xfer-mold call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
 
+    if (lower.lower_source_welcome("|^  sample=xfer-mold\n%-  flip  sample\n", &buf)) |_| {
+        return error.XferFlipCallBodyLoweredTooSoon;
+    } else |err| {
+        if (err != lower.LowerError.BodyGateNotYetLowered) return err;
+    }
+    print("lower: xfer-mold flip call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
+
     if (lower.lower_source_welcome("|^  sample=pair-mold\n%-  double  sample\n", &buf)) |_| {
         return error.PairCallBodyLoweredTooSoon;
     } else |err| {
         if (err != lower.LowerError.BodyGateNotYetLowered) return err;
     }
     print("lower: pair-mold call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
+
+    if (lower.lower_source_welcome("|^  sample=pair-mold\n%-  flip  sample\n", &buf)) |_| {
+        return error.PairFlipCallBodyLoweredTooSoon;
+    } else |err| {
+        if (err != lower.LowerError.BodyGateNotYetLowered) return err;
+    }
+    print("lower: pair-mold flip call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
 
     // STOA122: second closed named mold count-mold.
     const count_src = "|^  sample=count-mold\nsample\n";
@@ -339,7 +369,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("lower: glow/gen/gate-barket-count.glow carries count-mold -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: Glow `|^` barket — identity · argv · call-body · amount-mold · count-mold · kind-mold · kind flip · xact-mold · xfer-mold · pair-mold · wet-through-nests; STOA113–127.\n", .{});
+    print("GREEN: Glow `|^` barket — identity · argv · call-body · amount-mold · count-mold · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · pair-mold · wet-through-nests; STOA113–128.\n", .{});
     return 0;
 }
 
