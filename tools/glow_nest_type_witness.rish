@@ -1,0 +1,35 @@
+# glow_nest_type_witness.rish — thin nest/type surface implement (STOA107).
+#
+# Proves dry aura nest assert accepts @u32 / refuses @u64 as SampleDoesNotNest,
+# wires through bartis, and keeps barket untokenized. Wet/gold still held.
+#
+#   rishi/bin/rishi run tools/glow_nest_type_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "glow/bin/nest_type_witness"
+
+let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/nest_type_witness.rye -femit-bin=${bin}"]
+assert build.ok else "nest_type_witness build failed: ${build.err}${build.out}"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "nest_type_witness exited non-zero: ${selftest.err}${selftest.out}"
+assert selftest.out contains "GREEN" else "nest_type_witness not GREEN"
+assert selftest.out contains "SampleDoesNotNest" else "nest_type_witness missing SampleDoesNotNest"
+assert selftest.out contains "gate-sample.glow" else "nest_type_witness missing accept fixture"
+assert selftest.out contains "gate-sample-u64-refuse.glow" else "nest_type_witness missing refuse fixture"
+
+# Sibling horizons stay GREEN.
+let surface = run ["sh" "-c" "rishi/bin/rishi run tools/glow_nest_type_surface_witness.rish"]
+assert surface.ok else "glow_nest_type_surface_witness failed under nest implement"
+assert surface.out contains "GREEN" else "glow_nest_type_surface_witness not GREEN"
+
+let barket = run ["sh" "-c" "rishi/bin/rishi run tools/glow_barket_horizon_witness.rish"]
+assert barket.ok else "glow_barket_horizon_witness failed under nest implement"
+assert barket.out contains "GREEN" else "glow_barket_horizon_witness not GREEN"
+
+let bartis = run ["sh" "-c" "rishi/bin/rishi run tools/glow_lower_bartis_witness.rish"]
+assert bartis.ok else "glow_lower_bartis_witness failed under nest implement"
+assert bartis.out contains "GREEN" else "glow_lower_bartis_witness not GREEN"
+assert bartis.out contains "SampleDoesNotNest" else "glow_lower_bartis_witness missing nest refuse"
+
+say "GREEN: Glow nest/type thin implement — SampleDoesNotNest; bartis wire; barket held; STOA107."

@@ -1,4 +1,4 @@
-# STOA — Glow SLC · nest · product · ≤80 · STOA0–106 GREEN · 2026-07-20 (G0–G5 · bartis · nest/type) · draw → **STOA**
+# STOA — Glow SLC · nest · product · ≤80 · STOA0–107 GREEN · 2026-07-20 (G0–G5 · bartis · nest/type) · draw → **STOA**
 | Rung | Claim | Witness / gate | State |
 |------|-------|----------------|-------|
 | **STOA0** | Eight rune heads + desk hop · `(lent)` · `(mix)` | `glow_run_desk_witness` · `glow_expr_witness` | **GREEN** (claimed `20260718.202730`) |
@@ -79,4 +79,5 @@
 | **STOA76–83** | `$%` · cast · payload · multi · tag/pay · token stream | mold · named-cast · tokens | **GREEN** `192936`…`200706` |
 | **STOA84–105** | Cast · alphabet · G4–G5 · bartis tidy | tokens · G5 · bartis | **GREEN** `201027`…`042300` |
 | **STOA106** | Nest/type surface wording (wet samples) | `glow_nest_type_surface_witness` | **GREEN** `20260720.042931` |
-Smoke: `glow_nest_type_surface_witness` · `glow_lower_bartis_witness` · Sibling: **ZETA** · **LULU** · **SETU** · **TUBE**.
+| **STOA107** | Nest/type thin implement (dry aura) | `glow_nest_type_witness` · bartis | **GREEN** `20260720.043251` |
+Smoke: `glow_nest_type_witness` · `glow_lower_bartis_witness` · Sibling: **ZETA** · **LULU** · **SETU** · **TUBE**.

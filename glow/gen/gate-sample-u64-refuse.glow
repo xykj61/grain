@@ -1,0 +1,4 @@
+::  Refuse desk — sample=@u64 does not nest under dry @u32 (STOA107).
+::  Parse-only; do not glow_run — nest/type surface refuses SampleDoesNotNest.
+|=  sample=@u64
+sample
