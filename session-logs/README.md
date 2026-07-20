@@ -8,6 +8,7 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260720.193316` — [STOA130 naming approved and sent](20260720-193316_stoa130-naming-approved-sent.bron) — stated/nesting/gold on main · claim 2bf5ba11dc
 - `20260720.193254` — [STOA130 send complete](20260720-193254_stoa130-send-complete.bron) — origin main language claim 2bf5ba11dc · tip 2bf5ba11dc
 - `20260720.193254` — [STOA131 next map after stated nesting gold](20260720-193254_stoa131-next-map.bron) — gold vs call-body under pair; compass pick
 - `20260720.193228` — [STOA130 stated nesting gold vocabulary GREEN](20260720-193228_stoa130-stated-nesting-gold-green.bron) — stated/nesting/gold APIs · LEXICON merge; await send
