@@ -512,7 +512,9 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA136 triple-mold flip call-body GREEN, `20260720.195742`** — lean A (compass): closed `%-  flip` under triple-mold · from↔amount · fee stays · baked 5/3/1 → 3/5/1; double under triple / quad flip refuse; argv · gold · Sala B0 held. Brief [`active-designing/20260720-195742_stoa136-triple-flip.md`](../active-designing/20260720-195742_stoa136-triple-flip.md). Sent `aa460089fb` · PR #48.
 
-**STOA137 quad-mold flip call-body GREEN, `20260720.200022`** — lean A (compass): closed `%-  flip` under quad-mold · from↔amount · fee/nonce stay · baked 5/3/1/2 → 3/5/1/2; double under quad refuse; argv · gold · Sala B0 held. Brief [`active-designing/20260720-200022_stoa137-quad-flip.md`](../active-designing/20260720-200022_stoa137-quad-flip.md). Next language: **STOA138** map (gold · tagged argv · penta · Sala B0 still held).
+**STOA137 quad-mold flip call-body GREEN, `20260720.200022`** — lean A (compass): closed `%-  flip` under quad-mold · from↔amount · fee/nonce stay · baked 5/3/1/2 → 3/5/1/2; double under quad refuse; argv · gold · Sala B0 held. Brief [`active-designing/20260720-200022_stoa137-quad-flip.md`](../active-designing/20260720-200022_stoa137-quad-flip.md). Sent `968e4fb81e` · PR #49.
+
+**STOA138 penta-mold gate sample mapped, `20260720.200416`** — lean A (compass): closed five-field `$:` identity · PentaMold · baked 5/3/1/2/7 memo; hexa refuse; call-body under penta · tagged argv · gold · Sala B0 held. Brief [`active-designing/20260720-200416_stoa138-penta-mold-gate.md`](../active-designing/20260720-200416_stoa138-penta-mold-gate.md). Next: seat when GREEN.
 
 **Glow OS · Glow Desk · Glow Glass seated, `20260717.183622`** — Keaton: **Glow OS** unifies; **Glow Desk** = desktop; **Glow Glass** = mobile. Lexicon + silo [`../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md`](../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md). Orientation firmware stays check-in.
 
