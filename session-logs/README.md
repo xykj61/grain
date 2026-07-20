@@ -8,8 +8,10 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
-- `20260720.174521` — [STOA112 barket parse map — thinnest honest GREEN](20260720-174521_stoa112-barket-parse-map.bron) — dry-shaped demo; BodyNotYetLowered; lower/dispatch/Sala held
+- `20260720.175029` — [STOA113 barket lower vs Sala B0 map](20260720-175029_stoa113-barket-lower-map.bron) — check-in before thin lower; wet/Sala held
+- `20260720.175029` — [STOA112 send complete](20260720-175029_stoa112-send-complete.bron) — origin main at 6d02c6f96858
 - `20260720.174907` — [STOA112 barket header parse GREEN](20260720-174907_stoa112-barket-parse-green.bron) — dry BarketSpec · BodyNotYetLowered; await send
+- `20260720.174521` — [STOA112 barket parse map — thinnest honest GREEN](20260720-174521_stoa112-barket-parse-map.bron) — dry-shaped demo; BodyNotYetLowered; lower/dispatch/Sala held
 - `20260720.151450` — [STOA112 barket parse vs Sala B0 map](20260720-151450_stoa112-barket-parse-map.bron) — check-in before thin parse; lower/wet/Sala held
 - `20260720.151450` — [STOA111 send complete](20260720-151450_stoa111-send-complete.bron) — origin main at eb2a65794210
 - `20260720.151247` — [STOA111 barket tokenize GREEN](20260720-151247_stoa111-barket-tokenize-green.bron) — |^ → 27; parse/lower held; await send
