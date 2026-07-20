@@ -1,10 +1,11 @@
-//! glow/nest_type.rye — nest/type surface (STOA107–109).
+//! glow/nest_type.rye — nest/type surface (STOA107–110).
 //!
 //! Expansion-time checks that a sample nests under a stated mold:
 //!   - STOA107: dry aura equality (`@u32` under `@u32`)
 //!   - STOA108: unit `$%` tag membership (`mint` under kind-mold)
 //!   - STOA109: closed named-mold bartis sample (`amount-mold` one-field `$:`)
-//! Wet samples, `kind-mold` bartis samples, and barket stay held.
+//!   - STOA110: wet-sample refuse — wet-flagged claims do not nest (no Glow wet syntax)
+//! Ambient wet/gold accept, `kind-mold` bartis samples, and barket stay held.
 //!
 //! Bartis calls `assert_aura_nests` / `assert_bartis_named_mold`.
 
@@ -12,7 +13,7 @@ const std = @import("std");
 const assert = std.debug.assert;
 const rune_mold = @import("rune_mold.rye");
 
-pub const nest_type_version = "20260720.150155";
+pub const nest_type_version = "20260720.150635";
 
 /// Closed named mold welcome in bartis samples this lap (one-field `$:` ≡ `@u32`).
 pub const bartis_named_mold_amount = "amount-mold";
@@ -61,4 +62,11 @@ pub fn assert_named_mold_nests(mold_name: []const u8, spec: *const rune_mold.Mol
     if (!std.mem.eql(u8, rune_mold.name_slice(spec), mold_name)) return error.SampleDoesNotNest;
     if (spec.body != .tuple) return error.SampleDoesNotNest;
     if (spec.field_count != 1) return error.SampleDoesNotNest;
+}
+
+/// Assert a sample claim is dry. Wet-flagged claims refuse `SampleDoesNotNest`.
+/// STOA102 step 1 / STOA110: expansion refuse for wet samples — no Glow wet spelling,
+/// no ambient gold accept, no barket tokenize this lap.
+pub fn assert_sample_not_wet(is_wet: bool) NestError!void {
+    if (is_wet) return error.SampleDoesNotNest;
 }
