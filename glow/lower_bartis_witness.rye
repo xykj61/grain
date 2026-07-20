@@ -9,7 +9,7 @@ const print = std.debug.print;
 const lower = @import("lower_bartis.rye");
 const rb = @import("rune_bartis.rye");
 
-const witness_version = "20260720.042300";
+const witness_version = "20260720.043251";
 
 fn run_selftest(init: std.process.Init) !u8 {
     const io = init.io;
@@ -33,13 +33,13 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(n2 > 0);
     print("lower: bartis source with comment line parses cleanly -- GREEN\n", .{});
 
-    // Refuse aura other than @u32.
+    // Refuse aura other than @u32 (nest/type surface — SampleDoesNotNest).
     if (lower.lower_source_welcome("|=  sample=@u64\nsample\n", &buf)) |_| {
         return error.AuraLoweredTooSoon;
     } else |err| {
-        if (err != lower.LowerError.AuraNotYetLowered) return err;
+        if (err != lower.LowerError.SampleDoesNotNest) return err;
     }
-    print("lower: @u64 bartis refused AuraNotYetLowered -- GREEN\n", .{});
+    print("lower: @u64 bartis refused SampleDoesNotNest -- GREEN\n", .{});
 
     // Refuse body face mismatch.
     if (lower.lower_source_welcome("|=  sample=@u32\nother\n", &buf)) |_| {
@@ -157,7 +157,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("lower: glow/gen/gate-dec.glow carries call-body dec -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: Glow `|=` bartis — identity · argv · call-body · STOA105 TAME tidy (STOA100–105).\n", .{});
+    print("GREEN: Glow `|=` bartis — identity · argv · call-body · nest/type SampleDoesNotNest (STOA100–107).\n", .{});
     return 0;
 }
 

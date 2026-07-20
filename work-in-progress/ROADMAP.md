@@ -4,7 +4,7 @@
 
 **Language:** EN
 **Version:** `20260715` (Pool keystone revival prioritized · Quin voice seated · align pass reconciles the closed ladder)
-**Last updated:** 2026-07-20 (**STOA0–106** GREEN — nest/type surface wording; bartis tidy; barket horizon)
+**Last updated:** 2026-07-20 (**STOA0–107** GREEN — nest/type thin implement; bartis tidy; barket horizon)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Lens:** TAME — safety, performance, joy; the Seed Law; [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md)
@@ -451,6 +451,8 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 **STOA105 bartis TAME tidy GREEN, `20260720.042300`** — lean A (compass): `append_print` · u32 · `copy_disjoint` · overflow seat · width list; desks unchanged. Brief [`active-designing/20260720-042300_glow-bartis-tame-tidy.md`](../active-designing/20260720-042300_glow-bartis-tame-tidy.md). Next language: **STOA106** check-in (nest surface · barket implement · Sala B0).
 
 **STOA106 nest/type surface wording GREEN, `20260720.042931`** — lean A (compass): seats **nest/type surface** as wet-sample precondition; Lexicon + TAME; wet/gold held; barket still untokenized. Brief [`active-designing/20260720-042931_stoa106-nest-type-surface-wording.md`](../active-designing/20260720-042931_stoa106-nest-type-surface-wording.md). Next language: **STOA107** check-in (barket implement · nest/type implement · Sala B0).
+
+**STOA107 nest/type thin implement GREEN, `20260720.043251`** — lean A (compass): `nest_type.assert_aura_nests` · bartis `SampleDoesNotNest` · accept/refuse desks; wet/gold · barket tokenize · Sala B0 held. Brief [`active-designing/20260720-043251_stoa107-nest-type-thin-implement.md`](../active-designing/20260720-043251_stoa107-nest-type-thin-implement.md). Next language: **STOA108** check-in (`$%` tag nest · barket tokenize · Sala B0).
 
 **Glow OS · Glow Desk · Glow Glass seated, `20260717.183622`** — Keaton: **Glow OS** unifies; **Glow Desk** = desktop; **Glow Glass** = mobile. Lexicon + silo [`../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md`](../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md). Orientation firmware stays check-in.
 
