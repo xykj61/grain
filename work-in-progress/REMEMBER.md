@@ -2,11 +2,11 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Rule: [`.cursor/rules/remember.mdc`](../.cursor/rules/remember.mdc) · [`.claude/rules/remember.md`](../.claude/rules/remember.md).*
 
-**Last refreshed:** `20260720.182915` (UTC cloud · Eastern season) · voice Quin  
+**Last refreshed:** `20260720.183105` (UTC cloud · Eastern season) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5** · HOLD0–HOLD1 · HOLD-W  
 **Language nib:** **STOA0–121** GREEN · STOA122 open  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W · STOA0–121  
-**Git nib:** (await send) STOA121 barket wet-through-nests  
+**Git nib:** `c33f775cd2` — STOA121 barket wet-through-nests  
 
 **Season:** Cursor iOS / cloud — **Glow language TAME only** (no adb). Handoff [`20260719-204650_cursor-ios-handoff-glow-language.md`](20260719-204650_cursor-ios-handoff-glow-language.md).  
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`
@@ -15,8 +15,8 @@
 
 ## Now (language)
 
-**STOA121** GREEN · barket wet-through-nests (`assert_sample_wet_nests(true, …)`). Await send.  
-**STOA122** next — map (gold · Sala B0 · open named-mold held).
+**STOA121** sent · barket wet-through-nests (`assert_sample_wet_nests(true, …)`).  
+**STOA122** next — compass pick: open named-mold · kind-mold samples · gold (Sala B0 Framework).
 
 ```bash
 rishi/bin/rishi run tools/glow_nest_type_witness.rish
@@ -59,7 +59,7 @@ $ADB install -r tools/.cache/tube05/sala-broadcaster.apk
 
 | Door | Kind |
 |------|------|
-| **STOA120** wire wet into gates · gold · Sala B0 | **open** — iOS season |
+| **STOA122** open named-mold · kind-mold · gold | **open** — compass pick; Sala B0 Framework |
 | Glow wet syntax · ambient gold | **held** |
 | Live SETU6.5 **sent** on usb0/ncm | **check-in** — Framework host |
 | JABS3 · TAME Lap 3 | **check-in** |
