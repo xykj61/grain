@@ -7,7 +7,7 @@
 # Run from the repository root:
 #   rishi/bin/rishi run tools/tame_style_scan_bans.rish
 
-let roster = run ["sh" "-c" "find mantra caravan linengrow comlink rishi/src tally aurora pond brushstroke rye/src glow/tokens.rye glow/tokens_witness.rye -name '*.rye' ! -type l 2>/dev/null | sort"]
+let roster = run ["sh" "-c" "find mantra caravan linengrow comlink rishi/src tally aurora pond brushstroke rye/src glow/tokens.rye glow/lower_named_cast.rye -name '*.rye' ! -type l 2>/dev/null | sort"]
 assert roster.ok else "tame_style_scan_bans: find roster failed"
 
 let file_lines = lines roster.out
@@ -63,7 +63,7 @@ if length hits_dbg != 0 then say "BAN [dbg(]:"
 for-each hits_dbg as f do say f
 assert length hits_dbg == 0 else "TAME ban: dbg("
 
-let compound = run ["sh" "-c" "grep -Hn 'assert(.* and .*)' $(find mantra caravan linengrow comlink rishi/src tally aurora pond brushstroke rye/src glow/tokens.rye glow/tokens_witness.rye -name '*.rye' ! -type l 2>/dev/null) 2>/dev/null | head -8"]
+let compound = run ["sh" "-c" "grep -Hn 'assert(.* and .*)' $(find mantra caravan linengrow comlink rishi/src tally aurora pond brushstroke rye/src glow/tokens.rye glow/lower_named_cast.rye -name '*.rye' ! -type l 2>/dev/null) 2>/dev/null | head -8"]
 if compound.out != "" then say "BAN [compound assert — split so the failing half is named]:"
 if compound.out != "" then say compound.out
 assert compound.out == "" else "TAME ban: compound assert"
