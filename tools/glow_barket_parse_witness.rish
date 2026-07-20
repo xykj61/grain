@@ -29,11 +29,13 @@ assert selftest.out contains "call-body inc" else "rune_barket_witness missing c
 assert selftest.out contains "call-body dec" else "rune_barket_witness missing call-body dec claim"
 assert selftest.out contains "BodyGateNotYetLowered" else "rune_barket_witness missing unknown-gate refuse"
 assert selftest.out contains "amount-mold" else "rune_barket_witness missing amount-mold claim"
-assert selftest.out contains "kind-mold" else "rune_barket_witness missing kind-mold refuse"
+assert selftest.out contains "kind-mold" else "rune_barket_witness missing kind-mold claim"
+assert selftest.out contains "xact-mold" else "rune_barket_witness missing xact-mold claim"
+assert selftest.out contains "xfer-mold" else "rune_barket_witness missing xfer-mold refuse"
 
 # Tokenize sibling stays GREEN.
 let tok = run ["sh" "-c" "rishi/bin/rishi run tools/glow_barket_tokenize_witness.rish"]
 assert tok.ok else "glow_barket_tokenize_witness failed under barket parse"
 assert tok.out contains "GREEN" else "glow_barket_tokenize_witness not GREEN"
 
-say "GREEN: Glow barket parse — dry header · identity · call-body trio · amount-mold · count-mold · kind-mold · wet-through-nests; STOA112–123."
+say "GREEN: Glow barket parse — dry header · identity · call-body trio · amount-mold · count-mold · kind-mold · xact-mold · wet-through-nests; STOA112–124."
