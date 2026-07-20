@@ -392,6 +392,7 @@
 - [x] **STOA121 — barket wet-through-nests** `20260720.182915` — `assert_sample_wet_nests(true, …)` on `|^`; drop barket dry not_wet pin; bartis dry; gold · new wet tokens · Sala B0 held.
 - [x] **STOA122 — count-mold named allowlist** `20260720.183259` — second closed one-field `$:` mold; bartis+barket; kind-mold · gold · Sala B0 held.
 - [x] **STOA123 — kind-mold gate sample** `20260720.183837` — unit `$%` identity · KindMold · baked `.mint`; xact-mold refuse; call-body/argv/gold/Sala B0 held.
+- [x] **STOA124 — xact-mold gate sample** `20260720.184304` — payload `$%` identity · XactMold · baked `.mint` amount 5; xfer-mold refuse; call-body/argv/gold/Sala B0 held.
 - [x] **Cursor iOS handoff · core polymorphism + port order** `20260719.204650` — handoff [`20260719-204650_cursor-ios-handoff-glow-language.md`](20260719-204650_cursor-ios-handoff-glow-language.md); dry cores fit TAME · wet/gold hold · port L→R→G [`../active-designing/20260719-204650_hoon-core-polymorphism-tame-and-port-order.md`](../active-designing/20260719-204650_hoon-core-polymorphism-tame-and-port-order.md); iOS season = language-only (no adb).
 - [ ] **Dill-parallel kernel revival** — separate `active-reviving/` brief when a real need opens; not Dexter.
 - [ ] **M1 Scribble↔html round-trip witness** — named in fusion map; opens when Keaton leans doc pipeline.
