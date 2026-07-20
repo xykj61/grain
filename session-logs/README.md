@@ -8,6 +8,7 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260720.183712` — [STOA123 kind-mold gate samples map](20260720-183712_stoa123-kind-mold-samples-map.bron) — parse+lower identity lean A; gold held
 - `20260720.183547` — [STOA122 send complete](20260720-183547_stoa122-send-complete.bron) — origin main language claim 04865f8715 · tip 094c2dd83a
 - `20260720.183547` — [STOA123 next map after count-mold](20260720-183547_stoa123-next-map.bron) — kind-mold vs gold; compass pick
 - `20260720.183524` — [STOA122 count-mold named allowlist GREEN](20260720-183524_stoa122-count-mold-green.bron) — amount · count closed set; await send
