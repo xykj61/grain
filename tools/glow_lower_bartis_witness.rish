@@ -54,9 +54,13 @@ assert selftest.out contains "gate-hepta.glow" else "lower_bartis_witness missin
 assert selftest.out contains "HeptaMold" else "lower_bartis_witness missing HeptaMold claim"
 assert selftest.out contains "gate-octa.glow" else "lower_bartis_witness missing gate-octa desk"
 assert selftest.out contains "OctaMold" else "lower_bartis_witness missing OctaMold claim"
-assert selftest.out contains "nona-mold" else "lower_bartis_witness missing nona-mold refuse"
+assert selftest.out contains "gate-nona.glow" else "lower_bartis_witness missing gate-nona desk"
+assert selftest.out contains "NonaMold" else "lower_bartis_witness missing NonaMold claim"
+assert selftest.out contains "deca-mold" else "lower_bartis_witness missing deca-mold refuse"
 assert selftest.out contains "hepta-mold argv refused" else "lower_bartis_witness missing hepta argv refuse"
 assert selftest.out contains "octa-mold argv refused" else "lower_bartis_witness missing octa argv refuse"
+assert selftest.out contains "nona-mold argv refused" else "lower_bartis_witness missing nona argv refuse"
+assert selftest.out contains "nona-mold flip call-body refused" else "lower_bartis_witness missing nona flip refuse"
 assert selftest.out contains "gate-octa-flip.glow" else "lower_bartis_witness missing octa-flip desk"
 assert selftest.out contains "octa-mold call-body flip" else "lower_bartis_witness missing octa flip claim"
 assert selftest.out contains "octa-mold double call-body refused" else "lower_bartis_witness missing octa double refuse"
@@ -287,6 +291,15 @@ let run_octa = run ["sh" "-c" "${octa_bin}; echo EXIT:$?"]
 assert run_octa.ok else "bartis octa-mold welcome binary failed to launch"
 assert run_octa.out contains "EXIT:0" else "bartis octa-mold welcome binary did not exit 0"
 
+# STOA146: nona-mold welcome binary exits 0.
+let nona_rye = "glow/.cache/gate_nona_welcome.rye"
+let nona_bin = "glow/bin/gate_nona_welcome"
+let build_nona = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${nona_rye} -femit-bin=${nona_bin}"]
+assert build_nona.ok else "bartis nona-mold welcome .rye build failed"
+let run_nona = run ["sh" "-c" "${nona_bin}; echo EXIT:$?"]
+assert run_nona.ok else "bartis nona-mold welcome binary failed to launch"
+assert run_nona.out contains "EXIT:0" else "bartis nona-mold welcome binary did not exit 0"
+
 # STOA127: kind-mold flip call-body welcome binary exits 0.
 let kind_flip_rye = "glow/.cache/gate_kind_flip_welcome.rye"
 let kind_flip_bin = "glow/bin/gate_kind_flip_welcome"
@@ -377,4 +390,4 @@ let run_otf = run ["sh" "-c" "${octa_flip_bin}; echo EXIT:$?"]
 assert run_otf.ok else "bartis octa-mold flip welcome binary failed to launch"
 assert run_otf.out contains "EXIT:0" else "bartis octa-mold flip welcome binary did not exit 0"
 
-say "GREEN: Glow `|=` bartis — STOA100–145 identity · argv · call-body · amount-mold · amount argv · count-mold · count argv · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · pair flip · triple-mold · triple flip · quad-mold · quad flip · penta-mold · penta flip · hexa-mold · hexa flip · hepta-mold · hepta flip · octa-mold · octa flip · stated nesting · nest SampleDoesNotNest."
+say "GREEN: Glow `|=` bartis — STOA100–146 identity · argv · call-body · amount-mold · amount argv · count-mold · count argv · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · pair flip · triple-mold · triple flip · quad-mold · quad flip · penta-mold · penta flip · hexa-mold · hexa flip · hepta-mold · hepta flip · octa-mold · octa flip · nona-mold · stated nesting · nest SampleDoesNotNest."

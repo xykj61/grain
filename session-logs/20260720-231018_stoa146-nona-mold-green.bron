@@ -1,0 +1,16 @@
+format session-log-v1
+stamp 20260720.231018
+editor Cursor
+model Cursor Grok 4.5
+voice Rio 3
+host Cursor cloud sandbox — UTC stamp for STOA arc
+title STOA146 nona-mold gate GREEN
+prompt Seat nona-mold gate identity (STOA146) mirroring STOA144 octa
+think Created mold-nona · gate-nona · gate-barket-nona; max_fields 8→9; NonaMold baked 5/3/1/2/7/4/6/8/9 ref.
+think nest · barket parse · barket lower · bartis lower witnesses GREEN; deca refuse; flip/argv under nona held; octa identity and octa flip stay GREEN.
+obs Ninth face ref value 9; identity-only lap like octa at STOA144.
+file glow/gen/gate-nona.glow bartis identity desk
+file glow/nest_type.rye nona allowlist and assert_nona_mold_nests
+file glow/lower_bartis.rye emit_nona_identity
+file session-logs/20260720-231018_stoa146-nona-mold-green.bron green pin
+recommend keep-going commit push branch; parent FF-merges and maps STOA147

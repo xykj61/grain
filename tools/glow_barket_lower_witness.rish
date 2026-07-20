@@ -64,14 +64,18 @@ assert selftest.out contains "XferMold" else "lower_barket_witness missing XferM
 assert selftest.out contains "gate-barket-xfer.glow" else "lower_barket_witness missing xfer fixture"
 assert selftest.out contains "PairMold" else "lower_barket_witness missing PairMold claim"
 assert selftest.out contains "gate-barket-pair.glow" else "lower_barket_witness missing pair fixture"
-assert selftest.out contains "gate-barket-kind-refuse.glow" else "lower_barket_witness missing nona refuse desk"
-assert selftest.out contains "nona-mold" else "lower_barket_witness missing nona-mold refuse"
+assert selftest.out contains "gate-barket-kind-refuse.glow" else "lower_barket_witness missing deca refuse desk"
+assert selftest.out contains "deca-mold" else "lower_barket_witness missing deca-mold refuse"
 assert selftest.out contains "gate-barket-hepta.glow" else "lower_barket_witness missing hepta fixture"
 assert selftest.out contains "HeptaMold" else "lower_barket_witness missing HeptaMold claim"
 assert selftest.out contains "gate-barket-octa.glow" else "lower_barket_witness missing octa fixture"
 assert selftest.out contains "OctaMold" else "lower_barket_witness missing OctaMold claim"
+assert selftest.out contains "gate-barket-nona.glow" else "lower_barket_witness missing nona fixture"
+assert selftest.out contains "NonaMold" else "lower_barket_witness missing NonaMold claim"
 assert selftest.out contains "hepta-mold argv refused" else "lower_barket_witness missing hepta argv refuse"
 assert selftest.out contains "octa-mold argv refused" else "lower_barket_witness missing octa argv refuse"
+assert selftest.out contains "nona-mold argv refused" else "lower_barket_witness missing nona argv refuse"
+assert selftest.out contains "nona-mold flip call-body refused" else "lower_barket_witness missing nona flip refuse"
 assert selftest.out contains "gate-barket-octa-flip.glow" else "lower_barket_witness missing octa-flip desk"
 assert selftest.out contains "octa-mold call-body flip" else "lower_barket_witness missing octa flip claim"
 assert selftest.out contains "octa-mold double call-body refused" else "lower_barket_witness missing octa double refuse"
@@ -328,6 +332,15 @@ let run_octa = run ["sh" "-c" "${octa_bin}; echo EXIT:$?"]
 assert run_octa.ok else "barket octa-mold welcome binary failed to launch"
 assert run_octa.out contains "EXIT:0" else "barket octa-mold welcome binary did not exit 0"
 
+# STOA146: nona-mold welcome binary exits 0.
+let nona_rye = "glow/.cache/gate_barket_nona_welcome.rye"
+let nona_bin = "glow/bin/gate_barket_nona_welcome"
+let build_nona = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${nona_rye} -femit-bin=${nona_bin}"]
+assert build_nona.ok else "barket nona-mold welcome .rye build failed: ${build_nona.err}${build_nona.out}"
+let run_nona = run ["sh" "-c" "${nona_bin}; echo EXIT:$?"]
+assert run_nona.ok else "barket nona-mold welcome binary failed to launch"
+assert run_nona.out contains "EXIT:0" else "barket nona-mold welcome binary did not exit 0"
+
 # STOA127: kind-mold flip call-body welcome binary exits 0.
 let kind_flip_rye = "glow/.cache/gate_barket_kind_flip_welcome.rye"
 let kind_flip_bin = "glow/bin/gate_barket_kind_flip_welcome"
@@ -418,4 +431,4 @@ let run_otf = run ["sh" "-c" "${octa_flip_bin}; echo EXIT:$?"]
 assert run_otf.ok else "barket octa-mold flip welcome binary failed to launch"
 assert run_otf.out contains "EXIT:0" else "barket octa-mold flip welcome binary did not exit 0"
 
-say "GREEN: Glow barket lower — identity · argv · call-body · amount-mold · amount argv · count-mold · count argv · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · pair flip · triple-mold · triple flip · quad-mold · quad flip · penta-mold · penta flip · hexa-mold · hexa flip · hepta-mold · hepta flip · octa-mold · octa flip · nesting-through-nests; STOA113–145."
+say "GREEN: Glow barket lower — identity · argv · call-body · amount-mold · amount argv · count-mold · count argv · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · pair flip · triple-mold · triple flip · quad-mold · quad flip · penta-mold · penta flip · hexa-mold · hexa flip · hepta-mold · hepta flip · octa-mold · octa flip · nona-mold · nesting-through-nests; STOA113–146."
