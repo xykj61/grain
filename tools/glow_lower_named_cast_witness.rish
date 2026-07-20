@@ -64,4 +64,12 @@ let run_import_xact = run ["sh" "-c" "${import_xact_bin}; echo EXIT:$?"]
 assert run_import_xact.ok else "cross-desk payload tagged named-cast welcome binary failed to launch"
 assert run_import_xact.out contains "EXIT:0" else "cross-desk payload tagged named-cast welcome binary did not exit 0"
 
-say "GREEN: Glow named-cast — $: · unit $% · payload $% same-desk and cross-desk; STOA77/79/81/82."
+# TAME surface gates (STOA87).
+let width = run ["sh" "-c" "grep 'usize' glow/lower_named_cast.rye 2>/dev/null | grep -v '@intCast' | grep -v '@as(usize' | wc -l | tr -d ' '"]
+assert trim width.out == "0" else "glow/lower_named_cast.rye still carries authored usize"
+let assert_import = run ["sh" "-c" "grep -c 'const assert = std.debug.assert' glow/lower_named_cast.rye | tr -d ' '"]
+assert trim assert_import.out == "1" else "glow/lower_named_cast.rye must import assert once"
+let memcpy = run ["sh" "-c" "grep -c '@memcpy(' glow/lower_named_cast.rye | tr -d ' '"]
+assert trim memcpy.out == "0" else "glow/lower_named_cast.rye must use copy_disjoint"
+
+say "GREEN: Glow named-cast TAME tidy — assert · u32 · copy_disjoint; STOA87."

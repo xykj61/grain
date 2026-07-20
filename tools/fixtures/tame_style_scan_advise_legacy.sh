@@ -2,7 +2,7 @@
 # tame_style_scan_advise_legacy.sh — original shell ratchet lines (parity selftest only).
 set -u
 FILES=$(find mantra caravan linengrow comlink rishi/src tally aurora pond brushstroke rye/src \
-    glow/tokens.rye glow/tokens_witness.rye \
+    glow/tokens.rye glow/lower_named_cast.rye \
     -name "*.rye" ! -type l 2>/dev/null)
 ROOT=$(cd "$(dirname "$0")/../.." && pwd)
 memcpy_total=$(grep -h "@memcpy(" $FILES 2>/dev/null | wc -l | tr -d ' ')
