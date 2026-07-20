@@ -8,6 +8,8 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260720.180016` — [STOA115 barket call-body vs wet accept map](20260720-180016_stoa115-barket-next-map.bron) — check-in call-body vs wet accept
+- `20260720.180016` — [STOA114 send complete](20260720-180016_stoa114-send-complete.bron) — origin main at 04e5a1e511 / tip d661d3712c
 - `20260720.175953` — [STOA114 barket argv sample GREEN](20260720-175953_stoa114-barket-argv-green.bron) — argv generator · sample 9 exit 0; await send
 - `20260720.175549` — [STOA114 barket deepen vs wet accept map](20260720-175549_stoa114-barket-deepen-map.bron) — check-in argv vs call-body vs wet accept
 - `20260720.175549` — [STOA113 send complete](20260720-175549_stoa113-send-complete.bron) — origin main at 11ce632d8a / tip 5850b78930
