@@ -1,9 +1,9 @@
-//! glow/lower_bartis.rye — lower a thin `|=` bartis gate to runnable `.rye` (STOA100–103).
+//! glow/lower_bartis.rye — lower a thin `|=` bartis gate to runnable `.rye` (STOA100–104).
 //!
 //! Identity gate: `|=  sample=@u32` / `sample` — takes u32 and returns it.
-//! Call body (STOA103): `|=  sample=@u32` / `%-  double  sample` — closed demo *% 2.
+//! Call body: `|=  sample=@u32` / `%-  <gate>  sample` — closed demos:
+//!   double → *% 2 (STOA103) · inc → +% 1 · dec → -% 1 (STOA104).
 //! STOA100: baked demo sample 5; identity exits 0 when bartis_gate(5) == 5.
-//! STOA103: baked demo sample 5; call body exits 0 when bartis_gate(5) == 10.
 //! STOA101: argv sample path — main reads one decimal `@u32` and checks the body result.
 //! Gate function named `bartis_gate` to avoid collisions with the sample face.
 
@@ -17,8 +17,6 @@ pub const LowerError = rb.ParseError || error{Overflow};
 pub const bartis_demo_sample: u32 = 5;
 /// Expected result for identity body with baked sample.
 pub const bartis_identity_expect: u32 = 5;
-/// Expected result for `%-  double` body with baked sample.
-pub const bartis_double_expect: u32 = 10;
 
 fn zig_safe_ident(face: []const u8, out: *[rb.max_face_len]u8) LowerError!usize {
     assert(face.len <= rb.max_face_len); // precondition: caller checked length
@@ -39,10 +37,25 @@ fn zig_safe_ident(face: []const u8, out: *[rb.max_face_len]u8) LowerError!usize 
     return face.len;
 }
 
-fn expect_for(spec: *const rb.GateSpec) u32 {
+/// Zig expression fragment after `return {zface}` for a closed call-body gate.
+fn call_op_expr(gate: []const u8) LowerError![]const u8 {
+    if (std.mem.eql(u8, gate, "double")) return " *% 2";
+    if (std.mem.eql(u8, gate, "inc")) return " +% 1";
+    if (std.mem.eql(u8, gate, "dec")) return " -% 1";
+    return error.BodyGateNotYetLowered;
+}
+
+fn call_expect(gate: []const u8, sample: u32) LowerError!u32 {
+    if (std.mem.eql(u8, gate, "double")) return sample *% 2;
+    if (std.mem.eql(u8, gate, "inc")) return sample +% 1;
+    if (std.mem.eql(u8, gate, "dec")) return sample -% 1;
+    return error.BodyGateNotYetLowered;
+}
+
+fn expect_for(spec: *const rb.GateSpec) LowerError!u32 {
     return switch (spec.body) {
         .identity => bartis_identity_expect,
-        .call_one => bartis_double_expect,
+        .call_one => try call_expect(rb.gate_slice(spec), bartis_demo_sample),
     };
 }
 
@@ -52,7 +65,7 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
     var zig_face_buf: [rb.max_face_len]u8 = undefined;
     const zn = try zig_safe_ident(face, &zig_face_buf);
     const zface = zig_face_buf[0..zn];
-    const expect = expect_for(spec);
+    const expect = try expect_for(spec);
 
     const written = switch (spec.body) {
         .identity => std.fmt.bufPrint(out,
@@ -70,13 +83,15 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             \\
         , .{ face, zface, zface, zface, bartis_demo_sample, zface, expect }) catch return error.Overflow,
         .call_one => blk: {
-            assert(std.mem.eql(u8, rb.gate_slice(spec), "double")); // parse pin
+            const gate = rb.gate_slice(spec);
+            assert(rb.is_closed_call_gate(gate)); // parse pin
+            const op = try call_op_expr(gate);
             break :blk std.fmt.bufPrint(out,
                 \\const std = @import("std");
                 \\
-                \\/// Lowered from Glow `|=  {s}=@u32` / `%-  double  {s}` — call body (STOA103).
+                \\/// Lowered from Glow `|=  {s}=@u32` / `%-  {s}  {s}` — call body (STOA103–104).
                 \\fn bartis_gate({s}: u32) u32 {{
-                \\    return {s} *% 2;
+                \\    return {s}{s};
                 \\}}
                 \\
                 \\pub fn main(_: std.process.Init) !u8 {{
@@ -84,7 +99,7 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
                 \\    return if (bartis_gate({s}) == {d}) 0 else 1;
                 \\}}
                 \\
-            , .{ face, face, zface, zface, zface, bartis_demo_sample, zface, expect }) catch return error.Overflow;
+            , .{ face, gate, face, zface, zface, op, zface, bartis_demo_sample, zface, expect }) catch return error.Overflow;
         },
     };
     return @intCast(written.len);
@@ -116,13 +131,15 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             \\
         , .{ face, zface, zface, zface, zface, zface }) catch return error.Overflow,
         .call_one => blk: {
-            assert(std.mem.eql(u8, rb.gate_slice(spec), "double")); // parse pin
+            const gate = rb.gate_slice(spec);
+            assert(rb.is_closed_call_gate(gate)); // parse pin
+            const op = try call_op_expr(gate);
             break :blk std.fmt.bufPrint(out,
                 \\const std = @import("std");
                 \\
-                \\/// Lowered from Glow `|=  {s}=@u32` / `%-  double  {s}` — argv call body (STOA103).
+                \\/// Lowered from Glow `|=  {s}=@u32` / `%-  {s}  {s}` — argv call body (STOA103–104).
                 \\fn bartis_gate({s}: u32) u32 {{
-                \\    return {s} *% 2;
+                \\    return {s}{s};
                 \\}}
                 \\
                 \\pub fn main(init: std.process.Init) !u8 {{
@@ -130,11 +147,11 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
                 \\    const argv = try init.minimal.args.toSlice(alloc);
                 \\    if (argv.len < 2) return 2;
                 \\    const {s} = std.fmt.parseInt(u32, argv[1], 10) catch return 2;
-                \\    const expect: u32 = {s} *% 2;
+                \\    const expect: u32 = {s}{s};
                 \\    return if (bartis_gate({s}) == expect) 0 else 1;
                 \\}}
                 \\
-            , .{ face, face, zface, zface, zface, zface, zface }) catch return error.Overflow;
+            , .{ face, gate, face, zface, zface, op, zface, zface, op, zface }) catch return error.Overflow;
         },
     };
     return @intCast(written.len);

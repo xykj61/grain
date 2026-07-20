@@ -9,7 +9,7 @@ const print = std.debug.print;
 const lower = @import("lower_bartis.rye");
 const rb = @import("rune_bartis.rye");
 
-const witness_version = "20260720.040800";
+const witness_version = "20260720.041800";
 
 fn run_selftest(init: std.process.Init) !u8 {
     const io = init.io;
@@ -57,8 +57,24 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, rye_call, "bartis_gate(sample) == 10") != null);
     print("lower: call-body double lowers to *% 2 expect 10 -- GREEN\n", .{});
 
-    // Refuse unknown call-body gate.
-    if (lower.lower_source_welcome("|=  sample=@u32\n%-  inc  sample\n", &buf)) |_| {
+    // STOA104: call body `%-  inc` / `%-  dec` with baked expects 6 / 4.
+    try cwd.createDirPath(io, "glow/.cache");
+    const inc_src = "|=  sample=@u32\n%-  inc  sample\n";
+    const n_inc = try lower.lower_source_welcome(inc_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n_inc], "+% 1") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_inc], "bartis_gate(sample) == 6") != null);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_inc_welcome.rye", .data = buf[0..n_inc] });
+    print("lower: call-body inc lowers to +% 1 expect 6 -- GREEN\n", .{});
+
+    const dec_src = "|=  sample=@u32\n%-  dec  sample\n";
+    const n_dec = try lower.lower_source_welcome(dec_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n_dec], "-% 1") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_dec], "bartis_gate(sample) == 4") != null);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_dec_welcome.rye", .data = buf[0..n_dec] });
+    print("lower: call-body dec lowers to -% 1 expect 4 -- GREEN\n", .{});
+
+    // Refuse unknown call-body gate (still held beyond double/inc/dec).
+    if (lower.lower_source_welcome("|=  sample=@u32\n%-  mix  sample\n", &buf)) |_| {
         return error.BodyGateLoweredTooSoon;
     } else |err| {
         if (err != lower.LowerError.BodyGateNotYetLowered) return err;
@@ -73,8 +89,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("lower: call-body sample mismatch refused BodySampleMismatch -- GREEN\n", .{});
 
-    // Write the welcome .rye to cache for the Rishi half of the witness.
-    try cwd.createDirPath(io, "glow/.cache");
+    // Write remaining welcome .rye files for the Rishi half of the witness.
     const welcome_path = "glow/.cache/gate_sample_welcome.rye";
     const n3 = try lower.lower_source_welcome(gate_src, &buf);
     try cwd.writeFile(io, .{ .sub_path = welcome_path, .data = buf[0..n3] });
@@ -84,6 +99,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     const n_call_w = try lower.lower_source_welcome(call_src, &buf);
     try cwd.writeFile(io, .{ .sub_path = call_welcome_path, .data = buf[0..n_call_w] });
     print("lower: wrote bartis call-body welcome .rye under glow/.cache/ -- GREEN\n", .{});
+    print("lower: wrote bartis inc/dec welcome .rye under glow/.cache/ -- GREEN\n", .{});
 
     // Fixture desks parse.
     const gen_src = try cwd.readFileAlloc(io, "glow/gen/gate-sample.glow", a, .limited(4096));
@@ -128,8 +144,20 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(spec_du.body == .call_one);
     print("lower: glow/gen/gate-double-u32.glow carries call-body double -- GREEN\n", .{});
 
+    const gen_inc = try cwd.readFileAlloc(io, "glow/gen/gate-inc.glow", a, .limited(4096));
+    const spec_inc = try rb.parse_source(gen_inc);
+    assert(spec_inc.body == .call_one);
+    assert(std.mem.eql(u8, rb.gate_slice(&spec_inc), "inc"));
+    print("lower: glow/gen/gate-inc.glow carries call-body inc -- GREEN\n", .{});
+
+    const gen_dec = try cwd.readFileAlloc(io, "glow/gen/gate-dec.glow", a, .limited(4096));
+    const spec_dec = try rb.parse_source(gen_dec);
+    assert(spec_dec.body == .call_one);
+    assert(std.mem.eql(u8, rb.gate_slice(&spec_dec), "dec"));
+    print("lower: glow/gen/gate-dec.glow carries call-body dec -- GREEN\n", .{});
+
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: Glow `|=` bartis — identity (STOA100) · argv (STOA101) · call-body double (STOA103).\n", .{});
+    print("GREEN: Glow `|=` bartis — identity · argv · call-body double/inc/dec (STOA100–104).\n", .{});
     return 0;
 }
 
