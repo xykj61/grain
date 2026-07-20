@@ -2,11 +2,11 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Rule: [`.cursor/rules/remember.mdc`](../.cursor/rules/remember.mdc) · [`.claude/rules/remember.md`](../.claude/rules/remember.md).*
 
-**Last refreshed:** `20260720.043234` (UTC cloud · Eastern season) · voice Quin  
+**Last refreshed:** `20260720.043251` (UTC cloud · Eastern season) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5** · HOLD0–HOLD1 · HOLD-W  
-**Language nib:** **STOA0–106** GREEN · STOA107 open  
-**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W · STOA0–106  
-**Git nib:** `222c2458d4f4` STOA106 nest/type surface wording on main  
+**Language nib:** **STOA0–107** GREEN · STOA108 open  
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W · STOA0–107  
+**Git nib:** (refresh after send) STOA107 nest/type thin implement  
 
 **Season:** Cursor iOS / cloud — **Glow language TAME only** (no adb). Handoff [`20260719-204650_cursor-ios-handoff-glow-language.md`](20260719-204650_cursor-ios-handoff-glow-language.md).  
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`
@@ -15,16 +15,16 @@
 
 ## Now (language)
 
-**STOA106** sent · nest/type surface wording.  
-**STOA107** next — lean A thin nest/type implement (dry aura assert).
+**STOA107** GREEN · nest/type thin implement (`SampleDoesNotNest`).  
+**STOA108** next — check-in (`$%` tag nest · barket tokenize · Sala B0).
 
 ```bash
-rishi/bin/rishi run tools/glow_nest_type_surface_witness.rish
+rishi/bin/rishi run tools/glow_nest_type_witness.rish
 rishi/bin/rishi run tools/glow_barket_horizon_witness.rish
 rishi/bin/rishi run tools/glow_lower_bartis_witness.rish
 ```
 
-Hold on iOS: wet/gold implement · `|^` tokenize/lower · open call-body beyond trio. Defer Pixel/SETU / Sala B0 to Framework.
+Hold on iOS: wet/gold · `$%` tag nest · `|^` tokenize/lower · open call-body beyond trio. Defer Pixel/SETU / Sala B0 to Framework.
 
 ---
 
@@ -38,7 +38,7 @@ Hold on iOS: wet/gold implement · `|^` tokenize/lower · open call-body beyond 
 | **JABS** | Sala broadcast live-session fold | JABS0–2 GREEN · JABS3 check-in |
 | **LULU** | Hearth · short home · Wired Glass | **LULU0–5 closed** |
 | **SETU** | USB hearth carry Glass↔Desk | **SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W GREEN** |
-| **STOA** | Glow language SLC · nest · composition | **STOA0–106 GREEN** · STOA107 next |
+| **STOA** | Glow language SLC · nest · composition | **STOA0–107 GREEN** · STOA108 next |
 
 Canon: [`../docs/HAWM.md`](../docs/HAWM.md) · [`../docs/TUBE.md`](../docs/TUBE.md) · [`../docs/ZETA.md`](../docs/ZETA.md) · [`../docs/JABS.md`](../docs/JABS.md) · [`../docs/LULU.md`](../docs/LULU.md) · [`../docs/SETU.md`](../docs/SETU.md) · [`../docs/STOA.md`](../docs/STOA.md)
 
@@ -60,7 +60,7 @@ $ADB install -r tools/.cache/tube05/sala-broadcaster.apk
 
 | Door | Kind |
 |------|------|
-| **STOA107** barket implement · nest/type implement · Sala B0 | **check-in** — iOS season |
+| **STOA108** `$%` tag nest · barket tokenize · Sala B0 | **check-in** — iOS season |
 | Wet/gold · `|^` barket tokenize/lower | **held** |
 | Live SETU6.5 **sent** on usb0/ncm | **check-in** — Framework host |
 | JABS3 · TAME Lap 3 | **check-in** |

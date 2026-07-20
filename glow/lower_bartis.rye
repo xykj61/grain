@@ -1,4 +1,4 @@
-//! glow/lower_bartis.rye — lower a thin `|=` bartis gate to runnable `.rye` (STOA100–105).
+//! glow/lower_bartis.rye — lower a thin `|=` bartis gate to runnable `.rye` (STOA100–107).
 //!
 //! Identity gate: `|=  sample=@u32` / `sample` — takes u32 and returns it.
 //! Call body: `|=  sample=@u32` / `%-  <gate>  sample` — closed demos:
@@ -6,6 +6,7 @@
 //! STOA100: baked demo sample 5; identity exits 0 when bartis_gate(5) == 5.
 //! STOA101: argv sample path — main reads one decimal `@u32` and checks the body result.
 //! STOA105: TAME tidy — assert · u32 · append_print · split emitters.
+//! STOA107: nest/type surface — non-`@u32` sample refuses `SampleDoesNotNest`.
 //! Gate function named `bartis_gate` to avoid collisions with the sample face.
 
 const std = @import("std");

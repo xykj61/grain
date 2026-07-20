@@ -1,0 +1,23 @@
+//! glow/nest_type.rye — thin nest/type surface (STOA107).
+//!
+//! Expansion-time check: a sample aura nests under a stated mold aura.
+//! This lap is dry equality only (`@u32` under `@u32`). Wet samples,
+//! `$%` tag nest, named-mold samples, and barket stay held.
+//!
+//! Called from bartis parse so refuse carries `SampleDoesNotNest`.
+
+const std = @import("std");
+const assert = std.debug.assert;
+
+pub const nest_type_version = "20260720.043251";
+
+pub const NestError = error{
+    SampleDoesNotNest,
+};
+
+/// Assert `sample_aura` nests under `stated_mold` (dry aura equality this lap).
+pub fn assert_aura_nests(sample_aura: []const u8, stated_mold: []const u8) NestError!void {
+    assert(sample_aura.len > 0); // precondition: sample aura non-empty
+    assert(stated_mold.len > 0); // precondition: stated mold non-empty
+    if (!std.mem.eql(u8, sample_aura, stated_mold)) return error.SampleDoesNotNest;
+}

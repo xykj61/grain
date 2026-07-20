@@ -1,0 +1,69 @@
+//! glow/nest_type_witness.rye — proves thin nest/type surface (STOA107).
+//!
+//!   rye build glow/nest_type_witness.rye -femit-bin=glow/bin/nest_type_witness
+//!   glow/bin/nest_type_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const nest_type = @import("nest_type.rye");
+const rb = @import("rune_bartis.rye");
+const lower = @import("lower_bartis.rye");
+
+const witness_version = "20260720.043251";
+
+fn run_selftest(init: std.process.Init) !u8 {
+    const a = init.arena.allocator();
+    const cwd = std.Io.Dir.cwd();
+    const io = init.io;
+    var buf: [2048]u8 = undefined;
+
+    // Accept: @u32 nests under @u32.
+    try nest_type.assert_aura_nests("@u32", "@u32");
+    print("nest: @u32 under @u32 accepts -- GREEN\n", .{});
+
+    // Refuse: @u64 does not nest under @u32.
+    if (nest_type.assert_aura_nests("@u64", "@u32")) |_| {
+        return error.NestAcceptedTooSoon;
+    } else |err| {
+        if (err != nest_type.NestError.SampleDoesNotNest) return err;
+    }
+    print("nest: @u64 under @u32 refused SampleDoesNotNest -- GREEN\n", .{});
+
+    // Bartis accept path still lowers welcome identity.
+    const n_ok = try lower.lower_source_welcome("|=  sample=@u32\nsample\n", &buf);
+    assert(n_ok > 0);
+    assert(std.mem.indexOf(u8, buf[0..n_ok], "bartis_gate") != null);
+    print("nest: bartis @u32 identity still lowers -- GREEN\n", .{});
+
+    // Bartis refuse path surfaces SampleDoesNotNest (nest/type wire).
+    if (lower.lower_source_welcome("|=  sample=@u64\nsample\n", &buf)) |_| {
+        return error.BartisNestAcceptedTooSoon;
+    } else |err| {
+        if (err != lower.LowerError.SampleDoesNotNest) return err;
+    }
+    print("nest: bartis @u64 refused SampleDoesNotNest -- GREEN\n", .{});
+
+    // Accept fixture desk parses.
+    const accept_src = try cwd.readFileAlloc(io, "glow/gen/gate-sample.glow", a, .limited(4096));
+    const accept_spec = try rb.parse_source(accept_src);
+    assert(std.mem.eql(u8, rb.face_slice(&accept_spec), "sample"));
+    print("nest: glow/gen/gate-sample.glow accepts under nest surface -- GREEN\n", .{});
+
+    // Refuse fixture desk refuses nest.
+    const refuse_src = try cwd.readFileAlloc(io, "glow/gen/gate-sample-u64-refuse.glow", a, .limited(4096));
+    if (rb.parse_source(refuse_src)) |_| {
+        return error.RefuseDeskAccepted;
+    } else |err| {
+        if (err != rb.ParseError.SampleDoesNotNest) return err;
+    }
+    print("nest: glow/gen/gate-sample-u64-refuse.glow refused SampleDoesNotNest -- GREEN\n", .{});
+
+    print("nest: version {s}\n", .{witness_version});
+    print("GREEN: Glow nest/type thin surface — dry aura assert; SampleDoesNotNest; STOA107.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
+}

@@ -375,6 +375,7 @@
 - [x] **STOA104 — bartis call body inc/dec** `20260720.041800` — closed trio `double` · `inc` · `dec`; fixtures + argv generators; baked 5→6 / 5→4; `mix` still refuses. Wet/gold · barket · Sala B0 held.
 - [x] **STOA105 — TAME tidy bartis** `20260720.042300` — `lower_bartis` u32/`append_print`; `rune_bartis` `copy_disjoint` + body split; ban overflow seat; width list; desks unchanged. Nest · barket · Sala B0 held.
 - [x] **STOA106 — nest/type surface wording** `20260720.042931` — seats **nest/type surface** as wet-sample precondition; Lexicon + TAME pin; wet/gold held; barket still untokenized; `glow_nest_type_surface_witness` GREEN. Sala B0 held.
+- [x] **STOA107 — nest/type thin implement** `20260720.043251` — `nest_type.assert_aura_nests`; bartis `SampleDoesNotNest`; accept `gate-sample` · refuse `gate-sample-u64-refuse`; wet/gold · barket · Sala B0 held.
 - [x] **Cursor iOS handoff · core polymorphism + port order** `20260719.204650` — handoff [`20260719-204650_cursor-ios-handoff-glow-language.md`](20260719-204650_cursor-ios-handoff-glow-language.md); dry cores fit TAME · wet/gold hold · port L→R→G [`../active-designing/20260719-204650_hoon-core-polymorphism-tame-and-port-order.md`](../active-designing/20260719-204650_hoon-core-polymorphism-tame-and-port-order.md); iOS season = language-only (no adb).
 - [ ] **Dill-parallel kernel revival** — separate `active-reviving/` brief when a real need opens; not Dexter.
 - [ ] **M1 Scribble↔html round-trip witness** — named in fusion map; opens when Keaton leans doc pipeline.

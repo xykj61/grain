@@ -1,4 +1,4 @@
-//! glow/rune_bartis.rye — parses Glow's `|=` bartis gate rune (STOA100–105).
+//! glow/rune_bartis.rye — parses Glow's `|=` bartis gate rune (STOA100–107).
 //!
 //! Thin one-arm gate: `|=  sample=@u32` on line one, then either:
 //!   - identity body: bare face matching the sample (STOA100)
@@ -6,14 +6,16 @@
 //! Closed demo gates: `double` · `inc` · `dec` (same pins as STOA6 / core arms).
 //! Token-driven via tokens.rye. Only `@u32` aura accepted this lap.
 //! STOA105: TAME tidy — copy_disjoint · split header/body parse · assert alias.
-//! Wet / gold polymorphic cores held until a richer nest surface earns them.
+//! STOA107: nest/type surface — sample aura nests under `@u32` via nest_type;
+//!   refuse is `SampleDoesNotNest` (replaces bartis-local AuraNotYetLowered).
+//! Wet / gold polymorphic cores held until nest/type grows past dry aura equality.
 //!
 //! Parse shape (token stream):
 //!   1. skip leading newlines
 //!   2. rune2 `|=`
 //!   3. ident (sample face name)
 //!   4. equals
-//!   5. aura — must be `@u32` (else AuraNotYetLowered)
+//!   5. aura — must nest under `@u32` (else SampleDoesNotNest)
 //!   6. newline(s) — end of first line
 //!   7. body — identity ident, or `%-` + gate ident + sample face
 //!   8. trailing newlines only
@@ -22,6 +24,7 @@ const std = @import("std");
 const assert = std.debug.assert;
 const tokens = @import("tokens.rye");
 const tally_copy = @import("tally_copy.rye");
+const nest_type = @import("nest_type.rye");
 
 pub const max_face_len: u32 = tokens.max_name_len;
 pub const max_gate_len: u32 = tokens.max_name_len;
@@ -32,7 +35,7 @@ pub const ParseError = error{
     MissingFace,
     MissingEquals,
     MissingAura,
-    AuraNotYetLowered,
+    SampleDoesNotNest,
     BodyFaceMismatch,
     BodyGateNotYetLowered,
     BodySampleMismatch,
@@ -135,10 +138,10 @@ pub fn parse_source(src: []const u8) ParseError!GateSpec {
     if (i >= n or toks[@as(usize, @intCast(i))].kind != .equals) return error.MissingEquals;
     i += 1;
 
-    // Aura — only `@u32` this lap.
+    // Aura — nest under `@u32` this lap (nest/type surface, STOA107).
     if (i >= n or toks[@as(usize, @intCast(i))].kind != .aura) return error.MissingAura;
     const aura_text = tokens.slice_of(src, toks[@as(usize, @intCast(i))]);
-    if (!std.mem.eql(u8, aura_text, "@u32")) return error.AuraNotYetLowered;
+    nest_type.assert_aura_nests(aura_text, "@u32") catch return error.SampleDoesNotNest;
     i += 1;
 
     // Newline(s) — end of first line.
