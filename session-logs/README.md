@@ -8,6 +8,11 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260720.231547` — [kg STOA145-147 complete · STOA148 mapped](20260720-231547_kg-stoa147-complete.bron) — octa/nona laps sent; deca identity mapped
+- `20260720.231547` — [Glow compass send STOA147](20260720-231547_glow-compass-stoa147-send.bron) — nona flip sent; STOA148 mapped
+- `20260720.231547` — [STOA147 approved and sent](20260720-231547_stoa147-approved-sent.bron) — claim 2e84c960d4
+- `20260720.231547` — [STOA147 send complete](20260720-231547_stoa147-send-complete.bron) — origin main language claim 2e84c960d4
+- `20260720.231547` — [STOA148 next map after nona flip](20260720-231547_stoa148-next-map.bron) — lean A deca-mold gate identity
 - `20260720.231419` — [STOA147 nona-mold flip GREEN](20260720-231419_stoa147-nona-flip-green.bron) — NonaMold from↔amount · ref 9 stays · expect 3/5/1/2/7/4/6/8/9
 - `20260720.231128` — [kg STOA145-146 complete · STOA147 mapped](20260720-231128_kg-stoa146-complete.bron) — octa flip + nona identity sent; nona flip mapped
 - `20260720.231128` — [Glow compass send STOA146](20260720-231128_glow-compass-stoa146-send.bron) — nona-mold sent; STOA147 mapped
