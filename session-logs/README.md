@@ -10,6 +10,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 - `20260720.223440` — [STOA140 hexa-mold seat map for STOA142](20260720-223440_stoa140-hexa-mirror-map.bron) — claim 33922c54c8 edit checklist · hepta mirror keys
 - `20260720.223012` — [Mold vocabulary search — keep Hoon word](20260720-223012_mold-vocabulary-search.bron) — no Glow-native mold rename found; STOA130 renamed wet/dry only
+- `20260720.224210` — [kg STOA142 complete · STOA143 mapped](20260720-224210_kg-stoa142-complete.bron) — hepta-mold sent; hepta flip mapped
 - `20260720.224201` — [Glow compass send STOA142](20260720-224201_glow-compass-stoa142-send.bron) — hepta-mold sent; STOA143 mapped
 - `20260720.224201` — [STOA142 approved and sent](20260720-224201_stoa142-approved-sent.bron) — claim 3ed907d693
 - `20260720.224200` — [STOA142 send complete](20260720-224200_stoa142-send-complete.bron) — origin main language claim 3ed907d693
