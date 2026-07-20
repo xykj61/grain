@@ -8,6 +8,7 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260720.180747` — [STOA116 barket call-body inc/dec GREEN](20260720-180747_stoa116-barket-inc-dec-green.bron) — +%1/-%1 · fixture+argv7 exit 0; await send
 - `20260720.180414` — [STOA116 barket inc/dec vs wet accept map](20260720-180414_stoa116-barket-next-map.bron) — check-in barket inc/dec vs wet accept
 - `20260720.180414` — [STOA115 send complete](20260720-180414_stoa115-send-complete.bron) — origin main at ff73855b82
 - `20260720.180350` — [STOA115 barket call-body double GREEN](20260720-180350_stoa115-barket-call-body-green.bron) — *% 2 · fixture+argv7 exit 0; await send
