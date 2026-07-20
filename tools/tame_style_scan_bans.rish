@@ -68,4 +68,20 @@ if compound.out != "" then say "BAN [compound assert — split so the failing ha
 if compound.out != "" then say compound.out
 assert compound.out == "" else "TAME ban: compound assert"
 
-say "GREEN: TAME style bans clean on scan roster."
+# Glow TAME overflow seat (STOA96): style roster sits at Rishi's 256-file
+# ceiling with tokens + lower_named_cast. lower_mold rides a one-file ban pass.
+let mold = "glow/lower_mold.rye"
+assert ((read-file mold) contains ") == error.") == false else "TAME ban on lower_mold: ) == error."
+assert ((read-file mold) contains ") != error.") == false else "TAME ban on lower_mold: ) != error."
+assert ((read-file mold) contains "std.debug.assert(") == false else "TAME ban on lower_mold: std.debug.assert("
+assert ((read-file mold) contains "Self = @This()") == false else "TAME ban on lower_mold: Self = @This()"
+assert ((read-file mold) contains "usingnamespace") == false else "TAME ban on lower_mold: usingnamespace"
+assert ((read-file mold) contains "!comptime") == false else "TAME ban on lower_mold: !comptime"
+assert ((read-file mold) contains "copyForwards") == false else "TAME ban on lower_mold: copyForwards"
+assert ((read-file mold) contains "copyBackwards") == false else "TAME ban on lower_mold: copyBackwards"
+assert ((read-file mold) contains "FIXME") == false else "TAME ban on lower_mold: FIXME"
+assert ((read-file mold) contains "dbg(") == false else "TAME ban on lower_mold: dbg("
+let mold_compound = run ["sh" "-c" "grep -Hn 'assert(.* and .*)' glow/lower_mold.rye 2>/dev/null | head -8"]
+assert mold_compound.out == "" else "TAME ban on lower_mold: compound assert"
+
+say "GREEN: TAME style bans clean on scan roster · lower_mold overflow seat."

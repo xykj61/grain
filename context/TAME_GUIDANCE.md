@@ -7,7 +7,7 @@ type: reference
 # TAME Guidance — Operational Supplement
 
 **Language:** EN
-**Last updated:** 2026-07-19 (Glow asserts · alphabet · argv G3 · token peeks/parts G4 STOA93–95)
+**Last updated:** 2026-07-19 (Glow asserts · alphabet · argv · token G4 · tidy mold STOA93–96)
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 **Voice:** Quin
 **Status:** Active — grow by supplement, earned when the language is ready
@@ -23,7 +23,7 @@ Three layers, one discipline — filenames follow TigerBeetle's `docs/TIGER_STYL
 | **Source** | `gratitude/TIGER_STYLE.md` | TigerBeetle team's guide, kept whole and unaltered |
 | **Voiced canon** | `external-research/TAME_GUIDANCE.md` | Our radiant adaptation; Safety, Performance, DX, and the full why |
 | **Operational supplement** | this document | Checkable root + Rye / Brix / Rishi rules for authors and agents |
-| **Glow working pin** | [`../glow/README.md`](../glow/README.md) · alphabet · argv · token lower seam | Fixture desks + asserts · G0–G2 alphabet · **G3 argv** · **G4** token peeks/parts: cross-desk · same-desk mold-body · mold-only dispatch (STOA93–95) — full Glow supplement still horizon |
+| **Glow working pin** | [`../glow/README.md`](../glow/README.md) · alphabet · argv · token lower seam | Fixture desks + asserts · G0–G2 alphabet · **G3 argv** · **G4** token peeks/parts (STOA93–95) · **TAME tidy `lower_mold`** (STOA96) — full Glow supplement still horizon |
 | **Glow supplement (horizon)** | [`../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md`](../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md) | Scoping for a future Glow supplement; root still binds Glow authors now |
 
 Read the voiced canon (`external-research/TAME_GUIDANCE.md`) for philosophy and expert Tiger discipline. Read **this file** at the keyboard for what to assert, name, and bound. Organization prose lives in `active-designing/yonder/20260618-184912_growing-a-language.md`.

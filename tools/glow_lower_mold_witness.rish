@@ -28,6 +28,7 @@ assert selftest.out contains "XactMold" else "lower_mold_witness missing XactMol
 assert selftest.out contains "XferMold" else "lower_mold_witness missing XferMold"
 assert selftest.out contains "mold-only peek" else "lower_mold_witness missing mold-only peek"
 assert selftest.out contains "STOA95" else "lower_mold_witness missing STOA95"
+assert selftest.out contains "STOA96" else "lower_mold_witness missing STOA96"
 
 let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
 assert build_welcome.ok else "mold welcome .rye build failed"
@@ -59,4 +60,12 @@ let run_xfer = run ["sh" "-c" "${xfer_bin}; echo EXIT:$?"]
 assert run_xfer.ok else "mold xfer welcome binary failed to launch"
 assert run_xfer.out contains "EXIT:0" else "mold xfer welcome binary did not exit 0"
 
-say "GREEN: Glow +$ / $: / $% mold hop — AmountMold · PairMold · KindMold · XactMold · XferMold; STOA74–80 · STOA95 peek."
+# TAME surface gates (STOA96).
+let width = run ["sh" "-c" "grep 'usize' glow/lower_mold.rye 2>/dev/null | grep -v '@intCast' | grep -v '@as(usize' | wc -l | tr -d ' '"]
+assert trim width.out == "0" else "glow/lower_mold.rye still carries authored usize"
+let assert_import = run ["sh" "-c" "grep -c 'const assert = std.debug.assert' glow/lower_mold.rye | tr -d ' '"]
+assert trim assert_import.out == "1" else "glow/lower_mold.rye must import assert once"
+let memcpy = run ["sh" "-c" "grep -c '@memcpy(' glow/lower_mold.rye | tr -d ' '"]
+assert trim memcpy.out == "0" else "glow/lower_mold.rye must not use memcpy"
+
+say "GREEN: Glow +$ / $: / $% mold hop — AmountMold · PairMold · KindMold · XactMold · XferMold; STOA74–80 · STOA95 peek · STOA96 tidy."
