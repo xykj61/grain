@@ -8,6 +8,7 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260720.175527` — [STOA113 barket identity lower GREEN](20260720-175527_stoa113-barket-lower-green.bron) — barket_gate · fixture exit 0; await send
 - `20260720.175029` — [STOA113 barket lower vs Sala B0 map](20260720-175029_stoa113-barket-lower-map.bron) — check-in before thin lower; wet/Sala held
 - `20260720.175029` — [STOA112 send complete](20260720-175029_stoa112-send-complete.bron) — origin main at 6d02c6f96858
 - `20260720.174907` — [STOA112 barket header parse GREEN](20260720-174907_stoa112-barket-parse-green.bron) — dry BarketSpec · BodyNotYetLowered; await send
