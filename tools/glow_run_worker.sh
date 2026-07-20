@@ -22,7 +22,7 @@ STEM=$(basename "$GLOW" .glow)
 BIN="glow/bin/$STEM"
 
 case "$STEM" in
-sample-u32|gate-sample-u32|gate-double-u32|gate-inc-u32|gate-dec-u32|gate-amount-u32|gate-barket-sample-u32|gate-barket-double-u32|gate-barket-inc-u32|gate-barket-dec-u32|gate-barket-amount-u32)
+sample-u32|gate-sample-u32|gate-double-u32|gate-inc-u32|gate-dec-u32|gate-amount-u32|gate-count-u32|gate-barket-sample-u32|gate-barket-double-u32|gate-barket-inc-u32|gate-barket-dec-u32|gate-barket-amount-u32|gate-barket-count-u32)
   test -n "$SAMPLE" || {
     echo "FAIL: ${STEM}.glow needs one @u32 sample decimal"
     exit 2

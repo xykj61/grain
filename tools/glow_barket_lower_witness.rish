@@ -77,6 +77,8 @@ assert selftest.out contains "pair-mold call-body flip" else "lower_barket_witne
 assert selftest.out contains "gate-barket-amount-u32.glow" else "lower_barket_witness missing amount argv desk"
 assert selftest.out contains "amount-mold argv" else "lower_barket_witness missing amount argv claim"
 assert selftest.out contains "pair-mold argv refused" else "lower_barket_witness missing pair argv refuse"
+assert selftest.out contains "gate-barket-count-u32.glow" else "lower_barket_witness missing count argv desk"
+assert selftest.out contains "count-mold argv" else "lower_barket_witness missing count argv claim"
 
 let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
 assert build_welcome.ok else "barket welcome .rye build failed: ${build_welcome.err}${build_welcome.out}"
@@ -176,6 +178,15 @@ let run_amt_argv = run ["sh" "-c" "${amt_argv_bin} 9; echo EXIT:$?"]
 assert run_amt_argv.ok else "barket amount-mold argv binary failed to launch"
 assert run_amt_argv.out contains "EXIT:0" else "barket amount-mold argv binary did not exit 0 with sample 9"
 
+# STOA133: count-mold argv binary exits 0 with sample 9.
+let cnt_argv_rye = "glow/.cache/gate_barket_count_argv.rye"
+let cnt_argv_bin = "glow/bin/gate_barket_count_argv"
+let build_cnt_argv = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${cnt_argv_rye} -femit-bin=${cnt_argv_bin}"]
+assert build_cnt_argv.ok else "barket count-mold argv .rye build failed: ${build_cnt_argv.err}${build_cnt_argv.out}"
+let run_cnt_argv = run ["sh" "-c" "${cnt_argv_bin} 9; echo EXIT:$?"]
+assert run_cnt_argv.ok else "barket count-mold argv binary failed to launch"
+assert run_cnt_argv.out contains "EXIT:0" else "barket count-mold argv binary did not exit 0 with sample 9"
+
 # STOA121 / STOA130: barket passes is_nesting=true through nesting-nests; no stated not_nesting pin.
 let wet_wire = run ["sh" "-c" "grep -c 'assert_sample_nesting_nests(true' glow/rune_barket.rye | tr -d ' '"]
 assert trim wet_wire.out != "0" else "glow/rune_barket.rye must call assert_sample_nesting_nests(true, …)"
@@ -263,4 +274,4 @@ let run_pf = run ["sh" "-c" "${pair_flip_bin}; echo EXIT:$?"]
 assert run_pf.ok else "barket pair-mold flip welcome binary failed to launch"
 assert run_pf.out contains "EXIT:0" else "barket pair-mold flip welcome binary did not exit 0"
 
-say "GREEN: Glow barket lower — identity · argv · call-body · amount-mold · amount argv · count-mold · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · pair flip · nesting-through-nests; STOA113–132."
+say "GREEN: Glow barket lower — identity · argv · call-body · amount-mold · amount argv · count-mold · count argv · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · pair flip · nesting-through-nests; STOA113–133."
