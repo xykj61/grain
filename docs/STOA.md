@@ -1,4 +1,4 @@
-# STOA — Glow SLC · nest · product · ≤80 · STOA0–89 GREEN · 2026-07-19 (alphabet) · draw → **STOA**
+# STOA — Glow SLC · nest · product · ≤80 · STOA0–90 GREEN · 2026-07-19 (G1 table) · draw → **STOA**
 | Rung | Claim | Witness / gate | State |
 |------|-------|----------------|-------|
 | **STOA0** | Eight rune heads + desk hop · `(lent)` · `(mix)` | `glow_run_desk_witness` · `glow_expr_witness` | **GREEN** (claimed `20260718.202730`) |
@@ -77,5 +77,5 @@
 | **STOA73** | product-root write + Pixel install (expect 5) | write · `stoa73_…_install_onpath_host` | **GREEN** write `184836` · eyes `191719` |
 | **STOA74–75** | `+$` / `$:` `@u32` mold (1–3 fields) | `glow_rune_mold` · `glow_lower_mold` · desk | **GREEN** `190825` · `192241` |
 | **STOA76–83** | `$%` · cast · payload · multi · tag/pay · token stream | mold · named-cast · tokens | **GREEN** `192936`…`200706` |
-| **STOA84–89** | Cast peeks · TAME · `?>`/`?<` · rune alphabet roadmap | tokens · assert · designing G0 | **GREEN** `201027`…`204001` |
-Smoke: assert witness · brief `active-designing/20260719-204001_*` · Sibling: **ZETA** · **LULU** · **SETU** · **TUBE**.
+| **STOA84–90** | Cast peeks · TAME · `?>`/`?<` · alphabet G0–G1 | tokens · assert · `glow_rune_alphabet_witness` | **GREEN** `201027`…`220814` |
+Smoke: `glow_rune_alphabet_witness` · Sibling: **ZETA** · **LULU** · **SETU** · **TUBE**.

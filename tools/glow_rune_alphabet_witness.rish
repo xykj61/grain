@@ -1,0 +1,12 @@
+# glow_rune_alphabet_witness.rish — closed GREEN rune pronunciation table (STOA90 / G1).
+#
+# Binds active-designing/20260719-220814_glow-rune-pronunciation-closed-table.md
+# to glow/tokens.rye match_rune2. Device-free.
+#
+#   rishi/bin/rishi run tools/glow_rune_alphabet_witness.rish
+
+let gate = run ["sh" "tools/glow_rune_alphabet_worker.sh"]
+assert gate.ok else "glow rune alphabet G1 gate failed: ${gate.err}${gate.out}"
+assert gate.out contains "OK" else "glow rune alphabet G1 gate missing OK"
+
+say "GREEN: Glow rune alphabet G1 — 25 heads · spoken names · tokens.rye bound; STOA90."
