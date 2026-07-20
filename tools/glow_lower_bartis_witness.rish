@@ -41,7 +41,9 @@ assert selftest.out contains "XactMold" else "lower_bartis_witness missing XactM
 assert selftest.out contains "gate-xact.glow" else "lower_bartis_witness missing gate-xact desk"
 assert selftest.out contains "XferMold" else "lower_bartis_witness missing XferMold claim"
 assert selftest.out contains "gate-xfer.glow" else "lower_bartis_witness missing gate-xfer desk"
-assert selftest.out contains "pair-mold" else "lower_bartis_witness missing pair-mold refuse"
+assert selftest.out contains "PairMold" else "lower_bartis_witness missing PairMold claim"
+assert selftest.out contains "gate-pair.glow" else "lower_bartis_witness missing gate-pair desk"
+assert selftest.out contains "triple-mold" else "lower_bartis_witness missing triple-mold refuse"
 
 let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
 assert build_welcome.ok else "bartis welcome .rye build failed"
@@ -156,4 +158,13 @@ let run_xfer = run ["sh" "-c" "${xfer_bin}; echo EXIT:$?"]
 assert run_xfer.ok else "bartis xfer-mold welcome binary failed to launch"
 assert run_xfer.out contains "EXIT:0" else "bartis xfer-mold welcome binary did not exit 0"
 
-say "GREEN: Glow `|=` bartis — STOA100–125 identity · argv · call-body · amount-mold · count-mold · kind-mold · xact-mold · xfer-mold · nest SampleDoesNotNest."
+# STOA126: pair-mold welcome binary exits 0.
+let pair_rye = "glow/.cache/gate_pair_welcome.rye"
+let pair_bin = "glow/bin/gate_pair_welcome"
+let build_pair = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${pair_rye} -femit-bin=${pair_bin}"]
+assert build_pair.ok else "bartis pair-mold welcome .rye build failed"
+let run_pair = run ["sh" "-c" "${pair_bin}; echo EXIT:$?"]
+assert run_pair.ok else "bartis pair-mold welcome binary failed to launch"
+assert run_pair.out contains "EXIT:0" else "bartis pair-mold welcome binary did not exit 0"
+
+say "GREEN: Glow `|=` bartis — STOA100–126 identity · argv · call-body · amount-mold · count-mold · kind-mold · xact-mold · xfer-mold · pair-mold · nest SampleDoesNotNest."
