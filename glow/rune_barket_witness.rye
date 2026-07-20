@@ -56,7 +56,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("barket: @u64 refused SampleDoesNotNest -- GREEN\n", .{});
 
-    // STOA118 / STOA122–126 / STOA134–135/138/140/142: named molds through hepta accept; octa refuses.
+    // STOA118 / STOA122–126 / STOA134–135/138/140/142/144: named molds through octa accept; nona refuses.
     const amt = try rb.parse_source("|^  sample=amount-mold\nsample\n");
     assert(amt.body == .identity);
     assert(std.mem.eql(u8, rb.mold_name_slice(&amt), "amount-mold"));
@@ -107,12 +107,17 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.eql(u8, rb.mold_name_slice(&hepta), "hepta-mold"));
     print("barket: sample=hepta-mold accepts -- GREEN\n", .{});
 
-    if (rb.parse_source("|^  sample=octa-mold\nsample\n")) |_| {
-        return error.BarketOctaMoldAcceptedTooSoon;
+    const octa = try rb.parse_source("|^  sample=octa-mold\nsample\n");
+    assert(octa.body == .identity);
+    assert(std.mem.eql(u8, rb.mold_name_slice(&octa), "octa-mold"));
+    print("barket: sample=octa-mold accepts -- GREEN\n", .{});
+
+    if (rb.parse_source("|^  sample=nona-mold\nsample\n")) |_| {
+        return error.BarketNonaMoldAcceptedTooSoon;
     } else |err| {
         if (err != rb.ParseError.SampleDoesNotNest) return err;
     }
-    print("barket: sample=octa-mold refused SampleDoesNotNest -- GREEN\n", .{});
+    print("barket: sample=nona-mold refused SampleDoesNotNest -- GREEN\n", .{});
 
     // STOA122: count-mold accepts beside amount-mold.
     const cnt = try rb.parse_source("|^  sample=count-mold\nsample\n");
@@ -128,7 +133,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("barket: |= refused NotABarket -- GREEN\n", .{});
 
-    print("GREEN: Glow barket parse — stated header · identity · call-body trio · amount-mold · count-mold · kind-mold · xact-mold · xfer-mold · pair-mold · triple-mold · quad-mold · penta-mold · hexa-mold · hepta-mold · nesting-through-nests; STOA112–135/138/140/142.\n", .{});
+    print("GREEN: Glow barket parse — stated header · identity · call-body trio · amount-mold · count-mold · kind-mold · xact-mold · xfer-mold · pair-mold · triple-mold · quad-mold · penta-mold · hexa-mold · hepta-mold · octa-mold · nesting-through-nests; STOA112–135/138/140/142/144.\n", .{});
     _ = witness_version;
     return 0;
 }

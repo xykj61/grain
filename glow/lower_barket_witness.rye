@@ -379,13 +379,28 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(spec_hepta.body == .identity);
     print("lower: glow/gen/gate-barket-hepta.glow carries hepta-mold -- GREEN\n", .{});
 
-    const gen_octa = try cwd.readFileAlloc(io, "glow/gen/gate-barket-kind-refuse.glow", a, .limited(4096));
-    if (rb.parse_source(gen_octa)) |_| {
-        return error.OctaRefuseDeskAccepted;
+    // STOA144: octa-mold identity lowers as OctaMold.
+    const octa_src = "|^  sample=octa-mold\nsample\n";
+    const n_octa = try lower.lower_source_welcome(octa_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n_octa], "barket_gate") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_octa], "OctaMold") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_octa], "via: u32") != null);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_octa_welcome.rye", .data = buf[0..n_octa] });
+    print("lower: octa-mold barket lowers to OctaMold identity -- GREEN\n", .{});
+
+    const gen_octa = try cwd.readFileAlloc(io, "glow/gen/gate-barket-octa.glow", a, .limited(4096));
+    const spec_octa = try rb.parse_source(gen_octa);
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_octa), "octa-mold"));
+    assert(spec_octa.body == .identity);
+    print("lower: glow/gen/gate-barket-octa.glow carries octa-mold -- GREEN\n", .{});
+
+    const gen_nona = try cwd.readFileAlloc(io, "glow/gen/gate-barket-kind-refuse.glow", a, .limited(4096));
+    if (rb.parse_source(gen_nona)) |_| {
+        return error.NonaRefuseDeskAccepted;
     } else |err| {
         if (err != rb.ParseError.SampleDoesNotNest) return err;
     }
-    print("lower: glow/gen/gate-barket-kind-refuse.glow (octa-mold) refuses SampleDoesNotNest -- GREEN\n", .{});
+    print("lower: glow/gen/gate-barket-kind-refuse.glow (nona-mold) refuses SampleDoesNotNest -- GREEN\n", .{});
 
     // STOA143: hepta-mold flip call-body lowers as HeptaMold swap · baked 3/5/1/2/7/4/6.
     const hepta_flip_src = "|^  sample=hepta-mold\n%-  flip  sample\n";
@@ -417,6 +432,20 @@ fn run_selftest(init: std.process.Init) !u8 {
         if (err != lower.LowerError.SampleDoesNotNest) return err;
     }
     print("lower: hepta-mold argv refused SampleDoesNotNest -- GREEN\n", .{});
+
+    if (lower.lower_source_welcome("|^  sample=octa-mold\n%-  flip  sample\n", &buf)) |_| {
+        return error.OctaFlipCallBodyLoweredTooSoon;
+    } else |err| {
+        if (err != lower.LowerError.BodyGateNotYetLowered) return err;
+    }
+    print("lower: octa-mold flip call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
+
+    if (lower.lower_source_argv_sample("|^  sample=octa-mold\nsample\n", &buf)) |_| {
+        return error.OctaArgvLoweredTooSoon;
+    } else |err| {
+        if (err != lower.LowerError.SampleDoesNotNest) return err;
+    }
+    print("lower: octa-mold argv refused SampleDoesNotNest -- GREEN\n", .{});
 
     // STOA141: hexa-mold flip call-body lowers as HexaMold swap · baked 3/5/1/2/7/4.
     const hexa_flip_src = "|^  sample=hexa-mold\n%-  flip  sample\n";
@@ -656,7 +685,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("lower: glow/gen/gate-barket-count.glow carries count-mold -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: Glow `|^` barket — identity · argv · call-body · amount-mold · amount argv · count-mold · count argv · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · pair flip · triple-mold · triple flip · quad-mold · quad flip · penta-mold · penta flip · hexa-mold · hexa flip · hepta-mold · hepta flip · nesting-through-nests; STOA113–143.\n", .{});
+    print("GREEN: Glow `|^` barket — identity · argv · call-body · amount-mold · amount argv · count-mold · count argv · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · pair flip · triple-mold · triple flip · quad-mold · quad flip · penta-mold · penta flip · hexa-mold · hexa flip · hepta-mold · hepta flip · octa-mold · nesting-through-nests; STOA113–144.\n", .{});
     return 0;
 }
 
