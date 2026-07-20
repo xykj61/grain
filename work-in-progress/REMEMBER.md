@@ -2,11 +2,11 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Rule: [`.cursor/rules/remember.mdc`](../.cursor/rules/remember.mdc) · [`.claude/rules/remember.md`](../.claude/rules/remember.md).*
 
-**Last refreshed:** `20260720.191033` (UTC cloud · Eastern season) · voice Quin  
+**Last refreshed:** `20260720.192011` (UTC cloud · Eastern season) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5** · HOLD0–HOLD1 · HOLD-W  
 **Language nib:** **STOA0–128** GREEN · STOA129 open  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W · STOA0–128  
-**Git nib:** *(seated on send)* — STOA128 xact-mold flip call-body  
+**Git nib:** `08809fc52c` — STOA128 xact-mold flip call-body  
  
 
 **Season:** Cursor iOS / cloud — **Glow language TAME only** (no adb). Handoff [`20260719-204650_cursor-ios-handoff-glow-language.md`](20260719-204650_cursor-ios-handoff-glow-language.md).  
@@ -16,7 +16,7 @@
 
 ## Now (language)
 
-**STOA128** seating · xact-mold flip call-body (`XactMold` switch · baked mint/5 → `.send`).  
+**STOA128** sent · xact-mold flip call-body (`XactMold` switch · baked mint/5 → `.send`).  
 **STOA129** next — compass pick: gold · call-body under xfer (Sala B0 Framework).
 
 ```bash
