@@ -28,8 +28,11 @@ assert selftest.out contains "KindMold" else "lower_named_cast_witness missing K
 assert selftest.out contains "XactMold" else "lower_named_cast_witness missing XactMold"
 assert selftest.out contains "CastMoldMismatch" else "lower_named_cast_witness missing CastMoldMismatch"
 assert selftest.out contains "parse_cross_desk token-driven" else "lower_named_cast_witness missing token-driven parse"
+assert selftest.out contains "named_cast_parts" else "lower_named_cast_witness missing named_cast_parts"
+assert selftest.out contains "NotANamedCast" else "lower_named_cast_witness missing NotANamedCast"
 assert selftest.out contains "NamedCastNeedsTuple" else "lower_named_cast_witness missing aura refuse"
 assert selftest.out contains "STOA93" else "lower_named_cast_witness missing STOA93"
+assert selftest.out contains "STOA94" else "lower_named_cast_witness missing STOA94"
 
 let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
 assert build_welcome.ok else "named-cast welcome .rye build failed"
@@ -75,4 +78,4 @@ assert trim assert_import.out == "1" else "glow/lower_named_cast.rye must import
 let memcpy = run ["sh" "-c" "grep -c '@memcpy(' glow/lower_named_cast.rye | tr -d ' '"]
 assert trim memcpy.out == "0" else "glow/lower_named_cast.rye must use copy_disjoint"
 
-say "GREEN: Glow named-cast — TAME tidy · token-driven cross-desk parse; STOA87/93."
+say "GREEN: Glow named-cast — TAME tidy · cross-desk · same-desk mold-body tokens; STOA87/93/94."

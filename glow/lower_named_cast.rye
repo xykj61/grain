@@ -7,6 +7,7 @@
 //! STOA84–85: dispatch peeks via `tokens.rye`.
 //! STOA87: TAME tidy — assert · u32 · copy_disjoint · split emitters.
 //! STOA93: cross-desk parse walks `tokens.cross_desk_parts` (lexer→lower).
+//! STOA94: same-desk mold-body span via `tokens.named_cast_parts`.
 //!
 //!   +$  kind-mold
 //!     $%  [%mint ~]
@@ -17,16 +18,12 @@
 const std = @import("std");
 const assert = std.debug.assert;
 const rm = @import("rune_mold.rye");
-const rc = @import("rune_cast.rye");
-const lower_multi = @import("lower_multi.rye");
 const tokens = @import("tokens.rye");
 const tally_copy = @import("tally_copy.rye");
 
 pub const max_stem_len: u32 = 64;
-/// Mold source join buffer for same-desk desks (lines before the cast).
-pub const max_mold_src: u32 = 2048;
 
-pub const LowerError = rm.ParseError || rc.ParseError || error{
+pub const LowerError = rm.ParseError || error{
     Overflow,
     EmptySource,
     BadIdent,
@@ -34,6 +31,7 @@ pub const LowerError = rm.ParseError || rc.ParseError || error{
     NamedCastNeedsTuple,
     NamedCastNeedsPayloadArm,
     NotACrossDesk,
+    NotANamedCast,
     TooFewLines,
     TooManyLines,
 };
@@ -148,27 +146,6 @@ pub fn bind_cross_desk(spec: *const CrossDeskSpec, lib_src: []const u8) LowerErr
         .tagged => {},
     }
     return mold_spec;
-}
-
-fn collect_mold_src(lines: []const []const u8, n: u32, mold_src: *[max_mold_src]u8) LowerError!u32 {
-    assert(n >= 2); // precondition: cast line exists after mold lines
-    var mold_len: u32 = 0;
-    var i: u32 = 0;
-    while (i + 1 < n) : (i += 1) {
-        if (mold_len != 0) {
-            if (mold_len >= max_mold_src) return error.Overflow;
-            mold_src[@as(usize, @intCast(mold_len))] = '\n';
-            mold_len += 1;
-        }
-        const line = lines[@as(usize, @intCast(i))];
-        assert(line.len <= max_mold_src); // desk line within join budget
-        const line_len: u32 = @intCast(line.len);
-        if (mold_len + line_len > max_mold_src) return error.Overflow;
-        const dest = mold_src[@as(usize, @intCast(mold_len))..][0..@as(usize, @intCast(line_len))];
-        tally_copy.copy_disjoint(u8, dest, line);
-        mold_len += line_len;
-    }
-    return mold_len;
 }
 
 fn append_print(out: []u8, used: *u32, comptime fmt: []const u8, args: anytype) LowerError!void {
@@ -356,21 +333,14 @@ fn emit_tagged_payload_cast(spec: *const rm.MoldSpec, cast_mold: []const u8, out
 pub fn lower_source_welcome(src: []const u8, out: []u8) LowerError!u32 {
     assert(out.len >= 1); // precondition: emit buffer present
     if (src.len == 0) return error.EmptySource;
-    var lines: [lower_multi.max_lines][]const u8 = undefined;
-    const n_raw = lower_multi.collect_lines(src, &lines) catch |err| switch (err) {
-        error.TooManyLines => return error.TooManyLines,
-        else => return error.EmptySource,
-    };
-    const n: u32 = @intCast(n_raw);
-    if (n < 4) return error.TooFewLines;
-    if (n > 5) return error.TooManyLines;
+    const parts = tokens.named_cast_parts(src) orelse return error.NotANamedCast;
+    assert(parts.mold_start + parts.mold_len <= src.len); // invariant: mold span in src
+    const mold_lo: usize = @as(usize, @intCast(parts.mold_start));
+    const mold_hi: usize = @as(usize, @intCast(parts.mold_start + parts.mold_len));
+    const mold_spec = try rm.parse_source(src[mold_lo..mold_hi]);
 
-    var mold_src: [max_mold_src]u8 = undefined;
-    const mold_len = try collect_mold_src(lines[0..n_raw], n, &mold_src);
-    const mold_spec = try rm.parse_source(mold_src[0..@as(usize, @intCast(mold_len))]);
-
-    const cast_spec = try rc.parse(lines[@as(usize, @intCast(n - 1))]);
-    const cast_mold = rc.mold_slice(&cast_spec);
+    const cast_mold = tokens.slice_of(src, parts.cast_mold);
+    if (cast_mold.len == 0 or cast_mold.len > rm.max_name_len) return error.BadIdent;
     const mold_name = rm.name_slice(&mold_spec);
     if (!std.mem.eql(u8, cast_mold, mold_name)) return error.CastMoldMismatch;
 

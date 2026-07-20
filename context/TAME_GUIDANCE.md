@@ -7,7 +7,7 @@ type: reference
 # TAME Guidance — Operational Supplement
 
 **Language:** EN
-**Last updated:** 2026-07-19 (Glow asserts · alphabet · argv G3 · token cross-desk G4 STOA93)
+**Last updated:** 2026-07-19 (Glow asserts · alphabet · argv G3 · token same/cross-desk G4 STOA93–94)
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 **Voice:** Quin
 **Status:** Active — grow by supplement, earned when the language is ready
@@ -23,7 +23,7 @@ Three layers, one discipline — filenames follow TigerBeetle's `docs/TIGER_STYL
 | **Source** | `gratitude/TIGER_STYLE.md` | TigerBeetle team's guide, kept whole and unaltered |
 | **Voiced canon** | `external-research/TAME_GUIDANCE.md` | Our radiant adaptation; Safety, Performance, DX, and the full why |
 | **Operational supplement** | this document | Checkable root + Rye / Brix / Rishi rules for authors and agents |
-| **Glow working pin** | [`../glow/README.md`](../glow/README.md) · alphabet · argv · token lower seam | Fixture desks + asserts · G0–G2 alphabet · **G3 argv** · **G4 cross-desk parse from tokens** (STOA93) — full Glow supplement still horizon |
+| **Glow working pin** | [`../glow/README.md`](../glow/README.md) · alphabet · argv · token lower seam | Fixture desks + asserts · G0–G2 alphabet · **G3 argv** · **G4** cross-desk + same-desk mold-body from tokens (STOA93–94) — full Glow supplement still horizon |
 | **Glow supplement (horizon)** | [`../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md`](../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md) | Scoping for a future Glow supplement; root still binds Glow authors now |
 
 Read the voiced canon (`external-research/TAME_GUIDANCE.md`) for philosophy and expert Tiger discipline. Read **this file** at the keyboard for what to assert, name, and bound. Organization prose lives in `active-designing/yonder/20260618-184912_growing-a-language.md`.
@@ -45,7 +45,7 @@ Hoon's positive and negative assertion runes — [`?>` wutgar](https://docs.urbi
 
 ### Glow — rune alphabet and fixture desks (working pin, STOA89–91)
 
-Glow adopts Hoon's one-syllable glyph alphabet so digraphs stay speakable. Primary compile path is Glow→Rye→Zig→**RISC-V**; Nock is a second backend at a seam. Most `glow/gen/` files are **fixture desks** (baked sample). **G3** seats one thin parameterized **generator**: `glow/gen/sample-u32.glow` reads one `@u32` from Rishi argv. **G4** opens the lexer→lower seam at cross-desk named-cast parse (`tokens.cross_desk_parts` → `parse_cross_desk`); other lowers may still parse bytes. Not bartis — `|=` stays horizon. Canon: [`../active-designing/20260719-204001_glow-rune-pronunciation-alphabet-riscv-and-generators.md`](../active-designing/20260719-204001_glow-rune-pronunciation-alphabet-riscv-and-generators.md) · G3 plan [`../active-designing/20260720-022956_stoa92-thin-argv-sample-g3-plan.md`](../active-designing/20260720-022956_stoa92-thin-argv-sample-g3-plan.md) · G4 plan [`../active-designing/20260720-023513_stoa93-token-driven-lower-slice-g4-plan.md`](../active-designing/20260720-023513_stoa93-token-driven-lower-slice-g4-plan.md). **G1 closed table**: [`../active-designing/20260719-220814_glow-rune-pronunciation-closed-table.md`](../active-designing/20260719-220814_glow-rune-pronunciation-closed-table.md).
+Glow adopts Hoon's one-syllable glyph alphabet so digraphs stay speakable. Primary compile path is Glow→Rye→Zig→**RISC-V**; Nock is a second backend at a seam. Most `glow/gen/` files are **fixture desks** (baked sample). **G3** seats one thin parameterized **generator**: `glow/gen/sample-u32.glow` reads one `@u32` from Rishi argv. **G4** opens the lexer→lower seam at cross-desk named-cast parse (`tokens.cross_desk_parts` → `parse_cross_desk`) and same-desk mold-body span (`tokens.named_cast_parts` → `lower_source_welcome`); `rune_mold.parse_source` may still read that span as bytes. Not bartis — `|=` stays horizon. Canon: [`../active-designing/20260719-204001_glow-rune-pronunciation-alphabet-riscv-and-generators.md`](../active-designing/20260719-204001_glow-rune-pronunciation-alphabet-riscv-and-generators.md) · G3 plan [`../active-designing/20260720-022956_stoa92-thin-argv-sample-g3-plan.md`](../active-designing/20260720-022956_stoa92-thin-argv-sample-g3-plan.md) · G4 plans [`../active-designing/20260720-023513_stoa93-token-driven-lower-slice-g4-plan.md`](../active-designing/20260720-023513_stoa93-token-driven-lower-slice-g4-plan.md) · [`../active-designing/20260720-024223_stoa94-same-desk-mold-body-tokens-g4-plan.md`](../active-designing/20260720-024223_stoa94-same-desk-mold-body-tokens-g4-plan.md). **G1 closed table**: [`../active-designing/20260719-220814_glow-rune-pronunciation-closed-table.md`](../active-designing/20260719-220814_glow-rune-pronunciation-closed-table.md).
 
 #### Glyph alphabet (compact)
 
