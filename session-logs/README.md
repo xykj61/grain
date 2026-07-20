@@ -8,6 +8,8 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260720.233805` — [SETU6.5 live-sent enx GREEN](20260720-233805_setu65-live-sent-enx-green.bron) — enx CDC-NCM → gateway :38503 sent
+- `20260720.233344` — [Pixel connected · NCM pending](20260720-233344_pixel-connected-ncm-pending.bron) — adb was up; need USB tethering then kg
 - `20260720.232932` — [UDT resume on Framework host](20260720-232932_udt-resume-framework-host.bron) — Etc/UTC stamps; SETU live-sent check-in next
 - `20260720.231936` — [Capacity freeze at nine · Framework next SETU sent](20260720-231936_capacity-freeze-framework-next.bron) — stop field ladder; Framework lean A = live SETU sent
 - `20260720.231825` — [Framework season survey for parent](20260720-231825_framework-season-survey.bron) — Framework host vs iOS language; SETU live-sent thinnest Framework door

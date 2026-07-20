@@ -1,21 +1,32 @@
 # setu65_lab_tx_onpath_host.rish — SETU6.5 host: TX gate after lab probe.
 #
 # Run on the host after SETU6 probe has written lab.bron.
-# Stand-in → SKIP GREEN. Armed → attempt iface-bound UDP :38503.
+# Stand-in → SKIP GREEN. Armed → unicast framed UDP :38503 to the iface
+# default gateway (Pixel tether peer). Limited broadcast needs CAP.
 #
 #   rishi/bin/rishi run tools/setu6_lab_probe_onpath_host.rish
 #   rishi/bin/rishi run tools/setu65_lab_tx_onpath_host.rish
 
 let zig = "vendor/zig-toolchain/zig"
 let check = "linengrow/bin/setu65_lab_tx_check"
+let find_iface = "tools/fixtures/setu6_find_gadget_iface.sh"
 
 say "setu65-host: building lab TX check…"
 let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/setu65_lab_tx_check.rye -lc -femit-bin=${check}"]
 assert build.ok else "SETU6.5 lab TX check build failed"
 
-say "setu65-host: attempting TX from lab.bron…"
-let tx = run ["sh" "-c" "${check} 2>&1"]
+let name = run ["sh" find_iface]
+let iface = trim name.out
+let peer = ""
+if (iface != "") then let gw = run ["sh" "-c" "ip -4 route show default dev ${iface} 2>/dev/null | awk '{print $3; exit}' || true"]
+if (iface != "") then let peer = trim gw.out
+
+say "setu65-host: attempting TX from lab.bron (iface ${iface} peer ${peer})…"
+if (peer != "") then let tx = run ["sh" "-c" "${check} ${peer} 2>&1"]
+if (peer == "") then let tx = run ["sh" "-c" "${check} 2>&1"]
 say "${tx.out}"
 assert tx.ok else "SETU6.5 lab TX check failed"
 assert tx.out contains "GREEN" else "SETU6.5 check not GREEN"
+# Live-sent eyes: require the sent line when a peer was available
+if (peer != "") then assert tx.out contains "framed payload sent" else "SETU6.5 live-sent expected framed payload sent"
 say "GREEN: SETU6.5 — host TX gate path complete."

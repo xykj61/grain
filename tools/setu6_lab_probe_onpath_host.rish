@@ -1,6 +1,7 @@
 # setu6_lab_probe_onpath_host.rish — SETU6 host: classify USB/NCM iface + lab card.
 #
-# Run on the host. Looks for usb0 / ncm* (CDC-NCM gadget shape). Writes
+# Run on the host. Looks for usb0 / ncm* / enx* (CDC-NCM gadget shape —
+# systemd predictable names use enx<mac> for Pixel USB tether). Writes
 # tools/.cache/setu0/lab.bron. Stand-in GREEN when absent; armed when present.
 # Live frame TX over that iface: SETU6.5 onpath after this probe.
 #
@@ -8,28 +9,31 @@
 
 let zig = "vendor/zig-toolchain/zig"
 let check = "linengrow/bin/setu6_device_lab_check"
+let find_iface = "tools/fixtures/setu6_find_gadget_iface.sh"
 
 say "setu6-host: probing for USB gadget / NCM iface…"
-let found = run ["sh" "-c" "ip -o link show 2>/dev/null | grep -E 'usb0|: ncm' | head -3 || true"]
+let found = run ["sh" "-c" "ip -o link show 2>/dev/null | grep -E 'usb0|: ncm|enx[0-9a-f]+' | head -3 || true"]
 say "setu6-host: ip link match — ${found.out}"
 
-let name = run ["sh" "-c" "ip -o link show 2>/dev/null | grep -oE '(usb0|ncm[0-9]+)' | head -1 || true"]
+let name = run ["sh" find_iface]
 let iface = trim name.out
 
 let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/setu6_device_lab_check.rye -femit-bin=${check}"]
 assert build.ok else "SETU6 lab check build failed"
 
-if (iface == "") then say "setu6-host: no usb0/ncm — writing stand-in lab card…"
-if (iface == "") then let card = run ["sh" "-c" "${check} 2>&1"]
-if (iface == "") then say "${card.out}"
-if (iface == "") then assert card.ok else "SETU6 stand-in lab check failed"
-if (iface == "") then assert card.out contains "stand-in" else "SETU6 expected stand-in"
-if (iface == "") then say "GREEN: SETU6 — lab harness stand-in (gadget not in NCM mode; payload ready)."
-if (iface == "") then exit 0
+# Armed path first — avoid stand-in asserts referencing unbound `card` when iface is set
+# (Rishi still typechecks then-branches of false `if` arms).
+if (iface != "") then say "setu6-host: gadget-shaped iface ${iface} — writing armed lab card…"
+if (iface != "") then let armed = run ["sh" "-c" "${check} ${iface} 2>&1"]
+if (iface != "") then say "${armed.out}"
+if (iface != "") then assert armed.ok else "SETU6 armed lab check failed"
+if (iface != "") then assert armed.out contains "armed" else "SETU6 expected armed"
+if (iface != "") then say "GREEN: SETU6 — lab harness armed on ${iface} (run SETU6.5 onpath for TX)."
+if (iface != "") then exit 0
 
-say "setu6-host: gadget-shaped iface ${iface} — writing armed lab card…"
-let armed = run ["sh" "-c" "${check} ${iface} 2>&1"]
-say "${armed.out}"
-assert armed.ok else "SETU6 armed lab check failed"
-assert armed.out contains "armed" else "SETU6 expected armed"
-say "GREEN: SETU6 — lab harness armed on ${iface} (run SETU6.5 onpath for TX)."
+say "setu6-host: no usb0/ncm/enx — writing stand-in lab card…"
+let card = run ["sh" "-c" "${check} 2>&1"]
+say "${card.out}"
+assert card.ok else "SETU6 stand-in lab check failed"
+assert card.out contains "stand-in" else "SETU6 expected stand-in"
+say "GREEN: SETU6 — lab harness stand-in (gadget not in NCM mode; payload ready)."
