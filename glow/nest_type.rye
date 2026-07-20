@@ -13,7 +13,8 @@
 //!   - STOA130: Glow vocabulary — stated · nesting · gold (Hoon study: dry · wet · gold)
 //!   - STOA134: closed allowlist adds three-field `$:` `triple-mold`
 //!   - STOA135: closed allowlist adds four-field `$:` `quad-mold`
-//! Ambient gold / free polymorphism · open `$:` beyond quad stay held.
+//!   - STOA138: closed allowlist adds five-field `$:` `penta-mold`
+//! Ambient gold / free polymorphism · open `$:` beyond penta stay held.
 //!
 //! Bartis calls nesting-nests stated (`false`). Barket calls nesting-nests nesting (`true`).
 //! STOA110 `assert_sample_not_nesting(true)` refuse stays on the nest_type witness.
@@ -22,11 +23,11 @@ const std = @import("std");
 const assert = std.debug.assert;
 const rune_mold = @import("rune_mold.rye");
 
-pub const nest_type_version = "20260720.195131";
+pub const nest_type_version = "20260720.200416";
 
 /// Closed named molds welcome in gate samples.
 /// `$:` one-field ≡ `@u32`: amount · count. `$:` two-field: pair. `$:` three-field: triple.
-/// `$:` four-field: quad. Unit `$%`: kind. Payload `$%`: xact. Multi-face payload `$%`: xfer.
+/// `$:` four-field: quad. `$:` five-field: penta. Unit `$%`: kind. Payload `$%`: xact. Multi-face payload `$%`: xfer.
 pub const bartis_named_mold_amount = "amount-mold";
 pub const bartis_named_mold_count = "count-mold";
 pub const bartis_named_mold_kind = "kind-mold";
@@ -35,6 +36,7 @@ pub const bartis_named_mold_xfer = "xfer-mold";
 pub const bartis_named_mold_pair = "pair-mold";
 pub const bartis_named_mold_triple = "triple-mold";
 pub const bartis_named_mold_quad = "quad-mold";
+pub const bartis_named_mold_penta = "penta-mold";
 
 pub const NestError = error{
     SampleDoesNotNest,
@@ -67,7 +69,7 @@ pub fn assert_tag_nests(tag: []const u8, spec: *const rune_mold.MoldSpec) NestEr
     return error.SampleDoesNotNest;
 }
 
-/// Assert `mold_name` is on the closed gate-sample allowlist (STOA109 · STOA122–126 · STOA134–135).
+/// Assert `mold_name` is on the closed gate-sample allowlist (STOA109 · STOA122–126 · STOA134–135 · STOA138).
 pub fn assert_bartis_named_mold(mold_name: []const u8) NestError!void {
     assert(mold_name.len > 0); // precondition: mold name non-empty
     if (std.mem.eql(u8, mold_name, bartis_named_mold_amount)) return;
@@ -78,6 +80,7 @@ pub fn assert_bartis_named_mold(mold_name: []const u8) NestError!void {
     if (std.mem.eql(u8, mold_name, bartis_named_mold_pair)) return;
     if (std.mem.eql(u8, mold_name, bartis_named_mold_triple)) return;
     if (std.mem.eql(u8, mold_name, bartis_named_mold_quad)) return;
+    if (std.mem.eql(u8, mold_name, bartis_named_mold_penta)) return;
     return error.SampleDoesNotNest;
 }
 
@@ -111,6 +114,11 @@ pub fn is_quad_named_mold(mold_name: []const u8) bool {
     return std.mem.eql(u8, mold_name, bartis_named_mold_quad);
 }
 
+/// True when `mold_name` is the closed five-field `$:` penta-mold.
+pub fn is_penta_named_mold(mold_name: []const u8) bool {
+    return std.mem.eql(u8, mold_name, bartis_named_mold_penta);
+}
+
 /// True when any `$%` arm carries two or more payload faces.
 fn any_multi_face_payload(spec: *const rune_mold.MoldSpec) bool {
     var i: usize = 0;
@@ -122,7 +130,7 @@ fn any_multi_face_payload(spec: *const rune_mold.MoldSpec) bool {
 
 /// Assert `mold_name` nests under a one-field `$:` MoldSpec (amount/count shape).
 pub fn assert_named_mold_nests(mold_name: []const u8, spec: *const rune_mold.MoldSpec) NestError!void {
-    if (is_kind_named_mold(mold_name) or is_xact_named_mold(mold_name) or is_xfer_named_mold(mold_name) or is_pair_named_mold(mold_name) or is_triple_named_mold(mold_name) or is_quad_named_mold(mold_name))
+    if (is_kind_named_mold(mold_name) or is_xact_named_mold(mold_name) or is_xfer_named_mold(mold_name) or is_pair_named_mold(mold_name) or is_triple_named_mold(mold_name) or is_quad_named_mold(mold_name) or is_penta_named_mold(mold_name))
         return error.SampleDoesNotNest;
     try assert_bartis_named_mold(mold_name);
     if (!std.mem.eql(u8, rune_mold.name_slice(spec), mold_name)) return error.SampleDoesNotNest;
@@ -152,6 +160,14 @@ pub fn assert_quad_mold_nests(mold_name: []const u8, spec: *const rune_mold.Mold
     if (!std.mem.eql(u8, rune_mold.name_slice(spec), mold_name)) return error.SampleDoesNotNest;
     if (spec.body != .tuple) return error.SampleDoesNotNest;
     if (spec.field_count != 4) return error.SampleDoesNotNest;
+}
+
+/// Assert `mold_name` nests under a five-field `$:` MoldSpec (penta-mold · STOA138).
+pub fn assert_penta_mold_nests(mold_name: []const u8, spec: *const rune_mold.MoldSpec) NestError!void {
+    if (!is_penta_named_mold(mold_name)) return error.SampleDoesNotNest;
+    if (!std.mem.eql(u8, rune_mold.name_slice(spec), mold_name)) return error.SampleDoesNotNest;
+    if (spec.body != .tuple) return error.SampleDoesNotNest;
+    if (spec.field_count != 5) return error.SampleDoesNotNest;
 }
 
 /// Assert `mold_name` nests under a unit `$%` MoldSpec (kind-mold shape · STOA123).
@@ -194,7 +210,7 @@ pub fn assert_sample_not_nesting(is_nesting: bool) NestError!void {
 /// Stated path (`is_nesting=false`): no-op success.
 /// Nesting path (`is_nesting=true`): sample must nest under `stated_mold` via aura
 /// equality (`@…`) or the closed named-mold allowlist
-/// (amount · count · kind · xact · xfer · pair · triple · quad).
+/// (amount · count · kind · xact · xfer · pair · triple · quad · penta).
 pub fn assert_sample_nesting_nests(is_nesting: bool, sample: []const u8, stated_mold: []const u8) NestError!void {
     if (!is_nesting) return;
     assert(sample.len > 0); // precondition: nesting sample non-empty
