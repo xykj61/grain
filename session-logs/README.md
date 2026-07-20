@@ -8,6 +8,8 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260719.200850` — [STOA84 check-in after token stream](20260719-200850_stoa84-check-in.bron) — lean A wire glow_run onto tokens
+- `20260719.200836` — [STOA83 bounded token stream send](20260719-200836_stoa83-token-stream-send.bron) — pin b1f29af76f; then STOA84 check-in
 - `20260719.200706` — [STOA83 bounded token stream GREEN](20260719-200706_stoa83-token-stream-green.bron) — cast-named-xact kinds; await send
 - `20260719.200545` — [STOA83 check-in after payload $% cast](20260719-200545_stoa83-check-in.bron) — lean A general token stream
 - `20260719.200530` — [STOA82 payload $% named-cast send](20260719-200530_stoa82-payload-percent-cast-send.bron) — pin 6df7cff43b; then STOA83 check-in
