@@ -9,6 +9,7 @@
 //!   - STOA119: wet-sample accept under a stated closed mold (`assert_sample_wet_nests`)
 //!   - STOA120: barket/bartis expansion call `assert_sample_wet_nests`
 //!   - STOA121: barket passes `is_wet=true` through wet-nests under stated molds
+//!   - STOA122: closed named-mold allowlist adds `count-mold` beside `amount-mold`
 //! Ambient gold / free polymorphism · new wet tokens · `kind-mold` gate samples stay held.
 //!
 //! Bartis calls wet-nests dry (`false`). Barket calls wet-nests wet (`true`).
@@ -18,10 +19,11 @@ const std = @import("std");
 const assert = std.debug.assert;
 const rune_mold = @import("rune_mold.rye");
 
-pub const nest_type_version = "20260720.182915";
+pub const nest_type_version = "20260720.183259";
 
-/// Closed named mold welcome in bartis samples this lap (one-field `$:` ≡ `@u32`).
+/// Closed named molds welcome in gate samples (one-field `$:` ≡ `@u32`).
 pub const bartis_named_mold_amount = "amount-mold";
+pub const bartis_named_mold_count = "count-mold";
 
 pub const NestError = error{
     SampleDoesNotNest,
@@ -54,14 +56,16 @@ pub fn assert_tag_nests(tag: []const u8, spec: *const rune_mold.MoldSpec) NestEr
     return error.SampleDoesNotNest;
 }
 
-/// Assert `mold_name` is the closed bartis-welcome named mold this lap.
+/// Assert `mold_name` is on the closed named-mold allowlist (STOA109 · STOA122).
 pub fn assert_bartis_named_mold(mold_name: []const u8) NestError!void {
     assert(mold_name.len > 0); // precondition: mold name non-empty
-    if (!std.mem.eql(u8, mold_name, bartis_named_mold_amount)) return error.SampleDoesNotNest;
+    if (std.mem.eql(u8, mold_name, bartis_named_mold_amount)) return;
+    if (std.mem.eql(u8, mold_name, bartis_named_mold_count)) return;
+    return error.SampleDoesNotNest;
 }
 
-/// Assert `mold_name` nests under a `$:` MoldSpec that matches the closed bartis shape.
-/// Welcome shape this lap: name `amount-mold`, body `.tuple`, one field.
+/// Assert `mold_name` nests under a `$:` MoldSpec that matches the closed gate shape.
+/// Welcome shape: allowlisted name, body `.tuple`, one field.
 pub fn assert_named_mold_nests(mold_name: []const u8, spec: *const rune_mold.MoldSpec) NestError!void {
     try assert_bartis_named_mold(mold_name);
     if (!std.mem.eql(u8, rune_mold.name_slice(spec), mold_name)) return error.SampleDoesNotNest;
@@ -79,7 +83,7 @@ pub fn assert_sample_not_wet(is_wet: bool) NestError!void {
 /// Wet-sample accept under a stated closed mold (STOA119).
 /// Dry (`is_wet=false`): no-op success.
 /// Wet (`is_wet=true`): sample must nest under `stated_mold` via aura equality
-/// (`@…`) or the closed named-mold allowlist (`amount-mold`).
+/// (`@…`) or the closed named-mold allowlist (`amount-mold` · `count-mold`).
 pub fn assert_sample_wet_nests(is_wet: bool, sample: []const u8, stated_mold: []const u8) NestError!void {
     if (!is_wet) return;
     assert(sample.len > 0); // precondition: wet sample non-empty

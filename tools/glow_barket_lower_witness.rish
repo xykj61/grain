@@ -1,7 +1,7 @@
 # glow_barket_lower_witness.rish — `|^` barket lowers to Rye; emitted program runs.
 #
 # Proves identity (STOA113), argv (STOA114), call-body trio (STOA115–116),
-# TAME tidy (STOA117), named-mold amount-mold (STOA118), wet-through-nests (STOA121): barket_gate emit,
+# TAME tidy (STOA117), named-mold (STOA118/122), wet-through-nests (STOA121): barket_gate emit,
 # fixtures/generators, welcome exit 0, argv exit 0, ban overflow seat.
 #
 #   rishi/bin/rishi run tools/glow_barket_lower_witness.rish
@@ -26,8 +26,8 @@ let dec_bin = "glow/bin/gate_barket_dec_welcome"
 let dec_argv_rye = "glow/.cache/gate_barket_dec_argv.rye"
 let dec_argv_bin = "glow/bin/gate_barket_dec_argv"
 
-let tame_pin = run ["sh" "-c" "grep -F 'STOA121' ${tame}"]
-assert tame_pin.ok else "TAME missing STOA121 barket wet-through-nests"
+let tame_pin = run ["sh" "-c" "grep -F 'STOA122' ${tame}"]
+assert tame_pin.ok else "TAME missing STOA122 count-mold named allowlist"
 
 let has_lower = run ["sh" "-c" "test -f glow/lower_barket.rye; echo $?"]
 assert trim has_lower.out == "0" else "glow/lower_barket.rye must exist"
@@ -54,6 +54,8 @@ assert selftest.out contains "call-body inc" else "lower_barket_witness missing 
 assert selftest.out contains "call-body dec" else "lower_barket_witness missing call-body dec claim"
 assert selftest.out contains "amount-mold" else "lower_barket_witness missing amount-mold claim"
 assert selftest.out contains "gate-barket-amount.glow" else "lower_barket_witness missing amount fixture"
+assert selftest.out contains "count-mold" else "lower_barket_witness missing count-mold claim"
+assert selftest.out contains "gate-barket-count.glow" else "lower_barket_witness missing count fixture"
 assert selftest.out contains "kind-mold" else "lower_barket_witness missing kind-mold refuse"
 assert selftest.out contains "gate-barket-kind-refuse.glow" else "lower_barket_witness missing kind refuse desk"
 
@@ -152,4 +154,13 @@ assert trim wet_wire.out != "0" else "glow/rune_barket.rye must call assert_samp
 let dry_pin = run ["sh" "-c" "grep -c 'assert_sample_not_wet(false)' glow/rune_barket.rye | tr -d ' '"]
 assert trim dry_pin.out == "0" else "glow/rune_barket.rye must drop assert_sample_not_wet(false)"
 
-say "GREEN: Glow barket lower — identity · argv · call-body · amount-mold · wet-through-nests; STOA113–121."
+# STOA122: count-mold welcome binary exits 0.
+let cnt_rye = "glow/.cache/gate_barket_count_welcome.rye"
+let cnt_bin = "glow/bin/gate_barket_count_welcome"
+let build_cnt = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${cnt_rye} -femit-bin=${cnt_bin}"]
+assert build_cnt.ok else "barket count-mold welcome .rye build failed: ${build_cnt.err}${build_cnt.out}"
+let run_cnt = run ["sh" "-c" "${cnt_bin}; echo EXIT:$?"]
+assert run_cnt.ok else "barket count-mold welcome binary failed to launch"
+assert run_cnt.out contains "EXIT:0" else "barket count-mold welcome binary did not exit 0"
+
+say "GREEN: Glow barket lower — identity · argv · call-body · amount-mold · count-mold · wet-through-nests; STOA113–122."

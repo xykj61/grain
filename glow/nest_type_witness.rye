@@ -1,4 +1,4 @@
-//! glow/nest_type_witness.rye — proves nest/type surface (STOA107–110 · STOA119).
+//! glow/nest_type_witness.rye — proves nest/type surface (STOA107–110 · STOA119 · STOA122).
 //!
 //!   rye build glow/nest_type_witness.rye -femit-bin=glow/bin/nest_type_witness
 //!   glow/bin/nest_type_witness
@@ -11,7 +11,7 @@ const rb = @import("rune_bartis.rye");
 const lower = @import("lower_bartis.rye");
 const rm = @import("rune_mold.rye");
 
-const witness_version = "20260720.181950";
+const witness_version = "20260720.183259";
 
 fn run_selftest(init: std.process.Init) !u8 {
     const a = init.arena.allocator();
@@ -124,6 +124,22 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("nest: glow/gen/gate-kind-refuse.glow refused SampleDoesNotNest -- GREEN\n", .{});
 
+    // STOA122: second closed named mold count-mold.
+    const count_src = try cwd.readFileAlloc(io, "glow/gen/mold-count.glow", a, .limited(4096));
+    const count = try rm.parse_source(count_src);
+    try nest_type.assert_named_mold_nests("count-mold", &count);
+    print("nest: count-mold MoldSpec nests as bartis-welcome $: -- GREEN\n", .{});
+
+    const n_cnt = try lower.lower_source_welcome("|=  sample=count-mold\nsample\n", &buf);
+    assert(n_cnt > 0);
+    assert(std.mem.indexOf(u8, buf[0..n_cnt], "count-mold") != null);
+    print("nest: bartis sample=count-mold lowers as u32 identity -- GREEN\n", .{});
+
+    const cnt_desk = try cwd.readFileAlloc(io, "glow/gen/gate-count.glow", a, .limited(4096));
+    const cnt_spec = try rb.parse_source(cnt_desk);
+    assert(std.mem.eql(u8, rb.mold_name_slice(&cnt_spec), "count-mold"));
+    print("nest: glow/gen/gate-count.glow accepts named mold -- GREEN\n", .{});
+
     // STOA110: wet-flagged sample claims refuse; dry claims accept.
     try nest_type.assert_sample_not_wet(false);
     print("nest: dry sample claim (is_wet=false) accepts -- GREEN\n", .{});
@@ -145,6 +161,16 @@ fn run_selftest(init: std.process.Init) !u8 {
     try nest_type.assert_sample_wet_nests(true, "amount-mold", "amount-mold");
     print("nest: wet amount-mold under amount-mold accepts -- GREEN\n", .{});
 
+    try nest_type.assert_sample_wet_nests(true, "count-mold", "count-mold");
+    print("nest: wet count-mold under count-mold accepts -- GREEN\n", .{});
+
+    if (nest_type.assert_sample_wet_nests(true, "amount-mold", "count-mold")) |_| {
+        return error.WetNamedMoldCrossAccepted;
+    } else |err| {
+        if (err != nest_type.NestError.SampleDoesNotNest) return err;
+    }
+    print("nest: wet amount-mold under count-mold refused SampleDoesNotNest -- GREEN\n", .{});
+
     if (nest_type.assert_sample_wet_nests(true, "@u64", "@u32")) |_| {
         return error.WetAuraMismatchAccepted;
     } else |err| {
@@ -165,7 +191,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("nest: dry bartis still lowers under wet-refuse pin -- GREEN\n", .{});
 
     print("nest: version {s}\n", .{witness_version});
-    print("GREEN: Glow nest/type — dry aura · $% tag · named-mold · wet refuse · wet-nests; STOA107–110/119.\n", .{});
+    print("GREEN: Glow nest/type — dry aura · $% tag · named-mold · count-mold · wet refuse · wet-nests; STOA107–110/119/122.\n", .{});
     return 0;
 }
 
