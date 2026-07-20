@@ -8,7 +8,7 @@
 //! `(cue <face>)` — thin unpack of a jam cell-pack (low 16 bits) ·
 //! `(cue (jam <face> <face>))` — one-deep cue-of-jam round-trip ·
 //! `(cue (jam (mix …) <face>))` — cue of nest jam left.
-//! Other parenthesized forms refuse. Not a full token stream yet.
+//! Other parenthesized forms refuse. Full desk token stream: `tokens.rye` (STOA83).
 
 const std = @import("std");
 

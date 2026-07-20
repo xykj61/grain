@@ -400,6 +400,8 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA82 payload `$%` named-cast GREEN, `20260719.200508`** — lean A: same-desk `cast-named-xact` and cross-desk `cast-import-xact` cast payload `$%` to `XactMold` union; mold library emit covers payload `$%`. Sala B0 · token stream stay later. Next language: **STOA83** check-in.
 
+**STOA83 bounded shared token stream GREEN, `20260719.200706`** — lean A: `glow/tokens.rye` + `glow_tokens_witness` pin kind sequence for `cast-named-xact`, skip `::` comments, refuse `TooManyTokens` / `BadToken`; parity beside `glow_expr`. `glow_run` still fixed desk shapes. Wiring lowers onto tokens · Sala B0 stay later. Next language: **STOA84** check-in.
+
 **Glow OS · Glow Desk · Glow Glass seated, `20260717.183622`** — Keaton: **Glow OS** unifies; **Glow Desk** = desktop; **Glow Glass** = mobile. Lexicon + silo [`../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md`](../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md). Orientation firmware stays check-in.
 
 **Witness habitat + markup pipeline, `20260717.173427`** — foundations fit study affirms single-strand · sameness · happy-zone practice in the suite; teaching path was the gap. Seats **witness habitat** as Acme synonym (foundations keep *happy zone*). Fusion map holds Scribble→Brix→Bron→Mantra→Sala with Glow under TAME; Udon/Sail/Zuse horizon. Tutorial scaffold [`../manual/tutorials/cursor-and-the-compass.md`](../manual/tutorials/cursor-and-the-compass.md); silo [`../active-designing/20260717-173427_witness-habitat-and-the-markup-pipeline.md`](../active-designing/20260717-173427_witness-habitat-and-the-markup-pipeline.md). Product next remains Dexter D2.

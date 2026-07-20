@@ -1,0 +1,202 @@
+//! glow/tokens.rye — bounded shared Glow token stream (STOA83).
+//!
+//! Classifies desk bytes into a fixed-cap token array (kind + byte span).
+//! Skips `::` line comments and spaces/tabs. Newlines stay significant.
+//! Does not parse nests or rewire glow_run — that stays later.
+//!
+//!   +$  xact-mold
+//!     $%  [%mint amount=@u32]
+//!         [%send ~]
+//!     ==
+//!   ^-  xact-mold
+
+const std = @import("std");
+
+pub const max_tokens: u32 = 64;
+pub const max_name_len: u32 = 64;
+
+pub const TokenError = error{
+    TooManyTokens,
+    BadToken,
+    EmptySource,
+};
+
+pub const Kind = enum {
+    newline,
+    ident,
+    decimal,
+    aura,
+    rune2,
+    percent_tag,
+    lparen,
+    rparen,
+    lbracket,
+    rbracket,
+    equals,
+    tilde,
+    double_equals,
+};
+
+pub const Token = struct {
+    kind: Kind = .newline,
+    start: usize = 0,
+    len: usize = 0,
+};
+
+pub fn slice_of(src: []const u8, tok: Token) []const u8 {
+    return src[tok.start .. tok.start + tok.len];
+}
+
+fn is_ident_start(c: u8) bool {
+    if (c >= 'a' and c <= 'z') return true;
+    if (c >= 'A' and c <= 'Z') return true;
+    return c == '_';
+}
+
+fn is_ident_char(c: u8) bool {
+    if (is_ident_start(c)) return true;
+    if (c >= '0' and c <= '9') return true;
+    return c == '-' or c == '_';
+}
+
+fn is_digit(c: u8) bool {
+    return c >= '0' and c <= '9';
+}
+
+fn starts_with(src: []const u8, i: usize, lit: []const u8) bool {
+    if (i + lit.len > src.len) return false;
+    return std.mem.eql(u8, src[i .. i + lit.len], lit);
+}
+
+/// Two-byte Glow rune heads recognized this lap (longest-match with `==`).
+fn match_rune2(src: []const u8, i: usize) ?[]const u8 {
+    const pairs = [_][]const u8{
+        "+$", "$%", "$:", "^-", "=/", "=.", "=*", "|-", "|%", "++", "--",
+        "/+", "?:", "?-", "?~", ":-", ":+", ":^", ":~", "%-", "%+", "%^", "%*",
+    };
+    for (pairs) |p| {
+        if (starts_with(src, i, p)) return p;
+    }
+    return null;
+}
+
+fn push(out: []Token, used: *usize, kind: Kind, start: usize, len: usize) TokenError!void {
+    if (used.* >= out.len) return error.TooManyTokens;
+    out[used.*] = .{ .kind = kind, .start = start, .len = len };
+    used.* += 1;
+}
+
+/// Lex `src` into `out`. Returns the number of tokens written.
+pub fn tokenize(src: []const u8, out: []Token) TokenError!usize {
+    if (src.len == 0) return error.EmptySource;
+    var i: usize = 0;
+    var used: usize = 0;
+    while (i < src.len) {
+        const c = src[i];
+        if (c == ' ' or c == '\t' or c == '\r') {
+            i += 1;
+            continue;
+        }
+        if (c == '\n') {
+            try push(out, &used, .newline, i, 1);
+            i += 1;
+            continue;
+        }
+        // `::` comment eats the whole line (including the newline).
+        if (c == ':' and i + 1 < src.len and src[i + 1] == ':') {
+            i += 2;
+            while (i < src.len and src[i] != '\n') : (i += 1) {}
+            if (i < src.len) i += 1;
+            continue;
+        }
+        if (starts_with(src, i, "==")) {
+            try push(out, &used, .double_equals, i, 2);
+            i += 2;
+            continue;
+        }
+        if (match_rune2(src, i)) |r| {
+            try push(out, &used, .rune2, i, r.len);
+            i += r.len;
+            continue;
+        }
+        if (c == '(') {
+            try push(out, &used, .lparen, i, 1);
+            i += 1;
+            continue;
+        }
+        if (c == ')') {
+            try push(out, &used, .rparen, i, 1);
+            i += 1;
+            continue;
+        }
+        if (c == '[') {
+            try push(out, &used, .lbracket, i, 1);
+            i += 1;
+            continue;
+        }
+        if (c == ']') {
+            try push(out, &used, .rbracket, i, 1);
+            i += 1;
+            continue;
+        }
+        if (c == '=') {
+            try push(out, &used, .equals, i, 1);
+            i += 1;
+            continue;
+        }
+        if (c == '~') {
+            try push(out, &used, .tilde, i, 1);
+            i += 1;
+            continue;
+        }
+        // `%tag` cold atom (not a two-byte `%` call rune — those matched above).
+        if (c == '%') {
+            var j = i + 1;
+            if (j >= src.len or !is_ident_start(src[j])) return error.BadToken;
+            j += 1;
+            while (j < src.len and is_ident_char(src[j])) : (j += 1) {}
+            try push(out, &used, .percent_tag, i, j - i);
+            i = j;
+            continue;
+        }
+        // `@u32` / `@u64` aura molds.
+        if (c == '@') {
+            var j = i + 1;
+            if (j >= src.len or src[j] != 'u') return error.BadToken;
+            j += 1;
+            const dig0 = j;
+            while (j < src.len and is_digit(src[j])) : (j += 1) {}
+            if (j == dig0) return error.BadToken;
+            try push(out, &used, .aura, i, j - i);
+            i = j;
+            continue;
+        }
+        if (is_digit(c)) {
+            var j = i + 1;
+            while (j < src.len and is_digit(src[j])) : (j += 1) {}
+            try push(out, &used, .decimal, i, j - i);
+            i = j;
+            continue;
+        }
+        if (is_ident_start(c)) {
+            var j = i + 1;
+            while (j < src.len and is_ident_char(src[j])) : (j += 1) {}
+            if (j - i > max_name_len) return error.BadToken;
+            try push(out, &used, .ident, i, j - i);
+            i = j;
+            continue;
+        }
+        return error.BadToken;
+    }
+    return used;
+}
+
+/// True when `got` kinds match `want` exactly.
+pub fn kinds_eql(got: []const Token, want: []const Kind) bool {
+    if (got.len != want.len) return false;
+    var i: usize = 0;
+    while (i < got.len) : (i += 1) {
+        if (got[i].kind != want[i]) return false;
+    }
+    return true;
+}

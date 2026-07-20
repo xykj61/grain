@@ -1,0 +1,19 @@
+# glow_tokens_witness.rish — bounded Glow token stream (STOA83).
+#
+#   rishi/bin/rishi run tools/glow_tokens_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "glow/bin/tokens_witness"
+
+let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/tokens_witness.rye -femit-bin=${bin}"]
+assert build.ok else "tokens_witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "tokens_witness exited non-zero"
+assert selftest.out contains "GREEN" else "tokens_witness not GREEN"
+assert selftest.out contains "cast-named-xact" else "tokens_witness missing cast-named-xact claim"
+assert selftest.out contains "TooManyTokens" else "tokens_witness missing TooManyTokens"
+assert selftest.out contains "BadToken" else "tokens_witness missing BadToken"
+assert selftest.out contains "comments skipped" else "tokens_witness missing comment claim"
+
+say "GREEN: Glow bounded token stream — kinds for cast-named-xact; comments skipped; overflow refused; STOA83."
