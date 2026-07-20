@@ -7,6 +7,7 @@
 //! Closed demo gates: `double` · `inc` · `dec` (`@u32`) · `flip` (kind · xact · xfer · pair · triple · quad · penta · hexa · hepta · octa · nona · STOA127–131/136–139/141/143/145/147).
 //! STOA117: TAME tidy — copy_disjoint · parse_body split.
 //! STOA118: closed named mold `amount-mold` (one-field `$:` ≡ `@u32` lower).
+//! STOA148: closed allowlist alias `amount-shape` ≡ `amount-mold` (Glow OS shape word).
 //! STOA120: expansion calls `assert_sample_nesting_nests` at the mold seam.
 //! STOA121 / STOA130: barket passes `is_nesting=true` through nesting-nests under stated molds.
 //! STOA122: closed allowlist adds `count-mold` beside `amount-mold`.

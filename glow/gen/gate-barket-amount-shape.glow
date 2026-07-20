@@ -1,0 +1,4 @@
+::  Thin barket — sample=amount-shape returns sample (STOA148).
+::  amount-shape is the Glow OS shape alias for amount-mold (≡ @u32 lower).
+|^  sample=amount-shape
+sample
