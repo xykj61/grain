@@ -1,0 +1,13 @@
+format session-log-v1
+stamp 20260720.151046
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Cursor iOS / cloud sandbox — Eastern season · UTC stamp for STOA arc
+title STOA110 send complete
+prompt send and approve next rec following our compass
+think Fast-forward merged STOA110 to main at af6586b93e; tip 8b181a4f46 includes STOA111 map; pushed origin main.
+think Compass next: STOA111 lean A barket tokenize-only (STOA102 step 2); parse/lower stay held.
+obs Map session already on main from parallel explore; codeberg still unwired.
+file session-logs/20260720-151046_stoa110-send-complete.bron this send confirmation
+recommend keep-going STOA111 lean A barket tokenize-only
