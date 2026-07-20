@@ -8,6 +8,11 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260720.230350` — [kg STOA145 complete · STOA146 mapped](20260720-230350_kg-stoa145-complete.bron) — octa flip sent; nona identity mapped
+- `20260720.230350` — [Glow compass send STOA145](20260720-230350_glow-compass-stoa145-send.bron) — octa flip sent; STOA146 mapped
+- `20260720.230350` — [STOA145 approved and sent](20260720-230350_stoa145-approved-sent.bron) — claim f85dfed1a4
+- `20260720.230350` — [STOA145 send complete](20260720-230350_stoa145-send-complete.bron) — origin main language claim f85dfed1a4
+- `20260720.230350` — [STOA146 next map after octa flip](20260720-230350_stoa146-next-map.bron) — lean A nona-mold gate identity
 - `20260720.230219` — [STOA145 octa-mold flip GREEN](20260720-230219_stoa145-octa-flip-green.bron) — from↔amount · fee/nonce/memo/tag/to/via stay; await send
 - `20260720.225744` — [Why mold ladder — Hoon nest with TAME bounds](20260720-225744_why-mold-bounds-ladder.bron) — emulate molds/nest; refuse unbounded gold; SLC field ladder
 - `20260720.225659` — [kg STOA143-144 complete · STOA145 mapped](20260720-225659_kg-stoa144-complete.bron) — hepta flip + octa identity sent; octa flip mapped
