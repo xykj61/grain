@@ -1,4 +1,4 @@
-//! glow/nest_type_witness.rye — proves thin nest/type surface (STOA107).
+//! glow/nest_type_witness.rye — proves nest/type surface (STOA107–108).
 //!
 //!   rye build glow/nest_type_witness.rye -femit-bin=glow/bin/nest_type_witness
 //!   glow/bin/nest_type_witness
@@ -9,8 +9,9 @@ const print = std.debug.print;
 const nest_type = @import("nest_type.rye");
 const rb = @import("rune_bartis.rye");
 const lower = @import("lower_bartis.rye");
+const rm = @import("rune_mold.rye");
 
-const witness_version = "20260720.043251";
+const witness_version = "20260720.145814";
 
 fn run_selftest(init: std.process.Init) !u8 {
     const a = init.arena.allocator();
@@ -18,11 +19,11 @@ fn run_selftest(init: std.process.Init) !u8 {
     const io = init.io;
     var buf: [2048]u8 = undefined;
 
-    // Accept: @u32 nests under @u32.
+    // STOA107: Accept @u32 nests under @u32.
     try nest_type.assert_aura_nests("@u32", "@u32");
     print("nest: @u32 under @u32 accepts -- GREEN\n", .{});
 
-    // Refuse: @u64 does not nest under @u32.
+    // STOA107: Refuse @u64 under @u32.
     if (nest_type.assert_aura_nests("@u64", "@u32")) |_| {
         return error.NestAcceptedTooSoon;
     } else |err| {
@@ -36,7 +37,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, buf[0..n_ok], "bartis_gate") != null);
     print("nest: bartis @u32 identity still lowers -- GREEN\n", .{});
 
-    // Bartis refuse path surfaces SampleDoesNotNest (nest/type wire).
+    // Bartis refuse path surfaces SampleDoesNotNest.
     if (lower.lower_source_welcome("|=  sample=@u64\nsample\n", &buf)) |_| {
         return error.BartisNestAcceptedTooSoon;
     } else |err| {
@@ -59,8 +60,39 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("nest: glow/gen/gate-sample-u64-refuse.glow refused SampleDoesNotNest -- GREEN\n", .{});
 
+    // STOA108: unit $% tag nest against mold-kind.
+    const kind_src = try cwd.readFileAlloc(io, "glow/gen/mold-kind.glow", a, .limited(4096));
+    const kind = try rm.parse_source(kind_src);
+    assert(kind.body == .tagged);
+    assert(kind.field_count == 2);
+    try nest_type.assert_tag_nests("%mint", &kind);
+    try nest_type.assert_tag_nests("send", &kind);
+    print("nest: %mint / send under mold-kind.glow accepts -- GREEN\n", .{});
+
+    if (nest_type.assert_tag_nests("%burn", &kind)) |_| {
+        return error.TagNestAcceptedTooSoon;
+    } else |err| {
+        if (err != nest_type.NestError.SampleDoesNotNest) return err;
+    }
+    print("nest: %burn under mold-kind.glow refused SampleDoesNotNest -- GREEN\n", .{});
+
+    // Tuple mold is not a tag nest surface.
+    const tuple_src =
+        \\+$  amount-mold
+        \\  $:  amount=@u32
+        \\  ==
+    ;
+    const tuple = try rm.parse_source(tuple_src);
+    assert(tuple.body == .tuple);
+    if (nest_type.assert_tag_nests("amount", &tuple)) |_| {
+        return error.TupleTagNestAccepted;
+    } else |err| {
+        if (err != nest_type.NestError.SampleDoesNotNest) return err;
+    }
+    print("nest: tag under $: tuple mold refused SampleDoesNotNest -- GREEN\n", .{});
+
     print("nest: version {s}\n", .{witness_version});
-    print("GREEN: Glow nest/type thin surface — dry aura assert; SampleDoesNotNest; STOA107.\n", .{});
+    print("GREEN: Glow nest/type — dry aura · $% tag nest; SampleDoesNotNest; STOA107–108.\n", .{});
     return 0;
 }
 
