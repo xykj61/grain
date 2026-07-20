@@ -534,7 +534,11 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA147 nona-mold flip call-body GREEN, `20260720.231419`** — lean A (compass): closed `%-  flip` under nona-mold · from↔amount · fee/nonce/memo/tag/to/via/ref stay · baked 5/3/1/2/7/4/6/8/9 → 3/5/1/2/7/4/6/8/9; double under nona refuse; argv · gold · Sala B0 held. Brief [`active-designing/20260720-231128_stoa147-nona-flip.md`](../active-designing/20260720-231128_stoa147-nona-flip.md). Sent `2e84c960d4` · PR #65.
 
-**STOA148 deca-mold gate sample mapped, `20260720.231547`** — lean A (compass): closed ten-field `$:` identity · DecaMold · baked 5/3/1/2/7/4/6/8/9/10 gas; undec refuse; call-body under deca · tagged argv · gold · Sala B0 held. Brief [`active-designing/20260720-231547_stoa148-deca-mold-gate.md`](../active-designing/20260720-231547_stoa148-deca-mold-gate.md). Next: seat when GREEN.
+**Closed-field capacity freeze, `20260720.231857`** — stop the named `$:` allowlist ladder at **nine faces** (`nona-mold` · `max_fields == 9` · STOA146–147 GREEN). Further `deca`/`undec` widens stay horizon unless Kaeden opens a dedicated capacity pin. Brief [`active-designing/20260720-231857_closed-field-capacity-freeze-and-framework-next.md`](../active-designing/20260720-231857_closed-field-capacity-freeze-and-framework-next.md).
+
+**STOA148 deca-mold gate sample map withdrawn, `20260720.231547`→freeze** — map kept as horizon; lean A withdrawn by capacity freeze. Brief [`active-designing/20260720-231547_stoa148-deca-mold-gate.md`](../active-designing/20260720-231547_stoa148-deca-mold-gate.md).
+
+**Framework next (host resume), `20260720.231857`** — lean A: live SETU6.5 **sent** eyes on real `usb0`/`ncm`. Lab TX gate already GREEN; Sala B0 Glow rewrite · JABS3 stay thicker check-ins. Same freeze brief.
 
 **Glow OS shape vocabulary seated, `20260720.223226`** — living prose: **shape** is the Glow OS / citizen word for a bounded normalizer; **mold** stays Hoon study and today's desk suffix until a rename lap. Brief [`active-designing/20260720-223226_glow-os-shape-not-mold.md`](../active-designing/20260720-223226_glow-os-shape-not-mold.md) · LEXICON Shape · Mold rows.
 

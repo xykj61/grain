@@ -8,6 +8,7 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260720.231936` — [Capacity freeze at nine · Framework next SETU sent](20260720-231936_capacity-freeze-framework-next.bron) — stop field ladder; Framework lean A = live SETU sent
 - `20260720.231825` — [Framework season survey for parent](20260720-231825_framework-season-survey.bron) — Framework host vs iOS language; SETU live-sent thinnest Framework door
 - `20260720.231633` — [How far the closed-field mold ladder](20260720-231633_how-far-field-ladder.bron) — no stop policy yet; recommend capacity ceiling check-in
 - `20260720.231547` — [kg STOA145-147 complete · STOA148 mapped](20260720-231547_kg-stoa147-complete.bron) — octa/nona laps sent; deca identity mapped
