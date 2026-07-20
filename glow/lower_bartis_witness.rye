@@ -1,0 +1,73 @@
+//! glow/lower_bartis_witness.rye — proves `|=` bartis lowers to runnable `.rye` (STOA100).
+//!
+//!   rye build glow/lower_bartis_witness.rye -femit-bin=glow/bin/lower_bartis_witness
+//!   glow/bin/lower_bartis_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const lower = @import("lower_bartis.rye");
+const rb = @import("rune_bartis.rye");
+
+const witness_version = "20260720.033852";
+
+fn run_selftest(init: std.process.Init) !u8 {
+    const io = init.io;
+    const a = init.arena.allocator();
+    const cwd = std.Io.Dir.cwd();
+    var buf: [2048]u8 = undefined;
+
+    // Identity gate lowers to Rye with bartis_gate fn and baked sample 5.
+    const gate_src = "|=  sample=@u32\nsample\n";
+    const n1 = try lower.lower_source_welcome(gate_src, &buf);
+    const rye1 = buf[0..n1];
+    assert(std.mem.indexOf(u8, rye1, "bartis_gate") != null);
+    assert(std.mem.indexOf(u8, rye1, "sample: u32) u32") != null);
+    assert(std.mem.indexOf(u8, rye1, "const sample: u32 = 5") != null);
+    assert(std.mem.indexOf(u8, rye1, "bartis_gate(sample) == 5") != null);
+    print("lower: identity gate lowers to Rye bartis_gate fn -- GREEN\n", .{});
+
+    // Comment header is stripped cleanly by tokenizer.
+    const gate_src_with_comment = "::\n|=  sample=@u32\nsample\n";
+    const n2 = try lower.lower_source_welcome(gate_src_with_comment, &buf);
+    assert(n2 > 0);
+    print("lower: bartis source with comment line parses cleanly -- GREEN\n", .{});
+
+    // Refuse aura other than @u32.
+    if (lower.lower_source_welcome("|=  sample=@u64\nsample\n", &buf)) |_| {
+        return error.AuraLoweredTooSoon;
+    } else |err| {
+        if (err != lower.LowerError.AuraNotYetLowered) return err;
+    }
+    print("lower: @u64 bartis refused AuraNotYetLowered -- GREEN\n", .{});
+
+    // Refuse body face mismatch.
+    if (lower.lower_source_welcome("|=  sample=@u32\nother\n", &buf)) |_| {
+        return error.BodyMismatchLowered;
+    } else |err| {
+        if (err != lower.LowerError.BodyFaceMismatch) return err;
+    }
+    print("lower: body face mismatch refused BodyFaceMismatch -- GREEN\n", .{});
+
+    // Write the welcome .rye to cache for the Rishi half of the witness.
+    try cwd.createDirPath(io, "glow/.cache");
+    const welcome_path = "glow/.cache/gate_sample_welcome.rye";
+    const n3 = try lower.lower_source_welcome(gate_src, &buf);
+    try cwd.writeFile(io, .{ .sub_path = welcome_path, .data = buf[0..n3] });
+    print("lower: wrote bartis welcome .rye under glow/.cache/ -- GREEN\n", .{});
+
+    // Fixture desk parses and yields the sample face.
+    const gen_src = try cwd.readFileAlloc(io, "glow/gen/gate-sample.glow", a, .limited(4096));
+    const spec = try rb.parse_source(gen_src);
+    const face = rb.face_slice(&spec);
+    assert(std.mem.eql(u8, face, "sample"));
+    print("lower: glow/gen/gate-sample.glow carries sample face -- GREEN\n", .{});
+
+    print("lower: version {s}\n", .{witness_version});
+    print("GREEN: Glow `|=` bartis thin identity gate lowers to Rye; baked sample 5 exits 0 (STOA100).\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
+}

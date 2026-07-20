@@ -41,6 +41,7 @@ const lower_multi_typed = @import("lower_multi_typed.rye");
 const lower_core = @import("lower_core.rye");
 const lower_mold = @import("lower_mold.rye");
 const lower_named_cast = @import("lower_named_cast.rye");
+const lower_bartis = @import("lower_bartis.rye");
 
 
 
@@ -154,6 +155,12 @@ pub fn main(init: std.process.Init) !u8 {
             if (lower_mold.looks_like_mold_only(src)) {
                 break :blk lower_mold.lower_source_welcome(src, &rye_buf) catch |err| {
                     print("glow_run: mold lower failed ({s})\n", .{@errorName(err)});
+                    return 1;
+                };
+            }
+            if (n == 2 and lines[0].len >= 2 and lines[0][0] == '|' and lines[0][1] == '=') {
+                break :blk lower_bartis.lower_source_welcome(src, &rye_buf) catch |err| {
+                    print("glow_run: bartis lower failed ({s})\n", .{@errorName(err)});
                     return 1;
                 };
             }

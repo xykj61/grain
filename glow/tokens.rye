@@ -93,7 +93,7 @@ fn starts_with(src: []const u8, i: u32, lit: []const u8) bool {
 /// Two-byte Glow rune heads (longest-match before bare `=` / `%`).
 fn match_rune2(src: []const u8, i: u32) ?u32 {
     const pairs = [_][]const u8{
-        "+$", "$%", "$:", "^-", "=/", "=.", "=*", "|-", "|%", "++", "--",
+        "+$", "$%", "$:", "^-", "=/", "=.", "=*", "|-", "|%", "|=", "++", "--",
         "/+", "?:", "?>", "?<", "?-", "?~", ":-", ":+", ":^", ":~", "%-", "%+", "%^", "%*",
     };
     for (pairs) |p| {

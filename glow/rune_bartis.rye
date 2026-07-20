@@ -1,0 +1,108 @@
+//! glow/rune_bartis.rye — parses Glow's `|=` bartis gate rune (STOA100).
+//!
+//! Thin one-arm identity gate: `|=  sample=@u32` on line one, bare face on
+//! line two. Token-driven via tokens.rye. Only `@u32` aura accepted this lap.
+//! Wet / gold polymorphic cores held until a richer nest surface earns them.
+//!
+//! Parse shape (token stream):
+//!   1. skip leading newlines
+//!   2. rune2 `|=`
+//!   3. ident (sample face name)
+//!   4. equals
+//!   5. aura — must be `@u32` (else AuraNotYetLowered)
+//!   6. newline(s) — end of first line
+//!   7. ident body — must equal sample face (identity body only this lap)
+//!   8. trailing newlines only
+
+const std = @import("std");
+const assert = std.debug.assert;
+const tokens = @import("tokens.rye");
+
+pub const max_face_len: u32 = tokens.max_name_len;
+
+pub const ParseError = error{
+    EmptySource,
+    NotABartis,
+    MissingFace,
+    MissingEquals,
+    MissingAura,
+    AuraNotYetLowered,
+    BodyFaceMismatch,
+    MalformedBody,
+    TooManyTokens,
+    BadToken,
+};
+
+/// A parsed thin bartis gate: sample face name (identity gate only).
+pub const GateSpec = struct {
+    face: [max_face_len]u8 = [_]u8{0} ** max_face_len,
+    face_len: u32 = 0,
+};
+
+pub fn face_slice(spec: *const GateSpec) []const u8 {
+    assert(spec.face_len <= max_face_len); // invariant: face fits in buffer
+    return spec.face[0..spec.face_len];
+}
+
+/// Parse a 2-line (plus optional `::` comments) bartis source into a GateSpec.
+/// Tokenizer strips comment lines and blank lines; parse sees only live tokens.
+pub fn parse_source(src: []const u8) ParseError!GateSpec {
+    if (src.len == 0) return error.EmptySource;
+    var buf: [tokens.max_tokens]tokens.Token = undefined;
+    const n = tokens.tokenize(src, &buf) catch |err| switch (err) {
+        error.TooManyTokens => return error.TooManyTokens,
+        error.BadToken => return error.BadToken,
+        error.EmptySource => return error.EmptySource,
+    };
+    assert(n <= tokens.max_tokens); // postcondition: tokenize bound
+    const toks = buf[0..n];
+    var i: u32 = 0;
+
+    // Skip leading newlines.
+    while (i < n and toks[i].kind == .newline) : (i += 1) {}
+    if (i >= n) return error.NotABartis;
+
+    // Rune2 `|=`.
+    const rune_tok = toks[i];
+    if (rune_tok.kind != .rune2) return error.NotABartis;
+    if (!std.mem.eql(u8, tokens.slice_of(src, rune_tok), "|=")) return error.NotABartis;
+    i += 1;
+
+    // Ident (sample face name).
+    if (i >= n or toks[i].kind != .ident) return error.MissingFace;
+    const face_tok = toks[i];
+    const face_text = tokens.slice_of(src, face_tok);
+    if (face_text.len == 0 or face_text.len > max_face_len) return error.MissingFace;
+    i += 1;
+
+    // Equals.
+    if (i >= n or toks[i].kind != .equals) return error.MissingEquals;
+    i += 1;
+
+    // Aura — only `@u32` this lap.
+    if (i >= n or toks[i].kind != .aura) return error.MissingAura;
+    const aura_text = tokens.slice_of(src, toks[i]);
+    if (!std.mem.eql(u8, aura_text, "@u32")) return error.AuraNotYetLowered;
+    i += 1;
+
+    // Newline(s) — end of first line.
+    if (i >= n or toks[i].kind != .newline) return error.MalformedBody;
+    while (i < n and toks[i].kind == .newline) : (i += 1) {}
+
+    // Body ident — must equal sample face (identity body only).
+    if (i >= n or toks[i].kind != .ident) return error.MalformedBody;
+    const body_text = tokens.slice_of(src, toks[i]);
+    if (!std.mem.eql(u8, body_text, face_text)) return error.BodyFaceMismatch;
+    i += 1;
+
+    // Trailing newlines only — anything else is a malformed body.
+    while (i < n) : (i += 1) {
+        if (toks[i].kind != .newline) return error.MalformedBody;
+    }
+
+    var spec: GateSpec = .{};
+    assert(face_text.len <= max_face_len); // precondition held by check above
+    @memcpy(spec.face[0..face_text.len], face_text);
+    spec.face_len = @intCast(face_text.len);
+    return spec;
+}
