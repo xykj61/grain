@@ -2,11 +2,11 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Rule: [`.cursor/rules/remember.mdc`](../.cursor/rules/remember.mdc) · [`.claude/rules/remember.md`](../.claude/rules/remember.md).*
 
-**Last refreshed:** `20260720.184219` (UTC cloud · Eastern season) · voice Quin  
+**Last refreshed:** `20260720.184304` (UTC cloud · Eastern season) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5** · HOLD0–HOLD1 · HOLD-W  
-**Language nib:** **STOA0–123** GREEN · STOA124 open  
-**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W · STOA0–123  
-**Git nib:** `7b9d350d26` — STOA123 kind-mold gate sample  
+**Language nib:** **STOA0–124** GREEN · STOA125 open  
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W · STOA0–124  
+**Git nib:** *(pin after send)* — STOA124 xact-mold gate sample  
 
 **Season:** Cursor iOS / cloud — **Glow language TAME only** (no adb). Handoff [`20260719-204650_cursor-ios-handoff-glow-language.md`](20260719-204650_cursor-ios-handoff-glow-language.md).  
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`
@@ -15,15 +15,15 @@
 
 ## Now (language)
 
-**STOA123** sent · kind-mold gate sample (`KindMold` · baked `.mint`).  
-**STOA124** next — compass pick: gold · payload `$%` / xact-mold (Sala B0 Framework).
+**STOA124** seating · xact-mold gate sample (`XactMold` · baked `.mint` amount 5).  
+**STOA125** next — compass pick: gold · multi-face `$%` / xfer-mold (Sala B0 Framework).
 
 ```bash
 rishi/bin/rishi run tools/glow_nest_type_witness.rish
 rishi/bin/rishi run tools/glow_barket_lower_witness.rish
 ```
 
-Hold on iOS: ambient gold · payload `$%` · bartis dry · named allowlist amount/count/kind. Defer Pixel/SETU / Sala B0 to Framework.
+Hold on iOS: ambient gold · multi-face `xfer-mold` · bartis dry · named allowlist amount/count/kind/xact. Defer Pixel/SETU / Sala B0 to Framework.
 
 ---
 
@@ -37,7 +37,7 @@ Hold on iOS: ambient gold · payload `$%` · bartis dry · named allowlist amoun
 | **JABS** | Sala broadcast live-session fold | JABS0–2 GREEN · JABS3 check-in |
 | **LULU** | Hearth · short home · Wired Glass | **LULU0–5 closed** |
 | **SETU** | USB hearth carry Glass↔Desk | **SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W GREEN** |
-| **STOA** | Glow language SLC · nest · composition | **STOA0–123 GREEN** · STOA124 next |
+| **STOA** | Glow language SLC · nest · composition | **STOA0–124 GREEN** · STOA125 next |
 
 Canon: [`../docs/HAWM.md`](../docs/HAWM.md) · [`../docs/TUBE.md`](../docs/TUBE.md) · [`../docs/ZETA.md`](../docs/ZETA.md) · [`../docs/JABS.md`](../docs/JABS.md) · [`../docs/LULU.md`](../docs/LULU.md) · [`../docs/SETU.md`](../docs/SETU.md) · [`../docs/STOA.md`](../docs/STOA.md)
 
@@ -59,7 +59,7 @@ $ADB install -r tools/.cache/tube05/sala-broadcaster.apk
 
 | Door | Kind |
 |------|------|
-| **STOA124** gold · payload `$%` | **open** — thicker doors; Sala B0 Framework |
+| **STOA125** gold · multi-face `$%` | **open** — thicker doors; Sala B0 Framework |
 | Glow wet syntax · ambient gold | **held** |
 | Live SETU6.5 **sent** on usb0/ncm | **check-in** — Framework host |
 | JABS3 · TAME Lap 3 | **check-in** |

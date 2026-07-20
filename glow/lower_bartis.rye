@@ -9,6 +9,7 @@
 //! STOA107: nest/type surface — non-`@u32` sample refuses `SampleDoesNotNest`.
 //! STOA109 / STOA122: named molds `amount-mold` · `count-mold` lower as `@u32`.
 //! STOA123: `kind-mold` identity lowers as `KindMold` enum · baked `.mint`.
+//! STOA124: `xact-mold` identity lowers as `XactMold` union · baked `.mint` amount 5.
 //! Gate function named `bartis_gate` to avoid collisions with the sample face.
 
 const std = @import("std");
@@ -114,6 +115,11 @@ fn is_kind_sample(spec: *const rb.GateSpec) bool {
     return nest_type.is_kind_named_mold(rb.mold_name_slice(spec));
 }
 
+fn is_xact_sample(spec: *const rb.GateSpec) bool {
+    if (spec.mold_name_len == 0) return false;
+    return nest_type.is_xact_named_mold(rb.mold_name_slice(spec));
+}
+
 /// STOA123: closed unit `$%` kind-mold identity → KindMold enum · baked `.mint`.
 fn emit_kind_identity(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
     var used: u32 = 0;
@@ -133,6 +139,28 @@ fn emit_kind_identity(out: []u8, zface: []const u8, comment: []const u8) LowerEr
     return used;
 }
 
+/// STOA124: closed payload `$%` xact-mold identity → XactMold union · baked mint/5.
+fn emit_xact_identity(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
+    var used: u32 = 0;
+    try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
+    try append_print(out, &used, "pub const XactMold = union(enum) {{\n", .{});
+    try append_print(out, &used, "    mint: struct {{ amount: u32 = 0 }},\n", .{});
+    try append_print(out, &used, "    send,\n", .{});
+    try append_print(out, &used, "}};\n\n", .{});
+    try append_print(out, &used, "/// {s}\n", .{comment});
+    try append_print(out, &used, "fn bartis_gate({s}: XactMold) XactMold {{\n", .{zface});
+    try append_print(out, &used, "    return {s};\n", .{zface});
+    try append_print(out, &used, "}}\n\n", .{});
+    try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
+    try append_print(out, &used, "    const {s}: XactMold = .{{ .mint = .{{ .amount = {d} }} }};\n", .{ zface, bartis_demo_sample });
+    try append_print(out, &used, "    return switch (bartis_gate({s})) {{\n", .{zface});
+    try append_print(out, &used, "        .mint => |m| if (m.amount == {d}) 0 else 1,\n", .{bartis_demo_sample});
+    try append_print(out, &used, "        .send => 1,\n", .{});
+    try append_print(out, &used, "    }};\n", .{});
+    try append_print(out, &used, "}}\n", .{});
+    return used;
+}
+
 fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
     const face = rb.face_slice(spec);
     assert(face.len > 0); // invariant: spec carries a non-empty face
@@ -146,6 +174,13 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
         var comment_buf: [160]u8 = undefined;
         const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` bartis — KindMold identity (STOA123).", .{ face, mold }) catch return error.Overflow;
         return emit_kind_identity(out, zface, comment);
+    }
+
+    if (is_xact_sample(spec)) {
+        if (spec.body != .identity) return error.BodyGateNotYetLowered;
+        var comment_buf: [160]u8 = undefined;
+        const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` bartis — XactMold identity (STOA124).", .{ face, mold }) catch return error.Overflow;
+        return emit_xact_identity(out, zface, comment);
     }
 
     const expect = try expect_for(spec);
@@ -175,7 +210,7 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
 }
 
 fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
-    if (is_kind_sample(spec)) return error.SampleDoesNotNest;
+    if (is_kind_sample(spec) or is_xact_sample(spec)) return error.SampleDoesNotNest;
     const face = rb.face_slice(spec);
     assert(face.len > 0); // invariant: spec carries a non-empty face
     const mold = sample_mold_label(spec);

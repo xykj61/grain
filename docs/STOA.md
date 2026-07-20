@@ -96,4 +96,5 @@
 | **STOA121** | Barket wet-through-nests | `glow_barket_lower_witness` | **GREEN** `20260720.182915` |
 | **STOA122** | Count-mold named allowlist | `glow_nest_type_witness` · barket · bartis | **GREEN** `20260720.183259` |
 | **STOA123** | Kind-mold gate sample | `glow_barket_lower_witness` · bartis | **GREEN** `20260720.183837` |
+| **STOA124** | Xact-mold gate sample | `glow_barket_lower_witness` · bartis | **GREEN** `20260720.184304` |
 Smoke: `glow_barket_lower_witness` · `glow_barket_parse_witness` · `glow_nest_type_witness` · `glow_lower_bartis_witness` · Sibling: **ZETA** · **LULU** · **SETU** · **TUBE**.

@@ -9,7 +9,7 @@ const print = std.debug.print;
 const lower = @import("lower_bartis.rye");
 const rb = @import("rune_bartis.rye");
 
-const witness_version = "20260720.183837";
+const witness_version = "20260720.184304";
 
 fn run_selftest(init: std.process.Init) !u8 {
     const io = init.io;
@@ -186,12 +186,28 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(spec_kind.body == .identity);
     print("lower: glow/gen/gate-kind.glow carries kind-mold -- GREEN\n", .{});
 
-    if (lower.lower_source_welcome("|=  sample=xact-mold\nsample\n", &buf)) |_| {
-        return error.XactMoldLoweredTooSoon;
+    // STOA124: xact-mold identity lowers as XactMold.
+    const xact_src = "|=  sample=xact-mold\nsample\n";
+    const n_xact = try lower.lower_source_welcome(xact_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n_xact], "bartis_gate") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_xact], "XactMold") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_xact], ".mint") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_xact], "amount") != null);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_xact_welcome.rye", .data = buf[0..n_xact] });
+    print("lower: xact-mold bartis lowers to XactMold identity -- GREEN\n", .{});
+
+    const gen_xact = try cwd.readFileAlloc(io, "glow/gen/gate-xact.glow", a, .limited(4096));
+    const spec_xact = try rb.parse_source(gen_xact);
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_xact), "xact-mold"));
+    assert(spec_xact.body == .identity);
+    print("lower: glow/gen/gate-xact.glow carries xact-mold -- GREEN\n", .{});
+
+    if (lower.lower_source_welcome("|=  sample=xfer-mold\nsample\n", &buf)) |_| {
+        return error.XferMoldLoweredTooSoon;
     } else |err| {
         if (err != lower.LowerError.SampleDoesNotNest) return err;
     }
-    print("lower: xact-mold bartis refused SampleDoesNotNest -- GREEN\n", .{});
+    print("lower: xfer-mold bartis refused SampleDoesNotNest -- GREEN\n", .{});
 
     if (lower.lower_source_welcome("|=  sample=kind-mold\n%-  double  sample\n", &buf)) |_| {
         return error.KindCallBodyLoweredTooSoon;
@@ -199,6 +215,13 @@ fn run_selftest(init: std.process.Init) !u8 {
         if (err != lower.LowerError.BodyGateNotYetLowered) return err;
     }
     print("lower: kind-mold call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
+
+    if (lower.lower_source_welcome("|=  sample=xact-mold\n%-  double  sample\n", &buf)) |_| {
+        return error.XactCallBodyLoweredTooSoon;
+    } else |err| {
+        if (err != lower.LowerError.BodyGateNotYetLowered) return err;
+    }
+    print("lower: xact-mold call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
 
     // STOA122: second closed named mold count-mold.
     const count_src = "|=  sample=count-mold\nsample\n";
@@ -215,7 +238,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("lower: glow/gen/gate-count.glow carries count-mold -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: Glow `|=` bartis — identity · argv · call-body · amount-mold · count-mold · kind-mold · wet-nests (STOA100–123).\n", .{});
+    print("GREEN: Glow `|=` bartis — identity · argv · call-body · amount-mold · count-mold · kind-mold · xact-mold · wet-nests (STOA100–124).\n", .{});
     return 0;
 }
 

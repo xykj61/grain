@@ -37,7 +37,9 @@ assert selftest.out contains "count-mold" else "lower_bartis_witness missing cou
 assert selftest.out contains "gate-count.glow" else "lower_bartis_witness missing gate-count desk"
 assert selftest.out contains "KindMold" else "lower_bartis_witness missing KindMold claim"
 assert selftest.out contains "gate-kind.glow" else "lower_bartis_witness missing gate-kind desk"
-assert selftest.out contains "xact-mold" else "lower_bartis_witness missing xact-mold refuse"
+assert selftest.out contains "XactMold" else "lower_bartis_witness missing XactMold claim"
+assert selftest.out contains "gate-xact.glow" else "lower_bartis_witness missing gate-xact desk"
+assert selftest.out contains "xfer-mold" else "lower_bartis_witness missing xfer-mold refuse"
 
 let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
 assert build_welcome.ok else "bartis welcome .rye build failed"
@@ -134,4 +136,13 @@ let run_kind = run ["sh" "-c" "${kind_bin}; echo EXIT:$?"]
 assert run_kind.ok else "bartis kind-mold welcome binary failed to launch"
 assert run_kind.out contains "EXIT:0" else "bartis kind-mold welcome binary did not exit 0"
 
-say "GREEN: Glow `|=` bartis — STOA100–123 identity · argv · call-body · amount-mold · count-mold · kind-mold · nest SampleDoesNotNest."
+# STOA124: xact-mold welcome binary exits 0.
+let xact_rye = "glow/.cache/gate_xact_welcome.rye"
+let xact_bin = "glow/bin/gate_xact_welcome"
+let build_xact = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${xact_rye} -femit-bin=${xact_bin}"]
+assert build_xact.ok else "bartis xact-mold welcome .rye build failed"
+let run_xact = run ["sh" "-c" "${xact_bin}; echo EXIT:$?"]
+assert run_xact.ok else "bartis xact-mold welcome binary failed to launch"
+assert run_xact.out contains "EXIT:0" else "bartis xact-mold welcome binary did not exit 0"
+
+say "GREEN: Glow `|=` bartis — STOA100–124 identity · argv · call-body · amount-mold · count-mold · kind-mold · xact-mold · nest SampleDoesNotNest."
