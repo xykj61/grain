@@ -6,6 +6,7 @@
 //! STOA82: same-desk · cross-desk `^-` against payload `$%` molds.
 //! STOA84–85: dispatch peeks via `tokens.rye`.
 //! STOA87: TAME tidy — assert · u32 · copy_disjoint · split emitters.
+//! STOA93: cross-desk parse walks `tokens.cross_desk_parts` (lexer→lower).
 //!
 //!   +$  kind-mold
 //!     $%  [%mint ~]
@@ -47,13 +48,6 @@ pub const CrossDeskSpec = struct {
     cast_mold: [rm.max_name_len]u8 = .{0} ** rm.max_name_len,
     cast_mold_len: u32 = 0,
 };
-
-fn is_stem_char(ch: u8) bool {
-    if (ch >= 'a' and ch <= 'z') return true;
-    if (ch >= 'A' and ch <= 'Z') return true;
-    if (ch >= '0' and ch <= '9') return true;
-    return ch == '-' or ch == '_';
-}
 
 fn zig_safe_ident(face: []const u8, out: *[rm.max_name_len]u8) LowerError!u32 {
     assert(face.len <= rm.max_name_len); // precondition: face within name budget
@@ -102,22 +96,6 @@ fn zig_type_name(name: []const u8, out: *[rm.max_name_len]u8) LowerError!u32 {
     return o;
 }
 
-fn parse_import_stem(line: []const u8) LowerError![]const u8 {
-    if (line.len < 2) return error.NotACrossDesk;
-    if (line[0] != '/' or line[1] != '+') return error.NotACrossDesk;
-    const after = std.mem.trimStart(u8, line[2..], " \t");
-    if (after.len == 0 or after.len == line[2..].len) return error.NotACrossDesk;
-    var end: u32 = 0;
-    const after_len: u32 = @intCast(after.len);
-    while (end < after_len and is_stem_char(after[@as(usize, @intCast(end))])) : (end += 1) {}
-    if (end == 0) return error.BadIdent;
-    if (after[0] >= '0' and after[0] <= '9') return error.BadIdent;
-    if (end > max_stem_len) return error.BadIdent;
-    const tail = std.mem.trimStart(u8, after[@as(usize, @intCast(end))..], " \t");
-    if (tail.len != 0) return error.NotACrossDesk;
-    return after[0..@as(usize, @intCast(end))];
-}
-
 pub fn stem_slice(spec: *const CrossDeskSpec) []const u8 {
     assert(spec.stem_len <= max_stem_len); // invariant
     return spec.stem[0..@as(usize, @intCast(spec.stem_len))];
@@ -143,19 +121,15 @@ pub fn looks_like_cross_desk(src: []const u8) bool {
 }
 
 pub fn parse_cross_desk(src: []const u8) LowerError!CrossDeskSpec {
-    var lines: [lower_multi.max_lines][]const u8 = undefined;
-    const n = lower_multi.collect_lines(src, &lines) catch |err| switch (err) {
-        error.TooManyLines => return error.TooManyLines,
-        else => return error.EmptySource,
-    };
-    if (n != 2) return error.NotACrossDesk;
+    const parts = tokens.cross_desk_parts(src) orelse return error.NotACrossDesk;
     var spec: CrossDeskSpec = .{};
-    const stem = try parse_import_stem(lines[0]);
-    assert(stem.len <= max_stem_len); // postcondition: parse_import_stem bound
+    const stem = tokens.slice_of(src, parts.stem);
+    assert(stem.len <= max_stem_len); // postcondition: lexer ident within stem budget
+    if (stem.len == 0 or stem.len > max_stem_len) return error.BadIdent;
+    if (stem[0] >= '0' and stem[0] <= '9') return error.BadIdent;
     tally_copy.copy_disjoint(u8, spec.stem[0..stem.len], stem);
     spec.stem_len = @intCast(stem.len);
-    const cast_spec = try rc.parse(lines[1]);
-    const mold = rc.mold_slice(&cast_spec);
+    const mold = tokens.slice_of(src, parts.mold);
     if (mold.len == 0 or mold.len > rm.max_name_len) return error.BadIdent;
     if (mold[0] == '@') return error.NamedCastNeedsTuple;
     tally_copy.copy_disjoint(u8, spec.cast_mold[0..mold.len], mold);
