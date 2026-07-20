@@ -8,7 +8,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const tokens = @import("tokens.rye");
 
-const witness_version = "20260719.223610";
+const witness_version = "20260719.224451";
 
 /// Same shape as glow/gen/cast-named-xact.glow (comments stripped by lexer).
 const xact_desk =
@@ -40,6 +40,13 @@ const cross_desk =
 const cross_desk_junk =
     \\/+  mold-amount extra
     \\^-  amount-mold
+;
+
+const named_cast_junk =
+    \\+$  amount-mold
+    \\  $:  amount=@u32
+    \\  ==
+    \\^-  amount-mold extra
 ;
 
 fn run_selftest() !u8 {
@@ -122,6 +129,24 @@ fn run_selftest() !u8 {
     assert(!tokens.looks_like_named_cast(cross_desk));
     print("tokens: named-cast peek (glow_run wire) -- GREEN\n", .{});
 
+    const amount_parts = tokens.named_cast_parts(amount_cast) orelse return error.NamedCastPartsMissing;
+    assert(std.mem.eql(u8, tokens.slice_of(amount_cast, amount_parts.cast_mold), "amount-mold"));
+    const amount_mold = amount_cast[amount_parts.mold_start..][0..amount_parts.mold_len];
+    assert(std.mem.indexOf(u8, amount_mold, "+$") != null);
+    assert(std.mem.indexOf(u8, amount_mold, "amount=@u32") != null);
+    assert(std.mem.indexOf(u8, amount_mold, "==") != null);
+    assert(std.mem.indexOf(u8, amount_mold, "^-") == null);
+    const xact_parts = tokens.named_cast_parts(xact_desk) orelse return error.NamedCastPartsMissing;
+    assert(std.mem.eql(u8, tokens.slice_of(xact_desk, xact_parts.cast_mold), "xact-mold"));
+    const xact_mold = xact_desk[xact_parts.mold_start..][0..xact_parts.mold_len];
+    assert(std.mem.indexOf(u8, xact_mold, "$%") != null);
+    assert(std.mem.indexOf(u8, xact_mold, "==") != null);
+    assert(std.mem.indexOf(u8, xact_mold, "^-") == null);
+    assert(tokens.named_cast_parts(named_cast_junk) == null);
+    assert(tokens.named_cast_parts(mold_only) == null);
+    assert(tokens.named_cast_parts(cross_desk) == null);
+    print("tokens: named-cast parts (lexer→lower mold-body) -- GREEN\n", .{});
+
     assert(tokens.looks_like_cross_desk(cross_desk));
     assert(!tokens.looks_like_cross_desk(xact_desk));
     assert(!tokens.looks_like_cross_desk(amount_cast));
@@ -142,7 +167,7 @@ fn run_selftest() !u8 {
     print("tokens: TAME u32 spans -- GREEN\n", .{});
 
     print("tokens: version {s}\n", .{witness_version});
-    print("GREEN: Glow token stream — STOA86 tidy · STOA93 cross-desk parts; assert · u32 · split lex.\n", .{});
+    print("GREEN: Glow token stream — STOA86 tidy · STOA93 cross-desk · STOA94 same-desk mold-body; assert · u32 · split lex.\n", .{});
     return 0;
 }
 

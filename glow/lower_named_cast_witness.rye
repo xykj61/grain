@@ -9,7 +9,7 @@ const print = std.debug.print;
 const lower = @import("lower_named_cast.rye");
 const lower_mold = @import("lower_mold.rye");
 
-const witness_version = "20260719.223610";
+const witness_version = "20260719.224451";
 
 const desk_src =
     \\+$  amount-mold
@@ -101,6 +101,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, buf[0..n], "amount = raw") != null);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/cast_named_amount_welcome.rye", .data = buf[0..n] });
     print("lower: +$ amount-mold + ^- amount-mold emits AmountMold cast -- GREEN\n", .{});
+    print("lower: same-desk mold-body via tokens.named_cast_parts -- GREEN\n", .{});
 
     if (lower.lower_source_welcome(mismatch_src, &buf)) |_| {
         return error.CastMoldMismatchNotCaught;
@@ -108,6 +109,13 @@ fn run_selftest(init: std.process.Init) !u8 {
         if (err != lower.LowerError.CastMoldMismatch) return err;
     }
     print("lower: cast name mismatch refused CastMoldMismatch -- GREEN\n", .{});
+
+    if (lower.lower_source_welcome(lib_src, &buf)) |_| {
+        return error.NotANamedCastNotCaught;
+    } else |err| {
+        if (err != lower.LowerError.NotANamedCast) return err;
+    }
+    print("lower: mold-only desk refused NotANamedCast -- GREEN\n", .{});
 
     assert(lower.looks_like_named_cast(tagged_src));
     const tn = try lower.lower_source_welcome(tagged_src, &buf);
@@ -184,7 +192,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("lower: wrote named-cast welcome .rye under glow/.cache/ -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: named-cast resolve lowers — STOA93 token-driven cross-desk parse; amount · kind · xact · import desks.\n", .{});
+    print("GREEN: named-cast resolve lowers — STOA93 cross-desk · STOA94 same-desk mold-body tokens; amount · kind · xact · import desks.\n", .{});
     return 0;
 }
 

@@ -5,7 +5,9 @@
 //! STOA84–85: named-cast peeks for glow_run dispatch.
 //! STOA86: TAME tidy — assert contracts, u32 spans, split lex steps.
 //! STOA93: cross-desk named-cast parse joins the lexer→lower seam
-//! (`cross_desk_parts`); other lowers may still parse bytes.
+//! (`cross_desk_parts`).
+//! STOA94: same-desk named-cast mold-body span via `named_cast_parts`;
+//! other lowers may still parse bytes.
 //!
 //!   +$  xact-mold
 //!     $%  [%mint amount=@u32]
@@ -286,38 +288,58 @@ fn first_content(toks: []const Token) ?Token {
     return null;
 }
 
-/// First token of the last non-empty Glow line.
-fn last_line_head(toks: []const Token) ?Token {
-    if (toks.len == 0) return null;
-    var i: u32 = @intCast(toks.len);
-    // Skip trailing newlines.
-    while (i > 0 and toks[i - 1].kind == .newline) : (i -= 1) {}
-    if (i == 0) return null;
-    // Walk back to the newline that opens this line.
-    var j = i;
-    while (j > 0 and toks[j - 1].kind != .newline) : (j -= 1) {}
-    assert(j < i); // invariant: last line has at least one content token
-    return toks[j];
-}
-
 fn rune2_is(src: []const u8, tok: Token, lit: []const u8) bool {
     if (tok.kind != .rune2) return false;
     return std.mem.eql(u8, slice_of(src, tok), lit);
 }
 
-/// True when the token stream is a same-desk named-cast desk:
-/// 4–5 Glow lines, head `+$`, last line head `^-` (STOA84 peek).
-pub fn looks_like_named_cast(src: []const u8) bool {
+/// Spans into `src` for a same-desk named-cast desk (STOA94).
+/// `mold_start`/`mold_len` cover bytes before the `^-` line (`+$` … `==`).
+pub const NamedCastParts = struct {
+    mold_start: u32 = 0,
+    mold_len: u32 = 0,
+    cast_mold: Token = .{},
+};
+
+/// 4–5 Glow lines: head `+$`, last line `^- <mold-name>`, no cast-line junk.
+/// Returns null when the shape fails — peek and lower share this gate.
+pub fn named_cast_parts(src: []const u8) ?NamedCastParts {
     var buf: [max_tokens]Token = undefined;
-    const n = tokenize(src, &buf) catch return false;
+    const n = tokenize(src, &buf) catch return null;
     assert(n <= max_tokens); // postcondition: tokenize bound
     const toks = buf[0..n];
     const lines = glow_line_count(toks);
-    if (lines < 4 or lines > 5) return false;
-    const head = first_content(toks) orelse return false;
-    if (!rune2_is(src, head, "+$")) return false;
-    const last = last_line_head(toks) orelse return false;
-    return rune2_is(src, last, "^-");
+    if (lines < 4 or lines > 5) return null;
+    const head = first_content(toks) orelse return null;
+    if (!rune2_is(src, head, "+$")) return null;
+
+    var end: u32 = n;
+    while (end > 0 and toks[end - 1].kind == .newline) : (end -= 1) {}
+    if (end == 0) return null;
+    var line_start = end;
+    while (line_start > 0 and toks[line_start - 1].kind != .newline) : (line_start -= 1) {}
+    assert(line_start < end); // invariant: last line has content
+    if (!rune2_is(src, toks[line_start], "^-")) return null;
+    if (line_start + 1 >= end) return null;
+    const cast_mold = toks[line_start + 1];
+    if (cast_mold.kind != .ident and cast_mold.kind != .aura) return null;
+    var k = line_start + 2;
+    while (k < end) : (k += 1) {
+        if (toks[k].kind != .newline) return null;
+    }
+    const mold_len = toks[line_start].start;
+    if (mold_len == 0) return null;
+    assert(mold_len <= @as(u32, @intCast(src.len))); // span inside src
+    return .{
+        .mold_start = 0,
+        .mold_len = mold_len,
+        .cast_mold = cast_mold,
+    };
+}
+
+/// True when the token stream is a same-desk named-cast desk (STOA84 peek · STOA94 parse).
+pub fn looks_like_named_cast(src: []const u8) bool {
+    return named_cast_parts(src) != null;
 }
 
 /// Spans into `src` for a cross-desk named-cast consumer desk (STOA93).
