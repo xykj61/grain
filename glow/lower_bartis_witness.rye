@@ -194,6 +194,22 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("lower: pair-mold argv refused SampleDoesNotNest -- GREEN\n", .{});
 
+    // STOA133: count-mold argv identity beside fixture.
+    const count_argv_src = "|=  sample=count-mold\nsample\n";
+    const n_cnt_argv = try lower.lower_source_argv_sample(count_argv_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n_cnt_argv], "count-mold") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_cnt_argv], "minimal.args") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_cnt_argv], "parseInt(u32") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_cnt_argv], "const sample: u32 = 5") == null);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_count_argv.rye", .data = buf[0..n_cnt_argv] });
+    print("lower: count-mold argv emit reads minimal.args / parseInt(u32) -- GREEN\n", .{});
+
+    const gen_cnt_u32 = try cwd.readFileAlloc(io, "glow/gen/gate-count-u32.glow", a, .limited(4096));
+    const spec_cnt_u32 = try rb.parse_source(gen_cnt_u32);
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_cnt_u32), "count-mold"));
+    assert(spec_cnt_u32.body == .identity);
+    print("lower: glow/gen/gate-count-u32.glow carries count-mold argv -- GREEN\n", .{});
+
     // STOA123: kind-mold identity lowers as KindMold.
     const kind_src = "|=  sample=kind-mold\nsample\n";
     const n_kind = try lower.lower_source_welcome(kind_src, &buf);
@@ -379,7 +395,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("lower: glow/gen/gate-count.glow carries count-mold -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: Glow `|=` bartis — identity · argv · call-body · amount-mold · amount argv · count-mold · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · pair flip · nesting-nests (STOA100–132).\n", .{});
+    print("GREEN: Glow `|=` bartis — identity · argv · call-body · amount-mold · amount argv · count-mold · count argv · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · pair flip · nesting-nests (STOA100–133).\n", .{});
     return 0;
 }
 

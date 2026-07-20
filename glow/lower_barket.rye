@@ -14,6 +14,7 @@
 //! STOA129: `xfer-mold` call body `%-  flip` → XferMold switch · baked mint/5/3 → `.send`.
 //! STOA131: `pair-mold` call body `%-  flip` → PairMold swap · baked 5/3 → 3/5.
 //! STOA132: `amount-mold` argv identity — generator beside fixture (u32-shaped named mold).
+//! STOA133: `count-mold` argv identity — twin generator beside fixture.
 //! Gate function named `barket_gate`. Ambient gold held.
 
 const std = @import("std");
