@@ -95,8 +95,16 @@ const sockaddr_in = extern struct {
     sin_zero: [8]u8 = .{0} ** 8,
 };
 
-/// Armed TX: BINDTODEVICE + UDP broadcast of the framed payload.
+const SO_BROADCAST: c_int = 6;
+
+/// Armed TX: BINDTODEVICE + UDP of the framed payload to `dest`.
+/// Host supplies the iface default gateway (Pixel tether peer); limited
+/// broadcast 255.255.255.255 often needs CAP_NET_RAW and is a fallback only.
 pub fn attempt_iface_tx(mode: setu6.LabMode, iface: []const u8) TxReport {
+    return attempt_iface_tx_to(mode, iface, .{ 255, 255, 255, 255 });
+}
+
+pub fn attempt_iface_tx_to(mode: setu6.LabMode, iface: []const u8, dest: [4]u8) TxReport {
     var frame: [setu3.max_frame]u8 = undefined;
     var report = gate_prepare(mode, iface, &frame);
     if (report.result != .prepared) return report;
@@ -114,6 +122,7 @@ pub fn attempt_iface_tx(mode: setu6.LabMode, iface: []const u8) TxReport {
 
     const yes: c_int = 1;
     _ = c.setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &yes, @sizeOf(c_int));
+    _ = c.setsockopt(fd, SOL_SOCKET, SO_BROADCAST, &yes, @sizeOf(c_int));
     var ifname: [setu6.iface_name_max + 1]u8 = .{0} ** (setu6.iface_name_max + 1);
     tally_copy.copy_disjoint(u8, ifname[0..iface.len], iface);
     if (c.setsockopt(fd, SOL_SOCKET, SO_BINDTODEVICE, &ifname, @intCast(iface.len + 1)) != 0) {
@@ -121,7 +130,10 @@ pub fn attempt_iface_tx(mode: setu6.LabMode, iface: []const u8) TxReport {
         return report;
     }
 
-    var addr = sockaddr_in{ .sin_port = std.mem.nativeToBig(u16, lab_tx_port) };
+    var addr = sockaddr_in{
+        .sin_port = std.mem.nativeToBig(u16, lab_tx_port),
+        .sin_addr = dest,
+    };
     const sent = c.sendto(
         fd,
         frame[0..report.frame_len].ptr,
