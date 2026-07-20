@@ -26,8 +26,8 @@ let dec_bin = "glow/bin/gate_barket_dec_welcome"
 let dec_argv_rye = "glow/.cache/gate_barket_dec_argv.rye"
 let dec_argv_bin = "glow/bin/gate_barket_dec_argv"
 
-let tame_pin = run ["sh" "-c" "grep -F 'STOA128' ${tame}"]
-assert tame_pin.ok else "TAME missing STOA128 xact-mold flip call-body"
+let tame_pin = run ["sh" "-c" "grep -F 'STOA129' ${tame}"]
+assert tame_pin.ok else "TAME missing STOA129 xfer-mold flip call-body"
 
 let has_lower = run ["sh" "-c" "test -f glow/lower_barket.rye; echo $?"]
 assert trim has_lower.out == "0" else "glow/lower_barket.rye must exist"
@@ -70,6 +70,8 @@ assert selftest.out contains "call-body flip" else "lower_barket_witness missing
 assert selftest.out contains "gate-barket-kind-flip.glow" else "lower_barket_witness missing kind-flip desk"
 assert selftest.out contains "gate-barket-xact-flip.glow" else "lower_barket_witness missing xact-flip desk"
 assert selftest.out contains "xact-mold call-body flip" else "lower_barket_witness missing xact flip claim"
+assert selftest.out contains "gate-barket-xfer-flip.glow" else "lower_barket_witness missing xfer-flip desk"
+assert selftest.out contains "xfer-mold call-body flip" else "lower_barket_witness missing xfer flip claim"
 
 let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
 assert build_welcome.ok else "barket welcome .rye build failed: ${build_welcome.err}${build_welcome.out}"
@@ -229,4 +231,13 @@ let run_xf = run ["sh" "-c" "${xact_flip_bin}; echo EXIT:$?"]
 assert run_xf.ok else "barket xact-mold flip welcome binary failed to launch"
 assert run_xf.out contains "EXIT:0" else "barket xact-mold flip welcome binary did not exit 0"
 
-say "GREEN: Glow barket lower — identity · argv · call-body · amount-mold · count-mold · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · pair-mold · wet-through-nests; STOA113–128."
+# STOA129: xfer-mold flip call-body welcome binary exits 0.
+let xfer_flip_rye = "glow/.cache/gate_barket_xfer_flip_welcome.rye"
+let xfer_flip_bin = "glow/bin/gate_barket_xfer_flip_welcome"
+let build_xff = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${xfer_flip_rye} -femit-bin=${xfer_flip_bin}"]
+assert build_xff.ok else "barket xfer-mold flip welcome .rye build failed: ${build_xff.err}${build_xff.out}"
+let run_xff = run ["sh" "-c" "${xfer_flip_bin}; echo EXIT:$?"]
+assert run_xff.ok else "barket xfer-mold flip welcome binary failed to launch"
+assert run_xff.out contains "EXIT:0" else "barket xfer-mold flip welcome binary did not exit 0"
+
+say "GREEN: Glow barket lower — identity · argv · call-body · amount-mold · count-mold · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · wet-through-nests; STOA113–129."

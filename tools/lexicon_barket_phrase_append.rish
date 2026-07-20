@@ -1,0 +1,43 @@
+# lexicon_barket_phrase_append.rish — append a phrase on the LEXICON Barket row
+#
+# Replaces ephemeral python heredocs used during STOA pin sends. Reads the
+# exact phrase to insert from tools/.cache/lexicon_barket_phrase.txt and
+# places it immediately before " Horizon wording" on the Barket definition
+# line in context/LEXICON.md.
+#
+#   mkdir -p tools/.cache
+#   printf '%s' '; xfer-mold flip call-body as of STOA129.' \
+#     > tools/.cache/lexicon_barket_phrase.txt
+#   rishi/bin/rishi run tools/lexicon_barket_phrase_append.rish
+
+let lexicon = "context/LEXICON.md"
+let phrase_file = "tools/.cache/lexicon_barket_phrase.txt"
+let awk_prog = "tools/fixtures/lexicon_barket_phrase_append.awk"
+
+let have_lex = run ["test" "-f" lexicon]
+assert have_lex.ok else "context/LEXICON.md missing"
+
+let have_phrase = run ["test" "-f" phrase_file]
+assert have_phrase.ok else "missing ${phrase_file} — write the exact insert phrase first"
+
+let have_awk = run ["test" "-f" awk_prog]
+assert have_awk.ok else "missing ${awk_prog}"
+
+let phrase = read-file phrase_file
+assert (phrase contains "STOA") else "phrase file should name a STOA claim"
+
+let before = run ["md5sum" lexicon]
+assert before.ok else "could not checksum context/LEXICON.md"
+
+let apply = run ["sh" "-c" "PHRASE_FILE=${phrase_file} awk -f ${awk_prog} ${lexicon} > ${lexicon}.tmp && mv ${lexicon}.tmp ${lexicon}"]
+assert apply.ok else "lexicon_barket_phrase_append awk failed: ${apply.err}${apply.out}"
+
+let after = run ["md5sum" lexicon]
+assert after.ok else "could not checksum context/LEXICON.md after append"
+assert after.out != before.out else "context/LEXICON.md unchanged — Barket Horizon wording marker missing?"
+
+let check = run ["sh" "-c" "grep -F '**Barket**' ${lexicon}"]
+assert check.ok else "Barket row missing after append"
+assert check.out contains "STOA129" else "Barket row missing STOA129 after append"
+
+say "GREEN: context/LEXICON.md Barket row appended phrase from ${phrase_file}."
