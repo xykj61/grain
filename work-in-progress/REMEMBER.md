@@ -6,7 +6,8 @@
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5** · HOLD0–HOLD1 · HOLD-W  
 **Language nib:** **STOA0–82** GREEN · STOA83 open  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W · STOA0–82  
-**Git nib:** *(pin after seat)* STOA82 payload $% named-cast  
+**Git nib:** `6df7cff43b` STOA82 payload $% named-cast  
+ 
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`
 
 ---
