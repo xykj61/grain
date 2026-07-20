@@ -1,10 +1,10 @@
-//! glow/rune_barket.rye — parses Glow's `|^` barket (STOA112–115).
+//! glow/rune_barket.rye — parses Glow's `|^` barket (STOA112–116).
 //!
 //! Dry-shaped demo: `|^  sample=@u32` header, then either:
 //!   - header-only (STOA112)
 //!   - identity body face (STOA113)
-//!   - call body: `%-  double  <sample-face>` (STOA115)
-//! Closed demo gate this lap: `double` only (inc/dec held).
+//!   - call body: `%-  <gate>  <sample-face>` (STOA115–116)
+//! Closed demo gates: `double` · `inc` · `dec` (same pins as bartis STOA103–104).
 //! Sample aura nests under `@u32` via nest_type; wet/gold accept held.
 //! Token-driven via tokens.rye. Named-mold barket samples held.
 
@@ -60,7 +60,7 @@ pub fn gate_slice(spec: *const BarketSpec) []const u8 {
 
 /// True when `gate` is a closed demo one-arg gate accepted in a barket call body.
 pub fn is_closed_call_gate(gate: []const u8) bool {
-    return std.mem.eql(u8, gate, "double");
+    return std.mem.eql(u8, gate, "double") or std.mem.eql(u8, gate, "inc") or std.mem.eql(u8, gate, "dec");
 }
 
 /// Parse a barket source into a BarketSpec.
