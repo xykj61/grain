@@ -10,6 +10,7 @@
 //! STOA125: `xfer-mold` identity lowers as `XferMold` union · baked `.mint` from 5 amount 3.
 //! STOA126: `pair-mold` identity lowers as `PairMold` struct · baked from 5 amount 3.
 //! STOA134: `triple-mold` identity lowers as `TripleMold` struct · baked from 5 amount 3 fee 1.
+//! STOA135: `quad-mold` identity lowers as `QuadMold` struct · baked from 5 amount 3 fee 1 nonce 2.
 //! STOA127: `kind-mold` call body `%-  flip` → KindMold switch · baked `.mint` → `.send`.
 //! STOA128: `xact-mold` call body `%-  flip` → XactMold switch · baked mint/5 → `.send`.
 //! STOA129: `xfer-mold` call body `%-  flip` → XferMold switch · baked mint/5/3 → `.send`.
@@ -39,6 +40,11 @@ pub const barket_pair_demo_amount: u32 = 3;
 pub const barket_triple_demo_from: u32 = 5;
 pub const barket_triple_demo_amount: u32 = 3;
 pub const barket_triple_demo_fee: u32 = 1;
+/// Baked four-field quad (matches mold-quad welcome · STOA135).
+pub const barket_quad_demo_from: u32 = 5;
+pub const barket_quad_demo_amount: u32 = 3;
+pub const barket_quad_demo_fee: u32 = 1;
+pub const barket_quad_demo_nonce: u32 = 2;
 
 fn zig_safe_ident(face: []const u8, out: *[rb.max_face_len]u8) LowerError!u32 {
     assert(face.len <= rb.max_face_len); // precondition: face within name budget
@@ -118,6 +124,11 @@ fn is_pair_sample(spec: *const rb.BarketSpec) bool {
 fn is_triple_sample(spec: *const rb.BarketSpec) bool {
     if (spec.mold_name_len == 0) return false;
     return nest_type.is_triple_named_mold(rb.mold_name_slice(spec));
+}
+
+fn is_quad_sample(spec: *const rb.BarketSpec) bool {
+    if (spec.mold_name_len == 0) return false;
+    return nest_type.is_quad_named_mold(rb.mold_name_slice(spec));
 }
 
 fn emit_prelude(out: []u8, used: *u32) LowerError!void {
@@ -294,6 +305,28 @@ fn emit_triple_identity(out: []u8, zface: []const u8, comment: []const u8) Lower
     return used;
 }
 
+/// STOA135: closed four-field `$:` quad-mold → QuadMold struct · baked 5/3/1/2.
+fn emit_quad_identity(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
+    var used: u32 = 0;
+    try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
+    try append_print(out, &used, "pub const QuadMold = struct {{\n", .{});
+    try append_print(out, &used, "    from: u32 = 0,\n", .{});
+    try append_print(out, &used, "    amount: u32 = 0,\n", .{});
+    try append_print(out, &used, "    fee: u32 = 0,\n", .{});
+    try append_print(out, &used, "    nonce: u32 = 0,\n", .{});
+    try append_print(out, &used, "}};\n\n", .{});
+    try append_print(out, &used, "/// {s}\n", .{comment});
+    try append_print(out, &used, "fn barket_gate({s}: QuadMold) QuadMold {{\n", .{zface});
+    try append_print(out, &used, "    return {s};\n", .{zface});
+    try append_print(out, &used, "}}\n\n", .{});
+    try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
+    try append_print(out, &used, "    const {s}: QuadMold = .{{ .from = {d}, .amount = {d}, .fee = {d}, .nonce = {d} }};\n", .{ zface, barket_quad_demo_from, barket_quad_demo_amount, barket_quad_demo_fee, barket_quad_demo_nonce });
+    try append_print(out, &used, "    const got = barket_gate({s});\n", .{zface});
+    try append_print(out, &used, "    return if (got.from == {d} and got.amount == {d} and got.fee == {d} and got.nonce == {d}) 0 else 1;\n", .{ barket_quad_demo_from, barket_quad_demo_amount, barket_quad_demo_fee, barket_quad_demo_nonce });
+    try append_print(out, &used, "}}\n", .{});
+    return used;
+}
+
 /// STOA131: closed multi-field `$:` pair-mold call body → PairMold flip · baked 3/5.
 fn emit_pair_call_body(out: []u8, zface: []const u8, gate: []const u8, comment: []const u8) LowerError!u32 {
     assert(rb.is_pair_call_gate(gate)); // parse/lower pin — flip only today
@@ -423,6 +456,13 @@ fn emit(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
         return emit_triple_identity(out, zface, comment);
     }
 
+    if (is_quad_sample(spec)) {
+        if (spec.body == .call_one) return error.BodyGateNotYetLowered;
+        var comment_buf: [160]u8 = undefined;
+        const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` barket — QuadMold identity (STOA135).", .{ face, mold }) catch return error.Overflow;
+        return emit_quad_identity(out, zface, comment);
+    }
+
     const expect = try expect_for(spec);
     var used: u32 = 0;
 
@@ -450,7 +490,7 @@ fn emit(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
 }
 
 fn emit_argv(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
-    if (is_kind_sample(spec) or is_xact_sample(spec) or is_xfer_sample(spec) or is_pair_sample(spec) or is_triple_sample(spec)) return error.SampleDoesNotNest;
+    if (is_kind_sample(spec) or is_xact_sample(spec) or is_xfer_sample(spec) or is_pair_sample(spec) or is_triple_sample(spec) or is_quad_sample(spec)) return error.SampleDoesNotNest;
     const face = rb.face_slice(spec);
     assert(face.len > 0); // invariant: spec carries a non-empty face
     const mold = sample_mold_label(spec);

@@ -1,0 +1,8 @@
+::  Multi-field +$ / $: four @u32 fields (STOA135).
+::  Lowered by glow/lower_mold.rye into ordinary Rye; Rishi stays the shell.
++$  quad-mold
+  $:  from=@u32
+      amount=@u32
+      fee=@u32
+      nonce=@u32
+  ==

@@ -289,12 +289,27 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(spec_triple.body == .identity);
     print("lower: glow/gen/gate-triple.glow carries triple-mold -- GREEN\n", .{});
 
-    if (lower.lower_source_welcome("|=  sample=quad-mold\nsample\n", &buf)) |_| {
-        return error.QuadMoldLoweredTooSoon;
+    // STOA135: quad-mold identity lowers as QuadMold.
+    const quad_src = "|=  sample=quad-mold\nsample\n";
+    const n_quad = try lower.lower_source_welcome(quad_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n_quad], "bartis_gate") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_quad], "QuadMold") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_quad], "nonce") != null);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_quad_welcome.rye", .data = buf[0..n_quad] });
+    print("lower: quad-mold bartis lowers to QuadMold identity -- GREEN\n", .{});
+
+    const gen_quad = try cwd.readFileAlloc(io, "glow/gen/gate-quad.glow", a, .limited(4096));
+    const spec_quad = try rb.parse_source(gen_quad);
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_quad), "quad-mold"));
+    assert(spec_quad.body == .identity);
+    print("lower: glow/gen/gate-quad.glow carries quad-mold -- GREEN\n", .{});
+
+    if (lower.lower_source_welcome("|=  sample=penta-mold\nsample\n", &buf)) |_| {
+        return error.PentaMoldLoweredTooSoon;
     } else |err| {
         if (err != lower.LowerError.SampleDoesNotNest) return err;
     }
-    print("lower: quad-mold bartis refused SampleDoesNotNest -- GREEN\n", .{});
+    print("lower: penta-mold bartis refused SampleDoesNotNest -- GREEN\n", .{});
 
     if (lower.lower_source_welcome("|=  sample=triple-mold\n%-  flip  sample\n", &buf)) |_| {
         return error.TripleFlipCallBodyLoweredTooSoon;
@@ -309,6 +324,20 @@ fn run_selftest(init: std.process.Init) !u8 {
         if (err != lower.LowerError.SampleDoesNotNest) return err;
     }
     print("lower: triple-mold argv refused SampleDoesNotNest -- GREEN\n", .{});
+
+    if (lower.lower_source_welcome("|=  sample=quad-mold\n%-  flip  sample\n", &buf)) |_| {
+        return error.QuadFlipCallBodyLoweredTooSoon;
+    } else |err| {
+        if (err != lower.LowerError.BodyGateNotYetLowered) return err;
+    }
+    print("lower: quad-mold flip call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
+
+    if (lower.lower_source_argv_sample("|=  sample=quad-mold\nsample\n", &buf)) |_| {
+        return error.QuadArgvLoweredTooSoon;
+    } else |err| {
+        if (err != lower.LowerError.SampleDoesNotNest) return err;
+    }
+    print("lower: quad-mold argv refused SampleDoesNotNest -- GREEN\n", .{});
 
     // STOA127: kind-mold flip call-body lowers as KindMold switch · baked .send.
     const kind_flip_src = "|=  sample=kind-mold\n%-  flip  sample\n";
@@ -424,7 +453,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("lower: glow/gen/gate-count.glow carries count-mold -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: Glow `|=` bartis — identity · argv · call-body · amount-mold · amount argv · count-mold · count argv · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · pair flip · triple-mold · nesting-nests (STOA100–134).\n", .{});
+    print("GREEN: Glow `|=` bartis — identity · argv · call-body · amount-mold · amount argv · count-mold · count argv · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · pair flip · triple-mold · quad-mold · nesting-nests (STOA100–135).\n", .{});
     return 0;
 }
 

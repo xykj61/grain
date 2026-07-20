@@ -75,7 +75,7 @@
 | **STOA71** | NativeActivity-path Glow import seam | `stoa71_glow_import_seam_witness` | **GREEN** `20260719.182120` |
 | **STOA72** | NativeActivity APK Glow import wire | `stoa72_glow_apk_import_witness` · pack | **GREEN** `20260719.182648` |
 | **STOA73** | product-root write + Pixel install (expect 5) | write · `stoa73_…_install_onpath_host` | **GREEN** write `184836` · eyes `191719` |
-| **STOA74–75** | `+$` / `$:` `@u32` mold (1–3 fields) | `glow_rune_mold` · `glow_lower_mold` · desk | **GREEN** `190825` · `192241` |
+| **STOA74–75** | `+$` / `$:` `@u32` mold (1–4 fields · capacity through STOA135) | `glow_rune_mold` · `glow_lower_mold` · desk | **GREEN** `190825` · `192241` |
 | **STOA76–83** | `$%` · cast · payload · multi · tag/pay · token stream | mold · named-cast · tokens | **GREEN** `192936`…`200706` |
 | **STOA84–105** | Cast · alphabet · G4–G5 · bartis tidy | tokens · G5 · bartis | **GREEN** `201027`…`042300` |
 | **STOA106** | Nest/type surface wording (nesting samples) | `glow_nest_type_surface_witness` | **GREEN** `20260720.042931` |
@@ -107,4 +107,5 @@
 | **STOA132** | Amount-mold argv sample | `glow_barket_lower_witness` · bartis · glow_run | **GREEN** `20260720.193805` |
 | **STOA133** | Count-mold argv sample | `glow_barket_lower_witness` · bartis · glow_run | **GREEN** `20260720.194143` |
 | **STOA134** | Triple-mold gate sample | `glow_nest_type_witness` · barket · bartis | **GREEN** `20260720.194437` |
+| **STOA135** | Quad-mold gate sample | `glow_nest_type_witness` · barket · bartis | **GREEN** `20260720.195131` |
 Smoke: `glow_barket_lower_witness` · `glow_barket_parse_witness` · `glow_nest_type_witness` · `glow_lower_bartis_witness` · Sibling: **ZETA** · **LULU** · **SETU** · **TUBE**.

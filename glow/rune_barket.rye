@@ -19,8 +19,9 @@
 //! STOA129: closed call-body under xfer-mold — `flip` (mint↔send).
 //! STOA131: closed call-body under pair-mold — `flip` (from↔amount).
 //! STOA134: closed allowlist adds three-field `$:` `triple-mold` (identity lower).
+//! STOA135: closed allowlist adds four-field `$:` `quad-mold` (identity lower).
 //! Sample nests under `@u32` / named allowlist via nest_type; ambient gold held.
-//! Token-driven via tokens.rye. Open `$:` beyond triple barket samples held.
+//! Token-driven via tokens.rye. Open `$:` beyond quad barket samples held.
 
 const std = @import("std");
 const assert = std.debug.assert;
