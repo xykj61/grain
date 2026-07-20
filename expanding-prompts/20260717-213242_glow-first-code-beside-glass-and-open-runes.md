@@ -74,10 +74,10 @@ From the sameness rune brief. These are the heads an Acme reader should treat as
 | **Cells** | `:-`/`:+`/`:^`/`:~` **GREEN STOA2–5** |
 | **Molds** | thin `+$` / `$:` **STOA74** · multi-field `@u32` **STOA75** · thin `$%` **STOA76** · named-cast **STOA77** · `$%` payload **STOA78** · cross-desk cast **STOA79** · multi-face `$%` **STOA80** · tagged cast **STOA81** · payload cast **STOA82** · Sala later |
 | **Hints / jets** | `~%` `~/` (+ jet witnesses) |
-| **Nest / surface** | richer multi-line nest values · general token stream · deeper product desks |
+| **Nest / surface** | richer multi-line nest values · bounded token stream **STOA83** · wire `glow_run` onto tokens · deeper product desks |
 | **Auras** | `@ux` · `@p` · `@da` · `@t` (unsigned `@uN` only today) |
 
-**Glass-critical gap in one line:** Skate paint + Dexter drain + JABS chat still need richer arm bodies and fuller molds. **STOA71–74** GREEN: glass import path through product-root write, plus thin `+$` / `$:` `@u32` mold. Pixel product-root install eyes GREEN · molds through `$%` **STOA76** · same-desk named-cast **STOA77** · `$%` payload arms **STOA78** · cross-desk cast **STOA79** · multi-face `$%` **STOA80** · tagged named-cast **STOA81** · payload `$%` cast **STOA82**. Sala B0-in-Glow · general token stream stay **STOA83+**.
+**Glass-critical gap in one line:** Skate paint + Dexter drain + JABS chat still need richer arm bodies and fuller molds. **STOA71–74** GREEN: glass import path through product-root write, plus thin `+$` / `$:` `@u32` mold. Pixel product-root install eyes GREEN · molds through `$%` **STOA76** · same-desk named-cast **STOA77** · `$%` payload arms **STOA78** · cross-desk cast **STOA79** · multi-face `$%` **STOA80** · tagged named-cast **STOA81** · payload `$%` cast **STOA82** · bounded token stream **STOA83**. Sala B0-in-Glow · wiring `glow_run` onto tokens stay **STOA84+**.
 
 ---
 
