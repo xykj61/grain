@@ -2,11 +2,11 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Rule: [`.cursor/rules/remember.mdc`](../.cursor/rules/remember.mdc) · [`.claude/rules/remember.md`](../.claude/rules/remember.md).*
 
-**Last refreshed:** `20260720.194437` (UTC cloud) · voice Quin  
+**Last refreshed:** `20260720.195131` (UTC cloud) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5** · HOLD0–HOLD1 · HOLD-W  
 **Language nib:** **STOA0–134** GREEN · STOA135 open  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W · STOA0–134  
-**Git nib:** *(pin after send)* — STOA134 triple-mold gate  
+**Git nib:** `5dc52a407b` — STOA134 triple-mold gate  
 
 
 **Season:** Cursor iOS / cloud — **Glow language TAME only** (no adb). Handoff [`20260719-204650_cursor-ios-handoff-glow-language.md`](20260719-204650_cursor-ios-handoff-glow-language.md).  
@@ -17,7 +17,7 @@
 ## Now (language)
 
 **STOA134** seated · triple-mold gate identity (`TripleMold` · baked 5/3/1).  
-**STOA135** next — compass pick: gold · tagged/pair/triple argv · call-body under triple · quad-mold (Sala B0 Framework).
+**STOA135** next — lean A map: **quad-mold** gate identity (Sala B0 Framework).
 
 ```bash
 rishi/bin/rishi run tools/glow_nest_type_witness.rish
@@ -61,7 +61,7 @@ $ADB install -r tools/.cache/tube05/sala-broadcaster.apk
 
 | Door | Kind |
 |------|------|
-| **STOA135** gold · tagged/pair/triple argv · call-body under triple · quad-mold | **open** — thicker doors; Sala B0 Framework |
+| **STOA135** quad-mold gate identity (lean A) · call-body under triple · tagged argv · gold held | **open** — map seated; Sala B0 Framework |
 | Glow nesting syntax · ambient gold | **held** |
 | Live SETU6.5 **sent** on usb0/ncm | **check-in** — Framework host |
 | JABS3 · TAME Lap 3 | **check-in** |
