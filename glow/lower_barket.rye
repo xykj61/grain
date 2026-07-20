@@ -1,8 +1,9 @@
-//! glow/lower_barket.rye — lower a thin `|^` barket to runnable `.rye` (STOA113–116).
+//! glow/lower_barket.rye — lower a thin `|^` barket to runnable `.rye` (STOA113–117).
 //!
 //! Identity: `|^  sample=@u32` / `sample` — returns sample (STOA113).
 //! Argv identity: reads one `@u32` from process argv (STOA114).
 //! Call body: double → *% 2 (STOA115) · inc → +% 1 · dec → -% 1 (STOA116).
+//! STOA117: TAME tidy — assert · u32 · append_print · split emitters.
 //! Gate function named `barket_gate`. Wet/gold accept held.
 
 const std = @import("std");
@@ -66,11 +67,33 @@ fn expect_for(spec: *const rb.BarketSpec) LowerError!u32 {
     };
 }
 
+fn emit_prelude(out: []u8, used: *u32) LowerError!void {
+    try append_print(out, used, "const std = @import(\"std\");\n\n", .{});
+}
+
 fn emit_gate_fn(out: []u8, used: *u32, zface: []const u8, body_return: []const u8, comment: []const u8) LowerError!void {
     try append_print(out, used, "/// {s}\n", .{comment});
     try append_print(out, used, "fn barket_gate({s}: u32) u32 {{\n", .{zface});
     try append_print(out, used, "    return {s};\n", .{body_return});
     try append_print(out, used, "}}\n\n", .{});
+}
+
+fn emit_welcome_main(out: []u8, used: *u32, zface: []const u8, expect: u32) LowerError!void {
+    try append_print(out, used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
+    try append_print(out, used, "    const {s}: u32 = {d};\n", .{ zface, barket_demo_sample });
+    try append_print(out, used, "    return if (barket_gate({s}) == {d}) 0 else 1;\n", .{ zface, expect });
+    try append_print(out, used, "}}\n", .{});
+}
+
+fn emit_argv_main(out: []u8, used: *u32, zface: []const u8, expect_expr: []const u8) LowerError!void {
+    try append_print(out, used, "pub fn main(init: std.process.Init) !u8 {{\n", .{});
+    try append_print(out, used, "    const alloc = init.arena.allocator();\n", .{});
+    try append_print(out, used, "    const argv = try init.minimal.args.toSlice(alloc);\n", .{});
+    try append_print(out, used, "    if (argv.len < 2) return 2;\n", .{});
+    try append_print(out, used, "    const {s} = std.fmt.parseInt(u32, argv[1], 10) catch return 2;\n", .{zface});
+    try append_print(out, used, "    const expect: u32 = {s};\n", .{expect_expr});
+    try append_print(out, used, "    return if (barket_gate({s}) == expect) 0 else 1;\n", .{zface});
+    try append_print(out, used, "}}\n", .{});
 }
 
 fn emit(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
@@ -82,16 +105,13 @@ fn emit(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
     const expect = try expect_for(spec);
     var used: u32 = 0;
 
-    try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
+    try emit_prelude(out, &used);
     switch (spec.body) {
         .header_only, .identity => {
             var comment_buf: [160]u8 = undefined;
             const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}=@u32` barket — identity (STOA113).", .{face}) catch return error.Overflow;
             try emit_gate_fn(out, &used, zface, zface, comment);
-            try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
-            try append_print(out, &used, "    const {s}: u32 = {d};\n", .{ zface, barket_demo_sample });
-            try append_print(out, &used, "    return if (barket_gate({s}) == {d}) 0 else 1;\n", .{ zface, expect });
-            try append_print(out, &used, "}}\n", .{});
+            try emit_welcome_main(out, &used, zface, expect);
         },
         .call_one => {
             const gate = rb.gate_slice(spec);
@@ -102,10 +122,7 @@ fn emit(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
             var comment_buf: [192]u8 = undefined;
             const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}=@u32` / `%-  {s}  {s}` — call body (STOA115–116).", .{ face, gate, face }) catch return error.Overflow;
             try emit_gate_fn(out, &used, zface, body_return, comment);
-            try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
-            try append_print(out, &used, "    const {s}: u32 = {d};\n", .{ zface, barket_demo_sample });
-            try append_print(out, &used, "    return if (barket_gate({s}) == {d}) 0 else 1;\n", .{ zface, expect });
-            try append_print(out, &used, "}}\n", .{});
+            try emit_welcome_main(out, &used, zface, expect);
         },
     }
     return used;
@@ -119,20 +136,13 @@ fn emit_argv(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
     const zface = zig_face_buf[0..@as(usize, @intCast(zn))];
     var used: u32 = 0;
 
-    try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
+    try emit_prelude(out, &used);
     switch (spec.body) {
         .header_only, .identity => {
             var comment_buf: [160]u8 = undefined;
             const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}=@u32` barket — argv sample (STOA114).", .{face}) catch return error.Overflow;
             try emit_gate_fn(out, &used, zface, zface, comment);
-            try append_print(out, &used, "pub fn main(init: std.process.Init) !u8 {{\n", .{});
-            try append_print(out, &used, "    const alloc = init.arena.allocator();\n", .{});
-            try append_print(out, &used, "    const argv = try init.minimal.args.toSlice(alloc);\n", .{});
-            try append_print(out, &used, "    if (argv.len < 2) return 2;\n", .{});
-            try append_print(out, &used, "    const {s} = std.fmt.parseInt(u32, argv[1], 10) catch return 2;\n", .{zface});
-            try append_print(out, &used, "    const expect: u32 = {s};\n", .{zface});
-            try append_print(out, &used, "    return if (barket_gate({s}) == expect) 0 else 1;\n", .{zface});
-            try append_print(out, &used, "}}\n", .{});
+            try emit_argv_main(out, &used, zface, zface);
         },
         .call_one => {
             const gate = rb.gate_slice(spec);
@@ -145,14 +155,7 @@ fn emit_argv(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
             var comment_buf: [192]u8 = undefined;
             const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}=@u32` / `%-  {s}  {s}` — argv call body (STOA115–116).", .{ face, gate, face }) catch return error.Overflow;
             try emit_gate_fn(out, &used, zface, body_return, comment);
-            try append_print(out, &used, "pub fn main(init: std.process.Init) !u8 {{\n", .{});
-            try append_print(out, &used, "    const alloc = init.arena.allocator();\n", .{});
-            try append_print(out, &used, "    const argv = try init.minimal.args.toSlice(alloc);\n", .{});
-            try append_print(out, &used, "    if (argv.len < 2) return 2;\n", .{});
-            try append_print(out, &used, "    const {s} = std.fmt.parseInt(u32, argv[1], 10) catch return 2;\n", .{zface});
-            try append_print(out, &used, "    const expect: u32 = {s};\n", .{expect_expr});
-            try append_print(out, &used, "    return if (barket_gate({s}) == expect) 0 else 1;\n", .{zface});
-            try append_print(out, &used, "}}\n", .{});
+            try emit_argv_main(out, &used, zface, expect_expr);
         },
     }
     return used;

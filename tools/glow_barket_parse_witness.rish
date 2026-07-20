@@ -9,8 +9,8 @@ let tame = "context/TAME_GUIDANCE.md"
 let zig = "vendor/zig-toolchain/zig"
 let bin = "glow/bin/rune_barket_witness"
 
-let tame_pin = run ["sh" "-c" "grep -F 'STOA116' ${tame}"]
-assert tame_pin.ok else "TAME missing STOA116 barket call-body trio"
+let tame_pin = run ["sh" "-c" "grep -F 'STOA117' ${tame}"]
+assert tame_pin.ok else "TAME missing STOA117 barket TAME tidy"
 
 let has_parse = run ["sh" "-c" "test -f glow/rune_barket.rye; echo $?"]
 assert trim has_parse.out == "0" else "glow/rune_barket.rye must exist (STOA112)"
@@ -34,4 +34,4 @@ let tok = run ["sh" "-c" "rishi/bin/rishi run tools/glow_barket_tokenize_witness
 assert tok.ok else "glow_barket_tokenize_witness failed under barket parse"
 assert tok.out contains "GREEN" else "glow_barket_tokenize_witness not GREEN"
 
-say "GREEN: Glow barket parse — dry header · identity · call-body trio; STOA112–116."
+say "GREEN: Glow barket parse — dry header · identity · call-body trio · parse_body; STOA112–117."
