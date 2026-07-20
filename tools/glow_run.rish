@@ -3,29 +3,21 @@
 # Lower a .glow desk file to .rye, rye-build it, run the binary.
 # Glow owns the language hop; Rishi owns the shell orchestration.
 #
-#   rishi/bin/rishi run tools/glow_run.rish glow/gen/bound-tick.glow
+# Fixture (baked sample):
+#   rishi/bin/rishi run tools/glow_run.rish glow/gen/cast-u32.glow
+#
+# Generator (one @u32 sample from argv — G3 / STOA92):
+#   rishi/bin/rishi run tools/glow_run.rish glow/gen/sample-u32.glow 42
 
 let zig = "vendor/zig-toolchain/zig"
-assert (args.len == 1) else "usage: rishi run tools/glow_run.rish <file.glow>"
+assert (args.len != 0) else "usage: rishi run tools/glow_run.rish <file.glow> [<sample-u32-decimal>]"
 let glow_path = args[0]
 
-let build_driver = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/glow_run.rye -femit-bin=glow/bin/glow_run"]
-assert build_driver.ok else "glow_run driver build failed"
+# Optional sample decimal is args[1] when present — worker enforces stem rules.
+if args.len == 1 then let gate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" glow_path]
+if args.len == 2 then let gate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" glow_path args[1]]
 
-let lower = run ["sh" "-c" "glow/bin/glow_run ${glow_path}"]
-assert lower.ok else "glow_run lower failed"
-let rye_path = trim lower.out
-assert (rye_path != "") else "glow_run printed no .rye path"
-
-let stem = run ["sh" "-c" "basename '${glow_path}' .glow"]
-assert stem.ok else "basename failed"
-let bin = "glow/bin/${trim stem.out}"
-
-let build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${rye_path} -femit-bin=${bin}"]
-assert build.ok else "rye build of lowered generator failed"
-
-let run_bin = run ["sh" "-c" "${bin}; echo EXIT:$?"]
-assert run_bin.ok else "generator binary failed to launch"
-assert run_bin.out contains "EXIT:0" else "generator did not exit 0"
+assert gate.ok else "glow_run gate failed: ${gate.err}${gate.out}"
+assert gate.out contains "EXIT:0" else "generator did not exit 0"
 
 say "GREEN: glow_run — ${glow_path} lowered, built, exit 0."

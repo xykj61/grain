@@ -4,9 +4,9 @@
 
 **Last refreshed:** `20260719.223110` (Eastern) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5** · HOLD0–HOLD1 · HOLD-W  
-**Language nib:** **STOA0–91** GREEN · STOA92 open (G3 argv — in flight)  
-**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W · STOA0–91  
-**Git nib:** `1022d8cab1` STOA91 TAME alphabet pin G2 (sent)  
+**Language nib:** **STOA0–92** GREEN · STOA93 open  
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W · STOA0–92  
+**Git nib:** (refresh after send) STOA92 thin argv `@u32` G3  
 
 **Season:** Cursor iOS / cloud — **Glow language TAME only** (no adb). Handoff [`20260719-204650_cursor-ios-handoff-glow-language.md`](20260719-204650_cursor-ios-handoff-glow-language.md).  
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`
@@ -15,14 +15,19 @@
 
 ## Now (language)
 
-**STOA91** GREEN · TAME Glow pin: compact glyph alphabet + family index (G2).  
-**STOA90** GREEN · closed pronunciation table G1 (25 heads).  
-**STOA92** next — check-in (G3 argv · token lower · tidy mold · Sala B0).  
-**Cores / port:** dry cores fit TAME · wet/gold hold · L→R→G — [`../active-designing/20260719-204650_hoon-core-polymorphism-tame-and-port-order.md`](../active-designing/20260719-204650_hoon-core-polymorphism-tame-and-port-order.md).
+**STOA92** GREEN · thin generator `sample-u32.glow` reads one `@u32` from Rishi argv; fixture `cast-u32.glow` kept.  
+**STOA93** next — check-in (token-driven lower · tidy mold · Sala B0).  
+**Cores / port:** dry cores fit TAME · wet/gold hold · L→R→G.
 
-Alphabet: G0 [`../active-designing/20260719-204001_glow-rune-pronunciation-alphabet-riscv-and-generators.md`](../active-designing/20260719-204001_glow-rune-pronunciation-alphabet-riscv-and-generators.md) · G1 closed [`../active-designing/20260719-220814_glow-rune-pronunciation-closed-table.md`](../active-designing/20260719-220814_glow-rune-pronunciation-closed-table.md) · G2 pin [`../context/TAME_GUIDANCE.md`](../context/TAME_GUIDANCE.md).
+Alphabet G0–G2 · G3 plan [`../active-designing/20260720-022956_stoa92-thin-argv-sample-g3-plan.md`](../active-designing/20260720-022956_stoa92-thin-argv-sample-g3-plan.md).
 
-Hold on iOS: argv G3 · token lower · tidy mold. Defer Pixel/SETU adb to Framework outer terminal.
+```bash
+rishi/bin/rishi run tools/glow_run.rish glow/gen/cast-u32.glow
+rishi/bin/rishi run tools/glow_run.rish glow/gen/sample-u32.glow 42
+rishi/bin/rishi run tools/glow_sample_argv_witness.rish
+```
+
+Hold on iOS: token lower · tidy mold. Defer Pixel/SETU adb to Framework outer terminal.
 
 ---
 
@@ -36,7 +41,7 @@ Hold on iOS: argv G3 · token lower · tidy mold. Defer Pixel/SETU adb to Framew
 | **JABS** | Sala broadcast live-session fold | JABS0–2 GREEN · JABS3 check-in |
 | **LULU** | Hearth · short home · Wired Glass | **LULU0–5 closed** |
 | **SETU** | USB hearth carry Glass↔Desk | **SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W GREEN** · live “sent” eyes check-in |
-| **STOA** | Glow language SLC · nest · composition | **STOA0–91 GREEN** · STOA92 next |
+| **STOA** | Glow language SLC · nest · composition | **STOA0–92 GREEN** · STOA93 next |
 
 Canon: [`../docs/HAWM.md`](../docs/HAWM.md) · [`../docs/TUBE.md`](../docs/TUBE.md) · [`../docs/ZETA.md`](../docs/ZETA.md) · [`../docs/JABS.md`](../docs/JABS.md) · [`../docs/LULU.md`](../docs/LULU.md) · [`../docs/SETU.md`](../docs/SETU.md) · [`../docs/STOA.md`](../docs/STOA.md)
 
@@ -68,7 +73,7 @@ Hold row 1 → Settings: presets · `home ·` · `wire ·` · `cell ·` — all 
 
 | Door | Kind |
 |------|------|
-| **STOA92** G3 argv sample · token lower · tidy mold · Sala B0 | **check-in** — iOS season |
+| **STOA93** token-driven lower · tidy mold · Sala B0 | **check-in** — iOS season |
 | Wet/gold core polymorphism | **held** (design seated) |
 | Live SETU6.5 **sent** on usb0/ncm | **check-in** — Framework host |
 | JABS3 · TAME Lap 3 | **check-in** |

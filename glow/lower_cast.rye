@@ -13,6 +13,7 @@ pub const LowerError = rc.ParseError || error{
     EmptySource,
     AuraNotYetLowered,
     NamedMoldNotYetLowered,
+    ArgvSampleAuraNotYetLowered,
 };
 
 pub const cast_welcome_raw: u64 = 42;
@@ -109,4 +110,36 @@ pub fn lower_line_unwelcome(line: []const u8, out: []u8) LowerError!u32 {
     const mold = rc.mold_slice(&spec);
     const zig_ty = try zig_type_for_mold(mold);
     return emit_for(mold, zig_ty, false, out);
+}
+
+/// Emit a program whose sample is one decimal `@u32` from process argv (G3).
+/// Not bartis — `|=` stays horizon; Rishi forwards the word to the binary.
+fn emit_from_argv_u32(mold: []const u8, out: []u8) LowerError!u32 {
+    const written = std.fmt.bufPrint(out,
+        \\const std = @import("std");
+        \\
+        \\/// Lowered from Glow `^-  {s}` — sample from process argv (G3).
+        \\pub fn main(init: std.process.Init) !u8 {{
+        \\    const alloc = init.arena.allocator();
+        \\    const argv = try init.minimal.args.toSlice(alloc);
+        \\    if (argv.len < 2) return 2;
+        \\    const sample = std.fmt.parseInt(u32, argv[1], 10) catch return 2;
+        \\    const raw: u64 = sample;
+        \\    const casted: u32 = std.math.cast(u32, raw) orelse return 1;
+        \\    return if (@as(u64, casted) == raw) 0 else 1;
+        \\}}
+        \\
+    , .{mold}) catch return error.Overflow;
+    return @intCast(written.len);
+}
+
+/// Parse one Glow cast line and emit an argv-sample program (`@u32` only).
+pub fn lower_line_argv_sample(line: []const u8, out: []u8) LowerError!u32 {
+    const trimmed = std.mem.trim(u8, line, " \t\r\n");
+    if (trimmed.len == 0) return error.EmptySource;
+    const spec = try rc.parse(trimmed);
+    const mold = rc.mold_slice(&spec);
+    if (!std.mem.eql(u8, mold, "@u32")) return error.ArgvSampleAuraNotYetLowered;
+    _ = try zig_type_for_mold(mold); // refuse unknown auras with the cast error first
+    return emit_from_argv_u32(mold, out);
 }
