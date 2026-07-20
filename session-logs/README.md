@@ -8,6 +8,9 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260719.233050` — [STOA97 token MoldSpec G4 GREEN](20260719-233050_stoa97-token-mold-spec-green.bron) — compass lean A; await send
+- `20260720.032713` — [STOA97 token→MoldSpec rewrite](20260720-032713_stoa97-token-mold-spec.bron) — parse_source walks token stream; lower_multi retired
+- `20260719.231725` — [STOA96 send complete](20260719-231725_stoa96-send-complete.bron) — origin main at 4217096449
 - `20260719.231450` — [STOA96 TAME tidy lower_mold GREEN](20260719-231450_stoa96-tame-tidy-mold-green.bron) — width-check · ban overflow seat · docs; await send
 - `20260720.031128` — [STOA96 lower_mold TAME tidy rewrite](20260720-031128_stoa96-lower-mold-tame-tidy.bron) — assert · u32 · append_print · split emitters on main
 - `20260719.225349` — [STOA95 send complete](20260719-225349_stoa95-send-complete.bron) — origin main at fb356deace
