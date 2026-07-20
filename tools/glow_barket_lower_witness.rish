@@ -26,8 +26,8 @@ let dec_bin = "glow/bin/gate_barket_dec_welcome"
 let dec_argv_rye = "glow/.cache/gate_barket_dec_argv.rye"
 let dec_argv_bin = "glow/bin/gate_barket_dec_argv"
 
-let tame_pin = run ["sh" "-c" "grep -F 'STOA122' ${tame}"]
-assert tame_pin.ok else "TAME missing STOA122 count-mold named allowlist"
+let tame_pin = run ["sh" "-c" "grep -F 'STOA123' ${tame}"]
+assert tame_pin.ok else "TAME missing STOA123 kind-mold gate sample"
 
 let has_lower = run ["sh" "-c" "test -f glow/lower_barket.rye; echo $?"]
 assert trim has_lower.out == "0" else "glow/lower_barket.rye must exist"
@@ -56,8 +56,10 @@ assert selftest.out contains "amount-mold" else "lower_barket_witness missing am
 assert selftest.out contains "gate-barket-amount.glow" else "lower_barket_witness missing amount fixture"
 assert selftest.out contains "count-mold" else "lower_barket_witness missing count-mold claim"
 assert selftest.out contains "gate-barket-count.glow" else "lower_barket_witness missing count fixture"
-assert selftest.out contains "kind-mold" else "lower_barket_witness missing kind-mold refuse"
-assert selftest.out contains "gate-barket-kind-refuse.glow" else "lower_barket_witness missing kind refuse desk"
+assert selftest.out contains "KindMold" else "lower_barket_witness missing KindMold claim"
+assert selftest.out contains "gate-barket-kind.glow" else "lower_barket_witness missing kind fixture"
+assert selftest.out contains "gate-barket-kind-refuse.glow" else "lower_barket_witness missing xact refuse desk"
+assert selftest.out contains "xact-mold" else "lower_barket_witness missing xact-mold refuse"
 
 let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
 assert build_welcome.ok else "barket welcome .rye build failed: ${build_welcome.err}${build_welcome.out}"
@@ -163,4 +165,13 @@ let run_cnt = run ["sh" "-c" "${cnt_bin}; echo EXIT:$?"]
 assert run_cnt.ok else "barket count-mold welcome binary failed to launch"
 assert run_cnt.out contains "EXIT:0" else "barket count-mold welcome binary did not exit 0"
 
-say "GREEN: Glow barket lower — identity · argv · call-body · amount-mold · count-mold · wet-through-nests; STOA113–122."
+# STOA123: kind-mold welcome binary exits 0.
+let kind_rye = "glow/.cache/gate_barket_kind_welcome.rye"
+let kind_bin = "glow/bin/gate_barket_kind_welcome"
+let build_kind = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${kind_rye} -femit-bin=${kind_bin}"]
+assert build_kind.ok else "barket kind-mold welcome .rye build failed: ${build_kind.err}${build_kind.out}"
+let run_kind = run ["sh" "-c" "${kind_bin}; echo EXIT:$?"]
+assert run_kind.ok else "barket kind-mold welcome binary failed to launch"
+assert run_kind.out contains "EXIT:0" else "barket kind-mold welcome binary did not exit 0"
+
+say "GREEN: Glow barket lower — identity · argv · call-body · amount-mold · count-mold · kind-mold · wet-through-nests; STOA113–123."

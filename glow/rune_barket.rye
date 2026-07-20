@@ -10,8 +10,9 @@
 //! STOA120: expansion calls `assert_sample_wet_nests` at the mold seam.
 //! STOA121: barket passes `is_wet=true` through wet-nests under stated molds.
 //! STOA122: closed allowlist adds `count-mold` beside `amount-mold`.
+//! STOA123: closed allowlist adds unit `$%` `kind-mold` (identity lower).
 //! Sample nests under `@u32` / named allowlist via nest_type; ambient gold held.
-//! Token-driven via tokens.rye. `kind-mold` barket samples held.
+//! Token-driven via tokens.rye. Payload `$%` (`xact-mold`) barket samples held.
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -140,7 +141,7 @@ pub fn parse_source(src: []const u8) ParseError!BarketSpec {
     if (i >= n or toks[@as(usize, @intCast(i))].kind != .equals) return error.MissingEquals;
     i += 1;
 
-    // Sample mold — aura `@u32` or closed named `amount-mold` / `count-mold`.
+    // Sample mold — aura `@u32` or closed named amount/count/kind-mold.
     if (i >= n) return error.MissingAura;
     const mold_tok = toks[@as(usize, @intCast(i))];
     var named_mold: ?[]const u8 = null;

@@ -12,14 +12,15 @@
 //! STOA109: closed named mold `amount-mold` (one-field `$:` ≡ `@u32` lower).
 //! STOA120: expansion calls `assert_sample_wet_nests(false, …)` (dry no-op wire).
 //! STOA122: closed allowlist adds `count-mold` beside `amount-mold`.
-//! Wet / gold · `kind-mold` bartis samples held.
+//! STOA123: closed allowlist adds unit `$%` `kind-mold` (identity lower).
+//! Wet / gold · payload `$%` (`xact-mold`) bartis samples held.
 //!
 //! Parse shape (token stream):
 //!   1. skip leading newlines
 //!   2. rune2 `|=`
 //!   3. ident (sample face name)
 //!   4. equals
-//!   5. aura `@u32` or ident `amount-mold` / `count-mold` (else SampleDoesNotNest)
+//!   5. aura `@u32` or ident amount/count/kind-mold (else SampleDoesNotNest)
 //!   6. newline(s) — end of first line
 //!   7. body — identity ident, or `%-` + gate ident + sample face
 //!   8. trailing newlines only

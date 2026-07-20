@@ -4,7 +4,7 @@
 
 **Language:** EN
 **Version:** `20260715` (Pool keystone revival prioritized · Quin voice seated · align pass reconciles the closed ladder)
-**Last updated:** 2026-07-20 (**STOA0–122** GREEN — count-mold; barket wet-through-nests)
+**Last updated:** 2026-07-20 (**STOA0–123** GREEN — kind-mold gate; count-mold)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Lens:** TAME — safety, performance, joy; the Seed Law; [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md)
@@ -482,7 +482,9 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA121 barket wet-through-nests GREEN, `20260720.182915`** — lean A (compass): `|^` calls `assert_sample_wet_nests(true, …)` under stated molds; drop barket dry not_wet pin; bartis dry. Brief [`active-designing/20260720-182915_stoa121-barket-wet-through-nests.md`](../active-designing/20260720-182915_stoa121-barket-wet-through-nests.md). Next language: **STOA122** count-mold.
 
-**STOA122 count-mold named allowlist GREEN, `20260720.183259`** — lean A (compass): closed allowlist `amount-mold` · `count-mold`; bartis+barket; kind-mold · gold · Sala B0 held. Brief [`active-designing/20260720-183259_stoa122-count-mold-named.md`](../active-designing/20260720-183259_stoa122-count-mold-named.md). Next language: **STOA123** map (kind-mold samples · gold · Sala B0 still held).
+**STOA122 count-mold named allowlist GREEN, `20260720.183259`** — lean A (compass): closed allowlist `amount-mold` · `count-mold`; bartis+barket. Brief [`active-designing/20260720-183259_stoa122-count-mold-named.md`](../active-designing/20260720-183259_stoa122-count-mold-named.md). Next language: **STOA123** kind-mold gate.
+
+**STOA123 kind-mold gate sample GREEN, `20260720.183837`** — lean A (compass): unit `$%` `kind-mold` identity · `KindMold` · baked `.mint`; xact-mold refuse; call-body/argv/gold/Sala B0 held. Brief [`active-designing/20260720-183837_stoa123-kind-mold-gate.md`](../active-designing/20260720-183837_stoa123-kind-mold-gate.md). Next language: **STOA124** map (gold · payload `$%` · Sala B0 still held).
 
 **Glow OS · Glow Desk · Glow Glass seated, `20260717.183622`** — Keaton: **Glow OS** unifies; **Glow Desk** = desktop; **Glow Glass** = mobile. Lexicon + silo [`../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md`](../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md). Orientation firmware stays check-in.
 
