@@ -8,10 +8,11 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const nest_type = @import("nest_type.rye");
 const rb = @import("rune_bartis.rye");
+const rbrk = @import("rune_barket.rye");
 const lower = @import("lower_bartis.rye");
 const rm = @import("rune_mold.rye");
 
-const witness_version = "20260720.192738";
+const witness_version = "20260720.234340";
 
 fn run_selftest(init: std.process.Init) !u8 {
     const a = init.arena.allocator();
@@ -130,6 +131,10 @@ fn run_selftest(init: std.process.Init) !u8 {
     try nest_type.assert_bartis_named_mold("nona-mold");
     print("nest: nona-mold bartis named mold accepts -- GREEN\n", .{});
 
+    // STOA148: Glow OS shape alias amount-shape ≡ amount-mold.
+    try nest_type.assert_bartis_named_mold("amount-shape");
+    print("nest: amount-shape bartis named shape accepts -- GREEN\n", .{});
+
     if (nest_type.assert_bartis_named_mold("deca-mold")) |_| {
         return error.DecaMoldBartisAccepted;
     } else |err| {
@@ -142,6 +147,16 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, buf[0..n_amt], "bartis_gate") != null);
     assert(std.mem.indexOf(u8, buf[0..n_amt], "amount-mold") != null);
     print("nest: bartis sample=amount-mold lowers as u32 identity -- GREEN\n", .{});
+
+    const n_amt_shape = try lower.lower_source_welcome("|=  sample=amount-shape\nsample\n", &buf);
+    assert(n_amt_shape > 0);
+    assert(std.mem.indexOf(u8, buf[0..n_amt_shape], "bartis_gate") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_amt_shape], "amount-shape") != null);
+    print("nest: bartis sample=amount-shape lowers as u32 identity -- GREEN\n", .{});
+
+    const amt_shape_barket = try rbrk.parse_source("|^  sample=amount-shape\nsample\n");
+    assert(std.mem.eql(u8, rbrk.mold_name_slice(&amt_shape_barket), "amount-shape"));
+    print("nest: barket sample=amount-shape accepts named shape -- GREEN\n", .{});
 
     const amt_desk = try cwd.readFileAlloc(io, "glow/gen/gate-amount.glow", a, .limited(4096));
     const amt_spec = try rb.parse_source(amt_desk);
@@ -448,7 +463,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("nest: stated bartis still lowers under nesting-refuse pin -- GREEN\n", .{});
 
     print("nest: version {s}\n", .{witness_version});
-    print("GREEN: Glow nest/type — stated aura · $% tag · named-mold · count-mold · kind-mold · xact-mold · xfer-mold · pair-mold · triple-mold · quad-mold · penta-mold · hexa-mold · hepta-mold · octa-mold · nona-mold · nesting refuse · nesting-nests; STOA107–110/119/122–126/130/134–135/138/140/142/144/146.\n", .{});
+    print("GREEN: Glow nest/type — stated aura · $% tag · named-mold · amount-shape · count-mold · kind-mold · xact-mold · xfer-mold · pair-mold · triple-mold · quad-mold · penta-mold · hexa-mold · hepta-mold · octa-mold · nona-mold · nesting refuse · nesting-nests; STOA107–110/119/122–126/130/134–135/138/140/142/144/146/148.\n", .{});
     return 0;
 }
 

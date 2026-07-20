@@ -2,27 +2,27 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260720.234155` (UDT) · voice Quin  
+**Last refreshed:** `20260720.235200` (UDT) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD0–HOLD1 · HOLD-W  
-**Language nib:** **STOA0–147** GREEN · capacity freeze at 9  
-**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–147  
-**Git nib:** `d2f3084c7d` live-sent + privacy redact  
+**Language nib:** **STOA0–148** GREEN · capacity freeze at 9 · **amount-shape**  
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–148  
+**Git nib:** *(pin after send)*  
 
-**Season:** Framework · UDT · **SETU6.5 live-sent GREEN** on Pixel CDC-NCM `enx*` → tether gateway :38503.  
+**Season:** Framework · UDT · shape language first · SETU6.5 live-sent GREEN.  
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`
 
 ---
 
 ## Now
 
-**Live-sent** `20260720.233805` — armed lab · framed payload **sent**. Brief [`../active-designing/20260720-233805_setu65-live-sent-enx-green.md`](../active-designing/20260720-233805_setu65-live-sent-enx-green.md).
+**STOA148** `20260720.234340` — `amount-shape` ≡ `amount-mold` GREEN. Brief [`../active-designing/20260720-234340_stoa148-amount-shape-alias.md`](../active-designing/20260720-234340_stoa148-amount-shape-alias.md).
+
+**Approved next (A):** **STOA149** `count-shape` ≡ `count-mold` — twin one-field shape alias; capacity freeze held.
 
 ```bash
-rishi/bin/rishi run tools/setu6_lab_probe_onpath_host.rish
-rishi/bin/rishi run tools/setu65_lab_tx_onpath_host.rish
+rishi/bin/rishi run tools/glow_nest_type_witness.rish
+rishi/bin/rishi run tools/glow_run.rish glow/gen/gate-amount-shape.glow
 ```
-
-Language capacity freeze holds. Next door: check-in (Sala B0 Glow · JABS3 · non-ladder language).
 
 ---
 
@@ -30,9 +30,10 @@ Language capacity freeze holds. Next door: check-in (Sala B0 Glow · JABS3 · no
 
 | Door | Kind |
 |------|------|
-| SETU6.5 live-sent | **GREEN** `20260720.233805` |
+| STOA149 count-shape alias | **kg** (approved A · shape-first) |
 | Capacity freeze at 9 | **seated** |
-| Sala B0 Glow rewrite · JABS3 | **check-in** |
+| SETU6.5 live-sent | **GREEN** `20260720.233805` |
+| Sala B0 Glow · JABS3 | **check-in** (behind shape) |
 
 ---
 

@@ -707,6 +707,11 @@ assert gatebarketamount.ok else "glow_run gate-barket-amount.glow failed"
 assert gatebarketamount.out contains "GREEN" else "glow_run gate-barket-amount.glow not GREEN"
 assert gatebarketamount.out contains "gate-barket-amount.glow" else "glow_run gate-barket-amount claim missing path"
 
+let gatebarketamountshape = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/gate-barket-amount-shape.glow"]
+assert gatebarketamountshape.ok else "glow_run gate-barket-amount-shape.glow failed"
+assert gatebarketamountshape.out contains "GREEN" else "glow_run gate-barket-amount-shape.glow not GREEN"
+assert gatebarketamountshape.out contains "gate-barket-amount-shape.glow" else "glow_run gate-barket-amount-shape claim missing path"
+
 let gatedouble = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/gate-double.glow"]
 assert gatedouble.ok else "glow_run gate-double.glow failed"
 assert gatedouble.out contains "GREEN" else "glow_run gate-double.glow not GREEN"
@@ -726,6 +731,11 @@ let gateamount = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/ga
 assert gateamount.ok else "glow_run gate-amount.glow failed"
 assert gateamount.out contains "GREEN" else "glow_run gate-amount.glow not GREEN"
 assert gateamount.out contains "gate-amount.glow" else "glow_run gate-amount claim missing path"
+
+let gateamountshape = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/gate-amount-shape.glow"]
+assert gateamountshape.ok else "glow_run gate-amount-shape.glow failed"
+assert gateamountshape.out contains "GREEN" else "glow_run gate-amount-shape.glow not GREEN"
+assert gateamountshape.out contains "gate-amount-shape.glow" else "glow_run gate-amount-shape claim missing path"
 
 say "GREEN: glow_run desk — all desk generators lowered, built, exit 0."
 
