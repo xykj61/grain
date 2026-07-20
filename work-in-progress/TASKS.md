@@ -378,6 +378,7 @@
 - [x] **STOA107 — nest/type thin implement** `20260720.043251` — `nest_type.assert_aura_nests`; bartis `SampleDoesNotNest`; accept `gate-sample` · refuse `gate-sample-u64-refuse`; wet/gold · barket · Sala B0 held.
 - [x] **STOA108 — nest/type `$%` tag nest** `20260720.145814` — `assert_tag_nests` against unit MoldSpec; accept mint/send on `mold-kind`; refuse `%burn`; wet/gold · barket · Sala B0 held.
 - [x] **STOA109 — named-mold bartis** `20260720.150155` — `sample=amount-mold`; `assert_bartis_named_mold` · `gate-amount`; `kind-mold` refuse; wet/gold · barket · Sala B0 held.
+- [x] **STOA110 — wet-refuse nest** `20260720.150635` — `assert_sample_not_wet`; wet flag refuses `SampleDoesNotNest`; dry accept; barket still untokenized; ambient wet/gold accept · Sala B0 held.
 - [x] **Cursor iOS handoff · core polymorphism + port order** `20260719.204650` — handoff [`20260719-204650_cursor-ios-handoff-glow-language.md`](20260719-204650_cursor-ios-handoff-glow-language.md); dry cores fit TAME · wet/gold hold · port L→R→G [`../active-designing/20260719-204650_hoon-core-polymorphism-tame-and-port-order.md`](../active-designing/20260719-204650_hoon-core-polymorphism-tame-and-port-order.md); iOS season = language-only (no adb).
 - [ ] **Dill-parallel kernel revival** — separate `active-reviving/` brief when a real need opens; not Dexter.
 - [ ] **M1 Scribble↔html round-trip witness** — named in fusion map; opens when Keaton leans doc pipeline.
