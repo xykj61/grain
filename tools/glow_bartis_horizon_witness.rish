@@ -19,7 +19,7 @@ assert tame_pin.ok else "TAME missing STOA100 bartis implement"
 let has_bartis = run ["sh" "-c" "awk '/const pairs =/,/};/' ${tokens} | grep -F '|='"]
 assert has_bartis.ok else "tokens.rye must now tokenize |= (STOA100)"
 
-# |^ barket tokenizes as of STOA111 (sibling of bartis; parse/lower held).
+# |^ barket tokenizes as of STOA111 (sibling of bartis; lower held).
 let has_barket = run ["sh" "-c" "awk '/const pairs =/,/};/' ${tokens} | grep -F '|^'"]
 assert has_barket.ok else "tokens.rye must tokenize |^ (STOA111)"
 
