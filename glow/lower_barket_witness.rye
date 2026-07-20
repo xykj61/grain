@@ -1,4 +1,4 @@
-//! glow/lower_barket_witness.rye — proves `|^` barket lowers to runnable `.rye` (STOA113).
+//! glow/lower_barket_witness.rye — proves `|^` barket lowers to runnable `.rye` (STOA113–114).
 //!
 //!   rye build glow/lower_barket_witness.rye -femit-bin=glow/bin/lower_barket_witness
 //!   glow/bin/lower_barket_witness
@@ -9,7 +9,7 @@ const print = std.debug.print;
 const lower = @import("lower_barket.rye");
 const rb = @import("rune_barket.rye");
 
-const witness_version = "20260720.175115";
+const witness_version = "20260720.175643";
 
 fn run_selftest(init: std.process.Init) !u8 {
     const io = init.io;
@@ -75,8 +75,26 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_sample_welcome.rye", .data = buf[0..n3] });
     print("lower: wrote barket welcome .rye under glow/.cache/ -- GREEN\n", .{});
 
+    // STOA114: argv-sample emit reads process argv and keeps the gate fn.
+    const n4 = try lower.lower_source_argv_sample(gate_src, &buf);
+    const rye_argv = buf[0..n4];
+    assert(std.mem.indexOf(u8, rye_argv, "barket_gate") != null);
+    assert(std.mem.indexOf(u8, rye_argv, "minimal.args") != null);
+    assert(std.mem.indexOf(u8, rye_argv, "parseInt(u32") != null);
+    assert(std.mem.indexOf(u8, rye_argv, "const sample: u32 = 5") == null);
+    print("lower: argv-sample emit reads minimal.args / parseInt(u32) -- GREEN\n", .{});
+
+    const gen_argv_src = try cwd.readFileAlloc(io, "glow/gen/gate-barket-sample-u32.glow", a, .limited(4096));
+    const spec_argv = try rb.parse_source(gen_argv_src);
+    assert(std.mem.eql(u8, rb.face_slice(&spec_argv), "sample"));
+    assert(spec_argv.body == .identity);
+    print("lower: glow/gen/gate-barket-sample-u32.glow carries sample face -- GREEN\n", .{});
+
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_sample_argv.rye", .data = rye_argv });
+    print("lower: wrote barket argv .rye under glow/.cache/ -- GREEN\n", .{});
+
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: Glow `|^` barket — identity lower · fixture desk; STOA113.\n", .{});
+    print("GREEN: Glow `|^` barket — identity · argv-sample; STOA113–114.\n", .{});
     return 0;
 }
 
