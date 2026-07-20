@@ -8,6 +8,7 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260720.023513` — [STOA93 G4 token-driven lower slice plan seated](20260720-023513_stoa93-g4-token-lower-plan.bron) — cross-desk parse via tokens; peeks stay; no bartis
 - `20260720.022956` — [STOA92 G3 thin argv sample plan seated](20260720-022956_stoa92-g3-thin-argv-plan.bron) — Rishi forwards @u32; fixture cast-u32 kept; no bartis
 - `20260719.223351` — [STOA92 thin argv sample G3 GREEN](20260719-223351_stoa92-argv-sample-g3-green.bron) — sample-u32 reads Rishi argv; await send
 - `20260719.223110` — [STOA91 send complete](20260719-223110_stoa91-send-complete.bron) — origin main at 1022d8cab1

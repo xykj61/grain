@@ -16,10 +16,10 @@
 ## Now (language)
 
 **STOA92** GREEN · thin generator `sample-u32.glow` reads one `@u32` from Rishi argv; fixture `cast-u32.glow` kept.  
-**STOA93** next — check-in (token-driven lower · tidy mold · Sala B0).  
+**STOA93** next — lean A plan seated: token-driven cross-desk parse (G4) · [`../active-designing/20260720-023513_stoa93-token-driven-lower-slice-g4-plan.md`](../active-designing/20260720-023513_stoa93-token-driven-lower-slice-g4-plan.md).  
 **Cores / port:** dry cores fit TAME · wet/gold hold · L→R→G.
 
-Alphabet G0–G2 · G3 plan [`../active-designing/20260720-022956_stoa92-thin-argv-sample-g3-plan.md`](../active-designing/20260720-022956_stoa92-thin-argv-sample-g3-plan.md).
+Alphabet G0–G2 · G3 GREEN · G4 plan [`../active-designing/20260720-023513_stoa93-token-driven-lower-slice-g4-plan.md`](../active-designing/20260720-023513_stoa93-token-driven-lower-slice-g4-plan.md).
 
 ```bash
 rishi/bin/rishi run tools/glow_run.rish glow/gen/cast-u32.glow
@@ -73,7 +73,7 @@ Hold row 1 → Settings: presets · `home ·` · `wire ·` · `cell ·` — all 
 
 | Door | Kind |
 |------|------|
-| **STOA93** token-driven lower · tidy mold · Sala B0 | **check-in** — iOS season |
+| **STOA93** G4 token-driven cross-desk parse (plan seated) | **keep-going** implement · or redirect |
 | Wet/gold core polymorphism | **held** (design seated) |
 | Live SETU6.5 **sent** on usb0/ncm | **check-in** — Framework host |
 | JABS3 · TAME Lap 3 | **check-in** |
