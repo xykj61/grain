@@ -1,0 +1,13 @@
+format session-log-v1
+stamp 20260719.223110
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Cursor iOS / cloud sandbox — Eastern time convention (handoff season)
+title STOA91 send complete
+prompt send and kg
+think Fast-forward merged STOA91 to main at 1022d8cab1; pushed origin main.
+think kg takes STOA92 lean A — thin argv @u32 sample G3 per seated plan f12a291692.
+obs codeberg remote still unwired on this sandbox.
+file session-logs/20260719-223110_stoa91-send-complete.bron this send confirmation
+recommend keep-going STOA92 lean A G3 argv sample
