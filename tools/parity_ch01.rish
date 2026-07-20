@@ -1277,6 +1277,11 @@ let glow_expr = run ["rishi/bin/rishi" "run" "tools/glow_expr_witness.rish"]
 assert glow_expr.ok else "Glow expr witness failed"
 say "GREEN: Glow expr witness passed."
 
+say "witness suite: Glow bounded token stream — general lexer lap…"
+let glow_tokens = run ["rishi/bin/rishi" "run" "tools/glow_tokens_witness.rish"]
+assert glow_tokens.ok else "Glow tokens witness failed"
+say "GREEN: Glow tokens witness passed."
+
 say "witness suite: Glow `=/` lowers to Rye — face hop…"
 let glow_face = run ["rishi/bin/rishi" "run" "tools/glow_lower_face_witness.rish"]
 assert glow_face.ok else "Glow lower-face witness failed"
