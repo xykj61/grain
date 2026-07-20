@@ -2,11 +2,11 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Rule: [`.cursor/rules/remember.mdc`](../.cursor/rules/remember.mdc) · [`.claude/rules/remember.md`](../.claude/rules/remember.md).*
 
-**Last refreshed:** `20260720.150635` (UTC cloud · Eastern season) · voice Quin  
+**Last refreshed:** `20260720.151046` (UTC cloud · Eastern season) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5** · HOLD0–HOLD1 · HOLD-W  
 **Language nib:** **STOA0–110** GREEN · STOA111 open  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W · STOA0–110  
-**Git nib:** (refresh after send) STOA110 wet-refuse nest  
+**Git nib:** `8b181a4f46ab` STOA110 wet-refuse nest on main  
 
 **Season:** Cursor iOS / cloud — **Glow language TAME only** (no adb). Handoff [`20260719-204650_cursor-ios-handoff-glow-language.md`](20260719-204650_cursor-ios-handoff-glow-language.md).  
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`
@@ -15,8 +15,8 @@
 
 ## Now (language)
 
-**STOA110** GREEN · wet-refuse nest (`assert_sample_not_wet`).  
-**STOA111** next — check-in (barket tokenize · Sala B0).
+**STOA110** sent · wet-refuse nest (`assert_sample_not_wet`).  
+**STOA111** next — lean A barket tokenize-only (`|^` → 27).
 
 ```bash
 rishi/bin/rishi run tools/glow_nest_type_witness.rish
