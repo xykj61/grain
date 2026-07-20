@@ -15,14 +15,15 @@
 //! STOA123: closed allowlist adds unit `$%` `kind-mold` (identity lower).
 //! STOA124: closed allowlist adds payload `$%` `xact-mold` (identity lower).
 //! STOA125: closed allowlist adds multi-face payload `$%` `xfer-mold` (identity lower).
-//! Wet / gold · open `$:` beyond amount/count bartis samples held.
+//! STOA126: closed allowlist adds multi-field `$:` `pair-mold` (identity lower).
+//! Wet / gold · open `$:` beyond pair bartis samples held.
 //!
 //! Parse shape (token stream):
 //!   1. skip leading newlines
 //!   2. rune2 `|=`
 //!   3. ident (sample face name)
 //!   4. equals
-//!   5. aura `@u32` or ident amount/count/kind/xact/xfer-mold (else SampleDoesNotNest)
+//!   5. aura `@u32` or ident amount/count/kind/xact/xfer/pair-mold (else SampleDoesNotNest)
 //!   6. newline(s) — end of first line
 //!   7. body — identity ident, or `%-` + gate ident + sample face
 //!   8. trailing newlines only

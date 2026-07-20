@@ -8,6 +8,7 @@
 //! STOA123: `kind-mold` identity lowers as `KindMold` enum · baked `.mint`.
 //! STOA124: `xact-mold` identity lowers as `XactMold` union · baked `.mint` amount 5.
 //! STOA125: `xfer-mold` identity lowers as `XferMold` union · baked `.mint` from 5 amount 3.
+//! STOA126: `pair-mold` identity lowers as `PairMold` struct · baked from 5 amount 3.
 //! Gate function named `barket_gate`. Ambient gold held.
 
 const std = @import("std");
@@ -24,6 +25,9 @@ pub const barket_identity_expect: u32 = 5;
 /// Baked multi-face xfer mint (matches mold-xfer welcome · STOA125).
 pub const barket_xfer_demo_from: u32 = 5;
 pub const barket_xfer_demo_amount: u32 = 3;
+/// Baked multi-field pair (matches mold-pair welcome · STOA126).
+pub const barket_pair_demo_from: u32 = 5;
+pub const barket_pair_demo_amount: u32 = 3;
 
 fn zig_safe_ident(face: []const u8, out: *[rb.max_face_len]u8) LowerError!u32 {
     assert(face.len <= rb.max_face_len); // precondition: face within name budget
@@ -95,6 +99,11 @@ fn is_xfer_sample(spec: *const rb.BarketSpec) bool {
     return nest_type.is_xfer_named_mold(rb.mold_name_slice(spec));
 }
 
+fn is_pair_sample(spec: *const rb.BarketSpec) bool {
+    if (spec.mold_name_len == 0) return false;
+    return nest_type.is_pair_named_mold(rb.mold_name_slice(spec));
+}
+
 fn emit_prelude(out: []u8, used: *u32) LowerError!void {
     try append_print(out, used, "const std = @import(\"std\");\n\n", .{});
 }
@@ -162,6 +171,26 @@ fn emit_xfer_identity(out: []u8, zface: []const u8, comment: []const u8) LowerEr
     return used;
 }
 
+/// STOA126: closed multi-field `$:` pair-mold → PairMold struct · baked 5/3.
+fn emit_pair_identity(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
+    var used: u32 = 0;
+    try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
+    try append_print(out, &used, "pub const PairMold = struct {{\n", .{});
+    try append_print(out, &used, "    from: u32 = 0,\n", .{});
+    try append_print(out, &used, "    amount: u32 = 0,\n", .{});
+    try append_print(out, &used, "}};\n\n", .{});
+    try append_print(out, &used, "/// {s}\n", .{comment});
+    try append_print(out, &used, "fn barket_gate({s}: PairMold) PairMold {{\n", .{zface});
+    try append_print(out, &used, "    return {s};\n", .{zface});
+    try append_print(out, &used, "}}\n\n", .{});
+    try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
+    try append_print(out, &used, "    const {s}: PairMold = .{{ .from = {d}, .amount = {d} }};\n", .{ zface, barket_pair_demo_from, barket_pair_demo_amount });
+    try append_print(out, &used, "    const got = barket_gate({s});\n", .{zface});
+    try append_print(out, &used, "    return if (got.from == {d} and got.amount == {d}) 0 else 1;\n", .{ barket_pair_demo_from, barket_pair_demo_amount });
+    try append_print(out, &used, "}}\n", .{});
+    return used;
+}
+
 fn emit_gate_fn(out: []u8, used: *u32, zface: []const u8, body_return: []const u8, comment: []const u8) LowerError!void {
     try append_print(out, used, "/// {s}\n", .{comment});
     try append_print(out, used, "fn barket_gate({s}: u32) u32 {{\n", .{zface});
@@ -216,6 +245,13 @@ fn emit(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
         return emit_xfer_identity(out, zface, comment);
     }
 
+    if (is_pair_sample(spec)) {
+        if (spec.body == .call_one) return error.BodyGateNotYetLowered;
+        var comment_buf: [160]u8 = undefined;
+        const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` barket — PairMold identity (STOA126).", .{ face, mold }) catch return error.Overflow;
+        return emit_pair_identity(out, zface, comment);
+    }
+
     const expect = try expect_for(spec);
     var used: u32 = 0;
 
@@ -243,7 +279,7 @@ fn emit(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
 }
 
 fn emit_argv(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
-    if (is_kind_sample(spec) or is_xact_sample(spec) or is_xfer_sample(spec)) return error.SampleDoesNotNest;
+    if (is_kind_sample(spec) or is_xact_sample(spec) or is_xfer_sample(spec) or is_pair_sample(spec)) return error.SampleDoesNotNest;
     const face = rb.face_slice(spec);
     assert(face.len > 0); // invariant: spec carries a non-empty face
     const mold = sample_mold_label(spec);

@@ -1,4 +1,4 @@
-//! glow/nest_type_witness.rye — proves nest/type surface (STOA107–110 · STOA119 · STOA122–125).
+//! glow/nest_type_witness.rye — proves nest/type surface (STOA107–110 · STOA119 · STOA122–126).
 //!
 //!   rye build glow/nest_type_witness.rye -femit-bin=glow/bin/nest_type_witness
 //!   glow/bin/nest_type_witness
@@ -11,7 +11,7 @@ const rb = @import("rune_bartis.rye");
 const lower = @import("lower_bartis.rye");
 const rm = @import("rune_mold.rye");
 
-const witness_version = "20260720.184953";
+const witness_version = "20260720.185502";
 
 fn run_selftest(init: std.process.Init) !u8 {
     const a = init.arena.allocator();
@@ -106,12 +106,15 @@ fn run_selftest(init: std.process.Init) !u8 {
     try nest_type.assert_bartis_named_mold("xfer-mold");
     print("nest: xfer-mold bartis named mold accepts -- GREEN\n", .{});
 
-    if (nest_type.assert_bartis_named_mold("pair-mold")) |_| {
-        return error.PairMoldBartisAccepted;
+    try nest_type.assert_bartis_named_mold("pair-mold");
+    print("nest: pair-mold bartis named mold accepts -- GREEN\n", .{});
+
+    if (nest_type.assert_bartis_named_mold("triple-mold")) |_| {
+        return error.TripleMoldBartisAccepted;
     } else |err| {
         if (err != nest_type.NestError.SampleDoesNotNest) return err;
     }
-    print("nest: pair-mold bartis named mold refused SampleDoesNotNest -- GREEN\n", .{});
+    print("nest: triple-mold bartis named mold refused SampleDoesNotNest -- GREEN\n", .{});
 
     const n_amt = try lower.lower_source_welcome("|=  sample=amount-mold\nsample\n", &buf);
     assert(n_amt > 0);
@@ -140,13 +143,18 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.eql(u8, rb.mold_name_slice(&xfer_spec), "xfer-mold"));
     print("nest: glow/gen/gate-xfer.glow accepts named mold -- GREEN\n", .{});
 
-    const pair_refuse = try cwd.readFileAlloc(io, "glow/gen/gate-kind-refuse.glow", a, .limited(4096));
-    if (rb.parse_source(pair_refuse)) |_| {
-        return error.PairRefuseDeskAccepted;
+    const pair_desk = try cwd.readFileAlloc(io, "glow/gen/gate-pair.glow", a, .limited(4096));
+    const pair_spec = try rb.parse_source(pair_desk);
+    assert(std.mem.eql(u8, rb.mold_name_slice(&pair_spec), "pair-mold"));
+    print("nest: glow/gen/gate-pair.glow accepts named mold -- GREEN\n", .{});
+
+    const triple_refuse = try cwd.readFileAlloc(io, "glow/gen/gate-kind-refuse.glow", a, .limited(4096));
+    if (rb.parse_source(triple_refuse)) |_| {
+        return error.TripleRefuseDeskAccepted;
     } else |err| {
         if (err != rb.ParseError.SampleDoesNotNest) return err;
     }
-    print("nest: glow/gen/gate-kind-refuse.glow (pair-mold) refused SampleDoesNotNest -- GREEN\n", .{});
+    print("nest: glow/gen/gate-kind-refuse.glow (triple-mold) refused SampleDoesNotNest -- GREEN\n", .{});
 
     // STOA122: second closed named mold count-mold.
     const count_src = try cwd.readFileAlloc(io, "glow/gen/mold-count.glow", a, .limited(4096));
@@ -203,6 +211,19 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, buf[0..n_xfer], "amount") != null);
     print("nest: bartis sample=xfer-mold lowers as XferMold identity -- GREEN\n", .{});
 
+    // STOA126: multi-field $: pair-mold shape.
+    const pair_mold_src = try cwd.readFileAlloc(io, "glow/gen/mold-pair.glow", a, .limited(4096));
+    const pair_mold = try rm.parse_source(pair_mold_src);
+    try nest_type.assert_pair_mold_nests("pair-mold", &pair_mold);
+    print("nest: pair-mold MoldSpec nests as multi-field $: -- GREEN\n", .{});
+
+    const n_pair = try lower.lower_source_welcome("|=  sample=pair-mold\nsample\n", &buf);
+    assert(n_pair > 0);
+    assert(std.mem.indexOf(u8, buf[0..n_pair], "PairMold") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_pair], "from") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_pair], "amount") != null);
+    print("nest: bartis sample=pair-mold lowers as PairMold identity -- GREEN\n", .{});
+
     // STOA110: wet-flagged sample claims refuse; dry claims accept.
     try nest_type.assert_sample_not_wet(false);
     print("nest: dry sample claim (is_wet=false) accepts -- GREEN\n", .{});
@@ -250,12 +271,15 @@ fn run_selftest(init: std.process.Init) !u8 {
     try nest_type.assert_sample_wet_nests(true, "xfer-mold", "xfer-mold");
     print("nest: wet xfer-mold under xfer-mold accepts -- GREEN\n", .{});
 
-    if (nest_type.assert_sample_wet_nests(true, "pair-mold", "pair-mold")) |_| {
-        return error.WetPairMoldAcceptedTooSoon;
+    try nest_type.assert_sample_wet_nests(true, "pair-mold", "pair-mold");
+    print("nest: wet pair-mold under pair-mold accepts -- GREEN\n", .{});
+
+    if (nest_type.assert_sample_wet_nests(true, "triple-mold", "triple-mold")) |_| {
+        return error.WetTripleMoldAcceptedTooSoon;
     } else |err| {
         if (err != nest_type.NestError.SampleDoesNotNest) return err;
     }
-    print("nest: wet pair-mold refused SampleDoesNotNest -- GREEN\n", .{});
+    print("nest: wet triple-mold refused SampleDoesNotNest -- GREEN\n", .{});
 
     // Dry bartis path still holds beside wet refuse + wet-nests.
     const n_dry = try lower.lower_source_welcome("|=  sample=@u32\nsample\n", &buf);
@@ -263,7 +287,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("nest: dry bartis still lowers under wet-refuse pin -- GREEN\n", .{});
 
     print("nest: version {s}\n", .{witness_version});
-    print("GREEN: Glow nest/type — dry aura · $% tag · named-mold · count-mold · kind-mold · xact-mold · xfer-mold · wet refuse · wet-nests; STOA107–110/119/122–125.\n", .{});
+    print("GREEN: Glow nest/type — dry aura · $% tag · named-mold · count-mold · kind-mold · xact-mold · xfer-mold · pair-mold · wet refuse · wet-nests; STOA107–110/119/122–126.\n", .{});
     return 0;
 }
 

@@ -8,7 +8,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const rb = @import("rune_barket.rye");
 
-const witness_version = "20260720.184953";
+const witness_version = "20260720.185502";
 
 fn run_selftest(init: std.process.Init) !u8 {
     _ = init;
@@ -56,7 +56,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("barket: @u64 refused SampleDoesNotNest -- GREEN\n", .{});
 
-    // STOA118 / STOA123–125: named molds amount · kind · xact · xfer accept; pair refuses.
+    // STOA118 / STOA123–125: named molds amount · kind · xact · xfer · pair accept; triple refuses.
     const amt = try rb.parse_source("|^  sample=amount-mold\nsample\n");
     assert(amt.body == .identity);
     assert(std.mem.eql(u8, rb.mold_name_slice(&amt), "amount-mold"));
@@ -77,12 +77,17 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.eql(u8, rb.mold_name_slice(&xfer), "xfer-mold"));
     print("barket: sample=xfer-mold accepts -- GREEN\n", .{});
 
-    if (rb.parse_source("|^  sample=pair-mold\nsample\n")) |_| {
-        return error.BarketPairMoldAcceptedTooSoon;
+    const pair = try rb.parse_source("|^  sample=pair-mold\nsample\n");
+    assert(pair.body == .identity);
+    assert(std.mem.eql(u8, rb.mold_name_slice(&pair), "pair-mold"));
+    print("barket: sample=pair-mold accepts -- GREEN\n", .{});
+
+    if (rb.parse_source("|^  sample=triple-mold\nsample\n")) |_| {
+        return error.BarketTripleMoldAcceptedTooSoon;
     } else |err| {
         if (err != rb.ParseError.SampleDoesNotNest) return err;
     }
-    print("barket: sample=pair-mold refused SampleDoesNotNest -- GREEN\n", .{});
+    print("barket: sample=triple-mold refused SampleDoesNotNest -- GREEN\n", .{});
 
     // STOA122: count-mold accepts beside amount-mold.
     const cnt = try rb.parse_source("|^  sample=count-mold\nsample\n");
@@ -98,7 +103,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("barket: |= refused NotABarket -- GREEN\n", .{});
 
-    print("GREEN: Glow barket parse — dry header · identity · call-body trio · amount-mold · count-mold · kind-mold · xact-mold · xfer-mold · wet-through-nests; STOA112–125.\n", .{});
+    print("GREEN: Glow barket parse — dry header · identity · call-body trio · amount-mold · count-mold · kind-mold · xact-mold · xfer-mold · pair-mold · wet-through-nests; STOA112–126.\n", .{});
     _ = witness_version;
     return 0;
 }
