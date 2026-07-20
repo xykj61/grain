@@ -1,0 +1,13 @@
+format session-log-v1
+stamp 20260719.204820
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern time convention
+title iOS handoff send complete
+prompt expand iOS handoff; send; Framework break; polymorphism and port order
+think Seat 6a561a3358 pin 9da6c6ef3d pushed origin and codeberg.
+think Framework host may rest; iOS pulls main and continues STOA90 lean A.
+obs Handoff paste template in work-in-progress/20260719-204650_cursor-ios-handoff-glow-language.md
+file session-logs/20260719-204820_ios-handoff-send-complete.bron this confirmation
+recommend check-in on iOS with STOA90 lean A
