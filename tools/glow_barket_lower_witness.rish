@@ -26,8 +26,8 @@ let dec_bin = "glow/bin/gate_barket_dec_welcome"
 let dec_argv_rye = "glow/.cache/gate_barket_dec_argv.rye"
 let dec_argv_bin = "glow/bin/gate_barket_dec_argv"
 
-let tame_pin = run ["sh" "-c" "grep -F 'STOA125' ${tame}"]
-assert tame_pin.ok else "TAME missing STOA125 xfer-mold gate sample"
+let tame_pin = run ["sh" "-c" "grep -F 'STOA126' ${tame}"]
+assert tame_pin.ok else "TAME missing STOA126 pair-mold gate sample"
 
 let has_lower = run ["sh" "-c" "test -f glow/lower_barket.rye; echo $?"]
 assert trim has_lower.out == "0" else "glow/lower_barket.rye must exist"
@@ -62,8 +62,10 @@ assert selftest.out contains "XactMold" else "lower_barket_witness missing XactM
 assert selftest.out contains "gate-barket-xact.glow" else "lower_barket_witness missing xact fixture"
 assert selftest.out contains "XferMold" else "lower_barket_witness missing XferMold claim"
 assert selftest.out contains "gate-barket-xfer.glow" else "lower_barket_witness missing xfer fixture"
-assert selftest.out contains "gate-barket-kind-refuse.glow" else "lower_barket_witness missing pair refuse desk"
-assert selftest.out contains "pair-mold" else "lower_barket_witness missing pair-mold refuse"
+assert selftest.out contains "PairMold" else "lower_barket_witness missing PairMold claim"
+assert selftest.out contains "gate-barket-pair.glow" else "lower_barket_witness missing pair fixture"
+assert selftest.out contains "gate-barket-kind-refuse.glow" else "lower_barket_witness missing triple refuse desk"
+assert selftest.out contains "triple-mold" else "lower_barket_witness missing triple-mold refuse"
 
 let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
 assert build_welcome.ok else "barket welcome .rye build failed: ${build_welcome.err}${build_welcome.out}"
@@ -196,4 +198,13 @@ let run_xfer = run ["sh" "-c" "${xfer_bin}; echo EXIT:$?"]
 assert run_xfer.ok else "barket xfer-mold welcome binary failed to launch"
 assert run_xfer.out contains "EXIT:0" else "barket xfer-mold welcome binary did not exit 0"
 
-say "GREEN: Glow barket lower — identity · argv · call-body · amount-mold · count-mold · kind-mold · xact-mold · xfer-mold · wet-through-nests; STOA113–125."
+# STOA126: pair-mold welcome binary exits 0.
+let pair_rye = "glow/.cache/gate_barket_pair_welcome.rye"
+let pair_bin = "glow/bin/gate_barket_pair_welcome"
+let build_pair = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${pair_rye} -femit-bin=${pair_bin}"]
+assert build_pair.ok else "barket pair-mold welcome .rye build failed: ${build_pair.err}${build_pair.out}"
+let run_pair = run ["sh" "-c" "${pair_bin}; echo EXIT:$?"]
+assert run_pair.ok else "barket pair-mold welcome binary failed to launch"
+assert run_pair.out contains "EXIT:0" else "barket pair-mold welcome binary did not exit 0"
+
+say "GREEN: Glow barket lower — identity · argv · call-body · amount-mold · count-mold · kind-mold · xact-mold · xfer-mold · pair-mold · wet-through-nests; STOA113–126."
