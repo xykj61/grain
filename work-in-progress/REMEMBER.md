@@ -2,11 +2,11 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Rule: [`.cursor/rules/remember.mdc`](../.cursor/rules/remember.mdc) · [`.claude/rules/remember.md`](../.claude/rules/remember.md).*
 
-**Last refreshed:** `20260720.174115` (UTC cloud · Eastern season) · voice Quin  
+**Last refreshed:** `20260720.175029` (UTC cloud · Eastern season) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5** · HOLD0–HOLD1 · HOLD-W  
 **Language nib:** **STOA0–112** GREEN · STOA113 open  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W · STOA0–112  
-**Git nib:** (await send) STOA112 barket header parse  
+**Git nib:** `6d02c6f968` STOA112 barket header parse on main  
 
 **Season:** Cursor iOS / cloud — **Glow language TAME only** (no adb). Handoff [`20260719-204650_cursor-ios-handoff-glow-language.md`](20260719-204650_cursor-ios-handoff-glow-language.md).  
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`
@@ -15,7 +15,7 @@
 
 ## Now (language)
 
-**STOA112** GREEN · barket dry header parse (`BarketSpec` · `BodyNotYetLowered`). Await send.  
+**STOA112** sent · barket dry header parse (`BarketSpec` · `BodyNotYetLowered`).  
 **STOA113** next — check-in before thin barket lower.
 
 ```bash
