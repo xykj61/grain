@@ -1,7 +1,8 @@
-# glow_nest_type_surface_witness.rish — nest/type surface wording (STOA106).
+# glow_nest_type_surface_witness.rish — nest/type surface wording (STOA106+).
 #
-# Proves living pins name nest/type surface, wet samples stay held, barket
-# stays untokenized, and dry bartis remains GREEN. Docs-only lap — no wet lower.
+# Proves living pins name nest/type surface, wet samples stay held on accept,
+# barket is tokenized (STOA111), and dry bartis remains GREEN. Docs-only binder
+# grown when tokenize landed — no wet lower.
 #
 #   rishi/bin/rishi run tools/glow_nest_type_surface_witness.rish
 
@@ -17,9 +18,11 @@ assert tame_pin.ok else "TAME missing STOA106 nest/type surface"
 let tame_nest = run ["sh" "-c" "grep -F 'nest/type surface' ${tame}"]
 assert tame_nest.ok else "TAME missing nest/type surface phrase"
 
-# tokens.rye must NOT tokenize |^ (barket still horizon).
-let no_barket = run ["sh" "-c" "awk '/const pairs =/,/};/' ${tokens} | grep -F '|^' >/dev/null; echo $?"]
-assert trim no_barket.out == "1" else "tokens.rye must not tokenize |^ under nest/type wording"
+# tokens.rye MUST tokenize |^ as of STOA111; parse/lower stay absent.
+let has_barket = run ["sh" "-c" "awk '/const pairs =/,/};/' ${tokens} | grep -F '|^'"]
+assert has_barket.ok else "tokens.rye must tokenize |^ (STOA111)"
+let no_barket_parse = run ["sh" "-c" "test ! -f glow/rune_barket.rye && test ! -f glow/lower_barket.rye; echo $?"]
+assert trim no_barket_parse.out == "0" else "barket parse/lower must stay absent"
 
 # |= bartis remains tokenized (STOA100+) — nest wording does not undo bartis.
 let has_bartis = run ["sh" "-c" "awk '/const pairs =/,/};/' ${tokens} | grep -F '|='"]
@@ -50,4 +53,4 @@ let bartis = run ["sh" "-c" "rishi/bin/rishi run tools/glow_lower_bartis_witness
 assert bartis.ok else "glow_lower_bartis_witness failed under nest/type wording"
 assert bartis.out contains "GREEN" else "glow_lower_bartis_witness not GREEN"
 
-say "GREEN: Glow nest/type surface wording — wet samples held; barket untokenized; bartis GREEN; STOA106."
+say "GREEN: Glow nest/type surface wording — wet samples held; barket tokenized STOA111; parse held; bartis GREEN; STOA106+."

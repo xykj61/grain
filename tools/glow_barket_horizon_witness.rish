@@ -1,29 +1,20 @@
-# glow_barket_horizon_witness.rish — barket horizon wording (STOA102).
+# glow_barket_horizon_witness.rish — barket horizon wording artifact (STOA102).
 #
-# Proves |^ barket stays out of tokens, living pins name barket, and the
-# alphabet worker still refuses barket tokenize. Docs-only lap — no lower.
+# Proves the STOA102 wording brief and living barket name still exist, and that
+# tokenize (STOA111) is GREEN. Untokenized claim retired when STOA111 landed.
 #
 #   rishi/bin/rishi run tools/glow_barket_horizon_witness.rish
 
 let tame = "context/TAME_GUIDANCE.md"
-let tokens = "glow/tokens.rye"
 let brief = "active-designing/20260720-040700_stoa102-barket-horizon-wording.md"
 let lexicon = "context/LEXICON.md"
 let readme = "glow/README.md"
 
-# TAME carries STOA102 barket horizon note.
+# TAME still carries STOA102 barket horizon note (wording seat).
 let tame_pin = run ["sh" "-c" "grep -F 'STOA102' ${tame}"]
 assert tame_pin.ok else "TAME missing STOA102 barket horizon"
 let tame_barket = run ["sh" "-c" "grep -F 'barket' ${tame}"]
 assert tame_barket.ok else "TAME missing barket spoken name"
-
-# tokens.rye must NOT tokenize |^ (horizon).
-let no_barket = run ["sh" "-c" "awk '/const pairs =/,/};/' ${tokens} | grep -F '|^' >/dev/null; echo $?"]
-assert trim no_barket.out == "1" else "tokens.rye must not tokenize |^ (STOA102 horizon)"
-
-# |= bartis remains tokenized (STOA100) — barket does not undo bartis.
-let has_bartis = run ["sh" "-c" "awk '/const pairs =/,/};/' ${tokens} | grep -F '|='"]
-assert has_bartis.ok else "tokens.rye must still tokenize |= (bartis GREEN)"
 
 # Horizon brief exists and names barket + wet hold.
 let brief_ok = run ["sh" "-c" "test -f ${brief} && grep -F 'barket' ${brief} && grep -F 'wet' ${brief}"]
@@ -31,24 +22,15 @@ assert brief_ok.ok else "STOA102 barket horizon brief missing or incomplete"
 let brief_stoa = run ["sh" "-c" "grep -F 'STOA102' ${brief}"]
 assert brief_stoa.ok else "STOA102 brief must name STOA102"
 
-# Lexicon keeps Glow gate / bartis distinct from itinerary Gate.
-let lex_glow = run ["sh" "-c" "grep -F 'Glow gate' ${lexicon}"]
-assert lex_glow.ok else "LEXICON missing Glow gate"
+# Lexicon + README name barket.
 let lex_barket = run ["sh" "-c" "grep -F 'barket' ${lexicon}"]
 assert lex_barket.ok else "LEXICON missing barket"
-
-# README names barket as horizon.
 let readme_h = run ["sh" "-c" "grep -F 'barket' ${readme}"]
 assert readme_h.ok else "glow/README must name barket"
 
-# Alphabet witness GREEN (still refuses |^).
-let alpha = run ["sh" "-c" "rishi/bin/rishi run tools/glow_rune_alphabet_witness.rish"]
-assert alpha.ok else "glow_rune_alphabet_witness failed under barket horizon"
-assert alpha.out contains "GREEN" else "glow_rune_alphabet_witness not GREEN"
+# Tokenize lap GREEN (STOA111) — horizon wording no longer claims untokenized.
+let tok = run ["sh" "-c" "rishi/bin/rishi run tools/glow_barket_tokenize_witness.rish"]
+assert tok.ok else "glow_barket_tokenize_witness failed under horizon artifact check"
+assert tok.out contains "GREEN" else "glow_barket_tokenize_witness not GREEN"
 
-# Bartis GREEN path still holds beside barket horizon.
-let bartis = run ["sh" "-c" "rishi/bin/rishi run tools/glow_lower_bartis_witness.rish"]
-assert bartis.ok else "glow_lower_bartis_witness failed under barket horizon"
-assert bartis.out contains "GREEN" else "glow_lower_bartis_witness not GREEN"
-
-say "GREEN: Glow barket horizon wording — |^ untokenized; barket named; wet/gold held; STOA102."
+say "GREEN: Glow barket horizon wording artifact — STOA102 brief held; tokenize GREEN (STOA111)."

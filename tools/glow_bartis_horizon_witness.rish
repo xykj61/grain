@@ -19,9 +19,9 @@ assert tame_pin.ok else "TAME missing STOA100 bartis implement"
 let has_bartis = run ["sh" "-c" "awk '/const pairs =/,/};/' ${tokens} | grep -F '|='"]
 assert has_bartis.ok else "tokens.rye must now tokenize |= (STOA100)"
 
-# |^ barket stays horizon.
-let no_barket = run ["sh" "-c" "awk '/const pairs =/,/};/' ${tokens} | grep -F '|^' >/dev/null; echo $?"]
-assert trim no_barket.out == "1" else "tokens.rye must not tokenize |^"
+# |^ barket tokenizes as of STOA111 (sibling of bartis; parse/lower held).
+let has_barket = run ["sh" "-c" "awk '/const pairs =/,/};/' ${tokens} | grep -F '|^'"]
+assert has_barket.ok else "tokens.rye must tokenize |^ (STOA111)"
 
 # New G1 row brief exists and names bartis.
 let brief_ok = run ["sh" "-c" "test -f ${g1_brief} && grep -F 'bartis' ${g1_brief}"]
@@ -35,7 +35,7 @@ assert horizon_ok.ok else "STOA99 horizon brief missing"
 let readme_h = run ["sh" "-c" "grep -F 'bartis' ${readme}"]
 assert readme_h.ok else "glow/README must name bartis"
 
-# Alphabet witness GREEN (now expects 26 digraphs).
+# Alphabet witness GREEN (expects 27 digraphs with barket).
 let alpha = run ["sh" "-c" "rishi/bin/rishi run tools/glow_rune_alphabet_witness.rish"]
 assert alpha.ok else "glow_rune_alphabet_witness failed under bartis implement"
 assert alpha.out contains "GREEN" else "glow_rune_alphabet_witness not GREEN"
