@@ -544,7 +544,7 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **SETU6.5 live-sent attempt, `20260720.233109`–`233220`** — lean A: stand-in SKIP GREEN; Pixel 10a on adb without NCM iface; Graphene expects `ncm\d` for USB tether. Awaiting replug + USB tethering on. Brief [`active-designing/20260720-233109_setu65-live-sent-attempt-stand-in.md`](../active-designing/20260720-233109_setu65-live-sent-attempt-stand-in.md).
 
-**SETU6.5 live-sent GREEN, `20260720.233805`** — Pixel USB tether as `enx96e56705b13c` (`cdc_ncm`); host probe arms; framed 289b unicasted to `10.201.192.38:38503` → **sent**. Probe learns `enx*`; TX prefers gateway peer. Brief [`active-designing/20260720-233805_setu65-live-sent-enx-green.md`](../active-designing/20260720-233805_setu65-live-sent-enx-green.md).
+**SETU6.5 live-sent GREEN, `20260720.233805`** — Pixel USB tether as `enx*` (`cdc_ncm`); host probe arms; framed 289b unicasted to tether gateway on lab port **38503** → **sent**. Probe learns `enx*`; TX prefers gateway peer. Host-local MAC/IP redacted in public prose. Brief [`active-designing/20260720-233805_setu65-live-sent-enx-green.md`](../active-designing/20260720-233805_setu65-live-sent-enx-green.md).
 
 **SETU6.5 live-sent attempt stand-in, `20260720.233109`** — lean A approved; full SETU6/6.5 device-free + onpath host paths GREEN stand-in/SKIP; `adb devices` empty; no `usb0`/`ncm`. Live **sent** eyes pending Pixel USB tethering/NCM or QEMU. Brief [`active-designing/20260720-233109_setu65-live-sent-attempt-stand-in.md`](../active-designing/20260720-233109_setu65-live-sent-attempt-stand-in.md).
 
