@@ -15,6 +15,7 @@
 //! STOA134: `triple-mold` identity lowers as `TripleMold` struct · baked from 5 amount 3 fee 1.
 //! STOA135: `quad-mold` identity lowers as `QuadMold` struct · baked from 5 amount 3 fee 1 nonce 2.
 //! STOA136: `triple-mold` call body `%-  flip` → TripleMold swap · baked 5/3/1 → 3/5/1.
+//! STOA137: `quad-mold` call body `%-  flip` → QuadMold swap · baked 5/3/1/2 → 3/5/1/2.
 //! STOA127: `kind-mold` call body `%-  flip` → KindMold switch · baked `.mint` → `.send`.
 //! STOA128: `xact-mold` call body `%-  flip` → XactMold switch · baked mint/5 → `.send`.
 //! STOA129: `xfer-mold` call body `%-  flip` → XferMold switch · baked mint/5/3 → `.send`.
@@ -399,6 +400,29 @@ fn emit_triple_call_body(out: []u8, zface: []const u8, gate: []const u8, comment
     return used;
 }
 
+/// STOA137: closed four-field `$:` quad-mold call body → QuadMold flip · baked 3/5/1/2.
+fn emit_quad_call_body(out: []u8, zface: []const u8, gate: []const u8, comment: []const u8) LowerError!u32 {
+    assert(rb.is_quad_call_gate(gate)); // parse/lower pin — flip only today
+    var used: u32 = 0;
+    try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
+    try append_print(out, &used, "pub const QuadMold = struct {{\n", .{});
+    try append_print(out, &used, "    from: u32 = 0,\n", .{});
+    try append_print(out, &used, "    amount: u32 = 0,\n", .{});
+    try append_print(out, &used, "    fee: u32 = 0,\n", .{});
+    try append_print(out, &used, "    nonce: u32 = 0,\n", .{});
+    try append_print(out, &used, "}};\n\n", .{});
+    try append_print(out, &used, "/// {s}\n", .{comment});
+    try append_print(out, &used, "fn bartis_gate({s}: QuadMold) QuadMold {{\n", .{zface});
+    try append_print(out, &used, "    return .{{ .from = {s}.amount, .amount = {s}.from, .fee = {s}.fee, .nonce = {s}.nonce }};\n", .{ zface, zface, zface, zface });
+    try append_print(out, &used, "}}\n\n", .{});
+    try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
+    try append_print(out, &used, "    const {s}: QuadMold = .{{ .from = {d}, .amount = {d}, .fee = {d}, .nonce = {d} }};\n", .{ zface, bartis_quad_demo_from, bartis_quad_demo_amount, bartis_quad_demo_fee, bartis_quad_demo_nonce });
+    try append_print(out, &used, "    const got = bartis_gate({s});\n", .{zface});
+    try append_print(out, &used, "    return if (got.from == {d} and got.amount == {d} and got.fee == {d} and got.nonce == {d}) 0 else 1;\n", .{ bartis_quad_demo_amount, bartis_quad_demo_from, bartis_quad_demo_fee, bartis_quad_demo_nonce });
+    try append_print(out, &used, "}}\n", .{});
+    return used;
+}
+
 fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
     const face = rb.face_slice(spec);
     assert(face.len > 0); // invariant: spec carries a non-empty face
@@ -493,10 +517,20 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
     }
 
     if (is_quad_sample(spec)) {
-        if (spec.body != .identity) return error.BodyGateNotYetLowered;
-        var comment_buf: [160]u8 = undefined;
-        const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` bartis — QuadMold identity (STOA135).", .{ face, mold }) catch return error.Overflow;
-        return emit_quad_identity(out, zface, comment);
+        switch (spec.body) {
+            .identity => {
+                var comment_buf: [160]u8 = undefined;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` bartis — QuadMold identity (STOA135).", .{ face, mold }) catch return error.Overflow;
+                return emit_quad_identity(out, zface, comment);
+            },
+            .call_one => {
+                const gate = rb.gate_slice(spec);
+                if (!rb.is_quad_call_gate(gate)) return error.BodyGateNotYetLowered;
+                var comment_buf: [192]u8 = undefined;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` / `%-  {s}  {s}` — QuadMold call body (STOA137).", .{ face, mold, gate, face }) catch return error.Overflow;
+                return emit_quad_call_body(out, zface, gate, comment);
+            },
+        }
     }
 
     const expect = try expect_for(spec);
