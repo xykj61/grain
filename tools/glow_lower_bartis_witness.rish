@@ -50,7 +50,11 @@ assert selftest.out contains "gate-penta.glow" else "lower_bartis_witness missin
 assert selftest.out contains "PentaMold" else "lower_bartis_witness missing PentaMold claim"
 assert selftest.out contains "gate-hexa.glow" else "lower_bartis_witness missing gate-hexa desk"
 assert selftest.out contains "HexaMold" else "lower_bartis_witness missing HexaMold claim"
-assert selftest.out contains "hepta-mold" else "lower_bartis_witness missing hepta-mold refuse"
+assert selftest.out contains "gate-hepta.glow" else "lower_bartis_witness missing gate-hepta desk"
+assert selftest.out contains "HeptaMold" else "lower_bartis_witness missing HeptaMold claim"
+assert selftest.out contains "octa-mold" else "lower_bartis_witness missing octa-mold refuse"
+assert selftest.out contains "hepta-mold argv refused" else "lower_bartis_witness missing hepta argv refuse"
+assert selftest.out contains "hepta-mold flip call-body refused" else "lower_bartis_witness missing hepta flip refuse"
 assert selftest.out contains "hexa-mold argv refused" else "lower_bartis_witness missing hexa argv refuse"
 assert selftest.out contains "gate-hexa-flip.glow" else "lower_bartis_witness missing hexa-flip desk"
 assert selftest.out contains "hexa-mold call-body flip" else "lower_bartis_witness missing hexa flip claim"
@@ -257,6 +261,15 @@ let run_hexa = run ["sh" "-c" "${hexa_bin}; echo EXIT:$?"]
 assert run_hexa.ok else "bartis hexa-mold welcome binary failed to launch"
 assert run_hexa.out contains "EXIT:0" else "bartis hexa-mold welcome binary did not exit 0"
 
+# STOA142: hepta-mold welcome binary exits 0.
+let hepta_rye = "glow/.cache/gate_hepta_welcome.rye"
+let hepta_bin = "glow/bin/gate_hepta_welcome"
+let build_hepta = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${hepta_rye} -femit-bin=${hepta_bin}"]
+assert build_hepta.ok else "bartis hepta-mold welcome .rye build failed"
+let run_hepta = run ["sh" "-c" "${hepta_bin}; echo EXIT:$?"]
+assert run_hepta.ok else "bartis hepta-mold welcome binary failed to launch"
+assert run_hepta.out contains "EXIT:0" else "bartis hepta-mold welcome binary did not exit 0"
+
 # STOA127: kind-mold flip call-body welcome binary exits 0.
 let kind_flip_rye = "glow/.cache/gate_kind_flip_welcome.rye"
 let kind_flip_bin = "glow/bin/gate_kind_flip_welcome"
@@ -329,4 +342,4 @@ let run_hxf = run ["sh" "-c" "${hexa_flip_bin}; echo EXIT:$?"]
 assert run_hxf.ok else "bartis hexa-mold flip welcome binary failed to launch"
 assert run_hxf.out contains "EXIT:0" else "bartis hexa-mold flip welcome binary did not exit 0"
 
-say "GREEN: Glow `|=` bartis — STOA100–141 identity · argv · call-body · amount-mold · amount argv · count-mold · count argv · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · pair flip · triple-mold · triple flip · quad-mold · quad flip · penta-mold · penta flip · hexa-mold · hexa flip · stated nesting · nest SampleDoesNotNest."
+say "GREEN: Glow `|=` bartis — STOA100–142 identity · argv · call-body · amount-mold · amount argv · count-mold · count argv · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · pair flip · triple-mold · triple flip · quad-mold · quad flip · penta-mold · penta flip · hexa-mold · hexa flip · hepta-mold · stated nesting · nest SampleDoesNotNest."

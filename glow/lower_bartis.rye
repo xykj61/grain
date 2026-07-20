@@ -20,6 +20,7 @@
 //! STOA139: `penta-mold` call body `%-  flip` → PentaMold swap · baked 5/3/1/2/7 → 3/5/1/2/7.
 //! STOA140: `hexa-mold` identity lowers as `HexaMold` struct · baked from 5 amount 3 fee 1 nonce 2 memo 7 tag 4.
 //! STOA141: `hexa-mold` call body `%-  flip` → HexaMold swap · baked 5/3/1/2/7/4 → 3/5/1/2/7/4.
+//! STOA142: `hepta-mold` identity lowers as `HeptaMold` struct · baked from 5 amount 3 fee 1 nonce 2 memo 7 tag 4 to 6.
 //! STOA127: `kind-mold` call body `%-  flip` → KindMold switch · baked `.mint` → `.send`.
 //! STOA128: `xact-mold` call body `%-  flip` → XactMold switch · baked mint/5 → `.send`.
 //! STOA129: `xfer-mold` call body `%-  flip` → XferMold switch · baked mint/5/3 → `.send`.
@@ -63,6 +64,13 @@ pub const bartis_hexa_demo_fee: u32 = 1;
 pub const bartis_hexa_demo_nonce: u32 = 2;
 pub const bartis_hexa_demo_memo: u32 = 7;
 pub const bartis_hexa_demo_tag: u32 = 4;
+pub const bartis_hepta_demo_from: u32 = 5;
+pub const bartis_hepta_demo_amount: u32 = 3;
+pub const bartis_hepta_demo_fee: u32 = 1;
+pub const bartis_hepta_demo_nonce: u32 = 2;
+pub const bartis_hepta_demo_memo: u32 = 7;
+pub const bartis_hepta_demo_tag: u32 = 4;
+pub const bartis_hepta_demo_to: u32 = 6;
 
 fn zig_safe_ident(face: []const u8, out: *[rb.max_face_len]u8) LowerError!u32 {
     assert(face.len <= rb.max_face_len); // precondition: face within name budget
@@ -188,6 +196,11 @@ fn is_penta_sample(spec: *const rb.GateSpec) bool {
 fn is_hexa_sample(spec: *const rb.GateSpec) bool {
     if (spec.mold_name_len == 0) return false;
     return nest_type.is_hexa_named_mold(rb.mold_name_slice(spec));
+}
+
+fn is_hepta_sample(spec: *const rb.GateSpec) bool {
+    if (spec.mold_name_len == 0) return false;
+    return nest_type.is_hepta_named_mold(rb.mold_name_slice(spec));
 }
 
 /// STOA123: closed unit `$%` kind-mold identity → KindMold enum · baked `.mint`.
@@ -425,6 +438,31 @@ fn emit_hexa_identity(out: []u8, zface: []const u8, comment: []const u8) LowerEr
     try append_print(out, &used, "    const {s}: HexaMold = .{{ .from = {d}, .amount = {d}, .fee = {d}, .nonce = {d}, .memo = {d}, .tag = {d} }};\n", .{ zface, bartis_hexa_demo_from, bartis_hexa_demo_amount, bartis_hexa_demo_fee, bartis_hexa_demo_nonce, bartis_hexa_demo_memo, bartis_hexa_demo_tag });
     try append_print(out, &used, "    const got = bartis_gate({s});\n", .{zface});
     try append_print(out, &used, "    return if (got.from == {d} and got.amount == {d} and got.fee == {d} and got.nonce == {d} and got.memo == {d} and got.tag == {d}) 0 else 1;\n", .{ bartis_hexa_demo_from, bartis_hexa_demo_amount, bartis_hexa_demo_fee, bartis_hexa_demo_nonce, bartis_hexa_demo_memo, bartis_hexa_demo_tag });
+    try append_print(out, &used, "}}\n", .{});
+    return used;
+}
+
+/// STOA142: closed seven-field `$:` hepta-mold → HeptaMold struct · baked 5/3/1/2/7/4/6.
+fn emit_hepta_identity(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
+    var used: u32 = 0;
+    try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
+    try append_print(out, &used, "pub const HeptaMold = struct {{\n", .{});
+    try append_print(out, &used, "    from: u32 = 0,\n", .{});
+    try append_print(out, &used, "    amount: u32 = 0,\n", .{});
+    try append_print(out, &used, "    fee: u32 = 0,\n", .{});
+    try append_print(out, &used, "    nonce: u32 = 0,\n", .{});
+    try append_print(out, &used, "    memo: u32 = 0,\n", .{});
+    try append_print(out, &used, "    tag: u32 = 0,\n", .{});
+    try append_print(out, &used, "    to: u32 = 0,\n", .{});
+    try append_print(out, &used, "}};\n\n", .{});
+    try append_print(out, &used, "/// {s}\n", .{comment});
+    try append_print(out, &used, "fn bartis_gate({s}: HeptaMold) HeptaMold {{\n", .{zface});
+    try append_print(out, &used, "    return {s};\n", .{zface});
+    try append_print(out, &used, "}}\n\n", .{});
+    try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
+    try append_print(out, &used, "    const {s}: HeptaMold = .{{ .from = {d}, .amount = {d}, .fee = {d}, .nonce = {d}, .memo = {d}, .tag = {d}, .to = {d} }};\n", .{ zface, bartis_hepta_demo_from, bartis_hepta_demo_amount, bartis_hepta_demo_fee, bartis_hepta_demo_nonce, bartis_hepta_demo_memo, bartis_hepta_demo_tag, bartis_hepta_demo_to });
+    try append_print(out, &used, "    const got = bartis_gate({s});\n", .{zface});
+    try append_print(out, &used, "    return if (got.from == {d} and got.amount == {d} and got.fee == {d} and got.nonce == {d} and got.memo == {d} and got.tag == {d} and got.to == {d}) 0 else 1;\n", .{ bartis_hepta_demo_from, bartis_hepta_demo_amount, bartis_hepta_demo_fee, bartis_hepta_demo_nonce, bartis_hepta_demo_memo, bartis_hepta_demo_tag, bartis_hepta_demo_to });
     try append_print(out, &used, "}}\n", .{});
     return used;
 }
@@ -690,6 +728,18 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
         }
     }
 
+    // STOA142: hepta-mold gate identity — seven slots 5/3/1/2/7/4/6.
+    if (is_hepta_sample(spec)) {
+        switch (spec.body) {
+            .identity => {
+                var comment_buf: [160]u8 = undefined;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` bartis — HeptaMold identity (STOA142).", .{ face, mold }) catch return error.Overflow;
+                return emit_hepta_identity(out, zface, comment);
+            },
+            .call_one => return error.BodyGateNotYetLowered,
+        }
+    }
+
     const expect = try expect_for(spec);
     var used: u32 = 0;
 
@@ -717,7 +767,7 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
 }
 
 fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
-    if (is_kind_sample(spec) or is_xact_sample(spec) or is_xfer_sample(spec) or is_pair_sample(spec) or is_triple_sample(spec) or is_quad_sample(spec) or is_penta_sample(spec) or is_hexa_sample(spec)) return error.SampleDoesNotNest;
+    if (is_kind_sample(spec) or is_xact_sample(spec) or is_xfer_sample(spec) or is_pair_sample(spec) or is_triple_sample(spec) or is_quad_sample(spec) or is_penta_sample(spec) or is_hexa_sample(spec) or is_hepta_sample(spec)) return error.SampleDoesNotNest;
     const face = rb.face_slice(spec);
     assert(face.len > 0); // invariant: spec carries a non-empty face
     const mold = sample_mold_label(spec);

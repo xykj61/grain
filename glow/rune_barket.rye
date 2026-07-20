@@ -26,8 +26,9 @@
 //! STOA139: closed call-body under penta-mold — `flip` (from↔amount · fee/nonce/memo stay).
 //! STOA140: closed allowlist adds six-field `$:` `hexa-mold` (identity lower).
 //! STOA141: closed call-body under hexa-mold — `flip` (from↔amount · fee/nonce/memo/tag stay).
+//! STOA142: closed allowlist adds seven-field `$:` `hepta-mold` (identity lower).
 //! Sample nests under `@u32` / named allowlist via nest_type; ambient gold held.
-//! Token-driven via tokens.rye. Open `$:` beyond hexa barket samples held.
+//! Token-driven via tokens.rye. Open `$:` beyond hepta barket samples held.
 
 const std = @import("std");
 const assert = std.debug.assert;
