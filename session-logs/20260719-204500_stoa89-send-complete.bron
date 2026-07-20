@@ -1,0 +1,13 @@
+format session-log-v1
+stamp 20260719.204500
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern time convention
+title STOA89 send complete
+prompt send and approve next rec after alphabet and gen wording
+think Seat f29414bb99 and pin bcf3780543 pushed to origin and codeberg with good GPG signatures.
+think STOA90 check-in already offered in pin log — lean A closed pronunciation table G1.
+obs Send complete; working tree clean after this log-only follow-up if committed.
+file session-logs/20260719-204500_stoa89-send-complete.bron send confirmation
+recommend check-in STOA90 lean A pronunciation table unless Keaton redirects
