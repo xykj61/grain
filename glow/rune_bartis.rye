@@ -1,10 +1,11 @@
-//! glow/rune_bartis.rye — parses Glow's `|=` bartis gate rune (STOA100–104).
+//! glow/rune_bartis.rye — parses Glow's `|=` bartis gate rune (STOA100–105).
 //!
 //! Thin one-arm gate: `|=  sample=@u32` on line one, then either:
 //!   - identity body: bare face matching the sample (STOA100)
 //!   - call body: `%-  <gate>  <sample-face>` (STOA103–104)
 //! Closed demo gates: `double` · `inc` · `dec` (same pins as STOA6 / core arms).
 //! Token-driven via tokens.rye. Only `@u32` aura accepted this lap.
+//! STOA105: TAME tidy — copy_disjoint · split header/body parse · assert alias.
 //! Wet / gold polymorphic cores held until a richer nest surface earns them.
 //!
 //! Parse shape (token stream):
@@ -20,6 +21,7 @@
 const std = @import("std");
 const assert = std.debug.assert;
 const tokens = @import("tokens.rye");
+const tally_copy = @import("tally_copy.rye");
 
 pub const max_face_len: u32 = tokens.max_name_len;
 pub const max_gate_len: u32 = tokens.max_name_len;
@@ -68,6 +70,37 @@ pub fn is_closed_call_gate(gate: []const u8) bool {
     return std.mem.eql(u8, gate, "double") or std.mem.eql(u8, gate, "inc") or std.mem.eql(u8, gate, "dec");
 }
 
+fn parse_body(src: []const u8, toks: []const tokens.Token, start: u32, face_text: []const u8, spec: *GateSpec) ParseError!u32 {
+    var i = start;
+    const n: u32 = @intCast(toks.len);
+    if (i >= n) return error.MalformedBody;
+    if (toks[@as(usize, @intCast(i))].kind == .ident) {
+        const body_text = tokens.slice_of(src, toks[@as(usize, @intCast(i))]);
+        if (!std.mem.eql(u8, body_text, face_text)) return error.BodyFaceMismatch;
+        i += 1;
+        spec.body = .identity;
+        return i;
+    }
+    if (toks[@as(usize, @intCast(i))].kind == .rune2 and std.mem.eql(u8, tokens.slice_of(src, toks[@as(usize, @intCast(i))]), "%-")) {
+        i += 1;
+        if (i >= n or toks[@as(usize, @intCast(i))].kind != .ident) return error.MalformedBody;
+        const gate_text = tokens.slice_of(src, toks[@as(usize, @intCast(i))]);
+        if (gate_text.len == 0 or gate_text.len > max_gate_len) return error.MalformedBody;
+        // Closed demo gates — double (STOA103) · inc · dec (STOA104).
+        if (!is_closed_call_gate(gate_text)) return error.BodyGateNotYetLowered;
+        i += 1;
+        if (i >= n or toks[@as(usize, @intCast(i))].kind != .ident) return error.MalformedBody;
+        const call_sample = tokens.slice_of(src, toks[@as(usize, @intCast(i))]);
+        if (!std.mem.eql(u8, call_sample, face_text)) return error.BodySampleMismatch;
+        i += 1;
+        spec.body = .call_one;
+        tally_copy.copy_disjoint(u8, spec.gate[0..gate_text.len], gate_text);
+        spec.gate_len = @intCast(gate_text.len);
+        return i;
+    }
+    return error.MalformedBody;
+}
+
 /// Parse a 2-line (plus optional `::` comments) bartis source into a GateSpec.
 /// Tokenizer strips comment lines and blank lines; parse sees only live tokens.
 pub fn parse_source(src: []const u8) ParseError!GateSpec {
@@ -83,70 +116,45 @@ pub fn parse_source(src: []const u8) ParseError!GateSpec {
     var i: u32 = 0;
 
     // Skip leading newlines.
-    while (i < n and toks[i].kind == .newline) : (i += 1) {}
+    while (i < n and toks[@as(usize, @intCast(i))].kind == .newline) : (i += 1) {}
     if (i >= n) return error.NotABartis;
 
     // Rune2 `|=`.
-    const rune_tok = toks[i];
+    const rune_tok = toks[@as(usize, @intCast(i))];
     if (rune_tok.kind != .rune2) return error.NotABartis;
     if (!std.mem.eql(u8, tokens.slice_of(src, rune_tok), "|=")) return error.NotABartis;
     i += 1;
 
     // Ident (sample face name).
-    if (i >= n or toks[i].kind != .ident) return error.MissingFace;
-    const face_tok = toks[i];
-    const face_text = tokens.slice_of(src, face_tok);
+    if (i >= n or toks[@as(usize, @intCast(i))].kind != .ident) return error.MissingFace;
+    const face_text = tokens.slice_of(src, toks[@as(usize, @intCast(i))]);
     if (face_text.len == 0 or face_text.len > max_face_len) return error.MissingFace;
     i += 1;
 
     // Equals.
-    if (i >= n or toks[i].kind != .equals) return error.MissingEquals;
+    if (i >= n or toks[@as(usize, @intCast(i))].kind != .equals) return error.MissingEquals;
     i += 1;
 
     // Aura — only `@u32` this lap.
-    if (i >= n or toks[i].kind != .aura) return error.MissingAura;
-    const aura_text = tokens.slice_of(src, toks[i]);
+    if (i >= n or toks[@as(usize, @intCast(i))].kind != .aura) return error.MissingAura;
+    const aura_text = tokens.slice_of(src, toks[@as(usize, @intCast(i))]);
     if (!std.mem.eql(u8, aura_text, "@u32")) return error.AuraNotYetLowered;
     i += 1;
 
     // Newline(s) — end of first line.
-    if (i >= n or toks[i].kind != .newline) return error.MalformedBody;
-    while (i < n and toks[i].kind == .newline) : (i += 1) {}
+    if (i >= n or toks[@as(usize, @intCast(i))].kind != .newline) return error.MalformedBody;
+    while (i < n and toks[@as(usize, @intCast(i))].kind == .newline) : (i += 1) {}
 
     var spec: GateSpec = .{};
     assert(face_text.len <= max_face_len); // precondition held by check above
-    @memcpy(spec.face[0..face_text.len], face_text);
+    tally_copy.copy_disjoint(u8, spec.face[0..face_text.len], face_text);
     spec.face_len = @intCast(face_text.len);
 
-    // Body: identity ident, or `%-` one-arg call of closed demo gate.
-    if (i >= n) return error.MalformedBody;
-    if (toks[i].kind == .ident) {
-        const body_text = tokens.slice_of(src, toks[i]);
-        if (!std.mem.eql(u8, body_text, face_text)) return error.BodyFaceMismatch;
-        i += 1;
-        spec.body = .identity;
-    } else if (toks[i].kind == .rune2 and std.mem.eql(u8, tokens.slice_of(src, toks[i]), "%-")) {
-        i += 1;
-        if (i >= n or toks[i].kind != .ident) return error.MalformedBody;
-        const gate_text = tokens.slice_of(src, toks[i]);
-        if (gate_text.len == 0 or gate_text.len > max_gate_len) return error.MalformedBody;
-        // Closed demo gates — double (STOA103) · inc · dec (STOA104).
-        if (!is_closed_call_gate(gate_text)) return error.BodyGateNotYetLowered;
-        i += 1;
-        if (i >= n or toks[i].kind != .ident) return error.MalformedBody;
-        const call_sample = tokens.slice_of(src, toks[i]);
-        if (!std.mem.eql(u8, call_sample, face_text)) return error.BodySampleMismatch;
-        i += 1;
-        spec.body = .call_one;
-        @memcpy(spec.gate[0..gate_text.len], gate_text);
-        spec.gate_len = @intCast(gate_text.len);
-    } else {
-        return error.MalformedBody;
-    }
+    i = try parse_body(src, toks, i, face_text, &spec);
 
     // Trailing newlines only — anything else is a malformed body.
     while (i < n) : (i += 1) {
-        if (toks[i].kind != .newline) return error.MalformedBody;
+        if (toks[@as(usize, @intCast(i))].kind != .newline) return error.MalformedBody;
     }
 
     return spec;
