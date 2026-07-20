@@ -1,4 +1,4 @@
-//! glow/tokens_witness.rye — proves bounded Glow token stream + named-cast peek.
+//! glow/tokens_witness.rye — proves TAME-tidy Glow token stream (STOA86).
 //!
 //!   rye build glow/tokens_witness.rye -femit-bin=glow/bin/tokens_witness
 //!   glow/bin/tokens_witness
@@ -8,7 +8,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const tokens = @import("tokens.rye");
 
-const witness_version = "20260719.201500";
+const witness_version = "20260719.201942";
 
 /// Same shape as glow/gen/cast-named-xact.glow (comments stripped by lexer).
 const xact_desk =
@@ -40,7 +40,8 @@ const cross_desk =
 fn run_selftest() !u8 {
     var buf: [tokens.max_tokens]tokens.Token = undefined;
 
-    const n = try tokens.tokenize(xact_desk, &buf);
+    const n = try tokens.tokenize(xact_desk, buf[0..]);
+    assert(n > 0); // postcondition: desk yielded tokens
     const got = buf[0..n];
     const want = [_]tokens.Kind{
         .rune2, // +$
@@ -64,7 +65,7 @@ fn run_selftest() !u8 {
         .rune2, // ^-
         .ident, // xact-mold
     };
-    assert(tokens.kinds_eql(got, &want));
+    assert(tokens.kinds_eql(got, want[0..])); // kind sequence pin
     assert(std.mem.eql(u8, tokens.slice_of(xact_desk, got[0]), "+$"));
     assert(std.mem.eql(u8, tokens.slice_of(xact_desk, got[1]), "xact-mold"));
     assert(std.mem.eql(u8, tokens.slice_of(xact_desk, got[5]), "%mint"));
@@ -77,35 +78,36 @@ fn run_selftest() !u8 {
         \\+$  amount-mold
         \\
     ;
-    const n2 = try tokens.tokenize(with_comment, &buf);
-    assert(n2 == 3);
+    const n2 = try tokens.tokenize(with_comment, buf[0..]);
+    assert(n2 == 3); // comment line invisible
     assert(buf[0].kind == .rune2);
     assert(buf[1].kind == .ident);
     assert(buf[2].kind == .newline);
     assert(std.mem.eql(u8, tokens.slice_of(with_comment, buf[0]), "+$"));
     print("tokens: :: comments skipped -- GREEN\n", .{});
 
-    // Force overflow: many idents past max_tokens.
+    // Force overflow: many idents past max_tokens (no bare memcpy).
     var big: [4096]u8 = undefined;
-    var bi: usize = 0;
-    var k: usize = 0;
+    var bi: u32 = 0;
+    var k: u32 = 0;
     while (k < tokens.max_tokens + 8) : (k += 1) {
-        const chunk = "a ";
-        if (bi + chunk.len > big.len) break;
-        @memcpy(big[bi..][0..chunk.len], chunk);
-        bi += chunk.len;
+        if (bi + 2 > big.len) break;
+        big[bi] = 'a';
+        big[bi + 1] = ' ';
+        bi += 2;
     }
-    if (tokens.tokenize(big[0..bi], &buf)) |_| {
+    assert(bi >= 2); // precondition: overflow source non-empty
+    if (tokens.tokenize(big[0..bi], buf[0..])) |_| {
         return error.TooManyTokensNotCaught;
     } else |err| {
-        if (err != tokens.TokenError.TooManyTokens) return err;
+        assert(err == tokens.TokenError.TooManyTokens); // negative space
     }
     print("tokens: overflow refused TooManyTokens -- GREEN\n", .{});
 
-    if (tokens.tokenize("+$  !!!", &buf)) |_| {
+    if (tokens.tokenize("+$  !!!", buf[0..])) |_| {
         return error.BadTokenNotCaught;
     } else |err| {
-        if (err != tokens.TokenError.BadToken) return err;
+        assert(err == tokens.TokenError.BadToken); // negative space
     }
     print("tokens: unknown bytes refused BadToken -- GREEN\n", .{});
 
@@ -121,8 +123,13 @@ fn run_selftest() !u8 {
     assert(!tokens.looks_like_cross_desk(mold_only));
     print("tokens: cross-desk peek (glow_run wire) -- GREEN\n", .{});
 
+    // TAME surface: spans are u32; Token carries no authored usize fields.
+    assert(@sizeOf(u32) == @sizeOf(@TypeOf(@as(tokens.Token, .{}).start)));
+    assert(@sizeOf(u32) == @sizeOf(@TypeOf(@as(tokens.Token, .{}).len)));
+    print("tokens: TAME u32 spans -- GREEN\n", .{});
+
     print("tokens: version {s}\n", .{witness_version});
-    print("GREEN: Glow token stream cross-desk peek — STOA85; glow_run wire.\n", .{});
+    print("GREEN: Glow token stream TAME tidy — STOA86; assert · u32 · split lex.\n", .{});
     return 0;
 }
 

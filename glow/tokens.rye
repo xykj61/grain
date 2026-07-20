@@ -1,9 +1,9 @@
-//! glow/tokens.rye — bounded shared Glow token stream (STOA83).
+//! glow/tokens.rye — bounded shared Glow token stream (STOA83–86).
 //!
 //! Classifies desk bytes into a fixed-cap token array (kind + byte span).
 //! Skips `::` line comments and spaces/tabs. Newlines stay significant.
-//! STOA84: `looks_like_named_cast` peeks same-desk named-cast dispatch.
-//! STOA85: `looks_like_cross_desk` peeks cross-desk named-cast dispatch.
+//! STOA84–85: named-cast peeks for glow_run dispatch.
+//! STOA86: TAME tidy — assert contracts, u32 spans, split lex steps.
 //! Full lowers still parse source bytes.
 //!
 //!   +$  xact-mold
@@ -13,9 +13,14 @@
 //!   ^-  xact-mold
 
 const std = @import("std");
+const assert = std.debug.assert;
 
+/// Desk token budget — one fixed array; overflow is TooManyTokens.
 pub const max_tokens: u32 = 64;
+/// Ident / tag name ceiling (matches rune_mold.max_name_len).
 pub const max_name_len: u32 = 64;
+/// Hosted desk read ceiling (glow_run limited(64 * 1024)).
+pub const max_src_len: u32 = 64 * 1024;
 
 pub const TokenError = error{
     TooManyTokens,
@@ -39,14 +44,22 @@ pub const Kind = enum {
     double_equals,
 };
 
+/// One token over a source: kind plus byte span.
+/// Invariant: when live over `src`, start + len <= src.len.
 pub const Token = struct {
     kind: Kind = .newline,
-    start: usize = 0,
-    len: usize = 0,
+    start: u32 = 0,
+    len: u32 = 0,
 };
 
 pub fn slice_of(src: []const u8, tok: Token) []const u8 {
-    return src[tok.start .. tok.start + tok.len];
+    assert(src.len <= max_src_len); // precondition: hosted desk bound
+    const src_len: u32 = @intCast(src.len);
+    assert(tok.start <= src_len); // invariant: start in range
+    assert(tok.len <= src_len - tok.start); // invariant: span fits
+    const lo: usize = @as(usize, @intCast(tok.start));
+    const hi: usize = @as(usize, @intCast(tok.start + tok.len));
+    return src[lo..hi];
 }
 
 fn is_ident_start(c: u8) bool {
@@ -65,130 +78,173 @@ fn is_digit(c: u8) bool {
     return c >= '0' and c <= '9';
 }
 
-fn starts_with(src: []const u8, i: usize, lit: []const u8) bool {
-    if (i + lit.len > src.len) return false;
-    return std.mem.eql(u8, src[i .. i + lit.len], lit);
+fn starts_with(src: []const u8, i: u32, lit: []const u8) bool {
+    assert(lit.len >= 1); // precondition: literal non-empty
+    assert(lit.len <= 2); // precondition: rune/literal heads are 1–2 bytes
+    const i_usz: usize = @as(usize, @intCast(i));
+    if (i_usz + lit.len > src.len) return false;
+    return std.mem.eql(u8, src[i_usz .. i_usz + lit.len], lit);
 }
 
-/// Two-byte Glow rune heads recognized this lap (longest-match with `==`).
-fn match_rune2(src: []const u8, i: usize) ?[]const u8 {
+/// Two-byte Glow rune heads (longest-match before bare `=` / `%`).
+fn match_rune2(src: []const u8, i: u32) ?u32 {
     const pairs = [_][]const u8{
         "+$", "$%", "$:", "^-", "=/", "=.", "=*", "|-", "|%", "++", "--",
         "/+", "?:", "?-", "?~", ":-", ":+", ":^", ":~", "%-", "%+", "%^", "%*",
     };
     for (pairs) |p| {
-        if (starts_with(src, i, p)) return p;
+        if (starts_with(src, i, p)) {
+            assert(p.len == 2); // invariant: rune2 table is two-byte heads
+            return 2;
+        }
     }
     return null;
 }
 
-fn push(out: []Token, used: *usize, kind: Kind, start: usize, len: usize) TokenError!void {
-    if (used.* >= out.len) return error.TooManyTokens;
+fn push(out: []Token, used: *u32, kind: Kind, start: u32, len: u32) TokenError!void {
+    assert(len >= 1); // precondition: every token spans at least one byte
+    const cap: u32 = @intCast(out.len);
+    if (used.* >= cap) return error.TooManyTokens;
+    assert(used.* < cap); // invariant: slot free inside caller buffer
     out[used.*] = .{ .kind = kind, .start = start, .len = len };
     used.* += 1;
 }
 
-/// Lex `src` into `out`. Returns the number of tokens written.
-pub fn tokenize(src: []const u8, out: []Token) TokenError!usize {
-    if (src.len == 0) return error.EmptySource;
-    var i: usize = 0;
-    var used: usize = 0;
-    while (i < src.len) {
-        const c = src[i];
+fn skip_space(src: []const u8, i: u32) u32 {
+    var at = i;
+    const src_len: u32 = @intCast(src.len);
+    while (at < src_len) {
+        const c = src[@as(usize, @intCast(at))];
         if (c == ' ' or c == '\t' or c == '\r') {
-            i += 1;
+            at += 1;
             continue;
         }
-        if (c == '\n') {
-            try push(out, &used, .newline, i, 1);
-            i += 1;
-            continue;
-        }
-        // `::` comment eats the whole line (including the newline).
-        if (c == ':' and i + 1 < src.len and src[i + 1] == ':') {
-            i += 2;
-            while (i < src.len and src[i] != '\n') : (i += 1) {}
-            if (i < src.len) i += 1;
-            continue;
-        }
-        if (starts_with(src, i, "==")) {
-            try push(out, &used, .double_equals, i, 2);
-            i += 2;
-            continue;
-        }
-        if (match_rune2(src, i)) |r| {
-            try push(out, &used, .rune2, i, r.len);
-            i += r.len;
-            continue;
-        }
-        if (c == '(') {
-            try push(out, &used, .lparen, i, 1);
-            i += 1;
-            continue;
-        }
-        if (c == ')') {
-            try push(out, &used, .rparen, i, 1);
-            i += 1;
-            continue;
-        }
-        if (c == '[') {
-            try push(out, &used, .lbracket, i, 1);
-            i += 1;
-            continue;
-        }
-        if (c == ']') {
-            try push(out, &used, .rbracket, i, 1);
-            i += 1;
-            continue;
-        }
-        if (c == '=') {
-            try push(out, &used, .equals, i, 1);
-            i += 1;
-            continue;
-        }
-        if (c == '~') {
-            try push(out, &used, .tilde, i, 1);
-            i += 1;
-            continue;
-        }
-        // `%tag` cold atom (not a two-byte `%` call rune — those matched above).
-        if (c == '%') {
-            var j = i + 1;
-            if (j >= src.len or !is_ident_start(src[j])) return error.BadToken;
-            j += 1;
-            while (j < src.len and is_ident_char(src[j])) : (j += 1) {}
-            try push(out, &used, .percent_tag, i, j - i);
-            i = j;
-            continue;
-        }
-        // `@u32` / `@u64` aura molds.
-        if (c == '@') {
-            var j = i + 1;
-            if (j >= src.len or src[j] != 'u') return error.BadToken;
-            j += 1;
-            const dig0 = j;
-            while (j < src.len and is_digit(src[j])) : (j += 1) {}
-            if (j == dig0) return error.BadToken;
-            try push(out, &used, .aura, i, j - i);
-            i = j;
-            continue;
-        }
-        if (is_digit(c)) {
-            var j = i + 1;
-            while (j < src.len and is_digit(src[j])) : (j += 1) {}
-            try push(out, &used, .decimal, i, j - i);
-            i = j;
-            continue;
-        }
-        if (is_ident_start(c)) {
-            var j = i + 1;
-            while (j < src.len and is_ident_char(src[j])) : (j += 1) {}
-            if (j - i > max_name_len) return error.BadToken;
-            try push(out, &used, .ident, i, j - i);
-            i = j;
-            continue;
-        }
-        return error.BadToken;
+        break;
+    }
+    return at;
+}
+
+/// `::` comment eats the whole line, including the newline.
+fn skip_comment_line(src: []const u8, i: u32) u32 {
+    assert(starts_with(src, i, "::")); // precondition: caller saw comment open
+    var at = i + 2;
+    const src_len: u32 = @intCast(src.len);
+    while (at < src_len and src[@as(usize, @intCast(at))] != '\n') : (at += 1) {}
+    if (at < src_len) at += 1;
+    return at;
+}
+
+fn scan_ident_span(src: []const u8, start: u32) TokenError!u32 {
+    const src_len: u32 = @intCast(src.len);
+    assert(start < src_len); // precondition
+    assert(is_ident_start(src[@as(usize, @intCast(start))])); // precondition
+    var at = start + 1;
+    while (at < src_len and is_ident_char(src[@as(usize, @intCast(at))])) : (at += 1) {}
+    const n = at - start;
+    if (n > max_name_len) return error.BadToken;
+    return n;
+}
+
+fn scan_digits(src: []const u8, start: u32) TokenError!u32 {
+    const src_len: u32 = @intCast(src.len);
+    assert(start < src_len); // precondition
+    assert(is_digit(src[@as(usize, @intCast(start))])); // precondition
+    var at = start + 1;
+    while (at < src_len and is_digit(src[@as(usize, @intCast(at))])) : (at += 1) {}
+    return at - start;
+}
+
+fn lex_punct(c: u8) ?Kind {
+    return switch (c) {
+        '(' => .lparen,
+        ')' => .rparen,
+        '[' => .lbracket,
+        ']' => .rbracket,
+        '=' => .equals,
+        '~' => .tilde,
+        else => null,
+    };
+}
+
+fn lex_percent_tag(src: []const u8, i: u32, out: []Token, used: *u32) TokenError!u32 {
+    const src_len: u32 = @intCast(src.len);
+    if (i + 1 >= src_len) return error.BadToken;
+    if (!is_ident_start(src[@as(usize, @intCast(i + 1))])) return error.BadToken;
+    const n = try scan_ident_span(src, i + 1);
+    try push(out, used, .percent_tag, i, 1 + n);
+    return i + 1 + n;
+}
+
+fn lex_aura(src: []const u8, i: u32, out: []Token, used: *u32) TokenError!u32 {
+    const src_len: u32 = @intCast(src.len);
+    if (i + 1 >= src_len) return error.BadToken;
+    if (src[@as(usize, @intCast(i + 1))] != 'u') return error.BadToken;
+    if (i + 2 >= src_len) return error.BadToken;
+    if (!is_digit(src[@as(usize, @intCast(i + 2))])) return error.BadToken;
+    const n = try scan_digits(src, i + 2);
+    try push(out, used, .aura, i, 2 + n);
+    return i + 2 + n;
+}
+
+/// Lex one token at `i` (caller already skipped space). Returns next index.
+fn lex_one(src: []const u8, i: u32, out: []Token, used: *u32) TokenError!u32 {
+    const src_len: u32 = @intCast(src.len);
+    assert(i < src_len); // precondition: not at EOF
+    const c = src[@as(usize, @intCast(i))];
+
+    if (c == '\n') {
+        try push(out, used, .newline, i, 1);
+        return i + 1;
+    }
+    if (c == ':' and starts_with(src, i, "::")) {
+        return skip_comment_line(src, i);
+    }
+    if (starts_with(src, i, "==")) {
+        try push(out, used, .double_equals, i, 2);
+        return i + 2;
+    }
+    if (match_rune2(src, i)) |n| {
+        try push(out, used, .rune2, i, n);
+        return i + n;
+    }
+    if (lex_punct(c)) |kind| {
+        try push(out, used, kind, i, 1);
+        return i + 1;
+    }
+    // `%tag` cold atom (call runes `%-` / `%+` already matched above).
+    if (c == '%') return lex_percent_tag(src, i, out, used);
+    // `@u32` / `@u64` aura molds.
+    if (c == '@') return lex_aura(src, i, out, used);
+    if (is_digit(c)) {
+        const n = try scan_digits(src, i);
+        try push(out, used, .decimal, i, n);
+        return i + n;
+    }
+    if (is_ident_start(c)) {
+        const n = try scan_ident_span(src, i);
+        try push(out, used, .ident, i, n);
+        return i + n;
+    }
+    return error.BadToken;
+}
+
+/// Lex `src` into `out`. Returns the number of tokens written.
+pub fn tokenize(src: []const u8, out: []Token) TokenError!u32 {
+    assert(out.len >= 1); // precondition: caller supplies a buffer
+    assert(out.len <= max_tokens); // precondition: buffer within budget
+    if (src.len == 0) return error.EmptySource;
+    if (src.len > max_src_len) return error.BadToken;
+    assert(src.len <= max_src_len); // invariant: accepted source bound
+
+    const src_len: u32 = @intCast(src.len);
+    var i: u32 = 0;
+    var used: u32 = 0;
+    while (i < src_len) {
+        i = skip_space(src, i);
+        if (i >= src_len) break;
+        i = try lex_one(src, i, out, &used);
+        assert(i <= src_len); // invariant: cursor never past end
+        assert(used <= max_tokens); // invariant: count within budget
     }
     return used;
 }
@@ -196,16 +252,17 @@ pub fn tokenize(src: []const u8, out: []Token) TokenError!usize {
 /// True when `got` kinds match `want` exactly.
 pub fn kinds_eql(got: []const Token, want: []const Kind) bool {
     if (got.len != want.len) return false;
-    var i: usize = 0;
-    while (i < got.len) : (i += 1) {
+    var i: u32 = 0;
+    const n: u32 = @intCast(got.len);
+    while (i < n) : (i += 1) {
         if (got[i].kind != want[i]) return false;
     }
     return true;
 }
 
 /// Count Glow lines from tokens (a line has at least one non-newline token).
-pub fn glow_line_count(toks: []const Token) usize {
-    var lines: usize = 0;
+pub fn glow_line_count(toks: []const Token) u32 {
+    var lines: u32 = 0;
     var in_line = false;
     for (toks) |t| {
         if (t.kind == .newline) {
@@ -231,15 +288,20 @@ fn first_content(toks: []const Token) ?Token {
 /// First token of the last non-empty Glow line.
 fn last_line_head(toks: []const Token) ?Token {
     if (toks.len == 0) return null;
-    var i: isize = @intCast(toks.len - 1);
+    var i: u32 = @intCast(toks.len);
     // Skip trailing newlines.
-    while (i >= 0 and toks[@intCast(i)].kind == .newline) : (i -= 1) {}
-    if (i < 0) return null;
+    while (i > 0 and toks[i - 1].kind == .newline) : (i -= 1) {}
+    if (i == 0) return null;
     // Walk back to the newline that opens this line.
-    while (i >= 0 and toks[@intCast(i)].kind != .newline) : (i -= 1) {}
-    const head_i: usize = @intCast(i + 1);
-    if (head_i >= toks.len) return null;
-    return toks[head_i];
+    var j = i;
+    while (j > 0 and toks[j - 1].kind != .newline) : (j -= 1) {}
+    assert(j < i); // invariant: last line has at least one content token
+    return toks[j];
+}
+
+fn rune2_is(src: []const u8, tok: Token, lit: []const u8) bool {
+    if (tok.kind != .rune2) return false;
+    return std.mem.eql(u8, slice_of(src, tok), lit);
 }
 
 /// True when the token stream is a same-desk named-cast desk:
@@ -247,15 +309,14 @@ fn last_line_head(toks: []const Token) ?Token {
 pub fn looks_like_named_cast(src: []const u8) bool {
     var buf: [max_tokens]Token = undefined;
     const n = tokenize(src, &buf) catch return false;
+    assert(n <= max_tokens); // postcondition: tokenize bound
     const toks = buf[0..n];
     const lines = glow_line_count(toks);
     if (lines < 4 or lines > 5) return false;
     const head = first_content(toks) orelse return false;
-    if (head.kind != .rune2) return false;
-    if (!std.mem.eql(u8, slice_of(src, head), "+$")) return false;
+    if (!rune2_is(src, head, "+$")) return false;
     const last = last_line_head(toks) orelse return false;
-    if (last.kind != .rune2) return false;
-    return std.mem.eql(u8, slice_of(src, last), "^-");
+    return rune2_is(src, last, "^-");
 }
 
 /// True when the token stream is a cross-desk named-cast desk:
@@ -263,12 +324,11 @@ pub fn looks_like_named_cast(src: []const u8) bool {
 pub fn looks_like_cross_desk(src: []const u8) bool {
     var buf: [max_tokens]Token = undefined;
     const n = tokenize(src, &buf) catch return false;
+    assert(n <= max_tokens); // postcondition: tokenize bound
     const toks = buf[0..n];
     if (glow_line_count(toks) != 2) return false;
     const head = first_content(toks) orelse return false;
-    if (head.kind != .rune2) return false;
-    if (!std.mem.eql(u8, slice_of(src, head), "/+")) return false;
+    if (!rune2_is(src, head, "/+")) return false;
     const last = last_line_head(toks) orelse return false;
-    if (last.kind != .rune2) return false;
-    return std.mem.eql(u8, slice_of(src, last), "^-");
+    return rune2_is(src, last, "^-");
 }

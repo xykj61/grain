@@ -1,4 +1,4 @@
-# glow_tokens_witness.rish — token stream + named-cast peeks (STOA84–85).
+# glow_tokens_witness.rish — TAME-tidy Glow token stream (STOA86).
 #
 #   rishi/bin/rishi run tools/glow_tokens_witness.rish
 
@@ -17,6 +17,15 @@ assert selftest.out contains "BadToken" else "tokens_witness missing BadToken"
 assert selftest.out contains "comments skipped" else "tokens_witness missing comment claim"
 assert selftest.out contains "named-cast peek" else "tokens_witness missing named-cast peek"
 assert selftest.out contains "cross-desk peek" else "tokens_witness missing cross-desk peek"
-assert selftest.out contains "STOA85" else "tokens_witness missing STOA85"
+assert selftest.out contains "TAME u32 spans" else "tokens_witness missing TAME u32 claim"
+assert selftest.out contains "STOA86" else "tokens_witness missing STOA86"
 
-say "GREEN: Glow token stream cross-desk peek — glow_run wire; STOA85."
+# Width gate on the first Glow TAME surface (seam casts blessed).
+let width = run ["sh" "-c" "grep 'usize' glow/tokens.rye 2>/dev/null | grep -v '@intCast' | grep -v '@as(usize' | wc -l | tr -d ' '"]
+assert width.ok else "tokens width scan failed"
+assert trim width.out == "0" else "glow/tokens.rye still carries authored usize"
+
+let assert_import = run ["sh" "-c" "grep -c 'const assert = std.debug.assert' glow/tokens.rye | tr -d ' '"]
+assert trim assert_import.out == "1" else "glow/tokens.rye must import assert once"
+
+say "GREEN: Glow token stream TAME tidy — assert · u32 spans · split lex; STOA86."
