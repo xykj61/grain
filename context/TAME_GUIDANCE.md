@@ -7,7 +7,7 @@ type: reference
 # TAME Guidance — Operational Supplement
 
 **Language:** EN
-**Last updated:** 2026-07-19 (Glow asserts · alphabet · argv · token G4 close STOA93–97)
+**Last updated:** 2026-07-19 (Glow G0–G5 pin · G4 close · G5 Nock family notes STOA98)
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 **Voice:** Quin
 **Status:** Active — grow by supplement, earned when the language is ready
@@ -23,7 +23,7 @@ Three layers, one discipline — filenames follow TigerBeetle's `docs/TIGER_STYL
 | **Source** | `gratitude/TIGER_STYLE.md` | TigerBeetle team's guide, kept whole and unaltered |
 | **Voiced canon** | `external-research/TAME_GUIDANCE.md` | Our radiant adaptation; Safety, Performance, DX, and the full why |
 | **Operational supplement** | this document | Checkable root + Rye / Brix / Rishi rules for authors and agents |
-| **Glow working pin** | [`../glow/README.md`](../glow/README.md) · alphabet · argv · token lower seam | Fixture desks + asserts · G0–G2 alphabet · **G3 argv** · **G4** token peeks/parts · tidy mold · token→`MoldSpec` (STOA93–97) — full Glow supplement still horizon |
+| **Glow working pin** | [`../glow/README.md`](../glow/README.md) · alphabet · argv · token lower · G5 Nock | Fixture desks + asserts · G0–G5 · **G4** token→`MoldSpec` (STOA93–97) · **G5** Nock second-backend notes beside truth families (STOA98) — full Glow supplement still horizon |
 | **Glow supplement (horizon)** | [`../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md`](../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md) | Scoping for a future Glow supplement; root still binds Glow authors now |
 
 Read the voiced canon (`external-research/TAME_GUIDANCE.md`) for philosophy and expert Tiger discipline. Read **this file** at the keyboard for what to assert, name, and bound. Organization prose lives in `active-designing/yonder/20260618-184912_growing-a-language.md`.
@@ -43,9 +43,9 @@ Hoon's positive and negative assertion runes — [`?>` wutgar](https://docs.urbi
 
 **Not yet:** `?=` type-match asserts, general boolean tests, or inference that refines subject type across the assertion (Hoon's full power). Those wait on richer nest/type surface.
 
-### Glow — rune alphabet and fixture desks (working pin, STOA89–91)
+### Glow — rune alphabet and fixture desks (working pin, STOA89–91; G5 STOA98)
 
-Glow adopts Hoon's one-syllable glyph alphabet so digraphs stay speakable. Primary compile path is Glow→Rye→Zig→**RISC-V**; Nock is a second backend at a seam. Most `glow/gen/` files are **fixture desks** (baked sample). **G3** seats one thin parameterized **generator**: `glow/gen/sample-u32.glow` reads one `@u32` from Rishi argv. **G4** closes the lexer→lower mold seam: cross-desk parts · same-desk mold-body · mold-only peek · TAME tidy `lower_mold` · token→`MoldSpec` in `rune_mold.parse_source` (STOA93–97). Not bartis — `|=` stays horizon. Canon: [`../active-designing/20260719-204001_glow-rune-pronunciation-alphabet-riscv-and-generators.md`](../active-designing/20260719-204001_glow-rune-pronunciation-alphabet-riscv-and-generators.md) · G3 plan [`../active-designing/20260720-022956_stoa92-thin-argv-sample-g3-plan.md`](../active-designing/20260720-022956_stoa92-thin-argv-sample-g3-plan.md) · G4 plans [`../active-designing/20260720-023513_stoa93-token-driven-lower-slice-g4-plan.md`](../active-designing/20260720-023513_stoa93-token-driven-lower-slice-g4-plan.md) · [`../active-designing/20260720-024223_stoa94-same-desk-mold-body-tokens-g4-plan.md`](../active-designing/20260720-024223_stoa94-same-desk-mold-body-tokens-g4-plan.md). **G1 closed table**: [`../active-designing/20260719-220814_glow-rune-pronunciation-closed-table.md`](../active-designing/20260719-220814_glow-rune-pronunciation-closed-table.md).
+**STOA91** seats the compact glyph alphabet and family index below (G2). Glow adopts Hoon's one-syllable glyph alphabet so digraphs stay speakable. Primary compile path is Glow→Rye→Zig→**RISC-V**; Nock is a second backend at a seam. Most `glow/gen/` files are **fixture desks** (baked sample). **G3** seats one thin parameterized **generator**: `glow/gen/sample-u32.glow` reads one `@u32` from Rishi argv. **G4** closes the lexer→lower mold seam: cross-desk parts · same-desk mold-body · mold-only peek · TAME tidy `lower_mold` · token→`MoldSpec` in `rune_mold.parse_source` (STOA93–97). Not bartis — `|=` stays horizon. Canon: [`../active-designing/20260719-204001_glow-rune-pronunciation-alphabet-riscv-and-generators.md`](../active-designing/20260719-204001_glow-rune-pronunciation-alphabet-riscv-and-generators.md) · G3 plan [`../active-designing/20260720-022956_stoa92-thin-argv-sample-g3-plan.md`](../active-designing/20260720-022956_stoa92-thin-argv-sample-g3-plan.md) · G4 plans [`../active-designing/20260720-023513_stoa93-token-driven-lower-slice-g4-plan.md`](../active-designing/20260720-023513_stoa93-token-driven-lower-slice-g4-plan.md) · [`../active-designing/20260720-024223_stoa94-same-desk-mold-body-tokens-g4-plan.md`](../active-designing/20260720-024223_stoa94-same-desk-mold-body-tokens-g4-plan.md). **G1 closed table**: [`../active-designing/20260719-220814_glow-rune-pronunciation-closed-table.md`](../active-designing/20260719-220814_glow-rune-pronunciation-closed-table.md).
 
 #### Glyph alphabet (compact)
 
@@ -77,6 +77,17 @@ Full per-rune rows (meaning · RISC-V/TAME note) live in the G1 closed table. Th
 **Horizon (not in `tokens.rye`):** `|=` bartis · `|^` barket · sig hints `~%` · `~/`.
 
 **Authoring law:** when you seat a new Glow rune, add its digraph to `glow/tokens.rye` `match_rune2`, a row to the G1 closed table, and a spoken example here in the matching family — same lap, or the alphabet witness goes red.
+
+### Glow — Nock second-backend notes beside truth families (G5, STOA98)
+
+Primary path stays Glow→Rye→Zig→**RISC-V**. **Nock** is the second backend for Urbit interop and verification only ([`../nock/README.md`](../nock/README.md)) — never RISC-V→Nock. Ambient truth ruling: [`specs/20260717-154943_glow-truth-zig-ambient-nock-loobean-seam.md`](specs/20260717-154943_glow-truth-zig-ambient-nock-loobean-seam.md) · seam module [`../glow/truth_semantics.rye`](../glow/truth_semantics.rye).
+
+| Family | Touches | Nock second-backend note |
+|--------|---------|---------------------------|
+| **wut** | truth (`?:` · `?-` · `?~` · `?>` · `?<`) | Zig `bool` / Rye `assert` / POSIX exits ambient; loobean 0=yes only inside `nock/` and at `truth_semantics` conversion. Future Nock emit of wut heads converts at that seam. |
+| *(none yet)* | jets | No GREEN Glow family is jet-touching until a Glow→Nock emit or jet table seats; add the family row here that lap. |
+
+G5 brief: [`../active-designing/20260720-033200_stoa98-g5-nock-second-backend-family-notes.md`](../active-designing/20260720-033200_stoa98-g5-nock-second-backend-family-notes.md). Witness: `tools/glow_g5_nock_family_notes_witness.rish`.
 
 Cursor and Claude rules (`.cursor/rules/tame-guidance.mdc`, `.claude/rules/tame-guidance.md`) point here. Root rule **9** (docs and implementation stay synced) has its own always-on agent rule pair: `.cursor/rules/docs-implementation-sync.mdc`, `.claude/rules/docs-implementation-sync.md`.
 

@@ -8,6 +8,8 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260719.233200` — [STOA98 G5 Nock family notes GREEN](20260719-233200_stoa98-g5-nock-notes-green.bron) — wut truth pin; await send
+- `20260719.233140` — [STOA97 send complete](20260719-233140_stoa97-send-complete.bron) — origin main at 21c158ff01
 - `20260719.233050` — [STOA97 token MoldSpec G4 GREEN](20260719-233050_stoa97-token-mold-spec-green.bron) — compass lean A; await send
 - `20260720.032713` — [STOA97 token→MoldSpec rewrite](20260720-032713_stoa97-token-mold-spec.bron) — parse_source walks token stream; lower_multi retired
 - `20260719.231725` — [STOA96 send complete](20260719-231725_stoa96-send-complete.bron) — origin main at 4217096449
