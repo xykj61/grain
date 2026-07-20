@@ -8,6 +8,8 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260720.184838` — [STOA124 send complete](20260720-184838_stoa124-send-complete.bron) — origin main language claim 404a1d1ef0 · tip 404a1d1ef0
+- `20260720.184838` — [STOA125 next map after xact-mold gate](20260720-184838_stoa125-next-map.bron) — gold vs xfer-mold; compass pick
 - `20260720.184738` — [STOA124 xact-mold gate sample GREEN](20260720-184738_stoa124-xact-mold-green.bron) — XactMold · baked .mint amount 5; await send
 - `20260720.184304` — [STOA124 xact-mold gate sample map](20260720-184304_stoa124-xact-mold-map.bron) — lean A payload $% gate identity
 - `20260720.184219` — [STOA123 send complete](20260720-184219_stoa123-send-complete.bron) — origin main language claim 7b9d350d26 · tip f15f33c18d
