@@ -1,0 +1,40 @@
+# glow_g5_nock_family_notes_witness.rish — G5 Nock second-backend family pin (STOA98).
+#
+# Binds context/TAME_GUIDANCE.md G5 section + active-designing G5 brief.
+# Device-free. Does not open Nock emit.
+#
+#   rishi/bin/rishi run tools/glow_g5_nock_family_notes_witness.rish
+
+let tame = "context/TAME_GUIDANCE.md"
+let brief = "active-designing/20260720-033200_stoa98-g5-nock-second-backend-family-notes.md"
+let truth = "glow/truth_semantics.rye"
+let nock_readme = "nock/README.md"
+
+let tame_g5 = run ["sh" "-c" "grep -F 'Nock second-backend notes beside truth families (G5, STOA98)' ${tame}"]
+assert tame_g5.ok else "TAME missing G5 STOA98 heading"
+assert tame_g5.out contains "STOA98" else "TAME G5 heading missing STOA98"
+
+let tame_wut = run ["sh" "-c" "grep -F '**wut**' ${tame} | grep -F 'truth'"]
+assert tame_wut.ok else "TAME G5 missing wut truth row"
+
+let tame_jets = run ["sh" "-c" "grep -F 'jet-touching' ${tame}"]
+assert tame_jets.ok else "TAME G5 missing jet-touching horizon note"
+
+let tame_seam = run ["sh" "-c" "grep -F 'truth_semantics' ${tame}"]
+assert tame_seam.ok else "TAME G5 missing truth_semantics seam"
+
+let brief_ok = run ["sh" "-c" "test -f ${brief} && grep -F 'STOA98' ${brief} && grep -F '**wut**' ${brief} && grep -F 'jet-touching' ${brief}"]
+assert brief_ok.ok else "G5 brief missing or incomplete"
+
+let truth_mod = run ["sh" "-c" "grep -F 'loob_to_bool' ${truth} && grep -F 'bool_to_loob' ${truth}"]
+assert truth_mod.ok else "truth_semantics missing loobean converters"
+
+let nock_second = run ["sh" "-c" "grep -F 'second backend' ${nock_readme}"]
+assert nock_second.ok else "nock/README must name second backend"
+
+# Keep the living truth witness GREEN beside the pin.
+let truth_wit = run ["sh" "-c" "rishi/bin/rishi run tools/glow_truth_semantics_witness.rish"]
+assert truth_wit.ok else "glow_truth_semantics_witness failed under G5 pin"
+assert truth_wit.out contains "GREEN" else "glow_truth_semantics_witness not GREEN"
+
+say "GREEN: Glow G5 Nock second-backend family notes — wut truth · jets horizon; STOA98."
