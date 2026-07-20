@@ -1,0 +1,15 @@
+format session-log-v1
+stamp 20260719.204340
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern time convention
+title STOA89 pin and STOA90 check-in
+prompt send and approve next rec after processing pronunciation alphabet and gen wording
+think Seated STOA89 at git nib f29414bb99; pin REMEMBER language nib STOA0-89.
+think STOA90 check-in after alphabet roadmap G0: A closed pronunciation table G1 for GREEN rune heads; B thin argv sample generator G3; C token-driven lower; D tidy lower_mold; E Sala B0.
+think Recommend A — finishes the major step Keaton just approved; mechanical table restatement from Hoon alphabet + RISC-V notes already named; G3 and token lower stay ready after.
+obs kg ≠ send; this pin ships with send. Lean A is docs-checkable when living-docs or a thin witness lists the closed set.
+file work-in-progress/REMEMBER.md pin STOA89 f29414bb99
+file session-logs/20260719-204340_stoa89-pin-stoa90-check-in.bron this pin and check-in
+recommend check-in STOA90 lean A closed pronunciation table G1 unless Keaton redirects
