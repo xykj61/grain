@@ -2,11 +2,12 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Rule: [`.cursor/rules/remember.mdc`](../.cursor/rules/remember.mdc) · [`.claude/rules/remember.md`](../.claude/rules/remember.md).*
 
-**Last refreshed:** `20260720.184953` (UTC cloud · Eastern season) · voice Quin  
+**Last refreshed:** `20260720.185421` (UTC cloud · Eastern season) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5** · HOLD0–HOLD1 · HOLD-W  
 **Language nib:** **STOA0–125** GREEN · STOA126 open  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W · STOA0–125  
-**Git nib:** *(pin after send)* — STOA125 xfer-mold gate sample  
+**Git nib:** `a8630d802b` — STOA125 xfer-mold gate sample  
+ 
 
 **Season:** Cursor iOS / cloud — **Glow language TAME only** (no adb). Handoff [`20260719-204650_cursor-ios-handoff-glow-language.md`](20260719-204650_cursor-ios-handoff-glow-language.md).  
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`
@@ -15,8 +16,8 @@
 
 ## Now (language)
 
-**STOA125** seating · xfer-mold gate sample (`XferMold` · baked `.mint` from 5 amount 3).  
-**STOA126** next — compass pick: gold · thicker doors (Sala B0 Framework).
+**STOA125** sent · xfer-mold gate sample (`XferMold` · baked `.mint` from 5 amount 3).  
+**STOA126** next — compass pick: gold · pair-mold · call-body under tagged molds (Sala B0 Framework).
 
 ```bash
 rishi/bin/rishi run tools/glow_nest_type_witness.rish
@@ -59,7 +60,7 @@ $ADB install -r tools/.cache/tube05/sala-broadcaster.apk
 
 | Door | Kind |
 |------|------|
-| **STOA126** gold · thicker doors | **open** — Sala B0 Framework |
+| **STOA126** gold · pair-mold · call-body | **open** — thicker doors; Sala B0 Framework |
 | Glow wet syntax · ambient gold | **held** |
 | Live SETU6.5 **sent** on usb0/ncm | **check-in** — Framework host |
 | JABS3 · TAME Lap 3 | **check-in** |
