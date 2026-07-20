@@ -4,6 +4,7 @@
 //! STOA79: cross-desk `/+` then `^-` for `$:` molds.
 //! STOA81: same-desk · cross-desk `^-` against unit `$%` molds.
 //! STOA82: same-desk · cross-desk `^-` against payload `$%` molds.
+//! STOA84: same-desk `looks_like_named_cast` peeks via `tokens.rye`.
 //!
 //!   +$  kind-mold
 //!     $%  [%mint ~]
@@ -15,6 +16,7 @@ const std = @import("std");
 const rm = @import("rune_mold.rye");
 const rc = @import("rune_cast.rye");
 const lower_multi = @import("lower_multi.rye");
+const tokens = @import("tokens.rye");
 
 pub const max_stem_len: u32 = 64;
 
@@ -118,12 +120,7 @@ pub fn zig_stem(spec: *const CrossDeskSpec, out: *[max_stem_len]u8) LowerError!u
 
 /// True when a multi-line desk is `+$` … `==` followed by `^-  <name>`.
 pub fn looks_like_named_cast(src: []const u8) bool {
-    var lines: [lower_multi.max_lines][]const u8 = undefined;
-    const n = lower_multi.collect_lines(src, &lines) catch return false;
-    if (n < 4 or n > 5) return false;
-    if (lines[0].len < 2 or lines[0][0] != '+' or lines[0][1] != '$') return false;
-    const last = lines[n - 1];
-    return last.len >= 2 and last[0] == '^' and last[1] == '-';
+    return tokens.looks_like_named_cast(src);
 }
 
 /// True when desk is `/+  <stem>` then `^-  <mold-name>`.

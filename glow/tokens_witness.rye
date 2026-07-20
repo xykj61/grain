@@ -1,4 +1,4 @@
-//! glow/tokens_witness.rye — proves bounded Glow token stream (STOA83).
+//! glow/tokens_witness.rye — proves bounded Glow token stream + named-cast peek.
 //!
 //!   rye build glow/tokens_witness.rye -femit-bin=glow/bin/tokens_witness
 //!   glow/bin/tokens_witness
@@ -8,7 +8,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const tokens = @import("tokens.rye");
 
-const witness_version = "20260719.200706";
+const witness_version = "20260719.201027";
 
 /// Same shape as glow/gen/cast-named-xact.glow (comments stripped by lexer).
 const xact_desk =
@@ -17,6 +17,24 @@ const xact_desk =
     \\      [%send ~]
     \\  ==
     \\^-  xact-mold
+;
+
+const amount_cast =
+    \\+$  amount-mold
+    \\  $:  amount=@u32
+    \\  ==
+    \\^-  amount-mold
+;
+
+const mold_only =
+    \\+$  amount-mold
+    \\  $:  amount=@u32
+    \\  ==
+;
+
+const cross_desk =
+    \\/+  mold-amount
+    \\^-  amount-mold
 ;
 
 fn run_selftest() !u8 {
@@ -91,8 +109,14 @@ fn run_selftest() !u8 {
     }
     print("tokens: unknown bytes refused BadToken -- GREEN\n", .{});
 
+    assert(tokens.looks_like_named_cast(xact_desk));
+    assert(tokens.looks_like_named_cast(amount_cast));
+    assert(!tokens.looks_like_named_cast(mold_only));
+    assert(!tokens.looks_like_named_cast(cross_desk));
+    print("tokens: named-cast peek (glow_run wire) -- GREEN\n", .{});
+
     print("tokens: version {s}\n", .{witness_version});
-    print("GREEN: Glow bounded token stream — STOA83; cast-named-xact kinds.\n", .{});
+    print("GREEN: Glow token stream named-cast peek — STOA84; glow_run wire.\n", .{});
     return 0;
 }
 

@@ -2,7 +2,8 @@
 //!
 //! Classifies desk bytes into a fixed-cap token array (kind + byte span).
 //! Skips `::` line comments and spaces/tabs. Newlines stay significant.
-//! Does not parse nests or rewire glow_run — that stays later.
+//! STOA84: `looks_like_named_cast` peeks the stream for glow_run / lower
+//! named-cast dispatch. Full lowers still parse source bytes.
 //!
 //!   +$  xact-mold
 //!     $%  [%mint amount=@u32]
@@ -199,4 +200,59 @@ pub fn kinds_eql(got: []const Token, want: []const Kind) bool {
         if (got[i].kind != want[i]) return false;
     }
     return true;
+}
+
+/// Count Glow lines from tokens (a line has at least one non-newline token).
+pub fn glow_line_count(toks: []const Token) usize {
+    var lines: usize = 0;
+    var in_line = false;
+    for (toks) |t| {
+        if (t.kind == .newline) {
+            if (in_line) {
+                lines += 1;
+                in_line = false;
+            }
+        } else {
+            in_line = true;
+        }
+    }
+    if (in_line) lines += 1;
+    return lines;
+}
+
+fn first_content(toks: []const Token) ?Token {
+    for (toks) |t| {
+        if (t.kind != .newline) return t;
+    }
+    return null;
+}
+
+/// First token of the last non-empty Glow line.
+fn last_line_head(toks: []const Token) ?Token {
+    if (toks.len == 0) return null;
+    var i: isize = @intCast(toks.len - 1);
+    // Skip trailing newlines.
+    while (i >= 0 and toks[@intCast(i)].kind == .newline) : (i -= 1) {}
+    if (i < 0) return null;
+    // Walk back to the newline that opens this line.
+    while (i >= 0 and toks[@intCast(i)].kind != .newline) : (i -= 1) {}
+    const head_i: usize = @intCast(i + 1);
+    if (head_i >= toks.len) return null;
+    return toks[head_i];
+}
+
+/// True when the token stream is a same-desk named-cast desk:
+/// 4–5 Glow lines, head `+$`, last line head `^-` (STOA84 peek).
+pub fn looks_like_named_cast(src: []const u8) bool {
+    var buf: [max_tokens]Token = undefined;
+    const n = tokenize(src, &buf) catch return false;
+    const toks = buf[0..n];
+    const lines = glow_line_count(toks);
+    if (lines < 4 or lines > 5) return false;
+    const head = first_content(toks) orelse return false;
+    if (head.kind != .rune2) return false;
+    if (!std.mem.eql(u8, slice_of(src, head), "+$")) return false;
+    const last = last_line_head(toks) orelse return false;
+    if (last.kind != .rune2) return false;
+    return std.mem.eql(u8, slice_of(src, last), "^-");
 }
