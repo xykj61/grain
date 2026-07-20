@@ -8,6 +8,7 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260720.041204` — [STOA103 bartis call-body double GREEN](20260720-041204_stoa103-bartis-call-body-green.bron) — %- double sample; fixture+argv; await send
 - `20260720.040746` — [STOA102 send complete](20260720-040746_stoa102-send-complete.bron) — origin main at 19386bb574b4
 - `20260720.040713` — [STOA102 barket horizon wording GREEN](20260720-040713_stoa102-barket-horizon-green.bron) — |^ named untokenized; wet/gold held; await send
 - `20260720.040612` — [STOA101 send complete](20260720-040612_stoa101-send-complete.bron) — origin main at 21d402ad3013

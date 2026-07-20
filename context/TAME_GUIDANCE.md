@@ -7,7 +7,7 @@ type: reference
 # TAME Guidance — Operational Supplement
 
 **Language:** EN
-**Last updated:** 2026-07-20 (Glow G0–G5 · bartis STOA100–101 · barket horizon STOA102)
+**Last updated:** 2026-07-20 (Glow G0–G5 · bartis STOA100–103 · barket horizon STOA102)
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 **Voice:** Quin
 **Status:** Active — grow by supplement, earned when the language is ready
@@ -23,7 +23,7 @@ Three layers, one discipline — filenames follow TigerBeetle's `docs/TIGER_STYL
 | **Source** | `gratitude/TIGER_STYLE.md` | TigerBeetle team's guide, kept whole and unaltered |
 | **Voiced canon** | `external-research/TAME_GUIDANCE.md` | Our radiant adaptation; Safety, Performance, DX, and the full why |
 | **Operational supplement** | this document | Checkable root + Rye / Brix / Rishi rules for authors and agents |
-| **Glow working pin** | [`../glow/README.md`](../glow/README.md) · alphabet · argv · token · G5 Nock · bartis · barket | Fixture desks + asserts · G0–G5 · **bartis** STOA100–101 · **barket horizon wording** (STOA102 GREEN) |
+| **Glow working pin** | [`../glow/README.md`](../glow/README.md) · alphabet · argv · token · G5 Nock · bartis · barket | Fixture desks + asserts · G0–G5 · **bartis** STOA100–103 · **barket horizon** (STOA102) |
 | **Glow supplement (horizon)** | [`../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md`](../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md) | Scoping for a future Glow supplement; root still binds Glow authors now |
 
 Read the voiced canon (`external-research/TAME_GUIDANCE.md`) for philosophy and expert Tiger discipline. Read **this file** at the keyboard for what to assert, name, and bound. Organization prose lives in `active-designing/yonder/20260618-184912_growing-a-language.md`.
@@ -89,20 +89,22 @@ Primary path stays Glow→Rye→Zig→**RISC-V**. **Nock** is the second backend
 
 G5 brief: [`../active-designing/20260720-033200_stoa98-g5-nock-second-backend-family-notes.md`](../active-designing/20260720-033200_stoa98-g5-nock-second-backend-family-notes.md). Witness: `tools/glow_g5_nock_family_notes_witness.rish`.
 
-### Glow — bartis identity (STOA100–101) · barket horizon wording (STOA102 GREEN)
+### Glow — bartis (STOA100–103) · barket horizon wording (STOA102 GREEN)
 
-`|=` spoken **bartis** is the Hoon/Glow **dry** one-arm core with a typed **sample**. Language docs say **Glow gate** or **bartis gate** — never bare itinerary **Gate** ([`LEXICON.md`](LEXICON.md)). **STOA100–101** implement thin `@u32` identity (baked 5) and argv generator `gate-sample-u32.glow`. `|^` spoken **barket** is the wet-gate constructor — **STOA102** seats horizon wording only: digraph stays out of `tokens.rye`; wet/gold polymorphism remains held until a nest/type surface can assert samples at expansion.
+`|=` spoken **bartis** is the Hoon/Glow **dry** one-arm core with a typed **sample**. Language docs say **Glow gate** or **bartis gate** — never bare itinerary **Gate** ([`LEXICON.md`](LEXICON.md)). **STOA100–101** seat identity + argv. **STOA103** deepens the body to a closed one-arg call: `%-  double  sample` (same demo pin as STOA6). `|^` spoken **barket** stays horizon (**STOA102**) — untokenized; wet/gold held.
 
 | Status | Item |
 |--------|------|
 | **STOA100 GREEN** | Thin `|=  sample=@u32` identity gate — token parse · Rye emit · baked 5 · fixture desk |
 | **STOA101 GREEN** | Bartis argv sample — generator desk · `--sample-argv` · fixture stays baked |
 | **STOA102 GREEN** | Barket horizon wording — `\|^` named · untokenized · wet/gold held |
+| **STOA103 GREEN** | Bartis call body — `%-  double  sample` · fixture + argv · expect `sample *% 2` |
 | Still held | Wet / gold polymorphic cores — nest/type surface per cores port-order brief |
 | Still held | `\|^` barket tokenize / lower |
+| Still held | Open bartis call-body gate set beyond `double` |
 | Still held | Sala B0 in Glow — framework / product season |
 
-G1 row brief (STOA100): [`../active-designing/20260720-033852_glow-bartis-g1-row.md`](../active-designing/20260720-033852_glow-bartis-g1-row.md). Argv brief (STOA101): [`../active-designing/20260720-040200_glow-bartis-argv-sample.md`](../active-designing/20260720-040200_glow-bartis-argv-sample.md). Barket horizon (STOA102): [`../active-designing/20260720-040700_stoa102-barket-horizon-wording.md`](../active-designing/20260720-040700_stoa102-barket-horizon-wording.md). Bartis horizon artifact (STOA99): [`../active-designing/20260720-033340_stoa99-bartis-horizon-wording.md`](../active-designing/20260720-033340_stoa99-bartis-horizon-wording.md). Witnesses: `tools/glow_bartis_argv_witness.rish` · `tools/glow_barket_horizon_witness.rish`.
+G1 row brief (STOA100): [`../active-designing/20260720-033852_glow-bartis-g1-row.md`](../active-designing/20260720-033852_glow-bartis-g1-row.md). Argv brief (STOA101): [`../active-designing/20260720-040200_glow-bartis-argv-sample.md`](../active-designing/20260720-040200_glow-bartis-argv-sample.md). Barket horizon (STOA102): [`../active-designing/20260720-040700_stoa102-barket-horizon-wording.md`](../active-designing/20260720-040700_stoa102-barket-horizon-wording.md). Call body (STOA103): [`../active-designing/20260720-040800_glow-bartis-call-body.md`](../active-designing/20260720-040800_glow-bartis-call-body.md). Witnesses: `tools/glow_bartis_argv_witness.rish` · `tools/glow_barket_horizon_witness.rish` · `tools/glow_lower_bartis_witness.rish`.
 
 Cursor and Claude rules (`.cursor/rules/tame-guidance.mdc`, `.claude/rules/tame-guidance.md`) point here. Root rule **9** (docs and implementation stay synced) has its own always-on agent rule pair: `.cursor/rules/docs-implementation-sync.mdc`, `.claude/rules/docs-implementation-sync.md`.
 
