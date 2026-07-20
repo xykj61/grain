@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260720.233805
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — UDT (UTC) time convention
+title SETU6.5 live-sent enx GREEN
+prompt kg after Pixel connected with USB tethering
+think Pixel tether up as enx96e56705b13c cdc_ncm not ncm0; widened probe via fixture script.
+think Rishi false-if arms typecheck unbound card — restructure armed-first exit.
+think Limited broadcast needs CAP; unicast to default gateway 10.201.192.38 earned sent.
+obs Live-sent GREEN onpath; device-free witness still GREEN; await send.
+file tools/fixtures/setu6_find_gadget_iface.sh enx CDC-NCM discover
+file tools/setu6_lab_probe_onpath_host.rish armed-first + enx
+file linengrow/setu65_lab_tx.rye attempt_iface_tx_to + SO_BROADCAST
+file linengrow/setu65_lab_tx_check.rye peer argv
+file tools/setu65_lab_tx_onpath_host.rish gateway peer + require sent
+file active-designing/20260720-233805_setu65-live-sent-enx-green.md claim brief
+recommend check-in send live-sent seat then next door Sala/JABS/language

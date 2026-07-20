@@ -542,6 +542,12 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **Framework host resumes on UDT, `20260720.232932`** — Keaton set this host's system clock to **UDT (UTC)** for stamps (iOS/cloud season alignment). Spec [`context/specs/20260720-232932_udt-framework-host-convention.md`](../context/specs/20260720-232932_udt-framework-host-convention.md). Language nib held at STOA0–147 + capacity freeze. Next: SETU6.5 live-sent check-in.
 
+**SETU6.5 live-sent attempt, `20260720.233109`–`233220`** — lean A: stand-in SKIP GREEN; Pixel 10a on adb without NCM iface; Graphene expects `ncm\d` for USB tether. Awaiting replug + USB tethering on. Brief [`active-designing/20260720-233109_setu65-live-sent-attempt-stand-in.md`](../active-designing/20260720-233109_setu65-live-sent-attempt-stand-in.md).
+
+**SETU6.5 live-sent GREEN, `20260720.233805`** — Pixel USB tether as `enx96e56705b13c` (`cdc_ncm`); host probe arms; framed 289b unicasted to `10.201.192.38:38503` → **sent**. Probe learns `enx*`; TX prefers gateway peer. Brief [`active-designing/20260720-233805_setu65-live-sent-enx-green.md`](../active-designing/20260720-233805_setu65-live-sent-enx-green.md).
+
+**SETU6.5 live-sent attempt stand-in, `20260720.233109`** — lean A approved; full SETU6/6.5 device-free + onpath host paths GREEN stand-in/SKIP; `adb devices` empty; no `usb0`/`ncm`. Live **sent** eyes pending Pixel USB tethering/NCM or QEMU. Brief [`active-designing/20260720-233109_setu65-live-sent-attempt-stand-in.md`](../active-designing/20260720-233109_setu65-live-sent-attempt-stand-in.md).
+
 **Glow OS shape vocabulary seated, `20260720.223226`** — living prose: **shape** is the Glow OS / citizen word for a bounded normalizer; **mold** stays Hoon study and today's desk suffix until a rename lap. Brief [`active-designing/20260720-223226_glow-os-shape-not-mold.md`](../active-designing/20260720-223226_glow-os-shape-not-mold.md) · LEXICON Shape · Mold rows.
 
 **Glow OS · Glow Desk · Glow Glass seated, `20260717.183622`** — Keaton: **Glow OS** unifies; **Glow Desk** = desktop; **Glow Glass** = mobile. Lexicon + silo [`../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md`](../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md). Orientation firmware stays check-in.

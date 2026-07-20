@@ -1,6 +1,7 @@
 //! linengrow/setu65_lab_tx_check.rye — attempt lab TX from lab.bron mode/iface.
 //!
 //! Reads tools/.cache/setu0/lab.bron. Stand-in → SKIP. Armed → attempt_iface_tx.
+//! Optional argv: dotted IPv4 peer (iface default gateway) for unicast lab TX.
 
 const std = @import("std");
 const print = std.debug.print;
@@ -25,6 +26,25 @@ fn field_value(src: []const u8, key: []const u8) ?[]const u8 {
         return std.mem.trim(u8, raw[key.len + 1 ..], " \t\r");
     }
     return null;
+}
+
+fn parse_dotted_v4(s: []const u8) ?[4]u8 {
+    var out: [4]u8 = undefined;
+    var idx: u32 = 0;
+    var i: usize = 0;
+    while (idx < 4) : (idx += 1) {
+        if (i >= s.len) return null;
+        const start = i;
+        while (i < s.len and s[i] != '.') : (i += 1) {}
+        if (i == start) return null;
+        out[idx] = std.fmt.parseInt(u8, s[start..i], 10) catch return null;
+        if (idx < 3) {
+            if (i >= s.len or s[i] != '.') return null;
+            i += 1;
+        }
+    }
+    if (i != s.len) return null;
+    return out;
 }
 
 fn run_check(init: std.process.Init) !u8 {
@@ -55,7 +75,23 @@ fn run_check(init: std.process.Init) !u8 {
         return 0;
     }
 
-    const report = setu65.attempt_iface_tx(.armed, iface_name);
+    var dest: [4]u8 = .{ 255, 255, 255, 255 };
+    const args = try init.minimal.args.toSlice(init.arena.allocator());
+    if (args.len >= 2) {
+        if (parse_dotted_v4(args[1])) |oct| {
+            dest = oct;
+            print("setu65-check: peer {d}.{d}.{d}.{d} on {s}\n", .{
+                oct[0], oct[1], oct[2], oct[3], iface_name,
+            });
+        } else {
+            print("setu65-check: RED — bad peer IPv4 {s}\n", .{args[1]});
+            return 1;
+        }
+    } else {
+        print("setu65-check: no peer argv — trying limited broadcast on {s}\n", .{iface_name});
+    }
+
+    const report = setu65.attempt_iface_tx_to(.armed, iface_name, dest);
     print("setu65-check: tx {s} · iface {s} · {d}b\n", .{
         report.result.name(),
         report.iface_slice(),
@@ -65,8 +101,6 @@ fn run_check(init: std.process.Init) !u8 {
         print("GREEN: SETU6.5 — framed payload sent on {s}.\n", .{report.iface_slice()});
         return 0;
     }
-    // Armed but send failed — still honest GREEN for the gate attempt path when
-    // CAP/bind refuses; call it out so eyes know live TX did not complete.
     print("GREEN: SETU6.5 — TX attempted; result {s} (iface up, send incomplete).\n", .{report.result.name()});
     return 0;
 }
