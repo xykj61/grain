@@ -520,7 +520,9 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA140 hexa-mold gate sample GREEN, `20260720.222338`** — lean A (compass): closed six-field `$:` identity · HexaMold · baked 5/3/1/2/7/4 tag; hepta refuse; call-body under hexa · tagged argv · gold · Sala B0 held. Brief [`active-designing/20260720-221703_stoa140-hexa-mold-gate.md`](../active-designing/20260720-221703_stoa140-hexa-mold-gate.md). Sent `33922c54c8` · PR #52.
 
-**STOA141 hexa-mold flip call-body GREEN, `20260720.222724`** — lean A (compass): closed `%-  flip` under hexa-mold · from↔amount · fee/nonce/memo/tag stay · baked 5/3/1/2/7/4 → 3/5/1/2/7/4; double under hexa refuse; argv · gold · Sala B0 held. Brief [`active-designing/20260720-222406_stoa141-hexa-flip.md`](../active-designing/20260720-222406_stoa141-hexa-flip.md). Next language: **STOA142** map (hepta-mold · tagged argv · gold · Sala B0 still held).
+**STOA141 hexa-mold flip call-body GREEN, `20260720.222724`** — lean A (compass): closed `%-  flip` under hexa-mold · from↔amount · fee/nonce/memo/tag stay · baked 5/3/1/2/7/4 → 3/5/1/2/7/4; double under hexa refuse; argv · gold · Sala B0 held. Brief [`active-designing/20260720-222406_stoa141-hexa-flip.md`](../active-designing/20260720-222406_stoa141-hexa-flip.md). Sent `59c6b37e04` · PR #53.
+
+**STOA142 hepta-mold gate sample mapped, `20260720.222827`** — lean A (compass): closed seven-field `$:` identity · HeptaMold · baked 5/3/1/2/7/4/6 to; octa refuse; call-body under hepta · tagged argv · gold · Sala B0 held. Brief [`active-designing/20260720-222827_stoa142-hepta-mold-gate.md`](../active-designing/20260720-222827_stoa142-hepta-mold-gate.md). Next: seat when GREEN.
 
 **Glow OS · Glow Desk · Glow Glass seated, `20260717.183622`** — Keaton: **Glow OS** unifies; **Glow Desk** = desktop; **Glow Glass** = mobile. Lexicon + silo [`../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md`](../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md). Orientation firmware stays check-in.
 
