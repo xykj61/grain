@@ -8,6 +8,8 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260720.194102` — [STOA132 amount-mold argv GREEN](20260720-194102_stoa132-amount-argv-green.bron) — amount argv desks · glow_run stem; await send
+- `20260720.193805` — [STOA132 amount-mold argv map](20260720-193805_stoa132-amount-argv-map.bron) — lean A u32-shaped named-mold argv beside fixtures
 - `20260720.193750` — [STOA131 kg pair flip sent](20260720-193750_stoa131-kg-pair-flip-sent.bron) — claim 0bb33ad665 · tip 839ec78d48
 - `20260720.193738` — [STOA131 send complete](20260720-193738_stoa131-send-complete.bron) — origin main language claim 0bb33ad665
 - `20260720.193738` — [STOA132 next map after pair flip call-body](20260720-193738_stoa132-next-map.bron) — gold vs argv vs triple-mold; compass pick

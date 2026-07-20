@@ -2,11 +2,11 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Rule: [`.cursor/rules/remember.mdc`](../.cursor/rules/remember.mdc) · [`.claude/rules/remember.md`](../.claude/rules/remember.md).*
 
-**Last refreshed:** `20260720.193738` (UTC cloud) · voice Quin  
+**Last refreshed:** `20260720.193805` (UTC cloud) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5** · HOLD0–HOLD1 · HOLD-W  
-**Language nib:** **STOA0–131** GREEN · STOA132 open  
-**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W · STOA0–131  
-**Git nib:** `0bb33ad665` — STOA131 pair-mold flip call-body  
+**Language nib:** **STOA0–132** GREEN · STOA133 open  
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W · STOA0–132  
+**Git nib:** *(pin after send)* — STOA132 amount-mold argv  
 
 
 **Season:** Cursor iOS / cloud — **Glow language TAME only** (no adb). Handoff [`20260719-204650_cursor-ios-handoff-glow-language.md`](20260719-204650_cursor-ios-handoff-glow-language.md).  
@@ -16,8 +16,8 @@
 
 ## Now (language)
 
-**STOA131** seated · pair-mold flip call-body (`PairMold` swap · baked 5/3 → 3/5).  
-**STOA132** next — compass pick: gold · argv under tagged/pair · triple-mold (Sala B0 Framework).
+**STOA132** seated · amount-mold argv (`gate-amount-u32` · `gate-barket-amount-u32`).  
+**STOA133** next — compass pick: gold · count argv · argv under tagged/pair · triple-mold (Sala B0 Framework).
 
 ```bash
 rishi/bin/rishi run tools/glow_nest_type_witness.rish
@@ -39,7 +39,7 @@ Hold on iOS: ambient gold · bartis stated · named allowlist amount/count/kind/
 | **JABS** | Sala broadcast live-session fold | JABS0–2 GREEN · JABS3 check-in |
 | **LULU** | Hearth · short home · Wired Glass | **LULU0–5 closed** |
 | **SETU** | USB hearth carry Glass↔Desk | **SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W GREEN** |
-| **STOA** | Glow language SLC · nest · composition | **STOA0–131 GREEN** · STOA132 next |
+| **STOA** | Glow language SLC · nest · composition | **STOA0–132 GREEN** · STOA133 next |
 
 Canon: [`../docs/HAWM.md`](../docs/HAWM.md) · [`../docs/TUBE.md`](../docs/TUBE.md) · [`../docs/ZETA.md`](../docs/ZETA.md) · [`../docs/JABS.md`](../docs/JABS.md) · [`../docs/LULU.md`](../docs/LULU.md) · [`../docs/SETU.md`](../docs/SETU.md) · [`../docs/STOA.md`](../docs/STOA.md)
 
@@ -61,7 +61,7 @@ $ADB install -r tools/.cache/tube05/sala-broadcaster.apk
 
 | Door | Kind |
 |------|------|
-| **STOA132** gold · argv under tagged/pair · triple-mold | **open** — thicker doors; Sala B0 Framework |
+| **STOA133** gold · count argv · tagged/pair argv · triple-mold | **open** — thicker doors; Sala B0 Framework |
 | Glow nesting syntax · ambient gold | **held** |
 | Live SETU6.5 **sent** on usb0/ncm | **check-in** — Framework host |
 | JABS3 · TAME Lap 3 | **check-in** |

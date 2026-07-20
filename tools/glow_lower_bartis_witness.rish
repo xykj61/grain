@@ -52,6 +52,9 @@ assert selftest.out contains "gate-xfer-flip.glow" else "lower_bartis_witness mi
 assert selftest.out contains "xfer-mold call-body flip" else "lower_bartis_witness missing xfer flip claim"
 assert selftest.out contains "gate-pair-flip.glow" else "lower_bartis_witness missing pair-flip desk"
 assert selftest.out contains "pair-mold call-body flip" else "lower_bartis_witness missing pair flip claim"
+assert selftest.out contains "gate-amount-u32.glow" else "lower_bartis_witness missing amount argv desk"
+assert selftest.out contains "amount-mold argv" else "lower_bartis_witness missing amount argv claim"
+assert selftest.out contains "pair-mold argv refused" else "lower_bartis_witness missing pair argv refuse"
 
 let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
 assert build_welcome.ok else "bartis welcome .rye build failed"
@@ -125,6 +128,15 @@ assert build_amt.ok else "bartis amount-mold welcome .rye build failed"
 let run_amt = run ["sh" "-c" "${amt_bin}; echo EXIT:$?"]
 assert run_amt.ok else "bartis amount-mold welcome binary failed to launch"
 assert run_amt.out contains "EXIT:0" else "bartis amount-mold welcome binary did not exit 0"
+
+# STOA132: amount-mold argv binary exits 0 with sample 9.
+let amt_argv_rye = "glow/.cache/gate_amount_argv.rye"
+let amt_argv_bin = "glow/bin/gate_amount_argv"
+let build_amt_argv = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${amt_argv_rye} -femit-bin=${amt_argv_bin}"]
+assert build_amt_argv.ok else "bartis amount-mold argv .rye build failed"
+let run_amt_argv = run ["sh" "-c" "${amt_argv_bin} 9; echo EXIT:$?"]
+assert run_amt_argv.ok else "bartis amount-mold argv binary failed to launch"
+assert run_amt_argv.out contains "EXIT:0" else "bartis amount-mold argv binary did not exit 0 with sample 9"
 
 # STOA120 / STOA130: expansion seats assert_sample_nesting_nests (stated no-op wire).
 let wet_wire = run ["sh" "-c" "grep -c 'assert_sample_nesting_nests' glow/rune_bartis.rye | tr -d ' '"]
@@ -211,4 +223,4 @@ let run_pf = run ["sh" "-c" "${pair_flip_bin}; echo EXIT:$?"]
 assert run_pf.ok else "bartis pair-mold flip welcome binary failed to launch"
 assert run_pf.out contains "EXIT:0" else "bartis pair-mold flip welcome binary did not exit 0"
 
-say "GREEN: Glow `|=` bartis — STOA100–131 identity · argv · call-body · amount-mold · count-mold · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · pair flip · stated nesting · nest SampleDoesNotNest."
+say "GREEN: Glow `|=` bartis — STOA100–132 identity · argv · call-body · amount-mold · amount argv · count-mold · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · pair flip · stated nesting · nest SampleDoesNotNest."

@@ -201,6 +201,29 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(spec_amt.body == .identity);
     print("lower: glow/gen/gate-barket-amount.glow carries amount-mold -- GREEN\n", .{});
 
+    // STOA132: amount-mold argv identity beside fixture.
+    const amount_argv_src = "|^  sample=amount-mold\nsample\n";
+    const n_amt_argv = try lower.lower_source_argv_sample(amount_argv_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n_amt_argv], "amount-mold") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_amt_argv], "minimal.args") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_amt_argv], "parseInt(u32") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_amt_argv], "const sample: u32 = 5") == null);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_amount_argv.rye", .data = buf[0..n_amt_argv] });
+    print("lower: amount-mold argv emit reads minimal.args / parseInt(u32) -- GREEN\n", .{});
+
+    const gen_amt_u32 = try cwd.readFileAlloc(io, "glow/gen/gate-barket-amount-u32.glow", a, .limited(4096));
+    const spec_amt_u32 = try rb.parse_source(gen_amt_u32);
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_amt_u32), "amount-mold"));
+    assert(spec_amt_u32.body == .identity);
+    print("lower: glow/gen/gate-barket-amount-u32.glow carries amount-mold argv -- GREEN\n", .{});
+
+    if (lower.lower_source_argv_sample("|^  sample=pair-mold\nsample\n", &buf)) |_| {
+        return error.PairArgvLoweredTooSoon;
+    } else |err| {
+        if (err != lower.LowerError.SampleDoesNotNest) return err;
+    }
+    print("lower: pair-mold argv refused SampleDoesNotNest -- GREEN\n", .{});
+
     // STOA123: kind-mold identity lowers as KindMold.
     const kind_src = "|^  sample=kind-mold\nsample\n";
     const n_kind = try lower.lower_source_welcome(kind_src, &buf);
@@ -387,7 +410,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("lower: glow/gen/gate-barket-count.glow carries count-mold -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: Glow `|^` barket — identity · argv · call-body · amount-mold · count-mold · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · pair flip · nesting-through-nests; STOA113–131.\n", .{});
+    print("GREEN: Glow `|^` barket — identity · argv · call-body · amount-mold · amount argv · count-mold · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · pair flip · nesting-through-nests; STOA113–132.\n", .{});
     return 0;
 }
 
