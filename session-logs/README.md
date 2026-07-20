@@ -8,6 +8,7 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260720.181950` — [STOA119 wet accept thin claim](20260720-181950_stoa119-wet-accept-thin-claim.bron) — WET_ACCEPT_THIN under stated mold; lean A
 - `20260720.181658` — [STOA119 wet accept map](20260720-181658_stoa119-wet-accept-map.bron) — check-in ambient wet accept
 - `20260720.181658` — [STOA118 send complete](20260720-181658_stoa118-send-complete.bron) — origin main at eecdbb8dd2 / tip 79ee7bf590
 - `20260720.181627` — [STOA118 named-mold barket GREEN](20260720-181627_stoa118-named-mold-barket-green.bron) — amount-mold · kind refuse; await send
