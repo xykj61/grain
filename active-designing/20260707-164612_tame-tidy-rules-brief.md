@@ -68,7 +68,7 @@ Ratchets **never fail** parity. They only count downward as files are touched.
 
 **Standing counts (`20260717.182418` Lap 2):** `@memcpy` application **0** + **1** canonical; camelCase **0**; long-fn advisory non-empty; zero-assert non-exempt **3** (`mantra/bolt_apply_step.rye`, `tally/kumara.rye`, `tally/pedersen.rye`). Inventory: [`20260717-181715_tame-slc-rye-audit-ledger.md`](20260717-181715_tame-slc-rye-audit-ledger.md).
 
-**Glow TAME surfaces:** `glow/tokens.rye` (`20260719.201942` STOA86) and `glow/lower_named_cast.rye` (`20260719.202541` STOA87) join the style scan roster and width-check. `tokens_witness` stays on its own witness — the global roster sits at Rishi's 256-file list ceiling. The rest of `glow/` stays outside until each file earns tidy on touch.
+**Glow TAME surfaces:** `glow/tokens.rye` (`20260719.201942` STOA86) and `glow/lower_named_cast.rye` (`20260719.202541` STOA87) join the style scan roster and width-check. `glow/lower_mold.rye` (`20260719.231400` STOA96) is TAME-tidy on width-check and a one-file ban overflow seat — the global roster sits at Rishi's 256-file list ceiling with tokens + named-cast. `tokens_witness` / mold witness keep own gates. The rest of `glow/` stays outside until each file earns tidy on touch.
 
 ---
 
