@@ -8,6 +8,10 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260720.222828` — [Glow compass send STOA141](20260720-222828_glow-compass-stoa141-send.bron) — hexa flip sent; STOA142 mapped
+- `20260720.222828` — [STOA141 approved and sent](20260720-222828_stoa141-approved-sent.bron) — claim 59c6b37e04
+- `20260720.222827` — [STOA141 send complete](20260720-222827_stoa141-send-complete.bron) — origin main language claim 59c6b37e04
+- `20260720.222827` — [STOA142 next map after hexa flip](20260720-222827_stoa142-next-map.bron) — lean A hepta-mold gate identity
 - `20260720.222724` — [STOA141 hexa-mold flip GREEN](20260720-222724_stoa141-hexa-flip-green.bron) — from↔amount · fee/nonce/memo/tag stay; await send
 - `20260720.222407` — [Glow compass send STOA140](20260720-222407_glow-compass-stoa140-send.bron) — hexa-mold sent; STOA141 mapped
 - `20260720.222407` — [STOA140 approved and sent](20260720-222407_stoa140-approved-sent.bron) — claim 33922c54c8
