@@ -4,7 +4,7 @@
 
 **Language:** EN
 **Version:** `20260715` (Pool keystone revival prioritized · Quin voice seated · align pass reconciles the closed ladder)
-**Last updated:** 2026-07-20 (**STOA0–124** GREEN — xact-mold gate; kind-mold; count-mold)
+**Last updated:** 2026-07-20 (**STOA0–125** GREEN — xfer-mold gate; xact-mold; kind-mold)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Lens:** TAME — safety, performance, joy; the Seed Law; [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md)
@@ -486,7 +486,9 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA123 kind-mold gate sample GREEN, `20260720.183837`** — lean A (compass): unit `$%` `kind-mold` identity · `KindMold` · baked `.mint`; xact-mold refuse; call-body/argv/gold/Sala B0 held. Brief [`active-designing/20260720-183837_stoa123-kind-mold-gate.md`](../active-designing/20260720-183837_stoa123-kind-mold-gate.md). Next language: **STOA124** xact-mold gate.
 
-**STOA124 xact-mold gate sample GREEN, `20260720.184304`** — lean A (compass): payload `$%` `xact-mold` identity · `XactMold` · baked `.mint` amount 5; xfer-mold refuse; call-body/argv/gold/Sala B0 held. Brief [`active-designing/20260720-184304_stoa124-xact-mold-gate.md`](../active-designing/20260720-184304_stoa124-xact-mold-gate.md). Next language: **STOA125** map (gold · multi-face `xfer-mold` · Sala B0 still held).
+**STOA124 xact-mold gate sample GREEN, `20260720.184304`** — lean A (compass): payload `$%` `xact-mold` identity · `XactMold` · baked `.mint` amount 5; xfer-mold refuse; call-body/argv/gold/Sala B0 held. Brief [`active-designing/20260720-184304_stoa124-xact-mold-gate.md`](../active-designing/20260720-184304_stoa124-xact-mold-gate.md). Next language: **STOA125** xfer-mold gate.
+
+**STOA125 xfer-mold gate sample GREEN, `20260720.184953`** — lean A (compass): multi-face payload `$%` `xfer-mold` identity · `XferMold` · baked `.mint` from 5 amount 3; pair-mold refuse; call-body/argv/gold/Sala B0 held. Brief [`active-designing/20260720-184953_stoa125-xfer-mold-gate.md`](../active-designing/20260720-184953_stoa125-xfer-mold-gate.md). Next language: **STOA126** map (gold · thicker doors · Sala B0 still held).
 
 **Glow OS · Glow Desk · Glow Glass seated, `20260717.183622`** — Keaton: **Glow OS** unifies; **Glow Desk** = desktop; **Glow Glass** = mobile. Lexicon + silo [`../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md`](../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md). Orientation firmware stays check-in.
 
