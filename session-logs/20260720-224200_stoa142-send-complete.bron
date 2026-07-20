@@ -1,0 +1,13 @@
+format session-log-v1
+stamp 20260720.224200
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Cursor iOS / cloud sandbox — UTC stamp for STOA arc
+title STOA142 send complete
+prompt kg
+think FF-merged cursor/stoa142-hepta-mold-1fde onto origin/main · language claim 3ed907d693 · PR 55.
+obs Living pins already GREEN in seat commit; this log pins the send hash.
+file work-in-progress/REMEMBER.md git nib pin after send
+git_nib 3ed907d693
+recommend keep-going map STOA143 lean A hepta-mold flip; then seat

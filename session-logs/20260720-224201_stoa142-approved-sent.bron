@@ -1,0 +1,12 @@
+format session-log-v1
+stamp 20260720.224201
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Cursor iOS / cloud sandbox — UTC stamp for STOA arc
+title STOA142 approved and sent
+prompt kg
+think Compass approve: nest · barket · bartis GREEN; draft PR 55; FF-send main.
+obs Language claim 3ed907d693 on origin/main.
+git_nib 3ed907d693
+recommend keep-going seat STOA143 after map brief lands
