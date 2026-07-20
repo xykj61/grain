@@ -10,7 +10,7 @@
 //! STOA107: nest/type — sample aura nests under `@u32` via nest_type;
 //!   refuse is `SampleDoesNotNest`.
 //! STOA109: closed named mold `amount-mold` (one-field `$:` ≡ `@u32` lower).
-//! STOA120: expansion calls `assert_sample_wet_nests(false, …)` (dry no-op wire).
+//! STOA120 / STOA130: expansion calls `assert_sample_nesting_nests(false, …)` (stated no-op).
 //! STOA122: closed allowlist adds `count-mold` beside `amount-mold`.
 //! STOA123: closed allowlist adds unit `$%` `kind-mold` (identity lower).
 //! STOA124: closed allowlist adds payload `$%` `xact-mold` (identity lower).
@@ -19,7 +19,7 @@
 //! STOA127: closed call-body under kind-mold — `flip` (mint↔send).
 //! STOA128: closed call-body under xact-mold — `flip` (mint↔send).
 //! STOA129: closed call-body under xfer-mold — `flip` (mint↔send).
-//! Wet / gold · open `$:` beyond pair bartis samples held.
+//! Nesting / gold · open `$:` beyond pair bartis samples held.
 //!
 //! Parse shape (token stream):
 //!   1. skip leading newlines
@@ -192,8 +192,8 @@ pub fn parse_source(src: []const u8) ParseError!GateSpec {
         sample_text = mold_text;
         stated_mold = mold_text;
     } else return error.MissingAura;
-    // STOA120: wet-nests API seated at expansion (dry no-op until wet spelling).
-    nest_type.assert_sample_wet_nests(false, sample_text, stated_mold) catch return error.SampleDoesNotNest;
+    // STOA120 / STOA130: nesting-nests API at expansion (stated no-op until nesting spelling).
+    nest_type.assert_sample_nesting_nests(false, sample_text, stated_mold) catch return error.SampleDoesNotNest;
     i += 1;
 
     // Newline(s) — end of first line.

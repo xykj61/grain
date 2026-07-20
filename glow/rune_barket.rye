@@ -1,14 +1,14 @@
 //! glow/rune_barket.rye — parses Glow's `|^` barket (STOA112–120).
 //!
-//! Dry-shaped demo: `|^  sample=@u32` or `|^  sample=amount-mold` header, then either:
+//! Stated-sample demo: `|^  sample=@u32` or `|^  sample=amount-mold` header, then either:
 //!   - header-only (STOA112)
 //!   - identity body face (STOA113)
 //!   - call body: `%-  <gate>  <sample-face>` (STOA115–116)
 //! Closed demo gates: `double` · `inc` · `dec` (`@u32`) · `flip` (kind · xact · xfer · STOA127–129).
 //! STOA117: TAME tidy — copy_disjoint · parse_body split.
 //! STOA118: closed named mold `amount-mold` (one-field `$:` ≡ `@u32` lower).
-//! STOA120: expansion calls `assert_sample_wet_nests` at the mold seam.
-//! STOA121: barket passes `is_wet=true` through wet-nests under stated molds.
+//! STOA120: expansion calls `assert_sample_nesting_nests` at the mold seam.
+//! STOA121 / STOA130: barket passes `is_nesting=true` through nesting-nests under stated molds.
 //! STOA122: closed allowlist adds `count-mold` beside `amount-mold`.
 //! STOA123: closed allowlist adds unit `$%` `kind-mold` (identity lower).
 //! STOA124: closed allowlist adds payload `$%` `xact-mold` (identity lower).
@@ -181,8 +181,8 @@ pub fn parse_source(src: []const u8) ParseError!BarketSpec {
         sample_text = mold_text;
         stated_mold = mold_text;
     } else return error.MissingAura;
-    // STOA121: |^ carries wetness through mold-bounded wet-nests (no new token).
-    nest_type.assert_sample_wet_nests(true, sample_text, stated_mold) catch return error.SampleDoesNotNest;
+    // STOA121 / STOA130: |^ carries nesting through mold-bounded nesting-nests (no new token).
+    nest_type.assert_sample_nesting_nests(true, sample_text, stated_mold) catch return error.SampleDoesNotNest;
     i += 1;
 
     while (i < n and toks[@as(usize, @intCast(i))].kind == .newline) : (i += 1) {}

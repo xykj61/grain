@@ -78,22 +78,22 @@
 | **STOA74–75** | `+$` / `$:` `@u32` mold (1–3 fields) | `glow_rune_mold` · `glow_lower_mold` · desk | **GREEN** `190825` · `192241` |
 | **STOA76–83** | `$%` · cast · payload · multi · tag/pay · token stream | mold · named-cast · tokens | **GREEN** `192936`…`200706` |
 | **STOA84–105** | Cast · alphabet · G4–G5 · bartis tidy | tokens · G5 · bartis | **GREEN** `201027`…`042300` |
-| **STOA106** | Nest/type surface wording (wet samples) | `glow_nest_type_surface_witness` | **GREEN** `20260720.042931` |
-| **STOA107** | Nest/type thin implement (dry aura) | `glow_nest_type_witness` · bartis | **GREEN** `20260720.043251` |
+| **STOA106** | Nest/type surface wording (nesting samples) | `glow_nest_type_surface_witness` | **GREEN** `20260720.042931` |
+| **STOA107** | Nest/type thin implement (stated aura) | `glow_nest_type_witness` · bartis | **GREEN** `20260720.043251` |
 | **STOA108** | Nest/type `$%` tag nest | `glow_nest_type_witness` · mold-kind | **GREEN** `20260720.145814` |
 | **STOA109** | Named-mold bartis (`amount-mold`) | `glow_nest_type_witness` · bartis · desk | **GREEN** `20260720.150155` |
-| **STOA110** | Wet-refuse nest path | `glow_nest_type_witness` · barket horizon | **GREEN** `20260720.150635` |
+| **STOA110** | Nesting-refuse nest path | `glow_nest_type_witness` · barket horizon | **GREEN** `20260720.150635` |
 | **STOA111** | Barket tokenize (`\|^` → 27) | `glow_barket_tokenize_witness` · alphabet | **GREEN** `20260720.151119` |
-| **STOA112** | Barket header parse (dry demo) | `glow_barket_parse_witness` · tokenize | **GREEN** `20260720.174115` |
+| **STOA112** | Barket header parse (stated demo) | `glow_barket_parse_witness` · tokenize | **GREEN** `20260720.174115` |
 | **STOA113** | Barket identity lower (`barket_gate`) | `glow_barket_lower_witness` · `glow_run` | **GREEN** `20260720.175115` |
 | **STOA114** | Barket argv sample | `glow_barket_lower_witness` · `--sample-argv` | **GREEN** `20260720.175643` |
 | **STOA115** | Barket call-body double | `glow_barket_lower_witness` · `glow_run` | **GREEN** `20260720.180047` |
 | **STOA116** | Barket call-body inc/dec | `glow_barket_lower_witness` · `glow_run` | **GREEN** `20260720.180445` |
 | **STOA117** | Barket TAME tidy | `glow_barket_lower_witness` · `tame_style_scan_bans` | **GREEN** `20260720.180900` |
 | **STOA118** | Named-mold barket | `glow_barket_lower_witness` · `glow_run` | **GREEN** `20260720.181347` |
-| **STOA119** | Wet-nests under stated mold | `glow_nest_type_witness` | **GREEN** `20260720.181950` |
-| **STOA120** | Wet-nests barket/bartis wire | `glow_barket_lower_witness` · bartis | **GREEN** `20260720.182450` |
-| **STOA121** | Barket wet-through-nests | `glow_barket_lower_witness` | **GREEN** `20260720.182915` |
+| **STOA119** | Nesting-nests under stated mold | `glow_nest_type_witness` | **GREEN** `20260720.181950` |
+| **STOA120** | Nesting-nests barket/bartis wire | `glow_barket_lower_witness` · bartis | **GREEN** `20260720.182450` |
+| **STOA121** | Barket nesting-through-nests | `glow_barket_lower_witness` | **GREEN** `20260720.182915` |
 | **STOA122** | Count-mold named allowlist | `glow_nest_type_witness` · barket · bartis | **GREEN** `20260720.183259` |
 | **STOA123** | Kind-mold gate sample | `glow_barket_lower_witness` · bartis | **GREEN** `20260720.183837` |
 | **STOA124** | Xact-mold gate sample | `glow_barket_lower_witness` · bartis | **GREEN** `20260720.184304` |
@@ -102,4 +102,5 @@
 | **STOA127** | Kind-mold flip call-body | `glow_barket_lower_witness` · bartis | **GREEN** `20260720.190544` |
 | **STOA128** | Xact-mold flip call-body | `glow_barket_lower_witness` · bartis | **GREEN** `20260720.191033` |
 | **STOA129** | Xfer-mold flip call-body | `glow_barket_lower_witness` · bartis | **GREEN** `20260720.192038` |
+| **STOA130** | Stated · nesting · gold vocabulary | `glow_nest_type_witness` · barket · bartis | **GREEN** `20260720.192738` |
 Smoke: `glow_barket_lower_witness` · `glow_barket_parse_witness` · `glow_nest_type_witness` · `glow_lower_bartis_witness` · Sibling: **ZETA** · **LULU** · **SETU** · **TUBE**.

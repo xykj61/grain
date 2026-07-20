@@ -1,8 +1,8 @@
 # glow_nest_type_surface_witness.rish — nest/type surface wording (STOA106+).
 #
-# Proves living pins name nest/type surface, wet samples stay held on accept,
-# barket is tokenized (STOA111), and dry bartis remains GREEN. Docs-only binder
-# grown when tokenize landed — no wet lower.
+# Proves living pins name nest/type surface, ambient gold stays held,
+# barket is tokenized (STOA111), and stated bartis remains GREEN. Docs-only
+# binder grown when tokenize landed — ambient gold still held (STOA130).
 #
 #   rishi/bin/rishi run tools/glow_nest_type_surface_witness.rish
 
@@ -26,17 +26,17 @@ assert has_barket.ok else "tokens.rye must tokenize |^ (STOA111)"
 let has_bartis = run ["sh" "-c" "awk '/const pairs =/,/};/' ${tokens} | grep -F '|='"]
 assert has_bartis.ok else "tokens.rye must still tokenize |= (bartis GREEN)"
 
-# Horizon brief exists and names nest/type surface + wet sample hold.
+# Dated STOA106 brief keeps historical wet sample hold (dated_guard).
 let brief_ok = run ["sh" "-c" "test -f ${brief} && grep -F 'nest/type surface' ${brief} && grep -F 'wet sample' ${brief}"]
 assert brief_ok.ok else "STOA106 nest/type surface brief missing or incomplete"
 let brief_stoa = run ["sh" "-c" "grep -F 'STOA106' ${brief}"]
 assert brief_stoa.ok else "STOA106 brief must name STOA106"
 
-# Lexicon seats Nest/type surface.
+# Lexicon seats Nest/type surface + Glow stated/nesting/gold continuum (STOA130).
 let lex_nest = run ["sh" "-c" "grep -F 'Nest/type surface' ${lexicon}"]
 assert lex_nest.ok else "LEXICON missing Nest/type surface"
-let lex_wet = run ["sh" "-c" "grep -F 'Wet / gold polymorphism' ${lexicon}"]
-assert lex_wet.ok else "LEXICON missing Wet / gold polymorphism"
+let lex_ladder = run ["sh" "-c" "grep -F 'Stated / nesting / gold' ${lexicon}"]
+assert lex_ladder.ok else "LEXICON missing Stated / nesting / gold"
 
 # README names nest/type surface.
 let readme_h = run ["sh" "-c" "grep -F 'nest/type surface' ${readme}"]
@@ -51,4 +51,4 @@ let bartis = run ["sh" "-c" "rishi/bin/rishi run tools/glow_lower_bartis_witness
 assert bartis.ok else "glow_lower_bartis_witness failed under nest/type wording"
 assert bartis.out contains "GREEN" else "glow_lower_bartis_witness not GREEN"
 
-say "GREEN: Glow nest/type surface wording — wet samples held; barket tokenized; bartis GREEN; STOA106+."
+say "GREEN: Glow nest/type surface wording — stated/nesting/gold seated; barket tokenized; bartis GREEN; STOA106+ · STOA130."
