@@ -15,6 +15,7 @@
 //! STOA127: `kind-mold` call body `%-  flip` → KindMold switch · baked `.mint` → `.send`.
 //! STOA128: `xact-mold` call body `%-  flip` → XactMold switch · baked mint/5 → `.send`.
 //! STOA129: `xfer-mold` call body `%-  flip` → XferMold switch · baked mint/5/3 → `.send`.
+//! STOA131: `pair-mold` call body `%-  flip` → PairMold swap · baked 5/3 → 3/5.
 //! Gate function named `bartis_gate` to avoid collisions with the sample face.
 
 const std = @import("std");
@@ -290,6 +291,27 @@ fn emit_pair_identity(out: []u8, zface: []const u8, comment: []const u8) LowerEr
     return used;
 }
 
+/// STOA131: closed multi-field `$:` pair-mold call body → PairMold flip · baked 3/5.
+fn emit_pair_call_body(out: []u8, zface: []const u8, gate: []const u8, comment: []const u8) LowerError!u32 {
+    assert(rb.is_pair_call_gate(gate)); // parse/lower pin — flip only today
+    var used: u32 = 0;
+    try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
+    try append_print(out, &used, "pub const PairMold = struct {{\n", .{});
+    try append_print(out, &used, "    from: u32 = 0,\n", .{});
+    try append_print(out, &used, "    amount: u32 = 0,\n", .{});
+    try append_print(out, &used, "}};\n\n", .{});
+    try append_print(out, &used, "/// {s}\n", .{comment});
+    try append_print(out, &used, "fn bartis_gate({s}: PairMold) PairMold {{\n", .{zface});
+    try append_print(out, &used, "    return .{{ .from = {s}.amount, .amount = {s}.from }};\n", .{ zface, zface });
+    try append_print(out, &used, "}}\n\n", .{});
+    try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
+    try append_print(out, &used, "    const {s}: PairMold = .{{ .from = {d}, .amount = {d} }};\n", .{ zface, bartis_pair_demo_from, bartis_pair_demo_amount });
+    try append_print(out, &used, "    const got = bartis_gate({s});\n", .{zface});
+    try append_print(out, &used, "    return if (got.from == {d} and got.amount == {d}) 0 else 1;\n", .{ bartis_pair_demo_amount, bartis_pair_demo_from });
+    try append_print(out, &used, "}}\n", .{});
+    return used;
+}
+
 fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
     const face = rb.face_slice(spec);
     assert(face.len > 0); // invariant: spec carries a non-empty face
@@ -350,10 +372,20 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
     }
 
     if (is_pair_sample(spec)) {
-        if (spec.body != .identity) return error.BodyGateNotYetLowered;
-        var comment_buf: [160]u8 = undefined;
-        const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` bartis — PairMold identity (STOA126).", .{ face, mold }) catch return error.Overflow;
-        return emit_pair_identity(out, zface, comment);
+        switch (spec.body) {
+            .identity => {
+                var comment_buf: [160]u8 = undefined;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` bartis — PairMold identity (STOA126).", .{ face, mold }) catch return error.Overflow;
+                return emit_pair_identity(out, zface, comment);
+            },
+            .call_one => {
+                const gate = rb.gate_slice(spec);
+                if (!rb.is_pair_call_gate(gate)) return error.BodyGateNotYetLowered;
+                var comment_buf: [192]u8 = undefined;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` / `%-  {s}  {s}` — PairMold call body (STOA131).", .{ face, mold, gate, face }) catch return error.Overflow;
+                return emit_pair_call_body(out, zface, gate, comment);
+            },
+        }
     }
 
     const expect = try expect_for(spec);

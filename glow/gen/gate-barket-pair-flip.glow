@@ -1,0 +1,4 @@
+::  Thin barket — sample=pair-mold through closed flip call body (STOA131).
+::  PairMold flip: from↔amount; baked 5/3 → expect 3/5.
+|^  sample=pair-mold
+%-  flip  sample

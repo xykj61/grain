@@ -72,6 +72,8 @@ assert selftest.out contains "gate-barket-xact-flip.glow" else "lower_barket_wit
 assert selftest.out contains "xact-mold call-body flip" else "lower_barket_witness missing xact flip claim"
 assert selftest.out contains "gate-barket-xfer-flip.glow" else "lower_barket_witness missing xfer-flip desk"
 assert selftest.out contains "xfer-mold call-body flip" else "lower_barket_witness missing xfer flip claim"
+assert selftest.out contains "gate-barket-pair-flip.glow" else "lower_barket_witness missing pair-flip desk"
+assert selftest.out contains "pair-mold call-body flip" else "lower_barket_witness missing pair flip claim"
 
 let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
 assert build_welcome.ok else "barket welcome .rye build failed: ${build_welcome.err}${build_welcome.out}"
@@ -240,4 +242,13 @@ let run_xff = run ["sh" "-c" "${xfer_flip_bin}; echo EXIT:$?"]
 assert run_xff.ok else "barket xfer-mold flip welcome binary failed to launch"
 assert run_xff.out contains "EXIT:0" else "barket xfer-mold flip welcome binary did not exit 0"
 
-say "GREEN: Glow barket lower — identity · argv · call-body · amount-mold · count-mold · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · nesting-through-nests; STOA113–130."
+# STOA131: pair-mold flip call-body welcome binary exits 0.
+let pair_flip_rye = "glow/.cache/gate_barket_pair_flip_welcome.rye"
+let pair_flip_bin = "glow/bin/gate_barket_pair_flip_welcome"
+let build_pf = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${pair_flip_rye} -femit-bin=${pair_flip_bin}"]
+assert build_pf.ok else "barket pair-mold flip welcome .rye build failed: ${build_pf.err}${build_pf.out}"
+let run_pf = run ["sh" "-c" "${pair_flip_bin}; echo EXIT:$?"]
+assert run_pf.ok else "barket pair-mold flip welcome binary failed to launch"
+assert run_pf.out contains "EXIT:0" else "barket pair-mold flip welcome binary did not exit 0"
+
+say "GREEN: Glow barket lower — identity · argv · call-body · amount-mold · count-mold · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · pair flip · nesting-through-nests; STOA113–131."

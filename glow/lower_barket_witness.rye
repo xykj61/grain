@@ -350,18 +350,27 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("lower: xfer-mold double call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
 
     if (lower.lower_source_welcome("|^  sample=pair-mold\n%-  double  sample\n", &buf)) |_| {
-        return error.PairCallBodyLoweredTooSoon;
+        return error.PairDoubleCallBodyLoweredTooSoon;
     } else |err| {
         if (err != lower.LowerError.BodyGateNotYetLowered) return err;
     }
-    print("lower: pair-mold call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
+    print("lower: pair-mold double call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
 
-    if (lower.lower_source_welcome("|^  sample=pair-mold\n%-  flip  sample\n", &buf)) |_| {
-        return error.PairFlipCallBodyLoweredTooSoon;
-    } else |err| {
-        if (err != lower.LowerError.BodyGateNotYetLowered) return err;
-    }
-    print("lower: pair-mold flip call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
+    // STOA131: pair-mold flip call-body lowers as PairMold field swap · baked 3/5.
+    const pair_flip_src = "|^  sample=pair-mold\n%-  flip  sample\n";
+    const n_pf = try lower.lower_source_welcome(pair_flip_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n_pf], "PairMold") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_pf], ".from = sample.amount") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_pf], "got.from == 3") != null);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_pair_flip_welcome.rye", .data = buf[0..n_pf] });
+    print("lower: pair-mold call-body flip lowers to PairMold swap expect 3/5 -- GREEN\n", .{});
+
+    const gen_pf = try cwd.readFileAlloc(io, "glow/gen/gate-barket-pair-flip.glow", a, .limited(4096));
+    const spec_pf = try rb.parse_source(gen_pf);
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_pf), "pair-mold"));
+    assert(spec_pf.body == .call_one);
+    assert(std.mem.eql(u8, rb.gate_slice(&spec_pf), "flip"));
+    print("lower: glow/gen/gate-barket-pair-flip.glow carries pair-mold flip call-body -- GREEN\n", .{});
 
     // STOA122: second closed named mold count-mold.
     const count_src = "|^  sample=count-mold\nsample\n";
@@ -378,7 +387,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("lower: glow/gen/gate-barket-count.glow carries count-mold -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: Glow `|^` barket — identity · argv · call-body · amount-mold · count-mold · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · nesting-through-nests; STOA113–130.\n", .{});
+    print("GREEN: Glow `|^` barket — identity · argv · call-body · amount-mold · count-mold · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · pair flip · nesting-through-nests; STOA113–131.\n", .{});
     return 0;
 }
 
