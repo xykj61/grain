@@ -2,8 +2,9 @@
 //!
 //! Classifies desk bytes into a fixed-cap token array (kind + byte span).
 //! Skips `::` line comments and spaces/tabs. Newlines stay significant.
-//! STOA84: `looks_like_named_cast` peeks the stream for glow_run / lower
-//! named-cast dispatch. Full lowers still parse source bytes.
+//! STOA84: `looks_like_named_cast` peeks same-desk named-cast dispatch.
+//! STOA85: `looks_like_cross_desk` peeks cross-desk named-cast dispatch.
+//! Full lowers still parse source bytes.
 //!
 //!   +$  xact-mold
 //!     $%  [%mint amount=@u32]
@@ -252,6 +253,21 @@ pub fn looks_like_named_cast(src: []const u8) bool {
     const head = first_content(toks) orelse return false;
     if (head.kind != .rune2) return false;
     if (!std.mem.eql(u8, slice_of(src, head), "+$")) return false;
+    const last = last_line_head(toks) orelse return false;
+    if (last.kind != .rune2) return false;
+    return std.mem.eql(u8, slice_of(src, last), "^-");
+}
+
+/// True when the token stream is a cross-desk named-cast desk:
+/// exactly 2 Glow lines, head `/+`, last line head `^-` (STOA85 peek).
+pub fn looks_like_cross_desk(src: []const u8) bool {
+    var buf: [max_tokens]Token = undefined;
+    const n = tokenize(src, &buf) catch return false;
+    const toks = buf[0..n];
+    if (glow_line_count(toks) != 2) return false;
+    const head = first_content(toks) orelse return false;
+    if (head.kind != .rune2) return false;
+    if (!std.mem.eql(u8, slice_of(src, head), "/+")) return false;
     const last = last_line_head(toks) orelse return false;
     if (last.kind != .rune2) return false;
     return std.mem.eql(u8, slice_of(src, last), "^-");

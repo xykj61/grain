@@ -74,10 +74,10 @@ From the sameness rune brief. These are the heads an Acme reader should treat as
 | **Cells** | `:-`/`:+`/`:^`/`:~` **GREEN STOA2–5** |
 | **Molds** | thin `+$` / `$:` **STOA74** · multi-field `@u32` **STOA75** · thin `$%` **STOA76** · named-cast **STOA77** · `$%` payload **STOA78** · cross-desk cast **STOA79** · multi-face `$%` **STOA80** · tagged cast **STOA81** · payload cast **STOA82** · Sala later |
 | **Hints / jets** | `~%` `~/` (+ jet witnesses) |
-| **Nest / surface** | richer multi-line nest values · bounded token stream **STOA83** · named-cast token peek **STOA84** · cross-desk peek / token lowers · deeper product desks |
+| **Nest / surface** | richer multi-line nest values · bounded token stream **STOA83** · named-cast peeks **STOA84–85** · token-driven lowers · deeper product desks |
 | **Auras** | `@ux` · `@p` · `@da` · `@t` (unsigned `@uN` only today) |
 
-**Glass-critical gap in one line:** Skate paint + Dexter drain + JABS chat still need richer arm bodies and fuller molds. **STOA71–74** GREEN: glass import path through product-root write, plus thin `+$` / `$:` `@u32` mold. Pixel product-root install eyes GREEN · molds through `$%` **STOA76** · same-desk named-cast **STOA77** · `$%` payload arms **STOA78** · cross-desk cast **STOA79** · multi-face `$%` **STOA80** · tagged named-cast **STOA81** · payload `$%` cast **STOA82** · bounded token stream **STOA83** · named-cast token peek **STOA84**. Sala B0-in-Glow · cross-desk peek / token-driven lowers stay **STOA85+**.
+**Glass-critical gap in one line:** Skate paint + Dexter drain + JABS chat still need richer arm bodies and fuller molds. **STOA71–74** GREEN: glass import path through product-root write, plus thin `+$` / `$:` `@u32` mold. Pixel product-root install eyes GREEN · molds through `$%` **STOA76** · same-desk named-cast **STOA77** · `$%` payload arms **STOA78** · cross-desk cast **STOA79** · multi-face `$%` **STOA80** · tagged named-cast **STOA81** · payload `$%` cast **STOA82** · bounded token stream **STOA83** · named-cast token peeks **STOA84–85**. Sala B0-in-Glow · token-driven lowers stay **STOA86+**.
 
 ---
 

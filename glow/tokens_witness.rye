@@ -8,7 +8,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const tokens = @import("tokens.rye");
 
-const witness_version = "20260719.201027";
+const witness_version = "20260719.201500";
 
 /// Same shape as glow/gen/cast-named-xact.glow (comments stripped by lexer).
 const xact_desk =
@@ -115,8 +115,14 @@ fn run_selftest() !u8 {
     assert(!tokens.looks_like_named_cast(cross_desk));
     print("tokens: named-cast peek (glow_run wire) -- GREEN\n", .{});
 
+    assert(tokens.looks_like_cross_desk(cross_desk));
+    assert(!tokens.looks_like_cross_desk(xact_desk));
+    assert(!tokens.looks_like_cross_desk(amount_cast));
+    assert(!tokens.looks_like_cross_desk(mold_only));
+    print("tokens: cross-desk peek (glow_run wire) -- GREEN\n", .{});
+
     print("tokens: version {s}\n", .{witness_version});
-    print("GREEN: Glow token stream named-cast peek — STOA84; glow_run wire.\n", .{});
+    print("GREEN: Glow token stream cross-desk peek — STOA85; glow_run wire.\n", .{});
     return 0;
 }
 
