@@ -2,11 +2,11 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Rule: [`.cursor/rules/remember.mdc`](../.cursor/rules/remember.mdc) · [`.claude/rules/remember.md`](../.claude/rules/remember.md).*
 
-**Last refreshed:** `20260719.203117` (Eastern) · voice Quin  
+**Last refreshed:** `20260719.203726` (Eastern) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5** · HOLD0–HOLD1 · HOLD-W  
-**Language nib:** **STOA0–87** GREEN · STOA88 open  
-**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W · STOA0–87  
-**Git nib:** `376c2996b1` STOA87 TAME tidy named-cast  
+**Language nib:** **STOA0–88** GREEN · STOA89 open  
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W · STOA0–88  
+**Git nib:** `0530ed5f20` STOA88 ?> / ?< assertion runes  
  
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`
 
@@ -14,11 +14,11 @@
 
 ## Now (language)
 
-**STOA87** TAME tidy named-cast lower GREEN `20260719.202541` — `glow/lower_named_cast.rye` carries assert contracts, `u32` spans, `copy_disjoint`, and split emitters under 70 lines; on style/width roster beside tokens (256-file ceiling). Next door: **STOA88** check-in.
+**STOA88** Glow `?>` / `?<` TAME assertion runes GREEN `20260719.203207` — Hoon wutgar/wutgal parallel; desks `assert-true` · `assert-false` lower to unqualified Rye `assert`; pin in `context/TAME_GUIDANCE.md`. Next door: **STOA89** check-in.
 
-Smoke: `rishi/bin/rishi run tools/glow_lower_named_cast_witness.rish`
+Smoke: `rishi/bin/rishi run tools/glow_lower_assert_witness.rish`
 
-Pitfalls: global style roster full at 256 · `tokens_witness` on own gate. Hold: token-driven lower · tidy `lower_mold` · Sala B0 rewrite.
+Pitfalls: thin test `(gth tick 32)` only · `?=` type-match stays later. Hold: token-driven lower · tidy `lower_mold` · Sala B0 rewrite.
 
 ---
 
@@ -32,7 +32,7 @@ Pitfalls: global style roster full at 256 · `tokens_witness` on own gate. Hold:
 | **JABS** | Sala broadcast live-session fold | JABS0–2 GREEN · JABS3 check-in |
 | **LULU** | Hearth · short home · Wired Glass | **LULU0–5 closed** |
 | **SETU** | USB hearth carry Glass↔Desk | **SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W GREEN** · live “sent” eyes check-in |
-| **STOA** | Glow language SLC · nest · composition | **STOA0–87 GREEN** · TAME cast · STOA88 next |
+| **STOA** | Glow language SLC · nest · composition | **STOA0–88 GREEN** · ?> ?< · STOA89 next |
 
 Canon: [`../docs/HAWM.md`](../docs/HAWM.md) · [`../docs/TUBE.md`](../docs/TUBE.md) · [`../docs/ZETA.md`](../docs/ZETA.md) · [`../docs/JABS.md`](../docs/JABS.md) · [`../docs/LULU.md`](../docs/LULU.md) · [`../docs/SETU.md`](../docs/SETU.md) · [`../docs/STOA.md`](../docs/STOA.md)
 
@@ -71,7 +71,7 @@ Hold row 1 → Settings: presets · `home ·` · `wire ·` · `cell ·` — all 
 
 | Door | Kind |
 |------|------|
-| **STOA88** next language (token lower · tidy mold · Sala B0) | **check-in** |
+| **STOA89** next language (token lower · tidy mold · Sala B0) | **check-in** |
 | Live SETU6.5 **sent** on usb0/ncm | **check-in** (needs gadget/QEMU) |
 | Amber/Amphora Glass↔Desk fuse | **declined** — compose later (`133455`) |
 | JABS3 · TAME Lap 3 | **check-in** |
