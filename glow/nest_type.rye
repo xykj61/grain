@@ -7,17 +7,18 @@
 //!   - STOA110: wet-sample refuse — wet-flagged claims do not nest (no Glow wet syntax)
 //!   - STOA118: same closed named mold on barket samples
 //!   - STOA119: wet-sample accept under a stated closed mold (`assert_sample_wet_nests`)
-//!   - STOA120: barket/bartis expansion call `assert_sample_wet_nests(false, …)`
-//! Ambient gold / free polymorphism · Glow wet syntax · `kind-mold` gate samples stay held.
+//!   - STOA120: barket/bartis expansion call `assert_sample_wet_nests`
+//!   - STOA121: barket passes `is_wet=true` through wet-nests under stated molds
+//! Ambient gold / free polymorphism · new wet tokens · `kind-mold` gate samples stay held.
 //!
-//! Bartis and barket call `assert_aura_nests` / `assert_bartis_named_mold` /
-//! `assert_sample_wet_nests` (dry). Barket still hardcodes `assert_sample_not_wet(false)`.
+//! Bartis calls wet-nests dry (`false`). Barket calls wet-nests wet (`true`).
+//! STOA110 `assert_sample_not_wet(true)` refuse stays on the nest_type witness.
 
 const std = @import("std");
 const assert = std.debug.assert;
 const rune_mold = @import("rune_mold.rye");
 
-pub const nest_type_version = "20260720.182450";
+pub const nest_type_version = "20260720.182915";
 
 /// Closed named mold welcome in bartis samples this lap (one-field `$:` ≡ `@u32`).
 pub const bartis_named_mold_amount = "amount-mold";
