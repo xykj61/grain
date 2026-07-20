@@ -1,0 +1,4 @@
+::  Thin bartis Glow gate — sample=amount-mold returns sample (STOA109).
+::  amount-mold is the closed one-field $: named mold (≡ @u32 lower).
+|=  sample=amount-mold
+sample

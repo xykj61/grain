@@ -1,4 +1,4 @@
-//! glow/nest_type_witness.rye — proves nest/type surface (STOA107–108).
+//! glow/nest_type_witness.rye — proves nest/type surface (STOA107–109).
 //!
 //!   rye build glow/nest_type_witness.rye -femit-bin=glow/bin/nest_type_witness
 //!   glow/bin/nest_type_witness
@@ -11,7 +11,7 @@ const rb = @import("rune_bartis.rye");
 const lower = @import("lower_bartis.rye");
 const rm = @import("rune_mold.rye");
 
-const witness_version = "20260720.145814";
+const witness_version = "20260720.150155";
 
 fn run_selftest(init: std.process.Init) !u8 {
     const a = init.arena.allocator();
@@ -91,8 +91,41 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("nest: tag under $: tuple mold refused SampleDoesNotNest -- GREEN\n", .{});
 
+    // STOA109: named-mold bartis — amount-mold accepts; kind-mold refuses.
+    const amount_src = try cwd.readFileAlloc(io, "glow/gen/mold-amount.glow", a, .limited(4096));
+    const amount = try rm.parse_source(amount_src);
+    try nest_type.assert_named_mold_nests("amount-mold", &amount);
+    print("nest: amount-mold MoldSpec nests as bartis-welcome $: -- GREEN\n", .{});
+
+    if (nest_type.assert_bartis_named_mold("kind-mold")) |_| {
+        return error.KindMoldBartisAccepted;
+    } else |err| {
+        if (err != nest_type.NestError.SampleDoesNotNest) return err;
+    }
+    print("nest: kind-mold bartis named mold refused SampleDoesNotNest -- GREEN\n", .{});
+
+    const n_amt = try lower.lower_source_welcome("|=  sample=amount-mold\nsample\n", &buf);
+    assert(n_amt > 0);
+    assert(std.mem.indexOf(u8, buf[0..n_amt], "bartis_gate") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_amt], "amount-mold") != null);
+    print("nest: bartis sample=amount-mold lowers as u32 identity -- GREEN\n", .{});
+
+    const amt_desk = try cwd.readFileAlloc(io, "glow/gen/gate-amount.glow", a, .limited(4096));
+    const amt_spec = try rb.parse_source(amt_desk);
+    assert(std.mem.eql(u8, rb.face_slice(&amt_spec), "sample"));
+    assert(std.mem.eql(u8, rb.mold_name_slice(&amt_spec), "amount-mold"));
+    print("nest: glow/gen/gate-amount.glow accepts named mold -- GREEN\n", .{});
+
+    const kind_refuse = try cwd.readFileAlloc(io, "glow/gen/gate-kind-refuse.glow", a, .limited(4096));
+    if (rb.parse_source(kind_refuse)) |_| {
+        return error.KindRefuseDeskAccepted;
+    } else |err| {
+        if (err != rb.ParseError.SampleDoesNotNest) return err;
+    }
+    print("nest: glow/gen/gate-kind-refuse.glow refused SampleDoesNotNest -- GREEN\n", .{});
+
     print("nest: version {s}\n", .{witness_version});
-    print("GREEN: Glow nest/type — dry aura · $% tag nest; SampleDoesNotNest; STOA107–108.\n", .{});
+    print("GREEN: Glow nest/type — dry aura · $% tag · named-mold bartis; SampleDoesNotNest; STOA107–109.\n", .{});
     return 0;
 }
 

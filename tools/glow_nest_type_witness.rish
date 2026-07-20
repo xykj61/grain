@@ -1,6 +1,6 @@
-# glow_nest_type_witness.rish — nest/type surface (STOA107–108).
+# glow_nest_type_witness.rish — nest/type surface (STOA107–109).
 #
-# Proves dry aura nest + unit $% tag nest (SampleDoesNotNest), bartis wire,
+# Proves dry aura nest + unit $% tag nest + named-mold bartis (SampleDoesNotNest),
 # and barket still untokenized. Wet/gold still held.
 #
 #   rishi/bin/rishi run tools/glow_nest_type_witness.rish
@@ -20,6 +20,8 @@ assert selftest.out contains "gate-sample-u64-refuse.glow" else "nest_type_witne
 assert selftest.out contains "mold-kind.glow" else "nest_type_witness missing $% tag accept"
 assert selftest.out contains "%burn" else "nest_type_witness missing $% tag refuse"
 assert selftest.out contains "tuple mold" else "nest_type_witness missing tuple refuse"
+assert selftest.out contains "gate-amount.glow" else "nest_type_witness missing amount-mold accept"
+assert selftest.out contains "gate-kind-refuse.glow" else "nest_type_witness missing kind-mold refuse"
 
 # Sibling horizons stay GREEN.
 let surface = run ["sh" "-c" "rishi/bin/rishi run tools/glow_nest_type_surface_witness.rish"]
@@ -35,4 +37,4 @@ assert bartis.ok else "glow_lower_bartis_witness failed under nest implement"
 assert bartis.out contains "GREEN" else "glow_lower_bartis_witness not GREEN"
 assert bartis.out contains "SampleDoesNotNest" else "glow_lower_bartis_witness missing nest refuse"
 
-say "GREEN: Glow nest/type — dry aura · $% tag nest; SampleDoesNotNest; barket held; STOA107–108."
+say "GREEN: Glow nest/type — dry aura · $% tag · amount-mold bartis; SampleDoesNotNest; barket held; STOA107–109."
