@@ -8,6 +8,7 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260720.182824` — [STOA120 wet-nests barket/bartis wire GREEN](20260720-182824_stoa120-wet-nests-wire-green.bron) — expansion dry wire; await send
 - `20260720.182420` — [STOA119 send complete](20260720-182420_stoa119-send-complete.bron) — origin main language claim 471fe68b04 · tip d961878652
 - `20260720.182420` — [STOA120 wet-nests barket wire map](20260720-182420_stoa120-wet-nests-wire-map.bron) — lean A wire into barket/bartis; no Claude pause
 - `20260720.182341` — [STOA119 wet-nests accept GREEN](20260720-182341_stoa119-wet-nests-green.bron) — assert_sample_wet_nests · two molds one path; await send
