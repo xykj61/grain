@@ -4,7 +4,7 @@
 
 **Language:** EN
 **Version:** `20260715` (Pool keystone revival prioritized · Quin voice seated · align pass reconciles the closed ladder)
-**Last updated:** 2026-07-20 (**STOA0–120** GREEN — wet-nests wire; wet-nests accept; named-mold barket)
+**Last updated:** 2026-07-20 (**STOA0–121** GREEN — barket wet-through-nests; wet-nests wire)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Lens:** TAME — safety, performance, joy; the Seed Law; [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md)
@@ -478,7 +478,9 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA119 wet-nests accept GREEN, `20260720.181950`** — lean A (compass): `assert_sample_wet_nests` · wet `@u32` + `amount-mold` share one path; STOA110 refuse kept; Glow wet syntax · gold held. Brief [`active-designing/20260720-181950_stoa119-wet-accept-under-stated-mold.md`](../active-designing/20260720-181950_stoa119-wet-accept-under-stated-mold.md). Next language: **STOA120** wet-nests wire.
 
-**STOA120 wet-nests barket/bartis wire GREEN, `20260720.182450`** — lean A (compass): expansion calls `assert_sample_wet_nests(false, …)` on barket + bartis; STOA110/119 held; Glow wet syntax · gold · Sala B0 held. Brief [`active-designing/20260720-182450_stoa120-wet-nests-barket-wire.md`](../active-designing/20260720-182450_stoa120-wet-nests-barket-wire.md). Next language: **STOA121** map (wet spelling · gold · Sala B0 still held).
+**STOA120 wet-nests barket/bartis wire GREEN, `20260720.182450`** — lean A (compass): expansion calls `assert_sample_wet_nests` on barket + bartis; STOA110/119 held. Brief [`active-designing/20260720-182450_stoa120-wet-nests-barket-wire.md`](../active-designing/20260720-182450_stoa120-wet-nests-barket-wire.md). Next language: **STOA121** barket wet-through-nests.
+
+**STOA121 barket wet-through-nests GREEN, `20260720.182915`** — lean A (compass): `|^` calls `assert_sample_wet_nests(true, …)` under stated molds; drop barket dry not_wet pin; bartis dry; gold · new wet tokens · Sala B0 held. Brief [`active-designing/20260720-182915_stoa121-barket-wet-through-nests.md`](../active-designing/20260720-182915_stoa121-barket-wet-through-nests.md). Next language: **STOA122** map (gold · Sala B0 · open named-mold still held).
 
 **Glow OS · Glow Desk · Glow Glass seated, `20260717.183622`** — Keaton: **Glow OS** unifies; **Glow Desk** = desktop; **Glow Glass** = mobile. Lexicon + silo [`../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md`](../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md). Orientation firmware stays check-in.
 
