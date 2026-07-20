@@ -91,4 +91,5 @@
 | **STOA116** | Barket call-body inc/dec | `glow_barket_lower_witness` · `glow_run` | **GREEN** `20260720.180445` |
 | **STOA117** | Barket TAME tidy | `glow_barket_lower_witness` · `tame_style_scan_bans` | **GREEN** `20260720.180900` |
 | **STOA118** | Named-mold barket | `glow_barket_lower_witness` · `glow_run` | **GREEN** `20260720.181347` |
+| **STOA119** | Wet-nests under stated mold | `glow_nest_type_witness` | **GREEN** `20260720.181950` |
 Smoke: `glow_barket_lower_witness` · `glow_barket_parse_witness` · `glow_nest_type_witness` · `glow_lower_bartis_witness` · Sibling: **ZETA** · **LULU** · **SETU** · **TUBE**.
