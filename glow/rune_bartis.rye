@@ -4,7 +4,7 @@
 //! then either:
 //!   - identity body: bare face matching the sample (STOA100)
 //!   - call body: `%-  <gate>  <sample-face>` (STOA103–104)
-//! Closed demo gates: `double` · `inc` · `dec` (`@u32`) · `flip` (kind · xact · xfer · STOA127–129).
+//! Closed demo gates: `double` · `inc` · `dec` (`@u32`) · `flip` (kind · xact · xfer · pair · STOA127–131).
 //! Token-driven via tokens.rye.
 //! STOA105: TAME tidy — copy_disjoint · split header/body parse · assert alias.
 //! STOA107: nest/type — sample aura nests under `@u32` via nest_type;
@@ -19,6 +19,7 @@
 //! STOA127: closed call-body under kind-mold — `flip` (mint↔send).
 //! STOA128: closed call-body under xact-mold — `flip` (mint↔send).
 //! STOA129: closed call-body under xfer-mold — `flip` (mint↔send).
+//! STOA131: closed call-body under pair-mold — `flip` (from↔amount).
 //! Nesting / gold · open `$:` beyond pair bartis samples held.
 //!
 //! Parse shape (token stream):
@@ -105,6 +106,11 @@ pub fn is_xact_call_gate(gate: []const u8) bool {
 
 /// True when `gate` is the closed xfer-mold call-body gate (STOA129).
 pub fn is_xfer_call_gate(gate: []const u8) bool {
+    return std.mem.eql(u8, gate, "flip");
+}
+
+/// Closed call-body gates under pair-mold (STOA131) — `flip` only today.
+pub fn is_pair_call_gate(gate: []const u8) bool {
     return std.mem.eql(u8, gate, "flip");
 }
 
