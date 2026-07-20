@@ -8,6 +8,7 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260720.192529` — [Wet dry alternatives in Glow paradigm](20260720-192529_wet-dry-glow-paradigm-terms.bron) — counsel: stated/nesting/gold continuum; no rename yet
 - `20260720.192448` — [STOA129 send complete](20260720-192448_stoa129-send-complete.bron) — origin main language claim fa2c85e9b8 · tip fa2c85e9b8
 - `20260720.192448` — [STOA130 next map after xfer flip call-body](20260720-192448_stoa130-next-map.bron) — gold vs call-body under pair; compass pick
 - `20260720.192411` — [STOA129 xfer-mold flip call-body GREEN](20260720-192411_stoa129-xfer-call-body-green.bron) — XferMold switch · baked mint/5/3 → .send; await send
