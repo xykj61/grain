@@ -8,6 +8,7 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260719.204759` — [Cursor iOS handoff and core port order](20260719-204759_cursor-ios-handoff-and-core-port.bron) — dry cores fit; wet hold; await send
 - `20260719.204500` — [STOA89 send complete](20260719-204500_stoa89-send-complete.bron) — origin + codeberg at bcf3780543
 - `20260719.204340` — [STOA89 pin and STOA90 check-in](20260719-204340_stoa89-pin-stoa90-check-in.bron) — pin f29414bb99; lean A pronunciation table G1
 - `20260719.204307` — [STOA89 rune alphabet and generator wording](20260719-204307_stoa89-rune-alphabet-roadmap.bron) — adopt Hoon alphabet; fixture vs generator; await send
