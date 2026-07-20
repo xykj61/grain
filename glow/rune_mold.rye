@@ -1,5 +1,9 @@
 //! glow/rune_mold.rye — parses Glow's `+$` / `$:` / `$%` mold (STOA74–80).
 //!
+//! STOA97: token→MoldSpec — tokenize src via tokens.rye, walk token stream
+//! directly to build MoldSpec, retiring lower_multi.collect_lines and
+//! byte-level head parsing inside parse_source.
+//!
 //! `$:` tuple of `@u32` fields (1–3). `$%` tagged union of cold atoms with
 //! unit payload `[%tag ~]` or one-to-three-face `@u32` payload
 //! `[%tag face=@u32 …]` (2–3 tags). Tagged named-cast stay later.
@@ -10,7 +14,9 @@
 //!     ==
 
 const std = @import("std");
-const lower_multi = @import("lower_multi.rye");
+const assert = std.debug.assert;
+const tokens = @import("tokens.rye");
+const tally_copy = @import("tally_copy.rye");
 
 pub const max_name_len: u32 = 64;
 pub const max_fields: u32 = 3;
@@ -94,175 +100,193 @@ pub fn any_payload(spec: *const MoldSpec) bool {
     return false;
 }
 
-fn is_ident_char(c: u8) bool {
-    if (c >= 'a' and c <= 'z') return true;
-    if (c >= 'A' and c <= 'Z') return true;
-    if (c >= '0' and c <= '9') return true;
-    return c == '-' or c == '_';
+fn rune2_text_is(src: []const u8, tok: tokens.Token, lit: []const u8) bool {
+    assert(tok.kind == .rune2); // precondition: caller checked kind
+    return std.mem.eql(u8, tokens.slice_of(src, tok), lit);
 }
 
-fn parse_ident(text: []const u8) ParseError![]const u8 {
-    if (text.len == 0 or text.len > max_name_len) return error.MalformedName;
-    if (text[0] >= '0' and text[0] <= '9') return error.MalformedName;
-    for (text) |c| {
-        if (!is_ident_char(c)) return error.MalformedName;
-    }
-    return text;
-}
-
-fn parse_field_clause(clause: []const u8) ParseError![]const u8 {
-    if (clause.len == 0 or clause.len > max_name_len * 2 + 1) return error.FieldTooLong;
-    var eq: ?usize = null;
-    var i: usize = 0;
-    while (i < clause.len) : (i += 1) {
-        if (clause[i] == '=') {
-            eq = i;
-            break;
-        }
-    }
-    const e = eq orelse return error.MalformedField;
-    const face = try parse_ident(clause[0..e]);
-    const mold = clause[e + 1 ..];
-    if (mold.len == 0 or mold.len > max_name_len) return error.MalformedField;
-    if (!std.mem.eql(u8, mold, "@u32")) return error.MoldNotU32;
-    return face;
-}
-
-const TagArm = struct {
-    tag: []const u8,
-    face_count: usize,
-    faces: [max_payload_faces][]const u8,
-};
-
-/// `[%mint ~]` · `[%mint amount=@u32]` · `[%mint from=@u32 amount=@u32]`.
-fn parse_tag_arm(clause: []const u8) ParseError!TagArm {
-    var t = std.mem.trim(u8, clause, " \t");
-    if (t.len < 6) return error.MalformedTag; // [%x ~] min
-    if (t[0] != '[') return error.MalformedTag;
-    if (t[t.len - 1] != ']') return error.MalformedTag;
-    t = std.mem.trim(u8, t[1 .. t.len - 1], " \t");
-    if (t.len < 2 or t[0] != '%') return error.MalformedTag;
-    var end: usize = 1;
-    while (end < t.len and is_ident_char(t[end])) end += 1;
-    if (end == 1) return error.MissingTag;
-    const tag = try parse_ident(t[1..end]);
-    var rest = std.mem.trimStart(u8, t[end..], " \t");
-    if (rest.len == 0) return error.MalformedTag;
-    if (std.mem.eql(u8, rest, "~")) return .{ .tag = tag, .face_count = 0, .faces = undefined };
-
-    var faces: [max_payload_faces][]const u8 = undefined;
-    var face_count: usize = 0;
-    while (rest.len != 0) {
-        if (face_count >= max_payload_faces) return error.TooManyFields;
-        var tok_end: usize = 0;
-        while (tok_end < rest.len and rest[tok_end] != ' ' and rest[tok_end] != '\t') tok_end += 1;
-        faces[face_count] = try parse_field_clause(rest[0..tok_end]);
-        face_count += 1;
-        rest = std.mem.trimStart(u8, rest[tok_end..], " \t");
-    }
-    if (face_count == 0) return error.MalformedTag;
-    return .{ .tag = tag, .face_count = face_count, .faces = faces };
-}
-
-fn take_rest_of_line(line: []const u8) ParseError![]const u8 {
-    // Tagged arms may contain spaces: [%mint from=@u32 amount=@u32]
-    const trimmed = std.mem.trim(u8, line, " \t");
-    if (trimmed.len == 0) return error.MissingField;
-    return trimmed;
-}
-
-fn take_clause(line: []const u8) ParseError![]const u8 {
-    var end: usize = 0;
-    while (end < line.len and line[end] != ' ' and line[end] != '\t') end += 1;
-    const clause = line[0..end];
-    const rest = std.mem.trimStart(u8, line[end..], " \t");
-    if (rest.len != 0) return error.TrailingJunk;
-    if (clause.len == 0) return error.MissingField;
-    return clause;
-}
-
+/// Copy `face` (a `tokens.slice_of` span) into `spec.fields[i]` and advance
+/// `spec.field_count`. The `face` slice is already validated by the lexer.
 fn push_name(spec: *MoldSpec, face: []const u8) ParseError!void {
+    assert(face.len >= 1); // precondition: ident spans at least one byte
+    assert(face.len <= max_name_len); // precondition: lexer bounded ident
     if (spec.field_count >= max_fields) return error.TooManyFields;
     const i = spec.field_count;
-    @memcpy(spec.fields[i][0..face.len], face);
+    tally_copy.copy_disjoint(u8, spec.fields[i][0..face.len], face);
     spec.field_lens[i] = face.len;
     spec.field_count += 1;
 }
 
-fn push_tag(spec: *MoldSpec, arm: TagArm) ParseError!void {
+/// Record a unit `$%` arm (payload 0 faces) into `spec`.
+fn push_tag_unit(spec: *MoldSpec, tag: []const u8) ParseError!void {
+    assert(tag.len >= 1); // precondition: tag name non-empty
+    assert(tag.len <= max_name_len); // precondition: lexer bounded ident
     if (spec.field_count >= max_fields) return error.TooManyFields;
     const i = spec.field_count;
-    @memcpy(spec.fields[i][0..arm.tag.len], arm.tag);
-    spec.field_lens[i] = arm.tag.len;
-    spec.payload_counts[i] = arm.face_count;
-    var fi: usize = 0;
-    while (fi < arm.face_count) : (fi += 1) {
-        const face = arm.faces[fi];
-        @memcpy(spec.payloads[i][fi][0..face.len], face);
-        spec.payload_face_lens[i][fi] = face.len;
+    tally_copy.copy_disjoint(u8, spec.fields[i][0..tag.len], tag);
+    spec.field_lens[i] = tag.len;
+    spec.payload_counts[i] = 0;
+    spec.field_count += 1;
+}
+
+/// Record a payload `$%` arm (`faces` holds 1–3 face-name slices) into `spec`.
+fn push_tag_faces(spec: *MoldSpec, tag: []const u8, faces: []const []const u8) ParseError!void {
+    assert(tag.len >= 1); // precondition: tag name non-empty
+    assert(tag.len <= max_name_len); // precondition: lexer bounded ident
+    assert(faces.len >= 1); // precondition: at least one face
+    assert(faces.len <= max_payload_faces); // precondition: within payload budget
+    if (spec.field_count >= max_fields) return error.TooManyFields;
+    const i = spec.field_count;
+    tally_copy.copy_disjoint(u8, spec.fields[i][0..tag.len], tag);
+    spec.field_lens[i] = tag.len;
+    spec.payload_counts[i] = faces.len;
+    var fi: u32 = 0;
+    const fc: u32 = @intCast(faces.len);
+    while (fi < fc) : (fi += 1) {
+        const face = faces[@as(usize, @intCast(fi))];
+        assert(face.len >= 1); // precondition: face name non-empty
+        assert(face.len <= max_name_len); // precondition: lexer bounded ident
+        tally_copy.copy_disjoint(u8, spec.payloads[i][@as(usize, @intCast(fi))][0..face.len], face);
+        spec.payload_face_lens[i][@as(usize, @intCast(fi))] = face.len;
     }
     spec.field_count += 1;
 }
 
-/// Parse mold source. `$:` → 3–5 lines; `$%` → 4–5 lines (2–3 tags).
+/// Parse mold source via token stream (STOA97 token→MoldSpec).
+/// Accepts `$:` tuples (1–3 `@u32` fields) and `$%` tagged unions
+/// (2–3 arms, each `[%tag ~]` or `[%tag face=@u32 …]`).
+/// Same public signature as before: `parse_source(src) ParseError!MoldSpec`.
 pub fn parse_source(src: []const u8) ParseError!MoldSpec {
     if (src.len == 0) return error.EmptySource;
-    var lines: [lower_multi.max_lines][]const u8 = undefined;
-    const n = lower_multi.collect_lines(src, &lines) catch |err| switch (err) {
-        error.TooManyLines => return error.TooManyLines,
-        else => return error.EmptySource,
+
+    var buf: [tokens.max_tokens]tokens.Token = undefined;
+    const n: u32 = tokens.tokenize(src, &buf) catch |err| switch (err) {
+        error.EmptySource => return error.EmptySource,
+        error.TooManyTokens => return error.NotAMold,
+        error.BadToken => return error.NotAMold,
     };
-    if (n < 3) return error.TooFewLines;
-    if (n > 5) return error.TooManyLines;
+    assert(n <= tokens.max_tokens); // postcondition: tokenize budget
 
-    const head = std.mem.trim(u8, lines[0], " \t");
-    if (head.len < 2 or !std.mem.eql(u8, head[0..2], "+$")) return error.NotAMold;
-    var rest = std.mem.trimStart(u8, head[2..], " \t");
-    if (rest.len == 0) return error.MissingName;
-    var end: usize = 0;
-    while (end < rest.len and rest[end] != ' ' and rest[end] != '\t') end += 1;
-    const name = try parse_ident(rest[0..end]);
-    rest = std.mem.trimStart(u8, rest[end..], " \t");
-    if (rest.len != 0) return error.TrailingJunk;
+    const toks = buf[0..n];
+    var i: u32 = 0;
 
-    const closer = std.mem.trim(u8, lines[n - 1], " \t");
-    if (!std.mem.eql(u8, closer, "==")) return error.MissingEnd;
+    // Skip any leading newlines.
+    while (i < n and toks[@as(usize, @intCast(i))].kind == .newline) : (i += 1) {}
+    if (i >= n) return error.EmptySource;
+
+    // Head rune: +$
+    if (toks[@as(usize, @intCast(i))].kind != .rune2) return error.NotAMold;
+    if (!rune2_text_is(src, toks[@as(usize, @intCast(i))], "+$")) return error.NotAMold;
+    i += 1;
+
+    // Mold name ident (may be on same line as +$).
+    while (i < n and toks[@as(usize, @intCast(i))].kind == .newline) : (i += 1) {}
+    if (i >= n or toks[@as(usize, @intCast(i))].kind != .ident) return error.MissingName;
+    const name_tok = toks[@as(usize, @intCast(i))];
+    i += 1;
+
+    // Skip to body rune.
+    while (i < n and toks[@as(usize, @intCast(i))].kind == .newline) : (i += 1) {}
+    if (i >= n) return error.MissingTuple;
+
+    const name = tokens.slice_of(src, name_tok);
+    assert(name.len >= 1); // lexer guarantees ident non-empty
+    assert(name.len <= max_name_len); // lexer bounded by tokens.max_name_len == 64
 
     var spec: MoldSpec = .{};
-    @memcpy(spec.name[0..name.len], name);
+    tally_copy.copy_disjoint(u8, spec.name[0..name.len], name);
     spec.name_len = name.len;
 
-    const body0 = std.mem.trim(u8, lines[1], " \t");
-    if (body0.len >= 2 and std.mem.eql(u8, body0[0..2], "$%")) {
-        spec.body = .tagged;
-        // $% needs at least two tags → n >= 4.
-        if (n < 4) return error.TooFewTags;
-        var li: usize = 1;
-        while (li + 1 < n) : (li += 1) {
-            var body = std.mem.trim(u8, lines[li], " \t");
-            if (li == 1) {
-                body = std.mem.trimStart(u8, body[2..], " \t");
+    // Body rune: $: (tuple) or $% (tagged).
+    const body_tok = toks[@as(usize, @intCast(i))];
+    if (body_tok.kind != .rune2) return error.NotAMold;
+    i += 1;
+
+    if (rune2_text_is(src, body_tok, "$:")) {
+        spec.body = .tuple;
+        // Field clauses: ident = @u32, repeated until ==.
+        while (true) {
+            while (i < n and toks[@as(usize, @intCast(i))].kind == .newline) : (i += 1) {}
+            if (i >= n) return error.MissingEnd;
+            if (toks[@as(usize, @intCast(i))].kind == .double_equals) {
+                i += 1;
+                break;
             }
-            const arm_text = try take_rest_of_line(body);
-            const parsed = try parse_tag_arm(arm_text);
-            try push_tag(&spec, parsed);
+            // Expect: ident = @u32
+            if (toks[@as(usize, @intCast(i))].kind != .ident) return error.MissingField;
+            const face_tok = toks[@as(usize, @intCast(i))];
+            i += 1;
+            if (i >= n or toks[@as(usize, @intCast(i))].kind != .equals) return error.MalformedField;
+            i += 1;
+            if (i >= n or toks[@as(usize, @intCast(i))].kind != .aura) return error.MalformedField;
+            const aura_tok = toks[@as(usize, @intCast(i))];
+            i += 1;
+            if (!std.mem.eql(u8, tokens.slice_of(src, aura_tok), "@u32")) return error.MoldNotU32;
+            try push_name(&spec, tokens.slice_of(src, face_tok));
+        }
+        if (spec.field_count == 0) return error.MissingField;
+    } else if (rune2_text_is(src, body_tok, "$%")) {
+        spec.body = .tagged;
+        // Tag arms: [ %tag ~ ] or [ %tag face=@u32 … ], repeated until ==.
+        while (true) {
+            while (i < n and toks[@as(usize, @intCast(i))].kind == .newline) : (i += 1) {}
+            if (i >= n) return error.MissingEnd;
+            if (toks[@as(usize, @intCast(i))].kind == .double_equals) {
+                i += 1;
+                break;
+            }
+            // Arm opens with [
+            if (toks[@as(usize, @intCast(i))].kind != .lbracket) return error.MissingTag;
+            i += 1;
+            // Tag name as percent_tag (%name)
+            if (i >= n or toks[@as(usize, @intCast(i))].kind != .percent_tag) return error.MissingTag;
+            const ptag_tok = toks[@as(usize, @intCast(i))];
+            i += 1;
+            const ptag_full = tokens.slice_of(src, ptag_tok);
+            assert(ptag_full.len >= 2); // lexer: '%' + ident start
+            const tag_name = ptag_full[1..]; // drop leading '%'
+            assert(tag_name.len >= 1); // ident non-empty after '%'
+
+            if (i >= n) return error.MalformedTag;
+            if (toks[@as(usize, @intCast(i))].kind == .tilde) {
+                // Unit arm: ~ ]
+                i += 1;
+                if (i >= n or toks[@as(usize, @intCast(i))].kind != .rbracket) return error.MalformedTag;
+                i += 1;
+                try push_tag_unit(&spec, tag_name);
+            } else {
+                // Payload arm: one or more face=@u32, then ]
+                var faces: [max_payload_faces][]const u8 = undefined;
+                var face_count: u32 = 0;
+                while (i < n and toks[@as(usize, @intCast(i))].kind != .rbracket) {
+                    if (face_count >= max_payload_faces) return error.TooManyFields;
+                    if (toks[@as(usize, @intCast(i))].kind != .ident) return error.MalformedTag;
+                    const pface_tok = toks[@as(usize, @intCast(i))];
+                    i += 1;
+                    if (i >= n or toks[@as(usize, @intCast(i))].kind != .equals) return error.MalformedField;
+                    i += 1;
+                    if (i >= n or toks[@as(usize, @intCast(i))].kind != .aura) return error.MalformedField;
+                    const paura_tok = toks[@as(usize, @intCast(i))];
+                    i += 1;
+                    if (!std.mem.eql(u8, tokens.slice_of(src, paura_tok), "@u32")) return error.MoldNotU32;
+                    faces[@as(usize, @intCast(face_count))] = tokens.slice_of(src, pface_tok);
+                    face_count += 1;
+                }
+                if (i >= n or toks[@as(usize, @intCast(i))].kind != .rbracket) return error.MalformedTag;
+                i += 1;
+                if (face_count == 0) return error.MalformedTag;
+                try push_tag_faces(&spec, tag_name, faces[0..@as(usize, @intCast(face_count))]);
+            }
         }
         if (spec.field_count < 2) return error.TooFewTags;
-        return spec;
+    } else {
+        return error.NotAMold;
     }
 
-    if (body0.len < 2 or !std.mem.eql(u8, body0[0..2], "$:")) return error.MissingTuple;
-    spec.body = .tuple;
-    var li: usize = 1;
-    while (li + 1 < n) : (li += 1) {
-        var body = std.mem.trim(u8, lines[li], " \t");
-        if (li == 1) {
-            body = std.mem.trimStart(u8, body[2..], " \t");
-        }
-        const clause = try take_clause(body);
-        const face = try parse_field_clause(clause);
-        try push_name(&spec, face);
+    // Trailing tokens must be newlines only.
+    while (i < n) : (i += 1) {
+        if (toks[@as(usize, @intCast(i))].kind != .newline) return error.TrailingJunk;
     }
-    if (spec.field_count == 0) return error.MissingField;
+
     return spec;
 }

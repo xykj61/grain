@@ -8,7 +8,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const rm = @import("rune_mold.rye");
 
-const witness_version = "20260719.194808";
+const witness_version = "20260719.232000";
 
 fn run_selftest() !u8 {
     const one =
@@ -99,7 +99,7 @@ fn run_selftest() !u8 {
     print("rune: single $% tag refused TooFewTags -- GREEN\n", .{});
 
     print("rune: version {s}\n", .{witness_version});
-    print("GREEN: +$ / $: / $% mold front half parses — STOA74/75/76/78/80.\n", .{});
+    print("GREEN: +$ / $: / $% mold front half parses — STOA74/75/76/78/80 · STOA97 token→MoldSpec.\n", .{});
     return 0;
 }
 
