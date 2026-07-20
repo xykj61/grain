@@ -682,6 +682,11 @@ assert gatesample.ok else "glow_run gate-sample.glow failed"
 assert gatesample.out contains "GREEN" else "glow_run gate-sample.glow not GREEN"
 assert gatesample.out contains "gate-sample.glow" else "glow_run gate-sample claim missing path"
 
+let gatedouble = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/gate-double.glow"]
+assert gatedouble.ok else "glow_run gate-double.glow failed"
+assert gatedouble.out contains "GREEN" else "glow_run gate-double.glow not GREEN"
+assert gatedouble.out contains "gate-double.glow" else "glow_run gate-double claim missing path"
+
 say "GREEN: glow_run desk — all desk generators lowered, built, exit 0."
 
 

@@ -23,6 +23,10 @@ assert selftest.out contains "BodyFaceMismatch" else "lower_bartis_witness missi
 assert selftest.out contains "gate-sample.glow" else "lower_bartis_witness missing gen desk claim"
 assert selftest.out contains "argv-sample" else "lower_bartis_witness missing argv-sample claim"
 assert selftest.out contains "gate-sample-u32.glow" else "lower_bartis_witness missing argv gen desk claim"
+assert selftest.out contains "call-body double" else "lower_bartis_witness missing call-body claim"
+assert selftest.out contains "gate-double.glow" else "lower_bartis_witness missing gate-double desk claim"
+assert selftest.out contains "BodyGateNotYetLowered" else "lower_bartis_witness missing unknown-gate refuse"
+assert selftest.out contains "BodySampleMismatch" else "lower_bartis_witness missing sample-mismatch refuse"
 
 let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
 assert build_welcome.ok else "bartis welcome .rye build failed"
@@ -40,4 +44,22 @@ let run_argv = run ["sh" "-c" "${argv_bin} 9; echo EXIT:$?"]
 assert run_argv.ok else "bartis argv binary failed to launch"
 assert run_argv.out contains "EXIT:0" else "bartis argv binary did not exit 0 with sample 9"
 
-say "GREEN: Glow `|=` bartis identity gate — STOA100 baked 5 · STOA101 argv sample."
+let call_rye = "glow/.cache/gate_double_welcome.rye"
+let call_bin = "glow/bin/gate_double_welcome"
+let build_call = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${call_rye} -femit-bin=${call_bin}"]
+assert build_call.ok else "bartis call-body welcome .rye build failed"
+
+let run_call = run ["sh" "-c" "${call_bin}; echo EXIT:$?"]
+assert run_call.ok else "bartis call-body welcome binary failed to launch"
+assert run_call.out contains "EXIT:0" else "bartis call-body welcome binary did not exit 0"
+
+let call_argv_rye = "glow/.cache/gate_double_argv.rye"
+let call_argv_bin = "glow/bin/gate_double_argv"
+let build_call_argv = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${call_argv_rye} -femit-bin=${call_argv_bin}"]
+assert build_call_argv.ok else "bartis call-body argv .rye build failed"
+
+let run_call_argv = run ["sh" "-c" "${call_argv_bin} 7; echo EXIT:$?"]
+assert run_call_argv.ok else "bartis call-body argv binary failed to launch"
+assert run_call_argv.out contains "EXIT:0" else "bartis call-body argv binary did not exit 0 with sample 7"
+
+say "GREEN: Glow `|=` bartis — STOA100 baked 5 · STOA101 argv · STOA103 call-body double."

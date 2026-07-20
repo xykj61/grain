@@ -1,4 +1,4 @@
-//! glow/lower_bartis_witness.rye — proves `|=` bartis lowers to runnable `.rye` (STOA100–101).
+//! glow/lower_bartis_witness.rye — proves `|=` bartis lowers to runnable `.rye` (STOA100–103).
 //!
 //!   rye build glow/lower_bartis_witness.rye -femit-bin=glow/bin/lower_bartis_witness
 //!   glow/bin/lower_bartis_witness
@@ -9,7 +9,7 @@ const print = std.debug.print;
 const lower = @import("lower_bartis.rye");
 const rb = @import("rune_bartis.rye");
 
-const witness_version = "20260720.040200";
+const witness_version = "20260720.040800";
 
 fn run_selftest(init: std.process.Init) !u8 {
     const io = init.io;
@@ -49,6 +49,30 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("lower: body face mismatch refused BodyFaceMismatch -- GREEN\n", .{});
 
+    // STOA103: call body `%-  double  sample` lowers to *% 2 with expect 10.
+    const call_src = "|=  sample=@u32\n%-  double  sample\n";
+    const n_call = try lower.lower_source_welcome(call_src, &buf);
+    const rye_call = buf[0..n_call];
+    assert(std.mem.indexOf(u8, rye_call, "*% 2") != null);
+    assert(std.mem.indexOf(u8, rye_call, "bartis_gate(sample) == 10") != null);
+    print("lower: call-body double lowers to *% 2 expect 10 -- GREEN\n", .{});
+
+    // Refuse unknown call-body gate.
+    if (lower.lower_source_welcome("|=  sample=@u32\n%-  inc  sample\n", &buf)) |_| {
+        return error.BodyGateLoweredTooSoon;
+    } else |err| {
+        if (err != lower.LowerError.BodyGateNotYetLowered) return err;
+    }
+    print("lower: unknown call-body gate refused BodyGateNotYetLowered -- GREEN\n", .{});
+
+    // Refuse call-body sample face mismatch.
+    if (lower.lower_source_welcome("|=  sample=@u32\n%-  double  other\n", &buf)) |_| {
+        return error.BodySampleLowered;
+    } else |err| {
+        if (err != lower.LowerError.BodySampleMismatch) return err;
+    }
+    print("lower: call-body sample mismatch refused BodySampleMismatch -- GREEN\n", .{});
+
     // Write the welcome .rye to cache for the Rishi half of the witness.
     try cwd.createDirPath(io, "glow/.cache");
     const welcome_path = "glow/.cache/gate_sample_welcome.rye";
@@ -56,12 +80,24 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = welcome_path, .data = buf[0..n3] });
     print("lower: wrote bartis welcome .rye under glow/.cache/ -- GREEN\n", .{});
 
-    // Fixture desk parses and yields the sample face.
+    const call_welcome_path = "glow/.cache/gate_double_welcome.rye";
+    const n_call_w = try lower.lower_source_welcome(call_src, &buf);
+    try cwd.writeFile(io, .{ .sub_path = call_welcome_path, .data = buf[0..n_call_w] });
+    print("lower: wrote bartis call-body welcome .rye under glow/.cache/ -- GREEN\n", .{});
+
+    // Fixture desks parse.
     const gen_src = try cwd.readFileAlloc(io, "glow/gen/gate-sample.glow", a, .limited(4096));
     const spec = try rb.parse_source(gen_src);
-    const face = rb.face_slice(&spec);
-    assert(std.mem.eql(u8, face, "sample"));
+    assert(std.mem.eql(u8, rb.face_slice(&spec), "sample"));
+    assert(spec.body == .identity);
     print("lower: glow/gen/gate-sample.glow carries sample face -- GREEN\n", .{});
+
+    const gen_double = try cwd.readFileAlloc(io, "glow/gen/gate-double.glow", a, .limited(4096));
+    const spec_d = try rb.parse_source(gen_double);
+    assert(std.mem.eql(u8, rb.face_slice(&spec_d), "sample"));
+    assert(spec_d.body == .call_one);
+    assert(std.mem.eql(u8, rb.gate_slice(&spec_d), "double"));
+    print("lower: glow/gen/gate-double.glow carries call-body double -- GREEN\n", .{});
 
     // STOA101: argv-sample emit reads process argv and keeps the gate fn.
     const n4 = try lower.lower_source_argv_sample(gate_src, &buf);
@@ -80,8 +116,20 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_sample_argv.rye", .data = rye_argv });
     print("lower: wrote bartis argv .rye under glow/.cache/ -- GREEN\n", .{});
 
+    const n_call_argv = try lower.lower_source_argv_sample(call_src, &buf);
+    const rye_call_argv = buf[0..n_call_argv];
+    assert(std.mem.indexOf(u8, rye_call_argv, "*% 2") != null);
+    assert(std.mem.indexOf(u8, rye_call_argv, "minimal.args") != null);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_double_argv.rye", .data = rye_call_argv });
+    print("lower: wrote bartis call-body argv .rye under glow/.cache/ -- GREEN\n", .{});
+
+    const gen_double_u32 = try cwd.readFileAlloc(io, "glow/gen/gate-double-u32.glow", a, .limited(4096));
+    const spec_du = try rb.parse_source(gen_double_u32);
+    assert(spec_du.body == .call_one);
+    print("lower: glow/gen/gate-double-u32.glow carries call-body double -- GREEN\n", .{});
+
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: Glow `|=` bartis identity gate lowers to Rye; baked 5 (STOA100) + argv sample (STOA101).\n", .{});
+    print("GREEN: Glow `|=` bartis — identity (STOA100) · argv (STOA101) · call-body double (STOA103).\n", .{});
     return 0;
 }
 
