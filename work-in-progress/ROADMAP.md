@@ -4,7 +4,7 @@
 
 **Language:** EN
 **Version:** `20260715` (Pool keystone revival prioritized · Quin voice seated · align pass reconciles the closed ladder)
-**Last updated:** 2026-07-20 (**STOA0–126** GREEN — pair-mold gate; xfer-mold; xact-mold)
+**Last updated:** 2026-07-20 (**STOA0–127** GREEN — kind flip call-body; pair-mold; xfer-mold)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Lens:** TAME — safety, performance, joy; the Seed Law; [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md)
@@ -490,7 +490,9 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA125 xfer-mold gate sample GREEN, `20260720.184953`** — lean A (compass): multi-face payload `$%` `xfer-mold` identity · `XferMold` · baked `.mint` from 5 amount 3; pair-mold refuse; call-body/argv/gold/Sala B0 held. Brief [`active-designing/20260720-184953_stoa125-xfer-mold-gate.md`](../active-designing/20260720-184953_stoa125-xfer-mold-gate.md). Next language: **STOA126** pair-mold gate.
 
-**STOA126 pair-mold gate sample GREEN, `20260720.185502`** — lean A (compass): multi-field `$:` `pair-mold` identity · `PairMold` · baked from 5 amount 3; triple-mold refuse; call-body/argv/gold/Sala B0 held. Brief [`active-designing/20260720-185502_stoa126-pair-mold-gate.md`](../active-designing/20260720-185502_stoa126-pair-mold-gate.md). Next language: **STOA127** map (gold · call-body under tagged · Sala B0 still held).
+**STOA126 pair-mold gate sample GREEN, `20260720.185502`** — lean A (compass): multi-field `$:` `pair-mold` identity · `PairMold` · baked from 5 amount 3; triple-mold refuse; call-body/argv/gold/Sala B0 held. Brief [`active-designing/20260720-185502_stoa126-pair-mold-gate.md`](../active-designing/20260720-185502_stoa126-pair-mold-gate.md). Next language: **STOA127** kind flip call-body.
+
+**STOA127 kind-mold flip call-body GREEN, `20260720.190544`** — lean A (compass): closed unit `$%` `%-  flip` · KindMold switch · baked `.mint` → `.send`; double under kind and flip under `@u32` refuse; call-body under xact/xfer/pair · argv · gold · Sala B0 held. Brief [`active-designing/20260720-190544_stoa127-kind-call-body.md`](../active-designing/20260720-190544_stoa127-kind-call-body.md). Next language: **STOA128** map (gold · call-body under xact/xfer/pair · Sala B0 still held).
 
 **Glow OS · Glow Desk · Glow Glass seated, `20260717.183622`** — Keaton: **Glow OS** unifies; **Glow Desk** = desktop; **Glow Glass** = mobile. Lexicon + silo [`../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md`](../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md). Orientation firmware stays check-in.
 

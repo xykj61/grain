@@ -9,7 +9,7 @@ const print = std.debug.print;
 const lower = @import("lower_bartis.rye");
 const rb = @import("rune_bartis.rye");
 
-const witness_version = "20260720.185502";
+const witness_version = "20260720.190544";
 
 fn run_selftest(init: std.process.Init) !u8 {
     const io = init.io;
@@ -242,12 +242,35 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("lower: triple-mold bartis refused SampleDoesNotNest -- GREEN\n", .{});
 
+    // STOA127: kind-mold flip call-body lowers as KindMold switch · baked .send.
+    const kind_flip_src = "|=  sample=kind-mold\n%-  flip  sample\n";
+    const n_kf = try lower.lower_source_welcome(kind_flip_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n_kf], "KindMold") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_kf], ".mint => .send") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_kf], "bartis_gate(sample) == .send") != null);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_kind_flip_welcome.rye", .data = buf[0..n_kf] });
+    print("lower: kind-mold call-body flip lowers to KindMold switch expect .send -- GREEN\n", .{});
+
+    const gen_kf = try cwd.readFileAlloc(io, "glow/gen/gate-kind-flip.glow", a, .limited(4096));
+    const spec_kf = try rb.parse_source(gen_kf);
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_kf), "kind-mold"));
+    assert(spec_kf.body == .call_one);
+    assert(std.mem.eql(u8, rb.gate_slice(&spec_kf), "flip"));
+    print("lower: glow/gen/gate-kind-flip.glow carries kind-mold flip call-body -- GREEN\n", .{});
+
     if (lower.lower_source_welcome("|=  sample=kind-mold\n%-  double  sample\n", &buf)) |_| {
-        return error.KindCallBodyLoweredTooSoon;
+        return error.KindDoubleCallBodyLoweredTooSoon;
     } else |err| {
         if (err != lower.LowerError.BodyGateNotYetLowered) return err;
     }
-    print("lower: kind-mold call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
+    print("lower: kind-mold double call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
+
+    if (lower.lower_source_welcome("|=  sample=@u32\n%-  flip  sample\n", &buf)) |_| {
+        return error.U32FlipCallBodyLoweredTooSoon;
+    } else |err| {
+        if (err != lower.LowerError.BodyGateNotYetLowered) return err;
+    }
+    print("lower: @u32 flip call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
 
     if (lower.lower_source_welcome("|=  sample=xact-mold\n%-  double  sample\n", &buf)) |_| {
         return error.XactCallBodyLoweredTooSoon;
@@ -285,7 +308,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("lower: glow/gen/gate-count.glow carries count-mold -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: Glow `|=` bartis — identity · argv · call-body · amount-mold · count-mold · kind-mold · xact-mold · xfer-mold · pair-mold · wet-nests (STOA100–126).\n", .{});
+    print("GREEN: Glow `|=` bartis — identity · argv · call-body · amount-mold · count-mold · kind-mold · kind flip · xact-mold · xfer-mold · pair-mold · wet-nests (STOA100–127).\n", .{});
     return 0;
 }
 
