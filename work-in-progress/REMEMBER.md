@@ -2,7 +2,7 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Rule: [`.cursor/rules/remember.mdc`](../.cursor/rules/remember.mdc) · [`.claude/rules/remember.md`](../.claude/rules/remember.md).*
 
-**Last refreshed:** `20260720.222827` (UTC cloud) · voice Quin  
+**Last refreshed:** `20260720.223226` (UTC cloud) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5** · HOLD0–HOLD1 · HOLD-W  
 **Language nib:** **STOA0–141** GREEN · STOA142 open  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W · STOA0–141  
@@ -17,6 +17,7 @@
 ## Now (language)
 
 **STOA141** seated · hexa-mold flip (`%-  flip` · from↔amount · fee/nonce/memo/tag stay · 5/3/1/2/7/4 → 3/5/1/2/7/4) · claim `59c6b37e04`.  
+**Shape** seated as Glow OS surface word · mold stays Hoon study / desk suffix (`20260720.223226`).  
 **STOA142** next — lean A map: **hepta-mold** gate identity (Sala B0 Framework).
 
 ```bash
