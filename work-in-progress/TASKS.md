@@ -353,7 +353,8 @@
 - [x] **STOA82 — payload `$%` named-cast (lean A)** `20260719.200508` — same-desk `cast-named-xact` · cross-desk `cast-import-xact` → `XactMold` union; mold library covers payload `$%`; full desk suite GREEN.
 - [x] **STOA83 — bounded shared token stream (lean A)** `20260719.200706` — `glow/tokens.rye` classifies desk bytes into a fixed-cap kind+span array; witness pins `cast-named-xact` kinds · skips `::` · refuses overflow/unknown; parity wired; `glow_run` still desk-shaped.
 - [x] **STOA84 — named-cast peek via tokens (lean A)** `20260719.201027` — `tokens.looks_like_named_cast` drives same-desk named-cast dispatch; `lower_named_cast` delegates; mold-only and cross-desk stay false; full desk suite GREEN.
-- [ ] **STOA85 — next language / product** — check-in (cross-desk token peek · grow token lowers · Sala B0).
+- [x] **STOA85 — cross-desk named-cast peek via tokens (lean A)** `20260719.201500` — `tokens.looks_like_cross_desk` drives `/+` then `^-` dispatch; `lower_named_cast` delegates; same-desk and mold-only stay false; full desk suite GREEN.
+- [ ] **STOA86 — next language / product** — check-in (token-driven lower slice · mold peek · Sala B0).
 - [ ] **Dill-parallel kernel revival** — separate `active-reviving/` brief when a real need opens; not Dexter.
 - [ ] **M1 Scribble↔html round-trip witness** — named in fusion map; opens when Keaton leans doc pipeline.
 - [ ] **TAME witness-habitat pairing + Glow supplement** — horizon; needs Keaton's word (H2).

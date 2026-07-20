@@ -5,6 +5,7 @@
 //! STOA81: same-desk · cross-desk `^-` against unit `$%` molds.
 //! STOA82: same-desk · cross-desk `^-` against payload `$%` molds.
 //! STOA84: same-desk `looks_like_named_cast` peeks via `tokens.rye`.
+//! STOA85: cross-desk `looks_like_cross_desk` peeks via `tokens.rye`.
 //!
 //!   +$  kind-mold
 //!     $%  [%mint ~]
@@ -125,11 +126,7 @@ pub fn looks_like_named_cast(src: []const u8) bool {
 
 /// True when desk is `/+  <stem>` then `^-  <mold-name>`.
 pub fn looks_like_cross_desk(src: []const u8) bool {
-    var lines: [lower_multi.max_lines][]const u8 = undefined;
-    const n = lower_multi.collect_lines(src, &lines) catch return false;
-    if (n != 2) return false;
-    if (lines[0].len < 2 or lines[0][0] != '/' or lines[0][1] != '+') return false;
-    return lines[1].len >= 2 and lines[1][0] == '^' and lines[1][1] == '-';
+    return tokens.looks_like_cross_desk(src);
 }
 
 pub fn parse_cross_desk(src: []const u8) LowerError!CrossDeskSpec {

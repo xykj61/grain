@@ -1,4 +1,4 @@
-# STOA — Glow SLC · nest · product · ≤80 · STOA0–84 GREEN · 2026-07-19 (tok peek) · draw → **STOA**
+# STOA — Glow SLC · nest · product · ≤80 · STOA0–85 GREEN · 2026-07-19 (xdesk peek) · draw → **STOA**
 | Rung | Claim | Witness / gate | State |
 |------|-------|----------------|-------|
 | **STOA0** | Eight rune heads + desk hop · `(lent)` · `(mix)` | `glow_run_desk_witness` · `glow_expr_witness` | **GREEN** (claimed `20260718.202730`) |
@@ -77,5 +77,5 @@
 | **STOA73** | product-root write + Pixel install (expect 5) | write · `stoa73_…_install_onpath_host` | **GREEN** write `184836` · eyes `191719` |
 | **STOA74–75** | `+$` / `$:` `@u32` mold (1–3 fields) | `glow_rune_mold` · `glow_lower_mold` · desk | **GREEN** `190825` · `192241` |
 | **STOA76–83** | `$%` · cast · payload · multi · tag/pay · token stream | mold · named-cast · tokens | **GREEN** `192936`…`200706` |
-| **STOA84** | Named-cast peek via token stream | `glow_tokens_witness` · desk | **GREEN** `20260719.201027` |
+| **STOA84–85** | Same-/cross-desk named-cast token peeks | `glow_tokens_witness` · desk | **GREEN** `201027` · `201500` |
 Smoke: `rishi/bin/rishi run tools/glow_tokens_witness.rish` · Sibling: **ZETA** · **LULU** · **SETU** · **TUBE**.
