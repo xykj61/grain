@@ -99,4 +99,5 @@
 | **STOA124** | Xact-mold gate sample | `glow_barket_lower_witness` · bartis | **GREEN** `20260720.184304` |
 | **STOA125** | Xfer-mold gate sample | `glow_barket_lower_witness` · bartis | **GREEN** `20260720.184953` |
 | **STOA126** | Pair-mold gate sample | `glow_barket_lower_witness` · bartis | **GREEN** `20260720.185502` |
+| **STOA127** | Kind-mold flip call-body | `glow_barket_lower_witness` · bartis | **GREEN** `20260720.190544` |
 Smoke: `glow_barket_lower_witness` · `glow_barket_parse_witness` · `glow_nest_type_witness` · `glow_lower_bartis_witness` · Sibling: **ZETA** · **LULU** · **SETU** · **TUBE**.

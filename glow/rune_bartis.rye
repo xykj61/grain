@@ -4,7 +4,7 @@
 //! then either:
 //!   - identity body: bare face matching the sample (STOA100)
 //!   - call body: `%-  <gate>  <sample-face>` (STOA103–104)
-//! Closed demo gates: `double` · `inc` · `dec` (same pins as STOA6 / core arms).
+//! Closed demo gates: `double` · `inc` · `dec` (`@u32`) · `flip` (kind-mold · STOA127).
 //! Token-driven via tokens.rye.
 //! STOA105: TAME tidy — copy_disjoint · split header/body parse · assert alias.
 //! STOA107: nest/type — sample aura nests under `@u32` via nest_type;
@@ -16,6 +16,7 @@
 //! STOA124: closed allowlist adds payload `$%` `xact-mold` (identity lower).
 //! STOA125: closed allowlist adds multi-face payload `$%` `xfer-mold` (identity lower).
 //! STOA126: closed allowlist adds multi-field `$:` `pair-mold` (identity lower).
+//! STOA127: closed call-body under kind-mold — `flip` (mint↔send).
 //! Wet / gold · open `$:` beyond pair bartis samples held.
 //!
 //! Parse shape (token stream):
@@ -87,7 +88,12 @@ pub fn gate_slice(spec: *const GateSpec) []const u8 {
 
 /// True when `gate` is a closed demo one-arg gate accepted in a bartis call body.
 pub fn is_closed_call_gate(gate: []const u8) bool {
-    return std.mem.eql(u8, gate, "double") or std.mem.eql(u8, gate, "inc") or std.mem.eql(u8, gate, "dec");
+    return std.mem.eql(u8, gate, "double") or std.mem.eql(u8, gate, "inc") or std.mem.eql(u8, gate, "dec") or std.mem.eql(u8, gate, "flip");
+}
+
+/// True when `gate` is the closed kind-mold call-body gate (STOA127).
+pub fn is_kind_call_gate(gate: []const u8) bool {
+    return std.mem.eql(u8, gate, "flip");
 }
 
 fn parse_body(src: []const u8, toks: []const tokens.Token, start: u32, face_text: []const u8, spec: *GateSpec) ParseError!u32 {
@@ -106,7 +112,7 @@ fn parse_body(src: []const u8, toks: []const tokens.Token, start: u32, face_text
         if (i >= n or toks[@as(usize, @intCast(i))].kind != .ident) return error.MalformedBody;
         const gate_text = tokens.slice_of(src, toks[@as(usize, @intCast(i))]);
         if (gate_text.len == 0 or gate_text.len > max_gate_len) return error.MalformedBody;
-        // Closed demo gates — double (STOA103) · inc · dec (STOA104).
+        // Closed demo gates — double (STOA103) · inc · dec (STOA104) · flip (STOA127).
         if (!is_closed_call_gate(gate_text)) return error.BodyGateNotYetLowered;
         i += 1;
         if (i >= n or toks[@as(usize, @intCast(i))].kind != .ident) return error.MalformedBody;

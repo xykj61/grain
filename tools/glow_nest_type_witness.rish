@@ -11,8 +11,8 @@ let tame = "context/TAME_GUIDANCE.md"
 let zig = "vendor/zig-toolchain/zig"
 let bin = "glow/bin/nest_type_witness"
 
-let tame_pin = run ["sh" "-c" "grep -F 'STOA126' ${tame}"]
-assert tame_pin.ok else "TAME missing STOA126 pair-mold gate sample"
+let tame_pin = run ["sh" "-c" "grep -F 'STOA127' ${tame}"]
+assert tame_pin.ok else "TAME missing STOA127 kind-mold flip call-body"
 
 let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/nest_type_witness.rye -femit-bin=${bin}"]
 assert build.ok else "nest_type_witness build failed: ${build.err}${build.out}"

@@ -1,7 +1,7 @@
 # Lexicon — Module Names and Their Meanings
 
 **Language:** EN
-**Last updated:** 2026-07-20 (**STOA126** pair-mold gate sample GREEN)
+**Last updated:** 2026-07-20 (**STOA127** kind-mold flip call-body GREEN)
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 
 ---
