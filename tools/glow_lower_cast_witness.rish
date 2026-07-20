@@ -27,6 +27,9 @@ assert selftest.out contains "NamedMoldNotYetLowered" else "lower_cast_witness m
 assert selftest.out contains "AuraNotYetLowered" else "lower_cast_witness missing other-aura refuse"
 assert selftest.out contains "cast-u32.glow" else "lower_cast_witness missing gen desk claim"
 assert selftest.out contains "cast-u8.glow" else "lower_cast_witness missing u8 gen desk claim"
+assert selftest.out contains "argv-sample emit" else "lower_cast_witness missing argv-sample claim"
+assert selftest.out contains "sample-u32.glow" else "lower_cast_witness missing sample-u32 desk claim"
+assert selftest.out contains "ArgvSampleAuraNotYetLowered" else "lower_cast_witness missing argv aura refuse"
 
 let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
 assert build_welcome.ok else "cast welcome .rye build failed"

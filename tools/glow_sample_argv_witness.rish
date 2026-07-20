@@ -1,0 +1,51 @@
+# glow_sample_argv_witness.rish — thin @u32 sample from Rishi argv (STOA92 / G3).
+#
+# Fixture cast-u32 stays argv-free; generator sample-u32 reads process argv.
+#
+#   rishi/bin/rishi run tools/glow_sample_argv_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+
+# 1. Matching fixture still GREEN with no argv.
+let fixture = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cast-u32.glow"]
+assert fixture.ok else "fixture cast-u32.glow failed"
+assert fixture.out contains "GREEN" else "fixture cast-u32.glow not GREEN"
+assert fixture.out contains "cast-u32.glow" else "fixture claim missing path"
+
+# 2. Generator welcome — sample 42 (matches cast welcome constant).
+let gen42 = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/sample-u32.glow" "42"]
+assert gen42.ok else "sample-u32.glow 42 failed"
+assert gen42.out contains "GREEN" else "sample-u32.glow 42 not GREEN"
+assert gen42.out contains "sample-u32.glow" else "sample-u32.glow 42 missing path"
+
+# 3. Different sample proves parameterization.
+let gen7 = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/sample-u32.glow" "7"]
+assert gen7.ok else "sample-u32.glow 7 failed"
+assert gen7.out contains "GREEN" else "sample-u32.glow 7 not GREEN"
+
+# 4. Arity refuse — generator desk without sample.
+let no_sample = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/sample-u32.glow"]
+assert (no_sample.ok == false) else "sample-u32.glow without sample must refuse"
+
+# 5. Parse refuse — bad decimal on the built binary.
+let bad = run ["sh" "-c" "glow/bin/sample-u32 not-a-u32 >/dev/null 2>&1; echo EXIT:$?"]
+assert bad.out contains "EXIT:2" else "sample-u32 bad decimal must exit 2"
+
+# 6. Emit pin — argv path vs baked fixture.
+let emit_argv = run ["sh" "-c" "glow/bin/glow_run --sample-argv glow/gen/sample-u32.glow"]
+assert emit_argv.ok else "argv-sample lower failed"
+let rye_argv = trim emit_argv.out
+let scan_args = run ["sh" "-c" "grep -c 'minimal.args' ${rye_argv} | tr -d ' '"]
+assert trim scan_args.out != "0" else "argv emit missing minimal.args"
+let scan_parse = run ["sh" "-c" "grep -c 'parseInt(u32' ${rye_argv} | tr -d ' '"]
+assert trim scan_parse.out != "0" else "argv emit missing parseInt(u32"
+
+let emit_fix = run ["sh" "-c" "glow/bin/glow_run glow/gen/cast-u32.glow"]
+assert emit_fix.ok else "fixture lower failed"
+let rye_fix = trim emit_fix.out
+let scan_fix = run ["sh" "-c" "grep -c 'const raw: u64 = 42' ${rye_fix} | tr -d ' '"]
+assert trim scan_fix.out == "1" else "fixture emit must keep baked raw 42"
+let scan_no_argv = run ["sh" "-c" "grep -c 'minimal.args' ${rye_fix} | tr -d ' '"]
+assert trim scan_no_argv.out == "0" else "fixture emit must not read argv"
+
+say "GREEN: glow sample argv G3 — fixture cast-u32; generator sample-u32 reads one @u32 from Rishi argv; STOA92."
