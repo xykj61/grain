@@ -1,8 +1,8 @@
 # glow_barket_lower_witness.rish — `|^` barket lowers to Rye; emitted program runs.
 #
 # Proves identity (STOA113), argv (STOA114), call-body trio (STOA115–116),
-# and TAME tidy (STOA117): barket_gate emit, fixtures/generators, welcome
-# exit 0, argv exit 0, append_print · parse_body · ban overflow seat.
+# TAME tidy (STOA117), and named-mold amount-mold (STOA118): barket_gate emit,
+# fixtures/generators, welcome exit 0, argv exit 0, ban overflow seat.
 #
 #   rishi/bin/rishi run tools/glow_barket_lower_witness.rish
 
@@ -26,8 +26,8 @@ let dec_bin = "glow/bin/gate_barket_dec_welcome"
 let dec_argv_rye = "glow/.cache/gate_barket_dec_argv.rye"
 let dec_argv_bin = "glow/bin/gate_barket_dec_argv"
 
-let tame_pin = run ["sh" "-c" "grep -F 'STOA117' ${tame}"]
-assert tame_pin.ok else "TAME missing STOA117 barket TAME tidy"
+let tame_pin = run ["sh" "-c" "grep -F 'STOA118' ${tame}"]
+assert tame_pin.ok else "TAME missing STOA118 named-mold barket"
 
 let has_lower = run ["sh" "-c" "test -f glow/lower_barket.rye; echo $?"]
 assert trim has_lower.out == "0" else "glow/lower_barket.rye must exist"
@@ -52,6 +52,10 @@ assert selftest.out contains "gate-barket-inc.glow" else "lower_barket_witness m
 assert selftest.out contains "gate-barket-dec.glow" else "lower_barket_witness missing dec fixture"
 assert selftest.out contains "call-body inc" else "lower_barket_witness missing call-body inc claim"
 assert selftest.out contains "call-body dec" else "lower_barket_witness missing call-body dec claim"
+assert selftest.out contains "amount-mold" else "lower_barket_witness missing amount-mold claim"
+assert selftest.out contains "gate-barket-amount.glow" else "lower_barket_witness missing amount fixture"
+assert selftest.out contains "kind-mold" else "lower_barket_witness missing kind-mold refuse"
+assert selftest.out contains "gate-barket-kind-refuse.glow" else "lower_barket_witness missing kind refuse desk"
 
 let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
 assert build_welcome.ok else "barket welcome .rye build failed: ${build_welcome.err}${build_welcome.out}"
@@ -130,7 +134,16 @@ let emit_a = run ["sh" "-c" "grep -c 'fn emit_argv_main' glow/lower_barket.rye |
 assert trim emit_a.out == "1" else "glow/lower_barket.rye must define emit_argv_main"
 
 let bans = run ["sh" "-c" "rishi/bin/rishi run tools/tame_style_scan_bans.rish"]
-assert bans.ok else "tame_style_scan_bans failed under barket tidy"
+assert bans.ok else "tame_style_scan_bans failed under barket named-mold"
 assert bans.out contains "lower_barket" else "tame_style_scan_bans missing lower_barket overflow seat"
 
-say "GREEN: Glow barket lower — identity · argv · call-body trio · TAME tidy; STOA113–117."
+# STOA118: amount-mold welcome binary exits 0.
+let amt_rye = "glow/.cache/gate_barket_amount_welcome.rye"
+let amt_bin = "glow/bin/gate_barket_amount_welcome"
+let build_amt = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${amt_rye} -femit-bin=${amt_bin}"]
+assert build_amt.ok else "barket amount-mold welcome .rye build failed: ${build_amt.err}${build_amt.out}"
+let run_amt = run ["sh" "-c" "${amt_bin}; echo EXIT:$?"]
+assert run_amt.ok else "barket amount-mold welcome binary failed to launch"
+assert run_amt.out contains "EXIT:0" else "barket amount-mold welcome binary did not exit 0"
+
+say "GREEN: Glow barket lower — identity · argv · call-body · amount-mold · TAME tidy; STOA113–118."

@@ -1,4 +1,4 @@
-//! glow/lower_barket_witness.rye — proves `|^` barket lowers to runnable `.rye` (STOA113–117).
+//! glow/lower_barket_witness.rye — proves `|^` barket lowers to runnable `.rye` (STOA113–118).
 //!
 //!   rye build glow/lower_barket_witness.rye -femit-bin=glow/bin/lower_barket_witness
 //!   glow/bin/lower_barket_witness
@@ -9,7 +9,7 @@ const print = std.debug.print;
 const lower = @import("lower_barket.rye");
 const rb = @import("rune_barket.rye");
 
-const witness_version = "20260720.180900";
+const witness_version = "20260720.181347";
 
 fn run_selftest(init: std.process.Init) !u8 {
     const io = init.io;
@@ -186,8 +186,38 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(spec_dcu.body == .call_one);
     print("lower: glow/gen/gate-barket-dec-u32.glow carries call-body dec -- GREEN\n", .{});
 
+    // STOA118: named mold amount-mold lowers as u32 identity.
+    const amount_src = "|^  sample=amount-mold\nsample\n";
+    const n_amt = try lower.lower_source_welcome(amount_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n_amt], "barket_gate") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_amt], "sample: u32) u32") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_amt], "amount-mold") != null);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_amount_welcome.rye", .data = buf[0..n_amt] });
+    print("lower: amount-mold barket lowers to u32 identity -- GREEN\n", .{});
+
+    const gen_amt = try cwd.readFileAlloc(io, "glow/gen/gate-barket-amount.glow", a, .limited(4096));
+    const spec_amt = try rb.parse_source(gen_amt);
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_amt), "amount-mold"));
+    assert(spec_amt.body == .identity);
+    print("lower: glow/gen/gate-barket-amount.glow carries amount-mold -- GREEN\n", .{});
+
+    if (lower.lower_source_welcome("|^  sample=kind-mold\nsample\n", &buf)) |_| {
+        return error.KindMoldLoweredTooSoon;
+    } else |err| {
+        if (err != lower.LowerError.SampleDoesNotNest) return err;
+    }
+    print("lower: kind-mold barket refused SampleDoesNotNest -- GREEN\n", .{});
+
+    const gen_kind = try cwd.readFileAlloc(io, "glow/gen/gate-barket-kind-refuse.glow", a, .limited(4096));
+    if (rb.parse_source(gen_kind)) |_| {
+        return error.KindRefuseDeskAccepted;
+    } else |err| {
+        if (err != rb.ParseError.SampleDoesNotNest) return err;
+    }
+    print("lower: glow/gen/gate-barket-kind-refuse.glow refuses SampleDoesNotNest -- GREEN\n", .{});
+
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: Glow `|^` barket — identity · argv-sample · call-body trio · TAME tidy; STOA113–117.\n", .{});
+    print("GREEN: Glow `|^` barket — identity · argv · call-body · amount-mold · TAME tidy; STOA113–118.\n", .{});
     return 0;
 }
 

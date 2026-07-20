@@ -702,6 +702,11 @@ assert gatebarketdec.ok else "glow_run gate-barket-dec.glow failed"
 assert gatebarketdec.out contains "GREEN" else "glow_run gate-barket-dec.glow not GREEN"
 assert gatebarketdec.out contains "gate-barket-dec.glow" else "glow_run gate-barket-dec claim missing path"
 
+let gatebarketamount = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/gate-barket-amount.glow"]
+assert gatebarketamount.ok else "glow_run gate-barket-amount.glow failed"
+assert gatebarketamount.out contains "GREEN" else "glow_run gate-barket-amount.glow not GREEN"
+assert gatebarketamount.out contains "gate-barket-amount.glow" else "glow_run gate-barket-amount claim missing path"
+
 let gatedouble = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/gate-double.glow"]
 assert gatedouble.ok else "glow_run gate-double.glow failed"
 assert gatedouble.out contains "GREEN" else "glow_run gate-double.glow not GREEN"

@@ -1,13 +1,14 @@
-//! glow/rune_barket.rye — parses Glow's `|^` barket (STOA112–117).
+//! glow/rune_barket.rye — parses Glow's `|^` barket (STOA112–118).
 //!
-//! Dry-shaped demo: `|^  sample=@u32` header, then either:
+//! Dry-shaped demo: `|^  sample=@u32` or `|^  sample=amount-mold` header, then either:
 //!   - header-only (STOA112)
 //!   - identity body face (STOA113)
 //!   - call body: `%-  <gate>  <sample-face>` (STOA115–116)
 //! Closed demo gates: `double` · `inc` · `dec` (same pins as bartis STOA103–104).
 //! STOA117: TAME tidy — copy_disjoint · parse_body split.
-//! Sample aura nests under `@u32` via nest_type; wet/gold accept held.
-//! Token-driven via tokens.rye. Named-mold barket samples held.
+//! STOA118: closed named mold `amount-mold` (one-field `$:` ≡ `@u32` lower).
+//! Sample nests under `@u32` / `amount-mold` via nest_type; wet/gold accept held.
+//! Token-driven via tokens.rye. `kind-mold` barket samples held.
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -17,6 +18,7 @@ const nest_type = @import("nest_type.rye");
 
 pub const max_face_len: u32 = tokens.max_name_len;
 pub const max_gate_len: u32 = tokens.max_name_len;
+pub const max_mold_len: u32 = tokens.max_name_len;
 
 pub const ParseError = error{
     EmptySource,
@@ -40,10 +42,13 @@ pub const BodyKind = enum {
     call_one,
 };
 
-/// A parsed thin barket: sample face + optional identity/call body.
+/// A parsed thin barket: sample face + optional named mold + identity/call body.
+/// `mold_name_len == 0` means sample mold is the aura `@u32`.
 pub const BarketSpec = struct {
     face: [max_face_len]u8 = [_]u8{0} ** max_face_len,
     face_len: u32 = 0,
+    mold_name: [max_mold_len]u8 = [_]u8{0} ** max_mold_len,
+    mold_name_len: u32 = 0,
     body: BodyKind = .header_only,
     gate: [max_gate_len]u8 = [_]u8{0} ** max_gate_len,
     gate_len: u32 = 0,
@@ -52,6 +57,11 @@ pub const BarketSpec = struct {
 pub fn face_slice(spec: *const BarketSpec) []const u8 {
     assert(spec.face_len <= max_face_len); // invariant: face fits in buffer
     return spec.face[0..spec.face_len];
+}
+
+pub fn mold_name_slice(spec: *const BarketSpec) []const u8 {
+    assert(spec.mold_name_len <= max_mold_len); // invariant: mold name fits
+    return spec.mold_name[0..spec.mold_name_len];
 }
 
 pub fn gate_slice(spec: *const BarketSpec) []const u8 {
@@ -127,9 +137,19 @@ pub fn parse_source(src: []const u8) ParseError!BarketSpec {
     if (i >= n or toks[@as(usize, @intCast(i))].kind != .equals) return error.MissingEquals;
     i += 1;
 
-    if (i >= n or toks[@as(usize, @intCast(i))].kind != .aura) return error.MissingAura;
-    const aura_text = tokens.slice_of(src, toks[@as(usize, @intCast(i))]);
-    nest_type.assert_aura_nests(aura_text, "@u32") catch return error.SampleDoesNotNest;
+    // Sample mold — aura `@u32` or closed named `amount-mold` (STOA118).
+    if (i >= n) return error.MissingAura;
+    const mold_tok = toks[@as(usize, @intCast(i))];
+    var named_mold: ?[]const u8 = null;
+    if (mold_tok.kind == .aura) {
+        const aura_text = tokens.slice_of(src, mold_tok);
+        nest_type.assert_aura_nests(aura_text, "@u32") catch return error.SampleDoesNotNest;
+    } else if (mold_tok.kind == .ident) {
+        const mold_text = tokens.slice_of(src, mold_tok);
+        if (mold_text.len == 0 or mold_text.len > max_mold_len) return error.MissingAura;
+        nest_type.assert_bartis_named_mold(mold_text) catch return error.SampleDoesNotNest;
+        named_mold = mold_text;
+    } else return error.MissingAura;
     nest_type.assert_sample_not_wet(false) catch return error.SampleDoesNotNest;
     i += 1;
 
@@ -139,6 +159,10 @@ pub fn parse_source(src: []const u8) ParseError!BarketSpec {
     assert(face_text.len <= max_face_len); // precondition held by check above
     tally_copy.copy_disjoint(u8, spec.face[0..face_text.len], face_text);
     spec.face_len = @intCast(face_text.len);
+    if (named_mold) |mn| {
+        tally_copy.copy_disjoint(u8, spec.mold_name[0..mn.len], mn);
+        spec.mold_name_len = @intCast(mn.len);
+    }
 
     i = try parse_body(src, toks, i, face_text, &spec);
 

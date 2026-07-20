@@ -4,7 +4,7 @@
 
 **Language:** EN
 **Version:** `20260715` (Pool keystone revival prioritized · Quin voice seated · align pass reconciles the closed ladder)
-**Last updated:** 2026-07-20 (**STOA0–117** GREEN — barket TAME tidy; call-body trio; argv)
+**Last updated:** 2026-07-20 (**STOA0–118** GREEN — named-mold barket; TAME tidy; call-body trio)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Lens:** TAME — safety, performance, joy; the Seed Law; [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md)
@@ -473,6 +473,8 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 **STOA116 barket call-body inc/dec GREEN, `20260720.180445`** — lean A (compass): widen closed set to `inc` / `dec` beside `double`; fixtures + argv; baked 5→6 / 5→4. Brief [`active-designing/20260720-180445_stoa116-barket-call-body-inc-dec.md`](../active-designing/20260720-180445_stoa116-barket-call-body-inc-dec.md). Next language: **STOA117** check-in (wet accept · TAME tidy · Sala B0).
 
 **STOA117 barket TAME tidy GREEN, `20260720.180900`** — lean A (compass): `append_print` · `parse_body` · overflow seat · width list; desks unchanged. Brief [`active-designing/20260720-180900_stoa117-barket-tame-tidy.md`](../active-designing/20260720-180900_stoa117-barket-tame-tidy.md). Next language: **STOA118** check-in (wet accept · Sala B0).
+
+**STOA118 named-mold barket GREEN, `20260720.181347`** — lean A (compass): `sample=amount-mold` · `gate-barket-amount` · `kind-mold` refuse; wet accept · Sala B0 held. Brief [`active-designing/20260720-181347_stoa118-named-mold-barket.md`](../active-designing/20260720-181347_stoa118-named-mold-barket.md). Next language: **STOA119** check-in (wet accept · Sala B0).
 
 **Glow OS · Glow Desk · Glow Glass seated, `20260717.183622`** — Keaton: **Glow OS** unifies; **Glow Desk** = desktop; **Glow Glass** = mobile. Lexicon + silo [`../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md`](../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md). Orientation firmware stays check-in.
 
