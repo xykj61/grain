@@ -4,7 +4,7 @@
 //! then either:
 //!   - identity body: bare face matching the sample (STOA100)
 //!   - call body: `%-  <gate>  <sample-face>` (STOA103–104)
-//! Closed demo gates: `double` · `inc` · `dec` (`@u32`) · `flip` (kind · xact · xfer · pair · triple · quad · penta · STOA127–131/136–139).
+//! Closed demo gates: `double` · `inc` · `dec` (`@u32`) · `flip` (kind · xact · xfer · pair · triple · quad · penta · hexa · STOA127–131/136–139/141).
 //! Token-driven via tokens.rye.
 //! STOA105: TAME tidy — copy_disjoint · split header/body parse · assert alias.
 //! STOA107: nest/type — sample aura nests under `@u32` via nest_type;
@@ -25,6 +25,7 @@
 //! STOA138: closed allowlist adds five-field `$:` `penta-mold` (identity lower).
 //! STOA139: closed call-body under penta-mold — `flip` (from↔amount · fee/nonce/memo stay).
 //! STOA140: closed allowlist adds six-field `$:` `hexa-mold` (identity lower).
+//! STOA141: closed call-body under hexa-mold — `flip` (from↔amount · fee/nonce/memo/tag stay).
 //! Nesting / gold · open `$:` beyond hexa bartis samples held.
 //!
 //! Parse shape (token stream):
@@ -131,6 +132,11 @@ pub fn is_quad_call_gate(gate: []const u8) bool {
 
 /// Closed call-body gates under penta-mold (STOA139) — `flip` only today.
 pub fn is_penta_call_gate(gate: []const u8) bool {
+    return std.mem.eql(u8, gate, "flip");
+}
+
+/// Closed call-body gates under hexa-mold (STOA141) — `flip` only today.
+pub fn is_hexa_call_gate(gate: []const u8) bool {
     return std.mem.eql(u8, gate, "flip");
 }
 
