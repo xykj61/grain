@@ -1,0 +1,25 @@
+format session-log-v1
+stamp 20260720.223440
+editor Cursor
+model Cursor Grok 4.5
+voice Rio 3
+host Linux cloud agent — workspace /workspace
+title STOA140 hexa-mold seat map for STOA142
+prompt Map exactly what files and edits STOA140 claim 33922c54c8 made so we can mirror them for STOA142 hepta-mold; return concrete checklist with search/replace keys
+think Read claim 33922c54c8 file list and full diffs against current HEAD after STOA141.
+think Catalog gen desks mold-hexa gate-hexa gate-barket-hexa plus refuse desks hepta→octa for mirror.
+think Trace nest_type allowlist is_hexa_named_mold assert_hexa_mold_nests; rune_mold max_fields 6; mold_demo_vals sixth 4.
+think Map lower_bartis/barket demo consts is_hexa_sample emit_hexa_identity emit branch identity-only; call-body/argv refuse under hexa.
+think List witness refuse→accept flips and living docs in the seat commit; note STOA141 later accepted hexa flip so hepta identity lap keeps hepta flip refused.
+obs Current max_fields is 6; mold_demo_vals is 5 3 7 2 7 4; refuse desks sample=hepta-mold stamped STOA140.
+obs STOA142 mirror keys hexa→hepta HexaMold→HeptaMold six→seven 6→7 tag stays add to refuse hepta→octa mold_demo_vals seventh 6 nest_type_version to brief 20260720.222827.
+obs Gate bake for hepta per brief 5/3/1/2/7/4/6; mold_demo_vals append is 6 not fee-aligned — same pattern as hexa tag 4 vs mold fee slot 7.
+file glow/gen/mold-hexa.glow seat template for mold-hepta
+file glow/gen/gate-hexa.glow glow/gen/gate-barket-hexa.glow identity desks
+file glow/gen/gate-kind-refuse.glow glow/gen/gate-barket-kind-refuse.glow currently hepta; flip to octa
+file glow/nest_type.rye glow/rune_mold.rye glow/lower_mold.rye glow/lower_bartis.rye glow/lower_barket.rye core seating
+file glow/nest_type_witness.rye glow/lower_bartis_witness.rye glow/lower_barket_witness.rye glow/rune_barket_witness.rye refuse→accept
+file tools/glow_nest_type_witness.rish tools/glow_lower_bartis_witness.rish tools/glow_barket_lower_witness.rish tools/glow_barket_parse_witness.rish assert strings
+file active-designing/20260720-222827_stoa142-hepta-mold-gate.md already-mapped brief for hepta
+git_nib c9b7829092
+recommend keep-going seat STOA142 per this checklist — mechanical mirror of STOA140; policy already written in the hepta brief
