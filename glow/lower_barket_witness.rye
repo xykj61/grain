@@ -9,7 +9,7 @@ const print = std.debug.print;
 const lower = @import("lower_barket.rye");
 const rb = @import("rune_barket.rye");
 
-const witness_version = "20260720.181347";
+const witness_version = "20260720.182450";
 
 fn run_selftest(init: std.process.Init) !u8 {
     const io = init.io;
@@ -217,7 +217,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("lower: glow/gen/gate-barket-kind-refuse.glow refuses SampleDoesNotNest -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: Glow `|^` barket — identity · argv · call-body · amount-mold · TAME tidy; STOA113–118.\n", .{});
+    print("GREEN: Glow `|^` barket — identity · argv · call-body · amount-mold · wet-nests wire; STOA113–120.\n", .{});
     return 0;
 }
 

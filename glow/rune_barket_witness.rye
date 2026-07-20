@@ -8,7 +8,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const rb = @import("rune_barket.rye");
 
-const witness_version = "20260720.181347";
+const witness_version = "20260720.182450";
 
 fn run_selftest(init: std.process.Init) !u8 {
     _ = init;
@@ -77,7 +77,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("barket: |= refused NotABarket -- GREEN\n", .{});
 
-    print("GREEN: Glow barket parse — dry header · identity · call-body trio · amount-mold; STOA112–118.\n", .{});
+    print("GREEN: Glow barket parse — dry header · identity · call-body trio · amount-mold · wet-nests wire; STOA112–120.\n", .{});
     _ = witness_version;
     return 0;
 }

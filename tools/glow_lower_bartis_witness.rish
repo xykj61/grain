@@ -108,4 +108,8 @@ let run_amt = run ["sh" "-c" "${amt_bin}; echo EXIT:$?"]
 assert run_amt.ok else "bartis amount-mold welcome binary failed to launch"
 assert run_amt.out contains "EXIT:0" else "bartis amount-mold welcome binary did not exit 0"
 
-say "GREEN: Glow `|=` bartis — STOA100–109 identity · argv · call-body · amount-mold · nest SampleDoesNotNest."
+# STOA120: expansion seats assert_sample_wet_nests (dry no-op wire).
+let wet_wire = run ["sh" "-c" "grep -c 'assert_sample_wet_nests' glow/rune_bartis.rye | tr -d ' '"]
+assert trim wet_wire.out != "0" else "glow/rune_bartis.rye must call assert_sample_wet_nests"
+
+say "GREEN: Glow `|=` bartis — STOA100–109 · STOA120 identity · argv · call-body · amount-mold · wet-nests wire · nest SampleDoesNotNest."
