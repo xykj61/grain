@@ -476,7 +476,7 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA118 named-mold barket GREEN, `20260720.181347`** — lean A (compass): `sample=amount-mold` · `gate-barket-amount` · `kind-mold` refuse; wet accept · Sala B0 held. Brief [`active-designing/20260720-181347_stoa118-named-mold-barket.md`](../active-designing/20260720-181347_stoa118-named-mold-barket.md). Next language: **STOA119** wet-nests accept.
 
-**STOA119 wet-nests accept GREEN, `20260720.181950`** — lean A (compass): `assert_sample_wet_nests` · wet `@u32` + `amount-mold` share one path; STOA110 refuse kept; Glow wet syntax · gold held. Brief [`active-designing/20260720-181950_stoa119-wet-accept-under-stated-mold.md`](../active-designing/20260720-181950_stoa119-wet-accept-under-stated-mold.md). Next language: **STOA120** check-in (wire wet into gates · gold · Sala B0).
+**STOA119 wet-nests accept GREEN, `20260720.181950`** — lean A (compass): `assert_sample_wet_nests` · wet `@u32` + `amount-mold` share one path; STOA110 refuse kept; Glow wet syntax · gold held. Brief [`active-designing/20260720-181950_stoa119-wet-accept-under-stated-mold.md`](../active-designing/20260720-181950_stoa119-wet-accept-under-stated-mold.md). Next language: **STOA120** wire wet-nests into barket expansion (dry still; no Glow wet spelling · gold · Sala B0 held).
 
 **Glow OS · Glow Desk · Glow Glass seated, `20260717.183622`** — Keaton: **Glow OS** unifies; **Glow Desk** = desktop; **Glow Glass** = mobile. Lexicon + silo [`../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md`](../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md). Orientation firmware stays check-in.
 
