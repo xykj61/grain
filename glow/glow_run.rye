@@ -151,7 +151,7 @@ pub fn main(init: std.process.Init) !u8 {
                     return 1;
                 };
             }
-            if (n >= 3 and n <= 5 and lines[0].len >= 2 and lines[0][0] == '+' and lines[0][1] == '$') {
+            if (lower_mold.looks_like_mold_only(src)) {
                 break :blk lower_mold.lower_source_welcome(src, &rye_buf) catch |err| {
                     print("glow_run: mold lower failed ({s})\n", .{@errorName(err)});
                     return 1;

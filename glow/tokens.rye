@@ -6,7 +6,8 @@
 //! STOA86: TAME tidy — assert contracts, u32 spans, split lex steps.
 //! STOA93: cross-desk named-cast parse joins the lexer→lower seam
 //! (`cross_desk_parts`).
-//! STOA94: same-desk named-cast mold-body span via `named_cast_parts`;
+//! STOA94: same-desk named-cast mold-body span via `named_cast_parts`.
+//! STOA95: mold-only `+$` dispatch peek via `looks_like_mold_only`;
 //! other lowers may still parse bytes.
 //!
 //!   +$  xact-mold
@@ -383,4 +384,26 @@ pub fn cross_desk_parts(src: []const u8) ?CrossDeskParts {
 /// True when the token stream is a cross-desk named-cast desk (STOA85 peek · STOA93 parse).
 pub fn looks_like_cross_desk(src: []const u8) bool {
     return cross_desk_parts(src) != null;
+}
+
+/// True when the token stream is a mold-only `+$` … `==` desk (STOA95 peek).
+/// 3–5 Glow lines, head `+$`, last line is not `^-` (named-cast wins first in glow_run).
+pub fn looks_like_mold_only(src: []const u8) bool {
+    var buf: [max_tokens]Token = undefined;
+    const n = tokenize(src, &buf) catch return false;
+    assert(n <= max_tokens); // postcondition: tokenize bound
+    const toks = buf[0..n];
+    const lines = glow_line_count(toks);
+    if (lines < 3 or lines > 5) return false;
+    const head = first_content(toks) orelse return false;
+    if (!rune2_is(src, head, "+$")) return false;
+
+    var end: u32 = n;
+    while (end > 0 and toks[end - 1].kind == .newline) : (end -= 1) {}
+    if (end == 0) return false;
+    var line_start = end;
+    while (line_start > 0 and toks[line_start - 1].kind != .newline) : (line_start -= 1) {}
+    assert(line_start < end); // invariant: last line has content
+    if (rune2_is(src, toks[line_start], "^-")) return false;
+    return true;
 }
