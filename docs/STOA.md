@@ -83,4 +83,5 @@
 | **STOA108** | Nest/type `$%` tag nest | `glow_nest_type_witness` · mold-kind | **GREEN** `20260720.145814` |
 | **STOA109** | Named-mold bartis (`amount-mold`) | `glow_nest_type_witness` · bartis · desk | **GREEN** `20260720.150155` |
 | **STOA110** | Wet-refuse nest path | `glow_nest_type_witness` · barket horizon | **GREEN** `20260720.150635` |
-Smoke: `glow_nest_type_witness` · `glow_lower_bartis_witness` · Sibling: **ZETA** · **LULU** · **SETU** · **TUBE**.
+| **STOA111** | Barket tokenize (`\|^` → 27) | `glow_barket_tokenize_witness` · alphabet | **GREEN** `20260720.151119` |
+Smoke: `glow_barket_tokenize_witness` · `glow_nest_type_witness` · `glow_lower_bartis_witness` · Sibling: **ZETA** · **LULU** · **SETU** · **TUBE**.

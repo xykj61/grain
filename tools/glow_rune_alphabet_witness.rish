@@ -9,4 +9,4 @@ let gate = run ["sh" "tools/glow_rune_alphabet_worker.sh"]
 assert gate.ok else "glow rune alphabet G1 gate failed: ${gate.err}${gate.out}"
 assert gate.out contains "OK" else "glow rune alphabet G1 gate missing OK"
 
-say "GREEN: Glow rune alphabet G1+G2 — 26 heads · TAME family index · tokens.rye bound; STOA90–91 · bartis STOA100."
+say "GREEN: Glow rune alphabet G1+G2 — 27 heads · TAME family index · tokens.rye bound; STOA90–91 · bartis STOA100 · barket STOA111."
