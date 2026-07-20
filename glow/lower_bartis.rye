@@ -24,6 +24,7 @@
 //! STOA143: `hepta-mold` call body `%-  flip` → HeptaMold swap · baked 5/3/1/2/7/4/6 → 3/5/1/2/7/4/6.
 //! STOA144: `octa-mold` identity lowers as `OctaMold` struct · baked from 5 amount 3 fee 1 nonce 2 memo 7 tag 4 to 6 via 8.
 //! STOA145: `octa-mold` call body `%-  flip` → OctaMold swap · baked 5/3/1/2/7/4/6/8 → 3/5/1/2/7/4/6/8.
+//! STOA146: `nona-mold` identity lowers as `NonaMold` struct · baked from 5 amount 3 fee 1 nonce 2 memo 7 tag 4 to 6 via 8 ref 9.
 //! STOA127: `kind-mold` call body `%-  flip` → KindMold switch · baked `.mint` → `.send`.
 //! STOA128: `xact-mold` call body `%-  flip` → XactMold switch · baked mint/5 → `.send`.
 //! STOA129: `xfer-mold` call body `%-  flip` → XferMold switch · baked mint/5/3 → `.send`.
@@ -82,6 +83,15 @@ pub const bartis_octa_demo_memo: u32 = 7;
 pub const bartis_octa_demo_tag: u32 = 4;
 pub const bartis_octa_demo_to: u32 = 6;
 pub const bartis_octa_demo_via: u32 = 8;
+pub const bartis_nona_demo_from: u32 = 5;
+pub const bartis_nona_demo_amount: u32 = 3;
+pub const bartis_nona_demo_fee: u32 = 1;
+pub const bartis_nona_demo_nonce: u32 = 2;
+pub const bartis_nona_demo_memo: u32 = 7;
+pub const bartis_nona_demo_tag: u32 = 4;
+pub const bartis_nona_demo_to: u32 = 6;
+pub const bartis_nona_demo_via: u32 = 8;
+pub const bartis_nona_demo_ref: u32 = 9;
 
 fn zig_safe_ident(face: []const u8, out: *[rb.max_face_len]u8) LowerError!u32 {
     assert(face.len <= rb.max_face_len); // precondition: face within name budget
@@ -217,6 +227,11 @@ fn is_hepta_sample(spec: *const rb.GateSpec) bool {
 fn is_octa_sample(spec: *const rb.GateSpec) bool {
     if (spec.mold_name_len == 0) return false;
     return nest_type.is_octa_named_mold(rb.mold_name_slice(spec));
+}
+
+fn is_nona_sample(spec: *const rb.GateSpec) bool {
+    if (spec.mold_name_len == 0) return false;
+    return nest_type.is_nona_named_mold(rb.mold_name_slice(spec));
 }
 
 /// STOA123: closed unit `$%` kind-mold identity → KindMold enum · baked `.mint`.
@@ -505,6 +520,33 @@ fn emit_octa_identity(out: []u8, zface: []const u8, comment: []const u8) LowerEr
     try append_print(out, &used, "    const {s}: OctaMold = .{{ .from = {d}, .amount = {d}, .fee = {d}, .nonce = {d}, .memo = {d}, .tag = {d}, .to = {d}, .via = {d} }};\n", .{ zface, bartis_octa_demo_from, bartis_octa_demo_amount, bartis_octa_demo_fee, bartis_octa_demo_nonce, bartis_octa_demo_memo, bartis_octa_demo_tag, bartis_octa_demo_to, bartis_octa_demo_via });
     try append_print(out, &used, "    const got = bartis_gate({s});\n", .{zface});
     try append_print(out, &used, "    return if (got.from == {d} and got.amount == {d} and got.fee == {d} and got.nonce == {d} and got.memo == {d} and got.tag == {d} and got.to == {d} and got.via == {d}) 0 else 1;\n", .{ bartis_octa_demo_from, bartis_octa_demo_amount, bartis_octa_demo_fee, bartis_octa_demo_nonce, bartis_octa_demo_memo, bartis_octa_demo_tag, bartis_octa_demo_to, bartis_octa_demo_via });
+    try append_print(out, &used, "}}\n", .{});
+    return used;
+}
+
+/// STOA146: closed nine-field `$:` nona-mold → NonaMold struct · baked 5/3/1/2/7/4/6/8/9.
+fn emit_nona_identity(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
+    var used: u32 = 0;
+    try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
+    try append_print(out, &used, "pub const NonaMold = struct {{\n", .{});
+    try append_print(out, &used, "    from: u32 = 0,\n", .{});
+    try append_print(out, &used, "    amount: u32 = 0,\n", .{});
+    try append_print(out, &used, "    fee: u32 = 0,\n", .{});
+    try append_print(out, &used, "    nonce: u32 = 0,\n", .{});
+    try append_print(out, &used, "    memo: u32 = 0,\n", .{});
+    try append_print(out, &used, "    tag: u32 = 0,\n", .{});
+    try append_print(out, &used, "    to: u32 = 0,\n", .{});
+    try append_print(out, &used, "    via: u32 = 0,\n", .{});
+    try append_print(out, &used, "    ref: u32 = 0,\n", .{});
+    try append_print(out, &used, "}};\n\n", .{});
+    try append_print(out, &used, "/// {s}\n", .{comment});
+    try append_print(out, &used, "fn bartis_gate({s}: NonaMold) NonaMold {{\n", .{zface});
+    try append_print(out, &used, "    return {s};\n", .{zface});
+    try append_print(out, &used, "}}\n\n", .{});
+    try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
+    try append_print(out, &used, "    const {s}: NonaMold = .{{ .from = {d}, .amount = {d}, .fee = {d}, .nonce = {d}, .memo = {d}, .tag = {d}, .to = {d}, .via = {d}, .ref = {d} }};\n", .{ zface, bartis_nona_demo_from, bartis_nona_demo_amount, bartis_nona_demo_fee, bartis_nona_demo_nonce, bartis_nona_demo_memo, bartis_nona_demo_tag, bartis_nona_demo_to, bartis_nona_demo_via, bartis_nona_demo_ref });
+    try append_print(out, &used, "    const got = bartis_gate({s});\n", .{zface});
+    try append_print(out, &used, "    return if (got.from == {d} and got.amount == {d} and got.fee == {d} and got.nonce == {d} and got.memo == {d} and got.tag == {d} and got.to == {d} and got.via == {d} and got.ref == {d}) 0 else 1;\n", .{ bartis_nona_demo_from, bartis_nona_demo_amount, bartis_nona_demo_fee, bartis_nona_demo_nonce, bartis_nona_demo_memo, bartis_nona_demo_tag, bartis_nona_demo_to, bartis_nona_demo_via, bartis_nona_demo_ref });
     try append_print(out, &used, "}}\n", .{});
     return used;
 }
@@ -859,6 +901,18 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
         }
     }
 
+    // STOA146: nona-mold gate identity — nine slots 5/3/1/2/7/4/6/8/9.
+    if (is_nona_sample(spec)) {
+        switch (spec.body) {
+            .identity => {
+                var comment_buf: [160]u8 = undefined;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` bartis — NonaMold identity (STOA146).", .{ face, mold }) catch return error.Overflow;
+                return emit_nona_identity(out, zface, comment);
+            },
+            .call_one => return error.BodyGateNotYetLowered,
+        }
+    }
+
     const expect = try expect_for(spec);
     var used: u32 = 0;
 
@@ -886,7 +940,7 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
 }
 
 fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
-    if (is_kind_sample(spec) or is_xact_sample(spec) or is_xfer_sample(spec) or is_pair_sample(spec) or is_triple_sample(spec) or is_quad_sample(spec) or is_penta_sample(spec) or is_hexa_sample(spec) or is_hepta_sample(spec) or is_octa_sample(spec)) return error.SampleDoesNotNest;
+    if (is_kind_sample(spec) or is_xact_sample(spec) or is_xfer_sample(spec) or is_pair_sample(spec) or is_triple_sample(spec) or is_quad_sample(spec) or is_penta_sample(spec) or is_hexa_sample(spec) or is_hepta_sample(spec) or is_octa_sample(spec) or is_nona_sample(spec)) return error.SampleDoesNotNest;
     const face = rb.face_slice(spec);
     assert(face.len > 0); // invariant: spec carries a non-empty face
     const mold = sample_mold_label(spec);
