@@ -8,6 +8,9 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260720.191447` — [STOA128 xact call-body map](20260720-191447_stoa128-xact-call-body-map.bron) — flip under xact-mold: emit/refuse paths, gate choice, files/pins, one-breath claim
+- `20260720.191944` — [STOA128 xact-mold flip call-body GREEN](20260720-191944_stoa128-xact-call-body-green.bron) — XactMold switch · baked mint/5 → .send; await send
+- `20260720.191033` — [STOA128 xact-mold flip call-body map](20260720-191033_stoa128-xact-call-body-map.bron) — lean A closed payload $% flip call-body
 - `20260720.190941` — [STOA127 send complete](20260720-190941_stoa127-send-complete.bron) — origin main language claim 03f39d2eff · tip 03f39d2eff
 - `20260720.190941` — [STOA128 next map after kind flip call-body](20260720-190941_stoa128-next-map.bron) — gold vs call-body under xact; compass pick
 - `20260720.190904` — [STOA127 kind-mold flip call-body GREEN](20260720-190904_stoa127-kind-call-body-green.bron) — KindMold switch · baked .mint → .send; await send
