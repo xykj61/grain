@@ -2,11 +2,11 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Rule: [`.cursor/rules/remember.mdc`](../.cursor/rules/remember.mdc) · [`.claude/rules/remember.md`](../.claude/rules/remember.md).*
 
-**Last refreshed:** `20260720.180047` (UTC cloud · Eastern season) · voice Quin  
+**Last refreshed:** `20260720.180414` (UTC cloud · Eastern season) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5** · HOLD0–HOLD1 · HOLD-W  
 **Language nib:** **STOA0–115** GREEN · STOA116 open  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · HOLD0–HOLD1 · HOLD-W · STOA0–115  
-**Git nib:** (await send) STOA115 barket call-body double  
+**Git nib:** `ff73855b82` — STOA115 barket call-body double  
 
 **Season:** Cursor iOS / cloud — **Glow language TAME only** (no adb). Handoff [`20260719-204650_cursor-ios-handoff-glow-language.md`](20260719-204650_cursor-ios-handoff-glow-language.md).  
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`
@@ -15,7 +15,7 @@
 
 ## Now (language)
 
-**STOA115** GREEN · barket call-body double (`*% 2` · fixture+argv). Await send.  
+**STOA115** sent · barket call-body double (`*% 2` · fixture+argv).  
 **STOA116** next — check-in before barket inc/dec / wet accept.
 
 ```bash
