@@ -1,14 +1,14 @@
-//! glow/nest_type.rye — nest/type surface (STOA107–110 · STOA118–130).
+//! glow/nest_type.rye — nest/type surface (STOA107–110 · STOA118–130 · STOA148).
 //!
-//! Expansion-time checks that a sample nests under a stated mold:
+//! Expansion-time checks that a sample nests under a stated shape:
 //!   - STOA107: stated aura equality (`@u32` under `@u32`)
 //!   - STOA108: unit `$%` tag membership (`mint` under kind-mold)
-//!   - STOA109: closed named-mold bartis sample (`amount-mold` one-field `$:`)
+//!   - STOA109: closed named-shape bartis sample (`amount-mold` one-field `$:`)
 //!   - STOA110: nesting-sample refuse — nesting-flagged claims do not nest
-//!   - STOA118: same closed named mold on barket samples
-//!   - STOA119: nesting-sample accept under a stated closed mold
+//!   - STOA118: same closed named shape on barket samples
+//!   - STOA119: nesting-sample accept under a stated closed shape
 //!   - STOA120: barket/bartis expansion call `assert_sample_nesting_nests`
-//!   - STOA121: barket passes `is_nesting=true` through nesting-nests under stated molds
+//!   - STOA121: barket passes `is_nesting=true` through nesting-nests under stated shapes
 //!   - STOA122–126: closed allowlist amount · count · kind · xact · xfer · pair
 //!   - STOA130: Glow vocabulary — stated · nesting · gold (Hoon study: dry · wet · gold)
 //!   - STOA134: closed allowlist adds three-field `$:` `triple-mold`
@@ -18,7 +18,8 @@
 //!   - STOA142: closed allowlist adds seven-field `$:` `hepta-mold`
 //!   - STOA144: closed allowlist adds eight-field `$:` `octa-mold`
 //!   - STOA146: closed allowlist adds nine-field `$:` `nona-mold`
-//! Ambient gold / free polymorphism · open `$:` beyond nona stay held.
+//!   - STOA148: Glow OS shape alias `amount-shape` ≡ `amount-mold` (one-field `$:` / `@u32`)
+//! Ambient gold / free polymorphism · open `$:` beyond nona stay held (capacity freeze at 9).
 //!
 //! Bartis calls nesting-nests stated (`false`). Barket calls nesting-nests nesting (`true`).
 //! STOA110 `assert_sample_not_nesting(true)` refuse stays on the nest_type witness.
@@ -27,12 +28,14 @@ const std = @import("std");
 const assert = std.debug.assert;
 const rune_mold = @import("rune_mold.rye");
 
-pub const nest_type_version = "20260720.230350";
+pub const nest_type_version = "20260720.234340";
 
-/// Closed named molds welcome in gate samples.
-/// `$:` one-field ≡ `@u32`: amount · count. `$:` two-field: pair. `$:` three-field: triple.
+/// Closed named shapes welcome in gate samples (desk suffix still often `-mold`).
+/// `$:` one-field ≡ `@u32`: amount · count · amount-shape. `$:` two-field: pair. `$:` three-field: triple.
 /// `$:` four-field: quad. `$:` five-field: penta. `$:` six-field: hexa. `$:` seven-field: hepta. `$:` eight-field: octa. `$:` nine-field: nona. Unit `$%`: kind. Payload `$%`: xact. Multi-face payload `$%`: xfer.
 pub const bartis_named_mold_amount = "amount-mold";
+/// STOA148: Glow OS shape-language alias — same one-field `$:` / `@u32` lower as `amount-mold`.
+pub const bartis_named_shape_amount = "amount-shape";
 pub const bartis_named_mold_count = "count-mold";
 pub const bartis_named_mold_kind = "kind-mold";
 pub const bartis_named_mold_xact = "xact-mold";
@@ -77,10 +80,11 @@ pub fn assert_tag_nests(tag: []const u8, spec: *const rune_mold.MoldSpec) NestEr
     return error.SampleDoesNotNest;
 }
 
-/// Assert `mold_name` is on the closed gate-sample allowlist (STOA109 · STOA122–126 · STOA134–135 · STOA138 · STOA140 · STOA142 · STOA144 · STOA146).
+/// Assert `mold_name` is on the closed gate-sample allowlist (STOA109 · STOA122–126 · STOA134–135 · STOA138 · STOA140 · STOA142 · STOA144 · STOA146 · STOA148).
 pub fn assert_bartis_named_mold(mold_name: []const u8) NestError!void {
-    assert(mold_name.len > 0); // precondition: mold name non-empty
+    assert(mold_name.len > 0); // precondition: shape name non-empty
     if (std.mem.eql(u8, mold_name, bartis_named_mold_amount)) return;
+    if (std.mem.eql(u8, mold_name, bartis_named_shape_amount)) return;
     if (std.mem.eql(u8, mold_name, bartis_named_mold_count)) return;
     if (std.mem.eql(u8, mold_name, bartis_named_mold_kind)) return;
     if (std.mem.eql(u8, mold_name, bartis_named_mold_xact)) return;
@@ -160,7 +164,7 @@ fn any_multi_face_payload(spec: *const rune_mold.MoldSpec) bool {
     return false;
 }
 
-/// Assert `mold_name` nests under a one-field `$:` MoldSpec (amount/count shape).
+/// Assert `mold_name` nests under a one-field `$:` MoldSpec (amount/count one-field shape).
 pub fn assert_named_mold_nests(mold_name: []const u8, spec: *const rune_mold.MoldSpec) NestError!void {
     if (is_kind_named_mold(mold_name) or is_xact_named_mold(mold_name) or is_xfer_named_mold(mold_name) or is_pair_named_mold(mold_name) or is_triple_named_mold(mold_name) or is_quad_named_mold(mold_name) or is_penta_named_mold(mold_name) or is_hexa_named_mold(mold_name) or is_hepta_named_mold(mold_name) or is_octa_named_mold(mold_name) or is_nona_named_mold(mold_name))
         return error.SampleDoesNotNest;
@@ -270,11 +274,11 @@ pub fn assert_sample_not_nesting(is_nesting: bool) NestError!void {
     if (is_nesting) return error.SampleDoesNotNest;
 }
 
-/// Nesting-sample accept under a stated closed mold (STOA119 · STOA130).
+/// Nesting-sample accept under a stated closed shape (STOA119 · STOA130 · STOA148).
 /// Stated path (`is_nesting=false`): no-op success.
 /// Nesting path (`is_nesting=true`): sample must nest under `stated_mold` via aura
-/// equality (`@…`) or the closed named-mold allowlist
-/// (amount · count · kind · xact · xfer · pair · triple · quad · penta · hexa · hepta · octa · nona).
+/// equality (`@…`) or the closed named-shape allowlist
+/// (amount · amount-shape · count · kind · xact · xfer · pair · triple · quad · penta · hexa · hepta · octa · nona).
 pub fn assert_sample_nesting_nests(is_nesting: bool, sample: []const u8, stated_mold: []const u8) NestError!void {
     if (!is_nesting) return;
     assert(sample.len > 0); // precondition: nesting sample non-empty

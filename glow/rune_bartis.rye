@@ -10,6 +10,7 @@
 //! STOA107: nest/type — sample aura nests under `@u32` via nest_type;
 //!   refuse is `SampleDoesNotNest`.
 //! STOA109: closed named mold `amount-mold` (one-field `$:` ≡ `@u32` lower).
+//! STOA148: closed allowlist alias `amount-shape` ≡ `amount-mold` (Glow OS shape word).
 //! STOA120 / STOA130: expansion calls `assert_sample_nesting_nests(false, …)` (stated no-op).
 //! STOA122: closed allowlist adds `count-mold` beside `amount-mold`.
 //! STOA123: closed allowlist adds unit `$%` `kind-mold` (identity lower).
