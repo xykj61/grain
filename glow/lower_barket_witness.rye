@@ -9,7 +9,7 @@ const print = std.debug.print;
 const lower = @import("lower_barket.rye");
 const rb = @import("rune_barket.rye");
 
-const witness_version = "20260720.191033";
+const witness_version = "20260720.192038";
 
 fn run_selftest(init: std.process.Init) !u8 {
     const io = init.io;
@@ -326,19 +326,28 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("lower: xact-mold double call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
 
-    if (lower.lower_source_welcome("|^  sample=xfer-mold\n%-  double  sample\n", &buf)) |_| {
-        return error.XferCallBodyLoweredTooSoon;
-    } else |err| {
-        if (err != lower.LowerError.BodyGateNotYetLowered) return err;
-    }
-    print("lower: xfer-mold call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
+    // STOA129: xfer-mold flip call-body lowers as XferMold switch · baked .send.
+    const xfer_flip_src = "|^  sample=xfer-mold\n%-  flip  sample\n";
+    const n_xff = try lower.lower_source_welcome(xfer_flip_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n_xff], "XferMold") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_xff], ".mint => .send") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_xff], ".send => 0") != null);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_xfer_flip_welcome.rye", .data = buf[0..n_xff] });
+    print("lower: xfer-mold call-body flip lowers to XferMold switch expect .send -- GREEN\n", .{});
 
-    if (lower.lower_source_welcome("|^  sample=xfer-mold\n%-  flip  sample\n", &buf)) |_| {
-        return error.XferFlipCallBodyLoweredTooSoon;
+    const gen_xff = try cwd.readFileAlloc(io, "glow/gen/gate-barket-xfer-flip.glow", a, .limited(4096));
+    const spec_xff = try rb.parse_source(gen_xff);
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_xff), "xfer-mold"));
+    assert(spec_xff.body == .call_one);
+    assert(std.mem.eql(u8, rb.gate_slice(&spec_xff), "flip"));
+    print("lower: glow/gen/gate-barket-xfer-flip.glow carries xfer-mold flip call-body -- GREEN\n", .{});
+
+    if (lower.lower_source_welcome("|^  sample=xfer-mold\n%-  double  sample\n", &buf)) |_| {
+        return error.XferDoubleCallBodyLoweredTooSoon;
     } else |err| {
         if (err != lower.LowerError.BodyGateNotYetLowered) return err;
     }
-    print("lower: xfer-mold flip call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
+    print("lower: xfer-mold double call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
 
     if (lower.lower_source_welcome("|^  sample=pair-mold\n%-  double  sample\n", &buf)) |_| {
         return error.PairCallBodyLoweredTooSoon;
@@ -369,7 +378,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("lower: glow/gen/gate-barket-count.glow carries count-mold -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: Glow `|^` barket — identity · argv · call-body · amount-mold · count-mold · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · pair-mold · wet-through-nests; STOA113–128.\n", .{});
+    print("GREEN: Glow `|^` barket — identity · argv · call-body · amount-mold · count-mold · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · wet-through-nests; STOA113–129.\n", .{});
     return 0;
 }
 

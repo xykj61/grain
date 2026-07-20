@@ -48,6 +48,8 @@ assert selftest.out contains "call-body flip" else "lower_bartis_witness missing
 assert selftest.out contains "gate-kind-flip.glow" else "lower_bartis_witness missing kind-flip desk"
 assert selftest.out contains "gate-xact-flip.glow" else "lower_bartis_witness missing xact-flip desk"
 assert selftest.out contains "xact-mold call-body flip" else "lower_bartis_witness missing xact flip claim"
+assert selftest.out contains "gate-xfer-flip.glow" else "lower_bartis_witness missing xfer-flip desk"
+assert selftest.out contains "xfer-mold call-body flip" else "lower_bartis_witness missing xfer flip claim"
 
 let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
 assert build_welcome.ok else "bartis welcome .rye build failed"
@@ -189,4 +191,13 @@ let run_xf = run ["sh" "-c" "${xact_flip_bin}; echo EXIT:$?"]
 assert run_xf.ok else "bartis xact-mold flip welcome binary failed to launch"
 assert run_xf.out contains "EXIT:0" else "bartis xact-mold flip welcome binary did not exit 0"
 
-say "GREEN: Glow `|=` bartis — STOA100–128 identity · argv · call-body · amount-mold · count-mold · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · pair-mold · nest SampleDoesNotNest."
+# STOA129: xfer-mold flip call-body welcome binary exits 0.
+let xfer_flip_rye = "glow/.cache/gate_xfer_flip_welcome.rye"
+let xfer_flip_bin = "glow/bin/gate_xfer_flip_welcome"
+let build_xff = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${xfer_flip_rye} -femit-bin=${xfer_flip_bin}"]
+assert build_xff.ok else "bartis xfer-mold flip welcome .rye build failed"
+let run_xff = run ["sh" "-c" "${xfer_flip_bin}; echo EXIT:$?"]
+assert run_xff.ok else "bartis xfer-mold flip welcome binary failed to launch"
+assert run_xff.out contains "EXIT:0" else "bartis xfer-mold flip welcome binary did not exit 0"
+
+say "GREEN: Glow `|=` bartis — STOA100–129 identity · argv · call-body · amount-mold · count-mold · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · nest SampleDoesNotNest."
