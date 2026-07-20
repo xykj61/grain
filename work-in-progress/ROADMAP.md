@@ -530,7 +530,9 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA145 octa-mold flip call-body GREEN, `20260720.230219`** — lean A (compass): closed `%-  flip` under octa-mold · from↔amount · fee/nonce/memo/tag/to/via stay · baked 5/3/1/2/7/4/6/8 → 3/5/1/2/7/4/6/8; double under octa refuse; argv · gold · Sala B0 held. Brief [`active-designing/20260720-225659_stoa145-octa-flip.md`](../active-designing/20260720-225659_stoa145-octa-flip.md). Sent `f85dfed1a4` · PR #61.
 
-**STOA146 nona-mold gate sample GREEN, `20260720.231018`** — lean A (compass): closed nine-field `$:` identity · NonaMold · baked 5/3/1/2/7/4/6/8/9 ref; deca refuse; call-body under nona · tagged argv · gold · Sala B0 held. Brief [`active-designing/20260720-230350_stoa146-nona-mold-gate.md`](../active-designing/20260720-230350_stoa146-nona-mold-gate.md).
+**STOA146 nona-mold gate sample GREEN, `20260720.231018`** — lean A (compass): closed nine-field `$:` identity · NonaMold · baked 5/3/1/2/7/4/6/8/9 ref; deca refuse; call-body under nona · tagged argv · gold · Sala B0 held. Brief [`active-designing/20260720-230350_stoa146-nona-mold-gate.md`](../active-designing/20260720-230350_stoa146-nona-mold-gate.md). Sent `08069058b5` · PR #63.
+
+**STOA147 nona-mold flip call-body mapped, `20260720.231128`** — lean A (compass): closed `%-  flip` under nona-mold · from↔amount · fee/nonce/memo/tag/to/via/ref stay · baked 5/3/1/2/7/4/6/8/9 → 3/5/1/2/7/4/6/8/9; double under nona / deca refuse; argv · gold · Sala B0 held. Brief [`active-designing/20260720-231128_stoa147-nona-flip.md`](../active-designing/20260720-231128_stoa147-nona-flip.md). Next: seat when GREEN.
 
 **Glow OS shape vocabulary seated, `20260720.223226`** — living prose: **shape** is the Glow OS / citizen word for a bounded normalizer; **mold** stays Hoon study and today's desk suffix until a rename lap. Brief [`active-designing/20260720-223226_glow-os-shape-not-mold.md`](../active-designing/20260720-223226_glow-os-shape-not-mold.md) · LEXICON Shape · Mold rows.
 
