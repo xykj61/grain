@@ -797,7 +797,7 @@ assert castimportnonashape.ok else "glow_run cast-import-nona-shape.glow failed"
 assert castimportnonashape.out contains "GREEN" else "glow_run cast-import-nona-shape.glow not GREEN"
 assert castimportnonashape.out contains "cast-import-nona-shape.glow" else "glow_run cast-import-nona-shape claim missing path"
 
-# STOA179: Sala B0 Glow — sala-event-shape (FactFields names; stand-in @u32; cast held).
+# STOA179 / STOA181: Sala B0 Glow — sala-event-shape (FactFields names; @t text faces; cast held).
 let shapesalaevent = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/shape-sala-event.glow"]
 assert shapesalaevent.ok else "glow_run shape-sala-event.glow failed"
 assert shapesalaevent.out contains "GREEN" else "glow_run shape-sala-event.glow not GREEN"

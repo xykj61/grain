@@ -8,12 +8,14 @@
 //! Library emit (no main) is STOA79 for `/+` mold import.
 //! STOA95: mold-only dispatch peek delegates to `tokens.looks_like_mold_only`.
 //! STOA96: TAME tidy — assert · u32 · append_print · split emitters.
-//! STOA180: `$:` `@t` faces parse; cord lower held (`CordAuraNotYetLowered`).
+//! STOA180: `$:` `@t` faces parse.
+//! STOA181: `$:` `@t` lowers to bounded `[aura_t_max_bytes]u8` + demo main.
 
 const std = @import("std");
 const assert = std.debug.assert;
 const rm = @import("rune_mold.rye");
 const tokens = @import("tokens.rye");
+const nest_type = @import("nest_type.rye");
 
 /// True when a multi-line desk is mold-only `+$` … `==` (no trailing `^-`).
 pub fn looks_like_mold_only(src: []const u8) bool {
@@ -24,7 +26,6 @@ pub const LowerError = rm.ParseError || error{
     Overflow,
     BadIdent,
     EmptySource,
-    CordAuraNotYetLowered,
 };
 
 pub const mold_demo_vals: [rm.max_fields]u32 = .{ 5, 3, 7, 2, 7, 4, 6, 8, 9 };
@@ -85,14 +86,40 @@ fn append_print(out: []u8, used: *u32, comptime fmt: []const u8, args: anytype) 
     used.* += n;
 }
 
+fn emit_cord_demo_helper(out: []u8, used: *u32) LowerError!void {
+    assert(used.* <= out.len); // invariant
+    const bound = nest_type.aura_t_max_bytes;
+    // Bound-copy loop in emit (no memcpy token in this file — TAME scan).
+    try append_print(out, used,
+        \\fn glow_demo_cord(comptime s: []const u8) [{d}]u8 {{
+        \\    var buf = [_]u8{{0}} ** {d};
+        \\    var i: u32 = 0;
+        \\    while (i < @as(u32, @intCast(s.len))) : (i += 1) {{
+        \\        buf[@as(usize, @intCast(i))] = s[@as(usize, @intCast(i))];
+        \\    }}
+        \\    return buf;
+        \\}}
+        \\
+    , .{ bound, bound });
+}
+
 fn emit_tuple_type(spec: *const rm.MoldSpec, zig_type: []const u8, out: []u8, used: *u32, library: bool) LowerError!void {
     assert(used.* <= out.len); // invariant
     const name = rm.name_slice(spec);
+    const has_cord = rm.any_cord_field(spec);
     if (library) {
         try append_print(out, used,
             \\const std = @import("std");
             \\
-            \\/// Lowered from Glow `+$ {s}` library (STOA79).
+            \\/// Lowered from Glow `+$ {s}` library (STOA79 · STOA181 cord).
+            \\pub const {s} = struct {{
+            \\
+        , .{ name, zig_type });
+    } else if (has_cord) {
+        try append_print(out, used,
+            \\const std = @import("std");
+            \\
+            \\/// Lowered from Glow `+$ {s}` / `$:` @u32 · @t fields (STOA74/75/181).
             \\pub const {s} = struct {{
             \\
         , .{ name, zig_type });
@@ -105,12 +132,18 @@ fn emit_tuple_type(spec: *const rm.MoldSpec, zig_type: []const u8, out: []u8, us
             \\
         , .{ name, zig_type });
     }
+    const bound = nest_type.aura_t_max_bytes;
     const n: u32 = @intCast(spec.field_count);
     var i: u32 = 0;
     while (i < n) : (i += 1) {
         var zf: [rm.max_name_len]u8 = undefined;
         const fl = try zig_safe_ident(rm.field_slice(spec, @as(usize, @intCast(i))), &zf);
-        try append_print(out, used, "    {s}: u32 = 0,\n", .{zf[0..@as(usize, @intCast(fl))]});
+        const face = zf[0..@as(usize, @intCast(fl))];
+        if (spec.field_is_cord[@as(usize, @intCast(i))]) {
+            try append_print(out, used, "    {s}: [{d}]u8 = [_]u8{{0}} ** {d},\n", .{ face, bound, bound });
+        } else {
+            try append_print(out, used, "    {s}: u32 = 0,\n", .{face});
+        }
     }
     try append_print(out, used, "}};\n", .{});
 }
@@ -119,21 +152,39 @@ fn lower_tuple(spec: *const rm.MoldSpec, zig_type: []const u8, out: []u8) LowerE
     assert(out.len >= 1); // precondition: emit buffer present
     var used: u32 = 0;
     try emit_tuple_type(spec, zig_type, out, &used, false);
+    const has_cord = rm.any_cord_field(spec);
+    if (has_cord) {
+        try append_print(out, &used, "\n", .{});
+        try emit_cord_demo_helper(out, &used);
+    }
     try append_print(out, &used, "\npub fn main(_: std.process.Init) !u8 {{\n    const m = {s}{{\n", .{zig_type});
     const n: u32 = @intCast(spec.field_count);
     var i: u32 = 0;
     while (i < n) : (i += 1) {
         var zf: [rm.max_name_len]u8 = undefined;
-        const fl = try zig_safe_ident(rm.field_slice(spec, @as(usize, @intCast(i))), &zf);
-        try append_print(out, &used, "        .{s} = {d},\n", .{ zf[0..@as(usize, @intCast(fl))], mold_demo_vals[@as(usize, @intCast(i))] });
+        const face_src = rm.field_slice(spec, @as(usize, @intCast(i)));
+        const fl = try zig_safe_ident(face_src, &zf);
+        const face = zf[0..@as(usize, @intCast(fl))];
+        if (spec.field_is_cord[@as(usize, @intCast(i))]) {
+            // Demo cord text is the face name (fits name budget ≪ aura bound).
+            try append_print(out, &used, "        .{s} = glow_demo_cord(\"{s}\"),\n", .{ face, face_src });
+        } else {
+            try append_print(out, &used, "        .{s} = {d},\n", .{ face, mold_demo_vals[@as(usize, @intCast(i))] });
+        }
     }
     try append_print(out, &used, "    }};\n    return if (", .{});
     i = 0;
     while (i < n) : (i += 1) {
         var zf: [rm.max_name_len]u8 = undefined;
-        const fl = try zig_safe_ident(rm.field_slice(spec, @as(usize, @intCast(i))), &zf);
+        const face_src = rm.field_slice(spec, @as(usize, @intCast(i)));
+        const fl = try zig_safe_ident(face_src, &zf);
+        const face = zf[0..@as(usize, @intCast(fl))];
         if (i != 0) try append_print(out, &used, " and ", .{});
-        try append_print(out, &used, "m.{s} == {d}", .{ zf[0..@as(usize, @intCast(fl))], mold_demo_vals[@as(usize, @intCast(i))] });
+        if (spec.field_is_cord[@as(usize, @intCast(i))]) {
+            try append_print(out, &used, "std.mem.eql(u8, &m.{s}, &glow_demo_cord(\"{s}\"))", .{ face, face_src });
+        } else {
+            try append_print(out, &used, "m.{s} == {d}", .{ face, mold_demo_vals[@as(usize, @intCast(i))] });
+        }
     }
     try append_print(out, &used, ") 0 else 1;\n}}\n", .{});
     return used;
@@ -332,7 +383,6 @@ pub fn lower_source_welcome(src: []const u8, out: []u8) LowerError!u32 {
     const trimmed = std.mem.trim(u8, src, " \t\r\n");
     if (trimmed.len == 0) return error.EmptySource;
     const spec = try rm.parse_source(src);
-    if (rm.any_cord_field(&spec)) return error.CordAuraNotYetLowered;
     const name = rm.name_slice(&spec);
     var type_buf: [rm.max_name_len]u8 = undefined;
     const tn = try zig_type_name(name, &type_buf);
@@ -348,7 +398,6 @@ pub fn lower_source_library(src: []const u8, out: []u8) LowerError!u32 {
     const trimmed = std.mem.trim(u8, src, " \t\r\n");
     if (trimmed.len == 0) return error.EmptySource;
     const spec = try rm.parse_source(src);
-    if (rm.any_cord_field(&spec)) return error.CordAuraNotYetLowered;
     const name = rm.name_slice(&spec);
     var type_buf: [rm.max_name_len]u8 = undefined;
     const tn = try zig_type_name(name, &type_buf);
