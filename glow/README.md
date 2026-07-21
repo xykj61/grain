@@ -1,7 +1,7 @@
 # Glow — Language Tooling, Grown from Real Design
 
 **Language:** EN
-**Last updated:** 2026-07-21 (**STOA189** ShapeSpec / rune_shape / lower_shape)
+**Last updated:** 2026-07-21 (**STOA192** demo fixture constants desk)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Audience:** Acme Corporation employees reading the working Glow pin
