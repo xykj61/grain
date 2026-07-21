@@ -4,7 +4,7 @@
 //!
 //! Per active-designing/20260717-014522_native-activity-shim-and-slc-
 //! packaging.md: one small, fixed, never-generated entry. App logic is
-//! the Sala B0 claim shell (`glow_sala_b0_claim.rye` · STOA191), the TUBE1 admit gate
+//! the Sala B0 Glow fold (`glow_sala_b0_fold.rye` · STOA198), the TUBE1 admit gate
 //! (`tube1_glass_gate.rye`), the R2 multi-panel surface
 //! (`sala_r2_surface.rye`), the TUBE5 tip line (`tube5_glass_tip.rye`),
 //! the TUBE2–4 rail lines (`tube2_glass_pub.rye`, `tube3_glass_fetch.rye`,
@@ -19,7 +19,7 @@
 const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
-const claim = @import("glow_sala_b0_claim.rye");
+const glow_fold = @import("glow_sala_b0_fold.rye");
 /// Glow-lowered session-root (STOA70 desk → STOA71/72 import seam).
 /// Witness seats linengrow/lib_session_root_nest_cue_jam.rye → glow/.cache.
 const glow_session = @import("lib_session_root_nest_cue_jam.rye");
@@ -104,7 +104,7 @@ export fn __zig_probe_stack() callconv(.c) void {}
 
 fn record_root(root: *const [32]u8) void {
     var hex: [64]u8 = undefined;
-    claim.root_to_hex(root, &hex);
+    glow_fold.root_to_hex(root, &hex);
     // invariant: hex face is 64 ASCII digits
     assert(hex.len == 64);
     tally_copy.copy_disjoint(u8, glow_last_session_root_hex[0..64], &hex);
@@ -769,15 +769,15 @@ export fn ANativeActivity_onCreate(
     glow_last_product_session_root = product_root;
     write_product_root_file(product_root);
 
-    // STOA191: product path claims through Glow shell (elder fold underneath).
-    const root = claim.claim_demo_fold() catch {
+    // STOA198: product path runs Glow fold (compose claim · elder underneath).
+    const root = glow_fold.run_demo_fold() catch {
         @memset(glow_last_session_root_hex[0..], 0);
         g_root_matched = false;
         ANativeActivity_finish(activity);
         return;
     };
     record_root(&root);
-    g_root_matched = claim.root_matches_expected(&root);
+    g_root_matched = glow_fold.root_matches_expected(&root);
     write_root_file(glow_last_session_root_hex[0..64]);
 
     // TUBE1 door: paint R2 only when the app manifest matches a grant.

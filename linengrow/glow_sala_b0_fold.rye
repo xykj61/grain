@@ -1,0 +1,39 @@
+//! linengrow/glow_sala_b0_fold.rye — Glow product fold peer to elder sala_b0_fold.
+//!
+//! STOA198: `run_demo_fold` is the composed claim path (fixture → append →
+//! replay). Elder `sala_b0_fold` stays the baseline peer; Glow-authored
+//! append/sign/replay bodies stay held.
+//!
+//!   rye build linengrow/glow_sala_b0_fold_witness.rye \
+//!     -femit-bin=linengrow/bin/glow_sala_b0_fold_witness
+
+const std = @import("std");
+const claim = @import("glow_sala_b0_claim.rye");
+const elder = @import("sala_b0_fold.rye");
+
+pub const fold_version = "20260721.183554";
+
+/// Product-owned pin — same HAWM1 demo root the elder fold proves.
+pub const expected_demo_root_hex = claim.expected_demo_root_hex;
+
+pub const FoldError = claim.ClaimError;
+
+/// Run the Glow-composed three-event demo fold; refuse unless root matches.
+pub fn run_demo_fold() FoldError![32]u8 {
+    return claim.claim_demo_fold();
+}
+
+/// Hex-encode a 32-byte root (same table as elder).
+pub fn root_to_hex(root: *const [32]u8, out: *[64]u8) void {
+    claim.root_to_hex(root, out);
+}
+
+/// True when `root` matches the product-owned expected demo root.
+pub fn root_matches_expected(root: *const [32]u8) bool {
+    return claim.root_matches_expected(root);
+}
+
+/// True when Glow fold pin agrees with elder fold pin.
+pub fn pin_agrees_elder() bool {
+    return std.mem.eql(u8, expected_demo_root_hex, elder.expected_demo_root_hex);
+}
