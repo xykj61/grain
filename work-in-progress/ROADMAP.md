@@ -602,7 +602,17 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA176 named-cast peek widen · triple…nona casts GREEN, `20260721.014114`** — `named_cast_parts` 4–12; early `glow_run` named-cast path; cast twins through nona. Brief [`active-designing/20260721-014114_stoa176-named-cast-peek-widen-triple-nona.md`](../active-designing/20260721-014114_stoa176-named-cast-peek-widen-triple-nona.md).
 
-**STOA177 check-in seated, `20260721.014926`** — after cast inventary; leans A Sala B0/product (recommended) · B MoldSpec rename · C next language · D rest. Brief [`active-designing/20260721-014926_stoa177-after-multifield-cast-checkin.md`](../active-designing/20260721-014926_stoa177-after-multifield-cast-checkin.md).
+**STOA177 lean A · product season, `20260721.165342`** — Sala B0 Glow / product. Brief [`active-designing/20260721-014926_stoa177-after-multifield-cast-checkin.md`](../active-designing/20260721-014926_stoa177-after-multifield-cast-checkin.md).
+
+**STOA178 gap inventory GREEN, `20260721.165732`** — lean A; maps kumara/mala/receipt/sala → Glow coverage. Inventory [`active-designing/20260721-165732_stoa178-sala-b0-glow-gap-inventory.md`](../active-designing/20260721-165732_stoa178-sala-b0-glow-gap-inventory.md).
+
+**STOA179 sala-event-shape GREEN, `20260721.170403`** — FactFields-named five-face desk; `SalaEventShape`; stand-in `@u32`. Brief [`active-designing/20260721-170403_stoa179-sala-event-shape-desk.md`](../active-designing/20260721-170403_stoa179-sala-event-shape-desk.md).
+
+**STOA180 check-in seated, `20260721.171030`** — after sala-event-shape; leans A thin `@t`+bound (recommended) · B `@ux` · C stand-in casts · D claim shell · E rest. Brief [`active-designing/20260721-171030_stoa180-at-aura-checkin.md`](../active-designing/20260721-171030_stoa180-at-aura-checkin.md). JABS3 held.
+
+
+
+
 
 **Framework next (host resume), `20260720.231857`** — lean A: live SETU6.5 **sent** eyes on real `usb0`/`ncm`. Lab TX gate already GREEN; Sala B0 Glow rewrite · JABS3 stay thicker check-ins. Same freeze brief.
 

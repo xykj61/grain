@@ -8,6 +8,11 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260721.171030` — [STOA177–179 send · STOA180 check-in](20260721-171030_stoa177-179-send-stoa180-checkin.bron) — Sala B0 Glow pack; @t aura leans A–E
+- `20260721.170403` — [STOA179 sala-event-shape GREEN](20260721-170403_stoa179-sala-event-shape-green.bron) — SalaEventShape desk; @t debt held; cast held
+
+- `20260721.165732` — [STOA178 gap inventory GREEN](20260721-165732_stoa178-gap-inventory-green.bron) — sala-event-shape named as STOA179; @t debt held
+- `20260721.165342` — [STOA177 lean A · Sala B0 Glow thin face](20260721-165342_stoa177-lean-a-sala-b0-glow.bron) — product season open; STOA178 first-lap leans A–D
 - `20260721.014926` — [STOA176 send · STOA177 check-in](20260721-014926_stoa176-send-stoa177-checkin.bron) — cast inventary ship; leans A–D awaiting word
 - `20260721.014657` — [STOA175 full desk witness GREEN](20260721-014657_stoa175-desk-witness-green.bron) — glow_run_desk_witness exit 0 after STOA175 pack
 - `20260721.014503` — [STOA175 sent · STOA176 cast widen](20260721-014503_stoa175-sent-stoa176-cast-widen.bron) — pier 0494e655fe; peek 4–12 · triple…nona casts unsent
