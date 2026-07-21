@@ -1,0 +1,63 @@
+//! linengrow/glow_sala_b0_digest_witness.rye — proves Glow digest port over elder log.
+//!
+//! Builds the three-event demo log via elder append (same stamps/memos as fold),
+//! digests through glow_sala_b0_digest, pins HAWM1 hex. Append/sign ports held.
+//!
+//!   rye build linengrow/glow_sala_b0_digest_witness.rye \
+//!     -femit-bin=linengrow/bin/glow_sala_b0_digest_witness
+//!   linengrow/bin/glow_sala_b0_digest_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const kumara = @import("kumara.rye");
+const mc = @import("mala_core.rye");
+const rc = @import("receipt_core.rye");
+const sala = @import("sala_session_core.rye");
+const fixture = @import("glow_sala_b0_demo_fixture.rye");
+const digest = @import("glow_sala_b0_digest.rye");
+const claim = @import("glow_sala_b0_claim.rye");
+
+const witness_version = "20260721.182623";
+
+fn build_demo_log(log_buf: *[rc.max_log_len]u8) !u32 {
+    const actor_kp = kumara.keypair_from_seed(&mc.issuer_seed);
+    var actor_hex: [mc.pubkey_hex_len]u8 = undefined;
+    mc.hex_of_key(actor_kp.public_key, &actor_hex);
+
+    var len: u32 = 0;
+    len = try sala.append_event(log_buf, len, 1, fixture.stamp1, fixture.memo1, &actor_hex, actor_kp);
+    len = try sala.append_event(log_buf, len, 2, fixture.stamp2, fixture.memo2, &actor_hex, actor_kp);
+    len = try sala.append_event(log_buf, len, 3, fixture.stamp3, fixture.memo3, &actor_hex, actor_kp);
+    return len;
+}
+
+fn run_selftest() !u8 {
+    assert(fixture.root_pin_agrees());
+    print("sala-b0-digest: fixture root pin seated -- GREEN\n", .{});
+
+    var log_buf: [rc.max_log_len]u8 = undefined;
+    const len = try build_demo_log(&log_buf);
+    assert(len > 0);
+    print("sala-b0-digest: elder three-event log built -- GREEN\n", .{});
+
+    const root = try digest.claim_digest_log(log_buf[0..len]);
+    var hex: [64]u8 = undefined;
+    digest.root_to_hex(&root, &hex);
+    print("sala-b0-digest: session root -- {s}\n", .{hex[0..]});
+    assert(digest.root_matches_fixture(&root));
+    assert(std.mem.eql(u8, hex[0..], fixture.expected_demo_root_hex));
+    print("sala-b0-digest: claim_digest_log matches fixture -- GREEN\n", .{});
+
+    const fold_root = try claim.claim_demo_fold();
+    assert(std.mem.eql(u8, &root, &fold_root));
+    print("sala-b0-digest: digest root agrees claim_demo_fold -- GREEN\n", .{});
+
+    print("sala-b0-digest: version {s}\n", .{witness_version});
+    print("GREEN: Glow Sala B0 digest port — STOA194; elder digest_log behind Glow assert.\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}

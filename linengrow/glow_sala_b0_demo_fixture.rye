@@ -1,0 +1,37 @@
+//! linengrow/glow_sala_b0_demo_fixture.rye — product pin of Sala B0 demo constants.
+//!
+//! STOA193: checkable elder stamp · memo · root strings beside the Glow
+//! shape desk (`shape-demo-fixture-constants`). Fold rewrite stays held.
+//! Elder `sala_b0_fold` still embeds the same literals; this module owns
+//! the product pin surface for future Glow ports.
+//!
+//!   rye build linengrow/glow_sala_b0_demo_fixture_witness.rye \
+//!     -femit-bin=linengrow/bin/glow_sala_b0_demo_fixture_witness
+
+const std = @import("std");
+const fold = @import("sala_b0_fold.rye");
+const claim = @import("glow_sala_b0_claim.rye");
+
+pub const fixture_version = "20260721.182501";
+
+/// Three-event demo stamps (elder `run_demo_fold` order).
+pub const stamp1 = "20260715.190001";
+pub const stamp2 = "20260715.190002";
+pub const stamp3 = "20260715.190003";
+
+/// Three-event demo memo payloads (elder `run_demo_fold` order).
+pub const memo1 = "sala:open rishi session";
+pub const memo2 = "sala:type let x = 42";
+pub const memo3 = "sala:frame 8-line skate view";
+
+/// Same HAWM1 root the elder fold and claim shell prove.
+pub const expected_demo_root_hex = fold.expected_demo_root_hex;
+
+pub const event_count: u32 = 3;
+
+/// True when product root pin agrees with fold and claim shell.
+pub fn root_pin_agrees() bool {
+    if (!std.mem.eql(u8, expected_demo_root_hex, fold.expected_demo_root_hex)) return false;
+    if (!std.mem.eql(u8, expected_demo_root_hex, claim.expected_demo_root_hex)) return false;
+    return std.mem.eql(u8, expected_demo_root_hex, "99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe");
+}
