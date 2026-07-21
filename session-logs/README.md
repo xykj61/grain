@@ -8,7 +8,13 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260721.192700` — [STOA206-207 send · STOA208 kg](20260721-192700_stoa206-207-send-stoa208-kg.bron) — pier send; cast-import next
+- `20260721.192558` — [STOA207 fact-line cast twin GREEN](20260721-192558_stoa207-fact-line-cast-twin.bron) — same-desk ^-; desk pin
+
+- `20260721.191254` — [STOA206 fact-line desk · AD shelf](20260721-191254_stoa206-fact-line-desk-and-ad-shelf.bron) — B3 GREEN; folder roles named
+
 - `20260721.190850` — [STOA201-204 send · STOA205 check-in](20260721-190850_stoa201-204-send-stoa205-checkin.bron) — pier send; leans A–D
+
 - `20260721.190637` — [STOA204 replay digest honesty GREEN](20260721-190637_stoa204-replay-digest-honesty.bron) — claim_digest_log on claim path
 - `20260721.190527` — [STOA203 append sign+line GREEN](20260721-190527_stoa203-append-sign-line-compose.bron) — compose; no sala.append_event
 
