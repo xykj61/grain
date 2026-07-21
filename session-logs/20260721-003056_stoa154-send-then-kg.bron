@@ -1,0 +1,16 @@
+format session-log-v1
+stamp 20260721.003056
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu Framework 16 AMD — UDT (Etc/UTC)
+title STOA154 send then kg quad-shape
+prompt send then kg
+think Send STOA154 triple-shape, then kg lean A: STOA155 quad-shape ≡ quad-mold.
+think quad-shape needs is_quad_named_mold so lower emits QuadMold.
+obs Alias path continues through multi-field $: ladder.
+file glow/gen/gate-triple-shape.glow STOA154 seat
+recommend keep-going STOA155 quad-shape after send
+product_nib SETU6.5-live-sent
+suite_nib STOA0-154
+git_nib pending-send
