@@ -4,15 +4,15 @@
 //! shape desk (`shape-demo-fixture-constants`). Fold rewrite stays held.
 //! Elder `sala_b0_fold` still embeds the same literals; this module owns
 //! the product pin surface for future Glow ports.
+//! STOA197: no longer imports the claim shell (breaks claim→replay→fixture cycle).
 //!
 //!   rye build linengrow/glow_sala_b0_demo_fixture_witness.rye \
 //!     -femit-bin=linengrow/bin/glow_sala_b0_demo_fixture_witness
 
 const std = @import("std");
 const fold = @import("sala_b0_fold.rye");
-const claim = @import("glow_sala_b0_claim.rye");
 
-pub const fixture_version = "20260721.182501";
+pub const fixture_version = "20260721.183253";
 
 /// Three-event demo stamps (elder `run_demo_fold` order).
 pub const stamp1 = "20260715.190001";
@@ -29,9 +29,8 @@ pub const expected_demo_root_hex = fold.expected_demo_root_hex;
 
 pub const event_count: u32 = 3;
 
-/// True when product root pin agrees with fold and claim shell.
+/// True when product root pin agrees with elder fold and HAWM1 hex.
 pub fn root_pin_agrees() bool {
     if (!std.mem.eql(u8, expected_demo_root_hex, fold.expected_demo_root_hex)) return false;
-    if (!std.mem.eql(u8, expected_demo_root_hex, claim.expected_demo_root_hex)) return false;
     return std.mem.eql(u8, expected_demo_root_hex, "99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe");
 }

@@ -468,6 +468,7 @@
 - [x] **STOA194 — digest thin port (lean C)** `20260721.182623` — `glow_sala_b0_digest` over elder `digest_log`; demo log via elder append; agrees claim fold. Brief [`../active-designing/20260721-182623_stoa194-digest-thin-port.md`](../active-designing/20260721-182623_stoa194-digest-thin-port.md).
 - [x] **STOA195 — append thin port** `20260721.182950` — `glow_sala_b0_append` · `append_demo_log` · `claim_append_demo_root`; agrees claim fold. Brief [`../active-designing/20260721-182950_stoa195-append-thin-port.md`](../active-designing/20260721-182950_stoa195-append-thin-port.md).
 - [x] **STOA196 — replay thin port** `20260721.183126` — `glow_sala_b0_replay` · `claim_replay_demo_root`; double replay · fixture root; agrees claim fold. Brief [`../active-designing/20260721-183126_stoa196-replay-thin-port.md`](../active-designing/20260721-183126_stoa196-replay-thin-port.md).
+- [x] **STOA197 — claim compose append+replay** `20260721.183253` — `claim_demo_fold` via replay port; agrees elder fold; NativeActivity pack GREEN. Brief [`../active-designing/20260721-183253_stoa197-claim-compose-append-replay.md`](../active-designing/20260721-183253_stoa197-claim-compose-append-replay.md).
 
 
 - [x] **UDT stamp convention on Framework host** `20260720.232932` — Keaton set system clock to UDT (UTC); [`context/specs/20260720-232932_udt-framework-host-convention.md`](../context/specs/20260720-232932_udt-framework-host-convention.md); Eastern era stamps stay; session-log rules + `GLOW_PROFILE` point at Etc/UTC.
