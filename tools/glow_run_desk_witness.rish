@@ -667,6 +667,12 @@ assert moldxfer.ok else "glow_run mold-xfer.glow failed"
 assert moldxfer.out contains "GREEN" else "glow_run mold-xfer.glow not GREEN"
 assert moldxfer.out contains "mold-xfer.glow" else "glow_run mold-xfer claim missing path"
 
+# STOA166: Glow OS primary dual — shape-xfer beside mold-xfer.
+let shapexfer = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/shape-xfer.glow"]
+assert shapexfer.ok else "glow_run shape-xfer.glow failed"
+assert shapexfer.out contains "GREEN" else "glow_run shape-xfer.glow not GREEN"
+assert shapexfer.out contains "shape-xfer.glow" else "glow_run shape-xfer claim missing path"
+
 let castnamed = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cast-named-amount.glow"]
 assert castnamed.ok else "glow_run cast-named-amount.glow failed"
 assert castnamed.out contains "GREEN" else "glow_run cast-named-amount.glow not GREEN"
@@ -740,6 +746,17 @@ let castimportxactshape = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "gl
 assert castimportxactshape.ok else "glow_run cast-import-xact-shape.glow failed"
 assert castimportxactshape.out contains "GREEN" else "glow_run cast-import-xact-shape.glow not GREEN"
 assert castimportxactshape.out contains "cast-import-xact-shape.glow" else "glow_run cast-import-xact-shape claim missing path"
+
+# STOA166: Glow OS primary cast twins for xfer-shape (no mold cast-xfer twin).
+let castnamedxfershape = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cast-named-xfer-shape.glow"]
+assert castnamedxfershape.ok else "glow_run cast-named-xfer-shape.glow failed"
+assert castnamedxfershape.out contains "GREEN" else "glow_run cast-named-xfer-shape.glow not GREEN"
+assert castnamedxfershape.out contains "cast-named-xfer-shape.glow" else "glow_run cast-named-xfer-shape claim missing path"
+
+let castimportxfershape = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cast-import-xfer-shape.glow"]
+assert castimportxfershape.ok else "glow_run cast-import-xfer-shape.glow failed"
+assert castimportxfershape.out contains "GREEN" else "glow_run cast-import-xfer-shape.glow not GREEN"
+assert castimportxfershape.out contains "cast-import-xfer-shape.glow" else "glow_run cast-import-xfer-shape claim missing path"
 
 let asserttrue = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/assert-true.glow"]
 assert asserttrue.ok else "glow_run assert-true.glow failed"
