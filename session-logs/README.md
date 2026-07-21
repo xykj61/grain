@@ -8,6 +8,11 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260721.185942` — [STOA200 vane-body inventory](20260721-185942_stoa200-vane-body-inventory.bron) — lean B; rec B1 sign wrap
+- `20260721.185805` — [STOA199A Pixel eyes GREEN](20260721-185805_stoa199a-pixel-eyes-green.bron) — lean A; HAWM1 hex on glass
+- `20260721.185700` — [STOA199A Pixel eyes guide](20260721-185700_stoa199a-pixel-eyes-guide.bron) — what GREEN glass looks like
+- `20260721.185407` — [STOA199A Pixel restart howto](20260721-185407_stoa199a-pixel-restart-howto.bron) — host adb install proof lines
+- `20260721.185137` — [STOA198 send · STOA199 check-in](20260721-185137_stoa198-send-stoa199-checkin.bron) — pier send; leans A–E awaiting
 - `20260721.183554` — [STOA197 send · STOA198 Glow fold](20260721-183554_stoa197-send-stoa198-fold.bron) — pier send; NA run_demo_fold
 - `20260721.183253` — [STOA196 send · STOA197 compose](20260721-183253_stoa196-send-stoa197-compose.bron) — pier send; claim via append+replay
 - `20260721.183126` — [STOA195 send · STOA196 replay](20260721-183126_stoa195-send-stoa196-replay.bron) — pier send; claim_replay_demo_root GREEN
