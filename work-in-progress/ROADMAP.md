@@ -542,6 +542,8 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA149 approved A · shape-first, `20260720.235200`** — Keaton: prioritize shape language. Next kg: `count-shape` ≡ `count-mold` (twin one-field alias). Capacity freeze held. Sala B0 Glow · JABS3 · N-field generalize stay behind the shape surface.
 
+**STOA149 count-shape alias GREEN, `20260720.235652`** — lean A (compass): closed allowlist `count-shape` ≡ `count-mold` (one-field `$:` / `@u32`); bartis · barket desks; deca refuse; capacity freeze held. Brief [`active-designing/20260720-235652_stoa149-count-shape-alias.md`](../active-designing/20260720-235652_stoa149-count-shape-alias.md). Next: **STOA150** check-in (further shape aliases · rename itinerary · Sala behind shape).
+
 **Framework next (host resume), `20260720.231857`** — lean A: live SETU6.5 **sent** eyes on real `usb0`/`ncm`. Lab TX gate already GREEN; Sala B0 Glow rewrite · JABS3 stay thicker check-ins. Same freeze brief.
 
 **Framework host resumes on UDT, `20260720.232932`** — Keaton set this host's system clock to **UDT (UTC)** for stamps (iOS/cloud season alignment). Spec [`context/specs/20260720-232932_udt-framework-host-convention.md`](../context/specs/20260720-232932_udt-framework-host-convention.md). Language nib then STOA0–147 + capacity freeze; **STOA148** amount-shape later same day.

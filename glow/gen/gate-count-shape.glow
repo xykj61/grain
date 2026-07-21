@@ -1,0 +1,4 @@
+::  Thin bartis Glow gate — sample=count-shape returns sample (STOA149).
+::  count-shape is the Glow OS shape alias for count-mold (≡ @u32 lower).
+|=  sample=count-shape
+sample

@@ -8,6 +8,8 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260721.000044` — [STOA149 send then kg pair-shape](20260721-000044_stoa149-send-then-kg.bron) — send count-shape; kg STOA150
+- `20260720.235652` — [STOA149 count-shape alias GREEN](20260720-235652_stoa149-count-shape-green.bron) — count-shape ≡ count-mold; unsent
 - `20260720.235434` — [STOA148 pushed · STOA149 approved](20260720-235434_stoa148-pushed-shape-next.bron) — origin+codeberg; next count-shape kg
 - `20260720.235200` — [STOA148 send · shape-first next](20260720-235200_stoa148-send-shape-next.bron) — send amount-shape; approve STOA149 count-shape
 - `20260720.234340` — [STOA148 amount-shape alias GREEN](20260720-234340_stoa148-amount-shape-green.bron) — amount-shape ≡ amount-mold; capacity freeze held
