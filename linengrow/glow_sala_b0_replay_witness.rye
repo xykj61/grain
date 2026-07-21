@@ -1,4 +1,4 @@
-//! linengrow/glow_sala_b0_replay_witness.rye — proves Glow replay + digest honesty.
+//! linengrow/glow_sala_b0_replay_witness.rye — proves Glow replay compose (STOA211).
 //!
 //!   rye build linengrow/glow_sala_b0_replay_witness.rye \
 //!     -femit-bin=linengrow/bin/glow_sala_b0_replay_witness
@@ -15,7 +15,7 @@ const replay = @import("glow_sala_b0_replay.rye");
 const claim = @import("glow_sala_b0_claim.rye");
 const elder = @import("sala_b0_fold.rye");
 
-const witness_version = "20260721.190637";
+const witness_version = "20260721.193303";
 
 fn run_selftest() !u8 {
     assert(fixture.root_pin_agrees());
@@ -44,7 +44,7 @@ fn run_selftest() !u8 {
     print("sala-b0-replay: replay root agrees elder run_demo_fold -- GREEN\n", .{});
 
     print("sala-b0-replay: version {s}\n", .{witness_version});
-    print("GREEN: Glow Sala B0 replay port — STOA204; product digest honesty on claim path.\n", .{});
+    print("GREEN: Glow Sala B0 replay port — STOA211; line·sign·digest compose; no sala.replay.\n", .{});
     return 0;
 }
 

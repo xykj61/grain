@@ -1,5 +1,6 @@
 ::  Sala B0 session-event shape — FactFields face names (STOA179).
-::  STOA184: from/to are @ux (bound 32); memo/stamp @t (bound 256); amount @u32.
+::  STOA184: from/to are @ux (bound 32); memo/stamp @t; amount @u32.
+::  STOA209: @t bound 1024 (nest_type.aura_t_max_bytes).
 ::  STOA186: cast twin at cast-named-sala-event.glow; no mold twin; elder fold stays.
 +$  sala-event-shape
   $:  from=@ux

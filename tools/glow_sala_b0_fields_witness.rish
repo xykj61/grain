@@ -1,0 +1,20 @@
+# glow_sala_b0_fields_witness.rish — Glow FactFields parse surface (STOA212 · C2).
+#
+#   rishi/bin/rishi run tools/glow_sala_b0_fields_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/glow_sala_b0_fields_witness"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/glow_sala_b0_fields_witness.rye -femit-bin=${bin}"]
+assert build.ok else "glow_sala_b0_fields_witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "glow_sala_b0_fields_witness exited non-zero"
+assert selftest.out contains "GREEN" else "glow_sala_b0_fields_witness not GREEN"
+assert selftest.out contains "fixture root pin seated" else "glow_sala_b0_fields_witness missing fixture"
+assert selftest.out contains "claim_demo_fields round-trip" else "glow_sala_b0_fields_witness missing fields round-trip"
+assert selftest.out contains "incomplete fact refuses parse" else "glow_sala_b0_fields_witness missing incomplete refuse"
+assert selftest.out contains "leading-zero amount refuses" else "glow_sala_b0_fields_witness missing amount refuse"
+assert selftest.out contains "STOA212" else "glow_sala_b0_fields_witness missing STOA212"
+
+say "GREEN: Glow Sala B0 fields surface — elder parse_fact_fields behind Glow assert; STOA212."

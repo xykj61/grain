@@ -1,0 +1,4 @@
+::  Cross-desk named-cast — import shape-fact-line then ^- fact-line-shape (STOA208).
+::  Mirrors STOA175 pair / STOA176 triple import casts; STOA209 @t bound 1024.
+/+  shape-fact-line
+^-  fact-line-shape

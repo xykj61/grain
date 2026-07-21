@@ -1,6 +1,6 @@
-# STOA — Glow SLC · nest · product · ≤80 · STOA0–207 GREEN · 2026-07-21 · draw → **STOA**
+# STOA — Glow SLC · nest · product · ≤80 · STOA0–213 GREEN · STOA214 check-in · 2026-07-21 · draw → **STOA**
 
-Living Glow OS desks lead with `shape-*` (inventary duals STOA161–173; pin polish STOA174; multi-field cast twins STOA175–176). Sala B0 Glow: STOA177–206 · **STOA207** fact-line cast twin. Hoon study twins under `glow/gen/hoon-study/`.
+Living Glow OS desks lead with `shape-*` (inventary duals STOA161–173; pin polish STOA174; multi-field cast twins STOA175–176). Sala B0 Glow: STOA177–213 · **STOA214** after fixture cast check-in. Hoon study twins under `glow/gen/hoon-study/`.
 
 | Rung | Claim | Witness / gate | State |
 |------|-------|----------------|-------|
@@ -58,4 +58,11 @@ Living Glow OS desks lead with `shape-*` (inventary duals STOA161–173; pin pol
 | **STOA205** | after digest honesty check-in | A rest · B → STOA206 | **GREEN** `190850` |
 | **STOA206** | fact-line shape desk (B3) | `glow_run` · desk suite | **GREEN** `191254` |
 | **STOA207** | fact-line cast twin | `glow_run` · desk suite pin | **GREEN** `192558` |
+| **STOA208** | fact-line cast import | `glow_run` · desk suite pin | **GREEN** `192700` |
+| **STOA209** | cord bound 1024 | nest_type · lower_shape · fact-line | **GREEN** `192947` |
+| **STOA210** | replay-body inventory (lean C) | inventory brief · sub-leans C1–C4 | **GREEN** `193220` |
+| **STOA211** | replay line·sign·digest compose (C1) | `glow_sala_b0_replay_witness` · fold | **GREEN** `193303` |
+| **STOA212** | FactFields parse surface (C2) | `glow_sala_b0_fields_witness` · replay | **GREEN** `193404` |
+| **STOA213** | demo-fixture cast twins (C3) | `glow_run` named + import | **GREEN** `194058` |
+| **STOA214** | after fixture cast check-in | A send · C literals next | **GREEN** `194203`/`194756` |
 Smoke: `glow_nest_type_witness` · `glow_barket_parse_witness` · `glow_lower_bartis_witness` · Sibling: **ZETA** · **LULU** · **SETU** · **TUBE**.

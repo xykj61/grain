@@ -1,0 +1,49 @@
+//! linengrow/glow_sala_b0_fields.rye — Glow product FactFields parse surface.
+//!
+//! STOA212 (C2): owns parse_fact_fields + parse_amount_signed while calling
+//! elder receipt_core. Replay compose wires through this surface.
+//!
+//!   rye build linengrow/glow_sala_b0_fields_witness.rye \
+//!     -femit-bin=linengrow/bin/glow_sala_b0_fields_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const kumara = @import("kumara.rye");
+const mc = @import("mala_core.rye");
+const rc = @import("receipt_core.rye");
+const fixture = @import("glow_sala_b0_demo_fixture.rye");
+const sign = @import("glow_sala_b0_sign.rye");
+
+pub const fields_version = "20260721.193404";
+
+pub const FieldsError = error{ InvalidFact, InvalidAmount, FieldsMismatch } || sign.SignError;
+
+/// Parse canonical fact text into FactFields via elder `parse_fact_fields`.
+pub fn parse_fact_fields(text: []const u8, fields: *rc.FactFields) FieldsError!void {
+    try rc.parse_fact_fields(text, fields);
+}
+
+/// Parse a signed amount string via elder `parse_amount_signed`.
+pub fn parse_amount_signed(amount_text: []const u8) FieldsError!i64 {
+    return rc.parse_amount_signed(amount_text);
+}
+
+/// Sign demo fact (STOA201), parse fields back; refuse unless faces agree and seq is 1.
+pub fn claim_demo_fields() FieldsError!rc.FactFields {
+    const signed = try sign.claim_demo_sign();
+    const fact = signed.canonical[0..signed.canonical_len];
+    var fields: rc.FactFields = undefined;
+    try parse_fact_fields(fact, &fields);
+
+    const actor_kp = kumara.keypair_from_seed(&mc.issuer_seed);
+    var actor_hex: [mc.pubkey_hex_len]u8 = undefined;
+    mc.hex_of_key(actor_kp.public_key, &actor_hex);
+    if (!std.mem.eql(u8, fields.from, actor_hex[0..])) return error.FieldsMismatch;
+    if (!std.mem.eql(u8, fields.to, actor_hex[0..])) return error.FieldsMismatch;
+    if (!std.mem.eql(u8, fields.memo, fixture.memo1)) return error.FieldsMismatch;
+    if (!std.mem.eql(u8, fields.stamp, fixture.stamp1)) return error.FieldsMismatch;
+    const seq = try parse_amount_signed(fields.amount);
+    if (seq != 1) return error.FieldsMismatch;
+    assert(seq == 1);
+    return fields;
+}

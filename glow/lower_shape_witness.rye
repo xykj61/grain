@@ -104,7 +104,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     ;
     const n6 = try lower.lower_source_welcome(cord_src, &buf);
     assert(std.mem.indexOf(u8, buf[0..n6], "pub const MemoShape") != null);
-    assert(std.mem.indexOf(u8, buf[0..n6], "[256]u8") != null);
+    assert(std.mem.indexOf(u8, buf[0..n6], "[1024]u8") != null);
     assert(std.mem.indexOf(u8, buf[0..n6], "glow_demo_cord") != null);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/mold_memo_welcome.rye", .data = buf[0..n6] });
     print("lower: +$ memo-shape @t emits MemoShape cord -- GREEN\n", .{});
@@ -131,7 +131,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     ;
     const n8 = try lower.lower_source_welcome(pay_cord, &buf);
     assert(std.mem.indexOf(u8, buf[0..n8], "pub const NoteShape") != null);
-    assert(std.mem.indexOf(u8, buf[0..n8], "[256]u8") != null);
+    assert(std.mem.indexOf(u8, buf[0..n8], "[1024]u8") != null);
     assert(std.mem.indexOf(u8, buf[0..n8], "glow_demo_cord") != null);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/mold_note_welcome.rye", .data = buf[0..n8] });
     print("lower: $% note-mold memo=@t emits NoteShape cord payload -- GREEN\n", .{});

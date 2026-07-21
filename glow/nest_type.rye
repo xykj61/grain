@@ -40,10 +40,11 @@ const std = @import("std");
 const assert = std.debug.assert;
 const rune_shape = @import("rune_shape.rye");
 
-pub const nest_type_version = "20260721.171227";
+pub const nest_type_version = "20260721.192947";
 
 /// STOA180: Glow cord aura `@t` — warm text atom with a stated byte ceiling (TAME-shaped).
-pub const aura_t_max_bytes: u32 = 256;
+/// STOA209: ceiling 1024 — covers elder max fact hex (`max_fact_len` 512 × 2).
+pub const aura_t_max_bytes: u32 = 1024;
 /// STOA183: Glow hex aura `@ux` — fixed pubkey-shaped byte ceiling (ed25519 peer).
 pub const aura_ux_max_bytes: u32 = 32;
 

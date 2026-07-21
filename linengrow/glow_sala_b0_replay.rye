@@ -1,10 +1,11 @@
-//! linengrow/glow_sala_b0_replay.rye — Glow product replay surface over elder sala_session_core.
+//! linengrow/glow_sala_b0_replay.rye — Glow product replay surface for Sala B0.
 //!
-//! STOA196: owns demo-log replay (verify · order · digest) while calling elder
-//! `replay`. Builds the log via glow_sala_b0_append. Fold rewrite stays held.
+//! STOA196: owns demo-log replay while calling elder `sala.replay`.
 //! STOA203: append path carries sign+line errors into ReplayError.
-//! STOA204: claim path also digests via glow_sala_b0_digest and refuses unless
-//! that root equals elder replay roots (product digest honesty).
+//! STOA204: claim path also digests via glow_sala_b0_digest (honesty).
+//! STOA211 (C1): `replay` composes product line · sign · digest — no
+//! `sala.replay`.
+//! STOA212 (C2): FactFields / amount parse through glow_sala_b0_fields.
 //!
 //!   rye build linengrow/glow_sala_b0_replay_witness.rye \
 //!     -femit-bin=linengrow/bin/glow_sala_b0_replay_witness
@@ -18,21 +19,56 @@ const sala = @import("sala_session_core.rye");
 const fixture = @import("glow_sala_b0_demo_fixture.rye");
 const append = @import("glow_sala_b0_append.rye");
 const digest = @import("glow_sala_b0_digest.rye");
+const line = @import("glow_sala_b0_line.rye");
+const sign = @import("glow_sala_b0_sign.rye");
+const fields = @import("glow_sala_b0_fields.rye");
 
-pub const replay_version = "20260721.190637";
+pub const replay_version = "20260721.193404";
 
-pub const ReplayError = append.AppendError || digest.DigestError || error{RootMismatch};
+pub const ReplayError = append.AppendError || digest.DigestError || fields.FieldsError || sala.SessionError || error{RootMismatch};
 
 pub const ReplayResult = sala.ReplayResult;
 
-/// Replay a bounded log via elder `replay` (verify · order · digest).
+/// Replay a bounded log via product line · fields · sign · digest (not sala.replay).
 pub fn replay(
     log: []const u8,
     actor_hex: *const [mc.pubkey_hex_len]u8,
     actor_pk: kumara.PublicKey,
 ) ReplayError!ReplayResult {
     assert(log.len <= rc.max_log_len); // precondition: elder log bound
-    return sala.replay(log, actor_hex, actor_pk);
+    assert(mc.pubkey_hex_len > 0);
+
+    var count: u32 = 0;
+    var last_seq: i64 = 0;
+    var pos: u32 = 0;
+    const log_u32: u32 = @intCast(log.len);
+    while (pos < log_u32) {
+        if (count >= sala.max_events) return error.ReplayFailed;
+        const line_end_usz = std.mem.indexOfScalarPos(u8, log, pos, '\n') orelse log.len;
+        const line_end: u32 = @intCast(line_end_usz);
+        const raw_line = log[pos..line_end];
+        pos = if (line_end < log_u32) line_end + 1 else line_end;
+        if (std.mem.trim(u8, raw_line, " \t\r\n").len == 0) continue;
+
+        var sig_buf: [kumara.signature_length]u8 = undefined;
+        var fact_out: [rc.max_fact_len]u8 = undefined;
+        const parsed = line.parse_log_line(raw_line, &sig_buf, &fact_out) catch return error.ReplayFailed;
+        const fact = fact_out[0..parsed.fact_len];
+
+        var fact_fields: rc.FactFields = undefined;
+        fields.parse_fact_fields(fact, &fact_fields) catch return error.ReplayFailed;
+
+        if (!std.mem.eql(u8, fact_fields.from, actor_hex[0..])) return error.ReplayFailed;
+        sign.verify_record(sig_buf[0..parsed.sig_len], fact, actor_pk) catch return error.ReplayFailed;
+
+        const seq = fields.parse_amount_signed(fact_fields.amount) catch return error.ReplayFailed;
+        if (seq != last_seq + 1) return error.OutOfOrder;
+        last_seq = seq;
+        count += 1;
+    }
+
+    const root = digest.digest_log_bytes(log);
+    return .{ .events = count, .root = root, .last_seq = last_seq };
 }
 
 /// Build the three-event demo log, replay twice, assert roots agree; digest via
@@ -52,8 +88,7 @@ pub fn claim_replay_demo_root(log_buf: *[rc.max_log_len]u8) ReplayError![32]u8 {
     assert(std.mem.eql(u8, &r1.root, &r2.root));
     if (!digest.root_matches_fixture(&r1.root)) return error.RootMismatch;
 
-    // STOA204: product digest surface owns the claim assert (elder digest still
-    // inside sala.replay; this path must agree bit-for-bit).
+    // STOA204: product digest surface owns the claim assert.
     const product_root = try digest.claim_digest_log(log_buf[0..len]);
     if (!std.mem.eql(u8, &product_root, &r1.root)) return error.RootMismatch;
     return product_root;

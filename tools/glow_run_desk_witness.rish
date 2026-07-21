@@ -815,6 +815,17 @@ assert shapedemofixture.ok else "glow_run shape-demo-fixture-constants.glow fail
 assert shapedemofixture.out contains "GREEN" else "glow_run shape-demo-fixture-constants.glow not GREEN"
 assert shapedemofixture.out contains "shape-demo-fixture-constants.glow" else "glow_run shape-demo-fixture-constants claim missing path"
 
+# STOA213 / C3: demo-fixture-constants named-cast + import cast.
+let castnameddemofixture = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cast-named-demo-fixture-constants.glow"]
+assert castnameddemofixture.ok else "glow_run cast-named-demo-fixture-constants.glow failed"
+assert castnameddemofixture.out contains "GREEN" else "glow_run cast-named-demo-fixture-constants.glow not GREEN"
+assert castnameddemofixture.out contains "cast-named-demo-fixture-constants.glow" else "glow_run cast-named-demo-fixture-constants claim missing path"
+
+let castimportdemofixture = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cast-import-demo-fixture-constants.glow"]
+assert castimportdemofixture.ok else "glow_run cast-import-demo-fixture-constants.glow failed"
+assert castimportdemofixture.out contains "GREEN" else "glow_run cast-import-demo-fixture-constants.glow not GREEN"
+assert castimportdemofixture.out contains "cast-import-demo-fixture-constants.glow" else "glow_run cast-import-demo-fixture-constants claim missing path"
+
 # STOA206 / B3: Sala B0 fact-line shape (sig @t · fact @t).
 let shapefactline = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/shape-fact-line.glow"]
 assert shapefactline.ok else "glow_run shape-fact-line.glow failed"
@@ -826,6 +837,12 @@ let castnamedfactline = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow
 assert castnamedfactline.ok else "glow_run cast-named-fact-line.glow failed"
 assert castnamedfactline.out contains "GREEN" else "glow_run cast-named-fact-line.glow not GREEN"
 assert castnamedfactline.out contains "cast-named-fact-line.glow" else "glow_run cast-named-fact-line claim missing path"
+
+# STOA208: fact-line cross-desk import cast.
+let castimportfactline = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cast-import-fact-line.glow"]
+assert castimportfactline.ok else "glow_run cast-import-fact-line.glow failed"
+assert castimportfactline.out contains "GREEN" else "glow_run cast-import-fact-line.glow not GREEN"
+assert castimportfactline.out contains "cast-import-fact-line.glow" else "glow_run cast-import-fact-line claim missing path"
 
 let castnamed = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cast-named-amount.glow"]
 assert castnamed.ok else "glow_run cast-named-amount.glow failed"
