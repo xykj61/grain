@@ -11,4 +11,5 @@
 | **STOA161** | inventary · `shape-amount` dual desk | `glow_run` desks | **GREEN** `010211` |
 | **STOA162** | `shape-count` dual desk | `glow_run` desks | **GREEN** `010435` |
 | **STOA163** | `shape-pair` dual desk | `glow_run` | **GREEN** `010610` |
+| **STOA164** | `shape-kind` dual desk | `glow_run` desks | **GREEN** `010739` |
 Smoke: `glow_nest_type_witness` · `glow_barket_parse_witness` · `glow_lower_bartis_witness` · Sibling: **ZETA** · **LULU** · **SETU** · **TUBE**.
