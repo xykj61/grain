@@ -1,0 +1,14 @@
+format session-log-v1
+stamp 20260721.005350
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu Framework 16 AMD — UDT (Etc/UTC)
+title STOA159 sent · STOA160 GREEN closes ladder
+prompt send then kg
+think Sent STOA159 octa-shape (2e963fcd01); kg lean A nona-shape — GREEN at 20260721.005327.
+obs Multi-field $: shape alias ladder now closed at capacity freeze of 9; tagged $% and one-field twins already seated. Next check-in is rename itinerary or Sala — not another field widen.
+recommend check-in STOA161 rename itinerary (A) · Sala (B) · rest (C)
+product_nib SETU6.5-live-sent
+suite_nib STOA0-160-unsent
+git_nib 2e963fcd01
