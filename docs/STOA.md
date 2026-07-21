@@ -1,6 +1,6 @@
-# STOA — Glow SLC · nest · product · ≤80 · STOA0–190 GREEN · 2026-07-21 · draw → **STOA**
+# STOA — Glow SLC · nest · product · ≤80 · STOA0–191 GREEN · 2026-07-21 · draw → **STOA**
 
-Living Glow OS desks lead with `shape-*` (inventary duals STOA161–173; pin polish STOA174; multi-field cast twins STOA175–176). Sala B0 Glow: STOA177–189 · **STOA190** mold→shape surface. Hoon study twins under `glow/gen/hoon-study/`.
+Living Glow OS desks lead with `shape-*` (inventary duals STOA161–173; pin polish STOA174; multi-field cast twins STOA175–176). Sala B0 Glow: STOA177–190 · **STOA191** NativeActivity claim wire. Hoon study twins under `glow/gen/hoon-study/`.
 
 | Rung | Claim | Witness / gate | State |
 |------|-------|----------------|-------|
@@ -41,4 +41,5 @@ Living Glow OS desks lead with `shape-*` (inventary duals STOA161–173; pin pol
 | **STOA188** | `$%` payload `@t` / `@ux` emit | lower_shape · named-cast | **GREEN** `180725` |
 | **STOA189** | ShapeSpec / rune_shape / lower_shape API | shape witnesses · glow_run | **GREEN** `180917` |
 | **STOA190** | remaining mold→shape surface | bartis · nest · shape witnesses | **GREEN** `181551` |
+| **STOA191** | NativeActivity claim wire (lean C) | `stoa191_native_claim_wire_witness` | **GREEN** `181903` |
 Smoke: `glow_nest_type_witness` · `glow_barket_parse_witness` · `glow_lower_bartis_witness` · Sibling: **ZETA** · **LULU** · **SETU** · **TUBE**.
