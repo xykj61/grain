@@ -1,0 +1,55 @@
+//! linengrow/glow_sala_b0_append.rye — Glow product append surface over elder sala_session_core.
+//!
+//! STOA195: owns the three-event demo log build (fixture stamps/memos) while
+//! calling elder `append_event`. Sign stays inside elder append; replay and
+//! fold rewrite stay held. Digests through glow_sala_b0_digest.
+//!
+//!   rye build linengrow/glow_sala_b0_append_witness.rye \
+//!     -femit-bin=linengrow/bin/glow_sala_b0_append_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const kumara = @import("kumara.rye");
+const mc = @import("mala_core.rye");
+const rc = @import("receipt_core.rye");
+const sala = @import("sala_session_core.rye");
+const fixture = @import("glow_sala_b0_demo_fixture.rye");
+const digest = @import("glow_sala_b0_digest.rye");
+
+pub const append_version = "20260721.182950";
+
+pub const AppendError = sala.SessionError || digest.DigestError;
+
+/// Append one signed event via elder `append_event`.
+pub fn append_event(
+    log: []u8,
+    log_len: u32,
+    seq: i64,
+    stamp: []const u8,
+    payload: []const u8,
+    actor_hex: *const [mc.pubkey_hex_len]u8,
+    signer: kumara.KeyPair,
+) AppendError!u32 {
+    assert(log.len <= rc.max_log_len); // precondition: elder log bound
+    return sala.append_event(log, log_len, seq, stamp, payload, actor_hex, signer);
+}
+
+/// Build the three-event Sala B0 demo log from the product fixture pins.
+pub fn append_demo_log(log_buf: *[rc.max_log_len]u8) AppendError!u32 {
+    const actor_kp = kumara.keypair_from_seed(&mc.issuer_seed);
+    var actor_hex: [mc.pubkey_hex_len]u8 = undefined;
+    mc.hex_of_key(actor_kp.public_key, &actor_hex);
+
+    var len: u32 = 0;
+    len = try append_event(log_buf, len, 1, fixture.stamp1, fixture.memo1, &actor_hex, actor_kp);
+    len = try append_event(log_buf, len, 2, fixture.stamp2, fixture.memo2, &actor_hex, actor_kp);
+    len = try append_event(log_buf, len, 3, fixture.stamp3, fixture.memo3, &actor_hex, actor_kp);
+    assert(len > 0);
+    return len;
+}
+
+/// Build the demo log and claim its digest against the HAWM1 fixture root.
+pub fn claim_append_demo_root(log_buf: *[rc.max_log_len]u8) AppendError![32]u8 {
+    const len = try append_demo_log(log_buf);
+    return digest.claim_digest_log(log_buf[0..len]);
+}

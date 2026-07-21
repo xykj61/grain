@@ -466,6 +466,7 @@
 - [x] **STOA193 — after fixture desk check-in** `20260721.182415` — leans A–E; lean **B** chosen. Brief [`../active-designing/20260721-182415_stoa193-after-fixture-desk-checkin.md`](../active-designing/20260721-182415_stoa193-after-fixture-desk-checkin.md).
 - [x] **STOA193 — demo fixture product pin (lean B)** `20260721.182501` — `glow_sala_b0_demo_fixture` stamps/memos/root; agrees fold · claim · HAWM1. Brief [`../active-designing/20260721-182501_stoa193-demo-fixture-product-pin.md`](../active-designing/20260721-182501_stoa193-demo-fixture-product-pin.md).
 - [x] **STOA194 — digest thin port (lean C)** `20260721.182623` — `glow_sala_b0_digest` over elder `digest_log`; demo log via elder append; agrees claim fold. Brief [`../active-designing/20260721-182623_stoa194-digest-thin-port.md`](../active-designing/20260721-182623_stoa194-digest-thin-port.md).
+- [x] **STOA195 — append thin port** `20260721.182950` — `glow_sala_b0_append` · `append_demo_log` · `claim_append_demo_root`; agrees claim fold. Brief [`../active-designing/20260721-182950_stoa195-append-thin-port.md`](../active-designing/20260721-182950_stoa195-append-thin-port.md).
 
 
 - [x] **UDT stamp convention on Framework host** `20260720.232932` — Keaton set system clock to UDT (UTC); [`context/specs/20260720-232932_udt-framework-host-convention.md`](../context/specs/20260720-232932_udt-framework-host-convention.md); Eastern era stamps stay; session-log rules + `GLOW_PROFILE` point at Etc/UTC.

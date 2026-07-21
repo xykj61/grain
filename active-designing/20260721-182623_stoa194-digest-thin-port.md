@@ -44,7 +44,7 @@ rishi/bin/rishi run tools/glow_sala_b0_digest_witness.rish
 
 ## Hold
 
-Append · sign · verify · replay product ports. Fold rewrite. Pixel eyes. JABS3.
+Sign · verify · replay product ports (append product port landed STOA195). Fold rewrite. Pixel eyes. JABS3.
 
 ---
 
