@@ -1,8 +1,9 @@
-//! linengrow/glow_sala_b0_append.rye — Glow product append surface over elder sala_session_core.
+//! linengrow/glow_sala_b0_append.rye — Glow product append surface for Sala B0 demo log.
 //!
-//! STOA195: owns the three-event demo log build (fixture stamps/memos) while
-//! calling elder `append_event`. Sign stays inside elder append; replay and
-//! fold rewrite stay held. Digests through glow_sala_b0_digest.
+//! STOA195: owned three-event demo log build via elder `append_event`.
+//! STOA203: `append_event` builds through glow_sala_b0_sign + glow_sala_b0_line
+//! (elder sign/format bodies underneath those wraps). Replay still elder.
+//! Digests through glow_sala_b0_digest.
 //!
 //!   rye build linengrow/glow_sala_b0_append_witness.rye \
 //!     -femit-bin=linengrow/bin/glow_sala_b0_append_witness
@@ -13,14 +14,23 @@ const kumara = @import("kumara.rye");
 const mc = @import("mala_core.rye");
 const rc = @import("receipt_core.rye");
 const sala = @import("sala_session_core.rye");
+const tally_copy = @import("tally_copy.rye");
 const fixture = @import("glow_sala_b0_demo_fixture.rye");
 const digest = @import("glow_sala_b0_digest.rye");
+const sign = @import("glow_sala_b0_sign.rye");
+const line = @import("glow_sala_b0_line.rye");
 
-pub const append_version = "20260721.182950";
+pub const append_version = "20260721.190527";
 
-pub const AppendError = sala.SessionError || digest.DigestError;
+pub const AppendError = sala.SessionError || digest.DigestError || sign.SignError || line.LineError;
 
-/// Append one signed event via elder `append_event`.
+fn seq_string(seq: i64, buf: *[24]u8) []const u8 {
+    assert(buf.len == 24);
+    assert(seq >= 0);
+    return std.fmt.bufPrint(buf, "{d}", .{seq}) catch unreachable;
+}
+
+/// Append one signed event via product sign + line surfaces (not elder append_event).
 pub fn append_event(
     log: []u8,
     log_len: u32,
@@ -30,8 +40,31 @@ pub fn append_event(
     actor_hex: *const [mc.pubkey_hex_len]u8,
     signer: kumara.KeyPair,
 ) AppendError!u32 {
-    assert(log.len <= rc.max_log_len); // precondition: elder log bound
-    return sala.append_event(log, log_len, seq, stamp, payload, actor_hex, signer);
+    assert(log_len <= log.len);
+    assert(log.len <= rc.max_log_len);
+
+    var seq_buf: [24]u8 = undefined;
+    const seq_text = seq_string(seq, &seq_buf);
+    const fields = rc.FactFields{
+        .from = actor_hex[0..],
+        .to = actor_hex[0..],
+        .amount = seq_text,
+        .memo = payload,
+        .stamp = stamp,
+    };
+    const signed = try sign.sign_fact(fields, signer);
+    var line_buf: [rc.max_line_len]u8 = undefined;
+    const line_len = try line.format_log_line(
+        signed.sig,
+        signed.canonical[0..signed.canonical_len],
+        &line_buf,
+    );
+    if (line_len > sala.max_event_bytes) return error.EventTooLarge;
+    const new_len_usize = @as(usize, log_len) + line_len;
+    if (new_len_usize > log.len) return error.Overflow;
+    const new_len: u32 = @intCast(new_len_usize);
+    tally_copy.copy_disjoint(u8, log[log_len..new_len], line_buf[0..line_len]);
+    return new_len;
 }
 
 /// Build the three-event Sala B0 demo log from the product fixture pins.

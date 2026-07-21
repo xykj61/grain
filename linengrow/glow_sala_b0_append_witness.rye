@@ -1,4 +1,4 @@
-//! linengrow/glow_sala_b0_append_witness.rye — proves Glow append port over elder.
+//! linengrow/glow_sala_b0_append_witness.rye — proves Glow append via sign+line.
 //!
 //!   rye build linengrow/glow_sala_b0_append_witness.rye \
 //!     -femit-bin=linengrow/bin/glow_sala_b0_append_witness
@@ -12,8 +12,9 @@ const fixture = @import("glow_sala_b0_demo_fixture.rye");
 const digest = @import("glow_sala_b0_digest.rye");
 const append = @import("glow_sala_b0_append.rye");
 const claim = @import("glow_sala_b0_claim.rye");
+const elder = @import("sala_b0_fold.rye");
 
-const witness_version = "20260721.182950";
+const witness_version = "20260721.190527";
 
 fn run_selftest() !u8 {
     assert(fixture.root_pin_agrees());
@@ -22,7 +23,7 @@ fn run_selftest() !u8 {
     var log_buf: [rc.max_log_len]u8 = undefined;
     const len = try append.append_demo_log(&log_buf);
     assert(len > 0);
-    print("sala-b0-append: append_demo_log three events -- GREEN\n", .{});
+    print("sala-b0-append: append_demo_log via sign+line -- GREEN\n", .{});
 
     const root = try append.claim_append_demo_root(&log_buf);
     var hex: [64]u8 = undefined;
@@ -36,8 +37,12 @@ fn run_selftest() !u8 {
     assert(std.mem.eql(u8, &root, &fold_root));
     print("sala-b0-append: append root agrees claim_demo_fold -- GREEN\n", .{});
 
+    const elder_root = try elder.run_demo_fold();
+    assert(std.mem.eql(u8, &root, &elder_root));
+    print("sala-b0-append: append root agrees elder run_demo_fold -- GREEN\n", .{});
+
     print("sala-b0-append: version {s}\n", .{witness_version});
-    print("GREEN: Glow Sala B0 append port — STOA195; elder append_event behind Glow assert.\n", .{});
+    print("GREEN: Glow Sala B0 append port — STOA203; sign+line compose; elder bodies underneath.\n", .{});
     return 0;
 }
 

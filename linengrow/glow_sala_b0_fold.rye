@@ -1,8 +1,9 @@
 //! linengrow/glow_sala_b0_fold.rye — Glow product fold peer to elder sala_b0_fold.
 //!
 //! STOA198: `run_demo_fold` is the composed claim path (fixture → append →
-//! replay). Elder `sala_b0_fold` stays the baseline peer; Glow-authored
-//! append/sign/replay bodies stay held.
+//! replay). Elder `sala_b0_fold` stays the baseline peer.
+//! STOA203: append builds through product sign+line; elder sign/format bodies
+//! underneath. Glow-authored crypto jets and elder-replay body stay held.
 //!
 //!   rye build linengrow/glow_sala_b0_fold_witness.rye \
 //!     -femit-bin=linengrow/bin/glow_sala_b0_fold_witness

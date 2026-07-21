@@ -1,0 +1,24 @@
+format session-log-v1
+stamp 20260721.190850
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — UDT (UTC) time convention
+title STOA201-204 send · STOA205 check-in
+prompt send and check in
+think Send STOA201-204 sign line append compose digest honesty to pier origin and codeberg.
+think Suite GREEN before send: sign line append replay fold.
+think Seat STOA205 check-in: A rest recommended · B B3 desk · C replay-body inventory · D JABS3 held.
+obs Thin product-surface season from STOA200 closed; next needs a named lean. No lean chosen this turn.
+file linengrow/glow_sala_b0_sign.rye STOA201
+file linengrow/glow_sala_b0_line.rye STOA202
+file linengrow/glow_sala_b0_append.rye STOA203
+file linengrow/glow_sala_b0_replay.rye STOA204
+file active-designing/20260721-190850_stoa205-after-digest-honesty-checkin.md check-in
+file work-in-progress/REMEMBER.md Now STOA205
+file work-in-progress/TASKS.md STOA205 open
+file work-in-progress/ROADMAP.md STOA205
+file docs/STOA.md STOA205 open
+product_nib Sala-B0-Glow-digest-honesty
+suite_nib STOA0-204
+recommend check-in name lean A rest or B B3 or C replay inventory; D JABS3 held

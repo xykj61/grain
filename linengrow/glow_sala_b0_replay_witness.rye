@@ -1,4 +1,4 @@
-//! linengrow/glow_sala_b0_replay_witness.rye — proves Glow replay port over elder.
+//! linengrow/glow_sala_b0_replay_witness.rye — proves Glow replay + digest honesty.
 //!
 //!   rye build linengrow/glow_sala_b0_replay_witness.rye \
 //!     -femit-bin=linengrow/bin/glow_sala_b0_replay_witness
@@ -10,10 +10,12 @@ const print = std.debug.print;
 const rc = @import("receipt_core.rye");
 const fixture = @import("glow_sala_b0_demo_fixture.rye");
 const digest = @import("glow_sala_b0_digest.rye");
+const append = @import("glow_sala_b0_append.rye");
 const replay = @import("glow_sala_b0_replay.rye");
 const claim = @import("glow_sala_b0_claim.rye");
+const elder = @import("sala_b0_fold.rye");
 
-const witness_version = "20260721.183126";
+const witness_version = "20260721.190637";
 
 fn run_selftest() !u8 {
     assert(fixture.root_pin_agrees());
@@ -28,12 +30,21 @@ fn run_selftest() !u8 {
     assert(std.mem.eql(u8, hex[0..], fixture.expected_demo_root_hex));
     print("sala-b0-replay: claim_replay_demo_root matches fixture -- GREEN\n", .{});
 
+    const len = try append.append_demo_log(&log_buf);
+    const product = try digest.claim_digest_log(log_buf[0..len]);
+    assert(std.mem.eql(u8, &root, &product));
+    print("sala-b0-replay: product digest agrees replay claim -- GREEN\n", .{});
+
     const fold_root = try claim.claim_demo_fold();
     assert(std.mem.eql(u8, &root, &fold_root));
     print("sala-b0-replay: replay root agrees claim_demo_fold -- GREEN\n", .{});
 
+    const elder_root = try elder.run_demo_fold();
+    assert(std.mem.eql(u8, &root, &elder_root));
+    print("sala-b0-replay: replay root agrees elder run_demo_fold -- GREEN\n", .{});
+
     print("sala-b0-replay: version {s}\n", .{witness_version});
-    print("GREEN: Glow Sala B0 replay port — STOA196; elder replay behind Glow assert.\n", .{});
+    print("GREEN: Glow Sala B0 replay port — STOA204; product digest honesty on claim path.\n", .{});
     return 0;
 }
 

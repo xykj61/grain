@@ -2,9 +2,10 @@
 //!
 //! STOA185: owns the product assert surface (expected root pin + claim).
 //! STOA191: NativeActivity `onCreate` calls `claim_demo_fold`.
-//! STOA197: composes append + replay ports (fixture pins → elder append/replay)
-//! instead of calling elder `run_demo_fold` directly. Elder fold stays as peer
-//! baseline; fold rewrite (Glow-authored fold body) stays held.
+//! STOA197: composes append + replay ports instead of elder `run_demo_fold`.
+//! STOA203: append path is sign+line compose; elder replay body still underneath.
+//! STOA204: replay claim also digests via product digest surface.
+//! Elder fold stays as peer baseline; Glow-authored fold body stays held.
 //!
 //!   rye build linengrow/glow_sala_b0_claim_witness.rye \
 //!     -femit-bin=linengrow/bin/glow_sala_b0_claim_witness

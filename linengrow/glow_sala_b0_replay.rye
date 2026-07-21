@@ -2,6 +2,9 @@
 //!
 //! STOA196: owns demo-log replay (verify · order · digest) while calling elder
 //! `replay`. Builds the log via glow_sala_b0_append. Fold rewrite stays held.
+//! STOA203: append path carries sign+line errors into ReplayError.
+//! STOA204: claim path also digests via glow_sala_b0_digest and refuses unless
+//! that root equals elder replay roots (product digest honesty).
 //!
 //!   rye build linengrow/glow_sala_b0_replay_witness.rye \
 //!     -femit-bin=linengrow/bin/glow_sala_b0_replay_witness
@@ -16,9 +19,9 @@ const fixture = @import("glow_sala_b0_demo_fixture.rye");
 const append = @import("glow_sala_b0_append.rye");
 const digest = @import("glow_sala_b0_digest.rye");
 
-pub const replay_version = "20260721.183126";
+pub const replay_version = "20260721.190637";
 
-pub const ReplayError = sala.SessionError || digest.DigestError || error{RootMismatch};
+pub const ReplayError = append.AppendError || digest.DigestError || error{RootMismatch};
 
 pub const ReplayResult = sala.ReplayResult;
 
@@ -32,7 +35,8 @@ pub fn replay(
     return sala.replay(log, actor_hex, actor_pk);
 }
 
-/// Build the three-event demo log, replay twice, assert roots agree and match fixture.
+/// Build the three-event demo log, replay twice, assert roots agree; digest via
+/// product surface and refuse unless that root matches replay + fixture.
 pub fn claim_replay_demo_root(log_buf: *[rc.max_log_len]u8) ReplayError![32]u8 {
     const actor_kp = kumara.keypair_from_seed(&mc.issuer_seed);
     var actor_hex: [mc.pubkey_hex_len]u8 = undefined;
@@ -47,5 +51,10 @@ pub fn claim_replay_demo_root(log_buf: *[rc.max_log_len]u8) ReplayError![32]u8 {
     assert(r2.last_seq == 3);
     assert(std.mem.eql(u8, &r1.root, &r2.root));
     if (!digest.root_matches_fixture(&r1.root)) return error.RootMismatch;
-    return r1.root;
+
+    // STOA204: product digest surface owns the claim assert (elder digest still
+    // inside sala.replay; this path must agree bit-for-bit).
+    const product_root = try digest.claim_digest_log(log_buf[0..len]);
+    if (!std.mem.eql(u8, &product_root, &r1.root)) return error.RootMismatch;
+    return product_root;
 }

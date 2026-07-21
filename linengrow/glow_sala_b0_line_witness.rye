@@ -1,0 +1,39 @@
+//! linengrow/glow_sala_b0_line_witness.rye — proves Glow log-line product surface.
+//!
+//!   rye build linengrow/glow_sala_b0_line_witness.rye \
+//!     -femit-bin=linengrow/bin/glow_sala_b0_line_witness
+//!   linengrow/bin/glow_sala_b0_line_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const rc = @import("receipt_core.rye");
+const fixture = @import("glow_sala_b0_demo_fixture.rye");
+const line = @import("glow_sala_b0_line.rye");
+
+const witness_version = "20260721.190240";
+
+fn run_selftest() !u8 {
+    assert(fixture.root_pin_agrees());
+    print("sala-b0-line: fixture root pin seated -- GREEN\n", .{});
+
+    var line_buf: [rc.max_line_len]u8 = undefined;
+    const line_len = try line.claim_demo_line(&line_buf);
+    assert(line_len > 0);
+    assert(line_buf[line_len - 1] == '\n');
+    print("sala-b0-line: claim_demo_line format/parse/verify -- GREEN\n", .{});
+    print("sala-b0-line: line len -- {d}\n", .{line_len});
+
+    // Refuse: strip trailing newline content into garbage parse.
+    const bad = line.parse_log_line("not-a-line\n", line_buf[0..64], line_buf[64..]);
+    assert(bad == error.InvalidLine);
+    print("sala-b0-line: bad line refuses parse -- GREEN\n", .{});
+
+    print("sala-b0-line: version {s}\n", .{witness_version});
+    print("GREEN: Glow Sala B0 line surface — STOA202; elder format/parse behind Glow assert.\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}
