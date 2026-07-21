@@ -1,0 +1,14 @@
+format session-log-v1
+stamp 20260721.004449
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu Framework 16 AMD — UDT (Etc/UTC)
+title STOA157 send then kg hepta-shape
+prompt send then kg
+think Send STOA157 hexa-shape, then kg lean A: STOA158 hepta-shape ≡ hepta-mold.
+obs Alias path continues toward octa and nona.
+recommend keep-going STOA158 hepta-shape after send
+product_nib SETU6.5-live-sent
+suite_nib STOA0-157
+git_nib pending-send

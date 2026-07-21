@@ -19,6 +19,7 @@
 //! STOA154: closed allowlist alias `triple-shape` ≡ `triple-mold` (Glow OS shape word · TripleMold).
 //! STOA155: closed allowlist alias `quad-shape` ≡ `quad-mold` (Glow OS shape word · QuadMold).
 //! STOA156: closed allowlist alias `penta-shape` ≡ `penta-mold` (Glow OS shape word · PentaMold).
+//! STOA157: closed allowlist alias `hexa-shape` ≡ `hexa-mold` (Glow OS shape word · HexaMold).
 //! STOA120 / STOA130: expansion calls `assert_sample_nesting_nests(false, …)` (stated no-op).
 //! STOA122: closed allowlist adds `count-mold` beside `amount-mold`.
 //! STOA123: closed allowlist adds unit `$%` `kind-mold` (identity lower).

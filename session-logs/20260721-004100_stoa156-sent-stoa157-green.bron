@@ -1,0 +1,14 @@
+format session-log-v1
+stamp 20260721.004100
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu Framework 16 AMD — UDT (Etc/UTC)
+title STOA156 sent · STOA157 GREEN
+prompt send then kg
+think Sent STOA156 penta-shape (4c86c751e2); kg lean A hexa-shape — GREEN at 20260721.004052.
+obs Alias path continues; next check-in hepta-shape.
+recommend check-in STOA158 hepta-shape · rename · Sala
+product_nib SETU6.5-live-sent
+suite_nib STOA0-157-unsent
+git_nib 4c86c751e2
