@@ -586,7 +586,9 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA169 shape-penta dual GREEN, `20260721.011729`** — five-field `$:` dual `shape-penta` → `PentaShape`; mold-penta kept; cast held. Brief [`active-designing/20260721-011729_stoa169-shape-penta-dual-desk.md`](../active-designing/20260721-011729_stoa169-shape-penta-dual-desk.md).
 
-**STOA170 shape-hexa dual GREEN, `20260721.012029`** — six-field `$:` dual `shape-hexa` → `HexaShape`; mold-hexa kept; cast held. Brief [`active-designing/20260721-012029_stoa170-shape-hexa-dual-desk.md`](../active-designing/20260721-012029_stoa170-shape-hexa-dual-desk.md). Next language: **STOA171** `shape-hepta` dual.
+**STOA170 shape-hexa dual GREEN, `20260721.012029`** — six-field `$:` dual `shape-hexa` → `HexaShape`; mold-hexa kept; cast held. Brief [`active-designing/20260721-012029_stoa170-shape-hexa-dual-desk.md`](../active-designing/20260721-012029_stoa170-shape-hexa-dual-desk.md).
+
+**STOA171 shape-hepta dual GREEN, `20260721.012229`** — seven-field `$:` dual `shape-hepta` → `HeptaShape`; mold-hepta kept; cast held. Brief [`active-designing/20260721-012229_stoa171-shape-hepta-dual-desk.md`](../active-designing/20260721-012229_stoa171-shape-hepta-dual-desk.md). Next language: **STOA172** `shape-octa` dual.
 
 **Framework next (host resume), `20260720.231857`** — lean A: live SETU6.5 **sent** eyes on real `usb0`/`ncm`. Lab TX gate already GREEN; Sala B0 Glow rewrite · JABS3 stay thicker check-ins. Same freeze brief.
 
