@@ -6,8 +6,8 @@
 **Version:** `20260721.005729` (UDT · Framework host)  
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
 **Voice:** Quin  
-**Status:** Vision / check-in — awaiting lean before kg  
-**Register:** Mixed (Two Rooms) — ladder GREEN through STOA160; next lap is a scope choice  
+**Status:** Checkable — lean **A** chosen `20260721.010211`; dual desk brief follows  
+**Register:** Mixed (Two Rooms) — ladder GREEN through STOA160; lean A opens inventary + duals  
 **Grounds in:** [`20260721-005327_stoa160-nona-shape-alias.md`](20260721-005327_stoa160-nona-shape-alias.md) · [`20260720-223226_glow-os-shape-not-mold.md`](20260720-223226_glow-os-shape-not-mold.md) · counsel against whole-tree sed `20260721.001244`
 
 **dated_guard:** Do **not** rewrite dated mold briefs or force-push history. Any rename is forward-only living surface.
