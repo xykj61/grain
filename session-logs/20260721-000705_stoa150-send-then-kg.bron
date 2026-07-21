@@ -1,0 +1,16 @@
+format session-log-v1
+stamp 20260721.000705
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu Framework 16 AMD — UDT (Etc/UTC)
+title STOA150 send then kg kind-shape
+prompt send then kg
+think Send STOA150 pair-shape, then kg lean A: STOA151 kind-shape ≡ kind-mold (first $% shape alias).
+think kind-shape needs is_kind_named_mold so lower emits KindMold, same pattern as pair-shape.
+obs Shape language now covers one-field · multi-field · tagged unit paths once kind-shape greens.
+file glow/gen/gate-pair-shape.glow STOA150 seat
+recommend keep-going STOA151 kind-shape after send
+product_nib SETU6.5-live-sent
+suite_nib STOA0-150
+git_nib pending-send
