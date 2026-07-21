@@ -1,0 +1,25 @@
+format session-log-v1
+stamp 20260721.183253
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — UDT (UTC) time convention
+title STOA196 send · STOA197 claim compose GREEN
+prompt send and approve next rec
+think Send STOA196 replay port to pier origin and codeberg.
+think Next rec compose claim_demo_fold onto append+replay; break fixture→claim import cycle.
+think Witness claim agrees elder fold; stoa191 pack GREEN; Glow fold body still held.
+obs Product path now runs fixture→append→replay→claim without calling run_demo_fold; elder fold remains peer baseline.
+file linengrow/glow_sala_b0_claim.rye claim_demo_fold via replay
+file linengrow/glow_sala_b0_demo_fixture.rye drop claim import
+file linengrow/glow_sala_b0_claim_witness.rye STOA197 elder agree
+file tools/glow_sala_b0_claim_witness.rish STOA197 asserts
+file active-designing/20260721-183253_stoa197-claim-compose-append-replay.md brief
+file work-in-progress/TASKS.md STOA197 checked
+file work-in-progress/ROADMAP.md STOA197 GREEN
+file work-in-progress/REMEMBER.md Now STOA197
+file docs/STOA.md STOA0-197
+git_nib 02357d9cec
+product_nib Sala-B0-Glow-claim-compose
+suite_nib STOA0-197
+recommend check-in Glow fold body Pixel or rest; or send STOA197

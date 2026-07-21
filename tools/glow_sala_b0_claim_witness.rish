@@ -1,4 +1,4 @@
-# glow_sala_b0_claim_witness.rish — Glow claim shell over elder sala_b0_fold (STOA185).
+# glow_sala_b0_claim_witness.rish — Glow claim shell composed on append+replay (STOA197).
 #
 #   rishi/bin/rishi run tools/glow_sala_b0_claim_witness.rish
 
@@ -13,7 +13,8 @@ assert selftest.ok else "glow_sala_b0_claim_witness exited non-zero"
 assert selftest.out contains "GREEN" else "glow_sala_b0_claim_witness not GREEN"
 assert selftest.out contains "expected root pin seated" else "glow_sala_b0_claim_witness missing root pin"
 assert selftest.out contains "claim_demo_fold matches product root" else "glow_sala_b0_claim_witness missing claim"
-assert selftest.out contains "STOA185" else "glow_sala_b0_claim_witness missing STOA185"
+assert selftest.out contains "compose agrees elder run_demo_fold" else "glow_sala_b0_claim_witness missing elder agree"
+assert selftest.out contains "STOA197" else "glow_sala_b0_claim_witness missing STOA197"
 assert selftest.out contains "99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe" else "glow_sala_b0_claim_witness missing expected hex"
 
-say "GREEN: Glow Sala B0 claim shell — elder run_demo_fold behind Glow assert; STOA185."
+say "GREEN: Glow Sala B0 claim shell — append+replay compose; STOA197."

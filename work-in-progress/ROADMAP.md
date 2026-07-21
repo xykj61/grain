@@ -644,7 +644,9 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA195 append thin port GREEN, `20260721.182950`** — `append_demo_log` · `claim_append_demo_root` over elder `append_event`; agrees claim fold. Brief [`active-designing/20260721-182950_stoa195-append-thin-port.md`](../active-designing/20260721-182950_stoa195-append-thin-port.md). Sent `c60f3ae46e`.
 
-**STOA196 replay thin port GREEN, `20260721.183126`** — `claim_replay_demo_root` over elder `replay`; double replay · fixture root; agrees claim fold. Brief [`active-designing/20260721-183126_stoa196-replay-thin-port.md`](../active-designing/20260721-183126_stoa196-replay-thin-port.md). Next check-in: compose claim onto append+replay · Pixel eyes · rest. JABS3 held.
+**STOA196 replay thin port GREEN, `20260721.183126`** — `claim_replay_demo_root` over elder `replay`; double replay · fixture root; agrees claim fold. Brief [`active-designing/20260721-183126_stoa196-replay-thin-port.md`](../active-designing/20260721-183126_stoa196-replay-thin-port.md). Sent `02357d9cec`.
+
+**STOA197 claim compose append+replay GREEN, `20260721.183253`** — `claim_demo_fold` via ports; agrees elder `run_demo_fold`; pack GREEN. Brief [`active-designing/20260721-183253_stoa197-claim-compose-append-replay.md`](../active-designing/20260721-183253_stoa197-claim-compose-append-replay.md). Next check-in: Glow fold body · Pixel eyes · rest. JABS3 held.
 
 
 **Framework next (host resume), `20260720.231857`** — lean A: live SETU6.5 **sent** eyes on real `usb0`/`ncm`. Lab TX gate already GREEN; Sala B0 Glow rewrite · JABS3 stay thicker check-ins. Same freeze brief.
