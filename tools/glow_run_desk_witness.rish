@@ -634,11 +634,22 @@ assert moldpair.ok else "glow_run mold-pair.glow failed"
 assert moldpair.out contains "GREEN" else "glow_run mold-pair.glow not GREEN"
 assert moldpair.out contains "mold-pair.glow" else "glow_run mold-pair claim missing path"
 
-# STOA163: Glow OS primary dual — shape-pair beside mold-pair (cast twins held).
+# STOA163: Glow OS primary dual — shape-pair beside mold-pair.
 let shapepair = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/shape-pair.glow"]
 assert shapepair.ok else "glow_run shape-pair.glow failed"
 assert shapepair.out contains "GREEN" else "glow_run shape-pair.glow not GREEN"
 assert shapepair.out contains "shape-pair.glow" else "glow_run shape-pair claim missing path"
+
+# STOA175: multi-field named-cast cast twins for pair-shape.
+let castnamedpairshape = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cast-named-pair-shape.glow"]
+assert castnamedpairshape.ok else "glow_run cast-named-pair-shape.glow failed"
+assert castnamedpairshape.out contains "GREEN" else "glow_run cast-named-pair-shape.glow not GREEN"
+assert castnamedpairshape.out contains "cast-named-pair-shape.glow" else "glow_run cast-named-pair-shape claim missing path"
+
+let castimportpairshape = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cast-import-pair-shape.glow"]
+assert castimportpairshape.ok else "glow_run cast-import-pair-shape.glow failed"
+assert castimportpairshape.out contains "GREEN" else "glow_run cast-import-pair-shape.glow not GREEN"
+assert castimportpairshape.out contains "cast-import-pair-shape.glow" else "glow_run cast-import-pair-shape claim missing path"
 
 let moldkind = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/mold-kind.glow"]
 assert moldkind.ok else "glow_run mold-kind.glow failed"

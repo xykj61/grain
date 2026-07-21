@@ -98,7 +98,9 @@ fn run_selftest(init: std.process.Init) !u8 {
     const n = try lower.lower_source_welcome(desk_src, &buf);
     assert(std.mem.indexOf(u8, buf[0..n], "pub const AmountMold") != null);
     assert(std.mem.indexOf(u8, buf[0..n], "named-cast resolve") != null);
-    assert(std.mem.indexOf(u8, buf[0..n], "amount = raw") != null);
+    // STOA175: multi-field-ready emit uses demo vals (one-field still amount = 5).
+    assert(std.mem.indexOf(u8, buf[0..n], ".amount = 5") != null);
+    assert(std.mem.indexOf(u8, buf[0..n], "casted.amount == 5") != null);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/cast_named_amount_welcome.rye", .data = buf[0..n] });
     print("lower: +$ amount-mold + ^- amount-mold emits AmountMold cast -- GREEN\n", .{});
     print("lower: same-desk mold-body via tokens.named_cast_parts -- GREEN\n", .{});

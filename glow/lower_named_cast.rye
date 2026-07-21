@@ -8,6 +8,7 @@
 //! STOA87: TAME tidy — assert · u32 · copy_disjoint · split emitters.
 //! STOA93: cross-desk parse walks `tokens.cross_desk_parts` (lexer→lower).
 //! STOA94: same-desk mold-body span via `tokens.named_cast_parts`.
+//! STOA175: multi-field `$:` named-cast (pair…nona) — full struct emit · demo vals.
 //!
 //!   +$  kind-mold
 //!     $%  [%mint ~]
@@ -37,6 +38,8 @@ pub const LowerError = rm.ParseError || error{
 };
 
 pub const named_cast_demo: u32 = 5;
+/// Demo faces for multi-field `$:` named-cast (matches lower_mold.mold_demo_vals).
+pub const named_cast_demo_vals: [rm.max_fields]u32 = .{ 5, 3, 7, 2, 7, 4, 6, 8, 9 };
 
 /// Cross-desk `/+ <stem>` then `^- <mold>`.
 /// Invariant: stem_len <= max_stem_len; cast_mold_len <= rm.max_name_len.
@@ -141,7 +144,9 @@ pub fn bind_cross_desk(spec: *const CrossDeskSpec, lib_src: []const u8) LowerErr
     if (!std.mem.eql(u8, cast_mold_slice(spec), mold_name)) return error.CastMoldMismatch;
     switch (mold_spec.body) {
         .tuple => {
-            if (mold_spec.field_count != 1) return error.NamedCastNeedsTuple;
+            // STOA175: one- through nine-field `$:` (capacity freeze).
+            if (mold_spec.field_count == 0 or mold_spec.field_count > rm.max_fields)
+                return error.NamedCastNeedsTuple;
         },
         .tagged => {},
     }
@@ -157,37 +162,54 @@ fn append_print(out: []u8, used: *u32, comptime fmt: []const u8, args: anytype) 
     used.* += n;
 }
 
-fn emit_tuple_cast(mold_name: []const u8, cast_mold: []const u8, field: []const u8, out: []u8) LowerError!u32 {
+fn emit_tuple_cast(spec: *const rm.MoldSpec, cast_mold: []const u8, out: []u8) LowerError!u32 {
+    const mold_name = rm.name_slice(spec);
+    const n: u32 = @intCast(spec.field_count);
+    assert(n >= 1 and n <= rm.max_fields); // precondition: closed `$:` capacity
     var zt: [rm.max_name_len]u8 = undefined;
-    var zf: [rm.max_name_len]u8 = undefined;
     const tn = try zig_type_name(mold_name, &zt);
-    const fn_len = try zig_safe_ident(field, &zf);
     var used: u32 = 0;
     try append_print(out, &used,
         \\const std = @import("std");
         \\
-        \\/// Lowered from Glow `+$ {s}` + `^-  {s}` — named-cast resolve (STOA77).
+        \\/// Lowered from Glow `+$ {s}` + `^-  {s}` — named-cast resolve (STOA77/175).
         \\pub const {s} = struct {{
-        \\    {s}: u32 = 0,
+        \\
+    , .{ mold_name, cast_mold, zt[0..@as(usize, @intCast(tn))] });
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        var zf: [rm.max_name_len]u8 = undefined;
+        const fl = try zig_safe_ident(rm.field_slice(spec, @as(usize, @intCast(i))), &zf);
+        try append_print(out, &used, "    {s}: u32 = 0,\n", .{zf[0..@as(usize, @intCast(fl))]});
+    }
+    try append_print(out, &used,
         \\}};
         \\
         \\pub fn main(_: std.process.Init) !u8 {{
-        \\    const raw: u32 = {d};
-        \\    const casted: {s} = .{{ .{s} = raw }};
-        \\    return if (casted.{s} == {d}) 0 else 1;
-        \\}}
+        \\    const casted: {s} = .{{
         \\
-    , .{
-        mold_name,
-        cast_mold,
-        zt[0..@as(usize, @intCast(tn))],
-        zf[0..@as(usize, @intCast(fn_len))],
-        named_cast_demo,
-        zt[0..@as(usize, @intCast(tn))],
-        zf[0..@as(usize, @intCast(fn_len))],
-        zf[0..@as(usize, @intCast(fn_len))],
-        named_cast_demo,
-    });
+    , .{zt[0..@as(usize, @intCast(tn))]});
+    i = 0;
+    while (i < n) : (i += 1) {
+        var zf: [rm.max_name_len]u8 = undefined;
+        const fl = try zig_safe_ident(rm.field_slice(spec, @as(usize, @intCast(i))), &zf);
+        try append_print(out, &used, "        .{s} = {d},\n", .{
+            zf[0..@as(usize, @intCast(fl))],
+            named_cast_demo_vals[@as(usize, @intCast(i))],
+        });
+    }
+    try append_print(out, &used, "    }};\n    return if (", .{});
+    i = 0;
+    while (i < n) : (i += 1) {
+        var zf: [rm.max_name_len]u8 = undefined;
+        const fl = try zig_safe_ident(rm.field_slice(spec, @as(usize, @intCast(i))), &zf);
+        if (i != 0) try append_print(out, &used, " and ", .{});
+        try append_print(out, &used, "casted.{s} == {d}", .{
+            zf[0..@as(usize, @intCast(fl))],
+            named_cast_demo_vals[@as(usize, @intCast(i))],
+        });
+    }
+    try append_print(out, &used, ") 0 else 1;\n}}\n", .{});
     return used;
 }
 
@@ -346,8 +368,9 @@ pub fn lower_source_welcome(src: []const u8, out: []u8) LowerError!u32 {
 
     return switch (mold_spec.body) {
         .tuple => {
-            if (mold_spec.field_count != 1) return error.NamedCastNeedsTuple;
-            return emit_tuple_cast(mold_name, cast_mold, rm.first_field_slice(&mold_spec), out);
+            if (mold_spec.field_count == 0 or mold_spec.field_count > rm.max_fields)
+                return error.NamedCastNeedsTuple;
+            return emit_tuple_cast(&mold_spec, cast_mold, out);
         },
         .tagged => {
             if (rm.any_payload(&mold_spec)) return emit_tagged_payload_cast(&mold_spec, cast_mold, out);
@@ -358,25 +381,21 @@ pub fn lower_source_welcome(src: []const u8, out: []u8) LowerError!u32 {
 
 fn emit_cross_tuple(spec: *const CrossDeskSpec, mold_spec: *const rm.MoldSpec, out: []u8) LowerError!u32 {
     const mold_name = rm.name_slice(mold_spec);
-    const field = rm.first_field_slice(mold_spec);
+    const n: u32 = @intCast(mold_spec.field_count);
+    assert(n >= 1 and n <= rm.max_fields); // precondition: closed `$:` capacity
     var zs: [max_stem_len]u8 = undefined;
     var zt: [rm.max_name_len]u8 = undefined;
-    var zf: [rm.max_name_len]u8 = undefined;
     const sn = try zig_stem(spec, &zs);
     const tn = try zig_type_name(mold_name, &zt);
-    const fn_len = try zig_safe_ident(field, &zf);
     const at = "@";
     var used: u32 = 0;
     try append_print(out, &used,
         \\const std = {s}import("std");
         \\const lib = {s}import("{s}.rye");
         \\
-        \\/// Lowered from Glow `/+ {s}` + `^-  {s}` — cross-desk named-cast (STOA79).
+        \\/// Lowered from Glow `/+ {s}` + `^-  {s}` — cross-desk named-cast (STOA79/175).
         \\pub fn main(_: std.process.Init) !u8 {{
-        \\    const raw: u32 = {d};
-        \\    const casted: lib.{s} = .{{ .{s} = raw }};
-        \\    return if (casted.{s} == {d}) 0 else 1;
-        \\}}
+        \\    const casted: lib.{s} = .{{
         \\
     , .{
         at,
@@ -384,12 +403,29 @@ fn emit_cross_tuple(spec: *const CrossDeskSpec, mold_spec: *const rm.MoldSpec, o
         zs[0..@as(usize, @intCast(sn))],
         stem_slice(spec),
         cast_mold_slice(spec),
-        named_cast_demo,
         zt[0..@as(usize, @intCast(tn))],
-        zf[0..@as(usize, @intCast(fn_len))],
-        zf[0..@as(usize, @intCast(fn_len))],
-        named_cast_demo,
     });
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        var zf: [rm.max_name_len]u8 = undefined;
+        const fl = try zig_safe_ident(rm.field_slice(mold_spec, @as(usize, @intCast(i))), &zf);
+        try append_print(out, &used, "        .{s} = {d},\n", .{
+            zf[0..@as(usize, @intCast(fl))],
+            named_cast_demo_vals[@as(usize, @intCast(i))],
+        });
+    }
+    try append_print(out, &used, "    }};\n    return if (", .{});
+    i = 0;
+    while (i < n) : (i += 1) {
+        var zf: [rm.max_name_len]u8 = undefined;
+        const fl = try zig_safe_ident(rm.field_slice(mold_spec, @as(usize, @intCast(i))), &zf);
+        if (i != 0) try append_print(out, &used, " and ", .{});
+        try append_print(out, &used, "casted.{s} == {d}", .{
+            zf[0..@as(usize, @intCast(fl))],
+            named_cast_demo_vals[@as(usize, @intCast(i))],
+        });
+    }
+    try append_print(out, &used, ") 0 else 1;\n}}\n", .{});
     return used;
 }
 
