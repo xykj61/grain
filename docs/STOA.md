@@ -1,4 +1,7 @@
-# STOA — Glow SLC · nest · product · ≤80 · STOA0–160 GREEN · 2026-07-21 · draw → **STOA**
+# STOA — Glow SLC · nest · product · ≤80 · STOA0–174 GREEN · 2026-07-21 · draw → **STOA**
+
+Living Glow OS desks lead with `shape-*` (inventary duals STOA161–173; pin polish STOA174). Mold twins stay for Hoon study.
+
 | Rung | Claim | Witness / gate | State |
 |------|-------|----------------|-------|
 | **STOA0–31** | Rune heads · desk hop · cells · `%` calls · truth · `/+` · core | `glow_run_desk` · `glow_expr` · compose | **GREEN** through `20260718.235530` |
@@ -21,4 +24,5 @@
 | **STOA171** | `shape-hepta` dual desk | `glow_run` | **GREEN** `012229` |
 | **STOA172** | `shape-octa` dual desk | `glow_run` | **GREEN** `012414` |
 | **STOA173** | `shape-nona` dual · inventary closed | `glow_run` | **GREEN** `012555` |
+| **STOA174** | living pin polish · shape primary | LEXICON · pins | **GREEN** `013023` |
 Smoke: `glow_nest_type_witness` · `glow_barket_parse_witness` · `glow_lower_bartis_witness` · Sibling: **ZETA** · **LULU** · **SETU** · **TUBE**.

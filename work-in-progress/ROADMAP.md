@@ -594,7 +594,9 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA173 shape-nona dual GREEN, `20260721.012555`** — nine-field `$:` dual `shape-nona` → `NonaShape`; closes multi-field dual ladder and inventary through capacity freeze; cast held. Brief [`active-designing/20260721-012555_stoa173-shape-nona-dual-desk.md`](../active-designing/20260721-012555_stoa173-shape-nona-dual-desk.md).
 
-**STOA174 check-in, `20260721.012555`** — inventary duals closed. Leans: **A** living prose/pin polish (recommended) · **B** multi-field named-cast · **C** Sala B0 · **D** rest. Brief [`active-designing/20260721-012555_stoa174-after-dual-inventary-checkin.md`](../active-designing/20260721-012555_stoa174-after-dual-inventary-checkin.md). Awaiting Keaton's lean before kg.
+**STOA174 check-in, `20260721.012555`** — inventary duals closed. Leans: **A** living prose/pin polish (recommended) · **B** multi-field named-cast · **C** Sala B0 · **D** rest. Brief [`active-designing/20260721-012555_stoa174-after-dual-inventary-checkin.md`](../active-designing/20260721-012555_stoa174-after-dual-inventary-checkin.md).
+
+**STOA174 living pin polish GREEN, `20260721.013023`** — lean A: living pins lead with `shape-*` (LEXICON · STOA · glow README · vocabulary brief accretion); mold twins stay study; `MoldSpec` / Zig `*Mold` held. Brief [`active-designing/20260721-013023_stoa174-living-pin-polish-shape-primary.md`](../active-designing/20260721-013023_stoa174-living-pin-polish-shape-primary.md). Next language: **STOA175** check-in (named-cast · Sala · rest).
 
 **Framework next (host resume), `20260720.231857`** — lean A: live SETU6.5 **sent** eyes on real `usb0`/`ncm`. Lab TX gate already GREEN; Sala B0 Glow rewrite · JABS3 stay thicker check-ins. Same freeze brief.
 
@@ -607,6 +609,8 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 **SETU6.5 live-sent attempt stand-in, `20260720.233109`** — lean A approved; full SETU6/6.5 device-free + onpath host paths GREEN stand-in/SKIP; `adb devices` empty; no `usb0`/`ncm`. Live **sent** eyes pending Pixel USB tethering/NCM or QEMU. Brief [`active-designing/20260720-233109_setu65-live-sent-attempt-stand-in.md`](../active-designing/20260720-233109_setu65-live-sent-attempt-stand-in.md).
 
 **Glow OS shape vocabulary seated, `20260720.223226`** — living prose: **shape** is the Glow OS / citizen word for a bounded normalizer; **mold** stays Hoon study and today's desk suffix until a rename lap. Brief [`active-designing/20260720-223226_glow-os-shape-not-mold.md`](../active-designing/20260720-223226_glow-os-shape-not-mold.md) · LEXICON Shape · Mold rows.
+
+**Glow OS shape inventary duals + pin polish, `20260721.012555`–`013023`** — every `mold-*` desk has a `shape-*` dual (STOA161–173); living pins lead with shape (STOA174 lean A). Mold twins kept; `MoldSpec` held.
 
 **Glow OS · Glow Desk · Glow Glass seated, `20260717.183622`** — Keaton: **Glow OS** unifies; **Glow Desk** = desktop; **Glow Glass** = mobile. Lexicon + silo [`../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md`](../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md). Orientation firmware stays check-in.
 
