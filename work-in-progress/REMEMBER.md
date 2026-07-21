@@ -2,27 +2,26 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260721.181551` (UDT) · voice Quin  
-**Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · **Sala B0 Glow**  
-**Language nib:** **STOA0–190** GREEN · ShapeSpec · living shape · `$%` payload · claim · sala cast  
-**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–190  
-**Git nib:** (send this pack)  
+**Last refreshed:** `20260721.181903` (UDT) · voice Quin  
+**Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · **Sala B0 Glow claim**  
+**Language nib:** **STOA0–191** GREEN · ShapeSpec · claim wire · `$%` payload · sala cast  
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–191  
+**Git nib:** *(refresh after send)* · STOA191 claim wire  
 
-**Season:** Framework · UDT · Sala B0 Glow · mold→shape surface GREEN · SETU6.5 live-sent GREEN.  
+**Season:** Framework · UDT · NativeActivity claims through Glow shell · SETU6.5 live-sent GREEN.  
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`
 
 ---
 
 ## Now
 
-**STOA190** `20260721.181551` — remaining mold→shape GREEN. Brief [`../active-designing/20260721-181551_stoa190-remaining-mold-to-shape.md`](../active-designing/20260721-181551_stoa190-remaining-mold-to-shape.md).
+**STOA191** `20260721.181903` — NativeActivity claim wire GREEN. Brief [`../active-designing/20260721-181903_stoa191-native-claim-wire.md`](../active-designing/20260721-181903_stoa191-native-claim-wire.md).
 
-**Next** — check-in: NativeActivity claim wire · rest. JABS3 held.
+**Next** — check-in: rest · JABS3 held. Pixel eyes on claim path optional.
 
 ```bash
 export RYE_ZIG=vendor/zig-toolchain/zig
-rishi/bin/rishi run tools/glow_lower_shape_witness.rish
-glow/bin/lower_bartis_witness
+rishi/bin/rishi run tools/stoa191_native_claim_wire_witness.rish
 ```
 
 ---
@@ -31,7 +30,7 @@ glow/bin/lower_bartis_witness
 
 | Door | Kind |
 |------|------|
-| NativeActivity claim wire | **check-in** (product) |
+| Rest / next language season | **check-in** |
 | JABS3 inference · economics | **check-in** (held) |
 | SETU6.5 live-sent | **GREEN** `20260720.233805` |
 

@@ -2,6 +2,7 @@
 //!
 //! STOA185: owns the product assert surface (expected root pin + claim)
 //! while still calling elder `run_demo_fold`. Fold rewrite stays held.
+//! STOA191: NativeActivity `onCreate` calls `claim_demo_fold` (not raw fold).
 //! Seated beside the elder fold (same rye module path) until Glow earns
 //! a cross-tree import story; the Glow name is the product surface.
 //!
