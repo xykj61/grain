@@ -1,0 +1,10 @@
+::  Same-desk named-cast — +$ sala-event-shape then ^- sala-event-shape (STOA186).
+::  Mixed @ux peers · @u32 amount · @t memo/stamp; no mold twin this lap.
++$  sala-event-shape
+  $:  from=@ux
+      to=@ux
+      amount=@u32
+      memo=@t
+      stamp=@t
+  ==
+^-  sala-event-shape

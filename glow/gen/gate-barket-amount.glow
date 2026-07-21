@@ -1,4 +1,4 @@
-::  Thin barket — sample=amount-mold returns sample (STOA118).
+::  Thin barket — sample=amount-shape returns sample (STOA118).
 ::  amount-mold is the closed one-field $: named mold (≡ @u32 lower).
-|^  sample=amount-mold
+|^  sample=amount-shape
 sample

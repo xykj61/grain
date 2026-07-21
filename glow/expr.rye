@@ -33,7 +33,7 @@ pub const ParseError = error{
     ExprNotYetLowered,
     BadIdent,
     AuraNotYetLowered,
-    NamedMoldNotYetLowered,
+    NamedShapeNotYetLowered,
 };
 
 pub const Kind = enum { face, literal, cast_literal, lent_of, mix_of, jam_of, cue_of };
@@ -178,7 +178,7 @@ fn parse_ident(rest: []const u8) ParseError!struct { ident: []const u8, rest: []
 
 pub fn zig_type_for_mold(mold: []const u8) ParseError![]const u8 {
     if (mold.len == 0) return error.MalformedExpr;
-    if (mold[0] != '@') return error.NamedMoldNotYetLowered;
+    if (mold[0] != '@') return error.NamedShapeNotYetLowered;
     if (std.mem.eql(u8, mold, "@u8")) return "u8";
     if (std.mem.eql(u8, mold, "@u16")) return "u16";
     if (std.mem.eql(u8, mold, "@u32")) return "u32";

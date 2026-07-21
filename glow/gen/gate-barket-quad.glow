@@ -1,4 +1,4 @@
-::  Thin barket Glow gate — sample=quad-mold returns sample (STOA135).
-::  quad-mold is the closed four-field $: named mold (QuadMold struct · baked from 5 amount 3 fee 1 nonce 2).
-|^  sample=quad-mold
+::  Thin barket Glow gate — sample=quad-shape returns sample (STOA135).
+::  quad-mold is the closed four-field $: named mold (QuadShape struct · baked from 5 amount 3 fee 1 nonce 2).
+|^  sample=quad-shape
 sample

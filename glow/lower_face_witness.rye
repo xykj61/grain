@@ -57,11 +57,11 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("lower: bare face over nested ^- @u8 welcome -- GREEN\n", .{});
 
     if (lower.lower_line_welcome("=/  next-root=@u32  ^-  @u8  7", &buf)) |_| {
-        return error.CastMoldMismatchAccepted;
+        return error.CastShapeMismatchAccepted;
     } else |err| {
-        if (err != lower.LowerError.CastMoldMismatch) return err;
+        if (err != lower.LowerError.CastShapeMismatch) return err;
     }
-    print("lower: face mold vs cast mold CastMoldMismatch refused -- GREEN\n", .{});
+    print("lower: face mold vs cast mold CastShapeMismatch refused -- GREEN\n", .{});
 
     const n_u64 = try lower.lower_line_welcome("=/  next-root=@u64  ^-  @u64  42", &buf);
     const rye_u64 = buf[0..n_u64];
@@ -77,9 +77,9 @@ fn run_selftest(init: std.process.Init) !u8 {
     if (lower.lower_line_welcome("=/  cur-record=record", &buf)) |_| {
         return error.NamedMoldLoweredTooSoon;
     } else |err| {
-        if (err != lower.LowerError.NamedMoldNotYetLowered) return err;
+        if (err != lower.LowerError.NamedShapeNotYetLowered) return err;
     }
-    print("lower: \"=/  cur-record=record\" refused NamedMoldNotYetLowered -- GREEN\n", .{});
+    print("lower: \"=/  cur-record=record\" refused NamedShapeNotYetLowered -- GREEN\n", .{});
 
     const n_lent = try lower.lower_line_welcome("=/  n=@u32  (lent records)", &buf);
     const rye_lent = buf[0..n_lent];

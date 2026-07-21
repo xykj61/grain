@@ -7,8 +7,8 @@
 //! STOA93: cross-desk named-cast parse joins the lexer→lower seam
 //! (`cross_desk_parts`).
 //! STOA94: same-desk named-cast mold-body span via `named_cast_parts`.
-//! STOA95: mold-only `+$` dispatch peek via `looks_like_mold_only`.
-//! STOA97: `rune_mold.parse_source` consumes this stream → MoldSpec.
+//! STOA95: mold-only `+$` dispatch peek via `looks_like_shape_only`.
+//! STOA97: `rune_shape.parse_source` consumes this stream → ShapeSpec.
 //! STOA176: `named_cast_parts` line budget 4–12 (field_count+3 ≤ freeze).
 //! STOA180: `@t` cord aura lex (bound in nest_type).
 //! STOA183: `@ux` hex aura lex (bound in nest_type).
@@ -24,7 +24,7 @@ const assert = std.debug.assert;
 
 /// Desk token budget — one fixed array; overflow is TooManyTokens.
 pub const max_tokens: u32 = 64;
-/// Ident / tag name ceiling (matches rune_mold.max_name_len).
+/// Ident / tag name ceiling (matches rune_shape.max_name_len).
 pub const max_name_len: u32 = 64;
 /// Hosted desk read ceiling (glow_run limited(64 * 1024)).
 pub const max_src_len: u32 = 64 * 1024;
@@ -409,7 +409,7 @@ pub fn looks_like_cross_desk(src: []const u8) bool {
 /// True when the token stream is a mold-only `+$` … `==` desk (STOA95 peek).
 /// 3–11 Glow lines (STOA168: capacity freeze ≤9 `$:` faces → field_count+2), head `+$`,
 /// last line is not `^-` (named-cast wins first in glow_run).
-pub fn looks_like_mold_only(src: []const u8) bool {
+pub fn looks_like_shape_only(src: []const u8) bool {
     var buf: [max_tokens]Token = undefined;
     const n = tokenize(src, &buf) catch return false;
     assert(n <= max_tokens); // postcondition: tokenize bound

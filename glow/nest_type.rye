@@ -20,17 +20,17 @@
 //!   - STOA146: closed allowlist adds nine-field `$:` `nona-mold`
 //!   - STOA148: Glow OS shape alias `amount-shape` ≡ `amount-mold` (one-field `$:` / `@u32`)
 //!   - STOA149: Glow OS shape alias `count-shape` ≡ `count-mold` (one-field `$:` / `@u32`)
-//!   - STOA150: Glow OS shape alias `pair-shape` ≡ `pair-mold` (two-field `$:` / PairMold)
-//!   - STOA151: Glow OS shape alias `kind-shape` ≡ `kind-mold` (unit `$%` / KindMold)
-//!   - STOA152: Glow OS shape alias `xact-shape` ≡ `xact-mold` (payload `$%` / XactMold)
-//!   - STOA153: Glow OS shape alias `xfer-shape` ≡ `xfer-mold` (multi-face payload `$%` / XferMold)
-//!   - STOA154: Glow OS shape alias `triple-shape` ≡ `triple-mold` (three-field `$:` / TripleMold)
-//!   - STOA155: Glow OS shape alias `quad-shape` ≡ `quad-mold` (four-field `$:` / QuadMold)
-//!   - STOA156: Glow OS shape alias `penta-shape` ≡ `penta-mold` (five-field `$:` / PentaMold)
-//!   - STOA157: Glow OS shape alias `hexa-shape` ≡ `hexa-mold` (six-field `$:` / HexaMold)
-//!   - STOA158: Glow OS shape alias `hepta-shape` ≡ `hepta-mold` (seven-field `$:` / HeptaMold)
-//!   - STOA159: Glow OS shape alias `octa-shape` ≡ `octa-mold` (eight-field `$:` / OctaMold)
-//!   - STOA160: Glow OS shape alias `nona-shape` ≡ `nona-mold` (nine-field `$:` / NonaMold) — closes multi-field shape ladder at capacity freeze
+//!   - STOA150: Glow OS shape alias `pair-shape` ≡ `pair-mold` (two-field `$:` / PairShape)
+//!   - STOA151: Glow OS shape alias `kind-shape` ≡ `kind-mold` (unit `$%` / KindShape)
+//!   - STOA152: Glow OS shape alias `xact-shape` ≡ `xact-mold` (payload `$%` / XactShape)
+//!   - STOA153: Glow OS shape alias `xfer-shape` ≡ `xfer-mold` (multi-face payload `$%` / XferShape)
+//!   - STOA154: Glow OS shape alias `triple-shape` ≡ `triple-mold` (three-field `$:` / TripleShape)
+//!   - STOA155: Glow OS shape alias `quad-shape` ≡ `quad-mold` (four-field `$:` / QuadShape)
+//!   - STOA156: Glow OS shape alias `penta-shape` ≡ `penta-mold` (five-field `$:` / PentaShape)
+//!   - STOA157: Glow OS shape alias `hexa-shape` ≡ `hexa-mold` (six-field `$:` / HexaShape)
+//!   - STOA158: Glow OS shape alias `hepta-shape` ≡ `hepta-mold` (seven-field `$:` / HeptaShape)
+//!   - STOA159: Glow OS shape alias `octa-shape` ≡ `octa-mold` (eight-field `$:` / OctaShape)
+//!   - STOA160: Glow OS shape alias `nona-shape` ≡ `nona-mold` (nine-field `$:` / NonaShape) — closes multi-field shape ladder at capacity freeze
 //! Ambient gold / free polymorphism · open `$:` beyond nona stay held (capacity freeze at 9).
 //!
 //! Bartis calls nesting-nests stated (`false`). Barket calls nesting-nests nesting (`true`).
@@ -38,7 +38,7 @@
 
 const std = @import("std");
 const assert = std.debug.assert;
-const rune_mold = @import("rune_mold.rye");
+const rune_shape = @import("rune_shape.rye");
 
 pub const nest_type_version = "20260721.171227";
 
@@ -50,44 +50,44 @@ pub const aura_ux_max_bytes: u32 = 32;
 /// Closed named shapes welcome in gate samples (citizen desks lead with `-shape`; study twins keep `-mold`).
 /// `$:` one-field ≡ `@u32`: amount · count · amount-shape · count-shape. `$:` two-field: pair · pair-shape. `$:` three-field: triple · triple-shape.
 /// `$:` four-field: quad · quad-shape. `$:` five-field: penta · penta-shape. `$:` six-field: hexa · hexa-shape. `$:` seven-field: hepta · hepta-shape. `$:` eight-field: octa · octa-shape. `$:` nine-field: nona · nona-shape. Unit `$%`: kind · kind-shape. Payload `$%`: xact · xact-shape. Multi-face payload `$%`: xfer · xfer-shape.
-pub const bartis_named_mold_amount = "amount-mold";
+pub const bartis_named_study_amount = "amount-mold";
 /// STOA148: Glow OS shape-language alias — same one-field `$:` / `@u32` lower as `amount-mold`.
 pub const bartis_named_shape_amount = "amount-shape";
-pub const bartis_named_mold_count = "count-mold";
+pub const bartis_named_study_count = "count-mold";
 /// STOA149: Glow OS shape-language alias — same one-field `$:` / `@u32` lower as `count-mold`.
 pub const bartis_named_shape_count = "count-shape";
-pub const bartis_named_mold_kind = "kind-mold";
-/// STOA151: Glow OS shape-language alias — same unit `$%` / KindMold lower as `kind-mold`.
+pub const bartis_named_study_kind = "kind-mold";
+/// STOA151: Glow OS shape-language alias — same unit `$%` / KindShape lower as `kind-mold`.
 pub const bartis_named_shape_kind = "kind-shape";
-pub const bartis_named_mold_xact = "xact-mold";
-/// STOA152: Glow OS shape-language alias — same payload `$%` / XactMold lower as `xact-mold`.
+pub const bartis_named_study_xact = "xact-mold";
+/// STOA152: Glow OS shape-language alias — same payload `$%` / XactShape lower as `xact-mold`.
 pub const bartis_named_shape_xact = "xact-shape";
-pub const bartis_named_mold_xfer = "xfer-mold";
-/// STOA153: Glow OS shape-language alias — same multi-face payload `$%` / XferMold lower as `xfer-mold`.
+pub const bartis_named_study_xfer = "xfer-mold";
+/// STOA153: Glow OS shape-language alias — same multi-face payload `$%` / XferShape lower as `xfer-mold`.
 pub const bartis_named_shape_xfer = "xfer-shape";
-pub const bartis_named_mold_pair = "pair-mold";
-/// STOA150: Glow OS shape-language alias — same two-field `$:` / PairMold lower as `pair-mold`.
+pub const bartis_named_study_pair = "pair-mold";
+/// STOA150: Glow OS shape-language alias — same two-field `$:` / PairShape lower as `pair-mold`.
 pub const bartis_named_shape_pair = "pair-shape";
-pub const bartis_named_mold_triple = "triple-mold";
-/// STOA154: Glow OS shape-language alias — same three-field `$:` / TripleMold lower as `triple-mold`.
+pub const bartis_named_study_triple = "triple-mold";
+/// STOA154: Glow OS shape-language alias — same three-field `$:` / TripleShape lower as `triple-mold`.
 pub const bartis_named_shape_triple = "triple-shape";
-pub const bartis_named_mold_quad = "quad-mold";
-/// STOA155: Glow OS shape-language alias — same four-field `$:` / QuadMold lower as `quad-mold`.
+pub const bartis_named_study_quad = "quad-mold";
+/// STOA155: Glow OS shape-language alias — same four-field `$:` / QuadShape lower as `quad-mold`.
 pub const bartis_named_shape_quad = "quad-shape";
-pub const bartis_named_mold_penta = "penta-mold";
-/// STOA156: Glow OS shape-language alias — same five-field `$:` / PentaMold lower as `penta-mold`.
+pub const bartis_named_study_penta = "penta-mold";
+/// STOA156: Glow OS shape-language alias — same five-field `$:` / PentaShape lower as `penta-mold`.
 pub const bartis_named_shape_penta = "penta-shape";
-pub const bartis_named_mold_hexa = "hexa-mold";
-/// STOA157: Glow OS shape-language alias — same six-field `$:` / HexaMold lower as `hexa-mold`.
+pub const bartis_named_study_hexa = "hexa-mold";
+/// STOA157: Glow OS shape-language alias — same six-field `$:` / HexaShape lower as `hexa-mold`.
 pub const bartis_named_shape_hexa = "hexa-shape";
-pub const bartis_named_mold_hepta = "hepta-mold";
-/// STOA158: Glow OS shape-language alias — same seven-field `$:` / HeptaMold lower as `hepta-mold`.
+pub const bartis_named_study_hepta = "hepta-mold";
+/// STOA158: Glow OS shape-language alias — same seven-field `$:` / HeptaShape lower as `hepta-mold`.
 pub const bartis_named_shape_hepta = "hepta-shape";
-pub const bartis_named_mold_octa = "octa-mold";
-/// STOA159: Glow OS shape-language alias — same eight-field `$:` / OctaMold lower as `octa-mold`.
+pub const bartis_named_study_octa = "octa-mold";
+/// STOA159: Glow OS shape-language alias — same eight-field `$:` / OctaShape lower as `octa-mold`.
 pub const bartis_named_shape_octa = "octa-shape";
-pub const bartis_named_mold_nona = "nona-mold";
-/// STOA160: Glow OS shape-language alias — same nine-field `$:` / NonaMold lower as `nona-mold`.
+pub const bartis_named_study_nona = "nona-mold";
+/// STOA160: Glow OS shape-language alias — same nine-field `$:` / NonaShape lower as `nona-mold`.
 pub const bartis_named_shape_nona = "nona-shape";
 
 pub const NestError = error{
@@ -119,227 +119,227 @@ fn tag_name(tag: []const u8) []const u8 {
     return tag;
 }
 
-/// Assert `tag` nests under a `$%` MoldSpec (unit membership).
+/// Assert `tag` nests under a `$%` ShapeSpec (unit membership).
 /// `tag` may be bare (`mint`) or percent-spelled (`%mint`).
-pub fn assert_tag_nests(tag: []const u8, spec: *const rune_mold.MoldSpec) NestError!void {
+pub fn assert_tag_nests(tag: []const u8, spec: *const rune_shape.ShapeSpec) NestError!void {
     assert(tag.len > 0); // precondition: tag token non-empty
     const name = tag_name(tag);
     assert(name.len > 0); // precondition: bare tag non-empty after strip
     if (spec.body != .tagged) return error.SampleDoesNotNest;
     var i: usize = 0;
     while (i < spec.field_count) : (i += 1) {
-        if (std.mem.eql(u8, rune_mold.field_slice(spec, i), name)) return;
+        if (std.mem.eql(u8, rune_shape.field_slice(spec, i), name)) return;
     }
     return error.SampleDoesNotNest;
 }
 
 /// Assert `mold_name` is on the closed gate-sample allowlist (STOA109 · STOA122–126 · STOA134–135 · STOA138 · STOA140 · STOA142 · STOA144 · STOA146 · STOA148–160).
-pub fn assert_bartis_named_mold(mold_name: []const u8) NestError!void {
+pub fn assert_bartis_named_shape(mold_name: []const u8) NestError!void {
     assert(mold_name.len > 0); // precondition: shape name non-empty
-    if (std.mem.eql(u8, mold_name, bartis_named_mold_amount)) return;
+    if (std.mem.eql(u8, mold_name, bartis_named_study_amount)) return;
     if (std.mem.eql(u8, mold_name, bartis_named_shape_amount)) return;
-    if (std.mem.eql(u8, mold_name, bartis_named_mold_count)) return;
+    if (std.mem.eql(u8, mold_name, bartis_named_study_count)) return;
     if (std.mem.eql(u8, mold_name, bartis_named_shape_count)) return;
-    if (std.mem.eql(u8, mold_name, bartis_named_mold_kind)) return;
+    if (std.mem.eql(u8, mold_name, bartis_named_study_kind)) return;
     if (std.mem.eql(u8, mold_name, bartis_named_shape_kind)) return;
-    if (std.mem.eql(u8, mold_name, bartis_named_mold_xact)) return;
+    if (std.mem.eql(u8, mold_name, bartis_named_study_xact)) return;
     if (std.mem.eql(u8, mold_name, bartis_named_shape_xact)) return;
-    if (std.mem.eql(u8, mold_name, bartis_named_mold_xfer)) return;
+    if (std.mem.eql(u8, mold_name, bartis_named_study_xfer)) return;
     if (std.mem.eql(u8, mold_name, bartis_named_shape_xfer)) return;
-    if (std.mem.eql(u8, mold_name, bartis_named_mold_pair)) return;
+    if (std.mem.eql(u8, mold_name, bartis_named_study_pair)) return;
     if (std.mem.eql(u8, mold_name, bartis_named_shape_pair)) return;
-    if (std.mem.eql(u8, mold_name, bartis_named_mold_triple)) return;
+    if (std.mem.eql(u8, mold_name, bartis_named_study_triple)) return;
     if (std.mem.eql(u8, mold_name, bartis_named_shape_triple)) return;
-    if (std.mem.eql(u8, mold_name, bartis_named_mold_quad)) return;
+    if (std.mem.eql(u8, mold_name, bartis_named_study_quad)) return;
     if (std.mem.eql(u8, mold_name, bartis_named_shape_quad)) return;
-    if (std.mem.eql(u8, mold_name, bartis_named_mold_penta)) return;
+    if (std.mem.eql(u8, mold_name, bartis_named_study_penta)) return;
     if (std.mem.eql(u8, mold_name, bartis_named_shape_penta)) return;
-    if (std.mem.eql(u8, mold_name, bartis_named_mold_hexa)) return;
+    if (std.mem.eql(u8, mold_name, bartis_named_study_hexa)) return;
     if (std.mem.eql(u8, mold_name, bartis_named_shape_hexa)) return;
-    if (std.mem.eql(u8, mold_name, bartis_named_mold_hepta)) return;
+    if (std.mem.eql(u8, mold_name, bartis_named_study_hepta)) return;
     if (std.mem.eql(u8, mold_name, bartis_named_shape_hepta)) return;
-    if (std.mem.eql(u8, mold_name, bartis_named_mold_octa)) return;
+    if (std.mem.eql(u8, mold_name, bartis_named_study_octa)) return;
     if (std.mem.eql(u8, mold_name, bartis_named_shape_octa)) return;
-    if (std.mem.eql(u8, mold_name, bartis_named_mold_nona)) return;
+    if (std.mem.eql(u8, mold_name, bartis_named_study_nona)) return;
     if (std.mem.eql(u8, mold_name, bartis_named_shape_nona)) return;
     return error.SampleDoesNotNest;
 }
 
 /// True when `mold_name` is the closed unit `$%` kind-mold or its Glow OS shape alias.
-pub fn is_kind_named_mold(mold_name: []const u8) bool {
-    if (std.mem.eql(u8, mold_name, bartis_named_mold_kind)) return true;
+pub fn is_kind_named_shape(mold_name: []const u8) bool {
+    if (std.mem.eql(u8, mold_name, bartis_named_study_kind)) return true;
     return std.mem.eql(u8, mold_name, bartis_named_shape_kind);
 }
 
 /// True when `mold_name` is the closed payload `$%` xact-mold or its Glow OS shape alias.
-pub fn is_xact_named_mold(mold_name: []const u8) bool {
-    if (std.mem.eql(u8, mold_name, bartis_named_mold_xact)) return true;
+pub fn is_xact_named_shape(mold_name: []const u8) bool {
+    if (std.mem.eql(u8, mold_name, bartis_named_study_xact)) return true;
     return std.mem.eql(u8, mold_name, bartis_named_shape_xact);
 }
 
 /// True when `mold_name` is the closed multi-face payload `$%` xfer-mold or its Glow OS shape alias.
-pub fn is_xfer_named_mold(mold_name: []const u8) bool {
-    if (std.mem.eql(u8, mold_name, bartis_named_mold_xfer)) return true;
+pub fn is_xfer_named_shape(mold_name: []const u8) bool {
+    if (std.mem.eql(u8, mold_name, bartis_named_study_xfer)) return true;
     return std.mem.eql(u8, mold_name, bartis_named_shape_xfer);
 }
 
 /// True when `mold_name` is the closed multi-field `$:` pair-mold or its Glow OS shape alias.
-pub fn is_pair_named_mold(mold_name: []const u8) bool {
-    if (std.mem.eql(u8, mold_name, bartis_named_mold_pair)) return true;
+pub fn is_pair_named_shape(mold_name: []const u8) bool {
+    if (std.mem.eql(u8, mold_name, bartis_named_study_pair)) return true;
     return std.mem.eql(u8, mold_name, bartis_named_shape_pair);
 }
 
 /// True when `mold_name` is the closed three-field `$:` triple-mold or its Glow OS shape alias.
-pub fn is_triple_named_mold(mold_name: []const u8) bool {
-    if (std.mem.eql(u8, mold_name, bartis_named_mold_triple)) return true;
+pub fn is_triple_named_shape(mold_name: []const u8) bool {
+    if (std.mem.eql(u8, mold_name, bartis_named_study_triple)) return true;
     return std.mem.eql(u8, mold_name, bartis_named_shape_triple);
 }
 
 /// True when `mold_name` is the closed four-field `$:` quad-mold or its Glow OS shape alias.
-pub fn is_quad_named_mold(mold_name: []const u8) bool {
-    if (std.mem.eql(u8, mold_name, bartis_named_mold_quad)) return true;
+pub fn is_quad_named_shape(mold_name: []const u8) bool {
+    if (std.mem.eql(u8, mold_name, bartis_named_study_quad)) return true;
     return std.mem.eql(u8, mold_name, bartis_named_shape_quad);
 }
 
 /// True when `mold_name` is the closed five-field `$:` penta-mold or its Glow OS shape alias.
-pub fn is_penta_named_mold(mold_name: []const u8) bool {
-    if (std.mem.eql(u8, mold_name, bartis_named_mold_penta)) return true;
+pub fn is_penta_named_shape(mold_name: []const u8) bool {
+    if (std.mem.eql(u8, mold_name, bartis_named_study_penta)) return true;
     return std.mem.eql(u8, mold_name, bartis_named_shape_penta);
 }
 
 /// True when `mold_name` is the closed six-field `$:` hexa-mold or its Glow OS shape alias.
-pub fn is_hexa_named_mold(mold_name: []const u8) bool {
-    if (std.mem.eql(u8, mold_name, bartis_named_mold_hexa)) return true;
+pub fn is_hexa_named_shape(mold_name: []const u8) bool {
+    if (std.mem.eql(u8, mold_name, bartis_named_study_hexa)) return true;
     return std.mem.eql(u8, mold_name, bartis_named_shape_hexa);
 }
 
 /// True when `mold_name` is the closed seven-field `$:` hepta-mold or its Glow OS shape alias.
-pub fn is_hepta_named_mold(mold_name: []const u8) bool {
-    if (std.mem.eql(u8, mold_name, bartis_named_mold_hepta)) return true;
+pub fn is_hepta_named_shape(mold_name: []const u8) bool {
+    if (std.mem.eql(u8, mold_name, bartis_named_study_hepta)) return true;
     return std.mem.eql(u8, mold_name, bartis_named_shape_hepta);
 }
 
 /// True when `mold_name` is the closed eight-field `$:` octa-mold or its Glow OS shape alias.
-pub fn is_octa_named_mold(mold_name: []const u8) bool {
-    if (std.mem.eql(u8, mold_name, bartis_named_mold_octa)) return true;
+pub fn is_octa_named_shape(mold_name: []const u8) bool {
+    if (std.mem.eql(u8, mold_name, bartis_named_study_octa)) return true;
     return std.mem.eql(u8, mold_name, bartis_named_shape_octa);
 }
 
 /// True when `mold_name` is the closed nine-field `$:` nona-mold or its Glow OS shape alias.
-pub fn is_nona_named_mold(mold_name: []const u8) bool {
-    if (std.mem.eql(u8, mold_name, bartis_named_mold_nona)) return true;
+pub fn is_nona_named_shape(mold_name: []const u8) bool {
+    if (std.mem.eql(u8, mold_name, bartis_named_study_nona)) return true;
     return std.mem.eql(u8, mold_name, bartis_named_shape_nona);
 }
 
 /// True when any `$%` arm carries two or more payload faces.
-fn any_multi_face_payload(spec: *const rune_mold.MoldSpec) bool {
+fn any_multi_face_payload(spec: *const rune_shape.ShapeSpec) bool {
     var i: usize = 0;
     while (i < spec.field_count) : (i += 1) {
-        if (rune_mold.payload_count(spec, i) >= 2) return true;
+        if (rune_shape.payload_count(spec, i) >= 2) return true;
     }
     return false;
 }
 
-/// Assert `mold_name` nests under a one-field `$:` MoldSpec (amount/count one-field shape).
-pub fn assert_named_mold_nests(mold_name: []const u8, spec: *const rune_mold.MoldSpec) NestError!void {
-    if (is_kind_named_mold(mold_name) or is_xact_named_mold(mold_name) or is_xfer_named_mold(mold_name) or is_pair_named_mold(mold_name) or is_triple_named_mold(mold_name) or is_quad_named_mold(mold_name) or is_penta_named_mold(mold_name) or is_hexa_named_mold(mold_name) or is_hepta_named_mold(mold_name) or is_octa_named_mold(mold_name) or is_nona_named_mold(mold_name))
+/// Assert `mold_name` nests under a one-field `$:` ShapeSpec (amount/count one-field shape).
+pub fn assert_named_shape_nests(mold_name: []const u8, spec: *const rune_shape.ShapeSpec) NestError!void {
+    if (is_kind_named_shape(mold_name) or is_xact_named_shape(mold_name) or is_xfer_named_shape(mold_name) or is_pair_named_shape(mold_name) or is_triple_named_shape(mold_name) or is_quad_named_shape(mold_name) or is_penta_named_shape(mold_name) or is_hexa_named_shape(mold_name) or is_hepta_named_shape(mold_name) or is_octa_named_shape(mold_name) or is_nona_named_shape(mold_name))
         return error.SampleDoesNotNest;
-    try assert_bartis_named_mold(mold_name);
-    if (!std.mem.eql(u8, rune_mold.name_slice(spec), mold_name)) return error.SampleDoesNotNest;
+    try assert_bartis_named_shape(mold_name);
+    if (!std.mem.eql(u8, rune_shape.name_slice(spec), mold_name)) return error.SampleDoesNotNest;
     if (spec.body != .tuple) return error.SampleDoesNotNest;
     if (spec.field_count != 1) return error.SampleDoesNotNest;
 }
 
-/// Assert `mold_name` nests under a two-field `$:` MoldSpec (pair-mold · STOA126).
-pub fn assert_pair_mold_nests(mold_name: []const u8, spec: *const rune_mold.MoldSpec) NestError!void {
-    if (!is_pair_named_mold(mold_name)) return error.SampleDoesNotNest;
-    if (!std.mem.eql(u8, rune_mold.name_slice(spec), mold_name)) return error.SampleDoesNotNest;
+/// Assert `mold_name` nests under a two-field `$:` ShapeSpec (pair-mold · STOA126).
+pub fn assert_pair_shape_nests(mold_name: []const u8, spec: *const rune_shape.ShapeSpec) NestError!void {
+    if (!is_pair_named_shape(mold_name)) return error.SampleDoesNotNest;
+    if (!std.mem.eql(u8, rune_shape.name_slice(spec), mold_name)) return error.SampleDoesNotNest;
     if (spec.body != .tuple) return error.SampleDoesNotNest;
     if (spec.field_count != 2) return error.SampleDoesNotNest;
 }
 
-/// Assert `mold_name` nests under a three-field `$:` MoldSpec (triple-mold · STOA134).
-pub fn assert_triple_mold_nests(mold_name: []const u8, spec: *const rune_mold.MoldSpec) NestError!void {
-    if (!is_triple_named_mold(mold_name)) return error.SampleDoesNotNest;
-    if (!std.mem.eql(u8, rune_mold.name_slice(spec), mold_name)) return error.SampleDoesNotNest;
+/// Assert `mold_name` nests under a three-field `$:` ShapeSpec (triple-mold · STOA134).
+pub fn assert_triple_shape_nests(mold_name: []const u8, spec: *const rune_shape.ShapeSpec) NestError!void {
+    if (!is_triple_named_shape(mold_name)) return error.SampleDoesNotNest;
+    if (!std.mem.eql(u8, rune_shape.name_slice(spec), mold_name)) return error.SampleDoesNotNest;
     if (spec.body != .tuple) return error.SampleDoesNotNest;
     if (spec.field_count != 3) return error.SampleDoesNotNest;
 }
 
-/// Assert `mold_name` nests under a four-field `$:` MoldSpec (quad-mold · STOA135).
-pub fn assert_quad_mold_nests(mold_name: []const u8, spec: *const rune_mold.MoldSpec) NestError!void {
-    if (!is_quad_named_mold(mold_name)) return error.SampleDoesNotNest;
-    if (!std.mem.eql(u8, rune_mold.name_slice(spec), mold_name)) return error.SampleDoesNotNest;
+/// Assert `mold_name` nests under a four-field `$:` ShapeSpec (quad-mold · STOA135).
+pub fn assert_quad_shape_nests(mold_name: []const u8, spec: *const rune_shape.ShapeSpec) NestError!void {
+    if (!is_quad_named_shape(mold_name)) return error.SampleDoesNotNest;
+    if (!std.mem.eql(u8, rune_shape.name_slice(spec), mold_name)) return error.SampleDoesNotNest;
     if (spec.body != .tuple) return error.SampleDoesNotNest;
     if (spec.field_count != 4) return error.SampleDoesNotNest;
 }
 
-/// Assert `mold_name` nests under a five-field `$:` MoldSpec (penta-mold · STOA138).
-pub fn assert_penta_mold_nests(mold_name: []const u8, spec: *const rune_mold.MoldSpec) NestError!void {
-    if (!is_penta_named_mold(mold_name)) return error.SampleDoesNotNest;
-    if (!std.mem.eql(u8, rune_mold.name_slice(spec), mold_name)) return error.SampleDoesNotNest;
+/// Assert `mold_name` nests under a five-field `$:` ShapeSpec (penta-mold · STOA138).
+pub fn assert_penta_shape_nests(mold_name: []const u8, spec: *const rune_shape.ShapeSpec) NestError!void {
+    if (!is_penta_named_shape(mold_name)) return error.SampleDoesNotNest;
+    if (!std.mem.eql(u8, rune_shape.name_slice(spec), mold_name)) return error.SampleDoesNotNest;
     if (spec.body != .tuple) return error.SampleDoesNotNest;
     if (spec.field_count != 5) return error.SampleDoesNotNest;
 }
 
-/// Assert `mold_name` nests under a six-field `$:` MoldSpec (hexa-mold · STOA140).
-pub fn assert_hexa_mold_nests(mold_name: []const u8, spec: *const rune_mold.MoldSpec) NestError!void {
-    if (!is_hexa_named_mold(mold_name)) return error.SampleDoesNotNest;
-    if (!std.mem.eql(u8, rune_mold.name_slice(spec), mold_name)) return error.SampleDoesNotNest;
+/// Assert `mold_name` nests under a six-field `$:` ShapeSpec (hexa-mold · STOA140).
+pub fn assert_hexa_shape_nests(mold_name: []const u8, spec: *const rune_shape.ShapeSpec) NestError!void {
+    if (!is_hexa_named_shape(mold_name)) return error.SampleDoesNotNest;
+    if (!std.mem.eql(u8, rune_shape.name_slice(spec), mold_name)) return error.SampleDoesNotNest;
     if (spec.body != .tuple) return error.SampleDoesNotNest;
     if (spec.field_count != 6) return error.SampleDoesNotNest;
 }
 
-/// Assert `mold_name` nests under a seven-field `$:` MoldSpec (hepta-mold · STOA142).
-pub fn assert_hepta_mold_nests(mold_name: []const u8, spec: *const rune_mold.MoldSpec) NestError!void {
-    if (!is_hepta_named_mold(mold_name)) return error.SampleDoesNotNest;
-    if (!std.mem.eql(u8, rune_mold.name_slice(spec), mold_name)) return error.SampleDoesNotNest;
+/// Assert `mold_name` nests under a seven-field `$:` ShapeSpec (hepta-mold · STOA142).
+pub fn assert_hepta_shape_nests(mold_name: []const u8, spec: *const rune_shape.ShapeSpec) NestError!void {
+    if (!is_hepta_named_shape(mold_name)) return error.SampleDoesNotNest;
+    if (!std.mem.eql(u8, rune_shape.name_slice(spec), mold_name)) return error.SampleDoesNotNest;
     if (spec.body != .tuple) return error.SampleDoesNotNest;
     if (spec.field_count != 7) return error.SampleDoesNotNest;
 }
 
-/// Assert `mold_name` nests under an eight-field `$:` MoldSpec (octa-mold · STOA144).
-pub fn assert_octa_mold_nests(mold_name: []const u8, spec: *const rune_mold.MoldSpec) NestError!void {
-    if (!is_octa_named_mold(mold_name)) return error.SampleDoesNotNest;
-    if (!std.mem.eql(u8, rune_mold.name_slice(spec), mold_name)) return error.SampleDoesNotNest;
+/// Assert `mold_name` nests under an eight-field `$:` ShapeSpec (octa-mold · STOA144).
+pub fn assert_octa_shape_nests(mold_name: []const u8, spec: *const rune_shape.ShapeSpec) NestError!void {
+    if (!is_octa_named_shape(mold_name)) return error.SampleDoesNotNest;
+    if (!std.mem.eql(u8, rune_shape.name_slice(spec), mold_name)) return error.SampleDoesNotNest;
     if (spec.body != .tuple) return error.SampleDoesNotNest;
     if (spec.field_count != 8) return error.SampleDoesNotNest;
 }
 
-/// Assert `mold_name` nests under a nine-field `$:` MoldSpec (nona-mold · STOA146).
-pub fn assert_nona_mold_nests(mold_name: []const u8, spec: *const rune_mold.MoldSpec) NestError!void {
-    if (!is_nona_named_mold(mold_name)) return error.SampleDoesNotNest;
-    if (!std.mem.eql(u8, rune_mold.name_slice(spec), mold_name)) return error.SampleDoesNotNest;
+/// Assert `mold_name` nests under a nine-field `$:` ShapeSpec (nona-mold · STOA146).
+pub fn assert_nona_shape_nests(mold_name: []const u8, spec: *const rune_shape.ShapeSpec) NestError!void {
+    if (!is_nona_named_shape(mold_name)) return error.SampleDoesNotNest;
+    if (!std.mem.eql(u8, rune_shape.name_slice(spec), mold_name)) return error.SampleDoesNotNest;
     if (spec.body != .tuple) return error.SampleDoesNotNest;
     if (spec.field_count != 9) return error.SampleDoesNotNest;
 }
 
-/// Assert `mold_name` nests under a unit `$%` MoldSpec (kind-mold shape · STOA123).
-pub fn assert_kind_mold_nests(mold_name: []const u8, spec: *const rune_mold.MoldSpec) NestError!void {
-    if (!is_kind_named_mold(mold_name)) return error.SampleDoesNotNest;
-    if (!std.mem.eql(u8, rune_mold.name_slice(spec), mold_name)) return error.SampleDoesNotNest;
+/// Assert `mold_name` nests under a unit `$%` ShapeSpec (kind-mold shape · STOA123).
+pub fn assert_kind_shape_nests(mold_name: []const u8, spec: *const rune_shape.ShapeSpec) NestError!void {
+    if (!is_kind_named_shape(mold_name)) return error.SampleDoesNotNest;
+    if (!std.mem.eql(u8, rune_shape.name_slice(spec), mold_name)) return error.SampleDoesNotNest;
     if (spec.body != .tagged) return error.SampleDoesNotNest;
     if (spec.field_count < 1) return error.SampleDoesNotNest;
-    if (rune_mold.any_payload(spec)) return error.SampleDoesNotNest;
+    if (rune_shape.any_payload(spec)) return error.SampleDoesNotNest;
 }
 
-/// Assert `mold_name` nests under a one-face payload `$%` MoldSpec (xact-mold · STOA124).
-pub fn assert_xact_mold_nests(mold_name: []const u8, spec: *const rune_mold.MoldSpec) NestError!void {
-    if (!is_xact_named_mold(mold_name)) return error.SampleDoesNotNest;
-    if (!std.mem.eql(u8, rune_mold.name_slice(spec), mold_name)) return error.SampleDoesNotNest;
+/// Assert `mold_name` nests under a one-face payload `$%` ShapeSpec (xact-mold · STOA124).
+pub fn assert_xact_shape_nests(mold_name: []const u8, spec: *const rune_shape.ShapeSpec) NestError!void {
+    if (!is_xact_named_shape(mold_name)) return error.SampleDoesNotNest;
+    if (!std.mem.eql(u8, rune_shape.name_slice(spec), mold_name)) return error.SampleDoesNotNest;
     if (spec.body != .tagged) return error.SampleDoesNotNest;
     if (spec.field_count < 1) return error.SampleDoesNotNest;
-    if (!rune_mold.any_payload(spec)) return error.SampleDoesNotNest;
+    if (!rune_shape.any_payload(spec)) return error.SampleDoesNotNest;
     if (any_multi_face_payload(spec)) return error.SampleDoesNotNest;
 }
 
-/// Assert `mold_name` nests under a multi-face payload `$%` MoldSpec (xfer-mold · STOA125).
-pub fn assert_xfer_mold_nests(mold_name: []const u8, spec: *const rune_mold.MoldSpec) NestError!void {
-    if (!is_xfer_named_mold(mold_name)) return error.SampleDoesNotNest;
-    if (!std.mem.eql(u8, rune_mold.name_slice(spec), mold_name)) return error.SampleDoesNotNest;
+/// Assert `mold_name` nests under a multi-face payload `$%` ShapeSpec (xfer-mold · STOA125).
+pub fn assert_xfer_shape_nests(mold_name: []const u8, spec: *const rune_shape.ShapeSpec) NestError!void {
+    if (!is_xfer_named_shape(mold_name)) return error.SampleDoesNotNest;
+    if (!std.mem.eql(u8, rune_shape.name_slice(spec), mold_name)) return error.SampleDoesNotNest;
     if (spec.body != .tagged) return error.SampleDoesNotNest;
     if (spec.field_count < 1) return error.SampleDoesNotNest;
-    if (!rune_mold.any_payload(spec)) return error.SampleDoesNotNest;
+    if (!rune_shape.any_payload(spec)) return error.SampleDoesNotNest;
     if (!any_multi_face_payload(spec)) return error.SampleDoesNotNest;
 }
 
@@ -363,7 +363,7 @@ pub fn assert_sample_nesting_nests(is_nesting: bool, sample: []const u8, stated_
         try assert_aura_nests(sample, stated_mold);
         return;
     }
-    try assert_bartis_named_mold(sample);
-    try assert_bartis_named_mold(stated_mold);
+    try assert_bartis_named_shape(sample);
+    try assert_bartis_named_shape(stated_mold);
     if (!std.mem.eql(u8, sample, stated_mold)) return error.SampleDoesNotNest;
 }

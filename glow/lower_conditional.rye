@@ -22,7 +22,7 @@ pub const LowerError = rif.ParseError || expr.ParseError || error{
     BadIdent,
     MalformedArms,
     AuraNotYetLowered,
-    NamedMoldNotYetLowered,
+    NamedShapeNotYetLowered,
 };
 
 pub const gth_welcome_tick: u32 = 40;

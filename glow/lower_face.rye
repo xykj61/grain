@@ -18,11 +18,11 @@ pub const LowerError = rf.ParseError || expr.ParseError || error{
     Overflow,
     EmptySource,
     BadIdent,
-    NamedMoldNotYetLowered,
+    NamedShapeNotYetLowered,
     AuraNotYetLowered,
     ValueNotYetLowered,
     MalformedValue,
-    CastMoldMismatch,
+    CastShapeMismatch,
 };
 
 pub const face_default_value: u32 = 7;
@@ -91,7 +91,7 @@ fn zig_safe_ident(face: []const u8, out: *[rf.max_name_len]u8) LowerError!usize 
 
 fn zig_type_for_mold(mold: []const u8) LowerError![]const u8 {
     if (mold.len == 0) return "u32";
-    if (mold[0] != '@') return error.NamedMoldNotYetLowered;
+    if (mold[0] != '@') return error.NamedShapeNotYetLowered;
     if (std.mem.eql(u8, mold, "@u8")) return "u8";
     if (std.mem.eql(u8, mold, "@u16")) return "u16";
     if (std.mem.eql(u8, mold, "@u32")) return "u32";
@@ -127,7 +127,7 @@ fn map_expr_err(err: expr.ParseError) LowerError {
         error.Overflow => error.Overflow,
         error.BadIdent => error.BadIdent,
         error.AuraNotYetLowered => error.AuraNotYetLowered,
-        error.NamedMoldNotYetLowered => error.NamedMoldNotYetLowered,
+        error.NamedShapeNotYetLowered => error.NamedShapeNotYetLowered,
     };
 }
 
@@ -1713,7 +1713,7 @@ fn lower_line(line: []const u8, welcome: bool, out: []u8) LowerError!u32 {
         },
         .cast_literal => {
             const cast_mold = cast_mold_slice(&bound);
-            if (mold.len != 0 and !std.mem.eql(u8, mold, cast_mold)) return error.CastMoldMismatch;
+            if (mold.len != 0 and !std.mem.eql(u8, mold, cast_mold)) return error.CastShapeMismatch;
             const zig_ty = try zig_type_for_mold(cast_mold);
             if (std.mem.eql(u8, zig_ty, "u64")) {
                 return emit_cast_u64(face, mold, zig_face, cast_mold, bound.lit, welcome, out);

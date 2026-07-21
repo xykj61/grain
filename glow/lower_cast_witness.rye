@@ -56,9 +56,9 @@ fn run_selftest(init: std.process.Init) !u8 {
     if (lower.lower_line_welcome("^-  record", &buf)) |_| {
         return error.NamedMoldLoweredTooSoon;
     } else |err| {
-        if (err != lower.LowerError.NamedMoldNotYetLowered) return err;
+        if (err != lower.LowerError.NamedShapeNotYetLowered) return err;
     }
-    print("lower: \"^-  record\" refused NamedMoldNotYetLowered -- GREEN\n", .{});
+    print("lower: \"^-  record\" refused NamedShapeNotYetLowered -- GREEN\n", .{});
 
     if (lower.lower_line_welcome("^-  @ux", &buf)) |_| {
         return error.AuraLoweredTooSoon;

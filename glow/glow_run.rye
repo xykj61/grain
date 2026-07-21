@@ -39,7 +39,7 @@ const lower_compose_core_payload = @import("lower_compose_core_payload.rye");
 const lower_compose_lib = @import("lower_compose_lib.rye");
 const lower_multi_typed = @import("lower_multi_typed.rye");
 const lower_core = @import("lower_core.rye");
-const lower_mold = @import("lower_mold.rye");
+const lower_shape = @import("lower_shape.rye");
 const lower_named_cast = @import("lower_named_cast.rye");
 const lower_bartis = @import("lower_bartis.rye");
 const lower_barket = @import("lower_barket.rye");
@@ -111,11 +111,11 @@ pub fn main(init: std.process.Init) !u8 {
 
     // STOA168: mold-only desks (≤9 `$:` faces) bypass the bare multi-line budget.
     // Named-cast already returned above when its peek is true.
-    if (!sample_argv and lower_mold.looks_like_mold_only(src) and
+    if (!sample_argv and lower_shape.looks_like_shape_only(src) and
         !lower_named_cast.looks_like_cross_desk(src))
     {
         var mold_buf: [4096]u8 = undefined;
-        const mold_len = lower_mold.lower_source_welcome(src, &mold_buf) catch |err| {
+        const mold_len = lower_shape.lower_source_welcome(src, &mold_buf) catch |err| {
             print("glow_run: mold lower failed ({s})\n", .{@errorName(err)});
             return 1;
         };
@@ -176,7 +176,7 @@ pub fn main(init: std.process.Init) !u8 {
                     return 1;
                 };
                 var lib_buf: [4096]u8 = undefined;
-                const lib_len = lower_mold.lower_source_library(lib_src, &lib_buf) catch |err| {
+                const lib_len = lower_shape.lower_source_library(lib_src, &lib_buf) catch |err| {
                     print("glow_run: cross-desk mold library lower failed ({s})\n", .{@errorName(err)});
                     return 1;
                 };
@@ -193,8 +193,8 @@ pub fn main(init: std.process.Init) !u8 {
                     return 1;
                 };
             }
-            if (lower_mold.looks_like_mold_only(src)) {
-                break :blk lower_mold.lower_source_welcome(src, &rye_buf) catch |err| {
+            if (lower_shape.looks_like_shape_only(src)) {
+                break :blk lower_shape.lower_source_welcome(src, &rye_buf) catch |err| {
                     print("glow_run: mold lower failed ({s})\n", .{@errorName(err)});
                     return 1;
                 };

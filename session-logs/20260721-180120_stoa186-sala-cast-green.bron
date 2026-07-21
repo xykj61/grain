@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260721.180120
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — UDT (UTC) time convention
+title STOA186 sala-event cast twin GREEN
+prompt approve your rec
+think sent STOA185 c13f652fe0 · lean A cast-named-sala-event.glow · desk witness pin
+obs glow_run cast twin GREEN · shape-sala-event still GREEN · mixed @ux/@u32/@t
+file glow/gen/cast-named-sala-event.glow cast twin desk
+file tools/glow_run_desk_witness.rish STOA186 pin
+file active-designing/20260721-180054_stoa186-sala-event-cast-twin.md brief
+recommend check-in say send to ship STOA186 then lean next ($% / NA claim wire / rest)
+product_nib Sala B0 Glow
+suite_nib STOA0-186
+git_nib c13f652fe0

@@ -67,7 +67,7 @@ pub const LowerError = rf.ParseError || expr.ParseError || lower_multi.LowerErro
     BadIdent,
     NotAJamCueCompose,
     SampleMismatch,
-    MoldNotU32,
+    UnsupportedShapeAura,
     MalformedValue,
     ValueNotYetLowered,
 };
@@ -93,7 +93,7 @@ fn zig_safe_ident(face: []const u8, out: *[rf.max_name_len]u8) LowerError!usize 
 }
 
 fn clause_text(face: []const u8, mold: []const u8, buf: *[rf.max_name_len * 2 + 1]u8) LowerError![]const u8 {
-    if (mold.len == 0) return error.MoldNotU32;
+    if (mold.len == 0) return error.UnsupportedShapeAura;
     if (face.len + 1 + mold.len > buf.len) return error.Overflow;
     @memcpy(buf[0..face.len], face);
     buf[face.len] = '=';
@@ -108,7 +108,7 @@ fn map_expr_err(err: expr.ParseError) LowerError {
         error.Overflow => error.Overflow,
         error.BadIdent => error.BadIdent,
         error.AuraNotYetLowered => error.ValueNotYetLowered,
-        error.NamedMoldNotYetLowered => error.ValueNotYetLowered,
+        error.NamedShapeNotYetLowered => error.ValueNotYetLowered,
     };
 }
 
@@ -167,7 +167,7 @@ fn parse_typed_value(line: []const u8, face_out: *[rf.max_name_len]u8) LowerErro
     const face_spec = try rf.parse(line);
     const face = rf.face_slice(&face_spec);
     const mold = rf.mold_slice(&face_spec);
-    if (!std.mem.eql(u8, mold, "@u32")) return error.MoldNotU32;
+    if (!std.mem.eql(u8, mold, "@u32")) return error.UnsupportedShapeAura;
     var clause_buf: [rf.max_name_len * 2 + 1]u8 = undefined;
     const clause = try clause_text(face, mold, &clause_buf);
     const idx = std.mem.indexOf(u8, line, clause) orelse return error.MalformedValue;

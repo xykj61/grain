@@ -1,12 +1,12 @@
-//! glow/lower_mold_witness.rye — proves mold lowers to runnable `.rye`.
+//! glow/lower_shape_witness.rye — proves mold lowers to runnable `.rye`.
 //!
-//!   rye build glow/lower_mold_witness.rye -femit-bin=glow/bin/lower_mold_witness
-//!   glow/bin/lower_mold_witness
+//!   rye build glow/lower_shape_witness.rye -femit-bin=glow/bin/lower_shape_witness
+//!   glow/bin/lower_shape_witness
 
 const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
-const lower = @import("lower_mold.rye");
+const lower = @import("lower_shape.rye");
 
 const witness_version = "20260721.175343";
 
@@ -57,43 +57,43 @@ fn run_selftest(init: std.process.Init) !u8 {
     var buf: [4096]u8 = undefined;
     try cwd.createDirPath(io, "glow/.cache");
 
-    assert(lower.looks_like_mold_only(one_src));
-    assert(lower.looks_like_mold_only(pair_src));
-    assert(!lower.looks_like_mold_only(named_cast_src));
-    print("lower: mold-only peek via tokens (glow_run wire) -- GREEN\n", .{});
+    assert(lower.looks_like_shape_only(one_src));
+    assert(lower.looks_like_shape_only(pair_src));
+    assert(!lower.looks_like_shape_only(named_cast_src));
+    print("lower: shape-only peek via tokens (glow_run wire) -- GREEN\n", .{});
 
     const n1 = try lower.lower_source_welcome(one_src, &buf);
-    assert(std.mem.indexOf(u8, buf[0..n1], "pub const AmountMold") != null);
-    print("lower: thin +$ amount-mold emits AmountMold -- GREEN\n", .{});
+    assert(std.mem.indexOf(u8, buf[0..n1], "pub const AmountShape") != null);
+    print("lower: thin +$ amount-mold emits AmountShape -- GREEN\n", .{});
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/mold_amount_welcome.rye", .data = buf[0..n1] });
 
     const n2 = try lower.lower_source_welcome(pair_src, &buf);
-    assert(std.mem.indexOf(u8, buf[0..n2], "pub const PairMold") != null);
-    print("lower: multi-field +$ pair-mold emits PairMold -- GREEN\n", .{});
+    assert(std.mem.indexOf(u8, buf[0..n2], "pub const PairShape") != null);
+    print("lower: multi-field +$ pair-mold emits PairShape -- GREEN\n", .{});
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/mold_pair_welcome.rye", .data = buf[0..n2] });
 
     const n3 = try lower.lower_source_welcome(kind_src, &buf);
     const rye3 = buf[0..n3];
-    assert(std.mem.indexOf(u8, rye3, "pub const KindMold = enum(u8)") != null);
+    assert(std.mem.indexOf(u8, rye3, "pub const KindShape = enum(u8)") != null);
     assert(std.mem.indexOf(u8, rye3, "mint,") != null);
     assert(std.mem.indexOf(u8, rye3, "send,") != null);
-    print("lower: thin +$ / $% kind-mold emits KindMold enum -- GREEN\n", .{});
+    print("lower: thin +$ / $% kind-mold emits KindShape enum -- GREEN\n", .{});
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/mold_kind_welcome.rye", .data = rye3 });
 
     const n4 = try lower.lower_source_welcome(xact_src, &buf);
-    assert(std.mem.indexOf(u8, buf[0..n4], "pub const XactMold = union(enum)") != null);
+    assert(std.mem.indexOf(u8, buf[0..n4], "pub const XactShape = union(enum)") != null);
     assert(std.mem.indexOf(u8, buf[0..n4], "mint: struct") != null);
     assert(std.mem.indexOf(u8, buf[0..n4], "amount: u32") != null);
     assert(std.mem.indexOf(u8, buf[0..n4], "payload arms") != null);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/mold_xact_welcome.rye", .data = buf[0..n4] });
-    print("lower: +$ / $% xact-mold emits XactMold union -- GREEN\n", .{});
+    print("lower: +$ / $% xact-mold emits XactShape union -- GREEN\n", .{});
 
     const n5 = try lower.lower_source_welcome(xfer_src, &buf);
-    assert(std.mem.indexOf(u8, buf[0..n5], "pub const XferMold = union(enum)") != null);
+    assert(std.mem.indexOf(u8, buf[0..n5], "pub const XferShape = union(enum)") != null);
     assert(std.mem.indexOf(u8, buf[0..n5], "from: u32") != null);
     assert(std.mem.indexOf(u8, buf[0..n5], "amount: u32") != null);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/mold_xfer_welcome.rye", .data = buf[0..n5] });
-    print("lower: +$ / $% xfer-mold emits XferMold multi-face union -- GREEN\n", .{});
+    print("lower: +$ / $% xfer-mold emits XferShape multi-face union -- GREEN\n", .{});
     print("lower: wrote mold welcome .rye under glow/.cache/ -- GREEN\n", .{});
 
     // STOA181: `$:` @t lowers to bounded cord field + demo main.
@@ -122,8 +122,35 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/mold_peer_welcome.rye", .data = buf[0..n7] });
     print("lower: +$ peer-shape @ux emits PeerShape hex -- GREEN\n", .{});
 
+    // STOA188: `$%` payload @t / @ux emit.
+    const pay_cord =
+        \\+$  note-mold
+        \\  $%  [%mint memo=@t]
+        \\      [%send ~]
+        \\  ==
+    ;
+    const n8 = try lower.lower_source_welcome(pay_cord, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n8], "pub const NoteShape") != null);
+    assert(std.mem.indexOf(u8, buf[0..n8], "[256]u8") != null);
+    assert(std.mem.indexOf(u8, buf[0..n8], "glow_demo_cord") != null);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/mold_note_welcome.rye", .data = buf[0..n8] });
+    print("lower: $% note-mold memo=@t emits NoteShape cord payload -- GREEN\n", .{});
+
+    const pay_hex =
+        \\+$  peer-mold
+        \\  $%  [%mint from=@ux]
+        \\      [%send ~]
+        \\  ==
+    ;
+    const n9 = try lower.lower_source_welcome(pay_hex, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n9], "pub const PeerShape") != null);
+    assert(std.mem.indexOf(u8, buf[0..n9], "[32]u8") != null);
+    assert(std.mem.indexOf(u8, buf[0..n9], "glow_demo_hex") != null);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/mold_peer_payload_welcome.rye", .data = buf[0..n9] });
+    print("lower: $% peer-mold from=@ux emits PeerShape hex payload -- GREEN\n", .{});
+
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: +$ / $: / $% mold lowers — STOA74–80 · STOA95 peek · STOA96 TAME tidy · STOA181 @t · STOA184 @ux; mold-amount · mold-pair · mold-kind · mold-xact · mold-xfer · mold-memo · mold-peer.\n", .{});
+    print("GREEN: +$ / $: / $% mold lowers — STOA74–80 · STOA95 peek · STOA96 TAME tidy · STOA181 @t · STOA184 @ux · STOA188 payload emit; mold-amount · mold-pair · mold-kind · mold-xact · mold-xfer · mold-memo · mold-peer · mold-note.\n", .{});
     return 0;
 }
 

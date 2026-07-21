@@ -180,8 +180,8 @@ fn run_selftest(_: std.process.Init) !u8 {
     if (expr.zig_type_for_mold("record")) |_| {
         assert(false);
     } else |err| {
-        assert(err == expr.ParseError.NamedMoldNotYetLowered);
-        print("expr: named mold refused NamedMoldNotYetLowered -- GREEN\n", .{});
+        assert(err == expr.ParseError.NamedShapeNotYetLowered);
+        print("expr: named mold refused NamedShapeNotYetLowered -- GREEN\n", .{});
     }
 
     print("GREEN: shared nest-expression parser — decimal · ^- @uN · face · (lent …) · (mix …) · (jam …) · nest jam left/right/both · (cue …) · cue-of-jam; other parens later.\n", .{});

@@ -78,8 +78,8 @@
 | STOA175–176 | Multi-field named-cast cast twins through nona |
 | STOA177–179 | Sala B0 Glow season · `sala-event-shape` |
 | STOA180 `20260721.171800` | Thin `@t` cord aura; living shape-primary residual; **type** reopen refused (`20260721.171644`) |
-
-`MoldSpec` · `rune_mold` · Zig `*Mold` type names stay until a separate API rename.
+| STOA189 `20260721.180917` | API rename: `MoldSpec` → `ShapeSpec` · `rune_mold` → `rune_shape` · `lower_mold` → `lower_shape` · `looks_like_shape_only` |
+| STOA190 `20260721.181551` | Remaining surface: errors · nest/gate APIs · Zig `*Shape` stems · living gates `-shape` · `mold-*` → `glow/gen/hoon-study/` |
 
 ---
 

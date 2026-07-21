@@ -1,12 +1,14 @@
-//! glow/rune_mold.rye — parses Glow's `+$` / `$:` / `$%` mold (STOA74–80).
+//! glow/rune_shape.rye — parses Glow's `+$` / `$:` / `$%` shape (STOA74–80).
 //!
-//! STOA97: token→MoldSpec — tokenize src via tokens.rye, walk token stream
-//! directly to build MoldSpec, retiring lower_multi.collect_lines and
+//! STOA97: token→ShapeSpec — tokenize src via tokens.rye, walk token stream
+//! directly to build ShapeSpec, retiring lower_multi.collect_lines and
 //! byte-level head parsing inside parse_source.
 //!
-//! `$:` tuple of `@u32` fields (1–9). `$%` tagged union of cold atoms with
-//! unit payload `[%tag ~]` or one-to-three-face `@u32` payload
-//! `[%tag face=@u32 …]` (2–3 tags). Tagged named-cast stay later.
+//! `$:` tuple of `@u32`/`@t`/`@ux` fields (1–9). `$%` tagged union of cold
+//! atoms with unit payload `[%tag ~]` or one-to-three-face payload
+//! `[%tag face=@u32|@t|@ux …]` (2–3 tags). STOA187: payload `@t`/`@ux`
+//! parse. STOA188: payload cord/hex lower emit.
+//! STOA189: API rename from rune_mold / MoldSpec → rune_shape / ShapeSpec.
 //!
 //!   +$  xfer-mold
 //!     $%  [%mint from=@u32 amount=@u32]
@@ -36,7 +38,7 @@ pub const ParseError = error{
     FieldTooLong,
     MalformedField,
     MalformedTag,
-    MoldNotU32,
+    UnsupportedShapeAura,
     TooManyFields,
     TooFewTags,
     MissingEnd,
@@ -46,7 +48,7 @@ pub const ParseError = error{
     EmptySource,
 };
 
-pub const MoldSpec = struct {
+pub const ShapeSpec = struct {
     name: [max_name_len]u8 = [_]u8{0} ** max_name_len,
     name_len: usize = 0,
     body: BodyKind = .tuple,
@@ -56,7 +58,7 @@ pub const MoldSpec = struct {
     field_is_cord: [max_fields]bool = [_]bool{false} ** max_fields,
     /// STOA183: true when the `$:` face aura is `@ux` (hex); exclusive of cord.
     field_is_hex: [max_fields]bool = [_]bool{false} ** max_fields,
-    /// Per `$%` arm: count of `@u32` payload faces; 0 means unit `~`.
+    /// Per `$%` arm: count of payload faces; 0 means unit `~`.
     payload_counts: [max_fields]usize = [_]usize{0} ** max_fields,
     payloads: [max_fields][max_payload_faces][max_name_len]u8 = [_][max_payload_faces][max_name_len]u8{
         [_][max_name_len]u8{[_]u8{0} ** max_name_len} ** max_payload_faces,
@@ -64,39 +66,47 @@ pub const MoldSpec = struct {
     payload_face_lens: [max_fields][max_payload_faces]usize = [_][max_payload_faces]usize{
         [_]usize{0} ** max_payload_faces,
     } ** max_fields,
+    /// STOA187: per payload face — `@t` cord (exclusive of hex).
+    payload_face_is_cord: [max_fields][max_payload_faces]bool = [_][max_payload_faces]bool{
+        [_]bool{false} ** max_payload_faces,
+    } ** max_fields,
+    /// STOA187: per payload face — `@ux` hex (exclusive of cord).
+    payload_face_is_hex: [max_fields][max_payload_faces]bool = [_][max_payload_faces]bool{
+        [_]bool{false} ** max_payload_faces,
+    } ** max_fields,
     field_count: usize = 0,
 };
 
-pub fn name_slice(spec: *const MoldSpec) []const u8 {
+pub fn name_slice(spec: *const ShapeSpec) []const u8 {
     return spec.name[0..spec.name_len];
 }
 
-pub fn field_slice(spec: *const MoldSpec, i: usize) []const u8 {
+pub fn field_slice(spec: *const ShapeSpec, i: usize) []const u8 {
     return spec.fields[i][0..spec.field_lens[i]];
 }
 
-pub fn first_field_slice(spec: *const MoldSpec) []const u8 {
+pub fn first_field_slice(spec: *const ShapeSpec) []const u8 {
     return field_slice(spec, 0);
 }
 
-pub fn payload_count(spec: *const MoldSpec, arm: usize) usize {
+pub fn payload_count(spec: *const ShapeSpec, arm: usize) usize {
     return spec.payload_counts[arm];
 }
 
-pub fn payload_face_slice(spec: *const MoldSpec, arm: usize, face_i: usize) []const u8 {
+pub fn payload_face_slice(spec: *const ShapeSpec, arm: usize, face_i: usize) []const u8 {
     return spec.payloads[arm][face_i][0..spec.payload_face_lens[arm][face_i]];
 }
 
 /// First payload face on an arm (STOA78 one-face desks).
-pub fn payload_slice(spec: *const MoldSpec, arm: usize) []const u8 {
+pub fn payload_slice(spec: *const ShapeSpec, arm: usize) []const u8 {
     return payload_face_slice(spec, arm, 0);
 }
 
-pub fn arm_has_payload(spec: *const MoldSpec, i: usize) bool {
+pub fn arm_has_payload(spec: *const ShapeSpec, i: usize) bool {
     return spec.payload_counts[i] != 0;
 }
 
-pub fn any_payload(spec: *const MoldSpec) bool {
+pub fn any_payload(spec: *const ShapeSpec) bool {
     var i: usize = 0;
     while (i < spec.field_count) : (i += 1) {
         if (arm_has_payload(spec, i)) return true;
@@ -111,12 +121,12 @@ fn rune2_text_is(src: []const u8, tok: tokens.Token, lit: []const u8) bool {
 
 /// Copy `face` (a `tokens.slice_of` span) into `spec.fields[i]` and advance
 /// `spec.field_count`. The `face` slice is already validated by the lexer.
-fn push_name(spec: *MoldSpec, face: []const u8) ParseError!void {
+fn push_name(spec: *ShapeSpec, face: []const u8) ParseError!void {
     return push_field(spec, face, false, false);
 }
 
 /// `$:` face with aura kind — cord `@t` (STOA180) · hex `@ux` (STOA183).
-fn push_field(spec: *MoldSpec, face: []const u8, is_cord: bool, is_hex: bool) ParseError!void {
+fn push_field(spec: *ShapeSpec, face: []const u8, is_cord: bool, is_hex: bool) ParseError!void {
     assert(face.len >= 1); // precondition: ident spans at least one byte
     assert(face.len <= max_name_len); // precondition: lexer bounded ident
     if (is_cord) assert(!is_hex); // invariant: cord face is not hex
@@ -131,7 +141,7 @@ fn push_field(spec: *MoldSpec, face: []const u8, is_cord: bool, is_hex: bool) Pa
 }
 
 /// True when any `$:` face uses the cord aura `@t`.
-pub fn any_cord_field(spec: *const MoldSpec) bool {
+pub fn any_cord_field(spec: *const ShapeSpec) bool {
     var i: usize = 0;
     while (i < spec.field_count) : (i += 1) {
         if (spec.field_is_cord[i]) return true;
@@ -140,7 +150,7 @@ pub fn any_cord_field(spec: *const MoldSpec) bool {
 }
 
 /// True when any `$:` face uses the hex aura `@ux`.
-pub fn any_hex_field(spec: *const MoldSpec) bool {
+pub fn any_hex_field(spec: *const ShapeSpec) bool {
     var i: usize = 0;
     while (i < spec.field_count) : (i += 1) {
         if (spec.field_is_hex[i]) return true;
@@ -149,7 +159,7 @@ pub fn any_hex_field(spec: *const MoldSpec) bool {
 }
 
 /// Record a unit `$%` arm (payload 0 faces) into `spec`.
-fn push_tag_unit(spec: *MoldSpec, tag: []const u8) ParseError!void {
+fn push_tag_unit(spec: *ShapeSpec, tag: []const u8) ParseError!void {
     assert(tag.len >= 1); // precondition: tag name non-empty
     assert(tag.len <= max_name_len); // precondition: lexer bounded ident
     if (spec.field_count >= max_fields) return error.TooManyFields;
@@ -161,11 +171,20 @@ fn push_tag_unit(spec: *MoldSpec, tag: []const u8) ParseError!void {
 }
 
 /// Record a payload `$%` arm (`faces` holds 1–3 face-name slices) into `spec`.
-fn push_tag_faces(spec: *MoldSpec, tag: []const u8, faces: []const []const u8) ParseError!void {
+/// `is_cord` / `is_hex` are parallel aura flags (STOA187); both false means `@u32`.
+fn push_tag_faces(
+    spec: *ShapeSpec,
+    tag: []const u8,
+    faces: []const []const u8,
+    is_cord: []const bool,
+    is_hex: []const bool,
+) ParseError!void {
     assert(tag.len >= 1); // precondition: tag name non-empty
     assert(tag.len <= max_name_len); // precondition: lexer bounded ident
     assert(faces.len >= 1); // precondition: at least one face
     assert(faces.len <= max_payload_faces); // precondition: within payload budget
+    assert(is_cord.len == faces.len); // precondition: aura flags match faces
+    assert(is_hex.len == faces.len); // precondition: aura flags match faces
     if (spec.field_count >= max_fields) return error.TooManyFields;
     const i = spec.field_count;
     tally_copy.copy_disjoint(u8, spec.fields[i][0..tag.len], tag);
@@ -175,19 +194,56 @@ fn push_tag_faces(spec: *MoldSpec, tag: []const u8, faces: []const []const u8) P
     const fc: u32 = @intCast(faces.len);
     while (fi < fc) : (fi += 1) {
         const face = faces[@as(usize, @intCast(fi))];
+        const cord = is_cord[@as(usize, @intCast(fi))];
+        const hex = is_hex[@as(usize, @intCast(fi))];
+        if (cord) assert(!hex); // invariant: cord face is not hex
+        if (hex) assert(!cord); // invariant: hex face is not cord
         assert(face.len >= 1); // precondition: face name non-empty
         assert(face.len <= max_name_len); // precondition: lexer bounded ident
         tally_copy.copy_disjoint(u8, spec.payloads[i][@as(usize, @intCast(fi))][0..face.len], face);
         spec.payload_face_lens[i][@as(usize, @intCast(fi))] = face.len;
+        spec.payload_face_is_cord[i][@as(usize, @intCast(fi))] = cord;
+        spec.payload_face_is_hex[i][@as(usize, @intCast(fi))] = hex;
     }
     spec.field_count += 1;
 }
 
-/// Parse mold source via token stream (STOA97 token→MoldSpec).
-/// Accepts `$:` tuples (1–9 `@u32` fields) and `$%` tagged unions
-/// (2–3 arms, each `[%tag ~]` or `[%tag face=@u32 …]`).
-/// Same public signature as before: `parse_source(src) ParseError!MoldSpec`.
-pub fn parse_source(src: []const u8) ParseError!MoldSpec {
+/// True when any `$%` payload face uses `@t` (STOA187/188).
+pub fn any_payload_cord_field(spec: *const ShapeSpec) bool {
+    var i: usize = 0;
+    while (i < spec.field_count) : (i += 1) {
+        const pc = spec.payload_counts[i];
+        var fi: usize = 0;
+        while (fi < pc) : (fi += 1) {
+            if (spec.payload_face_is_cord[i][fi]) return true;
+        }
+    }
+    return false;
+}
+
+/// True when any `$%` payload face uses `@ux` (STOA187/188).
+pub fn any_payload_hex_field(spec: *const ShapeSpec) bool {
+    var i: usize = 0;
+    while (i < spec.field_count) : (i += 1) {
+        const pc = spec.payload_counts[i];
+        var fi: usize = 0;
+        while (fi < pc) : (fi += 1) {
+            if (spec.payload_face_is_hex[i][fi]) return true;
+        }
+    }
+    return false;
+}
+
+/// True when any `$%` payload face uses `@t` or `@ux` (STOA187/188).
+pub fn any_payload_bytes_field(spec: *const ShapeSpec) bool {
+    return any_payload_cord_field(spec) or any_payload_hex_field(spec);
+}
+
+/// Parse mold source via token stream (STOA97 token→ShapeSpec).
+/// Accepts `$:` tuples (1–9 `@u32`/`@t`/`@ux` fields) and `$%` tagged unions
+/// (2–3 arms, each `[%tag ~]` or `[%tag face=@u32|@t|@ux …]` — STOA187).
+/// Same public signature as before: `parse_source(src) ParseError!ShapeSpec`.
+pub fn parse_source(src: []const u8) ParseError!ShapeSpec {
     if (src.len == 0) return error.EmptySource;
 
     var buf: [tokens.max_tokens]tokens.Token = undefined;
@@ -224,7 +280,7 @@ pub fn parse_source(src: []const u8) ParseError!MoldSpec {
     assert(name.len >= 1); // lexer guarantees ident non-empty
     assert(name.len <= max_name_len); // lexer bounded by tokens.max_name_len == 64
 
-    var spec: MoldSpec = .{};
+    var spec: ShapeSpec = .{};
     tally_copy.copy_disjoint(u8, spec.name[0..name.len], name);
     spec.name_len = name.len;
 
@@ -256,7 +312,7 @@ pub fn parse_source(src: []const u8) ParseError!MoldSpec {
             const is_cord = std.mem.eql(u8, aura, "@t");
             const is_hex = std.mem.eql(u8, aura, "@ux");
             const is_u32 = std.mem.eql(u8, aura, "@u32");
-            if (!is_cord and !is_hex and !is_u32) return error.MoldNotU32;
+            if (!is_cord and !is_hex and !is_u32) return error.UnsupportedShapeAura;
             try push_field(&spec, tokens.slice_of(src, face_tok), is_cord, is_hex);
         }
         if (spec.field_count == 0) return error.MissingField;
@@ -290,8 +346,10 @@ pub fn parse_source(src: []const u8) ParseError!MoldSpec {
                 i += 1;
                 try push_tag_unit(&spec, tag_name);
             } else {
-                // Payload arm: one or more face=@u32, then ]
+                // Payload arm: one or more face=@u32|@t|@ux, then ] (STOA187).
                 var faces: [max_payload_faces][]const u8 = undefined;
+                var face_cord: [max_payload_faces]bool = [_]bool{false} ** max_payload_faces;
+                var face_hex: [max_payload_faces]bool = [_]bool{false} ** max_payload_faces;
                 var face_count: u32 = 0;
                 while (i < n and toks[@as(usize, @intCast(i))].kind != .rbracket) {
                     if (face_count >= max_payload_faces) return error.TooManyFields;
@@ -303,14 +361,22 @@ pub fn parse_source(src: []const u8) ParseError!MoldSpec {
                     if (i >= n or toks[@as(usize, @intCast(i))].kind != .aura) return error.MalformedField;
                     const paura_tok = toks[@as(usize, @intCast(i))];
                     i += 1;
-                    if (!std.mem.eql(u8, tokens.slice_of(src, paura_tok), "@u32")) return error.MoldNotU32;
-                    faces[@as(usize, @intCast(face_count))] = tokens.slice_of(src, pface_tok);
+                    const aura = tokens.slice_of(src, paura_tok);
+                    const is_cord = std.mem.eql(u8, aura, "@t");
+                    const is_hex = std.mem.eql(u8, aura, "@ux");
+                    const is_u32 = std.mem.eql(u8, aura, "@u32");
+                    if (!is_cord and !is_hex and !is_u32) return error.UnsupportedShapeAura;
+                    const fi = @as(usize, @intCast(face_count));
+                    faces[fi] = tokens.slice_of(src, pface_tok);
+                    face_cord[fi] = is_cord;
+                    face_hex[fi] = is_hex;
                     face_count += 1;
                 }
                 if (i >= n or toks[@as(usize, @intCast(i))].kind != .rbracket) return error.MalformedTag;
                 i += 1;
                 if (face_count == 0) return error.MalformedTag;
-                try push_tag_faces(&spec, tag_name, faces[0..@as(usize, @intCast(face_count))]);
+                const nfaces = @as(usize, @intCast(face_count));
+                try push_tag_faces(&spec, tag_name, faces[0..nfaces], face_cord[0..nfaces], face_hex[0..nfaces]);
             }
         }
         if (spec.field_count < 2) return error.TooFewTags;

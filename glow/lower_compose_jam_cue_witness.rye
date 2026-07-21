@@ -427,7 +427,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     if (lower.parse_jam_cue("=/  amount  5\n%-  double  amount\n")) |_| {
         return error.NotAJamCueComposeNotCaught;
     } else |err| {
-        if (err != lower.LowerError.NotAJamCueCompose and err != lower.LowerError.MoldNotU32) return err;
+        if (err != lower.LowerError.NotAJamCueCompose and err != lower.LowerError.UnsupportedShapeAura) return err;
     }
     print("compose-jam-cue: face→call refused NotAJamCueCompose -- GREEN\n", .{});
 

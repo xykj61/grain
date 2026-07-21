@@ -7,7 +7,7 @@ const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 const lower = @import("lower_named_cast.rye");
-const lower_mold = @import("lower_mold.rye");
+const lower_shape = @import("lower_shape.rye");
 
 const witness_version = "20260721.175343";
 
@@ -103,21 +103,21 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("lower: cast-named-amount shape detected -- GREEN\n", .{});
 
     const n = try lower.lower_source_welcome(desk_src, &buf);
-    assert(std.mem.indexOf(u8, buf[0..n], "pub const AmountMold") != null);
+    assert(std.mem.indexOf(u8, buf[0..n], "pub const AmountShape") != null);
     assert(std.mem.indexOf(u8, buf[0..n], "named-cast resolve") != null);
     // STOA175: multi-field-ready emit uses demo vals (one-field still amount = 5).
     assert(std.mem.indexOf(u8, buf[0..n], ".amount = 5") != null);
     assert(std.mem.indexOf(u8, buf[0..n], "casted.amount == 5") != null);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/cast_named_amount_welcome.rye", .data = buf[0..n] });
-    print("lower: +$ amount-mold + ^- amount-mold emits AmountMold cast -- GREEN\n", .{});
+    print("lower: +$ amount-mold + ^- amount-mold emits AmountShape cast -- GREEN\n", .{});
     print("lower: same-desk mold-body via tokens.named_cast_parts -- GREEN\n", .{});
 
     if (lower.lower_source_welcome(mismatch_src, &buf)) |_| {
-        return error.CastMoldMismatchNotCaught;
+        return error.CastShapeMismatchNotCaught;
     } else |err| {
-        if (err != lower.LowerError.CastMoldMismatch) return err;
+        if (err != lower.LowerError.CastShapeMismatch) return err;
     }
-    print("lower: cast name mismatch refused CastMoldMismatch -- GREEN\n", .{});
+    print("lower: cast name mismatch refused CastShapeMismatch -- GREEN\n", .{});
 
     if (lower.lower_source_welcome(lib_src, &buf)) |_| {
         return error.NotANamedCastNotCaught;
@@ -128,11 +128,11 @@ fn run_selftest(init: std.process.Init) !u8 {
 
     assert(lower.looks_like_named_cast(tagged_src));
     const tn = try lower.lower_source_welcome(tagged_src, &buf);
-    assert(std.mem.indexOf(u8, buf[0..tn], "pub const KindMold = enum(u8)") != null);
+    assert(std.mem.indexOf(u8, buf[0..tn], "pub const KindShape = enum(u8)") != null);
     assert(std.mem.indexOf(u8, buf[0..tn], "tagged named-cast") != null);
     assert(std.mem.indexOf(u8, buf[0..tn], "@enumFromInt") != null);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/cast_named_kind_welcome.rye", .data = buf[0..tn] });
-    print("lower: +$ kind-mold + ^- kind-mold emits KindMold tagged cast -- GREEN\n", .{});
+    print("lower: +$ kind-mold + ^- kind-mold emits KindShape tagged cast -- GREEN\n", .{});
 
     assert(lower.looks_like_cross_desk(cross_src));
     const cross_spec = try lower.parse_cross_desk(cross_src);
@@ -150,51 +150,51 @@ fn run_selftest(init: std.process.Init) !u8 {
     const cross_n = try lower.lower_cross_desk_welcome(cross_src, lib_src, &buf);
     assert(std.mem.indexOf(u8, buf[0..cross_n], "cross-desk named-cast") != null);
     assert(std.mem.indexOf(u8, buf[0..cross_n], "import(\"mold_amount.rye\")") != null);
-    assert(std.mem.indexOf(u8, buf[0..cross_n], "lib.AmountMold") != null);
+    assert(std.mem.indexOf(u8, buf[0..cross_n], "lib.AmountShape") != null);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/cast_import_amount_welcome.rye", .data = buf[0..cross_n] });
     print("lower: /+ mold-amount + ^- amount-mold emits cross-desk cast -- GREEN\n", .{});
 
     if (lower.lower_cross_desk_welcome(cross_mismatch, lib_src, &buf)) |_| {
-        return error.CrossCastMoldMismatchNotCaught;
+        return error.CrossCastShapeMismatchNotCaught;
     } else |err| {
-        if (err != lower.LowerError.CastMoldMismatch) return err;
+        if (err != lower.LowerError.CastShapeMismatch) return err;
     }
-    print("lower: cross-desk cast name mismatch refused CastMoldMismatch -- GREEN\n", .{});
+    print("lower: cross-desk cast name mismatch refused CastShapeMismatch -- GREEN\n", .{});
 
     const cross_kind_n = try lower.lower_cross_desk_welcome(cross_kind_src, lib_kind_src, &buf);
     assert(std.mem.indexOf(u8, buf[0..cross_kind_n], "cross-desk tagged named-cast") != null);
     assert(std.mem.indexOf(u8, buf[0..cross_kind_n], "import(\"mold_kind.rye\")") != null);
-    assert(std.mem.indexOf(u8, buf[0..cross_kind_n], "lib.KindMold") != null);
+    assert(std.mem.indexOf(u8, buf[0..cross_kind_n], "lib.KindShape") != null);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/cast_import_kind_welcome.rye", .data = buf[0..cross_kind_n] });
     print("lower: /+ mold-kind + ^- kind-mold emits cross-desk tagged cast -- GREEN\n", .{});
 
     assert(lower.looks_like_named_cast(payload_src));
     const pn = try lower.lower_source_welcome(payload_src, &buf);
-    assert(std.mem.indexOf(u8, buf[0..pn], "pub const XactMold = union(enum)") != null);
+    assert(std.mem.indexOf(u8, buf[0..pn], "pub const XactShape = union(enum)") != null);
     assert(std.mem.indexOf(u8, buf[0..pn], "payload tagged named-cast") != null);
     assert(std.mem.indexOf(u8, buf[0..pn], "amount: u32") != null);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/cast_named_xact_welcome.rye", .data = buf[0..pn] });
-    print("lower: +$ xact-mold + ^- xact-mold emits XactMold payload cast -- GREEN\n", .{});
+    print("lower: +$ xact-mold + ^- xact-mold emits XactShape payload cast -- GREEN\n", .{});
 
     const cross_xact_n = try lower.lower_cross_desk_welcome(cross_xact_src, lib_xact_src, &buf);
     assert(std.mem.indexOf(u8, buf[0..cross_xact_n], "cross-desk payload tagged named-cast") != null);
     assert(std.mem.indexOf(u8, buf[0..cross_xact_n], "import(\"mold_xact.rye\")") != null);
-    assert(std.mem.indexOf(u8, buf[0..cross_xact_n], "lib.XactMold") != null);
+    assert(std.mem.indexOf(u8, buf[0..cross_xact_n], "lib.XactShape") != null);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/cast_import_xact_welcome.rye", .data = buf[0..cross_xact_n] });
     print("lower: /+ mold-xact + ^- xact-mold emits cross-desk payload cast -- GREEN\n", .{});
 
-    const lib_n = try lower_mold.lower_source_library(lib_src, &buf);
-    assert(std.mem.indexOf(u8, buf[0..lib_n], "pub const AmountMold") != null);
+    const lib_n = try lower_shape.lower_source_library(lib_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..lib_n], "pub const AmountShape") != null);
     assert(std.mem.indexOf(u8, buf[0..lib_n], "pub fn main") == null);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/mold_amount.rye", .data = buf[0..lib_n] });
 
-    const lib_kind_n = try lower_mold.lower_source_library(lib_kind_src, &buf);
-    assert(std.mem.indexOf(u8, buf[0..lib_kind_n], "pub const KindMold = enum(u8)") != null);
+    const lib_kind_n = try lower_shape.lower_source_library(lib_kind_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..lib_kind_n], "pub const KindShape = enum(u8)") != null);
     assert(std.mem.indexOf(u8, buf[0..lib_kind_n], "pub fn main") == null);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/mold_kind.rye", .data = buf[0..lib_kind_n] });
 
-    const lib_xact_n = try lower_mold.lower_source_library(lib_xact_src, &buf);
-    assert(std.mem.indexOf(u8, buf[0..lib_xact_n], "pub const XactMold = union(enum)") != null);
+    const lib_xact_n = try lower_shape.lower_source_library(lib_xact_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..lib_xact_n], "pub const XactShape = union(enum)") != null);
     assert(std.mem.indexOf(u8, buf[0..lib_xact_n], "pub fn main") == null);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/mold_xact.rye", .data = buf[0..lib_xact_n] });
     print("lower: mold libraries emit with no main -- GREEN\n", .{});
@@ -224,10 +224,26 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/cast_named_peer_welcome.rye", .data = buf[0..hex_n] });
     print("lower: +$ peer-shape + ^- peer-shape emits PeerShape hex cast -- GREEN\n", .{});
 
+    // STOA188: `$%` payload @t named-cast emit.
+    const pay_cast =
+        \\+$  note-mold
+        \\  $%  [%mint memo=@t]
+        \\      [%send ~]
+        \\  ==
+        \\^-  note-mold
+    ;
+    assert(lower.looks_like_named_cast(pay_cast));
+    const pay_n = try lower.lower_source_welcome(pay_cast, &buf);
+    assert(std.mem.indexOf(u8, buf[0..pay_n], "pub const NoteShape") != null);
+    assert(std.mem.indexOf(u8, buf[0..pay_n], "[256]u8") != null);
+    assert(std.mem.indexOf(u8, buf[0..pay_n], "glow_demo_cord") != null);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/cast_named_note_welcome.rye", .data = buf[0..pay_n] });
+    print("lower: $% note-mold + ^- note-mold emits NoteShape cord payload cast -- GREEN\n", .{});
+
     print("lower: wrote named-cast welcome .rye under glow/.cache/ -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: named-cast resolve lowers — STOA93 cross-desk · STOA94 same-desk mold-body tokens · STOA182 @t · STOA184 @ux; amount · kind · xact · memo · peer · import desks.\n", .{});
+    print("GREEN: named-cast resolve lowers — STOA93 cross-desk · STOA94 same-desk mold-body tokens · STOA182 @t · STOA184 @ux · STOA188 payload emit; amount · kind · xact · memo · peer · note · import desks.\n", .{});
     return 0;
 }
 
