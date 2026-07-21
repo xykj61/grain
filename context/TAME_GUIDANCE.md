@@ -175,6 +175,7 @@ G5 brief: [`../active-designing/20260720-033200_stoa98-g5-nock-second-backend-fa
 | **STOA176 GREEN** | named-cast peek 4–12 · early glow_run path · triple…nona cast twins |
 | **STOA179 GREEN** | sala-event-shape FactFields names · stand-in @u32 · Sala B0 Glow ladder |
 | **STOA180 GREEN** | thin `@t` cord aura · bound 256 · parse · lower held · shape kept |
+| **STOA181 GREEN** | `@t` cord lower → `[256]u8` · sala-event text faces `@t` |
 | Still held | Ambient gold / free nesting polymorphism · bartis stays stated |
 | Still held | Open bartis/barket call-body gate set beyond `double` · `inc` · `dec` · `flip` |
 | Still held | Open named-mold set beyond nona (capacity freeze) · argv under tagged/multi-field shapes · further field widens horizon |

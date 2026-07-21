@@ -1,7 +1,7 @@
 # Lexicon — Module Names and Their Meanings
 
 **Language:** EN
-**Last updated:** 2026-07-21 (**STOA180** `@t` cord aura · shape kept over type)
+**Last updated:** 2026-07-21 (**STOA181** `@t` cord lower · shape kept over type)
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 
 ---
