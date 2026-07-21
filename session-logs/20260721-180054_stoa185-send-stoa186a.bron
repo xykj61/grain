@@ -1,0 +1,15 @@
+format session-log-v1
+stamp 20260721.180054
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — UDT (UTC) time convention
+title STOA185 send · approve STOA186 lean A
+prompt approve your rec
+think rec was send first or pick A–D — finishing edge send STOA185 then lean A sala-event cast twin
+obs claim shell pack unsent with check-in; next language door is ^- sala-event-shape
+file linengrow/glow_sala_b0_claim.rye STOA185
+file active-designing/20260721-180008_stoa186-after-claim-shell-checkin.md leans
+recommend keep-going STOA186A after remotes ack
+product_nib Sala B0 Glow
+suite_nib STOA0-185
