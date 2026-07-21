@@ -75,7 +75,7 @@ Until jets exist, every “body” lap that stays shippable is a **product surfa
 | **B2** | **chosen** `20260721.190240` as **STOA202** | Thin **format/parse log-line surface** over elder `format_log_line` / `parse_log_line` |
 | **wire** | **chosen** `20260721.190527` as **STOA203** | Compose sign+line into `glow_sala_b0_append.append_event` (no `sala.append_event`) |
 | **digest** | **chosen** `20260721.190637` as **STOA204** | Replay claim also asserts via `glow_sala_b0_digest.claim_digest_log` |
-| **B3** | | Glow **desk-only** deepen (fixture literals / fact-line shape) — language, not vane body |
+| **B3** | **chosen** `20260721.191254` as **STOA206** | Glow **desk-only** deepen — `fact-line-shape` (`sig` · `fact`); fixture literals still held |
 | **B4** | | Hold body season — rest until a jet/crypto word |
 
 ---

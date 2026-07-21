@@ -6,8 +6,8 @@
 **Version:** `20260721.190850` (UDT · Framework host)  
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
 **Voice:** Quin  
-**Status:** Living — leans A–D awaiting Keaton’s word  
-**Register:** Checkable (Two Rooms) — STOA201–204 GREEN on hand at send; next lap needs a named lean  
+**Status:** Checkable — lean **A** rest taken · lean **B** chosen `20260721.191254` as **STOA206**  
+**Register:** Checkable (Two Rooms) — STOA201–204 GREEN on pier; B3 fact-line desk opened as STOA206  
 
 **Grounds in:** [`20260721-190637_stoa204-replay-product-digest-honesty.md`](20260721-190637_stoa204-replay-product-digest-honesty.md) · [`20260721-185942_stoa200-vane-body-inventory.md`](20260721-185942_stoa200-vane-body-inventory.md) · Pixel eyes STOA199A
 
@@ -25,8 +25,8 @@ STOA201–204 on one send (`7d4dcddac4`): sign/verify surface · log-line format
 
 | | Lean | What it opens |
 |---|---|---|
-| **A** | **Rest** — **recommended** | hold language and product until a later season word; vane wraps earned a pause |
-| **B** | **B3 desk deepen** | Glow desk-only deepen (fixture literals / fact-line shape) — language, not vane body |
+| **A** | **Rest** — **taken** (Keaton rested) | hold language and product until a later season word; vane wraps earned a pause |
+| **B** | **B3 desk deepen** — **chosen** `20260721.191254` as **STOA206** | fact-line shape desk — brief [`20260721-191254_stoa206-fact-line-shape-desk.md`](20260721-191254_stoa206-fact-line-shape-desk.md) |
 | **C** | **Replay body inventory / first parse wrap** | size what still lives only inside elder `sala.replay` (parse · verify · order); thin wrap if sized |
 | **D** | **JABS3** | inference · economics — **held**; opens only on explicit word, never as silent kg |
 
