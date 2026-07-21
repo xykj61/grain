@@ -1,0 +1,24 @@
+format session-log-v1
+stamp 20260721.183126
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — UDT (UTC) time convention
+title STOA195 send · STOA196 replay GREEN
+prompt send and approve next rec
+think Send STOA195 append port to pier origin and codeberg.
+think Next rec is thin replay port wrapping elder replay after append_demo_log.
+think Seat claim_replay_demo_root double replay fixture pin; witness GREEN agrees claim_demo_fold.
+obs Append digest replay compose the fold path under Glow product names; fold rewrite still held as compose claim onto ports.
+file linengrow/glow_sala_b0_replay.rye replay product surface
+file linengrow/glow_sala_b0_replay_witness.rye selftest
+file tools/glow_sala_b0_replay_witness.rish hand
+file active-designing/20260721-183126_stoa196-replay-thin-port.md brief
+file work-in-progress/TASKS.md STOA196 checked
+file work-in-progress/ROADMAP.md STOA196 GREEN
+file work-in-progress/REMEMBER.md Now STOA196
+file docs/STOA.md STOA0-196
+git_nib c60f3ae46e
+product_nib Sala-B0-Glow-replay
+suite_nib STOA0-196
+recommend check-in compose claim onto append+replay or Pixel or rest; or send STOA196
