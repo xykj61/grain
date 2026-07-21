@@ -1,6 +1,6 @@
-# STOA — Glow SLC · nest · product · ≤80 · STOA0–198 GREEN · 2026-07-21 · draw → **STOA**
+# STOA — Glow SLC · nest · product · ≤80 · STOA0–200 GREEN · 2026-07-21 · draw → **STOA**
 
-Living Glow OS desks lead with `shape-*` (inventary duals STOA161–173; pin polish STOA174; multi-field cast twins STOA175–176). Sala B0 Glow: STOA177–197 · **STOA198** Glow fold surface. Hoon study twins under `glow/gen/hoon-study/`.
+Living Glow OS desks lead with `shape-*` (inventary duals STOA161–173; pin polish STOA174; multi-field cast twins STOA175–176). Sala B0 Glow: STOA177–199A · **STOA200** vane-body inventory. Hoon study twins under `glow/gen/hoon-study/`.
 
 | Rung | Claim | Witness / gate | State |
 |------|-------|----------------|-------|
@@ -49,4 +49,6 @@ Living Glow OS desks lead with `shape-*` (inventary duals STOA161–173; pin pol
 | **STOA196** | replay thin port | `glow_sala_b0_replay_witness` | **GREEN** `183126` |
 | **STOA197** | claim compose append+replay | `glow_sala_b0_claim_witness` · stoa191 | **GREEN** `183253` |
 | **STOA198** | Glow fold product surface | `glow_sala_b0_fold_witness` · stoa198 | **GREEN** `183554` |
+| **STOA199A** | Pixel Glow-fold eyes (lean A) | Keaton eyes · HAWM1 hex | **GREEN** `185805` |
+| **STOA200** | vane-body inventory (lean B) | inventory brief · sub-leans B1–B4 | **GREEN** `185942` |
 Smoke: `glow_nest_type_witness` · `glow_barket_parse_witness` · `glow_lower_bartis_witness` · Sibling: **ZETA** · **LULU** · **SETU** · **TUBE**.
