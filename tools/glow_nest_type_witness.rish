@@ -38,6 +38,7 @@ assert selftest.out contains "quad-shape" else "nest_type_witness missing quad-s
 assert selftest.out contains "penta-shape" else "nest_type_witness missing penta-shape alias"
 assert selftest.out contains "hexa-shape" else "nest_type_witness missing hexa-shape alias"
 assert selftest.out contains "hepta-shape" else "nest_type_witness missing hepta-shape alias"
+assert selftest.out contains "octa-shape" else "nest_type_witness missing octa-shape alias"
 assert selftest.out contains "gate-count.glow" else "nest_type_witness missing count-mold accept"
 assert selftest.out contains "gate-kind.glow" else "nest_type_witness missing kind-mold accept"
 assert selftest.out contains "gate-xact.glow" else "nest_type_witness missing xact-mold accept"
@@ -98,4 +99,4 @@ assert bartis.ok else "glow_lower_bartis_witness failed under nest implement"
 assert bartis.out contains "GREEN" else "glow_lower_bartis_witness not GREEN"
 assert bartis.out contains "SampleDoesNotNest" else "glow_lower_bartis_witness missing nest refuse"
 
-say "GREEN: Glow nest/type — stated aura · $% tag · amount-mold · amount-shape · count-shape · pair-shape · kind-shape · xact-shape · xfer-shape · triple-shape · quad-shape · penta-shape · hexa-shape · hepta-shape · count-mold · kind-mold · xact-mold · xfer-mold · pair-mold · triple-mold · quad-mold · penta-mold · hexa-mold · hepta-mold · octa-mold · nona-mold · nesting refuse · nesting-nests; STOA107–110/119/122–126/130/134–135/138/140/142/144/146/148–158."
+say "GREEN: Glow nest/type — stated aura · $% tag · amount-mold · amount-shape · count-shape · pair-shape · kind-shape · xact-shape · xfer-shape · triple-shape · quad-shape · penta-shape · hexa-shape · hepta-shape · octa-shape · count-mold · kind-mold · xact-mold · xfer-mold · pair-mold · triple-mold · quad-mold · penta-mold · hexa-mold · hepta-mold · octa-mold · nona-mold · nesting refuse · nesting-nests; STOA107–110/119/122–126/130/134–135/138/140/142/144/146/148–159."
