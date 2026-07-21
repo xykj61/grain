@@ -2,11 +2,11 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260721.004052` (UDT) · voice Quin  
+**Last refreshed:** `20260721.004523` (UDT) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD0–HOLD1 · HOLD-W  
-**Language nib:** **STOA0–157** GREEN · capacity freeze at 9 · amount…hexa-shape  
-**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–157  
-**Git nib:** *(pin after STOA157 send)*  
+**Language nib:** **STOA0–158** GREEN · capacity freeze at 9 · amount…hepta-shape  
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–158  
+**Git nib:** *(pin after STOA158 send)*  
 
 **Season:** Framework · UDT · shape alias path (no sed) · SETU6.5 live-sent GREEN.  
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`
@@ -15,13 +15,13 @@
 
 ## Now
 
-**STOA156 sent** `4c86c751e2` · **STOA157** `20260721.004052` — `hexa-shape` ≡ `hexa-mold` GREEN. Brief [`../active-designing/20260721-004052_stoa157-hexa-shape-alias.md`](../active-designing/20260721-004052_stoa157-hexa-shape-alias.md).
+**STOA157 sent** `97c7ec52a4` · **STOA158** `20260721.004523` — `hepta-shape` ≡ `hepta-mold` GREEN local unsent. Brief [`../active-designing/20260721-004523_stoa158-hepta-shape-alias.md`](../active-designing/20260721-004523_stoa158-hepta-shape-alias.md).
 
-**Next:** **STOA158** check-in — hepta-shape · rename itinerary · Sala behind shape.
+**Next:** **STOA159** check-in — octa-shape · rename itinerary · Sala behind shape.
 
 ```bash
 rishi/bin/rishi run tools/glow_nest_type_witness.rish
-rishi/bin/rishi run tools/glow_run.rish glow/gen/gate-hexa-shape.glow
+rishi/bin/rishi run tools/glow_run.rish glow/gen/gate-hepta-shape.glow
 ```
 
 ---
@@ -30,7 +30,7 @@ rishi/bin/rishi run tools/glow_run.rish glow/gen/gate-hexa-shape.glow
 
 | Door | Kind |
 |------|------|
-| STOA158 shape-language next | **check-in** |
+| STOA159 shape-language next | **check-in** |
 | Capacity freeze at 9 | **seated** |
 | SETU6.5 live-sent | **GREEN** `20260720.233805` |
 | Sala B0 Glow · JABS3 | **check-in** (behind shape) |
