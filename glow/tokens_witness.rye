@@ -139,6 +139,16 @@ fn run_selftest() !u8 {
     }
     print("tokens: unknown bytes refused BadToken -- GREEN\n", .{});
 
+    // STOA180: `@t` cord aura tokenizes; bound is nest_type.aura_t_max_bytes.
+    var tbuf: [tokens.max_tokens]tokens.Token = undefined;
+    const nt = try tokens.tokenize("memo=@t\n", tbuf[0..]);
+    assert(nt >= 3);
+    assert(tbuf[0].kind == .ident);
+    assert(tbuf[1].kind == .equals);
+    assert(tbuf[2].kind == .aura);
+    assert(std.mem.eql(u8, tokens.slice_of("memo=@t\n", tbuf[2]), "@t"));
+    print("tokens: @t cord aura lex -- GREEN\n", .{});
+
     assert(tokens.looks_like_named_cast(xact_desk));
     assert(tokens.looks_like_named_cast(amount_cast));
     assert(tokens.looks_like_named_cast(nona_cast));

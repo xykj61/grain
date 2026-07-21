@@ -8,6 +8,7 @@
 //! Library emit (no main) is STOA79 for `/+` mold import.
 //! STOA95: mold-only dispatch peek delegates to `tokens.looks_like_mold_only`.
 //! STOA96: TAME tidy — assert · u32 · append_print · split emitters.
+//! STOA180: `$:` `@t` faces parse; cord lower held (`CordAuraNotYetLowered`).
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -23,6 +24,7 @@ pub const LowerError = rm.ParseError || error{
     Overflow,
     BadIdent,
     EmptySource,
+    CordAuraNotYetLowered,
 };
 
 pub const mold_demo_vals: [rm.max_fields]u32 = .{ 5, 3, 7, 2, 7, 4, 6, 8, 9 };
@@ -330,6 +332,7 @@ pub fn lower_source_welcome(src: []const u8, out: []u8) LowerError!u32 {
     const trimmed = std.mem.trim(u8, src, " \t\r\n");
     if (trimmed.len == 0) return error.EmptySource;
     const spec = try rm.parse_source(src);
+    if (rm.any_cord_field(&spec)) return error.CordAuraNotYetLowered;
     const name = rm.name_slice(&spec);
     var type_buf: [rm.max_name_len]u8 = undefined;
     const tn = try zig_type_name(name, &type_buf);
@@ -345,6 +348,7 @@ pub fn lower_source_library(src: []const u8, out: []u8) LowerError!u32 {
     const trimmed = std.mem.trim(u8, src, " \t\r\n");
     if (trimmed.len == 0) return error.EmptySource;
     const spec = try rm.parse_source(src);
+    if (rm.any_cord_field(&spec)) return error.CordAuraNotYetLowered;
     const name = rm.name_slice(&spec);
     var type_buf: [rm.max_name_len]u8 = undefined;
     const tn = try zig_type_name(name, &type_buf);
