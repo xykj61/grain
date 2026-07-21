@@ -6,7 +6,8 @@
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · **Sala B0 Glow digest honesty**  
 **Language nib:** **STOA0–204** GREEN · **STOA205** check-in open · sign through digest  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–204  
-**Git nib:** pending send · STOA201–204 + STOA205 check-in  
+**Git nib:** `7d4dcddac4` · STOA201–204 + STOA205 check-in  
+
 
 **Season:** Framework · UDT · vane surfaces sent · check-in leans A–D · SETU6.5 live-sent GREEN.  
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`

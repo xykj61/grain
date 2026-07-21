@@ -17,7 +17,7 @@
 
 ## What just closed
 
-STOA201–204 on one send: sign/verify surface · log-line format/parse · append via sign+line compose · replay product digest honesty. Product path still calls elder bodies underneath; HAWM1 hex and elder `run_demo_fold` agree. Pixel eyes already GREEN for the Glow fold wire (STOA199A); re-eyes only if pack behavior changes.
+STOA201–204 on one send (`7d4dcddac4`): sign/verify surface · log-line format/parse · append via sign+line compose · replay product digest honesty. Product path still calls elder bodies underneath; HAWM1 hex and elder `run_demo_fold` agree. Pixel eyes already GREEN for the Glow fold wire (STOA199A); re-eyes only if pack behavior changes.
 
 ---
 
