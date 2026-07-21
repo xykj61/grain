@@ -29,7 +29,7 @@
 | `mold-pair` | `pair-mold` | two-field `$:` | **`shape-pair`** STOA163 (cast held) |
 | `mold-triple` … `mold-nona` | `*-mold` | multi-field `$:` | later |
 | `mold-kind` | `kind-mold` | unit `$%` | **`shape-kind`** STOA164 |
-| `mold-xact` | `xact-mold` | payload `$%` | later |
+| `mold-xact` | `xact-mold` | payload `$%` | **`shape-xact`** STOA165 |
 | `mold-xfer` | `xfer-mold` | multi-face `$%` | later |
 
 Cast twins already on mold path: `cast-named-amount` · `cast-import-amount` (and kind/xact). Gate desks already lead with `gate-*-shape` from STOA148–160.

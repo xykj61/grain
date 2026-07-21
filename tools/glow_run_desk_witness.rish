@@ -656,6 +656,12 @@ assert moldxact.ok else "glow_run mold-xact.glow failed"
 assert moldxact.out contains "GREEN" else "glow_run mold-xact.glow not GREEN"
 assert moldxact.out contains "mold-xact.glow" else "glow_run mold-xact claim missing path"
 
+# STOA165: Glow OS primary dual — shape-xact beside mold-xact.
+let shapexact = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/shape-xact.glow"]
+assert shapexact.ok else "glow_run shape-xact.glow failed"
+assert shapexact.out contains "GREEN" else "glow_run shape-xact.glow not GREEN"
+assert shapexact.out contains "shape-xact.glow" else "glow_run shape-xact claim missing path"
+
 let moldxfer = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/mold-xfer.glow"]
 assert moldxfer.ok else "glow_run mold-xfer.glow failed"
 assert moldxfer.out contains "GREEN" else "glow_run mold-xfer.glow not GREEN"
@@ -723,6 +729,17 @@ let castimportxact = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/ge
 assert castimportxact.ok else "glow_run cast-import-xact.glow failed"
 assert castimportxact.out contains "GREEN" else "glow_run cast-import-xact.glow not GREEN"
 assert castimportxact.out contains "cast-import-xact.glow" else "glow_run cast-import-xact claim missing path"
+
+# STOA165: Glow OS primary cast twins for xact-shape.
+let castnamedxactshape = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cast-named-xact-shape.glow"]
+assert castnamedxactshape.ok else "glow_run cast-named-xact-shape.glow failed"
+assert castnamedxactshape.out contains "GREEN" else "glow_run cast-named-xact-shape.glow not GREEN"
+assert castnamedxactshape.out contains "cast-named-xact-shape.glow" else "glow_run cast-named-xact-shape claim missing path"
+
+let castimportxactshape = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cast-import-xact-shape.glow"]
+assert castimportxactshape.ok else "glow_run cast-import-xact-shape.glow failed"
+assert castimportxactshape.out contains "GREEN" else "glow_run cast-import-xact-shape.glow not GREEN"
+assert castimportxactshape.out contains "cast-import-xact-shape.glow" else "glow_run cast-import-xact-shape claim missing path"
 
 let asserttrue = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/assert-true.glow"]
 assert asserttrue.ok else "glow_run assert-true.glow failed"
