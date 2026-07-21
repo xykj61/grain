@@ -16,6 +16,10 @@ let xact_rye = "glow/.cache/cast_named_xact_welcome.rye"
 let xact_bin = "glow/bin/cast_named_xact_welcome"
 let import_xact_rye = "glow/.cache/cast_import_xact_welcome.rye"
 let import_xact_bin = "glow/bin/cast_import_xact_welcome"
+let memo_rye = "glow/.cache/cast_named_memo_welcome.rye"
+let memo_bin = "glow/bin/cast_named_memo_welcome"
+let peer_rye = "glow/.cache/cast_named_peer_welcome.rye"
+let peer_bin = "glow/bin/cast_named_peer_welcome"
 
 let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/lower_named_cast_witness.rye -femit-bin=${bin}"]
 assert build.ok else "lower_named_cast_witness build failed"
@@ -26,6 +30,7 @@ assert selftest.out contains "GREEN" else "lower_named_cast_witness not GREEN"
 assert selftest.out contains "AmountMold" else "lower_named_cast_witness missing AmountMold"
 assert selftest.out contains "KindMold" else "lower_named_cast_witness missing KindMold"
 assert selftest.out contains "XactMold" else "lower_named_cast_witness missing XactMold"
+assert selftest.out contains "MemoShape" else "lower_named_cast_witness missing MemoShape"
 assert selftest.out contains "CastMoldMismatch" else "lower_named_cast_witness missing CastMoldMismatch"
 assert selftest.out contains "parse_cross_desk token-driven" else "lower_named_cast_witness missing token-driven parse"
 assert selftest.out contains "named_cast_parts" else "lower_named_cast_witness missing named_cast_parts"
@@ -33,6 +38,9 @@ assert selftest.out contains "NotANamedCast" else "lower_named_cast_witness miss
 assert selftest.out contains "NamedCastNeedsTuple" else "lower_named_cast_witness missing aura refuse"
 assert selftest.out contains "STOA93" else "lower_named_cast_witness missing STOA93"
 assert selftest.out contains "STOA94" else "lower_named_cast_witness missing STOA94"
+assert selftest.out contains "STOA182" else "lower_named_cast_witness missing STOA182"
+assert selftest.out contains "STOA184" else "lower_named_cast_witness missing STOA184"
+assert selftest.out contains "PeerShape" else "lower_named_cast_witness missing PeerShape"
 
 let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
 assert build_welcome.ok else "named-cast welcome .rye build failed"
@@ -70,6 +78,18 @@ let run_import_xact = run ["sh" "-c" "${import_xact_bin}; echo EXIT:$?"]
 assert run_import_xact.ok else "cross-desk payload tagged named-cast welcome binary failed to launch"
 assert run_import_xact.out contains "EXIT:0" else "cross-desk payload tagged named-cast welcome binary did not exit 0"
 
+let build_memo = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${memo_rye} -femit-bin=${memo_bin}"]
+assert build_memo.ok else "cord named-cast welcome .rye build failed"
+let run_memo = run ["sh" "-c" "${memo_bin}; echo EXIT:$?"]
+assert run_memo.ok else "cord named-cast welcome binary failed to launch"
+assert run_memo.out contains "EXIT:0" else "cord named-cast welcome binary did not exit 0"
+
+let build_peer = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${peer_rye} -femit-bin=${peer_bin}"]
+assert build_peer.ok else "hex named-cast welcome .rye build failed"
+let run_peer = run ["sh" "-c" "${peer_bin}; echo EXIT:$?"]
+assert run_peer.ok else "hex named-cast welcome binary failed to launch"
+assert run_peer.out contains "EXIT:0" else "hex named-cast welcome binary did not exit 0"
+
 # TAME surface gates (STOA87).
 let width = run ["sh" "-c" "grep 'usize' glow/lower_named_cast.rye 2>/dev/null | grep -v '@intCast' | grep -v '@as(usize' | wc -l | tr -d ' '"]
 assert trim width.out == "0" else "glow/lower_named_cast.rye still carries authored usize"
@@ -78,4 +98,4 @@ assert trim assert_import.out == "1" else "glow/lower_named_cast.rye must import
 let memcpy = run ["sh" "-c" "grep -c '@memcpy(' glow/lower_named_cast.rye | tr -d ' '"]
 assert trim memcpy.out == "0" else "glow/lower_named_cast.rye must use copy_disjoint"
 
-say "GREEN: Glow named-cast — TAME tidy · cross-desk · same-desk mold-body tokens; STOA87/93/94."
+say "GREEN: Glow named-cast — TAME tidy · cross-desk · same-desk · STOA182 @t · STOA184 @ux; STOA87/93/94."

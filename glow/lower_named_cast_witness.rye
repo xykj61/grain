@@ -9,7 +9,7 @@ const print = std.debug.print;
 const lower = @import("lower_named_cast.rye");
 const lower_mold = @import("lower_mold.rye");
 
-const witness_version = "20260719.224451";
+const witness_version = "20260721.175343";
 
 const desk_src =
     \\+$  amount-mold
@@ -84,6 +84,13 @@ const lib_xact_src =
     \\  $%  [%mint amount=@u32]
     \\      [%send ~]
     \\  ==
+;
+
+const cord_src =
+    \\+$  memo-shape
+    \\  $:  memo=@t
+    \\  ==
+    \\^-  memo-shape
 ;
 
 fn run_selftest(init: std.process.Init) !u8 {
@@ -191,10 +198,36 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, buf[0..lib_xact_n], "pub fn main") == null);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/mold_xact.rye", .data = buf[0..lib_xact_n] });
     print("lower: mold libraries emit with no main -- GREEN\n", .{});
+
+    // STOA182: `$:` @t named-cast emits bounded cord + demo.
+    assert(lower.looks_like_named_cast(cord_src));
+    const cord_n = try lower.lower_source_welcome(cord_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..cord_n], "pub const MemoShape") != null);
+    assert(std.mem.indexOf(u8, buf[0..cord_n], "[256]u8") != null);
+    assert(std.mem.indexOf(u8, buf[0..cord_n], "glow_demo_cord") != null);
+    assert(std.mem.indexOf(u8, buf[0..cord_n], "STOA77/175/182") != null);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/cast_named_memo_welcome.rye", .data = buf[0..cord_n] });
+    print("lower: +$ memo-shape + ^- memo-shape emits MemoShape cord cast -- GREEN\n", .{});
+
+    // STOA184: `$:` @ux named-cast emits bounded hex + demo.
+    const hex_cast_src =
+        \\+$  peer-shape
+        \\  $:  from=@ux
+        \\  ==
+        \\^-  peer-shape
+    ;
+    assert(lower.looks_like_named_cast(hex_cast_src));
+    const hex_n = try lower.lower_source_welcome(hex_cast_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..hex_n], "pub const PeerShape") != null);
+    assert(std.mem.indexOf(u8, buf[0..hex_n], "[32]u8") != null);
+    assert(std.mem.indexOf(u8, buf[0..hex_n], "glow_demo_hex") != null);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/cast_named_peer_welcome.rye", .data = buf[0..hex_n] });
+    print("lower: +$ peer-shape + ^- peer-shape emits PeerShape hex cast -- GREEN\n", .{});
+
     print("lower: wrote named-cast welcome .rye under glow/.cache/ -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: named-cast resolve lowers — STOA93 cross-desk · STOA94 same-desk mold-body tokens; amount · kind · xact · import desks.\n", .{});
+    print("GREEN: named-cast resolve lowers — STOA93 cross-desk · STOA94 same-desk mold-body tokens · STOA182 @t · STOA184 @ux; amount · kind · xact · memo · peer · import desks.\n", .{});
     return 0;
 }
 

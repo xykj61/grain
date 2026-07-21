@@ -16,6 +16,8 @@ let xfer_rye = "glow/.cache/mold_xfer_welcome.rye"
 let xfer_bin = "glow/bin/mold_xfer_welcome"
 let memo_rye = "glow/.cache/mold_memo_welcome.rye"
 let memo_bin = "glow/bin/mold_memo_welcome"
+let peer_rye = "glow/.cache/mold_peer_welcome.rye"
+let peer_bin = "glow/bin/mold_peer_welcome"
 
 let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/lower_mold_witness.rye -femit-bin=${bin}"]
 assert build.ok else "lower_mold_witness build failed"
@@ -33,6 +35,9 @@ assert selftest.out contains "mold-only peek" else "lower_mold_witness missing m
 assert selftest.out contains "STOA95" else "lower_mold_witness missing STOA95"
 assert selftest.out contains "STOA96" else "lower_mold_witness missing STOA96"
 assert selftest.out contains "STOA181" else "lower_mold_witness missing STOA181"
+assert selftest.out contains "STOA184" else "lower_mold_witness missing STOA184"
+assert selftest.out contains "PeerShape" else "lower_mold_witness missing PeerShape"
+assert selftest.out contains "MemoShape" else "lower_mold_witness missing MemoShape"
 
 let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
 assert build_welcome.ok else "mold welcome .rye build failed"
@@ -70,6 +75,12 @@ let run_memo = run ["sh" "-c" "${memo_bin}; echo EXIT:$?"]
 assert run_memo.ok else "mold memo welcome binary failed to launch"
 assert run_memo.out contains "EXIT:0" else "mold memo welcome binary did not exit 0"
 
+let build_peer = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${peer_rye} -femit-bin=${peer_bin}"]
+assert build_peer.ok else "mold peer welcome .rye build failed"
+let run_peer = run ["sh" "-c" "${peer_bin}; echo EXIT:$?"]
+assert run_peer.ok else "mold peer welcome binary failed to launch"
+assert run_peer.out contains "EXIT:0" else "mold peer welcome binary did not exit 0"
+
 # TAME surface gates (STOA96).
 let width = run ["sh" "-c" "grep 'usize' glow/lower_mold.rye 2>/dev/null | grep -v '@intCast' | grep -v '@as(usize' | wc -l | tr -d ' '"]
 assert trim width.out == "0" else "glow/lower_mold.rye still carries authored usize"
@@ -78,4 +89,4 @@ assert trim assert_import.out == "1" else "glow/lower_mold.rye must import asser
 let memcpy = run ["sh" "-c" "grep -c '@memcpy(' glow/lower_mold.rye | tr -d ' '"]
 assert trim memcpy.out == "0" else "glow/lower_mold.rye must not use memcpy"
 
-say "GREEN: Glow +$ / $: / $% mold hop — AmountMold · PairMold · KindMold · XactMold · XferMold · MemoShape; STOA74–80 · STOA95 peek · STOA96 tidy · STOA181 @t cord."
+say "GREEN: Glow +$ / $: / $% mold hop — AmountMold · PairMold · KindMold · XactMold · XferMold · MemoShape · PeerShape; STOA74–80 · STOA95 peek · STOA96 tidy · STOA181 @t · STOA184 @ux."

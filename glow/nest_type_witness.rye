@@ -45,6 +45,19 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("nest: @t under @u32 refused SampleDoesNotNest -- GREEN\n", .{});
 
+    // STOA183: `@ux` nests under `@ux`; named bound aura_ux_max_bytes.
+    try nest_type.assert_aura_nests("@ux", "@ux");
+    assert(nest_type.is_hex_aura("@ux"));
+    assert(!nest_type.is_hex_aura("@t"));
+    assert(nest_type.aura_ux_max_bytes == 32);
+    print("nest: @ux under @ux accepts · hex bound 32 -- GREEN\n", .{});
+    if (nest_type.assert_aura_nests("@ux", "@t")) |_| {
+        return error.HexNestAcceptedTooSoon;
+    } else |err| {
+        if (err != nest_type.NestError.SampleDoesNotNest) return err;
+    }
+    print("nest: @ux under @t refused SampleDoesNotNest -- GREEN\n", .{});
+
     // Bartis accept path still lowers welcome identity.
     const n_ok = try lower.lower_source_welcome("|=  sample=@u32\nsample\n", &buf);
     assert(n_ok > 0);

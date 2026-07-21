@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260721.175252
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — UDT (UTC) time convention
+title STOA183 thin @ux hex GREEN
+prompt approve next rec
+think approved STOA183 lean A @ux thin — mirror STOA180 cord path
+think lex @ux · nest bound 32 · parse field_is_hex · HexAuraNotYetLowered on mold + named-cast
+obs tokens · rune · nest · lower refuse · named-cast refuse all GREEN
+obs sala from/to stay @t until STOA184 lower; STOA182A–183 pack unsent
+file glow/tokens.rye lex @ux
+file glow/nest_type.rye aura_ux_max_bytes 32
+file glow/rune_mold.rye field_is_hex
+file glow/lower_mold.rye HexAuraNotYetLowered
+file glow/lower_named_cast.rye hex cast refuse
+file active-designing/20260721-174747_stoa183-ux-hex-aura-thin.md brief
+recommend keep-going STOA184 @ux lower emit — or say send first for STOA182A–183 pack
+product_nib Sala B0 Glow
+suite_nib STOA0-183
+git_nib 48af79c996
