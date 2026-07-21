@@ -10,6 +10,8 @@
 //! STOA96: TAME tidy — assert · u32 · append_print · split emitters.
 //! STOA180: `$:` `@t` faces parse.
 //! STOA181: `$:` `@t` lowers to bounded `[aura_t_max_bytes]u8` + demo main.
+//! STOA183: `$:` `@ux` faces parse.
+//! STOA184: `$:` `@ux` lowers to bounded `[aura_ux_max_bytes]u8` + demo main.
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -86,12 +88,11 @@ fn append_print(out: []u8, used: *u32, comptime fmt: []const u8, args: anytype) 
     used.* += n;
 }
 
-fn emit_cord_demo_helper(out: []u8, used: *u32) LowerError!void {
+fn emit_bytes_demo_helper(out: []u8, used: *u32, comptime fn_name: []const u8, bound: u32) LowerError!void {
     assert(used.* <= out.len); // invariant
-    const bound = nest_type.aura_t_max_bytes;
     // Bound-copy loop in emit (no memcpy token in this file — TAME scan).
     try append_print(out, used,
-        \\fn glow_demo_cord(comptime s: []const u8) [{d}]u8 {{
+        \\fn {s}(comptime s: []const u8) [{d}]u8 {{
         \\    var buf = [_]u8{{0}} ** {d};
         \\    var i: u32 = 0;
         \\    while (i < @as(u32, @intCast(s.len))) : (i += 1) {{
@@ -100,26 +101,27 @@ fn emit_cord_demo_helper(out: []u8, used: *u32) LowerError!void {
         \\    return buf;
         \\}}
         \\
-    , .{ bound, bound });
+    , .{ fn_name, bound, bound });
 }
 
 fn emit_tuple_type(spec: *const rm.MoldSpec, zig_type: []const u8, out: []u8, used: *u32, library: bool) LowerError!void {
     assert(used.* <= out.len); // invariant
     const name = rm.name_slice(spec);
     const has_cord = rm.any_cord_field(spec);
+    const has_hex = rm.any_hex_field(spec);
     if (library) {
         try append_print(out, used,
             \\const std = @import("std");
             \\
-            \\/// Lowered from Glow `+$ {s}` library (STOA79 · STOA181 cord).
+            \\/// Lowered from Glow `+$ {s}` library (STOA79 · STOA181/184 bytes).
             \\pub const {s} = struct {{
             \\
         , .{ name, zig_type });
-    } else if (has_cord) {
+    } else if (has_cord or has_hex) {
         try append_print(out, used,
             \\const std = @import("std");
             \\
-            \\/// Lowered from Glow `+$ {s}` / `$:` @u32 · @t fields (STOA74/75/181).
+            \\/// Lowered from Glow `+$ {s}` / `$:` @u32 · @t · @ux fields (STOA74/75/181/184).
             \\pub const {s} = struct {{
             \\
         , .{ name, zig_type });
@@ -132,7 +134,8 @@ fn emit_tuple_type(spec: *const rm.MoldSpec, zig_type: []const u8, out: []u8, us
             \\
         , .{ name, zig_type });
     }
-    const bound = nest_type.aura_t_max_bytes;
+    const cord_bound = nest_type.aura_t_max_bytes;
+    const hex_bound = nest_type.aura_ux_max_bytes;
     const n: u32 = @intCast(spec.field_count);
     var i: u32 = 0;
     while (i < n) : (i += 1) {
@@ -140,7 +143,9 @@ fn emit_tuple_type(spec: *const rm.MoldSpec, zig_type: []const u8, out: []u8, us
         const fl = try zig_safe_ident(rm.field_slice(spec, @as(usize, @intCast(i))), &zf);
         const face = zf[0..@as(usize, @intCast(fl))];
         if (spec.field_is_cord[@as(usize, @intCast(i))]) {
-            try append_print(out, used, "    {s}: [{d}]u8 = [_]u8{{0}} ** {d},\n", .{ face, bound, bound });
+            try append_print(out, used, "    {s}: [{d}]u8 = [_]u8{{0}} ** {d},\n", .{ face, cord_bound, cord_bound });
+        } else if (spec.field_is_hex[@as(usize, @intCast(i))]) {
+            try append_print(out, used, "    {s}: [{d}]u8 = [_]u8{{0}} ** {d},\n", .{ face, hex_bound, hex_bound });
         } else {
             try append_print(out, used, "    {s}: u32 = 0,\n", .{face});
         }
@@ -153,10 +158,10 @@ fn lower_tuple(spec: *const rm.MoldSpec, zig_type: []const u8, out: []u8) LowerE
     var used: u32 = 0;
     try emit_tuple_type(spec, zig_type, out, &used, false);
     const has_cord = rm.any_cord_field(spec);
-    if (has_cord) {
-        try append_print(out, &used, "\n", .{});
-        try emit_cord_demo_helper(out, &used);
-    }
+    const has_hex = rm.any_hex_field(spec);
+    if (has_cord or has_hex) try append_print(out, &used, "\n", .{});
+    if (has_cord) try emit_bytes_demo_helper(out, &used, "glow_demo_cord", nest_type.aura_t_max_bytes);
+    if (has_hex) try emit_bytes_demo_helper(out, &used, "glow_demo_hex", nest_type.aura_ux_max_bytes);
     try append_print(out, &used, "\npub fn main(_: std.process.Init) !u8 {{\n    const m = {s}{{\n", .{zig_type});
     const n: u32 = @intCast(spec.field_count);
     var i: u32 = 0;
@@ -166,8 +171,9 @@ fn lower_tuple(spec: *const rm.MoldSpec, zig_type: []const u8, out: []u8) LowerE
         const fl = try zig_safe_ident(face_src, &zf);
         const face = zf[0..@as(usize, @intCast(fl))];
         if (spec.field_is_cord[@as(usize, @intCast(i))]) {
-            // Demo cord text is the face name (fits name budget ≪ aura bound).
             try append_print(out, &used, "        .{s} = glow_demo_cord(\"{s}\"),\n", .{ face, face_src });
+        } else if (spec.field_is_hex[@as(usize, @intCast(i))]) {
+            try append_print(out, &used, "        .{s} = glow_demo_hex(\"{s}\"),\n", .{ face, face_src });
         } else {
             try append_print(out, &used, "        .{s} = {d},\n", .{ face, mold_demo_vals[@as(usize, @intCast(i))] });
         }
@@ -182,6 +188,8 @@ fn lower_tuple(spec: *const rm.MoldSpec, zig_type: []const u8, out: []u8) LowerE
         if (i != 0) try append_print(out, &used, " and ", .{});
         if (spec.field_is_cord[@as(usize, @intCast(i))]) {
             try append_print(out, &used, "std.mem.eql(u8, &m.{s}, &glow_demo_cord(\"{s}\"))", .{ face, face_src });
+        } else if (spec.field_is_hex[@as(usize, @intCast(i))]) {
+            try append_print(out, &used, "std.mem.eql(u8, &m.{s}, &glow_demo_hex(\"{s}\"))", .{ face, face_src });
         } else {
             try append_print(out, &used, "m.{s} == {d}", .{ face, mold_demo_vals[@as(usize, @intCast(i))] });
         }

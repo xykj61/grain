@@ -8,7 +8,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const lower = @import("lower_mold.rye");
 
-const witness_version = "20260721.173504";
+const witness_version = "20260721.175343";
 
 const one_src =
     \\+$  amount-mold
@@ -109,8 +109,21 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/mold_memo_welcome.rye", .data = buf[0..n6] });
     print("lower: +$ memo-shape @t emits MemoShape cord -- GREEN\n", .{});
 
+    // STOA184: `$:` @ux lowers to bounded hex field + demo main.
+    const hex_src =
+        \\+$  peer-shape
+        \\  $:  from=@ux
+        \\  ==
+    ;
+    const n7 = try lower.lower_source_welcome(hex_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n7], "pub const PeerShape") != null);
+    assert(std.mem.indexOf(u8, buf[0..n7], "[32]u8") != null);
+    assert(std.mem.indexOf(u8, buf[0..n7], "glow_demo_hex") != null);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/mold_peer_welcome.rye", .data = buf[0..n7] });
+    print("lower: +$ peer-shape @ux emits PeerShape hex -- GREEN\n", .{});
+
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: +$ / $: / $% mold lowers — STOA74–80 · STOA95 peek · STOA96 TAME tidy · STOA181 @t cord; mold-amount · mold-pair · mold-kind · mold-xact · mold-xfer · mold-memo.\n", .{});
+    print("GREEN: +$ / $: / $% mold lowers — STOA74–80 · STOA95 peek · STOA96 TAME tidy · STOA181 @t · STOA184 @ux; mold-amount · mold-pair · mold-kind · mold-xact · mold-xfer · mold-memo · mold-peer.\n", .{});
     return 0;
 }
 

@@ -9,6 +9,8 @@
 //! STOA93: cross-desk parse walks `tokens.cross_desk_parts` (lexer→lower).
 //! STOA94: same-desk mold-body span via `tokens.named_cast_parts`.
 //! STOA175: multi-field `$:` named-cast (pair…nona) — full struct emit · demo vals.
+//! STOA182: `$:` `@t` named-cast mirrors mold lower (`[aura_t_max_bytes]u8` + demo cord).
+//! STOA184: `$:` `@ux` named-cast mirrors mold lower (`[aura_ux_max_bytes]u8` + demo hex).
 //!
 //!   +$  kind-mold
 //!     $%  [%mint ~]
@@ -21,6 +23,7 @@ const assert = std.debug.assert;
 const rm = @import("rune_mold.rye");
 const tokens = @import("tokens.rye");
 const tally_copy = @import("tally_copy.rye");
+const nest_type = @import("nest_type.rye");
 
 pub const max_stem_len: u32 = 64;
 
@@ -162,30 +165,68 @@ fn append_print(out: []u8, used: *u32, comptime fmt: []const u8, args: anytype) 
     used.* += n;
 }
 
+fn emit_bytes_demo_helper(out: []u8, used: *u32, comptime fn_name: []const u8, bound: u32) LowerError!void {
+    assert(used.* <= out.len); // invariant
+    // Bound-copy loop in emit (no memcpy token in this file — TAME scan).
+    try append_print(out, used,
+        \\fn {s}(comptime s: []const u8) [{d}]u8 {{
+        \\    var buf = [_]u8{{0}} ** {d};
+        \\    var i: u32 = 0;
+        \\    while (i < @as(u32, @intCast(s.len))) : (i += 1) {{
+        \\        buf[@as(usize, @intCast(i))] = s[@as(usize, @intCast(i))];
+        \\    }}
+        \\    return buf;
+        \\}}
+        \\
+    , .{ fn_name, bound, bound });
+}
+
 fn emit_tuple_cast(spec: *const rm.MoldSpec, cast_mold: []const u8, out: []u8) LowerError!u32 {
     const mold_name = rm.name_slice(spec);
     const n: u32 = @intCast(spec.field_count);
     assert(n >= 1); // precondition: at least one `$:` face
     assert(n <= rm.max_fields); // precondition: closed `$:` capacity
+    const has_cord = rm.any_cord_field(spec);
+    const has_hex = rm.any_hex_field(spec);
+    const cord_bound = nest_type.aura_t_max_bytes;
+    const hex_bound = nest_type.aura_ux_max_bytes;
     var zt: [rm.max_name_len]u8 = undefined;
     const tn = try zig_type_name(mold_name, &zt);
     var used: u32 = 0;
-    try append_print(out, &used,
-        \\const std = @import("std");
-        \\
-        \\/// Lowered from Glow `+$ {s}` + `^-  {s}` — named-cast resolve (STOA77/175).
-        \\pub const {s} = struct {{
-        \\
-    , .{ mold_name, cast_mold, zt[0..@as(usize, @intCast(tn))] });
+    if (has_cord or has_hex) {
+        try append_print(out, &used,
+            \\const std = @import("std");
+            \\
+            \\/// Lowered from Glow `+$ {s}` + `^-  {s}` — named-cast resolve (STOA77/175/182/184).
+            \\pub const {s} = struct {{
+            \\
+        , .{ mold_name, cast_mold, zt[0..@as(usize, @intCast(tn))] });
+    } else {
+        try append_print(out, &used,
+            \\const std = @import("std");
+            \\
+            \\/// Lowered from Glow `+$ {s}` + `^-  {s}` — named-cast resolve (STOA77/175).
+            \\pub const {s} = struct {{
+            \\
+        , .{ mold_name, cast_mold, zt[0..@as(usize, @intCast(tn))] });
+    }
     var i: u32 = 0;
     while (i < n) : (i += 1) {
         var zf: [rm.max_name_len]u8 = undefined;
         const fl = try zig_safe_ident(rm.field_slice(spec, @as(usize, @intCast(i))), &zf);
-        try append_print(out, &used, "    {s}: u32 = 0,\n", .{zf[0..@as(usize, @intCast(fl))]});
+        const face = zf[0..@as(usize, @intCast(fl))];
+        if (spec.field_is_cord[@as(usize, @intCast(i))]) {
+            try append_print(out, &used, "    {s}: [{d}]u8 = [_]u8{{0}} ** {d},\n", .{ face, cord_bound, cord_bound });
+        } else if (spec.field_is_hex[@as(usize, @intCast(i))]) {
+            try append_print(out, &used, "    {s}: [{d}]u8 = [_]u8{{0}} ** {d},\n", .{ face, hex_bound, hex_bound });
+        } else {
+            try append_print(out, &used, "    {s}: u32 = 0,\n", .{face});
+        }
     }
+    try append_print(out, &used, "}};\n\n", .{});
+    if (has_cord) try emit_bytes_demo_helper(out, &used, "glow_demo_cord", cord_bound);
+    if (has_hex) try emit_bytes_demo_helper(out, &used, "glow_demo_hex", hex_bound);
     try append_print(out, &used,
-        \\}};
-        \\
         \\pub fn main(_: std.process.Init) !u8 {{
         \\    const casted: {s} = .{{
         \\
@@ -193,22 +234,38 @@ fn emit_tuple_cast(spec: *const rm.MoldSpec, cast_mold: []const u8, out: []u8) L
     i = 0;
     while (i < n) : (i += 1) {
         var zf: [rm.max_name_len]u8 = undefined;
-        const fl = try zig_safe_ident(rm.field_slice(spec, @as(usize, @intCast(i))), &zf);
-        try append_print(out, &used, "        .{s} = {d},\n", .{
-            zf[0..@as(usize, @intCast(fl))],
-            named_cast_demo_vals[@as(usize, @intCast(i))],
-        });
+        const face_src = rm.field_slice(spec, @as(usize, @intCast(i)));
+        const fl = try zig_safe_ident(face_src, &zf);
+        const face = zf[0..@as(usize, @intCast(fl))];
+        if (spec.field_is_cord[@as(usize, @intCast(i))]) {
+            try append_print(out, &used, "        .{s} = glow_demo_cord(\"{s}\"),\n", .{ face, face_src });
+        } else if (spec.field_is_hex[@as(usize, @intCast(i))]) {
+            try append_print(out, &used, "        .{s} = glow_demo_hex(\"{s}\"),\n", .{ face, face_src });
+        } else {
+            try append_print(out, &used, "        .{s} = {d},\n", .{
+                face,
+                named_cast_demo_vals[@as(usize, @intCast(i))],
+            });
+        }
     }
     try append_print(out, &used, "    }};\n    return if (", .{});
     i = 0;
     while (i < n) : (i += 1) {
         var zf: [rm.max_name_len]u8 = undefined;
-        const fl = try zig_safe_ident(rm.field_slice(spec, @as(usize, @intCast(i))), &zf);
+        const face_src = rm.field_slice(spec, @as(usize, @intCast(i)));
+        const fl = try zig_safe_ident(face_src, &zf);
+        const face = zf[0..@as(usize, @intCast(fl))];
         if (i != 0) try append_print(out, &used, " and ", .{});
-        try append_print(out, &used, "casted.{s} == {d}", .{
-            zf[0..@as(usize, @intCast(fl))],
-            named_cast_demo_vals[@as(usize, @intCast(i))],
-        });
+        if (spec.field_is_cord[@as(usize, @intCast(i))]) {
+            try append_print(out, &used, "std.mem.eql(u8, &casted.{s}, &glow_demo_cord(\"{s}\"))", .{ face, face_src });
+        } else if (spec.field_is_hex[@as(usize, @intCast(i))]) {
+            try append_print(out, &used, "std.mem.eql(u8, &casted.{s}, &glow_demo_hex(\"{s}\"))", .{ face, face_src });
+        } else {
+            try append_print(out, &used, "casted.{s} == {d}", .{
+                face,
+                named_cast_demo_vals[@as(usize, @intCast(i))],
+            });
+        }
     }
     try append_print(out, &used, ") 0 else 1;\n}}\n", .{});
     return used;
@@ -385,6 +442,8 @@ fn emit_cross_tuple(spec: *const CrossDeskSpec, mold_spec: *const rm.MoldSpec, o
     const n: u32 = @intCast(mold_spec.field_count);
     assert(n >= 1); // precondition: at least one `$:` face
     assert(n <= rm.max_fields); // precondition: closed `$:` capacity
+    const has_cord = rm.any_cord_field(mold_spec);
+    const has_hex = rm.any_hex_field(mold_spec);
     var zs: [max_stem_len]u8 = undefined;
     var zt: [rm.max_name_len]u8 = undefined;
     const sn = try zig_stem(spec, &zs);
@@ -395,9 +454,7 @@ fn emit_cross_tuple(spec: *const CrossDeskSpec, mold_spec: *const rm.MoldSpec, o
         \\const std = {s}import("std");
         \\const lib = {s}import("{s}.rye");
         \\
-        \\/// Lowered from Glow `/+ {s}` + `^-  {s}` — cross-desk named-cast (STOA79/175).
-        \\pub fn main(_: std.process.Init) !u8 {{
-        \\    const casted: lib.{s} = .{{
+        \\/// Lowered from Glow `/+ {s}` + `^-  {s}` — cross-desk named-cast (STOA79/175/182/184).
         \\
     , .{
         at,
@@ -405,27 +462,49 @@ fn emit_cross_tuple(spec: *const CrossDeskSpec, mold_spec: *const rm.MoldSpec, o
         zs[0..@as(usize, @intCast(sn))],
         stem_slice(spec),
         cast_mold_slice(spec),
-        zt[0..@as(usize, @intCast(tn))],
     });
+    if (has_cord) try emit_bytes_demo_helper(out, &used, "glow_demo_cord", nest_type.aura_t_max_bytes);
+    if (has_hex) try emit_bytes_demo_helper(out, &used, "glow_demo_hex", nest_type.aura_ux_max_bytes);
+    try append_print(out, &used,
+        \\pub fn main(_: std.process.Init) !u8 {{
+        \\    const casted: lib.{s} = .{{
+        \\
+    , .{zt[0..@as(usize, @intCast(tn))]});
     var i: u32 = 0;
     while (i < n) : (i += 1) {
         var zf: [rm.max_name_len]u8 = undefined;
-        const fl = try zig_safe_ident(rm.field_slice(mold_spec, @as(usize, @intCast(i))), &zf);
-        try append_print(out, &used, "        .{s} = {d},\n", .{
-            zf[0..@as(usize, @intCast(fl))],
-            named_cast_demo_vals[@as(usize, @intCast(i))],
-        });
+        const face_src = rm.field_slice(mold_spec, @as(usize, @intCast(i)));
+        const fl = try zig_safe_ident(face_src, &zf);
+        const face = zf[0..@as(usize, @intCast(fl))];
+        if (mold_spec.field_is_cord[@as(usize, @intCast(i))]) {
+            try append_print(out, &used, "        .{s} = glow_demo_cord(\"{s}\"),\n", .{ face, face_src });
+        } else if (mold_spec.field_is_hex[@as(usize, @intCast(i))]) {
+            try append_print(out, &used, "        .{s} = glow_demo_hex(\"{s}\"),\n", .{ face, face_src });
+        } else {
+            try append_print(out, &used, "        .{s} = {d},\n", .{
+                face,
+                named_cast_demo_vals[@as(usize, @intCast(i))],
+            });
+        }
     }
     try append_print(out, &used, "    }};\n    return if (", .{});
     i = 0;
     while (i < n) : (i += 1) {
         var zf: [rm.max_name_len]u8 = undefined;
-        const fl = try zig_safe_ident(rm.field_slice(mold_spec, @as(usize, @intCast(i))), &zf);
+        const face_src = rm.field_slice(mold_spec, @as(usize, @intCast(i)));
+        const fl = try zig_safe_ident(face_src, &zf);
+        const face = zf[0..@as(usize, @intCast(fl))];
         if (i != 0) try append_print(out, &used, " and ", .{});
-        try append_print(out, &used, "casted.{s} == {d}", .{
-            zf[0..@as(usize, @intCast(fl))],
-            named_cast_demo_vals[@as(usize, @intCast(i))],
-        });
+        if (mold_spec.field_is_cord[@as(usize, @intCast(i))]) {
+            try append_print(out, &used, "std.mem.eql(u8, &casted.{s}, &glow_demo_cord(\"{s}\"))", .{ face, face_src });
+        } else if (mold_spec.field_is_hex[@as(usize, @intCast(i))]) {
+            try append_print(out, &used, "std.mem.eql(u8, &casted.{s}, &glow_demo_hex(\"{s}\"))", .{ face, face_src });
+        } else {
+            try append_print(out, &used, "casted.{s} == {d}", .{
+                face,
+                named_cast_demo_vals[@as(usize, @intCast(i))],
+            });
+        }
     }
     try append_print(out, &used, ") 0 else 1;\n}}\n", .{});
     return used;

@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260721.175343
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — UDT (UTC) time convention
+title STOA184 @ux hex lower GREEN
+prompt kg
+think kg STOA184 — emit [32]u8 + glow_demo_hex · named-cast mirror · sala from/to @ux
+obs HexAuraNotYetLowered retired; mold + named-cast PeerShape EXIT:0; sala-event glow_run GREEN
+obs memo/stamp stay @t · amount @u32 · claim shell / $% hex held
+file glow/lower_mold.rye hex field emit
+file glow/lower_named_cast.rye hex named-cast emit
+file glow/gen/shape-sala-event.glow from/to @ux
+file active-designing/20260721-175343_stoa184-ux-hex-lower-emit.md brief
+recommend check-in say send to ship STOA182A–184 then lean next (claim shell / sala cast / $% / rest)
+product_nib Sala B0 Glow
+suite_nib STOA0-184
+git_nib 48af79c996

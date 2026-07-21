@@ -11,6 +11,7 @@
 //! STOA97: `rune_mold.parse_source` consumes this stream → MoldSpec.
 //! STOA176: `named_cast_parts` line budget 4–12 (field_count+3 ≤ freeze).
 //! STOA180: `@t` cord aura lex (bound in nest_type).
+//! STOA183: `@ux` hex aura lex (bound in nest_type).
 //!
 //!   +$  xact-mold
 //!     $%  [%mint amount=@u32]
@@ -192,10 +193,17 @@ fn lex_aura(src: []const u8, i: u32, out: []Token, used: *u32) TokenError!u32 {
         try push(out, used, .aura, i, 2);
         return i + 2;
     }
-    // `@u32` / `@u64` unsigned auras.
+    // `@u32` / `@u64` unsigned · STOA183 `@ux` hex peer.
     if (a1 != 'u') return error.BadToken;
     if (i + 2 >= src_len) return error.BadToken;
-    if (!is_digit(src[@as(usize, @intCast(i + 2))])) return error.BadToken;
+    const a2 = src[@as(usize, @intCast(i + 2))];
+    if (a2 == 'x') {
+        const after = i + 3;
+        if (after < src_len and is_ident_char(src[@as(usize, @intCast(after))])) return error.BadToken;
+        try push(out, used, .aura, i, 3);
+        return i + 3;
+    }
+    if (!is_digit(a2)) return error.BadToken;
     const n = try scan_digits(src, i + 2);
     try push(out, used, .aura, i, 2 + n);
     return i + 2 + n;
@@ -228,7 +236,7 @@ fn lex_one(src: []const u8, i: u32, out: []Token, used: *u32) TokenError!u32 {
     }
     // `%tag` cold atom (call runes `%-` / `%+` already matched above).
     if (c == '%') return lex_percent_tag(src, i, out, used);
-    // `@u32` / `@u64` / `@t` auras (STOA180 cord).
+    // `@u32` / `@u64` / `@t` / `@ux` auras (STOA180 cord · STOA183 hex).
     if (c == '@') return lex_aura(src, i, out, used);
     if (is_digit(c)) {
         const n = try scan_digits(src, i);

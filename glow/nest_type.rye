@@ -44,6 +44,8 @@ pub const nest_type_version = "20260721.171227";
 
 /// STOA180: Glow cord aura `@t` — warm text atom with a stated byte ceiling (TAME-shaped).
 pub const aura_t_max_bytes: u32 = 256;
+/// STOA183: Glow hex aura `@ux` — fixed pubkey-shaped byte ceiling (ed25519 peer).
+pub const aura_ux_max_bytes: u32 = 32;
 
 /// Closed named shapes welcome in gate samples (citizen desks lead with `-shape`; study twins keep `-mold`).
 /// `$:` one-field ≡ `@u32`: amount · count · amount-shape · count-shape. `$:` two-field: pair · pair-shape. `$:` three-field: triple · triple-shape.
@@ -94,6 +96,7 @@ pub const NestError = error{
 
 /// Assert `sample_aura` nests under `stated_aura` (stated aura equality).
 /// `@t` nests under `@t`; bound is `aura_t_max_bytes` (STOA180).
+/// `@ux` nests under `@ux`; bound is `aura_ux_max_bytes` (STOA183).
 pub fn assert_aura_nests(sample_aura: []const u8, stated_aura: []const u8) NestError!void {
     assert(sample_aura.len > 0); // precondition: sample aura non-empty
     assert(stated_aura.len > 0); // precondition: stated aura non-empty
@@ -103,6 +106,11 @@ pub fn assert_aura_nests(sample_aura: []const u8, stated_aura: []const u8) NestE
 /// True when `aura` is the Glow cord aura `@t`.
 pub fn is_cord_aura(aura: []const u8) bool {
     return std.mem.eql(u8, aura, "@t");
+}
+
+/// True when `aura` is the Glow hex aura `@ux`.
+pub fn is_hex_aura(aura: []const u8) bool {
+    return std.mem.eql(u8, aura, "@ux");
 }
 
 /// Strip one leading `%` so callers may pass `%mint` or `mint`.

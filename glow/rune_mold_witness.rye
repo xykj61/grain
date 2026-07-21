@@ -98,7 +98,22 @@ fn run_selftest() !u8 {
     assert(sc.field_count == 1);
     assert(std.mem.eql(u8, rm.field_slice(&sc, 0), "memo"));
     assert(rm.any_cord_field(&sc));
+    assert(!rm.any_hex_field(&sc));
     print("rune: +$ / $: memo=@t cord face parses -- GREEN\n", .{});
+
+    // STOA183: `$:` face=@ux parses; hex flag set; lower held separately.
+    const hex_src =
+        \\+$  peer-shape
+        \\  $:  from=@ux
+        \\  ==
+    ;
+    const sh = try rm.parse_source(hex_src);
+    assert(sh.body == .tuple);
+    assert(sh.field_count == 1);
+    assert(std.mem.eql(u8, rm.field_slice(&sh, 0), "from"));
+    assert(rm.any_hex_field(&sh));
+    assert(!rm.any_cord_field(&sh));
+    print("rune: +$ / $: from=@ux hex face parses -- GREEN\n", .{});
 
     if (rm.parse_source(
         \\+$  kind-mold

@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260721.175804
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — UDT (UTC) time convention
+title STOA182–184 send · approve claim shell
+prompt send and approve next rec
+think send STOA182A named-cast cord · STOA183 thin @ux · STOA184 @ux lower + sala from/to
+think next rec after ROADMAP list = claim shell (STOA183 lean B) — Glow adapter over elder run_demo_fold
+obs pier prior 48af79c996; pack unsent through STOA184
+file glow/lower_named_cast.rye STOA182 cord cast
+file glow/tokens.rye STOA183 @ux lex
+file glow/lower_mold.rye STOA184 @ux emit
+file glow/gen/shape-sala-event.glow from/to @ux
+recommend keep-going STOA185 claim shell after remotes ack
+product_nib Sala B0 Glow
+suite_nib STOA0-184
