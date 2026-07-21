@@ -26,7 +26,7 @@
 |------|------------|--------|---------------|
 | `mold-amount` | `amount-mold` | one-field `$:` | **`shape-amount`** GREEN |
 | `mold-count` | `count-mold` | one-field `$:` | **`shape-count`** STOA162 |
-| `mold-pair` | `pair-mold` | two-field `$:` | **`shape-pair`** STOA163 (cast held) |
+| `mold-pair` | `pair-mold` | two-field `$:` | **`shape-pair`** STOA163 · cast twins STOA175 |
 | `mold-triple` | `triple-mold` | multi-field `$:` | **`shape-triple`** STOA167 (cast held) |
 | `mold-quad` | `quad-mold` | multi-field `$:` | **`shape-quad`** STOA168 (cast held; mold-only budget) |
 | `mold-penta` | `penta-mold` | multi-field `$:` | **`shape-penta`** STOA169 (cast held) |
