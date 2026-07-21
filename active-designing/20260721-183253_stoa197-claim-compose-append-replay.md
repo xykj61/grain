@@ -32,7 +32,7 @@ rishi/bin/rishi run tools/stoa191_native_claim_wire_witness.rish
 
 ## Hold
 
-Glow-authored fold body (replace elder append/sign/replay internals). Pixel eyes. JABS3.
+Glow-authored append/sign/replay bodies. Pixel eyes. JABS3. (Glow fold product surface landed STOA198.)
 
 ---
 
