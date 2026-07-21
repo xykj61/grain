@@ -2,25 +2,24 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260721.011624` (UDT) · voice Quin  
+**Last refreshed:** `20260721.011816` (UDT) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD0–HOLD1 · HOLD-W  
-**Language nib:** **STOA0–168** GREEN · capacity freeze at 9 · mold-only budget ≤11  
-**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–168  
-**Git nib:** `90c3c29d78` STOA167 sent · STOA168 unsent  
+**Language nib:** **STOA0–169** GREEN · capacity freeze at 9 · mold-only budget ≤11  
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–169  
+**Git nib:** `160148622a` STOA168 sent · STOA169 unsent  
 
-**Season:** Framework · UDT · shape-quad dual · SETU6.5 live-sent GREEN.  
+**Season:** Framework · UDT · shape-penta dual · SETU6.5 live-sent GREEN.  
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`
 
 ---
 
 ## Now
 
-**STOA167** sent `90c3c29d78` — `shape-triple` dual.  
-**STOA168** `20260721.011412` — `shape-quad` dual GREEN (unsent); mold-only peek ≤11; glow_run early mold path. Brief [`../active-designing/20260721-011412_stoa168-shape-quad-dual-desk.md`](../active-designing/20260721-011412_stoa168-shape-quad-dual-desk.md).
+**STOA168** sent `160148622a` — `shape-quad` dual · mold-only budget.  
+**STOA169** `20260721.011729` — `shape-penta` dual GREEN (unsent). Brief [`../active-designing/20260721-011729_stoa169-shape-penta-dual-desk.md`](../active-designing/20260721-011729_stoa169-shape-penta-dual-desk.md).
 
 ```bash
-rishi/bin/rishi run tools/glow_run.rish glow/gen/shape-quad.glow
-rishi/bin/rishi run tools/glow_tokens_witness.rish
+rishi/bin/rishi run tools/glow_run.rish glow/gen/shape-penta.glow
 ```
 
 ---
@@ -29,7 +28,7 @@ rishi/bin/rishi run tools/glow_tokens_witness.rish
 
 | Door | Kind |
 |------|------|
-| STOA169 shape-penta dual | **kg** after send |
+| STOA170 shape-hexa dual | **kg** after send |
 | Multi-field duals through nona · multi-field named-cast | **itinerary** |
 | Sala B0 Glow / JABS3 | **check-in** (behind rename) |
 | Capacity freeze at 9 · alias ladder closed | **seated** |
