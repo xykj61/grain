@@ -1,0 +1,43 @@
+//! linengrow/glow_sala_b0_sign_witness.rye — proves Glow sign/verify product surface.
+//!
+//!   rye build linengrow/glow_sala_b0_sign_witness.rye \
+//!     -femit-bin=linengrow/bin/glow_sala_b0_sign_witness
+//!   linengrow/bin/glow_sala_b0_sign_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const kumara = @import("kumara.rye");
+const mc = @import("mala_core.rye");
+const rc = @import("receipt_core.rye");
+const fixture = @import("glow_sala_b0_demo_fixture.rye");
+const sign = @import("glow_sala_b0_sign.rye");
+
+const witness_version = "20260721.190209";
+
+fn run_selftest() !u8 {
+    assert(fixture.root_pin_agrees());
+    print("sala-b0-sign: fixture root pin seated -- GREEN\n", .{});
+
+    const signed = try sign.claim_demo_sign();
+    print("sala-b0-sign: claim_demo_sign round-trip -- GREEN\n", .{});
+    assert(signed.canonical_len > 0);
+    print("sala-b0-sign: canonical fact len -- {d}\n", .{signed.canonical_len});
+
+    // Tamper refuse: flip one fact byte and expect verify failure.
+    var bad: [rc.max_fact_len]u8 = signed.canonical;
+    bad[0] ^= 1;
+    const actor_kp = kumara.keypair_from_seed(&mc.issuer_seed);
+    const sig_bytes = signed.sig.toBytes();
+    const tamper = sign.verify_record(sig_bytes[0..], bad[0..signed.canonical_len], actor_kp.public_key);
+    assert(tamper == error.VerifyFailed);
+    print("sala-b0-sign: tampered fact refuses verify -- GREEN\n", .{});
+
+    print("sala-b0-sign: version {s}\n", .{witness_version});
+    print("GREEN: Glow Sala B0 sign surface — STOA201; elder sign_fact/verify behind Glow assert.\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}
