@@ -20,6 +20,7 @@ assert build.ok else "nest_type_witness build failed: ${build.err}${build.out}"
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
 assert selftest.ok else "nest_type_witness exited non-zero: ${selftest.err}${selftest.out}"
 assert selftest.out contains "GREEN" else "nest_type_witness not GREEN"
+assert selftest.out contains "cord bound 1024" else "nest_type_witness missing STOA209 cord bound 1024"
 assert selftest.out contains "SampleDoesNotNest" else "nest_type_witness missing SampleDoesNotNest"
 assert selftest.out contains "gate-sample.glow" else "nest_type_witness missing accept fixture"
 assert selftest.out contains "gate-sample-u64-refuse.glow" else "nest_type_witness missing refuse fixture"

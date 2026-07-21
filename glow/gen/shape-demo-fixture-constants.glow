@@ -3,6 +3,7 @@
 ::  sala:open rishi session | sala:type let x = 42 | sala:frame 8-line skate view
 ::  expected root @ux hex 99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe
 ::  Emit demos today are face-name cords/hex (STOA181/184); source literals held.
+::  STOA213: cast twins at cast-named-demo-fixture-constants · cast-import-demo-fixture-constants.
 +$  demo-fixture-constants-shape
   $:  stamp1=@t
       stamp2=@t

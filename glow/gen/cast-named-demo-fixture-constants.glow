@@ -1,0 +1,12 @@
+::  Same-desk named-cast — +$ demo-fixture-constants-shape then ^- (STOA213 / C3).
+::  Seven faces: stamp1–3 · memo1–3 @t · root @ux. Source literals still held.
++$  demo-fixture-constants-shape
+  $:  stamp1=@t
+      stamp2=@t
+      stamp3=@t
+      memo1=@t
+      memo2=@t
+      memo3=@t
+      root=@ux
+  ==
+^-  demo-fixture-constants-shape

@@ -1,0 +1,24 @@
+format session-log-v1
+stamp 20260721.192947
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — UDT (UTC) time convention
+title STOA209 cord bound 1024 GREEN
+prompt approve next rec
+think Next rec after STOA208 was cord capacity; widen aura_t_max_bytes 256 to 1024 for max fact hex.
+think Updated nest_type witness · lower_shape · named-cast emits; fact-line and sala-event glow_run GREEN.
+obs Full glow_nest_type_witness.rish still fails on barket sibling — panics amount-shape vs amount-mold; reproduced on clean HEAD before this lap; not introduced by 1024. STOA208-209 unsent.
+file glow/nest_type.rye aura_t_max_bytes 1024
+file glow/nest_type_witness.rye cord bound 1024 assert
+file glow/lower_shape_witness.rye expect [1024]u8
+file glow/lower_named_cast_witness.rye expect [1024]u8
+file tools/glow_nest_type_witness.rish pin cord bound 1024
+file active-designing/20260721-192947_stoa209-cord-bound-1024.md brief
+file work-in-progress/TASKS.md STOA209 checked
+file work-in-progress/REMEMBER.md Now STOA209
+file docs/STOA.md STOA0-209
+git_nib e0484e96ae
+product_nib Sala-B0-Glow-cord-1024
+suite_nib STOA0-209
+recommend send STOA208-209; or check-in C replay inventory
