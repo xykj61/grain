@@ -697,6 +697,12 @@ assert shapehexa.ok else "glow_run shape-hexa.glow failed"
 assert shapehexa.out contains "GREEN" else "glow_run shape-hexa.glow not GREEN"
 assert shapehexa.out contains "shape-hexa.glow" else "glow_run shape-hexa claim missing path"
 
+# STOA171: Glow OS primary dual — shape-hepta beside mold-hepta (cast twins held).
+let shapehepta = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/shape-hepta.glow"]
+assert shapehepta.ok else "glow_run shape-hepta.glow failed"
+assert shapehepta.out contains "GREEN" else "glow_run shape-hepta.glow not GREEN"
+assert shapehepta.out contains "shape-hepta.glow" else "glow_run shape-hepta claim missing path"
+
 let castnamed = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cast-named-amount.glow"]
 assert castnamed.ok else "glow_run cast-named-amount.glow failed"
 assert castnamed.out contains "GREEN" else "glow_run cast-named-amount.glow not GREEN"
