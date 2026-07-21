@@ -552,7 +552,9 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA153 xfer-shape alias GREEN, `20260721.002051`** — lean A (alias path): closed allowlist `xfer-shape` ≡ `xfer-mold` (multi-face payload `$%` / XferMold); `is_xfer_named_mold` accepts the alias; bartis · barket desks; capacity freeze held. Brief [`active-designing/20260721-002051_stoa153-xfer-shape-alias.md`](../active-designing/20260721-002051_stoa153-xfer-shape-alias.md). Sent `8471232968`.
 
-**STOA154 triple-shape alias GREEN, `20260721.002540`** — lean A (alias path): closed allowlist `triple-shape` ≡ `triple-mold` (three-field `$:` / TripleMold); `is_triple_named_mold` accepts the alias; bartis · barket desks; capacity freeze held. Brief [`active-designing/20260721-002540_stoa154-triple-shape-alias.md`](../active-designing/20260721-002540_stoa154-triple-shape-alias.md). Next: **STOA155** check-in (quad-shape · rename · Sala behind shape).
+**STOA154 triple-shape alias GREEN, `20260721.002540`** — lean A (alias path): closed allowlist `triple-shape` ≡ `triple-mold` (three-field `$:` / TripleMold); `is_triple_named_mold` accepts the alias; bartis · barket desks; capacity freeze held. Brief [`active-designing/20260721-002540_stoa154-triple-shape-alias.md`](../active-designing/20260721-002540_stoa154-triple-shape-alias.md). Sent `114f874af8`.
+
+**STOA155 quad-shape alias GREEN, `20260721.003129`** — lean A (alias path): closed allowlist `quad-shape` ≡ `quad-mold` (four-field `$:` / QuadMold); `is_quad_named_mold` accepts the alias; bartis · barket desks; capacity freeze held. Brief [`active-designing/20260721-003129_stoa155-quad-shape-alias.md`](../active-designing/20260721-003129_stoa155-quad-shape-alias.md). Next: **STOA156** check-in (penta-shape · rename · Sala behind shape).
 
 **Framework next (host resume), `20260720.231857`** — lean A: live SETU6.5 **sent** eyes on real `usb0`/`ncm`. Lab TX gate already GREEN; Sala B0 Glow rewrite · JABS3 stay thicker check-ins. Same freeze brief.
 
