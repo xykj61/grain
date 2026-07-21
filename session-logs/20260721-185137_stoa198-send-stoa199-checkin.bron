@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260721.185137
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — UDT (UTC) time convention
+title STOA198 send · STOA199 check-in seated
+prompt send and check in
+think Send STOA198 Glow fold product surface to pier origin and codeberg.
+think Seat STOA199 after Glow fold with leans A Pixel · B vane-body inventory · C sign surface · D rest · E JABS3 held.
+think Product naming and compose closed; Glow-authored vane bodies remain the real rewrite gap.
+obs Check-in unsent until next send word; no silent kg into vane bodies.
+file active-designing/20260721-185137_stoa199-after-glow-fold-checkin.md check-in brief
+file work-in-progress/REMEMBER.md Now STOA199 awaiting lean
+file work-in-progress/ROADMAP.md STOA199 seated
+file work-in-progress/TASKS.md STOA199 open checkbox
+git_nib b7966301a2
+product_nib Sala-B0-Glow-fold
+suite_nib STOA0-198
+recommend check-in choose lean A-E before next build; send when check-in should ride the pier
