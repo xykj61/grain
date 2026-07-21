@@ -12,7 +12,7 @@ pub const LowerError = rc.ParseError || error{
     Overflow,
     EmptySource,
     AuraNotYetLowered,
-    NamedMoldNotYetLowered,
+    NamedShapeNotYetLowered,
     ArgvSampleAuraNotYetLowered,
 };
 
@@ -20,7 +20,7 @@ pub const cast_welcome_raw: u64 = 42;
 
 fn zig_type_for_mold(mold: []const u8) LowerError![]const u8 {
     if (mold.len == 0) return error.MissingMold;
-    if (mold[0] != '@') return error.NamedMoldNotYetLowered;
+    if (mold[0] != '@') return error.NamedShapeNotYetLowered;
     if (std.mem.eql(u8, mold, "@u8")) return "u8";
     if (std.mem.eql(u8, mold, "@u16")) return "u16";
     if (std.mem.eql(u8, mold, "@u32")) return "u32";

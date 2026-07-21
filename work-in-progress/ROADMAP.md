@@ -618,10 +618,17 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA184 `@ux` hex lower GREEN, `20260721.175343`** — `[32]u8` emit · named-cast · sala `from`/`to` `@ux`. Brief [`active-designing/20260721-175343_stoa184-ux-hex-lower-emit.md`](../active-designing/20260721-175343_stoa184-ux-hex-lower-emit.md).
 
-**STOA185 Glow claim shell GREEN, `20260721.175857`** — lean B; elder `run_demo_fold` behind Glow assert. Brief [`active-designing/20260721-175857_stoa185-glow-sala-b0-claim-shell.md`](../active-designing/20260721-175857_stoa185-glow-sala-b0-claim-shell.md). Next check-in: sala cast · `$%` · rest. JABS3 held.
+**STOA185 Glow claim shell GREEN, `20260721.175857`** — lean B; elder `run_demo_fold` behind Glow assert. Brief [`active-designing/20260721-175857_stoa185-glow-sala-b0-claim-shell.md`](../active-designing/20260721-175857_stoa185-glow-sala-b0-claim-shell.md).
 
+**STOA186 sala-event cast GREEN, `20260721.180054`** — lean A; `cast-named-sala-event`. Brief [`active-designing/20260721-180054_stoa186-sala-event-cast-twin.md`](../active-designing/20260721-180054_stoa186-sala-event-cast-twin.md).
 
+**STOA187 thin `$%` payload `@t`/`@ux` GREEN, `20260721.180520`** — lean B (compass language door); parse + `PayloadAuraNotYetLowered`. Brief [`active-designing/20260721-180520_stoa187-pct-payload-at-thin.md`](../active-designing/20260721-180520_stoa187-pct-payload-at-thin.md).
 
+**STOA188 `$%` payload emit GREEN, `20260721.180725`** — retire refuse; cord/hex payload lower + named-cast. Brief [`active-designing/20260721-180725_stoa188-pct-payload-at-emit.md`](../active-designing/20260721-180725_stoa188-pct-payload-at-emit.md).
+
+**STOA189 ShapeSpec API rename GREEN, `20260721.180917`** — `ShapeSpec` · `rune_shape` · `lower_shape`. Brief [`active-designing/20260721-180917_stoa189-shapespec-api-rename.md`](../active-designing/20260721-180917_stoa189-shapespec-api-rename.md).
+
+**STOA190 remaining mold→shape GREEN, `20260721.181551`** — errors · APIs · Zig `*Shape` · living gates · `hoon-study/` twins. Brief [`active-designing/20260721-181551_stoa190-remaining-mold-to-shape.md`](../active-designing/20260721-181551_stoa190-remaining-mold-to-shape.md). Next check-in: NativeActivity claim wire · rest. JABS3 held.
 
 
 **Framework next (host resume), `20260720.231857`** — lean A: live SETU6.5 **sent** eyes on real `usb0`/`ncm`. Lab TX gate already GREEN; Sala B0 Glow rewrite · JABS3 stay thicker check-ins. Same freeze brief.

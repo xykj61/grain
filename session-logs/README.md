@@ -8,6 +8,17 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260721.181551` — [STOA190 mold→shape · send](20260721-181551_stoa190-mold-to-shape-send.bron) — living shape surface; pier send
+- `20260721.180917` — [STOA189 ShapeSpec API GREEN](20260721-180917_stoa189-shapespec-api-green.bron) — rune_shape · lower_shape; unsent with 186–188
+
+- `20260721.180800` — [shape vs mold API held](20260721-180800_shape-vs-mold-api-held.bron) — citizen shape; MoldSpec seam separate
+
+- `20260721.180725` — [STOA188 $% payload emit GREEN](20260721-180725_stoa188-pct-payload-emit-green.bron) — cord/hex lower; unsent with 186–187
+
+- `20260721.180520` — [STOA187 thin $% payload @t/@ux GREEN](20260721-180520_stoa187-pct-payload-thin-green.bron) — parse + refuse; unsent with 186
+
+- `20260721.180120` — [STOA186 sala-event cast GREEN](20260721-180120_stoa186-sala-cast-green.bron) — cast-named-sala-event; unsent
+
 - `20260721.180054` — [STOA185 send · STOA186A](20260721-180054_stoa185-send-stoa186a.bron) — claim shell to pier; sala cast twin next
 - `20260721.180008` — [STOA186 check-in seated](20260721-180008_stoa186-checkin-seated.bron) — leans A–D after claim shell
 - `20260721.175857` — [STOA185 Glow claim shell GREEN](20260721-175857_stoa185-claim-shell-green.bron) — elder fold behind Glow assert; unsent

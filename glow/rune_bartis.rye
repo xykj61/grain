@@ -12,17 +12,17 @@
 //! STOA109: closed named mold `amount-mold` (one-field `$:` ≡ `@u32` lower).
 //! STOA148: closed allowlist alias `amount-shape` ≡ `amount-mold` (Glow OS shape word).
 //! STOA149: closed allowlist alias `count-shape` ≡ `count-mold` (Glow OS shape word).
-//! STOA150: closed allowlist alias `pair-shape` ≡ `pair-mold` (Glow OS shape word · PairMold).
-//! STOA151: closed allowlist alias `kind-shape` ≡ `kind-mold` (Glow OS shape word · KindMold).
-//! STOA152: closed allowlist alias `xact-shape` ≡ `xact-mold` (Glow OS shape word · XactMold).
-//! STOA153: closed allowlist alias `xfer-shape` ≡ `xfer-mold` (Glow OS shape word · XferMold).
-//! STOA154: closed allowlist alias `triple-shape` ≡ `triple-mold` (Glow OS shape word · TripleMold).
-//! STOA155: closed allowlist alias `quad-shape` ≡ `quad-mold` (Glow OS shape word · QuadMold).
-//! STOA156: closed allowlist alias `penta-shape` ≡ `penta-mold` (Glow OS shape word · PentaMold).
-//! STOA157: closed allowlist alias `hexa-shape` ≡ `hexa-mold` (Glow OS shape word · HexaMold).
-//! STOA158: closed allowlist alias `hepta-shape` ≡ `hepta-mold` (Glow OS shape word · HeptaMold).
-//! STOA159: closed allowlist alias `octa-shape` ≡ `octa-mold` (Glow OS shape word · OctaMold).
-//! STOA160: closed allowlist alias `nona-shape` ≡ `nona-mold` (Glow OS shape word · NonaMold).
+//! STOA150: closed allowlist alias `pair-shape` ≡ `pair-mold` (Glow OS shape word · PairShape).
+//! STOA151: closed allowlist alias `kind-shape` ≡ `kind-mold` (Glow OS shape word · KindShape).
+//! STOA152: closed allowlist alias `xact-shape` ≡ `xact-mold` (Glow OS shape word · XactShape).
+//! STOA153: closed allowlist alias `xfer-shape` ≡ `xfer-mold` (Glow OS shape word · XferShape).
+//! STOA154: closed allowlist alias `triple-shape` ≡ `triple-mold` (Glow OS shape word · TripleShape).
+//! STOA155: closed allowlist alias `quad-shape` ≡ `quad-mold` (Glow OS shape word · QuadShape).
+//! STOA156: closed allowlist alias `penta-shape` ≡ `penta-mold` (Glow OS shape word · PentaShape).
+//! STOA157: closed allowlist alias `hexa-shape` ≡ `hexa-mold` (Glow OS shape word · HexaShape).
+//! STOA158: closed allowlist alias `hepta-shape` ≡ `hepta-mold` (Glow OS shape word · HeptaShape).
+//! STOA159: closed allowlist alias `octa-shape` ≡ `octa-mold` (Glow OS shape word · OctaShape).
+//! STOA160: closed allowlist alias `nona-shape` ≡ `nona-mold` (Glow OS shape word · NonaShape).
 //! STOA120 / STOA130: expansion calls `assert_sample_nesting_nests(false, …)` (stated no-op).
 //! STOA122: closed allowlist adds `count-mold` beside `amount-mold`.
 //! STOA123: closed allowlist adds unit `$%` `kind-mold` (identity lower).
@@ -253,7 +253,7 @@ pub fn parse_source(src: []const u8) ParseError!GateSpec {
     } else if (mold_tok.kind == .ident) {
         const mold_text = tokens.slice_of(src, mold_tok);
         if (mold_text.len == 0 or mold_text.len > max_mold_len) return error.MissingAura;
-        nest_type.assert_bartis_named_mold(mold_text) catch return error.SampleDoesNotNest;
+        nest_type.assert_bartis_named_shape(mold_text) catch return error.SampleDoesNotNest;
         named_mold = mold_text;
         sample_text = mold_text;
         stated_mold = mold_text;

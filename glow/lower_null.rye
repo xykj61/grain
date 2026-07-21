@@ -21,7 +21,7 @@ pub const LowerError = rn.ParseError || expr.ParseError || error{
     ArmNotYetLowered,
     MalformedArms,
     AuraNotYetLowered,
-    NamedMoldNotYetLowered,
+    NamedShapeNotYetLowered,
 };
 
 pub const max_arm_len: u32 = expr.max_name_len;

@@ -1,4 +1,4 @@
-::  Cross-desk payload tagged named-cast — import mold-xact then ^- xact-mold (STOA82).
+::  Cross-desk payload tagged named-cast — import shape-xact then ^- xact-shape (STOA82).
 ::  Lowered by glow/lower_named_cast.rye; mold library has no main.
-/+  mold-xact
-^-  xact-mold
+/+  shape-xact
+^-  xact-shape

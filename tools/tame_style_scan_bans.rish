@@ -69,21 +69,21 @@ if compound.out != "" then say compound.out
 assert compound.out == "" else "TAME ban: compound assert"
 
 # Glow TAME overflow seat (STOA96 / STOA105 / STOA117): style roster sits at
-# Rishi's 256-file ceiling with tokens + lower_named_cast. lower_mold,
+# Rishi's 256-file ceiling with tokens + lower_named_cast. lower_shape,
 # lower_bartis, and lower_barket ride one-file ban passes.
-let mold = "glow/lower_mold.rye"
-assert ((read-file mold) contains ") == error.") == false else "TAME ban on lower_mold: ) == error."
-assert ((read-file mold) contains ") != error.") == false else "TAME ban on lower_mold: ) != error."
-assert ((read-file mold) contains "std.debug.assert(") == false else "TAME ban on lower_mold: std.debug.assert("
-assert ((read-file mold) contains "Self = @This()") == false else "TAME ban on lower_mold: Self = @This()"
-assert ((read-file mold) contains "usingnamespace") == false else "TAME ban on lower_mold: usingnamespace"
-assert ((read-file mold) contains "!comptime") == false else "TAME ban on lower_mold: !comptime"
-assert ((read-file mold) contains "copyForwards") == false else "TAME ban on lower_mold: copyForwards"
-assert ((read-file mold) contains "copyBackwards") == false else "TAME ban on lower_mold: copyBackwards"
-assert ((read-file mold) contains "FIXME") == false else "TAME ban on lower_mold: FIXME"
-assert ((read-file mold) contains "dbg(") == false else "TAME ban on lower_mold: dbg("
-let mold_compound = run ["sh" "-c" "grep -Hn 'assert(.* and .*)' glow/lower_mold.rye 2>/dev/null | head -8"]
-assert mold_compound.out == "" else "TAME ban on lower_mold: compound assert"
+let shape_lower = "glow/lower_shape.rye"
+assert ((read-file shape_lower) contains ") == error.") == false else "TAME ban on lower_shape: ) == error."
+assert ((read-file shape_lower) contains ") != error.") == false else "TAME ban on lower_shape: ) != error."
+assert ((read-file shape_lower) contains "std.debug.assert(") == false else "TAME ban on lower_shape: std.debug.assert("
+assert ((read-file shape_lower) contains "Self = @This()") == false else "TAME ban on lower_shape: Self = @This()"
+assert ((read-file shape_lower) contains "usingnamespace") == false else "TAME ban on lower_shape: usingnamespace"
+assert ((read-file shape_lower) contains "!comptime") == false else "TAME ban on lower_shape: !comptime"
+assert ((read-file shape_lower) contains "copyForwards") == false else "TAME ban on lower_shape: copyForwards"
+assert ((read-file shape_lower) contains "copyBackwards") == false else "TAME ban on lower_shape: copyBackwards"
+assert ((read-file shape_lower) contains "FIXME") == false else "TAME ban on lower_shape: FIXME"
+assert ((read-file shape_lower) contains "dbg(") == false else "TAME ban on lower_shape: dbg("
+let shape_compound = run ["sh" "-c" "grep -Hn 'assert(.* and .*)' glow/lower_shape.rye 2>/dev/null | head -8"]
+assert shape_compound.out == "" else "TAME ban on lower_shape: compound assert"
 
 let bartis = "glow/lower_bartis.rye"
 assert ((read-file bartis) contains ") == error.") == false else "TAME ban on lower_bartis: ) == error."
@@ -113,4 +113,4 @@ assert ((read-file barket) contains "dbg(") == false else "TAME ban on lower_bar
 let barket_compound = run ["sh" "-c" "grep -Hn 'assert(.* and .*)' glow/lower_barket.rye 2>/dev/null | head -8"]
 assert barket_compound.out == "" else "TAME ban on lower_barket: compound assert"
 
-say "GREEN: TAME style bans clean on scan roster · lower_mold · lower_bartis · lower_barket overflow seats."
+say "GREEN: TAME style bans clean on scan roster · lower_shape · lower_bartis · lower_barket overflow seats."

@@ -26,7 +26,7 @@ STOA185 lean B: `glow_sala_b0_claim` calls elder `run_demo_fold` and asserts the
 | | Lean | What it opens |
 |---|---|---|
 | **A** | **chosen** `20260721.180054` | `^- sala-event-shape` desk (mixed `@ux`/`@u32`/`@t`) once product needs named-cast |
-| **B** | **`$%` payload `@t` / `@ux`** | tagged arms carry cord or hex faces (parse + emit) |
+| **B** | **`$%` payload `@t` / `@ux`** — **chosen thin** `20260721.180520` as **STOA187** | tagged arms parse cord/hex; emit held for next lap |
 | **C** | **Wire claim into NativeActivity** | paint/product path calls `claim_demo_fold` instead of raw fold |
 | **D** | **Rest** | send STOA185 · hold language until a later season word |
 
