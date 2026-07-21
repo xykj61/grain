@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260721.180008
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — UDT (UTC) time convention
+title STOA186 check-in seated after kg
+prompt kg
+think REMEMBER Next was check-in — seat STOA186 leans rather than invent sala cast or $%
+think STOA185 pack still unsent; remaining doors are cast twin · $% · NA wire · rest
+obs leans A sala cast · B $% @t/@ux · C NativeActivity claim wire · D rest/send
+file active-designing/20260721-180008_stoa186-after-claim-shell-checkin.md leans A-D
+file work-in-progress/REMEMBER.md Now points at STOA186 check-in
+recommend check-in pick lean A–D (or say send first for STOA185)
+product_nib Sala B0 Glow
+suite_nib STOA0-185
+git_nib be40df085f
