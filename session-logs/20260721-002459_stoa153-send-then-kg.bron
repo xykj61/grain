@@ -1,0 +1,16 @@
+format session-log-v1
+stamp 20260721.002459
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu Framework 16 AMD — UDT (Etc/UTC)
+title STOA153 send then kg triple-shape
+prompt send then kg
+think Send STOA153 xfer-shape, then kg lean A: STOA154 triple-shape ≡ triple-mold.
+think triple-shape needs is_triple_named_mold so lower emits TripleMold.
+obs Alias path continues after tagged $% trio; first multi-field beyond pair.
+file glow/gen/gate-xfer-shape.glow STOA153 seat
+recommend keep-going STOA154 triple-shape after send
+product_nib SETU6.5-live-sent
+suite_nib STOA0-153
+git_nib pending-send
