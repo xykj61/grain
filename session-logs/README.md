@@ -8,6 +8,9 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260721.174435` — [STOA181 send · STOA182A](20260721-174435_stoa181-send-stoa182a.bron) — cord lower to pier; lean A named-cast cord
+- `20260721.173800` — [STOA182 check-in seated](20260721-173800_stoa182-checkin-seated.bron) — leans A–E after cord lower
+- `20260721.173629` — [STOA181 @t cord lower GREEN](20260721-173629_stoa181-at-cord-lower-green.bron) — [256]u8 emit; sala text @t; unsent
 - `20260721.173330` — [STOA180 send · then kg STOA181](20260721-173330_stoa180-send.bron) — thin @t pack to pier; cord lower next
 - `20260721.173239` — [STOA180 handoff witnesses GREEN](20260721-173239_stoa180-handoff-witnesses-green.bron) — await send; then STOA181
 - `20260721.173015` — [Cursor handoff STOA180](20260721-173015_cursor-handoff-stoa180.bron) — fresh-agent card; send then STOA181

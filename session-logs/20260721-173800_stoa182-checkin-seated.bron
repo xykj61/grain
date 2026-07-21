@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260721.173800
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — UDT (UTC) time convention
+title STOA182 check-in seated after kg
+prompt kg
+think REMEMBER Next was check-in not a silent kg lap — seat STOA182 leans rather than invent emit
+think named-cast still hardcodes u32 — A emit · D refuse-only · E rest/send are the clear forks
+obs STOA181 pack still unsent on disk; kg converted to check-in card
+file active-designing/20260721-173800_stoa182-after-cord-lower-checkin.md leans A-E
+file work-in-progress/REMEMBER.md Now points at STOA182 check-in
+recommend check-in pick lean A–E (or say send first for STOA181)
+product_nib Sala B0 Glow
+suite_nib STOA0-181
+git_nib 254f046c4b

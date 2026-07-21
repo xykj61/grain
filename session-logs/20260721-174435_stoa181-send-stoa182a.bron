@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260721.174435
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — UDT (UTC) time convention
+title STOA181 send · approve STOA182 lean A
+prompt send and approve next rec
+think send STOA181 pack + STOA182 check-in · then kg lean A named-cast cord emit
+think next rec after check-in card was continue the cord seam — A mirrors mold lower for ^-
+obs B @ux · C claim shell · D refuse-only · E rest held behind A
+file active-designing/20260721-173504_stoa181-at-cord-lower-emit.md STOA181 brief
+file active-designing/20260721-173800_stoa182-after-cord-lower-checkin.md leans seated
+file session-logs/20260721-174435_stoa181-send-stoa182a.bron this send
+recommend keep-going STOA182A named-cast cord emit after remotes ack
+product_nib Sala B0 Glow
+suite_nib STOA0-181

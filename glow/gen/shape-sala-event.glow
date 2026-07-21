@@ -1,10 +1,10 @@
 ::  Sala B0 session-event shape — FactFields face names (STOA179).
-::  Stand-in @u32 until @t / bounded cord retires typed debt.
+::  STOA181: text faces from/to/memo/stamp are @t (bound 256); amount stays @u32.
 ::  Elder Rye fold stays; cast held; no mold twin this lap.
 +$  sala-event-shape
-  $:  from=@u32
-      to=@u32
+  $:  from=@t
+      to=@t
       amount=@u32
-      memo=@u32
-      stamp=@u32
+      memo=@t
+      stamp=@t
   ==

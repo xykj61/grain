@@ -450,7 +450,7 @@
 - [x] **STOA178 — Sala B0 Glow thin face · gap inventory** `20260721.165732` — lean **A**; inventory maps fold vanes → Glow coverage; names **STOA179** `sala-event-shape`. Thin face [`../active-designing/20260721-165342_stoa178-sala-b0-glow-thin-face.md`](../active-designing/20260721-165342_stoa178-sala-b0-glow-thin-face.md) · inventory [`../active-designing/20260721-165732_stoa178-sala-b0-glow-gap-inventory.md`](../active-designing/20260721-165732_stoa178-sala-b0-glow-gap-inventory.md).
 - [x] **STOA179 — sala-event-shape desk** `20260721.170403` — `shape-sala-event` → `SalaEventShape`; FactFields names; stand-in `@u32`; cast held. Brief [`../active-designing/20260721-170403_stoa179-sala-event-shape-desk.md`](../active-designing/20260721-170403_stoa179-sala-event-shape-desk.md).
 - [x] **STOA180 — thin `@t` cord aura (lean A)** `20260721.171800` — tokenize · nest bound 256 · `$:` parse · lower refuse `CordAuraNotYetLowered`; shape kept over type; living shape-primary residual. Brief [`../active-designing/20260721-171800_stoa180-at-cord-aura-thin.md`](../active-designing/20260721-171800_stoa180-at-cord-aura-thin.md) · check-in [`../active-designing/20260721-171030_stoa180-at-aura-checkin.md`](../active-designing/20260721-171030_stoa180-at-aura-checkin.md).
-- [ ] **STOA181 — `@t` cord lower emit** *(next)* — bounded cord field emit; then retire stand-in `@u32` on `sala-event-shape` text faces. JABS3 held.
+- [x] **STOA181 — `@t` cord lower emit** `20260721.173504` — `$:` `@t` → `[256]u8` + demo; retire `CordAuraNotYetLowered`; `sala-event-shape` text faces `@t` (`amount` stays `@u32`). Brief [`../active-designing/20260721-173504_stoa181-at-cord-lower-emit.md`](../active-designing/20260721-173504_stoa181-at-cord-lower-emit.md). JABS3 held.
 
 
 
