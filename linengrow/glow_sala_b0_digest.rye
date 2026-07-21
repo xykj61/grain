@@ -1,0 +1,44 @@
+//! linengrow/glow_sala_b0_digest.rye — Glow product digest surface over elder receipt_core.
+//!
+//! STOA194: owns the session-root digest assert (SHA3-256 of log bytes)
+//! while calling elder `digest_log`. Append · sign · replay · fold rewrite stay held.
+//!
+//!   rye build linengrow/glow_sala_b0_digest_witness.rye \
+//!     -femit-bin=linengrow/bin/glow_sala_b0_digest_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const rc = @import("receipt_core.rye");
+const fixture = @import("glow_sala_b0_demo_fixture.rye");
+const fold = @import("sala_b0_fold.rye");
+
+pub const digest_version = "20260721.182623";
+
+pub const DigestError = error{RootMismatch};
+
+/// Digest bounded session-log bytes via elder SHA3-256.
+pub fn digest_log_bytes(log: []const u8) [32]u8 {
+    assert(log.len <= rc.max_log_len); // precondition: elder log bound
+    var root: [32]u8 = undefined;
+    rc.digest_log(log, &root);
+    return root;
+}
+
+/// Hex-encode a 32-byte root (same table as elder fold).
+pub fn root_to_hex(root: *const [32]u8, out: *[64]u8) void {
+    fold.root_to_hex(root, out);
+}
+
+/// True when `root` matches the product fixture / HAWM1 demo root.
+pub fn root_matches_fixture(root: *const [32]u8) bool {
+    var hex: [64]u8 = undefined;
+    root_to_hex(root, &hex);
+    return std.mem.eql(u8, &hex, fixture.expected_demo_root_hex);
+}
+
+/// Digest log bytes; refuse unless the product fixture root matches.
+pub fn claim_digest_log(log: []const u8) DigestError![32]u8 {
+    const root = digest_log_bytes(log);
+    if (!root_matches_fixture(&root)) return error.RootMismatch;
+    return root;
+}

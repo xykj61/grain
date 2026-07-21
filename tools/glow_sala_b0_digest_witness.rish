@@ -1,0 +1,21 @@
+# glow_sala_b0_digest_witness.rish — Glow digest port over elder digest_log (STOA194).
+#
+#   rishi/bin/rishi run tools/glow_sala_b0_digest_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/glow_sala_b0_digest_witness"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/glow_sala_b0_digest_witness.rye -femit-bin=${bin}"]
+assert build.ok else "glow_sala_b0_digest_witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "glow_sala_b0_digest_witness exited non-zero"
+assert selftest.out contains "GREEN" else "glow_sala_b0_digest_witness not GREEN"
+assert selftest.out contains "fixture root pin seated" else "glow_sala_b0_digest_witness missing fixture"
+assert selftest.out contains "elder three-event log built" else "glow_sala_b0_digest_witness missing log build"
+assert selftest.out contains "claim_digest_log matches fixture" else "glow_sala_b0_digest_witness missing digest claim"
+assert selftest.out contains "digest root agrees claim_demo_fold" else "glow_sala_b0_digest_witness missing fold agree"
+assert selftest.out contains "STOA194" else "glow_sala_b0_digest_witness missing STOA194"
+assert selftest.out contains "99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe" else "glow_sala_b0_digest_witness missing expected hex"
+
+say "GREEN: Glow Sala B0 digest port — elder digest_log behind Glow assert; STOA194."
