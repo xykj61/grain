@@ -634,6 +634,12 @@ assert moldpair.ok else "glow_run mold-pair.glow failed"
 assert moldpair.out contains "GREEN" else "glow_run mold-pair.glow not GREEN"
 assert moldpair.out contains "mold-pair.glow" else "glow_run mold-pair claim missing path"
 
+# STOA163: Glow OS primary dual — shape-pair beside mold-pair (cast twins held).
+let shapepair = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/shape-pair.glow"]
+assert shapepair.ok else "glow_run shape-pair.glow failed"
+assert shapepair.out contains "GREEN" else "glow_run shape-pair.glow not GREEN"
+assert shapepair.out contains "shape-pair.glow" else "glow_run shape-pair claim missing path"
+
 let moldkind = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/mold-kind.glow"]
 assert moldkind.ok else "glow_run mold-kind.glow failed"
 assert moldkind.out contains "GREEN" else "glow_run mold-kind.glow not GREEN"
