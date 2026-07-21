@@ -1,0 +1,29 @@
+# stoa198_native_fold_wire_witness.rish — NativeActivity calls Glow product fold.
+#
+# Proves glow_native_activity imports glow_sala_b0_fold and calls
+# run_demo_fold (STOA198). Claim compose stays underneath. Pack GREEN.
+#
+#   rishi/bin/rishi run tools/stoa198_native_fold_wire_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+
+# 1) Glow product fold GREEN (agrees elder).
+let fold = run ["rishi/bin/rishi" "run" "tools/glow_sala_b0_fold_witness.rish"]
+assert fold.ok else "glow_sala_b0_fold_witness failed"
+assert fold.out contains "GREEN" else "glow_sala_b0_fold_witness missing GREEN"
+
+# 2) Claim compose still GREEN underneath.
+let claim = run ["rishi/bin/rishi" "run" "tools/glow_sala_b0_claim_witness.rish"]
+assert claim.ok else "glow_sala_b0_claim_witness failed"
+assert claim.out contains "GREEN" else "glow_sala_b0_claim_witness missing GREEN"
+
+# 3) Entry source wires the Glow fold (docs-implementation sync).
+let src = run ["sh" "-c" "grep -q 'glow_sala_b0_fold.rye' linengrow/glow_native_activity.rye && grep -q 'glow_fold.run_demo_fold' linengrow/glow_native_activity.rye && ! grep -q '@import(\"sala_b0_fold.rye\")' linengrow/glow_native_activity.rye && ! grep -q '@import(\"glow_sala_b0_claim.rye\")' linengrow/glow_native_activity.rye"]
+assert src.ok else "glow_native_activity missing Glow fold wire / still imports elder or claim directly"
+
+# 4) Pack path still GREEN with the wired entry.
+let pack = run ["rishi/bin/rishi" "run" "tools/tube05_apk_pack_witness.rish"]
+assert pack.ok else "tube05_apk_pack_witness failed after fold wire"
+assert pack.out contains "GREEN" else "tube05_apk_pack_witness missing GREEN"
+
+say "GREEN: STOA198 — NativeActivity runs glow_sala_b0_fold; pack device-free; compose underneath."

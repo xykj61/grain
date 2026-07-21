@@ -1,0 +1,38 @@
+//! linengrow/glow_sala_b0_fold_witness.rye — proves Glow product fold peer.
+//!
+//!   rye build linengrow/glow_sala_b0_fold_witness.rye \
+//!     -femit-bin=linengrow/bin/glow_sala_b0_fold_witness
+//!   linengrow/bin/glow_sala_b0_fold_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const glow_fold = @import("glow_sala_b0_fold.rye");
+const elder = @import("sala_b0_fold.rye");
+
+const witness_version = "20260721.183554";
+
+fn run_selftest() !u8 {
+    assert(glow_fold.pin_agrees_elder());
+    print("sala-b0-glow-fold: pin agrees elder -- GREEN\n", .{});
+
+    const root = try glow_fold.run_demo_fold();
+    var hex: [64]u8 = undefined;
+    glow_fold.root_to_hex(&root, &hex);
+    print("sala-b0-glow-fold: session root -- {s}\n", .{hex[0..]});
+    assert(glow_fold.root_matches_expected(&root));
+    assert(std.mem.eql(u8, hex[0..], glow_fold.expected_demo_root_hex));
+    print("sala-b0-glow-fold: run_demo_fold matches product root -- GREEN\n", .{});
+
+    const elder_root = try elder.run_demo_fold();
+    assert(std.mem.eql(u8, &root, &elder_root));
+    print("sala-b0-glow-fold: agrees elder run_demo_fold -- GREEN\n", .{});
+
+    print("sala-b0-glow-fold: version {s}\n", .{witness_version});
+    print("GREEN: Glow Sala B0 product fold — STOA198; compose path behind run_demo_fold.\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}

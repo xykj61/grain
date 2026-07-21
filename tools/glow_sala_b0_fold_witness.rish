@@ -1,0 +1,20 @@
+# glow_sala_b0_fold_witness.rish — Glow product fold peer to elder sala_b0_fold (STOA198).
+#
+#   rishi/bin/rishi run tools/glow_sala_b0_fold_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/glow_sala_b0_fold_witness"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/glow_sala_b0_fold_witness.rye -femit-bin=${bin}"]
+assert build.ok else "glow_sala_b0_fold_witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "glow_sala_b0_fold_witness exited non-zero"
+assert selftest.out contains "GREEN" else "glow_sala_b0_fold_witness not GREEN"
+assert selftest.out contains "pin agrees elder" else "glow_sala_b0_fold_witness missing pin agree"
+assert selftest.out contains "run_demo_fold matches product root" else "glow_sala_b0_fold_witness missing fold claim"
+assert selftest.out contains "agrees elder run_demo_fold" else "glow_sala_b0_fold_witness missing elder agree"
+assert selftest.out contains "STOA198" else "glow_sala_b0_fold_witness missing STOA198"
+assert selftest.out contains "99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe" else "glow_sala_b0_fold_witness missing expected hex"
+
+say "GREEN: Glow Sala B0 product fold — compose path behind run_demo_fold; STOA198."
