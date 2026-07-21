@@ -19,4 +19,5 @@
 | **STOA169** | `shape-penta` dual desk | `glow_run` | **GREEN** `011729` |
 | **STOA170** | `shape-hexa` dual desk | `glow_run` | **GREEN** `012029` |
 | **STOA171** | `shape-hepta` dual desk | `glow_run` | **GREEN** `012229` |
+| **STOA172** | `shape-octa` dual desk | `glow_run` | **GREEN** `012414` |
 Smoke: `glow_nest_type_witness` · `glow_barket_parse_witness` · `glow_lower_bartis_witness` · Sibling: **ZETA** · **LULU** · **SETU** · **TUBE**.
