@@ -165,7 +165,8 @@ fn append_print(out: []u8, used: *u32, comptime fmt: []const u8, args: anytype) 
 fn emit_tuple_cast(spec: *const rm.MoldSpec, cast_mold: []const u8, out: []u8) LowerError!u32 {
     const mold_name = rm.name_slice(spec);
     const n: u32 = @intCast(spec.field_count);
-    assert(n >= 1 and n <= rm.max_fields); // precondition: closed `$:` capacity
+    assert(n >= 1); // precondition: at least one `$:` face
+    assert(n <= rm.max_fields); // precondition: closed `$:` capacity
     var zt: [rm.max_name_len]u8 = undefined;
     const tn = try zig_type_name(mold_name, &zt);
     var used: u32 = 0;
@@ -382,7 +383,8 @@ pub fn lower_source_welcome(src: []const u8, out: []u8) LowerError!u32 {
 fn emit_cross_tuple(spec: *const CrossDeskSpec, mold_spec: *const rm.MoldSpec, out: []u8) LowerError!u32 {
     const mold_name = rm.name_slice(mold_spec);
     const n: u32 = @intCast(mold_spec.field_count);
-    assert(n >= 1 and n <= rm.max_fields); // precondition: closed `$:` capacity
+    assert(n >= 1); // precondition: at least one `$:` face
+    assert(n <= rm.max_fields); // precondition: closed `$:` capacity
     var zs: [max_stem_len]u8 = undefined;
     var zt: [rm.max_name_len]u8 = undefined;
     const sn = try zig_stem(spec, &zs);

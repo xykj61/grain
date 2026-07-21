@@ -1,11 +1,11 @@
 # Glow — Language Tooling, Grown from Real Design
 
 **Language:** EN
-**Last updated:** 2026-07-21 (**STOA176** named-cast peek widen · triple…nona cast twins GREEN)
+**Last updated:** 2026-07-21 (**STOA180** `@t` cord aura · shape-primary living pins)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Audience:** Acme Corporation employees reading the working Glow pin
-**Status:** Checkable — **STOA0–31** sixteen heads · `/+` payload import · payload+open `|%` · nest `++` bodies · library · multi-line · compose · nests · cells · `%` calls · truth · **STOA100–109** `|=` bartis GREEN · **STOA102/111–118** `|^` barket through named-mold GREEN · **STOA106–110/119–160** nest/type nesting-nests · expansion wire · barket nesting-through · count-mold · kind-mold · xact-mold · xfer-mold · pair-mold · triple-mold · quad-mold · penta-mold · hexa-mold · hepta-mold · octa-mold · nona-mold · **amount-shape** · **count-shape** · **pair-shape** · **kind-shape** · **xact-shape** · **xfer-shape** · **triple-shape** · **quad-shape** · **penta-shape** · **hexa-shape** · **hepta-shape** · **octa-shape** · **nona-shape** aliases (multi-field ladder closed at 9) · kind/xact/xfer/pair/triple/quad/penta/hexa/hepta/octa/nona flip call-body · stated/nesting/gold vocabulary · amount/count argv GREEN
+**Status:** Checkable — **STOA0–31** sixteen heads · `/+` payload import · payload+open `|%` · nest `++` bodies · library · multi-line · compose · nests · cells · `%` calls · truth · **STOA100–109** `|=` bartis GREEN · **STOA102/111–118** `|^` barket through named shapes GREEN · **STOA106–110/119–179** nest/type · citizen **amount-shape**…**nona-shape** · **sala-event-shape** · study mold twins kept · **STOA180** `@t` cord aura (bound 256; lower held) · stated/nesting/gold · amount/count argv GREEN
 **Waymark:** **STOA** — compressor [`../docs/STOA.md`](../docs/STOA.md) · seat [`../active-designing/20260718-202730_stoa-glow-language-waymark.md`](../active-designing/20260718-202730_stoa-glow-language-waymark.md)
 **Ground:** [`active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md`](../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md) · [`20260716-093000_glow-and-rye-what-shares-under-the-hood.md`](../active-designing/20260716-093000_glow-and-rye-what-shares-under-the-hood.md) · truth [`../context/specs/20260717-154943_glow-truth-zig-ambient-nock-loobean-seam.md`](../context/specs/20260717-154943_glow-truth-zig-ambient-nock-loobean-seam.md)
 **Law:** [`../context/TAME_GUIDANCE.md`](../context/TAME_GUIDANCE.md) (root) · Glow supplement still horizon — scoping [`../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md`](../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md)
@@ -24,10 +24,10 @@ Glow is the **language** (Hoon-parallel). Rishi is the **shell** (Dojo-parallel)
 | File | Rune | Proves |
 |---|---|---|
 | [`rune_bounded_trap.rye`](rune_bounded_trap.rye) | `\|-` | Bound shapes + `run_bounded` / `BoundExceeded` |
-| [`rune_cast.rye`](rune_cast.rye) | `^-` | Mold name — aura or named mold |
+| [`rune_cast.rye`](rune_cast.rye) | `^-` | Shape name — aura or named shape |
 | [`rune_conditional.rye`](rune_conditional.rye) | `?:` | Test expression |
 | [`rune_switch.rye`](rune_switch.rye) | `?-` | Subject wing |
-| [`rune_face.rye`](rune_face.rye) | `=/` | Face + optional mold |
+| [`rune_face.rye`](rune_face.rye) | `=/` | Face + optional shape |
 | [`rune_null.rye`](rune_null.rye) | `?~` | Null-test subject |
 | [`rune_mutate.rye`](rune_mutate.rye) | `=.` | Wing to mutate |
 | [`rune_alias.rye`](rune_alias.rye) | `=*` | Alias face |

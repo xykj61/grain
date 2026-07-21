@@ -75,8 +75,11 @@
 | STOA148–160 | Glow OS allowlist aliases `amount-shape` … `nona-shape` |
 | STOA161–173 | Inventary dual desks `shape-*` beside every `mold-*` twin |
 | STOA174 lean A `20260721.013023` | Living pins lead with shape; mold twins named as study |
+| STOA175–176 | Multi-field named-cast cast twins through nona |
+| STOA177–179 | Sala B0 Glow season · `sala-event-shape` |
+| STOA180 `20260721.171800` | Thin `@t` cord aura; living shape-primary residual; **type** reopen refused (`20260721.171644`) |
 
-`MoldSpec` · `rune_mold` · Zig `*Mold` type names stay until a separate API rename. Multi-field named-cast cast twins stay held.
+`MoldSpec` · `rune_mold` · Zig `*Mold` type names stay until a separate API rename.
 
 ---
 

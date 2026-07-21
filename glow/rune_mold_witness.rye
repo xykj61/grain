@@ -87,6 +87,19 @@ fn run_selftest() !u8 {
     }
     print("rune: non-@u32 field refused MoldNotU32 -- GREEN\n", .{});
 
+    // STOA180: `$:` face=@t parses; cord flag set; lower held separately.
+    const cord_src =
+        \\+$  memo-shape
+        \\  $:  memo=@t
+        \\  ==
+    ;
+    const sc = try rm.parse_source(cord_src);
+    assert(sc.body == .tuple);
+    assert(sc.field_count == 1);
+    assert(std.mem.eql(u8, rm.field_slice(&sc, 0), "memo"));
+    assert(rm.any_cord_field(&sc));
+    print("rune: +$ / $: memo=@t cord face parses -- GREEN\n", .{});
+
     if (rm.parse_source(
         \\+$  kind-mold
         \\  $%  [%mint ~]

@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260721.173330
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — UDT (UTC) time convention
+title STOA180 send · then kg STOA181
+prompt send then kg
+think witnesses already GREEN from handoff pickup; stage STOA180 pack + session logs
+think commit glow thin @t · push origin+codeberg · refresh REMEMBER git nib · kg STOA181 cord lower
+obs CordAuraNotYetLowered still the STOA181 door after this send
+file glow/tokens.rye lex @t
+file glow/nest_type.rye aura_t_max_bytes 256
+file glow/rune_mold.rye face=@t parse
+file glow/lower_mold.rye CordAuraNotYetLowered hold
+file active-designing/20260721-171800_stoa180-at-cord-aura-thin.md brief
+file session-logs/20260721-173330_stoa180-send.bron this send
+recommend keep-going STOA181 after remotes ack
+product_nib Sala B0 Glow
+suite_nib STOA0-180

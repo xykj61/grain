@@ -40,9 +40,12 @@ const std = @import("std");
 const assert = std.debug.assert;
 const rune_mold = @import("rune_mold.rye");
 
-pub const nest_type_version = "20260721.005327";
+pub const nest_type_version = "20260721.171227";
 
-/// Closed named shapes welcome in gate samples (desk suffix still often `-mold`).
+/// STOA180: Glow cord aura `@t` — warm text atom with a stated byte ceiling (TAME-shaped).
+pub const aura_t_max_bytes: u32 = 256;
+
+/// Closed named shapes welcome in gate samples (citizen desks lead with `-shape`; study twins keep `-mold`).
 /// `$:` one-field ≡ `@u32`: amount · count · amount-shape · count-shape. `$:` two-field: pair · pair-shape. `$:` three-field: triple · triple-shape.
 /// `$:` four-field: quad · quad-shape. `$:` five-field: penta · penta-shape. `$:` six-field: hexa · hexa-shape. `$:` seven-field: hepta · hepta-shape. `$:` eight-field: octa · octa-shape. `$:` nine-field: nona · nona-shape. Unit `$%`: kind · kind-shape. Payload `$%`: xact · xact-shape. Multi-face payload `$%`: xfer · xfer-shape.
 pub const bartis_named_mold_amount = "amount-mold";
@@ -89,11 +92,17 @@ pub const NestError = error{
     SampleDoesNotNest,
 };
 
-/// Assert `sample_aura` nests under `stated_mold` (stated aura equality).
-pub fn assert_aura_nests(sample_aura: []const u8, stated_mold: []const u8) NestError!void {
+/// Assert `sample_aura` nests under `stated_aura` (stated aura equality).
+/// `@t` nests under `@t`; bound is `aura_t_max_bytes` (STOA180).
+pub fn assert_aura_nests(sample_aura: []const u8, stated_aura: []const u8) NestError!void {
     assert(sample_aura.len > 0); // precondition: sample aura non-empty
-    assert(stated_mold.len > 0); // precondition: stated mold non-empty
-    if (!std.mem.eql(u8, sample_aura, stated_mold)) return error.SampleDoesNotNest;
+    assert(stated_aura.len > 0); // precondition: stated aura non-empty
+    if (!std.mem.eql(u8, sample_aura, stated_aura)) return error.SampleDoesNotNest;
+}
+
+/// True when `aura` is the Glow cord aura `@t`.
+pub fn is_cord_aura(aura: []const u8) bool {
+    return std.mem.eql(u8, aura, "@t");
 }
 
 /// Strip one leading `%` so callers may pass `%mint` or `mint`.
