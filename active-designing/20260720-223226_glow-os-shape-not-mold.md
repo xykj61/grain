@@ -53,11 +53,11 @@
 | LEXICON **Shape** · **Mold** rows | LEXICON |
 | Nest/type · stated/nesting glosses name shape as Glow OS word | LEXICON |
 | This brief as the forward pin | active-designing |
-| Desk / API identifier rename | **horizon** |
+| Desk / API identifier rename | **horizon** at this pin's stamp |
 
 ---
 
-## What stays horizon
+## What stays horizon *(as of this pin's stamp)*
 
 | Item | Why held |
 |------|----------|
@@ -68,9 +68,21 @@
 
 ---
 
+## Landed since this pin *(accrete — do not rewrite above)*
+
+| Stamp | What landed |
+|-------|-------------|
+| STOA148–160 | Glow OS allowlist aliases `amount-shape` … `nona-shape` |
+| STOA161–173 | Inventary dual desks `shape-*` beside every `mold-*` twin |
+| STOA174 lean A `20260721.013023` | Living pins lead with shape; mold twins named as study |
+
+`MoldSpec` · `rune_mold` · Zig `*Mold` type names stay until a separate API rename. Multi-field named-cast cast twins stay held.
+
+---
+
 ## Witness (vocabulary pin)
 
-No new binary witness — this lap seats living words. Desk rename, when opened, binds through nest · bartis · barket the same way STOA130 did.
+No new binary witness — this lap seats living words. Desk duals bind through nest · bartis · barket · `glow_run` (STOA161–173).
 
 ---
 
