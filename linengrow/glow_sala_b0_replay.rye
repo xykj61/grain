@@ -1,0 +1,51 @@
+//! linengrow/glow_sala_b0_replay.rye — Glow product replay surface over elder sala_session_core.
+//!
+//! STOA196: owns demo-log replay (verify · order · digest) while calling elder
+//! `replay`. Builds the log via glow_sala_b0_append. Fold rewrite stays held.
+//!
+//!   rye build linengrow/glow_sala_b0_replay_witness.rye \
+//!     -femit-bin=linengrow/bin/glow_sala_b0_replay_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const kumara = @import("kumara.rye");
+const mc = @import("mala_core.rye");
+const rc = @import("receipt_core.rye");
+const sala = @import("sala_session_core.rye");
+const fixture = @import("glow_sala_b0_demo_fixture.rye");
+const append = @import("glow_sala_b0_append.rye");
+const digest = @import("glow_sala_b0_digest.rye");
+
+pub const replay_version = "20260721.183126";
+
+pub const ReplayError = sala.SessionError || digest.DigestError || error{RootMismatch};
+
+pub const ReplayResult = sala.ReplayResult;
+
+/// Replay a bounded log via elder `replay` (verify · order · digest).
+pub fn replay(
+    log: []const u8,
+    actor_hex: *const [mc.pubkey_hex_len]u8,
+    actor_pk: kumara.PublicKey,
+) ReplayError!ReplayResult {
+    assert(log.len <= rc.max_log_len); // precondition: elder log bound
+    return sala.replay(log, actor_hex, actor_pk);
+}
+
+/// Build the three-event demo log, replay twice, assert roots agree and match fixture.
+pub fn claim_replay_demo_root(log_buf: *[rc.max_log_len]u8) ReplayError![32]u8 {
+    const actor_kp = kumara.keypair_from_seed(&mc.issuer_seed);
+    var actor_hex: [mc.pubkey_hex_len]u8 = undefined;
+    mc.hex_of_key(actor_kp.public_key, &actor_hex);
+
+    const len = try append.append_demo_log(log_buf);
+    const r1 = try replay(log_buf[0..len], &actor_hex, actor_kp.public_key);
+    const r2 = try replay(log_buf[0..len], &actor_hex, actor_kp.public_key);
+    assert(r1.events == fixture.event_count);
+    assert(r2.events == fixture.event_count);
+    assert(r1.last_seq == 3);
+    assert(r2.last_seq == 3);
+    assert(std.mem.eql(u8, &r1.root, &r2.root));
+    if (!digest.root_matches_fixture(&r1.root)) return error.RootMismatch;
+    return r1.root;
+}
