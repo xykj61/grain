@@ -576,7 +576,9 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA164 shape-kind dual GREEN, `20260721.010739`** — first unit `$%` dual `shape-kind` · cast twins; mold-kind kept. Brief [`active-designing/20260721-010739_stoa164-shape-kind-dual-desk.md`](../active-designing/20260721-010739_stoa164-shape-kind-dual-desk.md).
 
-**STOA165 shape-xact dual GREEN, `20260721.010935`** — first payload `$%` dual `shape-xact` · cast twins; mold-xact kept. Brief [`active-designing/20260721-010935_stoa165-shape-xact-dual-desk.md`](../active-designing/20260721-010935_stoa165-shape-xact-dual-desk.md). Next language: **STOA166** `shape-xfer` dual.
+**STOA165 shape-xact dual GREEN, `20260721.010935`** — first payload `$%` dual `shape-xact` · cast twins; mold-xact kept. Brief [`active-designing/20260721-010935_stoa165-shape-xact-dual-desk.md`](../active-designing/20260721-010935_stoa165-shape-xact-dual-desk.md).
+
+**STOA166 shape-xfer dual GREEN, `20260721.011110`** — multi-face payload `$%` dual `shape-xfer` · cast twins; mold-xfer kept; tagged dual family closed. Brief [`active-designing/20260721-011110_stoa166-shape-xfer-dual-desk.md`](../active-designing/20260721-011110_stoa166-shape-xfer-dual-desk.md). Next language: **STOA167** `shape-triple` dual.
 
 **Framework next (host resume), `20260720.231857`** — lean A: live SETU6.5 **sent** eyes on real `usb0`/`ncm`. Lab TX gate already GREEN; Sala B0 Glow rewrite · JABS3 stay thicker check-ins. Same freeze brief.
 

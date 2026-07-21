@@ -1,0 +1,6 @@
+::  +$ / $% multi-face payload — Glow OS primary desk (STOA166).
+::  xfer-shape ≡ xfer-mold; mold-xfer.glow stays the Hoon study twin.
++$  xfer-shape
+  $%  [%mint from=@u32 amount=@u32]
+      [%send ~]
+  ==
