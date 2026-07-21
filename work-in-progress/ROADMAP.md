@@ -630,7 +630,11 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA190 remaining mold→shape GREEN, `20260721.181551`** — errors · APIs · Zig `*Shape` · living gates · `hoon-study/` twins. Brief [`active-designing/20260721-181551_stoa190-remaining-mold-to-shape.md`](../active-designing/20260721-181551_stoa190-remaining-mold-to-shape.md).
 
-**STOA191 NativeActivity claim wire GREEN, `20260721.181903`** — lean C; `claim_demo_fold` on product path; pack GREEN. Brief [`active-designing/20260721-181903_stoa191-native-claim-wire.md`](../active-designing/20260721-181903_stoa191-native-claim-wire.md). Next check-in: rest · JABS3 held.
+**STOA191 NativeActivity claim wire GREEN, `20260721.181903`** — lean C; `claim_demo_fold` on product path; pack GREEN. Brief [`active-designing/20260721-181903_stoa191-native-claim-wire.md`](../active-designing/20260721-181903_stoa191-native-claim-wire.md).
+
+**STOA192 after claim wire check-in seated, `20260721.182041`** — leans A–E (Pixel eyes · fixture desk · digest/append · rest · JABS3 held). Brief [`active-designing/20260721-182041_stoa192-after-claim-wire-checkin.md`](../active-designing/20260721-182041_stoa192-after-claim-wire-checkin.md).
+
+**STOA192 demo fixture constants desk GREEN, `20260721.182250`** — lean B; `shape-demo-fixture-constants` · seven faces · elder pins commented. Brief [`active-designing/20260721-182250_stoa192-demo-fixture-constants-desk.md`](../active-designing/20260721-182250_stoa192-demo-fixture-constants-desk.md). Next check-in: Pixel eyes · digest/append · rest. JABS3 held.
 
 
 **Framework next (host resume), `20260720.231857`** — lean A: live SETU6.5 **sent** eyes on real `usb0`/`ncm`. Lab TX gate already GREEN; Sala B0 Glow rewrite · JABS3 stay thicker check-ins. Same freeze brief.

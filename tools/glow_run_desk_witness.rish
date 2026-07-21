@@ -809,6 +809,12 @@ assert castnamedsalaevent.ok else "glow_run cast-named-sala-event.glow failed"
 assert castnamedsalaevent.out contains "GREEN" else "glow_run cast-named-sala-event.glow not GREEN"
 assert castnamedsalaevent.out contains "cast-named-sala-event.glow" else "glow_run cast-named-sala-event claim missing path"
 
+# STOA192: Sala B0 demo fixture constants shape (three stamps · three memos · root @ux).
+let shapedemofixture = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/shape-demo-fixture-constants.glow"]
+assert shapedemofixture.ok else "glow_run shape-demo-fixture-constants.glow failed"
+assert shapedemofixture.out contains "GREEN" else "glow_run shape-demo-fixture-constants.glow not GREEN"
+assert shapedemofixture.out contains "shape-demo-fixture-constants.glow" else "glow_run shape-demo-fixture-constants claim missing path"
+
 let castnamed = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cast-named-amount.glow"]
 assert castnamed.ok else "glow_run cast-named-amount.glow failed"
 assert castnamed.out contains "GREEN" else "glow_run cast-named-amount.glow not GREEN"
