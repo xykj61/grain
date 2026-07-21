@@ -149,6 +149,13 @@ fn run_selftest() !u8 {
     assert(std.mem.eql(u8, tokens.slice_of("memo=@t\n", tbuf[2]), "@t"));
     print("tokens: @t cord aura lex -- GREEN\n", .{});
 
+    // STOA183: `@ux` hex aura tokenizes; bound is nest_type.aura_ux_max_bytes.
+    const nx = try tokens.tokenize("from=@ux\n", tbuf[0..]);
+    assert(nx >= 3);
+    assert(tbuf[2].kind == .aura);
+    assert(std.mem.eql(u8, tokens.slice_of("from=@ux\n", tbuf[2]), "@ux"));
+    print("tokens: @ux hex aura lex -- GREEN\n", .{});
+
     assert(tokens.looks_like_named_cast(xact_desk));
     assert(tokens.looks_like_named_cast(amount_cast));
     assert(tokens.looks_like_named_cast(nona_cast));

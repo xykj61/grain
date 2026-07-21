@@ -610,7 +610,13 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA180 thin `@t` GREEN, `20260721.171800`** — lean A; cord lex/nest/parse; lower held; shape affirmed over type. Brief [`active-designing/20260721-171800_stoa180-at-cord-aura-thin.md`](../active-designing/20260721-171800_stoa180-at-cord-aura-thin.md).
 
-**STOA181 `@t` cord lower GREEN, `20260721.173504`** — `$:` `@t` → `[256]u8` demo emit; `sala-event-shape` text faces `@t`; amount `@u32`. Brief [`active-designing/20260721-173504_stoa181-at-cord-lower-emit.md`](../active-designing/20260721-173504_stoa181-at-cord-lower-emit.md). Next: check-in (`@ux` / named-cast cord / claim shell / rest). JABS3 held.
+**STOA181 `@t` cord lower GREEN, `20260721.173504`** — `$:` `@t` → `[256]u8` demo emit; `sala-event-shape` text faces `@t`; amount `@u32`. Brief [`active-designing/20260721-173504_stoa181-at-cord-lower-emit.md`](../active-designing/20260721-173504_stoa181-at-cord-lower-emit.md).
+
+**STOA182 named-cast cord GREEN, `20260721.174530`** — lean A; `^-` `@t` emit. Brief [`active-designing/20260721-174530_stoa182-named-cast-cord.md`](../active-designing/20260721-174530_stoa182-named-cast-cord.md).
+
+**STOA183 thin `@ux` GREEN, `20260721.174747`** — lean A; hex lex/nest/parse; lower held. Brief [`active-designing/20260721-174747_stoa183-ux-hex-aura-thin.md`](../active-designing/20260721-174747_stoa183-ux-hex-aura-thin.md).
+
+**STOA184 `@ux` hex lower GREEN, `20260721.175343`** — `[32]u8` emit · named-cast · sala `from`/`to` `@ux`. Brief [`active-designing/20260721-175343_stoa184-ux-hex-lower-emit.md`](../active-designing/20260721-175343_stoa184-ux-hex-lower-emit.md). Next check-in: claim shell · sala cast · `$%` `@t`/`@ux` · rest. JABS3 held.
 
 
 

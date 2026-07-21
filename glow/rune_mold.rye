@@ -52,8 +52,10 @@ pub const MoldSpec = struct {
     body: BodyKind = .tuple,
     fields: [max_fields][max_name_len]u8 = [_][max_name_len]u8{[_]u8{0} ** max_name_len} ** max_fields,
     field_lens: [max_fields]usize = [_]usize{0} ** max_fields,
-    /// STOA180: true when the `$:` face aura is `@t` (cord); false for `@u32`.
+    /// STOA180: true when the `$:` face aura is `@t` (cord).
     field_is_cord: [max_fields]bool = [_]bool{false} ** max_fields,
+    /// STOA183: true when the `$:` face aura is `@ux` (hex); exclusive of cord.
+    field_is_hex: [max_fields]bool = [_]bool{false} ** max_fields,
     /// Per `$%` arm: count of `@u32` payload faces; 0 means unit `~`.
     payload_counts: [max_fields]usize = [_]usize{0} ** max_fields,
     payloads: [max_fields][max_payload_faces][max_name_len]u8 = [_][max_payload_faces][max_name_len]u8{
@@ -110,18 +112,21 @@ fn rune2_text_is(src: []const u8, tok: tokens.Token, lit: []const u8) bool {
 /// Copy `face` (a `tokens.slice_of` span) into `spec.fields[i]` and advance
 /// `spec.field_count`. The `face` slice is already validated by the lexer.
 fn push_name(spec: *MoldSpec, face: []const u8) ParseError!void {
-    return push_field(spec, face, false);
+    return push_field(spec, face, false, false);
 }
 
-/// `$:` face with aura kind — `is_cord` true for `@t` (STOA180).
-fn push_field(spec: *MoldSpec, face: []const u8, is_cord: bool) ParseError!void {
+/// `$:` face with aura kind — cord `@t` (STOA180) · hex `@ux` (STOA183).
+fn push_field(spec: *MoldSpec, face: []const u8, is_cord: bool, is_hex: bool) ParseError!void {
     assert(face.len >= 1); // precondition: ident spans at least one byte
     assert(face.len <= max_name_len); // precondition: lexer bounded ident
+    if (is_cord) assert(!is_hex); // invariant: cord face is not hex
+    if (is_hex) assert(!is_cord); // invariant: hex face is not cord
     if (spec.field_count >= max_fields) return error.TooManyFields;
     const i = spec.field_count;
     tally_copy.copy_disjoint(u8, spec.fields[i][0..face.len], face);
     spec.field_lens[i] = face.len;
     spec.field_is_cord[i] = is_cord;
+    spec.field_is_hex[i] = is_hex;
     spec.field_count += 1;
 }
 
@@ -130,6 +135,15 @@ pub fn any_cord_field(spec: *const MoldSpec) bool {
     var i: usize = 0;
     while (i < spec.field_count) : (i += 1) {
         if (spec.field_is_cord[i]) return true;
+    }
+    return false;
+}
+
+/// True when any `$:` face uses the hex aura `@ux`.
+pub fn any_hex_field(spec: *const MoldSpec) bool {
+    var i: usize = 0;
+    while (i < spec.field_count) : (i += 1) {
+        if (spec.field_is_hex[i]) return true;
     }
     return false;
 }
@@ -221,7 +235,7 @@ pub fn parse_source(src: []const u8) ParseError!MoldSpec {
 
     if (rune2_text_is(src, body_tok, "$:")) {
         spec.body = .tuple;
-        // Field clauses: ident = @u32 | @t, repeated until == (STOA180 cord).
+        // Field clauses: ident = @u32 | @t | @ux, until == (STOA180 cord · STOA183 hex).
         while (true) {
             while (i < n and toks[@as(usize, @intCast(i))].kind == .newline) : (i += 1) {}
             if (i >= n) return error.MissingEnd;
@@ -229,7 +243,7 @@ pub fn parse_source(src: []const u8) ParseError!MoldSpec {
                 i += 1;
                 break;
             }
-            // Expect: ident = @u32 | @t
+            // Expect: ident = @u32 | @t | @ux
             if (toks[@as(usize, @intCast(i))].kind != .ident) return error.MissingField;
             const face_tok = toks[@as(usize, @intCast(i))];
             i += 1;
@@ -240,9 +254,10 @@ pub fn parse_source(src: []const u8) ParseError!MoldSpec {
             i += 1;
             const aura = tokens.slice_of(src, aura_tok);
             const is_cord = std.mem.eql(u8, aura, "@t");
+            const is_hex = std.mem.eql(u8, aura, "@ux");
             const is_u32 = std.mem.eql(u8, aura, "@u32");
-            if (!is_cord and !is_u32) return error.MoldNotU32;
-            try push_field(&spec, tokens.slice_of(src, face_tok), is_cord);
+            if (!is_cord and !is_hex and !is_u32) return error.MoldNotU32;
+            try push_field(&spec, tokens.slice_of(src, face_tok), is_cord, is_hex);
         }
         if (spec.field_count == 0) return error.MissingField;
     } else if (rune2_text_is(src, body_tok, "$%")) {

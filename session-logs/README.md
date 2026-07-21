@@ -8,6 +8,11 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260721.175804` — [STOA182–184 send · claim shell](20260721-175804_stoa182-184-send-stoa185b.bron) — cord/hex pack to pier; lean B next
+- `20260721.175343` — [STOA184 @ux hex lower GREEN](20260721-175343_stoa184-ux-lower-green.bron) — [32]u8 emit; sala from/to @ux; unsent
+- `20260721.175252` — [STOA183 thin @ux hex GREEN](20260721-175252_stoa183-ux-thin-green.bron) — bound 32; lower held; unsent
+- `20260721.174709` — [STOA183 check-in seated](20260721-174709_stoa183-checkin-seated.bron) — leans A–E after named-cast cord
+- `20260721.174530` — [STOA182A named-cast cord GREEN](20260721-174530_stoa182-named-cast-cord-green.bron) — ^- @t emit; unsent
 - `20260721.174435` — [STOA181 send · STOA182A](20260721-174435_stoa181-send-stoa182a.bron) — cord lower to pier; lean A named-cast cord
 - `20260721.173800` — [STOA182 check-in seated](20260721-173800_stoa182-checkin-seated.bron) — leans A–E after cord lower
 - `20260721.173629` — [STOA181 @t cord lower GREEN](20260721-173629_stoa181-at-cord-lower-green.bron) — [256]u8 emit; sala text @t; unsent
