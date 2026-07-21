@@ -1,6 +1,6 @@
-# STOA — Glow SLC · nest · product · ≤80 · STOA0–176 GREEN · 2026-07-21 · draw → **STOA**
+# STOA — Glow SLC · nest · product · ≤80 · STOA0–179 GREEN · 2026-07-21 · draw → **STOA**
 
-Living Glow OS desks lead with `shape-*` (inventary duals STOA161–173; pin polish STOA174; multi-field cast twins STOA175–176). Mold twins stay for Hoon study.
+Living Glow OS desks lead with `shape-*` (inventary duals STOA161–173; pin polish STOA174; multi-field cast twins STOA175–176). Sala B0 Glow: STOA177–179 (`sala-event-shape`). Mold twins stay for Hoon study.
 
 | Rung | Claim | Witness / gate | State |
 |------|-------|----------------|-------|
@@ -27,4 +27,8 @@ Living Glow OS desks lead with `shape-*` (inventary duals STOA161–173; pin pol
 | **STOA174** | living pin polish · shape primary | LEXICON · pins | **GREEN** `013023` |
 | **STOA175** | pair-shape multi-field named-cast | named-cast witness · desks | **GREEN** `013225` |
 | **STOA176** | named-cast peek widen · triple…nona casts | tokens · glow_run desks | **GREEN** `014114` |
+| **STOA177** | after cast inventary · lean A product | check-in | **GREEN** `165342` |
+| **STOA178** | Sala B0 Glow gap inventory | inventory brief | **GREEN** `165732` |
+| **STOA179** | sala-event-shape desk | `glow_run` | **GREEN** `170403` |
+| **STOA180** | `@t` / cord aura check-in | awaiting lean | open `171030` |
 Smoke: `glow_nest_type_witness` · `glow_barket_parse_witness` · `glow_lower_bartis_witness` · Sibling: **ZETA** · **LULU** · **SETU** · **TUBE**.
