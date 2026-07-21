@@ -146,6 +146,7 @@ G5 brief: [`../active-designing/20260720-033200_stoa98-g5-nock-second-backend-fa
 | **STOA147 GREEN** | Nona-mold call body — closed nine-field `$:` flip · NonaMold swap · baked 5/3/1/2/7/4/6/8/9 → 3/5/1/2/7/4/6/8/9 |
 | **STOA148 GREEN** | `amount-shape` — first Glow OS shape allowlist alias ≡ `amount-mold` (one-field `$:` / `@u32`) |
 | **STOA149 GREEN** | `count-shape` — twin Glow OS shape allowlist alias ≡ `count-mold` (one-field `$:` / `@u32`) |
+| **STOA150 GREEN** | `pair-shape` — first multi-field Glow OS shape allowlist alias ≡ `pair-mold` (PairMold) |
 | Still held | Ambient gold / free nesting polymorphism · bartis stays stated |
 | Still held | Open bartis/barket call-body gate set beyond `double` · `inc` · `dec` · `flip` |
 | Still held | Open named-mold set beyond nona (capacity freeze) · argv under tagged/multi-field shapes · further field widens horizon |
