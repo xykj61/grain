@@ -1,0 +1,14 @@
+::  Multi-field +$ / $: nine @u32 fields — Glow OS primary desk (STOA173).
+::  nona-shape ≡ nona-mold; mold-nona.glow stays the Hoon study twin.
+::  Closes the multi-field $: dual ladder at capacity freeze.
++$  nona-shape
+  $:  from=@u32
+      amount=@u32
+      fee=@u32
+      nonce=@u32
+      memo=@u32
+      tag=@u32
+      to=@u32
+      via=@u32
+      ref=@u32
+  ==

@@ -8,6 +8,7 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260721.012720` — [STOA172 sent · STOA173 nona · STOA174 check-in](20260721-012720_stoa172-sent-stoa173-green-checkin.bron) — inventary closed; await A/B/C/D
 - `20260721.012510` — [STOA171 sent · STOA172 shape-octa GREEN](20260721-012510_stoa171-sent-stoa172-green.bron) — pier 25ce71648e; octa dual unsent
 - `20260721.012320` — [STOA170 sent · STOA171 shape-hepta GREEN](20260721-012320_stoa170-sent-stoa171-green.bron) — pier 0caaa726c1; hepta dual unsent
 - `20260721.012150` — [STOA169 sent · STOA170 shape-hexa GREEN](20260721-012150_stoa169-sent-stoa170-green.bron) — pier 17d564524c; hexa dual unsent

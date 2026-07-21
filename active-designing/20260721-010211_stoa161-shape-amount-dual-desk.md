@@ -33,7 +33,7 @@
 | `mold-hexa` | `hexa-mold` | multi-field `$:` | **`shape-hexa`** STOA170 (cast held) |
 | `mold-hepta` | `hepta-mold` | multi-field `$:` | **`shape-hepta`** STOA171 (cast held) |
 | `mold-octa` | `octa-mold` | multi-field `$:` | **`shape-octa`** STOA172 (cast held) |
-| `mold-nona` | `nona-mold` | multi-field `$:` | STOA173 horizon |
+| `mold-nona` | `nona-mold` | multi-field `$:` | **`shape-nona`** STOA173 (cast held; inventary closed) |
 | `mold-kind` | `kind-mold` | unit `$%` | **`shape-kind`** STOA164 |
 | `mold-xact` | `xact-mold` | payload `$%` | **`shape-xact`** STOA165 |
 | `mold-xfer` | `xfer-mold` | multi-face `$%` | **`shape-xfer`** STOA166 |

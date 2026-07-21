@@ -590,7 +590,11 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA171 shape-hepta dual GREEN, `20260721.012229`** — seven-field `$:` dual `shape-hepta` → `HeptaShape`; mold-hepta kept; cast held. Brief [`active-designing/20260721-012229_stoa171-shape-hepta-dual-desk.md`](../active-designing/20260721-012229_stoa171-shape-hepta-dual-desk.md).
 
-**STOA172 shape-octa dual GREEN, `20260721.012414`** — eight-field `$:` dual `shape-octa` → `OctaShape`; mold-octa kept; cast held. Brief [`active-designing/20260721-012414_stoa172-shape-octa-dual-desk.md`](../active-designing/20260721-012414_stoa172-shape-octa-dual-desk.md). Next language: **STOA173** `shape-nona` dual.
+**STOA172 shape-octa dual GREEN, `20260721.012414`** — eight-field `$:` dual `shape-octa` → `OctaShape`; mold-octa kept; cast held. Brief [`active-designing/20260721-012414_stoa172-shape-octa-dual-desk.md`](../active-designing/20260721-012414_stoa172-shape-octa-dual-desk.md).
+
+**STOA173 shape-nona dual GREEN, `20260721.012555`** — nine-field `$:` dual `shape-nona` → `NonaShape`; closes multi-field dual ladder and inventary through capacity freeze; cast held. Brief [`active-designing/20260721-012555_stoa173-shape-nona-dual-desk.md`](../active-designing/20260721-012555_stoa173-shape-nona-dual-desk.md).
+
+**STOA174 check-in, `20260721.012555`** — inventary duals closed. Leans: **A** living prose/pin polish (recommended) · **B** multi-field named-cast · **C** Sala B0 · **D** rest. Brief [`active-designing/20260721-012555_stoa174-after-dual-inventary-checkin.md`](../active-designing/20260721-012555_stoa174-after-dual-inventary-checkin.md). Awaiting Keaton's lean before kg.
 
 **Framework next (host resume), `20260720.231857`** — lean A: live SETU6.5 **sent** eyes on real `usb0`/`ncm`. Lab TX gate already GREEN; Sala B0 Glow rewrite · JABS3 stay thicker check-ins. Same freeze brief.
 
