@@ -1,4 +1,4 @@
-::  Thin barket Glow gate — sample=triple-mold returns sample (STOA134).
-::  triple-mold is the closed three-field $: named mold (TripleMold struct · baked from 5 amount 3 fee 1).
-|^  sample=triple-mold
+::  Thin barket Glow gate — sample=triple-shape returns sample (STOA134).
+::  triple-mold is the closed three-field $: named mold (TripleShape struct · baked from 5 amount 3 fee 1).
+|^  sample=triple-shape
 sample

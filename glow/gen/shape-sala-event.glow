@@ -1,6 +1,6 @@
 ::  Sala B0 session-event shape — FactFields face names (STOA179).
 ::  STOA184: from/to are @ux (bound 32); memo/stamp @t (bound 256); amount @u32.
-::  Elder Rye fold stays; cast held; no mold twin this lap.
+::  STOA186: cast twin at cast-named-sala-event.glow; no mold twin; elder fold stays.
 +$  sala-event-shape
   $:  from=@ux
       to=@ux

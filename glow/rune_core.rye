@@ -29,7 +29,7 @@ pub const ParseError = error{
     PayloadAfterArm,
     NotBarePayload,
     AuraNotYetLowered,
-    NamedMoldNotYetLowered,
+    NamedShapeNotYetLowered,
     MalformedPayload,
     EmptySource,
     MalformedBody,
@@ -97,7 +97,7 @@ fn map_expr_err(err: expr.ParseError) ParseError {
         error.Overflow => error.MalformedBody,
         error.BadIdent => error.MalformedBody,
         error.AuraNotYetLowered => error.AuraNotYetLowered,
-        error.NamedMoldNotYetLowered => error.NamedMoldNotYetLowered,
+        error.NamedShapeNotYetLowered => error.NamedShapeNotYetLowered,
     };
 }
 
@@ -176,7 +176,7 @@ fn parse_payload_line(line: []const u8) ParseError!struct { face: []const u8, va
     const mold = rf.mold_slice(&face_spec);
     const typed = mold.len != 0;
     if (typed) {
-        if (mold[0] != '@') return error.NamedMoldNotYetLowered;
+        if (mold[0] != '@') return error.NamedShapeNotYetLowered;
         if (!std.mem.eql(u8, mold, "@u32")) return error.AuraNotYetLowered;
     }
 

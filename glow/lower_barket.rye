@@ -5,28 +5,28 @@
 //! Call body: double → *% 2 (STOA115) · inc → +% 1 · dec → -% 1 (STOA116).
 //! STOA117: TAME tidy — assert · u32 · append_print · split emitters.
 //! STOA118 / STOA122: named molds `amount-mold` · `count-mold` lower as `@u32`.
-//! STOA123: `kind-mold` identity lowers as `KindMold` enum · baked `.mint`.
-//! STOA124: `xact-mold` identity lowers as `XactMold` union · baked `.mint` amount 5.
-//! STOA125: `xfer-mold` identity lowers as `XferMold` union · baked `.mint` from 5 amount 3.
-//! STOA126: `pair-mold` identity lowers as `PairMold` struct · baked from 5 amount 3.
-//! STOA134: `triple-mold` identity lowers as `TripleMold` struct · baked from 5 amount 3 fee 1.
-//! STOA135: `quad-mold` identity lowers as `QuadMold` struct · baked from 5 amount 3 fee 1 nonce 2.
-//! STOA136: `triple-mold` call body `%-  flip` → TripleMold swap · baked 5/3/1 → 3/5/1.
-//! STOA137: `quad-mold` call body `%-  flip` → QuadMold swap · baked 5/3/1/2 → 3/5/1/2.
-//! STOA138: `penta-mold` identity lowers as `PentaMold` struct · baked from 5 amount 3 fee 1 nonce 2 memo 7.
-//! STOA139: `penta-mold` call body `%-  flip` → PentaMold swap · baked 5/3/1/2/7 → 3/5/1/2/7.
-//! STOA140: `hexa-mold` identity lowers as `HexaMold` struct · baked from 5 amount 3 fee 1 nonce 2 memo 7 tag 4.
-//! STOA141: `hexa-mold` call body `%-  flip` → HexaMold swap · baked 5/3/1/2/7/4 → 3/5/1/2/7/4.
-//! STOA142: `hepta-mold` identity lowers as `HeptaMold` struct · baked from 5 amount 3 fee 1 nonce 2 memo 7 tag 4 to 6.
-//! STOA143: `hepta-mold` call body `%-  flip` → HeptaMold swap · baked 5/3/1/2/7/4/6 → 3/5/1/2/7/4/6.
-//! STOA144: `octa-mold` identity lowers as `OctaMold` struct · baked from 5 amount 3 fee 1 nonce 2 memo 7 tag 4 to 6 via 8.
-//! STOA145: `octa-mold` call body `%-  flip` → OctaMold swap · baked 5/3/1/2/7/4/6/8 → 3/5/1/2/7/4/6/8.
-//! STOA146: `nona-mold` identity lowers as `NonaMold` struct · baked from 5 amount 3 fee 1 nonce 2 memo 7 tag 4 to 6 via 8 ref 9.
-//! STOA147: `nona-mold` call body `%-  flip` → NonaMold swap · baked 5/3/1/2/7/4/6/8/9 → 3/5/1/2/7/4/6/8/9.
-//! STOA127: `kind-mold` call body `%-  flip` → KindMold switch · baked `.mint` → `.send`.
-//! STOA128: `xact-mold` call body `%-  flip` → XactMold switch · baked mint/5 → `.send`.
-//! STOA129: `xfer-mold` call body `%-  flip` → XferMold switch · baked mint/5/3 → `.send`.
-//! STOA131: `pair-mold` call body `%-  flip` → PairMold swap · baked 5/3 → 3/5.
+//! STOA123: `kind-mold` identity lowers as `KindShape` enum · baked `.mint`.
+//! STOA124: `xact-mold` identity lowers as `XactShape` union · baked `.mint` amount 5.
+//! STOA125: `xfer-mold` identity lowers as `XferShape` union · baked `.mint` from 5 amount 3.
+//! STOA126: `pair-mold` identity lowers as `PairShape` struct · baked from 5 amount 3.
+//! STOA134: `triple-mold` identity lowers as `TripleShape` struct · baked from 5 amount 3 fee 1.
+//! STOA135: `quad-mold` identity lowers as `QuadShape` struct · baked from 5 amount 3 fee 1 nonce 2.
+//! STOA136: `triple-mold` call body `%-  flip` → TripleShape swap · baked 5/3/1 → 3/5/1.
+//! STOA137: `quad-mold` call body `%-  flip` → QuadShape swap · baked 5/3/1/2 → 3/5/1/2.
+//! STOA138: `penta-mold` identity lowers as `PentaShape` struct · baked from 5 amount 3 fee 1 nonce 2 memo 7.
+//! STOA139: `penta-mold` call body `%-  flip` → PentaShape swap · baked 5/3/1/2/7 → 3/5/1/2/7.
+//! STOA140: `hexa-mold` identity lowers as `HexaShape` struct · baked from 5 amount 3 fee 1 nonce 2 memo 7 tag 4.
+//! STOA141: `hexa-mold` call body `%-  flip` → HexaShape swap · baked 5/3/1/2/7/4 → 3/5/1/2/7/4.
+//! STOA142: `hepta-mold` identity lowers as `HeptaShape` struct · baked from 5 amount 3 fee 1 nonce 2 memo 7 tag 4 to 6.
+//! STOA143: `hepta-mold` call body `%-  flip` → HeptaShape swap · baked 5/3/1/2/7/4/6 → 3/5/1/2/7/4/6.
+//! STOA144: `octa-mold` identity lowers as `OctaShape` struct · baked from 5 amount 3 fee 1 nonce 2 memo 7 tag 4 to 6 via 8.
+//! STOA145: `octa-mold` call body `%-  flip` → OctaShape swap · baked 5/3/1/2/7/4/6/8 → 3/5/1/2/7/4/6/8.
+//! STOA146: `nona-mold` identity lowers as `NonaShape` struct · baked from 5 amount 3 fee 1 nonce 2 memo 7 tag 4 to 6 via 8 ref 9.
+//! STOA147: `nona-mold` call body `%-  flip` → NonaShape swap · baked 5/3/1/2/7/4/6/8/9 → 3/5/1/2/7/4/6/8/9.
+//! STOA127: `kind-mold` call body `%-  flip` → KindShape switch · baked `.mint` → `.send`.
+//! STOA128: `xact-mold` call body `%-  flip` → XactShape switch · baked mint/5 → `.send`.
+//! STOA129: `xfer-mold` call body `%-  flip` → XferShape switch · baked mint/5/3 → `.send`.
+//! STOA131: `pair-mold` call body `%-  flip` → PairShape swap · baked 5/3 → 3/5.
 //! STOA132: `amount-mold` argv identity — generator beside fixture (u32-shaped named mold).
 //! STOA133: `count-mold` argv identity — twin generator beside fixture.
 //! Gate function named `barket_gate`. Ambient gold held.
@@ -151,116 +151,116 @@ fn sample_mold_label(spec: *const rb.BarketSpec) []const u8 {
 
 fn is_kind_sample(spec: *const rb.BarketSpec) bool {
     if (spec.mold_name_len == 0) return false;
-    return nest_type.is_kind_named_mold(rb.mold_name_slice(spec));
+    return nest_type.is_kind_named_shape(rb.mold_name_slice(spec));
 }
 
 fn is_xact_sample(spec: *const rb.BarketSpec) bool {
     if (spec.mold_name_len == 0) return false;
-    return nest_type.is_xact_named_mold(rb.mold_name_slice(spec));
+    return nest_type.is_xact_named_shape(rb.mold_name_slice(spec));
 }
 
 fn is_xfer_sample(spec: *const rb.BarketSpec) bool {
     if (spec.mold_name_len == 0) return false;
-    return nest_type.is_xfer_named_mold(rb.mold_name_slice(spec));
+    return nest_type.is_xfer_named_shape(rb.mold_name_slice(spec));
 }
 
 fn is_pair_sample(spec: *const rb.BarketSpec) bool {
     if (spec.mold_name_len == 0) return false;
-    return nest_type.is_pair_named_mold(rb.mold_name_slice(spec));
+    return nest_type.is_pair_named_shape(rb.mold_name_slice(spec));
 }
 
 fn is_triple_sample(spec: *const rb.BarketSpec) bool {
     if (spec.mold_name_len == 0) return false;
-    return nest_type.is_triple_named_mold(rb.mold_name_slice(spec));
+    return nest_type.is_triple_named_shape(rb.mold_name_slice(spec));
 }
 
 fn is_quad_sample(spec: *const rb.BarketSpec) bool {
     if (spec.mold_name_len == 0) return false;
-    return nest_type.is_quad_named_mold(rb.mold_name_slice(spec));
+    return nest_type.is_quad_named_shape(rb.mold_name_slice(spec));
 }
 
 fn is_penta_sample(spec: *const rb.BarketSpec) bool {
     if (spec.mold_name_len == 0) return false;
-    return nest_type.is_penta_named_mold(rb.mold_name_slice(spec));
+    return nest_type.is_penta_named_shape(rb.mold_name_slice(spec));
 }
 
 fn is_hexa_sample(spec: *const rb.BarketSpec) bool {
     if (spec.mold_name_len == 0) return false;
-    return nest_type.is_hexa_named_mold(rb.mold_name_slice(spec));
+    return nest_type.is_hexa_named_shape(rb.mold_name_slice(spec));
 }
 
 fn is_hepta_sample(spec: *const rb.BarketSpec) bool {
     if (spec.mold_name_len == 0) return false;
-    return nest_type.is_hepta_named_mold(rb.mold_name_slice(spec));
+    return nest_type.is_hepta_named_shape(rb.mold_name_slice(spec));
 }
 
 fn is_octa_sample(spec: *const rb.BarketSpec) bool {
     if (spec.mold_name_len == 0) return false;
-    return nest_type.is_octa_named_mold(rb.mold_name_slice(spec));
+    return nest_type.is_octa_named_shape(rb.mold_name_slice(spec));
 }
 
 fn is_nona_sample(spec: *const rb.BarketSpec) bool {
     if (spec.mold_name_len == 0) return false;
-    return nest_type.is_nona_named_mold(rb.mold_name_slice(spec));
+    return nest_type.is_nona_named_shape(rb.mold_name_slice(spec));
 }
 
 fn emit_prelude(out: []u8, used: *u32) LowerError!void {
     try append_print(out, used, "const std = @import(\"std\");\n\n", .{});
 }
 
-/// STOA123: closed unit `$%` kind-mold identity → KindMold enum · baked `.mint`.
+/// STOA123: closed unit `$%` kind-mold identity → KindShape enum · baked `.mint`.
 fn emit_kind_identity(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
     var used: u32 = 0;
     try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
-    try append_print(out, &used, "pub const KindMold = enum(u8) {{\n", .{});
+    try append_print(out, &used, "pub const KindShape = enum(u8) {{\n", .{});
     try append_print(out, &used, "    mint,\n", .{});
     try append_print(out, &used, "    send,\n", .{});
     try append_print(out, &used, "}};\n\n", .{});
     try append_print(out, &used, "/// {s}\n", .{comment});
-    try append_print(out, &used, "fn barket_gate({s}: KindMold) KindMold {{\n", .{zface});
+    try append_print(out, &used, "fn barket_gate({s}: KindShape) KindShape {{\n", .{zface});
     try append_print(out, &used, "    return {s};\n", .{zface});
     try append_print(out, &used, "}}\n\n", .{});
     try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
-    try append_print(out, &used, "    const {s}: KindMold = .mint;\n", .{zface});
+    try append_print(out, &used, "    const {s}: KindShape = .mint;\n", .{zface});
     try append_print(out, &used, "    return if (barket_gate({s}) == .mint) 0 else 1;\n", .{zface});
     try append_print(out, &used, "}}\n", .{});
     return used;
 }
 
-/// STOA127: closed unit `$%` kind-mold call body → KindMold flip · baked `.send`.
+/// STOA127: closed unit `$%` kind-mold call body → KindShape flip · baked `.send`.
 fn emit_kind_call_body(out: []u8, zface: []const u8, gate: []const u8, comment: []const u8) LowerError!u32 {
     assert(rb.is_kind_call_gate(gate)); // parse/lower pin — flip only today
     var used: u32 = 0;
     try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
-    try append_print(out, &used, "pub const KindMold = enum(u8) {{\n", .{});
+    try append_print(out, &used, "pub const KindShape = enum(u8) {{\n", .{});
     try append_print(out, &used, "    mint,\n", .{});
     try append_print(out, &used, "    send,\n", .{});
     try append_print(out, &used, "}};\n\n", .{});
     try append_print(out, &used, "/// {s}\n", .{comment});
-    try append_print(out, &used, "fn barket_gate({s}: KindMold) KindMold {{\n", .{zface});
+    try append_print(out, &used, "fn barket_gate({s}: KindShape) KindShape {{\n", .{zface});
     try append_print(out, &used, "    return switch ({s}) {{ .mint => .send, .send => .mint }};\n", .{zface});
     try append_print(out, &used, "}}\n\n", .{});
     try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
-    try append_print(out, &used, "    const {s}: KindMold = .mint;\n", .{zface});
+    try append_print(out, &used, "    const {s}: KindShape = .mint;\n", .{zface});
     try append_print(out, &used, "    return if (barket_gate({s}) == .send) 0 else 1;\n", .{zface});
     try append_print(out, &used, "}}\n", .{});
     return used;
 }
 
-/// STOA124: closed payload `$%` xact-mold identity → XactMold union · baked mint/5.
+/// STOA124: closed payload `$%` xact-mold identity → XactShape union · baked mint/5.
 fn emit_xact_identity(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
     var used: u32 = 0;
     try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
-    try append_print(out, &used, "pub const XactMold = union(enum) {{\n", .{});
+    try append_print(out, &used, "pub const XactShape = union(enum) {{\n", .{});
     try append_print(out, &used, "    mint: struct {{ amount: u32 = 0 }},\n", .{});
     try append_print(out, &used, "    send,\n", .{});
     try append_print(out, &used, "}};\n\n", .{});
     try append_print(out, &used, "/// {s}\n", .{comment});
-    try append_print(out, &used, "fn barket_gate({s}: XactMold) XactMold {{\n", .{zface});
+    try append_print(out, &used, "fn barket_gate({s}: XactShape) XactShape {{\n", .{zface});
     try append_print(out, &used, "    return {s};\n", .{zface});
     try append_print(out, &used, "}}\n\n", .{});
     try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
-    try append_print(out, &used, "    const {s}: XactMold = .{{ .mint = .{{ .amount = {d} }} }};\n", .{ zface, barket_demo_sample });
+    try append_print(out, &used, "    const {s}: XactShape = .{{ .mint = .{{ .amount = {d} }} }};\n", .{ zface, barket_demo_sample });
     try append_print(out, &used, "    return switch (barket_gate({s})) {{\n", .{zface});
     try append_print(out, &used, "        .mint => |m| if (m.amount == {d}) 0 else 1,\n", .{barket_demo_sample});
     try append_print(out, &used, "        .send => 1,\n", .{});
@@ -269,21 +269,21 @@ fn emit_xact_identity(out: []u8, zface: []const u8, comment: []const u8) LowerEr
     return used;
 }
 
-/// STOA128: closed payload `$%` xact-mold call body → XactMold flip · baked `.send`.
+/// STOA128: closed payload `$%` xact-mold call body → XactShape flip · baked `.send`.
 fn emit_xact_call_body(out: []u8, zface: []const u8, gate: []const u8, comment: []const u8) LowerError!u32 {
     assert(rb.is_xact_call_gate(gate)); // parse/lower pin — flip only today
     var used: u32 = 0;
     try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
-    try append_print(out, &used, "pub const XactMold = union(enum) {{\n", .{});
+    try append_print(out, &used, "pub const XactShape = union(enum) {{\n", .{});
     try append_print(out, &used, "    mint: struct {{ amount: u32 = 0 }},\n", .{});
     try append_print(out, &used, "    send,\n", .{});
     try append_print(out, &used, "}};\n\n", .{});
     try append_print(out, &used, "/// {s}\n", .{comment});
-    try append_print(out, &used, "fn barket_gate({s}: XactMold) XactMold {{\n", .{zface});
+    try append_print(out, &used, "fn barket_gate({s}: XactShape) XactShape {{\n", .{zface});
     try append_print(out, &used, "    return switch ({s}) {{ .mint => .send, .send => .{{ .mint = .{{ .amount = 0 }} }} }};\n", .{zface});
     try append_print(out, &used, "}}\n\n", .{});
     try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
-    try append_print(out, &used, "    const {s}: XactMold = .{{ .mint = .{{ .amount = {d} }} }};\n", .{ zface, barket_demo_sample });
+    try append_print(out, &used, "    const {s}: XactShape = .{{ .mint = .{{ .amount = {d} }} }};\n", .{ zface, barket_demo_sample });
     try append_print(out, &used, "    return switch (barket_gate({s})) {{\n", .{zface});
     try append_print(out, &used, "        .send => 0,\n", .{});
     try append_print(out, &used, "        .mint => 1,\n", .{});
@@ -292,20 +292,20 @@ fn emit_xact_call_body(out: []u8, zface: []const u8, gate: []const u8, comment: 
     return used;
 }
 
-/// STOA125: closed multi-face payload `$%` xfer-mold → XferMold · baked mint/5/3.
+/// STOA125: closed multi-face payload `$%` xfer-mold → XferShape · baked mint/5/3.
 fn emit_xfer_identity(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
     var used: u32 = 0;
     try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
-    try append_print(out, &used, "pub const XferMold = union(enum) {{\n", .{});
+    try append_print(out, &used, "pub const XferShape = union(enum) {{\n", .{});
     try append_print(out, &used, "    mint: struct {{ from: u32 = 0, amount: u32 = 0 }},\n", .{});
     try append_print(out, &used, "    send,\n", .{});
     try append_print(out, &used, "}};\n\n", .{});
     try append_print(out, &used, "/// {s}\n", .{comment});
-    try append_print(out, &used, "fn barket_gate({s}: XferMold) XferMold {{\n", .{zface});
+    try append_print(out, &used, "fn barket_gate({s}: XferShape) XferShape {{\n", .{zface});
     try append_print(out, &used, "    return {s};\n", .{zface});
     try append_print(out, &used, "}}\n\n", .{});
     try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
-    try append_print(out, &used, "    const {s}: XferMold = .{{ .mint = .{{ .from = {d}, .amount = {d} }} }};\n", .{ zface, barket_xfer_demo_from, barket_xfer_demo_amount });
+    try append_print(out, &used, "    const {s}: XferShape = .{{ .mint = .{{ .from = {d}, .amount = {d} }} }};\n", .{ zface, barket_xfer_demo_from, barket_xfer_demo_amount });
     try append_print(out, &used, "    return switch (barket_gate({s})) {{\n", .{zface});
     try append_print(out, &used, "        .mint => |m| if (m.from == {d} and m.amount == {d}) 0 else 1,\n", .{ barket_xfer_demo_from, barket_xfer_demo_amount });
     try append_print(out, &used, "        .send => 1,\n", .{});
@@ -314,21 +314,21 @@ fn emit_xfer_identity(out: []u8, zface: []const u8, comment: []const u8) LowerEr
     return used;
 }
 
-/// STOA129: closed multi-face payload `$%` xfer-mold call body → XferMold flip · baked `.send`.
+/// STOA129: closed multi-face payload `$%` xfer-mold call body → XferShape flip · baked `.send`.
 fn emit_xfer_call_body(out: []u8, zface: []const u8, gate: []const u8, comment: []const u8) LowerError!u32 {
     assert(rb.is_xfer_call_gate(gate)); // parse/lower pin — flip only today
     var used: u32 = 0;
     try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
-    try append_print(out, &used, "pub const XferMold = union(enum) {{\n", .{});
+    try append_print(out, &used, "pub const XferShape = union(enum) {{\n", .{});
     try append_print(out, &used, "    mint: struct {{ from: u32 = 0, amount: u32 = 0 }},\n", .{});
     try append_print(out, &used, "    send,\n", .{});
     try append_print(out, &used, "}};\n\n", .{});
     try append_print(out, &used, "/// {s}\n", .{comment});
-    try append_print(out, &used, "fn barket_gate({s}: XferMold) XferMold {{\n", .{zface});
+    try append_print(out, &used, "fn barket_gate({s}: XferShape) XferShape {{\n", .{zface});
     try append_print(out, &used, "    return switch ({s}) {{ .mint => .send, .send => .{{ .mint = .{{ .from = 0, .amount = 0 }} }} }};\n", .{zface});
     try append_print(out, &used, "}}\n\n", .{});
     try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
-    try append_print(out, &used, "    const {s}: XferMold = .{{ .mint = .{{ .from = {d}, .amount = {d} }} }};\n", .{ zface, barket_xfer_demo_from, barket_xfer_demo_amount });
+    try append_print(out, &used, "    const {s}: XferShape = .{{ .mint = .{{ .from = {d}, .amount = {d} }} }};\n", .{ zface, barket_xfer_demo_from, barket_xfer_demo_amount });
     try append_print(out, &used, "    return switch (barket_gate({s})) {{\n", .{zface});
     try append_print(out, &used, "        .send => 0,\n", .{});
     try append_print(out, &used, "        .mint => 1,\n", .{});
@@ -337,74 +337,74 @@ fn emit_xfer_call_body(out: []u8, zface: []const u8, gate: []const u8, comment: 
     return used;
 }
 
-/// STOA126: closed multi-field `$:` pair-mold → PairMold struct · baked 5/3.
+/// STOA126: closed multi-field `$:` pair-mold → PairShape struct · baked 5/3.
 fn emit_pair_identity(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
     var used: u32 = 0;
     try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
-    try append_print(out, &used, "pub const PairMold = struct {{\n", .{});
+    try append_print(out, &used, "pub const PairShape = struct {{\n", .{});
     try append_print(out, &used, "    from: u32 = 0,\n", .{});
     try append_print(out, &used, "    amount: u32 = 0,\n", .{});
     try append_print(out, &used, "}};\n\n", .{});
     try append_print(out, &used, "/// {s}\n", .{comment});
-    try append_print(out, &used, "fn barket_gate({s}: PairMold) PairMold {{\n", .{zface});
+    try append_print(out, &used, "fn barket_gate({s}: PairShape) PairShape {{\n", .{zface});
     try append_print(out, &used, "    return {s};\n", .{zface});
     try append_print(out, &used, "}}\n\n", .{});
     try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
-    try append_print(out, &used, "    const {s}: PairMold = .{{ .from = {d}, .amount = {d} }};\n", .{ zface, barket_pair_demo_from, barket_pair_demo_amount });
+    try append_print(out, &used, "    const {s}: PairShape = .{{ .from = {d}, .amount = {d} }};\n", .{ zface, barket_pair_demo_from, barket_pair_demo_amount });
     try append_print(out, &used, "    const got = barket_gate({s});\n", .{zface});
     try append_print(out, &used, "    return if (got.from == {d} and got.amount == {d}) 0 else 1;\n", .{ barket_pair_demo_from, barket_pair_demo_amount });
     try append_print(out, &used, "}}\n", .{});
     return used;
 }
 
-/// STOA134: closed three-field `$:` triple-mold → TripleMold struct · baked 5/3/1.
+/// STOA134: closed three-field `$:` triple-mold → TripleShape struct · baked 5/3/1.
 fn emit_triple_identity(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
     var used: u32 = 0;
     try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
-    try append_print(out, &used, "pub const TripleMold = struct {{\n", .{});
+    try append_print(out, &used, "pub const TripleShape = struct {{\n", .{});
     try append_print(out, &used, "    from: u32 = 0,\n", .{});
     try append_print(out, &used, "    amount: u32 = 0,\n", .{});
     try append_print(out, &used, "    fee: u32 = 0,\n", .{});
     try append_print(out, &used, "}};\n\n", .{});
     try append_print(out, &used, "/// {s}\n", .{comment});
-    try append_print(out, &used, "fn barket_gate({s}: TripleMold) TripleMold {{\n", .{zface});
+    try append_print(out, &used, "fn barket_gate({s}: TripleShape) TripleShape {{\n", .{zface});
     try append_print(out, &used, "    return {s};\n", .{zface});
     try append_print(out, &used, "}}\n\n", .{});
     try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
-    try append_print(out, &used, "    const {s}: TripleMold = .{{ .from = {d}, .amount = {d}, .fee = {d} }};\n", .{ zface, barket_triple_demo_from, barket_triple_demo_amount, barket_triple_demo_fee });
+    try append_print(out, &used, "    const {s}: TripleShape = .{{ .from = {d}, .amount = {d}, .fee = {d} }};\n", .{ zface, barket_triple_demo_from, barket_triple_demo_amount, barket_triple_demo_fee });
     try append_print(out, &used, "    const got = barket_gate({s});\n", .{zface});
     try append_print(out, &used, "    return if (got.from == {d} and got.amount == {d} and got.fee == {d}) 0 else 1;\n", .{ barket_triple_demo_from, barket_triple_demo_amount, barket_triple_demo_fee });
     try append_print(out, &used, "}}\n", .{});
     return used;
 }
 
-/// STOA135: closed four-field `$:` quad-mold → QuadMold struct · baked 5/3/1/2.
+/// STOA135: closed four-field `$:` quad-mold → QuadShape struct · baked 5/3/1/2.
 fn emit_quad_identity(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
     var used: u32 = 0;
     try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
-    try append_print(out, &used, "pub const QuadMold = struct {{\n", .{});
+    try append_print(out, &used, "pub const QuadShape = struct {{\n", .{});
     try append_print(out, &used, "    from: u32 = 0,\n", .{});
     try append_print(out, &used, "    amount: u32 = 0,\n", .{});
     try append_print(out, &used, "    fee: u32 = 0,\n", .{});
     try append_print(out, &used, "    nonce: u32 = 0,\n", .{});
     try append_print(out, &used, "}};\n\n", .{});
     try append_print(out, &used, "/// {s}\n", .{comment});
-    try append_print(out, &used, "fn barket_gate({s}: QuadMold) QuadMold {{\n", .{zface});
+    try append_print(out, &used, "fn barket_gate({s}: QuadShape) QuadShape {{\n", .{zface});
     try append_print(out, &used, "    return {s};\n", .{zface});
     try append_print(out, &used, "}}\n\n", .{});
     try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
-    try append_print(out, &used, "    const {s}: QuadMold = .{{ .from = {d}, .amount = {d}, .fee = {d}, .nonce = {d} }};\n", .{ zface, barket_quad_demo_from, barket_quad_demo_amount, barket_quad_demo_fee, barket_quad_demo_nonce });
+    try append_print(out, &used, "    const {s}: QuadShape = .{{ .from = {d}, .amount = {d}, .fee = {d}, .nonce = {d} }};\n", .{ zface, barket_quad_demo_from, barket_quad_demo_amount, barket_quad_demo_fee, barket_quad_demo_nonce });
     try append_print(out, &used, "    const got = barket_gate({s});\n", .{zface});
     try append_print(out, &used, "    return if (got.from == {d} and got.amount == {d} and got.fee == {d} and got.nonce == {d}) 0 else 1;\n", .{ barket_quad_demo_from, barket_quad_demo_amount, barket_quad_demo_fee, barket_quad_demo_nonce });
     try append_print(out, &used, "}}\n", .{});
     return used;
 }
 
-/// STOA138: closed five-field `$:` penta-mold → PentaMold struct · baked 5/3/1/2/7.
+/// STOA138: closed five-field `$:` penta-mold → PentaShape struct · baked 5/3/1/2/7.
 fn emit_penta_identity(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
     var used: u32 = 0;
     try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
-    try append_print(out, &used, "pub const PentaMold = struct {{\n", .{});
+    try append_print(out, &used, "pub const PentaShape = struct {{\n", .{});
     try append_print(out, &used, "    from: u32 = 0,\n", .{});
     try append_print(out, &used, "    amount: u32 = 0,\n", .{});
     try append_print(out, &used, "    fee: u32 = 0,\n", .{});
@@ -412,22 +412,22 @@ fn emit_penta_identity(out: []u8, zface: []const u8, comment: []const u8) LowerE
     try append_print(out, &used, "    memo: u32 = 0,\n", .{});
     try append_print(out, &used, "}};\n\n", .{});
     try append_print(out, &used, "/// {s}\n", .{comment});
-    try append_print(out, &used, "fn barket_gate({s}: PentaMold) PentaMold {{\n", .{zface});
+    try append_print(out, &used, "fn barket_gate({s}: PentaShape) PentaShape {{\n", .{zface});
     try append_print(out, &used, "    return {s};\n", .{zface});
     try append_print(out, &used, "}}\n\n", .{});
     try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
-    try append_print(out, &used, "    const {s}: PentaMold = .{{ .from = {d}, .amount = {d}, .fee = {d}, .nonce = {d}, .memo = {d} }};\n", .{ zface, barket_penta_demo_from, barket_penta_demo_amount, barket_penta_demo_fee, barket_penta_demo_nonce, barket_penta_demo_memo });
+    try append_print(out, &used, "    const {s}: PentaShape = .{{ .from = {d}, .amount = {d}, .fee = {d}, .nonce = {d}, .memo = {d} }};\n", .{ zface, barket_penta_demo_from, barket_penta_demo_amount, barket_penta_demo_fee, barket_penta_demo_nonce, barket_penta_demo_memo });
     try append_print(out, &used, "    const got = barket_gate({s});\n", .{zface});
     try append_print(out, &used, "    return if (got.from == {d} and got.amount == {d} and got.fee == {d} and got.nonce == {d} and got.memo == {d}) 0 else 1;\n", .{ barket_penta_demo_from, barket_penta_demo_amount, barket_penta_demo_fee, barket_penta_demo_nonce, barket_penta_demo_memo });
     try append_print(out, &used, "}}\n", .{});
     return used;
 }
 
-/// STOA140: closed six-field `$:` hexa-mold → HexaMold struct · baked 5/3/1/2/7/4.
+/// STOA140: closed six-field `$:` hexa-mold → HexaShape struct · baked 5/3/1/2/7/4.
 fn emit_hexa_identity(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
     var used: u32 = 0;
     try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
-    try append_print(out, &used, "pub const HexaMold = struct {{\n", .{});
+    try append_print(out, &used, "pub const HexaShape = struct {{\n", .{});
     try append_print(out, &used, "    from: u32 = 0,\n", .{});
     try append_print(out, &used, "    amount: u32 = 0,\n", .{});
     try append_print(out, &used, "    fee: u32 = 0,\n", .{});
@@ -436,22 +436,22 @@ fn emit_hexa_identity(out: []u8, zface: []const u8, comment: []const u8) LowerEr
     try append_print(out, &used, "    tag: u32 = 0,\n", .{});
     try append_print(out, &used, "}};\n\n", .{});
     try append_print(out, &used, "/// {s}\n", .{comment});
-    try append_print(out, &used, "fn barket_gate({s}: HexaMold) HexaMold {{\n", .{zface});
+    try append_print(out, &used, "fn barket_gate({s}: HexaShape) HexaShape {{\n", .{zface});
     try append_print(out, &used, "    return {s};\n", .{zface});
     try append_print(out, &used, "}}\n\n", .{});
     try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
-    try append_print(out, &used, "    const {s}: HexaMold = .{{ .from = {d}, .amount = {d}, .fee = {d}, .nonce = {d}, .memo = {d}, .tag = {d} }};\n", .{ zface, barket_hexa_demo_from, barket_hexa_demo_amount, barket_hexa_demo_fee, barket_hexa_demo_nonce, barket_hexa_demo_memo, barket_hexa_demo_tag });
+    try append_print(out, &used, "    const {s}: HexaShape = .{{ .from = {d}, .amount = {d}, .fee = {d}, .nonce = {d}, .memo = {d}, .tag = {d} }};\n", .{ zface, barket_hexa_demo_from, barket_hexa_demo_amount, barket_hexa_demo_fee, barket_hexa_demo_nonce, barket_hexa_demo_memo, barket_hexa_demo_tag });
     try append_print(out, &used, "    const got = barket_gate({s});\n", .{zface});
     try append_print(out, &used, "    return if (got.from == {d} and got.amount == {d} and got.fee == {d} and got.nonce == {d} and got.memo == {d} and got.tag == {d}) 0 else 1;\n", .{ barket_hexa_demo_from, barket_hexa_demo_amount, barket_hexa_demo_fee, barket_hexa_demo_nonce, barket_hexa_demo_memo, barket_hexa_demo_tag });
     try append_print(out, &used, "}}\n", .{});
     return used;
 }
 
-/// STOA142: closed seven-field `$:` hepta-mold → HeptaMold struct · baked 5/3/1/2/7/4/6.
+/// STOA142: closed seven-field `$:` hepta-mold → HeptaShape struct · baked 5/3/1/2/7/4/6.
 fn emit_hepta_identity(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
     var used: u32 = 0;
     try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
-    try append_print(out, &used, "pub const HeptaMold = struct {{\n", .{});
+    try append_print(out, &used, "pub const HeptaShape = struct {{\n", .{});
     try append_print(out, &used, "    from: u32 = 0,\n", .{});
     try append_print(out, &used, "    amount: u32 = 0,\n", .{});
     try append_print(out, &used, "    fee: u32 = 0,\n", .{});
@@ -461,22 +461,22 @@ fn emit_hepta_identity(out: []u8, zface: []const u8, comment: []const u8) LowerE
     try append_print(out, &used, "    to: u32 = 0,\n", .{});
     try append_print(out, &used, "}};\n\n", .{});
     try append_print(out, &used, "/// {s}\n", .{comment});
-    try append_print(out, &used, "fn barket_gate({s}: HeptaMold) HeptaMold {{\n", .{zface});
+    try append_print(out, &used, "fn barket_gate({s}: HeptaShape) HeptaShape {{\n", .{zface});
     try append_print(out, &used, "    return {s};\n", .{zface});
     try append_print(out, &used, "}}\n\n", .{});
     try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
-    try append_print(out, &used, "    const {s}: HeptaMold = .{{ .from = {d}, .amount = {d}, .fee = {d}, .nonce = {d}, .memo = {d}, .tag = {d}, .to = {d} }};\n", .{ zface, barket_hepta_demo_from, barket_hepta_demo_amount, barket_hepta_demo_fee, barket_hepta_demo_nonce, barket_hepta_demo_memo, barket_hepta_demo_tag, barket_hepta_demo_to });
+    try append_print(out, &used, "    const {s}: HeptaShape = .{{ .from = {d}, .amount = {d}, .fee = {d}, .nonce = {d}, .memo = {d}, .tag = {d}, .to = {d} }};\n", .{ zface, barket_hepta_demo_from, barket_hepta_demo_amount, barket_hepta_demo_fee, barket_hepta_demo_nonce, barket_hepta_demo_memo, barket_hepta_demo_tag, barket_hepta_demo_to });
     try append_print(out, &used, "    const got = barket_gate({s});\n", .{zface});
     try append_print(out, &used, "    return if (got.from == {d} and got.amount == {d} and got.fee == {d} and got.nonce == {d} and got.memo == {d} and got.tag == {d} and got.to == {d}) 0 else 1;\n", .{ barket_hepta_demo_from, barket_hepta_demo_amount, barket_hepta_demo_fee, barket_hepta_demo_nonce, barket_hepta_demo_memo, barket_hepta_demo_tag, barket_hepta_demo_to });
     try append_print(out, &used, "}}\n", .{});
     return used;
 }
 
-/// STOA144: closed eight-field `$:` octa-mold → OctaMold struct · baked 5/3/1/2/7/4/6/8.
+/// STOA144: closed eight-field `$:` octa-mold → OctaShape struct · baked 5/3/1/2/7/4/6/8.
 fn emit_octa_identity(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
     var used: u32 = 0;
     try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
-    try append_print(out, &used, "pub const OctaMold = struct {{\n", .{});
+    try append_print(out, &used, "pub const OctaShape = struct {{\n", .{});
     try append_print(out, &used, "    from: u32 = 0,\n", .{});
     try append_print(out, &used, "    amount: u32 = 0,\n", .{});
     try append_print(out, &used, "    fee: u32 = 0,\n", .{});
@@ -487,22 +487,22 @@ fn emit_octa_identity(out: []u8, zface: []const u8, comment: []const u8) LowerEr
     try append_print(out, &used, "    via: u32 = 0,\n", .{});
     try append_print(out, &used, "}};\n\n", .{});
     try append_print(out, &used, "/// {s}\n", .{comment});
-    try append_print(out, &used, "fn barket_gate({s}: OctaMold) OctaMold {{\n", .{zface});
+    try append_print(out, &used, "fn barket_gate({s}: OctaShape) OctaShape {{\n", .{zface});
     try append_print(out, &used, "    return {s};\n", .{zface});
     try append_print(out, &used, "}}\n\n", .{});
     try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
-    try append_print(out, &used, "    const {s}: OctaMold = .{{ .from = {d}, .amount = {d}, .fee = {d}, .nonce = {d}, .memo = {d}, .tag = {d}, .to = {d}, .via = {d} }};\n", .{ zface, barket_octa_demo_from, barket_octa_demo_amount, barket_octa_demo_fee, barket_octa_demo_nonce, barket_octa_demo_memo, barket_octa_demo_tag, barket_octa_demo_to, barket_octa_demo_via });
+    try append_print(out, &used, "    const {s}: OctaShape = .{{ .from = {d}, .amount = {d}, .fee = {d}, .nonce = {d}, .memo = {d}, .tag = {d}, .to = {d}, .via = {d} }};\n", .{ zface, barket_octa_demo_from, barket_octa_demo_amount, barket_octa_demo_fee, barket_octa_demo_nonce, barket_octa_demo_memo, barket_octa_demo_tag, barket_octa_demo_to, barket_octa_demo_via });
     try append_print(out, &used, "    const got = barket_gate({s});\n", .{zface});
     try append_print(out, &used, "    return if (got.from == {d} and got.amount == {d} and got.fee == {d} and got.nonce == {d} and got.memo == {d} and got.tag == {d} and got.to == {d} and got.via == {d}) 0 else 1;\n", .{ barket_octa_demo_from, barket_octa_demo_amount, barket_octa_demo_fee, barket_octa_demo_nonce, barket_octa_demo_memo, barket_octa_demo_tag, barket_octa_demo_to, barket_octa_demo_via });
     try append_print(out, &used, "}}\n", .{});
     return used;
 }
 
-/// STOA146: closed nine-field `$:` nona-mold → NonaMold struct · baked 5/3/1/2/7/4/6/8/9.
+/// STOA146: closed nine-field `$:` nona-mold → NonaShape struct · baked 5/3/1/2/7/4/6/8/9.
 fn emit_nona_identity(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
     var used: u32 = 0;
     try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
-    try append_print(out, &used, "pub const NonaMold = struct {{\n", .{});
+    try append_print(out, &used, "pub const NonaShape = struct {{\n", .{});
     try append_print(out, &used, "    from: u32 = 0,\n", .{});
     try append_print(out, &used, "    amount: u32 = 0,\n", .{});
     try append_print(out, &used, "    fee: u32 = 0,\n", .{});
@@ -514,89 +514,89 @@ fn emit_nona_identity(out: []u8, zface: []const u8, comment: []const u8) LowerEr
     try append_print(out, &used, "    ref: u32 = 0,\n", .{});
     try append_print(out, &used, "}};\n\n", .{});
     try append_print(out, &used, "/// {s}\n", .{comment});
-    try append_print(out, &used, "fn barket_gate({s}: NonaMold) NonaMold {{\n", .{zface});
+    try append_print(out, &used, "fn barket_gate({s}: NonaShape) NonaShape {{\n", .{zface});
     try append_print(out, &used, "    return {s};\n", .{zface});
     try append_print(out, &used, "}}\n\n", .{});
     try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
-    try append_print(out, &used, "    const {s}: NonaMold = .{{ .from = {d}, .amount = {d}, .fee = {d}, .nonce = {d}, .memo = {d}, .tag = {d}, .to = {d}, .via = {d}, .ref = {d} }};\n", .{ zface, barket_nona_demo_from, barket_nona_demo_amount, barket_nona_demo_fee, barket_nona_demo_nonce, barket_nona_demo_memo, barket_nona_demo_tag, barket_nona_demo_to, barket_nona_demo_via, barket_nona_demo_ref });
+    try append_print(out, &used, "    const {s}: NonaShape = .{{ .from = {d}, .amount = {d}, .fee = {d}, .nonce = {d}, .memo = {d}, .tag = {d}, .to = {d}, .via = {d}, .ref = {d} }};\n", .{ zface, barket_nona_demo_from, barket_nona_demo_amount, barket_nona_demo_fee, barket_nona_demo_nonce, barket_nona_demo_memo, barket_nona_demo_tag, barket_nona_demo_to, barket_nona_demo_via, barket_nona_demo_ref });
     try append_print(out, &used, "    const got = barket_gate({s});\n", .{zface});
     try append_print(out, &used, "    return if (got.from == {d} and got.amount == {d} and got.fee == {d} and got.nonce == {d} and got.memo == {d} and got.tag == {d} and got.to == {d} and got.via == {d} and got.ref == {d}) 0 else 1;\n", .{ barket_nona_demo_from, barket_nona_demo_amount, barket_nona_demo_fee, barket_nona_demo_nonce, barket_nona_demo_memo, barket_nona_demo_tag, barket_nona_demo_to, barket_nona_demo_via, barket_nona_demo_ref });
     try append_print(out, &used, "}}\n", .{});
     return used;
 }
 
-/// STOA131: closed multi-field `$:` pair-mold call body → PairMold flip · baked 3/5.
+/// STOA131: closed multi-field `$:` pair-mold call body → PairShape flip · baked 3/5.
 fn emit_pair_call_body(out: []u8, zface: []const u8, gate: []const u8, comment: []const u8) LowerError!u32 {
     assert(rb.is_pair_call_gate(gate)); // parse/lower pin — flip only today
     var used: u32 = 0;
     try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
-    try append_print(out, &used, "pub const PairMold = struct {{\n", .{});
+    try append_print(out, &used, "pub const PairShape = struct {{\n", .{});
     try append_print(out, &used, "    from: u32 = 0,\n", .{});
     try append_print(out, &used, "    amount: u32 = 0,\n", .{});
     try append_print(out, &used, "}};\n\n", .{});
     try append_print(out, &used, "/// {s}\n", .{comment});
-    try append_print(out, &used, "fn barket_gate({s}: PairMold) PairMold {{\n", .{zface});
+    try append_print(out, &used, "fn barket_gate({s}: PairShape) PairShape {{\n", .{zface});
     try append_print(out, &used, "    return .{{ .from = {s}.amount, .amount = {s}.from }};\n", .{ zface, zface });
     try append_print(out, &used, "}}\n\n", .{});
     try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
-    try append_print(out, &used, "    const {s}: PairMold = .{{ .from = {d}, .amount = {d} }};\n", .{ zface, barket_pair_demo_from, barket_pair_demo_amount });
+    try append_print(out, &used, "    const {s}: PairShape = .{{ .from = {d}, .amount = {d} }};\n", .{ zface, barket_pair_demo_from, barket_pair_demo_amount });
     try append_print(out, &used, "    const got = barket_gate({s});\n", .{zface});
     try append_print(out, &used, "    return if (got.from == {d} and got.amount == {d}) 0 else 1;\n", .{ barket_pair_demo_amount, barket_pair_demo_from });
     try append_print(out, &used, "}}\n", .{});
     return used;
 }
 
-/// STOA136: closed three-field `$:` triple-mold call body → TripleMold flip · baked 3/5/1.
+/// STOA136: closed three-field `$:` triple-mold call body → TripleShape flip · baked 3/5/1.
 fn emit_triple_call_body(out: []u8, zface: []const u8, gate: []const u8, comment: []const u8) LowerError!u32 {
     assert(rb.is_triple_call_gate(gate)); // parse/lower pin — flip only today
     var used: u32 = 0;
     try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
-    try append_print(out, &used, "pub const TripleMold = struct {{\n", .{});
+    try append_print(out, &used, "pub const TripleShape = struct {{\n", .{});
     try append_print(out, &used, "    from: u32 = 0,\n", .{});
     try append_print(out, &used, "    amount: u32 = 0,\n", .{});
     try append_print(out, &used, "    fee: u32 = 0,\n", .{});
     try append_print(out, &used, "}};\n\n", .{});
     try append_print(out, &used, "/// {s}\n", .{comment});
-    try append_print(out, &used, "fn barket_gate({s}: TripleMold) TripleMold {{\n", .{zface});
+    try append_print(out, &used, "fn barket_gate({s}: TripleShape) TripleShape {{\n", .{zface});
     try append_print(out, &used, "    return .{{ .from = {s}.amount, .amount = {s}.from, .fee = {s}.fee }};\n", .{ zface, zface, zface });
     try append_print(out, &used, "}}\n\n", .{});
     try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
-    try append_print(out, &used, "    const {s}: TripleMold = .{{ .from = {d}, .amount = {d}, .fee = {d} }};\n", .{ zface, barket_triple_demo_from, barket_triple_demo_amount, barket_triple_demo_fee });
+    try append_print(out, &used, "    const {s}: TripleShape = .{{ .from = {d}, .amount = {d}, .fee = {d} }};\n", .{ zface, barket_triple_demo_from, barket_triple_demo_amount, barket_triple_demo_fee });
     try append_print(out, &used, "    const got = barket_gate({s});\n", .{zface});
     try append_print(out, &used, "    return if (got.from == {d} and got.amount == {d} and got.fee == {d}) 0 else 1;\n", .{ barket_triple_demo_amount, barket_triple_demo_from, barket_triple_demo_fee });
     try append_print(out, &used, "}}\n", .{});
     return used;
 }
 
-/// STOA137: closed four-field `$:` quad-mold call body → QuadMold flip · baked 3/5/1/2.
+/// STOA137: closed four-field `$:` quad-mold call body → QuadShape flip · baked 3/5/1/2.
 fn emit_quad_call_body(out: []u8, zface: []const u8, gate: []const u8, comment: []const u8) LowerError!u32 {
     assert(rb.is_quad_call_gate(gate)); // parse/lower pin — flip only today
     var used: u32 = 0;
     try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
-    try append_print(out, &used, "pub const QuadMold = struct {{\n", .{});
+    try append_print(out, &used, "pub const QuadShape = struct {{\n", .{});
     try append_print(out, &used, "    from: u32 = 0,\n", .{});
     try append_print(out, &used, "    amount: u32 = 0,\n", .{});
     try append_print(out, &used, "    fee: u32 = 0,\n", .{});
     try append_print(out, &used, "    nonce: u32 = 0,\n", .{});
     try append_print(out, &used, "}};\n\n", .{});
     try append_print(out, &used, "/// {s}\n", .{comment});
-    try append_print(out, &used, "fn barket_gate({s}: QuadMold) QuadMold {{\n", .{zface});
+    try append_print(out, &used, "fn barket_gate({s}: QuadShape) QuadShape {{\n", .{zface});
     try append_print(out, &used, "    return .{{ .from = {s}.amount, .amount = {s}.from, .fee = {s}.fee, .nonce = {s}.nonce }};\n", .{ zface, zface, zface, zface });
     try append_print(out, &used, "}}\n\n", .{});
     try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
-    try append_print(out, &used, "    const {s}: QuadMold = .{{ .from = {d}, .amount = {d}, .fee = {d}, .nonce = {d} }};\n", .{ zface, barket_quad_demo_from, barket_quad_demo_amount, barket_quad_demo_fee, barket_quad_demo_nonce });
+    try append_print(out, &used, "    const {s}: QuadShape = .{{ .from = {d}, .amount = {d}, .fee = {d}, .nonce = {d} }};\n", .{ zface, barket_quad_demo_from, barket_quad_demo_amount, barket_quad_demo_fee, barket_quad_demo_nonce });
     try append_print(out, &used, "    const got = barket_gate({s});\n", .{zface});
     try append_print(out, &used, "    return if (got.from == {d} and got.amount == {d} and got.fee == {d} and got.nonce == {d}) 0 else 1;\n", .{ barket_quad_demo_amount, barket_quad_demo_from, barket_quad_demo_fee, barket_quad_demo_nonce });
     try append_print(out, &used, "}}\n", .{});
     return used;
 }
 
-/// STOA139: closed five-field `$:` penta-mold call body → PentaMold flip · baked 3/5/1/2/7.
+/// STOA139: closed five-field `$:` penta-mold call body → PentaShape flip · baked 3/5/1/2/7.
 fn emit_penta_call_body(out: []u8, zface: []const u8, gate: []const u8, comment: []const u8) LowerError!u32 {
     assert(rb.is_penta_call_gate(gate)); // parse/lower pin — flip only today
     var used: u32 = 0;
     try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
-    try append_print(out, &used, "pub const PentaMold = struct {{\n", .{});
+    try append_print(out, &used, "pub const PentaShape = struct {{\n", .{});
     try append_print(out, &used, "    from: u32 = 0,\n", .{});
     try append_print(out, &used, "    amount: u32 = 0,\n", .{});
     try append_print(out, &used, "    fee: u32 = 0,\n", .{});
@@ -604,23 +604,23 @@ fn emit_penta_call_body(out: []u8, zface: []const u8, gate: []const u8, comment:
     try append_print(out, &used, "    memo: u32 = 0,\n", .{});
     try append_print(out, &used, "}};\n\n", .{});
     try append_print(out, &used, "/// {s}\n", .{comment});
-    try append_print(out, &used, "fn barket_gate({s}: PentaMold) PentaMold {{\n", .{zface});
+    try append_print(out, &used, "fn barket_gate({s}: PentaShape) PentaShape {{\n", .{zface});
     try append_print(out, &used, "    return .{{ .from = {s}.amount, .amount = {s}.from, .fee = {s}.fee, .nonce = {s}.nonce, .memo = {s}.memo }};\n", .{ zface, zface, zface, zface, zface });
     try append_print(out, &used, "}}\n\n", .{});
     try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
-    try append_print(out, &used, "    const {s}: PentaMold = .{{ .from = {d}, .amount = {d}, .fee = {d}, .nonce = {d}, .memo = {d} }};\n", .{ zface, barket_penta_demo_from, barket_penta_demo_amount, barket_penta_demo_fee, barket_penta_demo_nonce, barket_penta_demo_memo });
+    try append_print(out, &used, "    const {s}: PentaShape = .{{ .from = {d}, .amount = {d}, .fee = {d}, .nonce = {d}, .memo = {d} }};\n", .{ zface, barket_penta_demo_from, barket_penta_demo_amount, barket_penta_demo_fee, barket_penta_demo_nonce, barket_penta_demo_memo });
     try append_print(out, &used, "    const got = barket_gate({s});\n", .{zface});
     try append_print(out, &used, "    return if (got.from == {d} and got.amount == {d} and got.fee == {d} and got.nonce == {d} and got.memo == {d}) 0 else 1;\n", .{ barket_penta_demo_amount, barket_penta_demo_from, barket_penta_demo_fee, barket_penta_demo_nonce, barket_penta_demo_memo });
     try append_print(out, &used, "}}\n", .{});
     return used;
 }
 
-/// STOA141: closed six-field `$:` hexa-mold call body → HexaMold flip · baked 3/5/1/2/7/4.
+/// STOA141: closed six-field `$:` hexa-mold call body → HexaShape flip · baked 3/5/1/2/7/4.
 fn emit_hexa_call_body(out: []u8, zface: []const u8, gate: []const u8, comment: []const u8) LowerError!u32 {
     assert(rb.is_hexa_call_gate(gate)); // parse/lower pin — flip only today
     var used: u32 = 0;
     try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
-    try append_print(out, &used, "pub const HexaMold = struct {{\n", .{});
+    try append_print(out, &used, "pub const HexaShape = struct {{\n", .{});
     try append_print(out, &used, "    from: u32 = 0,\n", .{});
     try append_print(out, &used, "    amount: u32 = 0,\n", .{});
     try append_print(out, &used, "    fee: u32 = 0,\n", .{});
@@ -629,23 +629,23 @@ fn emit_hexa_call_body(out: []u8, zface: []const u8, gate: []const u8, comment: 
     try append_print(out, &used, "    tag: u32 = 0,\n", .{});
     try append_print(out, &used, "}};\n\n", .{});
     try append_print(out, &used, "/// {s}\n", .{comment});
-    try append_print(out, &used, "fn barket_gate({s}: HexaMold) HexaMold {{\n", .{zface});
+    try append_print(out, &used, "fn barket_gate({s}: HexaShape) HexaShape {{\n", .{zface});
     try append_print(out, &used, "    return .{{ .from = {s}.amount, .amount = {s}.from, .fee = {s}.fee, .nonce = {s}.nonce, .memo = {s}.memo, .tag = {s}.tag }};\n", .{ zface, zface, zface, zface, zface, zface });
     try append_print(out, &used, "}}\n\n", .{});
     try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
-    try append_print(out, &used, "    const {s}: HexaMold = .{{ .from = {d}, .amount = {d}, .fee = {d}, .nonce = {d}, .memo = {d}, .tag = {d} }};\n", .{ zface, barket_hexa_demo_from, barket_hexa_demo_amount, barket_hexa_demo_fee, barket_hexa_demo_nonce, barket_hexa_demo_memo, barket_hexa_demo_tag });
+    try append_print(out, &used, "    const {s}: HexaShape = .{{ .from = {d}, .amount = {d}, .fee = {d}, .nonce = {d}, .memo = {d}, .tag = {d} }};\n", .{ zface, barket_hexa_demo_from, barket_hexa_demo_amount, barket_hexa_demo_fee, barket_hexa_demo_nonce, barket_hexa_demo_memo, barket_hexa_demo_tag });
     try append_print(out, &used, "    const got = barket_gate({s});\n", .{zface});
     try append_print(out, &used, "    return if (got.from == {d} and got.amount == {d} and got.fee == {d} and got.nonce == {d} and got.memo == {d} and got.tag == {d}) 0 else 1;\n", .{ barket_hexa_demo_amount, barket_hexa_demo_from, barket_hexa_demo_fee, barket_hexa_demo_nonce, barket_hexa_demo_memo, barket_hexa_demo_tag });
     try append_print(out, &used, "}}\n", .{});
     return used;
 }
 
-/// STOA143: closed seven-field `$:` hepta-mold call body → HeptaMold flip · baked 3/5/1/2/7/4/6.
+/// STOA143: closed seven-field `$:` hepta-mold call body → HeptaShape flip · baked 3/5/1/2/7/4/6.
 fn emit_hepta_call_body(out: []u8, zface: []const u8, gate: []const u8, comment: []const u8) LowerError!u32 {
     assert(rb.is_hepta_call_gate(gate)); // parse/lower pin — flip only today
     var used: u32 = 0;
     try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
-    try append_print(out, &used, "pub const HeptaMold = struct {{\n", .{});
+    try append_print(out, &used, "pub const HeptaShape = struct {{\n", .{});
     try append_print(out, &used, "    from: u32 = 0,\n", .{});
     try append_print(out, &used, "    amount: u32 = 0,\n", .{});
     try append_print(out, &used, "    fee: u32 = 0,\n", .{});
@@ -655,23 +655,23 @@ fn emit_hepta_call_body(out: []u8, zface: []const u8, gate: []const u8, comment:
     try append_print(out, &used, "    to: u32 = 0,\n", .{});
     try append_print(out, &used, "}};\n\n", .{});
     try append_print(out, &used, "/// {s}\n", .{comment});
-    try append_print(out, &used, "fn barket_gate({s}: HeptaMold) HeptaMold {{\n", .{zface});
+    try append_print(out, &used, "fn barket_gate({s}: HeptaShape) HeptaShape {{\n", .{zface});
     try append_print(out, &used, "    return .{{ .from = {s}.amount, .amount = {s}.from, .fee = {s}.fee, .nonce = {s}.nonce, .memo = {s}.memo, .tag = {s}.tag, .to = {s}.to }};\n", .{ zface, zface, zface, zface, zface, zface, zface });
     try append_print(out, &used, "}}\n\n", .{});
     try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
-    try append_print(out, &used, "    const {s}: HeptaMold = .{{ .from = {d}, .amount = {d}, .fee = {d}, .nonce = {d}, .memo = {d}, .tag = {d}, .to = {d} }};\n", .{ zface, barket_hepta_demo_from, barket_hepta_demo_amount, barket_hepta_demo_fee, barket_hepta_demo_nonce, barket_hepta_demo_memo, barket_hepta_demo_tag, barket_hepta_demo_to });
+    try append_print(out, &used, "    const {s}: HeptaShape = .{{ .from = {d}, .amount = {d}, .fee = {d}, .nonce = {d}, .memo = {d}, .tag = {d}, .to = {d} }};\n", .{ zface, barket_hepta_demo_from, barket_hepta_demo_amount, barket_hepta_demo_fee, barket_hepta_demo_nonce, barket_hepta_demo_memo, barket_hepta_demo_tag, barket_hepta_demo_to });
     try append_print(out, &used, "    const got = barket_gate({s});\n", .{zface});
     try append_print(out, &used, "    return if (got.from == {d} and got.amount == {d} and got.fee == {d} and got.nonce == {d} and got.memo == {d} and got.tag == {d} and got.to == {d}) 0 else 1;\n", .{ barket_hepta_demo_amount, barket_hepta_demo_from, barket_hepta_demo_fee, barket_hepta_demo_nonce, barket_hepta_demo_memo, barket_hepta_demo_tag, barket_hepta_demo_to });
     try append_print(out, &used, "}}\n", .{});
     return used;
 }
 
-/// STOA145: closed eight-field `$:` octa-mold call body → OctaMold flip · baked 3/5/1/2/7/4/6/8.
+/// STOA145: closed eight-field `$:` octa-mold call body → OctaShape flip · baked 3/5/1/2/7/4/6/8.
 fn emit_octa_call_body(out: []u8, zface: []const u8, gate: []const u8, comment: []const u8) LowerError!u32 {
     assert(rb.is_octa_call_gate(gate)); // parse/lower pin — flip only today
     var used: u32 = 0;
     try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
-    try append_print(out, &used, "pub const OctaMold = struct {{\n", .{});
+    try append_print(out, &used, "pub const OctaShape = struct {{\n", .{});
     try append_print(out, &used, "    from: u32 = 0,\n", .{});
     try append_print(out, &used, "    amount: u32 = 0,\n", .{});
     try append_print(out, &used, "    fee: u32 = 0,\n", .{});
@@ -682,23 +682,23 @@ fn emit_octa_call_body(out: []u8, zface: []const u8, gate: []const u8, comment: 
     try append_print(out, &used, "    via: u32 = 0,\n", .{});
     try append_print(out, &used, "}};\n\n", .{});
     try append_print(out, &used, "/// {s}\n", .{comment});
-    try append_print(out, &used, "fn barket_gate({s}: OctaMold) OctaMold {{\n", .{zface});
+    try append_print(out, &used, "fn barket_gate({s}: OctaShape) OctaShape {{\n", .{zface});
     try append_print(out, &used, "    return .{{ .from = {s}.amount, .amount = {s}.from, .fee = {s}.fee, .nonce = {s}.nonce, .memo = {s}.memo, .tag = {s}.tag, .to = {s}.to, .via = {s}.via }};\n", .{ zface, zface, zface, zface, zface, zface, zface, zface });
     try append_print(out, &used, "}}\n\n", .{});
     try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
-    try append_print(out, &used, "    const {s}: OctaMold = .{{ .from = {d}, .amount = {d}, .fee = {d}, .nonce = {d}, .memo = {d}, .tag = {d}, .to = {d}, .via = {d} }};\n", .{ zface, barket_octa_demo_from, barket_octa_demo_amount, barket_octa_demo_fee, barket_octa_demo_nonce, barket_octa_demo_memo, barket_octa_demo_tag, barket_octa_demo_to, barket_octa_demo_via });
+    try append_print(out, &used, "    const {s}: OctaShape = .{{ .from = {d}, .amount = {d}, .fee = {d}, .nonce = {d}, .memo = {d}, .tag = {d}, .to = {d}, .via = {d} }};\n", .{ zface, barket_octa_demo_from, barket_octa_demo_amount, barket_octa_demo_fee, barket_octa_demo_nonce, barket_octa_demo_memo, barket_octa_demo_tag, barket_octa_demo_to, barket_octa_demo_via });
     try append_print(out, &used, "    const got = barket_gate({s});\n", .{zface});
     try append_print(out, &used, "    return if (got.from == {d} and got.amount == {d} and got.fee == {d} and got.nonce == {d} and got.memo == {d} and got.tag == {d} and got.to == {d} and got.via == {d}) 0 else 1;\n", .{ barket_octa_demo_amount, barket_octa_demo_from, barket_octa_demo_fee, barket_octa_demo_nonce, barket_octa_demo_memo, barket_octa_demo_tag, barket_octa_demo_to, barket_octa_demo_via });
     try append_print(out, &used, "}}\n", .{});
     return used;
 }
 
-/// STOA147: closed nine-field `$:` nona-mold call body → NonaMold flip · baked 3/5/1/2/7/4/6/8/9.
+/// STOA147: closed nine-field `$:` nona-mold call body → NonaShape flip · baked 3/5/1/2/7/4/6/8/9.
 fn emit_nona_call_body(out: []u8, zface: []const u8, gate: []const u8, comment: []const u8) LowerError!u32 {
     assert(rb.is_nona_call_gate(gate)); // parse/lower pin — flip only today
     var used: u32 = 0;
     try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
-    try append_print(out, &used, "pub const NonaMold = struct {{\n", .{});
+    try append_print(out, &used, "pub const NonaShape = struct {{\n", .{});
     try append_print(out, &used, "    from: u32 = 0,\n", .{});
     try append_print(out, &used, "    amount: u32 = 0,\n", .{});
     try append_print(out, &used, "    fee: u32 = 0,\n", .{});
@@ -710,11 +710,11 @@ fn emit_nona_call_body(out: []u8, zface: []const u8, gate: []const u8, comment: 
     try append_print(out, &used, "    ref: u32 = 0,\n", .{});
     try append_print(out, &used, "}};\n\n", .{});
     try append_print(out, &used, "/// {s}\n", .{comment});
-    try append_print(out, &used, "fn barket_gate({s}: NonaMold) NonaMold {{\n", .{zface});
+    try append_print(out, &used, "fn barket_gate({s}: NonaShape) NonaShape {{\n", .{zface});
     try append_print(out, &used, "    return .{{ .from = {s}.amount, .amount = {s}.from, .fee = {s}.fee, .nonce = {s}.nonce, .memo = {s}.memo, .tag = {s}.tag, .to = {s}.to, .via = {s}.via, .ref = {s}.ref }};\n", .{ zface, zface, zface, zface, zface, zface, zface, zface, zface });
     try append_print(out, &used, "}}\n\n", .{});
     try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
-    try append_print(out, &used, "    const {s}: NonaMold = .{{ .from = {d}, .amount = {d}, .fee = {d}, .nonce = {d}, .memo = {d}, .tag = {d}, .to = {d}, .via = {d}, .ref = {d} }};\n", .{ zface, barket_nona_demo_from, barket_nona_demo_amount, barket_nona_demo_fee, barket_nona_demo_nonce, barket_nona_demo_memo, barket_nona_demo_tag, barket_nona_demo_to, barket_nona_demo_via, barket_nona_demo_ref });
+    try append_print(out, &used, "    const {s}: NonaShape = .{{ .from = {d}, .amount = {d}, .fee = {d}, .nonce = {d}, .memo = {d}, .tag = {d}, .to = {d}, .via = {d}, .ref = {d} }};\n", .{ zface, barket_nona_demo_from, barket_nona_demo_amount, barket_nona_demo_fee, barket_nona_demo_nonce, barket_nona_demo_memo, barket_nona_demo_tag, barket_nona_demo_to, barket_nona_demo_via, barket_nona_demo_ref });
     try append_print(out, &used, "    const got = barket_gate({s});\n", .{zface});
     try append_print(out, &used, "    return if (got.from == {d} and got.amount == {d} and got.fee == {d} and got.nonce == {d} and got.memo == {d} and got.tag == {d} and got.to == {d} and got.via == {d} and got.ref == {d}) 0 else 1;\n", .{ barket_nona_demo_amount, barket_nona_demo_from, barket_nona_demo_fee, barket_nona_demo_nonce, barket_nona_demo_memo, barket_nona_demo_tag, barket_nona_demo_to, barket_nona_demo_via, barket_nona_demo_ref });
     try append_print(out, &used, "}}\n", .{});
@@ -758,14 +758,14 @@ fn emit(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
         switch (spec.body) {
             .header_only, .identity => {
                 var comment_buf: [160]u8 = undefined;
-                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` barket — KindMold identity (STOA123).", .{ face, mold }) catch return error.Overflow;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` barket — KindShape identity (STOA123).", .{ face, mold }) catch return error.Overflow;
                 return emit_kind_identity(out, zface, comment);
             },
             .call_one => {
                 const gate = rb.gate_slice(spec);
                 if (!rb.is_kind_call_gate(gate)) return error.BodyGateNotYetLowered;
                 var comment_buf: [192]u8 = undefined;
-                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` / `%-  {s}  {s}` — KindMold call body (STOA127).", .{ face, mold, gate, face }) catch return error.Overflow;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` / `%-  {s}  {s}` — KindShape call body (STOA127).", .{ face, mold, gate, face }) catch return error.Overflow;
                 return emit_kind_call_body(out, zface, gate, comment);
             },
         }
@@ -775,14 +775,14 @@ fn emit(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
         switch (spec.body) {
             .header_only, .identity => {
                 var comment_buf: [160]u8 = undefined;
-                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` barket — XactMold identity (STOA124).", .{ face, mold }) catch return error.Overflow;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` barket — XactShape identity (STOA124).", .{ face, mold }) catch return error.Overflow;
                 return emit_xact_identity(out, zface, comment);
             },
             .call_one => {
                 const gate = rb.gate_slice(spec);
                 if (!rb.is_xact_call_gate(gate)) return error.BodyGateNotYetLowered;
                 var comment_buf: [192]u8 = undefined;
-                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` / `%-  {s}  {s}` — XactMold call body (STOA128).", .{ face, mold, gate, face }) catch return error.Overflow;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` / `%-  {s}  {s}` — XactShape call body (STOA128).", .{ face, mold, gate, face }) catch return error.Overflow;
                 return emit_xact_call_body(out, zface, gate, comment);
             },
         }
@@ -792,14 +792,14 @@ fn emit(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
         switch (spec.body) {
             .header_only, .identity => {
                 var comment_buf: [160]u8 = undefined;
-                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` barket — XferMold identity (STOA125).", .{ face, mold }) catch return error.Overflow;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` barket — XferShape identity (STOA125).", .{ face, mold }) catch return error.Overflow;
                 return emit_xfer_identity(out, zface, comment);
             },
             .call_one => {
                 const gate = rb.gate_slice(spec);
                 if (!rb.is_xfer_call_gate(gate)) return error.BodyGateNotYetLowered;
                 var comment_buf: [192]u8 = undefined;
-                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` / `%-  {s}  {s}` — XferMold call body (STOA129).", .{ face, mold, gate, face }) catch return error.Overflow;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` / `%-  {s}  {s}` — XferShape call body (STOA129).", .{ face, mold, gate, face }) catch return error.Overflow;
                 return emit_xfer_call_body(out, zface, gate, comment);
             },
         }
@@ -809,14 +809,14 @@ fn emit(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
         switch (spec.body) {
             .header_only, .identity => {
                 var comment_buf: [160]u8 = undefined;
-                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` barket — PairMold identity (STOA126).", .{ face, mold }) catch return error.Overflow;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` barket — PairShape identity (STOA126).", .{ face, mold }) catch return error.Overflow;
                 return emit_pair_identity(out, zface, comment);
             },
             .call_one => {
                 const gate = rb.gate_slice(spec);
                 if (!rb.is_pair_call_gate(gate)) return error.BodyGateNotYetLowered;
                 var comment_buf: [192]u8 = undefined;
-                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` / `%-  {s}  {s}` — PairMold call body (STOA131).", .{ face, mold, gate, face }) catch return error.Overflow;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` / `%-  {s}  {s}` — PairShape call body (STOA131).", .{ face, mold, gate, face }) catch return error.Overflow;
                 return emit_pair_call_body(out, zface, gate, comment);
             },
         }
@@ -826,14 +826,14 @@ fn emit(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
         switch (spec.body) {
             .header_only, .identity => {
                 var comment_buf: [160]u8 = undefined;
-                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` barket — TripleMold identity (STOA134).", .{ face, mold }) catch return error.Overflow;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` barket — TripleShape identity (STOA134).", .{ face, mold }) catch return error.Overflow;
                 return emit_triple_identity(out, zface, comment);
             },
             .call_one => {
                 const gate = rb.gate_slice(spec);
                 if (!rb.is_triple_call_gate(gate)) return error.BodyGateNotYetLowered;
                 var comment_buf: [192]u8 = undefined;
-                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` / `%-  {s}  {s}` — TripleMold call body (STOA136).", .{ face, mold, gate, face }) catch return error.Overflow;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` / `%-  {s}  {s}` — TripleShape call body (STOA136).", .{ face, mold, gate, face }) catch return error.Overflow;
                 return emit_triple_call_body(out, zface, gate, comment);
             },
         }
@@ -843,14 +843,14 @@ fn emit(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
         switch (spec.body) {
             .header_only, .identity => {
                 var comment_buf: [160]u8 = undefined;
-                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` barket — QuadMold identity (STOA135).", .{ face, mold }) catch return error.Overflow;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` barket — QuadShape identity (STOA135).", .{ face, mold }) catch return error.Overflow;
                 return emit_quad_identity(out, zface, comment);
             },
             .call_one => {
                 const gate = rb.gate_slice(spec);
                 if (!rb.is_quad_call_gate(gate)) return error.BodyGateNotYetLowered;
                 var comment_buf: [192]u8 = undefined;
-                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` / `%-  {s}  {s}` — QuadMold call body (STOA137).", .{ face, mold, gate, face }) catch return error.Overflow;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` / `%-  {s}  {s}` — QuadShape call body (STOA137).", .{ face, mold, gate, face }) catch return error.Overflow;
                 return emit_quad_call_body(out, zface, gate, comment);
             },
         }
@@ -861,14 +861,14 @@ fn emit(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
         switch (spec.body) {
             .header_only, .identity => {
                 var comment_buf: [160]u8 = undefined;
-                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` barket — PentaMold identity (STOA138).", .{ face, mold }) catch return error.Overflow;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` barket — PentaShape identity (STOA138).", .{ face, mold }) catch return error.Overflow;
                 return emit_penta_identity(out, zface, comment);
             },
             .call_one => {
                 const gate = rb.gate_slice(spec);
                 if (!rb.is_penta_call_gate(gate)) return error.BodyGateNotYetLowered;
                 var comment_buf: [192]u8 = undefined;
-                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` / `%-  {s}  {s}` — PentaMold call body (STOA139).", .{ face, mold, gate, face }) catch return error.Overflow;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` / `%-  {s}  {s}` — PentaShape call body (STOA139).", .{ face, mold, gate, face }) catch return error.Overflow;
                 return emit_penta_call_body(out, zface, gate, comment);
             },
         }
@@ -879,14 +879,14 @@ fn emit(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
         switch (spec.body) {
             .header_only, .identity => {
                 var comment_buf: [160]u8 = undefined;
-                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` barket — HexaMold identity (STOA140).", .{ face, mold }) catch return error.Overflow;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` barket — HexaShape identity (STOA140).", .{ face, mold }) catch return error.Overflow;
                 return emit_hexa_identity(out, zface, comment);
             },
             .call_one => {
                 const gate = rb.gate_slice(spec);
                 if (!rb.is_hexa_call_gate(gate)) return error.BodyGateNotYetLowered;
                 var comment_buf: [192]u8 = undefined;
-                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` / `%-  {s}  {s}` — HexaMold call body (STOA141).", .{ face, mold, gate, face }) catch return error.Overflow;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` / `%-  {s}  {s}` — HexaShape call body (STOA141).", .{ face, mold, gate, face }) catch return error.Overflow;
                 return emit_hexa_call_body(out, zface, gate, comment);
             },
         }
@@ -897,14 +897,14 @@ fn emit(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
         switch (spec.body) {
             .header_only, .identity => {
                 var comment_buf: [160]u8 = undefined;
-                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` barket — HeptaMold identity (STOA142).", .{ face, mold }) catch return error.Overflow;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` barket — HeptaShape identity (STOA142).", .{ face, mold }) catch return error.Overflow;
                 return emit_hepta_identity(out, zface, comment);
             },
             .call_one => {
                 const gate = rb.gate_slice(spec);
                 if (!rb.is_hepta_call_gate(gate)) return error.BodyGateNotYetLowered;
                 var comment_buf: [192]u8 = undefined;
-                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` / `%-  {s}  {s}` — HeptaMold call body (STOA143).", .{ face, mold, gate, face }) catch return error.Overflow;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` / `%-  {s}  {s}` — HeptaShape call body (STOA143).", .{ face, mold, gate, face }) catch return error.Overflow;
                 return emit_hepta_call_body(out, zface, gate, comment);
             },
         }
@@ -915,14 +915,14 @@ fn emit(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
         switch (spec.body) {
             .header_only, .identity => {
                 var comment_buf: [160]u8 = undefined;
-                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` barket — OctaMold identity (STOA144).", .{ face, mold }) catch return error.Overflow;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` barket — OctaShape identity (STOA144).", .{ face, mold }) catch return error.Overflow;
                 return emit_octa_identity(out, zface, comment);
             },
             .call_one => {
                 const gate = rb.gate_slice(spec);
                 if (!rb.is_octa_call_gate(gate)) return error.BodyGateNotYetLowered;
                 var comment_buf: [192]u8 = undefined;
-                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` / `%-  {s}  {s}` — OctaMold call body (STOA145).", .{ face, mold, gate, face }) catch return error.Overflow;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` / `%-  {s}  {s}` — OctaShape call body (STOA145).", .{ face, mold, gate, face }) catch return error.Overflow;
                 return emit_octa_call_body(out, zface, gate, comment);
             },
         }
@@ -933,14 +933,14 @@ fn emit(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
         switch (spec.body) {
             .header_only, .identity => {
                 var comment_buf: [160]u8 = undefined;
-                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` barket — NonaMold identity (STOA146).", .{ face, mold }) catch return error.Overflow;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` barket — NonaShape identity (STOA146).", .{ face, mold }) catch return error.Overflow;
                 return emit_nona_identity(out, zface, comment);
             },
             .call_one => {
                 const gate = rb.gate_slice(spec);
                 if (!rb.is_nona_call_gate(gate)) return error.BodyGateNotYetLowered;
                 var comment_buf: [192]u8 = undefined;
-                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` / `%-  {s}  {s}` — NonaMold call body (STOA147).", .{ face, mold, gate, face }) catch return error.Overflow;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` / `%-  {s}  {s}` — NonaShape call body (STOA147).", .{ face, mold, gate, face }) catch return error.Overflow;
                 return emit_nona_call_body(out, zface, gate, comment);
             },
         }

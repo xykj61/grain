@@ -1,7 +1,7 @@
-::  Tagged named-cast — same-desk +$ kind-mold / $% then ^- kind-mold (STOA81).
+::  Tagged named-cast — same-desk +$ kind-shape / $% then ^- kind-shape (STOA81).
 ::  Lowered by glow/lower_named_cast.rye into ordinary Rye; Rishi stays the shell.
-+$  kind-mold
++$  kind-shape
   $%  [%mint ~]
       [%send ~]
   ==
-^-  kind-mold
+^-  kind-shape

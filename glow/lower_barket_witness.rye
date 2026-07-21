@@ -197,7 +197,7 @@ fn run_selftest(init: std.process.Init) !u8 {
 
     const gen_amt = try cwd.readFileAlloc(io, "glow/gen/gate-barket-amount.glow", a, .limited(4096));
     const spec_amt = try rb.parse_source(gen_amt);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_amt), "amount-mold"));
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_amt), "amount-shape"));
     assert(spec_amt.body == .identity);
     print("lower: glow/gen/gate-barket-amount.glow carries amount-mold -- GREEN\n", .{});
 
@@ -213,7 +213,7 @@ fn run_selftest(init: std.process.Init) !u8 {
 
     const gen_amt_u32 = try cwd.readFileAlloc(io, "glow/gen/gate-barket-amount-u32.glow", a, .limited(4096));
     const spec_amt_u32 = try rb.parse_source(gen_amt_u32);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_amt_u32), "amount-mold"));
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_amt_u32), "amount-shape"));
     assert(spec_amt_u32.body == .identity);
     print("lower: glow/gen/gate-barket-amount-u32.glow carries amount-mold argv -- GREEN\n", .{});
 
@@ -236,176 +236,176 @@ fn run_selftest(init: std.process.Init) !u8 {
 
     const gen_cnt_u32 = try cwd.readFileAlloc(io, "glow/gen/gate-barket-count-u32.glow", a, .limited(4096));
     const spec_cnt_u32 = try rb.parse_source(gen_cnt_u32);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_cnt_u32), "count-mold"));
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_cnt_u32), "count-shape"));
     assert(spec_cnt_u32.body == .identity);
     print("lower: glow/gen/gate-barket-count-u32.glow carries count-mold argv -- GREEN\n", .{});
 
-    // STOA123: kind-mold identity lowers as KindMold.
+    // STOA123: kind-mold identity lowers as KindShape.
     const kind_src = "|^  sample=kind-mold\nsample\n";
     const n_kind = try lower.lower_source_welcome(kind_src, &buf);
     assert(std.mem.indexOf(u8, buf[0..n_kind], "barket_gate") != null);
-    assert(std.mem.indexOf(u8, buf[0..n_kind], "KindMold") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_kind], "KindShape") != null);
     assert(std.mem.indexOf(u8, buf[0..n_kind], ".mint") != null);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_kind_welcome.rye", .data = buf[0..n_kind] });
-    print("lower: kind-mold barket lowers to KindMold identity -- GREEN\n", .{});
+    print("lower: kind-mold barket lowers to KindShape identity -- GREEN\n", .{});
 
     const gen_kind = try cwd.readFileAlloc(io, "glow/gen/gate-barket-kind.glow", a, .limited(4096));
     const spec_kind = try rb.parse_source(gen_kind);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_kind), "kind-mold"));
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_kind), "kind-shape"));
     assert(spec_kind.body == .identity);
     print("lower: glow/gen/gate-barket-kind.glow carries kind-mold -- GREEN\n", .{});
 
-    // STOA124: xact-mold identity lowers as XactMold.
+    // STOA124: xact-mold identity lowers as XactShape.
     const xact_src = "|^  sample=xact-mold\nsample\n";
     const n_xact = try lower.lower_source_welcome(xact_src, &buf);
     assert(std.mem.indexOf(u8, buf[0..n_xact], "barket_gate") != null);
-    assert(std.mem.indexOf(u8, buf[0..n_xact], "XactMold") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_xact], "XactShape") != null);
     assert(std.mem.indexOf(u8, buf[0..n_xact], ".mint") != null);
     assert(std.mem.indexOf(u8, buf[0..n_xact], "amount") != null);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_xact_welcome.rye", .data = buf[0..n_xact] });
-    print("lower: xact-mold barket lowers to XactMold identity -- GREEN\n", .{});
+    print("lower: xact-mold barket lowers to XactShape identity -- GREEN\n", .{});
 
     const gen_xact = try cwd.readFileAlloc(io, "glow/gen/gate-barket-xact.glow", a, .limited(4096));
     const spec_xact = try rb.parse_source(gen_xact);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_xact), "xact-mold"));
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_xact), "xact-shape"));
     assert(spec_xact.body == .identity);
     print("lower: glow/gen/gate-barket-xact.glow carries xact-mold -- GREEN\n", .{});
 
-    // STOA125: xfer-mold identity lowers as XferMold.
+    // STOA125: xfer-mold identity lowers as XferShape.
     const xfer_src = "|^  sample=xfer-mold\nsample\n";
     const n_xfer = try lower.lower_source_welcome(xfer_src, &buf);
     assert(std.mem.indexOf(u8, buf[0..n_xfer], "barket_gate") != null);
-    assert(std.mem.indexOf(u8, buf[0..n_xfer], "XferMold") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_xfer], "XferShape") != null);
     assert(std.mem.indexOf(u8, buf[0..n_xfer], ".mint") != null);
     assert(std.mem.indexOf(u8, buf[0..n_xfer], "from") != null);
     assert(std.mem.indexOf(u8, buf[0..n_xfer], "amount") != null);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_xfer_welcome.rye", .data = buf[0..n_xfer] });
-    print("lower: xfer-mold barket lowers to XferMold identity -- GREEN\n", .{});
+    print("lower: xfer-mold barket lowers to XferShape identity -- GREEN\n", .{});
 
     const gen_xfer = try cwd.readFileAlloc(io, "glow/gen/gate-barket-xfer.glow", a, .limited(4096));
     const spec_xfer = try rb.parse_source(gen_xfer);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_xfer), "xfer-mold"));
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_xfer), "xfer-shape"));
     assert(spec_xfer.body == .identity);
     print("lower: glow/gen/gate-barket-xfer.glow carries xfer-mold -- GREEN\n", .{});
 
-    // STOA126: pair-mold identity lowers as PairMold.
+    // STOA126: pair-mold identity lowers as PairShape.
     const pair_src = "|^  sample=pair-mold\nsample\n";
     const n_pair = try lower.lower_source_welcome(pair_src, &buf);
     assert(std.mem.indexOf(u8, buf[0..n_pair], "barket_gate") != null);
-    assert(std.mem.indexOf(u8, buf[0..n_pair], "PairMold") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_pair], "PairShape") != null);
     assert(std.mem.indexOf(u8, buf[0..n_pair], "from") != null);
     assert(std.mem.indexOf(u8, buf[0..n_pair], "amount") != null);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_pair_welcome.rye", .data = buf[0..n_pair] });
-    print("lower: pair-mold barket lowers to PairMold identity -- GREEN\n", .{});
+    print("lower: pair-mold barket lowers to PairShape identity -- GREEN\n", .{});
 
     const gen_pair = try cwd.readFileAlloc(io, "glow/gen/gate-barket-pair.glow", a, .limited(4096));
     const spec_pair = try rb.parse_source(gen_pair);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_pair), "pair-mold"));
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_pair), "pair-shape"));
     assert(spec_pair.body == .identity);
     print("lower: glow/gen/gate-barket-pair.glow carries pair-mold -- GREEN\n", .{});
 
-    // STOA134: triple-mold identity lowers as TripleMold.
+    // STOA134: triple-mold identity lowers as TripleShape.
     const triple_src = "|^  sample=triple-mold\nsample\n";
     const n_triple = try lower.lower_source_welcome(triple_src, &buf);
     assert(std.mem.indexOf(u8, buf[0..n_triple], "barket_gate") != null);
-    assert(std.mem.indexOf(u8, buf[0..n_triple], "TripleMold") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_triple], "TripleShape") != null);
     assert(std.mem.indexOf(u8, buf[0..n_triple], "fee") != null);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_triple_welcome.rye", .data = buf[0..n_triple] });
-    print("lower: triple-mold barket lowers to TripleMold identity -- GREEN\n", .{});
+    print("lower: triple-mold barket lowers to TripleShape identity -- GREEN\n", .{});
 
     const gen_triple = try cwd.readFileAlloc(io, "glow/gen/gate-barket-triple.glow", a, .limited(4096));
     const spec_triple = try rb.parse_source(gen_triple);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_triple), "triple-mold"));
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_triple), "triple-shape"));
     assert(spec_triple.body == .identity);
     print("lower: glow/gen/gate-barket-triple.glow carries triple-mold -- GREEN\n", .{});
 
-    // STOA135: quad-mold identity lowers as QuadMold.
+    // STOA135: quad-mold identity lowers as QuadShape.
     const quad_src = "|^  sample=quad-mold\nsample\n";
     const n_quad = try lower.lower_source_welcome(quad_src, &buf);
     assert(std.mem.indexOf(u8, buf[0..n_quad], "barket_gate") != null);
-    assert(std.mem.indexOf(u8, buf[0..n_quad], "QuadMold") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_quad], "QuadShape") != null);
     assert(std.mem.indexOf(u8, buf[0..n_quad], "nonce") != null);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_quad_welcome.rye", .data = buf[0..n_quad] });
-    print("lower: quad-mold barket lowers to QuadMold identity -- GREEN\n", .{});
+    print("lower: quad-mold barket lowers to QuadShape identity -- GREEN\n", .{});
 
     const gen_quad = try cwd.readFileAlloc(io, "glow/gen/gate-barket-quad.glow", a, .limited(4096));
     const spec_quad = try rb.parse_source(gen_quad);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_quad), "quad-mold"));
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_quad), "quad-shape"));
     assert(spec_quad.body == .identity);
     print("lower: glow/gen/gate-barket-quad.glow carries quad-mold -- GREEN\n", .{});
 
-    // STOA138: penta-mold identity lowers as PentaMold.
+    // STOA138: penta-mold identity lowers as PentaShape.
     const penta_src = "|^  sample=penta-mold\nsample\n";
     const n_penta = try lower.lower_source_welcome(penta_src, &buf);
     assert(std.mem.indexOf(u8, buf[0..n_penta], "barket_gate") != null);
-    assert(std.mem.indexOf(u8, buf[0..n_penta], "PentaMold") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_penta], "PentaShape") != null);
     assert(std.mem.indexOf(u8, buf[0..n_penta], "memo") != null);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_penta_welcome.rye", .data = buf[0..n_penta] });
-    print("lower: penta-mold barket lowers to PentaMold identity -- GREEN\n", .{});
+    print("lower: penta-mold barket lowers to PentaShape identity -- GREEN\n", .{});
 
     const gen_penta = try cwd.readFileAlloc(io, "glow/gen/gate-barket-penta.glow", a, .limited(4096));
     const spec_penta = try rb.parse_source(gen_penta);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_penta), "penta-mold"));
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_penta), "penta-shape"));
     assert(spec_penta.body == .identity);
     print("lower: glow/gen/gate-barket-penta.glow carries penta-mold -- GREEN\n", .{});
 
-    // STOA140: hexa-mold identity lowers as HexaMold.
+    // STOA140: hexa-mold identity lowers as HexaShape.
     const hexa_src = "|^  sample=hexa-mold\nsample\n";
     const n_hexa = try lower.lower_source_welcome(hexa_src, &buf);
     assert(std.mem.indexOf(u8, buf[0..n_hexa], "barket_gate") != null);
-    assert(std.mem.indexOf(u8, buf[0..n_hexa], "HexaMold") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_hexa], "HexaShape") != null);
     assert(std.mem.indexOf(u8, buf[0..n_hexa], "tag") != null);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_hexa_welcome.rye", .data = buf[0..n_hexa] });
-    print("lower: hexa-mold barket lowers to HexaMold identity -- GREEN\n", .{});
+    print("lower: hexa-mold barket lowers to HexaShape identity -- GREEN\n", .{});
 
     const gen_hexa = try cwd.readFileAlloc(io, "glow/gen/gate-barket-hexa.glow", a, .limited(4096));
     const spec_hexa = try rb.parse_source(gen_hexa);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_hexa), "hexa-mold"));
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_hexa), "hexa-shape"));
     assert(spec_hexa.body == .identity);
     print("lower: glow/gen/gate-barket-hexa.glow carries hexa-mold -- GREEN\n", .{});
 
-    // STOA142: hepta-mold identity lowers as HeptaMold.
+    // STOA142: hepta-mold identity lowers as HeptaShape.
     const hepta_src = "|^  sample=hepta-mold\nsample\n";
     const n_hepta = try lower.lower_source_welcome(hepta_src, &buf);
     assert(std.mem.indexOf(u8, buf[0..n_hepta], "barket_gate") != null);
-    assert(std.mem.indexOf(u8, buf[0..n_hepta], "HeptaMold") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_hepta], "HeptaShape") != null);
     assert(std.mem.indexOf(u8, buf[0..n_hepta], "to: u32") != null);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_hepta_welcome.rye", .data = buf[0..n_hepta] });
-    print("lower: hepta-mold barket lowers to HeptaMold identity -- GREEN\n", .{});
+    print("lower: hepta-mold barket lowers to HeptaShape identity -- GREEN\n", .{});
 
     const gen_hepta = try cwd.readFileAlloc(io, "glow/gen/gate-barket-hepta.glow", a, .limited(4096));
     const spec_hepta = try rb.parse_source(gen_hepta);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_hepta), "hepta-mold"));
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_hepta), "hepta-shape"));
     assert(spec_hepta.body == .identity);
     print("lower: glow/gen/gate-barket-hepta.glow carries hepta-mold -- GREEN\n", .{});
 
-    // STOA144: octa-mold identity lowers as OctaMold.
+    // STOA144: octa-mold identity lowers as OctaShape.
     const octa_src = "|^  sample=octa-mold\nsample\n";
     const n_octa = try lower.lower_source_welcome(octa_src, &buf);
     assert(std.mem.indexOf(u8, buf[0..n_octa], "barket_gate") != null);
-    assert(std.mem.indexOf(u8, buf[0..n_octa], "OctaMold") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_octa], "OctaShape") != null);
     assert(std.mem.indexOf(u8, buf[0..n_octa], "via: u32") != null);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_octa_welcome.rye", .data = buf[0..n_octa] });
-    print("lower: octa-mold barket lowers to OctaMold identity -- GREEN\n", .{});
+    print("lower: octa-mold barket lowers to OctaShape identity -- GREEN\n", .{});
 
     const gen_octa = try cwd.readFileAlloc(io, "glow/gen/gate-barket-octa.glow", a, .limited(4096));
     const spec_octa = try rb.parse_source(gen_octa);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_octa), "octa-mold"));
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_octa), "octa-shape"));
     assert(spec_octa.body == .identity);
     print("lower: glow/gen/gate-barket-octa.glow carries octa-mold -- GREEN\n", .{});
 
-    // STOA146: nona-mold identity lowers as NonaMold.
+    // STOA146: nona-mold identity lowers as NonaShape.
     const nona_src = "|^  sample=nona-mold\nsample\n";
     const n_nona = try lower.lower_source_welcome(nona_src, &buf);
     assert(std.mem.indexOf(u8, buf[0..n_nona], "barket_gate") != null);
-    assert(std.mem.indexOf(u8, buf[0..n_nona], "NonaMold") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_nona], "NonaShape") != null);
     assert(std.mem.indexOf(u8, buf[0..n_nona], "ref: u32") != null);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_nona_welcome.rye", .data = buf[0..n_nona] });
-    print("lower: nona-mold barket lowers to NonaMold identity -- GREEN\n", .{});
+    print("lower: nona-mold barket lowers to NonaShape identity -- GREEN\n", .{});
 
     const gen_nona = try cwd.readFileAlloc(io, "glow/gen/gate-barket-nona.glow", a, .limited(4096));
     const spec_nona = try rb.parse_source(gen_nona);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_nona), "nona-mold"));
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_nona), "nona-shape"));
     assert(spec_nona.body == .identity);
     print("lower: glow/gen/gate-barket-nona.glow carries nona-mold -- GREEN\n", .{});
 
@@ -417,19 +417,19 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("lower: glow/gen/gate-barket-kind-refuse.glow (deca-mold) refuses SampleDoesNotNest -- GREEN\n", .{});
 
-    // STOA143: hepta-mold flip call-body lowers as HeptaMold swap · baked 3/5/1/2/7/4/6.
+    // STOA143: hepta-mold flip call-body lowers as HeptaShape swap · baked 3/5/1/2/7/4/6.
     const hepta_flip_src = "|^  sample=hepta-mold\n%-  flip  sample\n";
     const n_htf = try lower.lower_source_welcome(hepta_flip_src, &buf);
-    assert(std.mem.indexOf(u8, buf[0..n_htf], "HeptaMold") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_htf], "HeptaShape") != null);
     assert(std.mem.indexOf(u8, buf[0..n_htf], ".from = sample.amount") != null);
     assert(std.mem.indexOf(u8, buf[0..n_htf], "got.from == 3") != null);
     assert(std.mem.indexOf(u8, buf[0..n_htf], "got.to == 6") != null);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_hepta_flip_welcome.rye", .data = buf[0..n_htf] });
-    print("lower: hepta-mold call-body flip lowers to HeptaMold swap expect 3/5/1/2/7/4/6 -- GREEN\n", .{});
+    print("lower: hepta-mold call-body flip lowers to HeptaShape swap expect 3/5/1/2/7/4/6 -- GREEN\n", .{});
 
     const gen_htf = try cwd.readFileAlloc(io, "glow/gen/gate-barket-hepta-flip.glow", a, .limited(4096));
     const spec_htf = try rb.parse_source(gen_htf);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_htf), "hepta-mold"));
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_htf), "hepta-shape"));
     assert(spec_htf.body == .call_one);
     assert(std.mem.eql(u8, rb.gate_slice(&spec_htf), "flip"));
     print("lower: glow/gen/gate-barket-hepta-flip.glow carries hepta-mold flip call-body -- GREEN\n", .{});
@@ -448,19 +448,19 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("lower: hepta-mold argv refused SampleDoesNotNest -- GREEN\n", .{});
 
-    // STOA145: octa-mold flip call-body lowers as OctaMold swap · baked 3/5/1/2/7/4/6/8.
+    // STOA145: octa-mold flip call-body lowers as OctaShape swap · baked 3/5/1/2/7/4/6/8.
     const octa_flip_src = "|^  sample=octa-mold\n%-  flip  sample\n";
     const n_otf = try lower.lower_source_welcome(octa_flip_src, &buf);
-    assert(std.mem.indexOf(u8, buf[0..n_otf], "OctaMold") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_otf], "OctaShape") != null);
     assert(std.mem.indexOf(u8, buf[0..n_otf], ".from = sample.amount") != null);
     assert(std.mem.indexOf(u8, buf[0..n_otf], "got.from == 3") != null);
     assert(std.mem.indexOf(u8, buf[0..n_otf], "got.via == 8") != null);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_octa_flip_welcome.rye", .data = buf[0..n_otf] });
-    print("lower: octa-mold call-body flip lowers to OctaMold swap expect 3/5/1/2/7/4/6/8 -- GREEN\n", .{});
+    print("lower: octa-mold call-body flip lowers to OctaShape swap expect 3/5/1/2/7/4/6/8 -- GREEN\n", .{});
 
     const gen_otf = try cwd.readFileAlloc(io, "glow/gen/gate-barket-octa-flip.glow", a, .limited(4096));
     const spec_otf = try rb.parse_source(gen_otf);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_otf), "octa-mold"));
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_otf), "octa-shape"));
     assert(spec_otf.body == .call_one);
     assert(std.mem.eql(u8, rb.gate_slice(&spec_otf), "flip"));
     print("lower: glow/gen/gate-barket-octa-flip.glow carries octa-mold flip call-body -- GREEN\n", .{});
@@ -479,19 +479,19 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("lower: octa-mold argv refused SampleDoesNotNest -- GREEN\n", .{});
 
-    // STOA147: nona-mold flip call-body lowers as NonaMold swap · baked 3/5/1/2/7/4/6/8/9.
+    // STOA147: nona-mold flip call-body lowers as NonaShape swap · baked 3/5/1/2/7/4/6/8/9.
     const nona_flip_src = "|^  sample=nona-mold\n%-  flip  sample\n";
     const n_nnf = try lower.lower_source_welcome(nona_flip_src, &buf);
-    assert(std.mem.indexOf(u8, buf[0..n_nnf], "NonaMold") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_nnf], "NonaShape") != null);
     assert(std.mem.indexOf(u8, buf[0..n_nnf], ".from = sample.amount") != null);
     assert(std.mem.indexOf(u8, buf[0..n_nnf], "got.from == 3") != null);
     assert(std.mem.indexOf(u8, buf[0..n_nnf], "got.ref == 9") != null);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_nona_flip_welcome.rye", .data = buf[0..n_nnf] });
-    print("lower: nona-mold call-body flip lowers to NonaMold swap expect 3/5/1/2/7/4/6/8/9 -- GREEN\n", .{});
+    print("lower: nona-mold call-body flip lowers to NonaShape swap expect 3/5/1/2/7/4/6/8/9 -- GREEN\n", .{});
 
     const gen_nnf = try cwd.readFileAlloc(io, "glow/gen/gate-barket-nona-flip.glow", a, .limited(4096));
     const spec_nnf = try rb.parse_source(gen_nnf);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_nnf), "nona-mold"));
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_nnf), "nona-shape"));
     assert(spec_nnf.body == .call_one);
     assert(std.mem.eql(u8, rb.gate_slice(&spec_nnf), "flip"));
     print("lower: glow/gen/gate-barket-nona-flip.glow carries nona-mold flip call-body -- GREEN\n", .{});
@@ -510,19 +510,19 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("lower: nona-mold argv refused SampleDoesNotNest -- GREEN\n", .{});
 
-    // STOA141: hexa-mold flip call-body lowers as HexaMold swap · baked 3/5/1/2/7/4.
+    // STOA141: hexa-mold flip call-body lowers as HexaShape swap · baked 3/5/1/2/7/4.
     const hexa_flip_src = "|^  sample=hexa-mold\n%-  flip  sample\n";
     const n_hxf = try lower.lower_source_welcome(hexa_flip_src, &buf);
-    assert(std.mem.indexOf(u8, buf[0..n_hxf], "HexaMold") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_hxf], "HexaShape") != null);
     assert(std.mem.indexOf(u8, buf[0..n_hxf], ".from = sample.amount") != null);
     assert(std.mem.indexOf(u8, buf[0..n_hxf], "got.from == 3") != null);
     assert(std.mem.indexOf(u8, buf[0..n_hxf], "got.tag == 4") != null);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_hexa_flip_welcome.rye", .data = buf[0..n_hxf] });
-    print("lower: hexa-mold call-body flip lowers to HexaMold swap expect 3/5/1/2/7/4 -- GREEN\n", .{});
+    print("lower: hexa-mold call-body flip lowers to HexaShape swap expect 3/5/1/2/7/4 -- GREEN\n", .{});
 
     const gen_hxf = try cwd.readFileAlloc(io, "glow/gen/gate-barket-hexa-flip.glow", a, .limited(4096));
     const spec_hxf = try rb.parse_source(gen_hxf);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_hxf), "hexa-mold"));
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_hxf), "hexa-shape"));
     assert(spec_hxf.body == .call_one);
     assert(std.mem.eql(u8, rb.gate_slice(&spec_hxf), "flip"));
     print("lower: glow/gen/gate-barket-hexa-flip.glow carries hexa-mold flip call-body -- GREEN\n", .{});
@@ -548,19 +548,19 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("lower: triple-mold argv refused SampleDoesNotNest -- GREEN\n", .{});
 
-    // STOA136: triple-mold flip call-body lowers as TripleMold swap · baked 3/5/1.
+    // STOA136: triple-mold flip call-body lowers as TripleShape swap · baked 3/5/1.
     const triple_flip_src = "|^  sample=triple-mold\n%-  flip  sample\n";
     const n_tf = try lower.lower_source_welcome(triple_flip_src, &buf);
-    assert(std.mem.indexOf(u8, buf[0..n_tf], "TripleMold") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_tf], "TripleShape") != null);
     assert(std.mem.indexOf(u8, buf[0..n_tf], ".from = sample.amount") != null);
     assert(std.mem.indexOf(u8, buf[0..n_tf], "got.from == 3") != null);
     assert(std.mem.indexOf(u8, buf[0..n_tf], "got.fee == 1") != null);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_triple_flip_welcome.rye", .data = buf[0..n_tf] });
-    print("lower: triple-mold call-body flip lowers to TripleMold swap expect 3/5/1 -- GREEN\n", .{});
+    print("lower: triple-mold call-body flip lowers to TripleShape swap expect 3/5/1 -- GREEN\n", .{});
 
     const gen_tf = try cwd.readFileAlloc(io, "glow/gen/gate-barket-triple-flip.glow", a, .limited(4096));
     const spec_tf = try rb.parse_source(gen_tf);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_tf), "triple-mold"));
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_tf), "triple-shape"));
     assert(spec_tf.body == .call_one);
     assert(std.mem.eql(u8, rb.gate_slice(&spec_tf), "flip"));
     print("lower: glow/gen/gate-barket-triple-flip.glow carries triple-mold flip call-body -- GREEN\n", .{});
@@ -579,19 +579,19 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("lower: quad-mold argv refused SampleDoesNotNest -- GREEN\n", .{});
 
-    // STOA137: quad-mold flip call-body lowers as QuadMold swap · baked 3/5/1/2.
+    // STOA137: quad-mold flip call-body lowers as QuadShape swap · baked 3/5/1/2.
     const quad_flip_src = "|^  sample=quad-mold\n%-  flip  sample\n";
     const n_qf = try lower.lower_source_welcome(quad_flip_src, &buf);
-    assert(std.mem.indexOf(u8, buf[0..n_qf], "QuadMold") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_qf], "QuadShape") != null);
     assert(std.mem.indexOf(u8, buf[0..n_qf], ".from = sample.amount") != null);
     assert(std.mem.indexOf(u8, buf[0..n_qf], "got.from == 3") != null);
     assert(std.mem.indexOf(u8, buf[0..n_qf], "got.nonce == 2") != null);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_quad_flip_welcome.rye", .data = buf[0..n_qf] });
-    print("lower: quad-mold call-body flip lowers to QuadMold swap expect 3/5/1/2 -- GREEN\n", .{});
+    print("lower: quad-mold call-body flip lowers to QuadShape swap expect 3/5/1/2 -- GREEN\n", .{});
 
     const gen_qf = try cwd.readFileAlloc(io, "glow/gen/gate-barket-quad-flip.glow", a, .limited(4096));
     const spec_qf = try rb.parse_source(gen_qf);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_qf), "quad-mold"));
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_qf), "quad-shape"));
     assert(spec_qf.body == .call_one);
     assert(std.mem.eql(u8, rb.gate_slice(&spec_qf), "flip"));
     print("lower: glow/gen/gate-barket-quad-flip.glow carries quad-mold flip call-body -- GREEN\n", .{});
@@ -610,19 +610,19 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("lower: penta-mold argv refused SampleDoesNotNest -- GREEN\n", .{});
 
-    // STOA139: penta-mold flip call-body lowers as PentaMold swap · baked 3/5/1/2/7.
+    // STOA139: penta-mold flip call-body lowers as PentaShape swap · baked 3/5/1/2/7.
     const penta_flip_src = "|^  sample=penta-mold\n%-  flip  sample\n";
     const n_pnf = try lower.lower_source_welcome(penta_flip_src, &buf);
-    assert(std.mem.indexOf(u8, buf[0..n_pnf], "PentaMold") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_pnf], "PentaShape") != null);
     assert(std.mem.indexOf(u8, buf[0..n_pnf], ".from = sample.amount") != null);
     assert(std.mem.indexOf(u8, buf[0..n_pnf], "got.from == 3") != null);
     assert(std.mem.indexOf(u8, buf[0..n_pnf], "got.memo == 7") != null);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_penta_flip_welcome.rye", .data = buf[0..n_pnf] });
-    print("lower: penta-mold call-body flip lowers to PentaMold swap expect 3/5/1/2/7 -- GREEN\n", .{});
+    print("lower: penta-mold call-body flip lowers to PentaShape swap expect 3/5/1/2/7 -- GREEN\n", .{});
 
     const gen_pnf = try cwd.readFileAlloc(io, "glow/gen/gate-barket-penta-flip.glow", a, .limited(4096));
     const spec_pnf = try rb.parse_source(gen_pnf);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_pnf), "penta-mold"));
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_pnf), "penta-shape"));
     assert(spec_pnf.body == .call_one);
     assert(std.mem.eql(u8, rb.gate_slice(&spec_pnf), "flip"));
     print("lower: glow/gen/gate-barket-penta-flip.glow carries penta-mold flip call-body -- GREEN\n", .{});
@@ -634,18 +634,18 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("lower: penta-mold double call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
 
-    // STOA127: kind-mold flip call-body lowers as KindMold switch · baked .send.
+    // STOA127: kind-mold flip call-body lowers as KindShape switch · baked .send.
     const kind_flip_src = "|^  sample=kind-mold\n%-  flip  sample\n";
     const n_kf = try lower.lower_source_welcome(kind_flip_src, &buf);
-    assert(std.mem.indexOf(u8, buf[0..n_kf], "KindMold") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_kf], "KindShape") != null);
     assert(std.mem.indexOf(u8, buf[0..n_kf], ".mint => .send") != null);
     assert(std.mem.indexOf(u8, buf[0..n_kf], "barket_gate(sample) == .send") != null);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_kind_flip_welcome.rye", .data = buf[0..n_kf] });
-    print("lower: kind-mold call-body flip lowers to KindMold switch expect .send -- GREEN\n", .{});
+    print("lower: kind-mold call-body flip lowers to KindShape switch expect .send -- GREEN\n", .{});
 
     const gen_kf = try cwd.readFileAlloc(io, "glow/gen/gate-barket-kind-flip.glow", a, .limited(4096));
     const spec_kf = try rb.parse_source(gen_kf);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_kf), "kind-mold"));
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_kf), "kind-shape"));
     assert(spec_kf.body == .call_one);
     assert(std.mem.eql(u8, rb.gate_slice(&spec_kf), "flip"));
     print("lower: glow/gen/gate-barket-kind-flip.glow carries kind-mold flip call-body -- GREEN\n", .{});
@@ -664,18 +664,18 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("lower: @u32 flip call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
 
-    // STOA128: xact-mold flip call-body lowers as XactMold switch · baked .send.
+    // STOA128: xact-mold flip call-body lowers as XactShape switch · baked .send.
     const xact_flip_src = "|^  sample=xact-mold\n%-  flip  sample\n";
     const n_xf = try lower.lower_source_welcome(xact_flip_src, &buf);
-    assert(std.mem.indexOf(u8, buf[0..n_xf], "XactMold") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_xf], "XactShape") != null);
     assert(std.mem.indexOf(u8, buf[0..n_xf], ".mint => .send") != null);
     assert(std.mem.indexOf(u8, buf[0..n_xf], ".send => 0") != null);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_xact_flip_welcome.rye", .data = buf[0..n_xf] });
-    print("lower: xact-mold call-body flip lowers to XactMold switch expect .send -- GREEN\n", .{});
+    print("lower: xact-mold call-body flip lowers to XactShape switch expect .send -- GREEN\n", .{});
 
     const gen_xf = try cwd.readFileAlloc(io, "glow/gen/gate-barket-xact-flip.glow", a, .limited(4096));
     const spec_xf = try rb.parse_source(gen_xf);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_xf), "xact-mold"));
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_xf), "xact-shape"));
     assert(spec_xf.body == .call_one);
     assert(std.mem.eql(u8, rb.gate_slice(&spec_xf), "flip"));
     print("lower: glow/gen/gate-barket-xact-flip.glow carries xact-mold flip call-body -- GREEN\n", .{});
@@ -687,18 +687,18 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("lower: xact-mold double call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
 
-    // STOA129: xfer-mold flip call-body lowers as XferMold switch · baked .send.
+    // STOA129: xfer-mold flip call-body lowers as XferShape switch · baked .send.
     const xfer_flip_src = "|^  sample=xfer-mold\n%-  flip  sample\n";
     const n_xff = try lower.lower_source_welcome(xfer_flip_src, &buf);
-    assert(std.mem.indexOf(u8, buf[0..n_xff], "XferMold") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_xff], "XferShape") != null);
     assert(std.mem.indexOf(u8, buf[0..n_xff], ".mint => .send") != null);
     assert(std.mem.indexOf(u8, buf[0..n_xff], ".send => 0") != null);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_xfer_flip_welcome.rye", .data = buf[0..n_xff] });
-    print("lower: xfer-mold call-body flip lowers to XferMold switch expect .send -- GREEN\n", .{});
+    print("lower: xfer-mold call-body flip lowers to XferShape switch expect .send -- GREEN\n", .{});
 
     const gen_xff = try cwd.readFileAlloc(io, "glow/gen/gate-barket-xfer-flip.glow", a, .limited(4096));
     const spec_xff = try rb.parse_source(gen_xff);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_xff), "xfer-mold"));
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_xff), "xfer-shape"));
     assert(spec_xff.body == .call_one);
     assert(std.mem.eql(u8, rb.gate_slice(&spec_xff), "flip"));
     print("lower: glow/gen/gate-barket-xfer-flip.glow carries xfer-mold flip call-body -- GREEN\n", .{});
@@ -717,18 +717,18 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("lower: pair-mold double call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
 
-    // STOA131: pair-mold flip call-body lowers as PairMold field swap · baked 3/5.
+    // STOA131: pair-mold flip call-body lowers as PairShape field swap · baked 3/5.
     const pair_flip_src = "|^  sample=pair-mold\n%-  flip  sample\n";
     const n_pf = try lower.lower_source_welcome(pair_flip_src, &buf);
-    assert(std.mem.indexOf(u8, buf[0..n_pf], "PairMold") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_pf], "PairShape") != null);
     assert(std.mem.indexOf(u8, buf[0..n_pf], ".from = sample.amount") != null);
     assert(std.mem.indexOf(u8, buf[0..n_pf], "got.from == 3") != null);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_pair_flip_welcome.rye", .data = buf[0..n_pf] });
-    print("lower: pair-mold call-body flip lowers to PairMold swap expect 3/5 -- GREEN\n", .{});
+    print("lower: pair-mold call-body flip lowers to PairShape swap expect 3/5 -- GREEN\n", .{});
 
     const gen_pf = try cwd.readFileAlloc(io, "glow/gen/gate-barket-pair-flip.glow", a, .limited(4096));
     const spec_pf = try rb.parse_source(gen_pf);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_pf), "pair-mold"));
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_pf), "pair-shape"));
     assert(spec_pf.body == .call_one);
     assert(std.mem.eql(u8, rb.gate_slice(&spec_pf), "flip"));
     print("lower: glow/gen/gate-barket-pair-flip.glow carries pair-mold flip call-body -- GREEN\n", .{});
@@ -743,7 +743,7 @@ fn run_selftest(init: std.process.Init) !u8 {
 
     const gen_cnt = try cwd.readFileAlloc(io, "glow/gen/gate-barket-count.glow", a, .limited(4096));
     const spec_cnt = try rb.parse_source(gen_cnt);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_cnt), "count-mold"));
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_cnt), "count-shape"));
     assert(spec_cnt.body == .identity);
     print("lower: glow/gen/gate-barket-count.glow carries count-mold -- GREEN\n", .{});
 

@@ -23,7 +23,7 @@ assert selftest.out contains "checked-casts into u32" else "lower_cast_witness m
 assert selftest.out contains "checked-casts into u8" else "lower_cast_witness missing u8 claim"
 assert selftest.out contains "checked-casts into u16" else "lower_cast_witness missing u16 claim"
 assert selftest.out contains "checked-casts into u64" else "lower_cast_witness missing u64 claim"
-assert selftest.out contains "NamedMoldNotYetLowered" else "lower_cast_witness missing named-mold refuse"
+assert selftest.out contains "NamedShapeNotYetLowered" else "lower_cast_witness missing named-mold refuse"
 assert selftest.out contains "AuraNotYetLowered" else "lower_cast_witness missing other-aura refuse"
 assert selftest.out contains "cast-u32.glow" else "lower_cast_witness missing gen desk claim"
 assert selftest.out contains "cast-u8.glow" else "lower_cast_witness missing u8 gen desk claim"

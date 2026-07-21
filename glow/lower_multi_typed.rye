@@ -19,7 +19,7 @@ pub const LowerError = rf.ParseError || lower_multi.LowerError || error{
     TooManyLines,
     NotTypedLiteral,
     AuraNotYetLowered,
-    NamedMoldNotYetLowered,
+    NamedShapeNotYetLowered,
     MalformedValue,
 };
 
@@ -76,7 +76,7 @@ fn parse_trailing_u32(rest: []const u8) LowerError!u32 {
 
 fn require_u32_mold(mold: []const u8) LowerError!void {
     if (mold.len == 0) return error.NotTypedLiteral;
-    if (mold[0] != '@') return error.NamedMoldNotYetLowered;
+    if (mold[0] != '@') return error.NamedShapeNotYetLowered;
     if (!std.mem.eql(u8, mold, "@u32")) return error.AuraNotYetLowered;
 }
 

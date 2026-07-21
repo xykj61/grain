@@ -1,7 +1,7 @@
-::  Payload tagged named-cast — same-desk +$ xact-mold / $% then ^- xact-mold (STOA82).
+::  Payload tagged named-cast — same-desk +$ xact-shape / $% then ^- xact-shape (STOA82).
 ::  Lowered by glow/lower_named_cast.rye into ordinary Rye; Rishi stays the shell.
-+$  xact-mold
++$  xact-shape
   $%  [%mint amount=@u32]
       [%send ~]
   ==
-^-  xact-mold
+^-  xact-shape

@@ -612,7 +612,7 @@ assert composecorecuejamboth.ok else "glow_run compose-core-cue-jam-both-nest.gl
 assert composecorecuejamboth.out contains "GREEN" else "glow_run compose-core-cue-jam-both-nest.glow not GREEN"
 assert composecorecuejamboth.out contains "compose-core-cue-jam-both-nest.glow" else "glow_run compose-core-cue-jam-both-nest claim missing path"
 
-let moldamount = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/mold-amount.glow"]
+let moldamount = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/hoon-study/mold-amount.glow"]
 assert moldamount.ok else "glow_run mold-amount.glow failed"
 assert moldamount.out contains "GREEN" else "glow_run mold-amount.glow not GREEN"
 assert moldamount.out contains "mold-amount.glow" else "glow_run mold-amount claim missing path"
@@ -629,7 +629,7 @@ assert shapecount.ok else "glow_run shape-count.glow failed"
 assert shapecount.out contains "GREEN" else "glow_run shape-count.glow not GREEN"
 assert shapecount.out contains "shape-count.glow" else "glow_run shape-count claim missing path"
 
-let moldpair = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/mold-pair.glow"]
+let moldpair = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/hoon-study/mold-pair.glow"]
 assert moldpair.ok else "glow_run mold-pair.glow failed"
 assert moldpair.out contains "GREEN" else "glow_run mold-pair.glow not GREEN"
 assert moldpair.out contains "mold-pair.glow" else "glow_run mold-pair claim missing path"
@@ -651,7 +651,7 @@ assert castimportpairshape.ok else "glow_run cast-import-pair-shape.glow failed"
 assert castimportpairshape.out contains "GREEN" else "glow_run cast-import-pair-shape.glow not GREEN"
 assert castimportpairshape.out contains "cast-import-pair-shape.glow" else "glow_run cast-import-pair-shape claim missing path"
 
-let moldkind = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/mold-kind.glow"]
+let moldkind = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/hoon-study/mold-kind.glow"]
 assert moldkind.ok else "glow_run mold-kind.glow failed"
 assert moldkind.out contains "GREEN" else "glow_run mold-kind.glow not GREEN"
 assert moldkind.out contains "mold-kind.glow" else "glow_run mold-kind claim missing path"
@@ -662,7 +662,7 @@ assert shapekind.ok else "glow_run shape-kind.glow failed"
 assert shapekind.out contains "GREEN" else "glow_run shape-kind.glow not GREEN"
 assert shapekind.out contains "shape-kind.glow" else "glow_run shape-kind claim missing path"
 
-let moldxact = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/mold-xact.glow"]
+let moldxact = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/hoon-study/mold-xact.glow"]
 assert moldxact.ok else "glow_run mold-xact.glow failed"
 assert moldxact.out contains "GREEN" else "glow_run mold-xact.glow not GREEN"
 assert moldxact.out contains "mold-xact.glow" else "glow_run mold-xact claim missing path"
@@ -673,7 +673,7 @@ assert shapexact.ok else "glow_run shape-xact.glow failed"
 assert shapexact.out contains "GREEN" else "glow_run shape-xact.glow not GREEN"
 assert shapexact.out contains "shape-xact.glow" else "glow_run shape-xact claim missing path"
 
-let moldxfer = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/mold-xfer.glow"]
+let moldxfer = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/hoon-study/mold-xfer.glow"]
 assert moldxfer.ok else "glow_run mold-xfer.glow failed"
 assert moldxfer.out contains "GREEN" else "glow_run mold-xfer.glow not GREEN"
 assert moldxfer.out contains "mold-xfer.glow" else "glow_run mold-xfer claim missing path"
@@ -797,11 +797,17 @@ assert castimportnonashape.ok else "glow_run cast-import-nona-shape.glow failed"
 assert castimportnonashape.out contains "GREEN" else "glow_run cast-import-nona-shape.glow not GREEN"
 assert castimportnonashape.out contains "cast-import-nona-shape.glow" else "glow_run cast-import-nona-shape claim missing path"
 
-# STOA179 / STOA184: Sala B0 Glow — sala-event-shape (from/to @ux · memo/stamp @t; cast held).
+# STOA179 / STOA184: Sala B0 Glow — sala-event-shape (from/to @ux · memo/stamp @t).
 let shapesalaevent = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/shape-sala-event.glow"]
 assert shapesalaevent.ok else "glow_run shape-sala-event.glow failed"
 assert shapesalaevent.out contains "GREEN" else "glow_run shape-sala-event.glow not GREEN"
 assert shapesalaevent.out contains "shape-sala-event.glow" else "glow_run shape-sala-event claim missing path"
+
+# STOA186: sala-event named-cast twin (mixed @ux / @u32 / @t).
+let castnamedsalaevent = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cast-named-sala-event.glow"]
+assert castnamedsalaevent.ok else "glow_run cast-named-sala-event.glow failed"
+assert castnamedsalaevent.out contains "GREEN" else "glow_run cast-named-sala-event.glow not GREEN"
+assert castnamedsalaevent.out contains "cast-named-sala-event.glow" else "glow_run cast-named-sala-event claim missing path"
 
 let castnamed = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cast-named-amount.glow"]
 assert castnamed.ok else "glow_run cast-named-amount.glow failed"

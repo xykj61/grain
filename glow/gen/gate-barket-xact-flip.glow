@@ -1,4 +1,4 @@
-::  Thin barket — sample=xact-mold through closed flip call body (STOA128).
-::  XactMold flip: .mint → .send; baked expect .send.
-|^  sample=xact-mold
+::  Thin barket — sample=xact-shape through closed flip call body (STOA128).
+::  XactShape flip: .mint → .send; baked expect .send.
+|^  sample=xact-shape
 %-  flip  sample
