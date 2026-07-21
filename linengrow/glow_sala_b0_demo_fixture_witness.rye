@@ -24,7 +24,7 @@ fn run_selftest() !u8 {
     print("sala-b0-fixture: three memos seated -- GREEN\n", .{});
 
     assert(fixture.root_pin_agrees());
-    print("sala-b0-fixture: root pin agrees fold · claim · HAWM1 -- GREEN\n", .{});
+    print("sala-b0-fixture: root pin agrees fold · HAWM1 -- GREEN\n", .{});
     print("sala-b0-fixture: expected root -- {s}\n", .{fixture.expected_demo_root_hex});
 
     print("sala-b0-fixture: version {s}\n", .{witness_version});

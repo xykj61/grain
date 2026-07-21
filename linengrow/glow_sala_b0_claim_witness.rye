@@ -8,8 +8,9 @@ const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 const claim = @import("glow_sala_b0_claim.rye");
+const fold = @import("sala_b0_fold.rye");
 
-const witness_version = "20260721.175857";
+const witness_version = "20260721.183253";
 
 fn run_selftest() !u8 {
     assert(std.mem.eql(u8, claim.expected_demo_root_hex, "99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe"));
@@ -23,8 +24,12 @@ fn run_selftest() !u8 {
     assert(std.mem.eql(u8, hex[0..], claim.expected_demo_root_hex));
     print("sala-b0-claim: claim_demo_fold matches product root -- GREEN\n", .{});
 
+    const elder = try fold.run_demo_fold();
+    assert(std.mem.eql(u8, &root, &elder));
+    print("sala-b0-claim: compose agrees elder run_demo_fold -- GREEN\n", .{});
+
     print("sala-b0-claim: version {s}\n", .{witness_version});
-    print("GREEN: Glow Sala B0 claim shell — STOA185; elder run_demo_fold behind Glow assert surface.\n", .{});
+    print("GREEN: Glow Sala B0 claim shell — STOA197; append+replay compose behind claim_demo_fold.\n", .{});
     return 0;
 }
 

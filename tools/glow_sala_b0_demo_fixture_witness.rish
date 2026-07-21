@@ -13,7 +13,7 @@ assert selftest.ok else "glow_sala_b0_demo_fixture_witness exited non-zero"
 assert selftest.out contains "GREEN" else "glow_sala_b0_demo_fixture_witness not GREEN"
 assert selftest.out contains "three stamps seated" else "glow_sala_b0_demo_fixture_witness missing stamps"
 assert selftest.out contains "three memos seated" else "glow_sala_b0_demo_fixture_witness missing memos"
-assert selftest.out contains "root pin agrees" else "glow_sala_b0_demo_fixture_witness missing root pin"
+assert selftest.out contains "root pin agrees fold" else "glow_sala_b0_demo_fixture_witness missing root pin"
 assert selftest.out contains "STOA193" else "glow_sala_b0_demo_fixture_witness missing STOA193"
 assert selftest.out contains "99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe" else "glow_sala_b0_demo_fixture_witness missing expected hex"
 

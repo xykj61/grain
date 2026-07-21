@@ -1,33 +1,37 @@
-//! linengrow/glow_sala_b0_claim.rye — Glow product claim shell over elder sala_b0_fold.
+//! linengrow/glow_sala_b0_claim.rye — Glow product claim shell for Sala B0 demo root.
 //!
-//! STOA185: owns the product assert surface (expected root pin + claim)
-//! while still calling elder `run_demo_fold`. Fold rewrite stays held.
-//! STOA191: NativeActivity `onCreate` calls `claim_demo_fold` (not raw fold).
-//! Seated beside the elder fold (same rye module path) until Glow earns
-//! a cross-tree import story; the Glow name is the product surface.
+//! STOA185: owns the product assert surface (expected root pin + claim).
+//! STOA191: NativeActivity `onCreate` calls `claim_demo_fold`.
+//! STOA197: composes append + replay ports (fixture pins → elder append/replay)
+//! instead of calling elder `run_demo_fold` directly. Elder fold stays as peer
+//! baseline; fold rewrite (Glow-authored fold body) stays held.
 //!
 //!   rye build linengrow/glow_sala_b0_claim_witness.rye \
 //!     -femit-bin=linengrow/bin/glow_sala_b0_claim_witness
 
 const std = @import("std");
 const assert = std.debug.assert;
+const rc = @import("receipt_core.rye");
 const fold = @import("sala_b0_fold.rye");
+const fixture = @import("glow_sala_b0_demo_fixture.rye");
+const replay = @import("glow_sala_b0_replay.rye");
 
-pub const claim_version = "20260721.175857";
+pub const claim_version = "20260721.183253";
 
 /// Product-owned pin — same HAWM1 demo root the elder fold proves.
-pub const expected_demo_root_hex = fold.expected_demo_root_hex;
+pub const expected_demo_root_hex = fixture.expected_demo_root_hex;
 
-pub const ClaimError = fold.FoldError;
+pub const ClaimError = replay.ReplayError;
 
-/// Run the elder three-event demo fold; refuse unless the product root matches.
+/// Build + replay the three-event demo via Glow ports; refuse unless root matches.
 pub fn claim_demo_fold() ClaimError![32]u8 {
-    const root = try fold.run_demo_fold();
-    assert(fold.root_matches_expected(&root)); // product claim: Glow owns this pin
+    var log_buf: [rc.max_log_len]u8 = undefined;
+    const root = try replay.claim_replay_demo_root(&log_buf);
+    assert(root_matches_expected(&root)); // product claim: Glow owns this pin
     return root;
 }
 
-/// Hex-encode a 32-byte root (delegates to elder).
+/// Hex-encode a 32-byte root (delegates to elder fold table).
 pub fn root_to_hex(root: *const [32]u8, out: *[64]u8) void {
     fold.root_to_hex(root, out);
 }
