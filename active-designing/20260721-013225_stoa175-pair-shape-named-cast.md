@@ -35,7 +35,7 @@
 
 | Item | Why |
 |------|-----|
-| **STOA176** widen `named_cast_parts` + triple…nona cast desks | line budget 4–5 today |
+| **STOA176** widen `named_cast_parts` + triple…nona cast desks | seated `20260721.014114` |
 | Sala B0 | product season |
 
 ---
