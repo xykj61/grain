@@ -8,7 +8,19 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260721.194756` — [STOA208-214 send · literals next](20260721-194756_stoa208-214-send-literals-next.bron) — pier send; lean C
+- `20260721.194203` — [STOA214 after fixture cast check-in](20260721-194203_stoa214-after-fixture-cast-checkin.bron) — leans A send (rec) · B–D
+- `20260721.194058` — [STOA213 fixture cast twins GREEN](20260721-194058_stoa213-fixture-cast-twins.bron) — named+import; literals held
+
+- `20260721.193404` — [STOA212 fields surface GREEN](20260721-193404_stoa212-fields-surface-green.bron) — FactFields parse; wired into replay
+
+- `20260721.193303` — [STOA211 replay compose GREEN](20260721-193303_stoa211-replay-compose-green.bron) — line·sign·digest; no sala.replay
+- `20260721.193220` — [STOA210 replay-body inventory](20260721-193220_stoa210-replay-body-inventory.bron) — lean C; rec C1 compose
+
+- `20260721.192947` — [STOA209 cord bound 1024 GREEN](20260721-192947_stoa209-cord-bound-1024.bron) — aura_t_max_bytes; fact hex fits
+
 - `20260721.192700` — [STOA206-207 send · STOA208 kg](20260721-192700_stoa206-207-send-stoa208-kg.bron) — pier send; cast-import next
+
 - `20260721.192558` — [STOA207 fact-line cast twin GREEN](20260721-192558_stoa207-fact-line-cast-twin.bron) — same-desk ^-; desk pin
 
 - `20260721.191254` — [STOA206 fact-line desk · AD shelf](20260721-191254_stoa206-fact-line-desk-and-ad-shelf.bron) — B3 GREEN; folder roles named

@@ -1,6 +1,6 @@
 ::  Sala B0 log-line shape — sig hex + fact bytes as faces (STOA206 / B3).
 ::  Mirrors elder format_log_line halves (STOA202 product wrap).
-::  @t bound 256: sig hex (128) fits; max fact hex (1024) can exceed — debt named.
+::  STOA209: @t bound 1024 — sig hex (128) and max fact hex (1024) fit.
 ::  STOA207: cast twin at cast-named-fact-line.glow.
 ::  Glow source literals · rewrite glow_sala_b0_line held.
 +$  fact-line-shape

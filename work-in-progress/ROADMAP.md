@@ -668,7 +668,21 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA206 fact-line shape desk GREEN, `20260721.191254`** — B3; `fact-line-shape` · `sig`/`fact` `@t`; desk suite wire. Brief [`active-designing/20260721-191254_stoa206-fact-line-shape-desk.md`](../active-designing/20260721-191254_stoa206-fact-line-shape-desk.md).
 
-**STOA207 fact-line cast twin GREEN, `20260721.192558`** — same-desk `^- fact-line-shape`; desk suite pin. Brief [`active-designing/20260721-192558_stoa207-fact-line-cast-twin.md`](../active-designing/20260721-192558_stoa207-fact-line-cast-twin.md). Next check-in: cord capacity · C replay inventory · send · JABS3 held.
+**STOA207 fact-line cast twin GREEN, `20260721.192558`** — same-desk `^- fact-line-shape`; desk suite pin. Brief [`active-designing/20260721-192558_stoa207-fact-line-cast-twin.md`](../active-designing/20260721-192558_stoa207-fact-line-cast-twin.md). Sent `e0484e96ae`.
+
+**STOA208 fact-line cast import GREEN, `20260721.192700`** — `/+ shape-fact-line` · `^- fact-line-shape`; desk suite pin. Brief [`active-designing/20260721-192700_stoa208-fact-line-cast-import.md`](../active-designing/20260721-192700_stoa208-fact-line-cast-import.md).
+
+**STOA209 cord bound 1024 GREEN, `20260721.192947`** — `aura_t_max_bytes` 256→1024; fact hex fits. Brief [`active-designing/20260721-192947_stoa209-cord-bound-1024.md`](../active-designing/20260721-192947_stoa209-cord-bound-1024.md).
+
+**STOA210 replay-body inventory GREEN, `20260721.193220`** — lean C; elder replay steps vs wraps; rec C1 compose. Brief [`active-designing/20260721-193220_stoa210-replay-body-inventory.md`](../active-designing/20260721-193220_stoa210-replay-body-inventory.md).
+
+**STOA211 replay line·sign·digest compose GREEN, `20260721.193303`** — C1; no `sala.replay(`; fixture + elder fold agree. Brief [`active-designing/20260721-193303_stoa211-replay-line-sign-digest-compose.md`](../active-designing/20260721-193303_stoa211-replay-line-sign-digest-compose.md).
+
+**STOA212 FactFields parse surface GREEN, `20260721.193404`** — C2; `glow_sala_b0_fields` wired into replay. Brief [`active-designing/20260721-193404_stoa212-fact-fields-parse-surface.md`](../active-designing/20260721-193404_stoa212-fact-fields-parse-surface.md).
+
+**STOA213 demo-fixture cast twins GREEN, `20260721.194058`** — C3; named + import cast; literals held. Brief [`active-designing/20260721-194058_stoa213-fixture-cast-twins.md`](../active-designing/20260721-194058_stoa213-fixture-cast-twins.md).
+
+**STOA214 after fixture cast check-in, `20260721.194203`** — lean A send `194756` · lean C Glow source literals next. Brief [`active-designing/20260721-194203_stoa214-after-fixture-cast-checkin.md`](../active-designing/20260721-194203_stoa214-after-fixture-cast-checkin.md).
 
 
 **Framework next (host resume), `20260720.231857`** — lean A: live SETU6.5 **sent** eyes on real `usb0`/`ncm`. Lab TX gate already GREEN; Sala B0 Glow rewrite · JABS3 stay thicker check-ins. Same freeze brief.

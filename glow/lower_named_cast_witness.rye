@@ -203,7 +203,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(lower.looks_like_named_cast(cord_src));
     const cord_n = try lower.lower_source_welcome(cord_src, &buf);
     assert(std.mem.indexOf(u8, buf[0..cord_n], "pub const MemoShape") != null);
-    assert(std.mem.indexOf(u8, buf[0..cord_n], "[256]u8") != null);
+    assert(std.mem.indexOf(u8, buf[0..cord_n], "[1024]u8") != null);
     assert(std.mem.indexOf(u8, buf[0..cord_n], "glow_demo_cord") != null);
     assert(std.mem.indexOf(u8, buf[0..cord_n], "STOA77/175/182") != null);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/cast_named_memo_welcome.rye", .data = buf[0..cord_n] });
@@ -235,7 +235,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(lower.looks_like_named_cast(pay_cast));
     const pay_n = try lower.lower_source_welcome(pay_cast, &buf);
     assert(std.mem.indexOf(u8, buf[0..pay_n], "pub const NoteShape") != null);
-    assert(std.mem.indexOf(u8, buf[0..pay_n], "[256]u8") != null);
+    assert(std.mem.indexOf(u8, buf[0..pay_n], "[1024]u8") != null);
     assert(std.mem.indexOf(u8, buf[0..pay_n], "glow_demo_cord") != null);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/cast_named_note_welcome.rye", .data = buf[0..pay_n] });
     print("lower: $% note-mold + ^- note-mold emits NoteShape cord payload cast -- GREEN\n", .{});

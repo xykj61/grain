@@ -32,12 +32,12 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("nest: @u64 under @u32 refused SampleDoesNotNest -- GREEN\n", .{});
 
-    // STOA180: `@t` nests under `@t`; named bound aura_t_max_bytes.
+    // STOA180 / STOA209: `@t` nests under `@t`; named bound aura_t_max_bytes.
     try nest_type.assert_aura_nests("@t", "@t");
     assert(nest_type.is_cord_aura("@t"));
     assert(!nest_type.is_cord_aura("@u32"));
-    assert(nest_type.aura_t_max_bytes == 256);
-    print("nest: @t under @t accepts · cord bound 256 -- GREEN\n", .{});
+    assert(nest_type.aura_t_max_bytes == 1024);
+    print("nest: @t under @t accepts · cord bound 1024 -- GREEN\n", .{});
     if (nest_type.assert_aura_nests("@t", "@u32")) |_| {
         return error.CordNestAcceptedTooSoon;
     } else |err| {
