@@ -1,4 +1,4 @@
-# STOA — Glow SLC · nest · product · ≤80 · STOA0–150 GREEN · 2026-07-21 · draw → **STOA**
+# STOA — Glow SLC · nest · product · ≤80 · STOA0–151 GREEN · 2026-07-21 · draw → **STOA**
 | Rung | Claim | Witness / gate | State |
 |------|-------|----------------|-------|
 | **STOA0–31** | Rune heads · desk hop · cells · `%` calls · truth · `/+` · core | `glow_run_desk` · `glow_expr` · compose | **GREEN** through `20260718.235530` |
@@ -7,5 +7,5 @@
 | **STOA106–121** | Nest/type · barket tokenize→lower · nesting-nests wire | nest · barket · bartis | **GREEN** `042931`…`182915` |
 | **STOA122–133** | Named allowlist amount→pair · flips · amount/count argv | nest · barket · glow_run | **GREEN** `183259`…`194143` |
 | **STOA134–147** | Triple→nona `$:` ladder · flips · capacity freeze at 9 | nest · barket · bartis | **GREEN** `194437`…`231419` |
-| **STOA148–150** | `amount-shape` · `count-shape` · `pair-shape` aliases | `glow_nest_type_witness` · desks | **GREEN** `234340`…`000234` |
+| **STOA148–151** | amount/count/pair/kind-shape Glow OS aliases | `glow_nest_type_witness` · desks | **GREEN** `234340`…`000743` |
 Smoke: `glow_nest_type_witness` · `glow_barket_parse_witness` · `glow_lower_bartis_witness` · Sibling: **ZETA** · **LULU** · **SETU** · **TUBE**.
