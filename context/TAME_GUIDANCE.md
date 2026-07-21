@@ -148,6 +148,7 @@ G5 brief: [`../active-designing/20260720-033200_stoa98-g5-nock-second-backend-fa
 | **STOA149 GREEN** | `count-shape` — twin Glow OS shape allowlist alias ≡ `count-mold` (one-field `$:` / `@u32`) |
 | **STOA150 GREEN** | `pair-shape` — first multi-field Glow OS shape allowlist alias ≡ `pair-mold` (PairMold) |
 | **STOA151 GREEN** | `kind-shape` — first unit `$%` Glow OS shape allowlist alias ≡ `kind-mold` (KindMold) |
+| **STOA152 GREEN** | `xact-shape` — first payload `$%` Glow OS shape allowlist alias ≡ `xact-mold` (XactMold) |
 | Still held | Ambient gold / free nesting polymorphism · bartis stays stated |
 | Still held | Open bartis/barket call-body gate set beyond `double` · `inc` · `dec` · `flip` |
 | Still held | Open named-mold set beyond nona (capacity freeze) · argv under tagged/multi-field shapes · further field widens horizon |
