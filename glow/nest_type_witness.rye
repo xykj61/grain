@@ -179,6 +179,10 @@ fn run_selftest(init: std.process.Init) !u8 {
     try nest_type.assert_bartis_named_mold("octa-shape");
     print("nest: octa-shape bartis named shape accepts -- GREEN\n", .{});
 
+    // STOA160: Glow OS shape alias nona-shape ≡ nona-mold.
+    try nest_type.assert_bartis_named_mold("nona-shape");
+    print("nest: nona-shape bartis named shape accepts -- GREEN\n", .{});
+
     if (nest_type.assert_bartis_named_mold("deca-mold")) |_| {
         return error.DecaMoldBartisAccepted;
     } else |err| {
@@ -321,6 +325,17 @@ fn run_selftest(init: std.process.Init) !u8 {
     const octa_shape_barket = try rbrk.parse_source("|^  sample=octa-shape\nsample\n");
     assert(std.mem.eql(u8, rbrk.mold_name_slice(&octa_shape_barket), "octa-shape"));
     print("nest: barket sample=octa-shape accepts named shape -- GREEN\n", .{});
+
+    const n_nona_shape = try lower.lower_source_welcome("|=  sample=nona-shape\nsample\n", &buf);
+    assert(n_nona_shape > 0);
+    assert(std.mem.indexOf(u8, buf[0..n_nona_shape], "bartis_gate") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_nona_shape], "NonaMold") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_nona_shape], "nona-shape") != null);
+    print("nest: bartis sample=nona-shape lowers as NonaMold identity -- GREEN\n", .{});
+
+    const nona_shape_barket = try rbrk.parse_source("|^  sample=nona-shape\nsample\n");
+    assert(std.mem.eql(u8, rbrk.mold_name_slice(&nona_shape_barket), "nona-shape"));
+    print("nest: barket sample=nona-shape accepts named shape -- GREEN\n", .{});
 
     const amt_desk = try cwd.readFileAlloc(io, "glow/gen/gate-amount.glow", a, .limited(4096));
     const amt_spec = try rb.parse_source(amt_desk);
@@ -627,7 +642,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("nest: stated bartis still lowers under nesting-refuse pin -- GREEN\n", .{});
 
     print("nest: version {s}\n", .{witness_version});
-    print("GREEN: Glow nest/type — stated aura · $% tag · named-mold · amount-shape · count-shape · pair-shape · kind-shape · xact-shape · xfer-shape · triple-shape · quad-shape · penta-shape · hexa-shape · hepta-shape · octa-shape · count-mold · kind-mold · xact-mold · xfer-mold · pair-mold · triple-mold · quad-mold · penta-mold · hexa-mold · hepta-mold · octa-mold · nona-mold · nesting refuse · nesting-nests; STOA107–110/119/122–126/130/134–135/138/140/142/144/146/148–159.\n", .{});
+    print("GREEN: Glow nest/type — stated aura · $% tag · named-mold · amount-shape · count-shape · pair-shape · kind-shape · xact-shape · xfer-shape · triple-shape · quad-shape · penta-shape · hexa-shape · hepta-shape · octa-shape · nona-shape · count-mold · kind-mold · xact-mold · xfer-mold · pair-mold · triple-mold · quad-mold · penta-mold · hexa-mold · hepta-mold · octa-mold · nona-mold · nesting refuse · nesting-nests; STOA107–110/119/122–126/130/134–135/138/140/142/144/146/148–160.\n", .{});
     return 0;
 }
 
