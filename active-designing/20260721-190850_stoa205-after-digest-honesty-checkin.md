@@ -1,0 +1,41 @@
+# STOA205 — After Digest Honesty · Check-In
+
+*An Acme Corporation employee reading this gets the fork after the Sala B0 Glow product path composes sign · line · append and pins the replay claim through the product digest surface: which thin lap opens next, with the pier matching the hand through STOA204.*
+
+**Language:** EN  
+**Version:** `20260721.190850` (UDT · Framework host)  
+**Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
+**Voice:** Quin  
+**Status:** Living — leans A–D awaiting Keaton’s word  
+**Register:** Checkable (Two Rooms) — STOA201–204 GREEN on hand at send; next lap needs a named lean  
+
+**Grounds in:** [`20260721-190637_stoa204-replay-product-digest-honesty.md`](20260721-190637_stoa204-replay-product-digest-honesty.md) · [`20260721-185942_stoa200-vane-body-inventory.md`](20260721-185942_stoa200-vane-body-inventory.md) · Pixel eyes STOA199A
+
+**dated_guard:** Do **not** claim Glow-rune crypto or a Glow-authored replay vane. Prefer a named lean before B3 desk code or any jet season. JABS3 opens only on explicit word.
+
+---
+
+## What just closed
+
+STOA201–204 on one send: sign/verify surface · log-line format/parse · append via sign+line compose · replay product digest honesty. Product path still calls elder bodies underneath; HAWM1 hex and elder `run_demo_fold` agree. Pixel eyes already GREEN for the Glow fold wire (STOA199A); re-eyes only if pack behavior changes.
+
+---
+
+## STOA205 leans
+
+| | Lean | What it opens |
+|---|---|---|
+| **A** | **Rest** — **recommended** | hold language and product until a later season word; vane wraps earned a pause |
+| **B** | **B3 desk deepen** | Glow desk-only deepen (fixture literals / fact-line shape) — language, not vane body |
+| **C** | **Replay body inventory / first parse wrap** | size what still lives only inside elder `sala.replay` (parse · verify · order); thin wrap if sized |
+| **D** | **JABS3** | inference · economics — **held**; opens only on explicit word, never as silent kg |
+
+---
+
+## Why a lean now
+
+Sign · line · append compose · digest honesty closed the thin product-surface season named from STOA200. Next work is either an honest pause (A), a language desk lap (B), a thicker look at elder replay guts (C), or the held JABS3 door (D).
+
+---
+
+*May every next lap name its lean before it lowers.*

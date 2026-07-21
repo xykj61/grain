@@ -1,0 +1,60 @@
+//! linengrow/glow_sala_b0_sign.rye — Glow product sign/verify surface over elder mala/receipt.
+//!
+//! STOA201 (B1): owns sign_fact + verify_record assert while calling elder
+//! bodies. Format/parse log-line and Glow-rune crypto jets stay held.
+//!
+//!   rye build linengrow/glow_sala_b0_sign_witness.rye \
+//!     -femit-bin=linengrow/bin/glow_sala_b0_sign_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const kumara = @import("kumara.rye");
+const mc = @import("mala_core.rye");
+const rc = @import("receipt_core.rye");
+const fixture = @import("glow_sala_b0_demo_fixture.rye");
+
+pub const sign_version = "20260721.190209";
+
+pub const SignError = error{ Overflow, InvalidFact, VerifyFailed, SignMismatch };
+
+pub const SignedFact = struct {
+    canonical: [rc.max_fact_len]u8,
+    canonical_len: u32,
+    sig: kumara.Signature,
+};
+
+/// Sign FactFields via elder `mala_core.sign_fact`.
+pub fn sign_fact(fields: rc.FactFields, signer: kumara.KeyPair) SignError!SignedFact {
+    const signed = try mc.sign_fact(fields, signer);
+    return .{
+        .canonical = signed.canonical,
+        .canonical_len = signed.canonical_len,
+        .sig = signed.sig,
+    };
+}
+
+/// Verify a signature over fact bytes via elder `receipt_core.verify_record`.
+pub fn verify_record(sig_bytes: []const u8, fact: []const u8, pubkey: kumara.PublicKey) SignError!void {
+    try rc.verify_record(sig_bytes, fact, pubkey);
+}
+
+/// Sign the first demo event fields (fixture stamp1/memo1 · seq amount 1); verify round-trip.
+pub fn claim_demo_sign() SignError!SignedFact {
+    const actor_kp = kumara.keypair_from_seed(&mc.issuer_seed);
+    var actor_hex: [mc.pubkey_hex_len]u8 = undefined;
+    mc.hex_of_key(actor_kp.public_key, &actor_hex);
+
+    const fields = rc.FactFields{
+        .from = actor_hex[0..],
+        .to = actor_hex[0..],
+        .amount = "1",
+        .memo = fixture.memo1,
+        .stamp = fixture.stamp1,
+    };
+    const signed = try sign_fact(fields, actor_kp);
+    assert(signed.canonical_len > 0);
+    const fact = signed.canonical[0..signed.canonical_len];
+    const sig_bytes = signed.sig.toBytes();
+    try verify_record(sig_bytes[0..], fact, actor_kp.public_key);
+    return signed;
+}

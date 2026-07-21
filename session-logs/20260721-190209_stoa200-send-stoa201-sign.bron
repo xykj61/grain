@@ -1,0 +1,25 @@
+format session-log-v1
+stamp 20260721.190209
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — UDT (UTC) time convention
+title STOA199A-200 send · STOA201 sign GREEN
+prompt send and approve next
+think Send STOA199A eyes and STOA200 inventory to pier origin and codeberg.
+think Approve B1 thin sign/verify wrap over elder sign_fact and verify_record.
+think claim_demo_sign fixture stamp1/memo1; tamper refuse GREEN; unsent STOA201.
+obs Still Rye product surface not Glow-rune crypto; B2 format/parse next door.
+file linengrow/glow_sala_b0_sign.rye sign product surface
+file linengrow/glow_sala_b0_sign_witness.rye selftest
+file tools/glow_sala_b0_sign_witness.rish hand
+file active-designing/20260721-190209_stoa201-sign-verify-surface.md brief
+file active-designing/20260721-185942_stoa200-vane-body-inventory.md B1 chosen
+file work-in-progress/TASKS.md STOA201 checked
+file work-in-progress/ROADMAP.md STOA201 GREEN
+file work-in-progress/REMEMBER.md Now STOA201
+file docs/STOA.md STOA0-201
+git_nib 01e7428ee7
+product_nib Sala-B0-Glow-sign
+suite_nib STOA0-201
+recommend check-in B2 format/parse or wire sign into append or rest; or send STOA201

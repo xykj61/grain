@@ -1,7 +1,8 @@
 //! linengrow/glow_sala_b0_digest.rye — Glow product digest surface over elder receipt_core.
 //!
 //! STOA194: owns the session-root digest assert (SHA3-256 of log bytes)
-//! while calling elder `digest_log`. Append · sign · replay · fold rewrite stay held.
+//! while calling elder `digest_log`.
+//! STOA204: replay claim path also asserts through this surface.
 //!
 //!   rye build linengrow/glow_sala_b0_digest_witness.rye \
 //!     -femit-bin=linengrow/bin/glow_sala_b0_digest_witness

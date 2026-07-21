@@ -1,0 +1,19 @@
+# glow_sala_b0_line_witness.rish — Glow log-line format/parse surface (STOA202 · B2).
+#
+#   rishi/bin/rishi run tools/glow_sala_b0_line_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/glow_sala_b0_line_witness"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/glow_sala_b0_line_witness.rye -femit-bin=${bin}"]
+assert build.ok else "glow_sala_b0_line_witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "glow_sala_b0_line_witness exited non-zero"
+assert selftest.out contains "GREEN" else "glow_sala_b0_line_witness not GREEN"
+assert selftest.out contains "fixture root pin seated" else "glow_sala_b0_line_witness missing fixture"
+assert selftest.out contains "claim_demo_line format/parse/verify" else "glow_sala_b0_line_witness missing line claim"
+assert selftest.out contains "bad line refuses parse" else "glow_sala_b0_line_witness missing bad-line refuse"
+assert selftest.out contains "STOA202" else "glow_sala_b0_line_witness missing STOA202"
+
+say "GREEN: Glow Sala B0 line surface — elder format/parse behind Glow assert; STOA202."

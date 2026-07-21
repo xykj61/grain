@@ -1,4 +1,4 @@
-# glow_sala_b0_append_witness.rish — Glow append port over elder append_event (STOA195).
+# glow_sala_b0_append_witness.rish — Glow append via sign+line compose (STOA203).
 #
 #   rishi/bin/rishi run tools/glow_sala_b0_append_witness.rish
 
@@ -12,10 +12,15 @@ let selftest = run ["sh" "-c" "${bin} 2>&1"]
 assert selftest.ok else "glow_sala_b0_append_witness exited non-zero"
 assert selftest.out contains "GREEN" else "glow_sala_b0_append_witness not GREEN"
 assert selftest.out contains "fixture root pin seated" else "glow_sala_b0_append_witness missing fixture"
-assert selftest.out contains "append_demo_log three events" else "glow_sala_b0_append_witness missing append"
+assert selftest.out contains "append_demo_log via sign+line" else "glow_sala_b0_append_witness missing sign+line path"
 assert selftest.out contains "claim_append_demo_root matches fixture" else "glow_sala_b0_append_witness missing root claim"
 assert selftest.out contains "append root agrees claim_demo_fold" else "glow_sala_b0_append_witness missing fold agree"
-assert selftest.out contains "STOA195" else "glow_sala_b0_append_witness missing STOA195"
+assert selftest.out contains "append root agrees elder run_demo_fold" else "glow_sala_b0_append_witness missing elder agree"
+assert selftest.out contains "STOA203" else "glow_sala_b0_append_witness missing STOA203"
 assert selftest.out contains "99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe" else "glow_sala_b0_append_witness missing expected hex"
 
-say "GREEN: Glow Sala B0 append port — elder append_event behind Glow assert; STOA195."
+# Source honestly wires sign + line (docs-implementation sync).
+let src = run ["sh" "-c" "grep -q 'glow_sala_b0_sign.rye' linengrow/glow_sala_b0_append.rye && grep -q 'glow_sala_b0_line.rye' linengrow/glow_sala_b0_append.rye && ! grep -q 'sala.append_event' linengrow/glow_sala_b0_append.rye"]
+assert src.ok else "glow_sala_b0_append missing sign+line wire / still calls sala.append_event"
+
+say "GREEN: Glow Sala B0 append port — sign+line compose; STOA203."

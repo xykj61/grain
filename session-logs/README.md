@@ -8,7 +8,13 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
-- `20260721.185942` — [STOA200 vane-body inventory](20260721-185942_stoa200-vane-body-inventory.bron) — lean B; rec B1 sign wrap
+- `20260721.190850` — [STOA201-204 send · STOA205 check-in](20260721-190850_stoa201-204-send-stoa205-checkin.bron) — pier send; leans A–D
+- `20260721.190637` — [STOA204 replay digest honesty GREEN](20260721-190637_stoa204-replay-digest-honesty.bron) — claim_digest_log on claim path
+- `20260721.190527` — [STOA203 append sign+line GREEN](20260721-190527_stoa203-append-sign-line-compose.bron) — compose; no sala.append_event
+
+- `20260721.190240` — [STOA202 line surface GREEN](20260721-190240_stoa202-line-surface-green.bron) — B2 claim_demo_line
+- `20260721.190209` — [STOA200 send · STOA201 sign](20260721-190209_stoa200-send-stoa201-sign.bron) — pier send; claim_demo_sign GREEN
+- `20260721.185942` — [STOA200 vane-body inventory](20260721-185942_stoa200-vane-body-inventory.bron) — lean B; B1 chosen as STOA201
 - `20260721.185805` — [STOA199A Pixel eyes GREEN](20260721-185805_stoa199a-pixel-eyes-green.bron) — lean A; HAWM1 hex on glass
 - `20260721.185700` — [STOA199A Pixel eyes guide](20260721-185700_stoa199a-pixel-eyes-guide.bron) — what GREEN glass looks like
 - `20260721.185407` — [STOA199A Pixel restart howto](20260721-185407_stoa199a-pixel-restart-howto.bron) — host adb install proof lines

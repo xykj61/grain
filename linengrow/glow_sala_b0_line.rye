@@ -1,0 +1,56 @@
+//! linengrow/glow_sala_b0_line.rye — Glow product log-line surface over elder receipt_core.
+//!
+//! STOA202 (B2): owns format_log_line + parse_log_line while calling elder
+//! bodies. Wires with STOA201 sign for a demo round-trip.
+//! STOA203: append composes through this surface + sign.
+//!
+//!   rye build linengrow/glow_sala_b0_line_witness.rye \
+//!     -femit-bin=linengrow/bin/glow_sala_b0_line_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const kumara = @import("kumara.rye");
+const mc = @import("mala_core.rye");
+const rc = @import("receipt_core.rye");
+const sign = @import("glow_sala_b0_sign.rye");
+
+pub const line_version = "20260721.190240";
+
+pub const LineError = sign.SignError || error{ Overflow, InvalidLine, LineMismatch };
+
+pub const ParsedLine = struct {
+    sig_len: u32,
+    fact_len: u32,
+};
+
+/// Format sig + fact as one elder log line (hex · space · hex · newline).
+pub fn format_log_line(sig: kumara.Signature, fact: []const u8, out: []u8) LineError!u32 {
+    return rc.format_log_line(sig, fact, out);
+}
+
+/// Parse one elder log line into sig bytes and fact bytes.
+pub fn parse_log_line(line: []const u8, sig_out: []u8, fact_out: []u8) LineError!ParsedLine {
+    const parsed = try rc.parse_log_line(line, sig_out, fact_out);
+    return .{ .sig_len = parsed.sig_len, .fact_len = parsed.fact_len };
+}
+
+/// Sign demo fact (STOA201), format line, parse back; refuse unless bytes agree and verify.
+pub fn claim_demo_line(line_out: *[rc.max_line_len]u8) LineError!u32 {
+    const signed = try sign.claim_demo_sign();
+    const fact = signed.canonical[0..signed.canonical_len];
+    const line_len = try format_log_line(signed.sig, fact, line_out[0..]);
+    assert(line_len > 0);
+
+    var sig_buf: [kumara.signature_length]u8 = undefined;
+    var fact_buf: [rc.max_fact_len]u8 = undefined;
+    const parsed = try parse_log_line(line_out[0..line_len], &sig_buf, &fact_buf);
+    if (parsed.sig_len != kumara.signature_length) return error.LineMismatch;
+    if (parsed.fact_len != signed.canonical_len) return error.LineMismatch;
+    const expect_sig = signed.sig.toBytes();
+    if (!std.mem.eql(u8, sig_buf[0..parsed.sig_len], expect_sig[0..])) return error.LineMismatch;
+    if (!std.mem.eql(u8, fact_buf[0..parsed.fact_len], fact)) return error.LineMismatch;
+
+    const actor_kp = kumara.keypair_from_seed(&mc.issuer_seed);
+    try sign.verify_record(sig_buf[0..parsed.sig_len], fact_buf[0..parsed.fact_len], actor_kp.public_key);
+    return line_len;
+}
