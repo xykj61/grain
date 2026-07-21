@@ -1,0 +1,21 @@
+# glow_sala_b0_append_witness.rish — Glow append port over elder append_event (STOA195).
+#
+#   rishi/bin/rishi run tools/glow_sala_b0_append_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/glow_sala_b0_append_witness"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/glow_sala_b0_append_witness.rye -femit-bin=${bin}"]
+assert build.ok else "glow_sala_b0_append_witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "glow_sala_b0_append_witness exited non-zero"
+assert selftest.out contains "GREEN" else "glow_sala_b0_append_witness not GREEN"
+assert selftest.out contains "fixture root pin seated" else "glow_sala_b0_append_witness missing fixture"
+assert selftest.out contains "append_demo_log three events" else "glow_sala_b0_append_witness missing append"
+assert selftest.out contains "claim_append_demo_root matches fixture" else "glow_sala_b0_append_witness missing root claim"
+assert selftest.out contains "append root agrees claim_demo_fold" else "glow_sala_b0_append_witness missing fold agree"
+assert selftest.out contains "STOA195" else "glow_sala_b0_append_witness missing STOA195"
+assert selftest.out contains "99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe" else "glow_sala_b0_append_witness missing expected hex"
+
+say "GREEN: Glow Sala B0 append port — elder append_event behind Glow assert; STOA195."
