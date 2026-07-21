@@ -460,6 +460,7 @@
 - [x] **STOA188 — `$%` payload `@t` / `@ux` emit** `20260721.180725` — retire refuse; `[256]u8`/`[32]u8` + named-cast mirror. Brief [`../active-designing/20260721-180725_stoa188-pct-payload-at-emit.md`](../active-designing/20260721-180725_stoa188-pct-payload-at-emit.md).
 - [x] **STOA189 — ShapeSpec API rename** `20260721.180917` — `MoldSpec`→`ShapeSpec` · `rune_mold`→`rune_shape` · `lower_mold`→`lower_shape`; study `mold-*` kept. Brief [`../active-designing/20260721-180917_stoa189-shapespec-api-rename.md`](../active-designing/20260721-180917_stoa189-shapespec-api-rename.md).
 - [x] **STOA190 — remaining mold→shape** `20260721.181551` — errors · nest/gate APIs · Zig `*Shape` stems · living gates `-shape` · `mold-*` → `hoon-study/`. Brief [`../active-designing/20260721-181551_stoa190-remaining-mold-to-shape.md`](../active-designing/20260721-181551_stoa190-remaining-mold-to-shape.md).
+- [x] **STOA191 — NativeActivity claim wire (lean C)** `20260721.181903` — `glow_native_activity` calls `claim_demo_fold`; elder fold underneath; pack GREEN. Brief [`../active-designing/20260721-181903_stoa191-native-claim-wire.md`](../active-designing/20260721-181903_stoa191-native-claim-wire.md).
 
 
 - [x] **UDT stamp convention on Framework host** `20260720.232932` — Keaton set system clock to UDT (UTC); [`context/specs/20260720-232932_udt-framework-host-convention.md`](../context/specs/20260720-232932_udt-framework-host-convention.md); Eastern era stamps stay; session-log rules + `GLOW_PROFILE` point at Etc/UTC.

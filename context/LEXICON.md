@@ -1,7 +1,7 @@
 # Lexicon — Module Names and Their Meanings
 
 **Language:** EN
-**Last updated:** 2026-07-21 (**STOA190** living mold→shape surface · hoon-study twins)
+**Last updated:** 2026-07-21 (**STOA191** NativeActivity claim wire · ShapeSpec living)
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 
 ---
