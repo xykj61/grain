@@ -8,6 +8,10 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260721.003514` — [STOA155 send then kg penta-shape](20260721-003514_stoa155-send-then-kg.bron) — send quad-shape; kg STOA156
+- `20260721.003200` — [STOA154 sent · STOA155 GREEN](20260721-003200_stoa154-sent-stoa155-green.bron) — pier 114f874af8; next penta-shape
+- `20260721.003129` — [STOA155 quad-shape alias GREEN](20260721-003129_stoa155-quad-shape-green.bron) — quad-shape ≡ quad-mold; unsent
+
 - `20260721.003056` — [STOA154 send then kg quad-shape](20260721-003056_stoa154-send-then-kg.bron) — send triple-shape; kg STOA155
 - `20260721.002540` — [STOA154 triple-shape alias GREEN](20260721-002540_stoa154-triple-shape-green.bron) — triple-shape ≡ triple-mold; unsent
 - `20260721.002459` — [STOA153 send then kg triple-shape](20260721-002459_stoa153-send-then-kg.bron) — send xfer-shape; kg STOA154

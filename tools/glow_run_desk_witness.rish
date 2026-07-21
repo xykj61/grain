@@ -742,6 +742,11 @@ assert gatebarkettripleshape.ok else "glow_run gate-barket-triple-shape.glow fai
 assert gatebarkettripleshape.out contains "GREEN" else "glow_run gate-barket-triple-shape.glow not GREEN"
 assert gatebarkettripleshape.out contains "gate-barket-triple-shape.glow" else "glow_run gate-barket-triple-shape claim missing path"
 
+let gatebarketquadshape = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/gate-barket-quad-shape.glow"]
+assert gatebarketquadshape.ok else "glow_run gate-barket-quad-shape.glow failed"
+assert gatebarketquadshape.out contains "GREEN" else "glow_run gate-barket-quad-shape.glow not GREEN"
+assert gatebarketquadshape.out contains "gate-barket-quad-shape.glow" else "glow_run gate-barket-quad-shape claim missing path"
+
 let gatedouble = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/gate-double.glow"]
 assert gatedouble.ok else "glow_run gate-double.glow failed"
 assert gatedouble.out contains "GREEN" else "glow_run gate-double.glow not GREEN"
@@ -796,6 +801,11 @@ let gatetripleshape = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/g
 assert gatetripleshape.ok else "glow_run gate-triple-shape.glow failed"
 assert gatetripleshape.out contains "GREEN" else "glow_run gate-triple-shape.glow not GREEN"
 assert gatetripleshape.out contains "gate-triple-shape.glow" else "glow_run gate-triple-shape claim missing path"
+
+let gatequadshape = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/gate-quad-shape.glow"]
+assert gatequadshape.ok else "glow_run gate-quad-shape.glow failed"
+assert gatequadshape.out contains "GREEN" else "glow_run gate-quad-shape.glow not GREEN"
+assert gatequadshape.out contains "gate-quad-shape.glow" else "glow_run gate-quad-shape claim missing path"
 
 say "GREEN: glow_run desk — all desk generators lowered, built, exit 0."
 
