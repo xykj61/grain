@@ -25,7 +25,7 @@
 | Desk | Named mold | Family | Dual this lap |
 |------|------------|--------|---------------|
 | `mold-amount` | `amount-mold` | one-field `$:` | **`shape-amount`** GREEN |
-| `mold-count` | `count-mold` | one-field `$:` | STOA162 horizon |
+| `mold-count` | `count-mold` | one-field `$:` | **`shape-count`** STOA162 |
 | `mold-pair` | `pair-mold` | two-field `$:` | later |
 | `mold-triple` … `mold-nona` | `*-mold` | multi-field `$:` | later |
 | `mold-kind` | `kind-mold` | unit `$%` | later |
