@@ -8,6 +8,7 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260721.182950` — [STOA194 send · STOA195 append](20260721-182950_stoa194-send-stoa195-append.bron) — pier send; append_demo_log GREEN
 - `20260721.182623` — [STOA194 digest port GREEN](20260721-182623_stoa194-digest-port-green.bron) — lean C claim_digest_log
 - `20260721.182501` — [STOA193 fixture pin GREEN](20260721-182501_stoa193-fixture-pin-green.bron) — lean B product stamps/memos/root
 - `20260721.182415` — [STOA192 send · STOA193 check-in](20260721-182415_stoa192-send-stoa193-checkin.bron) — pier send; lean B chosen

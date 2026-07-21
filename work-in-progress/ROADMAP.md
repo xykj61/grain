@@ -640,7 +640,9 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA193 demo fixture product pin GREEN, `20260721.182501`** — lean B; `glow_sala_b0_demo_fixture` · root agrees fold/claim. Brief [`active-designing/20260721-182501_stoa193-demo-fixture-product-pin.md`](../active-designing/20260721-182501_stoa193-demo-fixture-product-pin.md).
 
-**STOA194 digest thin port GREEN, `20260721.182623`** — lean C; `claim_digest_log` over elder `digest_log`; demo log via elder append; agrees claim fold. Brief [`active-designing/20260721-182623_stoa194-digest-thin-port.md`](../active-designing/20260721-182623_stoa194-digest-thin-port.md). Next check-in: append/sign port · Pixel eyes · rest. JABS3 held.
+**STOA194 digest thin port GREEN, `20260721.182623`** — lean C; `claim_digest_log` over elder `digest_log`; demo log via elder append; agrees claim fold. Brief [`active-designing/20260721-182623_stoa194-digest-thin-port.md`](../active-designing/20260721-182623_stoa194-digest-thin-port.md). Sent with STOA193 `dc57dacc5e`.
+
+**STOA195 append thin port GREEN, `20260721.182950`** — `append_demo_log` · `claim_append_demo_root` over elder `append_event`; agrees claim fold. Brief [`active-designing/20260721-182950_stoa195-append-thin-port.md`](../active-designing/20260721-182950_stoa195-append-thin-port.md). Next check-in: replay port · Pixel eyes · rest. JABS3 held.
 
 
 **Framework next (host resume), `20260720.231857`** — lean A: live SETU6.5 **sent** eyes on real `usb0`/`ncm`. Lab TX gate already GREEN; Sala B0 Glow rewrite · JABS3 stay thicker check-ins. Same freeze brief.
