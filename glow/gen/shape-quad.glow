@@ -1,0 +1,8 @@
+::  Multi-field +$ / $: four @u32 fields — Glow OS primary desk (STOA168).
+::  quad-shape ≡ quad-mold; mold-quad.glow stays the Hoon study twin.
++$  quad-shape
+  $:  from=@u32
+      amount=@u32
+      fee=@u32
+      nonce=@u32
+  ==

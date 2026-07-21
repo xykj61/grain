@@ -90,6 +90,28 @@ pub fn main(init: std.process.Init) !u8 {
     const glow_path = argv[path_i];
 
     const src = try cwd.readFileAlloc(io, glow_path, alloc, .limited(64 * 1024));
+
+    // STOA168: mold-only desks (≤9 `$:` faces) bypass the bare multi-line budget.
+    // Named-cast / cross-desk still win first when they peek true.
+    if (!sample_argv and lower_mold.looks_like_mold_only(src) and
+        !lower_named_cast.looks_like_named_cast(src) and
+        !lower_named_cast.looks_like_cross_desk(src))
+    {
+        var mold_buf: [4096]u8 = undefined;
+        const mold_len = lower_mold.lower_source_welcome(src, &mold_buf) catch |err| {
+            print("glow_run: mold lower failed ({s})\n", .{@errorName(err)});
+            return 1;
+        };
+        try cwd.createDirPath(io, "glow/.cache");
+        const mold_stem = stem_of(glow_path);
+        const mold_rye = try std.fmt.allocPrint(alloc, "glow/.cache/{s}.rye", .{mold_stem});
+        try cwd.writeFile(io, .{ .sub_path = mold_rye, .data = mold_buf[0..mold_len] });
+        const mold_out = std.Io.File.stdout();
+        try mold_out.writeStreamingAll(io, mold_rye);
+        try mold_out.writeStreamingAll(io, "\n");
+        return 0;
+    }
+
     const line_count = glow_line_count(src);
     if (line_count == 0) {
         print("glow_run: no Glow line in {s}\n", .{glow_path});

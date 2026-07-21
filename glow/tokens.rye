@@ -387,14 +387,15 @@ pub fn looks_like_cross_desk(src: []const u8) bool {
 }
 
 /// True when the token stream is a mold-only `+$` … `==` desk (STOA95 peek).
-/// 3–5 Glow lines, head `+$`, last line is not `^-` (named-cast wins first in glow_run).
+/// 3–11 Glow lines (STOA168: capacity freeze ≤9 `$:` faces → field_count+2), head `+$`,
+/// last line is not `^-` (named-cast wins first in glow_run).
 pub fn looks_like_mold_only(src: []const u8) bool {
     var buf: [max_tokens]Token = undefined;
     const n = tokenize(src, &buf) catch return false;
     assert(n <= max_tokens); // postcondition: tokenize bound
     const toks = buf[0..n];
     const lines = glow_line_count(toks);
-    if (lines < 3 or lines > 5) return false;
+    if (lines < 3 or lines > 11) return false;
     const head = first_content(toks) orelse return false;
     if (!rune2_is(src, head, "+$")) return false;
 

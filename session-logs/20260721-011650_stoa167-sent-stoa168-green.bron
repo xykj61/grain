@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260721.011650
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — UDT (Etc/UTC)
+title STOA167 sent · STOA168 shape-quad dual GREEN
+prompt send then kg
+think Send STOA167 shape-triple dual — commit push origin and codeberg.
+think Kg STOA168 shape-quad; glow_run refused — looks_like_mold_only capped at 5 live lines; quad needs 6.
+think Widen mold-only peek to 11 lines; early-dispatch mold-only in glow_run before multi budget of 6; proves mold-quad through mold-nona too.
+think Seat shape-quad QuadShape GREEN; leave unsent; next shape-penta.
+obs Pier STOA167 at 90c3c29d78; STOA168 unblocks dual itinerary through capacity freeze.
+file glow/tokens.rye mold-only peek 3-11 lines
+file glow/glow_run.rye early mold-only path
+file glow/gen/shape-quad.glow Glow OS primary +$ quad-shape
+file active-designing/20260721-011412_stoa168-shape-quad-dual-desk.md dual and budget brief
+recommend keep-going send then kg STOA169 shape-penta dual — budget open through nona
+product_nib ZETA6 LULU0-5 SETU6.5 live-sent
+suite_nib STOA0-168
+git_nib 90c3c29d78 STOA167; STOA168 unsent

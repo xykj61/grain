@@ -679,6 +679,12 @@ assert shapetriple.ok else "glow_run shape-triple.glow failed"
 assert shapetriple.out contains "GREEN" else "glow_run shape-triple.glow not GREEN"
 assert shapetriple.out contains "shape-triple.glow" else "glow_run shape-triple claim missing path"
 
+# STOA168: Glow OS primary dual — shape-quad beside mold-quad (cast twins held).
+let shapequad = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/shape-quad.glow"]
+assert shapequad.ok else "glow_run shape-quad.glow failed"
+assert shapequad.out contains "GREEN" else "glow_run shape-quad.glow not GREEN"
+assert shapequad.out contains "shape-quad.glow" else "glow_run shape-quad claim missing path"
+
 let castnamed = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cast-named-amount.glow"]
 assert castnamed.ok else "glow_run cast-named-amount.glow failed"
 assert castnamed.out contains "GREEN" else "glow_run cast-named-amount.glow not GREEN"

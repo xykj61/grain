@@ -28,7 +28,8 @@
 | `mold-count` | `count-mold` | one-field `$:` | **`shape-count`** STOA162 |
 | `mold-pair` | `pair-mold` | two-field `$:` | **`shape-pair`** STOA163 (cast held) |
 | `mold-triple` | `triple-mold` | multi-field `$:` | **`shape-triple`** STOA167 (cast held) |
-| `mold-quad` … `mold-nona` | `*-mold` | multi-field `$:` | later |
+| `mold-quad` | `quad-mold` | multi-field `$:` | **`shape-quad`** STOA168 (cast held; mold-only budget) |
+| `mold-penta` … `mold-nona` | `*-mold` | multi-field `$:` | later |
 | `mold-kind` | `kind-mold` | unit `$%` | **`shape-kind`** STOA164 |
 | `mold-xact` | `xact-mold` | payload `$%` | **`shape-xact`** STOA165 |
 | `mold-xfer` | `xfer-mold` | multi-face `$%` | **`shape-xfer`** STOA166 |
