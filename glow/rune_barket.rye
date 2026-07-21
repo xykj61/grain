@@ -18,6 +18,7 @@
 //! STOA156: closed allowlist alias `penta-shape` ≡ `penta-mold` (Glow OS shape word · PentaMold).
 //! STOA157: closed allowlist alias `hexa-shape` ≡ `hexa-mold` (Glow OS shape word · HexaMold).
 //! STOA158: closed allowlist alias `hepta-shape` ≡ `hepta-mold` (Glow OS shape word · HeptaMold).
+//! STOA159: closed allowlist alias `octa-shape` ≡ `octa-mold` (Glow OS shape word · OctaMold).
 //! STOA120: expansion calls `assert_sample_nesting_nests` at the mold seam.
 //! STOA121 / STOA130: barket passes `is_nesting=true` through nesting-nests under stated molds.
 //! STOA122: closed allowlist adds `count-mold` beside `amount-mold`.

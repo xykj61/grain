@@ -562,6 +562,8 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA158 hepta-shape alias GREEN, `20260721.004523`** — lean A (alias path): closed allowlist `hepta-shape` ≡ `hepta-mold` (seven-field `$:` / HeptaMold); `is_hepta_named_mold` accepts the alias; bartis · barket desks; capacity freeze held. Brief [`active-designing/20260721-004523_stoa158-hepta-shape-alias.md`](../active-designing/20260721-004523_stoa158-hepta-shape-alias.md). Next: **STOA159** check-in (octa-shape · rename · Sala behind shape).
 
+**STOA159 octa-shape alias GREEN, `20260721.004935`** — lean A (alias path): closed allowlist `octa-shape` ≡ `octa-mold` (eight-field `$:` / OctaMold); `is_octa_named_mold` accepts the alias; bartis · barket desks; capacity freeze held. Brief [`active-designing/20260721-004935_stoa159-octa-shape-alias.md`](../active-designing/20260721-004935_stoa159-octa-shape-alias.md). Next: **STOA160** check-in (nona-shape — last multi-field at capacity freeze).
+
 **Framework next (host resume), `20260720.231857`** — lean A: live SETU6.5 **sent** eyes on real `usb0`/`ncm`. Lab TX gate already GREEN; Sala B0 Glow rewrite · JABS3 stay thicker check-ins. Same freeze brief.
 
 **Framework host resumes on UDT, `20260720.232932`** — Keaton set this host's system clock to **UDT (UTC)** for stamps (iOS/cloud season alignment). Spec [`context/specs/20260720-232932_udt-framework-host-convention.md`](../context/specs/20260720-232932_udt-framework-host-convention.md). Language nib then STOA0–147 + capacity freeze; **STOA148** amount-shape later same day.

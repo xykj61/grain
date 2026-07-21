@@ -155,6 +155,7 @@ G5 brief: [`../active-designing/20260720-033200_stoa98-g5-nock-second-backend-fa
 | **STOA156 GREEN** | `penta-shape` — five-field `$:` Glow OS shape allowlist alias ≡ `penta-mold` (PentaMold) |
 | **STOA157 GREEN** | `hexa-shape` — six-field `$:` Glow OS shape allowlist alias ≡ `hexa-mold` (HexaMold) |
 | **STOA158 GREEN** | `hepta-shape` — seven-field `$:` Glow OS shape allowlist alias ≡ `hepta-mold` (HeptaMold) |
+| **STOA159 GREEN** | `octa-shape` — eight-field `$:` Glow OS shape allowlist alias ≡ `octa-mold` (OctaMold) |
 | Still held | Ambient gold / free nesting polymorphism · bartis stays stated |
 | Still held | Open bartis/barket call-body gate set beyond `double` · `inc` · `dec` · `flip` |
 | Still held | Open named-mold set beyond nona (capacity freeze) · argv under tagged/multi-field shapes · further field widens horizon |

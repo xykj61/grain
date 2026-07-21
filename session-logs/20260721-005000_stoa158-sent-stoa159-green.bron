@@ -1,0 +1,14 @@
+format session-log-v1
+stamp 20260721.005000
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu Framework 16 AMD — UDT (Etc/UTC)
+title STOA158 sent · STOA159 GREEN
+prompt send then kg
+think Sent STOA158 hepta-shape (214e0a8b8f); kg lean A octa-shape — GREEN at 20260721.004935.
+obs Next check-in nona-shape closes the multi-field shape ladder at capacity freeze of 9.
+recommend check-in STOA160 nona-shape · rename · Sala
+product_nib SETU6.5-live-sent
+suite_nib STOA0-159-unsent
+git_nib 214e0a8b8f
