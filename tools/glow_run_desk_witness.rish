@@ -737,6 +737,11 @@ assert gatebarketxfershape.ok else "glow_run gate-barket-xfer-shape.glow failed"
 assert gatebarketxfershape.out contains "GREEN" else "glow_run gate-barket-xfer-shape.glow not GREEN"
 assert gatebarketxfershape.out contains "gate-barket-xfer-shape.glow" else "glow_run gate-barket-xfer-shape claim missing path"
 
+let gatebarkettripleshape = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/gate-barket-triple-shape.glow"]
+assert gatebarkettripleshape.ok else "glow_run gate-barket-triple-shape.glow failed"
+assert gatebarkettripleshape.out contains "GREEN" else "glow_run gate-barket-triple-shape.glow not GREEN"
+assert gatebarkettripleshape.out contains "gate-barket-triple-shape.glow" else "glow_run gate-barket-triple-shape claim missing path"
+
 let gatedouble = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/gate-double.glow"]
 assert gatedouble.ok else "glow_run gate-double.glow failed"
 assert gatedouble.out contains "GREEN" else "glow_run gate-double.glow not GREEN"
@@ -786,6 +791,11 @@ let gatexfershape = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen
 assert gatexfershape.ok else "glow_run gate-xfer-shape.glow failed"
 assert gatexfershape.out contains "GREEN" else "glow_run gate-xfer-shape.glow not GREEN"
 assert gatexfershape.out contains "gate-xfer-shape.glow" else "glow_run gate-xfer-shape claim missing path"
+
+let gatetripleshape = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/gate-triple-shape.glow"]
+assert gatetripleshape.ok else "glow_run gate-triple-shape.glow failed"
+assert gatetripleshape.out contains "GREEN" else "glow_run gate-triple-shape.glow not GREEN"
+assert gatetripleshape.out contains "gate-triple-shape.glow" else "glow_run gate-triple-shape claim missing path"
 
 say "GREEN: glow_run desk — all desk generators lowered, built, exit 0."
 
