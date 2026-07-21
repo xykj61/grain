@@ -6,7 +6,7 @@
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD0–HOLD1 · HOLD-W  
 **Language nib:** **STOA0–160** GREEN · capacity freeze at 9 · shape alias ladder closed  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–160  
-**Git nib:** *(pin after STOA160 send)*  
+**Git nib:** `3ac6464df6` STOA160 pin · STOA161 check-in awaiting lean  
 
 **Season:** Framework · UDT · shape ladder closed · SETU6.5 live-sent GREEN.  
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`
