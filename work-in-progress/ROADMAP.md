@@ -608,7 +608,7 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA179 sala-event-shape GREEN, `20260721.170403`** — FactFields-named five-face desk; `SalaEventShape`; stand-in `@u32`. Brief [`active-designing/20260721-170403_stoa179-sala-event-shape-desk.md`](../active-designing/20260721-170403_stoa179-sala-event-shape-desk.md).
 
-**STOA180 check-in seated, `20260721.171030`** — after sala-event-shape; leans A thin `@t`+bound (recommended) · B `@ux` · C stand-in casts · D claim shell · E rest. Brief [`active-designing/20260721-171030_stoa180-at-aura-checkin.md`](../active-designing/20260721-171030_stoa180-at-aura-checkin.md). JABS3 held.
+**STOA180 thin `@t` GREEN, `20260721.171800`** — lean A; cord lex/nest/parse; lower held; shape affirmed over type. Brief [`active-designing/20260721-171800_stoa180-at-cord-aura-thin.md`](../active-designing/20260721-171800_stoa180-at-cord-aura-thin.md). Next: **STOA181** `@t` lower emit. JABS3 held.
 
 
 

@@ -96,6 +96,19 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("lower: +$ / $% xfer-mold emits XferMold multi-face union -- GREEN\n", .{});
     print("lower: wrote mold welcome .rye under glow/.cache/ -- GREEN\n", .{});
 
+    // STOA180: `$:` @t parses upstream; lower refuses until cord emit lands.
+    const cord_src =
+        \\+$  memo-shape
+        \\  $:  memo=@t
+        \\  ==
+    ;
+    if (lower.lower_source_welcome(cord_src, &buf)) |_| {
+        return error.CordAuraLoweredTooSoon;
+    } else |err| {
+        if (err != lower.LowerError.CordAuraNotYetLowered) return err;
+    }
+    print("lower: @t cord face refused CordAuraNotYetLowered -- GREEN\n", .{});
+
     print("lower: version {s}\n", .{witness_version});
     print("GREEN: +$ / $: / $% mold lowers — STOA74–80 · STOA95 peek · STOA96 TAME tidy; mold-amount · mold-pair · mold-kind · mold-xact · mold-xfer.\n", .{});
     return 0;

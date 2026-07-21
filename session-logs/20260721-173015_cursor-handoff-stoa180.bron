@@ -1,0 +1,15 @@
+format session-log-v1
+stamp 20260721.173015
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — UDT (Etc/UTC)
+title Cursor handoff card for STOA180 · Sala B0 Glow
+prompt new Cursor agent handoff — chat memory heavy
+think Seat paste-ready handoff at work-in-progress for fresh agent; pier 5d97b5301f; STOA180 unsent.
+obs Recommend send STOA180 then kg STOA181; shape kept; MoldSpec rename held.
+file work-in-progress/20260721-173015_cursor-handoff-stoa180-sala-b0-glow.md handoff
+recommend check-in open new chat with handoff prompt — send STOA180 in this or that chat first
+product_nib ZETA6 LULU0-5 SETU6.5 live-sent Sala-B0-Glow
+suite_nib STOA0-180
+git_nib 5d97b5301f; STOA180 unsent
