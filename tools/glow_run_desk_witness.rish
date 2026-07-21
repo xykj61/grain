@@ -691,6 +691,12 @@ assert shapepenta.ok else "glow_run shape-penta.glow failed"
 assert shapepenta.out contains "GREEN" else "glow_run shape-penta.glow not GREEN"
 assert shapepenta.out contains "shape-penta.glow" else "glow_run shape-penta claim missing path"
 
+# STOA170: Glow OS primary dual — shape-hexa beside mold-hexa (cast twins held).
+let shapehexa = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/shape-hexa.glow"]
+assert shapehexa.ok else "glow_run shape-hexa.glow failed"
+assert shapehexa.out contains "GREEN" else "glow_run shape-hexa.glow not GREEN"
+assert shapehexa.out contains "shape-hexa.glow" else "glow_run shape-hexa claim missing path"
+
 let castnamed = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cast-named-amount.glow"]
 assert castnamed.ok else "glow_run cast-named-amount.glow failed"
 assert castnamed.out contains "GREEN" else "glow_run cast-named-amount.glow not GREEN"
