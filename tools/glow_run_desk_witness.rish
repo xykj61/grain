@@ -645,6 +645,12 @@ assert moldkind.ok else "glow_run mold-kind.glow failed"
 assert moldkind.out contains "GREEN" else "glow_run mold-kind.glow not GREEN"
 assert moldkind.out contains "mold-kind.glow" else "glow_run mold-kind claim missing path"
 
+# STOA164: Glow OS primary dual — shape-kind beside mold-kind.
+let shapekind = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/shape-kind.glow"]
+assert shapekind.ok else "glow_run shape-kind.glow failed"
+assert shapekind.out contains "GREEN" else "glow_run shape-kind.glow not GREEN"
+assert shapekind.out contains "shape-kind.glow" else "glow_run shape-kind claim missing path"
+
 let moldxact = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/mold-xact.glow"]
 assert moldxact.ok else "glow_run mold-xact.glow failed"
 assert moldxact.out contains "GREEN" else "glow_run mold-xact.glow not GREEN"
@@ -696,6 +702,17 @@ let castimportkind = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/ge
 assert castimportkind.ok else "glow_run cast-import-kind.glow failed"
 assert castimportkind.out contains "GREEN" else "glow_run cast-import-kind.glow not GREEN"
 assert castimportkind.out contains "cast-import-kind.glow" else "glow_run cast-import-kind claim missing path"
+
+# STOA164: Glow OS primary cast twins for kind-shape.
+let castnamedkindshape = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cast-named-kind-shape.glow"]
+assert castnamedkindshape.ok else "glow_run cast-named-kind-shape.glow failed"
+assert castnamedkindshape.out contains "GREEN" else "glow_run cast-named-kind-shape.glow not GREEN"
+assert castnamedkindshape.out contains "cast-named-kind-shape.glow" else "glow_run cast-named-kind-shape claim missing path"
+
+let castimportkindshape = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cast-import-kind-shape.glow"]
+assert castimportkindshape.ok else "glow_run cast-import-kind-shape.glow failed"
+assert castimportkindshape.out contains "GREEN" else "glow_run cast-import-kind-shape.glow not GREEN"
+assert castimportkindshape.out contains "cast-import-kind-shape.glow" else "glow_run cast-import-kind-shape claim missing path"
 
 let castnamedxact = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cast-named-xact.glow"]
 assert castnamedxact.ok else "glow_run cast-named-xact.glow failed"
