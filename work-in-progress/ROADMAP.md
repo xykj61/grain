@@ -556,7 +556,9 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA155 quad-shape alias GREEN, `20260721.003129`** — lean A (alias path): closed allowlist `quad-shape` ≡ `quad-mold` (four-field `$:` / QuadMold); `is_quad_named_mold` accepts the alias; bartis · barket desks; capacity freeze held. Brief [`active-designing/20260721-003129_stoa155-quad-shape-alias.md`](../active-designing/20260721-003129_stoa155-quad-shape-alias.md). Sent `9a66cd6822`.
 
-**STOA156 penta-shape alias GREEN, `20260721.003545`** — lean A (alias path): closed allowlist `penta-shape` ≡ `penta-mold` (five-field `$:` / PentaMold); `is_penta_named_mold` accepts the alias; bartis · barket desks; capacity freeze held. Brief [`active-designing/20260721-003545_stoa156-penta-shape-alias.md`](../active-designing/20260721-003545_stoa156-penta-shape-alias.md). Next: **STOA157** check-in (hexa-shape · rename · Sala behind shape).
+**STOA156 penta-shape alias GREEN, `20260721.003545`** — lean A (alias path): closed allowlist `penta-shape` ≡ `penta-mold` (five-field `$:` / PentaMold); `is_penta_named_mold` accepts the alias; bartis · barket desks; capacity freeze held. Brief [`active-designing/20260721-003545_stoa156-penta-shape-alias.md`](../active-designing/20260721-003545_stoa156-penta-shape-alias.md). Sent `4c86c751e2`.
+
+**STOA157 hexa-shape alias GREEN, `20260721.004052`** — lean A (alias path): closed allowlist `hexa-shape` ≡ `hexa-mold` (six-field `$:` / HexaMold); `is_hexa_named_mold` accepts the alias; bartis · barket desks; capacity freeze held. Brief [`active-designing/20260721-004052_stoa157-hexa-shape-alias.md`](../active-designing/20260721-004052_stoa157-hexa-shape-alias.md). Next: **STOA158** check-in (hepta-shape · rename · Sala behind shape).
 
 **Framework next (host resume), `20260720.231857`** — lean A: live SETU6.5 **sent** eyes on real `usb0`/`ncm`. Lab TX gate already GREEN; Sala B0 Glow rewrite · JABS3 stay thicker check-ins. Same freeze brief.
 
