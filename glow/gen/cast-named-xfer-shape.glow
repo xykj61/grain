@@ -1,0 +1,7 @@
+::  Multi-face payload named-cast — same-desk +$ xfer-shape / $% then ^- xfer-shape (STOA166).
+::  Glow OS primary spelling; mold-xfer.glow keeps the study twin (no mold cast twin yet).
++$  xfer-shape
+  $%  [%mint from=@u32 amount=@u32]
+      [%send ~]
+  ==
+^-  xfer-shape
