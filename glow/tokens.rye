@@ -9,6 +9,7 @@
 //! STOA94: same-desk named-cast mold-body span via `named_cast_parts`.
 //! STOA95: mold-only `+$` dispatch peek via `looks_like_mold_only`.
 //! STOA97: `rune_mold.parse_source` consumes this stream → MoldSpec.
+//! STOA176: `named_cast_parts` line budget 4–12 (field_count+3 ≤ freeze).
 //!
 //!   +$  xact-mold
 //!     $%  [%mint amount=@u32]
@@ -302,7 +303,8 @@ pub const NamedCastParts = struct {
     cast_mold: Token = .{},
 };
 
-/// 4–5 Glow lines: head `+$`, last line `^- <mold-name>`, no cast-line junk.
+/// 4–12 Glow lines (STOA176: capacity freeze ≤9 `$:` faces → field_count+3):
+/// head `+$`, last line `^- <mold-name>`, no cast-line junk.
 /// Returns null when the shape fails — peek and lower share this gate.
 pub fn named_cast_parts(src: []const u8) ?NamedCastParts {
     var buf: [max_tokens]Token = undefined;
@@ -310,7 +312,7 @@ pub fn named_cast_parts(src: []const u8) ?NamedCastParts {
     assert(n <= max_tokens); // postcondition: tokenize bound
     const toks = buf[0..n];
     const lines = glow_line_count(toks);
-    if (lines < 4 or lines > 5) return null;
+    if (lines < 4 or lines > 12) return null;
     const head = first_content(toks) orelse return null;
     if (!rune2_is(src, head, "+$")) return null;
 

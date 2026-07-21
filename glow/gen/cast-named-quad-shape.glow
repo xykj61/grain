@@ -1,0 +1,9 @@
+::  Multi-field named-cast — +$ quad-shape then ^- quad-shape (STOA176).
+::  Peek budget field_count+3 after named_cast_parts widen.
++$  quad-shape
+  $:  from=@u32
+      amount=@u32
+      fee=@u32
+      nonce=@u32
+  ==
+^-  quad-shape

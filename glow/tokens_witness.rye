@@ -26,6 +26,22 @@ const amount_cast =
     \\^-  amount-mold
 ;
 
+/// Nine-field same-desk cast — STOA176 peek budget (field_count+3 = 12).
+const nona_cast =
+    \\+$  nona-shape
+    \\  $:  from=@u32
+    \\      amount=@u32
+    \\      fee=@u32
+    \\      nonce=@u32
+    \\      memo=@u32
+    \\      tag=@u32
+    \\      to=@u32
+    \\      via=@u32
+    \\      ref=@u32
+    \\  ==
+    \\^-  nona-shape
+;
+
 const mold_only =
     \\+$  amount-mold
     \\  $:  amount=@u32
@@ -125,6 +141,7 @@ fn run_selftest() !u8 {
 
     assert(tokens.looks_like_named_cast(xact_desk));
     assert(tokens.looks_like_named_cast(amount_cast));
+    assert(tokens.looks_like_named_cast(nona_cast));
     assert(!tokens.looks_like_named_cast(mold_only));
     assert(!tokens.looks_like_named_cast(cross_desk));
     print("tokens: named-cast peek (glow_run wire) -- GREEN\n", .{});
@@ -142,6 +159,11 @@ fn run_selftest() !u8 {
     assert(std.mem.indexOf(u8, xact_mold, "$%") != null);
     assert(std.mem.indexOf(u8, xact_mold, "==") != null);
     assert(std.mem.indexOf(u8, xact_mold, "^-") == null);
+    const nona_parts = tokens.named_cast_parts(nona_cast) orelse return error.NamedCastPartsMissing;
+    assert(std.mem.eql(u8, tokens.slice_of(nona_cast, nona_parts.cast_mold), "nona-shape"));
+    const nona_mold = nona_cast[nona_parts.mold_start..][0..nona_parts.mold_len];
+    assert(std.mem.indexOf(u8, nona_mold, "ref=@u32") != null);
+    assert(std.mem.indexOf(u8, nona_mold, "^-") == null);
     assert(tokens.named_cast_parts(named_cast_junk) == null);
     assert(tokens.named_cast_parts(mold_only) == null);
     assert(tokens.named_cast_parts(cross_desk) == null);

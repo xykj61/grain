@@ -91,10 +91,27 @@ pub fn main(init: std.process.Init) !u8 {
 
     const src = try cwd.readFileAlloc(io, glow_path, alloc, .limited(64 * 1024));
 
+    // STOA176: same-desk named-cast (≤9 `$:` faces → ≤12 Glow lines) bypasses
+    // the bare multi-line budget of six — peek + lower share named_cast_parts.
+    if (!sample_argv and lower_named_cast.looks_like_named_cast(src)) {
+        var nc_buf: [4096]u8 = undefined;
+        const nc_len = lower_named_cast.lower_source_welcome(src, &nc_buf) catch |err| {
+            print("glow_run: named-cast lower failed ({s})\n", .{@errorName(err)});
+            return 1;
+        };
+        try cwd.createDirPath(io, "glow/.cache");
+        const nc_stem = stem_of(glow_path);
+        const nc_rye = try std.fmt.allocPrint(alloc, "glow/.cache/{s}.rye", .{nc_stem});
+        try cwd.writeFile(io, .{ .sub_path = nc_rye, .data = nc_buf[0..nc_len] });
+        const nc_out = std.Io.File.stdout();
+        try nc_out.writeStreamingAll(io, nc_rye);
+        try nc_out.writeStreamingAll(io, "\n");
+        return 0;
+    }
+
     // STOA168: mold-only desks (≤9 `$:` faces) bypass the bare multi-line budget.
-    // Named-cast / cross-desk still win first when they peek true.
+    // Named-cast already returned above when its peek is true.
     if (!sample_argv and lower_mold.looks_like_mold_only(src) and
-        !lower_named_cast.looks_like_named_cast(src) and
         !lower_named_cast.looks_like_cross_desk(src))
     {
         var mold_buf: [4096]u8 = undefined;

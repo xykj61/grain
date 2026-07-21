@@ -1,7 +1,7 @@
 # Glow — Language Tooling, Grown from Real Design
 
 **Language:** EN
-**Last updated:** 2026-07-21 (**STOA160** nona-shape alias GREEN — multi-field shape ladder closed)
+**Last updated:** 2026-07-21 (**STOA176** named-cast peek widen · triple…nona cast twins GREEN)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Audience:** Acme Corporation employees reading the working Glow pin

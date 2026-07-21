@@ -1,0 +1,8 @@
+::  Multi-field named-cast — +$ triple-shape then ^- triple-shape (STOA176).
+::  Peek budget field_count+3 after named_cast_parts widen.
++$  triple-shape
+  $:  from=@u32
+      amount=@u32
+      fee=@u32
+  ==
+^-  triple-shape

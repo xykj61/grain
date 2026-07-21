@@ -27,13 +27,13 @@
 | `mold-amount` | `amount-mold` | one-field `$:` | **`shape-amount`** GREEN |
 | `mold-count` | `count-mold` | one-field `$:` | **`shape-count`** STOA162 |
 | `mold-pair` | `pair-mold` | two-field `$:` | **`shape-pair`** STOA163 · cast twins STOA175 |
-| `mold-triple` | `triple-mold` | multi-field `$:` | **`shape-triple`** STOA167 (cast held) |
-| `mold-quad` | `quad-mold` | multi-field `$:` | **`shape-quad`** STOA168 (cast held; mold-only budget) |
-| `mold-penta` | `penta-mold` | multi-field `$:` | **`shape-penta`** STOA169 (cast held) |
-| `mold-hexa` | `hexa-mold` | multi-field `$:` | **`shape-hexa`** STOA170 (cast held) |
-| `mold-hepta` | `hepta-mold` | multi-field `$:` | **`shape-hepta`** STOA171 (cast held) |
-| `mold-octa` | `octa-mold` | multi-field `$:` | **`shape-octa`** STOA172 (cast held) |
-| `mold-nona` | `nona-mold` | multi-field `$:` | **`shape-nona`** STOA173 (cast held; inventary closed) |
+| `mold-triple` | `triple-mold` | multi-field `$:` | **`shape-triple`** STOA167 · cast twins STOA176 |
+| `mold-quad` | `quad-mold` | multi-field `$:` | **`shape-quad`** STOA168 · cast twins STOA176 |
+| `mold-penta` | `penta-mold` | multi-field `$:` | **`shape-penta`** STOA169 · cast twins STOA176 |
+| `mold-hexa` | `hexa-mold` | multi-field `$:` | **`shape-hexa`** STOA170 · cast twins STOA176 |
+| `mold-hepta` | `hepta-mold` | multi-field `$:` | **`shape-hepta`** STOA171 · cast twins STOA176 |
+| `mold-octa` | `octa-mold` | multi-field `$:` | **`shape-octa`** STOA172 · cast twins STOA176 |
+| `mold-nona` | `nona-mold` | multi-field `$:` | **`shape-nona`** STOA173 · cast twins STOA176 |
 | `mold-kind` | `kind-mold` | unit `$%` | **`shape-kind`** STOA164 |
 | `mold-xact` | `xact-mold` | payload `$%` | **`shape-xact`** STOA165 |
 | `mold-xfer` | `xfer-mold` | multi-face `$%` | **`shape-xfer`** STOA166 |

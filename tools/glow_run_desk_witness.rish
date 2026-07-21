@@ -684,47 +684,118 @@ assert shapexfer.ok else "glow_run shape-xfer.glow failed"
 assert shapexfer.out contains "GREEN" else "glow_run shape-xfer.glow not GREEN"
 assert shapexfer.out contains "shape-xfer.glow" else "glow_run shape-xfer claim missing path"
 
-# STOA167: Glow OS primary dual — shape-triple beside mold-triple (cast twins held).
+# STOA167: Glow OS primary dual — shape-triple beside mold-triple.
 let shapetriple = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/shape-triple.glow"]
 assert shapetriple.ok else "glow_run shape-triple.glow failed"
 assert shapetriple.out contains "GREEN" else "glow_run shape-triple.glow not GREEN"
 assert shapetriple.out contains "shape-triple.glow" else "glow_run shape-triple claim missing path"
 
-# STOA168: Glow OS primary dual — shape-quad beside mold-quad (cast twins held).
+# STOA176: multi-field named-cast cast twins for triple…nona (peek budget 4–12).
+let castnamedtripleshape = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cast-named-triple-shape.glow"]
+assert castnamedtripleshape.ok else "glow_run cast-named-triple-shape.glow failed"
+assert castnamedtripleshape.out contains "GREEN" else "glow_run cast-named-triple-shape.glow not GREEN"
+assert castnamedtripleshape.out contains "cast-named-triple-shape.glow" else "glow_run cast-named-triple-shape claim missing path"
+
+let castimporttripleshape = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cast-import-triple-shape.glow"]
+assert castimporttripleshape.ok else "glow_run cast-import-triple-shape.glow failed"
+assert castimporttripleshape.out contains "GREEN" else "glow_run cast-import-triple-shape.glow not GREEN"
+assert castimporttripleshape.out contains "cast-import-triple-shape.glow" else "glow_run cast-import-triple-shape claim missing path"
+
+# STOA168: Glow OS primary dual — shape-quad beside mold-quad.
 let shapequad = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/shape-quad.glow"]
 assert shapequad.ok else "glow_run shape-quad.glow failed"
 assert shapequad.out contains "GREEN" else "glow_run shape-quad.glow not GREEN"
 assert shapequad.out contains "shape-quad.glow" else "glow_run shape-quad claim missing path"
 
-# STOA169: Glow OS primary dual — shape-penta beside mold-penta (cast twins held).
+let castnamedquadshape = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cast-named-quad-shape.glow"]
+assert castnamedquadshape.ok else "glow_run cast-named-quad-shape.glow failed"
+assert castnamedquadshape.out contains "GREEN" else "glow_run cast-named-quad-shape.glow not GREEN"
+assert castnamedquadshape.out contains "cast-named-quad-shape.glow" else "glow_run cast-named-quad-shape claim missing path"
+
+let castimportquadshape = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cast-import-quad-shape.glow"]
+assert castimportquadshape.ok else "glow_run cast-import-quad-shape.glow failed"
+assert castimportquadshape.out contains "GREEN" else "glow_run cast-import-quad-shape.glow not GREEN"
+assert castimportquadshape.out contains "cast-import-quad-shape.glow" else "glow_run cast-import-quad-shape claim missing path"
+
+# STOA169: Glow OS primary dual — shape-penta beside mold-penta.
 let shapepenta = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/shape-penta.glow"]
 assert shapepenta.ok else "glow_run shape-penta.glow failed"
 assert shapepenta.out contains "GREEN" else "glow_run shape-penta.glow not GREEN"
 assert shapepenta.out contains "shape-penta.glow" else "glow_run shape-penta claim missing path"
 
-# STOA170: Glow OS primary dual — shape-hexa beside mold-hexa (cast twins held).
+let castnamedpentashape = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cast-named-penta-shape.glow"]
+assert castnamedpentashape.ok else "glow_run cast-named-penta-shape.glow failed"
+assert castnamedpentashape.out contains "GREEN" else "glow_run cast-named-penta-shape.glow not GREEN"
+assert castnamedpentashape.out contains "cast-named-penta-shape.glow" else "glow_run cast-named-penta-shape claim missing path"
+
+let castimportpentashape = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cast-import-penta-shape.glow"]
+assert castimportpentashape.ok else "glow_run cast-import-penta-shape.glow failed"
+assert castimportpentashape.out contains "GREEN" else "glow_run cast-import-penta-shape.glow not GREEN"
+assert castimportpentashape.out contains "cast-import-penta-shape.glow" else "glow_run cast-import-penta-shape claim missing path"
+
+# STOA170: Glow OS primary dual — shape-hexa beside mold-hexa.
 let shapehexa = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/shape-hexa.glow"]
 assert shapehexa.ok else "glow_run shape-hexa.glow failed"
 assert shapehexa.out contains "GREEN" else "glow_run shape-hexa.glow not GREEN"
 assert shapehexa.out contains "shape-hexa.glow" else "glow_run shape-hexa claim missing path"
 
-# STOA171: Glow OS primary dual — shape-hepta beside mold-hepta (cast twins held).
+let castnamedhexashape = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cast-named-hexa-shape.glow"]
+assert castnamedhexashape.ok else "glow_run cast-named-hexa-shape.glow failed"
+assert castnamedhexashape.out contains "GREEN" else "glow_run cast-named-hexa-shape.glow not GREEN"
+assert castnamedhexashape.out contains "cast-named-hexa-shape.glow" else "glow_run cast-named-hexa-shape claim missing path"
+
+let castimporthexashape = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cast-import-hexa-shape.glow"]
+assert castimporthexashape.ok else "glow_run cast-import-hexa-shape.glow failed"
+assert castimporthexashape.out contains "GREEN" else "glow_run cast-import-hexa-shape.glow not GREEN"
+assert castimporthexashape.out contains "cast-import-hexa-shape.glow" else "glow_run cast-import-hexa-shape claim missing path"
+
+# STOA171: Glow OS primary dual — shape-hepta beside mold-hepta.
 let shapehepta = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/shape-hepta.glow"]
 assert shapehepta.ok else "glow_run shape-hepta.glow failed"
 assert shapehepta.out contains "GREEN" else "glow_run shape-hepta.glow not GREEN"
 assert shapehepta.out contains "shape-hepta.glow" else "glow_run shape-hepta claim missing path"
 
-# STOA172: Glow OS primary dual — shape-octa beside mold-octa (cast twins held).
+let castnamedheptashape = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cast-named-hepta-shape.glow"]
+assert castnamedheptashape.ok else "glow_run cast-named-hepta-shape.glow failed"
+assert castnamedheptashape.out contains "GREEN" else "glow_run cast-named-hepta-shape.glow not GREEN"
+assert castnamedheptashape.out contains "cast-named-hepta-shape.glow" else "glow_run cast-named-hepta-shape claim missing path"
+
+let castimportheptashape = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cast-import-hepta-shape.glow"]
+assert castimportheptashape.ok else "glow_run cast-import-hepta-shape.glow failed"
+assert castimportheptashape.out contains "GREEN" else "glow_run cast-import-hepta-shape.glow not GREEN"
+assert castimportheptashape.out contains "cast-import-hepta-shape.glow" else "glow_run cast-import-hepta-shape claim missing path"
+
+# STOA172: Glow OS primary dual — shape-octa beside mold-octa.
 let shapeocta = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/shape-octa.glow"]
 assert shapeocta.ok else "glow_run shape-octa.glow failed"
 assert shapeocta.out contains "GREEN" else "glow_run shape-octa.glow not GREEN"
 assert shapeocta.out contains "shape-octa.glow" else "glow_run shape-octa claim missing path"
+
+let castnamedoctashape = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cast-named-octa-shape.glow"]
+assert castnamedoctashape.ok else "glow_run cast-named-octa-shape.glow failed"
+assert castnamedoctashape.out contains "GREEN" else "glow_run cast-named-octa-shape.glow not GREEN"
+assert castnamedoctashape.out contains "cast-named-octa-shape.glow" else "glow_run cast-named-octa-shape claim missing path"
+
+let castimportoctashape = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cast-import-octa-shape.glow"]
+assert castimportoctashape.ok else "glow_run cast-import-octa-shape.glow failed"
+assert castimportoctashape.out contains "GREEN" else "glow_run cast-import-octa-shape.glow not GREEN"
+assert castimportoctashape.out contains "cast-import-octa-shape.glow" else "glow_run cast-import-octa-shape claim missing path"
 
 # STOA173: Glow OS primary dual — shape-nona beside mold-nona (closes multi-field dual ladder).
 let shapenona = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/shape-nona.glow"]
 assert shapenona.ok else "glow_run shape-nona.glow failed"
 assert shapenona.out contains "GREEN" else "glow_run shape-nona.glow not GREEN"
 assert shapenona.out contains "shape-nona.glow" else "glow_run shape-nona claim missing path"
+
+let castnamednonashape = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cast-named-nona-shape.glow"]
+assert castnamednonashape.ok else "glow_run cast-named-nona-shape.glow failed"
+assert castnamednonashape.out contains "GREEN" else "glow_run cast-named-nona-shape.glow not GREEN"
+assert castnamednonashape.out contains "cast-named-nona-shape.glow" else "glow_run cast-named-nona-shape claim missing path"
+
+let castimportnonashape = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cast-import-nona-shape.glow"]
+assert castimportnonashape.ok else "glow_run cast-import-nona-shape.glow failed"
+assert castimportnonashape.out contains "GREEN" else "glow_run cast-import-nona-shape.glow not GREEN"
+assert castimportnonashape.out contains "cast-import-nona-shape.glow" else "glow_run cast-import-nona-shape claim missing path"
 
 let castnamed = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cast-named-amount.glow"]
 assert castnamed.ok else "glow_run cast-named-amount.glow failed"
