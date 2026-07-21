@@ -570,7 +570,9 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA161 shape-amount dual GREEN, `20260721.010211`** — lean A: inventary of thirteen `mold-*` desks; first forward dual `shape-amount` · `cast-named-amount-shape` · `cast-import-amount-shape`; mold twins kept; aliases kept; no sed. Brief [`active-designing/20260721-010211_stoa161-shape-amount-dual-desk.md`](../active-designing/20260721-010211_stoa161-shape-amount-dual-desk.md).
 
-**STOA162 shape-count dual GREEN, `20260721.010435`** — second one-field dual `shape-count` · cast twins; mold-count kept; one-field dual ladder closed. Brief [`active-designing/20260721-010435_stoa162-shape-count-dual-desk.md`](../active-designing/20260721-010435_stoa162-shape-count-dual-desk.md). Next language: **STOA163** `shape-pair` dual.
+**STOA162 shape-count dual GREEN, `20260721.010435`** — second one-field dual `shape-count` · cast twins; mold-count kept; one-field dual ladder closed. Brief [`active-designing/20260721-010435_stoa162-shape-count-dual-desk.md`](../active-designing/20260721-010435_stoa162-shape-count-dual-desk.md).
+
+**STOA163 shape-pair dual GREEN, `20260721.010610`** — first multi-field dual `shape-pair` → `PairShape`; mold-pair kept; cast twins held (named-cast one-field). Brief [`active-designing/20260721-010610_stoa163-shape-pair-dual-desk.md`](../active-designing/20260721-010610_stoa163-shape-pair-dual-desk.md). Next language: **STOA164** `shape-kind` dual.
 
 **Framework next (host resume), `20260720.231857`** — lean A: live SETU6.5 **sent** eyes on real `usb0`/`ncm`. Lab TX gate already GREEN; Sala B0 Glow rewrite · JABS3 stay thicker check-ins. Same freeze brief.
 
