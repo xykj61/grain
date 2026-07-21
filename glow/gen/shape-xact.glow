@@ -1,0 +1,6 @@
+::  +$ / $% payload arms — Glow OS primary desk (STOA165).
+::  xact-shape ≡ xact-mold; mold-xact.glow stays the Hoon study twin.
++$  xact-shape
+  $%  [%mint amount=@u32]
+      [%send ~]
+  ==
