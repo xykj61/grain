@@ -562,7 +562,11 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA158 hepta-shape alias GREEN, `20260721.004523`** — lean A (alias path): closed allowlist `hepta-shape` ≡ `hepta-mold` (seven-field `$:` / HeptaMold); `is_hepta_named_mold` accepts the alias; bartis · barket desks; capacity freeze held. Brief [`active-designing/20260721-004523_stoa158-hepta-shape-alias.md`](../active-designing/20260721-004523_stoa158-hepta-shape-alias.md). Next: **STOA159** check-in (octa-shape · rename · Sala behind shape).
 
-**STOA159 octa-shape alias GREEN, `20260721.004935`** — lean A (alias path): closed allowlist `octa-shape` ≡ `octa-mold` (eight-field `$:` / OctaMold); `is_octa_named_mold` accepts the alias; bartis · barket desks; capacity freeze held. Brief [`active-designing/20260721-004935_stoa159-octa-shape-alias.md`](../active-designing/20260721-004935_stoa159-octa-shape-alias.md). Next: **STOA160** check-in (nona-shape — last multi-field at capacity freeze).
+**STOA159 octa-shape alias GREEN, `20260721.004935`** — lean A (alias path): closed allowlist `octa-shape` ≡ `octa-mold` (eight-field `$:` / OctaMold); `is_octa_named_mold` accepts the alias; bartis · barket desks; capacity freeze held. Brief [`active-designing/20260721-004935_stoa159-octa-shape-alias.md`](../active-designing/20260721-004935_stoa159-octa-shape-alias.md). Sent `2e963fcd01`.
+
+**STOA160 nona-shape alias GREEN, `20260721.005327`** — lean A (alias path): closed allowlist `nona-shape` ≡ `nona-mold` (nine-field `$:` / NonaMold); closes multi-field Glow OS shape alias ladder at capacity freeze; `is_nona_named_mold` accepts the alias; bartis · barket desks; no `deca-shape`. Brief [`active-designing/20260721-005327_stoa160-nona-shape-alias.md`](../active-designing/20260721-005327_stoa160-nona-shape-alias.md).
+
+**STOA161 check-in, `20260721.005729`** — shape alias ladder closed through nona. Leans: **A** scoped living rename itinerary (recommended — forward desk/`glow/gen` primary `-shape`, aliases kept, mold stays Hoon study, no sed/force-push) · **B** Sala B0 Glow · **C** rest. Brief [`active-designing/20260721-005729_stoa161-shape-rename-checkin.md`](../active-designing/20260721-005729_stoa161-shape-rename-checkin.md). Awaiting Keaton's lean before kg.
 
 **Framework next (host resume), `20260720.231857`** — lean A: live SETU6.5 **sent** eyes on real `usb0`/`ncm`. Lab TX gate already GREEN; Sala B0 Glow rewrite · JABS3 stay thicker check-ins. Same freeze brief.
 
