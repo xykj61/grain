@@ -1,0 +1,6 @@
+::  Same-desk named-cast — +$ amount-shape then ^- amount-shape (STOA161).
+::  Glow OS primary spelling; cast-named-amount.glow keeps the mold twin.
++$  amount-shape
+  $:  amount=@u32
+  ==
+^-  amount-shape

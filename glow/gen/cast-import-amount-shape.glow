@@ -1,0 +1,4 @@
+::  Cross-desk named-cast — import shape-amount then ^- amount-shape (STOA161).
+::  Glow OS primary spelling; cast-import-amount.glow keeps the mold twin.
+/+  shape-amount
+^-  amount-shape

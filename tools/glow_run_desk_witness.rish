@@ -617,6 +617,12 @@ assert moldamount.ok else "glow_run mold-amount.glow failed"
 assert moldamount.out contains "GREEN" else "glow_run mold-amount.glow not GREEN"
 assert moldamount.out contains "mold-amount.glow" else "glow_run mold-amount claim missing path"
 
+# STOA161: Glow OS primary dual — shape-amount beside mold-amount.
+let shapeamount = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/shape-amount.glow"]
+assert shapeamount.ok else "glow_run shape-amount.glow failed"
+assert shapeamount.out contains "GREEN" else "glow_run shape-amount.glow not GREEN"
+assert shapeamount.out contains "shape-amount.glow" else "glow_run shape-amount claim missing path"
+
 let moldpair = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/mold-pair.glow"]
 assert moldpair.ok else "glow_run mold-pair.glow failed"
 assert moldpair.out contains "GREEN" else "glow_run mold-pair.glow not GREEN"
@@ -646,6 +652,17 @@ let castimport = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/ca
 assert castimport.ok else "glow_run cast-import-amount.glow failed"
 assert castimport.out contains "GREEN" else "glow_run cast-import-amount.glow not GREEN"
 assert castimport.out contains "cast-import-amount.glow" else "glow_run cast-import-amount claim missing path"
+
+# STOA161: Glow OS primary cast twins for amount-shape.
+let castnamedamountshape = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cast-named-amount-shape.glow"]
+assert castnamedamountshape.ok else "glow_run cast-named-amount-shape.glow failed"
+assert castnamedamountshape.out contains "GREEN" else "glow_run cast-named-amount-shape.glow not GREEN"
+assert castnamedamountshape.out contains "cast-named-amount-shape.glow" else "glow_run cast-named-amount-shape claim missing path"
+
+let castimportamountshape = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cast-import-amount-shape.glow"]
+assert castimportamountshape.ok else "glow_run cast-import-amount-shape.glow failed"
+assert castimportamountshape.out contains "GREEN" else "glow_run cast-import-amount-shape.glow not GREEN"
+assert castimportamountshape.out contains "cast-import-amount-shape.glow" else "glow_run cast-import-amount-shape claim missing path"
 
 let castnamedkind = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cast-named-kind.glow"]
 assert castnamedkind.ok else "glow_run cast-named-kind.glow failed"

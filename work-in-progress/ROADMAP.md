@@ -566,7 +566,9 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA160 nona-shape alias GREEN, `20260721.005327`** — lean A (alias path): closed allowlist `nona-shape` ≡ `nona-mold` (nine-field `$:` / NonaMold); closes multi-field Glow OS shape alias ladder at capacity freeze; `is_nona_named_mold` accepts the alias; bartis · barket desks; no `deca-shape`. Brief [`active-designing/20260721-005327_stoa160-nona-shape-alias.md`](../active-designing/20260721-005327_stoa160-nona-shape-alias.md).
 
-**STOA161 check-in, `20260721.005729`** — shape alias ladder closed through nona. Leans: **A** scoped living rename itinerary (recommended — forward desk/`glow/gen` primary `-shape`, aliases kept, mold stays Hoon study, no sed/force-push) · **B** Sala B0 Glow · **C** rest. Brief [`active-designing/20260721-005729_stoa161-shape-rename-checkin.md`](../active-designing/20260721-005729_stoa161-shape-rename-checkin.md). Awaiting Keaton's lean before kg.
+**STOA161 check-in, `20260721.005729`** — shape alias ladder closed through nona. Leans: **A** scoped living rename itinerary (recommended) · **B** Sala B0 Glow · **C** rest. Brief [`active-designing/20260721-005729_stoa161-shape-rename-checkin.md`](../active-designing/20260721-005729_stoa161-shape-rename-checkin.md).
+
+**STOA161 shape-amount dual GREEN, `20260721.010211`** — lean A: inventary of thirteen `mold-*` desks; first forward dual `shape-amount` · `cast-named-amount-shape` · `cast-import-amount-shape`; mold twins kept; aliases kept; no sed. Brief [`active-designing/20260721-010211_stoa161-shape-amount-dual-desk.md`](../active-designing/20260721-010211_stoa161-shape-amount-dual-desk.md). Next language: **STOA162** `shape-count` dual.
 
 **Framework next (host resume), `20260720.231857`** — lean A: live SETU6.5 **sent** eyes on real `usb0`/`ncm`. Lab TX gate already GREEN; Sala B0 Glow rewrite · JABS3 stay thicker check-ins. Same freeze brief.
 
