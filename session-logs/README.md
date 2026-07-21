@@ -8,6 +8,9 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260721.180054` — [STOA185 send · STOA186A](20260721-180054_stoa185-send-stoa186a.bron) — claim shell to pier; sala cast twin next
+- `20260721.180008` — [STOA186 check-in seated](20260721-180008_stoa186-checkin-seated.bron) — leans A–D after claim shell
+- `20260721.175857` — [STOA185 Glow claim shell GREEN](20260721-175857_stoa185-claim-shell-green.bron) — elder fold behind Glow assert; unsent
 - `20260721.175804` — [STOA182–184 send · claim shell](20260721-175804_stoa182-184-send-stoa185b.bron) — cord/hex pack to pier; lean B next
 - `20260721.175343` — [STOA184 @ux hex lower GREEN](20260721-175343_stoa184-ux-lower-green.bron) — [32]u8 emit; sala from/to @ux; unsent
 - `20260721.175252` — [STOA183 thin @ux hex GREEN](20260721-175252_stoa183-ux-thin-green.bron) — bound 32; lower held; unsent

@@ -1,7 +1,7 @@
 # Lexicon — Module Names and Their Meanings
 
 **Language:** EN
-**Last updated:** 2026-07-21 (**STOA184** `@ux` hex lower · shape kept over type)
+**Last updated:** 2026-07-21 (**STOA185** Glow claim shell · shape kept over type)
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 
 ---

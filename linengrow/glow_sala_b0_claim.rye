@@ -1,0 +1,37 @@
+//! linengrow/glow_sala_b0_claim.rye — Glow product claim shell over elder sala_b0_fold.
+//!
+//! STOA185: owns the product assert surface (expected root pin + claim)
+//! while still calling elder `run_demo_fold`. Fold rewrite stays held.
+//! Seated beside the elder fold (same rye module path) until Glow earns
+//! a cross-tree import story; the Glow name is the product surface.
+//!
+//!   rye build linengrow/glow_sala_b0_claim_witness.rye \
+//!     -femit-bin=linengrow/bin/glow_sala_b0_claim_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const fold = @import("sala_b0_fold.rye");
+
+pub const claim_version = "20260721.175857";
+
+/// Product-owned pin — same HAWM1 demo root the elder fold proves.
+pub const expected_demo_root_hex = fold.expected_demo_root_hex;
+
+pub const ClaimError = fold.FoldError;
+
+/// Run the elder three-event demo fold; refuse unless the product root matches.
+pub fn claim_demo_fold() ClaimError![32]u8 {
+    const root = try fold.run_demo_fold();
+    assert(fold.root_matches_expected(&root)); // product claim: Glow owns this pin
+    return root;
+}
+
+/// Hex-encode a 32-byte root (delegates to elder).
+pub fn root_to_hex(root: *const [32]u8, out: *[64]u8) void {
+    fold.root_to_hex(root, out);
+}
+
+/// True when `root` matches the product-owned expected demo root.
+pub fn root_matches_expected(root: *const [32]u8) bool {
+    return fold.root_matches_expected(root);
+}

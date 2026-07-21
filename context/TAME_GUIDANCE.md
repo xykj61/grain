@@ -179,6 +179,7 @@ G5 brief: [`../active-designing/20260720-033200_stoa98-g5-nock-second-backend-fa
 | **STOA182 GREEN** | named-cast `@t` emit · lean A · MemoShape `^-` |
 | **STOA183 GREEN** | thin `@ux` hex · bound 32 · parse · lower held |
 | **STOA184 GREEN** | `@ux` hex lower → `[32]u8` · sala from/to `@ux` |
+| **STOA185 GREEN** | Glow Sala B0 claim shell · elder `run_demo_fold` |
 | Still held | Ambient gold / free nesting polymorphism · bartis stays stated |
 | Still held | Open bartis/barket call-body gate set beyond `double` · `inc` · `dec` · `flip` |
 | Still held | Open named-mold set beyond nona (capacity freeze) · argv under tagged/multi-field shapes · further field widens horizon |

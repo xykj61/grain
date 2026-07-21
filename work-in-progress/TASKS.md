@@ -454,6 +454,7 @@
 - [x] **STOA182 — named-cast cord emit (lean A)** `20260721.174530` — `^-` on `$:` `@t` / mixed mirrors mold lower; check-in leans B–E held. Brief [`../active-designing/20260721-174530_stoa182-named-cast-cord.md`](../active-designing/20260721-174530_stoa182-named-cast-cord.md) · check-in [`../active-designing/20260721-173800_stoa182-after-cord-lower-checkin.md`](../active-designing/20260721-173800_stoa182-after-cord-lower-checkin.md).
 - [x] **STOA183 — thin `@ux` hex aura (lean A)** `20260721.174747` — tokenize · nest bound 32 · `$:` parse · lower/named-cast refuse `HexAuraNotYetLowered`. Brief [`../active-designing/20260721-174747_stoa183-ux-hex-aura-thin.md`](../active-designing/20260721-174747_stoa183-ux-hex-aura-thin.md) · check-in [`../active-designing/20260721-174709_stoa183-after-named-cast-cord-checkin.md`](../active-designing/20260721-174709_stoa183-after-named-cast-cord-checkin.md).
 - [x] **STOA184 — `@ux` hex lower emit** `20260721.175343` — `$:` `@ux` → `[32]u8` + demo; named-cast mirrors; `sala-event-shape` `from`/`to` `@ux`. Brief [`../active-designing/20260721-175343_stoa184-ux-hex-lower-emit.md`](../active-designing/20260721-175343_stoa184-ux-hex-lower-emit.md).
+- [x] **STOA185 — Glow Sala B0 claim shell (lean B)** `20260721.175857` — product assert over elder `run_demo_fold`; root pin `99b3ae96…e4c5fe`. Brief [`../active-designing/20260721-175857_stoa185-glow-sala-b0-claim-shell.md`](../active-designing/20260721-175857_stoa185-glow-sala-b0-claim-shell.md).
 
 
 
