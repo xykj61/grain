@@ -4,6 +4,8 @@
 //! STOA203: `append_event` builds through glow_sala_b0_sign + glow_sala_b0_line
 //! (elder sign/format bodies underneath those wraps). Replay still elder.
 //! Digests through glow_sala_b0_digest.
+//! STOA229: `append_demo_log` first event from `format_demo_line_from_pins`
+//! (STOA227); events 2–3 stay sign+line. HAWM1 root unchanged.
 //!
 //!   rye build linengrow/glow_sala_b0_append_witness.rye \
 //!     -femit-bin=linengrow/bin/glow_sala_b0_append_witness
@@ -20,7 +22,7 @@ const digest = @import("glow_sala_b0_digest.rye");
 const sign = @import("glow_sala_b0_sign.rye");
 const line = @import("glow_sala_b0_line.rye");
 
-pub const append_version = "20260721.190527";
+pub const append_version = "20260722.133004";
 
 pub const AppendError = sala.SessionError || digest.DigestError || sign.SignError || line.LineError;
 
@@ -68,13 +70,19 @@ pub fn append_event(
 }
 
 /// Build the three-event Sala B0 demo log from the product fixture pins.
+/// Event 1 comes from seated line pins (STOA229); events 2–3 still sign+line.
 pub fn append_demo_log(log_buf: *[rc.max_log_len]u8) AppendError!u32 {
     const actor_kp = kumara.keypair_from_seed(&mc.issuer_seed);
     var actor_hex: [mc.pubkey_hex_len]u8 = undefined;
     mc.hex_of_key(actor_kp.public_key, &actor_hex);
 
-    var len: u32 = 0;
-    len = try append_event(log_buf, len, 1, fixture.stamp1, fixture.memo1, &actor_hex, actor_kp);
+    var line_buf: [rc.max_line_len]u8 = undefined;
+    const pin_n = try line.format_demo_line_from_pins(line_buf[0..]);
+    if (pin_n > sala.max_event_bytes) return error.EventTooLarge;
+    if (pin_n > log_buf.len) return error.Overflow;
+    tally_copy.copy_disjoint(u8, log_buf[0..pin_n], line_buf[0..pin_n]);
+    var len: u32 = pin_n;
+
     len = try append_event(log_buf, len, 2, fixture.stamp2, fixture.memo2, &actor_hex, actor_kp);
     len = try append_event(log_buf, len, 3, fixture.stamp3, fixture.memo3, &actor_hex, actor_kp);
     assert(len > 0);

@@ -6,7 +6,8 @@
 **Version:** `20260722.132705` (EDT · Framework host)  
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
 **Voice:** Quin  
-**Status:** Checkable — lean **A** send chosen `20260722.132757` · lean **B** next as wire  
+**Status:** Checkable — lean **A** send `20260722.132757` · lean **B** as STOA229 `20260722.133004`  
+
 
 **Register:** Checkable (Two Rooms) — STOA227 GREEN on hand; append/fold still use sign path  
 

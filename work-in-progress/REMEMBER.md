@@ -2,27 +2,27 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260722.132757` (EDT) · voice Quin  
-**Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · **Sala B0 Glow compose** · demo pin emit  
-**Language nib:** **STOA0–228** GREEN · pin emit sending · append wire next  
-**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–228  
-**Git nib:** `0db7ef379153` · STOA227–228  
+**Last refreshed:** `20260722.133004` (EDT) · voice Quin  
+**Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · **Sala B0 Glow compose** · append pin wire  
+**Language nib:** **STOA0–229** GREEN · append event 1 from pin emit  
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–229  
+**Git nib:** *(after send)* · STOA229  
 
 
-**Season:** Framework · Eastern / EDT · demo pin emit on pier · SETU6.5 live-sent GREEN.  
+**Season:** Framework · Eastern / EDT · append pin wire on hand · SETU6.5 live-sent GREEN.  
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`
 
 ---
 
 ## Now
 
-**STOA228** `20260722.132757` — send chosen; lean B append wire next. Brief [`../active-designing/20260722-132705_stoa228-after-demo-pin-emit-checkin.md`](../active-designing/20260722-132705_stoa228-after-demo-pin-emit-checkin.md).
+**STOA229** `20260722.133004` — append first event from `format_demo_line_from_pins`; HAWM1 root GREEN. Brief [`../active-designing/20260722-133004_stoa229-append-first-event-pin-emit.md`](../active-designing/20260722-133004_stoa229-append-first-event-pin-emit.md).
 
-**Next** — lean B wire append first event from pin emit (in progress this turn).
+**Next** — send, then check-in (fold pin wire · rest · held doors).
 
 ```bash
 export RYE_ZIG=vendor/zig-toolchain/zig
-rishi/bin/rishi run tools/glow_sala_b0_line_witness.rish
+rishi/bin/rishi run tools/glow_sala_b0_append_witness.rish
 ```
 
 ---
@@ -31,11 +31,12 @@ rishi/bin/rishi run tools/glow_sala_b0_line_witness.rish
 
 | Door | Kind |
 |------|------|
-| Wire append first event from pin emit | **kg** this turn |
+| Wire fold demo path to pin emit | **check-in** after send |
 | Runtime `.glow` file parse | **held** |
+| Events 2–3 from pins | **held** (thicker) |
 | JABS3 | **held** |
 | SETU6.5 live-sent | **GREEN** `20260720.233805` |
 
 ---
 
-*May every hand know the waymarks, and every outer terminal own the USB.*
+*Waymarks: HAWM · TUBE · ZETA · JABS · LULU · STOA · SETU*
