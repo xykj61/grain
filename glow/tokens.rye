@@ -12,6 +12,8 @@
 //! STOA176: `named_cast_parts` line budget 4–12 (field_count+3 ≤ freeze).
 //! STOA180: `@t` cord aura lex (bound in nest_type).
 //! STOA183: `@ux` hex aura lex (bound in nest_type).
+//! STOA216: single-quoted cord literal `'…'` (interior ≤ max_cord_lit_bytes).
+//! STOA217: `@ux` + hex digits → hex_lit (bare `@ux` stays aura).
 //!
 //!   +$  xact-mold
 //!     $%  [%mint amount=@u32]
@@ -28,6 +30,10 @@ pub const max_tokens: u32 = 64;
 pub const max_name_len: u32 = 64;
 /// Hosted desk read ceiling (glow_run limited(64 * 1024)).
 pub const max_src_len: u32 = 64 * 1024;
+/// STOA216: cord literal interior ceiling — matches nest_type.aura_t_max_bytes (1024).
+pub const max_cord_lit_bytes: u32 = 1024;
+/// STOA217: hex literal digit ceiling — matches nest_type.aura_ux_max_bytes × 2 (64).
+pub const max_hex_lit_digits: u32 = 64;
 
 pub const TokenError = error{
     TooManyTokens,
@@ -40,6 +46,8 @@ pub const Kind = enum {
     ident,
     decimal,
     aura,
+    cord_lit,
+    hex_lit,
     rune2,
     percent_tag,
     lparen,
@@ -83,6 +91,13 @@ fn is_ident_char(c: u8) bool {
 
 fn is_digit(c: u8) bool {
     return c >= '0' and c <= '9';
+}
+
+fn is_hex_digit(c: u8) bool {
+    if (is_digit(c)) return true;
+    if (c >= 'a' and c <= 'f') return true;
+    if (c >= 'A' and c <= 'F') return true;
+    return false;
 }
 
 fn starts_with(src: []const u8, i: u32, lit: []const u8) bool {
@@ -182,6 +197,63 @@ fn lex_percent_tag(src: []const u8, i: u32, out: []Token, used: *u32) TokenError
     return i + 1 + n;
 }
 
+/// Single-quoted cord literal `'…'` — span includes quotes; no escapes; no newlines.
+fn lex_cord_lit(src: []const u8, i: u32, out: []Token, used: *u32) TokenError!u32 {
+    const src_len: u32 = @intCast(src.len);
+    assert(i < src_len);
+    assert(src[@as(usize, @intCast(i))] == '\'');
+    var at = i + 1;
+    while (at < src_len) {
+        const c = src[@as(usize, @intCast(at))];
+        if (c == '\n') return error.BadToken;
+        if (c == '\'') {
+            const total = at + 1 - i;
+            if (total < 2) return error.BadToken;
+            const interior = total - 2;
+            if (interior == 0) return error.BadToken;
+            if (interior > max_cord_lit_bytes) return error.BadToken;
+            try push(out, used, .cord_lit, i, total);
+            return at + 1;
+        }
+        at += 1;
+    }
+    return error.BadToken;
+}
+
+/// Interior bytes of a cord_lit token (quotes stripped).
+pub fn cord_lit_interior(src: []const u8, tok: Token) []const u8 {
+    assert(tok.kind == .cord_lit);
+    assert(tok.len >= 2);
+    const full = slice_of(src, tok);
+    return full[1 .. full.len - 1];
+}
+
+/// Hex digits of a hex_lit token (`@ux` prefix stripped).
+pub fn hex_lit_digits(src: []const u8, tok: Token) []const u8 {
+    assert(tok.kind == .hex_lit);
+    assert(tok.len >= 5); // `@ux` + at least two hex digits
+    const full = slice_of(src, tok);
+    return full[3..];
+}
+
+/// `@ux` + even hex digits (1–32 bytes). Bare `@ux` stays aura (STOA183).
+fn lex_hex_lit(src: []const u8, i: u32, out: []Token, used: *u32) TokenError!u32 {
+    const src_len: u32 = @intCast(src.len);
+    assert(i + 3 < src_len);
+    assert(src[@as(usize, @intCast(i))] == '@');
+    assert(src[@as(usize, @intCast(i + 1))] == 'u');
+    assert(src[@as(usize, @intCast(i + 2))] == 'x');
+    assert(is_hex_digit(src[@as(usize, @intCast(i + 3))]));
+    var at = i + 3;
+    while (at < src_len and is_hex_digit(src[@as(usize, @intCast(at))])) : (at += 1) {}
+    const digits = at - (i + 3);
+    if (digits % 2 != 0) return error.BadToken;
+    if (digits > max_hex_lit_digits) return error.BadToken;
+    if (at < src_len and is_ident_char(src[@as(usize, @intCast(at))])) return error.BadToken;
+    try push(out, used, .hex_lit, i, at - i);
+    return at;
+}
+
 fn lex_aura(src: []const u8, i: u32, out: []Token, used: *u32) TokenError!u32 {
     const src_len: u32 = @intCast(src.len);
     if (i + 1 >= src_len) return error.BadToken;
@@ -193,12 +265,15 @@ fn lex_aura(src: []const u8, i: u32, out: []Token, used: *u32) TokenError!u32 {
         try push(out, used, .aura, i, 2);
         return i + 2;
     }
-    // `@u32` / `@u64` unsigned · STOA183 `@ux` hex peer.
+    // `@u32` / `@u64` unsigned · STOA183 `@ux` hex peer · STOA217 `@ux…` hex lit.
     if (a1 != 'u') return error.BadToken;
     if (i + 2 >= src_len) return error.BadToken;
     const a2 = src[@as(usize, @intCast(i + 2))];
     if (a2 == 'x') {
         const after = i + 3;
+        if (after < src_len and is_hex_digit(src[@as(usize, @intCast(after))])) {
+            return lex_hex_lit(src, i, out, used);
+        }
         if (after < src_len and is_ident_char(src[@as(usize, @intCast(after))])) return error.BadToken;
         try push(out, used, .aura, i, 3);
         return i + 3;
@@ -238,6 +313,8 @@ fn lex_one(src: []const u8, i: u32, out: []Token, used: *u32) TokenError!u32 {
     if (c == '%') return lex_percent_tag(src, i, out, used);
     // `@u32` / `@u64` / `@t` / `@ux` auras (STOA180 cord · STOA183 hex).
     if (c == '@') return lex_aura(src, i, out, used);
+    // STOA216: `'cord'` source literal.
+    if (c == '\'') return lex_cord_lit(src, i, out, used);
     if (is_digit(c)) {
         const n = try scan_digits(src, i);
         try push(out, used, .decimal, i, n);

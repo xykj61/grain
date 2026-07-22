@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260722.130125
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title STOA217 hex literal lex GREEN
+prompt kg
+think kg after EDT seating means next mechanical literals sub-lean; inventory named C2 hex lit after C1 cord lit.
+think Kind.hex_lit for @ux plus even hex digits; bare @ux stays aura; max_hex_lit_digits 64; odd and oversize refuse; HAWM1 root hex in witness.
+obs glow_tokens_witness GREEN including STOA216 and STOA217. Parse/lower/desk pin still held. STOA215-217 unsent on hand.
+file glow/tokens.rye hex_lit lex
+file glow/tokens_witness.rye STOA217 asserts
+file tools/glow_tokens_witness.rish STOA217 pins
+file active-designing/20260722-130125_stoa217-hex-literal-lex.md brief
+file docs/STOA.md STOA0-217
+file work-in-progress/REMEMBER.md Now STOA217
+git_nib b7ee8fb7cf
+product_nib Sala-B0-Glow-compose
+suite_nib STOA0-217
+recommend check-in C3 parse face=lit; or send STOA215-217 when Keaton says send

@@ -156,6 +156,58 @@ fn run_selftest() !u8 {
     assert(std.mem.eql(u8, tokens.slice_of("from=@ux\n", tbuf[2]), "@ux"));
     print("tokens: @ux hex aura lex -- GREEN\n", .{});
 
+    // STOA216: single-quoted cord literal; interior helper; refuse empty / unclosed.
+    const nc = try tokens.tokenize("'sala:open'\n", tbuf[0..]);
+    assert(nc >= 1);
+    assert(tbuf[0].kind == .cord_lit);
+    assert(std.mem.eql(u8, tokens.cord_lit_interior("'sala:open'\n", tbuf[0]), "sala:open"));
+    print("tokens: cord literal lex -- GREEN\n", .{});
+    if (tokens.tokenize("''\n", tbuf[0..])) |_| {
+        return error.EmptyCordLitAccepted;
+    } else |err| {
+        assert(err == tokens.TokenError.BadToken);
+    }
+    print("tokens: empty cord literal refused -- GREEN\n", .{});
+    if (tokens.tokenize("'open\n", tbuf[0..])) |_| {
+        return error.UnclosedCordLitAccepted;
+    } else |err2| {
+        assert(err2 == tokens.TokenError.BadToken);
+    }
+    print("tokens: unclosed cord literal refused -- GREEN\n", .{});
+
+    // STOA217: `@ux` + hex digits → hex_lit; bare `@ux` stays aura; odd/oversize refuse.
+    const root_hex =
+        "@ux99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe\n";
+    const nh = try tokens.tokenize(root_hex, tbuf[0..]);
+    assert(nh >= 1);
+    assert(tbuf[0].kind == .hex_lit);
+    assert(std.mem.eql(
+        u8,
+        tokens.hex_lit_digits(root_hex, tbuf[0]),
+        "99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe",
+    ));
+    print("tokens: hex literal lex -- GREEN\n", .{});
+    const n_bare = try tokens.tokenize("from=@ux\n", tbuf[0..]);
+    assert(n_bare >= 3);
+    assert(tbuf[2].kind == .aura);
+    print("tokens: bare @ux aura still lex -- GREEN\n", .{});
+    if (tokens.tokenize("@uxabc\n", tbuf[0..])) |_| {
+        return error.OddHexLitAccepted;
+    } else |err3| {
+        assert(err3 == tokens.TokenError.BadToken);
+    }
+    print("tokens: odd hex literal refused -- GREEN\n", .{});
+    if (tokens.tokenize(
+        "@ux00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00\n",
+        tbuf[0..],
+    )) |_| {
+        return error.OversizeHexLitAccepted;
+    } else |err4| {
+        assert(err4 == tokens.TokenError.BadToken);
+    }
+    print("tokens: oversize hex literal refused -- GREEN\n", .{});
+    print("tokens: STOA217 hex literal -- GREEN\n", .{});
+
     assert(tokens.looks_like_named_cast(xact_desk));
     assert(tokens.looks_like_named_cast(amount_cast));
     assert(tokens.looks_like_named_cast(nona_cast));
@@ -212,7 +264,7 @@ fn run_selftest() !u8 {
     print("tokens: TAME u32 spans -- GREEN\n", .{});
 
     print("tokens: version {s}\n", .{witness_version});
-    print("GREEN: Glow token stream — STOA86 tidy · STOA93 cross-desk · STOA94 same-desk · STOA95 shape-only peek; assert · u32 · split lex.\n", .{});
+    print("GREEN: Glow token stream — STOA86 tidy · STOA93 cross-desk · STOA94 same-desk · STOA95 shape-only peek · STOA216 cord literal; assert · u32 · split lex.\n", .{});
     return 0;
 }
 

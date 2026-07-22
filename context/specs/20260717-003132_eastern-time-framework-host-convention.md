@@ -15,7 +15,9 @@
 
 **This host's stamps were Eastern Time, from `20260717.003132` forward through the day before the UDT switch.** Eastern Daylight Time (`UTC-4`) from mid-March to early November; Eastern Standard Time (`UTC-5`) the rest of the year. `TZ=America/New_York` on this machine resolves to the correct offset for either half of the year.
 
-**Later switch:** from `20260720.232932` forward on this same Framework host, Keaton set the system clock to **UDT** (UTC). Living stamps follow [`20260720-232932_udt-framework-host-convention.md`](20260720-232932_udt-framework-host-convention.md). Eastern-era stamps on this host are never rewritten.
+**Later switch:** from `20260720.232932` forward on this same Framework host, Keaton set the system clock to **UDT** (UTC). That season is recorded in [`20260720-232932_udt-framework-host-convention.md`](20260720-232932_udt-framework-host-convention.md).
+
+**Return:** from `20260722.125845` forward, Keaton asked stamps back to Eastern / EDT. Living stamps follow [`20260722-125845_edt-framework-host-convention.md`](20260722-125845_edt-framework-host-convention.md). Every prior era's stamps on this host stay readable.
 
 ## Why It Is Shaped This Way
 

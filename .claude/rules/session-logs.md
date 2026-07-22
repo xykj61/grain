@@ -34,7 +34,7 @@ stamp YYYYMMDD.HHMMSS
 editor Cursor
 model Cursor Grok 4.5 300k High Fast
 voice Quin
-host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — UDT (UTC) time convention
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
 title short title
 prompt what Keaton asked
 think step of reasoning
@@ -51,7 +51,7 @@ recommend keep-going|check-in what and why
 - **file** — repeatable; `path` then why.
 - **recommend** — one close line: `keep-going …` when mechanical and policy-written; `check-in …` when seams, Rishi/value-model, unruled design, or horizon facts.
 
-**Stamp timezone, per host.** `context/specs/20260627-102012_one-clock-naming-law.md` names no timezone, and "Stamps come from Keaton (formerly Kaeden), verbatim" still governs — each real machine gets its own named convention, never a tree-wide default. On the macOS clone, Kaeden's clock was Pacific Time (Reno, NV — PDT in summer, PST in winter), seated in `context/specs/20260713-201910_pacific-time-local-clone-convention.md`. **On this Framework 16 AMD Ubuntu 26.04 LTS host:** Pacific early · Eastern from `20260717.003132` · **UDT (UTC) from `20260720.232932` forward**, seated in `context/specs/20260720-232932_udt-framework-host-convention.md` — matching Keaton's system clock and the iOS/cloud UTC season. Existing dated stamps from any host are never rewritten; each note governs stamps written **from its own stamp forward**, on its own host only. `GLOW_PROFILE.bron`'s own `timezone` field is the machine-local pointer to whichever convention currently applies here.
+**Stamp timezone, per host.** `context/specs/20260627-102012_one-clock-naming-law.md` names no timezone, and "Stamps come from Keaton (formerly Kaeden), verbatim" still governs — each real machine gets its own named convention, never a tree-wide default. On the macOS clone, Kaeden's clock was Pacific Time (Reno, NV — PDT in summer, PST in winter), seated in `context/specs/20260713-201910_pacific-time-local-clone-convention.md`. **On this Framework 16 AMD Ubuntu 26.04 LTS host:** Pacific early · Eastern from `20260717.003132` · UDT from `20260720.232932` · **Eastern / EDT from `20260722.125845` forward**, seated in `context/specs/20260722-125845_edt-framework-host-convention.md` (`America/New_York`). Existing dated stamps from any host are never rewritten; each note governs stamps written **from its own stamp forward**, on its own host only. `GLOW_PROFILE.bron`'s own `timezone` field is the machine-local pointer to whichever convention currently applies here.
 
 ## Archive fold
 

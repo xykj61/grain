@@ -682,12 +682,22 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA213 demo-fixture cast twins GREEN, `20260721.194058`** — C3; named + import cast; literals held. Brief [`active-designing/20260721-194058_stoa213-fixture-cast-twins.md`](../active-designing/20260721-194058_stoa213-fixture-cast-twins.md).
 
-**STOA214 after fixture cast check-in, `20260721.194203`** — lean A send `194756` · lean C Glow source literals next. Brief [`active-designing/20260721-194203_stoa214-after-fixture-cast-checkin.md`](../active-designing/20260721-194203_stoa214-after-fixture-cast-checkin.md).
+**STOA214 after fixture cast check-in, `20260721.194203`** — lean A send `194756` · lean C Glow source literals. Brief [`active-designing/20260721-194203_stoa214-after-fixture-cast-checkin.md`](../active-designing/20260721-194203_stoa214-after-fixture-cast-checkin.md). Sent `b7ee8fb7cf`.
+
+**STOA215 Glow source literals inventory, `20260721.194941`** — lex→parse→lower→desk; rec C1. Brief [`active-designing/20260721-194941_stoa215-glow-source-literals-inventory.md`](../active-designing/20260721-194941_stoa215-glow-source-literals-inventory.md).
+
+**STOA216 cord literal lex GREEN, `20260721.194941`** — C1; `'…'` · `cord_lit`. Brief [`active-designing/20260721-194941_stoa216-cord-literal-lex.md`](../active-designing/20260721-194941_stoa216-cord-literal-lex.md).
+
+**STOA217 hex literal lex GREEN, `20260722.130125`** — C2; `@ux…` · `hex_lit` · bare `@ux` aura kept. Brief [`active-designing/20260722-130125_stoa217-hex-literal-lex.md`](../active-designing/20260722-130125_stoa217-hex-literal-lex.md).
+
+**STOA218 after literals lex check-in, `20260722.130254`** — lean A send · rec lean B C3 parse face=`lit`. Brief [`active-designing/20260722-130254_stoa218-after-literals-lex-checkin.md`](../active-designing/20260722-130254_stoa218-after-literals-lex-checkin.md). JABS3 held.
 
 
 **Framework next (host resume), `20260720.231857`** — lean A: live SETU6.5 **sent** eyes on real `usb0`/`ncm`. Lab TX gate already GREEN; Sala B0 Glow rewrite · JABS3 stay thicker check-ins. Same freeze brief.
 
 **Framework host resumes on UDT, `20260720.232932`** — Keaton set this host's system clock to **UDT (UTC)** for stamps (iOS/cloud season alignment). Spec [`context/specs/20260720-232932_udt-framework-host-convention.md`](../context/specs/20260720-232932_udt-framework-host-convention.md). Language nib then STOA0–147 + capacity freeze; **STOA148** amount-shape later same day.
+
+**Framework host returns to Eastern / EDT, `20260722.125845`** — after a rest, Keaton asked stamps back to `America/New_York`. Spec [`context/specs/20260722-125845_edt-framework-host-convention.md`](../context/specs/20260722-125845_edt-framework-host-convention.md). UDT-era stamps stay readable.
 
 **SETU6.5 live-sent attempt, `20260720.233109`–`233220`** — lean A: stand-in SKIP GREEN; Pixel 10a on adb without NCM iface; Graphene expects `ncm\d` for USB tether. Awaiting replug + USB tethering on. Brief [`active-designing/20260720-233109_setu65-live-sent-attempt-stand-in.md`](../active-designing/20260720-233109_setu65-live-sent-attempt-stand-in.md).
 

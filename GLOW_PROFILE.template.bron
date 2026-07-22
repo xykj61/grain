@@ -45,10 +45,10 @@ azimuth_planet
 # The one-clock naming law takes stamps from the contributor verbatim; this
 # names which wall clock that is, so a reader knows how to read your stamps.
 # Each host may seat its own convention (e.g. Pacific on a macOS clone,
-# UDT/UTC on the Framework Ubuntu host after 20260720.232932) — see
+# Eastern/EDT on the Framework Ubuntu host after 20260722.125845) — see
 # context/specs/ for host notes. Pick the IANA zone your system clock uses.
-timezone Etc/UTC
-timezone_label UDT (UTC)
+timezone America/New_York
+timezone_label Eastern (EDT in summer · EST in winter)
 
 # --- Session-log defaults for this clone ------------------------------------
 # The session-logs rule reads these as the default editor/model/voice for logs
