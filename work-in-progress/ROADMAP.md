@@ -838,6 +838,10 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA288 after HAWM rest resume check-in, `20260722.154654`** — lean A Pixel LIVE eyes · lean B language inventary · lean C reopen HAWM · lean D held. Brief [`active-designing/20260722-154654_stoa288-after-hawm-rest-resume-checkin.md`](../active-designing/20260722-154654_stoa288-after-hawm-rest-resume-checkin.md).
 
+**STOA289 Pixel LIVE eyes after HAWM, `20260722.154953`** — pack+install GREEN; HAWM1 + distinct live root. Brief [`active-designing/20260722-154953_stoa289-pixel-live-eyes-after-hawm.md`](../active-designing/20260722-154953_stoa289-pixel-live-eyes-after-hawm.md).
+
+**STOA290 after Pixel LIVE eyes check-in, `20260722.154953`** — lean A send · lean B rest · lean C language inventary. Brief [`active-designing/20260722-154953_stoa290-after-pixel-live-eyes-checkin.md`](../active-designing/20260722-154953_stoa290-after-pixel-live-eyes-checkin.md).
+
 
 **Framework next (host resume), `20260720.231857`** — lean A: live SETU6.5 **sent** eyes on real `usb0`/`ncm`. Lab TX gate already GREEN; Sala B0 Glow rewrite · JABS3 stay thicker check-ins. Same freeze brief.
 

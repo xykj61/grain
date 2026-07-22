@@ -7,6 +7,8 @@ Living index for the append-only session stream. This table reads **newest first
 **Day’s truth is this index’s order, not filename sort.** One-clock stamps sort ascending on disk; trust the table for sequence within a day.
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
+- `20260722.155018` — [STOA289–290 Pixel LIVE eyes](20260722-155018_stoa289-290-pixel-live-eyes-round.bron) — pack+install GREEN; live root distinct
+- `20260722.154745` — [REMEMBER git nib after STOA288](20260722-154745_remember-git-nib-stoa288.bron) — pin 611840f5b5f8
 - `20260722.154726` — [STOA288 after HAWM rest resume check-in](20260722-154726_stoa288-after-hawm-rest-resume-checkin.bron) — lean A Pixel LIVE eyes
 - `20260722.154549` — [REMEMBER git nib after STOA287](20260722-154549_remember-git-nib-stoa287.bron) — pin c6334634ad20
 - `20260722.154539` — [STOA287 HAWM season rest](20260722-154539_stoa287-hawm-season-rest.bron) — lean B rest chosen; no next kg

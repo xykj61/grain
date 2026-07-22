@@ -565,6 +565,8 @@
 - [x] **STOA286 — hawm0 stopped season fold** `20260722.154348` — stop GREEN; harvest Bron kept; lean B rest. Brief [`../active-designing/20260722-154348_stoa286-hawm0-stopped-season-fold.md`](../active-designing/20260722-154348_stoa286-hawm0-stopped-season-fold.md).
 - [x] **STOA287 — HAWM season rest** `20260722.154515` — lean B rest chosen; no next kg until reopen. Brief [`../active-designing/20260722-154515_stoa287-hawm-season-rest.md`](../active-designing/20260722-154515_stoa287-hawm-season-rest.md).
 - [x] **STOA288 — after HAWM rest resume check-in** `20260722.154654` — lean A Pixel LIVE eyes; lean B language inventary; lean C reopen HAWM; lean D held. Brief [`../active-designing/20260722-154654_stoa288-after-hawm-rest-resume-checkin.md`](../active-designing/20260722-154654_stoa288-after-hawm-rest-resume-checkin.md).
+- [x] **STOA289 — Pixel LIVE eyes after HAWM** `20260722.154953` — pack+install GREEN; HAWM1 root + distinct live root. Brief [`../active-designing/20260722-154953_stoa289-pixel-live-eyes-after-hawm.md`](../active-designing/20260722-154953_stoa289-pixel-live-eyes-after-hawm.md).
+- [x] **STOA290 — after Pixel LIVE eyes check-in** `20260722.154953` — lean A send; lean B rest; lean C language inventary. Brief [`../active-designing/20260722-154953_stoa290-after-pixel-live-eyes-checkin.md`](../active-designing/20260722-154953_stoa290-after-pixel-live-eyes-checkin.md).
 
 
 - [x] **UDT stamp convention on Framework host** `20260720.232932` — Keaton set system clock to UDT (UTC); [`context/specs/20260720-232932_udt-framework-host-convention.md`](../context/specs/20260720-232932_udt-framework-host-convention.md); Eastern era stamps stay; session-log rules + `GLOW_PROFILE` pointed at Etc/UTC for that season.
