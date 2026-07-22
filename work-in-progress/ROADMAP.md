@@ -766,6 +766,10 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA254 after N-field identity check-in, `20260722.142326`** — lean A send · lean B barket identity twin. Brief [`active-designing/20260722-142326_stoa254-after-n-field-identity-checkin.md`](../active-designing/20260722-142326_stoa254-after-n-field-identity-checkin.md). Flip · gold · JABS3 held.
 
+**STOA255 barket N-field identity emit GREEN, `20260722.142939`** — `emit_n_field_identity` · eight wrappers · flip held; mold_name_slice keeps source spelling. Brief [`active-designing/20260722-142554_stoa255-barket-n-field-identity-emit.md`](../active-designing/20260722-142554_stoa255-barket-n-field-identity-emit.md).
+
+**STOA256 after barket N-field identity check-in, `20260722.143410`** — lean A send · lean B flip call-body collapse. Brief [`active-designing/20260722-143410_stoa256-after-barket-n-field-identity-checkin.md`](../active-designing/20260722-143410_stoa256-after-barket-n-field-identity-checkin.md). Gold · shared-package · JABS3 held.
+
 
 **Framework next (host resume), `20260720.231857`** — lean A: live SETU6.5 **sent** eyes on real `usb0`/`ncm`. Lab TX gate already GREEN; Sala B0 Glow rewrite · JABS3 stay thicker check-ins. Same freeze brief.
 
