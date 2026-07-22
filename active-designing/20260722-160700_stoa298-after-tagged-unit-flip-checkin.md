@@ -6,8 +6,8 @@
 **Version:** `20260722.160700` (EDT · Framework host)  
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
 **Voice:** Quin  
-**Status:** Checkable — lean **A** send with round-close · lean **B** rest recommended  
-**Register:** Checkable (Two Rooms) — STOA297 GREEN; thicker doors held  
+**Status:** Checkable — lean **A** send with round-close · lean **B** rest offered · continue → STOA299  
+**Register:** Checkable (Two Rooms) — STOA297 GREEN; continue sized as STOA299  
 
 **Grounds in:** STOA297 · STOA296 lean C  
 
@@ -26,7 +26,7 @@ STOA297: `emit_tagged_unit_flip_call_body` on bartis + barket · kind wrappers �
 | | Lean | What it opens |
 |---|---|---|
 | **A** | **Send STOA297** — **chosen** with round-close | pier carries unit + payload on both gates |
-| **B** | **Rest** — **recommended** | season pause; flip emit inventary closed |
+| **B** | **Rest** — offered; continue → STOA299 | season pause; flip emit inventary closed |
 | **C** | **Gold · face_lit · fleets · JABS3** | **held** |
 
 ---
