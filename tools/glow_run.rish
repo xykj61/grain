@@ -12,14 +12,16 @@
 #   rishi/bin/rishi run tools/glow_run.rish glow/gen/gate-double-u32.glow 7
 #   rishi/bin/rishi run tools/glow_run.rish glow/gen/gate-barket-sample-u32.glow 9
 #   rishi/bin/rishi run tools/glow_run.rish glow/gen/gate-kind-tag.glow mint
+#   rishi/bin/rishi run tools/glow_run.rish glow/gen/gate-xact-tag.glow mint 5
 
 let zig = "vendor/zig-toolchain/zig"
-assert (args.len != 0) else "usage: rishi run tools/glow_run.rish <file.glow> [<sample-u32-decimal|kind-tag>]"
+assert (args.len != 0) else "usage: rishi run tools/glow_run.rish <file.glow> [<sample>] [<amount-u32>]"
 let glow_path = args[0]
 
-# Optional sample is args[1] when present — worker enforces stem rules.
+# Optional samples — worker enforces stem rules.
 if args.len == 1 then let gate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" glow_path]
 if args.len == 2 then let gate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" glow_path args[1]]
+if args.len == 3 then let gate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" glow_path args[1] args[2]]
 
 assert gate.ok else "glow_run gate failed: ${gate.err}${gate.out}"
 assert gate.out contains "EXIT:0" else "generator did not exit 0"
