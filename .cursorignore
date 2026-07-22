@@ -1,0 +1,37 @@
+# Cursor indexing — leave git truth whole; skip heavy / closed shelves.
+# Seated 20260722.183653 · lean A from filetree append-front check-in.
+# Syntax: gitignore-shaped. Does not remove files from the pier.
+
+# --- Closed day folds & archive shelves (tracked; keep out of the index) ---
+session-logs/archive/
+context/archive/
+work-in-progress/archive/
+active-designing/archive/
+active-reviving/archive/
+counsel/archive/
+expanding-prompts/archive/
+
+# --- Regenerated build & host caches (usually gitignored; still on disk) ---
+tools/.cache/
+tools/.build/
+glow/.cache/
+glow/bin/
+**/.zig-cache/
+**/zig-cache/
+**/bin/
+rye/bin/
+rishi/bin/
+
+# --- Large third-party / elder trees (study surfaces; rarely needed in chat) ---
+vendor/
+old/
+vere/
+gratitude/nix/
+gratitude/s6/
+gratitude/skalibs/
+gratitude/zon/
+
+# --- Editor / enclosure local state ---
+.cursor-state/
+.zed-state/
+squashfs-root/
