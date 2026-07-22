@@ -3,6 +3,9 @@
 //! STOA202 (B2): owns format_log_line + parse_log_line while calling elder
 //! bodies. Wires with STOA201 sign for a demo round-trip.
 //! STOA203: append composes through this surface + sign.
+//! STOA225: demo sig/fact hex pins + Glow face=lit desk bind
+//! (`glow/gen/sample-demo-fact-line-lits.glow`). Pins match
+//! `claim_demo_line` under issuer seed · fixture stamp1/memo1.
 //!
 //!   rye build linengrow/glow_sala_b0_line_witness.rye \
 //!     -femit-bin=linengrow/bin/glow_sala_b0_line_witness
@@ -14,7 +17,18 @@ const mc = @import("mala_core.rye");
 const rc = @import("receipt_core.rye");
 const sign = @import("glow_sala_b0_sign.rye");
 
-pub const line_version = "20260721.190240";
+pub const line_version = "20260722.132020";
+
+/// Glow face=lit sample desk for demo line halves (STOA225).
+pub const lit_desk_relpath = "glow/gen/sample-demo-fact-line-lits.glow";
+
+/// Deterministic demo sig hex from `claim_demo_line` (128 lowercase nibbles).
+pub const demo_sig_hex =
+    "93c92d1b6ac994d9560cc26480f36661f23be0144ac29e603d3f761df565a6c662a6083bca0e39bb3ca36d3b785789b1cc34d1bd491f5fa1eddd7a961684300b";
+
+/// Deterministic demo fact hex from `claim_demo_line` (canonical fact bytes as hex).
+pub const demo_fact_hex =
+    "66726f6d20616630366133653332393137313465346633353663313963396231356364313935316563366536363632616137376265303735343766323839333833333431640a746f20616630366133653332393137313465346633353663313963396231356364313935316563366536363632616137376265303735343766323839333833333431640a616d6f756e7420310a6d656d6f2073616c613a6f70656e2072697368692073657373696f6e0a7374616d702032303236303731352e3139303030310a";
 
 pub const LineError = sign.SignError || error{ Overflow, InvalidLine, LineMismatch };
 
@@ -53,4 +67,44 @@ pub fn claim_demo_line(line_out: *[rc.max_line_len]u8) LineError!u32 {
     const actor_kp = kumara.keypair_from_seed(&mc.issuer_seed);
     try sign.verify_record(sig_buf[0..parsed.sig_len], fact_buf[0..parsed.fact_len], actor_kp.public_key);
     return line_len;
+}
+
+fn split_line_hex(line: []const u8) ?struct { sig: []const u8, fact: []const u8 } {
+    if (line.len < 2) return null;
+    const body = if (line[line.len - 1] == '\n') line[0 .. line.len - 1] else line;
+    var i: u32 = 0;
+    const n: u32 = @intCast(body.len);
+    while (i < n) : (i += 1) {
+        if (body[@as(usize, @intCast(i))] == ' ') {
+            if (i == 0 or i + 1 >= n) return null;
+            return .{
+                .sig = body[0..@as(usize, @intCast(i))],
+                .fact = body[@as(usize, @intCast(i + 1))..],
+            };
+        }
+    }
+    return null;
+}
+
+/// True when a live `claim_demo_line` matches the seated demo sig/fact hex pins.
+pub fn demo_line_pins_agree() LineError!bool {
+    var line_buf: [rc.max_line_len]u8 = undefined;
+    const line_len = try claim_demo_line(&line_buf);
+    const parts = split_line_hex(line_buf[0..line_len]) orelse return false;
+    if (!std.mem.eql(u8, parts.sig, demo_sig_hex)) return false;
+    if (!std.mem.eql(u8, parts.fact, demo_fact_hex)) return false;
+    return true;
+}
+
+fn clause_present(src: []const u8, comptime face: []const u8, comptime lit: []const u8) bool {
+    const needle = face ++ "='" ++ lit ++ "'";
+    return std.mem.indexOf(u8, src, needle) != null;
+}
+
+/// True when Glow lit-desk text carries demo sig/fact as face=lit clauses.
+pub fn lit_desk_binds_pins(src: []const u8) bool {
+    assert(src.len >= 1);
+    if (!clause_present(src, "sig", demo_sig_hex)) return false;
+    if (!clause_present(src, "fact", demo_fact_hex)) return false;
+    return true;
 }
