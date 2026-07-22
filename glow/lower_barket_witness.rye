@@ -15,7 +15,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     const io = init.io;
     const a = init.arena.allocator();
     const cwd = std.Io.Dir.cwd();
-    var buf: [4096]u8 = undefined;
+    var buf: [8192]u8 = undefined;
 
     // Identity body lowers to Rye with barket_gate fn and baked sample 5.
     const gate_src = "|^  sample=@u32\nsample\n";
@@ -360,12 +360,30 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(spec_penta_fields.body == .identity);
     print("lower: glow/gen/gate-barket-penta-fields.glow carries penta-shape argv -- GREEN\n", .{});
 
-    if (lower.lower_source_argv_sample("|^  sample=hexa-shape\nsample\n", &buf)) |_| {
-        return error.HexaArgvLoweredTooSoon;
+    // STOA315: hexa-shape argv identity — six field decimals.
+    const hexa_argv_src = "|^  sample=hexa-shape\nsample\n";
+    const n_hexa_argv = try lower.lower_source_argv_sample(hexa_argv_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n_hexa_argv], "HexaShape") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_hexa_argv], "minimal.args") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_hexa_argv], "parseInt(u32, argv[1]") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_hexa_argv], "parseInt(u32, argv[6]") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_hexa_argv], ".tag") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_hexa_argv], "\"mint\"") == null);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_hexa_argv.rye", .data = buf[0..n_hexa_argv] });
+    print("lower: hexa-shape argv emit reads minimal.args / six fields -- GREEN\n", .{});
+
+    const gen_hexa_fields = try cwd.readFileAlloc(io, "glow/gen/gate-barket-hexa-fields.glow", a, .limited(4096));
+    const spec_hexa_fields = try rb.parse_source(gen_hexa_fields);
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_hexa_fields), "hexa-shape"));
+    assert(spec_hexa_fields.body == .identity);
+    print("lower: glow/gen/gate-barket-hexa-fields.glow carries hexa-shape argv -- GREEN\n", .{});
+
+    if (lower.lower_source_argv_sample("|^  sample=hepta-shape\nsample\n", &buf)) |_| {
+        return error.HeptaArgvLoweredTooSoon;
     } else |err| {
         if (err != lower.LowerError.SampleDoesNotNest) return err;
     }
-    print("lower: hexa-shape argv refused SampleDoesNotNest -- GREEN\n", .{});
+    print("lower: hepta-shape argv refused SampleDoesNotNest -- GREEN\n", .{});
 
     // STOA123: kind-shape identity lowers as KindShape.
     const kind_src = "|^  sample=kind-shape\nsample\n";
@@ -661,13 +679,6 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("lower: hexa-shape double call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
 
-    if (lower.lower_source_argv_sample("|^  sample=hexa-shape\nsample\n", &buf)) |_| {
-        return error.HexaArgvLoweredTooSoon;
-    } else |err| {
-        if (err != lower.LowerError.SampleDoesNotNest) return err;
-    }
-    print("lower: hexa-shape argv refused SampleDoesNotNest -- GREEN\n", .{});
-
     // STOA136: triple-shape flip call-body lowers as TripleShape swap · baked 3/5/1.
     const triple_flip_src = "|^  sample=triple-shape\n%-  flip  sample\n";
     const n_tf = try lower.lower_source_welcome(triple_flip_src, &buf);
@@ -854,7 +865,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("lower: glow/gen/gate-barket-count.glow carries count-shape -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: Glow `|^` barket — identity · argv · call-body · amount-shape · amount argv · count-shape · count argv · kind-shape · kind argv · kind flip · xact-shape · xact argv · xact flip · xfer-shape · xfer argv · xfer flip · pair-shape · pair argv · pair flip · triple-shape · triple argv · triple flip · quad-shape · quad argv · quad flip · penta-shape · penta argv · penta flip · hexa-shape · hexa flip · hepta-shape · hepta flip · octa-shape · octa flip · nona-shape · nona flip · nesting-through-nests; STOA113–147 · STOA255 identity emit · STOA261 N-field flip · STOA295 tagged payload flip · STOA297 tagged unit flip · STOA300 kind argv · STOA303 xact argv · STOA305 xfer argv · STOA307 pair argv · STOA309 triple argv · STOA311 quad argv · STOA313 penta argv · STOA257 shape-only living.\n", .{});
+    print("GREEN: Glow `|^` barket — identity · argv · call-body · amount-shape · amount argv · count-shape · count argv · kind-shape · kind argv · kind flip · xact-shape · xact argv · xact flip · xfer-shape · xfer argv · xfer flip · pair-shape · pair argv · pair flip · triple-shape · triple argv · triple flip · quad-shape · quad argv · quad flip · penta-shape · penta argv · penta flip · hexa-shape · hexa argv · hexa flip · hepta-shape · hepta flip · octa-shape · octa flip · nona-shape · nona flip · nesting-through-nests; STOA113–147 · STOA255 identity emit · STOA261 N-field flip · STOA295 tagged payload flip · STOA297 tagged unit flip · STOA300 kind argv · STOA303 xact argv · STOA305 xfer argv · STOA307 pair argv · STOA309 triple argv · STOA311 quad argv · STOA313 penta argv · STOA315 hexa argv · STOA257 shape-only living.\n", .{});
 
     return 0;
 }

@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260722.192737
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title STOA315-316 hexa argv round
+prompt kg — lean C hexa argv survey
+think emit_hexa_argv via emit_n_field_argv N=6
+think desks gate-hexa-fields · barket twin · worker six-decimal path
+think bump witness buf to 8192 · hepta refuse pinned · STOA316 lean C hepta
+obs N-field argv survey deepens through hexa
+product_nib ZETA6 LULU0-5 SETU6.5
+suite_nib STOA0-316
+file glow/lower_bartis.rye emit_hexa_argv
+file glow/lower_barket.rye barket twin
+file glow/gen/gate-hexa-fields.glow desk
+file tools/glow_run_worker.sh six-arg path
+file active-designing/20260722-192737_stoa315-n-field-argv-survey-hexa.md survey
+file active-designing/20260722-193120_stoa316-after-hexa-argv-checkin.md check-in
+recommend check-in lean C hepta argv survey
