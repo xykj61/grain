@@ -4,6 +4,7 @@
 //! replay). Elder `sala_b0_fold` stays the baseline peer.
 //! STOA203: append builds through product sign+line; elder sign/format bodies
 //! underneath. Glow-authored crypto jets and elder-replay body stay held.
+//! STOA235: `run_demo_fold_from_desk_file` reads fact-line lit desk then claims.
 //!
 //!   rye build linengrow/glow_sala_b0_fold_witness.rye \
 //!     -femit-bin=linengrow/bin/glow_sala_b0_fold_witness
@@ -12,16 +13,26 @@ const std = @import("std");
 const claim = @import("glow_sala_b0_claim.rye");
 const elder = @import("sala_b0_fold.rye");
 
-pub const fold_version = "20260721.183554";
+pub const fold_version = "20260722.134552";
 
 /// Product-owned pin — same HAWM1 demo root the elder fold proves.
 pub const expected_demo_root_hex = claim.expected_demo_root_hex;
 
 pub const FoldError = claim.ClaimError;
 
-/// Run the Glow-composed three-event demo fold; refuse unless root matches.
+/// Run the Glow-composed three-event demo fold (pin append path).
 pub fn run_demo_fold() FoldError![32]u8 {
     return claim.claim_demo_fold();
+}
+
+/// Run fold from runtime desk text (STOA235).
+pub fn run_demo_fold_from_desk(desk_src: []const u8) FoldError![32]u8 {
+    return claim.claim_demo_fold_from_desk(desk_src);
+}
+
+/// Read lit desk from cwd, then desk fold claim (STOA235 file I/O).
+pub fn run_demo_fold_from_desk_file(init: std.process.Init) FoldError![32]u8 {
+    return claim.claim_demo_fold_from_desk_file(init);
 }
 
 /// Hex-encode a 32-byte root (same table as elder).

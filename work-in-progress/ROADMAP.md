@@ -724,7 +724,11 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA233 runtime fact-line desk emit GREEN, `20260722.134205`** — desk extract · emit ≡ pins · desk append HAWM1. Brief [`active-designing/20260722-134205_stoa233-runtime-desk-emit.md`](../active-designing/20260722-134205_stoa233-runtime-desk-emit.md).
 
-**STOA234 after runtime desk emit check-in, `20260722.134415`** — lean A send · lean B fold desk I/O; round-close automation seated. Brief [`active-designing/20260722-134415_stoa234-after-runtime-desk-emit-checkin.md`](../active-designing/20260722-134415_stoa234-after-runtime-desk-emit-checkin.md). JABS3 held.
+**STOA234 after runtime desk emit check-in, `20260722.134415`** — lean A send · lean B as STOA235; round-close automation seated. Brief [`active-designing/20260722-134415_stoa234-after-runtime-desk-emit-checkin.md`](../active-designing/20260722-134415_stoa234-after-runtime-desk-emit-checkin.md).
+
+**STOA235 claim/fold desk-file I/O GREEN, `20260722.134552`** — `*_from_desk_file` ≡ pin; NA pin path. Brief [`active-designing/20260722-134552_stoa235-claim-fold-desk-file.md`](../active-designing/20260722-134552_stoa235-claim-fold-desk-file.md).
+
+**STOA236 after desk-file claim check-in, `20260722.134657`** — lean A send · lean B NA desk asset. Brief [`active-designing/20260722-134657_stoa236-after-desk-file-claim-checkin.md`](../active-designing/20260722-134657_stoa236-after-desk-file-claim-checkin.md). JABS3 held.
 
 
 **Framework next (host resume), `20260720.231857`** — lean A: live SETU6.5 **sent** eyes on real `usb0`/`ncm`. Lab TX gate already GREEN; Sala B0 Glow rewrite · JABS3 stay thicker check-ins. Same freeze brief.

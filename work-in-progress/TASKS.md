@@ -509,6 +509,8 @@
 - [x] **STOA233 — runtime fact-line desk emit** `20260722.134205` — extract desk cords · emit ≡ pins · desk append HAWM1. Brief [`../active-designing/20260722-134205_stoa233-runtime-desk-emit.md`](../active-designing/20260722-134205_stoa233-runtime-desk-emit.md).
 - [x] **STOA234 — after runtime desk emit check-in** `20260722.134415` — lean A send; lean B fold desk I/O next; round-close auto send+check-in seated. Brief [`../active-designing/20260722-134415_stoa234-after-runtime-desk-emit-checkin.md`](../active-designing/20260722-134415_stoa234-after-runtime-desk-emit-checkin.md).
 - [x] **Round-close auto send + check-in** `20260722.134415` — every landed work round sends and ends with a check-in; [`.cursor/rules/round-close-send-checkin.mdc`](../.cursor/rules/round-close-send-checkin.mdc).
+- [x] **STOA235 — claim/fold desk-file I/O** `20260722.134552` — `*_from_desk_file` ≡ pin claim; NA stays pin. Brief [`../active-designing/20260722-134552_stoa235-claim-fold-desk-file.md`](../active-designing/20260722-134552_stoa235-claim-fold-desk-file.md).
+- [x] **STOA236 — after desk-file claim check-in** `20260722.134657` — lean A send; lean B NA desk asset next. Brief [`../active-designing/20260722-134657_stoa236-after-desk-file-claim-checkin.md`](../active-designing/20260722-134657_stoa236-after-desk-file-claim-checkin.md).
 
 
 - [x] **UDT stamp convention on Framework host** `20260720.232932` — Keaton set system clock to UDT (UTC); [`context/specs/20260720-232932_udt-framework-host-convention.md`](../context/specs/20260720-232932_udt-framework-host-convention.md); Eastern era stamps stay; session-log rules + `GLOW_PROFILE` pointed at Etc/UTC for that season.
