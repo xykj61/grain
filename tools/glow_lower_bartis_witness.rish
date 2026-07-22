@@ -409,5 +409,9 @@ assert n_field.ok else "STOA253 missing emit_n_field_identity or eight identity 
 let n_flip = run ["sh" "-c" "grep -q 'fn emit_n_field_flip_call_body' glow/lower_bartis.rye && test $(grep -Fc 'return emit_n_field_flip_call_body(' glow/lower_bartis.rye) = 8"]
 assert n_flip.ok else "STOA259 missing emit_n_field_flip_call_body or eight flip wrappers"
 
-say "GREEN: Glow `|=` bartis — STOA100–147 · STOA253 N-field identity · STOA259 N-field flip · STOA257 shape-only living · argv · call-body · amount-shape · amount argv · count-shape · count argv · kind-shape · kind flip · xact-shape · xact flip · xfer-shape · xfer flip · pair-shape · pair flip · triple-shape · triple flip · quad-shape · quad flip · penta-shape · penta flip · hexa-shape · hexa flip · hepta-shape · hepta flip · octa-shape · octa flip · nona-shape · nona flip · stated nesting · nest SampleDoesNotNest."
+# STOA297: kind flip call-body collapses through emit_tagged_unit_flip_call_body.
+let unit_flip = run ["sh" "-c" "grep -q 'fn emit_tagged_unit_flip_call_body' glow/lower_bartis.rye && test $(grep -Fc 'return emit_tagged_unit_flip_call_body(' glow/lower_bartis.rye) = 1"]
+assert unit_flip.ok else "STOA297 missing emit_tagged_unit_flip_call_body or kind wrapper"
+
+say "GREEN: Glow `|=` bartis — STOA100–147 · STOA253 N-field identity · STOA259 N-field flip · STOA293 tagged payload flip · STOA297 tagged unit flip · STOA257 shape-only living · argv · call-body · amount-shape · amount argv · count-shape · count argv · kind-shape · kind flip · xact-shape · xact flip · xfer-shape · xfer flip · pair-shape · pair flip · triple-shape · triple flip · quad-shape · quad flip · penta-shape · penta flip · hexa-shape · hexa flip · hepta-shape · hepta flip · octa-shape · octa flip · nona-shape · nona flip · stated nesting · nest SampleDoesNotNest."
 

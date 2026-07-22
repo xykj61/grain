@@ -717,7 +717,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("lower: glow/gen/gate-count.glow carries count-shape -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: Glow `|=` bartis — identity · argv · call-body · amount-shape · amount argv · count-shape · count argv · kind-shape · kind flip · xact-shape · xact flip · xfer-shape · xfer flip · pair-shape · pair flip · triple-shape · triple flip · quad-shape · quad flip · penta-shape · penta flip · hexa-shape · hexa flip · hepta-shape · hepta flip · octa-shape · octa flip · nona-shape · nona flip · nesting-nests; STOA100–147 · STOA253 identity emit · STOA259 N-field flip · STOA293 tagged payload flip.\n", .{});
+    print("GREEN: Glow `|=` bartis — identity · argv · call-body · amount-shape · amount argv · count-shape · count argv · kind-shape · kind flip · xact-shape · xact flip · xfer-shape · xfer flip · pair-shape · pair flip · triple-shape · triple flip · quad-shape · quad flip · penta-shape · penta flip · hexa-shape · hexa flip · hepta-shape · hepta flip · octa-shape · octa flip · nona-shape · nona flip · nesting-nests; STOA100–147 · STOA253 identity emit · STOA259 N-field flip · STOA293 tagged payload flip · STOA297 tagged unit flip.\n", .{});
     return 0;
 }
 

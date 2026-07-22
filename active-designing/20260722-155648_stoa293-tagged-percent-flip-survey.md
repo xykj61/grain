@@ -38,8 +38,8 @@
 
 | Later | Claim |
 |---|---|
-| Barket payload twin | same helper on barket |
-| Unit tag helper | optional thin `emit_tagged_unit_flip` for kind |
+| Barket payload twin | **GREEN** STOA295 |
+| Unit tag helper | **GREEN** STOA297 — `emit_tagged_unit_flip_call_body` on both |
 | Held | gold · face_lit · fleets · JABS3 · `deca-*` |
 
 ---

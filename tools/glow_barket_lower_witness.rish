@@ -454,4 +454,8 @@ assert n_flip.ok else "STOA261 missing emit_n_field_flip_call_body or eight flip
 let tagged_flip = run ["sh" "-c" "grep -q 'fn emit_tagged_payload_flip_call_body' glow/lower_barket.rye && test $(grep -Fc 'return emit_tagged_payload_flip_call_body(' glow/lower_barket.rye) = 2"]
 assert tagged_flip.ok else "STOA295 missing emit_tagged_payload_flip_call_body or two payload wrappers"
 
-say "GREEN: Glow barket lower — STOA113–147 · STOA255 N-field identity · STOA261 N-field flip · STOA295 tagged payload flip · STOA257 shape-only living · identity · argv · call-body · amount-shape · amount argv · count-shape · count argv · kind-shape · kind flip · xact-shape · xact flip · xfer-shape · xfer flip · pair-shape · pair flip · triple-shape · triple flip · quad-shape · quad flip · penta-shape · penta flip · hexa-shape · hexa flip · hepta-shape · hepta flip · octa-shape · octa flip · nona-shape · nona flip · nesting-through-nests."
+# STOA297: kind flip call-body collapses through emit_tagged_unit_flip_call_body.
+let unit_flip = run ["sh" "-c" "grep -q 'fn emit_tagged_unit_flip_call_body' glow/lower_barket.rye && test $(grep -Fc 'return emit_tagged_unit_flip_call_body(' glow/lower_barket.rye) = 1"]
+assert unit_flip.ok else "STOA297 missing emit_tagged_unit_flip_call_body or kind wrapper"
+
+say "GREEN: Glow barket lower — STOA113–147 · STOA255 N-field identity · STOA261 N-field flip · STOA295 tagged payload flip · STOA297 tagged unit flip · STOA257 shape-only living · identity · argv · call-body · amount-shape · amount argv · count-shape · count argv · kind-shape · kind flip · xact-shape · xact flip · xfer-shape · xfer flip · pair-shape · pair flip · triple-shape · triple flip · quad-shape · quad flip · penta-shape · penta flip · hexa-shape · hexa flip · hepta-shape · hepta flip · octa-shape · octa flip · nona-shape · nona flip · nesting-through-nests."

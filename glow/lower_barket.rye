@@ -32,6 +32,8 @@
 //! STOA129: `xfer-mold` call body `%-  flip` → XferShape switch · baked mint/5/3 → `.send`.
 //! STOA295: xact+xfer flip call-body collapses through `emit_tagged_payload_flip_call_body`
 //!   (mint_faces 1|2) — barket twin of STOA293. Kind unit flip stays its own family.
+//! STOA297: kind flip call-body collapses through `emit_tagged_unit_flip_call_body`
+//!   (barket twin of bartis unit helper).
 //! STOA131: `pair-mold` call body `%-  flip` → PairShape swap · baked 5/3 → 3/5.
 //! STOA132: `amount-mold` argv identity — generator beside fixture (u32-shaped named mold).
 //! STOA133: `count-mold` argv identity — twin generator beside fixture.
@@ -233,9 +235,15 @@ fn emit_kind_identity(out: []u8, zface: []const u8, comment: []const u8) LowerEr
     return used;
 }
 
-/// STOA127: closed unit `$%` kind-mold call body → KindShape flip · baked `.send`.
+/// STOA127 / STOA297: closed unit `$%` kind-mold call body → KindShape flip (via unit helper).
 fn emit_kind_call_body(out: []u8, zface: []const u8, gate: []const u8, comment: []const u8) LowerError!u32 {
     assert(rb.is_kind_call_gate(gate)); // parse/lower pin — flip only today
+    return emit_tagged_unit_flip_call_body(out, zface, comment);
+}
+
+/// STOA297: one tagged-unit `$%` flip call-body emit for kind (KindShape enum).
+/// Barket twin of bartis unit helper. mint ↔ send.
+fn emit_tagged_unit_flip_call_body(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
     var used: u32 = 0;
     try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
     try append_print(out, &used, "pub const KindShape = enum(u8) {{\n", .{});
