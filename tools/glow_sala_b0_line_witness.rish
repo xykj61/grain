@@ -20,16 +20,19 @@ assert selftest.out contains "STOA227" else "glow_sala_b0_line_witness missing S
 assert selftest.out contains "STOA231" else "glow_sala_b0_line_witness missing STOA231"
 assert selftest.out contains "STOA233" else "glow_sala_b0_line_witness missing STOA233"
 assert selftest.out contains "STOA241" else "glow_sala_b0_line_witness missing STOA241"
+assert selftest.out contains "STOA243" else "glow_sala_b0_line_witness missing STOA243"
 assert selftest.out contains "demo line pins agree claim" else "glow_sala_b0_line_witness missing demo pin agree"
 assert selftest.out contains "lit desk binds demo pins" else "glow_sala_b0_line_witness missing lit desk bind"
 assert selftest.out contains "pin emit agrees claim_demo_line" else "glow_sala_b0_line_witness missing pin emit agree"
 assert selftest.out contains "event 2-3 pins and pin emit agree" else "glow_sala_b0_line_witness missing event 2-3"
 assert selftest.out contains "desk emit agrees pin emit 1-3" else "glow_sala_b0_line_witness missing desk emit"
 assert selftest.out contains "face_lit product extract agrees pins" else "glow_sala_b0_line_witness missing face_lit product"
+assert selftest.out contains "format/parse body agrees elder" else "glow_sala_b0_line_witness missing authored body agree"
 
 let lits = run ["rishi/bin/rishi" "run" "tools/glow_sample_demo_fact_line_lits_witness.rish"]
 assert lits.ok else "sample-demo-fact-line-lits witness failed after line wire"
 assert lits.out contains "GREEN" else "sample-demo-fact-line-lits missing GREEN"
 
-say "GREEN: Glow Sala B0 line surface — pin + desk emit + face_lit product; STOA241."
+say "GREEN: Glow Sala B0 line surface — pin + desk + face_lit + authored body; STOA243."
+
 
