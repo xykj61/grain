@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260722.185953
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title STOA305-306 xfer argv round
+prompt approve rec — lean C xfer argv survey
+think mirror emit_xact_argv as emit_xfer_argv with mint from+amount
+think desks gate-xfer-tag · barket twin · worker three-arg mint path
+think witnesses GREEN · pair refuse pinned · STOA306 lean C pair argv
+obs four argv families now: u32 · kind tag · xact tag+amount · xfer tag+from+amount
+product_nib ZETA6 LULU0-5 SETU6.5
+suite_nib STOA0-306
+file glow/lower_bartis.rye emit_xfer_argv
+file glow/lower_barket.rye barket twin
+file glow/gen/gate-xfer-tag.glow desk
+file tools/glow_run_worker.sh three-arg mint
+file active-designing/20260722-185953_stoa305-payload-argv-survey-xfer.md survey
+file active-designing/20260722-190015_stoa306-after-xfer-argv-checkin.md check-in
+recommend check-in lean C pair argv survey
