@@ -6,8 +6,8 @@
 **Version:** `20260722.152217` (EDT · Framework host)  
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
 **Voice:** Quin  
-**Status:** Checkable — lean **A** send with round-close · lean **B** HAWM 1A when mobile turns  
-**Register:** Checkable (Two Rooms) — STOA272 GREEN with this send; Dexter→Sala live path closed through paint  
+**Status:** Checkable — lean **A** send done · lean **B** → STOA274 season check-in  
+**Register:** Checkable (Two Rooms) — STOA272 GREEN; Dexter→Sala live path closed; HAWM turn sized as STOA274  
 
 **Grounds in:** STOA272 LIVE paint · STOA270 live-root wire · humanity finishing edge · HAWM fleet check-in  
 
@@ -28,7 +28,7 @@ Together with STOA266–270, the finishing-edge loop is: typed memo → append �
 | | Lean | What it opens |
 |---|---|---|
 | **A** | **Send STOA272** — **chosen** with round-close | pier carries LIVE paint |
-| **B** | **HAWM 1A log-harvest inventary** — **recommended** when mobile season turns | approved autonomy door |
+| **B** | **HAWM 1A log-harvest inventary** — **chosen** → STOA274 | approved autonomy door · season turn |
 | **C** | **Pixel screenshot / eyes note** | optional look record; not required for GREEN |
 | **D** | **Gold / shared-package / JABS3 / UDP** | thicker — **held** |
 
