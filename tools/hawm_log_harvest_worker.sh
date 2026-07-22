@@ -51,11 +51,15 @@ if ! grep -q '^device: ' "$META"; then
 fi
 
 device_line="$(grep '^device: ' "$META" | tail -n1)"
-# device: model=… android=… abi=… qemu=…
+# device: model=… android=… abi=… qemu=… [serial=…]
 model="$(printf '%s' "$device_line" | sed -n 's/.*model=\([^ ]*\).*/\1/p')"
 android="$(printf '%s' "$device_line" | sed -n 's/.*android=\([^ ]*\).*/\1/p')"
 abi="$(printf '%s' "$device_line" | sed -n 's/.*abi=\([^ ]*\).*/\1/p')"
 qemu="$(printf '%s' "$device_line" | sed -n 's/.*qemu=\([^ ]*\).*/\1/p')"
+serial="$(printf '%s' "$device_line" | sed -n 's/.*serial=\([^ ]*\).*/\1/p')"
+if [ -z "$serial" ]; then
+  serial=unknown
+fi
 
 boot_completed=0
 if grep -q 'boot_completed' "$META" || grep -q 'already booted' "$META"; then
@@ -79,10 +83,11 @@ model ${model}
 android ${android}
 abi ${abi}
 qemu ${qemu}
+serial ${serial}
 meta_path tools/.cache/hawm0/hawm0-boot-meta.txt
 emulator_log_path tools/.cache/hawm0/hawm0-emulator.log
 status GREEN
 EOF
 
 echo "harvest: wrote $OUT"
-echo "harvest: model=${model} android=${android} abi=${abi}"
+echo "harvest: model=${model} android=${android} abi=${abi} serial=${serial}"

@@ -6,7 +6,7 @@
 **Version:** `20260722.152801` (EDT · Framework host)  
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
 **Voice:** Quin  
-**Status:** Checkable — chain authored · harvest half GREEN `20260722.152801` · full boot onpath pending host KVM  
+**Status:** Checkable — chain authored · harvest half GREEN `20260722.152801` · **host full GREEN** `20260722.153549` (STOA281)  
 **Register:** Checkable for authoring + harvest half; Intent for live boot GREEN until host onpath prints GREEN  
 
 **Grounds in:** STOA276 lean **B** · STOA275 inventary · `hawm0_boot_onpath_host` · `hawm_log_harvest_worker`  
