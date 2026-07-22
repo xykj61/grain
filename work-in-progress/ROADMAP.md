@@ -818,6 +818,10 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA278 after boot→harvest chain check-in, `20260722.152849`** — lean A send · lean B host onpath full GREEN · lean C root-into-harvest. Brief [`active-designing/20260722-152849_stoa278-after-boot-harvest-chain-checkin.md`](../active-designing/20260722-152849_stoa278-after-boot-harvest-chain-checkin.md).
 
+**STOA279 HAWM emulator serial pin, `20260722.153358`** — pin `emulator-*` beside USB Pixel; device-free GREEN. Brief [`active-designing/20260722-153358_stoa279-hawm-emulator-serial-pin.md`](../active-designing/20260722-153358_stoa279-hawm-emulator-serial-pin.md).
+
+**STOA280 after serial pin check-in, `20260722.153358`** — lean A send · lean B host boot→harvest retry. Brief [`active-designing/20260722-153358_stoa280-after-serial-pin-checkin.md`](../active-designing/20260722-153358_stoa280-after-serial-pin-checkin.md).
+
 
 **Framework next (host resume), `20260720.231857`** — lean A: live SETU6.5 **sent** eyes on real `usb0`/`ncm`. Lab TX gate already GREEN; Sala B0 Glow rewrite · JABS3 stay thicker check-ins. Same freeze brief.
 

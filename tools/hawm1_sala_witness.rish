@@ -34,7 +34,11 @@ let zig = "vendor/zig-toolchain/zig"
 say "hawm1: confirming a hawm0 emulator is attached…"
 let devices = run ["sh" "-c" "${adb} devices | grep -c emulator-"]
 assert (trim devices.out != "0") else "no emulator attached — boot hawm0 first: rishi/bin/rishi run tools/hawm0_boot_onpath_host.rish"
-say "hawm1: emulator attached"
+# Pin emulator-* — a USB Pixel on the same adb server must not steal push/shell
+# (same seat fix as hawm0_boot_worker serial pin, STOA279).
+let serial = run ["sh" "-c" "${adb} devices | awk '/^emulator-[0-9]+\\t/ { print \$1; exit }'"]
+assert (trim serial.out != "") else "could not read emulator-* serial from adb devices"
+say "hawm1: emulator attached as ${serial.out}"
 
 say "hawm1: cross-building the Sala B0 witness natively (this host's own architecture) as the reference…"
 let build_native = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/sala_session_core_witness.rye -femit-bin=linengrow/bin/sala_session_core_witness_native"]
@@ -55,15 +59,15 @@ let shape = run ["sh" "-c" "file linengrow/bin/sala_session_core_witness_android
 assert shape.out contains "x86-64" else "cross-built binary is not x86-64"
 say "hawm1: android-target binary built and shaped correctly"
 
-say "hawm1: pushing the binary onto the real, booted device (/data/local/tmp)…"
-let push = run ["sh" "-c" "${adb} push linengrow/bin/sala_session_core_witness_android_x86_64 /data/local/tmp/sala_b0_witness"]
+say "hawm1: pushing the binary onto the real, booted emulator (/data/local/tmp)…"
+let push = run ["sh" "-c" "${adb} -s ${serial.out} push linengrow/bin/sala_session_core_witness_android_x86_64 /data/local/tmp/sala_b0_witness"]
 assert push.ok else "adb push failed"
-let chmod = run ["sh" "-c" "${adb} shell chmod 755 /data/local/tmp/sala_b0_witness"]
+let chmod = run ["sh" "-c" "${adb} -s ${serial.out} shell chmod 755 /data/local/tmp/sala_b0_witness"]
 assert chmod.ok else "adb shell chmod failed"
-say "hawm1: pushed and made executable on-device"
+say "hawm1: pushed and made executable on-emulator"
 
 say "hawm1: running Glow's own verified code inside the real Android userland…"
-let device_run = run ["sh" "-c" "${adb} shell /data/local/tmp/sala_b0_witness 2>&1"]
+let device_run = run ["sh" "-c" "${adb} -s ${serial.out} shell /data/local/tmp/sala_b0_witness 2>&1"]
 assert device_run.ok else "on-device run failed — see ${device_run.err}"
 assert device_run.out contains "GREEN" else "on-device run not GREEN"
 say "${device_run.out}"
@@ -76,7 +80,7 @@ assert device_root_line.out == native_root_line.out else "RED: on-device session
 say "hawm1: session roots agree bit for bit — native and on-device (Android userland) are the same fold"
 
 say "hawm1: cleaning up the pushed binary…"
-let cleanup = run ["sh" "-c" "${adb} shell rm -f /data/local/tmp/sala_b0_witness"]
+let cleanup = run ["sh" "-c" "${adb} -s ${serial.out} shell rm -f /data/local/tmp/sala_b0_witness"]
 assert cleanup.ok else "cleanup rm failed (non-fatal to the claim; named for hygiene)"
 
 say "GREEN: HAWM1 — Glow's own verified Sala B0 witness runs inside a real, KVM-booted Android userland, session root byte-identical to the native run."

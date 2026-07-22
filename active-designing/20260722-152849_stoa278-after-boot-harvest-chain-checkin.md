@@ -6,8 +6,8 @@
 **Version:** `20260722.152849` (EDT · Framework host)  
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
 **Voice:** Quin  
-**Status:** Checkable — lean **A** send with round-close · lean **B** host onpath full GREEN  
-**Register:** Checkable (Two Rooms) — STOA277 chain authored + harvest half GREEN; full boot Intent until host KVM  
+**Status:** Checkable — lean **A** send done · lean **B** attempted `20260722.153130` → serial race → STOA279  
+**Register:** Checkable (Two Rooms) — STOA277 chain authored; host full GREEN still Intent until serial-pin retry  
 
 **Grounds in:** STOA277 chain · STOA276 lean B · HAWM0 host seat  
 
@@ -26,7 +26,7 @@ STOA277: `hawm0_boot_harvest_onpath_host` · chain witness GREEN · onpath REFUS
 | | Lean | What it opens |
 |---|---|---|
 | **A** | **Send STOA277** — **chosen** with round-close | pier carries boot→harvest chain |
-| **B** | **Host onpath full GREEN** — **recommended** | run chain outside jail with `/dev/kvm`; pin eyes |
+| **B** | **Host onpath full GREEN** — **attempted** → STOA279 | Pixel raced bare adb; serial pin then retry |
 | **C** | **HAWM1 / Pixel root into harvest Bron** | extend `hawm-harvest-v1` with sala root (Pixel adb works in this seat) |
 | **D** | **Fleets · HAWM2 · gold · JABS3 · UDP** | thicker — **held** |
 

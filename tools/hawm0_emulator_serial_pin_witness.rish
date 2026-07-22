@@ -1,0 +1,33 @@
+# hawm0_emulator_serial_pin_witness.rish — STOA279: pin emulator-* vs Pixel.
+#
+# Device-free: proves the boot worker waits for an emulator-* serial and
+# uses adb -s for getprop/shell, so a USB phone on the same adb server
+# cannot steal wait-for-device or trip set -e on "more than one device".
+#
+#   rishi/bin/rishi run tools/hawm0_emulator_serial_pin_witness.rish
+
+say "hawm-serial: boot worker seated…"
+let worker = run ["sh" "-c" "test -f tools/hawm0_boot_worker.sh"]
+assert worker.ok else "missing tools/hawm0_boot_worker.sh"
+
+say "hawm-serial: emulator_serial helper…"
+let serial_fn = run ["sh" "-c" "grep -q emulator_serial tools/hawm0_boot_worker.sh"]
+assert serial_fn.ok else "boot worker missing emulator_serial"
+
+say "hawm-serial: adb_emu helper…"
+let emu_fn = run ["sh" "-c" "grep -q adb_emu tools/hawm0_boot_worker.sh"]
+assert emu_fn.ok else "boot worker missing adb_emu"
+
+say "hawm-serial: wait targets emulator-* serial…"
+let wait_pin = run ["sh" "-c" "grep -q 'waiting for emulator-' tools/hawm0_boot_worker.sh"]
+assert wait_pin.ok else "boot worker missing emulator-* wait progress line"
+let serial_assign = run ["sh" "-c" "grep -q 'SERIAL=\"\$(emulator_serial' tools/hawm0_boot_worker.sh"]
+assert serial_assign.ok else "boot worker missing SERIAL=emulator_serial assign"
+
+say "hawm-serial: HAWM1 push/shell pin -s serial…"
+let hawm1_push = run ["sh" "-c" "grep -E -- '-s .* push' tools/hawm1_sala_witness.rish"]
+assert hawm1_push.ok else "hawm1 missing adb -s serial on push"
+let hawm1_shell = run ["sh" "-c" "grep -E -- '-s .* shell' tools/hawm1_sala_witness.rish"]
+assert hawm1_shell.ok else "hawm1 missing adb -s serial on shell"
+
+say "GREEN: STOA279 — HAWM0/HAWM1 pin emulator-* serial beside a USB Pixel."

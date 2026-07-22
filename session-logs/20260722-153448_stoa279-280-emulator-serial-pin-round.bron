@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260722.153448
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title STOA279-280 emulator serial pin
+prompt host boot-harvest failed printout
+think Pixel attached; bare wait-for-device and shell raced phone; set -e killed AVD; harvest bron stale 152849
+think pin emulator- serial in hawm0_boot_worker and hawm1; device-free witness GREEN
+think seat STOA280 lean B host retry; do not claim full chain GREEN yet
+obs honest: cat after RED showed old harvest; next GREEN needs newer stamp
+product_nib ZETA6 LULU0-5 SETU6.5 HAWM-serial-pin
+suite_nib STOA0-280
+file tools/hawm0_boot_worker.sh emulator serial pin
+file tools/hawm1_sala_witness.rish adb -s serial
+file tools/hawm0_emulator_serial_pin_witness.rish GREEN
+file active-designing/20260722-153358_stoa279-hawm-emulator-serial-pin.md diagnosis
+file active-designing/20260722-153358_stoa280-after-serial-pin-checkin.md lean B retry
+recommend check-in host retry onpath after send; Pixel may stay plugged
