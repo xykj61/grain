@@ -1,0 +1,23 @@
+# stoa241_face_lit_product_agree_witness.rish — product face_lit stand-in ≡ Glow face_lit.
+#
+# Module path blocks linengrow @import of glow/face_lit. Both sides match the
+# same seated pins on the fact-line desk — transitive agree across the seam.
+#
+#   rishi/bin/rishi run tools/stoa241_face_lit_product_agree_witness.rish
+
+let glow_side = run ["rishi/bin/rishi" "run" "tools/glow_sample_demo_fact_line_lits_witness.rish"]
+assert glow_side.ok else "glow sample fact-line lits failed"
+assert glow_side.out contains "STOA241" else "glow side missing STOA241"
+
+let product = run ["rishi/bin/rishi" "run" "tools/glow_sala_b0_line_witness.rish"]
+assert product.ok else "glow_sala_b0_line_witness failed"
+assert product.out contains "STOA241" else "product side missing STOA241"
+assert product.out contains "face_lit product" else "product face_lit agree missing"
+
+# Honesty: product names the stand-in and does not @import glow/face_lit.
+let named = run ["sh" "-c" "grep -q extract_face_lit_cord linengrow/glow_sala_b0_line.rye"]
+assert named.ok else "missing extract_face_lit_cord"
+let no_import = run ["sh" "-c" "! grep -E '@import\\(\\\"(\\.\\./)?glow/face_lit\\\"\\)' linengrow/*.rye"]
+assert no_import.ok else "product must not @import glow/face_lit across module path"
+
+say "GREEN: STOA241 — product face_lit stand-in agrees Glow face_lit via seated pins."

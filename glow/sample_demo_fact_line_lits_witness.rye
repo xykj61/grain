@@ -12,7 +12,7 @@ const print = std.debug.print;
 const face_lit = @import("face_lit.rye");
 const lower = @import("lower_face_lit.rye");
 
-const witness_version = "20260722.133717";
+const witness_version = "20260722.135948";
 
 const demo_sig_hex =
     "93c92d1b6ac994d9560cc26480f36661f23be0144ac29e603d3f761df565a6c662a6083bca0e39bb3ca36d3b785789b1cc34d1bd491f5fa1eddd7a961684300b";
@@ -80,6 +80,7 @@ fn run_selftest(init: std.process.Init) !u8 {
 
     print("fact-line-lits: STOA225 desk pin -- GREEN\n", .{});
     print("fact-line-lits: STOA231 event 2-3 desk pins -- GREEN\n", .{});
+    print("fact-line-lits: STOA241 glow face_lit side agrees pins -- GREEN\n", .{});
     return 0;
 }
 
