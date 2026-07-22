@@ -6,8 +6,8 @@
 **Version:** `20260722.154515` (EDT · Framework host)  
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
 **Voice:** Quin  
-**Status:** Checkable — lean **B** rest **chosen** · lean **A** send with round-close  
-**Register:** Checkable (Two Rooms) — rest is the chosen lean; harvest Bron Intent-as-kept artifact, not a new claim  
+**Status:** Checkable — lean **B** rest chosen · resume as STOA288  
+**Register:** Checkable (Two Rooms) — rest held until continue; resume sized as STOA288  
 
 **Grounds in:** STOA286 lean **B** approved · HAWM chain STOA275–286  
 
