@@ -1,7 +1,7 @@
 # glow_barket_lower_witness.rish — `|^` barket lowers to Rye; emitted program runs.
 #
 # Proves identity (STOA113), argv (STOA114), call-body trio (STOA115–116),
-# TAME tidy (STOA117), named-mold (STOA118/122), nesting-through-nests (STOA121/130): barket_gate emit,
+# TAME tidy (STOA117), named-shape (STOA118/122), nesting-through-nests (STOA121/130): barket_gate emit,
 # fixtures/generators, welcome exit 0, argv exit 0, ban overflow seat.
 #
 #   rishi/bin/rishi run tools/glow_barket_lower_witness.rish
@@ -52,9 +52,9 @@ assert selftest.out contains "gate-barket-inc.glow" else "lower_barket_witness m
 assert selftest.out contains "gate-barket-dec.glow" else "lower_barket_witness missing dec fixture"
 assert selftest.out contains "call-body inc" else "lower_barket_witness missing call-body inc claim"
 assert selftest.out contains "call-body dec" else "lower_barket_witness missing call-body dec claim"
-assert selftest.out contains "amount-mold" else "lower_barket_witness missing amount-mold claim"
+assert selftest.out contains "amount-shape" else "lower_barket_witness missing amount-shape claim"
 assert selftest.out contains "gate-barket-amount.glow" else "lower_barket_witness missing amount fixture"
-assert selftest.out contains "count-mold" else "lower_barket_witness missing count-mold claim"
+assert selftest.out contains "count-shape" else "lower_barket_witness missing count-shape claim"
 assert selftest.out contains "gate-barket-count.glow" else "lower_barket_witness missing count fixture"
 assert selftest.out contains "KindShape" else "lower_barket_witness missing KindShape claim"
 assert selftest.out contains "gate-barket-kind.glow" else "lower_barket_witness missing kind fixture"
@@ -65,25 +65,25 @@ assert selftest.out contains "gate-barket-xfer.glow" else "lower_barket_witness 
 assert selftest.out contains "PairShape" else "lower_barket_witness missing PairShape claim"
 assert selftest.out contains "gate-barket-pair.glow" else "lower_barket_witness missing pair fixture"
 assert selftest.out contains "gate-barket-kind-refuse.glow" else "lower_barket_witness missing deca refuse desk"
-assert selftest.out contains "deca-mold" else "lower_barket_witness missing deca-mold refuse"
+assert selftest.out contains "deca-shape" else "lower_barket_witness missing deca-shape refuse"
 assert selftest.out contains "gate-barket-hepta.glow" else "lower_barket_witness missing hepta fixture"
 assert selftest.out contains "HeptaShape" else "lower_barket_witness missing HeptaShape claim"
 assert selftest.out contains "gate-barket-octa.glow" else "lower_barket_witness missing octa fixture"
 assert selftest.out contains "OctaShape" else "lower_barket_witness missing OctaShape claim"
 assert selftest.out contains "gate-barket-nona.glow" else "lower_barket_witness missing nona fixture"
 assert selftest.out contains "NonaShape" else "lower_barket_witness missing NonaShape claim"
-assert selftest.out contains "hepta-mold argv refused" else "lower_barket_witness missing hepta argv refuse"
-assert selftest.out contains "octa-mold argv refused" else "lower_barket_witness missing octa argv refuse"
-assert selftest.out contains "nona-mold argv refused" else "lower_barket_witness missing nona argv refuse"
+assert selftest.out contains "hepta-shape argv refused" else "lower_barket_witness missing hepta argv refuse"
+assert selftest.out contains "octa-shape argv refused" else "lower_barket_witness missing octa argv refuse"
+assert selftest.out contains "nona-shape argv refused" else "lower_barket_witness missing nona argv refuse"
 assert selftest.out contains "gate-barket-nona-flip.glow" else "lower_barket_witness missing nona-flip desk"
-assert selftest.out contains "nona-mold call-body flip" else "lower_barket_witness missing nona flip claim"
-assert selftest.out contains "nona-mold double call-body refused" else "lower_barket_witness missing nona double refuse"
+assert selftest.out contains "nona-shape call-body flip" else "lower_barket_witness missing nona flip claim"
+assert selftest.out contains "nona-shape double call-body refused" else "lower_barket_witness missing nona double refuse"
 assert selftest.out contains "gate-barket-octa-flip.glow" else "lower_barket_witness missing octa-flip desk"
-assert selftest.out contains "octa-mold call-body flip" else "lower_barket_witness missing octa flip claim"
-assert selftest.out contains "octa-mold double call-body refused" else "lower_barket_witness missing octa double refuse"
+assert selftest.out contains "octa-shape call-body flip" else "lower_barket_witness missing octa flip claim"
+assert selftest.out contains "octa-shape double call-body refused" else "lower_barket_witness missing octa double refuse"
 assert selftest.out contains "gate-barket-hepta-flip.glow" else "lower_barket_witness missing hepta-flip desk"
-assert selftest.out contains "hepta-mold call-body flip" else "lower_barket_witness missing hepta flip claim"
-assert selftest.out contains "hepta-mold double call-body refused" else "lower_barket_witness missing hepta double refuse"
+assert selftest.out contains "hepta-shape call-body flip" else "lower_barket_witness missing hepta flip claim"
+assert selftest.out contains "hepta-shape double call-body refused" else "lower_barket_witness missing hepta double refuse"
 assert selftest.out contains "gate-barket-triple.glow" else "lower_barket_witness missing triple fixture"
 assert selftest.out contains "TripleShape" else "lower_barket_witness missing TripleShape claim"
 assert selftest.out contains "gate-barket-quad.glow" else "lower_barket_witness missing quad fixture"
@@ -92,35 +92,35 @@ assert selftest.out contains "gate-barket-penta.glow" else "lower_barket_witness
 assert selftest.out contains "PentaShape" else "lower_barket_witness missing PentaShape claim"
 assert selftest.out contains "gate-barket-hexa.glow" else "lower_barket_witness missing hexa fixture"
 assert selftest.out contains "HexaShape" else "lower_barket_witness missing HexaShape claim"
-assert selftest.out contains "hexa-mold argv refused" else "lower_barket_witness missing hexa argv refuse"
+assert selftest.out contains "hexa-shape argv refused" else "lower_barket_witness missing hexa argv refuse"
 assert selftest.out contains "gate-barket-hexa-flip.glow" else "lower_barket_witness missing hexa-flip desk"
-assert selftest.out contains "hexa-mold call-body flip" else "lower_barket_witness missing hexa flip claim"
-assert selftest.out contains "hexa-mold double call-body refused" else "lower_barket_witness missing hexa double refuse"
-assert selftest.out contains "triple-mold argv refused" else "lower_barket_witness missing triple argv refuse"
-assert selftest.out contains "quad-mold argv refused" else "lower_barket_witness missing quad argv refuse"
-assert selftest.out contains "penta-mold argv refused" else "lower_barket_witness missing penta argv refuse"
+assert selftest.out contains "hexa-shape call-body flip" else "lower_barket_witness missing hexa flip claim"
+assert selftest.out contains "hexa-shape double call-body refused" else "lower_barket_witness missing hexa double refuse"
+assert selftest.out contains "triple-shape argv refused" else "lower_barket_witness missing triple argv refuse"
+assert selftest.out contains "quad-shape argv refused" else "lower_barket_witness missing quad argv refuse"
+assert selftest.out contains "penta-shape argv refused" else "lower_barket_witness missing penta argv refuse"
 assert selftest.out contains "gate-barket-penta-flip.glow" else "lower_barket_witness missing penta-flip desk"
-assert selftest.out contains "penta-mold call-body flip" else "lower_barket_witness missing penta flip claim"
-assert selftest.out contains "penta-mold double call-body refused" else "lower_barket_witness missing penta double refuse"
+assert selftest.out contains "penta-shape call-body flip" else "lower_barket_witness missing penta flip claim"
+assert selftest.out contains "penta-shape double call-body refused" else "lower_barket_witness missing penta double refuse"
 assert selftest.out contains "gate-barket-triple-flip.glow" else "lower_barket_witness missing triple-flip desk"
-assert selftest.out contains "triple-mold call-body flip" else "lower_barket_witness missing triple flip claim"
-assert selftest.out contains "triple-mold double call-body refused" else "lower_barket_witness missing triple double refuse"
+assert selftest.out contains "triple-shape call-body flip" else "lower_barket_witness missing triple flip claim"
+assert selftest.out contains "triple-shape double call-body refused" else "lower_barket_witness missing triple double refuse"
 assert selftest.out contains "gate-barket-quad-flip.glow" else "lower_barket_witness missing quad-flip desk"
-assert selftest.out contains "quad-mold call-body flip" else "lower_barket_witness missing quad flip claim"
-assert selftest.out contains "quad-mold double call-body refused" else "lower_barket_witness missing quad double refuse"
+assert selftest.out contains "quad-shape call-body flip" else "lower_barket_witness missing quad flip claim"
+assert selftest.out contains "quad-shape double call-body refused" else "lower_barket_witness missing quad double refuse"
 assert selftest.out contains "call-body flip" else "lower_barket_witness missing kind flip claim"
 assert selftest.out contains "gate-barket-kind-flip.glow" else "lower_barket_witness missing kind-flip desk"
 assert selftest.out contains "gate-barket-xact-flip.glow" else "lower_barket_witness missing xact-flip desk"
-assert selftest.out contains "xact-mold call-body flip" else "lower_barket_witness missing xact flip claim"
+assert selftest.out contains "xact-shape call-body flip" else "lower_barket_witness missing xact flip claim"
 assert selftest.out contains "gate-barket-xfer-flip.glow" else "lower_barket_witness missing xfer-flip desk"
-assert selftest.out contains "xfer-mold call-body flip" else "lower_barket_witness missing xfer flip claim"
+assert selftest.out contains "xfer-shape call-body flip" else "lower_barket_witness missing xfer flip claim"
 assert selftest.out contains "gate-barket-pair-flip.glow" else "lower_barket_witness missing pair-flip desk"
-assert selftest.out contains "pair-mold call-body flip" else "lower_barket_witness missing pair flip claim"
+assert selftest.out contains "pair-shape call-body flip" else "lower_barket_witness missing pair flip claim"
 assert selftest.out contains "gate-barket-amount-u32.glow" else "lower_barket_witness missing amount argv desk"
-assert selftest.out contains "amount-mold argv" else "lower_barket_witness missing amount argv claim"
-assert selftest.out contains "pair-mold argv refused" else "lower_barket_witness missing pair argv refuse"
+assert selftest.out contains "amount-shape argv" else "lower_barket_witness missing amount argv claim"
+assert selftest.out contains "pair-shape argv refused" else "lower_barket_witness missing pair argv refuse"
 assert selftest.out contains "gate-barket-count-u32.glow" else "lower_barket_witness missing count argv desk"
-assert selftest.out contains "count-mold argv" else "lower_barket_witness missing count argv claim"
+assert selftest.out contains "count-shape argv" else "lower_barket_witness missing count argv claim"
 
 let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
 assert build_welcome.ok else "barket welcome .rye build failed: ${build_welcome.err}${build_welcome.out}"
@@ -199,35 +199,35 @@ let emit_a = run ["sh" "-c" "grep -c 'fn emit_argv_main' glow/lower_barket.rye |
 assert trim emit_a.out == "1" else "glow/lower_barket.rye must define emit_argv_main"
 
 let bans = run ["sh" "-c" "rishi/bin/rishi run tools/tame_style_scan_bans.rish"]
-assert bans.ok else "tame_style_scan_bans failed under barket named-mold"
+assert bans.ok else "tame_style_scan_bans failed under barket named-shape"
 assert bans.out contains "lower_barket" else "tame_style_scan_bans missing lower_barket overflow seat"
 
-# STOA118: amount-mold welcome binary exits 0.
+# STOA118: amount-shape welcome binary exits 0.
 let amt_rye = "glow/.cache/gate_barket_amount_welcome.rye"
 let amt_bin = "glow/bin/gate_barket_amount_welcome"
 let build_amt = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${amt_rye} -femit-bin=${amt_bin}"]
-assert build_amt.ok else "barket amount-mold welcome .rye build failed: ${build_amt.err}${build_amt.out}"
+assert build_amt.ok else "barket amount-shape welcome .rye build failed: ${build_amt.err}${build_amt.out}"
 let run_amt = run ["sh" "-c" "${amt_bin}; echo EXIT:$?"]
-assert run_amt.ok else "barket amount-mold welcome binary failed to launch"
-assert run_amt.out contains "EXIT:0" else "barket amount-mold welcome binary did not exit 0"
+assert run_amt.ok else "barket amount-shape welcome binary failed to launch"
+assert run_amt.out contains "EXIT:0" else "barket amount-shape welcome binary did not exit 0"
 
-# STOA132: amount-mold argv binary exits 0 with sample 9.
+# STOA132: amount-shape argv binary exits 0 with sample 9.
 let amt_argv_rye = "glow/.cache/gate_barket_amount_argv.rye"
 let amt_argv_bin = "glow/bin/gate_barket_amount_argv"
 let build_amt_argv = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${amt_argv_rye} -femit-bin=${amt_argv_bin}"]
-assert build_amt_argv.ok else "barket amount-mold argv .rye build failed: ${build_amt_argv.err}${build_amt_argv.out}"
+assert build_amt_argv.ok else "barket amount-shape argv .rye build failed: ${build_amt_argv.err}${build_amt_argv.out}"
 let run_amt_argv = run ["sh" "-c" "${amt_argv_bin} 9; echo EXIT:$?"]
-assert run_amt_argv.ok else "barket amount-mold argv binary failed to launch"
-assert run_amt_argv.out contains "EXIT:0" else "barket amount-mold argv binary did not exit 0 with sample 9"
+assert run_amt_argv.ok else "barket amount-shape argv binary failed to launch"
+assert run_amt_argv.out contains "EXIT:0" else "barket amount-shape argv binary did not exit 0 with sample 9"
 
-# STOA133: count-mold argv binary exits 0 with sample 9.
+# STOA133: count-shape argv binary exits 0 with sample 9.
 let cnt_argv_rye = "glow/.cache/gate_barket_count_argv.rye"
 let cnt_argv_bin = "glow/bin/gate_barket_count_argv"
 let build_cnt_argv = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${cnt_argv_rye} -femit-bin=${cnt_argv_bin}"]
-assert build_cnt_argv.ok else "barket count-mold argv .rye build failed: ${build_cnt_argv.err}${build_cnt_argv.out}"
+assert build_cnt_argv.ok else "barket count-shape argv .rye build failed: ${build_cnt_argv.err}${build_cnt_argv.out}"
 let run_cnt_argv = run ["sh" "-c" "${cnt_argv_bin} 9; echo EXIT:$?"]
-assert run_cnt_argv.ok else "barket count-mold argv binary failed to launch"
-assert run_cnt_argv.out contains "EXIT:0" else "barket count-mold argv binary did not exit 0 with sample 9"
+assert run_cnt_argv.ok else "barket count-shape argv binary failed to launch"
+assert run_cnt_argv.out contains "EXIT:0" else "barket count-shape argv binary did not exit 0 with sample 9"
 
 # STOA121 / STOA130: barket passes is_nesting=true through nesting-nests; no stated not_nesting pin.
 let wet_wire = run ["sh" "-c" "grep -c 'assert_sample_nesting_nests(true' glow/rune_barket.rye | tr -d ' '"]
@@ -235,215 +235,215 @@ assert trim wet_wire.out != "0" else "glow/rune_barket.rye must call assert_samp
 let dry_pin = run ["sh" "-c" "grep -c 'assert_sample_not_nesting(false)' glow/rune_barket.rye | tr -d ' '"]
 assert trim dry_pin.out == "0" else "glow/rune_barket.rye must drop assert_sample_not_nesting(false)"
 
-# STOA122: count-mold welcome binary exits 0.
+# STOA122: count-shape welcome binary exits 0.
 let cnt_rye = "glow/.cache/gate_barket_count_welcome.rye"
 let cnt_bin = "glow/bin/gate_barket_count_welcome"
 let build_cnt = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${cnt_rye} -femit-bin=${cnt_bin}"]
-assert build_cnt.ok else "barket count-mold welcome .rye build failed: ${build_cnt.err}${build_cnt.out}"
+assert build_cnt.ok else "barket count-shape welcome .rye build failed: ${build_cnt.err}${build_cnt.out}"
 let run_cnt = run ["sh" "-c" "${cnt_bin}; echo EXIT:$?"]
-assert run_cnt.ok else "barket count-mold welcome binary failed to launch"
-assert run_cnt.out contains "EXIT:0" else "barket count-mold welcome binary did not exit 0"
+assert run_cnt.ok else "barket count-shape welcome binary failed to launch"
+assert run_cnt.out contains "EXIT:0" else "barket count-shape welcome binary did not exit 0"
 
-# STOA123: kind-mold welcome binary exits 0.
+# STOA123: kind-shape welcome binary exits 0.
 let kind_rye = "glow/.cache/gate_barket_kind_welcome.rye"
 let kind_bin = "glow/bin/gate_barket_kind_welcome"
 let build_kind = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${kind_rye} -femit-bin=${kind_bin}"]
-assert build_kind.ok else "barket kind-mold welcome .rye build failed: ${build_kind.err}${build_kind.out}"
+assert build_kind.ok else "barket kind-shape welcome .rye build failed: ${build_kind.err}${build_kind.out}"
 let run_kind = run ["sh" "-c" "${kind_bin}; echo EXIT:$?"]
-assert run_kind.ok else "barket kind-mold welcome binary failed to launch"
-assert run_kind.out contains "EXIT:0" else "barket kind-mold welcome binary did not exit 0"
+assert run_kind.ok else "barket kind-shape welcome binary failed to launch"
+assert run_kind.out contains "EXIT:0" else "barket kind-shape welcome binary did not exit 0"
 
-# STOA124: xact-mold welcome binary exits 0.
+# STOA124: xact-shape welcome binary exits 0.
 let xact_rye = "glow/.cache/gate_barket_xact_welcome.rye"
 let xact_bin = "glow/bin/gate_barket_xact_welcome"
 let build_xact = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${xact_rye} -femit-bin=${xact_bin}"]
-assert build_xact.ok else "barket xact-mold welcome .rye build failed: ${build_xact.err}${build_xact.out}"
+assert build_xact.ok else "barket xact-shape welcome .rye build failed: ${build_xact.err}${build_xact.out}"
 let run_xact = run ["sh" "-c" "${xact_bin}; echo EXIT:$?"]
-assert run_xact.ok else "barket xact-mold welcome binary failed to launch"
-assert run_xact.out contains "EXIT:0" else "barket xact-mold welcome binary did not exit 0"
+assert run_xact.ok else "barket xact-shape welcome binary failed to launch"
+assert run_xact.out contains "EXIT:0" else "barket xact-shape welcome binary did not exit 0"
 
-# STOA125: xfer-mold welcome binary exits 0.
+# STOA125: xfer-shape welcome binary exits 0.
 let xfer_rye = "glow/.cache/gate_barket_xfer_welcome.rye"
 let xfer_bin = "glow/bin/gate_barket_xfer_welcome"
 let build_xfer = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${xfer_rye} -femit-bin=${xfer_bin}"]
-assert build_xfer.ok else "barket xfer-mold welcome .rye build failed: ${build_xfer.err}${build_xfer.out}"
+assert build_xfer.ok else "barket xfer-shape welcome .rye build failed: ${build_xfer.err}${build_xfer.out}"
 let run_xfer = run ["sh" "-c" "${xfer_bin}; echo EXIT:$?"]
-assert run_xfer.ok else "barket xfer-mold welcome binary failed to launch"
-assert run_xfer.out contains "EXIT:0" else "barket xfer-mold welcome binary did not exit 0"
+assert run_xfer.ok else "barket xfer-shape welcome binary failed to launch"
+assert run_xfer.out contains "EXIT:0" else "barket xfer-shape welcome binary did not exit 0"
 
-# STOA126: pair-mold welcome binary exits 0.
+# STOA126: pair-shape welcome binary exits 0.
 let pair_rye = "glow/.cache/gate_barket_pair_welcome.rye"
 let pair_bin = "glow/bin/gate_barket_pair_welcome"
 let build_pair = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${pair_rye} -femit-bin=${pair_bin}"]
-assert build_pair.ok else "barket pair-mold welcome .rye build failed: ${build_pair.err}${build_pair.out}"
+assert build_pair.ok else "barket pair-shape welcome .rye build failed: ${build_pair.err}${build_pair.out}"
 let run_pair = run ["sh" "-c" "${pair_bin}; echo EXIT:$?"]
-assert run_pair.ok else "barket pair-mold welcome binary failed to launch"
-assert run_pair.out contains "EXIT:0" else "barket pair-mold welcome binary did not exit 0"
+assert run_pair.ok else "barket pair-shape welcome binary failed to launch"
+assert run_pair.out contains "EXIT:0" else "barket pair-shape welcome binary did not exit 0"
 
-# STOA134: triple-mold welcome binary exits 0.
+# STOA134: triple-shape welcome binary exits 0.
 let triple_rye = "glow/.cache/gate_barket_triple_welcome.rye"
 let triple_bin = "glow/bin/gate_barket_triple_welcome"
 let build_triple = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${triple_rye} -femit-bin=${triple_bin}"]
-assert build_triple.ok else "barket triple-mold welcome .rye build failed: ${build_triple.err}${build_triple.out}"
+assert build_triple.ok else "barket triple-shape welcome .rye build failed: ${build_triple.err}${build_triple.out}"
 let run_triple = run ["sh" "-c" "${triple_bin}; echo EXIT:$?"]
-assert run_triple.ok else "barket triple-mold welcome binary failed to launch"
-assert run_triple.out contains "EXIT:0" else "barket triple-mold welcome binary did not exit 0"
+assert run_triple.ok else "barket triple-shape welcome binary failed to launch"
+assert run_triple.out contains "EXIT:0" else "barket triple-shape welcome binary did not exit 0"
 
-# STOA135: quad-mold welcome binary exits 0.
+# STOA135: quad-shape welcome binary exits 0.
 let quad_rye = "glow/.cache/gate_barket_quad_welcome.rye"
 let quad_bin = "glow/bin/gate_barket_quad_welcome"
 let build_quad = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${quad_rye} -femit-bin=${quad_bin}"]
-assert build_quad.ok else "barket quad-mold welcome .rye build failed: ${build_quad.err}${build_quad.out}"
+assert build_quad.ok else "barket quad-shape welcome .rye build failed: ${build_quad.err}${build_quad.out}"
 let run_quad = run ["sh" "-c" "${quad_bin}; echo EXIT:$?"]
-assert run_quad.ok else "barket quad-mold welcome binary failed to launch"
-assert run_quad.out contains "EXIT:0" else "barket quad-mold welcome binary did not exit 0"
+assert run_quad.ok else "barket quad-shape welcome binary failed to launch"
+assert run_quad.out contains "EXIT:0" else "barket quad-shape welcome binary did not exit 0"
 
-# STOA138: penta-mold welcome binary exits 0.
+# STOA138: penta-shape welcome binary exits 0.
 let penta_rye = "glow/.cache/gate_barket_penta_welcome.rye"
 let penta_bin = "glow/bin/gate_barket_penta_welcome"
 let build_penta = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${penta_rye} -femit-bin=${penta_bin}"]
-assert build_penta.ok else "barket penta-mold welcome .rye build failed: ${build_penta.err}${build_penta.out}"
+assert build_penta.ok else "barket penta-shape welcome .rye build failed: ${build_penta.err}${build_penta.out}"
 let run_penta = run ["sh" "-c" "${penta_bin}; echo EXIT:$?"]
-assert run_penta.ok else "barket penta-mold welcome binary failed to launch"
-assert run_penta.out contains "EXIT:0" else "barket penta-mold welcome binary did not exit 0"
+assert run_penta.ok else "barket penta-shape welcome binary failed to launch"
+assert run_penta.out contains "EXIT:0" else "barket penta-shape welcome binary did not exit 0"
 
-# STOA140: hexa-mold welcome binary exits 0.
+# STOA140: hexa-shape welcome binary exits 0.
 let hexa_rye = "glow/.cache/gate_barket_hexa_welcome.rye"
 let hexa_bin = "glow/bin/gate_barket_hexa_welcome"
 let build_hexa = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${hexa_rye} -femit-bin=${hexa_bin}"]
-assert build_hexa.ok else "barket hexa-mold welcome .rye build failed: ${build_hexa.err}${build_hexa.out}"
+assert build_hexa.ok else "barket hexa-shape welcome .rye build failed: ${build_hexa.err}${build_hexa.out}"
 let run_hexa = run ["sh" "-c" "${hexa_bin}; echo EXIT:$?"]
-assert run_hexa.ok else "barket hexa-mold welcome binary failed to launch"
-assert run_hexa.out contains "EXIT:0" else "barket hexa-mold welcome binary did not exit 0"
+assert run_hexa.ok else "barket hexa-shape welcome binary failed to launch"
+assert run_hexa.out contains "EXIT:0" else "barket hexa-shape welcome binary did not exit 0"
 
-# STOA142: hepta-mold welcome binary exits 0.
+# STOA142: hepta-shape welcome binary exits 0.
 let hepta_rye = "glow/.cache/gate_barket_hepta_welcome.rye"
 let hepta_bin = "glow/bin/gate_barket_hepta_welcome"
 let build_hepta = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${hepta_rye} -femit-bin=${hepta_bin}"]
-assert build_hepta.ok else "barket hepta-mold welcome .rye build failed: ${build_hepta.err}${build_hepta.out}"
+assert build_hepta.ok else "barket hepta-shape welcome .rye build failed: ${build_hepta.err}${build_hepta.out}"
 let run_hepta = run ["sh" "-c" "${hepta_bin}; echo EXIT:$?"]
-assert run_hepta.ok else "barket hepta-mold welcome binary failed to launch"
-assert run_hepta.out contains "EXIT:0" else "barket hepta-mold welcome binary did not exit 0"
+assert run_hepta.ok else "barket hepta-shape welcome binary failed to launch"
+assert run_hepta.out contains "EXIT:0" else "barket hepta-shape welcome binary did not exit 0"
 
-# STOA144: octa-mold welcome binary exits 0.
+# STOA144: octa-shape welcome binary exits 0.
 let octa_rye = "glow/.cache/gate_barket_octa_welcome.rye"
 let octa_bin = "glow/bin/gate_barket_octa_welcome"
 let build_octa = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${octa_rye} -femit-bin=${octa_bin}"]
-assert build_octa.ok else "barket octa-mold welcome .rye build failed: ${build_octa.err}${build_octa.out}"
+assert build_octa.ok else "barket octa-shape welcome .rye build failed: ${build_octa.err}${build_octa.out}"
 let run_octa = run ["sh" "-c" "${octa_bin}; echo EXIT:$?"]
-assert run_octa.ok else "barket octa-mold welcome binary failed to launch"
-assert run_octa.out contains "EXIT:0" else "barket octa-mold welcome binary did not exit 0"
+assert run_octa.ok else "barket octa-shape welcome binary failed to launch"
+assert run_octa.out contains "EXIT:0" else "barket octa-shape welcome binary did not exit 0"
 
-# STOA146: nona-mold welcome binary exits 0.
+# STOA146: nona-shape welcome binary exits 0.
 let nona_rye = "glow/.cache/gate_barket_nona_welcome.rye"
 let nona_bin = "glow/bin/gate_barket_nona_welcome"
 let build_nona = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${nona_rye} -femit-bin=${nona_bin}"]
-assert build_nona.ok else "barket nona-mold welcome .rye build failed: ${build_nona.err}${build_nona.out}"
+assert build_nona.ok else "barket nona-shape welcome .rye build failed: ${build_nona.err}${build_nona.out}"
 let run_nona = run ["sh" "-c" "${nona_bin}; echo EXIT:$?"]
-assert run_nona.ok else "barket nona-mold welcome binary failed to launch"
-assert run_nona.out contains "EXIT:0" else "barket nona-mold welcome binary did not exit 0"
+assert run_nona.ok else "barket nona-shape welcome binary failed to launch"
+assert run_nona.out contains "EXIT:0" else "barket nona-shape welcome binary did not exit 0"
 
-# STOA127: kind-mold flip call-body welcome binary exits 0.
+# STOA127: kind-shape flip call-body welcome binary exits 0.
 let kind_flip_rye = "glow/.cache/gate_barket_kind_flip_welcome.rye"
 let kind_flip_bin = "glow/bin/gate_barket_kind_flip_welcome"
 let build_kf = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${kind_flip_rye} -femit-bin=${kind_flip_bin}"]
-assert build_kf.ok else "barket kind-mold flip welcome .rye build failed: ${build_kf.err}${build_kf.out}"
+assert build_kf.ok else "barket kind-shape flip welcome .rye build failed: ${build_kf.err}${build_kf.out}"
 let run_kf = run ["sh" "-c" "${kind_flip_bin}; echo EXIT:$?"]
-assert run_kf.ok else "barket kind-mold flip welcome binary failed to launch"
-assert run_kf.out contains "EXIT:0" else "barket kind-mold flip welcome binary did not exit 0"
+assert run_kf.ok else "barket kind-shape flip welcome binary failed to launch"
+assert run_kf.out contains "EXIT:0" else "barket kind-shape flip welcome binary did not exit 0"
 
-# STOA128: xact-mold flip call-body welcome binary exits 0.
+# STOA128: xact-shape flip call-body welcome binary exits 0.
 let xact_flip_rye = "glow/.cache/gate_barket_xact_flip_welcome.rye"
 let xact_flip_bin = "glow/bin/gate_barket_xact_flip_welcome"
 let build_xf = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${xact_flip_rye} -femit-bin=${xact_flip_bin}"]
-assert build_xf.ok else "barket xact-mold flip welcome .rye build failed: ${build_xf.err}${build_xf.out}"
+assert build_xf.ok else "barket xact-shape flip welcome .rye build failed: ${build_xf.err}${build_xf.out}"
 let run_xf = run ["sh" "-c" "${xact_flip_bin}; echo EXIT:$?"]
-assert run_xf.ok else "barket xact-mold flip welcome binary failed to launch"
-assert run_xf.out contains "EXIT:0" else "barket xact-mold flip welcome binary did not exit 0"
+assert run_xf.ok else "barket xact-shape flip welcome binary failed to launch"
+assert run_xf.out contains "EXIT:0" else "barket xact-shape flip welcome binary did not exit 0"
 
-# STOA129: xfer-mold flip call-body welcome binary exits 0.
+# STOA129: xfer-shape flip call-body welcome binary exits 0.
 let xfer_flip_rye = "glow/.cache/gate_barket_xfer_flip_welcome.rye"
 let xfer_flip_bin = "glow/bin/gate_barket_xfer_flip_welcome"
 let build_xff = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${xfer_flip_rye} -femit-bin=${xfer_flip_bin}"]
-assert build_xff.ok else "barket xfer-mold flip welcome .rye build failed: ${build_xff.err}${build_xff.out}"
+assert build_xff.ok else "barket xfer-shape flip welcome .rye build failed: ${build_xff.err}${build_xff.out}"
 let run_xff = run ["sh" "-c" "${xfer_flip_bin}; echo EXIT:$?"]
-assert run_xff.ok else "barket xfer-mold flip welcome binary failed to launch"
-assert run_xff.out contains "EXIT:0" else "barket xfer-mold flip welcome binary did not exit 0"
+assert run_xff.ok else "barket xfer-shape flip welcome binary failed to launch"
+assert run_xff.out contains "EXIT:0" else "barket xfer-shape flip welcome binary did not exit 0"
 
-# STOA131: pair-mold flip call-body welcome binary exits 0.
+# STOA131: pair-shape flip call-body welcome binary exits 0.
 let pair_flip_rye = "glow/.cache/gate_barket_pair_flip_welcome.rye"
 let pair_flip_bin = "glow/bin/gate_barket_pair_flip_welcome"
 let build_pf = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${pair_flip_rye} -femit-bin=${pair_flip_bin}"]
-assert build_pf.ok else "barket pair-mold flip welcome .rye build failed: ${build_pf.err}${build_pf.out}"
+assert build_pf.ok else "barket pair-shape flip welcome .rye build failed: ${build_pf.err}${build_pf.out}"
 let run_pf = run ["sh" "-c" "${pair_flip_bin}; echo EXIT:$?"]
-assert run_pf.ok else "barket pair-mold flip welcome binary failed to launch"
-assert run_pf.out contains "EXIT:0" else "barket pair-mold flip welcome binary did not exit 0"
+assert run_pf.ok else "barket pair-shape flip welcome binary failed to launch"
+assert run_pf.out contains "EXIT:0" else "barket pair-shape flip welcome binary did not exit 0"
 
-# STOA136: triple-mold flip call-body welcome binary exits 0.
+# STOA136: triple-shape flip call-body welcome binary exits 0.
 let triple_flip_rye = "glow/.cache/gate_barket_triple_flip_welcome.rye"
 let triple_flip_bin = "glow/bin/gate_barket_triple_flip_welcome"
 let build_tf = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${triple_flip_rye} -femit-bin=${triple_flip_bin}"]
-assert build_tf.ok else "barket triple-mold flip welcome .rye build failed: ${build_tf.err}${build_tf.out}"
+assert build_tf.ok else "barket triple-shape flip welcome .rye build failed: ${build_tf.err}${build_tf.out}"
 let run_tf = run ["sh" "-c" "${triple_flip_bin}; echo EXIT:$?"]
-assert run_tf.ok else "barket triple-mold flip welcome binary failed to launch"
-assert run_tf.out contains "EXIT:0" else "barket triple-mold flip welcome binary did not exit 0"
+assert run_tf.ok else "barket triple-shape flip welcome binary failed to launch"
+assert run_tf.out contains "EXIT:0" else "barket triple-shape flip welcome binary did not exit 0"
 
-# STOA137: quad-mold flip call-body welcome binary exits 0.
+# STOA137: quad-shape flip call-body welcome binary exits 0.
 let quad_flip_rye = "glow/.cache/gate_barket_quad_flip_welcome.rye"
 let quad_flip_bin = "glow/bin/gate_barket_quad_flip_welcome"
 let build_qf = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${quad_flip_rye} -femit-bin=${quad_flip_bin}"]
-assert build_qf.ok else "barket quad-mold flip welcome .rye build failed: ${build_qf.err}${build_qf.out}"
+assert build_qf.ok else "barket quad-shape flip welcome .rye build failed: ${build_qf.err}${build_qf.out}"
 let run_qf = run ["sh" "-c" "${quad_flip_bin}; echo EXIT:$?"]
-assert run_qf.ok else "barket quad-mold flip welcome binary failed to launch"
-assert run_qf.out contains "EXIT:0" else "barket quad-mold flip welcome binary did not exit 0"
+assert run_qf.ok else "barket quad-shape flip welcome binary failed to launch"
+assert run_qf.out contains "EXIT:0" else "barket quad-shape flip welcome binary did not exit 0"
 
-# STOA139: penta-mold flip call-body welcome binary exits 0.
+# STOA139: penta-shape flip call-body welcome binary exits 0.
 let penta_flip_rye = "glow/.cache/gate_barket_penta_flip_welcome.rye"
 let penta_flip_bin = "glow/bin/gate_barket_penta_flip_welcome"
 let build_pfenta = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${penta_flip_rye} -femit-bin=${penta_flip_bin}"]
-assert build_pfenta.ok else "barket penta-mold flip welcome .rye build failed: ${build_pfenta.err}${build_pfenta.out}"
+assert build_pfenta.ok else "barket penta-shape flip welcome .rye build failed: ${build_pfenta.err}${build_pfenta.out}"
 let run_pfenta = run ["sh" "-c" "${penta_flip_bin}; echo EXIT:$?"]
-assert run_pfenta.ok else "barket penta-mold flip welcome binary failed to launch"
-assert run_pfenta.out contains "EXIT:0" else "barket penta-mold flip welcome binary did not exit 0"
+assert run_pfenta.ok else "barket penta-shape flip welcome binary failed to launch"
+assert run_pfenta.out contains "EXIT:0" else "barket penta-shape flip welcome binary did not exit 0"
 
-# STOA141: hexa-mold flip call-body welcome binary exits 0.
+# STOA141: hexa-shape flip call-body welcome binary exits 0.
 let hexa_flip_rye = "glow/.cache/gate_barket_hexa_flip_welcome.rye"
 let hexa_flip_bin = "glow/bin/gate_barket_hexa_flip_welcome"
 let build_hxf = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${hexa_flip_rye} -femit-bin=${hexa_flip_bin}"]
-assert build_hxf.ok else "barket hexa-mold flip welcome .rye build failed: ${build_hxf.err}${build_hxf.out}"
+assert build_hxf.ok else "barket hexa-shape flip welcome .rye build failed: ${build_hxf.err}${build_hxf.out}"
 let run_hxf = run ["sh" "-c" "${hexa_flip_bin}; echo EXIT:$?"]
-assert run_hxf.ok else "barket hexa-mold flip welcome binary failed to launch"
-assert run_hxf.out contains "EXIT:0" else "barket hexa-mold flip welcome binary did not exit 0"
+assert run_hxf.ok else "barket hexa-shape flip welcome binary failed to launch"
+assert run_hxf.out contains "EXIT:0" else "barket hexa-shape flip welcome binary did not exit 0"
 
-# STOA143: hepta-mold flip call-body welcome binary exits 0.
+# STOA143: hepta-shape flip call-body welcome binary exits 0.
 let hepta_flip_rye = "glow/.cache/gate_barket_hepta_flip_welcome.rye"
 let hepta_flip_bin = "glow/bin/gate_barket_hepta_flip_welcome"
 let build_htf = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${hepta_flip_rye} -femit-bin=${hepta_flip_bin}"]
-assert build_htf.ok else "barket hepta-mold flip welcome .rye build failed: ${build_htf.err}${build_htf.out}"
+assert build_htf.ok else "barket hepta-shape flip welcome .rye build failed: ${build_htf.err}${build_htf.out}"
 let run_htf = run ["sh" "-c" "${hepta_flip_bin}; echo EXIT:$?"]
-assert run_htf.ok else "barket hepta-mold flip welcome binary failed to launch"
-assert run_htf.out contains "EXIT:0" else "barket hepta-mold flip welcome binary did not exit 0"
+assert run_htf.ok else "barket hepta-shape flip welcome binary failed to launch"
+assert run_htf.out contains "EXIT:0" else "barket hepta-shape flip welcome binary did not exit 0"
 
-# STOA145: octa-mold flip call-body welcome binary exits 0.
+# STOA145: octa-shape flip call-body welcome binary exits 0.
 let octa_flip_rye = "glow/.cache/gate_barket_octa_flip_welcome.rye"
 let octa_flip_bin = "glow/bin/gate_barket_octa_flip_welcome"
 let build_otf = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${octa_flip_rye} -femit-bin=${octa_flip_bin}"]
-assert build_otf.ok else "barket octa-mold flip welcome .rye build failed: ${build_otf.err}${build_otf.out}"
+assert build_otf.ok else "barket octa-shape flip welcome .rye build failed: ${build_otf.err}${build_otf.out}"
 let run_otf = run ["sh" "-c" "${octa_flip_bin}; echo EXIT:$?"]
-assert run_otf.ok else "barket octa-mold flip welcome binary failed to launch"
-assert run_otf.out contains "EXIT:0" else "barket octa-mold flip welcome binary did not exit 0"
+assert run_otf.ok else "barket octa-shape flip welcome binary failed to launch"
+assert run_otf.out contains "EXIT:0" else "barket octa-shape flip welcome binary did not exit 0"
 
-# STOA147: nona-mold flip call-body welcome binary exits 0.
+# STOA147: nona-shape flip call-body welcome binary exits 0.
 let nona_flip_rye = "glow/.cache/gate_barket_nona_flip_welcome.rye"
 let nona_flip_bin = "glow/bin/gate_barket_nona_flip_welcome"
 let build_nnf = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${nona_flip_rye} -femit-bin=${nona_flip_bin}"]
-assert build_nnf.ok else "barket nona-mold flip welcome .rye build failed: ${build_nnf.err}${build_nnf.out}"
+assert build_nnf.ok else "barket nona-shape flip welcome .rye build failed: ${build_nnf.err}${build_nnf.out}"
 let run_nnf = run ["sh" "-c" "${nona_flip_bin}; echo EXIT:$?"]
-assert run_nnf.ok else "barket nona-mold flip welcome binary failed to launch"
-assert run_nnf.out contains "EXIT:0" else "barket nona-mold flip welcome binary did not exit 0"
+assert run_nnf.ok else "barket nona-shape flip welcome binary failed to launch"
+assert run_nnf.out contains "EXIT:0" else "barket nona-shape flip welcome binary did not exit 0"
 
 # STOA255: pair…nona identity emit collapses through emit_n_field_identity.
 let n_field = run ["sh" "-c" "grep -q 'fn emit_n_field_identity' glow/lower_barket.rye && test $(grep -Fc 'return emit_n_field_identity(' glow/lower_barket.rye) = 8"]
 assert n_field.ok else "STOA255 missing emit_n_field_identity or eight identity wrappers"
 
-say "GREEN: Glow barket lower — STOA113–147 · STOA255 N-field identity emit · identity · argv · call-body · amount-mold · amount argv · count-mold · count argv · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · pair flip · triple-mold · triple flip · quad-mold · quad flip · penta-mold · penta flip · hexa-mold · hexa flip · hepta-mold · hepta flip · octa-mold · octa flip · nona-mold · nona flip · nesting-through-nests."
+say "GREEN: Glow barket lower — STOA113–147 · STOA255 N-field identity emit · STOA257 shape-only living · identity · argv · call-body · amount-shape · amount argv · count-shape · count argv · kind-shape · kind flip · xact-shape · xact flip · xfer-shape · xfer flip · pair-shape · pair flip · triple-shape · triple flip · quad-shape · quad flip · penta-shape · penta flip · hexa-shape · hexa flip · hepta-shape · hepta flip · octa-shape · octa flip · nona-shape · nona flip · nesting-through-nests."

@@ -56,85 +56,86 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("barket: @u64 refused SampleDoesNotNest -- GREEN\n", .{});
 
-    // STOA118 / STOA122–126 / STOA134–135/138/140/142/144/146: named molds through nona accept; deca refuses.
-    // mold_name_slice keeps the source spelling (study -mold or living -shape).
-    const amt = try rb.parse_source("|^  sample=amount-mold\nsample\n");
+    // STOA118 / STOA122–126 / STOA134–135/138/140/142/144/146 / STOA257:
+    // living samples speak -shape; mold_name_slice keeps source spelling.
+    const amt = try rb.parse_source("|^  sample=amount-shape\nsample\n");
     assert(amt.body == .identity);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&amt), "amount-mold"));
-    print("barket: sample=amount-mold accepts -- GREEN\n", .{});
-
-    const amt_shape = try rb.parse_source("|^  sample=amount-shape\nsample\n");
-    assert(amt_shape.body == .identity);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&amt_shape), "amount-shape"));
+    assert(std.mem.eql(u8, rb.mold_name_slice(&amt), "amount-shape"));
     print("barket: sample=amount-shape accepts -- GREEN\n", .{});
 
-    const kind = try rb.parse_source("|^  sample=kind-mold\nsample\n");
+    // STOA257: study alias -mold still nests (parse accept; not living speech).
+    const amt_study = try rb.parse_source("|^  sample=amount-mold\nsample\n");
+    assert(amt_study.body == .identity);
+    assert(std.mem.eql(u8, rb.mold_name_slice(&amt_study), "amount-mold"));
+    print("barket: study alias sample=amount-mold still accepts -- GREEN\n", .{});
+
+    const kind = try rb.parse_source("|^  sample=kind-shape\nsample\n");
     assert(kind.body == .identity);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&kind), "kind-mold"));
-    print("barket: sample=kind-mold accepts -- GREEN\n", .{});
+    assert(std.mem.eql(u8, rb.mold_name_slice(&kind), "kind-shape"));
+    print("barket: sample=kind-shape accepts -- GREEN\n", .{});
 
-    const xact = try rb.parse_source("|^  sample=xact-mold\nsample\n");
+    const xact = try rb.parse_source("|^  sample=xact-shape\nsample\n");
     assert(xact.body == .identity);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&xact), "xact-mold"));
-    print("barket: sample=xact-mold accepts -- GREEN\n", .{});
+    assert(std.mem.eql(u8, rb.mold_name_slice(&xact), "xact-shape"));
+    print("barket: sample=xact-shape accepts -- GREEN\n", .{});
 
-    const xfer = try rb.parse_source("|^  sample=xfer-mold\nsample\n");
+    const xfer = try rb.parse_source("|^  sample=xfer-shape\nsample\n");
     assert(xfer.body == .identity);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&xfer), "xfer-mold"));
-    print("barket: sample=xfer-mold accepts -- GREEN\n", .{});
+    assert(std.mem.eql(u8, rb.mold_name_slice(&xfer), "xfer-shape"));
+    print("barket: sample=xfer-shape accepts -- GREEN\n", .{});
 
-    const pair = try rb.parse_source("|^  sample=pair-mold\nsample\n");
+    const pair = try rb.parse_source("|^  sample=pair-shape\nsample\n");
     assert(pair.body == .identity);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&pair), "pair-mold"));
-    print("barket: sample=pair-mold accepts -- GREEN\n", .{});
+    assert(std.mem.eql(u8, rb.mold_name_slice(&pair), "pair-shape"));
+    print("barket: sample=pair-shape accepts -- GREEN\n", .{});
 
-    const triple = try rb.parse_source("|^  sample=triple-mold\nsample\n");
+    const triple = try rb.parse_source("|^  sample=triple-shape\nsample\n");
     assert(triple.body == .identity);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&triple), "triple-mold"));
-    print("barket: sample=triple-mold accepts -- GREEN\n", .{});
+    assert(std.mem.eql(u8, rb.mold_name_slice(&triple), "triple-shape"));
+    print("barket: sample=triple-shape accepts -- GREEN\n", .{});
 
-    const quad = try rb.parse_source("|^  sample=quad-mold\nsample\n");
+    const quad = try rb.parse_source("|^  sample=quad-shape\nsample\n");
     assert(quad.body == .identity);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&quad), "quad-mold"));
-    print("barket: sample=quad-mold accepts -- GREEN\n", .{});
+    assert(std.mem.eql(u8, rb.mold_name_slice(&quad), "quad-shape"));
+    print("barket: sample=quad-shape accepts -- GREEN\n", .{});
 
-    const penta = try rb.parse_source("|^  sample=penta-mold\nsample\n");
+    const penta = try rb.parse_source("|^  sample=penta-shape\nsample\n");
     assert(penta.body == .identity);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&penta), "penta-mold"));
-    print("barket: sample=penta-mold accepts -- GREEN\n", .{});
+    assert(std.mem.eql(u8, rb.mold_name_slice(&penta), "penta-shape"));
+    print("barket: sample=penta-shape accepts -- GREEN\n", .{});
 
-    const hexa = try rb.parse_source("|^  sample=hexa-mold\nsample\n");
+    const hexa = try rb.parse_source("|^  sample=hexa-shape\nsample\n");
     assert(hexa.body == .identity);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&hexa), "hexa-mold"));
-    print("barket: sample=hexa-mold accepts -- GREEN\n", .{});
+    assert(std.mem.eql(u8, rb.mold_name_slice(&hexa), "hexa-shape"));
+    print("barket: sample=hexa-shape accepts -- GREEN\n", .{});
 
-    const hepta = try rb.parse_source("|^  sample=hepta-mold\nsample\n");
+    const hepta = try rb.parse_source("|^  sample=hepta-shape\nsample\n");
     assert(hepta.body == .identity);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&hepta), "hepta-mold"));
-    print("barket: sample=hepta-mold accepts -- GREEN\n", .{});
+    assert(std.mem.eql(u8, rb.mold_name_slice(&hepta), "hepta-shape"));
+    print("barket: sample=hepta-shape accepts -- GREEN\n", .{});
 
-    const octa = try rb.parse_source("|^  sample=octa-mold\nsample\n");
+    const octa = try rb.parse_source("|^  sample=octa-shape\nsample\n");
     assert(octa.body == .identity);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&octa), "octa-mold"));
-    print("barket: sample=octa-mold accepts -- GREEN\n", .{});
+    assert(std.mem.eql(u8, rb.mold_name_slice(&octa), "octa-shape"));
+    print("barket: sample=octa-shape accepts -- GREEN\n", .{});
 
-    const nona = try rb.parse_source("|^  sample=nona-mold\nsample\n");
+    const nona = try rb.parse_source("|^  sample=nona-shape\nsample\n");
     assert(nona.body == .identity);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&nona), "nona-mold"));
-    print("barket: sample=nona-mold accepts -- GREEN\n", .{});
+    assert(std.mem.eql(u8, rb.mold_name_slice(&nona), "nona-shape"));
+    print("barket: sample=nona-shape accepts -- GREEN\n", .{});
 
-    if (rb.parse_source("|^  sample=deca-mold\nsample\n")) |_| {
-        return error.BarketDecaMoldAcceptedTooSoon;
+    if (rb.parse_source("|^  sample=deca-shape\nsample\n")) |_| {
+        return error.BarketDecaShapeAcceptedTooSoon;
     } else |err| {
         if (err != rb.ParseError.SampleDoesNotNest) return err;
     }
-    print("barket: sample=deca-mold refused SampleDoesNotNest -- GREEN\n", .{});
+    print("barket: sample=deca-shape refused SampleDoesNotNest -- GREEN\n", .{});
 
-    // STOA122: count-mold accepts beside amount-mold.
-    const cnt = try rb.parse_source("|^  sample=count-mold\nsample\n");
+    // STOA122: count-shape accepts beside amount-shape.
+    const cnt = try rb.parse_source("|^  sample=count-shape\nsample\n");
     assert(cnt.body == .identity);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&cnt), "count-mold"));
-    print("barket: sample=count-mold accepts -- GREEN\n", .{});
+    assert(std.mem.eql(u8, rb.mold_name_slice(&cnt), "count-shape"));
+    print("barket: sample=count-shape accepts -- GREEN\n", .{});
 
     // Bartis rune refuses NotABarket.
     if (rb.parse_source("|=  sample=@u32\nsample\n")) |_| {
@@ -144,7 +145,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("barket: |= refused NotABarket -- GREEN\n", .{});
 
-    print("GREEN: Glow barket parse — stated header · identity · call-body trio · amount-mold · count-mold · kind-mold · xact-mold · xfer-mold · pair-mold · triple-mold · quad-mold · penta-mold · hexa-mold · hepta-mold · octa-mold · nona-mold · nesting-through-nests; STOA112–135/138/140/142/144/146.\n", .{});
+    print("GREEN: Glow barket parse — stated header · identity · call-body trio · amount-shape · count-shape · kind-shape · xact-shape · xfer-shape · pair-shape · triple-shape · quad-shape · penta-shape · hexa-shape · hepta-shape · octa-shape · nona-shape · study alias amount-mold · nesting-through-nests; STOA112–146 · STOA257.\n", .{});
     _ = witness_version;
     return 0;
 }

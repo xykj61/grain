@@ -1,6 +1,6 @@
 //! glow/rune_bartis.rye — parses Glow's `|=` bartis gate rune (STOA100–109 · STOA120).
 //!
-//! Thin one-arm gate: `|=  sample=@u32` or `|=  sample=amount-mold` on line one,
+//! Thin one-arm gate: `|=  sample=@u32` or `|=  sample=amount-shape` on line one,
 //! then either:
 //!   - identity body: bare face matching the sample (STOA100)
 //!   - call body: `%-  <gate>  <sample-face>` (STOA103–104)

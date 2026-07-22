@@ -1,6 +1,6 @@
 //! glow/rune_barket.rye — parses Glow's `|^` barket (STOA112–120).
 //!
-//! Stated-sample demo: `|^  sample=@u32` or `|^  sample=amount-mold` header, then either:
+//! Stated-sample demo: `|^  sample=@u32` or `|^  sample=amount-shape` header, then either:
 //!   - header-only (STOA112)
 //!   - identity body face (STOA113)
 //!   - call body: `%-  <gate>  <sample-face>` (STOA115–116)
