@@ -6,8 +6,8 @@
 **Version:** `20260722.152631` (EDT · Framework host)  
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
 **Voice:** Quin  
-**Status:** Checkable — lean **A** send with round-close · lean **B** host boot→harvest chain  
-**Register:** Checkable (Two Rooms) — STOA275 GREEN with this send; multi-AVD still Intent  
+**Status:** Checkable — lean **A** send done · lean **B** chosen → STOA277  
+**Register:** Checkable (Two Rooms) — STOA275 GREEN; boot→harvest chain authored as STOA277  
 
 **Grounds in:** STOA275 inventary · STOA274 lean A · HAWM0/1 host path  
 
@@ -26,7 +26,7 @@ STOA275: inventary of meta · emulator log · ephemeral Rish · logcat-held · `
 | | Lean | What it opens |
 |---|---|---|
 | **A** | **Send STOA275** — **chosen** with round-close | pier carries harvest inventary |
-| **B** | **Host boot → harvest chain** — **recommended** | `hawm0_boot` then harvest worker as one onpath GREEN (needs `/dev/kvm`) |
+| **B** | **Host boot → harvest chain** — **chosen** → STOA277 | `hawm0_boot` then harvest worker as one onpath GREEN (needs `/dev/kvm`) |
 | **C** | **HAWM1 root into harvest Bron** | extend shape with sala root hex after hawm1 |
 | **D** | **Fleets · HAWM2 · gold · JABS3 · UDP** | thicker — **held** |
 
