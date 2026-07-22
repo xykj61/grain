@@ -1,0 +1,19 @@
+# stoa253_n_field_identity_emit_witness.rish — bartis pair…nona identity via one helper.
+#
+#   rishi/bin/rishi run tools/stoa253_n_field_identity_emit_witness.rish
+
+let bartis = run ["rishi/bin/rishi" "run" "tools/glow_lower_bartis_witness.rish"]
+assert bartis.ok else "glow_lower_bartis_witness failed"
+assert bartis.out contains "STOA253" else "bartis witness missing STOA253"
+
+let helper = run ["sh" "-c" "grep -q 'fn emit_n_field_identity' glow/lower_bartis.rye"]
+assert helper.ok else "missing emit_n_field_identity"
+
+let wrappers = run ["sh" "-c" "test $(grep -Fc 'return emit_n_field_identity(' glow/lower_bartis.rye) = 8"]
+assert wrappers.ok else "expected eight identity wrappers through emit_n_field_identity"
+
+# Flip emitters stay per-N (not collapsed this lap).
+let flip_kept = run ["sh" "-c" "grep -q 'fn emit_pair_call_body' glow/lower_bartis.rye && grep -q 'fn emit_nona_call_body' glow/lower_bartis.rye"]
+assert flip_kept.ok else "flip call-body emitters must remain until a later lap"
+
+say "GREEN: STOA253 — bartis N-field identity emit via emit_n_field_identity; flip held."

@@ -760,7 +760,11 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA251 N-field emit generalize inventory, `20260722.141918`** — language return first rung; pair…nona emit map; identity code next. Brief [`active-designing/20260722-141918_stoa251-n-field-emit-generalize-inventory.md`](../active-designing/20260722-141918_stoa251-n-field-emit-generalize-inventory.md).
 
-**STOA252 after N-field inventory check-in, `20260722.141940`** — lean A send · lean B thin identity N-field emit. Brief [`active-designing/20260722-141940_stoa252-after-n-field-inventory-checkin.md`](../active-designing/20260722-141940_stoa252-after-n-field-inventory-checkin.md). Gold · shared-package · JABS3 held.
+**STOA252 after N-field inventory check-in, `20260722.141940`** — lean A send · lean B → STOA253 identity emit. Brief [`active-designing/20260722-141940_stoa252-after-n-field-inventory-checkin.md`](../active-designing/20260722-141940_stoa252-after-n-field-inventory-checkin.md). Gold · shared-package · JABS3 held.
+
+**STOA253 bartis N-field identity emit GREEN, `20260722.142142`** — `emit_n_field_identity` · eight wrappers · flip held. Brief [`active-designing/20260722-142142_stoa253-n-field-identity-emit.md`](../active-designing/20260722-142142_stoa253-n-field-identity-emit.md).
+
+**STOA254 after N-field identity check-in, `20260722.142326`** — lean A send · lean B barket identity twin. Brief [`active-designing/20260722-142326_stoa254-after-n-field-identity-checkin.md`](../active-designing/20260722-142326_stoa254-after-n-field-identity-checkin.md). Flip · gold · JABS3 held.
 
 
 **Framework next (host resume), `20260720.231857`** — lean A: live SETU6.5 **sent** eyes on real `usb0`/`ncm`. Lab TX gate already GREEN; Sala B0 Glow rewrite · JABS3 stay thicker check-ins. Same freeze brief.
