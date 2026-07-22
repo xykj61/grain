@@ -1,0 +1,25 @@
+# stoa247_digest_body_author_witness.rish — product owns digest_log body.
+#
+# Elder receipt_core.digest_log stays peer baseline (one call inside
+# digest_body_agrees_elder only).
+#
+#   rishi/bin/rishi run tools/stoa247_digest_body_author_witness.rish
+
+let product = run ["rishi/bin/rishi" "run" "tools/glow_sala_b0_digest_witness.rish"]
+assert product.ok else "glow_sala_b0_digest_witness failed"
+assert product.out contains "STOA247" else "product side missing STOA247"
+assert product.out contains "product-authored digest" else "product side missing authored digest"
+
+let uses_sha3 = run ["sh" "-c" "grep -q 'Sha3_256.hash(' linengrow/glow_sala_b0_digest.rye"]
+assert uses_sha3.ok else "missing Sha3_256.hash in product digest"
+
+let peer_only = run ["sh" "-c" "test $(grep -Fc 'rc.digest_log(' linengrow/glow_sala_b0_digest.rye) = 1"]
+assert peer_only.ok else "elder digest_log must appear once (peer agree only)"
+
+let has_body = run ["sh" "-c" "grep -q digest_body_agrees_elder linengrow/glow_sala_b0_digest.rye"]
+assert has_body.ok else "missing digest_body_agrees_elder"
+
+let fold = run ["rishi/bin/rishi" "run" "tools/glow_sala_b0_fold_witness.rish"]
+assert fold.ok else "fold witness failed after digest body"
+
+say "GREEN: STOA247 — product-authored digest body agrees elder peer."
