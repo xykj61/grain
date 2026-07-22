@@ -1,6 +1,6 @@
 # STOA — Glow SLC · nest · product · ≤80 · STOA0–294 · 2026-07-22 · draw → **STOA**
 
-Living Glow OS desks lead with `shape-*` (shape duals STOA161–173; pin polish STOA174; multi-field cast twins STOA175–176). Sala B0 Glow: STOA177–298 · **STOA298** after tagged unit flip (two-family `$%` flip closed). Hoon study twins under `glow/gen/hoon-study/`.
+Living Glow OS desks lead with `shape-*` (shape duals STOA161–173; pin polish STOA174; multi-field cast twins STOA175–176). Sala B0 Glow: STOA177–299 · **STOA299** continue after tagged flip (argv survey next). Hoon study twins under `glow/gen/hoon-study/`.
 
 | Rung | Claim | Witness / gate | State |
 |------|-------|----------------|-------|
@@ -128,4 +128,5 @@ Living Glow OS desks lead with `shape-*` (shape duals STOA161–173; pin polish 
 | **STOA296** | after barket tagged flip check-in | leans A send · C kind unit helper | **GREEN** `20260722.160422` |
 | **STOA297** | tagged unit flip helper | `emit_tagged_unit_flip` · bartis+barket | **GREEN** `20260722.160822` |
 | **STOA298** | after tagged unit flip check-in | leans A send · B rest | **GREEN** `20260722.160700` |
+| **STOA299** | continue after tagged flip check-in | leans A tagged argv survey | **GREEN** `20260722.161041` |
 Smoke: `glow_nest_type_witness` · `glow_barket_parse_witness` · `glow_lower_bartis_witness` · Sibling: **ZETA** · **LULU** · **SETU** · **TUBE**.
