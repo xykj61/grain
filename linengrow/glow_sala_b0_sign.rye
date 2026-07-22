@@ -1,7 +1,9 @@
-//! linengrow/glow_sala_b0_sign.rye — Glow product sign/verify surface over elder mala/receipt.
+//! linengrow/glow_sala_b0_sign.rye — Glow product sign/verify surface.
 //!
 //! STOA201 (B1): owns sign_fact + verify_record assert while calling elder
 //! bodies. Format/parse log-line and Glow-rune crypto jets stay held.
+//! STOA245: product-authored sign/verify body — canonicalize + kumara.sign /
+//! kumara.verify_bytes live here; elder mala/receipt stay peer baseline.
 //!
 //!   rye build linengrow/glow_sala_b0_sign_witness.rye \
 //!     -femit-bin=linengrow/bin/glow_sala_b0_sign_witness
@@ -13,7 +15,7 @@ const mc = @import("mala_core.rye");
 const rc = @import("receipt_core.rye");
 const fixture = @import("glow_sala_b0_demo_fixture.rye");
 
-pub const sign_version = "20260721.190209";
+pub const sign_version = "20260722.141141";
 
 pub const SignError = error{ Overflow, InvalidFact, VerifyFailed, SignMismatch };
 
@@ -23,19 +25,62 @@ pub const SignedFact = struct {
     sig: kumara.Signature,
 };
 
-/// Sign FactFields via elder `mala_core.sign_fact`.
+fn write_canonical_fact(fields: rc.FactFields, out: []u8) SignError!u32 {
+    const written = std.fmt.bufPrint(
+        out,
+        "from {s}\nto {s}\namount {s}\nmemo {s}\nstamp {s}\n",
+        .{ fields.from, fields.to, fields.amount, fields.memo, fields.stamp },
+    ) catch return error.Overflow;
+    assert(written.len <= std.math.maxInt(u32));
+    return @intCast(written.len);
+}
+
+/// Sign FactFields — product body: canonicalize + kumara.sign (STOA245).
 pub fn sign_fact(fields: rc.FactFields, signer: kumara.KeyPair) SignError!SignedFact {
-    const signed = try mc.sign_fact(fields, signer);
+    var canonical: [rc.max_fact_len]u8 = undefined;
+    const canonical_len = try write_canonical_fact(fields, &canonical);
+    const sig = kumara.sign(canonical[0..canonical_len], signer, null);
     return .{
-        .canonical = signed.canonical,
-        .canonical_len = signed.canonical_len,
-        .sig = signed.sig,
+        .canonical = canonical,
+        .canonical_len = canonical_len,
+        .sig = sig,
     };
 }
 
-/// Verify a signature over fact bytes via elder `receipt_core.verify_record`.
+/// Verify a signature over fact bytes — product body: kumara.verify_bytes (STOA245).
 pub fn verify_record(sig_bytes: []const u8, fact: []const u8, pubkey: kumara.PublicKey) SignError!void {
-    try rc.verify_record(sig_bytes, fact, pubkey);
+    try kumara.verify_bytes(fact, sig_bytes, pubkey);
+}
+
+fn demo_event1_fields(actor_hex: []const u8) rc.FactFields {
+    return .{
+        .from = actor_hex,
+        .to = actor_hex,
+        .amount = "1",
+        .memo = fixture.memo1,
+        .stamp = fixture.stamp1,
+    };
+}
+
+/// True when product sign/verify bodies match elder mala/receipt peer (STOA245).
+pub fn sign_body_agrees_elder() SignError!bool {
+    const actor_kp = kumara.keypair_from_seed(&mc.issuer_seed);
+    var actor_hex: [mc.pubkey_hex_len]u8 = undefined;
+    mc.hex_of_key(actor_kp.public_key, &actor_hex);
+    const fields = demo_event1_fields(actor_hex[0..]);
+
+    const product = try sign_fact(fields, actor_kp);
+    const elder = try mc.sign_fact(fields, actor_kp);
+    if (product.canonical_len != elder.canonical_len) return false;
+    if (!std.mem.eql(u8, product.canonical[0..product.canonical_len], elder.canonical[0..elder.canonical_len])) return false;
+    const product_sig = product.sig.toBytes();
+    const elder_sig = elder.sig.toBytes();
+    if (!std.mem.eql(u8, product_sig[0..], elder_sig[0..])) return false;
+
+    const fact = product.canonical[0..product.canonical_len];
+    try verify_record(product_sig[0..], fact, actor_kp.public_key);
+    try rc.verify_record(elder_sig[0..], fact, actor_kp.public_key);
+    return true;
 }
 
 /// Sign the first demo event fields (fixture stamp1/memo1 · seq amount 1); verify round-trip.
@@ -44,13 +89,7 @@ pub fn claim_demo_sign() SignError!SignedFact {
     var actor_hex: [mc.pubkey_hex_len]u8 = undefined;
     mc.hex_of_key(actor_kp.public_key, &actor_hex);
 
-    const fields = rc.FactFields{
-        .from = actor_hex[0..],
-        .to = actor_hex[0..],
-        .amount = "1",
-        .memo = fixture.memo1,
-        .stamp = fixture.stamp1,
-    };
+    const fields = demo_event1_fields(actor_hex[0..]);
     const signed = try sign_fact(fields, actor_kp);
     assert(signed.canonical_len > 0);
     const fact = signed.canonical[0..signed.canonical_len];

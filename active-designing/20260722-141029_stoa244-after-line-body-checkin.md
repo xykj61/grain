@@ -6,7 +6,7 @@
 **Version:** `20260722.141029` (EDT · Framework host)  
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
 **Voice:** Quin  
-**Status:** Checkable — lean **A** send chosen with round-close · lean **B** name next authored body  
+**Status:** Checkable — lean **A** send chosen with round-close · lean **B** became **STOA245** `20260722.141141`  
 **Register:** Checkable (Two Rooms) — STOA243 GREEN with this send; first authored line body closed  
 
 **Grounds in:** STOA243 line body · STOA200 vane inventory · STOA241–242 face_lit season
