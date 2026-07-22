@@ -1,0 +1,26 @@
+# stoa245_sign_body_author_witness.rish — product owns sign/verify bodies.
+#
+# Elder mala_core.sign_fact / receipt_core.verify_record stay peer baseline
+# (one call each inside sign_body_agrees_elder only).
+#
+#   rishi/bin/rishi run tools/stoa245_sign_body_author_witness.rish
+
+let product = run ["rishi/bin/rishi" "run" "tools/glow_sala_b0_sign_witness.rish"]
+assert product.ok else "glow_sala_b0_sign_witness failed"
+assert product.out contains "STOA245" else "product side missing STOA245"
+assert product.out contains "product-authored sign" else "product side missing authored sign"
+
+# Public bodies use kumara; elder appears once each in peer-agree only.
+let uses_kumara = run ["sh" "-c" "grep -q 'kumara.sign(' linengrow/glow_sala_b0_sign.rye && grep -q 'kumara.verify_bytes(' linengrow/glow_sala_b0_sign.rye"]
+assert uses_kumara.ok else "missing kumara.sign / kumara.verify_bytes in product sign"
+
+let peer_only = run ["sh" "-c" "test $(grep -Fc 'mc.sign_fact(' linengrow/glow_sala_b0_sign.rye) = 1 && test $(grep -Fc 'rc.verify_record(' linengrow/glow_sala_b0_sign.rye) = 1"]
+assert peer_only.ok else "elder sign_fact/verify_record must appear once each (peer agree only)"
+
+let has_body = run ["sh" "-c" "grep -q sign_body_agrees_elder linengrow/glow_sala_b0_sign.rye"]
+assert has_body.ok else "missing sign_body_agrees_elder"
+
+let line = run ["rishi/bin/rishi" "run" "tools/glow_sala_b0_line_witness.rish"]
+assert line.ok else "line witness failed after sign body"
+
+say "GREEN: STOA245 — product-authored sign/verify body agrees elder peer."

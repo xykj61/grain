@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260722.141353
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title STOA245-246 product-authored sign body round
+prompt kg — thin sign/verify authored body after STOA244
+think STOA244 lean B recommended sign/verify; kg into STOA245.
+think Product sign_fact = write_canonical + kumara.sign; verify_record = kumara.verify_bytes; elder once each in sign_body_agrees_elder.
+think Honesty uses fixed-string counts so peer-agree calls do not false-pass.
+think Append and fold still GREEN. STOA246 check-in: lean B digest authored body.
+obs STOA245 GREEN. Line and sign authored bodies seated; digest is the natural third.
+file linengrow/glow_sala_b0_sign.rye product sign/verify bodies
+file tools/stoa245_sign_body_author_witness.rish authored body + peer-only honesty
+file active-designing/20260722-141141_stoa245-product-authored-sign-body.md STOA245 brief
+file active-designing/20260722-141319_stoa246-after-sign-body-checkin.md STOA246 check-in
+product_nib Sala-B0-Glow-compose
+suite_nib STOA0-246
+recommend keep-going digest authored body — thin digest_log over elder peer; shared-package and JABS3 held

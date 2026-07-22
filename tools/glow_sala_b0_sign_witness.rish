@@ -1,4 +1,4 @@
-# glow_sala_b0_sign_witness.rish — Glow sign/verify product surface (STOA201 · B1).
+# glow_sala_b0_sign_witness.rish — Glow sign/verify product surface (STOA201 · STOA245).
 #
 #   rishi/bin/rishi run tools/glow_sala_b0_sign_witness.rish
 
@@ -15,5 +15,7 @@ assert selftest.out contains "fixture root pin seated" else "glow_sala_b0_sign_w
 assert selftest.out contains "claim_demo_sign round-trip" else "glow_sala_b0_sign_witness missing sign round-trip"
 assert selftest.out contains "tampered fact refuses verify" else "glow_sala_b0_sign_witness missing tamper refuse"
 assert selftest.out contains "STOA201" else "glow_sala_b0_sign_witness missing STOA201"
+assert selftest.out contains "STOA245" else "glow_sala_b0_sign_witness missing STOA245"
+assert selftest.out contains "sign/verify body agrees elder" else "glow_sala_b0_sign_witness missing authored body agree"
 
-say "GREEN: Glow Sala B0 sign surface — elder sign_fact/verify behind Glow assert; STOA201."
+say "GREEN: Glow Sala B0 sign surface — product-authored sign/verify body; STOA245."

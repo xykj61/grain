@@ -13,7 +13,7 @@ const rc = @import("receipt_core.rye");
 const fixture = @import("glow_sala_b0_demo_fixture.rye");
 const sign = @import("glow_sala_b0_sign.rye");
 
-const witness_version = "20260721.190209";
+const witness_version = "20260722.141141";
 
 fn run_selftest() !u8 {
     assert(fixture.root_pin_agrees());
@@ -32,9 +32,15 @@ fn run_selftest() !u8 {
     const tamper = sign.verify_record(sig_bytes[0..], bad[0..signed.canonical_len], actor_kp.public_key);
     assert(tamper == error.VerifyFailed);
     print("sala-b0-sign: tampered fact refuses verify -- GREEN\n", .{});
+    print("sala-b0-sign: STOA201 sign surface -- GREEN\n", .{});
+
+    // STOA245: product-authored sign/verify body agrees elder peer.
+    assert(try sign.sign_body_agrees_elder());
+    print("sala-b0-sign: sign/verify body agrees elder -- GREEN\n", .{});
+    print("sala-b0-sign: STOA245 product-authored sign body -- GREEN\n", .{});
 
     print("sala-b0-sign: version {s}\n", .{witness_version});
-    print("GREEN: Glow Sala B0 sign surface — STOA201; elder sign_fact/verify behind Glow assert.\n", .{});
+    print("GREEN: Glow Sala B0 sign surface — STOA201/245; product-authored sign/verify body.\n", .{});
     return 0;
 }
 
