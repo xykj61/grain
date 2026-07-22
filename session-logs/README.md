@@ -9,6 +9,8 @@ Living index for the append-only session stream. This table reads **newest first
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
 - `20260722.134735` — [REMEMBER git nib after STOA236](20260722-134735_remember-git-nib-stoa236.bron) — pin 580f607c8b61
+- `20260722.135406` — [REMEMBER git nib after STOA238](20260722-135406_remember-git-nib-stoa238.bron) — pin 6aa85ec080f6
+- `20260722.135605` — [STOA239–240 Pixel eyes round](20260722-135605_stoa239-240-pixel-eyes-round.bron) — HAWM1 on device; name next door
 - `20260722.135324` — [STOA237–238 embedded desk round](20260722-135324_stoa237-238-embedded-desk-round.bron) — embed in .so; Pixel eyes next
 - `20260722.134657` — [STOA235–236 desk-file claim round](20260722-134657_stoa235-236-desk-file-claim-round.bron) — from_desk_file; NA asset next
 - `20260722.134513` — [REMEMBER git nib after STOA234](20260722-134513_remember-git-nib-stoa234.bron) — pin d24701ce4b20
