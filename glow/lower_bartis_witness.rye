@@ -187,13 +187,6 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(spec_amt_u32.body == .identity);
     print("lower: glow/gen/gate-amount-u32.glow carries amount-shape argv -- GREEN\n", .{});
 
-    if (lower.lower_source_argv_sample("|=  sample=pair-shape\nsample\n", &buf)) |_| {
-        return error.PairArgvLoweredTooSoon;
-    } else |err| {
-        if (err != lower.LowerError.SampleDoesNotNest) return err;
-    }
-    print("lower: pair-shape argv refused SampleDoesNotNest -- GREEN\n", .{});
-
     // STOA133: count-shape argv identity beside fixture.
     const count_argv_src = "|=  sample=count-shape\nsample\n";
     const n_cnt_argv = try lower.lower_source_argv_sample(count_argv_src, &buf);
@@ -263,12 +256,31 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(spec_xfer_tag.body == .identity);
     print("lower: glow/gen/gate-xfer-tag.glow carries xfer-shape argv -- GREEN\n", .{});
 
-    if (lower.lower_source_argv_sample("|=  sample=pair-shape\nsample\n", &buf)) |_| {
-        return error.PairArgvLoweredTooSoon;
+    // STOA307: pair-shape argv identity — two field decimals.
+    const pair_argv_src = "|=  sample=pair-shape\nsample\n";
+    const n_pair_argv = try lower.lower_source_argv_sample(pair_argv_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n_pair_argv], "PairShape") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_pair_argv], "minimal.args") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_pair_argv], "parseInt(u32, argv[1]") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_pair_argv], "parseInt(u32, argv[2]") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_pair_argv], ".from") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_pair_argv], ".amount") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_pair_argv], "\"mint\"") == null);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_pair_argv.rye", .data = buf[0..n_pair_argv] });
+    print("lower: pair-shape argv emit reads minimal.args / from+amount -- GREEN\n", .{});
+
+    const gen_pair_fields = try cwd.readFileAlloc(io, "glow/gen/gate-pair-fields.glow", a, .limited(4096));
+    const spec_pair_fields = try rb.parse_source(gen_pair_fields);
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_pair_fields), "pair-shape"));
+    assert(spec_pair_fields.body == .identity);
+    print("lower: glow/gen/gate-pair-fields.glow carries pair-shape argv -- GREEN\n", .{});
+
+    if (lower.lower_source_argv_sample("|=  sample=triple-shape\nsample\n", &buf)) |_| {
+        return error.TripleArgvLoweredTooSoon;
     } else |err| {
         if (err != lower.LowerError.SampleDoesNotNest) return err;
     }
-    print("lower: pair-shape argv refused SampleDoesNotNest -- GREEN\n", .{});
+    print("lower: triple-shape argv refused SampleDoesNotNest -- GREEN\n", .{});
 
     // STOA123: kind-shape identity lowers as KindShape.
     const kind_src = "|=  sample=kind-shape\nsample\n";
@@ -777,7 +789,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("lower: glow/gen/gate-count.glow carries count-shape -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: Glow `|=` bartis — identity · argv · call-body · amount-shape · amount argv · count-shape · count argv · kind-shape · kind argv · kind flip · xact-shape · xact argv · xact flip · xfer-shape · xfer argv · xfer flip · pair-shape · pair flip · triple-shape · triple flip · quad-shape · quad flip · penta-shape · penta flip · hexa-shape · hexa flip · hepta-shape · hepta flip · octa-shape · octa flip · nona-shape · nona flip · nesting-nests; STOA100–147 · STOA253 identity emit · STOA259 N-field flip · STOA293 tagged payload flip · STOA297 tagged unit flip · STOA300 kind argv · STOA303 xact argv · STOA305 xfer argv.\n", .{});
+    print("GREEN: Glow `|=` bartis — identity · argv · call-body · amount-shape · amount argv · count-shape · count argv · kind-shape · kind argv · kind flip · xact-shape · xact argv · xact flip · xfer-shape · xfer argv · xfer flip · pair-shape · pair argv · pair flip · triple-shape · triple flip · quad-shape · quad flip · penta-shape · penta flip · hexa-shape · hexa flip · hepta-shape · hepta flip · octa-shape · octa flip · nona-shape · nona flip · nesting-nests; STOA100–147 · STOA253 identity emit · STOA259 N-field flip · STOA293 tagged payload flip · STOA297 tagged unit flip · STOA300 kind argv · STOA303 xact argv · STOA305 xfer argv · STOA307 pair argv.\n", .{});
     return 0;
 }
 

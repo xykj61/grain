@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260722.190655
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title STOA307-308 pair argv round
+prompt approve rec — lean C pair argv survey
+think emit_n_field_argv for $: fields; emit_pair_argv N=2
+think desks gate-pair-fields · barket twin · worker two-decimal path
+think witnesses GREEN · triple refuse pinned · STOA308 lean C triple argv
+obs five argv families: u32 · kind · xact · xfer · pair $:
+product_nib ZETA6 LULU0-5 SETU6.5
+suite_nib STOA0-308
+file glow/lower_bartis.rye emit_n_field_argv emit_pair_argv
+file glow/lower_barket.rye barket twin
+file glow/gen/gate-pair-fields.glow desk
+file active-designing/20260722-190655_stoa307-n-field-argv-survey-pair.md survey
+file active-designing/20260722-190720_stoa308-after-pair-argv-checkin.md check-in
+recommend check-in lean C triple argv survey
