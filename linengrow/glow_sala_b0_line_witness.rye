@@ -11,9 +11,9 @@ const rc = @import("receipt_core.rye");
 const fixture = @import("glow_sala_b0_demo_fixture.rye");
 const line = @import("glow_sala_b0_line.rye");
 
-const witness_version = "20260721.190240";
+const witness_version = "20260722.132020";
 
-fn run_selftest() !u8 {
+fn run_selftest(init: std.process.Init) !u8 {
     assert(fixture.root_pin_agrees());
     print("sala-b0-line: fixture root pin seated -- GREEN\n", .{});
 
@@ -29,11 +29,23 @@ fn run_selftest() !u8 {
     assert(bad == error.InvalidLine);
     print("sala-b0-line: bad line refuses parse -- GREEN\n", .{});
 
+    // STOA225: live demo line matches seated hex pins; Glow desk binds them.
+    assert(try line.demo_line_pins_agree());
+    print("sala-b0-line: demo line pins agree claim -- GREEN\n", .{});
+
+    const a = init.arena.allocator();
+    const cwd = std.Io.Dir.cwd();
+    const io = init.io;
+    const desk = try cwd.readFileAlloc(io, line.lit_desk_relpath, a, .limited(8192));
+    assert(line.lit_desk_binds_pins(desk));
+    print("sala-b0-line: lit desk binds demo pins -- GREEN\n", .{});
+    print("sala-b0-line: STOA225 fact-line lit wire -- GREEN\n", .{});
+
     print("sala-b0-line: version {s}\n", .{witness_version});
-    print("GREEN: Glow Sala B0 line surface — STOA202; elder format/parse behind Glow assert.\n", .{});
+    print("GREEN: Glow Sala B0 line surface — STOA202/225; demo lit desk wire.\n", .{});
     return 0;
 }
 
-pub fn main(_: std.process.Init) !u8 {
-    return run_selftest();
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
 }

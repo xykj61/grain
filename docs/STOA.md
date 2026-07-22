@@ -1,6 +1,6 @@
-# STOA — Glow SLC · nest · product · ≤80 · STOA0–224 GREEN · 2026-07-22 · draw → **STOA**
+# STOA — Glow SLC · nest · product · ≤80 · STOA0–226 GREEN · 2026-07-22 · draw → **STOA**
 
-Living Glow OS desks lead with `shape-*` (inventary duals STOA161–173; pin polish STOA174; multi-field cast twins STOA175–176). Sala B0 Glow: STOA177–223 · **STOA224** after fixture wire check-in. Hoon study twins under `glow/gen/hoon-study/`.
+Living Glow OS desks lead with `shape-*` (inventary duals STOA161–173; pin polish STOA174; multi-field cast twins STOA175–176). Sala B0 Glow: STOA177–225 · **STOA226** after fact-line lits check-in. Hoon study twins under `glow/gen/hoon-study/`.
 
 | Rung | Claim | Witness / gate | State |
 |------|-------|----------------|-------|
@@ -75,4 +75,6 @@ Living Glow OS desks lead with `shape-*` (inventary duals STOA161–173; pin pol
 | **STOA222** | after literals season check-in | leans A send · B product wire | **GREEN** `20260722.131348` |
 | **STOA223** | product fixture lit desk wire | `glow_sala_b0_demo_fixture_witness` | **GREEN** `20260722.131511` |
 | **STOA224** | after fixture wire check-in | leans A send · B fact-line lits | **GREEN** `20260722.131841` |
+| **STOA225** | fact-line demo lit sample | `glow_sala_b0_line_witness` | **GREEN** `20260722.132020` |
+| **STOA226** | after fact-line lits check-in | leans A send · B rest | **GREEN** `20260722.132320` |
 Smoke: `glow_nest_type_witness` · `glow_barket_parse_witness` · `glow_lower_bartis_witness` · Sibling: **ZETA** · **LULU** · **SETU** · **TUBE**.
