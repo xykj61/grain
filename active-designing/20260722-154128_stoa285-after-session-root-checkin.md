@@ -6,8 +6,8 @@
 **Version:** `20260722.154128` (EDT · Framework host)  
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
 **Voice:** Quin  
-**Status:** Checkable — lean **A** send with round-close · lean **B** stop hawm0  
-**Register:** Checkable (Two Rooms) — STOA284 GREEN; fleets Intent  
+**Status:** Checkable — lean **A** send done · lean **B** → STOA286 stop GREEN  
+**Register:** Checkable (Two Rooms) — STOA284 GREEN; hawm0 stopped as STOA286  
 
 **Grounds in:** STOA284 · STOA283 lean A  
 
@@ -26,7 +26,7 @@ STOA284: HAWM1 GREEN on `emulator-5554` · `session_root` in `hawm-harvest-v1` �
 | | Lean | What it opens |
 |---|---|---|
 | **A** | **Send STOA284** — **chosen** with round-close | pier carries root-in-harvest |
-| **B** | **Stop hawm0 · rest** — **recommended** when mobile season pauses | `tools/hawm0_stop.sh` |
+| **B** | **Stop hawm0 · rest** — **chosen** → STOA286 | `tools/hawm0_stop.sh` GREEN `20260722.154348` |
 | **C** | **Pixel / HAWM1 root eyes** (optional note) | phone look vs AVD hex — no new field required |
 | **D** | **Fleets · HAWM2 · gold · JABS3 · UDP** | **held** |
 
