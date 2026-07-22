@@ -26,6 +26,8 @@
 //! STOA145: `octa-mold` call body `%-  flip` → OctaShape swap · baked 5/3/1/2/7/4/6/8 → 3/5/1/2/7/4/6/8.
 //! STOA146: `nona-mold` identity lowers as `NonaShape` struct · baked from 5 amount 3 fee 1 nonce 2 memo 7 tag 4 to 6 via 8 ref 9.
 //! STOA147: `nona-mold` call body `%-  flip` → NonaShape swap · baked 5/3/1/2/7/4/6/8/9 → 3/5/1/2/7/4/6/8/9.
+//! STOA253: pair…nona identity emit collapses through `emit_n_field_identity`
+//! (faces · demos shared; flip call-body emitters stay per-N until a later lap).
 //! STOA127: `kind-mold` call body `%-  flip` → KindShape switch · baked `.mint` → `.send`.
 //! STOA128: `xact-mold` call body `%-  flip` → XactShape switch · baked mint/5 → `.send`.
 //! STOA129: `xfer-mold` call body `%-  flip` → XferShape switch · baked mint/5/3 → `.send`.
@@ -364,192 +366,106 @@ fn emit_xfer_call_body(out: []u8, zface: []const u8, gate: []const u8, comment: 
     return used;
 }
 
-/// STOA126: closed multi-field `$:` pair-mold → PairShape struct · baked 5/3.
+/// Closed `$:` face order for pair…nona identity emit (STOA253).
+const closed_tuple_faces = [_][]const u8{ "from", "amount", "fee", "nonce", "memo", "tag", "to", "via", "ref" };
+
+/// Closed `$:` demo vals for pair…nona identity emit (STOA253) — matches seated pins.
+const closed_tuple_demos = [_]u32{ 5, 3, 1, 2, 7, 4, 6, 8, 9 };
+
+fn closed_tuple_type_name(field_count: u32) []const u8 {
+    return switch (field_count) {
+        2 => "PairShape",
+        3 => "TripleShape",
+        4 => "QuadShape",
+        5 => "PentaShape",
+        6 => "HexaShape",
+        7 => "HeptaShape",
+        8 => "OctaShape",
+        9 => "NonaShape",
+        else => unreachable,
+    };
+}
+
+/// STOA253: one N-field identity emit for closed `$:` pair…nona (N = 2…9).
+fn emit_n_field_identity(out: []u8, field_count: u32, zface: []const u8, comment: []const u8) LowerError!u32 {
+    assert(field_count >= 2 and field_count <= 9);
+    const zig_type = closed_tuple_type_name(field_count);
+    var used: u32 = 0;
+    try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
+    try append_print(out, &used, "pub const {s} = struct {{\n", .{zig_type});
+    var i: u32 = 0;
+    while (i < field_count) : (i += 1) {
+        try append_print(out, &used, "    {s}: u32 = 0,\n", .{closed_tuple_faces[@as(usize, @intCast(i))]});
+    }
+    try append_print(out, &used, "}};\n\n", .{});
+    try append_print(out, &used, "/// {s}\n", .{comment});
+    try append_print(out, &used, "fn bartis_gate({s}: {s}) {s} {{\n", .{ zface, zig_type, zig_type });
+    try append_print(out, &used, "    return {s};\n", .{zface});
+    try append_print(out, &used, "}}\n\n", .{});
+    try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
+    try append_print(out, &used, "    const {s}: {s} = .{{ ", .{ zface, zig_type });
+    i = 0;
+    while (i < field_count) : (i += 1) {
+        if (i > 0) try append_print(out, &used, ", ", .{});
+        try append_print(out, &used, ".{s} = {d}", .{
+            closed_tuple_faces[@as(usize, @intCast(i))],
+            closed_tuple_demos[@as(usize, @intCast(i))],
+        });
+    }
+    try append_print(out, &used, " }};\n", .{});
+    try append_print(out, &used, "    const got = bartis_gate({s});\n", .{zface});
+    try append_print(out, &used, "    return if (", .{});
+    i = 0;
+    while (i < field_count) : (i += 1) {
+        if (i > 0) try append_print(out, &used, " and ", .{});
+        try append_print(out, &used, "got.{s} == {d}", .{
+            closed_tuple_faces[@as(usize, @intCast(i))],
+            closed_tuple_demos[@as(usize, @intCast(i))],
+        });
+    }
+    try append_print(out, &used, ") 0 else 1;\n", .{});
+    try append_print(out, &used, "}}\n", .{});
+    return used;
+}
+
+/// STOA126: closed multi-field `$:` pair-mold → PairShape identity (via STOA253).
 fn emit_pair_identity(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
-    var used: u32 = 0;
-    try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
-    try append_print(out, &used, "pub const PairShape = struct {{\n", .{});
-    try append_print(out, &used, "    from: u32 = 0,\n", .{});
-    try append_print(out, &used, "    amount: u32 = 0,\n", .{});
-    try append_print(out, &used, "}};\n\n", .{});
-    try append_print(out, &used, "/// {s}\n", .{comment});
-    try append_print(out, &used, "fn bartis_gate({s}: PairShape) PairShape {{\n", .{zface});
-    try append_print(out, &used, "    return {s};\n", .{zface});
-    try append_print(out, &used, "}}\n\n", .{});
-    try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
-    try append_print(out, &used, "    const {s}: PairShape = .{{ .from = {d}, .amount = {d} }};\n", .{ zface, bartis_pair_demo_from, bartis_pair_demo_amount });
-    try append_print(out, &used, "    const got = bartis_gate({s});\n", .{zface});
-    try append_print(out, &used, "    return if (got.from == {d} and got.amount == {d}) 0 else 1;\n", .{ bartis_pair_demo_from, bartis_pair_demo_amount });
-    try append_print(out, &used, "}}\n", .{});
-    return used;
+    return emit_n_field_identity(out, 2, zface, comment);
 }
 
-/// STOA134: closed three-field `$:` triple-mold → TripleShape struct · baked 5/3/1.
+/// STOA134: closed three-field `$:` triple-mold → TripleShape identity (via STOA253).
 fn emit_triple_identity(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
-    var used: u32 = 0;
-    try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
-    try append_print(out, &used, "pub const TripleShape = struct {{\n", .{});
-    try append_print(out, &used, "    from: u32 = 0,\n", .{});
-    try append_print(out, &used, "    amount: u32 = 0,\n", .{});
-    try append_print(out, &used, "    fee: u32 = 0,\n", .{});
-    try append_print(out, &used, "}};\n\n", .{});
-    try append_print(out, &used, "/// {s}\n", .{comment});
-    try append_print(out, &used, "fn bartis_gate({s}: TripleShape) TripleShape {{\n", .{zface});
-    try append_print(out, &used, "    return {s};\n", .{zface});
-    try append_print(out, &used, "}}\n\n", .{});
-    try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
-    try append_print(out, &used, "    const {s}: TripleShape = .{{ .from = {d}, .amount = {d}, .fee = {d} }};\n", .{ zface, bartis_triple_demo_from, bartis_triple_demo_amount, bartis_triple_demo_fee });
-    try append_print(out, &used, "    const got = bartis_gate({s});\n", .{zface});
-    try append_print(out, &used, "    return if (got.from == {d} and got.amount == {d} and got.fee == {d}) 0 else 1;\n", .{ bartis_triple_demo_from, bartis_triple_demo_amount, bartis_triple_demo_fee });
-    try append_print(out, &used, "}}\n", .{});
-    return used;
+    return emit_n_field_identity(out, 3, zface, comment);
 }
 
-/// STOA135: closed four-field `$:` quad-mold → QuadShape struct · baked 5/3/1/2.
+/// STOA135: closed four-field `$:` quad-mold → QuadShape identity (via STOA253).
 fn emit_quad_identity(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
-    var used: u32 = 0;
-    try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
-    try append_print(out, &used, "pub const QuadShape = struct {{\n", .{});
-    try append_print(out, &used, "    from: u32 = 0,\n", .{});
-    try append_print(out, &used, "    amount: u32 = 0,\n", .{});
-    try append_print(out, &used, "    fee: u32 = 0,\n", .{});
-    try append_print(out, &used, "    nonce: u32 = 0,\n", .{});
-    try append_print(out, &used, "}};\n\n", .{});
-    try append_print(out, &used, "/// {s}\n", .{comment});
-    try append_print(out, &used, "fn bartis_gate({s}: QuadShape) QuadShape {{\n", .{zface});
-    try append_print(out, &used, "    return {s};\n", .{zface});
-    try append_print(out, &used, "}}\n\n", .{});
-    try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
-    try append_print(out, &used, "    const {s}: QuadShape = .{{ .from = {d}, .amount = {d}, .fee = {d}, .nonce = {d} }};\n", .{ zface, bartis_quad_demo_from, bartis_quad_demo_amount, bartis_quad_demo_fee, bartis_quad_demo_nonce });
-    try append_print(out, &used, "    const got = bartis_gate({s});\n", .{zface});
-    try append_print(out, &used, "    return if (got.from == {d} and got.amount == {d} and got.fee == {d} and got.nonce == {d}) 0 else 1;\n", .{ bartis_quad_demo_from, bartis_quad_demo_amount, bartis_quad_demo_fee, bartis_quad_demo_nonce });
-    try append_print(out, &used, "}}\n", .{});
-    return used;
+    return emit_n_field_identity(out, 4, zface, comment);
 }
 
-/// STOA138: closed five-field `$:` penta-mold → PentaShape struct · baked 5/3/1/2/7.
+/// STOA138: closed five-field `$:` penta-mold → PentaShape identity (via STOA253).
 fn emit_penta_identity(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
-    var used: u32 = 0;
-    try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
-    try append_print(out, &used, "pub const PentaShape = struct {{\n", .{});
-    try append_print(out, &used, "    from: u32 = 0,\n", .{});
-    try append_print(out, &used, "    amount: u32 = 0,\n", .{});
-    try append_print(out, &used, "    fee: u32 = 0,\n", .{});
-    try append_print(out, &used, "    nonce: u32 = 0,\n", .{});
-    try append_print(out, &used, "    memo: u32 = 0,\n", .{});
-    try append_print(out, &used, "}};\n\n", .{});
-    try append_print(out, &used, "/// {s}\n", .{comment});
-    try append_print(out, &used, "fn bartis_gate({s}: PentaShape) PentaShape {{\n", .{zface});
-    try append_print(out, &used, "    return {s};\n", .{zface});
-    try append_print(out, &used, "}}\n\n", .{});
-    try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
-    try append_print(out, &used, "    const {s}: PentaShape = .{{ .from = {d}, .amount = {d}, .fee = {d}, .nonce = {d}, .memo = {d} }};\n", .{ zface, bartis_penta_demo_from, bartis_penta_demo_amount, bartis_penta_demo_fee, bartis_penta_demo_nonce, bartis_penta_demo_memo });
-    try append_print(out, &used, "    const got = bartis_gate({s});\n", .{zface});
-    try append_print(out, &used, "    return if (got.from == {d} and got.amount == {d} and got.fee == {d} and got.nonce == {d} and got.memo == {d}) 0 else 1;\n", .{ bartis_penta_demo_from, bartis_penta_demo_amount, bartis_penta_demo_fee, bartis_penta_demo_nonce, bartis_penta_demo_memo });
-    try append_print(out, &used, "}}\n", .{});
-    return used;
+    return emit_n_field_identity(out, 5, zface, comment);
 }
 
-/// STOA140: closed six-field `$:` hexa-mold → HexaShape struct · baked 5/3/1/2/7/4.
+/// STOA140: closed six-field `$:` hexa-mold → HexaShape identity (via STOA253).
 fn emit_hexa_identity(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
-    var used: u32 = 0;
-    try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
-    try append_print(out, &used, "pub const HexaShape = struct {{\n", .{});
-    try append_print(out, &used, "    from: u32 = 0,\n", .{});
-    try append_print(out, &used, "    amount: u32 = 0,\n", .{});
-    try append_print(out, &used, "    fee: u32 = 0,\n", .{});
-    try append_print(out, &used, "    nonce: u32 = 0,\n", .{});
-    try append_print(out, &used, "    memo: u32 = 0,\n", .{});
-    try append_print(out, &used, "    tag: u32 = 0,\n", .{});
-    try append_print(out, &used, "}};\n\n", .{});
-    try append_print(out, &used, "/// {s}\n", .{comment});
-    try append_print(out, &used, "fn bartis_gate({s}: HexaShape) HexaShape {{\n", .{zface});
-    try append_print(out, &used, "    return {s};\n", .{zface});
-    try append_print(out, &used, "}}\n\n", .{});
-    try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
-    try append_print(out, &used, "    const {s}: HexaShape = .{{ .from = {d}, .amount = {d}, .fee = {d}, .nonce = {d}, .memo = {d}, .tag = {d} }};\n", .{ zface, bartis_hexa_demo_from, bartis_hexa_demo_amount, bartis_hexa_demo_fee, bartis_hexa_demo_nonce, bartis_hexa_demo_memo, bartis_hexa_demo_tag });
-    try append_print(out, &used, "    const got = bartis_gate({s});\n", .{zface});
-    try append_print(out, &used, "    return if (got.from == {d} and got.amount == {d} and got.fee == {d} and got.nonce == {d} and got.memo == {d} and got.tag == {d}) 0 else 1;\n", .{ bartis_hexa_demo_from, bartis_hexa_demo_amount, bartis_hexa_demo_fee, bartis_hexa_demo_nonce, bartis_hexa_demo_memo, bartis_hexa_demo_tag });
-    try append_print(out, &used, "}}\n", .{});
-    return used;
+    return emit_n_field_identity(out, 6, zface, comment);
 }
 
-/// STOA142: closed seven-field `$:` hepta-mold → HeptaShape struct · baked 5/3/1/2/7/4/6.
+/// STOA142: closed seven-field `$:` hepta-mold → HeptaShape identity (via STOA253).
 fn emit_hepta_identity(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
-    var used: u32 = 0;
-    try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
-    try append_print(out, &used, "pub const HeptaShape = struct {{\n", .{});
-    try append_print(out, &used, "    from: u32 = 0,\n", .{});
-    try append_print(out, &used, "    amount: u32 = 0,\n", .{});
-    try append_print(out, &used, "    fee: u32 = 0,\n", .{});
-    try append_print(out, &used, "    nonce: u32 = 0,\n", .{});
-    try append_print(out, &used, "    memo: u32 = 0,\n", .{});
-    try append_print(out, &used, "    tag: u32 = 0,\n", .{});
-    try append_print(out, &used, "    to: u32 = 0,\n", .{});
-    try append_print(out, &used, "}};\n\n", .{});
-    try append_print(out, &used, "/// {s}\n", .{comment});
-    try append_print(out, &used, "fn bartis_gate({s}: HeptaShape) HeptaShape {{\n", .{zface});
-    try append_print(out, &used, "    return {s};\n", .{zface});
-    try append_print(out, &used, "}}\n\n", .{});
-    try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
-    try append_print(out, &used, "    const {s}: HeptaShape = .{{ .from = {d}, .amount = {d}, .fee = {d}, .nonce = {d}, .memo = {d}, .tag = {d}, .to = {d} }};\n", .{ zface, bartis_hepta_demo_from, bartis_hepta_demo_amount, bartis_hepta_demo_fee, bartis_hepta_demo_nonce, bartis_hepta_demo_memo, bartis_hepta_demo_tag, bartis_hepta_demo_to });
-    try append_print(out, &used, "    const got = bartis_gate({s});\n", .{zface});
-    try append_print(out, &used, "    return if (got.from == {d} and got.amount == {d} and got.fee == {d} and got.nonce == {d} and got.memo == {d} and got.tag == {d} and got.to == {d}) 0 else 1;\n", .{ bartis_hepta_demo_from, bartis_hepta_demo_amount, bartis_hepta_demo_fee, bartis_hepta_demo_nonce, bartis_hepta_demo_memo, bartis_hepta_demo_tag, bartis_hepta_demo_to });
-    try append_print(out, &used, "}}\n", .{});
-    return used;
+    return emit_n_field_identity(out, 7, zface, comment);
 }
 
-/// STOA144: closed eight-field `$:` octa-mold → OctaShape struct · baked 5/3/1/2/7/4/6/8.
+/// STOA144: closed eight-field `$:` octa-mold → OctaShape identity (via STOA253).
 fn emit_octa_identity(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
-    var used: u32 = 0;
-    try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
-    try append_print(out, &used, "pub const OctaShape = struct {{\n", .{});
-    try append_print(out, &used, "    from: u32 = 0,\n", .{});
-    try append_print(out, &used, "    amount: u32 = 0,\n", .{});
-    try append_print(out, &used, "    fee: u32 = 0,\n", .{});
-    try append_print(out, &used, "    nonce: u32 = 0,\n", .{});
-    try append_print(out, &used, "    memo: u32 = 0,\n", .{});
-    try append_print(out, &used, "    tag: u32 = 0,\n", .{});
-    try append_print(out, &used, "    to: u32 = 0,\n", .{});
-    try append_print(out, &used, "    via: u32 = 0,\n", .{});
-    try append_print(out, &used, "}};\n\n", .{});
-    try append_print(out, &used, "/// {s}\n", .{comment});
-    try append_print(out, &used, "fn bartis_gate({s}: OctaShape) OctaShape {{\n", .{zface});
-    try append_print(out, &used, "    return {s};\n", .{zface});
-    try append_print(out, &used, "}}\n\n", .{});
-    try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
-    try append_print(out, &used, "    const {s}: OctaShape = .{{ .from = {d}, .amount = {d}, .fee = {d}, .nonce = {d}, .memo = {d}, .tag = {d}, .to = {d}, .via = {d} }};\n", .{ zface, bartis_octa_demo_from, bartis_octa_demo_amount, bartis_octa_demo_fee, bartis_octa_demo_nonce, bartis_octa_demo_memo, bartis_octa_demo_tag, bartis_octa_demo_to, bartis_octa_demo_via });
-    try append_print(out, &used, "    const got = bartis_gate({s});\n", .{zface});
-    try append_print(out, &used, "    return if (got.from == {d} and got.amount == {d} and got.fee == {d} and got.nonce == {d} and got.memo == {d} and got.tag == {d} and got.to == {d} and got.via == {d}) 0 else 1;\n", .{ bartis_octa_demo_from, bartis_octa_demo_amount, bartis_octa_demo_fee, bartis_octa_demo_nonce, bartis_octa_demo_memo, bartis_octa_demo_tag, bartis_octa_demo_to, bartis_octa_demo_via });
-    try append_print(out, &used, "}}\n", .{});
-    return used;
+    return emit_n_field_identity(out, 8, zface, comment);
 }
 
-/// STOA146: closed nine-field `$:` nona-mold → NonaShape struct · baked 5/3/1/2/7/4/6/8/9.
+/// STOA146: closed nine-field `$:` nona-mold → NonaShape identity (via STOA253).
 fn emit_nona_identity(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
-    var used: u32 = 0;
-    try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
-    try append_print(out, &used, "pub const NonaShape = struct {{\n", .{});
-    try append_print(out, &used, "    from: u32 = 0,\n", .{});
-    try append_print(out, &used, "    amount: u32 = 0,\n", .{});
-    try append_print(out, &used, "    fee: u32 = 0,\n", .{});
-    try append_print(out, &used, "    nonce: u32 = 0,\n", .{});
-    try append_print(out, &used, "    memo: u32 = 0,\n", .{});
-    try append_print(out, &used, "    tag: u32 = 0,\n", .{});
-    try append_print(out, &used, "    to: u32 = 0,\n", .{});
-    try append_print(out, &used, "    via: u32 = 0,\n", .{});
-    try append_print(out, &used, "    ref: u32 = 0,\n", .{});
-    try append_print(out, &used, "}};\n\n", .{});
-    try append_print(out, &used, "/// {s}\n", .{comment});
-    try append_print(out, &used, "fn bartis_gate({s}: NonaShape) NonaShape {{\n", .{zface});
-    try append_print(out, &used, "    return {s};\n", .{zface});
-    try append_print(out, &used, "}}\n\n", .{});
-    try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
-    try append_print(out, &used, "    const {s}: NonaShape = .{{ .from = {d}, .amount = {d}, .fee = {d}, .nonce = {d}, .memo = {d}, .tag = {d}, .to = {d}, .via = {d}, .ref = {d} }};\n", .{ zface, bartis_nona_demo_from, bartis_nona_demo_amount, bartis_nona_demo_fee, bartis_nona_demo_nonce, bartis_nona_demo_memo, bartis_nona_demo_tag, bartis_nona_demo_to, bartis_nona_demo_via, bartis_nona_demo_ref });
-    try append_print(out, &used, "    const got = bartis_gate({s});\n", .{zface});
-    try append_print(out, &used, "    return if (got.from == {d} and got.amount == {d} and got.fee == {d} and got.nonce == {d} and got.memo == {d} and got.tag == {d} and got.to == {d} and got.via == {d} and got.ref == {d}) 0 else 1;\n", .{ bartis_nona_demo_from, bartis_nona_demo_amount, bartis_nona_demo_fee, bartis_nona_demo_nonce, bartis_nona_demo_memo, bartis_nona_demo_tag, bartis_nona_demo_to, bartis_nona_demo_via, bartis_nona_demo_ref });
-    try append_print(out, &used, "}}\n", .{});
-    return used;
+    return emit_n_field_identity(out, 9, zface, comment);
 }
 
 /// STOA131: closed multi-field `$:` pair-mold call body → PairShape flip · baked 3/5.
