@@ -810,6 +810,10 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA274 after Dexter→Sala finish check-in, `20260722.152404`** — season turn; lean A HAWM 1A inventary (recommended) · lean B screenshot optional · lean D held. Brief [`active-designing/20260722-152404_stoa274-after-dexter-sala-finish-checkin.md`](../active-designing/20260722-152404_stoa274-after-dexter-sala-finish-checkin.md).
 
+**STOA275 HAWM log-harvest inventary GREEN, `20260722.152523`** — `hawm-harvest-v1` Bron; fixture + meta fold. Brief [`active-designing/20260722-152523_stoa275-hawm-log-harvest-inventory.md`](../active-designing/20260722-152523_stoa275-hawm-log-harvest-inventory.md).
+
+**STOA276 after HAWM harvest check-in, `20260722.152631`** — lean A send · lean B host boot→harvest chain · lean D fleets held. Brief [`active-designing/20260722-152631_stoa276-after-hawm-harvest-checkin.md`](../active-designing/20260722-152631_stoa276-after-hawm-harvest-checkin.md).
+
 
 **Framework next (host resume), `20260720.231857`** — lean A: live SETU6.5 **sent** eyes on real `usb0`/`ncm`. Lab TX gate already GREEN; Sala B0 Glow rewrite · JABS3 stay thicker check-ins. Same freeze brief.
 
