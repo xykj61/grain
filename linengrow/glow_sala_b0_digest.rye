@@ -1,27 +1,30 @@
-//! linengrow/glow_sala_b0_digest.rye — Glow product digest surface over elder receipt_core.
+//! linengrow/glow_sala_b0_digest.rye — Glow product digest surface.
 //!
 //! STOA194: owns the session-root digest assert (SHA3-256 of log bytes)
 //! while calling elder `digest_log`.
 //! STOA204: replay claim path also asserts through this surface.
+//! STOA247: product-authored digest body — Sha3_256.hash lives here;
+//! elder receipt_core.digest_log stays peer baseline.
 //!
 //!   rye build linengrow/glow_sala_b0_digest_witness.rye \
 //!     -femit-bin=linengrow/bin/glow_sala_b0_digest_witness
 
 const std = @import("std");
 const assert = std.debug.assert;
+const Sha3_256 = std.crypto.hash.sha3.Sha3_256;
 const rc = @import("receipt_core.rye");
 const fixture = @import("glow_sala_b0_demo_fixture.rye");
 const fold = @import("sala_b0_fold.rye");
 
-pub const digest_version = "20260721.182623";
+pub const digest_version = "20260722.141443";
 
 pub const DigestError = error{RootMismatch};
 
-/// Digest bounded session-log bytes via elder SHA3-256.
+/// Digest bounded session-log bytes — product body: Sha3_256.hash (STOA247).
 pub fn digest_log_bytes(log: []const u8) [32]u8 {
     assert(log.len <= rc.max_log_len); // precondition: elder log bound
-    var root: [32]u8 = undefined;
-    rc.digest_log(log, &root);
+    var root: [Sha3_256.digest_length]u8 = undefined;
+    Sha3_256.hash(log[0..log.len], &root, .{});
     return root;
 }
 
@@ -42,4 +45,13 @@ pub fn claim_digest_log(log: []const u8) DigestError![32]u8 {
     const root = digest_log_bytes(log);
     if (!root_matches_fixture(&root)) return error.RootMismatch;
     return root;
+}
+
+/// True when product digest body matches elder receipt_core peer (STOA247).
+pub fn digest_body_agrees_elder(log: []const u8) bool {
+    assert(log.len <= rc.max_log_len);
+    const product = digest_log_bytes(log);
+    var elder: [32]u8 = undefined;
+    rc.digest_log(log, &elder);
+    return std.mem.eql(u8, &product, &elder);
 }

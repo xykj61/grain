@@ -1,4 +1,4 @@
-# glow_sala_b0_digest_witness.rish — Glow digest port over elder digest_log (STOA194).
+# glow_sala_b0_digest_witness.rish — Glow digest port (STOA194 · STOA247).
 #
 #   rishi/bin/rishi run tools/glow_sala_b0_digest_witness.rish
 
@@ -16,6 +16,8 @@ assert selftest.out contains "elder three-event log built" else "glow_sala_b0_di
 assert selftest.out contains "claim_digest_log matches fixture" else "glow_sala_b0_digest_witness missing digest claim"
 assert selftest.out contains "digest root agrees claim_demo_fold" else "glow_sala_b0_digest_witness missing fold agree"
 assert selftest.out contains "STOA194" else "glow_sala_b0_digest_witness missing STOA194"
+assert selftest.out contains "STOA247" else "glow_sala_b0_digest_witness missing STOA247"
+assert selftest.out contains "digest body agrees elder" else "glow_sala_b0_digest_witness missing authored body agree"
 assert selftest.out contains "99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe" else "glow_sala_b0_digest_witness missing expected hex"
 
-say "GREEN: Glow Sala B0 digest port — elder digest_log behind Glow assert; STOA194."
+say "GREEN: Glow Sala B0 digest port — product-authored digest body; STOA247."

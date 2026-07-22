@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260722.141542
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title STOA247-248 product-authored digest body round
+prompt kg — thin digest authored body after STOA246
+think STOA246 lean B recommended digest; kg into STOA247.
+think Product digest_log_bytes = Sha3_256.hash; elder rc.digest_log once in digest_body_agrees_elder; HAWM1 unchanged.
+think Fold and append still GREEN. Authored trilogy closed: line · sign · digest.
+think STOA248 check-in: lean B name next door (fields body · shared-package · language); JABS3 held.
+obs STOA247 GREEN. First vane-body deepen pass closed without reopening glass.
+file linengrow/glow_sala_b0_digest.rye product Sha3_256 digest body
+file tools/stoa247_digest_body_author_witness.rish authored body + peer-only honesty
+file active-designing/20260722-141443_stoa247-product-authored-digest-body.md STOA247 brief
+file active-designing/20260722-141514_stoa248-after-digest-body-checkin.md STOA248 check-in
+product_nib Sala-B0-Glow-compose
+suite_nib STOA0-248
+recommend check-in name next door — fields authored body is natural thin continue; shared-package and JABS3 held
