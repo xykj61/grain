@@ -8,7 +8,9 @@ Cursor (or Claude Code) climbs the bench one keystone at a time. End every pass 
 
 **Keep going** when the next item is mechanical, single-module, and follows a policy already written down.
 
-**`kg` means keep going** — one syllable for the same guidance. It is not commit, push, or merge; those stay under **send** (see the send-word rule).
+**`kg` means keep going** — one syllable for the same guidance. It is not commit, push, or merge by itself; those stay under **send** (see the send-word rule).
+
+**Round close (seated `20260722.134415`):** every landed work round **auto send + check-in** — see `round-close-send-checkin.md`. Do not wait for Keaton to type send/check-in after a GREEN lap unless he says hold.
 
 **Pause for a Claude ruling** when the next item: crosses a module seam; changes Rishi or the value model; opens a new domain (a new lap, a new surface); raises a design or width question no written policy answers; needs a ruling not yet made; touches a foundational or heavily-cited file (assess rather than assume); or reaches for current external facts.
 

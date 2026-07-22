@@ -10,6 +10,9 @@
 //! seated pins (desk-bound). Does not read the `.glow` file at runtime.
 //! STOA231: event 2–3 sig/fact pins · emit · desk bind (stamp2/memo2 ·
 //! stamp3/memo3). Same recipe as event 1.
+//! STOA233: runtime desk emit — product extracts face='…' cords from desk
+//! text and formats lines byte-identical to pin emit. Glow face_lit stays
+//! in glow/; fold/NativeActivity file I/O held.
 //!
 //!   rye build linengrow/glow_sala_b0_line_witness.rye \
 //!     -femit-bin=linengrow/bin/glow_sala_b0_line_witness
@@ -23,7 +26,7 @@ const fixture = @import("glow_sala_b0_demo_fixture.rye");
 const sign = @import("glow_sala_b0_sign.rye");
 const tally_copy = @import("tally_copy.rye");
 
-pub const line_version = "20260722.133717";
+pub const line_version = "20260722.134205";
 
 /// Glow face=lit sample desk for demo line halves (STOA225 · STOA231).
 pub const lit_desk_relpath = "glow/gen/sample-demo-fact-line-lits.glow";
@@ -52,7 +55,13 @@ pub const demo_sig3_hex =
 pub const demo_fact3_hex =
     "66726f6d20616630366133653332393137313465346633353663313963396231356364313935316563366536363632616137376265303735343766323839333833333431640a746f20616630366133653332393137313465346633353663313963396231356364313935316563366536363632616137376265303735343766323839333833333431640a616d6f756e7420330a6d656d6f2073616c613a6672616d6520382d6c696e6520736b61746520766965770a7374616d702032303236303731352e3139303030330a";
 
-pub const LineError = sign.SignError || error{ Overflow, InvalidLine, LineMismatch };
+pub const LineError = sign.SignError || error{
+    Overflow,
+    InvalidLine,
+    LineMismatch,
+    DeskMissingFace,
+    DeskBadLit,
+};
 
 pub const ParsedLine = struct {
     sig_len: u32,
@@ -178,7 +187,7 @@ pub fn lit_desk_binds_pins(src: []const u8) bool {
     return true;
 }
 
-fn format_line_from_hex(comptime sig_hex: []const u8, comptime fact_hex: []const u8, out: []u8) LineError!u32 {
+fn format_line_from_hex(sig_hex: []const u8, fact_hex: []const u8, out: []u8) LineError!u32 {
     const sig_n: u32 = @intCast(sig_hex.len);
     const fact_n: u32 = @intCast(fact_hex.len);
     const need = sig_n + 1 + fact_n + 1;
@@ -208,6 +217,75 @@ pub fn format_demo_line2_from_pins(out: []u8) LineError!u32 {
 /// Emit elder demo log line from seated event-3 pins (STOA231).
 pub fn format_demo_line3_from_pins(out: []u8) LineError!u32 {
     return format_line_from_hex(demo_sig3_hex, demo_fact3_hex, out);
+}
+
+/// Extract cord interior from a `face='…'` clause in desk source (STOA233).
+/// Skips `::` comment lines. Product-local — does not import glow/face_lit.
+pub fn extract_desk_cord(src: []const u8, face: []const u8) LineError![]const u8 {
+    assert(face.len >= 1);
+    var line_start: usize = 0;
+    while (line_start <= src.len) {
+        var line_end = line_start;
+        while (line_end < src.len and src[line_end] != '\n') : (line_end += 1) {}
+        const row = src[line_start..line_end];
+        if (row.len >= 2 and row[0] == ':' and row[1] == ':') {
+            // comment
+        } else if (row.len > face.len + 3) {
+            if (std.mem.startsWith(u8, row, face) and row[face.len] == '=' and row[face.len + 1] == '\'') {
+                const lit_start = face.len + 2;
+                var lit_end = lit_start;
+                while (lit_end < row.len and row[lit_end] != '\'') : (lit_end += 1) {}
+                if (lit_end >= row.len) return error.DeskBadLit;
+                if (lit_end + 1 != row.len) return error.DeskBadLit;
+                if (lit_end == lit_start) return error.DeskBadLit;
+                return row[lit_start..lit_end];
+            }
+        }
+        if (line_end >= src.len) break;
+        line_start = line_end + 1;
+    }
+    return error.DeskMissingFace;
+}
+
+/// Emit event-1 line from desk-extracted sig/fact cords (STOA233).
+pub fn format_demo_line_from_desk(src: []const u8, out: []u8) LineError!u32 {
+    const sig = try extract_desk_cord(src, "sig");
+    const fact = try extract_desk_cord(src, "fact");
+    return format_line_from_hex(sig, fact, out);
+}
+
+/// Emit event-2 line from desk-extracted sig2/fact2 cords (STOA233).
+pub fn format_demo_line2_from_desk(src: []const u8, out: []u8) LineError!u32 {
+    const sig = try extract_desk_cord(src, "sig2");
+    const fact = try extract_desk_cord(src, "fact2");
+    return format_line_from_hex(sig, fact, out);
+}
+
+/// Emit event-3 line from desk-extracted sig3/fact3 cords (STOA233).
+pub fn format_demo_line3_from_desk(src: []const u8, out: []u8) LineError!u32 {
+    const sig = try extract_desk_cord(src, "sig3");
+    const fact = try extract_desk_cord(src, "fact3");
+    return format_line_from_hex(sig, fact, out);
+}
+
+/// True when desk emit for events 1–3 matches seated pin emit.
+pub fn demo_desk_emit_agrees_pins(src: []const u8) LineError!bool {
+    var from_desk: [rc.max_line_len]u8 = undefined;
+    var from_pins: [rc.max_line_len]u8 = undefined;
+
+    const d1 = try format_demo_line_from_desk(src, from_desk[0..]);
+    const p1 = try format_demo_line_from_pins(from_pins[0..]);
+    if (d1 != p1 or !std.mem.eql(u8, from_desk[0..d1], from_pins[0..p1])) return false;
+
+    const d2 = try format_demo_line2_from_desk(src, from_desk[0..]);
+    const p2 = try format_demo_line2_from_pins(from_pins[0..]);
+    if (d2 != p2 or !std.mem.eql(u8, from_desk[0..d2], from_pins[0..p2])) return false;
+
+    const d3 = try format_demo_line3_from_desk(src, from_desk[0..]);
+    const p3 = try format_demo_line3_from_pins(from_pins[0..]);
+    if (d3 != p3 or !std.mem.eql(u8, from_desk[0..d3], from_pins[0..p3])) return false;
+
+    return true;
 }
 
 /// True when pin emit and live `claim_demo_line` are byte-identical.

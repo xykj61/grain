@@ -15,9 +15,9 @@ const claim = @import("glow_sala_b0_claim.rye");
 const elder = @import("sala_b0_fold.rye");
 const line = @import("glow_sala_b0_line.rye");
 
-const witness_version = "20260722.133717";
+const witness_version = "20260722.134205";
 
-fn run_selftest() !u8 {
+fn run_selftest(init: std.process.Init) !u8 {
     assert(fixture.root_pin_agrees());
     print("sala-b0-append: fixture root pin seated -- GREEN\n", .{});
 
@@ -58,11 +58,27 @@ fn run_selftest() !u8 {
     assert(std.mem.eql(u8, &root, &elder_root));
     print("sala-b0-append: append root agrees elder run_demo_fold -- GREEN\n", .{});
 
+    // STOA233: runtime desk path equals pin path and HAWM1.
+    const a = init.arena.allocator();
+    const cwd = std.Io.Dir.cwd();
+    const desk = try cwd.readFileAlloc(init.io, line.lit_desk_relpath, a, .limited(8192));
+    var desk_log: [rc.max_log_len]u8 = undefined;
+    const desk_len = try append.append_demo_log_from_desk(desk, &desk_log);
+    assert(desk_len == len);
+    assert(std.mem.eql(u8, desk_log[0..desk_len], log_buf[0..len]));
+    print("sala-b0-append: desk log equals pin log -- GREEN\n", .{});
+
+    const desk_root = try append.claim_append_demo_root_from_desk(desk, &desk_log);
+    assert(std.mem.eql(u8, &desk_root, &root));
+    assert(digest.root_matches_fixture(&desk_root));
+    print("sala-b0-append: desk claim matches HAWM1 -- GREEN\n", .{});
+    print("sala-b0-append: STOA233 runtime desk append -- GREEN\n", .{});
+
     print("sala-b0-append: version {s}\n", .{witness_version});
-    print("GREEN: Glow Sala B0 append — STOA231 pin emit events 1-3; HAWM1 root; STOA203 append_event kept.\n", .{});
+    print("GREEN: Glow Sala B0 append — STOA231 pin emit; STOA233 desk emit; HAWM1 root.\n", .{});
     return 0;
 }
 
-pub fn main(_: std.process.Init) !u8 {
-    return run_selftest();
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
 }

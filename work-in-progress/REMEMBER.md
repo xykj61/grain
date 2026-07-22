@@ -2,23 +2,25 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260722.134008` (EDT) · voice Quin  
-**Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · **Sala B0 Glow compose** · pin emit 1–3  
-**Language nib:** **STOA0–232** GREEN · after events 2–3 pin emit check-in  
-**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–232  
-**Git nib:** *(after send)* · STOA231–232  
+**Last refreshed:** `20260722.134415` (EDT) · voice Quin  
+**Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · **Sala B0 Glow compose** · runtime desk emit  
+**Language nib:** **STOA0–234** GREEN · after runtime desk emit check-in  
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–234  
+**Git nib:** *(after send)* · STOA233–234  
 
 
-**Season:** Framework · Eastern / EDT · pin emit 1–3 on pier · rest next · SETU6.5 live-sent GREEN.  
+**Season:** Framework · Eastern / EDT · desk emit on pier · **round-close auto send+check-in** · SETU6.5 live-sent GREEN.  
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`
 
 ---
 
 ## Now
 
-**STOA232** `20260722.134008` — send chosen; lean B rest recommended. Brief [`../active-designing/20260722-134008_stoa232-after-events-2-3-pin-emit-checkin.md`](../active-designing/20260722-134008_stoa232-after-events-2-3-pin-emit-checkin.md).
+**STOA234** `20260722.134415` — send chosen; lean B fold desk I/O next. Brief [`../active-designing/20260722-134415_stoa234-after-runtime-desk-emit-checkin.md`](../active-designing/20260722-134415_stoa234-after-runtime-desk-emit-checkin.md).
 
-**Next** — rest (runtime `.glow` · JABS3 held).
+**Round close** — every landed lap auto send + check-in ([`.cursor/rules/round-close-send-checkin.mdc`](../.cursor/rules/round-close-send-checkin.mdc)).
+
+**Next** — **kg** wire claim/fold to desk file I/O.
 
 ```bash
 export RYE_ZIG=vendor/zig-toolchain/zig
@@ -32,8 +34,8 @@ rishi/bin/rishi run tools/glow_sala_b0_append_witness.rish
 
 | Door | Kind |
 |------|------|
-| Rest | **recommended** |
-| Runtime `.glow` file parse | **held** |
+| Wire claim/fold to desk file I/O | **kg** recommended |
+| Glow `face_lit` on product path | **held** |
 | JABS3 | **held** |
 | SETU6.5 live-sent | **GREEN** `20260720.233805` |
 
