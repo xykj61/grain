@@ -1,0 +1,15 @@
+format session-log-v1
+stamp 20260722.154415
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title STOA286 hawm0 stopped season fold
+prompt hawm0_stop.sh GREEN printout
+think STOA285 lean B; host stopped AVD cleanly; Pixel remains; harvest Bron kept
+think seat STOA286 check-in lean B rest; fleets held
+obs adb shows Pixel only; no emulator-*
+product_nib ZETA6 LULU0-5 SETU6.5 HAWM-chain-folded
+suite_nib STOA0-286
+file active-designing/20260722-154348_stoa286-hawm0-stopped-season-fold.md stop GREEN
+recommend check-in rest; reopen HAWM later via boot onpath when needed

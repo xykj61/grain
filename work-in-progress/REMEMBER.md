@@ -2,14 +2,14 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260722.154128` (EDT) · voice Quin  
-**Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE paint · **HAWM harvest+session_root**  
-**Language nib:** **STOA0–285** · shape-only · host boot→harvest→HAWM1→root GREEN  
-**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–285  
-**Git nib:** *(pin after send)* · STOA284–285
+**Last refreshed:** `20260722.154348` (EDT) · voice Quin  
+**Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE paint · **HAWM harvest chain folded**  
+**Language nib:** **STOA0–286** · shape-only · host boot→harvest→HAWM1→root→stop GREEN  
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–286  
+**Git nib:** *(pin after send)* · STOA286
 
 
-**Season:** Framework · Eastern / EDT · session_root in harvest GREEN · AVD may still be up · lean B stop/rest · round-close on.  
+**Season:** Framework · Eastern / EDT · hawm0 stopped cleanly · harvest Bron kept · Pixel USB only · rest lean · round-close on.  
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`  
 **ADB:** `tools/.cache/hawm0/android-sdk/platform-tools/adb` — not on bare PATH  
 
@@ -17,19 +17,25 @@
 
 ## Now
 
-**STOA285** `20260722.154128` — session_root in harvest; lean B stop hawm0/rest. Brief [`../active-designing/20260722-154128_stoa285-after-session-root-checkin.md`](../active-designing/20260722-154128_stoa285-after-session-root-checkin.md).
+**STOA286** `20260722.154348` — hawm0 stopped; lean B rest. Brief [`../active-designing/20260722-154348_stoa286-hawm0-stopped-season-fold.md`](../active-designing/20260722-154348_stoa286-hawm0-stopped-season-fold.md).
 
-**Harvest (checkable):**
+**Harvest kept on disk:**
 
 ```bash
 grep -E '^(stamp|serial|session_root|status)' tools/.cache/hawm0/hawm-harvest.bron
-rishi/bin/rishi run tools/hawm_harvest_session_root_witness.rish
 ```
 
-**Stop AVD when done (lean B):**
+**Reopen HAWM later (host, `/dev/kvm`):**
 
 ```bash
-tools/hawm0_stop.sh
+rishi/bin/rishi run tools/hawm0_boot_harvest_onpath_host.rish
+```
+
+**Pixel (still attached):**
+
+```bash
+export ADB=tools/.cache/hawm0/android-sdk/platform-tools/adb
+$ADB devices
 ```
 
 ---
@@ -38,9 +44,10 @@ tools/hawm0_stop.sh
 
 | Door | Kind |
 |------|------|
-| Stop hawm0 · rest | **recommended** (STOA285 lean B) |
+| Rest | **recommended** (STOA286 lean B) |
+| Pixel / glass season | **await** when mobile turns (lean C) |
 | Fleets · HAWM2 · gold · JABS3 · UDP | **held** |
-| HAWM1 session_root in harvest | **GREEN** `20260722.154128` |
+| HAWM harvest chain (boot→root→stop) | **GREEN** folded `20260722.154348` |
 
 ---
 

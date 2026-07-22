@@ -7,6 +7,8 @@ Living index for the append-only session stream. This table reads **newest first
 **Day’s truth is this index’s order, not filename sort.** One-clock stamps sort ascending on disk; trust the table for sequence within a day.
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
+- `20260722.154415` — [STOA286 hawm0 stopped season fold](20260722-154415_stoa286-hawm0-stopped-season-fold.bron) — AVD down; harvest kept; rest
+- `20260722.154221` — [REMEMBER git nib after STOA285](20260722-154221_remember-git-nib-stoa285.bron) — pin e9e5112a4f65
 - `20260722.154150` — [STOA284–285 harvest session_root](20260722-154150_stoa284-285-harvest-session-root-round.bron) — HAWM1 root in hawm-harvest-v1
 - `20260722.153914` — [REMEMBER git nib after STOA283](20260722-153914_remember-git-nib-stoa283.bron) — pin 3117f6db8ee9
 - `20260722.153850` — [STOA283 host GREEN check-in sized](20260722-153850_stoa283-host-green-checkin-sized.bron) — lean A HAWM1→root; AVD still up
