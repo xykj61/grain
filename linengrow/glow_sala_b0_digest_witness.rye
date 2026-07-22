@@ -18,7 +18,7 @@ const fixture = @import("glow_sala_b0_demo_fixture.rye");
 const digest = @import("glow_sala_b0_digest.rye");
 const claim = @import("glow_sala_b0_claim.rye");
 
-const witness_version = "20260721.182623";
+const witness_version = "20260722.141443";
 
 fn build_demo_log(log_buf: *[rc.max_log_len]u8) !u32 {
     const actor_kp = kumara.keypair_from_seed(&mc.issuer_seed);
@@ -52,9 +52,15 @@ fn run_selftest() !u8 {
     const fold_root = try claim.claim_demo_fold();
     assert(std.mem.eql(u8, &root, &fold_root));
     print("sala-b0-digest: digest root agrees claim_demo_fold -- GREEN\n", .{});
+    print("sala-b0-digest: STOA194 digest port -- GREEN\n", .{});
+
+    // STOA247: product-authored digest body agrees elder peer.
+    assert(digest.digest_body_agrees_elder(log_buf[0..len]));
+    print("sala-b0-digest: digest body agrees elder -- GREEN\n", .{});
+    print("sala-b0-digest: STOA247 product-authored digest body -- GREEN\n", .{});
 
     print("sala-b0-digest: version {s}\n", .{witness_version});
-    print("GREEN: Glow Sala B0 digest port — STOA194; elder digest_log behind Glow assert.\n", .{});
+    print("GREEN: Glow Sala B0 digest port — STOA194/247; product-authored digest body.\n", .{});
     return 0;
 }
 
