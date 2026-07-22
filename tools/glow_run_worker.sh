@@ -9,6 +9,7 @@
 #   tools/glow_run_worker.sh <file.glow> <from> <amount>           # pair $: fields
 #   tools/glow_run_worker.sh <file.glow> <from> <amount> <fee>     # triple $: fields
 #   tools/glow_run_worker.sh <file.glow> <from> <amount> <fee> <nonce>  # quad $: fields
+#   tools/glow_run_worker.sh <file.glow> <from> <amount> <fee> <nonce> <memo>  # penta
 
 set -e
 ROOT=$(CDPATH= cd -- "$(dirname "$0")/.." && pwd)
@@ -20,9 +21,10 @@ SAMPLE=${2-}
 SAMPLE2=${3-}
 SAMPLE3=${4-}
 SAMPLE4=${5-}
+SAMPLE5=${6-}
 
 test -n "$GLOW" || {
-  echo "usage: glow_run_worker.sh <file.glow> [<sample>] [<u32>] [<u32>] [<u32>]"
+  echo "usage: glow_run_worker.sh <file.glow> [<sample>] [<u32>]..."
   exit 2
 }
 
@@ -117,10 +119,20 @@ gate-quad-fields|gate-barket-quad-fields)
     echo "FAIL: ${STEM}.glow needs from u32, amount u32, fee u32, and nonce u32"
     exit 2
   }
+  test -z "$SAMPLE5" || {
+    echo "FAIL: ${STEM}.glow takes four field decimals only"
+    exit 2
+  }
+  ;;
+gate-penta-fields|gate-barket-penta-fields)
+  test -n "$SAMPLE" && test -n "$SAMPLE2" && test -n "$SAMPLE3" && test -n "$SAMPLE4" && test -n "$SAMPLE5" || {
+    echo "FAIL: ${STEM}.glow needs from, amount, fee, nonce, and memo u32"
+    exit 2
+  }
   ;;
 *)
   test -z "$SAMPLE" || {
-    echo "FAIL: only sample-u32 / gate-*-u32 / gate-*-kind-tag / gate-*-xact-tag / gate-*-xfer-tag / gate-*-pair-fields / gate-*-triple-fields / gate-*-quad-fields take a sample"
+    echo "FAIL: only sample-u32 / gate-*-u32 / gate-*-kind-tag / gate-*-xact-tag / gate-*-xfer-tag / gate-*-pair-fields / gate-*-triple-fields / gate-*-quad-fields / gate-*-penta-fields take a sample"
     exit 2
   }
   ;;
@@ -133,7 +145,9 @@ if [ -n "$SAMPLE" ]; then
   RYE=$(glow/bin/glow_run --sample-argv "$GLOW")
   test -n "$RYE"
   env RYE_ZIG="$ZIG" rye/bin/rye build "$RYE" -femit-bin="$BIN"
-  if [ -n "$SAMPLE4" ]; then
+  if [ -n "$SAMPLE5" ]; then
+    "$BIN" "$SAMPLE" "$SAMPLE2" "$SAMPLE3" "$SAMPLE4" "$SAMPLE5"
+  elif [ -n "$SAMPLE4" ]; then
     "$BIN" "$SAMPLE" "$SAMPLE2" "$SAMPLE3" "$SAMPLE4"
   elif [ -n "$SAMPLE3" ]; then
     "$BIN" "$SAMPLE" "$SAMPLE2" "$SAMPLE3"
