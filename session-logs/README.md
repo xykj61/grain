@@ -7,6 +7,8 @@ Living index for the append-only session stream. This table reads **newest first
 **Day’s truth is this index’s order, not filename sort.** One-clock stamps sort ascending on disk; trust the table for sequence within a day.
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
+- `20260722.183720` — [cursorignore archive and caches](20260722-183720_cursorignore-archive-caches.bron) — lean A seated; rest or yonder next
+- `20260722.183514` — [filetree append-front check-in](20260722-183514_filetree-append-front-checkin.bron) — prefer fold/ignore over content-merge
 - `20260722.161915` — [STOA301 send and check-in](20260722-161915_stoa301-send-and-checkin.bron) — pier already clean; rest or payload argv
 - `20260722.161826` — [REMEMBER git nib after STOA301](20260722-161826_remember-git-nib-stoa301.bron) — pin 036b9f414008
 - `20260722.161751` — [STOA300–301 kind argv](20260722-161751_stoa300-301-kind-argv-round.bron) — unit-tag reader GREEN; rest next

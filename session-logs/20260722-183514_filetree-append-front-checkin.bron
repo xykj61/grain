@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260722.183514
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title filetree append-front check-in
+prompt worried file creation overloads Cursor memory; append-to-front then ask if it would work
+think count trees: active-designing ~345 top md; living bron ~120 all today; archive already ~2091
+think append-to-front reduces inodes yet fights one-clock and dated_guard; huge files hurt agent context more than many small greppable ones
+think prefer existing fold: session_logs_archive; yonder/archive for designing; Cursor ignore archive; docs compressors
+obs living bron overload is today density not years of history; fold keeps today flat by design
+product_nib ZETA6 LULU0-5 SETU6.5
+suite_nib STOA0-301
+file ORGANIZING.md yonder and archive fold already named
+file tools/session_logs_archive.rish day fold
+recommend check-in prefer fold-and-ignore over content-merge; lean A cursorignore chosen as 20260722.183653
