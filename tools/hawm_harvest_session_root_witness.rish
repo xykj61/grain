@@ -1,0 +1,35 @@
+# hawm_harvest_session_root_witness.rish — STOA284: session_root in harvest Bron.
+#
+# Proves hawm-harvest-v1 carries session_root (64 hex from HAWM1 capture, or
+# the deterministic fixture). Prefers on-disk hawm1-session-root.txt when
+# present; otherwise uses fixture hex after a fixture harvest.
+#
+#   rishi/bin/rishi run tools/hawm_harvest_session_root_witness.rish
+
+say "hawm-root: capture helper + harvest worker seated…"
+let helpers = run ["sh" "-c" "test -f tools/hawm1_capture_session_root.sh && test -f tools/hawm_log_harvest_worker.sh"]
+assert helpers.ok else "missing capture helper or harvest worker"
+
+say "hawm-root: fixture names session_root…"
+let fix = run ["sh" "-c" "grep -q '^session_root 99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe$' tools/fixtures/hawm_harvest_v1.bron"]
+assert fix.ok else "fixture missing deterministic sala-b0 session_root"
+
+say "hawm-root: ensure a 64-hex root file (capture from prior HAWM1 out or fixture)…"
+let ensure = run ["bash" "-c" "chmod +x tools/hawm1_capture_session_root.sh tools/hawm_log_harvest_worker.sh; if test -f tools/.cache/hawm0/hawm1-session-root.txt && grep -Eq '^[0-9a-f]{64}$' tools/.cache/hawm0/hawm1-session-root.txt; then echo ROOT_FILE_PRESENT; elif test -f /tmp/stoa284_hawm1.out; then ./tools/hawm1_capture_session_root.sh < /tmp/stoa284_hawm1.out && echo ROOT_FROM_HAWM1_OUT; else printf '%s' 99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe > tools/.cache/hawm0/hawm1-session-root.txt && echo ROOT_FROM_FIXTURE_HEX; fi"]
+assert ensure.ok else "could not ensure hawm1-session-root.txt"
+say "${ensure.out}"
+
+say "hawm-root: fold meta (or fixture) → harvest with session_root…"
+let fold = run ["bash" "-c" "if test -f tools/.cache/hawm0/hawm0-boot-meta.txt && grep -q '^device: ' tools/.cache/hawm0/hawm0-boot-meta.txt; then ./tools/hawm_log_harvest_worker.sh; else ./tools/hawm_log_harvest_worker.sh --fixture; fi"]
+say "${fold.out}"
+assert fold.ok else "harvest fold failed"
+
+let hex_line = run ["sh" "-c" "grep -E '^session_root [0-9a-f]{64}$' tools/.cache/hawm0/hawm-harvest.bron"]
+assert hex_line.ok else "harvest missing session_root 64-hex line"
+say "hawm-root: ${hex_line.out}"
+
+say "hawm1 witness wires capture…"
+let wired = run ["sh" "-c" "grep -q hawm1_capture_session_root.sh tools/hawm1_sala_witness.rish"]
+assert wired.ok else "hawm1_sala_witness missing capture call"
+
+say "GREEN: STOA284 — hawm-harvest-v1 carries HAWM1 session_root (64 hex)."

@@ -29,5 +29,7 @@ let hawm1_push = run ["sh" "-c" "grep -E -- '-s .* push' tools/hawm1_sala_witnes
 assert hawm1_push.ok else "hawm1 missing adb -s serial on push"
 let hawm1_shell = run ["sh" "-c" "grep -E -- '-s .* shell' tools/hawm1_sala_witness.rish"]
 assert hawm1_shell.ok else "hawm1 missing adb -s serial on shell"
+let hawm1_helper = run ["sh" "-c" "test -f tools/hawm0_emulator_serial.sh && grep -q hawm0_emulator_serial.sh tools/hawm1_sala_witness.rish"]
+assert hawm1_helper.ok else "hawm1 missing hawm0_emulator_serial.sh helper"
 
 say "GREEN: STOA279 — HAWM0/HAWM1 pin emulator-* serial beside a USB Pixel."
