@@ -6,8 +6,8 @@
 **Version:** `20260722.154953` (EDT · Framework host)  
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
 **Voice:** Quin  
-**Status:** Checkable — lean **A** send with round-close · lean **B** rest  
-**Register:** Checkable (Two Rooms) — STOA289 GREEN; language inventary Intent until sized  
+**Status:** Checkable — lean **A** send done · continue → STOA291 (rest deferred)  
+**Register:** Checkable (Two Rooms) — STOA289 GREEN; language inventary sized as STOA291  
 
 **Grounds in:** STOA289 · STOA288 lean A  
 
