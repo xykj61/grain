@@ -7,6 +7,7 @@ Living index for the append-only session stream. This table reads **newest first
 **Day’s truth is this index’s order, not filename sort.** One-clock stamps sort ascending on disk; trust the table for sequence within a day.
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
+- `20260722.153448` — [STOA279–280 emulator serial pin](20260722-153448_stoa279-280-emulator-serial-pin-round.bron) — Pixel raced bare adb; pin emulator-*; host retry
 - `20260722.153045` — [README stamp fix after STOA278 pin](20260722-153045_readme-stamp-fix-stoa278.bron) — restore index stamp
 - `20260722.153025` — [REMEMBER git nib after STOA278](20260722-153025_remember-git-nib-stoa278.bron) — pin 6c939d171374
 - `20260722.152849` — [STOA277–278 boot harvest chain](20260722-152849_stoa277-278-boot-harvest-chain-round.bron) — onpath authored; harvest half GREEN; host KVM for full
