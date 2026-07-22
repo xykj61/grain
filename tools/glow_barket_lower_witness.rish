@@ -446,4 +446,8 @@ assert run_nnf.out contains "EXIT:0" else "barket nona-shape flip welcome binary
 let n_field = run ["sh" "-c" "grep -q 'fn emit_n_field_identity' glow/lower_barket.rye && test $(grep -Fc 'return emit_n_field_identity(' glow/lower_barket.rye) = 8"]
 assert n_field.ok else "STOA255 missing emit_n_field_identity or eight identity wrappers"
 
-say "GREEN: Glow barket lower — STOA113–147 · STOA255 N-field identity emit · STOA257 shape-only living · identity · argv · call-body · amount-shape · amount argv · count-shape · count argv · kind-shape · kind flip · xact-shape · xact flip · xfer-shape · xfer flip · pair-shape · pair flip · triple-shape · triple flip · quad-shape · quad flip · penta-shape · penta flip · hexa-shape · hexa flip · hepta-shape · hepta flip · octa-shape · octa flip · nona-shape · nona flip · nesting-through-nests."
+# STOA261: pair…nona flip call-body collapses through emit_n_field_flip_call_body.
+let n_flip = run ["sh" "-c" "grep -q 'fn emit_n_field_flip_call_body' glow/lower_barket.rye && test $(grep -Fc 'return emit_n_field_flip_call_body(' glow/lower_barket.rye) = 8"]
+assert n_flip.ok else "STOA261 missing emit_n_field_flip_call_body or eight flip wrappers"
+
+say "GREEN: Glow barket lower — STOA113–147 · STOA255 N-field identity · STOA261 N-field flip · STOA257 shape-only living · identity · argv · call-body · amount-shape · amount argv · count-shape · count argv · kind-shape · kind flip · xact-shape · xact flip · xfer-shape · xfer flip · pair-shape · pair flip · triple-shape · triple flip · quad-shape · quad flip · penta-shape · penta flip · hexa-shape · hexa flip · hepta-shape · hepta flip · octa-shape · octa flip · nona-shape · nona flip · nesting-through-nests."
