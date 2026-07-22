@@ -13,6 +13,7 @@
 #   tools/glow_run_worker.sh <file.glow> <from> <amount> <fee> <nonce> <memo> <tag>  # hexa
 #   tools/glow_run_worker.sh <file.glow> ... <to>  # hepta (7 fields)
 #   tools/glow_run_worker.sh <file.glow> ... <via>  # octa (8 fields)
+#   tools/glow_run_worker.sh <file.glow> ... <ref>  # nona (9 fields)
 
 set -e
 ROOT=$(CDPATH= cd -- "$(dirname "$0")/.." && pwd)
@@ -28,6 +29,7 @@ SAMPLE5=${6-}
 SAMPLE6=${7-}
 SAMPLE7=${8-}
 SAMPLE8=${9-}
+SAMPLE9=${10-}
 
 test -n "$GLOW" || {
   echo "usage: glow_run_worker.sh <file.glow> [<sample>] [<u32>]..."
@@ -165,10 +167,20 @@ gate-octa-fields|gate-barket-octa-fields)
     echo "FAIL: ${STEM}.glow needs from, amount, fee, nonce, memo, tag, to, and via u32"
     exit 2
   }
+  test -z "$SAMPLE9" || {
+    echo "FAIL: ${STEM}.glow takes eight field decimals only"
+    exit 2
+  }
+  ;;
+gate-nona-fields|gate-barket-nona-fields)
+  test -n "$SAMPLE" && test -n "$SAMPLE2" && test -n "$SAMPLE3" && test -n "$SAMPLE4" && test -n "$SAMPLE5" && test -n "$SAMPLE6" && test -n "$SAMPLE7" && test -n "$SAMPLE8" && test -n "$SAMPLE9" || {
+    echo "FAIL: ${STEM}.glow needs from, amount, fee, nonce, memo, tag, to, via, and ref u32"
+    exit 2
+  }
   ;;
 *)
   test -z "$SAMPLE" || {
-    echo "FAIL: only sample-u32 / gate-*-u32 / gate-*-kind-tag / gate-*-xact-tag / gate-*-xfer-tag / gate-*-pair-fields / gate-*-triple-fields / gate-*-quad-fields / gate-*-penta-fields / gate-*-hexa-fields / gate-*-hepta-fields / gate-*-octa-fields take a sample"
+    echo "FAIL: only sample-u32 / gate-*-u32 / gate-*-kind-tag / gate-*-xact-tag / gate-*-xfer-tag / gate-*-pair-fields / gate-*-triple-fields / gate-*-quad-fields / gate-*-penta-fields / gate-*-hexa-fields / gate-*-hepta-fields / gate-*-octa-fields / gate-*-nona-fields take a sample"
     exit 2
   }
   ;;
@@ -181,7 +193,9 @@ if [ -n "$SAMPLE" ]; then
   RYE=$(glow/bin/glow_run --sample-argv "$GLOW")
   test -n "$RYE"
   env RYE_ZIG="$ZIG" rye/bin/rye build "$RYE" -femit-bin="$BIN"
-  if [ -n "$SAMPLE8" ]; then
+  if [ -n "$SAMPLE9" ]; then
+    "$BIN" "$SAMPLE" "$SAMPLE2" "$SAMPLE3" "$SAMPLE4" "$SAMPLE5" "$SAMPLE6" "$SAMPLE7" "$SAMPLE8" "$SAMPLE9"
+  elif [ -n "$SAMPLE8" ]; then
     "$BIN" "$SAMPLE" "$SAMPLE2" "$SAMPLE3" "$SAMPLE4" "$SAMPLE5" "$SAMPLE6" "$SAMPLE7" "$SAMPLE8"
   elif [ -n "$SAMPLE7" ]; then
     "$BIN" "$SAMPLE" "$SAMPLE2" "$SAMPLE3" "$SAMPLE4" "$SAMPLE5" "$SAMPLE6" "$SAMPLE7"

@@ -906,6 +906,10 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA320 after octa argv check-in, `20260722.194423`** — lean A send · lean B rest available · lean **C** nona argv recommended. Brief [`active-designing/20260722-194423_stoa320-after-octa-argv-checkin.md`](../active-designing/20260722-194423_stoa320-after-octa-argv-checkin.md).
 
+**STOA321 N-field argv survey · nona GREEN, `20260722.195019`** — `emit_nona_argv` · nine fields · `$:` argv family closed. Brief [`active-designing/20260722-195019_stoa321-n-field-argv-survey-nona.md`](../active-designing/20260722-195019_stoa321-n-field-argv-survey-nona.md).
+
+**STOA322 after nona argv check-in, `20260722.195021`** — lean A send · lean B rest available · lean **C** name next STOA door. Brief [`active-designing/20260722-195021_stoa322-after-nona-argv-checkin.md`](../active-designing/20260722-195021_stoa322-after-nona-argv-checkin.md).
+
 
 **Framework next (host resume), `20260720.231857`** — lean A: live SETU6.5 **sent** eyes on real `usb0`/`ncm`. Lab TX gate already GREEN; Sala B0 Glow rewrite · JABS3 stay thicker check-ins. Same freeze brief.
 
