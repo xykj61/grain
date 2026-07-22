@@ -1,0 +1,20 @@
+# stoa243_line_body_author_witness.rish — product owns format/parse log-line body.
+#
+# Elder receipt_core stays peer baseline. Product body must agree, and the
+# product source must not call rc.format_log_line / rc.parse_log_line.
+#
+#   rishi/bin/rishi run tools/stoa243_line_body_author_witness.rish
+
+let product = run ["rishi/bin/rishi" "run" "tools/glow_sala_b0_line_witness.rish"]
+assert product.ok else "glow_sala_b0_line_witness failed"
+assert product.out contains "STOA243" else "product side missing STOA243"
+assert product.out contains "authored body" else "product side missing authored body"
+
+# Honesty: format_log_line / parse_log_line bodies live here — no rc.* call sites.
+let no_delegate = run ["sh" "-c" "! grep -E 'rc\\.(format_log_line|parse_log_line)\\(' linengrow/glow_sala_b0_line.rye"]
+assert no_delegate.ok else "product line still delegates format/parse to receipt_core"
+
+let has_body = run ["sh" "-c" "grep -q format_parse_body_agrees_elder linengrow/glow_sala_b0_line.rye"]
+assert has_body.ok else "missing format_parse_body_agrees_elder"
+
+say "GREEN: STOA243 — product-authored log-line format/parse body agrees elder peer."
