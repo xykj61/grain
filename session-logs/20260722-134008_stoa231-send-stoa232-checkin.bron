@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260722.134008
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title STOA231 send · STOA232 check-in · rest next
+prompt send and check in
+think Witness GREEN for events 2-3 pin emit; seat STOA232 check-in with rec lean B rest after closed pin-emit season.
+obs Pier send from main; origin and codeberg. Runtime .glow and JABS3 held.
+file active-designing/20260722-133717_stoa231-demo-events-2-3-pin-emit.md brief
+file active-designing/20260722-134008_stoa232-after-events-2-3-pin-emit-checkin.md check-in leans
+file linengrow/glow_sala_b0_line.rye event 2-3 pins
+file linengrow/glow_sala_b0_append.rye append all pin emit
+file glow/gen/sample-demo-fact-line-lits.glow six faces
+git_nib f6f314bb4b7a
+product_nib Sala-B0-Glow-compose
+suite_nib STOA0-232
+recommend rest; or sized brief for runtime .glow / JABS3 on explicit word

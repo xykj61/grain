@@ -1,6 +1,7 @@
-//! glow/sample_demo_fact_line_lits_witness.rye — demo fact-line pins as face=lit (STOA225).
+//! glow/sample_demo_fact_line_lits_witness.rye — demo fact-line pins as face=lit.
 //!
-//! Pins must match linengrow/glow_sala_b0_line.rye demo_sig_hex · demo_fact_hex.
+//! Pins must match linengrow/glow_sala_b0_line.rye demo_sig/fact · sig2/fact2 ·
+//! sig3/fact3 (STOA225 · STOA231). Duplicated here — Glow cannot import linengrow.
 //!
 //!   rye build glow/sample_demo_fact_line_lits_witness.rye \
 //!     -femit-bin=glow/bin/sample_demo_fact_line_lits_witness
@@ -11,12 +12,20 @@ const print = std.debug.print;
 const face_lit = @import("face_lit.rye");
 const lower = @import("lower_face_lit.rye");
 
-const witness_version = "20260722.132020";
+const witness_version = "20260722.133717";
 
 const demo_sig_hex =
     "93c92d1b6ac994d9560cc26480f36661f23be0144ac29e603d3f761df565a6c662a6083bca0e39bb3ca36d3b785789b1cc34d1bd491f5fa1eddd7a961684300b";
 const demo_fact_hex =
     "66726f6d20616630366133653332393137313465346633353663313963396231356364313935316563366536363632616137376265303735343766323839333833333431640a746f20616630366133653332393137313465346633353663313963396231356364313935316563366536363632616137376265303735343766323839333833333431640a616d6f756e7420310a6d656d6f2073616c613a6f70656e2072697368692073657373696f6e0a7374616d702032303236303731352e3139303030310a";
+const demo_sig2_hex =
+    "cbff6d796bfc1880950a31752483526f394fcf7f5a5d31267289735637ec9b7a02b2a8d92b8edcdcac77cf30a44f973225356043c6777a67c0ad99e8df34bf0f";
+const demo_fact2_hex =
+    "66726f6d20616630366133653332393137313465346633353663313963396231356364313935316563366536363632616137376265303735343766323839333833333431640a746f20616630366133653332393137313465346633353663313963396231356364313935316563366536363632616137376265303735343766323839333833333431640a616d6f756e7420320a6d656d6f2073616c613a74797065206c65742078203d2034320a7374616d702032303236303731352e3139303030320a";
+const demo_sig3_hex =
+    "33e4b1c91aa10787dec97f3db5e0f661d816eacdf97bfd28f24f38a7d23048ec7858fddc2259a2ff78bfe4e900e689b5a9612270ad365ab2ffa527bb44fd1f0e";
+const demo_fact3_hex =
+    "66726f6d20616630366133653332393137313465346633353663313963396231356364313935316563366536363632616137376265303735343766323839333833333431640a746f20616630366133653332393137313465346633353663313963396231356364313935316563366536363632616137376265303735343766323839333833333431640a616d6f756e7420330a6d656d6f2073616c613a6672616d6520382d6c696e6520736b61746520766965770a7374616d702032303236303731352e3139303030330a";
 
 fn find_face(specs: []const face_lit.FaceLitSpec, name: []const u8) ?usize {
     var i: u32 = 0;
@@ -38,24 +47,39 @@ fn run_selftest(init: std.process.Init) !u8 {
 
     var specs: [face_lit.max_face_lits]face_lit.FaceLitSpec = undefined;
     const n = try face_lit.parse_face_lit_sample(src, specs[0..]);
-    assert(n == 2);
-    print("fact-line-lits: two face=lit clauses parse -- GREEN\n", .{});
+    assert(n == 6);
+    print("fact-line-lits: six face=lit clauses parse -- GREEN\n", .{});
 
     const i_sig = find_face(specs[0..n], "sig") orelse return error.MissingSig;
     const i_fact = find_face(specs[0..n], "fact") orelse return error.MissingFact;
+    const i_sig2 = find_face(specs[0..n], "sig2") orelse return error.MissingSig2;
+    const i_fact2 = find_face(specs[0..n], "fact2") orelse return error.MissingFact2;
+    const i_sig3 = find_face(specs[0..n], "sig3") orelse return error.MissingSig3;
+    const i_fact3 = find_face(specs[0..n], "fact3") orelse return error.MissingFact3;
     assert(specs[i_sig].lit_kind == .cord);
     assert(specs[i_fact].lit_kind == .cord);
+    assert(specs[i_sig2].lit_kind == .cord);
+    assert(specs[i_fact2].lit_kind == .cord);
+    assert(specs[i_sig3].lit_kind == .cord);
+    assert(specs[i_fact3].lit_kind == .cord);
     assert(std.mem.eql(u8, face_lit.lit_bytes(src, &specs[i_sig]), demo_sig_hex));
     assert(std.mem.eql(u8, face_lit.lit_bytes(src, &specs[i_fact]), demo_fact_hex));
+    assert(std.mem.eql(u8, face_lit.lit_bytes(src, &specs[i_sig2]), demo_sig2_hex));
+    assert(std.mem.eql(u8, face_lit.lit_bytes(src, &specs[i_fact2]), demo_fact2_hex));
+    assert(std.mem.eql(u8, face_lit.lit_bytes(src, &specs[i_sig3]), demo_sig3_hex));
+    assert(std.mem.eql(u8, face_lit.lit_bytes(src, &specs[i_fact3]), demo_fact3_hex));
     print("fact-line-lits: demo sig fact pins match -- GREEN\n", .{});
 
     var buf: [64 * 1024]u8 = undefined;
     const nl = try lower.lower_source_welcome(src, &buf);
     assert(std.mem.indexOf(u8, buf[0..nl], demo_sig_hex[0..16]) != null);
+    assert(std.mem.indexOf(u8, buf[0..nl], demo_sig2_hex[0..16]) != null);
+    assert(std.mem.indexOf(u8, buf[0..nl], demo_sig3_hex[0..16]) != null);
     assert(std.mem.indexOf(u8, buf[0..nl], "glow_demo_cord") == null);
     print("fact-line-lits: lower emit carries demo pins -- GREEN\n", .{});
 
     print("fact-line-lits: STOA225 desk pin -- GREEN\n", .{});
+    print("fact-line-lits: STOA231 event 2-3 desk pins -- GREEN\n", .{});
     return 0;
 }
 
