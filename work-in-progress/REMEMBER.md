@@ -2,14 +2,14 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260722.152217` (EDT) · voice Quin  
-**Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · **Sala B0 Glow** · live-root wire · **LIVE Skate paint**  
-**Language nib:** **STOA0–273** · shape-only · N-field inventary deepen closed · typed→Sala LIVE face  
-**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–273  
-**Git nib:** *(pin after send)* · STOA272–273
+**Last refreshed:** `20260722.152404` (EDT) · voice Quin  
+**Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · **Sala B0 Glow** · LIVE Skate paint · Dexter→Sala finish  
+**Language nib:** **STOA0–274** · shape-only · N-field inventary deepen closed · typed→Sala LIVE closed  
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–274  
+**Git nib:** *(pin after send)* · STOA274
 
 
-**Season:** Framework · Eastern / EDT · LIVE paint GREEN · Dexter→Sala finishing edge closed · round-close on.  
+**Season:** Framework · Eastern / EDT · Dexter→Sala finishing edge closed · HAWM 1A inventary sized · round-close on.  
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`  
 **ADB:** `tools/.cache/hawm0/android-sdk/platform-tools/adb` — not on bare PATH
 
@@ -17,9 +17,9 @@
 
 ## Now
 
-**STOA273** `20260722.152217` — LIVE paint GREEN; lean B HAWM 1A when mobile season turns. Brief [`../active-designing/20260722-152217_stoa273-after-live-paint-checkin.md`](../active-designing/20260722-152217_stoa273-after-live-paint-checkin.md).
+**STOA274** `20260722.152404` — season check-in after Dexter→Sala finish; lean A HAWM 1A inventary (recommended). Brief [`../active-designing/20260722-152404_stoa274-after-dexter-sala-finish-checkin.md`](../active-designing/20260722-152404_stoa274-after-dexter-sala-finish-checkin.md).
 
-**Look (Pixel):** Skate row 5 shows `LIVE · 1 · 84822ce5` (or updated seq/prefix after more submits). Rows 6–7 still show HAWM1 hex.
+**Look (Pixel):** Skate row 5 `LIVE · 1 · 84822ce5` (prefix may move with more submits). Rows 6–7 HAWM1 hex.
 
 **ADB (copy-paste):**
 
@@ -41,12 +41,11 @@ $ADB shell run-as org.glow.app.sala_broadcaster cat files/sala_live_root.txt
 
 | Door | Kind |
 |------|------|
-| HAWM log-harvest inventary | **held** (approved 1A · mobile season · STOA273 lean B) |
-| Pixel screenshot / eyes note | optional (lean C) |
-| Ambient gold · shared-package · JABS3 · UDP | **held** |
+| HAWM 1A log-harvest inventary | **kg** (STOA274 lean A · host-onpath) |
+| Pixel screenshot / look note | optional (lean B) |
+| Ambient gold · shared-package · JABS3 · UDP · HAWM2 | **held** |
 | LIVE Skate paint | **GREEN** `20260722.151957` |
-| Native submit → live root | **GREEN** `20260722.151515` |
-| Dexter Sala helper | **GREEN** `20260722.151257` |
+| Dexter→Sala finishing edge | **closed** through STOA272 |
 
 ---
 

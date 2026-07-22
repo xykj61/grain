@@ -550,6 +550,7 @@
 - [x] **STOA271 — after live-root wire check-in** `20260722.151834` — lean A send; lean B live-root paint; lean C HAWM 1A held. Brief [`../active-designing/20260722-151834_stoa271-after-live-root-wire-checkin.md`](../active-designing/20260722-151834_stoa271-after-live-root-wire-checkin.md).
 - [x] **STOA272 — live-root Skate paint** `20260722.151957` — `LIVE · N · hex8` on row 5; tip yields; HAWM1 rows 6–7 kept. Brief [`../active-designing/20260722-151957_stoa272-live-root-skate-paint.md`](../active-designing/20260722-151957_stoa272-live-root-skate-paint.md).
 - [x] **STOA273 — after live paint check-in** `20260722.152217` — lean A send; lean B HAWM 1A when mobile; lean D gold/JABS3 held. Brief [`../active-designing/20260722-152217_stoa273-after-live-paint-checkin.md`](../active-designing/20260722-152217_stoa273-after-live-paint-checkin.md).
+- [x] **STOA274 — after Dexter→Sala finish · season check-in** `20260722.152404` — lean A HAWM 1A inventary (recommended); lean B screenshot optional; lean D gold/JABS3 held. Brief [`../active-designing/20260722-152404_stoa274-after-dexter-sala-finish-checkin.md`](../active-designing/20260722-152404_stoa274-after-dexter-sala-finish-checkin.md).
 
 
 - [x] **UDT stamp convention on Framework host** `20260720.232932` — Keaton set system clock to UDT (UTC); [`context/specs/20260720-232932_udt-framework-host-convention.md`](../context/specs/20260720-232932_udt-framework-host-convention.md); Eastern era stamps stay; session-log rules + `GLOW_PROFILE` pointed at Etc/UTC for that season.
