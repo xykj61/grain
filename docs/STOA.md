@@ -1,6 +1,6 @@
-# STOA — Glow SLC · nest · product · ≤80 · STOA0–290 · 2026-07-22 · draw → **STOA**
+# STOA — Glow SLC · nest · product · ≤80 · STOA0–291 · 2026-07-22 · draw → **STOA**
 
-Living Glow OS desks lead with `shape-*` (inventary duals STOA161–173; pin polish STOA174; multi-field cast twins STOA175–176). Sala B0 Glow: STOA177–290 · **STOA290** after Pixel LIVE eyes (rest or language). Hoon study twins under `glow/gen/hoon-study/`.
+Living Glow OS desks lead with `shape-*` (inventary duals STOA161–173; pin polish STOA174; multi-field cast twins STOA175–176). Sala B0 Glow: STOA177–291 · **STOA291** continue (tagged `$%` flip inventary next). Hoon study twins under `glow/gen/hoon-study/`.
 
 | Rung | Claim | Witness / gate | State |
 |------|-------|----------------|-------|
@@ -120,4 +120,5 @@ Living Glow OS desks lead with `shape-*` (inventary duals STOA161–173; pin pol
 | **STOA288** | after HAWM rest resume check-in | leans A Pixel LIVE · B language | **GREEN** `20260722.154654` |
 | **STOA289** | Pixel LIVE eyes after HAWM | pack + install-proof | **GREEN** `20260722.154953` |
 | **STOA290** | after Pixel LIVE eyes check-in | leans A send · B rest | **GREEN** `20260722.154953` |
+| **STOA291** | continue after Pixel eyes check-in | leans A `$%` flip inventary | **GREEN** `20260722.155130` |
 Smoke: `glow_nest_type_witness` · `glow_barket_parse_witness` · `glow_lower_bartis_witness` · Sibling: **ZETA** · **LULU** · **SETU** · **TUBE**.

@@ -842,6 +842,8 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA290 after Pixel LIVE eyes check-in, `20260722.154953`** — lean A send · lean B rest · lean C language inventary. Brief [`active-designing/20260722-154953_stoa290-after-pixel-live-eyes-checkin.md`](../active-designing/20260722-154953_stoa290-after-pixel-live-eyes-checkin.md).
 
+**STOA291 continue after Pixel eyes check-in, `20260722.155130`** — lean A tagged `$%` flip inventary · lean B face_lit · lean C gold held · lean E fleets held. Brief [`active-designing/20260722-155130_stoa291-continue-after-pixel-eyes-checkin.md`](../active-designing/20260722-155130_stoa291-continue-after-pixel-eyes-checkin.md).
+
 
 **Framework next (host resume), `20260720.231857`** — lean A: live SETU6.5 **sent** eyes on real `usb0`/`ncm`. Lab TX gate already GREEN; Sala B0 Glow rewrite · JABS3 stay thicker check-ins. Same freeze brief.
 

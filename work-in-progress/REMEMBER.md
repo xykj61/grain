@@ -2,14 +2,14 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260722.154953` (EDT) · voice Quin  
-**Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · **LIVE eyes after HAWM**  
-**Language nib:** **STOA0–290** · shape-only · HAWM folded · Pixel LIVE re-proved  
-**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–290  
-**Git nib:** *(pin after send)* · STOA289–290
+**Last refreshed:** `20260722.155130` (EDT) · voice Quin  
+**Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded**  
+**Language nib:** **STOA0–291** · shape-only · continue · tagged `$%` flip inventary next  
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–291  
+**Git nib:** *(pin after send)* · STOA291
 
 
-**Season:** Framework · Eastern / EDT · Pixel LIVE eyes GREEN · lean B rest · round-close on.  
+**Season:** Framework · Eastern / EDT · continue after Pixel eyes · lean A tagged `$%` flip inventary · round-close on.  
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`  
 **ADB:** `tools/.cache/hawm0/android-sdk/platform-tools/adb` — not on bare PATH  
 
@@ -17,16 +17,7 @@
 
 ## Now
 
-**STOA290** `20260722.154953` — Pixel LIVE eyes GREEN; lean B rest. Brief [`../active-designing/20260722-154953_stoa290-after-pixel-live-eyes-checkin.md`](../active-designing/20260722-154953_stoa290-after-pixel-live-eyes-checkin.md).
-
-**On-device roots (last proof):**
-
-| File | Hex (prefix) |
-|---|---|
-| `sala_root.txt` | `99b3ae96…c5fe` (HAWM1) |
-| `sala_live_root.txt` | `84822ce5…9b1a` (LIVE · ≠ HAWM1) |
-
-**Optional hand look:** LIVE · N · hex8 on Skate; tip/HAWM1 row honest.
+**STOA291** `20260722.155130` — continue check-in; lean A tagged `$%` flip inventary. Brief [`../active-designing/20260722-155130_stoa291-continue-after-pixel-eyes-checkin.md`](../active-designing/20260722-155130_stoa291-continue-after-pixel-eyes-checkin.md).
 
 ---
 
@@ -34,10 +25,10 @@
 
 | Door | Kind |
 |------|------|
-| Rest | **recommended** (STOA290 lean B) |
-| Language inventary size | **await** (lean C) |
-| Fleets · HAWM2 · gold · JABS3 · UDP | **held** |
-| Pixel LIVE after HAWM | **GREEN** `20260722.154953` |
+| Tagged `$%` flip inventary (kind·xact·xfer) | **await approve** (STOA291 lean A) |
+| Shared-package `face_lit` / ambient gold | **await** / **held** |
+| Fleets · HAWM2 · JABS3 · UDP | **held** |
+| Pixel LIVE · HAWM harvest chain | **GREEN** folded |
 
 ---
 
