@@ -1,0 +1,24 @@
+# stoa257_shape_only_living_witness.rish — living Glow speaks -shape; study -mold alias held.
+#
+#   rishi/bin/rishi run tools/stoa257_shape_only_living_witness.rish
+
+let parse = run ["rishi/bin/rishi" "run" "tools/glow_barket_parse_witness.rish"]
+assert parse.ok else "glow_barket_parse_witness failed"
+assert parse.out contains "amount-shape" else "barket parse missing living amount-shape"
+assert parse.out contains "study alias" else "barket parse missing study alias pin"
+
+let nest = run ["rishi/bin/rishi" "run" "tools/glow_nest_type_witness.rish"]
+assert nest.ok else "glow_nest_type_witness failed"
+assert nest.out contains "amount-shape" else "nest missing living amount-shape"
+assert nest.out contains "study alias" else "nest missing study alias pin"
+
+# nest_type_witness already pulls glow_lower_bartis_witness as a sibling.
+let barket = run ["rishi/bin/rishi" "run" "tools/glow_barket_lower_witness.rish"]
+assert barket.ok else "glow_barket_lower_witness failed"
+assert barket.out contains "amount-shape" else "barket lower missing living amount-shape"
+
+# Living witnesses do not teach sample=-mold as the primary path (study pins excepted).
+let living_mold = run ["sh" "-c" "rg -n 'sample=.*-mold' glow/lower_bartis_witness.rye glow/lower_barket_witness.rye 2>/dev/null | head -5"]
+assert living_mold.out == "" else "living lower witnesses still sample=-mold: ${living_mold.out}"
+
+say "GREEN: STOA257 — shape-only living surface; study -mold alias held; HAWM 1A held."

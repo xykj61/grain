@@ -770,6 +770,12 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA256 after barket N-field identity check-in, `20260722.143410`** — lean A send · lean B flip call-body collapse. Brief [`active-designing/20260722-143410_stoa256-after-barket-n-field-identity-checkin.md`](../active-designing/20260722-143410_stoa256-after-barket-n-field-identity-checkin.md). Gold · shared-package · JABS3 held.
 
+**Check-in HAWM fleet · shape-only, `20260722.143648`** — recommend living `-shape` only (2A); HAWM log-harvest (1A) for autonomy; refuse Glow-as-GrapheneOS-emulator; fleets after harvest. Brief [`active-designing/20260722-143648_checkin-hawm-fleet-and-shape-only.md`](../active-designing/20260722-143648_checkin-hawm-fleet-and-shape-only.md).
+
+**STOA257 shape-only living GREEN, `20260722.144300`** — living `-shape` speech; study `-mold` alias held. Brief [`active-designing/20260722-143829_stoa257-shape-only-living-surface.md`](../active-designing/20260722-143829_stoa257-shape-only-living-surface.md).
+
+**STOA258 after shape-only living check-in, `20260722.144300`** — lean A send · lean B flip collapse · lean C HAWM 1A held. Brief [`active-designing/20260722-144300_stoa258-after-shape-only-living-checkin.md`](../active-designing/20260722-144300_stoa258-after-shape-only-living-checkin.md).
+
 
 **Framework next (host resume), `20260720.231857`** — lean A: live SETU6.5 **sent** eyes on real `usb0`/`ncm`. Lab TX gate already GREEN; Sala B0 Glow rewrite · JABS3 stay thicker check-ins. Same freeze brief.
 

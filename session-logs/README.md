@@ -7,6 +7,8 @@ Living index for the append-only session stream. This table reads **newest first
 **Day’s truth is this index’s order, not filename sort.** One-clock stamps sort ascending on disk; trust the table for sequence within a day.
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
+- `20260722.144300` — [STOA257–258 shape-only living](20260722-144300_stoa257-258-shape-only-living-round.bron) — living -shape; study alias held; flip next
+- `20260722.143648` — [Check-in HAWM fleet and shape-only](20260722-143648_checkin-hawm-fleet-shape-only.bron) — 2A shape living · 1A HAWM harvest
 - `20260722.143539` — [REMEMBER git nib STOA256 fix](20260722-143539_remember-git-nib-stoa256-fix.bron) — pin df21de606e7f on living card
 - `20260722.143510` — [REMEMBER git nib after STOA256](20260722-143510_remember-git-nib-stoa256.bron) — pin df21de606e7f
 - `20260722.143410` — [STOA255–256 barket N-field identity](20260722-143410_stoa255-256-barket-n-field-identity-round.bron) — barket emit_n_field_identity; flip next

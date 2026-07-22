@@ -31,9 +31,9 @@ assert selftest.out contains "gate-inc.glow" else "lower_bartis_witness missing 
 assert selftest.out contains "gate-dec.glow" else "lower_bartis_witness missing gate-dec desk claim"
 assert selftest.out contains "BodyGateNotYetLowered" else "lower_bartis_witness missing unknown-gate refuse"
 assert selftest.out contains "BodySampleMismatch" else "lower_bartis_witness missing sample-mismatch refuse"
-assert selftest.out contains "amount-mold" else "lower_bartis_witness missing amount-mold claim"
+assert selftest.out contains "amount-shape" else "lower_bartis_witness missing amount-shape claim"
 assert selftest.out contains "gate-amount.glow" else "lower_bartis_witness missing gate-amount desk"
-assert selftest.out contains "count-mold" else "lower_bartis_witness missing count-mold claim"
+assert selftest.out contains "count-shape" else "lower_bartis_witness missing count-shape claim"
 assert selftest.out contains "gate-count.glow" else "lower_bartis_witness missing gate-count desk"
 assert selftest.out contains "KindShape" else "lower_bartis_witness missing KindShape claim"
 assert selftest.out contains "gate-kind.glow" else "lower_bartis_witness missing gate-kind desk"
@@ -56,48 +56,48 @@ assert selftest.out contains "gate-octa.glow" else "lower_bartis_witness missing
 assert selftest.out contains "OctaShape" else "lower_bartis_witness missing OctaShape claim"
 assert selftest.out contains "gate-nona.glow" else "lower_bartis_witness missing gate-nona desk"
 assert selftest.out contains "NonaShape" else "lower_bartis_witness missing NonaShape claim"
-assert selftest.out contains "deca-mold" else "lower_bartis_witness missing deca-mold refuse"
-assert selftest.out contains "hepta-mold argv refused" else "lower_bartis_witness missing hepta argv refuse"
-assert selftest.out contains "octa-mold argv refused" else "lower_bartis_witness missing octa argv refuse"
-assert selftest.out contains "nona-mold argv refused" else "lower_bartis_witness missing nona argv refuse"
+assert selftest.out contains "deca-shape" else "lower_bartis_witness missing deca-shape refuse"
+assert selftest.out contains "hepta-shape argv refused" else "lower_bartis_witness missing hepta argv refuse"
+assert selftest.out contains "octa-shape argv refused" else "lower_bartis_witness missing octa argv refuse"
+assert selftest.out contains "nona-shape argv refused" else "lower_bartis_witness missing nona argv refuse"
 assert selftest.out contains "gate-nona-flip.glow" else "lower_bartis_witness missing nona-flip desk"
-assert selftest.out contains "nona-mold call-body flip" else "lower_bartis_witness missing nona flip claim"
-assert selftest.out contains "nona-mold double call-body refused" else "lower_bartis_witness missing nona double refuse"
+assert selftest.out contains "nona-shape call-body flip" else "lower_bartis_witness missing nona flip claim"
+assert selftest.out contains "nona-shape double call-body refused" else "lower_bartis_witness missing nona double refuse"
 assert selftest.out contains "gate-octa-flip.glow" else "lower_bartis_witness missing octa-flip desk"
-assert selftest.out contains "octa-mold call-body flip" else "lower_bartis_witness missing octa flip claim"
-assert selftest.out contains "octa-mold double call-body refused" else "lower_bartis_witness missing octa double refuse"
+assert selftest.out contains "octa-shape call-body flip" else "lower_bartis_witness missing octa flip claim"
+assert selftest.out contains "octa-shape double call-body refused" else "lower_bartis_witness missing octa double refuse"
 assert selftest.out contains "gate-hepta-flip.glow" else "lower_bartis_witness missing hepta-flip desk"
-assert selftest.out contains "hepta-mold call-body flip" else "lower_bartis_witness missing hepta flip claim"
-assert selftest.out contains "hepta-mold double call-body refused" else "lower_bartis_witness missing hepta double refuse"
-assert selftest.out contains "hexa-mold argv refused" else "lower_bartis_witness missing hexa argv refuse"
+assert selftest.out contains "hepta-shape call-body flip" else "lower_bartis_witness missing hepta flip claim"
+assert selftest.out contains "hepta-shape double call-body refused" else "lower_bartis_witness missing hepta double refuse"
+assert selftest.out contains "hexa-shape argv refused" else "lower_bartis_witness missing hexa argv refuse"
 assert selftest.out contains "gate-hexa-flip.glow" else "lower_bartis_witness missing hexa-flip desk"
-assert selftest.out contains "hexa-mold call-body flip" else "lower_bartis_witness missing hexa flip claim"
-assert selftest.out contains "hexa-mold double call-body refused" else "lower_bartis_witness missing hexa double refuse"
-assert selftest.out contains "triple-mold argv refused" else "lower_bartis_witness missing triple argv refuse"
-assert selftest.out contains "quad-mold argv refused" else "lower_bartis_witness missing quad argv refuse"
-assert selftest.out contains "penta-mold argv refused" else "lower_bartis_witness missing penta argv refuse"
+assert selftest.out contains "hexa-shape call-body flip" else "lower_bartis_witness missing hexa flip claim"
+assert selftest.out contains "hexa-shape double call-body refused" else "lower_bartis_witness missing hexa double refuse"
+assert selftest.out contains "triple-shape argv refused" else "lower_bartis_witness missing triple argv refuse"
+assert selftest.out contains "quad-shape argv refused" else "lower_bartis_witness missing quad argv refuse"
+assert selftest.out contains "penta-shape argv refused" else "lower_bartis_witness missing penta argv refuse"
 assert selftest.out contains "gate-penta-flip.glow" else "lower_bartis_witness missing penta-flip desk"
-assert selftest.out contains "penta-mold call-body flip" else "lower_bartis_witness missing penta flip claim"
-assert selftest.out contains "penta-mold double call-body refused" else "lower_bartis_witness missing penta double refuse"
+assert selftest.out contains "penta-shape call-body flip" else "lower_bartis_witness missing penta flip claim"
+assert selftest.out contains "penta-shape double call-body refused" else "lower_bartis_witness missing penta double refuse"
 assert selftest.out contains "gate-triple-flip.glow" else "lower_bartis_witness missing triple-flip desk"
-assert selftest.out contains "triple-mold call-body flip" else "lower_bartis_witness missing triple flip claim"
-assert selftest.out contains "triple-mold double call-body refused" else "lower_bartis_witness missing triple double refuse"
+assert selftest.out contains "triple-shape call-body flip" else "lower_bartis_witness missing triple flip claim"
+assert selftest.out contains "triple-shape double call-body refused" else "lower_bartis_witness missing triple double refuse"
 assert selftest.out contains "gate-quad-flip.glow" else "lower_bartis_witness missing quad-flip desk"
-assert selftest.out contains "quad-mold call-body flip" else "lower_bartis_witness missing quad flip claim"
-assert selftest.out contains "quad-mold double call-body refused" else "lower_bartis_witness missing quad double refuse"
+assert selftest.out contains "quad-shape call-body flip" else "lower_bartis_witness missing quad flip claim"
+assert selftest.out contains "quad-shape double call-body refused" else "lower_bartis_witness missing quad double refuse"
 assert selftest.out contains "call-body flip" else "lower_bartis_witness missing kind flip claim"
 assert selftest.out contains "gate-kind-flip.glow" else "lower_bartis_witness missing kind-flip desk"
 assert selftest.out contains "gate-xact-flip.glow" else "lower_bartis_witness missing xact-flip desk"
-assert selftest.out contains "xact-mold call-body flip" else "lower_bartis_witness missing xact flip claim"
+assert selftest.out contains "xact-shape call-body flip" else "lower_bartis_witness missing xact flip claim"
 assert selftest.out contains "gate-xfer-flip.glow" else "lower_bartis_witness missing xfer-flip desk"
-assert selftest.out contains "xfer-mold call-body flip" else "lower_bartis_witness missing xfer flip claim"
+assert selftest.out contains "xfer-shape call-body flip" else "lower_bartis_witness missing xfer flip claim"
 assert selftest.out contains "gate-pair-flip.glow" else "lower_bartis_witness missing pair-flip desk"
-assert selftest.out contains "pair-mold call-body flip" else "lower_bartis_witness missing pair flip claim"
+assert selftest.out contains "pair-shape call-body flip" else "lower_bartis_witness missing pair flip claim"
 assert selftest.out contains "gate-amount-u32.glow" else "lower_bartis_witness missing amount argv desk"
-assert selftest.out contains "amount-mold argv" else "lower_bartis_witness missing amount argv claim"
-assert selftest.out contains "pair-mold argv refused" else "lower_bartis_witness missing pair argv refuse"
+assert selftest.out contains "amount-shape argv" else "lower_bartis_witness missing amount argv claim"
+assert selftest.out contains "pair-shape argv refused" else "lower_bartis_witness missing pair argv refuse"
 assert selftest.out contains "gate-count-u32.glow" else "lower_bartis_witness missing count argv desk"
-assert selftest.out contains "count-mold argv" else "lower_bartis_witness missing count argv claim"
+assert selftest.out contains "count-shape argv" else "lower_bartis_witness missing count argv claim"
 
 let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
 assert build_welcome.ok else "bartis welcome .rye build failed"
@@ -163,247 +163,247 @@ assert trim copy_d.out != "0" else "glow/rune_bartis.rye must use copy_disjoint"
 let append_p = run ["sh" "-c" "grep -c 'fn append_print' glow/lower_bartis.rye | tr -d ' '"]
 assert trim append_p.out == "1" else "glow/lower_bartis.rye must define append_print"
 
-# STOA109: named-mold welcome binary exits 0.
+# STOA109: named-shape welcome binary exits 0.
 let amt_rye = "glow/.cache/gate_amount_welcome.rye"
 let amt_bin = "glow/bin/gate_amount_welcome"
 let build_amt = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${amt_rye} -femit-bin=${amt_bin}"]
-assert build_amt.ok else "bartis amount-mold welcome .rye build failed"
+assert build_amt.ok else "bartis amount-shape welcome .rye build failed"
 let run_amt = run ["sh" "-c" "${amt_bin}; echo EXIT:$?"]
-assert run_amt.ok else "bartis amount-mold welcome binary failed to launch"
-assert run_amt.out contains "EXIT:0" else "bartis amount-mold welcome binary did not exit 0"
+assert run_amt.ok else "bartis amount-shape welcome binary failed to launch"
+assert run_amt.out contains "EXIT:0" else "bartis amount-shape welcome binary did not exit 0"
 
-# STOA132: amount-mold argv binary exits 0 with sample 9.
+# STOA132: amount-shape argv binary exits 0 with sample 9.
 let amt_argv_rye = "glow/.cache/gate_amount_argv.rye"
 let amt_argv_bin = "glow/bin/gate_amount_argv"
 let build_amt_argv = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${amt_argv_rye} -femit-bin=${amt_argv_bin}"]
-assert build_amt_argv.ok else "bartis amount-mold argv .rye build failed"
+assert build_amt_argv.ok else "bartis amount-shape argv .rye build failed"
 let run_amt_argv = run ["sh" "-c" "${amt_argv_bin} 9; echo EXIT:$?"]
-assert run_amt_argv.ok else "bartis amount-mold argv binary failed to launch"
-assert run_amt_argv.out contains "EXIT:0" else "bartis amount-mold argv binary did not exit 0 with sample 9"
+assert run_amt_argv.ok else "bartis amount-shape argv binary failed to launch"
+assert run_amt_argv.out contains "EXIT:0" else "bartis amount-shape argv binary did not exit 0 with sample 9"
 
-# STOA133: count-mold argv binary exits 0 with sample 9.
+# STOA133: count-shape argv binary exits 0 with sample 9.
 let cnt_argv_rye = "glow/.cache/gate_count_argv.rye"
 let cnt_argv_bin = "glow/bin/gate_count_argv"
 let build_cnt_argv = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${cnt_argv_rye} -femit-bin=${cnt_argv_bin}"]
-assert build_cnt_argv.ok else "bartis count-mold argv .rye build failed"
+assert build_cnt_argv.ok else "bartis count-shape argv .rye build failed"
 let run_cnt_argv = run ["sh" "-c" "${cnt_argv_bin} 9; echo EXIT:$?"]
-assert run_cnt_argv.ok else "bartis count-mold argv binary failed to launch"
-assert run_cnt_argv.out contains "EXIT:0" else "bartis count-mold argv binary did not exit 0 with sample 9"
+assert run_cnt_argv.ok else "bartis count-shape argv binary failed to launch"
+assert run_cnt_argv.out contains "EXIT:0" else "bartis count-shape argv binary did not exit 0 with sample 9"
 
 # STOA120 / STOA130: expansion seats assert_sample_nesting_nests (stated no-op wire).
 let wet_wire = run ["sh" "-c" "grep -c 'assert_sample_nesting_nests' glow/rune_bartis.rye | tr -d ' '"]
 assert trim wet_wire.out != "0" else "glow/rune_bartis.rye must call assert_sample_nesting_nests"
 
-# STOA122: count-mold welcome binary exits 0.
+# STOA122: count-shape welcome binary exits 0.
 let cnt_rye = "glow/.cache/gate_count_welcome.rye"
 let cnt_bin = "glow/bin/gate_count_welcome"
 let build_cnt = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${cnt_rye} -femit-bin=${cnt_bin}"]
-assert build_cnt.ok else "bartis count-mold welcome .rye build failed"
+assert build_cnt.ok else "bartis count-shape welcome .rye build failed"
 let run_cnt = run ["sh" "-c" "${cnt_bin}; echo EXIT:$?"]
-assert run_cnt.ok else "bartis count-mold welcome binary failed to launch"
-assert run_cnt.out contains "EXIT:0" else "bartis count-mold welcome binary did not exit 0"
+assert run_cnt.ok else "bartis count-shape welcome binary failed to launch"
+assert run_cnt.out contains "EXIT:0" else "bartis count-shape welcome binary did not exit 0"
 
-# STOA123: kind-mold welcome binary exits 0.
+# STOA123: kind-shape welcome binary exits 0.
 let kind_rye = "glow/.cache/gate_kind_welcome.rye"
 let kind_bin = "glow/bin/gate_kind_welcome"
 let build_kind = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${kind_rye} -femit-bin=${kind_bin}"]
-assert build_kind.ok else "bartis kind-mold welcome .rye build failed"
+assert build_kind.ok else "bartis kind-shape welcome .rye build failed"
 let run_kind = run ["sh" "-c" "${kind_bin}; echo EXIT:$?"]
-assert run_kind.ok else "bartis kind-mold welcome binary failed to launch"
-assert run_kind.out contains "EXIT:0" else "bartis kind-mold welcome binary did not exit 0"
+assert run_kind.ok else "bartis kind-shape welcome binary failed to launch"
+assert run_kind.out contains "EXIT:0" else "bartis kind-shape welcome binary did not exit 0"
 
-# STOA124: xact-mold welcome binary exits 0.
+# STOA124: xact-shape welcome binary exits 0.
 let xact_rye = "glow/.cache/gate_xact_welcome.rye"
 let xact_bin = "glow/bin/gate_xact_welcome"
 let build_xact = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${xact_rye} -femit-bin=${xact_bin}"]
-assert build_xact.ok else "bartis xact-mold welcome .rye build failed"
+assert build_xact.ok else "bartis xact-shape welcome .rye build failed"
 let run_xact = run ["sh" "-c" "${xact_bin}; echo EXIT:$?"]
-assert run_xact.ok else "bartis xact-mold welcome binary failed to launch"
-assert run_xact.out contains "EXIT:0" else "bartis xact-mold welcome binary did not exit 0"
+assert run_xact.ok else "bartis xact-shape welcome binary failed to launch"
+assert run_xact.out contains "EXIT:0" else "bartis xact-shape welcome binary did not exit 0"
 
-# STOA125: xfer-mold welcome binary exits 0.
+# STOA125: xfer-shape welcome binary exits 0.
 let xfer_rye = "glow/.cache/gate_xfer_welcome.rye"
 let xfer_bin = "glow/bin/gate_xfer_welcome"
 let build_xfer = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${xfer_rye} -femit-bin=${xfer_bin}"]
-assert build_xfer.ok else "bartis xfer-mold welcome .rye build failed"
+assert build_xfer.ok else "bartis xfer-shape welcome .rye build failed"
 let run_xfer = run ["sh" "-c" "${xfer_bin}; echo EXIT:$?"]
-assert run_xfer.ok else "bartis xfer-mold welcome binary failed to launch"
-assert run_xfer.out contains "EXIT:0" else "bartis xfer-mold welcome binary did not exit 0"
+assert run_xfer.ok else "bartis xfer-shape welcome binary failed to launch"
+assert run_xfer.out contains "EXIT:0" else "bartis xfer-shape welcome binary did not exit 0"
 
-# STOA126: pair-mold welcome binary exits 0.
+# STOA126: pair-shape welcome binary exits 0.
 let pair_rye = "glow/.cache/gate_pair_welcome.rye"
 let pair_bin = "glow/bin/gate_pair_welcome"
 let build_pair = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${pair_rye} -femit-bin=${pair_bin}"]
-assert build_pair.ok else "bartis pair-mold welcome .rye build failed"
+assert build_pair.ok else "bartis pair-shape welcome .rye build failed"
 let run_pair = run ["sh" "-c" "${pair_bin}; echo EXIT:$?"]
-assert run_pair.ok else "bartis pair-mold welcome binary failed to launch"
-assert run_pair.out contains "EXIT:0" else "bartis pair-mold welcome binary did not exit 0"
+assert run_pair.ok else "bartis pair-shape welcome binary failed to launch"
+assert run_pair.out contains "EXIT:0" else "bartis pair-shape welcome binary did not exit 0"
 
-# STOA134: triple-mold welcome binary exits 0.
+# STOA134: triple-shape welcome binary exits 0.
 let triple_rye = "glow/.cache/gate_triple_welcome.rye"
 let triple_bin = "glow/bin/gate_triple_welcome"
 let build_triple = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${triple_rye} -femit-bin=${triple_bin}"]
-assert build_triple.ok else "bartis triple-mold welcome .rye build failed"
+assert build_triple.ok else "bartis triple-shape welcome .rye build failed"
 let run_triple = run ["sh" "-c" "${triple_bin}; echo EXIT:$?"]
-assert run_triple.ok else "bartis triple-mold welcome binary failed to launch"
-assert run_triple.out contains "EXIT:0" else "bartis triple-mold welcome binary did not exit 0"
+assert run_triple.ok else "bartis triple-shape welcome binary failed to launch"
+assert run_triple.out contains "EXIT:0" else "bartis triple-shape welcome binary did not exit 0"
 
-# STOA135: quad-mold welcome binary exits 0.
+# STOA135: quad-shape welcome binary exits 0.
 let quad_rye = "glow/.cache/gate_quad_welcome.rye"
 let quad_bin = "glow/bin/gate_quad_welcome"
 let build_quad = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${quad_rye} -femit-bin=${quad_bin}"]
-assert build_quad.ok else "bartis quad-mold welcome .rye build failed"
+assert build_quad.ok else "bartis quad-shape welcome .rye build failed"
 let run_quad = run ["sh" "-c" "${quad_bin}; echo EXIT:$?"]
-assert run_quad.ok else "bartis quad-mold welcome binary failed to launch"
-assert run_quad.out contains "EXIT:0" else "bartis quad-mold welcome binary did not exit 0"
+assert run_quad.ok else "bartis quad-shape welcome binary failed to launch"
+assert run_quad.out contains "EXIT:0" else "bartis quad-shape welcome binary did not exit 0"
 
-# STOA138: penta-mold welcome binary exits 0.
+# STOA138: penta-shape welcome binary exits 0.
 let penta_rye = "glow/.cache/gate_penta_welcome.rye"
 let penta_bin = "glow/bin/gate_penta_welcome"
 let build_penta = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${penta_rye} -femit-bin=${penta_bin}"]
-assert build_penta.ok else "bartis penta-mold welcome .rye build failed"
+assert build_penta.ok else "bartis penta-shape welcome .rye build failed"
 let run_penta = run ["sh" "-c" "${penta_bin}; echo EXIT:$?"]
-assert run_penta.ok else "bartis penta-mold welcome binary failed to launch"
-assert run_penta.out contains "EXIT:0" else "bartis penta-mold welcome binary did not exit 0"
+assert run_penta.ok else "bartis penta-shape welcome binary failed to launch"
+assert run_penta.out contains "EXIT:0" else "bartis penta-shape welcome binary did not exit 0"
 
-# STOA140: hexa-mold welcome binary exits 0.
+# STOA140: hexa-shape welcome binary exits 0.
 let hexa_rye = "glow/.cache/gate_hexa_welcome.rye"
 let hexa_bin = "glow/bin/gate_hexa_welcome"
 let build_hexa = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${hexa_rye} -femit-bin=${hexa_bin}"]
-assert build_hexa.ok else "bartis hexa-mold welcome .rye build failed"
+assert build_hexa.ok else "bartis hexa-shape welcome .rye build failed"
 let run_hexa = run ["sh" "-c" "${hexa_bin}; echo EXIT:$?"]
-assert run_hexa.ok else "bartis hexa-mold welcome binary failed to launch"
-assert run_hexa.out contains "EXIT:0" else "bartis hexa-mold welcome binary did not exit 0"
+assert run_hexa.ok else "bartis hexa-shape welcome binary failed to launch"
+assert run_hexa.out contains "EXIT:0" else "bartis hexa-shape welcome binary did not exit 0"
 
-# STOA142: hepta-mold welcome binary exits 0.
+# STOA142: hepta-shape welcome binary exits 0.
 let hepta_rye = "glow/.cache/gate_hepta_welcome.rye"
 let hepta_bin = "glow/bin/gate_hepta_welcome"
 let build_hepta = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${hepta_rye} -femit-bin=${hepta_bin}"]
-assert build_hepta.ok else "bartis hepta-mold welcome .rye build failed"
+assert build_hepta.ok else "bartis hepta-shape welcome .rye build failed"
 let run_hepta = run ["sh" "-c" "${hepta_bin}; echo EXIT:$?"]
-assert run_hepta.ok else "bartis hepta-mold welcome binary failed to launch"
-assert run_hepta.out contains "EXIT:0" else "bartis hepta-mold welcome binary did not exit 0"
+assert run_hepta.ok else "bartis hepta-shape welcome binary failed to launch"
+assert run_hepta.out contains "EXIT:0" else "bartis hepta-shape welcome binary did not exit 0"
 
-# STOA144: octa-mold welcome binary exits 0.
+# STOA144: octa-shape welcome binary exits 0.
 let octa_rye = "glow/.cache/gate_octa_welcome.rye"
 let octa_bin = "glow/bin/gate_octa_welcome"
 let build_octa = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${octa_rye} -femit-bin=${octa_bin}"]
-assert build_octa.ok else "bartis octa-mold welcome .rye build failed"
+assert build_octa.ok else "bartis octa-shape welcome .rye build failed"
 let run_octa = run ["sh" "-c" "${octa_bin}; echo EXIT:$?"]
-assert run_octa.ok else "bartis octa-mold welcome binary failed to launch"
-assert run_octa.out contains "EXIT:0" else "bartis octa-mold welcome binary did not exit 0"
+assert run_octa.ok else "bartis octa-shape welcome binary failed to launch"
+assert run_octa.out contains "EXIT:0" else "bartis octa-shape welcome binary did not exit 0"
 
-# STOA146: nona-mold welcome binary exits 0.
+# STOA146: nona-shape welcome binary exits 0.
 let nona_rye = "glow/.cache/gate_nona_welcome.rye"
 let nona_bin = "glow/bin/gate_nona_welcome"
 let build_nona = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${nona_rye} -femit-bin=${nona_bin}"]
-assert build_nona.ok else "bartis nona-mold welcome .rye build failed"
+assert build_nona.ok else "bartis nona-shape welcome .rye build failed"
 let run_nona = run ["sh" "-c" "${nona_bin}; echo EXIT:$?"]
-assert run_nona.ok else "bartis nona-mold welcome binary failed to launch"
-assert run_nona.out contains "EXIT:0" else "bartis nona-mold welcome binary did not exit 0"
+assert run_nona.ok else "bartis nona-shape welcome binary failed to launch"
+assert run_nona.out contains "EXIT:0" else "bartis nona-shape welcome binary did not exit 0"
 
-# STOA127: kind-mold flip call-body welcome binary exits 0.
+# STOA127: kind-shape flip call-body welcome binary exits 0.
 let kind_flip_rye = "glow/.cache/gate_kind_flip_welcome.rye"
 let kind_flip_bin = "glow/bin/gate_kind_flip_welcome"
 let build_kf = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${kind_flip_rye} -femit-bin=${kind_flip_bin}"]
-assert build_kf.ok else "bartis kind-mold flip welcome .rye build failed"
+assert build_kf.ok else "bartis kind-shape flip welcome .rye build failed"
 let run_kf = run ["sh" "-c" "${kind_flip_bin}; echo EXIT:$?"]
-assert run_kf.ok else "bartis kind-mold flip welcome binary failed to launch"
-assert run_kf.out contains "EXIT:0" else "bartis kind-mold flip welcome binary did not exit 0"
+assert run_kf.ok else "bartis kind-shape flip welcome binary failed to launch"
+assert run_kf.out contains "EXIT:0" else "bartis kind-shape flip welcome binary did not exit 0"
 
-# STOA128: xact-mold flip call-body welcome binary exits 0.
+# STOA128: xact-shape flip call-body welcome binary exits 0.
 let xact_flip_rye = "glow/.cache/gate_xact_flip_welcome.rye"
 let xact_flip_bin = "glow/bin/gate_xact_flip_welcome"
 let build_xf = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${xact_flip_rye} -femit-bin=${xact_flip_bin}"]
-assert build_xf.ok else "bartis xact-mold flip welcome .rye build failed"
+assert build_xf.ok else "bartis xact-shape flip welcome .rye build failed"
 let run_xf = run ["sh" "-c" "${xact_flip_bin}; echo EXIT:$?"]
-assert run_xf.ok else "bartis xact-mold flip welcome binary failed to launch"
-assert run_xf.out contains "EXIT:0" else "bartis xact-mold flip welcome binary did not exit 0"
+assert run_xf.ok else "bartis xact-shape flip welcome binary failed to launch"
+assert run_xf.out contains "EXIT:0" else "bartis xact-shape flip welcome binary did not exit 0"
 
-# STOA129: xfer-mold flip call-body welcome binary exits 0.
+# STOA129: xfer-shape flip call-body welcome binary exits 0.
 let xfer_flip_rye = "glow/.cache/gate_xfer_flip_welcome.rye"
 let xfer_flip_bin = "glow/bin/gate_xfer_flip_welcome"
 let build_xff = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${xfer_flip_rye} -femit-bin=${xfer_flip_bin}"]
-assert build_xff.ok else "bartis xfer-mold flip welcome .rye build failed"
+assert build_xff.ok else "bartis xfer-shape flip welcome .rye build failed"
 let run_xff = run ["sh" "-c" "${xfer_flip_bin}; echo EXIT:$?"]
-assert run_xff.ok else "bartis xfer-mold flip welcome binary failed to launch"
-assert run_xff.out contains "EXIT:0" else "bartis xfer-mold flip welcome binary did not exit 0"
+assert run_xff.ok else "bartis xfer-shape flip welcome binary failed to launch"
+assert run_xff.out contains "EXIT:0" else "bartis xfer-shape flip welcome binary did not exit 0"
 
-# STOA131: pair-mold flip call-body welcome binary exits 0.
+# STOA131: pair-shape flip call-body welcome binary exits 0.
 let pair_flip_rye = "glow/.cache/gate_pair_flip_welcome.rye"
 let pair_flip_bin = "glow/bin/gate_pair_flip_welcome"
 let build_pf = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${pair_flip_rye} -femit-bin=${pair_flip_bin}"]
-assert build_pf.ok else "bartis pair-mold flip welcome .rye build failed"
+assert build_pf.ok else "bartis pair-shape flip welcome .rye build failed"
 let run_pf = run ["sh" "-c" "${pair_flip_bin}; echo EXIT:$?"]
-assert run_pf.ok else "bartis pair-mold flip welcome binary failed to launch"
-assert run_pf.out contains "EXIT:0" else "bartis pair-mold flip welcome binary did not exit 0"
+assert run_pf.ok else "bartis pair-shape flip welcome binary failed to launch"
+assert run_pf.out contains "EXIT:0" else "bartis pair-shape flip welcome binary did not exit 0"
 
-# STOA136: triple-mold flip call-body welcome binary exits 0.
+# STOA136: triple-shape flip call-body welcome binary exits 0.
 let triple_flip_rye = "glow/.cache/gate_triple_flip_welcome.rye"
 let triple_flip_bin = "glow/bin/gate_triple_flip_welcome"
 let build_tf = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${triple_flip_rye} -femit-bin=${triple_flip_bin}"]
-assert build_tf.ok else "bartis triple-mold flip welcome .rye build failed"
+assert build_tf.ok else "bartis triple-shape flip welcome .rye build failed"
 let run_tf = run ["sh" "-c" "${triple_flip_bin}; echo EXIT:$?"]
-assert run_tf.ok else "bartis triple-mold flip welcome binary failed to launch"
-assert run_tf.out contains "EXIT:0" else "bartis triple-mold flip welcome binary did not exit 0"
+assert run_tf.ok else "bartis triple-shape flip welcome binary failed to launch"
+assert run_tf.out contains "EXIT:0" else "bartis triple-shape flip welcome binary did not exit 0"
 
-# STOA137: quad-mold flip call-body welcome binary exits 0.
+# STOA137: quad-shape flip call-body welcome binary exits 0.
 let quad_flip_rye = "glow/.cache/gate_quad_flip_welcome.rye"
 let quad_flip_bin = "glow/bin/gate_quad_flip_welcome"
 let build_qf = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${quad_flip_rye} -femit-bin=${quad_flip_bin}"]
-assert build_qf.ok else "bartis quad-mold flip welcome .rye build failed"
+assert build_qf.ok else "bartis quad-shape flip welcome .rye build failed"
 let run_qf = run ["sh" "-c" "${quad_flip_bin}; echo EXIT:$?"]
-assert run_qf.ok else "bartis quad-mold flip welcome binary failed to launch"
-assert run_qf.out contains "EXIT:0" else "bartis quad-mold flip welcome binary did not exit 0"
+assert run_qf.ok else "bartis quad-shape flip welcome binary failed to launch"
+assert run_qf.out contains "EXIT:0" else "bartis quad-shape flip welcome binary did not exit 0"
 
-# STOA139: penta-mold flip call-body welcome binary exits 0.
+# STOA139: penta-shape flip call-body welcome binary exits 0.
 let penta_flip_rye = "glow/.cache/gate_penta_flip_welcome.rye"
 let penta_flip_bin = "glow/bin/gate_penta_flip_welcome"
 let build_pfenta = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${penta_flip_rye} -femit-bin=${penta_flip_bin}"]
-assert build_pfenta.ok else "bartis penta-mold flip welcome .rye build failed"
+assert build_pfenta.ok else "bartis penta-shape flip welcome .rye build failed"
 let run_pfenta = run ["sh" "-c" "${penta_flip_bin}; echo EXIT:$?"]
-assert run_pfenta.ok else "bartis penta-mold flip welcome binary failed to launch"
-assert run_pfenta.out contains "EXIT:0" else "bartis penta-mold flip welcome binary did not exit 0"
+assert run_pfenta.ok else "bartis penta-shape flip welcome binary failed to launch"
+assert run_pfenta.out contains "EXIT:0" else "bartis penta-shape flip welcome binary did not exit 0"
 
-# STOA141: hexa-mold flip call-body welcome binary exits 0.
+# STOA141: hexa-shape flip call-body welcome binary exits 0.
 let hexa_flip_rye = "glow/.cache/gate_hexa_flip_welcome.rye"
 let hexa_flip_bin = "glow/bin/gate_hexa_flip_welcome"
 let build_hxf = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${hexa_flip_rye} -femit-bin=${hexa_flip_bin}"]
-assert build_hxf.ok else "bartis hexa-mold flip welcome .rye build failed"
+assert build_hxf.ok else "bartis hexa-shape flip welcome .rye build failed"
 let run_hxf = run ["sh" "-c" "${hexa_flip_bin}; echo EXIT:$?"]
-assert run_hxf.ok else "bartis hexa-mold flip welcome binary failed to launch"
-assert run_hxf.out contains "EXIT:0" else "bartis hexa-mold flip welcome binary did not exit 0"
+assert run_hxf.ok else "bartis hexa-shape flip welcome binary failed to launch"
+assert run_hxf.out contains "EXIT:0" else "bartis hexa-shape flip welcome binary did not exit 0"
 
-# STOA143: hepta-mold flip call-body welcome binary exits 0.
+# STOA143: hepta-shape flip call-body welcome binary exits 0.
 let hepta_flip_rye = "glow/.cache/gate_hepta_flip_welcome.rye"
 let hepta_flip_bin = "glow/bin/gate_hepta_flip_welcome"
 let build_htf = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${hepta_flip_rye} -femit-bin=${hepta_flip_bin}"]
-assert build_htf.ok else "bartis hepta-mold flip welcome .rye build failed"
+assert build_htf.ok else "bartis hepta-shape flip welcome .rye build failed"
 let run_htf = run ["sh" "-c" "${hepta_flip_bin}; echo EXIT:$?"]
-assert run_htf.ok else "bartis hepta-mold flip welcome binary failed to launch"
-assert run_htf.out contains "EXIT:0" else "bartis hepta-mold flip welcome binary did not exit 0"
+assert run_htf.ok else "bartis hepta-shape flip welcome binary failed to launch"
+assert run_htf.out contains "EXIT:0" else "bartis hepta-shape flip welcome binary did not exit 0"
 
-# STOA145: octa-mold flip call-body welcome binary exits 0.
+# STOA145: octa-shape flip call-body welcome binary exits 0.
 let octa_flip_rye = "glow/.cache/gate_octa_flip_welcome.rye"
 let octa_flip_bin = "glow/bin/gate_octa_flip_welcome"
 let build_otf = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${octa_flip_rye} -femit-bin=${octa_flip_bin}"]
-assert build_otf.ok else "bartis octa-mold flip welcome .rye build failed"
+assert build_otf.ok else "bartis octa-shape flip welcome .rye build failed"
 let run_otf = run ["sh" "-c" "${octa_flip_bin}; echo EXIT:$?"]
-assert run_otf.ok else "bartis octa-mold flip welcome binary failed to launch"
-assert run_otf.out contains "EXIT:0" else "bartis octa-mold flip welcome binary did not exit 0"
+assert run_otf.ok else "bartis octa-shape flip welcome binary failed to launch"
+assert run_otf.out contains "EXIT:0" else "bartis octa-shape flip welcome binary did not exit 0"
 
-# STOA147: nona-mold flip call-body welcome binary exits 0.
+# STOA147: nona-shape flip call-body welcome binary exits 0.
 let nona_flip_rye = "glow/.cache/gate_nona_flip_welcome.rye"
 let nona_flip_bin = "glow/bin/gate_nona_flip_welcome"
 let build_nnf = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${nona_flip_rye} -femit-bin=${nona_flip_bin}"]
-assert build_nnf.ok else "bartis nona-mold flip welcome .rye build failed"
+assert build_nnf.ok else "bartis nona-shape flip welcome .rye build failed"
 let run_nnf = run ["sh" "-c" "${nona_flip_bin}; echo EXIT:$?"]
-assert run_nnf.ok else "bartis nona-mold flip welcome binary failed to launch"
-assert run_nnf.out contains "EXIT:0" else "bartis nona-mold flip welcome binary did not exit 0"
+assert run_nnf.ok else "bartis nona-shape flip welcome binary failed to launch"
+assert run_nnf.out contains "EXIT:0" else "bartis nona-shape flip welcome binary did not exit 0"
 
 # STOA253: pair…nona identity emit collapses through emit_n_field_identity.
 let n_field = run ["sh" "-c" "grep -q 'fn emit_n_field_identity' glow/lower_bartis.rye && test $(grep -Fc 'return emit_n_field_identity(' glow/lower_bartis.rye) = 8"]
 assert n_field.ok else "STOA253 missing emit_n_field_identity or eight identity wrappers"
 
-say "GREEN: Glow `|=` bartis — STOA100–147 · STOA253 N-field identity emit · argv · call-body · amount-mold · amount argv · count-mold · count argv · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · pair flip · triple-mold · triple flip · quad-mold · quad flip · penta-mold · penta flip · hexa-mold · hexa flip · hepta-mold · hepta flip · octa-mold · octa flip · nona-mold · nona flip · stated nesting · nest SampleDoesNotNest."
+say "GREEN: Glow `|=` bartis — STOA100–147 · STOA253 N-field identity emit · STOA257 shape-only living · argv · call-body · amount-shape · amount argv · count-shape · count argv · kind-shape · kind flip · xact-shape · xact flip · xfer-shape · xfer flip · pair-shape · pair flip · triple-shape · triple flip · quad-shape · quad flip · penta-shape · penta flip · hexa-shape · hexa flip · hepta-shape · hepta flip · octa-shape · octa flip · nona-shape · nona flip · stated nesting · nest SampleDoesNotNest."
 
