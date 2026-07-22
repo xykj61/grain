@@ -573,6 +573,8 @@
 - [x] **STOA294 — after tagged flip survey check-in** `20260722.155802` — lean A send; lean B barket twin. Brief [`../active-designing/20260722-155802_stoa294-after-tagged-flip-survey-checkin.md`](../active-designing/20260722-155802_stoa294-after-tagged-flip-survey-checkin.md).
 - [x] **STOA295 — barket tagged payload flip twin** `20260722.160418` — `emit_tagged_payload_flip_call_body`; xact/xfer wrappers; barket witness GREEN. Brief [`../active-designing/20260722-160418_stoa295-barket-tagged-payload-flip.md`](../active-designing/20260722-160418_stoa295-barket-tagged-payload-flip.md).
 - [x] **STOA296 — after barket tagged flip check-in** `20260722.160422` — lean A send; lean C kind unit helper. Brief [`../active-designing/20260722-160422_stoa296-after-barket-tagged-flip-checkin.md`](../active-designing/20260722-160422_stoa296-after-barket-tagged-flip-checkin.md).
+- [x] **STOA297 — tagged unit flip helper** `20260722.160822` — `emit_tagged_unit_flip_call_body` bartis+barket; both witnesses GREEN. Brief [`../active-designing/20260722-160643_stoa297-tagged-unit-flip-helper.md`](../active-designing/20260722-160643_stoa297-tagged-unit-flip-helper.md).
+- [x] **STOA298 — after tagged unit flip check-in** `20260722.160700` — lean A send; lean B rest. Brief [`../active-designing/20260722-160700_stoa298-after-tagged-unit-flip-checkin.md`](../active-designing/20260722-160700_stoa298-after-tagged-unit-flip-checkin.md).
 
 
 - [x] **UDT stamp convention on Framework host** `20260720.232932` — Keaton set system clock to UDT (UTC); [`context/specs/20260720-232932_udt-framework-host-convention.md`](../context/specs/20260720-232932_udt-framework-host-convention.md); Eastern era stamps stay; session-log rules + `GLOW_PROFILE` pointed at Etc/UTC for that season.
