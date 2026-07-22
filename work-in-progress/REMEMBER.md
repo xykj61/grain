@@ -2,14 +2,14 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260722.142326` (EDT) · voice Quin  
+**Last refreshed:** `20260722.143410` (EDT) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · **Sala B0 Glow compose** · authored line · sign · digest · fields  
-**Language nib:** **STOA0–254** · language return · bartis N-field identity emit  
-**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–254  
-**Git nib:** *(set after send)* · STOA253–254  
+**Language nib:** **STOA0–256** · language return · bartis · barket N-field identity emit  
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–256  
+**Git nib:** *(refresh after send)* · STOA255–256
 
 
-**Season:** Framework · Eastern / EDT · language return · bartis N-field identity GREEN · round-close on.  
+**Season:** Framework · Eastern / EDT · language return · barket N-field identity GREEN · round-close on.  
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`  
 **ADB:** `tools/.cache/hawm0/android-sdk/platform-tools/adb` — not on bare PATH
 
@@ -17,7 +17,7 @@
 
 ## Now
 
-**STOA254** `20260722.142326` — bartis N-field identity GREEN; lean B barket identity twin. Brief [`../active-designing/20260722-142326_stoa254-after-n-field-identity-checkin.md`](../active-designing/20260722-142326_stoa254-after-n-field-identity-checkin.md).
+**STOA256** `20260722.143410` — barket N-field identity GREEN; lean B flip call-body collapse. Brief [`../active-designing/20260722-143410_stoa256-after-barket-n-field-identity-checkin.md`](../active-designing/20260722-143410_stoa256-after-barket-n-field-identity-checkin.md).
 
 **ADB (copy-paste):**
 
@@ -37,11 +37,11 @@ $ADB shell run-as org.glow.app.sala_broadcaster cat files/sala_root.txt
 
 | Door | Kind |
 |------|------|
-| Barket identity twin | **kg** (STOA254 lean B) |
-| Flip call-body collapse | **held** |
+| Flip call-body collapse | **kg** (STOA256 lean B) |
 | Ambient gold | **held** |
 | Shared package / true `@import` face_lit | **held** |
 | JABS3 | **held** |
+| Barket N-field identity emit | **GREEN** `20260722.142939` |
 | Bartis N-field identity emit | **GREEN** `20260722.142142` |
 | Pixel embedded-desk eyes | **GREEN** `20260722.135605` |
 
