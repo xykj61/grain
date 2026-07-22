@@ -6,6 +6,8 @@
 //! STOA225: demo sig/fact hex pins + Glow face=lit desk bind
 //! (`glow/gen/sample-demo-fact-line-lits.glow`). Pins match
 //! `claim_demo_line` under issuer seed · fixture stamp1/memo1.
+//! STOA227: `format_demo_line_from_pins` emits the elder line from those
+//! seated pins (desk-bound). Does not read the `.glow` file at runtime.
 //!
 //!   rye build linengrow/glow_sala_b0_line_witness.rye \
 //!     -femit-bin=linengrow/bin/glow_sala_b0_line_witness
@@ -16,8 +18,9 @@ const kumara = @import("kumara.rye");
 const mc = @import("mala_core.rye");
 const rc = @import("receipt_core.rye");
 const sign = @import("glow_sala_b0_sign.rye");
+const tally_copy = @import("tally_copy.rye");
 
-pub const line_version = "20260722.132020";
+pub const line_version = "20260722.132533";
 
 /// Glow face=lit sample desk for demo line halves (STOA225).
 pub const lit_desk_relpath = "glow/gen/sample-demo-fact-line-lits.glow";
@@ -107,4 +110,33 @@ pub fn lit_desk_binds_pins(src: []const u8) bool {
     if (!clause_present(src, "sig", demo_sig_hex)) return false;
     if (!clause_present(src, "fact", demo_fact_hex)) return false;
     return true;
+}
+
+/// Emit elder demo log line from seated pins: `sighex facthex\n` (STOA227).
+/// Byte-identical to a successful `claim_demo_line` under the same pins.
+pub fn format_demo_line_from_pins(out: []u8) LineError!u32 {
+    const sig_n: u32 = @intCast(demo_sig_hex.len);
+    const fact_n: u32 = @intCast(demo_fact_hex.len);
+    const need = sig_n + 1 + fact_n + 1;
+    if (out.len < need) return error.Overflow;
+    tally_copy.copy_disjoint(u8, out[0..@as(usize, @intCast(sig_n))], demo_sig_hex);
+    out[@as(usize, @intCast(sig_n))] = ' ';
+    const fact_off = sig_n + 1;
+    tally_copy.copy_disjoint(
+        u8,
+        out[@as(usize, @intCast(fact_off)) .. @as(usize, @intCast(fact_off + fact_n))],
+        demo_fact_hex,
+    );
+    out[@as(usize, @intCast(fact_off + fact_n))] = '\n';
+    return need;
+}
+
+/// True when pin emit and live `claim_demo_line` are byte-identical.
+pub fn demo_pin_emit_agrees_claim() LineError!bool {
+    var from_pins: [rc.max_line_len]u8 = undefined;
+    var from_claim: [rc.max_line_len]u8 = undefined;
+    const n_pins = try format_demo_line_from_pins(from_pins[0..]);
+    const n_claim = try claim_demo_line(&from_claim);
+    if (n_pins != n_claim) return false;
+    return std.mem.eql(u8, from_pins[0..n_pins], from_claim[0..n_claim]);
 }
