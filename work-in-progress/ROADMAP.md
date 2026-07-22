@@ -828,6 +828,10 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA283 after host GREEN check-in sized, `20260722.153820`** — lean A HAWM1→root-into-harvest · lean B HAWM1 only · lean C stop/rest · lean D held. Brief [`active-designing/20260722-153820_stoa283-after-host-green-checkin-sized.md`](../active-designing/20260722-153820_stoa283-after-host-green-checkin-sized.md).
 
+**STOA284 harvest session_root, `20260722.154128`** — HAWM1 GREEN; `session_root` in hawm-harvest-v1. Brief [`active-designing/20260722-154128_stoa284-hawm-harvest-session-root.md`](../active-designing/20260722-154128_stoa284-hawm-harvest-session-root.md).
+
+**STOA285 after session_root check-in, `20260722.154128`** — lean A send · lean B stop hawm0/rest. Brief [`active-designing/20260722-154128_stoa285-after-session-root-checkin.md`](../active-designing/20260722-154128_stoa285-after-session-root-checkin.md).
+
 
 **Framework next (host resume), `20260720.231857`** — lean A: live SETU6.5 **sent** eyes on real `usb0`/`ncm`. Lab TX gate already GREEN; Sala B0 Glow rewrite · JABS3 stay thicker check-ins. Same freeze brief.
 
