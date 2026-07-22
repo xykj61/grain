@@ -1,0 +1,39 @@
+//! linengrow/sala_live_root_glass_witness.rye — STOA272 live-root Skate line.
+//!
+//!   rye build linengrow/sala_live_root_glass_witness.rye \
+//!     -femit-bin=linengrow/bin/sala_live_root_glass_witness
+//!   linengrow/bin/sala_live_root_glass_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const live = @import("sala_live_root_glass.rye");
+const tally_copy = @import("tally_copy.rye");
+
+const witness_version = "20260722.151957";
+
+fn run_selftest() !u8 {
+    const hex_src = "84822ce5da4fb4508ee2cf604e78b37884f71bf3c3cdf49937f5f425dfb29b1a";
+    assert(hex_src.len == 64);
+    var hex: [64]u8 = undefined;
+    tally_copy.copy_disjoint(u8, hex[0..], hex_src);
+    var line: [live.live_line_max]u8 = undefined;
+    var len: u32 = 0;
+    assert(live.format_live_line(1, &hex, &line, &len));
+    assert(std.mem.eql(u8, line[0..len], "LIVE · 1 · 84822ce5"));
+    print("sala-live-root-glass: format LIVE · 1 · 84822ce5 -- GREEN\n", .{});
+
+    assert(live.format_live_line(12, &hex, &line, &len));
+    assert(std.mem.eql(u8, line[0..len], "LIVE · 12 · 84822ce5"));
+    print("sala-live-root-glass: multi-digit seq -- GREEN\n", .{});
+    assert(live.skate_row == 5);
+    print("sala-live-root-glass: skate row 5 -- GREEN\n", .{});
+
+    print("sala-live-root-glass: version {s}\n", .{witness_version});
+    print("GREEN: Sala live-root glass — STOA272 Skate LIVE line.\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}

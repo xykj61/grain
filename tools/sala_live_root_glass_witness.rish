@@ -1,0 +1,20 @@
+# sala_live_root_glass_witness.rish — STOA272 live-root Skate line.
+#
+#   rishi/bin/rishi run tools/sala_live_root_glass_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/sala_live_root_glass_witness"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/sala_live_root_glass_witness.rye -femit-bin=${bin}"]
+assert build.ok else "sala_live_root_glass_witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "sala_live_root_glass_witness exited non-zero"
+assert selftest.out contains "GREEN" else "sala_live_root_glass_witness not GREEN"
+assert selftest.out contains "LIVE · 1 · 84822ce5" else "missing LIVE line format"
+assert selftest.out contains "skate row 5" else "missing skate row claim"
+
+let src = run ["sh" "-c" "grep -q 'format_live_line' linengrow/sala_live_root_glass.rye && grep -q 'LIVE ·' linengrow/sala_live_root_glass.rye"]
+assert src.ok else "sala_live_root_glass missing format_live_line"
+
+say "GREEN: STOA272 — live-root Skate LIVE line."
