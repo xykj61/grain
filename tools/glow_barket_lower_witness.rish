@@ -442,4 +442,8 @@ let run_nnf = run ["sh" "-c" "${nona_flip_bin}; echo EXIT:$?"]
 assert run_nnf.ok else "barket nona-mold flip welcome binary failed to launch"
 assert run_nnf.out contains "EXIT:0" else "barket nona-mold flip welcome binary did not exit 0"
 
-say "GREEN: Glow barket lower — identity · argv · call-body · amount-mold · amount argv · count-mold · count argv · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · pair flip · triple-mold · triple flip · quad-mold · quad flip · penta-mold · penta flip · hexa-mold · hexa flip · hepta-mold · hepta flip · octa-mold · octa flip · nona-mold · nona flip · nesting-through-nests; STOA113–147."
+# STOA255: pair…nona identity emit collapses through emit_n_field_identity.
+let n_field = run ["sh" "-c" "grep -q 'fn emit_n_field_identity' glow/lower_barket.rye && test $(grep -Fc 'return emit_n_field_identity(' glow/lower_barket.rye) = 8"]
+assert n_field.ok else "STOA255 missing emit_n_field_identity or eight identity wrappers"
+
+say "GREEN: Glow barket lower — STOA113–147 · STOA255 N-field identity emit · identity · argv · call-body · amount-mold · amount argv · count-mold · count argv · kind-mold · kind flip · xact-mold · xact flip · xfer-mold · xfer flip · pair-mold · pair flip · triple-mold · triple flip · quad-mold · quad flip · penta-mold · penta flip · hexa-mold · hexa flip · hepta-mold · hepta flip · octa-mold · octa flip · nona-mold · nona flip · nesting-through-nests."

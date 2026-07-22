@@ -1,76 +1,74 @@
 # tame_style_scan_bans.rish — TAME ban patterns over the scan roster (native bans half).
 #
-# File enumeration uses find (list-dir does not recurse). Compound-assert line
-# match still uses grep for the one-line regex; fixed-string bans are native.
+# File enumeration uses find (list-dir does not recurse). Fixed-string and
+# compound-assert bans use grep over the find set — the roster outgrew Rishi's
+# 256-value list ceiling (274 `.rye` paths as of STOA255), so this scan no
+# longer materializes the full path list in-process.
 # Mode router: tools/tame_style_scan.rish · advise: tools/tame_style_scan_advise.rish
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/tame_style_scan_bans.rish
 
-let roster = run ["sh" "-c" "find mantra caravan linengrow comlink rishi/src tally aurora pond brushstroke rye/src glow/tokens.rye glow/lower_named_cast.rye -name '*.rye' ! -type l 2>/dev/null | sort"]
-assert roster.ok else "tame_style_scan_bans: find roster failed"
+let find_rye = "find mantra caravan linengrow comlink rishi/src tally aurora pond brushstroke rye/src glow/tokens.rye glow/lower_named_cast.rye -name '*.rye' ! -type l 2>/dev/null"
 
-let file_lines = lines roster.out
-let files = where file_lines as f: f != ""
+let hits_err_eq = run ["sh" "-c" "grep -rlF ') == error.' $(${find_rye}) 2>/dev/null | head -8"]
+if hits_err_eq.out != "" then say "BAN [) == error.]:"
+if hits_err_eq.out != "" then say hits_err_eq.out
+assert hits_err_eq.out == "" else "TAME ban: ) == error."
 
-let hits_err_eq = where files as f: (read-file f) contains ") == error."
-if length hits_err_eq != 0 then say "BAN [) == error.]:"
-for-each hits_err_eq as f do say f
-assert length hits_err_eq == 0 else "TAME ban: ) == error."
+let hits_err_ne = run ["sh" "-c" "grep -rlF ') != error.' $(${find_rye}) 2>/dev/null | head -8"]
+if hits_err_ne.out != "" then say "BAN [) != error.]:"
+if hits_err_ne.out != "" then say hits_err_ne.out
+assert hits_err_ne.out == "" else "TAME ban: ) != error."
 
-let hits_err_ne = where files as f: (read-file f) contains ") != error."
-if length hits_err_ne != 0 then say "BAN [) != error.]:"
-for-each hits_err_ne as f do say f
-assert length hits_err_ne == 0 else "TAME ban: ) != error."
+let hits_qassert = run ["sh" "-c" "grep -rlF 'std.debug.assert(' $(${find_rye}) 2>/dev/null | head -8"]
+if hits_qassert.out != "" then say "BAN [std.debug.assert(]:"
+if hits_qassert.out != "" then say hits_qassert.out
+assert hits_qassert.out == "" else "TAME ban: std.debug.assert("
 
-let hits_qassert = where files as f: (read-file f) contains "std.debug.assert("
-if length hits_qassert != 0 then say "BAN [std.debug.assert(]:"
-for-each hits_qassert as f do say f
-assert length hits_qassert == 0 else "TAME ban: std.debug.assert("
+let hits_self = run ["sh" "-c" "grep -rlF 'Self = @This()' $(${find_rye}) 2>/dev/null | head -8"]
+if hits_self.out != "" then say "BAN [Self = @This()]:"
+if hits_self.out != "" then say hits_self.out
+assert hits_self.out == "" else "TAME ban: Self = @This()"
 
-let hits_self = where files as f: (read-file f) contains "Self = @This()"
-if length hits_self != 0 then say "BAN [Self = @This()]:"
-for-each hits_self as f do say f
-assert length hits_self == 0 else "TAME ban: Self = @This()"
+let hits_using = run ["sh" "-c" "grep -rlF 'usingnamespace' $(${find_rye}) 2>/dev/null | head -8"]
+if hits_using.out != "" then say "BAN [usingnamespace]:"
+if hits_using.out != "" then say hits_using.out
+assert hits_using.out == "" else "TAME ban: usingnamespace"
 
-let hits_using = where files as f: (read-file f) contains "usingnamespace"
-if length hits_using != 0 then say "BAN [usingnamespace]:"
-for-each hits_using as f do say f
-assert length hits_using == 0 else "TAME ban: usingnamespace"
+let hits_not_comptime = run ["sh" "-c" "grep -rlF '!comptime' $(${find_rye}) 2>/dev/null | head -8"]
+if hits_not_comptime.out != "" then say "BAN [!comptime]:"
+if hits_not_comptime.out != "" then say hits_not_comptime.out
+assert hits_not_comptime.out == "" else "TAME ban: !comptime"
 
-let hits_not_comptime = where files as f: (read-file f) contains "!comptime"
-if length hits_not_comptime != 0 then say "BAN [!comptime]:"
-for-each hits_not_comptime as f do say f
-assert length hits_not_comptime == 0 else "TAME ban: !comptime"
+let hits_cf = run ["sh" "-c" "grep -rlF 'copyForwards' $(${find_rye}) 2>/dev/null | head -8"]
+if hits_cf.out != "" then say "BAN [copyForwards]:"
+if hits_cf.out != "" then say hits_cf.out
+assert hits_cf.out == "" else "TAME ban: copyForwards"
 
-let hits_cf = where files as f: (read-file f) contains "copyForwards"
-if length hits_cf != 0 then say "BAN [copyForwards]:"
-for-each hits_cf as f do say f
-assert length hits_cf == 0 else "TAME ban: copyForwards"
+let hits_cb = run ["sh" "-c" "grep -rlF 'copyBackwards' $(${find_rye}) 2>/dev/null | head -8"]
+if hits_cb.out != "" then say "BAN [copyBackwards]:"
+if hits_cb.out != "" then say hits_cb.out
+assert hits_cb.out == "" else "TAME ban: copyBackwards"
 
-let hits_cb = where files as f: (read-file f) contains "copyBackwards"
-if length hits_cb != 0 then say "BAN [copyBackwards]:"
-for-each hits_cb as f do say f
-assert length hits_cb == 0 else "TAME ban: copyBackwards"
+let hits_fixme = run ["sh" "-c" "grep -rlF 'FIXME' $(${find_rye}) 2>/dev/null | head -8"]
+if hits_fixme.out != "" then say "BAN [FIXME]:"
+if hits_fixme.out != "" then say hits_fixme.out
+assert hits_fixme.out == "" else "TAME ban: FIXME"
 
-let hits_fixme = where files as f: (read-file f) contains "FIXME"
-if length hits_fixme != 0 then say "BAN [FIXME]:"
-for-each hits_fixme as f do say f
-assert length hits_fixme == 0 else "TAME ban: FIXME"
+let hits_dbg = run ["sh" "-c" "grep -rlF 'dbg(' $(${find_rye}) 2>/dev/null | head -8"]
+if hits_dbg.out != "" then say "BAN [dbg(]:"
+if hits_dbg.out != "" then say hits_dbg.out
+assert hits_dbg.out == "" else "TAME ban: dbg("
 
-let hits_dbg = where files as f: (read-file f) contains "dbg("
-if length hits_dbg != 0 then say "BAN [dbg(]:"
-for-each hits_dbg as f do say f
-assert length hits_dbg == 0 else "TAME ban: dbg("
-
-let compound = run ["sh" "-c" "grep -Hn 'assert(.* and .*)' $(find mantra caravan linengrow comlink rishi/src tally aurora pond brushstroke rye/src glow/tokens.rye glow/lower_named_cast.rye -name '*.rye' ! -type l 2>/dev/null) 2>/dev/null | head -8"]
+let compound = run ["sh" "-c" "grep -Hn 'assert(.* and .*)' $(${find_rye}) 2>/dev/null | head -8"]
 if compound.out != "" then say "BAN [compound assert — split so the failing half is named]:"
 if compound.out != "" then say compound.out
 assert compound.out == "" else "TAME ban: compound assert"
 
-# Glow TAME overflow seat (STOA96 / STOA105 / STOA117): style roster sits at
-# Rishi's 256-file ceiling with tokens + lower_named_cast. lower_shape,
-# lower_bartis, and lower_barket ride one-file ban passes.
+# Glow TAME overflow seat (STOA96 / STOA105 / STOA117): style roster outgrew
+# Rishi's 256-file list ceiling; lower_shape · lower_bartis · lower_barket
+# ride one-file ban passes beside the shell roster greps above.
 let shape_lower = "glow/lower_shape.rye"
 assert ((read-file shape_lower) contains ") == error.") == false else "TAME ban on lower_shape: ) == error."
 assert ((read-file shape_lower) contains ") != error.") == false else "TAME ban on lower_shape: ) != error."
