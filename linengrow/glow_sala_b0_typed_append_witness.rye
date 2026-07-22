@@ -1,0 +1,91 @@
+//! linengrow/glow_sala_b0_typed_append_witness.rye — STOA266 typed memo append.
+//!
+//! Feeds a Dexter-shaped live memo through product `append_typed_memo` /
+//! `append_event`, verifies sign+line+fields, and proves the HAWM1 three-event
+//! demo pin path still digests to the seated root.
+//!
+//!   rye build linengrow/glow_sala_b0_typed_append_witness.rye \
+//!     -femit-bin=linengrow/bin/glow_sala_b0_typed_append_witness
+//!   linengrow/bin/glow_sala_b0_typed_append_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const kumara = @import("kumara.rye");
+const mc = @import("mala_core.rye");
+const rc = @import("receipt_core.rye");
+const fixture = @import("glow_sala_b0_demo_fixture.rye");
+const digest = @import("glow_sala_b0_digest.rye");
+const append = @import("glow_sala_b0_append.rye");
+const sign = @import("glow_sala_b0_sign.rye");
+const line = @import("glow_sala_b0_line.rye");
+const fields_mod = @import("glow_sala_b0_fields.rye");
+
+const witness_version = "20260722.151008";
+
+/// Dexter-seeded held line on NativeActivity — typed shape, not a fixture memo.
+const typed_memo = "glow";
+const typed_stamp = "20260722.151008";
+const typed_seq: i64 = 1;
+
+fn run_selftest() !u8 {
+    assert(fixture.root_pin_agrees());
+    print("sala-b0-typed-append: fixture root pin seated -- GREEN\n", .{});
+    assert(!std.mem.eql(u8, typed_memo, fixture.memo1));
+    print("sala-b0-typed-append: typed memo differs fixture memo1 -- GREEN\n", .{});
+
+    const actor_kp = kumara.keypair_from_seed(&mc.issuer_seed);
+    var actor_hex: [mc.pubkey_hex_len]u8 = undefined;
+    mc.hex_of_key(actor_kp.public_key, &actor_hex);
+
+    var typed_log: [rc.max_log_len]u8 = undefined;
+    const typed_len = try append.append_typed_memo(
+        typed_log[0..],
+        0,
+        typed_seq,
+        typed_stamp,
+        typed_memo,
+        &actor_hex,
+        actor_kp,
+    );
+    assert(typed_len > 0);
+    print("sala-b0-typed-append: append_typed_memo via append_event -- GREEN\n", .{});
+
+    var sig_bytes: [kumara.signature_length]u8 = undefined;
+    var fact_bytes: [rc.max_fact_len]u8 = undefined;
+    const parsed = try line.parse_log_line(typed_log[0..typed_len], &sig_bytes, &fact_bytes);
+    assert(parsed.sig_len == kumara.signature_length);
+    assert(parsed.fact_len > 0);
+    try sign.verify_record(sig_bytes[0..parsed.sig_len], fact_bytes[0..parsed.fact_len], actor_kp.public_key);
+    print("sala-b0-typed-append: sign+line verify round-trip -- GREEN\n", .{});
+
+    var fact_fields: rc.FactFields = undefined;
+    try fields_mod.parse_fact_fields(fact_bytes[0..parsed.fact_len], &fact_fields);
+    assert(std.mem.eql(u8, fact_fields.memo, typed_memo));
+    assert(std.mem.eql(u8, fact_fields.stamp, typed_stamp));
+    assert(std.mem.eql(u8, fact_fields.amount, "1"));
+    print("sala-b0-typed-append: fields memo equals typed glow -- GREEN\n", .{});
+
+    const typed_root = digest.digest_log_bytes(typed_log[0..typed_len]);
+    var typed_hex: [64]u8 = undefined;
+    digest.root_to_hex(&typed_root, &typed_hex);
+    assert(!std.mem.eql(u8, typed_hex[0..], fixture.expected_demo_root_hex));
+    print("sala-b0-typed-append: typed root differs HAWM1 -- GREEN\n", .{});
+
+    var demo_log: [rc.max_log_len]u8 = undefined;
+    const demo_root = try append.claim_append_demo_root(&demo_log);
+    assert(digest.root_matches_fixture(&demo_root));
+    var demo_hex: [64]u8 = undefined;
+    digest.root_to_hex(&demo_root, &demo_hex);
+    assert(std.mem.eql(u8, demo_hex[0..], fixture.expected_demo_root_hex));
+    print("sala-b0-typed-append: HAWM1 pin path still seated -- GREEN\n", .{});
+    print("sala-b0-typed-append: session root -- {s}\n", .{demo_hex[0..]});
+
+    print("sala-b0-typed-append: version {s}\n", .{witness_version});
+    print("GREEN: Glow Sala B0 typed append — STOA266 memo via append_event; HAWM1 untouched.\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}
