@@ -6,8 +6,8 @@
 **Version:** `20260722.154654` (EDT · Framework host)  
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
 **Voice:** Quin  
-**Status:** Checkable — lean table · awaiting choose  
-**Register:** Checkable for the lean; Intent until the chosen door’s witness GREEN  
+**Status:** Checkable — lean **A** approved → STOA289 GREEN  
+**Register:** Checkable (Two Rooms) — Pixel LIVE eyes GREEN as STOA289  
 
 **Grounds in:** STOA287 rest · “let’s continue” · Pixel `66041JEA306288` attached · APK `tools/.cache/tube05/sala-broadcaster.apk` present  
 
@@ -29,7 +29,7 @@
 
 | | Lean | Size | What it opens |
 |---|---|---|---|
-| **A** | **Pixel glass LIVE eyes** — **recommended** | one kg lap | pack/install/start Sala APK; eyes confirm LIVE row + HAWM1 tip; short look note |
+| **A** | **Pixel glass LIVE eyes** — **chosen** → STOA289 | one kg lap | pack/install/start Sala APK; eyes confirm LIVE row + HAWM1 tip; short look note |
 | **B** | **Glow language inventary** | check-in first | next language door (tagged `$%` flip · gold · other) — needs its own size before kg |
 | **C** | **Reopen HAWM0** | host onpath | boot→harvest again — low value right after stop unless a new harvest field is named |
 | **D** | **Fleets · HAWM2 · gold · JABS3 · UDP** | thick | **held** |
