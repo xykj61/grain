@@ -1,0 +1,13 @@
+format session-log-v1
+stamp 20260722.132757
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title STOA227 send · STOA228 check-in · lean B next
+prompt send and approve next rec
+think Send STOA227 pin emit and STOA228 check-in seating; approved next is lean B append/fold wire to pin emit.
+obs Pier send then implement first-event append from format_demo_line_from_pins.
+file active-designing/20260722-132533_stoa227-demo-line-pin-emit.md brief
+file active-designing/20260722-132705_stoa228-after-demo-pin-emit-checkin.md check-in
+recommend keep-going lean B append first event from pin emit after pier send

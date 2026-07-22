@@ -1,7 +1,7 @@
 # Glow — Language Tooling, Grown from Real Design
 
 **Language:** EN
-**Last updated:** 2026-07-22 (**STOA226** after fact-line lits check-in)
+**Last updated:** 2026-07-22 (**STOA228** after demo pin emit check-in)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Audience:** Acme Corporation employees reading the working Glow pin

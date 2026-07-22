@@ -8,6 +8,10 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260722.132705` — [STOA228 after demo pin emit check-in](20260722-132705_stoa228-after-demo-pin-emit-checkin.bron) — rec send; then append/fold
+- `20260722.132533` — [STOA227 demo line pin emit GREEN](20260722-132533_stoa227-demo-line-pin-emit.bron) — pins ≡ claim_demo_line
+
+- `20260722.132402` — [REMEMBER git nib after STOA226](20260722-132402_remember-git-nib-stoa226.bron) — pin d1feb98c479a
 - `20260722.132320` — [STOA225 send · STOA226 check-in](20260722-132320_stoa225-send-stoa226-checkin.bron) — pier send; rec rest
 - `20260722.132020` — [STOA225 fact-line demo lit sample](20260722-132020_stoa225-fact-line-demo-lit-sample.bron) — sig/fact pins · desk bind GREEN
 
