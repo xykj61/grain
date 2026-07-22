@@ -16,9 +16,10 @@
 #   rishi/bin/rishi run tools/glow_run.rish glow/gen/gate-xfer-tag.glow mint 5 3
 #   rishi/bin/rishi run tools/glow_run.rish glow/gen/gate-pair-fields.glow 5 3
 #   rishi/bin/rishi run tools/glow_run.rish glow/gen/gate-triple-fields.glow 5 3 1
+#   rishi/bin/rishi run tools/glow_run.rish glow/gen/gate-quad-fields.glow 5 3 1 2
 
 let zig = "vendor/zig-toolchain/zig"
-assert (args.len != 0) else "usage: rishi run tools/glow_run.rish <file.glow> [<sample>] [<u32>] [<u32>]"
+assert (args.len != 0) else "usage: rishi run tools/glow_run.rish <file.glow> [<sample>] [<u32>]..."
 let glow_path = args[0]
 
 # Optional samples — worker enforces stem rules.
@@ -26,7 +27,8 @@ if args.len == 1 then let gate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_ru
 if args.len == 2 then let gate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" glow_path args[1]]
 if args.len == 3 then let gate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" glow_path args[1] args[2]]
 if args.len == 4 then let gate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" glow_path args[1] args[2] args[3]]
-assert (args.len != 5) else "usage: at most three sample words after the .glow path"
+if args.len == 5 then let gate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" glow_path args[1] args[2] args[3] args[4]]
+assert (args.len != 6) else "usage: at most four sample words after the .glow path"
 
 assert gate.ok else "glow_run gate failed: ${gate.err}${gate.out}"
 assert gate.out contains "EXIT:0" else "generator did not exit 0"

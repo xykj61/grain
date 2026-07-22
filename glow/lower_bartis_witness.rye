@@ -294,12 +294,30 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(spec_triple_fields.body == .identity);
     print("lower: glow/gen/gate-triple-fields.glow carries triple-shape argv -- GREEN\n", .{});
 
-    if (lower.lower_source_argv_sample("|=  sample=quad-shape\nsample\n", &buf)) |_| {
-        return error.QuadArgvLoweredTooSoon;
+    // STOA311: quad-shape argv identity — four field decimals.
+    const quad_argv_src = "|=  sample=quad-shape\nsample\n";
+    const n_quad_argv = try lower.lower_source_argv_sample(quad_argv_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n_quad_argv], "QuadShape") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_quad_argv], "minimal.args") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_quad_argv], "parseInt(u32, argv[1]") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_quad_argv], "parseInt(u32, argv[4]") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_quad_argv], ".nonce") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_quad_argv], "\"mint\"") == null);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_quad_argv.rye", .data = buf[0..n_quad_argv] });
+    print("lower: quad-shape argv emit reads minimal.args / from+amount+fee+nonce -- GREEN\n", .{});
+
+    const gen_quad_fields = try cwd.readFileAlloc(io, "glow/gen/gate-quad-fields.glow", a, .limited(4096));
+    const spec_quad_fields = try rb.parse_source(gen_quad_fields);
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_quad_fields), "quad-shape"));
+    assert(spec_quad_fields.body == .identity);
+    print("lower: glow/gen/gate-quad-fields.glow carries quad-shape argv -- GREEN\n", .{});
+
+    if (lower.lower_source_argv_sample("|=  sample=penta-shape\nsample\n", &buf)) |_| {
+        return error.PentaArgvLoweredTooSoon;
     } else |err| {
         if (err != lower.LowerError.SampleDoesNotNest) return err;
     }
-    print("lower: quad-shape argv refused SampleDoesNotNest -- GREEN\n", .{});
+    print("lower: penta-shape argv refused SampleDoesNotNest -- GREEN\n", .{});
 
     // STOA123: kind-shape identity lowers as KindShape.
     const kind_src = "|=  sample=kind-shape\nsample\n";
@@ -625,13 +643,6 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("lower: triple-shape double call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
 
-    if (lower.lower_source_argv_sample("|=  sample=quad-shape\nsample\n", &buf)) |_| {
-        return error.QuadArgvLoweredTooSoon;
-    } else |err| {
-        if (err != lower.LowerError.SampleDoesNotNest) return err;
-    }
-    print("lower: quad-shape argv refused SampleDoesNotNest -- GREEN\n", .{});
-
     // STOA137: quad-shape flip call-body lowers as QuadShape swap · baked 3/5/1/2.
     const quad_flip_src = "|=  sample=quad-shape\n%-  flip  sample\n";
     const n_qf = try lower.lower_source_welcome(quad_flip_src, &buf);
@@ -801,7 +812,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("lower: glow/gen/gate-count.glow carries count-shape -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: Glow `|=` bartis — identity · argv · call-body · amount-shape · amount argv · count-shape · count argv · kind-shape · kind argv · kind flip · xact-shape · xact argv · xact flip · xfer-shape · xfer argv · xfer flip · pair-shape · pair argv · pair flip · triple-shape · triple argv · triple flip · quad-shape · quad flip · penta-shape · penta flip · hexa-shape · hexa flip · hepta-shape · hepta flip · octa-shape · octa flip · nona-shape · nona flip · nesting-nests; STOA100–147 · STOA253 identity emit · STOA259 N-field flip · STOA293 tagged payload flip · STOA297 tagged unit flip · STOA300 kind argv · STOA303 xact argv · STOA305 xfer argv · STOA307 pair argv · STOA309 triple argv.\n", .{});
+    print("GREEN: Glow `|=` bartis — identity · argv · call-body · amount-shape · amount argv · count-shape · count argv · kind-shape · kind argv · kind flip · xact-shape · xact argv · xact flip · xfer-shape · xfer argv · xfer flip · pair-shape · pair argv · pair flip · triple-shape · triple argv · triple flip · quad-shape · quad argv · quad flip · penta-shape · penta flip · hexa-shape · hexa flip · hepta-shape · hepta flip · octa-shape · octa flip · nona-shape · nona flip · nesting-nests; STOA100–147 · STOA253 identity emit · STOA259 N-field flip · STOA293 tagged payload flip · STOA297 tagged unit flip · STOA300 kind argv · STOA303 xact argv · STOA305 xfer argv · STOA307 pair argv · STOA309 triple argv · STOA311 quad argv.\n", .{});
     return 0;
 }
 
