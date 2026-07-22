@@ -141,5 +141,7 @@ Living Glow OS desks lead with `shape-*` (shape duals STOA161–173; pin polish 
 | **STOA309** | N-field argv survey · triple | `emit_triple_argv` · bartis+barket | **GREEN** `20260722.190839` |
 | **STOA310** | after triple argv check-in | A send · B rest available · **C** quad argv chosen | **GREEN** `20260722.191301` |
 | **STOA311** | N-field argv survey · quad | `emit_quad_argv` · bartis+barket | **GREEN** `20260722.191505` |
-| **STOA312** | after quad argv check-in | A send · B rest available · **C** penta argv recommended | **GREEN** `20260722.191917` |
+| **STOA312** | after quad argv check-in | A send · B rest available · **C** penta argv chosen | **GREEN** `20260722.191917` |
+| **STOA313** | N-field argv survey · penta | `emit_penta_argv` · bartis+barket | **GREEN** `20260722.192146` |
+| **STOA314** | after penta argv check-in | A send · B rest available · **C** hexa argv recommended | **GREEN** `20260722.192541` |
 Smoke: `glow_nest_type_witness` · `glow_barket_parse_witness` · `glow_lower_bartis_witness` · Sibling: **ZETA** · **LULU** · **SETU** · **TUBE**.
