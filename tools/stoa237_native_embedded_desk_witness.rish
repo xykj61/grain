@@ -1,0 +1,38 @@
+# stoa237_native_embedded_desk_witness.rish — NativeActivity fold from embedded lit desk.
+#
+#   rishi/bin/rishi run tools/stoa237_native_embedded_desk_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+
+let fold = run ["rishi/bin/rishi" "run" "tools/glow_sala_b0_fold_witness.rish"]
+assert fold.ok else "glow_sala_b0_fold_witness failed"
+assert fold.out contains "STOA237" else "fold witness missing STOA237"
+
+let claim = run ["rishi/bin/rishi" "run" "tools/glow_sala_b0_claim_witness.rish"]
+assert claim.ok else "glow_sala_b0_claim_witness failed"
+assert claim.out contains "STOA237" else "claim witness missing STOA237"
+
+let src = run ["sh" "-c" "grep -q 'lit_desk_embedded' linengrow/glow_sala_b0_line.rye && grep -q 'run_demo_fold_from_embedded_desk' linengrow/glow_native_activity.rye && grep -q '@embedFile' linengrow/glow_sala_b0_line.rye"]
+assert src.ok else "missing embedFile / NativeActivity embedded-desk wire"
+
+let pack = run ["rishi/bin/rishi" "run" "tools/tube05_apk_pack_witness.rish"]
+assert pack.ok else "tube05_apk_pack_witness failed after embedded desk wire"
+assert pack.out contains "GREEN" else "tube05_apk_pack_witness missing GREEN"
+
+# Desk bytes ride inside libglowapp.so (APK pack path).
+# Unique hex prefixes from the seated desk — no shell quoting of quotes.
+let so = "tools/.cache/tube05/staging/lib/arm64-v8a/libglowapp.so"
+let so_ok = run ["test" "-f" so]
+assert so_ok.ok else "missing libglowapp.so after pack"
+let sig2 = run ["sh" "-c" "strings tools/.cache/tube05/staging/lib/arm64-v8a/libglowapp.so | grep -c cbff6d796bfc1880"]
+assert sig2.ok else "libglowapp.so missing embedded sig2 hex"
+assert sig2.out contains "1" else "libglowapp.so sig2 hex count unexpected"
+let fact3 = run ["sh" "-c" "strings tools/.cache/tube05/staging/lib/arm64-v8a/libglowapp.so | grep -c 3139303030330a"]
+assert fact3.ok else "libglowapp.so missing embedded fact3 stamp tail"
+assert fact3.out contains "1" else "libglowapp.so fact3 stamp count unexpected"
+
+# linengrow twin desk equals Glow sample desk (docs-implementation sync).
+let twin = run ["diff" "-q" "glow/gen/sample-demo-fact-line-lits.glow" "linengrow/gen/sample-demo-fact-line-lits.glow"]
+assert twin.ok else "linengrow/gen desk twin drifted from glow/gen"
+
+say "GREEN: STOA237 — NativeActivity embedded lit desk fold; desk in .so; pack GREEN."

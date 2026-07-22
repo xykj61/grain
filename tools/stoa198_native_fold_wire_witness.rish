@@ -18,8 +18,9 @@ assert claim.ok else "glow_sala_b0_claim_witness failed"
 assert claim.out contains "GREEN" else "glow_sala_b0_claim_witness missing GREEN"
 
 # 3) Entry source wires the Glow fold (docs-implementation sync).
-let src = run ["sh" "-c" "grep -q 'glow_sala_b0_fold.rye' linengrow/glow_native_activity.rye && grep -q 'glow_fold.run_demo_fold' linengrow/glow_native_activity.rye && ! grep -q '@import(\"sala_b0_fold.rye\")' linengrow/glow_native_activity.rye && ! grep -q '@import(\"glow_sala_b0_claim.rye\")' linengrow/glow_native_activity.rye"]
-assert src.ok else "glow_native_activity missing Glow fold wire / still imports elder or claim directly"
+# STOA237: onCreate uses embedded-desk fold; pin fold stays available on host.
+let src = run ["sh" "-c" "grep -q 'glow_sala_b0_fold.rye' linengrow/glow_native_activity.rye && grep -q 'run_demo_fold_from_embedded_desk' linengrow/glow_native_activity.rye && ! grep -q '@import(\"sala_b0_fold.rye\")' linengrow/glow_native_activity.rye && ! grep -q '@import(\"glow_sala_b0_claim.rye\")' linengrow/glow_native_activity.rye"]
+assert src.ok else "glow_native_activity missing Glow embedded-desk fold wire / still imports elder or claim directly"
 
 # 4) Pack path still GREEN with the wired entry.
 let pack = run ["rishi/bin/rishi" "run" "tools/tube05_apk_pack_witness.rish"]

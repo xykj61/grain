@@ -6,7 +6,8 @@
 **Version:** `20260722.134657` (EDT · Framework host)  
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
 **Voice:** Quin  
-**Status:** Checkable — lean **A** send chosen `20260722.134657` · lean **B** NativeActivity desk asset recommended next  
+**Status:** Checkable — lean **A** send `20260722.134657` · lean **B** as **STOA237** `20260722.134831`  
+
 **Register:** Checkable (Two Rooms) — STOA235 GREEN with this send; NA pin path unchanged  
 
 **Grounds in:** STOA235 desk-file claim/fold · STOA233 desk emit · STOA191 NativeActivity claim wire
@@ -26,7 +27,7 @@ STOA235 `claim_demo_fold_from_desk_file` · `run_demo_fold_from_desk_file` · pi
 | | Lean | What it opens |
 |---|---|---|
 | **A** | **Send STOA235** — **chosen** `20260722.134657` | pier matches hand |
-| **B** | **NativeActivity / APK desk asset** — **recommended next** | pack lit desk · onCreate desk claim (sized) |
+| **B** | **NativeActivity / APK desk asset** — **as STOA237** `20260722.134831` | embedded lit desk in `.so` · onCreate desk fold |
 | **C** | **Glow `face_lit` on product path** | thicker module-path seam — **held** |
 | **D** | **JABS3** | inference · economics — **held**; explicit word only |
 

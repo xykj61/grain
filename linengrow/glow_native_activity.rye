@@ -4,7 +4,8 @@
 //!
 //! Per active-designing/20260717-014522_native-activity-shim-and-slc-
 //! packaging.md: one small, fixed, never-generated entry. App logic is
-//! the Sala B0 Glow fold (`glow_sala_b0_fold.rye` · STOA198), the TUBE1 admit gate
+//! the Sala B0 Glow fold (`glow_sala_b0_fold.rye` · STOA198/237 embedded desk),
+//! the TUBE1 admit gate
 //! (`tube1_glass_gate.rye`), the R2 multi-panel surface
 //! (`sala_r2_surface.rye`), the TUBE5 tip line (`tube5_glass_tip.rye`),
 //! the TUBE2–4 rail lines (`tube2_glass_pub.rye`, `tube3_glass_fetch.rye`,
@@ -769,8 +770,9 @@ export fn ANativeActivity_onCreate(
     glow_last_product_session_root = product_root;
     write_product_root_file(product_root);
 
-    // STOA198: product path runs Glow fold (compose claim · elder underneath).
-    const root = glow_fold.run_demo_fold() catch {
+    // STOA237: product path runs Glow fold from embedded fact-line lit desk
+    // (desk bytes packed in libglowapp.so · APK). Pin fold remains for hosts.
+    const root = glow_fold.run_demo_fold_from_embedded_desk() catch {
         @memset(glow_last_session_root_hex[0..], 0);
         g_root_matched = false;
         ANativeActivity_finish(activity);
