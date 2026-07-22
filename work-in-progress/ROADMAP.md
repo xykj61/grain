@@ -712,7 +712,9 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA227 demo line pin emit GREEN, `20260722.132533`** — `format_demo_line_from_pins` ≡ claim. Brief [`active-designing/20260722-132533_stoa227-demo-line-pin-emit.md`](../active-designing/20260722-132533_stoa227-demo-line-pin-emit.md).
 
-**STOA228 after demo pin emit check-in, `20260722.132705`** — rec lean A send · lean B append/fold wire. Brief [`active-designing/20260722-132705_stoa228-after-demo-pin-emit-checkin.md`](../active-designing/20260722-132705_stoa228-after-demo-pin-emit-checkin.md). JABS3 held.
+**STOA228 after demo pin emit check-in, `20260722.132705`** — lean A send · lean B as STOA229. Brief [`active-designing/20260722-132705_stoa228-after-demo-pin-emit-checkin.md`](../active-designing/20260722-132705_stoa228-after-demo-pin-emit-checkin.md).
+
+**STOA229 append first-event pin wire GREEN, `20260722.133004`** — `append_demo_log` event 1 from pin emit; events 2–3 sign+line; HAWM1 root. Brief [`active-designing/20260722-133004_stoa229-append-first-event-pin-emit.md`](../active-designing/20260722-133004_stoa229-append-first-event-pin-emit.md). JABS3 held.
 
 
 **Framework next (host resume), `20260720.231857`** — lean A: live SETU6.5 **sent** eyes on real `usb0`/`ncm`. Lab TX gate already GREEN; Sala B0 Glow rewrite · JABS3 stay thicker check-ins. Same freeze brief.
