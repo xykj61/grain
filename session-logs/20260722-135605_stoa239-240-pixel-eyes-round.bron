@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260722.135605
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title STOA239 Pixel eyes · STOA240 check-in
+prompt bare adb not found screenshot; Pixel install eyes
+think Bare adb missing from PATH; SDK platform-tools adb works; Pixel 66041JEA306288 attached.
+think install -r Success; sala_root HAWM1; product root 5; tube05_install_proof GREEN. Round-close send+check-in.
+obs REMEMBER seats ADB=tools/.cache/hawm0/android-sdk/platform-tools/adb. Lit-desk arc closed on glass.
+file tools/.cache/hawm0/android-sdk/platform-tools/adb SDK adb path
+file active-designing/20260722-135605_stoa239-pixel-embedded-desk-eyes.md brief
+file active-designing/20260722-135605_stoa240-after-pixel-eyes-checkin.md check-in
+file work-in-progress/REMEMBER.md ADB path seated
+git_nib 2de64f7c09a8
+product_nib Sala-B0-Glow-compose
+suite_nib STOA0-240
+recommend name next door face_lit or JABS3; pin/desk/embed/Pixel path closed

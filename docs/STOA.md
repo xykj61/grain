@@ -1,6 +1,6 @@
-# STOA — Glow SLC · nest · product · ≤80 · STOA0–238 GREEN · 2026-07-22 · draw → **STOA**
+# STOA — Glow SLC · nest · product · ≤80 · STOA0–240 GREEN · 2026-07-22 · draw → **STOA**
 
-Living Glow OS desks lead with `shape-*` (inventary duals STOA161–173; pin polish STOA174; multi-field cast twins STOA175–176). Sala B0 Glow: STOA177–238 · **STOA238** after embedded desk check-in (Pixel eyes next). Hoon study twins under `glow/gen/hoon-study/`.
+Living Glow OS desks lead with `shape-*` (inventary duals STOA161–173; pin polish STOA174; multi-field cast twins STOA175–176). Sala B0 Glow: STOA177–240 · **STOA240** after Pixel embedded-desk eyes (name next door). Hoon study twins under `glow/gen/hoon-study/`.
 
 | Rung | Claim | Witness / gate | State |
 |------|-------|----------------|-------|
@@ -88,5 +88,7 @@ Living Glow OS desks lead with `shape-*` (inventary duals STOA161–173; pin pol
 | **STOA235** | claim/fold desk-file I/O | claim + fold witnesses | **GREEN** `20260722.134552` |
 | **STOA236** | after desk-file claim check-in | leans A send · B as STOA237 | **GREEN** `20260722.134657` |
 | **STOA237** | NativeActivity embedded lit desk | `stoa237_native_embedded_desk_witness` | **GREEN** `20260722.134831` |
-| **STOA238** | after embedded desk check-in | leans A send · B Pixel eyes | **GREEN** `20260722.135324` |
+| **STOA238** | after embedded desk check-in | leans A send · B as STOA239 | **GREEN** `20260722.135324` |
+| **STOA239** | Pixel embedded-desk eyes | `tube05_install_proof_onpath_host` | **GREEN** `20260722.135605` |
+| **STOA240** | after Pixel eyes check-in | leans A send · B name next door | **GREEN** `20260722.135605` |
 Smoke: `glow_nest_type_witness` · `glow_barket_parse_witness` · `glow_lower_bartis_witness` · Sibling: **ZETA** · **LULU** · **SETU** · **TUBE**.
