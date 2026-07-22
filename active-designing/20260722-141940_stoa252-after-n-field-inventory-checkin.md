@@ -6,8 +6,8 @@
 **Version:** `20260722.141940` (EDT · Framework host)  
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
 **Voice:** Quin  
-**Status:** Checkable — lean **A** send chosen with round-close · lean **B** thin identity N-field emit  
-**Register:** Checkable (Two Rooms) — STOA251 inventary seated with this send; emit collapse not yet claimed  
+**Status:** Checkable — lean **A** send chosen with round-close · lean **B** became **STOA253** `20260722.142142`  
+**Register:** Checkable (Two Rooms) — STOA251 inventary seated with this send; identity emit collapse claimed as STOA253  
 
 **Grounds in:** STOA251 N-field inventary · capacity freeze · STOA250 name-next-door  
 
