@@ -20,8 +20,8 @@ const line = @import("glow_sala_b0_line.rye");
 const fields_mod = @import("glow_sala_b0_fields.rye");
 const bridge = @import("dexter_sala_append.rye");
 
-const witness_version = "20260722.151257";
-const demo_stamp = "20260722.151257";
+const witness_version = "20260722.151515";
+const demo_stamp = "20260722.151515";
 const demo_seq: i64 = 1;
 
 fn run_selftest() !u8 {
@@ -64,11 +64,39 @@ fn run_selftest() !u8 {
     assert(std.mem.eql(u8, fact_fields.amount, "1"));
     print("dexter-sala-append: fields memo equals Dexter glow -- GREEN\n", .{});
 
-    const typed_root = digest.digest_log_bytes(log_buf[0..len]);
+    var digest_root: [32]u8 = undefined;
+    var digest_log: [rc.max_log_len]u8 = undefined;
+    var digest_memo: [dexter.max_line_len]u8 = undefined;
+    var digest_memo_len: u32 = 0;
+    const digest_len = try bridge.append_demo_submit(
+        digest_log[0..],
+        0,
+        demo_seq,
+        demo_stamp,
+        &actor_hex,
+        actor_kp,
+        &digest_memo,
+        &digest_memo_len,
+    );
+    // Re-digest via STOA270 helper path on the same bytes.
+    const again = try bridge.append_submitted_line_digest(
+        digest_log[0..],
+        0,
+        demo_seq,
+        demo_stamp,
+        digest_memo[0..digest_memo_len],
+        &actor_hex,
+        actor_kp,
+        &digest_root,
+    );
+    assert(again == digest_len);
+    assert(again == len);
+    assert(std.mem.eql(u8, digest_log[0..again], log_buf[0..len]));
     var typed_hex: [64]u8 = undefined;
-    digest.root_to_hex(&typed_root, &typed_hex);
+    digest.root_to_hex(&digest_root, &typed_hex);
     assert(!std.mem.eql(u8, typed_hex[0..], fixture.expected_demo_root_hex));
     print("dexter-sala-append: typed root differs HAWM1 -- GREEN\n", .{});
+    print("dexter-sala-append: append_submitted_line_digest -- GREEN\n", .{});
 
     var demo_log: [rc.max_log_len]u8 = undefined;
     const demo_root = try append.claim_append_demo_root(&demo_log);

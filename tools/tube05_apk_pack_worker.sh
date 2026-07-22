@@ -77,6 +77,11 @@ build_android_so() {
     || die "${so_out} missing glow_last_session_root_hex"
   nm -D "$so_out" | grep -q 'glow_last_product_session_root' \
     || die "${so_out} missing glow_last_product_session_root (STOA72 Glow import)"
+  nm -D "$so_out" | grep -q 'glow_last_live_root_hex' \
+    || die "${so_out} missing glow_last_live_root_hex (STOA270 live typed append)"
+  # Binary path check — prefer grep -a over strings (strings may be absent).
+  grep -aFq 'sala_live_root.txt' "$so_out" \
+    || die "${so_out} missing sala_live_root.txt path (STOA270)"
   readelf -d "$so_out" | grep -q 'NEEDED.*libc.so' \
     || die "${so_out} missing DT_NEEDED libc.so"
   if nm -D "$so_out" | grep -q ' U __tls_get_addr$'; then

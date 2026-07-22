@@ -800,6 +800,10 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA269 after Dexter Sala helper check-in, `20260722.151335`** — lean A send · lean B NativeActivity submit wire · lean C Pixel eyes. Brief [`active-designing/20260722-151335_stoa269-after-dexter-sala-helper-checkin.md`](../active-designing/20260722-151335_stoa269-after-dexter-sala-helper-checkin.md).
 
+**STOA270 NativeActivity submit → live root GREEN, `20260722.151515`** — `.submit` → helper · `sala_live_root.txt` beside HAWM1; pack+install GREEN. Brief [`active-designing/20260722-151515_stoa270-native-submit-live-root.md`](../active-designing/20260722-151515_stoa270-native-submit-live-root.md).
+
+**STOA271 after live-root wire check-in, `20260722.151834`** — lean A send · lean B live-root paint · lean C HAWM 1A held. Brief [`active-designing/20260722-151834_stoa271-after-live-root-wire-checkin.md`](../active-designing/20260722-151834_stoa271-after-live-root-wire-checkin.md).
+
 
 **Framework next (host resume), `20260720.231857`** — lean A: live SETU6.5 **sent** eyes on real `usb0`/`ncm`. Lab TX gate already GREEN; Sala B0 Glow rewrite · JABS3 stay thicker check-ins. Same freeze brief.
 

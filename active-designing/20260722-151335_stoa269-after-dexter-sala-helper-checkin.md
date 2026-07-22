@@ -6,8 +6,8 @@
 **Version:** `20260722.151335` (EDT · Framework host)  
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
 **Voice:** Quin  
-**Status:** Checkable — lean **A** send with round-close · lean **B** NativeActivity submit wire  
-**Register:** Checkable (Two Rooms) — STOA268 GREEN with this send; glass submit still paint-only until lean B  
+**Status:** Checkable — lean **A** send done · lean **B** chosen → STOA270 GREEN  
+**Register:** Checkable (Two Rooms) — STOA268 GREEN; glass live-root wire GREEN as STOA270  
 
 **Grounds in:** STOA268 Dexter helper · STOA266 typed memo · STOA263 Pixel eyes · STOA265 lean C  
 
@@ -26,7 +26,7 @@ STOA268: `dexter_sala_append` · `append_demo_submit` · Dexter `glow` → produ
 | | Lean | What it opens |
 |---|---|---|
 | **A** | **Send STOA268** — **chosen** with round-close | pier carries Dexter submit helper |
-| **B** | **NativeActivity submit → helper + live-root file** — **recommended** | glass hand; pack; Pixel eyes follow |
+| **B** | **NativeActivity submit → helper + live-root file** — **chosen** → STOA270 | glass hand; pack; Pixel eyes follow |
 | **C** | **Pack + Pixel eyes only** (after B lands in same or next lap) | finishing loop on device |
 | **D** | **HAWM 1A · gold · shared-package · JABS3 · UDP** | thicker — **held** |
 

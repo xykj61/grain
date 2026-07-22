@@ -14,6 +14,7 @@ assert selftest.out contains "GREEN" else "dexter_sala_append_witness not GREEN"
 assert selftest.out contains "demo editor submit via bridge" else "missing Dexter bridge path"
 assert selftest.out contains "fields memo equals Dexter glow" else "missing Dexter memo fields claim"
 assert selftest.out contains "typed root differs HAWM1" else "missing typed≠HAWM1 claim"
+assert selftest.out contains "append_submitted_line_digest" else "missing STOA270 digest helper claim"
 assert selftest.out contains "HAWM1 pin path still seated" else "missing HAWM1 untouched claim"
 assert selftest.out contains "99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe" else "missing HAWM1 hex"
 
