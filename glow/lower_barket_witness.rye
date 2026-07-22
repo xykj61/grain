@@ -240,6 +240,37 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(spec_cnt_u32.body == .identity);
     print("lower: glow/gen/gate-barket-count-u32.glow carries count-shape argv -- GREEN\n", .{});
 
+    // STOA300: kind-shape argv identity — unit tag reader (not parseInt).
+    const kind_argv_src = "|^  sample=kind-shape\nsample\n";
+    const n_kind_argv = try lower.lower_source_argv_sample(kind_argv_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n_kind_argv], "KindShape") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_kind_argv], "minimal.args") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_kind_argv], "parseInt(u32") == null);
+    assert(std.mem.indexOf(u8, buf[0..n_kind_argv], "\"mint\"") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_kind_argv], "\"send\"") != null);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_kind_argv.rye", .data = buf[0..n_kind_argv] });
+    print("lower: kind-shape argv emit reads minimal.args / unit tags -- GREEN\n", .{});
+
+    const gen_kind_tag = try cwd.readFileAlloc(io, "glow/gen/gate-barket-kind-tag.glow", a, .limited(4096));
+    const spec_kind_tag = try rb.parse_source(gen_kind_tag);
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_kind_tag), "kind-shape"));
+    assert(spec_kind_tag.body == .identity);
+    print("lower: glow/gen/gate-barket-kind-tag.glow carries kind-shape argv -- GREEN\n", .{});
+
+    if (lower.lower_source_argv_sample("|^  sample=xact-shape\nsample\n", &buf)) |_| {
+        return error.XactArgvLoweredTooSoon;
+    } else |err| {
+        if (err != lower.LowerError.SampleDoesNotNest) return err;
+    }
+    print("lower: xact-shape argv refused SampleDoesNotNest -- GREEN\n", .{});
+
+    if (lower.lower_source_argv_sample("|^  sample=xfer-shape\nsample\n", &buf)) |_| {
+        return error.XferArgvLoweredTooSoon;
+    } else |err| {
+        if (err != lower.LowerError.SampleDoesNotNest) return err;
+    }
+    print("lower: xfer-shape argv refused SampleDoesNotNest -- GREEN\n", .{});
+
     // STOA123: kind-shape identity lowers as KindShape.
     const kind_src = "|^  sample=kind-shape\nsample\n";
     const n_kind = try lower.lower_source_welcome(kind_src, &buf);
@@ -748,7 +779,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("lower: glow/gen/gate-barket-count.glow carries count-shape -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: Glow `|^` barket — identity · argv · call-body · amount-shape · amount argv · count-shape · count argv · kind-shape · kind flip · xact-shape · xact flip · xfer-shape · xfer flip · pair-shape · pair flip · triple-shape · triple flip · quad-shape · quad flip · penta-shape · penta flip · hexa-shape · hexa flip · hepta-shape · hepta flip · octa-shape · octa flip · nona-shape · nona flip · nesting-through-nests; STOA113–147 · STOA255 identity emit · STOA261 N-field flip · STOA295 tagged payload flip · STOA297 tagged unit flip · STOA257 shape-only living.\n", .{});
+    print("GREEN: Glow `|^` barket — identity · argv · call-body · amount-shape · amount argv · count-shape · count argv · kind-shape · kind argv · kind flip · xact-shape · xact flip · xfer-shape · xfer flip · pair-shape · pair flip · triple-shape · triple flip · quad-shape · quad flip · penta-shape · penta flip · hexa-shape · hexa flip · hepta-shape · hepta flip · octa-shape · octa flip · nona-shape · nona flip · nesting-through-nests; STOA113–147 · STOA255 identity emit · STOA261 N-field flip · STOA295 tagged payload flip · STOA297 tagged unit flip · STOA300 kind argv · STOA257 shape-only living.\n", .{});
 
     return 0;
 }
