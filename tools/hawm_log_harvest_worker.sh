@@ -71,6 +71,17 @@ if grep -q '/dev/kvm present' "$META"; then
   kvm=present
 fi
 
+# Optional HAWM1 fold — present after hawm1_sala_witness captures the root.
+SESSION_ROOT_FILE="$CACHE/hawm1-session-root.txt"
+session_root=pending
+if [ -f "$SESSION_ROOT_FILE" ]; then
+  session_root="$(cat "$SESSION_ROOT_FILE")"
+  if [[ ! "$session_root" =~ ^[0-9a-f]{64}$ ]]; then
+    echo "RED: $SESSION_ROOT_FILE is not 64 lowercase hex" >&2
+    exit 1
+  fi
+fi
+
 cat >"$OUT" <<EOF
 format hawm-harvest-v1
 stamp ${STAMP}
@@ -84,10 +95,11 @@ android ${android}
 abi ${abi}
 qemu ${qemu}
 serial ${serial}
+session_root ${session_root}
 meta_path tools/.cache/hawm0/hawm0-boot-meta.txt
 emulator_log_path tools/.cache/hawm0/hawm0-emulator.log
 status GREEN
 EOF
 
 echo "harvest: wrote $OUT"
-echo "harvest: model=${model} android=${android} abi=${abi} serial=${serial}"
+echo "harvest: model=${model} android=${android} abi=${abi} serial=${serial} session_root=${session_root}"

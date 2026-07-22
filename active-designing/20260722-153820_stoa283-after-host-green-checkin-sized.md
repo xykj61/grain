@@ -6,8 +6,8 @@
 **Version:** `20260722.153820` (EDT · Framework host)  
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
 **Voice:** Quin  
-**Status:** Checkable — lean table · awaiting Keaton’s choose  
-**Register:** Checkable for the lean; Intent for root field until a witness GREEN  
+**Status:** Checkable — lean **A** approved → STOA284 GREEN  
+**Register:** Checkable (Two Rooms) — root-in-harvest GREEN as STOA284  
 
 **Grounds in:** STOA282 · STOA281 host GREEN · live adb `emulator-5554` + Pixel `66041JEA306288` @ `20260722.153820`  
 
@@ -30,7 +30,7 @@
 
 | | Lean | Size | What it opens |
 |---|---|---|---|
-| **A** | **HAWM1 → root into harvest** — **recommended** | one kg lap | run `hawm1_sala_witness` on `emulator-5554`, fold `session_root` (hex) into `hawm-harvest-v1`, device-free + live witness GREEN |
+| **A** | **HAWM1 → root into harvest** — **chosen** → STOA284 | one kg lap | run `hawm1_sala_witness` on `emulator-5554`, fold `session_root` (hex) into `hawm-harvest-v1`, device-free + live witness GREEN |
 | **B** | **HAWM1 only** (no harvest field yet) | smaller | prove dual-device push/shell pin; leave harvest shape unchanged |
 | **C** | **Stop hawm0 · rest** | pause | `tools/hawm0_stop.sh`; reopen root fold later (idempotent boot) |
 | **D** | **Fleets · HAWM2 · gold · JABS3 · UDP** | thick | **held** |

@@ -10,6 +10,7 @@ android 16
 abi x86_64
 qemu 1
 serial emulator-5554
+session_root 99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe
 meta_path tools/.cache/hawm0/hawm0-boot-meta.txt
 emulator_log_path tools/.cache/hawm0/hawm0-emulator.log
 status GREEN
