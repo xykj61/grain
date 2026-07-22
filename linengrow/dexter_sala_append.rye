@@ -1,0 +1,70 @@
+//! linengrow/dexter_sala_append.rye — Dexter submit → Glow typed Sala append (STOA268).
+//!
+//! Names the LineEditor→`append_typed_memo` seam before NativeActivity wire.
+//! Device-free: demo editor submits `glow`, then product append signs it.
+//! HAWM1 three-event pin path stays untouched. Glass submit wire stays lean C.
+//!
+//!   rye build linengrow/dexter_sala_append_witness.rye \
+//!     -femit-bin=linengrow/bin/dexter_sala_append_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const kumara = @import("kumara.rye");
+const mc = @import("mala_core.rye");
+const rc = @import("receipt_core.rye");
+const dexter = @import("window_input.rye");
+const glass = @import("dexter_glass_core.rye");
+const append = @import("glow_sala_b0_append.rye");
+
+pub const dexter_sala_append_version = "20260722.151257";
+
+pub const DexterSalaAppendError = append.AppendError || error{
+    SubmitMissing,
+    LineMismatch,
+    LineTooLong,
+    EmptyMemo,
+};
+
+/// Append a already-submitted Dexter line as one Glow-signed Sala event.
+pub fn append_submitted_line(
+    log: []u8,
+    log_len: u32,
+    seq: i64,
+    stamp: []const u8,
+    submitted: []const u8,
+    actor_hex: *const [mc.pubkey_hex_len]u8,
+    signer: kumara.KeyPair,
+) DexterSalaAppendError!u32 {
+    if (submitted.len == 0) return error.EmptyMemo;
+    return append.append_typed_memo(log, log_len, seq, stamp, submitted, actor_hex, signer);
+}
+
+/// Run the Dexter glass demo editor, then append its submitted line.
+/// Returns the new log length and the submitted memo length.
+pub fn append_demo_submit(
+    log: []u8,
+    log_len: u32,
+    seq: i64,
+    stamp: []const u8,
+    actor_hex: *const [mc.pubkey_hex_len]u8,
+    signer: kumara.KeyPair,
+    out_memo: *[dexter.max_line_len]u8,
+    out_memo_len: *u32,
+) DexterSalaAppendError!u32 {
+    const lens = glass.run_demo_editor(out_memo, out_memo_len) catch |err| switch (err) {
+        error.SubmitMissing => return error.SubmitMissing,
+        error.LineMismatch => return error.LineMismatch,
+        error.LineTooLong => return error.LineTooLong,
+    };
+    assert(lens.submitted_len == out_memo_len.*);
+    assert(std.mem.eql(u8, out_memo[0..out_memo_len.*], glass.demo_submitted));
+    return append_submitted_line(
+        log,
+        log_len,
+        seq,
+        stamp,
+        out_memo[0..out_memo_len.*],
+        actor_hex,
+        signer,
+    );
+}

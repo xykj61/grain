@@ -6,8 +6,8 @@
 **Version:** `20260722.151101` (EDT · Framework host)  
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
 **Voice:** Quin  
-**Status:** Checkable — lean **A** send with round-close · lean **B** Dexter submit helper  
-**Register:** Checkable (Two Rooms) — STOA266 GREEN with this send; glass submit still paint-only  
+**Status:** Checkable — lean **A** send done · lean **B** chosen → STOA268 GREEN  
+**Register:** Checkable (Two Rooms) — STOA266 GREEN; Dexter helper GREEN as STOA268; glass submit still paint-only  
 
 **Grounds in:** STOA266 typed memo append · STOA265 lean table · STOA263 Pixel eyes  
 
@@ -26,7 +26,7 @@ STOA266: `append_typed_memo` · typed memo `glow` · sign+line+fields verify · 
 | | Lean | What it opens |
 |---|---|---|
 | **A** | **Send STOA266** — **chosen** with round-close | pier carries typed memo append |
-| **B** | **Dexter submit helper module** — **recommended** | names LineEditor→`append_typed_memo` before glass |
+| **B** | **Dexter submit helper module** — **chosen** → STOA268 | names LineEditor→`append_typed_memo` before glass |
 | **C** | **NativeActivity submit → append + live-root file** | glass hand; pack; Pixel eyes follow |
 | **D** | **HAWM 1A · gold · shared-package · JABS3 · UDP** | thicker — **held** |
 
