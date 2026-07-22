@@ -45,7 +45,8 @@
 //! STOA311: `quad-mold` argv identity — `$:` four-field reader (`<from> <amount> <fee> <nonce>`).
 //! STOA313: `penta-mold` argv identity — `$:` five-field reader (`… <memo>`).
 //! STOA315: `hexa-mold` argv identity — `$:` six-field reader (`… <tag>`).
-//! STOA317: `hepta-mold` argv identity — `$:` seven-field reader (`… <to>`); octa…nona held.
+//! STOA317: `hepta-mold` argv identity — `$:` seven-field reader (`… <to>`).
+//! STOA319: `octa-mold` argv identity — `$:` eight-field reader (`… <via>`); nona held.
 //! Gate function named `barket_gate`. Ambient gold held.
 
 const std = @import("std");
@@ -557,6 +558,11 @@ fn emit_hexa_argv(out: []u8, zface: []const u8, comment: []const u8) LowerError!
 /// STOA317: closed seven-field `$:` hepta-mold argv → HeptaShape (via N-field argv).
 fn emit_hepta_argv(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
     return emit_n_field_argv(out, 7, zface, comment);
+}
+
+/// STOA319: closed eight-field `$:` octa-mold argv → OctaShape (via N-field argv).
+fn emit_octa_argv(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
+    return emit_n_field_argv(out, 8, zface, comment);
 }
 
 /// STOA255: one N-field identity emit for closed `$:` pair…nona (N = 2…9).
@@ -1108,7 +1114,7 @@ fn emit_argv(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
         }
     }
 
-    // STOA317: hepta `$:` argv identity — seven field decimals; octa…nona held.
+    // STOA317: hepta `$:` argv identity — seven field decimals.
     if (is_hepta_sample(spec)) {
         switch (spec.body) {
             .header_only, .identity => {
@@ -1120,7 +1126,19 @@ fn emit_argv(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
         }
     }
 
-    if (is_octa_sample(spec) or is_nona_sample(spec)) return error.SampleDoesNotNest;
+    // STOA319: octa `$:` argv identity — eight field decimals; nona held.
+    if (is_octa_sample(spec)) {
+        switch (spec.body) {
+            .header_only, .identity => {
+                var comment_buf: [192]u8 = undefined;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` barket — OctaShape argv fields (STOA319).", .{ face, mold }) catch return error.Overflow;
+                return emit_octa_argv(out, zface, comment);
+            },
+            .call_one => return error.SampleDoesNotNest,
+        }
+    }
+
+    if (is_nona_sample(spec)) return error.SampleDoesNotNest;
     var used: u32 = 0;
 
     try emit_prelude(out, &used);

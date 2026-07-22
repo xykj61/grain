@@ -2,14 +2,14 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260722.193733` (EDT) · voice Quin  
+**Last refreshed:** `20260722.194423` (EDT) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded**  
-**Language nib:** **STOA0–318** · Survey seated · hepta `$:` argv GREEN  
-**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–318  
-**Git nib:** *(pin after send)* · STOA317–318
+**Language nib:** **STOA0–320** · Survey seated · octa `$:` argv GREEN  
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–320  
+**Git nib:** *(pin after send)* · STOA319–320
 
 
-**Season:** Framework · Eastern / EDT · do not recommend rest · lean C octa argv · round-close on.  
+**Season:** Framework · Eastern / EDT · do not recommend rest · lean C nona argv · round-close on.  
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`  
 **ADB:** `tools/.cache/hawm0/android-sdk/platform-tools/adb` — not on bare PATH  
 
@@ -17,13 +17,13 @@
 
 ## Now
 
-**STOA318** `20260722.193733` — after hepta argv; lean C octa argv recommended. Brief [`../active-designing/20260722-193733_stoa318-after-hepta-argv-checkin.md`](../active-designing/20260722-193733_stoa318-after-hepta-argv-checkin.md).
+**STOA320** `20260722.194423` — after octa argv; lean C nona argv recommended. Brief [`../active-designing/20260722-194423_stoa320-after-octa-argv-checkin.md`](../active-designing/20260722-194423_stoa320-after-octa-argv-checkin.md).
 
 **Witness:**
 
 ```bash
 export RYE_ZIG=vendor/zig-toolchain/zig
-rishi/bin/rishi run tools/glow_run.rish glow/gen/gate-hepta-fields.glow 5 3 1 2 7 4 6
+rishi/bin/rishi run tools/glow_run.rish glow/gen/gate-octa-fields.glow 5 3 1 2 7 4 6 8
 ```
 
 ---
@@ -32,10 +32,10 @@ rishi/bin/rishi run tools/glow_run.rish glow/gen/gate-hepta-fields.glow 5 3 1 2 
 
 | Door | Kind |
 |------|------|
-| Octa argv survey | **kg** after approve (STOA318 lean C) |
+| Nona argv survey | **kg** after approve (STOA320 lean C) |
 | Rest | Keaton’s word only — not recommended |
 | Gold · face_lit · fleets · JABS3 | **held** |
-| Hepta `$:` argv | **GREEN** `20260722.193725` |
+| Octa `$:` argv | **GREEN** `20260722.194416` |
 
 ---
 
