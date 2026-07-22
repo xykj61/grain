@@ -4,6 +4,7 @@
 #
 #   tools/glow_run_worker.sh <file.glow>           # fixture path
 #   tools/glow_run_worker.sh <file.glow> <sample>  # generator argv path
+#     — @u32 decimal for *-u32 stems · unit tag (mint|send) for *-kind-tag stems
 
 set -e
 ROOT=$(CDPATH= cd -- "$(dirname "$0")/.." && pwd)
@@ -14,7 +15,7 @@ GLOW=$1
 SAMPLE=${2-}
 
 test -n "$GLOW" || {
-  echo "usage: glow_run_worker.sh <file.glow> [<sample-u32-decimal>]"
+  echo "usage: glow_run_worker.sh <file.glow> [<sample-u32-decimal|kind-tag>]"
   exit 2
 }
 
@@ -28,9 +29,15 @@ sample-u32|gate-sample-u32|gate-double-u32|gate-inc-u32|gate-dec-u32|gate-amount
     exit 2
   }
   ;;
+gate-kind-tag|gate-barket-kind-tag)
+  test -n "$SAMPLE" || {
+    echo "FAIL: ${STEM}.glow needs one kind unit tag (mint|send)"
+    exit 2
+  }
+  ;;
 *)
   test -z "$SAMPLE" || {
-    echo "FAIL: only sample-u32 / gate-*-u32 bartis/barket generators take a sample decimal"
+    echo "FAIL: only sample-u32 / gate-*-u32 / gate-*-kind-tag generators take a sample"
     exit 2
   }
   ;;

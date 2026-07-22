@@ -98,6 +98,10 @@ assert selftest.out contains "amount-shape argv" else "lower_bartis_witness miss
 assert selftest.out contains "pair-shape argv refused" else "lower_bartis_witness missing pair argv refuse"
 assert selftest.out contains "gate-count-u32.glow" else "lower_bartis_witness missing count argv desk"
 assert selftest.out contains "count-shape argv" else "lower_bartis_witness missing count argv claim"
+assert selftest.out contains "gate-kind-tag.glow" else "lower_bartis_witness missing kind argv desk"
+assert selftest.out contains "kind-shape argv emit" else "lower_bartis_witness missing kind argv claim"
+assert selftest.out contains "xact-shape argv refused" else "lower_bartis_witness missing xact argv refuse"
+assert selftest.out contains "xfer-shape argv refused" else "lower_bartis_witness missing xfer argv refuse"
 
 let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
 assert build_welcome.ok else "bartis welcome .rye build failed"
@@ -413,5 +417,17 @@ assert n_flip.ok else "STOA259 missing emit_n_field_flip_call_body or eight flip
 let unit_flip = run ["sh" "-c" "grep -q 'fn emit_tagged_unit_flip_call_body' glow/lower_bartis.rye && test $(grep -Fc 'return emit_tagged_unit_flip_call_body(' glow/lower_bartis.rye) = 1"]
 assert unit_flip.ok else "STOA297 missing emit_tagged_unit_flip_call_body or kind wrapper"
 
-say "GREEN: Glow `|=` bartis — STOA100–147 · STOA253 N-field identity · STOA259 N-field flip · STOA293 tagged payload flip · STOA297 tagged unit flip · STOA257 shape-only living · argv · call-body · amount-shape · amount argv · count-shape · count argv · kind-shape · kind flip · xact-shape · xact flip · xfer-shape · xfer flip · pair-shape · pair flip · triple-shape · triple flip · quad-shape · quad flip · penta-shape · penta flip · hexa-shape · hexa flip · hepta-shape · hepta flip · octa-shape · octa flip · nona-shape · nona flip · stated nesting · nest SampleDoesNotNest."
+# STOA300: kind argv identity lowers through emit_kind_argv.
+let kind_argv = run ["sh" "-c" "grep -q 'fn emit_kind_argv' glow/lower_bartis.rye"]
+assert kind_argv.ok else "STOA300 missing emit_kind_argv"
+
+let kind_argv_rye = "glow/.cache/gate_kind_argv.rye"
+let kind_argv_bin = "glow/bin/gate_kind_argv"
+let build_kind_argv = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${kind_argv_rye} -femit-bin=${kind_argv_bin}"]
+assert build_kind_argv.ok else "bartis kind argv .rye build failed: ${build_kind_argv.err}${build_kind_argv.out}"
+let run_kind_argv = run ["sh" "-c" "${kind_argv_bin} mint; echo EXIT:$?"]
+assert run_kind_argv.ok else "bartis kind argv binary failed to launch"
+assert run_kind_argv.out contains "EXIT:0" else "bartis kind argv binary did not exit 0 with tag mint"
+
+say "GREEN: Glow `|=` bartis — STOA100–147 · STOA253 N-field identity · STOA259 N-field flip · STOA293 tagged payload flip · STOA297 tagged unit flip · STOA300 kind argv · STOA257 shape-only living · argv · call-body · amount-shape · amount argv · count-shape · count argv · kind-shape · kind argv · kind flip · xact-shape · xact flip · xfer-shape · xfer flip · pair-shape · pair flip · triple-shape · triple flip · quad-shape · quad flip · penta-shape · penta flip · hexa-shape · hexa flip · hepta-shape · hepta flip · octa-shape · octa flip · nona-shape · nona flip · stated nesting · nest SampleDoesNotNest."
 
