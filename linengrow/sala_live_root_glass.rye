@@ -1,0 +1,38 @@
+//! linengrow/sala_live_root_glass.rye — Skate line for live typed-append root (STOA272).
+//!
+//! Short face: event count + first eight hex digits of sala_live_root.
+//! HAWM1 hex stays on rows 6–7; this line paints on the tip strip (row 5).
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+pub const live_line_max: u32 = 48;
+/// Skate row shared with TUBE5 tip — live line wins when present.
+pub const skate_row: u32 = 5;
+pub const hex_preview_len: u32 = 8;
+
+/// Format `LIVE · {seq} · {hex[0..8]}`. Returns false if it will not fit.
+pub fn format_live_line(
+    seq: i64,
+    hex64: *const [64]u8,
+    out_line: *[live_line_max]u8,
+    out_len: *u32,
+) bool {
+    assert(out_line.len == live_line_max);
+    assert(seq >= 0);
+    const preview = hex64[0..hex_preview_len];
+    const line = std.fmt.bufPrint(
+        out_line,
+        "LIVE · {d} · {s}",
+        .{ seq, preview },
+    ) catch return false;
+    out_len.* = @intCast(line.len);
+    assert(out_len.* > 0);
+    assert(out_len.* <= live_line_max);
+    return true;
+}
+
+comptime {
+    _ = print;
+}

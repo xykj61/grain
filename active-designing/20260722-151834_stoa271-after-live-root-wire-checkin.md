@@ -6,8 +6,8 @@
 **Version:** `20260722.151834` (EDT · Framework host)  
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
 **Voice:** Quin  
-**Status:** Checkable — lean **A** send with round-close · lean **B** live-root paint / eyes polish  
-**Register:** Checkable (Two Rooms) — STOA270 GREEN with this send; typed glass→Sala seam closed through install  
+**Status:** Checkable — lean **A** send done · lean **B** chosen → STOA272 GREEN  
+**Register:** Checkable (Two Rooms) — STOA270 GREEN; LIVE paint GREEN as STOA272  
 
 **Grounds in:** STOA270 live-root wire · STOA269 lean B · humanity finishing edge  
 
@@ -26,7 +26,7 @@ STOA270: NativeActivity `.submit` → `commit_live_typed_memo` · onCreate seeds
 | | Lean | What it opens |
 |---|---|---|
 | **A** | **Send STOA270** — **chosen** with round-close | pier carries glass live append |
-| **B** | **Live-root paint / Skate eyes** — **recommended** | show live hex or event count on glass |
+| **B** | **Live-root paint / Skate eyes** — **chosen** → STOA272 | show live hex or event count on glass |
 | **C** | **HAWM 1A log-harvest inventary** | approved mobile autonomy · when season turns |
 | **D** | **Gold / shared-package / JABS3 / UDP** | thicker — **held** |
 

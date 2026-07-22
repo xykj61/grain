@@ -20,6 +20,7 @@ const kb_paint = @import("dexter_glass_keyboard_paint.rye");
 const kb_layout = @import("dexter_glass_keyboard_layout.rye");
 const kb_emoji = @import("dexter_glass_emoji.rye");
 const jabs2_glass = @import("sala_jabs2_glass_audience.rye");
+const live_glass = @import("sala_live_root_glass.rye");
 const hearth = @import("hearth_lulu0.rye");
 const lulu1 = @import("hearth_lulu1.rye");
 const lulu2 = @import("hearth_lulu2.rye");
@@ -123,6 +124,7 @@ fn fill_admitted_rows(
     tube1_admitted: bool,
     surf: ?*const sala_surf.Surface,
     tip_line: ?[]const u8,
+    live_line: ?[]const u8,
     pub_line: ?[]const u8,
     fetch_line: ?[]const u8,
     market_line: ?[]const u8,
@@ -166,7 +168,12 @@ fn fill_admitted_rows(
                 row += 1;
             }
         }
-        if (tip_line) |tip| put_line_centered(grid, 5, tip);
+        // STOA272: live typed-append face wins tip strip when present.
+        if (live_line) |live| {
+            put_line_centered(grid, live_glass.skate_row, live);
+        } else if (tip_line) |tip| {
+            put_line_centered(grid, 5, tip);
+        }
         if (pub_line) |published| put_line_centered(grid, 8, published);
         if (fetch_line) |fetched| put_line_centered(grid, 9, fetched);
         if (market_line) |market| put_line_centered(grid, 10, market);
@@ -238,6 +245,7 @@ fn blit_grid_centered(
 
 const PaintChrome = struct {
     tip_line: ?[]const u8,
+    live_line: ?[]const u8,
     pub_line: ?[]const u8,
     fetch_line: ?[]const u8,
     market_line: ?[]const u8,
@@ -276,6 +284,7 @@ fn fill_chrome_rows(
         tube1_admitted,
         surf,
         chrome.tip_line,
+        chrome.live_line,
         chrome.pub_line,
         chrome.fetch_line,
         chrome.market_line,
@@ -402,7 +411,7 @@ pub fn preset_hit_index(x: i32, y: i32) ?u32 {
     return null;
 }
 
-/// Paint via Skate: title, R2, tip, hex, rail, JABS1, Dexter, JABS2, ZETA, tap.
+/// Paint via Skate: title, R2, tip/live, hex, rail, JABS1, Dexter, JABS2, ZETA, tap.
 pub fn paint_session_root_hex(
     window: ?*anyopaque,
     hex: *const [64]u8,
@@ -410,6 +419,7 @@ pub fn paint_session_root_hex(
     tube1_admitted: bool,
     surf: ?*const sala_surf.Surface,
     tip_line: ?[]const u8,
+    live_line: ?[]const u8,
     pub_line: ?[]const u8,
     fetch_line: ?[]const u8,
     market_line: ?[]const u8,
@@ -453,6 +463,7 @@ pub fn paint_session_root_hex(
     defer allocator.free(grid.cells);
     fill_chrome_rows(&grid, hex, matched, tube1_admitted, surf, .{
         .tip_line = tip_line,
+        .live_line = live_line,
         .pub_line = pub_line,
         .fetch_line = fetch_line,
         .market_line = market_line,
