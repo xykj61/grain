@@ -1,4 +1,4 @@
-//! linengrow/glow_sala_b0_append_witness.rye — proves Glow append via sign+line.
+//! linengrow/glow_sala_b0_append_witness.rye — proves Glow append via pin emit.
 //!
 //!   rye build linengrow/glow_sala_b0_append_witness.rye \
 //!     -femit-bin=linengrow/bin/glow_sala_b0_append_witness
@@ -13,9 +13,9 @@ const digest = @import("glow_sala_b0_digest.rye");
 const append = @import("glow_sala_b0_append.rye");
 const claim = @import("glow_sala_b0_claim.rye");
 const elder = @import("sala_b0_fold.rye");
-
-const witness_version = "20260722.133004";
 const line = @import("glow_sala_b0_line.rye");
+
+const witness_version = "20260722.133717";
 
 fn run_selftest() !u8 {
     assert(fixture.root_pin_agrees());
@@ -24,13 +24,21 @@ fn run_selftest() !u8 {
     var log_buf: [rc.max_log_len]u8 = undefined;
     const len = try append.append_demo_log(&log_buf);
     assert(len > 0);
-    print("sala-b0-append: append_demo_log via pin+sign+line -- GREEN\n", .{});
+    print("sala-b0-append: append_demo_log via pin emit 1-3 -- GREEN\n", .{});
 
-    // STOA229: first event bytes match seated pin emit.
-    var pin_line: [rc.max_line_len]u8 = undefined;
-    const pin_n = try line.format_demo_line_from_pins(pin_line[0..]);
-    assert(len >= pin_n);
-    assert(std.mem.eql(u8, log_buf[0..pin_n], pin_line[0..pin_n]));
+    // STOA231: all three event bytes match seated pin emit.
+    var pin1: [rc.max_line_len]u8 = undefined;
+    var pin2: [rc.max_line_len]u8 = undefined;
+    var pin3: [rc.max_line_len]u8 = undefined;
+    const n1 = try line.format_demo_line_from_pins(pin1[0..]);
+    const n2 = try line.format_demo_line2_from_pins(pin2[0..]);
+    const n3 = try line.format_demo_line3_from_pins(pin3[0..]);
+    assert(len == n1 + n2 + n3);
+    assert(std.mem.eql(u8, log_buf[0..n1], pin1[0..n1]));
+    assert(std.mem.eql(u8, log_buf[n1 .. n1 + n2], pin2[0..n2]));
+    assert(std.mem.eql(u8, log_buf[n1 + n2 .. n1 + n2 + n3], pin3[0..n3]));
+    print("sala-b0-append: events 1-3 from pin emit -- GREEN\n", .{});
+    print("sala-b0-append: STOA231 append pin wire -- GREEN\n", .{});
     print("sala-b0-append: first event from pin emit -- GREEN\n", .{});
     print("sala-b0-append: STOA229 append pin wire -- GREEN\n", .{});
 
@@ -51,7 +59,7 @@ fn run_selftest() !u8 {
     print("sala-b0-append: append root agrees elder run_demo_fold -- GREEN\n", .{});
 
     print("sala-b0-append: version {s}\n", .{witness_version});
-    print("GREEN: Glow Sala B0 append — STOA229 pin emit event 1; STOA203 sign+line events 2–3; HAWM1 root.\n", .{});
+    print("GREEN: Glow Sala B0 append — STOA231 pin emit events 1-3; HAWM1 root; STOA203 append_event kept.\n", .{});
     return 0;
 }
 

@@ -1,4 +1,4 @@
-# glow_sample_demo_fact_line_lits_witness.rish — fact-line demo pins as face=lit (STOA225).
+# glow_sample_demo_fact_line_lits_witness.rish — fact-line demo pins as face=lit.
 #
 #   rishi/bin/rishi run tools/glow_sample_demo_fact_line_lits_witness.rish
 
@@ -11,9 +11,10 @@ assert build.ok else "sample_demo_fact_line_lits_witness build failed"
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
 assert selftest.ok else "sample_demo_fact_line_lits_witness exited non-zero"
 assert selftest.out contains "GREEN" else "sample_demo_fact_line_lits_witness not GREEN"
-assert selftest.out contains "two face=lit clauses parse" else "missing two-clause parse"
+assert selftest.out contains "six face=lit clauses parse" else "missing six-clause parse"
 assert selftest.out contains "demo sig fact pins match" else "missing pin match"
 assert selftest.out contains "lower emit carries demo pins" else "missing lower emit"
 assert selftest.out contains "STOA225" else "missing STOA225"
+assert selftest.out contains "STOA231" else "missing STOA231"
 
-say "GREEN: Glow sample-demo-fact-line-lits — demo sig/fact as face=lit; STOA225."
+say "GREEN: Glow sample-demo-fact-line-lits — demo sig/fact 1–3 as face=lit; STOA231."
