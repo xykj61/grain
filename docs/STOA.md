@@ -1,6 +1,6 @@
-# STOA — Glow SLC · nest · product · ≤80 · STOA0–286 · 2026-07-22 · draw → **STOA**
+# STOA — Glow SLC · nest · product · ≤80 · STOA0–287 · 2026-07-22 · draw → **STOA**
 
-Living Glow OS desks lead with `shape-*` (inventary duals STOA161–173; pin polish STOA174; multi-field cast twins STOA175–176). Sala B0 Glow: STOA177–286 · **STOA286** hawm0 stopped (HAWM harvest chain folded). Hoon study twins under `glow/gen/hoon-study/`.
+Living Glow OS desks lead with `shape-*` (inventary duals STOA161–173; pin polish STOA174; multi-field cast twins STOA175–176). Sala B0 Glow: STOA177–287 · **STOA287** HAWM season rest. Hoon study twins under `glow/gen/hoon-study/`.
 
 | Rung | Claim | Witness / gate | State |
 |------|-------|----------------|-------|
@@ -116,4 +116,5 @@ Living Glow OS desks lead with `shape-*` (inventary duals STOA161–173; pin pol
 | **STOA284** | harvest session_root | HAWM1 + root witness | **GREEN** `20260722.154128` |
 | **STOA285** | after session_root check-in | leans A send · B stop hawm0 | **GREEN** `20260722.154128` |
 | **STOA286** | hawm0 stopped season fold | host stop GREEN · rest lean | **GREEN** `20260722.154348` |
+| **STOA287** | HAWM season rest | lean B rest chosen | **GREEN** `20260722.154515` |
 Smoke: `glow_nest_type_witness` · `glow_barket_parse_witness` · `glow_lower_bartis_witness` · Sibling: **ZETA** · **LULU** · **SETU** · **TUBE**.
