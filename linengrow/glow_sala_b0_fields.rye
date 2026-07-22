@@ -2,30 +2,93 @@
 //!
 //! STOA212 (C2): owns parse_fact_fields + parse_amount_signed while calling
 //! elder receipt_core. Replay compose wires through this surface.
+//! STOA249: product-authored fields body — parse lives here; elder
+//! receipt_core stays peer baseline.
 //!
 //!   rye build linengrow/glow_sala_b0_fields_witness.rye \
 //!     -femit-bin=linengrow/bin/glow_sala_b0_fields_witness
 
 const std = @import("std");
 const assert = std.debug.assert;
+const tally_parse_int = @import("parse_int.rye");
 const kumara = @import("kumara.rye");
 const mc = @import("mala_core.rye");
 const rc = @import("receipt_core.rye");
 const fixture = @import("glow_sala_b0_demo_fixture.rye");
 const sign = @import("glow_sala_b0_sign.rye");
 
-pub const fields_version = "20260721.193404";
+pub const fields_version = "20260722.141630";
 
 pub const FieldsError = error{ InvalidFact, InvalidAmount, FieldsMismatch } || sign.SignError;
 
-/// Parse canonical fact text into FactFields via elder `parse_fact_fields`.
-pub fn parse_fact_fields(text: []const u8, fields: *rc.FactFields) FieldsError!void {
-    try rc.parse_fact_fields(text, fields);
+fn trim_line(line: []const u8) []const u8 {
+    return std.mem.trim(u8, line, " \t\r\n");
 }
 
-/// Parse a signed amount string via elder `parse_amount_signed`.
+/// Parse canonical fact text into FactFields — product body (STOA249).
+pub fn parse_fact_fields(text: []const u8, fields: *rc.FactFields) FieldsError!void {
+    var from_set = false;
+    var to_set = false;
+    var amount_set = false;
+    var memo_set = false;
+    var stamp_set = false;
+
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    while (lines.next()) |raw| {
+        const line = trim_line(raw);
+        if (line.len == 0) continue;
+        if (line[0] == '#') continue;
+        const space = std.mem.indexOfScalar(u8, line, ' ') orelse return error.InvalidFact;
+        const key = line[0..space];
+        const value = trim_line(line[space + 1 ..]);
+        if (value.len == 0) return error.InvalidFact;
+        if (std.mem.eql(u8, key, "from")) {
+            fields.from = value;
+            from_set = true;
+        } else if (std.mem.eql(u8, key, "to")) {
+            fields.to = value;
+            to_set = true;
+        } else if (std.mem.eql(u8, key, "amount")) {
+            fields.amount = value;
+            amount_set = true;
+        } else if (std.mem.eql(u8, key, "memo")) {
+            fields.memo = value;
+            memo_set = true;
+        } else if (std.mem.eql(u8, key, "stamp")) {
+            fields.stamp = value;
+            stamp_set = true;
+        } else {
+            return error.InvalidFact;
+        }
+    }
+    if (!from_set or !to_set or !amount_set or !memo_set or !stamp_set) return error.InvalidFact;
+}
+
+/// Parse a signed amount string — product body: tally_parse_int (STOA249).
 pub fn parse_amount_signed(amount_text: []const u8) FieldsError!i64 {
-    return rc.parse_amount_signed(amount_text);
+    return tally_parse_int.parse_int(i64, amount_text, .{}) catch return error.InvalidAmount;
+}
+
+/// True when product fields bodies match elder receipt_core peer (STOA249).
+pub fn fields_body_agrees_elder() FieldsError!bool {
+    const signed = try sign.claim_demo_sign();
+    const fact = signed.canonical[0..signed.canonical_len];
+
+    var product: rc.FactFields = undefined;
+    var elder: rc.FactFields = undefined;
+    try parse_fact_fields(fact, &product);
+    try rc.parse_fact_fields(fact, &elder);
+
+    if (!std.mem.eql(u8, product.from, elder.from)) return false;
+    if (!std.mem.eql(u8, product.to, elder.to)) return false;
+    if (!std.mem.eql(u8, product.amount, elder.amount)) return false;
+    if (!std.mem.eql(u8, product.memo, elder.memo)) return false;
+    if (!std.mem.eql(u8, product.stamp, elder.stamp)) return false;
+
+    const product_amt = try parse_amount_signed(product.amount);
+    const elder_amt = try rc.parse_amount_signed(elder.amount);
+    if (product_amt != elder_amt) return false;
+    return true;
 }
 
 /// Sign demo fact (STOA201), parse fields back; refuse unless faces agree and seq is 1.
