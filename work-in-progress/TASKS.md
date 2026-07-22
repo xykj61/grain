@@ -503,6 +503,7 @@
 - [x] **STOA227 — demo line emit from seated pins** `20260722.132533` — `format_demo_line_from_pins` ≡ `claim_demo_line`. Brief [`../active-designing/20260722-132533_stoa227-demo-line-pin-emit.md`](../active-designing/20260722-132533_stoa227-demo-line-pin-emit.md).
 - [x] **STOA228 — after demo pin emit check-in** `20260722.132705` — lean A send `132757`; lean B as STOA229. Brief [`../active-designing/20260722-132705_stoa228-after-demo-pin-emit-checkin.md`](../active-designing/20260722-132705_stoa228-after-demo-pin-emit-checkin.md).
 - [x] **STOA229 — append first event from pin emit** `20260722.133004` — `append_demo_log` event 1 from `format_demo_line_from_pins`; HAWM1 root. Brief [`../active-designing/20260722-133004_stoa229-append-first-event-pin-emit.md`](../active-designing/20260722-133004_stoa229-append-first-event-pin-emit.md).
+- [x] **STOA230 — after append pin wire check-in** `20260722.133211` — lean A send `133343`; lean B rest; fold inherits pin seed. Brief [`../active-designing/20260722-133211_stoa230-after-append-pin-wire-checkin.md`](../active-designing/20260722-133211_stoa230-after-append-pin-wire-checkin.md).
 
 
 - [x] **UDT stamp convention on Framework host** `20260720.232932` — Keaton set system clock to UDT (UTC); [`context/specs/20260720-232932_udt-framework-host-convention.md`](../context/specs/20260720-232932_udt-framework-host-convention.md); Eastern era stamps stay; session-log rules + `GLOW_PROFILE` pointed at Etc/UTC for that season.
