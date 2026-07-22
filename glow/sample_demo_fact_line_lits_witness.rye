@@ -1,0 +1,64 @@
+//! glow/sample_demo_fact_line_lits_witness.rye — demo fact-line pins as face=lit (STOA225).
+//!
+//! Pins must match linengrow/glow_sala_b0_line.rye demo_sig_hex · demo_fact_hex.
+//!
+//!   rye build glow/sample_demo_fact_line_lits_witness.rye \
+//!     -femit-bin=glow/bin/sample_demo_fact_line_lits_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const face_lit = @import("face_lit.rye");
+const lower = @import("lower_face_lit.rye");
+
+const witness_version = "20260722.132020";
+
+const demo_sig_hex =
+    "93c92d1b6ac994d9560cc26480f36661f23be0144ac29e603d3f761df565a6c662a6083bca0e39bb3ca36d3b785789b1cc34d1bd491f5fa1eddd7a961684300b";
+const demo_fact_hex =
+    "66726f6d20616630366133653332393137313465346633353663313963396231356364313935316563366536363632616137376265303735343766323839333833333431640a746f20616630366133653332393137313465346633353663313963396231356364313935316563366536363632616137376265303735343766323839333833333431640a616d6f756e7420310a6d656d6f2073616c613a6f70656e2072697368692073657373696f6e0a7374616d702032303236303731352e3139303030310a";
+
+fn find_face(specs: []const face_lit.FaceLitSpec, name: []const u8) ?usize {
+    var i: u32 = 0;
+    const n: u32 = @intCast(specs.len);
+    while (i < n) : (i += 1) {
+        if (std.mem.eql(u8, face_lit.face_slice(&specs[@as(usize, @intCast(i))]), name))
+            return @as(usize, @intCast(i));
+    }
+    return null;
+}
+
+fn run_selftest(init: std.process.Init) !u8 {
+    print("sample_demo_fact_line_lits_witness {s}\n", .{witness_version});
+
+    const a = init.arena.allocator();
+    const cwd = std.Io.Dir.cwd();
+    const io = init.io;
+    const src = try cwd.readFileAlloc(io, "glow/gen/sample-demo-fact-line-lits.glow", a, .limited(8192));
+
+    var specs: [face_lit.max_face_lits]face_lit.FaceLitSpec = undefined;
+    const n = try face_lit.parse_face_lit_sample(src, specs[0..]);
+    assert(n == 2);
+    print("fact-line-lits: two face=lit clauses parse -- GREEN\n", .{});
+
+    const i_sig = find_face(specs[0..n], "sig") orelse return error.MissingSig;
+    const i_fact = find_face(specs[0..n], "fact") orelse return error.MissingFact;
+    assert(specs[i_sig].lit_kind == .cord);
+    assert(specs[i_fact].lit_kind == .cord);
+    assert(std.mem.eql(u8, face_lit.lit_bytes(src, &specs[i_sig]), demo_sig_hex));
+    assert(std.mem.eql(u8, face_lit.lit_bytes(src, &specs[i_fact]), demo_fact_hex));
+    print("fact-line-lits: demo sig fact pins match -- GREEN\n", .{});
+
+    var buf: [64 * 1024]u8 = undefined;
+    const nl = try lower.lower_source_welcome(src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..nl], demo_sig_hex[0..16]) != null);
+    assert(std.mem.indexOf(u8, buf[0..nl], "glow_demo_cord") == null);
+    print("fact-line-lits: lower emit carries demo pins -- GREEN\n", .{});
+
+    print("fact-line-lits: STOA225 desk pin -- GREEN\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
+}

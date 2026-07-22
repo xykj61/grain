@@ -497,7 +497,9 @@
 - [x] **Session-logs archive fold** `20260722.131028` — 613 prior-day logs under `session-logs/archive/`; day `20260722` flat.
 - [x] **STOA222 — after literals season check-in** `20260722.131348` — lean A send; lean B as STOA223. Brief [`../active-designing/20260722-131348_stoa222-after-literals-season-checkin.md`](../active-designing/20260722-131348_stoa222-after-literals-season-checkin.md).
 - [x] **STOA223 — product fixture lit desk wire** `20260722.131511` — `lit_desk_binds_pins` · product pins ↔ sample desk. Brief [`../active-designing/20260722-131511_stoa223-product-fixture-lit-desk-wire.md`](../active-designing/20260722-131511_stoa223-product-fixture-lit-desk-wire.md).
-- [x] **STOA224 — after fixture wire check-in** `20260722.131841` — lean A send; rec lean B fact-line demo lits. Brief [`../active-designing/20260722-131841_stoa224-after-fixture-wire-checkin.md`](../active-designing/20260722-131841_stoa224-after-fixture-wire-checkin.md).
+- [x] **STOA224 — after fixture wire check-in** `20260722.131841` — lean A send; lean B as STOA225. Brief [`../active-designing/20260722-131841_stoa224-after-fixture-wire-checkin.md`](../active-designing/20260722-131841_stoa224-after-fixture-wire-checkin.md).
+- [x] **STOA225 — fact-line demo lit sample** `20260722.132020` — `demo_sig_hex` · `demo_fact_hex` · sample desk · bind. Brief [`../active-designing/20260722-132020_stoa225-fact-line-demo-lit-sample.md`](../active-designing/20260722-132020_stoa225-fact-line-demo-lit-sample.md).
+- [x] **STOA226 — after fact-line lits check-in** `20260722.132320` — lean A send; rec lean B rest. Brief [`../active-designing/20260722-132320_stoa226-after-fact-line-lits-checkin.md`](../active-designing/20260722-132320_stoa226-after-fact-line-lits-checkin.md).
 
 
 - [x] **UDT stamp convention on Framework host** `20260720.232932` — Keaton set system clock to UDT (UTC); [`context/specs/20260720-232932_udt-framework-host-convention.md`](../context/specs/20260720-232932_udt-framework-host-convention.md); Eastern era stamps stay; session-log rules + `GLOW_PROFILE` pointed at Etc/UTC for that season.
