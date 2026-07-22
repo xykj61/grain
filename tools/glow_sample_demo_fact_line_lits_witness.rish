@@ -16,5 +16,7 @@ assert selftest.out contains "demo sig fact pins match" else "missing pin match"
 assert selftest.out contains "lower emit carries demo pins" else "missing lower emit"
 assert selftest.out contains "STOA225" else "missing STOA225"
 assert selftest.out contains "STOA231" else "missing STOA231"
+assert selftest.out contains "STOA241" else "missing STOA241"
 
-say "GREEN: Glow sample-demo-fact-line-lits — demo sig/fact 1–3 as face=lit; STOA231."
+say "GREEN: Glow sample-demo-fact-line-lits — face=lit 1–3; STOA241 glow side."
+
