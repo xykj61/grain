@@ -6,7 +6,7 @@
 **Version:** `20260722.190720` (EDT · Framework host)  
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
 **Voice:** Quin  
-**Status:** Checkable — lean **A** send with round-close · lean **C** triple argv recommended  
+**Status:** Checkable — lean **A** send with round-close · lean **C** triple argv **chosen** (implement STOA309)  
 **Register:** Checkable (Two Rooms) — STOA307 GREEN; triple argv Intent  
 
 **Grounds in:** STOA307 · STOA306 lean C · rest habit `20260722.185058`  

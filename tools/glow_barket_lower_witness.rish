@@ -96,7 +96,6 @@ assert selftest.out contains "hexa-shape argv refused" else "lower_barket_witnes
 assert selftest.out contains "gate-barket-hexa-flip.glow" else "lower_barket_witness missing hexa-flip desk"
 assert selftest.out contains "hexa-shape call-body flip" else "lower_barket_witness missing hexa flip claim"
 assert selftest.out contains "hexa-shape double call-body refused" else "lower_barket_witness missing hexa double refuse"
-assert selftest.out contains "triple-shape argv refused" else "lower_barket_witness missing triple argv refuse"
 assert selftest.out contains "quad-shape argv refused" else "lower_barket_witness missing quad argv refuse"
 assert selftest.out contains "penta-shape argv refused" else "lower_barket_witness missing penta argv refuse"
 assert selftest.out contains "gate-barket-penta-flip.glow" else "lower_barket_witness missing penta-flip desk"
@@ -120,7 +119,8 @@ assert selftest.out contains "gate-barket-amount-u32.glow" else "lower_barket_wi
 assert selftest.out contains "amount-shape argv" else "lower_barket_witness missing amount argv claim"
 assert selftest.out contains "gate-barket-pair-fields.glow" else "lower_barket_witness missing pair argv desk"
 assert selftest.out contains "pair-shape argv emit" else "lower_barket_witness missing pair argv claim"
-assert selftest.out contains "triple-shape argv refused" else "lower_barket_witness missing triple argv refuse"
+assert selftest.out contains "gate-barket-triple-fields.glow" else "lower_barket_witness missing triple argv desk"
+assert selftest.out contains "triple-shape argv emit" else "lower_barket_witness missing triple argv claim"
 assert selftest.out contains "gate-barket-count-u32.glow" else "lower_barket_witness missing count argv desk"
 assert selftest.out contains "count-shape argv" else "lower_barket_witness missing count argv claim"
 assert selftest.out contains "gate-barket-kind-tag.glow" else "lower_barket_witness missing kind argv desk"
@@ -490,4 +490,4 @@ let run_xact_argv = run ["sh" "-c" "${xact_argv_bin} mint 5; echo EXIT:$?"]
 assert run_xact_argv.ok else "barket xact argv binary failed to launch"
 assert run_xact_argv.out contains "EXIT:0" else "barket xact argv binary did not exit 0 with mint 5"
 
-say "GREEN: Glow barket lower — STOA113–147 · STOA255 N-field identity · STOA261 N-field flip · STOA295 tagged payload flip · STOA297 tagged unit flip · STOA300 kind argv · STOA303 xact argv · STOA305 xfer argv · STOA307 pair argv · STOA257 shape-only living · identity · argv · call-body · amount-shape · amount argv · count-shape · count argv · kind-shape · kind argv · kind flip · xact-shape · xact argv · xact flip · xfer-shape · xfer argv · xfer flip · pair-shape · pair argv · pair flip · triple-shape · triple flip · quad-shape · quad flip · penta-shape · penta flip · hexa-shape · hexa flip · hepta-shape · hepta flip · octa-shape · octa flip · nona-shape · nona flip · nesting-through-nests."
+say "GREEN: Glow barket lower — STOA113–147 · STOA255 N-field identity · STOA261 N-field flip · STOA295 tagged payload flip · STOA297 tagged unit flip · STOA300 kind argv · STOA303 xact argv · STOA305 xfer argv · STOA307 pair argv · STOA309 triple argv · STOA257 shape-only living · identity · argv · call-body · amount-shape · amount argv · count-shape · count argv · kind-shape · kind argv · kind flip · xact-shape · xact argv · xact flip · xfer-shape · xfer argv · xfer flip · pair-shape · pair argv · pair flip · triple-shape · triple argv · triple flip · quad-shape · quad flip · penta-shape · penta flip · hexa-shape · hexa flip · hepta-shape · hepta flip · octa-shape · octa flip · nona-shape · nona flip · nesting-through-nests."
