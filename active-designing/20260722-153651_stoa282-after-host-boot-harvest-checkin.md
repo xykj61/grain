@@ -6,7 +6,7 @@
 **Version:** `20260722.153651` (EDT · Framework host)  
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
 **Voice:** Quin  
-**Status:** Checkable — lean **A** send with round-close · lean **B** root-into-harvest  
+**Status:** Checkable — lean **A** send done · leans sized further as STOA283  
 **Register:** Checkable (Two Rooms) — STOA281 host GREEN; root field Intent until witnessed  
 
 **Grounds in:** STOA281 · STOA280 lean B · STOA278 lean C  

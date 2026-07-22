@@ -1,6 +1,6 @@
-# STOA — Glow SLC · nest · product · ≤80 · STOA0–282 · 2026-07-22 · draw → **STOA**
+# STOA — Glow SLC · nest · product · ≤80 · STOA0–283 · 2026-07-22 · draw → **STOA**
 
-Living Glow OS desks lead with `shape-*` (inventary duals STOA161–173; pin polish STOA174; multi-field cast twins STOA175–176). Sala B0 Glow: STOA177–282 · **STOA282** after host boot→harvest GREEN (root-into-harvest next). Hoon study twins under `glow/gen/hoon-study/`.
+Living Glow OS desks lead with `shape-*` (inventary duals STOA161–173; pin polish STOA174; multi-field cast twins STOA175–176). Sala B0 Glow: STOA177–283 · **STOA283** sized check-in (HAWM1→root next). Hoon study twins under `glow/gen/hoon-study/`.
 
 | Rung | Claim | Witness / gate | State |
 |------|-------|----------------|-------|
@@ -112,4 +112,5 @@ Living Glow OS desks lead with `shape-*` (inventary duals STOA161–173; pin pol
 | **STOA280** | after serial pin check-in | leans A send · B host retry | **GREEN** `20260722.153358` |
 | **STOA281** | HAWM0 boot→harvest host GREEN | host printout · serial field | **GREEN** `20260722.153651` |
 | **STOA282** | after host boot→harvest check-in | leans A send · B root field | **GREEN** `20260722.153651` |
+| **STOA283** | after host GREEN check-in sized | leans A HAWM1→root · B HAWM1 | **GREEN** `20260722.153820` |
 Smoke: `glow_nest_type_witness` · `glow_barket_parse_witness` · `glow_lower_bartis_witness` · Sibling: **ZETA** · **LULU** · **SETU** · **TUBE**.

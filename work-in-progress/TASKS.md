@@ -559,6 +559,7 @@
 - [x] **STOA280 — after serial pin check-in** `20260722.153358` — lean A send; lean B host boot→harvest retry. Brief [`../active-designing/20260722-153358_stoa280-after-serial-pin-checkin.md`](../active-designing/20260722-153358_stoa280-after-serial-pin-checkin.md).
 - [x] **STOA281 — HAWM0 boot→harvest host GREEN** `20260722.153651` — host onpath GREEN beside Pixel; harvest `serial` field. Brief [`../active-designing/20260722-153651_stoa281-hawm-boot-harvest-host-green.md`](../active-designing/20260722-153651_stoa281-hawm-boot-harvest-host-green.md).
 - [x] **STOA282 — after host boot→harvest check-in** `20260722.153651` — lean A send; lean B root-into-harvest. Brief [`../active-designing/20260722-153651_stoa282-after-host-boot-harvest-checkin.md`](../active-designing/20260722-153651_stoa282-after-host-boot-harvest-checkin.md).
+- [x] **STOA283 — after host GREEN check-in sized** `20260722.153820` — lean A HAWM1→root-into-harvest; lean B HAWM1 only; lean C stop/rest; lean D held. Brief [`../active-designing/20260722-153820_stoa283-after-host-green-checkin-sized.md`](../active-designing/20260722-153820_stoa283-after-host-green-checkin-sized.md).
 
 
 - [x] **UDT stamp convention on Framework host** `20260720.232932` — Keaton set system clock to UDT (UTC); [`context/specs/20260720-232932_udt-framework-host-convention.md`](../context/specs/20260720-232932_udt-framework-host-convention.md); Eastern era stamps stay; session-log rules + `GLOW_PROFILE` pointed at Etc/UTC for that season.
