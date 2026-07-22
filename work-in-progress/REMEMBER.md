@@ -2,14 +2,14 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260722.153358` (EDT) · voice Quin  
-**Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE paint · **HAWM harvest-v1** · serial pin  
-**Language nib:** **STOA0–280** · shape-only · Dexter→Sala LIVE closed · HAWM serial pin GREEN  
-**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–280  
-**Git nib:** *(pin after send)* · STOA279–280
+**Last refreshed:** `20260722.153651` (EDT) · voice Quin  
+**Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE paint · **HAWM harvest host GREEN**  
+**Language nib:** **STOA0–282** · shape-only · Dexter→Sala LIVE closed · host boot→harvest GREEN  
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–282  
+**Git nib:** *(pin after send)* · STOA281–282
 
 
-**Season:** Framework · Eastern / EDT · host boot failed on Pixel+bare-adb race · serial pin landed · host retry next · round-close on.  
+**Season:** Framework · Eastern / EDT · host boot→harvest GREEN beside Pixel · emulator may still be up · root-into-harvest next · round-close on.  
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`  
 **ADB:** `tools/.cache/hawm0/android-sdk/platform-tools/adb` — not on bare PATH  
 
@@ -17,23 +17,21 @@
 
 ## Now
 
-**STOA280** `20260722.153358` — serial pin GREEN; lean B host boot→harvest retry (Pixel may stay plugged). Brief [`../active-designing/20260722-153358_stoa280-after-serial-pin-checkin.md`](../active-designing/20260722-153358_stoa280-after-serial-pin-checkin.md).
+**STOA282** `20260722.153651` — host boot→harvest GREEN; lean B root-into-harvest. Brief [`../active-designing/20260722-153651_stoa282-after-host-boot-harvest-checkin.md`](../active-designing/20260722-153651_stoa282-after-host-boot-harvest-checkin.md).
 
-**Host retry (lean B — plain terminal, `/dev/kvm`):**
+**Host proof (already GREEN):** harvest stamp `20260722.153549` · serial `emulator-5554` · stop later with `tools/hawm0_stop.sh`.
+
+**Re-check harvest (device-free fold from meta):**
 
 ```bash
-cd ~/urbit
-rishi/bin/rishi run tools/hawm0_boot_harvest_onpath_host.rish
+./tools/hawm_log_harvest_worker.sh
 grep -E '^(stamp|status|boot_completed|model|serial)' tools/.cache/hawm0/hawm-harvest.bron
-tail -20 tools/.cache/hawm0/hawm0-boot-meta.txt
 ```
 
-Expect a harvest stamp **newer** than `20260722.152849` (that file was a stale jail fold).
-
-**Device-free serial check:**
+**HAWM1 on live emulator (optional lean C):**
 
 ```bash
-rishi/bin/rishi run tools/hawm0_emulator_serial_pin_witness.rish
+rishi/bin/rishi run tools/hawm1_sala_witness.rish
 ```
 
 ---
@@ -42,10 +40,10 @@ rishi/bin/rishi run tools/hawm0_emulator_serial_pin_witness.rish
 
 | Door | Kind |
 |------|------|
-| Host boot→harvest retry with serial pin | **host** (STOA280 lean B) |
-| HAWM1 / Pixel root into harvest Bron | **kg** after approve (lean C) |
+| HAWM1 / Sala root into harvest Bron | **kg** after approve (STOA282 lean B) |
+| HAWM1 Sala witness on live emulator | **kg** optional (lean C · emulator up) |
 | Fleets · HAWM2 · gold · JABS3 · UDP | **held** |
-| Emulator serial pin beside USB Pixel | **GREEN** `20260722.153358` |
+| Host boot→harvest beside Pixel | **GREEN** `20260722.153549` |
 
 ---
 
