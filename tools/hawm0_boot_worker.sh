@@ -90,33 +90,49 @@ progress "emulator + AVD present"
 
 ADB="$ANDROID_SDK_ROOT/platform-tools/adb"
 
+# Pin the emulator serial. A GrapheneOS/Pixel phone on the same adb server
+# (common on this Framework seat) makes bare `adb wait-for-device` and
+# `adb shell` race the physical device — wait returns early, shell may hit
+# "more than one device/emulator" under set -e, cleanup kills the just-launched
+# AVD, and meta stops mid-wait with no RED timeout line. Live hit
+# 20260722.153130 with Pixel 66041JEA306288 attached beside hawm0.
+emulator_serial() {
+  "$ADB" devices 2>/dev/null | awk '/^emulator-[0-9]+\t/ { print $1; exit }'
+}
+
+adb_emu() {
+  # SERIAL must already be set by the caller.
+  "$ADB" -s "$SERIAL" "$@"
+}
+
 report_identity_and_green() {
-  progress "reading device identity as final proof of a real, booted userland…"
-  model="$("$ADB" shell getprop ro.product.model 2>/dev/null | tr -d '\r\n')"
-  release="$("$ADB" shell getprop ro.build.version.release 2>/dev/null | tr -d '\r\n')"
-  abi="$("$ADB" shell getprop ro.product.cpu.abi 2>/dev/null | tr -d '\r\n')"
-  kvm_check="$("$ADB" shell getprop ro.kernel.qemu 2>/dev/null | tr -d '\r\n')"
-  echo "device: model=$model android=$release abi=$abi qemu=$kvm_check" | tee -a "$META"
-  echo "GREEN: HAWM0 — stock AOSP/Android emulator booted, KVM-accelerated (model=$model android=$release abi=$abi)"
+  progress "reading device identity as final proof of a real, booted userland (serial=$SERIAL)…"
+  model="$(adb_emu shell getprop ro.product.model 2>/dev/null | tr -d '\r\n' || true)"
+  release="$(adb_emu shell getprop ro.build.version.release 2>/dev/null | tr -d '\r\n' || true)"
+  abi="$(adb_emu shell getprop ro.product.cpu.abi 2>/dev/null | tr -d '\r\n' || true)"
+  kvm_check="$(adb_emu shell getprop ro.kernel.qemu 2>/dev/null | tr -d '\r\n' || true)"
+  echo "device: model=$model android=$release abi=$abi qemu=$kvm_check serial=$SERIAL" | tee -a "$META"
+  echo "GREEN: HAWM0 — stock AOSP/Android emulator booted, KVM-accelerated (model=$model android=$release abi=$abi serial=$SERIAL)"
 }
 
 # An already-running, already-booted hawm0 is exactly the intended end state
 # after the exit-trap fix above (a successful boot deliberately stays up for
 # a caller like tools/hawm1_sala_witness.rish) -- treating it as a failure
 # here would make a second, ordinary call into this same script red for no
-# real reason. Idempotent success: verify the existing device is genuinely
-# booted (not merely attached-but-stuck) before declaring GREEN and exiting
+# real reason. Idempotent success: verify the existing *emulator* is genuinely
+# booted (not merely a Pixel attached) before declaring GREEN and exiting
 # early, never launching a second competing emulator process.
 progress "checking for an emulator already running on this AVD…"
-if "$ADB" devices 2>/dev/null | grep -q "emulator-"; then
-  progress "an emulator is already attached — checking whether it is actually booted…"
-  existing_boot="$("$ADB" shell getprop sys.boot_completed 2>/dev/null | tr -d '\r\n')"
+SERIAL="$(emulator_serial || true)"
+if [ -n "${SERIAL:-}" ]; then
+  progress "emulator already attached as $SERIAL — checking whether it is actually booted…"
+  existing_boot="$(adb_emu shell getprop sys.boot_completed 2>/dev/null | tr -d '\r\n' || true)"
   if [ "$existing_boot" = "1" ]; then
     progress "already booted — treating as idempotent success, not launching a second emulator"
     report_identity_and_green
     exit 0
   fi
-  echo "RED: an emulator is attached but not fully booted (sys.boot_completed='$existing_boot') — close it first (tools/hawm0_stop.sh), then retry" | tee -a "$META" >&2
+  echo "RED: emulator $SERIAL is attached but not fully booted (sys.boot_completed='$existing_boot') — close it first (tools/hawm0_stop.sh), then retry" | tee -a "$META" >&2
   exit 1
 fi
 
@@ -125,49 +141,56 @@ rm -f "$LOG"
 "$EMULATOR" -avd hawm0 -accel on -no-window -no-audio -no-boot-anim \
   >"$LOG" 2>&1 &
 EPID=$!
+SERIAL=""
 
 cleanup() {
   if kill -0 "$EPID" 2>/dev/null; then
-    "$ADB" -s emulator-5554 emu kill >/dev/null 2>&1 || kill "$EPID" 2>/dev/null || true
+    if [ -n "${SERIAL:-}" ]; then
+      "$ADB" -s "$SERIAL" emu kill >/dev/null 2>&1 || kill "$EPID" 2>/dev/null || true
+    else
+      "$ADB" -s emulator-5554 emu kill >/dev/null 2>&1 || kill "$EPID" 2>/dev/null || true
+    fi
     wait "$EPID" 2>/dev/null || true
   fi
 }
 trap cleanup EXIT
 
-progress "emulator pid=$EPID — waiting for adb device (up to 60s)…"
-"$ADB" wait-for-device &
-WAITPID=$!
+# Wait for an emulator-* serial specifically — never bare wait-for-device,
+# which returns as soon as a USB phone is already listed.
+progress "emulator pid=$EPID — waiting for emulator-* adb serial (up to 60s; Pixel may already be listed)…"
 for i in $(seq 1 60); do
-  if ! kill -0 "$WAITPID" 2>/dev/null; then
+  SERIAL="$(emulator_serial || true)"
+  if [ -n "${SERIAL:-}" ]; then
+    progress "emulator adb serial attached: $SERIAL after ${i}s"
     break
   fi
   if [ $((i % 10)) -eq 0 ]; then
-    progress "still waiting for adb device… ${i}/60s"
+    progress "still waiting for emulator-* serial… ${i}/60s"
   fi
   sleep 1
 done
-wait "$WAITPID" 2>/dev/null || {
-  echo "RED: adb never saw the device — see $LOG" | tee -a "$META" >&2
+if [ -z "${SERIAL:-}" ]; then
+  echo "RED: adb never saw an emulator-* serial — see $LOG (a USB phone alone does not count)" | tee -a "$META" >&2
   exit 1
-}
-progress "adb device attached"
+fi
 
-progress "waiting for sys.boot_completed=1 (up to 120s)…"
+progress "waiting for sys.boot_completed=1 on $SERIAL (up to 120s)…"
 booted=0
 for i in $(seq 1 120); do
-  prop="$("$ADB" shell getprop sys.boot_completed 2>/dev/null | tr -d '\r\n')"
+  # Soften getprop: early shell can fail transiently; never set -e out of the poll.
+  prop="$(adb_emu shell getprop sys.boot_completed 2>/dev/null | tr -d '\r\n' || true)"
   if [ "$prop" = "1" ]; then
     progress "boot_completed after ${i}s"
     booted=1
     break
   fi
   if [ $((i % 10)) -eq 0 ]; then
-    progress "still booting… ${i}/120s"
+    progress "still booting… ${i}/120s (sys.boot_completed='${prop}')"
   fi
   sleep 1
 done
 if [ "$booted" -ne 1 ]; then
-  echo "RED: sys.boot_completed never reached 1 within 120s — see $LOG" | tee -a "$META" >&2
+  echo "RED: sys.boot_completed never reached 1 within 120s on $SERIAL — see $LOG" | tee -a "$META" >&2
   exit 1
 fi
 
@@ -176,8 +199,8 @@ fi
 # or an interactive session) needs to still be running a moment later. The
 # trap stays live for every failure path above (a broken boot really should
 # tear itself down); only a genuinely successful close leaves hawm0 up.
-# Stop it later with: adb -s emulator-5554 emu kill  (or tools/hawm0_stop.sh)
+# Stop it later with: tools/hawm0_stop.sh
 trap - EXIT
-progress "emulator left running (pid=$EPID) — stop later with tools/hawm0_stop.sh"
+progress "emulator left running (pid=$EPID serial=$SERIAL) — stop later with tools/hawm0_stop.sh"
 
 report_identity_and_green
