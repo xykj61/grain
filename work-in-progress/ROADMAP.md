@@ -832,6 +832,8 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA285 after session_root check-in, `20260722.154128`** — lean A send · lean B stop hawm0/rest. Brief [`active-designing/20260722-154128_stoa285-after-session-root-checkin.md`](../active-designing/20260722-154128_stoa285-after-session-root-checkin.md).
 
+**STOA286 hawm0 stopped season fold, `20260722.154348`** — stop GREEN; harvest kept; lean B rest. Brief [`active-designing/20260722-154348_stoa286-hawm0-stopped-season-fold.md`](../active-designing/20260722-154348_stoa286-hawm0-stopped-season-fold.md).
+
 
 **Framework next (host resume), `20260720.231857`** — lean A: live SETU6.5 **sent** eyes on real `usb0`/`ncm`. Lab TX gate already GREEN; Sala B0 Glow rewrite · JABS3 stay thicker check-ins. Same freeze brief.
 
