@@ -7,6 +7,8 @@
 //! STOA229: `append_demo_log` first event from `format_demo_line_from_pins`
 //! (STOA227); events 2–3 stay sign+line. HAWM1 root unchanged.
 //! STOA231: all three events from seated pin emit (event 1–3 hex pins).
+//! STOA233: `append_demo_log_from_desk` builds the same log from runtime
+//! desk text (face='…' extract). Pin path remains. HAWM1 root unchanged.
 //!
 //!   rye build linengrow/glow_sala_b0_append_witness.rye \
 //!     -femit-bin=linengrow/bin/glow_sala_b0_append_witness
@@ -22,7 +24,7 @@ const digest = @import("glow_sala_b0_digest.rye");
 const sign = @import("glow_sala_b0_sign.rye");
 const line = @import("glow_sala_b0_line.rye");
 
-pub const append_version = "20260722.133717";
+pub const append_version = "20260722.134205";
 
 pub const AppendError = sala.SessionError || digest.DigestError || sign.SignError || line.LineError;
 
@@ -101,8 +103,32 @@ pub fn append_demo_log(log_buf: *[rc.max_log_len]u8) AppendError!u32 {
     return len;
 }
 
+/// Build the three-event demo log from runtime fact-line lit desk text (STOA233).
+pub fn append_demo_log_from_desk(desk_src: []const u8, log_buf: *[rc.max_log_len]u8) AppendError!u32 {
+    var line_buf: [rc.max_line_len]u8 = undefined;
+    var len: u32 = 0;
+
+    const n1 = try line.format_demo_line_from_desk(desk_src, line_buf[0..]);
+    len = try append_pin_line(log_buf, len, n1, line_buf[0..n1]);
+
+    const n2 = try line.format_demo_line2_from_desk(desk_src, line_buf[0..]);
+    len = try append_pin_line(log_buf, len, n2, line_buf[0..n2]);
+
+    const n3 = try line.format_demo_line3_from_desk(desk_src, line_buf[0..]);
+    len = try append_pin_line(log_buf, len, n3, line_buf[0..n3]);
+
+    assert(len > 0);
+    return len;
+}
+
 /// Build the demo log and claim its digest against the HAWM1 fixture root.
 pub fn claim_append_demo_root(log_buf: *[rc.max_log_len]u8) AppendError![32]u8 {
     const len = try append_demo_log(log_buf);
+    return digest.claim_digest_log(log_buf[0..len]);
+}
+
+/// Desk-path claim: runtime desk log digests to HAWM1 (STOA233).
+pub fn claim_append_demo_root_from_desk(desk_src: []const u8, log_buf: *[rc.max_log_len]u8) AppendError![32]u8 {
+    const len = try append_demo_log_from_desk(desk_src, log_buf);
     return digest.claim_digest_log(log_buf[0..len]);
 }
