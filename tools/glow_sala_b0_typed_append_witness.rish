@@ -1,0 +1,24 @@
+# glow_sala_b0_typed_append_witness.rish — STOA266 typed memo → append_event.
+#
+#   rishi/bin/rishi run tools/glow_sala_b0_typed_append_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/glow_sala_b0_typed_append_witness"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/glow_sala_b0_typed_append_witness.rye -femit-bin=${bin}"]
+assert build.ok else "glow_sala_b0_typed_append_witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "glow_sala_b0_typed_append_witness exited non-zero"
+assert selftest.out contains "GREEN" else "glow_sala_b0_typed_append_witness not GREEN"
+assert selftest.out contains "append_typed_memo via append_event" else "missing append_typed_memo path"
+assert selftest.out contains "sign+line verify round-trip" else "missing sign+line verify"
+assert selftest.out contains "fields memo equals typed glow" else "missing typed memo fields claim"
+assert selftest.out contains "typed root differs HAWM1" else "missing typed≠HAWM1 claim"
+assert selftest.out contains "HAWM1 pin path still seated" else "missing HAWM1 untouched claim"
+assert selftest.out contains "99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe" else "missing HAWM1 hex"
+
+let src = run ["sh" "-c" "grep -q 'append_typed_memo' linengrow/glow_sala_b0_append.rye && grep -q 'append_event' linengrow/glow_sala_b0_append.rye && ! grep -q 'sala.append_event' linengrow/glow_sala_b0_append.rye"]
+assert src.ok else "glow_sala_b0_append missing append_typed_memo / still calls sala.append_event"
+
+say "GREEN: STOA266 — typed memo via Glow append_event; HAWM1 untouched."

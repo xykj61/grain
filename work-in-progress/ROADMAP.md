@@ -792,6 +792,10 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA265 Dexter → signed Sala append check-in, `20260722.150806`** — lean A typed memo→`append_event` device-free (recommended) · lean C glass wire later · HAWM1 untouched. Brief [`active-designing/20260722-150806_stoa265-dexter-sala-append-checkin.md`](../active-designing/20260722-150806_stoa265-dexter-sala-append-checkin.md).
 
+**STOA266 typed memo → Glow append_event GREEN, `20260722.151008`** — `append_typed_memo` · memo `glow` · HAWM1 untouched. Brief [`active-designing/20260722-151008_stoa266-typed-memo-append-event.md`](../active-designing/20260722-151008_stoa266-typed-memo-append-event.md).
+
+**STOA267 after typed memo append check-in, `20260722.151101`** — lean A send · lean B Dexter submit helper · lean C glass wire held. Brief [`active-designing/20260722-151101_stoa267-after-typed-memo-append-checkin.md`](../active-designing/20260722-151101_stoa267-after-typed-memo-append-checkin.md).
+
 
 **Framework next (host resume), `20260720.231857`** — lean A: live SETU6.5 **sent** eyes on real `usb0`/`ncm`. Lab TX gate already GREEN; Sala B0 Glow rewrite · JABS3 stay thicker check-ins. Same freeze brief.
 

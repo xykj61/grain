@@ -2,14 +2,14 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260722.150806` (EDT) · voice Quin  
-**Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · **Sala B0 Glow compose** · authored bodies · **Pixel authored-fold eyes**  
-**Language nib:** **STOA0–265** · shape-only · N-field inventary deepen closed · Dexter→Sala check-in seated  
-**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–265  
-**Git nib:** *(pin after send)* · STOA265
+**Last refreshed:** `20260722.151101` (EDT) · voice Quin  
+**Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · **Sala B0 Glow** · authored bodies · Pixel eyes · **typed memo append**  
+**Language nib:** **STOA0–267** · shape-only · N-field inventary deepen closed · typed memo→`append_event`  
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–267  
+**Git nib:** *(pin after send)* · STOA266–267
 
 
-**Season:** Framework · Eastern / EDT · Dexter→Sala thin face sized · lean A typed memo→append · round-close on.  
+**Season:** Framework · Eastern / EDT · typed memo append GREEN · Dexter helper next · round-close on.  
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`  
 **ADB:** `tools/.cache/hawm0/android-sdk/platform-tools/adb` — not on bare PATH
 
@@ -17,7 +17,7 @@
 
 ## Now
 
-**STOA265** `20260722.150806` — Dexter→Sala append check-in; lean A device-free typed memo→`append_event` (recommended). Brief [`../active-designing/20260722-150806_stoa265-dexter-sala-append-checkin.md`](../active-designing/20260722-150806_stoa265-dexter-sala-append-checkin.md).
+**STOA267** `20260722.151101` — typed memo→`append_event` GREEN; lean B Dexter submit helper. Brief [`../active-designing/20260722-151101_stoa267-after-typed-memo-append-checkin.md`](../active-designing/20260722-151101_stoa267-after-typed-memo-append-checkin.md).
 
 **ADB (copy-paste):**
 
@@ -37,11 +37,11 @@ $ADB shell run-as org.glow.app.sala_broadcaster cat files/sala_root.txt
 
 | Door | Kind |
 |------|------|
-| Typed memo → Glow `append_event` | **kg** (STOA265 lean A) |
-| Dexter submit helper module | lean B (after A) |
-| NativeActivity submit → append | lean C (glass · after A) |
+| Dexter submit helper module | **kg** (STOA267 lean B) |
+| NativeActivity submit → append | lean C (glass · after B) |
 | HAWM log-harvest inventary | **held** (approved 1A · mobile season) |
 | Ambient gold · shared-package · JABS3 · UDP | **held** |
+| Typed memo → Glow `append_event` | **GREEN** `20260722.151008` |
 | Pixel authored-fold eyes | **GREEN** `20260722.150432` |
 
 ---

@@ -7,6 +7,8 @@ Living index for the append-only session stream. This table reads **newest first
 **Day’s truth is this index’s order, not filename sort.** One-clock stamps sort ascending on disk; trust the table for sequence within a day.
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
+- `20260722.151101` — [STOA266–267 typed memo append](20260722-151101_stoa266-267-typed-memo-append-round.bron) — glow memo via append_event; Dexter helper next
+- `20260722.150910` — [REMEMBER git nib after STOA265](20260722-150910_remember-git-nib-stoa265.bron) — pin 722d8c560422
 - `20260722.150806` — [STOA265 Dexter Sala append check-in](20260722-150806_stoa265-dexter-sala-append-checkin.bron) — lean A typed memo→append_event
 - `20260722.150725` — [STOA265 Dexter→Sala append research](20260722-150725_stoa265-dexter-sala-append-research.bron) — live append unwired; lean A device-free
 - `20260722.150537` — [REMEMBER git nib after STOA264](20260722-150537_remember-git-nib-stoa264.bron) — pin baa28401bc4c
