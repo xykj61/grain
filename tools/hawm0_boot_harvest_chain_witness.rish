@@ -1,0 +1,29 @@
+# hawm0_boot_harvest_chain_witness.rish — STOA277: chain authored + harvest half.
+#
+# Device-free half of the boot→harvest chain: proves the onpath script is
+# seated, names the kvm refuse, and re-folds on-disk meta (or fixture) into
+# hawm-harvest.bron. Full boot GREEN stays host-onpath:
+#   rishi/bin/rishi run tools/hawm0_boot_harvest_onpath_host.rish
+#
+#   rishi/bin/rishi run tools/hawm0_boot_harvest_chain_witness.rish
+
+say "hawm-chain: onpath script seated…"
+let onpath = run ["sh" "-c" "test -f tools/hawm0_boot_harvest_onpath_host.rish"]
+assert onpath.ok else "missing tools/hawm0_boot_harvest_onpath_host.rish"
+
+let wiring = run ["sh" "-c" "grep -q 'hawm0_boot_onpath_host.rish' tools/hawm0_boot_harvest_onpath_host.rish && grep -q 'hawm_log_harvest_worker.sh' tools/hawm0_boot_harvest_onpath_host.rish && grep -q '/dev/kvm' tools/hawm0_boot_harvest_onpath_host.rish"]
+assert wiring.ok else "onpath chain missing boot / harvest / kvm refuse wiring"
+say "hawm-chain: boot → harvest → kvm refuse wiring GREEN"
+
+say "hawm-chain: harvest half (meta or fixture)…"
+let half = run ["rishi/bin/rishi" "run" "tools/hawm_log_harvest_witness.rish"]
+say "${half.out}"
+assert half.ok else "harvest inventary witness failed"
+assert half.out contains "GREEN" else "harvest inventary witness not GREEN"
+say "hawm-chain: harvest half GREEN"
+
+let kvm = run ["sh" "-c" "test -e /dev/kvm && echo KVM_PRESENT || echo KVM_ABSENT"]
+say "hawm-chain: ${kvm.out}"
+assert kvm.out contains "KVM_" else "kvm probe missing marker"
+
+say "GREEN: STOA277 — boot→harvest chain authored; harvest half GREEN; full boot onpath when /dev/kvm present."
