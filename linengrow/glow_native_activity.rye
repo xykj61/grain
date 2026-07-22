@@ -39,6 +39,7 @@ const kb_paint = @import("dexter_glass_keyboard_paint.rye");
 const kb_layout = @import("dexter_glass_keyboard_layout.rye");
 const dexter = @import("window_input.rye");
 const dexter_sala = @import("dexter_sala_append.rye");
+const live_glass = @import("sala_live_root_glass.rye");
 const kumara = @import("kumara.rye");
 const mc = @import("mala_core.rye");
 const rc = @import("receipt_core.rye");
@@ -105,6 +106,10 @@ var g_live_log: [rc.max_log_len]u8 = undefined;
 var g_live_len: u32 = 0;
 var g_live_seq: i64 = 0;
 const live_stamp = "20260722.151515";
+/// STOA272: Skate LIVE line (tip strip).
+var g_live_line: [live_glass.live_line_max]u8 = undefined;
+var g_live_line_len: u32 = 0;
+var g_live_line_ready: bool = false;
 var g_kb_shift: bool = false;
 var g_window: ?*anyopaque = null;
 var g_caret_timer_fd: c_int = -1;
@@ -173,6 +178,19 @@ fn write_live_root_file(hex: *const [64]u8) void {
     _ = write(fd, "\n", 1);
 }
 
+fn refresh_live_paint_line() void {
+    g_live_line_ready = false;
+    g_live_line_len = 0;
+    if (g_live_seq <= 0) return;
+    if (glow_last_live_root_hex[0] == 0) return;
+    g_live_line_ready = live_glass.format_live_line(
+        g_live_seq,
+        glow_last_live_root_hex[0..64],
+        &g_live_line,
+        &g_live_line_len,
+    );
+}
+
 fn record_live_root(root: *const [32]u8) void {
     var hex: [64]u8 = undefined;
     glow_fold.root_to_hex(root, &hex);
@@ -180,6 +198,7 @@ fn record_live_root(root: *const [32]u8) void {
     tally_copy.copy_disjoint(u8, glow_last_live_root_hex[0..64], &hex);
     glow_last_live_root_hex[64] = 0;
     write_live_root_file(glow_last_live_root_hex[0..64]);
+    refresh_live_paint_line();
 }
 
 /// Append one Dexter-shaped memo into the live log and refresh live-root file.
@@ -595,6 +614,7 @@ fn paint_window(_: ?*anyopaque, window: ?*anyopaque) callconv(.c) void {
     if (glow_last_session_root_hex[0] == 0) return;
     const surf_ptr: ?*const sala_surf.Surface = if (g_surface_ready) &g_surface else null;
     const tip: ?[]const u8 = if (g_tip_ready) g_tip_line[0..g_tip_len] else null;
+    const live_line: ?[]const u8 = if (g_live_line_ready) g_live_line[0..g_live_line_len] else null;
     const published: ?[]const u8 = if (g_pub_ready) g_pub_line[0..g_pub_len] else null;
     const fetched: ?[]const u8 = if (g_fetch_ready) g_fetch_line[0..g_fetch_len] else null;
     const market: ?[]const u8 = if (g_market_ready) g_market_line[0..g_market_len] else null;
@@ -609,6 +629,7 @@ fn paint_window(_: ?*anyopaque, window: ?*anyopaque) callconv(.c) void {
         g_tube1_admitted,
         surf_ptr,
         tip,
+        live_line,
         published,
         fetched,
         market,
@@ -880,6 +901,8 @@ export fn ANativeActivity_onCreate(
     g_dexter_len = 0;
     g_live_len = 0;
     g_live_seq = 0;
+    g_live_line_ready = false;
+    g_live_line_len = 0;
     @memset(glow_last_live_root_hex[0..], 0);
     g_dexter_ready = dexter_glass.run_demo_dexter_line(&g_dexter_line, &g_dexter_len);
     if (g_dexter_ready) {
