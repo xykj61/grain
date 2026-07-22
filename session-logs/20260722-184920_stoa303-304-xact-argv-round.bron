@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260722.184850
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title STOA303-304 xact argv
+prompt approve rec
+think STOA302 lean A; emit_xact_argv mint amount or send; both gates
+think worker two-arg mint path; xfer refuse pinned; witnesses GREEN; glow_run mint 5 and send
+think seat STOA304 lean B rest
+obs three argv families now: u32 · unit tag · payload tag+amount
+product_nib ZETA6 LULU0-5 SETU6.5 xact-argv
+suite_nib STOA0-304
+file glow/lower_bartis.rye emit_xact_argv
+file glow/lower_barket.rye barket twin
+file glow/gen/gate-xact-tag.glow argv desk
+file active-designing/20260722-184507_stoa303-payload-argv-survey-xact.md survey
+file active-designing/20260722-184520_stoa304-after-xact-argv-checkin.md lean B
+recommend check-in lean B rest or lean C xfer argv survey

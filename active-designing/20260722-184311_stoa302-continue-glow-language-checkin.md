@@ -6,8 +6,8 @@
 **Version:** `20260722.184311` (EDT · Framework host)  
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
 **Voice:** Quin  
-**Status:** Checkable — lean table · continue over STOA301 / cursorignore rest  
-**Register:** Checkable (Two Rooms) — align seated; next door Intent until approved  
+**Status:** Checkable — lean **A** approved → STOA303 GREEN  
+**Register:** Checkable (Two Rooms) — align seated; xact argv Checkable as STOA303  
 
 **Grounds in:** align brief `20260722-184311_align-continue-glow-language.md` · STOA301 lean C · completeness survey `20260722.184015` · “align our direction and check in to continue developing Glow”  
 
@@ -31,7 +31,7 @@
 
 | | Lean | Size | What it opens |
 |---|---|---|---|
-| **A** | **Payload argv survey (xact first)** — **recommended** | survey → first code lap | tag + `amount` reader; xfer/pair stay refuse |
+| **A** | **Payload argv survey (xact first)** — **chosen** → STOA303 | survey → first code lap | tag + `amount` reader; xfer/pair stay refuse |
 | **B** | **Docs compressor** — Glow completeness page under `docs/` | thin prose | park the survey as living guide |
 | **C** | **Kind flip argv** | thin optional | call-body under kind + tag argv |
 | **D** | **Yonder old designing** | shelf hygiene | relevance `git mv` — not language metal |

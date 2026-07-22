@@ -39,7 +39,8 @@
 //! STOA131: `pair-mold` call body `%-  flip` → PairShape swap · baked 5/3 → 3/5.
 //! STOA132: `amount-mold` argv identity — generator beside fixture (u32-shaped named mold).
 //! STOA133: `count-mold` argv identity — twin generator beside fixture.
-//! STOA300: `kind-mold` argv identity — unit-tag reader (`mint`/`send`); xact/xfer/pair argv held.
+//! STOA300: `kind-mold` argv identity — unit-tag reader (`mint`/`send`).
+//! STOA303: `xact-mold` argv identity — payload tag + amount (`mint <u32>` / `send`); xfer/pair held.
 //! Gate function named `bartis_gate` to avoid collisions with the sample face.
 
 const std = @import("std");
@@ -281,6 +282,40 @@ fn emit_kind_argv(out: []u8, zface: []const u8, comment: []const u8) LowerError!
     try append_print(out, &used, "    const tag = argv[1];\n", .{});
     try append_print(out, &used, "    const {s}: KindShape = if (std.mem.eql(u8, tag, \"mint\")) .mint else if (std.mem.eql(u8, tag, \"send\")) .send else return 2;\n", .{zface});
     try append_print(out, &used, "    return if (bartis_gate({s}) == {s}) 0 else 1;\n", .{ zface, zface });
+    try append_print(out, &used, "}}\n", .{});
+    return used;
+}
+
+/// STOA303: closed payload `$%` xact-mold argv identity → XactShape · tag + amount from argv.
+/// `mint <u32>` → `.mint { .amount }` · `send` → `.send`. Distinct from kind unit tags and u32 parseInt-only.
+fn emit_xact_argv(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
+    var used: u32 = 0;
+    try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
+    try append_print(out, &used, "pub const XactShape = union(enum) {{\n", .{});
+    try append_print(out, &used, "    mint: struct {{ amount: u32 = 0 }},\n", .{});
+    try append_print(out, &used, "    send,\n", .{});
+    try append_print(out, &used, "}};\n\n", .{});
+    try append_print(out, &used, "/// {s}\n", .{comment});
+    try append_print(out, &used, "fn bartis_gate({s}: XactShape) XactShape {{\n", .{zface});
+    try append_print(out, &used, "    return {s};\n", .{zface});
+    try append_print(out, &used, "}}\n\n", .{});
+    try append_print(out, &used, "pub fn main(init: std.process.Init) !u8 {{\n", .{});
+    try append_print(out, &used, "    const alloc = init.arena.allocator();\n", .{});
+    try append_print(out, &used, "    const argv = try init.minimal.args.toSlice(alloc);\n", .{});
+    try append_print(out, &used, "    if (argv.len < 2) return 2;\n", .{});
+    try append_print(out, &used, "    const tag = argv[1];\n", .{});
+    try append_print(out, &used, "    if (std.mem.eql(u8, tag, \"send\")) {{\n", .{});
+    try append_print(out, &used, "        const {s}: XactShape = .send;\n", .{zface});
+    try append_print(out, &used, "        return switch (bartis_gate({s})) {{ .send => 0, .mint => 1 }};\n", .{zface});
+    try append_print(out, &used, "    }}\n", .{});
+    try append_print(out, &used, "    if (!std.mem.eql(u8, tag, \"mint\")) return 2;\n", .{});
+    try append_print(out, &used, "    if (argv.len < 3) return 2;\n", .{});
+    try append_print(out, &used, "    const amount = std.fmt.parseInt(u32, argv[2], 10) catch return 2;\n", .{});
+    try append_print(out, &used, "    const {s}: XactShape = .{{ .mint = .{{ .amount = amount }} }};\n", .{zface});
+    try append_print(out, &used, "    return switch (bartis_gate({s})) {{\n", .{zface});
+    try append_print(out, &used, "        .mint => |m| if (m.amount == amount) 0 else 1,\n", .{});
+    try append_print(out, &used, "        .send => 1,\n", .{});
+    try append_print(out, &used, "    }};\n", .{});
     try append_print(out, &used, "}}\n", .{});
     return used;
 }
@@ -864,7 +899,19 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
         }
     }
 
-    if (is_xact_sample(spec) or is_xfer_sample(spec) or is_pair_sample(spec) or is_triple_sample(spec) or is_quad_sample(spec) or is_penta_sample(spec) or is_hexa_sample(spec) or is_hepta_sample(spec) or is_octa_sample(spec) or is_nona_sample(spec)) return error.SampleDoesNotNest;
+    // STOA303: xact payload argv identity — tag + amount; distinct from kind and u32-only.
+    if (is_xact_sample(spec)) {
+        switch (spec.body) {
+            .identity => {
+                var comment_buf: [192]u8 = undefined;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` bartis — XactShape argv payload (STOA303).", .{ face, mold }) catch return error.Overflow;
+                return emit_xact_argv(out, zface, comment);
+            },
+            .call_one => return error.SampleDoesNotNest,
+        }
+    }
+
+    if (is_xfer_sample(spec) or is_pair_sample(spec) or is_triple_sample(spec) or is_quad_sample(spec) or is_penta_sample(spec) or is_hexa_sample(spec) or is_hepta_sample(spec) or is_octa_sample(spec) or is_nona_sample(spec)) return error.SampleDoesNotNest;
     var used: u32 = 0;
 
     try emit_prelude(out, &used);

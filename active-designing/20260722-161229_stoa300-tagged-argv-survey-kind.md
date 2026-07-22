@@ -21,7 +21,8 @@
 |---|---|---|---|
 | `@u32` · amount · count | GREEN | GREEN | `parseInt(u32)` |
 | **kind** (unit `$%`) | GREEN | **GREEN** STOA300 | tag word `mint`/`send` |
-| xact · xfer (payload `$%`) | GREEN | refuse `SampleDoesNotNest` | held |
+| xact (payload `$%`) | GREEN | **GREEN** STOA303 | tag + amount |
+| xfer (payload `$%`) | GREEN | refuse `SampleDoesNotNest` | held |
 | pair…nona (`$:` N-field) | GREEN | refuse `SampleDoesNotNest` | held |
 
 **Refuse site (both lowers):** `emit_argv` — kind carved out for identity; payload + N-field stay on the guard.
