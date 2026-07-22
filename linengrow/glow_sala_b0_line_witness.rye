@@ -11,7 +11,7 @@ const rc = @import("receipt_core.rye");
 const fixture = @import("glow_sala_b0_demo_fixture.rye");
 const line = @import("glow_sala_b0_line.rye");
 
-const witness_version = "20260722.135948";
+const witness_version = "20260722.140957";
 
 fn run_selftest(init: std.process.Init) !u8 {
     assert(fixture.root_pin_agrees());
@@ -69,8 +69,13 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("sala-b0-line: face_lit product extract agrees pins -- GREEN\n", .{});
     print("sala-b0-line: STOA241 face_lit product stand-in -- GREEN\n", .{});
 
+    // STOA243: product-authored format/parse body agrees elder peer.
+    assert(try line.format_parse_body_agrees_elder());
+    print("sala-b0-line: format/parse body agrees elder -- GREEN\n", .{});
+    print("sala-b0-line: STOA243 product-authored line body -- GREEN\n", .{});
+
     print("sala-b0-line: version {s}\n", .{witness_version});
-    print("GREEN: Glow Sala B0 line surface — STOA202/225/227/231/233/241; face_lit product.\n", .{});
+    print("GREEN: Glow Sala B0 line surface — STOA202/225/227/231/233/241/243; authored body.\n", .{});
     return 0;
 }
 

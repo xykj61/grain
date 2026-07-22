@@ -740,7 +740,11 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA241 face_lit product agree GREEN, `20260722.135948`** — product stand-in ≡ Glow face_lit via seated pins; no `@import`. Brief [`active-designing/20260722-135948_stoa241-face-lit-product-agree.md`](../active-designing/20260722-135948_stoa241-face-lit-product-agree.md).
 
-**STOA242 after face_lit agree check-in, `20260722.140015`** — lean A send · lean B name next door (shared-package import / new product door / JABS3). Brief [`active-designing/20260722-140015_stoa242-after-face-lit-agree-checkin.md`](../active-designing/20260722-140015_stoa242-after-face-lit-agree-checkin.md). JABS3 held.
+**STOA242 after face_lit agree check-in, `20260722.140015`** — lean A send · lean B → STOA243 authored line body. Brief [`active-designing/20260722-140015_stoa242-after-face-lit-agree-checkin.md`](../active-designing/20260722-140015_stoa242-after-face-lit-agree-checkin.md). JABS3 held.
+
+**STOA243 product-authored line body GREEN, `20260722.140957`** — format/parse own body ≡ elder peer; no rc delegate. Brief [`active-designing/20260722-140957_stoa243-product-authored-line-body.md`](../active-designing/20260722-140957_stoa243-product-authored-line-body.md).
+
+**STOA244 after line body check-in, `20260722.141029`** — lean A send · lean B next authored body (sign/verify or digest). Brief [`active-designing/20260722-141029_stoa244-after-line-body-checkin.md`](../active-designing/20260722-141029_stoa244-after-line-body-checkin.md). JABS3 held.
 
 
 **Framework next (host resume), `20260720.231857`** — lean A: live SETU6.5 **sent** eyes on real `usb0`/`ncm`. Lab TX gate already GREEN; Sala B0 Glow rewrite · JABS3 stay thicker check-ins. Same freeze brief.

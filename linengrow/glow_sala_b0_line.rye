@@ -15,6 +15,8 @@
 //! STOA241: product face_lit stand-in — `extract_face_lit_cord` (same body as
 //! extract_desk_cord). Module path blocks `@import` of glow/face_lit; dual
 //! witness proves product extract ≡ Glow face_lit on the fact-line desk.
+//! STOA243: product-authored format/parse log-line body — hex·space·hex·newline
+//! lives in this module; elder receipt_core stays peer baseline for agree.
 //!
 //!   rye build linengrow/glow_sala_b0_line_witness.rye \
 //!     -femit-bin=linengrow/bin/glow_sala_b0_line_witness
@@ -27,8 +29,9 @@ const rc = @import("receipt_core.rye");
 const fixture = @import("glow_sala_b0_demo_fixture.rye");
 const sign = @import("glow_sala_b0_sign.rye");
 const tally_copy = @import("tally_copy.rye");
+const tally_parse_int = @import("parse_int.rye");
 
-pub const line_version = "20260722.135948";
+pub const line_version = "20260722.140957";
 
 /// Glow face=lit sample desk for demo line halves (STOA225 · STOA231).
 pub const lit_desk_relpath = "glow/gen/sample-demo-fact-line-lits.glow";
@@ -76,15 +79,82 @@ pub const ParsedLine = struct {
     fact_len: u32,
 };
 
-/// Format sig + fact as one elder log line (hex · space · hex · newline).
-pub fn format_log_line(sig: kumara.Signature, fact: []const u8, out: []u8) LineError!u32 {
-    return rc.format_log_line(sig, fact, out);
+fn buf_len_u32(buf: []const u8) u32 {
+    assert(buf.len <= std.math.maxInt(u32));
+    return @intCast(buf.len);
 }
 
-/// Parse one elder log line into sig bytes and fact bytes.
-pub fn parse_log_line(line: []const u8, sig_out: []u8, fact_out: []u8) LineError!ParsedLine {
-    const parsed = try rc.parse_log_line(line, sig_out, fact_out);
-    return .{ .sig_len = parsed.sig_len, .fact_len = parsed.fact_len };
+fn trim_line(line_text: []const u8) []const u8 {
+    return std.mem.trim(u8, line_text, " \t\r\n");
+}
+
+fn write_hex_lower(bytes: []const u8, out: []u8) LineError!u32 {
+    if (out.len < bytes.len * 2) return error.Overflow;
+    var i: u32 = 0;
+    while (i < buf_len_u32(bytes)) : (i += 1) {
+        _ = std.fmt.bufPrint(out[i * 2 ..][0..2], "{x:0>2}", .{bytes[i]}) catch return error.Overflow;
+    }
+    return @intCast(bytes.len * 2);
+}
+
+fn decode_hex_lower(hex: []const u8, out: []u8) LineError!u32 {
+    if (hex.len % 2 != 0) return error.InvalidLine;
+    const nbytes: u32 = @intCast(hex.len / 2);
+    if (nbytes > buf_len_u32(out)) return error.InvalidLine;
+    var i: u32 = 0;
+    while (i < nbytes) : (i += 1) {
+        const pair = hex[i * 2 ..][0..2];
+        out[i] = tally_parse_int.parse_int(u8, pair, .{ .base = 16, .allow_leading_zero = true }) catch return error.InvalidLine;
+    }
+    return nbytes;
+}
+
+/// Format sig + fact as one log line (hex · space · hex · newline) — product body (STOA243).
+pub fn format_log_line(sig: kumara.Signature, fact: []const u8, out: []u8) LineError!u32 {
+    const sig_bytes = sig.toBytes();
+    var pos: u32 = 0;
+    pos += try write_hex_lower(&sig_bytes, out[pos..]);
+    if (pos >= buf_len_u32(out)) return error.Overflow;
+    out[pos] = ' ';
+    pos += 1;
+    pos += try write_hex_lower(fact, out[pos..]);
+    if (pos < buf_len_u32(out)) out[pos] = '\n';
+    return pos + 1;
+}
+
+/// Parse one log line into sig bytes and fact bytes — product body (STOA243).
+pub fn parse_log_line(line_text: []const u8, sig_out: []u8, fact_out: []u8) LineError!ParsedLine {
+    const trimmed = trim_line(line_text);
+    if (trimmed.len < rc.sig_hex_len + 2) return error.InvalidLine;
+    const sig_hex = trimmed[0..rc.sig_hex_len];
+    if (trimmed[rc.sig_hex_len] != ' ') return error.InvalidLine;
+    const fact_hex = trim_line(trimmed[rc.sig_hex_len + 1 ..]);
+    const sig_len = try decode_hex_lower(sig_hex, sig_out);
+    const fact_len = try decode_hex_lower(fact_hex, fact_out);
+    return .{ .sig_len = sig_len, .fact_len = fact_len };
+}
+
+/// True when product format/parse bodies match elder receipt_core peer (STOA243).
+pub fn format_parse_body_agrees_elder() LineError!bool {
+    const signed = try sign.claim_demo_sign();
+    const fact = signed.canonical[0..signed.canonical_len];
+    var product_line: [rc.max_line_len]u8 = undefined;
+    var elder_line: [rc.max_line_len]u8 = undefined;
+    const pn = try format_log_line(signed.sig, fact, product_line[0..]);
+    const en = try rc.format_log_line(signed.sig, fact, elder_line[0..]);
+    if (pn != en) return false;
+    if (!std.mem.eql(u8, product_line[0..pn], elder_line[0..en])) return false;
+
+    var sig_p: [kumara.signature_length]u8 = undefined;
+    var fact_p: [rc.max_fact_len]u8 = undefined;
+    var sig_e: [kumara.signature_length]u8 = undefined;
+    var fact_e: [rc.max_fact_len]u8 = undefined;
+    const pp = try parse_log_line(product_line[0..pn], &sig_p, &fact_p);
+    const ep = try rc.parse_log_line(elder_line[0..en], &sig_e, &fact_e);
+    if (pp.sig_len != ep.sig_len or pp.fact_len != ep.fact_len) return false;
+    if (!std.mem.eql(u8, sig_p[0..pp.sig_len], sig_e[0..ep.sig_len])) return false;
+    if (!std.mem.eql(u8, fact_p[0..pp.fact_len], fact_e[0..ep.fact_len])) return false;
+    return true;
 }
 
 /// Sign demo fact (STOA201), format line, parse back; refuse unless bytes agree and verify.
