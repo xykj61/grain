@@ -786,6 +786,10 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA262 after barket N-field flip check-in, `20260722.145840`** — lean A send · lean B finishing edge · lean C HAWM 1A held. Brief [`active-designing/20260722-145840_stoa262-after-barket-n-field-flip-checkin.md`](../active-designing/20260722-145840_stoa262-after-barket-n-field-flip-checkin.md).
 
+**STOA263 Pixel authored-fold eyes GREEN, `20260722.150432`** — fresh pack + Pixel install after fields; `sala_root` HAWM1 · product root `5`. Brief [`active-designing/20260722-150432_stoa263-pixel-authored-fold-eyes.md`](../active-designing/20260722-150432_stoa263-pixel-authored-fold-eyes.md).
+
+**STOA264 after authored-fold eyes check-in, `20260722.150432`** — lean A send · lean B Dexter→Sala thin face · lean C HAWM 1A held. Brief [`active-designing/20260722-150432_stoa264-after-authored-fold-eyes-checkin.md`](../active-designing/20260722-150432_stoa264-after-authored-fold-eyes-checkin.md).
+
 
 **Framework next (host resume), `20260720.231857`** — lean A: live SETU6.5 **sent** eyes on real `usb0`/`ncm`. Lab TX gate already GREEN; Sala B0 Glow rewrite · JABS3 stay thicker check-ins. Same freeze brief.
 

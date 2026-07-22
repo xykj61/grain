@@ -1,6 +1,6 @@
-# STOA — Glow SLC · nest · product · ≤80 · STOA0–240 GREEN · 2026-07-22 · draw → **STOA**
+# STOA — Glow SLC · nest · product · ≤80 · STOA0–264 GREEN · 2026-07-22 · draw → **STOA**
 
-Living Glow OS desks lead with `shape-*` (inventary duals STOA161–173; pin polish STOA174; multi-field cast twins STOA175–176). Sala B0 Glow: STOA177–240 · **STOA240** after Pixel embedded-desk eyes (name next door). Hoon study twins under `glow/gen/hoon-study/`.
+Living Glow OS desks lead with `shape-*` (inventary duals STOA161–173; pin polish STOA174; multi-field cast twins STOA175–176). Sala B0 Glow: STOA177–264 · **STOA264** after Pixel authored-fold eyes (Dexter→Sala thin face next). Hoon study twins under `glow/gen/hoon-study/`.
 
 | Rung | Claim | Witness / gate | State |
 |------|-------|----------------|-------|
@@ -91,4 +91,7 @@ Living Glow OS desks lead with `shape-*` (inventary duals STOA161–173; pin pol
 | **STOA238** | after embedded desk check-in | leans A send · B as STOA239 | **GREEN** `20260722.135324` |
 | **STOA239** | Pixel embedded-desk eyes | `tube05_install_proof_onpath_host` | **GREEN** `20260722.135605` |
 | **STOA240** | after Pixel eyes check-in | leans A send · B name next door | **GREEN** `20260722.135605` |
+| **STOA241–262** | face_lit · authored bodies · shape-only · N-field inventary deepen | product · bartis/barket | **GREEN** through `20260722.145840` |
+| **STOA263** | Pixel authored-fold eyes | `tube05` pack + install onpath | **GREEN** `20260722.150432` |
+| **STOA264** | after authored-fold eyes check-in | leans A send · B Dexter→Sala | **GREEN** `20260722.150432` |
 Smoke: `glow_nest_type_witness` · `glow_barket_parse_witness` · `glow_lower_bartis_witness` · Sibling: **ZETA** · **LULU** · **SETU** · **TUBE**.
