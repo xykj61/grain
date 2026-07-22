@@ -7,6 +7,7 @@
 #   tools/glow_run_worker.sh <file.glow> mint <amount-u32>         # xact payload tag
 #   tools/glow_run_worker.sh <file.glow> mint <from> <amount>      # xfer payload tag
 #   tools/glow_run_worker.sh <file.glow> <from> <amount>           # pair $: fields
+#   tools/glow_run_worker.sh <file.glow> <from> <amount> <fee>     # triple $: fields
 
 set -e
 ROOT=$(CDPATH= cd -- "$(dirname "$0")/.." && pwd)
@@ -95,9 +96,15 @@ gate-pair-fields|gate-barket-pair-fields)
     exit 2
   }
   ;;
+gate-triple-fields|gate-barket-triple-fields)
+  test -n "$SAMPLE" && test -n "$SAMPLE2" && test -n "$SAMPLE3" || {
+    echo "FAIL: ${STEM}.glow needs from u32, amount u32, and fee u32"
+    exit 2
+  }
+  ;;
 *)
   test -z "$SAMPLE" || {
-    echo "FAIL: only sample-u32 / gate-*-u32 / gate-*-kind-tag / gate-*-xact-tag / gate-*-xfer-tag / gate-*-pair-fields take a sample"
+    echo "FAIL: only sample-u32 / gate-*-u32 / gate-*-kind-tag / gate-*-xact-tag / gate-*-xfer-tag / gate-*-pair-fields / gate-*-triple-fields take a sample"
     exit 2
   }
   ;;
