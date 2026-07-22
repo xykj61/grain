@@ -728,7 +728,11 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA235 claim/fold desk-file I/O GREEN, `20260722.134552`** — `*_from_desk_file` ≡ pin; NA pin path. Brief [`active-designing/20260722-134552_stoa235-claim-fold-desk-file.md`](../active-designing/20260722-134552_stoa235-claim-fold-desk-file.md).
 
-**STOA236 after desk-file claim check-in, `20260722.134657`** — lean A send · lean B NA desk asset. Brief [`active-designing/20260722-134657_stoa236-after-desk-file-claim-checkin.md`](../active-designing/20260722-134657_stoa236-after-desk-file-claim-checkin.md). JABS3 held.
+**STOA236 after desk-file claim check-in, `20260722.134657`** — lean A send · lean B as STOA237. Brief [`active-designing/20260722-134657_stoa236-after-desk-file-claim-checkin.md`](../active-designing/20260722-134657_stoa236-after-desk-file-claim-checkin.md).
+
+**STOA237 NativeActivity embedded lit desk GREEN, `20260722.134831`** — embed · onCreate · pack · `.so` markers. Brief [`active-designing/20260722-134831_stoa237-native-embedded-lit-desk.md`](../active-designing/20260722-134831_stoa237-native-embedded-lit-desk.md).
+
+**STOA238 after embedded desk check-in, `20260722.135324`** — lean A send · lean B Pixel eyes. Brief [`active-designing/20260722-135324_stoa238-after-embedded-desk-checkin.md`](../active-designing/20260722-135324_stoa238-after-embedded-desk-checkin.md). JABS3 held.
 
 
 **Framework next (host resume), `20260720.231857`** — lean A: live SETU6.5 **sent** eyes on real `usb0`/`ncm`. Lab TX gate already GREEN; Sala B0 Glow rewrite · JABS3 stay thicker check-ins. Same freeze brief.

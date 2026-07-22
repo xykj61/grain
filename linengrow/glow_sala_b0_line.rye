@@ -26,10 +26,16 @@ const fixture = @import("glow_sala_b0_demo_fixture.rye");
 const sign = @import("glow_sala_b0_sign.rye");
 const tally_copy = @import("tally_copy.rye");
 
-pub const line_version = "20260722.134205";
+pub const line_version = "20260722.134831";
 
 /// Glow face=lit sample desk for demo line halves (STOA225 · STOA231).
 pub const lit_desk_relpath = "glow/gen/sample-demo-fact-line-lits.glow";
+
+/// Desk bytes packed into the product binary / APK `.so` (STOA237).
+/// Twin of `lit_desk_relpath` under linengrow/ (Zig embed stays in-package).
+/// Witness proves embed ≡ glow/gen desk file.
+pub const lit_desk_embed_relpath = "linengrow/gen/sample-demo-fact-line-lits.glow";
+pub const lit_desk_embedded: []const u8 = @embedFile("gen/sample-demo-fact-line-lits.glow");
 
 /// Deterministic demo sig hex from `claim_demo_line` (128 lowercase nibbles).
 pub const demo_sig_hex =

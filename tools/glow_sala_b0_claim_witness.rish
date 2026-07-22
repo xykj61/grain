@@ -15,11 +15,14 @@ assert selftest.out contains "expected root pin seated" else "glow_sala_b0_claim
 assert selftest.out contains "claim_demo_fold matches product root" else "glow_sala_b0_claim_witness missing claim"
 assert selftest.out contains "compose agrees elder run_demo_fold" else "glow_sala_b0_claim_witness missing elder agree"
 assert selftest.out contains "desk-file claim matches pin claim" else "glow_sala_b0_claim_witness missing desk-file claim"
+assert selftest.out contains "embedded desk claim matches pin claim" else "glow_sala_b0_claim_witness missing embedded claim"
 assert selftest.out contains "STOA235" else "glow_sala_b0_claim_witness missing STOA235"
+assert selftest.out contains "STOA237" else "glow_sala_b0_claim_witness missing STOA237"
 assert selftest.out contains "STOA197" else "glow_sala_b0_claim_witness missing STOA197"
 assert selftest.out contains "99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe" else "glow_sala_b0_claim_witness missing expected hex"
 
-let src = run ["sh" "-c" "grep -q 'claim_demo_fold_from_desk_file' linengrow/glow_sala_b0_claim.rye && grep -q 'lit_desk_relpath' linengrow/glow_sala_b0_claim.rye"]
-assert src.ok else "glow_sala_b0_claim missing desk-file wire"
+let src = run ["sh" "-c" "grep -q 'claim_demo_fold_from_desk_file' linengrow/glow_sala_b0_claim.rye && grep -q 'claim_demo_fold_from_embedded_desk' linengrow/glow_sala_b0_claim.rye && grep -q 'lit_desk_embedded' linengrow/glow_sala_b0_line.rye"]
+assert src.ok else "glow_sala_b0_claim missing desk-file/embedded wire"
 
-say "GREEN: Glow Sala B0 claim shell — pin + desk-file; STOA235."
+say "GREEN: Glow Sala B0 claim shell — pin + desk-file + embedded; STOA237."
+
