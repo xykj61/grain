@@ -1,0 +1,29 @@
+# hawm0_boot_harvest_onpath_host.rish — STOA277: HAWM0 boot then harvest Bron.
+#
+# Host-onpath only — needs /dev/kvm (same seat as hawm0_boot_onpath_host).
+# Boots (or reuses) hawm0, then folds hawm0-boot-meta.txt into hawm-harvest.bron.
+#
+#   rishi/bin/rishi run tools/hawm0_boot_harvest_onpath_host.rish
+#
+# Device-free inventary stays tools/hawm_log_harvest_witness.rish.
+
+say "hawm0-boot-harvest: require /dev/kvm…"
+let kvm = run ["sh" "-c" "test -e /dev/kvm"]
+assert kvm.ok else "REFUSE: /dev/kvm absent — run from a plain host terminal outside the jail (same seat as hawm0_boot_onpath_host)"
+
+say "hawm0-boot-harvest: boot hawm0 (idempotent if already up)…"
+let boot = run ["rishi/bin/rishi" "run" "tools/hawm0_boot_onpath_host.rish"]
+say "${boot.out}"
+if (boot.ok == false) then say "hawm0-boot-harvest: boot stderr — ${boot.err}"
+assert boot.ok else "HAWM0 boot failed — see tools/.cache/hawm0/hawm0-boot-meta.txt"
+assert boot.out contains "GREEN" else "HAWM0 boot missing GREEN"
+
+say "hawm0-boot-harvest: fold meta → hawm-harvest.bron…"
+let harvest = run ["bash" "-c" "chmod +x tools/hawm_log_harvest_worker.sh && ./tools/hawm_log_harvest_worker.sh"]
+say "${harvest.out}"
+assert harvest.ok else "harvest worker failed after boot"
+let shape = run ["sh" "-c" "grep -q '^format hawm-harvest-v1$' tools/.cache/hawm0/hawm-harvest.bron && grep -q '^source meta$' tools/.cache/hawm0/hawm-harvest.bron && grep -q '^status GREEN$' tools/.cache/hawm0/hawm-harvest.bron && grep -q '^model ' tools/.cache/hawm0/hawm-harvest.bron && grep -q '^boot_completed 1$' tools/.cache/hawm0/hawm-harvest.bron"]
+assert shape.ok else "post-boot harvest Bron missing required fields"
+say "hawm0-boot-harvest: harvest Bron shape GREEN"
+
+say "GREEN: STOA277 — HAWM0 boot then hawm-harvest-v1 onpath."
