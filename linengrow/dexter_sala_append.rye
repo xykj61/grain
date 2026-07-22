@@ -15,8 +15,9 @@ const rc = @import("receipt_core.rye");
 const dexter = @import("window_input.rye");
 const glass = @import("dexter_glass_core.rye");
 const append = @import("glow_sala_b0_append.rye");
+const digest = @import("glow_sala_b0_digest.rye");
 
-pub const dexter_sala_append_version = "20260722.151257";
+pub const dexter_sala_append_version = "20260722.151515";
 
 pub const DexterSalaAppendError = append.AppendError || error{
     SubmitMissing,
@@ -37,6 +38,31 @@ pub fn append_submitted_line(
 ) DexterSalaAppendError!u32 {
     if (submitted.len == 0) return error.EmptyMemo;
     return append.append_typed_memo(log, log_len, seq, stamp, submitted, actor_hex, signer);
+}
+
+/// STOA270: append a submitted line and digest the growing live log.
+/// Does not touch the HAWM1 three-event pin path.
+pub fn append_submitted_line_digest(
+    log: []u8,
+    log_len: u32,
+    seq: i64,
+    stamp: []const u8,
+    submitted: []const u8,
+    actor_hex: *const [mc.pubkey_hex_len]u8,
+    signer: kumara.KeyPair,
+    out_root: *[32]u8,
+) DexterSalaAppendError!u32 {
+    const new_len = try append_submitted_line(
+        log,
+        log_len,
+        seq,
+        stamp,
+        submitted,
+        actor_hex,
+        signer,
+    );
+    out_root.* = digest.digest_log_bytes(log[0..new_len]);
+    return new_len;
 }
 
 /// Run the Dexter glass demo editor, then append its submitted line.

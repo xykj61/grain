@@ -16,6 +16,8 @@
 //! paints panels + tip + rail + B1 + Dexter + session-root hex; KEY updates
 //! Dexter; tap finishes. Soft input is shown when TUBE1 admits.
 //! R2 and TUBE2–5 + B1 + Dexter paint only when TUBE1 admits.
+//! STOA270: Dexter `.submit` appends through `dexter_sala_append` and writes
+//! files/sala_live_root.txt — distinct from HAWM1 sala_root.txt.
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -36,6 +38,10 @@ const dexter_key = @import("dexter_glass_key.rye");
 const kb_paint = @import("dexter_glass_keyboard_paint.rye");
 const kb_layout = @import("dexter_glass_keyboard_layout.rye");
 const dexter = @import("window_input.rye");
+const dexter_sala = @import("dexter_sala_append.rye");
+const kumara = @import("kumara.rye");
+const mc = @import("mala_core.rye");
+const rc = @import("receipt_core.rye");
 const r2 = @import("sala_r2_surface.rye");
 const sala_surf = @import("sala_surface.rye");
 const surface = @import("glow_native_surface.rye");
@@ -60,6 +66,9 @@ export var glow_last_session_root_hex: [65]u8 = [_]u8{0} ** 65;
 /// Glow product session-root (u32 from lowered nest cue-jam; expect 5).
 /// Distinct from Sala B0's 32-byte hex root in glow_last_session_root_hex.
 export var glow_last_product_session_root: u32 = 0;
+
+/// STOA270: live typed-append session root (hex + NUL). Distinct from HAWM1.
+export var glow_last_live_root_hex: [65]u8 = [_]u8{0} ** 65;
 
 var g_activity: ?*anyopaque = null;
 var g_input_queue: ?*anyopaque = null;
@@ -91,6 +100,11 @@ var g_dexter_ready: bool = false;
 var g_dexter_editor: dexter.LineEditor = .{};
 var g_dexter_held: [dexter.max_line_len]u8 = undefined;
 var g_dexter_held_len: u32 = 0;
+/// STOA270: accumulating live typed log (not the HAWM1 pin path).
+var g_live_log: [rc.max_log_len]u8 = undefined;
+var g_live_len: u32 = 0;
+var g_live_seq: i64 = 0;
+const live_stamp = "20260722.151515";
 var g_kb_shift: bool = false;
 var g_window: ?*anyopaque = null;
 var g_caret_timer_fd: c_int = -1;
@@ -146,6 +160,52 @@ fn write_product_root_file(root: u32) void {
     var buf: [16]u8 = undefined;
     const n = std.fmt.bufPrint(&buf, "{d}\n", .{root}) catch return;
     _ = write(fd, n.ptr, n.len);
+}
+
+/// STOA270: live typed-append root — never overwrites sala_root.txt (HAWM1).
+fn write_live_root_file(hex: *const [64]u8) void {
+    const path = android_files_root ++ "/sala_live_root.txt";
+    _ = mkdir(android_files_root, 0o700);
+    const fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0o600);
+    if (fd < 0) return;
+    defer _ = close(fd);
+    _ = write(fd, hex, 64);
+    _ = write(fd, "\n", 1);
+}
+
+fn record_live_root(root: *const [32]u8) void {
+    var hex: [64]u8 = undefined;
+    glow_fold.root_to_hex(root, &hex);
+    assert(hex.len == 64);
+    tally_copy.copy_disjoint(u8, glow_last_live_root_hex[0..64], &hex);
+    glow_last_live_root_hex[64] = 0;
+    write_live_root_file(glow_last_live_root_hex[0..64]);
+}
+
+/// Append one Dexter-shaped memo into the live log and refresh live-root file.
+fn commit_live_typed_memo(memo: []const u8) void {
+    if (memo.len == 0) return;
+    if (g_live_seq >= std.math.maxInt(i64)) return;
+    const actor_kp = kumara.keypair_from_seed(&mc.issuer_seed);
+    var actor_hex: [mc.pubkey_hex_len]u8 = undefined;
+    mc.hex_of_key(actor_kp.public_key, &actor_hex);
+    g_live_seq += 1;
+    var root: [32]u8 = undefined;
+    const new_len = dexter_sala.append_submitted_line_digest(
+        g_live_log[0..],
+        g_live_len,
+        g_live_seq,
+        live_stamp,
+        memo,
+        &actor_hex,
+        actor_kp,
+        &root,
+    ) catch {
+        g_live_seq -= 1;
+        return;
+    };
+    g_live_len = new_len;
+    record_live_root(&root);
 }
 
 fn apply_hearth_record(h: hearth.Hearth) void {
@@ -435,6 +495,8 @@ fn apply_dexter_action(action: dexter.Action) void {
         }
         g_dexter_held_len = @intCast(prompt.len);
         assert(g_dexter_held_len == prompt.len);
+        // STOA270: signed live append beside HAWM1 pin (empty submit skips).
+        commit_live_typed_memo(prompt);
         // JABS2: submit always refreshes chat face — bare ret included.
         if (g_jabs2_ready) {
             var chat_len: u32 = 0;
@@ -816,6 +878,9 @@ export fn ANativeActivity_onCreate(
     g_dexter_editor.reset();
     g_dexter_held_len = 0;
     g_dexter_len = 0;
+    g_live_len = 0;
+    g_live_seq = 0;
+    @memset(glow_last_live_root_hex[0..], 0);
     g_dexter_ready = dexter_glass.run_demo_dexter_line(&g_dexter_line, &g_dexter_len);
     if (g_dexter_ready) {
         const demo = "glow";
@@ -823,6 +888,9 @@ export fn ANativeActivity_onCreate(
         assert(demo.len <= g_dexter_held.len);
         tally_copy.copy_disjoint(u8, g_dexter_held[0..demo.len], demo);
         g_dexter_held_len = demo.len;
+        // STOA270: seed one live append from held demo so install eyes can
+        // prove sala_live_root.txt without a tap; submit uses the same commit.
+        commit_live_typed_memo(demo);
     }
     refresh_dexter_paint_line();
     wire_surface_callbacks(activity);
