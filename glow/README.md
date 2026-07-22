@@ -1,7 +1,7 @@
 # Glow — Language Tooling, Grown from Real Design
 
 **Language:** EN
-**Last updated:** 2026-07-21 (**STOA213** fixture cast twins)
+**Last updated:** 2026-07-22 (**STOA217** hex literal lex)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Audience:** Acme Corporation employees reading the working Glow pin

@@ -8,7 +8,13 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+- `20260722.130254` — [STOA215-217 send · STOA218 check-in](20260722-130254_stoa215-217-send-stoa218-checkin.bron) — pier send; rec C3 parse
+- `20260722.130125` — [STOA217 hex literal lex GREEN](20260722-130125_stoa217-hex-literal-lex.bron) — Kind.hex_lit; bare @ux kept
+- `20260722.130034` — [EDT Ubuntu Settings confirmed](20260722-130034_edt-ubuntu-settings-confirmed.bron) — date EDT; localtime New York
+- `20260722.125845` — [EDT Framework host stamp return](20260722-125845_edt-framework-host-convention.bron) — America/New_York; UDT era stays
+- `20260721.194941` — [STOA215-216 literals · cord lex](20260721-194941_stoa215-216-literals-cord-lex.bron) — inventory; Kind.cord_lit GREEN
 - `20260721.194756` — [STOA208-214 send · literals next](20260721-194756_stoa208-214-send-literals-next.bron) — pier send; lean C
+
 - `20260721.194203` — [STOA214 after fixture cast check-in](20260721-194203_stoa214-after-fixture-cast-checkin.bron) — leans A send (rec) · B–D
 - `20260721.194058` — [STOA213 fixture cast twins GREEN](20260721-194058_stoa213-fixture-cast-twins.bron) — named+import; literals held
 
