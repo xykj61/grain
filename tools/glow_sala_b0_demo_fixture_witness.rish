@@ -15,6 +15,8 @@ assert selftest.out contains "three stamps seated" else "glow_sala_b0_demo_fixtu
 assert selftest.out contains "three memos seated" else "glow_sala_b0_demo_fixture_witness missing memos"
 assert selftest.out contains "root pin agrees fold" else "glow_sala_b0_demo_fixture_witness missing root pin"
 assert selftest.out contains "STOA193" else "glow_sala_b0_demo_fixture_witness missing STOA193"
+assert selftest.out contains "STOA223" else "glow_sala_b0_demo_fixture_witness missing STOA223"
+assert selftest.out contains "lit desk binds product pins" else "glow_sala_b0_demo_fixture_witness missing lit desk wire"
 assert selftest.out contains "99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe" else "glow_sala_b0_demo_fixture_witness missing expected hex"
 
 # Desk shape still GREEN beside the product pin.
@@ -22,4 +24,9 @@ let desk = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/shape-de
 assert desk.ok else "shape-demo-fixture-constants.glow failed after fixture pin"
 assert desk.out contains "GREEN" else "shape-demo-fixture-constants.glow missing GREEN"
 
-say "GREEN: Glow Sala B0 demo fixture pin — stamps/memos/root checkable; desk beside; STOA193."
+# Glow face=lit sample desk still GREEN (parse · lower · elder pins).
+let lits = run ["rishi/bin/rishi" "run" "tools/glow_sample_demo_fixture_lits_witness.rish"]
+assert lits.ok else "sample-demo-fixture-lits witness failed after product wire"
+assert lits.out contains "GREEN" else "sample-demo-fixture-lits missing GREEN"
+
+say "GREEN: Glow Sala B0 demo fixture pin — stamps/memos/root · lit desk wire; STOA193/223."
