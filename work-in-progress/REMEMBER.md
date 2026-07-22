@@ -6,7 +6,8 @@
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · **Sala B0 Glow compose** · fixture + fact-line lit wire  
 **Language nib:** **STOA0–226** GREEN · literals season closed · check-in open  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–226  
-**Git nib:** *(filled after send)* · STOA225–226  
+**Git nib:** `d1feb98c479a` · STOA225–226  
+
 
 **Season:** Framework · Eastern / EDT · fact-line lits on pier · SETU6.5 live-sent GREEN.  
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`
