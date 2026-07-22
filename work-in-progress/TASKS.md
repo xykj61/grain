@@ -581,6 +581,8 @@
 - [x] **`.cursorignore` archive and caches** `20260722.183653` — indexing only; git truth whole. Brief [`../active-designing/20260722-183653_cursorignore-archive-and-caches.md`](../active-designing/20260722-183653_cursorignore-archive-and-caches.md).
 - [x] **Align · continue Glow language** `20260722.184311` — compass; payload argv next. Brief [`../active-designing/20260722-184311_align-continue-glow-language.md`](../active-designing/20260722-184311_align-continue-glow-language.md).
 - [x] **STOA302 — continue Glow language check-in** `20260722.184311` — lean A payload argv survey (xact); lean B docs compressor; lean E held. Brief [`../active-designing/20260722-184311_stoa302-continue-glow-language-checkin.md`](../active-designing/20260722-184311_stoa302-continue-glow-language-checkin.md).
+- [x] **STOA303 — payload argv survey · xact** `20260722.184804` — `emit_xact_argv` bartis+barket; mint/send; xfer refuse pinned. Brief [`../active-designing/20260722-184507_stoa303-payload-argv-survey-xact.md`](../active-designing/20260722-184507_stoa303-payload-argv-survey-xact.md).
+- [x] **STOA304 — after xact argv check-in** `20260722.184520` — lean A send; lean B rest. Brief [`../active-designing/20260722-184520_stoa304-after-xact-argv-checkin.md`](../active-designing/20260722-184520_stoa304-after-xact-argv-checkin.md).
 
 
 - [x] **UDT stamp convention on Framework host** `20260720.232932` — Keaton set system clock to UDT (UTC); [`context/specs/20260720-232932_udt-framework-host-convention.md`](../context/specs/20260720-232932_udt-framework-host-convention.md); Eastern era stamps stay; session-log rules + `GLOW_PROFILE` pointed at Etc/UTC for that season.

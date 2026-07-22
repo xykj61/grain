@@ -1,0 +1,5 @@
+::  Thin bartis generator (STOA303): xact-shape identity; payload tag + amount from Rishi argv.
+::  Matching fixture desk: gate-xact-shape.glow (baked welcome).
+::  Args: mint <u32> · or send
+|=  sample=xact-shape
+sample

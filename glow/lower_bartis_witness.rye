@@ -227,12 +227,22 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(spec_kind_tag.body == .identity);
     print("lower: glow/gen/gate-kind-tag.glow carries kind-shape argv -- GREEN\n", .{});
 
-    if (lower.lower_source_argv_sample("|=  sample=xact-shape\nsample\n", &buf)) |_| {
-        return error.XactArgvLoweredTooSoon;
-    } else |err| {
-        if (err != lower.LowerError.SampleDoesNotNest) return err;
-    }
-    print("lower: xact-shape argv refused SampleDoesNotNest -- GREEN\n", .{});
+    // STOA303: xact-shape argv identity — payload tag + amount.
+    const xact_argv_src = "|=  sample=xact-shape\nsample\n";
+    const n_xact_argv = try lower.lower_source_argv_sample(xact_argv_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n_xact_argv], "XactShape") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_xact_argv], "minimal.args") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_xact_argv], "\"mint\"") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_xact_argv], "\"send\"") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_xact_argv], "parseInt(u32, argv[2]") != null);
+    try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_xact_argv.rye", .data = buf[0..n_xact_argv] });
+    print("lower: xact-shape argv emit reads minimal.args / tag+amount -- GREEN\n", .{});
+
+    const gen_xact_tag = try cwd.readFileAlloc(io, "glow/gen/gate-xact-tag.glow", a, .limited(4096));
+    const spec_xact_tag = try rb.parse_source(gen_xact_tag);
+    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_xact_tag), "xact-shape"));
+    assert(spec_xact_tag.body == .identity);
+    print("lower: glow/gen/gate-xact-tag.glow carries xact-shape argv -- GREEN\n", .{});
 
     if (lower.lower_source_argv_sample("|=  sample=xfer-shape\nsample\n", &buf)) |_| {
         return error.XferArgvLoweredTooSoon;
@@ -748,7 +758,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("lower: glow/gen/gate-count.glow carries count-shape -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: Glow `|=` bartis — identity · argv · call-body · amount-shape · amount argv · count-shape · count argv · kind-shape · kind argv · kind flip · xact-shape · xact flip · xfer-shape · xfer flip · pair-shape · pair flip · triple-shape · triple flip · quad-shape · quad flip · penta-shape · penta flip · hexa-shape · hexa flip · hepta-shape · hepta flip · octa-shape · octa flip · nona-shape · nona flip · nesting-nests; STOA100–147 · STOA253 identity emit · STOA259 N-field flip · STOA293 tagged payload flip · STOA297 tagged unit flip · STOA300 kind argv.\n", .{});
+    print("GREEN: Glow `|=` bartis — identity · argv · call-body · amount-shape · amount argv · count-shape · count argv · kind-shape · kind argv · kind flip · xact-shape · xact argv · xact flip · xfer-shape · xfer flip · pair-shape · pair flip · triple-shape · triple flip · quad-shape · quad flip · penta-shape · penta flip · hexa-shape · hexa flip · hepta-shape · hepta flip · octa-shape · octa flip · nona-shape · nona flip · nesting-nests; STOA100–147 · STOA253 identity emit · STOA259 N-field flip · STOA293 tagged payload flip · STOA297 tagged unit flip · STOA300 kind argv · STOA303 xact argv.\n", .{});
     return 0;
 }
 
