@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260722.155546
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title STOA292 Survey seated
+prompt we can seat survey
+think seat Survey in Lexicon; retire inventary for living Now; dated inventary stays
+think rule vocabulary-survey for Cursor and Claude; update STOA291 lean to survey
+obs STOA292 vocabulary pin; STOA291 lean A still await approve
+product_nib ZETA6 LULU0-5 SETU6.5 Survey-seated
+suite_nib STOA0-292
+file context/LEXICON.md Survey row
+file active-designing/20260722-155438_survey-seated-inventary-retired.md seating brief
+file .cursor/rules/vocabulary-survey.mdc
+file .claude/rules/vocabulary-survey.md
+recommend check-in approve STOA291 lean A tagged dollar-percent flip survey then kg

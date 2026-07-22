@@ -7,6 +7,10 @@ Living index for the append-only session stream. This table reads **newest first
 **Day’s truth is this index’s order, not filename sort.** One-clock stamps sort ascending on disk; trust the table for sequence within a day.
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
+- `20260722.155546` — [STOA292 Survey seated](20260722-155546_stoa292-survey-seated.bron) — Lexicon Survey; inventary retired for Now
+- `20260722.155357` — [inventary word pick survey](20260722-155357_inventary-word-pick-survey.bron) — Quin picks survey; inventory as plain default
+- `20260722.155252` — [inventary word plain function](20260722-155252_inventary-word-plain-function.bron) — coined site-catalog pass; not dictionary English
+- `20260722.155221` — [REMEMBER git nib after STOA291](20260722-155221_remember-git-nib-stoa291.bron) — pin a77e356968be
 - `20260722.155211` — [STOA291 continue after Pixel eyes](20260722-155211_stoa291-continue-after-pixel-eyes-checkin.bron) — lean A tagged `$%` flip inventary
 - `20260722.155031` — [REMEMBER git nib after STOA290](20260722-155031_remember-git-nib-stoa290.bron) — pin 0443b2f6150a
 - `20260722.155018` — [STOA289–290 Pixel LIVE eyes](20260722-155018_stoa289-290-pixel-live-eyes-round.bron) — pack+install GREEN; live root distinct
