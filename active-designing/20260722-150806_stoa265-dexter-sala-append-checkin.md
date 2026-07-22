@@ -6,8 +6,8 @@
 **Version:** `20260722.150806` (EDT · Framework host)  
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
 **Voice:** Quin  
-**Status:** Checkable — lean table · recommend **A** · no wire yet  
-**Register:** Checkable for the lean; Intent until the typed-append witness GREEN  
+**Status:** Checkable — lean **A** approved `20260722.151008` → STOA266 GREEN  
+**Register:** Checkable (Two Rooms) — typed-append witness GREEN as STOA266; glass wire still Intent  
 **Grounds in:** STOA264 lean **B** · STOA263 Pixel authored-fold eyes · STOA203 append compose · STOA243–249 authored bodies · Dexter ZETA/JABS2 glass · humanity 1A  
 
 **dated_guard:** Do **not** reopen STOA263 eyes as unfinished. Do **not** claim JABS2 chat paint is a signed Sala event. Do **not** change `sala_root.txt` HAWM1 pin in the first typed-append lap. HAWM 1A · gold · shared-package · JABS3 · UDP hop stay held.
@@ -44,7 +44,7 @@
 
 | | Lean | What it opens |
 |---|---|---|
-| **A** | **Typed memo → Glow `append_event` (device-free)** — **recommended** | First real signed event from a Dexter-shaped string; HAWM1 fold untouched |
+| **A** | **Typed memo → Glow `append_event` (device-free)** — **chosen** → STOA266 | First real signed event from a Dexter-shaped string; HAWM1 fold untouched |
 | **B** | **Dexter submit helper module** (still host witness) | Names LineEditor→append before glass wire |
 | **C** | **NativeActivity submit → append + paint / live-root file** | Glass hand; pack; Pixel eyes follow |
 | **D** | **Rest / other season door** | Explicit hold |

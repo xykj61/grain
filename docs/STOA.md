@@ -1,6 +1,6 @@
-# STOA — Glow SLC · nest · product · ≤80 · STOA0–265 · 2026-07-22 · draw → **STOA**
+# STOA — Glow SLC · nest · product · ≤80 · STOA0–267 GREEN · 2026-07-22 · draw → **STOA**
 
-Living Glow OS desks lead with `shape-*` (inventary duals STOA161–173; pin polish STOA174; multi-field cast twins STOA175–176). Sala B0 Glow: STOA177–265 · **STOA265** Dexter→Sala append check-in (lean A typed memo→`append_event`). Hoon study twins under `glow/gen/hoon-study/`.
+Living Glow OS desks lead with `shape-*` (inventary duals STOA161–173; pin polish STOA174; multi-field cast twins STOA175–176). Sala B0 Glow: STOA177–267 · **STOA267** after typed memo append (Dexter submit helper next). Hoon study twins under `glow/gen/hoon-study/`.
 
 | Rung | Claim | Witness / gate | State |
 |------|-------|----------------|-------|
@@ -95,4 +95,6 @@ Living Glow OS desks lead with `shape-*` (inventary duals STOA161–173; pin pol
 | **STOA263** | Pixel authored-fold eyes | `tube05` pack + install onpath | **GREEN** `20260722.150432` |
 | **STOA264** | after authored-fold eyes check-in | leans A send · B Dexter→Sala | **GREEN** `20260722.150432` |
 | **STOA265** | Dexter→Sala append check-in | lean A typed memo→`append_event` | **seated** `20260722.150806` |
+| **STOA266** | typed memo → Glow `append_event` | `glow_sala_b0_typed_append_witness` | **GREEN** `20260722.151008` |
+| **STOA267** | after typed memo append check-in | leans A send · B Dexter helper | **GREEN** `20260722.151101` |
 Smoke: `glow_nest_type_witness` · `glow_barket_parse_witness` · `glow_lower_bartis_witness` · Sibling: **ZETA** · **LULU** · **SETU** · **TUBE**.
