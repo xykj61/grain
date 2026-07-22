@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260722.145236
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title STOA259-260 bartis N-field flip
+prompt kg
+think STOA258 lean B flip collapse; inventary already sized identity then flip.
+think Collapse lower_bartis pair…nona flip through emit_n_field_flip_call_body; keep kind/xact/xfer per-family.
+think Witness GREEN; STOA260 lean A send · B barket flip twin.
+think Ship pending humanity/green/Glow-name check-in docs in the same send.
+obs Bartis now has both identity and flip on the shared closed_tuple table; barket flip is the mechanical twin.
+file glow/lower_bartis.rye emit_n_field_flip_call_body
+file tools/stoa259_n_field_flip_emit_witness.rish STOA259 pin
+file active-designing/20260722-145110_stoa259-n-field-flip-emit.md brief
+file active-designing/20260722-145236_stoa260-after-n-field-flip-checkin.md check-in
+file active-designing/20260722-144843_checkin-humanity-green-runes-glow-name.md rides send
+product_nib ZETA6
+suite_nib STOA260
+recommend keep-going barket flip twin after send (STOA260 lean B)

@@ -7,6 +7,11 @@ Living index for the append-only session stream. This table reads **newest first
 **Day’s truth is this index’s order, not filename sort.** One-clock stamps sort ascending on disk; trust the table for sequence within a day.
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
+- `20260722.145236` — [STOA259–260 bartis N-field flip](20260722-145236_stoa259-260-n-field-flip-round.bron) — flip emit; barket twin next
+- `20260722.145017` — [Surveys close · Glow name grounds](20260722-145017_surveys-close-glow-name-grounds.bron) — cite acceptance specs on check-in
+- `20260722.144843` — [Check-in humanity green runes Glow name](20260722-144843_checkin-humanity-green-runes-glow-name.bron) — finish · meter · keep Glow
+- `20260722.144811` — [REMEMBER git nib STOA258 fix](20260722-144811_remember-git-nib-stoa258-fix.bron) — pin 02b62dc59096 on living card
+- `20260722.144745` — [REMEMBER git nib after STOA258](20260722-144745_remember-git-nib-stoa258.bron) — pin 02b62dc59096
 - `20260722.144300` — [STOA257–258 shape-only living](20260722-144300_stoa257-258-shape-only-living-round.bron) — living -shape; study alias held; flip next
 - `20260722.143648` — [Check-in HAWM fleet and shape-only](20260722-143648_checkin-hawm-fleet-shape-only.bron) — 2A shape living · 1A HAWM harvest
 - `20260722.143539` — [REMEMBER git nib STOA256 fix](20260722-143539_remember-git-nib-stoa256-fix.bron) — pin df21de606e7f on living card

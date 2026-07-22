@@ -1,0 +1,19 @@
+# stoa259_n_field_flip_emit_witness.rish — bartis pair…nona flip via one helper.
+#
+#   rishi/bin/rishi run tools/stoa259_n_field_flip_emit_witness.rish
+
+let bartis = run ["rishi/bin/rishi" "run" "tools/glow_lower_bartis_witness.rish"]
+assert bartis.ok else "glow_lower_bartis_witness failed"
+assert bartis.out contains "STOA259" else "bartis witness missing STOA259"
+
+let helper = run ["sh" "-c" "grep -q 'fn emit_n_field_flip_call_body' glow/lower_bartis.rye"]
+assert helper.ok else "missing emit_n_field_flip_call_body"
+
+let wrappers = run ["sh" "-c" "test $(grep -Fc 'return emit_n_field_flip_call_body(' glow/lower_bartis.rye) = 8"]
+assert wrappers.ok else "expected eight flip wrappers through emit_n_field_flip_call_body"
+
+# kind/xact/xfer flip emitters stay per-family (not closed $: N-field).
+let tagged_kept = run ["sh" "-c" "grep -q 'fn emit_kind_call_body' glow/lower_bartis.rye && grep -q 'fn emit_xfer_call_body' glow/lower_bartis.rye"]
+assert tagged_kept.ok else "tagged $% flip emitters must remain"
+
+say "GREEN: STOA259 — bartis N-field flip emit via emit_n_field_flip_call_body; tagged flip held."
