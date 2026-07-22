@@ -1,0 +1,25 @@
+# stoa249_fields_body_author_witness.rish — product owns FactFields parse bodies.
+#
+# Elder receipt_core parse stays peer baseline (one call each inside
+# fields_body_agrees_elder only).
+#
+#   rishi/bin/rishi run tools/stoa249_fields_body_author_witness.rish
+
+let product = run ["rishi/bin/rishi" "run" "tools/glow_sala_b0_fields_witness.rish"]
+assert product.ok else "glow_sala_b0_fields_witness failed"
+assert product.out contains "STOA249" else "product side missing STOA249"
+assert product.out contains "product-authored fields" else "product side missing authored fields"
+
+let uses_tally = run ["sh" "-c" "grep -q 'tally_parse_int.parse_int' linengrow/glow_sala_b0_fields.rye"]
+assert uses_tally.ok else "missing tally_parse_int in product fields amount parse"
+
+let peer_only = run ["sh" "-c" "test $(grep -Fc 'rc.parse_fact_fields(' linengrow/glow_sala_b0_fields.rye) = 1 && test $(grep -Fc 'rc.parse_amount_signed(' linengrow/glow_sala_b0_fields.rye) = 1"]
+assert peer_only.ok else "elder parse_fact_fields/parse_amount_signed must appear once each (peer agree only)"
+
+let has_body = run ["sh" "-c" "grep -q fields_body_agrees_elder linengrow/glow_sala_b0_fields.rye"]
+assert has_body.ok else "missing fields_body_agrees_elder"
+
+let replay = run ["rishi/bin/rishi" "run" "tools/glow_sala_b0_replay_witness.rish"]
+assert replay.ok else "replay witness failed after fields body"
+
+say "GREEN: STOA249 — product-authored fields body agrees elder peer."

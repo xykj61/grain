@@ -2,14 +2,14 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260722.141514` (EDT) · voice Quin  
-**Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · **Sala B0 Glow compose** · authored line · sign · **digest**  
-**Language nib:** **STOA0–248** GREEN · after product-authored digest body  
-**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–248  
-**Git nib:** *(set after send)* · STOA247–248  
+**Last refreshed:** `20260722.141659` (EDT) · voice Quin  
+**Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · **Sala B0 Glow compose** · authored line · sign · digest · **fields**  
+**Language nib:** **STOA0–250** GREEN · after product-authored fields body  
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–250  
+**Git nib:** *(set after send)* · STOA249–250  
 
 
-**Season:** Framework · Eastern / EDT · authored trilogy (line·sign·digest) GREEN · round-close on.  
+**Season:** Framework · Eastern / EDT · authored deepen (line·sign·digest·fields) GREEN · round-close on.  
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`  
 **ADB:** `tools/.cache/hawm0/android-sdk/platform-tools/adb` — not on bare PATH
 
@@ -17,7 +17,7 @@
 
 ## Now
 
-**STOA248** `20260722.141514` — authored digest body GREEN; lean B name next door (fields body · shared-package · language). Brief [`../active-designing/20260722-141514_stoa248-after-digest-body-checkin.md`](../active-designing/20260722-141514_stoa248-after-digest-body-checkin.md).
+**STOA250** `20260722.141659` — authored fields body GREEN; lean B name next door (shared-package · language · season). Brief [`../active-designing/20260722-141659_stoa250-after-fields-body-checkin.md`](../active-designing/20260722-141659_stoa250-after-fields-body-checkin.md).
 
 **ADB (copy-paste):**
 
@@ -37,13 +37,12 @@ $ADB shell run-as org.glow.app.sala_broadcaster cat files/sala_root.txt
 
 | Door | Kind |
 |------|------|
-| Name next door | **check-in** (fields body · shared-package · language) |
-| Fields/parse authored body | **held** until sized |
+| Name next door | **check-in** (shared-package · language · season) |
 | Shared package / true `@import` face_lit | **held** |
+| Language return | **held** until named |
 | JABS3 | **held** |
+| Product-authored fields body | **GREEN** `20260722.141630` |
 | Product-authored digest body | **GREEN** `20260722.141443` |
-| Product-authored sign body | **GREEN** `20260722.141141` |
-| Product-authored line body | **GREEN** `20260722.140957` |
 | Pixel embedded-desk eyes | **GREEN** `20260722.135605` |
 | SETU6.5 live-sent | **GREEN** `20260720.233805` |
 

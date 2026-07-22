@@ -752,7 +752,11 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA247 product-authored digest body GREEN, `20260722.141443`** — Sha3_256 own body ≡ elder peer; HAWM1. Brief [`active-designing/20260722-141443_stoa247-product-authored-digest-body.md`](../active-designing/20260722-141443_stoa247-product-authored-digest-body.md).
 
-**STOA248 after digest body check-in, `20260722.141514`** — lean A send · lean B name next door (fields body / shared-package / language). Brief [`active-designing/20260722-141514_stoa248-after-digest-body-checkin.md`](../active-designing/20260722-141514_stoa248-after-digest-body-checkin.md). JABS3 held.
+**STOA248 after digest body check-in, `20260722.141514`** — lean A send · lean B → STOA249 fields body. Brief [`active-designing/20260722-141514_stoa248-after-digest-body-checkin.md`](../active-designing/20260722-141514_stoa248-after-digest-body-checkin.md). JABS3 held.
+
+**STOA249 product-authored fields body GREEN, `20260722.141630`** — parse_fact_fields/amount own body ≡ elder peer. Brief [`active-designing/20260722-141630_stoa249-product-authored-fields-body.md`](../active-designing/20260722-141630_stoa249-product-authored-fields-body.md).
+
+**STOA250 after fields body check-in, `20260722.141659`** — lean A send · lean B name next door (shared-package / language / season). Brief [`active-designing/20260722-141659_stoa250-after-fields-body-checkin.md`](../active-designing/20260722-141659_stoa250-after-fields-body-checkin.md). JABS3 held.
 
 
 **Framework next (host resume), `20260720.231857`** — lean A: live SETU6.5 **sent** eyes on real `usb0`/`ncm`. Lab TX gate already GREEN; Sala B0 Glow rewrite · JABS3 stay thicker check-ins. Same freeze brief.

@@ -10,7 +10,7 @@ const print = std.debug.print;
 const fixture = @import("glow_sala_b0_demo_fixture.rye");
 const fields = @import("glow_sala_b0_fields.rye");
 
-const witness_version = "20260721.193404";
+const witness_version = "20260722.141630";
 
 fn run_selftest() !u8 {
     assert(fixture.root_pin_agrees());
@@ -30,9 +30,15 @@ fn run_selftest() !u8 {
     const bad_amt = fields.parse_amount_signed("01");
     assert(bad_amt == error.InvalidAmount);
     print("sala-b0-fields: leading-zero amount refuses -- GREEN\n", .{});
+    print("sala-b0-fields: STOA212 fields surface -- GREEN\n", .{});
+
+    // STOA249: product-authored fields body agrees elder peer.
+    assert(try fields.fields_body_agrees_elder());
+    print("sala-b0-fields: fields body agrees elder -- GREEN\n", .{});
+    print("sala-b0-fields: STOA249 product-authored fields body -- GREEN\n", .{});
 
     print("sala-b0-fields: version {s}\n", .{witness_version});
-    print("GREEN: Glow Sala B0 fields surface — STOA212; elder parse_fact_fields behind Glow assert.\n", .{});
+    print("GREEN: Glow Sala B0 fields surface — STOA212/249; product-authored fields body.\n", .{});
     return 0;
 }
 
