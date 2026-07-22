@@ -57,7 +57,6 @@ assert selftest.out contains "OctaShape" else "lower_bartis_witness missing Octa
 assert selftest.out contains "gate-nona.glow" else "lower_bartis_witness missing gate-nona desk"
 assert selftest.out contains "NonaShape" else "lower_bartis_witness missing NonaShape claim"
 assert selftest.out contains "deca-shape" else "lower_bartis_witness missing deca-shape refuse"
-assert selftest.out contains "nona-shape argv refused" else "lower_bartis_witness missing nona argv refuse"
 assert selftest.out contains "gate-nona-flip.glow" else "lower_bartis_witness missing nona-flip desk"
 assert selftest.out contains "nona-shape call-body flip" else "lower_bartis_witness missing nona flip claim"
 assert selftest.out contains "nona-shape double call-body refused" else "lower_bartis_witness missing nona double refuse"
@@ -103,6 +102,8 @@ assert selftest.out contains "gate-hepta-fields.glow" else "lower_bartis_witness
 assert selftest.out contains "hepta-shape argv emit" else "lower_bartis_witness missing hepta argv claim"
 assert selftest.out contains "gate-octa-fields.glow" else "lower_bartis_witness missing octa argv desk"
 assert selftest.out contains "octa-shape argv emit" else "lower_bartis_witness missing octa argv claim"
+assert selftest.out contains "gate-nona-fields.glow" else "lower_bartis_witness missing nona argv desk"
+assert selftest.out contains "nona-shape argv emit" else "lower_bartis_witness missing nona argv claim"
 assert selftest.out contains "gate-count-u32.glow" else "lower_bartis_witness missing count argv desk"
 assert selftest.out contains "count-shape argv" else "lower_bartis_witness missing count argv claim"
 assert selftest.out contains "gate-kind-tag.glow" else "lower_bartis_witness missing kind argv desk"
@@ -450,5 +451,5 @@ let run_xact_argv = run ["sh" "-c" "${xact_argv_bin} mint 5; echo EXIT:$?"]
 assert run_xact_argv.ok else "bartis xact argv binary failed to launch"
 assert run_xact_argv.out contains "EXIT:0" else "bartis xact argv binary did not exit 0 with mint 5"
 
-say "GREEN: Glow `|=` bartis — STOA100–147 · STOA253 N-field identity · STOA259 N-field flip · STOA293 tagged payload flip · STOA297 tagged unit flip · STOA300 kind argv · STOA303 xact argv · STOA305 xfer argv · STOA307 pair argv · STOA309 triple argv · STOA311 quad argv · STOA313 penta argv · STOA315 hexa argv · STOA317 hepta argv · STOA319 octa argv · STOA257 shape-only living · argv · call-body · amount-shape · amount argv · count-shape · count argv · kind-shape · kind argv · kind flip · xact-shape · xact argv · xact flip · xfer-shape · xfer argv · xfer flip · pair-shape · pair argv · pair flip · triple-shape · triple argv · triple flip · quad-shape · quad argv · quad flip · penta-shape · penta argv · penta flip · hexa-shape · hexa argv · hexa flip · hepta-shape · hepta argv · hepta flip · octa-shape · octa argv · octa flip · nona-shape · nona flip · stated nesting · nest SampleDoesNotNest."
+say "GREEN: Glow `|=` bartis — STOA100–147 · STOA253 N-field identity · STOA259 N-field flip · STOA293 tagged payload flip · STOA297 tagged unit flip · STOA300 kind argv · STOA303 xact argv · STOA305 xfer argv · STOA307 pair argv · STOA309 triple argv · STOA311 quad argv · STOA313 penta argv · STOA315 hexa argv · STOA317 hepta argv · STOA319 octa argv · STOA321 nona argv · STOA257 shape-only living · argv · call-body · amount-shape · amount argv · count-shape · count argv · kind-shape · kind argv · kind flip · xact-shape · xact argv · xact flip · xfer-shape · xfer argv · xfer flip · pair-shape · pair argv · pair flip · triple-shape · triple argv · triple flip · quad-shape · quad argv · quad flip · penta-shape · penta argv · penta flip · hexa-shape · hexa argv · hexa flip · hepta-shape · hepta argv · hepta flip · octa-shape · octa argv · octa flip · nona-shape · nona argv · nona flip · stated nesting · nest SampleDoesNotNest."
 
