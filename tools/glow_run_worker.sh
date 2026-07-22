@@ -8,6 +8,7 @@
 #   tools/glow_run_worker.sh <file.glow> mint <from> <amount>      # xfer payload tag
 #   tools/glow_run_worker.sh <file.glow> <from> <amount>           # pair $: fields
 #   tools/glow_run_worker.sh <file.glow> <from> <amount> <fee>     # triple $: fields
+#   tools/glow_run_worker.sh <file.glow> <from> <amount> <fee> <nonce>  # quad $: fields
 
 set -e
 ROOT=$(CDPATH= cd -- "$(dirname "$0")/.." && pwd)
@@ -18,9 +19,10 @@ GLOW=$1
 SAMPLE=${2-}
 SAMPLE2=${3-}
 SAMPLE3=${4-}
+SAMPLE4=${5-}
 
 test -n "$GLOW" || {
-  echo "usage: glow_run_worker.sh <file.glow> [<sample>] [<u32>] [<u32>]"
+  echo "usage: glow_run_worker.sh <file.glow> [<sample>] [<u32>] [<u32>] [<u32>]"
   exit 2
 }
 
@@ -79,6 +81,10 @@ gate-xfer-tag|gate-barket-xfer-tag)
       echo "FAIL: ${STEM}.glow mint needs from u32 and amount u32"
       exit 2
     }
+    test -z "$SAMPLE4" || {
+      echo "FAIL: ${STEM}.glow mint takes two faces only"
+      exit 2
+    }
   else
     test -z "$SAMPLE2" || {
       echo "FAIL: ${STEM}.glow send takes no faces"
@@ -101,10 +107,20 @@ gate-triple-fields|gate-barket-triple-fields)
     echo "FAIL: ${STEM}.glow needs from u32, amount u32, and fee u32"
     exit 2
   }
+  test -z "$SAMPLE4" || {
+    echo "FAIL: ${STEM}.glow takes three field decimals only"
+    exit 2
+  }
+  ;;
+gate-quad-fields|gate-barket-quad-fields)
+  test -n "$SAMPLE" && test -n "$SAMPLE2" && test -n "$SAMPLE3" && test -n "$SAMPLE4" || {
+    echo "FAIL: ${STEM}.glow needs from u32, amount u32, fee u32, and nonce u32"
+    exit 2
+  }
   ;;
 *)
   test -z "$SAMPLE" || {
-    echo "FAIL: only sample-u32 / gate-*-u32 / gate-*-kind-tag / gate-*-xact-tag / gate-*-xfer-tag / gate-*-pair-fields / gate-*-triple-fields take a sample"
+    echo "FAIL: only sample-u32 / gate-*-u32 / gate-*-kind-tag / gate-*-xact-tag / gate-*-xfer-tag / gate-*-pair-fields / gate-*-triple-fields / gate-*-quad-fields take a sample"
     exit 2
   }
   ;;
@@ -117,7 +133,9 @@ if [ -n "$SAMPLE" ]; then
   RYE=$(glow/bin/glow_run --sample-argv "$GLOW")
   test -n "$RYE"
   env RYE_ZIG="$ZIG" rye/bin/rye build "$RYE" -femit-bin="$BIN"
-  if [ -n "$SAMPLE3" ]; then
+  if [ -n "$SAMPLE4" ]; then
+    "$BIN" "$SAMPLE" "$SAMPLE2" "$SAMPLE3" "$SAMPLE4"
+  elif [ -n "$SAMPLE3" ]; then
     "$BIN" "$SAMPLE" "$SAMPLE2" "$SAMPLE3"
   elif [ -n "$SAMPLE2" ]; then
     "$BIN" "$SAMPLE" "$SAMPLE2"
