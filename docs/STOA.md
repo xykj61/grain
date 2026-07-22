@@ -1,6 +1,6 @@
-# STOA — Glow SLC · nest · product · ≤80 · STOA0–229 GREEN · 2026-07-22 · draw → **STOA**
+# STOA — Glow SLC · nest · product · ≤80 · STOA0–230 GREEN · 2026-07-22 · draw → **STOA**
 
-Living Glow OS desks lead with `shape-*` (inventary duals STOA161–173; pin polish STOA174; multi-field cast twins STOA175–176). Sala B0 Glow: STOA177–229 · **STOA229** append first event from pin emit. Hoon study twins under `glow/gen/hoon-study/`.
+Living Glow OS desks lead with `shape-*` (inventary duals STOA161–173; pin polish STOA174; multi-field cast twins STOA175–176). Sala B0 Glow: STOA177–230 · **STOA230** after append pin wire check-in (send · rest). Hoon study twins under `glow/gen/hoon-study/`.
 
 | Rung | Claim | Witness / gate | State |
 |------|-------|----------------|-------|
@@ -80,4 +80,5 @@ Living Glow OS desks lead with `shape-*` (inventary duals STOA161–173; pin pol
 | **STOA227** | demo line emit from seated pins | `glow_sala_b0_line_witness` | **GREEN** `20260722.132533` |
 | **STOA228** | after demo pin emit check-in | leans A send · B as STOA229 | **GREEN** `20260722.132705` |
 | **STOA229** | append first event from pin emit | `glow_sala_b0_append_witness` | **GREEN** `20260722.133004` |
+| **STOA230** | after append pin wire check-in | leans A send `133343` · B rest | **GREEN** `20260722.133211` |
 Smoke: `glow_nest_type_witness` · `glow_barket_parse_witness` · `glow_lower_bartis_witness` · Sibling: **ZETA** · **LULU** · **SETU** · **TUBE**.
