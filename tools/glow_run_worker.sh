@@ -6,6 +6,7 @@
 #   tools/glow_run_worker.sh <file.glow> <sample>                  # u32 or kind tag
 #   tools/glow_run_worker.sh <file.glow> mint <amount-u32>         # xact payload tag
 #   tools/glow_run_worker.sh <file.glow> mint <from> <amount>      # xfer payload tag
+#   tools/glow_run_worker.sh <file.glow> <from> <amount>           # pair $: fields
 
 set -e
 ROOT=$(CDPATH= cd -- "$(dirname "$0")/.." && pwd)
@@ -84,9 +85,19 @@ gate-xfer-tag|gate-barket-xfer-tag)
     }
   fi
   ;;
+gate-pair-fields|gate-barket-pair-fields)
+  test -n "$SAMPLE" && test -n "$SAMPLE2" || {
+    echo "FAIL: ${STEM}.glow needs from u32 and amount u32"
+    exit 2
+  }
+  test -z "$SAMPLE3" || {
+    echo "FAIL: ${STEM}.glow takes two field decimals only"
+    exit 2
+  }
+  ;;
 *)
   test -z "$SAMPLE" || {
-    echo "FAIL: only sample-u32 / gate-*-u32 / gate-*-kind-tag / gate-*-xact-tag / gate-*-xfer-tag take a sample"
+    echo "FAIL: only sample-u32 / gate-*-u32 / gate-*-kind-tag / gate-*-xact-tag / gate-*-xfer-tag / gate-*-pair-fields take a sample"
     exit 2
   }
   ;;
