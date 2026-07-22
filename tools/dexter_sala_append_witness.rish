@@ -1,0 +1,23 @@
+# dexter_sala_append_witness.rish — STOA268 Dexter submit → typed Sala append.
+#
+#   rishi/bin/rishi run tools/dexter_sala_append_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/dexter_sala_append_witness"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/dexter_sala_append_witness.rye -femit-bin=${bin}"]
+assert build.ok else "dexter_sala_append_witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "dexter_sala_append_witness exited non-zero"
+assert selftest.out contains "GREEN" else "dexter_sala_append_witness not GREEN"
+assert selftest.out contains "demo editor submit via bridge" else "missing Dexter bridge path"
+assert selftest.out contains "fields memo equals Dexter glow" else "missing Dexter memo fields claim"
+assert selftest.out contains "typed root differs HAWM1" else "missing typed≠HAWM1 claim"
+assert selftest.out contains "HAWM1 pin path still seated" else "missing HAWM1 untouched claim"
+assert selftest.out contains "99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe" else "missing HAWM1 hex"
+
+let src = run ["sh" "-c" "grep -q 'append_demo_submit' linengrow/dexter_sala_append.rye && grep -q 'append_typed_memo' linengrow/dexter_sala_append.rye && grep -q 'run_demo_editor' linengrow/dexter_sala_append.rye"]
+assert src.ok else "dexter_sala_append missing demo submit → append_typed_memo wire"
+
+say "GREEN: STOA268 — Dexter submit helper → Glow append_typed_memo; HAWM1 untouched."
