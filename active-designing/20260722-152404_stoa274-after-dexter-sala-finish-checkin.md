@@ -6,8 +6,8 @@
 **Version:** `20260722.152404` (EDT · Framework host)  
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
 **Voice:** Quin  
-**Status:** Checkable — lean table · recommend **A** HAWM 1A inventary  
-**Register:** Checkable for the lean; Intent until the inventary brief + first harvest witness GREEN  
+**Status:** Checkable — lean **A** approved → STOA275 GREEN  
+**Register:** Checkable (Two Rooms) — inventary + harvest shape GREEN as STOA275  
 **Grounds in:** STOA273 lean **B** · HAWM fleet check-in `20260722.143648` (1A approved, held) · STOA266–272 Dexter→Sala finish · humanity 1A  
 
 **dated_guard:** Do **not** reopen STOA266–272 as unfinished. Do **not** start a “Glow GrapheneOS emulator” ladder (HAWM 1C refuse). Do **not** claim fleets are checkable before a harvest shape GREEN. Gold · shared-package · JABS3 · UDP stay held.
@@ -54,7 +54,7 @@ Thin inventary brief naming:
 
 | | Lean | What it opens |
 |---|---|---|
-| **A** | **HAWM 1A log-harvest inventary** — **recommended** | inventary brief + first harvest GREEN shape; host-onpath |
+| **A** | **HAWM 1A log-harvest inventary** — **chosen** → STOA275 | inventary brief + first harvest GREEN shape; host-onpath |
 | **B** | **Pixel screenshot / look note** | optional eyes record for LIVE face; not required |
 | **C** | **Rest / hold season** | explicit pause; doors stay named |
 | **D** | **Gold / shared-package / JABS3 / UDP / HAWM2** | thicker — **held**; explicit word only |

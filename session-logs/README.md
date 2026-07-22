@@ -7,6 +7,8 @@ Living index for the append-only session stream. This table reads **newest first
 **Day’s truth is this index’s order, not filename sort.** One-clock stamps sort ascending on disk; trust the table for sequence within a day.
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
+- `20260722.152631` — [STOA275–276 HAWM log harvest](20260722-152631_stoa275-276-hawm-harvest-round.bron) — hawm-harvest-v1; boot→harvest next
+- `20260722.152450` — [REMEMBER git nib after STOA274](20260722-152450_remember-git-nib-stoa274.bron) — pin 450cf2f9afdf
 - `20260722.152404` — [STOA274 after Dexter Sala finish check-in](20260722-152404_stoa274-after-dexter-sala-finish-checkin.bron) — season turn; HAWM 1A inventary next
 - `20260722.152325` — [REMEMBER git nib after STOA273](20260722-152325_remember-git-nib-stoa273.bron) — pin de1113bad8c5
 - `20260722.152217` — [STOA272–273 live-root Skate paint](20260722-152217_stoa272-273-live-root-paint-round.bron) — LIVE · N · hex8; HAWM 1A next when mobile

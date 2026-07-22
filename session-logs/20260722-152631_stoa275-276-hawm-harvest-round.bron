@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260722.152631
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title STOA275-276 HAWM log harvest
+prompt approve and kg
+think STOA274 lean A approved; inventary host logs; hawm-harvest-v1 Bron; worker fixture and meta fold
+think rish has no if-blocks or or; shell branch markers for meta optional path
+think witness GREEN fixture plus on-disk meta from Jul 17 boot; seat STOA276 lean B host boot chain
+obs fleets held; next kg needs /dev/kvm for live boot then harvest
+product_nib ZETA6 LULU0-5 SETU6.5 HAWM-harvest-v1
+suite_nib STOA0-276
+file active-designing/20260722-152523_stoa275-hawm-log-harvest-inventory.md inventary
+file tools/fixtures/hawm_harvest_v1.bron fixture
+file tools/hawm_log_harvest_worker.sh meta to Bron
+file tools/hawm_log_harvest_witness.rish GREEN
+file active-designing/20260722-152631_stoa276-after-hawm-harvest-checkin.md lean B boot chain
+recommend keep-going host boot to harvest onpath when /dev/kvm available; or rest

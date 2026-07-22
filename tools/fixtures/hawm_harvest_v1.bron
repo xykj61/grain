@@ -1,0 +1,14 @@
+format hawm-harvest-v1
+stamp 20260717.121859
+waymark HAWM
+rung HAWM0
+source meta-fixture
+kvm present
+boot_completed 1
+model sdk_gphone64_x86_64
+android 16
+abi x86_64
+qemu 1
+meta_path tools/.cache/hawm0/hawm0-boot-meta.txt
+emulator_log_path tools/.cache/hawm0/hawm0-emulator.log
+status GREEN

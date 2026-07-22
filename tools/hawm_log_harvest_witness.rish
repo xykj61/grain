@@ -1,0 +1,39 @@
+# hawm_log_harvest_witness.rish — STOA275: HAWM log-harvest inventary + Bron shape.
+#
+# Device-free: seats inventary claims and proves hawm-harvest-v1 can be written
+# from the fixture (and from on-disk meta when present). Does not require
+# /dev/kvm or a running emulator.
+#
+#   rishi/bin/rishi run tools/hawm_log_harvest_witness.rish
+
+say "hawm-harvest: inventary surfaces named…"
+let inventary = run ["sh" "-c" "test -f active-designing/20260722-152523_stoa275-hawm-log-harvest-inventory.md"]
+assert inventary.ok else "missing STOA275 inventary brief"
+
+let fixture = run ["sh" "-c" "test -f tools/fixtures/hawm_harvest_v1.bron"]
+assert fixture.ok else "missing tools/fixtures/hawm_harvest_v1.bron"
+
+let worker = run ["sh" "-c" "test -x tools/hawm_log_harvest_worker.sh || chmod +x tools/hawm_log_harvest_worker.sh"]
+assert worker.ok else "hawm_log_harvest_worker.sh not executable"
+
+say "hawm-harvest: writing harvest from fixture…"
+let fix_run = run ["bash" "-c" "./tools/hawm_log_harvest_worker.sh --fixture"]
+assert fix_run.ok else "fixture harvest failed"
+let out = run ["sh" "-c" "test -f tools/.cache/hawm0/hawm-harvest.bron"]
+assert out.ok else "missing tools/.cache/hawm0/hawm-harvest.bron after fixture harvest"
+
+let shape = run ["sh" "-c" "grep -q '^format hawm-harvest-v1$' tools/.cache/hawm0/hawm-harvest.bron && grep -q '^waymark HAWM$' tools/.cache/hawm0/hawm-harvest.bron && grep -q '^rung HAWM0$' tools/.cache/hawm0/hawm-harvest.bron && grep -q '^status GREEN$' tools/.cache/hawm0/hawm-harvest.bron && grep -q '^model ' tools/.cache/hawm0/hawm-harvest.bron && grep -q '^abi ' tools/.cache/hawm0/hawm-harvest.bron"]
+assert shape.ok else "harvest Bron missing required hawm-harvest-v1 fields"
+say "hawm-harvest: fixture harvest shape GREEN"
+
+# When a prior HAWM0 meta exists, also prove live fold from meta → Bron.
+say "hawm-harvest: folding on-disk meta when present…"
+let meta_fold = run ["bash" "-c" "if test -f tools/.cache/hawm0/hawm0-boot-meta.txt && grep -q '^device: ' tools/.cache/hawm0/hawm0-boot-meta.txt; then ./tools/hawm_log_harvest_worker.sh && grep -q '^source meta$' tools/.cache/hawm0/hawm-harvest.bron && grep -q '^status GREEN$' tools/.cache/hawm0/hawm-harvest.bron && grep -q '^model sdk_gphone64_x86_64$' tools/.cache/hawm0/hawm-harvest.bron && echo META_HARVEST_GREEN; else echo META_ABSENT_FIXTURE_ONLY; fi"]
+assert meta_fold.ok else "meta fold shell failed"
+assert meta_fold.out contains "META_" else "meta fold missing branch marker"
+say "${meta_fold.out}"
+
+let src = run ["sh" "-c" "grep -q 'hawm-harvest-v1' active-designing/20260722-152523_stoa275-hawm-log-harvest-inventory.md && grep -q 'hawm0-boot-meta.txt' active-designing/20260722-152523_stoa275-hawm-log-harvest-inventory.md"]
+assert src.ok else "inventary brief missing harvest shape or meta path"
+
+say "GREEN: STOA275 — HAWM log-harvest inventary; hawm-harvest-v1 Bron shape."
