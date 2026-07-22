@@ -33,6 +33,8 @@
 //! STOA127: `kind-mold` call body `%-  flip` → KindShape switch · baked `.mint` → `.send`.
 //! STOA128: `xact-mold` call body `%-  flip` → XactShape switch · baked mint/5 → `.send`.
 //! STOA129: `xfer-mold` call body `%-  flip` → XferShape switch · baked mint/5/3 → `.send`.
+//! STOA293: xact+xfer flip call-body collapses through `emit_tagged_payload_flip_call_body`
+//!   (mint_faces 1|2). Kind unit flip stays its own family this lap.
 //! STOA131: `pair-mold` call body `%-  flip` → PairShape swap · baked 5/3 → 3/5.
 //! STOA132: `amount-mold` argv identity — generator beside fixture (u32-shaped named mold).
 //! STOA133: `count-mold` argv identity — twin generator beside fixture.
@@ -300,27 +302,10 @@ fn emit_xact_identity(out: []u8, zface: []const u8, comment: []const u8) LowerEr
     return used;
 }
 
-/// STOA128: closed payload `$%` xact-mold call body → XactShape flip · baked `.send`.
+/// STOA128 / STOA293: closed payload `$%` xact-mold call body → XactShape flip (via payload helper).
 fn emit_xact_call_body(out: []u8, zface: []const u8, gate: []const u8, comment: []const u8) LowerError!u32 {
     assert(rb.is_xact_call_gate(gate)); // parse/lower pin — flip only today
-    var used: u32 = 0;
-    try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
-    try append_print(out, &used, "pub const XactShape = union(enum) {{\n", .{});
-    try append_print(out, &used, "    mint: struct {{ amount: u32 = 0 }},\n", .{});
-    try append_print(out, &used, "    send,\n", .{});
-    try append_print(out, &used, "}};\n\n", .{});
-    try append_print(out, &used, "/// {s}\n", .{comment});
-    try append_print(out, &used, "fn bartis_gate({s}: XactShape) XactShape {{\n", .{zface});
-    try append_print(out, &used, "    return switch ({s}) {{ .mint => .send, .send => .{{ .mint = .{{ .amount = 0 }} }} }};\n", .{zface});
-    try append_print(out, &used, "}}\n\n", .{});
-    try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
-    try append_print(out, &used, "    const {s}: XactShape = .{{ .mint = .{{ .amount = {d} }} }};\n", .{ zface, bartis_demo_sample });
-    try append_print(out, &used, "    return switch (bartis_gate({s})) {{\n", .{zface});
-    try append_print(out, &used, "        .send => 0,\n", .{});
-    try append_print(out, &used, "        .mint => 1,\n", .{});
-    try append_print(out, &used, "    }};\n", .{});
-    try append_print(out, &used, "}}\n", .{});
-    return used;
+    return emit_tagged_payload_flip_call_body(out, 1, zface, comment);
 }
 
 /// STOA125: closed multi-face payload `$%` xfer-mold → XferShape · baked mint/5/3.
@@ -345,21 +330,41 @@ fn emit_xfer_identity(out: []u8, zface: []const u8, comment: []const u8) LowerEr
     return used;
 }
 
-/// STOA129: closed multi-face payload `$%` xfer-mold call body → XferShape flip · baked `.send`.
+/// STOA129 / STOA293: closed multi-face payload `$%` xfer-mold call body → XferShape flip (via payload helper).
 fn emit_xfer_call_body(out: []u8, zface: []const u8, gate: []const u8, comment: []const u8) LowerError!u32 {
     assert(rb.is_xfer_call_gate(gate)); // parse/lower pin — flip only today
+    return emit_tagged_payload_flip_call_body(out, 2, zface, comment);
+}
+
+/// STOA293: one tagged-payload `$%` flip call-body emit for xact (1 mint face) and xfer (2).
+/// mint → .send; send → empty mint. Distinct from KindShape unit-enum flip and from `$:` N-field.
+fn emit_tagged_payload_flip_call_body(out: []u8, mint_faces: u32, zface: []const u8, comment: []const u8) LowerError!u32 {
+    assert(mint_faces == 1 or mint_faces == 2);
+    const zig_type: []const u8 = if (mint_faces == 1) "XactShape" else "XferShape";
     var used: u32 = 0;
     try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
-    try append_print(out, &used, "pub const XferShape = union(enum) {{\n", .{});
-    try append_print(out, &used, "    mint: struct {{ from: u32 = 0, amount: u32 = 0 }},\n", .{});
+    try append_print(out, &used, "pub const {s} = union(enum) {{\n", .{zig_type});
+    if (mint_faces == 1) {
+        try append_print(out, &used, "    mint: struct {{ amount: u32 = 0 }},\n", .{});
+    } else {
+        try append_print(out, &used, "    mint: struct {{ from: u32 = 0, amount: u32 = 0 }},\n", .{});
+    }
     try append_print(out, &used, "    send,\n", .{});
     try append_print(out, &used, "}};\n\n", .{});
     try append_print(out, &used, "/// {s}\n", .{comment});
-    try append_print(out, &used, "fn bartis_gate({s}: XferShape) XferShape {{\n", .{zface});
-    try append_print(out, &used, "    return switch ({s}) {{ .mint => .send, .send => .{{ .mint = .{{ .from = 0, .amount = 0 }} }} }};\n", .{zface});
+    try append_print(out, &used, "fn bartis_gate({s}: {s}) {s} {{\n", .{ zface, zig_type, zig_type });
+    if (mint_faces == 1) {
+        try append_print(out, &used, "    return switch ({s}) {{ .mint => .send, .send => .{{ .mint = .{{ .amount = 0 }} }} }};\n", .{zface});
+    } else {
+        try append_print(out, &used, "    return switch ({s}) {{ .mint => .send, .send => .{{ .mint = .{{ .from = 0, .amount = 0 }} }} }};\n", .{zface});
+    }
     try append_print(out, &used, "}}\n\n", .{});
     try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
-    try append_print(out, &used, "    const {s}: XferShape = .{{ .mint = .{{ .from = {d}, .amount = {d} }} }};\n", .{ zface, bartis_xfer_demo_from, bartis_xfer_demo_amount });
+    if (mint_faces == 1) {
+        try append_print(out, &used, "    const {s}: {s} = .{{ .mint = .{{ .amount = {d} }} }};\n", .{ zface, zig_type, bartis_demo_sample });
+    } else {
+        try append_print(out, &used, "    const {s}: {s} = .{{ .mint = .{{ .from = {d}, .amount = {d} }} }};\n", .{ zface, zig_type, bartis_xfer_demo_from, bartis_xfer_demo_amount });
+    }
     try append_print(out, &used, "    return switch (bartis_gate({s})) {{\n", .{zface});
     try append_print(out, &used, "        .send => 0,\n", .{});
     try append_print(out, &used, "        .mint => 1,\n", .{});

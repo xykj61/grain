@@ -846,6 +846,10 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA292 Survey seated, `20260722.155438`** — Lexicon **Survey**; inventary retired for living *Now*. Brief [`active-designing/20260722-155438_survey-seated-inventary-retired.md`](../active-designing/20260722-155438_survey-seated-inventary-retired.md).
 
+**STOA293 tagged `$%` flip survey · bartis payload, `20260722.155648`** — `emit_tagged_payload_flip_call_body`; witness GREEN. Brief [`active-designing/20260722-155648_stoa293-tagged-percent-flip-survey.md`](../active-designing/20260722-155648_stoa293-tagged-percent-flip-survey.md).
+
+**STOA294 after tagged flip survey check-in, `20260722.155802`** — lean A send · lean B barket twin. Brief [`active-designing/20260722-155802_stoa294-after-tagged-flip-survey-checkin.md`](../active-designing/20260722-155802_stoa294-after-tagged-flip-survey-checkin.md).
+
 
 **Framework next (host resume), `20260720.231857`** — lean A: live SETU6.5 **sent** eyes on real `usb0`/`ncm`. Lab TX gate already GREEN; Sala B0 Glow rewrite · JABS3 stay thicker check-ins. Same freeze brief.
 
