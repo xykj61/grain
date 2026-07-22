@@ -2,9 +2,10 @@
 # glow_run_worker.sh — lower · build · run one Glow desk (fixture or argv sample).
 # Invoked by tools/glow_run.rish.
 #
-#   tools/glow_run_worker.sh <file.glow>                      # fixture path
-#   tools/glow_run_worker.sh <file.glow> <sample>             # u32 or kind tag
-#   tools/glow_run_worker.sh <file.glow> mint <amount-u32>    # xact payload tag
+#   tools/glow_run_worker.sh <file.glow>                           # fixture path
+#   tools/glow_run_worker.sh <file.glow> <sample>                  # u32 or kind tag
+#   tools/glow_run_worker.sh <file.glow> mint <amount-u32>         # xact payload tag
+#   tools/glow_run_worker.sh <file.glow> mint <from> <amount>      # xfer payload tag
 
 set -e
 ROOT=$(CDPATH= cd -- "$(dirname "$0")/.." && pwd)
@@ -14,9 +15,10 @@ ZIG="${RYE_ZIG:-vendor/zig-toolchain/zig}"
 GLOW=$1
 SAMPLE=${2-}
 SAMPLE2=${3-}
+SAMPLE3=${4-}
 
 test -n "$GLOW" || {
-  echo "usage: glow_run_worker.sh <file.glow> [<sample>] [<amount-u32>]"
+  echo "usage: glow_run_worker.sh <file.glow> [<sample>] [<u32>] [<u32>]"
   exit 2
 }
 
@@ -54,6 +56,10 @@ gate-xact-tag|gate-barket-xact-tag)
       echo "FAIL: ${STEM}.glow mint needs amount u32"
       exit 2
     }
+    test -z "$SAMPLE3" || {
+      echo "FAIL: ${STEM}.glow mint takes one amount only"
+      exit 2
+    }
   else
     test -z "$SAMPLE2" || {
       echo "FAIL: ${STEM}.glow send takes no amount"
@@ -61,9 +67,26 @@ gate-xact-tag|gate-barket-xact-tag)
     }
   fi
   ;;
+gate-xfer-tag|gate-barket-xfer-tag)
+  test -n "$SAMPLE" || {
+    echo "FAIL: ${STEM}.glow needs tag mint|send"
+    exit 2
+  }
+  if [ "$SAMPLE" = "mint" ]; then
+    test -n "$SAMPLE2" && test -n "$SAMPLE3" || {
+      echo "FAIL: ${STEM}.glow mint needs from u32 and amount u32"
+      exit 2
+    }
+  else
+    test -z "$SAMPLE2" || {
+      echo "FAIL: ${STEM}.glow send takes no faces"
+      exit 2
+    }
+  fi
+  ;;
 *)
   test -z "$SAMPLE" || {
-    echo "FAIL: only sample-u32 / gate-*-u32 / gate-*-kind-tag / gate-*-xact-tag take a sample"
+    echo "FAIL: only sample-u32 / gate-*-u32 / gate-*-kind-tag / gate-*-xact-tag / gate-*-xfer-tag take a sample"
     exit 2
   }
   ;;
@@ -76,7 +99,9 @@ if [ -n "$SAMPLE" ]; then
   RYE=$(glow/bin/glow_run --sample-argv "$GLOW")
   test -n "$RYE"
   env RYE_ZIG="$ZIG" rye/bin/rye build "$RYE" -femit-bin="$BIN"
-  if [ -n "$SAMPLE2" ]; then
+  if [ -n "$SAMPLE3" ]; then
+    "$BIN" "$SAMPLE" "$SAMPLE2" "$SAMPLE3"
+  elif [ -n "$SAMPLE2" ]; then
     "$BIN" "$SAMPLE" "$SAMPLE2"
   else
     "$BIN" "$SAMPLE"

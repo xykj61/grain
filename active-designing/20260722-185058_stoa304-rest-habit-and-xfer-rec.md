@@ -29,7 +29,7 @@ Rule twins: `.cursor/rules/round-close-send-checkin.mdc` · `.claude/rules/round
 |---|---|---|
 | **A** | **Send STOA303** — chosen | pier already carries xact argv |
 | **B** | **Rest** — available; not recommended | Keaton’s word only |
-| **C** | **Xfer argv survey** — **recommended** | two mint faces · thicker payload reader |
+| **C** | **Xfer argv survey** — **chosen** → STOA305 | two mint faces · thicker payload reader |
 | **D** | **Gold · face_lit · fleets · JABS3** | **held** |
 
 ---
