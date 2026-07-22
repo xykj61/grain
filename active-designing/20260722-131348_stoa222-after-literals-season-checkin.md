@@ -6,7 +6,8 @@
 **Version:** `20260722.131348` (EDT · Framework host)  
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
 **Voice:** Quin  
-**Status:** Checkable — lean **A** send chosen with this seating · next lean open  
+**Status:** Checkable — lean **A** send chosen `20260722.131348` · lean **B** chosen `20260722.131511` as **STOA223**  
+
 **Register:** Checkable (Two Rooms) — STOA219–221 GREEN; product fold rewrite held  
 
 **Grounds in:** STOA215 inventory C1–C5 · STOA219–221 · archive fold `20260722.131028`

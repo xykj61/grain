@@ -5,14 +5,22 @@
 //! Elder `sala_b0_fold` still embeds the same literals; this module owns
 //! the product pin surface for future Glow ports.
 //! STOA197: no longer imports the claim shell (breaks claim→replay→fixture cycle).
+//! STOA223: product pins bind to Glow face=lit desk
+//! (`glow/gen/sample-demo-fixture-lits.glow`). Callers still read these
+//! comptime pin strings; `lit_desk_binds_pins` proves the desk text carries
+//! the same face=lit clauses (Glow parse/lower stays in glow/).
 //!
 //!   rye build linengrow/glow_sala_b0_demo_fixture_witness.rye \
 //!     -femit-bin=linengrow/bin/glow_sala_b0_demo_fixture_witness
 
 const std = @import("std");
+const assert = std.debug.assert;
 const fold = @import("sala_b0_fold.rye");
 
-pub const fixture_version = "20260721.183253";
+pub const fixture_version = "20260722.131511";
+
+/// Glow face=lit sample desk that pins the same elder strings (STOA221 · STOA223).
+pub const lit_desk_relpath = "glow/gen/sample-demo-fixture-lits.glow";
 
 /// Three-event demo stamps (elder `run_demo_fold` order).
 pub const stamp1 = "20260715.190001";
@@ -33,4 +41,29 @@ pub const event_count: u32 = 3;
 pub fn root_pin_agrees() bool {
     if (!std.mem.eql(u8, expected_demo_root_hex, fold.expected_demo_root_hex)) return false;
     return std.mem.eql(u8, expected_demo_root_hex, "99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe");
+}
+
+fn clause_present(src: []const u8, comptime face: []const u8, comptime lit: []const u8) bool {
+    // Cord: face='lit' · hex: face=@uxdigits (no quotes).
+    const needle = face ++ "='" ++ lit ++ "'";
+    return std.mem.indexOf(u8, src, needle) != null;
+}
+
+fn hex_clause_present(src: []const u8, comptime face: []const u8, comptime digits: []const u8) bool {
+    const needle = face ++ "=@ux" ++ digits;
+    return std.mem.indexOf(u8, src, needle) != null;
+}
+
+/// True when Glow lit-desk text carries every product pin as a face=lit clause.
+/// Does not parse via glow/face_lit (module path seam); Glow witness covers parse.
+pub fn lit_desk_binds_pins(src: []const u8) bool {
+    assert(src.len >= 1);
+    if (!clause_present(src, "stamp1", stamp1)) return false;
+    if (!clause_present(src, "stamp2", stamp2)) return false;
+    if (!clause_present(src, "stamp3", stamp3)) return false;
+    if (!clause_present(src, "memo1", memo1)) return false;
+    if (!clause_present(src, "memo2", memo2)) return false;
+    if (!clause_present(src, "memo3", memo3)) return false;
+    if (!hex_clause_present(src, "root", expected_demo_root_hex)) return false;
+    return root_pin_agrees();
 }

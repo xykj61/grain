@@ -1,5 +1,6 @@
 ::  Sala B0 demo fixture — elder pins as Glow face=lit sample (STOA221 / C5).
 ::  Matches linengrow/glow_sala_b0_demo_fixture.rye · HAWM1 root hex.
+::  STOA223: product surface binds this desk via lit_desk_binds_pins.
 ::  Shape/cast desks stay type-only; this desk owns the literal sample.
 stamp1='20260715.190001'
 stamp2='20260715.190002'
