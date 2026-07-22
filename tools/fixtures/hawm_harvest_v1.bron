@@ -9,6 +9,7 @@ model sdk_gphone64_x86_64
 android 16
 abi x86_64
 qemu 1
+serial emulator-5554
 meta_path tools/.cache/hawm0/hawm0-boot-meta.txt
 emulator_log_path tools/.cache/hawm0/hawm0-emulator.log
 status GREEN
