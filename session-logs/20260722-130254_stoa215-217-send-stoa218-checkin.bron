@@ -1,0 +1,15 @@
+format session-log-v1
+stamp 20260722.130254
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title STOA215-217 send · STOA218 check-in
+prompt send and check in
+think Send seats EDT return plus STOA215-217 literals on pier; tokens witness GREEN before ship.
+think Check-in STOA218 after lex: rec lean B C3 parse face=lit; C4 lower held behind parse; JABS3 held.
+obs Pier send from main; origin and codeberg. Living pins STOA0-217; Next is check-in lean not silent kg.
+file active-designing/20260722-130254_stoa218-after-literals-lex-checkin.md check-in leans
+file glow/tokens.rye cord_lit hex_lit
+file context/specs/20260722-125845_edt-framework-host-convention.md EDT seating
+recommend check-in lean B C3 parse face=lit (seam); or rest / JABS3 on explicit word

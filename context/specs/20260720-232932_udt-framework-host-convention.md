@@ -13,7 +13,9 @@
 
 [`20260627-102012_one-clock-naming-law.md`](20260627-102012_one-clock-naming-law.md) names the stamp shape and leaves timezone to each host. This Framework host already carried Pacific, then Eastern ([`20260717-003132_eastern-time-framework-host-convention.md`](20260717-003132_eastern-time-framework-host-convention.md)). Keaton has now set this machine's system clock to **UDT** — the project's long-standing label for **UTC** (same wall as `Etc/UTC` / GMT+0000), matching the Cursor iOS / cloud season that stamped today's STOA arc in UTC.
 
-**This host's stamps are UDT (UTC), from `20260720.232932` forward.**
+**This host's stamps were UDT (UTC), from `20260720.232932` forward through the stamp before the Eastern return.**
+
+**Later switch:** from `20260722.125845` forward on this same Framework host, Keaton asked stamps back to **Eastern / EDT** (`America/New_York`). Living stamps follow [`20260722-125845_edt-framework-host-convention.md`](20260722-125845_edt-framework-host-convention.md). UDT-era stamps on this host are never rewritten.
 
 ## Why It Is Shaped This Way
 
@@ -32,7 +34,7 @@ date '+%Y%m%d.%H%M%S'
 
 Optional prose tag: append `UDT` in headers where a timezone label helps (`20260720.232932 UDT`). Filenames stay hyphen form without a timezone suffix.
 
-`GLOW_PROFILE.bron` on this host points `timezone Etc/UTC` and `timezone_label UDT (UTC)`.
+While UDT governed living stamps, `GLOW_PROFILE.bron` on this host pointed `timezone Etc/UTC` and `timezone_label UDT (UTC)`. After `20260722.125845`, the living pointer is Eastern again — see the EDT return seating.
 
 ## Related
 

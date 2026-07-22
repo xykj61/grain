@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260722.125845
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title EDT Framework host stamp convention return
+prompt we rested a while, let's change time zone to EDT
+think Keaton asked the Framework host back to EDT after the UDT season; one-clock law keeps timezone per host and accrete-never-break.
+think Seated context/specs/20260722-125845_edt-framework-host-convention.md; pointed GLOW_PROFILE at America/New_York; updated session-log rules; annotated UDT and first Eastern specs with the return.
+think timedatectl set-timezone failed inside ai-jail (no host bus); stamps use TZ=America/New_York until Keaton sets the host outside the jail if the wall should match.
+obs Living stamps from this seating forward are Eastern / EDT; UDT-era and prior Eastern-era stamps stay readable.
+file context/specs/20260722-125845_edt-framework-host-convention.md new EDT return seating
+file context/specs/20260720-232932_udt-framework-host-convention.md later-switch note
+file context/specs/20260717-003132_eastern-time-framework-host-convention.md return note
+file GLOW_PROFILE.bron timezone America/New_York
+file .cursor/rules/session-logs.mdc Eastern from 20260722.125845
+file .claude/rules/session-logs.md same pointer
+file work-in-progress/TASKS.md EDT convention checked
+file work-in-progress/ROADMAP.md EDT return line
+file GLOW_PROFILE.template.bron Eastern example defaults
+file work-in-progress/REMEMBER.md EDT season line
+recommend keep-going next STOA lean (C2 hex lit or send STOA215-216) once Keaton names the word; set host timezone outside jail if wall clock should show EDT
