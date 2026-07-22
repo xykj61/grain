@@ -6,17 +6,18 @@
 # Fixture (baked sample):
 #   rishi/bin/rishi run tools/glow_run.rish glow/gen/cast-u32.glow
 #
-# Generator (one @u32 sample from argv — G3 cast / STOA101–103 bartis / STOA114 barket):
+# Generator (one sample from argv — G3 cast / STOA101–103 bartis / STOA114 barket):
 #   rishi/bin/rishi run tools/glow_run.rish glow/gen/sample-u32.glow 42
 #   rishi/bin/rishi run tools/glow_run.rish glow/gen/gate-sample-u32.glow 7
 #   rishi/bin/rishi run tools/glow_run.rish glow/gen/gate-double-u32.glow 7
 #   rishi/bin/rishi run tools/glow_run.rish glow/gen/gate-barket-sample-u32.glow 9
+#   rishi/bin/rishi run tools/glow_run.rish glow/gen/gate-kind-tag.glow mint
 
 let zig = "vendor/zig-toolchain/zig"
-assert (args.len != 0) else "usage: rishi run tools/glow_run.rish <file.glow> [<sample-u32-decimal>]"
+assert (args.len != 0) else "usage: rishi run tools/glow_run.rish <file.glow> [<sample-u32-decimal|kind-tag>]"
 let glow_path = args[0]
 
-# Optional sample decimal is args[1] when present — worker enforces stem rules.
+# Optional sample is args[1] when present — worker enforces stem rules.
 if args.len == 1 then let gate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" glow_path]
 if args.len == 2 then let gate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" glow_path args[1]]
 

@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260722.161751
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title STOA300-301 kind argv
+prompt approve next rec
+think STOA299 lean A; survey argv refuse; two families u32 vs unit tag
+think emit_kind_argv bartis+barket; desks gate-kind-tag; xact/xfer refuse pinned
+think both lower witnesses GREEN; glow_run mint/send EXIT 0; seat STOA301 lean B rest
+obs do not force KindShape through parseInt
+product_nib ZETA6 LULU0-5 SETU6.5 kind-argv
+suite_nib STOA0-301
+file glow/lower_bartis.rye emit_kind_argv
+file glow/lower_barket.rye barket twin
+file glow/gen/gate-kind-tag.glow argv desk
+file active-designing/20260722-161229_stoa300-tagged-argv-survey-kind.md survey
+file active-designing/20260722-161300_stoa301-after-kind-argv-checkin.md lean B
+recommend check-in lean B rest or lean C payload argv survey

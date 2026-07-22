@@ -6,8 +6,8 @@
 **Version:** `20260722.161041` (EDT · Framework host)  
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
 **Voice:** Quin  
-**Status:** Checkable — lean table · continue over STOA298 rest  
-**Register:** Checkable (Two Rooms) — flip inventary closed; next door Intent until approved  
+**Status:** Checkable — lean **A** approved → STOA300 GREEN  
+**Register:** Checkable (Two Rooms) — flip inventary closed; kind argv Checkable as STOA300  
 
 **Grounds in:** STOA298 lean B declined · “send then let’s continue” · STOA293–297 two-family flip · STOA291 lean B face_lit still open  
 
@@ -31,7 +31,7 @@
 
 | | Lean | Size | What it opens |
 |---|---|---|---|
-| **A** | **Tagged argv survey** — **recommended** | survey → first code lap | map kind/xact/xfer/pair argv refuse; name one thin reader family |
+| **A** | **Tagged argv survey** — **chosen** → STOA300 | survey → first code lap | map kind/xact/xfer/pair; kind unit-tag reader GREEN |
 | **B** | **Shared-package `face_lit` survey** | thicker seam | size Zig package options before any import lap |
 | **C** | **Measurement survey (2A)** | research | green-runes meters — not a lower lap |
 | **D** | **Finishing edge** | product | one real hand loop (humanity 1A) — Pixel/HAWM already GREEN |
