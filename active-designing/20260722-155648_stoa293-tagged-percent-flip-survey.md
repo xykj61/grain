@@ -7,11 +7,11 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
 **Voice:** Quin  
 **Status:** Checkable — survey seated · bartis payload flip GREEN with this lap  
-**Register:** Checkable (Two Rooms) — helper + witnesses; barket twin Intent  
+**Register:** Checkable (Two Rooms) — helper + witnesses; barket twin Checkable as STOA295  
 
 **Grounds in:** STOA291 lean **A** · Survey Lexicon · STOA127–129 · N-field pattern STOA259  
 
-**dated_guard:** Do **not** merge with `$:` N-field path. Do **not** open ambient gold. Kind unit flip stays a second family this lap. Barket twin next.
+**dated_guard:** Do **not** merge with `$:` N-field path. Do **not** open ambient gold. Kind unit flip stays a second family this lap. Barket twin → STOA295.
 
 ---
 
