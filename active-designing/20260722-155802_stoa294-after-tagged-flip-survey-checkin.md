@@ -6,8 +6,8 @@
 **Version:** `20260722.155802` (EDT · Framework host)  
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
 **Voice:** Quin  
-**Status:** Checkable — lean **A** send with round-close · lean **B** barket twin  
-**Register:** Checkable (Two Rooms) — STOA293 GREEN; barket twin Intent  
+**Status:** Checkable — lean **A** send with round-close · lean **B** barket twin **chosen** → STOA295 GREEN  
+**Register:** Checkable (Two Rooms) — STOA293 GREEN; barket twin Checkable as STOA295  
 
 **Grounds in:** STOA293 · STOA291 lean A  
 
@@ -26,7 +26,7 @@ STOA293: survey of kind/xact/xfer · bartis `emit_tagged_payload_flip_call_body`
 | | Lean | What it opens |
 |---|---|---|
 | **A** | **Send STOA293** — **chosen** with round-close | pier carries survey + bartis collapse |
-| **B** | **Barket payload flip twin** — **recommended** | same helper on `lower_barket.rye` |
+| **B** | **Barket payload flip twin** — **chosen** → STOA295 | same helper on `lower_barket.rye` |
 | **C** | **Kind unit flip helper** | optional thin family for KindShape |
 | **D** | **Gold · face_lit · fleets · JABS3** | **held** |
 

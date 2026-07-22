@@ -7,6 +7,8 @@ Living index for the append-only session stream. This table reads **newest first
 **Day’s truth is this index’s order, not filename sort.** One-clock stamps sort ascending on disk; trust the table for sequence within a day.
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
+- `20260722.160509` — [STOA295–296 barket tagged flip](20260722-160509_stoa295-296-barket-tagged-flip-round.bron) — barket payload helper GREEN; kind unit next
+- `20260722.155928` — [REMEMBER git nib after STOA294](20260722-155928_remember-git-nib-stoa294.bron) — pin 57aa4dbdcc08
 - `20260722.155828` — [STOA293–294 tagged flip survey](20260722-155828_stoa293-294-tagged-flip-survey-round.bron) — bartis payload helper GREEN; barket twin next
 - `20260722.155603` — [REMEMBER git nib after STOA292](20260722-155603_remember-git-nib-stoa292.bron) — pin d515b7dc0001
 - `20260722.155546` — [STOA292 Survey seated](20260722-155546_stoa292-survey-seated.bron) — Lexicon Survey; inventary retired for Now
