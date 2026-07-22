@@ -872,7 +872,11 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA303 payload argv survey · xact GREEN, `20260722.184804`** — `emit_xact_argv` · mint/send · xfer refuse pinned. Brief [`active-designing/20260722-184507_stoa303-payload-argv-survey-xact.md`](../active-designing/20260722-184507_stoa303-payload-argv-survey-xact.md).
 
-**STOA304 after xact argv check-in, `20260722.184520` · recommend `20260722.185058`** — lean A send · lean B rest available · lean **C** xfer argv recommended. Brief [`active-designing/20260722-184520_stoa304-after-xact-argv-checkin.md`](../active-designing/20260722-184520_stoa304-after-xact-argv-checkin.md) · habit [`active-designing/20260722-185058_stoa304-rest-habit-and-xfer-rec.md`](../active-designing/20260722-185058_stoa304-rest-habit-and-xfer-rec.md).
+**STOA304 after xact argv check-in, `20260722.184520` · recommend `20260722.185058`** — lean A send · lean B rest available · lean **C** xfer argv chosen. Brief [`active-designing/20260722-184520_stoa304-after-xact-argv-checkin.md`](../active-designing/20260722-184520_stoa304-after-xact-argv-checkin.md) · habit [`active-designing/20260722-185058_stoa304-rest-habit-and-xfer-rec.md`](../active-designing/20260722-185058_stoa304-rest-habit-and-xfer-rec.md).
+
+**STOA305 payload argv survey · xfer GREEN, `20260722.185953`** — `emit_xfer_argv` · mint from/amount · send · pair refuse pinned. Brief [`active-designing/20260722-185953_stoa305-payload-argv-survey-xfer.md`](../active-designing/20260722-185953_stoa305-payload-argv-survey-xfer.md).
+
+**STOA306 after xfer argv check-in, `20260722.190015`** — lean A send · lean B rest available · lean **C** pair argv recommended. Brief [`active-designing/20260722-190015_stoa306-after-xfer-argv-checkin.md`](../active-designing/20260722-190015_stoa306-after-xfer-argv-checkin.md).
 
 
 **Framework next (host resume), `20260720.231857`** — lean A: live SETU6.5 **sent** eyes on real `usb0`/`ncm`. Lab TX gate already GREEN; Sala B0 Glow rewrite · JABS3 stay thicker check-ins. Same freeze brief.

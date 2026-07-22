@@ -40,7 +40,8 @@
 //! STOA132: `amount-mold` argv identity — generator beside fixture (u32-shaped named mold).
 //! STOA133: `count-mold` argv identity — twin generator beside fixture.
 //! STOA300: `kind-mold` argv identity — unit-tag reader (`mint`/`send`).
-//! STOA303: `xact-mold` argv identity — payload tag + amount (`mint <u32>` / `send`); xfer/pair held.
+//! STOA303: `xact-mold` argv identity — payload tag + amount (`mint <u32>` / `send`).
+//! STOA305: `xfer-mold` argv identity — payload tag + two mint faces (`mint <from> <amount>` / `send`); pair held.
 //! Gate function named `bartis_gate` to avoid collisions with the sample face.
 
 const std = @import("std");
@@ -314,6 +315,41 @@ fn emit_xact_argv(out: []u8, zface: []const u8, comment: []const u8) LowerError!
     try append_print(out, &used, "    const {s}: XactShape = .{{ .mint = .{{ .amount = amount }} }};\n", .{zface});
     try append_print(out, &used, "    return switch (bartis_gate({s})) {{\n", .{zface});
     try append_print(out, &used, "        .mint => |m| if (m.amount == amount) 0 else 1,\n", .{});
+    try append_print(out, &used, "        .send => 1,\n", .{});
+    try append_print(out, &used, "    }};\n", .{});
+    try append_print(out, &used, "}}\n", .{});
+    return used;
+}
+
+/// STOA305: closed multi-face payload `$%` xfer-mold argv identity → XferShape · tag + from/amount.
+/// `mint <from> <amount>` / `send`. Distinct from xact (one mint face) and kind unit tags.
+fn emit_xfer_argv(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
+    var used: u32 = 0;
+    try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
+    try append_print(out, &used, "pub const XferShape = union(enum) {{\n", .{});
+    try append_print(out, &used, "    mint: struct {{ from: u32 = 0, amount: u32 = 0 }},\n", .{});
+    try append_print(out, &used, "    send,\n", .{});
+    try append_print(out, &used, "}};\n\n", .{});
+    try append_print(out, &used, "/// {s}\n", .{comment});
+    try append_print(out, &used, "fn bartis_gate({s}: XferShape) XferShape {{\n", .{zface});
+    try append_print(out, &used, "    return {s};\n", .{zface});
+    try append_print(out, &used, "}}\n\n", .{});
+    try append_print(out, &used, "pub fn main(init: std.process.Init) !u8 {{\n", .{});
+    try append_print(out, &used, "    const alloc = init.arena.allocator();\n", .{});
+    try append_print(out, &used, "    const argv = try init.minimal.args.toSlice(alloc);\n", .{});
+    try append_print(out, &used, "    if (argv.len < 2) return 2;\n", .{});
+    try append_print(out, &used, "    const tag = argv[1];\n", .{});
+    try append_print(out, &used, "    if (std.mem.eql(u8, tag, \"send\")) {{\n", .{});
+    try append_print(out, &used, "        const {s}: XferShape = .send;\n", .{zface});
+    try append_print(out, &used, "        return switch (bartis_gate({s})) {{ .send => 0, .mint => 1 }};\n", .{zface});
+    try append_print(out, &used, "    }}\n", .{});
+    try append_print(out, &used, "    if (!std.mem.eql(u8, tag, \"mint\")) return 2;\n", .{});
+    try append_print(out, &used, "    if (argv.len < 4) return 2;\n", .{});
+    try append_print(out, &used, "    const from = std.fmt.parseInt(u32, argv[2], 10) catch return 2;\n", .{});
+    try append_print(out, &used, "    const amount = std.fmt.parseInt(u32, argv[3], 10) catch return 2;\n", .{});
+    try append_print(out, &used, "    const {s}: XferShape = .{{ .mint = .{{ .from = from, .amount = amount }} }};\n", .{zface});
+    try append_print(out, &used, "    return switch (bartis_gate({s})) {{\n", .{zface});
+    try append_print(out, &used, "        .mint => |m| if (m.from == from and m.amount == amount) 0 else 1,\n", .{});
     try append_print(out, &used, "        .send => 1,\n", .{});
     try append_print(out, &used, "    }};\n", .{});
     try append_print(out, &used, "}}\n", .{});
@@ -911,7 +947,19 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
         }
     }
 
-    if (is_xfer_sample(spec) or is_pair_sample(spec) or is_triple_sample(spec) or is_quad_sample(spec) or is_penta_sample(spec) or is_hexa_sample(spec) or is_hepta_sample(spec) or is_octa_sample(spec) or is_nona_sample(spec)) return error.SampleDoesNotNest;
+    // STOA305: xfer payload argv identity — tag + from/amount; pair…nona held.
+    if (is_xfer_sample(spec)) {
+        switch (spec.body) {
+            .identity => {
+                var comment_buf: [192]u8 = undefined;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` bartis — XferShape argv payload (STOA305).", .{ face, mold }) catch return error.Overflow;
+                return emit_xfer_argv(out, zface, comment);
+            },
+            .call_one => return error.SampleDoesNotNest,
+        }
+    }
+
+    if (is_pair_sample(spec) or is_triple_sample(spec) or is_quad_sample(spec) or is_penta_sample(spec) or is_hexa_sample(spec) or is_hepta_sample(spec) or is_octa_sample(spec) or is_nona_sample(spec)) return error.SampleDoesNotNest;
     var used: u32 = 0;
 
     try emit_prelude(out, &used);
