@@ -1,0 +1,10 @@
+::  Sala B0 demo fixture — elder pins as Glow face=lit sample (STOA221 / C5).
+::  Matches linengrow/glow_sala_b0_demo_fixture.rye · HAWM1 root hex.
+::  Shape/cast desks stay type-only; this desk owns the literal sample.
+stamp1='20260715.190001'
+stamp2='20260715.190002'
+stamp3='20260715.190003'
+memo1='sala:open rishi session'
+memo2='sala:type let x = 42'
+memo3='sala:frame 8-line skate view'
+root=@ux99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe

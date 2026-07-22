@@ -1,0 +1,81 @@
+//! glow/sample_demo_fixture_lits_witness.rye — elder fixture pins as face=lit (STOA221).
+//!
+//! Pins must match linengrow/glow_sala_b0_demo_fixture.rye (STOA193).
+//!
+//!   rye build glow/sample_demo_fixture_lits_witness.rye \
+//!     -femit-bin=glow/bin/sample_demo_fixture_lits_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const face_lit = @import("face_lit.rye");
+const lower = @import("lower_face_lit.rye");
+
+const witness_version = "20260722.131153";
+
+const stamp1 = "20260715.190001";
+const stamp2 = "20260715.190002";
+const stamp3 = "20260715.190003";
+const memo1 = "sala:open rishi session";
+const memo2 = "sala:type let x = 42";
+const memo3 = "sala:frame 8-line skate view";
+const root_hex = "99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe";
+
+fn find_face(specs: []const face_lit.FaceLitSpec, name: []const u8) ?usize {
+    var i: u32 = 0;
+    const n: u32 = @intCast(specs.len);
+    while (i < n) : (i += 1) {
+        if (std.mem.eql(u8, face_lit.face_slice(&specs[@as(usize, @intCast(i))]), name))
+            return @as(usize, @intCast(i));
+    }
+    return null;
+}
+
+fn run_selftest(init: std.process.Init) !u8 {
+    print("sample_demo_fixture_lits_witness {s}\n", .{witness_version});
+
+    const a = init.arena.allocator();
+    const cwd = std.Io.Dir.cwd();
+    const io = init.io;
+    const src = try cwd.readFileAlloc(io, "glow/gen/sample-demo-fixture-lits.glow", a, .limited(4096));
+
+    var specs: [face_lit.max_face_lits]face_lit.FaceLitSpec = undefined;
+    const n = try face_lit.parse_face_lit_sample(src, specs[0..]);
+    assert(n == 7);
+    print("fixture-lits: seven face=lit clauses parse -- GREEN\n", .{});
+
+    const i_s1 = find_face(specs[0..n], "stamp1") orelse return error.MissingStamp1;
+    const i_s2 = find_face(specs[0..n], "stamp2") orelse return error.MissingStamp2;
+    const i_s3 = find_face(specs[0..n], "stamp3") orelse return error.MissingStamp3;
+    const i_m1 = find_face(specs[0..n], "memo1") orelse return error.MissingMemo1;
+    const i_m2 = find_face(specs[0..n], "memo2") orelse return error.MissingMemo2;
+    const i_m3 = find_face(specs[0..n], "memo3") orelse return error.MissingMemo3;
+    const i_root = find_face(specs[0..n], "root") orelse return error.MissingRoot;
+
+    assert(specs[i_s1].lit_kind == .cord);
+    assert(specs[i_m1].lit_kind == .cord);
+    assert(specs[i_root].lit_kind == .hex);
+    assert(std.mem.eql(u8, face_lit.lit_bytes(src, &specs[i_s1]), stamp1));
+    assert(std.mem.eql(u8, face_lit.lit_bytes(src, &specs[i_s2]), stamp2));
+    assert(std.mem.eql(u8, face_lit.lit_bytes(src, &specs[i_s3]), stamp3));
+    assert(std.mem.eql(u8, face_lit.lit_bytes(src, &specs[i_m1]), memo1));
+    assert(std.mem.eql(u8, face_lit.lit_bytes(src, &specs[i_m2]), memo2));
+    assert(std.mem.eql(u8, face_lit.lit_bytes(src, &specs[i_m3]), memo3));
+    assert(std.mem.eql(u8, face_lit.lit_bytes(src, &specs[i_root]), root_hex));
+    print("fixture-lits: elder stamp memo root pins match -- GREEN\n", .{});
+
+    var buf: [32 * 1024]u8 = undefined;
+    const nl = try lower.lower_source_welcome(src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..nl], memo1) != null);
+    assert(std.mem.indexOf(u8, buf[0..nl], "0x99") != null);
+    assert(std.mem.indexOf(u8, buf[0..nl], "glow_demo_cord") == null);
+    assert(std.mem.indexOf(u8, buf[0..nl], "glow_demo_hex") == null);
+    print("fixture-lits: lower emit carries elder pins -- GREEN\n", .{});
+
+    print("fixture-lits: STOA221 desk pin -- GREEN\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
+}

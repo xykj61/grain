@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260722.131348
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title STOA219-221 send · STOA222 check-in
+prompt send and check in
+think Witnesses GREEN for face_lit lower_face_lit fixture-lits tokens; archive fold rides with send.
+think Check-in STOA222: lean A send done; rec lean B product fixture wire; fact-line demo lits and JABS3 held.
+obs Pier send from main to origin and codeberg. Literals C1-C5 closed on pier.
+file active-designing/20260722-131348_stoa222-after-literals-season-checkin.md check-in leans
+file glow/face_lit.rye STOA219
+file glow/lower_face_lit.rye STOA220
+file glow/gen/sample-demo-fixture-lits.glow STOA221
+file session-logs/archive/ fold 613
+recommend check-in lean B product fixture wire; or rest / JABS3 on explicit word
