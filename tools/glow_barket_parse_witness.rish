@@ -10,7 +10,7 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "glow/bin/rune_barket_witness"
 
 let tame_pin = run ["sh" "-c" "grep -F 'STOA118' ${tame}"]
-assert tame_pin.ok else "TAME missing STOA118 named-mold barket"
+assert tame_pin.ok else "TAME missing STOA118 named-shape barket"
 
 let has_parse = run ["sh" "-c" "test -f glow/rune_barket.rye; echo $?"]
 assert trim has_parse.out == "0" else "glow/rune_barket.rye must exist (STOA112)"
@@ -28,23 +28,26 @@ assert selftest.out contains "call-body double" else "rune_barket_witness missin
 assert selftest.out contains "call-body inc" else "rune_barket_witness missing call-body inc claim"
 assert selftest.out contains "call-body dec" else "rune_barket_witness missing call-body dec claim"
 assert selftest.out contains "BodyGateNotYetLowered" else "rune_barket_witness missing unknown-gate refuse"
-assert selftest.out contains "amount-mold" else "rune_barket_witness missing amount-mold claim"
-assert selftest.out contains "kind-mold" else "rune_barket_witness missing kind-mold claim"
-assert selftest.out contains "xact-mold" else "rune_barket_witness missing xact-mold claim"
-assert selftest.out contains "xfer-mold" else "rune_barket_witness missing xfer-mold claim"
-assert selftest.out contains "pair-mold" else "rune_barket_witness missing pair-mold claim"
-assert selftest.out contains "sample=triple-mold accepts" else "rune_barket_witness missing triple-mold accept"
-assert selftest.out contains "sample=quad-mold accepts" else "rune_barket_witness missing quad-mold accept"
-assert selftest.out contains "sample=penta-mold accepts" else "rune_barket_witness missing penta-mold accept"
-assert selftest.out contains "sample=hexa-mold accepts" else "rune_barket_witness missing hexa-mold accept"
-assert selftest.out contains "sample=hepta-mold accepts" else "rune_barket_witness missing hepta-mold accept"
-assert selftest.out contains "sample=octa-mold accepts" else "rune_barket_witness missing octa-mold accept"
-assert selftest.out contains "sample=nona-mold accepts" else "rune_barket_witness missing nona-mold accept"
-assert selftest.out contains "sample=deca-mold refused" else "rune_barket_witness missing deca-mold refuse"
+assert selftest.out contains "amount-shape" else "rune_barket_witness missing amount-shape claim"
+assert selftest.out contains "kind-shape" else "rune_barket_witness missing kind-shape claim"
+assert selftest.out contains "xact-shape" else "rune_barket_witness missing xact-shape claim"
+assert selftest.out contains "xfer-shape" else "rune_barket_witness missing xfer-shape claim"
+assert selftest.out contains "pair-shape" else "rune_barket_witness missing pair-shape claim"
+assert selftest.out contains "sample=triple-shape accepts" else "rune_barket_witness missing triple-shape accept"
+assert selftest.out contains "sample=quad-shape accepts" else "rune_barket_witness missing quad-shape accept"
+assert selftest.out contains "sample=penta-shape accepts" else "rune_barket_witness missing penta-shape accept"
+assert selftest.out contains "sample=hexa-shape accepts" else "rune_barket_witness missing hexa-shape accept"
+assert selftest.out contains "sample=hepta-shape accepts" else "rune_barket_witness missing hepta-shape accept"
+assert selftest.out contains "sample=octa-shape accepts" else "rune_barket_witness missing octa-shape accept"
+assert selftest.out contains "sample=nona-shape accepts" else "rune_barket_witness missing nona-shape accept"
+assert selftest.out contains "sample=deca-shape refused" else "rune_barket_witness missing deca-shape refuse"
 
 # Tokenize sibling stays GREEN.
 let tok = run ["sh" "-c" "rishi/bin/rishi run tools/glow_barket_tokenize_witness.rish"]
 assert tok.ok else "glow_barket_tokenize_witness failed under barket parse"
 assert tok.out contains "GREEN" else "glow_barket_tokenize_witness not GREEN"
 
-say "GREEN: Glow barket parse — stated header · identity · call-body trio · amount-mold · count-mold · kind-mold · xact-mold · xfer-mold · pair-mold · triple-mold · quad-mold · penta-mold · hexa-mold · hepta-mold · octa-mold · nona-mold · nesting-through-nests; STOA112–135/138/140/142/144/146."
+assert selftest.out contains "study alias" else "rune_barket_witness missing study alias amount-mold pin"
+assert selftest.out contains "STOA257" else "rune_barket_witness missing STOA257"
+
+say "GREEN: Glow barket parse — stated header · identity · call-body trio · amount-shape … nona-shape · study alias amount-mold · nesting-through-nests; STOA112–146 · STOA257."
