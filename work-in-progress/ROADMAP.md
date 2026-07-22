@@ -708,7 +708,11 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA225 fact-line demo lit sample GREEN, `20260722.132020`** — demo sig/fact pins · desk · bind. Brief [`active-designing/20260722-132020_stoa225-fact-line-demo-lit-sample.md`](../active-designing/20260722-132020_stoa225-fact-line-demo-lit-sample.md).
 
-**STOA226 after fact-line lits check-in, `20260722.132320`** — lean A send · rec lean B rest. Brief [`active-designing/20260722-132320_stoa226-after-fact-line-lits-checkin.md`](../active-designing/20260722-132320_stoa226-after-fact-line-lits-checkin.md). JABS3 held.
+**STOA226 after fact-line lits check-in, `20260722.132320`** — lean A send · lean B rest · lean C thin as STOA227. Brief [`active-designing/20260722-132320_stoa226-after-fact-line-lits-checkin.md`](../active-designing/20260722-132320_stoa226-after-fact-line-lits-checkin.md).
+
+**STOA227 demo line pin emit GREEN, `20260722.132533`** — `format_demo_line_from_pins` ≡ claim. Brief [`active-designing/20260722-132533_stoa227-demo-line-pin-emit.md`](../active-designing/20260722-132533_stoa227-demo-line-pin-emit.md).
+
+**STOA228 after demo pin emit check-in, `20260722.132705`** — rec lean A send · lean B append/fold wire. Brief [`active-designing/20260722-132705_stoa228-after-demo-pin-emit-checkin.md`](../active-designing/20260722-132705_stoa228-after-demo-pin-emit-checkin.md). JABS3 held.
 
 
 **Framework next (host resume), `20260720.231857`** — lean A: live SETU6.5 **sent** eyes on real `usb0`/`ncm`. Lab TX gate already GREEN; Sala B0 Glow rewrite · JABS3 stay thicker check-ins. Same freeze brief.

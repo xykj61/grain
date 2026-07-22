@@ -6,7 +6,8 @@
 **Version:** `20260722.132320` (EDT · Framework host)  
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
 **Voice:** Quin  
-**Status:** Checkable — lean **A** send chosen with this seating · next lean open  
+**Status:** Checkable — lean **A** send chosen `20260722.132320` · lean **B** rest taken · lean **C** thin as **STOA227** `20260722.132533`  
+
 **Register:** Checkable (Two Rooms) — STOA225 GREEN on pier with this send; runtime desk emit held  
 
 **Grounds in:** STOA225 fact-line demo lits · STOA223 fixture wire · STOA215–221 literals path

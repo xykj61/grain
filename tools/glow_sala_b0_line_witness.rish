@@ -16,11 +16,13 @@ assert selftest.out contains "claim_demo_line format/parse/verify" else "glow_sa
 assert selftest.out contains "bad line refuses parse" else "glow_sala_b0_line_witness missing bad-line refuse"
 assert selftest.out contains "STOA202" else "glow_sala_b0_line_witness missing STOA202"
 assert selftest.out contains "STOA225" else "glow_sala_b0_line_witness missing STOA225"
+assert selftest.out contains "STOA227" else "glow_sala_b0_line_witness missing STOA227"
 assert selftest.out contains "demo line pins agree claim" else "glow_sala_b0_line_witness missing demo pin agree"
 assert selftest.out contains "lit desk binds demo pins" else "glow_sala_b0_line_witness missing lit desk bind"
+assert selftest.out contains "pin emit agrees claim_demo_line" else "glow_sala_b0_line_witness missing pin emit agree"
 
 let lits = run ["rishi/bin/rishi" "run" "tools/glow_sample_demo_fact_line_lits_witness.rish"]
 assert lits.ok else "sample-demo-fact-line-lits witness failed after line wire"
 assert lits.out contains "GREEN" else "sample-demo-fact-line-lits missing GREEN"
 
-say "GREEN: Glow Sala B0 line surface — demo lit desk wire; STOA202/225."
+say "GREEN: Glow Sala B0 line surface — demo pin emit; STOA202/225/227."

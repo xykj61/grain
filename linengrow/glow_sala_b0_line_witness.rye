@@ -11,7 +11,7 @@ const rc = @import("receipt_core.rye");
 const fixture = @import("glow_sala_b0_demo_fixture.rye");
 const line = @import("glow_sala_b0_line.rye");
 
-const witness_version = "20260722.132020";
+const witness_version = "20260722.132533";
 
 fn run_selftest(init: std.process.Init) !u8 {
     assert(fixture.root_pin_agrees());
@@ -41,8 +41,17 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("sala-b0-line: lit desk binds demo pins -- GREEN\n", .{});
     print("sala-b0-line: STOA225 fact-line lit wire -- GREEN\n", .{});
 
+    // STOA227: pin emit equals live claim_demo_line (runtime from seated pins).
+    var pin_line: [rc.max_line_len]u8 = undefined;
+    const pin_n = try line.format_demo_line_from_pins(pin_line[0..]);
+    assert(pin_n > 0);
+    assert(pin_line[pin_n - 1] == '\n');
+    assert(try line.demo_pin_emit_agrees_claim());
+    print("sala-b0-line: pin emit agrees claim_demo_line -- GREEN\n", .{});
+    print("sala-b0-line: STOA227 demo pin emit -- GREEN\n", .{});
+
     print("sala-b0-line: version {s}\n", .{witness_version});
-    print("GREEN: Glow Sala B0 line surface — STOA202/225; demo lit desk wire.\n", .{});
+    print("GREEN: Glow Sala B0 line surface — STOA202/225/227; demo pin emit.\n", .{});
     return 0;
 }
 
