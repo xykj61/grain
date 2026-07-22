@@ -57,4 +57,16 @@ if (cat.ok == false) then say "tube05-install: cat stderr — ${cat.err}"
 assert cat.ok else "could not read sala_root.txt — onCreate may have failed to write, or run-as was refused"
 assert cat.out contains "${expected}" else "RED: sala_root.txt does not contain the HAWM1 demo root"
 
-say "GREEN: TUBE0.5 — Glow NativeActivity APK installed; Sala B0 fold wrote the expected session root on-device."
+# STOA270: live typed-append root beside HAWM1 (seeded from held demo glow).
+say "tube05-install: reading files/sala_live_root.txt via run-as…"
+let live = run ["sh" "-c" "${adb} shell run-as ${pkg} cat files/sala_live_root.txt 2>&1"]
+say "tube05-install: sala_live_root.txt — ${live.out}"
+if (live.ok == false) then say "tube05-install: live stderr — ${live.err}"
+assert live.ok else "could not read sala_live_root.txt — STOA270 live seed may have failed"
+# Live one-event root must be 64 hex and differ from the three-event HAWM1 pin.
+let live_shape = run ["sh" "-c" "printf '%s' '${live.out}' | tr -d '\\r\\n' | grep -E '^[0-9a-f]{64}$'"]
+assert live_shape.ok else "sala_live_root.txt is not 64 lowercase hex digits"
+let live_diff = run ["sh" "-c" "printf '%s' '${live.out}' | tr -d '\\r\\n' | grep -vq '${expected}'"]
+assert live_diff.ok else "RED: sala_live_root.txt must not equal HAWM1 sala_root"
+
+say "GREEN: TUBE0.5 — Glow NativeActivity APK installed; Sala B0 fold wrote the expected session root on-device; STOA270 live root beside HAWM1."
