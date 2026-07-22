@@ -1,0 +1,154 @@
+//! glow/lower_face_lit.rye — emit Zig bytes from face=lit samples (STOA220).
+//!
+//! STOA220 (C4): parsed `FaceLitSpec` → Zig expressions carrying the lit
+//! bytes themselves. Face-name demos (`glow_demo_cord` / `glow_demo_hex`) stay
+//! on mold lower until a later wire. Desk pin held (C5).
+//!
+//!   rye build glow/lower_face_lit_witness.rye \
+//!     -femit-bin=glow/bin/lower_face_lit_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const face_lit = @import("face_lit.rye");
+const nest_type = @import("nest_type.rye");
+
+pub const LowerError = face_lit.ParseError || error{
+    Overflow,
+    BadIdent,
+    BadCordLit,
+    BadHexLit,
+    EmptySource,
+};
+
+fn append_print(out: []u8, used: *u32, comptime fmt: []const u8, args: anytype) LowerError!void {
+    assert(used.* <= out.len);
+    const slice = out[@as(usize, @intCast(used.*))..];
+    const written = std.fmt.bufPrint(slice, fmt, args) catch return error.Overflow;
+    const n: u32 = @intCast(written.len);
+    assert(used.* + n <= out.len);
+    used.* += n;
+}
+
+fn zig_safe_ident(face: []const u8, out: *[face_lit.max_name_len]u8) LowerError!u32 {
+    if (face.len == 0 or face.len > face_lit.max_name_len) return error.BadIdent;
+    const n: u32 = @intCast(face.len);
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        const c = face[@as(usize, @intCast(i))];
+        const mapped: u8 = if (c == '-') '_' else c;
+        if (i == 0) {
+            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or mapped == '_'))
+                return error.BadIdent;
+        } else {
+            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or (mapped >= '0' and mapped <= '9') or mapped == '_'))
+                return error.BadIdent;
+        }
+        out[@as(usize, @intCast(i))] = mapped;
+    }
+    return n;
+}
+
+fn cord_interior_safe(interior: []const u8) bool {
+    var i: u32 = 0;
+    const n: u32 = @intCast(interior.len);
+    while (i < n) : (i += 1) {
+        const c = interior[@as(usize, @intCast(i))];
+        if (c == '"' or c == '\\' or c < 0x20) return false;
+    }
+    return true;
+}
+
+fn hex_nibble(c: u8) ?u8 {
+    if (c >= '0' and c <= '9') return c - '0';
+    if (c >= 'a' and c <= 'f') return c - 'a' + 10;
+    if (c >= 'A' and c <= 'F') return c - 'A' + 10;
+    return null;
+}
+
+/// Emit one Zig expression: padded cord array or hex byte array from `spec`.
+pub fn emit_face_lit_expr(
+    src: []const u8,
+    spec: *const face_lit.FaceLitSpec,
+    out: []u8,
+    used: *u32,
+) LowerError!void {
+    const bytes = face_lit.lit_bytes(src, spec);
+    switch (spec.lit_kind) {
+        .cord => {
+            const bound = nest_type.aura_t_max_bytes;
+            if (bytes.len > bound) return error.BadCordLit;
+            if (!cord_interior_safe(bytes)) return error.BadCordLit;
+            try append_print(out, used,
+                \\blk: {{
+                \\    var buf = [_]u8{{0}} ** {d};
+                \\    const s = "{s}";
+                \\    var i: u32 = 0;
+                \\    while (i < @as(u32, @intCast(s.len))) : (i += 1) {{
+                \\        buf[@as(usize, @intCast(i))] = s[@as(usize, @intCast(i))];
+                \\    }}
+                \\    break :blk buf;
+                \\}}
+            , .{ bound, bytes });
+        },
+        .hex => {
+            if (bytes.len == 0 or bytes.len % 2 != 0) return error.BadHexLit;
+            const byte_n: u32 = @intCast(bytes.len / 2);
+            if (byte_n > nest_type.aura_ux_max_bytes) return error.BadHexLit;
+            try append_print(out, used, "[_]u8{{ ", .{});
+            var i: u32 = 0;
+            while (i < byte_n) : (i += 1) {
+                const hi = hex_nibble(bytes[@as(usize, @intCast(i * 2))]) orelse return error.BadHexLit;
+                const lo = hex_nibble(bytes[@as(usize, @intCast(i * 2 + 1))]) orelse return error.BadHexLit;
+                const v: u8 = @intCast((hi << 4) | lo);
+                if (i != 0) try append_print(out, used, ", ", .{});
+                try append_print(out, used, "0x{x:0>2}", .{v});
+            }
+            try append_print(out, used, " }}", .{});
+        },
+    }
+}
+
+/// Lower a face=lit sample desk to a small Zig main that binds each face.
+pub fn lower_source_welcome(src: []const u8, out: []u8) LowerError!u32 {
+    if (src.len == 0) return error.EmptySource;
+    var specs: [face_lit.max_face_lits]face_lit.FaceLitSpec = undefined;
+    const n = try face_lit.parse_face_lit_sample(src, specs[0..]);
+    assert(n >= 1);
+    assert(n <= face_lit.max_face_lits);
+
+    var used: u32 = 0;
+    try append_print(out, &used,
+        \\const std = @import("std");
+        \\
+        \\/// Lowered from Glow face=lit sample (STOA220).
+        \\pub fn main(_: std.process.Init) !u8 {{
+        \\
+    , .{});
+
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        var zf: [face_lit.max_name_len]u8 = undefined;
+        const fl = try zig_safe_ident(face_lit.face_slice(&specs[@as(usize, @intCast(i))]), &zf);
+        const face = zf[0..@as(usize, @intCast(fl))];
+        try append_print(out, &used, "    const {s} = ", .{face});
+        try emit_face_lit_expr(src, &specs[@as(usize, @intCast(i))], out, &used);
+        try append_print(out, &used, ";\n", .{});
+    }
+
+    try append_print(out, &used, "    _ = .{{", .{});
+    i = 0;
+    while (i < n) : (i += 1) {
+        var zf: [face_lit.max_name_len]u8 = undefined;
+        const fl = try zig_safe_ident(face_lit.face_slice(&specs[@as(usize, @intCast(i))]), &zf);
+        const face = zf[0..@as(usize, @intCast(fl))];
+        if (i != 0) try append_print(out, &used, ", ", .{});
+        try append_print(out, &used, "{s}", .{face});
+    }
+    try append_print(out, &used,
+        \\}};
+        \\    return 0;
+        \\}}
+        \\
+    , .{});
+    return used;
+}

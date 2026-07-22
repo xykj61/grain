@@ -1,0 +1,19 @@
+# glow_sample_demo_fixture_lits_witness.rish — fixture elder pins as face=lit (STOA221 · C5).
+#
+#   rishi/bin/rishi run tools/glow_sample_demo_fixture_lits_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "glow/bin/sample_demo_fixture_lits_witness"
+
+let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/sample_demo_fixture_lits_witness.rye -femit-bin=${bin}"]
+assert build.ok else "sample_demo_fixture_lits_witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "sample_demo_fixture_lits_witness exited non-zero"
+assert selftest.out contains "GREEN" else "sample_demo_fixture_lits_witness not GREEN"
+assert selftest.out contains "seven face=lit clauses parse" else "missing seven-clause parse"
+assert selftest.out contains "elder stamp memo root pins match" else "missing elder pin match"
+assert selftest.out contains "lower emit carries elder pins" else "missing lower emit claim"
+assert selftest.out contains "STOA221" else "missing STOA221"
+
+say "GREEN: Glow sample-demo-fixture-lits — elder pins as face=lit; STOA221."

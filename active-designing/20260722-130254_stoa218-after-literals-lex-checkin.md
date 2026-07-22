@@ -6,7 +6,8 @@
 **Version:** `20260722.130254` (EDT · Framework host)  
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
 **Voice:** Quin  
-**Status:** Checkable — lean **A** send chosen with this seating · next lean open  
+**Status:** Checkable — lean **A** send chosen `20260722.130254` · lean **B** C3 chosen `20260722.130604` as **STOA219**  
+
 **Register:** Checkable (Two Rooms) — STOA215–217 lex GREEN; parse/lower/desk pin held  
 
 **Grounds in:** [`20260721-194941_stoa215-glow-source-literals-inventory.md`](20260721-194941_stoa215-glow-source-literals-inventory.md) · STOA216 cord · STOA217 hex · EDT return `20260722.125845`

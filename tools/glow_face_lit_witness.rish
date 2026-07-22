@@ -1,0 +1,21 @@
+# glow_face_lit_witness.rish — face=lit sample parse (STOA219 · C3).
+#
+#   rishi/bin/rishi run tools/glow_face_lit_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "glow/bin/face_lit_witness"
+
+let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/face_lit_witness.rye -femit-bin=${bin}"]
+assert build.ok else "face_lit_witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "face_lit_witness exited non-zero"
+assert selftest.out contains "GREEN" else "face_lit_witness not GREEN"
+assert selftest.out contains "cord clause parse" else "face_lit_witness missing cord clause"
+assert selftest.out contains "hex clause parse" else "face_lit_witness missing hex clause"
+assert selftest.out contains "two-face sample parse" else "face_lit_witness missing sample"
+assert selftest.out contains "aura RHS refused" else "face_lit_witness missing aura refuse"
+assert selftest.out contains "decimal RHS refused" else "face_lit_witness missing decimal refuse"
+assert selftest.out contains "STOA219" else "face_lit_witness missing STOA219"
+
+say "GREEN: Glow face=lit sample parse — cord · hex · refuse mold/decimal RHS; STOA219."

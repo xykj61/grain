@@ -1,0 +1,16 @@
+format session-log-v1
+stamp 20260722.130753
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Hoon.hoon study vs Glow primary path
+prompt have we been searching old urbit hoon.hoon this whole time for parser and Nock so Glow runes target RISC-V via Rye correctly
+think Tree holds old/pkg/arvo/sys/hoon.hoon; grounded study exists for core variance and fusion scoping; STOA lex/parse/lower season did not walk hoon.hoon each lap.
+think Primary path is Glow to Rye Zig text to RISC-V; Nock is second backend at a seam; not Hoon mint to Nock then to RISC-V.
+obs Honest answer: selective study yes; continuous parser/Nock mirror no. Recent STOA215-219 grew from Glow desks tokens lower and briefs.
+file old/pkg/arvo/sys/hoon.hoon present in tree
+file external-research/20260717-003402_hoon-core-variance-glow-rune-bron-brix-fusion.md grounded citation
+file context/TAME_GUIDANCE.md Glow to Rye to Zig to RISC-V primary
+file external-research/20260713-214400_nock-interpreter-and-rye-hoon-fusion-scoping.md fusion lean
+recommend check-in before a hoon.hoon open/mint study season; or kg C4 on seated Glow path with Hoon cited when a rune seam needs it

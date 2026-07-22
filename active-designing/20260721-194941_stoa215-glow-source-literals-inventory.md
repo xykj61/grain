@@ -27,9 +27,9 @@
 |---|---|---|
 | **C1** | **chosen** `20260721.194941` as **STOA216** | Lex `'cord'` → `Kind.cord_lit` · refuse empty/unclosed |
 | **C2** | **chosen** `20260722.130125` as **STOA217** | Lex `@ux` + hex digits → `Kind.hex_lit` · bare `@ux` stays aura |
-| **C3** | | Parse face=`lit` under named-cast / shape sample |
-| **C4** | | Lower emit parsed bytes (not face-name demo) |
-| **C5** | | Fixture / fact-line desks pin elder strings |
+| **C3** | **chosen** `20260722.130604` as **STOA219** | Parse `face='…'` / `face=@ux…` via `glow/face_lit.rye` |
+| **C4** | **chosen** `20260722.130902` as **STOA220** | Lower emit via `glow/lower_face_lit.rye` (lit bytes, not demos) |
+| **C5** | **chosen** `20260722.131153` as **STOA221** | `sample-demo-fixture-lits.glow` elder pins; fact-line demo lits held |
 
 ---
 

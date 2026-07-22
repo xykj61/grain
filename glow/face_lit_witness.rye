@@ -1,0 +1,71 @@
+//! glow/face_lit_witness.rye — proves face=lit sample parse (STOA219).
+//!
+//!   rye build glow/face_lit_witness.rye -femit-bin=glow/bin/face_lit_witness
+//!   glow/bin/face_lit_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const face_lit = @import("face_lit.rye");
+
+const witness_version = "20260722.130604";
+
+const root_digits = "99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe";
+
+pub fn main() !void {
+    print("face_lit_witness {s}\n", .{witness_version});
+
+    const cord_src = "memo='sala:open'\n";
+    const cord = try face_lit.parse_face_lit(cord_src);
+    assert(std.mem.eql(u8, face_lit.face_slice(&cord), "memo"));
+    assert(cord.lit_kind == .cord);
+    assert(std.mem.eql(u8, face_lit.lit_bytes(cord_src, &cord), "sala:open"));
+    print("face_lit: cord clause parse -- GREEN\n", .{});
+
+    var hex_src_buf: [80]u8 = undefined;
+    const hex_src = try std.fmt.bufPrint(&hex_src_buf, "root=@ux{s}\n", .{root_digits});
+    const hex = try face_lit.parse_face_lit(hex_src);
+    assert(std.mem.eql(u8, face_lit.face_slice(&hex), "root"));
+    assert(hex.lit_kind == .hex);
+    assert(std.mem.eql(u8, face_lit.lit_bytes(hex_src, &hex), root_digits));
+    print("face_lit: hex clause parse -- GREEN\n", .{});
+
+    const sample_src =
+        \\memo='sala:open'
+        \\root=@ux99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe
+        \\
+    ;
+    var out: [face_lit.max_face_lits]face_lit.FaceLitSpec = undefined;
+    const n = try face_lit.parse_face_lit_sample(sample_src, out[0..]);
+    assert(n == 2);
+    assert(std.mem.eql(u8, face_lit.face_slice(&out[0]), "memo"));
+    assert(out[0].lit_kind == .cord);
+    assert(std.mem.eql(u8, face_lit.lit_bytes(sample_src, &out[0]), "sala:open"));
+    assert(std.mem.eql(u8, face_lit.face_slice(&out[1]), "root"));
+    assert(out[1].lit_kind == .hex);
+    assert(std.mem.eql(u8, face_lit.lit_bytes(sample_src, &out[1]), root_digits));
+    print("face_lit: two-face sample parse -- GREEN\n", .{});
+
+    if (face_lit.parse_face_lit("memo=@t\n")) |_| {
+        return error.AuraRhsAccepted;
+    } else |err| {
+        assert(err == face_lit.ParseError.UnsupportedRhs);
+    }
+    print("face_lit: aura RHS refused -- GREEN\n", .{});
+
+    if (face_lit.parse_face_lit("memo=5\n")) |_| {
+        return error.DecimalRhsAccepted;
+    } else |err2| {
+        assert(err2 == face_lit.ParseError.UnsupportedRhs);
+    }
+    print("face_lit: decimal RHS refused -- GREEN\n", .{});
+
+    if (face_lit.parse_face_lit("memo=''\n")) |_| {
+        return error.EmptyCordAccepted;
+    } else |_| {
+        // empty cord fails at lex (BadToken) before parse kinds
+    }
+    print("face_lit: empty cord refused -- GREEN\n", .{});
+
+    print("face_lit: STOA219 face=lit parse -- GREEN\n", .{});
+}

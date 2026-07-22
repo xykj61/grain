@@ -1,0 +1,19 @@
+# glow_lower_face_lit_witness.rish — face=lit lower emit (STOA220 · C4).
+#
+#   rishi/bin/rishi run tools/glow_lower_face_lit_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "glow/bin/lower_face_lit_witness"
+
+let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/lower_face_lit_witness.rye -femit-bin=${bin}"]
+assert build.ok else "lower_face_lit_witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "lower_face_lit_witness exited non-zero"
+assert selftest.out contains "GREEN" else "lower_face_lit_witness not GREEN"
+assert selftest.out contains "cord emit uses lit bytes" else "lower_face_lit_witness missing cord emit"
+assert selftest.out contains "hex emit uses lit bytes" else "lower_face_lit_witness missing hex emit"
+assert selftest.out contains "two-face sample emit" else "lower_face_lit_witness missing sample emit"
+assert selftest.out contains "STOA220" else "lower_face_lit_witness missing STOA220"
+
+say "GREEN: Glow face=lit lower emit — lit bytes not face-name demos; STOA220."
