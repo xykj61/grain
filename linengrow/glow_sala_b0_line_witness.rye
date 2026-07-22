@@ -11,7 +11,7 @@ const rc = @import("receipt_core.rye");
 const fixture = @import("glow_sala_b0_demo_fixture.rye");
 const line = @import("glow_sala_b0_line.rye");
 
-const witness_version = "20260722.132533";
+const witness_version = "20260722.133717";
 
 fn run_selftest(init: std.process.Init) !u8 {
     assert(fixture.root_pin_agrees());
@@ -50,8 +50,16 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("sala-b0-line: pin emit agrees claim_demo_line -- GREEN\n", .{});
     print("sala-b0-line: STOA227 demo pin emit -- GREEN\n", .{});
 
+    // STOA231: event 2–3 pins · emit · desk.
+    assert(try line.demo_line2_pins_agree());
+    assert(try line.demo_line3_pins_agree());
+    assert(try line.demo_pin_emit2_agrees_claim());
+    assert(try line.demo_pin_emit3_agrees_claim());
+    print("sala-b0-line: event 2-3 pins and pin emit agree -- GREEN\n", .{});
+    print("sala-b0-line: STOA231 event 2-3 pin emit -- GREEN\n", .{});
+
     print("sala-b0-line: version {s}\n", .{witness_version});
-    print("GREEN: Glow Sala B0 line surface — STOA202/225/227; demo pin emit.\n", .{});
+    print("GREEN: Glow Sala B0 line surface — STOA202/225/227/231; demo pin emit 1-3.\n", .{});
     return 0;
 }
 
