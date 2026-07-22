@@ -6,6 +6,7 @@
 //! STOA211 (C1): `replay` composes product line · sign · digest — no
 //! `sala.replay`.
 //! STOA212 (C2): FactFields / amount parse through glow_sala_b0_fields.
+//! STOA235: `claim_replay_demo_root_from_desk` builds via desk append.
 //!
 //!   rye build linengrow/glow_sala_b0_replay_witness.rye \
 //!     -femit-bin=linengrow/bin/glow_sala_b0_replay_witness
@@ -23,7 +24,7 @@ const line = @import("glow_sala_b0_line.rye");
 const sign = @import("glow_sala_b0_sign.rye");
 const fields = @import("glow_sala_b0_fields.rye");
 
-pub const replay_version = "20260721.193404";
+pub const replay_version = "20260722.134552";
 
 pub const ReplayError = append.AppendError || digest.DigestError || fields.FieldsError || sala.SessionError || error{RootMismatch};
 
@@ -71,16 +72,14 @@ pub fn replay(
     return .{ .events = count, .root = root, .last_seq = last_seq };
 }
 
-/// Build the three-event demo log, replay twice, assert roots agree; digest via
-/// product surface and refuse unless that root matches replay + fixture.
-pub fn claim_replay_demo_root(log_buf: *[rc.max_log_len]u8) ReplayError![32]u8 {
-    const actor_kp = kumara.keypair_from_seed(&mc.issuer_seed);
-    var actor_hex: [mc.pubkey_hex_len]u8 = undefined;
-    mc.hex_of_key(actor_kp.public_key, &actor_hex);
-
-    const len = try append.append_demo_log(log_buf);
-    const r1 = try replay(log_buf[0..len], &actor_hex, actor_kp.public_key);
-    const r2 = try replay(log_buf[0..len], &actor_hex, actor_kp.public_key);
+fn claim_replay_built_log(
+    log_buf: *[rc.max_log_len]u8,
+    len: u32,
+    actor_hex: *const [mc.pubkey_hex_len]u8,
+    actor_pk: kumara.PublicKey,
+) ReplayError![32]u8 {
+    const r1 = try replay(log_buf[0..len], actor_hex, actor_pk);
+    const r2 = try replay(log_buf[0..len], actor_hex, actor_pk);
     assert(r1.events == fixture.event_count);
     assert(r2.events == fixture.event_count);
     assert(r1.last_seq == 3);
@@ -92,4 +91,27 @@ pub fn claim_replay_demo_root(log_buf: *[rc.max_log_len]u8) ReplayError![32]u8 {
     const product_root = try digest.claim_digest_log(log_buf[0..len]);
     if (!std.mem.eql(u8, &product_root, &r1.root)) return error.RootMismatch;
     return product_root;
+}
+
+/// Build the three-event demo log from pins, replay twice, assert roots agree.
+pub fn claim_replay_demo_root(log_buf: *[rc.max_log_len]u8) ReplayError![32]u8 {
+    const actor_kp = kumara.keypair_from_seed(&mc.issuer_seed);
+    var actor_hex: [mc.pubkey_hex_len]u8 = undefined;
+    mc.hex_of_key(actor_kp.public_key, &actor_hex);
+
+    const len = try append.append_demo_log(log_buf);
+    return claim_replay_built_log(log_buf, len, &actor_hex, actor_kp.public_key);
+}
+
+/// Build from runtime desk text, replay twice, assert HAWM1 (STOA235).
+pub fn claim_replay_demo_root_from_desk(
+    desk_src: []const u8,
+    log_buf: *[rc.max_log_len]u8,
+) ReplayError![32]u8 {
+    const actor_kp = kumara.keypair_from_seed(&mc.issuer_seed);
+    var actor_hex: [mc.pubkey_hex_len]u8 = undefined;
+    mc.hex_of_key(actor_kp.public_key, &actor_hex);
+
+    const len = try append.append_demo_log_from_desk(desk_src, log_buf);
+    return claim_replay_built_log(log_buf, len, &actor_hex, actor_kp.public_key);
 }

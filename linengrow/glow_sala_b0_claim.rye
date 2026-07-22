@@ -5,6 +5,8 @@
 //! STOA197: composes append + replay ports instead of elder `run_demo_fold`.
 //! STOA203: append path is sign+line compose; elder replay body still underneath.
 //! STOA204: replay claim also digests via product digest surface.
+//! STOA235: `claim_demo_fold_from_desk` / `_from_desk_file` — desk append+replay.
+//! NativeActivity stays on pin `claim_demo_fold` until an asset lap.
 //! Elder fold stays as peer baseline; Glow-authored fold body stays held.
 //!
 //!   rye build linengrow/glow_sala_b0_claim_witness.rye \
@@ -16,20 +18,37 @@ const rc = @import("receipt_core.rye");
 const fold = @import("sala_b0_fold.rye");
 const fixture = @import("glow_sala_b0_demo_fixture.rye");
 const replay = @import("glow_sala_b0_replay.rye");
+const line = @import("glow_sala_b0_line.rye");
 
-pub const claim_version = "20260721.183253";
+pub const claim_version = "20260722.134552";
 
 /// Product-owned pin — same HAWM1 demo root the elder fold proves.
 pub const expected_demo_root_hex = fixture.expected_demo_root_hex;
 
-pub const ClaimError = replay.ReplayError;
+pub const ClaimError = replay.ReplayError || error{DeskReadFailed};
 
-/// Build + replay the three-event demo via Glow ports; refuse unless root matches.
+/// Build + replay the three-event demo via Glow pin ports; refuse unless root matches.
 pub fn claim_demo_fold() ClaimError![32]u8 {
     var log_buf: [rc.max_log_len]u8 = undefined;
     const root = try replay.claim_replay_demo_root(&log_buf);
     assert(root_matches_expected(&root)); // product claim: Glow owns this pin
     return root;
+}
+
+/// Build + replay from runtime desk text (STOA235); refuse unless HAWM1.
+pub fn claim_demo_fold_from_desk(desk_src: []const u8) ClaimError![32]u8 {
+    var log_buf: [rc.max_log_len]u8 = undefined;
+    const root = try replay.claim_replay_demo_root_from_desk(desk_src, &log_buf);
+    assert(root_matches_expected(&root));
+    return root;
+}
+
+/// Read fact-line lit desk from cwd, then desk claim (STOA235 file I/O).
+pub fn claim_demo_fold_from_desk_file(init: std.process.Init) ClaimError![32]u8 {
+    const a = init.arena.allocator();
+    const desk = std.Io.Dir.cwd().readFileAlloc(init.io, line.lit_desk_relpath, a, .limited(8192)) catch
+        return error.DeskReadFailed;
+    return claim_demo_fold_from_desk(desk);
 }
 
 /// Hex-encode a 32-byte root (delegates to elder fold table).

@@ -10,9 +10,9 @@ const print = std.debug.print;
 const glow_fold = @import("glow_sala_b0_fold.rye");
 const elder = @import("sala_b0_fold.rye");
 
-const witness_version = "20260721.183554";
+const witness_version = "20260722.134552";
 
-fn run_selftest() !u8 {
+fn run_selftest(init: std.process.Init) !u8 {
     assert(glow_fold.pin_agrees_elder());
     print("sala-b0-glow-fold: pin agrees elder -- GREEN\n", .{});
 
@@ -28,11 +28,18 @@ fn run_selftest() !u8 {
     assert(std.mem.eql(u8, &root, &elder_root));
     print("sala-b0-glow-fold: agrees elder run_demo_fold -- GREEN\n", .{});
 
+    // STOA235: desk-file fold equals pin fold.
+    const desk_root = try glow_fold.run_demo_fold_from_desk_file(init);
+    assert(std.mem.eql(u8, &desk_root, &root));
+    assert(glow_fold.root_matches_expected(&desk_root));
+    print("sala-b0-glow-fold: desk-file fold matches pin fold -- GREEN\n", .{});
+    print("sala-b0-glow-fold: STOA235 desk-file fold -- GREEN\n", .{});
+
     print("sala-b0-glow-fold: version {s}\n", .{witness_version});
-    print("GREEN: Glow Sala B0 product fold — STOA198; compose path behind run_demo_fold.\n", .{});
+    print("GREEN: Glow Sala B0 product fold — STOA198/235; pin + desk-file fold.\n", .{});
     return 0;
 }
 
-pub fn main(_: std.process.Init) !u8 {
-    return run_selftest();
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
 }

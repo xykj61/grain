@@ -6,7 +6,8 @@
 **Version:** `20260722.134415` (EDT · Framework host)  
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
 **Voice:** Quin  
-**Status:** Checkable — lean **A** send chosen `20260722.134415` · lean **B** fold desk I/O recommended next  
+**Status:** Checkable — lean **A** send `20260722.134415` · lean **B** as **STOA235** `20260722.134552`  
+
 **Register:** Checkable (Two Rooms) — STOA233 GREEN with this send; claim path still pin-append  
 
 **Grounds in:** STOA233 runtime desk emit · STOA231 pin emit · STOA197/198 claim·fold compose
@@ -26,7 +27,7 @@ STOA233 `extract_desk_cord` · `format_demo_line*_from_desk` · `append_demo_log
 | | Lean | What it opens |
 |---|---|---|
 | **A** | **Send STOA233** — **chosen** `20260722.134415` | pier matches hand |
-| **B** | **Wire claim/fold to desk file I/O** — **recommended next** | `claim_demo_fold` (or thin twin) reads lit desk · desk append |
+| **B** | **Wire claim/fold to desk file I/O** — **as STOA235** `20260722.134552` | desk-file claim/fold twin · HAWM1 |
 | **C** | **Glow `face_lit` on product path** | thicker module-path seam — **held** |
 | **D** | **JABS3** | inference · economics — **held**; explicit word only |
 
