@@ -6,8 +6,8 @@
 **Version:** `20260722.183720` (EDT · Framework host)  
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
 **Voice:** Quin  
-**Status:** Checkable — lean **A** send with round-close · lean **B** rest recommended  
-**Register:** Checkable (Two Rooms) — ignore seated; yonder Intent  
+**Status:** Checkable — lean **A** send with round-close · lean **B** rest offered · language continue → STOA302  
+**Register:** Checkable (Two Rooms) — ignore seated; yonder still Intent  
 
 **Grounds in:** `20260722-183653` cursorignore · filetree check-in lean A  
 
@@ -26,7 +26,7 @@ Root `.cursorignore` · `.gitignore` allows the file · brief names archive/cach
 | | Lean | What it opens |
 |---|---|---|
 | **A** | **Send this lap** — **chosen** with round-close | pier carries ignore |
-| **B** | **Rest** — **recommended** | let the index settle; resume language later |
+| **B** | **Rest** — offered; language continue → STOA302 | let the index settle; resume language later |
 | **C** | **Yonder old designing** (relevance, not age alone) | thinner living shelf · `git mv` |
 | **D** | **Slower file birth** | habit — fewer per-rung briefs when a check-in table can carry it |
 

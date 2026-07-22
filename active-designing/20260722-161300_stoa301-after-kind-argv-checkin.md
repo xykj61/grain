@@ -6,8 +6,8 @@
 **Version:** `20260722.161300` (EDT · Framework host)  
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
 **Voice:** Quin  
-**Status:** Checkable — lean **A** send with round-close · lean **B** rest recommended  
-**Register:** Checkable (Two Rooms) — STOA300 GREEN; payload argv Intent  
+**Status:** Checkable — lean **A** send with round-close · lean **B** rest offered · continue → STOA302  
+**Register:** Checkable (Two Rooms) — STOA300 GREEN; continue sized as STOA302  
 
 **Grounds in:** STOA300 · STOA299 lean A  
 
@@ -26,8 +26,8 @@ STOA300: tagged argv survey · `emit_kind_argv` bartis+barket · tag desks · xa
 | | Lean | What it opens |
 |---|---|---|
 | **A** | **Send STOA300** — **chosen** with round-close | pier carries kind argv |
-| **B** | **Rest** — **recommended** | unit-tag argv family seated; pause |
-| **C** | **Payload argv survey** (xact first) | thicker — tag + faces |
+| **B** | **Rest** — offered; continue → STOA302 | unit-tag argv family seated; pause |
+| **C** | **Payload argv survey** (xact first) — carried to STOA302 lean A | thicker — tag + faces |
 | **D** | **Gold · face_lit · fleets · JABS3** | **held** |
 
 ---

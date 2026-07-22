@@ -864,6 +864,12 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA301 after kind argv check-in, `20260722.161300`** — lean A send · lean B rest. Brief [`active-designing/20260722-161300_stoa301-after-kind-argv-checkin.md`](../active-designing/20260722-161300_stoa301-after-kind-argv-checkin.md).
 
+**`.cursorignore` seated, `20260722.183653`** — archive/caches out of Cursor index; git whole. Brief [`active-designing/20260722-183653_cursorignore-archive-and-caches.md`](../active-designing/20260722-183653_cursorignore-archive-and-caches.md).
+
+**Align · continue Glow language, `20260722.184311`** — compass; STOA302 lean A payload argv (xact). Brief [`active-designing/20260722-184311_align-continue-glow-language.md`](../active-designing/20260722-184311_align-continue-glow-language.md).
+
+**STOA302 continue Glow language check-in, `20260722.184311`** — lean A payload argv survey · lean B docs compressor · lean E held. Brief [`active-designing/20260722-184311_stoa302-continue-glow-language-checkin.md`](../active-designing/20260722-184311_stoa302-continue-glow-language-checkin.md).
+
 
 **Framework next (host resume), `20260720.231857`** — lean A: live SETU6.5 **sent** eyes on real `usb0`/`ncm`. Lab TX gate already GREEN; Sala B0 Glow rewrite · JABS3 stay thicker check-ins. Same freeze brief.
 

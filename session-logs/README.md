@@ -7,6 +7,9 @@ Living index for the append-only session stream. This table reads **newest first
 **Day’s truth is this index’s order, not filename sort.** One-clock stamps sort ascending on disk; trust the table for sequence within a day.
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
+- `20260722.184311` — [align continue Glow STOA302](20260722-184311_align-continue-glow-stoa302.bron) — payload argv survey recommended
+- `20260722.184015` — [Glow language completeness survey](20260722-184015_glow-language-completeness-survey.bron) — vs Hoon families; Rye→Zig→RISC-V
+- `20260722.183757` — [REMEMBER git nib after cursorignore](20260722-183757_remember-git-nib-cursorignore.bron) — pin c127b3ab73e6
 - `20260722.183720` — [cursorignore archive and caches](20260722-183720_cursorignore-archive-caches.bron) — lean A seated; rest or yonder next
 - `20260722.183514` — [filetree append-front check-in](20260722-183514_filetree-append-front-checkin.bron) — prefer fold/ignore over content-merge
 - `20260722.161915` — [STOA301 send and check-in](20260722-161915_stoa301-send-and-checkin.bron) — pier already clean; rest or payload argv
