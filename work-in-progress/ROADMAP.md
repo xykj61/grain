@@ -850,6 +850,10 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA294 after tagged flip survey check-in, `20260722.155802`** — lean A send · lean B barket twin. Brief [`active-designing/20260722-155802_stoa294-after-tagged-flip-survey-checkin.md`](../active-designing/20260722-155802_stoa294-after-tagged-flip-survey-checkin.md).
 
+**STOA295 barket tagged payload flip twin GREEN, `20260722.160418`** — `emit_tagged_payload_flip_call_body` · two wrappers · payload family closed on both gates. Brief [`active-designing/20260722-160418_stoa295-barket-tagged-payload-flip.md`](../active-designing/20260722-160418_stoa295-barket-tagged-payload-flip.md).
+
+**STOA296 after barket tagged flip check-in, `20260722.160422`** — lean A send · lean C kind unit helper. Brief [`active-designing/20260722-160422_stoa296-after-barket-tagged-flip-checkin.md`](../active-designing/20260722-160422_stoa296-after-barket-tagged-flip-checkin.md).
+
 
 **Framework next (host resume), `20260720.231857`** — lean A: live SETU6.5 **sent** eyes on real `usb0`/`ncm`. Lab TX gate already GREEN; Sala B0 Glow rewrite · JABS3 stay thicker check-ins. Same freeze brief.
 
