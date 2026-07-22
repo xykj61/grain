@@ -7,6 +7,8 @@ Living index for the append-only session stream. This table reads **newest first
 **Day’s truth is this index’s order, not filename sort.** One-clock stamps sort ascending on disk; trust the table for sequence within a day.
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
+- `20260722.143539` — [REMEMBER git nib STOA256 fix](20260722-143539_remember-git-nib-stoa256-fix.bron) — pin df21de606e7f on living card
+- `20260722.143510` — [REMEMBER git nib after STOA256](20260722-143510_remember-git-nib-stoa256.bron) — pin df21de606e7f
 - `20260722.143410` — [STOA255–256 barket N-field identity](20260722-143410_stoa255-256-barket-n-field-identity-round.bron) — barket emit_n_field_identity; flip next
 - `20260722.142353` — [REMEMBER git nib after STOA254](20260722-142353_remember-git-nib-stoa254.bron) — pin 8492f8195698
 - `20260722.142353` — [STOA253–254 bartis N-field identity](20260722-142353_stoa253-254-n-field-identity-round.bron) — emit_n_field_identity; barket twin next
