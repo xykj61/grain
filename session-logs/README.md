@@ -7,6 +7,7 @@ Living index for the append-only session stream. This table reads **newest first
 **Day’s truth is this index’s order, not filename sort.** One-clock stamps sort ascending on disk; trust the table for sequence within a day.
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
+- `20260722.185058` — [stop recommending rest](20260722-185058_stop-recommending-rest.bron) — Keaton owns rest; STOA304 lean C
 - `20260722.184920` — [STOA303–304 xact argv](20260722-184920_stoa303-304-xact-argv-round.bron) — payload tag+amount GREEN; rest next
 - `20260722.184415` — [REMEMBER git nib after STOA302](20260722-184415_remember-git-nib-stoa302.bron) — pin 802826c4262f
 - `20260722.184311` — [align continue Glow STOA302](20260722-184311_align-continue-glow-stoa302.bron) — payload argv survey recommended
