@@ -6,12 +6,12 @@
 **Version:** `20260722.135605` (EDT · Framework host)  
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
 **Voice:** Quin  
-**Status:** Checkable — lean **A** send chosen `20260722.135605` · lean **B** name next door  
+**Status:** Checkable — lean **A** send chosen `20260722.135605` · lean **B** became **STOA241** `20260722.135948`  
 **Register:** Checkable (Two Rooms) — STOA239 GREEN with this send; pin/desk/embed/Pixel arc closed  
 
 **Grounds in:** STOA239 Pixel eyes · STOA215–238 lit/desk season · HAWM1
 
-**dated_guard:** Do **not** reopen pin/desk emit as unfinished. JABS3 and product `face_lit` stay held until named.
+**dated_guard:** Do **not** reopen pin/desk emit as unfinished. JABS3 and shared-package `face_lit` import stay held until named.
 
 ---
 
