@@ -1,0 +1,89 @@
+//! linengrow/dexter_sala_append_witness.rye — STOA268 Dexter submit → Sala append.
+//!
+//!   rye build linengrow/dexter_sala_append_witness.rye \
+//!     -femit-bin=linengrow/bin/dexter_sala_append_witness
+//!   linengrow/bin/dexter_sala_append_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const kumara = @import("kumara.rye");
+const mc = @import("mala_core.rye");
+const rc = @import("receipt_core.rye");
+const dexter = @import("window_input.rye");
+const glass = @import("dexter_glass_core.rye");
+const fixture = @import("glow_sala_b0_demo_fixture.rye");
+const digest = @import("glow_sala_b0_digest.rye");
+const append = @import("glow_sala_b0_append.rye");
+const sign = @import("glow_sala_b0_sign.rye");
+const line = @import("glow_sala_b0_line.rye");
+const fields_mod = @import("glow_sala_b0_fields.rye");
+const bridge = @import("dexter_sala_append.rye");
+
+const witness_version = "20260722.151257";
+const demo_stamp = "20260722.151257";
+const demo_seq: i64 = 1;
+
+fn run_selftest() !u8 {
+    assert(fixture.root_pin_agrees());
+    print("dexter-sala-append: fixture root pin seated -- GREEN\n", .{});
+
+    const actor_kp = kumara.keypair_from_seed(&mc.issuer_seed);
+    var actor_hex: [mc.pubkey_hex_len]u8 = undefined;
+    mc.hex_of_key(actor_kp.public_key, &actor_hex);
+
+    var log_buf: [rc.max_log_len]u8 = undefined;
+    var memo: [dexter.max_line_len]u8 = undefined;
+    var memo_len: u32 = 0;
+    const len = try bridge.append_demo_submit(
+        log_buf[0..],
+        0,
+        demo_seq,
+        demo_stamp,
+        &actor_hex,
+        actor_kp,
+        &memo,
+        &memo_len,
+    );
+    assert(len > 0);
+    assert(memo_len == glass.demo_submitted.len);
+    assert(std.mem.eql(u8, memo[0..memo_len], glass.demo_submitted));
+    print("dexter-sala-append: demo editor submit via bridge -- GREEN\n", .{});
+    print("dexter-sala-append: submitted memo \"{s}\" -- GREEN\n", .{memo[0..memo_len]});
+
+    var sig_bytes: [kumara.signature_length]u8 = undefined;
+    var fact_bytes: [rc.max_fact_len]u8 = undefined;
+    const parsed = try line.parse_log_line(log_buf[0..len], &sig_bytes, &fact_bytes);
+    try sign.verify_record(sig_bytes[0..parsed.sig_len], fact_bytes[0..parsed.fact_len], actor_kp.public_key);
+    print("dexter-sala-append: sign+line verify round-trip -- GREEN\n", .{});
+
+    var fact_fields: rc.FactFields = undefined;
+    try fields_mod.parse_fact_fields(fact_bytes[0..parsed.fact_len], &fact_fields);
+    assert(std.mem.eql(u8, fact_fields.memo, glass.demo_submitted));
+    assert(std.mem.eql(u8, fact_fields.stamp, demo_stamp));
+    assert(std.mem.eql(u8, fact_fields.amount, "1"));
+    print("dexter-sala-append: fields memo equals Dexter glow -- GREEN\n", .{});
+
+    const typed_root = digest.digest_log_bytes(log_buf[0..len]);
+    var typed_hex: [64]u8 = undefined;
+    digest.root_to_hex(&typed_root, &typed_hex);
+    assert(!std.mem.eql(u8, typed_hex[0..], fixture.expected_demo_root_hex));
+    print("dexter-sala-append: typed root differs HAWM1 -- GREEN\n", .{});
+
+    var demo_log: [rc.max_log_len]u8 = undefined;
+    const demo_root = try append.claim_append_demo_root(&demo_log);
+    assert(digest.root_matches_fixture(&demo_root));
+    var demo_hex: [64]u8 = undefined;
+    digest.root_to_hex(&demo_root, &demo_hex);
+    assert(std.mem.eql(u8, demo_hex[0..], fixture.expected_demo_root_hex));
+    print("dexter-sala-append: HAWM1 pin path still seated -- GREEN\n", .{});
+    print("dexter-sala-append: session root -- {s}\n", .{demo_hex[0..]});
+
+    print("dexter-sala-append: version {s}\n", .{witness_version});
+    print("GREEN: Dexter Sala append — STOA268 submit helper; HAWM1 untouched.\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}
