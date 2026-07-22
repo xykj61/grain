@@ -2,7 +2,8 @@
 ::  Mirrors elder format_log_line halves (STOA202 product wrap).
 ::  STOA209: @t bound 1024 — sig hex (128) and max fact hex (1024) fit.
 ::  STOA207: cast twin at cast-named-fact-line.glow.
-::  Glow source literals · rewrite glow_sala_b0_line held.
+::  Fixture elder lits: sample-demo-fixture-lits (STOA221). Fact-line sig/fact
+::  demo lits wait on a fixed demo line pin · rewrite glow_sala_b0_line held.
 +$  fact-line-shape
   $:  sig=@t
       fact=@t

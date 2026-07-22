@@ -491,6 +491,11 @@
 - [x] **STOA216 — cord literal lex (C1)** `20260721.194941` — `Kind.cord_lit` · `'…'` · empty/unclosed refuse. Brief [`../active-designing/20260721-194941_stoa216-cord-literal-lex.md`](../active-designing/20260721-194941_stoa216-cord-literal-lex.md).
 - [x] **STOA217 — hex literal lex (C2)** `20260722.130125` — `Kind.hex_lit` · `@ux` + even hex digits · bare `@ux` stays aura. Brief [`../active-designing/20260722-130125_stoa217-hex-literal-lex.md`](../active-designing/20260722-130125_stoa217-hex-literal-lex.md).
 - [x] **STOA218 — after literals lex check-in** `20260722.130254` — lean A send; rec lean B C3 parse. Brief [`../active-designing/20260722-130254_stoa218-after-literals-lex-checkin.md`](../active-designing/20260722-130254_stoa218-after-literals-lex-checkin.md).
+- [x] **STOA219 — face=lit sample parse (C3)** `20260722.130604` — `parse_face_lit` · cord/hex · refuse aura/decimal RHS. Brief [`../active-designing/20260722-130604_stoa219-face-lit-parse.md`](../active-designing/20260722-130604_stoa219-face-lit-parse.md).
+- [x] **STOA220 — face=lit lower emit (C4)** `20260722.130902` — lit bytes into Zig; no face-name demos. Brief [`../active-designing/20260722-130902_stoa220-face-lit-lower-emit.md`](../active-designing/20260722-130902_stoa220-face-lit-lower-emit.md).
+- [x] **STOA221 — fixture elder lits desk (C5)** `20260722.131153` — `sample-demo-fixture-lits.glow` · HAWM1 root. Brief [`../active-designing/20260722-131153_stoa221-fixture-lits-desk-pin.md`](../active-designing/20260722-131153_stoa221-fixture-lits-desk-pin.md).
+- [x] **Session-logs archive fold** `20260722.131028` — 613 prior-day logs under `session-logs/archive/`; day `20260722` flat.
+- [x] **STOA222 — after literals season check-in** `20260722.131348` — lean A send; rec lean B product fixture wire. Brief [`../active-designing/20260722-131348_stoa222-after-literals-season-checkin.md`](../active-designing/20260722-131348_stoa222-after-literals-season-checkin.md).
 
 
 - [x] **UDT stamp convention on Framework host** `20260720.232932` — Keaton set system clock to UDT (UTC); [`context/specs/20260720-232932_udt-framework-host-convention.md`](../context/specs/20260720-232932_udt-framework-host-convention.md); Eastern era stamps stay; session-log rules + `GLOW_PROFILE` pointed at Etc/UTC for that season.

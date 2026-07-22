@@ -1,0 +1,136 @@
+//! glow/face_lit.rye — parse face=cord_lit|hex_lit sample clauses (STOA219).
+//!
+//! STOA219 (C3): one Glow value clause `face='…'` or `face=@ux…` after lex
+//! (STOA216–217). Mold `face=@t` / `face=@ux` stay in rune_shape — this surface
+//! is sample values only. Lower emit and desk pin held (C4 / C5).
+//!
+//!   rye build glow/face_lit_witness.rye -femit-bin=glow/bin/face_lit_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const tokens = @import("tokens.rye");
+const tally_copy = @import("tally_copy.rye");
+
+pub const max_name_len: u32 = tokens.max_name_len;
+pub const max_face_lits: u32 = 9;
+
+pub const ParseError = error{
+    MissingFace,
+    MissingEquals,
+    MissingLit,
+    UnsupportedRhs,
+    TrailingJunk,
+    TooManyFaceLits,
+} || tokens.TokenError;
+
+pub const LitKind = enum { cord, hex };
+
+/// One parsed `face=<lit>` clause; `lit` spans the source token.
+pub const FaceLitSpec = struct {
+    face: [max_name_len]u8 = [_]u8{0} ** max_name_len,
+    face_len: u32 = 0,
+    lit_kind: LitKind = .cord,
+    lit: tokens.Token = .{},
+};
+
+pub fn face_slice(spec: *const FaceLitSpec) []const u8 {
+    return spec.face[0..spec.face_len];
+}
+
+/// Cord interior or hex digits for the clause's lit token.
+pub fn lit_bytes(src: []const u8, spec: *const FaceLitSpec) []const u8 {
+    return switch (spec.lit_kind) {
+        .cord => tokens.cord_lit_interior(src, spec.lit),
+        .hex => tokens.hex_lit_digits(src, spec.lit),
+    };
+}
+
+fn skip_newlines(toks: []const tokens.Token, i: *u32) void {
+    const n: u32 = @intCast(toks.len);
+    while (i.* < n and toks[@as(usize, @intCast(i.*))].kind == .newline) : (i.* += 1) {}
+}
+
+/// Parse one clause: `ident = cord_lit | hex_lit` (newlines around allowed).
+pub fn parse_face_lit(src: []const u8) ParseError!FaceLitSpec {
+    var buf: [tokens.max_tokens]tokens.Token = undefined;
+    const n = try tokens.tokenize(src, buf[0..]);
+    assert(n <= tokens.max_tokens);
+    const toks = buf[0..n];
+    var i: u32 = 0;
+    skip_newlines(toks, &i);
+    if (i >= n) return error.MissingFace;
+    if (toks[@as(usize, @intCast(i))].kind != .ident) return error.MissingFace;
+    const face_tok = toks[@as(usize, @intCast(i))];
+    i += 1;
+    if (i >= n or toks[@as(usize, @intCast(i))].kind != .equals) return error.MissingEquals;
+    i += 1;
+    if (i >= n) return error.MissingLit;
+    const lit_tok = toks[@as(usize, @intCast(i))];
+    const lit_kind: LitKind = switch (lit_tok.kind) {
+        .cord_lit => .cord,
+        .hex_lit => .hex,
+        .aura, .decimal, .ident => return error.UnsupportedRhs,
+        else => return error.MissingLit,
+    };
+    i += 1;
+    skip_newlines(toks, &i);
+    if (i < n) return error.TrailingJunk;
+
+    const face = tokens.slice_of(src, face_tok);
+    assert(face.len >= 1);
+    assert(face.len <= max_name_len);
+    var spec: FaceLitSpec = .{
+        .face_len = @intCast(face.len),
+        .lit_kind = lit_kind,
+        .lit = lit_tok,
+    };
+    tally_copy.copy_disjoint(u8, spec.face[0..face.len], face);
+    return spec;
+}
+
+/// Parse one or more newline-separated `face=<lit>` clauses (≤ max_face_lits).
+pub fn parse_face_lit_sample(src: []const u8, out: []FaceLitSpec) ParseError!u32 {
+    assert(out.len >= 1);
+    assert(out.len <= max_face_lits);
+    var buf: [tokens.max_tokens]tokens.Token = undefined;
+    const n = try tokens.tokenize(src, buf[0..]);
+    assert(n <= tokens.max_tokens);
+    const toks = buf[0..n];
+    var i: u32 = 0;
+    var used: u32 = 0;
+    const cap: u32 = @intCast(out.len);
+
+    while (true) {
+        skip_newlines(toks, &i);
+        if (i >= n) break;
+        if (used >= cap) return error.TooManyFaceLits;
+        if (toks[@as(usize, @intCast(i))].kind != .ident) return error.MissingFace;
+        const face_tok = toks[@as(usize, @intCast(i))];
+        i += 1;
+        if (i >= n or toks[@as(usize, @intCast(i))].kind != .equals) return error.MissingEquals;
+        i += 1;
+        if (i >= n) return error.MissingLit;
+        const lit_tok = toks[@as(usize, @intCast(i))];
+        const lit_kind: LitKind = switch (lit_tok.kind) {
+            .cord_lit => .cord,
+            .hex_lit => .hex,
+            .aura, .decimal, .ident => return error.UnsupportedRhs,
+            else => return error.MissingLit,
+        };
+        i += 1;
+
+        const face = tokens.slice_of(src, face_tok);
+        assert(face.len >= 1);
+        assert(face.len <= max_name_len);
+        var spec: FaceLitSpec = .{
+            .face_len = @intCast(face.len),
+            .lit_kind = lit_kind,
+            .lit = lit_tok,
+        };
+        tally_copy.copy_disjoint(u8, spec.face[0..face.len], face);
+        out[used] = spec;
+        used += 1;
+    }
+    if (used == 0) return error.MissingFace;
+    return used;
+}

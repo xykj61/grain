@@ -690,7 +690,17 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA217 hex literal lex GREEN, `20260722.130125`** — C2; `@ux…` · `hex_lit` · bare `@ux` aura kept. Brief [`active-designing/20260722-130125_stoa217-hex-literal-lex.md`](../active-designing/20260722-130125_stoa217-hex-literal-lex.md).
 
-**STOA218 after literals lex check-in, `20260722.130254`** — lean A send · rec lean B C3 parse face=`lit`. Brief [`active-designing/20260722-130254_stoa218-after-literals-lex-checkin.md`](../active-designing/20260722-130254_stoa218-after-literals-lex-checkin.md). JABS3 held.
+**STOA218 after literals lex check-in, `20260722.130254`** — lean A send · lean B C3 as STOA219. Brief [`active-designing/20260722-130254_stoa218-after-literals-lex-checkin.md`](../active-designing/20260722-130254_stoa218-after-literals-lex-checkin.md).
+
+**STOA219 face=lit parse GREEN, `20260722.130604`** — C3; `glow/face_lit.rye`. Brief [`active-designing/20260722-130604_stoa219-face-lit-parse.md`](../active-designing/20260722-130604_stoa219-face-lit-parse.md).
+
+**STOA220 face=lit lower GREEN, `20260722.130902`** — C4; lit bytes not demos. Brief [`active-designing/20260722-130902_stoa220-face-lit-lower-emit.md`](../active-designing/20260722-130902_stoa220-face-lit-lower-emit.md).
+
+**Session-logs archive fold, `20260722.131028`** — 613 prior-day logs under `archive/`; today flat.
+
+**STOA221 fixture elder lits desk GREEN, `20260722.131153`** — C5; `sample-demo-fixture-lits.glow`. Brief [`active-designing/20260722-131153_stoa221-fixture-lits-desk-pin.md`](../active-designing/20260722-131153_stoa221-fixture-lits-desk-pin.md). Literals C1–C5 closed.
+
+**STOA222 after literals season check-in, `20260722.131348`** — lean A send · rec lean B product fixture wire. Brief [`active-designing/20260722-131348_stoa222-after-literals-season-checkin.md`](../active-designing/20260722-131348_stoa222-after-literals-season-checkin.md). JABS3 held.
 
 
 **Framework next (host resume), `20260720.231857`** — lean A: live SETU6.5 **sent** eyes on real `usb0`/`ncm`. Lab TX gate already GREEN; Sala B0 Glow rewrite · JABS3 stay thicker check-ins. Same freeze brief.

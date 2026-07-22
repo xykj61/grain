@@ -1,0 +1,48 @@
+//! glow/lower_face_lit_witness.rye — proves face=lit lower emit (STOA220).
+//!
+//!   rye build glow/lower_face_lit_witness.rye \
+//!     -femit-bin=glow/bin/lower_face_lit_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const lower = @import("lower_face_lit.rye");
+
+const witness_version = "20260722.130902";
+const root_digits = "99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe";
+
+pub fn main() !void {
+    print("lower_face_lit_witness {s}\n", .{witness_version});
+
+    var buf: [16 * 1024]u8 = undefined;
+
+    const cord_src = "memo='sala:open'\n";
+    const nc = try lower.lower_source_welcome(cord_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..nc], "sala:open") != null);
+    assert(std.mem.indexOf(u8, buf[0..nc], "const memo = ") != null);
+    assert(std.mem.indexOf(u8, buf[0..nc], "glow_demo_cord") == null);
+    print("lower_face_lit: cord emit uses lit bytes -- GREEN\n", .{});
+
+    var hex_src_buf: [96]u8 = undefined;
+    const hex_src = try std.fmt.bufPrint(&hex_src_buf, "root=@ux{s}\n", .{root_digits});
+    const nh = try lower.lower_source_welcome(hex_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..nh], "const root = ") != null);
+    assert(std.mem.indexOf(u8, buf[0..nh], "0x99") != null);
+    assert(std.mem.indexOf(u8, buf[0..nh], "0xfe") != null);
+    assert(std.mem.indexOf(u8, buf[0..nh], "glow_demo_hex") == null);
+    print("lower_face_lit: hex emit uses lit bytes -- GREEN\n", .{});
+
+    const sample_src =
+        \\memo='sala:open'
+        \\root=@ux99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe
+        \\
+    ;
+    const ns = try lower.lower_source_welcome(sample_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..ns], "sala:open") != null);
+    assert(std.mem.indexOf(u8, buf[0..ns], "0x99") != null);
+    assert(std.mem.indexOf(u8, buf[0..ns], "glow_demo_cord") == null);
+    assert(std.mem.indexOf(u8, buf[0..ns], "glow_demo_hex") == null);
+    print("lower_face_lit: two-face sample emit -- GREEN\n", .{});
+
+    print("lower_face_lit: STOA220 face=lit lower -- GREEN\n", .{});
+}
