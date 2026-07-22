@@ -6,8 +6,8 @@
 **Version:** `20260722.154348` (EDT · Framework host)  
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
 **Voice:** Quin  
-**Status:** Checkable — lean **A** send with round-close · lean **B** rest  
-**Register:** Checkable (Two Rooms) — stop GREEN from host printout; harvest Bron unchanged on disk  
+**Status:** Checkable — lean **A** send done · lean **B** → STOA287 rest  
+**Register:** Checkable (Two Rooms) — stop GREEN; rest chosen as STOA287  
 
 **Grounds in:** STOA285 lean **B** · `tools/hawm0_stop.sh` · STOA281–284 chain  
 
@@ -32,7 +32,7 @@ Harvest still on disk (last fold): stamp `20260722.154128` · serial `emulator-5
 | | Lean | What it opens |
 |---|---|---|
 | **A** | **Send this fold** — **chosen** with round-close | pier names AVD down |
-| **B** | **Rest** — **recommended** | hand pauses; reopen HAWM later via boot onpath |
+| **B** | **Rest** — **chosen** → STOA287 | hand pauses; reopen HAWM later via boot onpath |
 | **C** | **Pixel / glass season** (Sala LIVE already seated) | phone eyes / APK when mobile turns |
 | **D** | **Fleets · HAWM2 · gold · JABS3 · UDP** | **held** |
 
