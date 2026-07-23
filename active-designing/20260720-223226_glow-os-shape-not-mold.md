@@ -80,6 +80,7 @@
 | STOA180 `20260721.171800` | Thin `@t` cord aura; living shape-primary residual; **type** reopen refused (`20260721.171644`) |
 | STOA189 `20260721.180917` | API rename: `MoldSpec` → `ShapeSpec` · `rune_mold` → `rune_shape` · `lower_mold` → `lower_shape` · `looks_like_shape_only` |
 | STOA190 `20260721.181551` | Remaining surface: errors · nest/gate APIs · Zig `*Shape` stems · living gates `-shape` · `mold-*` → `glow/gen/hoon-study/` |
+| STOA328 `20260722.203753` | nest_type allowlist/N table; living params say `shape_name`; gate-spec `mold_name` field still debt |
 
 ---
 

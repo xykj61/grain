@@ -26,7 +26,7 @@ assert selftest.out contains "gate-sample.glow" else "nest_type_witness missing 
 assert selftest.out contains "gate-sample-u64-refuse.glow" else "nest_type_witness missing refuse fixture"
 assert selftest.out contains "mold-kind.glow" else "nest_type_witness missing $% tag accept"
 assert selftest.out contains "%burn" else "nest_type_witness missing $% tag refuse"
-assert selftest.out contains "tuple mold" else "nest_type_witness missing tuple refuse"
+assert selftest.out contains "tuple shape" else "nest_type_witness missing tuple refuse"
 assert selftest.out contains "gate-amount.glow" else "nest_type_witness missing amount-shape accept"
 assert selftest.out contains "amount-shape" else "nest_type_witness missing amount-shape alias"
 assert selftest.out contains "count-shape" else "nest_type_witness missing count-shape alias"
@@ -104,4 +104,11 @@ assert bartis.out contains "SampleDoesNotNest" else "glow_lower_bartis_witness m
 assert selftest.out contains "study alias" else "nest_type_witness missing study alias pin"
 assert selftest.out contains "STOA257" else "nest_type_witness missing STOA257"
 
-say "GREEN: Glow nest/type — named-shape · amount-shape … nona-shape · study alias amount-mold · nesting-nests; STOA107–160 · STOA257."
+# STOA328: allowlist + closed `$:` N live in one table; living params say shape.
+let table = run ["sh" "-c" "grep -q 'closed_named_allowlist' glow/nest_type.rye && grep -q 'fn closed_tuple_field_count' glow/nest_type.rye && grep -q 'fn assert_n_field_shape_nests' glow/nest_type.rye"]
+assert table.ok else "STOA328 missing nest_type table collapse helpers"
+
+let shape_params = run ["sh" "-c" "grep -q 'fn assert_bartis_named_shape(shape_name' glow/nest_type.rye && ! grep -q 'fn assert_bartis_named_shape(mold_name' glow/nest_type.rye"]
+assert shape_params.ok else "STOA328 nest_type living params must say shape_name"
+
+say "GREEN: Glow nest/type — named-shape · amount-shape … nona-shape · study alias amount-mold · nesting-nests; STOA107–160 · STOA257 · STOA328."
