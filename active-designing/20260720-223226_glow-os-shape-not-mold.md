@@ -81,6 +81,7 @@
 | STOA189 `20260721.180917` | API rename: `MoldSpec` → `ShapeSpec` · `rune_mold` → `rune_shape` · `lower_mold` → `lower_shape` · `looks_like_shape_only` |
 | STOA190 `20260721.181551` | Remaining surface: errors · nest/gate APIs · Zig `*Shape` stems · living gates `-shape` · `mold-*` → `glow/gen/hoon-study/` |
 | STOA328 `20260722.203753` | nest_type allowlist/N table; living params say `shape_name`; gate-spec `mold_name` field still debt |
+| STOA330 `20260722.204131` | GateSpec/BarketSpec `shape_name` · `shape_name_slice` · `max_shape_len`; cast/face mold still debt |
 
 ---
 

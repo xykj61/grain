@@ -111,4 +111,8 @@ assert table.ok else "STOA328 missing nest_type table collapse helpers"
 let shape_params = run ["sh" "-c" "grep -q 'fn assert_bartis_named_shape(shape_name' glow/nest_type.rye && ! grep -q 'fn assert_bartis_named_shape(mold_name' glow/nest_type.rye"]
 assert shape_params.ok else "STOA328 nest_type living params must say shape_name"
 
-say "GREEN: Glow nest/type — named-shape · amount-shape … nona-shape · study alias amount-mold · nesting-nests; STOA107–160 · STOA257 · STOA328."
+# STOA330: gate specs carry shape_name (not mold_name).
+let gate_shape = run ["sh" "-c" "grep -q 'shape_name:' glow/rune_bartis.rye && grep -q 'fn shape_name_slice' glow/rune_bartis.rye && grep -q 'fn shape_name_slice' glow/rune_barket.rye && ! grep -q 'mold_name:' glow/rune_bartis.rye && ! grep -q 'fn mold_name_slice' glow/rune_bartis.rye"]
+assert gate_shape.ok else "STOA330 gate specs must say shape_name / shape_name_slice"
+
+say "GREEN: Glow nest/type — named-shape · amount-shape … nona-shape · study alias amount-mold · nesting-nests; STOA107–160 · STOA257 · STOA328 · STOA330."
