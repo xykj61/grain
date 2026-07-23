@@ -456,13 +456,17 @@ let run_nnf = run ["sh" "-c" "${nona_flip_bin}; echo EXIT:$?"]
 assert run_nnf.ok else "barket nona-shape flip welcome binary failed to launch"
 assert run_nnf.out contains "EXIT:0" else "barket nona-shape flip welcome binary did not exit 0"
 
-# STOA255: pair…nona identity emit collapses through emit_n_field_identity.
-let n_field = run ["sh" "-c" "grep -q 'fn emit_n_field_identity' glow/lower_barket.rye && test $(grep -Fc 'return emit_n_field_identity(' glow/lower_barket.rye) = 8"]
-assert n_field.ok else "STOA255 missing emit_n_field_identity or eight identity wrappers"
+# STOA255 / STOA326: pair…nona identity through emit_n_field_identity (one welcome call).
+let n_field = run ["sh" "-c" "grep -q 'fn emit_n_field_identity' glow/lower_barket.rye && test $(grep -Fc 'return emit_n_field_identity(' glow/lower_barket.rye) = 1"]
+assert n_field.ok else "STOA255/326 missing emit_n_field_identity or one welcome identity call"
 
-# STOA261: pair…nona flip call-body collapses through emit_n_field_flip_call_body.
-let n_flip = run ["sh" "-c" "grep -q 'fn emit_n_field_flip_call_body' glow/lower_barket.rye && test $(grep -Fc 'return emit_n_field_flip_call_body(' glow/lower_barket.rye) = 8"]
-assert n_flip.ok else "STOA261 missing emit_n_field_flip_call_body or eight flip wrappers"
+# STOA261 / STOA326: pair…nona flip through emit_n_field_flip_call_body (one welcome call).
+let n_flip = run ["sh" "-c" "grep -q 'fn emit_n_field_flip_call_body' glow/lower_barket.rye && test $(grep -Fc 'return emit_n_field_flip_call_body(' glow/lower_barket.rye) = 1"]
+assert n_flip.ok else "STOA261/326 missing emit_n_field_flip_call_body or one welcome flip call"
+
+# STOA326: closed `$:` call-gate is one flip allowlist; thin per-N wrappers retired.
+let n_gate = run ["sh" "-c" "grep -q 'fn is_n_field_call_gate' glow/rune_barket.rye && ! grep -q 'fn emit_pair_call_body' glow/lower_barket.rye && ! grep -q 'fn emit_nona_call_body' glow/lower_barket.rye"]
+assert n_gate.ok else "STOA326 missing is_n_field_call_gate or thin call-body wrappers still present"
 
 # STOA295: xact+xfer flip call-body collapses through emit_tagged_payload_flip_call_body.
 let tagged_flip = run ["sh" "-c" "grep -q 'fn emit_tagged_payload_flip_call_body' glow/lower_barket.rye && test $(grep -Fc 'return emit_tagged_payload_flip_call_body(' glow/lower_barket.rye) = 2"]
@@ -496,4 +500,4 @@ let run_xact_argv = run ["sh" "-c" "${xact_argv_bin} mint 5; echo EXIT:$?"]
 assert run_xact_argv.ok else "barket xact argv binary failed to launch"
 assert run_xact_argv.out contains "EXIT:0" else "barket xact argv binary did not exit 0 with mint 5"
 
-say "GREEN: Glow barket lower — STOA113–147 · STOA255 N-field identity · STOA261 N-field flip · STOA295 tagged payload flip · STOA297 tagged unit flip · STOA300 kind argv · STOA303 xact argv · STOA305 xfer argv · STOA307–321 pair…nona argv · STOA324 `$:` argv sameness collapse · STOA257 shape-only living · identity · argv · call-body · amount-shape · amount argv · count-shape · count argv · kind-shape · kind argv · kind flip · xact-shape · xact argv · xact flip · xfer-shape · xfer argv · xfer flip · pair-shape · pair argv · pair flip · triple-shape · triple argv · triple flip · quad-shape · quad argv · quad flip · penta-shape · penta argv · penta flip · hexa-shape · hexa argv · hexa flip · hepta-shape · hepta argv · hepta flip · octa-shape · octa argv · octa flip · nona-shape · nona argv · nona flip · nesting-through-nests."
+say "GREEN: Glow barket lower — STOA113–147 · STOA255 N-field identity · STOA261 N-field flip · STOA295 tagged payload flip · STOA297 tagged unit flip · STOA300 kind argv · STOA303 xact argv · STOA305 xfer argv · STOA307–321 pair…nona argv · STOA324 `$:` argv sameness · STOA326 `$:` welcome sameness · STOA257 shape-only living · identity · argv · call-body · amount-shape · amount argv · count-shape · count argv · kind-shape · kind argv · kind flip · xact-shape · xact argv · xact flip · xfer-shape · xfer argv · xfer flip · pair-shape · pair argv · pair flip · triple-shape · triple argv · triple flip · quad-shape · quad argv · quad flip · penta-shape · penta argv · penta flip · hexa-shape · hexa argv · hexa flip · hepta-shape · hepta argv · hepta flip · octa-shape · octa argv · octa flip · nona-shape · nona argv · nona flip · nesting-through-nests."

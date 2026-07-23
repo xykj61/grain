@@ -9,8 +9,9 @@ assert bartis.out contains "STOA259" else "bartis witness missing STOA259"
 let helper = run ["sh" "-c" "grep -q 'fn emit_n_field_flip_call_body' glow/lower_bartis.rye"]
 assert helper.ok else "missing emit_n_field_flip_call_body"
 
-let wrappers = run ["sh" "-c" "test $(grep -Fc 'return emit_n_field_flip_call_body(' glow/lower_bartis.rye) = 8"]
-assert wrappers.ok else "expected eight flip wrappers through emit_n_field_flip_call_body"
+# STOA326: thin flip wrappers retired — one welcome call site.
+let one_call = run ["sh" "-c" "test $(grep -Fc 'return emit_n_field_flip_call_body(' glow/lower_bartis.rye) = 1"]
+assert one_call.ok else "expected one welcome flip call through emit_n_field_flip_call_body"
 
 # kind/xact/xfer flip emitters stay per-family (not closed $: N-field).
 let tagged_kept = run ["sh" "-c" "grep -q 'fn emit_kind_call_body' glow/lower_bartis.rye && grep -q 'fn emit_xfer_call_body' glow/lower_bartis.rye"]

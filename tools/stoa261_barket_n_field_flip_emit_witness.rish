@@ -9,8 +9,9 @@ assert barket.out contains "STOA261" else "barket witness missing STOA261"
 let helper = run ["sh" "-c" "grep -q 'fn emit_n_field_flip_call_body' glow/lower_barket.rye"]
 assert helper.ok else "missing emit_n_field_flip_call_body"
 
-let wrappers = run ["sh" "-c" "test $(grep -Fc 'return emit_n_field_flip_call_body(' glow/lower_barket.rye) = 8"]
-assert wrappers.ok else "expected eight flip wrappers through emit_n_field_flip_call_body"
+# STOA326: thin flip wrappers retired — one welcome call site.
+let one_call = run ["sh" "-c" "test $(grep -Fc 'return emit_n_field_flip_call_body(' glow/lower_barket.rye) = 1"]
+assert one_call.ok else "expected one welcome flip call through emit_n_field_flip_call_body"
 
 let tagged_kept = run ["sh" "-c" "grep -q 'fn emit_kind_call_body' glow/lower_barket.rye && grep -q 'fn emit_xfer_call_body' glow/lower_barket.rye"]
 assert tagged_kept.ok else "tagged $% flip emitters must remain"

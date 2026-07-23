@@ -134,43 +134,8 @@ pub fn is_xfer_call_gate(gate: []const u8) bool {
     return std.mem.eql(u8, gate, "flip");
 }
 
-/// Closed call-body gates under pair-mold (STOA131) — `flip` only today.
-pub fn is_pair_call_gate(gate: []const u8) bool {
-    return std.mem.eql(u8, gate, "flip");
-}
-
-/// Closed call-body gates under triple-mold (STOA136) — `flip` only today.
-pub fn is_triple_call_gate(gate: []const u8) bool {
-    return std.mem.eql(u8, gate, "flip");
-}
-
-/// Closed call-body gates under quad-mold (STOA137) — `flip` only today.
-pub fn is_quad_call_gate(gate: []const u8) bool {
-    return std.mem.eql(u8, gate, "flip");
-}
-
-/// Closed call-body gates under penta-mold (STOA139) — `flip` only today.
-pub fn is_penta_call_gate(gate: []const u8) bool {
-    return std.mem.eql(u8, gate, "flip");
-}
-
-/// Closed call-body gates under hexa-mold (STOA141) — `flip` only today.
-pub fn is_hexa_call_gate(gate: []const u8) bool {
-    return std.mem.eql(u8, gate, "flip");
-}
-
-/// Closed call-body gates under hepta-mold (STOA143) — `flip` only today.
-pub fn is_hepta_call_gate(gate: []const u8) bool {
-    return std.mem.eql(u8, gate, "flip");
-}
-
-/// Closed call-body gates under octa-mold (STOA145) — `flip` only today.
-pub fn is_octa_call_gate(gate: []const u8) bool {
-    return std.mem.eql(u8, gate, "flip");
-}
-
-/// Closed call-body gates under nona-mold (STOA147) — `flip` only today.
-pub fn is_nona_call_gate(gate: []const u8) bool {
+/// STOA326: closed call-body gate under pair…nona `$:` — `flip` only today.
+pub fn is_n_field_call_gate(gate: []const u8) bool {
     return std.mem.eql(u8, gate, "flip");
 }
 
