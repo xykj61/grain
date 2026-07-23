@@ -916,6 +916,10 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA325 after argv sameness check-in, `20260722.200918`** — lean A send · lean B rest available · lean **C** name next STOA door. Brief [`active-designing/20260722-200918_stoa325-after-argv-sameness-checkin.md`](../active-designing/20260722-200918_stoa325-after-argv-sameness-checkin.md).
 
+**STOA326 `$:` welcome sameness collapse GREEN, `20260722.201812`** — `closed_tuple_field_count` → identity / flip · `is_n_field_call_gate` · wrappers retired. Brief [`active-designing/20260722-201812_stoa326-n-field-welcome-sameness-collapse.md`](../active-designing/20260722-201812_stoa326-n-field-welcome-sameness-collapse.md).
+
+**STOA327 after welcome sameness check-in, `20260722.201814`** — lean A send · lean B rest available · lean **C** nest_type named_shape / assert table. Brief [`active-designing/20260722-201814_stoa327-after-welcome-sameness-checkin.md`](../active-designing/20260722-201814_stoa327-after-welcome-sameness-checkin.md).
+
 
 **Framework next (host resume), `20260720.231857`** — lean A: live SETU6.5 **sent** eyes on real `usb0`/`ncm`. Lab TX gate already GREEN; Sala B0 Glow rewrite · JABS3 stay thicker check-ins. Same freeze brief.
 
