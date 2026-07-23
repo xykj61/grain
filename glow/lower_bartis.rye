@@ -42,14 +42,8 @@
 //! STOA300: `kind-mold` argv identity — unit-tag reader (`mint`/`send`).
 //! STOA303: `xact-mold` argv identity — payload tag + amount (`mint <u32>` / `send`).
 //! STOA305: `xfer-mold` argv identity — payload tag + two mint faces (`mint <from> <amount>` / `send`).
-//! STOA307: `pair-mold` argv identity — `$:` two-field reader (`<from> <amount>`).
-//! STOA309: `triple-mold` argv identity — `$:` three-field reader (`<from> <amount> <fee>`).
-//! STOA311: `quad-mold` argv identity — `$:` four-field reader (`<from> <amount> <fee> <nonce>`).
-//! STOA313: `penta-mold` argv identity — `$:` five-field reader (`… <memo>`).
-//! STOA315: `hexa-mold` argv identity — `$:` six-field reader (`… <tag>`).
-//! STOA317: `hepta-mold` argv identity — `$:` seven-field reader (`… <to>`).
-//! STOA319: `octa-mold` argv identity — `$:` eight-field reader (`… <via>`).
-//! STOA321: `nona-mold` argv identity — `$:` nine-field reader (`… <ref>`); closes pair…nona.
+//! STOA307–321: pair…nona `$:` argv readers (survey).
+//! STOA324: `$:` argv dispatch collapses — mold → N → `emit_n_field_argv` (sameness).
 //! Gate function named `bartis_gate` to avoid collisions with the sample face.
 
 const std = @import("std");
@@ -503,8 +497,21 @@ fn closed_tuple_type_name(field_count: u32) []const u8 {
     };
 }
 
-/// STOA307: N-field `$:` argv identity — parse N decimals from argv[1..N] into the closed tuple.
-/// Pair first (N=2). Distinct from tagged `$%` argv and from single-u32 parseInt.
+/// STOA324: closed `$:` pair…nona mold/shape name → field count N (2…9).
+fn closed_tuple_field_count(mold: []const u8) ?u32 {
+    if (nest_type.is_pair_named_shape(mold)) return 2;
+    if (nest_type.is_triple_named_shape(mold)) return 3;
+    if (nest_type.is_quad_named_shape(mold)) return 4;
+    if (nest_type.is_penta_named_shape(mold)) return 5;
+    if (nest_type.is_hexa_named_shape(mold)) return 6;
+    if (nest_type.is_hepta_named_shape(mold)) return 7;
+    if (nest_type.is_octa_named_shape(mold)) return 8;
+    if (nest_type.is_nona_named_shape(mold)) return 9;
+    return null;
+}
+
+/// STOA307 / STOA324: N-field `$:` argv identity — parse N decimals from argv[1..N].
+/// Distinct from tagged `$%` argv and from single-u32 parseInt.
 fn emit_n_field_argv(out: []u8, field_count: u32, zface: []const u8, comment: []const u8) LowerError!u32 {
     assert(field_count >= 2);
     assert(field_count <= 9);
@@ -555,46 +562,6 @@ fn emit_n_field_argv(out: []u8, field_count: u32, zface: []const u8, comment: []
     try append_print(out, &used, ") 0 else 1;\n", .{});
     try append_print(out, &used, "}}\n", .{});
     return used;
-}
-
-/// STOA307: closed two-field `$:` pair-mold argv → PairShape (via N-field argv).
-fn emit_pair_argv(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
-    return emit_n_field_argv(out, 2, zface, comment);
-}
-
-/// STOA309: closed three-field `$:` triple-mold argv → TripleShape (via N-field argv).
-fn emit_triple_argv(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
-    return emit_n_field_argv(out, 3, zface, comment);
-}
-
-/// STOA311: closed four-field `$:` quad-mold argv → QuadShape (via N-field argv).
-fn emit_quad_argv(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
-    return emit_n_field_argv(out, 4, zface, comment);
-}
-
-/// STOA313: closed five-field `$:` penta-mold argv → PentaShape (via N-field argv).
-fn emit_penta_argv(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
-    return emit_n_field_argv(out, 5, zface, comment);
-}
-
-/// STOA315: closed six-field `$:` hexa-mold argv → HexaShape (via N-field argv).
-fn emit_hexa_argv(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
-    return emit_n_field_argv(out, 6, zface, comment);
-}
-
-/// STOA317: closed seven-field `$:` hepta-mold argv → HeptaShape (via N-field argv).
-fn emit_hepta_argv(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
-    return emit_n_field_argv(out, 7, zface, comment);
-}
-
-/// STOA319: closed eight-field `$:` octa-mold argv → OctaShape (via N-field argv).
-fn emit_octa_argv(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
-    return emit_n_field_argv(out, 8, zface, comment);
-}
-
-/// STOA321: closed nine-field `$:` nona-mold argv → NonaShape (via N-field argv).
-fn emit_nona_argv(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
-    return emit_n_field_argv(out, 9, zface, comment);
 }
 
 /// STOA253: one N-field identity emit for closed `$:` pair…nona (N = 2…9).
@@ -1061,97 +1028,14 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
         }
     }
 
-    // STOA307: pair `$:` argv identity — two field decimals.
-    if (is_pair_sample(spec)) {
+    // STOA324: closed `$:` pair…nona argv — one path (mold → N → emit_n_field_argv).
+    if (closed_tuple_field_count(mold)) |n| {
         switch (spec.body) {
             .identity => {
+                const zig_type = closed_tuple_type_name(n);
                 var comment_buf: [192]u8 = undefined;
-                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` bartis — PairShape argv fields (STOA307).", .{ face, mold }) catch return error.Overflow;
-                return emit_pair_argv(out, zface, comment);
-            },
-            .call_one => return error.SampleDoesNotNest,
-        }
-    }
-
-    // STOA309: triple `$:` argv identity — three field decimals.
-    if (is_triple_sample(spec)) {
-        switch (spec.body) {
-            .identity => {
-                var comment_buf: [192]u8 = undefined;
-                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` bartis — TripleShape argv fields (STOA309).", .{ face, mold }) catch return error.Overflow;
-                return emit_triple_argv(out, zface, comment);
-            },
-            .call_one => return error.SampleDoesNotNest,
-        }
-    }
-
-    // STOA311: quad `$:` argv identity — four field decimals.
-    if (is_quad_sample(spec)) {
-        switch (spec.body) {
-            .identity => {
-                var comment_buf: [192]u8 = undefined;
-                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` bartis — QuadShape argv fields (STOA311).", .{ face, mold }) catch return error.Overflow;
-                return emit_quad_argv(out, zface, comment);
-            },
-            .call_one => return error.SampleDoesNotNest,
-        }
-    }
-
-    // STOA313: penta `$:` argv identity — five field decimals.
-    if (is_penta_sample(spec)) {
-        switch (spec.body) {
-            .identity => {
-                var comment_buf: [192]u8 = undefined;
-                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` bartis — PentaShape argv fields (STOA313).", .{ face, mold }) catch return error.Overflow;
-                return emit_penta_argv(out, zface, comment);
-            },
-            .call_one => return error.SampleDoesNotNest,
-        }
-    }
-
-    // STOA315: hexa `$:` argv identity — six field decimals.
-    if (is_hexa_sample(spec)) {
-        switch (spec.body) {
-            .identity => {
-                var comment_buf: [192]u8 = undefined;
-                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` bartis — HexaShape argv fields (STOA315).", .{ face, mold }) catch return error.Overflow;
-                return emit_hexa_argv(out, zface, comment);
-            },
-            .call_one => return error.SampleDoesNotNest,
-        }
-    }
-
-    // STOA317: hepta `$:` argv identity — seven field decimals.
-    if (is_hepta_sample(spec)) {
-        switch (spec.body) {
-            .identity => {
-                var comment_buf: [192]u8 = undefined;
-                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` bartis — HeptaShape argv fields (STOA317).", .{ face, mold }) catch return error.Overflow;
-                return emit_hepta_argv(out, zface, comment);
-            },
-            .call_one => return error.SampleDoesNotNest,
-        }
-    }
-
-    // STOA319: octa `$:` argv identity — eight field decimals.
-    if (is_octa_sample(spec)) {
-        switch (spec.body) {
-            .identity => {
-                var comment_buf: [192]u8 = undefined;
-                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` bartis — OctaShape argv fields (STOA319).", .{ face, mold }) catch return error.Overflow;
-                return emit_octa_argv(out, zface, comment);
-            },
-            .call_one => return error.SampleDoesNotNest,
-        }
-    }
-
-    // STOA321: nona `$:` argv identity — nine field decimals; closes pair…nona.
-    if (is_nona_sample(spec)) {
-        switch (spec.body) {
-            .identity => {
-                var comment_buf: [192]u8 = undefined;
-                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` bartis — NonaShape argv fields (STOA321).", .{ face, mold }) catch return error.Overflow;
-                return emit_nona_argv(out, zface, comment);
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` bartis — {s} argv fields (STOA324).", .{ face, mold, zig_type }) catch return error.Overflow;
+                return emit_n_field_argv(out, n, zface, comment);
             },
             .call_one => return error.SampleDoesNotNest,
         }
