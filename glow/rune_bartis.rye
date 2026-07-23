@@ -204,27 +204,27 @@ pub fn parse_source(src: []const u8) ParseError!GateSpec {
     if (i >= n or toks[@as(usize, @intCast(i))].kind != .equals) return error.MissingEquals;
     i += 1;
 
-    // Sample mold — aura `@u32` or closed named `amount-mold` / `count-mold`.
+    // Sample shape — aura `@u32` or closed named living `-shape` / study `-mold`.
     if (i >= n) return error.MissingAura;
-    const mold_tok = toks[@as(usize, @intCast(i))];
-    var named_mold: ?[]const u8 = null;
+    const shape_tok = toks[@as(usize, @intCast(i))];
+    var named_shape: ?[]const u8 = null;
     var sample_text: []const u8 = undefined;
-    var stated_mold: []const u8 = undefined;
-    if (mold_tok.kind == .aura) {
-        const aura_text = tokens.slice_of(src, mold_tok);
+    var stated_shape: []const u8 = undefined;
+    if (shape_tok.kind == .aura) {
+        const aura_text = tokens.slice_of(src, shape_tok);
         nest_type.assert_aura_nests(aura_text, "@u32") catch return error.SampleDoesNotNest;
         sample_text = aura_text;
-        stated_mold = "@u32";
-    } else if (mold_tok.kind == .ident) {
-        const mold_text = tokens.slice_of(src, mold_tok);
-        if (mold_text.len == 0 or mold_text.len > max_mold_len) return error.MissingAura;
-        nest_type.assert_bartis_named_shape(mold_text) catch return error.SampleDoesNotNest;
-        named_mold = mold_text;
-        sample_text = mold_text;
-        stated_mold = mold_text;
+        stated_shape = "@u32";
+    } else if (shape_tok.kind == .ident) {
+        const shape_text = tokens.slice_of(src, shape_tok);
+        if (shape_text.len == 0 or shape_text.len > max_mold_len) return error.MissingAura;
+        nest_type.assert_bartis_named_shape(shape_text) catch return error.SampleDoesNotNest;
+        named_shape = shape_text;
+        sample_text = shape_text;
+        stated_shape = shape_text;
     } else return error.MissingAura;
     // STOA120 / STOA130: nesting-nests API at expansion (stated no-op until nesting spelling).
-    nest_type.assert_sample_nesting_nests(false, sample_text, stated_mold) catch return error.SampleDoesNotNest;
+    nest_type.assert_sample_nesting_nests(false, sample_text, stated_shape) catch return error.SampleDoesNotNest;
     i += 1;
 
     // Newline(s) — end of first line.
@@ -235,9 +235,9 @@ pub fn parse_source(src: []const u8) ParseError!GateSpec {
     assert(face_text.len <= max_face_len); // precondition held by check above
     tally_copy.copy_disjoint(u8, spec.face[0..face_text.len], face_text);
     spec.face_len = @intCast(face_text.len);
-    if (named_mold) |mn| {
-        tally_copy.copy_disjoint(u8, spec.mold_name[0..mn.len], mn);
-        spec.mold_name_len = @intCast(mn.len);
+    if (named_shape) |sn| {
+        tally_copy.copy_disjoint(u8, spec.mold_name[0..sn.len], sn);
+        spec.mold_name_len = @intCast(sn.len);
     }
 
     i = try parse_body(src, toks, i, face_text, &spec);

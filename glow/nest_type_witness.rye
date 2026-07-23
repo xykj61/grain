@@ -116,7 +116,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     } else |err| {
         if (err != nest_type.NestError.SampleDoesNotNest) return err;
     }
-    print("nest: tag under $: tuple mold refused SampleDoesNotNest -- GREEN\n", .{});
+    print("nest: tag under $: tuple shape refused SampleDoesNotNest -- GREEN\n", .{});
 
     // STOA109: named-shape bartis — amount-shape accepts; kind-shape refuses.
     const amount_src = try cwd.readFileAlloc(io, "glow/gen/hoon-study/mold-amount.glow", a, .limited(4096));
@@ -671,7 +671,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("nest: stated bartis still lowers under nesting-refuse pin -- GREEN\n", .{});
 
     print("nest: version {s}\n", .{witness_version});
-    print("GREEN: Glow nest/type — stated aura · $% tag · named-shape · amount-shape … nona-shape · study alias amount-mold · nesting refuse · nesting-nests; STOA107–160 · STOA257.\n", .{});
+    print("GREEN: Glow nest/type — stated aura · $% tag · named-shape · amount-shape … nona-shape · study alias amount-mold · nesting refuse · nesting-nests; STOA107–160 · STOA257 · STOA328 table collapse.\n", .{});
     return 0;
 }
 

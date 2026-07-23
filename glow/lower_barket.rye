@@ -41,8 +41,9 @@
 //! STOA303: `xact-mold` argv identity — payload tag + amount (`mint <u32>` / `send`).
 //! STOA305: `xfer-mold` argv identity — payload tag + two mint faces (`mint <from> <amount>` / `send`).
 //! STOA307–321: pair…nona `$:` argv readers (survey).
-//! STOA324: `$:` argv dispatch collapses — mold → N → `emit_n_field_argv` (sameness).
-//! STOA326: `$:` welcome dispatch collapses — mold → N → identity / flip (sameness).
+//! STOA324: `$:` argv dispatch collapses — shape → N → `emit_n_field_argv` (sameness).
+//! STOA326: `$:` welcome dispatch collapses — shape → N → identity / flip (sameness).
+//! STOA328: N-path reads `nest_type.closed_tuple_field_count`; living locals say shape.
 //! Gate function named `barket_gate`. Ambient gold held.
 
 const std = @import("std");
@@ -158,7 +159,7 @@ fn expect_for(spec: *const rb.BarketSpec) LowerError!u32 {
     };
 }
 
-fn sample_mold_label(spec: *const rb.BarketSpec) []const u8 {
+fn sample_shape_label(spec: *const rb.BarketSpec) []const u8 {
     if (spec.mold_name_len == 0) return "@u32";
     return rb.mold_name_slice(spec);
 }
@@ -433,19 +434,6 @@ fn closed_tuple_type_name(field_count: u32) []const u8 {
     };
 }
 
-/// STOA324: closed `$:` pair…nona mold/shape name → field count N (2…9).
-fn closed_tuple_field_count(mold: []const u8) ?u32 {
-    if (nest_type.is_pair_named_shape(mold)) return 2;
-    if (nest_type.is_triple_named_shape(mold)) return 3;
-    if (nest_type.is_quad_named_shape(mold)) return 4;
-    if (nest_type.is_penta_named_shape(mold)) return 5;
-    if (nest_type.is_hexa_named_shape(mold)) return 6;
-    if (nest_type.is_hepta_named_shape(mold)) return 7;
-    if (nest_type.is_octa_named_shape(mold)) return 8;
-    if (nest_type.is_nona_named_shape(mold)) return 9;
-    return null;
-}
-
 /// STOA307 / STOA324: N-field `$:` argv identity — parse N decimals from argv[1..N].
 /// Barket twin of bartis.
 fn emit_n_field_argv(out: []u8, field_count: u32, zface: []const u8, comment: []const u8) LowerError!u32 {
@@ -635,7 +623,7 @@ fn emit_argv_main(out: []u8, used: *u32, zface: []const u8, expect_expr: []const
 fn emit(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
     const face = rb.face_slice(spec);
     assert(face.len > 0); // invariant: spec carries a non-empty face
-    const mold = sample_mold_label(spec);
+    const shape = sample_shape_label(spec);
     var zig_face_buf: [rb.max_face_len]u8 = undefined;
     const zn = try zig_safe_ident(face, &zig_face_buf);
     const zface = zig_face_buf[0..@as(usize, @intCast(zn))];
@@ -644,14 +632,14 @@ fn emit(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
         switch (spec.body) {
             .header_only, .identity => {
                 var comment_buf: [160]u8 = undefined;
-                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` barket — KindShape identity (STOA123).", .{ face, mold }) catch return error.Overflow;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` barket — KindShape identity (STOA123).", .{ face, shape }) catch return error.Overflow;
                 return emit_kind_identity(out, zface, comment);
             },
             .call_one => {
                 const gate = rb.gate_slice(spec);
                 if (!rb.is_kind_call_gate(gate)) return error.BodyGateNotYetLowered;
                 var comment_buf: [192]u8 = undefined;
-                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` / `%-  {s}  {s}` — KindShape call body (STOA127).", .{ face, mold, gate, face }) catch return error.Overflow;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` / `%-  {s}  {s}` — KindShape call body (STOA127).", .{ face, shape, gate, face }) catch return error.Overflow;
                 return emit_kind_call_body(out, zface, gate, comment);
             },
         }
@@ -661,14 +649,14 @@ fn emit(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
         switch (spec.body) {
             .header_only, .identity => {
                 var comment_buf: [160]u8 = undefined;
-                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` barket — XactShape identity (STOA124).", .{ face, mold }) catch return error.Overflow;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` barket — XactShape identity (STOA124).", .{ face, shape }) catch return error.Overflow;
                 return emit_xact_identity(out, zface, comment);
             },
             .call_one => {
                 const gate = rb.gate_slice(spec);
                 if (!rb.is_xact_call_gate(gate)) return error.BodyGateNotYetLowered;
                 var comment_buf: [192]u8 = undefined;
-                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` / `%-  {s}  {s}` — XactShape call body (STOA128).", .{ face, mold, gate, face }) catch return error.Overflow;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` / `%-  {s}  {s}` — XactShape call body (STOA128).", .{ face, shape, gate, face }) catch return error.Overflow;
                 return emit_xact_call_body(out, zface, gate, comment);
             },
         }
@@ -678,26 +666,26 @@ fn emit(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
         switch (spec.body) {
             .header_only, .identity => {
                 var comment_buf: [160]u8 = undefined;
-                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` barket — XferShape identity (STOA125).", .{ face, mold }) catch return error.Overflow;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` barket — XferShape identity (STOA125).", .{ face, shape }) catch return error.Overflow;
                 return emit_xfer_identity(out, zface, comment);
             },
             .call_one => {
                 const gate = rb.gate_slice(spec);
                 if (!rb.is_xfer_call_gate(gate)) return error.BodyGateNotYetLowered;
                 var comment_buf: [192]u8 = undefined;
-                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` / `%-  {s}  {s}` — XferShape call body (STOA129).", .{ face, mold, gate, face }) catch return error.Overflow;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` / `%-  {s}  {s}` — XferShape call body (STOA129).", .{ face, shape, gate, face }) catch return error.Overflow;
                 return emit_xfer_call_body(out, zface, gate, comment);
             },
         }
     }
 
-    // STOA326: closed `$:` pair…nona welcome — one path (mold → N → identity / flip).
-    if (closed_tuple_field_count(mold)) |n| {
+    // STOA326: closed `$:` pair…nona welcome — one path (shape → N → identity / flip).
+    if (nest_type.closed_tuple_field_count(shape)) |n| {
         switch (spec.body) {
             .header_only, .identity => {
                 const zig_type = closed_tuple_type_name(n);
                 var comment_buf: [192]u8 = undefined;
-                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` barket — {s} identity (STOA326).", .{ face, mold, zig_type }) catch return error.Overflow;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` barket — {s} identity (STOA326).", .{ face, shape, zig_type }) catch return error.Overflow;
                 return emit_n_field_identity(out, n, zface, comment);
             },
             .call_one => {
@@ -705,7 +693,7 @@ fn emit(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
                 if (!rb.is_n_field_call_gate(gate)) return error.BodyGateNotYetLowered;
                 const zig_type = closed_tuple_type_name(n);
                 var comment_buf: [192]u8 = undefined;
-                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` / `%-  {s}  {s}` — {s} call body (STOA326).", .{ face, mold, gate, face, zig_type }) catch return error.Overflow;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` / `%-  {s}  {s}` — {s} call body (STOA326).", .{ face, shape, gate, face, zig_type }) catch return error.Overflow;
                 return emit_n_field_flip_call_body(out, n, zface, comment);
             },
         }
@@ -718,7 +706,7 @@ fn emit(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
     switch (spec.body) {
         .header_only, .identity => {
             var comment_buf: [160]u8 = undefined;
-            const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` barket — identity (STOA113/118).", .{ face, mold }) catch return error.Overflow;
+            const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` barket — identity (STOA113/118).", .{ face, shape }) catch return error.Overflow;
             try emit_gate_fn(out, &used, zface, zface, comment);
             try emit_welcome_main(out, &used, zface, expect);
         },
@@ -729,7 +717,7 @@ fn emit(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
             var body_buf: [96]u8 = undefined;
             const body_return = std.fmt.bufPrint(&body_buf, "{s}{s}", .{ zface, op }) catch return error.Overflow;
             var comment_buf: [192]u8 = undefined;
-            const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` / `%-  {s}  {s}` — call body (STOA115–116).", .{ face, mold, gate, face }) catch return error.Overflow;
+            const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` / `%-  {s}  {s}` — call body (STOA115–116).", .{ face, shape, gate, face }) catch return error.Overflow;
             try emit_gate_fn(out, &used, zface, body_return, comment);
             try emit_welcome_main(out, &used, zface, expect);
         },
@@ -740,7 +728,7 @@ fn emit(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
 fn emit_argv(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
     const face = rb.face_slice(spec);
     assert(face.len > 0); // invariant: spec carries a non-empty face
-    const mold = sample_mold_label(spec);
+    const shape = sample_shape_label(spec);
     var zig_face_buf: [rb.max_face_len]u8 = undefined;
     const zn = try zig_safe_ident(face, &zig_face_buf);
     const zface = zig_face_buf[0..@as(usize, @intCast(zn))];
@@ -750,7 +738,7 @@ fn emit_argv(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
         switch (spec.body) {
             .header_only, .identity => {
                 var comment_buf: [192]u8 = undefined;
-                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` barket — KindShape argv tag (STOA300).", .{ face, mold }) catch return error.Overflow;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` barket — KindShape argv tag (STOA300).", .{ face, shape }) catch return error.Overflow;
                 return emit_kind_argv(out, zface, comment);
             },
             .call_one => return error.SampleDoesNotNest,
@@ -762,7 +750,7 @@ fn emit_argv(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
         switch (spec.body) {
             .header_only, .identity => {
                 var comment_buf: [192]u8 = undefined;
-                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` barket — XactShape argv payload (STOA303).", .{ face, mold }) catch return error.Overflow;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` barket — XactShape argv payload (STOA303).", .{ face, shape }) catch return error.Overflow;
                 return emit_xact_argv(out, zface, comment);
             },
             .call_one => return error.SampleDoesNotNest,
@@ -774,20 +762,20 @@ fn emit_argv(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
         switch (spec.body) {
             .header_only, .identity => {
                 var comment_buf: [192]u8 = undefined;
-                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` barket — XferShape argv payload (STOA305).", .{ face, mold }) catch return error.Overflow;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` barket — XferShape argv payload (STOA305).", .{ face, shape }) catch return error.Overflow;
                 return emit_xfer_argv(out, zface, comment);
             },
             .call_one => return error.SampleDoesNotNest,
         }
     }
 
-    // STOA324: closed `$:` pair…nona argv — one path (mold → N → emit_n_field_argv).
-    if (closed_tuple_field_count(mold)) |n| {
+    // STOA324: closed `$:` pair…nona argv — one path (shape → N → emit_n_field_argv).
+    if (nest_type.closed_tuple_field_count(shape)) |n| {
         switch (spec.body) {
             .header_only, .identity => {
                 const zig_type = closed_tuple_type_name(n);
                 var comment_buf: [192]u8 = undefined;
-                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` barket — {s} argv fields (STOA324).", .{ face, mold, zig_type }) catch return error.Overflow;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` barket — {s} argv fields (STOA324).", .{ face, shape, zig_type }) catch return error.Overflow;
                 return emit_n_field_argv(out, n, zface, comment);
             },
             .call_one => return error.SampleDoesNotNest,
@@ -800,7 +788,7 @@ fn emit_argv(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
     switch (spec.body) {
         .header_only, .identity => {
             var comment_buf: [160]u8 = undefined;
-            const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` barket — argv sample (STOA114/118).", .{ face, mold }) catch return error.Overflow;
+            const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` barket — argv sample (STOA114/118).", .{ face, shape }) catch return error.Overflow;
             try emit_gate_fn(out, &used, zface, zface, comment);
             try emit_argv_main(out, &used, zface, zface);
         },
@@ -813,7 +801,7 @@ fn emit_argv(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
             var expect_buf: [96]u8 = undefined;
             const expect_expr = std.fmt.bufPrint(&expect_buf, "{s}{s}", .{ zface, op }) catch return error.Overflow;
             var comment_buf: [192]u8 = undefined;
-            const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` / `%-  {s}  {s}` — argv call body (STOA115–116).", .{ face, mold, gate, face }) catch return error.Overflow;
+            const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|^  {s}={s}` / `%-  {s}  {s}` — argv call body (STOA115–116).", .{ face, shape, gate, face }) catch return error.Overflow;
             try emit_gate_fn(out, &used, zface, body_return, comment);
             try emit_argv_main(out, &used, zface, expect_expr);
         },
