@@ -45,6 +45,7 @@
 //! STOA145: closed call-body under octa-mold — `flip` (from↔amount · fee/nonce/memo/tag/to/via stay).
 //! STOA146: closed allowlist adds nine-field `$:` `nona-mold` (identity lower).
 //! STOA147: closed call-body under nona-mold — `flip` (from↔amount · fee/nonce/memo/tag/to/via/ref stay).
+//! STOA330: BarketSpec fields — `shape_name` · `shape_name_len` · `shape_name_slice` · `max_shape_len`.
 //! Sample nests under `@u32` / named allowlist via nest_type; ambient gold held.
 //! Token-driven via tokens.rye. Open `$:` beyond nona barket samples held.
 
@@ -56,7 +57,7 @@ const nest_type = @import("nest_type.rye");
 
 pub const max_face_len: u32 = tokens.max_name_len;
 pub const max_gate_len: u32 = tokens.max_name_len;
-pub const max_mold_len: u32 = tokens.max_name_len;
+pub const max_shape_len: u32 = tokens.max_name_len;
 
 pub const ParseError = error{
     EmptySource,
@@ -80,13 +81,13 @@ pub const BodyKind = enum {
     call_one,
 };
 
-/// A parsed thin barket: sample face + optional named mold + identity/call body.
-/// `mold_name_len == 0` means sample mold is the aura `@u32`.
+/// A parsed thin barket: sample face + optional named shape + identity/call body.
+/// `shape_name_len == 0` means sample shape is the aura `@u32`.
 pub const BarketSpec = struct {
     face: [max_face_len]u8 = [_]u8{0} ** max_face_len,
     face_len: u32 = 0,
-    mold_name: [max_mold_len]u8 = [_]u8{0} ** max_mold_len,
-    mold_name_len: u32 = 0,
+    shape_name: [max_shape_len]u8 = [_]u8{0} ** max_shape_len,
+    shape_name_len: u32 = 0,
     body: BodyKind = .header_only,
     gate: [max_gate_len]u8 = [_]u8{0} ** max_gate_len,
     gate_len: u32 = 0,
@@ -97,9 +98,9 @@ pub fn face_slice(spec: *const BarketSpec) []const u8 {
     return spec.face[0..spec.face_len];
 }
 
-pub fn mold_name_slice(spec: *const BarketSpec) []const u8 {
-    assert(spec.mold_name_len <= max_mold_len); // invariant: mold name fits
-    return spec.mold_name[0..spec.mold_name_len];
+pub fn shape_name_slice(spec: *const BarketSpec) []const u8 {
+    assert(spec.shape_name_len <= max_shape_len); // invariant: shape name fits
+    return spec.shape_name[0..spec.shape_name_len];
 }
 
 pub fn gate_slice(spec: *const BarketSpec) []const u8 {
@@ -208,7 +209,7 @@ pub fn parse_source(src: []const u8) ParseError!BarketSpec {
         stated_shape = "@u32";
     } else if (shape_tok.kind == .ident) {
         const shape_text = tokens.slice_of(src, shape_tok);
-        if (shape_text.len == 0 or shape_text.len > max_mold_len) return error.MissingAura;
+        if (shape_text.len == 0 or shape_text.len > max_shape_len) return error.MissingAura;
         nest_type.assert_bartis_named_shape(shape_text) catch return error.SampleDoesNotNest;
         named_shape = shape_text;
         sample_text = shape_text;
@@ -225,8 +226,8 @@ pub fn parse_source(src: []const u8) ParseError!BarketSpec {
     tally_copy.copy_disjoint(u8, spec.face[0..face_text.len], face_text);
     spec.face_len = @intCast(face_text.len);
     if (named_shape) |sn| {
-        tally_copy.copy_disjoint(u8, spec.mold_name[0..sn.len], sn);
-        spec.mold_name_len = @intCast(sn.len);
+        tally_copy.copy_disjoint(u8, spec.shape_name[0..sn.len], sn);
+        spec.shape_name_len = @intCast(sn.len);
     }
 
     i = try parse_body(src, toks, i, face_text, &spec);

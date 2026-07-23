@@ -167,7 +167,7 @@ fn run_selftest(init: std.process.Init) !u8 {
 
     const gen_amt = try cwd.readFileAlloc(io, "glow/gen/gate-amount.glow", a, .limited(4096));
     const spec_amt = try rb.parse_source(gen_amt);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_amt), "amount-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&spec_amt), "amount-shape"));
     assert(spec_amt.body == .identity);
     print("lower: glow/gen/gate-amount.glow carries amount-shape -- GREEN\n", .{});
 
@@ -183,7 +183,7 @@ fn run_selftest(init: std.process.Init) !u8 {
 
     const gen_amt_u32 = try cwd.readFileAlloc(io, "glow/gen/gate-amount-u32.glow", a, .limited(4096));
     const spec_amt_u32 = try rb.parse_source(gen_amt_u32);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_amt_u32), "amount-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&spec_amt_u32), "amount-shape"));
     assert(spec_amt_u32.body == .identity);
     print("lower: glow/gen/gate-amount-u32.glow carries amount-shape argv -- GREEN\n", .{});
 
@@ -199,7 +199,7 @@ fn run_selftest(init: std.process.Init) !u8 {
 
     const gen_cnt_u32 = try cwd.readFileAlloc(io, "glow/gen/gate-count-u32.glow", a, .limited(4096));
     const spec_cnt_u32 = try rb.parse_source(gen_cnt_u32);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_cnt_u32), "count-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&spec_cnt_u32), "count-shape"));
     assert(spec_cnt_u32.body == .identity);
     print("lower: glow/gen/gate-count-u32.glow carries count-shape argv -- GREEN\n", .{});
 
@@ -216,7 +216,7 @@ fn run_selftest(init: std.process.Init) !u8 {
 
     const gen_kind_tag = try cwd.readFileAlloc(io, "glow/gen/gate-kind-tag.glow", a, .limited(4096));
     const spec_kind_tag = try rb.parse_source(gen_kind_tag);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_kind_tag), "kind-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&spec_kind_tag), "kind-shape"));
     assert(spec_kind_tag.body == .identity);
     print("lower: glow/gen/gate-kind-tag.glow carries kind-shape argv -- GREEN\n", .{});
 
@@ -233,7 +233,7 @@ fn run_selftest(init: std.process.Init) !u8 {
 
     const gen_xact_tag = try cwd.readFileAlloc(io, "glow/gen/gate-xact-tag.glow", a, .limited(4096));
     const spec_xact_tag = try rb.parse_source(gen_xact_tag);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_xact_tag), "xact-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&spec_xact_tag), "xact-shape"));
     assert(spec_xact_tag.body == .identity);
     print("lower: glow/gen/gate-xact-tag.glow carries xact-shape argv -- GREEN\n", .{});
 
@@ -252,7 +252,7 @@ fn run_selftest(init: std.process.Init) !u8 {
 
     const gen_xfer_tag = try cwd.readFileAlloc(io, "glow/gen/gate-xfer-tag.glow", a, .limited(4096));
     const spec_xfer_tag = try rb.parse_source(gen_xfer_tag);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_xfer_tag), "xfer-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&spec_xfer_tag), "xfer-shape"));
     assert(spec_xfer_tag.body == .identity);
     print("lower: glow/gen/gate-xfer-tag.glow carries xfer-shape argv -- GREEN\n", .{});
 
@@ -271,7 +271,7 @@ fn run_selftest(init: std.process.Init) !u8 {
 
     const gen_pair_fields = try cwd.readFileAlloc(io, "glow/gen/gate-pair-fields.glow", a, .limited(4096));
     const spec_pair_fields = try rb.parse_source(gen_pair_fields);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_pair_fields), "pair-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&spec_pair_fields), "pair-shape"));
     assert(spec_pair_fields.body == .identity);
     print("lower: glow/gen/gate-pair-fields.glow carries pair-shape argv -- GREEN\n", .{});
 
@@ -290,7 +290,7 @@ fn run_selftest(init: std.process.Init) !u8 {
 
     const gen_triple_fields = try cwd.readFileAlloc(io, "glow/gen/gate-triple-fields.glow", a, .limited(4096));
     const spec_triple_fields = try rb.parse_source(gen_triple_fields);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_triple_fields), "triple-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&spec_triple_fields), "triple-shape"));
     assert(spec_triple_fields.body == .identity);
     print("lower: glow/gen/gate-triple-fields.glow carries triple-shape argv -- GREEN\n", .{});
 
@@ -308,7 +308,7 @@ fn run_selftest(init: std.process.Init) !u8 {
 
     const gen_quad_fields = try cwd.readFileAlloc(io, "glow/gen/gate-quad-fields.glow", a, .limited(4096));
     const spec_quad_fields = try rb.parse_source(gen_quad_fields);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_quad_fields), "quad-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&spec_quad_fields), "quad-shape"));
     assert(spec_quad_fields.body == .identity);
     print("lower: glow/gen/gate-quad-fields.glow carries quad-shape argv -- GREEN\n", .{});
 
@@ -326,7 +326,7 @@ fn run_selftest(init: std.process.Init) !u8 {
 
     const gen_penta_fields = try cwd.readFileAlloc(io, "glow/gen/gate-penta-fields.glow", a, .limited(4096));
     const spec_penta_fields = try rb.parse_source(gen_penta_fields);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_penta_fields), "penta-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&spec_penta_fields), "penta-shape"));
     assert(spec_penta_fields.body == .identity);
     print("lower: glow/gen/gate-penta-fields.glow carries penta-shape argv -- GREEN\n", .{});
 
@@ -344,7 +344,7 @@ fn run_selftest(init: std.process.Init) !u8 {
 
     const gen_hexa_fields = try cwd.readFileAlloc(io, "glow/gen/gate-hexa-fields.glow", a, .limited(4096));
     const spec_hexa_fields = try rb.parse_source(gen_hexa_fields);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_hexa_fields), "hexa-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&spec_hexa_fields), "hexa-shape"));
     assert(spec_hexa_fields.body == .identity);
     print("lower: glow/gen/gate-hexa-fields.glow carries hexa-shape argv -- GREEN\n", .{});
 
@@ -362,7 +362,7 @@ fn run_selftest(init: std.process.Init) !u8 {
 
     const gen_hepta_fields = try cwd.readFileAlloc(io, "glow/gen/gate-hepta-fields.glow", a, .limited(4096));
     const spec_hepta_fields = try rb.parse_source(gen_hepta_fields);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_hepta_fields), "hepta-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&spec_hepta_fields), "hepta-shape"));
     assert(spec_hepta_fields.body == .identity);
     print("lower: glow/gen/gate-hepta-fields.glow carries hepta-shape argv -- GREEN\n", .{});
 
@@ -380,7 +380,7 @@ fn run_selftest(init: std.process.Init) !u8 {
 
     const gen_octa_fields = try cwd.readFileAlloc(io, "glow/gen/gate-octa-fields.glow", a, .limited(4096));
     const spec_octa_fields = try rb.parse_source(gen_octa_fields);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_octa_fields), "octa-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&spec_octa_fields), "octa-shape"));
     assert(spec_octa_fields.body == .identity);
     print("lower: glow/gen/gate-octa-fields.glow carries octa-shape argv -- GREEN\n", .{});
 
@@ -398,7 +398,7 @@ fn run_selftest(init: std.process.Init) !u8 {
 
     const gen_nona_fields = try cwd.readFileAlloc(io, "glow/gen/gate-nona-fields.glow", a, .limited(4096));
     const spec_nona_fields = try rb.parse_source(gen_nona_fields);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_nona_fields), "nona-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&spec_nona_fields), "nona-shape"));
     assert(spec_nona_fields.body == .identity);
     print("lower: glow/gen/gate-nona-fields.glow carries nona-shape argv -- GREEN\n", .{});
 
@@ -413,7 +413,7 @@ fn run_selftest(init: std.process.Init) !u8 {
 
     const gen_kind = try cwd.readFileAlloc(io, "glow/gen/gate-kind.glow", a, .limited(4096));
     const spec_kind = try rb.parse_source(gen_kind);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_kind), "kind-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&spec_kind), "kind-shape"));
     assert(spec_kind.body == .identity);
     print("lower: glow/gen/gate-kind.glow carries kind-shape -- GREEN\n", .{});
 
@@ -429,7 +429,7 @@ fn run_selftest(init: std.process.Init) !u8 {
 
     const gen_xact = try cwd.readFileAlloc(io, "glow/gen/gate-xact.glow", a, .limited(4096));
     const spec_xact = try rb.parse_source(gen_xact);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_xact), "xact-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&spec_xact), "xact-shape"));
     assert(spec_xact.body == .identity);
     print("lower: glow/gen/gate-xact.glow carries xact-shape -- GREEN\n", .{});
 
@@ -446,7 +446,7 @@ fn run_selftest(init: std.process.Init) !u8 {
 
     const gen_xfer = try cwd.readFileAlloc(io, "glow/gen/gate-xfer.glow", a, .limited(4096));
     const spec_xfer = try rb.parse_source(gen_xfer);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_xfer), "xfer-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&spec_xfer), "xfer-shape"));
     assert(spec_xfer.body == .identity);
     print("lower: glow/gen/gate-xfer.glow carries xfer-shape -- GREEN\n", .{});
 
@@ -462,7 +462,7 @@ fn run_selftest(init: std.process.Init) !u8 {
 
     const gen_pair = try cwd.readFileAlloc(io, "glow/gen/gate-pair.glow", a, .limited(4096));
     const spec_pair = try rb.parse_source(gen_pair);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_pair), "pair-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&spec_pair), "pair-shape"));
     assert(spec_pair.body == .identity);
     print("lower: glow/gen/gate-pair.glow carries pair-shape -- GREEN\n", .{});
 
@@ -477,7 +477,7 @@ fn run_selftest(init: std.process.Init) !u8 {
 
     const gen_triple = try cwd.readFileAlloc(io, "glow/gen/gate-triple.glow", a, .limited(4096));
     const spec_triple = try rb.parse_source(gen_triple);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_triple), "triple-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&spec_triple), "triple-shape"));
     assert(spec_triple.body == .identity);
     print("lower: glow/gen/gate-triple.glow carries triple-shape -- GREEN\n", .{});
 
@@ -492,7 +492,7 @@ fn run_selftest(init: std.process.Init) !u8 {
 
     const gen_quad = try cwd.readFileAlloc(io, "glow/gen/gate-quad.glow", a, .limited(4096));
     const spec_quad = try rb.parse_source(gen_quad);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_quad), "quad-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&spec_quad), "quad-shape"));
     assert(spec_quad.body == .identity);
     print("lower: glow/gen/gate-quad.glow carries quad-shape -- GREEN\n", .{});
 
@@ -507,7 +507,7 @@ fn run_selftest(init: std.process.Init) !u8 {
 
     const gen_penta = try cwd.readFileAlloc(io, "glow/gen/gate-penta.glow", a, .limited(4096));
     const spec_penta = try rb.parse_source(gen_penta);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_penta), "penta-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&spec_penta), "penta-shape"));
     assert(spec_penta.body == .identity);
     print("lower: glow/gen/gate-penta.glow carries penta-shape -- GREEN\n", .{});
 
@@ -522,7 +522,7 @@ fn run_selftest(init: std.process.Init) !u8 {
 
     const gen_hexa = try cwd.readFileAlloc(io, "glow/gen/gate-hexa.glow", a, .limited(4096));
     const spec_hexa = try rb.parse_source(gen_hexa);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_hexa), "hexa-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&spec_hexa), "hexa-shape"));
     assert(spec_hexa.body == .identity);
     print("lower: glow/gen/gate-hexa.glow carries hexa-shape -- GREEN\n", .{});
 
@@ -537,7 +537,7 @@ fn run_selftest(init: std.process.Init) !u8 {
 
     const gen_hepta = try cwd.readFileAlloc(io, "glow/gen/gate-hepta.glow", a, .limited(4096));
     const spec_hepta = try rb.parse_source(gen_hepta);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_hepta), "hepta-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&spec_hepta), "hepta-shape"));
     assert(spec_hepta.body == .identity);
     print("lower: glow/gen/gate-hepta.glow carries hepta-shape -- GREEN\n", .{});
 
@@ -552,7 +552,7 @@ fn run_selftest(init: std.process.Init) !u8 {
 
     const gen_octa = try cwd.readFileAlloc(io, "glow/gen/gate-octa.glow", a, .limited(4096));
     const spec_octa = try rb.parse_source(gen_octa);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_octa), "octa-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&spec_octa), "octa-shape"));
     assert(spec_octa.body == .identity);
     print("lower: glow/gen/gate-octa.glow carries octa-shape -- GREEN\n", .{});
 
@@ -567,7 +567,7 @@ fn run_selftest(init: std.process.Init) !u8 {
 
     const gen_nona = try cwd.readFileAlloc(io, "glow/gen/gate-nona.glow", a, .limited(4096));
     const spec_nona = try rb.parse_source(gen_nona);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_nona), "nona-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&spec_nona), "nona-shape"));
     assert(spec_nona.body == .identity);
     print("lower: glow/gen/gate-nona.glow carries nona-shape -- GREEN\n", .{});
 
@@ -590,7 +590,7 @@ fn run_selftest(init: std.process.Init) !u8 {
 
     const gen_htf = try cwd.readFileAlloc(io, "glow/gen/gate-hepta-flip.glow", a, .limited(4096));
     const spec_htf = try rb.parse_source(gen_htf);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_htf), "hepta-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&spec_htf), "hepta-shape"));
     assert(spec_htf.body == .call_one);
     assert(std.mem.eql(u8, rb.gate_slice(&spec_htf), "flip"));
     print("lower: glow/gen/gate-hepta-flip.glow carries hepta-shape flip call-body -- GREEN\n", .{});
@@ -614,7 +614,7 @@ fn run_selftest(init: std.process.Init) !u8 {
 
     const gen_otf = try cwd.readFileAlloc(io, "glow/gen/gate-octa-flip.glow", a, .limited(4096));
     const spec_otf = try rb.parse_source(gen_otf);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_otf), "octa-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&spec_otf), "octa-shape"));
     assert(spec_otf.body == .call_one);
     assert(std.mem.eql(u8, rb.gate_slice(&spec_otf), "flip"));
     print("lower: glow/gen/gate-octa-flip.glow carries octa-shape flip call-body -- GREEN\n", .{});
@@ -638,7 +638,7 @@ fn run_selftest(init: std.process.Init) !u8 {
 
     const gen_nnf = try cwd.readFileAlloc(io, "glow/gen/gate-nona-flip.glow", a, .limited(4096));
     const spec_nnf = try rb.parse_source(gen_nnf);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_nnf), "nona-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&spec_nnf), "nona-shape"));
     assert(spec_nnf.body == .call_one);
     assert(std.mem.eql(u8, rb.gate_slice(&spec_nnf), "flip"));
     print("lower: glow/gen/gate-nona-flip.glow carries nona-shape flip call-body -- GREEN\n", .{});
@@ -662,7 +662,7 @@ fn run_selftest(init: std.process.Init) !u8 {
 
     const gen_hxf = try cwd.readFileAlloc(io, "glow/gen/gate-hexa-flip.glow", a, .limited(4096));
     const spec_hxf = try rb.parse_source(gen_hxf);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_hxf), "hexa-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&spec_hxf), "hexa-shape"));
     assert(spec_hxf.body == .call_one);
     assert(std.mem.eql(u8, rb.gate_slice(&spec_hxf), "flip"));
     print("lower: glow/gen/gate-hexa-flip.glow carries hexa-shape flip call-body -- GREEN\n", .{});
@@ -686,7 +686,7 @@ fn run_selftest(init: std.process.Init) !u8 {
 
     const gen_tf = try cwd.readFileAlloc(io, "glow/gen/gate-triple-flip.glow", a, .limited(4096));
     const spec_tf = try rb.parse_source(gen_tf);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_tf), "triple-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&spec_tf), "triple-shape"));
     assert(spec_tf.body == .call_one);
     assert(std.mem.eql(u8, rb.gate_slice(&spec_tf), "flip"));
     print("lower: glow/gen/gate-triple-flip.glow carries triple-shape flip call-body -- GREEN\n", .{});
@@ -710,7 +710,7 @@ fn run_selftest(init: std.process.Init) !u8 {
 
     const gen_qf = try cwd.readFileAlloc(io, "glow/gen/gate-quad-flip.glow", a, .limited(4096));
     const spec_qf = try rb.parse_source(gen_qf);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_qf), "quad-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&spec_qf), "quad-shape"));
     assert(spec_qf.body == .call_one);
     assert(std.mem.eql(u8, rb.gate_slice(&spec_qf), "flip"));
     print("lower: glow/gen/gate-quad-flip.glow carries quad-shape flip call-body -- GREEN\n", .{});
@@ -734,7 +734,7 @@ fn run_selftest(init: std.process.Init) !u8 {
 
     const gen_pnf = try cwd.readFileAlloc(io, "glow/gen/gate-penta-flip.glow", a, .limited(4096));
     const spec_pnf = try rb.parse_source(gen_pnf);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_pnf), "penta-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&spec_pnf), "penta-shape"));
     assert(spec_pnf.body == .call_one);
     assert(std.mem.eql(u8, rb.gate_slice(&spec_pnf), "flip"));
     print("lower: glow/gen/gate-penta-flip.glow carries penta-shape flip call-body -- GREEN\n", .{});
@@ -757,7 +757,7 @@ fn run_selftest(init: std.process.Init) !u8 {
 
     const gen_kf = try cwd.readFileAlloc(io, "glow/gen/gate-kind-flip.glow", a, .limited(4096));
     const spec_kf = try rb.parse_source(gen_kf);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_kf), "kind-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&spec_kf), "kind-shape"));
     assert(spec_kf.body == .call_one);
     assert(std.mem.eql(u8, rb.gate_slice(&spec_kf), "flip"));
     print("lower: glow/gen/gate-kind-flip.glow carries kind-shape flip call-body -- GREEN\n", .{});
@@ -787,7 +787,7 @@ fn run_selftest(init: std.process.Init) !u8 {
 
     const gen_xf = try cwd.readFileAlloc(io, "glow/gen/gate-xact-flip.glow", a, .limited(4096));
     const spec_xf = try rb.parse_source(gen_xf);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_xf), "xact-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&spec_xf), "xact-shape"));
     assert(spec_xf.body == .call_one);
     assert(std.mem.eql(u8, rb.gate_slice(&spec_xf), "flip"));
     print("lower: glow/gen/gate-xact-flip.glow carries xact-shape flip call-body -- GREEN\n", .{});
@@ -810,7 +810,7 @@ fn run_selftest(init: std.process.Init) !u8 {
 
     const gen_xff = try cwd.readFileAlloc(io, "glow/gen/gate-xfer-flip.glow", a, .limited(4096));
     const spec_xff = try rb.parse_source(gen_xff);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_xff), "xfer-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&spec_xff), "xfer-shape"));
     assert(spec_xff.body == .call_one);
     assert(std.mem.eql(u8, rb.gate_slice(&spec_xff), "flip"));
     print("lower: glow/gen/gate-xfer-flip.glow carries xfer-shape flip call-body -- GREEN\n", .{});
@@ -840,7 +840,7 @@ fn run_selftest(init: std.process.Init) !u8 {
 
     const gen_pf = try cwd.readFileAlloc(io, "glow/gen/gate-pair-flip.glow", a, .limited(4096));
     const spec_pf = try rb.parse_source(gen_pf);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_pf), "pair-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&spec_pf), "pair-shape"));
     assert(spec_pf.body == .call_one);
     assert(std.mem.eql(u8, rb.gate_slice(&spec_pf), "flip"));
     print("lower: glow/gen/gate-pair-flip.glow carries pair-shape flip call-body -- GREEN\n", .{});
@@ -855,7 +855,7 @@ fn run_selftest(init: std.process.Init) !u8 {
 
     const gen_cnt = try cwd.readFileAlloc(io, "glow/gen/gate-count.glow", a, .limited(4096));
     const spec_cnt = try rb.parse_source(gen_cnt);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&spec_cnt), "count-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&spec_cnt), "count-shape"));
     assert(spec_cnt.body == .identity);
     print("lower: glow/gen/gate-count.glow carries count-shape -- GREEN\n", .{});
 

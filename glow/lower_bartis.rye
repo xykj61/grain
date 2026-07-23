@@ -190,23 +190,23 @@ fn emit_argv_main(out: []u8, used: *u32, zface: []const u8, expect_expr: []const
 }
 
 fn sample_shape_label(spec: *const rb.GateSpec) []const u8 {
-    if (spec.mold_name_len == 0) return "@u32";
-    return rb.mold_name_slice(spec);
+    if (spec.shape_name_len == 0) return "@u32";
+    return rb.shape_name_slice(spec);
 }
 
 fn is_kind_sample(spec: *const rb.GateSpec) bool {
-    if (spec.mold_name_len == 0) return false;
-    return nest_type.is_kind_named_shape(rb.mold_name_slice(spec));
+    if (spec.shape_name_len == 0) return false;
+    return nest_type.is_kind_named_shape(rb.shape_name_slice(spec));
 }
 
 fn is_xact_sample(spec: *const rb.GateSpec) bool {
-    if (spec.mold_name_len == 0) return false;
-    return nest_type.is_xact_named_shape(rb.mold_name_slice(spec));
+    if (spec.shape_name_len == 0) return false;
+    return nest_type.is_xact_named_shape(rb.shape_name_slice(spec));
 }
 
 fn is_xfer_sample(spec: *const rb.GateSpec) bool {
-    if (spec.mold_name_len == 0) return false;
-    return nest_type.is_xfer_named_shape(rb.mold_name_slice(spec));
+    if (spec.shape_name_len == 0) return false;
+    return nest_type.is_xfer_named_shape(rb.shape_name_slice(spec));
 }
 
 /// STOA123: closed unit `$%` kind-mold identity → KindShape enum · baked `.mint`.
