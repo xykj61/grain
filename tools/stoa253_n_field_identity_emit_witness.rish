@@ -9,11 +9,12 @@ assert bartis.out contains "STOA253" else "bartis witness missing STOA253"
 let helper = run ["sh" "-c" "grep -q 'fn emit_n_field_identity' glow/lower_bartis.rye"]
 assert helper.ok else "missing emit_n_field_identity"
 
-let wrappers = run ["sh" "-c" "test $(grep -Fc 'return emit_n_field_identity(' glow/lower_bartis.rye) = 8"]
-assert wrappers.ok else "expected eight identity wrappers through emit_n_field_identity"
+# STOA326: thin identity wrappers retired — one welcome call site.
+let one_call = run ["sh" "-c" "test $(grep -Fc 'return emit_n_field_identity(' glow/lower_bartis.rye) = 1"]
+assert one_call.ok else "expected one welcome identity call through emit_n_field_identity"
 
-# Flip emitters stay per-N (not collapsed this lap).
-let flip_kept = run ["sh" "-c" "grep -q 'fn emit_pair_call_body' glow/lower_bartis.rye && grep -q 'fn emit_nona_call_body' glow/lower_bartis.rye"]
-assert flip_kept.ok else "flip call-body emitters must remain until a later lap"
+# STOA326: thin flip wrappers retired with welcome collapse.
+let flip_retired = run ["sh" "-c" "! grep -q 'fn emit_pair_call_body' glow/lower_bartis.rye && ! grep -q 'fn emit_nona_call_body' glow/lower_bartis.rye"]
+assert flip_retired.ok else "thin flip call-body wrappers must be retired (STOA326)"
 
-say "GREEN: STOA253 — bartis N-field identity emit via emit_n_field_identity; flip held."
+say "GREEN: STOA253 — bartis N-field identity emit via emit_n_field_identity; STOA326 wrappers retired."
