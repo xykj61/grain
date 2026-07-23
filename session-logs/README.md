@@ -7,6 +7,7 @@ Living index for the append-only session stream. This table reads **newest first
 **Day’s truth is this index’s order, not filename sort.** One-clock stamps sort ascending on disk; trust the table for sequence within a day.
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
+- `20260722.205054` — [REMEMBER git nib after STOA331](20260722-205054_remember-git-nib-stoa331.bron) — pin 4d246d2886
 - `20260722.205026` — [STOA330–331 gate-spec shape_name](20260722-205026_stoa330-331-gate-spec-shape-name.bron) — GateSpec rename GREEN; cast/face next
 - `20260722.203848` — [REMEMBER git nib after STOA329](20260722-203848_remember-git-nib-stoa329.bron) — pin f18899d8bf
 - `20260722.203753` — [STOA328–329 nest_type shape table](20260722-203753_stoa328-329-nest-type-shape-table.bron) — allowlist/N tables; gate-spec mold_name next
