@@ -924,6 +924,10 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA329 after nest_type shape check-in, `20260722.203755`** — lean A send · lean B rest available · lean **C** gate-spec `mold_name`→`shape_name`. Brief [`active-designing/20260722-203755_stoa329-after-nest-type-shape-checkin.md`](../active-designing/20260722-203755_stoa329-after-nest-type-shape-checkin.md).
 
+**STOA330 gate-spec shape_name GREEN, `20260722.204131`** — `shape_name` · `shape_name_slice` · `max_shape_len`. Brief [`active-designing/20260722-204131_stoa330-gate-spec-shape-name.md`](../active-designing/20260722-204131_stoa330-gate-spec-shape-name.md).
+
+**STOA331 after gate shape_name check-in, `20260722.204133`** — lean A send · lean B rest available · lean **C** cast/face mold→shape. Brief [`active-designing/20260722-204133_stoa331-after-gate-shape-name-checkin.md`](../active-designing/20260722-204133_stoa331-after-gate-shape-name-checkin.md).
+
 
 **Framework next (host resume), `20260720.231857`** — lean A: live SETU6.5 **sent** eyes on real `usb0`/`ncm`. Lab TX gate already GREEN; Sala B0 Glow rewrite · JABS3 stay thicker check-ins. Same freeze brief.
 

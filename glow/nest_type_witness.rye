@@ -232,7 +232,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("nest: study alias bartis sample=amount-mold still lowers -- GREEN\n", .{});
 
     const amt_shape_barket = try rbrk.parse_source("|^  sample=amount-shape\nsample\n");
-    assert(std.mem.eql(u8, rbrk.mold_name_slice(&amt_shape_barket), "amount-shape"));
+    assert(std.mem.eql(u8, rbrk.shape_name_slice(&amt_shape_barket), "amount-shape"));
     print("nest: barket sample=amount-shape accepts named shape -- GREEN\n", .{});
 
     const n_cnt_shape = try lower.lower_source_welcome("|=  sample=count-shape\nsample\n", &buf);
@@ -242,7 +242,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("nest: bartis sample=count-shape lowers as u32 identity -- GREEN\n", .{});
 
     const cnt_shape_barket = try rbrk.parse_source("|^  sample=count-shape\nsample\n");
-    assert(std.mem.eql(u8, rbrk.mold_name_slice(&cnt_shape_barket), "count-shape"));
+    assert(std.mem.eql(u8, rbrk.shape_name_slice(&cnt_shape_barket), "count-shape"));
     print("nest: barket sample=count-shape accepts named shape -- GREEN\n", .{});
 
     const n_pair_shape = try lower.lower_source_welcome("|=  sample=pair-shape\nsample\n", &buf);
@@ -253,7 +253,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("nest: bartis sample=pair-shape lowers as PairShape identity -- GREEN\n", .{});
 
     const pair_shape_barket = try rbrk.parse_source("|^  sample=pair-shape\nsample\n");
-    assert(std.mem.eql(u8, rbrk.mold_name_slice(&pair_shape_barket), "pair-shape"));
+    assert(std.mem.eql(u8, rbrk.shape_name_slice(&pair_shape_barket), "pair-shape"));
     print("nest: barket sample=pair-shape accepts named shape -- GREEN\n", .{});
 
     const n_kind_shape = try lower.lower_source_welcome("|=  sample=kind-shape\nsample\n", &buf);
@@ -264,7 +264,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("nest: bartis sample=kind-shape lowers as KindShape identity -- GREEN\n", .{});
 
     const kind_shape_barket = try rbrk.parse_source("|^  sample=kind-shape\nsample\n");
-    assert(std.mem.eql(u8, rbrk.mold_name_slice(&kind_shape_barket), "kind-shape"));
+    assert(std.mem.eql(u8, rbrk.shape_name_slice(&kind_shape_barket), "kind-shape"));
     print("nest: barket sample=kind-shape accepts named shape -- GREEN\n", .{});
 
     const n_xact_shape = try lower.lower_source_welcome("|=  sample=xact-shape\nsample\n", &buf);
@@ -275,7 +275,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("nest: bartis sample=xact-shape lowers as XactShape identity -- GREEN\n", .{});
 
     const xact_shape_barket = try rbrk.parse_source("|^  sample=xact-shape\nsample\n");
-    assert(std.mem.eql(u8, rbrk.mold_name_slice(&xact_shape_barket), "xact-shape"));
+    assert(std.mem.eql(u8, rbrk.shape_name_slice(&xact_shape_barket), "xact-shape"));
     print("nest: barket sample=xact-shape accepts named shape -- GREEN\n", .{});
 
     const n_xfer_shape = try lower.lower_source_welcome("|=  sample=xfer-shape\nsample\n", &buf);
@@ -286,7 +286,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("nest: bartis sample=xfer-shape lowers as XferShape identity -- GREEN\n", .{});
 
     const xfer_shape_barket = try rbrk.parse_source("|^  sample=xfer-shape\nsample\n");
-    assert(std.mem.eql(u8, rbrk.mold_name_slice(&xfer_shape_barket), "xfer-shape"));
+    assert(std.mem.eql(u8, rbrk.shape_name_slice(&xfer_shape_barket), "xfer-shape"));
     print("nest: barket sample=xfer-shape accepts named shape -- GREEN\n", .{});
 
     const n_triple_shape = try lower.lower_source_welcome("|=  sample=triple-shape\nsample\n", &buf);
@@ -297,7 +297,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("nest: bartis sample=triple-shape lowers as TripleShape identity -- GREEN\n", .{});
 
     const triple_shape_barket = try rbrk.parse_source("|^  sample=triple-shape\nsample\n");
-    assert(std.mem.eql(u8, rbrk.mold_name_slice(&triple_shape_barket), "triple-shape"));
+    assert(std.mem.eql(u8, rbrk.shape_name_slice(&triple_shape_barket), "triple-shape"));
     print("nest: barket sample=triple-shape accepts named shape -- GREEN\n", .{});
 
     const n_quad_shape = try lower.lower_source_welcome("|=  sample=quad-shape\nsample\n", &buf);
@@ -308,7 +308,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("nest: bartis sample=quad-shape lowers as QuadShape identity -- GREEN\n", .{});
 
     const quad_shape_barket = try rbrk.parse_source("|^  sample=quad-shape\nsample\n");
-    assert(std.mem.eql(u8, rbrk.mold_name_slice(&quad_shape_barket), "quad-shape"));
+    assert(std.mem.eql(u8, rbrk.shape_name_slice(&quad_shape_barket), "quad-shape"));
     print("nest: barket sample=quad-shape accepts named shape -- GREEN\n", .{});
 
     const n_penta_shape = try lower.lower_source_welcome("|=  sample=penta-shape\nsample\n", &buf);
@@ -319,7 +319,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("nest: bartis sample=penta-shape lowers as PentaShape identity -- GREEN\n", .{});
 
     const penta_shape_barket = try rbrk.parse_source("|^  sample=penta-shape\nsample\n");
-    assert(std.mem.eql(u8, rbrk.mold_name_slice(&penta_shape_barket), "penta-shape"));
+    assert(std.mem.eql(u8, rbrk.shape_name_slice(&penta_shape_barket), "penta-shape"));
     print("nest: barket sample=penta-shape accepts named shape -- GREEN\n", .{});
 
     const n_hexa_shape = try lower.lower_source_welcome("|=  sample=hexa-shape\nsample\n", &buf);
@@ -330,7 +330,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("nest: bartis sample=hexa-shape lowers as HexaShape identity -- GREEN\n", .{});
 
     const hexa_shape_barket = try rbrk.parse_source("|^  sample=hexa-shape\nsample\n");
-    assert(std.mem.eql(u8, rbrk.mold_name_slice(&hexa_shape_barket), "hexa-shape"));
+    assert(std.mem.eql(u8, rbrk.shape_name_slice(&hexa_shape_barket), "hexa-shape"));
     print("nest: barket sample=hexa-shape accepts named shape -- GREEN\n", .{});
 
     const n_hepta_shape = try lower.lower_source_welcome("|=  sample=hepta-shape\nsample\n", &buf);
@@ -341,7 +341,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("nest: bartis sample=hepta-shape lowers as HeptaShape identity -- GREEN\n", .{});
 
     const hepta_shape_barket = try rbrk.parse_source("|^  sample=hepta-shape\nsample\n");
-    assert(std.mem.eql(u8, rbrk.mold_name_slice(&hepta_shape_barket), "hepta-shape"));
+    assert(std.mem.eql(u8, rbrk.shape_name_slice(&hepta_shape_barket), "hepta-shape"));
     print("nest: barket sample=hepta-shape accepts named shape -- GREEN\n", .{});
 
     const n_octa_shape = try lower.lower_source_welcome("|=  sample=octa-shape\nsample\n", &buf);
@@ -352,7 +352,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("nest: bartis sample=octa-shape lowers as OctaShape identity -- GREEN\n", .{});
 
     const octa_shape_barket = try rbrk.parse_source("|^  sample=octa-shape\nsample\n");
-    assert(std.mem.eql(u8, rbrk.mold_name_slice(&octa_shape_barket), "octa-shape"));
+    assert(std.mem.eql(u8, rbrk.shape_name_slice(&octa_shape_barket), "octa-shape"));
     print("nest: barket sample=octa-shape accepts named shape -- GREEN\n", .{});
 
     const n_nona_shape = try lower.lower_source_welcome("|=  sample=nona-shape\nsample\n", &buf);
@@ -363,68 +363,68 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("nest: bartis sample=nona-shape lowers as NonaShape identity -- GREEN\n", .{});
 
     const nona_shape_barket = try rbrk.parse_source("|^  sample=nona-shape\nsample\n");
-    assert(std.mem.eql(u8, rbrk.mold_name_slice(&nona_shape_barket), "nona-shape"));
+    assert(std.mem.eql(u8, rbrk.shape_name_slice(&nona_shape_barket), "nona-shape"));
     print("nest: barket sample=nona-shape accepts named shape -- GREEN\n", .{});
 
     const amt_desk = try cwd.readFileAlloc(io, "glow/gen/gate-amount.glow", a, .limited(4096));
     const amt_spec = try rb.parse_source(amt_desk);
     assert(std.mem.eql(u8, rb.face_slice(&amt_spec), "sample"));
-    assert(std.mem.eql(u8, rb.mold_name_slice(&amt_spec), "amount-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&amt_spec), "amount-shape"));
     print("nest: glow/gen/gate-amount.glow accepts named shape -- GREEN\n", .{});
 
     const kind_desk = try cwd.readFileAlloc(io, "glow/gen/gate-kind.glow", a, .limited(4096));
     const kind_spec = try rb.parse_source(kind_desk);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&kind_spec), "kind-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&kind_spec), "kind-shape"));
     print("nest: glow/gen/gate-kind.glow accepts named shape -- GREEN\n", .{});
 
     const xact_desk = try cwd.readFileAlloc(io, "glow/gen/gate-xact.glow", a, .limited(4096));
     const xact_spec = try rb.parse_source(xact_desk);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&xact_spec), "xact-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&xact_spec), "xact-shape"));
     print("nest: glow/gen/gate-xact.glow accepts named shape -- GREEN\n", .{});
 
     const xfer_desk = try cwd.readFileAlloc(io, "glow/gen/gate-xfer.glow", a, .limited(4096));
     const xfer_spec = try rb.parse_source(xfer_desk);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&xfer_spec), "xfer-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&xfer_spec), "xfer-shape"));
     print("nest: glow/gen/gate-xfer.glow accepts named shape -- GREEN\n", .{});
 
     const pair_desk = try cwd.readFileAlloc(io, "glow/gen/gate-pair.glow", a, .limited(4096));
     const pair_spec = try rb.parse_source(pair_desk);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&pair_spec), "pair-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&pair_spec), "pair-shape"));
     print("nest: glow/gen/gate-pair.glow accepts named shape -- GREEN\n", .{});
 
     const triple_desk = try cwd.readFileAlloc(io, "glow/gen/gate-triple.glow", a, .limited(4096));
     const triple_spec = try rb.parse_source(triple_desk);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&triple_spec), "triple-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&triple_spec), "triple-shape"));
     print("nest: glow/gen/gate-triple.glow accepts named shape -- GREEN\n", .{});
 
     const quad_desk = try cwd.readFileAlloc(io, "glow/gen/gate-quad.glow", a, .limited(4096));
     const quad_spec = try rb.parse_source(quad_desk);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&quad_spec), "quad-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&quad_spec), "quad-shape"));
     print("nest: glow/gen/gate-quad.glow accepts named shape -- GREEN\n", .{});
 
     const penta_desk = try cwd.readFileAlloc(io, "glow/gen/gate-penta.glow", a, .limited(4096));
     const penta_spec = try rb.parse_source(penta_desk);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&penta_spec), "penta-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&penta_spec), "penta-shape"));
     print("nest: glow/gen/gate-penta.glow accepts named shape -- GREEN\n", .{});
 
     const hexa_desk = try cwd.readFileAlloc(io, "glow/gen/gate-hexa.glow", a, .limited(4096));
     const hexa_spec = try rb.parse_source(hexa_desk);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&hexa_spec), "hexa-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&hexa_spec), "hexa-shape"));
     print("nest: glow/gen/gate-hexa.glow accepts named shape -- GREEN\n", .{});
 
     const hepta_desk = try cwd.readFileAlloc(io, "glow/gen/gate-hepta.glow", a, .limited(4096));
     const hepta_spec = try rb.parse_source(hepta_desk);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&hepta_spec), "hepta-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&hepta_spec), "hepta-shape"));
     print("nest: glow/gen/gate-hepta.glow accepts named shape -- GREEN\n", .{});
 
     const octa_desk = try cwd.readFileAlloc(io, "glow/gen/gate-octa.glow", a, .limited(4096));
     const octa_spec = try rb.parse_source(octa_desk);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&octa_spec), "octa-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&octa_spec), "octa-shape"));
     print("nest: glow/gen/gate-octa.glow accepts named shape -- GREEN\n", .{});
 
     const nona_desk = try cwd.readFileAlloc(io, "glow/gen/gate-nona.glow", a, .limited(4096));
     const nona_spec = try rb.parse_source(nona_desk);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&nona_spec), "nona-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&nona_spec), "nona-shape"));
     print("nest: glow/gen/gate-nona.glow accepts named shape -- GREEN\n", .{});
 
     const deca_refuse = try cwd.readFileAlloc(io, "glow/gen/gate-kind-refuse.glow", a, .limited(4096));
@@ -448,7 +448,7 @@ fn run_selftest(init: std.process.Init) !u8 {
 
     const cnt_desk = try cwd.readFileAlloc(io, "glow/gen/gate-count.glow", a, .limited(4096));
     const cnt_spec = try rb.parse_source(cnt_desk);
-    assert(std.mem.eql(u8, rb.mold_name_slice(&cnt_spec), "count-shape"));
+    assert(std.mem.eql(u8, rb.shape_name_slice(&cnt_spec), "count-shape"));
     print("nest: glow/gen/gate-count.glow accepts named shape -- GREEN\n", .{});
 
     // STOA123: unit $% kind-shape shape.
@@ -671,7 +671,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("nest: stated bartis still lowers under nesting-refuse pin -- GREEN\n", .{});
 
     print("nest: version {s}\n", .{witness_version});
-    print("GREEN: Glow nest/type — stated aura · $% tag · named-shape · amount-shape … nona-shape · study alias amount-mold · nesting refuse · nesting-nests; STOA107–160 · STOA257 · STOA328 table collapse.\n", .{});
+    print("GREEN: Glow nest/type — stated aura · $% tag · named-shape · amount-shape … nona-shape · study alias amount-mold · nesting refuse · nesting-nests; STOA107–160 · STOA257 · STOA328 table collapse · STOA330 gate shape_name.\n", .{});
     return 0;
 }
 
