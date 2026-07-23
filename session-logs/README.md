@@ -7,6 +7,7 @@ Living index for the append-only session stream. This table reads **newest first
 **Day’s truth is this index’s order, not filename sort.** One-clock stamps sort ascending on disk; trust the table for sequence within a day.
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
+- `20260722.201109` — [REMEMBER git nib after STOA325](20260722-201109_remember-git-nib-stoa325.bron) — pin b93cd09d7b1b
 - `20260722.200916` — [STOA324–325 argv sameness collapse](20260722-200916_stoa324-325-argv-sameness-collapse.bron) — one N-path GREEN; name next door
 - `20260722.200325` — [REMEMBER git nib after STOA323](20260722-200325_remember-git-nib-stoa323.bron) — pin fb9251f3c7f8
 - `20260722.200205` — [STOA323 sameness argv check-in](20260722-200205_stoa323-sameness-argv-checkin.bron) — lean C dollar-colon argv collapse
