@@ -152,4 +152,5 @@ Living Glow OS desks lead with `shape-*` (shape duals STOA161–173; pin polish 
 | **STOA320** | after octa argv check-in | A send · B rest available · **C** nona argv recommended | **GREEN** `20260722.194423` |
 | **STOA321** | N-field argv survey · nona | `emit_nona_argv` · bartis+barket · family closed | **GREEN** `20260722.195019` |
 | **STOA322** | after nona argv check-in | A send · B rest available · **C** name next STOA door | **GREEN** `20260722.195021` |
+| **STOA323** | after sameness argv check-in | A send · B rest available · **C** `$:` argv collapse recommended | **GREEN** `20260722.200205` |
 Smoke: `glow_nest_type_witness` · `glow_barket_parse_witness` · `glow_lower_bartis_witness` · Sibling: **ZETA** · **LULU** · **SETU** · **TUBE**.
