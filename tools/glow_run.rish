@@ -15,19 +15,15 @@
 #   rishi/bin/rishi run tools/glow_run.rish glow/gen/gate-xact-tag.glow mint 5
 #   rishi/bin/rishi run tools/glow_run.rish glow/gen/gate-xfer-tag.glow mint 5 3
 #   rishi/bin/rishi run tools/glow_run.rish glow/gen/gate-pair-fields.glow 5 3
-#   rishi/bin/rishi run tools/glow_run.rish glow/gen/gate-triple-fields.glow 5 3 1
-#   rishi/bin/rishi run tools/glow_run.rish glow/gen/gate-quad-fields.glow 5 3 1 2
-#   rishi/bin/rishi run tools/glow_run.rish glow/gen/gate-penta-fields.glow 5 3 1 2 7
-#   rishi/bin/rishi run tools/glow_run.rish glow/gen/gate-hexa-fields.glow 5 3 1 2 7 4
-#   rishi/bin/rishi run tools/glow_run.rish glow/gen/gate-hepta-fields.glow 5 3 1 2 7 4 6
-#   rishi/bin/rishi run tools/glow_run.rish glow/gen/gate-octa-fields.glow 5 3 1 2 7 4 6 8
 #   rishi/bin/rishi run tools/glow_run.rish glow/gen/gate-nona-fields.glow 5 3 1 2 7 4 6 8 9
+#   ($: pair…nona — worker maps stem → N; STOA324)
 
 let zig = "vendor/zig-toolchain/zig"
 assert (args.len != 0) else "usage: rishi run tools/glow_run.rish <file.glow> [<sample>] [<u32>]..."
 let glow_path = args[0]
 
 # Optional samples — worker enforces stem rules.
+# Rishi has no argv splat; bounded forwarder only. Sameness lives in the worker (STOA324).
 if args.len == 1 then let gate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" glow_path]
 if args.len == 2 then let gate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" glow_path args[1]]
 if args.len == 3 then let gate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" glow_path args[1] args[2]]
