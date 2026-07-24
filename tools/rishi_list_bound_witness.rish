@@ -1,0 +1,32 @@
+# rishi_list_bound_witness.rish — max_list_items = 512 (advise roster crossed 256, 20260724).
+#
+# Asserts the named bound in source, proves map/where over 279+ lines GREEN,
+# and that native tame_style_scan_advise completes on the whole roster.
+#
+#   rishi/bin/rishi run tools/rishi_list_bound_witness.rish
+
+let main = read-file "rishi/src/main.rye"
+assert (main contains "max_list_items: u32 = 512") else "max_list_items not pinned at 512"
+assert (main contains "advise roster crossed 256, 20260724") else "missing raise reason comment"
+assert (main contains "[max_list_items]Value") else "list buffers must use max_list_items"
+
+# Pipeline past the old 256 ceiling: 300 nonempty lines through where + map.
+let three_hundred = run ["sh" "-c" "seq 1 300"]
+assert three_hundred.ok else "seq 1 300 failed"
+let nums = where (lines three_hundred.out) as ln: ln != ""
+assert (length nums) == 300 else "where over 300 lines failed (bound still 256?)"
+let doubled = map nums as n: "${n}"
+assert (length doubled) == 300 else "map over 300 lines failed"
+
+# Native advise on the whole roster (279 `.rye` paths as of this pin).
+let advise = run ["rishi/bin/rishi" "run" "tools/tame_style_scan_advise.rish"]
+assert advise.ok else "native tame_style_scan_advise ListTooLong or other failure"
+assert advise.out contains "ratchet: @memcpy application sites =" else "advise missing memcpy ratchet"
+assert advise.out contains "ratchet: zero assert( files remaining =" else "advise missing zero-assert ratchet"
+assert advise.out contains "ratchet: tools/*.py count =" else "advise missing tools py ratchet"
+
+let selftest = run ["rishi/bin/rishi" "run" "tools/tame_style_scan_advise_selftest.rish"]
+assert selftest.ok else "tame_style_scan_advise_selftest failed"
+assert selftest.out contains "GREEN" else "advise selftest not GREEN"
+
+say "GREEN: Rishi max_list_items=512 — pipeline 300 · native advise roster · selftest"

@@ -171,6 +171,9 @@ const max_history: u32 = 50; // recent input lines kept for :history and (Step 3
 pub const max_transcript_bytes: u32 = 65536; // the session transcript's ceiling, in bytes
 const max_args: u32 = 64; // script argv bound — friendly error past this, not a crash
 const max_session_lines: u32 = 256; // session_lines row bound — named before any projection
+/// Element ceiling for list literals, map/where pipelines, and list-dir.
+/// Raised from 256 — advise roster crossed 256, 20260724 (279 `.rye` paths).
+pub const max_list_items: u32 = 512;
 
 /// A bounded lap of the most recent input lines. Bounded on purpose: the
 /// limit is named, so a long session meets a clear edge rather than growing
@@ -1230,7 +1233,8 @@ fn do_read_file(allocator: std.mem.Allocator, io: std.Io, env: *Env, arg: []cons
 
 /// `list-dir <path-expr>` lists all entries in a directory and returns their
 /// names as a list of strings. The path is evaluated to a string; the directory
-/// is opened from the current working directory. Entry count is bounded at 256.
+/// is opened from the current working directory. Entry count is bounded at
+/// `max_list_items`.
 fn do_list_dir(allocator: std.mem.Allocator, io: std.Io, env: *Env, arg: []const u8) EvalError!Value {
     const path_value = try eval_expr(allocator, io, env, arg);
     const path = switch (path_value) {
@@ -1243,8 +1247,8 @@ fn do_list_dir(allocator: std.mem.Allocator, io: std.Io, env: *Env, arg: []const
     const cwd = std.Io.Dir.cwd();
     const dir = cwd.openDir(io, z_path, .{ .iterate = true }) catch return error.ListDirFailed;
     var it = dir.iterate();
-    // invariant: at most 256 entries — bounded to prevent runaway iteration
-    var names: [256]Value = undefined;
+    // invariant: at most max_list_items — bounded to prevent runaway iteration
+    var names: [max_list_items]Value = undefined;
     var count: u32 = 0;
     while (true) {
         const maybe_entry = it.next(io) catch return error.ListDirFailed;
@@ -1597,7 +1601,7 @@ fn do_pipeline(allocator: std.mem.Allocator, io: std.Io, env: *Env, rest: []cons
         else => return error.PipelineNeedsList,
     };
 
-    var results: [256]Value = undefined;
+    var results: [max_list_items]Value = undefined;
     var count: u32 = 0;
     for (items) |item| {
         // Each element is evaluated in a child scope carrying the loop binding.
@@ -1861,10 +1865,10 @@ fn interpolate(allocator: std.mem.Allocator, io: std.Io, env: *Env, inner: []con
 }
 
 /// Parse a list literal's interior — space-separated operands, with spaces inside
-/// a quoted element kept whole. The element count is bounded, so a runaway literal
-/// meets a clear edge rather than eating memory without end.
+/// a quoted element kept whole. The element count is bounded at `max_list_items`,
+/// so a runaway literal meets a clear edge rather than eating memory without end.
 fn parse_list(allocator: std.mem.Allocator, io: std.Io, env: *Env, inner: []const u8) EvalError!Value {
-    var buffer: [256]Value = undefined;
+    var buffer: [max_list_items]Value = undefined;
     var count: u32 = 0;
     var it = TokenIter{ .text = inner };
     while (it.next()) |token| {
