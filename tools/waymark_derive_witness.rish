@@ -1,0 +1,59 @@
+# waymark_derive_witness.rish — naming-grade sameness across the flw fixture pin.
+#
+# Asserts corpus count + SHA3-512 pins, re-derives every corpus-drawn seated
+# waymark (HAWM · TUBE · ZETA · JABS · LULU · STOA), and confirms SETU remains
+# on the exclude list (hand-seated; absent from the flw corpus).
+# While old/doc/spec/flw.txt is present, also asserts the fixture body is a
+# byte-identical twin after the attribution header.
+#
+# Note: tools/waymark_derive.rish's placeholder input is the latest seated
+# mark (STOA); re-running it alone trips the exclude list by design. This
+# witness is the GREEN gate for corpus sameness — not a re-run of that
+# placeholder.
+#
+#   rishi/bin/rishi run tools/waymark_derive_witness.rish
+
+let corpus_digest = "615dbeb79c631115505ba71713aabdae243dcf4c1ae77109f325583a2c0e282cf6fc009d54802a268f04e3c170f705f4bd7203e018f00f5c443ae5e79808d8cc"
+let corpus_count_pin = "5526"
+let fixture_path = "tools/fixtures/flw-four-letter.txt"
+let corpus_path = "tools/.cache/waymark/witness_corpus.txt"
+
+let mk_cache = run ["mkdir" "-p" "tools/.cache/waymark"]
+assert mk_cache.ok else "could not create tools/.cache/waymark/"
+
+let marker = run ["sh" "-c" "grep -qx '# body unmodified below' ${fixture_path}"]
+assert marker.ok else "fixture missing '# body unmodified below' marker"
+
+let corpus_run = run ["sh" "tools/fixtures/waymark_corpus_extract.sh" "${fixture_path}" "${corpus_path}"]
+assert corpus_run.ok else "fixture corpus extract failed"
+
+let count_run = run ["sh" "-c" "wc -l < ${corpus_path}"]
+assert count_run.ok else "corpus count failed"
+let corpus_size = trim count_run.out
+assert corpus_size == corpus_count_pin else "corpus count pin failed"
+
+let digest_run = run ["sh" "-c" "openssl dgst -sha3-512 ${corpus_path} | awk '{print $NF}'"]
+assert digest_run.ok else "corpus digest failed"
+assert (trim digest_run.out) == corpus_digest else "corpus digest pin failed"
+
+let twin_run = run ["sh" "tools/fixtures/waymark_fixture_twin.sh" "${fixture_path}"]
+assert twin_run.ok else "fixture body does not match elder old/doc/spec/flw.txt byte-for-byte"
+
+let setu_in_corpus = run ["sh" "-c" "grep -qx SETU ${corpus_path}"]
+assert (setu_in_corpus.ok == false) else "SETU unexpectedly present in flw corpus"
+
+let exclude_src = read-file "tools/waymark_derive.rish"
+assert (exclude_src contains "SETU") else "waymark_derive exclude list missing SETU"
+assert (exclude_src contains "tools/fixtures/flw-four-letter.txt") else "waymark_derive not pointed at fixture"
+assert (exclude_src contains "${corpus_digest}") else "waymark_derive missing corpus digest pin"
+
+let draw_run = run ["sh" "tools/fixtures/waymark_seated_draws.sh" "${corpus_path}"]
+assert draw_run.ok else "seated waymark re-derive failed"
+assert draw_run.out contains "HAWM" else "HAWM missing"
+assert draw_run.out contains "TUBE" else "TUBE missing"
+assert draw_run.out contains "ZETA" else "ZETA missing"
+assert draw_run.out contains "JABS" else "JABS missing"
+assert draw_run.out contains "LULU" else "LULU missing"
+assert draw_run.out contains "STOA" else "STOA missing"
+
+say "GREEN: waymark derive witness — corpus pins · body twin · six seated draws · SETU exclude · fixture repoint"

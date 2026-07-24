@@ -12,7 +12,7 @@
 
 ## Thesis — prove the compute, then the platform
 
-**HAWM** is the waymark for the GrapheneOS/Pixel ladder (SHA3-512 over `old/doc/spec/flw.txt`, seated `20260716.115927`). It is a different ladder from the Genode proven-seat **G0/G1** in [`PROVEN_SEAT.md`](PROVEN_SEAT.md) — that collision is why waymarks exist.
+**HAWM** is the waymark for the GrapheneOS/Pixel ladder (SHA3-512 over the flw corpus fixture, seated `20260716.115927`; runtime pin `tools/fixtures/flw-four-letter.txt`). It is a different ladder from the Genode proven-seat **G0/G1** in [`PROVEN_SEAT.md`](PROVEN_SEAT.md) — that collision is why waymarks exist.
 
 HAWM0/HAWM1 exercise real AOSP/Android userland (useful for Glow code). Only HAWM2 (real GrapheneOS build) or HAWM3 (physical device) touch GrapheneOS's own hardening. Name that boundary honestly; never claim the emulator is GrapheneOS.
 
