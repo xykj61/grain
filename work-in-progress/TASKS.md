@@ -1,23 +1,24 @@
 # Tasks — living pin
 
 **Language:** EN  
-**Last updated:** `20260724.151327` (EDT) · voice Quin  
+**Last updated:** `20260724.181241` (EDT) · voice Quin  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Full season ledger:** [`archive/20260724-132812_tasks-season-ledger.md`](archive/20260724-132812_tasks-season-ledger.md)
 
 ---
 
-## Now — flw Option C (`20260724.151327`)
+## Now — list512 · STOA333 (`20260724.181241`)
 
 **Finishing edge (seated):** a newcomer clones, bootstraps, runs one witness green, and evaluates one Glow line at `rishi glow` — inside thirty minutes.
 
 | Lap | Status |
 |-----|--------|
-| flw fixture twin + digest pins | **done** · GREEN witness |
-| Genre law (fixtures / sibling / gratitude) | **seated** in waymark naming spec |
-| vere/old sibling clones | **STOP** — ops (five remotes); runtime pre-flight clean |
-| Rishi list bound 256→512 | open door · when convenient |
-| Rung-1 digraph twin | held until vere/old path clears |
+| Rishi max_list_items 256→512 | **GREEN** · native advise whole roster |
+| Digraph-table twin (STOA333) | **GREEN** |
+| flw Option C fixture pin | done (prior) |
+| vere/old sibling clones | **held** · siblings seated |
+| jam/cue outward publish | **held** |
+| SETU retrofit draw | **declined** · stays hand-seated |
 
 ---
 
@@ -25,7 +26,6 @@
 
 | Door | Kind |
 |------|------|
-| vere/old PR on five-remote Framework host | check-in |
-| Raise Rishi list bound to 512 | kg when named |
+| vere/old when **siblings seated** | check-in |
 | Review JAMCUE for outward publish | check-in |
-| Rung-1 digraph twin | after vere/old |
+| Rung 2 Glow lowering arm | season |

@@ -39,4 +39,14 @@ let waymark = run ["rishi/bin/rishi" "run" "tools/waymark_derive_witness.rish"]
 assert waymark.ok else "waymark derive witness failed"
 say "GREEN: waymark derive corpus pin passed."
 
-say "GREEN: full witness suite — 2 chapters + jam/cue + glow REPL + waymark pin under Env binding ceiling."
+say "witness suite: Rishi max_list_items=512…"
+let list_bound = run ["rishi/bin/rishi" "run" "tools/rishi_list_bound_witness.rish"]
+assert list_bound.ok else "rishi list bound witness failed"
+say "GREEN: Rishi max_list_items=512 passed."
+
+say "witness suite: Glow digraph-table twin…"
+let digraph = run ["rishi/bin/rishi" "run" "tools/glow_digraph_twin_witness.rish"]
+assert digraph.ok else "glow digraph twin witness failed"
+say "GREEN: Glow digraph-table twin passed."
+
+say "GREEN: full witness suite — chapters · jam/cue · glow REPL · waymark · list512 · digraph twin."

@@ -1,7 +1,7 @@
 # The Counsel Stack
 
 **Language:** EN
-**Last updated:** 2026-07-24 (flw Option C reply `151327` · shelf ask `150246`)
+**Last updated:** 2026-07-24 (list512 · digraph twin reply `181241`)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Foundation
 
@@ -21,6 +21,7 @@ Filing law: [`../ORGANIZING.md`](../ORGANIZING.md) · reorg proposal: [`20260707
 
 | Stamp | Note | Meaning |
 |-------|------|---------|
+| `20260724.181241` | [Reply — list512 · digraph twin](replies/20260724-181241_re-list512-digraph-twin.md) | max_list_items=512 · STOA333 GREEN · vere/jamcue/SETU holds |
 | `20260724.151327` | [Reply — flw Option C fixture pin](replies/20260724-151327_re-flw-corpus-shelf-option-c.md) | fixture twin GREEN · genre law · vere/old STOP ops (five remotes) |
 | `20260724.150246` | [flw corpus shelf — STOP obs · gratitude vs fixtures](20260724-150246_flw-corpus-shelf-and-vere-old.md) | Document vere/old STOP · ask Claude A–E · Quin leans `tools/fixtures/` |
 | `20260724.145458` | [Reply — fourth sitting glow · jamcue · vere STOP](replies/20260724-145458_re-fourth-sitting-glow-jamcue-vere.md) | glow SLC GREEN · jamcue in-tree · vere STOP on waymark_derive/flw |

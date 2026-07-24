@@ -25,4 +25,4 @@
 
 ## Next
 
-Rung-1 digraph-table twin is the following sitting.
+Rung-1 digraph-table twin — seated STOA333 (`20260724.181200`).

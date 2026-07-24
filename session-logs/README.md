@@ -10,6 +10,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 **Living pin bound:** `living_pin_max_bytes = 24576` ([spec](../context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md)). Closed index rows through `20260721`: [`archive/README-index-through-20260721.md`](archive/README-index-through-20260721.md). Early `20260722` overflow: [`archive/README-index-20260722-shelf.md`](archive/README-index-20260722-shelf.md).
 
+- `20260724.181241` — [list512 and digraph-table twin STOA333](20260724-181241_list512-digraph-twin.bron) — max_list_items=512 · STOA333 GREEN
 - `20260724.221013` — [Rung-1 digraph twin research for Quin](20260724-221013_rung1-digraph-twin-research.bron) — Ojjo twin · Glow @t limits · STOA333 thin plan
 - `20260724.151517` — [Send flw Option C fixture pin to main](20260724-151517_send-flw-option-c.bron) — FF merge · witness GREEN · vere STOP ops
 - `20260724.151417` — [flw Option C fixture pin and genre law](20260724-151417_flw-option-c-fixture-pin.bron) — twin GREEN · vere STOP ops · genre law
@@ -173,6 +174,3 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 - `20260722.132020` — [STOA225 fact-line demo lit sample](20260722-132020_stoa225-fact-line-demo-lit-sample.bron) — sig/fact pins · desk bind GREEN
 - `20260722.131928` — [REMEMBER git nib after STOA224](20260722-131928_remember-git-nib-stoa224.bron) — pin 91ad5674502a
 - `20260722.131841` — [STOA223 send · STOA224 check-in](20260722-131841_stoa223-send-stoa224-checkin.bron) — pier send; rec fact-line lits
-- `20260722.131511` — [STOA223 product fixture lit wire](20260722-131511_stoa223-product-fixture-lit-desk-wire.bron) — lit_desk_binds_pins GREEN
-- `20260722.131432` — [REMEMBER git nib after STOA222](20260722-131432_remember-git-nib-stoa222.bron) — pin 6285b8182ee4
-- `20260722.131348` — [STOA219-221 send · STOA222 check-in](20260722-131348_stoa219-221-send-stoa222-checkin.bron) — pier send; rec product wire
