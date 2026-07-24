@@ -3,7 +3,7 @@
 *A durable guide to where work lives, how new writing earns its place, and how the tree stays honest over time.*
 
 **Language:** EN
-**Last updated:** 2026-07-17 (standing voice Quin; fifth OS variant beside Reya · Riyo · Trey · Triz)
+**Last updated:** 2026-07-24 (waymarks · counsel/replies · Aparigraha braid `143155`)
 **Style:** Radiant (see `context/RADIANT_STYLE.md`)
 **Voice:** Quin
 
@@ -31,7 +31,9 @@ Read the sections below when you wonder where a new file belongs. When a season'
 
 **`work-in-progress/`** — the workbench. The living roadmap (`ROADMAP.md`), the granular plan (`TASKS.md`), open threads, and dated artifacts for work still in motion. Finished scaffolding graduates to `archive/`.
 
-**`active-designing/`** — design in motion. Our own module names, RISC-V-first, siloed from gratitude sources. Dated briefs; living README index. **Raw layer** for the docs compression shelf — dated notes stay here; they are not yondered when `docs/` compresses them.
+**`active-designing/`** — design in motion. Our own module names, RISC-V-first, siloed from gratitude sources. Dated briefs; living README index. **Raw layer** for the docs compression shelf — dated notes stay here; they are not yondered when `docs/` compresses them. High-level seats and naming rounds live here; **lap claims** (what just went green) land forward-only in **`waymarks/`** from `20260724.143155`.
+
+**`waymarks/`** — claim shelf by genre, not age. Season indexes (`stoa-100s/` · `stoa-200s/` · `stoa-300s/`) keep one-line-per-claim listings. Elder claim briefs stay in `active-designing/` until archived; new claims do not mix genres back into design sittings.
 
 **`active-reviving/`** — reviving in motion, sibling to `active-designing/`. Where an existing working thing (an `old/` vane, a running Rye OS module, a retired seam) is re-grown into the Glow direction as a **new artifact born with its Glow name, beside the elder** — never a rename. The elder keeps its name and green witnesses until the revival is proven and supersedes it (the Pond-superseded-ai-jail pattern). Living README index; concept seated at [`context/specs/20260714-004428_reviving-replaces-renaming.md`](context/specs/20260714-004428_reviving-replaces-renaming.md).
 
@@ -39,7 +41,7 @@ Read the sections below when you wonder where a new file belongs. When a season'
 
 **`external-research/`** — study of the world with attribution. Explorations, comparisons, voiced adaptations of gratitude sources. Living README. **Research for understanding — advice stays elsewhere:** surveys and memos here frame understanding only — they recommend no purchase, no treasury action, and no licensed professional course; policy and money choices belong to Kaeden in their own season. Say so in each file's status line; CIVIC stays policy-shaped in `context/`. Proposed register law: [`context/TWO_ROOMS.md`](context/TWO_ROOMS.md) (seats on Kaeden's word).
 
-**`counsel/`** — the bench's answer to a pending project decision. Analysis, rulings, proposals, and recommendations from Claude (or the bench) in response to a specific question Kaeden asked — propose-never-seat. Each piece stays as filed; Kaeden's word seats decisions in `active-designing/`, `context/specs/`, or the module home. Living README at [`counsel/README.md`](counsel/README.md).
+**`counsel/`** — the bench's answer to a pending project decision. Analysis, rulings, proposals, and recommendations from Claude (or the bench) in response to a specific question Kaeden asked — propose-never-seat. Each piece stays as filed; Kaeden's word seats decisions in `active-designing/`, `context/specs/`, or the module home. Living README at [`counsel/README.md`](counsel/README.md). **`counsel/replies/`** holds dated bench replies (What landed · What resisted · What the bench asks) so future counsel reads a short measured note rather than a season of logs.
 
 **`expanding-prompts/`** — intent expanded into runnable plans. Counts upward from `10000`; each prompt is a dated artifact that agents can execute.
 

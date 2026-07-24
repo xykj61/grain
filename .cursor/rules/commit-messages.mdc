@@ -1,6 +1,6 @@
 ---
-description: Write every commit message in Quin Radiant Style, following Urbit's CONTRIBUTING.md shape
-alwaysApply: true
+description: Write every commit message in Quin Radiant Style, following Urbit CONTRIBUTING.md shape — attach at commit time
+alwaysApply: false
 ---
 
 # Commit Messages — Quin, Radiant, CONTRIBUTING-Style

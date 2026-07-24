@@ -1,4 +1,4 @@
-# living_docs_lint.rish — ratchet-advisory living-docs lint (six duties).
+# living_docs_lint.rish — ratchet-advisory living-docs lint (seven duties).
 #
 # Kaeden seated the name 20260712.222800 · Claude counsel at bench 4fa8363.
 # Print every parity run; never fail. Hardening horizon: link-breaks may earn
@@ -11,14 +11,16 @@
 #   4. Status rooms on rostered living pages
 #   5. docs/ pin-strings byte-match canon (PUBKEYS · master-seal · exit card)
 #   6. living pin size ≤ living_pin_max_bytes (24576) — pin-and-ledger law
+#   7. tools/**/*.py count — target two→zero (Python-at-seam law)
 #
 # First-lap roster: tools/fixtures/living_docs_lint_roster.sh
 # Design: active-designing/20260712-221600_docs-compression-layer-design.md
 # Pin law: context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md
+# Python law: context/specs/20260724-143155_python-at-the-seam-law.md
 #
 #   rishi/bin/rishi run tools/living_docs_lint.rish
 
-say "living-docs lint: ratchet advisory (six duties)…"
+say "living-docs lint: ratchet advisory (seven duties)…"
 let scan = run ["python3" "tools/fixtures/living_docs_lint_scan.py"]
 say scan.out
 say "GREEN: living-docs lint — advisories printed; witness never fails."

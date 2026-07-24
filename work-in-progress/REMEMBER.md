@@ -2,13 +2,13 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260724.132812` (EDT) · voice Quin  
+**Last refreshed:** `20260724.143155` (EDT) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded**  
 **Language nib:** **STOA0–331** · gate-spec shape_name GREEN  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–331  
-**Git nib:** `51634d6f6e` · workshop-warehouse  
+**Git nib:** _(refresh after commit)_  
 
-**Season:** Framework · Eastern / EDT · **workshop/warehouse context economy** · lean C cast/face mold→shape held beside this lap · round-close on.  
+**Season:** Framework · EDT · **aparigraha / anatomy+strategy braid** · lean C cast/face held · round-close on.  
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`  
 **ADB:** `tools/.cache/hawm0/android-sdk/platform-tools/adb` — not on bare PATH  
 
@@ -16,17 +16,10 @@
 
 ## Now
 
-**Workshop and Warehouse** `20260724.132812` — counsel filed · EP running · pin-and-ledger seated · `tools/bin/` untracked · living pins rolled.  
-Counsel [`../counsel/20260724-132812_the-workshop-and-the-warehouse.md`](../counsel/20260724-132812_the-workshop-and-the-warehouse.md) · EP [`../expanding-prompts/20260724-132812_workshop-and-warehouse-context-economy.md`](../expanding-prompts/20260724-132812_workshop-and-warehouse-context-economy.md) · doctrine [`../context/specs/20260724-132812_workshop-and-warehouse-context-economy.md`](../context/specs/20260724-132812_workshop-and-warehouse-context-economy.md).
+**Vanes · shelves · names · maps** `20260724.143155` — both afternoon counsels filed · braided EP run · always-on ~6.6 KB · `waymarks/` · replies · STEWARDS · OPEN_QUESTIONS · `llms.txt` · APARIGRAHA seated.  
+EP [`../expanding-prompts/20260724-143155_vanes-shelves-names-maps-braid.md`](../expanding-prompts/20260724-143155_vanes-shelves-names-maps-braid.md) · economy [`../context/APARIGRAHA.md`](../context/APARIGRAHA.md) · stewards [`../STEWARDS.md`](../STEWARDS.md).
 
-**Language door (held):** STOA331 lean C — cast/face mold→shape. Brief [`../active-designing/20260722-204133_stoa331-after-gate-shape-name-checkin.md`](../active-designing/20260722-204133_stoa331-after-gate-shape-name-checkin.md).
-
-**Witness (living-docs sixth duty):**
-
-```bash
-python3 tools/fixtures/living_docs_lint_scan.py
-# or: rishi/bin/rishi run tools/living_docs_lint.rish
-```
+**Language door (held):** STOA331 lean C — cast/face mold→shape. New claims → `waymarks/stoa-300s/`.
 
 ---
 
@@ -34,11 +27,10 @@ python3 tools/fixtures/living_docs_lint_scan.py
 
 | Door | Kind |
 |------|------|
-| Workshop/warehouse P3 finish · P6–P7 runs · vere/old | **kg** / check-in on vere·old |
-| cast / face mold→shape | lean C when language sitting resumes |
-| Rest | Keaton’s word only — not recommended |
-| gate-spec shape_name | **GREEN** `20260722.204131` |
+| glow mode build · rung 1 · parity vectors · vere/old | kg / check-in as named |
+| cast / face mold→shape | lean C |
+| Rest | Keaton’s word only |
 
 ---
 
-*Waymarks: HAWM · TUBE · ZETA · JABS · LULU · STOA · SETU*
+*Waymarks: HAWM · TUBE · ZETA · JABS · LULU · STOA · SETU · claims shelf `waymarks/`*

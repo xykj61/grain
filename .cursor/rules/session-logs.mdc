@@ -1,6 +1,7 @@
 ---
-description: Keep a session log of reasoning and changes at the end of every response
-alwaysApply: true
+description: Keep a session log of reasoning and changes at the end of every response — attach when writing session-logs or closing a lap
+globs: session-logs/**
+alwaysApply: false
 ---
 
 # Session Logs
