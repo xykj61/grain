@@ -1,21 +1,22 @@
 # Tasks — living pin
 
 **Language:** EN  
-**Last updated:** `20260724.150246` (EDT) · voice Quin  
+**Last updated:** `20260724.151327` (EDT) · voice Quin  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Full season ledger:** [`archive/20260724-132812_tasks-season-ledger.md`](archive/20260724-132812_tasks-season-ledger.md)
 
 ---
 
-## Now — flw shelf counsel (`20260724.150246`)
+## Now — flw Option C (`20260724.151327`)
 
 **Finishing edge (seated):** a newcomer clones, bootstraps, runs one witness green, and evaluates one Glow line at `rishi glow` — inside thirty minutes.
 
 | Lap | Status |
 |-----|--------|
-| Document vere/old STOP + flw observation | **filed** · [`../counsel/20260724-150246_flw-corpus-shelf-and-vere-old.md`](../counsel/20260724-150246_flw-corpus-shelf-and-vere-old.md) |
-| Claude shelf ruling (gratitude vs fixtures A–E) | **asked** |
-| vere/old sibling clones | **STOP** until corpus home seats |
+| flw fixture twin + digest pins | **done** · GREEN witness |
+| Genre law (fixtures / sibling / gratitude) | **seated** in waymark naming spec |
+| vere/old sibling clones | **STOP** — ops (five remotes); runtime pre-flight clean |
+| Rishi list bound 256→512 | open door · when convenient |
 | Rung-1 digraph twin | held until vere/old path clears |
 
 ---
@@ -24,6 +25,7 @@
 
 | Door | Kind |
 |------|------|
-| Claude seats A–E; then vendor · repoint · re-preflight · vere/old PR | check-in |
+| vere/old PR on five-remote Framework host | check-in |
+| Raise Rishi list bound to 512 | kg when named |
 | Review JAMCUE for outward publish | check-in |
-| Rung-1 digraph twin | after flw cure |
+| Rung-1 digraph twin | after vere/old |
