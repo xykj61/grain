@@ -10,6 +10,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 **Living pin bound:** `living_pin_max_bytes = 24576` ([spec](../context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md)). Closed index rows through `20260721`: [`archive/README-index-through-20260721.md`](archive/README-index-through-20260721.md).
 
+- `20260724.143710` — [Send vanes-shelves-names-maps braid to main](20260724-143710_send-vanes-shelves-names-maps.bron) — FF merge PR 72 · anatomy+strategy on pier
 - `20260724.143435` — [Vanes shelves names maps — counsel braid run](20260724-143435_vanes-shelves-names-maps-braid.bron) — P3 under 8KB · waymarks · Aparigraha · coverage GREEN
 - `20260724.134541` — [Send workshop-warehouse to main](20260724-134541_send-workshop-warehouse.bron) — FF merge PR 71 · context economy on pier
 - `20260724.134322` — [Workshop and Warehouse — counsel, EP, first laps](20260724-134322_workshop-warehouse-counsel-ep-run.bron) — pin-and-ledger · tools/bin off git · living pins rolled
