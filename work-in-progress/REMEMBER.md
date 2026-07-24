@@ -2,11 +2,11 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260724.145458` (EDT) · voice Quin  
+**Last refreshed:** `20260724.150246` (EDT) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded**  
 **Language nib:** **STOA0–332** · glow mode SLC GREEN · gate-spec shape_name GREEN  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–332  
-**Git nib:** `146acac560` · fourth-sitting-glow
+**Git nib:** *(pin after send)* · flw-corpus-counsel
 
 **Season:** Framework · EDT · **finishing edge:** newcomer clones · bootstraps · one witness green · one Glow line at `rishi glow` · inside thirty minutes.  
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`  
@@ -16,8 +16,7 @@
 
 ## Now
 
-**Fourth sitting** `20260724.144740`–`145458` — glow mode SLC GREEN (STOA332) · jam/cue vectors GREEN in-tree · py advise ratchet · waymarks confirmed · **vere/old STOP** (waymark_derive → `old/doc/spec/flw.txt`).  
-Claim [`../waymarks/stoa-300s/20260724-144740_stoa332-rishi-glow-mode-slc.md`](../waymarks/stoa-300s/20260724-144740_stoa332-rishi-glow-mode-slc.md) · vectors [`../docs/JAMCUE.md`](../docs/JAMCUE.md) · reply [`../counsel/replies/20260724-145458_re-fourth-sitting-glow-jamcue-vere.md`](../counsel/replies/20260724-145458_re-fourth-sitting-glow-jamcue-vere.md).
+**flw corpus shelf ask** `20260724.150246` — observation of vere/old STOP filed; Claude asked to seat A–E (gratitude move vs `tools/fixtures/` lean). Counsel [`../counsel/20260724-150246_flw-corpus-shelf-and-vere-old.md`](../counsel/20260724-150246_flw-corpus-shelf-and-vere-old.md). Prior glow lap still GREEN: STOA332 · JAMCUE · reply [`../counsel/replies/20260724-145458_re-fourth-sitting-glow-jamcue-vere.md`](../counsel/replies/20260724-145458_re-fourth-sitting-glow-jamcue-vere.md).
 
 **Witnesses:**
 
@@ -34,9 +33,9 @@ printf '%s\n' '^-  @u32' ':quit' | rishi/bin/rishi glow
 
 | Door | Kind |
 |------|------|
-| Vendor flw corpus → retry vere/old PR | check-in |
+| Claude seats flw shelf (A–E) → vendor · repoint · re-preflight · vere/old PR | check-in |
 | Outward jam/cue publish | held · review docs/JAMCUE.md |
-| Rung-1 digraph twin | following sitting |
+| Rung-1 digraph twin | after vere/old path clears |
 | cast/face mold→shape | lean C held |
 
 ---
