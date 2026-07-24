@@ -10,6 +10,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 **Living pin bound:** `living_pin_max_bytes = 24576` ([spec](../context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md)). Closed index rows through `20260721`: [`archive/README-index-through-20260721.md`](archive/README-index-through-20260721.md). Early `20260722` overflow: [`archive/README-index-20260722-shelf.md`](archive/README-index-20260722-shelf.md).
 
+- `20260724.151517` — [Send flw Option C fixture pin to main](20260724-151517_send-flw-option-c.bron) — FF merge · witness GREEN · vere STOP ops
 - `20260724.151417` — [flw Option C fixture pin and genre law](20260724-151417_flw-option-c-fixture-pin.bron) — twin GREEN · vere STOP ops · genre law
 - `20260724.150446` — [Send flw corpus shelf counsel to main](20260724-150446_send-flw-corpus-counsel.bron) — FF merge · Claude A–E ask · vere STOP held
 - `20260724.150317` — [flw corpus shelf — STOP obs and Claude ask](20260724-150317_flw-corpus-shelf-counsel.bron) — counsel A–E · Quin leans tools/fixtures · send
@@ -174,4 +175,3 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 - `20260722.131511` — [STOA223 product fixture lit wire](20260722-131511_stoa223-product-fixture-lit-desk-wire.bron) — lit_desk_binds_pins GREEN
 - `20260722.131432` — [REMEMBER git nib after STOA222](20260722-131432_remember-git-nib-stoa222.bron) — pin 6285b8182ee4
 - `20260722.131348` — [STOA219-221 send · STOA222 check-in](20260722-131348_stoa219-221-send-stoa222-checkin.bron) — pier send; rec product wire
-- `20260722.131153` — [Archive fold · STOA221 fixture lits](20260722-131153_archive-fold-stoa221-fixture-lits.bron) — 613 folded; C5 GREEN
