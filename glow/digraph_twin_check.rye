@@ -1,0 +1,46 @@
+//! Digraph twin check — each fixture line tokenizes as Kind.rune2 (STOA333).
+//!
+//!   rye build glow/digraph_twin_check.rye -femit-bin=glow/bin/digraph_twin_check
+//!   glow/bin/digraph_twin_check
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const tokens = @import("tokens.rye");
+
+const fixture_path = "tools/fixtures/glow_digraph_table.txt";
+
+fn run_selftest(init: std.process.Init) !u8 {
+    const a = init.arena.allocator();
+    const cwd = std.Io.Dir.cwd();
+    const io = init.io;
+    const body = try cwd.readFileAlloc(io, fixture_path, a, .limited(4096));
+
+    var count: u32 = 0;
+    var it = std.mem.splitScalar(u8, body, '\n');
+    while (it.next()) |raw| {
+        const line = std.mem.trim(u8, raw, " \t\r");
+        if (line.len == 0) continue;
+        assert(line.len == 2); // invariant: fixture digraphs are two bytes
+        var buf: [4]u8 = undefined;
+        buf[0] = line[0];
+        buf[1] = line[1];
+        buf[2] = ' ';
+        const src = buf[0..3];
+        var out: [8]tokens.Token = undefined;
+        const n = try tokens.tokenize(src, &out);
+        assert(n >= 1);
+        assert(out[0].kind == .rune2);
+        assert(out[0].len == 2);
+        const got = tokens.slice_of(src, out[0]);
+        assert(std.mem.eql(u8, got, line));
+        count += 1;
+    }
+    assert(count == 27);
+    print("OK digraph_twin_check {d}\n", .{count});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
+}
