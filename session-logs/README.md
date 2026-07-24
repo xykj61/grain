@@ -8,8 +8,9 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
-**Living pin bound:** `living_pin_max_bytes = 24576` ([spec](../context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md)). Closed index rows through `20260721`: [`archive/README-index-through-20260721.md`](archive/README-index-through-20260721.md).
+**Living pin bound:** `living_pin_max_bytes = 24576` ([spec](../context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md)). Closed index rows through `20260721`: [`archive/README-index-through-20260721.md`](archive/README-index-through-20260721.md). Early `20260722` overflow: [`archive/README-index-20260722-shelf.md`](archive/README-index-20260722-shelf.md).
 
+- `20260724.150317` — [flw corpus shelf — STOP obs and Claude ask](20260724-150317_flw-corpus-shelf-counsel.bron) — counsel A–E · Quin leans tools/fixtures · send
 - `20260724.145552` — [Send fourth sitting glow and jamcue to main](20260724-145552_send-fourth-sitting-glow.bron) — FF merge · STOA332 · JAMCUE · vere STOP held
 - `20260724.145458` — [Fourth sitting — glow SLC, jamcue, vere STOP](20260724-145458_fourth-sitting-glow-jamcue-vere.bron) — STOA332 GREEN · JAMCUE in-tree · vere STOP on flw
 - `20260724.184846` — [Glow jam/cue · Rishi glow mode · sixteen heads scout](20260724-184846_glow-jamcue-rishi-mode-scout.bron) — impl map · GREEN wire · thin path
@@ -174,5 +175,3 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 - `20260722.131153` — [Archive fold · STOA221 fixture lits](20260722-131153_archive-fold-stoa221-fixture-lits.bron) — 613 folded; C5 GREEN
 - `20260722.130902` — [STOA220 face=lit lower GREEN](20260722-130902_stoa220-face-lit-lower-emit.bron) — lit bytes; demos absent
 - `20260722.130753` — [Hoon.hoon study vs Glow path](20260722-130753_hoon-hoon-study-vs-glow-path.bron) — selective study; not continuous mint mirror
-- `20260722.130604` — [STOA219 face=lit parse GREEN](20260722-130604_stoa219-face-lit-parse.bron) — parse_face_lit; lower held
-- `20260722.130329` — [REMEMBER git nib after STOA218](20260722-130329_remember-git-nib-stoa218.bron) — pin 756a83b8bb

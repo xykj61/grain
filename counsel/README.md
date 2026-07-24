@@ -1,7 +1,7 @@
 # The Counsel Stack
 
 **Language:** EN
-**Last updated:** 2026-07-24 (vanes-shelves `135312` · names-maps `141612`)
+**Last updated:** 2026-07-24 (flw corpus shelf ask `150246` · vanes-shelves `135312` · names-maps `141612`)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Foundation
 
@@ -21,6 +21,7 @@ Filing law: [`../ORGANIZING.md`](../ORGANIZING.md) · reorg proposal: [`20260707
 
 | Stamp | Note | Meaning |
 |-------|------|---------|
+| `20260724.150246` | [flw corpus shelf — STOP obs · gratitude vs fixtures](20260724-150246_flw-corpus-shelf-and-vere-old.md) | Document vere/old STOP · ask Claude A–E · Quin leans `tools/fixtures/` |
 | `20260724.145458` | [Reply — fourth sitting glow · jamcue · vere STOP](replies/20260724-145458_re-fourth-sitting-glow-jamcue-vere.md) | glow SLC GREEN · jamcue in-tree · vere STOP on waymark_derive/flw |
 | `20260724.141612` | [Names, Maps, and Open Questions — third sitting](20260724-141612_names-maps-and-open-questions.md) | Strategy braid · Rhyz/Maze · T hold · sovereign/interop · stewards · open questions · Aparigraha — **braided EP** `143155` |
 | `20260724.135312` | [Vanes, Shelves, and the Glow Ladder — second sitting](20260724-135312_vanes-shelves-and-the-glow-ladder.md) | Claims home · replies · Python law · glow mode · letters · stdlib · rung 1 · shelf sweep — **braided EP** `143155` |
