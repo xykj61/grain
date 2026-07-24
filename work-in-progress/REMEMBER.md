@@ -6,7 +6,7 @@
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded**  
 **Language nib:** **STOA0–331** · gate-spec shape_name GREEN  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–331  
-**Git nib:**  · workshop-warehouse  
+**Git nib:** `01f8255827` · workshop-warehouse  
 
 **Season:** Framework · Eastern / EDT · **workshop/warehouse context economy** · lean C cast/face mold→shape held beside this lap · round-close on.  
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`  
