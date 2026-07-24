@@ -6,7 +6,7 @@
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded**  
 **Language nib:** **STOA0–331** · gate-spec shape_name GREEN  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–331  
-**Git nib:** `262e4a471f` · vanes-shelves-names-maps
+**Git nib:** `5cf6dba2f8` · vanes-shelves-names-maps
 
 **Season:** Framework · EDT · **aparigraha / anatomy+strategy braid** · lean C cast/face held · round-close on.  
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`  
