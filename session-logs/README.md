@@ -10,6 +10,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 **Living pin bound:** `living_pin_max_bytes = 24576` ([spec](../context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md)). Closed index rows through `20260721`: [`archive/README-index-through-20260721.md`](archive/README-index-through-20260721.md). Early `20260722` overflow: [`archive/README-index-20260722-shelf.md`](archive/README-index-20260722-shelf.md).
 
+- `20260724.221013` — [Rung-1 digraph twin research for Quin](20260724-221013_rung1-digraph-twin-research.bron) — Ojjo twin · Glow @t limits · STOA333 thin plan
 - `20260724.151517` — [Send flw Option C fixture pin to main](20260724-151517_send-flw-option-c.bron) — FF merge · witness GREEN · vere STOP ops
 - `20260724.151417` — [flw Option C fixture pin and genre law](20260724-151417_flw-option-c-fixture-pin.bron) — twin GREEN · vere STOP ops · genre law
 - `20260724.150446` — [Send flw corpus shelf counsel to main](20260724-150446_send-flw-corpus-counsel.bron) — FF merge · Claude A–E ask · vere STOP held
