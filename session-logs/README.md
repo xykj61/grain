@@ -10,6 +10,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 **Living pin bound:** `living_pin_max_bytes = 24576` ([spec](../context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md)). Closed index rows through `20260721`: [`archive/README-index-through-20260721.md`](archive/README-index-through-20260721.md).
 
+- `20260724.145458` — [Fourth sitting — glow SLC, jamcue, vere STOP](20260724-145458_fourth-sitting-glow-jamcue-vere.bron) — STOA332 GREEN · JAMCUE in-tree · vere STOP on flw
 - `20260724.184846` — [Glow jam/cue · Rishi glow mode · sixteen heads scout](20260724-184846_glow-jamcue-rishi-mode-scout.bron) — impl map · GREEN wire · thin path
 - `20260724.143710` — [Send vanes-shelves-names-maps braid to main](20260724-143710_send-vanes-shelves-names-maps.bron) — FF merge PR 72 · anatomy+strategy on pier
 - `20260724.143435` — [Vanes shelves names maps — counsel braid run](20260724-143435_vanes-shelves-names-maps-braid.bron) — P3 under 8KB · waymarks · Aparigraha · coverage GREEN
@@ -175,6 +176,3 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 - `20260722.130604` — [STOA219 face=lit parse GREEN](20260722-130604_stoa219-face-lit-parse.bron) — parse_face_lit; lower held
 - `20260722.130329` — [REMEMBER git nib after STOA218](20260722-130329_remember-git-nib-stoa218.bron) — pin 756a83b8bb
 - `20260722.130254` — [STOA215-217 send · STOA218 check-in](20260722-130254_stoa215-217-send-stoa218-checkin.bron) — pier send; rec C3 parse
-- `20260722.130125` — [STOA217 hex literal lex GREEN](20260722-130125_stoa217-hex-literal-lex.bron) — Kind.hex_lit; bare @ux kept
-- `20260722.130034` — [EDT Ubuntu Settings confirmed](20260722-130034_edt-ubuntu-settings-confirmed.bron) — date EDT; localtime New York
-- `20260722.125845` — [EDT Framework host stamp return](20260722-125845_edt-framework-host-convention.bron) — America/New_York; UDT era stays

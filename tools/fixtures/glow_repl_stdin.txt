@@ -1,0 +1,18 @@
+|-  32
+^-  @u8
+?:  (gth tick 32)  1  0
+?-  kind.cur-record  %mint  1  %send  0
+=/  n=@u32  (lent records)
+?~  records.cur  1  0
+=.  root  42
+=*  records  stock
+:-  from  amount
+:+  from  amount  note
+:^  from  amount  note  tag
+:~  from  amount  note
+%-  double  amount
+%+  add  from  amount
+%^  sum  from  amount  note
+%*  mix  left  right
+not-a-rune
+:quit

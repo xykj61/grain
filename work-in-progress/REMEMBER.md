@@ -2,13 +2,13 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260724.143155` (EDT) · voice Quin  
+**Last refreshed:** `20260724.145458` (EDT) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded**  
-**Language nib:** **STOA0–331** · gate-spec shape_name GREEN  
-**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–331  
-**Git nib:** `5cf6dba2f8` · vanes-shelves-names-maps
+**Language nib:** **STOA0–332** · glow mode SLC GREEN · gate-spec shape_name GREEN  
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–332  
+**Git nib:** _(refresh after commit)_  
 
-**Season:** Framework · EDT · **aparigraha / anatomy+strategy braid** · lean C cast/face held · round-close on.  
+**Season:** Framework · EDT · **finishing edge:** newcomer clones · bootstraps · one witness green · one Glow line at `rishi glow` · inside thirty minutes.  
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`  
 **ADB:** `tools/.cache/hawm0/android-sdk/platform-tools/adb` — not on bare PATH  
 
@@ -16,10 +16,17 @@
 
 ## Now
 
-**Vanes · shelves · names · maps** `20260724.143155` — both afternoon counsels filed · braided EP run · always-on ~6.6 KB · `waymarks/` · replies · STEWARDS · OPEN_QUESTIONS · `llms.txt` · APARIGRAHA seated.  
-EP [`../expanding-prompts/20260724-143155_vanes-shelves-names-maps-braid.md`](../expanding-prompts/20260724-143155_vanes-shelves-names-maps-braid.md) · economy [`../context/APARIGRAHA.md`](../context/APARIGRAHA.md) · stewards [`../STEWARDS.md`](../STEWARDS.md).
+**Fourth sitting** `20260724.144740`–`145458` — glow mode SLC GREEN (STOA332) · jam/cue vectors GREEN in-tree · py advise ratchet · waymarks confirmed · **vere/old STOP** (waymark_derive → `old/doc/spec/flw.txt`).  
+Claim [`../waymarks/stoa-300s/20260724-144740_stoa332-rishi-glow-mode-slc.md`](../waymarks/stoa-300s/20260724-144740_stoa332-rishi-glow-mode-slc.md) · vectors [`../docs/JAMCUE.md`](../docs/JAMCUE.md) · reply [`../counsel/replies/20260724-145458_re-fourth-sitting-glow-jamcue-vere.md`](../counsel/replies/20260724-145458_re-fourth-sitting-glow-jamcue-vere.md).
 
-**Language door (held):** STOA331 lean C — cast/face mold→shape. New claims → `waymarks/stoa-300s/`.
+**Witnesses:**
+
+```bash
+export RYE_ZIG=vendor/zig-toolchain/zig
+rishi/bin/rishi run tools/glow_repl_witness.rish
+rishi/bin/rishi run tools/glow_jamcue_vectors_witness.rish
+printf '%s\n' '^-  @u32' ':quit' | rishi/bin/rishi glow
+```
 
 ---
 
@@ -27,10 +34,11 @@ EP [`../expanding-prompts/20260724-143155_vanes-shelves-names-maps-braid.md`](..
 
 | Door | Kind |
 |------|------|
-| glow mode build · rung 1 · parity vectors · vere/old | kg / check-in as named |
-| cast / face mold→shape | lean C |
-| Rest | Keaton’s word only |
+| Vendor flw corpus → retry vere/old PR | check-in |
+| Outward jam/cue publish | held · review docs/JAMCUE.md |
+| Rung-1 digraph twin | following sitting |
+| cast/face mold→shape | lean C held |
 
 ---
 
-*Waymarks: HAWM · TUBE · ZETA · JABS · LULU · STOA · SETU · claims shelf `waymarks/`*
+*Waymarks: HAWM · TUBE · ZETA · JABS · LULU · STOA · SETU · claims `waymarks/`*

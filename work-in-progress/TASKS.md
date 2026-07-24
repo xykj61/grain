@@ -1,45 +1,31 @@
 # Tasks — living pin
 
 **Language:** EN  
-**Last updated:** `20260724.143155` (EDT) · voice Quin  
+**Last updated:** `20260724.145458` (EDT) · voice Quin  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
-**Full season ledger:** [`archive/20260724-132812_tasks-season-ledger.md`](archive/20260724-132812_tasks-season-ledger.md)  
-**Economy:** [`../context/APARIGRAHA.md`](../context/APARIGRAHA.md) · **Stewards:** [`../STEWARDS.md`](../STEWARDS.md)
+**Full season ledger:** [`archive/20260724-132812_tasks-season-ledger.md`](archive/20260724-132812_tasks-season-ledger.md)
 
 ---
 
-## Now — Vanes, shelves, names, maps (`20260724.143155`)
+## Now — Fourth sitting (`20260724.144740`)
 
-**Direction:** Braided counsel run — second + third sittings. EP [`../expanding-prompts/20260724-143155_vanes-shelves-names-maps-braid.md`](../expanding-prompts/20260724-143155_vanes-shelves-names-maps-braid.md).
+**Finishing edge (seated):** a newcomer clones, bootstraps, runs one witness green, and evaluates one Glow line at `rishi glow` — inside thirty minutes.
 
 | Lap | Status |
 |-----|--------|
-| P3 always-on under 8 KB | **done** (~6.6 KB) |
-| Session-README coverage | **GREEN** (0 missing) |
-| `waymarks/` · `counsel/replies/` · `**/archive/` | **seated** |
-| Python law + duty7 | **seated** |
-| Letters · retirement · stdlib · rung 1 | **seated** |
-| STEWARDS · OPEN_QUESTIONS · llms.txt · APARIGRAHA | **seated** |
-| Glow mode aspect (design) | **seated** — build open |
-| Sovereign / interop strategy | **seated** — parity vectors await word |
-| `vere/` / `old/` move | **held** |
-
-**Language door (held):** STOA331 lean C — cast/face mold→shape. Next claims land in `waymarks/stoa-300s/`.
-
-**Product nib:** ZETA6 · LULU0–5 · SETU6.5 live-sent · HAWM folded · Framework season.
+| waymarks/ confirmed | **done** |
+| tools/*.py advise ratchet | **done** (shell count) |
+| jam/cue vectors in-tree | **GREEN** · outward held |
+| Rishi glow mode SLC (STOA332) | **GREEN** |
+| vere/old sibling clones | **STOP** — waymark_derive load-bearing on `old/doc/spec/flw.txt` |
+| Rung-1 digraph twin | next sitting |
 
 ---
 
-## Open doors (short)
+## Open doors
 
 | Door | Kind |
 |------|------|
-| Rishi `glow` mode SLC · rung 1 digraph twin | kg when named finishing edge |
-| jam/cue parity vectors outward | check-in / word |
-| `vere/` / `old/` sibling clones | check-in |
-| STOA331 cast/face mold→shape | lean C |
-| Migrate two `tools/fixtures/*.py` | on touch |
-
----
-
-*Prior workshop season: counsel `132812` · EP `132812` · send PR #71.*
+| Vendor flw four-letter corpus; re-preflight; vere/old PR | check-in |
+| Review JAMCUE for outward publish | check-in |
+| Rung-1 digraph twin | kg when named |

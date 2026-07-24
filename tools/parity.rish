@@ -24,4 +24,14 @@ if ch2.ok == false then say ch2.err
 assert ch2.ok else "parity chapter 2 failed"
 say "GREEN: parity chapter 2/2 passed."
 
-say "GREEN: full witness suite — 2 chapters under Env binding ceiling."
+say "witness suite: Glow jam/cue parity vectors…"
+let jamcue = run ["rishi/bin/rishi" "run" "tools/glow_jamcue_vectors_witness.rish"]
+assert jamcue.ok else "glow jam/cue vectors witness failed"
+say "GREEN: Glow jam/cue parity vectors passed."
+
+say "witness suite: Rishi glow mode SLC…"
+let glow_repl = run ["rishi/bin/rishi" "run" "tools/glow_repl_witness.rish"]
+assert glow_repl.ok else "glow repl witness failed"
+say "GREEN: Rishi glow mode SLC passed."
+
+say "GREEN: full witness suite — 2 chapters + jam/cue vectors + glow REPL under Env binding ceiling."

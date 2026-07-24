@@ -37,4 +37,8 @@ for f in $FILES; do
     echo "  $f (zero assert — review on touch)"
 done
 echo "ratchet: zero assert( files remaining = ${zero_assert_total} (honest exempt: virtio guests, aurora freestanding, signal handler, font table, thin line editor, exit constants, the dual-of-assert mark itself)"
+
+# tools/*.py — Python-at-seam law (parity with native advise)
+py_count=$(find tools -name '*.py' -type f 2>/dev/null | wc -l | tr -d ' ')
+echo "ratchet: tools/*.py count = ${py_count} (target zero; migrate-on-touch; ephemeris seam classical-vedic-astrology/cast_a_chart.py exempt by name)"
 "${ROOT}/rishi/bin/rishi" run tools/fixtures/tame_style_long_fn.rish
