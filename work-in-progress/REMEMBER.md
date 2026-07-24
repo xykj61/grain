@@ -2,11 +2,11 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260724.181241` (EDT) · voice Quin  
+**Last refreshed:** `20260724.193912` (EDT) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded**  
-**Language nib:** **STOA0–333** · glow mode SLC · digraph twin GREEN · list512 GREEN  
+**Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list512 GREEN  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333  
-**Git nib:** *(pin after send)* · list512-digraph-twin
+**Git nib:** `877b2f4666` · pre-hands-we-grow (update after send)
 
 **Season:** Framework · EDT · **finishing edge:** newcomer clones · bootstraps · one witness green · one Glow line at `rishi glow` · inside thirty minutes.  
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`  
@@ -16,13 +16,13 @@
 
 ## Now
 
-**list512 + STOA333** `20260724.181241` — Rishi `max_list_items=512` · native advise roster GREEN · digraph-table twin GREEN (Glow desk ≡ fixture ≡ Rye `match_rune2`). Reply [`../counsel/replies/20260724-181241_re-list512-digraph-twin.md`](../counsel/replies/20260724-181241_re-list512-digraph-twin.md) · claim [`../waymarks/stoa-300s/20260724-181200_stoa333-digraph-table-twin.md`](../waymarks/stoa-300s/20260724-181200_stoa333-digraph-table-twin.md).
+**Hands We Grow relay** `20260724.193912` — JAMCUE reframed (cell-pack demo; outward gift = mat/rub season) · digraph twin hardened (Rye ≡ desk + wrong-order refuse) · STOA333 = rung 1a. Counsel decisions 2–8 PARK. Reply [`../counsel/replies/20260724-194239_re-the-hands-we-grow.md`](../counsel/replies/20260724-194239_re-the-hands-we-grow.md) · claim [`../waymarks/stoa-300s/20260724-181200_stoa333-digraph-table-twin.md`](../waymarks/stoa-300s/20260724-181200_stoa333-digraph-table-twin.md).
 
 **Witnesses:**
 
 ```bash
 export RYE_ZIG=vendor/zig-toolchain/zig
-rishi/bin/rishi run tools/rishi_list_bound_witness.rish
+rishi/bin/rishi run tools/glow_jamcue_vectors_witness.rish
 rishi/bin/rishi run tools/glow_digraph_twin_witness.rish
 rishi/bin/rishi run tools/waymark_derive_witness.rish
 ```
@@ -34,8 +34,9 @@ rishi/bin/rishi run tools/waymark_derive_witness.rish
 | Door | Kind |
 |------|------|
 | vere/old untrack | held · word **siblings seated** or host ritual |
-| Outward jam/cue publish | held · review docs/JAMCUE.md |
+| Real mat/rub jam & cue | season |
 | Rung 2 — one Glow lowering arm | season |
+| Counsel 2–8 (custody · Mona · pillars) | park · Keaton’s word |
 | cast/face mold→shape | lean C held |
 
 ---

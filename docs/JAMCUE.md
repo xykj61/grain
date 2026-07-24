@@ -1,8 +1,9 @@
-# Jam / cue parity vectors (Glow thin cell-pack)
+# Glow cell-pack demo vectors (in-tree)
 
 **Language:** EN  
 **Seated:** `20260724.144740`  
-**Status:** Checkable in-tree · outward publish **held** until Keaton reviews  
+**Reframed:** `20260724.193912` — outward publish declined; parity framing retired  
+**Status:** Checkable in-tree · demo face only  
 **Witness:** `rishi/bin/rishi run tools/glow_jamcue_vectors_witness.rish`  
 **Fixture:** [`../tools/fixtures/glow_jamcue_vectors.txt`](../tools/fixtures/glow_jamcue_vectors.txt)  
 **Canon:** `glow/expr.rye` — `jam_demo_*` · `jam_expect` · `cue_expect`
@@ -26,7 +27,7 @@ Demo atoms: left `5`, right `3`; `mix = 5 ^ 3 = 6`.
 
 ## Strategy
 
-Built on our pier for sovereign-first interop. Publishing these vectors outward as a conformance gift waits on Keaton’s review of this artifact.
+The outward gift is real mat/rub-layout jam and cue in Glow — a future season. These in-tree vectors pin the thin cell-pack demo face only.
 
 ---
 

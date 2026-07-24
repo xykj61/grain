@@ -1,16 +1,20 @@
-# glow_digraph_twin_witness.rish — STOA333 rung-1 digraph-table twin.
+# glow_digraph_twin_witness.rish — STOA333 rung-1a digraph-table twin.
 #
 # Glow desk (sample-digraph-table.glow) · fixture · Rye match_rune2 extract
-# agree byte-for-byte; each fixture line tokenizes as Kind.rune2.
+# agree byte-for-byte with each other; each fixture line tokenizes as Kind.rune2.
+# Wrong-order fixture (glow_digraph_table_wrong_order.txt — first two rows swapped)
+# proves the cmp gate turns red. Standing-exempt intentional violation — do not "fix".
 #
 #   rishi/bin/rishi run tools/glow_digraph_twin_witness.rish
 
 let fixture = "tools/fixtures/glow_digraph_table.txt"
+let wrong = "tools/fixtures/glow_digraph_table_wrong_order.txt"
 let desk = "glow/gen/sample-digraph-table.glow"
 let shape = "glow/gen/shape-digraph-table.glow"
 
 assert ((read-file fixture) contains "+$") else "fixture missing +$"
 assert ((read-file fixture) contains "|^") else "fixture missing |^ barket"
+assert ((read-file wrong) contains "+$") else "wrong-order fixture missing +$"
 assert ((read-file desk) contains "rows='") else "desk missing rows cord"
 assert ((read-file shape) contains "digraph-table-shape") else "shape desk missing"
 
@@ -22,15 +26,24 @@ assert glow.ok else "glow desk digraph extract failed"
 let rye_n = length (where (lines rye.out) as ln: ln != "")
 let glow_n = length (where (lines glow.out) as ln: ln != "")
 let fix_n = length (where (lines (read-file fixture)) as ln: ln != "")
+let wrong_n = length (where (lines (read-file wrong)) as ln: ln != "")
 assert rye_n == 27 else "rye extract count not 27"
 assert glow_n == 27 else "glow extract count not 27"
 assert fix_n == 27 else "fixture count not 27"
+assert wrong_n == 27 else "wrong-order fixture count not 27"
 
-# Byte-identical line streams (trailing newline normalized via cmp of sorted? No — order is law).
+# Byte-identical line streams — order is law.
 let cmp_rye = run ["sh" "-c" "tools/fixtures/glow_digraph_rye_extract.sh | cmp -s - ${fixture}"]
 assert cmp_rye.ok else "rye extract != fixture (order or glyphs drifted)"
 let cmp_glow = run ["sh" "-c" "tools/fixtures/glow_digraph_desk_extract.sh | cmp -s - ${fixture}"]
 assert cmp_glow.ok else "glow desk extract != fixture"
+
+# Rye extract and Glow desk extract are byte-identical to each other.
+assert rye.out == glow.out else "rye extract != glow desk extract (twin drift)"
+
+# Negative space: wrong-order fixture must fail cmp against the Rye extract.
+let cmp_wrong = run ["sh" "-c" "tools/fixtures/glow_digraph_rye_extract.sh | cmp -s - ${wrong}"]
+assert cmp_wrong.ok == false else "wrong-order fixture must fail cmp — gate inconclusive"
 
 # Tokenizer face: each fixture digraph is Kind.rune2 length 2.
 let zig = "vendor/zig-toolchain/zig"
@@ -46,4 +59,4 @@ let alpha = run ["rishi/bin/rishi" "run" "tools/glow_rune_alphabet_witness.rish"
 assert alpha.ok else "glow_rune_alphabet_witness failed under digraph twin"
 assert alpha.out contains "27" else "alphabet witness must still name 27"
 
-say "GREEN: STOA333 digraph-table twin — Glow desk · fixture · Rye match_rune2 · tokenize rune2"
+say "GREEN: STOA333 digraph-table twin rung 1a — desk ≡ fixture ≡ Rye · wrong-order fails · tokenize rune2"

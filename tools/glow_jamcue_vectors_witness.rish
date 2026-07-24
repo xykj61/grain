@@ -1,4 +1,4 @@
-# glow_jamcue_vectors_witness.rish — thin jam/cue parity vectors GREEN.
+# glow_jamcue_vectors_witness.rish — Glow cell-pack demo vectors GREEN.
 #
 # Asserts the seated demo arithmetic against tools/fixtures/glow_jamcue_vectors.txt
 # and reuses glow_expr_witness for the parse/lower face.
@@ -40,4 +40,4 @@ assert expr.out contains "GREEN" else "glow_expr_witness not GREEN"
 assert expr.out contains "jam" else "expr GREEN missing jam mention"
 assert expr.out contains "cue" else "expr GREEN missing cue mention"
 
-say "GREEN: Glow jam/cue parity vectors — four thin packs + cue round-trip + expr face."
+say "GREEN: Glow cell-pack demo vectors — four thin packs + cue round-trip + expr face."

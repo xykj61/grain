@@ -12,3 +12,9 @@
 - `20260722.131432` — [REMEMBER git nib after STOA222](20260722-131432_remember-git-nib-stoa222.bron) — pin 6285b8182ee4
 - `20260722.131511` — [STOA223 product fixture lit wire](20260722-131511_stoa223-product-fixture-lit-desk-wire.bron) — lit_desk_binds_pins GREEN
 - `20260722.131841` — [STOA223 send · STOA224 check-in](20260722-131841_stoa223-send-stoa224-checkin.bron) — pier send; rec fact-line lits
+- `20260722.131928` — [REMEMBER git nib after STOA224](20260722-131928_remember-git-nib-stoa224.bron) — pin 91ad5674502a
+- `20260722.132020` — [STOA225 fact-line demo lit sample](20260722-132020_stoa225-fact-line-demo-lit-sample.bron) — sig/fact pins · desk bind GREEN
+- `20260722.132320` — [STOA225 send · STOA226 check-in](20260722-132320_stoa225-send-stoa226-checkin.bron) — pier send; rec rest
+- `20260722.132402` — [REMEMBER git nib after STOA226](20260722-132402_remember-git-nib-stoa226.bron) — pin d1feb98c479a
+- `20260722.132533` — [STOA227 demo line pin emit GREEN](20260722-132533_stoa227-demo-line-pin-emit.bron) — pins ≡ claim_demo_line
+- `20260722.132705` — [STOA228 after demo pin emit check-in](20260722-132705_stoa228-after-demo-pin-emit-checkin.bron) — rec send; then append/fold
