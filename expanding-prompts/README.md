@@ -3,7 +3,7 @@
 *A place where a request becomes a plan. When you hand me a seed of intent, I bring it here, read it closely through every lens we have built, and craft from it a fuller, clearer prompt for myself — one I can then run. The seed stays yours; the expansion is how I make sure I have understood it, sharpened it, and lost none of it.*
 
 **Language:** EN
-**Last updated:** 2026-07-24 (workshop/warehouse context economy `132812`)
+**Last updated:** 2026-07-24 (vanes-shelves-names-maps braid `143155`)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 
@@ -68,6 +68,7 @@ What does *not* belong here is the work itself — that lands in the research, d
 
 | Stamp | Prompt | Meaning |
 |-------|--------|---------|
+| `20260724.143155` | [Vanes, shelves, names, maps — braided](20260724-143155_vanes-shelves-names-maps-braid.md) | Files second+third counsel · P3 under 8KB · waymarks · replies · stewards · Aparigraha · letters · rung 1 · coverage GREEN |
 | `20260724.132812` | [Workshop and Warehouse — context economy](20260724-132812_workshop-and-warehouse-context-economy.md) | Files Fable 5 counsel · seats pin-and-ledger `24576` · untracks `tools/bin/` · rolls living pins · watcher excludes · sixth lint duty · workshop/warehouse doctrine · P3 rules partial · P6–P7 skeletons |
 | `20260718.122145` | [Glow Glass display, short home, Dexter send, Wired Glass](20260718-122145_glow-glass-display-short-home-and-dexter-send.md) | Expands ret=newline · ↑ send · Hearth short home `kd` · LULU display presets (Pixel 10a 1080×2424 → same-ratio lower → Mantrapod Skate floor) · Wired Glass SLC (used Pixel, no cellular, USB to Desk) · draws waymark **LULU** · seats silo + ER + align |
 | `20260716.142818` | [The Glow application framework and publishing mechanism, held against GrapheneOS](20260716-142818_glow-application-framework-and-publishing.md) | Grounds GrapheneOS's own app model (signed repository tied to verified boot, sandboxed Play as an unprivileged app, A/B verified-boot update rail, capability-gated permissions — checkable, dated) · maps each service onto the closest Glow module/vane (Pool+Caravan the strongest match; Granary/Amber/Comlink the repository; MALA/Neth/Sigma/Mandi an *improvement* on Play payments) · connects the framework to the rune design (an app is a Pool agent, its manifest a bounded mold, its capabilities an exhaustive `?-` checked at admission, its loops the bounded `\|-`) · names the publishing mechanism as a fold over signed offers, not a central store · lays the **TUBE** ladder (waymark-derived, TUBE0–TUBE7) and recommends TUBE0 (the app-manifest mold) as the reachable, device-free next step |
