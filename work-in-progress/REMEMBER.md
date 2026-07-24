@@ -6,7 +6,7 @@
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded**  
 **Language nib:** **STOA0–332** · glow mode SLC GREEN · gate-spec shape_name GREEN  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–332  
-**Git nib:** `d7f924bf7e` · fourth-sitting-glow
+**Git nib:** `146acac560` · fourth-sitting-glow
 
 **Season:** Framework · EDT · **finishing edge:** newcomer clones · bootstraps · one witness green · one Glow line at `rishi glow` · inside thirty minutes.  
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`  
