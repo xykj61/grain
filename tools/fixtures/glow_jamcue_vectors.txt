@@ -1,0 +1,9 @@
+# Glow thin jam/cue parity vectors — in-tree artifact (outward publish held).
+# Format: name | input_form | jam_u32_decimal | cue_u32_decimal | note
+# Demo atoms: left=5 right=3; mix = 5^3 = 6. Thin pack: (hi << 16) | lo.
+# Not Vere jam/cue bit layout — Glow expr.rye cell-pack face.
+#
+flat|(jam from amount)|327683|3|jam_demo_result; cue low-16 = right
+nest-left|(jam (mix from amount) amount)|393219|3|mix<<16|right; cue → right
+nest-right|(jam cell (mix from amount))|327686|6|left<<16|mix; cue → mix
+nest-both|(jam (mix from amount) (mix cell gate))|393222|6|mix<<16|mix; cue → mix

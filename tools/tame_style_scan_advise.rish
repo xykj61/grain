@@ -6,6 +6,11 @@
 # Run from the repository root:
 #   rishi/bin/rishi run tools/tame_style_scan_advise.rish
 
+# tools/*.py count — Python-at-seam law; shell count (no Rish list). Ephemeris outside tools/ exempt.
+let tools_py_run = run ["sh" "-c" "find tools -name '*.py' -type f 2>/dev/null | wc -l | tr -d ' '"]
+assert tools_py_run.ok else "tame_style_scan_advise: tools py count failed"
+say "ratchet: tools/*.py count = ${trim tools_py_run.out} (target zero; migrate-on-touch; ephemeris seam classical-vedic-astrology/cast_a_chart.py exempt by name)"
+
 let roster = run ["sh" "-c" "find mantra caravan linengrow comlink rishi/src tally aurora pond brushstroke rye/src glow/tokens.rye glow/lower_named_cast.rye -name '*.rye' ! -type l 2>/dev/null | sort"]
 assert roster.ok else "tame_style_scan_advise: find roster failed"
 
@@ -58,3 +63,4 @@ say "ratchet: zero assert( files remaining = ${length za8} (honest exempt: virti
 
 let long_fn = run ["rishi/bin/rishi" "run" "tools/fixtures/tame_style_long_fn.rish"]
 say long_fn.out
+
