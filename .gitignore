@@ -69,6 +69,8 @@
 !/vendor/genode/
 !/vendor/monocypher/
 !/.cursor/
+!/.vscode/
+!/.vscode/settings.json
 !/CLAUDE.md
 !/ORGANIZING.md
 !/.claude/
@@ -137,6 +139,7 @@ Icon
 /tools/launch-zed.sh
 # Tracked launchers (not gitignored): tools/cursor-jail.sh, tools/launch-cursor.rish
 /tools/.build/
+/tools/bin/
 
 # --- Editor state inside the project (ai-jail durable ground) ---------------
 /.cursor-state/

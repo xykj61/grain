@@ -1,6 +1,6 @@
 ---
-description: New numbered ladders must draw a waymark before the first rung is named
-alwaysApply: true
+description: New numbered ladders must draw a waymark before the first rung is named — attach when opening a ladder
+alwaysApply: false
 ---
 
 # Waymark Ladders — Draw Before You Number

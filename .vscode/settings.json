@@ -1,0 +1,27 @@
+{
+  "files.watcherExclude": {
+    "**/vere/**": true,
+    "**/old/**": true,
+    "**/vendor/**": true,
+    "**/tools/bin/**": true,
+    "**/.zig-cache/**": true,
+    "**/zig-cache/**": true,
+    "**/squashfs-root/**": true,
+    "**/session-logs/archive/**": true,
+    "**/work-in-progress/archive/**": true,
+    "**/active-designing/archive/**": true,
+    "**/tools/.cache/**": true,
+    "**/glow/.cache/**": true
+  },
+  "search.exclude": {
+    "**/vere/**": true,
+    "**/old/**": true,
+    "**/vendor/**": true,
+    "**/tools/bin/**": true,
+    "**/session-logs/archive/**": true,
+    "**/work-in-progress/archive/**": true,
+    "**/active-designing/archive/**": true,
+    "**/tools/.cache/**": true,
+    "**/glow/.cache/**": true
+  }
+}
