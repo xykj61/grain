@@ -1,6 +1,7 @@
 ---
 description: Address expanding-prompts and design-research documentation to a generic Acme Corporation employee, never a named individual
-alwaysApply: true
+globs: expanding-prompts/**,external-research/**,context/specs/**
+alwaysApply: false
 ---
 
 # Address a Generic Acme Corporation Employee

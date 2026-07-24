@@ -1,6 +1,6 @@
 ---
-description: Prefer nib over tip for landed-edge vocabulary
-alwaysApply: true
+description: Prefer nib over tip for landed-edge vocabulary — attach when naming product, suite, or git landed edges
+alwaysApply: false
 ---
 
 # Nib (landed-edge sense)

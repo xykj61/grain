@@ -1,6 +1,7 @@
 ---
 description: Keep implementation and documentation synced — check claims, don't assume them
-alwaysApply: true
+globs: docs/**
+alwaysApply: false
 ---
 
 # Docs and Implementation Stay Synced
