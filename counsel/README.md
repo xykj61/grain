@@ -1,7 +1,7 @@
 # The Counsel Stack
 
 **Language:** EN
-**Last updated:** 2026-07-12 (post-Seam disposition + signing-key park `061012`)
+**Last updated:** 2026-07-24 (workshop/warehouse counsel `132812`)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Foundation
 
@@ -21,6 +21,7 @@ Filing law: [`../ORGANIZING.md`](../ORGANIZING.md) · reorg proposal: [`20260707
 
 | Stamp | Note | Meaning |
 |-------|------|---------|
+| `20260724.132812` | [The Workshop and the Warehouse — context economy](20260724-132812_the-workshop-and-the-warehouse.md) | Seven proposals · pin-and-ledger · rules attach · workshop/warehouse — **aligned and run** via EP `132812` (Claude Fable 5 counsel, Quin voice) |
 | `20260712.061012` | [Post-Seam disposition — parks and T2 shapes](20260712-061012_claude-counsel-post-seam-disposition.md) | Sync-and-parks · T2 courtesy/proof · bud/mudra — **seats landed** `062656` |
 | `20260712.061012` | [Cloud signing-key park](20260712-061012_cloud-signing-key-park.md) | SSHSIG `SHA256:/ZGdxqU+…` — **seated in PUBKEYS** `062656` |
 | `20260712.052806` | [Three doors and teacher — Seam season](20260712-052806_claude-counsel-three-doors-and-teacher.md) | OCapN study · CapTP decline · consumer edge · teacher≠ally; prioritization affirmed |

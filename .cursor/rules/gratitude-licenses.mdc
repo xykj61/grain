@@ -1,6 +1,7 @@
 ---
 description: Gratitude project licenses and clean-room discipline — never copy GPL/copyleft code into our modules
-alwaysApply: true
+globs: gratitude/**
+alwaysApply: false
 ---
 
 # Gratitude Licenses — Clean-Room Discipline

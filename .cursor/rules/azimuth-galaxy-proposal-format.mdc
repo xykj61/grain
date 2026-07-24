@@ -1,6 +1,7 @@
 ---
 description: Add an optional Galaxy Pitch block to substantial commits and proposals, formatted for real Azimuth galaxy holders
-alwaysApply: true
+globs: expanding-prompts/**,counsel/**
+alwaysApply: false
 ---
 
 # Azimuth-Galaxy-Proposal Format

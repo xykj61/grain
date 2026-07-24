@@ -27,6 +27,7 @@ assert real_before.ok else "could not checksum the real lexicon file before the 
 let crosswalk_path = "work-in-progress/992_strengthening_width_crosswalk.md"
 let crosswalk_before = run ["test" "-f" crosswalk_path]
 
+# Rebuild binary (gitignored under tools/bin/): rye build → tools/bin/enrich-strengthening-docs
 let mkdir = run ["mkdir" "-p" "tools/bin"]
 assert mkdir.ok else "could not create tools/bin"
 let build = run ["env" "RYE_ZIG=${zig}" "rye/bin/rye" "build" "tools/enrich_strengthening_docs.rye" "-femit-bin=tools/bin/enrich-strengthening-docs"]

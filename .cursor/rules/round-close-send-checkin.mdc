@@ -1,6 +1,6 @@
 ---
-description: Round close — auto send + check-in so every work round ends with a check-in
-alwaysApply: true
+description: Round close — auto send + check-in so every work round ends with a check-in — attach at session close
+alwaysApply: false
 ---
 
 # Round Close — Send + Check-In (seated `20260722.134415` · rest habit `20260722.185058`)

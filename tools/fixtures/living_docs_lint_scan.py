@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""living_docs_lint_scan.py — ratchet-advisory living-docs lint (five duties).
+"""living_docs_lint_scan.py — ratchet-advisory living-docs lint (six duties).
 
 Always exits 0 — print advisories every parity run; never fail the witness.
 Hardening horizon: link-breaks may earn a gate once the shelf proves stable.
@@ -10,8 +10,10 @@ Duties:
   3. Orphan roster pages (no inbound link from roster + docs/README)
   4. Status room on rostered living pages (head-30)
   5. docs/ pin-strings must byte-match canon sources
+  6. living pin size ≤ living_pin_max_bytes (24576) — pin-and-ledger law
 
 Spec: active-designing/20260712-221600_docs-compression-layer-design.md
+Pin law: context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md
 """
 from __future__ import annotations
 
@@ -21,6 +23,9 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
+
+# Pin-and-ledger law — seated 20260724.132812 (workshop/warehouse counsel).
+LIVING_PIN_MAX_BYTES = 24576
 
 # Word-boundary retired forms (living voice — judgment + machine hint).
 RETIRED_WORDS = [
@@ -227,6 +232,30 @@ def duty4_status(paths: list[Path]) -> int:
     return n
 
 
+def duty6_living_pin_bytes(paths: list[Path]) -> int:
+    n = 0
+    for p in paths:
+        try:
+            size = p.stat().st_size
+        except OSError:
+            continue
+        if size > LIVING_PIN_MAX_BYTES:
+            rel = p.relative_to(ROOT)
+            print(
+                f"ADVISE duty6 living-pin-bytes {rel}: {size} > "
+                f"living_pin_max_bytes={LIVING_PIN_MAX_BYTES}"
+            )
+            n += 1
+    if n == 0:
+        print(
+            f"OK   duty6 living pin bytes — all roster paths ≤ "
+            f"{LIVING_PIN_MAX_BYTES}"
+        )
+    else:
+        print(f"ADVISE duty6 count={n}")
+    return n
+
+
 def duty5_docs_pins(canon: str) -> int:
     docs_dir = ROOT / "docs"
     if not docs_dir.is_dir():
@@ -262,6 +291,7 @@ def main() -> int:
     duty3_orphans(paths)
     duty4_status(paths)
     duty5_docs_pins(canon)
+    duty6_living_pin_bytes(paths)
     print(
         "ADVISE: living-docs lint complete — ratchet advisory; "
         "link-breaks may earn a gate once the shelf proves stable"
