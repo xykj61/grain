@@ -35,6 +35,7 @@
 //! Commands:
 //!   rishi                  Start the interactive REPL (same as `rishi repl`).
 //!   rishi repl               Interactive loop — type, run, with bindings carried forward.
+//!   rishi glow               Glow mode — tokenize · lower · run · print; `:quit` exits.
 //!   rishi version            Print the Rishi version.
 //!   rishi run <file.rish>    Read and run a single .rish script.
 
@@ -232,6 +233,8 @@ pub fn main(init: std.process.Init) !u8 {
         return 0;
     } else if (std.mem.eql(u8, command, "repl")) {
         return run_repl(init);
+    } else if (std.mem.eql(u8, command, "glow")) {
+        return run_glow_repl(init);
     } else if (std.mem.eql(u8, command, "run")) {
         return run_file(init, args);
     } else if (std.mem.eql(u8, command, "help") or std.mem.eql(u8, command, "--help")) {
@@ -251,10 +254,144 @@ fn print_usage() void {
         \\usage:
         \\  rishi                  start the interactive REPL
         \\  rishi repl             start the interactive REPL
+        \\  rishi glow             Glow mode — one line, sixteen heads, :quit
         \\  rishi version          print the Rishi version
         \\  rishi run <file.rish>  read and run a single .rish script
         \\
     , .{rishi_version});
+}
+
+/// Glow mode bounds — named before the lap begins (TAME / aparigraha).
+const glow_max_line_bytes: u32 = 256;
+const glow_max_session_lines: u32 = 64;
+const glow_repl_desk_path = "glow/.cache/repl-line.glow";
+
+/// Sixteen seated single-line rune heads (glow/README.md) — digraph at column 0.
+fn glow_is_seated_head(line: []const u8) bool {
+    assert(line.len <= glow_max_line_bytes);
+    if (line.len < 2) return false;
+    const d = line[0..2];
+    if (std.mem.eql(u8, d, "|-")) return true;
+    if (std.mem.eql(u8, d, "^-")) return true;
+    if (std.mem.eql(u8, d, "?:")) return true;
+    if (std.mem.eql(u8, d, "?-")) return true;
+    if (std.mem.eql(u8, d, "=/")) return true;
+    if (std.mem.eql(u8, d, "?~")) return true;
+    if (std.mem.eql(u8, d, "=.")) return true;
+    if (std.mem.eql(u8, d, "=*")) return true;
+    if (std.mem.eql(u8, d, ":-")) return true;
+    if (std.mem.eql(u8, d, ":+")) return true;
+    if (std.mem.eql(u8, d, ":^")) return true;
+    if (std.mem.eql(u8, d, ":~")) return true;
+    if (std.mem.eql(u8, d, "%-")) return true;
+    if (std.mem.eql(u8, d, "%+")) return true;
+    if (std.mem.eql(u8, d, "%^")) return true;
+    if (std.mem.eql(u8, d, "%*")) return true;
+    return false;
+}
+
+fn glow_ensure_cache_dir(garden: std.mem.Allocator, io: std.Io) !void {
+    const argv = [_][]const u8{ "mkdir", "-p", "glow/.cache" };
+    const result = std.process.run(garden, io, .{ .argv = &argv }) catch return error.CommandFailed;
+    if (!run_exited_ok(result)) return error.CommandFailed;
+}
+
+fn glow_write_repl_desk(garden: std.mem.Allocator, io: std.Io, line: []const u8) !void {
+    assert(line.len > 0);
+    assert(line.len <= glow_max_line_bytes);
+    try glow_ensure_cache_dir(garden, io);
+    const cwd = std.Io.Dir.cwd();
+    var buf: [384]u8 = undefined;
+    const header = ":: glow repl line — tokenize · lower · run via glow_run_worker\n";
+    assert(header.len + line.len + 1 <= buf.len);
+    var i: u32 = 0;
+    while (i < header.len) : (i += 1) {
+        buf[i] = header[i];
+    }
+    var j: u32 = 0;
+    while (j < line.len) : (j += 1) {
+        buf[header.len + j] = line[j];
+    }
+    buf[header.len + line.len] = '\n';
+    const total: u32 = @intCast(header.len + line.len + 1);
+    assert(total <= buf.len);
+    try cwd.writeFile(io, .{ .sub_path = glow_repl_desk_path, .data = buf[0..total] });
+}
+
+fn glow_run_line(garden: std.mem.Allocator, io: std.Io, init: std.process.Init, line: []const u8) !std.process.RunResult {
+    try glow_write_repl_desk(garden, io, line);
+    const zig = init.environ_map.get("RYE_ZIG") orelse "vendor/zig-toolchain/zig";
+    const rye_zig_eq = try std.fmt.allocPrint(garden, "RYE_ZIG={s}", .{zig});
+    const real_argv = [_][]const u8{ "env", rye_zig_eq, "sh", "tools/glow_run_worker.sh", glow_repl_desk_path };
+    return std.process.run(garden, io, .{ .argv = &real_argv });
+}
+
+/// Glow-speaking shell aspect — SLC stub (counsel 20260724.143155 · Keaton word 144740).
+fn run_glow_repl(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+    var stdin_buffer: [4096]u8 = undefined;
+    var file_reader = std.Io.File.Reader.initStreaming(std.Io.File.stdin(), io, &stdin_buffer);
+    const reader = &file_reader.interface;
+    var lines_seen: u32 = 0;
+
+    print("glow — sixteen single-line heads; :quit ends the session cleanly.\n", .{});
+
+    while (true) {
+        print("glow> ", .{});
+        const raw_line = reader.takeDelimiterInclusive('\n') catch |err| switch (err) {
+            error.EndOfStream => return 0,
+            else => return 1,
+        };
+        const line = std.mem.trim(u8, raw_line, " \t\r\n");
+        if (line.len == 0) continue;
+
+        if (std.mem.eql(u8, line, ":quit") or std.mem.eql(u8, line, ":q")) {
+            print("glow: session closed.\n", .{});
+            return 0;
+        }
+
+        assert(lines_seen < glow_max_session_lines);
+        if (lines_seen >= glow_max_session_lines) {
+            print("glow: refuse — session line cap ({d}) reached; :quit and begin again.\n", .{glow_max_session_lines});
+            continue;
+        }
+        lines_seen += 1;
+
+        if (line.len > glow_max_line_bytes) {
+            print("glow: refuse — line exceeds max_line_bytes ({d}).\n", .{glow_max_line_bytes});
+            continue;
+        }
+
+        if (!glow_is_seated_head(line)) {
+            print("glow: refuse — not a seated single-line head (want |- ^- ?: ?- =/ ?~ =. =* :- :+ :^ :~ %- %+ %^ %*).\n", .{});
+            continue;
+        }
+
+        const result = glow_run_line(garden, io, init, line) catch {
+            print("glow: refuse — could not spawn lower/run seam.\n", .{});
+            continue;
+        };
+        if (!run_exited_ok(result)) {
+            print("glow: refuse — lower/run did not exit 0.\n", .{});
+            if (result.stderr.len > 0) print("{s}", .{result.stderr});
+            if (result.stdout.len > 0) print("{s}", .{result.stdout});
+            continue;
+        }
+        // Print worker stdout; strip a trailing EXIT:0 claim line when present.
+        var out = result.stdout;
+        if (std.mem.endsWith(u8, out, "EXIT:0\n")) {
+            out = out[0 .. out.len - "EXIT:0\n".len];
+        } else if (std.mem.endsWith(u8, out, "EXIT:0")) {
+            out = out[0 .. out.len - "EXIT:0".len];
+        }
+        if (out.len > 0) {
+            print("{s}", .{out});
+            if (out[out.len - 1] != '\n') print("\n", .{});
+        } else {
+            print("glow: ok\n", .{});
+        }
+    }
 }
 
 fn transcript_invite_version() void {

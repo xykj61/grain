@@ -21,6 +21,7 @@ Filing law: [`../ORGANIZING.md`](../ORGANIZING.md) · reorg proposal: [`20260707
 
 | Stamp | Note | Meaning |
 |-------|------|---------|
+| `20260724.145458` | [Reply — fourth sitting glow · jamcue · vere STOP](replies/20260724-145458_re-fourth-sitting-glow-jamcue-vere.md) | glow SLC GREEN · jamcue in-tree · vere STOP on waymark_derive/flw |
 | `20260724.141612` | [Names, Maps, and Open Questions — third sitting](20260724-141612_names-maps-and-open-questions.md) | Strategy braid · Rhyz/Maze · T hold · sovereign/interop · stewards · open questions · Aparigraha — **braided EP** `143155` |
 | `20260724.135312` | [Vanes, Shelves, and the Glow Ladder — second sitting](20260724-135312_vanes-shelves-and-the-glow-ladder.md) | Claims home · replies · Python law · glow mode · letters · stdlib · rung 1 · shelf sweep — **braided EP** `143155` |
 | `20260724.132812` | [The Workshop and the Warehouse — context economy](20260724-132812_the-workshop-and-the-warehouse.md) | Seven proposals · pin-and-ledger · rules attach · workshop/warehouse — **aligned and run** via EP `132812` (Claude Fable 5 counsel, Quin voice) |
