@@ -11,9 +11,11 @@ Duties:
   4. Status room on rostered living pages (head-30)
   5. docs/ pin-strings must byte-match canon sources
   6. living pin size ≤ living_pin_max_bytes (24576) — pin-and-ledger law
+  7. count tools/**/*.py — target two→zero (Python-at-seam law)
 
 Spec: active-designing/20260712-221600_docs-compression-layer-design.md
 Pin law: context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md
+Python law: context/specs/20260724-143155_python-at-the-seam-law.md
 """
 from __future__ import annotations
 
@@ -232,6 +234,21 @@ def duty4_status(paths: list[Path]) -> int:
     return n
 
 
+def duty7_tools_py_count() -> int:
+    """Advisory: tools/**/*.py should fall two→zero (ephemeris seam exempt, outside tools/)."""
+    py_files = sorted(ROOT.glob("tools/**/*.py"))
+    n = len(py_files)
+    if n == 0:
+        print("OK   duty7 tools/*.py count — zero (target met)")
+    elif n <= 2:
+        names = ", ".join(str(p.relative_to(ROOT)) for p in py_files)
+        print(f"ADVISE duty7 tools/*.py count={n} (target zero; migrate-on-touch): {names}")
+    else:
+        names = ", ".join(str(p.relative_to(ROOT)) for p in py_files)
+        print(f"ADVISE duty7 tools/*.py count={n} above target two: {names}")
+    return n
+
+
 def duty6_living_pin_bytes(paths: list[Path]) -> int:
     n = 0
     for p in paths:
@@ -292,6 +309,7 @@ def main() -> int:
     duty4_status(paths)
     duty5_docs_pins(canon)
     duty6_living_pin_bytes(paths)
+    duty7_tools_py_count()
     print(
         "ADVISE: living-docs lint complete — ratchet advisory; "
         "link-breaks may earn a gate once the shelf proves stable"
