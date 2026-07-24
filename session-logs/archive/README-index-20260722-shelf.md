@@ -6,3 +6,4 @@
 - `20260722.130329` — [REMEMBER git nib after STOA218](20260722-130329_remember-git-nib-stoa218.bron) — pin 756a83b8bb
 - `20260722.130604` — [STOA219 face=lit parse GREEN](20260722-130604_stoa219-face-lit-parse.bron) — parse_face_lit; lower held
 - `20260722.130753` — [Hoon.hoon study vs Glow path](20260722-130753_hoon-hoon-study-vs-glow-path.bron) — selective study; not continuous mint mirror
+- `20260722.130902` — [STOA220 face=lit lower GREEN](20260722-130902_stoa220-face-lit-lower-emit.bron) — lit bytes; demos absent

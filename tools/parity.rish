@@ -34,4 +34,9 @@ let glow_repl = run ["rishi/bin/rishi" "run" "tools/glow_repl_witness.rish"]
 assert glow_repl.ok else "glow repl witness failed"
 say "GREEN: Rishi glow mode SLC passed."
 
-say "GREEN: full witness suite — 2 chapters + jam/cue vectors + glow REPL under Env binding ceiling."
+say "witness suite: waymark derive corpus pin…"
+let waymark = run ["rishi/bin/rishi" "run" "tools/waymark_derive_witness.rish"]
+assert waymark.ok else "waymark derive witness failed"
+say "GREEN: waymark derive corpus pin passed."
+
+say "GREEN: full witness suite — 2 chapters + jam/cue + glow REPL + waymark pin under Env binding ceiling."

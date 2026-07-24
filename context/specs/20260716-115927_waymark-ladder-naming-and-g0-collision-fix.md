@@ -4,7 +4,7 @@
 **Version:** `20260716.115927` · corrected `20260716.124840` (hash family fixed to this tree's own SHA3-512; the derived word changed from a first, wrong SHA-2 draw)
 **Style:** Radiant (see `../RADIANT_STYLE.md`)
 **Voice:** Quin
-**Status:** Living — seats a new naming convention and applies it once, today, to a real collision. Register: checkable — the derivation is a real witness (`tools/waymark_derive.rish`), GREEN on this metal.
+**Status:** Living — seats a new naming convention and applies it once, today, to a real collision. Register: checkable — the derivation is a real witness (`tools/waymark_derive.rish`), GREEN on this metal. Corpus pin refreshed `20260724.151327` (Option C fixture twin + digest).
 
 ---
 
@@ -25,7 +25,7 @@ Twenty-six letters sounds like room enough, yet the real failure mode is not exh
 
 What3words solves an adjacent problem (uniquely addressing every 3×3m square on Earth) with one idea worth borrowing in spirit only, per this tree's own clean-room discipline (`.cursor/rules/gratitude-licenses.mdc`): **a stable function from a name to a word (or words) needs no central coordination to stay collision-free** — nobody has to check a shared ledger of "words already taken," because the mapping itself is deterministic. No what3words code, word list, or proprietary algorithm is used here, or ever vendored into this tree; only that one idea.
 
-The actual word corpus is one this tree already holds: `old/doc/spec/flw.txt`, part of the vendored `urbit/urbit` tree (permissive, per `gratitude-licenses.mdc`'s own listing), a plain list of valid four-letter English words — **5,526 of them**, once de-duplicated and confirmed as clean `[A-Z]{4}` entries. A word list is a collection of facts, not creative expression, so drawing individual words from it for our own naming needs (exactly as this fork already did by hand for `Sala`, `Pool`, `Ojjo`, `Quin`, `Rhyz`) is the same permissive-study, clean-room-authored pattern the whole Lexicon already stands on.
+The actual word corpus began as one this tree already held: `old/doc/spec/flw.txt`, part of the vendored `urbit/urbit` tree (MIT, per `gratitude-licenses.mdc`'s own listing), a plain list of valid four-letter English words — **5,526 of them**, once de-duplicated and confirmed as clean `[A-Z]{4}` entries. **Runtime pin (Option C, `20260724.151327`):** [`../../tools/fixtures/flw-four-letter.txt`](../../tools/fixtures/flw-four-letter.txt) — a whole-file twin with a short attribution header above `# body unmodified below`; extract skips the header. Naming-grade pins in `tools/waymark_derive.rish`: count `5526` and SHA3-512 of the extracted corpus. Sameness witness: `tools/waymark_derive_witness.rish`. A word list is a collection of facts, not creative expression, so drawing individual words from it for our own naming needs (exactly as this fork already did by hand for `Sala`, `Pool`, `Ojjo`, `Quin`, `Rhyz`) is the same permissive-study, clean-room-authored pattern the whole Lexicon already stands on.
 
 ## Waymark, Defined
 
@@ -76,7 +76,18 @@ GREEN: waymark derived -- HAWM
 
 ## Using Waymark for the Next Ladder
 
-Open `tools/waymark_derive.rish`, change the one `input_name` line to the new ladder's own canonical name, run it (`rishi/bin/rishi run tools/waymark_derive.rish`), and read the printed word off a GREEN close. If the closing assert ever goes RED — the draw landed on an already-seated name, at roughly 1-in-5,526 odds — append `-2` to the input and redraw. No ledger to check, no coordination with anyone else naming a ladder the same week; the function itself keeps the promise.
+Open `tools/waymark_derive.rish`, change the one `input_name` line to the new ladder's own canonical name, run it (`rishi/bin/rishi run tools/waymark_derive.rish`), and read the printed word off a GREEN close. If the closing assert ever goes RED — the draw landed on an already-seated name, at roughly 1-in-5,526 odds — append `-2` to the input and redraw. No ledger to check, no coordination with anyone else naming a ladder the same week; the function itself keeps the promise. Re-running the script with a *already-seated* placeholder input trips the exclude list by design; use a fresh input for the next ladder. Corpus sameness: `rishi/bin/rishi run tools/waymark_derive_witness.rish`.
+
+## Genre law — fixtures, inherited trees, gratitude
+
+Seated `20260724.151327` with the Option C flw pin, for all future cases:
+
+| Kind | Home |
+|------|------|
+| Authored fixtures the bench asserts | `tools/fixtures/` |
+| Inherited trees kept for study | sibling clones (not the working pier) |
+| A single inherited data file the bench asserts | fixtures twin with attribution header + digest pin |
+| Gratitude shelf | reading library only — never a runtime dependency |
 
 ## Related
 
@@ -86,7 +97,10 @@ Open `tools/waymark_derive.rish`, change the one `input_name` line to the new la
 - `context/LEXICON.md` — the Waymark entry seated alongside Lap and Bench.
 - `.cursor/rules/gratitude-licenses.mdc` · `.cursor/rules/placeholder-ship-names.mdc` — the two disciplines this scheme leans on (clean-room study; structural safety by construction).
 - `20260703-191112_resins-and-hash-tiers.md` — the ratified two-tier SHA3 policy this scheme's own hash step follows (Canonical/SHA3-512, not Working/SHA3-256 or plain SHA-2).
-- `tools/waymark_derive.rish` — the witness itself.
+- `tools/waymark_derive.rish` — the operator derive script.
+- `tools/waymark_derive_witness.rish` — naming-grade corpus + seated-draw sameness.
+- `tools/fixtures/flw-four-letter.txt` — runtime corpus pin (elder path named in its header).
+- Counsel ask `counsel/20260724-150246_flw-corpus-shelf-and-vere-old.md` · reply `counsel/replies/20260724-151327_re-flw-corpus-shelf-option-c.md`.
 
 ---
 
