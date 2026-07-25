@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260725.143250` — [Pier untrack vere and old](20260725-143250_pier-untrack-vere-old.bron) — Framework ritual · depth-1 clones skip 2701 elder files  
 - `20260725.120908` — [Send Quin relay PR 131 restamped EDT](20260725-120908_send-quin-relay-restamp.bron) — UTC drift fixed · duty 4 provenance · PR #131 sent  
 - `20260725.120702` — [Send Quin relay PR 131 nib 75627b4349](20260725-120702_send-quin-relay-pr131.bron) — superseded send stamp (UTC drift; restamped)  
 - `20260725.120701` — [Quin relay structure Mand harvest Glow floor](20260725-120701_quin-relay-structure-mand-harvest.bron) — column fix · mand/ home · ring-3 · four harvest verbs · Glow text floor  
