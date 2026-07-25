@@ -11,6 +11,8 @@
 
 *Written together by Keaton and Quin.*
 
+Radiant pass `20260725.105504`
+
 ---
 
 A person will one day ask us to forget them, and the ledger we built remembers by construction. That collision is the whole of this document. The good news, arrived at plainly: the collision is apparent rather than real, and the tree already holds every mechanism the resolution needs. What remains is naming which mechanism answers which question, and refusing to let one stand in for another.
