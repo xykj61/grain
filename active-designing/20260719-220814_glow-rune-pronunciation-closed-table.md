@@ -10,6 +10,8 @@
 **Waymark:** **STOA90**  
 **Grounds in:** [`20260719-204001_glow-rune-pronunciation-alphabet-riscv-and-generators.md`](20260719-204001_glow-rune-pronunciation-alphabet-riscv-and-generators.md) · [`../glow/tokens.rye`](../glow/tokens.rye) `match_rune2` · [Hoon School — Pronouncing Hoon](https://docs.urbit.org/build-on-urbit/hoon-school)
 
+Radiant pass `20260725.111715`
+
 ---
 
 ## Authority
