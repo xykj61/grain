@@ -1,0 +1,9 @@
+format session-log-v1
+stamp 20260725.110924
+editor Cursor
+model Cursor Composer 2.5 300k Fast
+voice Quin
+title Send Radiant Wave 20 spot-read
+prompt kg
+obs Spot-read wov-mala-hardware-fit; PR 109
+recommend keep-going Wave 21 bound 50
