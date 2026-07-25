@@ -61,9 +61,12 @@ pub const AuditLog = struct {
         record_id: []const u8,
         authority: []const u8,
     ) error{AuditFull}!void {
-        assert(reader.len > 0 and reader.len <= max_audit_name_len);
-        assert(record_id.len > 0 and record_id.len <= max_audit_name_len);
-        assert(authority.len > 0 and authority.len <= max_audit_name_len);
+        assert(reader.len > 0); // precondition: reader named
+        assert(reader.len <= max_audit_name_len); // precondition: reader within bound
+        assert(record_id.len > 0); // precondition: record named
+        assert(record_id.len <= max_audit_name_len); // precondition: record within bound
+        assert(authority.len > 0); // precondition: authority named
+        assert(authority.len <= max_audit_name_len); // precondition: authority within bound
         if (self.count >= max_audit_entries) return error.AuditFull;
         var e: AuditEntry = .{};
         e.reader_len = @intCast(reader.len);
@@ -104,7 +107,8 @@ pub fn see_record(
     assert(reader.len > 0);
     assert(authority.len > 0);
     assert(record_id.len > 0);
-    assert(body.len > 0 and body.len <= max_record_body_len);
+    assert(body.len > 0); // precondition: body present
+    assert(body.len <= max_record_body_len); // precondition: body within bound
     // Ring-1: reader and authority are one named identity at the seam.
     if (!std.mem.eql(u8, reader, authority)) return error.Refused;
     if (!may_see(table, authority)) return error.Refused;

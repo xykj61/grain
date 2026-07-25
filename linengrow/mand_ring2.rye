@@ -1,0 +1,169 @@
+//! linengrow/mand_ring2.rye — Mand ring-2: retention eligibility (decide, never erase).
+//!
+//! Seam (SLC): what is this record's standing under its published schedule —
+//! keep until X, eligible, or held under H?
+//!
+//! Ring-2 DESTROYS NOTHING. Deletion is key-destruction and belongs to a later
+//! ring. This lap decides and records on Mand ring-1's audit log.
+//!
+//! Reason: custody doctrine's published retention and legal-hold regime
+//! (foundations/20260724-200912_nothing-to-give-custody-first-principle.md ·
+//! counsel Hands We Grow) — ordinary release must be scheduled, announced,
+//! and suspended the instant a hold arrives.
+//!
+//!   rye build linengrow/mand_ring2_witness.rye -femit-bin=linengrow/bin/mand_ring2_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const mand1 = @import("mand_ring1.rye");
+const tally_copy = @import("tally_copy.rye");
+
+pub const mand_ring2_version = "20260724.212805";
+
+/// Plain standing words a person could be shown.
+pub const Standing = enum {
+    keep,
+    eligible,
+    held,
+
+    pub fn word(self: Standing) []const u8 {
+        return switch (self) {
+            .keep => "KEEP",
+            .eligible => "ELIGIBLE",
+            .held => "HELD",
+        };
+    }
+};
+
+pub const RetentionError = error{
+    MissingSchedule,
+    MalformedSchedule,
+    TooManyHolds,
+    AuditFull,
+};
+
+/// Max retention window length in chronological stamp units (u64 seconds-of-
+/// stamp space). Reason: one century of seconds bounds any published civil
+/// schedule we will seat; longer windows are a different product claim.
+pub const max_retention_window: u64 = 3_155_760_000;
+
+/// Max simultaneous holds on one record. Reason: legal holds are rare and
+/// named; a pile past eight is a process smell, not a custody need.
+pub const max_holds_per_record: u32 = 8;
+
+pub const max_class_name_len: u32 = 48;
+pub const max_hold_id_len: u32 = 48;
+
+/// One retention schedule attached to one record class.
+pub const Schedule = struct {
+    class: [max_class_name_len]u8 = undefined,
+    class_len: u32 = 0,
+    /// Inclusive start of the keep window (persisted chronological stamp).
+    keep_from: u64 = 0,
+    /// Exclusive end of the keep window — at and after this stamp, standing
+    /// is ELIGIBLE unless a hold is in force.
+    keep_until: u64 = 0,
+
+    pub fn class_slice(self: *const Schedule) []const u8 {
+        const n: usize = @intCast(self.class_len);
+        return self.class[0..n];
+    }
+};
+
+pub const Hold = struct {
+    id: [max_hold_id_len]u8 = undefined,
+    id_len: u32 = 0,
+    in_force: bool = false,
+
+    pub fn id_slice(self: *const Hold) []const u8 {
+        const n: usize = @intCast(self.id_len);
+        return self.id[0..n];
+    }
+};
+
+pub const Decision = struct {
+    standing: Standing,
+    audit_written: bool,
+};
+
+/// Build a schedule or refuse MalformedSchedule / MissingSchedule (fail closed).
+pub fn make_schedule(class: []const u8, keep_from: u64, keep_until: u64) RetentionError!Schedule {
+    assert(class.len <= max_class_name_len); // precondition: class within name budget
+    if (class.len == 0) return error.MissingSchedule;
+    if (keep_until < keep_from) return error.MalformedSchedule;
+    const span: u64 = keep_until - keep_from;
+    if (span > max_retention_window) return error.MalformedSchedule;
+    var s: Schedule = .{};
+    s.class_len = @intCast(class.len);
+    tally_copy.copy_disjoint(u8, s.class[0..class.len], class);
+    s.keep_from = keep_from;
+    s.keep_until = keep_until;
+    assert(s.class_len > 0); // postcondition: class present
+    assert(s.keep_until >= s.keep_from); // postcondition: ordered window
+    return s;
+}
+
+/// True when any hold in the slice is in force.
+pub fn hold_in_force(holds: []const Hold) bool {
+    assert(holds.len <= max_holds_per_record); // precondition: within named bound
+    var i: u32 = 0;
+    const n: u32 = @intCast(holds.len);
+    while (i < n) : (i += 1) {
+        if (holds[@as(usize, @intCast(i))].in_force) return true;
+    }
+    return false;
+}
+
+/// Eligibility path only — window vs now. Does not consult holds.
+pub fn standing_by_window(schedule: *const Schedule, now: u64) Standing {
+    assert(schedule.class_len > 0); // precondition: schedule declared
+    assert(schedule.keep_until >= schedule.keep_from); // precondition: ordered
+    if (now < schedule.keep_until) return .keep;
+    return .eligible;
+}
+
+/// Hold path — past-window standing becomes HELD when any hold is in force.
+pub fn standing_with_holds(window_standing: Standing, holds: []const Hold) RetentionError!Standing {
+    assert(holds.len <= max_holds_per_record); // precondition: within named bound
+    if (holds.len > max_holds_per_record) return error.TooManyHolds;
+    if (window_standing == .keep) return .keep;
+    assert(window_standing == .eligible); // invariant: only eligible can become held
+    if (hold_in_force(holds)) return .held;
+    return .eligible;
+}
+
+/// Full standing: schedule required (fail closed) · window · holds.
+pub fn retention_standing(
+    schedule: ?*const Schedule,
+    now: u64,
+    holds: []const Hold,
+) RetentionError!Standing {
+    assert(holds.len <= max_holds_per_record); // precondition
+    const sched = schedule orelse return error.MissingSchedule;
+    if (sched.class_len == 0) return error.MissingSchedule;
+    if (sched.keep_until < sched.keep_from) return error.MalformedSchedule;
+    const by_window = standing_by_window(sched, now);
+    return standing_with_holds(by_window, holds);
+}
+
+/// Decide standing and write exactly one audit line to Mand ring-1's log.
+/// Actor is the named retention authority writing the decision.
+pub fn decide_retention(
+    audit: *mand1.AuditLog,
+    actor: []const u8,
+    record_id: []const u8,
+    schedule: ?*const Schedule,
+    now: u64,
+    holds: []const Hold,
+) RetentionError!Decision {
+    assert(actor.len > 0); // precondition: actor named
+    assert(actor.len <= mand1.max_audit_name_len); // precondition: actor within bound
+    assert(record_id.len > 0); // precondition: record named
+    assert(record_id.len <= mand1.max_audit_name_len); // precondition: record within bound
+    assert(holds.len <= max_holds_per_record); // precondition: holds within bound
+    const standing = try retention_standing(schedule, now, holds);
+    const word = standing.word();
+    assert(word.len > 0); // invariant: every standing has a plain word
+    audit.append(actor, record_id, word) catch return error.AuditFull;
+    return .{ .standing = standing, .audit_written = true };
+}

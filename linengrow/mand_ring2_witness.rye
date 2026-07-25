@@ -1,0 +1,110 @@
+//! linengrow/mand_ring2_witness.rye — Mand ring-2 retention eligibility.
+//!
+//!   rye build linengrow/mand_ring2_witness.rye -femit-bin=linengrow/bin/mand_ring2_witness
+//!   linengrow/bin/mand_ring2_witness
+//!
+//! Claims:
+//!   1. Inside window → KEEP + one audit line.
+//!   2. Past window → ELIGIBLE + one audit line.
+//!   3. Past window WITH hold → HELD (paired: eligibility path + hold path).
+//!   4. One decide → exactly one audit line (present; not doubled in one call).
+//!   5. Missing / malformed schedule REFUSES (fail closed).
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const mand1 = @import("mand_ring1.rye");
+const mand2 = @import("mand_ring2.rye");
+const tally_copy = @import("tally_copy.rye");
+
+const witness_version = "20260724.212805";
+
+fn run_selftest() !u8 {
+    const actor = "custodian";
+    const record_id = "rec-retain-1";
+
+    // Window [100, 200): keep while now < 200.
+    const sched = try mand2.make_schedule("memo-class", 100, 200);
+    assert(std.mem.eql(u8, sched.class_slice(), "memo-class"));
+    print("mand-ring2: schedule memo-class keep_from=100 keep_until=200\n", .{});
+
+    var audit: mand1.AuditLog = .{};
+
+    // Claim 1: inside window → KEEP.
+    const d_keep = try mand2.decide_retention(&audit, actor, record_id, &sched, 150, &[_]mand2.Hold{});
+    assert(d_keep.standing == .keep);
+    assert(d_keep.audit_written);
+    assert(audit.count == 1);
+    assert(std.mem.eql(u8, audit.entries[0].authority_slice(), "KEEP"));
+    assert(std.mem.eql(u8, audit.entries[0].record_id_slice(), record_id));
+    print("mand-ring2: inside window reads KEEP, audit written -- GREEN welcome path\n", .{});
+
+    // Claim 2: past window → ELIGIBLE.
+    const before_elig = audit.count;
+    const d_elig = try mand2.decide_retention(&audit, actor, record_id, &sched, 200, &[_]mand2.Hold{});
+    assert(d_elig.standing == .eligible);
+    assert(d_elig.audit_written);
+    assert(audit.count == before_elig + 1);
+    assert(std.mem.eql(u8, audit.entries[before_elig].authority_slice(), "ELIGIBLE"));
+    print("mand-ring2: past window reads ELIGIBLE, audit written -- GREEN welcome path\n", .{});
+
+    // Claim 3: past window WITH hold → HELD (paired assertion).
+    var hold: mand2.Hold = .{};
+    const hold_id = "hold-subpoena-1";
+    hold.id_len = @intCast(hold_id.len);
+    tally_copy.copy_disjoint(u8, hold.id[0..hold_id.len], hold_id);
+    hold.in_force = true;
+    const holds = [_]mand2.Hold{hold};
+
+    // Eligibility path: window alone says ELIGIBLE.
+    const by_window = mand2.standing_by_window(&sched, 250);
+    assert(by_window == .eligible);
+    // Hold path: ELIGIBLE + hold in force → HELD.
+    const by_hold = try mand2.standing_with_holds(by_window, holds[0..]);
+    assert(by_hold == .held);
+    assert(by_hold.word().len == 4); // "HELD"
+    const before_held = audit.count;
+    const d_held = try mand2.decide_retention(&audit, actor, record_id, &sched, 250, holds[0..]);
+    assert(d_held.standing == .held);
+    assert(d_held.audit_written);
+    assert(audit.count == before_held + 1);
+    assert(std.mem.eql(u8, audit.entries[before_held].authority_slice(), "HELD"));
+    print("mand-ring2: past window WITH hold reads HELD (eligibility + hold paths) -- GREEN paired path\n", .{});
+
+    // Claim 4: one decide writes exactly one line (not zero, not two in one call).
+    const before_one = audit.count;
+    const d_one = try mand2.decide_retention(&audit, actor, "rec-2", &sched, 150, &[_]mand2.Hold{});
+    assert(d_one.audit_written);
+    assert(audit.count == before_one + 1);
+    assert(audit.count != before_one);
+    assert(audit.count != before_one + 2);
+    print("mand-ring2: one decision writes exactly one audit line -- GREEN\n", .{});
+
+    // Claim 5a: missing schedule REFUSES (fail closed — never default eligible).
+    const before_miss = audit.count;
+    const miss = mand2.decide_retention(&audit, actor, record_id, null, 150, &[_]mand2.Hold{});
+    if (miss) |_| {
+        return error.MissingScheduleAdmitted;
+    } else |err| {
+        if (err != mand2.RetentionError.MissingSchedule) return err;
+    }
+    assert(audit.count == before_miss);
+    print("mand-ring2: missing schedule REFUSES MissingSchedule -- GREEN unwelcome path\n", .{});
+
+    // Claim 5b: malformed schedule REFUSES.
+    const bad = mand2.make_schedule("bad-class", 200, 100);
+    if (bad) |_| {
+        return error.MalformedScheduleAdmitted;
+    } else |err| {
+        if (err != mand2.RetentionError.MalformedSchedule) return err;
+    }
+    print("mand-ring2: malformed schedule REFUSES MalformedSchedule -- GREEN unwelcome path\n", .{});
+
+    print("mand-ring2: version {s} (module {s})\n", .{ witness_version, mand2.mand_ring2_version });
+    print("GREEN: Mand ring-2 -- retention eligibility; KEEP · ELIGIBLE · HELD; fail closed.\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}

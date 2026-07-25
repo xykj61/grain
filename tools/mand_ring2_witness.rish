@@ -1,0 +1,23 @@
+# mand_ring2_witness.rish — Mand ring-2: retention eligibility (decide, never erase).
+#
+# Seam: keep until X · eligible · held under H — written to Mand ring-1's audit log.
+#
+#   rishi/bin/rishi run tools/mand_ring2_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/mand_ring2_witness"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/mand_ring2_witness.rye -femit-bin=${bin}"]
+assert build.ok else "Mand ring-2 witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "Mand ring-2 witness exited non-zero"
+assert selftest.out contains "GREEN" else "Mand ring-2 witness not GREEN"
+assert selftest.out contains "KEEP" else "Mand ring-2 missing KEEP path"
+assert selftest.out contains "ELIGIBLE" else "Mand ring-2 missing ELIGIBLE path"
+assert selftest.out contains "HELD" else "Mand ring-2 missing HELD paired path"
+assert selftest.out contains "exactly one audit line" else "Mand ring-2 missing one-line audit claim"
+assert selftest.out contains "MissingSchedule" else "Mand ring-2 missing MissingSchedule refuse"
+assert selftest.out contains "MalformedSchedule" else "Mand ring-2 missing MalformedSchedule refuse"
+
+say "GREEN: Mand ring-2 retention eligibility witness passed (KEEP · ELIGIBLE · HELD · fail closed)."
