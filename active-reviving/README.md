@@ -10,7 +10,7 @@
 
 ## What Reviving Is
 
-Reviving is how Glow OS grows: not by renaming what exists, but by **re-growing an existing working thing into the Glow direction as a new artifact beside the elder.** A revival takes something real — an Urbit vane resting in `old/`, a Rye OS module already running, a retired seam like the WOV-TigerBeetle pin — and rewrites its proven essence in Glow, under TAME, born with its Glow-direction name. The elder keeps its name and its green witnesses and keeps running. The revival supersedes it only once it is proven, and never before.
+Reviving is how Grain grows: not by renaming what exists, but by **re-growing an existing working thing into the Glow direction as a new artifact beside the elder.** A revival takes something real — an Urbit vane resting in `old/`, a Rye OS module already running, a retired seam like the WOV-TigerBeetle pin — and rewrites its proven essence in Glow, under TAME, born with its Glow-direction name. The elder keeps its name and its green witnesses and keeps running. The revival supersedes it only once it is proven, and never before.
 
 This resolves the rename tension at its root. We were weighing whether to rename our modules to Urbit's vane names (huge reference churn, un-reviewable diffs) or keep our own (less legible to Urbit). Reviving dissolves the choice: **we never rename.** A revived module is a new thing, so it is simply *born* with whichever name fits the Glow direction — while the elder it grew from stays exactly as it was until the revival earns the right to replace it.
 
@@ -53,7 +53,7 @@ These are already underway, now recognized as revivals rather than one-off desig
 
 ## Why This Is the Right Shape
 
-- It is Gall's Law made into a folder: a complex Glow OS grows from the simpler elders that already worked, one revival at a time, each proven before it supersedes.
+- It is Gall's Law made into a folder: a complex Grain grows from the simpler elders that already worked, one revival at a time, each proven before it supersedes.
 - It keeps every review small and human-checkable — the elder never churns, the revival is a fresh, self-contained artifact.
 - It keeps every pitch legible — a revival can be pitched as "our Glow-native Clay," born with that name, without ever having renamed Mantra.
 - It is honest — the elder stays visible and running until the revival truly earns its place.

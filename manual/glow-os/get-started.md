@@ -1,4 +1,4 @@
-# Glow OS — Get Started
+# Grain — Get Started
 
 **Language:** EN
 **Version:** `20260718.192716` (Eastern) · prior `20260717.173427` · scaffold `20260713.235900`
@@ -16,7 +16,7 @@
 
 ## Two paths that meet
 
-Glow OS documentation has two front doors that share one house. Pick the door that matches what you came to do; both lead to packaging when you are ready to put a Glow fold on a phone.
+Grain documentation has two front doors that share one house. Pick the door that matches what you came to do; both lead to packaging when you are ready to put a Glow fold on a phone.
 
 | Path | Start here | Compressor |
 |------|------------|------------|

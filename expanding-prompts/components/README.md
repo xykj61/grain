@@ -26,12 +26,12 @@ Components are prefixed `_` (like a template partial) so they sort together and 
 
 ## The Starter Set
 
-- [`_fusion-design.prompt.md`](_fusion-design.prompt.md) — design a fusion of a Glow OS module with an Urbit/other concept, in Glow under the proposed names.
+- [`_fusion-design.prompt.md`](_fusion-design.prompt.md) — design a fusion of a Grain module with an Urbit/other concept, in Glow under the proposed names.
 - [`_naming-proposal.prompt.md`](_naming-proposal.prompt.md) — propose a name with collision research and a reference-cost estimate.
 
 ## Why It Is Shaped This Way
 
-This fork has, in a single season, run the same few prompt shapes many times: "design a fusion," "propose a name," "silo a source," "scope a module." Writing each as a component means the discipline (secular voice, held-whole gratitude, bounded TAME, honest open-questions, bron logging) is carried in the template rather than remembered each time — the same reason a UI library exists. In time these generalize into the shared prompt vocabulary a mature Glow OS hands to every contributor.
+This fork has, in a single season, run the same few prompt shapes many times: "design a fusion," "propose a name," "silo a source," "scope a module." Writing each as a component means the discipline (secular voice, held-whole gratitude, bounded TAME, honest open-questions, bron logging) is carried in the template rather than remembered each time — the same reason a UI library exists. In time these generalize into the shared prompt vocabulary a mature Grain hands to every contributor.
 
 ---
 

@@ -64,7 +64,7 @@ Seated `20260725.034254` with the responsive rhythm ([`../foundations/20260725-0
 
 ## The Larger Why
 
-Keaton builds safer, kinder spaces for communication — and grows Glow OS as a path around the usual app-store gates. The work supports vegan legislators and musicians who choose to be brave. I hold that purpose in view; every small, well-made piece serves it.
+Keaton builds safer, kinder spaces for communication — and grows Grain as a path around the usual app-store gates. The work supports vegan legislators and musicians who choose to be brave. I hold that purpose in view; every small, well-made piece serves it.
 
 ---
 

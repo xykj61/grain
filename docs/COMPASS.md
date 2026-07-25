@@ -1,4 +1,4 @@
-# COMPASS — Day-one rose for Glow OS
+# COMPASS — Day-one rose for Grain
 
 *Compresses the foundations reading order and Cursor loop vocabulary for an Acme Corporation employee or agent cold start. Never replaces the raw shelf.*
 
@@ -12,7 +12,7 @@
 
 ## Thesis — meet the rose before the cathedral
 
-Glow OS keeps why-briefs in `foundations/` and living law in `context/`. Those shelves stay. When time or context is short, start here, then open one pointed source. A Bron pointer twin lives at [`compass_card.bron`](compass_card.bron).
+Grain keeps why-briefs in `foundations/` and living law in `context/`. Those shelves stay. When time or context is short, start here, then open one pointed source. A Bron pointer twin lives at [`compass_card.bron`](compass_card.bron).
 
 ## The rose (oldest conviction → newest lap)
 

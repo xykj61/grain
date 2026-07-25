@@ -1,4 +1,4 @@
-# Glow OS
+# Grain
 
 **Language:** EN
 **Style:** Radiant (see [`context/RADIANT_STYLE.md`](context/RADIANT_STYLE.md))
@@ -6,9 +6,9 @@
 
 ---
 
-Welcome. This repository is **Glow OS** — a body of work developed in the open as a **proposal to [Urbit](https://urbit.org)**, exploring what Urbit could become when its ideas are rebuilt in **Glow**, a language that keeps Hoon's runes over bounded, asserted, statically-disciplined semantics. It descends from `urbit/urbit` as a downstream research repository, and its intent is collaborative: to grow ideas here, prove them with witnesses, and offer the ones that earn their place back upstream as contributions — an infinite game played *with* Urbit, not against it. If you are an Acme Corporation employee opening this tree for the first time, this page is the one calm read that orients you: what Glow OS is, the five variants you can choose between, what actually boots today, and where to go next.
+Welcome. This repository is **Grain** — a body of work developed in the open as a **proposal to [Urbit](https://urbit.org)**, exploring what Urbit could become when its ideas are rebuilt in **Glow**, a language that keeps Hoon's runes over bounded, asserted, statically-disciplined semantics. It descends from `urbit/urbit` as a downstream research repository, and its intent is collaborative: to grow ideas here, prove them with witnesses, and offer the ones that earn their place back upstream as contributions — an infinite game played *with* Urbit, not against it. If you are an Acme Corporation employee opening this tree for the first time, this page is the one calm read that orients you: what Grain is, the five variants you can choose between, what actually boots today, and where to go next.
 
-Glow OS is one body of work with **one language, one value model, and one law** ([`context/TAME_GUIDANCE.md`](context/TAME_GUIDANCE.md)) — offered to you as a template in which you pick a variant and build. Its stance is a **collaborative, ethical accelerationism**: build ambitiously and in the open, measure honestly, and offer the work upstream as a gift rather than hold it apart (see [`gratitude/TechnoOptimistManifesto.md`](gratitude/TechnoOptimistManifesto.md)).
+Grain is one body of work with **one language, one value model, and one law** ([`context/TAME_GUIDANCE.md`](context/TAME_GUIDANCE.md)) — offered to you as a template in which you pick a variant and build. Its stance is a **collaborative, ethical accelerationism**: build ambitiously and in the open, measure honestly, and offer the work upstream as a gift rather than hold it apart (see [`gratitude/TechnoOptimistManifesto.md`](gratitude/TechnoOptimistManifesto.md)).
 
 ---
 
@@ -40,13 +40,13 @@ The full onboarding surface for the variants lives in the manual: [`manual/glow-
 |---|---|---|---|
 | Language | **Glow** | Hoon's runes over TAME-bounded semantics; emits ordinary `.rye` | desk hops emit GREEN — see [`glow/README.md`](glow/README.md) |
 | Interpreter | **Nock interpreter** | runs Glow's compiled forms | scoped (Nock 4K), not built |
-| Umbrella | **Glow OS** | the whole system | named (formerly "Rye OS") |
+| Umbrella | **Grain** | the whole system | named (formerly "Rye OS") |
 | Variants | **Reya · Riyo · Trey · Triz · Quin** | five switchable OS builds, all in Glow | named; see the table above |
 | Kernel spine | state as a pure fold over an append-only log of signed facts | the transition-function model | the stated spine, with running witnesses |
 | App ladder | **TUBE** | Glow app = Pool agent → signed APK on GrapheneOS (HAWM) | TUBE0–5 · TUBE7 GREEN; TUBE6 horizon — [`docs/TUBE.md`](docs/TUBE.md) |
 | Modules | Rishi, Mantra, Comlink, Caravan, Tally, Brix, Bron, Aurora, Pond, Scribble, and more | the running seeds | many green today |
 
-**An honest word on status.** Most of what runs today still lives under the project's prior module names and is being carried into Glow OS by decision, not yet by a mass rename. Glow's **desk already emits** through `glow_run` witnesses; a full OS boot and the Nock interpreter remain horizon. The five variants are named and scoped — real design, real direction — yet not things you can boot quite yet. Every page in this tree marks its own register: what a witness proves, versus what is proposed. Nothing here claims a feature its witnesses do not show. That discipline has a name and a home ([`context/TWO_ROOMS.md`](context/TWO_ROOMS.md)).
+**An honest word on status.** Most of what runs today still lives under the project's prior module names and is being carried into Grain by decision, not yet by a mass rename. Glow's **desk already emits** through `glow_run` witnesses; a full OS boot and the Nock interpreter remain horizon. The five variants are named and scoped — real design, real direction — yet not things you can boot quite yet. Every page in this tree marks its own register: what a witness proves, versus what is proposed. Nothing here claims a feature its witnesses do not show. That discipline has a name and a home ([`context/TWO_ROOMS.md`](context/TWO_ROOMS.md)).
 
 ---
 
@@ -70,7 +70,7 @@ Two root configuration files hold what is specific to *your* machine and *your* 
 Then read, in order:
 
 1. **[`ORGANIZING.md`](ORGANIZING.md)** — where every kind of work lives in this tree.
-2. **[`manual/glow-os/`](manual/glow-os/README.md)** — the Glow OS onboarding rooms and the five variants.
+2. **[`manual/glow-os/`](manual/glow-os/README.md)** — the Grain onboarding rooms and the five variants.
 3. **[`docs/TUBE.md`](docs/TUBE.md)** · **[`glow/README.md`](glow/README.md)** — what the app ladder and language desk prove today.
 4. **[`CONTRIBUTING.md`](CONTRIBUTING.md)** — how a contribution arrives: small, signed, component-prefixed, in Radiant voice.
 

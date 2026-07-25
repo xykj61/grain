@@ -144,19 +144,19 @@ G5 brief: [`../active-designing/20260720-033200_stoa98-g5-nock-second-backend-fa
 | **STOA146 GREEN** | Nona-mold gate sample — nine-field `$:` · `NonaMold` struct · baked from 5 amount 3 fee 1 nonce 2 memo 7 tag 4 to 6 via 8 ref 9 |
 | **Capacity freeze** | Closed `$:` allowlist stops at nine faces (`nona-mold` · `max_fields == 9`) — brief `20260720.231857` |
 | **STOA147 GREEN** | Nona-mold call body — closed nine-field `$:` flip · NonaMold swap · baked 5/3/1/2/7/4/6/8/9 → 3/5/1/2/7/4/6/8/9 |
-| **STOA148 GREEN** | `amount-shape` — first Glow OS shape allowlist alias ≡ `amount-mold` (one-field `$:` / `@u32`) |
-| **STOA149 GREEN** | `count-shape` — twin Glow OS shape allowlist alias ≡ `count-mold` (one-field `$:` / `@u32`) |
-| **STOA150 GREEN** | `pair-shape` — first multi-field Glow OS shape allowlist alias ≡ `pair-mold` (PairMold) |
-| **STOA151 GREEN** | `kind-shape` — first unit `$%` Glow OS shape allowlist alias ≡ `kind-mold` (KindMold) |
-| **STOA152 GREEN** | `xact-shape` — first payload `$%` Glow OS shape allowlist alias ≡ `xact-mold` (XactMold) |
-| **STOA153 GREEN** | `xfer-shape` — first multi-face payload `$%` Glow OS shape allowlist alias ≡ `xfer-mold` (XferMold) |
-| **STOA154 GREEN** | `triple-shape` — three-field `$:` Glow OS shape allowlist alias ≡ `triple-mold` (TripleMold) |
-| **STOA155 GREEN** | `quad-shape` — four-field `$:` Glow OS shape allowlist alias ≡ `quad-mold` (QuadMold) |
-| **STOA156 GREEN** | `penta-shape` — five-field `$:` Glow OS shape allowlist alias ≡ `penta-mold` (PentaMold) |
-| **STOA157 GREEN** | `hexa-shape` — six-field `$:` Glow OS shape allowlist alias ≡ `hexa-mold` (HexaMold) |
-| **STOA158 GREEN** | `hepta-shape` — seven-field `$:` Glow OS shape allowlist alias ≡ `hepta-mold` (HeptaMold) |
-| **STOA159 GREEN** | `octa-shape` — eight-field `$:` Glow OS shape allowlist alias ≡ `octa-mold` (OctaMold) |
-| **STOA160 GREEN** | `nona-shape` — nine-field `$:` Glow OS shape allowlist alias ≡ `nona-mold` (NonaMold); closes multi-field shape ladder at capacity freeze |
+| **STOA148 GREEN** | `amount-shape` — first Grain shape allowlist alias ≡ `amount-mold` (one-field `$:` / `@u32`) |
+| **STOA149 GREEN** | `count-shape` — twin Grain shape allowlist alias ≡ `count-mold` (one-field `$:` / `@u32`) |
+| **STOA150 GREEN** | `pair-shape` — first multi-field Grain shape allowlist alias ≡ `pair-mold` (PairMold) |
+| **STOA151 GREEN** | `kind-shape` — first unit `$%` Grain shape allowlist alias ≡ `kind-mold` (KindMold) |
+| **STOA152 GREEN** | `xact-shape` — first payload `$%` Grain shape allowlist alias ≡ `xact-mold` (XactMold) |
+| **STOA153 GREEN** | `xfer-shape` — first multi-face payload `$%` Grain shape allowlist alias ≡ `xfer-mold` (XferMold) |
+| **STOA154 GREEN** | `triple-shape` — three-field `$:` Grain shape allowlist alias ≡ `triple-mold` (TripleMold) |
+| **STOA155 GREEN** | `quad-shape` — four-field `$:` Grain shape allowlist alias ≡ `quad-mold` (QuadMold) |
+| **STOA156 GREEN** | `penta-shape` — five-field `$:` Grain shape allowlist alias ≡ `penta-mold` (PentaMold) |
+| **STOA157 GREEN** | `hexa-shape` — six-field `$:` Grain shape allowlist alias ≡ `hexa-mold` (HexaMold) |
+| **STOA158 GREEN** | `hepta-shape` — seven-field `$:` Grain shape allowlist alias ≡ `hepta-mold` (HeptaMold) |
+| **STOA159 GREEN** | `octa-shape` — eight-field `$:` Grain shape allowlist alias ≡ `octa-mold` (OctaMold) |
+| **STOA160 GREEN** | `nona-shape` — nine-field `$:` Grain shape allowlist alias ≡ `nona-mold` (NonaMold); closes multi-field shape ladder at capacity freeze |
 | **STOA161 GREEN** | inventary of `mold-*` desks · first dual `shape-amount` / cast twins; mold twins kept; rename itinerary open |
 | **STOA162 GREEN** | second one-field dual `shape-count` / cast twins; mold-count kept; one-field dual ladder closed |
 | **STOA163 GREEN** | first multi-field dual `shape-pair` → `PairShape`; mold-pair kept; cast twins held |
