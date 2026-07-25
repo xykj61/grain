@@ -25,9 +25,7 @@
 
 **Digest roots and seated fixture bytes (integrity, not secrecy).** These prove sameness. They are not secrets. Named today: the HAWM1 demo root `99b3ae96…e4c5fe` pinned in `linengrow/seva_b0_fold.rye` (and asserted by rename and product witnesses); the FLW corpus pin over `tools/fixtures/flw-four-letter.txt` (count and SHA3-512 in `tools/waymark_derive.rish`); seated waymark draws (HAWM · TUBE · ZETA · JABS · LULU · STOA · SETU · SEVA). Who reaches them: every clone of the pier; changing them breaks witnesses by design.
 
-**The pier across remotes.** Living push law (`.cursor/rules/git-signing.mdc`) names four remotes: `origin` · `github` · `gp36-codeberg` · `gp36-github`. This cloud pier carries only `origin` today. Who reaches a remote: whoever holds forge credentials for that remote.
-
-**GAP — "five remotes."** Counsel and workshop prose say *five remotes*. The seated signing rule enumerates *four*. No living roster names a fifth. The gap stays named; inventing a fifth here would flatter the page.
+**The pier across remotes.** Canonical count and names live in [`REMOTE_ROSTER.md`](REMOTE_ROSTER.md). This cloud pier carries only `origin` today. Who reaches a remote: whoever holds forge credentials for that remote. Dated prose that says *five remotes* carries an erratum pointing at that roster — the wrong belief stays visible (Tier 2).
 
 **Mand's audit log.** In-process bounded log in `linengrow/mand_ring1.rye` (`AuditLog`, max eight entries). Ring-1 appends on grant; ring-2 writes retention decisions (KEEP · ELIGIBLE · HELD) onto the same log. Who reaches it: the process running Mand's API; it is not yet a durable on-disk store.
 
@@ -64,7 +62,7 @@ Each line is falsifiable. The break condition sits beside it.
 | The master key never enters the sandbox. | A master private key found inside the jail, Pond, or an agent environment. |
 | The jail signs with a revocable subordinate key. | Day-to-day commits verified under the master fingerprint instead. |
 | This cloud pier sees `origin`; full multi-remote propagation is a host ritual, manual and signed. | Unattended fan-out from the jail to every forge, or a fifth remote seated without updating the signing rule. |
-| Dated artifacts are immutable under `dated_guard`; digest-covered fixture bytes are immutable by construction. | A dated path on main edited without a living header; a HAWM/corpus/waymark pin changed while witnesses still claim the old hex. |
+| Digest-covered bytes are Tier 1 (never edit); dated testimony is Tier 2 under `dated_guard` (Radiant pass / errata only). | A Tier 1 pin changed while witnesses claim the old hex; a dated path edited without living header, freeze pointer, or recorded Radiant pass. |
 | A green witness means what its assertions say, and no more. | A GREEN line whose printed claims were not the checks that ran, or a parity skip that still prints GREEN. |
 | Keaton is the sole authority — a named single point of failure. | A seated succession design (OPEN_QUESTIONS #2) that names who acts when the hand rests. |
 

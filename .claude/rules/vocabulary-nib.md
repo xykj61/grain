@@ -17,9 +17,9 @@ In new prose, rules, session logs, living ledger *Now* lines, and Bron fields, u
 - **Git's "tip of the branch"** when quoting or teaching git — teacher-keeps; our HEAD word remains **git nib**.
 - **Giving-lane tipping** as a future gratuity feature — name it in the giving family when that day comes; do not reopen landed-edge *tip* by a side door.
 
-## Accrete-never-break
+## Accrete-never-break (by tier)
 
-Historical *tip* stays readable in dated logs, counsel titles, frozen witnesses, **and landed rows inside living ledgers** (checked TASKS lines, filed RTAC tables, inference-arc history). Sweep only lines that speak as *now*.
+Historical *tip* stays readable in dated logs, counsel titles, frozen witnesses, **and landed rows inside living ledgers** (checked TASKS lines, filed RTAC tables, inference-arc history). Living *Now* lines are Tier 3 and may sweep. Dated testimony is Tier 2 — style via a recorded Radiant pass; facts via errata. Proof-sealed bytes are Tier 1.
 
 ## Witnesses
 

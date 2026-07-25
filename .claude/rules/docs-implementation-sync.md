@@ -11,7 +11,7 @@ A doc that describes behavior the code no longer has is a stale claim wearing do
 
 ## When you change behavior
 
-- **Update the doc that describes it in the same commit as the code change**, not as a later follow-up. Accrete-never-break applies to docs exactly as it applies to code.
+- **Update the doc that describes it in the same commit as the code change**, not as a later follow-up. Accrete-never-break applies by **tier** (TAME §4): living docs and code are Tier 3; testimony takes a recorded pass or erratum; proof-sealed bytes never move.
 - **When you change a doc's claim, check the claim is actually true first** — read the current code path, or run the relevant witness — rather than editing prose from memory of how the code used to work.
 - **This is a ratchet, not a sweep.** Do not go looking for unrelated drift across the whole tree; tighten sync wherever a doc or the code beside it is already open for other reasons in the current turn.
 

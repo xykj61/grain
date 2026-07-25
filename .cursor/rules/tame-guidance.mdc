@@ -16,7 +16,7 @@ Full checkable surface: supplement section **What We Check, and When**.
 - State invariants **before** implementing; `// invariant:` on every `assert`; `const assert = std.debug.assert` once per file, then bare `assert(...)`.
 - Diagnostic lines in hosted `.rye`: `const print = std.debug.print` once per file, then bare `print(...)` — as-you-touch, no lint gate yet (see supplement **Diagnostic output**).
 - **Opening lines:** hosted `.rye` begins with `std`, bare `assert`, bare `print` — see supplement **The opening lines**.
-- Bounds on everything; named errors; accrete never break; one value model.
+- Bounds on everything; named errors; accrete-never-break in **three tiers** (Tier 1 proof absolute · Tier 2 testimony + recorded Radiant pass · Tier 3 open); one value model. Canon: `context/TAME_GUIDANCE.md` §4.
 - **`snake_case`** for functions, variables, and file names (996 / Tiger Style).
 - **Explicit widths** in authored APIs — see supplement Rye section.
 

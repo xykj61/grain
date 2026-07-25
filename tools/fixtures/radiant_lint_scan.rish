@@ -1,0 +1,10 @@
+# radiant_lint_scan.rish — advisory Radiant surface scan.
+#
+# Body: radiant_lint_scan.sh via run seam.
+# Outer: tools/radiant_lint.rish
+#
+#   rishi/bin/rishi run tools/fixtures/radiant_lint_scan.rish
+
+let body = run ["sh" "tools/fixtures/radiant_lint_scan.sh"]
+say body.out
+assert body.ok else "radiant_lint_scan body failed unexpectedly"
