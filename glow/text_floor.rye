@@ -9,7 +9,7 @@ const std = @import("std");
 const assert = std.debug.assert;
 const tally_copy = @import("tally_copy.rye");
 
-pub const text_floor_version = "20260725.160000";
+pub const text_floor_version = "20260725.120701";
 
 pub const max_text_len: u32 = 256;
 

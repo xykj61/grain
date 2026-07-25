@@ -3,7 +3,7 @@
 **Language:** EN  
 **Last updated:** 2026-07-25  
 **Status:** Seated — ring-1 · ring-2 · ring-3 GREEN (test-only reach)  
-**Graduation:** Early vane-home ruling `20260725.160000` — kernel concern out of product host  
+**Graduation:** Early vane-home ruling `20260725.120701` — kernel concern out of product host  
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 
 ## What this room is
@@ -22,4 +22,4 @@ rishi/bin/rishi run tools/mand_ring2_witness.rish
 rishi/bin/rishi run tools/mand_ring3_witness.rish
 ```
 
-Counsel: [`../counsel/20260725-001200_forgetting-without-breaking.md`](../counsel/20260725-001200_forgetting-without-breaking.md) · claim [`../waymarks/20260725-160000_mand-home-ring3.md`](../waymarks/20260725-160000_mand-home-ring3.md)
+Counsel: [`../counsel/20260725-001200_forgetting-without-breaking.md`](../counsel/20260725-001200_forgetting-without-breaking.md) · claim [`../waymarks/20260725-120701_mand-home-ring3.md`](../waymarks/20260725-120701_mand-home-ring3.md)

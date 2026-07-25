@@ -18,7 +18,7 @@ const mand2 = @import("mand_ring2.rye");
 const mand3 = @import("mand_ring3.rye");
 const tally_copy = @import("tally_copy.rye");
 
-const witness_version = "20260725.160000";
+const witness_version = "20260725.120701";
 
 fn run_selftest() !u8 {
     const subject = "subj-alpha";

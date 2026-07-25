@@ -4,10 +4,12 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
-- `20260725.160000` — [Quin relay structure Mand harvest Glow floor](20260725-160000_quin-relay-structure-mand-harvest.bron) — column fix · mand/ home · ring-3 · four harvest verbs · Glow text floor  
-- `20260725.160000` — [Explore shell harvest bench · duty 8 · four verbs](20260725-160000_explore-shell-harvest-bench.bron) — law seated · duty8 count 28 · four Rishi laps unimplemented  
-- `20260725.160000` — [Explore Mand ring-3 bench spec · witnesses · files](20260725-160000_explore-mand-ring3-bench.bron) — section Five spec · zero ring-3 code · ring-1/2 template · test-only reach informal  
-- `20260725.155400` — [Explore Move Mand home bench](20260725-155400_explore-mand-home-bench.bron) — six files · 59 refs · mand/ unplanned · witnesses named · blockers listed  
+- `20260725.120908` — [Send Quin relay PR 131 restamped EDT](20260725-120908_send-quin-relay-restamp.bron) — UTC drift fixed · duty 4 provenance · PR #131 sent  
+- `20260725.120702` — [Send Quin relay PR 131 nib 75627b4349](20260725-120702_send-quin-relay-pr131.bron) — superseded send stamp (UTC drift; restamped)  
+- `20260725.120701` — [Quin relay structure Mand harvest Glow floor](20260725-120701_quin-relay-structure-mand-harvest.bron) — column fix · mand/ home · ring-3 · four harvest verbs · Glow text floor  
+- `20260725.120656` — [Explore Mand ring-3 bench spec · witnesses · files](20260725-120656_explore-mand-ring3-bench.bron) — section Five spec · zero ring-3 code · ring-1/2 template · test-only reach informal  
+- `20260725.120657` — [Explore shell harvest bench · duty 8 · four verbs](20260725-120657_explore-shell-harvest-bench.bron) — law seated · duty8 count 28 · four Rishi laps unimplemented  
+- `20260725.115400` — [Explore Move Mand home bench](20260725-115400_explore-mand-home-bench.bron) — six files · 59 refs · mand/ unplanned · witnesses named · blockers listed  
 - `20260725.115200` — [Explore Mand home · ring-3 · witnesses](20260725-115200_explore-mand-home-requirements.bron) — linengrow today · mand/ parked · ring-3 PARK · harvest law seated  
 **Seasons roster:** [`SEASONS.md`](SEASONS.md)
 

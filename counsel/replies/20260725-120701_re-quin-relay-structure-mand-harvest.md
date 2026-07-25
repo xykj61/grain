@@ -1,7 +1,7 @@
 # Reply — Quin relay: structure fix · Mand home · ring-3 · harvest · Glow floor
 
 **Language:** EN  
-**Stamp:** `20260725.160000`  
+**Stamp:** `20260725.120701`  
 **Voice:** Quin  
 **Ground:** main nib `dae4eeb647`
 
@@ -30,7 +30,7 @@ Lines 37–38 of the naming spec are valid four-column tables and **pass** under
 
 ## D — Shell harvest
 
-Four verbs seated in `rishi/src/main.rye` (`20260725.160000`):
+Four verbs seated in `rishi/src/main.rye` (`20260725.120701`):
 
 | Verb | Surface |
 |------|---------|
@@ -51,4 +51,4 @@ Framework ritual for vere/old · data-dignity options — counsel may draft unas
 
 **Recommend:** keep going on duty-8 shell-body migration now that harvest verbs are seated; check in before production Mand ring-3 key custody.
 
-Claim: [`waymarks/20260725-160000_mand-home-ring3.md`](../../waymarks/20260725-160000_mand-home-ring3.md)
+Claim: [`waymarks/20260725-120701_mand-home-ring3.md`](../../waymarks/20260725-120701_mand-home-ring3.md)

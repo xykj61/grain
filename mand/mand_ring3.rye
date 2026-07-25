@@ -16,7 +16,7 @@ const mand1 = @import("mand_ring1.rye");
 const mand2 = @import("mand_ring2.rye");
 const tally_copy = @import("tally_copy.rye");
 
-pub const mand_ring3_version = "20260725.160000";
+pub const mand_ring3_version = "20260725.120701";
 
 pub const max_keys: u32 = 8;
 pub const max_subject_len: u32 = mand1.max_audit_name_len;
