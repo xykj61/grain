@@ -6,6 +6,8 @@
 **Status:** Vision register — design and research; proposals; no vane code. Register: design (Two Rooms — proposals, not bound claims). Addressed to a generic Acme Corporation employee.
 **Grounds on:** the collision search below, the inference family already built (`../active-designing/20260710-133500_inference-stack-lap0-hammock.md`), the Neth simulation horizon (`20260714-041542_ironbeetle-patterns-for-the-neth-ladder.md`), and Puddle (`20260702-035018_puddle-sandboxed-rye-containers.md`).
 
+Radiant pass `20260725.111515`
+
 ---
 
 ## The Collision Search (before proposing the name)

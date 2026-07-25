@@ -5,6 +5,8 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Research for understanding — scoping; proposes a future TAME_GUIDANCE.md supplement, writes no grammar or code yet
 
+Radiant pass `20260725.111515`
+
 ---
 
 ## What This Answers

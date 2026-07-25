@@ -6,6 +6,8 @@
 **Status:** Vision register — design and research; a proposal; no vane code written; name awaiting confirmation. Register: this is design (Two Rooms — a proposal, not a bound claim). Addressed to a generic Acme Corporation employee.
 **Grounds on:** the collision search below (whole `old/` tree), `../context/specs/20260714-002123_naming-decisions-and-role-nesting.md` (module-as-name, vane-as-role), the Linengrow foundations (secularized here), and the existing market surfaces (Granary, Mandi, Open Asks, MALA, Neth).
 
+Radiant pass `20260725.111515`
+
 ---
 
 ## First, the Collision Search (as required before proposing the name)
