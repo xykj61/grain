@@ -78,8 +78,8 @@
 !/STEWARDS.md
 !/llms.txt
 !/.claude/
-!/old/
-!/vere/
+# STOA elder trees vere/ · old/ — untracked `20260725` (Framework ritual).
+# Root /* already ignores them; do not re-allow. Files stay on disk + in history.
 
 # Claude Code grows this file when you approve shell commands in Zed; machine-local.
 /.claude/settings.local.json
