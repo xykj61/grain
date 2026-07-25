@@ -12,6 +12,8 @@
 
 **Direction:** [`20260628-043542_thin-frontend-slc-direction.md`](20260628-043542_thin-frontend-slc-direction.md) · **Roadmap:** [`../work-in-progress/ROADMAP.md`](../work-in-progress/ROADMAP.md)
 
+Radiant pass `20260725.110418`
+
 ---
 
 ## The Problem, Plainly
