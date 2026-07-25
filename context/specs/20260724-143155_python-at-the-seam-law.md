@@ -5,7 +5,6 @@
 **Status:** Seated  
 **Counsel:** [`../../counsel/20260724-135312_vanes-shelves-and-the-glow-ladder.md`](../../counsel/20260724-135312_vanes-shelves-and-the-glow-ladder.md)
 
-
 ---
 
 ## Census law
