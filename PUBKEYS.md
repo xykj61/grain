@@ -40,7 +40,7 @@ SHA256:fL9IfWIyHik6gAU8sM2/zmfpJsW3+75fN4FjOE/98YA
 **OpenPGP · signing** (this fork's identity key)
 
 ```
-1622 6BC7 D5B3 1C88 8809  2BE6 F096 19B9 B845 1F67
+1622 6BC7 D5B3 1C88 8809 2BE6 F096 19B9 B845 1F67
 ```
 
 ---
@@ -76,7 +76,7 @@ SHA256:xoVpUNgM/br13MTUXUya3sptT24Ccdp48C/MJ5EQ7G8
 **OpenPGP · jail-local signing** (Linux ai-jail, Framework 16 AMD / Ubuntu) — passphrase-free, signing-only, day-to-day commit *Verified* badges from this specific jailed session. Public form: [`keys/jail_signing_linux_CC8BA6.pub.asc`](keys/jail_signing_linux_CC8BA6.pub.asc).
 
 ```
-CC8B A671 25E2 02E1 DB0C  BFD7 0E63 2656 F07D D30B
+CC8B A671 25E2 02E1 DB0C BFD7 0E63 2656 F07D D30B
 ```
 
 **Verified on Codeberg** `20260716.130105` — signed Codeberg's own challenge token with `gpg --detach-sig`, checked by Codeberg's own key-verification flow. This is the second GPG key on the account (the first, `7AD8934CB185E9DA`, predates this jail-local key and is a separate, already-verified identity).

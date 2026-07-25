@@ -44,7 +44,15 @@ for-each pgp_rows as row do say row.text
 let ssh_n = length ssh_lines
 let pgp_n = length pgp_rows
 
-if (ssh_n == 3) then if (pgp_n == 2) then say "IDENTITY-GREEN ssh=${ssh_n} pgp=${pgp_n}" else say "IDENTITY-RED ssh=${ssh_n} pgp=${pgp_n}"
-if (ssh_n != 3) then say "IDENTITY-RED ssh=${ssh_n} pgp=${pgp_n}"
-if (ssh_n == 3) then if (pgp_n != 2) then exit 1
-if (ssh_n != 3) then exit 1
+# Expected face: two forge SSH + two OpenPGP (master + sandbox/jail), and
+# either the Cursor cloud lane-key (context/PUBKEYS) or the Framework
+# jail-local SSH fingerprints (root PUBKEYS) — three or four SHA256: lines.
+# PGP lines must be ten single-spaced four-hex groups (length 49); gpg's
+# double-space middle gap fails the shape on purpose.
+let ssh_ok = false
+if (ssh_n == 3) then let ssh_ok = true
+if (ssh_n == 4) then let ssh_ok = true
+if (ssh_ok) then if (pgp_n == 2) then say "IDENTITY-GREEN ssh=${ssh_n} pgp=${pgp_n}" else say "IDENTITY-RED ssh=${ssh_n} pgp=${pgp_n}"
+if (ssh_ok == false) then say "IDENTITY-RED ssh=${ssh_n} pgp=${pgp_n}"
+if (ssh_ok) then if (pgp_n != 2) then exit 1
+if (ssh_ok == false) then exit 1

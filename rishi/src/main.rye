@@ -131,12 +131,14 @@ const SpawnRegistry = struct {
 /// A bounded environment of name-to-value bindings. Bounded on purpose: the
 /// limit is stated, so a runaway script meets a clear edge rather than eating
 /// memory without end.
+/// Raised from 256 — parity_ch01 crossed 256 top-level lets, 20260725 (302).
+const max_env_bindings: u32 = 512;
 const ExitSlot = struct {
     code: ?u8 = null,
 };
 
 pub const Env = struct {
-    items: [256]Binding = undefined,
+    items: [max_env_bindings]Binding = undefined,
     count: u32 = 0,
     /// Process environment for the `env` builtin — set at REPL and script entry.
     host_environ: ?*std.process.Environ.Map = null,
@@ -173,7 +175,8 @@ const max_args: u32 = 64; // script argv bound — friendly error past this, not
 const max_session_lines: u32 = 256; // session_lines row bound — named before any projection
 /// Element ceiling for list literals, map/where pipelines, and list-dir.
 /// Raised from 256 — advise roster crossed 256, 20260724 (279 `.rye` paths).
-pub const max_list_items: u32 = 512;
+/// Raised from 512 — two_rooms doorway roster crossed 512, 20260725 (524 pages).
+pub const max_list_items: u32 = 1024;
 
 /// A bounded lap of the most recent input lines. Bounded on purpose: the
 /// limit is named, so a long session meets a clear edge rather than growing

@@ -3,7 +3,7 @@
 **Language:** EN  
 **Stamp:** `20260724.143155`  
 **Voice:** Quin  
-**Status:** Seated design — aspect first; not yet built  
+**Status:** Vision — seated design; aspect first; not yet built  
 **Room:** Vision → checkable when SLC ring witnesses exist  
 **Counsel:** [`../counsel/20260724-135312_vanes-shelves-and-the-glow-ladder.md`](../counsel/20260724-135312_vanes-shelves-and-the-glow-ladder.md)
 

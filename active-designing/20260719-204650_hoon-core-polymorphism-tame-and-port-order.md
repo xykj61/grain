@@ -6,7 +6,7 @@
 **Version:** `20260719.204650` (Eastern)  
 **Style:** Radiant  
 **Voice:** Quin  
-**Status:** Design — verdicts seated; wet/gold polymorphism and Glow-authored vanes remain horizon  
+**Status:** Vision — verdicts seated; wet/gold polymorphism and Glow-authored vanes remain horizon  
 **Register:** Mixed (Two Rooms) — fit/order are **design**; today's `|%` · payload · `|=`-shaped closed demo gates are **checkable** on STOA  
 **Grounds in:** [`20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md`](20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md) · [`20260719-204001_glow-rune-pronunciation-alphabet-riscv-and-generators.md`](20260719-204001_glow-rune-pronunciation-alphabet-riscv-and-generators.md) · [`../context/TAME_GUIDANCE.md`](../context/TAME_GUIDANCE.md) · [`../external-research/20260715-172000_pool-keystone-revival-realidream-landscape.md`](../external-research/20260715-172000_pool-keystone-revival-realidream-landscape.md) · [`../context/specs/20260713-214400_urbit-parallel-naming-mapping-proposal.md`](../context/specs/20260713-214400_urbit-parallel-naming-mapping-proposal.md)
 
