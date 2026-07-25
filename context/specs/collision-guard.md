@@ -9,6 +9,8 @@
 **Voice:** Rio 3
 **Ground:** mudra soft-collision owned in `79a79ba` · seating [`20260712-061012_bud-and-mudra-names-seated.md`](20260712-061012_bud-and-mudra-names-seated.md) · RTAC [`../../work-in-progress/ready-to-ask-claude.md`](../../work-in-progress/ready-to-ask-claude.md)
 
+Radiant pass `20260725.112415`
+
 ---
 
 ## Lesson — the mudra catch

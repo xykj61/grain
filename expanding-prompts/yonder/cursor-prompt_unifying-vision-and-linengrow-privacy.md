@@ -4,6 +4,8 @@
 
 Work in Radiant Style. Commit and push when confirmed, then report a Claude-readable summary of what changed.
 
+Radiant pass `20260725.112415`
+
 ---
 
 ## Step 0 — Footing

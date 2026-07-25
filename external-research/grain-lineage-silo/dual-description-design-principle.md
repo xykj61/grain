@@ -5,6 +5,8 @@
 **Style:** Radiant · secular silo
 **Originals (held whole):** [`../../gratitude/grain-lineage/silken-ground-v3-visionary.md`](../../gratitude/grain-lineage/silken-ground-v3-visionary.md) (and the topos essay)
 
+Radiant pass `20260725.112415`
+
 ---
 
 ## The One-Sentence Claim

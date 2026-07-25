@@ -2,6 +2,8 @@
 
 **Paste into a fresh Cursor agent on `main`.** Read fully before running. Propose each move; wait for Kaeden's word before destructive changes. Push only when Kaeden says.
 
+Radiant pass `20260725.112415`
+
 ---
 
 ## Environment

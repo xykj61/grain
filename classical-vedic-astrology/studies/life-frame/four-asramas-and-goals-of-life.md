@@ -6,6 +6,8 @@
 **Method:** Siloed — distilled in our own voice; teachers named with gratitude below (see SILO_TECHNIQUE.md)
 **Stamped:** 20260629.182512 UDT
 
+Radiant pass `20260725.112415`
+
 ---
 
 ## Why this comes first

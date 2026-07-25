@@ -4,6 +4,8 @@
 
 Work in Radiant Style. Gate every change behind propose-then-confirm. Touch no other work.
 
+Radiant pass `20260725.112415`
+
 ---
 
 ## Step 0 — Footing check

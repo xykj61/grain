@@ -4,6 +4,8 @@
 
 Work in Radiant Style. Gate every phase propose-then-confirm. Kaeden is the sole developer and permits amend and force-push on his own branches. The authored files for this pass are provided alongside this prompt; place each at the path named, and confirm each by its first line.
 
+Radiant pass `20260725.112415`
+
 ---
 
 ## Step 0 — Footing

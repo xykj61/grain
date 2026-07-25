@@ -4,6 +4,8 @@
 
 This is accretion and alignment — no behavior changes, no renames across the tree. Work in Radiant Style. Touch no other work.
 
+Radiant pass `20260725.112415`
+
 ---
 
 ## Step 0 — Footing check
