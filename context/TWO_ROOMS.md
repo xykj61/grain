@@ -14,6 +14,8 @@ vocabulary companions:
 [`20260704-024600_two-rooms-on-the-metal-path.md`](../external-research/20260704-024600_two-rooms-on-the-metal-path.md);
 metal-path cases seated above; forward-facing pages name their room from stamp `20260705.203144` — [`specs/20260705-203144_canonical-glosses.md`](specs/20260705-203144_canonical-glosses.md)
 
+Radiant pass `20260725.112715`
+
 ---
 
 ## Why Two Rooms

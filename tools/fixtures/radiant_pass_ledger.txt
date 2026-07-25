@@ -1,9 +1,10 @@
 # radiant_pass_ledger.txt — most recent Radiant pass stamp per path
-# Pool: 179 of ~1,185 in scope (~15%) · batch 50 · seated 20260725.110354
+# Pool: 1,192 rows · in-scope prose exhausted 20260725.112715 (select returns 0)
 # Format: <relpath><TAB><stamp YYYYMMDD.HHMMSS><TAB><changed|clean|legacy>
 # Waves append or update; oldest untouched first. Scope: tools/fixtures/radiant_pool_scope.md
 # Genre ALL-CLEAN: two full consecutive waves all-clean → wholesale exempt on evidence
 # Seated 20260725.034807 · backfill waves 1–3 + RIO3 182821 family · instrument 110354
+
 
 
 
@@ -486,6 +487,7 @@ classical-vedic-astrology/studies/planet-in-house/jupiter-in-virgo-in-the-11th.m
 classical-vedic-astrology/studies/planet-in-house/mercury-in-virgo-in-the-11th.md	20260725.112515	clean
 classical-vedic-astrology/studies/planet-in-house/saturn-in-the-9th-house.md	20260725.112615	clean
 classical-vedic-astrology/studies/planet-in-house/sun-in-the-10th-house.md	20260725.112615	clean
+classical-vedic-astrology/studies/planet-in-house/venus-in-eighth-house.md	20260725.112715	clean
 classical-vedic-astrology/studies/planets-in-signs/20260705-172312_venus-in-aries.md	20260725.111120	clean
 classical-vedic-astrology/studies/planets-in-signs/20260705-172312_venus-in-virgo-debilitated.md	20260725.111120	clean
 classical-vedic-astrology/studies/planets-in-signs/20260705-173112_moon-in-capricorn.md	20260725.111120	clean
@@ -498,6 +500,7 @@ classical-vedic-astrology/studies/planets-in-signs/mars-in-leo.md	20260725.11251
 classical-vedic-astrology/studies/planets-in-signs/moon-in-taurus-exalted.md	20260725.112515	clean
 classical-vedic-astrology/studies/planets-in-signs/saturn-in-cancer.md	20260725.112615	clean
 classical-vedic-astrology/studies/planets-in-signs/sun-in-leo.md	20260725.112615	clean
+classical-vedic-astrology/studies/planets-in-signs/venus-in-gemini.md	20260725.112715	clean
 classical-vedic-astrology/studies/reading-themes/20260705-172312_a-planets-passage-as-maturation.md	20260725.111120	clean
 classical-vedic-astrology/studies/reading-themes/20260705-172312_the-three-pass-opposition.md	20260725.111120	clean
 classical-vedic-astrology/studies/reading-themes/20260705-180812_anger-and-sadness-two-responses.md	20260725.111120	clean
@@ -541,6 +544,9 @@ context/README.md	20260725.112515	clean
 context/REMOTE_ROSTER.md	20260725.112615	changed
 context/SILO_TECHNIQUE.md	20260725.112615	clean
 context/SIMPLE_LOVABLE_COMPLETE.md	20260725.112615	clean
+context/TAME_GUIDANCE.md	20260725.112715	clean
+context/THREATS.md	20260725.112715	clean
+context/TWO_ROOMS.md	20260725.112715	clean
 context/archive/RIO3.md	20260710.182821	legacy
 context/fixtures/claim_preserve_modality_after.md	20260725.112415	clean
 context/fixtures/claim_preserve_modality_before.md	20260725.112415	clean
@@ -607,7 +613,9 @@ context/specs/redaction-stance.md	20260725.112615	clean
 context/specs/reserved-vocabulary.md	20260725.112615	clean
 context/specs/rye-as-its-own-language.md	20260725.112615	clean
 context/specs/rye-versioning-style.md	20260725.112615	clean
+context/specs/tame-guidance.md	20260725.112715	clean
 context/specs/two-dev-environments-and-mobile-emulation.md	20260724.223050	legacy
+context/specs/zig-0.16.0-local-setup.md	20260725.112715	clean
 counsel/20260704-004912_gate-unify-counsel.md	20260725.034920	legacy
 counsel/20260704-031812_eight-asks-one-sitting.md	20260725.034920	legacy
 counsel/20260704-181612_zero-copy-resins-counsel-answers.md	20260725.034920	legacy
@@ -728,6 +736,7 @@ counsel/replies/20260725-112215_re-radiant-wave32.md	20260725.112315	clean
 counsel/replies/20260725-112315_re-radiant-wave33.md	20260725.112415	clean
 counsel/replies/20260725-112415_re-radiant-wave34.md	20260725.112515	changed
 counsel/replies/20260725-112515_re-radiant-wave35.md	20260725.112615	changed
+counsel/replies/20260725-112615_re-radiant-wave36.md	20260725.112715	changed
 counsel/replies/README.md	20260725.112515	clean
 counsel/replies/SEASONS.md	20260725.112615	changed
 docs/README.md	20260725.112515	clean
@@ -1018,10 +1027,14 @@ external-research/20260717-175220_glow-english-qwerty-glass-keyboard-ios-inspire
 external-research/20260718-122145_pixel10a-resolution-mantrapod-floor-and-wired-glass-slc.md	20260725.111615	clean
 external-research/20260718-133455_glass-desk-amber-amphora-compose-not-fuse.md	20260725.111615	clean
 external-research/README.md	20260725.112515	clean
+external-research/TAME_GUIDANCE.md	20260725.112715	clean
 external-research/grain-lineage-silo/README.md	20260725.112515	clean
 external-research/grain-lineage-silo/dual-description-design-principle.md	20260725.112415	clean
 external-research/grain-lineage-silo/one-carrier-many-flows.md	20260725.112515	clean
 external-research/grain-lineage-silo/silicon-torus-hardware.md	20260725.112615	clean
+external-research/grain-lineage-silo/the-state-at-center.md	20260725.112715	clean
+external-research/grain-lineage-silo/toroidal-bounded-optimization.md	20260725.112715	clean
+external-research/grain-lineage-silo/whole-in-every-part.md	20260725.112715	clean
 external-research/yonder/20260617-195312_mantra.md	20260725.110622	clean
 external-research/yonder/20260617-195612_ownerboot-riscv-caravan.md	20260725.110622	clean
 external-research/yonder/20260617-195712_caravan-tally-networking.md	20260725.110622	clean
@@ -1070,6 +1083,8 @@ foundations/20260724-200912_nothing-to-give-custody-first-principle.md	20260725.
 foundations/20260724-220625_five-pillars-direction.md	20260725.035453	legacy
 foundations/20260725-034254_always-in-it-responsive-rhythm.md	20260725.112215	clean
 foundations/README.md	20260725.112515	clean
+foundations/the-aspiring-radiance-universal.md	20260725.112715	clean
+foundations/the-regenerative-experiment-universal.md	20260725.112715	clean
 glow/README.md	20260725.112515	clean
 granary/README.md	20260710.182821	legacy
 dimeroll/README.md	20260725.112515	clean
@@ -1089,6 +1104,7 @@ manual/glow-os/README.md	20260725.112615	clean
 manual/glow-os/get-started.md	20260725.112415	clean
 manual/glow-os/overview.md	20260725.112515	clean
 manual/glow-os/variants/README.md	20260725.112615	clean
+manual/glow-os/variants/_variant-template.md	20260725.112715	clean
 manual/guides/cloud-agent-toolchain-setup.md	20260725.112415	clean
 manual/guides/filevault-setup.md	20260725.112415	clean
 manual/guides/key-cards-setup.md	20260725.112415	clean
@@ -1097,6 +1113,7 @@ manual/guides/pixel-10a-grapheneos-setup.md	20260725.112515	clean
 manual/guides/self-hosted-vpn-setup.md	20260725.112615	clean
 manual/reference/caravan-capabilities.md	20260725.112415	clean
 manual/reference/rishi-language.md	20260725.112615	clean
+manual/reference/tally-gardens.md	20260725.112715	clean
 manual/tutorials/cursor-and-the-compass.md	20260725.112415	clean
 manual/tutorials/first-witness.md	20260725.112415	clean
 manual/tutorials/run-record-and-failures.md	20260725.112615	clean
@@ -1154,6 +1171,7 @@ waymarks/20260725-112215_radiant-wave32.md	20260725.112415	clean
 waymarks/20260725-112315_radiant-wave33.md	20260725.112415	clean
 waymarks/20260725-112415_radiant-wave34.md	20260725.112515	clean
 waymarks/20260725-112515_radiant-wave35.md	20260725.112615	clean
+waymarks/20260725-112615_radiant-wave36.md	20260725.112715	clean
 waymarks/README.md	20260725.112615	clean
 waymarks/SEASONS.md	20260725.112615	changed
 waymarks/stoa-100s/README.md	20260725.112615	changed
@@ -1184,6 +1202,7 @@ work-in-progress/20260721-173015_cursor-handoff-stoa180-sala-b0-glow.md	20260725
 work-in-progress/README.md	20260725.112615	clean
 work-in-progress/REMEMBER.md	20260725.112615	changed
 work-in-progress/ROADMAP.md	20260725.112615	clean
+work-in-progress/TASKS.md	20260725.112715	clean
 work-in-progress/ready-to-ask-claude.md	20260725.112615	clean
 work-in-progress/yonder/20260620-155342_style-audit.md	20260725.110740	clean
 work-in-progress/yonder/20260621-032327_strengthening-width-crosswalk.md	20260725.110740	clean

@@ -6,13 +6,13 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260725.112626` (EDT) · voice Quin  
+**Last refreshed:** `20260725.112726` (EDT) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2** · **THREATS** · **five pillars** · **accrete tiers** · **redaction stance** · **always-in-it rhythm**  
 **Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list512 GREEN · **stamp @u64 · Crockford** · **shape aura floor**  
-**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand ring-2** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm REPORT** · **OQ #1 · #3 · #5 answered** · **pass ledger** · **Wave 36** · **growth law** · **shell harvest**  
-**Git nib:** `c911fd4de6` · Wave 36 (PR #124)
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand ring-2** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm REPORT** · **OQ #1 · #3 · #5 answered** · **pass ledger complete** · **Wave 37** · **growth law** · **shell harvest**  
+**Git nib:** pending · Wave 37 (PR pending)
 
-**Season:** Framework · EDT · **finishing edge:** Radiant Wave 36 · **1,179/~1,185 (~99%)** · **~6 remain**.  
+**Season:** Framework · EDT · **finishing edge:** Radiant pool **complete** · **1,192 rows** · select **0**.  
 **APK:** `tools/.cache/tube05/seva-broadcaster.apk` · pkg `org.glow.app.seva_broadcaster`  
 **ADB:** `tools/.cache/hawm0/android-sdk/platform-tools/adb` — not on bare PATH
 
@@ -22,13 +22,13 @@ Radiant pass `20260725.112615`
 
 ## Now
 
-**Radiant Wave 36** `20260725.112615` — 36 clean · 14 changed · lint 2. Sent `20260725.112625` · git nib `c911fd4de6`. **Runway:** Wave **36 / ~20** · **1,179 / ~1,185** (~99%).
+**Radiant Wave 37** `20260725.112715` — 17 clean · 1 changed · lint 2. **Pool complete:** **1,192 ledger rows** · select **0**.
 
 **Read:**
 
 ```bash
 less tools/fixtures/radiant_pass_ledger.txt
-less counsel/replies/20260725-103949_re-radiant-wave12.md
+less counsel/replies/20260725-112715_re-radiant-wave37.md
 ```
 
 ---
@@ -37,7 +37,7 @@ less counsel/replies/20260725-103949_re-radiant-wave12.md
 
 | Door | Kind |
 |------|------|
-| Next Radiant wave | ledger · oldest untouched · bound 50 |
+| Next Radiant wave | **complete** — pool exhausted · check-in for exempt review |
 | Mand ring-3 | parked · awaits word on counsel decision 5 |
 | Mand module home | parked · analysis ready · awaits word |
 | Glow text floor | open whenever it is the live thing |

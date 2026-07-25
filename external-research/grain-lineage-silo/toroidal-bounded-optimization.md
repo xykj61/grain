@@ -5,6 +5,8 @@
 **Style:** Radiant · secular silo
 **Original (held whole):** [`../../gratitude/grain-lineage/toroidal_ml_synthesis_whitepaper.md`](../../gratitude/grain-lineage/toroidal_ml_synthesis_whitepaper.md)
 
+Radiant pass `20260725.112715`
+
 ---
 
 ## The One-Sentence Claim

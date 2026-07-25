@@ -11,6 +11,8 @@
 
 *Descriptive, not prescriptive. Each line states what is true today, or names a gap and stops. No aspiration wears a fact's clothes.*
 
+Radiant pass `20260725.112715`
+
 ---
 
 ## 1. Assets
