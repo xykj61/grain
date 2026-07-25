@@ -6,6 +6,8 @@
 **Voice:** Quin
 **Status:** Living — seats a new naming convention and applies it once, today, to a real collision. Register: checkable — the derivation is a real witness (`tools/waymark_derive.rish`), GREEN on this metal. Corpus pin refreshed `20260724.151327` (Option C fixture twin + digest).
 
+Radiant pass `20260725.040728`
+
 ---
 
 ## The Collision, Named Plainly

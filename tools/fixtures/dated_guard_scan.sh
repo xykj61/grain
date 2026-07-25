@@ -1,5 +1,6 @@
 #!/bin/sh
 # dated_guard_scan.sh — body for dated_guard_scan.rish.
+# Missing Rishi verb: accumulate · filter chained · read bounded — harvest ledger (counsel 20260725.040247)
 #
 # Staged MODIFIED dated paths that already exist on main must declare a living
 # ledger header, freeze-pointer stub, or recorded Radiant pass (Tier 2).

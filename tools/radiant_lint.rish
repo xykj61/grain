@@ -14,6 +14,7 @@
 # Exempt: RADIANT_STYLE.md · gratitude/ · old/ · vere/ · tools/fixtures/
 # Negative: context/fixtures/radiant_lint_planted_but.md must be counted.
 #
+# Missing Rishi verb (this wrapper's body): accumulate · filter chained · read bounded
 #   rishi/bin/rishi run tools/radiant_lint.rish
 
 say "radiant lint: ratchet advisory…"
