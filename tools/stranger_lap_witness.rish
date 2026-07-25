@@ -6,8 +6,9 @@
 # prove network clone, full history, or cold install — see worker header.
 #
 # Advisory / report seat — not wired into parity_ch01. Cold path is a mode on
-# the same worker (STRANGER_LAP_MODE=cold); keep OQ4 open for cold until several
-# reports justify tightening the 1800s claim ceiling.
+# the same worker (STRANGER_LAP_MODE=cold). Framework cold REPORT landed
+# 20260725.174428 (29s under 1800); keep the claim ceiling until several hosts
+# justify tightening.
 #
 #   rishi/bin/rishi run tools/stranger_lap_witness.rish
 # Bound-negative fixture (proves comparator is live):

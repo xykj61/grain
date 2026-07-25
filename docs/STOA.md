@@ -1,6 +1,6 @@
 # STOA — Glow SLC · nest · product · ≤80 · STOA0–294 · 2026-07-22 · draw → **STOA**
 
-Living Glow OS desks lead with `shape-*` (shape duals STOA161–173; pin polish STOA174; multi-field cast twins STOA175–176). Seva B0 Glow: STOA177–304 · **STOA304** after xact argv (payload tag+amount GREEN). Hoon study twins under `glow/gen/hoon-study/`.
+Living Grain desks lead with `shape-*` (shape duals STOA161–173; pin polish STOA174; multi-field cast twins STOA175–176). Seva B0 Glow: STOA177–304 · **STOA304** after xact argv (payload tag+amount GREEN). Hoon study twins under `glow/gen/hoon-study/`.
 
 | Rung | Claim | Witness / gate | State |
 |------|-------|----------------|-------|
@@ -10,7 +10,7 @@ Living Glow OS desks lead with `shape-*` (shape duals STOA161–173; pin polish 
 | **STOA106–121** | Nest/type · barket tokenize→lower · nesting-nests wire | nest · barket · bartis | **GREEN** `042931`…`182915` |
 | **STOA122–133** | Named allowlist amount→pair · flips · amount/count argv | nest · barket · glow_run | **GREEN** `183259`…`194143` |
 | **STOA134–147** | Triple→nona `$:` ladder · flips · capacity freeze at 9 | nest · barket · bartis | **GREEN** `194437`…`231419` |
-| **STOA148–160** | amount…nona-shape Glow OS aliases | `glow_nest_type_witness` · desks | **GREEN** `234340`…`005327` |
+| **STOA148–160** | amount…nona-shape Grain aliases | `glow_nest_type_witness` · desks | **GREEN** `234340`…`005327` |
 | **STOA161** | inventary · `shape-amount` dual desk | `glow_run` desks | **GREEN** `010211` |
 | **STOA162** | `shape-count` dual desk | `glow_run` desks | **GREEN** `010435` |
 | **STOA163** | `shape-pair` dual desk | `glow_run` | **GREEN** `010610` |
@@ -161,4 +161,6 @@ Living Glow OS desks lead with `shape-*` (shape duals STOA161–173; pin polish 
 | **STOA329** | after nest_type shape check-in | A send · B rest available · **C** gate-spec shape_name | **GREEN** `20260722.203755` |
 | **STOA330** | gate-spec shape_name | GateSpec/BarketSpec rename | **GREEN** `20260722.204131` |
 | **STOA331** | after gate shape_name check-in | A send · B rest available · **C** cast/face mold→shape | **GREEN** `20260722.204133` |
-Smoke: `glow_nest_type_witness` · `glow_barket_parse_witness` · `glow_lower_bartis_witness` · Sibling: **ZETA** · **LULU** · **SETU** · **TUBE**.
+| **STOA332** | Rishi glow mode SLC | sixteen heads at `rishi glow` · quit word | **GREEN** — claim [`../waymarks/stoa-300s/20260724-144740_stoa332-rishi-glow-mode-slc.md`](../waymarks/stoa-300s/20260724-144740_stoa332-rishi-glow-mode-slc.md) |
+| **STOA333** | digraph-table twin (rung 1a) | Glow desk ↔ Rye `match_rune2` byte twin | **GREEN** `20260724.181200` — [`../waymarks/stoa-300s/20260724-181200_stoa333-digraph-table-twin.md`](../waymarks/stoa-300s/20260724-181200_stoa333-digraph-table-twin.md) |
+Smoke: `glow_nest_type_witness` · `glow_barket_parse_witness` · `glow_lower_bartis_witness` · `glow_digraph_twin_witness` · `glow_text_floor_witness` · Sibling: **ZETA** · **LULU** · **SETU** · **TUBE**.
