@@ -14,6 +14,9 @@
 
 *Written together by Keaton and Quin; seated on Keaton's word.*
 
+Radiant pass `20260725.001538`
+*Living pointer `20260725.001538` — the redaction stance now names the erasure mechanism the published-schedule clause below implied: [`../context/specs/redaction-stance.md`](../context/specs/redaction-stance.md).*
+
 ---
 
 ## The first principle

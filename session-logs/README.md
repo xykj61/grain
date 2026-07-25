@@ -16,6 +16,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 **Living pin bound:** `living_pin_max_bytes = 24576` ([spec](../context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md)). Closed index rows through `20260721`: [`archive/README-index-through-20260721.md`](archive/README-index-through-20260721.md). Early `20260722` overflow: [`archive/README-index-20260722-shelf.md`](archive/README-index-20260722-shelf.md).
 
+- `20260725.001710` — [Redaction stance living pin · OQ #1](20260725-001710_redaction-stance-seat.bron) — forget by key · Mand ring-3 PARK
 - `20260724.223409` — [Send Radiant waves close to main](20260724-223409_send-radiant-waves-close.bron) — FF merge · PR 87–90
 - `20260724.223410` — [REMEMBER git nib after Radiant waves send](20260724-223410_remember-git-nib-radiant-waves.bron) — pin 41fbabd16e
 - `20260724.223233` — [Radiant Wave 3 — Tier 2 passes · five-remotes errata](20260724-223233_radiant-wave3-tier2.bron) — pass · erratum · lint 8→4
@@ -164,7 +165,3 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 - `20260722.150806` — [STOA265 Dexter Sala append check-in](20260722-150806_stoa265-dexter-sala-append-checkin.bron) — lean A typed memo→append_event
 - `20260722.150725` — [STOA265 Dexter→Sala append research](20260722-150725_stoa265-dexter-sala-append-research.bron) — live append unwired; lean A device-free
 - `20260722.150537` — [REMEMBER git nib after STOA264](20260722-150537_remember-git-nib-stoa264.bron) — pin baa28401bc4c
-- `20260722.150432` — [STOA263–264 Pixel authored-fold eyes](20260722-150432_stoa263-264-pixel-authored-fold-eyes.bron) — pack+install HAWM1; Dexter→Sala next
-- `20260722.145936` — [REMEMBER git nib after STOA262](20260722-145936_remember-git-nib-stoa262.bron) — pin c1ed098ebcf8
-- `20260722.145840` — [STOA261–262 barket N-field flip](20260722-145840_stoa261-262-barket-n-field-flip-round.bron) — barket flip emit; inventary deepen closed; finishing edge next
-- `20260722.145314` — [REMEMBER git nib after STOA260](20260722-145314_remember-git-nib-stoa260.bron) — pin 171b5c7bbdff

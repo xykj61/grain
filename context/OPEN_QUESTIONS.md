@@ -5,15 +5,18 @@
 **Voice:** Quin  
 **Status:** Living pin — one line per standing question  
 **Answers:** land as dated `foundations/` or `context/specs/` documents; link from here  
-**Counsel:** [`../counsel/20260724-141612_names-maps-and-open-questions.md`](../counsel/20260724-141612_names-maps-and-open-questions.md)
+**Counsel:** [`../counsel/20260724-141612_names-maps-and-open-questions.md`](../counsel/20260724-141612_names-maps-and-open-questions.md) · redaction [`../counsel/20260725-001200_forgetting-without-breaking.md`](../counsel/20260725-001200_forgetting-without-breaking.md)
 
 | # | Question | Status | Answer home |
 |---|----------|--------|-------------|
-| 1 | **Redaction stance** — how Weave honors a request to be forgotten (tombstone · encrypt-then-destroy-key · other) before the request arrives under duress | open · threat model available as foundation | — · see [`THREATS.md`](THREATS.md) |
-| 2 | **Continuity of the one hand** — succession when the signing hand must rest; encrypt-to-future-identity + succession spec | open · half-parked · threat model available as foundation | — · see [`THREATS.md`](THREATS.md) |
+| 1 | **Redaction stance** — how Weave honors a request to be forgotten (tombstone · encrypt-then-destroy-key · other) before the request arrives under duress | answered | [`specs/redaction-stance.md`](specs/redaction-stance.md) |
+| 2 | **Continuity of the one hand** — succession when the signing hand must rest; encrypt-to-future-identity + succession spec · **dependency:** per-subject keys reachable by one hand make a person's erasability rest on one person's availability | open · half-parked · threat model available as foundation · redaction dependency named | — · see [`THREATS.md`](THREATS.md) · [`specs/redaction-stance.md`](specs/redaction-stance.md) |
 | 3 | **Written threat model** — one-page `THREATS.md`: assets, adversaries, assumptions | answered | [`THREATS.md`](THREATS.md) |
 | 4 | **Stranger's lap** — clone · bootstrap · one witness green · under thirty minutes · no prior context | answered, warm path only; cold path open | warm REPORT [`../tools/stranger_lap_witness.rish`](../tools/stranger_lap_witness.rish) · bound-negative [`../tools/stranger_lap_bound_negative_witness.rish`](../tools/stranger_lap_bound_negative_witness.rish) · worker [`../tools/stranger_lap_worker.sh`](../tools/stranger_lap_worker.sh) (`STRANGER_LAP_MODE=cold` open) |
 | 5 | **Operator's budget** — season-close rest cadence beside round-close | open | — |
 | 6 | **Data dignity for artists** — consent and data posture for Linengrow before first outreach becomes a stored record | open · threat model available as foundation | — · see [`THREATS.md`](THREATS.md) |
+| 7 | **Backup and mirror key policy** — erasure is only as complete as the least disciplined copy of the per-subject key | open | — · see [`specs/redaction-stance.md`](specs/redaction-stance.md) |
+| 8 | **Erasure under a preservation hold** — person's request meets a hold; architecture owes refuse · record · tell plainly | open | — · see [`specs/redaction-stance.md`](specs/redaction-stance.md) |
+| 9 | **Aggregates computed before an erasure** — whether derived figures are recomputed, frozen, or coarsened | open | — · see [`specs/redaction-stance.md`](specs/redaction-stance.md) |
 
 *Load the questions well; let them ripen; write each answer once.*
