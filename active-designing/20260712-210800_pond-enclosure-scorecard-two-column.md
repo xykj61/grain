@@ -22,7 +22,7 @@
 | # | Bar | Incumbent-measured (ai-jail today · column one) | Pond-required (supersede floor · column two) | Gap row |
 |---|-----|--------------------------------------------------|----------------------------------------------|---------|
 | 1 | Durable project tree | `.git` · writable root · cache probe persists | Project tree durable across enclosure lifetime; writes persist inside the bound work tree | — |
-| 2 | Home and tmp reset | Sparse HOME (no Documents/Downloads) · `/tmp` writable · **incumbent-anchored:** `/tmp/.ai-jail-landlock` present | Private home/tmp that reset on exit; host clutter absent — **behavior**, not the landlock filename | — |
+| 2 | Home and tmp reset | Sparse HOME (no Documents/Downloads) · `/tmp` writable · **enclosure-neutral:** `/tmp/.enclosure-landlock` **or** elder `/tmp/.ai-jail-landlock` | Private home/tmp that reset on exit; host clutter absent — **behavior**, not an ai-jail-only filename | — |
 | 3 | Wayland/GPU lane | Always-on today: `WAYLAND_DISPLAY` set · `/dev/dri` present (incumbent wrapper) | GPU present when granted · absent when not — refuse-permit pair like KVM | Lane customs (grant/refuse) not yet Pond policy |
 | 4 | KVM lane | `lane_kvm` off by default · refuse-probe OK · **incumbent-anchored:** teacher `ai-jail 1.12.0` binary pin | Named KVM lane off by default; on grants `/dev/kvm` only — **behavior**, not the ai-jail artifact | — |
 | 5 | Signing-lane separation | Sandbox secret `DBF8…` present · master secret absent · lane key file absent · **exactly one** `sec:` in sandbox keyring | Same custody shape: sandbox signing present · master absent · lane absent · exactly one secret | — |
