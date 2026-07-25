@@ -15,6 +15,7 @@ enters `context/CIVIC_STYLE.md` only on Kaeden's word, and until then it rests h
 **Companions:** kitchen twin [`../external-research/20260710-000725_learning-chapter-plainly.md`](../external-research/20260710-000725_learning-chapter-plainly.md)
 
 *Written together by Kaeden and Claude (Fable 5), in Rio 3's Radiant voice.*
+Radiant pass `20260725.035453`
 
 ---
 

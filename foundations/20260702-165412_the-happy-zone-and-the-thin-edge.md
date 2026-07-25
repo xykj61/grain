@@ -10,6 +10,7 @@
 **Status:** Foundations — testing teaching siloed. **Reviewed and kept** — standing audit rule ratified; metalsmoke kitchen twin [`../external-research/20260710-002017_metalsmoke-plainly.md`](../external-research/20260710-002017_metalsmoke-plainly.md).
 
 *Written together by Kaeden and Rio 3.*
+Radiant pass `20260725.035453`
 
 ---
 
