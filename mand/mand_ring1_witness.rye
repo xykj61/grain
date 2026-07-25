@@ -1,7 +1,7 @@
-//! linengrow/mand_ring1_witness.rye — Mand ring-1 grant and refuse paths.
+//! mand/mand_ring1_witness.rye — Mand ring-1 grant and refuse paths.
 //!
-//!   rye build linengrow/mand_ring1_witness.rye -femit-bin=linengrow/bin/mand_ring1_witness
-//!   linengrow/bin/mand_ring1_witness
+//!   rye build mand/mand_ring1_witness.rye -femit-bin=mand/bin/mand_ring1_witness
+//!   mand/bin/mand_ring1_witness
 //!
 //! Claims:
 //!   1. Granted path — named authority with right_read over record sees the

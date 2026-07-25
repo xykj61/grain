@@ -1,0 +1,73 @@
+//! tally/copy.rye — the disjoint copy, with its preconditions written down.
+//!
+//! `@memcpy` trusts its caller twice: that the lengths agree, and that the
+//! regions never overlap. TigerBeetle's stdx wraps that trust in assertions
+//! (`copy_disjoint`), and its tidy bans the bare builtin so the checked form
+//! is the only form. We adopt the same law in Tally, the home of bounds:
+//! one function, both preconditions asserted, then the builtin it guards.
+//!
+//! Elder call sites migrate as they are touched — the ratchet, counted by
+//! `tools/tame_style_check.rish` — rather than in one sweep. New code
+//! reaches here first.
+//!
+//!   rye build tally/copy.rye -femit-bin=tally/bin/copy
+//!   tally/bin/copy selftest
+//!
+//! Gratitude: gratitude/TIGER_STYLE.md · tigerbeetle src/stdx (study only).
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+pub const tally_copy_version = "20260707.053212";
+
+/// Copy `source` into `target`. The regions must be the same length and must
+/// not overlap; both facts are asserted here so no caller carries them alone.
+pub fn copy_disjoint(comptime T: type, target: []T, source: []const T) void {
+    assert(target.len == source.len); // precondition: lengths agree exactly
+
+    const t_lo = @as(usize, @intFromPtr(target.ptr));
+    const t_hi = t_lo + target.len * @sizeOf(T);
+    const s_lo = @as(usize, @intFromPtr(source.ptr));
+    const s_hi = s_lo + source.len * @sizeOf(T);
+    assert(t_hi <= s_lo or s_hi <= t_lo); // precondition: regions are disjoint
+
+    @memcpy(target, source);
+}
+
+fn run_selftest(_: std.Io) !u8 {
+    // Bytes, separate buffers.
+    var a: [8]u8 = .{ 1, 2, 3, 4, 5, 6, 7, 8 };
+    var b: [8]u8 = undefined;
+    copy_disjoint(u8, b[0..], a[0..]);
+    assert(std.mem.eql(u8, b[0..], a[0..])); // postcondition: bytes carried whole
+
+    // Adjacent halves of one buffer are disjoint; the law welcomes them.
+    var one: [8]u8 = .{ 9, 9, 9, 9, 0, 0, 0, 0 };
+    copy_disjoint(u8, one[4..8], one[0..4]);
+    assert(std.mem.eql(u8, one[4..8], one[0..4]));
+
+    // Wider elements carry the same law.
+    var xs: [4]u32 = .{ 10, 20, 30, 40 };
+    var ys: [4]u32 = undefined;
+    copy_disjoint(u32, ys[0..], xs[0..]);
+    assert(ys[0] == 10);
+    assert(ys[3] == 40);
+
+    // The refusing halves — mismatched lengths, overlapping regions — end the
+    // process by design; an assertion is a crash-on-corruption, so a witness
+    // proves the welcome space and the preconditions stand guard in the text.
+    print("tally copy: disjoint copies carried whole, both preconditions asserted\n", .{});
+    print("tally copy: version {s}\n", .{tally_copy_version});
+    print("GREEN: tally copy_disjoint; lengths agree and regions never overlap.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(init.arena.allocator());
+    if (args.len >= 2) {
+        if (std.mem.eql(u8, args[1], "selftest")) return run_selftest(io);
+    }
+    return run_selftest(io);
+}

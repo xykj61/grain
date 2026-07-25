@@ -1,0 +1,44 @@
+//! glow/text_floor_witness.rye — bounded text floor witness.
+//!
+//!   rye build glow/text_floor_witness.rye -femit-bin=glow/bin/text_floor_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const tf = @import("text_floor.rye");
+
+const witness_version = "20260725.160000";
+
+fn run_selftest() !u8 {
+    var buf: tf.BoundedText = .{};
+    try buf.copy_from("hello-glow-floor");
+    assert(std.mem.eql(u8, buf.slice(), "hello-glow-floor"));
+    assert(tf.BoundedText.fits(@intCast(buf.len)));
+    print("text-floor: copy within bound -- GREEN welcome path\n", .{});
+
+    var big: [tf.max_text_len + 1]u8 = undefined;
+    @memset(big[0..], 'x');
+    const over = buf.copy_from(big[0..]);
+    if (over) |_| {
+        return error.OverflowAdmitted;
+    } else |err| {
+        if (err != tf.TextError.TextOverflow) return err;
+    }
+    print("text-floor: overflow REFUSES TextOverflow -- GREEN unwelcome path\n", .{});
+
+    const empty = buf.copy_from("");
+    if (empty) |_| {
+        return error.EmptyAdmitted;
+    } else |err| {
+        if (err != tf.TextError.EmptyText) return err;
+    }
+    print("text-floor: empty REFUSES EmptyText -- GREEN unwelcome path\n", .{});
+
+    print("text-floor: version {s} (module {s})\n", .{ witness_version, tf.text_floor_version });
+    print("GREEN: Glow text floor -- bounded buffers; named overflow errors.\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}

@@ -1,4 +1,4 @@
-//! linengrow/mand_ring1.rye — Mand ring-1: one capability check at one seam.
+//! mand/mand_ring1.rye — Mand ring-1: one capability check at one seam.
 //!
 //! Seam (SLC): may this reader see this record, under this named authority,
 //! written to the audit log?
@@ -9,7 +9,7 @@
 //! discloses the record body and appends one audit line. A refuse returns
 //! Refused with no body and no grant audit line.
 //!
-//!   rye build linengrow/mand_ring1_witness.rye -femit-bin=linengrow/bin/mand_ring1_witness
+//!   rye build mand/mand_ring1_witness.rye -femit-bin=mand/bin/mand_ring1_witness
 
 const std = @import("std");
 const assert = std.debug.assert;

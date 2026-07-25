@@ -1,7 +1,7 @@
-//! linengrow/mand_ring2_witness.rye — Mand ring-2 retention eligibility.
+//! mand/mand_ring2_witness.rye — Mand ring-2 retention eligibility.
 //!
-//!   rye build linengrow/mand_ring2_witness.rye -femit-bin=linengrow/bin/mand_ring2_witness
-//!   linengrow/bin/mand_ring2_witness
+//!   rye build mand/mand_ring2_witness.rye -femit-bin=mand/bin/mand_ring2_witness
+//!   mand/bin/mand_ring2_witness
 //!
 //! Claims:
 //!   1. Inside window → KEEP + one audit line.

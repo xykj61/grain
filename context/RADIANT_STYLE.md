@@ -270,6 +270,7 @@ Seated `20260725.034254` from counsel [`../counsel/20260725-034254_always-in-it.
 - **Batch fifty.** The twelve-file bound was a **human-review** bound — so Keaton could read a whole wave in one sitting. When each diff is no longer read, **the witnesses become the only reviewer**, and that trade is accepted for style-only passes. Fifty files per wave · one PR per wave · **one revert away**.
 - **Spot-read every fifth wave.** One file, chosen at random from that wave, read by Keaton — five minutes catches model drift better than skimming fifty diffs.
 - **Report lint sum and change-rate after every wave** — `changed` vs `clean` per row in the ledger; a genre ALL-CLEAN across two full waves may earn wholesale exemption on evidence (see `tools/fixtures/radiant_pool_scope.md`).
+- **Blocking witnesses earn PASS fixtures.** A gate that reds on valid input teaches the bench to route around it; a witness nobody trusts is worse than none. Every blocking witness carries a known-good PASS fixture beside its known-bad FAIL fixture — never FAIL alone. Table structure compares **column counts** (split on unescaped pipes · drop empty leading/trailing fields · mask inline code and fenced blocks), not raw pipe counts.
 
 ### Coverage ledger
 
