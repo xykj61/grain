@@ -4,7 +4,7 @@
 //! rung B0: a broadcast (or a recorded session, Asciinema's shape) is not a
 //! video — it is a replayable log of signed, timestamped, strictly-ordered
 //! events, re-rendered by folding. This is the smallest real lap of the Seva
-//! broadcast lane, and it gates on nothing but the fold primitives already
+//! broadcast lane, and it gates on nothing except the fold primitives already
 //! green (it does not wait on Pool P0; only live carriage, B1, does).
 //!
 //! Composition, not new machinery: an event rides receipt_core's already-

@@ -58,7 +58,7 @@ fn run_selftest() !u8 {
     assert(manifest.declares("seva-session", caps.right_read | caps.right_write));
     print("tube0: declares() confirms the exact granted rights -- GREEN welcome path.\n", .{});
 
-    // Claim 3: declares() answers false when the resource is named but the
+    // Claim 3: declares() answers false when the resource is named, yet the
     // right was never granted (network was declared net-only, not device).
     assert(!manifest.declares("network", caps.right_device));
     print("tube0: declares() refuses an ungranted right over a named resource -- GREEN unwelcome path.\n", .{});

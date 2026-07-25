@@ -121,7 +121,7 @@ fn run_selftest() !u8 {
     assert(hosted_scoped.balances.issuer == 200);
     print("tube1: matching grant + Storage Scope admits -- GREEN scoped path\n", .{});
 
-    // Claim 6a: scope covers the resource but grants only read → refuse.
+    // Claim 6a: scope covers the resource, yet grants only read → refuse.
     const scope_weak = try scope_mod.Scope.build(&[_]scope_mod.ScopeEntry{
         scope_mod.ScopeEntry.init(pool.ledger_resource, caps.right_read),
     });
