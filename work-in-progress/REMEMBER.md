@@ -6,11 +6,11 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260725.110418` (EDT) · voice Quin  
+**Last refreshed:** `20260725.110544` (EDT) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2** · **THREATS** · **five pillars** · **accrete tiers** · **redaction stance** · **always-in-it rhythm**  
 **Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list512 GREEN · **stamp @u64 · Crockford** · **shape aura floor**  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand ring-2** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm REPORT** · **OQ #1 · #3 · #5 answered** · **pass ledger** · **Wave 17** · **growth law** · **shell harvest**  
-**Git nib:** `3c83d9ca6e` · prior · *this lap re-pins on send*
+**Git nib:** `ef96db6513}` · Wave 17 runway (PR #106)
 
 **Season:** Framework · EDT · **finishing edge:** Radiant Wave 17 · **229/~1,185 (~19%)** · batch 50.  
 **APK:** `tools/.cache/tube05/seva-broadcaster.apk` · pkg `org.glow.app.seva_broadcaster`  
@@ -20,7 +20,7 @@
 
 ## Now
 
-**Radiant Wave 17** `20260725.110418` — fifty paths · **50 clean · 0 changed** · lint 2. Runway **Wave 17 / ~20** at batch fifty (**229 of ~1,185**, ~19%). Reply [`../counsel/replies/20260725-110418_re-radiant-wave17.md`](../counsel/replies/20260725-110418_re-radiant-wave17.md) · claim [`../waymarks/20260725-110418_radiant-wave17.md`](../waymarks/20260725-110418_radiant-wave17.md) · runway [`../counsel/20260725-110128_the-runway.md`](../counsel/20260725-110128_the-runway.md).
+**Radiant Wave 17** `20260725.110418` — fifty paths · 50 clean · lint 2. Sent `20260725.110543` · git nib `ef96db6513}`. **Runway:** Wave **17 / ~20** · **229 / ~1,185** (~19%).
 
 **Read:**
 

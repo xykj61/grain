@@ -1,0 +1,10 @@
+format session-log-v1
+stamp 20260725.110543
+editor Cursor
+model Cursor Composer 2.5 300k Fast
+voice Quin
+title Send Radiant Wave 17 · runway to main
+prompt Quin relay A-D; Wave 17 at fifty
+think FF-merge cursor/radiant-wave17-runway-1fde; PR 106
+obs Fifty paths 50 clean; modality witness live; PR 106
+recommend keep-going Wave 18 bound 50; spot-read Wave 20
