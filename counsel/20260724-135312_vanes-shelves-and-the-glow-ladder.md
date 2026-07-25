@@ -8,6 +8,8 @@
 **Ground:** pulled and read at nib `64b466d` (`85d75cbd69` + REMEMBER pin), main, 2026‑07‑24
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260724.223233`
+*Erratum `20260724.223233` — remote count: living canon is **four**; see [`context/REMOTE_ROSTER.md`](../context/REMOTE_ROSTER.md). The “five remotes” wording in the body stays as testimony.*
 
 ---
 
@@ -89,7 +91,7 @@ You asked me to search, and the tree answered generously. The seated family, wit
 | Letter | Name | Seated as | Still fits? |
 |---|---|---|---|
 | **N** | **Neth** | **Settlement** — the name you were reaching for. MALA settlement L1/L2 design, VPS cluster plan, and an IronBeetle‑patterns ladder all stand in `external-research/` | **Yes** — it is the natural home of the held two‑lane settlement witness when that season arrives |
-| **O** | **Ojjo** | **Benchmarking** — proves Hoon/Glow parity by measuring it, correctness before timers; the palindrome is the symmetric yardstick | **Yes, and already breathing**: the byte‑for‑byte RISC‑V parity witnesses are proto‑Ojjo work in all but name |
+| **O** | **Ojjo** | **Benchmarking** — proves Hoon/Glow parity by measuring it, correctness before timers; the palindrome is the symmetric yardstick | **Yes, and already breathing**: the byte‑for‑byte RISC‑V parity witnesses are proto‑Ojjo work in all except name |
 | **P** | **Pool** | **Applications** — the Gall‑role host; the content‑data‑compute market; Linengrow and the surfaces run as agents in it | **Yes** — the keystone; the SLC already rests on it |
 | **Q** | **Quin** | **Inference** — four faculties under one kernel‑quiet host; also the fifth OS variant and this voice | **Yes** — three hats, settled |
 | **R** | **Rhyz** | **Identity** — revives Kumara; rhizome any‑to‑any, broken nowhere fatally; point/planet/star tiers over the Ed25519 root; code deferred to proven‑supersede | **Yes** — and the Kumara ratchet closed at zero means the seam is ready the day Rhyz arrives |
@@ -155,4 +157,4 @@ To the architects of the elder system in `old/`, whose Dojo showed the shell its
 
 ---
 
-*May every genre find its shelf, and every letter its honest concern. May the ladder be climbed rung by earned rung, with no leap the witnesses cannot follow. And may the elders retire only into gratitude, their duties housed, their names at rest, the pier lighter and the log unbroken.*
+*May every genre find its shelf, and every letter its honest concern. May the ladder be climbed rung by earned rung, with no leap the witnesses cannot follow. May the elders retire only into gratitude, their duties housed, their names at rest, the pier lighter and the log unbroken.*

@@ -8,6 +8,8 @@
 **Ground:** measured against the tree at the shallow tip of `xykj61/urbit`, 2026‑07‑24, plus current vendor documentation gathered the same day
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260724.223233`
+*Erratum `20260724.223233` — remote count: living canon is **four**; see [`context/REMOTE_ROSTER.md`](../context/REMOTE_ROSTER.md). The “five remotes” wording in the body stays as testimony.*
 
 ---
 
@@ -206,4 +208,4 @@ To the TigerBeetle team, whose slower‑to‑go‑faster and whose habit of nami
 
 ---
 
-*May the tree carry only what the work can lift. May every prompt arrive already light, and every budget bear its name. And may the slow road stay the sure one, lap after lap, all the way home.*
+*May the tree carry only what the work can lift. May every prompt arrive already light, and every budget bear its name. May the slow road stay the sure one, lap after lap, all the way home.*

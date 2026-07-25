@@ -73,7 +73,8 @@ is_freeze_pointer() {
 
 # Recorded Radiant pass — Tier 2 style-only door (TAME §4 · living-vs-dated).
 has_radiant_pass() {
-  head -60 "$1" | grep -Eqi 'Radiant pass[[:space:]]+`?[0-9]{8}[.]?[0-9]{6}`?'
+  # Forms: "Radiant pass 20260724.223233" · "Radiant pass `stamp`" · optional markdown bold/colon
+  head -60 "$1" | grep -Eqi 'Radiant pass[:\*[:space:]]+`?[0-9]{8}[.]?[0-9]{6}`?'
 }
 
 if [ -s "$TMP/candidates" ]; then

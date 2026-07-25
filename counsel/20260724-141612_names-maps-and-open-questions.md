@@ -8,6 +8,8 @@
 **Companion to:** the unfiled second sitting, `20260724-135312_vanes-shelves-and-the-glow-ladder.md` — file both together; braid at the expanding prompt (Section Eight)
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260724.223233`
+*Erratum `20260724.223233` — remote count: living canon is **four**; see [`context/REMOTE_ROSTER.md`](../context/REMOTE_ROSTER.md). The “five remotes” wording in the body stays as testimony.*
 
 ---
 
@@ -127,4 +129,4 @@ To the keeper of the hammock keynote on our shelf, whose slow questions shaped S
 
 ---
 
-*May every name keep the promise it was given, and every open letter rest easy until a true concern knocks. May our gifts to the elder network be witnesses it can run, and our sovereignty be gentle enough to need no wall. And may the questions we have finally asked ripen slowly in the hammock, each answer arriving once, written well, and never needing to be written again.*
+*May every name keep the promise it was given, and every open letter rest easy until a true concern knocks. May our gifts to the elder network be witnesses it can run, and our sovereignty be gentle enough to need no wall. May the questions we have finally asked ripen slowly in the hammock, each answer arriving once, written well, and never needing to be written again.*

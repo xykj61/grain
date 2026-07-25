@@ -6,13 +6,13 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260724.222902` (EDT) · voice Quin  
-**Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2** · **THREATS** · **five pillars** · **accrete tiers**  
+**Last refreshed:** `20260724.223233` (EDT) · voice Quin  
+**Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2** · **THREATS** · **five pillars** · **accrete tiers** · **Radiant waves 1–3**  
 **Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list512 GREEN · **stamp @u64 · Crockford** · **shape aura floor**  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand ring-2** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm REPORT** · **OQ #3 answered** · **radiant_lint** · **claim_preserve**  
-**Git nib:** `f41298d8bf` · prior send — *this lap re-pins on send*
+**Git nib:** `40900f2a83` · Wave 2 on main — *Wave 3 send re-pins*
 
-**Season:** Framework · EDT · **finishing edge:** three-tier accrete · radiant instruments · waves.  
+**Season:** Framework · EDT · **finishing edge:** three-tier accrete · Radiant waves 1–3.  
 **APK:** `tools/.cache/tube05/seva-broadcaster.apk` · pkg `org.glow.app.seva_broadcaster`  
 **ADB:** `tools/.cache/hawm0/android-sdk/platform-tools/adb` — not on bare PATH  
 
@@ -20,7 +20,7 @@
 
 ## Now
 
-**Accrete tiers · radiant instruments** `20260724.222620` — TAME §4 three tiers; `radiant_lint` · `claim_preserve` seated; remote count at [`../context/REMOTE_ROSTER.md`](../context/REMOTE_ROSTER.md). Waves ≤12 files next. Reply [`../counsel/replies/20260724-222620_re-accrete-tiers-radiant-waves.md`](../counsel/replies/20260724-222620_re-accrete-tiers-radiant-waves.md) · claim [`../waymarks/20260724-222620_accrete-tiers-radiant-instruments.md`](../waymarks/20260724-222620_accrete-tiers-radiant-instruments.md).
+**Radiant waves close** `20260724.223233` — Tier 1–3 law seated; waves ≤12 proved by `radiant_lint` + `claim_preserve`; lint sum 10→4; five-remotes errata point at [`../context/REMOTE_ROSTER.md`](../context/REMOTE_ROSTER.md). Reply [`../counsel/replies/20260724-223233_re-radiant-waves-close.md`](../counsel/replies/20260724-223233_re-radiant-waves-close.md) · instruments claim [`../waymarks/20260724-222620_accrete-tiers-radiant-instruments.md`](../waymarks/20260724-222620_accrete-tiers-radiant-instruments.md).
 
 **Read:**
 
