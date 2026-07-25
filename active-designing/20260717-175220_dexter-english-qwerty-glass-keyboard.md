@@ -9,6 +9,8 @@
 **World study:** [`../external-research/20260717-175220_glow-english-qwerty-glass-keyboard-ios-inspired.md`](../external-research/20260717-175220_glow-english-qwerty-glass-keyboard-ios-inspired.md)
 **Compressor:** [`../docs/ZETA.md`](../docs/ZETA.md)
 
+Radiant pass `20260725.111615`
+
 ---
 
 ## Decisions Seated Here

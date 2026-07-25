@@ -5,6 +5,8 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Runnable plan — three external-research writings, all landed this pass. Register: design/research (Two Rooms — proposals, not bound claims). Addressed to a generic Acme Corporation employee.
 
+Radiant pass `20260725.111615`
+
 ---
 
 ## The Seed (what was asked, across four turns)
