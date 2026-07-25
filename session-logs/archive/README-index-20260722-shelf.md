@@ -23,3 +23,11 @@
 - `20260722.133004` — [STOA229 append first-event pin emit](20260722-133004_stoa229-append-first-event-pin-emit.bron) — event 1 from pins; HAWM1
 - `20260722.133103` — [REMEMBER git nib after STOA229](20260722-133103_remember-git-nib-stoa229.bron) — pin 779751bbeecc
 - `20260722.133211` — [STOA230 after append pin wire check-in](20260722-133211_stoa230-after-append-pin-wire-checkin.bron) — rec send; then rest
+- `20260722.133343` — [STOA230 send · rest next](20260722-133343_stoa230-send-rest-next.bron) — pier send; lean B rest
+- `20260722.133429` — [REMEMBER git nib after STOA230](20260722-133429_remember-git-nib-stoa230.bron) — pin 82aae70dc231
+- `20260722.133631` — [After rest · rec events 2–3 pins](20260722-133631_after-rest-rec-events-2-3-pins.bron) — kg same recipe as event 1
+- `20260722.133717` — [STOA231 demo events 2–3 pin emit](20260722-133717_stoa231-demo-events-2-3-pin-emit.bron) — pins · desk · append GREEN
+- `20260722.134008` — [STOA231 send · STOA232 check-in](20260722-134008_stoa231-send-stoa232-checkin.bron) — pier send; rec rest
+- `20260722.134048` — [REMEMBER git nib after STOA232](20260722-134048_remember-git-nib-stoa232.bron) — pin 9f7786b86115
+- `20260722.134205` — [STOA233 runtime desk emit GREEN](20260722-134205_stoa233-runtime-desk-emit.bron) — desk extract ≡ pins; HAWM1
+- `20260722.134415` — [STOA233 send · STOA234 · round-close](20260722-134415_stoa233-send-stoa234-round-close.bron) — auto send+check-in seated
