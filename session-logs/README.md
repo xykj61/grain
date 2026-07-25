@@ -4,7 +4,12 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
-- `20260725.162512` — [Send Framework follow · cursor · Pond](20260725-162512_send-framework-cursor-pond-counsel.bron) — bounds · --cursor · counsel 161616
+- `20260725.185647` — [Send Grain · fence · Claude counsel](20260725-185647_send-grain-fence-claude-counsel.bron) — cold REPORT · parity paused honest  
+- `20260725.185700` — [Parity re-run aborted](20260725-185700_parity-rerun-aborted.bron) — paused mid-suite after wasmtime pin  
+- `20260725.185555` — [Pause parity · wasmtime counsel ask](20260725-185555_pause-parity-wasmtime-counsel-ask.bron) — suite stopped · Claude advice requested  
+- `20260725.174516` — [Parity RED wasmtime missing](20260725-174516_parity-red-wasmtime-missing.bron) — cold REPORT 29s · STOP before send  
+- `20260725.174005` — [Parity not infinite loop](20260725-174005_parity-not-infinite-loop.bron) — ch1 GREEN · ch02 scribble views advancing  
+- `20260725.162512` — [Send Framework follow · cursor · Pond](20260725-162512_send-framework-cursor-pond-counsel.bron) — bounds · --cursor · counsel 161616  
 - `20260725.161616` — [Pond-in-Glow counsel · glow comment truth](20260725-161616_pond-glow-counsel-comment-truth.bron) — Pool nest · focused pass · face/cast gate for Claude  
 - `20260725.161330` — [Cursor --cursor path flag Rishi](20260725-161330_cursor-path-flag-rishi.bron) — Linux AppImage · macOS .app · RS-3 GREEN · Pond counsel lean  
 - `20260725.160403` — [Parity not stuck; Cursor zygote lag](20260725-160403_parity-not-stuck-cursor-lag.bron) — ch1 GREEN · ch2 moving · Cursor ~5Gi/55% CPU for 6d  
