@@ -8,9 +8,12 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+*Erratum `20260724.203617` — UTC window on the cloud bench:* while Keaton's clock supplied `20260724.202412` (EDT), four living logs were stamped from `Etc/UTC` and must be read in index order, not filename sort: `20260724.221013` (digraph research; sits after `181241` in truth-order), `20260725.002400` (sala rename survey), `20260725.002955` (send Seva·Mand), `20260725.003013` (REMEMBER pin). Files keep their names (accrete-never-break). Cause fixed: host zone re-seated to `America/New_York`; witness `tools/one_clock_witness.rish`.
+
 **Living pin bound:** `living_pin_max_bytes = 24576` ([spec](../context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md)). Closed index rows through `20260721`: [`archive/README-index-through-20260721.md`](archive/README-index-through-20260721.md). Early `20260722` overflow: [`archive/README-index-20260722-shelf.md`](archive/README-index-20260722-shelf.md).
 
-- `20260724.203459` — [Explore Mand · Seva · standing-exempt surfaces](20260724-203459_explore-mand-surfaces.bron) — LEXICON · exclude · ring-1 sketch · EDT stamp (UTC-labeled 20260725.* rows above are wall-drifted)
+- `20260724.203813` — [Mand ring-1 · one-clock seat](20260724-203813_mand-ring1-one-clock.bron) — HAWM1 exempt · one-clock · Mand GREEN
+- `20260724.203459` — [Explore Mand · Seva · standing-exempt surfaces](20260724-203459_explore-mand-surfaces.bron) — LEXICON · exclude · ring-1 sketch · EDT stamp
 - `20260725.003013` — [REMEMBER git nib after Seva · Mand send](20260725-003013_remember-git-nib-seva-mand.bron) — pin 1ab2009bb0
 - `20260725.002955` — [Send Seva complete · Mand seated to main](20260725-002955_send-seva-complete-mand.bron) — FF merge · Sala historical · Mand · GREEN
 - `20260725.002400` — [Sala rename digest and fixture risk survey](20260725-002400_sala-rename-digest-fixture-risk.bron) — STOP memos/pins · SAFE names/paths

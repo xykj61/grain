@@ -1,0 +1,33 @@
+# one_clock_witness.rish — one-clock naming law ratchet.
+#
+# Asserts:
+#   1. Every living dated filename matches ^\d{8}-\d{6}_
+#   2. No living dated stamp exceeds tools/fixtures/one_clock_ceiling.txt
+#      unless listed in tools/fixtures/one_clock_drift_erratum.txt
+#
+# Mode: ADVISORY first (prints WARN; exits 0). Flip MODE in
+# tools/fixtures/one_clock_mode.txt to "blocking" once green.
+#
+#   rishi/bin/rishi run tools/one_clock_witness.rish
+
+# Avoid bare $ in run strings — Rish interpolates dollar forms.
+let ceiling_line = run ["sh" "-c" "head -1 tools/fixtures/one_clock_ceiling.txt"]
+let ceiling = trim ceiling_line.out
+assert (ceiling contains ".") else "one_clock_ceiling.txt missing YYYYMMDD.HHMMSS"
+
+let mode_line = run ["sh" "-c" "head -1 tools/fixtures/one_clock_mode.txt"]
+let mode = trim mode_line.out
+assert (mode_line.ok) else "one_clock_mode.txt unreadable"
+assert (mode contains "a") else "one_clock_mode.txt empty"
+
+let shape = run ["sh" "tools/fixtures/one_clock_shape_scan.sh"]
+assert shape.ok else "one_clock shape scan failed to run"
+assert (shape.out contains "SHAPE_OK") else "dated filename shape failed (expected ^YYYYMMDD-HHMMSS_)"
+assert ((shape.out contains "SHAPE_BAD") == false) else "dated filename shape violations present"
+
+let gate = run ["sh" "tools/fixtures/one_clock_mode_gate.sh"]
+say "one-clock: ceiling ${ceiling} · mode ${mode}"
+say gate.out
+assert gate.ok else "one-clock blocking mode: ceiling violations present"
+
+say "GREEN: one_clock_witness — filename shape ok · ceiling scan printed · mode ${mode}"
