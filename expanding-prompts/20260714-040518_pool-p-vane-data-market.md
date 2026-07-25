@@ -5,6 +5,8 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Runnable plan — collision search + design done; build gated on Glow's agent runtime. Addressed to a generic Acme Corporation employee.
 
+Radiant pass `20260725.111515`
+
 ---
 
 ## The Seed (what was asked)

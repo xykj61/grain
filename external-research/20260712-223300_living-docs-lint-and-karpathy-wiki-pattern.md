@@ -7,6 +7,8 @@
 **Keeper:** `tools/living_docs_lint.rish` (ratchet-advisory · seated `c4694f4` · three folds `223300`)
 **Status:** Research for understanding — living-docs lint pattern study; keeper seated; no wiki rewrite claimed
 
+Radiant pass `20260725.111515`
+
 ---
 
 ## What Karpathy names

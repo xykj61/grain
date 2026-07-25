@@ -9,6 +9,8 @@
 **Status:** Checkable — seated — freeze affirmed · master-seal landed
 **Ground:** Exit card [`20260712-210800_pond-supersede-exit-criteria.md`](20260712-210800_pond-supersede-exit-criteria.md) · scorecard witness · `tools/pond_exit_bron_master_seal.sh`
 
+Radiant pass `20260725.111515`
+
 ---
 
 ## Freeze affirmed

@@ -6,6 +6,8 @@
 **Status:** Vision register — design and research; no rename, no code, no kelvin number committed
 **Builds on:** `yonder/20260617-195812_aurora-boot-riscv.md` (Aurora's existing design), `../context/specs/20260713-225658_glow-accepted-riyo-reya-trey-triz-amended.md` (the four kernel variants)
 
+Radiant pass `20260725.111515`
+
 ---
 
 ## What Was Checked Live, Just Now, Before Writing Any of This

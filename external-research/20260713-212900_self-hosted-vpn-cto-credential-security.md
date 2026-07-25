@@ -5,6 +5,8 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Vision register — living recommendation, not yet implemented
 
+Radiant pass `20260725.111515`
+
 ---
 
 ## The Frame

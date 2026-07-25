@@ -5,6 +5,8 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Plan — inventory only; zero files moved by this document
 
+Radiant pass `20260725.111515`
+
 ---
 
 ## What Kaeden Asked, and the Tension This Inventory Surfaces

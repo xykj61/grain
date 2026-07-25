@@ -6,6 +6,8 @@
 **Stamped:** `20260715.160000` (Pacific)
 **Companion:** [`life-frame/four-asramas-and-goals-of-life.md`](../life-frame/four-asramas-and-goals-of-life.md) (the four aims and four seasons), [`20260705-180812_the-four-directions-and-the-four-aims.md`](20260705-180812_the-four-directions-and-the-four-aims.md) (artha as earth's own aim), [`government-as-planetary-spectrum.md`](government-as-planetary-spectrum.md) (the four-sector varnashrama model this study builds directly on)
 
+Radiant pass `20260725.111515`
+
 ---
 
 ## Why This Study Exists

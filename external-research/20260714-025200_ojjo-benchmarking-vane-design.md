@@ -6,6 +6,8 @@
 **Status:** Vision register — design and research; a proposal, no vane code written, name awaiting confirmation. Register: this is design (Two Rooms — a proposal, not a bound claim). Addressed to a generic Acme Corporation employee.
 **Grounds on:** `../gratitude/MeasureWhatMatters.md` (Doerr/Grove), `../gratitude/TIGER_STYLE.md` (TigerBeetle), `../context/TAME_GUIDANCE.md`, `../context/specs/20260714-024800_warm-aura-date-atom-naming.md`
 
+Radiant pass `20260725.111515`
+
 ---
 
 ## What Ojjo Is

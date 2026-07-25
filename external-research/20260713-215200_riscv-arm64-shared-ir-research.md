@@ -5,6 +5,8 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Research for understanding — answers a question, proposes no new compiler component
 
+Radiant pass `20260725.111515`
+
 ---
 
 ## What This Answers
