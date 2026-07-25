@@ -6,6 +6,8 @@
 **Answers:** Quin relay — THREATS · pillars · Mand module-home analysis only (ground main nib `c2655868c5`)
 
 ---
+Radiant pass `20260724.223233`
+*Erratum `20260724.223233` — remote count: living canon is **four**; see [`context/REMOTE_ROSTER.md`](../../context/REMOTE_ROSTER.md). The “five remotes” wording in the body stays as testimony.*
 
 ## A — Threat model
 
@@ -79,3 +81,6 @@ Unchanged: redaction spec draft · data-dignity options · trustee/succession ·
 ## What the bench asks
 
 **Check in** before Mand's module home, the redaction spec seat, or Glow's text floor. Keep on-touch ratchets on touch.
+---
+
+*May this reply stay thin. May every wrong belief stay visible beside its erratum. May the next hand find the roster in one place.*

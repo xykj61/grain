@@ -16,6 +16,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 **Living pin bound:** `living_pin_max_bytes = 24576` ([spec](../context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md)). Closed index rows through `20260721`: [`archive/README-index-through-20260721.md`](archive/README-index-through-20260721.md). Early `20260722` overflow: [`archive/README-index-20260722-shelf.md`](archive/README-index-20260722-shelf.md).
 
+- `20260724.223233` — [Radiant Wave 3 — Tier 2 passes · five-remotes errata](20260724-223233_radiant-wave3-tier2.bron) — pass · erratum · lint 8→4
 - `20260724.223151` — [Radiant Wave 2 — linengrow comments](20260724-223151_radiant-wave2-linengrow.bron) — 5 files · claim_preserve GREEN
 - `20260724.223050` — [Radiant Wave 1 — living docs](20260724-223050_radiant-wave1-living.bron) — header · but-word · lint 10→8
 - `20260724.222902` — [Accrete three tiers · radiant_lint · claim_preserve](20260724-222902_accrete-tiers-radiant-instruments.bron) — Tier1–3 · instruments · roster
@@ -165,9 +166,3 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 - `20260722.145936` — [REMEMBER git nib after STOA262](20260722-145936_remember-git-nib-stoa262.bron) — pin c1ed098ebcf8
 - `20260722.145840` — [STOA261–262 barket N-field flip](20260722-145840_stoa261-262-barket-n-field-flip-round.bron) — barket flip emit; inventary deepen closed; finishing edge next
 - `20260722.145314` — [REMEMBER git nib after STOA260](20260722-145314_remember-git-nib-stoa260.bron) — pin 171b5c7bbdff
-- `20260722.145236` — [STOA259–260 bartis N-field flip](20260722-145236_stoa259-260-n-field-flip-round.bron) — flip emit; barket twin next
-- `20260722.145017` — [Surveys close · Glow name grounds](20260722-145017_surveys-close-glow-name-grounds.bron) — cite acceptance specs on check-in
-- `20260722.144843` — [Check-in humanity green runes Glow name](20260722-144843_checkin-humanity-green-runes-glow-name.bron) — finish · meter · keep Glow
-- `20260722.144811` — [REMEMBER git nib STOA258 fix](20260722-144811_remember-git-nib-stoa258-fix.bron) — pin 02b62dc59096 on living card
-- `20260722.144745` — [REMEMBER git nib after STOA258](20260722-144745_remember-git-nib-stoa258.bron) — pin 02b62dc59096
-- `20260722.144300` — [STOA257–258 shape-only living](20260722-144300_stoa257-258-shape-only-living-round.bron) — living -shape; study alias held; flip next

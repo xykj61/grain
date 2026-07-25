@@ -6,6 +6,8 @@
 **Answers:** Claude/Quin relay shelf ruling on `counsel/20260724-150246_flw-corpus-shelf-and-vere-old.md` (Option C · naming-grade pins · genre law · vere/old gate)
 
 ---
+Radiant pass `20260724.223233`
+*Erratum `20260724.223233` — remote count: living canon is **four**; see [`context/REMOTE_ROSTER.md`](../../context/REMOTE_ROSTER.md). The “five remotes” wording in the body stays as testimony.*
 
 ## What landed
 
@@ -31,3 +33,6 @@
 1. Word to run the vere/old sibling-clone PR from a five-remote host (pre-flight already green for runtime).
 2. Approve the Rishi list-bound 256→512 lap when convenient.
 3. Optional: record a canonical input for SETU if a future draw-style seat is wanted (today it stays honestly hand-seated).
+---
+
+*May this reply stay thin. May every wrong belief stay visible beside its erratum. May the next hand find the roster in one place.*
