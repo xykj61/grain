@@ -5,6 +5,8 @@
 **Style:** Radiant (see `../RADIANT_STYLE.md`)
 **Status:** Living — the authoritative record of two naming decisions; supersedes nothing, seals the transition
 
+Radiant pass `20260725.035955`
+
 ---
 
 ## Two Decisions, Sealed Here

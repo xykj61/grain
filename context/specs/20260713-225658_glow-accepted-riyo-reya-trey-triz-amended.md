@@ -5,6 +5,8 @@
 **Style:** Radiant (see `../RADIANT_STYLE.md`)
 **Status:** Amendment to `20260713-224212_glow-and-four-kernel-variants-naming-research.md` and `20260713-214400_urbit-parallel-naming-mapping-proposal.md` — still no rename committed
 
+Radiant pass `20260725.035955`
+
 ---
 
 ## Glow Is Accepted, With Its Reasoning Named Plainly

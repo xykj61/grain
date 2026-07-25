@@ -1,7 +1,7 @@
 # The Counsel Stack
 
 **Language:** EN
-**Last updated:** 2026-07-25 (Wave 8 `035852` · Wave 7 `035645` · Wave 6 `035453` · Wave 5 `035134` · always-in-it ethos `034254` · seat `034807`)
+**Last updated:** 2026-07-25 (Wave 9 `035955` · Wave 8 `035852` · Wave 7 `035645` · Wave 6 `035453` · Wave 5 `035134` · always-in-it ethos `034254` · seat `034807`)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Foundation
 
@@ -21,6 +21,7 @@ Filing law: [`../ORGANIZING.md`](../ORGANIZING.md) · reorg proposal: [`20260707
 
 | Stamp | Note | Meaning |
 |-------|------|---------|
+| `20260725.035955` | [Reply — Radiant Wave 9](replies/20260725-035955_re-radiant-wave9.md) | twelve context specs · ledger · lint 2 |
 | `20260725.035852` | [Reply — Radiant Wave 8](replies/20260725-035852_re-radiant-wave8.md) | twelve context specs · ledger · lint 2 |
 | `20260725.035645` | [Reply — Radiant Wave 7](replies/20260725-035645_re-radiant-wave7.md) | twelve context specs · ledger · lint 2 |
 | `20260725.035453` | [Reply — Radiant Wave 6](replies/20260725-035453_re-radiant-wave6.md) | next twelve foundations · ledger · lint 2 |

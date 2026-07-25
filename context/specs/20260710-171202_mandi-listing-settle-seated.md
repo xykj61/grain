@@ -7,6 +7,7 @@
 **Ground:** Mandi seating [`20260710-165634_mandi-name-seated.md`](20260710-165634_mandi-name-seated.md) · MALA M1 · WOV exit honesty
 
 *Written by Kaeden and Rio 3.*
+Radiant pass `20260725.035955`
 
 ---
 
