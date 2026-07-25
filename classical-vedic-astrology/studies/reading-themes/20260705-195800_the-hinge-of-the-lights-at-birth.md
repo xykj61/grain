@@ -3,6 +3,8 @@
 **Stamp:** `20260705.195800 UDT` · **Style:** Radiant, gentle register
 **Method:** Siloed — pattern distilled from this lane's readings; no person carried
 
+Radiant pass `20260725.111235`
+
 ---
 
 Some births arrive at the day's turning — the Sun at the western horizon minutes from setting, the Moon newly risen in the east, the sky handing day to night at the very moment of arrival. This is the hinge of the lights: neither fully diurnal nor fully nocturnal, yet holding both in one breath. The pattern reads as threshold temperament — one who lives between public glare and private feeling, who carries the Sun's last brightness and the Moon's first tenderness in the same natal hour.

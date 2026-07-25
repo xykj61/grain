@@ -24,6 +24,8 @@ Read all 25 remaining `tools/fixtures/*.sh` scripts before picking targets. Two 
 
 `opening_lines_scan.sh`, `tame_check_mantra.sh` — wait on the `let…in`/block-body language feature, itself waiting on your word. `chrono_version_scan.sh`, `identity_shape.sh`, `two_rooms_doorway_scan.sh` — genuinely regex-dependent, stay `.sh`. `slc1_accept.sh` — untested whether `run` can express stdin redirection at all.
 
+Radiant pass `20260725.111235`
+
 ---
 
 *May the next script that needs to know which stream carries which message never have to learn it the hard way again.*

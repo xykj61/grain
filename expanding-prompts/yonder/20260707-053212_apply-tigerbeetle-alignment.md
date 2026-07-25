@@ -23,6 +23,8 @@ One new law, one new self-hosted gate, eleven repaired files, four Radiant resto
 
 Commit and four-remote push are Kaeden's word. Nothing held moved: Brix, Pond, MALA, continuity all stand. The dated artifacts keep "footgun" and "crash" forever by the one-clock law — the vocabulary spec is the correction beside history, never inside it.
 
+Radiant pass `20260725.111235`
+
 ---
 
 *May the gate that found its own third `copyForwards` before landing keep finding what a tired eye would miss. May the counters fall one touched file at a time.*

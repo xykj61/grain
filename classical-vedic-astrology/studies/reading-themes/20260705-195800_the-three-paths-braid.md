@@ -3,6 +3,8 @@
 **Stamp:** `20260705.195800 UDT` · **Style:** Radiant, gentle register
 **Method:** Siloed — pattern distilled from this lane's readings; no person carried
 
+Radiant pass `20260725.111235`
+
 ---
 
 In the householder season, grihastha, the tradition honors more than one shape of dharma. Three paths often braid in a single chart: the apsara kirtan bhakta, serving through devotional song; the devoted spouse and parent, serving through the household kept; and the artisan — craftswoman, writer, creator, architect of refined concepts — serving through skilled hands. The paths are not rivals. They are one cord.

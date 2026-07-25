@@ -34,6 +34,8 @@ Rishi's `run` blocks until exit. That structural fact keeps seven wire-lab `.sh`
 
 SLC-L3 settlement — custody gate unchanged. Realidream sketchbook vendoring and gratitude lines — taste, not this lap.
 
+Radiant pass `20260725.111235`
+
 ---
 
 *May the verb arrive whole — handle, wait, record — before any wire lab sheds its shell script.*
