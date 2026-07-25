@@ -35,6 +35,7 @@ Each shelf keeps a one-line-per-claim `README.md` index as claims arrive.
 | Stamp | Claim | Path |
 |-------|-------|------|
 | `20260725.040520` | Shell fold · growth law · harvest | [`20260725-040520_shell-fold-harvest.md`](20260725-040520_shell-fold-harvest.md) |
+| `20260725.041039` | Radiant Wave 11 — twelve counsel · specs | [`20260725-041039_radiant-wave11.md`](20260725-041039_radiant-wave11.md) |
 | `20260725.040728` | Radiant Wave 10 — twelve specs | [`20260725-040728_radiant-wave10.md`](20260725-040728_radiant-wave10.md) |
 | `20260725.035955` | Radiant Wave 9 — twelve context specs | [`20260725-035955_radiant-wave9.md`](20260725-035955_radiant-wave9.md) |
 | `20260725.035852` | Radiant Wave 8 — twelve context specs | [`20260725-035852_radiant-wave8.md`](20260725-035852_radiant-wave8.md) |

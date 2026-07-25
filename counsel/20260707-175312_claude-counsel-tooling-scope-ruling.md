@@ -8,6 +8,7 @@
 **Ground:** `tools/fixtures/tame_style_scan.sh` run live on this bench (bans clean, both ratchets confirmed) · `rye/src/main.rye` (read in full, 351 lines) · `tools/align_session_logs.rye`, `tools/tame_usize_audit.rye`, `tools/enrich/*` (15 files, read for shape and scope) · `linengrow/open_asks.rye`'s reputation fold (verified split, not merely renamed)
 
 *Written by Kaeden and Rio 3.*
+Radiant pass `20260725.041039`
 
 ---
 

@@ -9,6 +9,7 @@
 **Ground:** `linengrow/open_asks.rye` (`classifyFact`, `foldReputationLog`, `foldEscrowLog`, `appendCompletedAsk`, read in full) · `active-designing/20260706-013012_open-asks-escrow-hammock.md` · `context/specs/20260702-035018_graduation-rule.md`
 
 *Written by Kaeden and Rio 3.*
+Radiant pass `20260725.041039`
 
 ---
 

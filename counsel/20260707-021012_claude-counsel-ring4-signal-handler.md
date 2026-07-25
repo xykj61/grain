@@ -9,6 +9,7 @@
 **Ground:** `caravan/subscribe_poll_service.rye`, `caravan/supervisor_exit.rye` (read in full) · `mantra/recall_subscribe_poll_delivery.rye` (`stopSentinelPresent`, `runFetcherPollOnce`, `runSourceLoop`, read in full) · `std/posix.zig` (`Sigaction`, `sigaction`, `kill`, `raise`, `sigemptyset`) — every API named below spiked and run on this bench before being recommended
 
 *Written by Kaeden and Rio 3.*
+Radiant pass `20260725.041039`
 
 ---
 
