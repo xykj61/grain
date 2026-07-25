@@ -10,6 +10,8 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 **Living pin bound:** `living_pin_max_bytes = 24576` ([spec](../context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md)). Closed index rows through `20260721`: [`archive/README-index-through-20260721.md`](archive/README-index-through-20260721.md). Early `20260722` overflow: [`archive/README-index-20260722-shelf.md`](archive/README-index-20260722-shelf.md).
 
+- `20260724.203459` — [Explore Mand · Seva · standing-exempt surfaces](20260724-203459_explore-mand-surfaces.bron) — LEXICON · exclude · ring-1 sketch · EDT stamp (UTC-labeled 20260725.* rows above are wall-drifted)
+- `20260725.003013` — [REMEMBER git nib after Seva · Mand send](20260725-003013_remember-git-nib-seva-mand.bron) — pin 1ab2009bb0
 - `20260725.002955` — [Send Seva complete · Mand seated to main](20260725-002955_send-seva-complete-mand.bron) — FF merge · Sala historical · Mand · GREEN
 - `20260725.002400` — [Sala rename digest and fixture risk survey](20260725-002400_sala-rename-digest-fixture-risk.bron) — STOP memos/pins · SAFE names/paths
 - `20260724.202412` — [Seva rename complete · Mand seated](20260724-202412_seva-complete-mand-seated.bron) — glow_seva_b0 · Mand · STOP memos · GREEN
