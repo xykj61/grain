@@ -6,6 +6,8 @@
 **Room:** Checkable  
 **Witnesses:** `rishi/bin/rishi run tools/mand_ring1_witness.rish` · `rishi/bin/rishi run tools/one_clock_witness.rish` · `rishi/bin/rishi run tools/seva_rename_witness.rish`
 
+Radiant pass `20260725.112215`
+
 ---
 
 ## Claim

@@ -8,6 +8,8 @@
 **Room:** Checkable  
 **Rung:** **1a** — table proven as data; Glow-written lexer remains rung 2
 
+Radiant pass `20260725.112215`
+
 ---
 
 ## Claim

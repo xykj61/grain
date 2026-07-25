@@ -13,6 +13,8 @@
 
 **dated_guard:** Do **not** open deca argv. Do **not** collapse tagged `$%` argv into this path. Gold · fleets · JABS3 stay held.
 
+Radiant pass `20260725.112215`
+
 ---
 
 ## Verdict (one breath)

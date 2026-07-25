@@ -7,6 +7,8 @@
 **Counsel:** [`../counsel/20260724-200912_nothing-to-give-and-the-hall-renamed.md`](../counsel/20260724-200912_nothing-to-give-and-the-hall-renamed.md)  
 **Witness:** `rishi/bin/rishi run tools/seva_rename_witness.rish`
 
+Radiant pass `20260725.112215`
+
 ---
 
 ## Claim

@@ -6,6 +6,8 @@
 **Room:** Checkable  
 **Witnesses:** `rishi/bin/rishi run tools/mand_ring2_witness.rish` · `rishi/bin/rishi run tools/tame_style_tools_py_ban_selftest.rish` · `rishi/bin/rishi run tools/stranger_lap_witness.rish`
 
+Radiant pass `20260725.112215`
+
 ---
 
 ## Claim
