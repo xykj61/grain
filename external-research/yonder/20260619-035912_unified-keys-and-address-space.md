@@ -11,6 +11,8 @@
 **Reads alongside:** `yonder/20260618-195512_encrypted-networking-riscv.md`, `yonder/20260618-212112_content-centric-messaging.md`, `yonder/20260618-195612_devotional-social-layer.md`; `../SOURCE.md`; honored in `../gratitude/urbit`, `../gratitude/sui`, `../gratitude/nips`
 **Structure:** mission · problem · opportunity · architecture · metaphor and mechanism · caveats · longer horizon · conclusion
 
+Radiant pass `20260725.110622`
+
 ---
 
 ## Mission
