@@ -47,7 +47,7 @@ const print = std.debug.print;
 
 /// Rishi's version, stamped chronologically — YYYYMMDD.HHMMSS, where later is
 /// larger, the same clock Rye keeps. This is Rishi's founding stamp.
-const rishi_version = "20260725.160000";
+const rishi_version = "20260725.120701";
 
 /// A Rishi value. The kinds — string, integer, boolean, list, record — are the
 /// seed of a model shared with Rye so a value can cross between them without a seam.
