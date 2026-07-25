@@ -12,6 +12,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 **Living pin bound:** `living_pin_max_bytes = 24576` ([spec](../context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md)). Closed index rows through `20260721`: [`archive/README-index-through-20260721.md`](archive/README-index-through-20260721.md). Early `20260722` overflow: [`archive/README-index-20260722-shelf.md`](archive/README-index-20260722-shelf.md).
 
+- `20260724.205321` — [Send one-clock · Crockford aura to main](20260724-205321_send-one-clock-crockford.bron) — FF merge · blocking · Decision 6
 - `20260724.205258` — [One-clock amended · Crockford aura Decision 6](20260724-205258_one-clock-crockford-aura.bron) — blocking · Decision 6 GREEN
 - `20260724.204825` — [Explore one-clock · Crockford aura · encode patterns](20260724-204825_explore-one-clock-crockford-aura.bron) — Decision 6 PARK · aura seat map · witness sketch
 - `20260724.203949` — [REMEMBER git nib after Mand ring-1 send](20260724-203949_remember-git-nib-mand-ring1.bron) — pin 9e59d53527
