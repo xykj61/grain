@@ -6,6 +6,8 @@
 **Method:** Siloed — distilled in our own voice; teacher named with gratitude below
 **Stamped:** 20260702.202612 UDT
 
+Radiant pass `20260725.112415`
+
 ---
 
 ## What governing means in the sky's language

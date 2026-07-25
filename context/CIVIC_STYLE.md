@@ -9,6 +9,8 @@
 **Companion to:** `TAME_GUIDANCE.md` (code), `RADIANT_STYLE.md` (prose), `SIMPLE_LOVABLE_COMPLETE.md` (product)
 **Scope:** policy, law, public-benefit corporations, nonprofits — any system that spends public trust
 
+Radiant pass `20260725.112415`
+
 ---
 
 ## The First Principle

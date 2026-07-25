@@ -8,6 +8,8 @@
 
 **In Alice's chart:** Her Sun shines through Ashleṣā, the star of the coiled serpent, in Leo, in the 10th house. This file gives the *deeper flavor* of her Sun — the star-quality that colors its light. Read it alongside the Sun-in-Leo file (the sign) and the Sun-in-the-10th-house file (the arena).
 
+Radiant pass `20260725.112415`
+
 ---
 
 ## The star of the serpent

@@ -12,6 +12,8 @@
 
 
 
+CLAUDE.md	20260725.112415	clean
+CONTRIBUTING.md	20260725.112415	clean
 active-designing/20260620-020712_scribble-lantern-and-lattice.md	20260725.110418	clean
 active-designing/20260628-043542_thin-frontend-slc-direction.md	20260725.110418	clean
 active-designing/20260628-071012_slc-1-rishi-mantra-shell.md	20260725.110418	clean
@@ -386,6 +388,7 @@ active-designing/20260722-204131_stoa330-gate-spec-shape-name.md	20260725.112215
 active-designing/20260722-204133_stoa331-after-gate-shape-name-checkin.md	20260725.112215	clean
 active-designing/20260724-143155_glow-mode-rishi-aspect-and-pool-ladder.md	20260725.112215	clean
 active-designing/20260724-143155_letters-retirement-glow-stdlib-rung1.md	20260725.112215	clean
+active-designing/giving-lane-t2-courtesy-wire.md	20260725.112415	clean
 active-designing/yonder/20260618-085812_strengthening-strategy.md	20260725.110622	clean
 active-designing/yonder/20260618-182412_single-stranded.md	20260725.110622	clean
 active-designing/yonder/20260618-184912_growing-a-language.md	20260725.110622	clean
@@ -423,6 +426,7 @@ active-designing/yonder/20260705-045012_rye-astrology-atelier.md	20260725.111120
 amphora/README.md	20260710.182821	legacy
 classical-vedic-astrology/_method/rendering/20260705-030312_degree-true-crossing-addendum.md	20260725.111120	clean
 classical-vedic-astrology/_method/rendering/20260705-045012_svg-wheel-generation.md	20260725.111120	clean
+classical-vedic-astrology/readings/alice-sample-reading.md	20260725.112415	clean
 classical-vedic-astrology/readings/brooke/20260705-020812_a-temple-of-star-gods.md	20260725.111005	clean
 classical-vedic-astrology/readings/brooke/20260705-020812_companions-of-the-lights.md	20260725.111005	clean
 classical-vedic-astrology/readings/brooke/20260705-020812_deep-faith-among-the-gathered.md	20260725.111005	clean
@@ -440,16 +444,21 @@ classical-vedic-astrology/readings/brooke/20260705-020812_the-priests-light-on-t
 classical-vedic-astrology/readings/brooke/20260705-020812_the-season-and-the-three-paths.md	20260725.111120	clean
 classical-vedic-astrology/readings/brooke/20260705-020812_the-spartan-heart-under-vishnus-star.md	20260725.111120	changed
 classical-vedic-astrology/studies/life-frame/20260705-171012_dharma-the-essence-of-a-thing.md	20260725.111120	clean
+classical-vedic-astrology/studies/life-frame/four-asramas-and-goals-of-life.md	20260725.112415	clean
 classical-vedic-astrology/studies/lunar-craft/20260705-190812_the-four-lunar-neighbor-yogas.md	20260725.111120	clean
 classical-vedic-astrology/studies/lunar-craft/20260705-195800_the-hybrid-lunar-day.md	20260725.111235	clean
 classical-vedic-astrology/studies/nakshatras/20260705-160712_chitra-the-architects-star.md	20260725.111120	clean
 classical-vedic-astrology/studies/nakshatras/20260705-180812_ardra-the-star-of-rudra.md	20260725.111120	clean
 classical-vedic-astrology/studies/nakshatras/20260705-180812_rudra-and-shiva-one-being-two-names.md	20260725.111120	clean
 classical-vedic-astrology/studies/nakshatras/20260705-190812_occupation-as-a-lens-on-a-stars-essence.md	20260725.111120	clean
+classical-vedic-astrology/studies/nakshatras/ashlesha.md	20260725.112415	clean
+classical-vedic-astrology/studies/nakshatras/asvini.md	20260725.112415	clean
+classical-vedic-astrology/studies/nakshatras/bharani.md	20260725.112415	clean
 classical-vedic-astrology/studies/planet-in-house/20260705-173112_moon-in-the-12th-house.md	20260725.111120	clean
 classical-vedic-astrology/studies/planet-in-house/20260705-173112_moon-in-the-6th-house.md	20260725.111120	clean
 classical-vedic-astrology/studies/planet-in-house/20260705-182612_sun-in-the-12th-house.md	20260725.111120	clean
 classical-vedic-astrology/studies/planet-in-house/20260705-182612_sun-in-the-7th-house.md	20260725.111120	clean
+classical-vedic-astrology/studies/planet-in-house/jupiter-in-virgo-in-the-11th.md	20260725.112415	clean
 classical-vedic-astrology/studies/planets-in-signs/20260705-172312_venus-in-aries.md	20260725.111120	clean
 classical-vedic-astrology/studies/planets-in-signs/20260705-172312_venus-in-virgo-debilitated.md	20260725.111120	clean
 classical-vedic-astrology/studies/planets-in-signs/20260705-173112_moon-in-capricorn.md	20260725.111120	clean
@@ -463,6 +472,7 @@ classical-vedic-astrology/studies/reading-themes/20260705-172312_the-three-pass-
 classical-vedic-astrology/studies/reading-themes/20260705-180812_anger-and-sadness-two-responses.md	20260725.111120	clean
 classical-vedic-astrology/studies/reading-themes/20260705-195800_the-hinge-of-the-lights-at-birth.md	20260725.111235	clean
 classical-vedic-astrology/studies/reading-themes/20260705-195800_the-three-paths-braid.md	20260725.111235	clean
+classical-vedic-astrology/studies/reading-themes/devotion-patience-and-partnership.md	20260725.112415	clean
 classical-vedic-astrology/studies/rising-signs/20260705-190812_capricorn-rising.md	20260725.111235	clean
 classical-vedic-astrology/studies/rising-signs/20260705-190812_capricorn-the-sign-nature.md	20260725.111235	clean
 classical-vedic-astrology/studies/synthesis/20260705-045812_the-divine-mother-as-the-charts-teacher.md	20260725.111120	clean
@@ -477,13 +487,20 @@ classical-vedic-astrology/studies/teaching/20260705-182612_reading-a-planet-in-a
 classical-vedic-astrology/studies/teaching/20260705-182612_the-two-faces-of-a-sign.md	20260725.111120	clean
 classical-vedic-astrology/studies/teaching/20260705-190812_the-neighboring-yogas-of-sun-and-ascendant.md	20260725.111235	clean
 classical-vedic-astrology/studies/teaching/20260715-160000_kali-yuga-brahmana-grihastha-artha-and-glow.md	20260725.111515	clean
+classical-vedic-astrology/studies/teaching/government-as-planetary-spectrum.md	20260725.112415	clean
+classical-vedic-astrology/studies/teaching/liberal-and-conservative-planets.md	20260725.112415	clean
 classical-vedic-astrology/yonder/20260704-223112_brooke-foundation-morning-cast.md	20260725.111005	clean
 classical-vedic-astrology/yonder/20260704-223112_brooke-venus-chapter-morning-cast.md	20260725.111005	clean
 classical-vedic-astrology/yonder/20260704-231912_brooke-moon-chapter-morning-cast.md	20260725.111005	clean
 classical-vedic-astrology/yonder/20260704-231912_brooke-sun-chapter-morning-cast.md	20260725.111005	clean
 classical-vedic-astrology/yonder/20260705-004812_brooke-ascendant-chapter-morning-cast.md	20260725.111005	clean
 classical-vedic-astrology/yonder/20260705-020812_morning-cast-supersession-note.md	20260725.111120	clean
+context/APARIGRAHA.md	20260725.112415	clean
+context/CIVIC_STYLE.md	20260725.112415	clean
+context/LEXICON.md	20260725.112415	clean
 context/archive/RIO3.md	20260710.182821	legacy
+context/fixtures/claim_preserve_modality_after.md	20260725.112415	clean
+context/fixtures/claim_preserve_modality_before.md	20260725.112415	clean
 context/specs/20260627-102012_one-clock-naming-law.md	20260725.035645	legacy
 context/specs/20260629-031512_slc1-ring-closed-handoff.md	20260725.035645	legacy
 context/specs/20260630-004512_module-name-provenance.md	20260725.035645	legacy
@@ -535,6 +552,11 @@ context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md	20260725.04
 context/specs/20260724-132812_workshop-and-warehouse-context-economy.md	20260725.040728	legacy
 context/specs/20260724-143155_python-at-the-seam-law.md	20260725.041039	legacy
 context/specs/20260724-205009_crockford-stamp-aura.md	20260725.041039	legacy
+context/specs/append-only-growth-law.md	20260725.112415	clean
+context/specs/civic-style.md	20260725.112415	clean
+context/specs/collision-guard.md	20260725.112415	clean
+context/specs/enclosure-editors.md	20260725.112415	clean
+context/specs/inherited-names.md	20260725.112415	clean
 context/specs/living-vs-dated.md	20260724.223050	legacy
 context/specs/two-dev-environments-and-mobile-emulation.md	20260724.223050	legacy
 counsel/20260704-004912_gate-unify-counsel.md	20260725.034920	legacy
@@ -652,6 +674,7 @@ counsel/replies/20260725-111915_re-radiant-wave29.md	20260725.112315	clean
 counsel/replies/20260725-112015_re-radiant-wave30.md	20260725.112315	clean
 counsel/replies/20260725-112115_re-radiant-wave31.md	20260725.112315	clean
 counsel/replies/20260725-112215_re-radiant-wave32.md	20260725.112315	clean
+counsel/replies/20260725-112315_re-radiant-wave33.md	20260725.112415	clean
 expanding-prompts/20260620-210812_explicit-width-audit.md	20260725.110740	clean
 expanding-prompts/20260628-120912_kernel-direction-brix-and-foundations.md	20260725.110740	clean
 expanding-prompts/20260702-030112_cursor-slc-2b-keyboard-from-window.md	20260725.110847	clean
@@ -701,6 +724,7 @@ expanding-prompts/20260724-143155_vanes-shelves-names-maps-braid.md	20260725.112
 expanding-prompts/20260725-001538_forgetting-without-breaking-redaction.md	20260725.112215	clean
 expanding-prompts/20260725-034807_always-in-it-ethos-pass.md	20260725.112215	clean
 expanding-prompts/20260725-040520_rishi-four-harvest-laps.md	20260725.112315	clean
+expanding-prompts/components/_fusion-design.prompt.md	20260725.112415	clean
 expanding-prompts/yonder/20260618-195512_encrypted-networking-and-social.md	20260725.110622	clean
 expanding-prompts/yonder/20260618-212012_content-centric-messaging.md	20260725.110622	clean
 expanding-prompts/yonder/20260618-215512_unified-keys-and-address-space.md	20260725.110622	clean
@@ -787,6 +811,22 @@ expanding-prompts/yonder/20260710-174217_tablecloth-query-device-wire.md	2026072
 expanding-prompts/yonder/20260711-053412_apply-cursor-bot-arc-audit.md	20260725.111415	clean
 expanding-prompts/yonder/20260712-195339_proven-seat-g1-open.md	20260725.111515	clean
 expanding-prompts/yonder/20260713-221237_urbit-fusion-hammock-reading-set.md	20260725.111515	clean
+expanding-prompts/yonder/cursor-prompt_civic-style-and-filing-guide.md	20260725.112415	clean
+expanding-prompts/yonder/cursor-prompt_distilled-essays-into-foundations.md	20260725.112415	clean
+expanding-prompts/yonder/cursor-prompt_foundations-branch-and-placement.md	20260725.112415	clean
+expanding-prompts/yonder/cursor-prompt_linengrow-tasks-and-roadmap.md	20260725.112415	clean
+expanding-prompts/yonder/cursor-prompt_place-slc-method-doc.md	20260725.112415	clean
+expanding-prompts/yonder/cursor-prompt_reorg-chunk-1_one-clock.md	20260725.112415	clean
+expanding-prompts/yonder/cursor-prompt_reorg-chunk-2_active-designing.md	20260725.112415	clean
+expanding-prompts/yonder/cursor-prompt_reorg-chunk-3_external-research (1).md	20260725.112415	clean
+expanding-prompts/yonder/cursor-prompt_reorg-chunk-3_external-research.md	20260725.112415	clean
+expanding-prompts/yonder/cursor-prompt_reorg-chunk-4_expanding-prompts.md	20260725.112415	clean
+expanding-prompts/yonder/cursor-prompt_reorg-chunk-5_work-in-progress.md	20260725.112415	clean
+expanding-prompts/yonder/cursor-prompt_reorg-chunk-6_rye-learning-process.md	20260725.112415	clean
+expanding-prompts/yonder/cursor-prompt_thin-frontend-four-moves.md	20260725.112415	clean
+expanding-prompts/yonder/cursor-prompt_tigerstyle-alignment.md	20260725.112415	clean
+expanding-prompts/yonder/cursor-prompt_unifying-vision-and-linengrow-privacy.md	20260725.112415	clean
+expanding-prompts/yonder/cursor_versioning_principles_for_rye_la.md	20260725.112415	clean
 external-research/20260618-180812_pond-foundation.md	20260725.110622	clean
 external-research/20260620-010712_editors-remoting-tame.md	20260725.110622	clean
 external-research/20260620-014412_system.md	20260725.110740	clean
@@ -917,6 +957,7 @@ external-research/20260717-173848_foundations-archive-bron-compress-for-llm-cont
 external-research/20260717-175220_glow-english-qwerty-glass-keyboard-ios-inspired.md	20260725.111615	clean
 external-research/20260718-122145_pixel10a-resolution-mantrapod-floor-and-wired-glass-slc.md	20260725.111615	clean
 external-research/20260718-133455_glass-desk-amber-amphora-compose-not-fuse.md	20260725.111615	clean
+external-research/grain-lineage-silo/dual-description-design-principle.md	20260725.112415	clean
 external-research/yonder/20260617-195312_mantra.md	20260725.110622	clean
 external-research/yonder/20260617-195612_ownerboot-riscv-caravan.md	20260725.110622	clean
 external-research/yonder/20260617-195712_caravan-tally-networking.md	20260725.110622	clean
@@ -970,6 +1011,13 @@ linengrow/seva_backchannel_witness.rye	20260724.223151	legacy
 linengrow/seva_session_core.rye	20260724.223151	legacy
 linengrow/tube1_admission_witness.rye	20260724.223151	legacy
 linengrow/tube_manifest_witness.rye	20260724.223151	legacy
+manual/glow-os/get-started.md	20260725.112415	clean
+manual/guides/cloud-agent-toolchain-setup.md	20260725.112415	clean
+manual/guides/filevault-setup.md	20260725.112415	clean
+manual/guides/key-cards-setup.md	20260725.112415	clean
+manual/reference/caravan-capabilities.md	20260725.112415	clean
+manual/tutorials/cursor-and-the-compass.md	20260725.112415	clean
+manual/tutorials/first-witness.md	20260725.112415	clean
 pond/README.md	20260710.182821	legacy
 session-logs/README.md	20260724.223050	legacy
 waymarks/20260724-201527_seva-confirmed-sala-alias.md	20260725.112215	clean
@@ -1012,6 +1060,8 @@ waymarks/20260725-111815_radiant-wave28.md	20260725.112315	clean
 waymarks/20260725-111915_radiant-wave29.md	20260725.112315	clean
 waymarks/20260725-112015_radiant-wave30.md	20260725.112315	clean
 waymarks/20260725-112115_radiant-wave31.md	20260725.112315	clean
+waymarks/20260725-112215_radiant-wave32.md	20260725.112415	clean
+waymarks/20260725-112315_radiant-wave33.md	20260725.112415	clean
 waymarks/stoa-300s/20260724-144740_stoa332-rishi-glow-mode-slc.md	20260725.112215	clean
 waymarks/stoa-300s/20260724-181200_stoa333-digraph-table-twin.md	20260725.112215	clean
 work-in-progress/20260620-212126_usize-width-baseline.md	20260725.110740	clean
