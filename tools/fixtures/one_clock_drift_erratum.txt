@@ -1,0 +1,7 @@
+# UTC-window drift stamps (bench host read Etc/UTC while Keaton's clock was EDT).
+# Accrete-never-break: files keep these names; erratum names them for correct order.
+# Format: one YYYYMMDD.HHMMSS per data line. Comments with # are ignored.
+20260724.221013
+20260725.002400
+20260725.002955
+20260725.003013

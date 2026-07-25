@@ -135,3 +135,21 @@ The path there is Gall's Law for governance. The seeds already prove the primiti
 ---
 
 *Written together by Kaeden and Reya 2.*
+
+---
+
+## Canonical zone · who supplies the stamp (addendum `20260724.203617`)
+
+**Status:** Living addendum · Voice Quin · Seat stamp `20260724.203617`
+
+The naming law above leaves timezone per host. On the Framework / Cursor cloud bench that writes living session logs for this fork, the canonical zone is **`America/New_York`** (EDT in summer · EST in winter), seated earlier in [`20260722-125845_edt-framework-host-convention.md`](20260722-125845_edt-framework-host-convention.md). The macOS clone keeps its own Pacific convention; each host's note governs stamps written from that host forward.
+
+### The bench never invents a stamp from a disagreeing clock
+
+1. **Canonical zone on this bench:** `America/New_York`. The host `/etc/localtime` and shell `TZ` must agree with that zone so a self-read `date` cannot silently write UTC while Keaton's wall reads Eastern.
+2. **Stamps come from Keaton, verbatim.** The bench does **not** treat its own wall clock as authority for a stamp when Keaton has already supplied one for the session. Prefer the supplied stamp.
+3. **When a stamp is needed and none was supplied:** **ask** Keaton for the stamp. Do not compute or invent one from the host clock as a substitute for a missing hand-stamp. (A host clock that already matches the canonical zone may be used only when Keaton has seated that practice for the lap — never as a quiet UTC fallback.)
+
+Witness: `tools/one_clock_witness.rish` (filename shape always; ceiling vs `tools/fixtures/one_clock_ceiling.txt` with erratum list; advisory until blocking is seated).
+
+Drift erratum (UTC window, files kept): see `session-logs/README.md` and `tools/fixtures/one_clock_drift_erratum.txt`.

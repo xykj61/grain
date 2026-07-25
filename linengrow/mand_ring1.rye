@@ -1,0 +1,113 @@
+//! linengrow/mand_ring1.rye — Mand ring-1: one capability check at one seam.
+//!
+//! Seam (SLC): may this reader see this record, under this named authority,
+//! written to the audit log?
+//!
+//! Mand owns authority · scope · audit · retention. Ring-1 proves the thin
+//! door only: Caravan's capability table grants `right_read` over the
+//! `record` resource to a named authority (the reader label). A grant
+//! discloses the record body and appends one audit line. A refuse returns
+//! Refused with no body and no grant audit line.
+//!
+//!   rye build linengrow/mand_ring1_witness.rye -femit-bin=linengrow/bin/mand_ring1_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const caps = @import("capabilities.rye");
+const tally_copy = @import("tally_copy.rye");
+
+pub const mand_ring1_version = "20260724.203617";
+
+/// The one resource Mand ring-1 gates.
+pub const record_resource = "record";
+
+pub const SeeError = error{ Refused, AuditFull };
+
+pub const max_audit_entries: u32 = 8;
+pub const max_audit_name_len: u32 = 48;
+pub const max_record_body_len: u32 = 128;
+
+pub const AuditEntry = struct {
+    reader: [max_audit_name_len]u8 = undefined,
+    reader_len: u32 = 0,
+    record_id: [max_audit_name_len]u8 = undefined,
+    record_id_len: u32 = 0,
+    authority: [max_audit_name_len]u8 = undefined,
+    authority_len: u32 = 0,
+
+    pub fn reader_slice(self: *const AuditEntry) []const u8 {
+        const n: usize = @intCast(self.reader_len);
+        return self.reader[0..n];
+    }
+
+    pub fn record_id_slice(self: *const AuditEntry) []const u8 {
+        const n: usize = @intCast(self.record_id_len);
+        return self.record_id[0..n];
+    }
+
+    pub fn authority_slice(self: *const AuditEntry) []const u8 {
+        const n: usize = @intCast(self.authority_len);
+        return self.authority[0..n];
+    }
+};
+
+pub const AuditLog = struct {
+    entries: [max_audit_entries]AuditEntry = undefined,
+    count: u32 = 0,
+
+    pub fn append(
+        self: *AuditLog,
+        reader: []const u8,
+        record_id: []const u8,
+        authority: []const u8,
+    ) error{AuditFull}!void {
+        assert(reader.len > 0 and reader.len <= max_audit_name_len);
+        assert(record_id.len > 0 and record_id.len <= max_audit_name_len);
+        assert(authority.len > 0 and authority.len <= max_audit_name_len);
+        if (self.count >= max_audit_entries) return error.AuditFull;
+        var e: AuditEntry = .{};
+        e.reader_len = @intCast(reader.len);
+        tally_copy.copy_disjoint(u8, e.reader[0..reader.len], reader);
+        e.record_id_len = @intCast(record_id.len);
+        tally_copy.copy_disjoint(u8, e.record_id[0..record_id.len], record_id);
+        e.authority_len = @intCast(authority.len);
+        tally_copy.copy_disjoint(u8, e.authority[0..authority.len], authority);
+        self.entries[self.count] = e;
+        self.count += 1;
+        assert(self.count <= max_audit_entries);
+    }
+};
+
+pub const SeeResult = struct {
+    body: []const u8,
+    audit_written: bool,
+};
+
+/// True when the named authority holds read over the record resource.
+pub fn may_see(table: *const caps.CapabilityTable, authority: []const u8) bool {
+    assert(authority.len > 0);
+    return table.allows(authority, record_resource, caps.right_read);
+}
+
+/// May this reader see this record, under this named authority, written to audit?
+///
+/// Ring-1: the reader label and the named authority are the same string — one
+/// identity at the door. A later ring may split reader from authorizing role.
+pub fn see_record(
+    table: *const caps.CapabilityTable,
+    audit: *AuditLog,
+    reader: []const u8,
+    authority: []const u8,
+    record_id: []const u8,
+    body: []const u8,
+) SeeError!SeeResult {
+    assert(reader.len > 0);
+    assert(authority.len > 0);
+    assert(record_id.len > 0);
+    assert(body.len > 0 and body.len <= max_record_body_len);
+    // Ring-1: reader and authority are one named identity at the seam.
+    if (!std.mem.eql(u8, reader, authority)) return error.Refused;
+    if (!may_see(table, authority)) return error.Refused;
+    try audit.append(reader, record_id, authority);
+    return .{ .body = body, .audit_written = true };
+}
