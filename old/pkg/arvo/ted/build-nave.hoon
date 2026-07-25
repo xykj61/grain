@@ -1,1 +1,0 @@
-clay/build-nave.hoon

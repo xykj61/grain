@@ -1,1 +1,0 @@
-clay/cat.hoon

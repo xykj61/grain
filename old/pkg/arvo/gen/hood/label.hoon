@@ -1,1 +1,0 @@
-clay/label.hoon
