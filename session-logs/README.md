@@ -12,6 +12,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 **Living pin bound:** `living_pin_max_bytes = 24576` ([spec](../context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md)). Closed index rows through `20260721`: [`archive/README-index-through-20260721.md`](archive/README-index-through-20260721.md). Early `20260722` overflow: [`archive/README-index-20260722-shelf.md`](archive/README-index-20260722-shelf.md).
 
+- `20260724.212844` — [Explore Mand ring-1 surfaces for ring-2 retention](20260724-212844_explore-mand-ring1-for-ring2.bron) — APIs · custody · ratchet patterns · placement
 - `20260724.211904` — [REMEMBER git nib after stranger-lap honesty send](20260724-211904_remember-git-nib-stranger-honesty.bron) — pin 3d9b8f67a3
 - `20260724.211852` — [Send stranger lap honesty to main](20260724-211852_send-stranger-lap-honesty.bron) — FF merge · PR 84
 - `20260724.211820` — [Stranger lap honesty · warm REPORT · cold open](20260724-211820_stranger-lap-honesty.bron) — scope · bound live · OQ4 warm-only
