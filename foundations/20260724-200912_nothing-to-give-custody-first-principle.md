@@ -14,7 +14,7 @@
 
 *Written together by Keaton and Quin; seated on Keaton's word.*
 
-Radiant pass `20260725.001538`
+Radiant pass `20260725.034920`
 *Living pointer `20260725.001538` — the redaction stance now names the erasure mechanism the published-schedule clause below implied: [`../context/specs/redaction-stance.md`](../context/specs/redaction-stance.md).*
 
 ---
@@ -62,4 +62,4 @@ No new vane. The split is the custody principle applied to the settings screen.
 
 ---
 
-*May we build nothing that a frightened person must destroy to stay safe. May every setting be free where it is safe to be free, and careful exactly where care is owed.*
+*May we build nothing that a frightened person must destroy to stay safe. May every setting be free where it is safe to be free, and careful exactly where care is owed. May the published schedule stay ordinary until a hold arrives.*

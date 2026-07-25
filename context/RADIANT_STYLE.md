@@ -1,11 +1,13 @@
 # Radiant Style
  
 **Language:** EN
-**Last updated:** 2026-07-16 (Quin restored as the standing voice; Riyo, who carried it for one day, retired)
+**Last updated:** 2026-07-25 (pass playbook seated · always-in-it `034254`)
  
 **Purpose:** Define how we write and speak, so every piece is clear, affirmative, and a joy to hear — whether read on the page or aloud (TTS, podcast, narration). Target reading level: 8th grade through collegiate. Voice: conversational yet eloquent, warm yet precise.
 
 **The voice that writes in this style is Quin** — the standing companion of this workspace, restored after a short season under Riyo's name (now retired in `archive/`). Full identity: [`QUIN.md`](QUIN.md). Radiant Style is how Quin writes; Quin is who writes it.
+
+**Pass playbook** (below) and **lint** (`tools/radiant_lint.rish`) are distinct: the lint catches mechanical surface; a Radiant pass needs a reader's hand. Coverage ledger: [`../tools/fixtures/radiant_pass_ledger.txt`](../tools/fixtures/radiant_pass_ledger.txt).
  
 ---
  
@@ -223,4 +225,51 @@ Before publishing any piece written in Radiant Style, run through these question
 - [ ] Has the draft been read aloud at least once?
 - [ ] If the piece is for a young or tender audience, has the gentle register been applied — suffering language softened, creatures treated with courtesy, affirmative replacements found?
 - [ ] Does the overall tone feel warm, unhurried, and generous?
+
+---
+
+## Radiant Pass Playbook
+
+Seated `20260725.034254` from counsel [`../counsel/20260725-034254_always-in-it.md`](../counsel/20260725-034254_always-in-it.md). The lint catches mechanical surface; everything that makes prose radiant lives outside its reach. A pass needs a hand and a method.
+
+### What only a reader can judge
+
+- **The first word.** Readers absorb the opening of a sentence hardest, so lead with what *is*. Move the qualification later, or drop it.
+- **Negation.** Replace "not X" with the affirmative word that means it. Reserve "not" for safety, law, and the places where negation is the actual point.
+- **Contrast.** Prefer "yet" or "however," or open a new sentence stating the positive on its own.
+- **Voice.** Active by default. Passive earns its place only where the actor genuinely matters less than the result.
+- **Parentheticals.** A mid-sentence aside interrupts the breath. Weave it in as a clause, or give it its own sentence afterward.
+- **Rhythm.** Alternate deliberately: one long flowing sentence that carries several joined ideas, then a short one that lands. Uniform length reads as a drone aloud.
+- **Breath points.** Place commas where a speaker would actually inhale.
+- **One idea per sentence.** Split a dense construction into two well-made ones rather than compressing.
+- **Weaving over listing.** Let the method reveal its meaning as it unfolds, so the reader arrives at the insight through the description.
+- **Complete sentences.** Fragments are a rare deliberate beat, never a default.
+- **The close.** A benediction runs in three short parallel clauses, stays affirmative throughout, and opens outward on its final phrase rather than resolving tight.
+- **Register.** Where the audience is young or the subject tender, choose the warmest accurate word over the bluntest one.
+
+### The sequence, in order
+
+1. **Read the whole file aloud first, editing nothing.** Mark every place you stumble.
+2. Fix the leads — first words of paragraphs and sentences.
+3. Fix negations and contrasts.
+4. Fix voice.
+5. Dissolve parentheticals.
+6. Tune rhythm, reading each paragraph aloud as you go.
+7. Check the close: three clauses, affirmative, opening outward.
+8. **Read aloud again, whole.** If it flows, it is ready.
+9. Run `claim_preserve_witness`, then `radiant_lint`, then `living_docs_lint`.
+
+### The rules that bound a pass
+
+- **Style only.** A pass may change no claim, and `claim_preserve_witness` proves it — numbers, digests, fingerprints, paths, stamps, and proper nouns identical before and after. A mismatch stops the wave rather than getting resolved.
+- **Tier 1 is never touched.** Bytes under proof stay exactly as they are.
+- **Tier 2 passes are recorded** — the header gains a `Radiant pass <stamp>` line, so a reader knows the prose moved and the claims did not.
+- **Factual errors take errata, never silent correction.** A wrong belief stays visible as a wrong belief; the erratum sits beside it.
+- **Waves stay reviewable.** No wave exceeds what a person can read in one sitting; the bound is named in the reply and held.
+- **Report the lint count after every wave**, so the ratchet's direction is visible.
+
+### Coverage ledger
+
+`tools/fixtures/radiant_pass_ledger.txt` — one line per file naming the stamp of its most recent pass. Waves write to it. Next wave takes the oldest untouched files. Precedent: recorded pass stamps on living identity notes since July (`Radiant pass 182821`).
+
 ---

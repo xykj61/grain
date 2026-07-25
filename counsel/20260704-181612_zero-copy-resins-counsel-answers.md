@@ -10,6 +10,7 @@
 **Ground:** [`../expanding-prompts/20260704-181012_zero-copy-resins-claude-counsel.md`](../expanding-prompts/20260704-181012_zero-copy-resins-claude-counsel.md) · [`20260704-180612_zero-copy-resins-and-the-sovereign-snapshot.md`](20260704-180612_zero-copy-resins-and-the-sovereign-snapshot.md) · [`../context/specs/20260703-191112_resins-and-hash-tiers.md`](../context/specs/20260703-191112_resins-and-hash-tiers.md) · [`../context/specs/20260701-221512_amber-functional-spec.md`](../context/specs/20260701-221512_amber-functional-spec.md) · [`20260703-201612_the-amphora-and-the-crossing.md`](20260703-201612_the-amphora-and-the-crossing.md) · [`20260704-031812_eight-asks-one-sitting.md`](20260704-031812_eight-asks-one-sitting.md) · [`20260703-015512_bandwidth-and-moderation.md`](20260703-015512_bandwidth-and-moderation.md) · [`../active-designing/20260703-200712_what-needs-ordering.md`](../active-designing/20260703-200712_what-needs-ordering.md) · [`../gratitude/TIGER_STYLE.md`](../gratitude/TIGER_STYLE.md) (Apache-2.0 · study only)
 
 *Written together by Kaeden and Claude (Fable 5), in the fresh bench's Radiant voice — voice-name awaiting Kaeden's word.*
+Radiant pass `20260725.034920`
 
 ---
 

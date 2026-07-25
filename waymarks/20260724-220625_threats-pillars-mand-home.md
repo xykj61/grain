@@ -7,6 +7,8 @@
 **Witnesses:** none code — descriptive seats; Mand analysis moves nothing
 
 ---
+Radiant pass `20260725.034920`
+
 
 ## Claim
 
@@ -25,3 +27,7 @@
 ## Next
 
 Mand home word · redaction spec · data-dignity options · trustee answer · season-close cadence — on Keaton's word. Text floor when attention is fresh.
+
+---
+
+*May every gap stay named until a decision earns its seat. May the pillars keep their silo. May the parked home wait for a clear word before it moves.*

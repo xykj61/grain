@@ -67,3 +67,7 @@
 - `20260722.145840` — [STOA261–262 barket N-field flip](20260722-145840_stoa261-262-barket-n-field-flip-round.bron) — barket flip emit; inventary deepen closed; finishing edge next
 - `20260722.145936` — [REMEMBER git nib after STOA262](20260722-145936_remember-git-nib-stoa262.bron) — pin c1ed098ebcf8
 - `20260722.150432` — [STOA263–264 Pixel authored-fold eyes](20260722-150432_stoa263-264-pixel-authored-fold-eyes.bron) — pack+install HAWM1; Dexter→Sala next
+- `20260722.150537` — [REMEMBER git nib after STOA264](20260722-150537_remember-git-nib-stoa264.bron) — pin baa28401bc4c
+- `20260722.150725` — [STOA265 Dexter→Sala append research](20260722-150725_stoa265-dexter-sala-append-research.bron) — live append unwired; lean A device-free
+- `20260722.150806` — [STOA265 Dexter Sala append check-in](20260722-150806_stoa265-dexter-sala-append-checkin.bron) — lean A typed memo→append_event
+- `20260722.150910` — [REMEMBER git nib after STOA265](20260722-150910_remember-git-nib-stoa265.bron) — pin 722d8c560422
