@@ -8,6 +8,7 @@
 **Ground:** every ratchet re-measured on the real toolchain, rebuilt from source · all fifteen `parse_int` sites confirmed individually correct, hex-pair and strict-decimal alike · PRNG and `posix.send(` re-checked rather than assumed still absent · two newly-migrated files (`caravan/seed.rye`, `mantra/recall_subscribe_poll_delivery.rye`) rebuilt and reselftested for real, both GREEN
 
 *Written by Kaeden and Rio 3.*
+Radiant pass `20260725.103949`
 
 ---
 

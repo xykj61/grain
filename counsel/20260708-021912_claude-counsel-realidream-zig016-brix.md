@@ -8,6 +8,7 @@
 **Ground:** the grain-sketchbook read as a primary source (full study: [`../external-research/20260708-021912_grain-sketchbook-realidream-mining.md`](../external-research/20260708-021912_grain-sketchbook-realidream-mining.md)) · the tree's 0.16 idiom usage measured directly (65 `std.process.Init` mains, 74 `std.Io` threads, 49 `Io.Dir` sites, 177 `.empty` decl-literals, zero legacy writers) · the vendored 0.16 stdlib grepped for what exists unused · [`20260708-021912_rye-os-in-brix-terms.md`](../active-designing/20260708-021912_rye-os-in-brix-terms.md)
 
 *Written by Kaeden and Rio 3.*
+Radiant pass `20260725.103949`
 
 ---
 
