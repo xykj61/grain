@@ -3,6 +3,8 @@
 **Stamp:** `20260705.182612 UDT` · **Style:** Radiant, gentle register
 **Method:** Siloed — distilled in our own voice; teacher named with gratitude below
 
+Radiant pass `20260725.111120`
+
 ---
 
 The lunar nodes are the two points where the Moon's path crosses the Sun's, the places where eclipses are born. From that fact their whole meaning unfolds: one node reaches up and out, amplifying and drawing things into the open; the other draws down and in, deepening and pulling things inward. Both share the nature of the eclipse — sudden, radical change, and the pull of what feels beyond our control. Wherever they fall, they exaggerate, they compel, and they polarize. On the Taurus–Scorpio axis, they do all of this to a single, fertile tension.

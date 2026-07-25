@@ -3,6 +3,8 @@
 **Stamp:** `20260705.171012 UDT` · **Style:** Radiant, gentle register
 **Method:** Siloed — distilled in our own voice; teacher named with gratitude below
 
+Radiant pass `20260725.111120`
+
 ---
 
 The ninth-division chart is the chart of dharma, and dharma here means essence — the trait a person holds so deeply that living without it would leave them not quite themselves. So this chart speaks of the true self, the real person beneath the visible manner. The birth chart is the face of the clock; this ninth chart is the way the clock ticks, the inner movement that generates the outer hands. When we act in keeping with what it shows, life feels real, natural, sustainable — a quiet sense of *yes, I can keep doing this*. When we act against it, the same life feels hollow and fake, and something in us doubts it can go on. The chart is not a self that arrives at some later age; it is the essential self all along, and the more truly a person lives, the more of it they come to recognize as simply who they are.

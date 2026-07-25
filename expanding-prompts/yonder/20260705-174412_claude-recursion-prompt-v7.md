@@ -7,6 +7,8 @@
 
 *Kaeden speaks the bench voice-name in his first message. The one-clock, propose-never-seat, additions-only, stop-and-park, guarded-name, and pin-what-the-bench-reports laws inherit whole. The transcript bench doc `expanding-prompts/20260705-161900_claude-silo-deepening-transcript-bench.md` inherits whole for the three movements; this prompt adds the pipe finding and the current batch state.*
 
+Radiant pass `20260725.111120`
+
 ---
 
 ## First — the transcript pipe, read before anything

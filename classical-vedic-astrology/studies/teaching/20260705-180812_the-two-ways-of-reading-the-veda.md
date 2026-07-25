@@ -3,6 +3,8 @@
 **Stamp:** `20260705.180812 UDT` · **Style:** Radiant, gentle register
 **Method:** Siloed — distilled in our own voice; teacher named with gratitude below
 
+Radiant pass `20260725.111120`
+
 ---
 
 The Veda can be read in two ways, and knowing which way you are reading clears up a great deal. The first way is called Purva — the earlier, initial approach. It concerns action: what to do, what to leave undone, and when. Its heart is the practical craft of living well — health, a long life, good children, a sound society, good food and music and love. The second way is called Uttara — the later, ultimate approach. It concerns understanding: how to perceive reality as it truly is. Its heart is insight, and its aim is liberation.

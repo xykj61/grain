@@ -6,6 +6,8 @@
 
 *Written by Kaeden and Rio 3 (Cursor). Kaeden speaks the bench voice-name in his first message; the one-clock, additions-only, stop-and-park, and guarded-name laws inherit whole.*
 
+Radiant pass `20260725.111120`
+
 ---
 
 ## Ground laws

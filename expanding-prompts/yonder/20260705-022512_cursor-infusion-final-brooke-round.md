@@ -6,6 +6,8 @@
 
 *Written together by Kaeden and Claude (Fable 5), gathering the reading round authored by Kaeden and Rio 3 — whose credit stands untouched on every reading file.*
 
+Radiant pass `20260725.111120`
+
 ---
 
 ## Ground Laws (unchanged from the round, held twice now)

@@ -6,6 +6,8 @@
 
 *Written together by Kaeden and Rio 3.*
 
+Radiant pass `20260725.111120`
+
 ---
 
 The classical almanac reads each day by the star the Moon holds at sunrise (#55). Sunrise came at 6:13 that morning, and the Moon stood then in Uttara Ashadha in the visible reckoning and in Pushya in the essence reckoning — a hybrid day, ruled without by the star of the later victory and within by the star of the nourisher. For Brooke this triangulates all three paths in one sentence: *vocations of faithful completion that nourish others* — the song carried to its last verse, the household kept through its seasons, the made thing finished to its final joint and given warm.

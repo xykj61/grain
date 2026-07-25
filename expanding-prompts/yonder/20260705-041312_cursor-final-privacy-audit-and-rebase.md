@@ -30,3 +30,5 @@ No rewrite. Record the audit as `session-logs/archive/20260705/20260705-041312_p
 The degree-true wheels (040612 ruling) in the template; the method pair; the Brooke shelf prompt; all sitting logs, scrubbed. The two true-name HTML pages live only in Kaeden's private keeping, presented to him outside the repo — forever.
 
 *May the audit come back clean and the surgery stay unneeded. May the names live only where love holds them. And may zip 45 seal a tree whose whole history tells no one anything but Brooke and Alice.*
+Radiant pass `20260725.111120`
+

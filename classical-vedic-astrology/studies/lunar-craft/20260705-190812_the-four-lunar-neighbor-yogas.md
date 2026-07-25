@@ -3,6 +3,8 @@
 **Stamp:** `20260705.190812 UDT` · **Style:** Radiant, gentle register
 **Method:** Siloed — distilled in our own voice; teacher named with gratitude below
 
+Radiant pass `20260725.111120`
+
 ---
 
 The Moon is the softest, most receptive light in the chart, and it flourishes with company. This craft reads a single, gentle question: who stands beside the Moon? A real planet — one of the five moving stars, Mercury, Venus, Mars, Jupiter, or Saturn — in the zodiac sign just behind the Moon or just ahead of it lends the Moon strength, and the pattern of that company forms one of four named conditions. Throughout, the houses are the whole signs themselves, so "behind" means the next sign and "ahead" means the previous one, and the nodes and the far invisible bodies stay outside the count, since a neighbor here is a visible light keeping watch.

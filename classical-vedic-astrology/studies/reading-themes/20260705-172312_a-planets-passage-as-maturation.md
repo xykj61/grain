@@ -3,6 +3,8 @@
 **Stamp:** `20260705.172312 UDT` · **Style:** Radiant, gentle register
 **Method:** Siloed — distilled in our own voice; teacher named with gratitude below
 
+Radiant pass `20260725.111120`
+
 ---
 
 When a planet moves into a sign and then, over the following weeks, meets the slow great powers of the sky one after another, the series of contacts is not a scatter of unrelated events. It is a curriculum. Each meeting tests the moving planet's principle in a different way, and taken in order the contacts form an arc of maturation — a season in which whatever that planet governs is stretched, refined, and grown up a little. Read a transit this way and it stops being a weather report of good days and bad days; it becomes a story with chapters, each one asking something and giving something in return.
