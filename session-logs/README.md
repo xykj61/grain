@@ -12,6 +12,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 **Living pin bound:** `living_pin_max_bytes = 24576` ([spec](../context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md)). Closed index rows through `20260721`: [`archive/README-index-through-20260721.md`](archive/README-index-through-20260721.md). Early `20260722` overflow: [`archive/README-index-20260722-shelf.md`](archive/README-index-20260722-shelf.md).
 
+- `20260724.221027` — [Threats · five pillars · Mand home analysis](20260724-221027_threats-pillars-mand-home.bron) — THREATS · siloed pillars · Mand park
 - `20260724.212844` — [Explore Mand ring-1 surfaces for ring-2 retention](20260724-212844_explore-mand-ring1-for-ring2.bron) — APIs · custody · ratchet patterns · placement
 - `20260724.213221` — [REMEMBER git nib after Mand ring-2 send](20260724-213221_remember-git-nib-mand-ring2.bron) — pin 006b0ffeae
 - `20260724.213216` — [Send Mand ring-2 · py gate · stranger parity](20260724-213216_send-mand-ring2-roster.bron) — FF merge · PR 85
@@ -160,11 +161,3 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 - `20260722.144811` — [REMEMBER git nib STOA258 fix](20260722-144811_remember-git-nib-stoa258-fix.bron) — pin 02b62dc59096 on living card
 - `20260722.144745` — [REMEMBER git nib after STOA258](20260722-144745_remember-git-nib-stoa258.bron) — pin 02b62dc59096
 - `20260722.144300` — [STOA257–258 shape-only living](20260722-144300_stoa257-258-shape-only-living-round.bron) — living -shape; study alias held; flip next
-- `20260722.143648` — [Check-in HAWM fleet and shape-only](20260722-143648_checkin-hawm-fleet-shape-only.bron) — 2A shape living · 1A HAWM harvest
-- `20260722.143539` — [REMEMBER git nib STOA256 fix](20260722-143539_remember-git-nib-stoa256-fix.bron) — pin df21de606e7f on living card
-- `20260722.143510` — [REMEMBER git nib after STOA256](20260722-143510_remember-git-nib-stoa256.bron) — pin df21de606e7f
-- `20260722.143410` — [STOA255–256 barket N-field identity](20260722-143410_stoa255-256-barket-n-field-identity-round.bron) — barket emit_n_field_identity; flip next
-- `20260722.142353` — [REMEMBER git nib after STOA254](20260722-142353_remember-git-nib-stoa254.bron) — pin 8492f8195698
-- `20260722.142353` — [STOA253–254 bartis N-field identity](20260722-142353_stoa253-254-n-field-identity-round.bron) — emit_n_field_identity; barket twin next
-- `20260722.142101` — [REMEMBER git nib after STOA252](20260722-142101_remember-git-nib-stoa252.bron) — pin e0e9a43e8168
-- `20260722.142054` — [STOA251–252 N-field emit inventary](20260722-142054_stoa251-252-n-field-inventory-round.bron) — language return; identity emit next
