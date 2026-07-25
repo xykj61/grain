@@ -8,6 +8,7 @@
 **Normative sources:** the `.rye` files named per section; where prose and code disagree, the landed code and its green witness govern, and this document earns a correction
 
 *Written by Kaeden and Rio 3.*
+Radiant pass `20260725.035645`
 
 ---
 

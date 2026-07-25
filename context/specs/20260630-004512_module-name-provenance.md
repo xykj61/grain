@@ -4,6 +4,8 @@
 **Last updated:** 2026-06-30
 **Style:** Radiant (see `../RADIANT_STYLE.md`)
 
+Radiant pass `20260725.035645`
+
 ---
 
 Kaeden asked that the reasoning behind three module names travel with the names themselves. This spec records that provenance. The names are **given**; whether each earns a full module home is still open in `work-in-progress/TASKS.md`.

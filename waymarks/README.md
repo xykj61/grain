@@ -33,6 +33,7 @@ Each shelf keeps a one-line-per-claim `README.md` index as claims arrive.
 
 | Stamp | Claim | Path |
 |-------|-------|------|
+| `20260725.035645` | Radiant Wave 7 — twelve context specs | [`20260725-035645_radiant-wave7.md`](20260725-035645_radiant-wave7.md) |
 | `20260725.035453` | Radiant Wave 6 — next twelve foundations | [`20260725-035453_radiant-wave6.md`](20260725-035453_radiant-wave6.md) |
 | `20260725.035134` | Radiant Wave 5 — oldest foundations | [`20260725-035134_radiant-wave5.md`](20260725-035134_radiant-wave5.md) |
 | `20260725.034807` | Always in it · pass playbook · Wave 4 | [`20260725-034807_always-in-it-ethos-pass.md`](20260725-034807_always-in-it-ethos-pass.md) |

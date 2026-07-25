@@ -16,6 +16,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 **Living pin bound:** `living_pin_max_bytes = 24576` ([spec](../context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md)). Closed index rows through `20260721`: [`archive/README-index-through-20260721.md`](archive/README-index-through-20260721.md). Early `20260722` overflow: [`archive/README-index-20260722-shelf.md`](archive/README-index-20260722-shelf.md).
 
+- `20260725.035645` — [Radiant Wave 7 — twelve context specs](20260725-035645_radiant-wave7-specs.bron) — 12 files · lint 2
 - `20260725.035548` — [REMEMBER git nib after Wave 6 send](20260725-035548_remember-git-nib-wave6.bron) — pin a02ec36f16
 - `20260725.035547` — [Send Radiant Wave 6 to main](20260725-035547_send-radiant-wave6.bron) — FF merge · PR 94
 - `20260725.035453` — [Radiant Wave 6 — next twelve foundations](20260725-035453_radiant-wave6-foundations.bron) — 12 files · lint 2
@@ -164,11 +165,3 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 - `20260722.152631` — [STOA275–276 HAWM log harvest](20260722-152631_stoa275-276-hawm-harvest-round.bron) — hawm-harvest-v1; boot→harvest next
 - `20260722.152450` — [REMEMBER git nib after STOA274](20260722-152450_remember-git-nib-stoa274.bron) — pin 450cf2f9afdf
 - `20260722.152404` — [STOA274 after Dexter Sala finish check-in](20260722-152404_stoa274-after-dexter-sala-finish-checkin.bron) — season turn; HAWM 1A inventary next
-- `20260722.152325` — [REMEMBER git nib after STOA273](20260722-152325_remember-git-nib-stoa273.bron) — pin de1113bad8c5
-- `20260722.152217` — [STOA272–273 live-root Skate paint](20260722-152217_stoa272-273-live-root-paint-round.bron) — LIVE · N · hex8; HAWM 1A next when mobile
-- `20260722.151924` — [REMEMBER git nib after STOA271](20260722-151924_remember-git-nib-stoa271.bron) — pin cbab2ee0e209
-- `20260722.151834` — [STOA270–271 live-root wire](20260722-151834_stoa270-271-live-root-wire-round.bron) — submit→live root; paint next
-- `20260722.151427` — [REMEMBER git nib after STOA269](20260722-151427_remember-git-nib-stoa269.bron) — pin 72d20f7ba7db
-- `20260722.151335` — [STOA268–269 Dexter Sala helper](20260722-151335_stoa268-269-dexter-sala-helper-round.bron) — submit→append_typed_memo; glass wire next
-- `20260722.151156` — [REMEMBER git nib after STOA267](20260722-151156_remember-git-nib-stoa267.bron) — pin 51d744686e0e
-- `20260722.151101` — [STOA266–267 typed memo append](20260722-151101_stoa266-267-typed-memo-append-round.bron) — glow memo via append_event; Dexter helper next
