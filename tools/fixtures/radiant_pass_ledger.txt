@@ -1,179 +1,233 @@
 # radiant_pass_ledger.txt — most recent Radiant pass stamp per path
-# Format: <relpath><TAB><stamp YYYYMMDD.HHMMSS>
-# Waves append or update; oldest untouched first for the next wave.
-# Seated 20260725.034807 · backfill of waves 1–3 + RIO3 182821 family.
+# Pool: 179 of ~1,185 in scope (~15%) · batch 50 · seated 20260725.110354
+# Format: <relpath><TAB><stamp YYYYMMDD.HHMMSS><TAB><changed|clean|legacy>
+# Waves append or update; oldest untouched first. Scope: tools/fixtures/radiant_pool_scope.md
+# Genre ALL-CLEAN: two full consecutive waves all-clean → wholesale exempt on evidence
+# Seated 20260725.034807 · backfill waves 1–3 + RIO3 182821 family · instrument 110354
 
-amphora/README.md	20260710.182821
-context/archive/RIO3.md	20260710.182821
-context/specs/20260627-102012_one-clock-naming-law.md	20260725.035645
-context/specs/20260629-031512_slc1-ring-closed-handoff.md	20260725.035645
-context/specs/20260630-004512_module-name-provenance.md	20260725.035645
-context/specs/20260701-221512_amber-functional-spec.md	20260725.035645
-context/specs/20260702-035018_graduation-rule.md	20260725.035645
-context/specs/20260703-191112_resins-and-hash-tiers.md	20260725.035645
-context/specs/20260704-020800_one-word-one-gate.md	20260725.035645
-context/specs/20260704-030300_itinerary-retires-diet.md	20260725.035645
-context/specs/20260705-203144_canonical-glosses.md	20260725.035645
-context/specs/20260707-011412_mantra-referential-namespace-reference.md	20260725.035645
-context/specs/20260707-011412_module-surfaces-index.md	20260725.035645
-context/specs/20260707-021512_snapshot-export-lap1.md	20260725.035645
-context/specs/20260707-024712_snapshot-export-lap2.md	20260725.035852
-context/specs/20260707-030412_weave-slice-ruling.md	20260725.035852
-context/specs/20260707-042512_snapshot-export-lap3.md	20260725.035852
-context/specs/20260707-053212_radiant-vocabulary-pass.md	20260725.035852
-context/specs/20260709-200443_wov-exit-honesty.md	20260725.035852
-context/specs/20260709-204026_wov-tb-client-seam.md	20260725.035852
-context/specs/20260709-224325_slcl4-lap2-width.md	20260725.035852
-context/specs/20260709-224531_wov-dual-monarch.md	20260725.035852
-context/specs/20260709-225159_mala-kind-field.md	20260725.035852
-context/specs/20260709-225343_thin-view-dexter-exception.md	20260725.035852
-context/specs/20260710-163043_granary-name-seated.md	20260725.035852
-context/specs/20260710-165634_mandi-name-seated.md	20260725.035852
-context/specs/20260710-171202_mandi-listing-settle-seated.md	20260725.035955
-context/specs/20260710-172625_granary-weave-settle-seated.md	20260725.035955
-context/specs/20260712-054650_captp-as-fold-carriage-declined.md	20260725.035955
-context/specs/20260712-061012_bud-and-mudra-names-seated.md	20260725.035955
-context/specs/20260713-201910_pacific-time-local-clone-convention.md	20260725.035955
-context/specs/20260713-211800_local-host-system-hardware-anonymized.md	20260725.035955
-context/specs/20260713-214400_urbit-parallel-naming-mapping-proposal.md	20260725.035955
-context/specs/20260713-222416_new-journey-identity-marker.md	20260725.035955
-context/specs/20260713-224212_glow-and-four-kernel-variants-naming-research.md	20260725.035955
-context/specs/20260713-225658_glow-accepted-riyo-reya-trey-triz-amended.md	20260725.035955
-context/specs/20260713-235455_keaton-name-and-glow-os-umbrella.md	20260725.035955
-context/specs/20260713-235600_names-awaiting-confirmation.md	20260725.035955
-context/specs/20260714-002123_naming-decisions-and-role-nesting.md	20260725.040728
-context/specs/20260714-004428_reviving-replaces-renaming.md	20260725.040728
-context/specs/20260714-011504_glow-host-config-and-vpn-reification.md	20260725.040728
-context/specs/20260714-015200_glow-profile-and-acme-generic-voice.md	20260725.040728
-context/specs/20260714-024800_proposal-not-fork-reframing.md	20260725.040728
-context/specs/20260714-024800_warm-aura-date-atom-naming.md	20260725.040728
-context/specs/20260716-115927_waymark-ladder-naming-and-g0-collision-fix.md	20260725.040728
-context/specs/20260717-003132_eastern-time-framework-host-convention.md	20260725.040728
-context/specs/20260717-154943_glow-truth-zig-ambient-nock-loobean-seam.md	20260725.040728
-context/specs/20260720-232932_udt-framework-host-convention.md	20260725.040728
-context/specs/20260722-125845_edt-framework-host-convention.md	20260725.040728
-context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md	20260725.040520
-context/specs/20260724-132812_workshop-and-warehouse-context-economy.md	20260725.040728
-context/specs/20260724-143155_python-at-the-seam-law.md	20260725.041039
-context/specs/20260724-205009_crockford-stamp-aura.md	20260725.041039
-context/specs/living-vs-dated.md	20260724.223050
-context/specs/two-dev-environments-and-mobile-emulation.md	20260724.223050
-counsel/20260704-004912_gate-unify-counsel.md	20260725.034920
-counsel/20260704-031812_eight-asks-one-sitting.md	20260725.034920
-counsel/20260704-181612_zero-copy-resins-counsel-answers.md	20260725.034920
-counsel/20260706-232812_claude-ruling-oal4-mala-edit5-and-horizons.md	20260725.034920
-counsel/20260707-000112_claude-counsel-two-way-sync-and-subscribe.md	20260725.034920
-counsel/20260707-001612_claude-counsel-subscribe-revisited.md	20260725.034920
-counsel/20260707-004712_claude-counsel-outer-subscribe-and-host-mirror.md	20260725.034920
-counsel/20260707-005612_claude-counsel-tablecloth-query.md	20260725.034920
-counsel/20260707-011412_claude-analysis-state-of-the-tree.md	20260725.034920
-counsel/20260707-014212_claude-counsel-graceful-stop-reframed.md	20260725.034920
-counsel/20260707-021012_claude-counsel-ring4-signal-handler.md	20260725.041039
-counsel/20260707-023512_claude-counsel-mala-graduation-and-fold-gap.md	20260725.041039
-counsel/20260707-025212_claude-counsel-weave-brix-pond-customs.md	20260725.041039
-counsel/20260707-042512_claude-proposal-snapshot-lap3-and-caravan-hardening.md	20260725.041039
-counsel/20260707-044112_claude-recommendation-path.md	20260725.041039
-counsel/20260707-175312_claude-counsel-tooling-scope-ruling.md	20260725.041039
-counsel/20260707-180712_claude-proposal-counsel-folder-reorganization.md	20260725.041039
-counsel/20260707-183412_claude-counsel-tb-std-prefix-assert-density.md	20260725.041039
-counsel/20260707-185612_claude-counsel-general-expansion-round.md	20260725.041039
-counsel/20260707-193712_claude-counsel-enrich-strengthening-docs-witness.md	20260725.041039
-counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md	20260725.103949
-counsel/20260707-201912_claude-counsel-enrich-migration-order.md	20260725.103949
-counsel/20260707-203612_claude-counsel-parse-int-and-season-close.md	20260725.103949
-counsel/20260707-213212_claude-counsel-tigerbeetle-arc-closed.md	20260725.103949
-counsel/20260707-214012_claude-counsel-next-bench-choice.md	20260725.103949
-counsel/20260707-220912_claude-counsel-roadmap-synthesis.md	20260725.103949
-counsel/20260707-222500_claude-counsel-bron-beside-brix-first-proposal.md	20260725.103949
-counsel/20260707-222812_claude-counsel-open-questions-final-pass.md	20260725.103949
-counsel/20260707-223100_claude-counsel-open-questions-batch-two.md	20260725.103949
-counsel/20260708-015312_claude-counsel-kumara-open-asks-cluster.md	20260725.103949
-counsel/20260708-021912_claude-counsel-realidream-zig016-brix.md	20260725.103949
-counsel/20260708-035600_claude-counsel-aurora-run-migration.md	20260725.103949
-counsel/20260708-041000_claude-counsel-settlement-recommendation-july-2026.md	20260725.104245
-counsel/20260708-042112_claude-counsel-sh-migration-wall-found.md	20260725.104245
-counsel/20260708-171712_claude-counsel-every-gate-sorted.md	20260725.104245
-counsel/20260708-214500_claude-counsel-chain-read-seams-built.md	20260725.104245
-counsel/20260708-221612_claude-counsel-six-open-points.md	20260725.104245
-counsel/20260709-011912_claude-counsel-memcpy-mention-hygiene.md	20260725.104245
-counsel/20260709-021112_claude-counsel-slcl4-top-recommended-path.md	20260725.104245
-counsel/20260709-023112_claude-counsel-zig-native-zk-path.md	20260725.104245
-counsel/20260709-152612_claude-counsel-mala-wov-already-designed.md	20260725.104245
-counsel/20260709-184051_grok-counsel-mala-m1-names-and-tasks.md	20260725.104245
-counsel/20260709-191634_grok-counsel-mala-m2-open.md	20260725.104245
-counsel/20260709-224426_grok-counsel-slcl4-w0-lap1-review.md	20260725.104245
-counsel/20260709-225508_grok-counsel-evening-close-leftovers.md	20260725.104506
-counsel/20260709-225614_grok-counsel-w1-and-seam-b-soak.md	20260725.104506
-counsel/20260711-010030_rye-os-helps-cursor-spacexai.md	20260725.104506
-counsel/20260711-033228_hold-at-tip-430.md	20260725.104506
-counsel/20260711-052338_cursor-bot-full-trail.md	20260725.104506
-counsel/20260711-053412_claude-counsel-cursor-bot-arc-audit.md	20260725.104506
-counsel/20260711-055112_claude-counsel-wov-tigerbeetle-recommendation.md	20260725.104506
-counsel/20260711-060112_claude-counsel-consumer-surface-protection-audit.md	20260725.104506
-counsel/20260712-052806_claude-counsel-three-doors-and-teacher.md	20260725.104506
-counsel/20260712-061012_claude-counsel-post-seam-disposition.md	20260725.104506
-counsel/20260712-061012_cloud-signing-key-park.md	20260725.104506
-counsel/20260712-090512_claude-ruling-enclosure-ai-jail-then-pond.md	20260725.104506
-counsel/20260712-092212_claude-counsel-hoon-azimuth-ames-verdicts.md	20260725.105504
-counsel/20260715-190000_the-design-over-build-ratio-and-finishing.md	20260725.105504
-counsel/20260724-132812_the-workshop-and-the-warehouse.md	20260724.223233
-counsel/20260724-135312_vanes-shelves-and-the-glow-ladder.md	20260724.223233
-counsel/20260724-141612_names-maps-and-open-questions.md	20260724.223233
-counsel/20260724-150246_flw-corpus-shelf-and-vere-old.md	20260725.105504
-counsel/20260724-193912_the-hands-we-grow.md	20260725.105504
-counsel/20260724-200912_nothing-to-give-and-the-hall-renamed.md	20260725.105504
-counsel/20260725-001200_forgetting-without-breaking.md	20260725.105504
-counsel/20260725-034254_always-in-it.md	20260725.105504
-counsel/20260725-040247_what-the-shell-remembers.md	20260725.105504
-counsel/replies/20260724-143155_re-the-workshop-and-the-warehouse.md	20260725.105504
-counsel/replies/20260724-145458_re-fourth-sitting-glow-jamcue-vere.md	20260725.105504
-counsel/replies/20260724-151327_re-flw-corpus-shelf-option-c.md	20260724.223233
-counsel/replies/20260724-181241_re-list512-digraph-twin.md	20260725.105504
-counsel/replies/20260724-194239_re-the-hands-we-grow.md	20260725.105504
-counsel/replies/20260724-201727_re-nothing-to-give-and-the-hall-renamed.md	20260725.105645
-counsel/replies/20260724-202412_re-seva-complete-mand-seated.md	20260725.105645
-counsel/replies/20260724-203617_re-mand-ring1-one-clock.md	20260725.105645
-counsel/replies/20260724-205009_re-one-clock-crockford-aura.md	20260725.105645
-counsel/replies/20260724-205719_re-shape-aura-floor-stranger.md	20260725.105645
-counsel/replies/20260724-210602_re-fixture-scans-rish.md	20260725.105645
-counsel/replies/20260724-211721_re-stranger-lap-honesty.md	20260725.105645
-counsel/replies/20260724-212805_re-mand-ring2-roster.md	20260725.105645
-counsel/replies/20260724-220625_re-threats-pillars-mand-home.md	20260724.223233
-counsel/replies/20260724-222620_re-accrete-tiers-radiant-waves.md	20260725.105645
-counsel/replies/20260724-223233_re-radiant-waves-close.md	20260725.105645
-counsel/replies/20260725-001538_re-forgetting-without-breaking.md	20260725.105645
-counsel/replies/20260725-034807_re-always-in-it.md	20260725.105645
-foundations/20260628-121512_the-foundation-beneath-the-work.md	20260725.035134
-foundations/20260628-121512_the-heart-in-the-work.md	20260725.035134
-foundations/20260628-124512_anywhere-we-are-found.md	20260725.035134
-foundations/20260628-133212_a-free-and-open-room.md	20260725.035134
-foundations/20260628-133212_a-home-in-plain-text.md	20260725.035134
-foundations/20260628-133212_an-open-way-to-learn.md	20260725.035134
-foundations/20260628-133212_four-promises-a-tool-can-keep.md	20260725.035134
-foundations/20260628-133212_the-device-that-forgets.md	20260725.035134
-foundations/20260628-133212_the-key-you-hold.md	20260725.035134
-foundations/20260628-133212_the-shape-of-a-day.md	20260725.035134
-foundations/20260628-140812_the-roots-beneath-the-work.md	20260725.035134
-foundations/20260629-014512_money-that-stays-close-to-home.md	20260725.035134
-foundations/20260629-020012_mantrapod-venture-pitch.md	20260725.035453
-foundations/20260629-063512_lantern-lattice-anvil.md	20260725.035453
-foundations/20260629-063512_realidream.md	20260725.035453
-foundations/20260629-063512_the-graph-beneath-the-surface.md	20260725.035453
-foundations/20260629-063512_the-wafer-and-the-sovereign-coin.md	20260725.035453
-foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md	20260725.035453
-foundations/20260702-202612_a-conversation-with-serena.md	20260725.035453
-foundations/20260703-140212_the-learning-chapter.md	20260725.035453
-foundations/20260703-182612_sameness-is-the-macro.md	20260725.035453
-foundations/20260706-022912_the-wire-serves-the-fold.md	20260725.035453
-foundations/20260706-185112_follow-our-compass.md	20260725.035453
-foundations/20260724-200912_nothing-to-give-custody-first-principle.md	20260725.034920
-foundations/20260724-220625_five-pillars-direction.md	20260725.035453
-granary/README.md	20260710.182821
-linengrow/neth_serial_core_delivery.rye	20260724.223151
-linengrow/seva_backchannel_witness.rye	20260724.223151
-linengrow/seva_session_core.rye	20260724.223151
-linengrow/tube1_admission_witness.rye	20260724.223151
-linengrow/tube_manifest_witness.rye	20260724.223151
-pond/README.md	20260710.182821
-session-logs/README.md	20260724.223050
-waymarks/20260724-220625_threats-pillars-mand-home.md	20260725.034920
+
+
+active-designing/20260620-020712_scribble-lantern-and-lattice.md	20260725.110418	clean
+active-designing/20260628-043542_thin-frontend-slc-direction.md	20260725.110418	clean
+active-designing/20260628-071012_slc-1-rishi-mantra-shell.md	20260725.110418	clean
+active-designing/20260629-004912_slc-1-step-2-version.md	20260725.110418	clean
+active-designing/20260629-203012_posix-a-seam-not-a-model.md	20260725.110418	clean
+active-designing/20260630-001812_the-stack-and-the-surface.md	20260725.110418	clean
+active-designing/20260630-014012_lotus-the-daw.md	20260725.110418	clean
+active-designing/20260630-030312_slc-2a-the-drawn-terminal.md	20260725.110418	clean
+active-designing/20260702-031312_modules-aspects-and-mailable-money.md	20260725.110418	clean
+active-designing/20260702-180812_the-small-sharp-toolset.md	20260725.110418	clean
+active-designing/20260702-184312_the-grain-and-the-crossing.md	20260725.110418	clean
+active-designing/20260702-185912_brix-the-composer.md	20260725.110418	clean
+active-designing/20260702-195426_slcl1-verifiable-receipt.md	20260725.110418	clean
+active-designing/20260703-013412_metalsmoke.md	20260725.110418	clean
+active-designing/20260703-071212_amber-seasons.md	20260725.110418	clean
+active-designing/20260703-140212_the-bench.md	20260725.110418	clean
+active-designing/20260703-140212_the-shape-carries-the-bound.md	20260725.110418	clean
+active-designing/20260703-200712_what-needs-ordering.md	20260725.110418	clean
+active-designing/20260703-201612_the-sealed-crossing.md	20260725.110418	clean
+active-designing/20260703-202312_the-marked-value.md	20260725.110418	clean
+active-designing/20260704-211012_the-rye-core-and-the-shell.md	20260725.110418	clean
+active-designing/20260705-225412_comlink-device-wire.md	20260725.110418	clean
+active-designing/20260705-231300_virtio-tx-counsel-handoff.md	20260725.110418	clean
+active-designing/20260705-233012_virtio-tx-ruling.md	20260725.110418	clean
+active-designing/20260706-000812_slcl2-sealed-delivery.md	20260725.110418	clean
+active-designing/20260706-002912_open-asks-hammock-scope.md	20260725.110418	clean
+active-designing/20260706-011512_open-asks-cross-party-delivery.md	20260725.110418	clean
+active-designing/20260706-013012_open-asks-escrow-hammock.md	20260725.110418	clean
+active-designing/20260706-023912_the-referential-namespace.md	20260725.110418	clean
+active-designing/20260706-185112_the-witness-bolt.md	20260725.110418	clean
+active-designing/20260707-164612_tame-tidy-rules-brief.md	20260725.110418	clean
+active-designing/20260708-021912_rye-os-in-brix-terms.md	20260725.110418	clean
+active-designing/20260708-182500_slcl3-settlement-rail.md	20260725.110418	clean
+active-designing/20260708-194500_slcl4-selective-disclosure.md	20260725.110418	clean
+active-designing/20260710-125953_dimeroll-hammock.md	20260725.110418	clean
+active-designing/20260710-131212_dimeroll-lap2-reports.md	20260725.110418	clean
+active-designing/20260710-132548_dimeroll-lap3-sight-view.md	20260725.110418	clean
+active-designing/20260710-133500_inference-stack-lap0-hammock.md	20260725.110418	clean
+active-designing/20260710-140500_comlink-view-filter-not-graphql.md	20260725.110418	clean
+active-designing/20260710-225320_anvil-corpus-lap2-hammock.md	20260725.110418	clean
+active-designing/20260710-230433_dimeroll-lap4-filters.md	20260725.110418	clean
+active-designing/20260710-234004_assist-sight-glass-composition-hammock.md	20260725.110418	clean
+active-designing/20260711-004652_commerce-citizen-steward-demo-hammock.md	20260725.110418	clean
+active-designing/20260711-010030_steward-composition-glass-hammock.md	20260725.110418	clean
+active-designing/20260711-011254_steward-sight-composition-hammock.md	20260725.110418	clean
+active-designing/20260711-012451_granary-steward-composition-hammock.md	20260725.110418	clean
+active-designing/20260711-014304_granary-steward-sight-hammock.md	20260725.110418	clean
+active-designing/20260711-014454_open-asks-view-hammock.md	20260725.110418	clean
+active-designing/20260711-015106_open-asks-escrow-view-hammock.md	20260725.110418	clean
+active-designing/20260711-030123_open-asks-reputation-view-hammock.md	20260725.110418	clean
+amphora/README.md	20260710.182821	legacy
+context/archive/RIO3.md	20260710.182821	legacy
+context/specs/20260627-102012_one-clock-naming-law.md	20260725.035645	legacy
+context/specs/20260629-031512_slc1-ring-closed-handoff.md	20260725.035645	legacy
+context/specs/20260630-004512_module-name-provenance.md	20260725.035645	legacy
+context/specs/20260701-221512_amber-functional-spec.md	20260725.035645	legacy
+context/specs/20260702-035018_graduation-rule.md	20260725.035645	legacy
+context/specs/20260703-191112_resins-and-hash-tiers.md	20260725.035645	legacy
+context/specs/20260704-020800_one-word-one-gate.md	20260725.035645	legacy
+context/specs/20260704-030300_itinerary-retires-diet.md	20260725.035645	legacy
+context/specs/20260705-203144_canonical-glosses.md	20260725.035645	legacy
+context/specs/20260707-011412_mantra-referential-namespace-reference.md	20260725.035645	legacy
+context/specs/20260707-011412_module-surfaces-index.md	20260725.035645	legacy
+context/specs/20260707-021512_snapshot-export-lap1.md	20260725.035645	legacy
+context/specs/20260707-024712_snapshot-export-lap2.md	20260725.035852	legacy
+context/specs/20260707-030412_weave-slice-ruling.md	20260725.035852	legacy
+context/specs/20260707-042512_snapshot-export-lap3.md	20260725.035852	legacy
+context/specs/20260707-053212_radiant-vocabulary-pass.md	20260725.035852	legacy
+context/specs/20260709-200443_wov-exit-honesty.md	20260725.035852	legacy
+context/specs/20260709-204026_wov-tb-client-seam.md	20260725.035852	legacy
+context/specs/20260709-224325_slcl4-lap2-width.md	20260725.035852	legacy
+context/specs/20260709-224531_wov-dual-monarch.md	20260725.035852	legacy
+context/specs/20260709-225159_mala-kind-field.md	20260725.035852	legacy
+context/specs/20260709-225343_thin-view-dexter-exception.md	20260725.035852	legacy
+context/specs/20260710-163043_granary-name-seated.md	20260725.035852	legacy
+context/specs/20260710-165634_mandi-name-seated.md	20260725.035852	legacy
+context/specs/20260710-171202_mandi-listing-settle-seated.md	20260725.035955	legacy
+context/specs/20260710-172625_granary-weave-settle-seated.md	20260725.035955	legacy
+context/specs/20260712-054650_captp-as-fold-carriage-declined.md	20260725.035955	legacy
+context/specs/20260712-061012_bud-and-mudra-names-seated.md	20260725.035955	legacy
+context/specs/20260713-201910_pacific-time-local-clone-convention.md	20260725.035955	legacy
+context/specs/20260713-211800_local-host-system-hardware-anonymized.md	20260725.035955	legacy
+context/specs/20260713-214400_urbit-parallel-naming-mapping-proposal.md	20260725.035955	legacy
+context/specs/20260713-222416_new-journey-identity-marker.md	20260725.035955	legacy
+context/specs/20260713-224212_glow-and-four-kernel-variants-naming-research.md	20260725.035955	legacy
+context/specs/20260713-225658_glow-accepted-riyo-reya-trey-triz-amended.md	20260725.035955	legacy
+context/specs/20260713-235455_keaton-name-and-glow-os-umbrella.md	20260725.035955	legacy
+context/specs/20260713-235600_names-awaiting-confirmation.md	20260725.035955	legacy
+context/specs/20260714-002123_naming-decisions-and-role-nesting.md	20260725.040728	legacy
+context/specs/20260714-004428_reviving-replaces-renaming.md	20260725.040728	legacy
+context/specs/20260714-011504_glow-host-config-and-vpn-reification.md	20260725.040728	legacy
+context/specs/20260714-015200_glow-profile-and-acme-generic-voice.md	20260725.040728	legacy
+context/specs/20260714-024800_proposal-not-fork-reframing.md	20260725.040728	legacy
+context/specs/20260714-024800_warm-aura-date-atom-naming.md	20260725.040728	legacy
+context/specs/20260716-115927_waymark-ladder-naming-and-g0-collision-fix.md	20260725.040728	legacy
+context/specs/20260717-003132_eastern-time-framework-host-convention.md	20260725.040728	legacy
+context/specs/20260717-154943_glow-truth-zig-ambient-nock-loobean-seam.md	20260725.040728	legacy
+context/specs/20260720-232932_udt-framework-host-convention.md	20260725.040728	legacy
+context/specs/20260722-125845_edt-framework-host-convention.md	20260725.040728	legacy
+context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md	20260725.040520	legacy
+context/specs/20260724-132812_workshop-and-warehouse-context-economy.md	20260725.040728	legacy
+context/specs/20260724-143155_python-at-the-seam-law.md	20260725.041039	legacy
+context/specs/20260724-205009_crockford-stamp-aura.md	20260725.041039	legacy
+context/specs/living-vs-dated.md	20260724.223050	legacy
+context/specs/two-dev-environments-and-mobile-emulation.md	20260724.223050	legacy
+counsel/20260704-004912_gate-unify-counsel.md	20260725.034920	legacy
+counsel/20260704-031812_eight-asks-one-sitting.md	20260725.034920	legacy
+counsel/20260704-181612_zero-copy-resins-counsel-answers.md	20260725.034920	legacy
+counsel/20260706-232812_claude-ruling-oal4-mala-edit5-and-horizons.md	20260725.034920	legacy
+counsel/20260707-000112_claude-counsel-two-way-sync-and-subscribe.md	20260725.034920	legacy
+counsel/20260707-001612_claude-counsel-subscribe-revisited.md	20260725.034920	legacy
+counsel/20260707-004712_claude-counsel-outer-subscribe-and-host-mirror.md	20260725.034920	legacy
+counsel/20260707-005612_claude-counsel-tablecloth-query.md	20260725.034920	legacy
+counsel/20260707-011412_claude-analysis-state-of-the-tree.md	20260725.034920	legacy
+counsel/20260707-014212_claude-counsel-graceful-stop-reframed.md	20260725.034920	legacy
+counsel/20260707-021012_claude-counsel-ring4-signal-handler.md	20260725.041039	legacy
+counsel/20260707-023512_claude-counsel-mala-graduation-and-fold-gap.md	20260725.041039	legacy
+counsel/20260707-025212_claude-counsel-weave-brix-pond-customs.md	20260725.041039	legacy
+counsel/20260707-042512_claude-proposal-snapshot-lap3-and-caravan-hardening.md	20260725.041039	legacy
+counsel/20260707-044112_claude-recommendation-path.md	20260725.041039	legacy
+counsel/20260707-175312_claude-counsel-tooling-scope-ruling.md	20260725.041039	legacy
+counsel/20260707-180712_claude-proposal-counsel-folder-reorganization.md	20260725.041039	legacy
+counsel/20260707-183412_claude-counsel-tb-std-prefix-assert-density.md	20260725.041039	legacy
+counsel/20260707-185612_claude-counsel-general-expansion-round.md	20260725.041039	legacy
+counsel/20260707-193712_claude-counsel-enrich-strengthening-docs-witness.md	20260725.041039	legacy
+counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md	20260725.103949	legacy
+counsel/20260707-201912_claude-counsel-enrich-migration-order.md	20260725.103949	legacy
+counsel/20260707-203612_claude-counsel-parse-int-and-season-close.md	20260725.103949	legacy
+counsel/20260707-213212_claude-counsel-tigerbeetle-arc-closed.md	20260725.103949	legacy
+counsel/20260707-214012_claude-counsel-next-bench-choice.md	20260725.103949	legacy
+counsel/20260707-220912_claude-counsel-roadmap-synthesis.md	20260725.103949	legacy
+counsel/20260707-222500_claude-counsel-bron-beside-brix-first-proposal.md	20260725.103949	legacy
+counsel/20260707-222812_claude-counsel-open-questions-final-pass.md	20260725.103949	legacy
+counsel/20260707-223100_claude-counsel-open-questions-batch-two.md	20260725.103949	legacy
+counsel/20260708-015312_claude-counsel-kumara-open-asks-cluster.md	20260725.103949	legacy
+counsel/20260708-021912_claude-counsel-realidream-zig016-brix.md	20260725.103949	legacy
+counsel/20260708-035600_claude-counsel-aurora-run-migration.md	20260725.103949	legacy
+counsel/20260708-041000_claude-counsel-settlement-recommendation-july-2026.md	20260725.104245	legacy
+counsel/20260708-042112_claude-counsel-sh-migration-wall-found.md	20260725.104245	legacy
+counsel/20260708-171712_claude-counsel-every-gate-sorted.md	20260725.104245	legacy
+counsel/20260708-214500_claude-counsel-chain-read-seams-built.md	20260725.104245	legacy
+counsel/20260708-221612_claude-counsel-six-open-points.md	20260725.104245	legacy
+counsel/20260709-011912_claude-counsel-memcpy-mention-hygiene.md	20260725.104245	legacy
+counsel/20260709-021112_claude-counsel-slcl4-top-recommended-path.md	20260725.104245	legacy
+counsel/20260709-023112_claude-counsel-zig-native-zk-path.md	20260725.104245	legacy
+counsel/20260709-152612_claude-counsel-mala-wov-already-designed.md	20260725.104245	legacy
+counsel/20260709-184051_grok-counsel-mala-m1-names-and-tasks.md	20260725.104245	legacy
+counsel/20260709-191634_grok-counsel-mala-m2-open.md	20260725.104245	legacy
+counsel/20260709-224426_grok-counsel-slcl4-w0-lap1-review.md	20260725.104245	legacy
+counsel/20260709-225508_grok-counsel-evening-close-leftovers.md	20260725.104506	legacy
+counsel/20260709-225614_grok-counsel-w1-and-seam-b-soak.md	20260725.104506	legacy
+counsel/20260711-010030_rye-os-helps-cursor-spacexai.md	20260725.104506	legacy
+counsel/20260711-033228_hold-at-tip-430.md	20260725.104506	legacy
+counsel/20260711-052338_cursor-bot-full-trail.md	20260725.104506	legacy
+counsel/20260711-053412_claude-counsel-cursor-bot-arc-audit.md	20260725.104506	legacy
+counsel/20260711-055112_claude-counsel-wov-tigerbeetle-recommendation.md	20260725.104506	legacy
+counsel/20260711-060112_claude-counsel-consumer-surface-protection-audit.md	20260725.104506	legacy
+counsel/20260712-052806_claude-counsel-three-doors-and-teacher.md	20260725.104506	legacy
+counsel/20260712-061012_claude-counsel-post-seam-disposition.md	20260725.104506	legacy
+counsel/20260712-061012_cloud-signing-key-park.md	20260725.104506	legacy
+counsel/20260712-090512_claude-ruling-enclosure-ai-jail-then-pond.md	20260725.104506	legacy
+counsel/20260712-092212_claude-counsel-hoon-azimuth-ames-verdicts.md	20260725.105504	legacy
+counsel/20260715-190000_the-design-over-build-ratio-and-finishing.md	20260725.105504	legacy
+counsel/20260724-132812_the-workshop-and-the-warehouse.md	20260724.223233	legacy
+counsel/20260724-135312_vanes-shelves-and-the-glow-ladder.md	20260724.223233	legacy
+counsel/20260724-141612_names-maps-and-open-questions.md	20260724.223233	legacy
+counsel/20260724-150246_flw-corpus-shelf-and-vere-old.md	20260725.105504	legacy
+counsel/20260724-193912_the-hands-we-grow.md	20260725.105504	legacy
+counsel/20260724-200912_nothing-to-give-and-the-hall-renamed.md	20260725.105504	legacy
+counsel/20260725-001200_forgetting-without-breaking.md	20260725.105504	legacy
+counsel/20260725-034254_always-in-it.md	20260725.105504	legacy
+counsel/20260725-040247_what-the-shell-remembers.md	20260725.105504	legacy
+counsel/replies/20260724-143155_re-the-workshop-and-the-warehouse.md	20260725.105504	legacy
+counsel/replies/20260724-145458_re-fourth-sitting-glow-jamcue-vere.md	20260725.105504	legacy
+counsel/replies/20260724-151327_re-flw-corpus-shelf-option-c.md	20260724.223233	legacy
+counsel/replies/20260724-181241_re-list512-digraph-twin.md	20260725.105504	legacy
+counsel/replies/20260724-194239_re-the-hands-we-grow.md	20260725.105504	legacy
+counsel/replies/20260724-201727_re-nothing-to-give-and-the-hall-renamed.md	20260725.105645	legacy
+counsel/replies/20260724-202412_re-seva-complete-mand-seated.md	20260725.105645	legacy
+counsel/replies/20260724-203617_re-mand-ring1-one-clock.md	20260725.105645	legacy
+counsel/replies/20260724-205009_re-one-clock-crockford-aura.md	20260725.105645	legacy
+counsel/replies/20260724-205719_re-shape-aura-floor-stranger.md	20260725.105645	legacy
+counsel/replies/20260724-210602_re-fixture-scans-rish.md	20260725.105645	legacy
+counsel/replies/20260724-211721_re-stranger-lap-honesty.md	20260725.105645	legacy
+counsel/replies/20260724-212805_re-mand-ring2-roster.md	20260725.105645	legacy
+counsel/replies/20260724-220625_re-threats-pillars-mand-home.md	20260724.223233	legacy
+counsel/replies/20260724-222620_re-accrete-tiers-radiant-waves.md	20260725.105645	legacy
+counsel/replies/20260724-223233_re-radiant-waves-close.md	20260725.105645	legacy
+counsel/replies/20260725-001538_re-forgetting-without-breaking.md	20260725.105645	legacy
+counsel/replies/20260725-034807_re-always-in-it.md	20260725.105645	legacy
+foundations/20260628-121512_the-foundation-beneath-the-work.md	20260725.035134	legacy
+foundations/20260628-121512_the-heart-in-the-work.md	20260725.035134	legacy
+foundations/20260628-124512_anywhere-we-are-found.md	20260725.035134	legacy
+foundations/20260628-133212_a-free-and-open-room.md	20260725.035134	legacy
+foundations/20260628-133212_a-home-in-plain-text.md	20260725.035134	legacy
+foundations/20260628-133212_an-open-way-to-learn.md	20260725.035134	legacy
+foundations/20260628-133212_four-promises-a-tool-can-keep.md	20260725.035134	legacy
+foundations/20260628-133212_the-device-that-forgets.md	20260725.035134	legacy
+foundations/20260628-133212_the-key-you-hold.md	20260725.035134	legacy
+foundations/20260628-133212_the-shape-of-a-day.md	20260725.035134	legacy
+foundations/20260628-140812_the-roots-beneath-the-work.md	20260725.035134	legacy
+foundations/20260629-014512_money-that-stays-close-to-home.md	20260725.035134	legacy
+foundations/20260629-020012_mantrapod-venture-pitch.md	20260725.035453	legacy
+foundations/20260629-063512_lantern-lattice-anvil.md	20260725.035453	legacy
+foundations/20260629-063512_realidream.md	20260725.035453	legacy
+foundations/20260629-063512_the-graph-beneath-the-surface.md	20260725.035453	legacy
+foundations/20260629-063512_the-wafer-and-the-sovereign-coin.md	20260725.035453	legacy
+foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md	20260725.035453	legacy
+foundations/20260702-202612_a-conversation-with-serena.md	20260725.035453	legacy
+foundations/20260703-140212_the-learning-chapter.md	20260725.035453	legacy
+foundations/20260703-182612_sameness-is-the-macro.md	20260725.035453	legacy
+foundations/20260706-022912_the-wire-serves-the-fold.md	20260725.035453	legacy
+foundations/20260706-185112_follow-our-compass.md	20260725.035453	legacy
+foundations/20260724-200912_nothing-to-give-custody-first-principle.md	20260725.034920	legacy
+foundations/20260724-220625_five-pillars-direction.md	20260725.035453	legacy
+granary/README.md	20260710.182821	legacy
+linengrow/neth_serial_core_delivery.rye	20260724.223151	legacy
+linengrow/seva_backchannel_witness.rye	20260724.223151	legacy
+linengrow/seva_session_core.rye	20260724.223151	legacy
+linengrow/tube1_admission_witness.rye	20260724.223151	legacy
+linengrow/tube_manifest_witness.rye	20260724.223151	legacy
+pond/README.md	20260710.182821	legacy
+session-logs/README.md	20260724.223050	legacy
+waymarks/20260724-220625_threats-pillars-mand-home.md	20260725.034920	legacy

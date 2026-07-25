@@ -1,7 +1,7 @@
 # Radiant Style
  
 **Language:** EN
-**Last updated:** 2026-07-25 (pass playbook seated · always-in-it `034254`)
+**Last updated:** 2026-07-25 (runway seated `110354` · batch 50 · pass playbook `034254`)
  
 **Purpose:** Define how we write and speak, so every piece is clear, affirmative, and a joy to hear — whether read on the page or aloud (TTS, podcast, narration). Target reading level: 8th grade through collegiate. Voice: conversational yet eloquent, warm yet precise.
 
@@ -261,15 +261,18 @@ Seated `20260725.034254` from counsel [`../counsel/20260725-034254_always-in-it.
 
 ### The rules that bound a pass
 
-- **Style only.** A pass may change no claim, and `claim_preserve_witness` proves it — numbers, digests, fingerprints, paths, stamps, and proper nouns identical before and after. A mismatch stops the wave rather than getting resolved.
+- **Style only.** A pass may change no claim, and `claim_preserve_witness` proves it — numbers, digests, fingerprints, paths, stamps, proper nouns, **and modality counts** (`must` · `should` · `may` · `recommend` · `require` · `seat` · `hold` · `parked` · …) identical before and after. A mismatch stops the wave rather than getting resolved.
+- **Preserve cadence and vocabulary.** Fix only what this playbook names. A pass is a **correction**, never a rewrite — one model must not homogenize a thousand voices into its own.
+- **Preserve hedges deliberately.** Where a memo says *probably*, *I lean*, or *my guess*, that hedge is load-bearing counsel — it tells a future reader how much weight the claim carried. Strengthening it destroys information.
 - **Tier 1 is never touched.** Bytes under proof stay exactly as they are.
 - **Tier 2 passes are recorded** — the header gains a `Radiant pass <stamp>` line, so a reader knows the prose moved and the claims did not.
 - **Factual errors take errata, never silent correction.** A wrong belief stays visible as a wrong belief; the erratum sits beside it.
-- **Waves stay reviewable.** No wave exceeds what a person can read in one sitting; the bound is named in the reply and held.
-- **Report the lint count after every wave**, so the ratchet's direction is visible.
+- **Batch fifty.** The twelve-file bound was a **human-review** bound — so Keaton could read a whole wave in one sitting. When each diff is no longer read, **the witnesses become the only reviewer**, and that trade is accepted for style-only passes. Fifty files per wave · one PR per wave · **one revert away**.
+- **Spot-read every fifth wave.** One file, chosen at random from that wave, read by Keaton — five minutes catches model drift better than skimming fifty diffs.
+- **Report lint sum and change-rate after every wave** — `changed` vs `clean` per row in the ledger; a genre ALL-CLEAN across two full waves may earn wholesale exemption on evidence (see `tools/fixtures/radiant_pool_scope.md`).
 
 ### Coverage ledger
 
-`tools/fixtures/radiant_pass_ledger.txt` — one line per file naming the stamp of its most recent pass. Waves write to it. Next wave takes the oldest untouched files. Precedent: recorded pass stamps on living identity notes since July (`Radiant pass 182821`).
+`tools/fixtures/radiant_pass_ledger.txt` — one line per file: path · stamp · **changed | clean | legacy**. Waves write to it. Next wave takes the oldest untouched in-scope files (`sh tools/fixtures/radiant_select_wave.sh 50`). Pool scope and exemptions: [`../tools/fixtures/radiant_pool_scope.md`](../tools/fixtures/radiant_pool_scope.md). Runway counsel: [`../counsel/20260725-110128_the-runway.md`](../counsel/20260725-110128_the-runway.md).
 
 ---

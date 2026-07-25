@@ -1,6 +1,7 @@
 #!/bin/sh
-# claim_preserve_scan.sh — before/after claim-token identity for a Radiant pass.
+# claim_preserve_scan.sh — before/after claim-token and modality identity for a Radiant pass.
 # Missing Rishi verb: accumulate · filter chained · read bounded — harvest ledger (counsel 20260725.040247)
+# Modality seated 20260725.110354 — counsel the-runway; obligation drift stops the wave.
 #
 # Env:
 #   CLAIM_PRESERVE_FILES — newline-separated relative paths (required for a pass)
@@ -63,6 +64,11 @@ while IFS= read -r path; do
   else
     echo "OK   claim tokens identical: ${path}"
   fi
+  # Modality — per-file obligation counts must hold (recommend→require is red).
+  git show "${BASE}:${path}" >"$TMP/before_mod_raw"
+  if ! sh tools/fixtures/claim_preserve_modality.sh compare "$TMP/before_mod_raw" "$path"; then
+    reds=$((reds + 1))
+  fi
   # Wrong beliefs stay visible — silent five→four rewrites are red.
   if grep -Fq 'five remotes' "$TMP/before_raw"; then
     if ! grep -Fq 'five remotes' "$path"; then
@@ -106,5 +112,5 @@ if [ "$reds" -gt 0 ]; then
   echo "FAIL claim_preserve count=${reds}"
   exit 1
 fi
-echo "OK   claim_preserve clean — tokens identical; pins held"
+echo "OK   claim_preserve clean — tokens and modality identical; pins held"
 exit 0

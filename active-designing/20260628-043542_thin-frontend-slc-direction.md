@@ -6,6 +6,8 @@
 **Lens:** TAME · Tiger · Gall · Hickey · [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md) · Hammock
 **Status:** Adopted — reshapes `work-in-progress/ROADMAP.md` spine; vision unchanged
 
+Radiant pass `20260725.110418`
+
 ---
 
 ## The Decision
