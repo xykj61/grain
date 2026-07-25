@@ -1,7 +1,7 @@
 # The Counsel Stack
 
 **Language:** EN
-**Last updated:** 2026-07-25 (Wave 32 `20260725.112215` · batch 50)
+**Last updated:** 2026-07-25 (Wave 33 `20260725.112315` · batch 50)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Foundation
 **Seasons roster:** [`SEASONS.md`](SEASONS.md)
@@ -22,6 +22,7 @@ Filing law: [`../ORGANIZING.md`](../ORGANIZING.md) · reorg proposal: [`20260707
 
 | Stamp | Note | Meaning |
 |-------|------|---------|
+| `20260725.112315` | [Reply — Radiant Wave 33](replies/20260725-112315_re-radiant-wave33.md) | fifty · 50 clean |
 | `20260725.112215` | [Reply — Radiant Wave 32](replies/20260725-112215_re-radiant-wave32.md) | fifty · 50 clean |
 | `20260725.112115` | [Reply — Radiant Wave 31](replies/20260725-112115_re-radiant-wave31.md) | fifty · 50 clean |
 | `20260725.112015` | [Reply — Radiant Wave 30 · spot-read](replies/20260725-112015_re-radiant-wave30.md) | fifty · 50 clean |
