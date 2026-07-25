@@ -80,20 +80,22 @@ zed --version
 
 ### Cursor (AppImage in the project)
 
-Documented in `SOURCE.md` Step 6–9. From the repo root:
+Documented in `SOURCE.md` Step 6–9. From the repo root on **Ubuntu 26.04 LTS · GNOME Wayland (Framework)**:
 
 ```bash
-./tools/cursor-jail.sh --extract ./Cursor-3.11.13-x86_64.AppImage   # once → squashfs-root/
-./tools/cursor-jail.sh --gpu                                         # launch in ai-jail
-# Rishi door (preferred):
-rishi/bin/rishi run tools/launch-cursor.rish --extract ./Cursor-3.11.13-x86_64.AppImage --gpu
+chmod +x ./Cursor-3.13.10-x86_64.AppImage
+# Rishi door (preferred) — --cursor takes the AppImage path; --gpu for Wayland:
+rishi/bin/rishi run tools/launch-cursor.rish --cursor ./Cursor-3.13.10-x86_64.AppImage --gpu
+# Later launches (already extracted):
 rishi/bin/rishi run tools/launch-cursor.rish --gpu
+# Bash elder:
+./tools/cursor-jail.sh --cursor ./Cursor-3.13.10-x86_64.AppImage --gpu
 ```
 
-Or from Rishi (edit `apprun` in `tools/launch-cursor.rish` if needed):
+**macOS** (Seatbelt; no AppImage):
 
 ```bash
-rishi/bin/rishi run tools/launch-cursor.rish
+rishi/bin/rishi run tools/cursor_jail_macos.rish --cursor /Applications/Cursor.app
 ```
 
 ---
