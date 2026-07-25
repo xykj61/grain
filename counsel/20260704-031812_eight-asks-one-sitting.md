@@ -8,6 +8,7 @@
 **Status:** Proposed — counsel and designs only; every gate stays Kaeden's; no witness program renamed; no module name minted
 
 *Written together by Kaeden and Claude (Fable 5), in Rio 3's Radiant voice.*
+Radiant pass `20260725.034920`
 
 ---
 
