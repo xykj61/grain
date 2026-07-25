@@ -1,5 +1,9 @@
 # Session logs
 
+**Language:** EN  
+**Status:** Living pin — newest-first index  
+**Bound:** under `living_pin_max_bytes`  
+
 Living index for the append-only session stream. This table reads **newest first**.
 
 **Living format:** **Bron** (`.bron`) — immutable key-value at the seam. Historical Markdown logs are folded under `archive/YYYYMMDD/`. Rules: [`.cursor/rules/session-logs.mdc`](../.cursor/rules/session-logs.mdc) · [`.claude/rules/session-logs.md`](../.claude/rules/session-logs.md).
