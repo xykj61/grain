@@ -44,3 +44,6 @@
 - `20260722.140100` — [STOA241–242 face_lit agree round](20260722-140100_stoa241-242-face-lit-agree-round.bron) — product stand-in ≡ Glow pins; name next door
 - `20260722.141353` — [STOA245–246 authored sign body round](20260722-141353_stoa245-246-sign-body-round.bron) — sign/verify own body; digest next
 - `20260722.141102` — [REMEMBER git nib after STOA244](20260722-141102_remember-git-nib-stoa244.bron) — pin c003ffbb7bfe
+- `20260722.141553` — [REMEMBER git nib after STOA248](20260722-141553_remember-git-nib-stoa248.bron) — pin 361969662bc1
+- `20260722.141542` — [STOA247–248 authored digest body round](20260722-141542_stoa247-248-digest-body-round.bron) — Sha3 own body; name next door
+- `20260722.141403` — [REMEMBER git nib after STOA246](20260722-141403_remember-git-nib-stoa246.bron) — pin c874d977a872
