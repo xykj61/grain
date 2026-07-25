@@ -22,7 +22,7 @@ Radiant pass `20260725.112615`
 
 ## Now
 
-**Radiant Wave 36** `20260725.112615` — 36 clean · 14 changed · lint 2. **Runway:** Wave **36 / ~20** · **1,179 / ~1,185** (~99%) · **~6 remain**.
+**Radiant Wave 36** `20260725.112615` — 36 clean · 14 changed · lint 2. Sent `20260725.112625` · git nib `c911fd4de6`. **Runway:** Wave **36 / ~20** · **1,179 / ~1,185** (~99%).
 
 **Read:**
 
