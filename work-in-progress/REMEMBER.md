@@ -2,13 +2,13 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260724.211904` (EDT) · voice Quin  
-**Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1** · **Crockford aura** · **`$:` @u64 floor**  
+**Last refreshed:** `20260724.213140` (EDT) · voice Quin  
+**Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2** · **Crockford aura** · **`$:` @u64 floor**  
 **Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list512 GREEN · **stamp @u64 · Crockford** · **shape aura floor**  
-**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand ring-1** · **one-clock blocking** · **stranger lap warm REPORT** · **tools/*.py zero**  
-**Git nib:** `3d9b8f67a3` · stranger lap honesty · warm REPORT (PR #84)
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand ring-2** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm REPORT**  
+**Git nib:** `fa22485b69` · ground before Mand ring-2 (pin refreshes after send)
 
-**Season:** Framework · EDT · **finishing edge:** stranger lap warm REPORT honest · cold path open.  
+**Season:** Framework · EDT · **finishing edge:** Mand ring-2 retention eligibility · `.py` gate · warm stranger in parity.  
 **APK:** `tools/.cache/tube05/seva-broadcaster.apk` · pkg `org.glow.app.seva_broadcaster`  
 **ADB:** `tools/.cache/hawm0/android-sdk/platform-tools/adb` — not on bare PATH  
 
@@ -16,14 +16,15 @@
 
 ## Now
 
-**Stranger lap honesty** `20260724.211721` — warm REPORT names local · depth 1 · prewarmed; bound comparator live (negative FAILS); ceiling **1800s**; cold mode present; OQ4 warm-only. On-touch ratchets stay on touch. Reply [`../counsel/replies/20260724-211721_re-stranger-lap-honesty.md`](../counsel/replies/20260724-211721_re-stranger-lap-honesty.md) · claim [`../waymarks/20260724-211721_stranger-lap-honesty.md`](../waymarks/20260724-211721_stranger-lap-honesty.md).
+**Mand ring-2 · roster hygiene** `20260724.212805` — retention eligibility KEEP · ELIGIBLE · HELD (decide, never erase) · `tools/*.py` blocking at zero · warm stranger-lap REPORT in `parity_ch01` (mode=warm). Reply [`../counsel/replies/20260724-212805_re-mand-ring2-roster.md`](../counsel/replies/20260724-212805_re-mand-ring2-roster.md) · claim [`../waymarks/20260724-212805_mand-ring2-retention.md`](../waymarks/20260724-212805_mand-ring2-retention.md).
 
 **Witnesses:**
 
 ```bash
 export RYE_ZIG=vendor/zig-toolchain/zig
+rishi/bin/rishi run tools/mand_ring2_witness.rish
+rishi/bin/rishi run tools/tame_style_tools_py_ban_selftest.rish
 rishi/bin/rishi run tools/stranger_lap_witness.rish
-rishi/bin/rishi run tools/stranger_lap_bound_negative_witness.rish
 ```
 
 ---
@@ -32,8 +33,8 @@ rishi/bin/rishi run tools/stranger_lap_bound_negative_witness.rish
 
 | Door | Kind |
 |------|------|
-| Stranger lap cold path | reports before tighten |
-| Mand ring-2 | check-in on word |
+| Cold stranger-lap report | waits on vere/old untrack |
+| Mand deepen past eligibility | check-in on word |
 | Hands We Grow succession · redaction · first-responder · pillars | park |
 | vere/old untrack | held · word **siblings seated** |
 | HAWM1 memo reseat (`seva:…`) | optional deliberate re-pin |
