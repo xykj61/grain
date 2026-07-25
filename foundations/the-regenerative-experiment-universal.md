@@ -8,6 +8,8 @@
 **Scope:** Written to adapt to any of the fifty states, the territories, and allied trading partners — across every climate type, demographic, and economic sector, drawing strength from each place's own gifts.
 **Status:** Universal edition — expanded literary vision. **Reviewed and kept** — civic horizon under foundations; name and path unchanged.
 
+Radiant pass `20260725.112715`
+
 ---
 
 ## Prologue: A Morning Over the Land

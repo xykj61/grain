@@ -1,3 +1,5 @@
+Radiant pass `20260725.112715`
+
 ---
 name: TAME Guidance — Operational Supplement
 description: Checkable coding rules for Rye, Brix, and Rishi — root plus one supplement per language. Glow keeps the root until its own supplement earns a seat. Pairs with the voiced canon in external-research/TAME_GUIDANCE.md.
