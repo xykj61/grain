@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260725.002400
+editor Cursor
+model Cursor Grok 4.5
+voice Rio 3
+host Linux cloud sandbox
+title Sala rename digest and fixture risk survey
+prompt Investigate whether renaming sala:open memos, sala_broadcaster package/APK, or sala-event glow shapes would break pinned digests or seated fixture bytes; return STOP vs SAFE; do not modify living product files
+think Searched living tree excluding gratitude vendor old vere archives for glow_sala_b0_* glow/gen/*sala* exact memo package shape strings and hex pins
+think Decoded demo_fact_hex family — ASCII embeds memo sala:open rishi session and kin; sig pins and HAWM1 root 99b3ae96… depend on those memo bytes
+think Fixture witnesses assert memo string equality; fact-line lit desks and harvest bron seat the same root and fact hex
+think Package id APK path shape-sala-event and SALA B0 paint strings sit outside the session digest body; renames need reference updates yet leave HAWM1 root intact if memos stay
+obs STOP surface is wire memo payloads plus every seated fact/sig/root pin that embeds them; SAFE surface is module filenames package/APK path shape type names and display titles when memo bytes stay
+file linengrow/glow_sala_b0_demo_fixture.rye product memo1–3 and root pin
+file linengrow/glow_sala_b0_line.rye seated demo_sig/fact hex pins embedding memo ASCII
+file linengrow/sala_b0_fold.rye elder fold memos and expected_demo_root_hex
+file glow/gen/sample-demo-fixture-lits.glow face=lit memo and root seats
+file glow/gen/sample-demo-fact-line-lits.glow fact hex seats twin embed
+file tools/fixtures/hawm_harvest_v1.bron session_root pin
+recommend check-in before any memo string rename — reseat fact/sig/root pins together; keep-going on filename package or shape renames with reference greps when a dedicated wire lap opens
+git_nib f1c9ae9c1f
