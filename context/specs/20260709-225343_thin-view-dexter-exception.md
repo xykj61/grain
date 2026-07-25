@@ -10,6 +10,7 @@
 **Ground:** graduation [`035018`](20260702-035018_graduation-rule.md) · thin view [`202427`](../../expanding-prompts/20260709-202427_realidream-thin-view-local-facts.md) · TASKS Dexter trigger · late-night brief [`225159`](../../external-research/20260709-225159_claude-review-brief-jul9-late-night.md)
 
 *Written by Kaeden and Rio 3 (Grok). Affirmed by keep-going after K0.*
+Radiant pass `20260725.035852`
 
 ---
 
