@@ -9,7 +9,7 @@
 
 say "dated-guard: scanning staged MODIFIED dated paths…"
 
-let scan = run ["python3" "tools/fixtures/dated_guard_scan.py"]
+let scan = run ["rishi/bin/rishi" "run" "tools/fixtures/dated_guard_scan.rish"]
 say scan.out
 assert scan.ok else "dated-guard RED: staged dated file on main lacks living header"
 say "GREEN: dated-guard — staged dated mods on main declare living or are absent."

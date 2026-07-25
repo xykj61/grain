@@ -33,6 +33,7 @@ Each shelf keeps a one-line-per-claim `README.md` index as claims arrive.
 
 | Stamp | Claim | Path |
 |-------|-------|------|
+| `20260724.210602` | Fixture scans → `.rish` · `tools/*.py` zero | [`20260724-210602_fixture-scans-rish-zero.md`](20260724-210602_fixture-scans-rish-zero.md) |
 | `20260724.205719` | Shape aura floor · `@u64` admitted (stamp first consumer) | [`20260724-205719_shape-aura-floor-u64.md`](20260724-205719_shape-aura-floor-u64.md) |
 | `20260724.205009` | One-clock amended · Crockford stamp aura (Decision 6) | [`20260724-205009_one-clock-crockford-aura.md`](20260724-205009_one-clock-crockford-aura.md) |
 | `20260724.203617` | Mand ring-1 · one-clock seat | [`20260724-203617_mand-ring1-one-clock.md`](20260724-203617_mand-ring1-one-clock.md) |

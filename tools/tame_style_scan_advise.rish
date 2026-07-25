@@ -8,14 +8,13 @@
 #   rishi/bin/rishi run tools/tame_style_scan_advise.rish
 
 # tools/*.py count — Python-at-seam law; shell wc (count only).
-# Target two→zero on touch: living_docs_lint_scan.py · dated_guard_scan.py migrate
-# to .rish when next opened (lean on run seam: wc -c · grep -c — map-transform
-# ceiling refuses files past 256 lines; those scans read the big living docs).
+# Fixture scans migrated `20260724.210602` → living_docs_lint_scan.rish ·
+# dated_guard_scan.rish (bodies lean on run seam: wc -c · grep). Target zero.
 # classical-vedic-astrology/cast_a_chart.py is EXEMPT BY NAME (POSIX-seam law;
 # outside tools/, so this count never includes it).
 let tools_py_run = run ["sh" "-c" "find tools -name '*.py' -type f 2>/dev/null | wc -l | tr -d ' '"]
 assert tools_py_run.ok else "tame_style_scan_advise: tools py count failed"
-say "ratchet: tools/*.py count = ${trim tools_py_run.out} (target two-to-zero on touch; fixture scans living_docs_lint_scan.py · dated_guard_scan.py; cast_a_chart.py exempt by name outside tools/)"
+say "ratchet: tools/*.py count = ${trim tools_py_run.out} (target zero; fixture scans migrated to .rish; cast_a_chart.py exempt by name outside tools/)"
 
 let roster = run ["sh" "-c" "find mantra caravan linengrow comlink rishi/src tally aurora pond brushstroke rye/src glow/tokens.rye glow/lower_named_cast.rye -name '*.rye' ! -type l 2>/dev/null | sort"]
 assert roster.ok else "tame_style_scan_advise: find roster failed"
