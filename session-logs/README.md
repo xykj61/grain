@@ -12,6 +12,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 **Living pin bound:** `living_pin_max_bytes = 24576` ([spec](../context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md)). Closed index rows through `20260721`: [`archive/README-index-through-20260721.md`](archive/README-index-through-20260721.md). Early `20260722` overflow: [`archive/README-index-20260722-shelf.md`](archive/README-index-20260722-shelf.md).
 
+- `20260724.203949` — [REMEMBER git nib after Mand ring-1 send](20260724-203949_remember-git-nib-mand-ring1.bron) — pin 9e59d53527
 - `20260724.203935` — [Send Mand ring-1 · one-clock to main](20260724-203935_send-mand-ring1-one-clock.bron) — FF merge · HAWM1 · Mand GREEN
 - `20260724.203813` — [Mand ring-1 · one-clock seat](20260724-203813_mand-ring1-one-clock.bron) — HAWM1 exempt · one-clock · Mand GREEN
 - `20260724.203459` — [Explore Mand · Seva · standing-exempt surfaces](20260724-203459_explore-mand-surfaces.bron) — LEXICON · exclude · ring-1 sketch · EDT stamp
