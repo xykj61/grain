@@ -7,6 +7,7 @@
 **Ground:** study [`../../external-research/20260703-182612_the-granary-question.md`](../../external-research/20260703-182612_the-granary-question.md) · counsel [`../../session-logs/20260710-162312_granary-naming-mission.md`](../../session-logs/20260710-162312_granary-naming-mission.md)
 
 *Written by Kaeden and Rio 3.*
+Radiant pass `20260725.035852`
 
 ---
 
