@@ -4,14 +4,14 @@
 # Print every parity run; never fail. Hardening horizon: link-breaks may earn
 # a gate once the docs shelf proves stable.
 #
-# Duties (fixtures/living_docs_lint_scan.py):
+# Duties (fixtures/living_docs_lint_scan.rish · .sh body via run seam):
 #   1. retired LEXICON words in living-voice lines (word-boundary; keeps.txt exemptions)
 #   2. broken relative links on roster
 #   3. orphan roster pages (no inbound from roster + docs/README)
 #   4. Status rooms on rostered living pages
 #   5. docs/ pin-strings byte-match canon (PUBKEYS · master-seal · exit card)
 #   6. living pin size ≤ living_pin_max_bytes (24576) — pin-and-ledger law
-#   7. tools/**/*.py count — target two→zero (Python-at-seam law)
+#   7. tools/**/*.py count — target zero (Python-at-seam law)
 #
 # First-lap roster: tools/fixtures/living_docs_lint_roster.sh
 # Design: active-designing/20260712-221600_docs-compression-layer-design.md
@@ -21,6 +21,6 @@
 #   rishi/bin/rishi run tools/living_docs_lint.rish
 
 say "living-docs lint: ratchet advisory (seven duties)…"
-let scan = run ["python3" "tools/fixtures/living_docs_lint_scan.py"]
+let scan = run ["rishi/bin/rishi" "run" "tools/fixtures/living_docs_lint_scan.rish"]
 say scan.out
 say "GREEN: living-docs lint — advisories printed; witness never fails."

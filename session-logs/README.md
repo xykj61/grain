@@ -12,6 +12,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 **Living pin bound:** `living_pin_max_bytes = 24576` ([spec](../context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md)). Closed index rows through `20260721`: [`archive/README-index-through-20260721.md`](archive/README-index-through-20260721.md). Early `20260722` overflow: [`archive/README-index-20260722-shelf.md`](archive/README-index-20260722-shelf.md).
 
+- `20260724.210848` — [Fixture scans to rish · tools py zero](20260724-210848_fixture-scans-rish-zero.bron) — migrate · count zero · law table
 - `20260724.210347` — [REMEMBER git nib after aura-floor · stranger send](20260724-210347_remember-git-nib-aura-floor.bron) — pin 489b3abad2
 - `20260724.210342` — [Send shape aura floor · stranger lap to main](20260724-210342_send-shape-aura-floor-stranger.bron) — FF merge · PR 82
 - `20260724.210249` — [Shape aura floor · stranger lap · .py ratchet](20260724-210249_shape-aura-floor-stranger.bron) — @u64 $: · OQ4 advisory · two-to-zero

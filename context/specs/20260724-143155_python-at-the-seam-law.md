@@ -12,11 +12,11 @@
 | Path | Standing |
 |------|----------|
 | `classical-vedic-astrology/cast_a_chart.py` | **stays** — external-interpreter seam (ephemeris); exempt by name |
-| `tools/fixtures/living_docs_lint_scan.py` | **migrates on touch** → `.rish` |
-| `tools/fixtures/dated_guard_scan.py` | **migrates on touch** → `.rish` |
+| `tools/fixtures/living_docs_lint_scan.rish` | **migrated** `20260724.210602` — body `living_docs_lint_scan.sh` via run seam |
+| `tools/fixtures/dated_guard_scan.rish` | **migrated** `20260724.210602` — body `dated_guard_scan.sh` via run seam |
 
-Craft note: Rish `lines(read-file)` ceiling is 256 lines — size and pattern duties lean on the `run` seam (`wc -c`, `grep -c`) rather than in-pipeline line maps over large living docs.
+Craft note: Rish `lines(read-file)` ceiling is 256 lines — size and pattern duties lean on the `run` seam (`wc -c`, `grep -nE`) rather than in-pipeline line maps over large living docs. Historical `.py` paths remain readable in dated logs; living prose names the `.rish` homes.
 
 ## Ratchet
 
-`living_docs_lint` prints an advisory count of `tools/**/*.py` each run; target **two → zero** (ephemeris seam outside `tools/` and exempt).
+`living_docs_lint` prints an advisory count of `tools/**/*.py` each run; target **zero** (ephemeris seam outside `tools/` and exempt). Fixture scans met the target at `20260724.210602`.
