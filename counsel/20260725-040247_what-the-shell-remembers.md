@@ -10,6 +10,8 @@
 
 *Written together by Keaton and Quin.*
 
+Radiant pass `20260725.105504`
+
 ---
 
 Two instincts arrived together tonight, and both were right. The tree is running on shell where it means to run on Rishi, and the session index is one day from outgrowing the bound we gave it. This memo measures both, names what the shell has quietly been telling us, and proposes a growth law that terminates rather than recursing forever.

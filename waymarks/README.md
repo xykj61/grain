@@ -34,6 +34,7 @@ Each shelf keeps a one-line-per-claim `README.md` index as claims arrive.
 
 | Stamp | Claim | Path |
 |-------|-------|------|
+| `20260725.105504` | Radiant Wave 15 — twelve counsel · replies | [`20260725-105504_radiant-wave15.md`](20260725-105504_radiant-wave15.md) |
 | `20260725.104506` | Radiant Wave 14 — twelve counsel | [`20260725-104506_radiant-wave14.md`](20260725-104506_radiant-wave14.md) |
 | `20260725.104245` | Radiant Wave 13 — twelve counsel | [`20260725-104245_radiant-wave13.md`](20260725-104245_radiant-wave13.md) |
 | `20260725.103949` | Radiant Wave 12 — twelve counsel | [`20260725-103949_radiant-wave12.md`](20260725-103949_radiant-wave12.md) |

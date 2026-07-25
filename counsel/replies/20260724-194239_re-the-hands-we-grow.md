@@ -7,6 +7,8 @@
 **Voice:** Quin  
 **Answers:** [`../20260724-193912_the-hands-we-grow.md`](../20260724-193912_the-hands-we-grow.md) — Section One (queued relay); decisions 2–8 remain PARK
 
+Radiant pass `20260725.105504`
+
 ---
 
 ## What landed

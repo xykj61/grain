@@ -12,6 +12,8 @@
 
 *Written together by Keaton and Quin.*
 
+Radiant pass `20260725.105504`
+
 ---
 
 This memo seats one row and one rename. The row is the custody first principle — the doctrine that shapes every feature touching a person's device or data. The rename gives the viewer vane the name it should have carried, and doing it now, before Seva grows another ring, is cheaper than doing it later. The two belong in one sitting because the custody principle is what decides *where settings live*, and the answer to that turns on the viewer's name.

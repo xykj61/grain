@@ -6,13 +6,13 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260725.104544` (EDT) · voice Quin  
+**Last refreshed:** `20260725.105504` (EDT) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2** · **THREATS** · **five pillars** · **accrete tiers** · **redaction stance** · **always-in-it rhythm**  
 **Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list512 GREEN · **stamp @u64 · Crockford** · **shape aura floor**  
-**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand ring-2** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm REPORT** · **OQ #1 · #3 · #5 answered** · **pass ledger** · **Wave 14** · **growth law** · **shell harvest**  
-**Git nib:** `caab8ca98c` · Wave 14 counsel (PR #103)
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand ring-2** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm REPORT** · **OQ #1 · #3 · #5 answered** · **pass ledger** · **Wave 15** · **growth law** · **shell harvest**  
+**Git nib:** `32feb4735f` · prior · *this lap re-pins on send*
 
-**Season:** Framework · EDT · **finishing edge:** Radiant Wave 14 · ledger coverage.  
+**Season:** Framework · EDT · **finishing edge:** Radiant Wave 15 · ledger coverage.  
 **APK:** `tools/.cache/tube05/seva-broadcaster.apk` · pkg `org.glow.app.seva_broadcaster`  
 **ADB:** `tools/.cache/hawm0/android-sdk/platform-tools/adb` — not on bare PATH  
 
@@ -20,7 +20,7 @@
 
 ## Now
 
-**Radiant Wave 14** `20260725.104506` — twelve next-oldest dated counsel on the ledger; claim_preserve GREEN; lint sum 2; duty8=27. Reply [`../counsel/replies/20260725-104506_re-radiant-wave14.md`](../counsel/replies/20260725-104506_re-radiant-wave14.md) · claim [`../waymarks/20260725-104506_radiant-wave14.md`](../waymarks/20260725-104506_radiant-wave14.md). Sent `20260725.104543` · git nib `caab8ca98c`.
+**Radiant Wave 15** `20260725.105504` — twelve next-oldest dated counsel and replies on the ledger; claim_preserve GREEN; lint sum 2; duty8=27. Reply [`../counsel/replies/20260725-105504_re-radiant-wave15.md`](../counsel/replies/20260725-105504_re-radiant-wave15.md) · claim [`../waymarks/20260725-105504_radiant-wave15.md`](../waymarks/20260725-105504_radiant-wave15.md).
 
 **Read:**
 

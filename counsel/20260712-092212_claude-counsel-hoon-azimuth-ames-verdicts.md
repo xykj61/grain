@@ -10,6 +10,8 @@
 **Status:** Counsel filed — RTAC rows opened; nothing seated in modules
 **Ground:** gratitude Urbit / Hoon · Kumara · Comlink · proven-seat ER [`../external-research/20260712-054342_proven-seat-guest-genode-sel4.md`](../external-research/20260712-054342_proven-seat-guest-genode-sel4.md) · Door 3 · Spritely petname direction · TAME · enclosure ruling [`20260712-090512_claude-ruling-enclosure-ai-jail-then-pond.md`](20260712-090512_claude-ruling-enclosure-ai-jail-then-pond.md) · mesh study [`../external-research/20260712-093812_mesh-inference-study.md`](../external-research/20260712-093812_mesh-inference-study.md)
 
+Radiant pass `20260725.105504`
+
 ---
 
 ## Verdict 1 — Rye (not Hoon)

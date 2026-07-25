@@ -6,6 +6,8 @@
 **Voice:** Quin
 **Status:** Counsel — a durable self-check for Keaton, kept where a reflection may name him plainly. Register: honest assessment, offered for a focus decision.
 
+Radiant pass `20260725.105504`
+
 ---
 
 ## Why This Is Written Down
