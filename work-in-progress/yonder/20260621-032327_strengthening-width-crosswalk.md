@@ -4,6 +4,8 @@
 **Parent:** `../20260620-212126_usize-width-baseline.md`
 **Lexicon:** `../../strengthening-compiler/0000_STRENGTHENING_LEXICON.md`
 
+Radiant pass `20260725.110740`
+
 ---
 
 ## Summary

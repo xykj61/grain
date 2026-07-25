@@ -11,6 +11,8 @@
 
 **Prior art:** [`20260621-050312_usize-boundary-not-design.md`](20260621-050312_usize-boundary-not-design.md) (seam policy while on Zig ground) · [`TAME_STYLE.md`](TAME_STYLE.md) · [`../gratitude/TIGER_STYLE.md`](../gratitude/TIGER_STYLE.md) · [`../context/specs/rye-as-its-own-language.md`](../context/specs/rye-as-its-own-language.md)
 
+Radiant pass `20260725.110740`
+
 ---
 
 ## The Question

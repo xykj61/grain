@@ -8,6 +8,7 @@
 
 
 
+
 active-designing/20260620-020712_scribble-lantern-and-lattice.md	20260725.110418	clean
 active-designing/20260628-043542_thin-frontend-slc-direction.md	20260725.110418	clean
 active-designing/20260628-071012_slc-1-rishi-mantra-shell.md	20260725.110418	clean
@@ -75,6 +76,21 @@ active-designing/yonder/20260619-160312_native-system-interface.md	20260725.1106
 active-designing/yonder/20260619-223712_caravan-microkernel.md	20260725.110622	clean
 active-designing/yonder/20260619-225712_the-whole-system.md	20260725.110622	clean
 active-designing/yonder/20260620-005112_the-forge.md	20260725.110622	clean
+active-designing/yonder/20260620-011412_the-desktop.md	20260725.110740	clean
+active-designing/yonder/20260620-012012_the-editor.md	20260725.110740	clean
+active-designing/yonder/20260620-012112_comlink-remoting.md	20260725.110740	clean
+active-designing/yonder/20260620-021212_flow-of-values.md	20260725.110740	clean
+active-designing/yonder/20260620-041412_virtio-the-device-wire.md	20260725.110740	clean
+active-designing/yonder/20260620-041512_harts-parallel-on-one-machine.md	20260725.110740	clean
+active-designing/yonder/20260620-041612_sealed-datagrams.md	20260725.110740	clean
+active-designing/yonder/20260620-042612_who-executor-sealer-opener.md	20260725.110740	clean
+active-designing/yonder/20260620-042812_tally-and-who.md	20260725.110740	clean
+active-designing/yonder/20260621-051312_explicit-width-in-rye.md	20260725.110740	clean
+active-designing/yonder/20260621-063912_bron-notation.md	20260725.110740	clean
+active-designing/yonder/20260621-070712_the-compiler-fork.md	20260725.110740	clean
+active-designing/yonder/20260622-232912_caravan-kernel-improvements.md	20260725.110740	clean
+active-designing/yonder/20260622-235012_what-we-mean-by-seed.md	20260725.110740	clean
+active-designing/yonder/20260628-120912_brix-the-composer.md	20260725.110740	clean
 amphora/README.md	20260710.182821	legacy
 context/archive/RIO3.md	20260710.182821	legacy
 context/specs/20260627-102012_one-clock-naming-law.md	20260725.035645	legacy
@@ -215,6 +231,8 @@ counsel/replies/20260724-222620_re-accrete-tiers-radiant-waves.md	20260725.10564
 counsel/replies/20260724-223233_re-radiant-waves-close.md	20260725.105645	legacy
 counsel/replies/20260725-001538_re-forgetting-without-breaking.md	20260725.105645	legacy
 counsel/replies/20260725-034807_re-always-in-it.md	20260725.105645	legacy
+expanding-prompts/20260620-210812_explicit-width-audit.md	20260725.110740	clean
+expanding-prompts/20260628-120912_kernel-direction-brix-and-foundations.md	20260725.110740	clean
 expanding-prompts/yonder/20260618-195512_encrypted-networking-and-social.md	20260725.110622	clean
 expanding-prompts/yonder/20260618-212012_content-centric-messaging.md	20260725.110622	clean
 expanding-prompts/yonder/20260618-215512_unified-keys-and-address-space.md	20260725.110622	clean
@@ -225,8 +243,37 @@ expanding-prompts/yonder/20260619-081812_dual-editors-enclosure-template.md	2026
 expanding-prompts/yonder/20260619-084412_caravan-tally-seeds-and-close-reading.md	20260725.110622	clean
 expanding-prompts/yonder/20260619-090512_zed-claude-rules-and-agent-panel.md	20260725.110622	clean
 expanding-prompts/yonder/20260619-153612_pond-gui-rishi-mantra-x86-amd.md	20260725.110622	clean
+expanding-prompts/yonder/20260620-021212_display-flow-gardens-and-next-milestones.md	20260725.110740	clean
+expanding-prompts/yonder/20260620-021612_brushstroke-wayland-and-display-frontier.md	20260725.110740	clean
+expanding-prompts/yonder/20260620-032012_caravan-chain-and-device-wire.md	20260725.110740	clean
+expanding-prompts/yonder/20260620-034212_virtio-device-wire.md	20260725.110740	clean
+expanding-prompts/yonder/20260620-040712_build-catches-design.md	20260725.110740	clean
+expanding-prompts/yonder/20260620-043812_tablecloth-brix-split.md	20260725.110740	clean
+expanding-prompts/yonder/20260620-043912_tablecloth-brix-build.md	20260725.110740	clean
+expanding-prompts/yonder/20260620-044012_tablecloth-ladder-index.md	20260725.110740	clean
+expanding-prompts/yonder/20260620-044012_tablecloth-value-model.md	20260725.110740	clean
+expanding-prompts/yonder/20260620-044112_tablecloth-v1-seed.md	20260725.110740	clean
+expanding-prompts/yonder/20260621-051612_documentation-and-almanac-sync-redirect.md	20260725.110740	clean
+expanding-prompts/yonder/20260621-051612_main-track-rye-rishi-strengthening.md	20260725.110740	clean
+expanding-prompts/yonder/20260621-051612_strengthening-stdlib-doc-width-pass-redirect.md	20260725.110740	clean
+expanding-prompts/yonder/20260621-051612_what-we-mean-by-seed-redirect.md	20260725.110740	clean
+expanding-prompts/yonder/20260629-004912_cursor-build-slc1-step2-version.md	20260725.110740	clean
+expanding-prompts/yonder/20260629-004912_cursor-pass-slc1-version-recall-and-tame.md	20260725.110740	clean
+expanding-prompts/yonder/20260629-014512_cursor-adopt-currency-vision.md	20260725.110740	clean
 external-research/20260618-180812_pond-foundation.md	20260725.110622	clean
 external-research/20260620-010712_editors-remoting-tame.md	20260725.110622	clean
+external-research/20260620-014412_system.md	20260725.110740	clean
+external-research/20260620-020712_formats-editors-inference-and-tensors.md	20260725.110740	clean
+external-research/20260620-040112_dual-editors-and-priorities.md	20260725.110740	clean
+external-research/20260621-050312_usize-boundary-not-design.md	20260725.110740	clean
+external-research/20260621-051312_literal-usize-ban-language-fork.md	20260725.110740	clean
+external-research/20260621-051612_recommended-architecture-redirect.md	20260725.110740	clean
+external-research/20260621-051612_rishi-shell-redirect.md	20260725.110740	clean
+external-research/20260621-051612_shell-scripting-tame-redirect.md	20260725.110740	clean
+external-research/20260621-063112_prompt-caching-zon-brix.md	20260725.110740	clean
+external-research/20260621-064612_brix-vs-bron.md	20260725.110740	clean
+external-research/20260621-070712_rye-compiler-fork.md	20260725.110740	clean
+external-research/20260622-232912_sel4-redox-through-tame-rye.md	20260725.110740	clean
 external-research/yonder/20260617-195312_mantra.md	20260725.110622	clean
 external-research/yonder/20260617-195612_ownerboot-riscv-caravan.md	20260725.110622	clean
 external-research/yonder/20260617-195712_caravan-tally-networking.md	20260725.110622	clean
@@ -282,3 +329,7 @@ linengrow/tube_manifest_witness.rye	20260724.223151	legacy
 pond/README.md	20260710.182821	legacy
 session-logs/README.md	20260724.223050	legacy
 waymarks/20260724-220625_threats-pillars-mand-home.md	20260725.034920	legacy
+work-in-progress/20260620-212126_usize-width-baseline.md	20260725.110740	clean
+work-in-progress/20260623-033012_open-threads.md	20260725.110740	clean
+work-in-progress/yonder/20260620-155342_style-audit.md	20260725.110740	clean
+work-in-progress/yonder/20260621-032327_strengthening-width-crosswalk.md	20260725.110740	clean

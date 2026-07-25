@@ -11,6 +11,8 @@
 
 *Reviewed and kept (`2026-06-30`) — width charter, heavily cited.*
 
+Radiant pass `20260725.110740`
+
 ---
 
 ## The Seed (faithful echo)
