@@ -12,6 +12,8 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 **Living pin bound:** `living_pin_max_bytes = 24576` ([spec](../context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md)). Closed index rows through `20260721`: [`archive/README-index-through-20260721.md`](archive/README-index-through-20260721.md). Early `20260722` overflow: [`archive/README-index-20260722-shelf.md`](archive/README-index-20260722-shelf.md).
 
+- `20260724.211904` — [REMEMBER git nib after stranger-lap honesty send](20260724-211904_remember-git-nib-stranger-honesty.bron) — pin 3d9b8f67a3
+- `20260724.211852` — [Send stranger lap honesty to main](20260724-211852_send-stranger-lap-honesty.bron) — FF merge · PR 84
 - `20260724.211820` — [Stranger lap honesty · warm REPORT · cold open](20260724-211820_stranger-lap-honesty.bron) — scope · bound live · OQ4 warm-only
 - `20260724.210931` — [REMEMBER git nib after fixture-scan send](20260724-210931_remember-git-nib-fixture-scans.bron) — pin 6da85ee496
 - `20260724.210920` — [Send fixture scans rish · py zero to main](20260724-210920_send-fixture-scans-rish.bron) — FF merge · PR 83
@@ -167,5 +169,3 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 - `20260722.141553` — [REMEMBER git nib after STOA248](20260722-141553_remember-git-nib-stoa248.bron) — pin 361969662bc1
 - `20260722.141542` — [STOA247–248 authored digest body round](20260722-141542_stoa247-248-digest-body-round.bron) — Sha3 own body; name next door
 - `20260722.141403` — [REMEMBER git nib after STOA246](20260722-141403_remember-git-nib-stoa246.bron) — pin c874d977a872
-- `20260722.141353` — [STOA245–246 authored sign body round](20260722-141353_stoa245-246-sign-body-round.bron) — sign/verify own body; digest next
-- `20260722.141102` — [REMEMBER git nib after STOA244](20260722-141102_remember-git-nib-stoa244.bron) — pin c003ffbb7bfe
