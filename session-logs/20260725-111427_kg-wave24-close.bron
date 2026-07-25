@@ -1,0 +1,11 @@
+format session-log-v1
+stamp 20260725.111427
+editor Cursor
+model Cursor Composer 2.5 300k Fast
+voice Quin
+title Wave 24 close kg turn
+prompt kg
+think WOV MALA plainly dimeroll giving-lane inference fifty paths all clean.
+obs PR 112 nib 056bf2d5f9; runway 579/~1185 (~49%); lint 2.
+recommend keep-going Wave 25 bound 50 spot-read
+git_nib 056bf2d5f9
