@@ -39,3 +39,6 @@
 - `20260722.135605` — [STOA239–240 Pixel eyes round](20260722-135605_stoa239-240-pixel-eyes-round.bron) — HAWM1 on device; name next door
 - `20260722.135647` — [REMEMBER git nib after STOA240](20260722-135647_remember-git-nib-stoa240.bron) — pin a0b9fc9b2300
 - `20260722.135731` — [Recommend after Pixel eyes arc](20260722-135731_rec-after-pixel-eyes-arc.bron) — size face_lit or pause
+- `20260722.141044` — [STOA243–244 authored line body round](20260722-141044_stoa243-244-line-body-round.bron) — format/parse own body; next authored surface
+- `20260722.140125` — [REMEMBER git nib after STOA242](20260722-140125_remember-git-nib-stoa242.bron) — pin b5fc164eda97
+- `20260722.140100` — [STOA241–242 face_lit agree round](20260722-140100_stoa241-242-face-lit-agree-round.bron) — product stand-in ≡ Glow pins; name next door
