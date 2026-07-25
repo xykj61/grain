@@ -6,6 +6,8 @@
 **Status:** Foundation
 **Chapters roster:** [`CHAPTERS.md`](CHAPTERS.md)
 
+Radiant pass `20260725.112515`
+
 ---
 
 ## What This Folder Is

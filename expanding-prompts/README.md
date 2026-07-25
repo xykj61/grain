@@ -8,6 +8,8 @@
 **Voice:** Quin
 **Chapters roster:** [`CHAPTERS.md`](CHAPTERS.md)
 
+Radiant pass `20260725.112515`
+
 ---
 
 ## Why This Stack Exists

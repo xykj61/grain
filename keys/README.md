@@ -3,6 +3,8 @@
 **Language:** EN
 **Last updated:** 2026-07-16 (`115927`, first file in this folder for the `xykj61`/Keaton Dunsford identity)
 
+Radiant pass `20260725.112515`
+
 ---
 
 This is the root `keys/` folder for **this fork's current identity** (`xykj61` / Keaton Dunsford — see `../PUBKEYS.md`). It mirrors `../context/keys/`, the same-shaped folder that holds the **retired** `veganreyklah2`/Kaeden identity's own dedicated keys — kept there exactly as history, never edited going forward.
