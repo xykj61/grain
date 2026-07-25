@@ -13,6 +13,8 @@
 
 *Reviewed in the yonder sweep on 2026-06-29 and kept active — canonical TAME Guidance organization brief.*
 
+Radiant pass `20260725.110622`
+
 ---
 
 ## Our Own Ground

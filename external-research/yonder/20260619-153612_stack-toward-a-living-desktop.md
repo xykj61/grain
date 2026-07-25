@@ -10,6 +10,8 @@
 **Lens:** TAME — safety, performance, joy; Gall's Law; one value model; x86_64 near, RISC-V horizon
 **Status:** Research synthesis and forward design
 
+Radiant pass `20260725.110622`
+
 ---
 
 ## The Goal, Stated Precisely

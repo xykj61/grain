@@ -11,6 +11,8 @@
 **Lens:** TAME — safety, performance, then the joy of the craft
 **Status:** Active Design — **Reviewed and kept** (`2026-06-30`).
 
+Radiant pass `20260725.110622`
+
 ---
 
 ## What Rye Is For

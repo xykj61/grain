@@ -8,6 +8,8 @@
 **Voice:** Reya 2
 **Lens:** active-designing principles (Gall's Law, the gates, one value model, simplicity, the silo); TAME Style; critical evaluation through every filter we hold
 
+Radiant pass `20260725.110622`
+
 ---
 
 ## The Seed (a faithful echo)

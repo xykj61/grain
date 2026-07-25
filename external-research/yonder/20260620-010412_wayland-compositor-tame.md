@@ -10,6 +10,8 @@
 **Lens:** TAME — safety, performance, joy
 **Status:** Research
 
+Radiant pass `20260725.110622`
+
 ---
 
 ## Wayland Itself — The Protocol, Not the Compositor

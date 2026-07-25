@@ -11,6 +11,8 @@
 **Reads alongside:** `yonder/20260618-195512_encrypted-networking-riscv.md`; sources honored in `../gratitude/nips`, `../gratitude/primal`, `../gratitude/damus`, `../gratitude/sui`
 **Structure:** mission · problem · opportunity · architecture · caveats · longer horizon · conclusion
 
+Radiant pass `20260725.110622`
+
 ---
 
 ## Mission

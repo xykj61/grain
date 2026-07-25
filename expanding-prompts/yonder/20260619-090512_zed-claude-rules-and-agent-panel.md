@@ -8,6 +8,8 @@
 **Voice:** Reya 2
 **Lens:** Gall's Law — one shared `context/` home; thin per-editor rule files; prove rules load before growing enforcement layers
 
+Radiant pass `20260725.110622`
+
 ---
 
 ## The Seed (a faithful echo)

@@ -10,6 +10,8 @@
 **Lens:** TAME priority — safety, performance, then the joy of the craft
 **Status:** Research
 
+Radiant pass `20260725.110622`
+
 ---
 
 ## The Question

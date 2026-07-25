@@ -10,6 +10,8 @@
 **Lens:** TAME — safety, performance, joy; Gall's Law
 **Status:** Research
 
+Radiant pass `20260725.110622`
+
 ---
 
 ## How Mantra and Git Coexist Today

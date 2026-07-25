@@ -10,6 +10,8 @@
 **Lens:** TAME — safety, performance, joy
 **Status:** Research
 
+Radiant pass `20260725.110622`
+
 ---
 
 ## The Question of the Editor

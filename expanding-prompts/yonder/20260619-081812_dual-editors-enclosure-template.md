@@ -8,6 +8,8 @@
 **Voice:** Reya 2
 **Lens:** TAME — safety first; the enclosure as a value; Gall's Law (smallest thing that runs); cloneable templates like `key-card.conf`
 
+Radiant pass `20260725.110622`
+
 ---
 
 ## The Seed (a faithful echo)

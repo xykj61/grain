@@ -10,6 +10,8 @@
 **Lens:** TAME priority — safety, performance, then the joy of the craft
 **Status:** Standing strategy (revised in place as the work matures)
 
+Radiant pass `20260725.110622`
+
 ---
 
 ## Where We Stand

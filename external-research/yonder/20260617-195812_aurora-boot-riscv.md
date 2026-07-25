@@ -10,6 +10,8 @@
 **Builds on:** `yonder/20260617-195612_ownerboot-riscv-caravan.md`, `yonder/20260617-195712_caravan-tally-networking.md`
 **Status:** Exploration
 
+Radiant pass `20260725.110622`
+
 ---
 
 ## The Question of Aurora

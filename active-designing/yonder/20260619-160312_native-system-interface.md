@@ -10,6 +10,8 @@
 **Lens:** TAME — safety, performance, then the joy of the craft
 **Status:** Active Design
 
+Radiant pass `20260725.110622`
+
 ---
 
 ## Our Own Ground

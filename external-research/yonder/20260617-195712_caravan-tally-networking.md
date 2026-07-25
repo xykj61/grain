@@ -10,6 +10,8 @@
 **Prerequisite:** the names Rye, Tablecloth, Tally, and Caravan are introduced in `20260617-195612_ownerboot-riscv-caravan.md`
 **Status:** Exploration
 
+Radiant pass `20260725.110622`
+
 ---
 
 ## The Question We Are Chasing
