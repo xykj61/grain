@@ -9,6 +9,8 @@
 **Status:** Foundation memo — supersedes the unverified draft of the same evening; revised within the same session to seal three confirmations (key custody, the single-node inference ceiling, and the AI head's secondary-slot bandwidth)
 **Companion to:** *(pending)* OCuLink server-workstation research memo — awaits Kaeden bridge into `external-research/` with a six-digit one-clock filename. Landed companions: the WOV/MALA fit-check [`20260702-215212_wov-mala-hardware-fit.md`](20260702-215212_wov-mala-hardware-fit.md) and the priced purchase guide [`20260703-013412_home-server-purchase-guide.md`](20260703-013412_home-server-purchase-guide.md)
 
+Radiant pass `20260725.110847`
+
 ---
 
 ## A Correction Held in the Light

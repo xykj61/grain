@@ -6,13 +6,13 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260725.110813` (EDT) · voice Quin  
+**Last refreshed:** `20260725.110847` (EDT) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2** · **THREATS** · **five pillars** · **accrete tiers** · **redaction stance** · **always-in-it rhythm**  
 **Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list512 GREEN · **stamp @u64 · Crockford** · **shape aura floor**  
-**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand ring-2** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm REPORT** · **OQ #1 · #3 · #5 answered** · **pass ledger** · **Wave 19** · **growth law** · **shell harvest**  
-**Git nib:** `d36d5b17ae` · Wave 19 (PR #108)
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand ring-2** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm REPORT** · **OQ #1 · #3 · #5 answered** · **pass ledger** · **Wave 20** · **growth law** · **shell harvest**  
+**Git nib:** `614af13941` · prior · *this lap re-pins on send*
 
-**Season:** Framework · EDT · **finishing edge:** Radiant Wave 19 · **329/~1,185 (~28%)**.  
+**Season:** Framework · EDT · **finishing edge:** Radiant Wave 20 · **379/~1,185 (~32%)**.  
 **APK:** `tools/.cache/tube05/seva-broadcaster.apk` · pkg `org.glow.app.seva_broadcaster`  
 **ADB:** `tools/.cache/hawm0/android-sdk/platform-tools/adb` — not on bare PATH  
 
@@ -20,7 +20,7 @@
 
 ## Now
 
-**Radiant Wave 19** `20260725.110740` — fifty paths · 50 clean · lint 2. Sent `20260725.110812` · git nib `d36d5b17ae`. **Runway:** Wave **19 / ~20** · **329 / ~1,185** (~28%). **Wave 20 = spot-read.**
+**Radiant Wave 20** `20260725.110847` — fifty paths · 50 clean · lint 2. **Runway:** Wave **20 / ~20** · **379 / ~1,185** (~32%). Spot-read: [`../external-research/20260702-215212_wov-mala-hardware-fit.md`](../external-research/20260702-215212_wov-mala-hardware-fit.md).
 
 **Read:**
 

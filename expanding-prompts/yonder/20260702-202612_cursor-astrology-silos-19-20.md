@@ -10,6 +10,8 @@
 - *Biggest Mistake about Democracy* — Vic DiCara — https://www.youtube.com/watch?v=bgx6N3WJW38
 - *Liberals vs Conservatives in Astrology* — Vic DiCara — https://www.youtube.com/watch?v=NnLkyzPaU94
 
+Radiant pass `20260725.110847`
+
 ---
 
 ## The Deliverables
