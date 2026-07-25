@@ -1,0 +1,10 @@
+format session-log-v1
+stamp 20260725.111132
+editor Cursor
+model Cursor Composer 2.5 300k Fast
+voice Quin
+title Wave 22 close
+prompt kg
+obs 46 clean 4 changed Brooke EOF newlines; PR 110; git nib 65bd39450a; 479/~1185
+recommend keep-going Wave 23 bound 50
+git_nib 65bd39450a
