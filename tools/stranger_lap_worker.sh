@@ -66,27 +66,40 @@ echo "stranger-lap: bound_seconds=${STRANGER_LAP_WALL_SECONDS}"
 START=$(date +%s)
 
 if [ "$MODE" = "warm" ]; then
-  # Fastest credible seat: local file:// clone · shallow · reuse host ziglang.
+  # Fastest credible seat: local file:// clone · shallow · reuse prewarmed zig.
   # file:// is required for --depth on a local pier (path clones ignore --depth
   # and can hardlink-fail against a dirty worktree).
   echo "STRANGER_CONFIG=local-path depth=1 toolchain=prewarmed"
   git clone --depth 1 "file://${ROOT}" "$TMP/pier"
   cd "$TMP/pier"
-  if ! python3 -c 'import ziglang' >/dev/null 2>&1; then
-    echo "ADVISORY: warm mode expected pre-warmed ziglang; installing once"
-    pip3 install 'ziglang==0.16.0' --break-system-packages
+  mkdir -p vendor
+  # Prefer the source pier's pinned toolchain (Framework / ai-jail usual), then
+  # the ziglang Python package, then a one-shot pip install. pip is often
+  # absent on locked-down hosts; the pier vendor path is the real prewarm.
+  if [ -x "${ROOT}/vendor/zig-toolchain/zig" ]; then
+    ln -sfn "${ROOT}/vendor/zig-toolchain" vendor/zig-toolchain
+  elif python3 -c 'import ziglang' >/dev/null 2>&1; then
+    ln -sfn "$(python3 -c 'import ziglang,os;print(os.path.dirname(ziglang.__file__))')" vendor/zig-toolchain
+  else
+    echo "ADVISORY: warm mode expected pre-warmed zig; installing ziglang once"
+    python3 -m pip install 'ziglang==0.16.0' --break-system-packages
+    ln -sfn "$(python3 -c 'import ziglang,os;print(os.path.dirname(ziglang.__file__))')" vendor/zig-toolchain
   fi
 else
   # Cold path: remote URL · full history · forced toolchain reinstall.
   echo "STRANGER_CONFIG=remote-url depth=full toolchain=cold-install"
   git clone "$ORIGIN" "$TMP/pier"
   cd "$TMP/pier"
-  pip3 install --force-reinstall 'ziglang==0.16.0' --break-system-packages
+  python3 -m pip install --force-reinstall 'ziglang==0.16.0' --break-system-packages
+  mkdir -p vendor
+  ln -sfn "$(python3 -c 'import ziglang,os;print(os.path.dirname(ziglang.__file__))')" vendor/zig-toolchain
 fi
 
-mkdir -p vendor
-ln -sfn "$(python3 -c 'import ziglang,os;print(os.path.dirname(ziglang.__file__))')" vendor/zig-toolchain
 export RYE_ZIG="$PWD/vendor/zig-toolchain/zig"
+test -x "$RYE_ZIG" || {
+  echo "FAIL: stranger lap zig missing at ${RYE_ZIG}"
+  exit 1
+}
 
 sh rye/bootstrap.sh
 mkdir -p rishi/bin

@@ -3,7 +3,7 @@
 # File enumeration uses find (list-dir does not recurse). Fixed-string and
 # compound-assert bans use grep over the find set — a thin host seam for
 # multi-file greps. Advise materializes the roster in-process again under
-# max_list_items=512 (raised 20260724 when the roster crossed 256).
+# max_list_items=1024 (512 on 20260724 for advise; 1024 on 20260725 for doorway).
 # Mode router: tools/tame_style_scan.rish · advise: tools/tame_style_scan_advise.rish
 #
 # Run from the repository root:
