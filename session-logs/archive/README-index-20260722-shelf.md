@@ -31,3 +31,7 @@
 - `20260722.134048` — [REMEMBER git nib after STOA232](20260722-134048_remember-git-nib-stoa232.bron) — pin 9f7786b86115
 - `20260722.134205` — [STOA233 runtime desk emit GREEN](20260722-134205_stoa233-runtime-desk-emit.bron) — desk extract ≡ pins; HAWM1
 - `20260722.134415` — [STOA233 send · STOA234 · round-close](20260722-134415_stoa233-send-stoa234-round-close.bron) — auto send+check-in seated
+- `20260722.134513` — [REMEMBER git nib after STOA234](20260722-134513_remember-git-nib-stoa234.bron) — pin d24701ce4b20
+- `20260722.134657` — [STOA235–236 desk-file claim round](20260722-134657_stoa235-236-desk-file-claim-round.bron) — from_desk_file; NA asset next
+- `20260722.135324` — [STOA237–238 embedded desk round](20260722-135324_stoa237-238-embedded-desk-round.bron) — embed in .so; Pixel eyes next
+- `20260722.134735` — [REMEMBER git nib after STOA236](20260722-134735_remember-git-nib-stoa236.bron) — pin 580f607c8b61

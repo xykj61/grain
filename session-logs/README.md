@@ -12,6 +12,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 **Living pin bound:** `living_pin_max_bytes = 24576` ([spec](../context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md)). Closed index rows through `20260721`: [`archive/README-index-through-20260721.md`](archive/README-index-through-20260721.md). Early `20260722` overflow: [`archive/README-index-20260722-shelf.md`](archive/README-index-20260722-shelf.md).
 
+- `20260724.203935` — [Send Mand ring-1 · one-clock to main](20260724-203935_send-mand-ring1-one-clock.bron) — FF merge · HAWM1 · Mand GREEN
 - `20260724.203813` — [Mand ring-1 · one-clock seat](20260724-203813_mand-ring1-one-clock.bron) — HAWM1 exempt · one-clock · Mand GREEN
 - `20260724.203459` — [Explore Mand · Seva · standing-exempt surfaces](20260724-203459_explore-mand-surfaces.bron) — LEXICON · exclude · ring-1 sketch · EDT stamp
 - `20260725.003013` — [REMEMBER git nib after Seva · Mand send](20260725-003013_remember-git-nib-seva-mand.bron) — pin 1ab2009bb0
@@ -163,7 +164,3 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 - `20260722.135647` — [REMEMBER git nib after STOA240](20260722-135647_remember-git-nib-stoa240.bron) — pin a0b9fc9b2300
 - `20260722.135605` — [STOA239–240 Pixel eyes round](20260722-135605_stoa239-240-pixel-eyes-round.bron) — HAWM1 on device; name next door
 - `20260722.135406` — [REMEMBER git nib after STOA238](20260722-135406_remember-git-nib-stoa238.bron) — pin 6aa85ec080f6
-- `20260722.134735` — [REMEMBER git nib after STOA236](20260722-134735_remember-git-nib-stoa236.bron) — pin 580f607c8b61
-- `20260722.135324` — [STOA237–238 embedded desk round](20260722-135324_stoa237-238-embedded-desk-round.bron) — embed in .so; Pixel eyes next
-- `20260722.134657` — [STOA235–236 desk-file claim round](20260722-134657_stoa235-236-desk-file-claim-round.bron) — from_desk_file; NA asset next
-- `20260722.134513` — [REMEMBER git nib after STOA234](20260722-134513_remember-git-nib-stoa234.bron) — pin d24701ce4b20
