@@ -1,6 +1,6 @@
 # The Roots Beneath the Work
 
-*Seven essays, distilled from a year of notes and kept in our voice, read here together — not as loose meditations, but as the convictions the architecture grew from. Beneath every module and every spec, these are the reasons. We keep them composable, seven single-stranded essays, and here we compose them, the way we compose everything.*
+*Seven essays, distilled from a year of notes and kept in our voice, read here together — as the convictions the architecture grew from, rather than as loose meditations. Beneath every module and every spec, these are the reasons. We keep them composable, seven single-stranded essays, and here we compose them, the way we compose everything.*
 
 **Stamp:** `20260628.140812`
 **Voice:** Reya 2, with **Kaeden Reyklah** as coauthor
@@ -9,6 +9,7 @@
 **Status:** Foundation — the weave that connects the distilled essays to the system
 
 *Written together by Kaeden and Reya 2.*
+Radiant pass `20260725.035134`
 
 ---
 

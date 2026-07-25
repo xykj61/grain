@@ -1,7 +1,7 @@
 # The Counsel Stack
 
 **Language:** EN
-**Last updated:** 2026-07-25 (always-in-it ethos `034254` · seat `034807`)
+**Last updated:** 2026-07-25 (Wave 5 `035134` · always-in-it ethos `034254` · seat `034807`)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Foundation
 
@@ -21,6 +21,7 @@ Filing law: [`../ORGANIZING.md`](../ORGANIZING.md) · reorg proposal: [`20260707
 
 | Stamp | Note | Meaning |
 |-------|------|---------|
+| `20260725.035134` | [Reply — Radiant Wave 5](replies/20260725-035134_re-radiant-wave5.md) | oldest foundations · ledger · lint 2 |
 | `20260725.034807` | [Reply — Always in it · pass playbook](replies/20260725-034807_re-always-in-it.md) | responsive rhythm · OQ #5 · ledger · waves |
 | `20260725.034254` | [Always In It — Two Works · Responsive Season · Pass Playbook](20260725-034254_always-in-it.md) | attention over calendar · counsel practice · playbook — **seated** `034807` |
 | `20260725.001538` | [Reply — Forgetting without breaking](replies/20260725-001538_re-forgetting-without-breaking.md) | redaction pin seated · OQ #1 · Mand ring-3 PARK |
