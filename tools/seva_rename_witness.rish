@@ -19,7 +19,10 @@ assert (lex contains "**Seva**") else "LEXICON missing Seva"
 assert (lex contains "**Mand**") else "LEXICON missing Mand"
 assert (lex contains "**Historical**") else "LEXICON Sala row missing Historical"
 assert (lex contains "Prior name") else "LEXICON Mona row missing Prior name"
-assert (lex contains "STOP kept") else "LEXICON missing HAWM1 STOP note"
+assert (lex contains "digest-pinned HAWM1") else "LEXICON Sala row missing digest-pinned HAWM1 STOP"
+assert (lex contains "99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe") else "LEXICON Sala row missing HAWM1 root"
+let tame = read-file "context/TAME_GUIDANCE.md"
+assert (tame contains "digest-pinned HAWM1") else "TAME_GUIDANCE missing standing-exempt HAWM1 sala: memos"
 
 # New paths present; old paths gone.
 assert ((read-file "tools/seva_view_witness.rish") contains "seva_view") else "seva_view witness missing"
