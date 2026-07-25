@@ -6,11 +6,11 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260725.035453` (EDT) · voice Quin  
+**Last refreshed:** `20260725.035548` (EDT) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2** · **THREATS** · **five pillars** · **accrete tiers** · **redaction stance** · **always-in-it rhythm**  
 **Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list512 GREEN · **stamp @u64 · Crockford** · **shape aura floor**  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand ring-2** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm REPORT** · **OQ #1 · #3 · #5 answered** · **pass ledger** · **Wave 6**  
-**Git nib:** `445c67aec7` · prior · *this lap re-pins on send*
+**Git nib:** `a02ec36f16` · Wave 6 foundations · pass ledger (PR 94)
 
 **Season:** Framework · EDT · **finishing edge:** Radiant Wave 6 · ledger coverage.  
 **APK:** `tools/.cache/tube05/seva-broadcaster.apk` · pkg `org.glow.app.seva_broadcaster`  
@@ -20,7 +20,7 @@
 
 ## Now
 
-**Radiant Wave 6** `20260725.035453` — twelve next-oldest dated foundations on the ledger; claim_preserve GREEN; lint sum 2. Reply [`../counsel/replies/20260725-035453_re-radiant-wave6.md`](../counsel/replies/20260725-035453_re-radiant-wave6.md) · claim [`../waymarks/20260725-035453_radiant-wave6.md`](../waymarks/20260725-035453_radiant-wave6.md).
+**Radiant Wave 6** `20260725.035453` — twelve next-oldest dated foundations on the ledger; claim_preserve GREEN; lint sum 2. Reply [`../counsel/replies/20260725-035453_re-radiant-wave6.md`](../counsel/replies/20260725-035453_re-radiant-wave6.md) · claim [`../waymarks/20260725-035453_radiant-wave6.md`](../waymarks/20260725-035453_radiant-wave6.md). Sent `20260725.035547` · git nib `a02ec36f16`.
 
 **Read:**
 
