@@ -111,4 +111,13 @@ assert ((read-file barket) contains "dbg(") == false else "TAME ban on lower_bar
 let barket_compound = run ["sh" "-c" "grep -Hn 'assert(.* and .*)' glow/lower_barket.rye 2>/dev/null | head -8"]
 assert barket_compound.out == "" else "TAME ban on lower_barket: compound assert"
 
-say "GREEN: TAME style bans clean on scan roster · lower_shape · lower_bartis · lower_barket overflow seats."
+# tools/*.py — blocking at zero (Python-at-seam law). Named exempts live in
+# tools/fixtures/tools_py_exempt.txt (reason comment per entry). cast_a_chart.py
+# stays outside tools/ and needs no entry. Negative selftest:
+# tools/tame_style_tools_py_ban_selftest.rish
+let tools_py_ban = run ["sh" "tools/fixtures/tools_py_ban_scan.sh"]
+if tools_py_ban.out != "" then say tools_py_ban.out
+assert tools_py_ban.ok else "TAME ban: tools/*.py present (target zero; name an exempt deliberately)"
+assert tools_py_ban.out contains "TOOLS_PY_OK" else "TAME ban: tools/*.py scan missing TOOLS_PY_OK"
+
+say "GREEN: TAME style bans clean on scan roster · lower_shape · lower_bartis · lower_barket overflow seats · tools/*.py zero."
