@@ -7,6 +7,8 @@
 
 *Written by Kaeden and Claude; filed by Rio 3.*
 
+Radiant pass `20260725.104245`
+
 ---
 
 ## Aurora Witness — Verified, Appropriately Scoped

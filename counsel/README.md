@@ -1,7 +1,7 @@
 # The Counsel Stack
 
 **Language:** EN
-**Last updated:** 2026-07-25 (shell·fold `040520` · Wave 12 `103949` · Wave 11 `041039` · Wave 10 `040728` · Wave 9 `035955` · Wave 8 `035852` · Wave 7 `035645` · Wave 6 `035453` · Wave 5 `035134` · always-in-it ethos `034254` · seat `034807`)
+**Last updated:** 2026-07-25 (Wave 13 `20260725.104245` · Wave 12 `103949` · Wave 11 `041039` · Wave 10 `040728` · shell·fold `040520` · Wave 9 `035955` · Wave 8 `035852` · Wave 7 `035645` · Wave 6 `035453` · Wave 5 `035134` · always-in-it ethos `034254` · seat `034807`)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Foundation
 **Seasons roster:** [`SEASONS.md`](SEASONS.md)
@@ -22,6 +22,7 @@ Filing law: [`../ORGANIZING.md`](../ORGANIZING.md) · reorg proposal: [`20260707
 
 | Stamp | Note | Meaning |
 |-------|------|---------|
+| `20260725.104245` | [Reply — Radiant Wave 13](replies/20260725-104245_re-radiant-wave13.md) | twelve counsel · lint 2 |
 | `20260725.103949` | [Reply — Radiant Wave 12](replies/20260725-103949_re-radiant-wave12.md) | twelve counsel · lint 2 |
 | `20260725.041039` | [Reply — Radiant Wave 11](replies/20260725-041039_re-radiant-wave11.md) | twelve counsel · specs · lint 2 |
 | `20260725.040728` | [Reply — Radiant Wave 10](replies/20260725-040728_re-radiant-wave10.md) | twelve specs · after shell·fold |
