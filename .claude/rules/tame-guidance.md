@@ -20,7 +20,7 @@ Full checkable surface: supplement section **What We Check, and When**.
 - **Opening lines:** every hosted `.rye` file opens with `const std`, `const assert`, `const print` — canonical head per design sitting `20260702.031312`.
 - Bounds on everything: every allocation, collection, and pipeline names a maximum. Name the budget at construction; enforce at the edge.
 - Say why: every assertion, every named constant, every surprising design choice earns a comment that names the reason.
-- Accrete, never break: a name once given is a promise. Add beside it; do not replace it silently.
+- Accrete, never break — **three tiers**: Tier 1 sealed by proof (absolute); Tier 2 sealed by testimony (recorded Radiant pass / errata); Tier 3 open to revision. Only Tier 1 is absolute. Canon: `context/TAME_GUIDANCE.md` §4.
 - One value model: string, integer, bool, list, record — composed side by side, never tangled.
 - **`snake_case`** for functions, variables, and file names.
 

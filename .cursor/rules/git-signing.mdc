@@ -13,7 +13,7 @@ All commits MUST be GPG-signed. The global config already sets `commit.gpgsign=t
 
 After pushing, remind the user to upload their public GPG key to GitHub and Codeberg if commits show as "Unverified" on those platforms.
 
-Push to all four remotes when the user asks:
+Push to all four remotes when the user asks (canonical count: `context/REMOTE_ROSTER.md`):
 - `origin` (Codeberg veganreyklah2)
 - `github` (GitHub veganreyklah2)
 - `gp36-codeberg` (Codeberg groupproject36)
