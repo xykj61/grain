@@ -1,7 +1,7 @@
 # The Counsel Stack
 
 **Language:** EN
-**Last updated:** 2026-07-25 (Wave 15 `20260725.105504` · Wave 14 `104506` · Wave 13 `104245` · Wave 12 `103949` · shell·fold `040520` · seat `034807`)
+**Last updated:** 2026-07-25 (Wave 16 `20260725.105645` · Wave 15 `105504` · Wave 14 `104506` · seat `034807`)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Foundation
 **Seasons roster:** [`SEASONS.md`](SEASONS.md)
@@ -22,6 +22,7 @@ Filing law: [`../ORGANIZING.md`](../ORGANIZING.md) · reorg proposal: [`20260707
 
 | Stamp | Note | Meaning |
 |-------|------|---------|
+| `20260725.105645` | [Reply — Radiant Wave 16](replies/20260725-105645_re-radiant-wave16.md) | twelve counsel replies · lint 2 |
 | `20260725.105504` | [Reply — Radiant Wave 15](replies/20260725-105504_re-radiant-wave15.md) | twelve counsel · replies · lint 2 |
 | `20260725.104506` | [Reply — Radiant Wave 14](replies/20260725-104506_re-radiant-wave14.md) | twelve counsel · lint 2 |
 | `20260725.104245` | [Reply — Radiant Wave 13](replies/20260725-104245_re-radiant-wave13.md) | twelve counsel · lint 2 |
