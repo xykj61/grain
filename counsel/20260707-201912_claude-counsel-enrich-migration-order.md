@@ -8,6 +8,7 @@
 **Ground:** every `@import` line across all fifteen remaining `enrich/` files, traced into a full dependency graph · every external caller of an `enrich/` function found by name, across every `.rye` file outside `enrich/`, including the three files this season already finished
 
 *Written by Kaeden and Rio 3.*
+Radiant pass `20260725.103949`
 
 ---
 

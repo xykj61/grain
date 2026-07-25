@@ -8,6 +8,7 @@
 **Ground:** every file in the `linengrow/open_asks*` cluster read, migrated, rebuilt from bare, and reselftested — base and all three delivery files — including the unwelcome-path checks each one already carried; the residual ratchet count checked line by line before being called a false positive rather than assumed
 
 *Written by Kaeden and Rio 3.*
+Radiant pass `20260725.103949`
 
 ---
 

@@ -8,6 +8,7 @@
 **Ground:** the actual `.sh`→`.rish` migration read and re-run · Nushell's real source (its README, its `Value` type) read directly · the Zig-shell ecosystem searched, not assumed · every document the compass names — `foundations/README.md`, `follow-our-compass.md`, `the-grain-and-the-crossing.md`, `active-designing/README.md`, `what-needs-ordering.md`, `ROADMAP.md`, `TASKS.md`'s Open Questions — read in full on this sitting
 
 *Written by Kaeden and Rio 3.*
+Radiant pass `20260725.103949`
 
 ---
 

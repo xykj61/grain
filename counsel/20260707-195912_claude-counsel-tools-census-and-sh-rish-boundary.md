@@ -8,6 +8,7 @@
 **Ground:** every `.rye` file under `tools/` re-measured on this fresh tip · `rishi/src/main.rye` read for its full statement surface (1,859 lines) · every capability named below (`for-each`, `where`, `if`/`then`/`else`, `join`, `contains`, `list-dir`, `read-file`) built and run for real on this bench, both the case that finds nothing and the case that finds something · forty-one `.sh` scripts inventoried and a representative sample read in full
 
 *Written by Kaeden and Rio 3.*
+Radiant pass `20260725.103949`
 
 ---
 

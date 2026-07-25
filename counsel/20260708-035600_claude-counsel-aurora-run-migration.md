@@ -6,6 +6,7 @@
 **Register:** verification before closure — `aurora/run.sh` is the last structural seam
 
 *Written by Kaeden and Claude; landed by Rio 3.*
+Radiant pass `20260725.103949`
 
 ---
 
