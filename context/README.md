@@ -7,7 +7,7 @@
 
 ---
 
-This directory is the memory and compass for the Glow OS repository. It gathers the durable guidance — how we write, who Quin is, and the plain-English specs that record each decision — in one calm, local place. Whoever reads it — you, arriving fresh, or an agent picking up the work — finds the disciplines here rather than scattered through the tree.
+This directory is the memory and compass for the Grain repository. It gathers the durable guidance — how we write, who Quin is, and the plain-English specs that record each decision — in one calm, local place. Whoever reads it — you, arriving fresh, or an agent picking up the work — finds the disciplines here rather than scattered through the tree.
 
 Everything here lives inside the persistent project directory, so it survives every sandbox reset. The enclosure wrapper keeps only the project directory across runs; this `context/` home rests safely within it. The specific contributor behind a given clone — the name that signs the work, the clock the stamps come from, the editor and voice defaults — lives in the root [`GLOW_PROFILE.bron`](../GLOW_PROFILE.template.bron), so this guidance can stay generally addressed while the profile carries the specifics.
 
@@ -44,7 +44,7 @@ When a chat or a file stops serving the project, name it gently and let it go. P
 
 ```
 glow-os/
-  README.md       <- the front door: what Glow OS is, the five variants
+  README.md       <- the front door: what Grain is, the five variants
   ORGANIZING.md   <- filing guide: tree shape, placement test, one-clock law
   context/        <- this home: disciplines, identity, specs
     RADIANT_STYLE.md
