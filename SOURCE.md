@@ -161,9 +161,9 @@ cd ~/yourrepo
 ./Cursor-3.9.16-x86_64.AppImage --appimage-extract   # once → squashfs-root/
 ```
 
-When you upgrade Cursor, extract the new AppImage the same way (or use `./tools/cursor-jail.sh --extract ./Cursor-*.AppImage`). The AppImage and `squashfs-root/` stay in the project directory and are not committed — only the launch scripts ship in git.
+When you upgrade Cursor, `chmod +x` the new download, then pass it with **`--cursor`** (preferred) so the launcher extracts into `squashfs-root/` and starts the jail in one step. The AppImage and `squashfs-root/` stay in the project directory and are not committed — only the launch scripts ship in git.
 
-**Ubuntu (24.04 LTS).** The extract path needs nothing extra. Only if someone runs the `.AppImage` *directly* would they need FUSE — and on 24.04 that package is **`libfuse2t64`** (not `fuse`, not the old `libfuse2`). Since the jail path extracts, this stays a footnote.
+**Ubuntu (26.04 LTS · Framework · GNOME Wayland).** The extract path needs nothing extra. Pass **`--gpu`** so ai-jail can use the Wayland/WebGPU path. Only if someone runs the `.AppImage` *directly* would they need FUSE — and that package is **`libfuse2t64`** (not `fuse`, not the old `libfuse2`). Since the jail path extracts, this stays a footnote. (Ubuntu 24.04 LTS hosts follow the same extract law.)
 
 **NixOS (Framework and similar).** NixOS does not run generic dynamically linked executables out of the box — and that holds for the extracted `AppRun` as much as for the `.AppImage`. Enable AppImage support in system config with `programs.appimage.enable = true;` and `programs.appimage.binfmt = true;` (NixOS 24.05 and later), which lets a `.AppImage` run directly when you choose that path; the older route is `appimage-run` from nixpkgs. Because binfmt registration acts on the `.AppImage` file, the launcher's **extracted-`AppRun`** path may additionally want an FHS wrapper — `steam-run` or `nix-ld` — to supply the dynamic loader and libraries. On a tested Framework host, extract once, then `./tools/cursor-jail.sh` from the repo root is the working form; if `AppRun` fails with loader errors, wrap the launch with `steam-run` from nixpkgs. The full NixOS map lives in **`context/specs/enclosure-editors.md`**.
 
@@ -333,29 +333,37 @@ From inside your project folder, start Cursor in the sandbox. This grants the ed
 
 ```bash
 cd ~/yourrepo
-./tools/cursor-jail.sh
+chmod +x ./Cursor-3.13.10-x86_64.AppImage   # each new download
+rishi/bin/rishi run tools/launch-cursor.rish --cursor ./Cursor-3.13.10-x86_64.AppImage --gpu
 ```
+
+That is the preferred outer-terminal form on Ubuntu 26.04 LTS GNOME Wayland (Framework). Bash elder equivalent: `./tools/cursor-jail.sh --cursor ./Cursor-3.13.10-x86_64.AppImage --gpu`. Once extracted, later launches can omit `--cursor` and keep `--gpu`.
 
 That runs the same command by hand:
 
 ```bash
-ai-jail --private-home --no-docker -- ./squashfs-root/AppRun --no-sandbox \
+ai-jail --private-home --no-docker --gpu -- ./squashfs-root/AppRun --no-sandbox \
   --user-data-dir="$PWD/.cursor-state/user-data" \
   --extensions-dir="$PWD/.cursor-state/extensions" "$PWD"
 ```
 
-**Options** (the tracked `tools/cursor-jail.sh` script). The `--appimage` flag expects the **extracted `AppRun`**, not a `.AppImage` file — a raw `.AppImage` mounts through FUSE, which fails inside the jail, so the launcher always runs the extracted form. To point at a freshly downloaded `.AppImage`, use **`--extract`**, which unpacks it into `squashfs-root/` and launches in one step.
+**Options.** **`--cursor PATH`** is the preferred flag: a `.AppImage` path extracts into `squashfs-root/` then launches; any other path is treated as the extracted `AppRun`. Legacy **`--extract`** / **`--appimage`** (AppRun only) still work. A raw `.AppImage` must not be exec'd inside the jail — FUSE fails there — so the launcher always runs the extracted form.
 
 ```bash
-./tools/cursor-jail.sh --extract ./Cursor-3.9.16-x86_64.AppImage   # unpack + launch
-./tools/cursor-jail.sh --appimage /path/to/squashfs-root/AppRun    # custom AppRun
-./tools/cursor-jail.sh --gpu                                        # GPU on GNOME Wayland
+# Preferred (Rish) — fresh download
+rishi/bin/rishi run tools/launch-cursor.rish --cursor ./Cursor-3.13.10-x86_64.AppImage --gpu
+# Already extracted
+rishi/bin/rishi run tools/launch-cursor.rish --gpu
+# Bash elder
+./tools/cursor-jail.sh --cursor ./Cursor-3.13.10-x86_64.AppImage --gpu
+./tools/cursor-jail.sh --extract ./Cursor-3.9.16-x86_64.AppImage   # legacy unpack + launch
+./tools/cursor-jail.sh --appimage /path/to/squashfs-root/AppRun    # legacy AppRun
 ```
 
-**From Rishi** — edit `apprun` at the top of `tools/launch-cursor.rish`, then:
+**macOS** — pass the app bundle (or binary) the same way:
 
 ```bash
-rishi/bin/rishi run tools/launch-cursor.rish
+rishi/bin/rishi run tools/cursor_jail_macos.rish --cursor /Applications/Cursor.app
 ```
 
 `--no-sandbox` here disables Chromium's own sandbox, which cannot nest inside `bwrap`; the real boundary is ai-jail's namespaces plus Landlock and seccomp. The display passes through so the window appears; everything else stays sealed.
