@@ -1,0 +1,10 @@
+format session-log-v1
+stamp 20260725.110930
+editor Cursor
+model Cursor Composer 2.5 300k Fast
+voice Quin
+title Wave 20 spot-read close
+prompt kg
+obs Spot-read wov-mala-hardware-fit voice holds; 379/~1185; FF main 724cc7387c
+recommend keep-going Wave 21 bound 50
+git_nib 4f57421659
