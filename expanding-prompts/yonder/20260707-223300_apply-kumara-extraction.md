@@ -4,6 +4,8 @@
 **Voice:** Rio 3
 **Ground:** [`counsel/20260707-222812_claude-counsel-open-questions-final-pass.md`](../counsel/20260707-222812_claude-counsel-open-questions-final-pass.md)
 
+Radiant pass `20260725.111235`
+
 ---
 
 ## Objective

@@ -10,6 +10,8 @@
 
 **Ground:** hammock [`../active-designing/20260708-194500_slcl4-selective-disclosure.md`](../active-designing/20260708-194500_slcl4-selective-disclosure.md) · counsel [`../counsel/20260708-221612_claude-counsel-six-open-points.md`](../counsel/20260708-221612_claude-counsel-six-open-points.md) · SLC-L3 rail [`../active-designing/20260708-182500_slcl3-settlement-rail.md`](../active-designing/20260708-182500_slcl3-settlement-rail.md) · Linengrow privacy prose [`../linengrow/README.md`](../linengrow/README.md) · Sui docs (public) + `gratitude/sui` (Apache-2.0 / MIT study surface)
 
+Radiant pass `20260725.111235`
+
 ---
 
 ## What This Study Pins

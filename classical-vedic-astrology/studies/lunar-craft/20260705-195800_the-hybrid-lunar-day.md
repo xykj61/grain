@@ -3,6 +3,8 @@
 **Stamp:** `20260705.195800 UDT` · **Style:** Radiant, gentle register
 **Method:** Siloed — pattern distilled from this lane's readings; no person carried
 
+Radiant pass `20260725.111235`
+
 ---
 
 The classical almanac reads each day by the star the Moon holds at sunrise, and assigns that star its people and trades. When the visible chart and the essence chart disagree at sunrise — one star ruling the day without, another within — the day is hybrid. The outer star names how the world meets the birth; the inner star names what the essential self carries underneath. Read both, never one alone.

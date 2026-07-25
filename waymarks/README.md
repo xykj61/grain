@@ -34,6 +34,7 @@ Each shelf keeps a one-line-per-claim `README.md` index as claims arrive.
 
 | Stamp | Claim | Path |
 |-------|-------|------|
+| `20260725.111235` | Radiant Wave 23 — fifty · settlement arc | [`20260725-111235_radiant-wave23.md`](20260725-111235_radiant-wave23.md) |
 | `20260725.111120` | Radiant Wave 22 — fifty · Brooke shelf | [`20260725-111120_radiant-wave22.md`](20260725-111120_radiant-wave22.md) |
 | `20260725.111005` | Radiant Wave 21 — fifty paths | [`20260725-111005_radiant-wave21.md`](20260725-111005_radiant-wave21.md) |
 | `20260725.110847` | Radiant Wave 20 — fifty · spot-read | [`20260725-110847_radiant-wave20.md`](20260725-110847_radiant-wave20.md) |

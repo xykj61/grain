@@ -4,6 +4,8 @@
 **Method:** Siloed — distilled in our own voice; teacher named with gratitude below
 **Placement:** Gated — awaiting the rising-sign folder name before it seats
 
+Radiant pass `20260725.111235`
+
 ---
 
 Capricorn grows from two roots, and nearly everything the sign does unfolds from them: tenacity and realism. Hold these two words and the sign opens. Each root branches into three traits, and each trait carries a bright face and a shadowed one, since a sign is like a musical instrument that sounds like itself no matter what, while sounding quite different depending on how it is played. How brightly Capricorn plays is decided by its dignity in a given chart, so these six traits are best read as a range to be balanced rather than a fixed verdict.
