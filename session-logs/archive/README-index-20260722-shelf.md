@@ -71,3 +71,11 @@
 - `20260722.150725` — [STOA265 Dexter→Sala append research](20260722-150725_stoa265-dexter-sala-append-research.bron) — live append unwired; lean A device-free
 - `20260722.150806` — [STOA265 Dexter Sala append check-in](20260722-150806_stoa265-dexter-sala-append-checkin.bron) — lean A typed memo→append_event
 - `20260722.150910` — [REMEMBER git nib after STOA265](20260722-150910_remember-git-nib-stoa265.bron) — pin 722d8c560422
+- `20260722.151101` — [STOA266–267 typed memo append](20260722-151101_stoa266-267-typed-memo-append-round.bron) — glow memo via append_event; Dexter helper next
+- `20260722.151156` — [REMEMBER git nib after STOA267](20260722-151156_remember-git-nib-stoa267.bron) — pin 51d744686e0e
+- `20260722.151335` — [STOA268–269 Dexter Sala helper](20260722-151335_stoa268-269-dexter-sala-helper-round.bron) — submit→append_typed_memo; glass wire next
+- `20260722.151427` — [REMEMBER git nib after STOA269](20260722-151427_remember-git-nib-stoa269.bron) — pin 72d20f7ba7db
+- `20260722.151834` — [STOA270–271 live-root wire](20260722-151834_stoa270-271-live-root-wire-round.bron) — submit→live root; paint next
+- `20260722.151924` — [REMEMBER git nib after STOA271](20260722-151924_remember-git-nib-stoa271.bron) — pin cbab2ee0e209
+- `20260722.152217` — [STOA272–273 live-root Skate paint](20260722-152217_stoa272-273-live-root-paint-round.bron) — LIVE · N · hex8; HAWM 1A next when mobile
+- `20260722.152325` — [REMEMBER git nib after STOA273](20260722-152325_remember-git-nib-stoa273.bron) — pin de1113bad8c5

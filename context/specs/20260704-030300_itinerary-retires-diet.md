@@ -6,6 +6,8 @@
 **Status:** Seated — forward-facing prose uses itinerary family only
 **Supersedes:** dining metaphor in living docs; [`20260704.001012`](20260704-001012_itinerary-seated.md) seated the words — this spec records the full retirement sweep
 
+Radiant pass `20260725.035645`
+
 ---
 
 ## The seated family

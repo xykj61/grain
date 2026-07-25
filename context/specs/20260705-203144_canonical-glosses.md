@@ -6,6 +6,8 @@
 **Status:** Seated — checkable-room vocabulary law; reviewed and kept
 **Ground:** [`counsel/20260704-031812_eight-asks-one-sitting.md`](../../counsel/20260704-031812_eight-asks-one-sitting.md) (A2) · [`../TWO_ROOMS.md`](../TWO_ROOMS.md)
 
+Radiant pass `20260725.035645`
+
 ---
 
 ## Primary gloss
