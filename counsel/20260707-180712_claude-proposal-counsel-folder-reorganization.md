@@ -8,6 +8,7 @@
 **Ground:** `ORGANIZING.md` (read in full, 145 lines) · `external-research/README.md` and its full index (read in full) · the prior precedent `work-in-progress/archive/20260628-014753_external-research-rename-mapping.md` · citation counts run against every candidate, repo-wide
 
 *Written by Kaeden and Rio 3.*
+Radiant pass `20260725.041039`
 
 ---
 

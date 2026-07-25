@@ -6,13 +6,13 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260725.040845` (EDT) · voice Quin  
+**Last refreshed:** `20260725.041039` (EDT) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2** · **THREATS** · **five pillars** · **accrete tiers** · **redaction stance** · **always-in-it rhythm**  
 **Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list512 GREEN · **stamp @u64 · Crockford** · **shape aura floor**  
-**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand ring-2** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm REPORT** · **OQ #1 · #3 · #5 answered** · **pass ledger** · **Wave 10** · **growth law** · **shell harvest**  
-**Git nib:** `f521048887` · shell·fold · Wave 10 (PR #98)
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand ring-2** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm REPORT** · **OQ #1 · #3 · #5 answered** · **pass ledger** · **Wave 11** · **growth law** · **shell harvest**  
+**Git nib:** `27a62164b6` · prior · *this lap re-pins on send*
 
-**Season:** Framework · EDT · **finishing edge:** shell·fold · Wave 10 · ledger coverage.  
+**Season:** Framework · EDT · **finishing edge:** Radiant Wave 11 · ledger coverage.  
 **APK:** `tools/.cache/tube05/seva-broadcaster.apk` · pkg `org.glow.app.seva_broadcaster`  
 **ADB:** `tools/.cache/hawm0/android-sdk/platform-tools/adb` — not on bare PATH  
 
@@ -20,14 +20,13 @@
 
 ## Now
 
-**Shell·fold · Wave 10** `20260725.040728` — growth law seated; session pin folded (~4.6KB); shell harvest duty8=27; Wave 10 twelve specs GREEN (lint 2). Sent `20260725.040844` · git nib `f521048887`. OQ #10 granularity open. Reply [`../counsel/replies/20260725-040520_re-what-the-shell-remembers.md`](../counsel/replies/20260725-040520_re-what-the-shell-remembers.md) · wave [`../counsel/replies/20260725-040728_re-radiant-wave10.md`](../counsel/replies/20260725-040728_re-radiant-wave10.md).
+**Radiant Wave 11** `20260725.041039` — twelve next-oldest dated paths on the ledger; claim_preserve GREEN; lint sum 2; duty8=27. Reply [`../counsel/replies/20260725-041039_re-radiant-wave11.md`](../counsel/replies/20260725-041039_re-radiant-wave11.md) · claim [`../waymarks/20260725-041039_radiant-wave11.md`](../waymarks/20260725-041039_radiant-wave11.md).
 
 **Read:**
 
 ```bash
-less session-logs/SEASONS.md
-less context/specs/append-only-growth-law.md
-less counsel/20260725-040247_what-the-shell-remembers.md
+less tools/fixtures/radiant_pass_ledger.txt
+less counsel/replies/20260725-041039_re-radiant-wave11.md
 ```
 
 ---
