@@ -6,13 +6,13 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260725.112126` (EDT) · voice Quin  
+**Last refreshed:** `20260725.112226` (EDT) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2** · **THREATS** · **five pillars** · **accrete tiers** · **redaction stance** · **always-in-it rhythm**  
 **Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list512 GREEN · **stamp @u64 · Crockford** · **shape aura floor**  
-**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand ring-2** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm REPORT** · **OQ #1 · #3 · #5 answered** · **pass ledger** · **Wave 31** · **growth law** · **shell harvest**  
-**Git nib:** `208720f0a6` · Wave 31 (PR #119)
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand ring-2** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm REPORT** · **OQ #1 · #3 · #5 answered** · **pass ledger** · **Wave 32** · **growth law** · **shell harvest**  
+**Git nib:** `6a0dd97ecd` · Wave 32 (PR #120)
 
-**Season:** Framework · EDT · **finishing edge:** Radiant Wave 31 · **929/~1,185 (~78%)**.  
+**Season:** Framework · EDT · **finishing edge:** Radiant Wave 32 · **979/~1,185 (~83%)**.  
 **APK:** `tools/.cache/tube05/seva-broadcaster.apk` · pkg `org.glow.app.seva_broadcaster`  
 **ADB:** `tools/.cache/hawm0/android-sdk/platform-tools/adb` — not on bare PATH  
 
@@ -20,7 +20,7 @@
 
 ## Now
 
-**Radiant Wave 31** `20260725.112115` — 50 clean · 0 changed · lint 2. Sent `20260725.112125` · git nib `208720f0a6`. **Runway:** Wave **31 / ~20** · **929 / ~1,185** (~78%).
+**Radiant Wave 32** `20260725.112215` — 50 clean · 0 changed · lint 2. Sent `20260725.112225` · git nib `6a0dd97ecd`. **Runway:** Wave **32 / ~20** · **979 / ~1,185** (~83%).
 
 **Read:**
 
