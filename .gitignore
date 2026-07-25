@@ -61,6 +61,7 @@
 !/bron-resins/
 !/granary/
 !/mandi/
+!/mand/
 !/nock/
 !/glow/
 !/expanding-prompts/
@@ -183,4 +184,5 @@ __pycache__/
 /amphora/bin/
 /granary/bin/
 /mandi/bin/
+/mand/bin/
 /tools/fixtures/.forge_view_bundle/

@@ -1,0 +1,217 @@
+//! mand/mand_ring3.rye — Mand ring-3: destroying ring (test-only reach).
+//!
+//! Seam (SLC): destroy a per-subject key after recording exactly one removal
+//! fact — never edit ciphertext bytes; fail closed on hold · malformed authority.
+//!
+//! Ring-3 inherits ring-2's clean seam: decides destruction only where ring-2
+//! would read ELIGIBLE, with hold re-asserted on this path. Test namespace only
+//! until production key custody seats (decision 5 · counsel 20260725.001200 § Five).
+//!
+//!   rye build mand/mand_ring3_witness.rye -femit-bin=mand/bin/mand_ring3_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const Sha3_256 = std.crypto.hash.sha3.Sha3_256;
+const mand1 = @import("mand_ring1.rye");
+const mand2 = @import("mand_ring2.rye");
+const tally_copy = @import("tally_copy.rye");
+
+pub const mand_ring3_version = "20260725.160000";
+
+pub const max_keys: u32 = 8;
+pub const max_subject_len: u32 = mand1.max_audit_name_len;
+pub const max_cipher_len: u32 = 64;
+pub const max_key_bytes: u32 = 32;
+pub const max_removal_facts: u32 = 8;
+pub const max_authority_len: u32 = 48;
+
+pub const ErasureError = error{
+    WitnessModeRequired,
+    HeldRefused,
+    NotEligible,
+    MissingKeyRef,
+    MalformedAuthority,
+    RemovalLogFull,
+    KeyStoreFull,
+};
+
+pub const ErasureAuthority = enum {
+    person_request,
+    legal_order,
+    schedule_end,
+
+    pub fn tag(self: ErasureAuthority) []const u8 {
+        return switch (self) {
+            .person_request => "person_request",
+            .legal_order => "legal_order",
+            .schedule_end => "schedule_end",
+        };
+    }
+};
+
+pub const SubjectKey = struct {
+    subject: [max_subject_len]u8 = undefined,
+    subject_len: u32 = 0,
+    material: [max_key_bytes]u8 = undefined,
+    present: bool = false,
+
+    pub fn subject_slice(self: *const SubjectKey) []const u8 {
+        const n: usize = @intCast(self.subject_len);
+        return self.subject[0..n];
+    }
+};
+
+pub const KeyStore = struct {
+    keys: [max_keys]SubjectKey = undefined,
+    count: u32 = 0,
+
+    pub fn insert(self: *KeyStore, subject: []const u8, material: *const [max_key_bytes]u8) ErasureError!void {
+        assert(subject.len > 0);
+        assert(subject.len <= max_subject_len);
+        if (self.count >= max_keys) return error.KeyStoreFull;
+        var k: SubjectKey = .{};
+        k.subject_len = @intCast(subject.len);
+        tally_copy.copy_disjoint(u8, k.subject[0..subject.len], subject);
+        tally_copy.copy_disjoint(u8, k.material[0..max_key_bytes], material);
+        k.present = true;
+        self.keys[self.count] = k;
+        self.count += 1;
+    }
+
+    pub fn find_index(self: *const KeyStore, subject: []const u8) ?u32 {
+        var i: u32 = 0;
+        while (i < self.count) : (i += 1) {
+            if (std.mem.eql(u8, self.keys[@intCast(i)].subject_slice(), subject)) return i;
+        }
+        return null;
+    }
+
+    pub fn zeroize_at(self: *KeyStore, index: u32) void {
+        assert(index < self.count);
+        @memset(self.keys[@intCast(index)].material[0..], 0);
+        self.keys[@intCast(index)].present = false;
+    }
+};
+
+pub const Ciphertext = struct {
+    bytes: [max_cipher_len]u8 = undefined,
+    len: u32 = 0,
+
+    pub fn seal(subject_key: *const SubjectKey, plaintext: []const u8) ErasureError!Ciphertext {
+        assert(plaintext.len > 0);
+        assert(plaintext.len <= max_cipher_len);
+        assert(subject_key.present);
+        var c: Ciphertext = .{};
+        c.len = @intCast(plaintext.len);
+        var i: u32 = 0;
+        while (i < c.len) : (i += 1) {
+            const kb = subject_key.material[@intCast(i % max_key_bytes)];
+            c.bytes[@intCast(i)] = plaintext[@intCast(i)] ^ kb;
+        }
+        return c;
+    }
+
+    pub fn open(subject_key: *const SubjectKey, cipher: *const Ciphertext) ErasureError![max_cipher_len]u8 {
+        assert(subject_key.present);
+        assert(cipher.len > 0);
+        var out: [max_cipher_len]u8 = undefined;
+        var i: u32 = 0;
+        while (i < cipher.len) : (i += 1) {
+            const kb = subject_key.material[@intCast(i % max_key_bytes)];
+            out[@intCast(i)] = cipher.bytes[@intCast(i)] ^ kb;
+        }
+        return out;
+    }
+
+    pub fn readable_with(self: *const Ciphertext, subject_key: *const SubjectKey, plaintext: []const u8) bool {
+        if (!subject_key.present) return false;
+        const opened = open(subject_key, self) catch return false;
+        return std.mem.eql(u8, opened[0..self.len], plaintext);
+    }
+};
+
+pub const RemovalFact = struct {
+    subject: [max_subject_len]u8 = undefined,
+    subject_len: u32 = 0,
+    authority_tag: [max_authority_len]u8 = undefined,
+    authority_len: u32 = 0,
+    key_digest: [32]u8 = undefined,
+    stamp: u64 = 0,
+
+    pub fn subject_slice(self: *const RemovalFact) []const u8 {
+        const n: usize = @intCast(self.subject_len);
+        return self.subject[0..n];
+    }
+
+    pub fn authority_slice(self: *const RemovalFact) []const u8 {
+        const n: usize = @intCast(self.authority_len);
+        return self.authority_tag[0..n];
+    }
+};
+
+pub const RemovalLog = struct {
+    facts: [max_removal_facts]RemovalFact = undefined,
+    count: u32 = 0,
+
+    pub fn append(
+        self: *RemovalLog,
+        subject: []const u8,
+        authority: ErasureAuthority,
+        key_material: *const [max_key_bytes]u8,
+        stamp: u64,
+    ) ErasureError!void {
+        assert(subject.len > 0);
+        assert(subject.len <= max_subject_len);
+        if (self.count >= max_removal_facts) return error.RemovalLogFull;
+        const tag = authority.tag();
+        assert(tag.len <= max_authority_len);
+        var f: RemovalFact = .{};
+        f.subject_len = @intCast(subject.len);
+        tally_copy.copy_disjoint(u8, f.subject[0..subject.len], subject);
+        f.authority_len = @intCast(tag.len);
+        tally_copy.copy_disjoint(u8, f.authority_tag[0..tag.len], tag);
+        f.stamp = stamp;
+        Sha3_256.hash(key_material, &f.key_digest, .{});
+        self.facts[self.count] = f;
+        self.count += 1;
+    }
+};
+
+pub fn digest_log_bytes(log: []const u8) [32]u8 {
+    var root: [32]u8 = undefined;
+    Sha3_256.hash(log, &root, .{});
+    return root;
+}
+
+/// Fail closed when witness mode is off — test-only reach at this lap.
+pub fn witness_mode_allowed(enabled: bool) bool {
+    return enabled;
+}
+
+/// Destroy key for subject after writing exactly one removal fact.
+/// Ciphertext bytes in the log are never moved — only key material zeroized.
+pub fn destroy_key(
+    store: *KeyStore,
+    removal_log: *RemovalLog,
+    schedule: ?*const mand2.Schedule,
+    now: u64,
+    holds: []const mand2.Hold,
+    authority: ErasureAuthority,
+    subject: []const u8,
+    witness_mode: bool,
+    stamp: u64,
+) ErasureError!void {
+    assert(holds.len <= mand2.max_holds_per_record);
+    if (!witness_mode_allowed(witness_mode)) return error.WitnessModeRequired;
+    if (subject.len == 0 or subject.len > max_subject_len) return error.MissingKeyRef;
+    const idx = store.find_index(subject) orelse return error.MissingKeyRef;
+    assert(idx < store.count);
+    const standing = mand2.retention_standing(schedule, now, holds) catch return error.MalformedAuthority;
+    if (standing == .held) return error.HeldRefused;
+    if (standing == .keep) return error.NotEligible;
+    assert(standing == .eligible);
+    const key_ref = store.keys[@intCast(idx)].material;
+    try removal_log.append(subject, authority, &key_ref, stamp);
+    store.zeroize_at(idx);
+    assert(!store.keys[@intCast(idx)].present);
+}

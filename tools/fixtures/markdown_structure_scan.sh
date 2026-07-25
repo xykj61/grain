@@ -1,6 +1,8 @@
 #!/bin/sh
 # markdown_structure_scan.sh — blocking structural integrity for Markdown passes.
 # Seated 20260725.114400 · Quin relay repair.
+# Lesson 20260725.160000 — compare COLUMN counts, not raw pipe counts; mask
+# inline code and fenced blocks so pipes inside them never split table cells.
 set -eu
 
 ROOT=$(CDPATH= cd -- "$(dirname "$0")/../.." && pwd)
@@ -8,6 +10,11 @@ cd "$ROOT"
 
 BASE=${MARKDOWN_STRUCTURE_BASE:-${CLAIM_PRESERVE_BASE:-HEAD}}
 FILES=${MARKDOWN_STRUCTURE_FILES:-${CLAIM_PRESERVE_FILES:-}}
+LIST=${MARKDOWN_STRUCTURE_LIST:-}
+
+if [ -n "$LIST" ] && [ -f "$LIST" ]; then
+  FILES=$(sed '/^$/d' "$LIST")
+fi
 
 if [ -z "$FILES" ]; then
   echo "FAIL MARKDOWN_STRUCTURE_FILES empty — name every file the pass touches"
@@ -28,38 +35,74 @@ base = os.environ["BASE"]
 paths = [l.strip() for l in (Path(os.environ["TMP"]) / "files").read_text().splitlines() if l.strip()]
 reds = 0
 
-def pipe_count(line: str) -> int:
+def mask_fenced_blocks(text: str) -> str:
+    """Replace fenced code block interiors with spaces (keep fence lines)."""
+    lines = text.splitlines(keepends=True)
+    out = []
+    in_fence = False
+    for line in lines:
+        if re.match(r"^\s*```", line):
+            in_fence = not in_fence
+            out.append(line)
+        elif in_fence:
+            out.append(" " * len(line))
+        else:
+            out.append(line)
+    return "".join(out)
+
+def mask_inline_code(line: str) -> str:
+    return re.sub(r"`[^`\n]*`", lambda m: " " * len(m.group()), line)
+
+def table_cells(line: str) -> list[str]:
+    """Split on unescaped pipes; drop empty leading/trailing from outer pipes."""
     s = line.strip()
-    return s.count("|") if s.startswith("|") else 0
+    if "|" not in s:
+        return []
+    parts = s.split("|")
+    if parts and parts[0].strip() == "":
+        parts = parts[1:]
+    if parts and parts[-1].strip() == "":
+        parts = parts[:-1]
+    return parts
+
+def column_count(line: str) -> int:
+    return len(table_cells(line))
 
 def is_separator(line: str) -> bool:
-    s = line.strip()
-    if not s.startswith("|"):
+    cells = table_cells(line)
+    if not cells:
         return False
-    inner = s.strip("|").strip()
-    return bool(inner) and re.fullmatch(r"[|\s:\-]+", inner) is not None
+    return all(re.fullmatch(r"\s*:?-+:?\s*", c) for c in cells)
 
 def strip_pass(t: str) -> str:
     return re.sub(r"^Radiant pass `[^`]+`\n?", "", t, flags=re.M)
 
 def check_tables(text: str, path: str) -> None:
     global reds
-    lines = text.splitlines()
+    masked = mask_fenced_blocks(text)
+    lines = masked.splitlines()
     for j, line in enumerate(lines):
-        if not is_separator(line):
+        work = mask_inline_code(line)
+        if not is_separator(work):
             continue
-        # find previous non-blank line as header
         i = j - 1
         while i >= 0 and not lines[i].strip():
             i -= 1
-        if i < 0 or not lines[i].strip().startswith("|"):
+        if i < 0:
             print(f"FAIL table separator without header: {path}:{j+1}")
             reds += 1
             continue
-        if is_separator(lines[i]):
+        hdr = mask_inline_code(lines[i])
+        if is_separator(hdr):
             continue
-        if pipe_count(lines[i]) != pipe_count(line):
-            print(f"FAIL table pipe mismatch header={pipe_count(lines[i])} sep={pipe_count(line)}: {path}:{i+1}")
+        hdr_cols = column_count(hdr)
+        sep_cols = column_count(work)
+        if hdr_cols == 0:
+            print(f"FAIL table header without pipes: {path}:{i+1}")
+            reds += 1
+            continue
+        if hdr_cols != sep_cols:
+            print(f"FAIL table column mismatch header={hdr_cols} sep={sep_cols}: {path}:{i+1}")
             reds += 1
             return
     print(f"OK   tables: {path}")
@@ -75,7 +118,8 @@ def check_fences(text: str, path: str) -> None:
 
 def check_links(text: str, path: str) -> None:
     global reds
-    for i, line in enumerate(text.splitlines(), 1):
+    masked = mask_fenced_blocks(text)
+    for i, line in enumerate(masked.splitlines(), 1):
         if re.search(r"\[[^\]]*\]\([^)\n]*$", line):
             print(f"FAIL unclosed link: {path}:{i}")
             reds += 1

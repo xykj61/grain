@@ -1,4 +1,4 @@
-//! linengrow/mand_ring2.rye — Mand ring-2: retention eligibility (decide, never erase).
+//! mand/mand_ring2.rye — Mand ring-2: retention eligibility (decide, never erase).
 //!
 //! Seam (SLC): what is this record's standing under its published schedule —
 //! keep until X, eligible, or held under H?
@@ -11,7 +11,7 @@
 //! counsel Hands We Grow) — ordinary release must be scheduled, announced,
 //! and suspended the instant a hold arrives.
 //!
-//!   rye build linengrow/mand_ring2_witness.rye -femit-bin=linengrow/bin/mand_ring2_witness
+//!   rye build mand/mand_ring2_witness.rye -femit-bin=mand/bin/mand_ring2_witness
 
 const std = @import("std");
 const assert = std.debug.assert;

@@ -27,7 +27,7 @@
 
 **The pier across remotes.** Canonical count and names live in [`REMOTE_ROSTER.md`](REMOTE_ROSTER.md). This cloud pier carries only `origin` today. Who reaches a remote: whoever holds forge credentials for that remote. Dated prose that says *five remotes* carries an erratum pointing at that roster — the wrong belief stays visible (Tier 2).
 
-**Mand's audit log.** In-process bounded log in `linengrow/mand_ring1.rye` (`AuditLog`, max eight entries). Ring-1 appends on grant; ring-2 writes retention decisions (KEEP · ELIGIBLE · HELD) onto the same log. Who reaches it: the process running Mand's API; it is not yet a durable on-disk store.
+**Mand's audit log.** In-process bounded log in `mand/mand_ring1.rye` (`AuditLog`, max eight entries). Ring-1 appends on grant; ring-2 writes retention decisions (KEEP · ELIGIBLE · HELD) onto the same log. Who reaches it: the process running Mand's API; it is not yet a durable on-disk store.
 
 **FUTURE (named, not present):** artist contact records; donation flows. Neither is a stored product surface today.
 
