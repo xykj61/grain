@@ -5,6 +5,8 @@
 **Status:** **Landed** `20260709.203527` — pin presence GREEN; parity **203**; no TB client link
 **Ground:** exit-honesty [`200443`](../context/specs/20260709-200443_wov-exit-honesty.md) · WOV lap 1 [`200729`](../linengrow/wov_core.rye) · night brief Q1 [`203139`](../external-research/20260709-203139_claude-review-brief-jul9-night-climb.md) · LEXICON pin `59f2b99`
 
+Radiant pass `20260725.111415`
+
 ---
 
 ## Why This Lap Before a Client Wrapper
