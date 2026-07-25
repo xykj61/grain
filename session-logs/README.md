@@ -12,6 +12,8 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 **Living pin bound:** `living_pin_max_bytes = 24576` ([spec](../context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md)). Closed index rows through `20260721`: [`archive/README-index-through-20260721.md`](archive/README-index-through-20260721.md). Early `20260722` overflow: [`archive/README-index-20260722-shelf.md`](archive/README-index-20260722-shelf.md).
 
+- `20260724.210931` — [REMEMBER git nib after fixture-scan send](20260724-210931_remember-git-nib-fixture-scans.bron) — pin 6da85ee496
+- `20260724.210920` — [Send fixture scans rish · py zero to main](20260724-210920_send-fixture-scans-rish.bron) — FF merge · PR 83
 - `20260724.210848` — [Fixture scans to rish · tools py zero](20260724-210848_fixture-scans-rish-zero.bron) — migrate · count zero · law table
 - `20260724.210347` — [REMEMBER git nib after aura-floor · stranger send](20260724-210347_remember-git-nib-aura-floor.bron) — pin 489b3abad2
 - `20260724.210342` — [Send shape aura floor · stranger lap to main](20260724-210342_send-shape-aura-floor-stranger.bron) — FF merge · PR 82
@@ -166,6 +168,3 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 - `20260722.141403` — [REMEMBER git nib after STOA246](20260722-141403_remember-git-nib-stoa246.bron) — pin c874d977a872
 - `20260722.141353` — [STOA245–246 authored sign body round](20260722-141353_stoa245-246-sign-body-round.bron) — sign/verify own body; digest next
 - `20260722.141102` — [REMEMBER git nib after STOA244](20260722-141102_remember-git-nib-stoa244.bron) — pin c003ffbb7bfe
-- `20260722.141044` — [STOA243–244 authored line body round](20260722-141044_stoa243-244-line-body-round.bron) — format/parse own body; next authored surface
-- `20260722.140125` — [REMEMBER git nib after STOA242](20260722-140125_remember-git-nib-stoa242.bron) — pin b5fc164eda97
-- `20260722.140100` — [STOA241–242 face_lit agree round](20260722-140100_stoa241-242-face-lit-agree-round.bron) — product stand-in ≡ Glow pins; name next door
