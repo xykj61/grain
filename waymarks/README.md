@@ -33,6 +33,7 @@ Each shelf keeps a one-line-per-claim `README.md` index as claims arrive.
 
 | Stamp | Claim | Path |
 |-------|-------|------|
+| `20260725.035134` | Radiant Wave 5 — oldest foundations | [`20260725-035134_radiant-wave5.md`](20260725-035134_radiant-wave5.md) |
 | `20260725.034807` | Always in it · pass playbook · Wave 4 | [`20260725-034807_always-in-it-ethos-pass.md`](20260725-034807_always-in-it-ethos-pass.md) |
 | `20260725.001538` | Redaction stance living pin · OQ #1 | [`20260725-001538_redaction-stance.md`](20260725-001538_redaction-stance.md) |
 | `20260724.212805` | Mand ring-2 · retention eligibility | [`20260724-212805_mand-ring2-retention.md`](20260724-212805_mand-ring2-retention.md) |
