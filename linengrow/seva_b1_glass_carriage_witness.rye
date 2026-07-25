@@ -1,14 +1,14 @@
-//! linengrow/sala_b1_glass_carriage_witness.rye — proves JABS1 glass welcome line.
+//! linengrow/seva_b1_glass_carriage_witness.rye — proves JABS1 glass welcome line.
 //!
-//!   rye build linengrow/sala_b1_glass_carriage_witness.rye \
-//!     -femit-bin=linengrow/bin/sala_b1_glass_carriage_witness
-//!   linengrow/bin/sala_b1_glass_carriage_witness
+//!   rye build linengrow/seva_b1_glass_carriage_witness.rye \
+//!     -femit-bin=linengrow/bin/seva_b1_glass_carriage_witness
+//!   linengrow/bin/seva_b1_glass_carriage_witness
 
 const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
-const glass = @import("sala_b1_glass_carriage.rye");
-const core = @import("sala_b1_carriage_core.rye");
+const glass = @import("seva_b1_glass_carriage.rye");
+const core = @import("seva_b1_carriage_core.rye");
 
 const witness_version = "20260717.170100";
 

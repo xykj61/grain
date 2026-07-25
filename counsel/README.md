@@ -1,7 +1,7 @@
 # The Counsel Stack
 
 **Language:** EN
-**Last updated:** 2026-07-24 (Hands We Grow reply `194239`)
+**Last updated:** 2026-07-24 (Nothing to Give / Seva reply `201727`)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Foundation
 
@@ -21,6 +21,8 @@ Filing law: [`../ORGANIZING.md`](../ORGANIZING.md) · reorg proposal: [`20260707
 
 | Stamp | Note | Meaning |
 |-------|------|---------|
+| `20260724.201727` | [Reply — Nothing to Give · Hall Renamed](replies/20260724-201727_re-nothing-to-give-and-the-hall-renamed.md) | custody foundations · Seva · Mona · suite rename GREEN |
+| `20260724.200912` | [Nothing to Give, and the Hall Renamed](20260724-200912_nothing-to-give-and-the-hall-renamed.md) | custody · settings split · Sala→Seva — **approved and seated** |
 | `20260724.194239` | [Reply — Hands We Grow Section One](replies/20260724-194239_re-the-hands-we-grow.md) | JAMCUE reframe · twin harden · rung 1a · decisions 2–8 PARK |
 | `20260724.193912` | [The Hands We Grow — Custody, Law, Mona](20260724-193912_the-hands-we-grow.md) | Relay + custody · succession · Mona · Crockford · pillars — park for word |
 | `20260724.181241` | [Reply — list512 · digraph twin](replies/20260724-181241_re-list512-digraph-twin.md) | max_list_items=512 · STOA333 GREEN · vere/jamcue/SETU holds |

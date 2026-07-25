@@ -1,22 +1,22 @@
 # The Roadmap — living pin
 
 **Language:** EN  
-**Last updated:** `20260724.193912` (EDT) · voice Quin  
+**Last updated:** `20260724.201727` (EDT) · voice Quin  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Full season ledger:** [`archive/20260724-132812_roadmap-season-ledger.md`](archive/20260724-132812_roadmap-season-ledger.md)
 
 ---
 
-## Now — Hands We Grow relay (`20260724.193912`)
+## Now — Custody · Seva · Mona (`20260724.201727`)
 
 | Order | Lap | Status |
 |-------|-----|--------|
-| — | Aparigraha · stewards · waymarks braid | landed PR #72 |
-| **1** | Rishi `glow` mode SLC (STOA332) | **GREEN** |
-| **2** | Glow cell-pack demo vectors in-tree | **GREEN** · outward gift = mat/rub season |
-| **3** | Digraph-table twin STOA333 rung 1a | **GREEN** · wrong-order refuse |
+| — | Hands We Grow Section One relay | landed PR #77 |
+| **1** | Custody first principle foundations | **landed** |
+| **2** | Seva rename (parity suite) · Sala alias | **GREEN** |
+| **3** | Mona seat (lexicon · exclude) | **landed** |
 | **4** | vere/old sibling clones | **STOP** — flw corpus load-bearing |
-| **5** | Custody · Mona · pillars (counsel) | **PARK** — Keaton’s word |
+| **5** | Mona ring-1 · glow_sala_b0 migrate | following · on-touch |
 
 **Finishing edge:** clone · bootstrap · one witness · one `rishi glow` line ≤ 30 minutes.
 

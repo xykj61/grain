@@ -93,8 +93,8 @@ Living Glow OS desks lead with `shape-*` (shape duals STOA161–173; pin polish 
 | **STOA240** | after Pixel eyes check-in | leans A send · B name next door | **GREEN** `20260722.135605` |
 | **STOA241–262** | face_lit · authored bodies · shape-only · N-field inventary deepen | product · bartis/barket | **GREEN** through `20260722.145840` |
 | **STOA263** | Pixel authored-fold eyes | `tube05` pack + install onpath | **GREEN** `20260722.150432` |
-| **STOA264** | after authored-fold eyes check-in | leans A send · B Dexter→Sala | **GREEN** `20260722.150432` |
-| **STOA265** | Dexter→Sala append check-in | lean A typed memo→`append_event` | **seated** `20260722.150806` |
+| **STOA264** | after authored-fold eyes check-in | leans A send · B Dexter→Seva | **GREEN** `20260722.150432` |
+| **STOA265** | Dexter→Seva append check-in | lean A typed memo→`append_event` | **seated** `20260722.150806` |
 | **STOA266** | typed memo → Glow `append_event` | `glow_sala_b0_typed_append_witness` | **GREEN** `20260722.151008` |
 | **STOA267** | after typed memo append check-in | leans A send · B Dexter helper | **GREEN** `20260722.151101` |
 | **STOA268** | Dexter submit helper → typed append | `dexter_sala_append_witness` | **GREEN** `20260722.151257` |
@@ -103,7 +103,7 @@ Living Glow OS desks lead with `shape-*` (shape duals STOA161–173; pin polish 
 | **STOA271** | after live-root wire check-in | leans A send · B live-root paint | **GREEN** `20260722.151834` |
 | **STOA272** | live-root Skate paint | `sala_live_root_glass_witness` | **GREEN** `20260722.151957` |
 | **STOA273** | after live paint check-in | leans A send · B HAWM 1A | **GREEN** `20260722.152217` |
-| **STOA274** | after Dexter→Sala finish check-in | lean A HAWM 1A inventary | **seated** `20260722.152404` |
+| **STOA274** | after Dexter→Seva finish check-in | lean A HAWM 1A inventary | **seated** `20260722.152404` |
 | **STOA275** | HAWM log-harvest inventary | `hawm_log_harvest_witness` | **GREEN** `20260722.152523` |
 | **STOA276** | after HAWM harvest check-in | leans A send · B boot→harvest | **GREEN** `20260722.152631` |
 | **STOA277** | HAWM0 boot → harvest chain | chain witness · onpath host | **host GREEN** `20260722.153549` |

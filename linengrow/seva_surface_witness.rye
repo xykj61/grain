@@ -1,11 +1,11 @@
-//! linengrow/sala_surface_witness.rye — proves Sala R2: the unified viewer.
+//! linengrow/seva_surface_witness.rye — proves Seva R2: the unified viewer.
 //!
-//!   rye build linengrow/sala_surface_witness.rye -femit-bin=linengrow/bin/sala_surface_witness
-//!   linengrow/bin/sala_surface_witness
+//!   rye build linengrow/seva_surface_witness.rye -femit-bin=linengrow/bin/seva_surface_witness
+//!   linengrow/bin/seva_surface_witness
 //!
 //! Per external-research/20260715-172000_pool-keystone-revival-realidream-landscape.md
-//! rung R2 and linengrow/sala_surface.rye. Three capability-isolated
-//! Pool-hosted agents (ask, receipt, reputation) gathered onto one Sala
+//! rung R2 and linengrow/seva_surface.rye. Three capability-isolated
+//! Pool-hosted agents (ask, receipt, reputation) gathered onto one Seva
 //! surface. Four claims:
 //!   1. Three isolated agents, each hosted on its own capability over its
 //!      own state, render onto one surface as three panels, each reflecting
@@ -25,7 +25,7 @@ const rc = @import("receipt_core.rye");
 const mc = @import("mala_core.rye");
 const caps = @import("capabilities.rye");
 const pool = @import("pool_host_seam.rye");
-const surface = @import("sala_surface.rye");
+const surface = @import("seva_surface.rye");
 
 const witness_version = "20260715.205500";
 
@@ -67,7 +67,7 @@ fn run_selftest() !u8 {
     const reputation = try table.add_child("reputation");
     try reputation.grant(caps.Capability.init("state-reputation", caps.right_read | caps.right_write));
 
-    // Host each isolated agent, then gather all three onto one Sala surface.
+    // Host each isolated agent, then gather all three onto one Seva surface.
     const r_ask = try pool.host_agent_on(&table, "ask", "state-ask", log_ask[0..ask_len], &issuer_hex, &holder_hex, issuer_kp.public_key, holder_kp.public_key);
     const r_receipt = try pool.host_agent_on(&table, "receipt", "state-receipt", log_receipt[0..receipt_len], &issuer_hex, &holder_hex, issuer_kp.public_key, holder_kp.public_key);
     const r_rep = try pool.host_agent_on(&table, "reputation", "state-reputation", log_rep[0..rep_len], &issuer_hex, &holder_hex, issuer_kp.public_key, holder_kp.public_key);
@@ -83,7 +83,7 @@ fn run_selftest() !u8 {
     assert(std.mem.eql(u8, surf.panel(0).frame.line(1), "issuer 200"));
     assert(std.mem.eql(u8, surf.panel(1).frame.line(1), "issuer 250"));
     assert(std.mem.eql(u8, surf.panel(2).frame.line(1), "issuer 275"));
-    print("pool-r2: one Sala surface, three capability-isolated Pool agents --\n", .{});
+    print("pool-r2: one Seva surface, three capability-isolated Pool agents --\n", .{});
     var p: u32 = 0;
     while (p < surf.count) : (p += 1) {
         const pan = surf.panel(p);
@@ -119,7 +119,7 @@ fn run_selftest() !u8 {
     print("pool-r2: an ungranted 'sanctuary' agent is refused by Pool, so it earns no panel -- the surface shows only what Pool admitted -- GREEN unwelcome path\n", .{});
 
     print("pool-r2: version {s}\n", .{witness_version});
-    print("GREEN: Sala R2 -- the unified viewer, many capability-isolated Pool agents on one surface, each a pure fold.\n", .{});
+    print("GREEN: Seva R2 -- the unified viewer, many capability-isolated Pool agents on one surface, each a pure fold.\n", .{});
     return 0;
 }
 
