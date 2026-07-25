@@ -12,11 +12,7 @@ Beside the allocator itself, Tally holds a second kind of thing: small, universa
 ## The Garden
 
 | File | Proves |
-|
-
-Radiant pass `20260725.112615`
-
-------|--------|
+|------|--------|
 | [`seed.rye`](seed.rye) | the first running Tally — a bounded region, asserted edges |
 | [`gardens.rye`](gardens.rye) | Tally v1 — a fixed set of named Regions in one Gardens, each its own bounded garden |
 

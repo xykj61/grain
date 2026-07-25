@@ -13,8 +13,6 @@
 
 **dated_guard:** Do **not** claim a Glow-rune hash jet beyond this product body. Do **not** reopen line/sign authored bodies or lit-desk/Pixel as unfinished. Shared-package `face_lit` · JABS3 stay held until named.
 
-Radiant pass `20260725.112015`
-
 ---
 
 ## Verdict (one breath)

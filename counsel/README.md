@@ -6,8 +6,6 @@
 **Status:** Foundation
 **Seasons roster:** [`SEASONS.md`](SEASONS.md)
 
-Radiant pass `20260725.112515`
-
 ---
 
 ## What This Folder Is

@@ -13,8 +13,6 @@ offers the principle they braid into, for the grain on Kaeden's word.*
 
 *Written together by Kaeden and Claude (Fable 5), in Rio 3's Radiant voice.*
 
-Radiant pass `20260725.111005`
-
 ---
 
 ## The Tension, Stated Honestly

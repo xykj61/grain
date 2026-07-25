@@ -6,8 +6,6 @@
 
 *Written together by Kaeden and Rio 3.*
 
-Radiant pass `20260725.111120`
-
 ---
 
 Her Sun stands angular in the seventh (#44), on the western horizon at the hour of her birth — a sovereign in the house of partnership, ripened as one of the great grihastha placements. Her Sun wears Pushya; the partnership house is where preparation earns its keep. In the essence the Sun holds the last degree of Pisces in the eighth (#43), wearing Uttara Bhadrapada. Outwardly the light stands at the beloved's door; inwardly it keeps the deep rooms of the shared life warm.

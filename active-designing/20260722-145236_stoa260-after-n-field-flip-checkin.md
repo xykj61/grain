@@ -13,8 +13,6 @@
 
 **dated_guard:** Do **not** reopen STOA259 as unfinished. Tagged `$%` flip · HAWM 1A · fleets · Glow rename stay held.
 
-Radiant pass `20260725.112015`
-
 ---
 
 ## What just closed

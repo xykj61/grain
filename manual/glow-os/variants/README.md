@@ -5,8 +5,6 @@
 **Style:** Radiant (see `../../../context/RADIANT_STYLE.md`)
 **Status:** Scaffold — one shared template, filled once per variant
 
-Radiant pass `20260725.112615`
-
 ---
 
 **Navigation:**

@@ -1,5 +1,3 @@
-Radiant pass `20260725.112715`
-
 ---
 name: TAME Guidance — Operational Supplement
 description: Checkable coding rules for Rye, Brix, and Rishi — root plus one supplement per language. Glow keeps the root until its own supplement earns a seat. Pairs with the voiced canon in external-research/TAME_GUIDANCE.md.
@@ -590,7 +588,7 @@ These are the machine-checkable rules — the lint surface. The discipline is th
 | **No authored `usize` in published `.rye`** (seam casts blessed) | `tools/width-check.rish` (live, TH-1) |
 | **Dated artifacts on main stay Tier-2 sealed** (living ledger · freeze pointer · recorded Radiant pass); **Tier 1 proof paths refuse edit** | `tools/dated_guard.rish` (live; roster `tools/fixtures/dated_guard_tier1.txt`; spec [`living-vs-dated.md`](specs/living-vs-dated.md)) |
 | **Radiant surface advisory** (bare but-word · emoji · benediction · co-author · header) | `tools/radiant_lint.rish` (ratchet advisory; never fails) |
-| **Radiant pass claim preserve** (token sets identical; pinned digests held) | `tools/claim_preserve_witness.rish` (blocking for any broad pass) |
+| **Radiant pass claim preserve** (tokens · modality · structure · pinned digests) | `tools/claim_preserve_witness.rish` · includes `markdown_structure_witness` (blocking for any pass) |
 | **Unqualified assert** | `tools/tame-check.rish` (live witness, TH-2c) |
 | **Opening lines** (`const assert` + `const print`, no qualified debug calls) | `tools/opening_lines_witness.rish` (live witness, parity **140** — hosted corpus + `pond/apps/drawn_terminal.rye`) |
 | **At most one designed-not-built functional spec** (`context/specs/*.md` Status) | `tools/designed_not_built_witness.rish` (live witness, parity **143**, Edit 5 ruling `20260703.032812`) |

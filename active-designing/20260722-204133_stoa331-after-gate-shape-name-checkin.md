@@ -13,8 +13,6 @@
 
 **dated_guard:** Study aliases stay. Do not recommend rest unprompted.
 
-Radiant pass `20260725.112215`
-
 ---
 
 ## What just closed

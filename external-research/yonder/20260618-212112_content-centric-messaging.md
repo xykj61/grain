@@ -12,8 +12,6 @@
 **Sources distilled:** Curtis Yarvin, ["Urbit: functional programming from scratch"](https://moronlab.blogspot.com/2010/01/urbit-functional-programming-from.html) (2010); [Named data networking (CCN lineage)](https://grokipedia.com/page/Named_data_networking) (Van Jacobson / PARC); [Clay marks](https://docs.urbit.org/urbit-os/kernel/clay/marks)
 **Structure:** mission · problem · opportunity · architecture · shape-casting and the RISC-V question · Landscape or relays · caveats · longer horizon · conclusion
 
-Radiant pass `20260725.110622`
-
 ---
 
 ## Mission

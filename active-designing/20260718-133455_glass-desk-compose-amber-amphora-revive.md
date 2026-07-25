@@ -9,8 +9,6 @@
 **Research:** [`../external-research/20260718-133455_glass-desk-amber-amphora-compose-not-fuse.md`](../external-research/20260718-133455_glass-desk-amber-amphora-compose-not-fuse.md)  
 **Companions:** [`20260718-122145_hearth-lulu-display-presets-short-home-and-zeta6-send.md`](20260718-122145_hearth-lulu-display-presets-short-home-and-zeta6-send.md) · compressors [`../docs/LULU.md`](../docs/LULU.md) · [`../docs/SETU.md`](../docs/SETU.md)
 
-Radiant pass `20260725.111615`
-
 ---
 
 ## Ruling (seated)

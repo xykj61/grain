@@ -8,8 +8,6 @@
 **Voice:** Reya 2
 **Lens:** TAME — single-stranded modules; `999_DESIGN` silo principle; `983` whole-system map
 
-Radiant pass `20260725.110740`
-
 ---
 
 ## The Seed

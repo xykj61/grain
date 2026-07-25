@@ -12,8 +12,6 @@
 
 **dated_guard:** Do **not** rewrite STOA183's dated "lower held" claims. Do **not** claim `$%` `@ux`. Elder Rye fold stays.
 
-Radiant pass `20260725.111915`
-
 ---
 
 ## Verdict (one breath)

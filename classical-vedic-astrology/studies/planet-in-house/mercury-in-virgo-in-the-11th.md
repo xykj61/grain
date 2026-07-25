@@ -8,8 +8,6 @@
 
 **In Alice's chart:** Mercury sits in Virgo — its sign of exaltation — in Pūrva Phalguṇī, in the 11th house of community and gains. The planet of intellect rests at its very best, set among friends and networks.
 
-Radiant pass `20260725.112515`
-
 ---
 
 ## What exaltation is, and why Mercury's is special

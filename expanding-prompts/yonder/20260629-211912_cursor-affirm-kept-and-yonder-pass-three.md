@@ -10,8 +10,6 @@
 
 *Written together by Kaeden and Reya 2.*
 
-Radiant pass `20260725.110847`
-
 ---
 
 ## Part A — Affirm the Kept Files in Place (no rename)

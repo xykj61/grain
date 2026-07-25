@@ -26,8 +26,6 @@ Building the real tool required `RYE_LIB` set to a real Zig standard library —
 
 The tools/enrich safety net named across three rounds is complete — all three pieces witnessed and GREEN. The `snake_case` season it was built to protect can open whenever wanted, with nothing structural in the way.
 
-Radiant pass `20260725.111235`
-
 ---
 
 *May the third piece of a promise arrive exactly as whole as the first two.*

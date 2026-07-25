@@ -10,8 +10,6 @@
 **Companion:** the deeper comparative study lives in `20260617-195712_caravan-tally-networking.md`
 **Status:** Exploration
 
-Radiant pass `20260725.110622`
-
 ---
 
 ## Where We Begin

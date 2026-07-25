@@ -13,8 +13,6 @@
 
 **dated_guard:** Study `-mold` allowlist strings and hoon-study desks stay. Cast/`rune_face` mold fields wait for the next lap.
 
-Radiant pass `20260725.112215`
-
 ---
 
 ## Verdict (one breath)

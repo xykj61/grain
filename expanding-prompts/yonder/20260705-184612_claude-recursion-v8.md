@@ -8,8 +8,6 @@
 **Parity pin (this session):** 116 standard witnesses + 37 block witnesses GREEN
 **This document:** operational and plain; the studies it carries are Radiant
 
-Radiant pass `20260725.111120`
-
 ---
 
 ## 0. Who you are, and the one clock

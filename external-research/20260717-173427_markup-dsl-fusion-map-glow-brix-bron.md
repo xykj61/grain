@@ -8,8 +8,6 @@
 **Companion silo:** [`../active-designing/20260717-173427_witness-habitat-and-the-markup-pipeline.md`](../active-designing/20260717-173427_witness-habitat-and-the-markup-pipeline.md)
 **Foundations companion:** [`20260717-173427_witness-habitat-foundations-fit-and-onboarding-gaps.md`](20260717-173427_witness-habitat-foundations-fit-and-onboarding-gaps.md)
 
-Radiant pass `20260725.111615`
-
 ---
 
 ## The Honest Question

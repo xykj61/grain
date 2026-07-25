@@ -5,8 +5,6 @@
 **Style:** Radiant (see `../../context/RADIANT_STYLE.md`)
 **Status:** Living — starter library; grows a component each time a prompt shape proves itself
 
-Radiant pass `20260725.112515`
-
 ---
 
 ## The Idea

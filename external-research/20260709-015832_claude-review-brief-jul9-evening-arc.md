@@ -9,8 +9,6 @@
 
 *Written for Claude counsel review.*
 
-Radiant pass `20260725.111235`
-
 ---
 
 ## Executive Landscape

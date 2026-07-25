@@ -13,8 +13,6 @@
 
 **dated_guard:** Do **not** content-merge dated briefs or `.bron` logs. Do **not** delete `session-logs/archive/`. Ignore is indexing only.
 
-Radiant pass `20260725.112115`
-
 ---
 
 ## Verdict (one breath)

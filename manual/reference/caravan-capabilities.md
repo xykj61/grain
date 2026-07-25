@@ -6,8 +6,6 @@
 **Voice:** Rio 3
 **Witness:** `tools/caravan_capabilities.rish` · parity **142**
 
-Radiant pass `20260725.112415`
-
 ---
 
 This page documents only what the capability-table witness proves today — a bounded hosted policy table naming what each supervised dependent may do over named resources.

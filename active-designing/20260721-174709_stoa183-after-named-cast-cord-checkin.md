@@ -13,8 +13,6 @@
 
 **dated_guard:** Do **not** claim `$%` `@t` or sala-event cast twins until a lean seats them. Elder Rye fold and JABS3 stay held. Prefer **send** of STOA182A before a long next lap when the pier should match the hand.
 
-Radiant pass `20260725.111915`
-
 ---
 
 ## What just closed

@@ -5,8 +5,6 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Research for understanding — study only; no lap opened, no policy seated
 
-Radiant pass `20260725.111515`
-
 ---
 
 ## What This Answers

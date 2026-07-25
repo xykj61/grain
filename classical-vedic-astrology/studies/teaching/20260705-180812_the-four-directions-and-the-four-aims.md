@@ -3,8 +3,6 @@
 **Stamp:** `20260705.180812 UDT` · **Style:** Radiant, gentle register
 **Method:** Siloed — distilled in our own voice; teacher named with gratitude below
 
-Radiant pass `20260725.111120`
-
 ---
 
 The compass and the soul share a shape. In this teaching, the four cardinal directions each carry one of the four elements, and each element carries one of the four great aims of a human life. Set them side by side and a simple, beautiful map appears — one that also explains why the turning-points of the zodiac hold the elements they do.

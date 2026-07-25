@@ -13,8 +13,6 @@
 
 **dated_guard:** Do **not** claim Glow authored ed25519. Format/parse log-line stays B2. JABS3 held.
 
-Radiant pass `20260725.111915`
-
 ---
 
 ## Verdict (one breath)

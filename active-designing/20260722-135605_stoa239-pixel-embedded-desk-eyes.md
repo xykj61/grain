@@ -14,8 +14,6 @@
 **dated_guard:** Do **not** claim bare `adb` is on PATH. Prefer  
 `tools/.cache/hawm0/android-sdk/platform-tools/adb`. JABS3 held.
 
-Radiant pass `20260725.112015`
-
 ---
 
 ## Verdict (one breath)

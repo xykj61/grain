@@ -6,8 +6,6 @@ Work in Radiant Style. Gate every phase propose-then-confirm. Kaeden is the sole
 
 The authored files for this batch are provided alongside this prompt (in the same handoff): the two new briefs, and the six writings. Place each at the path named below; confirm each by its first line.
 
-Radiant pass `20260725.112415`
-
 ---
 
 ## Step 0 — Footing and branch

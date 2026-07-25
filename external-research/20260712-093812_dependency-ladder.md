@@ -5,8 +5,6 @@
 **Style:** Radiant (see `context/RADIANT_STYLE.md`)
 **Status:** Proposed ordering — research for understanding / counsel. Rung sequence is a recommendation; Kaeden words which open.
 
-Radiant pass `20260725.111415`
-
 ---
 
 The rungs are grouped by what they wait on. Within a group, order is by smallest-first. Each rung names its blocker plainly, so the tree can see what unlocks what. Nothing here is seated; this is the map, not the march.

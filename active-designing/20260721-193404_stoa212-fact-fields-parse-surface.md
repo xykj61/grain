@@ -13,8 +13,6 @@
 
 **dated_guard:** Do **not** claim Glow-authored field parse or Glow source literals. JABS3 held.
 
-Radiant pass `20260725.111915`
-
 ---
 
 ## Verdict (one breath)

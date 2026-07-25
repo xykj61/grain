@@ -6,8 +6,6 @@
 **Voice:** Quin  
 **Waymark:** **STOA** · compressor [`../docs/STOA.md`](../docs/STOA.md) · prior [`20260718-225931_stoa17-core-payload-brief.md`](20260718-225931_stoa17-core-payload-brief.md)
 
-Radiant pass `20260725.111615`
-
 ---
 
 ## Thin face claim

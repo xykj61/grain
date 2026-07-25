@@ -7,8 +7,6 @@
 
 *Reviewed in the yonder sweep on 2026-06-29 and kept active — canonical width inventory.*
 
-Radiant pass `20260725.110740`
-
 ---
 
 ## The Law

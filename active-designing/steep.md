@@ -11,8 +11,6 @@
 
 *Written by Kaeden and Rio 3.*
 
-Radiant pass `20260725.112615`
-
 ---
 
 ## Mission

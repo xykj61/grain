@@ -13,8 +13,6 @@
 
 **dated_guard:** Do **not** claim tagged `$%` flip collapsed. Do **not** widen past nine faces. Ambient gold · HAWM 1A · JABS3 stay held.
 
-Radiant pass `20260725.112015`
-
 ---
 
 ## Verdict (one breath)

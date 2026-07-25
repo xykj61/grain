@@ -8,8 +8,6 @@
 
 **In Alice's chart:** Jupiter sits in Virgo, in Pūrva Phalguṇī, in the 11th house — the very same sign, star, and house as her Mercury. The planet of wisdom and the planet of intellect stand side by side. (Their meeting together has its own file; here we read Jupiter on its own terms.)
 
-Radiant pass `20260725.112415`
-
 ---
 
 ## What Jupiter is, at the root

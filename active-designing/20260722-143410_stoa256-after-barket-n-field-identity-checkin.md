@@ -13,8 +13,6 @@
 
 **dated_guard:** Do **not** reopen STOA255 as unfinished. Ambient gold · shared-package · JABS3 stay held until named.
 
-Radiant pass `20260725.112015`
-
 ---
 
 ## What just closed

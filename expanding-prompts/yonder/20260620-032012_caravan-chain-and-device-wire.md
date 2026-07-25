@@ -8,8 +8,6 @@
 **Voice:** Reya 2
 **Lens:** TAME — Gall's Law; `993` bounded network; `979` Comlink remoting
 
-Radiant pass `20260725.110740`
-
 ---
 
 ## The Seed

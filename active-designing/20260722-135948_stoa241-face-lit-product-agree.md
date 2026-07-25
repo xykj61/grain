@@ -13,8 +13,6 @@
 
 **dated_guard:** Do **not** claim linengrow `@import`s `glow/face_lit`. Do **not** reopen pin/desk/embed/Pixel as unfinished. True shared-package import stays held. JABS3 held.
 
-Radiant pass `20260725.112015`
-
 ---
 
 ## Verdict (one breath)

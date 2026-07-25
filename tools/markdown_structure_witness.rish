@@ -1,0 +1,13 @@
+# markdown_structure_witness.rish — blocking structural integrity for Radiant passes.
+# Seated 20260725.114400 · Quin relay repair.
+#
+# Tables · code fences · links · heading levels (vs BASE).
+# Negative: context/fixtures/markdown_structure_broken_table.md must FAIL.
+#
+#   MARKDOWN_STRUCTURE_FILES=$'path\npath' rishi/bin/rishi run tools/markdown_structure_witness.rish
+
+say "markdown_structure: tables · fences · links · headings…"
+let scan = run ["rishi/bin/rishi" "run" "tools/fixtures/markdown_structure_scan.rish"]
+say scan.out
+assert scan.ok else "markdown_structure RED — STOP the wave"
+say "GREEN: markdown_structure — tables · fences · links · headings held."

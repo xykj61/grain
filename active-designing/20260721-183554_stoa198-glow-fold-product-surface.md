@@ -13,8 +13,6 @@
 
 **dated_guard:** Do **not** rewrite elder `sala_b0_fold` internals. STOA191 claim-direct wire is superseded for the product entry by this fold surface. JABS3 held.
 
-Radiant pass `20260725.111915`
-
 ---
 
 ## Verdict (one breath)

@@ -12,8 +12,6 @@
 
 **dated_guard:** Do **not** rewrite dated STOA briefs, desk names, or session logs that say *mold*. Those keep Hoon-era and desk-suffix *mold* as historical names. Living Glow OS prose uses **shape** from this pin forward.
 
-Radiant pass `20260725.111815`
-
 ---
 
 ## Verdict (one breath)

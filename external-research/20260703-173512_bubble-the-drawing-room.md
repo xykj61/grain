@@ -11,8 +11,6 @@
 **Source:** the Grain Sketchbook archive — proposal of 2025-12-05, development plan, task ledger, integration gaps memo, agent coordination letters, and the `grain_bubble` source tree with its numbered witness tests
 **Status:** External research — siloed design harvest
 
-Radiant pass `20260725.111005`
-
 ---
 
 ## What This Document Is

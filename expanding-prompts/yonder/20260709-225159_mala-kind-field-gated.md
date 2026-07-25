@@ -5,8 +5,6 @@
 **Status:** **K0 landed** `20260709.225343` (keep memos); **do not implement K1** until affirm
 **Ground:** [`../context/specs/20260709-225159_mala-kind-field.md`](../context/specs/20260709-225159_mala-kind-field.md)
 
-Radiant pass `20260725.111415`
-
 ---
 
 ## Affirm

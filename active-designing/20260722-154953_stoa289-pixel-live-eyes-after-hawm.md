@@ -13,8 +13,6 @@
 
 **dated_guard:** Fleets · HAWM2 · gold · JABS3 · UDP stay held. Do not claim bare `adb` on PATH.
 
-Radiant pass `20260725.112115`
-
 ---
 
 ## Verdict

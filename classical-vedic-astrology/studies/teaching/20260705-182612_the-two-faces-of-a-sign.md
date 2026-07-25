@@ -3,8 +3,6 @@
 **Stamp:** `20260705.182612 UDT` · **Style:** Radiant, gentle register
 **Method:** Siloed — distilled in our own voice; teacher named with gratitude below
 
-Radiant pass `20260725.111120`
-
 ---
 
 Every sign carries a set of themes, and every theme has two faces — a bright expression and a shadowed one. A sign of leadership can rise into noble command or harden into domination; a sign of care and order can flower into patient excellence or tighten into anxious perfectionism. The themes are fixed; which face they show is not. Knowing what decides the face is one of the quiet keys of the craft.

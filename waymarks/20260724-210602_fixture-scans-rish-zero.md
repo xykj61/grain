@@ -6,8 +6,6 @@
 **Room:** Checkable  
 **Witnesses:** `rishi/bin/rishi run tools/living_docs_lint.rish` · `rishi/bin/rishi run tools/dated_guard.rish` · `rishi/bin/rishi run tools/tame_style_scan_advise.rish`
 
-Radiant pass `20260725.112215`
-
 ---
 
 ## Claim

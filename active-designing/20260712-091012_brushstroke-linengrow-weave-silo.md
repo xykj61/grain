@@ -11,8 +11,6 @@
 **Provenance:** May agent session (Kaeden’s account copy; share `https://claude.ai/share/48cf756e-648c-4bc6-9cb2-d7fe5cd80170` robots-blocked to the bench) · screenshots on Framework morning `091012` · Linengrow linen spirit
 **Ground:** LEXICON Brushstroke / Skate / Maitreya · enclosure ruling [`../counsel/20260712-090512_claude-ruling-enclosure-ai-jail-then-pond.md`](../counsel/20260712-090512_claude-ruling-enclosure-ai-jail-then-pond.md) · proven-seat guest ER [`../external-research/20260712-054342_proven-seat-guest-genode-sel4.md`](../external-research/20260712-054342_proven-seat-guest-genode-sel4.md) · Pond drawn terminal
 
-Radiant pass `20260725.111415`
-
 ---
 
 ## Six invariants (design law — comments beside the constants)

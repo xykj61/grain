@@ -7,8 +7,6 @@
 **Subtitle:** named budgets for bytes, tokens, memory, and attention  
 **Bound:** `living_pin_max_bytes = 24576`
 
-Radiant pass `20260725.112415`
-
 ---
 
 ## The vow

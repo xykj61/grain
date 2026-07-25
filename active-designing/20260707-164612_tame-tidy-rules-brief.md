@@ -11,8 +11,6 @@
 
 *Written by Rio 3 for Kaeden and Claude.*
 
-Radiant pass `20260725.110418`
-
 ---
 
 ## Where the rules live

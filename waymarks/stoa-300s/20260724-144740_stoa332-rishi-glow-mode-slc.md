@@ -7,8 +7,6 @@
 **Witness:** `rishi/bin/rishi run tools/glow_repl_witness.rish`  
 **Room:** Checkable
 
-Radiant pass `20260725.112215`
-
 ---
 
 ## Claim

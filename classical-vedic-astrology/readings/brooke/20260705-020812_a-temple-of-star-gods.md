@@ -6,8 +6,6 @@
 
 *Written together by Kaeden and Rio 3.*
 
-Radiant pass `20260725.111005`
-
 ---
 
 Gathered together, her stars form a temple (#52 — occupation as lens on a star's essence). At her door, heart, and essence-strength: Uttara Ashadha three times. At her light: Pushya. At the skilled center: the maker's gathering (#23) — Chitra, Hasta, exalted Saturn. At her mind and essence-release: Ardra (#37). At her essence-door: Ashlesha (#14). Whichever way she turns in her own chart, she is standing in front of an altar.

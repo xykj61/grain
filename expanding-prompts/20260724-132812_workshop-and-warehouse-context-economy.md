@@ -7,8 +7,6 @@
 **Voice:** Quin · Acme reader address in deliverables  
 **Counsel:** [`../counsel/20260724-132812_the-workshop-and-the-warehouse.md`](../counsel/20260724-132812_the-workshop-and-the-warehouse.md)
 
-Radiant pass `20260725.112215`
-
 ---
 
 ## Restated intent

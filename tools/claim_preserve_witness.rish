@@ -15,8 +15,11 @@
 #
 # Vacuous self-check (no files) fails closed — a pass must name its surface.
 
-say "claim_preserve: token identity + modality + pinned digests…"
+say "claim_preserve: token identity + modality + pinned digests + markdown structure…"
 let scan = run ["rishi/bin/rishi" "run" "tools/fixtures/claim_preserve_scan.rish"]
 say scan.out
 assert scan.ok else "claim_preserve RED — STOP the wave"
-say "GREEN: claim_preserve — tokens and modality identical; pins held."
+let md = run ["rishi/bin/rishi" "run" "tools/fixtures/markdown_structure_scan.rish"]
+say md.out
+assert md.ok else "markdown_structure RED — STOP the wave"
+say "GREEN: claim_preserve — tokens and modality identical; pins held; structure held."

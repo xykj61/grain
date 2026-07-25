@@ -12,8 +12,6 @@
 
 **dated_guard:** Do **not** edit dated STOA126–133 wording artifacts. Seat this lap in *this* brief and living pins when GREEN.
 
-Radiant pass `20260725.111815`
-
 ---
 
 ## Verdict (one breath)

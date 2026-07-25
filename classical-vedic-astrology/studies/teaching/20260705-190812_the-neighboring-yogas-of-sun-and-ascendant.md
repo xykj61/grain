@@ -3,8 +3,6 @@
 **Stamp:** `20260705.190812 UDT` · **Style:** Radiant, gentle register
 **Method:** Siloed — distilled in our own voice; teacher named with gratitude below
 
-Radiant pass `20260725.111235`
-
 ---
 
 The neighboring method that reads company around the Moon reaches the Sun and the ascendant as well, growing subtler at each step. A real planet — one of the five moving stars — in the whole sign just behind or just ahead of a focal point lends that point its nature. The Moon, softest of the three, feels this most; the Sun feels it clearly; the ascendant feels it least, registering only its strongest form. Reading all three together completes one graceful pattern, the same formula carried across the chart's three most important lights.

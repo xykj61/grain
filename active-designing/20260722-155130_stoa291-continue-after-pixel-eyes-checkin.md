@@ -13,8 +13,6 @@
 
 **dated_guard:** Fleets · HAWM2 · ambient gold · JABS3 · UDP · Glow rename · `deca-*` stay **held** unless explicitly chosen.
 
-Radiant pass `20260725.112115`
-
 ---
 
 ## Seat right now

@@ -9,8 +9,6 @@
 **Status:** Checkable — `vendor/monocypher` @ 4.0.3 / `ab2b16d…` · fetch witness GREEN · guest/fixture HOLD
 **Ground:** Lap [`20260712-214200_proven-seat-signed-kumara-monocypher.md`](20260712-214200_proven-seat-signed-kumara-monocypher.md) · witness `tools/proven_seat_signed_kumara_fetch.rish` · tip `85c79ef`
 
-Radiant pass `20260725.111515`
-
 ---
 
 ## Ask one — resting

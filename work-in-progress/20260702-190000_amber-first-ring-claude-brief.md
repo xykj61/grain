@@ -5,8 +5,6 @@
 **Opens after:** Kaeden's three doors (Pond clause · Lap 3 metal close · Edit 5 ruling)
 **Ground:** [`context/specs/20260701-221512_amber-functional-spec.md`](../context/specs/20260701-221512_amber-functional-spec.md)
 
-Radiant pass `20260725.110847`
-
 ---
 
 ## The ask

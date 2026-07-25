@@ -5,8 +5,6 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Research and cost plan — no infrastructure provisioned; all pricing current as of this research date
 
-Radiant pass `20260725.111515`
-
 ---
 
 ## For an Acme Corporation Employee Reading This

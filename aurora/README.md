@@ -5,8 +5,6 @@
 **Style:** Radiant prose (see `../context/RADIANT_STYLE.md`); code in TAME Guidance (`../external-research/TAME_GUIDANCE.md`)
 **Status:** Checkable — freestanding boot and wire seed
 
-Radiant pass `20260725.112515`
-
 ---
 
 ## What Aurora Is

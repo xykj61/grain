@@ -8,8 +8,6 @@ The clean-room architecture for our core modules now lives in the design stack, 
 
 Whole-system map: [`../active-designing/yonder/20260619-225712_the-whole-system.md`](../active-designing/yonder/20260619-225712_the-whole-system.md)
 
-Radiant pass `20260725.110740`
-
 ---
 
 *May the recommendation live where we decide, not only where we explored.*

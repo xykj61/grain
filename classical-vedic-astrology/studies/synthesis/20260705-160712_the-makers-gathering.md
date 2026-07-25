@@ -7,5 +7,3 @@ Some charts gather their craft into one room. The pattern: Mercury and an exalte
 *Distilled from this lane's own readings; pattern generic, no person carried. Transcript deepening queued for its dedicated sitting.*
 
 *May the three companions keep one workshop. May the late blooming be trusted as blooming. And may the door between the workbench and the world stand open.*
-Radiant pass `20260725.111120`
-

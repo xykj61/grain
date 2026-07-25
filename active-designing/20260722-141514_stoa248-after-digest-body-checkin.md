@@ -13,8 +13,6 @@
 
 **dated_guard:** Do **not** reopen STOA247 as unfinished. Shared-package `face_lit` · JABS3 stay held until named.
 
-Radiant pass `20260725.112015`
-
 ---
 
 ## What just closed

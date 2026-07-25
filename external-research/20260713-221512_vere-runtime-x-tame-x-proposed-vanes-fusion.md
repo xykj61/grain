@@ -5,8 +5,6 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Research for understanding — reads `vere/old`'s actual source, proposes no code merge yet
 
-Radiant pass `20260725.111515`
-
 ---
 
 ## What This Answers, for an Acme Corporation Employee Reading This

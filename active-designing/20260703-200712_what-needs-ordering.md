@@ -10,8 +10,6 @@
 
 *Written together by Kaeden and Claude (Fable 5), in Rio 3's Radiant voice.*
 
-Radiant pass `20260725.110418`
-
 ---
 
 ## The Sorting

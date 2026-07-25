@@ -7,8 +7,6 @@
 **Audience:** an Acme Corporation employee choosing a first door on this tree
 **Status:** Mixed register (Two Rooms) — real Pixel/HAWM/TUBE0.5 and Rishi paths named first; OS variants remain scaffold
 
-Radiant pass `20260725.112415`
-
 ---
 
 **Navigation:**

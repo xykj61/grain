@@ -9,8 +9,6 @@
 **Status:** Design — proposes the sharing boundary; no `.glow` parser exists yet. Register: mixed (Two Rooms) — Rye's own bridge mechanism, quoted below, is checkable today (real code, read directly); the Glow-side extension is design.
 **Grounds in:** [`../active-reviving/20260715-213500_glow-revives-hoon-runes-targets-riscv.md`](../active-reviving/20260715-213500_glow-revives-hoon-runes-targets-riscv.md) (the revival decision) · [`20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md`](20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md) (the rune grammar this bridges) · [`../rye/README.md`](../rye/README.md) and [`../rye/src/main.rye`](../rye/src/main.rye) (Rye's own real bridge, quoted directly)
 
-Radiant pass `20260725.111615`
-
 ---
 
 ## What This Answers

@@ -7,8 +7,6 @@
 **Room:** Vision → checkable when SLC ring witnesses exist  
 **Counsel:** [`../counsel/20260724-135312_vanes-shelves-and-the-glow-ladder.md`](../counsel/20260724-135312_vanes-shelves-and-the-glow-ladder.md)
 
-Radiant pass `20260725.112215`
-
 ---
 
 ## Seat

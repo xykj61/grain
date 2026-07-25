@@ -5,8 +5,6 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Checkable-room module — laps 0–7 green (parse · rye/rish/plain snippets · headings · depth filter · paragraphs · fence kinds); rye/rish/plain/fence/paragraph/outline/h1/h2/h3/depth-tally/tally/blocks/fence+heading/tally+blocks/para+blocks/h1+blocks views on Skate
 
-Radiant pass `20260725.112615`
-
 ---
 
 Scribble turns human prose into block values — headings, paragraphs, and fenced code with `rye_fence` / `rish_fence` / plain kinds for corpus work. Heading extract feeds the outline Skate view; depth filter selects h1, h2, or h3 folds; paragraph extract gathers prose bodies in source order; fence-kinds count folds rye/rish/plain tallies; plain-snippet extract gathers unmarked fence bodies.

@@ -10,8 +10,6 @@
 **Ground:** ruling [`../counsel/20260712-090512_claude-ruling-enclosure-ai-jail-then-pond.md`](../counsel/20260712-090512_claude-ruling-enclosure-ai-jail-then-pond.md) · wrappers `tools/cursor-jail.sh` · gate `tools/lane_kvm.sh` · gratitude study `gratitude/ai-jail/src/cli.rs` + `sandbox/bwrap.rs` (GPL-3.0 — ideas only)
 **Reviewed-and-kept:** Status named Checkable after doorway FAIL `143528`; Claude afternoon four asks seated `144519`
 
-Radiant pass `20260725.111415`
-
 ---
 
 ## Host one-shot safety (Claude affirm)

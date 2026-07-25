@@ -13,8 +13,6 @@
 
 **dated_guard:** Study aliases and hoon-study desks keep `-mold`. Do not recommend rest unprompted.
 
-Radiant pass `20260725.112215`
-
 ---
 
 ## What just closed

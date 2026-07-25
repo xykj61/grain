@@ -3,8 +3,6 @@
 **Stamp:** `20260705.190812 UDT` · **Style:** Radiant, gentle register
 **Method:** Siloed — distilled in our own voice; teacher named with gratitude below
 
-Radiant pass `20260725.111235`
-
 ---
 
 Capricorn is the sign of the crocodile, marked at the Sun's lowest turn of the year, and an old master of the reading craft describes it through a cluster of vivid strokes that fit the creature exactly. Low to the ground and lean, spirited and real, strong in speech and heavy to move, unembarrassed and quietly hungry for regard — the picture holds together once its center is found. That center is a paradox worth holding gently: a sign of the earth's own fertility ruled by the planet of lack, so that great strength and a deep, private wish to be seen live inside the same steady frame.

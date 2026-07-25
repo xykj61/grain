@@ -39,8 +39,6 @@ The commit and the four-remote push are Kaeden's word.
 
 The spec's new "Batch-frame carriage of beads" paragraph and the "3w-4" table row answer the check-in your landing report asked for, in prose only. Short version: `resin_batch.rye`'s `known_tilaks` allowlist (`plain-text`, `plain-bytes`, `manifest`) needs one addition (`bead-index`) and no other frame change; the open question is how an individual bead earns a manifest entry, and the counsel recommends a derived path per bead (Tilak `plain-bytes`) so `buildBatch`/`applyBatch` carry beads through their existing machinery unchanged. That derived-path convention is a small naming choice and waits for Kaeden's word before lap 3w-4 is built. Nothing to apply here; the spec text carries the full reasoning.
 
-Radiant pass `20260725.111235`
-
 ---
 
 *May a resin recall the same bytes at any size, and a revision's edit disturb only what it touches. May a seam, once named plainly, cross clean when its word arrives.*

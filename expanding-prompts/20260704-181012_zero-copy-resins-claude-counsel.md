@@ -12,8 +12,6 @@
 
 *Prepared by Cursor (Rio 3) for Claude (Fable counsel) and Kaeden — counsel and editorial deltas only; Cursor implements on Kaeden approval after counsel lands.*
 
-Radiant pass `20260725.111005`
-
 ---
 
 ## Seed intent (Kaeden's request, echoed)

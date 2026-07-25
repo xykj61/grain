@@ -13,8 +13,6 @@
 
 **dated_guard:** Do **not** claim Glow authored sign or replay. Sign stays inside elder `append_event`. Elder `sala_b0_fold` stays. JABS3 held.
 
-Radiant pass `20260725.111915`
-
 ---
 
 ## Verdict (one breath)

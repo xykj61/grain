@@ -7,11 +7,7 @@
 Numbered notes live here as a lexicon-shaped catalog. This README is the living index pin; the notes themselves stay dated study.
 
 | Role | Path |
-|
-
-Radiant pass `20260725.112615`
-
-------|------|
+|------|------|
 | Lexicon / start | look for `0000*` or lowest-numbered note in this folder |
 | Parent organizing | [`../ORGANIZING.md`](../ORGANIZING.md) |
 | Stewards | [`../STEWARDS.md`](../STEWARDS.md) — study shelf |

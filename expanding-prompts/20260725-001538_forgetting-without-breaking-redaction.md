@@ -7,8 +7,6 @@
 **Voice:** Quin · Acme reader address in deliverables  
 **Counsel:** [`../counsel/20260725-001200_forgetting-without-breaking.md`](../counsel/20260725-001200_forgetting-without-breaking.md)
 
-Radiant pass `20260725.112215`
-
 ---
 
 ## Restated intent

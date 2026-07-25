@@ -5,8 +5,6 @@
 **Status:** **Landed** `20260709.202427` — `thinviewtest` GREEN; parity **202**
 **Ground:** TASKS thin-demo exception (`021112`) · counsel §3 · chain-read **removed** `152612` — re-scope to local MALA/WOV fixtures through SLC-2a drawn terminal
 
-Radiant pass `20260725.111415`
-
 ---
 
 ## Re-scope (honest)

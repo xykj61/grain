@@ -11,8 +11,6 @@
 
 *Written in Rio 3's Radiant voice, for Kaeden and every future sitter.*
 
-Radiant pass `20260725.111235`
-
 ---
 
 ## Part One — What We Are Working On Now

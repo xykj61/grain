@@ -8,8 +8,6 @@
 
 **In Alice's chart:** Venus occupies the 8th house — the deep, hidden, regenerative house. This is the *where* of her Venus, the realm her love operates within. Read it alongside the Venus-in-Gemini file, which gives the *how*.
 
-Radiant pass `20260725.112715`
-
 ---
 
 ## What the 8th house holds

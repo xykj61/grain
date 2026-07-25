@@ -3,8 +3,6 @@
 **Stamp:** `20260705.173112 UDT` · **Style:** Radiant, gentle register
 **Method:** Siloed — distilled in our own voice; teacher named with gratitude below
 
-Radiant pass `20260725.111120`
-
 ---
 
 The sixth house is the house of difficulty and its overcoming — of daily work and service, of health and its troubles, of conflict, obstacles, and the effort it takes to set things right. Set the Moon here, the feeling heart in the house of struggle, and the emotional nature becomes engaged with challenge itself. This is a heart that meets the fight, that feels most alive when there is a problem to solve, a wrong to correct, or a hard thing to master. It is stirred by resistance, and it grows by pushing against it.

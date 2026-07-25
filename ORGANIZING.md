@@ -7,8 +7,6 @@
 **Style:** Radiant (see `context/RADIANT_STYLE.md`)
 **Voice:** Quin
 
-Radiant pass `20260725.112515`
-
 ---
 
 ## A Word First

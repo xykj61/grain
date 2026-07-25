@@ -5,8 +5,6 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Living — the expanded intent behind this season's Glow OS turn, addressed to a generic Acme Corporation employee
 
-Radiant pass `20260725.111515`
-
 ---
 
 ## The Seed

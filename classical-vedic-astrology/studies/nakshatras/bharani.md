@@ -8,8 +8,6 @@
 
 **In Alice's chart:** Bharaṇī is her Moon's star — the star her mind and heart are born into. Her Moon rests here, in the 7th house. This is the deeper, maturing tone beneath the bright morning.
 
-Radiant pass `20260725.112415`
-
 ---
 
 ## The living character of the star

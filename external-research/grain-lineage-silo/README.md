@@ -5,8 +5,6 @@
 **Style:** Radiant (see `../../context/RADIANT_STYLE.md`)
 **Status:** Living — siloed adaptations; originals held whole at `../../gratitude/grain-lineage/`
 
-Radiant pass `20260725.112515`
-
 ---
 
 ## What Siloing Does Here

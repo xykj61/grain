@@ -3,8 +3,6 @@
 **Stamp:** `20260705.180812 UDT` · **Style:** Radiant, gentle register
 **Method:** Siloed — distilled in our own voice; teacher named with gratitude below
 
-Radiant pass `20260725.111120`
-
 ---
 
 Ardra is the star where Rudra lives. The name points there directly: Ardra marks the place Rudra dwells, so to read this star is to read the god of the storm — the one whose voice is thunder and whose feeling runs hot. Rudra arrives in the old telling as anger given form, born from the tension between a creator's brows, howling for a name the moment he lands. To meet Ardra honestly is to meet that intensity first, and to understand what it is truly for.

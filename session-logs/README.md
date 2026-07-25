@@ -15,6 +15,7 @@ Living index for the append-only session stream. This table reads **newest first
 
 *Erratum `20260724.203617` — UTC window:* four living logs were stamped from `Etc/UTC` and must be read in index order (now on the 20260724/25 season surfaces). Cause fixed: host zone `America/New_York`. From `20260724.205009` the one-clock witness is **blocking**.
 
+- `20260725.114400` — [Radiant repair campaign stopped](20260725-114400_radiant-repair-campaign-stopped.bron) — 12 tables · witness seated
 - `20260725.113125` — [kg completion report filed](20260725-113125_kg-completion-report.bron) — PR 129
 - `20260725.113115` — [Radiant pass completion report](20260725-113115_radiant-pass-completion.bron) — 1198 rows · pass closed
 - `20260725.113030` — [kg Wave 40 pass closed](20260725-113030_kg-wave40-pass-closed.bron) — PR 128 · meta exempt

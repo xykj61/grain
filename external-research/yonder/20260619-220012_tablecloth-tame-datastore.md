@@ -9,8 +9,6 @@
 **Voice:** Reya 2
 **Lens:** TAME — safety, performance, joy
 
-Radiant pass `20260725.110622`
-
 ---
 
 ## The Design Space

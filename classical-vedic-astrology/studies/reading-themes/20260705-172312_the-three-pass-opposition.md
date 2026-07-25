@@ -3,8 +3,6 @@
 **Stamp:** `20260705.172312 UDT` · **Style:** Radiant, gentle register
 **Method:** Siloed — distilled in our own voice; teacher named with gratitude below
 
-Radiant pass `20260725.111120`
-
 ---
 
 Now and then a moving planet forms an opposition to another and, because of the retrograde loop, the exact opposition arrives three times rather than once — the planet reaches the point going forward, backs over it in retreat, and crosses it a third time going forward again. When this happens, the three passes are not three repetitions of one blow. They are three movements of a single lesson: a beginning that raises the theme, a reckoning that turns it inward, and a conclusion that resolves it. To read the three-pass rhythm as one whole is to hand a person a difficulty that already contains its own resolution.

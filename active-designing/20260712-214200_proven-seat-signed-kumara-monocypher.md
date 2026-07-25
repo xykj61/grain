@@ -15,8 +15,6 @@
 - `rishi/bin/rishi run tools/proven_seat_signed_kumara_build_guest.rish`
 - `rishi/bin/rishi run tools/proven_seat_signed_kumara.rish` — jailed TCG · both GREEN lines
 
-Radiant pass `20260725.111515`
-
 ---
 
 ## Grade

@@ -12,8 +12,6 @@
 
 *Written by Rio 3 for Kaeden.*
 
-Radiant pass `20260725.111235`
-
 ---
 
 ## What the Sketchbook Actually Built

@@ -3,8 +3,6 @@
 **Language:** EN
 **Last updated:** 2026-06-21 (`015712`)
 
-Radiant pass `20260725.112515`
-
 ---
 
 These two OpenPGP public keys are **not** duplicates. They share an email and creation date yet carry **different fingerprints** and **different roles**.

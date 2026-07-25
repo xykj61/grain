@@ -10,8 +10,6 @@
 **Status:** Seated — checkable-room lap brief; hosted path GREEN on metal; parity **155**
 **Ground:** [`20260702-195426_slcl1-verifiable-receipt.md`](20260702-195426_slcl1-verifiable-receipt.md) · [`20260705-225412_comlink-device-wire.md`](20260705-225412_comlink-device-wire.md) · [`../external-research/20260705-235412_device-wire-dependencies-down-to-caravan-tally.md`](../external-research/20260705-235412_device-wire-dependencies-down-to-caravan-tally.md) · [`comlink/wire_format.rye`](../comlink/wire_format.rye) · [`comlink/hosted_wire.rye`](../comlink/hosted_wire.rye)
 
-Radiant pass `20260725.110418`
-
 ---
 
 ## The lap in one sentence

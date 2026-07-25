@@ -8,8 +8,6 @@
 **Voice:** Quin
 **Seasons roster:** [`SEASONS.md`](SEASONS.md)
 
-Radiant pass `20260725.112515`
-
 ---
 
 ## Why This Stack Exists

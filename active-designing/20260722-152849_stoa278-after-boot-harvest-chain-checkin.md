@@ -13,8 +13,6 @@
 
 **dated_guard:** Do **not** claim full boot→harvest GREEN without a host onpath printout. Fleets · HAWM2 · gold · JABS3 stay held.
 
-Radiant pass `20260725.112115`
-
 ---
 
 ## What just closed

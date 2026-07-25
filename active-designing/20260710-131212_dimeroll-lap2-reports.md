@@ -10,8 +10,6 @@
 
 *Written by Kaeden and Rio 3 (Grok).*
 
-Radiant pass `20260725.110418`
-
 ---
 
 ## Mission

@@ -13,8 +13,6 @@
 
 **dated_guard:** Do **not** claim Pixel eyes confirmed this stamp. Do **not** claim Android `assets/` folder — desk rides in the `.so`. Keep `linengrow/gen` twin = `glow/gen` desk. JABS3 held.
 
-Radiant pass `20260725.112015`
-
 ---
 
 ## Verdict (one breath)

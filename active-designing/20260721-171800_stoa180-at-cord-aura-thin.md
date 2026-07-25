@@ -12,8 +12,6 @@
 
 **dated_guard:** Do **not** claim `@t` faces lower to runnable desks yet. Do **not** rewrite dated `@uN`-only aura claims. Keep **shape** as Glow OS word — **type** stays refused; **norm** stays held. `MoldSpec` / Zig `*Mold` API rename stays a separate seam.
 
-Radiant pass `20260725.111915`
-
 ---
 
 ## Verdict (one breath)

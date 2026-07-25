@@ -12,8 +12,6 @@
 
 **dated_guard:** Do **not** claim measured token or energy savings. Do **not** rewrite the Glow name affirmation. Do **not** whole-tree rename without an explicit lean. Do **not** treat “enough for humanity” as a GREEN boolean.
 
-Radiant pass `20260725.112015`
-
 ---
 
 ## Door 1 — Are we doing enough for humanity?

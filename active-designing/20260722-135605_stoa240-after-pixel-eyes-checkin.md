@@ -13,8 +13,6 @@
 
 **dated_guard:** Do **not** reopen pin/desk emit as unfinished. JABS3 and shared-package `face_lit` import stay held until named.
 
-Radiant pass `20260725.112015`
-
 ---
 
 ## What just closed (on the pier + Pixel)

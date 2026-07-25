@@ -12,8 +12,6 @@
 
 *Written together by Kaeden and Reya 2.*
 
-Radiant pass `20260725.110847`
-
 ---
 
 ## The Shape, and the One Decision to Confirm First

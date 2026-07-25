@@ -6,8 +6,6 @@
 **Voice:** Quin  
 **Waymark:** **STOA** · compressor [`../docs/STOA.md`](../docs/STOA.md) · prior [`20260718-223906_stoa14-cores-thin-battery-brief.md`](20260718-223906_stoa14-cores-thin-battery-brief.md)
 
-Radiant pass `20260725.111615`
-
 ---
 
 ## STOA15 — two named arms

@@ -8,8 +8,6 @@
 **Room:** Checkable  
 **Counsel:** [`../../counsel/20260725-040247_what-the-shell-remembers.md`](../../counsel/20260725-040247_what-the-shell-remembers.md)
 
-Radiant pass `20260725.112415`
-
 ---
 
 ## The law

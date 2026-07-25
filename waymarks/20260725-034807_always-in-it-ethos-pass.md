@@ -6,8 +6,6 @@
 **Room:** Checkable  
 **Witnesses:** `claim_preserve_witness` · `radiant_lint` · `living_docs_lint` · `dated_guard`
 
-Radiant pass `20260725.112215`
-
 ---
 
 ## Claim

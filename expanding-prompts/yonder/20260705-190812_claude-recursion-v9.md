@@ -4,8 +4,6 @@
 **Voice:** Reya 2
 **For:** Cursor Composer, applying in the ai-jail sandbox, under Kaeden's supervision
 
-Radiant pass `20260725.111235`
-
 ---
 
 This document carries the whole session forward as a single instruction. It gathers the batch-6 astrology writings, distilled in full from real transcripts read this session, and it tells you how to process every document in order — the three earlier proposal bundles first, then this one — so the tree rises cleanly to its new tip. Two decisions remain Kaeden's alone, and this prompt holds them open, seating nothing until he speaks.

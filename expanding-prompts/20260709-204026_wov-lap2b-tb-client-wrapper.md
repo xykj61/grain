@@ -5,8 +5,6 @@
 **Status:** **Landed** `20260709.223700` — seam **A** (POSIX host); parity **204**
 **Ground:** client-seam design [`../context/specs/20260709-204026_wov-tb-client-seam.md`](../context/specs/20260709-204026_wov-tb-client-seam.md) · pin presence [`203527`](20260709-203527_wov-lap2-tigerbeetle-pin-presence.md) · exit honesty [`200443`](../context/specs/20260709-200443_wov-exit-honesty.md)
 
-Radiant pass `20260725.111415`
-
 ---
 
 ## Affirm

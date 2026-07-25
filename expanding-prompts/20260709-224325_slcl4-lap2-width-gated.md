@@ -5,8 +5,6 @@
 **Status:** **W0 landed** `20260709.224426` (design review); W1/W2 still **do not implement** until affirm
 **Ground:** design [`../context/specs/20260709-224325_slcl4-lap2-width.md`](../context/specs/20260709-224325_slcl4-lap2-width.md) · W0 review [`../counsel/20260709-224426_grok-counsel-slcl4-w0-lap1-review.md`](../counsel/20260709-224426_grok-counsel-slcl4-w0-lap1-review.md) · lap 1 [`031612`](20260709-031612_slcl4-lap1-fixed-tier-sigma-protocol.md)
 
-Radiant pass `20260725.111415`
-
 ---
 
 ## Affirm

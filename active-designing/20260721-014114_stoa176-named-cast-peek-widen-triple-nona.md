@@ -12,8 +12,6 @@
 
 **dated_guard:** Do **not** rewrite dated pair/one-field cast briefs. Capacity freeze at nine `$:` faces stays. No `deca-*`.
 
-Radiant pass `20260725.111915`
-
 ---
 
 ## Verdict (one breath)

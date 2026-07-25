@@ -9,8 +9,6 @@
 **Status:** Living — word seated; wire shape opened; first composition green still ahead on OA glass
 **Ground:** choice brief [`20260712-062656_giving-lane-t2-choice-brief.md`](20260712-062656_giving-lane-t2-choice-brief.md) · T1 map [`20260712-054942_giving-lane-t1-open-asks-field-map.md`](20260712-054942_giving-lane-t1-open-asks-field-map.md) · tip **430** OA civic sight (already shows `withheld=excluded`)
 
-Radiant pass `20260725.112415`
-
 ---
 
 ## What the wire is

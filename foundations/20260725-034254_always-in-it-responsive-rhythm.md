@@ -12,8 +12,6 @@
 
 *Written together by Keaton and Quin; seated on Keaton's word.*
 
-Radiant pass `20260725.112215`
-
 ---
 
 ## The season that does not close

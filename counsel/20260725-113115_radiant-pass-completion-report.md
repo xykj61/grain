@@ -99,3 +99,45 @@ Spot-reads ran at Waves **25 · 30 · 35** (every fifth wave at batch 50).
 ---
 
 *May every future reader inherit prose that already met a Radiant hand. May the ledger say plainly how much of it needed anything.*
+
+---
+
+## Appendix — Campaign stopped · repair verdict `20260725.114400`
+
+**Quin relay repair** after Keaton's review. Ground nib `dc42fd1`. **Campaign STOPPED.** Radiant passes revert to **on-touch only** — the ledger records coverage; inline stamp lines removed from **933 clean corpus files** on counsel's recommendation.
+
+### Structural regression (one class · twelve files)
+
+Separator rows destroyed when stamp lines landed inside tables without a `---` seam:
+
+`STEWARDS.md` · `context/REMOTE_ROSTER.md` · `tally/README.md` · `mandi/README.md` · `strengthening-compiler/README.md` · `waymarks/stoa-100s/README.md` · `waymarks/stoa-200s/README.md` · `waymarks/stoa-300s/README.md` · `waymarks/SEASONS.md` · `counsel/SEASONS.md` · `counsel/replies/SEASONS.md` · `expanding-prompts/SEASONS.md`
+
+**Repaired.** Witness seated: `tools/markdown_structure_witness.rish` (blocking · wired into `claim_preserve_witness`).
+
+### Corrected headline (§ Two)
+
+A flat lint sum **2** plus **97.2% clean** is evidence the corpus was **already Radiant**, not evidence of improvement the lint could not see. The **2.8% changed** rate is mostly stamp churn, EOF newlines, and the twelve-table regression — not prose the pass earned.
+
+### Hand audit — 29 `changed` rows
+
+| Verdict | Count | Action |
+|---------|------:|--------|
+| Table regression | 12 | repaired |
+| Stamp-only (no `---` seam) | 10 | stamp removed |
+| EOF newline only (Brooke readings) | 5 | kept newline · stamp removed |
+| Counsel reply prose broken by stamp in backticks | 2 | prose restored (`wave35` · `wave36` replies) |
+| Living pin (`REMEMBER`) | 1 | kept (operator updates, not pass prose) |
+
+**No non-style substantive reverts** beyond structural repair and stamp removal.
+
+### Legacy rows — structural scan (169 `.md` of 174)
+
+`markdown_structure_witness` across legacy pool: **168 GREEN · 1 pre-existing FAIL** — `context/specs/20260713-214400_urbit-parallel-naming-mapping-proposal.md` (header 5 pipes · separator 4 · predates the campaign).
+
+### Stamp policy (§ E)
+
+Counsel recommendation: **ledger alone suffices** for coverage proof; inline `Radiant pass` stamps were churn on files nothing improved. Stamps **removed** from clean ledger rows; **on-touch** passes may still stamp when a file actually changes.
+
+### What opens next
+
+Mand ring-3 (test-only reach) · shell harvest · Glow text floor — per runway § Five.

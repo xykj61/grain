@@ -13,8 +13,6 @@
 
 **dated_guard:** Do **not** reopen STOA253 as unfinished. Flip collapse · ambient gold · shared-package · JABS3 stay held until named.
 
-Radiant pass `20260725.112015`
-
 ---
 
 ## What just closed

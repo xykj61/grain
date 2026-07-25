@@ -13,8 +13,6 @@
 
 *Reviewed in the yonder sweep on 2026-06-29 and kept active — foundational clean-room architecture brief; third of the trio with single-stranded and growing-a-language.*
 
-Radiant pass `20260725.110622`
-
 ---
 
 ## Our Own Ground

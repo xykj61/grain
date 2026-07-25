@@ -5,8 +5,6 @@
 **Voice:** Quin  
 **Audience:** Acme Corporation employees reading the language ladder seat
 
-Radiant pass `20260725.111615`
-
 ---
 
 ## Why this ladder

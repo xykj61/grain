@@ -15,8 +15,6 @@ The learning layer was synced: gate trio, `init.garden`, Caravan chain, Brushstr
 
 **Retired patterns:** `tools/parity.sh`, `init.arena` in docs, pre-gate-trio READMEs.
 
-Radiant pass `20260725.110740`
-
 ---
 
 *May the docs read as true as the code they describe.*

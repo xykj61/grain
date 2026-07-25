@@ -5,8 +5,6 @@
 **Style:** Radiant · secular silo
 **Original (held whole):** [`../../gratitude/grain-lineage/silicon_torus_hpc_hardware_proposal_whitepaper.md`](../../gratitude/grain-lineage/silicon_torus_hpc_hardware_proposal_whitepaper.md)
 
-Radiant pass `20260725.112615`
-
 ---
 
 ## The One-Sentence Claim

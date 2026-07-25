@@ -6,8 +6,6 @@
 **Status:** Research for understanding — study → design, siloed. Register: design (Two Rooms — proposal, not bound claim). Sources on urbit.org studied and thanked below; no code copied; every idea re-expressed in our own vocabulary. Addressed to a generic Acme Corporation employee.
 **Companion:** `../external-research/20260714-041542_ironbeetle-patterns-for-the-neth-ladder.md` (Neth's graduated-trust ladder, now landed and green, which this reconciliation builds on)
 
-Radiant pass `20260725.111615`
-
 ---
 
 ## What This Answers

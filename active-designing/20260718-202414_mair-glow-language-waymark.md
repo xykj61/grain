@@ -7,8 +7,6 @@
 
 > Living name is **STOA** — [`20260718-202730_stoa-glow-language-waymark.md`](20260718-202730_stoa-glow-language-waymark.md) · [`../docs/STOA.md`](../docs/STOA.md). This brief stays as the first-draw record.
 
-Radiant pass `20260725.111615`
-
 ---
 
 ## Why this ladder

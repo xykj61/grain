@@ -10,8 +10,6 @@ nothing seated, every name already ours. Charter changes park in RTAC for his wo
 
 *Written together by Kaeden and Claude (Fable 5), in Rio 3's Radiant voice.*
 
-Radiant pass `20260725.111005`
-
 ---
 
 **Scribble** widens from markdown-to-values into *the prose face of the fold*: one parser

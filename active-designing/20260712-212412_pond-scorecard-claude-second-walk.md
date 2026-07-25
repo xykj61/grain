@@ -9,8 +9,6 @@
 **Status:** Checkable — freeze-worthy affirmed · four accretions landing · col2 probes open as kg
 **Ground:** handoff [`../bron-resins/20260712-212200_claude-scorecard-witness-walk.bron`](../bron-resins/20260712-212200_claude-scorecard-witness-walk.bron) · exit [`20260712-210800_pond-supersede-exit-criteria.md`](20260712-210800_pond-supersede-exit-criteria.md) · scorecard [`20260712-210800_pond-enclosure-scorecard-two-column.md`](20260712-210800_pond-enclosure-scorecard-two-column.md) · tip `0032844`
 
-Radiant pass `20260725.111515`
-
 ---
 
 ## Verdict

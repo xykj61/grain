@@ -7,8 +7,6 @@
 **Status:** Living guide
 **Builds on:** `../../SOURCE.md`, `../../gratitude/ai-jail/README.md`, `../../tools/enclosure.conf.example`
 
-Radiant pass `20260725.112415`
-
 ---
 
 ## What This Is

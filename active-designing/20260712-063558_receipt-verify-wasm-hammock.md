@@ -9,8 +9,6 @@
 **Status:** Checkable-room — tip **432** · witness `tools/receipt_verify_wasm.rish`
 **Ground:** ER [`../external-research/20260712-054135_component-model-one-seed.md`](../external-research/20260712-054135_component-model-one-seed.md) · `linengrow/receipt_core.rye` · Door 3 tip **431**
 
-Radiant pass `20260725.111415`
-
 ---
 
 ## Claim

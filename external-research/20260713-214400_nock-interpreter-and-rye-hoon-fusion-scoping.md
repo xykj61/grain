@@ -5,8 +5,6 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Research for understanding — scoping only; no interpreter code, no language grammar written yet
 
-Radiant pass `20260725.111515`
-
 ---
 
 ## What This Answers

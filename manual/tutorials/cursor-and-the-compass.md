@@ -7,8 +7,6 @@
 **Status:** Mixed register (Two Rooms) — scaffold tutorial path; each section becomes checkable when its named witness is run and cited.
 **Audience:** an Acme Corporation employee opening Cursor on this tree for the first time.
 
-Radiant pass `20260725.112415`
-
 ---
 
 ## What This Tutorial Is

@@ -13,8 +13,6 @@
 
 **dated_guard:** Do **not** invent a new argv family this lap. Deca · gold · face_lit · fleets · JABS3 stay held. Do not recommend rest unprompted.
 
-Radiant pass `20260725.112215`
-
 ---
 
 ## What just closed

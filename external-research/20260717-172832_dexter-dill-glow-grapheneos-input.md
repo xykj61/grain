@@ -7,8 +7,6 @@
 **Status:** research for understanding — Dexter · Dill · GrapheneOS input (Two Rooms). Addressed to a generic Acme Corporation employee.
 **Companion silo:** [`../active-reviving/20260717-172832_dexter-beside-brushstroke-dill-stays-gap.md`](../active-reviving/20260717-172832_dexter-beside-brushstroke-dill-stays-gap.md)
 
-Radiant pass `20260725.111615`
-
 ---
 
 ## What This Study Asks

@@ -5,8 +5,6 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Runnable plan — living-layer revival done; code migration deferred to proven-supersede. Addressed to a generic Acme Corporation employee.
 
-Radiant pass `20260725.111515`
-
 ---
 
 ## The Seed (what was asked)

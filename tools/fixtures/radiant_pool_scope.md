@@ -2,14 +2,14 @@
 
 **Language:** EN  
 **Stamp:** `20260725.110354`  
-**Status:** Checkable — pass closed · completion report `20260725.113115`  
-**Ground:** counsel [`20260725-110128_the-runway.md`](../../counsel/20260725-110128_the-runway.md) · completion [`20260725-113115_radiant-pass-completion-report.md`](../../counsel/20260725-113115_radiant-pass-completion-report.md) · main nib `248f4ed42b`
+**Status:** Checkable — **campaign STOPPED** `20260725.114400` · passes **on-touch only**  
+**Ground:** completion [`20260725-113115_radiant-pass-completion-report.md`](../../counsel/20260725-113115_radiant-pass-completion-report.md) appendix · repair relay `20260725.114400`
 
 ---
 
 ## Runway (ledger header truth)
 
-**1,198 rows · pass closed `20260725.113015` · meta exempt seated · select returns 0.** Completion report `20260725.113115`.
+**1,198 ledger rows recorded.** Continuous campaign **stopped** `20260725.114400`. Coverage proof lives in the ledger; inline `Radiant pass` stamps **removed** from clean corpus files. **No batch waves.**
 
 ---
 
@@ -17,38 +17,32 @@
 
 | Tree | Count | Reason |
 |------|------:|--------|
-| `session-logs/` | ~1,111 | Structured field records (Bron), not prose — a pass cannot improve them |
+| `session-logs/` | ~1,111 | Structured field records (Bron), not prose |
 | `strengthening-compiler/` | 115 | Numbered technical notes, not Radiant prose |
-| `.claude/` | 22 | Machine-facing rules — style pass targets human readers |
-| `gratitude/` | 78 | Unaltered originals, already law — clean-room hold |
-| `tools/fixtures/` · `context/fixtures/` | 9 | Intentional violations and witness fixtures |
-| Pass meta rows | rolling | `counsel/replies/*_re-radiant-wave*.md` · `waymarks/*_radiant-wave*.md` — wave bookkeeping, not prose; on-touch only · seated `20260725.113015` |
+| `.claude/` | 22 | Machine-facing rules |
+| `gratitude/` | 78 | Unaltered originals — clean-room hold |
+| `tools/fixtures/` · `context/fixtures/` | 9+ | Witness fixtures · including `markdown_structure_broken_table.md` |
+| Pass meta rows | rolling | `counsel/replies/*_re-radiant-wave*.md` · `waymarks/*_radiant-wave*.md` — on-touch only |
 
 ---
 
-## On-touch only
+## On-touch only (Radiant passes)
 
-| Extension | Count | Reason |
-|-----------|------:|--------|
-| `.rye` · `.rish` · `.glow` · `.sh` | ~1,740 | Terse invariant comments — *lead with what is* barely applies; pass when the file is already open |
+| Surface | Reason |
+|---------|--------|
+| **All in-scope prose** | Campaign proved corpus already Radiant (97.2% clean · flat lint) — batch passes retired `20260725.114400` |
+| `.rye` · `.rish` · `.glow` · `.sh` | Terse invariant comments — pass when file is already open |
 
----
-
-## In scope
-
-`active-designing/` · `external-research/` · `expanding-prompts/` · `counsel/` (+ `replies/`) · `classical-vedic-astrology/` · `context/` · `work-in-progress/` · `waymarks/` · `foundations/` · `manual/` · root and module `README.md` files.
-
-Selection: oldest untouched first · skip `Living twin:` in first 20 lines · bound **50**.
+When a file is touched: run **`claim_preserve_witness`** (includes **`markdown_structure_witness`**) · **`dated_guard`** · **`radiant_lint`**. Ledger row updates; stamp line **optional** — counsel recommends ledger-only proof.
 
 ---
 
-## Genre ALL-CLEAN rule
+## Witness gate (blocking)
 
-When an in-scope **genre** returns **ALL-CLEAN** across **two full consecutive waves** (every row `clean`, zero `changed`), that genre may be **exempted wholesale** — on evidence, with the reason recorded beside the exemption in this file or counsel.
+`tools/markdown_structure_witness.rish` — table separators · balanced fences · link syntax · heading levels vs BASE. Wired into `claim_preserve_witness.rish`. Negative: `context/fixtures/markdown_structure_broken_table.md`.
 
 ---
 
-## Spot-read · rollback
+## Historical — batch wave rules (retired)
 
-- **Spot-read:** one random file from the wave, every **fifth** wave — Keaton, ~five minutes.
-- **Rollback:** each wave is one PR revert away.
+Batch bound 50 · spot-read every fifth wave · meta exempt `20260725.113015` — archived in completion report appendix. Do not resume without Keaton's word.

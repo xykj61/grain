@@ -13,8 +13,6 @@
 
 **dated_guard:** Do **not** claim fixture desks emit elder stamp/memo/root yet. Prefer lex before parse before lower before desk pin. JABS3 held.
 
-Radiant pass `20260725.111915`
-
 ---
 
 ## Verdict (one breath)

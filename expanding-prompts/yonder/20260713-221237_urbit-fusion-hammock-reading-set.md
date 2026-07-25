@@ -5,8 +5,6 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Living — a reading set for background thought, not a plan to execute
 
-Radiant pass `20260725.111515`
-
 ---
 
 ## For an Acme Corporation Employee, Reading Slowly

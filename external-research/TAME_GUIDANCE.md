@@ -9,8 +9,6 @@
 **Voice:** Reya 2
 **Status:** Living
 
-Radiant pass `20260725.112715`
-
 ---
 
 ## Document Stack

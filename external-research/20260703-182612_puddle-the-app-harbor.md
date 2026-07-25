@@ -15,8 +15,6 @@ bandwidth-and-moderation memo
 
 *Written together by Kaeden and Claude (Fable 5), in Rio 3's Radiant voice.*
 
-Radiant pass `20260725.111005`
-
 ---
 
 ## What the Teachers Teach, Siloed

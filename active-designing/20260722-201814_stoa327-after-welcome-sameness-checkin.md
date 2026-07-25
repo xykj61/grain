@@ -13,8 +13,6 @@
 
 **dated_guard:** Deca · gold · face_lit · fleets · JABS3 stay held unless chosen. Do not recommend rest unprompted. Do not merge tagged `$%` into N-field path.
 
-Radiant pass `20260725.112215`
-
 ---
 
 ## What just closed

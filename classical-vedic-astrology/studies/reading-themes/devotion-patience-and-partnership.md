@@ -9,8 +9,6 @@
 
 **A note on how to hold this:** What follows is warm counsel, not command — wisdom from the tradition, offered through a caring lens, for Alice to weigh in her own time and by her own light, ideally alongside a trusted guide. A chart describes tendencies and invitations. The choosing is always, fully, hers.
 
-Radiant pass `20260725.112415`
-
 ---
 
 ## Beginning where her chart begins: fidelity

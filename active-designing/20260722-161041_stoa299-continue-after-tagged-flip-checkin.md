@@ -13,8 +13,6 @@
 
 **dated_guard:** Ambient gold · fleets · HAWM2 · JABS3 · UDP · Glow rename · `deca-*` stay **held** unless explicitly chosen. Do **not** reopen N-field or tagged flip emit as unfinished.
 
-Radiant pass `20260725.112115`
-
 ---
 
 ## Seat right now

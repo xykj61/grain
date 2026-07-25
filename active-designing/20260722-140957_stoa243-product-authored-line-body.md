@@ -13,8 +13,6 @@
 
 **dated_guard:** Do **not** claim Glow-rune crypto or a Glow desk that emits log lines. Do **not** reopen pin/desk/embed/Pixel/face_lit as unfinished. Shared-package `face_lit` import and JABS3 stay held.
 
-Radiant pass `20260725.112015`
-
 ---
 
 ## Verdict (one breath)

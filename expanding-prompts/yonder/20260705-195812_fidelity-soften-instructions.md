@@ -4,8 +4,6 @@
 **Voice:** Reya 2
 **For:** Cursor Composer, applying in the ai-jail sandbox, under Kaeden's supervision
 
-Radiant pass `20260725.111235`
-
 ---
 
 This bundle carries the fidelity ruling into the shelf. Thirteen studies numbered twenty-four through thirty-six were written from talk titles ahead of their transcripts, and their gratitude sections cited specific talks as though distilled from them. This edit softens those thirteen to honest form, and it leaves every transcript-true study untouched.

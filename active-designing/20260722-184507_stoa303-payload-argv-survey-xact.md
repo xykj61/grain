@@ -13,8 +13,6 @@
 
 **dated_guard:** Do **not** open xfer/pair argv this lap. Do **not** force xact through bare `parseInt` on argv[1]. Gold · fleets · JABS3 stay held.
 
-Radiant pass `20260725.112115`
-
 ---
 
 ## Survey — argv families (updated)

@@ -8,8 +8,6 @@
 
 *Written together by Kaeden and Reya 2; re-siloed with Rio 3.*
 
-Radiant pass `20260725.110418`
-
 ---
 
 ## What Brix Is

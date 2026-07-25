@@ -11,8 +11,6 @@
 
 Full counsel: [`counsel/20260706-232812_claude-ruling-oal4-mala-edit5-and-horizons.md`](../counsel/20260706-232812_claude-ruling-oal4-mala-edit5-and-horizons.md). Parity unchanged. TASKS phrase deltas await Kaeden word.
 
-Radiant pass `20260725.111235`
-
 ---
 
 ## Bench pin (verify on metal; never inherit)

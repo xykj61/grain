@@ -8,8 +8,6 @@
 **Status:** Checkable — design seated; compressor + card scaffolded this send (Two Rooms).
 **World study:** [`../external-research/20260717-173848_foundations-archive-bron-compress-for-llm-context.md`](../external-research/20260717-173848_foundations-archive-bron-compress-for-llm-context.md)
 
-Radiant pass `20260725.111615`
-
 ---
 
 ## Decisions Seated Here

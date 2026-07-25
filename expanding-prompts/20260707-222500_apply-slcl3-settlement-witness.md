@@ -5,8 +5,6 @@
 **Ground:** [`external-research/20260707-222500_settlement-seat-refresh-and-slcl3-witness-proposal.md`](../external-research/20260707-222500_settlement-seat-refresh-and-slcl3-witness-proposal.md)
 **Gate:** Kaeden's word opens SLC-L3 — this prompt does not authorize mainnet treasury
 
-Radiant pass `20260725.111235`
-
 ---
 
 ## Objective

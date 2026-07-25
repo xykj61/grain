@@ -6,8 +6,6 @@
 
 *Written together by Kaeden and Claude (Fable 5), gathering the diurnal-wheel method authored by Reya 2 on its own bench.*
 
-Radiant pass `20260725.111120`
-
 ---
 
 ## Ground laws

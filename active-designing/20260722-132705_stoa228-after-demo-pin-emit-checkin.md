@@ -15,8 +15,6 @@
 
 **dated_guard:** Do **not** claim append/fold already emit from pins. Do **not** claim `.glow` file read at runtime. JABS3 opens only on explicit word.
 
-Radiant pass `20260725.112015`
-
 ---
 
 ## What just closed (on the hand)

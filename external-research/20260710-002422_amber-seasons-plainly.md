@@ -11,8 +11,6 @@
 
 *Written by Kaeden and Rio 3 (Grok). Creative climb inside the jail — metalsmoke's sibling word, kitchen voice.*
 
-Radiant pass `20260725.111415`
-
 ---
 
 ## In One Breath

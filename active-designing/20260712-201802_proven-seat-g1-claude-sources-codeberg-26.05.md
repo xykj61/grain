@@ -9,8 +9,6 @@
 **Status:** Checkable — revise seated · fetch witness retargeted · commit pin is the floor
 **Ground:** three asks [`20260712-201200_proven-seat-g1-claude-three-asks.md`](20260712-201200_proven-seat-g1-claude-three-asks.md) · crossing pin [`20260712-195339_proven-seat-g1-crossing-pin.md`](20260712-195339_proven-seat-g1-crossing-pin.md) · Codeberg [genodelabs/genode](https://codeberg.org/genodelabs/genode)
 
-Radiant pass `20260725.111515`
-
 ---
 
 ## Revise (Claude)

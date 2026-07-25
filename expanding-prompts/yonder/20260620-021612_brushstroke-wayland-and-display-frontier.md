@@ -8,8 +8,6 @@
 **Voice:** Reya 2
 **Lens:** TAME — Gall's Law; `985` native interface; `986`/`988` Brushstroke; `995` single-stranded
 
-Radiant pass `20260725.110740`
-
 ---
 
 ## The Seed

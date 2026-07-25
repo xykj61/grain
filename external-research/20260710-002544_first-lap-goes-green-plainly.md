@@ -11,8 +11,6 @@
 
 *Written by Kaeden and Rio 3 (Grok). Creative climb inside the jail — oldest shipping phrase, kitchen voice.*
 
-Radiant pass `20260725.111415`
-
 ---
 
 ## In One Breath

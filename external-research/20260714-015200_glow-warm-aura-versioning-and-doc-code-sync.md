@@ -6,8 +6,6 @@
 **Status:** Vision register — design and research; no code, no aura seated; extends `../context/specs/rye-versioning-style.md` and root rule 9 toward Glow. Register: this is design (Two Rooms — a proposal, not a bound claim). Addressed to a generic Acme Corporation employee.
 **Builds on:** `../gratitude/Spec_ulation.md` (Rich Hickey), `../context/specs/rye-versioning-style.md`, `20260714-013700_aurora-vere-arvo-boot-fusion-and-kelvin-strategy.md`, `../context/TAME_GUIDANCE.md` root rule 9
 
-Radiant pass `20260725.111515`
-
 ---
 
 ## The One Idea, and Where It Lands Twice

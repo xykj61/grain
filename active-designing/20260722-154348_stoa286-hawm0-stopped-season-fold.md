@@ -13,8 +13,6 @@
 
 **dated_guard:** Do **not** delete `hawm-harvest.bron` or reopen fleets from this stop alone.
 
-Radiant pass `20260725.112115`
-
 ---
 
 ## Host proof
