@@ -12,6 +12,8 @@ The vocabulary silo and seed catalog live in active-designing.
 | First instances | [`../../active-designing/yonder/20260619-084412_the-first-seeds.md`](../../active-designing/yonder/20260619-084412_the-first-seeds.md) |
 | Whole-system seed table | [`../../active-designing/yonder/20260619-225712_the-whole-system.md`](../../active-designing/yonder/20260619-225712_the-whole-system.md) |
 
+Radiant pass `20260725.110740`
+
 ---
 
 *May one word name one thing across the family.*

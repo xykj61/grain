@@ -12,6 +12,8 @@
 **Lens:** TAME — safety first; explicit widths; assertions as specification
 **Status:** Active Design (siloed)
 
+Radiant pass `20260725.110740`
+
 ---
 
 ## Our Own Ground
