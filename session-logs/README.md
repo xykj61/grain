@@ -16,6 +16,8 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 **Living pin bound:** `living_pin_max_bytes = 24576` ([spec](../context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md)). Closed index rows through `20260721`: [`archive/README-index-through-20260721.md`](archive/README-index-through-20260721.md). Early `20260722` overflow: [`archive/README-index-20260722-shelf.md`](archive/README-index-20260722-shelf.md).
 
+- `20260725.035801` — [REMEMBER git nib after Wave 7 send](20260725-035801_remember-git-nib-wave7.bron) — pin 2ee01dd29f
+- `20260725.035800` — [Send Radiant Wave 7 to main](20260725-035800_send-radiant-wave7.bron) — FF merge · PR 95
 - `20260725.035645` — [Radiant Wave 7 — twelve context specs](20260725-035645_radiant-wave7-specs.bron) — 12 files · lint 2
 - `20260725.035548` — [REMEMBER git nib after Wave 6 send](20260725-035548_remember-git-nib-wave6.bron) — pin a02ec36f16
 - `20260725.035547` — [Send Radiant Wave 6 to main](20260725-035547_send-radiant-wave6.bron) — FF merge · PR 94
