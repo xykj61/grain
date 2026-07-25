@@ -49,3 +49,11 @@
 - `20260722.141403` — [REMEMBER git nib after STOA246](20260722-141403_remember-git-nib-stoa246.bron) — pin c874d977a872
 - `20260722.141731` — [REMEMBER git nib after STOA250](20260722-141731_remember-git-nib-stoa250.bron) — pin aee500ffe5a0
 - `20260722.141720` — [STOA249–250 authored fields body round](20260722-141720_stoa249-250-fields-body-round.bron) — parse own body; name next door
+- `20260722.142054` — [STOA251–252 N-field emit inventary](20260722-142054_stoa251-252-n-field-inventory-round.bron) — language return; identity emit next
+- `20260722.142101` — [REMEMBER git nib after STOA252](20260722-142101_remember-git-nib-stoa252.bron) — pin e0e9a43e8168
+- `20260722.142353` — [STOA253–254 bartis N-field identity](20260722-142353_stoa253-254-n-field-identity-round.bron) — emit_n_field_identity; barket twin next
+- `20260722.142353` — [REMEMBER git nib after STOA254](20260722-142353_remember-git-nib-stoa254.bron) — pin 8492f8195698
+- `20260722.143410` — [STOA255–256 barket N-field identity](20260722-143410_stoa255-256-barket-n-field-identity-round.bron) — barket emit_n_field_identity; flip next
+- `20260722.143510` — [REMEMBER git nib after STOA256](20260722-143510_remember-git-nib-stoa256.bron) — pin df21de606e7f
+- `20260722.143539` — [REMEMBER git nib STOA256 fix](20260722-143539_remember-git-nib-stoa256-fix.bron) — pin df21de606e7f on living card
+- `20260722.143648` — [Check-in HAWM fleet and shape-only](20260722-143648_checkin-hawm-fleet-shape-only.bron) — 2A shape living · 1A HAWM harvest

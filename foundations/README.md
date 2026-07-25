@@ -1,7 +1,7 @@
 # Foundations
 
 **Language:** EN
-**Last updated:** 2026-07-24 (custody first principle · Seva/Mand settings split · Mand seated)
+**Last updated:** 2026-07-24 (five pillars direction · custody first principle · Seva/Mand · Mand seated)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 
 ---
@@ -24,6 +24,7 @@ These rest beneath the specifications. The specs say what to build and how; thes
 
 **Foundation briefs** — the why beneath the daily work, on our own roots:
 
+- `20260724-220625_five-pillars-direction.md` — five direction pillars siloed (non-harming · devotion · meditation · sound · scripture); teachers named only in the gratitude close; **seated** `20260724.220625`.
 - `20260724-200912_nothing-to-give-custody-first-principle.md` — **build nothing that destroys**; minimize · encrypt-with-external-key · delete-by-key; safe-by-default configuration; Seva (preference) / **Mand** (policy) settings split; **landed** `20260724.201334` · Mand name `20260724.202412` (Mona prior under erratum).
 - `20260703-182612_sameness-is-the-macro.md` — compression without magic: sameness as the macro we accept, syntax macros we refuse; **grain strand seated** `20260704.023400 UDT`; siloed from [`../external-research/20260703-182612_sameness-is-the-macro.md`](../external-research/20260703-182612_sameness-is-the-macro.md).
 - `20260706-022912_the-wire-serves-the-fold.md` — carriage first-principles for Comlink: the record is sovereign and the wire serves it; **landed** at ruling `20260706.232812`.
