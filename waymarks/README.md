@@ -33,6 +33,7 @@ Each shelf keeps a one-line-per-claim `README.md` index as claims arrive.
 
 | Stamp | Claim | Path |
 |-------|-------|------|
+| `20260724.212805` | Mand ring-2 · retention eligibility | [`20260724-212805_mand-ring2-retention.md`](20260724-212805_mand-ring2-retention.md) |
 | `20260724.211721` | Stranger lap honesty · warm REPORT · cold open | [`20260724-211721_stranger-lap-honesty.md`](20260724-211721_stranger-lap-honesty.md) |
 | `20260724.210602` | Fixture scans → `.rish` · `tools/*.py` zero | [`20260724-210602_fixture-scans-rish-zero.md`](20260724-210602_fixture-scans-rish-zero.md) |
 | `20260724.205719` | Shape aura floor · `@u64` admitted (stamp first consumer) | [`20260724-205719_shape-aura-floor-u64.md`](20260724-205719_shape-aura-floor-u64.md) |
