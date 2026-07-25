@@ -22,7 +22,7 @@ Radiant pass `20260725.112615`
 
 ## Now
 
-**Radiant Wave 39** `20260725.112915` — 2 clean · 0 changed · lint 2. Prose pool seated; meta tail rolls.
+**Radiant Wave 39** `20260725.112915` — 2 clean · 0 changed · lint 2. Sent `20260725.112925` · git nib `4135af830d`. Prose seated; meta tail rolls.
 
 **Read:**
 
