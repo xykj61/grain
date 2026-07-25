@@ -4,6 +4,8 @@
 
 *Written by Kaeden and Rio 3. One-clock, stop-and-park, and TAME laws inherit whole. Lap 3w-3a builds the resin-batch frame the resins counsel gave as spec I1 — signed header and manifest, payloads prove by digest. Verified GREEN on the bench. No new name minted.*
 
+Radiant pass `20260725.111235`
+
 ---
 
 ## What this bench lands
