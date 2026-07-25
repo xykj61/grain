@@ -5,6 +5,8 @@
 **Since:** `20260713.201910` (this fork's first commit)
 **Last updated:** `20260716.130105` (Linux ai-jail jail-local keys — Codeberg-verified)
 
+Radiant pass `20260725.112515`
+
 ---
 
 This proposal to Urbit — **Glow OS**, a downstream research repository layered over the project formerly named Rye OS from `groupproject36/veganreyklah2` — carries its own identity forward from here. The record below is this identity's public face; the private halves stay home, exactly as `PUBKEYS.template.md` asks of every downstream clone.

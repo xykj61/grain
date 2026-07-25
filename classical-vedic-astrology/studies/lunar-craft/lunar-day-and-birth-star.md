@@ -9,6 +9,8 @@
 
 **In Alice's chart:** On her birth date, the Moon began the day in Aśvinī at sunrise and crossed into Bharaṇī by the time of her birth in the early afternoon. So her day held two stars — and her chart holds both gifts. (The Moon sits at sidereal Bharaṇī, which places her birth-star firmly there; at dawn it still rested in Aśvinī's earlier degrees.)
 
+Radiant pass `20260725.112515`
+
 ---
 
 ## Two stars in one day

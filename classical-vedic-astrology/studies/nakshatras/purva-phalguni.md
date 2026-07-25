@@ -8,6 +8,8 @@
 
 **In Alice's chart:** Pūrva Phalguṇī is the star where both her Mercury *and* her Jupiter rest — her mind and her wisdom share one nakshatra, in Virgo, in the 11th house. This is a strong, repeated note, so it deserves a full reading.
 
+Radiant pass `20260725.112515`
+
 ---
 
 ## The meaning in the name

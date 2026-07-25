@@ -5,6 +5,8 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Checkable-room module — laps 0–33 green; RW-5 mirrored pair landed
 
+Radiant pass `20260725.112515`
+
 ---
 
 Lantern serves bounded request/response inference inside Pond. Each lap deepens the contract: a pinned fixture completion, a `max_tokens` budget, a model-hash allow-list, `temperature` and `seed`, `top_p`, `err_stop`, `stop_sequence` on the response, a request-side `stop_sequence` pin, a request-side `prompt` pin, a request-side `max_tokens` pin, a response `text_pin`, a dedicated `TemperatureMismatch` pin, a seed-only pin fixture, `TopPMismatch` distinct from range `BadTopP`, an `err_stop` request pin, a `length_stop` request pin, empty allow-list refuse, an `allow_count` pin, dual-model allow welcome, a `require_model` pin, `stopped_reason` pins, then a `stream` pin. Weights named by hash and Caravan supervision follow on later laps.

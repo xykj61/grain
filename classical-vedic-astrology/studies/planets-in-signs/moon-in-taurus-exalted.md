@@ -8,6 +8,8 @@
 
 **In Alice's chart:** The Moon sits in Taurus, its sign of exaltation — its highest, most supported placement — in the star of Bharaṇī, in the 7th house. This is one of the most quietly fortunate things a chart can hold.
 
+Radiant pass `20260725.112515`
+
 ---
 
 ## What the Moon is, and what Taurus offers it
