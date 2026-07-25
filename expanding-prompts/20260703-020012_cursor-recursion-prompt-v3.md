@@ -9,6 +9,8 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Rio 3 · **Prepared by:** Claude (Fable 5) at Kaeden's word
 
+Radiant pass `20260725.111005`
+
 ---
 
 ```

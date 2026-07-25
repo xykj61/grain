@@ -11,6 +11,8 @@
 
 *Written in Rio 3's Radiant voice, for Kaeden and every future sitter.*
 
+Radiant pass `20260725.111005`
+
 ---
 
 ## Part One — Three Gate Families in Our Tree (None of Them Hoon)

@@ -10,6 +10,7 @@
 
 
 
+
 active-designing/20260620-020712_scribble-lantern-and-lattice.md	20260725.110418	clean
 active-designing/20260628-043542_thin-frontend-slc-direction.md	20260725.110418	clean
 active-designing/20260628-071012_slc-1-rishi-mantra-shell.md	20260725.110418	clean
@@ -92,7 +93,20 @@ active-designing/yonder/20260621-070712_the-compiler-fork.md	20260725.110740	cle
 active-designing/yonder/20260622-232912_caravan-kernel-improvements.md	20260725.110740	clean
 active-designing/yonder/20260622-235012_what-we-mean-by-seed.md	20260725.110740	clean
 active-designing/yonder/20260628-120912_brix-the-composer.md	20260725.110740	clean
+active-designing/yonder/20260703-182612_territories-revisited.md	20260725.111005	clean
 amphora/README.md	20260710.182821	legacy
+classical-vedic-astrology/readings/brooke/20260705-020812_a-temple-of-star-gods.md	20260725.111005	clean
+classical-vedic-astrology/readings/brooke/20260705-020812_companions-of-the-lights.md	20260725.111005	clean
+classical-vedic-astrology/readings/brooke/20260705-020812_deep-faith-among-the-gathered.md	20260725.111005	clean
+classical-vedic-astrology/readings/brooke/20260705-020812_dharma-and-the-two-wheels.md	20260725.111005	clean
+classical-vedic-astrology/readings/brooke/20260705-020812_hunger-and-release.md	20260725.111005	clean
+classical-vedic-astrology/readings/brooke/20260705-020812_love-as-dharma-twice.md	20260725.111005	changed
+classical-vedic-astrology/readings/brooke/20260705-020812_one-braid.md	20260725.111005	clean
+classical-vedic-astrology/yonder/20260704-223112_brooke-foundation-morning-cast.md	20260725.111005	clean
+classical-vedic-astrology/yonder/20260704-223112_brooke-venus-chapter-morning-cast.md	20260725.111005	clean
+classical-vedic-astrology/yonder/20260704-231912_brooke-moon-chapter-morning-cast.md	20260725.111005	clean
+classical-vedic-astrology/yonder/20260704-231912_brooke-sun-chapter-morning-cast.md	20260725.111005	clean
+classical-vedic-astrology/yonder/20260705-004812_brooke-ascendant-chapter-morning-cast.md	20260725.111005	clean
 context/archive/RIO3.md	20260710.182821	legacy
 context/specs/20260627-102012_one-clock-naming-law.md	20260725.035645	legacy
 context/specs/20260629-031512_slc1-ring-closed-handoff.md	20260725.035645	legacy
@@ -235,6 +249,11 @@ counsel/replies/20260725-034807_re-always-in-it.md	20260725.105645	legacy
 expanding-prompts/20260620-210812_explicit-width-audit.md	20260725.110740	clean
 expanding-prompts/20260628-120912_kernel-direction-brix-and-foundations.md	20260725.110740	clean
 expanding-prompts/20260702-030112_cursor-slc-2b-keyboard-from-window.md	20260725.110847	clean
+expanding-prompts/20260703-020012_cursor-recursion-prompt-v3.md	20260725.111005	clean
+expanding-prompts/20260703-205212_bench-raise-recipe-v5-accretion.md	20260725.111005	clean
+expanding-prompts/20260704-030300_cursor-recursion-prompt-v4.md	20260725.111005	clean
+expanding-prompts/20260704-181012_zero-copy-resins-claude-counsel.md	20260725.111005	clean
+expanding-prompts/20260704-185412_cursor-lane-zip42-counsel-unified.md	20260725.111005	clean
 expanding-prompts/yonder/20260618-195512_encrypted-networking-and-social.md	20260725.110622	clean
 expanding-prompts/yonder/20260618-212012_content-centric-messaging.md	20260725.110622	clean
 expanding-prompts/yonder/20260618-215512_unified-keys-and-address-space.md	20260725.110622	clean
@@ -317,6 +336,35 @@ external-research/20260702-180812_userland-lineages.md	20260725.110847	clean
 external-research/20260702-192712_the-movements-open-asks.md	20260725.110847	clean
 external-research/20260702-211312_names-builds-and-the-ledger-map.md	20260725.110847	clean
 external-research/20260702-215212_wov-mala-hardware-fit.md	20260725.110847	clean
+external-research/20260703-013412_home-server-purchase-guide.md	20260725.111005	clean
+external-research/20260703-013412_writing-recursion-prompts.md	20260725.111005	clean
+external-research/20260703-015512_bandwidth-and-moderation.md	20260725.111005	clean
+external-research/20260703-033602_first-lap-goes-green.md	20260725.111005	clean
+external-research/20260703-043912_circulation-portfolio-survey.md	20260725.111005	clean
+external-research/20260703-043912_the-issuers-ledger.md	20260725.111005	clean
+external-research/20260703-071712_the-second-harvest.md	20260725.111005	clean
+external-research/20260703-173512_bubble-the-drawing-room.md	20260725.111005	clean
+external-research/20260703-182612_puddle-the-app-harbor.md	20260725.111005	clean
+external-research/20260703-182612_sameness-is-the-macro.md	20260725.111005	clean
+external-research/20260703-182612_the-granary-question.md	20260725.111005	clean
+external-research/20260703-182612_the-road-a-failure-carries.md	20260725.111005	clean
+external-research/20260703-193012_the-bench-as-a-block-and-the-living-build.md	20260725.111005	clean
+external-research/20260703-200712_a-move-for-rye.md	20260725.111005	clean
+external-research/20260703-200712_compute-commerce-on-the-network.md	20260725.111005	clean
+external-research/20260703-200712_mysticetis-blocks-and-the-object-path.md	20260725.111005	clean
+external-research/20260703-200712_the-cloneable-repo-and-the-practice-ground.md	20260725.111005	clean
+external-research/20260703-201612_the-amphora-and-the-crossing.md	20260725.111005	clean
+external-research/20260704-002912_gates-arms-and-the-urbit-lineage.md	20260725.111005	clean
+external-research/20260704-024600_two-rooms-on-the-metal-path.md	20260725.111005	clean
+external-research/20260704-024800_the-checkable-room.md	20260725.111005	clean
+external-research/20260704-024900_claim.md	20260725.111005	clean
+external-research/20260704-025600_claims-happy-zone-and-grain.md	20260725.111005	clean
+external-research/20260704-030600_itinerary-and-the-crossing-manifest.md	20260725.111005	clean
+external-research/20260704-031812_the-view-from-the-floor.md	20260725.111005	clean
+external-research/20260704-180612_zero-copy-resins-and-the-sovereign-snapshot.md	20260725.111005	clean
+external-research/20260704-185412_ends-first-map-orientation.md	20260725.111005	clean
+external-research/20260704-211012_rye-cores-and-the-gratitude-lineage.md	20260725.111005	clean
+external-research/20260704-214100_subject-oriented-programming-and-the-rye-core.md	20260725.111005	clean
 external-research/yonder/20260617-195312_mantra.md	20260725.110622	clean
 external-research/yonder/20260617-195612_ownerboot-riscv-caravan.md	20260725.110622	clean
 external-research/yonder/20260617-195712_caravan-tally-networking.md	20260725.110622	clean
@@ -382,5 +430,8 @@ work-in-progress/20260702-200109_rw1-mirrored-pair-contract.md	20260725.110847	c
 work-in-progress/20260702-205630_rw2-mirrored-pair-contract.md	20260725.110847	clean
 work-in-progress/20260702-222353_cursor-recursion-prompt-v2.md	20260725.110847	clean
 work-in-progress/20260702-edit5-ready-to-apply.md	20260725.110847	clean
+work-in-progress/20260703-014912_round-summary-and-decoder.md	20260725.111005	clean
+work-in-progress/20260703-021412_counsel-and-confirmation-tests.md	20260725.111005	clean
+work-in-progress/20260703-041850_claude-strategy-roadmap-counsel.md	20260725.111005	clean
 work-in-progress/yonder/20260620-155342_style-audit.md	20260725.110740	clean
 work-in-progress/yonder/20260621-032327_strengthening-width-crosswalk.md	20260725.110740	clean

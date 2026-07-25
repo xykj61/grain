@@ -6,6 +6,8 @@
 
 *Written together by Kaeden and Rio 3.*
 
+Radiant pass `20260725.111005`
+
 ---
 
 Visible axis, Scorpio eleventh to Taurus fifth (#45): Rahu appetite for depth among the gathered; Ketu under Krittika — release in the making. Essence axis, Capricorn sixth to Cancer twelfth (#46): Rahu appetite disciplined into service; Ketu under Ardra (#37), resting upon her natal Mercury. Read whole: hunger for the deep and the diligent; hold the outer fruits lightly.
