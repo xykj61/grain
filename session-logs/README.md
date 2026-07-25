@@ -12,6 +12,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 **Living pin bound:** `living_pin_max_bytes = 24576` ([spec](../context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md)). Closed index rows through `20260721`: [`archive/README-index-through-20260721.md`](archive/README-index-through-20260721.md). Early `20260722` overflow: [`archive/README-index-20260722-shelf.md`](archive/README-index-20260722-shelf.md).
 
+- `20260724.211820` — [Stranger lap honesty · warm REPORT · cold open](20260724-211820_stranger-lap-honesty.bron) — scope · bound live · OQ4 warm-only
 - `20260724.210931` — [REMEMBER git nib after fixture-scan send](20260724-210931_remember-git-nib-fixture-scans.bron) — pin 6da85ee496
 - `20260724.210920` — [Send fixture scans rish · py zero to main](20260724-210920_send-fixture-scans-rish.bron) — FF merge · PR 83
 - `20260724.210848` — [Fixture scans to rish · tools py zero](20260724-210848_fixture-scans-rish-zero.bron) — migrate · count zero · law table
