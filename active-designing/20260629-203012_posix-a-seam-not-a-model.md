@@ -7,6 +7,8 @@
 **Cross-reference:** TAME root rule five (*one value model*) in `context/TAME_GUIDANCE.md`
 Radiant pass `20260725.040520`
 
+Radiant pass `20260725.110418`
+
 ---
 
 ## The Stance

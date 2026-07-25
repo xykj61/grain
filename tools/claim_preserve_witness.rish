@@ -3,8 +3,11 @@
 #
 # For every file a pass touches, extract claim tokens (numbers · hex digests ·
 # key fingerprints · file paths · stamps · capitalized proper nouns) BEFORE and
-# AFTER, and assert the sets are identical. Also asserts known pinned digests
-# did not move. Any mismatch → STOP; do not "resolve."
+# AFTER, and assert the sets are identical. Modality counts (must · should · may ·
+# recommend · require · seat · hold · parked · …) must match too — token identity
+# misses a shifted obligation, which is the drift that would hurt a tree of
+# proposals and holds. Also asserts known pinned digests did not move.
+# Any mismatch → STOP; do not "resolve."
 #
 # Seated 20260724.222620 · Quin relay.
 #
@@ -12,8 +15,8 @@
 #
 # Vacuous self-check (no files) fails closed — a pass must name its surface.
 
-say "claim_preserve: token identity + pinned digests…"
+say "claim_preserve: token identity + modality + pinned digests…"
 let scan = run ["rishi/bin/rishi" "run" "tools/fixtures/claim_preserve_scan.rish"]
 say scan.out
 assert scan.ok else "claim_preserve RED — STOP the wave"
-say "GREEN: claim_preserve — tokens identical; pins held."
+say "GREEN: claim_preserve — tokens and modality identical; pins held."
