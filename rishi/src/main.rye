@@ -47,7 +47,7 @@ const print = std.debug.print;
 
 /// Rishi's version, stamped chronologically — YYYYMMDD.HHMMSS, where later is
 /// larger, the same clock Rye keeps. This is Rishi's founding stamp.
-const rishi_version = "20260621.062112";
+const rishi_version = "20260725.160000";
 
 /// A Rishi value. The kinds — string, integer, boolean, list, record — are the
 /// seed of a model shared with Rye so a value can cross between them without a seam.
@@ -784,6 +784,12 @@ const EvalError = error{
     PipelineNeedsName,
     PipelineNeedsList,
     WhereNeedsBool,
+    FoldNeedsFrom,
+    FoldNeedsAs,
+    FoldNeedsColon,
+    FoldNeedsNames,
+    LinesBoundedNeedsMax,
+    CompareNeedsInt,
     ArithNeedsInt,
     DivisionByZero,
     FilePathNeedsString,
@@ -851,6 +857,12 @@ fn eval_expr(allocator: std.mem.Allocator, io: std.Io, env: *Env, text: []const 
     if (std.mem.startsWith(u8, trimmed, "list-dir ")) {
         return do_list_dir(allocator, io, env, trimmed[9..]);
     }
+    if (std.mem.startsWith(u8, trimmed, "fold ")) {
+        return do_fold(allocator, io, env, trimmed[5..]);
+    }
+    if (std.mem.startsWith(u8, trimmed, "lines-bounded ")) {
+        return do_lines_bounded(allocator, io, env, trimmed[14..]);
+    }
     // `map <list> as <name>: <expr>` transforms each element; `where … ` keeps the
     // elements whose predicate holds. Checked before the operators below, so a
     // comparison in the body stays part of the body.
@@ -866,8 +878,20 @@ fn eval_expr(allocator: std.mem.Allocator, io: std.Io, env: *Env, text: []const 
     if (find_comparison(text)) |cmp| {
         const left = try eval_expr(allocator, io, env, std.mem.trim(u8, cmp.left, " \t"));
         const right = try eval_expr(allocator, io, env, std.mem.trim(u8, cmp.right, " \t"));
-        const equal = values_equal(left, right);
-        return .{ .boolean = if (cmp.op == .ne) !equal else equal };
+        return switch (cmp.op) {
+            .eq => .{ .boolean = values_equal(left, right) },
+            .ne => .{ .boolean = !values_equal(left, right) },
+            .gt => .{ .boolean = try compare_int(left, right) == .gt },
+            .lt => .{ .boolean = try compare_int(left, right) == .lt },
+            .gte => .{ .boolean = switch (try compare_int(left, right)) {
+                .gt, .eq => true,
+                .lt => false,
+            } },
+            .lte => .{ .boolean = switch (try compare_int(left, right)) {
+                .lt, .eq => true,
+                .gt => false,
+            } },
+        };
     }
     // `<string> starts-with <prefix>` checks whether a string begins with a prefix.
     if (find_word_op(text, " starts-with ")) |idx| {
@@ -1631,6 +1655,70 @@ fn do_pipeline(allocator: std.mem.Allocator, io: std.Io, env: *Env, rest: []cons
     return .{ .list = out };
 }
 
+/// `fold <list> from <init> as <acc> <item>: <expr>` — accumulate over a list.
+fn do_fold(allocator: std.mem.Allocator, io: std.Io, env: *Env, rest: []const u8) EvalError!Value {
+    const from_idx = find_word_op(rest, " from ") orelse return error.FoldNeedsFrom;
+    const list_text = rest[0..@intCast(from_idx)];
+    const tail = rest[@intCast(from_idx + 6)..];
+    const as_idx = find_word_op(tail, " as ") orelse return error.FoldNeedsAs;
+    const init_text = tail[0..@intCast(as_idx)];
+    const body_tail = tail[@intCast(as_idx + 4)..];
+    const colon = find_top_level(body_tail, ':') orelse return error.FoldNeedsColon;
+    const names = std.mem.trim(u8, body_tail[0..@intCast(colon)], " \t");
+    const body = std.mem.trim(u8, body_tail[@intCast(colon + 1)..], " \t");
+    const space = std.mem.indexOfScalar(u8, names, ' ') orelse return error.FoldNeedsNames;
+    const acc_name = std.mem.trim(u8, names[0..space], " \t");
+    const item_name = std.mem.trim(u8, names[space + 1 ..], " \t");
+    if (acc_name.len == 0 or item_name.len == 0) return error.FoldNeedsNames;
+
+    const list_value = try eval_expr(allocator, io, env, list_text);
+    const items = switch (list_value) {
+        .list => |l| l,
+        else => return error.PipelineNeedsList,
+    };
+    var acc = try eval_expr(allocator, io, env, init_text);
+    for (items) |item| {
+        var child = env.*;
+        try child.bind(acc_name, acc);
+        try child.bind(item_name, item);
+        acc = try eval_expr(allocator, io, &child, body);
+    }
+    return acc;
+}
+
+/// `lines-bounded <expr> max <n>` — split lines; refuse when count exceeds bound.
+fn do_lines_bounded(allocator: std.mem.Allocator, io: std.Io, env: *Env, rest: []const u8) EvalError!Value {
+    const max_idx = find_word_op(rest, " max ") orelse return error.LinesBoundedNeedsMax;
+    const text_expr = rest[0..@intCast(max_idx)];
+    const max_expr = std.mem.trim(u8, rest[@intCast(max_idx + 5)..], " \t");
+    const value = try eval_expr(allocator, io, env, text_expr);
+    const text = switch (value) {
+        .string => |s| s,
+        else => return error.LinesNeedsString,
+    };
+    const max_val = try eval_expr(allocator, io, env, max_expr);
+    const max_n = switch (max_val) {
+        .int => |x| x,
+        else => return error.LinesBoundedNeedsMax,
+    };
+    if (max_n < 0) return error.ListTooLong;
+    const max_u: u32 = @intCast(max_n);
+
+    var count: u32 = 0;
+    var counter = std.mem.splitScalar(u8, text, '\n');
+    while (counter.next() != null) count += 1;
+    if (count > max_u) return error.ListTooLong;
+
+    const items = allocator.alloc(Value, @intCast(count)) catch return error.OutOfMemory;
+    var it = std.mem.splitScalar(u8, text, '\n');
+    var i: u32 = 0;
+    while (it.next()) |line| {
+        items[@intCast(i)] = .{ .string = line };
+        i += 1;
+    }
+    return .{ .list = items };
+}
+
 /// Evaluate one operand: a double-quoted string, a boolean, a base-ten integer,
 /// or a bare name that refers to an earlier binding.
 fn eval_operand(allocator: std.mem.Allocator, io: std.Io, env: *Env, raw: []const u8) EvalError!Value {
@@ -1659,6 +1747,12 @@ fn eval_operand(allocator: std.mem.Allocator, io: std.Io, env: *Env, raw: []cons
         // A string with a `${…}` hole composes a new value; a plain one is itself.
         if (std.mem.indexOf(u8, inner, "${")) |_| return interpolate(allocator, io, env, inner);
         return .{ .string = inner };
+    }
+    // Single-quoted strings are literal — `$` is never expanded (quote-safe run argv).
+    if (s.len >= 2 and s[0] == '\'' and s[s.len - 1] == '\'') {
+        const inner = s[1 .. s.len - 1];
+        const owned = try allocator.dupe(u8, inner);
+        return .{ .string = owned };
     }
     if (s.len >= 2 and s[0] == '[' and s[s.len - 1] == ']') {
         return parse_list(allocator, io, env, s[1 .. s.len - 1]);
@@ -1989,9 +2083,21 @@ const TopLevelSplit = struct {
     }
 };
 
-const Comparison = struct { op: enum { eq, ne }, left: []const u8, right: []const u8 };
+const Comparison = struct { op: enum { eq, ne, gt, lt, gte, lte }, left: []const u8, right: []const u8 };
 
-/// Find a top-level `==` or `!=`, skipping anything inside a quoted string.
+fn compare_int(a: Value, b: Value) EvalError!std.math.Order {
+    const ai = switch (a) {
+        .int => |x| x,
+        else => return error.CompareNeedsInt,
+    };
+    const bi = switch (b) {
+        .int => |x| x,
+        else => return error.CompareNeedsInt,
+    };
+    return std.math.order(ai, bi);
+}
+
+/// Find a top-level comparison operator, skipping anything inside a quoted string.
 fn find_comparison(text: []const u8) ?Comparison {
     var in_quote = false;
     var depth: u32 = 0;
@@ -2010,6 +2116,14 @@ fn find_comparison(text: []const u8) ?Comparison {
             return .{ .op = .eq, .left = text[0..@intCast(i)], .right = text[@intCast(i + 2)..] };
         } else if (depth == 0 and c == '!' and text[@intCast(i + 1)] == '=') {
             return .{ .op = .ne, .left = text[0..@intCast(i)], .right = text[@intCast(i + 2)..] };
+        } else if (depth == 0 and c == '>' and text[@intCast(i + 1)] == '=') {
+            return .{ .op = .gte, .left = text[0..@intCast(i)], .right = text[@intCast(i + 2)..] };
+        } else if (depth == 0 and c == '<' and text[@intCast(i + 1)] == '=') {
+            return .{ .op = .lte, .left = text[0..@intCast(i)], .right = text[@intCast(i + 2)..] };
+        } else if (depth == 0 and c == '>') {
+            return .{ .op = .gt, .left = text[0..@intCast(i)], .right = text[@intCast(i + 1)..] };
+        } else if (depth == 0 and c == '<') {
+            return .{ .op = .lt, .left = text[0..@intCast(i)], .right = text[@intCast(i + 1)..] };
         }
     }
     return null;

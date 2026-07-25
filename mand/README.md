@@ -1,0 +1,25 @@
+# Mand — M kernel vane: authority · scope · audit · retention · erasure
+
+**Language:** EN  
+**Last updated:** 2026-07-25  
+**Status:** Seated — ring-1 · ring-2 · ring-3 GREEN (test-only reach)  
+**Graduation:** Early vane-home ruling `20260725.160000` — kernel concern out of product host  
+**Style:** Radiant (see `../context/RADIANT_STYLE.md`)
+
+## What this room is
+
+Mand names custody at the kernel seam: who may see a record, how long it is kept, and when a per-subject key may be destroyed. Linengrow hosts product commerce; Mand owns the M-vane rings.
+
+| Ring | Seam | Witness |
+|------|------|---------|
+| **1** | Grant or refuse see at one capability check | `tools/mand_ring1_witness.rish` |
+| **2** | Retention standing KEEP · ELIGIBLE · HELD | `tools/mand_ring2_witness.rish` |
+| **3** | Destroy keys; record removal fact first (test-only) | `tools/mand_ring3_witness.rish` |
+
+```sh
+rishi/bin/rishi run tools/mand_ring1_witness.rish
+rishi/bin/rishi run tools/mand_ring2_witness.rish
+rishi/bin/rishi run tools/mand_ring3_witness.rish
+```
+
+Counsel: [`../counsel/20260725-001200_forgetting-without-breaking.md`](../counsel/20260725-001200_forgetting-without-breaking.md) · claim [`../waymarks/20260725-160000_mand-home-ring3.md`](../waymarks/20260725-160000_mand-home-ring3.md)

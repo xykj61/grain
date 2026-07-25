@@ -6,9 +6,9 @@
 #   rishi/bin/rishi run tools/mand_ring1_witness.rish
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "linengrow/bin/mand_ring1_witness"
+let bin = "mand/bin/mand_ring1_witness"
 
-let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/mand_ring1_witness.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mand/bin && env RYE_ZIG=${zig} rye/bin/rye build mand/mand_ring1_witness.rye -femit-bin=${bin}"]
 assert build.ok else "Mand ring-1 witness build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]

@@ -1,0 +1,43 @@
+//! glow/text_floor.rye — bounded string buffers and named overflow errors.
+//!
+//! Smallest complete ring for Glow rung 2: general text handling with explicit
+//! bounds and refuse-by-name overflow — prerequisite for a Glow-written lexer arm.
+//!
+//!   rye build glow/text_floor_witness.rye -femit-bin=glow/bin/text_floor_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const tally_copy = @import("tally_copy.rye");
+
+pub const text_floor_version = "20260725.160000";
+
+pub const max_text_len: u32 = 256;
+
+pub const TextError = error{
+    TextOverflow,
+    EmptyText,
+};
+
+pub const BoundedText = struct {
+    bytes: [max_text_len]u8 = undefined,
+    len: u32 = 0,
+
+    pub fn slice(self: *const BoundedText) []const u8 {
+        const n: usize = @intCast(self.len);
+        return self.bytes[0..n];
+    }
+
+    pub fn copy_from(self: *BoundedText, source: []const u8) TextError!void {
+        if (source.len == 0) return error.EmptyText;
+        if (source.len > max_text_len) return error.TextOverflow;
+        assert(source.len <= max_text_len); // postcondition guard
+        self.len = @intCast(source.len);
+        tally_copy.copy_disjoint(u8, self.bytes[0..source.len], source);
+        assert(self.len > 0);
+        assert(self.len <= max_text_len);
+    }
+
+    pub fn fits(source_len: u32) bool {
+        return source_len > 0 and source_len <= max_text_len;
+    }
+};

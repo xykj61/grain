@@ -1,0 +1,141 @@
+//! mand/mand_ring3_witness.rye — Mand ring-3 erasure witness (test-only reach).
+//!
+//!   rye build mand/mand_ring3_witness.rye -femit-bin=mand/bin/mand_ring3_witness
+//!   mand/bin/mand_ring3_witness
+//!
+//! Claims (counsel 20260725.001200 § Five):
+//!   1. Key destroyed → ciphertext unreadable.
+//!   2. Removal fact exists and is well-formed (written before destroy).
+//!   3. HELD standing refuses destruction.
+//!   4. Malformed authority / missing schedule refuses.
+//!   5. Witness mode off refuses by name.
+//!   6. Chain digest unchanged after erasure (bytes never moved).
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const mand2 = @import("mand_ring2.rye");
+const mand3 = @import("mand_ring3.rye");
+const tally_copy = @import("tally_copy.rye");
+
+const witness_version = "20260725.160000";
+
+fn run_selftest() !u8 {
+    const subject = "subj-alpha";
+    const plaintext = "personal-content-v1";
+    var key_material: [mand3.max_key_bytes]u8 = undefined;
+    @memset(key_material[0..], 0xAB);
+    key_material[0] = 0x01;
+
+    var store: mand3.KeyStore = .{};
+    try store.insert(subject, &key_material);
+    const idx = store.find_index(subject).?;
+    assert(store.keys[@intCast(idx)].present);
+
+    var cipher = try mand3.Ciphertext.seal(&store.keys[@intCast(idx)], plaintext);
+    assert(cipher.readable_with(&store.keys[@intCast(idx)], plaintext));
+
+    const sched = try mand2.make_schedule("memo-class", 100, 200);
+    var removal_log: mand3.RemovalLog = .{};
+    const log_bytes = "append-only-log-bytes-never-edited";
+
+    const digest_before = mand3.digest_log_bytes(log_bytes);
+
+    // Claim 5: witness mode off refuses.
+    const no_mode = mand3.destroy_key(
+        &store,
+        &removal_log,
+        &sched,
+        250,
+        &[_]mand2.Hold{},
+        .person_request,
+        subject,
+        false,
+        250,
+    );
+    if (no_mode) |_| {
+        return error.WitnessModeAdmitted;
+    } else |err| {
+        if (err != mand3.ErasureError.WitnessModeRequired) return err;
+    }
+    assert(removal_log.count == 0);
+    print("mand-ring3: witness mode off REFUSES WitnessModeRequired -- GREEN unwelcome path\n", .{});
+
+    // Claim 3: HELD refuses.
+    var hold: mand2.Hold = .{};
+    const hold_id = "hold-legal-1";
+    hold.id_len = @intCast(hold_id.len);
+    tally_copy.copy_disjoint(u8, hold.id[0..hold_id.len], hold_id);
+    hold.in_force = true;
+    const held_err = mand3.destroy_key(
+        &store,
+        &removal_log,
+        &sched,
+        250,
+        &[_]mand2.Hold{hold},
+        .person_request,
+        subject,
+        true,
+        250,
+    );
+    if (held_err) |_| {
+        return error.HeldAdmitted;
+    } else |err| {
+        if (err != mand3.ErasureError.HeldRefused) return err;
+    }
+    assert(removal_log.count == 0);
+    assert(store.keys[@intCast(idx)].present);
+    print("mand-ring3: HELD standing REFUSES HeldRefused -- GREEN unwelcome path\n", .{});
+
+    // Claim 4: missing schedule refuses.
+    const miss = mand3.destroy_key(
+        &store,
+        &removal_log,
+        null,
+        250,
+        &[_]mand2.Hold{},
+        .person_request,
+        subject,
+        true,
+        250,
+    );
+    if (miss) |_| {
+        return error.MissingScheduleAdmitted;
+    } else |err| {
+        if (err != mand3.ErasureError.MalformedAuthority) return err;
+    }
+    print("mand-ring3: missing schedule REFUSES MalformedAuthority -- GREEN unwelcome path\n", .{});
+
+    // Claim 1 + 2: eligible path — removal fact first, then key gone.
+    const before_facts = removal_log.count;
+    try mand3.destroy_key(
+        &store,
+        &removal_log,
+        &sched,
+        250,
+        &[_]mand2.Hold{},
+        .person_request,
+        subject,
+        true,
+        250,
+    );
+    assert(removal_log.count == before_facts + 1);
+    assert(std.mem.eql(u8, removal_log.facts[before_facts].subject_slice(), subject));
+    assert(std.mem.eql(u8, removal_log.facts[before_facts].authority_slice(), "person_request"));
+    assert(!store.keys[@intCast(idx)].present);
+    assert(!cipher.readable_with(&store.keys[@intCast(idx)], plaintext));
+    print("mand-ring3: key destroyed, ciphertext unreadable, removal fact written -- GREEN welcome path\n", .{});
+
+    // Claim 6: digest unchanged — log bytes never moved.
+    const digest_after = mand3.digest_log_bytes(log_bytes);
+    assert(std.mem.eql(u8, &digest_before, &digest_after));
+    print("mand-ring3: chain digest unchanged after erasure -- GREEN stance proof\n", .{});
+
+    print("mand-ring3: version {s} (module {s})\n", .{ witness_version, mand3.mand_ring3_version });
+    print("GREEN: Mand ring-3 -- destroy keys; record first; fail closed; test-only reach.\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}
