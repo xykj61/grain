@@ -10,6 +10,7 @@
 **Companions:** the deep-archive blueprint (`20260701-213412_deep-archive-and-sovereign-host-blueprint.md`), archive law [`20260703-191112_resins-and-hash-tiers.md`](20260703-191112_resins-and-hash-tiers.md) (ratified `20260703.191312`), Puddle verdict in [`external-research/20260702-035018_puddle-sandboxed-rye-containers.md`](../../external-research/20260702-035018_puddle-sandboxed-rye-containers.md), `PUBKEYS.md`, and the stack record
 
 *Written together by Kaeden and Reya 2.*
+Radiant pass `20260725.035645`
 
 ---
 

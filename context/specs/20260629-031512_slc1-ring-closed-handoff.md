@@ -7,6 +7,8 @@
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 **Git tip at close:** `06de97f` — `tools: Cursor in ai-jail launcher — cursor-jail.sh and launch-cursor.rish.`
 
+Radiant pass `20260725.035645`
+
 ---
 
 ## What Is True Now
