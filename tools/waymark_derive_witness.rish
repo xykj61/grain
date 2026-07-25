@@ -1,8 +1,8 @@
 # waymark_derive_witness.rish — naming-grade sameness across the flw fixture pin.
 #
 # Asserts corpus count + SHA3-512 pins, re-derives every corpus-drawn seated
-# waymark (HAWM · TUBE · ZETA · JABS · LULU · STOA), and confirms SETU remains
-# on the exclude list (hand-seated; absent from the flw corpus).
+# waymark (HAWM · TUBE · ZETA · JABS · LULU · STOA), and confirms SETU · SEVA ·
+# MONA · SALA remain on the exclude list (hand-seated; absent from flw corpus).
 # While old/doc/spec/flw.txt is present, also asserts the fixture body is a
 # byte-identical twin after the attribution header.
 #
@@ -41,9 +41,17 @@ assert twin_run.ok else "fixture body does not match elder old/doc/spec/flw.txt 
 
 let setu_in_corpus = run ["sh" "-c" "grep -qx SETU ${corpus_path}"]
 assert (setu_in_corpus.ok == false) else "SETU unexpectedly present in flw corpus"
+let seva_in_corpus = run ["sh" "-c" "grep -qx SEVA ${corpus_path}"]
+assert (seva_in_corpus.ok == false) else "SEVA unexpectedly present in flw corpus"
+# MONA appears in the flw corpus — hand-seat still requires exclude membership.
+let sala_in_corpus = run ["sh" "-c" "grep -qx SALA ${corpus_path}"]
+assert (sala_in_corpus.ok == false) else "SALA unexpectedly present in flw corpus"
 
 let exclude_src = read-file "tools/waymark_derive.rish"
 assert (exclude_src contains "SETU") else "waymark_derive exclude list missing SETU"
+assert (exclude_src contains "SEVA") else "waymark_derive exclude list missing SEVA"
+assert (exclude_src contains "MONA") else "waymark_derive exclude list missing MONA"
+assert (exclude_src contains "SALA") else "waymark_derive exclude list missing SALA (transition season)"
 assert (exclude_src contains "tools/fixtures/flw-four-letter.txt") else "waymark_derive not pointed at fixture"
 assert (exclude_src contains "${corpus_digest}") else "waymark_derive missing corpus digest pin"
 
@@ -56,4 +64,4 @@ assert draw_run.out contains "JABS" else "JABS missing"
 assert draw_run.out contains "LULU" else "LULU missing"
 assert draw_run.out contains "STOA" else "STOA missing"
 
-say "GREEN: waymark derive witness — corpus pins · body twin · six seated draws · SETU exclude · fixture repoint"
+say "GREEN: waymark derive witness — corpus pins · body twin · six seated draws · SETU·SEVA·MONA·SALA exclude · fixture repoint"

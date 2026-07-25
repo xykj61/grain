@@ -1,6 +1,6 @@
-//! linengrow/sala_broadcast_delivery.rye — Sala B1: a session carried live over Comlink.
+//! linengrow/seva_broadcast_delivery.rye — Seva B1: a session carried live over Comlink.
 //!
-//!   rye build linengrow/sala_broadcast_delivery.rye -lc -femit-bin=linengrow/bin/sala-broadcast-delivery
+//!   rye build linengrow/seva_broadcast_delivery.rye -lc -femit-bin=linengrow/bin/sala-broadcast-delivery
 //!   linengrow/bin/sala-broadcast-delivery selftest
 //!   linengrow/bin/sala-broadcast-delivery demo
 //!
@@ -11,7 +11,7 @@
 //! flagship rests on, unblocked by Pool P0.
 //!
 //! Composition, not new machinery: the log and replay are Sala B0
-//! (sala_session_core.rye); the seal is Comlink's wire_format (the same
+//! (seva_session_core.rye); the seal is Comlink's wire_format (the same
 //! primitive neth_serial_core_delivery.rye and mala_delivery.rye use); the
 //! carriage shape (source/follower/selftest/demo over real UDP) mirrors the
 //! Neth carriage lap already proven. As there, each event crosses the wire
@@ -34,7 +34,7 @@ const kumara = @import("kumara.rye");
 const rc = @import("receipt_core.rye");
 const mc = @import("mala_core.rye");
 const wf = @import("wire_format.rye");
-const sala = @import("sala_session_core.rye");
+const sala = @import("seva_session_core.rye");
 const tally_copy = @import("tally_copy.rye");
 
 const delivery_version = "20260715.203500";
@@ -91,7 +91,7 @@ fn event_fields(seq: i64, stamp: []const u8, payload: []const u8, actor_hex: *co
 }
 
 /// Sign event #seq and encode it in the compact wire payload — the exact
-/// bytes sala_session_core.append_event would sign, so the reconstructed
+/// bytes seva_session_core.append_event would sign, so the reconstructed
 /// line matches and roots agree.
 fn build_event_payload(seq: i64, stamp: []const u8, payload: []const u8, actor_hex: *const [mc.pubkey_hex_len]u8, signer: kumara.KeyPair, out: *[rc.slcl2_payload_header + rc.slcl2_max_fact]u8) !u32 {
     var seq_buf: [24]u8 = undefined;
@@ -170,7 +170,7 @@ fn run_selftest(_: std.Io) !u8 {
     }
 
     print("sala-b1: version {s} wire_format {s}\n", .{ delivery_version, wf.wire_format_version });
-    print("GREEN: Sala B1 -- a session carried live over Comlink replays to the identical root, in order.\n", .{});
+    print("GREEN: Seva B1 -- a session carried live over Comlink replays to the identical root, in order.\n", .{});
     return 0;
 }
 

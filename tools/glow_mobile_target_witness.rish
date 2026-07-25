@@ -16,8 +16,8 @@
 #   rishi/bin/rishi run tools/glow_mobile_target_witness.rish
 
 let zig = "vendor/zig-toolchain/zig"
-let src = "linengrow/sala_session_core_witness.rye"
-let bin = "linengrow/bin/sala_session_core_witness_aarch64"
+let src = "linengrow/seva_session_core_witness.rye"
+let bin = "linengrow/bin/seva_session_core_witness_aarch64"
 
 let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build ${src} -target aarch64-linux-musl -femit-bin=${bin}"]
 assert build.ok else "Glow mobile-target cross-build for aarch64 failed"

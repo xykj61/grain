@@ -1,6 +1,6 @@
-//! linengrow/sala_r1_frame.rye — Sala R1 demo frame as a callable unit.
+//! linengrow/seva_r1_frame.rye — Seva R1 demo frame as a callable unit.
 //!
-//! Same Pool-hosted ledger path as sala_view_witness.rye Claim 1, returned as
+//! Same Pool-hosted ledger path as seva_view_witness.rye Claim 1, returned as
 //! a thin-view Frame for the NativeActivity present seam. B0 still owns the
 //! session root; R1 owns what Pool hosts painted as lines.
 
@@ -12,7 +12,7 @@ const rc = @import("receipt_core.rye");
 const mc = @import("mala_core.rye");
 const caps = @import("capabilities.rye");
 const pool = @import("pool_host_seam.rye");
-const view = @import("sala_view.rye");
+const view = @import("seva_view.rye");
 
 pub const FrameError = view.FrameError || pool.HostError || error{ TableFull, Overflow, InvalidFact };
 

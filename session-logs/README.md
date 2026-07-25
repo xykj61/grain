@@ -10,6 +10,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 **Living pin bound:** `living_pin_max_bytes = 24576` ([spec](../context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md)). Closed index rows through `20260721`: [`archive/README-index-through-20260721.md`](archive/README-index-through-20260721.md). Early `20260722` overflow: [`archive/README-index-20260722-shelf.md`](archive/README-index-20260722-shelf.md).
 
+- `20260724.201727` — [Nothing to Give · Seva · Mona seated](20260724-201727_nothing-to-give-seva-seat.bron) — custody foundations · suite rename GREEN
 - `20260724.194344` — [Send Hands We Grow Section One to main](20260724-194344_send-hands-we-grow-relay.bron) — FF merge · JAMCUE · twin 1a · PARK 2–8
 - `20260724.194239` — [Hands We Grow relay — jamcue · twin 1a](20260724-194239_hands-we-grow-relay.bron) — JAMCUE reframe · digraph harden · PARK 2–8
 - `20260724.181332` — [Send list512 and digraph twin to main](20260724-181332_send-list512-digraph-twin.bron) — FF merge · STOA333 · list512

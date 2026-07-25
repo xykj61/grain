@@ -1,13 +1,13 @@
-//! linengrow/sala_jabs2_glass_audience_witness.rye — proves JABS2 glass audience lines.
+//! linengrow/seva_jabs2_glass_audience_witness.rye — proves JABS2 glass audience lines.
 //!
-//!   rye build linengrow/sala_jabs2_glass_audience_witness.rye \
-//!     -femit-bin=linengrow/bin/sala_jabs2_glass_audience_witness
-//!   linengrow/bin/sala_jabs2_glass_audience_witness
+//!   rye build linengrow/seva_jabs2_glass_audience_witness.rye \
+//!     -femit-bin=linengrow/bin/seva_jabs2_glass_audience_witness
+//!   linengrow/bin/seva_jabs2_glass_audience_witness
 
 const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
-const glass = @import("sala_jabs2_glass_audience.rye");
+const glass = @import("seva_jabs2_glass_audience.rye");
 
 const witness_version = "20260717.212257";
 

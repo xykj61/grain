@@ -1047,10 +1047,10 @@ let neth_delivery = run ["rishi/bin/rishi" "run" "tools/neth_serial_core_deliver
 assert neth_delivery.ok else "Neth serial core delivery witness failed"
 say "GREEN: Neth serial core delivery witness passed."
 
-say "witness suite: Sala B0 — a session is a signed, ordered, replayable log…"
-let sala_b0 = run ["rishi/bin/rishi" "run" "tools/sala_session_core_witness.rish"]
-assert sala_b0.ok else "Sala B0 session-core witness failed"
-say "GREEN: Sala B0 session-core witness passed."
+say "witness suite: Seva B0 — a session is a signed, ordered, replayable log…"
+let sala_b0 = run ["rishi/bin/rishi" "run" "tools/seva_session_core_witness.rish"]
+assert sala_b0.ok else "Seva B0 session-core witness failed"
+say "GREEN: Seva B0 session-core witness passed."
 
 say "witness suite: Pool P0 — one agent hosted over Caravan's capability table…"
 let pool_p0 = run ["rishi/bin/rishi" "run" "tools/pool_host_seam_witness.rish"]
@@ -1062,18 +1062,18 @@ let pool_p1 = run ["rishi/bin/rishi" "run" "tools/pool_isolation_witness.rish"]
 assert pool_p1.ok else "Pool P1 isolation witness failed"
 say "GREEN: Pool P1 isolation witness passed."
 
-say "witness suite: Sala B1 — a session carried live over Comlink…"
-let sala_b1 = run ["rishi/bin/rishi" "run" "tools/sala_broadcast_delivery_witness.rish"]
-assert sala_b1.ok else "Sala B1 broadcast delivery witness failed"
-say "GREEN: Sala B1 broadcast delivery witness passed."
+say "witness suite: Seva B1 — a session carried live over Comlink…"
+let sala_b1 = run ["rishi/bin/rishi" "run" "tools/seva_broadcast_delivery_witness.rish"]
+assert sala_b1.ok else "Seva B1 broadcast delivery witness failed"
+say "GREEN: Seva B1 broadcast delivery witness passed."
 
-say "witness suite: Sala B1 glass — welcome carriage paints Skate…"
-let sala_b1_glass = run ["rishi/bin/rishi" "run" "tools/sala_b1_glass_carriage_witness.rish"]
-assert sala_b1_glass.ok else "Sala B1 glass carriage witness failed"
-say "GREEN: Sala B1 glass carriage witness passed."
+say "witness suite: Seva B1 glass — welcome carriage paints Skate…"
+let sala_b1_glass = run ["rishi/bin/rishi" "run" "tools/seva_b1_glass_carriage_witness.rish"]
+assert sala_b1_glass.ok else "Seva B1 glass carriage witness failed"
+say "GREEN: Seva B1 glass carriage witness passed."
 
 say "witness suite: JABS2 glass — audience strip under layout word…"
-let sala_jabs2_glass = run ["rishi/bin/rishi" "run" "tools/sala_jabs2_glass_audience_witness.rish"]
+let sala_jabs2_glass = run ["rishi/bin/rishi" "run" "tools/seva_jabs2_glass_audience_witness.rish"]
 assert sala_jabs2_glass.ok else "JABS2 glass audience witness failed"
 say "GREEN: JABS2 glass audience witness passed."
 
@@ -1177,18 +1177,18 @@ let setu65 = run ["rishi/bin/rishi" "run" "tools/setu65_lab_tx_witness.rish"]
 assert setu65.ok else "SETU6.5 lab TX gate witness failed"
 say "GREEN: SETU6.5 lab TX gate witness passed."
 
-say "witness suite: Sala R1 — the viewer renders what Pool hosts…"
-let sala_r1 = run ["rishi/bin/rishi" "run" "tools/sala_view_witness.rish"]
-assert sala_r1.ok else "Sala R1 view witness failed"
-say "GREEN: Sala R1 view witness passed."
+say "witness suite: Seva R1 — the viewer renders what Pool hosts…"
+let sala_r1 = run ["rishi/bin/rishi" "run" "tools/seva_view_witness.rish"]
+assert sala_r1.ok else "Seva R1 view witness failed"
+say "GREEN: Seva R1 view witness passed."
 
-say "witness suite: Sala R2 — the unified viewer, many agents on one surface…"
-let sala_r2 = run ["rishi/bin/rishi" "run" "tools/sala_surface_witness.rish"]
-assert sala_r2.ok else "Sala R2 unified-viewer witness failed"
-say "GREEN: Sala R2 unified-viewer witness passed."
+say "witness suite: Seva R2 — the unified viewer, many agents on one surface…"
+let sala_r2 = run ["rishi/bin/rishi" "run" "tools/seva_surface_witness.rish"]
+assert sala_r2.ok else "Seva R2 unified-viewer witness failed"
+say "GREEN: Seva R2 unified-viewer witness passed."
 
 say "witness suite: JABS2 — audience + back-channel (multi-signer chat)…"
-let sala_jabs2 = run ["rishi/bin/rishi" "run" "tools/sala_backchannel_witness.rish"]
+let sala_jabs2 = run ["rishi/bin/rishi" "run" "tools/seva_backchannel_witness.rish"]
 assert sala_jabs2.ok else "JABS2 back-channel witness failed"
 say "GREEN: JABS2 back-channel witness passed."
 

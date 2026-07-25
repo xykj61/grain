@@ -1,10 +1,10 @@
-//! linengrow/sala_backchannel_witness.rye — proves Sala B2: audience + back-channel.
+//! linengrow/seva_backchannel_witness.rye — proves Seva B2: audience + back-channel.
 //!
-//!   rye build linengrow/sala_backchannel_witness.rye -femit-bin=linengrow/bin/sala_backchannel_witness
-//!   linengrow/bin/sala_backchannel_witness
+//!   rye build linengrow/seva_backchannel_witness.rye -femit-bin=linengrow/bin/seva_backchannel_witness
+//!   linengrow/bin/seva_backchannel_witness
 //!
 //! Per external-research/20260715-181500_sala-broadcast-live-session-fold.md
-//! rung B2 and linengrow/sala_session_core.rye. A broadcast is one ordered
+//! rung B2 and linengrow/seva_session_core.rye. A broadcast is one ordered
 //! log carrying both the broadcaster's content and viewers' chat, each a
 //! signed fact from its own author, folded and verified against its own key.
 //! Five claims:
@@ -26,7 +26,7 @@ const print = std.debug.print;
 const kumara = @import("kumara.rye");
 const rc = @import("receipt_core.rye");
 const mc = @import("mala_core.rye");
-const sala = @import("sala_session_core.rye");
+const sala = @import("seva_session_core.rye");
 
 const witness_version = "20260715.210500";
 
@@ -103,7 +103,7 @@ fn run_selftest() !u8 {
     print("sala-b2: two subscribers replay the same stream to the same root -- one audience, one verified truth -- GREEN convergence path\n", .{});
 
     print("sala-b2: version {s}\n", .{witness_version});
-    print("GREEN: Sala B2 -- audience and back-channel; chat as folded signed facts, only consented voices, one verified stream.\n", .{});
+    print("GREEN: Seva B2 -- audience and back-channel; chat as folded signed facts, only consented voices, one verified stream.\n", .{});
     return 0;
 }
 

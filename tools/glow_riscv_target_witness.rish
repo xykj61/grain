@@ -36,9 +36,9 @@ let zig = "vendor/zig-toolchain/zig"
 
 # --- Sala B0: the session-broadcast root ------------------------------------
 
-let src_sala = "linengrow/sala_session_core_witness.rye"
-let bin_sala_native = "linengrow/bin/sala_session_core_witness_native"
-let bin_sala_riscv = "linengrow/bin/sala_session_core_witness_riscv64"
+let src_sala = "linengrow/seva_session_core_witness.rye"
+let bin_sala_native = "linengrow/bin/seva_session_core_witness_native"
+let bin_sala_riscv = "linengrow/bin/seva_session_core_witness_riscv64"
 
 let build_sala_native = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build ${src_sala} -femit-bin=${bin_sala_native}"]
 assert build_sala_native.ok else "Sala native build failed"

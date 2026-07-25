@@ -1,0 +1,46 @@
+# seva_rename_witness.rish — Sala→Seva parity-family rename GREEN.
+#
+# Asserts Seva paths exist, old suite paths are gone, exclude holds
+# SALA·SEVA·MONA, and the seven suite witnesses still GREEN.
+#
+#   rishi/bin/rishi run tools/seva_rename_witness.rish
+
+let exclude_src = read-file "tools/waymark_derive.rish"
+assert (exclude_src contains "SEVA") else "exclude missing SEVA"
+assert (exclude_src contains "SALA") else "exclude missing SALA (transition)"
+assert (exclude_src contains "MONA") else "exclude missing MONA"
+
+let lex = read-file "context/LEXICON.md"
+assert (lex contains "**Seva**") else "LEXICON missing Seva"
+assert (lex contains "**Mona**") else "LEXICON missing Mona"
+assert (lex contains "Renamed to Seva") else "LEXICON Sala row missing rename note"
+
+assert ((read-file "tools/seva_view_witness.rish") contains "seva_view") else "seva_view witness missing"
+assert ((read-file "foundations/20260724-200912_nothing-to-give-custody-first-principle.md") contains "Nothing to Give") else "custody foundations missing"
+
+# Old suite entrypoints must be gone (atomic rename).
+let old_view = run ["sh" "-c" "test ! -e tools/sala_view_witness.rish"]
+assert old_view.ok else "tools/sala_view_witness.rish still present"
+let old_core = run ["sh" "-c" "test ! -e tools/sala_session_core_witness.rish"]
+assert old_core.ok else "tools/sala_session_core_witness.rish still present"
+
+let way = run ["rishi/bin/rishi" "run" "tools/waymark_derive_witness.rish"]
+assert way.ok else "waymark_derive_witness failed under Seva seat"
+assert way.out contains "SEVA" else "waymark GREEN missing SEVA"
+
+let w1 = run ["rishi/bin/rishi" "run" "tools/seva_view_witness.rish"]
+assert w1.ok else "seva_view_witness failed"
+let w2 = run ["rishi/bin/rishi" "run" "tools/seva_surface_witness.rish"]
+assert w2.ok else "seva_surface_witness failed"
+let w3 = run ["rishi/bin/rishi" "run" "tools/seva_session_core_witness.rish"]
+assert w3.ok else "seva_session_core_witness failed"
+let w4 = run ["rishi/bin/rishi" "run" "tools/seva_broadcast_delivery_witness.rish"]
+assert w4.ok else "seva_broadcast_delivery_witness failed"
+let w5 = run ["rishi/bin/rishi" "run" "tools/seva_backchannel_witness.rish"]
+assert w5.ok else "seva_backchannel_witness failed"
+let w6 = run ["rishi/bin/rishi" "run" "tools/seva_b1_glass_carriage_witness.rish"]
+assert w6.ok else "seva_b1_glass_carriage_witness failed"
+let w7 = run ["rishi/bin/rishi" "run" "tools/seva_jabs2_glass_audience_witness.rish"]
+assert w7.ok else "seva_jabs2_glass_audience_witness failed"
+
+say "GREEN: Seva rename — lexicon · exclude SALA·SEVA·MONA · seven suite witnesses · old paths gone"

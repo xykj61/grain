@@ -7,10 +7,10 @@
 //! the Sala B0 Glow fold (`glow_sala_b0_fold.rye` · STOA198/237 embedded desk),
 //! the TUBE1 admit gate
 //! (`tube1_glass_gate.rye`), the R2 multi-panel surface
-//! (`sala_r2_surface.rye`), the TUBE5 tip line (`tube5_glass_tip.rye`),
+//! (`seva_r2_surface.rye`), the TUBE5 tip line (`tube5_glass_tip.rye`),
 //! the TUBE2–4 rail lines (`tube2_glass_pub.rye`, `tube3_glass_fetch.rye`,
 //! `tube4_glass_market.rye`), and Sala B1 live-carriage
-//! (`sala_b1_glass_carriage.rye`), and Dexter glass line
+//! (`seva_b1_glass_carriage.rye`), and Dexter glass line
 //! (`dexter_glass_line.rye`) with live KEY drain (`dexter_glass_key.rye`).
 //! After writing files/sala_root.txt, registers window + input callbacks:
 //! paints panels + tip + rail + B1 + Dexter + session-root hex; KEY updates
@@ -31,8 +31,8 @@ const tube5_tip = @import("tube5_glass_tip.rye");
 const tube2_pub = @import("tube2_glass_pub.rye");
 const tube3_fetch = @import("tube3_glass_fetch.rye");
 const tube4_market = @import("tube4_glass_market.rye");
-const b1_carriage = @import("sala_b1_glass_carriage.rye");
-const jabs2_audience = @import("sala_jabs2_glass_audience.rye");
+const b1_carriage = @import("seva_b1_glass_carriage.rye");
+const jabs2_audience = @import("seva_jabs2_glass_audience.rye");
 const dexter_glass = @import("dexter_glass_line.rye");
 const dexter_key = @import("dexter_glass_key.rye");
 const kb_paint = @import("dexter_glass_keyboard_paint.rye");
@@ -43,8 +43,8 @@ const live_glass = @import("sala_live_root_glass.rye");
 const kumara = @import("kumara.rye");
 const mc = @import("mala_core.rye");
 const rc = @import("receipt_core.rye");
-const r2 = @import("sala_r2_surface.rye");
-const sala_surf = @import("sala_surface.rye");
+const r2 = @import("seva_r2_surface.rye");
+const sala_surf = @import("seva_surface.rye");
 const surface = @import("glow_native_surface.rye");
 const hearth = @import("hearth_lulu0.rye");
 const lulu2 = @import("hearth_lulu2.rye");

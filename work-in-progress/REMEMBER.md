@@ -2,11 +2,11 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260724.193912` (EDT) · voice Quin  
-**Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded**  
+**Last refreshed:** `20260724.201727` (EDT) · voice Quin  
+**Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** (Sala alias)  
 **Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list512 GREEN  
-**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333  
-**Git nib:** `877b2f4666` · pre-hands-we-grow (update after send)
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mona** seated  
+**Git nib:** `98815ea7de` · pre-seva-seat (update after send)
 
 **Season:** Framework · EDT · **finishing edge:** newcomer clones · bootstraps · one witness green · one Glow line at `rishi glow` · inside thirty minutes.  
 **APK:** `tools/.cache/tube05/sala-broadcaster.apk` · pkg `org.glow.app.sala_broadcaster`  
@@ -16,15 +16,15 @@
 
 ## Now
 
-**Hands We Grow relay** `20260724.193912` — JAMCUE reframed (cell-pack demo; outward gift = mat/rub season) · digraph twin hardened (Rye ≡ desk + wrong-order refuse) · STOA333 = rung 1a. Counsel decisions 2–8 PARK. Reply [`../counsel/replies/20260724-194239_re-the-hands-we-grow.md`](../counsel/replies/20260724-194239_re-the-hands-we-grow.md) · claim [`../waymarks/stoa-300s/20260724-181200_stoa333-digraph-table-twin.md`](../waymarks/stoa-300s/20260724-181200_stoa333-digraph-table-twin.md).
+**Nothing to Give · Hall Renamed** `20260724.201727` — custody first principle landed · Seva confirmed (Sala alias) · Mona seated · parity suite `sala_*`→`seva_*` GREEN · settings split Seva/Mona. Reply [`../counsel/replies/20260724-201727_re-nothing-to-give-and-the-hall-renamed.md`](../counsel/replies/20260724-201727_re-nothing-to-give-and-the-hall-renamed.md) · foundations [`../foundations/20260724-200912_nothing-to-give-custody-first-principle.md`](../foundations/20260724-200912_nothing-to-give-custody-first-principle.md) · claim [`../waymarks/20260724-201527_seva-confirmed-sala-alias.md`](../waymarks/20260724-201527_seva-confirmed-sala-alias.md).
 
 **Witnesses:**
 
 ```bash
 export RYE_ZIG=vendor/zig-toolchain/zig
-rishi/bin/rishi run tools/glow_jamcue_vectors_witness.rish
-rishi/bin/rishi run tools/glow_digraph_twin_witness.rish
+rishi/bin/rishi run tools/seva_rename_witness.rish
 rishi/bin/rishi run tools/waymark_derive_witness.rish
+rishi/bin/rishi run tools/seva_view_witness.rish
 ```
 
 ---
@@ -34,9 +34,11 @@ rishi/bin/rishi run tools/waymark_derive_witness.rish
 | Door | Kind |
 |------|------|
 | vere/old untrack | held · word **siblings seated** or host ritual |
+| `glow_sala_b0_*` rename pass | migrate-on-touch |
+| Mona ring-1 capability witness | season |
 | Real mat/rub jam & cue | season |
 | Rung 2 — one Glow lowering arm | season |
-| Counsel 2–8 (custody · Mona · pillars) | park · Keaton’s word |
+| Hands We Grow 3–4·6–8 (succession · redaction · Crockford · first-responder · pillars) | park |
 | cast/face mold→shape | lean C held |
 
 ---

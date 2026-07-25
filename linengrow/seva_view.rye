@@ -1,11 +1,11 @@
-//! linengrow/sala_view.rye — Sala R1: render what Pool hosts as a bounded frame.
+//! linengrow/seva_view.rye — Seva R1: render what Pool hosts as a bounded frame.
 //!
 //! Per external-research/20260715-172000_pool-keystone-revival-realidream-landscape.md
-//! rung R1: Realidream (Sala) renders one Pool-hosted agent's state as a pure
+//! rung R1: Realidream (Seva) renders one Pool-hosted agent's state as a pure
 //! fold from the state to a frame — the thin-view exception (local facts → a
 //! small bounded frame, no Pond/Dexter), sourced from Pool rather than a
 //! local fixture. This is the first rung of the Landscape-parallel viewer:
-//! Pool hosts, Sala shows.
+//! Pool hosts, Seva shows.
 //!
 //! A frame is a bounded list of short text lines derived purely from the
 //! hosted agent's folded state. Rendering is a deterministic fold — the same

@@ -1,9 +1,9 @@
-//! linengrow/sala_session_core.rye — Sala B0: a session is a signed, ordered, replayable log.
+//! linengrow/seva_session_core.rye — Seva B0: a session is a signed, ordered, replayable log.
 //!
 //! Per external-research/20260715-181500_sala-broadcast-live-session-fold.md
 //! rung B0: a broadcast (or a recorded session, Asciinema's shape) is not a
 //! video — it is a replayable log of signed, timestamped, strictly-ordered
-//! events, re-rendered by folding. This is the smallest real lap of the Sala
+//! events, re-rendered by folding. This is the smallest real lap of the Seva
 //! broadcast lane, and it gates on nothing but the fold primitives already
 //! green (it does not wait on Pool P0; only live carriage, B1, does).
 //!

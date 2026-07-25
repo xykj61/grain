@@ -1,11 +1,11 @@
-# sala_jabs2_glass_audience_witness.rish — JABS2 glass audience strip.
+# seva_jabs2_glass_audience_witness.rish — JABS2 glass audience strip.
 #
-#   rishi/bin/rishi run tools/sala_jabs2_glass_audience_witness.rish
+#   rishi/bin/rishi run tools/seva_jabs2_glass_audience_witness.rish
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "linengrow/bin/sala_jabs2_glass_audience_witness"
+let bin = "linengrow/bin/seva_jabs2_glass_audience_witness"
 
-let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/sala_jabs2_glass_audience_witness.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/seva_jabs2_glass_audience_witness.rye -femit-bin=${bin}"]
 assert build.ok else "JABS2 glass audience witness build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]

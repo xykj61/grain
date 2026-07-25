@@ -18,10 +18,12 @@ Before the first rung is written as `X0` / `X1` / … in TASKS, ROADMAP, compres
 | **HAWM** | `grapheneos-pixel-mobile-emulation` | Pixel / GrapheneOS SLC |
 | **TUBE** | `glow-application-framework-and-publishing` | App framework / packaging |
 | **ZETA** | `glow-english-qwerty-glass-keyboard-3` | Glass English QWERTY keyboard |
-| **JABS** | `sala-broadcast-live-session-fold` | Sala broadcast session fold (was bare B0–B3) |
+| **JABS** | `sala-broadcast-live-session-fold` | Seva (Sala alias) broadcast session fold (was bare B0–B3) |
 | **LULU** | `glow-glass-hearth-display-and-wired-sync` | Hearth display presets · short home · Wired Glass |
 | **STOA** | `glow-language-rune-heads-nest-and-lowering-2` | Glow language SLC · rune heads · nest · composition |
 | **SETU** | *(hand-seated; not a corpus draw — absent from flw)* | USB hearth carry Glass↔Desk |
+
+**Hand-seated names on the exclude roster** (not waymark draws): **SEVA** (viewer; absent from flw), **SALA** (alias — keep both for one transition season), **MONA** (M vane; present in flw, never a ladder draw).
 
 Corpus pin: `tools/fixtures/flw-four-letter.txt` · witness `tools/waymark_derive_witness.rish`.
 

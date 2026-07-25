@@ -1,6 +1,6 @@
-//! linengrow/sala_r2_surface.rye — Sala R2 demo surface as a callable unit.
+//! linengrow/seva_r2_surface.rye — Seva R2 demo surface as a callable unit.
 //!
-//! Same three capability-isolated Pool agents as sala_surface_witness.rye
+//! Same three capability-isolated Pool agents as seva_surface_witness.rye
 //! Claim 1 (ask · receipt · reputation), gathered onto one Surface for the
 //! NativeActivity present seam. B0 still owns the session root; R2 owns the
 //! multi-panel thin-view.
@@ -13,7 +13,7 @@ const rc = @import("receipt_core.rye");
 const mc = @import("mala_core.rye");
 const caps = @import("capabilities.rye");
 const pool = @import("pool_host_seam.rye");
-const sala_surf = @import("sala_surface.rye");
+const sala_surf = @import("seva_surface.rye");
 
 pub const SurfaceError = sala_surf.SurfaceError || pool.HostError || error{ TableFull, Overflow, InvalidFact, InvalidAmount };
 
@@ -38,7 +38,7 @@ fn append_send(
     try mc.sign_append(log, len, fields, signer);
 }
 
-/// Host three isolated ledger agents and gather them onto one Sala surface.
+/// Host three isolated ledger agents and gather them onto one Seva surface.
 pub fn run_demo_surface() SurfaceError!sala_surf.Surface {
     // invariant: three isolated panels fit R2 bounds
     assert(sala_surf.max_panels >= 3);

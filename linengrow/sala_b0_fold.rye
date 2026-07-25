@@ -1,6 +1,6 @@
 //! linengrow/sala_b0_fold.rye — the Sala B0 demo fold as a callable unit.
 //!
-//! Same three signed, ordered events as sala_session_core_witness.rye Claim 1,
+//! Same three signed, ordered events as seva_session_core_witness.rye Claim 1,
 //! returned as a session root rather than printed from `main`. The NativeActivity
 //! entry (`glow_native_activity.rye`) and a host-side witness both call
 //! `run_demo_fold` so the APK path and the CLI path prove the same fold.
@@ -10,7 +10,7 @@ const assert = std.debug.assert;
 const kumara = @import("kumara.rye");
 const mc = @import("mala_core.rye");
 const rc = @import("receipt_core.rye");
-const sala = @import("sala_session_core.rye");
+const sala = @import("seva_session_core.rye");
 
 /// Known session root for the fixed three-event demo (HAWM1 green).
 /// Host and on-device folds must match this byte-for-byte.

@@ -19,7 +19,7 @@
 | `glow/` · `rye/` · `rishi/` · `tools/` | Languages and bench | instruments; Ojjo consumes parity |
 | `aurora/` · `caravan/` · `tally/` | Runtime trio | held unification; ship-day image names it |
 | `linengrow/` · `mandi/` · `granary/` · `amphora/` · `dimeroll/` | Agents and goods | **Pool** |
-| `brushstroke/` | Design system | **Sala** |
+| `brushstroke/` | Design system | **Seva** |
 | `comlink/` | Wires | **Neth** · **Pool** jointly |
 | `amber/` | Archival module | Mantra / Weave |
 | `anvil/` · `lantern/` · `lattice/` · `scribble/` | Faculties | **Quin** |
