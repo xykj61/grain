@@ -1,0 +1,10 @@
+format session-log-v1
+stamp 20260725.112728
+editor Cursor
+model Cursor Composer 2.5 300k Fast
+voice Quin
+title kg closes Wave 35 and 36
+prompt kg
+think finish Wave 35 spot-read dimeroll; start Wave 36 README tail; both PR merge send.
+obs Wave 35 PR 123 f1eee232e1 41/9; Wave 36 PR 124 c911fd4de6 36/14; runway 1179/~1185 (~99%).
+recommend keep-going Wave 37 final sweep ~18 paths select shows
