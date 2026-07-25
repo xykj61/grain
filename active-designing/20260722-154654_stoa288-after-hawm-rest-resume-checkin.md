@@ -13,6 +13,8 @@
 
 **dated_guard:** Fleets · HAWM2 · ambient gold · tagged `$%` flip collapse · JABS3 · UDP stay **held** until their own check-in.
 
+Radiant pass `20260725.112115`
+
 ---
 
 ## What already closed (this season arc)

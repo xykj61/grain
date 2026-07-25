@@ -13,6 +13,8 @@
 
 **dated_guard:** Do **not** claim NativeActivity `.submit` appends. Do **not** change `sala_root.txt` HAWM1. Lean C stays glass wire.
 
+Radiant pass `20260725.112115`
+
 ---
 
 ## Verdict (one breath)

@@ -13,6 +13,8 @@
 
 **dated_guard:** Fleets · HAWM2 · gold · JABS3 stay held.
 
+Radiant pass `20260725.112115`
+
 ---
 
 ## STOA280 leans

@@ -13,6 +13,8 @@
 
 **dated_guard:** Do not treat rest as the recommended lean going forward unless Keaton asks for rest.
 
+Radiant pass `20260725.112115`
+
 ---
 
 ## Preference (standing)

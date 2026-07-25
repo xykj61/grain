@@ -13,6 +13,8 @@
 
 **dated_guard:** Do **not** overwrite `sala_root.txt` with the live root. Do **not** claim UDP hop or JABS3. Live digest may change when more submits land — install eyes assert shape and ≠ HAWM1, not a fixed live pin.
 
+Radiant pass `20260725.112115`
+
 ---
 
 ## Verdict (one breath)
