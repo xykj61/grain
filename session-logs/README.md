@@ -16,7 +16,8 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 **Living pin bound:** `living_pin_max_bytes = 24576` ([spec](../context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md)). Closed index rows through `20260721`: [`archive/README-index-through-20260721.md`](archive/README-index-through-20260721.md). Early `20260722` overflow: [`archive/README-index-20260722-shelf.md`](archive/README-index-20260722-shelf.md).
 
-- `20260724.223050` — [Radiant Wave 1 — living docs](20260724-223050_radiant-wave1-living.bron) — header · bare but · lint 10→8
+- `20260724.223151` — [Radiant Wave 2 — linengrow comments](20260724-223151_radiant-wave2-linengrow.bron) — 5 files · claim_preserve GREEN
+- `20260724.223050` — [Radiant Wave 1 — living docs](20260724-223050_radiant-wave1-living.bron) — header · but-word · lint 10→8
 - `20260724.222902` — [Accrete three tiers · radiant_lint · claim_preserve](20260724-222902_accrete-tiers-radiant-instruments.bron) — Tier1–3 · instruments · roster
 - `20260724.222500` — [Accrete-never-break law survey for 3-tier split](20260724-222500_accrete-never-break-law-survey.bron) — TAME §4 · living-vs-dated · remotes
 - `20260724.221120` — [REMEMBER git nib after threats · pillars send](20260724-221120_remember-git-nib-threats-pillars.bron) — pin 7878bd5f28
