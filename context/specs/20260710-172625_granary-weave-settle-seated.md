@@ -7,6 +7,7 @@
 **Ground:** Granary seating [`20260710-163043_granary-name-seated.md`](20260710-163043_granary-name-seated.md) · Mandi settle sibling [`20260710-171202_mandi-listing-settle-seated.md`](20260710-171202_mandi-listing-settle-seated.md) · commerce plainly [`../../external-research/20260710-171707_granary-mandi-commerce-plainly.md`](../../external-research/20260710-171707_granary-mandi-commerce-plainly.md)
 
 *Written by Kaeden and Rio 3.*
+Radiant pass `20260725.035955`
 
 ---
 

@@ -5,6 +5,8 @@
 **Style:** Radiant (see `../RADIANT_STYLE.md`)
 **Status:** Living — record for this specific machine, refresh when hardware or OS changes
 
+Radiant pass `20260725.035955`
+
 ---
 
 ## What This Is, and What It Deliberately Leaves Out

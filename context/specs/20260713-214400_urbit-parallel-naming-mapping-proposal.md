@@ -5,6 +5,8 @@
 **Style:** Radiant (see `../RADIANT_STYLE.md`)
 **Status:** Proposal — no file has been renamed; every count below is grep-measured, so migration PRs can be sized honestly
 
+Radiant pass `20260725.035955`
+
 ---
 
 ## What This Answers

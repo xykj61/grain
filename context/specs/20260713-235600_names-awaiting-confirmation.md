@@ -5,6 +5,8 @@
 **Style:** Radiant (see `../RADIANT_STYLE.md`)
 **Status:** Living — the single checklist of every proposed name, so the fork can move forward once each is confirmed or denied
 
+Radiant pass `20260725.035955`
+
 ---
 
 ## How to Read This

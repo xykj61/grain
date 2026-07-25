@@ -5,6 +5,8 @@
 **Style:** Radiant (see `../RADIANT_STYLE.md`)
 **Status:** Living — addendum to the one-clock naming law, scoped to this local clone
 
+Radiant pass `20260725.035955`
+
 ---
 
 ## What This Adds

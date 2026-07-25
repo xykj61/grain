@@ -5,6 +5,8 @@
 **Style:** Radiant (see `../RADIANT_STYLE.md`)
 **Status:** Research and proposal — no rename committed, no code written
 
+Radiant pass `20260725.035955`
+
 ---
 
 ## Is There a `%glow` in Old Urbit?

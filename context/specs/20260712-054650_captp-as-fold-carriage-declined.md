@@ -9,6 +9,7 @@
 **Ground:** counsel [`../../counsel/20260712-052806_claude-counsel-three-doors-and-teacher.md`](../../counsel/20260712-052806_claude-counsel-three-doors-and-teacher.md) · study 1 [`../../external-research/20260712-053324_ocapn-beside-comlink.md`](../../external-research/20260712-053324_ocapn-beside-comlink.md) · wire serves the fold [`../../foundations/20260706-022912_the-wire-serves-the-fold.md`](../../foundations/20260706-022912_the-wire-serves-the-fold.md) · hammock [`../../active-designing/20260712-052806_seam-season-hammock.md`](../../active-designing/20260712-052806_seam-season-hammock.md)
 
 *Written by Rio 3 for Kaeden · Seam season.*
+Radiant pass `20260725.035955`
 
 ---
 
