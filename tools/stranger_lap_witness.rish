@@ -1,0 +1,20 @@
+# stranger_lap_witness.rish — OPEN_QUESTIONS #4 answer home (advisory).
+#
+# Proves the documented newcomer path works for someone with no context:
+# clone from origin · bootstrap · ONE named witness GREEN · inside a named
+# wall-clock bound. Honest scope: path works; does not prove the docs are lovely.
+#
+# Advisory first — not wired into parity_ch01. Run from the repository root:
+#   rishi/bin/rishi run tools/stranger_lap_witness.rish
+#
+# Bound and named witness live in tools/stranger_lap_worker.sh (reason comments
+# beside the constants). Worker owns all shell dollars — Rish interpolates.
+
+let walk = run ["sh" "tools/stranger_lap_worker.sh"]
+assert walk.ok else "stranger lap walk failed: ${walk.err}${walk.out}"
+assert walk.out contains "GREEN: stranger lap" else "stranger lap missing GREEN claim"
+assert walk.out contains "STRANGER_ELAPSED_SECONDS=" else "stranger lap missing elapsed"
+assert walk.out contains "STRANGER_BOUND_SECONDS=" else "stranger lap missing bound"
+assert walk.out contains "crockford_stamp_witness" else "stranger lap must name the seated witness"
+
+say "GREEN: stranger lap advisory — clone · bootstrap · one named witness · under bound (OPEN_QUESTIONS #4)."
