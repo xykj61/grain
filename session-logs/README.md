@@ -15,9 +15,9 @@ Living index for the append-only session stream. This table reads **newest first
 
 *Erratum `20260724.203617` — UTC window:* four living logs were stamped from `Etc/UTC` and must be read in index order (now on the 20260724/25 season surfaces). Cause fixed: host zone `America/New_York`. From `20260724.205009` the one-clock witness is **blocking**.
 
-- `20260725.112627` — [Wave 36 close kg turn](20260725-112627_kg-wave36-close.bron) — PR pending
-- `20260725.112626` — [REMEMBER Wave 36](20260725-112626_remember-git-nib-wave36.bron) — pin pending
-- `20260725.112625` — [Send Wave 36](20260725-112625_send-radiant-wave36.bron) — PR pending
+- `20260725.112627` — [Wave 36 close kg turn](20260725-112627_kg-wave36-close.bron) — PR 124
+- `20260725.112626` — [REMEMBER Wave 36](20260725-112626_remember-git-nib-wave36.bron) — pin c911fd4de6
+- `20260725.112625` — [Send Wave 36](20260725-112625_send-radiant-wave36.bron) — PR 124
 - `20260725.112615` — [Radiant Wave 36 — fifty paths](20260725-112615_radiant-wave36.bron) — 36 clean · 14 changed · lint 2
 - `20260725.112527` — [Wave 35 close kg turn](20260725-112527_kg-wave35-close.bron) — PR 123
 - `20260725.112526` — [REMEMBER Wave 35](20260725-112526_remember-git-nib-wave35.bron) — pin f1eee232e1
