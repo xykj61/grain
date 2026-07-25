@@ -6,6 +6,8 @@
 **Style:** Radiant (see `../RADIANT_STYLE.md`)
 **Status:** Living — entries accrete; assignments are deliberate
 
+Radiant pass `20260725.112615`
+
 ---
 
 ## What This Decides

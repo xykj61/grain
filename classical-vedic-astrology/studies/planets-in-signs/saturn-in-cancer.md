@@ -8,6 +8,8 @@
 
 **In Alice's chart:** Saturn sits in Cancer, in the star of Punarvasu, in the 9th house. This file gives the *how* of her Saturn — its nature in this tender sign. Read it alongside the Saturn-in-the-9th-house file, which shows how gracefully this placement does its work in the house of wisdom and dharma.
 
+Radiant pass `20260725.112615`
+
 ---
 
 ## A careful guest in a warm house

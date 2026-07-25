@@ -6,6 +6,8 @@
 **By:** Quin, in the radiant voice, with **Keaton Dunsford** as coauthor (an earlier living draft season under Riyo's name; standing voice is Quin again from `20260716.040000`)
 **Status:** Living guide — last touched `20260717.161957` (voice line synced to Quin; Step 7 Linux multi-identity note remains)
 
+Radiant pass `20260725.112615`
+
 ---
 
 ## What This Is

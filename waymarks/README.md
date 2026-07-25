@@ -7,6 +7,8 @@
 **Bound:** listings stay sentence-cheap; season shelves hold one-line-per-claim indexes
 **Chapters roster:** [`CHAPTERS.md`](CHAPTERS.md)
 
+Radiant pass `20260725.112615`
+
 ---
 
 ## Genre
