@@ -1,3 +1,6 @@
-::  Cast twin for stamp aura — Decision 6 inward @u64 face.
-::  Crockford outward stays at the Rye seam (crockford_stamp.rye).
-^-  @u64
+::  Same-desk named-cast — +$ stamp-shape then ^- stamp-shape.
+::  First consumer of admitted `$:` @u64 (aura floor `20260724.205719`).
++$  stamp-shape
+  $:  stamp=@u64
+  ==
+^-  stamp-shape

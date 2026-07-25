@@ -1,0 +1,7 @@
+::  Mixed admitted auras — @u64 beside @u32 and @t (aura floor `20260724.205719`).
+::  Proves widening the gate keeps the other admitted auras green together.
++$  stamp-mix-shape
+  $:  stamp=@u64
+      amount=@u32
+      memo=@t
+  ==
