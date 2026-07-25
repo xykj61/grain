@@ -7,6 +7,8 @@
 **Status:** Product brief — names the SLC product and its first laps. Register: mixed — L1 (session record + replay) is checkable (Sala B0 green); L2–L3 are horizon (design), gated as noted.
 **Compass:** foundations → grain → Two Rooms → this brief → TASKS/ROADMAP
 
+Radiant pass `20260725.111615`
+
 ---
 
 ## The Decision, Stated First

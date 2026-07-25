@@ -6,6 +6,8 @@
 **Status:** Runnable long-term plan — design/research register (Two Rooms). The GrapheneOS facts below are **checkable**, dated July 2026 and cited so they can be re-verified as the project moves; the Glow mapping, framework, and ladder are **design proposals**, none bound, gated on Keaton's word before anything is seated or built. Addressed to a generic Acme Corporation employee.
 **Waymark:** **TUBE** — this ladder's own name-tag, drawn deterministically (SHA3-512 over `old/doc/spec/flw.txt`, per [`../context/specs/20260716-115927_waymark-ladder-naming-and-g0-collision-fix.md`](../context/specs/20260716-115927_waymark-ladder-naming-and-g0-collision-fix.md)) from the input `glow-application-framework-and-publishing`, so it never collides with the Genode `G`-ladder or the GrapheneOS `HAWM`-ladder. The word carries no chosen meaning; its aptness (a tube carries things) is coincidence.
 
+Radiant pass `20260725.111615`
+
 ---
 
 ## The Seed (what was asked)
