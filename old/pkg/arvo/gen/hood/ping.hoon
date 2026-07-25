@@ -1,1 +1,0 @@
-ames/ping.hoon

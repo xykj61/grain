@@ -1,1 +1,0 @@
-clay/ota.hoon

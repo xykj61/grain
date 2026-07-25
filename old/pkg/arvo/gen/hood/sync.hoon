@@ -1,1 +1,0 @@
-clay/sync.hoon

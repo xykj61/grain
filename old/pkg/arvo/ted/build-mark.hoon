@@ -1,1 +1,0 @@
-clay/build-mark.hoon

@@ -1,1 +1,0 @@
-clay/uninstall.hoon
