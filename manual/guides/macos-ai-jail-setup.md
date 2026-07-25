@@ -31,6 +31,8 @@ From any terminal — Terminal.app or otherwise, with or without another Cursor 
 ```bash
 cd ~/urbit
 rishi/bin/rishi run tools/cursor_jail_macos.rish
+# Optional: point at a non-default install
+rishi/bin/rishi run tools/cursor_jail_macos.rish --cursor /Applications/Cursor.app
 ```
 
 Cursor opens with its own state under `.cursor-state/`, and every write it or its extensions attempt lands only inside `~/urbit` (or fails). The launcher returns immediately; the jailed app keeps running on its own, independent of the terminal that started it.

@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 # cursor-jail.sh — start Cursor (AppImage) inside ai-jail with project-local state.
 #
-# Tracked in git (unlike tools/launch-cursor.sh, which remains a personal copy).
+# Tracked bash elder. Preferred entry (Rish):
+#   rishi/bin/rishi run tools/launch-cursor.rish --cursor ./Cursor-3.13.10-x86_64.AppImage --gpu
 #
 #   ./tools/cursor-jail.sh
+#   ./tools/cursor-jail.sh --cursor ./Cursor-3.13.10-x86_64.AppImage --gpu
 #   ./tools/cursor-jail.sh --appimage squashfs-root/AppRun
 #   ./tools/cursor-jail.sh --extract ./Cursor-3.9.16-x86_64.AppImage
 #   ./tools/cursor-jail.sh --gpu
 #
-# From Rishi (default AppRun; edit apprun in the .rish file to override):
-#   rishi/bin/rishi run tools/launch-cursor.rish
-#
+# Framework host: Ubuntu 26.04 LTS · GNOME Wayland — use --gpu.
 # See: SOURCE.md Step 9 and context/specs/enclosure-editors.md
 
 set -euo pipefail
@@ -27,14 +27,19 @@ usage() {
 Usage: ./tools/cursor-jail.sh [options] [APPRUN]
 
   APPRUN            Path to Cursor AppRun (positional; default: squashfs-root/AppRun)
-  --appimage PATH   Same as positional APPRUN (legacy; prefer rishi run launch-cursor.rish)
+  --cursor PATH     Preferred: .AppImage → extract+launch; else treat as AppRun
+  --appimage PATH   Same as positional APPRUN (legacy AppRun path)
   --extract IMAGE   Extract an AppImage into squashfs-root/, then launch
   --gpu             Pass --gpu to ai-jail (GNOME Wayland / WebGPU)
   -h, --help        Show this help
 
-Equivalent manual command (from the repository root):
+Preferred (Rish) from the repository root:
 
-  ai-jail --private-home --no-docker -- ./squashfs-root/AppRun --no-sandbox \
+  rishi/bin/rishi run tools/launch-cursor.rish --cursor ./Cursor-3.13.10-x86_64.AppImage --gpu
+
+Equivalent manual command:
+
+  ai-jail --private-home --no-docker --gpu -- ./squashfs-root/AppRun --no-sandbox \
     --user-data-dir="$PWD/.cursor-state/user-data" \
     --extensions-dir="$PWD/.cursor-state/extensions" "$PWD"
 EOF
@@ -42,6 +47,18 @@ EOF
 
 while [ $# -gt 0 ]; do
   case "$1" in
+    --cursor)
+      CURSOR_PATH="${2:?cursor-jail: --cursor needs a path}"
+      case "$CURSOR_PATH" in
+        *.AppImage)
+          EXTRACT="$CURSOR_PATH"
+          ;;
+        *)
+          APPRUN="$CURSOR_PATH"
+          ;;
+      esac
+      shift 2
+      ;;
     --appimage)
       APPRUN="${2:?cursor-jail: --appimage needs a path}"
       shift 2
@@ -73,6 +90,11 @@ done
 if [ -n "$EXTRACT" ]; then
   if [ ! -f "$EXTRACT" ]; then
     echo "cursor-jail: AppImage not found: $EXTRACT" >&2
+    exit 1
+  fi
+  if [ ! -x "$EXTRACT" ]; then
+    echo "cursor-jail: AppImage is not executable: $EXTRACT" >&2
+    echo "  chmod +x \"$EXTRACT\"   # then re-run with --cursor / --extract" >&2
     exit 1
   fi
   rm -rf "$REPO_ROOT/squashfs-root"
@@ -156,7 +178,8 @@ fi
 
 if [ ! -x "$APPRUN" ]; then
   echo "cursor-jail: AppRun not found or not executable: $APPRUN" >&2
-  echo "Extract once: ./tools/cursor-jail.sh --extract ./Cursor-3.9.16-x86_64.AppImage" >&2
+  echo "Extract once (chmod +x the download first):" >&2
+  echo "  rishi/bin/rishi run tools/launch-cursor.rish --cursor ./Cursor-3.13.10-x86_64.AppImage --gpu" >&2
   exit 1
 fi
 

@@ -3,7 +3,11 @@
 # sandbox-exec (Seatbelt) enclosure, with project-local state, mirroring
 # tools/cursor-jail.sh's ai-jail launcher on Linux as closely as macOS allows.
 #
+# Preferred (Rish):
+#   rishi/bin/rishi run tools/cursor_jail_macos.rish --cursor /Applications/Cursor.app
+#
 #   ./tools/cursor-jail-macos.sh
+#   ./tools/cursor-jail-macos.sh --cursor /Applications/Cursor.app
 #   ./tools/cursor-jail-macos.sh --no-network
 #   ./tools/cursor-jail-macos.sh --harden-home     # deny real ~/.ssh, ~/.gnupg, etc.
 #   ./tools/cursor-jail-macos.sh --print-profile   # show the generated SBPL, don't launch
@@ -60,18 +64,35 @@ usage() {
   cat <<'EOF'
 Usage: ./tools/cursor-jail-macos.sh [options]
 
-  --no-network      Deny all network access inside the sandbox
+  --cursor PATH      Cursor.app bundle or Contents/MacOS/Cursor binary
+  --no-network       Deny all network access inside the sandbox
   --harden-home      Deny reads to real ~/.ssh, ~/.gnupg, and other
                       credential stores under $HOME
   --private-home     Deny reads to every real $HOME entry except this
                       project's own directory (enumerated fresh at launch)
   --print-profile    Print the generated SBPL profile and exit; do not launch
-  -h, --help          Show this help
+  -h, --help         Show this help
+
+Preferred (Rish):
+
+  rishi/bin/rishi run tools/cursor_jail_macos.rish --cursor /Applications/Cursor.app
 EOF
 }
 
 while [ $# -gt 0 ]; do
   case "$1" in
+    --cursor)
+      CURSOR_PATH="${2:?cursor-jail-macos: --cursor needs a path}"
+      case "$CURSOR_PATH" in
+        *.app)
+          CURSOR_BIN="${CURSOR_PATH}/Contents/MacOS/Cursor"
+          ;;
+        *)
+          CURSOR_BIN="$CURSOR_PATH"
+          ;;
+      esac
+      shift 2
+      ;;
     --no-network)
       ALLOW_NETWORK=false
       shift

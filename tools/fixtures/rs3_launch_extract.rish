@@ -1,8 +1,12 @@
-# Mirror launch-cursor extract + apprun flag resolution — no ai-jail exec.
+# Mirror launch-cursor extract + cursor + apprun flag resolution — no ai-jail exec.
 let image = ""
 let apprun = "squashfs-root/AppRun"
+let cursor = ""
 if (args contains "--extract") then let image = flag args "--extract"
+if (args contains "--cursor") then let cursor = flag args "--cursor"
 if (args contains "--appimage") then let apprun = flag args "--appimage"
-if (args contains "--extract") then say "extract:${image}"
+if (args contains "--cursor") then if (cursor ends-with ".AppImage") then let image = cursor
+if (args contains "--cursor") then if ((cursor ends-with ".AppImage") == false) then let apprun = cursor
+if image != "" then say "extract:${image}"
 if (args contains "--gpu") then say "gpu:yes"
 say "apprun:${apprun}"
