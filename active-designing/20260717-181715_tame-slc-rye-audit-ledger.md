@@ -8,6 +8,8 @@
 **Canon:** [`../context/TAME_GUIDANCE.md`](../context/TAME_GUIDANCE.md) · brief [`20260707-164612_tame-tidy-rules-brief.md`](20260707-164612_tame-tidy-rules-brief.md)
 **Compressor / plan seat:** ROADMAP align `20260717.181715` · [`../docs/ZETA.md`](../docs/ZETA.md) tidy gate before ZETA3
 
+Radiant pass `20260725.111615`
+
 ---
 
 ## Diagnosis (seated)

@@ -12,6 +12,8 @@
 
 *Addressed to an Acme Corporation employee reading this tree's research stack.*
 
+Radiant pass `20260725.111615`
+
 ---
 
 ## What happened, in kitchen language

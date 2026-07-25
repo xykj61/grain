@@ -8,6 +8,8 @@
 **Companion silo:** [`../active-designing/20260717-173427_witness-habitat-and-the-markup-pipeline.md`](../active-designing/20260717-173427_witness-habitat-and-the-markup-pipeline.md)
 **Fusion companion:** [`20260717-173427_markup-dsl-fusion-map-glow-brix-bron.md`](20260717-173427_markup-dsl-fusion-map-glow-brix-bron.md)
 
+Radiant pass `20260725.111615`
+
 ---
 
 ## What This Study Answers

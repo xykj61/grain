@@ -6,6 +6,8 @@
 **Voice:** Quin  
 **Waymark:** **STOA** · compressor [`../docs/STOA.md`](../docs/STOA.md)
 
+Radiant pass `20260725.111615`
+
 ---
 
 ## Why now

@@ -9,6 +9,8 @@
 **Compresses into:** [`../docs/SETU.md`](../docs/SETU.md)  
 **Companions:** LULU hearth · SETU0–5 · compose-not-fuse [`20260718-133455_glass-desk-compose-amber-amphora-revive.md`](20260718-133455_glass-desk-compose-amber-amphora-revive.md)
 
+Radiant pass `20260725.111615`
+
 ---
 
 ## Season open (named job)

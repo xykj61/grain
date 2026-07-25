@@ -6,6 +6,8 @@
 **Status:** Vision register — design → architecture, siloed. Register: design (Two Rooms — a proposal about layering, not a bound claim). Addressed to a generic Acme Corporation employee.
 **Companion:** `../context/specs/20260713-214400_urbit-parallel-naming-mapping-proposal.md` (the vane-parallel mapping this doc refines with an explicit non-vane layering)
 
+Radiant pass `20260725.111615`
+
 ---
 
 ## What This Answers

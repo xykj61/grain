@@ -6,6 +6,8 @@
 **Status:** Vision register — design → decision brief, siloed. Register: design (Two Rooms — a prioritization proposal, not built code). Addressed to a generic Acme Corporation employee.
 **Companion:** `../context/specs/20260713-214400_urbit-parallel-naming-mapping-proposal.md` (which already maps Gall → Pool and Realidream → the Landscape parallel — this brief prioritizes that mapping and names the first laps)
 
+Radiant pass `20260725.111615`
+
 ---
 
 ## The Decision, Stated First
