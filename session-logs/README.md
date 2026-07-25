@@ -2,7 +2,9 @@
 
 **Language:** EN  
 **Status:** Living pin — newest-first index (current day)  
-**Bound:** under `living_pin_max_bytes`  
+**Bound:** under `living_pin_max_bytes`
+
+- `20260725.115200` — [Explore Mand home · ring-3 · witnesses](20260725-115200_explore-mand-home-requirements.bron) — linengrow today · mand/ parked · ring-3 PARK · harvest law seated  
 **Seasons roster:** [`SEASONS.md`](SEASONS.md)
 
 Living index for the append-only session stream. This table reads **newest first** and holds the **current season day only**. Closed seasons fold into dated indexes under `archive/`; the roster names each season in one line.
