@@ -13,6 +13,8 @@
 
 **dated_guard:** Do **not** claim Glow source carries real sig/fact hex literals yet. Do **not** claim `@t` (bound 256) holds max fact hex (1024). Do **not** rewrite `glow_sala_b0_line` to import this desk. Cast twin: STOA207. JABS3 held.
 
+Radiant pass `20260725.111915`
+
 ---
 
 ## Verdict (one breath)

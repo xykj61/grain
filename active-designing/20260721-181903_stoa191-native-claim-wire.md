@@ -13,6 +13,8 @@
 
 **dated_guard:** Do **not** rewrite elder `sala_b0_fold` in Glow. Device install/eyes are a separate host lap.
 
+Radiant pass `20260725.111915`
+
 ---
 
 ## What closed

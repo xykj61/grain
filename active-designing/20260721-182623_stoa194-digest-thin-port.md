@@ -13,6 +13,8 @@
 
 **dated_guard:** Do **not** claim Glow authored append, sign, or replay. Elder `sala_b0_fold` stays. Jam/cue and STOA69–73 product-root **5** are not the Sala hex. JABS3 held.
 
+Radiant pass `20260725.111915`
+
 ---
 
 ## Inventory (digest / append season)

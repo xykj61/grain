@@ -13,6 +13,8 @@
 
 **dated_guard:** Do **not** rewrite `sala_b0_fold` to import this module yet. Do **not** claim Glow source literals carry these strings. JABS3 held.
 
+Radiant pass `20260725.111915`
+
 ---
 
 ## Verdict (one breath)

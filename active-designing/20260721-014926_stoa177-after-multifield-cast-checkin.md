@@ -12,6 +12,8 @@
 
 **dated_guard:** Do **not** rewrite dated mold or cast briefs. Capacity freeze at nine `$:` faces stays. No `deca-*`. No whole-tree sed for Zig `*Mold` names until a lean opens that door.
 
+Radiant pass `20260725.111915`
+
 ---
 
 ## What just closed
