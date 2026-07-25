@@ -39,5 +39,5 @@ done <"$POOL" | awk -F/ '{
   n=$NF
   sub(/\.md$/, "", n)
   if (match(n, /^[0-9]{8}-[0-9]{6}/)) { key=substr(n,1,15) } else { key=n }
-  print key "\t" $0
-}' | sort -t$'\t' -k1,1 | cut -f2- | head -n "$BOUND"
+  print key " " $0
+}' | sort -k1,1 | awk '{ $1=""; sub(/^ /,""); print }' | head -n "$BOUND"

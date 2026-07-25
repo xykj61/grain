@@ -12,6 +12,8 @@
 **Lens:** TAME — safety, performance, then the joy of the craft
 **Status:** Active Design (siloed) — **Reviewed and kept** (`2026-06-30`).
 
+Radiant pass `20260725.110622`
+
 ---
 
 ## Our Own Ground

@@ -11,6 +11,8 @@
 **Reads alongside:** `yonder/20260617-195612_ownerboot-riscv-caravan.md`, `yonder/20260617-195712_caravan-tally-networking.md`, `yonder/20260617-195812_aurora-boot-riscv.md`; sources honored in `../gratitude/urbit`, `../gratitude/sui`
 **Structure:** mission · problem · opportunity · architecture · caveats · longer horizon · conclusion
 
+Radiant pass `20260725.110622`
+
 ---
 
 ## Mission

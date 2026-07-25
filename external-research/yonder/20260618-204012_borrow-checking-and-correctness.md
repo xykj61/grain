@@ -10,6 +10,8 @@
 **Lens:** TAME Style (`TAME_STYLE.md`); active-designing principles; `../context/specs/rye-as-its-own-language.md`
 **Structure:** mission · the premise examined · opportunity · architecture · where this meets Tally and Caravan · caveats · the turn to correctness · longer horizon · conclusion
 
+Radiant pass `20260725.110622`
+
 ---
 
 ## Mission
