@@ -1,0 +1,9 @@
+format session-log-v1
+stamp 20260725.111245
+editor Cursor
+model Cursor Composer 2.5 300k Fast
+voice Quin
+title Send Radiant Wave 23 to main
+prompt kg
+obs 50 clean 0 changed; PR 111
+recommend keep-going Wave 24 bound 50
