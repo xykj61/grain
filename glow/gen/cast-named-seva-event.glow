@@ -1,0 +1,10 @@
+::  Same-desk named-cast — +$ seva-event-shape then ^- seva-event-shape (STOA186).
+::  Mixed @ux peers · @u32 amount · @t memo/stamp; no mold twin this lap.
++$  seva-event-shape
+  $:  from=@ux
+      to=@ux
+      amount=@u32
+      memo=@t
+      stamp=@t
+  ==
+^-  seva-event-shape

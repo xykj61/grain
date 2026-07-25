@@ -1,7 +1,7 @@
 # stoa73_product_root_install_onpath_host.rish — STOA73 A on-device half:
 # install the signed APK, launch NativeActivity, prove onCreate wrote
 # files/glow_product_root.txt with decimal 5 (Glow session_root).
-# Also re-checks Sala B0 sala_root.txt so the product root does not
+# Also re-checks Seva B0 seva_root.txt so the product root does not
 # displace the existing install proof.
 #
 # Run OUTSIDE ai-jail, from a plain host terminal — needs adb and either
@@ -13,9 +13,9 @@
 
 let android_sdk = "tools/.cache/hawm0/android-sdk"
 let adb = "${android_sdk}/platform-tools/adb"
-let apk = "tools/.cache/tube05/sala-broadcaster.apk"
-let pkg = "org.glow.app.sala_broadcaster"
-let expected_sala = "99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe"
+let apk = "tools/.cache/tube05/seva-broadcaster.apk"
+let pkg = "org.glow.app.seva_broadcaster"
+let expected_seva = "99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe"
 let expected_product = "5"
 
 say "stoa73-install: confirming an adb device is attached…"
@@ -54,10 +54,10 @@ if (product.ok == false) then say "stoa73-install: product stderr — ${product.
 assert product.ok else "could not read glow_product_root.txt"
 assert product.out contains "${expected_product}" else "RED: glow_product_root.txt does not contain 5"
 
-say "stoa73-install: re-checking files/sala_root.txt (Sala B0 still present)…"
-let sala = run ["sh" "-c" "${adb} shell run-as ${pkg} cat files/sala_root.txt 2>&1"]
-say "stoa73-install: sala_root.txt — ${sala.out}"
-assert sala.ok else "could not read sala_root.txt"
-assert sala.out contains "${expected_sala}" else "RED: sala_root.txt lost the HAWM1 demo root"
+say "stoa73-install: re-checking files/seva_root.txt (Seva B0 still present)…"
+let seva = run ["sh" "-c" "${adb} shell run-as ${pkg} cat files/seva_root.txt 2>&1"]
+say "stoa73-install: seva_root.txt — ${seva.out}"
+assert seva.ok else "could not read seva_root.txt"
+assert seva.out contains "${expected_seva}" else "RED: seva_root.txt lost the HAWM1 demo root"
 
-say "GREEN: STOA73 A — on-device Glow product-root is 5; Sala B0 hex root still present."
+say "GREEN: STOA73 A — on-device Glow product-root is 5; Seva B0 hex root still present."

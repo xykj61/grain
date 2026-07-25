@@ -9,7 +9,7 @@ const print = std.debug.print;
 const kumara = @import("kumara.rye");
 const rc = @import("receipt_core.rye");
 const mc = @import("mala_core.rye");
-const sala = @import("seva_session_core.rye");
+const seva = @import("seva_session_core.rye");
 
 pub const event_count: u32 = 5;
 pub const voice_count: u32 = 3; // caster + 2 viewers
@@ -38,18 +38,18 @@ pub fn run_welcome_audience() !AudienceLens {
 
     var log: [rc.max_log_len]u8 = undefined;
     var len: u32 = 0;
-    len = try sala.append_event(&log, len, 1, "20260715.210501", "sala:open session", &caster_hex, caster_kp);
-    len = try sala.append_event(&log, len, 2, "20260715.210502", "chat:great to be here", &viewer1_hex, viewer1_kp);
-    len = try sala.append_event(&log, len, 3, "20260715.210503", "sala:frame update", &caster_hex, caster_kp);
-    len = try sala.append_event(&log, len, 4, "20260715.210504", "chat:love this", &viewer2_hex, viewer2_kp);
-    len = try sala.append_event(&log, len, 5, "20260715.210505", "sala:closing", &caster_hex, caster_kp);
+    len = try seva.append_event(&log, len, 1, "20260715.210501", "seva:open session", &caster_hex, caster_kp);
+    len = try seva.append_event(&log, len, 2, "20260715.210502", "chat:great to be here", &viewer1_hex, viewer1_kp);
+    len = try seva.append_event(&log, len, 3, "20260715.210503", "seva:frame update", &caster_hex, caster_kp);
+    len = try seva.append_event(&log, len, 4, "20260715.210504", "chat:love this", &viewer2_hex, viewer2_kp);
+    len = try seva.append_event(&log, len, 5, "20260715.210505", "seva:closing", &caster_hex, caster_kp);
 
-    var registry: sala.ActorRegistry = .{};
+    var registry: seva.ActorRegistry = .{};
     try registry.admit(&caster_hex, caster_kp.public_key);
     try registry.admit(&viewer1_hex, viewer1_kp.public_key);
     try registry.admit(&viewer2_hex, viewer2_kp.public_key);
 
-    const r = try sala.replay_multi(log[0..len], &registry);
+    const r = try seva.replay_multi(log[0..len], &registry);
     // invariant: welcome audience shape
     assert(r.events == event_count);
     assert(r.last_seq == event_count);

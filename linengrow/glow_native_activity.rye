@@ -4,25 +4,25 @@
 //!
 //! Per active-designing/20260717-014522_native-activity-shim-and-slc-
 //! packaging.md: one small, fixed, never-generated entry. App logic is
-//! the Sala B0 Glow fold (`glow_sala_b0_fold.rye` · STOA198/237 embedded desk),
+//! the Seva B0 Glow fold (`glow_seva_b0_fold.rye` · STOA198/237 embedded desk),
 //! the TUBE1 admit gate
 //! (`tube1_glass_gate.rye`), the R2 multi-panel surface
 //! (`seva_r2_surface.rye`), the TUBE5 tip line (`tube5_glass_tip.rye`),
 //! the TUBE2–4 rail lines (`tube2_glass_pub.rye`, `tube3_glass_fetch.rye`,
-//! `tube4_glass_market.rye`), and Sala B1 live-carriage
+//! `tube4_glass_market.rye`), and Seva B1 live-carriage
 //! (`seva_b1_glass_carriage.rye`), and Dexter glass line
 //! (`dexter_glass_line.rye`) with live KEY drain (`dexter_glass_key.rye`).
-//! After writing files/sala_root.txt, registers window + input callbacks:
+//! After writing files/seva_root.txt, registers window + input callbacks:
 //! paints panels + tip + rail + B1 + Dexter + session-root hex; KEY updates
 //! Dexter; tap finishes. Soft input is shown when TUBE1 admits.
 //! R2 and TUBE2–5 + B1 + Dexter paint only when TUBE1 admits.
-//! STOA270: Dexter `.submit` appends through `dexter_sala_append` and writes
-//! files/sala_live_root.txt — distinct from HAWM1 sala_root.txt.
+//! STOA270: Dexter `.submit` appends through `dexter_seva_append` and writes
+//! files/seva_live_root.txt — distinct from HAWM1 seva_root.txt.
 
 const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
-const glow_fold = @import("glow_sala_b0_fold.rye");
+const glow_fold = @import("glow_seva_b0_fold.rye");
 /// Glow-lowered session-root (STOA70 desk → STOA71/72 import seam).
 /// Witness seats linengrow/lib_session_root_nest_cue_jam.rye → glow/.cache.
 const glow_session = @import("lib_session_root_nest_cue_jam.rye");
@@ -38,13 +38,13 @@ const dexter_key = @import("dexter_glass_key.rye");
 const kb_paint = @import("dexter_glass_keyboard_paint.rye");
 const kb_layout = @import("dexter_glass_keyboard_layout.rye");
 const dexter = @import("window_input.rye");
-const dexter_sala = @import("dexter_sala_append.rye");
-const live_glass = @import("sala_live_root_glass.rye");
+const dexter_sala = @import("dexter_seva_append.rye");
+const live_glass = @import("seva_live_root_glass.rye");
 const kumara = @import("kumara.rye");
 const mc = @import("mala_core.rye");
 const rc = @import("receipt_core.rye");
 const r2 = @import("seva_r2_surface.rye");
-const sala_surf = @import("seva_surface.rye");
+const seva_surf = @import("seva_surface.rye");
 const surface = @import("glow_native_surface.rye");
 const hearth = @import("hearth_lulu0.rye");
 const lulu2 = @import("hearth_lulu2.rye");
@@ -65,7 +65,7 @@ const default_hearth_bron =
 export var glow_last_session_root_hex: [65]u8 = [_]u8{0} ** 65;
 
 /// Glow product session-root (u32 from lowered nest cue-jam; expect 5).
-/// Distinct from Sala B0's 32-byte hex root in glow_last_session_root_hex.
+/// Distinct from Seva B0's 32-byte hex root in glow_last_session_root_hex.
 export var glow_last_product_session_root: u32 = 0;
 
 /// STOA270: live typed-append session root (hex + NUL). Distinct from HAWM1.
@@ -75,7 +75,7 @@ var g_activity: ?*anyopaque = null;
 var g_input_queue: ?*anyopaque = null;
 var g_root_matched: bool = false;
 var g_tube1_admitted: bool = false;
-var g_surface: sala_surf.Surface = .{};
+var g_surface: seva_surf.Surface = .{};
 var g_surface_ready: bool = false;
 var g_tip_line: [tube5_tip.tip_line_max]u8 = undefined;
 var g_tip_len: u32 = 0;
@@ -140,12 +140,12 @@ extern fn write(fd: c_int, buf: [*]const u8, n: usize) isize;
 extern fn close(fd: c_int) c_int;
 extern fn mkdir(path: [*:0]const u8, mode: c_int) c_int;
 
-/// Same files root as sala_root.txt — Hearth Bron lives at `{root}/{home}/hearth.bron`.
-const android_files_root = "/data/user/0/org.glow.app.sala_broadcaster/files";
+/// Same files root as seva_root.txt — Hearth Bron lives at `{root}/{home}/hearth.bron`.
+const android_files_root = "/data/user/0/org.glow.app.seva_broadcaster/files";
 
 fn write_root_file(hex: *const [64]u8) void {
     const dir_path = android_files_root;
-    const path = android_files_root ++ "/sala_root.txt";
+    const path = android_files_root ++ "/seva_root.txt";
     _ = mkdir(dir_path, 0o700);
     const fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0o600);
     if (fd < 0) return;
@@ -155,7 +155,7 @@ fn write_root_file(hex: *const [64]u8) void {
 }
 
 /// STOA73: Glow product session-root as decimal ASCII for run-as install proof.
-/// Distinct from sala_root.txt (Sala B0 64-hex). Expect body "5\n".
+/// Distinct from seva_root.txt (Seva B0 64-hex). Expect body "5\n".
 fn write_product_root_file(root: u32) void {
     const path = android_files_root ++ "/glow_product_root.txt";
     _ = mkdir(android_files_root, 0o700);
@@ -167,9 +167,9 @@ fn write_product_root_file(root: u32) void {
     _ = write(fd, n.ptr, n.len);
 }
 
-/// STOA270: live typed-append root — never overwrites sala_root.txt (HAWM1).
+/// STOA270: live typed-append root — never overwrites seva_root.txt (HAWM1).
 fn write_live_root_file(hex: *const [64]u8) void {
-    const path = android_files_root ++ "/sala_live_root.txt";
+    const path = android_files_root ++ "/seva_live_root.txt";
     _ = mkdir(android_files_root, 0o700);
     const fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0o600);
     if (fd < 0) return;
@@ -612,7 +612,7 @@ fn apply_glass_layout_key(key: kb_layout.Key) void {
 fn paint_window(_: ?*anyopaque, window: ?*anyopaque) callconv(.c) void {
     g_window = window;
     if (glow_last_session_root_hex[0] == 0) return;
-    const surf_ptr: ?*const sala_surf.Surface = if (g_surface_ready) &g_surface else null;
+    const surf_ptr: ?*const seva_surf.Surface = if (g_surface_ready) &g_surface else null;
     const tip: ?[]const u8 = if (g_tip_ready) g_tip_line[0..g_tip_len] else null;
     const live_line: ?[]const u8 = if (g_live_line_ready) g_live_line[0..g_live_line_len] else null;
     const published: ?[]const u8 = if (g_pub_ready) g_pub_line[0..g_pub_len] else null;
@@ -846,7 +846,7 @@ export fn ANativeActivity_onCreate(
     _ = saved_state_size;
 
     // STOA72 A: NativeActivity compiles and calls Glow-lowered session-root.
-    // Expect 5. Sala B0 hex fold below stays the painted / file-proof root.
+    // Expect 5. Seva B0 hex fold below stays the painted / file-proof root.
     const glow_core = glow_session.Core{};
     const product_root = glow_core.session_root();
     assert(product_root == 5);
@@ -912,7 +912,7 @@ export fn ANativeActivity_onCreate(
         tally_copy.copy_disjoint(u8, g_dexter_held[0..demo.len], demo);
         g_dexter_held_len = demo.len;
         // STOA270: seed one live append from held demo so install eyes can
-        // prove sala_live_root.txt without a tap; submit uses the same commit.
+        // prove seva_live_root.txt without a tap; submit uses the same commit.
         commit_live_typed_memo(demo);
     }
     refresh_dexter_paint_line();

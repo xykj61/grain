@@ -41,7 +41,7 @@ fn run_selftest() !u8 {
     const declared = [_]tube.DeclaredCapability{
         tube.DeclaredCapability.init(pool.ledger_resource, caps.right_read | caps.right_write),
     };
-    const manifest = try tube.build("sala-broadcaster", "0.1.0", &declared, 1024);
+    const manifest = try tube.build("seva-broadcaster", "0.1.0", &declared, 1024);
     assert(manifest.declares(pool.ledger_resource, caps.right_read | caps.right_write));
 
     // Claim 1: matching grant → admitted + fold.
@@ -160,7 +160,7 @@ fn run_selftest() !u8 {
         tube.DeclaredCapability.init(pool.ledger_resource, caps.right_read | caps.right_write),
         tube.DeclaredCapability.init("contacts", caps.right_read),
     };
-    const manifest_contacts = try tube.build("sala-contacts", "0.1.0", &with_contacts, 1024);
+    const manifest_contacts = try tube.build("seva-contacts", "0.1.0", &with_contacts, 1024);
     var table_c: caps.CapabilityTable = .{};
     const agent_c = try table_c.add_child("ledger-agent");
     try agent_c.grant(caps.Capability.init(pool.ledger_resource, caps.right_read | caps.right_write));
@@ -185,7 +185,7 @@ fn run_selftest() !u8 {
         tube.DeclaredCapability.init(pool.ledger_resource, caps.right_read | caps.right_write),
         tube.DeclaredCapability.init(tube1.network_resource, caps.right_net),
     };
-    const manifest_net = try tube.build("sala-network", "0.1.0", &with_network, 1024);
+    const manifest_net = try tube.build("seva-network", "0.1.0", &with_network, 1024);
     var table_n: caps.CapabilityTable = .{};
     const agent_n = try table_n.add_child("ledger-agent");
     try agent_n.grant(caps.Capability.init(pool.ledger_resource, caps.right_read | caps.right_write));
@@ -221,7 +221,7 @@ fn run_selftest() !u8 {
         tube.DeclaredCapability.init(pool.ledger_resource, caps.right_read | caps.right_write),
         tube.DeclaredCapability.init(tube1.sensors_resource, caps.right_device),
     };
-    const manifest_sens = try tube.build("sala-sensors", "0.1.0", &with_sensors, 1024);
+    const manifest_sens = try tube.build("seva-sensors", "0.1.0", &with_sensors, 1024);
     var table_s: caps.CapabilityTable = .{};
     const agent_s = try table_s.add_child("ledger-agent");
     try agent_s.grant(caps.Capability.init(pool.ledger_resource, caps.right_read | caps.right_write));

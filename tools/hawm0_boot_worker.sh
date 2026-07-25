@@ -12,7 +12,7 @@
 #   rishi/bin/rishi run tools/hawm0_boot_onpath_host.rish
 #
 # A successful GREEN close leaves the emulator running on purpose — a
-# caller (tools/hawm1_sala_witness.rish, or an interactive `adb shell`
+# caller (tools/hawm1_seva_witness.rish, or an interactive `adb shell`
 # session) needs it still attached a moment later. Stop it explicitly with
 # tools/hawm0_stop.sh when actually done. Only a failure path tears the
 # emulator back down automatically; this is a real fix, corrected
@@ -117,7 +117,7 @@ report_identity_and_green() {
 
 # An already-running, already-booted hawm0 is exactly the intended end state
 # after the exit-trap fix above (a successful boot deliberately stays up for
-# a caller like tools/hawm1_sala_witness.rish) -- treating it as a failure
+# a caller like tools/hawm1_seva_witness.rish) -- treating it as a failure
 # here would make a second, ordinary call into this same script red for no
 # real reason. Idempotent success: verify the existing *emulator* is genuinely
 # booted (not merely a Pixel attached) before declaring GREEN and exiting

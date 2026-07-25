@@ -91,7 +91,7 @@ If it matches character for character, the chain of trust from the SoC's own fac
 
 - **Sandboxed Google Play** (if you want any app that needs it) — a separate, later step through GrapheneOS's own "Apps" store, installed per user profile, never given special privileges. Not needed for anything in this tree's own HAWM/TUBE work.
 - **Hardware attestation via the Auditor app** — a deeper verification than Step 8's own boot-time check, needing a second Android device to pair with. Worth doing eventually, not required to start using the phone.
-- **Flashing Glow/Sala's own userland onto the device** — that's HAWM3's own next rung, gated on this setup finishing first; see [`../../context/specs/two-dev-environments-and-mobile-emulation.md`](../../context/specs/two-dev-environments-and-mobile-emulation.md).
+- **Flashing Glow/Seva's own userland onto the device** — that's HAWM3's own next rung, gated on this setup finishing first; see [`../../context/specs/two-dev-environments-and-mobile-emulation.md`](../../context/specs/two-dev-environments-and-mobile-emulation.md).
 
 ## Related
 

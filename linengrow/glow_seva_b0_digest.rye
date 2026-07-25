@@ -1,0 +1,57 @@
+//! linengrow/glow_seva_b0_digest.rye — Glow product digest surface.
+//!
+//! STOA194: owns the session-root digest assert (SHA3-256 of log bytes)
+//! while calling elder `digest_log`.
+//! STOA204: replay claim path also asserts through this surface.
+//! STOA247: product-authored digest body — Sha3_256.hash lives here;
+//! elder receipt_core.digest_log stays peer baseline.
+//!
+//!   rye build linengrow/glow_seva_b0_digest_witness.rye \
+//!     -femit-bin=linengrow/bin/glow_seva_b0_digest_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const Sha3_256 = std.crypto.hash.sha3.Sha3_256;
+const rc = @import("receipt_core.rye");
+const fixture = @import("glow_seva_b0_demo_fixture.rye");
+const fold = @import("seva_b0_fold.rye");
+
+pub const digest_version = "20260722.141443";
+
+pub const DigestError = error{RootMismatch};
+
+/// Digest bounded session-log bytes — product body: Sha3_256.hash (STOA247).
+pub fn digest_log_bytes(log: []const u8) [32]u8 {
+    assert(log.len <= rc.max_log_len); // precondition: elder log bound
+    var root: [Sha3_256.digest_length]u8 = undefined;
+    Sha3_256.hash(log[0..log.len], &root, .{});
+    return root;
+}
+
+/// Hex-encode a 32-byte root (same table as elder fold).
+pub fn root_to_hex(root: *const [32]u8, out: *[64]u8) void {
+    fold.root_to_hex(root, out);
+}
+
+/// True when `root` matches the product fixture / HAWM1 demo root.
+pub fn root_matches_fixture(root: *const [32]u8) bool {
+    var hex: [64]u8 = undefined;
+    root_to_hex(root, &hex);
+    return std.mem.eql(u8, &hex, fixture.expected_demo_root_hex);
+}
+
+/// Digest log bytes; refuse unless the product fixture root matches.
+pub fn claim_digest_log(log: []const u8) DigestError![32]u8 {
+    const root = digest_log_bytes(log);
+    if (!root_matches_fixture(&root)) return error.RootMismatch;
+    return root;
+}
+
+/// True when product digest body matches elder receipt_core peer (STOA247).
+pub fn digest_body_agrees_elder(log: []const u8) bool {
+    assert(log.len <= rc.max_log_len);
+    const product = digest_log_bytes(log);
+    var elder: [32]u8 = undefined;
+    rc.digest_log(log, &elder);
+    return std.mem.eql(u8, &product, &elder);
+}

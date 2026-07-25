@@ -20,14 +20,14 @@ const witness_version = "20260717.021800";
 fn run_selftest() !u8 {
     var declared = [_]tm.DeclaredCapability{
         tm.DeclaredCapability.init("network", caps.right_net),
-        tm.DeclaredCapability.init("sala-session", caps.right_read | caps.right_write),
+        tm.DeclaredCapability.init("seva-session", caps.right_read | caps.right_write),
     };
-    const manifest = try tm.build("sala-broadcaster", "0.1.0", &declared, 32);
+    const manifest = try tm.build("seva-broadcaster", "0.1.0", &declared, 32);
 
     var out: [am.max_manifest_xml_bytes]u8 = undefined;
     const n = try am.render_android_manifest(
         &manifest,
-        "org.glow.app.sala_broadcaster",
+        "org.glow.app.seva_broadcaster",
         am.glow_lib_name,
         &out,
     );
@@ -40,12 +40,12 @@ fn run_selftest() !u8 {
     print("tube0.5: NativeActivity envelope names android.app.NativeActivity and lib glowapp -- GREEN.\n", .{});
 
     // Claim 2: package, label, and version ride the manifest's own data.
-    assert(std.mem.indexOf(u8, xml, "package=\"org.glow.app.sala_broadcaster\"") != null);
+    assert(std.mem.indexOf(u8, xml, "package=\"org.glow.app.seva_broadcaster\"") != null);
     assert(std.mem.indexOf(u8, xml, "android:versionName=\"0.1.0\"") != null);
-    assert(std.mem.indexOf(u8, xml, "android:label=\"sala-broadcaster\"") != null);
+    assert(std.mem.indexOf(u8, xml, "android:label=\"seva-broadcaster\"") != null);
     print("tube0.5: package, version, and label come from the validated manifest -- GREEN.\n", .{});
 
-    // Claim 3: network capability emits INTERNET; internal sala-session emits nothing.
+    // Claim 3: network capability emits INTERNET; internal seva-session emits nothing.
     assert(std.mem.indexOf(u8, xml, "android.permission.INTERNET") != null);
     assert(std.mem.count(u8, xml, "uses-permission") == 1);
     print("tube0.5: permission lines match the closed table — INTERNET only -- GREEN.\n", .{});

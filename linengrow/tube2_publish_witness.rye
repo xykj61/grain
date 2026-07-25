@@ -4,7 +4,7 @@
 //!   linengrow/bin/tube2_publish_witness
 //!
 //! Four claims:
-//!   1. Maker publishes a TUBE0 Manifest resin under glow/sala-broadcaster;
+//!   1. Maker publishes a TUBE0 Manifest resin under glow/seva-broadcaster;
 //!      resolve returns the matching resin digest.
 //!   2. Consumer resolves, clones, and admits (TUBE1) — install after verify.
 //!   3. A lying signature is refused at the publish write gate.
@@ -31,7 +31,7 @@ fn run_selftest() !u8 {
     const fact = try gc.resolve(&reg, tube2.demo_path);
     assert(std.mem.eql(u8, fact.resin_digest, &published.digest));
     assert(std.mem.eql(u8, fact.person, "glow"));
-    assert(std.mem.eql(u8, fact.weave, "sala-broadcaster"));
+    assert(std.mem.eql(u8, fact.weave, "seva-broadcaster"));
     print("tube2: published manifest resin under {s} -- digest matches resolve\n", .{tube2.demo_path});
     print("tube2: welcome publish path -- GREEN\n", .{});
 

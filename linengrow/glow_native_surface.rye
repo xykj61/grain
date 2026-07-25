@@ -1,6 +1,6 @@
 //! linengrow/glow_native_surface.rye — Skate grid presented on Android glass.
 //!
-//! Builds a small Brushstroke Skate text grid (title, Sala R2 panel lines,
+//! Builds a small Brushstroke Skate text grid (title, Seva R2 panel lines,
 //! session-root hex, tap hint), rasterizes it with skate_grid.rye, and copies
 //! pixels into the locked ANativeWindow. No EGL, no Kotlin — Skate stays
 //! OS-free; this file is only the Android present seam (same role Wayland seed
@@ -15,12 +15,12 @@ const print = std.debug.print;
 // Symlinked beside this file (linengrow/skate_grid.rye → brushstroke/) so Zig's
 // module root stays inside linengrow while Skate remains the one Brushstroke source.
 const skate = @import("skate_grid.rye");
-const sala_surf = @import("seva_surface.rye");
+const seva_surf = @import("seva_surface.rye");
 const kb_paint = @import("dexter_glass_keyboard_paint.rye");
 const kb_layout = @import("dexter_glass_keyboard_layout.rye");
 const kb_emoji = @import("dexter_glass_emoji.rye");
 const jabs2_glass = @import("seva_jabs2_glass_audience.rye");
-const live_glass = @import("sala_live_root_glass.rye");
+const live_glass = @import("seva_live_root_glass.rye");
 const hearth = @import("hearth_lulu0.rye");
 const lulu1 = @import("hearth_lulu1.rye");
 const lulu2 = @import("hearth_lulu2.rye");
@@ -122,7 +122,7 @@ fn fill_preset_list_rows(grid: *skate.Grid) void {
 fn fill_admitted_rows(
     grid: *skate.Grid,
     tube1_admitted: bool,
-    surf: ?*const sala_surf.Surface,
+    surf: ?*const seva_surf.Surface,
     tip_line: ?[]const u8,
     live_line: ?[]const u8,
     pub_line: ?[]const u8,
@@ -260,18 +260,18 @@ fn fill_chrome_rows(
     hex: *const [64]u8,
     matched: bool,
     tube1_admitted: bool,
-    surf: ?*const sala_surf.Surface,
+    surf: ?*const seva_surf.Surface,
     chrome: PaintChrome,
 ) void {
     const jabs2_on = chrome.jabs2_line0 != null;
     const title = if (matched and tube1_admitted and jabs2_on)
-        "SALA JABS0+JABS1+JABS2+DX+R2+T1 GREEN"
+        "SEVA JABS0+JABS1+JABS2+DX+R2+T1 GREEN"
     else if (matched and tube1_admitted)
-        "SALA JABS0+JABS1+DX+R2+T1 GREEN"
+        "SEVA JABS0+JABS1+DX+R2+T1 GREEN"
     else if (matched)
-        "SALA B0  GREEN"
+        "SEVA B0  GREEN"
     else
-        "SALA B0";
+        "SEVA B0";
     put_line_centered(grid, 0, title);
     var hearth_buf: [lulu1.status_line_max]u8 = undefined;
     const hearth_line = if (tube1_admitted)
@@ -417,7 +417,7 @@ pub fn paint_session_root_hex(
     hex: *const [64]u8,
     matched: bool,
     tube1_admitted: bool,
-    surf: ?*const sala_surf.Surface,
+    surf: ?*const seva_surf.Surface,
     tip_line: ?[]const u8,
     live_line: ?[]const u8,
     pub_line: ?[]const u8,

@@ -16,9 +16,9 @@ pub fn main() !void {
 
     var buf: [16 * 1024]u8 = undefined;
 
-    const cord_src = "memo='sala:open'\n";
+    const cord_src = "memo='seva:open'\n";
     const nc = try lower.lower_source_welcome(cord_src, &buf);
-    assert(std.mem.indexOf(u8, buf[0..nc], "sala:open") != null);
+    assert(std.mem.indexOf(u8, buf[0..nc], "seva:open") != null);
     assert(std.mem.indexOf(u8, buf[0..nc], "const memo = ") != null);
     assert(std.mem.indexOf(u8, buf[0..nc], "glow_demo_cord") == null);
     print("lower_face_lit: cord emit uses lit bytes -- GREEN\n", .{});
@@ -33,12 +33,12 @@ pub fn main() !void {
     print("lower_face_lit: hex emit uses lit bytes -- GREEN\n", .{});
 
     const sample_src =
-        \\memo='sala:open'
+        \\memo='seva:open'
         \\root=@ux99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe
         \\
     ;
     const ns = try lower.lower_source_welcome(sample_src, &buf);
-    assert(std.mem.indexOf(u8, buf[0..ns], "sala:open") != null);
+    assert(std.mem.indexOf(u8, buf[0..ns], "seva:open") != null);
     assert(std.mem.indexOf(u8, buf[0..ns], "0x99") != null);
     assert(std.mem.indexOf(u8, buf[0..ns], "glow_demo_cord") == null);
     assert(std.mem.indexOf(u8, buf[0..ns], "glow_demo_hex") == null);

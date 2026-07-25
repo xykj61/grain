@@ -16,7 +16,7 @@ const pool = @import("pool_host_seam.rye");
 
 pub const PublishError = tube.ManifestError || gc.NameFactError || pool.HostError || error{TableFull};
 
-pub const demo_path = "glow/sala-broadcaster";
+pub const demo_path = "glow/seva-broadcaster";
 
 /// Put the manifest resin, sign a name-fact, and publish into the registry.
 pub fn publish_app_manifest(
@@ -65,7 +65,7 @@ pub fn resolve_and_admit(
     if (!tube1.admit_manifest(table, agent_label, manifest)) return error.NotAdmitted;
 }
 
-/// Demo publish of sala-broadcaster's ledger manifest under glow/sala-broadcaster.
+/// Demo publish of seva-broadcaster's ledger manifest under glow/seva-broadcaster.
 pub fn run_demo_publish(
     store: *gc.ResinStore,
     reg: *gc.Registry,
@@ -77,8 +77,8 @@ pub fn run_demo_publish(
         tube.DeclaredCapability.init(pool.ledger_resource, caps.right_read | caps.right_write),
     };
     assert(declared.len == 1);
-    const manifest = try tube.build("sala-broadcaster", "0.1.0", &declared, 1024);
-    const digest = try publish_app_manifest(store, reg, log, log_len, "glow", "sala-broadcaster", &manifest);
+    const manifest = try tube.build("seva-broadcaster", "0.1.0", &declared, 1024);
+    const digest = try publish_app_manifest(store, reg, log, log_len, "glow", "seva-broadcaster", &manifest);
     return .{ .manifest = manifest, .digest = digest };
 }
 

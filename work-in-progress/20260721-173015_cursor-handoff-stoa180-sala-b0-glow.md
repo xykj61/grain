@@ -20,7 +20,7 @@ Shape is the Glow OS citizen word; mold = Hoon study. Keaton affirmed shape over
 (20260721.171644). MoldSpec / Zig *Mold API rename stays a separate large seam — do not sed.
 
 ### Pier (sent)
-5d97b5301f — STOA179 sala-event-shape + STOA180 check-in seated.
+5d97b5301f — STOA179 seva-event-shape + STOA180 check-in seated.
 Remotes: origin (GitHub xykj61/urbit) + codeberg.
 
 ### Unsent on disk (STOA180 GREEN — send first unless Keaton says kg)
@@ -43,7 +43,7 @@ Witness before send:
 
 ### Next after send
 STOA181 — @t cord lower emit (bounded field in Zig); then retire stand-in @u32 on
-sala-event-shape text faces (from/to/memo/stamp). Elder Rye sala_b0_fold stays until
+seva-event-shape text faces (from/to/memo/stamp). Elder Rye sala_b0_fold stays until
 Glow earns root 99b3ae96…e4c5fe. JABS3 held companion check-in.
 
 ### Verbs

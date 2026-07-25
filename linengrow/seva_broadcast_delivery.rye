@@ -1,16 +1,16 @@
 //! linengrow/seva_broadcast_delivery.rye — Seva B1: a session carried live over Comlink.
 //!
-//!   rye build linengrow/seva_broadcast_delivery.rye -lc -femit-bin=linengrow/bin/sala-broadcast-delivery
-//!   linengrow/bin/sala-broadcast-delivery selftest
-//!   linengrow/bin/sala-broadcast-delivery demo
+//!   rye build linengrow/seva_broadcast_delivery.rye -lc -femit-bin=linengrow/bin/seva-broadcast-delivery
+//!   linengrow/bin/seva-broadcast-delivery selftest
+//!   linengrow/bin/seva-broadcast-delivery demo
 //!
 //! Per external-research/20260715-181500_sala-broadcast-live-session-fold.md
-//! rung B1: the same signed, ordered session log of Sala B0, now carried
+//! rung B1: the same signed, ordered session log of Seva B0, now carried
 //! event-by-event over a genuine Comlink hop to a follower, who replays it
 //! to the identical session root. This is the live-broadcast lap the SLC
 //! flagship rests on, unblocked by Pool P0.
 //!
-//! Composition, not new machinery: the log and replay are Sala B0
+//! Composition, not new machinery: the log and replay are Seva B0
 //! (seva_session_core.rye); the seal is Comlink's wire_format (the same
 //! primitive neth_serial_core_delivery.rye and mala_delivery.rye use); the
 //! carriage shape (source/follower/selftest/demo over real UDP) mirrors the
@@ -34,7 +34,7 @@ const kumara = @import("kumara.rye");
 const rc = @import("receipt_core.rye");
 const mc = @import("mala_core.rye");
 const wf = @import("wire_format.rye");
-const sala = @import("seva_session_core.rye");
+const seva = @import("seva_session_core.rye");
 const tally_copy = @import("tally_copy.rye");
 
 const delivery_version = "20260715.203500";
@@ -110,16 +110,16 @@ fn payload_to_line(payload: []const u8, out: *[rc.max_line_len]u8) !u32 {
 }
 
 const stamps = [event_count][]const u8{ "20260715.203501", "20260715.203502", "20260715.203503" };
-const payloads = [event_count][]const u8{ "sala:open session", "sala:type a line", "sala:frame update" };
+const payloads = [event_count][]const u8{ "seva:open session", "seva:type a line", "seva:frame update" };
 
 /// Build the source's own session directly (the ground truth root).
-fn build_source_session(log: *[rc.max_log_len]u8, actor_hex: *const [mc.pubkey_hex_len]u8, signer: kumara.KeyPair) !sala.ReplayResult {
+fn build_source_session(log: *[rc.max_log_len]u8, actor_hex: *const [mc.pubkey_hex_len]u8, signer: kumara.KeyPair) !seva.ReplayResult {
     var len: u32 = 0;
     var i: u32 = 0;
     while (i < event_count) : (i += 1) {
-        len = try sala.append_event(log, len, @as(i64, i + 1), stamps[i], payloads[i], actor_hex, signer);
+        len = try seva.append_event(log, len, @as(i64, i + 1), stamps[i], payloads[i], actor_hex, signer);
     }
-    return try sala.replay(log[0..len], actor_hex, signer.public_key);
+    return try seva.replay(log[0..len], actor_hex, signer.public_key);
 }
 
 fn run_selftest(_: std.Io) !u8 {
@@ -143,14 +143,14 @@ fn run_selftest(_: std.Io) !u8 {
         const olen = try wf.open_datagram(wire[0..@intCast(wlen)], &opened);
         var line_buf: [rc.max_line_len]u8 = undefined;
         const line_len = try payload_to_line(opened[0..@intCast(olen)], &line_buf);
-        flen = try sala.append_signed_line(&follower_log, flen, line_buf[0..line_len]);
+        flen = try seva.append_signed_line(&follower_log, flen, line_buf[0..line_len]);
     }
-    const follower = try sala.replay(follower_log[0..flen], &a.hex, a.kp.public_key);
+    const follower = try seva.replay(follower_log[0..flen], &a.hex, a.kp.public_key);
 
     assert(follower.events == src.events);
     assert(follower.last_seq == src.last_seq);
     assert(std.mem.eql(u8, &follower.root, &src.root));
-    print("sala-b1: {d} events carried (seal->open->reconstruct->append), follower root matches the source's own byte-for-byte -- GREEN carriage-transparency path\n", .{follower.events});
+    print("seva-b1: {d} events carried (seal->open->reconstruct->append), follower root matches the source's own byte-for-byte -- GREEN carriage-transparency path\n", .{follower.events});
 
     // Unwelcome: a tampered sealed event refuses at open, before it ever
     // reaches the session log.
@@ -166,10 +166,10 @@ fn run_selftest(_: std.Io) !u8 {
     if (wf.open_datagram(bad[0..wl], &junk)) |_| {
         return error.TamperNotCaught;
     } else |_| {
-        print("sala-b1: tampered sealed event refused at open -- GREEN unwelcome path\n", .{});
+        print("seva-b1: tampered sealed event refused at open -- GREEN unwelcome path\n", .{});
     }
 
-    print("sala-b1: version {s} wire_format {s}\n", .{ delivery_version, wf.wire_format_version });
+    print("seva-b1: version {s} wire_format {s}\n", .{ delivery_version, wf.wire_format_version });
     print("GREEN: Seva B1 -- a session carried live over Comlink replays to the identical root, in order.\n", .{});
     return 0;
 }
@@ -197,14 +197,14 @@ fn run_follower(_: std.Io) !u8 {
         const olen = try wf.open_datagram(wire[0..@intCast(wlen)], &opened);
         var line_buf: [rc.max_line_len]u8 = undefined;
         const line_len = try payload_to_line(opened[0..@intCast(olen)], &line_buf);
-        len = try sala.append_signed_line(&log, len, line_buf[0..line_len]);
+        len = try seva.append_signed_line(&log, len, line_buf[0..line_len]);
     }
-    const result = try sala.replay(log[0..len], &a.hex, a.kp.public_key);
+    const result = try seva.replay(log[0..len], &a.hex, a.kp.public_key);
 
     var root_wire: [@intCast(wf.wire_capacity)]u8 = undefined;
     const root_wire_len = try wf.seal_message(&result.root, &root_wire);
     try send_wire(root_port, root_wire[0..@intCast(root_wire_len)]);
-    print("sala-b1: follower replayed {d} carried events, root sent back\n", .{result.events});
+    print("seva-b1: follower replayed {d} carried events, root sent back\n", .{result.events});
     return 0;
 }
 
@@ -230,7 +230,7 @@ fn run_source(_: std.Io) !u8 {
         var pause = c.timespec{ .sec = 0, .nsec = 10_000_000 };
         _ = c.nanosleep(&pause, null);
     }
-    print("sala-b1: source broadcast {d} sealed events in order\n", .{event_count});
+    print("seva-b1: source broadcast {d} sealed events in order\n", .{event_count});
 
     var wire: [@intCast(wf.wire_capacity)]u8 = undefined;
     var from: sockaddr_in = undefined;
@@ -242,7 +242,7 @@ fn run_source(_: std.Io) !u8 {
     const olen = try wf.open_datagram(wire[0..@intCast(wlen)], &opened);
     if (olen != 32) return error.RootSizeMismatch;
     if (!std.mem.eql(u8, opened[0..32], &src.root)) return error.RootMismatch;
-    print("sala-b1: follower's broadcast root matches the source's own -- GREEN convergence path\n", .{});
+    print("seva-b1: follower's broadcast root matches the source's own -- GREEN convergence path\n", .{});
     return 0;
 }
 
@@ -271,8 +271,8 @@ fn run_demo(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) !u8
     };
     assert(follower_code == 0);
     assert(source_code == 0);
-    print("sala-b1: demo GREEN -- a session broadcast over localhost, in order, replayed to the source's own root\n", .{});
-    print("sala-b1: version {s} wire_format {s}\n", .{ delivery_version, wf.wire_format_version });
+    print("seva-b1: demo GREEN -- a session broadcast over localhost, in order, replayed to the source's own root\n", .{});
+    print("seva-b1: version {s} wire_format {s}\n", .{ delivery_version, wf.wire_format_version });
     return 0;
 }
 

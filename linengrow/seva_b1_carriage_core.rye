@@ -11,7 +11,7 @@ const kumara = @import("kumara.rye");
 const rc = @import("receipt_core.rye");
 const mc = @import("mala_core.rye");
 const wf = @import("wire_format.rye");
-const sala = @import("seva_session_core.rye");
+const seva = @import("seva_session_core.rye");
 
 pub const event_count: u32 = 3;
 
@@ -21,7 +21,7 @@ pub const CarriageLens = struct {
 };
 
 const stamps = [event_count][]const u8{ "20260715.203501", "20260715.203502", "20260715.203503" };
-const payloads = [event_count][]const u8{ "sala:open session", "sala:type a line", "sala:frame update" };
+const payloads = [event_count][]const u8{ "seva:open session", "seva:type a line", "seva:frame update" };
 
 fn actor() struct { kp: kumara.KeyPair, hex: [mc.pubkey_hex_len]u8 } {
     // invariant: seated demo actor bounds
@@ -63,23 +63,23 @@ fn payload_to_line(payload: []const u8, out: *[rc.max_line_len]u8) !u32 {
     return try rc.format_log_line(sig, fact_buf[0..decoded.fact_len], out);
 }
 
-fn build_source_session(log: *[rc.max_log_len]u8, actor_hex: *const [mc.pubkey_hex_len]u8, signer: kumara.KeyPair) !sala.ReplayResult {
+fn build_source_session(log: *[rc.max_log_len]u8, actor_hex: *const [mc.pubkey_hex_len]u8, signer: kumara.KeyPair) !seva.ReplayResult {
     // invariant: welcome session fits B0 bounds
     assert(event_count > 0);
-    assert(event_count <= sala.max_events);
+    assert(event_count <= seva.max_events);
     var len: u32 = 0;
     var i: u32 = 0;
     while (i < event_count) : (i += 1) {
-        len = try sala.append_event(log, len, @as(i64, i + 1), stamps[i], payloads[i], actor_hex, signer);
+        len = try seva.append_event(log, len, @as(i64, i + 1), stamps[i], payloads[i], actor_hex, signer);
     }
-    return try sala.replay(log[0..len], actor_hex, signer.public_key);
+    return try seva.replay(log[0..len], actor_hex, signer.public_key);
 }
 
 /// Welcome carriage: roots match. Device-free and glass-safe.
 pub fn run_welcome_carriage() !CarriageLens {
     // invariant: carriage replays a fixed welcome event count
     assert(event_count == 3);
-    assert(event_count <= sala.max_events);
+    assert(event_count <= seva.max_events);
     const a = actor();
     var src_log: [rc.max_log_len]u8 = undefined;
     const src = try build_source_session(&src_log, &a.hex, a.kp);
@@ -96,9 +96,9 @@ pub fn run_welcome_carriage() !CarriageLens {
         const olen = try wf.open_datagram(wire[0..@intCast(wlen)], &opened);
         var line_buf: [rc.max_line_len]u8 = undefined;
         const line_len = try payload_to_line(opened[0..@intCast(olen)], &line_buf);
-        flen = try sala.append_signed_line(&follower_log, flen, line_buf[0..line_len]);
+        flen = try seva.append_signed_line(&follower_log, flen, line_buf[0..line_len]);
     }
-    const follower = try sala.replay(follower_log[0..flen], &a.hex, a.kp.public_key);
+    const follower = try seva.replay(follower_log[0..flen], &a.hex, a.kp.public_key);
     if (follower.events != src.events) return error.EventCountMismatch;
     if (follower.last_seq != src.last_seq) return error.SeqMismatch;
     if (!std.mem.eql(u8, &follower.root, &src.root)) return error.RootMismatch;

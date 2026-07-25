@@ -13,9 +13,9 @@ const rc = @import("receipt_core.rye");
 const mc = @import("mala_core.rye");
 const caps = @import("capabilities.rye");
 const pool = @import("pool_host_seam.rye");
-const sala_surf = @import("seva_surface.rye");
+const seva_surf = @import("seva_surface.rye");
 
-pub const SurfaceError = sala_surf.SurfaceError || pool.HostError || error{ TableFull, Overflow, InvalidFact, InvalidAmount };
+pub const SurfaceError = seva_surf.SurfaceError || pool.HostError || error{ TableFull, Overflow, InvalidFact, InvalidAmount };
 
 fn append_send(
     log: *[rc.max_log_len]u8,
@@ -39,9 +39,9 @@ fn append_send(
 }
 
 /// Host three isolated ledger agents and gather them onto one Seva surface.
-pub fn run_demo_surface() SurfaceError!sala_surf.Surface {
+pub fn run_demo_surface() SurfaceError!seva_surf.Surface {
     // invariant: three isolated panels fit R2 bounds
-    assert(sala_surf.max_panels >= 3);
+    assert(seva_surf.max_panels >= 3);
     assert(mc.issuer_seed.len == kumara.seed_length);
     const issuer_kp = kumara.keypair_from_seed(&mc.issuer_seed);
     const holder_kp = kumara.keypair_from_seed(&mc.holder_seed);
@@ -101,7 +101,7 @@ pub fn run_demo_surface() SurfaceError!sala_surf.Surface {
         holder_kp.public_key,
     );
 
-    var surf: sala_surf.Surface = .{};
+    var surf: seva_surf.Surface = .{};
     try surf.add("ask", r_ask);
     try surf.add("receipt", r_receipt);
     try surf.add("reputation", r_rep);

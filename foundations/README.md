@@ -1,7 +1,7 @@
 # Foundations
 
 **Language:** EN
-**Last updated:** 2026-07-24 (custody first principle · Seva/Mona settings split landed)
+**Last updated:** 2026-07-24 (custody first principle · Seva/Mand settings split · Mand seated)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 
 ---
@@ -24,7 +24,7 @@ These rest beneath the specifications. The specs say what to build and how; thes
 
 **Foundation briefs** — the why beneath the daily work, on our own roots:
 
-- `20260724-200912_nothing-to-give-custody-first-principle.md` — **build nothing that destroys**; minimize · encrypt-with-external-key · delete-by-key; safe-by-default configuration; Seva (preference) / Mona (policy) settings split; **landed** `20260724.201334`.
+- `20260724-200912_nothing-to-give-custody-first-principle.md` — **build nothing that destroys**; minimize · encrypt-with-external-key · delete-by-key; safe-by-default configuration; Seva (preference) / **Mand** (policy) settings split; **landed** `20260724.201334` · Mand name `20260724.202412` (Mona prior under erratum).
 - `20260703-182612_sameness-is-the-macro.md` — compression without magic: sameness as the macro we accept, syntax macros we refuse; **grain strand seated** `20260704.023400 UDT`; siloed from [`../external-research/20260703-182612_sameness-is-the-macro.md`](../external-research/20260703-182612_sameness-is-the-macro.md).
 - `20260706-022912_the-wire-serves-the-fold.md` — carriage first-principles for Comlink: the record is sovereign and the wire serves it; **landed** at ruling `20260706.232812`.
 - `20260703-140212_the-learning-chapter.md` — the candidate Civic Style education chapter: learning as apprenticeship, a dignity floor per learner, the unlocked door in existing law, accreditation resung as a witness suite; enters canon on Keaton's word. Kitchen twin: [`../external-research/20260710-000725_learning-chapter-plainly.md`](../external-research/20260710-000725_learning-chapter-plainly.md).

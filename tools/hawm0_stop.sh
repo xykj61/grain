@@ -3,7 +3,7 @@
 #
 # A successful tools/hawm0_boot_worker.sh run (via tools/hawm0_boot_onpath_host.rish)
 # leaves the emulator running on purpose, since a caller like
-# tools/hawm1_sala_witness.rish needs it attached a moment later. This is the
+# tools/hawm1_seva_witness.rish needs it attached a moment later. This is the
 # explicit teardown for when you are actually done with it — run from the
 # same plain host terminal, outside any jail.
 #

@@ -4,15 +4,15 @@
 
 let zig = "vendor/zig-toolchain/zig"
 
-let fold = run ["rishi/bin/rishi" "run" "tools/glow_sala_b0_fold_witness.rish"]
-assert fold.ok else "glow_sala_b0_fold_witness failed"
+let fold = run ["rishi/bin/rishi" "run" "tools/glow_seva_b0_fold_witness.rish"]
+assert fold.ok else "glow_seva_b0_fold_witness failed"
 assert fold.out contains "STOA237" else "fold witness missing STOA237"
 
-let claim = run ["rishi/bin/rishi" "run" "tools/glow_sala_b0_claim_witness.rish"]
-assert claim.ok else "glow_sala_b0_claim_witness failed"
+let claim = run ["rishi/bin/rishi" "run" "tools/glow_seva_b0_claim_witness.rish"]
+assert claim.ok else "glow_seva_b0_claim_witness failed"
 assert claim.out contains "STOA237" else "claim witness missing STOA237"
 
-let src = run ["sh" "-c" "grep -q 'lit_desk_embedded' linengrow/glow_sala_b0_line.rye && grep -q 'run_demo_fold_from_embedded_desk' linengrow/glow_native_activity.rye && grep -q '@embedFile' linengrow/glow_sala_b0_line.rye"]
+let src = run ["sh" "-c" "grep -q 'lit_desk_embedded' linengrow/glow_seva_b0_line.rye && grep -q 'run_demo_fold_from_embedded_desk' linengrow/glow_native_activity.rye && grep -q '@embedFile' linengrow/glow_seva_b0_line.rye"]
 assert src.ok else "missing embedFile / NativeActivity embedded-desk wire"
 
 let pack = run ["rishi/bin/rishi" "run" "tools/tube05_apk_pack_witness.rish"]

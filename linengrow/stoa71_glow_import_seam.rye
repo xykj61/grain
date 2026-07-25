@@ -2,7 +2,7 @@
 //!
 //! NativeActivity-path import of a Glow-lowered session-root module.
 //! Honest Two Rooms: imports lowered Rye from glow/.cache (via symlink),
-//! not .glow source. Sala B0 fold and glow_native_activity stay untouched.
+//! not .glow source. Seva B0 fold and glow_native_activity stay untouched.
 //!
 //!   rishi/bin/rishi run tools/stoa71_glow_import_seam_witness.rish
 

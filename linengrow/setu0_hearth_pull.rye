@@ -11,7 +11,7 @@ const hearth = @import("hearth_lulu0.rye");
 const lulu3 = @import("hearth_lulu3.rye");
 
 pub const waymark: []const u8 = "SETU";
-pub const pkg: []const u8 = "org.glow.app.sala_broadcaster";
+pub const pkg: []const u8 = "org.glow.app.seva_broadcaster";
 /// Relative to the app's `files/` dir (run-as cat path).
 pub const rel_pointer: []const u8 = lulu3.pointer_name;
 

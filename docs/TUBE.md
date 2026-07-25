@@ -23,7 +23,7 @@ Language path and device path meet here: Glow's fold (language) becomes an insta
 | Rung | Claim | Primary witness | State |
 |------|-------|-----------------|-------|
 | **TUBE0** | App-manifest mold validates at the boundary | `tools/tube0_manifest_witness.rish` | GREEN |
-| **TUBE0.5** | Permissions emit; NativeActivity envelope; signed APK with **JABS0** Seva fold (module `sala_b0_fold`); install + `sala_root.txt` on HAWM0 and Pixel 10a | `tools/tube0_5_android_permission_witness.rish` · `tools/tube05_envelope_witness.rish` · `tools/tube05_apk_pack_witness.rish` · `tools/tube05_install_proof_onpath_host.rish` | **GREEN** pack · Seva wire · HAWM0 `20260717.122010` · **Pixel `20260717.123226`** |
+| **TUBE0.5** | Permissions emit; NativeActivity envelope; signed APK with **JABS0** Seva fold (module `seva_b0_fold`); install + `seva_root.txt` on HAWM0 and Pixel 10a | `tools/tube0_5_android_permission_witness.rish` · `tools/tube05_envelope_witness.rish` · `tools/tube05_apk_pack_witness.rish` · `tools/tube05_install_proof_onpath_host.rish` | **GREEN** pack · Seva wire · HAWM0 `20260717.122010` · **Pixel `20260717.123226`** |
 | **TUBE1** | Pool admits an agent iff manifest caps match a grant | `tools/tube1_admission_witness.rish` · glass gate `tube1_glass_gate.rye` | **GREEN** device-free `20260717.131000` · glass + Pixel `20260717.131404` |
 | **TUBE2** | Maker signs app+manifest into Granary; consumer verifies before install | `tools/tube2_publish_witness.rish` · glass `tube2_glass_pub.rye` | **GREEN** device-free `20260717.131500`; glass + Pixel `20260717.144536` |
 | **TUBE3** | Manifest resin fetched by digest under Comlink seal; verified before admit | `tools/tube3_resin_fetch_witness.rish` · glass `tube3_glass_fetch.rye` | **GREEN** device-free `20260717.133900`; glass + Pixel `20260717.145328` |
@@ -38,10 +38,10 @@ Language path and device path meet here: Glow's fold (language) becomes an insta
 
 ```bash
 rishi/bin/rishi run tools/tube05_apk_pack_witness.rish
-# → tools/.cache/tube05/sala-broadcaster.apk
-#    package org.glow.app.sala_broadcaster
+# → tools/.cache/tube05/seva-broadcaster.apk
+#    package org.glow.app.seva_broadcaster
 #    NativeActivity + lib/{arm64-v8a,x86_64}/libglowapp.so (NDK-linked, DT_NEEDED libc)
-#    onCreate runs JABS0 Seva fold; writes files/sala_root.txt (HAWM1 demo root)
+#    onCreate runs JABS0 Seva fold; writes files/seva_root.txt (HAWM1 demo root)
 #    INTERNET from the closed permission table
 ```
 
@@ -49,11 +49,11 @@ rishi/bin/rishi run tools/tube05_apk_pack_witness.rish
 |-------|------|
 | Permission emission | `linengrow/tube_manifest_android_permission.rye` |
 | Full AndroidManifest.xml | `linengrow/tube_android_manifest.rye` |
-| JABS0 Seva fold (module `sala_b0_fold`, same root as HAWM1) | `linengrow/sala_b0_fold.rye` |
+| JABS0 Seva fold (module `seva_b0_fold`, same root as HAWM1) | `linengrow/seva_b0_fold.rye` |
 | Native entry (`ANativeActivity_onCreate`) | `linengrow/glow_native_activity.rye` |
 | Pack worker | `tools/tube05_apk_pack_worker.sh` |
 
-**Install GREEN** — HAWM0 `20260717.122010` · physical Pixel 10a `20260717.123226` (`sala_root.txt` = HAWM1 demo root both times). Re-run anytime:
+**Install GREEN** — HAWM0 `20260717.122010` · physical Pixel 10a `20260717.123226` (`seva_root.txt` = HAWM1 demo root both times). Re-run anytime:
 
 ```bash
 # Host terminal (not ai-jail):
@@ -63,15 +63,15 @@ rishi/bin/rishi run tools/tube05_install_proof_onpath_host.rish
 # → 99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe
 ```
 
-**Surface + Skate on Pixel GREEN `20260717.125858`:** `glow_native_surface.rye` rasterizes Brushstroke Skate onto the ANativeWindow; Keaton confirmed on-device. Fold + `sala_root.txt` still land in onCreate; tap finishes.
+**Surface + Skate on Pixel GREEN `20260717.125858`:** `glow_native_surface.rye` rasterizes Brushstroke Skate onto the ANativeWindow; Keaton confirmed on-device. Fold + `seva_root.txt` still land in onCreate; tap finishes.
 
 **Thin-view on glass GREEN `20260717.130602`:** R1 path landed; Keaton confirmed ledger lines on Pixel.
 
 **R2 surface on glass GREEN `20260717.130848`:** `seva_r2_surface.rye` hosts ask · receipt · reputation (capability-isolated) onto one `seva_surface.Surface`; Skate paints `[ask] issuer 200` / `[receipt] issuer 250` / `[reputation] issuer 275` above the B0 hex. Install proof GREEN; Keaton confirmed on Pixel.
 
-**TUBE1 glass gate GREEN `20260717.131404` · cover `20260717.161823`:** `tube1_glass_gate.rye` admits sala-broadcaster (state resources + `photos` + `contacts` + `network` + `sensors`) before R2 paints; covering scopes and Network · Sensors toggles are load-bearing. Title (with B1) `SALA B0+B1+R2+T1 GREEN` / `TUBE1 admitted · Pool x3`. Install proof GREEN; Keaton confirmed on Pixel.
+**TUBE1 glass gate GREEN `20260717.131404` · cover `20260717.161823`:** `tube1_glass_gate.rye` admits seva-broadcaster (state resources + `photos` + `contacts` + `network` + `sensors`) before R2 paints; covering scopes and Network · Sensors toggles are load-bearing. Title (with B1) `SEVA B0+B1+R2+T1 GREEN` / `TUBE1 admitted · Pool x3`. Install proof GREEN; Keaton confirmed on Pixel.
 
-**TUBE5 Mantra-rev tip on glass GREEN `20260717.140600`:** after admit + R2, `tube5_glass_tip.rye` lands Mantra rev1/rev2 and paints `TUBE5 tip rev2 · 0.2.0` (UI string — Mantra revision tip, not landed-edge *nib*). Install proof GREEN (binds `sala_root.txt`); Keaton confirmed the Mantra-rev line on Pixel.
+**TUBE5 Mantra-rev tip on glass GREEN `20260717.140600`:** after admit + R2, `tube5_glass_tip.rye` lands Mantra rev1/rev2 and paints `TUBE5 tip rev2 · 0.2.0` (UI string — Mantra revision tip, not landed-edge *nib*). Install proof GREEN (binds `seva_root.txt`); Keaton confirmed the Mantra-rev line on Pixel.
 
 **TUBE2 publish on glass GREEN `20260717.144536`:** after Mantra-rev tip + hex, `tube2_glass_pub.rye` runs demo publish + resolve/admit and paints `TUBE2 published · verified` on row 8. Install proof GREEN; Keaton confirmed on Pixel.
 
@@ -79,7 +79,7 @@ rishi/bin/rishi run tools/tube05_install_proof_onpath_host.rish
 
 **TUBE4 market on glass GREEN `20260717.145547`:** `tube4_glass_market.rye` runs demo Exchange+Neth acquire and paints `TUBE4 market · acquired` on row 10. Install proof GREEN; Keaton confirmed on Pixel. Debug keystore under `tools/.cache/tube05/` is host-local, never for publish.
 
-**JABS1 welcome carriage on glass GREEN `20260717.170315` · Pixel `20260717.171015`:** device-free JABS1 (`seva_broadcast_delivery.rye`) already GREEN; glass presents the in-process welcome path (`seva_b1_carriage_core.rye` · `seva_b1_glass_carriage.rye`) as `SALA B1 carriage · 3 ev` on row 11 (dated paint string). Witness `tools/seva_b1_glass_carriage_witness.rish` GREEN; pack GREEN; install proof GREEN. Keaton confirmed title `SALA B0+B1+R2+T1 GREEN` and the JABS1 line on Pixel. UDP hop stays out of the APK.
+**JABS1 welcome carriage on glass GREEN `20260717.170315` · Pixel `20260717.171015`:** device-free JABS1 (`seva_broadcast_delivery.rye`) already GREEN; glass presents the in-process welcome path (`seva_b1_carriage_core.rye` · `seva_b1_glass_carriage.rye`) as `SEVA B1 carriage · 3 ev` on row 11 (dated paint string). Witness `tools/seva_b1_glass_carriage_witness.rish` GREEN; pack GREEN; install proof GREEN. Keaton confirmed title `SEVA B0+B1+R2+T1 GREEN` and the JABS1 line on Pixel. UDP hop stays out of the APK.
 
 **Dexter + ZETA on glass:** D0–D3 GREEN; Pixel look for Dexter line GREEN. **ZETA0+ZETA1** `20260717.180558` — English QWERTY letters painted on Skate rows 14–17 with hit boxes ([`docs/ZETA.md`](ZETA.md)). System IME still unused; caret blink is ZETA3; tap→Action is ZETA2.
 

@@ -384,7 +384,7 @@ pub fn kd_hearth_path_is_short() bool {
 
 /// Device-free: files-root join lands on `…/kd/hearth.bron`.
 pub fn kd_files_join_is_honest() bool {
-    const root = "/data/user/0/org.glow.app.sala_broadcaster/files";
+    const root = "/data/user/0/org.glow.app.seva_broadcaster/files";
     var path: [max_abs_path_len]u8 = undefined;
     const n = join_files_hearth_path(root, "kd", &path) catch return false;
     const want = root ++ "/kd/hearth.bron";

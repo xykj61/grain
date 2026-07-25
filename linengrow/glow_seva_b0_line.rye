@@ -1,0 +1,421 @@
+//! linengrow/glow_seva_b0_line.rye — Glow product log-line surface over elder receipt_core.
+//!
+//! STOA202 (B2): owns format_log_line + parse_log_line while calling elder
+//! bodies. Wires with STOA201 sign for a demo round-trip.
+//! STOA203: append composes through this surface + sign.
+//! STOA225: demo sig/fact hex pins + Glow face=lit desk bind
+//! (`glow/gen/sample-demo-fact-line-lits.glow`). Pins match
+//! `claim_demo_line` under issuer seed · fixture stamp1/memo1.
+//! STOA227: `format_demo_line_from_pins` emits the elder line from those
+//! seated pins (desk-bound). Does not read the `.glow` file at runtime.
+//! STOA231: event 2–3 sig/fact pins · emit · desk bind (stamp2/memo2 ·
+//! stamp3/memo3). Same recipe as event 1.
+//! STOA233: runtime desk emit — product extracts face='…' cords from desk
+//! text and formats lines byte-identical to pin emit.
+//! STOA241: product face_lit stand-in — `extract_face_lit_cord` (same body as
+//! extract_desk_cord). Module path blocks `@import` of glow/face_lit; dual
+//! witness proves product extract ≡ Glow face_lit on the fact-line desk.
+//! STOA243: product-authored format/parse log-line body — hex·space·hex·newline
+//! lives in this module; elder receipt_core stays peer baseline for agree.
+//!
+//!   rye build linengrow/glow_seva_b0_line_witness.rye \
+//!     -femit-bin=linengrow/bin/glow_seva_b0_line_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const kumara = @import("kumara.rye");
+const mc = @import("mala_core.rye");
+const rc = @import("receipt_core.rye");
+const fixture = @import("glow_seva_b0_demo_fixture.rye");
+const sign = @import("glow_seva_b0_sign.rye");
+const tally_copy = @import("tally_copy.rye");
+const tally_parse_int = @import("parse_int.rye");
+
+pub const line_version = "20260722.140957";
+
+/// Glow face=lit sample desk for demo line halves (STOA225 · STOA231).
+pub const lit_desk_relpath = "glow/gen/sample-demo-fact-line-lits.glow";
+
+/// Desk bytes packed into the product binary / APK `.so` (STOA237).
+/// Twin of `lit_desk_relpath` under linengrow/ (Zig embed stays in-package).
+/// Witness proves embed ≡ glow/gen desk file.
+pub const lit_desk_embed_relpath = "linengrow/gen/sample-demo-fact-line-lits.glow";
+pub const lit_desk_embedded: []const u8 = @embedFile("gen/sample-demo-fact-line-lits.glow");
+
+/// Deterministic demo sig hex from `claim_demo_line` (128 lowercase nibbles).
+pub const demo_sig_hex =
+    "93c92d1b6ac994d9560cc26480f36661f23be0144ac29e603d3f761df565a6c662a6083bca0e39bb3ca36d3b785789b1cc34d1bd491f5fa1eddd7a961684300b";
+
+/// Deterministic demo fact hex from `claim_demo_line` (canonical fact bytes as hex).
+pub const demo_fact_hex =
+    "66726f6d20616630366133653332393137313465346633353663313963396231356364313935316563366536363632616137376265303735343766323839333833333431640a746f20616630366133653332393137313465346633353663313963396231356364313935316563366536363632616137376265303735343766323839333833333431640a616d6f756e7420310a6d656d6f2073616c613a6f70656e2072697368692073657373696f6e0a7374616d702032303236303731352e3139303030310a";
+
+/// Event 2 sig hex (issuer seed · stamp2/memo2 · amount 2).
+pub const demo_sig2_hex =
+    "cbff6d796bfc1880950a31752483526f394fcf7f5a5d31267289735637ec9b7a02b2a8d92b8edcdcac77cf30a44f973225356043c6777a67c0ad99e8df34bf0f";
+
+/// Event 2 fact hex (canonical fact bytes as hex).
+pub const demo_fact2_hex =
+    "66726f6d20616630366133653332393137313465346633353663313963396231356364313935316563366536363632616137376265303735343766323839333833333431640a746f20616630366133653332393137313465346633353663313963396231356364313935316563366536363632616137376265303735343766323839333833333431640a616d6f756e7420320a6d656d6f2073616c613a74797065206c65742078203d2034320a7374616d702032303236303731352e3139303030320a";
+
+/// Event 3 sig hex (issuer seed · stamp3/memo3 · amount 3).
+pub const demo_sig3_hex =
+    "33e4b1c91aa10787dec97f3db5e0f661d816eacdf97bfd28f24f38a7d23048ec7858fddc2259a2ff78bfe4e900e689b5a9612270ad365ab2ffa527bb44fd1f0e";
+
+/// Event 3 fact hex (canonical fact bytes as hex).
+pub const demo_fact3_hex =
+    "66726f6d20616630366133653332393137313465346633353663313963396231356364313935316563366536363632616137376265303735343766323839333833333431640a746f20616630366133653332393137313465346633353663313963396231356364313935316563366536363632616137376265303735343766323839333833333431640a616d6f756e7420330a6d656d6f2073616c613a6672616d6520382d6c696e6520736b61746520766965770a7374616d702032303236303731352e3139303030330a";
+
+pub const LineError = sign.SignError || error{
+    Overflow,
+    InvalidLine,
+    LineMismatch,
+    DeskMissingFace,
+    DeskBadLit,
+};
+
+pub const ParsedLine = struct {
+    sig_len: u32,
+    fact_len: u32,
+};
+
+fn buf_len_u32(buf: []const u8) u32 {
+    assert(buf.len <= std.math.maxInt(u32));
+    return @intCast(buf.len);
+}
+
+fn trim_line(line_text: []const u8) []const u8 {
+    return std.mem.trim(u8, line_text, " \t\r\n");
+}
+
+fn write_hex_lower(bytes: []const u8, out: []u8) LineError!u32 {
+    if (out.len < bytes.len * 2) return error.Overflow;
+    var i: u32 = 0;
+    while (i < buf_len_u32(bytes)) : (i += 1) {
+        _ = std.fmt.bufPrint(out[i * 2 ..][0..2], "{x:0>2}", .{bytes[i]}) catch return error.Overflow;
+    }
+    return @intCast(bytes.len * 2);
+}
+
+fn decode_hex_lower(hex: []const u8, out: []u8) LineError!u32 {
+    if (hex.len % 2 != 0) return error.InvalidLine;
+    const nbytes: u32 = @intCast(hex.len / 2);
+    if (nbytes > buf_len_u32(out)) return error.InvalidLine;
+    var i: u32 = 0;
+    while (i < nbytes) : (i += 1) {
+        const pair = hex[i * 2 ..][0..2];
+        out[i] = tally_parse_int.parse_int(u8, pair, .{ .base = 16, .allow_leading_zero = true }) catch return error.InvalidLine;
+    }
+    return nbytes;
+}
+
+/// Format sig + fact as one log line (hex · space · hex · newline) — product body (STOA243).
+pub fn format_log_line(sig: kumara.Signature, fact: []const u8, out: []u8) LineError!u32 {
+    const sig_bytes = sig.toBytes();
+    var pos: u32 = 0;
+    pos += try write_hex_lower(&sig_bytes, out[pos..]);
+    if (pos >= buf_len_u32(out)) return error.Overflow;
+    out[pos] = ' ';
+    pos += 1;
+    pos += try write_hex_lower(fact, out[pos..]);
+    if (pos < buf_len_u32(out)) out[pos] = '\n';
+    return pos + 1;
+}
+
+/// Parse one log line into sig bytes and fact bytes — product body (STOA243).
+pub fn parse_log_line(line_text: []const u8, sig_out: []u8, fact_out: []u8) LineError!ParsedLine {
+    const trimmed = trim_line(line_text);
+    if (trimmed.len < rc.sig_hex_len + 2) return error.InvalidLine;
+    const sig_hex = trimmed[0..rc.sig_hex_len];
+    if (trimmed[rc.sig_hex_len] != ' ') return error.InvalidLine;
+    const fact_hex = trim_line(trimmed[rc.sig_hex_len + 1 ..]);
+    const sig_len = try decode_hex_lower(sig_hex, sig_out);
+    const fact_len = try decode_hex_lower(fact_hex, fact_out);
+    return .{ .sig_len = sig_len, .fact_len = fact_len };
+}
+
+/// True when product format/parse bodies match elder receipt_core peer (STOA243).
+pub fn format_parse_body_agrees_elder() LineError!bool {
+    const signed = try sign.claim_demo_sign();
+    const fact = signed.canonical[0..signed.canonical_len];
+    var product_line: [rc.max_line_len]u8 = undefined;
+    var elder_line: [rc.max_line_len]u8 = undefined;
+    const pn = try format_log_line(signed.sig, fact, product_line[0..]);
+    const en = try rc.format_log_line(signed.sig, fact, elder_line[0..]);
+    if (pn != en) return false;
+    if (!std.mem.eql(u8, product_line[0..pn], elder_line[0..en])) return false;
+
+    var sig_p: [kumara.signature_length]u8 = undefined;
+    var fact_p: [rc.max_fact_len]u8 = undefined;
+    var sig_e: [kumara.signature_length]u8 = undefined;
+    var fact_e: [rc.max_fact_len]u8 = undefined;
+    const pp = try parse_log_line(product_line[0..pn], &sig_p, &fact_p);
+    const ep = try rc.parse_log_line(elder_line[0..en], &sig_e, &fact_e);
+    if (pp.sig_len != ep.sig_len or pp.fact_len != ep.fact_len) return false;
+    if (!std.mem.eql(u8, sig_p[0..pp.sig_len], sig_e[0..ep.sig_len])) return false;
+    if (!std.mem.eql(u8, fact_p[0..pp.fact_len], fact_e[0..ep.fact_len])) return false;
+    return true;
+}
+
+/// Sign demo fact (STOA201), format line, parse back; refuse unless bytes agree and verify.
+pub fn claim_demo_line(line_out: *[rc.max_line_len]u8) LineError!u32 {
+    return claim_demo_line_seq(1, fixture.stamp1, fixture.memo1, line_out);
+}
+
+/// Sign one demo event (seq · stamp · memo), format line, parse/verify round-trip.
+pub fn claim_demo_line_seq(
+    seq: i64,
+    stamp: []const u8,
+    memo: []const u8,
+    line_out: *[rc.max_line_len]u8,
+) LineError!u32 {
+    assert(seq >= 1);
+    const actor_kp = kumara.keypair_from_seed(&mc.issuer_seed);
+    var actor_hex: [mc.pubkey_hex_len]u8 = undefined;
+    mc.hex_of_key(actor_kp.public_key, &actor_hex);
+
+    var seq_buf: [24]u8 = undefined;
+    const seq_text = std.fmt.bufPrint(&seq_buf, "{d}", .{seq}) catch unreachable;
+    const fields = rc.FactFields{
+        .from = actor_hex[0..],
+        .to = actor_hex[0..],
+        .amount = seq_text,
+        .memo = memo,
+        .stamp = stamp,
+    };
+    const signed = try sign.sign_fact(fields, actor_kp);
+    const fact = signed.canonical[0..signed.canonical_len];
+    const line_len = try format_log_line(signed.sig, fact, line_out[0..]);
+    assert(line_len > 0);
+
+    var sig_buf: [kumara.signature_length]u8 = undefined;
+    var fact_buf: [rc.max_fact_len]u8 = undefined;
+    const parsed = try parse_log_line(line_out[0..line_len], &sig_buf, &fact_buf);
+    if (parsed.sig_len != kumara.signature_length) return error.LineMismatch;
+    if (parsed.fact_len != signed.canonical_len) return error.LineMismatch;
+    const expect_sig = signed.sig.toBytes();
+    if (!std.mem.eql(u8, sig_buf[0..parsed.sig_len], expect_sig[0..])) return error.LineMismatch;
+    if (!std.mem.eql(u8, fact_buf[0..parsed.fact_len], fact)) return error.LineMismatch;
+
+    try sign.verify_record(sig_buf[0..parsed.sig_len], fact_buf[0..parsed.fact_len], actor_kp.public_key);
+    return line_len;
+}
+
+fn split_line_hex(line: []const u8) ?struct { sig: []const u8, fact: []const u8 } {
+    if (line.len < 2) return null;
+    const body = if (line[line.len - 1] == '\n') line[0 .. line.len - 1] else line;
+    var i: u32 = 0;
+    const n: u32 = @intCast(body.len);
+    while (i < n) : (i += 1) {
+        if (body[@as(usize, @intCast(i))] == ' ') {
+            if (i == 0 or i + 1 >= n) return null;
+            return .{
+                .sig = body[0..@as(usize, @intCast(i))],
+                .fact = body[@as(usize, @intCast(i + 1))..],
+            };
+        }
+    }
+    return null;
+}
+
+/// True when a live `claim_demo_line` matches the seated demo sig/fact hex pins.
+pub fn demo_line_pins_agree() LineError!bool {
+    var line_buf: [rc.max_line_len]u8 = undefined;
+    const line_len = try claim_demo_line(&line_buf);
+    const parts = split_line_hex(line_buf[0..line_len]) orelse return false;
+    if (!std.mem.eql(u8, parts.sig, demo_sig_hex)) return false;
+    if (!std.mem.eql(u8, parts.fact, demo_fact_hex)) return false;
+    return true;
+}
+
+/// True when live event-2 line matches seated demo_sig2/fact2 pins.
+pub fn demo_line2_pins_agree() LineError!bool {
+    var line_buf: [rc.max_line_len]u8 = undefined;
+    const line_len = try claim_demo_line_seq(2, fixture.stamp2, fixture.memo2, &line_buf);
+    const parts = split_line_hex(line_buf[0..line_len]) orelse return false;
+    if (!std.mem.eql(u8, parts.sig, demo_sig2_hex)) return false;
+    if (!std.mem.eql(u8, parts.fact, demo_fact2_hex)) return false;
+    return true;
+}
+
+/// True when live event-3 line matches seated demo_sig3/fact3 pins.
+pub fn demo_line3_pins_agree() LineError!bool {
+    var line_buf: [rc.max_line_len]u8 = undefined;
+    const line_len = try claim_demo_line_seq(3, fixture.stamp3, fixture.memo3, &line_buf);
+    const parts = split_line_hex(line_buf[0..line_len]) orelse return false;
+    if (!std.mem.eql(u8, parts.sig, demo_sig3_hex)) return false;
+    if (!std.mem.eql(u8, parts.fact, demo_fact3_hex)) return false;
+    return true;
+}
+
+fn clause_present(src: []const u8, comptime face: []const u8, comptime lit: []const u8) bool {
+    const needle = face ++ "='" ++ lit ++ "'";
+    return std.mem.indexOf(u8, src, needle) != null;
+}
+
+/// True when Glow lit-desk text carries demo event 1–3 sig/fact as face=lit clauses.
+pub fn lit_desk_binds_pins(src: []const u8) bool {
+    assert(src.len >= 1);
+    if (!clause_present(src, "sig", demo_sig_hex)) return false;
+    if (!clause_present(src, "fact", demo_fact_hex)) return false;
+    if (!clause_present(src, "sig2", demo_sig2_hex)) return false;
+    if (!clause_present(src, "fact2", demo_fact2_hex)) return false;
+    if (!clause_present(src, "sig3", demo_sig3_hex)) return false;
+    if (!clause_present(src, "fact3", demo_fact3_hex)) return false;
+    return true;
+}
+
+fn format_line_from_hex(sig_hex: []const u8, fact_hex: []const u8, out: []u8) LineError!u32 {
+    const sig_n: u32 = @intCast(sig_hex.len);
+    const fact_n: u32 = @intCast(fact_hex.len);
+    const need = sig_n + 1 + fact_n + 1;
+    if (out.len < need) return error.Overflow;
+    tally_copy.copy_disjoint(u8, out[0..@as(usize, @intCast(sig_n))], sig_hex);
+    out[@as(usize, @intCast(sig_n))] = ' ';
+    const fact_off = sig_n + 1;
+    tally_copy.copy_disjoint(
+        u8,
+        out[@as(usize, @intCast(fact_off)) .. @as(usize, @intCast(fact_off + fact_n))],
+        fact_hex,
+    );
+    out[@as(usize, @intCast(fact_off + fact_n))] = '\n';
+    return need;
+}
+
+/// Emit elder demo log line from seated event-1 pins: `sighex facthex\n` (STOA227).
+pub fn format_demo_line_from_pins(out: []u8) LineError!u32 {
+    return format_line_from_hex(demo_sig_hex, demo_fact_hex, out);
+}
+
+/// Emit elder demo log line from seated event-2 pins (STOA231).
+pub fn format_demo_line2_from_pins(out: []u8) LineError!u32 {
+    return format_line_from_hex(demo_sig2_hex, demo_fact2_hex, out);
+}
+
+/// Emit elder demo log line from seated event-3 pins (STOA231).
+pub fn format_demo_line3_from_pins(out: []u8) LineError!u32 {
+    return format_line_from_hex(demo_sig3_hex, demo_fact3_hex, out);
+}
+
+/// Extract cord interior from a `face='…'` clause in desk source (STOA233/241).
+/// Skips `::` comment lines. Product face_lit stand-in — does not import
+/// glow/face_lit (module path seam); dual witness proves agree.
+pub fn extract_face_lit_cord(src: []const u8, face: []const u8) LineError![]const u8 {
+    return extract_desk_cord(src, face);
+}
+
+/// STOA233 name kept as alias of the product face_lit extract (STOA241).
+pub fn extract_desk_cord(src: []const u8, face: []const u8) LineError![]const u8 {
+    assert(face.len >= 1);
+    var line_start: usize = 0;
+    while (line_start <= src.len) {
+        var line_end = line_start;
+        while (line_end < src.len and src[line_end] != '\n') : (line_end += 1) {}
+        const row = src[line_start..line_end];
+        if (row.len >= 2 and row[0] == ':' and row[1] == ':') {
+            // comment
+        } else if (row.len > face.len + 3) {
+            if (std.mem.startsWith(u8, row, face) and row[face.len] == '=' and row[face.len + 1] == '\'') {
+                const lit_start = face.len + 2;
+                var lit_end = lit_start;
+                while (lit_end < row.len and row[lit_end] != '\'') : (lit_end += 1) {}
+                if (lit_end >= row.len) return error.DeskBadLit;
+                if (lit_end + 1 != row.len) return error.DeskBadLit;
+                if (lit_end == lit_start) return error.DeskBadLit;
+                return row[lit_start..lit_end];
+            }
+        }
+        if (line_end >= src.len) break;
+        line_start = line_end + 1;
+    }
+    return error.DeskMissingFace;
+}
+
+/// Emit event-1 line from desk-extracted sig/fact cords (STOA233).
+pub fn format_demo_line_from_desk(src: []const u8, out: []u8) LineError!u32 {
+    const sig = try extract_face_lit_cord(src, "sig");
+    const fact = try extract_face_lit_cord(src, "fact");
+    return format_line_from_hex(sig, fact, out);
+}
+
+/// Emit event-2 line from desk-extracted sig2/fact2 cords (STOA233).
+pub fn format_demo_line2_from_desk(src: []const u8, out: []u8) LineError!u32 {
+    const sig = try extract_face_lit_cord(src, "sig2");
+    const fact = try extract_face_lit_cord(src, "fact2");
+    return format_line_from_hex(sig, fact, out);
+}
+
+/// Emit event-3 line from desk-extracted sig3/fact3 cords (STOA233).
+pub fn format_demo_line3_from_desk(src: []const u8, out: []u8) LineError!u32 {
+    const sig = try extract_face_lit_cord(src, "sig3");
+    const fact = try extract_face_lit_cord(src, "fact3");
+    return format_line_from_hex(sig, fact, out);
+}
+
+/// True when product face_lit extract matches seated pins for events 1–3 (STOA241).
+/// Glow face_lit witness matches the same pins — transitive agree across the seam.
+pub fn face_lit_product_agrees_pins(src: []const u8) LineError!bool {
+    const pairs = [_]struct { face: []const u8, pin: []const u8 }{
+        .{ .face = "sig", .pin = demo_sig_hex },
+        .{ .face = "fact", .pin = demo_fact_hex },
+        .{ .face = "sig2", .pin = demo_sig2_hex },
+        .{ .face = "fact2", .pin = demo_fact2_hex },
+        .{ .face = "sig3", .pin = demo_sig3_hex },
+        .{ .face = "fact3", .pin = demo_fact3_hex },
+    };
+    for (pairs) |p| {
+        const got = try extract_face_lit_cord(src, p.face);
+        if (!std.mem.eql(u8, got, p.pin)) return false;
+    }
+    return true;
+}
+
+/// True when desk emit for events 1–3 matches seated pin emit.
+pub fn demo_desk_emit_agrees_pins(src: []const u8) LineError!bool {
+    var from_desk: [rc.max_line_len]u8 = undefined;
+    var from_pins: [rc.max_line_len]u8 = undefined;
+
+    const d1 = try format_demo_line_from_desk(src, from_desk[0..]);
+    const p1 = try format_demo_line_from_pins(from_pins[0..]);
+    if (d1 != p1 or !std.mem.eql(u8, from_desk[0..d1], from_pins[0..p1])) return false;
+
+    const d2 = try format_demo_line2_from_desk(src, from_desk[0..]);
+    const p2 = try format_demo_line2_from_pins(from_pins[0..]);
+    if (d2 != p2 or !std.mem.eql(u8, from_desk[0..d2], from_pins[0..p2])) return false;
+
+    const d3 = try format_demo_line3_from_desk(src, from_desk[0..]);
+    const p3 = try format_demo_line3_from_pins(from_pins[0..]);
+    if (d3 != p3 or !std.mem.eql(u8, from_desk[0..d3], from_pins[0..p3])) return false;
+
+    return true;
+}
+
+/// True when pin emit and live `claim_demo_line` are byte-identical.
+pub fn demo_pin_emit_agrees_claim() LineError!bool {
+    var from_pins: [rc.max_line_len]u8 = undefined;
+    var from_claim: [rc.max_line_len]u8 = undefined;
+    const n_pins = try format_demo_line_from_pins(from_pins[0..]);
+    const n_claim = try claim_demo_line(&from_claim);
+    if (n_pins != n_claim) return false;
+    return std.mem.eql(u8, from_pins[0..n_pins], from_claim[0..n_claim]);
+}
+
+/// True when event-2 pin emit equals live claim for stamp2/memo2.
+pub fn demo_pin_emit2_agrees_claim() LineError!bool {
+    var from_pins: [rc.max_line_len]u8 = undefined;
+    var from_claim: [rc.max_line_len]u8 = undefined;
+    const n_pins = try format_demo_line2_from_pins(from_pins[0..]);
+    const n_claim = try claim_demo_line_seq(2, fixture.stamp2, fixture.memo2, &from_claim);
+    if (n_pins != n_claim) return false;
+    return std.mem.eql(u8, from_pins[0..n_pins], from_claim[0..n_claim]);
+}
+
+/// True when event-3 pin emit equals live claim for stamp3/memo3.
+pub fn demo_pin_emit3_agrees_claim() LineError!bool {
+    var from_pins: [rc.max_line_len]u8 = undefined;
+    var from_claim: [rc.max_line_len]u8 = undefined;
+    const n_pins = try format_demo_line3_from_pins(from_pins[0..]);
+    const n_claim = try claim_demo_line_seq(3, fixture.stamp3, fixture.memo3, &from_claim);
+    if (n_pins != n_claim) return false;
+    return std.mem.eql(u8, from_pins[0..n_pins], from_claim[0..n_claim]);
+}

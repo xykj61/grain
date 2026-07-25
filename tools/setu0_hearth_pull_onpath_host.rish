@@ -9,7 +9,7 @@
 
 let android_sdk = "tools/.cache/hawm0/android-sdk"
 let adb = "${android_sdk}/platform-tools/adb"
-let pkg = "org.glow.app.sala_broadcaster"
+let pkg = "org.glow.app.seva_broadcaster"
 let zig = "vendor/zig-toolchain/zig"
 let pull_bin = "linengrow/bin/setu0_hearth_pull_check"
 let cache = "tools/.cache/setu0"
