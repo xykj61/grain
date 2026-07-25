@@ -2,14 +2,14 @@
 
 **Language:** EN  
 **Stamp:** `20260725.110354`  
-**Status:** Checkable — scope seated with Wave 17 runway  
-**Ground:** counsel [`20260725-110128_the-runway.md`](../../counsel/20260725-110128_the-runway.md) · main nib `3c83d9c`
+**Status:** Checkable — pass closed · completion report `20260725.113115`  
+**Ground:** counsel [`20260725-110128_the-runway.md`](../../counsel/20260725-110128_the-runway.md) · completion [`20260725-113115_radiant-pass-completion-report.md`](../../counsel/20260725-113115_radiant-pass-completion-report.md) · main nib `248f4ed42b`
 
 ---
 
 ## Runway (ledger header truth)
 
-**179 of ~1,185 in scope (~15%).** Batch **50** per wave · ~**20 waves** remaining at fifty (was ~84 at twelve).
+**1,198 rows · pass closed `20260725.113015` · meta exempt seated · select returns 0.** Completion report `20260725.113115`.
 
 ---
 
