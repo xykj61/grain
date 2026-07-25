@@ -4,6 +4,9 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260725.161616` — [Pond-in-Glow counsel · glow comment truth](20260725-161616_pond-glow-counsel-comment-truth.bron) — Pool nest · focused pass · face/cast gate for Claude  
+- `20260725.161330` — [Cursor --cursor path flag Rishi](20260725-161330_cursor-path-flag-rishi.bron) — Linux AppImage · macOS .app · RS-3 GREEN · Pond counsel lean  
+- `20260725.160403` — [Parity not stuck; Cursor zygote lag](20260725-160403_parity-not-stuck-cursor-lag.bron) — ch1 GREEN · ch2 moving · Cursor ~5Gi/55% CPU for 6d  
 - `20260725.143250` — [Pier untrack vere and old](20260725-143250_pier-untrack-vere-old.bron) — Framework ritual · depth-1 clones skip 2701 elder files  
 - `20260725.120908` — [Send Quin relay PR 131 restamped EDT](20260725-120908_send-quin-relay-restamp.bron) — UTC drift fixed · duty 4 provenance · PR #131 sent  
 - `20260725.120702` — [Send Quin relay PR 131 nib 75627b4349](20260725-120702_send-quin-relay-pr131.bron) — superseded send stamp (UTC drift; restamped)  

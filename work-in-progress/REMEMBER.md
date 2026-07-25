@@ -12,13 +12,17 @@
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand home** · **markdown_structure column fix** · **one-clock duty 4 provenance** · **shell harvest verbs** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm REPORT** · **OQ #1 · #3 · #5 answered** · **pass ledger** · **campaign STOPPED** · **growth law**  
 **Git nib:** `1d37bae43b` · Quin relay PR #131 (restamped EDT)
 
-**Season:** Framework · EDT · **finishing edge:** duty-8 shell migration · vere/old ritual · data-dignity counsel.
+**Season:** Framework · EDT · **finishing edge:** parity send · glow comment truth · Pond-in-Glow counsel · duty-8.
 
 ---
 
 ## Now
 
-**Quin relay landed** `20260725.120701` — markdown_structure column fix + PASS fixture · Mand `mand/` home · ring-3 test-only · four Rishi harvest verbs · Glow text floor GREEN.
+**Counsel for Claude** `20260725.161616` — Pond in Glow under Pool · `glow/` comment truth as twin door · face/cast mold rename held for ruling. Read: `counsel/replies/20260725-161616_re-pond-in-glow-and-glow-comment-truth.md`.
+
+**`--cursor` launch** GREEN on Framework — `rishi/bin/rishi run tools/launch-cursor.rish --cursor ./Cursor-3.13.10-x86_64.AppImage --gpu`.
+
+**Quin relay landed** `20260725.120701` — Mand home · ring-3 · harvest verbs · Glow text floor GREEN.
 
 **Read:**
 

@@ -1,9 +1,9 @@
 # The Counsel Stack
 
 **Language:** EN
-**Last updated:** 2026-07-25 (Wave 34 `20260725.112415` · batch 50)
-**Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Status:** Foundation
+**Last updated:** 2026-07-25 (`20260725.161616` Pond-in-Glow · glow comment truth)  
+**Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
+**Status:** Foundation  
 **Seasons roster:** [`SEASONS.md`](SEASONS.md)
 
 ---
@@ -22,6 +22,7 @@ Filing law: [`../ORGANIZING.md`](../ORGANIZING.md) · reorg proposal: [`20260707
 
 | Stamp | Note | Meaning |
 |-------|------|---------|
+| `20260725.161616` | [Reply — Pond in Glow · glow comment truth](replies/20260725-161616_re-pond-in-glow-and-glow-comment-truth.md) | Pool nest · comment pass · face/cast gate · Pond SLC |
 | `20260725.112415` | [Reply — Radiant Wave 34](replies/20260725-112415_re-radiant-wave34.md) | fifty · 50 clean |
 | `20260725.112315` | [Reply — Radiant Wave 33](replies/20260725-112315_re-radiant-wave33.md) | fifty · 50 clean |
 | `20260725.112215` | [Reply — Radiant Wave 32](replies/20260725-112215_re-radiant-wave32.md) | fifty · 50 clean |
