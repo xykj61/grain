@@ -4,6 +4,8 @@
 
 Work in Radiant Style. Commit and push each phase when confirmed, then append a session log.
 
+Radiant pass `20260725.112415`
+
 ---
 
 ## Step 0 — Footing

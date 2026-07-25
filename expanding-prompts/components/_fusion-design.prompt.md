@@ -8,6 +8,8 @@
 - `{{OTHER_CONCEPT}}` — the thing to fuse with (e.g. Hoon's marks, Clay, Ford, LMDB).
 - `{{WHY_NOW}}` — the reason this fusion matters this season.
 
+Radiant pass `20260725.112415`
+
 ---
 
 ## The Expanded Prompt (fill the tokens, then run)

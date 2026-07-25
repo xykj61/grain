@@ -6,6 +6,8 @@
 **Voice:** Rio 3
 **Status:** Guide for the task — the macOS path is witnessed end to end on this host; the Linux path is the inherited script
 
+Radiant pass `20260725.112415`
+
 ---
 
 **Navigation:** [Manual home](../README.md)

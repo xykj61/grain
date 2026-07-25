@@ -8,6 +8,8 @@
 **Parity ground:** **142** — every command below runs green today
 **Law:** [`../../context/TAME_GUIDANCE.md`](../../context/TAME_GUIDANCE.md)
 
+Radiant pass `20260725.112415`
+
 ---
 
 A **witness** is a `.rish` script that proves one honest fact about the system. Witnesses live under `tools/`, run from the repository root, and end with a `GREEN:` line when they pass. The parity suite runs them all; the manual teaches only what they already show.

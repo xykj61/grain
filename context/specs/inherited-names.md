@@ -6,6 +6,8 @@
 **Style:** Radiant (see `../RADIANT_STYLE.md`)
 **Status:** Decided
 
+Radiant pass `20260725.112415`
+
 ---
 
 ## What This Decides

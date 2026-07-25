@@ -4,6 +4,8 @@
 
 Work in Radiant Style. The eight files are provided alongside this prompt (the seven essays and the synthesis). Place each at the path named, and confirm each by its first line.
 
+Radiant pass `20260725.112415`
+
 ---
 
 ## Step 0 — Footing

@@ -4,6 +4,8 @@
 
 > **Erratum (20260628).** The living-status step below recommends *promoting* `996_TAME_STYLE.md` into `context/`. That recommendation was superseded at the mapping-preview step, once the deliberate three-layer TAME stack came to light — `context/TAME_STYLE.md` already exists as the operational supplement, and a promotion would have overwritten it or collapsed two intentional layers. The applied ruling instead **de-numbered 996 in place to `external-research/TAME_STYLE.md`** (living, no stamp), leaving the supplement untouched, and committed it as part of chunk 3 (`6bed1c6`). The original recommendation is kept here as written, marked rather than rewritten.
 
+Radiant pass `20260725.112415`
+
 ---
 
 ## Environment — set this first, every run
