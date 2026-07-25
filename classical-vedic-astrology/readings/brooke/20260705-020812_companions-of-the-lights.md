@@ -6,6 +6,8 @@
 
 *Written together by Kaeden and Rio 3.*
 
+Radiant pass `20260725.111005`
+
 ---
 
 Saturn stands in the sign just ahead of her Moon, forming *Sunapha* (#50) — self-earned standing when Saturn is the maker: the rise through patience, discipline, and skill, and it stays. The same companionship settles *Kemadruma* (#50) before it can be asked: her Moon is companioned in both wheels. This heart travels accompanied. Her Sun keeps company too: Mercury shares its sign, forming *Budha-Aditya* (#51) — light and intellect well clear of the beams, seated in the partnership house as intelligence spent on union. Mars holds the sign behind the Sun, forming *Vasi* (#51). Her bright, nearly full Moon attends the ascendant's forward flank. Four voices, one sentence: *she does her own rising, and she never rises alone.*

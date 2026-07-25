@@ -10,6 +10,8 @@
 **Sibling:** `20260703-034812_where-public-money-becomes-public-work.md` (the first harvest)
 **Status:** External research — harvest map, first pass
 
+Radiant pass `20260725.111005`
+
 ---
 
 ## What This Document Is
