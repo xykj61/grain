@@ -5,6 +5,8 @@
 **Voice:** Quin  
 **Answers:** Quin relay — Mand ring-2 retention · `.py` gate · stranger parity (ground main nib `fa22485b69`)
 
+Radiant pass `20260725.105645`
+
 ---
 
 ## What landed
