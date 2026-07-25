@@ -5,6 +5,8 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Runnable plan — a naming-alignment sweep, not a file-move sweep. Addressed to a generic Acme Corporation employee.
 
+Radiant pass `20260725.111515`
+
 ---
 
 ## The Seed (what was asked)

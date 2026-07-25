@@ -5,6 +5,8 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Vision register — design research; no code written, no module renamed; proposes roles for Keaton to confirm
 
+Radiant pass `20260725.111515`
+
 ---
 
 ## For an Acme Corporation Employee Reading This
