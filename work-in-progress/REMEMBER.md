@@ -6,11 +6,11 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260725.040728` (EDT) · voice Quin  
+**Last refreshed:** `20260725.040845` (EDT) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2** · **THREATS** · **five pillars** · **accrete tiers** · **redaction stance** · **always-in-it rhythm**  
 **Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list512 GREEN · **stamp @u64 · Crockford** · **shape aura floor**  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand ring-2** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm REPORT** · **OQ #1 · #3 · #5 answered** · **pass ledger** · **Wave 10** · **growth law** · **shell harvest**  
-**Git nib:** `11138797c5` · prior · *this lap re-pins on send*
+**Git nib:** `f521048887` · shell·fold · Wave 10 (PR #)
 
 **Season:** Framework · EDT · **finishing edge:** shell·fold · Wave 10 · ledger coverage.  
 **APK:** `tools/.cache/tube05/seva-broadcaster.apk` · pkg `org.glow.app.seva_broadcaster`  
@@ -20,7 +20,7 @@
 
 ## Now
 
-**Shell·fold · Wave 10** `20260725.040728` — growth law seated; session pin folded (~4.6KB); shell harvest duty8=27; Wave 10 twelve specs GREEN (lint 2). OQ #10 granularity open. Reply [`../counsel/replies/20260725-040520_re-what-the-shell-remembers.md`](../counsel/replies/20260725-040520_re-what-the-shell-remembers.md) · wave [`../counsel/replies/20260725-040728_re-radiant-wave10.md`](../counsel/replies/20260725-040728_re-radiant-wave10.md).
+**Shell·fold · Wave 10** `20260725.040728` — growth law seated; session pin folded (~4.6KB); shell harvest duty8=27; Wave 10 twelve specs GREEN (lint 2). Sent `20260725.040844` · git nib `f521048887`. OQ #10 granularity open. Reply [`../counsel/replies/20260725-040520_re-what-the-shell-remembers.md`](../counsel/replies/20260725-040520_re-what-the-shell-remembers.md) · wave [`../counsel/replies/20260725-040728_re-radiant-wave10.md`](../counsel/replies/20260725-040728_re-radiant-wave10.md).
 
 **Read:**
 
