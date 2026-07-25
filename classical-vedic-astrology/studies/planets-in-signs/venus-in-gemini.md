@@ -8,6 +8,8 @@
 
 **In Alice's chart:** Venus sits in Gemini, at the very last degree (29°52′), in the star of Mṛgaśirṣa, in the 8th house. This is the bright, communicative center of her airy chart — and, fittingly for Gemini, it stands right at a threshold.
 
+Radiant pass `20260725.112715`
+
 ---
 
 ## The meeting of beauty and exchange
