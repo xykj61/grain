@@ -173,7 +173,7 @@ fn run_selftest(_: std.Io) !u8 {
 
     // Seal the compact payload, as if handed to Comlink for real
     // carriage, then open it on the "other side" -- still in-process
-    // here, but the same seal/open pair run_source/run_follower use for
+    // here, yet the same seal/open pair run_source/run_follower use for
     // real below.
     var wire: [@intCast(wf.wire_capacity)]u8 = undefined;
     const wire_len = try wf.seal_message(payload, &wire);

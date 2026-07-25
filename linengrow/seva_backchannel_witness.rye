@@ -74,7 +74,7 @@ fn run_selftest() !u8 {
     print("seva-b2: VOD -- the finished log replays to the identical root -- {x} -- GREEN determinism path\n", .{r1.root});
 
     // Claim 3: a chat from an unadmitted signer is refused. Build a log whose
-    // second event is signed by viewer2 but viewer2 is NOT in the registry.
+    // second event is signed by viewer2, yet viewer2 is NOT in the registry.
     var closed_registry: seva.ActorRegistry = .{};
     try closed_registry.admit(&caster_hex, caster_kp.public_key);
     try closed_registry.admit(&viewer1_hex, viewer1_kp.public_key);
