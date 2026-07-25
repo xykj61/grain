@@ -12,6 +12,8 @@
 
 **dated_guard:** Do **not** rewrite dated mold briefs or force-push history. Any rename is forward-only living surface.
 
+Radiant pass `20260725.111815`
+
 ---
 
 ## What just closed

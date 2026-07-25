@@ -12,6 +12,8 @@
 
 **dated_guard:** Do **not** rewrite dated mold briefs. Do **not** delete `mold-*` desks this lap. Do **not** whole-tree sed or force-push. Hoon study word **mold** stays.
 
+Radiant pass `20260725.111815`
+
 ---
 
 ## Verdict (one breath)

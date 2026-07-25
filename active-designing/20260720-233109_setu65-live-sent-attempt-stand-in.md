@@ -10,6 +10,8 @@
 **Register:** Mixed — stand-in path **checkable**; live-sent **intent** until `ncm*` / `usb0`  
 **Grounds in:** [`20260718-201601_setu65-lab-tx-gate.md`](20260718-201601_setu65-lab-tx-gate.md) · [`20260720-231857_closed-field-capacity-freeze-and-framework-next.md`](20260720-231857_closed-field-capacity-freeze-and-framework-next.md) · [`../docs/SETU.md`](../docs/SETU.md)
 
+Radiant pass `20260725.111815`
+
 ---
 
 ## What already ran GREEN
