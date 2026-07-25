@@ -13,6 +13,8 @@
 
 **dated_guard:** Do **not** rewrite elder `sala_b0_fold` silently. Prefer a sized vane-body inventory before a first Glow-authored append/sign/replay body. JABS3 opens only on explicit word.
 
+Radiant pass `20260725.111915`
+
 ---
 
 ## What just closed

@@ -13,6 +13,8 @@
 
 **dated_guard:** Do **not** rewrite elder `sala_b0_fold` in Glow. Do **not** open JABS3 without an explicit word. Prefer a sized inventory before a first port.
 
+Radiant pass `20260725.111915`
+
 ---
 
 ## What just closed

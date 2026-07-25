@@ -13,6 +13,8 @@
 
 **dated_guard:** Do **not** claim Glow-rune crypto or a Glow-authored replay vane. Prefer a named lean before B3 desk code or any jet season. JABS3 opens only on explicit word.
 
+Radiant pass `20260725.111915`
+
 ---
 
 ## What just closed
