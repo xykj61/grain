@@ -34,7 +34,7 @@ Each shelf keeps a one-line-per-claim `README.md` index as claims arrive.
 
 | Stamp | Claim | Path |
 |-------|-------|------|
-| `20260725.160000` | Mand home · ring-3 · harvest · Glow floor | [`20260725-160000_mand-home-ring3.md`](20260725-160000_mand-home-ring3.md) |
+| `20260725.120701` | Mand home · ring-3 · harvest · Glow floor | [`20260725-120701_mand-home-ring3.md`](20260725-120701_mand-home-ring3.md) |
 | `20260725.112415` | Radiant Wave 34 — fifty · context tail | [`20260725-112415_radiant-wave34.md`](20260725-112415_radiant-wave34.md) |
 | `20260725.112315` | Radiant Wave 33 — fifty · ledger catch-up | [`20260725-112315_radiant-wave33.md`](20260725-112315_radiant-wave33.md) |
 | `20260725.112215` | Radiant Wave 32 — fifty · argv to early waves | [`20260725-112215_radiant-wave32.md`](20260725-112215_radiant-wave32.md) |

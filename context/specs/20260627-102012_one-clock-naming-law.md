@@ -161,6 +161,7 @@ On this Framework / Cursor cloud bench the canonical zone is declared by IANA na
 1. **shape** — every living dated filename matches `^\d{8}-\d{6}_`
 2. **monotonicity** — no living stamp exceeds the true head (max of non-erratum living stamps) unless listed in `tools/fixtures/one_clock_drift_erratum.txt` (the four UTC-window files)
 3. **zone** — the host zone equals `America/New_York` by **name** (path or `TZ`), never by offset
+4. **provenance** — every dated artifact new in the change carries a stamp not more than **900 seconds** ahead of the live host clock at witness time (`ONE_CLOCK_PROVENANCE_TOLERANCE_SECONDS`). Monotonicity cannot catch a forward jump; only a live-clock comparison can. Duty 3 checks the host; duty 4 checks the stamp.
 
 **Ceiling retired.** `tools/fixtures/one_clock_ceiling.txt` and its duty are gone. The host-zone fix removed the UTC-drift cause; a maintained human ceiling would add only upkeep and a back door. Mode is **blocking**.
 
