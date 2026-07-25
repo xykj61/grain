@@ -1,7 +1,7 @@
 # The Counsel Stack
 
 **Language:** EN
-**Last updated:** 2026-07-24 (Mand ring-1 · one-clock seat `203617`)
+**Last updated:** 2026-07-24 (one-clock blocking · Crockford aura `205009`)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Foundation
 
@@ -21,6 +21,7 @@ Filing law: [`../ORGANIZING.md`](../ORGANIZING.md) · reorg proposal: [`20260707
 
 | Stamp | Note | Meaning |
 |-------|------|---------|
+| `20260724.205009` | [Reply — One-clock · Crockford aura](replies/20260724-205009_re-one-clock-crockford-aura.md) | one CLOCK · blocking · Decision 6 GREEN |
 | `20260724.203617` | [Reply — Mand ring-1 · one-clock](replies/20260724-203617_re-mand-ring1-one-clock.md) | HAWM1 exempt · one-clock advisory · Mand grant+refuse GREEN |
 | `20260724.202412` | [Reply — Seva complete · Mand seated](replies/20260724-202412_re-seva-complete-mand-seated.md) | glow_seva_b0 · desks · Mand · SALA off exclude · STOP memos |
 | `20260724.201727` | [Reply — Nothing to Give · Hall Renamed](replies/20260724-201727_re-nothing-to-give-and-the-hall-renamed.md) | custody foundations · Seva · Mand (Mona prior) · suite rename |

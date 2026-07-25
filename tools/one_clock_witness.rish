@@ -1,33 +1,41 @@
 # one_clock_witness.rish — one-clock naming law ratchet.
 #
-# Asserts:
-#   1. Every living dated filename matches ^\d{8}-\d{6}_
-#   2. No living dated stamp exceeds tools/fixtures/one_clock_ceiling.txt
-#      unless listed in tools/fixtures/one_clock_drift_erratum.txt
+# Ceiling retired: the host-zone fix removes the UTC-drift cause, so a
+# maintained human ceiling would add only upkeep and a back door.
 #
-# Mode: ADVISORY first (prints WARN; exits 0). Flip MODE in
-# tools/fixtures/one_clock_mode.txt to "blocking" once green.
+# Duties:
+#   1. shape — every living dated filename matches ^\d{8}-\d{6}_
+#   2. monotonicity — no living stamp > true_head unless listed in
+#      tools/fixtures/one_clock_drift_erratum.txt (the four UTC files)
+#   3. zone — host zone equals America/New_York by NAME (not offset)
+#
+# Mode: tools/fixtures/one_clock_mode.txt — blocking (seated 20260724.204741).
 #
 #   rishi/bin/rishi run tools/one_clock_witness.rish
 
-# Avoid bare $ in run strings — Rish interpolates dollar forms.
-let ceiling_line = run ["sh" "-c" "head -1 tools/fixtures/one_clock_ceiling.txt"]
-let ceiling = trim ceiling_line.out
-assert (ceiling contains ".") else "one_clock_ceiling.txt missing YYYYMMDD.HHMMSS"
-
 let mode_line = run ["sh" "-c" "head -1 tools/fixtures/one_clock_mode.txt"]
 let mode = trim mode_line.out
-assert (mode_line.ok) else "one_clock_mode.txt unreadable"
-assert (mode contains "a") else "one_clock_mode.txt empty"
+assert mode_line.ok else "one_clock_mode.txt unreadable"
+assert (mode contains "block") else "one_clock_mode.txt must be blocking (or advisory during thaw)"
 
 let shape = run ["sh" "tools/fixtures/one_clock_shape_scan.sh"]
 assert shape.ok else "one_clock shape scan failed to run"
 assert (shape.out contains "SHAPE_OK") else "dated filename shape failed (expected ^YYYYMMDD-HHMMSS_)"
 assert ((shape.out contains "SHAPE_BAD") == false) else "dated filename shape violations present"
 
-let gate = run ["sh" "tools/fixtures/one_clock_mode_gate.sh"]
-say "one-clock: ceiling ${ceiling} · mode ${mode}"
-say gate.out
-assert gate.ok else "one-clock blocking mode: ceiling violations present"
+let mono = run ["sh" "tools/fixtures/one_clock_mono_scan.sh"]
+assert mono.ok else "one_clock mono scan failed to run"
+say mono.out
+assert (mono.out contains "MONO_OK") else "one-clock monotonicity failed"
+assert ((mono.out contains "MONO_BAD") == false) else "one-clock MONO_BAD present"
 
-say "GREEN: one_clock_witness — filename shape ok · ceiling scan printed · mode ${mode}"
+let zone = run ["sh" "tools/fixtures/one_clock_zone_scan.sh"]
+assert zone.ok else "one_clock zone scan failed to run"
+say zone.out
+assert (zone.out contains "ZONE_OK") else "one-clock host zone is not America/New_York by name"
+assert ((zone.out contains "ZONE_BAD") == false) else "one-clock ZONE_BAD present"
+
+# Blocking mode: all three duties already asserted above. Advisory thaw would
+# soften mono/zone; blocking is the seated default after the host-zone fix.
+say "one-clock: mode ${mode} · shape · mono · zone"
+say "GREEN: one_clock_witness — shape · monotonicity · zone · mode ${mode}"
