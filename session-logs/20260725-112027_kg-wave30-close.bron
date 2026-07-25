@@ -1,0 +1,11 @@
+format session-log-v1
+stamp 20260725.112027
+editor Cursor
+model Cursor Composer 2.5 300k Fast
+voice Quin
+title Wave 30 close kg spot-read
+prompt kg
+think spot-read #48 STOA262 barket flip checkin; STOA217-264 fifty clean.
+obs PR 118 nib abe53c5d02; runway 879/~1185 (~74%); lean table modality hold.
+recommend keep-going Wave 31 bound 50
+git_nib abe53c5d02
