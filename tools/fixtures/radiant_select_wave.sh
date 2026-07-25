@@ -28,6 +28,11 @@ awk -F'\t' '/^[^#]/ && NF>=2 {print $1}' "$LEDGER" | sort >"$LED"
 
 while IFS= read -r f; do
   [ -f "$f" ] || continue
+  case "$f" in
+    counsel/replies/*_re-radiant-wave*.md|waymarks/*_radiant-wave*.md)
+      continue
+      ;;
+  esac
   if head -n 20 "$f" | grep -q 'Living twin:'; then
     continue
   fi

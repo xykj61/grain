@@ -1,9 +1,10 @@
 # radiant_pass_ledger.txt — most recent Radiant pass stamp per path
-# Pool: 1,196 rows · prose seated · meta tail rolls per wave (counsel/waymark)
+# Pool: 1,198 rows · prose seated · meta exempt 20260725.113015 · select returns 0
 # Format: <relpath><TAB><stamp YYYYMMDD.HHMMSS><TAB><changed|clean|legacy>
 # Waves append or update; oldest untouched first. Scope: tools/fixtures/radiant_pool_scope.md
 # Genre ALL-CLEAN: two full consecutive waves all-clean → wholesale exempt on evidence
 # Seated 20260725.034807 · backfill waves 1–3 + RIO3 182821 family · instrument 110354
+
 
 
 
@@ -741,6 +742,7 @@ counsel/replies/20260725-112515_re-radiant-wave35.md	20260725.112615	changed
 counsel/replies/20260725-112615_re-radiant-wave36.md	20260725.112715	changed
 counsel/replies/20260725-112715_re-radiant-wave37.md	20260725.112815	clean
 counsel/replies/20260725-112815_re-radiant-wave38.md	20260725.112915	clean
+counsel/replies/20260725-112915_re-radiant-wave39.md	20260725.113015	clean
 counsel/replies/README.md	20260725.112515	clean
 counsel/replies/SEASONS.md	20260725.112615	changed
 docs/README.md	20260725.112515	clean
@@ -1178,6 +1180,7 @@ waymarks/20260725-112515_radiant-wave35.md	20260725.112615	clean
 waymarks/20260725-112615_radiant-wave36.md	20260725.112715	clean
 waymarks/20260725-112715_radiant-wave37.md	20260725.112815	clean
 waymarks/20260725-112815_radiant-wave38.md	20260725.112915	clean
+waymarks/20260725-112915_radiant-wave39.md	20260725.113015	clean
 waymarks/README.md	20260725.112615	clean
 waymarks/SEASONS.md	20260725.112615	changed
 waymarks/stoa-100s/README.md	20260725.112615	changed
