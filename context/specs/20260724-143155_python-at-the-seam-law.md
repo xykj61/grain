@@ -19,4 +19,4 @@ Craft note: Rish `lines(read-file)` ceiling is 256 lines — size and pattern du
 
 ## Ratchet
 
-`living_docs_lint` prints an advisory count of `tools/**/*.py` each run; target **zero** (ephemeris seam outside `tools/` and exempt). Fixture scans met the target at `20260724.210602`.
+`living_docs_lint` prints an advisory count of `tools/**/*.py` each run. From `20260724.212805` the count is also a **blocking** ban in `tools/tame_style_scan_bans.rish` (scan body `tools/fixtures/tools_py_ban_scan.sh`). Named exempts: `tools/fixtures/tools_py_exempt.txt` (reason comment per entry). Negative: `tools/tame_style_tools_py_ban_selftest.rish` plants under `context/fixtures/tools_py_ban_tree/` and expects FAIL. Ephemeris seam `classical-vedic-astrology/cast_a_chart.py` stays outside `tools/` and needs no exempt entry.

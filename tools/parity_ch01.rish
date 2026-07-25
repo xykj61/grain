@@ -144,6 +144,11 @@ let tame_bans = run ["rishi/bin/rishi" "run" "tools/tame_style_scan_bans_selftes
 assert tame_bans.ok else "TAME style bans native idiom selftest failed"
 say "GREEN: TAME style bans native idiom selftest passed."
 
+say "witness suite: tools/*.py ban (blocking zero + planted FAIL)…"
+let tools_py_ban = run ["rishi/bin/rishi" "run" "tools/tame_style_tools_py_ban_selftest.rish"]
+assert tools_py_ban.ok else "tools/*.py ban selftest failed"
+say "GREEN: tools/*.py ban selftest passed."
+
 say "witness suite: TAME style bans…"
 let tame = run ["rishi/bin/rishi" "run" "tools/tame_style_check.rish"]
 assert tame.ok else "TAME style witness failed"
@@ -154,6 +159,13 @@ let docs_lint = run ["rishi/bin/rishi" "run" "tools/living_docs_lint.rish"]
 say docs_lint.out
 if docs_lint.err != "" then say docs_lint.err
 say "GREEN: living-docs lint advisory printed (ratchet; never fails witness)."
+
+say "witness suite: stranger lap warm REPORT (never gates; keeps newcomer path honest)…"
+let stranger = run ["rishi/bin/rishi" "run" "tools/stranger_lap_witness.rish"]
+say stranger.out
+if stranger.err != "" then say stranger.err
+assert stranger.out contains "STRANGER_MODE=warm" else "stranger lap parity line must name mode=warm"
+say "GREEN: stranger lap warm REPORT printed (mode=warm; never fails parity)."
 
 say "witness suite: Tally maybe…"
 let tmaybe = run ["rishi/bin/rishi" "run" "tools/tally_maybe.rish"]
