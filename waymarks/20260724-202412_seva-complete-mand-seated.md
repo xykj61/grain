@@ -6,6 +6,8 @@
 **Room:** Checkable  
 **Witnesses:** `rishi/bin/rishi run tools/seva_rename_witness.rish` · `rishi/bin/rishi run tools/waymark_derive_witness.rish`
 
+Radiant pass `20260725.112215`
+
 ---
 
 ## Claim

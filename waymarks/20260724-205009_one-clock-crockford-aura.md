@@ -6,6 +6,8 @@
 **Room:** Checkable  
 **Witnesses:** `rishi/bin/rishi run tools/one_clock_witness.rish` · `rishi/bin/rishi run tools/crockford_stamp_witness.rish` · `rishi/bin/rishi run tools/glow_run.rish glow/gen/shape-stamp-aura.glow` · `rishi/bin/rishi run tools/glow_run.rish glow/gen/cast-named-stamp-aura.glow`
 
+Radiant pass `20260725.112215`
+
 ---
 
 ## Claim

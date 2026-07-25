@@ -6,6 +6,8 @@
 **Status:** Seated (braid run)  
 **Counsel:** second [`../counsel/20260724-135312_vanes-shelves-and-the-glow-ladder.md`](../counsel/20260724-135312_vanes-shelves-and-the-glow-ladder.md) · third [`../counsel/20260724-141612_names-maps-and-open-questions.md`](../counsel/20260724-141612_names-maps-and-open-questions.md)
 
+Radiant pass `20260725.112215`
+
 ---
 
 ## Letters (N–S) — blessed as recovered
