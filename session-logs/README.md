@@ -12,6 +12,8 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 **Living pin bound:** `living_pin_max_bytes = 24576` ([spec](../context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md)). Closed index rows through `20260721`: [`archive/README-index-through-20260721.md`](archive/README-index-through-20260721.md). Early `20260722` overflow: [`archive/README-index-20260722-shelf.md`](archive/README-index-20260722-shelf.md).
 
+- `20260724.221120` — [REMEMBER git nib after threats · pillars send](20260724-221120_remember-git-nib-threats-pillars.bron) — pin 7878bd5f28
+- `20260724.221119` — [Send threats · pillars · Mand home to main](20260724-221119_send-threats-pillars-mand-home.bron) — FF merge · PR 86
 - `20260724.221027` — [Threats · five pillars · Mand home analysis](20260724-221027_threats-pillars-mand-home.bron) — THREATS · siloed pillars · Mand park
 - `20260724.212844` — [Explore Mand ring-1 surfaces for ring-2 retention](20260724-212844_explore-mand-ring1-for-ring2.bron) — APIs · custody · ratchet patterns · placement
 - `20260724.213221` — [REMEMBER git nib after Mand ring-2 send](20260724-213221_remember-git-nib-mand-ring2.bron) — pin 006b0ffeae

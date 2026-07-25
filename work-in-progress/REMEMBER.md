@@ -2,11 +2,11 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260724.221027` (EDT) · voice Quin  
+**Last refreshed:** `20260724.221120` (EDT) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2** · **Crockford aura** · **`$:` @u64 floor** · **THREATS** · **five pillars**  
 **Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list512 GREEN · **stamp @u64 · Crockford** · **shape aura floor**  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand ring-2** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm REPORT** · **OQ #3 answered**  
-**Git nib:** `c2655868c5` · Mand ring-2 · py gate · stranger parity (PR #85) — *this lap's send will re-pin*
+**Git nib:** `7878bd5f28` · THREATS · five pillars · Mand home analysis (PR #86)
 
 **Season:** Framework · EDT · **finishing edge:** threat model · five pillars · Mand home analysis parked.  
 **APK:** `tools/.cache/tube05/seva-broadcaster.apk` · pkg `org.glow.app.seva_broadcaster`  
