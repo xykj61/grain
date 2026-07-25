@@ -4,7 +4,7 @@
 # values. GLOW_PROFILE.bron is gitignored (personal identity metadata); only
 # this .template is committed, so it works for anyone who clones the fork.
 #
-# Why this file exists. Glow OS's reader-facing docs address a generic Acme
+# Why this file exists. Grain's reader-facing docs address a generic Acme
 # Corporation employee, never a named individual (see
 # .cursor/rules/acme-employee-voice.mdc). That keeps the tree shareable and
 # teachable. But some things a real contributor genuinely needs are specific

@@ -3,7 +3,7 @@
 # Copy this file to GLOW_HOST.bron at the repository root and fill in YOUR
 # values. GLOW_HOST.bron is gitignored (personal, machine-specific absolute
 # paths); only this .template is committed, so this works for anyone who
-# clones the fork. This is Glow OS's own root config — the sibling, in Bron,
+# clones the fork. This is Grain's own root config — the sibling, in Bron,
 # to .claude/rules and .cursor/rules, but for the host and toolchain rather
 # than agent behavior.
 #

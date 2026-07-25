@@ -163,51 +163,51 @@ fn run_selftest(init: std.process.Init) !u8 {
     try nest_type.assert_bartis_named_shape("amount-mold");
     print("nest: study alias amount-mold bartis named shape still accepts -- GREEN\n", .{});
 
-    // STOA149: Glow OS living count-shape (study alias count-mold held).
+    // STOA149: Grain living count-shape (study alias count-mold held).
     try nest_type.assert_bartis_named_shape("count-shape");
     print("nest: count-shape bartis named shape accepts -- GREEN\n", .{});
 
-    // STOA150: Glow OS shape alias pair-shape ≡ pair-shape.
+    // STOA150: Grain shape alias pair-shape ≡ pair-shape.
     try nest_type.assert_bartis_named_shape("pair-shape");
     print("nest: pair-shape bartis named shape accepts -- GREEN\n", .{});
 
-    // STOA151: Glow OS shape alias kind-shape ≡ kind-shape.
+    // STOA151: Grain shape alias kind-shape ≡ kind-shape.
     try nest_type.assert_bartis_named_shape("kind-shape");
     print("nest: kind-shape bartis named shape accepts -- GREEN\n", .{});
 
-    // STOA152: Glow OS shape alias xact-shape ≡ xact-shape.
+    // STOA152: Grain shape alias xact-shape ≡ xact-shape.
     try nest_type.assert_bartis_named_shape("xact-shape");
     print("nest: xact-shape bartis named shape accepts -- GREEN\n", .{});
 
-    // STOA153: Glow OS shape alias xfer-shape ≡ xfer-shape.
+    // STOA153: Grain shape alias xfer-shape ≡ xfer-shape.
     try nest_type.assert_bartis_named_shape("xfer-shape");
     print("nest: xfer-shape bartis named shape accepts -- GREEN\n", .{});
 
-    // STOA154: Glow OS shape alias triple-shape ≡ triple-shape.
+    // STOA154: Grain shape alias triple-shape ≡ triple-shape.
     try nest_type.assert_bartis_named_shape("triple-shape");
     print("nest: triple-shape bartis named shape accepts -- GREEN\n", .{});
 
-    // STOA155: Glow OS shape alias quad-shape ≡ quad-shape.
+    // STOA155: Grain shape alias quad-shape ≡ quad-shape.
     try nest_type.assert_bartis_named_shape("quad-shape");
     print("nest: quad-shape bartis named shape accepts -- GREEN\n", .{});
 
-    // STOA156: Glow OS shape alias penta-shape ≡ penta-shape.
+    // STOA156: Grain shape alias penta-shape ≡ penta-shape.
     try nest_type.assert_bartis_named_shape("penta-shape");
     print("nest: penta-shape bartis named shape accepts -- GREEN\n", .{});
 
-    // STOA157: Glow OS shape alias hexa-shape ≡ hexa-shape.
+    // STOA157: Grain shape alias hexa-shape ≡ hexa-shape.
     try nest_type.assert_bartis_named_shape("hexa-shape");
     print("nest: hexa-shape bartis named shape accepts -- GREEN\n", .{});
 
-    // STOA158: Glow OS shape alias hepta-shape ≡ hepta-shape.
+    // STOA158: Grain shape alias hepta-shape ≡ hepta-shape.
     try nest_type.assert_bartis_named_shape("hepta-shape");
     print("nest: hepta-shape bartis named shape accepts -- GREEN\n", .{});
 
-    // STOA159: Glow OS shape alias octa-shape ≡ octa-shape.
+    // STOA159: Grain shape alias octa-shape ≡ octa-shape.
     try nest_type.assert_bartis_named_shape("octa-shape");
     print("nest: octa-shape bartis named shape accepts -- GREEN\n", .{});
 
-    // STOA160: Glow OS shape alias nona-shape ≡ nona-shape.
+    // STOA160: Grain shape alias nona-shape ≡ nona-shape.
     try nest_type.assert_bartis_named_shape("nona-shape");
     print("nest: nona-shape bartis named shape accepts -- GREEN\n", .{});
 

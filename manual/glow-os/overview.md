@@ -1,4 +1,4 @@
-# Glow OS — Overview
+# Grain — Overview
 
 **Language:** EN
 **Version:** `20260717.162114` (Eastern)
@@ -18,7 +18,7 @@
 |---|---|---|---|
 | Language | **Glow** | the fused Rye-Hoon language, keeping Hoon's runes over TAME-bounded semantics | desk hops emit GREEN; full language still growing |
 | Interpreter | **Nock interpreter** | runs Glow's compiled forms | scoped (Nock 4K), not built |
-| Umbrella | **Glow OS** | the whole system, by Keaton Dunsford / `xykj61` | named; was Rye OS |
+| Umbrella | **Grain** | the whole system, by Keaton Dunsford / `xykj61` | named; was Rye OS |
 | Variants | **Reya · Riyo · Trey · Triz · Quin** | five switchable OS builds, all in Glow | **five confirmed** (pairs `20260714.035600`; Quin fifth `20260717.162114`) |
 | Kernel spine | state as a pure fold over an append-only log of signed facts | the transition-function model | already this fork's stated spine |
 | Modules | Rishi, Mantra, Comlink, Caravan, Tally, Brix, Bron, Aurora, Pond, Scribble, and the rest | the running seeds | many green today under the prior name |
@@ -33,7 +33,7 @@ Glow keeps Hoon's rune tradition as *surface syntax* while compiling to TAME-bou
 
 ## Honest Status
 
-Most of what runs today runs under the prior name (Rye OS) and is being carried forward into Glow OS by decision, not yet by mass rename. The language desk already emits; the Nock interpreter and the five variants are **named and scoped, not yet bootable as whole OS images.** These docs describe the direction plainly and mark, per page, what is real. Nothing here claims a feature the witnesses do not show.
+Most of what runs today runs under the prior name (Rye OS) and is being carried forward into Grain by decision, not yet by mass rename. The language desk already emits; the Nock interpreter and the five variants are **named and scoped, not yet bootable as whole OS images.** These docs describe the direction plainly and mark, per page, what is real. Nothing here claims a feature the witnesses do not show.
 
 ---
 
