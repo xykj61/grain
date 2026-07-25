@@ -1,0 +1,34 @@
+# radiant_pass_ledger.txt — most recent Radiant pass stamp per path
+# Format: <relpath><TAB><stamp YYYYMMDD.HHMMSS>
+# Waves append or update; oldest untouched first for the next wave.
+# Seated 20260725.034807 · backfill of waves 1–3 + RIO3 182821 family.
+
+context/archive/RIO3.md	20260710.182821
+amphora/README.md	20260710.182821
+granary/README.md	20260710.182821
+pond/README.md	20260710.182821
+session-logs/README.md	20260724.223050
+context/specs/living-vs-dated.md	20260724.223050
+context/specs/two-dev-environments-and-mobile-emulation.md	20260724.223050
+linengrow/neth_serial_core_delivery.rye	20260724.223151
+linengrow/tube1_admission_witness.rye	20260724.223151
+linengrow/seva_backchannel_witness.rye	20260724.223151
+linengrow/seva_session_core.rye	20260724.223151
+linengrow/tube_manifest_witness.rye	20260724.223151
+counsel/20260724-132812_the-workshop-and-the-warehouse.md	20260724.223233
+counsel/20260724-135312_vanes-shelves-and-the-glow-ladder.md	20260724.223233
+counsel/20260724-141612_names-maps-and-open-questions.md	20260724.223233
+counsel/replies/20260724-151327_re-flw-corpus-shelf-option-c.md	20260724.223233
+counsel/replies/20260724-220625_re-threats-pillars-mand-home.md	20260724.223233
+foundations/20260724-200912_nothing-to-give-custody-first-principle.md	20260725.034920
+waymarks/20260724-220625_threats-pillars-mand-home.md	20260725.034920
+counsel/20260704-004912_gate-unify-counsel.md	20260725.034920
+counsel/20260704-031812_eight-asks-one-sitting.md	20260725.034920
+counsel/20260704-181612_zero-copy-resins-counsel-answers.md	20260725.034920
+counsel/20260706-232812_claude-ruling-oal4-mala-edit5-and-horizons.md	20260725.034920
+counsel/20260707-000112_claude-counsel-two-way-sync-and-subscribe.md	20260725.034920
+counsel/20260707-001612_claude-counsel-subscribe-revisited.md	20260725.034920
+counsel/20260707-004712_claude-counsel-outer-subscribe-and-host-mirror.md	20260725.034920
+counsel/20260707-005612_claude-counsel-tablecloth-query.md	20260725.034920
+counsel/20260707-011412_claude-analysis-state-of-the-tree.md	20260725.034920
+counsel/20260707-014212_claude-counsel-graceful-stop-reframed.md	20260725.034920
