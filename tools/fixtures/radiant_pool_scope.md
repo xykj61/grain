@@ -22,6 +22,7 @@
 | `.claude/` | 22 | Machine-facing rules — style pass targets human readers |
 | `gratitude/` | 78 | Unaltered originals, already law — clean-room hold |
 | `tools/fixtures/` · `context/fixtures/` | 9 | Intentional violations and witness fixtures |
+| Pass meta rows | rolling | `counsel/replies/*_re-radiant-wave*.md` · `waymarks/*_radiant-wave*.md` — wave bookkeeping, not prose; on-touch only · seated `20260725.113015` |
 
 ---
 
