@@ -1,6 +1,6 @@
 # MAIR — Glow language waymark (superseded)
 
-**Status:** Superseded same day by **STOA** (`20260718.202730`)  
+**Status:** Mixed — superseded same day by **STOA** (`20260718.202730`)  
 **Stamp:** `20260718.202414`  
 **Voice:** Quin  
 **Audience:** Acme Corporation employees reading the language ladder seat

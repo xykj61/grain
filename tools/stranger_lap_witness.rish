@@ -24,4 +24,6 @@ assert walk.out contains "GREEN: stranger lap" else "stranger lap missing GREEN 
 assert walk.out contains "crockford_stamp_witness" else "stranger lap must name the seated witness"
 assert walk.out contains "REPORT:" else "stranger lap report posture line missing"
 
+# Surface worker REPORT lines so parity_ch01 (and eyes) can read STRANGER_* keys.
+say walk.out
 say "GREEN: stranger lap warm REPORT — local · depth 1 · prewarmed · bound comparator live · ceiling 1800s (OPEN_QUESTIONS #4 warm)."

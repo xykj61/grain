@@ -18,7 +18,10 @@ EXEMPT="$HERE/tools/fixtures/tools_py_exempt.txt"
 TMP=$(mktemp)
 trap 'rm -f "$TMP" "$TMP.all"' EXIT
 
-find tools -name '*.py' -type f 2>/dev/null | sort >"$TMP.all" || : >"$TMP.all"
+# Prune host caches — tools/.cache (HAWM Android SDK) and tools/.build stay
+# gitignored; counting them would false-RED the living tree on Framework.
+find tools \( -path 'tools/.cache' -o -path 'tools/.build' \) -prune -o \
+  -name '*.py' -type f -print 2>/dev/null | sort >"$TMP.all" || : >"$TMP.all"
 : >"$TMP"
 
 while IFS= read -r path; do

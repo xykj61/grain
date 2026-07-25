@@ -3,7 +3,7 @@
 *Owned Glow design: a Hearth preference record (Bron), declared presets (Brix/infuse discipline), waymark **LULU**, and ZETA6 keyboard send — so Glow Glass paragraphs and Glow Desk stations share one short home and one Skate budget down to the Mantrapod floor.*
 
 **Stamp:** `20260718.122145` (Eastern)  
-**Status:** Design — siloed; ZETA6 Pixel GREEN · **LULU0–5 closed** · **SETU0–SETU5 GREEN** `20260718.184537` · SETU6 check-in · Amber/Amphora fuse declined [`20260718-133455`](20260718-133455_glass-desk-compose-amber-amphora-revive.md)  
+**Status:** Mixed — siloed design; ZETA6 Pixel GREEN · **LULU0–5 closed** · **SETU0–SETU5 GREEN** `20260718.184537` · SETU6 check-in · Amber/Amphora fuse declined [`20260718-133455`](20260718-133455_glass-desk-compose-amber-amphora-revive.md)  
 **Voice:** Quin  
 **Research:** [`../external-research/20260718-122145_pixel10a-resolution-mantrapod-floor-and-wired-glass-slc.md`](../external-research/20260718-122145_pixel10a-resolution-mantrapod-floor-and-wired-glass-slc.md) · compose ER [`../external-research/20260718-133455_glass-desk-amber-amphora-compose-not-fuse.md`](../external-research/20260718-133455_glass-desk-amber-amphora-compose-not-fuse.md)  
 **Prompt:** [`../expanding-prompts/20260718-122145_glow-glass-display-short-home-and-dexter-send.md`](../expanding-prompts/20260718-122145_glow-glass-display-short-home-and-dexter-send.md)  

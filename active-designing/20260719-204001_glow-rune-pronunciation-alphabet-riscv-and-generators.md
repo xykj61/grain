@@ -6,7 +6,7 @@
 **Version:** `20260719.204001` (Eastern)  
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
 **Voice:** Quin  
-**Status:** Design — roadmap seated; alphabet table and parameterized generators are horizon laps  
+**Status:** Vision — roadmap seated; alphabet table and parameterized generators are horizon laps  
 **Register:** Mixed (Two Rooms) — adoption decisions and wording are **design**; RISC-V primary path and bounded `|-` are already **checkable** elsewhere  
 **Grounds in:** [Hoon School — Pronouncing Hoon](https://docs.urbit.org/build-on-urbit/hoon-school) · [Hoon School — Syntax](https://docs.urbit.org/build-on-urbit/hoon-school/b-syntax) · [Hoon rune index](https://docs.urbit.org/hoon/rune) · [`20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md`](20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md) · [`../active-reviving/20260715-213500_glow-revives-hoon-runes-targets-riscv.md`](../active-reviving/20260715-213500_glow-revives-hoon-runes-targets-riscv.md) · [`../context/TAME_GUIDANCE.md`](../context/TAME_GUIDANCE.md) Glow assert pin · [`../glow/README.md`](../glow/README.md)
 
