@@ -28,11 +28,11 @@ fi
 printf '%s\n' "$CLAIM_PRESERVE_FILES" | sed '/^$/d' >"$TMP/files"
 reds=0
 
-# Drop Radiant-pass and Erratum lines so recorded Tier-2 doors can open
-# without pretending the new stamp or erratum pointer was always there.
+# Drop Radiant-pass, Erratum, and Living-pointer lines so recorded Tier-2
+# doors can open without pretending the new stamp or pointer was always there.
 normalize_body() {
   # stdin → stdout
-  grep -viE 'Radiant pass|[Ee]rratum' || true
+  grep -viE 'Radiant pass|[Ee]rratum|[Ll]iving pointer' || true
 }
 
 while IFS= read -r path; do

@@ -63,3 +63,7 @@
 - `20260722.144843` — [Check-in humanity green runes Glow name](20260722-144843_checkin-humanity-green-runes-glow-name.bron) — finish · meter · keep Glow
 - `20260722.145017` — [Surveys close · Glow name grounds](20260722-145017_surveys-close-glow-name-grounds.bron) — cite acceptance specs on check-in
 - `20260722.145236` — [STOA259–260 bartis N-field flip](20260722-145236_stoa259-260-n-field-flip-round.bron) — flip emit; barket twin next
+- `20260722.145314` — [REMEMBER git nib after STOA260](20260722-145314_remember-git-nib-stoa260.bron) — pin 171b5c7bbdff
+- `20260722.145840` — [STOA261–262 barket N-field flip](20260722-145840_stoa261-262-barket-n-field-flip-round.bron) — barket flip emit; inventary deepen closed; finishing edge next
+- `20260722.145936` — [REMEMBER git nib after STOA262](20260722-145936_remember-git-nib-stoa262.bron) — pin c1ed098ebcf8
+- `20260722.150432` — [STOA263–264 Pixel authored-fold eyes](20260722-150432_stoa263-264-pixel-authored-fold-eyes.bron) — pack+install HAWM1; Dexter→Sala next

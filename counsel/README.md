@@ -1,7 +1,7 @@
 # The Counsel Stack
 
 **Language:** EN
-**Last updated:** 2026-07-24 (one-clock blocking · Crockford aura `205009`)
+**Last updated:** 2026-07-25 (redaction stance counsel `001200` · seat `001538`)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Foundation
 
@@ -21,6 +21,8 @@ Filing law: [`../ORGANIZING.md`](../ORGANIZING.md) · reorg proposal: [`20260707
 
 | Stamp | Note | Meaning |
 |-------|------|---------|
+| `20260725.001538` | [Reply — Forgetting without breaking](replies/20260725-001538_re-forgetting-without-breaking.md) | redaction pin seated · OQ #1 · Mand ring-3 PARK |
+| `20260725.001200` | [Forgetting Without Breaking — The Redaction Stance](20260725-001200_forgetting-without-breaking.md) | three questions · crypto-shred · removal fact · never-erased — **stance seated** `001538` |
 | `20260724.205009` | [Reply — One-clock · Crockford aura](replies/20260724-205009_re-one-clock-crockford-aura.md) | one CLOCK · blocking · Decision 6 GREEN |
 | `20260724.203617` | [Reply — Mand ring-1 · one-clock](replies/20260724-203617_re-mand-ring1-one-clock.md) | HAWM1 exempt · one-clock advisory · Mand grant+refuse GREEN |
 | `20260724.202412` | [Reply — Seva complete · Mand seated](replies/20260724-202412_re-seva-complete-mand-seated.md) | glow_seva_b0 · desks · Mand · SALA off exclude · STOP memos |
