@@ -1,5 +1,6 @@
 #!/bin/sh
 # radiant_lint_scan.sh — advisory Radiant surface (body for radiant_lint_scan.rish).
+# Missing Rishi verb: accumulate · filter chained · read bounded — harvest ledger (counsel 20260725.040247)
 #
 # Duties:
 #   1. bare " but " (word-adjacent spaces) outside fences

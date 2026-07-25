@@ -5,6 +5,8 @@
 **Style:** Radiant (see `../RADIANT_STYLE.md`)
 **Status:** Living — names the canonical date-atom format the whole tree already reaches for, ties it to the warm-aura versioning design, and settles how dated folders are named. Extends `20260627-102012_one-clock-naming-law.md`; does not supersede it.
 
+Radiant pass `20260725.040728`
+
 ---
 
 ## What This Names

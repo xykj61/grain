@@ -5,6 +5,8 @@
 **Style:** Radiant (see `../RADIANT_STYLE.md`)
 **Status:** Living — seats the host-config concept and records both artifacts as real, witnessed work
 
+Radiant pass `20260725.040728`
+
 ---
 
 ## `GLOW_HOST.bron` — Glow OS's Own Root Config

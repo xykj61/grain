@@ -5,6 +5,8 @@
 **Style:** Radiant (see `../RADIANT_STYLE.md`)
 **Status:** Living — seats `GLOW_PROFILE.bron` and the generic-Acme adaptation of the living entry docs
 
+Radiant pass `20260725.040728`
+
 ---
 
 ## What This Decides

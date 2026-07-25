@@ -9,6 +9,7 @@
 **Witness:** `rishi/bin/rishi run tools/crockford_stamp_witness.rish`  
 **Counsel:** [`../../counsel/20260724-193912_the-hands-we-grow.md`](../../counsel/20260724-193912_the-hands-we-grow.md) § Six
 
+
 ---
 
 ## What This Seats

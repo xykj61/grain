@@ -5,6 +5,8 @@
 **Style:** Radiant (see `../RADIANT_STYLE.md`)
 **Status:** Living — seats "reviving" as a first-class project concept and supersedes the earlier "mass rename deferred" framing
 
+Radiant pass `20260725.040728`
+
 ---
 
 ## The Decision

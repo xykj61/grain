@@ -8,6 +8,8 @@
 **Co-author:** Keaton Dunsford (`xykj61`)
 **Witness:** [`../../tools/glow_truth_semantics_witness.rish`](../../tools/glow_truth_semantics_witness.rish) · module [`../../glow/truth_semantics.rye`](../../glow/truth_semantics.rye)
 
+Radiant pass `20260725.040728`
+
 ---
 
 ## The Ruling
