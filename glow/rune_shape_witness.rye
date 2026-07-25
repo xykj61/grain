@@ -8,7 +8,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const rm = @import("rune_shape.rye");
 
-const witness_version = "20260719.232000";
+const witness_version = "20260724.205719";
 
 fn run_selftest() !u8 {
     const one =
@@ -76,16 +76,47 @@ fn run_selftest() !u8 {
     assert(!rm.arm_has_payload(&s5, 1));
     print("rune: +$ / $% xfer-mold multi-face payload parses -- GREEN\n", .{});
 
+    // `20260724.205719`: `@u64` admitted — stamp aura's first `$:` consumer.
+    const stamp_src =
+        \\+$  stamp-shape
+        \\  $:  stamp=@u64
+        \\  ==
+    ;
+    const su = try rm.parse_source(stamp_src);
+    assert(su.body == .tuple);
+    assert(su.field_count == 1);
+    assert(std.mem.eql(u8, rm.field_slice(&su, 0), "stamp"));
+    assert(rm.any_u64_field(&su));
+    assert(!rm.any_cord_field(&su));
+    assert(!rm.any_hex_field(&su));
+    print("rune: +$ / $: stamp=@u64 face parses -- GREEN\n", .{});
+
+    const mix_src =
+        \\+$  stamp-mix-shape
+        \\  $:  stamp=@u64
+        \\      amount=@u32
+        \\      memo=@t
+        \\  ==
+    ;
+    const sm = try rm.parse_source(mix_src);
+    assert(sm.body == .tuple);
+    assert(sm.field_count == 3);
+    assert(rm.any_u64_field(&sm));
+    assert(rm.any_cord_field(&sm));
+    assert(!rm.any_hex_field(&sm));
+    print("rune: +$ / $: stamp=@u64 mixed with @u32/@t parses -- GREEN\n", .{});
+
+    // Wall still stands: genuinely unsupported auras keep UnsupportedShapeAura.
     if (rm.parse_source(
         \\+$  amount-mold
-        \\  $:  amount=@u64
+        \\  $:  amount=@u8
         \\  ==
     )) |_| {
         return error.UnsupportedShapeAuraNotCaught;
     } else |err| {
         if (err != rm.ParseError.UnsupportedShapeAura) return err;
     }
-    print("rune: non-@u32 field refused UnsupportedShapeAura -- GREEN\n", .{});
+    print("rune: unsupported @u8 refused UnsupportedShapeAura -- GREEN\n", .{});
 
     // STOA180: `$:` face=@t parses; cord flag set; lower held separately.
     const cord_src =
@@ -158,7 +189,7 @@ fn run_selftest() !u8 {
     print("rune: single $% tag refused TooFewTags -- GREEN\n", .{});
 
     print("rune: version {s}\n", .{witness_version});
-    print("GREEN: +$ / $: / $% mold front half parses — STOA74/75/76/78/80 · STOA97 · STOA187 payload @t/@ux.\n", .{});
+    print("GREEN: +$ / $: / $% mold front half parses — STOA74/75/76/78/80 · STOA97 · STOA187 · @u64 floor.\n", .{});
     return 0;
 }
 

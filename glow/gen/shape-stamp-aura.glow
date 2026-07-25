@@ -1,10 +1,8 @@
-::  Stamp aura — Hands We Grow Decision 6 (`20260724.205009`).
-::  Inward face: @u64 chronological stamp (wire-persistent; eight LE bytes).
-::  Outward face: Crockford base32 (thirteen chars) — linengrow/crockford_stamp.rye.
-::  Desk uses the seated @u64 face/cast path (`face-u64` / `cast-u64`).
-::  Sample literal stays in the face-lower welcome range (see face-u64.glow);
-::  full chronological values live in the Rye fixture set.
-::  Note: +$ / $: product fields still refuse @u64 (UnsupportedShapeAura);
-::  that widen is a later Glow lap — Decision 6 seats the aura faces, not $:.
+::  Stamp aura as first `$:` consumer — aura floor open `20260724.205719`.
+::  Hands We Grow Decision 6 inward face: @u64 chronological stamp.
+::  Outward Crockford face stays at linengrow/crockford_stamp.rye.
 ::  Spec: context/specs/20260724-205009_crockford-stamp-aura.md
-=/  stamp=@u64  ^-  @u64  42
+::  Claim: waymarks/20260724-205719_shape-aura-floor-u64.md
++$  stamp-shape
+  $:  stamp=@u64
+  ==
