@@ -22,7 +22,7 @@ Radiant pass `20260725.112615`
 
 ## Now
 
-**Radiant Wave 40** `20260725.113015` — 2 clean · 0 changed · meta exempt seated · lint 2. **Pass closed:** **1,198 rows** · select **0**.
+**Radiant Wave 40** `20260725.113015` — 2 clean · 0 changed · meta exempt seated · lint 2. Sent `20260725.113025` · git nib `248f4ed42b`. **Pass closed:** **1,198 rows** · select **0**.
 
 **Read:**
 
