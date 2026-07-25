@@ -34,6 +34,7 @@ Each shelf keeps a one-line-per-claim `README.md` index as claims arrive.
 
 | Stamp | Claim | Path |
 |-------|-------|------|
+| `20260725.112015` | Radiant Wave 30 — fifty · spot-read | [`20260725-112015_radiant-wave30.md`](20260725-112015_radiant-wave30.md) |
 | `20260725.111915` | Radiant Wave 29 — fifty · STOA176–216 | [`20260725-111915_radiant-wave29.md`](20260725-111915_radiant-wave29.md) |
 | `20260725.111815` | Radiant Wave 28 — fifty · STOA133–175 | [`20260725-111815_radiant-wave28.md`](20260725-111815_radiant-wave28.md) |
 | `20260725.111715` | Radiant Wave 27 — fifty · STOA26–132 | [`20260725-111715_radiant-wave27.md`](20260725-111715_radiant-wave27.md) |

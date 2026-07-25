@@ -13,6 +13,8 @@
 
 **dated_guard:** Do **not** reopen STOA243 as unfinished. Crypto jets · shared-package `face_lit` · JABS3 stay held until named.
 
+Radiant pass `20260725.112015`
+
 ---
 
 ## What just closed

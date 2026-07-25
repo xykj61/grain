@@ -13,6 +13,8 @@
 
 **dated_guard:** Do **not** reopen STOA263 as unfinished. Typed append · HAWM 1A · JABS3 stay held until sized or chosen.
 
+Radiant pass `20260725.112015`
+
 ---
 
 ## What just closed

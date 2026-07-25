@@ -14,6 +14,8 @@
 
 **dated_guard:** Do **not** claim `claim_demo_fold` already reads the desk file. Do **not** recommend rest as the standing next door. JABS3 opens only on explicit word.
 
+Radiant pass `20260725.112015`
+
 ---
 
 ## What just closed (on the hand → pier)

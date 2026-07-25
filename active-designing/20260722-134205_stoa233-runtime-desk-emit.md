@@ -13,6 +13,8 @@
 
 **dated_guard:** Do **not** claim `claim_demo_fold` / NativeActivity reads the desk file yet. Do **not** claim product imports `glow/face_lit` — extract is product-local. JABS3 held.
 
+Radiant pass `20260725.112015`
+
 ---
 
 ## Verdict (one breath)

@@ -13,6 +13,8 @@
 
 **dated_guard:** Do **not** claim NativeActivity reads the desk file. Do **not** claim `claim_demo_fold` (pin) opened a file — the desk twin is `*_from_desk_file`. JABS3 held.
 
+Radiant pass `20260725.112015`
+
 ---
 
 ## Verdict (one breath)
