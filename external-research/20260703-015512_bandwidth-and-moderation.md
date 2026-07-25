@@ -10,6 +10,8 @@
 
 *Written together by Kaeden and Claude (Fable 5), in Rio 3's Radiant voice — with gratitude to the friend whose question sharpened it.*
 
+Radiant pass `20260725.111005`
+
 ---
 
 ## Part One — Bandwidth: Name the Budget, Bound the Lanes, Let Popularity Leave Home

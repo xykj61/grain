@@ -18,6 +18,8 @@ and untouched by this note
 
 *Written together by Kaeden and Claude (Fable 5), in Rio 3's Radiant voice.*
 
+Radiant pass `20260725.111005`
+
 ---
 
 ## The Unit Comes Before the Coin

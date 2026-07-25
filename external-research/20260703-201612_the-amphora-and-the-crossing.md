@@ -13,6 +13,8 @@
 
 **Amphora is vessel software** — preservation in motion. **Amber** is **cellar software** — preservation in place. The cellar seals resins at home; the vessel carries sealed cargo across the sea (Comlink), through customs (Pond), and back to another dock. One family, two rooms.
 
+Radiant pass `20260725.111005`
+
 ---
 
 ## The Missing Piece

@@ -8,6 +8,8 @@
 
 *Written together by Kaeden and Claude (Fable 5), in the fresh bench's Radiant voice — voice-name awaiting Kaeden's word.*
 
+Radiant pass `20260725.111005`
+
 ---
 
 ## What the Claude bench reports (pin, verify, never inherit)

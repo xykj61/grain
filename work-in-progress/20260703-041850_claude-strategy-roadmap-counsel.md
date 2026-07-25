@@ -10,6 +10,8 @@
 
 *Prepared by Cursor for Claude (Fable counsel) and Kaeden — counsel only; no parity or module changes from this file alone.*
 
+Radiant pass `20260725.111005`
+
 ---
 
 ## Bench snapshot (tip `778f4b8` area)
