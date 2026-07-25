@@ -5,6 +5,8 @@
 **Style:** Radiant (see `../RADIANT_STYLE.md`)
 **Status:** Living — the seam between what came before and what carries forward
 
+Radiant pass `20260725.035955`
+
 ---
 
 ## What This Marks
