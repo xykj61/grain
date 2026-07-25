@@ -71,7 +71,7 @@ if grep -q '/dev/kvm present' "$META"; then
   kvm=present
 fi
 
-# Optional HAWM1 fold — present after hawm1_sala_witness captures the root.
+# Optional HAWM1 fold — present after hawm1_seva_witness captures the root.
 SESSION_ROOT_FILE="$CACHE/hawm1-session-root.txt"
 session_root=pending
 if [ -f "$SESSION_ROOT_FILE" ]; then

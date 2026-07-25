@@ -1,6 +1,6 @@
 //! linengrow/tube1_glass_gate.rye — TUBE1 door for the NativeActivity present path.
 //!
-//! Builds the sala-broadcaster TUBE0 manifest: three R2 state resources,
+//! Builds the seva-broadcaster TUBE0 manifest: three R2 state resources,
 //! `photos` + `contacts` (Resource Scopes), and `network` + `sensors`
 //! (Network · Sensors Grants). Caravan grants match; covering scopes and
 //! live toggles are load-bearing. APK permission emission stays on the
@@ -32,12 +32,12 @@ pub fn run_demo_admit() bool {
         tube.DeclaredCapability.init(tube1.network_resource, caps.right_net),
         tube.DeclaredCapability.init(tube1.sensors_resource, caps.right_device),
     };
-    // invariant: seven declared capabilities for sala-broadcaster glass
+    // invariant: seven declared capabilities for seva-broadcaster glass
     assert(declared.len == 7);
-    const manifest = tube.build("sala-broadcaster", "0.1.0", &declared, 1024) catch return false;
+    const manifest = tube.build("seva-broadcaster", "0.1.0", &declared, 1024) catch return false;
 
     var table: caps.CapabilityTable = .{};
-    const agent = table.add_child("sala-broadcaster") catch return false;
+    const agent = table.add_child("seva-broadcaster") catch return false;
     agent.grant(caps.Capability.init("state-ask", rw)) catch return false;
     agent.grant(caps.Capability.init("state-receipt", rw)) catch return false;
     agent.grant(caps.Capability.init("state-reputation", rw)) catch return false;
@@ -59,7 +59,7 @@ pub fn run_demo_admit() bool {
 
     return tube1.admit_manifest_gated(
         &table,
-        "sala-broadcaster",
+        "seva-broadcaster",
         &manifest,
         scopes[0..],
         &network,

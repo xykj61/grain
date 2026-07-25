@@ -46,7 +46,7 @@ fn run_selftest() !u8 {
 
     // Claim 2: a resource with no table row emits nothing for it.
     var declared_internal = [_]tm.DeclaredCapability{
-        tm.DeclaredCapability.init("sala-session", caps.right_read | caps.right_write),
+        tm.DeclaredCapability.init("seva-session", caps.right_read | caps.right_write),
     };
     const internal_manifest = try tm.build("internal-app", "0.1.0", &declared_internal, 32);
     const internal_written = try perm.render_permission_lines(&internal_manifest, &out_buf);

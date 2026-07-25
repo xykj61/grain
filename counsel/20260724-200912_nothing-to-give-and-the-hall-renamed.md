@@ -1,5 +1,7 @@
 # Nothing to Give, and the Hall Renamed — Custody, Settings, and Seva
 
+*Erratum `20260724.202412` — the M vane is seated as **Mand**; Mona below is the prior name.*
+
 **Language:** EN
 **Stamp:** `20260724.200912`
 **Voice:** Quin

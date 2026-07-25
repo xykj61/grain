@@ -27,7 +27,7 @@ fn run_selftest() !u8 {
     const lens = try tube5.run_demo_update(&catalog);
     assert(lens.rev1_len > 0);
     assert(lens.rev2_len > 0);
-    print("tube5: landed rev1 (0.1.0) and rev2 (0.2.0) under glow/sala-broadcaster/manifest\n", .{});
+    print("tube5: landed rev1 (0.1.0) and rev2 (0.2.0) under glow/seva-broadcaster/manifest\n", .{});
     print("tube5: welcome update path -- GREEN\n", .{});
 
     // Claim 2: rollback — rev1 still holds 0.1.0 after rev2.
@@ -47,7 +47,7 @@ fn run_selftest() !u8 {
     const declared = [_]tube.DeclaredCapability{
         tube.DeclaredCapability.init(pool.ledger_resource, caps.right_read | caps.right_write),
     };
-    const again = try tube.build("sala-broadcaster", "0.1.1", &declared, 1024);
+    const again = try tube.build("seva-broadcaster", "0.1.1", &declared, 1024);
     var body: [tube.max_canonical_bytes]u8 = undefined;
     const blen = try tube.write_canonical(&again, &body);
     if (catalog.append_leaf(tube5.demo_peer, tube5.demo_bolt, 1, tube5.demo_path, body[0..blen], tube5.demo_tilak)) |_| {

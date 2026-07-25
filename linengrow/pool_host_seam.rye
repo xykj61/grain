@@ -16,7 +16,7 @@
 //!     the door — the same customs place/hold/refuse shape Pond keeps.
 //!   - The hosted agent's state is a fold. Pool never mutates agent state
 //!     directly; it applies a signed event by folding, exactly as Neth and
-//!     Sala already do. A tampered or wrongly-signed event is refused; the
+//!     Seva already do. A tampered or wrongly-signed event is refused; the
 //!     fold reproduces deterministically.
 //!   - Everything is bounded (the log, the event, the agent count) and the
 //!     agent runs within its granted right and nothing more.

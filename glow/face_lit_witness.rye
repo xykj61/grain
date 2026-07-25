@@ -15,11 +15,11 @@ const root_digits = "99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e
 pub fn main() !void {
     print("face_lit_witness {s}\n", .{witness_version});
 
-    const cord_src = "memo='sala:open'\n";
+    const cord_src = "memo='seva:open'\n";
     const cord = try face_lit.parse_face_lit(cord_src);
     assert(std.mem.eql(u8, face_lit.face_slice(&cord), "memo"));
     assert(cord.lit_kind == .cord);
-    assert(std.mem.eql(u8, face_lit.lit_bytes(cord_src, &cord), "sala:open"));
+    assert(std.mem.eql(u8, face_lit.lit_bytes(cord_src, &cord), "seva:open"));
     print("face_lit: cord clause parse -- GREEN\n", .{});
 
     var hex_src_buf: [80]u8 = undefined;
@@ -31,7 +31,7 @@ pub fn main() !void {
     print("face_lit: hex clause parse -- GREEN\n", .{});
 
     const sample_src =
-        \\memo='sala:open'
+        \\memo='seva:open'
         \\root=@ux99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe
         \\
     ;
@@ -40,7 +40,7 @@ pub fn main() !void {
     assert(n == 2);
     assert(std.mem.eql(u8, face_lit.face_slice(&out[0]), "memo"));
     assert(out[0].lit_kind == .cord);
-    assert(std.mem.eql(u8, face_lit.lit_bytes(sample_src, &out[0]), "sala:open"));
+    assert(std.mem.eql(u8, face_lit.lit_bytes(sample_src, &out[0]), "seva:open"));
     assert(std.mem.eql(u8, face_lit.face_slice(&out[1]), "root"));
     assert(out[1].lit_kind == .hex);
     assert(std.mem.eql(u8, face_lit.lit_bytes(sample_src, &out[1]), root_digits));

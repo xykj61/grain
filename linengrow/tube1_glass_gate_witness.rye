@@ -28,11 +28,11 @@ fn build_glass_manifest() !tube.Manifest {
         tube.DeclaredCapability.init(tube1.network_resource, caps.right_net),
         tube.DeclaredCapability.init(tube1.sensors_resource, caps.right_device),
     };
-    return try tube.build("sala-broadcaster", "0.1.0", &declared, 1024);
+    return try tube.build("seva-broadcaster", "0.1.0", &declared, 1024);
 }
 
 fn grant_glass_table(table: *caps.CapabilityTable) !void {
-    const agent = try table.add_child("sala-broadcaster");
+    const agent = try table.add_child("seva-broadcaster");
     try agent.grant(caps.Capability.init("state-ask", rw));
     try agent.grant(caps.Capability.init("state-receipt", rw));
     try agent.grant(caps.Capability.init("state-reputation", rw));
@@ -61,7 +61,7 @@ fn run_selftest() !u8 {
     const sensors = sens_mod.SensorsGrant.grant();
     assert(tube1.admit_manifest_gated(
         &table,
-        "sala-broadcaster",
+        "seva-broadcaster",
         &manifest,
         scopes_ok[0..],
         &network,
@@ -76,7 +76,7 @@ fn run_selftest() !u8 {
     const scopes_weak_storage = [_]*const scope_mod.Scope{ &storage_weak, &contact_ok };
     assert(!tube1.admit_manifest_gated(
         &table,
-        "sala-broadcaster",
+        "seva-broadcaster",
         &manifest,
         scopes_weak_storage[0..],
         &network,
@@ -92,7 +92,7 @@ fn run_selftest() !u8 {
     const scopes_rev_contact = [_]*const scope_mod.Scope{ &storage_ok, &contact_rev };
     assert(!tube1.admit_manifest_gated(
         &table,
-        "sala-broadcaster",
+        "seva-broadcaster",
         &manifest,
         scopes_rev_contact[0..],
         &network,
@@ -104,7 +104,7 @@ fn run_selftest() !u8 {
     const net_denied = net_mod.NetworkGrant.deny();
     assert(!tube1.admit_manifest_gated(
         &table,
-        "sala-broadcaster",
+        "seva-broadcaster",
         &manifest,
         scopes_ok[0..],
         &net_denied,
@@ -118,7 +118,7 @@ fn run_selftest() !u8 {
     sens_rev.revoke();
     assert(!tube1.admit_manifest_gated(
         &table,
-        "sala-broadcaster",
+        "seva-broadcaster",
         &manifest,
         scopes_ok[0..],
         &network,

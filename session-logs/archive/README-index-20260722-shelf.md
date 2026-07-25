@@ -18,3 +18,8 @@
 - `20260722.132402` — [REMEMBER git nib after STOA226](20260722-132402_remember-git-nib-stoa226.bron) — pin d1feb98c479a
 - `20260722.132533` — [STOA227 demo line pin emit GREEN](20260722-132533_stoa227-demo-line-pin-emit.bron) — pins ≡ claim_demo_line
 - `20260722.132705` — [STOA228 after demo pin emit check-in](20260722-132705_stoa228-after-demo-pin-emit-checkin.bron) — rec send; then append/fold
+- `20260722.132757` — [STOA227 send · STOA228 · lean B next](20260722-132757_stoa227-send-stoa228-checkin.bron) — pier send; append wire
+- `20260722.132831` — [REMEMBER git nib after STOA228](20260722-132831_remember-git-nib-stoa228.bron) — pin 0db7ef379153
+- `20260722.133004` — [STOA229 append first-event pin emit](20260722-133004_stoa229-append-first-event-pin-emit.bron) — event 1 from pins; HAWM1
+- `20260722.133103` — [REMEMBER git nib after STOA229](20260722-133103_remember-git-nib-stoa229.bron) — pin 779751bbeecc
+- `20260722.133211` — [STOA230 after append pin wire check-in](20260722-133211_stoa230-after-append-pin-wire-checkin.bron) — rec send; then rest

@@ -797,19 +797,19 @@ assert castimportnonashape.ok else "glow_run cast-import-nona-shape.glow failed"
 assert castimportnonashape.out contains "GREEN" else "glow_run cast-import-nona-shape.glow not GREEN"
 assert castimportnonashape.out contains "cast-import-nona-shape.glow" else "glow_run cast-import-nona-shape claim missing path"
 
-# STOA179 / STOA184: Sala B0 Glow — sala-event-shape (from/to @ux · memo/stamp @t).
-let shapesalaevent = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/shape-sala-event.glow"]
-assert shapesalaevent.ok else "glow_run shape-sala-event.glow failed"
-assert shapesalaevent.out contains "GREEN" else "glow_run shape-sala-event.glow not GREEN"
-assert shapesalaevent.out contains "shape-sala-event.glow" else "glow_run shape-sala-event claim missing path"
+# STOA179 / STOA184: Seva B0 Glow — seva-event-shape (from/to @ux · memo/stamp @t).
+let shapesalaevent = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/shape-seva-event.glow"]
+assert shapesalaevent.ok else "glow_run shape-seva-event.glow failed"
+assert shapesalaevent.out contains "GREEN" else "glow_run shape-seva-event.glow not GREEN"
+assert shapesalaevent.out contains "shape-seva-event.glow" else "glow_run shape-seva-event claim missing path"
 
-# STOA186: sala-event named-cast twin (mixed @ux / @u32 / @t).
-let castnamedsalaevent = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cast-named-sala-event.glow"]
-assert castnamedsalaevent.ok else "glow_run cast-named-sala-event.glow failed"
-assert castnamedsalaevent.out contains "GREEN" else "glow_run cast-named-sala-event.glow not GREEN"
-assert castnamedsalaevent.out contains "cast-named-sala-event.glow" else "glow_run cast-named-sala-event claim missing path"
+# STOA186: seva-event named-cast twin (mixed @ux / @u32 / @t).
+let castnamedsalaevent = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cast-named-seva-event.glow"]
+assert castnamedsalaevent.ok else "glow_run cast-named-seva-event.glow failed"
+assert castnamedsalaevent.out contains "GREEN" else "glow_run cast-named-seva-event.glow not GREEN"
+assert castnamedsalaevent.out contains "cast-named-seva-event.glow" else "glow_run cast-named-seva-event claim missing path"
 
-# STOA192: Sala B0 demo fixture constants shape (three stamps · three memos · root @ux).
+# STOA192: Seva B0 demo fixture constants shape (three stamps · three memos · root @ux).
 let shapedemofixture = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/shape-demo-fixture-constants.glow"]
 assert shapedemofixture.ok else "glow_run shape-demo-fixture-constants.glow failed"
 assert shapedemofixture.out contains "GREEN" else "glow_run shape-demo-fixture-constants.glow not GREEN"
@@ -826,7 +826,7 @@ assert castimportdemofixture.ok else "glow_run cast-import-demo-fixture-constant
 assert castimportdemofixture.out contains "GREEN" else "glow_run cast-import-demo-fixture-constants.glow not GREEN"
 assert castimportdemofixture.out contains "cast-import-demo-fixture-constants.glow" else "glow_run cast-import-demo-fixture-constants claim missing path"
 
-# STOA206 / B3: Sala B0 fact-line shape (sig @t · fact @t).
+# STOA206 / B3: Seva B0 fact-line shape (sig @t · fact @t).
 let shapefactline = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/shape-fact-line.glow"]
 assert shapefactline.ok else "glow_run shape-fact-line.glow failed"
 assert shapefactline.out contains "GREEN" else "glow_run shape-fact-line.glow not GREEN"
