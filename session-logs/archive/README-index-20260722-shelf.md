@@ -35,3 +35,7 @@
 - `20260722.134657` — [STOA235–236 desk-file claim round](20260722-134657_stoa235-236-desk-file-claim-round.bron) — from_desk_file; NA asset next
 - `20260722.135324` — [STOA237–238 embedded desk round](20260722-135324_stoa237-238-embedded-desk-round.bron) — embed in .so; Pixel eyes next
 - `20260722.134735` — [REMEMBER git nib after STOA236](20260722-134735_remember-git-nib-stoa236.bron) — pin 580f607c8b61
+- `20260722.135406` — [REMEMBER git nib after STOA238](20260722-135406_remember-git-nib-stoa238.bron) — pin 6aa85ec080f6
+- `20260722.135605` — [STOA239–240 Pixel eyes round](20260722-135605_stoa239-240-pixel-eyes-round.bron) — HAWM1 on device; name next door
+- `20260722.135647` — [REMEMBER git nib after STOA240](20260722-135647_remember-git-nib-stoa240.bron) — pin a0b9fc9b2300
+- `20260722.135731` — [Recommend after Pixel eyes arc](20260722-135731_rec-after-pixel-eyes-arc.bron) — size face_lit or pause
