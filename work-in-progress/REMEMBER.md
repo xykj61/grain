@@ -6,11 +6,11 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260725.105645` (EDT) · voice Quin  
+**Last refreshed:** `20260725.105706` (EDT) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2** · **THREATS** · **five pillars** · **accrete tiers** · **redaction stance** · **always-in-it rhythm**  
 **Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list512 GREEN · **stamp @u64 · Crockford** · **shape aura floor**  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand ring-2** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm REPORT** · **OQ #1 · #3 · #5 answered** · **pass ledger** · **Wave 16** · **growth law** · **shell harvest**  
-**Git nib:** `e2926fcb31` · prior · *this lap re-pins on send*
+**Git nib:** `8d416b71d3` · Wave 16 counsel replies (PR #105)
 
 **Season:** Framework · EDT · **finishing edge:** Radiant Wave 16 · ~16/17 counsel runway.  
 **APK:** `tools/.cache/tube05/seva-broadcaster.apk` · pkg `org.glow.app.seva_broadcaster`  
@@ -20,7 +20,7 @@
 
 ## Now
 
-**Radiant Wave 16** `20260725.105645` — twelve counsel replies; claim_preserve GREEN; lint sum 2; duty8=27. Reply [`../counsel/replies/20260725-105645_re-radiant-wave16.md`](../counsel/replies/20260725-105645_re-radiant-wave16.md) · claim [`../waymarks/20260725-105645_radiant-wave16.md`](../waymarks/20260725-105645_radiant-wave16.md). **Runway:** Wave **16 / ~17** (counsel · foundations · context).
+**Radiant Wave 16** `20260725.105645` — twelve counsel replies; claim_preserve GREEN; lint sum 2. Sent `20260725.105705` · git nib `8d416b71d3`. **Runway:** Wave **16 / ~17** (counsel · foundations · context).
 
 **Read:**
 
