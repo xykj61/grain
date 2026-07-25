@@ -1,0 +1,11 @@
+format session-log-v1
+stamp 20260725.112127
+editor Cursor
+model Cursor Composer 2.5 300k Fast
+voice Quin
+title Wave 31 close kg turn
+prompt kg
+think STOA265-310 HAWM harvest tagged flip argv fifty all clean.
+obs PR 119 nib 208720f0a6; runway 929/~1185 (~78%); lint 2.
+recommend keep-going Wave 32 bound 50
+git_nib 208720f0a6
