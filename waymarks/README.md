@@ -28,3 +28,11 @@ New claim briefs land here from this stamp forward. Elder claims remain in `acti
 | [`stoa-300s/`](stoa-300s/) | STOA300–399 claim index |
 
 Each shelf keeps a one-line-per-claim `README.md` index as claims arrive.
+
+## Root claims (newest first)
+
+| Stamp | Claim | Path |
+|-------|-------|------|
+| `20260724.205009` | One-clock amended · Crockford stamp aura (Decision 6) | [`20260724-205009_one-clock-crockford-aura.md`](20260724-205009_one-clock-crockford-aura.md) |
+| `20260724.203617` | Mand ring-1 · one-clock seat | [`20260724-203617_mand-ring1-one-clock.md`](20260724-203617_mand-ring1-one-clock.md) |
+| `20260724.202412` | Seva rename complete · Mand seated | [`20260724-202412_seva-complete-mand-seated.md`](20260724-202412_seva-complete-mand-seated.md) |

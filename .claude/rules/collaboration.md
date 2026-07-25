@@ -14,7 +14,7 @@ Cursor (or Claude Code) climbs the bench one keystone at a time. End every pass 
 
 **Pause for a Claude ruling** when the next item: crosses a module seam; changes Rishi or the value model; opens a new domain (a new lap, a new surface); raises a design or width question no written policy answers; needs a ruling not yet made; touches a foundational or heavily-cited file (assess rather than assume); or reaches for current external facts.
 
-**Stamps come from Kaeden.** Never compute or invent a one-clock timestamp; use the stamp Kaeden supplies, verbatim, in `YYYYMMDD.HHMMSS`.
+**One CLOCK, not one hand.** Stamps come from the canonical host clock (`America/New_York` on this Framework / cloud bench), in `YYYYMMDD.HHMMSS`. Any agent may produce a stamp when it reads that zone; never invent from a disagreeing clock. See the one-clock law addendum `20260724.205009`.
 
 **References are promises.** Before moving or renaming a file, grep the tree for its inbound references and repoint every one. A canonical reference — a file many others cite — keeps its stable name and is affirmed in place rather than renamed.
 

@@ -35,7 +35,9 @@ Optional prose tag: append `EDT` (or `EST` in winter) in headers where a label h
 
 Keaton set Ubuntu **Settings → Date & Time** to **New York** at `20260722.130034` (confirmed: `date` prints `EDT -0400`; `/etc/localtime` → `America/New_York`). Plain `date '+%Y%m%d.%H%M%S'` is enough for stamps on this host now. `TZ=America/New_York` remains a fine explicit override if a shell ever inherits a different zone.
 
-**Cloud / sandbox re-seat `20260724.203617`:** a Cursor cloud agent image booted with `/etc/localtime` → `Etc/UTC` while prose still said EDT, and four session-log stamps drifted onto the UTC wall (`20260724.221013`, `20260725.002400`, `20260725.002955`, `20260725.003013`). The bench re-linked `/etc/localtime` and `/etc/timezone` to `America/New_York` and exported `TZ=America/New_York` in the agent shell profile. Those four filenames stay (accrete-never-break); the session-logs index carries the erratum. One-clock law addendum: [`20260627-102012_one-clock-naming-law.md`](20260627-102012_one-clock-naming-law.md) § Canonical zone. Witness: `tools/one_clock_witness.rish`.
+**Cloud / sandbox re-seat `20260724.203617`:** a Cursor cloud agent image booted with `/etc/localtime` → `Etc/UTC` while prose still said EDT, and four session-log stamps drifted onto the UTC wall (`20260724.221013`, `20260725.002400`, `20260725.002955`, `20260725.003013`). The bench re-linked `/etc/localtime` and `/etc/timezone` to `America/New_York` and exported `TZ=America/New_York` in the agent shell profile. Those four filenames stay (accrete-never-break); the session-logs index carries the erratum.
+
+**One CLOCK `20260724.205009`:** the naming-law addendum seats one canonical clock (any agent may stamp when it reads the zone); ceiling retired; `one_clock_witness` blocking (shape · mono · zone). See [`20260627-102012_one-clock-naming-law.md`](20260627-102012_one-clock-naming-law.md).
 
 ## Related
 

@@ -1,0 +1,103 @@
+//! linengrow/crockford_stamp_witness.rye — Decision 6 bijection + negative space.
+//!
+//!   rye build linengrow/crockford_stamp_witness.rye \
+//!     -femit-bin=linengrow/bin/crockford_stamp_witness
+//!   linengrow/bin/crockford_stamp_witness
+//!
+//! Claims:
+//!   1. Round-trip encode→decode over a fixture set (wire LE + Crockford).
+//!   2. Encoded length is exactly thirteen.
+//!   3. Reject base32 containing I, L, O, or U.
+//!   4. Reject over-long and under-long input.
+//!   5. Decode is case-insensitive for A–Z.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const cf = @import("crockford_stamp.rye");
+
+const witness_version = "20260724.205009";
+
+const Fixture = struct { value: u64, crockford: []const u8 };
+
+// Pre-computed against linengrow/crockford_stamp.rye encode (MSB-first).
+const fixtures = [_]Fixture{
+    .{ .value = 0, .crockford = "0000000000000" },
+    .{ .value = 1, .crockford = "0000000000001" },
+    .{ .value = 31, .crockford = "000000000000Z" },
+    .{ .value = 32, .crockford = "0000000000010" },
+    .{ .value = 20260724190000, .crockford = "0000JDN8M9ASG" },
+    .{ .value = 20260724205009, .crockford = "0000JDN8M9SEH" },
+};
+
+fn run_selftest() !u8 {
+    assert(cf.encoded_len == 13);
+    assert(cf.wire_bytes == 8);
+    assert(cf.alphabet.len == 32);
+
+    // Claim 1–2: round-trip + length + fixture agree + wire LE.
+    for (fixtures) |fix| {
+        var enc: [cf.encoded_len]u8 = undefined;
+        cf.encode(fix.value, &enc);
+        assert(std.mem.eql(u8, enc[0..], fix.crockford));
+        const back = try cf.decode(enc[0..]);
+        assert(back == fix.value);
+        assert(cf.round_trip(fix.value));
+
+        var wire: [cf.wire_bytes]u8 = undefined;
+        cf.to_wire_le(fix.value, &wire);
+        assert(cf.from_wire_le(&wire) == fix.value);
+        print("crockford: fixture {d} <-> {s} · wire-le round-trip -- GREEN\n", .{ fix.value, fix.crockford });
+    }
+
+    // Claim 3: reject I L O U (each position covered once).
+    const banned = [_][]const u8{
+        "000000000000I",
+        "000000000000L",
+        "000000000000O",
+        "000000000000U",
+        "000000000000i",
+        "000000000000l",
+        "000000000000o",
+        "000000000000u",
+    };
+    for (banned) |s| {
+        const r = cf.decode(s);
+        if (r) |_| {
+            return error.BannedCharAccepted;
+        } else |err| {
+            if (err != cf.DecodeError.BadChar) return err;
+        }
+        print("crockford: rejected banned char in {s} -- GREEN unwelcome\n", .{s});
+    }
+
+    // Claim 4: over-long and under-long.
+    const long = cf.decode("00000000000001");
+    if (long) |_| {
+        return error.OverLongAccepted;
+    } else |err| {
+        if (err != cf.DecodeError.BadLength) return err;
+    }
+    print("crockford: rejected over-long input -- GREEN unwelcome\n", .{});
+
+    const short = cf.decode("000000000000");
+    if (short) |_| {
+        return error.UnderLongAccepted;
+    } else |err| {
+        if (err != cf.DecodeError.BadLength) return err;
+    }
+    print("crockford: rejected under-long input -- GREEN unwelcome\n", .{});
+
+    // Claim 5: lowercase decode of a fixture.
+    const lower_back = try cf.decode("0000jdn8m9asg");
+    assert(lower_back == 20260724190000);
+    print("crockford: case-insensitive decode -- GREEN welcome\n", .{});
+
+    print("crockford: version {s} (module {s})\n", .{ witness_version, cf.crockford_stamp_version });
+    print("GREEN: Crockford stamp aura — bijection · thirteen · banned I/L/O/U · length gate.\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}

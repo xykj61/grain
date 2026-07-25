@@ -8,10 +8,11 @@ Living index for the append-only session stream. This table reads **newest first
 
 Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
-*Erratum `20260724.203617` — UTC window on the cloud bench:* while Keaton's clock supplied `20260724.202412` (EDT), four living logs were stamped from `Etc/UTC` and must be read in index order, not filename sort: `20260724.221013` (digraph research; sits after `181241` in truth-order), `20260725.002400` (sala rename survey), `20260725.002955` (send Seva·Mand), `20260725.003013` (REMEMBER pin). Files keep their names (accrete-never-break). Cause fixed: host zone re-seated to `America/New_York`; witness `tools/one_clock_witness.rish`.
+*Erratum `20260724.203617` — UTC window on the cloud bench:* while Keaton's clock supplied `20260724.202412` (EDT), four living logs were stamped from `Etc/UTC` and must be read in index order, not filename sort: `20260724.221013` (digraph research; sits after `181241` in truth-order), `20260725.002400` (sala rename survey), `20260725.002955` (send Seva·Mand), `20260725.003013` (REMEMBER pin). Files keep their names (accrete-never-break). Cause fixed: host zone re-seated to `America/New_York`. From `20260724.205009` the one-clock witness is **blocking** (shape · mono · zone); the human ceiling is retired — see law addendum.
 
 **Living pin bound:** `living_pin_max_bytes = 24576` ([spec](../context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md)). Closed index rows through `20260721`: [`archive/README-index-through-20260721.md`](archive/README-index-through-20260721.md). Early `20260722` overflow: [`archive/README-index-20260722-shelf.md`](archive/README-index-20260722-shelf.md).
 
+- `20260724.205258` — [One-clock amended · Crockford aura Decision 6](20260724-205258_one-clock-crockford-aura.bron) — blocking · Decision 6 GREEN
 - `20260724.204825` — [Explore one-clock · Crockford aura · encode patterns](20260724-204825_explore-one-clock-crockford-aura.bron) — Decision 6 PARK · aura seat map · witness sketch
 - `20260724.203949` — [REMEMBER git nib after Mand ring-1 send](20260724-203949_remember-git-nib-mand-ring1.bron) — pin 9e59d53527
 - `20260724.203935` — [Send Mand ring-1 · one-clock to main](20260724-203935_send-mand-ring1-one-clock.bron) — FF merge · HAWM1 · Mand GREEN
@@ -162,7 +163,3 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 - `20260722.141044` — [STOA243–244 authored line body round](20260722-141044_stoa243-244-line-body-round.bron) — format/parse own body; next authored surface
 - `20260722.140125` — [REMEMBER git nib after STOA242](20260722-140125_remember-git-nib-stoa242.bron) — pin b5fc164eda97
 - `20260722.140100` — [STOA241–242 face_lit agree round](20260722-140100_stoa241-242-face-lit-agree-round.bron) — product stand-in ≡ Glow pins; name next door
-- `20260722.135731` — [Recommend after Pixel eyes arc](20260722-135731_rec-after-pixel-eyes-arc.bron) — size face_lit or pause
-- `20260722.135647` — [REMEMBER git nib after STOA240](20260722-135647_remember-git-nib-stoa240.bron) — pin a0b9fc9b2300
-- `20260722.135605` — [STOA239–240 Pixel eyes round](20260722-135605_stoa239-240-pixel-eyes-round.bron) — HAWM1 on device; name next door
-- `20260722.135406` — [REMEMBER git nib after STOA238](20260722-135406_remember-git-nib-stoa238.bron) — pin 6aa85ec080f6
