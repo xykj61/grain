@@ -13,6 +13,8 @@
 
 **dated_guard:** Do **not** reopen STOA251 as unfinished. Do **not** widen past nine faces. Ambient gold · flip collapse · barket twin · shared-package · JABS3 stay held until named.
 
+Radiant pass `20260725.112015`
+
 ---
 
 ## What just closed

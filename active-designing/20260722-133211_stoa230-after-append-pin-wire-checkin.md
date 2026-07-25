@@ -15,6 +15,8 @@
 
 **dated_guard:** Do **not** claim events 2–3 come from pins. Do **not** claim runtime `.glow` parse. Do **not** reopen fold as an open pin-wire door — composition already carries event 1. JABS3 opens only on explicit word.
 
+Radiant pass `20260725.112015`
+
 ---
 
 ## What just closed (on the pier)

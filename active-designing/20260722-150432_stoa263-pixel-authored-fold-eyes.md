@@ -13,6 +13,8 @@
 
 **dated_guard:** Do **not** claim bare `adb` is on PATH — use SDK `adb`. Do **not** reopen N-field inventary deepen. HAWM 1A · JABS3 · Dexter→Sala typed append stay named doors, not this lap.
 
+Radiant pass `20260725.112015`
+
 ---
 
 ## Verdict (one breath)
