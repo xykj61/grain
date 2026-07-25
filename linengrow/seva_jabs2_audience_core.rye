@@ -1,7 +1,7 @@
-//! linengrow/sala_jabs2_audience_core.rye — in-process JABS2 welcome path.
+//! linengrow/seva_jabs2_audience_core.rye — in-process JABS2 welcome path.
 //!
 //! Mixed multi-signer session (broadcaster + two viewers' chat). Device-free
-//! and glass-safe. Full five-claim witness stays in sala_backchannel_witness.
+//! and glass-safe. Full five-claim witness stays in seva_backchannel_witness.
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -9,7 +9,7 @@ const print = std.debug.print;
 const kumara = @import("kumara.rye");
 const rc = @import("receipt_core.rye");
 const mc = @import("mala_core.rye");
-const sala = @import("sala_session_core.rye");
+const sala = @import("seva_session_core.rye");
 
 pub const event_count: u32 = 5;
 pub const voice_count: u32 = 3; // caster + 2 viewers

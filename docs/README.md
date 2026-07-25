@@ -22,7 +22,7 @@
 | [`COMPASS.md`](COMPASS.md) | guide · ≤120 | Day-one rose — foundations · witness habitat · Cursor loop |
 | [`compass_card.bron`](compass_card.bron) | card · paths | Agent cold-start reading order (no essay body) |
 | [`ZETA.md`](ZETA.md) | guide · ≤80 | English QWERTY glass keyboard ladder — ZETA0–ZETA6 |
-| [`JABS.md`](JABS.md) | guide · ≤80 | Sala broadcast live-session fold — JABS0–JABS3 |
+| [`JABS.md`](JABS.md) | guide · ≤80 | Seva broadcast live-session fold — JABS0–JABS3 |
 | [`LULU.md`](LULU.md) | guide · ≤80 | Hearth display presets · short home · Wired Glass |
 | [`SETU.md`](SETU.md) | guide · ≤80 | USB hearth carry Glass↔Desk — SETU0–SETU1 |
 | [`PROVEN_SEAT.md`](PROVEN_SEAT.md) | guide · ≤300 | Proven-seat ladder — Genode G0 through signed-Kumara (not HAWM) |

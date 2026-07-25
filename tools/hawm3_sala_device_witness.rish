@@ -35,10 +35,10 @@ assert (trim devices.out != "0") else "no real device attached — check USB cab
 say "hawm3: real device attached"
 
 say "hawm3: cross-building the Sala B0 witness natively (this host's own architecture) as the reference…"
-let build_native = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/sala_session_core_witness.rye -femit-bin=linengrow/bin/sala_session_core_witness_native"]
+let build_native = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/seva_session_core_witness.rye -femit-bin=linengrow/bin/seva_session_core_witness_native"]
 if (build_native.ok == false) then say "hawm3: native build stderr — ${build_native.err}"
 assert build_native.ok else "native Sala B0 build failed — real reason printed just above"
-let run_native = run ["sh" "-c" "linengrow/bin/sala_session_core_witness_native 2>&1"]
+let run_native = run ["sh" "-c" "linengrow/bin/seva_session_core_witness_native 2>&1"]
 assert run_native.ok else "native Sala B0 run failed"
 assert run_native.out contains "GREEN" else "native Sala B0 run not GREEN"
 let native_root_line = run ["sh" "-c" "echo '${run_native.out}' | grep 'session root'"]
@@ -46,15 +46,15 @@ assert native_root_line.ok else "could not read native session root from run out
 say "hawm3: native reference — ${native_root_line.out}"
 
 say "hawm3: cross-building the same witness for aarch64-linux-android (bionic libc, the Tensor G4's own architecture)…"
-let build_android = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build linengrow/sala_session_core_witness.rye -target aarch64-linux-android -femit-bin=linengrow/bin/sala_session_core_witness_android_aarch64"]
+let build_android = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build linengrow/seva_session_core_witness.rye -target aarch64-linux-android -femit-bin=linengrow/bin/seva_session_core_witness_android_aarch64"]
 if (build_android.ok == false) then say "hawm3: android-target build stderr — ${build_android.err}"
 assert build_android.ok else "aarch64-android-target Sala B0 build failed — real reason printed just above"
-let shape = run ["sh" "-c" "file linengrow/bin/sala_session_core_witness_android_aarch64"]
+let shape = run ["sh" "-c" "file linengrow/bin/seva_session_core_witness_android_aarch64"]
 assert shape.out contains "ARM aarch64" else "cross-built binary is not aarch64"
 say "hawm3: android-target binary built and shaped correctly"
 
 say "hawm3: pushing the binary onto the real, physical device (/data/local/tmp)…"
-let push = run ["sh" "-c" "${adb} push linengrow/bin/sala_session_core_witness_android_aarch64 /data/local/tmp/sala_b0_witness"]
+let push = run ["sh" "-c" "${adb} push linengrow/bin/seva_session_core_witness_android_aarch64 /data/local/tmp/sala_b0_witness"]
 assert push.ok else "adb push failed"
 let chmod = run ["sh" "-c" "${adb} shell chmod 755 /data/local/tmp/sala_b0_witness"]
 assert chmod.ok else "adb shell chmod failed"

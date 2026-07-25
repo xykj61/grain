@@ -15,11 +15,11 @@ const print = std.debug.print;
 // Symlinked beside this file (linengrow/skate_grid.rye → brushstroke/) so Zig's
 // module root stays inside linengrow while Skate remains the one Brushstroke source.
 const skate = @import("skate_grid.rye");
-const sala_surf = @import("sala_surface.rye");
+const sala_surf = @import("seva_surface.rye");
 const kb_paint = @import("dexter_glass_keyboard_paint.rye");
 const kb_layout = @import("dexter_glass_keyboard_layout.rye");
 const kb_emoji = @import("dexter_glass_emoji.rye");
-const jabs2_glass = @import("sala_jabs2_glass_audience.rye");
+const jabs2_glass = @import("seva_jabs2_glass_audience.rye");
 const live_glass = @import("sala_live_root_glass.rye");
 const hearth = @import("hearth_lulu0.rye");
 const lulu1 = @import("hearth_lulu1.rye");

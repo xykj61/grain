@@ -1,4 +1,4 @@
-//! linengrow/sala_jabs2_glass_audience.rye — JABS2 audience lines for glass.
+//! linengrow/seva_jabs2_glass_audience.rye — JABS2 audience lines for glass.
 //!
 //! Layout word: Skate grows to 20 rows; JABS2 paints rows 14–15;
 //! ZETA keyboard sits on 16–19. Two chat voices from the welcome audience.
@@ -6,7 +6,7 @@
 const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
-const core = @import("sala_jabs2_audience_core.rye");
+const core = @import("seva_jabs2_audience_core.rye");
 const emoji = @import("dexter_glass_emoji.rye");
 const dexter = @import("window_input.rye");
 

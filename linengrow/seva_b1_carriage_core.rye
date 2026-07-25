@@ -1,8 +1,8 @@
-//! linengrow/sala_b1_carriage_core.rye — in-process Sala B1 welcome path.
+//! linengrow/seva_b1_carriage_core.rye — in-process Seva B1 welcome path.
 //!
 //! Seal → open → reconstruct → append, then replay: follower root matches
 //! the source's own. No UDP, no process spawn — the glass and device-free
-//! door. Live hop stays in sala_broadcast_delivery.rye.
+//! door. Live hop stays in seva_broadcast_delivery.rye.
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -11,7 +11,7 @@ const kumara = @import("kumara.rye");
 const rc = @import("receipt_core.rye");
 const mc = @import("mala_core.rye");
 const wf = @import("wire_format.rye");
-const sala = @import("sala_session_core.rye");
+const sala = @import("seva_session_core.rye");
 
 pub const event_count: u32 = 3;
 

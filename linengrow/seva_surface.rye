@@ -1,9 +1,9 @@
-//! linengrow/sala_surface.rye — Sala R2: the unified viewer, many agents on one surface.
+//! linengrow/seva_surface.rye — Seva R2: the unified viewer, many agents on one surface.
 //!
 //! Per external-research/20260715-172000_pool-keystone-revival-realidream-landscape.md
 //! rung R2: ask, receipt, reputation, sanctuary — each a Pool-hosted agent,
 //! capability-isolated (P1) — rendered as its own bounded frame (R1) and
-//! gathered onto ONE Sala surface. This is the Landscape-parallel proper:
+//! gathered onto ONE Seva surface. This is the Landscape-parallel proper:
 //! one window over many sovereign, isolated agents, each shown as a pure
 //! fold, none able to touch another's state.
 //!
@@ -14,7 +14,7 @@
 
 const std = @import("std");
 const assert = std.debug.assert;
-const view = @import("sala_view.rye");
+const view = @import("seva_view.rye");
 const pool = @import("pool_host_seam.rye");
 const tally_copy = @import("tally_copy.rye");
 
