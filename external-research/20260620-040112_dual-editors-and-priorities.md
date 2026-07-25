@@ -10,6 +10,8 @@
 **Lens:** TAME — safety, performance, joy; honest reckoning
 **Status:** Research
 
+Radiant pass `20260725.110740`
+
 ---
 
 ## What Each Agent Built Tonight

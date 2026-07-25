@@ -11,6 +11,8 @@
 
 > **Reorientation (`051312`):** Rye will fork to a **literal `usize` ban** in authored types. This document remains the accurate manual for strengthenings and audits **while** `rye/lib/std` is Zig-shaped and parity uses vendor baseline. New language work follows `970`.
 
+Radiant pass `20260725.110740`
+
 ---
 
 ## The Question
