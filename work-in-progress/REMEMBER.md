@@ -20,7 +20,7 @@
 
 ## Now
 
-**Radiant Wave 25** `20260725.111515` — 50 clean · 0 changed · spot-read · lint 2. Sent `20260725.111525` · git nib `1b0a6324f0`. **Runway:** Wave **25 / ~20** · **629 / ~1,185** (~53%).
+**Radiant Wave 26** `20260725.111615` — 50 clean · 0 changed · lint 2. Sent `20260725.111625` · git nib `24c2f524a0`. **Runway:** Wave **26 / ~20** · **679 / ~1,185** (~57%).
 
 **Read:**
 
