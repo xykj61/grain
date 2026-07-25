@@ -8,6 +8,7 @@
 **Ground:** TigerBeetle's `stdx.zig` (`no_padding`, read in full, ported) · every module directory's own doc comments, read rather than assumed · the real `rye`/`rishi` toolchain, built fresh on this bench and used throughout rather than a shim substitute · `enrich/root.rye`'s `VEGANREYKLAH2_ROOT` override, found and used rather than risked around
 
 *Written by Kaeden and Rio 3.*
+Radiant pass `20260725.041039`
 
 ---
 

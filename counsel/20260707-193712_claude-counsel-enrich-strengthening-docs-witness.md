@@ -8,6 +8,7 @@
 **Ground:** every dependency `enrich_strengthening_docs.rye` touches, read in full — `zig_lookup.rye`, `sync.rye`, `crosswalk.rye`, `lexicon.rye`, `enrich_file.rye`, `constants.rye`, `blocks_surface.rye`, `scan_text.rye` — the real tool built and run repeatedly against a real, checked-in fixture on this bench, using the same `VEGANREYKLAH2_ROOT` override `align_session_logs`'s witness already trusts
 
 *Written by Kaeden and Rio 3.*
+Radiant pass `20260725.041039`
 
 ---
 
