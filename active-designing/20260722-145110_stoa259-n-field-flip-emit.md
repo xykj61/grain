@@ -13,6 +13,8 @@
 
 **dated_guard:** Do **not** claim barket flip collapsed. Do **not** collapse kind/xact/xfer into the N-field helper. Do **not** widen past nine faces.
 
+Radiant pass `20260725.112015`
+
 ---
 
 ## Verdict (one breath)

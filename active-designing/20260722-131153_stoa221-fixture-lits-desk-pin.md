@@ -13,6 +13,8 @@
 
 **dated_guard:** Do **not** claim `glow_sala_b0_fold` reads this desk yet. Fact-line sig/fact demo lits wait on a fixed demo line pin. JABS3 held.
 
+Radiant pass `20260725.112015`
+
 ---
 
 ## Verdict (one breath)

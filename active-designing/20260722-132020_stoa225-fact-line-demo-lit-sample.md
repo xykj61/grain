@@ -13,6 +13,8 @@
 
 **dated_guard:** Do **not** claim `glow_sala_b0_line` formats from the Glow desk at runtime. Pins are seated from deterministic `claim_demo_line` under issuer seed. JABS3 held.
 
+Radiant pass `20260725.112015`
+
 ---
 
 ## Verdict (one breath)

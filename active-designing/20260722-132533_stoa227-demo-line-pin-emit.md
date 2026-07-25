@@ -13,6 +13,8 @@
 
 **dated_guard:** Do **not** claim product reads `sample-demo-fact-line-lits.glow` at runtime. Do **not** claim fold uses pin emit yet. JABS3 held.
 
+Radiant pass `20260725.112015`
+
 ---
 
 ## Verdict (one breath)
