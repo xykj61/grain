@@ -1,0 +1,11 @@
+format session-log-v1
+stamp 20260725.111247
+editor Cursor
+model Cursor Composer 2.5 300k Fast
+voice Quin
+title Wave 22-23 close kg turn
+prompt kg
+think closed Wave 22 46 clean 4 changed Brooke EOF; Wave 23 50 clean settlement arc.
+obs Wave 22 PR 110 nib 65bd39450a; Wave 23 PR 111 nib 731a802f55; runway 529/~1185.
+recommend keep-going Wave 24 bound 50; spot-read Wave 25
+git_nib 731a802f55
