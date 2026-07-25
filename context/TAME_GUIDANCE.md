@@ -240,11 +240,19 @@ Every assertion earns a comment: `// invariant: ...`. Every named constant earns
 
 The next reader meets the reason, not only the rule. Always motivate, always say why — a stated rationale shares with the reader the very criteria by which to weigh the decision.
 
-### 4. Accrete, never break
+### 4. Accrete, never break — three tiers
 
-A name once given is a promise. Add beside it; do not replace it silently. When a better shape is found, the old name keeps working while the new one grows. Rename only with a migration path; deprecate before removing.
+A name once given is a promise. Add beside it; do not replace it silently. When a better shape is found, the old name keeps working while the new one grows. Rename only with a migration path; deprecate before removing. A version once published does not change under the tier that seals it.
 
-A version once published does not change.
+**This is a compatibility law.** Only **Tier 1** is absolute. The project has no external dependents yet, so the law binds where proofs and testimony bind — rather than everywhere by default. Amended `20260724.222620`.
+
+| Tier | Seal | What it covers | How it moves |
+|------|------|----------------|--------------|
+| **1 — Sealed by proof** | Absolute | Any byte a digest, signature, or root covers: HAWM root `99b3ae96…`, the flw corpus pin and its count, seated waymark draws, digest-pinned fixtures, signed commit content | **Never edited.** Editing invalidates a proof, rather than a caller. |
+| **2 — Sealed by testimony** | Recorded history | Counsel memos and replies, session logs, claim briefs | A **recorded Radiant pass** is permitted — precedent: `Radiant pass 182821` on archived RIO3. The pass adds a `Radiant pass <stamp>` line to the header; it changes **style only** and no claim. Factual errors take **errata**, so a wrong belief stays visible as a wrong belief. |
+| **3 — Open to revision** | Living present | Living docs, current-state specs, code, comments, names until a consumer exists | Freely revisable and sweepable. Names still take a collision lap; nothing else gates. |
+
+Machine half: `tools/dated_guard.rish` refuses Tier 1 outright; permits Tier 2 when a `Radiant pass <stamp>` line is present (or living ledger / freeze pointer). Broad style passes earn honesty from `tools/claim_preserve_witness.rish`. Spec: [`specs/living-vs-dated.md`](specs/living-vs-dated.md).
 
 ### 5. One value model
 
@@ -578,7 +586,9 @@ These are the machine-checkable rules — the lint surface. The discipline is th
 | Rule | Check |
 |------|-------|
 | **No authored `usize` in published `.rye`** (seam casts blessed) | `tools/width-check.rish` (live, TH-1) |
-| **Dated artifacts on main stay immutable** (unless living ledger header or freeze pointer) | `tools/dated_guard.rish` (live, beside width-check; spec [`living-vs-dated.md`](specs/living-vs-dated.md)) |
+| **Dated artifacts on main stay Tier-2 sealed** (living ledger · freeze pointer · recorded Radiant pass); **Tier 1 proof paths refuse edit** | `tools/dated_guard.rish` (live; roster `tools/fixtures/dated_guard_tier1.txt`; spec [`living-vs-dated.md`](specs/living-vs-dated.md)) |
+| **Radiant surface advisory** (bare but-word · emoji · benediction · co-author · header) | `tools/radiant_lint.rish` (ratchet advisory; never fails) |
+| **Radiant pass claim preserve** (token sets identical; pinned digests held) | `tools/claim_preserve_witness.rish` (blocking for any broad pass) |
 | **Unqualified assert** | `tools/tame-check.rish` (live witness, TH-2c) |
 | **Opening lines** (`const assert` + `const print`, no qualified debug calls) | `tools/opening_lines_witness.rish` (live witness, parity **140** — hosted corpus + `pond/apps/drawn_terminal.rye`) |
 | **At most one designed-not-built functional spec** (`context/specs/*.md` Status) | `tools/designed_not_built_witness.rish` (live witness, parity **143**, Edit 5 ruling `20260703.032812`) |

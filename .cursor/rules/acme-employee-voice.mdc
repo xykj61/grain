@@ -16,7 +16,7 @@ Write the *reader-facing* voice in these documents as if addressed to an unnamed
 
 - **Session logs** (`session-logs/*.bron`) are a factual reasoning record, not an instructional document — they keep naming Keaton plainly, exactly as the `session-logs.md`/`.mdc` rules already require ("`prompt` what Keaton asked"). This rule does not touch them.
 - **`TASKS.md`, `ROADMAP.md`, `counsel/`, `collaboration.md`**, and any other document whose whole purpose is tracking a specific person's specific decisions, keep naming Keaton — anonymizing a decision log would make it useless as a record.
-- **Existing dated documents are never rewritten** to retrofit this rule — dated artifacts stay immutable per `dated_guard.rish` and the "accrete, never break" root discipline. This rule governs new documents written from here forward.
+- **Existing dated documents are not silently rewritten** to retrofit this rule — dated testimony is Tier 2 under TAME §4 (`dated_guard.rish` permits a recorded Radiant pass or erratum; Tier 1 proof paths still refuse). This rule governs new documents written from here forward.
 - **Code, module names, and file paths** are entirely out of scope for this rule — it governs prose voice only.
 
 ## Why it is shaped this way

@@ -9,9 +9,11 @@
 
 *What kind is each root thing, and who stewards it?* Not every artifact is a vane.
 
+**Pier remotes:** canonical count lives in [`context/REMOTE_ROSTER.md`](context/REMOTE_ROSTER.md) — this page points rather than restates.
+
 | Root artifact(s) | Kind | Steward / serves |
 |---|---|---|
-| `context/` · `foundations/` · `APARIGRAHA.md` · `OPEN_QUESTIONS.md` | Compass | everyone; `living_docs_lint` · `dated_guard` |
+| `context/` · `foundations/` · `APARIGRAHA.md` · `OPEN_QUESTIONS.md` · `REMOTE_ROSTER.md` | Compass | everyone; `living_docs_lint` · `dated_guard` · `radiant_lint` |
 | `README` · `ORGANIZING` · `CONTRIBUTING` · `SOURCE` · `PUBKEYS` · licenses · `CLAUDE.md` · `llms.txt` · this file | Pier papers | the pier itself |
 | `counsel/` · `expanding-prompts/` · `session-logs/` · `work-in-progress/` · `bron-resins/` · host/profile cards | Relay genres | counsel↔bench relay |
 | `active-designing/` · `active-reviving/` · `waymarks/` | Design · revival · claims | Maze-adjacent; claims forward-only in `waymarks/` |

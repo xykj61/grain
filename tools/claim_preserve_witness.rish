@@ -1,0 +1,18 @@
+# claim_preserve_witness.rish — safety that makes a broad Radiant pass honest.
+#
+# For every file a pass touches, extract claim tokens (numbers · hex digests ·
+# key fingerprints · file paths · stamps · capitalized proper nouns) BEFORE and
+# AFTER, and assert the sets are identical. Also asserts known pinned digests
+# did not move. Any mismatch → STOP; do not "resolve."
+#
+# Seated 20260724.222620 · Quin relay.
+#
+#   CLAIM_PRESERVE_FILES=$'a.md\nb.md' rishi/bin/rishi run tools/claim_preserve_witness.rish
+#
+# Vacuous self-check (no files) fails closed — a pass must name its surface.
+
+say "claim_preserve: token identity + pinned digests…"
+let scan = run ["rishi/bin/rishi" "run" "tools/fixtures/claim_preserve_scan.rish"]
+say scan.out
+assert scan.ok else "claim_preserve RED — STOP the wave"
+say "GREEN: claim_preserve — tokens identical; pins held."
