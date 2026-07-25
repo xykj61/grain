@@ -10,6 +10,7 @@
 **Ground:** exit honesty [`200443`](20260709-200443_wov-exit-honesty.md) · lap 1 [`../linengrow/wov_core.rye`](../linengrow/wov_core.rye) · pin presence parity **203** · night brief [`203139`](../../external-research/20260709-203139_claude-review-brief-jul9-night-climb.md) · gratitude pin `59f2b99` Apache-2.0
 
 *Written by Kaeden and Rio 3 (Grok).*
+Radiant pass `20260725.035852`
 
 ---
 

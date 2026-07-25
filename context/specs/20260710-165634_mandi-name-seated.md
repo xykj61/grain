@@ -7,6 +7,7 @@
 **Ground:** study [`../../external-research/20260703-200712_compute-commerce-on-the-network.md`](../../external-research/20260703-200712_compute-commerce-on-the-network.md) · Granary seating [`20260710-163043_granary-name-seated.md`](20260710-163043_granary-name-seated.md)
 
 *Written by Kaeden and Rio 3.*
+Radiant pass `20260725.035852`
 
 ---
 
