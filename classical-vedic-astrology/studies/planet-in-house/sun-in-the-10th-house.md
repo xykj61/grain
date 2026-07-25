@@ -8,6 +8,8 @@
 
 **In Alice's chart:** Her Sun occupies the 10th house — the highest, most public point of the chart. This is the *where* of her Sun, the arena her light shines into. Read it alongside the Sun-in-Leo file (the sign) and the Ashleṣā file (the star). Her Mars shares this same house; the Mars-in-Leo file describes the doubled fire of her public life.
 
+Radiant pass `20260725.112615`
+
 ---
 
 ## The high noon of the chart

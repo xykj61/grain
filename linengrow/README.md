@@ -4,6 +4,8 @@
 **Last updated:** 2026-07-11 (commerce steward demo nib **419** · Dimeroll own root; MALA/WOV still here)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 
+Radiant pass `20260725.112615`
+
 ---
 
 Linengrow is the first whole built upon Rye OS — a transparent civic and social-commerce platform for vegan musicians and activist creators, where every sponsored post carries a visible label, every data sale carries a visible receipt, every contract carries a visible expiration, and every person owns their complete data in a portable server they can carry whenever they choose. Where Rye OS is the system, Linengrow is what the system is *for*: the place its foundations meet real people, real creators, and real communities.

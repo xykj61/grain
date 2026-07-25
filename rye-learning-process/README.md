@@ -5,6 +5,8 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Foundation
 
+Radiant pass `20260725.112615`
+
 ---
 
 ## What This Folder Is

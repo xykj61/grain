@@ -6,6 +6,8 @@
 **Voice:** Rio 3
 **Status:** Guide for the task — the client half is real and witnessed on this host; the server half is a real, tested-for-syntax deploy artifact, run once for real on a VPS
 
+Radiant pass `20260725.112615`
+
 ---
 
 **Navigation:** [Manual home](../README.md)

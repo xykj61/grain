@@ -8,6 +8,8 @@
 **Conformance:** *must* and *should* carry their plain conformance weight
 **Pledge:** this reference documents only what runs; every example below is drawn from, or shaped exactly like, a witness that passes today
 
+Radiant pass `20260725.112615`
+
 ---
 
 ## 1. Invocation

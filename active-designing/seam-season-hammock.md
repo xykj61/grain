@@ -12,6 +12,8 @@
 **Foundations:** [`../foundations/20260706-022912_the-wire-serves-the-fold.md`](../foundations/20260706-022912_the-wire-serves-the-fold.md) · [`../foundations/20260703-182612_sameness-is-the-macro.md`](../foundations/20260703-182612_sameness-is-the-macro.md) · [`../foundations/20260628-124512_anywhere-we-are-found.md`](../foundations/20260628-124512_anywhere-we-are-found.md) · [`../foundations/20260629-014512_money-that-stays-close-to-home.md`](../foundations/20260629-014512_money-that-stays-close-to-home.md)
 **Living law:** [`../context/specs/living-vs-dated.md`](../context/specs/living-vs-dated.md) · frozen dated original [`20260712-052806_seam-season-hammock.md`](20260712-052806_seam-season-hammock.md)
 
+Radiant pass `20260725.112615`
+
 ---
 
 ## Season name

@@ -8,6 +8,8 @@
 **Parity ground:** **142** — RW-3 and RW-4 green today
 **Law:** [`../../context/TAME_GUIDANCE.md`](../../context/TAME_GUIDANCE.md)
 
+Radiant pass `20260725.112615`
+
 ---
 
 Tutorial one introduced the witness shape. This room goes deeper into the **run record** — the four fields every gate trusts — and the **failure paths** RW-4 pins beside success.
