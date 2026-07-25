@@ -5,6 +5,8 @@
 **Status:** **Landed** `20260709.224634` — **D1** twin log lines; parity **205**
 **Ground:** design [`../context/specs/20260709-224531_wov-dual-monarch.md`](../context/specs/20260709-224531_wov-dual-monarch.md) · exit honesty [`200443`](../context/specs/20260709-200443_wov-exit-honesty.md) · seam A parity **204**
 
+Radiant pass `20260725.111415`
+
 ---
 
 ## Affirm

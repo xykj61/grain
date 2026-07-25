@@ -9,6 +9,8 @@
 **Status:** Checkable-room — escape path **retired**; refuse witness is the living floor; on-path waits behind `LANE_KVM=true` + `/dev/kvm`
 **Ground:** counsel [`../counsel/20260712-090512_claude-ruling-enclosure-ai-jail-then-pond.md`](../counsel/20260712-090512_claude-ruling-enclosure-ai-jail-then-pond.md) · hammock [`proven-seat-guest-hammock.md`](proven-seat-guest-hammock.md) · gate `tools/lane_kvm.sh`
 
+Radiant pass `20260725.111415`
+
 ---
 
 ## What happened (finding → repair)

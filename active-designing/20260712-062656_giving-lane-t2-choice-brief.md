@@ -9,6 +9,8 @@
 **Status:** Checkable-room — seated choice; courtesy is T2’s shape; proof is T3 after a conservation brief; no OA wire in this note
 **Ground:** T1 map [`20260712-054942_giving-lane-t1-open-asks-field-map.md`](20260712-054942_giving-lane-t1-open-asks-field-map.md) · disposition [`../counsel/20260712-061012_claude-counsel-post-seam-disposition.md`](../counsel/20260712-061012_claude-counsel-post-seam-disposition.md) · bud/mudra [`../context/specs/20260712-061012_bud-and-mudra-names-seated.md`](../context/specs/20260712-061012_bud-and-mudra-names-seated.md) · tip **430** green
 
+Radiant pass `20260725.111415`
+
 ---
 
 ## The choice (seated)

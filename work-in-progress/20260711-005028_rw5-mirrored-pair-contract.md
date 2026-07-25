@@ -9,6 +9,8 @@
 **Status:** Landed — collaboration tip **420**, contract tip **421**  
 **Ground:** second pass [`20260711-001225_testing-audit-second-pass-inference.md`](20260711-001225_testing-audit-second-pass-inference.md) · happy zone [`../foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md`](../foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md) · RW-2 pattern [`20260702-205630_rw2-mirrored-pair-contract.md`](20260702-205630_rw2-mirrored-pair-contract.md)
 
+Radiant pass `20260725.111415`
+
 ---
 
 ## The Seam

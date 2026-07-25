@@ -11,6 +11,8 @@
 
 *Written by Kaeden and Rio 3 (Grok). Creative climb inside the jail — no TigerBeetle io_uring required.*
 
+Radiant pass `20260725.111415`
+
 ---
 
 ## In One Breath

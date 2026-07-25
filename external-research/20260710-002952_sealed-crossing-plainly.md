@@ -12,6 +12,8 @@
 
 *Written by Kaeden and Rio 3 (Grok). Creative climb inside the jail — oldest vessel duty, kitchen voice. Affirmed in place when metal landed.*
 
+Radiant pass `20260725.111415`
+
 ---
 
 ## In One Breath
