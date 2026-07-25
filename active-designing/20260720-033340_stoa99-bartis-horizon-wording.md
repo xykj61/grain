@@ -12,6 +12,8 @@
 
 **dated_guard:** Do **not** edit the dated `20260719-204001_*` or `20260719-220814_*` files. Seat bartis horizon in *this* brief and living pins.
 
+Radiant pass `20260725.111715`
+
 ---
 
 ## Verdict (one breath)
