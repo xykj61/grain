@@ -13,6 +13,8 @@
 
 **dated_guard:** Do **not** merge with `$:` N-field path. Do **not** open ambient gold. Kind unit flip stays a second family this lap. Barket twin → STOA295.
 
+Radiant pass `20260725.112115`
+
 ---
 
 ## Survey — where flip lives

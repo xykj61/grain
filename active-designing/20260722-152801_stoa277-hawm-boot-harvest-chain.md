@@ -13,6 +13,8 @@
 
 **dated_guard:** Do **not** claim full boot→harvest GREEN from a session without `/dev/kvm`. Do **not** claim fleets. HAWM1 root-into-harvest stays lean C.
 
+Radiant pass `20260725.112115`
+
 ---
 
 ## Verdict (one breath)

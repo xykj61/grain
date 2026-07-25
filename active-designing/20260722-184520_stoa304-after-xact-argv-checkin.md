@@ -13,6 +13,8 @@
 
 **dated_guard:** Xfer/pair argv · gold · face_lit · fleets · JABS3 stay held unless chosen. Do not recommend rest unprompted.
 
+Radiant pass `20260725.112115`
+
 ---
 
 ## What just closed

@@ -13,6 +13,8 @@
 
 **dated_guard:** Do **not** rewrite dated titles or bodies that say *inventary*. Sweep only lines that speak as *now*.
 
+Radiant pass `20260725.112115`
+
 ---
 
 ## Plain function
