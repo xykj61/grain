@@ -5,8 +5,6 @@
 **Style:** Radiant · secular silo
 **Original (held whole):** [`../../gratitude/grain-lineage/topos-aether-agni-geometry.md`](../../gratitude/grain-lineage/topos-aether-agni-geometry.md)
 
-Radiant pass `20260725.112715`
-
 ---
 
 ## The One-Sentence Claim

@@ -1,5 +1,3 @@
-Radiant pass `20260725.112715`
-
 # Moved
 
 The TAME operational supplement now lives at [`../TAME_GUIDANCE.md`](../TAME_GUIDANCE.md).

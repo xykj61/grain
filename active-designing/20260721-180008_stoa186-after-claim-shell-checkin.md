@@ -13,8 +13,6 @@
 
 **dated_guard:** Do **not** claim `$%` `@t`/`@ux` or fold rewrite until a lean seats them. Prefer **send** of STOA185 before a long next lap when the pier should match the hand. JABS3 stays held.
 
-Radiant pass `20260725.111915`
-
 ---
 
 ## What just closed

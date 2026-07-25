@@ -8,8 +8,6 @@
 
 **In Alice's chart:** The Sun sits in Leo — its own sign, the throne it rules — in the star of Ashleṣā, in the 10th house. This file gives the *who* of her Sun, its core nature. Read it alongside the Ashleṣā file, which gives the deeper star that colors its light, and the Sun-in-the-10th-house file, which gives the public arena where it acts.
 
-Radiant pass `20260725.112615`
-
 ---
 
 ## The Sun at home in its own sign

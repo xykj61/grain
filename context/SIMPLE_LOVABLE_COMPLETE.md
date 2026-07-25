@@ -6,8 +6,6 @@
 
 **Purpose:** Name how we ship — so that every release, at every size, is something a person can use today and genuinely love.
 
-Radiant pass `20260725.112615`
-
 ---
 
 ## The Three Words

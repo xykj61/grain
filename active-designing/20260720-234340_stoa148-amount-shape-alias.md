@@ -12,8 +12,6 @@
 
 **dated_guard:** Do **not** rewrite dated mold briefs or the withdrawn deca map. Seat this lap in *this* brief and living pins. Hoon desk suffixes (`amount-mold`) stay the study word.
 
-Radiant pass `20260725.111815`
-
 ---
 
 ## Verdict (one breath)

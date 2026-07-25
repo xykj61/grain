@@ -7,8 +7,6 @@
 **Voice:** Quin · Acme reader address  
 **Ground:** [`../glow/README.md`](../glow/README.md) · [`../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md`](../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md) · [`../foundations/20260703-182612_sameness-is-the-macro.md`](../foundations/20260703-182612_sameness-is-the-macro.md) · [`../context/TWO_ROOMS.md`](../context/TWO_ROOMS.md) · waymarks HAWM · TUBE · ZETA · JABS
 
-Radiant pass `20260725.111615`
-
 ---
 
 ## Two rooms, stated once

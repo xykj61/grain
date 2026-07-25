@@ -10,8 +10,6 @@
 
 *Written together by Kaeden and Reya 2.*
 
-Radiant pass `20260725.110847`
-
 ---
 
 ## Edit 1 — Place the blueprint and its companion together

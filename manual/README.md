@@ -7,8 +7,6 @@
 **Audience:** Acme Corporation employees · operators on this tree
 **Status:** Founded — reference at parity **142**; three tutorials open (first-witness · run-record · Cursor-and-the-compass); Caravan and Tally reference partial; Glow OS onboarding under `glow-os/`; Pixel/HAWM/TUBE/JABS path indexed
 
-Radiant pass `20260725.112615`
-
 ---
 
 The manual teaches what already runs, and it has four rooms, each answering a different visitor. **Tutorials** teach by the hand — Radiant and gentle, each one ending at a green witness. **Guides** serve the person mid-task. **Reference** serves the person looking something up: one living, versioned specification per stable surface. **Understanding** lives where it always has — the essays in `foundations/` and the design records in `active-designing/` — and this README points there rather than duplicating them.

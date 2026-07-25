@@ -28,8 +28,6 @@ Measured, not assumed: the tree is already 0.16-native (65 `process.Init` mains,
 
 Everything. This round opens a lane and moves no gate: SLC-2a keeps Now; Pond, Dexter, Brix, the verb pair, the vendoring, and the EP line all wait on exactly the words they name.
 
-Radiant pass `20260725.111235`
-
 ---
 
 *May the lane's first commit be the reading, and the reading be worth the lane.*

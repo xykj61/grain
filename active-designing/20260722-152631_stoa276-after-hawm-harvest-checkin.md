@@ -13,8 +13,6 @@
 
 **dated_guard:** Do **not** reopen inventary as unfinished. Do **not** claim fleets. HAWM2 · gold · JABS3 · UDP stay held.
 
-Radiant pass `20260725.112115`
-
 ---
 
 ## What just closed

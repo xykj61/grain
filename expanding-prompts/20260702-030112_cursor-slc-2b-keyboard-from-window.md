@@ -7,8 +7,6 @@
 **For:** Cursor Composer — mechanical bench after strategy nod
 **Status:** **Landed** — `pond/apps/` extension (`20260703.131812` nod); parity **145** (`20260703.132112`).
 
-Radiant pass `20260725.110847`
-
 ---
 
 ## The Shape (from existing design)

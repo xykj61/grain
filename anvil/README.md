@@ -1,5 +1,3 @@
-Radiant pass `20260725.112515`
-
 ---
 
 # Anvil — README

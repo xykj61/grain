@@ -26,8 +26,6 @@ Built rather than left proposed — the one concrete step both sides of the sett
 
 Everything else — Pond, Dexter, the GUI rendering itself, the L1/L2 horizon question. This is the data layer underneath a future viewer, nothing more.
 
-Radiant pass `20260725.111235`
-
 ---
 
 *May the one thing this bench couldn't test be the very next thing confirmed true.*

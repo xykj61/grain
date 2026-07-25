@@ -10,8 +10,6 @@
 
 *Written together by Kaeden and Claude (Fable 5), in Reya 2's Radiant voice.*
 
-Radiant pass `20260725.110847`
-
 ---
 
 ## The Python and the Shell

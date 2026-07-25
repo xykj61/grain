@@ -12,8 +12,6 @@
 
 **dated_guard:** Do **not** rewrite dated JABS0 / HAWM1 / STOA72–73 records. Elder Rye fold stays until a Glow path earns the same root. JABS3 stays a separate thicker check-in. No whole-vane dump from `old/`.
 
-Radiant pass `20260725.111915`
-
 ---
 
 ## Verdict (one breath)

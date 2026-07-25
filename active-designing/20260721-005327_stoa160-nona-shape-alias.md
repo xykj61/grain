@@ -12,8 +12,6 @@
 
 **dated_guard:** Do **not** rewrite dated mold briefs. Seat this lap in *this* brief and living pins. Hoon desk suffixes (`nona-mold`) stay the study word. Alias path stays; no whole-tree sed. Do **not** open `deca-shape`.
 
-Radiant pass `20260725.111815`
-
 ---
 
 ## Verdict (one breath)

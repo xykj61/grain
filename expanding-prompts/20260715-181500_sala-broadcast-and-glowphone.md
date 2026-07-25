@@ -5,8 +5,6 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Runnable synthesis — two external-research writings landed this pass. Register: design/research (Two Rooms — proposals, not built code). Addressed to a generic Acme Corporation employee.
 
-Radiant pass `20260725.111615`
-
 ---
 
 ## The Seed (what was asked)

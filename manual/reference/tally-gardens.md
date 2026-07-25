@@ -6,8 +6,6 @@
 **Voice:** Rio 3
 **Witness:** `rye/tests/tally_gardens_test.rye` (via parity) · `tools/foundation_seeds.rish` · parity **142**
 
-Radiant pass `20260725.112715`
-
 ---
 
 This page documents only what the gardens witness and foundation-seed gate prove — named bounded memory regions for hosted modules.

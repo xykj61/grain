@@ -12,8 +12,6 @@
 
 **dated_guard:** Do **not** claim NativeActivity claim wire or fold rewrite. Prefer **send** of STOA186–188 when the pier should match the hand. JABS3 held.
 
-Radiant pass `20260725.111915`
-
 ---
 
 ## Verdict (one breath)

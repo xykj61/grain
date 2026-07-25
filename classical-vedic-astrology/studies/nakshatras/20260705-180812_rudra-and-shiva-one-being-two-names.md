@@ -3,8 +3,6 @@
 **Stamp:** `20260705.180812 UDT` · **Style:** Radiant, gentle register
 **Method:** Siloed — distilled in our own voice; teacher named with gratitude below
 
-Radiant pass `20260725.111120`
-
 ---
 
 One being wears two names, and the distance between them is a whole path. Rudra is the being himself — loud, fierce, the howler, named for the crying he did the moment he was born. Shiva is the title he earned — placid, auspicious, the calm one — given to him once he had mastered his own anger through yoga. Same figure, two names; and to move from the first name to the second is the journey the story quietly holds up for us.

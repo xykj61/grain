@@ -3,8 +3,6 @@
 **Stamp:** `20260705.182612 UDT` · **Style:** Radiant, gentle register
 **Method:** Siloed — distilled in our own voice; teacher named with gratitude below
 
-Radiant pass `20260725.111120`
-
 ---
 
 A planet in a house is one of the simplest things to name and one of the richest to read well. The simplicity is a kind of trap: because the pieces are few, everything depends on how they are combined. So the craft holds a small, reliable method, alongside a larger discipline about never mistaking one placement for a whole life.

@@ -6,8 +6,6 @@
 
 *Written together by Kaeden and Rio 3.*
 
-Radiant pass `20260725.111120`
-
 ---
 
 Born a single day shy of the full Moon (#56), her heart rose in the east as she was born. Visible: Aquarius in the second (#48) — *her heart lives in the house of the voice* — Uttara Ashadha across the sign-change. Essence: Libra in the third (#49), wearing Chitra (#22), beside Mercury and exalted Saturn in the maker's gathering (#23). Feeling flows directly into making.

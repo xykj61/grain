@@ -19,8 +19,6 @@ This documentation pass landed. Re-run the enricher after each new `k` pass; wid
 
 **Retired:** `tools/enrich_strengthening_docs.py`
 
-Radiant pass `20260725.110740`
-
 ---
 
 *May every pass name its surface, and every count name its width.*

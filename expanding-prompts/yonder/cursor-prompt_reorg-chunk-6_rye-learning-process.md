@@ -2,8 +2,6 @@
 
 **Paste this into a fresh Cursor Composer 2.5 agent.** It reorganizes one folder whole, on `reorg/one-clock`. Read it fully before running anything. Check before you change. Propose every rename and wait for Kaeden's word. Push only when Kaeden says.
 
-Radiant pass `20260725.112415`
-
 ---
 
 ## Environment — set this first, every run

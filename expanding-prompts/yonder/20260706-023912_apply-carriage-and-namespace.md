@@ -4,8 +4,6 @@
 
 *Written by Kaeden and Rio 3. One-clock, stop-and-park, and TAME laws inherit whole. This is a documentation bench — no code, no witness, no parity change. It is cumulative: it carries the prior carriage study so everything since `2252109` applies in one pass.*
 
-Radiant pass `20260725.111235`
-
 ---
 
 ## What this bench applies

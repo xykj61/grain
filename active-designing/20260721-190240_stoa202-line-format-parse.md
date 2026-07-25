@@ -13,8 +13,6 @@
 
 **dated_guard:** Elder `format_log_line` / `parse_log_line` stay the bodies. Append compose via this surface: [`20260721-190527_stoa203-append-sign-line-compose.md`](20260721-190527_stoa203-append-sign-line-compose.md). JABS3 held.
 
-Radiant pass `20260725.111915`
-
 ---
 
 ## Verdict (one breath)

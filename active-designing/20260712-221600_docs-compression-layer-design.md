@@ -9,8 +9,6 @@
 **Status:** Checkable — design seated at git nib `386869e`; `docs/` shelf live; **`tools/living_docs_lint.rish` seated** `222800`
 **Ground:** RTAC compression test · [`context/TAME_GUIDANCE.md`](../context/TAME_GUIDANCE.md) TigerBeetle `docs/` precedent · [`context/TWO_ROOMS.md`](../context/TWO_ROOMS.md) doorway law · [`context/SILO_TECHNIQUE.md`](../context/SILO_TECHNIQUE.md) scoped relaxation
 
-Radiant pass `20260725.111515`
-
 ---
 
 ## Reframe — you already own the pattern

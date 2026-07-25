@@ -13,8 +13,6 @@
 
 **dated_guard:** Do **not** reopen STOA270–272 as unfinished. Gold · shared-package · JABS3 · UDP stay held.
 
-Radiant pass `20260725.112115`
-
 ---
 
 ## What just closed

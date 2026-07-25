@@ -26,8 +26,6 @@ An audit of the whole Cursor-bot arc (tips 379→430, PRs #85–#112). One verif
 - **The WOV/TigerBeetle tension** — `wov_tb_ensure_binary.sh` builds pinned TigerBeetle via a separate Zig 0.14.1 toolchain and runs it as an external process. Faithful to WOV's original design, in tension with the no-external-interpreters direction. This is Kaeden's call, not a mechanical fix — do not act on it in this bundle.
 - **`run_selftest` (77) and `run_poster` (73)** — left deliberately for a later touch; splitting unverifiable-in-one-pass code is how a clean refactor grows a quiet bug.
 
-Radiant pass `20260725.111415`
-
 ---
 
 *May the money code stay exactly as guarded as it already is, and grow only more so.*

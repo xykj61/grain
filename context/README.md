@@ -5,8 +5,6 @@
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 **Voice:** Quin
 
-Radiant pass `20260725.112515`
-
 ---
 
 This directory is the memory and compass for the Glow OS repository. It gathers the durable guidance — how we write, who Quin is, and the plain-English specs that record each decision — in one calm, local place. Whoever reads it — you, arriving fresh, or an agent picking up the work — finds the disciplines here rather than scattered through the tree.

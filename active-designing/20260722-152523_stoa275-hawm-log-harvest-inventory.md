@@ -13,8 +13,6 @@
 
 **dated_guard:** Do **not** claim fleets or multi-AVD. Do **not** claim GrapheneOS under the emulator. Do **not** require `/dev/kvm` for the inventary witness itself.
 
-Radiant pass `20260725.112115`
-
 ---
 
 ## Host log surfaces (today)

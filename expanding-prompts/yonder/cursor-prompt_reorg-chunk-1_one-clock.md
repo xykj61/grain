@@ -2,8 +2,6 @@
 
 **Paste this into a fresh Cursor Composer 2.5 agent.** It carries one safe, complete chunk of the one-clock reorganization. Read it fully before running anything. Check before you change. Push the branch over SSH only once the work is committed and Kaeden gives the word.
 
-Radiant pass `20260725.112415`
-
 ---
 
 ## Environment — set this first, every run

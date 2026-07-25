@@ -1,5 +1,3 @@
-Radiant pass `20260725.112615`
-
 # Urbit
 
 [Urbit](https://urbit.org) is a personal server stack built from scratch. It

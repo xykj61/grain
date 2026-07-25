@@ -12,8 +12,6 @@
 
 **dated_guard:** Do **not** rewrite dated mold briefs. Do **not** delete `mold-kind`. No whole-tree sed.
 
-Radiant pass `20260725.111815`
-
 ---
 
 ## Verdict (one breath)

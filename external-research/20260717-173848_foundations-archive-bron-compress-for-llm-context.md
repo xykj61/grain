@@ -7,8 +7,6 @@
 **Status:** research for understanding — archive vs compress · Bron vs Markdown · LLM context (Two Rooms). Addressed to a generic Acme Corporation employee.
 **Companion silo:** [`../active-designing/20260717-173848_compass-card-and-foundations-compress.md`](../active-designing/20260717-173848_compass-card-and-foundations-compress.md)
 
-Radiant pass `20260725.111615`
-
 ---
 
 ## What This Study Asks

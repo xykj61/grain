@@ -8,8 +8,6 @@
 
 **In Alice's chart:** Mars sits in Leo, in the 10th house — sharing that highest, most public house with her Sun. This file holds both the *how* of her Mars, its nature in Leo, and a closing word on the *where*, its work in the 10th. Read it alongside the Sun-in-the-10th-house file, which describes the public arena these two fires share.
 
-Radiant pass `20260725.112515`
-
 ---
 
 ## Fire welcomed by fire

@@ -5,8 +5,6 @@
 **Style:** Radiant (see `../../context/RADIANT_STYLE.md`)
 **Status:** Scaffold — conceptual overview; implementation status noted per claim
 
-Radiant pass `20260725.112515`
-
 ---
 
 **Navigation:**

@@ -13,8 +13,6 @@
 
 **dated_guard:** Do **not** claim events 2–3 come from pins. Do **not** claim fold rewrites to pin emit. Do **not** claim runtime `.glow` parse. JABS3 held.
 
-Radiant pass `20260725.112015`
-
 ---
 
 ## Verdict (one breath)

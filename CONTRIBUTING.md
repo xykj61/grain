@@ -4,8 +4,6 @@
 **Style:** Radiant (see `context/RADIANT_STYLE.md`)
 **Voice:** Quin
 
-Radiant pass `20260725.112415`
-
 ---
 
 This proposal keeps the strictness of the `CONTRIBUTING.md` it inherited from `urbit/urbit` — now resting, unaltered, at [`old/urbit/CONTRIBUTING.md`](old/urbit/CONTRIBUTING.md) — and grows its own voice on top of it. Read both; the older document's rules still bind, and this one names what this proposal adds. Glow OS is developed downstream as a contribution offered back to Urbit, so its own discipline deliberately mirrors Urbit's, keeping any eventual upstream pull request small, legible, and in the house style.

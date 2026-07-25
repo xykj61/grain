@@ -3,8 +3,6 @@
 **Stamp:** `20260705.190812 UDT` · **Style:** Radiant, gentle register
 **Method:** Siloed — distilled in our own voice; teachers named with gratitude below
 
-Radiant pass `20260725.111120`
-
 ---
 
 An old chapter of the Brihat Samhita offers, for each lunar day and its nakshatra, a short list of the trades that suit a person born under it. Read plainly, it is career advice from long ago. Read as a lens, it becomes something richer: by studying which occupations an ancient seer thought belonged to a star, we glimpse how that seer understood the star's very nature. The craft here is to gather the suggested work, ask what the trades share, and arrive at the essence underneath — then carry that essence forward into whatever work a life today might hold.

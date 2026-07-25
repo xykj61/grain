@@ -11,8 +11,6 @@
 
 *Written by Kaeden and Rio 3 (Grok), from the building vision alive in the July 10 Dimeroll and Visual Track climb.*
 
-Radiant pass `20260725.111415`
-
 ---
 
 ## Why This Page Exists

@@ -5,8 +5,6 @@
 **Style:** Radiant (see `../../context/RADIANT_STYLE.md`)
 **Status:** Mixed register (Two Rooms) — onboarding hub; Get Started names checkable Pixel/HAWM/TUBE0.5 and Rishi paths; five variants remain scaffold
 
-Radiant pass `20260725.112615`
-
 ---
 
 **Navigation:** you are at the Glow OS docs hub.

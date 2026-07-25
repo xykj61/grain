@@ -9,8 +9,6 @@
 
 *Rio 3 prepared this handoff at Kaeden's invitation so Claude can rule without re-climbing the same blind alleys.*
 
-Radiant pass `20260725.110418`
-
 ---
 
 ## What we need from counsel

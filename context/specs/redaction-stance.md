@@ -13,8 +13,6 @@
 
 *We forget by destroying keys, and we record the forgetting as a fact.*
 
-Radiant pass `20260725.112615`
-
 ---
 
 ## Three questions that wear one word

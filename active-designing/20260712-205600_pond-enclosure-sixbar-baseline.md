@@ -10,8 +10,6 @@
 **Status:** Checkable — six-bar baseline **GREEN** vs ai-jail **v1.12.0** · column one frozen
 **Ground:** counsel [`../counsel/20260712-090512_claude-ruling-enclosure-ai-jail-then-pond.md`](../counsel/20260712-090512_claude-ruling-enclosure-ai-jail-then-pond.md) · Claude close [`20260712-204549_proven-seat-g1-claude-close.md`](20260712-204549_proven-seat-g1-claude-close.md) · Claude shape [`20260712-210800_pond-sixbar-claude-shape-exit.md`](20260712-210800_pond-sixbar-claude-shape-exit.md) · two-column [`20260712-210800_pond-enclosure-scorecard-two-column.md`](20260712-210800_pond-enclosure-scorecard-two-column.md) · D-Bus retire [`20260712-113900_lane-kvm-retire-dbus-escape.md`](20260712-113900_lane-kvm-retire-dbus-escape.md)
 
-Radiant pass `20260725.111515`
-
 ---
 
 ## Witness

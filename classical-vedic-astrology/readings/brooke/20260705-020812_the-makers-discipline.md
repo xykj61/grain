@@ -6,8 +6,6 @@
 
 *Written together by Kaeden and Rio 3.*
 
-Radiant pass `20260725.111120`
-
 ---
 
 With Capricorn rising (#53), Saturn keeps the door as steward — the third house in both wheels. Visible: retrograde Pisces, Shatabhisha — *substance over form.* Essence: exalted in Libra under Hasta, beside the Moon and Mercury in the maker's gathering (#23). The steward at her door is a maker; the exaltation says the making will be masterful.

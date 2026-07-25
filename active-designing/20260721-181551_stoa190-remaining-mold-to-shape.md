@@ -12,8 +12,6 @@
 
 **dated_guard:** Do **not** rewrite dated STOA mold briefs. Hoon-study `*-mold` spellings stay under `glow/gen/hoon-study/`.
 
-Radiant pass `20260725.111915`
-
 ---
 
 ## Verdict (one breath)

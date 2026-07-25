@@ -13,8 +13,6 @@
 
 **dated_guard:** Do **not** open hepta…nona argv this lap. Gold · fleets · JABS3 stay held.
 
-Radiant pass `20260725.112215`
-
 ---
 
 ## Survey — argv families (updated)

@@ -6,8 +6,6 @@
 **Method:** Siloed — retold in our own words from the Vedic and Puranic tradition; sources named with gratitude below
 **Stamped:** 20260629.182512 UDT
 
-Radiant pass `20260725.112515`
-
 ---
 
 ## Two brothers, children of the Sun

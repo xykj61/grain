@@ -10,8 +10,6 @@
 - [`../external-research/20260717-173427_witness-habitat-foundations-fit-and-onboarding-gaps.md`](../external-research/20260717-173427_witness-habitat-foundations-fit-and-onboarding-gaps.md)
 - [`../external-research/20260717-173427_markup-dsl-fusion-map-glow-brix-bron.md`](../external-research/20260717-173427_markup-dsl-fusion-map-glow-brix-bron.md)
 
-Radiant pass `20260725.111615`
-
 ---
 
 ## Decisions Seated Here

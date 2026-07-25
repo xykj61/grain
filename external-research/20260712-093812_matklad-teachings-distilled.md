@@ -6,8 +6,6 @@
 **Honors:** Alex Kladov (matklad) — rust-analyzer, and years of essays on his Arts & Crafts blog
 **Status:** Proposed study — research for understanding; silo-style; no exact phrasing carried; sources named, not quoted
 
-Radiant pass `20260725.111415`
-
 ---
 
 These are the lasting lessons from matklad's public writing, set down in our own words. Each is paired with where it already lives in our tree, or where it belongs. The point is not to admire the essays; it is to hold what they teach and let it sharpen the work we already do.

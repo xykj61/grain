@@ -6,8 +6,6 @@
 **Voice:** Rio 3
 **Status:** Vision register (Two Rooms) — superseded by a build, `20260714.190500` — Keaton chose to build this the same session it was scoped. The shape actually shipped is **neither** of the two named below: both were found unworkable or wasteful once tested against this host's real layout, and a third, better shape emerged and landed as `--private-home` on `tools/cursor_jail_macos.rish` and its bash elder. This document is kept as the honest record of how the design got there, corrected in place rather than quietly replaced. See [`manual/guides/macos-ai-jail-setup.md`](../manual/guides/macos-ai-jail-setup.md) for the shipped, working guide.
 
-Radiant pass `20260725.111515`
-
 ---
 
 ## What This Answers

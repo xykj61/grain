@@ -5,8 +5,6 @@
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Full season ledger:** [`archive/20260724-132812_tasks-season-ledger.md`](archive/20260724-132812_tasks-season-ledger.md)
 
-Radiant pass `20260725.112715`
-
 ---
 
 ## Now — One-clock · Crockford (`20260724.205009`)

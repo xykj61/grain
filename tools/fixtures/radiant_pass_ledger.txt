@@ -1,5 +1,5 @@
 # radiant_pass_ledger.txt — most recent Radiant pass stamp per path
-# Pool: 1,198 rows · prose seated · meta exempt 20260725.113015 · select returns 0
+# Pool: 1,198 rows · campaign STOPPED 20260725.114400 · passes ON-TOUCH ONLY · select disabled
 # Format: <relpath><TAB><stamp YYYYMMDD.HHMMSS><TAB><changed|clean|legacy>
 # Waves append or update; oldest untouched first. Scope: tools/fixtures/radiant_pool_scope.md
 # Genre ALL-CLEAN: two full consecutive waves all-clean → wholesale exempt on evidence

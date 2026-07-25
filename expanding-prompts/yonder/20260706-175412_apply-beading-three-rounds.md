@@ -51,8 +51,6 @@ The commit and the four-remote push are Kaeden's word. On his word, GPG-sign wit
 
 This bench built `mantra/beading.rye` against the pinned Zig 0.16 toolchain and stock `std`. The selftest greened across all three rings and every welcome and unwelcome assertion, and printed the dividends: a fixed-size resin round-trips to the byte and dedups an aligned shared bead; a content-defined resin re-syncs five of six beads across a three-byte insertion and five across a three-byte deletion, where fixed-size re-syncs none; bounded-memory verify confirms the whole in one-bead space and agrees with reassembly; the name is identical across both rings and unbeaded; and every refusal lands whole. The resin-batch frame reran green beside it, so accrete-never-break holds in fact. The shipped file was rebuilt to confirm it matches the file that greened.
 
-Radiant pass `20260725.111235`
-
 ---
 
 *May the bundle land whole, and the suite green on honest metal. May an edit disturb only what it touches, and a beaded resin prove itself whole in the smallest space. And may these three rings stand together, ready for the wire to grow from them.*

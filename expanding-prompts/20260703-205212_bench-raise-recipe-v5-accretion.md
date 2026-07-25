@@ -9,8 +9,6 @@
 **Supersedes:** accretes every prior bench-raise zip step (v3 recursion prompt, v4 handoff additions)
 **Status:** Proposed — wire into the next full-tree zip comment and fresh-sitter instruction
 
-Radiant pass `20260725.111005`
-
 ---
 
 ## Before bootstrap (mandatory on every fresh bench)

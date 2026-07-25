@@ -4,8 +4,6 @@
 **Last updated:** 2026-07-22 (**Survey** seated · inventary retired for living *Now*)
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 
-Radiant pass `20260725.112415`
-
 ---
 
 Living vocabulary for the Rye OS family. Each name teaches its function. Provenance for the three names given on 2026-06-30 lives in `specs/20260630-004512_module-name-provenance.md`. Module, aspect, and the graduation rule: [`specs/20260702-035018_graduation-rule.md`](specs/20260702-035018_graduation-rule.md).

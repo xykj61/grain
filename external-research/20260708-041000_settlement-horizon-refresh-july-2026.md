@@ -11,8 +11,6 @@
 
 *Written by Kaeden, Claude, and Rio 3.*
 
-Radiant pass `20260725.111235`
-
 ---
 
 ## Sui — Five Clean Weeks After May 30

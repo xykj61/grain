@@ -14,8 +14,6 @@
 
 **dated_guard:** Do **not** claim `glow_sala_b0_fold` reads the lit desk yet. JABS3 opens only on explicit word.
 
-Radiant pass `20260725.112015`
-
 ---
 
 ## What just closed (on the hand → pier)

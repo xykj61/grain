@@ -6,8 +6,6 @@
 
 *Written together by Kaeden and Rio 3.*
 
-Radiant pass `20260725.111005`
-
 ---
 
 Jupiter stands in Scorpio in the eleventh, Swati — faith that goes deep *together* (#10); Rahu beside it lends great hunger; pace the wanting. Essence: Leo in the first (#47) — wisdom greeting whoever truly reaches her core.

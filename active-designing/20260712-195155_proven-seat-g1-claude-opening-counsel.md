@@ -9,8 +9,6 @@
 **Status:** Checkable — counsel seated · G1 **opened** `195339` · crossing spike in flight
 **Ground:** hammock [`proven-seat-guest-hammock.md`](proven-seat-guest-hammock.md) · ER [`../external-research/20260712-054342_proven-seat-guest-genode-sel4.md`](../external-research/20260712-054342_proven-seat-guest-genode-sel4.md) · wasm twin tip **432** · TASKS G1 · Claude afternoon order `144519` · parity pin `193958` / go `ee1c37f`
 
-Radiant pass `20260725.111515`
-
 ---
 
 ## Affirm (Claude)
