@@ -3,6 +3,8 @@
 **Stamp:** `20260705.171012 UDT` · **Style:** Radiant, gentle register
 **Method:** Siloed — distilled in our own voice; teacher named with gratitude below
 
+Radiant pass `20260725.111120`
+
 ---
 
 Dharma is most often heard as duty, religion, or morality, and each of those is true at the surface. Underneath them lies the word's real root: dharma is the essence of a thing, the quality it holds so fundamentally that, were the quality removed, the thing would no longer be itself. The dharma of water is wetness; take the wetness away and what remains is no longer water. The dharma of fire is heat and light; cool it and darken it and the fire is gone. So the dharma of anything is the trait it cannot be parted from — the very characteristic that makes it what it is.

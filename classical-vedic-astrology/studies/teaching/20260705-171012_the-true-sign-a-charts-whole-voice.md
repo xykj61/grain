@@ -3,6 +3,8 @@
 **Stamp:** `20260705.171012 UDT` · **Style:** Radiant, gentle register
 **Method:** Siloed — distilled in our own voice; teacher named with gratitude below
 
+Radiant pass `20260725.111120`
+
 ---
 
 When someone asks another person their sign, the honest answer has always been slippery. The rising sign, the Moon sign, and the Sun sign each feel a little right and none feels complete, and choosing one over the others leaves the rest unspoken. There is a way to answer the plain question plainly, without losing depth: weigh every point in the chart, and in every subdivision too, and let their combined voice speak a single sign. The answer stays simple enough to say aloud — a blend of a few sign-names — while resting on the whole sky rather than one lonely light.

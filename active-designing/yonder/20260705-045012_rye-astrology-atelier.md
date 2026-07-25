@@ -10,3 +10,5 @@ The one seam Zig's standard library does not cover is the ephemeris. Two laps, p
 Module and library names — the atelier, the caster, the wrapper — all park in RTAC for Kaeden's joy; the seam ships nameless as an aspect until its second consumer, per the graduation rule.
 
 *May the sky be a fold and the fold be witnessed. May the one foreign seam stay one file wide. And may the first green cast light the same wheel the readings already love.*
+Radiant pass `20260725.111120`
+

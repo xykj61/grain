@@ -6,6 +6,8 @@
 
 *Written together by Kaeden and Rio 3.*
 
+Radiant pass `20260725.111120`
+
 ---
 
 Capricorn rises (#53): Uttara Ashadha across the threshold — the same star her Moon wears. Saturn, the door's captain, sits in the third house under Shatabhisha — *substance over form.* *The steward at her door is a patient craftsman-healer stationed in the workshop.*

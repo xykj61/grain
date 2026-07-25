@@ -3,6 +3,8 @@
 **Stamp:** `20260705.182612 UDT` · **Style:** Radiant, gentle register
 **Method:** Siloed — distilled in our own voice; teacher named with gratitude below
 
+Radiant pass `20260725.111120`
+
 ---
 
 The lunar nodes are the crossing points of the Moon's path and the Sun's, the birthplaces of eclipses, and so they carry the eclipse's nature — sudden and radical change, and the sense of forces beyond our control. One node lifts up and out, amplifying and bringing things into the open; the other draws down and in, deepening and compressing. Wherever they fall they exaggerate, compel, and polarize. On the Cancer–Capricorn axis, they press upon one of the heaviest tensions in the zodiac.
