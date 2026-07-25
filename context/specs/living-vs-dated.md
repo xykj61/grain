@@ -65,7 +65,7 @@ Files matching `YYYYMMDD-HHMMSS_short-slug` (pattern `2026????-??????_*`) that *
 
 `tools/claim_preserve_witness.rish` — before/after token sets on every file a Radiant pass touches; STOP on mismatch.
 
-`tools/radiant_lint.rish` — advisory Radiant surface (bare ` but `, emoji, benediction and header duties).
+`tools/radiant_lint.rish` — advisory Radiant surface (bare but-word, emoji, benediction and header duties).
 
 ## Seam-season example
 
