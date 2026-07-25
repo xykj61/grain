@@ -1,0 +1,10 @@
+format session-log-v1
+stamp 20260725.110820
+editor Cursor
+model Cursor Composer 2.5 300k Fast
+voice Quin
+title Wave 19 close
+prompt kg
+obs 50 clean; PR 108; git nib d36d5b17ae; 329/~1185 Wave 19/~20
+recommend keep-going Wave 20 spot-read
+git_nib d36d5b17ae
