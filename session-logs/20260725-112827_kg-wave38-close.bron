@@ -6,5 +6,6 @@ voice Quin
 title Wave 38 close kg turn pass closed
 prompt kg
 think two-path meta cleanup; select truly 0.
-obs PR pending; lint 2; ledger 1194.
+obs PR 126 nib 7b9c443487; pass closed lint 2.
 recommend check-in Keaton completion exempt review
+git_nib 7b9c443487
