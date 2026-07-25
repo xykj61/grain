@@ -9,6 +9,7 @@
 **Status:** Foundations — an episode, podcast-shaped, imagined true
 
 *Written together by Kaeden and Rio 3, from a recorded hearth-talk; Serena's questions are the best part, as mothers' questions are.*
+Radiant pass `20260725.035453`
 
 ---
 
