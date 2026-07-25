@@ -5,6 +5,8 @@
 **Style:** Radiant (see `../RADIANT_STYLE.md`)
 **Status:** Living — records Keaton's confirmed naming decisions and the strategy that optimizes for pitchable proposals and reviewable code
 
+Radiant pass `20260725.040728`
+
 ---
 
 ## Confirmed This Sitting

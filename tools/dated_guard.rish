@@ -1,4 +1,5 @@
 # dated_guard.rish — staged dated artifacts on main stay immutable unless living.
+# Missing Rishi verb (this wrapper's body): accumulate · filter chained · read bounded — counsel 20260725.040247
 #
 # Staged MODIFIED files matching 2026????-??????_* that already exist on main
 # are RED unless the working-tree header declares a living ledger (or a freeze

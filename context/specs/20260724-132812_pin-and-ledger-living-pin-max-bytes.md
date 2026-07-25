@@ -5,6 +5,9 @@
 **Voice:** Quin  
 **Status:** Seated (Keaton’s align-and-run word on workshop/warehouse counsel)  
 **Room:** Checkable — living pins measured; lint duty advisory
+Radiant pass `20260725.040520`
+**Living pointer:** growth law [`append-only-growth-law.md`](append-only-growth-law.md) seated `20260725.040520`
+
 
 ---
 
@@ -24,9 +27,15 @@ Nothing is deleted. Everything moves to the dated home it was already promised.
 
 ---
 
+## Three-level growth (accretion `20260725.040520`)
+
+Living pin → season index under `archive/` → seasons roster (one line per season).
+Full law: [`append-only-growth-law.md`](append-only-growth-law.md).
+Fold when the pin nears its bound — measured, matching the responsive rhythm.
+
 ## Lint
 
-`tools/living_docs_lint.rish` carries a **sixth, ratchet-advisory duty**: flag any living document on its pin roster past `living_pin_max_bytes`. Printed every parity run; never fails the witness.
+`tools/living_docs_lint.rish` carries a **sixth, ratchet-advisory duty**: flag any living document on its pin roster past `living_pin_max_bytes`, and advise when a pin is near the bound (≥ 90%) naming the fold and the genre seasons roster. Printed every parity run; never fails the witness.
 
 ---
 

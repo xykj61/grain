@@ -4,6 +4,7 @@
 **Seated:** `20260724.143155`  
 **Status:** Dated reply shelf — immutable once filed  
 **Form:** three sections per reply
+**Seasons roster:** [`SEASONS.md`](SEASONS.md)
 
 ---
 

@@ -18,5 +18,6 @@
 | 7 | **Backup and mirror key policy** — erasure is only as complete as the least disciplined copy of the per-subject key | open | — · see [`specs/redaction-stance.md`](specs/redaction-stance.md) |
 | 8 | **Erasure under a preservation hold** — person's request meets a hold; architecture owes refuse · record · tell plainly | open | — · see [`specs/redaction-stance.md`](specs/redaction-stance.md) |
 | 9 | **Aggregates computed before an erasure** — whether derived figures are recomputed, frozen, or coarsened | open | — · see [`specs/redaction-stance.md`](specs/redaction-stance.md) |
+| 10 | **Session-log granularity** — one log per send, or one log per sitting | open | — · see [`../counsel/20260725-040247_what-the-shell-remembers.md`](../counsel/20260725-040247_what-the-shell-remembers.md) |
 
 *Load the questions well; let them ripen; write each answer once.*

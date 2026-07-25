@@ -5,6 +5,8 @@
 **Style:** Radiant (see `../RADIANT_STYLE.md`)
 **Status:** Living — the authoritative reframing; a sibling to the Keaton-name and Glow-OS-umbrella markers, sealing how "fork" is read across the tree.
 
+Radiant pass `20260725.040728`
+
 ---
 
 ## The Decision, Sealed Here

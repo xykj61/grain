@@ -1,5 +1,6 @@
 #!/bin/sh
 # living_docs_lint_scan.sh — body for living_docs_lint_scan.rish (seven duties).
+# Missing Rishi verb: accumulate · filter chained · read bounded — harvest ledger (counsel 20260725.040247)
 #
 # Port of living_docs_lint_scan.py. Size and pattern duties lean on the run seam
 # (wc -c · grep -nE) rather than in-pipeline line maps — Rish's map-transform
@@ -193,20 +194,34 @@ else
   echo "OK   duty5 docs pins — none outside canon (or absent)"
 fi
 
-# --- duty 6 (wc -c) ---
+# --- duty 6 (wc -c) — past bound + near-bound fold advisory ---
+# Near = 90% of living_pin_max_bytes. Remedy: fold closed season → seasons roster.
+LIVING_PIN_NEAR_BYTES=$((LIVING_PIN_MAX_BYTES * 90 / 100))
 : >"$TMP/d6"
+: >"$TMP/d6near"
 while IFS= read -r rel; do
   [ -n "$rel" ] && [ -f "$rel" ] || continue
   size=$(wc -c <"$rel" | tr -d ' ')
   if [ "$size" -gt "$LIVING_PIN_MAX_BYTES" ]; then
     echo "ADVISE duty6 living-pin-bytes ${rel}: ${size} > living_pin_max_bytes=${LIVING_PIN_MAX_BYTES}" >>"$TMP/d6"
+  elif [ "$size" -ge "$LIVING_PIN_NEAR_BYTES" ]; then
+    dir=$(dirname "$rel")
+    roster="${dir}/SEASONS.md"
+    if [ -f "$roster" ]; then
+      echo "ADVISE duty6 living-pin-near ${rel}: ${size} ≥ 90% of ${LIVING_PIN_MAX_BYTES} — fold closed season into archive/; roster ${roster}" >>"$TMP/d6near"
+    else
+      echo "ADVISE duty6 living-pin-near ${rel}: ${size} ≥ 90% of ${LIVING_PIN_MAX_BYTES} — fold closed season; seat ${dir}/SEASONS.md (append-only-growth-law)" >>"$TMP/d6near"
+    fi
   fi
 done <"$ROSTER"
 if [ -s "$TMP/d6" ]; then
   cat "$TMP/d6"
   echo "ADVISE duty6 count=$(wc -l <"$TMP/d6" | tr -d ' ')"
+elif [ -s "$TMP/d6near" ]; then
+  cat "$TMP/d6near"
+  echo "ADVISE duty6 near-count=$(wc -l <"$TMP/d6near" | tr -d ' ') — fold remedy named; never blocking"
 else
-  echo "OK   duty6 living pin bytes — all roster paths ≤ ${LIVING_PIN_MAX_BYTES}"
+  echo "OK   duty6 living pin bytes — all roster paths ≤ ${LIVING_PIN_MAX_BYTES} (near threshold ${LIVING_PIN_NEAR_BYTES})"
 fi
 
 # --- duty 7 ---
@@ -220,6 +235,35 @@ elif [ "$py_n" -le 2 ]; then
 else
   names=$(printf '%s\n' "$py_list" | sed '/^$/d' | awk 'NR>1{printf ", "}{printf "%s",$0} END{print ""}')
   echo "ADVISE duty7 tools/*.py count=${py_n} above target two: ${names}"
+fi
+
+# --- duty 8 — shell bodies (>40 lines) beneath .rish wrappers (harvest ratchet) ---
+# Count .sh files invoked from tools/**/*.rish that themselves exceed 40 lines.
+# Genuine exemptions (bootstrap · external interpreters · interactive stdin) stay .sh by design
+# and are not wrapper bodies. Ratchet should only fall as Rishi earns the missing verbs.
+: >"$TMP/d8"
+SHELL_BODY_LINE_FLOOR=40
+find tools -name '*.rish' -type f 2>/dev/null | while IFS= read -r rish; do
+  # Extract quoted .sh paths from run / sh invocations
+  grep -Eo '"[^"]+\.sh"' "$rish" 2>/dev/null | tr -d '"' || true
+done | sort -u >"$TMP/d8_candidates"
+while IFS= read -r shpath; do
+  [ -n "$shpath" ] && [ -f "$shpath" ] || continue
+  # Skip permanent entry-point exemptions by path name
+  case "$shpath" in
+    rye/bootstrap.sh|tools/cursor-jail.sh|tools/cursor-jail-macos.sh|tools/fetch_gratitude_web.sh|*slc1_accept.sh|*slc1_version_step2.sh|*cast_a_chart*) continue ;;
+  esac
+  n=$(wc -l <"$shpath" | tr -d ' ')
+  if [ "$n" -gt "$SHELL_BODY_LINE_FLOOR" ]; then
+    echo "$n	$shpath" >>"$TMP/d8"
+  fi
+done <"$TMP/d8_candidates"
+if [ -s "$TMP/d8" ]; then
+  d8_n=$(wc -l <"$TMP/d8" | tr -d ' ')
+  echo "ADVISE duty8 shell-body-under-rish count=${d8_n} (lines>${SHELL_BODY_LINE_FLOOR}; harvest ratchet — only falls)"
+  sort -n "$TMP/d8" | awk -F'	' '{printf "ADVISE duty8 shell-body %s (%s lines)\n", $2, $1}'
+else
+  echo "OK   duty8 shell-body-under-rish count — zero above ${SHELL_BODY_LINE_FLOOR} lines"
 fi
 
 echo "ADVISE: living-docs lint complete — ratchet advisory; link-breaks may earn a gate once the shelf proves stable"

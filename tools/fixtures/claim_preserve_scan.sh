@@ -1,5 +1,6 @@
 #!/bin/sh
 # claim_preserve_scan.sh — before/after claim-token identity for a Radiant pass.
+# Missing Rishi verb: accumulate · filter chained · read bounded — harvest ledger (counsel 20260725.040247)
 #
 # Env:
 #   CLAIM_PRESERVE_FILES — newline-separated relative paths (required for a pass)

@@ -7,6 +7,8 @@
 **Status:** Living — addendum to the one-clock naming law, scoped to this Framework 16 AMD Ubuntu host  
 **Co-author:** Keaton Dunsford (`xykj61`)
 
+Radiant pass `20260725.040728`
+
 ---
 
 ## What This Adds

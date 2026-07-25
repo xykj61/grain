@@ -6,6 +6,8 @@
 **Status:** Seated (Keaton’s align-and-run word)  
 **Room:** Mixed — doctrine seated; harness figures dated to counsel day
 
+Radiant pass `20260725.040728`
+
 ---
 
 ## One line each

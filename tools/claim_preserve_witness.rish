@@ -1,4 +1,5 @@
 # claim_preserve_witness.rish — safety that makes a broad Radiant pass honest.
+# Missing Rishi verb (this wrapper's body): accumulate · filter chained · read bounded — counsel 20260725.040247
 #
 # For every file a pass touches, extract claim tokens (numbers · hex digests ·
 # key fingerprints · file paths · stamps · capitalized proper nouns) BEFORE and
