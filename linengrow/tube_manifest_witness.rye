@@ -38,10 +38,10 @@ fn run_selftest() !u8 {
     // Claim 1: a well-formed manifest builds cleanly.
     var declared = [_]tm.DeclaredCapability{
         tm.DeclaredCapability.init("network", caps.right_net),
-        tm.DeclaredCapability.init("sala-session", caps.right_read | caps.right_write),
+        tm.DeclaredCapability.init("seva-session", caps.right_read | caps.right_write),
     };
-    const manifest = try tm.build("sala-broadcaster", "0.1.0", &declared, 32);
-    assert(std.mem.eql(u8, manifest.name_slice(), "sala-broadcaster"));
+    const manifest = try tm.build("seva-broadcaster", "0.1.0", &declared, 32);
+    assert(std.mem.eql(u8, manifest.name_slice(), "seva-broadcaster"));
     assert(std.mem.eql(u8, manifest.version_slice(), "0.1.0"));
     assert(manifest.cap_count == 2);
     assert(manifest.iteration_bound_max == 32);
@@ -55,7 +55,7 @@ fn run_selftest() !u8 {
 
     // Claim 2: declares() answers true for a real grant, checking the exact right.
     assert(manifest.declares("network", caps.right_net));
-    assert(manifest.declares("sala-session", caps.right_read | caps.right_write));
+    assert(manifest.declares("seva-session", caps.right_read | caps.right_write));
     print("tube0: declares() confirms the exact granted rights -- GREEN welcome path.\n", .{});
 
     // Claim 3: declares() answers false when the resource is named but the

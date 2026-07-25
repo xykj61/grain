@@ -36,7 +36,7 @@ fn run_selftest() !u8 {
     mc.hex_of_key(holder_kp.public_key, &holder_hex);
 
     // A real signed log (mint, then send) -- the agent's state is the fold
-    // over this, exactly as Neth and Sala fold their own logs.
+    // over this, exactly as Neth and Seva fold their own logs.
     var log: [rc.max_log_len]u8 = undefined;
     const log_len = try mc.build_welcome_log(&log, issuer_kp, holder_kp, &issuer_hex, &holder_hex);
     print("pool-p0: signed ledger log built -- {d} bytes (mint, send)\n", .{log_len});

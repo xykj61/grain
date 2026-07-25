@@ -1,6 +1,6 @@
 //! glow/sample_demo_fixture_lits_witness.rye — elder fixture pins as face=lit (STOA221).
 //!
-//! Pins must match linengrow/glow_sala_b0_demo_fixture.rye (STOA193).
+//! Pins must match linengrow/glow_seva_b0_demo_fixture.rye (STOA193).
 //!
 //!   rye build glow/sample_demo_fixture_lits_witness.rye \
 //!     -femit-bin=glow/bin/sample_demo_fixture_lits_witness

@@ -103,7 +103,7 @@ pub fn home_line_paint_honest() bool {
 
 /// Device-free: pointer joins under the files root.
 pub fn pointer_path_honest() bool {
-    const root = "/data/user/0/org.glow.app.sala_broadcaster/files";
+    const root = "/data/user/0/org.glow.app.seva_broadcaster/files";
     var path: [hearth.max_abs_path_len]u8 = undefined;
     const n = join_home_pointer(root, &path) catch return false;
     const want = root ++ "/hearth_home";

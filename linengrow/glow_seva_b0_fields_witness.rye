@@ -1,0 +1,47 @@
+//! linengrow/glow_seva_b0_fields_witness.rye — proves Glow FactFields parse surface.
+//!
+//!   rye build linengrow/glow_seva_b0_fields_witness.rye \
+//!     -femit-bin=linengrow/bin/glow_seva_b0_fields_witness
+//!   linengrow/bin/glow_seva_b0_fields_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const fixture = @import("glow_seva_b0_demo_fixture.rye");
+const fields = @import("glow_seva_b0_fields.rye");
+
+const witness_version = "20260722.141630";
+
+fn run_selftest() !u8 {
+    assert(fixture.root_pin_agrees());
+    print("seva-b0-fields: fixture root pin seated -- GREEN\n", .{});
+
+    const parsed = try fields.claim_demo_fields();
+    print("seva-b0-fields: claim_demo_fields round-trip -- GREEN\n", .{});
+    assert(parsed.memo.len > 0);
+    print("seva-b0-fields: memo -- {s}\n", .{parsed.memo});
+
+    // Bad fact refuse: missing stamp key.
+    var bad_fields: @TypeOf(parsed) = undefined;
+    const bad = fields.parse_fact_fields("from a\nto b\namount 1\nmemo x\n", &bad_fields);
+    assert(bad == error.InvalidFact);
+    print("seva-b0-fields: incomplete fact refuses parse -- GREEN\n", .{});
+
+    const bad_amt = fields.parse_amount_signed("01");
+    assert(bad_amt == error.InvalidAmount);
+    print("seva-b0-fields: leading-zero amount refuses -- GREEN\n", .{});
+    print("seva-b0-fields: STOA212 fields surface -- GREEN\n", .{});
+
+    // STOA249: product-authored fields body agrees elder peer.
+    assert(try fields.fields_body_agrees_elder());
+    print("seva-b0-fields: fields body agrees elder -- GREEN\n", .{});
+    print("seva-b0-fields: STOA249 product-authored fields body -- GREEN\n", .{});
+
+    print("seva-b0-fields: version {s}\n", .{witness_version});
+    print("GREEN: Glow Seva B0 fields surface — STOA212/249; product-authored fields body.\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}

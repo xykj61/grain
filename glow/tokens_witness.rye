@@ -157,10 +157,10 @@ fn run_selftest() !u8 {
     print("tokens: @ux hex aura lex -- GREEN\n", .{});
 
     // STOA216: single-quoted cord literal; interior helper; refuse empty / unclosed.
-    const nc = try tokens.tokenize("'sala:open'\n", tbuf[0..]);
+    const nc = try tokens.tokenize("'seva:open'\n", tbuf[0..]);
     assert(nc >= 1);
     assert(tbuf[0].kind == .cord_lit);
-    assert(std.mem.eql(u8, tokens.cord_lit_interior("'sala:open'\n", tbuf[0]), "sala:open"));
+    assert(std.mem.eql(u8, tokens.cord_lit_interior("'seva:open'\n", tbuf[0]), "seva:open"));
     print("tokens: cord literal lex -- GREEN\n", .{});
     if (tokens.tokenize("''\n", tbuf[0..])) |_| {
         return error.EmptyCordLitAccepted;

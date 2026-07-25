@@ -64,7 +64,7 @@ Every turn ends with a Bron session log (`session-logs/YYYYMMDD-HHMMSS_slug.bron
 
 ## 7. Markup Pipeline (orientation only)
 
-prose → Scribble → Brix → Bron → Mantra → Sala · Glow programs under TAME.  
+prose → Scribble → Brix → Bron → Mantra → Seva · Glow programs under TAME.  
 Map: [`../../external-research/20260717-173427_markup-dsl-fusion-map-glow-brix-bron.md`](../../external-research/20260717-173427_markup-dsl-fusion-map-glow-brix-bron.md).
 
 ## What This Tutorial Does Not Yet Claim

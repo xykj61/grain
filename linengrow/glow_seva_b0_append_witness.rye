@@ -1,0 +1,84 @@
+//! linengrow/glow_seva_b0_append_witness.rye — proves Glow append via pin emit.
+//!
+//!   rye build linengrow/glow_seva_b0_append_witness.rye \
+//!     -femit-bin=linengrow/bin/glow_seva_b0_append_witness
+//!   linengrow/bin/glow_seva_b0_append_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const rc = @import("receipt_core.rye");
+const fixture = @import("glow_seva_b0_demo_fixture.rye");
+const digest = @import("glow_seva_b0_digest.rye");
+const append = @import("glow_seva_b0_append.rye");
+const claim = @import("glow_seva_b0_claim.rye");
+const elder = @import("seva_b0_fold.rye");
+const line = @import("glow_seva_b0_line.rye");
+
+const witness_version = "20260722.134205";
+
+fn run_selftest(init: std.process.Init) !u8 {
+    assert(fixture.root_pin_agrees());
+    print("seva-b0-append: fixture root pin seated -- GREEN\n", .{});
+
+    var log_buf: [rc.max_log_len]u8 = undefined;
+    const len = try append.append_demo_log(&log_buf);
+    assert(len > 0);
+    print("seva-b0-append: append_demo_log via pin emit 1-3 -- GREEN\n", .{});
+
+    // STOA231: all three event bytes match seated pin emit.
+    var pin1: [rc.max_line_len]u8 = undefined;
+    var pin2: [rc.max_line_len]u8 = undefined;
+    var pin3: [rc.max_line_len]u8 = undefined;
+    const n1 = try line.format_demo_line_from_pins(pin1[0..]);
+    const n2 = try line.format_demo_line2_from_pins(pin2[0..]);
+    const n3 = try line.format_demo_line3_from_pins(pin3[0..]);
+    assert(len == n1 + n2 + n3);
+    assert(std.mem.eql(u8, log_buf[0..n1], pin1[0..n1]));
+    assert(std.mem.eql(u8, log_buf[n1 .. n1 + n2], pin2[0..n2]));
+    assert(std.mem.eql(u8, log_buf[n1 + n2 .. n1 + n2 + n3], pin3[0..n3]));
+    print("seva-b0-append: events 1-3 from pin emit -- GREEN\n", .{});
+    print("seva-b0-append: STOA231 append pin wire -- GREEN\n", .{});
+    print("seva-b0-append: first event from pin emit -- GREEN\n", .{});
+    print("seva-b0-append: STOA229 append pin wire -- GREEN\n", .{});
+
+    const root = try append.claim_append_demo_root(&log_buf);
+    var hex: [64]u8 = undefined;
+    digest.root_to_hex(&root, &hex);
+    print("seva-b0-append: session root -- {s}\n", .{hex[0..]});
+    assert(digest.root_matches_fixture(&root));
+    assert(std.mem.eql(u8, hex[0..], fixture.expected_demo_root_hex));
+    print("seva-b0-append: claim_append_demo_root matches fixture -- GREEN\n", .{});
+
+    const fold_root = try claim.claim_demo_fold();
+    assert(std.mem.eql(u8, &root, &fold_root));
+    print("seva-b0-append: append root agrees claim_demo_fold -- GREEN\n", .{});
+
+    const elder_root = try elder.run_demo_fold();
+    assert(std.mem.eql(u8, &root, &elder_root));
+    print("seva-b0-append: append root agrees elder run_demo_fold -- GREEN\n", .{});
+
+    // STOA233: runtime desk path equals pin path and HAWM1.
+    const a = init.arena.allocator();
+    const cwd = std.Io.Dir.cwd();
+    const desk = try cwd.readFileAlloc(init.io, line.lit_desk_relpath, a, .limited(8192));
+    var desk_log: [rc.max_log_len]u8 = undefined;
+    const desk_len = try append.append_demo_log_from_desk(desk, &desk_log);
+    assert(desk_len == len);
+    assert(std.mem.eql(u8, desk_log[0..desk_len], log_buf[0..len]));
+    print("seva-b0-append: desk log equals pin log -- GREEN\n", .{});
+
+    const desk_root = try append.claim_append_demo_root_from_desk(desk, &desk_log);
+    assert(std.mem.eql(u8, &desk_root, &root));
+    assert(digest.root_matches_fixture(&desk_root));
+    print("seva-b0-append: desk claim matches HAWM1 -- GREEN\n", .{});
+    print("seva-b0-append: STOA233 runtime desk append -- GREEN\n", .{});
+
+    print("seva-b0-append: version {s}\n", .{witness_version});
+    print("GREEN: Glow Seva B0 append — STOA231 pin emit; STOA233 desk emit; HAWM1 root.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
+}

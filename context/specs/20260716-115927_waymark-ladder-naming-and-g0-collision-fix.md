@@ -13,7 +13,7 @@
 Two ladders in this tree independently reached for the same short code:
 
 - The **Genode/seL4 proven-seat guest ladder** (`docs/PROVEN_SEAT.md`) names its rungs **G0** (environment, TCG boot), **G0-complete** (kvm path), **G1** (digest-grade), with real tooling behind each: `tools/proven_seat_g0.rish`, `tools/proven_seat_g1.rish`, and a dozen siblings, all GREEN, all cross-referenced from `work-in-progress/ROADMAP.md` and `TASKS.md`.
-- The **GrapheneOS/Pixel mobile-emulation ladder** (`two-dev-environments-and-mobile-emulation.md`, opened `20260715.163500`) names its own rungs **G0** (stock AOSP/Android emulator), **G1** (Sala in the AVD), **G2** (real GrapheneOS build), **G3** (physical device) — a wholly unrelated ladder that happens to share the letter G, because "Genode" and "GrapheneOS" both start with it.
+- The **GrapheneOS/Pixel mobile-emulation ladder** (`two-dev-environments-and-mobile-emulation.md`, opened `20260715.163500`) names its own rungs **G0** (stock AOSP/Android emulator), **G1** (Seva in the AVD), **G2** (real GrapheneOS build), **G3** (physical device) — a wholly unrelated ladder that happens to share the letter G, because "Genode" and "GrapheneOS" both start with it.
 
 The prior session already spotted this and named it honestly without yet fixing it: *"That machinery belongs to a wholly unrelated Genode/seL4 proven-seat guest ladder that happens to reuse the same G0-G3 numbering as the GrapheneOS/Pixel ladder — a real naming collision, kept straight rather than conflated"* (`session-logs/20260716-110152_framework-ubuntu-host-arrives-slc-green.bron`). This document closes that open thread.
 
@@ -37,7 +37,7 @@ The actual word corpus began as one this tree already held: `old/doc/spec/flw.tx
 2. Hash the input string with **SHA3-512** (`openssl dgst -sha3-512`, this tree's own ratified host oracle — [`20260703-191112_resins-and-hash-tiers.md`](20260703-191112_resins-and-hash-tiers.md)); take the first 8 hex digits. A waymark is a naming-grade, durable identity — the same "must mean one thing for as long as the work endures" promise that spec's own Canonical tier names for Aurora stage names — so it draws from SHA3-512, never plain SHA-2 (`sha256sum`, a different algorithm family entirely despite the similar name) and never the Working-tier SHA3-256 reserved for high-volume store units like Amber resins.
 3. Convert to decimal, modulo the corpus size (5,526), plus one — the index.
 4. Look up that index in the sorted, de-duplicated corpus.
-5. Assert the drawn word is not already a seated four-letter name in `context/LEXICON.md` (`BRIX`, `BRON`, `POND`, `MALA`, `SALA`, `POOL`, `QUIN`, `RIYO`, `REYA`, `TREY`, `TERA`, `TRIZ`, `OJJO`, `GLOW`, `RHYZ`, `PEAL` — the only entries of that same length). A collision here is vanishingly unlikely at 1-in-5,526 odds, and the script fails loudly rather than silently if it ever happens; the fix is to salt the input (append `-2`) and redraw.
+5. Assert the drawn word is not already a seated four-letter name in `context/LEXICON.md` (`BRIX`, `BRON`, `POND`, `MALA`, `SEVA`, `MONA`, `POOL`, `QUIN`, `RIYO`, `REYA`, `TREY`, `TERA`, `TRIZ`, `OJJO`, `GLOW`, `RHYZ`, `PEAL` — the only entries of that same length). A collision here is vanishingly unlikely at 1-in-5,526 odds, and the script fails loudly rather than silently if it ever happens; the fix is to salt the input (append `-2`) and redraw.
 
 **A named correction, honestly kept:** the first pass of this script (`115927`) reached for plain `sha256sum` out of habit and drew `FITS` before anything downstream of it was written down as settled. Caught within the hour (`124840`) against this tree's own already-ratified two-tier SHA3 policy, which names an exact host oracle for exactly this kind of naming-grade hash and was simply not consulted the first time. The fix changed one line in the script and, with it, the drawn word — `HAWM` is the real, current, correct waymark; `FITS` never shipped past this same day's own living docs and is not a second valid answer sitting beside it.
 
@@ -64,7 +64,7 @@ GREEN: waymark derived -- HAWM
 | Old mark | New mark | What it is |
 |---|---|---|
 | G0 | **HAWM0** | Stock AOSP/Android Emulator, HVF/KVM-accelerated |
-| G1 | **HAWM1** | Glow userland (Sala broadcaster) inside the AVD |
+| G1 | **HAWM1** | Glow userland (Seva broadcaster) inside the AVD |
 | G2 | **HAWM2** | Real GrapheneOS build, emulator target (Linux/KVM host) |
 | G3 | **HAWM3** | Physical Pixel, GrapheneOS flashed |
 

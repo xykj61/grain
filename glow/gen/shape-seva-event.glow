@@ -1,0 +1,11 @@
+::  Seva B0 session-event shape — FactFields face names (STOA179).
+::  STOA184: from/to are @ux (bound 32); memo/stamp @t; amount @u32.
+::  STOA209: @t bound 1024 (nest_type.aura_t_max_bytes).
+::  STOA186: cast twin at cast-named-seva-event.glow; no mold twin; elder fold stays.
++$  seva-event-shape
+  $:  from=@ux
+      to=@ux
+      amount=@u32
+      memo=@t
+      stamp=@t
+  ==

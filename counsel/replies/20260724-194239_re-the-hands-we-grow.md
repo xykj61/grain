@@ -1,5 +1,7 @@
 # Reply — The Hands We Grow (Section One relay)
 
+*Erratum `20260724.202412` — the M vane is seated as **Mand**; Mona below is the prior name.*
+
 **Language:** EN  
 **Stamp:** `20260724.194239`  
 **Voice:** Quin  

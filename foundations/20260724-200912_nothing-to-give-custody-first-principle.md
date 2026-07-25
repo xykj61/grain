@@ -1,5 +1,7 @@
 # Nothing to Give — Custody First Principle
 
+*Erratum `20260724.202412` — the M vane is seated as **Mand**; Mona below is the prior name.*
+
 *Build nothing that destroys, and build so there is nothing to destroy. The honest answer to a lawful search is that there is nothing here to give — a property of the design, rather than an act a statute can dramatize.*
 
 **Stamp:** `20260724.200912`

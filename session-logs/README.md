@@ -11,6 +11,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 **Living pin bound:** `living_pin_max_bytes = 24576` ([spec](../context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md)). Closed index rows through `20260721`: [`archive/README-index-through-20260721.md`](archive/README-index-through-20260721.md). Early `20260722` overflow: [`archive/README-index-20260722-shelf.md`](archive/README-index-20260722-shelf.md).
 
 - `20260725.002400` — [Sala rename digest and fixture risk survey](20260725-002400_sala-rename-digest-fixture-risk.bron) — STOP memos/pins · SAFE names/paths
+- `20260724.202412` — [Seva rename complete · Mand seated](20260724-202412_seva-complete-mand-seated.bron) — glow_seva_b0 · Mand · STOP memos · GREEN
 - `20260724.201810` — [Send Nothing to Give · Seva · Mona to main](20260724-201810_send-nothing-to-give-seva.bron) — FF merge · custody · Seva · Mona
 - `20260724.201727` — [Nothing to Give · Seva · Mona seated](20260724-201727_nothing-to-give-seva-seat.bron) — custody foundations · suite rename GREEN
 - `20260724.194344` — [Send Hands We Grow Section One to main](20260724-194344_send-hands-we-grow-relay.bron) — FF merge · JAMCUE · twin 1a · PARK 2–8
@@ -168,8 +169,3 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 - `20260722.133631` — [After rest · rec events 2–3 pins](20260722-133631_after-rest-rec-events-2-3-pins.bron) — kg same recipe as event 1
 - `20260722.133429` — [REMEMBER git nib after STOA230](20260722-133429_remember-git-nib-stoa230.bron) — pin 82aae70dc231
 - `20260722.133343` — [STOA230 send · rest next](20260722-133343_stoa230-send-rest-next.bron) — pier send; lean B rest
-- `20260722.133211` — [STOA230 after append pin wire check-in](20260722-133211_stoa230-after-append-pin-wire-checkin.bron) — rec send; then rest
-- `20260722.133103` — [REMEMBER git nib after STOA229](20260722-133103_remember-git-nib-stoa229.bron) — pin 779751bbeecc
-- `20260722.133004` — [STOA229 append first-event pin emit](20260722-133004_stoa229-append-first-event-pin-emit.bron) — event 1 from pins; HAWM1
-- `20260722.132831` — [REMEMBER git nib after STOA228](20260722-132831_remember-git-nib-stoa228.bron) — pin 0db7ef379153
-- `20260722.132757` — [STOA227 send · STOA228 · lean B next](20260722-132757_stoa227-send-stoa228-checkin.bron) — pier send; append wire

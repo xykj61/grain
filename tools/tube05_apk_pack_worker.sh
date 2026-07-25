@@ -4,7 +4,7 @@
 # Host-side worker for TUBE0.5 packaging. Builds:
 #   1. AndroidManifest.xml via linengrow/tube_android_manifest_emit.rye
 #   2. libglowapp.so for aarch64 (Pixel) and x86_64 (HAWM0 emulator):
-#        rye build-lib -fsingle-threaded → static .a (Sala B0 fold)
+#        rye build-lib -fsingle-threaded → static .a (Seva B0 fold)
 #        NDK clang -shared → real .so with DT_NEEDED libc
 #   3. an unsigned-then-debug-signed APK via aapt + apksigner
 #
@@ -30,9 +30,9 @@ ZIG="$ROOT/vendor/zig-toolchain/zig"
 CACHE="$ROOT/tools/.cache/tube05"
 ZIG_CACHE="$CACHE/zig-cache"
 STAGING="$CACHE/staging"
-APK_UNSIGNED="$CACHE/sala-broadcaster-unsigned.apk"
-APK_ALIGNED="$CACHE/sala-broadcaster-aligned.apk"
-APK_SIGNED="$CACHE/sala-broadcaster.apk"
+APK_UNSIGNED="$CACHE/seva-broadcaster-unsigned.apk"
+APK_ALIGNED="$CACHE/seva-broadcaster-aligned.apk"
+APK_SIGNED="$CACHE/seva-broadcaster.apk"
 KEYSTORE="$CACHE/debug.keystore"
 
 export JAVA_HOME="$JDK"
@@ -80,8 +80,8 @@ build_android_so() {
   nm -D "$so_out" | grep -q 'glow_last_live_root_hex' \
     || die "${so_out} missing glow_last_live_root_hex (STOA270 live typed append)"
   # Binary path check — prefer grep -a over strings (strings may be absent).
-  grep -aFq 'sala_live_root.txt' "$so_out" \
-    || die "${so_out} missing sala_live_root.txt path (STOA270)"
+  grep -aFq 'seva_live_root.txt' "$so_out" \
+    || die "${so_out} missing seva_live_root.txt path (STOA270)"
   readelf -d "$so_out" | grep -q 'NEEDED.*libc.so' \
     || die "${so_out} missing DT_NEEDED libc.so"
   if nm -D "$so_out" | grep -q ' U __tls_get_addr$'; then
@@ -144,7 +144,7 @@ fi
   || die "apksigner failed"
 "$BT/apksigner" verify "$APK_SIGNED" || die "verify failed"
 "$BT/aapt" dump badging "$APK_SIGNED" | tee "$CACHE/badging.txt"
-grep -q "package: name='org.glow.app.sala_broadcaster'" "$CACHE/badging.txt"
+grep -q "package: name='org.glow.app.seva_broadcaster'" "$CACHE/badging.txt"
 grep -q "arm64-v8a" "$CACHE/badging.txt"
 grep -q "x86_64" "$CACHE/badging.txt"
 
@@ -153,5 +153,5 @@ grep -F 'lib/arm64-v8a/libglowapp.so' "$CACHE/apk-list.txt" >/dev/null
 grep -F 'lib/x86_64/libglowapp.so' "$CACHE/apk-list.txt" >/dev/null
 
 echo "GREEN: TUBE0.5 APK packed - $APK_SIGNED"
-echo "tube05-pack: package=org.glow.app.sala_broadcaster abi=arm64-v8a,x86_64 fold=sala-b0 ndk-linked"
+echo "tube05-pack: package=org.glow.app.seva_broadcaster abi=arm64-v8a,x86_64 fold=seva-b0 ndk-linked"
 exit 0

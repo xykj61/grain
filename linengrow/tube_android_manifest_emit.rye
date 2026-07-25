@@ -1,6 +1,6 @@
 //! linengrow/tube_android_manifest_emit.rye — writes one AndroidManifest.xml
 //! for the TUBE0.5 packaging path. Builds a small, fixed demo manifest
-//! (sala-broadcaster with network) and emits the NativeActivity envelope
+//! (seva-broadcaster with network) and emits the NativeActivity envelope
 //! to the path passed as argv[1].
 //!
 //!   rye build linengrow/tube_android_manifest_emit.rye \
@@ -25,12 +25,12 @@ pub fn main(init: std.process.Init) !u8 {
     var declared = [_]tm.DeclaredCapability{
         tm.DeclaredCapability.init("network", caps.right_net),
     };
-    const manifest = try tm.build("sala-broadcaster", "0.1.0", &declared, 32);
+    const manifest = try tm.build("seva-broadcaster", "0.1.0", &declared, 32);
 
     var buf: [am.max_manifest_xml_bytes]u8 = undefined;
     const n = try am.render_android_manifest(
         &manifest,
-        "org.glow.app.sala_broadcaster",
+        "org.glow.app.seva_broadcaster",
         am.glow_lib_name,
         &buf,
     );
