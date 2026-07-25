@@ -19,7 +19,9 @@
 let cache = "tools/.cache/pond-enclosure"
 let meta = "${cache}/sixbar-baseline-meta.txt"
 let pin = "active-designing/20260712-205600_pond-enclosure-sixbar-baseline.md"
-let sandbox_fpr = "DBF853437A937B4E36B93611D949807AC26B2B99"
+# Framework jail-local signing (PUBKEYS.md) — not the elder veganreyklah2 sandbox.
+let sandbox_fpr = "CC8BA67125E202E1DB0CBFD70E632656F07DD30B"
+# Elder Kaeden master — must stay out of the jail keyring (public may).
 let master_fpr = "06462132D3E63B834F976E03A81D720B9235FA7A"
 let gpg_wrap = ".gnupg-rye/gpg.sh"
 let aijail = "tools/.cache/bin/ai-jail"
@@ -44,15 +46,18 @@ say "GREEN: pond sixbar bar1 — durable project tree"
 
 # --- Bar 2: Home and tmp reset ---
 say "pond sixbar bar2: home and tmp reset…"
-let landlock = run ["test" "-e" "/tmp/.ai-jail-landlock"]
-assert landlock.ok else "bar2: missing /tmp/.ai-jail-landlock — expect ai-jail private tmp"
+# Enclosure-neutral Landlock marker. Pond will write /tmp/.enclosure-landlock;
+# teacher ai-jail still bind-mounts its binary at /tmp/.ai-jail-landlock.
+# Either proves private tmp + Landlock present — same bar, either incumbent.
+let landlock = run ["sh" "-c" "test -e /tmp/.enclosure-landlock || test -e /tmp/.ai-jail-landlock"]
+assert landlock.ok else "bar2: missing enclosure Landlock marker (/tmp/.enclosure-landlock or /tmp/.ai-jail-landlock)"
 let no_docs = run ["sh" "-c" "test ! -d \"$HOME/Documents\""]
 assert no_docs.ok else "bar2: host Documents visible under HOME — private-home drift"
 let no_dl = run ["sh" "-c" "test ! -d \"$HOME/Downloads\""]
 assert no_dl.ok else "bar2: host Downloads visible under HOME — private-home drift"
 let tmp_w = run ["sh" "-c" "echo ok > /tmp/pond-sixbar-tmp-probe && rm -f /tmp/pond-sixbar-tmp-probe"]
 assert tmp_w.ok else "bar2: /tmp not writable inside enclosure"
-say "GREEN: pond sixbar bar2 — home and tmp reset (landlock · sparse HOME)"
+say "GREEN: pond sixbar bar2 — home and tmp reset (enclosure Landlock marker · sparse HOME)"
 
 # --- Bar 3: Wayland/GPU lane ---
 say "pond sixbar bar3: Wayland/GPU lane…"

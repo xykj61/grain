@@ -19,10 +19,11 @@
 #   · a full-history clone (no --depth)
 #   · a cold toolchain install (pip/fetch when nothing is cached)
 #
-# Mode=cold asks for those three. Until several cold reports exist across hosts,
-# the seat stays a REPORT against the thirty-minute claim ceiling (1800s) —
-# print elapsed and configuration; tighten the bound only when the range of
-# real reports justifies it.
+# Mode=cold asks for those three. Framework cold REPORT 20260725.174428 printed
+# elapsed=29s under the 1800s claim ceiling (remote origin · full history ·
+# force-reinstall ziglang). Seat stays REPORT; tighten the bound only when the
+# range of real reports across hosts justifies it. Cold SSH clones need the
+# origin host key already trusted (BatchMode; no ssh-askpass in jail).
 # ---------------------------------------------------------------------------
 set -eu
 
