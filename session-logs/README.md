@@ -10,6 +10,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 **Living pin bound:** `living_pin_max_bytes = 24576` ([spec](../context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md)). Closed index rows through `20260721`: [`archive/README-index-through-20260721.md`](archive/README-index-through-20260721.md). Early `20260722` overflow: [`archive/README-index-20260722-shelf.md`](archive/README-index-20260722-shelf.md).
 
+- `20260725.002955` — [Send Seva complete · Mand seated to main](20260725-002955_send-seva-complete-mand.bron) — FF merge · Sala historical · Mand · GREEN
 - `20260725.002400` — [Sala rename digest and fixture risk survey](20260725-002400_sala-rename-digest-fixture-risk.bron) — STOP memos/pins · SAFE names/paths
 - `20260724.202412` — [Seva rename complete · Mand seated](20260724-202412_seva-complete-mand-seated.bron) — glow_seva_b0 · Mand · STOP memos · GREEN
 - `20260724.201810` — [Send Nothing to Give · Seva · Mona to main](20260724-201810_send-nothing-to-give-seva.bron) — FF merge · custody · Seva · Mona
@@ -161,11 +162,3 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 - `20260722.135324` — [STOA237–238 embedded desk round](20260722-135324_stoa237-238-embedded-desk-round.bron) — embed in .so; Pixel eyes next
 - `20260722.134657` — [STOA235–236 desk-file claim round](20260722-134657_stoa235-236-desk-file-claim-round.bron) — from_desk_file; NA asset next
 - `20260722.134513` — [REMEMBER git nib after STOA234](20260722-134513_remember-git-nib-stoa234.bron) — pin d24701ce4b20
-- `20260722.134415` — [STOA233 send · STOA234 · round-close](20260722-134415_stoa233-send-stoa234-round-close.bron) — auto send+check-in seated
-- `20260722.134205` — [STOA233 runtime desk emit GREEN](20260722-134205_stoa233-runtime-desk-emit.bron) — desk extract ≡ pins; HAWM1
-- `20260722.134048` — [REMEMBER git nib after STOA232](20260722-134048_remember-git-nib-stoa232.bron) — pin 9f7786b86115
-- `20260722.134008` — [STOA231 send · STOA232 check-in](20260722-134008_stoa231-send-stoa232-checkin.bron) — pier send; rec rest
-- `20260722.133717` — [STOA231 demo events 2–3 pin emit](20260722-133717_stoa231-demo-events-2-3-pin-emit.bron) — pins · desk · append GREEN
-- `20260722.133631` — [After rest · rec events 2–3 pins](20260722-133631_after-rest-rec-events-2-3-pins.bron) — kg same recipe as event 1
-- `20260722.133429` — [REMEMBER git nib after STOA230](20260722-133429_remember-git-nib-stoa230.bron) — pin 82aae70dc231
-- `20260722.133343` — [STOA230 send · rest next](20260722-133343_stoa230-send-rest-next.bron) — pier send; lean B rest
