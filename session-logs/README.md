@@ -4,7 +4,8 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
-- `20260725.192107` — [Cursor handoff waiting on Claude](20260725-192107_cursor-handoff-waiting-on-claude.bron) — pier ~/grain · ssh_config_grain · no Pond kg
+- `20260725.193707` — [Handoff wait Claude · rename pending](20260725-193707_handoff-wait-claude-rename-pending.bron) — still ~/urbit · new jail after mv  
+- `20260725.192107` — [Cursor handoff waiting on Claude](20260725-192107_cursor-handoff-waiting-on-claude.bron) — path claim corrected `193707`  
 - `20260725.190200` — [Send complete four remotes](20260725-190200_send-complete-four-remotes.bron) — jail SSH xykj61 · autoproject96/grain  
 - `20260725.185647` — [Send Grain · fence · Claude counsel](20260725-185647_send-grain-fence-claude-counsel.bron) — cold REPORT · parity paused honest  
 - `20260725.185700` — [Parity re-run aborted](20260725-185700_parity-rerun-aborted.bron) — paused mid-suite after wasmtime pin  
