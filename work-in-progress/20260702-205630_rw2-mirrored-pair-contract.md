@@ -10,6 +10,8 @@
 
 **Ground:** [`20260702-180812_testing-audit-first-pass.md`](20260702-180812_testing-audit-first-pass.md) · [`../active-designing/20260630-030312_slc-2a-the-drawn-terminal.md`](../active-designing/20260630-030312_slc-2a-the-drawn-terminal.md) · [`../tools/slc2a_ring2_redraw.rish`](../tools/slc2a_ring2_redraw.rish)
 
+Radiant pass `20260725.110847`
+
 ---
 
 ## The Seam
