@@ -6,6 +6,8 @@
 **Pier tip (sent):** `5d97b5301f`  
 **Working tree:** STOA180 pack **unsent** (modified + untracked below)
 
+Radiant pass `20260725.111915`
+
 ---
 
 ## Prompt for the new agent

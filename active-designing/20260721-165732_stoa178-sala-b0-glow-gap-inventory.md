@@ -12,6 +12,8 @@
 
 **dated_guard:** Do **not** rewrite dated JABS0 / HAWM1 / STOA72–73 records. Elder Rye stays until Glow earns the root. JABS3 stays held. No `deca-*`. No whole-tree sed.
 
+Radiant pass `20260725.111915`
+
 ---
 
 ## Verdict (one breath)

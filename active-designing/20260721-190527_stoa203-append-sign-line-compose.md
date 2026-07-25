@@ -13,6 +13,8 @@
 
 **dated_guard:** Do **not** claim Glow-rune crypto or a Glow-authored replay body. HAWM1 hex still rests on elder sign/format/replay/digest guts. JABS3 held.
 
+Radiant pass `20260725.111915`
+
 ---
 
 ## Verdict (one breath)

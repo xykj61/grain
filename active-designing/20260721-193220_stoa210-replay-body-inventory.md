@@ -13,6 +13,8 @@
 
 **dated_guard:** Compose landed as STOA211. FactFields/amount parse still elder (C2). JABS3 held.
 
+Radiant pass `20260725.111915`
+
 ---
 
 ## Verdict (one breath)

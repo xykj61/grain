@@ -12,6 +12,8 @@
 
 **dated_guard:** Do **not** rewrite dated STOA mold briefs or historical ROADMAP/TASKS rows. Do **not** delete `mold-*` study twins. Prefer **send** with STOA186–188 when the pier should match the hand.
 
+Radiant pass `20260725.111915`
+
 ---
 
 ## Verdict (one breath)

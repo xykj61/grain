@@ -13,6 +13,8 @@
 
 **dated_guard:** Do **not** claim a Glow-authored replay vane (parse · verify · order). Elder `sala.replay` still runs. Product `claim_digest_log` is an honesty assert over the same log bytes. JABS3 held.
 
+Radiant pass `20260725.111915`
+
 ---
 
 ## Verdict (one breath)

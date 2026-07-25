@@ -12,6 +12,8 @@
 
 **dated_guard:** Do **not** claim Glow rewrote the fold. Module path seats beside elder fold until cross-tree import exists; the Glow name is the product surface.
 
+Radiant pass `20260725.111915`
+
 ---
 
 ## Verdict (one breath)

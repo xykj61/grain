@@ -12,6 +12,8 @@
 
 **dated_guard:** Do **not** rewrite STOA180's dated "lower held" claims. Do **not** claim `$%` payload `@t` or named-cast cord demos. Elder Rye `sala_b0_fold` stays until Glow earns the product root. `MoldSpec` / Zig `*Mold` rename stays a separate seam.
 
+Radiant pass `20260725.111915`
+
 ---
 
 ## Verdict (one breath)
