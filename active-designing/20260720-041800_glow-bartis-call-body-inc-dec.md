@@ -10,6 +10,8 @@
 **Waymark:** **STOA104** — bartis call-body `inc` / `dec`  
 **Grounds in:** [`20260720-040800_glow-bartis-call-body.md`](20260720-040800_glow-bartis-call-body.md) · `glow/lower_core.rye` closed arm pins
 
+Radiant pass `20260725.111715`
+
 ---
 
 ## Claim

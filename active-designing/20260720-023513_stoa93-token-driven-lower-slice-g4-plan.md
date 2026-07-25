@@ -12,6 +12,8 @@
 
 **dated_guard:** Do **not** edit the dated `20260719-204001_*` files. Seat G4 progress in living docs and in *this* new dated brief.
 
+Radiant pass `20260725.111715`
+
 ---
 
 ## Verdict (one breath)

@@ -12,6 +12,8 @@
 
 **dated_guard:** Do **not** edit the dated `20260719-*` alphabet files. Seat tokenize in *this* brief, the G1 barket row, and living pins. The STOA102 horizon brief remains a dated wording artifact.
 
+Radiant pass `20260725.111715`
+
 ---
 
 ## Verdict (one breath)

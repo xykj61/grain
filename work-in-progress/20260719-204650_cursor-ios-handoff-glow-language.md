@@ -9,6 +9,8 @@
 **Status:** Intent — living handoff; refresh REMEMBER when nibs move  
 **Style:** Radiant  
 
+Radiant pass `20260725.111715`
+
 ---
 
 ## Who you are
