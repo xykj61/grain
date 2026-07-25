@@ -6,7 +6,7 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260725.113026` (EDT) · voice Quin  
+**Last refreshed:** `20260725.113115` (EDT) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2** · **THREATS** · **five pillars** · **accrete tiers** · **redaction stance** · **always-in-it rhythm**  
 **Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list512 GREEN · **stamp @u64 · Crockford** · **shape aura floor**  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand ring-2** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm REPORT** · **OQ #1 · #3 · #5 answered** · **pass ledger closed** · **meta exempt** · **Wave 40** · **growth law** · **shell harvest**  
@@ -22,13 +22,13 @@ Radiant pass `20260725.112615`
 
 ## Now
 
-**Radiant Wave 40** `20260725.113015` — 2 clean · 0 changed · meta exempt seated · lint 2. Sent `20260725.113025` · git nib `248f4ed42b`. **Pass closed:** **1,198 rows** · select **0**.
+**Radiant pass closed** · completion report **`20260725.113115`** — 1,198 rows · 995 clean · 29 changed · lint 2 every wave.
 
 **Read:**
 
 ```bash
+less counsel/20260725-113115_radiant-pass-completion-report.md
 less tools/fixtures/radiant_pass_ledger.txt
-less counsel/replies/20260725-113015_re-radiant-wave40.md
 ```
 
 ---
@@ -37,7 +37,7 @@ less counsel/replies/20260725-113015_re-radiant-wave40.md
 
 | Door | Kind |
 |------|------|
-| Next Radiant wave | **closed** — meta exempt seated · select 0 |
+| Next Radiant wave | **closed** — read completion report · genre ALL-CLEAN check-in |
 | Mand ring-3 | parked · awaits word on counsel decision 5 |
 | Mand module home | parked · analysis ready · awaits word |
 | Glow text floor | open whenever it is the live thing |
