@@ -9,6 +9,8 @@
 **Status:** **Seated** `20260712.062656` — door 1 taken: fingerprint added to [`../context/PUBKEYS.md`](../context/PUBKEYS.md) as Cursor cloud lane-key
 **Ground:** tip `b0c9590` · [`../context/PUBKEYS.md`](../context/PUBKEYS.md) · git `gpg.format=ssh`
 
+Radiant pass `20260725.104506`
+
 ---
 
 ## Finding

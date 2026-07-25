@@ -10,6 +10,8 @@
 **Status:** Counsel — disposition recorded; parks open
 **Ground:** tip `b0c9590` · Seam summary [`../session-logs/20260712-055558_full-seam-season-summary.md`](../session-logs/20260712-055558_full-seam-season-summary.md) · T1 map [`../active-designing/20260712-054942_giving-lane-t1-open-asks-field-map.md`](../active-designing/20260712-054942_giving-lane-t1-open-asks-field-map.md) · PUBKEYS [`../context/PUBKEYS.md`](../context/PUBKEYS.md)
 
+Radiant pass `20260725.104506`
+
 ---
 
 ## Affirmed (read-only)
