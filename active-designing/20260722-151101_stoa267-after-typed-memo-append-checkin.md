@@ -13,6 +13,8 @@
 
 **dated_guard:** Do **not** reopen STOA266 as unfinished. Do **not** claim chat paint equals signed append. HAWM1 pin stays.
 
+Radiant pass `20260725.112115`
+
 ---
 
 ## What just closed

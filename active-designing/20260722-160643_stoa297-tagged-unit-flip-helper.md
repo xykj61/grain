@@ -13,6 +13,8 @@
 
 **dated_guard:** Do **not** merge unit with payload or `$:` N-field. Ambient gold · face_lit · fleets · JABS3 stay held.
 
+Radiant pass `20260725.112115`
+
 ---
 
 ## Verdict (one breath)

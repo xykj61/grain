@@ -13,6 +13,8 @@
 
 **dated_guard:** Do **not** reopen STOA270 as unfinished. Do **not** merge live root into `sala_root.txt`. HAWM 1A · gold · JABS3 · UDP stay held.
 
+Radiant pass `20260725.112115`
+
 ---
 
 ## What just closed

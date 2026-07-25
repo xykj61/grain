@@ -13,6 +13,8 @@
 
 **dated_guard:** Do **not** merge with `$:` N-field path. Do **not** open ambient gold. Kind unit flip helper stays optional.
 
+Radiant pass `20260725.112115`
+
 ---
 
 ## Verdict (one breath)

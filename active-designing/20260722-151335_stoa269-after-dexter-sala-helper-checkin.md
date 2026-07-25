@@ -13,6 +13,8 @@
 
 **dated_guard:** Do **not** reopen STOA268 as unfinished. Do **not** overwrite HAWM1 `sala_root.txt` with the live typed root — keep a separate live-root file if wiring glass.
 
+Radiant pass `20260725.112115`
+
 ---
 
 ## What just closed
