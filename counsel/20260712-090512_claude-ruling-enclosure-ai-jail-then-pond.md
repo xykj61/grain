@@ -10,6 +10,8 @@
 **Status:** **Answered** — disposition **A-narrow interim → B supersede-by-witness**
 **Ground:** ask [`../session-logs/20260712-004012_framework-metal-g0c-pond-ask.md`](../session-logs/20260712-004012_framework-metal-g0c-pond-ask.md) · tip `4c2a359` · Pond customs `161125` · enclosure-editors [`../context/specs/enclosure-editors.md`](../context/specs/enclosure-editors.md) · compass [`../foundations/20260706-185112_follow-our-compass.md`](../foundations/20260706-185112_follow-our-compass.md) · Puddle [`../external-research/20260702-035018_puddle-sandboxed-rye-containers.md`](../external-research/20260702-035018_puddle-sandboxed-rye-containers.md)
 
+Radiant pass `20260725.104506`
+
 ---
 
 ## Disposition

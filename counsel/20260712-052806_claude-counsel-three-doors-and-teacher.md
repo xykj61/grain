@@ -10,6 +10,8 @@
 **Status:** Counsel — disposition affirmed by Kaeden `20260712.052806` (Seam season prioritization)
 **Ground:** tip-430 hold [`20260711-033228_hold-at-tip-430.md`](20260711-033228_hold-at-tip-430.md) · wire serves the fold [`../foundations/20260706-022912_the-wire-serves-the-fold.md`](../foundations/20260706-022912_the-wire-serves-the-fold.md) · sameness [`../foundations/20260703-182612_sameness-is-the-macro.md`](../foundations/20260703-182612_sameness-is-the-macro.md) · Anywhere [`../foundations/20260628-124512_anywhere-we-are-found.md`](../foundations/20260628-124512_anywhere-we-are-found.md) · money close to home [`../foundations/20260629-014512_money-that-stays-close-to-home.md`](../foundations/20260629-014512_money-that-stays-close-to-home.md) · hammock [`../active-designing/20260712-052806_seam-season-hammock.md`](../active-designing/20260712-052806_seam-season-hammock.md)
 
+Radiant pass `20260725.104506`
+
 ---
 
 ## Disposition (affirmed)
