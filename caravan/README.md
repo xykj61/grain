@@ -32,6 +32,8 @@ A supervisor that only knows "zero means done, anything else means retry" stalls
 
 Extended-run stability (dozens of supervised cycles, watched for resource growth) waits for a genuine indefinite consumer to make the longer run mean something — see [`counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md`](../counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md) for the reasoning. Nothing here reaches toward Pond's policy layer or Brix's composition layer; Caravan supervises processes, and stops exactly there.
 
+Radiant pass `20260725.112515`
+
 ---
 
 *May every dependent that falls be caught, and every dependent that finishes ordinarily be trusted to go again. May a stop always mean the same thing, however it arrives.*

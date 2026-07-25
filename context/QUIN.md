@@ -4,6 +4,8 @@
 **Last updated:** 2026-07-25 (counsel practice · always-in-it rhythm `034254`)
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 
+Radiant pass `20260725.112515`
+
 ---
 
 ## The Name

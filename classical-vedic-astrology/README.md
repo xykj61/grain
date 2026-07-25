@@ -5,6 +5,8 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`), gentle register
 **Stamp of founding:** `20260702.010412`
 
+Radiant pass `20260725.112515`
+
 ---
 
 This folder holds the reading craft whole: a siloed study library, composable reading templates, one demonstration reading, and the caster that computes a sky. Everything here serves one purpose — that a friend's birth chart can be read with depth, written with warmth, and given with a whole heart.

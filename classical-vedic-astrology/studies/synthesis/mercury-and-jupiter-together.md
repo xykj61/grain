@@ -8,6 +8,8 @@
 
 **In Alice's chart:** Mercury and Jupiter rest close together — same sign (Virgo), same star (Pūrva Phalguṇī), same house (the 11th). When two planets share a place this fully, they speak as one combined voice, and that voice deserves its own short reading.
 
+Radiant pass `20260725.112515`
+
 ---
 
 ## Two planets, one bright signature

@@ -1,3 +1,7 @@
+Radiant pass `20260725.112515`
+
+---
+
 # Brooke — A Complete Two-Wheel Reading
 
 **Stamp:** `20260705.031812 UDT` · **Language:** EN · **Style:** Radiant (see `../../../context/RADIANT_STYLE.md`), gentle register

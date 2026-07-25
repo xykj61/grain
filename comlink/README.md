@@ -40,6 +40,8 @@ Every Mantra and Linengrow wire capability that crosses onto real virtio carries
 
 Ports repeat across unrelated laps by design — each witness binds, uses, and releases its own pair within one bounded run, and Comlink's laps never run concurrently against the same address.
 
+Radiant pass `20260725.112515`
+
 ---
 
 *May a sealed datagram always mean the same bytes, whichever rung carries it. May every guest prove exactly the one crossing it was built for. And may a hosted check always exist beside a freestanding one, so nothing waits a whole season to be found.*

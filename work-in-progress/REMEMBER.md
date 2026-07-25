@@ -6,13 +6,13 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260725.112426` (EDT) · voice Quin  
+**Last refreshed:** `20260725.112526` (EDT) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2** · **THREATS** · **five pillars** · **accrete tiers** · **redaction stance** · **always-in-it rhythm**  
 **Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list512 GREEN · **stamp @u64 · Crockford** · **shape aura floor**  
-**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand ring-2** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm REPORT** · **OQ #1 · #3 · #5 answered** · **pass ledger** · **Wave 34** · **growth law** · **shell harvest**  
-**Git nib:** `449b3321a0` · Wave 34 (PR #122)
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand ring-2** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm REPORT** · **OQ #1 · #3 · #5 answered** · **pass ledger** · **Wave 35** · **growth law** · **shell harvest**  
+**Git nib:** pending · Wave 35 (PR pending)
 
-**Season:** Framework · EDT · **finishing edge:** Radiant Wave 34 · **1,079/~1,185 (~91%)**.  
+**Season:** Framework · EDT · **finishing edge:** Radiant Wave 35 · **1,129/~1,185 (~95%)**.  
 **APK:** `tools/.cache/tube05/seva-broadcaster.apk` · pkg `org.glow.app.seva_broadcaster`  
 **ADB:** `tools/.cache/hawm0/android-sdk/platform-tools/adb` — not on bare PATH  
 
@@ -20,7 +20,7 @@
 
 ## Now
 
-**Radiant Wave 34** `20260725.112415` — 50 clean · 0 changed · lint 2. Sent `20260725.112425` · git nib `449b3321a0`. **Runway:** Wave **34 / ~20** · **1,079 / ~1,185** (~91%).
+**Radiant Wave 35** `20260725.112515` — 41 clean · 9 changed · lint 2. **Runway:** Wave **35 / ~20** · **1,129 / ~1,185** (~95%) · **~56 remain**.
 
 **Read:**
 

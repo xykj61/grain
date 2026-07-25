@@ -10,6 +10,8 @@
 **Ground:** ER [`../external-research/20260712-054342_proven-seat-guest-genode-sel4.md`](../external-research/20260712-054342_proven-seat-guest-genode-sel4.md) · counsel [`20260712-195155_proven-seat-g1-claude-opening-counsel.md`](20260712-195155_proven-seat-g1-claude-opening-counsel.md) · crossing pin [`20260712-195339_proven-seat-g1-crossing-pin.md`](20260712-195339_proven-seat-g1-crossing-pin.md) · product nib **430** · suite nib **432**
 **License (gratitude):** Genode/Sculpt images are AGPL-hosted teacher artifacts — held under `tools/.cache/proven-seat/` (gitignored); never linked into Rye ship binaries; Caravan keeps its name.
 
+Radiant pass `20260725.112515`
+
 ---
 
 ## Enclosure (Framework 16 · this season)

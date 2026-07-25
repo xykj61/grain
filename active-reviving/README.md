@@ -6,6 +6,8 @@
 **Voice:** Quin
 **Status:** Living — the home for revivals in motion, sibling to `active-designing/`
 
+Radiant pass `20260725.112515`
+
 ---
 
 ## What Reviving Is

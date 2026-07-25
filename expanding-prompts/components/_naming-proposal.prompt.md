@@ -8,6 +8,8 @@
 - `{{CANDIDATES}}` — the candidate name(s) to weigh.
 - `{{ROLE}}` — the role the name must fit (kernel vane, language, shell, umbrella).
 
+Radiant pass `20260725.112515`
+
 ---
 
 ## The Expanded Prompt (fill the tokens, then run)
