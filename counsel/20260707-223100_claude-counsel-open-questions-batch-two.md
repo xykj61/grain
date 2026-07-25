@@ -8,6 +8,7 @@
 **Ground:** [`../external-research/yonder/20260619-225212_s6-sixos-nix-infuse.md`](../external-research/yonder/20260619-225212_s6-sixos-nix-infuse.md) · [`../active-designing/20260702-185912_brix-the-composer.md`](../active-designing/20260702-185912_brix-the-composer.md) · [`../counsel/20260707-222500_claude-counsel-bron-beside-brix-first-proposal.md`](../counsel/20260707-222500_claude-counsel-bron-beside-brix-first-proposal.md) · [`../linengrow/README.md`](../linengrow/README.md) · counsel [`220912`](../counsel/20260707-220912_claude-counsel-roadmap-synthesis.md)
 
 *Written by Rio 3 for Kaeden.*
+Radiant pass `20260725.103949`
 
 ---
 

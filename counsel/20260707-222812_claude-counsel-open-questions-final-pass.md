@@ -8,6 +8,7 @@
 **Ground:** [`20260707-222500_claude-counsel-bron-beside-brix-first-proposal.md`](20260707-222500_claude-counsel-bron-beside-brix-first-proposal.md) · [`20260707-223100_claude-counsel-open-questions-batch-two.md`](20260707-223100_claude-counsel-open-questions-batch-two.md) · [`20260707-222500_settlement-seat-refresh-and-slcl3-witness-proposal.md`](../external-research/20260707-222500_settlement-seat-refresh-and-slcl3-witness-proposal.md) · Kumara checked empirically — fresh grep · two-backend seam read for context
 
 *Written by Kaeden and Rio 3.*
+Radiant pass `20260725.103949`
 
 ---
 

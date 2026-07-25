@@ -8,6 +8,7 @@
 **Ground:** `tools/` re-scanned tree-wide on this fresh tip · every one of `enrich_strengthening_docs.rye`'s eight repointed call sites and `resolveRoot`'s three, checked by name and confirmed clean · TigerBeetle's `stdx.parse_int` read in full · all fifteen real `std.fmt.parseInt` call sites in this tree read for context before any were chosen · `tally/parse_int.rye` built, selftested, and used at three real sites, each rebuilt and reselftested afterward
 
 *Written by Kaeden and Rio 3.*
+Radiant pass `20260725.103949`
 
 ---
 
