@@ -13,6 +13,7 @@
 //! STOA184: `$:` `@ux` named-cast mirrors mold lower (`[aura_ux_max_bytes]u8` + demo hex).
 //! STOA187: `$%` payload `@t`/`@ux` parse.
 //! STOA188: `$%` payload `@t`/`@ux` named-cast emit.
+//! `20260724.205719`: `$:` / `$%` `@u64` named-cast emit (Zig `u64`).
 //!
 //!   +$  kind-mold
 //!     $%  [%mint ~]
@@ -230,6 +231,8 @@ fn emit_tuple_cast(spec: *const rm.ShapeSpec, cast_mold: []const u8, out: []u8) 
             try append_print(out, &used, "    {s}: [{d}]u8 = [_]u8{{0}} ** {d},\n", .{ face, cord_bound, cord_bound });
         } else if (spec.field_is_hex[@as(usize, @intCast(i))]) {
             try append_print(out, &used, "    {s}: [{d}]u8 = [_]u8{{0}} ** {d},\n", .{ face, hex_bound, hex_bound });
+        } else if (spec.field_is_u64[@as(usize, @intCast(i))]) {
+            try append_print(out, &used, "    {s}: u64 = 0,\n", .{face});
         } else {
             try append_print(out, &used, "    {s}: u32 = 0,\n", .{face});
         }
@@ -252,6 +255,11 @@ fn emit_tuple_cast(spec: *const rm.ShapeSpec, cast_mold: []const u8, out: []u8) 
             try append_print(out, &used, "        .{s} = glow_demo_cord(\"{s}\"),\n", .{ face, face_src });
         } else if (spec.field_is_hex[@as(usize, @intCast(i))]) {
             try append_print(out, &used, "        .{s} = glow_demo_hex(\"{s}\"),\n", .{ face, face_src });
+        } else if (spec.field_is_u64[@as(usize, @intCast(i))]) {
+            try append_print(out, &used, "        .{s} = {d},\n", .{
+                face,
+                named_cast_demo_vals[@as(usize, @intCast(i))],
+            });
         } else {
             try append_print(out, &used, "        .{s} = {d},\n", .{
                 face,
@@ -271,6 +279,11 @@ fn emit_tuple_cast(spec: *const rm.ShapeSpec, cast_mold: []const u8, out: []u8) 
             try append_print(out, &used, "std.mem.eql(u8, &casted.{s}, &glow_demo_cord(\"{s}\"))", .{ face, face_src });
         } else if (spec.field_is_hex[@as(usize, @intCast(i))]) {
             try append_print(out, &used, "std.mem.eql(u8, &casted.{s}, &glow_demo_hex(\"{s}\"))", .{ face, face_src });
+        } else if (spec.field_is_u64[@as(usize, @intCast(i))]) {
+            try append_print(out, &used, "casted.{s} == {d}", .{
+                face,
+                named_cast_demo_vals[@as(usize, @intCast(i))],
+            });
         } else {
             try append_print(out, &used, "casted.{s} == {d}", .{
                 face,
@@ -349,6 +362,8 @@ fn emit_union_arm(spec: *const rm.ShapeSpec, arm: u32, out: []u8, used: *u32) Lo
                 try append_print(out, used, "        {s}: [{d}]u8 = [_]u8{{0}} ** {d},\n", .{ face, cord_bound, cord_bound });
             } else if (spec.payload_face_is_hex[@as(usize, @intCast(arm))][@as(usize, @intCast(fi))]) {
                 try append_print(out, used, "        {s}: [{d}]u8 = [_]u8{{0}} ** {d},\n", .{ face, hex_bound, hex_bound });
+            } else if (spec.payload_face_is_u64[@as(usize, @intCast(arm))][@as(usize, @intCast(fi))]) {
+                try append_print(out, used, "        {s}: u64 = 0,\n", .{face});
             } else {
                 try append_print(out, used, "        {s}: u32 = 0,\n", .{face});
             }

@@ -20,12 +20,12 @@ One chronological stamp has **two canonical faces** and a bijection asserted bot
 | **Inward** | `u64`, fixed eight bytes, **little-endian** | Zero-copy wire · batches · named bound · cast at the seam |
 | **Outward** | **Crockford base32**, exactly **thirteen** characters | URLs · filenames · anything read aloud |
 
-Glow desks: `glow/gen/shape-stamp-aura.glow` (typed `@u64` face) · `glow/gen/cast-named-stamp-aura.glow` (`^-  @u64`).  
+Glow desks: `glow/gen/shape-stamp-aura.glow` (`+$` / `$:` `stamp=@u64`) · `glow/gen/cast-named-stamp-aura.glow` (same-desk `^-  stamp-shape`) · `glow/gen/shape-stamp-mixed.glow` (mixed admitted auras).  
 Rye codec: `linengrow/crockford_stamp.rye`.
 
 The warm-aura date atom ([`20260714-024800_warm-aura-date-atom-naming.md`](20260714-024800_warm-aura-date-atom-naming.md)) remains the prose rendering (`YYYYMMDD.HHMMSS` / filename hyphen form). This aura seats the **machine faces** of that same moment: the integer on the wire, the Crockford string at the edge.
 
-**Honest hold:** `+$` / `$:` product-shape fields still refuse `@u64` (`UnsupportedShapeAura` — `glow/rune_shape.rye`). Decision 6 seats the aura faces on the living `@u64` cast/face path; widening `$:` for `@u64` is a later Glow lap.
+**Aura floor:** from `20260724.205719`, `@u64` sits on the admitted-shape list in `glow/rune_shape.rye` (`admitted_shape_auras` — data in one place). Genuinely unsupported auras still refuse with `UnsupportedShapeAura`.
 
 ## Why Crockford, not base64url
 

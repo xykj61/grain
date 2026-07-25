@@ -15,6 +15,7 @@
 //! STOA187: `$%` payload `@t`/`@ux` parse.
 //! STOA188: `$%` payload `@t`/`@ux` lowers to bounded bytes + demo main.
 //! STOA189: API rename from lower_mold / MoldSpec → lower_shape / ShapeSpec.
+//! `20260724.205719`: `$:` / `$%` `@u64` lowers to Zig `u64` (admitted-aura table).
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -159,6 +160,8 @@ fn emit_tuple_type(spec: *const rm.ShapeSpec, zig_type: []const u8, out: []u8, u
             try append_print(out, used, "    {s}: [{d}]u8 = [_]u8{{0}} ** {d},\n", .{ face, cord_bound, cord_bound });
         } else if (spec.field_is_hex[@as(usize, @intCast(i))]) {
             try append_print(out, used, "    {s}: [{d}]u8 = [_]u8{{0}} ** {d},\n", .{ face, hex_bound, hex_bound });
+        } else if (spec.field_is_u64[@as(usize, @intCast(i))]) {
+            try append_print(out, used, "    {s}: u64 = 0,\n", .{face});
         } else {
             try append_print(out, used, "    {s}: u32 = 0,\n", .{face});
         }
@@ -187,6 +190,8 @@ fn lower_tuple(spec: *const rm.ShapeSpec, zig_type: []const u8, out: []u8) Lower
             try append_print(out, &used, "        .{s} = glow_demo_cord(\"{s}\"),\n", .{ face, face_src });
         } else if (spec.field_is_hex[@as(usize, @intCast(i))]) {
             try append_print(out, &used, "        .{s} = glow_demo_hex(\"{s}\"),\n", .{ face, face_src });
+        } else if (spec.field_is_u64[@as(usize, @intCast(i))]) {
+            try append_print(out, &used, "        .{s} = {d},\n", .{ face, shape_demo_vals[@as(usize, @intCast(i))] });
         } else {
             try append_print(out, &used, "        .{s} = {d},\n", .{ face, shape_demo_vals[@as(usize, @intCast(i))] });
         }
@@ -203,6 +208,8 @@ fn lower_tuple(spec: *const rm.ShapeSpec, zig_type: []const u8, out: []u8) Lower
             try append_print(out, &used, "std.mem.eql(u8, &m.{s}, &glow_demo_cord(\"{s}\"))", .{ face, face_src });
         } else if (spec.field_is_hex[@as(usize, @intCast(i))]) {
             try append_print(out, &used, "std.mem.eql(u8, &m.{s}, &glow_demo_hex(\"{s}\"))", .{ face, face_src });
+        } else if (spec.field_is_u64[@as(usize, @intCast(i))]) {
+            try append_print(out, &used, "m.{s} == {d}", .{ face, shape_demo_vals[@as(usize, @intCast(i))] });
         } else {
             try append_print(out, &used, "m.{s} == {d}", .{ face, shape_demo_vals[@as(usize, @intCast(i))] });
         }
@@ -315,6 +322,8 @@ fn emit_tagged_payload_type(spec: *const rm.ShapeSpec, zig_type: []const u8, out
                     try append_print(out, used, "        {s}: [{d}]u8 = [_]u8{{0}} ** {d},\n", .{ face, cord_bound, cord_bound });
                 } else if (spec.payload_face_is_hex[@as(usize, @intCast(i))][@as(usize, @intCast(fi))]) {
                     try append_print(out, used, "        {s}: [{d}]u8 = [_]u8{{0}} ** {d},\n", .{ face, hex_bound, hex_bound });
+                } else if (spec.payload_face_is_u64[@as(usize, @intCast(i))][@as(usize, @intCast(fi))]) {
+                    try append_print(out, used, "        {s}: u64 = 0,\n", .{face});
                 } else {
                     try append_print(out, used, "        {s}: u32 = 0,\n", .{face});
                 }
@@ -340,6 +349,8 @@ fn emit_payload_face_inits(spec: *const rm.ShapeSpec, arm_i: u32, face_count: u3
             try append_print(out, used, ".{s} = glow_demo_cord(\"{s}\")", .{ face, face_src });
         } else if (spec.payload_face_is_hex[@as(usize, @intCast(arm_i))][@as(usize, @intCast(fi))]) {
             try append_print(out, used, ".{s} = glow_demo_hex(\"{s}\")", .{ face, face_src });
+        } else if (spec.payload_face_is_u64[@as(usize, @intCast(arm_i))][@as(usize, @intCast(fi))]) {
+            try append_print(out, used, ".{s} = {d}", .{ face, shape_demo_vals[@as(usize, @intCast(fi))] });
         } else {
             try append_print(out, used, ".{s} = {d}", .{ face, shape_demo_vals[@as(usize, @intCast(fi))] });
         }
@@ -359,6 +370,8 @@ fn emit_payload_face_checks(spec: *const rm.ShapeSpec, arm_i: u32, face_count: u
             try append_print(out, used, "std.mem.eql(u8, &m.{s}, &glow_demo_cord(\"{s}\"))", .{ face, face_src });
         } else if (spec.payload_face_is_hex[@as(usize, @intCast(arm_i))][@as(usize, @intCast(fi))]) {
             try append_print(out, used, "std.mem.eql(u8, &m.{s}, &glow_demo_hex(\"{s}\"))", .{ face, face_src });
+        } else if (spec.payload_face_is_u64[@as(usize, @intCast(arm_i))][@as(usize, @intCast(fi))]) {
+            try append_print(out, used, "m.{s} == {d}", .{ face, shape_demo_vals[@as(usize, @intCast(fi))] });
         } else {
             try append_print(out, used, "m.{s} == {d}", .{ face, shape_demo_vals[@as(usize, @intCast(fi))] });
         }

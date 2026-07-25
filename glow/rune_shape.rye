@@ -4,11 +4,11 @@
 //! directly to build ShapeSpec, retiring lower_multi.collect_lines and
 //! byte-level head parsing inside parse_source.
 //!
-//! `$:` tuple of `@u32`/`@t`/`@ux` fields (1–9). `$%` tagged union of cold
+//! `$:` tuple of admitted field auras (1–9). `$%` tagged union of cold
 //! atoms with unit payload `[%tag ~]` or one-to-three-face payload
-//! `[%tag face=@u32|@t|@ux …]` (2–3 tags). STOA187: payload `@t`/`@ux`
-//! parse. STOA188: payload cord/hex lower emit.
-//! STOA189: API rename from rune_mold / MoldSpec → rune_shape / ShapeSpec.
+//! (2–3 tags). STOA187: payload `@t`/`@ux` parse. STOA188: payload cord/hex
+//! lower emit. STOA189: API rename. `20260724.205719`: `@u64` admitted —
+//! list is DATA in `admitted_shape_auras` (one place; rung-1a lesson).
 //!
 //!   +$  xfer-mold
 //!     $%  [%mint from=@u32 amount=@u32]
@@ -23,6 +23,17 @@ const tally_copy = @import("tally_copy.rye");
 pub const max_name_len: u32 = 64;
 pub const max_fields: u32 = 9;
 pub const max_payload_faces: u32 = 3;
+
+/// Admitted `$:` / `$%` field auras — DATA in one place (rung-1a lesson).
+/// Widen here; parse and lower both consult this table. Bound named.
+pub const admitted_shape_aura_count: u32 = 4;
+pub const admitted_shape_auras = [_][]const u8{ "@u32", "@t", "@ux", "@u64" };
+
+pub const ShapeAuraFlags = struct {
+    is_cord: bool = false,
+    is_hex: bool = false,
+    is_u64: bool = false,
+};
 
 pub const BodyKind = enum { tuple, tagged };
 
@@ -48,6 +59,30 @@ pub const ParseError = error{
     EmptySource,
 };
 
+/// True when `aura` is on the admitted-shape list.
+pub fn shape_aura_admitted(aura: []const u8) bool {
+    assert(aura.len >= 2); // precondition: aura token starts with @
+    assert(admitted_shape_aura_count == admitted_shape_auras.len); // invariant: bound matches table
+    var i: u32 = 0;
+    while (i < admitted_shape_aura_count) : (i += 1) {
+        if (std.mem.eql(u8, aura, admitted_shape_auras[i])) return true;
+    }
+    return false;
+}
+
+/// Classify an admitted aura, or refuse UnsupportedShapeAura.
+pub fn classify_shape_aura(aura: []const u8) ParseError!ShapeAuraFlags {
+    assert(aura.len >= 2); // precondition: aura token
+    if (!shape_aura_admitted(aura)) return error.UnsupportedShapeAura;
+    const is_cord = std.mem.eql(u8, aura, "@t");
+    const is_hex = std.mem.eql(u8, aura, "@ux");
+    const is_u64 = std.mem.eql(u8, aura, "@u64");
+    if (is_cord) assert(!is_hex and !is_u64); // invariant: exclusive kinds
+    if (is_hex) assert(!is_cord and !is_u64); // invariant: exclusive kinds
+    if (is_u64) assert(!is_cord and !is_hex); // invariant: exclusive kinds
+    return .{ .is_cord = is_cord, .is_hex = is_hex, .is_u64 = is_u64 };
+}
+
 pub const ShapeSpec = struct {
     name: [max_name_len]u8 = [_]u8{0} ** max_name_len,
     name_len: usize = 0,
@@ -58,6 +93,8 @@ pub const ShapeSpec = struct {
     field_is_cord: [max_fields]bool = [_]bool{false} ** max_fields,
     /// STOA183: true when the `$:` face aura is `@ux` (hex); exclusive of cord.
     field_is_hex: [max_fields]bool = [_]bool{false} ** max_fields,
+    /// `20260724.205719`: true when the `$:` face aura is `@u64`; exclusive of cord/hex.
+    field_is_u64: [max_fields]bool = [_]bool{false} ** max_fields,
     /// Per `$%` arm: count of payload faces; 0 means unit `~`.
     payload_counts: [max_fields]usize = [_]usize{0} ** max_fields,
     payloads: [max_fields][max_payload_faces][max_name_len]u8 = [_][max_payload_faces][max_name_len]u8{
@@ -72,6 +109,10 @@ pub const ShapeSpec = struct {
     } ** max_fields,
     /// STOA187: per payload face — `@ux` hex (exclusive of cord).
     payload_face_is_hex: [max_fields][max_payload_faces]bool = [_][max_payload_faces]bool{
+        [_]bool{false} ** max_payload_faces,
+    } ** max_fields,
+    /// `20260724.205719`: per payload face — `@u64` (exclusive of cord/hex).
+    payload_face_is_u64: [max_fields][max_payload_faces]bool = [_][max_payload_faces]bool{
         [_]bool{false} ** max_payload_faces,
     } ** max_fields,
     field_count: usize = 0,
@@ -122,21 +163,23 @@ fn rune2_text_is(src: []const u8, tok: tokens.Token, lit: []const u8) bool {
 /// Copy `face` (a `tokens.slice_of` span) into `spec.fields[i]` and advance
 /// `spec.field_count`. The `face` slice is already validated by the lexer.
 fn push_name(spec: *ShapeSpec, face: []const u8) ParseError!void {
-    return push_field(spec, face, false, false);
+    return push_field(spec, face, .{});
 }
 
-/// `$:` face with aura kind — cord `@t` (STOA180) · hex `@ux` (STOA183).
-fn push_field(spec: *ShapeSpec, face: []const u8, is_cord: bool, is_hex: bool) ParseError!void {
+/// `$:` face with aura kind — cord `@t` · hex `@ux` · `@u64` · else `@u32`.
+fn push_field(spec: *ShapeSpec, face: []const u8, flags: ShapeAuraFlags) ParseError!void {
     assert(face.len >= 1); // precondition: ident spans at least one byte
     assert(face.len <= max_name_len); // precondition: lexer bounded ident
-    if (is_cord) assert(!is_hex); // invariant: cord face is not hex
-    if (is_hex) assert(!is_cord); // invariant: hex face is not cord
+    if (flags.is_cord) assert(!flags.is_hex and !flags.is_u64); // invariant: exclusive
+    if (flags.is_hex) assert(!flags.is_cord and !flags.is_u64); // invariant: exclusive
+    if (flags.is_u64) assert(!flags.is_cord and !flags.is_hex); // invariant: exclusive
     if (spec.field_count >= max_fields) return error.TooManyFields;
     const i = spec.field_count;
     tally_copy.copy_disjoint(u8, spec.fields[i][0..face.len], face);
     spec.field_lens[i] = face.len;
-    spec.field_is_cord[i] = is_cord;
-    spec.field_is_hex[i] = is_hex;
+    spec.field_is_cord[i] = flags.is_cord;
+    spec.field_is_hex[i] = flags.is_hex;
+    spec.field_is_u64[i] = flags.is_u64;
     spec.field_count += 1;
 }
 
@@ -158,6 +201,15 @@ pub fn any_hex_field(spec: *const ShapeSpec) bool {
     return false;
 }
 
+/// True when any `$:` face uses the `@u64` aura.
+pub fn any_u64_field(spec: *const ShapeSpec) bool {
+    var i: usize = 0;
+    while (i < spec.field_count) : (i += 1) {
+        if (spec.field_is_u64[i]) return true;
+    }
+    return false;
+}
+
 /// Record a unit `$%` arm (payload 0 faces) into `spec`.
 fn push_tag_unit(spec: *ShapeSpec, tag: []const u8) ParseError!void {
     assert(tag.len >= 1); // precondition: tag name non-empty
@@ -171,13 +223,14 @@ fn push_tag_unit(spec: *ShapeSpec, tag: []const u8) ParseError!void {
 }
 
 /// Record a payload `$%` arm (`faces` holds 1–3 face-name slices) into `spec`.
-/// `is_cord` / `is_hex` are parallel aura flags (STOA187); both false means `@u32`.
+/// Parallel aura flag slices; all false means `@u32`.
 fn push_tag_faces(
     spec: *ShapeSpec,
     tag: []const u8,
     faces: []const []const u8,
     is_cord: []const bool,
     is_hex: []const bool,
+    is_u64: []const bool,
 ) ParseError!void {
     assert(tag.len >= 1); // precondition: tag name non-empty
     assert(tag.len <= max_name_len); // precondition: lexer bounded ident
@@ -185,6 +238,7 @@ fn push_tag_faces(
     assert(faces.len <= max_payload_faces); // precondition: within payload budget
     assert(is_cord.len == faces.len); // precondition: aura flags match faces
     assert(is_hex.len == faces.len); // precondition: aura flags match faces
+    assert(is_u64.len == faces.len); // precondition: aura flags match faces
     if (spec.field_count >= max_fields) return error.TooManyFields;
     const i = spec.field_count;
     tally_copy.copy_disjoint(u8, spec.fields[i][0..tag.len], tag);
@@ -196,14 +250,17 @@ fn push_tag_faces(
         const face = faces[@as(usize, @intCast(fi))];
         const cord = is_cord[@as(usize, @intCast(fi))];
         const hex = is_hex[@as(usize, @intCast(fi))];
-        if (cord) assert(!hex); // invariant: cord face is not hex
-        if (hex) assert(!cord); // invariant: hex face is not cord
+        const wide = is_u64[@as(usize, @intCast(fi))];
+        if (cord) assert(!hex and !wide); // invariant: exclusive
+        if (hex) assert(!cord and !wide); // invariant: exclusive
+        if (wide) assert(!cord and !hex); // invariant: exclusive
         assert(face.len >= 1); // precondition: face name non-empty
         assert(face.len <= max_name_len); // precondition: lexer bounded ident
         tally_copy.copy_disjoint(u8, spec.payloads[i][@as(usize, @intCast(fi))][0..face.len], face);
         spec.payload_face_lens[i][@as(usize, @intCast(fi))] = face.len;
         spec.payload_face_is_cord[i][@as(usize, @intCast(fi))] = cord;
         spec.payload_face_is_hex[i][@as(usize, @intCast(fi))] = hex;
+        spec.payload_face_is_u64[i][@as(usize, @intCast(fi))] = wide;
     }
     spec.field_count += 1;
 }
@@ -240,8 +297,8 @@ pub fn any_payload_bytes_field(spec: *const ShapeSpec) bool {
 }
 
 /// Parse mold source via token stream (STOA97 token→ShapeSpec).
-/// Accepts `$:` tuples (1–9 `@u32`/`@t`/`@ux` fields) and `$%` tagged unions
-/// (2–3 arms, each `[%tag ~]` or `[%tag face=@u32|@t|@ux …]` — STOA187).
+/// Accepts `$:` tuples (1–9 admitted field auras) and `$%` tagged unions
+/// (2–3 arms, each `[%tag ~]` or `[%tag face=<admitted> …]`).
 /// Same public signature as before: `parse_source(src) ParseError!ShapeSpec`.
 pub fn parse_source(src: []const u8) ParseError!ShapeSpec {
     if (src.len == 0) return error.EmptySource;
@@ -291,7 +348,7 @@ pub fn parse_source(src: []const u8) ParseError!ShapeSpec {
 
     if (rune2_text_is(src, body_tok, "$:")) {
         spec.body = .tuple;
-        // Field clauses: ident = @u32 | @t | @ux, until == (STOA180 cord · STOA183 hex).
+        // Field clauses: ident = <admitted aura>, until ==.
         while (true) {
             while (i < n and toks[@as(usize, @intCast(i))].kind == .newline) : (i += 1) {}
             if (i >= n) return error.MissingEnd;
@@ -299,7 +356,7 @@ pub fn parse_source(src: []const u8) ParseError!ShapeSpec {
                 i += 1;
                 break;
             }
-            // Expect: ident = @u32 | @t | @ux
+            // Expect: ident = <admitted aura>
             if (toks[@as(usize, @intCast(i))].kind != .ident) return error.MissingField;
             const face_tok = toks[@as(usize, @intCast(i))];
             i += 1;
@@ -309,11 +366,8 @@ pub fn parse_source(src: []const u8) ParseError!ShapeSpec {
             const aura_tok = toks[@as(usize, @intCast(i))];
             i += 1;
             const aura = tokens.slice_of(src, aura_tok);
-            const is_cord = std.mem.eql(u8, aura, "@t");
-            const is_hex = std.mem.eql(u8, aura, "@ux");
-            const is_u32 = std.mem.eql(u8, aura, "@u32");
-            if (!is_cord and !is_hex and !is_u32) return error.UnsupportedShapeAura;
-            try push_field(&spec, tokens.slice_of(src, face_tok), is_cord, is_hex);
+            const flags = try classify_shape_aura(aura);
+            try push_field(&spec, tokens.slice_of(src, face_tok), flags);
         }
         if (spec.field_count == 0) return error.MissingField;
     } else if (rune2_text_is(src, body_tok, "$%")) {
@@ -346,10 +400,11 @@ pub fn parse_source(src: []const u8) ParseError!ShapeSpec {
                 i += 1;
                 try push_tag_unit(&spec, tag_name);
             } else {
-                // Payload arm: one or more face=@u32|@t|@ux, then ] (STOA187).
+                // Payload arm: one or more face=<admitted>, then ].
                 var faces: [max_payload_faces][]const u8 = undefined;
                 var face_cord: [max_payload_faces]bool = [_]bool{false} ** max_payload_faces;
                 var face_hex: [max_payload_faces]bool = [_]bool{false} ** max_payload_faces;
+                var face_u64: [max_payload_faces]bool = [_]bool{false} ** max_payload_faces;
                 var face_count: u32 = 0;
                 while (i < n and toks[@as(usize, @intCast(i))].kind != .rbracket) {
                     if (face_count >= max_payload_faces) return error.TooManyFields;
@@ -362,21 +417,19 @@ pub fn parse_source(src: []const u8) ParseError!ShapeSpec {
                     const paura_tok = toks[@as(usize, @intCast(i))];
                     i += 1;
                     const aura = tokens.slice_of(src, paura_tok);
-                    const is_cord = std.mem.eql(u8, aura, "@t");
-                    const is_hex = std.mem.eql(u8, aura, "@ux");
-                    const is_u32 = std.mem.eql(u8, aura, "@u32");
-                    if (!is_cord and !is_hex and !is_u32) return error.UnsupportedShapeAura;
+                    const flags = try classify_shape_aura(aura);
                     const fi = @as(usize, @intCast(face_count));
                     faces[fi] = tokens.slice_of(src, pface_tok);
-                    face_cord[fi] = is_cord;
-                    face_hex[fi] = is_hex;
+                    face_cord[fi] = flags.is_cord;
+                    face_hex[fi] = flags.is_hex;
+                    face_u64[fi] = flags.is_u64;
                     face_count += 1;
                 }
                 if (i >= n or toks[@as(usize, @intCast(i))].kind != .rbracket) return error.MalformedTag;
                 i += 1;
                 if (face_count == 0) return error.MalformedTag;
                 const nfaces = @as(usize, @intCast(face_count));
-                try push_tag_faces(&spec, tag_name, faces[0..nfaces], face_cord[0..nfaces], face_hex[0..nfaces]);
+                try push_tag_faces(&spec, tag_name, faces[0..nfaces], face_cord[0..nfaces], face_hex[0..nfaces], face_u64[0..nfaces]);
             }
         }
         if (spec.field_count < 2) return error.TooFewTags;
