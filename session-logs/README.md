@@ -13,6 +13,8 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 **Living pin bound:** `living_pin_max_bytes = 24576` ([spec](../context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md)). Closed index rows through `20260721`: [`archive/README-index-through-20260721.md`](archive/README-index-through-20260721.md). Early `20260722` overflow: [`archive/README-index-20260722-shelf.md`](archive/README-index-20260722-shelf.md).
 
 - `20260724.212844` — [Explore Mand ring-1 surfaces for ring-2 retention](20260724-212844_explore-mand-ring1-for-ring2.bron) — APIs · custody · ratchet patterns · placement
+- `20260724.213221` — [REMEMBER git nib after Mand ring-2 send](20260724-213221_remember-git-nib-mand-ring2.bron) — pin 006b0ffeae
+- `20260724.213216` — [Send Mand ring-2 · py gate · stranger parity](20260724-213216_send-mand-ring2-roster.bron) — FF merge · PR 85
 - `20260724.213140` — [Mand ring-2 retention · py gate · stranger parity](20260724-213140_mand-ring2-py-gate-stranger.bron) — KEEP·ELIGIBLE·HELD · py blocking · warm REPORT
 - `20260724.211904` — [REMEMBER git nib after stranger-lap honesty send](20260724-211904_remember-git-nib-stranger-honesty.bron) — pin 3d9b8f67a3
 - `20260724.211852` — [Send stranger lap honesty to main](20260724-211852_send-stranger-lap-honesty.bron) — FF merge · PR 84
@@ -166,5 +168,3 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 - `20260722.142353` — [STOA253–254 bartis N-field identity](20260722-142353_stoa253-254-n-field-identity-round.bron) — emit_n_field_identity; barket twin next
 - `20260722.142101` — [REMEMBER git nib after STOA252](20260722-142101_remember-git-nib-stoa252.bron) — pin e0e9a43e8168
 - `20260722.142054` — [STOA251–252 N-field emit inventary](20260722-142054_stoa251-252-n-field-inventory-round.bron) — language return; identity emit next
-- `20260722.141731` — [REMEMBER git nib after STOA250](20260722-141731_remember-git-nib-stoa250.bron) — pin aee500ffe5a0
-- `20260722.141720` — [STOA249–250 authored fields body round](20260722-141720_stoa249-250-fields-body-round.bron) — parse own body; name next door
