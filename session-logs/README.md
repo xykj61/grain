@@ -16,6 +16,8 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 **Living pin bound:** `living_pin_max_bytes = 24576` ([spec](../context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md)). Closed index rows through `20260721`: [`archive/README-index-through-20260721.md`](archive/README-index-through-20260721.md). Early `20260722` overflow: [`archive/README-index-20260722-shelf.md`](archive/README-index-20260722-shelf.md).
 
+- `20260725.001742` — [REMEMBER git nib after redaction send](20260725-001742_remember-git-nib-redaction.bron) — pin 8dc6238c7a
+- `20260725.001741` — [Send redaction stance to main](20260725-001741_send-redaction-stance.bron) — FF merge · PR 91
 - `20260725.001710` — [Redaction stance living pin · OQ #1](20260725-001710_redaction-stance-seat.bron) — forget by key · Mand ring-3 PARK
 - `20260724.223409` — [Send Radiant waves close to main](20260724-223409_send-radiant-waves-close.bron) — FF merge · PR 87–90
 - `20260724.223410` — [REMEMBER git nib after Radiant waves send](20260724-223410_remember-git-nib-radiant-waves.bron) — pin 41fbabd16e
