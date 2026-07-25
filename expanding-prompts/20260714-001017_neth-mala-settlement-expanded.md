@@ -5,8 +5,6 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Living — the expanded, research-grounded form of the Neth seed, addressed to a generic Acme Corporation employee. Design and social-experiment framing only; not financial, investment, or legal advice.
 
-Radiant pass `20260725.111515`
-
 ---
 
 ## The Seed

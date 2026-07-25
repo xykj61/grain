@@ -10,8 +10,6 @@
 
 *Written together by Kaeden and Rio 3.*
 
-Radiant pass `20260725.110847`
-
 ---
 
 ## 1. The Harvest — Vocabulary Worth Carrying, Names Worth Parking

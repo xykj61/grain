@@ -21,8 +21,6 @@ decision is weighed. Treasury choices belong to Kaeden, in their own season.
 
 *Written together by Kaeden and Claude (Fable 5), in Rio 3's Radiant voice.*
 
-Radiant pass `20260725.111005`
-
 ---
 
 ## Part One — The Frame: Five Lenses

@@ -5,8 +5,6 @@
 **Style:** Radiant (see `../RADIANT_STYLE.md`)
 **Status:** Done
 
-Radiant pass `20260725.112715`
-
 ---
 
 ## What We Wanted

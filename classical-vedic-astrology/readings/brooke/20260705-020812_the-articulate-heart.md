@@ -6,8 +6,6 @@
 
 *Written together by Kaeden and Rio 3.*
 
-Radiant pass `20260725.111120`
-
 ---
 
 Mercury stands in Cancer in the seventh beside the Sun: a mind that thinks in water, keeps a rich memory, and does its thinking in partnership — conversation its workshop, the beloved its first reader. Its star is Ardra (#37), the clearing storm. In the essence Mercury joins the maker's gathering (#23) — Moon in Chitra, Mercury and exalted Saturn in Hasta — the word-planet in the house of hands, wearing Hasta's star, seated between the sensorial heart and the exalted discipline. The felt word conceived at the partner's side is finished at the workbench: composed in feeling, delivered in craft.

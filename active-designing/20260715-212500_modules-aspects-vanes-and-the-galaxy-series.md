@@ -8,8 +8,6 @@
 **Status:** Design — revives `20260702-031312_modules-aspects-and-mailable-money.md` (the elder stays whole; this is born beside it, per accrete-never-break). Register: mixed — the layering and the green laps it names are checkable; the runtime-unification proposal is design (Two Rooms).
 **Revives:** `20260702-031312_modules-aspects-and-mailable-money.md`
 
-Radiant pass `20260725.111615`
-
 ---
 
 ## The Three Layers, Said Once

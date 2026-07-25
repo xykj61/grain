@@ -9,8 +9,6 @@
 **Status:** Checkable — three asks seated · sources pin **revised** `201802` to Codeberg **26.05** · toolchain 25.05 stands
 **Ground:** evening handoff [`../bron-resins/20260712-200445_claude-evening-g1-toolchain.bron`](../bron-resins/20260712-200445_claude-evening-g1-toolchain.bron) · crossing pin [`20260712-195339_proven-seat-g1-crossing-pin.md`](20260712-195339_proven-seat-g1-crossing-pin.md) · opening counsel [`20260712-195155_proven-seat-g1-claude-opening-counsel.md`](20260712-195155_proven-seat-g1-claude-opening-counsel.md)
 
-Radiant pass `20260725.111515`
-
 ---
 
 ## Day sentence (Claude)

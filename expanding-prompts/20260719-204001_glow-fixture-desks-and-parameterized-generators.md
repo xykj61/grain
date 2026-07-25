@@ -9,8 +9,6 @@
 **Status:** Intent — wording seated; argv sample lap is horizon  
 **Canon:** [`../active-designing/20260719-204001_glow-rune-pronunciation-alphabet-riscv-and-generators.md`](../active-designing/20260719-204001_glow-rune-pronunciation-alphabet-riscv-and-generators.md) · [`../glow/README.md`](../glow/README.md)
 
-Radiant pass `20260725.111715`
-
 ---
 
 ## What you run today

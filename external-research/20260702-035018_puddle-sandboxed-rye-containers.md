@@ -11,8 +11,6 @@
 
 *Named by Kaeden (`2026-07-02`). Puddle is a small word for many bounded worlds — each whole, each shallow from the host's view, each deep to the agent inside.*
 
-Radiant pass `20260725.110847`
-
 ---
 
 ## The shape we are exploring

@@ -10,8 +10,6 @@
 **Lens:** TAME; Gall's Law; one value model; x86_64 near, RISC-V horizon
 **Research base:** `../external-research/yonder/20260619-153612_stack-toward-a-living-desktop.md`
 
-Radiant pass `20260725.110622`
-
 ---
 
 ## Mission

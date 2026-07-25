@@ -13,8 +13,6 @@
 
 **dated_guard:** Do **not** claim product reads the lit desk at runtime. Do **not** claim events 2–3 were already pin-wired before this stamp. JABS3 held.
 
-Radiant pass `20260725.112015`
-
 ---
 
 ## Verdict (one breath)

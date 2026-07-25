@@ -5,8 +5,6 @@
 **Counsel:** argues *for* the bound
 **Current tree:** **1** spec in flight — [`context/specs/20260701-221512_amber-functional-spec.md`](../context/specs/20260701-221512_amber-functional-spec.md) — already within the bound
 
-Radiant pass `20260725.110847`
-
 ---
 
 ## The ruling

@@ -13,8 +13,6 @@
 
 **dated_guard:** Do **not** claim Glow rewrote `sala_b0_fold`. Sign/verify stay inside elder replay. JABS3 held.
 
-Radiant pass `20260725.111915`
-
 ---
 
 ## Verdict (one breath)

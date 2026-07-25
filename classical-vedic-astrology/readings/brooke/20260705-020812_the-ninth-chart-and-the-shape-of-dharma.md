@@ -6,8 +6,6 @@
 
 *Written together by Kaeden and Rio 3.*
 
-Radiant pass `20260725.111120`
-
 ---
 
 Dharma is the essence of a thing (#24) — the quality so inseparable that removing it removes the thing itself. The householder's table is as true a temple as any cave, and the workshop bench belongs beside it on that list.

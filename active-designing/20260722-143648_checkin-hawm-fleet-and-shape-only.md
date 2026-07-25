@@ -12,8 +12,6 @@
 
 **dated_guard:** Do **not** rewrite dated STOA mold briefs or Hoon-study `mold-*` desks. Do **not** claim GrapheneOS ships a first-party emulator this tree already runs. Do **not** claim multi-user fleets are checkable until a witness binds them.
 
-Radiant pass `20260725.112015`
-
 ---
 
 ## Door 1 — GrapheneOS emulator · autonomous fleets

@@ -7,8 +7,6 @@
 
 *Written together by Kaeden and Claude (Fable 5), in the fresh bench's Radiant voice — voice-name awaiting Kaeden's word.*
 
-Radiant pass `20260725.111120`
-
 ---
 
 The diurnal wheel places its angles beautifully; this addendum records Kaeden's refinement of one step. The silo method sets each angle at the center of its angular house, which is exactly right when the ascendant stands mid-sign. When it stands elsewhere in its sign, the horizon should cross houses one and seven at the **true zodiac degree** — a Capricorn ascendant of 24°37′ crosses its house four-fifths of the way through, with four-fifths of the rising sign already in the day above the line and one-fifth still in the night below.

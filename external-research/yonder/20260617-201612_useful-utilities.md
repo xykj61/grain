@@ -9,8 +9,6 @@
 **Lens:** TAME priority — safety, performance, then the joy of the craft
 **Status:** Living roadmap
 
-Radiant pass `20260725.110622`
-
 ---
 
 ## Why This List

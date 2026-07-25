@@ -4,8 +4,6 @@
 **Style:** Radiant (see `../../../context/RADIANT_STYLE.md`)
 **Status:** Template — fill `{{VARIANT}}` with one of Reya / Riyo / Trey / Triz; do not hand-edit the fills, regenerate from this template
 
-Radiant pass `20260725.112715`
-
 ---
 
 **Navigation:**

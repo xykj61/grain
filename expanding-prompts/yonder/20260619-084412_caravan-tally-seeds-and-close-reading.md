@@ -8,8 +8,6 @@
 **Voice:** Reya 2
 **Lens:** TAME — safety, performance, the joy of the craft; Gall's Law; building level with design
 
-Radiant pass `20260725.110622`
-
 ---
 
 ## The Seed (a faithful echo)

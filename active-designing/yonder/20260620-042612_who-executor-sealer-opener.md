@@ -12,8 +12,6 @@
 **Lens:** TAME — safety first; `977` flow of values; `973` datagrams; `974` harts; `994` identity
 **Status:** Active Design (siloed)
 
-Radiant pass `20260725.110740`
-
 ---
 
 ## Our Own Ground

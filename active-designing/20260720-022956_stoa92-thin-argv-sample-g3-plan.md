@@ -12,8 +12,6 @@
 
 **dated_guard:** Do **not** edit the dated `20260719-204001_*` files. Seat G3 progress in living docs (`glow/README.md`, `context/TAME_GUIDANCE.md` Now lines, work-in-progress ledgers) and in *this* new dated brief.
 
-Radiant pass `20260725.111715`
-
 ---
 
 ## Verdict (one breath)

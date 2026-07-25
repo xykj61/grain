@@ -12,8 +12,6 @@
 
 **dated_guard:** Do **not** rewrite dated STOA110–121 wording artifacts. Those keep Hoon-era *wet* / *dry* as historical names. Living pins and APIs use Glow terms from this lap forward.
 
-Radiant pass `20260725.111715`
-
 ---
 
 ## Verdict (one breath)

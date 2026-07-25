@@ -5,8 +5,6 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Checkable-room witness report — real, run, and green through the core; one host-specific gap fully diagnosed
 
-Radiant pass `20260725.111515`
-
 ---
 
 ## What This Answers

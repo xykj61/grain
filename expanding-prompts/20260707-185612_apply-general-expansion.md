@@ -36,8 +36,6 @@ An open-invitation round: two seated TigerBeetle marks with a real application, 
 
 `enrich_strengthening_docs.rye`'s own witness — larger fixture surface, deserves its own sitting. Extended-run stability, Brix, Pond, MALA, continuity — all unchanged.
 
-Radiant pass `20260725.111235`
-
 ---
 
 *May the bug a verification finds always matter more than the feature it was checking.*

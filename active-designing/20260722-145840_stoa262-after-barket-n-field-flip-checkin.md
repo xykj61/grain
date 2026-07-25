@@ -13,8 +13,6 @@
 
 **dated_guard:** Do **not** reopen pair…nona identity/flip emit as unfinished. Tagged `$%` flip · `deca-*` · shared-package · Glow rename stay held.
 
-Radiant pass `20260725.112015`
-
 ---
 
 ## What just closed

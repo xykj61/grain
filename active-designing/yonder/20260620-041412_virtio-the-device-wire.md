@@ -12,8 +12,6 @@
 **Lens:** TAME — safety first; Gall's Law; `993` bounded network; `992` shape-casting at the edge
 **Status:** Active Design (siloed)
 
-Radiant pass `20260725.110740`
-
 ---
 
 ## Our Own Ground

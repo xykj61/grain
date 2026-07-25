@@ -12,8 +12,6 @@
 
 **dated_guard:** Do **not** rewrite dated one-field cast briefs. One-field desks keep working under the shared emit path.
 
-Radiant pass `20260725.111815`
-
 ---
 
 ## Verdict (one breath)

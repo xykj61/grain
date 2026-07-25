@@ -12,8 +12,6 @@
 
 **Direction:** [`../work-in-progress/ROADMAP.md`](../work-in-progress/ROADMAP.md) · [`../work-in-progress/TASKS.md`](../work-in-progress/TASKS.md)
 
-Radiant pass `20260725.110418`
-
 ---
 
 ## The Problem, Plainly

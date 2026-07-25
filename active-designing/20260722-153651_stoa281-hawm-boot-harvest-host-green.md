@@ -13,8 +13,6 @@
 
 **dated_guard:** Do **not** reopen fleets · HAWM2 · gold · JABS3 from this GREEN alone.
 
-Radiant pass `20260725.112115`
-
 ---
 
 ## Host proof (Keaton, plain terminal)

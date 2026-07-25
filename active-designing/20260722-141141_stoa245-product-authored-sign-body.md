@@ -13,8 +13,6 @@
 
 **dated_guard:** Do **not** claim a Glow-rune crypto jet. Do **not** reopen line body or lit-desk/Pixel/face_lit as unfinished. Digest authored body · shared-package `face_lit` · JABS3 stay held until named.
 
-Radiant pass `20260725.112015`
-
 ---
 
 ## Verdict (one breath)

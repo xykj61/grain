@@ -12,8 +12,6 @@
 
 **Exit bron (fixed path):** `bron-resins/pond-supersede-exit.bron` — **absent** while the season sleeps; present-with-content the day exit is claimed. Must include `soak_start_nib <hash>`. **Counts only when master-signed** — detached `bron-resins/pond-supersede-exit.bron.asc` verifies against master `0646 2132 D3E6 3B83 4F97 6E03 A81D 720B 9235 FA7A` alone, in a keyring holding only `context/keys/gpg_signing_06462132.pub.asc` (helper `tools/pond_exit_bron_master_seal.sh`); sandbox signatures never open the season.
 
-Radiant pass `20260725.111515`
-
 ---
 
 ## Exit is all six at once

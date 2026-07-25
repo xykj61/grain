@@ -10,8 +10,6 @@
 **Lens:** TAME — safety, performance, joy
 **Status:** Research
 
-Radiant pass `20260725.110740`
-
 ---
 
 ## Prompt Caching — What It Is and What It Rewards

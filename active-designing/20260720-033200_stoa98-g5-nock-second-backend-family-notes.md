@@ -12,8 +12,6 @@
 
 **dated_guard:** Do **not** edit the dated `20260719-204001_*` or `20260719-220814_*` files. Seat G5 in this brief and in living TAME / glow pins.
 
-Radiant pass `20260725.111715`
-
 ---
 
 ## Verdict (one breath)

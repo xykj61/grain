@@ -5,8 +5,6 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Proposal — no code written, no module renamed
 
-Radiant pass `20260725.111515`
-
 ---
 
 ## Framing, for an Acme Corporation Employee Reading This

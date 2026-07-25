@@ -8,8 +8,6 @@
 **Co-author:** Keaton Dunsford (`xykj61`)
 **Status:** Vision register — design and research; grounded directly in Hoon's own kernel source (`old/pkg/arvo/sys/hoon.hoon`), quoted rather than paraphrased from memory. Register: design (Two Rooms — a proposal, not a bound claim). No Glow code written; no core-variance system seated.
 
-Radiant pass `20260725.111615`
-
 ---
 
 ## What This Answers

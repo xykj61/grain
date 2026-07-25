@@ -6,8 +6,6 @@
 **Status:** Vision register (Two Rooms) — a design reflection, a critique of this tree's own prose, offered to sharpen the house voice rather than replace it; a proposal about how we write, not a change to the canonical style guide. Addressed to a generic Acme Corporation employee.
 **Companion:** `../context/RADIANT_STYLE.md` (the canonical discipline this note refines from experience, and does not overrule)
 
-Radiant pass `20260725.111515`
-
 ---
 
 ## Why This Note Exists

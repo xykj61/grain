@@ -9,8 +9,6 @@
 **Voice:** Reya 2
 **Lens:** TAME — safety, performance, then the joy of the craft; Gall's Law; one value model
 
-Radiant pass `20260725.110622`
-
 ---
 
 ## The Two Strands

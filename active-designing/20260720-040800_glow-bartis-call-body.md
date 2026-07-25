@@ -10,8 +10,6 @@
 **Waymark:** **STOA103** — bartis call-body `%-  double`  
 **Grounds in:** [`20260720-033852_glow-bartis-g1-row.md`](20260720-033852_glow-bartis-g1-row.md) · [`20260720-040200_glow-bartis-argv-sample.md`](20260720-040200_glow-bartis-argv-sample.md) · STOA6 `%-` closed demo gate
 
-Radiant pass `20260725.111715`
-
 ---
 
 ## Claim

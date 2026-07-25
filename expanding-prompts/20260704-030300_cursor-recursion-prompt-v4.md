@@ -8,8 +8,6 @@
 **Voice:** Rio 3
 **Live checkpoint:** [`../work-in-progress/ready-to-ask-claude.md`](../work-in-progress/ready-to-ask-claude.md)
 
-Radiant pass `20260725.111005`
-
 ---
 
 ## How to use this prompt

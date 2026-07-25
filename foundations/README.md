@@ -4,8 +4,6 @@
 **Last updated:** 2026-07-25 (always-in-it responsive rhythm · five pillars · custody)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 
-Radiant pass `20260725.112515`
-
 ---
 
 This folder holds the why beneath the work — the reasons the building means something, at two scales. The foundation briefs name why the daily craft is an offering and a service. The vision documents name the larger civic horizon the work ultimately serves.

@@ -8,8 +8,6 @@
 
 **In Alice's chart:** Aśvinī is the star her day opened under at sunrise, and the star where her Rahu sits (in the 7th house). It sets the bright morning tone of her birth.
 
-Radiant pass `20260725.112415`
-
 ---
 
 ## The living character of the star

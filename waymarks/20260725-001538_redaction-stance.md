@@ -6,8 +6,6 @@
 **Room:** Checkable / Intent (ring-3 awaits word)  
 **Witnesses:** `rishi/bin/rishi run tools/radiant_lint.rish` · `rishi/bin/rishi run tools/living_docs_lint.rish` · `rishi/bin/rishi run tools/dated_guard.rish`
 
-Radiant pass `20260725.112215`
-
 ---
 
 ## Claim

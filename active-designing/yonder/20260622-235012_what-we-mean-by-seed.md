@@ -12,8 +12,6 @@
 **Lens:** TAME — the Seed Law; correctness by construction (`990`); single-stranded composition (`995`)
 **Status:** Active Design (siloed)
 
-Radiant pass `20260725.110740`
-
 ---
 
 ## Our Own Ground

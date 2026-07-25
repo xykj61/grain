@@ -9,8 +9,6 @@
 **Status:** Checkable — signed-Kumara **resting** · seam-C law named · Rye-body shim horizon parked
 **Ground:** Signed-Kumara lap [`20260712-214200_proven-seat-signed-kumara-monocypher.md`](20260712-214200_proven-seat-signed-kumara-monocypher.md) · G1 close [`20260712-204549_proven-seat-g1-claude-close.md`](20260712-204549_proven-seat-g1-claude-close.md) · tip `c4d3468`
 
-Radiant pass `20260725.111515`
-
 ---
 
 ## Ask one — signed-Kumara rests

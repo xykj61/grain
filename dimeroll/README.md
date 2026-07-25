@@ -5,8 +5,6 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Checkable-room module — laps 1–4 green; sight, exception, P&L, BS, TB, journal, chart, cash-account, memo-prefix, cash-flow, and sum-amounts views on Skate
 
-Radiant pass `20260725.112515`
-
 ---
 
 Dimeroll is Linengrow's **centralized books**: one steward's chart of accounts, journal entries as facts, balances as a pure fold, reports as projections, and Skate views so the books can be *seen*. It complements **MALA** (mailable money) and keeps each role clear.

@@ -13,8 +13,6 @@ study draws the design and parks the name candidates in RTAC, seating nothing.*
 
 *Written together by Kaeden and Claude (Fable 5), in Rio 3's Radiant voice. Name affirmed by Kaeden `20260710.163043`.*
 
-Radiant pass `20260725.111005`
-
 ---
 
 ## Seated name (`20260710.163043`)

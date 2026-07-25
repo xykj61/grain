@@ -12,8 +12,6 @@
 
 **dated_guard:** Do **not** rewrite dated STOA mold briefs. Do **not** delete `glow/gen/hoon-study/mold-*`. Do **not** claim `-mold` parse refuse (that is lean **2B**, held).
 
-Radiant pass `20260725.112015`
-
 ---
 
 ## Verdict (one breath)

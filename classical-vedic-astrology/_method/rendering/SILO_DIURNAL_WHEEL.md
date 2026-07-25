@@ -5,8 +5,6 @@
 **Purpose:** draw a self-contained SVG chart wheel whose angles fall where the sky truly places them, with daylight and dark drawn to their real proportion
 **Stamped:** 20260705.025812 UDT
 
-Radiant pass `20260725.112615`
-
 ---
 
 ## What this draws

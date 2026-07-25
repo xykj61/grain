@@ -3,8 +3,6 @@
 **Stamp:** `20260705.173112 UDT` · **Style:** Radiant, gentle register
 **Method:** Siloed — distilled in our own voice; teacher named with gratitude below
 
-Radiant pass `20260725.111120`
-
 ---
 
 The Moon is the mind and the feeling heart — the soft, receptive part of us that takes in the world and is nourished or wounded by it. Capricorn is the sign of structure, patience, and the long climb: Saturn's earth, where nothing is given and everything is earned, and where the sea-goat rises from the deep waters to the high peak by sheer endurance. Set the tender Moon in this demanding sign and the result is a disciplined heart — an emotional nature that governs itself, holds its feelings under structure, and reaches, quietly and seriously, for something it means to accomplish.

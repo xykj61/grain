@@ -18,11 +18,7 @@ Mandi names the offer: a signed `vessel-listing-v1` binds `vessel_parent` + MALA
 ## Lap 1
 
 | Piece | Role |
-|
-
-Radiant pass `20260725.112615`
-
--------|------|
+|-------|------|
 | `mandi_core.rye` | Sign / verify / receipt / parent bind |
 | `mandi.rye` | Selftest binary |
 | `tools/mandi_lap1.rish` | Witness → parity **238** |

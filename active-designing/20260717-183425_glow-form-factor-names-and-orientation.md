@@ -7,8 +7,6 @@
 **Voice:** Quin
 **Related:** Pixel typing GREEN `20260717.183345` · Sensors Grant · Sala (= Landscape *viewer* parallel, not phone landscape) · Lexicon
 
-Radiant pass `20260725.111615`
-
 ---
 
 ## Form-factor product names (seated)

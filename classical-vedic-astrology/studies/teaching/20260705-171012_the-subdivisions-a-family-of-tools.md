@@ -3,8 +3,6 @@
 **Stamp:** `20260705.171012 UDT` · **Style:** Radiant, gentle register
 **Method:** Siloed — distilled in our own voice; teacher named with gratitude below
 
-Radiant pass `20260725.111120`
-
 ---
 
 People often ask which chart matters more, the birth chart or one of its subdivisions, as though the two were rivals. They are not. They are a hammer and a screwdriver, rather than two hammers — different tools for different tasks, never in competition. The birth chart shows the observable reality: how a person works, what they do, the traits met at face value. A subdivision shows the mechanism beneath that reality — the reason a person likes what they like, fears what they fear, reaches for what they reach for. One names the trait; the other names its root.

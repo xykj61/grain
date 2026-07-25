@@ -6,8 +6,6 @@
 **Voice:** Quin
 **Status:** Guide for the task — every step below is transcribed directly from GrapheneOS's own official web installer instructions (`grapheneos.org/install/web`, checked `20260716`), not paraphrased from memory. The Pixel 10a's own verified-boot key hash is quoted verbatim from that same page. This guide has not yet been run end to end against a real device from this session — treat your own first real run as the actual proof, and tell your agent how it goes so this page can be corrected in place if reality differs from what follows.
 
-Radiant pass `20260725.112515`
-
 ---
 
 **Navigation:** [Manual home](../README.md)

@@ -10,8 +10,6 @@
 
 *Written together by Kaeden and Reya 2.*
 
-Radiant pass `20260725.110847`
-
 ---
 
 ## Edit 1 — Sharpen the `yonder/` Test in ORGANIZING.md

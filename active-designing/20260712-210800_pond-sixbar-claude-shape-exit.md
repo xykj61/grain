@@ -10,8 +10,6 @@
 **Status:** Checkable — shape affirmed · bar6 rewrite named · exit criteria first · **N seated**
 **Ground:** handoff [`../bron-resins/20260712-210000_claude-g1-close-pond-sixbar.bron`](../bron-resins/20260712-210000_claude-g1-close-pond-sixbar.bron) · baseline [`20260712-205600_pond-enclosure-sixbar-baseline.md`](20260712-205600_pond-enclosure-sixbar-baseline.md) · counsel [`../counsel/20260712-090512_claude-ruling-enclosure-ai-jail-then-pond.md`](../counsel/20260712-090512_claude-ruling-enclosure-ai-jail-then-pond.md) · tip `6a5d094`
 
-Radiant pass `20260725.111515`
-
 ---
 
 ## Ask one — affirmed: two-column scorecard

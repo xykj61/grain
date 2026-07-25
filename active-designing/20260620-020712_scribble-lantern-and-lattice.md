@@ -10,8 +10,6 @@
 **Lens:** TAME — safety, performance, joy
 **Status:** Active Design (siloed)
 
-Radiant pass `20260725.110418`
-
 ---
 
 ## Our Own Ground

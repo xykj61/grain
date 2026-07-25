@@ -18,5 +18,3 @@
 Land the two exemplar studies with index rows `#22 Chitra — the architect's star` and `#23 The maker's gathering`, plus this prompt and its log. The deepening bench then runs in its own chats; its packets follow the same rite.
 
 *May every teaching arrive as a transcript and leave as a study. May the person stay in her reading and the patterns join the library. And may the recomposed reading stand on twenty-three shoulders and more.*
-Radiant pass `20260725.111120`
-

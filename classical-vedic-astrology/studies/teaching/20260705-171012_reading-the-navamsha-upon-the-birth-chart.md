@@ -3,8 +3,6 @@
 **Stamp:** `20260705.171012 UDT` · **Style:** Radiant, gentle register
 **Method:** Siloed — distilled in our own voice; teacher named with gratitude below
 
-Radiant pass `20260725.111120`
-
 ---
 
 The ordinary way to read the ninth chart notes only which division-sign a planet falls in — this Ketu is in Capricorn of the ninth chart, and there the matter rests. A finer technique goes one step further and reveals which inner factors are truly alive in a person's outward life. The step is simple to state: find the exact degree a planet occupies *within* its division-sign, then place that division-planet back onto the birth wheel at that degree, on the same circle as the real chart. Wherever it lands, it shows whether it touches anything in the actual sky.

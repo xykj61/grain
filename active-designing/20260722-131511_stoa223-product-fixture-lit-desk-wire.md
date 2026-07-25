@@ -13,8 +13,6 @@
 
 **dated_guard:** Do **not** claim `sala_b0_fold` / NativeActivity reads the Glow desk at runtime. Module-path seam: product bind is text-clause agree; Glow parse/lower stays in `glow/`. JABS3 held.
 
-Radiant pass `20260725.112015`
-
 ---
 
 ## Verdict (one breath)

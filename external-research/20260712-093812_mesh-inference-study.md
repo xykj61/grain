@@ -6,8 +6,6 @@
 **Honors:** the iroh / n0 team (the pooled-inference pattern read in the wild, July 2026)
 **Status:** Proposed study — research for understanding; a shape to understand, not a seat to take. Every module role here is a sketch awaiting Kaeden's word and, for most rungs, a working seL4 seat first.
 
-Radiant pass `20260725.111415`
-
 ---
 
 ## What the pattern is, in our own words

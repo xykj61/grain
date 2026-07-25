@@ -5,8 +5,6 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Checkable — shell, small and growing
 
-Radiant pass `20260725.112615`
-
 ---
 
 Rishi is the interactive-and-scripting shell of the Rye ecosystem: terse for the

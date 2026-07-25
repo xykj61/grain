@@ -13,8 +13,6 @@
 
 **dated_guard:** Do **not** rewrite elder `sala_b0_fold`. Fixture no longer imports claim (cycle break). JABS3 held.
 
-Radiant pass `20260725.111915`
-
 ---
 
 ## Verdict (one breath)

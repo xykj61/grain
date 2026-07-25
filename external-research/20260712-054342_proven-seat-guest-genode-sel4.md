@@ -14,8 +14,6 @@
 
 *Written by Rio 3 for Kaeden · Seam season study 3.*
 
-Radiant pass `20260725.111415`
-
 ---
 
 ## The Question

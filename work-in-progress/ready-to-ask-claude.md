@@ -5,8 +5,6 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Rio 3
 
-Radiant pass `20260725.112615`
-
 ---
 
 ## IronBeetle silo pilot — **COMPLETE · thirty-four written · five gaps** (`20260712.105212`)

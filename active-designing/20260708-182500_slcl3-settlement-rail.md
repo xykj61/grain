@@ -12,8 +12,6 @@
 
 **Gate:** Kaeden opened SLC-L3 settlement `182500` — witness runs; no winner crowned in prose.
 
-Radiant pass `20260725.110418`
-
 ---
 
 ## What SLC-L3 Is

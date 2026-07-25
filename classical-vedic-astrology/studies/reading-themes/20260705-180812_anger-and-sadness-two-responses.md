@@ -3,8 +3,6 @@
 **Stamp:** `20260705.180812 UDT` · **Style:** Radiant, gentle register
 **Method:** Siloed — distilled in our own voice; teacher named with gratitude below
 
-Radiant pass `20260725.111120`
-
 ---
 
 Anger and sadness feel close, and they are often tangled together, yet they are two different emotions with two different tasks. Each is a true signal. Each asks for a particular response. And a great deal of peace comes from telling them apart and answering each rightly.

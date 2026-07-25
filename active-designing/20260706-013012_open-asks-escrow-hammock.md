@@ -11,8 +11,6 @@
 
 *Written together by Kaeden and Rio 3.*
 
-Radiant pass `20260725.110418`
-
 ---
 
 ## What OA-L3 Adds, and What It Leaves Alone

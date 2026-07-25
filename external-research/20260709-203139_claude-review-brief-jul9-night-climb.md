@@ -9,8 +9,6 @@
 
 *Written for Claude counsel review after Kaeden's keep-going climb from evening close through thin view.*
 
-Radiant pass `20260725.111415`
-
 ---
 
 ## Executive Landscape

@@ -5,8 +5,6 @@
 **Status:** **Landed** `20260709.200729` — parity **201**; in-memory book + golden + witness GREEN
 **Ground:** exit-honesty spec [`context/specs/20260709-200443_wov-exit-honesty.md`](../context/specs/20260709-200443_wov-exit-honesty.md) · July 2 ledger map · MALA M2 landed
 
-Radiant pass `20260725.111415`
-
 ---
 
 ## DoD (when opened)

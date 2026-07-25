@@ -13,8 +13,6 @@
 
 **dated_guard:** Do **not** overwrite HAWM1 hex rows with the live digest. Do **not** claim Pixel screenshot eyes in this lap — file+format+pack bind the claim.
 
-Radiant pass `20260725.112115`
-
 ---
 
 ## Verdict (one breath)

@@ -8,8 +8,6 @@
 **Counsel:** [`../counsel/20260725-040247_what-the-shell-remembers.md`](../counsel/20260725-040247_what-the-shell-remembers.md)  
 **Law:** [`../active-designing/20260629-203012_posix-a-seam-not-a-model.md`](../active-designing/20260629-203012_posix-a-seam-not-a-model.md)
 
-Radiant pass `20260725.112315`
-
 ---
 
 ## Intent

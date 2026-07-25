@@ -24,8 +24,6 @@ The product surface itself, not just infrastructure underneath it — the whole 
 
 Virtio guest cluster (~91 sites, ~20 files) stays its own season — tier by wire capability, not a sweep, matching the `enrich/` precedent. SLC-L3 stays gated on Kaeden's word.
 
-Radiant pass `20260725.111235`
-
 ---
 
 *May the whole cluster always be checked before a partial migration is called complete.*

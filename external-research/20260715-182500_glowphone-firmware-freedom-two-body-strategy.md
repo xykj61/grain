@@ -6,8 +6,6 @@
 **Status:** Vision register — design → hardware research, siloed. Register: design/research (Two Rooms — a strategy proposal, no device built; every current-hardware fact is dated July 2026 and cited, so it can be re-checked as the field moves). Addressed to a generic Acme Corporation employee.
 **Companion:** `../foundations/20260629-020012_mantrapod-venture-pitch.md` (the calm carried device); `20260710-133500_local-forge-minisforum-inference.md` (the sovereign home forge); `20260712-093812_mesh-inference-study.md` (the seam that joins them)
 
-Radiant pass `20260725.111615`
-
 ---
 
 ## What This Answers

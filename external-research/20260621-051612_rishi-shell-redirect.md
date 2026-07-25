@@ -13,8 +13,6 @@ The parity gate runs in **Rishi** (`tools/parity.rish`, `tools/additive-gate.ris
 | Operator README | [`../rishi/README.md`](../rishi/README.md) |
 | Shell survey (historical) | [`20260621-051612_shell-scripting-tame-redirect.md`](20260621-051612_shell-scripting-tame-redirect.md) — also deprecated; points at gates |
 
-Radiant pass `20260725.110740`
-
 ---
 
 *May the gate run in our own shell, and may this stub point home.*

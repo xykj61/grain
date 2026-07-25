@@ -6,8 +6,6 @@
 
 *Written together by Kaeden and Rio 3.*
 
-Radiant pass `20260725.111120`
-
 ---
 
 | Body | D1 — Visible | House | Star | D9 — Essence | House | Star |

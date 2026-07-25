@@ -9,8 +9,6 @@
 **Status:** Checkable-room — tip **431** · witness `tools/door3_consumer_edge_pass.rish`
 **Ground:** ER Door 3 test plan [`../external-research/20260712-053324_ocapn-beside-comlink.md`](../external-research/20260712-053324_ocapn-beside-comlink.md) · Granary published-set · Kumara · tip **430** civic sight held as prior green
 
-Radiant pass `20260725.111415`
-
 ---
 
 ## Claim

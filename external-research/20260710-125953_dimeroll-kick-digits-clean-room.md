@@ -12,8 +12,6 @@
 
 *Written by Kaeden and Rio 3 (Grok). Kick and Digits remain outside gratitude clones; we thank their public teaching and write our own code.*
 
-Radiant pass `20260725.111415`
-
 ---
 
 ## What We Studied (Public Surface Only)

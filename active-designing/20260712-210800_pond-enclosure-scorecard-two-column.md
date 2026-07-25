@@ -15,8 +15,6 @@
 **Witness (column-two probes):** `rishi/bin/rishi run tools/pond_enclosure_col2_probes.rish` — refuse-until-candidate · measured truth · claim nothing  
 **Master-seal helper:** `tools/pond_exit_bron_master_seal.sh` — `--season-closed` · `--require` (VALIDSIG `0646 2132…` alone)
 
-Radiant pass `20260725.111515`
-
 ---
 
 ## Scorecard

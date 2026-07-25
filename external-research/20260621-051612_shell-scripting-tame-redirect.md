@@ -15,8 +15,6 @@ We no longer write build or test gates in Bash. **Rishi** (`.rish`) orchestrates
 
 **Retired patterns:** `tools/parity.sh`, `parity.rye` as gate target, Bash-first tooling.
 
-Radiant pass `20260725.110740`
-
 ---
 
 *May every gate speak in values we own.*

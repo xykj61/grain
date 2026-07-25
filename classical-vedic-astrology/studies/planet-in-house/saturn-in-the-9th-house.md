@@ -8,8 +8,6 @@
 
 **In Alice's chart:** Saturn occupies the 9th house — the house of wisdom, dharma, and teachers. This is the *where* of her Saturn, the arena it works within. Read it alongside the Saturn-in-Cancer file (the sign), and notice the quiet architecture: this 9th house holds up the 10th, where her Sun and Mars shine.
 
-Radiant pass `20260725.112615`
-
 ---
 
 ## The house of giving back

@@ -4,8 +4,6 @@
 **Last updated:** 2026-07-12 (cloud Cursor lane-key seated `062656`)
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 
-Radiant pass `20260725.112515`
-
 ---
 
 This file holds the public face of Kaeden's developer identity: fingerprints anyone can use to confirm that a commit, a push, or a signed message truly comes from a named lane of this house. Each string here travels freely — printed on a card, pinned to a profile, read aloud at a key-signing. The matching private keys stay close: three rest safely on Kaeden's own machines, one dedicated OpenPGP signing key lives in the project's sandbox keyring so the automated agent can sign commits from inside ai-jail, and one dedicated SSH lane-key signs from the Cursor cloud bench. This file keeps only their public counterparts.

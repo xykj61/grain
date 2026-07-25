@@ -13,8 +13,6 @@
 
 **dated_guard:** Content-merge of dated files stays held.
 
-Radiant pass `20260725.112115`
-
 ---
 
 ## What just closed
