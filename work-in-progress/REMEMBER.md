@@ -10,7 +10,7 @@
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2** · **THREATS** · **five pillars** · **accrete tiers** · **redaction stance** · **always-in-it rhythm**  
 **Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list512 GREEN · **stamp @u64 · Crockford** · **shape aura floor**  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand ring-2** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm REPORT** · **OQ #1 · #3 · #5 answered** · **pass ledger closed** · **Wave 38** · **growth law** · **shell harvest**  
-**Git nib:** pending · Wave 38 (PR pending)
+**Git nib:** `7b9c443487` · Wave 38 (PR #126)
 
 **Season:** Framework · EDT · **finishing edge:** Radiant pass **closed** · **1,194 rows** · select **0**.  
 **APK:** `tools/.cache/tube05/seva-broadcaster.apk` · pkg `org.glow.app.seva_broadcaster`  
@@ -22,7 +22,7 @@ Radiant pass `20260725.112615`
 
 ## Now
 
-**Radiant Wave 38** `20260725.112815` — 2 clean · 0 changed · lint 2. **Pass closed:** **1,194 ledger rows** · select **0**.
+**Radiant Wave 38** `20260725.112815` — 2 clean · 0 changed · lint 2. Sent `20260725.112825` · git nib `7b9c443487`. **Pass closed:** **1,194 ledger rows** · select **0**.
 
 **Read:**
 
