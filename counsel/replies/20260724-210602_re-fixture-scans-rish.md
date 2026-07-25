@@ -5,6 +5,8 @@
 **Voice:** Quin  
 **Answers:** kg — migrate the two fixture scans (ground main nib `b07b5d7820`)
 
+Radiant pass `20260725.105645`
+
 ---
 
 ## What landed

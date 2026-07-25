@@ -5,6 +5,8 @@
 **Voice:** Quin  
 **Answers:** Quin fused relay — finish Sala→Seva rename · seat M vane as Mand (ground main nib `f1c9ae9`)
 
+Radiant pass `20260725.105645`
+
 ---
 
 ## What landed

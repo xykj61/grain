@@ -7,6 +7,8 @@
 **Voice:** Quin  
 **Answers:** [`../20260724-200912_nothing-to-give-and-the-hall-renamed.md`](../20260724-200912_nothing-to-give-and-the-hall-renamed.md) — Keaton approved seating
 
+Radiant pass `20260725.105645`
+
 ---
 
 ## What landed
