@@ -6,6 +6,8 @@
 **Style:** Radiant prose (see `../context/RADIANT_STYLE.md`); code in TAME Guidance (`../external-research/TAME_GUIDANCE.md`)
 **Status:** Checkable — living language module
 
+Radiant pass `20260725.112615`
+
 ---
 
 ## What Rye Is
