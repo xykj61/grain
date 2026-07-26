@@ -6,13 +6,13 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260726.041232` (EDT) · voice Quin  
+**Last refreshed:** `20260726.041853` (EDT) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2 · ring-3** · **THREATS** · **five pillars** · **accrete tiers** · **redaction stance** · **always-in-it rhythm**  
 **Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list1024 · Env512 · **stamp @u64 · Crockford** · **shape aura floor** · **Glow text floor GREEN**  
-**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand home** · **siblings seated** · **--cursor launch** · **Pond counsel 161616** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm+cold REPORT** · **Grain umbrella living** · **OQ #1 · #3 · #4 · #5 answered** · **pass ledger** · **campaign STOPPED** · **growth law** · **wasmtime E GREEN** · **monocypher 4.0.3 GREEN** · **MAP.md** · **breach T3–T4** · **U Glow design pages** · **V aurora/kelvin pointer** · **F full re-run in flight**  
-**Git nib:** *(pin after send)* · Grain · U·V · F in flight · autoproject96/grain
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand home** · **siblings seated** · **--cursor launch** · **Pond counsel 161616** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm+cold REPORT** · **Grain umbrella living** · **OQ #1 · #3 · #4 · #5 answered** · **pass ledger** · **campaign STOPPED** · **growth law** · **wasmtime E GREEN** · **monocypher 4.0.3 GREEN** · **MAP.md** · **breach T3–T4** · **U·V·I** · **F in flight**  
+**Git nib:** *(pin after send)* · Grain · I lane note · F in flight · autoproject96/grain
 
-**Season:** Framework · EDT · **Grain** umbrella · pier **`~/grain`** · **finishing edge:** F measuring · then H Brix · I lane note · breach two next season.
+**Season:** Framework · EDT · **Grain** umbrella · pier **`~/grain`** · **finishing edge:** F measuring · then H Brix survey · breach two next season.
 
 ---
 
@@ -20,20 +20,20 @@
 
 **Pier path** — **`~/grain`** · agent **`home-xy-grain`**.
 
-**kg** — full parity **F in flight** (`/tmp/parity-f-rerun/parity.log`). **U** landed: [`active-designing/docs/glow/`](../active-designing/docs/glow/) (value model + Nock seam). **V** living pointer on `glow/README.md` → aurora/kelvin study. claim_preserve not run on U (content lap).
+**F** — full parity in flight (`/tmp/parity-f-rerun/parity.log` · ch1 compiling). **U·V·I** landed. H waits on F GREEN.
+
+**Lane** (`autoproject96` · counsel `223409`) — agentic research pier on both forges. Keys are the map: never push across `groupproject36` / `xykj61` lanes. Agent may `kg` mechanical witness-first stops inside the enclosure; seating words, keys, Tier 1, gratitude, compass, roster, and **send** stay human-gated (send-after-every-round is Keaton's standing preference, not a license past STOP). Specimen #1 is this Grain agent's own session logs since `home-xy-grain` rooted. Map: [`PUBKEYS.md`](../PUBKEYS.md) · [`context/REMOTE_ROSTER.md`](../context/REMOTE_ROSTER.md).
 
 **Waiting gates**
-- F result · then H Brix survey  
-- I lane note in REMEMBER  
-- Breach-two word (next season) · Pond seven · xykj61 · Acme · lap-kinds · …
+- F result · then H Brix survey (reading only)  
+- Breach-two word (next season) · Pond seven · xykj61 · Acme · lap-kinds · Brix ladder name after H · …
 
 **`--cursor` launch** GREEN — `rishi/bin/rishi run tools/launch-cursor.rish --cursor ./Cursor-3.13.10-x86_64.AppImage --gpu`.
 
 **Read:**
 
 ```bash
-less active-designing/docs/glow/glow-value-model.md
-less active-designing/docs/glow/nock-interop-seam.md
+less counsel/20260725-223409_the-tool-the-door-the-rung-and-the-lane.md
 tail -f /tmp/parity-f-rerun/parity.log
 ```
 
@@ -51,13 +51,12 @@ sh tools/bootstrap_wasmtime.sh
 
 | Door | Kind |
 |------|------|
-| **Relay G–I** | **held** — heading-signature seat for SOURCE Part One |
-| **Parity F** | **in flight** — then H survey if GREEN |
+| **Parity F** | **in flight** — H Brix survey if GREEN |
+| **H Brix survey** | held on F · reading only · proposes ladder slug |
 | Radiant pass | **on-touch only** |
-| **Duty-8 shell migration** | harvest verbs seated · retire `.sh` bodies next |
-| Full parity | wasmtime E seated · F measuring |
-| **Agentic lane specimen #1** | session logs of this relay — first measurement |
-| Pond seven · xykj61 · Acme · Brix name · data-dignity · succession · Mand ring-3 | awaiting Keaton |
+| **Duty-8 shell migration** | ratchet · on-touch |
+| **Agentic lane** | note seated · specimen #1 = these session logs |
+| Pond seven · xykj61 · Acme · Brix name · data-dignity · succession · Mand ring-3 · breach two | awaiting Keaton |
 
 ---
 
