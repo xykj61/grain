@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260726.165528` — [Send · corpus twin STOP at lap_vocabulary_sweep](20260726-165528_send-corpus-twin-stop-vocab.bron) — 270 TWIN · 5 SLOW-BOTH · 1 RED · resume ready  
 - `20260726.130711` — [Send · C2b glow-book threads · anchor gate GREEN](20260726-130711_send-c2b-glow-book-threads-green.bron) — 34 seeded · pack 6/6 · origin+codeberg  
 - `20260726.122450` — [Send · C3–C5 resume · homes blank · L0.5 PARTIAL](20260726-122450_send-c345-resume-homes-blank.bron) — manifests green · creates skipped  
 - `20260726.115026` — [Send · C-Ladder C1 C2 to pier](20260726-115026_send-c-ladder-c1-c2.bron) — origin+codeberg · C3–C5 still need homes  
