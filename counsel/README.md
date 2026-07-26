@@ -1,7 +1,7 @@
 # The Counsel Stack
 
 **Language:** EN
-**Last updated:** 2026-07-26 (`20260726.032231` the pin and the shelf)  
+**Last updated:** 2026-07-26 (`20260726.035217` T3–T4 continue reply)  
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
 **Status:** Foundation  
 **Seasons roster:** [`SEASONS.md`](SEASONS.md)
