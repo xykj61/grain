@@ -4,7 +4,7 @@
 **Depth:** brief  
 **Last updated:** 2026-07-18 (`20260718.232419`)  
 **Voice:** Quin  
-**Waymark:** **STOA** · compressor [`../docs/STOA.md`](../docs/STOA.md) · prior [`20260718-225931_stoa17-core-payload-brief.md`](20260718-225931_stoa17-core-payload-brief.md)
+**Waymark:** **STOA** · compressor [`../docs/STOA.md`](../docs/STOA.md) · prior [`20260718-225931_stoa17-core-payload-brief.md`](yonder/20260718-225931_stoa17-core-payload-brief.md)
 
 ---
 

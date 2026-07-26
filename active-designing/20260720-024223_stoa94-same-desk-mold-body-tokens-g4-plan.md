@@ -8,7 +8,7 @@
 **Voice:** Quin  
 **Status:** Design — implementable plan; checkable once the witnesses below are GREEN  
 **Register:** Mixed (Two Rooms) — file paths and parse seam are **design** until the witnesses bind them  
-**Grounds in:** [`20260719-204001_glow-rune-pronunciation-alphabet-riscv-and-generators.md`](20260719-204001_glow-rune-pronunciation-alphabet-riscv-and-generators.md) **G4** · [`20260720-023513_stoa93-token-driven-lower-slice-g4-plan.md`](20260720-023513_stoa93-token-driven-lower-slice-g4-plan.md) deferred same-desk slice · [`../glow/tokens.rye`](../glow/tokens.rye) · [`../glow/lower_named_cast.rye`](../glow/lower_named_cast.rye) · [`../glow/gen/cast-named-amount.glow`](../glow/gen/cast-named-amount.glow)
+**Grounds in:** [`20260719-204001_glow-rune-pronunciation-alphabet-riscv-and-generators.md`](20260719-204001_glow-rune-pronunciation-alphabet-riscv-and-generators.md) **G4** · [`20260720-023513_stoa93-token-driven-lower-slice-g4-plan.md`](yonder/20260720-023513_stoa93-token-driven-lower-slice-g4-plan.md) deferred same-desk slice · [`../glow/tokens.rye`](../glow/tokens.rye) · [`../glow/lower_named_cast.rye`](../glow/lower_named_cast.rye) · [`../glow/gen/cast-named-amount.glow`](../glow/gen/cast-named-amount.glow)
 
 **dated_guard:** Do **not** edit the dated `20260719-204001_*` or `20260720-023513_*` files. Seat G4 progress in living docs and in *this* new dated brief.
 

@@ -8,7 +8,7 @@
 **Voice:** Quin  
 **Status:** Checkable — bound by `tools/glow_barket_lower_witness.rish`  
 **Register:** Checkable (Two Rooms) — `%-  inc` / `%-  dec` → `+% 1` / `-% 1`; fixtures + argv generators  
-**Grounds in:** [`20260720-180047_stoa115-barket-call-body.md`](20260720-180047_stoa115-barket-call-body.md) · [`20260720-041800_glow-bartis-call-body-inc-dec.md`](20260720-041800_glow-bartis-call-body-inc-dec.md) · [`20260720-040700_stoa102-barket-horizon-wording.md`](20260720-040700_stoa102-barket-horizon-wording.md)
+**Grounds in:** [`20260720-180047_stoa115-barket-call-body.md`](20260720-180047_stoa115-barket-call-body.md) · [`20260720-041800_glow-bartis-call-body-inc-dec.md`](yonder/20260720-041800_glow-bartis-call-body-inc-dec.md) · [`20260720-040700_stoa102-barket-horizon-wording.md`](20260720-040700_stoa102-barket-horizon-wording.md)
 
 **dated_guard:** Do **not** edit the dated `20260719-*` alphabet files or the STOA102 wording artifact. Seat the trio widen in *this* brief and living pins.
 

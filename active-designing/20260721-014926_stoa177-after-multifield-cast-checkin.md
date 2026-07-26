@@ -8,7 +8,7 @@
 **Voice:** Quin  
 **Status:** Checkable — lean **A** chosen `20260721.165342`; Sala B0 Glow / product season opens  
 **Register:** Mixed (Two Rooms) — cast inventary GREEN through STOA176; lean A opens product season  
-**Grounds in:** [`20260721-014114_stoa176-named-cast-peek-widen-triple-nona.md`](20260721-014114_stoa176-named-cast-peek-widen-triple-nona.md) · [`20260721-012555_stoa174-after-dual-inventary-checkin.md`](20260721-012555_stoa174-after-dual-inventary-checkin.md) · thin face [`20260721-165342_stoa178-sala-b0-glow-thin-face.md`](20260721-165342_stoa178-sala-b0-glow-thin-face.md)
+**Grounds in:** [`20260721-014114_stoa176-named-cast-peek-widen-triple-nona.md`](yonder/20260721-014114_stoa176-named-cast-peek-widen-triple-nona.md) · [`20260721-012555_stoa174-after-dual-inventary-checkin.md`](20260721-012555_stoa174-after-dual-inventary-checkin.md) · thin face [`20260721-165342_stoa178-sala-b0-glow-thin-face.md`](yonder/20260721-165342_stoa178-sala-b0-glow-thin-face.md)
 
 **dated_guard:** Do **not** rewrite dated mold or cast briefs. Capacity freeze at nine `$:` faces stays. No `deca-*`. No whole-tree sed for Zig `*Mold` names until a lean opens that door.
 

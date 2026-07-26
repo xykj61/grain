@@ -8,7 +8,7 @@
 **Voice:** Quin  
 **Status:** Checkable — inventory seated; STOA179 named  
 **Register:** Checkable (Two Rooms) — maps elder surfaces to Glow heads; no rewrite claimed yet  
-**Grounds in:** [`20260721-165342_stoa178-sala-b0-glow-thin-face.md`](20260721-165342_stoa178-sala-b0-glow-thin-face.md) · [`../linengrow/sala_b0_fold.rye`](../linengrow/sala_b0_fold.rye) · [`../linengrow/sala_session_core.rye`](../linengrow/sala_session_core.rye) · [`../linengrow/receipt_core.rye`](../linengrow/receipt_core.rye) · Phase G in [`20260719-204650_hoon-core-polymorphism-tame-and-port-order.md`](20260719-204650_hoon-core-polymorphism-tame-and-port-order.md)
+**Grounds in:** [`20260721-165342_stoa178-sala-b0-glow-thin-face.md`](yonder/20260721-165342_stoa178-sala-b0-glow-thin-face.md) · [`../linengrow/sala_b0_fold.rye`](../linengrow/sala_b0_fold.rye) · [`../linengrow/sala_session_core.rye`](../linengrow/sala_session_core.rye) · [`../linengrow/receipt_core.rye`](../linengrow/receipt_core.rye) · Phase G in [`20260719-204650_hoon-core-polymorphism-tame-and-port-order.md`](20260719-204650_hoon-core-polymorphism-tame-and-port-order.md)
 
 **dated_guard:** Do **not** rewrite dated JABS0 / HAWM1 / STOA72–73 records. Elder Rye stays until Glow earns the root. JABS3 stays held. No `deca-*`. No whole-tree sed.
 

@@ -35,7 +35,7 @@
 
 Design law: [`active-designing/20260712-221600_docs-compression-layer-design.md`](../active-designing/20260712-221600_docs-compression-layer-design.md).
 
-**Lint roster (inbound):** [`proven-seat-guest-hammock`](../active-designing/proven-seat-guest-hammock.md) · [`seam-season-hammock`](../active-designing/seam-season-hammock.md) · [`wasm hammock`](../active-designing/20260712-063558_receipt-verify-wasm-hammock.md) · [`door3 hammock`](../active-designing/20260712-063213_door3-consumer-edge-pass-hammock.md)
+**Lint roster (inbound):** [`proven-seat-guest-hammock`](../active-designing/proven-seat-guest-hammock.md) · [`seam-season-hammock`](../active-designing/seam-season-hammock.md) · [`wasm hammock`](../active-designing/yonder/20260712-063558_receipt-verify-wasm-hammock.md) · [`door3 hammock`](../active-designing/yonder/20260712-063213_door3-consumer-edge-pass-hammock.md)
 
 ---
 

@@ -8,7 +8,7 @@
 **Lens:** TAME · [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md) · Gall · Hammock
 **Status:** **Done** on metal (`2026-06-29`) — four verbs + `tools/slc1_accept.rish`; acceptance closed on functional promise; width/TAME hardening is the next milestone, not part of this lap.
 
-**Child scopes:** [`20260629-004912_slc-1-step-2-version.md`](20260629-004912_slc-1-step-2-version.md) (version, sealed) · Step 3 recall (sealed) · **Handoff:** [`../context/specs/20260629-031512_slc1-lap-closed-handoff.md`](../context/specs/20260629-031512_slc1-lap-closed-handoff.md)
+**Child scopes:** [`20260629-004912_slc-1-step-2-version.md`](yonder/20260629-004912_slc-1-step-2-version.md) (version, sealed) · Step 3 recall (sealed) · **Handoff:** [`../context/specs/20260629-031512_slc1-lap-closed-handoff.md`](../context/specs/20260629-031512_slc1-lap-closed-handoff.md)
 
 **Direction:** [`20260628-043542_thin-frontend-slc-direction.md`](20260628-043542_thin-frontend-slc-direction.md) · **Roadmap:** [`../work-in-progress/ROADMAP.md`](../work-in-progress/ROADMAP.md)
 

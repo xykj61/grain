@@ -8,7 +8,7 @@
 **Voice:** Quin  
 **Status:** Checkable — lean **A** chosen `20260721.013023`; living pin polish follows  
 **Register:** Mixed (Two Rooms) — inventary duals GREEN through STOA173; lean A opens pin polish  
-**Grounds in:** [`20260721-012555_stoa173-shape-nona-dual-desk.md`](20260721-012555_stoa173-shape-nona-dual-desk.md) · [`20260721-010211_stoa161-shape-amount-dual-desk.md`](20260721-010211_stoa161-shape-amount-dual-desk.md)
+**Grounds in:** [`20260721-012555_stoa173-shape-nona-dual-desk.md`](yonder/20260721-012555_stoa173-shape-nona-dual-desk.md) · [`20260721-010211_stoa161-shape-amount-dual-desk.md`](20260721-010211_stoa161-shape-amount-dual-desk.md)
 
 **dated_guard:** Do **not** rewrite dated mold briefs. Do **not** delete mold twins. No whole-tree sed.
 

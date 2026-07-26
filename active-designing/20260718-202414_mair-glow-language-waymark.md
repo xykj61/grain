@@ -5,7 +5,7 @@
 **Voice:** Quin  
 **Audience:** Acme Corporation employees reading the language ladder seat
 
-> Living name is **STOA** — [`20260718-202730_stoa-glow-language-waymark.md`](20260718-202730_stoa-glow-language-waymark.md) · [`../docs/STOA.md`](../docs/STOA.md). This brief stays as the first-draw record.
+> Living name is **STOA** — [`20260718-202730_stoa-glow-language-waymark.md`](yonder/20260718-202730_stoa-glow-language-waymark.md) · [`../docs/STOA.md`](../docs/STOA.md). This brief stays as the first-draw record.
 
 ---
 

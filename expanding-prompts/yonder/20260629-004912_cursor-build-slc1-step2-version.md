@@ -7,7 +7,7 @@
 **Style:** Radiant (see `context/RADIANT_STYLE.md`)
 **Discipline:** TAME (see `context/TAME_STYLE.md`) · SLC
 **For:** Cursor Composer 2.5, in the ai-jail sandbox
-**Grounding:** scope — [`active-designing/20260629-004912_slc-1-step-2-version.md`](active-designing/20260629-004912_slc-1-step-2-version.md) · runbook Phase 2 — [`expanding-prompts/20260629-004912_cursor-pass-slc1-version-recall-and-tame.md`](expanding-prompts/20260629-004912_cursor-pass-slc1-version-recall-and-tame.md)
+**Grounding:** scope — [`active-designing/20260629-004912_slc-1-step-2-version.md`](../../active-designing/yonder/20260629-004912_slc-1-step-2-version.md) · runbook Phase 2 — [`expanding-prompts/20260629-004912_cursor-pass-slc1-version-recall-and-tame.md`](expanding-prompts/20260629-004912_cursor-pass-slc1-version-recall-and-tame.md)
 
 *Written together by Kaeden and Reya 2.*
 

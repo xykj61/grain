@@ -8,7 +8,7 @@
 **Voice:** Quin  
 **Status:** Checkable — `tools/glow_bartis_argv_witness.rish` binds fixture vs generator  
 **Waymark:** **STOA101** — bartis argv sample beside baked fixture  
-**Grounds in:** [`20260720-033852_glow-bartis-g1-row.md`](20260720-033852_glow-bartis-g1-row.md) · [`20260720-022956_stoa92-thin-argv-sample-g3-plan.md`](20260720-022956_stoa92-thin-argv-sample-g3-plan.md) · [`../glow/lower_bartis.rye`](../glow/lower_bartis.rye)
+**Grounds in:** [`20260720-033852_glow-bartis-g1-row.md`](20260720-033852_glow-bartis-g1-row.md) · [`20260720-022956_stoa92-thin-argv-sample-g3-plan.md`](yonder/20260720-022956_stoa92-thin-argv-sample-g3-plan.md) · [`../glow/lower_bartis.rye`](../glow/lower_bartis.rye)
 
 ---
 

@@ -8,7 +8,7 @@
 **Voice:** Quin  
 **Status:** Checkable — nest · bartis · barket witnesses bind triple-mold accept  
 **Register:** Checkable — `glow_nest_type_witness` · `glow_lower_bartis_witness` · `glow_barket_lower_witness`  
-**Grounds in:** [`20260720-185502_stoa126-pair-mold-gate.md`](20260720-185502_stoa126-pair-mold-gate.md) · [`20260720-194143_stoa133-count-argv.md`](20260720-194143_stoa133-count-argv.md) · [`../glow/gen/mold-pair.glow`](../glow/gen/mold-pair.glow)
+**Grounds in:** [`20260720-185502_stoa126-pair-mold-gate.md`](20260720-185502_stoa126-pair-mold-gate.md) · [`20260720-194143_stoa133-count-argv.md`](yonder/20260720-194143_stoa133-count-argv.md) · [`../glow/gen/mold-pair.glow`](../glow/gen/mold-pair.glow)
 
 **dated_guard:** Do **not** edit dated STOA126–133 wording artifacts. Seat this lap in *this* brief and living pins when GREEN.
 
