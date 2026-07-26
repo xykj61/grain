@@ -1,0 +1,42 @@
+# glow_book_anchor_witness.rish — the weave holds in both directions (ANCHORS.md).
+# Status: Checkable. Positive and negative space both asserted; the known-bad
+# fixture must go RED by name or this witness itself is RED.
+# Run from the repository root with either shell.
+
+let book = "active-designing/docs/glow"
+
+say "anchors: direction one — every glow-book: thread in glow/ resolves…"
+let threads = run ["sh" "-c" "grep -rhoE 'glow-book: [a-z._-]+#[a-z0-9-]+' glow/ 2>/dev/null | sort -u"]
+let threads_text = trim threads.out
+let thread_lines_all = lines threads_text
+let thread_lines = where thread_lines_all as t: t != ""
+say "  threads found in glow/: ${length thread_lines}"
+let dangling = run ["sh" "-c" "grep -rhoE 'glow-book: [a-z._-]+#[a-z0-9-]+' glow/ 2>/dev/null | sort -u | while read _ ref; do f=${book}/$( printf %s $ref | cut -d'#' -f1 ); a=$( printf %s $ref | cut -d'#' -f2 ); grep -q id=.$a. $f 2>/dev/null || echo $ref; done"]
+let dangling_out = trim dangling.out
+if dangling_out != "" then say "RED: dangling glow-book threads:"
+if dangling_out != "" then say dangling_out
+assert dangling_out == "" else "direction one broken — dangling threads stand"
+
+say "anchors: direction two — every Book anchor carries an inbound thread…"
+let orphans = run ["sh" "-c" "grep -rhoE '<a id=.[a-z0-9-]+.></a>' ${book}/*.md | grep -oE 'g[a-z]*-[a-z0-9-]+' | sort -u | while read a; do grep -rq glow-book:.*#$a glow/ 2>/dev/null || echo $a; done"]
+let orphans_out = trim orphans.out
+if orphans_out != "" then say "ORPHANED anchors (no inbound thread yet):"
+if orphans_out != "" then say orphans_out
+
+say "anchors: direction three — every Source path in the Book exists…"
+let missing_src = run ["sh" "-c" "grep -rhoE '\\(\\.\\./\\.\\./\\.\\./[a-z0-9/_.-]+\\)' ${book}/*.md | tr -d '()' | sed 's|^\\.\\./\\.\\./\\.\\./||' | sort -u | while read p; do [ -e $p ] || echo $p; done"]
+let missing_out = trim missing_src.out
+if missing_out != "" then say "RED: Source paths missing from the tree:"
+if missing_out != "" then say missing_out
+assert missing_out == "" else "a Source path names a missing file"
+
+say "anchors: the known-bad fixture must be caught by name…"
+let bad = run ["sh" "-c" "ref=$( grep -hoE 'glow-book: [a-z._-]+#[a-z0-9-]+' ${book}/fixtures/anchor_bad.rye | head -1 ); set -- $ref; f=${book}/$( printf %s $2 | cut -d'#' -f1 ); a=$( printf %s $ref | cut -d'#' -f2 ); grep -q id=.$a. $f 2>/dev/null && echo RESOLVED || echo RED: dangling glow-book thread — $a"]
+let bad_line = trim bad.out
+say "  ${bad_line}"
+assert (bad_line contains "g-ghost") else "the known-bad fixture escaped detection"
+let good = run ["sh" "-c" "ref=$( grep -hoE 'glow-book: [a-z._-]+#[a-z0-9-]+' ${book}/fixtures/anchor_good.rye | head -1 ); set -- $ref; f=${book}/$( printf %s $2 | cut -d'#' -f1 ); a=$( printf %s $ref | cut -d'#' -f2 ); grep -q id=.$a. $f 2>/dev/null && echo GOOD-RESOLVES || echo RED"]
+assert trim good.out == "GOOD-RESOLVES" else "the known-good fixture failed to resolve"
+
+if orphans_out == "" then say "ANCHORS GREEN: both directions whole; known-bad caught by name."
+if orphans_out != "" then say "ANCHORS PARTIAL: threads and sources whole; orphaned anchors reported above await their inbound threads (the weave is young)."
