@@ -8,7 +8,7 @@
 **Voice:** Quin  
 **Status:** Checkable — GREEN `20260722.144300`  
 **Register:** Checkable (Two Rooms)  
-**Grounds in:** [`20260722-143648_checkin-hawm-fleet-and-shape-only.md`](yonder/20260722-143648_checkin-hawm-fleet-and-shape-only.md) lean **2A** · STOA190 · LEXICON Shape  
+**Grounds in:** [`20260722-143648_checkin-hawm-fleet-and-shape-only.md`](20260722-143648_checkin-hawm-fleet-and-shape-only.md) lean **2A** · STOA190 · LEXICON Shape  
 
 **dated_guard:** Do **not** rewrite dated STOA mold briefs. Do **not** delete `glow/gen/hoon-study/mold-*`. Do **not** claim `-mold` parse refuse (that is lean **2B**, held).
 
