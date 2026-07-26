@@ -22,6 +22,7 @@ Filing law: [`../ORGANIZING.md`](../ORGANIZING.md) · reorg proposal: [`20260707
 
 | Stamp | Note | Meaning |
 |-------|------|---------|
+| `20260726.014013` | [Which Gate Belongs to Which Lap](20260726-014013_which-gate-belongs-to-which-lap.md) | content-lap heading exception · gates-for-laps table proposed |
 | `20260726.022043` | [Reply — Cheap-hour STOP · missing 014013](replies/20260726-022043_re-cheap-hour-stop-missing-014013.md) | four of five filed · heading_additive body absent · Q–V hold |
 | `20260726.020825` | [The Cheap Hour](20260726-020825_the-cheap-hour.md) | breach · create · router · Glow docs · carries 224641+014013 |
 | `20260725.235531` | [Reply — Relay STOP at G · heading signature](replies/20260725-235531_re-relay-stop-g-heading-signature.md) | J–E landed · SOURCE Part One needs heading-growth seat · F in flight |
