@@ -6,7 +6,7 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260726.025926` (EDT) · voice Quin  
+**Last refreshed:** `20260726.030603` (EDT) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2 · ring-3** · **THREATS** · **five pillars** · **accrete tiers** · **redaction stance** · **always-in-it rhythm**  
 **Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list1024 · Env512 · **stamp @u64 · Crockford** · **shape aura floor** · **Glow text floor GREEN**  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand home** · **siblings seated** · **--cursor launch** · **Pond counsel 161616** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm+cold REPORT** · **Grain umbrella living** · **OQ #1 · #3 · #4 · #5 answered** · **pass ledger** · **campaign STOPPED** · **growth law** · **wasmtime E GREEN** · **parity F RED** (signed-Kumara / monocypher pathspec) · **link_witness ROUND MODE GREEN** (unique dangling=2374)  
@@ -34,8 +34,8 @@
 **Read:**
 
 ```bash
+less counsel/replies/20260726-030603_re-sixteen-hot-round-mode-stop-t2.md
 less counsel/20260726-025120_sixteen-hot-files.md
-less work-in-progress/20260726-025926_link-witness-2544-cause-buckets.md
 less work-in-progress/20260726-025926_monocypher-submodule-diagnosis.md
 ```
 
