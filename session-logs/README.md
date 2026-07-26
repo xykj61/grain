@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260726.014009` — [Parity F RED · signed-Kumara submodule](20260726-014009_parity-f-red-signed-kumara.bron) — wasmtime GREEN · monocypher submodule init failed · H held  
 - `20260726.010659` — [Send · default after every round](20260726-010659_send-default-after-rounds.bron) — preference seated · pier was already 3f59865a84  
 - `20260725.235531` — [Relay STOP at G · E wasmtime landed · F in flight](20260725-235531_relay-stop-g-heading-e-landed.bron) — heading signature · PARTIAL send  
 - `20260725.224548` — [Send · pier already current](20260725-224548_send-already-at-pier.bron) — 0078653bf7 on origin+codeberg · relay PARTIAL at D  
