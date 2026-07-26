@@ -9,7 +9,7 @@
 **Status:** Checkable — GREEN `20260721.192558`  
 **Register:** Checkable (Two Rooms) — cast twin GREEN; mold twin held; `@t` fact capacity debt stays  
 
-**Grounds in:** [`20260721-191254_stoa206-fact-line-shape-desk.md`](yonder/20260721-191254_stoa206-fact-line-shape-desk.md) · STOA186 sala-event cast pattern
+**Grounds in:** [`20260721-191254_stoa206-fact-line-shape-desk.md`](20260721-191254_stoa206-fact-line-shape-desk.md) · STOA186 sala-event cast pattern
 
 **dated_guard:** Do **not** claim mold twin, real hex literals, or wire into `glow_sala_b0_line`. JABS3 held.
 

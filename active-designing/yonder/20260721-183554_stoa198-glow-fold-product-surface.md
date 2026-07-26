@@ -9,7 +9,7 @@
 **Status:** Checkable — GREEN `20260721.183554`  
 **Register:** Checkable (Two Rooms) — product fold GREEN; pack GREEN; Glow-authored append/sign/replay bodies held  
 
-**Grounds in:** [`20260721-183253_stoa197-claim-compose-append-replay.md`](../20260721-183253_stoa197-claim-compose-append-replay.md) · STOA191 claim wire
+**Grounds in:** [`20260721-183253_stoa197-claim-compose-append-replay.md`](20260721-183253_stoa197-claim-compose-append-replay.md) · STOA191 claim wire
 
 **dated_guard:** Do **not** rewrite elder `sala_b0_fold` internals. STOA191 claim-direct wire is superseded for the product entry by this fold surface. JABS3 held.
 

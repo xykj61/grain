@@ -9,7 +9,7 @@
 **Status:** Checkable — GREEN `20260721.183126`  
 **Register:** Checkable (Two Rooms) — replay port GREEN; fold rewrite held  
 
-**Grounds in:** [`20260721-182950_stoa195-append-thin-port.md`](yonder/20260721-182950_stoa195-append-thin-port.md) · [`20260721-182623_stoa194-digest-thin-port.md`](yonder/20260721-182623_stoa194-digest-thin-port.md)
+**Grounds in:** [`20260721-182950_stoa195-append-thin-port.md`](20260721-182950_stoa195-append-thin-port.md) · [`20260721-182623_stoa194-digest-thin-port.md`](20260721-182623_stoa194-digest-thin-port.md)
 
 **dated_guard:** Do **not** claim Glow rewrote `sala_b0_fold`. Sign/verify stay inside elder replay. JABS3 held.
 

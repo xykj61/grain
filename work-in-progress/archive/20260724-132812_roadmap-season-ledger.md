@@ -620,15 +620,15 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA185 Glow claim shell GREEN, `20260721.175857`** — lean B; elder `run_demo_fold` behind Glow assert. Brief [`active-designing/20260721-175857_stoa185-glow-sala-b0-claim-shell.md`](../active-designing/20260721-175857_stoa185-glow-sala-b0-claim-shell.md).
 
-**STOA186 sala-event cast GREEN, `20260721.180054`** — lean A; `cast-named-sala-event`. Brief [`active-designing/20260721-180054_stoa186-sala-event-cast-twin.md`](../active-designing/20260721-180054_stoa186-sala-event-cast-twin.md).
+**STOA186 sala-event cast GREEN, `20260721.180054`** — lean A; `cast-named-sala-event`. Brief [`active-designing/20260721-180054_stoa186-sala-event-cast-twin.md`](../../active-designing/yonder/20260721-180054_stoa186-sala-event-cast-twin.md).
 
 **STOA187 thin `$%` payload `@t`/`@ux` GREEN, `20260721.180520`** — lean B (compass language door); parse + `PayloadAuraNotYetLowered`. Brief [`active-designing/20260721-180520_stoa187-pct-payload-at-thin.md`](../../active-designing/yonder/20260721-180520_stoa187-pct-payload-at-thin.md).
 
-**STOA188 `$%` payload emit GREEN, `20260721.180725`** — retire refuse; cord/hex payload lower + named-cast. Brief [`active-designing/20260721-180725_stoa188-pct-payload-at-emit.md`](../active-designing/20260721-180725_stoa188-pct-payload-at-emit.md).
+**STOA188 `$%` payload emit GREEN, `20260721.180725`** — retire refuse; cord/hex payload lower + named-cast. Brief [`active-designing/20260721-180725_stoa188-pct-payload-at-emit.md`](../../active-designing/yonder/20260721-180725_stoa188-pct-payload-at-emit.md).
 
 **STOA189 ShapeSpec API rename GREEN, `20260721.180917`** — `ShapeSpec` · `rune_shape` · `lower_shape`. Brief [`active-designing/20260721-180917_stoa189-shapespec-api-rename.md`](../../active-designing/yonder/20260721-180917_stoa189-shapespec-api-rename.md).
 
-**STOA190 remaining mold→shape GREEN, `20260721.181551`** — errors · APIs · Zig `*Shape` · living gates · `hoon-study/` twins. Brief [`active-designing/20260721-181551_stoa190-remaining-mold-to-shape.md`](../active-designing/20260721-181551_stoa190-remaining-mold-to-shape.md).
+**STOA190 remaining mold→shape GREEN, `20260721.181551`** — errors · APIs · Zig `*Shape` · living gates · `hoon-study/` twins. Brief [`active-designing/20260721-181551_stoa190-remaining-mold-to-shape.md`](../../active-designing/yonder/20260721-181551_stoa190-remaining-mold-to-shape.md).
 
 **STOA191 NativeActivity claim wire GREEN, `20260721.181903`** — lean C; `claim_demo_fold` on product path; pack GREEN. Brief [`active-designing/20260721-181903_stoa191-native-claim-wire.md`](../../active-designing/yonder/20260721-181903_stoa191-native-claim-wire.md).
 
@@ -644,9 +644,9 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA195 append thin port GREEN, `20260721.182950`** — `append_demo_log` · `claim_append_demo_root` over elder `append_event`; agrees claim fold. Brief [`active-designing/20260721-182950_stoa195-append-thin-port.md`](../../active-designing/yonder/20260721-182950_stoa195-append-thin-port.md). Sent `c60f3ae46e`.
 
-**STOA196 replay thin port GREEN, `20260721.183126`** — `claim_replay_demo_root` over elder `replay`; double replay · fixture root; agrees claim fold. Brief [`active-designing/20260721-183126_stoa196-replay-thin-port.md`](../active-designing/20260721-183126_stoa196-replay-thin-port.md). Sent `02357d9cec`.
+**STOA196 replay thin port GREEN, `20260721.183126`** — `claim_replay_demo_root` over elder `replay`; double replay · fixture root; agrees claim fold. Brief [`active-designing/20260721-183126_stoa196-replay-thin-port.md`](../../active-designing/yonder/20260721-183126_stoa196-replay-thin-port.md). Sent `02357d9cec`.
 
-**STOA197 claim compose append+replay GREEN, `20260721.183253`** — `claim_demo_fold` via ports; agrees elder `run_demo_fold`; pack GREEN. Brief [`active-designing/20260721-183253_stoa197-claim-compose-append-replay.md`](../active-designing/20260721-183253_stoa197-claim-compose-append-replay.md). Sent `37164ad3f9`.
+**STOA197 claim compose append+replay GREEN, `20260721.183253`** — `claim_demo_fold` via ports; agrees elder `run_demo_fold`; pack GREEN. Brief [`active-designing/20260721-183253_stoa197-claim-compose-append-replay.md`](../../active-designing/yonder/20260721-183253_stoa197-claim-compose-append-replay.md). Sent `37164ad3f9`.
 
 **STOA198 Glow fold product surface GREEN, `20260721.183554`** — `glow_sala_b0_fold` · NativeActivity `run_demo_fold`; pack GREEN. Brief [`active-designing/20260721-183554_stoa198-glow-fold-product-surface.md`](../../active-designing/yonder/20260721-183554_stoa198-glow-fold-product-surface.md). Sent `b7966301a2`.
 
@@ -658,81 +658,81 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA201 sign/verify product surface GREEN, `20260721.190209`** — B1; `claim_demo_sign` · tamper refuse. Brief [`active-designing/20260721-190209_stoa201-sign-verify-surface.md`](../../active-designing/yonder/20260721-190209_stoa201-sign-verify-surface.md).
 
-**STOA202 log-line format/parse GREEN, `20260721.190240`** — B2; `claim_demo_line` · bad-line refuse. Brief [`active-designing/20260721-190240_stoa202-line-format-parse.md`](../active-designing/20260721-190240_stoa202-line-format-parse.md).
+**STOA202 log-line format/parse GREEN, `20260721.190240`** — B2; `claim_demo_line` · bad-line refuse. Brief [`active-designing/20260721-190240_stoa202-line-format-parse.md`](../../active-designing/yonder/20260721-190240_stoa202-line-format-parse.md).
 
 **STOA203 append via sign+line compose GREEN, `20260721.190527`** — `append_event` → sign · line · copy; no `sala.append_event`; fixture + elder fold agree. Brief [`active-designing/20260721-190527_stoa203-append-sign-line-compose.md`](../../active-designing/yonder/20260721-190527_stoa203-append-sign-line-compose.md).
 
-**STOA204 replay product digest honesty GREEN, `20260721.190637`** — claim path → `claim_digest_log`; agrees elder replay · fixture · fold. Brief [`active-designing/20260721-190637_stoa204-replay-product-digest-honesty.md`](../active-designing/20260721-190637_stoa204-replay-product-digest-honesty.md).
+**STOA204 replay product digest honesty GREEN, `20260721.190637`** — claim path → `claim_digest_log`; agrees elder replay · fixture · fold. Brief [`active-designing/20260721-190637_stoa204-replay-product-digest-honesty.md`](../../active-designing/yonder/20260721-190637_stoa204-replay-product-digest-honesty.md).
 
 **STOA205 after digest honesty check-in, `20260721.190850`** — lean A rest taken · lean B chosen as STOA206. Brief [`active-designing/20260721-190850_stoa205-after-digest-honesty-checkin.md`](../../active-designing/yonder/20260721-190850_stoa205-after-digest-honesty-checkin.md).
 
 **STOA206 fact-line shape desk GREEN, `20260721.191254`** — B3; `fact-line-shape` · `sig`/`fact` `@t`; desk suite wire. Brief [`active-designing/20260721-191254_stoa206-fact-line-shape-desk.md`](../../active-designing/yonder/20260721-191254_stoa206-fact-line-shape-desk.md).
 
-**STOA207 fact-line cast twin GREEN, `20260721.192558`** — same-desk `^- fact-line-shape`; desk suite pin. Brief [`active-designing/20260721-192558_stoa207-fact-line-cast-twin.md`](../active-designing/20260721-192558_stoa207-fact-line-cast-twin.md). Sent `e0484e96ae`.
+**STOA207 fact-line cast twin GREEN, `20260721.192558`** — same-desk `^- fact-line-shape`; desk suite pin. Brief [`active-designing/20260721-192558_stoa207-fact-line-cast-twin.md`](../../active-designing/yonder/20260721-192558_stoa207-fact-line-cast-twin.md). Sent `e0484e96ae`.
 
-**STOA208 fact-line cast import GREEN, `20260721.192700`** — `/+ shape-fact-line` · `^- fact-line-shape`; desk suite pin. Brief [`active-designing/20260721-192700_stoa208-fact-line-cast-import.md`](../active-designing/20260721-192700_stoa208-fact-line-cast-import.md).
+**STOA208 fact-line cast import GREEN, `20260721.192700`** — `/+ shape-fact-line` · `^- fact-line-shape`; desk suite pin. Brief [`active-designing/20260721-192700_stoa208-fact-line-cast-import.md`](../../active-designing/yonder/20260721-192700_stoa208-fact-line-cast-import.md).
 
-**STOA209 cord bound 1024 GREEN, `20260721.192947`** — `aura_t_max_bytes` 256→1024; fact hex fits. Brief [`active-designing/20260721-192947_stoa209-cord-bound-1024.md`](../active-designing/20260721-192947_stoa209-cord-bound-1024.md).
+**STOA209 cord bound 1024 GREEN, `20260721.192947`** — `aura_t_max_bytes` 256→1024; fact hex fits. Brief [`active-designing/20260721-192947_stoa209-cord-bound-1024.md`](../../active-designing/yonder/20260721-192947_stoa209-cord-bound-1024.md).
 
 **STOA210 replay-body inventory GREEN, `20260721.193220`** — lean C; elder replay steps vs wraps; rec C1 compose. Brief [`active-designing/20260721-193220_stoa210-replay-body-inventory.md`](../active-designing/20260721-193220_stoa210-replay-body-inventory.md).
 
-**STOA211 replay line·sign·digest compose GREEN, `20260721.193303`** — C1; no `sala.replay(`; fixture + elder fold agree. Brief [`active-designing/20260721-193303_stoa211-replay-line-sign-digest-compose.md`](../active-designing/20260721-193303_stoa211-replay-line-sign-digest-compose.md).
+**STOA211 replay line·sign·digest compose GREEN, `20260721.193303`** — C1; no `sala.replay(`; fixture + elder fold agree. Brief [`active-designing/20260721-193303_stoa211-replay-line-sign-digest-compose.md`](../../active-designing/yonder/20260721-193303_stoa211-replay-line-sign-digest-compose.md).
 
-**STOA212 FactFields parse surface GREEN, `20260721.193404`** — C2; `glow_sala_b0_fields` wired into replay. Brief [`active-designing/20260721-193404_stoa212-fact-fields-parse-surface.md`](../active-designing/20260721-193404_stoa212-fact-fields-parse-surface.md).
+**STOA212 FactFields parse surface GREEN, `20260721.193404`** — C2; `glow_sala_b0_fields` wired into replay. Brief [`active-designing/20260721-193404_stoa212-fact-fields-parse-surface.md`](../../active-designing/yonder/20260721-193404_stoa212-fact-fields-parse-surface.md).
 
-**STOA213 demo-fixture cast twins GREEN, `20260721.194058`** — C3; named + import cast; literals held. Brief [`active-designing/20260721-194058_stoa213-fixture-cast-twins.md`](../active-designing/20260721-194058_stoa213-fixture-cast-twins.md).
+**STOA213 demo-fixture cast twins GREEN, `20260721.194058`** — C3; named + import cast; literals held. Brief [`active-designing/20260721-194058_stoa213-fixture-cast-twins.md`](../../active-designing/yonder/20260721-194058_stoa213-fixture-cast-twins.md).
 
-**STOA214 after fixture cast check-in, `20260721.194203`** — lean A send `194756` · lean C Glow source literals. Brief [`active-designing/20260721-194203_stoa214-after-fixture-cast-checkin.md`](../active-designing/20260721-194203_stoa214-after-fixture-cast-checkin.md). Sent `b7ee8fb7cf`.
+**STOA214 after fixture cast check-in, `20260721.194203`** — lean A send `194756` · lean C Glow source literals. Brief [`active-designing/20260721-194203_stoa214-after-fixture-cast-checkin.md`](../../active-designing/yonder/20260721-194203_stoa214-after-fixture-cast-checkin.md). Sent `b7ee8fb7cf`.
 
 **STOA215 Glow source literals inventory, `20260721.194941`** — lex→parse→lower→desk; rec C1. Brief [`active-designing/20260721-194941_stoa215-glow-source-literals-inventory.md`](../active-designing/20260721-194941_stoa215-glow-source-literals-inventory.md).
 
-**STOA216 cord literal lex GREEN, `20260721.194941`** — C1; `'…'` · `cord_lit`. Brief [`active-designing/20260721-194941_stoa216-cord-literal-lex.md`](../active-designing/20260721-194941_stoa216-cord-literal-lex.md).
+**STOA216 cord literal lex GREEN, `20260721.194941`** — C1; `'…'` · `cord_lit`. Brief [`active-designing/20260721-194941_stoa216-cord-literal-lex.md`](../../active-designing/yonder/20260721-194941_stoa216-cord-literal-lex.md).
 
-**STOA217 hex literal lex GREEN, `20260722.130125`** — C2; `@ux…` · `hex_lit` · bare `@ux` aura kept. Brief [`active-designing/20260722-130125_stoa217-hex-literal-lex.md`](../active-designing/20260722-130125_stoa217-hex-literal-lex.md).
+**STOA217 hex literal lex GREEN, `20260722.130125`** — C2; `@ux…` · `hex_lit` · bare `@ux` aura kept. Brief [`active-designing/20260722-130125_stoa217-hex-literal-lex.md`](../../active-designing/yonder/20260722-130125_stoa217-hex-literal-lex.md).
 
-**STOA218 after literals lex check-in, `20260722.130254`** — lean A send · lean B C3 as STOA219. Brief [`active-designing/20260722-130254_stoa218-after-literals-lex-checkin.md`](../active-designing/20260722-130254_stoa218-after-literals-lex-checkin.md).
+**STOA218 after literals lex check-in, `20260722.130254`** — lean A send · lean B C3 as STOA219. Brief [`active-designing/20260722-130254_stoa218-after-literals-lex-checkin.md`](../../active-designing/yonder/20260722-130254_stoa218-after-literals-lex-checkin.md).
 
-**STOA219 face=lit parse GREEN, `20260722.130604`** — C3; `glow/face_lit.rye`. Brief [`active-designing/20260722-130604_stoa219-face-lit-parse.md`](../active-designing/20260722-130604_stoa219-face-lit-parse.md).
+**STOA219 face=lit parse GREEN, `20260722.130604`** — C3; `glow/face_lit.rye`. Brief [`active-designing/20260722-130604_stoa219-face-lit-parse.md`](../../active-designing/yonder/20260722-130604_stoa219-face-lit-parse.md).
 
-**STOA220 face=lit lower GREEN, `20260722.130902`** — C4; lit bytes not demos. Brief [`active-designing/20260722-130902_stoa220-face-lit-lower-emit.md`](../active-designing/20260722-130902_stoa220-face-lit-lower-emit.md).
+**STOA220 face=lit lower GREEN, `20260722.130902`** — C4; lit bytes not demos. Brief [`active-designing/20260722-130902_stoa220-face-lit-lower-emit.md`](../../active-designing/yonder/20260722-130902_stoa220-face-lit-lower-emit.md).
 
 **Session-logs archive fold, `20260722.131028`** — 613 prior-day logs under `archive/`; today flat.
 
-**STOA221 fixture elder lits desk GREEN, `20260722.131153`** — C5; `sample-demo-fixture-lits.glow`. Brief [`active-designing/20260722-131153_stoa221-fixture-lits-desk-pin.md`](../active-designing/20260722-131153_stoa221-fixture-lits-desk-pin.md). Literals C1–C5 closed.
+**STOA221 fixture elder lits desk GREEN, `20260722.131153`** — C5; `sample-demo-fixture-lits.glow`. Brief [`active-designing/20260722-131153_stoa221-fixture-lits-desk-pin.md`](../../active-designing/yonder/20260722-131153_stoa221-fixture-lits-desk-pin.md). Literals C1–C5 closed.
 
-**STOA222 after literals season check-in, `20260722.131348`** — lean A send · lean B as STOA223. Brief [`active-designing/20260722-131348_stoa222-after-literals-season-checkin.md`](../active-designing/20260722-131348_stoa222-after-literals-season-checkin.md).
+**STOA222 after literals season check-in, `20260722.131348`** — lean A send · lean B as STOA223. Brief [`active-designing/20260722-131348_stoa222-after-literals-season-checkin.md`](../../active-designing/yonder/20260722-131348_stoa222-after-literals-season-checkin.md).
 
-**STOA223 product fixture lit desk wire GREEN, `20260722.131511`** — `lit_desk_binds_pins`. Brief [`active-designing/20260722-131511_stoa223-product-fixture-lit-desk-wire.md`](../active-designing/20260722-131511_stoa223-product-fixture-lit-desk-wire.md).
+**STOA223 product fixture lit desk wire GREEN, `20260722.131511`** — `lit_desk_binds_pins`. Brief [`active-designing/20260722-131511_stoa223-product-fixture-lit-desk-wire.md`](../../active-designing/yonder/20260722-131511_stoa223-product-fixture-lit-desk-wire.md).
 
-**STOA224 after fixture wire check-in, `20260722.131841`** — lean A send · lean B as STOA225. Brief [`active-designing/20260722-131841_stoa224-after-fixture-wire-checkin.md`](../active-designing/20260722-131841_stoa224-after-fixture-wire-checkin.md).
+**STOA224 after fixture wire check-in, `20260722.131841`** — lean A send · lean B as STOA225. Brief [`active-designing/20260722-131841_stoa224-after-fixture-wire-checkin.md`](../../active-designing/yonder/20260722-131841_stoa224-after-fixture-wire-checkin.md).
 
-**STOA225 fact-line demo lit sample GREEN, `20260722.132020`** — demo sig/fact pins · desk · bind. Brief [`active-designing/20260722-132020_stoa225-fact-line-demo-lit-sample.md`](../active-designing/20260722-132020_stoa225-fact-line-demo-lit-sample.md).
+**STOA225 fact-line demo lit sample GREEN, `20260722.132020`** — demo sig/fact pins · desk · bind. Brief [`active-designing/20260722-132020_stoa225-fact-line-demo-lit-sample.md`](../../active-designing/yonder/20260722-132020_stoa225-fact-line-demo-lit-sample.md).
 
-**STOA226 after fact-line lits check-in, `20260722.132320`** — lean A send · lean B rest · lean C thin as STOA227. Brief [`active-designing/20260722-132320_stoa226-after-fact-line-lits-checkin.md`](../active-designing/20260722-132320_stoa226-after-fact-line-lits-checkin.md).
+**STOA226 after fact-line lits check-in, `20260722.132320`** — lean A send · lean B rest · lean C thin as STOA227. Brief [`active-designing/20260722-132320_stoa226-after-fact-line-lits-checkin.md`](../../active-designing/yonder/20260722-132320_stoa226-after-fact-line-lits-checkin.md).
 
-**STOA227 demo line pin emit GREEN, `20260722.132533`** — `format_demo_line_from_pins` ≡ claim. Brief [`active-designing/20260722-132533_stoa227-demo-line-pin-emit.md`](../active-designing/20260722-132533_stoa227-demo-line-pin-emit.md).
+**STOA227 demo line pin emit GREEN, `20260722.132533`** — `format_demo_line_from_pins` ≡ claim. Brief [`active-designing/20260722-132533_stoa227-demo-line-pin-emit.md`](../../active-designing/yonder/20260722-132533_stoa227-demo-line-pin-emit.md).
 
-**STOA228 after demo pin emit check-in, `20260722.132705`** — lean A send · lean B as STOA229. Brief [`active-designing/20260722-132705_stoa228-after-demo-pin-emit-checkin.md`](../active-designing/20260722-132705_stoa228-after-demo-pin-emit-checkin.md).
+**STOA228 after demo pin emit check-in, `20260722.132705`** — lean A send · lean B as STOA229. Brief [`active-designing/20260722-132705_stoa228-after-demo-pin-emit-checkin.md`](../../active-designing/yonder/20260722-132705_stoa228-after-demo-pin-emit-checkin.md).
 
-**STOA229 append first-event pin wire GREEN, `20260722.133004`** — `append_demo_log` event 1 from pin emit; events 2–3 sign+line; HAWM1 root. Brief [`active-designing/20260722-133004_stoa229-append-first-event-pin-emit.md`](../active-designing/20260722-133004_stoa229-append-first-event-pin-emit.md).
+**STOA229 append first-event pin wire GREEN, `20260722.133004`** — `append_demo_log` event 1 from pin emit; events 2–3 sign+line; HAWM1 root. Brief [`active-designing/20260722-133004_stoa229-append-first-event-pin-emit.md`](../../active-designing/yonder/20260722-133004_stoa229-append-first-event-pin-emit.md).
 
-**STOA230 after append pin wire check-in, `20260722.133211`** — lean A send `133343` · lean B rest · lean C as STOA231. Brief [`active-designing/20260722-133211_stoa230-after-append-pin-wire-checkin.md`](../active-designing/20260722-133211_stoa230-after-append-pin-wire-checkin.md).
+**STOA230 after append pin wire check-in, `20260722.133211`** — lean A send `133343` · lean B rest · lean C as STOA231. Brief [`active-designing/20260722-133211_stoa230-after-append-pin-wire-checkin.md`](../../active-designing/yonder/20260722-133211_stoa230-after-append-pin-wire-checkin.md).
 
-**STOA231 demo events 2–3 pin emit GREEN, `20260722.133717`** — sig2/fact2 · sig3/fact3 · desk six faces · append all pins; HAWM1. Brief [`active-designing/20260722-133717_stoa231-demo-events-2-3-pin-emit.md`](../active-designing/20260722-133717_stoa231-demo-events-2-3-pin-emit.md).
+**STOA231 demo events 2–3 pin emit GREEN, `20260722.133717`** — sig2/fact2 · sig3/fact3 · desk six faces · append all pins; HAWM1. Brief [`active-designing/20260722-133717_stoa231-demo-events-2-3-pin-emit.md`](../../active-designing/yonder/20260722-133717_stoa231-demo-events-2-3-pin-emit.md).
 
-**STOA232 after events 2–3 pin emit check-in, `20260722.134008`** — lean A send · lean B rest already taken · lean C as STOA233. Brief [`active-designing/20260722-134008_stoa232-after-events-2-3-pin-emit-checkin.md`](../active-designing/20260722-134008_stoa232-after-events-2-3-pin-emit-checkin.md).
+**STOA232 after events 2–3 pin emit check-in, `20260722.134008`** — lean A send · lean B rest already taken · lean C as STOA233. Brief [`active-designing/20260722-134008_stoa232-after-events-2-3-pin-emit-checkin.md`](../../active-designing/yonder/20260722-134008_stoa232-after-events-2-3-pin-emit-checkin.md).
 
-**STOA233 runtime fact-line desk emit GREEN, `20260722.134205`** — desk extract · emit ≡ pins · desk append HAWM1. Brief [`active-designing/20260722-134205_stoa233-runtime-desk-emit.md`](../active-designing/20260722-134205_stoa233-runtime-desk-emit.md).
+**STOA233 runtime fact-line desk emit GREEN, `20260722.134205`** — desk extract · emit ≡ pins · desk append HAWM1. Brief [`active-designing/20260722-134205_stoa233-runtime-desk-emit.md`](../../active-designing/yonder/20260722-134205_stoa233-runtime-desk-emit.md).
 
-**STOA234 after runtime desk emit check-in, `20260722.134415`** — lean A send · lean B as STOA235; round-close automation seated. Brief [`active-designing/20260722-134415_stoa234-after-runtime-desk-emit-checkin.md`](../active-designing/20260722-134415_stoa234-after-runtime-desk-emit-checkin.md).
+**STOA234 after runtime desk emit check-in, `20260722.134415`** — lean A send · lean B as STOA235; round-close automation seated. Brief [`active-designing/20260722-134415_stoa234-after-runtime-desk-emit-checkin.md`](../../active-designing/yonder/20260722-134415_stoa234-after-runtime-desk-emit-checkin.md).
 
-**STOA235 claim/fold desk-file I/O GREEN, `20260722.134552`** — `*_from_desk_file` ≡ pin; NA pin path. Brief [`active-designing/20260722-134552_stoa235-claim-fold-desk-file.md`](../active-designing/20260722-134552_stoa235-claim-fold-desk-file.md).
+**STOA235 claim/fold desk-file I/O GREEN, `20260722.134552`** — `*_from_desk_file` ≡ pin; NA pin path. Brief [`active-designing/20260722-134552_stoa235-claim-fold-desk-file.md`](../../active-designing/yonder/20260722-134552_stoa235-claim-fold-desk-file.md).
 
-**STOA236 after desk-file claim check-in, `20260722.134657`** — lean A send · lean B as STOA237. Brief [`active-designing/20260722-134657_stoa236-after-desk-file-claim-checkin.md`](../active-designing/20260722-134657_stoa236-after-desk-file-claim-checkin.md).
+**STOA236 after desk-file claim check-in, `20260722.134657`** — lean A send · lean B as STOA237. Brief [`active-designing/20260722-134657_stoa236-after-desk-file-claim-checkin.md`](../../active-designing/yonder/20260722-134657_stoa236-after-desk-file-claim-checkin.md).
 
-**STOA237 NativeActivity embedded lit desk GREEN, `20260722.134831`** — embed · onCreate · pack · `.so` markers. Brief [`active-designing/20260722-134831_stoa237-native-embedded-lit-desk.md`](../active-designing/20260722-134831_stoa237-native-embedded-lit-desk.md).
+**STOA237 NativeActivity embedded lit desk GREEN, `20260722.134831`** — embed · onCreate · pack · `.so` markers. Brief [`active-designing/20260722-134831_stoa237-native-embedded-lit-desk.md`](../../active-designing/yonder/20260722-134831_stoa237-native-embedded-lit-desk.md).
 
-**STOA238 after embedded desk check-in, `20260722.135324`** — lean A send · lean B as STOA239. Brief [`active-designing/20260722-135324_stoa238-after-embedded-desk-checkin.md`](../active-designing/20260722-135324_stoa238-after-embedded-desk-checkin.md).
+**STOA238 after embedded desk check-in, `20260722.135324`** — lean A send · lean B as STOA239. Brief [`active-designing/20260722-135324_stoa238-after-embedded-desk-checkin.md`](../../active-designing/yonder/20260722-135324_stoa238-after-embedded-desk-checkin.md).
 
 **STOA239 Pixel embedded-desk eyes GREEN, `20260722.135605`** — SDK adb · sala_root HAWM1 · install-proof. Brief [`active-designing/20260722-135605_stoa239-pixel-embedded-desk-eyes.md`](../active-designing/20260722-135605_stoa239-pixel-embedded-desk-eyes.md).
 
@@ -770,7 +770,7 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA256 after barket N-field identity check-in, `20260722.143410`** — lean A send · lean B flip call-body collapse. Brief [`active-designing/20260722-143410_stoa256-after-barket-n-field-identity-checkin.md`](../active-designing/20260722-143410_stoa256-after-barket-n-field-identity-checkin.md). Gold · shared-package · JABS3 held.
 
-**Check-in HAWM fleet · shape-only, `20260722.143648`** — recommend living `-shape` only (2A); HAWM log-harvest (1A) for autonomy; refuse Glow-as-GrapheneOS-emulator; fleets after harvest. Brief [`active-designing/20260722-143648_checkin-hawm-fleet-and-shape-only.md`](../active-designing/20260722-143648_checkin-hawm-fleet-and-shape-only.md).
+**Check-in HAWM fleet · shape-only, `20260722.143648`** — recommend living `-shape` only (2A); HAWM log-harvest (1A) for autonomy; refuse Glow-as-GrapheneOS-emulator; fleets after harvest. Brief [`active-designing/20260722-143648_checkin-hawm-fleet-and-shape-only.md`](../../active-designing/yonder/20260722-143648_checkin-hawm-fleet-and-shape-only.md).
 
 **STOA257 shape-only living GREEN, `20260722.144300`** — living `-shape` speech; study `-mold` alias held. Brief [`active-designing/20260722-143829_stoa257-shape-only-living-surface.md`](../active-designing/20260722-143829_stoa257-shape-only-living-surface.md).
 
@@ -844,7 +844,7 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA291 continue after Pixel eyes check-in, `20260722.155130`** — lean A tagged `$%` flip survey · lean B face_lit · lean C gold held · lean E fleets held. Brief [`active-designing/20260722-155130_stoa291-continue-after-pixel-eyes-checkin.md`](../active-designing/20260722-155130_stoa291-continue-after-pixel-eyes-checkin.md).
 
-**STOA292 Survey seated, `20260722.155438`** — Lexicon **Survey**; inventary retired for living *Now*. Brief [`active-designing/20260722-155438_survey-seated-inventary-retired.md`](../active-designing/20260722-155438_survey-seated-inventary-retired.md).
+**STOA292 Survey seated, `20260722.155438`** — Lexicon **Survey**; inventary retired for living *Now*. Brief [`active-designing/20260722-155438_survey-seated-inventary-retired.md`](../../active-designing/yonder/20260722-155438_survey-seated-inventary-retired.md).
 
 **STOA293 tagged `$%` flip survey · bartis payload, `20260722.155648`** — `emit_tagged_payload_flip_call_body`; witness GREEN. Brief [`active-designing/20260722-155648_stoa293-tagged-percent-flip-survey.md`](../active-designing/20260722-155648_stoa293-tagged-percent-flip-survey.md).
 
@@ -872,7 +872,7 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA303 payload argv survey · xact GREEN, `20260722.184804`** — `emit_xact_argv` · mint/send · xfer refuse pinned. Brief [`active-designing/20260722-184507_stoa303-payload-argv-survey-xact.md`](../active-designing/20260722-184507_stoa303-payload-argv-survey-xact.md).
 
-**STOA304 after xact argv check-in, `20260722.184520` · recommend `20260722.185058`** — lean A send · lean B rest available · lean **C** xfer argv chosen. Brief [`active-designing/20260722-184520_stoa304-after-xact-argv-checkin.md`](../active-designing/20260722-184520_stoa304-after-xact-argv-checkin.md) · habit [`active-designing/20260722-185058_stoa304-rest-habit-and-xfer-rec.md`](../active-designing/20260722-185058_stoa304-rest-habit-and-xfer-rec.md).
+**STOA304 after xact argv check-in, `20260722.184520` · recommend `20260722.185058`** — lean A send · lean B rest available · lean **C** xfer argv chosen. Brief [`active-designing/20260722-184520_stoa304-after-xact-argv-checkin.md`](../active-designing/20260722-184520_stoa304-after-xact-argv-checkin.md) · habit [`active-designing/20260722-185058_stoa304-rest-habit-and-xfer-rec.md`](../../active-designing/yonder/20260722-185058_stoa304-rest-habit-and-xfer-rec.md).
 
 **STOA305 payload argv survey · xfer GREEN, `20260722.185953`** — `emit_xfer_argv` · mint from/amount · send · pair refuse pinned. Brief [`active-designing/20260722-185953_stoa305-payload-argv-survey-xfer.md`](../active-designing/20260722-185953_stoa305-payload-argv-survey-xfer.md).
 

@@ -9,7 +9,7 @@
 **Status:** Checkable — GREEN `20260721.190527`  
 **Register:** Checkable (Two Rooms) — product compose GREEN; elder bodies still underneath sign/line/replay  
 
-**Grounds in:** inventory hold “wire sign+line into append” · [`20260721-190209_stoa201-sign-verify-surface.md`](20260721-190209_stoa201-sign-verify-surface.md) · [`20260721-190240_stoa202-line-format-parse.md`](../20260721-190240_stoa202-line-format-parse.md) · STOA195 append port
+**Grounds in:** inventory hold “wire sign+line into append” · [`20260721-190209_stoa201-sign-verify-surface.md`](20260721-190209_stoa201-sign-verify-surface.md) · [`20260721-190240_stoa202-line-format-parse.md`](20260721-190240_stoa202-line-format-parse.md) · STOA195 append port
 
 **dated_guard:** Do **not** claim Glow-rune crypto or a Glow-authored replay body. HAWM1 hex still rests on elder sign/format/replay/digest guts. JABS3 held.
 

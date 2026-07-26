@@ -4,7 +4,7 @@
 **Depth:** brief  
 **Last updated:** 2026-07-18 (`20260718.233120`)  
 **Voice:** Quin  
-**Waymark:** **STOA** · compressor [`../docs/STOA.md`](../docs/STOA.md)
+**Waymark:** **STOA** · compressor [`../docs/STOA.md`](../../docs/STOA.md)
 
 ---
 

@@ -6,7 +6,7 @@
 **Language:** EN  
 **Style:** Radiant · **Lens:** TAME · SLC · logic before carriage  
 **Status:** Checkable-room hammock — tip **418** closes the lap  
-**Ground:** path counsel [`../session-logs/20260710-233026_path-counsel-next-open.md`](../session-logs/20260710-233026_path-counsel-next-open.md) · prior composition [`../session-logs/20260710-192018_assist-sight-composition-journal-plain.md`](../session-logs/20260710-192018_assist-sight-composition-journal-plain.md)
+**Ground:** path counsel [`../session-logs/20260710-233026_path-counsel-next-open.md`](../../session-logs/archive/20260710/20260710-233026_path-counsel-next-open.md) · prior composition [`../session-logs/20260710-192018_assist-sight-composition-journal-plain.md`](../../session-logs/archive/20260710/20260710-192018_assist-sight-composition-journal-plain.md)
 
 *Written by Kaeden and Rio 3.*
 
