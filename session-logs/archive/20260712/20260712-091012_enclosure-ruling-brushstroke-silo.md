@@ -15,7 +15,7 @@ Kaeden pasted three Claude printouts: enclosure disposition (`090512`), morning 
 | Stamp | Artifact |
 |-------|----------|
 | `090512` | [`counsel/20260712-090512_claude-ruling-enclosure-ai-jail-then-pond.md`](../counsel/20260712-090512_claude-ruling-enclosure-ai-jail-then-pond.md) — A-narrow interim → B supersede-by-witness + addendum a–f |
-| `091012` | [`active-designing/20260712-091012_brushstroke-linengrow-weave-silo.md`](../active-designing/20260712-091012_brushstroke-linengrow-weave-silo.md) — six invariants · Flax·Bark·Oat·Walnut |
+| `091012` | [`active-designing/20260712-091012_brushstroke-linengrow-weave-silo.md`](../../../active-designing/yonder/20260712-091012_brushstroke-linengrow-weave-silo.md) — six invariants · Flax·Bark·Oat·Walnut |
 | — | RTAC answered · TASKS ordered next · session-log index header: **index order is the day’s truth** |
 
 ## Metal parity pin (honest)

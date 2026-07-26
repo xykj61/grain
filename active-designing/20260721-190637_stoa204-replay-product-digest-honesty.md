@@ -9,7 +9,7 @@
 **Status:** Checkable — GREEN `20260721.190637`  
 **Register:** Checkable (Two Rooms) — product digest on claim path GREEN; elder `replay` body still owns verify · order · inner digest  
 
-**Grounds in:** Hold in [`20260721-190527_stoa203-append-sign-line-compose.md`](20260721-190527_stoa203-append-sign-line-compose.md) · STOA194 digest · STOA196 replay
+**Grounds in:** Hold in [`20260721-190527_stoa203-append-sign-line-compose.md`](yonder/20260721-190527_stoa203-append-sign-line-compose.md) · STOA194 digest · STOA196 replay
 
 **dated_guard:** Do **not** claim a Glow-authored replay vane (parse · verify · order). Elder `sala.replay` still runs. Product `claim_digest_log` is an honesty assert over the same log bytes. JABS3 held.
 
