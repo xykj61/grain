@@ -1,7 +1,7 @@
 # The Counsel Stack
 
 **Language:** EN
-**Last updated:** 2026-07-26 (`20260726.020825` the cheap hour)  
+**Last updated:** 2026-07-26 (`20260726.025120` sixteen hot files)  
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
 **Status:** Foundation  
 **Seasons roster:** [`SEASONS.md`](SEASONS.md)
@@ -22,8 +22,9 @@ Filing law: [`../ORGANIZING.md`](../ORGANIZING.md) · reorg proposal: [`20260707
 
 | Stamp | Note | Meaning |
 |-------|------|---------|
-| `20260726.014013` | [Which Gate Belongs to Which Lap](20260726-014013_which-gate-belongs-to-which-lap.md) | content-lap heading exception · gates-for-laps table proposed |
-| `20260726.022043` | [Reply — Cheap-hour STOP · missing 014013](replies/20260726-022043_re-cheap-hour-stop-missing-014013.md) | four of five filed · heading_additive body absent · Q–V hold |
+| `20260726.025120` | [Sixteen Hot Files](20260726-025120_sixteen-hot-files.md) | T2 stay list · 117 cold stay put · target 133 · ROUND MODE for link_witness |
+| `20260726.014013` | [Which Gate Belongs to Which Lap](20260726-014013_which-gate-belongs-to-which-lap.md) | content-lap heading exception · gates-for-laps table proposed · **arrived** (was missing at cheap-hour STOP) |
+| `20260726.022043` | [Reply — Cheap-hour STOP · missing 014013](replies/20260726-022043_re-cheap-hour-stop-missing-014013.md) | historical STOP — 014013 now filed at `20260726.014013` · Q–V resumed |
 | `20260726.020825` | [The Cheap Hour](20260726-020825_the-cheap-hour.md) | breach · create · router · Glow docs · carries 224641+014013 |
 | `20260725.235531` | [Reply — Relay STOP at G · heading signature](replies/20260725-235531_re-relay-stop-g-heading-signature.md) | J–E landed · SOURCE Part One needs heading-growth seat · F in flight |
 | `20260725.224641` | [The Gate That Caught Me](20260725-224641_the-gate-that-caught-me.md) | amend D · style-only then status lap · claim_preserve token classes parked |
