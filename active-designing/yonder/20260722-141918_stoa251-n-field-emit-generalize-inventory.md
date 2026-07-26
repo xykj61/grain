@@ -9,7 +9,7 @@
 **Status:** Checkable — inventary seated `20260722.141918` · first code lap named STOA252 lean  
 **Register:** Checkable (Two Rooms) — maps duplication; no emit collapse claimed yet  
 
-**Grounds in:** STOA250 lean **B** (name next door → language return) · capacity freeze [`20260720-231857_closed-field-capacity-freeze-and-framework-next.md`](20260720-231857_closed-field-capacity-freeze-and-framework-next.md) · STOA126–147 pair…nona · STOA175 `emit_tuple_cast` pattern  
+**Grounds in:** STOA250 lean **B** (name next door → language return) · capacity freeze [`20260720-231857_closed-field-capacity-freeze-and-framework-next.md`](../20260720-231857_closed-field-capacity-freeze-and-framework-next.md) · STOA126–147 pair…nona · STOA175 `emit_tuple_cast` pattern  
 
 **dated_guard:** Do **not** kg another `*-mold` field widen past nine. Do **not** open ambient gold. Do **not** collapse identity+flip+both lowers in one silent lap. Shared-package `face_lit` · JABS3 stay held until named.
 
