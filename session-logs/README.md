@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260726.035217` — [T3–T4 breach continue · AD manual logged](20260726-035217_t3-t4-breach-continue-ad-manual.bron) — 247 moved · WIP 10 · AD 135 · forge desc by hand  
 - `20260726.033904` — [Pin and shelf · mono GREEN · AD STOP](20260726-033904_pin-shelf-mono-green-ad-stop.bron) — AB witnesses green · forge auth STOP · WIP census  
 - `20260726.030603` — [Send reply · sixteen hot STOP T2](20260726-030603_send-reply-sixteen-hot-stop-t2.bron) — counsel reply filed · origin+codeberg  
 - `20260726.025926` — [Sixteen hot · ROUND MODE · buckets · mono RED](20260726-025926_sixteen-hot-round-mode-buckets-mono.bron) — X GREEN · Y reported · Z pathspec · STOP T2 strike  
