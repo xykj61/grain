@@ -6,13 +6,13 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260726.061511` (EDT) · voice Quin  
+**Last refreshed:** `20260726.062108` (EDT) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2 · ring-3** · **THREATS** · **five pillars** · **accrete tiers** · **redaction stance** · **always-in-it rhythm**  
 **Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list1024 · Env512 · **stamp @u64 · Crockford** · **shape aura floor** · **Glow text floor GREEN**  
-**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand home** · **siblings seated** · **--cursor launch** · **Pond counsel 161616** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm+cold REPORT** · **Grain umbrella living** · **OQ #1 · #3 · #4 · #5 answered** · **pass ledger** · **campaign STOPPED** · **growth law** · **wasmtime E GREEN** · **monocypher 4.0.3 GREEN** · **MAP.md** · **breach T3–T4** · **U·V·I** · **F RED boot fixed** · **instrumented COLD RED doorway** · **align+kg handoff**  
-**Git nib:** *(pin after this send)* · Grain · COLD RED doorway · H held · autoproject96/grain
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand home** · **siblings seated** · **--cursor launch** · **Pond counsel 161616** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm+cold REPORT** · **Grain umbrella living** · **OQ #1 · #3 · #4 · #5 answered** · **pass ledger** · **campaign STOPPED** · **growth law** · **wasmtime E GREEN** · **monocypher 4.0.3 GREEN** · **MAP.md** · **breach T3–T4** · **U·V·I** · **F RED boot fixed** · **instrumented COLD RED doorway** · **advice ask open**  
+**Git nib:** *(pin after this send)* · Grain · doorway advice ask · H held · autoproject96/grain
 
-**Season:** Framework · EDT · **Grain** umbrella · pier **`~/grain`** · **finishing edge:** restore doorway · then instrumented COLD cost table · then H Brix survey · breach two next season.
+**Season:** Framework · EDT · **Grain** umbrella · pier **`~/grain`** · **finishing edge:** Claude on doorway Status · then instrumented COLD cost table · then H Brix survey · breach two next season.
 
 ---
 
@@ -20,7 +20,7 @@
 
 **Pier path** — **`~/grain`** · agent **`home-xy-grain`**.
 
-**Instrumented COLD** — finished (~30 min · `/tmp/parity-next/parity.log`): ch1 **RED** at **two-rooms doorway**. Solo: `FAIL active-designing/20260726-050047_mantra-core-witness-receipts-hammock.md` — Status is `Hammock — design only…` and does not name a room (`checkable|vision|mixed|research for understanding`). Partial cost TSV exists; no WIP cost-table.md yet. H held. S2/S3 held. Prior F ch2 boot fix remains landed. **Handoff:** [`20260726-050422_cursor-kg-handoff.md`](20260726-050422_cursor-kg-handoff.md).
+**Instrumented COLD** — **RED** at two-rooms doorway (S3 hammock Status lacks room word). Status reply + advice ask filed: [`counsel/replies/20260726-062108_re-handoff-cold-red-doorway-ask.md`](../counsel/replies/20260726-062108_re-handoff-cold-red-doorway-ask.md). Quin leans Vision · full COLD resume · fresh cost log. H held. S2/S3 held. **Handoff:** [`20260726-050422_cursor-kg-handoff.md`](20260726-050422_cursor-kg-handoff.md).
 
 **Lane** (`autoproject96` · counsel `223409`) — agentic research pier on both forges. Keys are the map: never push across `groupproject36` / `xykj61` lanes. Agent may `kg` mechanical witness-first stops inside the enclosure; seating words, keys, Tier 1, gratitude, compass, roster, and **send** stay human-gated (send-after-every-round is Keaton's standing preference, not a license past STOP). Specimen #1 is this Grain agent's own session logs since `home-xy-grain` rooted. Map: [`PUBKEYS.md`](../PUBKEYS.md) · [`context/REMOTE_ROSTER.md`](../context/REMOTE_ROSTER.md).
 
