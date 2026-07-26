@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260725.224548` — [Send · pier already current](20260725-224548_send-already-at-pier.bron) — 0078653bf7 on origin+codeberg · relay PARTIAL at D  
 - `20260725.224336` — [Relay STOP at D · claim_preserve RED](20260725-224336_relay-stop-d-claim-preserve-red.bron) — C landed · Mand/Seva/Acme drift · E–I hold  
 - `20260725.223919` — [Relay STOP at C · missing provided files](20260725-223919_relay-stop-missing-provided-files.bron) — A·B landed · handoff+README pass absent  
 - `20260725.222438` — [Send SOURCE beginner counsel · grain agent logs](20260725-222438_send-source-beginner-counsel.bron) — origin+codeberg · Claude still owes relay  
