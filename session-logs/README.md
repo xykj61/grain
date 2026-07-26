@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260726.054057` — [Parity F RED · S0 boot UndefinedName fix](20260726-054057_parity-f-red-s0-boot-fix.bron) — ch1 GREEN · ch2 boot fixed · H held  
 - `20260726.050422` — [Align · Cursor kg handoff · send](20260726-050422_align-cursor-kg-handoff.bron) — TASKS/ROADMAP reconciled · F→H finishing edge  
 - `20260726.050047` — [Graph not a vane · S0 S1 S3 relay · send](20260726-050047_graph-not-vane-relay-s0-s1-s3.bron) — counsel filed · zig cold/warm pin · F undisturbed  
 - `20260726.042641` — [Parity speed ask · Ford Fusion · send](20260726-042641_parity-speed-ford-ask-send.bron) — counsel ask four lanes · RTAC OPEN · F still measuring  

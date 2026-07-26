@@ -20,7 +20,7 @@
 
 **Pier path** — **`~/grain`** · agent **`home-xy-grain`**.
 
-**F** — full parity in flight (`/tmp/parity-f-rerun/parity.log` · COLD · do not disturb). **U·V·I** landed. H waits on F GREEN. S0 instrumentation + zig shelf land for the *next* full run. **Next agent:** [`20260726-050422_cursor-kg-handoff.md`](20260726-050422_cursor-kg-handoff.md) · align [`20260726-050422_align-before-cursor-handoff.md`](20260726-050422_align-before-cursor-handoff.md).
+**F** — COLD finished (~88 min): ch1 **GREEN** · ch2 **RED** — Rishi `UndefinedName` on S0 inline `${PARITY_COST_RESET:-1}` (ch2 picked up mid-run disk edit). Fixed via `tools/parity_cost_boot.sh` (`054057`). H still held. **Next:** instrumented COLD full run. **Handoff:** [`20260726-050422_cursor-kg-handoff.md`](20260726-050422_cursor-kg-handoff.md).
 
 **Lane** (`autoproject96` · counsel `223409`) — agentic research pier on both forges. Keys are the map: never push across `groupproject36` / `xykj61` lanes. Agent may `kg` mechanical witness-first stops inside the enclosure; seating words, keys, Tier 1, gratitude, compass, roster, and **send** stay human-gated (send-after-every-round is Keaton's standing preference, not a license past STOP). Specimen #1 is this Grain agent's own session logs since `home-xy-grain` rooted. Map: [`PUBKEYS.md`](../PUBKEYS.md) · [`context/REMOTE_ROSTER.md`](../context/REMOTE_ROSTER.md).
 
