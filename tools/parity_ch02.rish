@@ -3,6 +3,12 @@
 # Lines 988–1633 of the former monolithic parity.rish · 130 lets.
 # Driven by tools/parity.rish. Run alone:
 #   rishi/bin/rishi run tools/parity_ch02.rish
+#
+# Host-tool preflight (counsel 20260725.223409): wasmtime ABSENT before the clock.
+
+let preflight = run ["sh" "tools/fixtures/wasmtime_preflight.sh"]
+assert preflight.ok else "wasmtime preflight script failed"
+if (preflight.out != "") then say preflight.out
 
 say "witness suite: Anvil corpus apps prefix view (pond/apps/ → Skate)…"
 let apps_prefix_view = run ["rishi/bin/rishi" "run" "tools/inference_anvil_corpus_apps_prefix_view.rish"]
@@ -648,8 +654,10 @@ say "GREEN: Door 3 consumer-edge pass witness passed."
 
 say "witness suite: receipt-verify Wasmtime guest (component compile lap)…"
 let receipt_verify_wasm = run ["rishi/bin/rishi" "run" "tools/receipt_verify_wasm.rish"]
-assert receipt_verify_wasm.ok else "receipt-verify Wasmtime witness failed"
-say "GREEN: receipt-verify Wasmtime guest witness passed."
+# ABSENT is exit-0 with the restore line — count it; never soften a true RED.
+if (receipt_verify_wasm.out contains "ABSENT: wasmtime") then say "ABSENT: wasmtime — receipt_verify_wasm counted; suite PARTIAL"
+if ((receipt_verify_wasm.out contains "ABSENT: wasmtime") == false) then assert receipt_verify_wasm.ok
+if ((receipt_verify_wasm.out contains "ABSENT: wasmtime") == false) then say "GREEN: receipt-verify Wasmtime guest witness passed."
 
 say "witness suite: signed-Kumara parity (proven-seat · append ch.2)…"
 let signed_kumara = run ["rishi/bin/rishi" "run" "tools/proven_seat_signed_kumara_parity.rish"]

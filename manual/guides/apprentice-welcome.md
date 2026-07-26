@@ -1,0 +1,26 @@
+# Apprentice Welcome — a letter into Grain
+
+**Language:** EN  
+**Status:** Living guide — person-to-person welcome; not a seating of this pier’s voice  
+**Voice:** Keaton’s letter, lightly tightened by Quin  
+**Last updated:** `20260725.235100` (EDT)
+
+---
+
+My project I call **Grain** — it is like a framework for Cursor that helps you do everything more safely and faster and with more joy. You can literally ask Cursor any question you have and it will help you understand. Let me know when you download Cursor — likely the x86_64 Linux AppImage if you choose Linux — and I will give you an instruction to get started with Grain.
+
+You can choose between five voice names for your AI Cursor assistant — **Quin**, **Reya**, **Riyo**, **Trey**, or **Triz** — or you can make up your own. Those names are for *your* companion on *your* pier. On this repository the standing voice stays **Quin**, and the retired archive stays at rest under `context/archive/`. You can tell Cursor to help you using the `foundations` and `context` folders and to write replies in **Radiant Style**. It can help you learn anything you want.
+
+You will need to create two more accounts — [github.com](https://github.com) and [codeberg.org](https://codeberg.org) — ideally choosing the same username. Then ask Cursor to help you get set up with the instructions in the Grain root [`SOURCE.md`](../../SOURCE.md).
+
+If I were you, I would try and back up everything you have and install either **Ubuntu 26.04 LTS** Linux or **NixOS 26.05** Linux on your computer. You might need one or two USB flash drives in order to install Linux. You will have a way better time than Windows. NixOS will give you the best experience though.
+
+You can ask your AI assistant to explain to you in plain English what all of these things in Grain are.
+
+If you cannot afford Cursor’s paid plan that includes Agent mode (about twenty dollars a month at the time I write this), reach out to me and let’s talk.
+
+Software and Cursor can help you do anything even if you do not want to code — they can help even if you just want to do more communications, outreach, stuff like that.
+
+---
+
+*May your first day end with a window that opens kindly. May asking stay easier than guessing.*

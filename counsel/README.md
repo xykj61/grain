@@ -22,6 +22,7 @@ Filing law: [`../ORGANIZING.md`](../ORGANIZING.md) · reorg proposal: [`20260707
 
 | Stamp | Note | Meaning |
 |-------|------|---------|
+| `20260725.235531` | [Reply — Relay STOP at G · heading signature](replies/20260725-235531_re-relay-stop-g-heading-signature.md) | J–E landed · SOURCE Part One needs heading-growth seat · F in flight |
 | `20260725.224641` | [The Gate That Caught Me](20260725-224641_the-gate-that-caught-me.md) | amend D · style-only then status lap · claim_preserve token classes parked |
 | `20260725.224336` | [Reply — Relay STOP at D · claim_preserve RED](replies/20260725-224336_re-relay-stop-d-claim-preserve-red.md) | C landed · README pass claim drift · E–I hold |
 | `20260725.223919` | [Reply — Relay STOP at C · missing provided files](replies/20260725-223919_re-relay-stop-missing-provided-files.md) | A·B landed · handoff + README pass absent on disk |
