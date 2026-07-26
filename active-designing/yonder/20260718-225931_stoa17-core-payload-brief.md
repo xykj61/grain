@@ -4,7 +4,7 @@
 **Depth:** brief  
 **Last updated:** 2026-07-18 (`20260718.225931`)  
 **Voice:** Quin  
-**Waymark:** **STOA** · compressor [`../docs/STOA.md`](../../docs/STOA.md) · prior [`20260718-225150_stoa15-16-two-arm-and-library-brief.md`](../20260718-225150_stoa15-16-two-arm-and-library-brief.md)
+**Waymark:** **STOA** · compressor [`../docs/STOA.md`](../../docs/STOA.md) · prior [`20260718-225150_stoa15-16-two-arm-and-library-brief.md`](20260718-225150_stoa15-16-two-arm-and-library-brief.md)
 
 ---
 
