@@ -4,6 +4,8 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260726.115026` — [Send · C-Ladder C1 C2 to pier](20260726-115026_send-c-ladder-c1-c2.bron) — origin+codeberg · C3–C5 still need homes  
+- `20260726.112435` — [C-Ladder C1 C2 land · C3–C5 skipped blank homes](20260726-112435_c-ladder-c1-c2-homes-blank.bron) — charter · Glow Book · no push until send  
 - `20260726.062108` — [Send · doorway status reply · advice ask](20260726-062108_send-doorway-advice-ask.bron) — Vision lean · full COLD resume · await Claude  
 - `20260726.061511` — [Instrumented COLD RED · two-rooms doorway](20260726-061511_instrumented-cold-red-doorway.bron) — S3 hammock Status lacks room word · H held  
 - `20260726.054154` — [Handoff pickup · F RED named · instrumented COLD started](20260726-054154_handoff-f-red-instrumented-cold.bron) — watched F · boot fix already in · COLD at /tmp/parity-next  
