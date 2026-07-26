@@ -7,7 +7,7 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
 **Lens:** the happy zone and the thin edge (`../foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md`), over TAME  
 **Status:** Audit — second pass complete; follow-ups captured as horizons  
-**Ground:** first pass [`20260702-180812_testing-audit-first-pass.md`](20260702-180812_testing-audit-first-pass.md) · counsel [`../session-logs/20260710-235856_happy-zone-audit-counsel.md`](../session-logs/20260710-235856_happy-zone-audit-counsel.md) · metalsmoke [`../external-research/20260710-002017_metalsmoke-plainly.md`](../external-research/20260710-002017_metalsmoke-plainly.md)
+**Ground:** first pass [`20260702-180812_testing-audit-first-pass.md`](20260702-180812_testing-audit-first-pass.md) · counsel [`../session-logs/20260710-235856_happy-zone-audit-counsel.md`](../../session-logs/archive/20260710/20260710-235856_happy-zone-audit-counsel.md) · metalsmoke [`../external-research/20260710-002017_metalsmoke-plainly.md`](../../external-research/20260710-002017_metalsmoke-plainly.md)
 
 *Written together by Kaeden and Rio 3.*
 

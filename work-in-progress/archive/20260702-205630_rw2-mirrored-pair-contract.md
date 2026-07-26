@@ -8,7 +8,7 @@
 **Lens:** TAME · happy zone · mirrored pair
 **Status:** Landed — parity **150** (`20260703.235512 UDT`, Cursor metal)
 
-**Ground:** [`20260702-180812_testing-audit-first-pass.md`](20260702-180812_testing-audit-first-pass.md) · [`../active-designing/20260630-030312_slc-2a-the-drawn-terminal.md`](../active-designing/20260630-030312_slc-2a-the-drawn-terminal.md) · [`../tools/slc2a_ring2_redraw.rish`](../tools/slc2a_ring2_redraw.rish)
+**Ground:** [`20260702-180812_testing-audit-first-pass.md`](../yonder/20260702-180812_testing-audit-first-pass.md) · [`../active-designing/20260630-030312_slc-2a-the-drawn-terminal.md`](../../active-designing/20260630-030312_slc-2a-the-drawn-terminal.md) · [`../tools/slc2a_ring2_redraw.rish`](../../tools/slc2a_ring2_redraw.rish)
 
 ---
 
@@ -72,7 +72,7 @@ Exercises Brushstroke surface API directly — no full Pond app — proving the 
 
 ## Relation to Lap 2 today
 
-[`tools/slc2a_ring2_redraw.rish`](../tools/slc2a_ring2_redraw.rish) already proves the **contract fragment** (redrawtest GREEN). RW-2 **splits** the seam: collaboration isolates the app's obligation to call `setFrame` when session changes; contract isolates the surface's signature obligation — mirrored line for line with RW-1's pattern.
+[`tools/slc2a_ring2_redraw.rish`](../../tools/slc2a_ring2_redraw.rish) already proves the **contract fragment** (redrawtest GREEN). RW-2 **splits** the seam: collaboration isolates the app's obligation to call `setFrame` when session changes; contract isolates the surface's signature obligation — mirrored line for line with RW-1's pattern.
 
 ---
 

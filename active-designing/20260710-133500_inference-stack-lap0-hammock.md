@@ -6,7 +6,7 @@
 **Language:** EN
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`) · **Lens:** TAME · SLC · Gall's Law
 **Status:** Checkable-room hammock — lap 0 green; **Inference Track lap 1 closed** `224805` — tip **378**; **Anvil corpus lap 2 closed** `225320` — tip **386**; fixture deepen **410**; **glass composition closed** `234004` — tip **418**; next ROCm/Pond/LoRA on word
-**Ground:** [`../external-research/20260710-133500_local-forge-minisforum-inference.md`](../external-research/20260710-133500_local-forge-minisforum-inference.md) · prior brief [`20260620-020712_scribble-lantern-and-lattice.md`](20260620-020712_scribble-lantern-and-lattice.md) · thin-view exception [`../context/specs/20260709-225343_thin-view-dexter-exception.md`](../context/specs/20260709-225343_thin-view-dexter-exception.md) · progress [`../work-in-progress/20260710-220706_slc-and-inference-progress.md`](../work-in-progress/20260710-220706_slc-and-inference-progress.md)
+**Ground:** [`../external-research/20260710-133500_local-forge-minisforum-inference.md`](../external-research/20260710-133500_local-forge-minisforum-inference.md) · prior brief [`20260620-020712_scribble-lantern-and-lattice.md`](20260620-020712_scribble-lantern-and-lattice.md) · thin-view exception [`../context/specs/20260709-225343_thin-view-dexter-exception.md`](../context/specs/20260709-225343_thin-view-dexter-exception.md) · progress [`../work-in-progress/20260710-220706_slc-and-inference-progress.md`](../work-in-progress/archive/20260710-220706_slc-and-inference-progress.md)
 
 *Written by Kaeden and Rio 3.*
 

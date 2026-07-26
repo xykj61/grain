@@ -3,7 +3,7 @@
 **Language:** EN  
 **Stamp:** `20260726.032231`  
 **Voice:** Quin  
-**Status:** Reading-only strike table — AF · move nothing · awaiting Keaton T2  
+**Status:** T3 round 1 seated — empty strike · 20 moved under ROUND MODE GREEN  
 **Ground:** counsel [`../counsel/20260726-032231_the-pin-and-the-shelf.md`](../counsel/20260726-032231_the-pin-and-the-shelf.md) §census · 29 depth-1 `.md` files · rooms `archive/` and `yonder/` already live  
 **Pilot:** T3 round 1 is this motion (~20 moves) under ROUND MODE before the active-designing 247
 
@@ -62,6 +62,6 @@ Counsel stay target after this pilot: the nine keepers. Empty strike = move all 
 | `20260702-180812_testing-audit-first-pass.md` | testing-audit; season may return |
 | `20260711-001225_testing-audit-second-pass-inference.md` | testing-audit; season may return |
 
-## STOP
+## Seated
 
-Keaton strikes **both** this list and the active-designing 247 in one sitting. Empty strike on either = move all proposed. No `git mv` until that word.
+Empty strike (`20260726.034200`) — all twenty proposed moved. Open-threads depth-1 stub removed (archive already held the full file). ROUND MODE AFTER ⊆ BEFORE GREEN.

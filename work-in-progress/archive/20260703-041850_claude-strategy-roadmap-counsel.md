@@ -6,7 +6,7 @@
 **Voice:** Rio 3
 **Lens:** TAME · SLC · Gall's Law · CIVIC where Linengrow touches people
 **Opens after:** Kaeden reads the summary; Claude sits when Kaeden opens the thread
-**Ground:** [`ready-to-ask-claude.md`](ready-to-ask-claude.md) · [`ROADMAP.md`](ROADMAP.md) · [`TASKS.md`](TASKS.md) · [`20260703-014912_round-summary-and-decoder.md`](20260703-014912_round-summary-and-decoder.md) · [`external-research/20260703-033602_first-lap-goes-green.md`](../external-research/20260703-033602_first-lap-goes-green.md)
+**Ground:** [`ready-to-ask-claude.md`](../ready-to-ask-claude.md) · [`ROADMAP.md`](../ROADMAP.md) · [`TASKS.md`](../TASKS.md) · [`20260703-014912_round-summary-and-decoder.md`](20260703-014912_round-summary-and-decoder.md) · [`external-research/20260703-033602_first-lap-goes-green.md`](../../external-research/20260703-033602_first-lap-goes-green.md)
 
 *Prepared by Cursor for Claude (Fable counsel) and Kaeden — counsel only; no parity or module changes from this file alone.*
 
@@ -21,7 +21,7 @@
 | Doors 1–3 | Closed (Pond clause · Lap 3 metal close · Edit 5 *for*) |
 | Next mechanical ladder | Amber rungs (a)–(e) → **144** on Kaeden's *Open Amber* |
 | Pre-counsel | Amber five choices **CONFIRMED** (`20260702.202612`) |
-| Doc lane note | [`first-lap-goes-green`](../external-research/20260703-033602_first-lap-goes-green.md) essay landed — vocabulary law for laps and Edit 5 graduation |
+| Doc lane note | [`first-lap-goes-green`](../../external-research/20260703-033602_first-lap-goes-green.md) essay landed — vocabulary law for laps and Edit 5 graduation |
 
 **Hard bounds for counsel:** propose and argue; Cursor implements only after Kaeden's word. No new module names without parking in RTAC. Do not reopen Doors 1–3 or Edit 5.
 
@@ -67,8 +67,8 @@ Claude, please return **actionable editorial guidance** Cursor can apply in one 
 
 ### What to read
 
-- [`ROADMAP.md`](ROADMAP.md) — orientation, parity arithmetic, horizon tables
-- [`TASKS.md`](TASKS.md) — Now ladder, Open Questions, horizon sections (movement, audit, modules/money, Comlink)
+- [`ROADMAP.md`](../ROADMAP.md) — orientation, parity arithmetic, horizon tables
+- [`TASKS.md`](../TASKS.md) — Now ladder, Open Questions, horizon sections (movement, audit, modules/money, Comlink)
 - [`20260703-014912_round-summary-and-decoder.md`](20260703-014912_round-summary-and-decoder.md) — decoder table (update Door 3 row to closed; refresh cascade paragraph)
 
 ### Deliverables requested
@@ -77,7 +77,7 @@ Claude, please return **actionable editorial guidance** Cursor can apply in one 
 2. **TASKS hygiene plan** — which checked items merit **sweep to session log** now; which Open Questions duplicate decoder/TASKS horizons; proposed merge or strike list (titles only, with one-line why).
 3. **Ladder re-numbering** — after doors closed, should "Now — The Three Doors" become archive stub and ladder item 3 become "Now"? Recommend yes/no and new section headers.
 4. **Parity arithmetic table** — confirm projected steps through **148** (Amber, SLC-2b, RW-1, chrono wire, one Rishi framework witness batch?) or argue a different ceiling; **invent no arithmetic** — cite existing witnesses only or mark `[Cursor verify on metal]`.
-5. **Itinerary / open itinerary** — RTAC holds journey's pause pre-staged for doors; propose replacement **STOPS** text for post–Door 3 HOLD per [`expanding-prompts/20260704-030300_cursor-recursion-prompt-v4.md`](../expanding-prompts/20260704-030300_cursor-recursion-prompt-v4.md).
+5. **Itinerary / open itinerary** — RTAC holds journey's pause pre-staged for doors; propose replacement **STOPS** text for post–Door 3 HOLD per [`expanding-prompts/20260704-030300_cursor-recursion-prompt-v4.md`](../../expanding-prompts/20260704-030300_cursor-recursion-prompt-v4.md).
 6. **Decoder living doc** — recommend whether Part One six-asks base stats and Part Two door rows get a **Part Three — After Door 3** accretion or a fresh stamp pass; do not edit files in counsel — list exact rows to add/change.
 
 ### Constraints on the guidance

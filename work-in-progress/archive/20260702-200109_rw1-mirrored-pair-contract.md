@@ -8,7 +8,7 @@
 **Lens:** TAME · happy zone · mirrored pair
 **Status:** Contract prep — no `.rish` files until ladder rung 5; two commits, parity **+2**
 
-**Ground:** [`20260702-180812_testing-audit-first-pass.md`](20260702-180812_testing-audit-first-pass.md) · [`../foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md`](../foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md) · [`../active-designing/20260628-071012_slc-1-rishi-mantra-shell.md`](../active-designing/20260628-071012_slc-1-rishi-mantra-shell.md)
+**Ground:** [`20260702-180812_testing-audit-first-pass.md`](../yonder/20260702-180812_testing-audit-first-pass.md) · [`../foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md`](../../foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md) · [`../active-designing/20260628-071012_slc-1-rishi-mantra-shell.md`](../../active-designing/20260628-071012_slc-1-rishi-mantra-shell.md)
 
 ---
 
