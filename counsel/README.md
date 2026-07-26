@@ -1,7 +1,7 @@
 # The Counsel Stack
 
 **Language:** EN
-**Last updated:** 2026-07-25 (`20260725.224641` the gate that caught me)  
+**Last updated:** 2026-07-26 (`20260726.020825` the cheap hour)  
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
 **Status:** Foundation  
 **Seasons roster:** [`SEASONS.md`](SEASONS.md)
@@ -22,6 +22,8 @@ Filing law: [`../ORGANIZING.md`](../ORGANIZING.md) · reorg proposal: [`20260707
 
 | Stamp | Note | Meaning |
 |-------|------|---------|
+| `20260726.022043` | [Reply — Cheap-hour STOP · missing 014013](replies/20260726-022043_re-cheap-hour-stop-missing-014013.md) | four of five filed · heading_additive body absent · Q–V hold |
+| `20260726.020825` | [The Cheap Hour](20260726-020825_the-cheap-hour.md) | breach · create · router · Glow docs · carries 224641+014013 |
 | `20260725.235531` | [Reply — Relay STOP at G · heading signature](replies/20260725-235531_re-relay-stop-g-heading-signature.md) | J–E landed · SOURCE Part One needs heading-growth seat · F in flight |
 | `20260725.224641` | [The Gate That Caught Me](20260725-224641_the-gate-that-caught-me.md) | amend D · style-only then status lap · claim_preserve token classes parked |
 | `20260725.224336` | [Reply — Relay STOP at D · claim_preserve RED](replies/20260725-224336_re-relay-stop-d-claim-preserve-red.md) | C landed · README pass claim drift · E–I hold |

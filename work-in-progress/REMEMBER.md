@@ -6,35 +6,28 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260726.014009` (EDT) · voice Quin  
+**Last refreshed:** `20260726.022123` (EDT) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2 · ring-3** · **THREATS** · **five pillars** · **accrete tiers** · **redaction stance** · **always-in-it rhythm**  
 **Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list1024 · Env512 · **stamp @u64 · Crockford** · **shape aura floor** · **Glow text floor GREEN**  
-**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand home** · **siblings seated** · **--cursor launch** · **Pond counsel 161616** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm+cold REPORT** · **Grain umbrella living** · **OQ #1 · #3 · #4 · #5 answered** · **pass ledger** · **campaign STOPPED** · **growth law** · **wasmtime E GREEN** · **parity F RED** (signed-Kumara / monocypher submodule)  
-**Git nib:** `c5598b9eda` · Grain · F RED owned · STOP at G · autoproject96/grain
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand home** · **siblings seated** · **--cursor launch** · **Pond counsel 161616** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm+cold REPORT** · **Grain umbrella living** · **OQ #1 · #3 · #4 · #5 answered** · **pass ledger** · **campaign STOPPED** · **growth law** · **wasmtime E GREEN** · **parity F RED** (signed-Kumara / monocypher)  
+**Git nib:** `2395c24305` · Grain · cheap-hour STOP · missing 014013 · autoproject96/grain
 
-**Season:** Framework · EDT · **Grain** umbrella · pier **`~/grain`** · Cursor project **`home-xy-grain`** · **finishing edge:** E landed · F RED signed-Kumara · STOP at G (heading) · H after F GREEN + G seat · Pond seven · Brix ladder name.
+**Season:** Framework · EDT · **Grain** umbrella · pier **`~/grain`** · **finishing edge:** cheap-hour four of five filed · await 014013 · then Q–S · M·G · breach T · Pond seven · Brix.
 
 ---
 
 ## Now
 
-**Pier path** — **`~/grain`** · rename **DONE** · agent **`home-xy-grain`**.
+**Pier path** — **`~/grain`** · agent **`home-xy-grain`**.
 
-**Counsel** — `223409` tool/door/rung/lane · `224641` gate-that-caught-me (amend D).
+**Cheap hour** — counsel `020825` · foundations breach + output-over-activity · `context/BREACH.md` filed. **STOP:** zip missing `20260726-014013_which-gate-belongs-to-which-lap.md` (heading_additive body). Q–V hold.
 
-**Relay status** — **J · D1 · D2 · K · E landed.** **F RED** (~106 min): `receipt_verify_wasm` GREEN · ch2 failed **signed-Kumara** — `git submodule update --init vendor/monocypher` failed. H held. **STOP at G** still open (SOURCE heading signature).
-
-**Wasmtime (E)** — holds · pin 31.0.0 · TOFU fixture · ABSENT third word · suite witness GREEN in F.
-
-**Agentic lane specimen #1** — this relay’s execution; session logs of landed steps are the first measurement (held open at G).
+**F RED** (~106 min) — wasmtime GREEN · signed-Kumara monocypher submodule init failed · H held.
 
 **Waiting gates**
-- G: seat heading-growth exception **or** amend `markdown_structure` in its own lap (fixtures)  
-- Pond seven (`170344`) — no Pond code  
-- xykj61 remotes — mirror or retire  
-- Acme audience line — Keaton’s word  
-- Brix ladder name + waymark — after H  
-- data-dignity · succession trustees · Mand ring-3 production  
+- Drop 014013 create · resume cheap-hour P  
+- Repair monocypher submodule · re-run F  
+- Pond seven · xykj61 · Acme · breach expiry · census target · Brix ladder · data-dignity · succession · Mand ring-3  
 
 **`--cursor` launch** GREEN — `rishi/bin/rishi run tools/launch-cursor.rish --cursor ./Cursor-3.13.10-x86_64.AppImage --gpu`.
 
