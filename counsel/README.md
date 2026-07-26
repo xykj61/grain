@@ -1,7 +1,7 @@
 # The Counsel Stack
 
 **Language:** EN
-**Last updated:** 2026-07-25 (`20260725.221958` SOURCE beginner front door)  
+**Last updated:** 2026-07-25 (`20260725.223409` the tool · the door · the rung · the lane)  
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
 **Status:** Foundation  
 **Seasons roster:** [`SEASONS.md`](SEASONS.md)
@@ -22,6 +22,8 @@ Filing law: [`../ORGANIZING.md`](../ORGANIZING.md) · reorg proposal: [`20260707
 
 | Stamp | Note | Meaning |
 |-------|------|---------|
+| `20260725.223919` | [Reply — Relay STOP at C · missing provided files](replies/20260725-223919_re-relay-stop-missing-provided-files.md) | A·B landed · handoff + README pass absent on disk |
+| `20260725.223409` | [The Tool, the Door, the Rung, and the Lane](20260725-223409_the-tool-the-door-the-rung-and-the-lane.md) | wasmtime · SOURCE First Day · Brix survey · agentic lane · answers 185041+221958 |
 | `20260725.221958` | [Reply — SOURCE beginner onboarding front door](replies/20260725-221958_re-source-beginner-onboarding-front-door.md) | OS ladder · AppImage · outer git · apprentice welcome · ask Claude |
 | `20260725.185041` | [Reply — Grain · Brix · autoproject96 · pier status](replies/20260725-185041_re-grain-brix-autoproject96-and-pier-status.md) | Grain umbrella · Brix+Tally · agentic · ask Claude for relay |
 | `20260725.170344` | [Reply — Fence and fencepost](replies/20260725-170344_re-the-fence-and-the-fencepost.md) · [memo](20260725-170344_the-fence-and-the-fencepost.md) | Pond hammock · nest-then-remove |
