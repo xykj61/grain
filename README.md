@@ -18,11 +18,11 @@ The heart of the template is a choice among **five OS variants**. They are one d
 
 | Variant | What it is | Status |
 |---|---|---|
+| **Quin** | An OS variant; the fifth boot image, intentionally unpaired | Confirmed fifth `20260717.162114`; unpaired settled `20260717.162620`; not yet built |
 | **Reya** | An OS variant; the diverse-redundant twin of Riyo | Name confirmed; not yet built |
 | **Riyo** | An OS variant; the diverse-redundant twin of Reya | Name confirmed; not yet built |
 | **Trey** | An OS variant; the diverse-redundant twin of Triz | Name confirmed; not yet built |
 | **Triz** | An OS variant; the diverse-redundant twin of Trey | Name confirmed; not yet built |
-| **Quin** | An OS variant; the fifth boot image, intentionally unpaired | Confirmed fifth `20260717.162114`; unpaired settled `20260717.162620`; not yet built |
 
 **Why more than one?** Safety leads every decision in this tree — that is what TAME Guidance means by "safety first." Two honest, independently-written implementations of the same intent mean a single mistake cannot take down the only copy you have, the same principle as N-version programming applied at the scale of a whole operating system. Four of the five form **two diverse-redundant pairs** — Riyo/Reya and Trey/Triz — where each pair must agree on every externally-visible behavior, checked by one shared witness suite both must pass identically, and may differ only in internal detail. **Quin** is the fifth bootable image, intentionally unpaired: five total, a settled count, no twin hunt. Recorded in [`context/specs/20260713-235600_names-awaiting-confirmation.md`](context/specs/20260713-235600_names-awaiting-confirmation.md).
 

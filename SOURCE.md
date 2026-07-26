@@ -4,7 +4,7 @@
 **Version:** `20260716.110152` (Glow warm-aura date atom — chronological, later-is-larger)
 **Style:** Radiant (see `context/RADIANT_STYLE.md`)
 **By:** Quin, in the radiant voice, with **Keaton Dunsford** as coauthor (an earlier living draft season under Riyo's name; standing voice is Quin again from `20260716.040000`)
-**Status:** Living guide — last touched `20260717.161957` (voice line synced to Quin; Step 7 Linux multi-identity note remains)
+**Status:** Living guide — last touched `20260726.023800` (Part One — The First Day; Part Two banner; Step 7 Linux multi-identity note remains)
 
 ---
 
@@ -14,9 +14,85 @@ This is the whole path, start to finish, for someone brand new to coding who wan
 
 You do not need prior experience. Each step says what to do, and why it matters, so the shape of the thing makes sense as you build it. Wherever you see a placeholder like `youruser` or `you@example.com` or an `EXAMPLE…` fingerprint, put your own value in its place.
 
+**Part One** ends with a working, jailed Cursor on your machine. **Part Two** builds the signed forge home. A warm letter for a friend starting out lives at [`manual/guides/apprentice-welcome.md`](manual/guides/apprentice-welcome.md). This pier’s standing voice is **Quin** ([`context/QUIN.md`](context/QUIN.md)).
+
 By the end you will have a repository that an AI agent can grow and **commit to, signed and verified, entirely from inside the sandbox** — nothing to sign by hand, nothing leaking out.
 
 ---
+
+## Part One — The First Day
+
+A first day that ends with Cursor open inside the enclosure — before any forge keys. Short moves here; depth lives in Part Two (Steps 5, 6, and 9).
+
+### C0 — Choose a host (if you still need one)
+
+We recommend hosts in this order:
+
+1. **NixOS 26.05** — the best enclosure and reproducible-host story for Grain.  
+2. **Ubuntu 26.04 LTS** — the path this Framework pier proves day to day.  
+3. **macOS** — supported with Seatbelt (no AppImage, no `bwrap`); more traps, still workable.
+
+Other Linux distros and **Windows** are honest **less preferred** — not shame, just fewer witnessed paths in this tree. If you are coming from Windows: back up everything you care about; you may need one or two USB flash drives; you will have a way better time on Linux. NixOS will give you the best experience.
+
+### C1 — Install git (outer terminal, before Cursor)
+
+A clone over **HTTPS needs no separate `curl`** — the distro `git` package already carries what HTTPS needs. One move per host:
+
+| Host | First-day command | Notes |
+|------|-------------------|--------|
+| **NixOS** | `nix-shell -p git` | Stated-pending on-metal witness. Durable settle-in: add `git` to `environment.systemPackages` in your configuration. |
+| **Ubuntu** | `sudo apt update && sudo apt install -y git` | **Pier-proven** on this Framework host. |
+| **macOS** | `xcode-select --install` | Stated-pending on-metal witness. Ships git; Homebrew arrives later in Part Two (key cards). |
+
+Run these in an **ordinary outer terminal** — outside Cursor, outside ai-jail.
+
+### C2 — Clone Grain
+
+```bash
+git clone https://codeberg.org/autoproject96/grain.git ~/grain
+cd ~/grain
+```
+
+Public HTTPS, no fork, no keys yet. The GitHub mirror is the alternate:
+
+`https://github.com/autoproject96/grain.git`
+
+Forks arrive naturally in Part Two, once forge accounts exist.
+
+### C3 — Place the Cursor AppImage
+
+Go to **<https://cursor.com/download>**. Prefer the **AppImage** for your platform:
+
+- **x86_64** — most PC laptops, Framework AMD/Intel, older Intel Apple machines under Linux.  
+- **ARM64** — newer Apple Silicon (and ARM Linux when that path is witnessed).  
+- **macOS** — there is no AppImage; Cursor ships as **`Cursor.app`** (see Step 6 / the macOS jail guide).
+
+```bash
+chmod +x ./Cursor-<version>-x86_64.AppImage
+# move the download into ~/grain if it landed elsewhere
+```
+
+You will want a **paid Cursor plan that includes Agent mode**. Depth on extract and enclosure: Steps 5 and 6.
+
+### C4 — Launch jailed Cursor
+
+From `~/grain`, still in the outer terminal (Ubuntu / Framework form):
+
+```bash
+rishi/bin/rishi run tools/launch-cursor.rish --cursor ./Cursor-<version>-x86_64.AppImage --gpu
+```
+
+Full launch options and the macOS twin: Step 9.
+
+### C5 — Sign in
+
+Cursor opens inside ai-jail and asks you to sign in through the browser. Use a real password manager, sign in through the browser window the jailed app opens, and keep every credential outside this tree. Fuller browser and vault hygiene: [`manual/guides/first-day-personal-ops.md`](manual/guides/first-day-personal-ops.md). Confirm the running Cursor window shows a successful session.
+
+When that lands, Part One is done. Part Two builds the signed home.
+
+---
+
+## Part Two — The Signed Home
 
 ## The Shape of the Destination
 
