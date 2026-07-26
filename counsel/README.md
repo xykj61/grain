@@ -22,6 +22,7 @@ Filing law: [`../ORGANIZING.md`](../ORGANIZING.md) · reorg proposal: [`20260707
 
 | Stamp | Note | Meaning |
 |-------|------|---------|
+| `20260726.035217` | [Reply — Pin and shelf continue · T3–T4](replies/20260726-035217_re-pin-shelf-continue-t3-t4.md) | AD manual · empty strike · 247 moved · WIP 10 · AD 135 |
 | `20260726.033904` | [Reply — Pin and shelf · AD STOP](replies/20260726-033904_re-pin-and-shelf-ad-stop.md) | AB GREEN · MAP landed · forge auth STOP · await strikes |
 | `20260726.032231` | [The Pin and the Shelf](20260726-032231_the-pin-and-the-shelf.md) | monocypher repair · MAP · forge desc · WIP pilot · breach two held |
 | `20260726.030603` | [Reply — Sixteen hot · ROUND MODE · STOP T2](replies/20260726-030603_re-sixteen-hot-round-mode-stop-t2.md) | W–Z landed · F RED pathspec · await strike list |
