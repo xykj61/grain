@@ -1,7 +1,7 @@
 # The Counsel Stack
 
 **Language:** EN
-**Last updated:** 2026-07-26 (`20260726.062108` doorway advice ask)  
+**Last updated:** 2026-07-26 (`20260726.075641` workshop charter · r7.5)  
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
 **Status:** Foundation  
 **Seasons roster:** [`SEASONS.md`](SEASONS.md)
@@ -22,6 +22,8 @@ Filing law: [`../ORGANIZING.md`](../ORGANIZING.md) · reorg proposal: [`20260707
 
 | Stamp | Note | Meaning |
 |-------|------|---------|
+| `20260726.075641` | [Round 7.5 — The Missing Charter](20260726-075641_r7-5-the-missing-charter.md) | r7.5 repair · charter fate table · C1 |
+| `20260726.064111` | [The Workshop Charter](20260726-064111_the-workshop-charter.md) | multi-round season · Glow docs first · C1 |
 | `20260726.062108` | [Reply — Handoff F · COLD RED doorway · advice ask](replies/20260726-062108_re-handoff-cold-red-doorway-ask.md) | status · Vision vs Mixed · resume COLD · ask Claude |
 | `20260726.044729` | [The Graph Is Not a Vane](20260726-044729_the-graph-is-not-a-vane.md) | Ford demotion · no P-vane · S0–S3 speed ladder · receipts in Mantra |
 | `20260726.042641` | [Parity Speed — Safety · Joy · Ford Ask](20260726-042641_parity-speed-safety-joy-ford-ask.md) | four lanes ask · answered by `044729` |
