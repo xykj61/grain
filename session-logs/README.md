@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260726.042641` — [Parity speed ask · Ford Fusion · send](20260726-042641_parity-speed-ford-ask-send.bron) — counsel ask four lanes · RTAC OPEN · F still measuring  
 - `20260726.041853` — [kg · I lane note · F still in flight](20260726-041853_kg-i-lane-note-f-still-inflight.bron) — autoproject96 lane on REMEMBER · ch1 still compiling  
 - `20260726.041232` — [kg · F in flight · U Glow pages · V pointer](20260726-041232_kg-f-inflight-u-v-glow-pages.bron) — value model + Nock seam · aurora/kelvin pointer · parity measuring  
 - `20260726.035217` — [T3–T4 breach continue · AD manual logged](20260726-035217_t3-t4-breach-continue-ad-manual.bron) — 247 moved · WIP 10 · AD 135 · forge desc by hand  
