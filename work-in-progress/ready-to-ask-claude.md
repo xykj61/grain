@@ -7,15 +7,13 @@
 
 ---
 
-## OPEN — Parity speed · safety · performance · joy · Ford graph (`20260726.042641`)
+## ANSWERED — Parity speed · graph is not a vane (`20260726.044729`)
 
-**Ask:** How may Grain speed full parity (~106 min measured; ch01 alone still multi-tens of minutes) without teaching the bench to distrust GREEN?
+**Ask:** [`../counsel/20260726-042641_parity-speed-safety-joy-ford-ask.md`](../counsel/20260726-042641_parity-speed-safety-joy-ford-ask.md)
 
-**Lanes offered:** (1) TAME guidance only under safety/performance/joy · (2) archive stale witnesses · (3) smaller selectable Rishi packs beside the full oracle · (4) Ford/Clay-like dependency graph with cached products ([Ford Fusion](https://urbit.org/blog/ford-fusion)).
+**Ruling:** [`../counsel/20260726-044729_the-graph-is-not-a-vane.md`](../counsel/20260726-044729_the-graph-is-not-a-vane.md) — no P-vane; S0→S3 ladder; receipts inside Mantra; lane (b) gated on S0 table.
 
-**Counsel:** [`../counsel/20260726-042641_parity-speed-safety-joy-ford-ask.md`](../counsel/20260726-042641_parity-speed-safety-joy-ford-ask.md)
-
-**Status:** Awaiting Claude ruling — propose-never-seat. Full parity F continues measuring; H held on suite GREEN.
+**Status:** Answered. Relay landing S0 instrument · S1a/S1b sidecar · S3 hammock; S2 after S0 table; F COLD undisturbed.
 
 ---
 
