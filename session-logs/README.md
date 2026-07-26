@@ -4,6 +4,10 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260725.222438` — [Send SOURCE beginner counsel · grain agent logs](20260725-222438_send-source-beginner-counsel.bron) — origin+codeberg · Claude still owes relay  
+- `20260725.221958` — [SOURCE beginner counsel · open-work summary](20260725-221958_source-beginner-counsel-open-summary.bron) — front-door ask · 185041 still waiting  
+- `20260725.215745` — [New Grain agent rooted at ~/grain](20260725-215745_new-grain-agent-rooted.bron) — move_agent_to_root · Claude gate still holds  
+- `20260725.212428` — [Cursor sidebar still says urbit after grain rename](20260725-212428_cursor-sidebar-urbit-label.bron) — disk grain · UI sticky home-xy-urbit  
 - `20260725.193707` — [Handoff wait Claude · rename pending](20260725-193707_handoff-wait-claude-rename-pending.bron) — still ~/urbit · new jail after mv  
 - `20260725.192107` — [Cursor handoff waiting on Claude](20260725-192107_cursor-handoff-waiting-on-claude.bron) — path claim corrected `193707`  
 - `20260725.190200` — [Send complete four remotes](20260725-190200_send-complete-four-remotes.bron) — jail SSH xykj61 · autoproject96/grain  
