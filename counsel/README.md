@@ -1,7 +1,7 @@
 # The Counsel Stack
 
 **Language:** EN
-**Last updated:** 2026-07-25 (`20260725.185041` Grain · Brix · autoproject96)  
+**Last updated:** 2026-07-25 (`20260725.221958` SOURCE beginner front door)  
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
 **Status:** Foundation  
 **Seasons roster:** [`SEASONS.md`](SEASONS.md)
@@ -22,6 +22,7 @@ Filing law: [`../ORGANIZING.md`](../ORGANIZING.md) · reorg proposal: [`20260707
 
 | Stamp | Note | Meaning |
 |-------|------|---------|
+| `20260725.221958` | [Reply — SOURCE beginner onboarding front door](replies/20260725-221958_re-source-beginner-onboarding-front-door.md) | OS ladder · AppImage · outer git · apprentice welcome · ask Claude |
 | `20260725.185041` | [Reply — Grain · Brix · autoproject96 · pier status](replies/20260725-185041_re-grain-brix-autoproject96-and-pier-status.md) | Grain umbrella · Brix+Tally · agentic · ask Claude for relay |
 | `20260725.170344` | [Reply — Fence and fencepost](replies/20260725-170344_re-the-fence-and-the-fencepost.md) · [memo](20260725-170344_the-fence-and-the-fencepost.md) | Pond hammock · nest-then-remove |
 | `20260725.161616` | [Reply — Pond in Glow · glow comment truth](replies/20260725-161616_re-pond-in-glow-and-glow-comment-truth.md) | Pool nest · comment pass · face/cast gate · Pond SLC |

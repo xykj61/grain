@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260725.222438
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Send SOURCE beginner counsel · grain agent logs
+prompt send
+think stage counsel 221958 · README rows · agent root and sidebar session logs
+think commit on main · GPG sign · push origin and codeberg autoproject96/grain
+think primary remotes only · xykj61 not configured on this pier
+think parity still paused · SOURCE not rewritten · Claude owes 185041 and 221958
+obs docs-and-counsel send · no code witness required · pier ~/grain
+file counsel/replies/20260725-221958_re-source-beginner-onboarding-front-door.md ask Claude
+file counsel/README.md index
+file session-logs/20260725-221958_source-beginner-counsel-open-summary.bron counsel sitting
+file session-logs/20260725-215745_new-grain-agent-rooted.bron agent root
+file session-logs/20260725-212428_cursor-sidebar-urbit-label.bron path UI note
+recommend check-in hand Claude 221958 with 185041
