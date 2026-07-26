@@ -6,51 +6,51 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260725.224336` (EDT) · voice Quin  
+**Last refreshed:** `20260725.235531` (EDT) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2 · ring-3** · **THREATS** · **five pillars** · **accrete tiers** · **redaction stance** · **always-in-it rhythm**  
 **Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list1024 · Env512 · **stamp @u64 · Crockford** · **shape aura floor** · **Glow text floor GREEN**  
-**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand home** · **siblings seated** · **--cursor launch** · **Pond counsel 161616** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm+cold REPORT** · **Grain umbrella living** · **OQ #1 · #3 · #4 · #5 answered** · **pass ledger** · **campaign STOPPED** · **growth law** · **parity PARTIAL** (wasmtime seat pending relay E–F)  
-**Git nib:** `e690d4ed15` · Grain · counsel 223409 · relay STOP at D · autoproject96/grain
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand home** · **siblings seated** · **--cursor launch** · **Pond counsel 161616** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm+cold REPORT** · **Grain umbrella living** · **OQ #1 · #3 · #4 · #5 answered** · **pass ledger** · **campaign STOPPED** · **growth law** · **wasmtime seat E landed** · **parity F in flight**  
+**Git nib:** `25ab6c0ab7` · Grain · relay resume-D · STOP at G · autoproject96/grain
 
-**Season:** Framework · EDT · **Grain** umbrella · pier **`~/grain`** · Cursor project **`home-xy-grain`** · **finishing edge:** relay A–C landed · STOP at D (claim_preserve RED) · amend pass or seat exception · then E–G · F timed · H after F GREEN · Pond seven · Brix ladder name.
+**Season:** Framework · EDT · **Grain** umbrella · pier **`~/grain`** · Cursor project **`home-xy-grain`** · **finishing edge:** J·D1·D2·K·E landed · F running · STOP at G (heading signature) · H after F GREEN + G seat · Pond seven · Brix ladder name.
 
 ---
 
 ## Now
 
-**Pier path** — **`~/grain`** · rename **DONE** · new agent rooted on **`home-xy-grain`**. (`~/urbit` absent.)
+**Pier path** — **`~/grain`** · rename **DONE** · agent **`home-xy-grain`**.
 
-**Counsel `20260725.223409`** received — answers `185041` + `221958`. Memo filed at [`../counsel/20260725-223409_the-tool-the-door-the-rung-and-the-lane.md`](../counsel/20260725-223409_the-tool-the-door-the-rung-and-the-lane.md).
+**Counsel** — `223409` tool/door/rung/lane · `224641` gate-that-caught-me (amend D).
 
-**Relay status** — **A · B · C landed.** **STOP at D:** README Radiant pass applied then **claim_preserve RED** (Mand/Seva/Acme/NUM:5 · modality must·hold). `markdown_structure` was GREEN. README restored to HEAD. Pass file kept at root for amendment. E–I hold.
+**Relay status** — **J · D1 · D2 · K · E landed.** **F** full parity **in flight** (Keaton-timed). **STOP at G:** `markdown_structure` RED — `FAIL heading levels changed: SOURCE.md` when Part One adds headings; SOURCE restored to HEAD; guides drafted. H·I hold until G seating word.
 
-**Handoff (C):** [`../bron-resins/20260725-224249_quin-handoff_fresh-session-bootstrap.md`](../bron-resins/20260725-224249_quin-handoff_fresh-session-bootstrap.md)
+**Wasmtime (E)** — `tools/bootstrap_wasmtime.sh` · pin 31.0.0 · TOFU fixture `tools/fixtures/wasmtime_31_0_0.sha256` · preflight · ABSENT third word · single `receipt_verify_wasm` GREEN.
 
-**Waiting gates that remain**
-- Amend `grain-readme_radiant-pass.md` or seat claim-drift exception · then resume D  
-- Pond seven fencepost decisions (`170344`) — no Pond code before them  
-- xykj61 remotes — mirror or retire (custody word)  
-- Brix ladder name + waymark draw — after H returns  
-- data-dignity options for Linengrow — counsel drafts unasked on a word  
-- succession trustee names · Mand ring-3 production reach  
+**Agentic lane specimen #1** — this relay’s execution; session logs of landed steps are the first measurement (held open at G).
 
-**`--cursor` launch** GREEN — from pier root: `rishi/bin/rishi run tools/launch-cursor.rish --cursor ./Cursor-3.13.10-x86_64.AppImage --gpu`.
+**Waiting gates**
+- G: seat heading-growth exception **or** amend `markdown_structure` in its own lap (fixtures)  
+- Pond seven (`170344`) — no Pond code  
+- xykj61 remotes — mirror or retire  
+- Acme audience line — Keaton’s word  
+- Brix ladder name + waymark — after H  
+- data-dignity · succession trustees · Mand ring-3 production  
+
+**`--cursor` launch** GREEN — `rishi/bin/rishi run tools/launch-cursor.rish --cursor ./Cursor-3.13.10-x86_64.AppImage --gpu`.
 
 **Read:**
 
 ```bash
-less counsel/20260725-223409_the-tool-the-door-the-rung-and-the-lane.md
-less counsel/replies/20260725-224336_re-relay-stop-d-claim-preserve-red.md
+less counsel/20260725-224641_the-gate-that-caught-me.md
+less counsel/replies/20260725-235531_re-relay-stop-g-heading-signature.md
 ```
 
 **Witness block:**
 
 ```bash
 rishi/bin/rishi run tools/mand_ring1_witness.rish
-rishi/bin/rishi run tools/mand_ring2_witness.rish
-rishi/bin/rishi run tools/mand_ring3_witness.rish
-rishi/bin/rishi run tools/rishi_fold_witness.rish
-rishi/bin/rishi run tools/glow_text_floor_witness.rish
+rishi/bin/rishi run tools/receipt_verify_wasm.rish
+sh tools/bootstrap_wasmtime.sh
 ```
 
 ---
@@ -59,18 +59,13 @@ rishi/bin/rishi run tools/glow_text_floor_witness.rish
 
 | Door | Kind |
 |------|------|
-| **Relay D–I** | **held** — claim_preserve RED on Radiant pass; amend or seat exception |
-| Radiant pass | **on-touch only** — ledger records coverage; no batch waves |
+| **Relay G–I** | **held** — heading-signature seat for SOURCE Part One |
+| **Parity F** | **in flight** — then H survey if GREEN |
+| Radiant pass | **on-touch only** |
 | **Duty-8 shell migration** | harvest verbs seated · retire `.sh` bodies next |
-| **Pool markdown reds** | naming-mapping spec L22 · external-research README L133 |
-| Cold stranger-lap report | **REPORT 29s** · OQ #4 both paths |
-| Data dignity · succession | OQ #6 open · #2 half-parked |
-| Backup / hold / aggregate erasure | OQ #7–#9 open |
-| Full parity | **PARTIAL / paused** · wasmtime rulings in 223409 · seat E then F |
-| Forge push keys | pier `.ssh/id_ed25519_jail_{github,codeberg}` as xykj61 |
-| vere/old untrack | **siblings seated** · depth-1 lightened |
-| On-touch code ratchets | `.rye` · `.rish` · `.glow` · `.sh` when file open |
-| **Agentic lane specimen #1** | this relay’s own execution — session logs of A–H are the first measurement (**held** at D) |
+| Full parity | wasmtime E seated · F measuring |
+| **Agentic lane specimen #1** | session logs of this relay — first measurement |
+| Pond seven · xykj61 · Acme · Brix name · data-dignity · succession · Mand ring-3 | awaiting Keaton |
 
 ---
 

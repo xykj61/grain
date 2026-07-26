@@ -6,6 +6,14 @@
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/parity.rish
+#
+# Host-tool preflight (counsel 20260725.223409): wasmtime ABSENT surfaces in
+# seconds with the restore line. Suite summary becomes PARTIAL while any ABSENT
+# stands — never suite GREEN, never a false RED for a missing host tool.
+
+let preflight = run ["sh" "tools/fixtures/wasmtime_preflight.sh"]
+assert preflight.ok else "wasmtime preflight script failed"
+if (preflight.out != "") then say preflight.out
 
 say "witness suite: chapter 1/2…"
 let ch1 = run ["rishi/bin/rishi" "run" "tools/parity_ch01.rish"]
@@ -50,4 +58,7 @@ let digraph = run ["rishi/bin/rishi" "run" "tools/glow_digraph_twin_witness.rish
 assert digraph.ok else "glow digraph twin witness failed"
 say "GREEN: Glow digraph-table twin passed."
 
+# Third word: any ABSENT withholds suite GREEN (counsel 20260725.223409).
+if (ch2.out contains "ABSENT: wasmtime") then say "PARTIAL — chapters green · 0 red · 1 absent(wasmtime)"
+if (ch2.out contains "ABSENT: wasmtime") then exit 0
 say "GREEN: full witness suite — chapters · jam/cue · glow REPL · waymark · list1024 · digraph twin."

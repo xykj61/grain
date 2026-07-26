@@ -7,6 +7,10 @@
 #
 # Requires: vendor/zig-toolchain (or RYE_ZIG), rye/bin/rye, and wasmtime —
 # PATH first, else tools/.cache/wasmtime/wasmtime (gitignored pin; bench: 31.0.0).
+#
+# Third word (counsel 20260725.223409): ABSENT when wasmtime is missing — exit 0
+# with the restore line; never a false RED. True RED only when wasmtime is present
+# and build/invoke fails. Suite summary becomes PARTIAL while any ABSENT stands.
 
 let zig = "vendor/zig-toolchain/zig"
 let wasm = "linengrow/bin/receipt-verify.wasm"
@@ -16,7 +20,9 @@ assert zig_ver.ok else "pinned ziglang toolchain missing at vendor/zig-toolchain
 say "receipt-verify wasm: pinned ziglang ${zig_ver.out}"
 
 let resolve_wt = run ["sh" "-c" "if command -v wasmtime >/dev/null; then command -v wasmtime; elif test -x tools/.cache/wasmtime/wasmtime; then printf '%s' tools/.cache/wasmtime/wasmtime; else exit 1; fi"]
-assert resolve_wt.ok else "wasmtime missing — install wasmtime-cli on PATH or place 31.0.0 at tools/.cache/wasmtime/wasmtime"
+if (resolve_wt.ok == false) then say "ABSENT: wasmtime — restore: sh tools/bootstrap_wasmtime.sh"
+if (resolve_wt.ok == false) then exit 0
+
 let wasmtime = resolve_wt.out
 let wt_ver = run ["sh" "-c" "${wasmtime} --version"]
 assert wt_ver.ok else "wasmtime --version failed"
