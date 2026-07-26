@@ -35,11 +35,11 @@ You are **Quin**. Read `context/QUIN.md` · `context/RADIANT_STYLE.md` · `conte
 
 ### Canon just seated (read these)
 
-1. [`../active-designing/20260719-204001_glow-rune-pronunciation-alphabet-riscv-and-generators.md`](../active-designing/20260719-204001_glow-rune-pronunciation-alphabet-riscv-and-generators.md) — alphabet YES; fixture desks today; generators horizon; roadmap **G0–G5**  
-2. [`../expanding-prompts/20260719-204001_glow-fixture-desks-and-parameterized-generators.md`](../expanding-prompts/20260719-204001_glow-fixture-desks-and-parameterized-generators.md) — Acme wording  
-3. [`../active-designing/20260719-204650_hoon-core-polymorphism-tame-and-port-order.md`](../active-designing/20260719-204650_hoon-core-polymorphism-tame-and-port-order.md) — **dry cores YES · wet/gold HOLD · port order L→R→G**  
-4. [`../glow/README.md`](../glow/README.md) · [`../docs/STOA.md`](../docs/STOA.md) · [`../work-in-progress/REMEMBER.md`](REMEMBER.md)  
-5. [`../context/LEXICON.md`](../context/LEXICON.md) — **Fixture desk** · **Generator** · **Sample** · **Glow gate** · **Rune alphabet** (bare **Gate** = itinerary)
+1. [`../active-designing/20260719-204001_glow-rune-pronunciation-alphabet-riscv-and-generators.md`](../../active-designing/20260719-204001_glow-rune-pronunciation-alphabet-riscv-and-generators.md) — alphabet YES; fixture desks today; generators horizon; roadmap **G0–G5**  
+2. [`../expanding-prompts/20260719-204001_glow-fixture-desks-and-parameterized-generators.md`](../../expanding-prompts/20260719-204001_glow-fixture-desks-and-parameterized-generators.md) — Acme wording  
+3. [`../active-designing/20260719-204650_hoon-core-polymorphism-tame-and-port-order.md`](../../active-designing/20260719-204650_hoon-core-polymorphism-tame-and-port-order.md) — **dry cores YES · wet/gold HOLD · port order L→R→G**  
+4. [`../glow/README.md`](../../glow/README.md) · [`../docs/STOA.md`](../../docs/STOA.md) · [`../work-in-progress/REMEMBER.md`](../REMEMBER.md)  
+5. [`../context/LEXICON.md`](../../context/LEXICON.md) — **Fixture desk** · **Generator** · **Sample** · **Glow gate** · **Rune alphabet** (bare **Gate** = itinerary)
 
 ---
 
@@ -87,7 +87,7 @@ After A: G2 (TAME alphabet pin grow) is natural kg; G3/G4 when he wants code sea
 - **Port order:** Phase **L** language (now) → Phase **R** keep vanes in **Rye + TAME** (Pool etc. already green) → Phase **G** Glow-rewrite a module only when fixture desks cover every head.  
 - First Glow userspace target later: one thin Pool agent arm with a Rye twin — never dump `old/` Hoon line-by-line.
 
-Full brief: [`../active-designing/20260719-204650_hoon-core-polymorphism-tame-and-port-order.md`](../active-designing/20260719-204650_hoon-core-polymorphism-tame-and-port-order.md).
+Full brief: [`../active-designing/20260719-204650_hoon-core-polymorphism-tame-and-port-order.md`](../../active-designing/20260719-204650_hoon-core-polymorphism-tame-and-port-order.md).
 
 ---
 

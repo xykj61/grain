@@ -7,7 +7,7 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Lens:** TAME — safety first, performance second, the joy of the craft third
 **Status:** Living — held for Kaeden's expansion and further insight
-**Companions:** [`../active-designing/20260703-013412_metalsmoke.md`](../active-designing/20260703-013412_metalsmoke.md) · [`../external-research/20260703-013412_writing-recursion-prompts.md`](../external-research/20260703-013412_writing-recursion-prompts.md) · [`../external-research/20260703-013412_home-server-purchase-guide.md`](../external-research/20260703-013412_home-server-purchase-guide.md) · [`../external-research/20260703-015512_bandwidth-and-moderation.md`](../external-research/20260703-015512_bandwidth-and-moderation.md)
+**Companions:** [`../active-designing/20260703-013412_metalsmoke.md`](../../active-designing/20260703-013412_metalsmoke.md) · [`../external-research/20260703-013412_writing-recursion-prompts.md`](../../external-research/20260703-013412_writing-recursion-prompts.md) · [`../external-research/20260703-013412_home-server-purchase-guide.md`](../../external-research/20260703-013412_home-server-purchase-guide.md) · [`../external-research/20260703-015512_bandwidth-and-moderation.md`](../../external-research/20260703-015512_bandwidth-and-moderation.md)
 
 *Written together by Kaeden and Claude (Fable 5), in Rio 3's Radiant voice.*
 

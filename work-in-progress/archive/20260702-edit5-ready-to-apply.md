@@ -3,7 +3,7 @@
 **Stamp:** `20260702.035920` · **Ruled:** *for* `20260703.032812` · **Parity:** **143**
 **Voice:** Rio 3
 **Counsel:** argues *for* the bound
-**Current tree:** **1** spec in flight — [`context/specs/20260701-221512_amber-functional-spec.md`](../context/specs/20260701-221512_amber-functional-spec.md) — already within the bound
+**Current tree:** **1** spec in flight — [`context/specs/20260701-221512_amber-functional-spec.md`](../../context/specs/20260701-221512_amber-functional-spec.md) — already within the bound
 
 ---
 
@@ -18,7 +18,7 @@ At most **one** functional spec in designed-not-built flight until that spec's f
 Add after the deep-archive horizon line:
 
 ```markdown
-- [x] **Designed-not-built spec bound (Edit 5)** — at most one functional spec in flight until its first lap runs green; witness [`tools/designed_not_built_witness.rish`](../tools/designed_not_built_witness.rish) wired in parity.
+- [x] **Designed-not-built spec bound (Edit 5)** — at most one functional spec in flight until its first lap runs green; witness [`tools/designed_not_built_witness.rish`](../../tools/designed_not_built_witness.rish) wired in parity.
 ```
 
 Remove or strike the Open Questions line for Edit 5.

@@ -8,7 +8,7 @@
 **Voice:** Quin  
 **Status:** Design — implementable plan; checkable once the witnesses below are GREEN  
 **Register:** Mixed (Two Rooms) — file paths and parse seam are **design** until the witnesses bind them  
-**Grounds in:** [`20260719-204001_glow-rune-pronunciation-alphabet-riscv-and-generators.md`](20260719-204001_glow-rune-pronunciation-alphabet-riscv-and-generators.md) **G4** · STOA83–87 tidy tokens + named-cast · [`../work-in-progress/20260719-204650_cursor-ios-handoff-glow-language.md`](../work-in-progress/20260719-204650_cursor-ios-handoff-glow-language.md) pitfalls · [`../glow/tokens.rye`](../glow/tokens.rye) · [`../glow/lower_named_cast.rye`](../glow/lower_named_cast.rye) · [`../glow/glow_run.rye`](../glow/glow_run.rye)
+**Grounds in:** [`20260719-204001_glow-rune-pronunciation-alphabet-riscv-and-generators.md`](20260719-204001_glow-rune-pronunciation-alphabet-riscv-and-generators.md) **G4** · STOA83–87 tidy tokens + named-cast · [`../work-in-progress/20260719-204650_cursor-ios-handoff-glow-language.md`](../work-in-progress/archive/20260719-204650_cursor-ios-handoff-glow-language.md) pitfalls · [`../glow/tokens.rye`](../glow/tokens.rye) · [`../glow/lower_named_cast.rye`](../glow/lower_named_cast.rye) · [`../glow/glow_run.rye`](../glow/glow_run.rye)
 
 **dated_guard:** Do **not** edit the dated `20260719-204001_*` files. Seat G4 progress in living docs and in *this* new dated brief.
 

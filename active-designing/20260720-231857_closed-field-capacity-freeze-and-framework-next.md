@@ -8,7 +8,7 @@
 **Voice:** Quin  
 **Status:** Checkable — capacity freeze seats living pins; Framework next stays check-in until host resumes  
 **Register:** Mixed — capacity law is **checkable** once pins match; Framework live-sent is **intent** until outer-terminal eyes  
-**Grounds in:** [`../external-research/20260715-170000_glow-mold-nesting-bounded.md`](../external-research/20260715-170000_glow-mold-nesting-bounded.md) · [`20260719-204650_hoon-core-polymorphism-tame-and-port-order.md`](20260719-204650_hoon-core-polymorphism-tame-and-port-order.md) · handoff [`../work-in-progress/20260719-204650_cursor-ios-handoff-glow-language.md`](../work-in-progress/20260719-204650_cursor-ios-handoff-glow-language.md) · ask [`../session-logs/20260720-231633_how-far-field-ladder.bron`](../session-logs/20260720-231633_how-far-field-ladder.bron) · SETU [`../docs/SETU.md`](../docs/SETU.md)
+**Grounds in:** [`../external-research/20260715-170000_glow-mold-nesting-bounded.md`](../external-research/20260715-170000_glow-mold-nesting-bounded.md) · [`20260719-204650_hoon-core-polymorphism-tame-and-port-order.md`](20260719-204650_hoon-core-polymorphism-tame-and-port-order.md) · handoff [`../work-in-progress/20260719-204650_cursor-ios-handoff-glow-language.md`](../work-in-progress/archive/20260719-204650_cursor-ios-handoff-glow-language.md) · ask [`../session-logs/20260720-231633_how-far-field-ladder.bron`](../session-logs/20260720-231633_how-far-field-ladder.bron) · SETU [`../docs/SETU.md`](../docs/SETU.md)
 
 **dated_guard:** Do **not** rewrite dated STOA140–147 GREEN briefs. STOA148’s map brief keeps its stamp; this pin **withdraws** it as lean A.
 

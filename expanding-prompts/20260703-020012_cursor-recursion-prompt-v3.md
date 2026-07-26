@@ -2,7 +2,7 @@
 
 **Superseded:** [`20260704-030300_cursor-recursion-prompt-v4.md`](20260704-030300_cursor-recursion-prompt-v4.md) — itinerary · stops · journey's pause. Body frozen for accretion; do not paste for new sittings.
 
-*The operating loop for the next batch of Cursor rounds: land the three-sitting bundle in eight named commits, verify the whole claim on the host's own metal, then hold an empty plate where every pre-staged item opens only on Kaeden's word. Supersedes v2 ([`../work-in-progress/20260702-222353_cursor-recursion-prompt-v2.md`](../work-in-progress/20260702-222353_cursor-recursion-prompt-v2.md)) once ROUND ZERO lands. Craft ground: [`../external-research/20260703-013412_writing-recursion-prompts.md`](../external-research/20260703-013412_writing-recursion-prompts.md).*
+*The operating loop for the next batch of Cursor rounds: land the three-sitting bundle in eight named commits, verify the whole claim on the host's own metal, then hold an empty plate where every pre-staged item opens only on Kaeden's word. Supersedes v2 ([`../work-in-progress/20260702-222353_cursor-recursion-prompt-v2.md`](../work-in-progress/archive/20260702-222353_cursor-recursion-prompt-v2.md)) once ROUND ZERO lands. Craft ground: [`../external-research/20260703-013412_writing-recursion-prompts.md`](../external-research/20260703-013412_writing-recursion-prompts.md).*
 
 **Stamp:** `20260703.020012`
 **Language:** EN

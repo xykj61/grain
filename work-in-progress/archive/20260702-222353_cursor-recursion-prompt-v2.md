@@ -1,6 +1,6 @@
 # Cursor Recursion Prompt — v2 (post–ROUND ZERO)
 
-**Superseded:** [`../expanding-prompts/20260704-030300_cursor-recursion-prompt-v4.md`](../expanding-prompts/20260704-030300_cursor-recursion-prompt-v4.md) — itinerary · stops · journey's pause. Body frozen for accretion; do not paste for new sittings.
+**Superseded:** [`../expanding-prompts/20260704-030300_cursor-recursion-prompt-v4.md`](../../expanding-prompts/20260704-030300_cursor-recursion-prompt-v4.md) — itinerary · stops · journey's pause. Body frozen for accretion; do not paste for new sittings.
 
 **Stamp:** `20260702.222353`
 **Language:** EN
@@ -17,9 +17,9 @@ Paste the **Operating loop** block below to start or continue an autonomous sitt
 
 When Kaeden asks *"what do you recommend?"* without opening a menu item — answer in Rio 3 Radiant style, **HOLD**, and end with **Questions for Kaeden and Claude**. Do not forage.
 
-Lexicon: [`context/LEXICON.md`](../context/LEXICON.md) → **Gate** · **Ungated diet** · **Empty plate**.
+Lexicon: [`context/LEXICON.md`](../../context/LEXICON.md) → **Gate** · **Ungated diet** · **Empty plate**.
 
-Checkpoint: [`ready-to-ask-claude.md`](ready-to-ask-claude.md).
+Checkpoint: [`ready-to-ask-claude.md`](../ready-to-ask-claude.md).
 
 ---
 
