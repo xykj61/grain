@@ -39,7 +39,7 @@ Logic before carriage throughout. Each study lands as understanding + a short de
 - Comlink’s sealed datagram keeps carrying the fold between our own ships
 - Granary’s published-set gate is the in-tree ancestor of the pass check
 
-**Door 3** — tip **431** `063213`: in-process pass admits published read + signed submit; refuses unpublished digest / lying signature / lying pass — [`20260712-063213_door3-consumer-edge-pass-hammock.md`](20260712-063213_door3-consumer-edge-pass-hammock.md).
+**Door 3** — tip **431** `063213`: in-process pass admits published read + signed submit; refuses unpublished digest / lying signature / lying pass — [`20260712-063213_door3-consumer-edge-pass-hammock.md`](yonder/20260712-063213_door3-consumer-edge-pass-hammock.md).
 
 ## Parked rulings (Kaeden’s word)
 

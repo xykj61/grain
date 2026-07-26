@@ -8,7 +8,7 @@
 **Voice:** Quin  
 **Status:** Checkable — bound by `tools/glow_nest_type_witness.rish` · bartis/barket desks  
 **Register:** Checkable (Two Rooms) — shape alias accept · PairMold lower · capacity freeze held  
-**Grounds in:** [`20260720-235652_stoa149-count-shape-alias.md`](20260720-235652_stoa149-count-shape-alias.md) · [`20260720-234340_stoa148-amount-shape-alias.md`](20260720-234340_stoa148-amount-shape-alias.md) · [`20260720-223226_glow-os-shape-not-mold.md`](20260720-223226_glow-os-shape-not-mold.md)
+**Grounds in:** [`20260720-235652_stoa149-count-shape-alias.md`](yonder/20260720-235652_stoa149-count-shape-alias.md) · [`20260720-234340_stoa148-amount-shape-alias.md`](20260720-234340_stoa148-amount-shape-alias.md) · [`20260720-223226_glow-os-shape-not-mold.md`](20260720-223226_glow-os-shape-not-mold.md)
 
 **dated_guard:** Do **not** rewrite dated mold briefs. Seat this lap in *this* brief and living pins. Hoon desk suffixes (`pair-mold`) stay the study word.
 

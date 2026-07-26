@@ -97,7 +97,7 @@ If it matches character for character, the chain of trust from the SoC's own fac
 
 - `grapheneos.org/install/web` — the official page every step above transcribes; check it directly if anything here goes stale.
 - [`../../context/specs/two-dev-environments-and-mobile-emulation.md`](../../context/specs/two-dev-environments-and-mobile-emulation.md) — the HAWM ladder this device unblocks (HAWM3), and the two emulated rungs (HAWM0, HAWM1) already proven before this device arrived.
-- [`../../active-designing/20260715-194500_the-slc-product-glow-on-capable-hardware.md`](../../active-designing/20260715-194500_the-slc-product-glow-on-capable-hardware.md) — the go-to-market brief naming where this device sits in the product's own tier plan.
+- [`../../active-designing/20260715-194500_the-slc-product-glow-on-capable-hardware.md`](../../active-designing/yonder/20260715-194500_the-slc-product-glow-on-capable-hardware.md) — the go-to-market brief naming where this device sits in the product's own tier plan.
 
 ---
 

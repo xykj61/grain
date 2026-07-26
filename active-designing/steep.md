@@ -7,7 +7,7 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`) · **Lens:** TAME · SLC · Gall's Law · Civic
 **Status:** Living named horizon — no code lap yet; visionary room until a first-lap hammock opens
 **Ground:** Kaeden word `210433` (Rest-until for status; Steep reserved for this app) · Comlink · Mantra · Granary · Pond customs · Brix/Bron · published-set gate counsel `060112`
-**Frozen dated original:** [`20260710-210433_steep-peer-file-sharing-name.md`](20260710-210433_steep-peer-file-sharing-name.md)
+**Frozen dated original:** [`20260710-210433_steep-peer-file-sharing-name.md`](yonder/20260710-210433_steep-peer-file-sharing-name.md)
 
 *Written by Kaeden and Rio 3.*
 
