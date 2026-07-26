@@ -1,0 +1,15 @@
+# Glow design pages — hot shelf
+
+**Language:** EN  
+**Status:** Living — Design register · pages graduate into [`docs/`](../../../docs/) when witnesses land  
+**Voice:** Quin  
+**Ground:** counsel [`../../../counsel/20260726-020825_the-cheap-hour.md`](../../../counsel/20260726-020825_the-cheap-hour.md) · rooms settled after breach T3–T4
+
+This room holds Glow prose that is **designed and honest**, not yet proven-shelf compressors. `docs/` stays the witness-backed shelf. A page moves up when its claims earn metal.
+
+| Page | Job |
+|------|-----|
+| [`glow-value-model.md`](glow-value-model.md) | Grain/Glow values — clean-room · RISC-V lowering path |
+| [`nock-interop-seam.md`](nock-interop-seam.md) | Where atoms and cells appear — boundary only |
+
+Working pin: [`../../../glow/README.md`](../../../glow/README.md). Law: [`../../../context/TAME_GUIDANCE.md`](../../../context/TAME_GUIDANCE.md) root rule 5.

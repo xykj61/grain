@@ -28,7 +28,7 @@ Everything in [`context/`](context/README.md) is a promise we keep on purpose. [
 
 ## The Language and the Machines
 
-[`glow/`](glow/README.md) is **Glow** — Hoon's runes over bounded, asserted semantics, lowering to ordinary Rye. [`nock/`](nock/README.md) is the interop backend beside it. The module ring is the machinery, each home with its own witnesses: [`rishi/`](rishi/) the shell · [`mantra/`](mantra/) versions · [`comlink/`](comlink/) wires · [`tally/`](tally/) bounds · [`caravan/`](caravan/) supervision · [`aurora/`](aurora/) the boot · [`pond/`](pond/) the enclosure · [`mand/`](mand/) authority · [`brushstroke/`](brushstroke/) drawing · [`linengrow/`](linengrow/) the giving edge · and friends. You never need all of them at once; each README says what its room proves.
+[`glow/`](glow/README.md) is **Glow** — Hoon's runes over bounded, asserted semantics, lowering to ordinary Rye. Design pages for the value model and the Nock seam live under [`active-designing/docs/glow/`](active-designing/docs/glow/). [`nock/`](nock/README.md) is the interop backend beside it. The module ring is the machinery, each home with its own witnesses: [`rishi/`](rishi/) the shell · [`mantra/`](mantra/) versions · [`comlink/`](comlink/) wires · [`tally/`](tally/) bounds · [`caravan/`](caravan/) supervision · [`aurora/`](aurora/) the boot · [`pond/`](pond/) the enclosure · [`mand/`](mand/) authority · [`brushstroke/`](brushstroke/) drawing · [`linengrow/`](linengrow/) the giving edge · and friends. You never need all of them at once; each README says what its room proves.
 
 ## The Workrooms (Mind the Sawdust)
 
