@@ -6,11 +6,11 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260726.115026` (EDT) · voice Quin  
+**Last refreshed:** `20260726.122450` (EDT) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2 · ring-3** · **THREATS** · **five pillars** · **accrete tiers** · **redaction stance** · **always-in-it rhythm**  
 **Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list1024 · Env512 · **stamp @u64 · Crockford** · **shape aura floor** · **Glow text floor GREEN**  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand home** · **siblings seated** · **--cursor launch** · **Pond counsel 161616** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm+cold REPORT** · **Grain umbrella living** · **OQ #1 · #3 · #4 · #5 answered** · **pass ledger** · **campaign STOPPED** · **growth law** · **wasmtime E GREEN** · **monocypher 4.0.3 GREEN** · **MAP.md** · **breach T3–T4** · **U·V·I** · **C-Ladder C1·C2 landed** · **C3–C5 await homes** · **advice ask open**  
-**Git nib:** *(pin after this send)* · Grain · C1 C2 sent · C3–C5 parks · autoproject96/grain
+**Git nib:** *(pin after this send)* · Grain · C3–C5 resume skipped · homes blank · autoproject96/grain
 
 **Season:** Framework · EDT · **Grain** umbrella · pier **`~/grain`** · **finishing edge:** C3–C5 home words · doorway Status · instrumented COLD cost table · H Brix survey · breach two next season.
 
