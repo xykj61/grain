@@ -408,7 +408,7 @@ Broad forward-facing sweep: lap/toll/itinerary vocabulary across active-designin
 | **A5** | **Claim register** | Review claim quartet; propose witness hooks (if any) for checkable-room discipline in parity or width-check |
 | **A6** | **Amphora lap one** | Crossing manifest: witness design for Tilak marks on seed [`work-in-progress/20260703-202312_crossing_manifest_seed.rye`](20260703-202312_crossing_manifest_seed.rye) per [`external-research/20260703-201612_the-amphora-and-the-crossing.md`](../external-research/20260703-201612_the-amphora-and-the-crossing.md) |
 | **A7** | **Fold reading map** | Lap 3 of canonical refinement — where does *fold canon* live (plural docs); interface-as-fold currency |
-| **A8** | **ROADMAP / TASKS / decoder** | Granular refresh plan per [`20260703-041850_claude-strategy-roadmap-counsel.md`](20260703-041850_claude-strategy-roadmap-counsel.md) — structure and deltas only |
+| **A8** | **ROADMAP / TASKS / decoder** | Granular refresh plan per [`20260703-041850_claude-strategy-roadmap-counsel.md`](archive/20260703-041850_claude-strategy-roadmap-counsel.md) — structure and deltas only |
 
 ### Read order for zip 41 intake
 
@@ -561,7 +561,7 @@ Prior tip: `999359e`
 
 ## Claude — strategy and roadmap counsel (`20260703.041850`)
 
-**Brief:** [`20260703-041850_claude-strategy-roadmap-counsel.md`](20260703-041850_claude-strategy-roadmap-counsel.md)
+**Brief:** [`20260703-041850_claude-strategy-roadmap-counsel.md`](archive/20260703-041850_claude-strategy-roadmap-counsel.md)
 
 **Medium-long strategy (seven questions):** cascade order after Amber **144** · Linengrow vs Rye next product lap · MALA M0 / WOV timing · doc lane vs metal lane after Edit 5 · Open Asks first lap when paste lands · hardware procurement season · ratifications bundle order.
 

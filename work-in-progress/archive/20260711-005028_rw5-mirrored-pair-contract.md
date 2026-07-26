@@ -7,7 +7,7 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
 **Lens:** TAME · happy zone · mirrored pair  
 **Status:** Landed — collaboration tip **420**, contract tip **421**  
-**Ground:** second pass [`20260711-001225_testing-audit-second-pass-inference.md`](20260711-001225_testing-audit-second-pass-inference.md) · happy zone [`../foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md`](../foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md) · RW-2 pattern [`20260702-205630_rw2-mirrored-pair-contract.md`](20260702-205630_rw2-mirrored-pair-contract.md)
+**Ground:** second pass [`20260711-001225_testing-audit-second-pass-inference.md`](../yonder/20260711-001225_testing-audit-second-pass-inference.md) · happy zone [`../foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md`](../../foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md) · RW-2 pattern [`20260702-205630_rw2-mirrored-pair-contract.md`](20260702-205630_rw2-mirrored-pair-contract.md)
 
 ---
 

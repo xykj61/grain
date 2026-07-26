@@ -46,7 +46,7 @@ The warm-aura date atom is TAME-guided in the same sense every value in this tre
 
 ## How the Archiving/Reviving Sweep Aligns to It
 
-The archive process was already settled ([`../../work-in-progress/20260713-215800_markdown-archive-inventory-and-migration-plan.md`](../../work-in-progress/20260713-215800_markdown-archive-inventory-and-migration-plan.md), concluded `20260714.000100`): **no bulk flatten** — each directory archives in its own established way. This spec does not reopen that. It settles only the *naming* the sweep aligns to, so that wherever a directory does fold a closed day, it folds into a `YYYYMMDD` folder — the session-logs pattern — and nowhere invents a different dated-folder shape.
+The archive process was already settled ([`../../work-in-progress/20260713-215800_markdown-archive-inventory-and-migration-plan.md`](../../work-in-progress/yonder/20260713-215800_markdown-archive-inventory-and-migration-plan.md), concluded `20260714.000100`): **no bulk flatten** — each directory archives in its own established way. This spec does not reopen that. It settles only the *naming* the sweep aligns to, so that wherever a directory does fold a closed day, it folds into a `YYYYMMDD` folder — the session-logs pattern — and nowhere invents a different dated-folder shape.
 
 The sweep, then, is a **naming-alignment** pass, not a file-move pass:
 

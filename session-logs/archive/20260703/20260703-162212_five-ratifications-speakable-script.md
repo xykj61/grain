@@ -34,7 +34,7 @@ Archive → versioning → standing audit → Maitreya → demand map
 
 > Authored surfaces carry chronological stamps only; semver stays a named backend seam.
 
-**Ground:** [`work-in-progress/20260702-184312_versioning-audit.md`](../work-in-progress/20260702-184312_versioning-audit.md) · chrono sweep may wire after.
+**Ground:** [`work-in-progress/20260702-184312_versioning-audit.md`](../../../work-in-progress/archive/20260702-184312_versioning-audit.md) · chrono sweep may wire after.
 
 ---
 

@@ -50,7 +50,7 @@ Today’s glass path (`glow_native_surface.rye`) only picks Skate **scale** 2–
 | Source | What it says about resolution |
 |--------|-------------------------------|
 | [`../foundations/20260629-020012_mantrapod-venture-pitch.md`](../foundations/20260629-020012_mantrapod-venture-pitch.md) | Reflective e-ink, no radios, single wire — **no panel pixel count** |
-| [`../work-in-progress/20260702-014112_horizons-and-blind-spots.md`](../work-in-progress/20260702-014112_horizons-and-blind-spots.md) | Brushstroke+Skate → e-ink partial refresh; Comlink over USB CDC-NCM (**Setu** name candidate) |
+| [`../work-in-progress/20260702-014112_horizons-and-blind-spots.md`](../work-in-progress/archive/20260702-014112_horizons-and-blind-spots.md) | Brushstroke+Skate → e-ink partial refresh; Comlink over USB CDC-NCM (**Setu** name candidate) |
 
 **Design-provisional floor (until a panel SKU is sourced):** the seated Glow Glass layout word needs **≥32 Skate cols × 20 rows**. At minimum readable scale **2**:
 

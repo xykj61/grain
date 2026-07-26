@@ -8,7 +8,7 @@
 **Voice:** Rio 3
 **Lens:** TAME · SLC · CIVIC · TWO_ROOMS
 **Opens when:** Kaeden cuts a zip or opens a Claude thread with this prompt
-**Ground:** [`../external-research/20260704-180612_zero-copy-resins-and-the-sovereign-snapshot.md`](../external-research/20260704-180612_zero-copy-resins-and-the-sovereign-snapshot.md) · [`../counsel/20260704-031812_eight-asks-one-sitting.md`](../counsel/20260704-031812_eight-asks-one-sitting.md) · [`../work-in-progress/ready-to-ask-claude.md`](../work-in-progress/ready-to-ask-claude.md) · [`../work-in-progress/ROADMAP.md`](../work-in-progress/ROADMAP.md) · [`../work-in-progress/TASKS.md`](../work-in-progress/TASKS.md) · [`../work-in-progress/20260703-014912_round-summary-and-decoder.md`](../work-in-progress/20260703-014912_round-summary-and-decoder.md) · [`../work-in-progress/20260703-041850_claude-strategy-roadmap-counsel.md`](../work-in-progress/20260703-041850_claude-strategy-roadmap-counsel.md)
+**Ground:** [`../external-research/20260704-180612_zero-copy-resins-and-the-sovereign-snapshot.md`](../external-research/20260704-180612_zero-copy-resins-and-the-sovereign-snapshot.md) · [`../counsel/20260704-031812_eight-asks-one-sitting.md`](../counsel/20260704-031812_eight-asks-one-sitting.md) · [`../work-in-progress/ready-to-ask-claude.md`](../work-in-progress/ready-to-ask-claude.md) · [`../work-in-progress/ROADMAP.md`](../work-in-progress/ROADMAP.md) · [`../work-in-progress/TASKS.md`](../work-in-progress/TASKS.md) · [`../work-in-progress/20260703-014912_round-summary-and-decoder.md`](../work-in-progress/archive/20260703-014912_round-summary-and-decoder.md) · [`../work-in-progress/20260703-041850_claude-strategy-roadmap-counsel.md`](../work-in-progress/archive/20260703-041850_claude-strategy-roadmap-counsel.md)
 
 *Prepared by Cursor (Rio 3) for Claude (Fable counsel) and Kaeden — counsel and editorial deltas only; Cursor implements on Kaeden approval after counsel lands.*
 
@@ -44,7 +44,7 @@
 2. [`context/specs/20260703-191112_resins-and-hash-tiers.md`](../context/specs/20260703-191112_resins-and-hash-tiers.md) · [`context/specs/20260701-221512_amber-functional-spec.md`](../context/specs/20260701-221512_amber-functional-spec.md)
 3. [`20260703-201612_the-amphora-and-the-crossing.md`](../external-research/20260703-201612_the-amphora-and-the-crossing.md) · [`20260702-035018_puddle-sandboxed-rye-containers.md`](../external-research/20260702-035018_puddle-sandboxed-rye-containers.md) (pier replay · double-boot · chunk store)
 4. [`20260704-031812_eight-asks-one-sitting.md`](../counsel/20260704-031812_eight-asks-one-sitting.md) — priority counsel (Open Asks · gloss · Amphora lap-two)
-5. [`ROADMAP.md`](../work-in-progress/ROADMAP.md) · [`TASKS.md`](../work-in-progress/TASKS.md) · [`20260703-014912_round-summary-and-decoder.md`](../work-in-progress/20260703-014912_round-summary-and-decoder.md)
+5. [`ROADMAP.md`](../work-in-progress/ROADMAP.md) · [`TASKS.md`](../work-in-progress/TASKS.md) · [`20260703-014912_round-summary-and-decoder.md`](../work-in-progress/archive/20260703-014912_round-summary-and-decoder.md)
 6. [`gratitude/TIGER_STYLE.md`](../gratitude/TIGER_STYLE.md) (Apache-2.0 · study only) — batching, in-place init, control/data plane
 7. [`CIVIC_STYLE.md`](../context/CIVIC_STYLE.md) — accountability layer, append-only signed records, verification from outside
 
@@ -106,7 +106,7 @@ Deliver **designs Cursor can draft into `context/specs/` or `active-designing/` 
 
 ## Part Three — ROADMAP granular refresh
 
-Return **structure and deltas only** (per eight-asks A8 and [`20260703-041850`](../work-in-progress/20260703-041850_claude-strategy-roadmap-counsel.md)):
+Return **structure and deltas only** (per eight-asks A8 and [`20260703-041850`](../work-in-progress/archive/20260703-041850_claude-strategy-roadmap-counsel.md)):
 
 1. **Current position paragraph** — replace stale door language; pin **152**, SLC-L1 landed, zip **41** counsel landed.
 2. **Ground table** — add/update rows: **Amber** (cellar), **Amphora** (vessel), **Linengrow receipt** at **152**; Tablecloth/Puddle horizon honesty.
@@ -124,13 +124,13 @@ Return **structure and deltas only** (per eight-asks A8 and [`20260703-041850`](
 3. **Duplicate strike list** — horizons that repeat decoder rows or eight-asks; titles + one-line why.
 4. **Crossing suite follow-ups** — Amphora lap-two Tilak witness (A6), seed-home gate, manifest module home — restated as TASKS rows with dependencies.
 5. **Open horizons block** — update [`movement's open asks`](../work-in-progress/TASKS.md), **Puddle continuity**, **deep-archive hardware**, **resin-refusal fact** — tie each to snapshot/comlink counsel.
-6. **Open threads stub** — [`20260623-033012_open-threads.md`](../work-in-progress/20260623-033012_open-threads.md) is archived; recommend whether any living "open thread" rows need a **decoder home** instead.
+6. **Open threads stub** — [`20260623-033012_open-threads.md`](../work-in-progress/archive/20260623-033012_open-threads.md) is archived; recommend whether any living "open thread" rows need a **decoder home** instead.
 
 ---
 
 ## Part Five — Decoder and RTAC rows
 
-Expand the decoder skeleton from eight-asks A8 ([`20260703-014912`](../work-in-progress/20260703-014912_round-summary-and-decoder.md)):
+Expand the decoder skeleton from eight-asks A8 ([`20260703-014912`](../work-in-progress/archive/20260703-014912_round-summary-and-decoder.md)):
 
 | Column | Ask |
 |--------|-----|

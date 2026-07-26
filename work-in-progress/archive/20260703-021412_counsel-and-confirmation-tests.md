@@ -11,7 +11,7 @@ counsel earns trust only after the ground it stands on is witnessed.*
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Lens:** TAME — safety first, performance second, the joy of the craft third
 **Status:** Counsel — recommendations only; every door, gate, ratification, and stamp stays Kaeden's alone
-**Companions:** [`20260703-014912_round-summary-and-decoder.md`](20260703-014912_round-summary-and-decoder.md) · [`20260702-edit5-ready-to-apply.md`](20260702-edit5-ready-to-apply.md) · [`../pond/README.md`](../pond/README.md) · [`ready-to-ask-claude.md`](ready-to-ask-claude.md)
+**Companions:** [`20260703-014912_round-summary-and-decoder.md`](20260703-014912_round-summary-and-decoder.md) · [`20260702-edit5-ready-to-apply.md`](20260702-edit5-ready-to-apply.md) · [`../pond/README.md`](../../pond/README.md) · [`ready-to-ask-claude.md`](../ready-to-ask-claude.md)
 
 *Written together by Kaeden and Claude (Fable 5), in Rio 3's Radiant voice.*
 
@@ -41,7 +41,7 @@ Three benches now agree on the same arithmetic from bare metal. The tree is tell
 and the story checks out.
 
 **One honest flag rides along.** The `WAYLAND_DISPLAY` guard inside
-[`tools/slc2a_ring3_metal.rish`](../tools/slc2a_ring3_metal.rish) passes even when the variable is
+[`tools/slc2a_ring3_metal.rish`](../../tools/slc2a_ring3_metal.rish) passes even when the variable is
 unset — the quoted dollar sign reaches `sh` as a literal string, so `test -n` always succeeds, and
 a headless bench fails one assert later with a less kind message. On your GNOME the guard is moot,
 since the variable is genuinely set and the smoke genuinely passes. The repair is two lines using
