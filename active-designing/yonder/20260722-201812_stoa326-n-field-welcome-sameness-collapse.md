@@ -9,7 +9,7 @@
 **Status:** Checkable — collapse GREEN `20260722.201812`  
 **Register:** Checkable (Two Rooms) — welcome dispatch + call-gate collapsed; tagged `$%` held  
 
-**Grounds in:** survey lean **C** · sameness [`../foundations/20260703-182612_sameness-is-the-macro.md`](../foundations/20260703-182612_sameness-is-the-macro.md) · STOA324 argv collapse pattern · STOA253 / STOA259 helpers  
+**Grounds in:** survey lean **C** · sameness [`../foundations/20260703-182612_sameness-is-the-macro.md`](../../foundations/20260703-182612_sameness-is-the-macro.md) · STOA324 argv collapse pattern · STOA253 / STOA259 helpers  
 
 **dated_guard:** Do **not** collapse tagged `$%` kind/xact/xfer into this path. Gold · fleets · JABS3 · deca stay held.
 

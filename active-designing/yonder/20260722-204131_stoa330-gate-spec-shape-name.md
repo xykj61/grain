@@ -9,7 +9,7 @@
 **Status:** Checkable — rename GREEN `20260722.204131`  
 **Register:** Checkable (Two Rooms) — gate-spec API; cast/face mold fields still debt  
 
-**Grounds in:** STOA329 lean **C** · shape surface [`20260720-223226_glow-os-shape-not-mold.md`](20260720-223226_glow-os-shape-not-mold.md) · STOA328  
+**Grounds in:** STOA329 lean **C** · shape surface [`20260720-223226_glow-os-shape-not-mold.md`](../20260720-223226_glow-os-shape-not-mold.md) · STOA328  
 
 **dated_guard:** Study `-mold` allowlist strings and hoon-study desks stay. Cast/`rune_face` mold fields wait for the next lap.
 

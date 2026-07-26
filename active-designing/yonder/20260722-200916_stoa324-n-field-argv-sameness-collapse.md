@@ -9,7 +9,7 @@
 **Status:** Checkable — collapse GREEN `20260722.200916`  
 **Register:** Checkable (Two Rooms) — dispatch + worker collapsed; glow_run bounded forwarder named  
 
-**Grounds in:** STOA323 lean **C** · sameness [`../foundations/20260703-182612_sameness-is-the-macro.md`](../foundations/20260703-182612_sameness-is-the-macro.md) · STOA253 N-field identity pattern · STOA307–321 survey  
+**Grounds in:** STOA323 lean **C** · sameness [`../foundations/20260703-182612_sameness-is-the-macro.md`](../../foundations/20260703-182612_sameness-is-the-macro.md) · STOA253 N-field identity pattern · STOA307–321 survey  
 
 **dated_guard:** Do **not** open deca argv. Do **not** collapse tagged `$%` argv into this path. Gold · fleets · JABS3 stay held.
 
