@@ -1,7 +1,7 @@
 # The Counsel Stack
 
 **Language:** EN
-**Last updated:** 2026-07-26 (`20260726.030603` reply sixteen-hot STOP T2)  
+**Last updated:** 2026-07-26 (`20260726.032231` the pin and the shelf)  
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
 **Status:** Foundation  
 **Seasons roster:** [`SEASONS.md`](SEASONS.md)
@@ -22,6 +22,8 @@ Filing law: [`../ORGANIZING.md`](../ORGANIZING.md) · reorg proposal: [`20260707
 
 | Stamp | Note | Meaning |
 |-------|------|---------|
+| `20260726.033904` | [Reply — Pin and shelf · AD STOP](replies/20260726-033904_re-pin-and-shelf-ad-stop.md) | AB GREEN · MAP landed · forge auth STOP · await strikes |
+| `20260726.032231` | [The Pin and the Shelf](20260726-032231_the-pin-and-the-shelf.md) | monocypher repair · MAP · forge desc · WIP pilot · breach two held |
 | `20260726.030603` | [Reply — Sixteen hot · ROUND MODE · STOP T2](replies/20260726-030603_re-sixteen-hot-round-mode-stop-t2.md) | W–Z landed · F RED pathspec · await strike list |
 | `20260726.025120` | [Sixteen Hot Files](20260726-025120_sixteen-hot-files.md) | T2 stay list · 117 cold stay put · target 133 · ROUND MODE for link_witness |
 | `20260726.014013` | [Which Gate Belongs to Which Lap](20260726-014013_which-gate-belongs-to-which-lap.md) | content-lap heading exception · gates-for-laps table proposed · **arrived** (was missing at cheap-hour STOP) |
