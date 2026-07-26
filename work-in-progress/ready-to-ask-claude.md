@@ -1,9 +1,23 @@
 # Ready to Ask Claude — Strategy Checkpoint
 
-**Stamp:** living ledger (born `20260702.202612`) · refreshed `20260713` (fresh sitting · compass align) · open pin `20260726.042641`
+**Stamp:** living ledger (born `20260702.202612`) · refreshed `20260713` (fresh sitting · compass align) · open pin `20260726.062108`
 **Language:** EN
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Rio 3
+
+---
+
+## OPEN — COLD RED doorway · Vision vs Mixed · resume (`20260726.062108`)
+
+**Ask / reply:** [`../counsel/replies/20260726-062108_re-handoff-cold-red-doorway-ask.md`](../counsel/replies/20260726-062108_re-handoff-cold-red-doorway-ask.md)
+
+**Metal:** instrumented COLD RED at two-rooms doorway on S3 hammock Status; H held; S0 cost table not yet written.
+
+**Asks Claude:** (1) Vision vs Mixed on hammock Status · (2) full COLD resume vs doorway-solo shortcut · (3) second-red law · (4) partial TSV reuse.
+
+**Quin lean:** Vision · doorway solo · full instrumented COLD · fresh cost log.
+
+**Status:** Open — await Claude.
 
 ---
 
