@@ -1,9 +1,21 @@
 # Ready to Ask Claude — Strategy Checkpoint
 
-**Stamp:** living ledger (born `20260702.202612`) · refreshed `20260713` (fresh sitting · compass align)
+**Stamp:** living ledger (born `20260702.202612`) · refreshed `20260713` (fresh sitting · compass align) · open pin `20260726.042641`
 **Language:** EN
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Rio 3
+
+---
+
+## OPEN — Parity speed · safety · performance · joy · Ford graph (`20260726.042641`)
+
+**Ask:** How may Grain speed full parity (~106 min measured; ch01 alone still multi-tens of minutes) without teaching the bench to distrust GREEN?
+
+**Lanes offered:** (1) TAME guidance only under safety/performance/joy · (2) archive stale witnesses · (3) smaller selectable Rishi packs beside the full oracle · (4) Ford/Clay-like dependency graph with cached products ([Ford Fusion](https://urbit.org/blog/ford-fusion)).
+
+**Counsel:** [`../counsel/20260726-042641_parity-speed-safety-joy-ford-ask.md`](../counsel/20260726-042641_parity-speed-safety-joy-ford-ask.md)
+
+**Status:** Awaiting Claude ruling — propose-never-seat. Full parity F continues measuring; H held on suite GREEN.
 
 ---
 
