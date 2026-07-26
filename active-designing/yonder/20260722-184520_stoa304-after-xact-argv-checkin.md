@@ -30,7 +30,7 @@ STOA303: payload argv survey · `emit_xact_argv` · `mint <u32>` / `send` · bot
 | **C** | **Xfer argv survey** — **recommended** | thicker — two mint faces |
 | **D** | **Gold · face_lit · fleets · JABS3** | **held** |
 
-Living note: [`20260722-185058_stoa304-rest-habit-and-xfer-rec.md`](yonder/20260722-185058_stoa304-rest-habit-and-xfer-rec.md).
+Living note: [`20260722-185058_stoa304-rest-habit-and-xfer-rec.md`](20260722-185058_stoa304-rest-habit-and-xfer-rec.md).
 
 ---
 

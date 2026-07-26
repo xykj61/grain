@@ -9,7 +9,7 @@
 **Status:** Checkable — lean **A** send with round-close · lean **C** `$:` argv sameness collapse recommended  
 **Register:** Checkable (Two Rooms) — STOA321 GREEN; collapse Intent  
 
-**Grounds in:** STOA322 · Keaton critique `20260722.195305` · sameness [`../foundations/20260703-182612_sameness-is-the-macro.md`](../foundations/20260703-182612_sameness-is-the-macro.md) · STOA253 N-field identity pattern  
+**Grounds in:** STOA322 · Keaton critique `20260722.195305` · sameness [`../foundations/20260703-182612_sameness-is-the-macro.md`](../../foundations/20260703-182612_sameness-is-the-macro.md) · STOA253 N-field identity pattern  
 
 **dated_guard:** Do **not** invent a new argv family this lap. Deca · gold · face_lit · fleets · JABS3 stay held. Do not recommend rest unprompted.
 

@@ -838,95 +838,95 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA288 after HAWM rest resume check-in, `20260722.154654`** — lean A Pixel LIVE eyes · lean B language inventary · lean C reopen HAWM · lean D held. Brief [`active-designing/20260722-154654_stoa288-after-hawm-rest-resume-checkin.md`](../../active-designing/yonder/20260722-154654_stoa288-after-hawm-rest-resume-checkin.md).
 
-**STOA289 Pixel LIVE eyes after HAWM, `20260722.154953`** — pack+install GREEN; HAWM1 + distinct live root. Brief [`active-designing/20260722-154953_stoa289-pixel-live-eyes-after-hawm.md`](../active-designing/20260722-154953_stoa289-pixel-live-eyes-after-hawm.md).
+**STOA289 Pixel LIVE eyes after HAWM, `20260722.154953`** — pack+install GREEN; HAWM1 + distinct live root. Brief [`active-designing/20260722-154953_stoa289-pixel-live-eyes-after-hawm.md`](../../active-designing/yonder/20260722-154953_stoa289-pixel-live-eyes-after-hawm.md).
 
-**STOA290 after Pixel LIVE eyes check-in, `20260722.154953`** — lean A send · lean B rest · lean C language inventary. Brief [`active-designing/20260722-154953_stoa290-after-pixel-live-eyes-checkin.md`](../active-designing/20260722-154953_stoa290-after-pixel-live-eyes-checkin.md).
+**STOA290 after Pixel LIVE eyes check-in, `20260722.154953`** — lean A send · lean B rest · lean C language inventary. Brief [`active-designing/20260722-154953_stoa290-after-pixel-live-eyes-checkin.md`](../../active-designing/yonder/20260722-154953_stoa290-after-pixel-live-eyes-checkin.md).
 
-**STOA291 continue after Pixel eyes check-in, `20260722.155130`** — lean A tagged `$%` flip survey · lean B face_lit · lean C gold held · lean E fleets held. Brief [`active-designing/20260722-155130_stoa291-continue-after-pixel-eyes-checkin.md`](../active-designing/20260722-155130_stoa291-continue-after-pixel-eyes-checkin.md).
+**STOA291 continue after Pixel eyes check-in, `20260722.155130`** — lean A tagged `$%` flip survey · lean B face_lit · lean C gold held · lean E fleets held. Brief [`active-designing/20260722-155130_stoa291-continue-after-pixel-eyes-checkin.md`](../../active-designing/yonder/20260722-155130_stoa291-continue-after-pixel-eyes-checkin.md).
 
 **STOA292 Survey seated, `20260722.155438`** — Lexicon **Survey**; inventary retired for living *Now*. Brief [`active-designing/20260722-155438_survey-seated-inventary-retired.md`](../../active-designing/yonder/20260722-155438_survey-seated-inventary-retired.md).
 
-**STOA293 tagged `$%` flip survey · bartis payload, `20260722.155648`** — `emit_tagged_payload_flip_call_body`; witness GREEN. Brief [`active-designing/20260722-155648_stoa293-tagged-percent-flip-survey.md`](../active-designing/20260722-155648_stoa293-tagged-percent-flip-survey.md).
+**STOA293 tagged `$%` flip survey · bartis payload, `20260722.155648`** — `emit_tagged_payload_flip_call_body`; witness GREEN. Brief [`active-designing/20260722-155648_stoa293-tagged-percent-flip-survey.md`](../../active-designing/yonder/20260722-155648_stoa293-tagged-percent-flip-survey.md).
 
-**STOA294 after tagged flip survey check-in, `20260722.155802`** — lean A send · lean B barket twin. Brief [`active-designing/20260722-155802_stoa294-after-tagged-flip-survey-checkin.md`](../active-designing/20260722-155802_stoa294-after-tagged-flip-survey-checkin.md).
+**STOA294 after tagged flip survey check-in, `20260722.155802`** — lean A send · lean B barket twin. Brief [`active-designing/20260722-155802_stoa294-after-tagged-flip-survey-checkin.md`](../../active-designing/yonder/20260722-155802_stoa294-after-tagged-flip-survey-checkin.md).
 
-**STOA295 barket tagged payload flip twin GREEN, `20260722.160418`** — `emit_tagged_payload_flip_call_body` · two wrappers · payload family closed on both gates. Brief [`active-designing/20260722-160418_stoa295-barket-tagged-payload-flip.md`](../active-designing/20260722-160418_stoa295-barket-tagged-payload-flip.md).
+**STOA295 barket tagged payload flip twin GREEN, `20260722.160418`** — `emit_tagged_payload_flip_call_body` · two wrappers · payload family closed on both gates. Brief [`active-designing/20260722-160418_stoa295-barket-tagged-payload-flip.md`](../../active-designing/yonder/20260722-160418_stoa295-barket-tagged-payload-flip.md).
 
-**STOA296 after barket tagged flip check-in, `20260722.160422`** — lean A send · lean C kind unit helper. Brief [`active-designing/20260722-160422_stoa296-after-barket-tagged-flip-checkin.md`](../active-designing/20260722-160422_stoa296-after-barket-tagged-flip-checkin.md).
+**STOA296 after barket tagged flip check-in, `20260722.160422`** — lean A send · lean C kind unit helper. Brief [`active-designing/20260722-160422_stoa296-after-barket-tagged-flip-checkin.md`](../../active-designing/yonder/20260722-160422_stoa296-after-barket-tagged-flip-checkin.md).
 
-**STOA297 tagged unit flip helper GREEN, `20260722.160822`** — `emit_tagged_unit_flip_call_body` on bartis + barket; tagged `$%` two-family flip closed. Brief [`active-designing/20260722-160643_stoa297-tagged-unit-flip-helper.md`](../active-designing/20260722-160643_stoa297-tagged-unit-flip-helper.md).
+**STOA297 tagged unit flip helper GREEN, `20260722.160822`** — `emit_tagged_unit_flip_call_body` on bartis + barket; tagged `$%` two-family flip closed. Brief [`active-designing/20260722-160643_stoa297-tagged-unit-flip-helper.md`](../../active-designing/yonder/20260722-160643_stoa297-tagged-unit-flip-helper.md).
 
-**STOA298 after tagged unit flip check-in, `20260722.160700`** — lean A send · lean B rest. Brief [`active-designing/20260722-160700_stoa298-after-tagged-unit-flip-checkin.md`](../active-designing/20260722-160700_stoa298-after-tagged-unit-flip-checkin.md).
+**STOA298 after tagged unit flip check-in, `20260722.160700`** — lean A send · lean B rest. Brief [`active-designing/20260722-160700_stoa298-after-tagged-unit-flip-checkin.md`](../../active-designing/yonder/20260722-160700_stoa298-after-tagged-unit-flip-checkin.md).
 
-**STOA299 continue after tagged flip check-in, `20260722.161041`** — lean A tagged argv survey · lean B face_lit survey · lean E held. Brief [`active-designing/20260722-161041_stoa299-continue-after-tagged-flip-checkin.md`](../active-designing/20260722-161041_stoa299-continue-after-tagged-flip-checkin.md).
+**STOA299 continue after tagged flip check-in, `20260722.161041`** — lean A tagged argv survey · lean B face_lit survey · lean E held. Brief [`active-designing/20260722-161041_stoa299-continue-after-tagged-flip-checkin.md`](../../active-designing/yonder/20260722-161041_stoa299-continue-after-tagged-flip-checkin.md).
 
-**STOA300 tagged argv survey · kind unit-tag GREEN, `20260722.161609`** — `emit_kind_argv` · tag desks · xact/xfer argv refuse pinned. Brief [`active-designing/20260722-161229_stoa300-tagged-argv-survey-kind.md`](../active-designing/20260722-161229_stoa300-tagged-argv-survey-kind.md).
+**STOA300 tagged argv survey · kind unit-tag GREEN, `20260722.161609`** — `emit_kind_argv` · tag desks · xact/xfer argv refuse pinned. Brief [`active-designing/20260722-161229_stoa300-tagged-argv-survey-kind.md`](../../active-designing/yonder/20260722-161229_stoa300-tagged-argv-survey-kind.md).
 
-**STOA301 after kind argv check-in, `20260722.161300`** — lean A send · lean B rest. Brief [`active-designing/20260722-161300_stoa301-after-kind-argv-checkin.md`](../active-designing/20260722-161300_stoa301-after-kind-argv-checkin.md).
+**STOA301 after kind argv check-in, `20260722.161300`** — lean A send · lean B rest. Brief [`active-designing/20260722-161300_stoa301-after-kind-argv-checkin.md`](../../active-designing/yonder/20260722-161300_stoa301-after-kind-argv-checkin.md).
 
-**`.cursorignore` seated, `20260722.183653`** — archive/caches out of Cursor index; git whole. Brief [`active-designing/20260722-183653_cursorignore-archive-and-caches.md`](../active-designing/20260722-183653_cursorignore-archive-and-caches.md).
+**`.cursorignore` seated, `20260722.183653`** — archive/caches out of Cursor index; git whole. Brief [`active-designing/20260722-183653_cursorignore-archive-and-caches.md`](../../active-designing/yonder/20260722-183653_cursorignore-archive-and-caches.md).
 
-**Align · continue Glow language, `20260722.184311`** — compass; STOA302 lean A payload argv (xact). Brief [`active-designing/20260722-184311_align-continue-glow-language.md`](../active-designing/20260722-184311_align-continue-glow-language.md).
+**Align · continue Glow language, `20260722.184311`** — compass; STOA302 lean A payload argv (xact). Brief [`active-designing/20260722-184311_align-continue-glow-language.md`](../../active-designing/yonder/20260722-184311_align-continue-glow-language.md).
 
-**STOA302 continue Glow language check-in, `20260722.184311`** — lean A payload argv survey · lean B docs compressor · lean E held. Brief [`active-designing/20260722-184311_stoa302-continue-glow-language-checkin.md`](../active-designing/20260722-184311_stoa302-continue-glow-language-checkin.md).
+**STOA302 continue Glow language check-in, `20260722.184311`** — lean A payload argv survey · lean B docs compressor · lean E held. Brief [`active-designing/20260722-184311_stoa302-continue-glow-language-checkin.md`](../../active-designing/yonder/20260722-184311_stoa302-continue-glow-language-checkin.md).
 
-**STOA303 payload argv survey · xact GREEN, `20260722.184804`** — `emit_xact_argv` · mint/send · xfer refuse pinned. Brief [`active-designing/20260722-184507_stoa303-payload-argv-survey-xact.md`](../active-designing/20260722-184507_stoa303-payload-argv-survey-xact.md).
+**STOA303 payload argv survey · xact GREEN, `20260722.184804`** — `emit_xact_argv` · mint/send · xfer refuse pinned. Brief [`active-designing/20260722-184507_stoa303-payload-argv-survey-xact.md`](../../active-designing/yonder/20260722-184507_stoa303-payload-argv-survey-xact.md).
 
-**STOA304 after xact argv check-in, `20260722.184520` · recommend `20260722.185058`** — lean A send · lean B rest available · lean **C** xfer argv chosen. Brief [`active-designing/20260722-184520_stoa304-after-xact-argv-checkin.md`](../active-designing/20260722-184520_stoa304-after-xact-argv-checkin.md) · habit [`active-designing/20260722-185058_stoa304-rest-habit-and-xfer-rec.md`](../../active-designing/yonder/20260722-185058_stoa304-rest-habit-and-xfer-rec.md).
+**STOA304 after xact argv check-in, `20260722.184520` · recommend `20260722.185058`** — lean A send · lean B rest available · lean **C** xfer argv chosen. Brief [`active-designing/20260722-184520_stoa304-after-xact-argv-checkin.md`](../../active-designing/yonder/20260722-184520_stoa304-after-xact-argv-checkin.md) · habit [`active-designing/20260722-185058_stoa304-rest-habit-and-xfer-rec.md`](../../active-designing/yonder/20260722-185058_stoa304-rest-habit-and-xfer-rec.md).
 
-**STOA305 payload argv survey · xfer GREEN, `20260722.185953`** — `emit_xfer_argv` · mint from/amount · send · pair refuse pinned. Brief [`active-designing/20260722-185953_stoa305-payload-argv-survey-xfer.md`](../active-designing/20260722-185953_stoa305-payload-argv-survey-xfer.md).
+**STOA305 payload argv survey · xfer GREEN, `20260722.185953`** — `emit_xfer_argv` · mint from/amount · send · pair refuse pinned. Brief [`active-designing/20260722-185953_stoa305-payload-argv-survey-xfer.md`](../../active-designing/yonder/20260722-185953_stoa305-payload-argv-survey-xfer.md).
 
-**STOA306 after xfer argv check-in, `20260722.190015`** — lean A send · lean B rest available · lean **C** pair argv chosen. Brief [`active-designing/20260722-190015_stoa306-after-xfer-argv-checkin.md`](../active-designing/20260722-190015_stoa306-after-xfer-argv-checkin.md).
+**STOA306 after xfer argv check-in, `20260722.190015`** — lean A send · lean B rest available · lean **C** pair argv chosen. Brief [`active-designing/20260722-190015_stoa306-after-xfer-argv-checkin.md`](../../active-designing/yonder/20260722-190015_stoa306-after-xfer-argv-checkin.md).
 
-**STOA307 N-field argv survey · pair GREEN, `20260722.190655`** — `emit_n_field_argv` / `emit_pair_argv` · from/amount · triple refuse pinned. Brief [`active-designing/20260722-190655_stoa307-n-field-argv-survey-pair.md`](../active-designing/20260722-190655_stoa307-n-field-argv-survey-pair.md).
+**STOA307 N-field argv survey · pair GREEN, `20260722.190655`** — `emit_n_field_argv` / `emit_pair_argv` · from/amount · triple refuse pinned. Brief [`active-designing/20260722-190655_stoa307-n-field-argv-survey-pair.md`](../../active-designing/yonder/20260722-190655_stoa307-n-field-argv-survey-pair.md).
 
-**STOA308 after pair argv check-in, `20260722.190720`** — lean A send · lean B rest available · lean **C** triple argv chosen. Brief [`active-designing/20260722-190720_stoa308-after-pair-argv-checkin.md`](../active-designing/20260722-190720_stoa308-after-pair-argv-checkin.md).
+**STOA308 after pair argv check-in, `20260722.190720`** — lean A send · lean B rest available · lean **C** triple argv chosen. Brief [`active-designing/20260722-190720_stoa308-after-pair-argv-checkin.md`](../../active-designing/yonder/20260722-190720_stoa308-after-pair-argv-checkin.md).
 
-**STOA309 N-field argv survey · triple GREEN, `20260722.190839`** — `emit_triple_argv` · from/amount/fee · quad refuse pinned. Brief [`active-designing/20260722-190839_stoa309-n-field-argv-survey-triple.md`](../active-designing/20260722-190839_stoa309-n-field-argv-survey-triple.md).
+**STOA309 N-field argv survey · triple GREEN, `20260722.190839`** — `emit_triple_argv` · from/amount/fee · quad refuse pinned. Brief [`active-designing/20260722-190839_stoa309-n-field-argv-survey-triple.md`](../../active-designing/yonder/20260722-190839_stoa309-n-field-argv-survey-triple.md).
 
-**STOA310 after triple argv check-in, `20260722.191301`** — lean A send · lean B rest available · lean **C** quad argv chosen. Brief [`active-designing/20260722-191301_stoa310-after-triple-argv-checkin.md`](../active-designing/20260722-191301_stoa310-after-triple-argv-checkin.md).
+**STOA310 after triple argv check-in, `20260722.191301`** — lean A send · lean B rest available · lean **C** quad argv chosen. Brief [`active-designing/20260722-191301_stoa310-after-triple-argv-checkin.md`](../../active-designing/yonder/20260722-191301_stoa310-after-triple-argv-checkin.md).
 
-**STOA311 N-field argv survey · quad GREEN, `20260722.191505`** — `emit_quad_argv` · from/amount/fee/nonce · penta refuse pinned. Brief [`active-designing/20260722-191505_stoa311-n-field-argv-survey-quad.md`](../active-designing/20260722-191505_stoa311-n-field-argv-survey-quad.md).
+**STOA311 N-field argv survey · quad GREEN, `20260722.191505`** — `emit_quad_argv` · from/amount/fee/nonce · penta refuse pinned. Brief [`active-designing/20260722-191505_stoa311-n-field-argv-survey-quad.md`](../../active-designing/yonder/20260722-191505_stoa311-n-field-argv-survey-quad.md).
 
-**STOA312 after quad argv check-in, `20260722.191917`** — lean A send · lean B rest available · lean **C** penta argv chosen. Brief [`active-designing/20260722-191917_stoa312-after-quad-argv-checkin.md`](../active-designing/20260722-191917_stoa312-after-quad-argv-checkin.md).
+**STOA312 after quad argv check-in, `20260722.191917`** — lean A send · lean B rest available · lean **C** penta argv chosen. Brief [`active-designing/20260722-191917_stoa312-after-quad-argv-checkin.md`](../../active-designing/yonder/20260722-191917_stoa312-after-quad-argv-checkin.md).
 
-**STOA313 N-field argv survey · penta GREEN, `20260722.192146`** — `emit_penta_argv` · five fields · hexa refuse pinned. Brief [`active-designing/20260722-192146_stoa313-n-field-argv-survey-penta.md`](../active-designing/20260722-192146_stoa313-n-field-argv-survey-penta.md).
+**STOA313 N-field argv survey · penta GREEN, `20260722.192146`** — `emit_penta_argv` · five fields · hexa refuse pinned. Brief [`active-designing/20260722-192146_stoa313-n-field-argv-survey-penta.md`](../../active-designing/yonder/20260722-192146_stoa313-n-field-argv-survey-penta.md).
 
-**STOA314 after penta argv check-in, `20260722.192541`** — lean A send · lean B rest available · lean **C** hexa argv chosen. Brief [`active-designing/20260722-192541_stoa314-after-penta-argv-checkin.md`](../active-designing/20260722-192541_stoa314-after-penta-argv-checkin.md).
+**STOA314 after penta argv check-in, `20260722.192541`** — lean A send · lean B rest available · lean **C** hexa argv chosen. Brief [`active-designing/20260722-192541_stoa314-after-penta-argv-checkin.md`](../../active-designing/yonder/20260722-192541_stoa314-after-penta-argv-checkin.md).
 
-**STOA315 N-field argv survey · hexa GREEN, `20260722.192737`** — `emit_hexa_argv` · six fields · hepta refuse pinned. Brief [`active-designing/20260722-192737_stoa315-n-field-argv-survey-hexa.md`](../active-designing/20260722-192737_stoa315-n-field-argv-survey-hexa.md).
+**STOA315 N-field argv survey · hexa GREEN, `20260722.192737`** — `emit_hexa_argv` · six fields · hepta refuse pinned. Brief [`active-designing/20260722-192737_stoa315-n-field-argv-survey-hexa.md`](../../active-designing/yonder/20260722-192737_stoa315-n-field-argv-survey-hexa.md).
 
-**STOA316 after hexa argv check-in, `20260722.193120`** — lean A send · lean B rest available · lean **C** hepta argv recommended. Brief [`active-designing/20260722-193120_stoa316-after-hexa-argv-checkin.md`](../active-designing/20260722-193120_stoa316-after-hexa-argv-checkin.md).
+**STOA316 after hexa argv check-in, `20260722.193120`** — lean A send · lean B rest available · lean **C** hepta argv recommended. Brief [`active-designing/20260722-193120_stoa316-after-hexa-argv-checkin.md`](../../active-designing/yonder/20260722-193120_stoa316-after-hexa-argv-checkin.md).
 
-**STOA317 N-field argv survey · hepta GREEN, `20260722.193725`** — `emit_hepta_argv` · seven fields · octa refuse pinned. Brief [`active-designing/20260722-193725_stoa317-n-field-argv-survey-hepta.md`](../active-designing/20260722-193725_stoa317-n-field-argv-survey-hepta.md).
+**STOA317 N-field argv survey · hepta GREEN, `20260722.193725`** — `emit_hepta_argv` · seven fields · octa refuse pinned. Brief [`active-designing/20260722-193725_stoa317-n-field-argv-survey-hepta.md`](../../active-designing/yonder/20260722-193725_stoa317-n-field-argv-survey-hepta.md).
 
-**STOA318 after hepta argv check-in, `20260722.193733`** — lean A send · lean B rest available · lean **C** octa argv recommended. Brief [`active-designing/20260722-193733_stoa318-after-hepta-argv-checkin.md`](../active-designing/20260722-193733_stoa318-after-hepta-argv-checkin.md).
+**STOA318 after hepta argv check-in, `20260722.193733`** — lean A send · lean B rest available · lean **C** octa argv recommended. Brief [`active-designing/20260722-193733_stoa318-after-hepta-argv-checkin.md`](../../active-designing/yonder/20260722-193733_stoa318-after-hepta-argv-checkin.md).
 
-**STOA319 N-field argv survey · octa GREEN, `20260722.194416`** — `emit_octa_argv` · eight fields · nona refuse pinned. Brief [`active-designing/20260722-194416_stoa319-n-field-argv-survey-octa.md`](../active-designing/20260722-194416_stoa319-n-field-argv-survey-octa.md).
+**STOA319 N-field argv survey · octa GREEN, `20260722.194416`** — `emit_octa_argv` · eight fields · nona refuse pinned. Brief [`active-designing/20260722-194416_stoa319-n-field-argv-survey-octa.md`](../../active-designing/yonder/20260722-194416_stoa319-n-field-argv-survey-octa.md).
 
-**STOA320 after octa argv check-in, `20260722.194423`** — lean A send · lean B rest available · lean **C** nona argv recommended. Brief [`active-designing/20260722-194423_stoa320-after-octa-argv-checkin.md`](../active-designing/20260722-194423_stoa320-after-octa-argv-checkin.md).
+**STOA320 after octa argv check-in, `20260722.194423`** — lean A send · lean B rest available · lean **C** nona argv recommended. Brief [`active-designing/20260722-194423_stoa320-after-octa-argv-checkin.md`](../../active-designing/yonder/20260722-194423_stoa320-after-octa-argv-checkin.md).
 
-**STOA321 N-field argv survey · nona GREEN, `20260722.195019`** — `emit_nona_argv` · nine fields · `$:` argv family closed. Brief [`active-designing/20260722-195019_stoa321-n-field-argv-survey-nona.md`](../active-designing/20260722-195019_stoa321-n-field-argv-survey-nona.md).
+**STOA321 N-field argv survey · nona GREEN, `20260722.195019`** — `emit_nona_argv` · nine fields · `$:` argv family closed. Brief [`active-designing/20260722-195019_stoa321-n-field-argv-survey-nona.md`](../../active-designing/yonder/20260722-195019_stoa321-n-field-argv-survey-nona.md).
 
-**STOA322 after nona argv check-in, `20260722.195021`** — lean A send · lean B rest available · lean **C** name next STOA door. Brief [`active-designing/20260722-195021_stoa322-after-nona-argv-checkin.md`](../active-designing/20260722-195021_stoa322-after-nona-argv-checkin.md).
+**STOA322 after nona argv check-in, `20260722.195021`** — lean A send · lean B rest available · lean **C** name next STOA door. Brief [`active-designing/20260722-195021_stoa322-after-nona-argv-checkin.md`](../../active-designing/yonder/20260722-195021_stoa322-after-nona-argv-checkin.md).
 
-**STOA323 after sameness argv check-in, `20260722.200205`** — lean A send · lean B rest available · lean **C** `$:` argv sameness collapse recommended (dispatch · worker · glow_run → one N-path). Brief [`active-designing/20260722-200205_stoa323-after-sameness-argv-checkin.md`](../active-designing/20260722-200205_stoa323-after-sameness-argv-checkin.md).
+**STOA323 after sameness argv check-in, `20260722.200205`** — lean A send · lean B rest available · lean **C** `$:` argv sameness collapse recommended (dispatch · worker · glow_run → one N-path). Brief [`active-designing/20260722-200205_stoa323-after-sameness-argv-checkin.md`](../../active-designing/yonder/20260722-200205_stoa323-after-sameness-argv-checkin.md).
 
-**STOA324 `$:` argv sameness collapse GREEN, `20260722.200916`** — `closed_tuple_field_count` → `emit_n_field_argv` · worker stem→N · wrappers retired. Brief [`active-designing/20260722-200916_stoa324-n-field-argv-sameness-collapse.md`](../active-designing/20260722-200916_stoa324-n-field-argv-sameness-collapse.md).
+**STOA324 `$:` argv sameness collapse GREEN, `20260722.200916`** — `closed_tuple_field_count` → `emit_n_field_argv` · worker stem→N · wrappers retired. Brief [`active-designing/20260722-200916_stoa324-n-field-argv-sameness-collapse.md`](../../active-designing/yonder/20260722-200916_stoa324-n-field-argv-sameness-collapse.md).
 
-**STOA325 after argv sameness check-in, `20260722.200918`** — lean A send · lean B rest available · lean **C** name next STOA door. Brief [`active-designing/20260722-200918_stoa325-after-argv-sameness-checkin.md`](../active-designing/20260722-200918_stoa325-after-argv-sameness-checkin.md).
+**STOA325 after argv sameness check-in, `20260722.200918`** — lean A send · lean B rest available · lean **C** name next STOA door. Brief [`active-designing/20260722-200918_stoa325-after-argv-sameness-checkin.md`](../../active-designing/yonder/20260722-200918_stoa325-after-argv-sameness-checkin.md).
 
-**STOA326 `$:` welcome sameness collapse GREEN, `20260722.201812`** — `closed_tuple_field_count` → identity / flip · `is_n_field_call_gate` · wrappers retired. Brief [`active-designing/20260722-201812_stoa326-n-field-welcome-sameness-collapse.md`](../active-designing/20260722-201812_stoa326-n-field-welcome-sameness-collapse.md).
+**STOA326 `$:` welcome sameness collapse GREEN, `20260722.201812`** — `closed_tuple_field_count` → identity / flip · `is_n_field_call_gate` · wrappers retired. Brief [`active-designing/20260722-201812_stoa326-n-field-welcome-sameness-collapse.md`](../../active-designing/yonder/20260722-201812_stoa326-n-field-welcome-sameness-collapse.md).
 
-**STOA327 after welcome sameness check-in, `20260722.201814`** — lean A send · lean B rest available · lean **C** nest_type named_shape / assert table. Brief [`active-designing/20260722-201814_stoa327-after-welcome-sameness-checkin.md`](../active-designing/20260722-201814_stoa327-after-welcome-sameness-checkin.md).
+**STOA327 after welcome sameness check-in, `20260722.201814`** — lean A send · lean B rest available · lean **C** nest_type named_shape / assert table. Brief [`active-designing/20260722-201814_stoa327-after-welcome-sameness-checkin.md`](../../active-designing/yonder/20260722-201814_stoa327-after-welcome-sameness-checkin.md).
 
-**STOA328 nest_type table · shape params GREEN, `20260722.203753`** — allowlist/N tables · living `shape_name` · lowers share N helper. Brief [`active-designing/20260722-203753_stoa328-nest-type-table-shape-params.md`](../active-designing/20260722-203753_stoa328-nest-type-table-shape-params.md).
+**STOA328 nest_type table · shape params GREEN, `20260722.203753`** — allowlist/N tables · living `shape_name` · lowers share N helper. Brief [`active-designing/20260722-203753_stoa328-nest-type-table-shape-params.md`](../../active-designing/yonder/20260722-203753_stoa328-nest-type-table-shape-params.md).
 
-**STOA329 after nest_type shape check-in, `20260722.203755`** — lean A send · lean B rest available · lean **C** gate-spec `mold_name`→`shape_name`. Brief [`active-designing/20260722-203755_stoa329-after-nest-type-shape-checkin.md`](../active-designing/20260722-203755_stoa329-after-nest-type-shape-checkin.md).
+**STOA329 after nest_type shape check-in, `20260722.203755`** — lean A send · lean B rest available · lean **C** gate-spec `mold_name`→`shape_name`. Brief [`active-designing/20260722-203755_stoa329-after-nest-type-shape-checkin.md`](../../active-designing/yonder/20260722-203755_stoa329-after-nest-type-shape-checkin.md).
 
-**STOA330 gate-spec shape_name GREEN, `20260722.204131`** — `shape_name` · `shape_name_slice` · `max_shape_len`. Brief [`active-designing/20260722-204131_stoa330-gate-spec-shape-name.md`](../active-designing/20260722-204131_stoa330-gate-spec-shape-name.md).
+**STOA330 gate-spec shape_name GREEN, `20260722.204131`** — `shape_name` · `shape_name_slice` · `max_shape_len`. Brief [`active-designing/20260722-204131_stoa330-gate-spec-shape-name.md`](../../active-designing/yonder/20260722-204131_stoa330-gate-spec-shape-name.md).
 
-**STOA331 after gate shape_name check-in, `20260722.204133`** — lean A send · lean B rest available · lean **C** cast/face mold→shape. Brief [`active-designing/20260722-204133_stoa331-after-gate-shape-name-checkin.md`](../active-designing/20260722-204133_stoa331-after-gate-shape-name-checkin.md).
+**STOA331 after gate shape_name check-in, `20260722.204133`** — lean A send · lean B rest available · lean **C** cast/face mold→shape. Brief [`active-designing/20260722-204133_stoa331-after-gate-shape-name-checkin.md`](../../active-designing/yonder/20260722-204133_stoa331-after-gate-shape-name-checkin.md).
 
 
 **Framework next (host resume), `20260720.231857`** — lean A: live SETU6.5 **sent** eyes on real `usb0`/`ncm`. Lab TX gate already GREEN; Sala B0 Glow rewrite · JABS3 stay thicker check-ins. Same freeze brief.

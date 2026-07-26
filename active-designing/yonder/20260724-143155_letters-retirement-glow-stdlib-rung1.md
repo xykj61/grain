@@ -5,7 +5,7 @@
 **Voice:** Quin  
 **Status:** Mixed — seated braid run (letters · retirement shape · Glow stdlib · rung 1)  
 **Room:** Mixed (Two Rooms) — design counsel until Glow stdlib / rung-1 witnesses bind  
-**Counsel:** second [`../counsel/20260724-135312_vanes-shelves-and-the-glow-ladder.md`](../counsel/20260724-135312_vanes-shelves-and-the-glow-ladder.md) · third [`../counsel/20260724-141612_names-maps-and-open-questions.md`](../counsel/20260724-141612_names-maps-and-open-questions.md)
+**Counsel:** second [`../counsel/20260724-135312_vanes-shelves-and-the-glow-ladder.md`](../../counsel/20260724-135312_vanes-shelves-and-the-glow-ladder.md) · third [`../counsel/20260724-141612_names-maps-and-open-questions.md`](../../counsel/20260724-141612_names-maps-and-open-questions.md)
 
 ---
 
