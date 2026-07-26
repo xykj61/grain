@@ -1,0 +1,14 @@
+format session-log-v1
+stamp 20260726.115026
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Send · C-Ladder C1 C2 to pier
+prompt send
+think Push C1 charter+r7.5 and C2 Glow Book · session log rides · quin-workshop stays untracked for C3–C5
+obs C3 C4 C5 still need home words · no push of workshop sandbox
+file session-logs/20260726-112435_c-ladder-c1-c2-homes-blank.bron create report
+file counsel/20260726-064111_the-workshop-charter.md C1
+file active-designing/docs/glow/ C2
+recommend check-in Keaton for C3_HOME C4_HOME C5_HOME then kg those creates
