@@ -8,7 +8,7 @@
 **Voice:** Quin  
 **Status:** Checkable — bound by `glow_run` `cast-named-sala-event` · desk witness pin  
 **Register:** Checkable (Two Rooms) — cast twin GREEN; no mold twin; elder fold stays; JABS3 held  
-**Grounds in:** [`20260721-180008_stoa186-after-claim-shell-checkin.md`](20260721-180008_stoa186-after-claim-shell-checkin.md) · [`20260721-175343_stoa184-ux-hex-lower-emit.md`](yonder/20260721-175343_stoa184-ux-hex-lower-emit.md)
+**Grounds in:** [`20260721-180008_stoa186-after-claim-shell-checkin.md`](../20260721-180008_stoa186-after-claim-shell-checkin.md) · [`20260721-175343_stoa184-ux-hex-lower-emit.md`](20260721-175343_stoa184-ux-hex-lower-emit.md)
 
 **dated_guard:** Do **not** claim a mold twin or `$%` `@t`/`@ux`. Prefer send when the pier should match the hand.
 
