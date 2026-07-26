@@ -1,3 +1,4 @@
+//! glow-book: runes.md#g-calln
 //! glow/rune_calln.rye — parses Glow's `%*` named-argument call rune head.
 //!
 //! Per the sameness rune brief `%` category: `%*` calls a gate with named

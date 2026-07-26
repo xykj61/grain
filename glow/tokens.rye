@@ -1,3 +1,13 @@
+//! glow-book: machine-reading.md#gm-parsers
+//! glow-book: machine-reading.md#gm-order
+//! glow-book: machine-reading.md#gm-kinds
+//! glow-book: machine-reading.md#gm-generation
+//! glow-book: machine-reading.md#gm-dispatch
+//! glow-book: machine-reading.md#gm-digraphs
+//! glow-book: machine-reading.md#gm-comments
+//! glow-book: machine-reading.md#gm-bounds
+//! glow-book: runes.md#gd-desk
+//! glow-book: runes.md#g-lib
 //! glow/tokens.rye — bounded shared Glow token stream (STOA83–86 · STOA93).
 //!
 //! Classifies desk bytes into a fixed-cap token array (kind + byte span).
