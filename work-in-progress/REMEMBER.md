@@ -6,13 +6,13 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260726.183534` (EDT) · voice Quin  
+**Last refreshed:** `20260726.191451` (EDT) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2 · ring-3** · **THREATS** · **five pillars** · **accrete tiers** · **redaction stance** · **always-in-it rhythm**  
 **Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list1024 · Env512 · **stamp @u64 · Crockford** · **shape aura floor** · **Glow text floor GREEN** · **Glow Book weave GREEN (C2b)**  
-**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand home** · **siblings seated** · **--cursor launch** · **Pond counsel 161616** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm+cold REPORT** · **Grain umbrella living** · **OQ #1 · #3 · #4 · #5 answered** · **pass ledger** · **campaign STOPPED** · **growth law** · **wasmtime E GREEN** · **monocypher 4.0.3 GREEN** · **MAP.md** · **breach T3–T4** · **U·V·I** · **C-Ladder C1·C2·C2b landed** · **corpus twin STOP living_docs** · **C3–C5 await homes**  
-**Git nib:** *(pin after this send)* · Grain · corpus twin STOP living_docs · C3–C5 parks · autoproject96/grain
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand home** · **siblings seated** · **--cursor launch** · **Pond counsel 161616** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm+cold REPORT** · **Grain umbrella living** · **OQ #1 · #3 · #4 · #5 answered** · **pass ledger** · **campaign STOPPED** · **growth law** · **wasmtime E GREEN** · **monocypher 4.0.3 GREEN** · **MAP.md** · **breach T3–T4** · **U·V·I** · **C-Ladder C1·C2·C2b landed** · **lint TRACE · still 134** · **C3–C5 await homes**  
+**Git nib:** *(pin after this send)* · Grain · lint TRACE still 134 · C3–C5 parks · autoproject96/grain
 
-**Season:** Framework · EDT · **Grain** umbrella · pier **`~/grain`** · **finishing edge:** newborn living_docs_lint panic · then resume corpus twin · C3–C5 homes · doorway · H · breach two next season.
+**Season:** Framework · EDT · **Grain** umbrella · pier **`~/grain`** · **finishing edge:** counsel repair `append_value`/`do_say` `max_str_len` (scan ~215 KB) · then resume corpus twin · C3–C5 homes · doorway · H · breach two next season.
 
 ---
 
@@ -20,7 +20,7 @@
 
 **Pier path** — **`~/grain`** · agent **`home-xy-grain`**.
 
-**Corpus twin** — part two **STOP** at `living_docs_lint.rish` (elder 0 · newborn 134 panic · not in GRAMMAR). Ledgers: [`20260726-132520_corpus-twin-verdicts.tsv`](20260726-132520_corpus-twin-verdicts.tsv) · [`20260726-182349_corpus-twin-verdicts-2.tsv`](20260726-182349_corpus-twin-verdicts-2.tsv) — combined **312 TWIN · 5 SLOW-BOTH · 2 RED** (vocab row sealed as writes-misfiled by relay words). Writes-guard seated. **C-Ladder** C1·C2·C2b sent; C3–C5 homes blank; `quin-workshop/` untracked. Doorway ask open. H held. **Handoff:** [`20260726-050422_cursor-kg-handoff.md`](20260726-050422_cursor-kg-handoff.md).
+**Corpus twin** — check-in TRACE: fresh rebuild · `living_docs_lint` still exit **134**. Panic in `append_value` (`assert(list.items.len <= max_str_len)`) via `do_say`; `living_docs_lint_scan` ≈ **215475** bytes. Nothing landed. Ledgers sealed: part one · part two. Part three not opened. **C-Ladder** C1·C2·C2b sent; C3–C5 homes blank; `quin-workshop/` untracked. Doorway ask open. H held. **Handoff:** [`20260726-050422_cursor-kg-handoff.md`](20260726-050422_cursor-kg-handoff.md).
 
 **Lane** (`autoproject96` · counsel `223409`) — agentic research pier on both forges. Keys are the map: never push across `groupproject36` / `xykj61` lanes. Agent may `kg` mechanical witness-first stops inside the enclosure; seating words, keys, Tier 1, gratitude, compass, roster, and **send** stay human-gated (send-after-every-round is Keaton's standing preference, not a license past STOP). Specimen #1 is this Grain agent's own session logs since `home-xy-grain` rooted. Map: [`PUBKEYS.md`](../PUBKEYS.md) · [`context/REMOTE_ROSTER.md`](../context/REMOTE_ROSTER.md).
 

@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260726.191451` — [Send · living_docs_lint check-in TRACE · still 134](20260726-191451_send-checkin-living-docs-trace.bron) — append_value max_str_len · scan 215475 bytes  
 - `20260726.183534` — [Send · corpus twin part two STOP at living_docs_lint](20260726-183534_send-corpus-twin-stop-living-docs.bron) — newborn panic 134 · 42 TWIN in T2  
 - `20260726.165528` — [Send · corpus twin STOP at lap_vocabulary_sweep](20260726-165528_send-corpus-twin-stop-vocab.bron) — 270 TWIN · 5 SLOW-BOTH · 1 RED · resume ready  
 - `20260726.130711` — [Send · C2b glow-book threads · anchor gate GREEN](20260726-130711_send-c2b-glow-book-threads-green.bron) — 34 seeded · pack 6/6 · origin+codeberg  
