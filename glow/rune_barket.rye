@@ -1,3 +1,4 @@
+//! glow-book: runes.md#g-barket
 //! glow/rune_barket.rye — parses Glow's `|^` barket (STOA112–120).
 //!
 //! Stated-sample demo: `|^  sample=@u32` or `|^  sample=amount-shape` header, then either:

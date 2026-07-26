@@ -1,3 +1,4 @@
+//! glow-book: runes.md#g-bartis
 //! glow/rune_bartis.rye — parses Glow's `|=` bartis gate rune (STOA100–109 · STOA120).
 //!
 //! Thin one-arm gate: `|=  sample=@u32` or `|=  sample=amount-shape` on line one,
