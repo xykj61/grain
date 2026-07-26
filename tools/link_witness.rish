@@ -1,0 +1,27 @@
+# link_witness.rish — blocking relative-markdown link completeness.
+# Counsel 20260726.020825 · cheap hour T0.
+#
+# Positive: context/fixtures/link_witness_valid.md must PASS.
+# Negative: context/fixtures/link_witness_broken.md must FAIL.
+# Tree walk: LINK_WITNESS_ALLOW_BASELINE=1 for the first honest count.
+#
+#   rishi/bin/rishi run tools/link_witness.rish
+#   LINK_WITNESS_ALLOW_BASELINE=1 rishi/bin/rishi run tools/link_witness.rish
+
+say "link_witness: fixture PASS (valid relative links)…"
+let pass = run ["sh" "-c" "LINK_WITNESS_FILES='context/fixtures/link_witness_valid.md' sh tools/fixtures/link_witness_scan.sh"]
+say pass.out
+assert pass.ok else "link_witness valid fixture RED — witness broken"
+
+say "link_witness: fixture FAIL (broken relative link)…"
+let fail = run ["sh" "-c" "LINK_WITNESS_FILES='context/fixtures/link_witness_broken.md' sh tools/fixtures/link_witness_scan.sh"]
+assert fail.ok == false else "link_witness broken fixture passed — witness toothless"
+assert fail.out contains "dangling" else "broken fixture must report dangling"
+
+say "link_witness: tree walk…"
+# Hardcoded ALLOW_BASELINE=1 — Rishi does not expand shell ${…} in string literals.
+# Drop this flag once Keaton seats zero-dangling or a ceiling count.
+let walk = run ["sh" "-c" "LINK_WITNESS_ALLOW_BASELINE=1 sh tools/fixtures/link_witness_scan.sh"]
+say walk.out
+assert walk.ok else "link_witness tree walk RED"
+say "GREEN: link_witness — fixtures · tree baseline held."
