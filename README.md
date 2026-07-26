@@ -43,8 +43,8 @@ The full onboarding surface for the variants lives in the manual: [`manual/glow-
 | Umbrella | **Grain** | the whole system | named (formerly "Rye OS") |
 | Variants | **Reya · Riyo · Trey · Triz · Quin** | five switchable OS builds, all in Glow | named; see the table above |
 | Kernel spine | state as a pure fold over an append-only log of signed facts | the transition-function model | the stated spine, with running witnesses |
-| App ladder | **TUBE** | Glow app = Pool agent → signed APK on GrapheneOS (HAWM) | TUBE0–5 · TUBE7 GREEN; TUBE6 horizon — [`docs/TUBE.md`](docs/TUBE.md) |
-| Modules | Rishi, Mantra, Comlink, Caravan, Tally, Brix, Bron, Aurora, Pond, Scribble, and more | the running seeds | many green today |
+| App ladder | **TUBE** | Glow app = Pool agent → signed APK on GrapheneOS (HAWM) | TUBE0 · 0.5 · 1–5 · 7 GREEN; TUBE6 horizon — [`docs/TUBE.md`](docs/TUBE.md) |
+| Modules | Rishi, Mantra, Comlink, Caravan, Tally, Brix, Bron, Aurora, Pond, Mand, Scribble, and more | the running seeds | many green today |
 
 **An honest word on status.** Most of what runs today still lives under the project's prior module names, carried into Grain by decision rather than by a mass rename. Glow's **desk already emits** through `glow_run` witnesses; a full OS boot and the Nock interpreter remain horizon. The five variants are named and scoped — real design, real direction — rather than things you can boot quite yet. Every page in this tree marks its own register: what a witness proves, versus what is proposed. Nothing here claims a feature its witnesses do not show. That discipline has a name and a home ([`context/TWO_ROOMS.md`](context/TWO_ROOMS.md)).
 
@@ -52,8 +52,8 @@ The full onboarding surface for the variants lives in the manual: [`manual/glow-
 
 ## What You Can Actually Run Today
 
-- **Glow desk** — eight generator hops lower to Rye and run via [`tools/glow_run.rish`](tools/glow_run.rish); desk witness GREEN — [`glow/README.md`](glow/README.md).
-- **TUBE / HAWM product edge** — installable NativeActivity APK (Sala fold), Pool admit, GrapheneOS-parallel Resource Scope (Storage · Contact), Network Grant, and Sensors Grant (including `OTHER_SENSORS` emission) — [`docs/TUBE.md`](docs/TUBE.md) · [`docs/HAWM.md`](docs/HAWM.md).
+- **Glow desk** — generator hops lower to Rye and run via [`tools/glow_run.rish`](tools/glow_run.rish); desk witness GREEN — [`glow/README.md`](glow/README.md).
+- **TUBE / HAWM product edge** — installable NativeActivity APK (Seva fold), Pool admit, GrapheneOS-parallel Resource Scope (Storage · Contact), Network Grant, and Sensors Grant (including `OTHER_SENSORS` emission) — [`docs/TUBE.md`](docs/TUBE.md) · [`docs/HAWM.md`](docs/HAWM.md).
 - **The module seeds** — the Rishi shell, Mantra, Comlink, Scribble, and the rest, each with its own `tools/*.rish` witness.
 - **The witness suite** — the parity gates in `tools/` that guard every push; state is proven on metal rather than asserted in prose.
 - **The enclosure** — editor inside a host fence where your machine supports it (macOS `sandbox-exec` guide: [`manual/guides/macos-ai-jail-setup.md`](manual/guides/macos-ai-jail-setup.md); this Framework host runs under ai-jail today, with a Glow-authored **Pond** enclosure in design to supersede it).
