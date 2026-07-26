@@ -12,7 +12,7 @@
 # tools/.cache/zig/ when ZIG_* unset (see parity_zig_cache_seat.sh).
 let _parity_seat = run ["sh" "tools/parity_zig_cache_seat.sh"]
 say _parity_seat.out
-let _parity_cost_boot = run ["sh" "-c" "mkdir -p tools/.cache/parity-cost && log=tools/.cache/parity-cost/current.tsv && if [ \"${PARITY_COST_RESET:-1}\" = 1 ]; then : > \"$log\"; fi && echo ch02 > tools/.cache/parity-cost/chapter && echo cost_boot_ok"]
+let _parity_cost_boot = run ["sh" "tools/parity_cost_boot.sh" "ch02"]
 let preflight = run ["sh" "tools/parity_time_one.sh" "preflight" "--" "sh" "tools/fixtures/wasmtime_preflight.sh"]
 assert preflight.ok else "wasmtime preflight script failed"
 if (preflight.out != "") then say preflight.out
