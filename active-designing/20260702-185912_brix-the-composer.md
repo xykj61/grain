@@ -4,7 +4,7 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Lens:** TAME — single-stranded; one thing per module; the region model
 **Status:** Design brief — Brix clarified as the head of a small ensemble
-**Reads with:** [`20260702-180812_the-small-sharp-toolset.md`](20260702-180812_the-small-sharp-toolset.md) · [`20260702-184312_the-grain-and-the-crossing.md`](20260702-184312_the-grain-and-the-crossing.md) · named ground: [`external-research/20260702-180812_userland-lineages.md`](../external-research/20260702-180812_userland-lineages.md)
+**Reads with:** [`20260702-180812_the-small-sharp-toolset.md`](yonder/20260702-180812_the-small-sharp-toolset.md) · [`20260702-184312_the-grain-and-the-crossing.md`](20260702-184312_the-grain-and-the-crossing.md) · named ground: [`external-research/20260702-180812_userland-lineages.md`](../external-research/20260702-180812_userland-lineages.md)
 
 *Written together by Kaeden and Reya 2; re-siloed with Rio 3.*
 

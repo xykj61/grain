@@ -8,7 +8,7 @@
 **Voice:** Quin  
 **Status:** Checkable — bound by `glow_run` · tokens mold-only peek  
 **Register:** Checkable (Two Rooms) — `shape-quad` dual GREEN · mold-only line budget ≤11 · mold twin kept  
-**Grounds in:** [`20260721-011244_stoa167-shape-triple-dual-desk.md`](20260721-011244_stoa167-shape-triple-dual-desk.md) · [`20260721-003129_stoa155-quad-shape-alias.md`](20260721-003129_stoa155-quad-shape-alias.md)
+**Grounds in:** [`20260721-011244_stoa167-shape-triple-dual-desk.md`](yonder/20260721-011244_stoa167-shape-triple-dual-desk.md) · [`20260721-003129_stoa155-quad-shape-alias.md`](yonder/20260721-003129_stoa155-quad-shape-alias.md)
 
 **dated_guard:** Do **not** rewrite dated mold briefs. Do **not** delete `mold-quad`. No whole-tree sed.
 
