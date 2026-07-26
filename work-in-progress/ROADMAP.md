@@ -20,6 +20,8 @@
 
 **Finishing edge:** clone · bootstrap · one witness · one `rishi glow` line ≤ 30 minutes.
 
+**Shell ratchet** (seated `20260726.032231`): `.sh` to Rishi on-touch; advisory count each advise run; exemptions: `rye/bootstrap.sh`, external-interpreter seams, python-heredoc witness bodies until duty-8 verbs land, thin-delegate elders.
+
 ---
 
 *May every newcomer reach a green line before the half-hour bell.*
