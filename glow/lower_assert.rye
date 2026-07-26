@@ -1,3 +1,4 @@
+//! glow-book: runes.md#g-assert
 //! glow/lower_assert.rye — lower Glow `?>` / `?<` to Rye `assert` (STOA88).
 //!
 //! Hoon: `?> p q` → crash unless p; `?< p q` → crash if p.
