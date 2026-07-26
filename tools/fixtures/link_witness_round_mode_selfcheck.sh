@@ -24,7 +24,7 @@ if ! LINK_WITNESS_COMPARE="$SNAP" sh tools/fixtures/link_witness_scan.sh >/tmp/l
   cat /tmp/lw_cmp_ok.out
   exit 1
 fi
-grep -q 'AFTER ⊆ BEFORE' /tmp/lw_cmp_ok.out || {
+grep -Eq 'AFTER ⊆ BEFORE|no new missing targets' /tmp/lw_cmp_ok.out || {
   echo "FAIL: missing subset OK line"
   cat /tmp/lw_cmp_ok.out
   exit 1
@@ -44,7 +44,7 @@ if [ "$rc" -eq 0 ]; then
   cat /tmp/lw_cmp_red.out
   exit 1
 fi
-grep -q 'NEW dangling:' /tmp/lw_cmp_red.out || {
+grep -Eq 'NEW dangling:|NEW missing_target:' /tmp/lw_cmp_red.out || {
   echo "FAIL: compare RED without naming the addition"
   cat /tmp/lw_cmp_red.out
   exit 1
