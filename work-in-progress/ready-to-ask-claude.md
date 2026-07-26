@@ -89,7 +89,7 @@
 
 **Claude `125200` (guidance `123700`):** residue close **affirmed** after six living tip→nib lines (anvil · mandi · active-designing README · seam-season guard · giving-lane-t2 guard). Order **holds** — host on-path → G1 → Pond. Pre-flight: stage sculpt image · after restore run `lane_kvm.sh refuse-probe` on host · parity pin-what-prints / red-twice parks. Giving-family naming **affirmed** for future creator gratuity. Jail kg refuse honored as the floor working.
 
-**Claude `130300`:** host one-shot **safe** (human-in-loop · verify-commit · read three scripts · porcelain silence). Lane inward: Route one **no teacher `--kvm`/`--dev`** (only `--gpu` uses `--dev-bind`; `--rw-map` is filesystem `--bind`) — study seated [`../active-designing/20260712-130300_lane-inward-route-probe.md`](../active-designing/20260712-130300_lane-inward-route-probe.md). Route two nest **parked** (module home + name). Sequencing word: host-first (default) vs Route two when spoken.
+**Claude `130300`:** host one-shot **safe** (human-in-loop · verify-commit · read three scripts · porcelain silence). Lane inward: Route one **no teacher `--kvm`/`--dev`** (only `--gpu` uses `--dev-bind`; `--rw-map` is filesystem `--bind`) — study seated [`../active-designing/20260712-130300_lane-inward-route-probe.md`](../active-designing/yonder/20260712-130300_lane-inward-route-probe.md). Route two nest **parked** (module home + name). Sequencing word: host-first (default) vs Route two when spoken.
 
 **Claude `144519` (handoff [`../bron-resins/20260712-143946_claude-afternoon-onpath-parity.bron`](../bron-resins/20260712-143946_claude-afternoon-onpath-parity.bron) · walked `ff35220` Good · study pin v1.12.0):** all four asks cleared. (1) **Park affirmed** — two reds in one full-suite sitting parks; doorway Status fix + `.err` observability is the right last mechanical close; nothing else in this sitting. (2) **argv-direct law affirmed** — assert `.ok` first, GREEN on the stream the tool speaks (`.err` for `std.debug.print`, `.out` for `say`); decline `run-environ` / mkdir builtins until a need a child process cannot serve. (3) **Order holds, sharpened** — after go: metal parity parked until a *fresh* Framework sitting whose **first act** is the re-pin; then G1 on word, Pond after. (4) **Route two stays parked** — graduation trigger: open when G1’s QEMU cadence makes the hand one-shot the bottleneck (lane’s second consumer), or at the autonomous-pipeline word, whichever first. Doorway FAIL on the `130300` note owned as counsel-seating miss caught by the suite.
 
@@ -152,7 +152,7 @@
 
 ## Brushstroke × Linengrow weave — **silo filed** (`20260712.091012`)
 
-**Silo:** [`../active-designing/20260712-091012_brushstroke-linengrow-weave-silo.md`](../active-designing/20260712-091012_brushstroke-linengrow-weave-silo.md) — six invariants; design-as-value token sheet; three glasses (web · Skate · Genode later).
+**Silo:** [`../active-designing/20260712-091012_brushstroke-linengrow-weave-silo.md`](../active-designing/yonder/20260712-091012_brushstroke-linengrow-weave-silo.md) — six invariants; design-as-value token sheet; three glasses (web · Skate · Genode later).
 
 **Palette (proposed seat):** Flax · Bark · Oat · Walnut — collision census in the silo (Flax = radiance prose only; Bark/Oat/Walnut clean).
 

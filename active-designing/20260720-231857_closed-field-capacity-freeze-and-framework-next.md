@@ -32,7 +32,7 @@
 
 Lean A kept saying “one more face — thinner than gold.” That sentence has no end. Nine fields is enough to pin the discipline; ten stays optional if a round-number capacity pin is ever wanted.
 
-**Withdrawn lean A:** [`20260720-231547_stoa148-deca-mold-gate.md`](20260720-231547_stoa148-deca-mold-gate.md) — map remains readable; not the next kg seat.
+**Withdrawn lean A:** [`20260720-231547_stoa148-deca-mold-gate.md`](yonder/20260720-231547_stoa148-deca-mold-gate.md) — map remains readable; not the next kg seat.
 
 ---
 

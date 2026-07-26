@@ -8,7 +8,7 @@
 **Voice:** Quin  
 **Status:** Checkable — bound by `lower_mold` · `lower_named_cast` witnesses · welcome binaries exit 0  
 **Register:** Checkable (Two Rooms) — `$%` payload emit GREEN; NativeActivity claim wire stays product  
-**Grounds in:** [`20260721-180520_stoa187-pct-payload-at-thin.md`](20260721-180520_stoa187-pct-payload-at-thin.md) · [`20260721-175343_stoa184-ux-hex-lower-emit.md`](20260721-175343_stoa184-ux-hex-lower-emit.md)
+**Grounds in:** [`20260721-180520_stoa187-pct-payload-at-thin.md`](yonder/20260721-180520_stoa187-pct-payload-at-thin.md) · [`20260721-175343_stoa184-ux-hex-lower-emit.md`](yonder/20260721-175343_stoa184-ux-hex-lower-emit.md)
 
 **dated_guard:** Do **not** claim NativeActivity claim wire or fold rewrite. Prefer **send** of STOA186–188 when the pier should match the hand. JABS3 held.
 

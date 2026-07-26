@@ -9,7 +9,7 @@
 **Status:** Checkable — inventory seated `20260721.185942`  
 **Register:** Checkable (Two Rooms) — maps wrappers vs bodies; no Glow-authored vane body claimed  
 
-**Grounds in:** lean **B** in [`20260721-185137_stoa199-after-glow-fold-checkin.md`](20260721-185137_stoa199-after-glow-fold-checkin.md) · [`20260721-165732_stoa178-sala-b0-glow-gap-inventory.md`](20260721-165732_stoa178-sala-b0-glow-gap-inventory.md) · Pixel eyes [`20260721-185805_stoa199a-pixel-glow-fold-eyes.md`](20260721-185805_stoa199a-pixel-glow-fold-eyes.md)
+**Grounds in:** lean **B** in [`20260721-185137_stoa199-after-glow-fold-checkin.md`](yonder/20260721-185137_stoa199-after-glow-fold-checkin.md) · [`20260721-165732_stoa178-sala-b0-glow-gap-inventory.md`](20260721-165732_stoa178-sala-b0-glow-gap-inventory.md) · Pixel eyes [`20260721-185805_stoa199a-pixel-glow-fold-eyes.md`](yonder/20260721-185805_stoa199a-pixel-glow-fold-eyes.md)
 
 **dated_guard:** Do **not** claim the Pixel HAWM1 hex was produced by Glow-rune fold bodies. Prefer a named sub-lean before the first body code lap. JABS3 held.
 

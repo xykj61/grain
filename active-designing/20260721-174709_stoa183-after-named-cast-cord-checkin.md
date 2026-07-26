@@ -9,7 +9,7 @@
 **Status:** Checkable — lean **A** chosen `20260721.174747`; STOA182A still unsent  
 **Register:** Checkable (Two Rooms) — named-cast cord seated; thin `@ux` next  
 
-**Grounds in:** [`20260721-174530_stoa182-named-cast-cord.md`](20260721-174530_stoa182-named-cast-cord.md) · [`20260721-173800_stoa182-after-cord-lower-checkin.md`](20260721-173800_stoa182-after-cord-lower-checkin.md)
+**Grounds in:** [`20260721-174530_stoa182-named-cast-cord.md`](yonder/20260721-174530_stoa182-named-cast-cord.md) · [`20260721-173800_stoa182-after-cord-lower-checkin.md`](yonder/20260721-173800_stoa182-after-cord-lower-checkin.md)
 
 **dated_guard:** Do **not** claim `$%` `@t` or sala-event cast twins until a lean seats them. Elder Rye fold and JABS3 stay held. Prefer **send** of STOA182A before a long next lap when the pier should match the hand.
 

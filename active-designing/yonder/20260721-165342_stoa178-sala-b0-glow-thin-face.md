@@ -8,7 +8,7 @@
 **Voice:** Quin  
 **Status:** Checkable — lean **A** gap inventory GREEN `20260721.165732`  
 **Register:** Checkable (Two Rooms) — thin face + inventory seated; rewrite claim not yet witnessed in Glow  
-**Grounds in:** [`20260721-014926_stoa177-after-multifield-cast-checkin.md`](../20260721-014926_stoa177-after-multifield-cast-checkin.md) · inventory [`20260721-165732_stoa178-sala-b0-glow-gap-inventory.md`](../20260721-165732_stoa178-sala-b0-glow-gap-inventory.md) · Phase G · [`../linengrow/sala_b0_fold.rye`](../../linengrow/sala_b0_fold.rye) · [`../docs/JABS.md`](../../docs/JABS.md)
+**Grounds in:** [`20260721-014926_stoa177-after-multifield-cast-checkin.md`](20260721-014926_stoa177-after-multifield-cast-checkin.md) · inventory [`20260721-165732_stoa178-sala-b0-glow-gap-inventory.md`](../20260721-165732_stoa178-sala-b0-glow-gap-inventory.md) · Phase G · [`../linengrow/sala_b0_fold.rye`](../../linengrow/sala_b0_fold.rye) · [`../docs/JABS.md`](../../docs/JABS.md)
 
 **dated_guard:** Do **not** rewrite dated JABS0 / HAWM1 / STOA72–73 records. Elder Rye fold stays until a Glow path earns the same root. JABS3 stays a separate thicker check-in. No whole-vane dump from `old/`.
 

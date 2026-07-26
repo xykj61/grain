@@ -9,7 +9,7 @@
 **Status:** Checkable — inventory seated `20260721.193220`  
 **Register:** Checkable (Two Rooms) — maps replay guts vs product wraps; no Glow-authored replay vane claimed  
 
-**Grounds in:** lean **C** in [`20260721-190850_stoa205-after-digest-honesty-checkin.md`](20260721-190850_stoa205-after-digest-honesty-checkin.md) · [`20260721-185942_stoa200-vane-body-inventory.md`](20260721-185942_stoa200-vane-body-inventory.md) · STOA196/202/201/204
+**Grounds in:** lean **C** in [`20260721-190850_stoa205-after-digest-honesty-checkin.md`](yonder/20260721-190850_stoa205-after-digest-honesty-checkin.md) · [`20260721-185942_stoa200-vane-body-inventory.md`](20260721-185942_stoa200-vane-body-inventory.md) · STOA196/202/201/204
 
 **dated_guard:** Compose landed as STOA211. FactFields/amount parse still elder (C2). JABS3 held.
 

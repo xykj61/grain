@@ -8,7 +8,7 @@
 **Voice:** Quin  
 **Status:** Checkable — bound by `glow_run` desks · inventary in this brief  
 **Register:** Checkable (Two Rooms) — inventary seated · `shape-amount` dual GREEN · mold twins kept  
-**Grounds in:** [`20260721-005729_stoa161-shape-rename-checkin.md`](20260721-005729_stoa161-shape-rename-checkin.md) · [`20260720-223226_glow-os-shape-not-mold.md`](20260720-223226_glow-os-shape-not-mold.md) · [`20260720-234340_stoa148-amount-shape-alias.md`](20260720-234340_stoa148-amount-shape-alias.md)
+**Grounds in:** [`20260721-005729_stoa161-shape-rename-checkin.md`](yonder/20260721-005729_stoa161-shape-rename-checkin.md) · [`20260720-223226_glow-os-shape-not-mold.md`](20260720-223226_glow-os-shape-not-mold.md) · [`20260720-234340_stoa148-amount-shape-alias.md`](20260720-234340_stoa148-amount-shape-alias.md)
 
 **dated_guard:** Do **not** rewrite dated mold briefs. Do **not** delete `mold-*` desks this lap. Do **not** whole-tree sed or force-push. Hoon study word **mold** stays.
 
