@@ -5,12 +5,12 @@
 **Stamp:** `20260710.140500`
 **Voice:** Rio 3
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Lens:** TAME · [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md) · Gall · Hammock
+**Lens:** TAME · [SLC](../../context/SIMPLE_LOVABLE_COMPLETE.md) · Gall · Hammock
 **Status:** Design + wire + query/forge views through device + unified — checkable-room hammock; forge query device **256**; climb tip through **267** (`182502`)
 
-**Ground:** counsel [`005612`](../counsel/20260707-005612_claude-counsel-tablecloth-query.md) · Hyperfiddle gratitude [`../gratitude/hyperfiddle.md`](../gratitude/hyperfiddle.md) · Weave essay [`../foundations/20260629-063512_the-graph-beneath-the-surface.md`](../foundations/20260629-063512_the-graph-beneath-the-surface.md) · NS brief [`20260706-023912_the-referential-namespace.md`](20260706-023912_the-referential-namespace.md) · Realidream thin-view exception [`../context/specs/20260709-225343_thin-view-dexter-exception.md`](../context/specs/20260709-225343_thin-view-dexter-exception.md)
+**Ground:** counsel [`005612`](../../counsel/20260707-005612_claude-counsel-tablecloth-query.md) · Hyperfiddle gratitude [`../gratitude/hyperfiddle.md`](../../gratitude/hyperfiddle.md) · Weave essay [`../foundations/20260629-063512_the-graph-beneath-the-surface.md`](../../foundations/20260629-063512_the-graph-beneath-the-surface.md) · NS brief [`20260706-023912_the-referential-namespace.md`](../20260706-023912_the-referential-namespace.md) · Realidream thin-view exception [`../context/specs/20260709-225343_thin-view-dexter-exception.md`](../../context/specs/20260709-225343_thin-view-dexter-exception.md)
 
-**Direction:** [`../work-in-progress/ROADMAP.md`](../work-in-progress/ROADMAP.md) · [`../work-in-progress/TASKS.md`](../work-in-progress/TASKS.md)
+**Direction:** [`../work-in-progress/ROADMAP.md`](../../work-in-progress/ROADMAP.md) · [`../work-in-progress/TASKS.md`](../../work-in-progress/TASKS.md)
 
 ---
 

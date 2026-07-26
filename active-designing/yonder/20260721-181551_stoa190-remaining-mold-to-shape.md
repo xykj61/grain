@@ -8,7 +8,7 @@
 **Voice:** Quin  
 **Status:** Checkable — bartis · barket · nest · shape witnesses · glow_run  
 **Register:** Checkable (Two Rooms)  
-**Grounds in:** [`20260721-180917_stoa189-shapespec-api-rename.md`](yonder/20260721-180917_stoa189-shapespec-api-rename.md)
+**Grounds in:** [`20260721-180917_stoa189-shapespec-api-rename.md`](20260721-180917_stoa189-shapespec-api-rename.md)
 
 **dated_guard:** Do **not** rewrite dated STOA mold briefs. Hoon-study `*-mold` spellings stay under `glow/gen/hoon-study/`.
 

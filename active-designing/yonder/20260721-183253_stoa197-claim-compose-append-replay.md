@@ -9,7 +9,7 @@
 **Status:** Checkable — GREEN `20260721.183253`  
 **Register:** Checkable (Two Rooms) — compose GREEN; NativeActivity pack GREEN; Glow-authored fold body held  
 
-**Grounds in:** [`20260721-183126_stoa196-replay-thin-port.md`](20260721-183126_stoa196-replay-thin-port.md) · [`20260721-175857_stoa185-glow-sala-b0-claim-shell.md`](20260721-175857_stoa185-glow-sala-b0-claim-shell.md) · STOA191 wire
+**Grounds in:** [`20260721-183126_stoa196-replay-thin-port.md`](20260721-183126_stoa196-replay-thin-port.md) · [`20260721-175857_stoa185-glow-sala-b0-claim-shell.md`](../20260721-175857_stoa185-glow-sala-b0-claim-shell.md) · STOA191 wire
 
 **dated_guard:** Do **not** rewrite elder `sala_b0_fold`. Fixture no longer imports claim (cycle break). JABS3 held.
 

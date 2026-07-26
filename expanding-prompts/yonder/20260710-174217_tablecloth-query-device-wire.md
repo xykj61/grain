@@ -2,7 +2,7 @@
 
 **Stamp:** `20260710.174217`
 **Status:** Landed — parity **246**
-**Ground:** hammock [`../active-designing/20260710-140500_comlink-view-filter-not-graphql.md`](../active-designing/20260710-140500_comlink-view-filter-not-graphql.md) · hosted wire `140500`
+**Ground:** hammock [`../active-designing/20260710-140500_comlink-view-filter-not-graphql.md`](../../active-designing/yonder/20260710-140500_comlink-view-filter-not-graphql.md) · hosted wire `140500`
 
 ## Lap
 
