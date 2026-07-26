@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260726.025926` — [Sixteen hot · ROUND MODE · buckets · mono RED](20260726-025926_sixteen-hot-round-mode-buckets-mono.bron) — X GREEN · Y reported · Z pathspec · STOP T2 strike  
 - `20260726.024245` — [T0 link_witness GREEN · T1 census · STOP T2](20260726-024245_t0-link-witness-t1-census-stop-t2.bron) — baseline dangling=2544 · waymark word-corpus · await Keaton  
 - `20260726.022123` — [Cheap-hour STOP · missing 014013 create half](20260726-022123_cheap-hour-stop-missing-014013.bron) — four of five filed · Q–V hold  
 - `20260726.014009` — [Parity F RED · signed-Kumara submodule](20260726-014009_parity-f-red-signed-kumara.bron) — wasmtime GREEN · monocypher submodule init failed · H held  
