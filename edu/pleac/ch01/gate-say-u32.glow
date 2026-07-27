@@ -1,0 +1,5 @@
+::  PLEAC chapter one, recipe two — the gate that speaks (PLEAC 1.2).
+::  say answers its sample aloud on stdout; the value finally has a voice.
+::  say is argv-only by design; the fixture road refuses it honestly.
+|=  sample=@u32
+%-  say  sample
