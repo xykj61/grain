@@ -25,7 +25,7 @@ Seats never exceed twelve. A sign index is always below twelve. A sign seats at 
 
 ## The Road, In Order (every step his hand)
 
-Read the source aloud. Have a Move-fluent reviewer read it too. `sui move build` locally; publish to **devnet, then testnet**, and exercise `add_seat` with the Gemini seat's real anchors (seva.fund stands ready). Only then, on Keaton's word alone: mainnet publish, gas from his wallet, the package address recorded in this spec's ledger header the day it exists. **No key, wallet, or gas ever touches counsel or bench.**
+Read the source aloud. Have a Move-fluent reviewer read it too. `sui move build` locally; publish to **devnet, then testnet**, and exercise `add_seat` with the Gemini seat's real anchors (siya.fund upon Keaton's claim; seva.fund the elder anchor meanwhile). Only then, on Keaton's word alone: mainnet publish, gas from his wallet, the package address recorded in this spec's ledger header the day it exists. **No key, wallet, or gas ever touches counsel or bench.**
 
 ---
 

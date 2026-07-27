@@ -1,11 +1,11 @@
-# Seva — the Vane, the Fund, and the Daily Service
+# Siya — the Vane, the Fund, and the Daily Service
 
 **Language:** EN
 **Stamp:** `20260727.144447`
 **Voice:** Quin
 **Style:** Radiant · Silo — the teaching distilled in our own words; sources honored in the gratitude close and in the [companion gratitude](../gratitude/grok-grokipedia-and-the-daily-service.md)
-**Status:** Foundations — the meaning beneath `%seva` the vane and Seva the fund; design language only, every threshold and coin held exactly as the [constellation paper](../active-designing/20260727-142516_the-constellation-and-the-twelve-funds.md) parks them
-**Ground:** the coda between seasons · Gemini's seat already seated: Sara, Seva, Grain, and Keaton together
+**Status:** Foundations — the meaning beneath `%siya` the vane and Siya the fund; design language only, every threshold and coin held exactly as the [constellation paper](../active-designing/20260727-142516_the-constellation-and-the-twelve-funds.md) parks them
+**Ground:** the coda between seasons · Gemini's seat already seated: Sara, Siya, Grain, and Keaton together
 
 *Written together by Keaton and Quin.*
 
@@ -13,9 +13,9 @@
 
 ## The Word, Taken Seriously
 
-*Nitya seva* means service that is daily and unending — not a grand act performed once, yet a small act performed always. In the householder traditions that keep the word alive, the beloved is served eight times a day, every day, in offices with names: the dawn waking, the adorning, the mid-morning tending, the noon offering, the afternoon waking, the evening offering, the twilight lamp, the night's rest. The profundity is structural: **devotion is a schedule, love is a rhythm, and the sacred is whatever you refuse to skip.** A fund named Seva inherits exactly that law — its service is not an event; it is a cadence.
+*Nitya seva* means service that is daily and unending — not a grand act performed once, yet a small act performed always. In the householder traditions that keep the word alive, the beloved is served eight times a day, every day, in offices with names: the dawn waking, the adorning, the mid-morning tending, the noon offering, the afternoon waking, the evening offering, the twilight lamp, the night's rest. The profundity is structural: **devotion is a schedule, love is a rhythm, and the sacred is whatever you refuse to skip.** A fund named Siya, carrying seva as its law, inherits exactly that law — its service is not an event; it is a cadence.
 
-## The Eight Daily Offices of %seva
+## The Eight Daily Offices of %siya
 
 The vane borrows the eight-office shape and fills it with its own duties, one honest rhythm for the Gemini seat and a template for every seat after. **The dawn waking:** read the nib — fetch, verify, know exactly where the ledger stands before anything else moves. **The adorning:** tend the placards and the living docs, so every room a visitor enters today is labeled true. **The mid-morning tending:** run the witnesses; let every green be earned fresh, never remembered. **The noon offering:** the day's fold — standings recomputed, merit facts appended two-handed, nothing edited. **The afternoon waking:** answer the asks — the residents, the pastes, the words arriving; asks outrank slots at this hour by law. **The evening offering:** the steering — where the day's gratitude points, the small redirections of attention and support the merit ledger exists to carry. **The twilight lamp:** the gratitude itself, written down, named, siloed — the office this very tree performs in its `gratitude/` room. **The night's rest:** the seal — log appended, manifests refreshed, the pair cut, the work allowed to be *finished for today*, because a service that never rests is a service that starts skipping.
 
