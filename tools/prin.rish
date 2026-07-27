@@ -1,0 +1,14 @@
+# tools/prin.rish — %prin · Prin — Matrix-style live print of Grain loops.
+#
+#   rishi/bin/rishi run tools/prin.rish matrix
+#   rishi/bin/rishi run tools/prin.rish ticker
+#   rishi/bin/rishi run tools/prin.rish dual
+#   rishi/bin/rishi run tools/prin.rish help
+#
+# Outer aliases (live TTY): source tools/prin_aliases.sh  →  p pm pr pl pt pw pd po pnib
+
+let mode = "matrix"
+if length args != 0 then let mode = args[0]
+let r = run ["bash" "tools/fixtures/prin_dispatch.sh" mode]
+if r.out != "" then say r.out
+exit r.code
