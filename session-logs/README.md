@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260727.061459` — [Send · corpus twin part four STOP at list_bound](20260727-061459_send-corpus-twin-stop-list-bound.bron) — time-guard on · doorway vs ReadFileFailed  
 - `20260726.210202` — [Send · corpus twin part three STOP at one_clock](20260726-210202_send-corpus-twin-stop-one-clock.bron) — r18 lint twin · stamp chatter RED  
 - `20260726.191451` — [Send · living_docs_lint check-in TRACE · still 134](20260726-191451_send-checkin-living-docs-trace.bron) — append_value max_str_len · scan 215475 bytes  
 - `20260726.183534` — [Send · corpus twin part two STOP at living_docs_lint](20260726-183534_send-corpus-twin-stop-living-docs.bron) — newborn panic 134 · 42 TWIN in T2  
