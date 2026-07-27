@@ -1,0 +1,10 @@
+# Grain constellation — v1 registry (unaudited; deploys only by Keaton's hand).
+[package]
+name = "grain_constellation"
+edition = "2024.beta"
+
+[dependencies]
+Sui = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework/packages/sui-framework", rev = "framework/mainnet" }
+
+[addresses]
+grain_constellation = "0x0"
