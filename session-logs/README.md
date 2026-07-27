@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260727.153836` — [Send · unified twenty · Siya tip](20260727-153836_send-unified-twenty-siya.bron) — origin+codeberg · gen_home red named
 - `20260727.092049` — [Send · counsel ask five · .brush Brushstroke](20260727-092049_send-counsel-ask-brush-extension.bron) — CSS/Sail/glob gratitude silo  
 - `20260727.091628` — [Send · counsel asks Mantra/Weave/nib · Glow·Sui·Move](20260727-091628_send-counsel-asks-mantra-glow-sui.bron) — four asks · nib not tip  
 - `20260727.090646` — [Send · Prin %prin · counsel compiler+perf ask](20260727-090646_send-prin-counsel-perf-ask.bron) — matrix · verse ticker · aliases  
