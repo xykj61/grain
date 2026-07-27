@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260727.091628` — [Send · counsel asks Mantra/Weave/nib · Glow·Sui·Move](20260727-091628_send-counsel-asks-mantra-glow-sui.bron) — four asks · nib not tip  
 - `20260727.090646` — [Send · Prin %prin · counsel compiler+perf ask](20260727-090646_send-prin-counsel-perf-ask.bron) — matrix · verse ticker · aliases  
 - `20260727.082454` — [Send · r21 partial · Verse · Acme gloss · T5 mid-roster](20260727-082454_send-r21-partial-twin-slow.bron) — not stuck · slow stoa257 · 49 pending  
 - `20260727.073826` — [R21 partial · STOP at slc2a_ring3_metal](20260727-073826_r21-partial-stop-slc2a-ring3-metal.bron) — reclass NONDET-BUILD · continue  
