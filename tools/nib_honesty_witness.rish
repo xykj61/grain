@@ -1,0 +1,24 @@
+# tools/nib_honesty_witness.rish — the advertised edge keeps its promise.
+#
+# From the nib paper (r27): every advertised nib resolves, and where we are
+# is a named landed edge. For the one living family — the git nib pinned in
+# REMEMBER — the hard law asserts and the soft state narrates:
+#   HARD · the pin exists, resolves to a real commit, and is ancestor-or-
+#          equal of HEAD (a landed edge, never a floating claim)
+#   SOFT · AT-HEAD or BEHIND is reported, never failed — mid-paste the pin
+#          lawfully trails until the next pin ritual.
+
+let pin = run ["sh" "-c" "grep -oE '[0-9a-f]{10}' work-in-progress/REMEMBER.md | head -1 | tr -d '\n'"]
+assert pin.ok else "REMEMBER pin scan failed"
+assert pin.out != "" else "no git-nib pin found in REMEMBER — the advertised edge is missing"
+say "nib-honesty — advertised git nib: ${pin.out}"
+
+let resolves = run ["sh" "-c" "git cat-file -e ${pin.out} && echo yes || echo no"]
+assert resolves.out contains "yes" else "the advertised nib does not resolve — a floating claim, refused by name"
+
+let anc = run ["sh" "-c" "git merge-base --is-ancestor ${pin.out} HEAD && echo landed || echo astray"]
+assert anc.out contains "landed" else "the advertised nib is not on this history — refused by name"
+
+let state = run ["sh" "-c" "test ${pin.out} = $(git rev-parse --short=10 HEAD) && echo AT-HEAD || echo BEHIND"]
+say "nib-honesty — pin stands: ${state.out}"
+say "GREEN: nib-honesty — the advertised edge resolves and is landed."
