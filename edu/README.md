@@ -1,0 +1,16 @@
+# edu — Learning by Making
+
+**Language:** EN
+**Last updated:** 2026-07-27 (room opened)
+**Style:** Radiant
+**Status:** Living — the learning floor: puzzles, first steps, and worked examples
+
+---
+
+Three lanes, all teaching Glow and Grain by the hand:
+
+- **PLEAC lane** — the classic discipline of solving one shared cookbook of small problems in this language, one solution per page, each with its witness. Solutions accrete here as Glow grows the verbs to carry them.
+- **First steps** — the beginner's intro to programming *with* Grain and Glow, written for a reader's very first day, woven with [`../manual/`](../manual/README.md) (the manual teaches what runs; edu teaches the reader).
+- **Worked examples** — small Pool-and-desk applications in the spirit of the elder example collections, studied whole in gratitude and rebuilt clean-room here with our vocabulary.
+
+*May the first puzzle be small, the first success be quick, and the first reader want a second.*
