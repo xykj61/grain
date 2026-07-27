@@ -3,9 +3,10 @@
 **Language:** EN  
 **Stamp:** `20260727.090646`  
 **Voice:** Quin  
-**Status:** Reply — Prin seated on metal; four advice asks open for Claude  
+**Status:** Reply — Prin seated on metal; five advice asks open for Claude  
 **Amended:** `20260727.091628` — Keaton adds Mantra/Weave/nib · Brushstroke · Glow reimplementation · Kumara·Sui·Move DSL asks  
-**Ground:** pier `~/grain` · git nib `cd17595581` · r22 outside-eyes · Prin (`%prin`) · part six twin paused mid-T6  
+**Amended again:** `20260727.092049` — Keaton adds `.brush` Brushstroke design-file ask (CSS/Sail/glob as gratitude silo)  
+**Ground:** pier `~/grain` · git nib at send · r22 outside-eyes · Prin (`%prin`) · part six twin paused mid-T6  
 **Counsel model this ask targets:** Claude Opus (standing counsel)
 
 *Written together by Keaton and Quin.*
@@ -76,9 +77,22 @@ Keaton sketches a long arc and asks for counsel on shape and order, not a blank 
 
 ---
 
+## Advice ask five — `.brush` design files for Brushstroke (CSS as gratitude silo)
+
+Lexicon already coins **`.brush`** as “surface-description extension when Brushstroke earns a small language.” Keaton asks whether Grain should **support `.brush` file extensions** as Brushstroke design files — our own surface language for drawn values — with **CSS** held in gratitude as a siloed teacher (not a rail we ship).
+
+An agent’s raw paste from the Urbit docs search bar (`docs.urbit.org`) frames the elder parallel as two CSS homes, not one:
+
+1. **CSS inside Sail-rendered pages** — a separate agent arm (commonly `+style`) returns CSS as a cord via a fenced cord block (`''' … '''`), often under `^~` and `+trip` at compile time, then injected into Sail as `;style: {style}` (Sail HTML → “A note on CSS”).
+2. **CSS as part of a Landscape glob** — client-side package (`css/style.css` beside required root `index.html`); the desk’s docket points at the glob source (Glob → “The glob type”).
+
+**Ask:** Should Grain seat `.brush` as (a) an in-desk / in-core surface description that Brushstroke lowers (Sail-style: language-native, compile-time or expansion-time), (b) a packaged client asset beside glass/Landscape-analogue globs, (c) both with a clear seam, or (d) hold until Brushstroke’s drawn surface and Skate earn a thinner paper? What is the smallest honest first step — extension + one fixture, a gratitude CSS silo note, a Workshop Two round — and what must not be begun while `src/` · `edu/` · PLEAC and the twin still own the finishing edge? Name how `.brush` relates to nib-first Mantra/Weave speech from ask three.
+
+---
+
 ## What this reply does not seat
 
-No rename of parity to “compiler.” No performance rewrite. No Mantra/Weave/Brushstroke rename. No Move DSL, no Sui purchase, no vane nest begun. Prin is the watch; counsel owns the words. Custody and keys stay off this paste.
+No rename of parity to “compiler.” No performance rewrite. No Mantra/Weave/Brushstroke rename. No `.brush` parser, no CSS fork into the tree, no Move DSL, no Sui purchase, no vane nest begun. Prin is the watch; counsel owns the words. Custody and keys stay off this paste. Urbit CSS/Sail/glob text above is research paste for counsel — gratitude silo when kept, never a clean-room breach.
 
 ---
 
