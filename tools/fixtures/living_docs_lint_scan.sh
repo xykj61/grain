@@ -26,7 +26,7 @@ if [ "$roster_n" -eq 0 ]; then
 fi
 echo "living-docs lint: roster ${roster_n} paths"
 
-RETIRED='footgun|dead-peer|sanity check|empty plate|ungated diet|thin ring|product tip|suite tip|git tip|product_tip|suite_tip|git_tip'
+RETIRED='corpus|footgun|dead-peer|sanity check|empty plate|ungated diet|thin ring|product tip|suite tip|git tip|product_tip|suite_tip|git_tip'
 
 kept_line() {
   rel=$1
