@@ -1,0 +1,6 @@
+::  PLEAC chapter one, recipe one — the first gate a pilot writes. Stem law: gate-*-u32 stems accept one sample.
+::  A bartis takes one typed sample from argv and answers with its double.
+::  Shape proven by the corpus twin (STOA103 family); comments keep the
+::  column law: full-line from character zero.
+|=  sample=@u32
+%-  double  sample
