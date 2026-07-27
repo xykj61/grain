@@ -1,7 +1,7 @@
 # Tasks — living pin
 
 **Language:** EN  
-**Last updated:** `20260726.050422` (EDT) · voice Quin  
+**Last updated:** `20260727.074039` (EDT) · voice Quin  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Full season ledger:** [`archive/20260724-132812_tasks-season-ledger.md`](archive/20260724-132812_tasks-season-ledger.md)  
 **Align:** [`20260726-050422_align-before-cursor-handoff.md`](20260726-050422_align-before-cursor-handoff.md)
@@ -37,6 +37,7 @@
 | Mand ring-2 / Hands We Grow parks / `$:` `@u64` | check-in / later Glow |
 | Duty-8 shell migration | ratchet · on-touch |
 | Radiant pass | on-touch only |
+| Glow README · baked-sample Acme gloss | **landed** `20260727.074000` — fixture vs generator · Kumara personalization held as possible-not-proven |
 
 ---
 
