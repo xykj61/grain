@@ -3,8 +3,9 @@
 **Language:** EN  
 **Stamp:** `20260727.090646`  
 **Voice:** Quin  
-**Status:** Reply — Prin seated on metal; two advice asks open for Claude  
-**Ground:** pier `~/grain` · r22 outside-eyes commit ahead · part six twin still crawling (300s STOA timeouts) · Prin (`%prin`) just landed  
+**Status:** Reply — Prin seated on metal; four advice asks open for Claude  
+**Amended:** `20260727.091628` — Keaton adds Mantra/Weave/nib · Brushstroke · Glow reimplementation · Kumara·Sui·Move DSL asks  
+**Ground:** pier `~/grain` · git nib `cd17595581` · r22 outside-eyes · Prin (`%prin`) · part six twin paused mid-T6  
 **Counsel model this ask targets:** Claude Opus (standing counsel)
 
 *Written together by Keaton and Quin.*
@@ -33,7 +34,7 @@ cd ~/grain && source tools/prin_aliases.sh && pw
 # or two panes:  p   |   pt
 ```
 
-Part six twin remains in flight (slow native STOA witnesses · 300s timeouts). Prin reads the living TSV and process list; it does not own the loop.
+Part six twin was paused for the Prin send (T6 partial shipped). Prin reads the living TSV and process list; it does not own the loop. Living prose prefers **git nib** (never *tip*) for the very latest commit — Lexicon already seats this; Keaton reaffirms.
 
 ---
 
@@ -55,9 +56,29 @@ The corpus twin and native STOA witnesses often sit in **SLOW-BOTH** (elder and 
 
 ---
 
+## Advice ask three — Mantra · Weave · nib · Brushstroke
+
+With **nib** as the living emphasis (product nib · suite nib · **git nib** = HEAD — the very latest commit; *tip* retired forward-facing), Keaton asks how we should be thinking about **Mantra** and **Weave** now, and about **Brushstroke** beside them.
+
+**Ask:** Under a nib-first story (the pen’s landed edge, not a floating tip), what is the clean relationship among Mantra (version-control projection), Weave (append-only accretion), and Brushstroke (drawn surface · values to pixels)? What changes in Acme speech, module order, or Workshop Two rounds — if anything — once “where we are” always means a named nib rather than a tip metaphor? Name parks vs next design papers.
+
+---
+
+## Advice ask four — Glow reimplementation · Kumara·Sui · Move DSL · DLT vanes
+
+Keaton sketches a long arc and asks for counsel on shape and order, not a blank check to begin:
+
+1. **Reimplement in Glow** following the design patterns that already work — **PLEAC** success with Glow · **edu** success with Glow · stdlib and OS `src/` documentation with Glow · user flight-manual instructions for running and setting up with Glow.
+2. **Kumara ↔ Sui** interaction expressed in Glow (identity seam; purchases/wallets/custody stay Keaton’s own hand — design papers only).
+3. **Plan** (not begin) a **Glow DSL** that transpiles to **Move** for Sui, nested in one of our vanes, with best practices for **Glow · Sui · Mycelium · MALA · WOV** smart-contract shape — a Quin Radiant TAME Glow DSL spanning **Grain DLT** and **Sui DLT**.
+
+**Ask:** Is this one arc or several? Which vane (or new coin) should host a Move-emit DSL if we ever seat it? What is the smallest honest first paper after Workshop Two’s Kumara rounds (study · contract shape · Acme-generic onboarding), and what must stay parked until Glow’s userland (`src/` · `edu/` · PLEAC) and the twin campaign close? Name the order: docs patterns → Kumara·Sui study → Move DSL hammock → any vane nest — or refuse the bundling.
+
+---
+
 ## What this reply does not seat
 
-No rename of parity to “compiler.” No performance rewrite. No kill of the part-six loop. Prin is the watch; counsel owns the words.
+No rename of parity to “compiler.” No performance rewrite. No Mantra/Weave/Brushstroke rename. No Move DSL, no Sui purchase, no vane nest begun. Prin is the watch; counsel owns the words. Custody and keys stay off this paste.
 
 ---
 
