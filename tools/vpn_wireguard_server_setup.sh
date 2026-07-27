@@ -25,6 +25,19 @@
 set -euo pipefail
 
 CLIENT_PUBKEY="${1:-}"
+CONFIRM="${2:-}"
+# Dangerous-script law (outside-eyes round, 20260727.083402): validate before
+# privilege, plan by default, act only on an explicit --yes.
+if [ -n "$CLIENT_PUBKEY" ] && ! printf '%s' "$CLIENT_PUBKEY" | grep -Eq '^[A-Za-z0-9+/]{43}=$'; then
+  echo "refuse: first argument is not a plausible WireGuard public key (44-char base64 ending '=')" >&2
+  exit 1
+fi
+if [ "$CONFIRM" != "--yes" ]; then
+  echo "plan only (no changes made): this script would install wireguard, write /etc/wireguard/wg0.conf"
+  echo "with the peer key above, enable forwarding and firewall rules, and start wg-quick@wg0."
+  echo "re-run with a second argument --yes on the intended host to proceed."
+  exit 0
+fi
 if [ -z "$CLIENT_PUBKEY" ]; then
   cat <<'EOF' >&2
 Usage: bash vpn_wireguard_server_setup.sh <client-public-key>

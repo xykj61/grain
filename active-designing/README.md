@@ -1,7 +1,7 @@
 # The Active-Designing Stack
 
 **Language:** EN
-**Last updated:** 2026-07-18 (SETU6 lab harness `201232`)
+**Last updated:** 2026-07-27 (`20260727.083402` — the workshop era named; roster refreshed; the Book and the season lanes mapped)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Foundation
 
@@ -19,13 +19,17 @@ This file, `README.md`, is the foundation stone. It rests at the bottom of the s
 
 One rule governs everything here, and it is the reason this folder stands apart: **active-designing names only what is ours, and one fixed external.**
 
-The names we may use are our own chosen modules — **TAME, Aurora, Rye, Brix, Tablecloth, Tally, Caravan, Weave, Mantra, Pond, Rishi, Comlink, Brushstroke, Dexter, Kumara, Bookie**, and any future names we coin — together with **RISC-V**, the open instruction set we build upon and treat as solid ground. Inspired systems, admired tools, and ancestor languages keep their names in external-research and gratitude; here the design speaks only our own vocabulary.
+The names we may use are our own chosen modules — **Grain, TAME, Aurora, Rye, Glow, Brix, Tablecloth, Tally, Caravan, Weave, Mantra, Pond, Pool, Rishi, Comlink, Brushstroke, Dexter, Kumara, Bookie, Granary, Mandi, Amber, the Verse**, and any future names we coin — together with **RISC-V**, the open instruction set we build upon and treat as solid ground. Inspired systems, admired tools, and ancestor languages keep their names in external-research and gratitude; here the design speaks only our own vocabulary.
 
 This is silo as a kindness to clarity. Outside ideas enter only as **concepts**, stripped of their origin and weighed on their own merits — a region of memory, a content-addressed store, a supervision tree, a lawful combinator. By refusing the borrowed name, we force ourselves to understand the idea well enough to restate it plainly, and we keep our design space free of any genealogy that might quietly smuggle in assumptions we never chose. What grows here grows on its own roots.
 
 The discipline is simple to check: read any line aloud, and if it names something outside our own work or RISC-V, it belongs in the external-research stack instead.
 
 ---
+
+## The Workshop Era (accreted 2026-07-27)
+
+Three residents joined this folder after the foundation above was laid, and each keeps the silo law whole. **`docs/glow/`** is the Glow Book — the language's six anchored pages with their gate witness, landed by the first workshop's C2 create. **`quin-workshop/`** is a season lane: a workshop branch's working home, holding its charter's creates, the newborn shell and driver under proof, and **`creates/for-main/`**, the mirror of every path a paste will land on main — files travel from there by copy, gated by the manifests, seated only by Keaton's paste. **`yonder/`** holds designs resting beyond the current horizon. A season closes; its lane remains as record; the next season opens its own round counter on the same branch. The verse of this folder is therefore layered on purpose: foundations at the bottom, living design in the middle, season lanes alongside — one clean room, several benches.
 
 ## Two Folders, Two Purposes
 
