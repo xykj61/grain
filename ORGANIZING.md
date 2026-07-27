@@ -3,7 +3,7 @@
 *A durable guide to where work lives, how new writing earns its place, and how the tree stays honest over time.*
 
 **Language:** EN
-**Last updated:** 2026-07-24 (waymarks · counsel/replies · Aparigraha braid `143155`)
+**Last updated:** 2026-07-27 (`20260727.064038` — src/ Glow userland and edu/ opened as O1 skeleton)
 **Style:** Radiant (see `context/RADIANT_STYLE.md`)
 **Voice:** Quin
 
@@ -61,6 +61,10 @@ Read the sections below when you wonder where a new file belongs. When a season'
 
 **Module homes** — [`rye/README.md`](rye/README.md) · [`rishi/README.md`](rishi/README.md) · [`tally/README.md`](tally/README.md) · [`caravan/README.md`](caravan/README.md) · [`mantra/README.md`](mantra/README.md) · [`comlink/README.md`](comlink/README.md) · [`pond/README.md`](pond/README.md) · [`aurora/README.md`](aurora/README.md) · [`brushstroke/`](brushstroke/) · [`linengrow/`](linengrow/) (vision until graduation), and the rest: each grows a seed toward a running whole.
 
+**`src/`** — the Glow **userland**: code written in Glow, five rooms — `til/` tilaks (the type-marks), `sur/` structures (the data-shape museum), `app/` Pool agents, `gen/` generators, `lib/` shared gates. The Glow *implementation* (tokenizer, runes, lowerers — Rye) stays at `glow/`; the desks stay at `glow/gen/` until the O2–O3 breach is declared and witnessed (design in counsel; law in `context/BREACH.md`). Opened as O1 skeleton `20260727.064038`.
+
+**`edu/`** — the learning floor: the PLEAC puzzle lane, the beginner's first steps with Grain and Glow, and clean-room worked examples in the spirit of the elder collections (studied whole in gratitude). The manual teaches what runs; edu teaches the reader.
+
 **`GLOW_HOST.bron`** — Grain's own root host-and-toolchain config, the sibling in Bron to `.claude/rules`/`.cursor/rules` (those configure agent behavior; this configures the host). Copy [`GLOW_HOST.template.bron`](GLOW_HOST.template.bron) to `GLOW_HOST.bron` (gitignored, personal) and fill in this host's own `os`/`arch`/`rye_zig`/`rye_lib`. [`tools/glow_host_run.sh`](tools/glow_host_run.sh) reads it and refuses to run rather than silently reach for a mismatched toolchain on `PATH` — see [`context/specs/20260714-011504_glow-host-config-and-vpn-reification.md`](context/specs/20260714-011504_glow-host-config-and-vpn-reification.md).
 
 **`GLOW_PROFILE.bron`** — Grain's own root contributor-profile config, sibling to `GLOW_HOST.bron`. Where `GLOW_HOST.bron` declares the *host*, this declares the *contributor*: the professional name that signs the work, forge handles, the clock stamps come from, and the editor/model/voice defaults for session logs. It lets the reader-facing docs stay generically addressed (to a generic Acme Corporation employee) while the specifics live in one loadable place. Copy [`GLOW_PROFILE.template.bron`](GLOW_PROFILE.template.bron) to `GLOW_PROFILE.bron` (gitignored, personal); canonical public fingerprints stay in `PUBKEYS.md`, which the profile points at rather than copies. Seated at [`context/specs/20260714-015200_glow-profile-and-acme-generic-voice.md`](context/specs/20260714-015200_glow-profile-and-acme-generic-voice.md).
@@ -87,7 +91,8 @@ Read the piece aloud. Ask what it is *doing*:
 - **Expanding intent into a runnable plan** → `expanding-prompts/`.
 - **Tracking what is open or next** → `work-in-progress/`.
 - **Recording what a session settled** → `session-logs/`.
-- **Implementing** → the module the code belongs to.
+- **Implementing** → the module the code belongs to; **code written in Glow** → `src/` (its five rooms), with `glow/` reserved for the language's own implementation.
+- **Teaching a beginner or solving the shared puzzle book** → `edu/`.
 
 If two folders seem right, choose the one whose README you would update first. If still unsure, write a one-line note in `work-in-progress/TASKS.md` open questions and place the file where a future reader will look first.
 
