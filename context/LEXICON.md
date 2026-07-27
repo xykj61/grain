@@ -1,7 +1,7 @@
 # Lexicon — Module Names and Their Meanings
 
 **Language:** EN
-**Last updated:** 2026-07-27 (**Prin / %prin** Matrix live printer · Grain umbrella living)
+**Last updated:** 2026-07-25 (**Grain** umbrella living · Survey seated · inventary retired for living *Now*)
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 
 ---
@@ -32,7 +32,6 @@ Living vocabulary for the Grain family (Glow language · Grain umbrella). Each n
 | **Generator** (Glow) | A Glow program whose **sample** arrives from outside (Rishi argv / typed hand-off) — Urbit `/gen` parallel. GREEN for cast `sample-u32` (STOA92) and bartis `gate-sample-u32` (STOA101); fixtures remain beside generators. Seated `20260719.204001` · Acme hand [`../expanding-prompts/20260719-204001_glow-fixture-desks-and-parameterized-generators.md`](../expanding-prompts/20260719-204001_glow-fixture-desks-and-parameterized-generators.md) |
 | **Sample** (Glow) | The typed argument face of a Glow gate (`\|=`). Not an itinerary word. Seated `20260719.204001` |
 | **Witness** | A program that proves a claim on metal and answers green or red — the trio (`parity.rish`, `parity-selftest.rish`, `additive-gate.rish`) guards every push |
-| **Prin** / **%prin** | Matrix-style live outer-terminal printer for Grain loops — twin ledgers, live rishi/rye workers, optional foundations+edu verse ticker beside it. Aliases via `tools/prin_aliases.sh` (`p` `pt` `pw` …). Seated `20260727.090646` — [`../tools/prin.rish`](../tools/prin.rish) · counsel ask [`../counsel/replies/20260727-090646_re-prin-loop-parity-compiler-and-perf.md`](../counsel/replies/20260727-090646_re-prin-loop-parity-compiler-and-perf.md) |
 | **Claim** | A bounded, falsifiable proposition one witness binds — lap, seam, or invariant; [`external-research/20260704-024900_claim.md`](../external-research/20260704-024900_claim.md) |
 | **Two rooms** | Every sentence is checkable or visionary, and says which at the door — [`TWO_ROOMS.md`](TWO_ROOMS.md) · seated `20260705.203144` |
 | **Canonical** | The single authoritative place or form the tree cites — [`specs/20260705-203144_canonical-glosses.md`](specs/20260705-203144_canonical-glosses.md) |
@@ -204,6 +203,9 @@ Full loop bounds: [`work-in-progress/ready-to-ask-claude.md`](../work-in-progres
 | **`.brush`** | Surface-description extension when Brushstroke earns a small language |
 
 | **Verse** | Seated `20260727.065835` on Keaton's word — the contributed body of this work: the teachings, the manual (the flight manual of the ship), the docs, and the proven witness scripts whose sung agreement is the specification (*the verse is the specification*). Retires forward-facing **corpus** (duty-1 roster wired; sealed dated artifacts and the `corpus-twin-verdicts` family keep their bytes and names). Round history: chorus · shruti · samhita · canon offered, verse chosen. Source silo: [`../gratitude/o-me-o-life-and-the-dead-poets-scene.md`](../gratitude/o-me-o-life-and-the-dead-poets-scene.md) · [`../foundations/20260727-065835_the-verse.md`](../foundations/20260727-065835_the-verse.md) |
+
+| **Vegan-dogfood** | Seated `20260727.131234` on Keaton's word — eating our own cooking, kindly: proving the Glow stdlib and `src/` rooms by building our own apps on them first. The only acceptable use of the word "dogfood" in this tree. |
+| **Anvil (retired)** | Retired with honor `20260727.131234` on Keaton's word — the app rests, never deleted, its name released in tribute to Anvil of [debrided]; the tribute lands in the Magazine's first issue (Nakshatra Arc V). |
 
 ---
 
