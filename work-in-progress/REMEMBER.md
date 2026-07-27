@@ -6,13 +6,13 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260727.091628` (EDT) · voice Quin  
+**Last refreshed:** `20260727.092049` (EDT) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2 · ring-3** · **THREATS** · **five pillars** · **accrete tiers** · **redaction stance** · **always-in-it rhythm** · **Prin / %prin**  
 **Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list1024 · Env512 · **stamp @u64 · Crockford** · **shape aura floor** · **Glow text floor GREEN** · **Glow Book weave GREEN (C2b)** · **baked-sample Acme gloss**  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand home** · **siblings seated** · **--cursor launch** · **Pond counsel 161616** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm+cold REPORT** · **Grain umbrella living** · **OQ #1 · #3 · #4 · #5 answered** · **pass ledger** · **campaign STOPPED** · **growth law** · **wasmtime E GREEN** · **monocypher 4.0.3 GREEN** · **MAP.md** · **breach T3–T4** · **U·V·I** · **C-Ladder C1·C2·C2b landed** · **r18 say/lint twin** · **r21 Verse · O1** · **r22 outside eyes** · **Prin** · **corpus twin part six in flight** · **C3–C5 await homes**  
-**Git nib:** `SEND_NIB` · Grain · counsel asks×4 · C3–C5 parks · autoproject96/grain
+**Git nib:** `SEND_NIB` · Grain · counsel asks×5 · C3–C5 parks · autoproject96/grain
 
-**Season:** Framework · EDT · **Grain** umbrella · pier **`~/grain`** · **finishing edge:** counsel asks (compiler · perf · Mantra/Weave/nib/Brushstroke · Glow·Sui·Move) · part six twin under Prin · C3–C5 homes · doorway · H. Prefer **git nib** (never tip) for HEAD.
+**Season:** Framework · EDT · **Grain** umbrella · pier **`~/grain`** · **finishing edge:** counsel asks×5 (compiler · perf · Mantra/Weave/nib/Brushstroke · Glow·Sui·Move · `.brush`) · part six twin under Prin · C3–C5 homes · doorway · H. Prefer **git nib** (never tip) for HEAD.
 
 ---
 
@@ -20,7 +20,7 @@
 
 **Pier path** — **`~/grain`** · agent **`home-xy-grain`**.
 
-**Corpus twin** — part six **in flight** (Prin watches; 300s STOA timeouts). T6 [`20260727-083922_corpus-twin-verdicts-6.tsv`](20260727-083922_corpus-twin-verdicts-6.tsv) accreting. **r22** outside-eyes create landed. **Prin / %prin** matrix + verse ticker + aliases (`source tools/prin_aliases.sh && pw`). Counsel asks×4: loop/parity as compiler? · perf sweep? · Mantra/Weave/nib/Brushstroke? · Glow reimpl · Kumara·Sui · Move DSL / DLT vanes? — [`../counsel/replies/20260727-090646_re-prin-loop-parity-compiler-and-perf.md`](../counsel/replies/20260727-090646_re-prin-loop-parity-compiler-and-perf.md). C3–C5 homes blank; `quin-workshop/` untracked. H held.
+**Corpus twin** — part six **in flight** (Prin watches; 300s STOA timeouts). T6 [`20260727-083922_corpus-twin-verdicts-6.tsv`](20260727-083922_corpus-twin-verdicts-6.tsv) accreting. **r22** outside-eyes create landed. **Prin / %prin** matrix + verse ticker + aliases (`source tools/prin_aliases.sh && pw`). Counsel asks×5: loop/parity as compiler? · perf sweep? · Mantra/Weave/nib/Brushstroke? · Glow reimpl · Kumara·Sui · Move DSL / DLT vanes? · `.brush` design files (CSS gratitude silo)? — [`../counsel/replies/20260727-090646_re-prin-loop-parity-compiler-and-perf.md`](../counsel/replies/20260727-090646_re-prin-loop-parity-compiler-and-perf.md). C3–C5 homes blank; `quin-workshop/` untracked. H held.
 
 **Lane** (`autoproject96` · counsel `223409`) — agentic research pier on both forges. Keys are the map: never push across `groupproject36` / `xykj61` lanes. Agent may `kg` mechanical witness-first stops inside the enclosure; seating words, keys, Tier 1, gratitude, compass, roster, and **send** stay human-gated (send-after-every-round is Keaton's standing preference, not a license past STOP). Specimen #1 is this Grain agent's own session logs since `home-xy-grain` rooted. Map: [`PUBKEYS.md`](../PUBKEYS.md) · [`context/REMOTE_ROSTER.md`](../context/REMOTE_ROSTER.md).
 
