@@ -202,6 +202,8 @@ Full loop bounds: [`work-in-progress/ready-to-ask-claude.md`](../work-in-progres
 | **`.peal`** | Compressed audio mark — Opus-in-Ogg beneath, our own four-letter name (distinct from Claude Opus); first audio bytes at `anvil/anvil.peal` — [`../gratitude/OpusOggXiph.md`](../gratitude/OpusOggXiph.md) |
 | **`.brush`** | Surface-description extension when Brushstroke earns a small language |
 
+| **Verse** | Seated `20260727.065835` on Keaton's word — the contributed body of this work: the teachings, the manual (the flight manual of the ship), the docs, and the proven witness scripts whose sung agreement is the specification (*the verse is the specification*). Retires forward-facing **corpus** (duty-1 roster wired; sealed dated artifacts and the `corpus-twin-verdicts` family keep their bytes and names). Round history: chorus · shruti · samhita · canon offered, verse chosen. Source silo: [`../gratitude/o-me-o-life-and-the-dead-poets-scene.md`](../gratitude/o-me-o-life-and-the-dead-poets-scene.md) · [`../foundations/20260727-065835_the-verse.md`](../foundations/20260727-065835_the-verse.md) |
+
 ---
 
 *May each name carry its idea. May the lexicon grow only when a name earns its place.*
