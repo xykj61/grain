@@ -4,6 +4,8 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260727.082454` — [Send · r21 partial · Verse · Acme gloss · T5 mid-roster](20260727-082454_send-r21-partial-twin-slow.bron) — not stuck · slow stoa257 · 49 pending  
+- `20260727.073826` — [R21 partial · STOP at slc2a_ring3_metal](20260727-073826_r21-partial-stop-slc2a-ring3-metal.bron) — reclass NONDET-BUILD · continue  
 - `20260727.061459` — [Send · corpus twin part four STOP at list_bound](20260727-061459_send-corpus-twin-stop-list-bound.bron) — time-guard on · doorway vs ReadFileFailed  
 - `20260726.210202` — [Send · corpus twin part three STOP at one_clock](20260726-210202_send-corpus-twin-stop-one-clock.bron) — r18 lint twin · stamp chatter RED  
 - `20260726.191451` — [Send · living_docs_lint check-in TRACE · still 134](20260726-191451_send-checkin-living-docs-trace.bron) — append_value max_str_len · scan 215475 bytes  
