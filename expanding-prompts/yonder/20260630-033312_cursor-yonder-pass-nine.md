@@ -86,7 +86,7 @@ These stay where they are — the design narratives of our current and core modu
 
 ## Part C — Hold (pending upcoming work)
 
-`expanding-prompts/20260628-120912_kernel-direction-brix-and-foundations.md` — recent, and it points at the kernel-direction memo that is still a live Now task. Leave it one level deep, unchanged; note in the session log that it is held pending that memo, to be reassessed when the memo lands. Same pattern as holding the brushstroke prompt for Skate.
+`expanding-prompts/yonder/20260628-120912_kernel-direction-brix-and-foundations.md` — recent, and it points at the kernel-direction memo that is still a live Now task. Leave it one level deep, unchanged; note in the session log that it is held pending that memo, to be reassessed when the memo lands. Same pattern as holding the brushstroke prompt for Skate.
 
 ## Verify
 

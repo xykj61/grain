@@ -40,7 +40,7 @@ We hold the work as an offering, and we keep it a place of joy. The foundation w
 
 sixos is **Nixpkgs plus infuse plus s6**, and each maps onto a module we already hold. Brix is the composer language — the Nixpkgs-and-infuse role — with its vocabulary already named: *brick*, *course*, *bond*, *lay*. The clarification is that the package *system* is Brix at the head of an ensemble: a `.brix` description in **Bron** notation evaluates through its lawful *bond* (our infuse analog) into a course of bricks, held content-addressed in **Tablecloth** (our store), remembered by **Mantra**, distributed under PKI seal over **Comlink** (the substituter reimagined on identity, in the Ames lineage), supervised by **Caravan** (the s6 analog), bounded by **Tally**, and booted by **Aurora** — all in Rye's one value model, rooted in a keypair rather than in Nix-on-Linux.
 
-The full statement lives in [`active-designing/20260702-185912_brix-the-composer.md`](../active-designing/20260702-185912_brix-the-composer.md).
+The full statement lives in [`active-designing/20260702-185912_brix-the-composer.md`](../../active-designing/20260702-185912_brix-the-composer.md).
 
 ---
 

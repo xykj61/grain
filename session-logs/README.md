@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.171011` — [MUR Season u81 fascia prune silo workshop yonder](20260728-171011_mur-season-u81-fascia-prune-silo-workshop-yonder.bron) — silo · workshop · SLC-2b · kernel · u82 next
 - `20260728.161501` — [MUR Season u80 fascia prune college counsel yonder](20260728-161501_mur-season-u80-fascia-prune-college-counsel-yonder.bron) — college · jail · zero-copy · zip42 · u81 next
 - `20260728.161205` — [MUR Season u79 fascia prune pool gated yonder](20260728-161205_mur-season-u79-fascia-prune-pool-gated-yonder.bron) — pool · strata · sala · vanes braid · u80 next
 - `20260728.160951` — [MUR Season u78 fascia prune yonder class-A paper](20260728-160951_mur-season-u78-fascia-prune-yonder-class-a-paper.bron) — inference/bench/grep/ojjo · Class-A paper · u79 next

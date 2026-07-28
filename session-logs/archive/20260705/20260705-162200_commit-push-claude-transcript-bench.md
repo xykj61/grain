@@ -22,7 +22,7 @@ Staged the Claude transcript bench prompt, handoff summary, prior intake-acknowl
 
 ## What Claude opens
 
-**Paste:** `expanding-prompts/20260705-161900_claude-silo-deepening-transcript-bench.md`
+**Paste:** `expanding-prompts/yonder/20260705-161900_claude-silo-deepening-transcript-bench.md`
 
 **Beside it:** privacy-gate guarded-name patterns (Kaeden's private keeping).
 
@@ -54,7 +54,7 @@ Per-talk URLs in Brooke chapter **With Gratitude** rolls — richest: foundation
 
 | File | Why |
 |------|-----|
-| `expanding-prompts/20260705-161900_claude-silo-deepening-transcript-bench.md` | Runnable Claude bench with commit/push/zip discipline |
+| `expanding-prompts/yonder/20260705-161900_claude-silo-deepening-transcript-bench.md` | Runnable Claude bench with commit/push/zip discipline |
 | `session-logs/20260705-161900_claude-silo-deepening-handoff-summary.md` | Granular handoff |
 | `session-logs/20260705-161700_intake-acknowledged.md` | Prior turn intake acknowledgment |
 | `session-logs/20260705-162200_commit-push-claude-transcript-bench.md` | This full summary |

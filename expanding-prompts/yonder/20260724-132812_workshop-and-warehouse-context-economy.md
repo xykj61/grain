@@ -5,7 +5,7 @@
 **Stamp:** `20260724.132812` (EDT)  
 **Status:** Expanded and run this sitting (laps P1–P2–P4 seated; P3 partial; P5 doctrine; P6–P7 skeletons; `vere`/`old` held)  
 **Voice:** Quin · Acme reader address in deliverables  
-**Counsel:** [`../counsel/20260724-132812_the-workshop-and-the-warehouse.md`](../counsel/20260724-132812_the-workshop-and-the-warehouse.md)
+**Counsel:** [`../counsel/20260724-132812_the-workshop-and-the-warehouse.md`](../../counsel/20260724-132812_the-workshop-and-the-warehouse.md)
 
 ---
 
@@ -22,7 +22,7 @@ For an Acme Corporation employee reading this plan: the daily craft stays in a s
 | Artifact | Path |
 |----------|------|
 | Counsel (as filed) | `counsel/20260724-132812_the-workshop-and-the-warehouse.md` |
-| This expansion | `expanding-prompts/20260724-132812_workshop-and-warehouse-context-economy.md` |
+| This expansion | `expanding-prompts/yonder/20260724-132812_workshop-and-warehouse-context-economy.md` |
 | Pin-and-ledger law | `context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md` |
 | Workshop/warehouse doctrine | `context/specs/20260724-132812_workshop-and-warehouse-context-economy.md` |
 | Living pins rolled | `session-logs/README.md` · `work-in-progress/TASKS.md` · `work-in-progress/ROADMAP.md` |

@@ -74,7 +74,7 @@ MENU — exhaustive; each line opens only on Kaeden's explicit word:
     IF AGAINST: Amber rungs (a)–(e) at 143 per box (5); Edit 5 stays drafted and unwired.
 
   SLC-2b NOD (only after Door 2 closes):
-    Execute expanding-prompts/20260702-030112_cursor-slc-2b-keyboard-from-window.md to the letter;
+    Execute expanding-prompts/yonder/20260702-030112_cursor-slc-2b-keyboard-from-window.md to the letter;
     four DoD greens, one commit each; then RW-1 mirrored pair per 20260702-200109 contract,
     two witnesses, two commits, +2.
 
