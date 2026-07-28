@@ -1,6 +1,6 @@
 //! linengrow/tube1_admission.rye — TUBE1: admit iff the manifest matches a grant.
 //!
-//! Per expanding-prompts/20260716-142818 rung TUBE1: Pool admits one agent
+//! Per expanding-prompts/yonder/20260716-142818 rung TUBE1: Pool admits one agent
 //! only when every capability the TUBE0 manifest declares is granted on the
 //! Caravan table for that agent. This is P0's door re-aimed at a Manifest —
 //! no separate agent runtime yet; the host still folds a ledger log when

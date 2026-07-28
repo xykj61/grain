@@ -40,7 +40,7 @@ No Amphora shred · no Class A rewrite · no over-70 function split · no harves
 
 ## Next
 
-**kg u83** — next prune slice (more yonder · on-touch over-70 · glow-app / TUBE lean), or check-in.
+**LANDED u83** — TUBE plan · MUR M1–M2b yonder · flat shelf living holds.
 
 ---
 

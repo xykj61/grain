@@ -1,6 +1,6 @@
 //! linengrow/tube2_publish.rye — TUBE2: sign an app+manifest into Granary.
 //!
-//! Per expanding-prompts/20260716-142818 rung TUBE2: a maker publishes a
+//! Per expanding-prompts/yonder/20260716-142818 rung TUBE2: a maker publishes a
 //! TUBE0 Manifest as a content-addressed resin under a signed person/weave
 //! name-fact; a consumer resolves by name, verifies the resin digest, and
 //! only then may admit (TUBE1). Composes landed Granary + TUBE0 + TUBE1.

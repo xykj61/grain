@@ -1,7 +1,7 @@
 //! linengrow/glow_storage_scope.rye — Glow Resource Scope mold.
 //!
 //! One mold for GrapheneOS **Storage Scopes** and **Contact Scopes**
-//! (studied `20260716` in expanding-prompts/20260716-142818): an app sees
+//! (studied `20260716` in expanding-prompts/yonder/20260716-142818): an app sees
 //! only resources it was granted; access ends when the grant is revoked
 //! (uninstall-shaped). Clean-room Glow parallel — bounded (resource, rights)
 //! entries, checked at the boundary, never ambient trust. Resource names

@@ -5,7 +5,7 @@
 **Language:** EN
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** **Landed** `20260709.184051` — `linengrow/murr.rye` + witness at parity **198**; M0 gate verified before open
-**Ground:** counsel [`20260709-152612`](../counsel/20260709-152612_claude-counsel-mala-wov-already-designed.md) · design [`20260702-031312`](../active-designing/20260702-031312_modules-aspects-and-mailable-money.md) · SLC-L1 spine [`receipt_core.rye`](../linengrow/receipt_core.rye)
+**Ground:** counsel [`20260709-152612`](../../counsel/20260709-152612_claude-counsel-mala-wov-already-designed.md) · design [`20260702-031312`](../../active-designing/20260702-031312_modules-aspects-and-mailable-money.md) · SLC-L1 spine [`receipt_core.rye`](../../linengrow/receipt_core.rye)
 Radiant pass `20260728.052149` — living rename-forward: **MUR** (was MALA); dated path tables keep `mala*` until **kg u32** (tool GO) / **u48** (module); rehearsals u17–u22 seated  
 Radiant pass `20260728.054844` — delivery + memos landed u50: `murr_delivery` · `murr:*`
 Radiant pass `20260728.054644` — entry/bin landed u49: `murr.rye` / `bin/murr`
@@ -45,7 +45,7 @@ MUR (was MALA) reuses SLC-L1's `.bron` fact envelope (`from`, `to`, `amount`, `m
 
 **Pinned witness seeds** (same family as SLC-L1 / Open Asks): one issuer keypair, one holder keypair — seeds named in the module and asserted at selftest startup.
 
-**Log line format:** identical to SLC-L1 — `sig_hex fact_hex\n` per [`receipt_core.rye`](../linengrow/receipt_core.rye).
+**Log line format:** identical to SLC-L1 — `sig_hex fact_hex\n` per [`receipt_core.rye`](../../linengrow/receipt_core.rye).
 
 ## What "Complete" Means for M1, Bound Tightly
 

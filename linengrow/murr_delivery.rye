@@ -4,7 +4,7 @@
 //!   linengrow/bin/murr-delivery selftest
 //!   linengrow/bin/murr-delivery demo
 //!
-//! Scope: [`expanding-prompts/20260709-191634_mala-m2-mailable-comlink.md`](../expanding-prompts/20260709-191634_mala-m2-mailable-comlink.md)
+//! Scope: [`expanding-prompts/yonder/20260709-191634_mala-m2-mailable-comlink.md`](../expanding-prompts/yonder/20260709-191634_mala-m2-mailable-comlink.md)
 
 const std = @import("std");
 const assert = std.debug.assert;

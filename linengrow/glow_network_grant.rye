@@ -2,7 +2,7 @@
 //!
 //! Clean-room Glow parallel of GrapheneOS's **Network permission toggle**
 //! (studied in gratitude/grapheneos/features-overview.md · named next in
-//! expanding-prompts/20260716-142818): a binary per-app grant for network
+//! expanding-prompts/yonder/20260716-142818): a binary per-app grant for network
 //! access. Grant admits; revoke (or deny) refuses. When refused, the grant
 //! **appears down** — GrapheneOS pretends the network is unavailable rather
 //! than surfacing a permission error.
