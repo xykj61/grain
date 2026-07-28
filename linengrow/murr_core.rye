@@ -1,7 +1,7 @@
 //! linengrow/murr_core.rye — shared MUR mint/send fold for M1 and M2 (was mala_core / MALA).
 //!
 //! Imported by `murr.rye` (one-node selftest) and `murr_delivery.rye` (Comlink carriage).
-//! Wire memos `murr:*` (was mala:*). `fold_murr_log` symbol held for later module step.
+//! Wire memos `murr:*` (was mala:*). `fold_murr_log` LIVE (u51).
 
 const std = @import("std");
 const assert = std.debug.assert;
