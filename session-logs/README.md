@@ -4,7 +4,9 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.043539` — [MUR u1 remember residual](20260728-043539_mur-u1-remember-residual.bron) — breach rename · gen_mala ABSENT · u2 next
 - `20260728.043220` — [Gren handback · MUR u0](20260728-043220_gren-handback-mur-u0.bron) — return_mur_u0 · u0 bow · u1 next
+
 - `20260728.043010` — [Gren extend-length check-in](20260728-043010_gren-extend-length-checkin.bron) — rec return_mur_u0 · blank held
 
 - `20260728.042644` — [Gren Season g15 horizon warn](20260728-042644_gren-season-g15-horizon-warn.bron) — lean-16 CLOSED · await extend_or_return

@@ -37,7 +37,7 @@ Prep for a **new thirty-two-round season** is approved. The season's early spine
 
 **Nara** (Virgo · earth · nara.live) remains recorded from Fascia f0; her `.fund` anchor question stays his. Opening triad living names: **Murr · Gren · Siya** (was Mala · Djin · Siya).
 
-Lexicon rows for **Murr (fund)** · **Gren (fund)** · **Siya (fund)** · retired Mala/Djin/Twah. Outer season **paused** while deeper nests run — Inner PAUSED i6/i7 · core Gren OPEN — see Gren charter [`20260728-025634_the-gren-season-core-charter.md`](20260728-025634_the-gren-season-core-charter.md).
+Lexicon rows for **Murr (fund)** · **Gren (fund)** · **Siya (fund)** · retired Mala/Djin/Twah. Outer season **paused** while deeper nests run — Inner PAUSED i6/i7 · core Gren CLOSED (handed back) · innermost MUR OPEN — see MUR charter [`20260728-025220_the-mur-season-innermost-charter.md`](20260728-025220_the-mur-season-innermost-charter.md).
 
 ## Myc / Move / Sui — Prep Only (deployment software shape)
 

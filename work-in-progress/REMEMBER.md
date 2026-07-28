@@ -6,47 +6,39 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260728.043220` (EDT) · voice Quin  
+**Last refreshed:** `20260728.043539` (EDT) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2 · ring-3** · **THREATS** · **five pillars** · **accrete tiers** · **redaction stance** · **always-in-it rhythm** · **Prin / %prin** · **sundial**  
 **Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list1024 · Env512 · **stamp @u64 · Crockford** · **shape aura floor** · **Glow text floor GREEN** · **Glow Book weave GREEN (C2b)** · **baked-sample Acme gloss**  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand home** · **siblings seated** · **--cursor launch** · **Pond counsel 161616** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm+cold REPORT** · **Grain umbrella living** · **OQ #1 · #3 · #4 · #5 answered** · **pass ledger** · **campaign STOPPED** · **growth law** · **wasmtime ABSENT** · **monocypher 4.0.3 GREEN** · **MAP.md** · **breach T3–T4** · **U·V·I** · **C-Ladder C1·C2·C2b landed** · **r18 say/lint twin** · **r21 Verse · O1** · **r22 outside eyes** · **Prin** · **corpus twin fold seated (Sound r11)** · **C3–C5 await homes**  
-**Git nib:** `(pre-send)` · Grain · **MUR** u0 · handback from Gren · autoproject96/grain
-**Bookmark:** [`counsel/20260728-043220_mur-season-u0-bow.md`](../counsel/20260728-043220_mur-season-u0-bow.md)
+**Git nib:** `(pre-send)` · Grain · **MUR** u1 · rename overwrite · autoproject96/grain
+**Bookmark:** [`counsel/20260728-043539_mur-season-u1-residual-map.md`](../counsel/20260728-043539_mur-season-u1-residual-map.md)
 
-**Season:** Framework · EDT · **Grain** · **finishing edge:** **innermost MUR** u1 · Gren CLOSED · Keeh CLOSED · Linn·Helen · Geode PREP · F undisturbed. Prefer **git nib**. · `prin scope`
+**Season:** Framework · EDT · **Grain** · **finishing edge:** **innermost MUR** — **top priority** Mala/MALA→Murr/MUR rename overwrite (breach approved seated) · Gren CLOSED · Keeh CLOSED · Geode PREP · F undisturbed. Prefer **git nib**. · `prin scope`
+
+---
+
+## Top priority (seated `20260728.043539`)
+
+**Rename overwrite everywhere:** **Mala / MALA / `%mala` → Murr / MUR / `%murr`**.  
+**Breach for this overwrite: approved · seated.** Waves with witnesses; dated hours may keep stamps; living doors must not sell Mala/MALA as present.  
+Fascia **shred** (Amphora parity delete) still waits his circled shred yes — distinct from the rename edit breach.  
+WOV retirement stays **roadmap last**. No live deploy · wallet · gas · private key.
 
 ---
 
 ## Now
 
-**Pier path** — **`~/grain`** · agent **`home-xy-grain`**.
+**Pier path** — **`~/grain`** · agent **`home-xy-grain`**.  
+**Jail authors; host installs** — agents write inside the project / enclosure; host installs stay Keaton's hand.
 
-**Corpus twin** — Sound r11 **fold seated** [`20260727-232702_corpus-twin-fold-latest.tsv`](20260727-232702_corpus-twin-fold-latest.tsv) · latest-wins **530 TWIN / 551** · mass resume outside The Sound. **r22** outside-eyes create landed. **Prin / %prin** matrix + verse ticker + aliases (`source tools/prin_aliases.sh && pw`). Counsel asks×5: loop/parity as compiler? · perf sweep? · Mantra/Weave/nib/Brushstroke? · Glow reimpl · Kumara·Sui · Move DSL / DLT vanes? · `.brush` design files (CSS gratitude silo)? — [`../counsel/replies/20260727-090646_re-prin-loop-parity-compiler-and-perf.md`](../counsel/replies/20260727-090646_re-prin-loop-parity-compiler-and-perf.md). C3–C5 homes blank; `quin-workshop/` untracked. H held.
+**Waymarks** — HAWM · TUBE · ZETA · JABS · LULU · STOA · SETU · claims `waymarks/`.  
+**Outer terminal / phone** — USB/`adb` paths and phone look stay on the operator desk; prefer git nib + `prin scope` for season state. Jail authors; host installs.
 
-**Lane** (`autoproject96` · counsel `223409`) — agentic research pier on both forges. Keys are the map: never push across `groupproject36` / `xykj61` lanes. Agent may `kg` mechanical witness-first stops inside the enclosure; seating words, keys, Tier 1, gratitude, compass, roster, and **send** stay human-gated (send-after-every-round is Keaton's standing preference, not a license past STOP). Specimen #1 is this Grain agent's own session logs since `home-xy-grain` rooted. Map: [`PUBKEYS.md`](../PUBKEYS.md) · [`context/REMOTE_ROSTER.md`](../context/REMOTE_ROSTER.md).
+**Corpus twin** — Sound r11 **fold seated** · r22 outside-eyes · Prin matrix. C3–C5 homes blank; `quin-workshop/` untracked. H held.
 
-**Waiting gates**
-- Doorway restore (Status room word on S3 hammock) · then instrumented COLD for S0 cost table · then H Brix survey  
-- S0 cost table · then S2 packs · S3 receipts word · lane (b) archive cuts  
-- **P-vane naming round — PARKED** (counsel `044729`): entry checks before any rename — (1) Maze already seated as nursery · (2) Ojjo charter collision · (3) Pool proven seat · (4) parity already means three things · (5) waymark word-collision check (`pear`/`maze` four-letter). Parked, not planned.  
-- Breach-two word (next season) · Pond seven · xykj61 · Acme · lap-kinds · Brix ladder name after H · license badge · data-dignity · succession · Mand ring-3 · …
+**Lane** (`autoproject96`) — never push across `groupproject36` / `xykj61`. Map: [`PUBKEYS.md`](../PUBKEYS.md) · [`context/REMOTE_ROSTER.md`](../context/REMOTE_ROSTER.md).
 
 **`--cursor` launch** GREEN — `rishi/bin/rishi run tools/launch-cursor.rish --cursor ./Cursor-3.13.10-x86_64.AppImage --gpu`.
-
-**Read:**
-
-```bash
-less work-in-progress/archive/20260726-050422_cursor-kg-handoff.md
-tail -f /tmp/parity-next/parity.log
-```
-
-**Witness block:**
-
-```bash
-rishi/bin/rishi run tools/mand_ring1_witness.rish
-rishi/bin/rishi run tools/receipt_verify_wasm.rish
-sh tools/bootstrap_wasmtime.sh
-```
 
 ---
 
@@ -54,12 +46,13 @@ sh tools/bootstrap_wasmtime.sh
 
 | Door | Kind |
 |------|------|
-| **Parity / COLD** | **RED** two-rooms doorway · S3 hammock Status · H held |
-| **H Brix survey** | held on F · reading only · proposes ladder slug |
-| Radiant pass | **on-touch only** |
-| **Duty-8 shell migration** | ratchet · on-touch |
-| **Agentic lane** | note seated · specimen #1 = these session logs |
-| Pond seven · xykj61 · Acme · Brix name · data-dignity · succession · Mand ring-3 · breach two | awaiting Keaton |
+| **MUR rename overwrite** | **TOP** · breach approved · kg u-rounds · living Mala/MALA → Murr/MUR |
+| **Parity / COLD** | **RED** two-rooms doorway · S3 hammock · H held |
+| Radiant pass | **on-touch only** (MUR waves are the living Radiant pass) |
+| Geode d0 | PREP parallel |
+| Pond seven · xykj61 · Acme · Brix name · data-dignity · succession · Mand ring-3 · breach two (other) | awaiting Keaton |
+
+**kg** = keep going mechanical (u-rounds). **check-in** = his word / design. remember ≠ send ≠ kg ≠ align.
 
 ---
 
