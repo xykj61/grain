@@ -31,5 +31,5 @@ Door 1 closed (`3320bed`); Door 2 automated fresh, live stamp pending. Plate emp
 
 | File | Why |
 |------|-----|
-| `expanding-prompts/20260703-020012_cursor-recursion-prompt-v3.md` | Operating loop in canon |
+| `expanding-prompts/yonder/20260703-020012_cursor-recursion-prompt-v3.md` | Operating loop in canon |
 | `session-logs/20260703-020012_handoff-v3.md` | Fable handoff log |
