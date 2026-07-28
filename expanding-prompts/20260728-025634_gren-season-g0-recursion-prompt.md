@@ -1,8 +1,9 @@
 # Gren Chapter — Recursion Prompt (printout · core OPEN · post-Keeh handback)
 
-**Stamp:** `20260728.025634` · Radiant pass `20260728.040437`  
+**Stamp:** `20260728.025634` · Radiant pass `20260728.040656`  
 **Use:** paste the fenced block as the next counsel/bench session opener.  
-Radiant pass `20260728.040437` — g3 outer prep · index · living overwrite CLEARED · g4 spot-check  
+Radiant pass `20260728.040656` — g4 first spot-check empty · g5 next  
+Radiant pass `20260728.040437` — g3 outer prep · index · living overwrite CLEARED  
 Radiant pass `20260728.040237` — g2 Inner charter · recursion printouts → Gren  
 Radiant pass `20260728.035740` — g1 residual map · bare living Djin ads CLEARED  
 Radiant pass `20260728.035441` — Keeh handback return_gren_g0 · g0 bow · core OPEN
@@ -45,8 +46,8 @@ CORE SCOPE (this season — walk here):
   Lexicon: scope·outer·inner·innermost·core·quint · Gren · Djin retired · Murr+DJINN · sundial.
   Prin: rishi/bin/rishi run tools/prin.rish scope
   gen_gren GREEN · deploy RED; gen_murr GREEN with DJINN executive; gen_keeh still GREEN.
-  g0–g3 COMPLETE · g4 next (living overwrite CLEARED early · spot-check).
-  Bare ads CLEARED g1; Inner+printouts g2; Constellation prep+index g3.
+  g0–g4 COMPLETE · g5 next (spot-check empty×1 · overwrite CLEARED).
+  Bare ads CLEARED g1; Inner+printouts g2; Constellation prep+index g3; spot empty g4.
   g14 and g15 MUST warn: extend to 32 · extend to 64 · or return MUR u0.
 
 Read whole: Gren charter · MUR charter · Keeh charter (CLOSED) · LEXICON Gren/Murr/core ·
@@ -55,19 +56,19 @@ Companions: newest quin-workshop pair if attached; else verify origin/main nib.
 
 first duties: bootstrap or verify · state the nib · prin scope ·
 run gen_gren (GREEN; deploy RED) · run gen_murr (GREEN; DJINN+Kyler) · report ·
-then walk g4 from the charter:
+then walk g5 from the charter:
   affirm three pauses above + quint CLOSED · affirm Djin→Gren · DJINN→Murr · Keaton→Gren ·
-  spot-check: no living bookmark sells gen_djin / djin.fund as present ·
+  second spot-check: no living bookmark sells gen_djin / djin.fund as present ·
   no live shred · no breach without prin rish breach yes now + his circled scope;
   no live Sui deploy · no wallet · no gas · no private key in tree;
   no MUR mass sed until core hands back to u0;
   no Keeh q-rounds (quint CLOSED).
 
-waymark: g3 complete, g4 next
+waymark: g4 complete, g5 next
 nib <origin/main short nib>
 bench report (verbatim, if any): <REPORT/STOP — or "none">
 scope: outer=paused(m8/m9) inner=paused(i6/i7) innermost=paused(u0)
-  core=open(g4) quint=closed(handed_back) geode=prep(d0)
+  core=open(g5) quint=closed(handed_back) geode=prep(d0)
 breach scope circle (blank = still held): A= A+C= all=
 words seated (blank = held whole): season_name= choir= LICENSE_WORD=
   O3= relay_word= tilak_names= scarcity= merit_unit= app_name=
