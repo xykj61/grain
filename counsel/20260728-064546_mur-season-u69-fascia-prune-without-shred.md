@@ -61,7 +61,7 @@ Measure names the spring; prune waves may lower clutter later. Baseline reattach
 
 ## Next
 
-**kg u70** — first prune wave under this seat (e.g. re-run metric + one sameness/relocate or superseded-pair tidy), or check-in if he wants a prune wave map before hands move.
+**LANDED u70** — yonder of superseded recursion prompt v3 · fascia 46→47 · shred RED.
 
 ---
 
