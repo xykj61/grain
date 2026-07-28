@@ -71,6 +71,10 @@ Round 1 opens on Keaton's **kg** (or a wave paste); the season does not invent f
 
 Arc I **exits early**: foundations/context select empty; **seven** newborn prose paths enrolled **clean** (0 changed); claim_preserve · dated_guard · radiant_lint GREEN (sum=2). Reply: [`replies/20260727-215720_re-radiant-lint-season-r1.md`](replies/20260727-215720_re-radiant-lint-season-r1.md). Next door: Arc II (counsel / active-designing) or the g0–g14 bench hour.
 
+### Round 2 landed (`20260727.220135`)
+
+Arc II wave A: **fifty** tracked `active-designing/` paths — **47 clean · 3 changed** (bare `but` → yet / only / rather than). Ledger **1255**. Reply: [`replies/20260727-220135_re-radiant-lint-season-r2.md`](replies/20260727-220135_re-radiant-lint-season-r2.md). Next door: Arc II wave B, or the g0–g14 bench hour.
+
 ## Counsel reply topics (shelf)
 
 Future replies may take these as first-class topics — same three-section shape (`counsel/replies/README.md`):

@@ -8,6 +8,7 @@
 **Ground:** Twin Season Arc II, round r25; Arc III's residents round receives these shapes the day their names are worded
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260727.220135` — style only; claims unchanged
 
 ---
 
@@ -47,7 +48,7 @@ Seven rows, zero seated. The day Keaton words them, Arc III's residents round la
 
 ## What Paper Three Takes
 
-The onboarding story: a pilot with nothing but an internet connection and a fresh keypair, walked to a bound point in their own jurisdiction's terms — the `JURISDICTION` block instantiated, the custody park stated on every page, and every step Acme-generic so the walk reads the same from any county on Earth.
+The onboarding story: a pilot with only an internet connection and a fresh keypair, walked to a bound point in their own jurisdiction's terms — the `JURISDICTION` block instantiated, the custody park stated on every page, and every step Acme-generic so the walk reads the same from any county on Earth.
 
 ---
 
