@@ -3,7 +3,7 @@
 *A place where a request becomes a plan. When you hand me a seed of intent, I bring it here, read it closely through every lens we have built, and craft from it a fuller, clearer prompt for myself — one I can then run. The seed stays yours; the expansion is how I make sure I have understood it, sharpened it, and lost none of it.*
 
 **Language:** EN
-**Last updated:** 2026-07-27 (Tensegral Season Expanded · r0 recursion · Rishi harvest · always-in-it)
+**Last updated:** 2026-07-28 (Inner Scope i0 recursion · Twah → Djin · outer pause)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Seasons roster:** [`SEASONS.md`](SEASONS.md)
@@ -69,6 +69,7 @@ What does *not* belong here is the work itself — that lands in the research, d
 
 | Stamp | Prompt | Meaning |
 |-------|--------|---------|
+| `20260728.015541` | [Inner Scope Season i0 recursion](20260728-015541_inner-scope-season-i0-recursion-prompt.md) | Outer Constellation paused m8/m9 · inner i0–i15 fascia shredding · Djin · scope/outer/inner · i14/i15 extend-or-return |
 | `20260725.040520` | [Four Rishi harvest laps](20260725-040520_rishi-four-harvest-laps.md) | accumulate · read bounded · filter chained · quote safe — shell harvest |
 | `20260724.143155` | [Vanes, shelves, names, maps — braided](20260724-143155_vanes-shelves-names-maps-braid.md) | Files second+third counsel · P3 under 8KB · waymarks · replies · stewards · Aparigraha · letters · rung 1 · coverage GREEN |
 | `20260724.132812` | [Workshop and Warehouse — context economy](20260724-132812_workshop-and-warehouse-context-economy.md) | Files Fable 5 counsel · seats pin-and-ledger `24576` · untracks `tools/bin/` · rolls living pins · watcher excludes · sixth lint duty · workshop/warehouse doctrine · P3 rules partial · P6–P7 skeletons |
