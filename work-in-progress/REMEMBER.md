@@ -6,12 +6,12 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260728.055536` (EDT) · voice Quin  
+**Last refreshed:** `20260728.055837` (EDT) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2 · ring-3** · **THREATS** · **five pillars** · **accrete tiers** · **redaction stance** · **always-in-it rhythm** · **Prin / %prin** · **sundial**  
 **Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list1024 · Env512 · **stamp @u64 · Crockford** · **shape aura floor** · **Glow text floor GREEN** · **Glow Book weave GREEN (C2b)** · **baked-sample Acme gloss**  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand home** · **siblings seated** · **--cursor launch** · **Pond counsel 161616** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm+cold REPORT** · **Grain umbrella living** · **OQ #1 · #3 · #4 · #5 answered** · **pass ledger** · **campaign STOPPED** · **growth law** · **wasmtime ABSENT** · **monocypher 4.0.3 GREEN** · **MAP.md** · **breach T3–T4** · **U·V·I** · **C-Ladder C1·C2·C2b landed** · **r18 say/lint twin** · **r21 Verse · O1** · **r22 outside eyes** · **Prin** · **corpus twin fold seated (Sound r11)** · **C3–C5 await homes**  
-**Git nib:** `3534d97311` · Grain · **MUR** u53 · tube/pool choir · autoproject96/grain
-**Bookmark:** [`counsel/20260728-055536_mur-season-u53-tube-pool-cluster-choir.md`](../counsel/20260728-055536_mur-season-u53-tube-pool-cluster-choir.md)
+**Git nib:** `076b5bba4c` · Grain · **MUR** u54 · zig twin sync · autoproject96/grain
+**Bookmark:** [`counsel/20260728-055837_mur-season-u54-zig-twin-sync.md`](../counsel/20260728-055837_mur-season-u54-zig-twin-sync.md)
 
 **Season:** Framework · EDT · **Grain** · **finishing edge:** **innermost MUR** — **top priority** Mala/MALA→Murr/MUR rename overwrite (breach approved seated) · Gren CLOSED · Keeh CLOSED · Geode PREP · F undisturbed. Prefer **git nib**. · `prin scope`
 

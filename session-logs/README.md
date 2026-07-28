@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.055837` — [MUR Season u54 zig twin sync](20260728-055837_mur-season-u54-zig-twin-sync.bron) — emit discipline GREEN · u55 next
 - `20260728.055536` — [MUR Season u53 tube pool cluster choir](20260728-055536_mur-season-u53-tube-pool-cluster-choir.bron) — tube/pool choir GREEN · u54 next
 - `20260728.055351` — [MUR Season u52 seva glow cluster choir](20260728-055351_mur-season-u52-seva-glow-cluster-choir.bron) — seva/glow/dexter choir GREEN · u53 next
 - `20260728.055039` — [MUR Season u51 fold_murr_log live](20260728-055039_mur-season-u51-fold-murr-log-live.bron) — fold symbol · M1/M2/neth GREEN · u52 next
