@@ -10,6 +10,8 @@
 **Lens:** TAME Style (`TAME_STYLE.md`); systems lineage in `20260620-014412_system.md`
 **Reads back:** `yonder/20260617-195812_aurora-boot-riscv.md`, `yonder/20260617-195312_mantra.md`, through `../active-designing/yonder/20260618-182412_single-stranded.md`, `../active-designing/yonder/20260618-184912_growing-a-language.md`, and `../context/specs/rye-as-its-own-language.md`
 
+Radiant pass `20260727.224156` — path re-point only; claims unchanged
+
 ---
 
 ## What Changed Around Them
@@ -40,7 +42,7 @@ Three more decisions land softly on Aurora. **The gates** harden each stage and 
 
 **It weaves values, not only lines.** Because the family shares one value model, Mantra versions a Rye program, a Tablecloth configuration, a Rishi script, and an orchestration definition with one mechanism — a weave of *values*, content-addressed, rather than a weave of text. The seam `998` set out to close between a source's history and the build made from it widens into a seam closed across the whole family: one history, in one grain.
 
-**The hash it trusts is now stronger.** `998` chose SHA3-512 for naming, and the strengthening-compiler's first passes hardened exactly that — the Keccak sponge beneath SHA3-512, stated and proven (`../strengthening-compiler/9998_sha3_512.md`, `9997_keccak_sponge.md`). So the names Mantra leans on rest on a function we have made more trustworthy. And one day Mantra will version the very history of those strengthening passes. The tool and the work make each other surer — a circle worth pausing over.
+**The hash it trusts is now stronger.** `998` chose SHA3-512 for naming, and the strengthening-compiler's first passes hardened exactly that — the Keccak sponge beneath SHA3-512, stated and proven (`../external-research/yonder/strengthening-compiler/9998_sha3_512.md`, `9997_keccak_sponge.md`). So the names Mantra leans on rest on a function we have made more trustworthy. And one day Mantra will version the very history of those strengthening passes. The tool and the work make each other surer — a circle worth pausing over.
 
 The simplicity lens reads Mantra kindly, too: its always-succeeding merge is composition without braiding, and its choice to *show* a conflict rather than *block* on it is the radiant temper made into an algorithm — leading with what is, trusting the reader, the same gentleness `995` names.
 

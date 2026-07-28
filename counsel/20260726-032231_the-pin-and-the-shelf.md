@@ -10,6 +10,7 @@
 **Counsel model this sitting:** Claude Fable 5 1M Max
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260727.224156` — path re-point only; claims unchanged
 
 ---
 
@@ -61,7 +62,7 @@ Sixty-eight entries greet a forge visitor before the README's first sentence. He
 
 **The dotfiles consolidation is refused, and the refusal is the breach law working.** `.cursor/`, `.claude/`, `.vscode/`, `CLAUDE.md`, and the git trio are **convention-pinned paths whose outside consumers already exist** — the editors and the forges themselves read those exact locations. For them the breach window is already closed; moving them breaks tools we do not control. `.brix` stays too: it is the tree's own descriptor wearing its own extension. This is the expiry clause doing its job on day one.
 
-**`strengthening-compiler/` yonders; it is never deleted.** One hundred fifteen entries of fork-era study, and the fork is a deferred horizon — dormant-yet-alive is the textbook `yonder/` case, so it moves whole to `external-research/yonder/strengthening-compiler/`. Deletion would break both the accrete law and the breach's second promise for the sake of bytes that cost nothing where they cannot be seen. One live consumer exists and the round must carry it: `tools/enrich_strengthening_docs.rish` and `tools/enrich/crosswalk.rye` walk that folder, so they re-point and run green in the same round, alongside the roughly dozen living documents (`STEWARDS`, `ORGANIZING`, `rye/README`, three context specs, one active brief, four counsels) whose references turn.
+**`external-research/yonder/strengthening-compiler/` yonders; it is never deleted.** One hundred fifteen entries of fork-era study, and the fork is a deferred horizon — dormant-yet-alive is the textbook `yonder/` case, so it moves whole to `external-research/yonder/strengthening-compiler/`. Deletion would break both the accrete law and the breach's second promise for the sake of bytes that cost nothing where they cannot be seen. One live consumer exists and the round must carry it: `tools/enrich_strengthening_docs.rish` and `tools/enrich/crosswalk.rye` walk that folder, so they re-point and run green in the same round, alongside the roughly dozen living documents (`STEWARDS`, `ORGANIZING`, `rye/README`, three context specs, one active brief, four counsels) whose references turn.
 
 **The instrument correction, and it is load-bearing: the link witness reads only markdown.** Breach two moves folders that *tools* read — nock's witnesses, the enrich pair, the GLOW consumers — and a green markdown gate would say nothing about a `.rish` path left dangling. So breach two's census gains a **tool-consumer column** (a grep across `tools/`, `*.rish`, `*.sh` for each moving path), and each round's close adds one step: run every witness whose paths that round touched, green, before the commit. The markdown witness guards the prose; the touched witnesses guard themselves.
 

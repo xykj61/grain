@@ -182,7 +182,7 @@ pub fn build_width_audit_block(
     } else if (constants.witness_alias(pass_name)) |slug| {
         try buf.append_fmt(a, &out, "| `rye/tests/{s}.rye` | witness program | {s} |\n", .{ slug, status });
     }
-    try buf.append_fmt(a, &out, "| `tools/parity.rish` | witness registered | {s} |\n| `strengthening-compiler/{s}` | pass record + audited surfaces | {s} |\n| `## usize explicit audit` | per-surface locus table — gates lexicon ✅ | {s} |\n| `992_strengthening_width_crosswalk.md` | lexicon row {s} | {s} |\n", .{ status, pass_name, status, status, pass_num, status });
+    try buf.append_fmt(a, &out, "| `tools/parity.rish` | witness registered | {s} |\n| `external-research/yonder/strengthening-compiler/{s}` | pass record + audited surfaces | {s} |\n| `## usize explicit audit` | per-surface locus table — gates lexicon ✅ | {s} |\n| `992_strengthening_width_crosswalk.md` | lexicon row {s} | {s} |\n", .{ status, pass_name, status, status, pass_num, status });
     return try out.toOwnedSlice(a);
 }
 

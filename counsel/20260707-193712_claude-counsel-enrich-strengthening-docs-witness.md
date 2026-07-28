@@ -10,6 +10,8 @@
 *Written by Kaeden and Rio 3.*
 Radiant pass `20260725.041039`
 
+Radiant pass `20260727.224156` — path re-point only; claims unchanged
+
 ---
 
 ## Why This One Took Three Rounds to Earn
@@ -18,7 +20,7 @@ Twice this bench named this file's fixture surface as "genuinely larger" and def
 
 ## The Full Shape, Finally Mapped
 
-`enrich_strengthening_docs.rye` touches five real locations relative to the repo root, not one: `rye/lib/std/**/*.zig` (read, via `zig_lookup.loadZigSources`), `strengthening-compiler/*.md` minus a two-name skip list (read and mutated, by four separate passes that each independently re-scan the same directory — `enrichFile`, `syncWidthAuditDocs`, `syncPassAuditWritings`, `completePendingWidthAudits`), `tools/parity.rish` (read-only), and two whole-file outputs, `work-in-progress/992_strengthening_width_crosswalk.md` and `strengthening-compiler/0000_STRENGTHENING_LEXICON.md`. A fixture that mirrors all five, minimally, is not actually more than one careful sitting can hold — it just needs to be built once, correctly, rather than guessed at.
+`enrich_strengthening_docs.rye` touches five real locations relative to the repo root, not one: `rye/lib/std/**/*.zig` (read, via `zig_lookup.loadZigSources`), `external-research/yonder/strengthening-compiler/*.md` minus a two-name skip list (read and mutated, by four separate passes that each independently re-scan the same directory — `enrichFile`, `syncWidthAuditDocs`, `syncPassAuditWritings`, `completePendingWidthAudits`), `tools/parity.rish` (read-only), and two whole-file outputs, `work-in-progress/992_strengthening_width_crosswalk.md` and `external-research/yonder/strengthening-compiler/0000_STRENGTHENING_LEXICON.md`. A fixture that mirrors all five, minimally, is not actually more than one careful sitting can hold — it just needs to be built once, correctly, rather than guessed at.
 
 ## What the Fixture Taught, Before It Taught Anything About the Tool
 
@@ -30,7 +32,7 @@ Given a fixture pass doc that references `` `std.mem.eql` `` properly, `enrich_s
 
 ## The Witness, Landed
 
-`tools/enrich_strengthening_docs.rish` runs the real binary twice against a real, checked-in fixture, asserting the first run's output on all three artifacts (the enriched doc, the crosswalk, the lexicon) and the second run's idempotency, then checksums the real `strengthening-compiler/0000_STRENGTHENING_LEXICON.md` before and after — the same safety discipline `align_session_logs`'s witness already uses, proven necessary again the first time this bench ran the tool directly against the fixture source rather than a disposable copy and mutated its own checked-in input by accident. That mistake is named here rather than hidden, and the fixture was reset and re-verified clean across two full, independent witness runs before this counsel was written.
+`tools/enrich_strengthening_docs.rish` runs the real binary twice against a real, checked-in fixture, asserting the first run's output on all three artifacts (the enriched doc, the crosswalk, the lexicon) and the second run's idempotency, then checksums the real `external-research/yonder/strengthening-compiler/0000_STRENGTHENING_LEXICON.md` before and after — the same safety discipline `align_session_logs`'s witness already uses, proven necessary again the first time this bench ran the tool directly against the fixture source rather than a disposable copy and mutated its own checked-in input by accident. That mistake is named here rather than hidden, and the fixture was reset and re-verified clean across two full, independent witness runs before this counsel was written.
 
 ## What This Closes
 

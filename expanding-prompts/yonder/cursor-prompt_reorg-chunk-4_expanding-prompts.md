@@ -148,7 +148,7 @@ Anchor the foundation to README, stamp every dated brief from its header, let th
 
 ## Step 6 — Write a stamped session log of this chunk
 
-Add `session-logs/<STAMP>_reorg-chunk-4-expanding-prompts.md`, where `<STAMP>` is the exact time Kaeden supplies in `YYYYMMDD-HHMMSS` form, in the one-clock shape — no countdown prefix. Write it in Radiant voice: what this chunk settled (the count-up folder reconciled to the clock, the tail re-sorted honestly, the held-open number released), what waits next (`work-in-progress/` and `rye-learning-process/`, each fully and alone, then `strengthening-compiler/` when the pause lifts), and a three-clause benediction. Prepend its newest-first row to `session-logs/README.md`, then commit it.
+Add `session-logs/<STAMP>_reorg-chunk-4-expanding-prompts.md`, where `<STAMP>` is the exact time Kaeden supplies in `YYYYMMDD-HHMMSS` form, in the one-clock shape — no countdown prefix. Write it in Radiant voice: what this chunk settled (the count-up folder reconciled to the clock, the tail re-sorted honestly, the held-open number released), what waits next (`work-in-progress/` and `rye-learning-process/`, each fully and alone, then `external-research/yonder/strengthening-compiler/` when the pause lifts), and a three-clause benediction. Prepend its newest-first row to `session-logs/README.md`, then commit it.
 
 ---
 

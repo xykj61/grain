@@ -180,7 +180,7 @@ Four functions, each a different kind of TAME invariant:
 - **`std.mem.eql`** — a *`maybe`*, the dual of assert: equal and unequal lengths are both expected, so we name the variable space rather than constrain it.
 - **`std.fmt.parseInt`** — a *precondition*: a base is `0` (detect the prefix) or a true radix in 2…36; anything else is the caller's mistake, named at the door.
 
-The discipline held: each change adds what the code *says*, never what it *does*. A new witness program, `rye/tests/call_paths_test.rye`, exercises all four across found/not-found, equal/unequal, all-stripped trims, and several bases; the parity gate (`tools/parity.rish`) runs it against the baseline and the strengthened `std` and stays green. And because `rye run` builds in Debug, the assertions are *live* when we run Rishi — every `.rish` script now checks these invariants as it goes. The full study is `strengthening-compiler/9996_stdlib_call_paths.md`.
+The discipline held: each change adds what the code *says*, never what it *does*. A new witness program, `rye/tests/call_paths_test.rye`, exercises all four across found/not-found, equal/unequal, all-stripped trims, and several bases; the parity gate (`tools/parity.rish`) runs it against the baseline and the strengthened `std` and stays green. And because `rye run` builds in Debug, the assertions are *live* when we run Rishi — every `.rish` script now checks these invariants as it goes. The full study is `external-research/yonder/strengthening-compiler/9996_stdlib_call_paths.md`.
 
 One deferral, named on purpose: `indexOfScalarPos` is a direct alias to the hot `findScalarPos`, so giving *it* a postcondition means touching the hot core. That waits for a pass that strengthens hot paths behind a `verify` flag — checks too costly for the data plane, compiled in only when asked for.
 
@@ -237,7 +237,7 @@ rishi/bin/rishi run tools/parity-selftest.rish
 rishi/bin/rishi run tools/additive-gate.rish   # after a rye/lib-touching commit
 ```
 
-**Thin frontend (2026-06-28):** `rye/lib/std` symlinks to `vendor/zig-toolchain/lib/std`. The old differential parity gate — baseline `RYE_LIB` vs strengthened `rye/lib` — **retired**; both arms would read the same bytes. `parity.rish` is now a **behavior regression suite**. The selftest ensures no one replaces the symlink with a copied tree without witnesses still catching behavioral drift. The strengthening chronicle (`strengthening-compiler/`) remains honest record; invariants belong at **call sites** in authored `.rye` per [`work-in-progress/archive/20260628-044200_call-site-harvest.md`](../work-in-progress/archive/20260628-044200_call-site-harvest.md).
+**Thin frontend (2026-06-28):** `rye/lib/std` symlinks to `vendor/zig-toolchain/lib/std`. The old differential parity gate — baseline `RYE_LIB` vs strengthened `rye/lib` — **retired**; both arms would read the same bytes. `parity.rish` is now a **behavior regression suite**. The selftest ensures no one replaces the symlink with a copied tree without witnesses still catching behavioral drift. The strengthening chronicle (`external-research/yonder/strengthening-compiler/`) remains honest record; invariants belong at **call sites** in authored `.rye` per [`work-in-progress/archive/20260628-044200_call-site-harvest.md`](../work-in-progress/archive/20260628-044200_call-site-harvest.md).
 
 ---
 

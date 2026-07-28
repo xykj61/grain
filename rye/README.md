@@ -104,7 +104,7 @@ rye/bin/rye build brushstroke/wayland_seed.rye brushstroke/xdg-shell-protocol.c 
 
 ## Strengthening and the Gate Trio
 
-Rye's `std` grows by **strengthening** — assertions and `maybe` markers that state what the code already does, never changing behavior. Each pass is recorded in `../strengthening-compiler/` and proven by three **Rishi** gates (`../tools/*.rish`):
+Rye's `std` grows by **strengthening** — assertions and `maybe` markers that state what the code already does, never changing behavior. Each pass is recorded in `../external-research/yonder/strengthening-compiler/` and proven by three **Rishi** gates (`../tools/*.rish`):
 
 ```sh
 rishi/bin/rishi run tools/parity.rish          # witness regression suite (116 programs)

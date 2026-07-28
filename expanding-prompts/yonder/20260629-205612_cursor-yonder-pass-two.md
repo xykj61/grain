@@ -10,6 +10,8 @@
 
 *Written together by Kaeden and Reya 2.*
 
+Radiant pass `20260727.224156` — path re-point only; claims unchanged
+
 ---
 
 ## Edit 1 — Sharpen the `yonder/` Test in ORGANIZING.md
@@ -50,7 +52,7 @@ Record in the session log where each thread now lives.
 **The reference work is the real work here — both are cited widely, including by active source.**
 
 - Before each move, grep the whole tree for the filename (and for short forms if any). Update every inbound reference to the new `yonder/` path.
-- `content-centric-messaging` is cited by **Aurora source files** — `aurora/src/named.rye`, `posted.rye`, `sealed.rye`, and `aurora/README.md` — as their design origin, plus `strengthening-compiler/9995`, the unified-keys research, and the external-research README. These are doc-comment provenance links: repoint the paths, do not remove them. Source comments count as references.
+- `content-centric-messaging` is cited by **Aurora source files** — `aurora/src/named.rye`, `posted.rye`, `sealed.rye`, and `aurora/README.md` — as their design origin, plus `external-research/yonder/strengthening-compiler/9995`, the unified-keys research, and the external-research README. These are doc-comment provenance links: repoint the paths, do not remove them. Source comments count as references.
 - `ownerboot-riscv-caravan` is cited by `external-research/README.md`, the gratitude README, and sibling research including its **companion** `20260617-195712_caravan-tally-networking.md` (which stays one level deep — repoint its link rather than break the pair) and `20260617-195812_aurora-boot-riscv.md`.
 
 A move is not done while a dangling path remains.

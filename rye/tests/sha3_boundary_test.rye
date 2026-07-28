@@ -1,6 +1,6 @@
 //! Rye test: SHA3-512 across the block boundary — a guard for our strengthening.
 //!
-//! Our first divergence in substance (strengthening-compiler/9998_sha3_512.md) added TAME
+//! Our first divergence in substance (external-research/yonder/strengthening-compiler/9998_sha3_512.md) added TAME
 //! assertions to SHA3-512 in Rye's own `std`, stating the sponge's invariant
 //! that its cursor stays within one block: `offset <= rate`. The interesting
 //! case is the one that rests the cursor *exactly* on the boundary —

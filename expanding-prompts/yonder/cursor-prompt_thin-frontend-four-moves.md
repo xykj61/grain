@@ -51,7 +51,7 @@ Show diff; commit in Radiant voice on Kaeden's word.
 **Method:**
 
 1. Scan authored `.rye`/`.rish` under seeds (`rye/tests`, `rishi`, `caravan`, `aurora`, `mantra`, `tally`, `brushstroke`, `tools`, etc.) for `std.*` usage.
-2. Crosswalk to `strengthening-compiler/0000_STRENGTHENING_LEXICON.md` surfaces.
+2. Crosswalk to `external-research/yonder/strengthening-compiler/0000_STRENGTHENING_LEXICON.md` surfaces.
 3. For each seed-used surface, note: pass doc, whether pass matches real strengthened fn (flag mismatches like `9941`), suggested call-site assertion (one line).
 4. Write `work-in-progress/20260628-<STAMP>_call-site-harvest.md` — table: surface | seeds that call it | pass doc | verify? | harvest when touched.
 
@@ -114,7 +114,7 @@ After moves land (or after each approved commit), write `session-logs/<STAMP>_th
 
 ## Do not (unless Kaeden explicitly asks)
 
-- Resume strengthening pass 9886 or stamp-rename `strengthening-compiler/`
+- Resume strengthening pass 9886 or stamp-rename `external-research/yonder/strengthening-compiler/`
 - Add assertions back into `std` "demand-driven"
 - Run std re-fork without approved plan
 - Silent-flip supplement without migration framing
