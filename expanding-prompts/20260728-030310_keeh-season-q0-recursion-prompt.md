@@ -1,7 +1,8 @@
 # Keeh Season — Recursion Prompt (printout · lean-16 closed · await extend)
 
-**Stamp:** `20260728.030310` · Radiant pass `20260728.035025`  
-**Use:** paste the fenced block as the next counsel/bench session opener.  
+**Stamp:** `20260728.030310` · Radiant pass `20260728.035441`  
+**Use:** historical Keeh printout / sundial target — **quint CLOSED**; walk Gren prompt instead.  
+Radiant pass `20260728.035441` — handback return_gren_g0 · quint CLOSED · core OPEN  
 Radiant pass `20260728.035025` — Linn→Helen · sundial · lean-16 CLOSED · prompt catch-up  
 Radiant pass `20260728.034317` — Linn Capricorn 10 · q15  
 Radiant pass `20260728.033820` — Shyu→Hyundai  
@@ -30,13 +31,14 @@ INNERMOST SCOPE (paused — do not advance u-rounds):
   Spine waiting: Mala/MALA→Murr/MUR waves · Kyler dedication · WOV roadmap last.
   Charter: counsel/20260728-025220_the-mur-season-innermost-charter.md
 
-CORE SCOPE (paused — do not advance g-rounds while quint awaits handback/extend):
-  Gren Season held at g0 (prep seated; Djin→Gren living overwrite waits).
+CORE SCOPE (OPEN after handback — walk Gren; Keeh printout is archival):
+  Gren Season OPEN · g0 complete / g1 next (Djin→Gren living overwrite).
   Charter: counsel/20260728-025634_the-gren-season-core-charter.md
+  Active printout: expanding-prompts/20260728-025634_gren-season-g0-recursion-prompt.md
 
-QUINT SCOPE (lean-16 CLOSED — no q-rounds until extend 32 or return Gren g0):
+QUINT SCOPE (CLOSED — handed back — do not advance q-rounds):
   Charter: counsel/20260728-030310_the-keeh-season-quint-charter.md
-  Spine: fascia edit Ketu → Keeh / %keeh / keeh.fund (Aquarius air seat 11).
+  Spine: fascia edit Ketu → Keeh / %keeh / keeh.fund (Aquarius air seat 11) — LIVING kept.
   Executive: Keaton Sealy Livermore UNCHANGED.
   Honor sponsor: Kia (South Korea) design seat — not a paid buy.
   Recommend: used 4-cyl hatch/SUV · non-CVT auto · light grey/beige cloth · CL/FB Marketplace.
@@ -47,8 +49,8 @@ QUINT SCOPE (lean-16 CLOSED — no q-rounds until extend 32 or return Gren g0):
   Prin: rishi/bin/rishi run tools/prin.rish scope
   Sundial: rishi/bin/rishi run tools/sundial.rish  (or prin sundial) — confidence percent · band.
   gen_keeh · gen_gren · gen_murr · gen_shyu · gen_linn GREEN · deploy RED.
-  q14 and q15 WARN×2 seated: extend to 32 · or return Gren g0.
-  lean-16 CLOSED at q15 — ungated quint rounds empty until his extend_or_return word.
+  q14 and q15 WARN×2 seated; word seated: extend_or_return=return_gren_g0.
+  lean-16 CLOSED at q15 — quint CLOSED · walk Gren core (g1+) instead.
 
 Read whole: Keeh charter · Gren · MUR · LEXICON Keeh/Linn/Shyu/sundial ·
 edu keeh-opening · linn-opening · shyu-opening ·
@@ -66,11 +68,11 @@ then await his word — do not invent q16 or Gren g0 advance:
   no live Sui deploy · no wallet · no gas · no private key in tree;
   no Gren g-rounds · no MUR mass sed until quint hands back to g0 (or he extends).
 
-waymark: q15 complete, lean-16 CLOSED
+waymark: Keeh CLOSED · handed back · Gren g0 complete / g1 next
 nib <origin/main short nib>
 bench report (verbatim, if any): <REPORT/STOP — or "none">
 scope: outer=paused(m8/m9) inner=paused(i6/i7) innermost=paused(u0)
-  core=paused(g0) quint=lean16_closed(await) geode=prep(d0)
+  core=open(g1) quint=closed(handed_back) geode=prep(d0)
 breach scope circle (blank = still held): A= A+C= all=
 words seated (blank = held whole): season_name= choir= LICENSE_WORD=
   O3= relay_word= tilak_names= scarcity= merit_unit= app_name=
@@ -88,7 +90,7 @@ words seated (blank = held whole): season_name= choir= LICENSE_WORD=
   gwoh_dedication=Sarah_Guo eyva_dedication=Avanti trya_dedication=Ariana_Grande
   year=wave crush=compile docs-geode= geode=prep(d0)
   n_of_12_multisig=plan (n held) wov_retire=roadmap_last
-  core_extend=16_lean quint_extend=16_complete extend_or_return=
+  core_extend=16_lean quint_extend=16_complete extend_or_return=return_gren_g0
 asks: <anything — or "none"> ] ]
 ```
 

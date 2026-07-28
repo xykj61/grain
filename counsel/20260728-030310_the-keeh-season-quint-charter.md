@@ -8,7 +8,8 @@
 **Rename spine (approved fascia edit):** **Ketu / `%ketu` / ketu.fund → Keeh / `%keeh` / keeh.fund** — Aquarius · air · seat 11  
 **Executive:** **Keaton Sealy Livermore** — **still** (unchanged)  
 **Within:** paused **core** Gren Season (g0) · inside paused MUR u0 · inside paused Inner Scope · inside paused Constellation  
-**Status:** Prep seated · **q0–q15 complete** `20260728.034317` · **lean-16 CLOSED** · `extend_or_return=` held · Linn Capricorn 10 seated  
+**Status:** **CLOSED** · handed back `20260728.035441` · `extend_or_return=return_gren_g0` · living Keeh doors kept  
+Radiant pass `20260728.035441` — handback return Gren g0 · quint CLOSED · core OPEN  
 Radiant pass `20260728.034317` — q15 second horizon warn · Linn `%linn` Capricorn 10 · lean-16 CLOSED · blank held  
 Radiant pass `20260728.034122` — q14 first horizon warn · doors GREEN · deploy RED · blank held  
 Radiant pass `20260728.033933` — q13 second harden · Shyu→Hyundai · gen trio+shyu GREEN · deploy RED · harden CLOSED  
@@ -34,10 +35,10 @@ Radiant pass `20260728.032134` — Kia honor sponsor · used 4-cyl hatch/SUV non
 | **outer** | Constellation | m8 / m9 next | **PAUSED** |
 | **inner** | Inner Scope | i6 / i7 next · fascia | **PAUSED** |
 | **innermost** | MUR Season | u0 | **PAUSED** |
-| **core** | Gren Season | g0 | **PAUSED** while quint walks |
-| **quint** | **Keeh Season** | **q0–q15** lean-16 CLOSED · await extend/return | **OPEN** (held at close) |
+| **core** | Gren Season | **g0** OPEN (post-handback) | **OPEN** |
+| **quint** | **Keeh Season** | lean-16 CLOSED · **handed back** | **CLOSED** |
 
-Handback: quint → core **g0** (unless extend 32). Then Gren · MUR · inner · outer as before.
+Handback **seated** `20260728.035441`: `extend_or_return=return_gren_g0`. Living Keeh · Shyu · Linn doors remain.
 
 ## What this season is for
 
@@ -69,7 +70,7 @@ Handback: quint → core **g0** (unless extend 32). Then Gren · MUR · inner ·
 | Living overwrite | **q2–q7** AFFIRMED CLOSED | Lexicon · prin · counsel Radiant-pass Ketu→Keeh · Kia |
 | Residual | **q8–q11** CLOSED | Bare living ads cleared · spot-checks empty ×3 |
 | Harden | **q12–q13** CLOSED | gen_keeh · gen_gren · gen_murr · gen_shyu still GREEN |
-| Horizon · close | **q14–q15** CLOSED | **Warn×2 seated:** extend 32 · or return Gren g0 (`extend_or_return=` held) |
+| Horizon · close | **q14–q15** CLOSED | **Warn×2** · word seated: **return_gren_g0** |
 
 ## Hard lines
 
