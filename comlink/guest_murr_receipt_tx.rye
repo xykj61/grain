@@ -1,4 +1,4 @@
-//! comlink/guest_mala_receipt_tx.rye — MUR M2b (was MALA) receipt hop TX (holder → issuer).
+//! comlink/guest_murr_receipt_tx.rye — MUR M2b (was MALA) receipt hop TX (holder → issuer).
 
 const vn = @import("virtio_net.rye");
 const tally_copy = @import("tally_copy.rye");
@@ -55,6 +55,6 @@ export fn kmain() callconv(.c) noreturn {
     const total: u32 = poff + dg_len;
 
     tx.send(total);
-    vn.write_str("mala m2b device wire: sealed receipt TX sent\n");
+    vn.write_str("murr m2b device wire: sealed receipt TX sent\n");
     vn.finish_pass();
 }

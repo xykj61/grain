@@ -1,6 +1,7 @@
-//! comlink/guest_mala_receipt_rx.rye — MUR M2b (was MALA) receipt hop RX (issuer).
+//! comlink/guest_murr_mint_rx.rye — MUR M2b (was MALA) mint hop RX (holder).
+//!
+//! Opens the sealed mint, folds via murr_core, asserts holder balance 1000.
 
-const std = @import("std");
 const vn = @import("virtio_net.rye");
 const wf = @import("wire_format.rye");
 const rc = @import("receipt_core.rye");
@@ -24,12 +25,12 @@ export fn kmain() callconv(.c) noreturn {
 
     const n = rx.wait_frame();
     if (n == 0) {
-        vn.write_str("mala m2b device wire: FAIL — receipt RX timeout\n");
+        vn.write_str("murr m2b device wire: FAIL — mint RX timeout\n");
         vn.finish_fail();
     }
     const poff = vn.virtio_net_hdr_len + vn.eth_header_len;
     if (n <= poff) {
-        vn.write_str("mala m2b device wire: FAIL — receipt frame too short\n");
+        vn.write_str("murr m2b device wire: FAIL — mint frame too short\n");
         vn.finish_fail();
     }
     const buf = rx.frame();
@@ -37,7 +38,7 @@ export fn kmain() callconv(.c) noreturn {
 
     var opened: [@intCast(wf.max_message)]u8 = undefined;
     const opened_len = wf.open_datagram(datagram, &opened) catch {
-        vn.write_str("mala m2b device wire: FAIL — receipt open refused\n");
+        vn.write_str("murr m2b device wire: FAIL — mint open refused\n");
         vn.finish_fail();
     };
 
@@ -51,27 +52,33 @@ export fn kmain() callconv(.c) noreturn {
     var sig_buf: [kumara.signature_length]u8 = undefined;
     var fact_buf: [rc.slcl2_max_fact]u8 = undefined;
     const decoded = rc.decode_compact_payload(opened[0..@intCast(opened_len)], &sig_buf, &fact_buf) catch {
-        vn.write_str("mala m2b device wire: FAIL — receipt payload decode\n");
+        vn.write_str("murr m2b device wire: FAIL — mint payload decode\n");
         vn.finish_fail();
     };
     const fact = fact_buf[0..decoded.fact_len];
     var fields: rc.FactFields = undefined;
     rc.parse_fact_fields(fact, &fields) catch {
-        vn.write_str("mala m2b device wire: FAIL — receipt fact parse\n");
+        vn.write_str("murr m2b device wire: FAIL — mint fact parse\n");
         vn.finish_fail();
     };
-    if (!mc.memo_is_receipt(fields.memo)) {
-        vn.write_str("mala m2b device wire: FAIL — not a receipt memo\n");
-        vn.finish_fail();
-    }
-    if (!std.mem.eql(u8, fields.from, holder_hex[0..]) or !std.mem.eql(u8, fields.to, issuer_hex[0..])) {
-        vn.write_str("mala m2b device wire: FAIL — receipt parties\n");
-        vn.finish_fail();
-    }
-    rc.verify_record(sig_buf[0..kumara.signature_length], fact, holder_kp.public_key) catch {
-        vn.write_str("mala m2b device wire: FAIL — receipt verify\n");
+    var balances: mc.Balances = .{};
+    mc.fold_one_line(
+        fields,
+        fact,
+        sig_buf[0..kumara.signature_length],
+        &balances,
+        &issuer_hex,
+        &holder_hex,
+        issuer_kp.public_key,
+        holder_kp.public_key,
+    ) catch {
+        vn.write_str("murr m2b device wire: FAIL — mint fold\n");
         vn.finish_fail();
     };
-    vn.write_str("mala m2b device wire: sealed receipt GREEN — verify passed\n");
+    if (balances.holder != 1000) {
+        vn.write_str("murr m2b device wire: FAIL — mint balance mismatch\n");
+        vn.finish_fail();
+    }
+    vn.write_str("murr m2b device wire: sealed mint GREEN — fold passed\n");
     vn.finish_pass();
 }
