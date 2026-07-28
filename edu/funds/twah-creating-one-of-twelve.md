@@ -4,10 +4,11 @@
 **Stamp:** `20260728.014523`  
 **Voice:** Quin · nested frame Trey  
 **Fund seat:** **Twah** — Taurus · earth · seat 2 · `%twah` · domain prep **twah.fund**  
-**Status:** Steps **1–5 taught and witnessed** (`20260728.014918`); step 6 remains outline  
+**Status:** Steps **1–6 taught and witnessed** · Twah fund-prep arc **m5–m8 CLOSED** (`20260728.015058`)  
 **Generator:** [`../../tools/gen_twah_fund_prep.rish`](../../tools/gen_twah_fund_prep.rish)
 
 *Twah's gift under the fund seat: the edu-series tutorial for creating one of the twelve.*
+Radiant pass `20260728.015058` — step 6 refuse-walk · Twah m5–m8 closed
 Radiant pass `20260728.014918` — deepen steps 4–5 · phone book · Comlink knock
 Radiant pass `20260728.014737` — deepen steps 1–3 · gen-twah witnesses
 
@@ -26,7 +27,9 @@ How a new fund joins the constellation wheel: a **four-letter** name, a **`.fund
 | **3** | Know the tropical seat (Twah = Taurus · index 1) | **taught · witnessed m6** |
 | **4** | Read the phone book — registry-only, **mints nothing** | **taught · witnessed m7** |
 | **5** | Knock Comlink before any seating byte | **taught · witnessed m7** |
-| 6 | Refuse live deploy · wallet · gas from a tutorial page | outline · hard line below · m8 |
+| **6** | Refuse live deploy · wallet · gas from a tutorial page | **taught · witnessed m8** |
+
+**arc: Twah m5–m8 CLOSED** at the refuse-walk.
 
 ---
 
@@ -89,7 +92,7 @@ The constellation contract is a **phone book**, not a mint. Version one holds se
 | Artifact | Role |
 |----------|------|
 | [`../../mycelium/constellation/SPEC.md`](../../mycelium/constellation/SPEC.md) | Design — registry-only · two lanes · hard lines |
-| [`../../mycelium/constellation/sui/sources/constellation.move`](../../mycelium/constellation/sui/sources/constellation.move) | Unaffected Move sketch — `add_seat` under AdminCap · **mints nothing** |
+| [`../../mycelium/constellation/sui/sources/constellation.move`](../../mycelium/constellation/sui/sources/constellation.move) | Unaudited Move sketch — `add_seat` under AdminCap · **mints nothing** |
 | Settlement lane | Sui package (devnet/testnet/mainnet = his hand) |
 | Sovereign lane | Same registry truth over **Comlink** on house metal |
 
@@ -114,6 +117,31 @@ Every constellation prep generator knocks **Comlink** before any seating byte. T
 
 ---
 
+## Step 6 — the refuse-walk
+
+A tutorial that can deploy is a tutorial that lies. Step six is the practiced **RED**: name the forbidden verbs and prove the generator exits rather than pretending.
+
+| Verb | Who may run it | Tutorial / gen-twah |
+|------|----------------|---------------------|
+| `deploy` | Keaton alone | **REFUSE** |
+| `mainnet` | Keaton alone | **REFUSE** |
+| `wallet` | Keaton alone | **REFUSE** |
+| `gas` | Keaton alone | **REFUSE** |
+| `multisig-live` | Keaton + professionals | **REFUSE** |
+| `claim-domain` | Keaton alone | **REFUSE** |
+
+**Prove the refuse (part of GREEN):**
+
+```bash
+rishi/bin/rishi run tools/gen_twah_fund_prep.rish deploy   # must exit non-zero
+```
+
+gen-twah's own GREEN path re-runs this refuse as a post-fold so the page cannot stay GREEN if the door softens.
+
+**witness:step6** refuse-walk taught · deploy RED proven — GREEN when gen-twah passes.
+
+---
+
 ## Hard lines (always)
 
 - **no live deploy** from this page or its generator  
@@ -121,13 +149,13 @@ Every constellation prep generator knocks **Comlink** before any seating byte. T
 - no domain purchase by counsel  
 - n-of-12 multisig remains **plan only** (led by Mala) until professionals + Keaton  
 
-## Prove steps 1–5
+## Prove the whole page (steps 1–6)
 
 ```bash
-rishi/bin/rishi run tools/gen_twah_fund_prep.rish
-rishi/bin/rishi run tools/gen_twah_fund_prep.rish deploy   # expects RED
+rishi/bin/rishi run tools/gen_twah_fund_prep.rish          # GREEN — includes refuse post-fold
+rishi/bin/rishi run tools/gen_twah_fund_prep.rish deploy   # RED by name
 ```
 
 ---
 
-*May the earth seat teach the phone book before the mint that never comes, and may every knock land on Comlink before any seating byte.*
+*May the earth seat close its prep by refusing what it cannot honestly carry, and may every four-letter fund wait for the hand that alone may claim, pay gas, and deploy.*
