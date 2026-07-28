@@ -39,7 +39,7 @@ Radiant pass `20260727.235754` — Prim was a typo for Prin; Brix `alias Prim Pr
 |-----|----------------|
 | **0 Bow** | Prep receipt + shelf counts · standing battery in r0 |
 | **I** | `width_check_th4.rish` (`.brix` · includes Prim→Prin alias) · `amber_first_ring.rish` · `amphora_lap1.rish` |
-| **II** | `amphora_resin_chunk.rish` · one Glow floor witness on-touch · sameness = one public fold, no private macro |
+| **II** | `resin_unit_witness.rish` · Glow floors · `tensegral_arc_ii_witness.rish` (sameness fold) |
 | **III** | `radiant_lint.rish` (touched paths) · `tame_style_check.rish` (touched code) · consolidate = one canon home |
 | **IV** | Width/garden tighten on one module · unify one caller map · `foundation_seeds.rish` / Tally battery as happy-zone habitat |
 | **V** | One thin metalsmoke slice · Realidream/Pond close note · saga on `saga/` |
