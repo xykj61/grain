@@ -1,0 +1,13 @@
+format session-log-v1
+stamp 20260728.040951
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Gren Season g6 spotcheck empty
+prompt waymark g5 complete g6 next · asks none — third spot-check
+think Re-run living-bookmark probes · gen doors GREEN · spot_misses=0
+obs Spot empty×3 · g7 closes spot-check block then residual g8
+file counsel/20260728-040951_gren-season-g6-spotcheck.md third spot-check
+file counsel/20260728-040951_gren-season-g6-checkin.md round-close check-in
+recommend keep-going to kg g7 fourth spot-check close block — mechanical
