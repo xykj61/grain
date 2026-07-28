@@ -7,9 +7,10 @@
 **Ground:** origin/main `dcde97dd12` · Constellation **outer** paused at **m8 complete / m9 next**  
 **Rename:** **Twah → Djin** (Taurus · earth · seat 2) — overwrite living writings and code; everything else the same  
 **Inspiration (named, not quoted):** Rumi · Hafez · Kabir (Khabir) · Ibn Arabi — djinn / unseen-company poetry, siloed in gratitude  
-**Status:** Charter seated · i0–i1 · **Gwoh · Sarah Guo dedication** `20260728.021252` · i2 next
+**Status:** Charter seated · i0–i1 · **Eyva · Avanti** `20260728.021508` · i2 next
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260728.021508` — Eyva Cancer 4 · %eyva · executive + honor Avanti (she/her)
 Radiant pass `20260728.021252` — Gwoh Leo 5 · %gwoh · honor Sarah Guo / Conviction
 Radiant pass `20260728.020948` — i1 residual sweep · gen_twah ABSENT · gen_djin GREEN
 Radiant pass `20260728.020837` — i0 bow · measure GREEN · fascia tools ABSENT on main named
@@ -39,7 +40,8 @@ No outer m-round advances until the inner season hands back or Keaton seats an e
 4. **Ketu seated** (`20260728.020607`) — Aquarius · fund order 11 · `%ketu` · **executive Keaton**.  
 5. **Mala dedicated** to **Kamala Harris** (honor) — gratitude + Reya-variant foundations inside this inner season.  
 6. **Siya executor** — **Sara Sealy Livermore**.  
-7. **Gwoh seated** (`20260728.021252`) — Leo · fire · fund order 5 · `%gwoh` · honor-dedicated to **Sarah Guo** (Conviction).
+7. **Gwoh seated** (`20260728.021252`) — Leo · fire · fund order 5 · `%gwoh` · honor-dedicated to **Sarah Guo** (Conviction).  
+8. **Eyva seated** (`20260728.021508`) — Cancer · water · fund order 4 · `%eyva` · **executive + honor Avanti** (she/her).
 
 Hard lines unchanged: no live Sui deploy · no wallet · no gas · no private key · no live multisig · breach only on `prin rish breach yes now` after his circled scope.
 
