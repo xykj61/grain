@@ -187,7 +187,7 @@ const open_asks_view_max_lines: u32 = 8;
 const open_asks_escrow_view_max_lines: u32 = 8;
 const open_asks_reputation_view_max_lines: u32 = 8;
 const open_asks_civic_sight_view_max_lines: u32 = 8;
-const mala_mint_fixture = "tools/fixtures/mala_m1_mint.bron";
+const murr_mint_fixture = "tools/fixtures/murr_m1_mint.bron";
 const wov_bundle_fixture = "tools/fixtures/wov_exit_bundle_v1.bron";
 const dimeroll_journal_fixture = "dimeroll/fixtures/journal.bron";
 const anvil_corpus_fixture = "anvil/fixtures/rye_corpus.bron";
@@ -310,7 +310,7 @@ fn first_non_comment_line(text: []const u8) ?[]const u8 {
 fn compose_thin_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var mint_buf: [512]u8 = undefined;
-    const mint = try cwd.readFile(io, mala_mint_fixture, &mint_buf);
+    const mint = try cwd.readFile(io, murr_mint_fixture, &mint_buf);
     var wov_buf: [1024]u8 = undefined;
     const wov = try cwd.readFile(io, wov_bundle_fixture, &wov_buf);
 
@@ -504,7 +504,7 @@ fn run_books_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
 fn compose_sight_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var mint_buf: [512]u8 = undefined;
-    const mint = try cwd.readFile(io, mala_mint_fixture, &mint_buf);
+    const mint = try cwd.readFile(io, murr_mint_fixture, &mint_buf);
     var wov_buf: [1024]u8 = undefined;
     const wov = try cwd.readFile(io, wov_bundle_fixture, &wov_buf);
     var journal_buf: [2048]u8 = undefined;
@@ -786,7 +786,7 @@ fn run_assist_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
 fn compose_assist_sight_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var mint_buf: [512]u8 = undefined;
-    const mint = try cwd.readFile(io, mala_mint_fixture, &mint_buf);
+    const mint = try cwd.readFile(io, murr_mint_fixture, &mint_buf);
     var wov_buf: [1024]u8 = undefined;
     const wov = try cwd.readFile(io, wov_bundle_fixture, &wov_buf);
     var corpus_buf: [4096]u8 = undefined;
