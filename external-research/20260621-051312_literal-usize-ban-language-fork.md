@@ -9,7 +9,9 @@
 **Voice:** Reya 2
 **Status:** Exploration — decision recorded; design siloed at `active-designing/yonder/20260621-051312_explicit-width-in-rye.md`
 
-**Prior art:** [`20260621-050312_usize-boundary-not-design.md`](20260621-050312_usize-boundary-not-design.md) (seam policy while on Zig ground) · [`TAME_STYLE.md`](TAME_STYLE.md) · [`../gratitude/TIGER_STYLE.md`](../gratitude/TIGER_STYLE.md) · [`../context/specs/rye-as-its-own-language.md`](../context/specs/rye-as-its-own-language.md)
+**Prior art:** [`20260621-050312_usize-boundary-not-design.md`](20260621-050312_usize-boundary-not-design.md) (seam policy while on Zig ground) · [`TAME_GUIDANCE.md`](TAME_GUIDANCE.md) · [`../gratitude/TIGER_STYLE.md`](../gratitude/TIGER_STYLE.md) · [`../context/specs/rye-as-its-own-language.md`](../context/specs/rye-as-its-own-language.md)
+
+Radiant pass `20260727.231750` — path re-point only; claims unchanged
 
 ---
 
