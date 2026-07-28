@@ -1,7 +1,7 @@
 //! mandi/listing_settle_core.rye — Mandi lap 3: settle a vessel listing (in-process).
 //!
 //! Binds listing_receipt + payment digest under Kumara seed 0x68.
-//! Payment digests MALA send + WOV transfer proofs — no buyer/seller identities.
+//! Payment digests MUR send + WOV transfer proofs — no buyer/seller identities.
 //! Amphora carriage and live TB wait.
 //!
 //! Ground: [`../context/specs/20260710-171202_mandi-listing-settle-seated.md`](../context/specs/20260710-171202_mandi-listing-settle-seated.md)
@@ -308,7 +308,7 @@ pub fn record_settle(set: *SettledSet, listing_receipt: []const u8) SettleError!
     set.count += 1;
 }
 
-/// SHA3-256 hex of arbitrary proof bytes (MALA fact or WOV transfer line).
+/// SHA3-256 hex of arbitrary proof bytes (MUR fact or WOV transfer line).
 pub fn digest_bytes(bytes: []const u8, out: *[digest_hex_len]u8) void {
     var digest: [32]u8 = undefined;
     Sha3_256.hash(bytes, &digest, .{});
