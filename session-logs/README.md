@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.033612` — [Keeh Season q11 residual close](20260728-033612_keeh-season-q11-residual-close.bron) — residual CLOSED · q12 harden
 - `20260728.033404` — [Shyu Wayne Hsiung and Keeh q10](20260728-033404_shyu-wayne-and-keeh-q10.bron) — Libra 7 · spot empty×3 · q11 next
 - `20260728.033136` — [Keeh Season q9 spotcheck](20260728-033136_keeh-season-q9-spotcheck.bron) — residual empty×2 · q10 next
 - `20260728.033017` — [Keeh Season q8 spotcheck](20260728-033017_keeh-season-q8-spotcheck.bron) — residual empty · q9 next

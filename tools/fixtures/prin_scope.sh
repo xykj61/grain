@@ -13,7 +13,7 @@ Prin scope — seasons · Tally · rish vocabulary
   inner:  Inner Scope Season — PAUSED at i6 complete / i7 next (fascia)
   innermost: MUR Season — PAUSED at u0 (Mala/MALA→Murr/MUR waits)
   core:   Gren Season — PAUSED at g0 (Djin→Gren waits while quint walks)
-  quint:  Keeh Season — OPEN · q10 complete / q11 next (lean 16 · expand 32) · spot-check empty×3
+  quint:  Keeh Season — OPEN · q11 complete / q12 next (lean 16 · expand 32) · residual CLOSED · harden next
   keeh_sponsor: Kia (South Korea) honor · design seat
   keeh_recommend: used 4-cyl hatch/SUV · non-CVT auto · light grey/beige cloth · CL/FB Marketplace
   geode:  Geode Season — PREP · d0 next (docs-geode · crush=compile · wave=year)
