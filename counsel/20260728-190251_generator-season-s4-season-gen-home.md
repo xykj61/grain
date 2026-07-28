@@ -42,7 +42,7 @@ No O3 · no glow_* move · no fund-prep second wave · no shred · no MUR unpaus
 
 ## Next
 
-**kg s5** — fund-prep cluster → `tools/gen/fund/`, or taxonomy draft, or check-in.
+**LANDED s5** — `tools/gen/fund/` LIVE · six fund-prep · shims green.
 
 ---
 

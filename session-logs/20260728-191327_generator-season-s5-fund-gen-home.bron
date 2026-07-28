@@ -1,0 +1,13 @@
+format session-log-v1
+stamp 20260728.191327
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Generator Season s5 fund gen home
+prompt waymark s4 complete s5 next kg fund-prep cluster
+think Move six gen_*_fund_prep into tools/gen/fund; shims at old paths; leave gen_home_witness.
+obs Second thin f4 wave after season cohort; O3 still gated.
+file tools/gen/fund/ round home
+file counsel/20260728-191327_generator-season-s5-fund-gen-home.md round seat
+recommend kg s6 taxonomy draft or next family or check-in
