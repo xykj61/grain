@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.050720` — [MUR Season u14 tool-wave prep](20260728-050720_mur-season-u14-tool-wave-prep.bron) — u32 entry order seated · no renames · u15 next
 - `20260728.050601` — [MUR Season u13 living pins](20260728-050601_mur-season-u13-living-pins-harden.bron) — prin_scope current · prose status · u14 next
 - `20260728.050430` — [MUR Season u12 prose residual](20260728-050430_mur-season-u12-prose-residual.bron) — replies · ER cleared · holds named · u13 next
 - `20260728.050219` — [MUR Season u11 prose residual](20260728-050219_mur-season-u11-prose-residual.bron) — constellation m0–m4 · ER briefs · tools held · u12 next
