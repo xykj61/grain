@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260727.232702` — [Sound Season r11 · Arc IV twin-fold pane](20260727-232702_sound-season-r11.bron) — 530 TWIN / 551 · 1 RED owned · digraph GREEN
 - `20260727.231957` — [Sound Season r10 · Arc IV parity weave standing](20260727-231957_sound-season-r10.bron) — short GREEN · wasmtime ABSENT · parity2 PARKED
 - `20260727.231928` — [Sound Season r9 · Arc III urbit hold exit](20260727-231928_sound-season-r9.bron) — urbit ABSENT hold · Arc III exits
 - `20260727.231750` — [Sound Season r8 · Arc III research link pocket](20260727-231750_sound-season-r8.bron) — 9→3 outbound · six repairs · urbit hold
