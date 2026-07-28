@@ -15,7 +15,7 @@
 |-------|------|------|
 | The language | **Glow** | unchanged — runes · desks · `glow/` |
 | The project / OS umbrella | **Grain** | sketchbook name restored; “Grain OS” optional |
-| OS variants | **Reya · Riyo · Trey · Triz · Quin** | unchanged |
+| OS variants | **Reya · Riyo · Trey · Triz · Quin · Trya** | Trya accreted `20260728.024417` |
 | Style / law | **TAME Guidance** | governs Grain |
 
 ## Why
