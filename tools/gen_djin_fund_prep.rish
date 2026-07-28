@@ -1,0 +1,32 @@
+# tools/gen_djin_fund_prep.rish — Constellation m5–m8 · Djin (was Twah): Djin fund prep generator.
+#
+# Affirms Taurus earth seat, edu steps 1–6 witnessed (refuse-walk closes arc),
+# post-fold proves deploy exits RED, refuses forbidden verbs by name.
+#   rishi/bin/rishi run tools/gen_djin_fund_prep.rish
+#   rishi/bin/rishi run tools/gen_djin_fund_prep.rish deploy  # RED
+
+say "gen-djin: Language EN — Djin fund prep (Taurus earth · edu gift · steps 1–6 close)."
+say "gen-djin: Style Radiant — GREEN only after steps 1–6 witness and deploy refuse."
+say "gen-djin: Lens TAME — prep only; no wallet, gas, domain claim, or live deploy."
+
+let verb = ""
+if length args != 0 then let verb = args[0]
+
+let prep = run ["sh" "tools/fixtures/gen_djin_fund_prep.sh" verb]
+assert prep.ok else "gen-djin REFUSE or stack door failed — see stderr for deploy/wallet/gas/claim-domain refusals"
+assert prep.out contains "GREEN: gen-djin" else "gen-djin prep helper missing GREEN line"
+assert prep.out contains "sign_index=1" else "gen-djin Taurus seat index unnamed"
+assert prep.out contains "witness:step1 GREEN" else "gen-djin step1 witness missing"
+assert prep.out contains "witness:step2 GREEN" else "gen-djin step2 witness missing"
+assert prep.out contains "witness:step3 GREEN" else "gen-djin step3 witness missing"
+assert prep.out contains "witness:step4 GREEN" else "gen-djin step4 witness missing"
+assert prep.out contains "witness:step5 GREEN" else "gen-djin step5 witness missing"
+assert prep.out contains "witness:step6 GREEN" else "gen-djin step6 witness missing"
+assert prep.out contains "Djin m5–m8 CLOSED" else "gen-djin Djin arc close line missing"
+say prep.out
+
+# m8 — refuse-walk post-fold: deploy must fail
+let refuse = run ["sh" "tools/fixtures/gen_djin_fund_prep.sh" "deploy"]
+assert (refuse.ok == false) else "gen-djin refuse-walk broken: deploy must exit RED"
+
+say "GREEN: gen-djin m8 — Djin arc closed; steps 1–6 witnessed; deploy refuse post-fold RED."
