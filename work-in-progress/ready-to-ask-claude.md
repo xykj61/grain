@@ -280,7 +280,7 @@ Full-tree zip discipline unchanged; use **58** not 43.
 |------|------|
 | Zero-copy counsel (A–H, I1–I7) | [`counsel/20260704-181612_zero-copy-resins-counsel-answers.md`](../counsel/20260704-181612_zero-copy-resins-counsel-answers.md) |
 | Ends-first orientation (Part Three addendum) | [`external-research/20260704-185412_ends-first-map-orientation.md`](../external-research/20260704-185412_ends-first-map-orientation.md) |
-| Unified Cursor lane | [`expanding-prompts/20260704-185412_cursor-lane-zip42-counsel-unified.md`](../expanding-prompts/20260704-185412_cursor-lane-zip42-counsel-unified.md) |
+| Unified Cursor lane | [`expanding-prompts/yonder/20260704-185412_cursor-lane-zip42-counsel-unified.md`](../expanding-prompts/yonder/20260704-185412_cursor-lane-zip42-counsel-unified.md) |
 | Unified cut log | [`session-logs/archive/20260704/20260704-185412_unified-packet-cut.md`](../session-logs/archive/20260704/20260704-185412_unified-packet-cut.md) |
 
 **Superseded pre-intake:** `181612` lane prompt and three prior proposal zips — re-cut into this packet; lineage in unified cut log.

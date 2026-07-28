@@ -4,7 +4,7 @@
 **Language:** EN · **Style:** Radiant (`context/RADIANT_STYLE.md`) · **Lens:** TAME · TWO_ROOMS
 **Opens when:** Kaeden pastes this into the Cursor thread after reviewing the unified counsel packet
 **Supersedes (pre-intake):** the `20260704-181612_cursor-lane-response-zero-copy.md` lane prompt — re-cut into this one before ever landing; the two prior proposal zips (`…181612-zero-copy-counsel…`, `…185412-ends-first-orientation…`) retire the same way
-**Ground:** [`../counsel/20260704-181612_zero-copy-resins-counsel-answers.md`](../counsel/20260704-181612_zero-copy-resins-counsel-answers.md) · [`../external-research/20260704-185412_ends-first-map-orientation.md`](../external-research/20260704-185412_ends-first-map-orientation.md) · [`20260704-181012_zero-copy-resins-claude-counsel.md`](20260704-181012_zero-copy-resins-claude-counsel.md) · [`../external-research/20260704-180612_zero-copy-resins-and-the-sovereign-snapshot.md`](../external-research/20260704-180612_zero-copy-resins-and-the-sovereign-snapshot.md)
+**Ground:** [`../counsel/20260704-181612_zero-copy-resins-counsel-answers.md`](../../counsel/20260704-181612_zero-copy-resins-counsel-answers.md) · [`../external-research/20260704-185412_ends-first-map-orientation.md`](../../external-research/20260704-185412_ends-first-map-orientation.md) · [`20260704-181012_zero-copy-resins-claude-counsel.md`](20260704-181012_zero-copy-resins-claude-counsel.md) · [`../external-research/20260704-180612_zero-copy-resins-and-the-sovereign-snapshot.md`](../../external-research/20260704-180612_zero-copy-resins-and-the-sovereign-snapshot.md)
 
 *Written together by Kaeden and Claude (Fable 5), in the fresh bench's Radiant voice — voice-name awaiting Kaeden's word.*
 
