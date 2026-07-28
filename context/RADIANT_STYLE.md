@@ -1,7 +1,7 @@
 # Radiant Style
  
 **Language:** EN
-**Last updated:** 2026-07-25 (runway seated `110354` · batch 50 · pass playbook `034254`)
+**Last updated:** 2026-07-28 (Tensegral Arc III r7 — on-touch law reaffirmed · lint GREEN `003623`)
  
 **Purpose:** Define how we write and speak, so every piece is clear, affirmative, and a joy to hear — whether read on the page or aloud (TTS, podcast, narration). Target reading level: 8th grade through collegiate. Voice: conversational yet eloquent, warm yet precise.
 

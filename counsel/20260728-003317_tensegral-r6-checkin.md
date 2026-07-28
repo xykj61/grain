@@ -3,7 +3,7 @@
 **Language:** EN
 **Stamp:** `20260728.003317`
 **Voice:** Quin
-**Status:** Check-in — after Arc II round 6
+**Status:** **Resolved** — lean **A · kg r7 Radiant** taken `20260728.003623`
 **Ground:** Motion [`20260728-003317_tensegral-season-r6-sameness.md`](20260728-003317_tensegral-season-r6-sameness.md)
 
 *Written together by Keaton and Quin.*
