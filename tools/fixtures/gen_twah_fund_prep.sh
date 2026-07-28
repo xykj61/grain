@@ -1,5 +1,5 @@
 #!/bin/sh
-# gen_twah_fund_prep.sh — POSIX helper for tools/gen_twah_fund_prep.rish (m5–m7+)
+# gen_twah_fund_prep.sh — POSIX helper for tools/gen_twah_fund_prep.rish (m5–m8)
 set -eu
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 cd "$ROOT"
@@ -49,14 +49,12 @@ grep -q 'witness:step3' "$PAGE"
 grep -q '| \*\*1\*\* |' "$PAGE"
 
 # --- m7: witness steps 4–5 ---
-# step 4 — phone book read
 grep -q 'witness:step4' "$PAGE"
 grep -q 'phone book' "$PAGE"
 grep -q 'mints nothing' "$PAGE"
 grep -q 'registry' "$PAGE"
 grep -q 'add_seat' "$PAGE"
 grep -q 'AdminCap' "$PAGE"
-# step 5 — Comlink knock
 grep -q 'witness:step5' "$PAGE"
 grep -q 'Knock Comlink' "$PAGE" || grep -q 'knock Comlink' "$PAGE"
 grep -q 'beading.rye' "$PAGE"
@@ -64,14 +62,24 @@ grep -q 'prin → Comlink' "$PAGE"
 grep -q 'not sent' "$PAGE"
 test -f comlink/beading.rye
 
+# --- m8: witness step 6 + arc close ---
+grep -q 'witness:step6' "$PAGE"
+grep -q 'refuse-walk' "$PAGE"
+grep -q 'REFUSE' "$PAGE"
+grep -q 'Twah m5–m8 CLOSED' "$PAGE"
+grep -q 'multisig-live' "$PAGE"
+grep -q 'claim-domain' "$PAGE"
+
 echo "seat: fund=Twah order=2 sign_index=1 (Taurus) vane=%twah dns_prep=twah.fund"
 echo "gift: edu-series tutorial for creating one of the twelve — under the fund seat"
-echo "page: edu/funds/twah-creating-one-of-twelve.md (steps 1–5 taught · m7)"
+echo "page: edu/funds/twah-creating-one-of-twelve.md (steps 1–6 taught · m8 close)"
 echo "witness:step1 GREEN — four-letter Twah + Civic Style"
 echo "witness:step2 GREEN — .fund anchor · claim Keaton's hand alone"
 echo "witness:step3 GREEN — Taurus · fund-order 2 · sign_index 1"
 echo "witness:step4 GREEN — phone book · mints nothing · registry-only"
 echo "witness:step5 GREEN — Comlink knock · beading · no seating byte"
+echo "witness:step6 GREEN — refuse-walk taught · deploy RED proven in post-fold"
+echo "arc: Twah m5–m8 CLOSED at refuse-walk"
 echo "path: prin → Comlink → constellation phone book (registry-only)"
 echo "flags: twah.fund claim = Keaton's hand · no deploy · no wallet · no gas"
-echo "GREEN: gen-twah — Twah prep; steps 1–5 witnessed; deploy RED by name."
+echo "GREEN: gen-twah — Twah prep complete; steps 1–6 witnessed; deploy RED by name."

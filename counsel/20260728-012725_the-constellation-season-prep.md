@@ -6,9 +6,10 @@
 **Kind:** season prep seat · Keaton's word · rounds **m0–m31** (lean numbering; seat of the letter is his)
 **Ground:** origin/main `46d27a3213` · local ahead carries Fascia f0/f1 · Fascia mid-flight parks pending fold-or-parallel word
 **Season name lean:** *the Constellation Season* (beside *the Fund Season* · *the Mala Season*); **season_name=** held for his final seat
-**Status:** Prep seated · m0–m6 · **m7 Twah edu steps 4–5 · phone book · Comlink** `20260728.014918`
+**Status:** Prep seated · m0–m7 · **m8 Twah arc CLOSED · refuse-walk** `20260728.015058`
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260728.015058` — m8 Twah step 6 refuse-walk · m5–m8 closed
 Radiant pass `20260728.014918` — m7 Twah steps 4–5 · phone book · Comlink knock
 Radiant pass `20260728.014737` — m6 Twah steps 1–3 · gen_twah witnesses GREEN
 Radiant pass `20260728.014523` — m5 Twah · gen_twah Comlink · edu page-one stub
