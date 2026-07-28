@@ -10,6 +10,7 @@
 *Written for Claude counsel review after Kaeden's keep-going climb from evening close through thin view.*
 
 Radiant pass `20260728.050219` — living rename-forward: **MUR** (was MALA)
+Radiant pass `20260728.054644` — entry/bin landed u49: `murr.rye` / `bin/murr`
 Radiant pass `20260728.053348` — tool paths landed u32: `murr_m*_witness` · `murr_m1_mint.bron` · `run_murr_wire_lab` (was mala_*); guests/module held
 ---
 
@@ -41,7 +42,7 @@ Since evening close (`183326`, parity **197**, MUR (was MALA) M1 lap-open only),
 
 | Lap | What | Ports / paths |
 |-----|------|---------------|
-| **M1** | One issuer, one holder; mint/send/fold | `linengrow/mala.rye`, `murr_core.rye` |
+| **M1** | One issuer, one holder; mint/send/fold | `linengrow/murr.rye`, `murr_core.rye` |
 | **M2** | Mint crosses Comlink; receipt back | hosted **38492**/**38493**; `mala_delivery.rye` |
 | **M2b** | Same bytes on virtio | device **15569**/**15570**; four guests; extends `murr_m2_witness` (was mala_*) |
 
