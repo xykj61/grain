@@ -16,7 +16,7 @@
 |------|----------|
 | Pond run | `pond_customs.rish` **GREEN** |
 | Spot greens | Amber first ring · Amphora lap 1 · foundation seeds **GREEN** |
-| Prim seeds | Named for arcs 0–V |
+| Arc seeds | Named for arcs 0–V (Prin prep seat; Prim is typo alias only) |
 | Expanded | Season runway prompt |
 | r0 recursion | Paste block + bow discipline |
 | Realidream | Oriented only (no new surface) |

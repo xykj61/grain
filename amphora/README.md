@@ -26,6 +26,12 @@
 
 **Tensegral Arc I r3** (`20260728.000659`): lap 1 · lap 2 · lap 3 · vessel seal · resin chunk all **GREEN** this sitting — Arc I (Brix · Amber · Amphora) exits.
 
-**Tensegral Arc II r4** (`20260728.002049`): resin unit fold [`../tools/resin_unit_witness.rish`](../tools/resin_unit_witness.rish) **GREEN** (mantra batch · granary wire · chunk fixture · TUBE3). Prefer that fold over cold `amphora_resin_chunk.rish` when rishi rebuild hangs.
+**Resin homes (one job each — consolidated `20260728.003902`):**
+
+| Home | Job |
+|------|-----|
+| [`../tools/amphora_resin_chunk.rish`](../tools/amphora_resin_chunk.rish) | Amphora chunk hand — rebuild · chunkdemo · fixture scrub |
+| [`../tools/resin_unit_witness.rish`](../tools/resin_unit_witness.rish) | Arc II public resin fold — batch · granary · chunk fixture · TUBE3 |
+| [`../tools/tensegral_arc_ii_witness.rish`](../tools/tensegral_arc_ii_witness.rish) | Arc II season fold — resin unit + Glow floors |
 
 *May every vessel stay sealed in motion. May every pour remember its cellar.*

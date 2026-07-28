@@ -1,8 +1,8 @@
 # resin_unit_witness.rish — Arc II Resin unit: one public fold over resin greens.
 #
 # Sameness as the macro: callers run this name; internals stay the named
-# witnesses. amphora_resin_chunk.rish may hang on cold rye-build under rishi;
-# the chunk fixture proves the same cargo path without that rebuild gate.
+# witnesses. Chunk cargo path here is the fixture; the Amphora hand
+# tools/amphora_resin_chunk.rish owns rebuild+chunkdemo (tidied r8).
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/resin_unit_witness.rish

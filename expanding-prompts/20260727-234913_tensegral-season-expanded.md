@@ -30,12 +30,12 @@ Open a sixteen-round **kg** season after The Sound. Theme: consolidate · tighte
 | 1 | Brix — `.brix` / TH-4 honesty; name home question without seating workshop newborn | `width_check_th4.rish` |
 | 2 | Amber — cellar first ring reaffirmed; one tighten if red | `amber_first_ring.rish` |
 | 3 | Amphora — vessel lap 1 (or next named lap if lap 1 already owned this week) | `amphora_lap1.rish` |
-| 4 | Resin — one content-addressed unit path | `amphora_resin_chunk.rish` |
+| 4 | Resin — one content-addressed unit path | `resin_unit_witness.rish` (canon fold; chunk hand stays `amphora_resin_chunk.rish`) |
 | 5 | Glow — one language floor on-touch (no suite rewrite) | Glow witness on touched desk |
-| 6 | Sameness as the macro — one public fold; delete or refuse a private macro temptation | Foundations law + caller map |
+| 6 | Sameness as the macro — one public fold; delete or refuse a private macro temptation | `tensegral_arc_ii_witness.rish` |
 | 7 | Radiant — on-touch prose only | `radiant_lint.rish` on touched paths |
 | 8 | TAME — on-touch tidy | `tame_style_check.rish` |
-| 9 | Consolidate — fewer homes saying the same thing (one merge or one redirect) | Grep + one canon |
+| 9 | Consolidate — fewer homes saying the same thing (one merge or one redirect) | Grep + one canon · TH-4 → `brix_alias_resolve` |
 | 10 | Tighten — bounds / gardens on one module | Width or Tally garden |
 | 11 | Unify — one seam caller map | README / LEXICON honesty |
 | 12 | Stay happy zone — habitat first; no suite bloat | `foundation_seeds.rish` / Tally battery |
