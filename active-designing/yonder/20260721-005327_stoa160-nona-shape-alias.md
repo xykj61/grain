@@ -8,7 +8,7 @@
 **Voice:** Quin  
 **Status:** Checkable — bound by `tools/glow_nest_type_witness.rish` · bartis/barket desks  
 **Register:** Checkable (Two Rooms) — shape alias accept · NonaMold lower · capacity freeze held · multi-field shape ladder closed  
-**Grounds in:** [`20260721-004935_stoa159-octa-shape-alias.md`](20260721-004935_stoa159-octa-shape-alias.md) · [`20260720-230350_stoa146-nona-mold-gate.md`](../20260720-230350_stoa146-nona-mold-gate.md) · [`20260720-231857_closed-field-capacity-freeze-and-framework-next.md`](../20260720-231857_closed-field-capacity-freeze-and-framework-next.md) · [`20260720-223226_glow-os-shape-not-mold.md`](../20260720-223226_glow-os-shape-not-mold.md)
+**Grounds in:** [`20260721-004935_stoa159-octa-shape-alias.md`](20260721-004935_stoa159-octa-shape-alias.md) · [`20260720-230350_stoa146-nona-mold-gate.md`](20260720-230350_stoa146-nona-mold-gate.md) · [`20260720-231857_closed-field-capacity-freeze-and-framework-next.md`](../20260720-231857_closed-field-capacity-freeze-and-framework-next.md) · [`20260720-223226_glow-os-shape-not-mold.md`](../20260720-223226_glow-os-shape-not-mold.md)
 
 **dated_guard:** Do **not** rewrite dated mold briefs. Seat this lap in *this* brief and living pins. Hoon desk suffixes (`nona-mold`) stay the study word. Alias path stays; no whole-tree sed. Do **not** open `deca-shape`.
 

@@ -502,7 +502,7 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA130 stated · nesting · gold vocabulary GREEN, `20260720.192738`** — lean A (compass): seat Glow nest ladder stated · nesting · gold; rename living APIs `assert_sample_not_nesting` · `assert_sample_nesting_nests` · `is_nesting`; LEXICON merge; dated wet/dry briefs kept; ambient gold held. Brief [`active-designing/20260720-192738_stoa130-stated-nesting-gold.md`](../active-designing/20260720-192738_stoa130-stated-nesting-gold.md). Next language: **STOA131** pair flip call-body.
 
-**STOA131 pair-mold flip call-body GREEN, `20260720.193357`** — lean A (compass): closed multi-field `$:` `%-  flip` · PairMold swap · baked 5/3 → 3/5; double under pair and flip under `@u32` refuse; argv · gold · Sala B0 held. Brief [`active-designing/20260720-193357_stoa131-pair-call-body.md`](../active-designing/20260720-193357_stoa131-pair-call-body.md). Next language: **STOA132** amount-mold argv.
+**STOA131 pair-mold flip call-body GREEN, `20260720.193357`** — lean A (compass): closed multi-field `$:` `%-  flip` · PairMold swap · baked 5/3 → 3/5; double under pair and flip under `@u32` refuse; argv · gold · Sala B0 held. Brief [`active-designing/yonder/20260720-193357_stoa131-pair-call-body.md`](../../active-designing/yonder/20260720-193357_stoa131-pair-call-body.md). Next language: **STOA132** amount-mold argv.
 
 **STOA132 amount-mold argv GREEN, `20260720.193805`** — lean A (compass): u32-shaped named-mold argv generators beside fixtures; glow_run stem; pair argv refuse; count argv · tagged/pair argv · gold · Sala B0 held. Brief [`active-designing/20260720-193805_stoa132-amount-argv.md`](../../active-designing/yonder/20260720-193805_stoa132-amount-argv.md). Next language: **STOA133** count-mold argv.
 
@@ -532,7 +532,7 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA145 octa-mold flip call-body GREEN, `20260720.230219`** — lean A (compass): closed `%-  flip` under octa-mold · from↔amount · fee/nonce/memo/tag/to/via stay · baked 5/3/1/2/7/4/6/8 → 3/5/1/2/7/4/6/8; double under octa refuse; argv · gold · Sala B0 held. Brief [`active-designing/20260720-225659_stoa145-octa-flip.md`](../active-designing/20260720-225659_stoa145-octa-flip.md). Sent `f85dfed1a4` · PR #61.
 
-**STOA146 nona-mold gate sample GREEN, `20260720.231018`** — lean A (compass): closed nine-field `$:` identity · NonaMold · baked 5/3/1/2/7/4/6/8/9 ref; deca refuse; call-body under nona · tagged argv · gold · Sala B0 held. Brief [`active-designing/20260720-230350_stoa146-nona-mold-gate.md`](../active-designing/20260720-230350_stoa146-nona-mold-gate.md). Sent `08069058b5` · PR #63.
+**STOA146 nona-mold gate sample GREEN, `20260720.231018`** — lean A (compass): closed nine-field `$:` identity · NonaMold · baked 5/3/1/2/7/4/6/8/9 ref; deca refuse; call-body under nona · tagged argv · gold · Sala B0 held. Brief [`active-designing/yonder/20260720-230350_stoa146-nona-mold-gate.md`](../../active-designing/yonder/20260720-230350_stoa146-nona-mold-gate.md). Sent `08069058b5` · PR #63.
 
 **STOA147 nona-mold flip call-body GREEN, `20260720.231419`** — lean A (compass): closed `%-  flip` under nona-mold · from↔amount · fee/nonce/memo/tag/to/via/ref stay · baked 5/3/1/2/7/4/6/8/9 → 3/5/1/2/7/4/6/8/9; double under nona refuse; argv · gold · Sala B0 held. Brief [`active-designing/20260720-231128_stoa147-nona-flip.md`](../../active-designing/yonder/20260720-231128_stoa147-nona-flip.md). Sent `2e84c960d4` · PR #65.
 
@@ -546,7 +546,7 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA149 count-shape alias GREEN, `20260720.235652`** — lean A (compass): closed allowlist `count-shape` ≡ `count-mold` (one-field `$:` / `@u32`); bartis · barket desks; deca refuse; capacity freeze held. Brief [`active-designing/20260720-235652_stoa149-count-shape-alias.md`](../../active-designing/yonder/20260720-235652_stoa149-count-shape-alias.md). Sent `0fa867ac2d`.
 
-**STOA150 pair-shape alias GREEN, `20260721.000234`** — lean A (compass): closed allowlist `pair-shape` ≡ `pair-mold` (two-field `$:` / PairMold); `is_pair_named_mold` accepts the alias; bartis · barket desks; capacity freeze held. Brief [`active-designing/20260721-000234_stoa150-pair-shape-alias.md`](../active-designing/20260721-000234_stoa150-pair-shape-alias.md). Sent `4221f3304d`.
+**STOA150 pair-shape alias GREEN, `20260721.000234`** — lean A (compass): closed allowlist `pair-shape` ≡ `pair-mold` (two-field `$:` / PairMold); `is_pair_named_mold` accepts the alias; bartis · barket desks; capacity freeze held. Brief [`active-designing/yonder/20260721-000234_stoa150-pair-shape-alias.md`](../../active-designing/yonder/20260721-000234_stoa150-pair-shape-alias.md). Sent `4221f3304d`.
 
 **STOA151 kind-shape alias GREEN, `20260721.000743`** — lean A (compass): closed allowlist `kind-shape` ≡ `kind-mold` (unit `$%` / KindMold); `is_kind_named_mold` accepts the alias; bartis · barket desks; capacity freeze held. Brief [`active-designing/20260721-000743_stoa151-kind-shape-alias.md`](../../active-designing/yonder/20260721-000743_stoa151-kind-shape-alias.md). Sent `3e1e145eba`.
 
@@ -612,7 +612,7 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA180 thin `@t` GREEN, `20260721.171800`** — lean A; cord lex/nest/parse; lower held; shape affirmed over type. Brief [`active-designing/20260721-171800_stoa180-at-cord-aura-thin.md`](../active-designing/20260721-171800_stoa180-at-cord-aura-thin.md).
 
-**STOA181 `@t` cord lower GREEN, `20260721.173504`** — `$:` `@t` → `[256]u8` demo emit; `sala-event-shape` text faces `@t`; amount `@u32`. Brief [`active-designing/20260721-173504_stoa181-at-cord-lower-emit.md`](../active-designing/20260721-173504_stoa181-at-cord-lower-emit.md).
+**STOA181 `@t` cord lower GREEN, `20260721.173504`** — `$:` `@t` → `[256]u8` demo emit; `sala-event-shape` text faces `@t`; amount `@u32`. Brief [`active-designing/yonder/20260721-173504_stoa181-at-cord-lower-emit.md`](../../active-designing/yonder/20260721-173504_stoa181-at-cord-lower-emit.md).
 
 **STOA182 named-cast cord GREEN, `20260721.174530`** — lean A; `^-` `@t` emit. Brief [`active-designing/20260721-174530_stoa182-named-cast-cord.md`](../../active-designing/yonder/20260721-174530_stoa182-named-cast-cord.md).
 
@@ -676,7 +676,7 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA209 cord bound 1024 GREEN, `20260721.192947`** — `aura_t_max_bytes` 256→1024; fact hex fits. Brief [`active-designing/20260721-192947_stoa209-cord-bound-1024.md`](../../active-designing/yonder/20260721-192947_stoa209-cord-bound-1024.md).
 
-**STOA210 replay-body inventory GREEN, `20260721.193220`** — lean C; elder replay steps vs wraps; rec C1 compose. Brief [`active-designing/20260721-193220_stoa210-replay-body-inventory.md`](../active-designing/20260721-193220_stoa210-replay-body-inventory.md).
+**STOA210 replay-body inventory GREEN, `20260721.193220`** — lean C; elder replay steps vs wraps; rec C1 compose. Brief [`active-designing/yonder/20260721-193220_stoa210-replay-body-inventory.md`](../../active-designing/yonder/20260721-193220_stoa210-replay-body-inventory.md).
 
 **STOA211 replay line·sign·digest compose GREEN, `20260721.193303`** — C1; no `sala.replay(`; fixture + elder fold agree. Brief [`active-designing/20260721-193303_stoa211-replay-line-sign-digest-compose.md`](../../active-designing/yonder/20260721-193303_stoa211-replay-line-sign-digest-compose.md).
 
@@ -686,7 +686,7 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA214 after fixture cast check-in, `20260721.194203`** — lean A send `194756` · lean C Glow source literals. Brief [`active-designing/20260721-194203_stoa214-after-fixture-cast-checkin.md`](../../active-designing/yonder/20260721-194203_stoa214-after-fixture-cast-checkin.md). Sent `b7ee8fb7cf`.
 
-**STOA215 Glow source literals inventory, `20260721.194941`** — lex→parse→lower→desk; rec C1. Brief [`active-designing/20260721-194941_stoa215-glow-source-literals-inventory.md`](../active-designing/20260721-194941_stoa215-glow-source-literals-inventory.md).
+**STOA215 Glow source literals inventory, `20260721.194941`** — lex→parse→lower→desk; rec C1. Brief [`active-designing/yonder/20260721-194941_stoa215-glow-source-literals-inventory.md`](../../active-designing/yonder/20260721-194941_stoa215-glow-source-literals-inventory.md).
 
 **STOA216 cord literal lex GREEN, `20260721.194941`** — C1; `'…'` · `cord_lit`. Brief [`active-designing/20260721-194941_stoa216-cord-literal-lex.md`](../../active-designing/yonder/20260721-194941_stoa216-cord-literal-lex.md).
 
@@ -786,7 +786,7 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA261 barket N-field flip emit GREEN, `20260722.145715`** — `emit_n_field_flip_call_body` · eight wrappers · tagged `$%` flip held; N-field inventary deepen closed on both gates. Brief [`active-designing/20260722-145412_stoa261-barket-n-field-flip-emit.md`](../../active-designing/yonder/20260722-145412_stoa261-barket-n-field-flip-emit.md).
 
-**STOA262 after barket N-field flip check-in, `20260722.145840`** — lean A send · lean B finishing edge · lean C HAWM 1A held. Brief [`active-designing/20260722-145840_stoa262-after-barket-n-field-flip-checkin.md`](../active-designing/20260722-145840_stoa262-after-barket-n-field-flip-checkin.md).
+**STOA262 after barket N-field flip check-in, `20260722.145840`** — lean A send · lean B finishing edge · lean C HAWM 1A held. Brief [`active-designing/yonder/20260722-145840_stoa262-after-barket-n-field-flip-checkin.md`](../../active-designing/yonder/20260722-145840_stoa262-after-barket-n-field-flip-checkin.md).
 
 **STOA263 Pixel authored-fold eyes GREEN, `20260722.150432`** — fresh pack + Pixel install after fields; `sala_root` HAWM1 · product root `5`. Brief [`active-designing/20260722-150432_stoa263-pixel-authored-fold-eyes.md`](../../active-designing/yonder/20260722-150432_stoa263-pixel-authored-fold-eyes.md).
 

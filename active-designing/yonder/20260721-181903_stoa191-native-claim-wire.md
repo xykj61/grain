@@ -9,7 +9,7 @@
 **Status:** Checkable — GREEN `20260721.181903`  
 **Register:** Checkable (Two Rooms) — pack device-free; Pixel eyes stay separate  
 
-**Grounds in:** [`20260721-175857_stoa185-glow-sala-b0-claim-shell.md`](../20260721-175857_stoa185-glow-sala-b0-claim-shell.md) · lean **C** in [`20260721-180008_stoa186-after-claim-shell-checkin.md`](../20260721-180008_stoa186-after-claim-shell-checkin.md)
+**Grounds in:** [`20260721-175857_stoa185-glow-sala-b0-claim-shell.md`](../20260721-175857_stoa185-glow-sala-b0-claim-shell.md) · lean **C** in [`20260721-180008_stoa186-after-claim-shell-checkin.md`](20260721-180008_stoa186-after-claim-shell-checkin.md)
 
 **dated_guard:** Do **not** rewrite elder `sala_b0_fold` in Glow. Device install/eyes are a separate host lap.
 
