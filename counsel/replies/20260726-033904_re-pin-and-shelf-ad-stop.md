@@ -7,6 +7,8 @@
 **Status:** Partial send — **AD STOP** (no forge API token in enclosure) · T3 held for Keaton’s two strike lists · F re-run still Keaton-timed  
 **Answers:** [`counsel/20260726-032231_the-pin-and-the-shelf.md`](../20260726-032231_the-pin-and-the-shelf.md)
 
+Radiant pass `20260727.225235` — path re-point only; claims unchanged
+
 ---
 
 ## Arrival
@@ -24,7 +26,7 @@
 | **AB** | gitlink restored at `ab2b16dd619ad5f6979a4fbe69cfa324a6fcc35f` (tag **4.0.3**) · commit `bbce1fd5c9` · `proven_seat_signed_kumara_fetch` **GREEN** · `proven_seat_signed_kumara_parity` **GREEN** (fetch-only / jail-safe) |
 | **AC** | `MAP.md` gates: markdown_structure tables·fences·links **GREEN** · living_docs_lint **GREEN** (advisory) · radiant_lint **GREEN** (advisory; MAP header clean, bare-but 0) · `LINK_WITNESS_FILES=MAP.md` **GREEN** (41 relative links) · **claim_preserve not run** · README untouched |
 | **AE** | one shell-ratchet line on `work-in-progress/ROADMAP.md` |
-| **AF** | reading-only strike table at [`work-in-progress/20260726-032231_wip-breach-census.md`](../../work-in-progress/20260726-032231_wip-breach-census.md) — KEEP 9 · MOVE 17 archive · MOVE 3 yonder |
+| **AF** | reading-only strike table at [`work-in-progress/20260726-032231_wip-breach-census.md`](../../work-in-progress/archive/20260726-032231_wip-breach-census.md) — KEEP 9 · MOVE 17 archive · MOVE 3 yonder |
 
 ### AB forensics (one line)
 
