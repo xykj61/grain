@@ -1,7 +1,8 @@
 # MUR Season — u0 Recursion Prompt (printout · all scopes kept)
 
-**Stamp:** `20260728.025220` · Radiant pass `20260728.060902`  
+**Stamp:** `20260728.025220` · Radiant pass `20260728.061323`  
 **Use:** paste the fenced block as the next counsel/bench session opener.  
+Radiant pass `20260728.061323` — check-in at u58 · rename spines done · doors named  
 Radiant pass `20260728.060902` — u58 module spine HARDENED · rename done · u59 next
 Radiant pass `20260728.060656` — u57 module residual clear · spine COMPLETE · u58 next
 Radiant pass `20260728.060424` — u56 currency/say LIVE · module spine 1–9 · u57 next
@@ -119,8 +120,9 @@ INNERMOST SCOPE (this season — walk here):
   Currency/say: counsel/20260728-060424_mur-season-u56-say-lines-currency-wire.md
   Module residual: counsel/20260728-060656_mur-season-u57-module-wave-residual.md
   Module harden: counsel/20260728-060902_mur-season-u58-module-wave-harden.md
+  Check-in u58: counsel/20260728-061323_mur-season-check-in-u58.md
   Living pin: tools/fixtures/prin_scope.sh innermost waymark kept current.
-  Tool+module rename LIVE/HARDENED; optional polish or seat WOV-design.
+  Tool+module rename HARDENED; optional polish or seat WOV-design when named.
   Kamala/Mala gratitude = historical; living Aries = Murr·Kyler.
   u126 and u127 MUST warn before handback (extend innermost · return inner i7 · other).
 

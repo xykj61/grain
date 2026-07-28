@@ -8,7 +8,8 @@
 **Rename spine (approved overwrite):** **Mala / MALA / `%mala` → Murr / MUR / `%murr`** — Radiant · TAME · living-tree massive rename across the season  
 **Honor dedication:** **Kyler Murray** — Minnesota Vikings quarterback (signed 2026; camp competition with J.J. McCarthy as of this stamp's web ground)  
 **Currency lean:** **MUR** as **L1** · unify with **WOV** concept · roadmap **last** retires WOV entirely in favor of MUR  
-**Status:** **OPEN** · u0–u58 complete `20260728.060902` · **u59** next — optional polish or WOV-design  
+**Status:** **OPEN** · u0–u58 complete · check-in `20260728.061323` · **u59** next — optional polish or WOV-design  
+Radiant pass `20260728.061323` — check-in at u58 · rename spines done · doors named  
 Radiant pass `20260728.060902` — u58 module spine HARDENED · rename done for living doors  
 Radiant pass `20260728.060656` — u57 module residual clear · spine COMPLETE for living doors  
 Radiant pass `20260728.060424` — u56 currency/say LIVE · module spine 1–9 GREEN  
