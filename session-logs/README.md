@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.032900` — [Keeh Season q7 affirm](20260728-032900_keeh-season-q7-affirm.bron) — overwrite AFFIRMED CLOSED · q8 next
 - `20260728.032745` — [Keeh Season q6 residual close](20260728-032745_keeh-season-q6-residual-close.bron) — overwrite CLEARED · q7 next
 - `20260728.032606` — [Keeh Season q5 polish](20260728-032606_keeh-season-q5-polish.bron) — charter Kia spine · q6 next
 - `20260728.032134` — [Keeh Kia sponsor q4](20260728-032134_keeh-kia-sponsor-q4.bron) — Kia honor sponsor · used lean · q5 next
