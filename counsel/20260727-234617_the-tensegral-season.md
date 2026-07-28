@@ -37,7 +37,7 @@ Radiant pass `20260727.234913` — prep receipt · Expanded · r0 recursion prom
 | **Prep** | **GREEN** — [`20260727-234913_tensegral-prep-receipt.md`](20260727-234913_tensegral-prep-receipt.md) · Pond customs GREEN · Prin affirmed (Prim→Prin) · arc seeds named |
 | **Round** | **seated** `20260728.010302` — season closed · saga on `saga/` |
 | **Saga** | [`../saga/20260728-010054_saga-of-the-tensegral-season.md`](../saga/20260728-010054_saga-of-the-tensegral-season.md) · **Seated** |
-| **r0 prompt** | [`../expanding-prompts/20260727-234913_tensegral-season-r0-recursion-prompt.md`](../expanding-prompts/20260727-234913_tensegral-season-r0-recursion-prompt.md) |
+| **r0 prompt** | [`../expanding-prompts/yonder/20260727-234913_tensegral-season-r0-recursion-prompt.md`](../expanding-prompts/yonder/20260727-234913_tensegral-season-r0-recursion-prompt.md) |
 | **Shape** | Prep done → **16 kg rounds** (1 bow + five arcs of three) · exits over counts |
 | **Close** | A new saga on [`../saga/`](../saga/README.md) when the season ends |
 | **Voice** | **Quin** · Radiant Style |
