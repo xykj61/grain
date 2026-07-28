@@ -1,7 +1,8 @@
 # MUR Season — u0 Recursion Prompt (printout · all scopes kept)
 
-**Stamp:** `20260728.025220` · Radiant pass `20260728.154949`  
+**Stamp:** `20260728.025220` · Radiant pass `20260728.155418`  
 **Use:** paste the fenced block as the next counsel/bench session opener.  
+Radiant pass `20260728.155418` — u74 parseInt emit exclusion · WOV yonder · fascia 52 · u75 next  
 Radiant pass `20260728.154949` — u73 closed-season yonder · shred RED · u74 next  
 Radiant pass `20260728.153843` — u72 archival yonder · setu parseInt · shred RED · u73 next  
 Radiant pass `20260728.153133` — u71 memcpy ratchet CLEARED · fascia 49 · shred RED · u72 next  
@@ -102,7 +103,7 @@ INNERMOST SCOPE (this season — walk here):
   Lexicon: scope·outer·inner·innermost·core·quint · MUR · Murr · retired Mala/MALA · Gren living.
   Prin: rishi/bin/rishi run tools/prin.rish scope
   gen_murr GREEN · deploy RED; gen_gren GREEN (core closed door); gen_mala ABSENT.
-  u0–u73 COMPLETE · closed-season yonder · fascia 49 · shred RED · u74 next.
+  u0–u74 COMPLETE · parseInt emit · WOV yonder · fascia 52 · shred RED · u75 next.
   TOP PRIORITY: rename overwrite everywhere Mala/MALA → Murr/MUR (breach approved seated).
   Fascia shred still needs separate circled yes. WOV retire roadmap last.
   Wave map: counsel/20260728-044738_mur-season-u6-tool-module-wave-map.md

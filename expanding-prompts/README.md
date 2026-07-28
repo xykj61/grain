@@ -3,7 +3,7 @@
 *A place where a request becomes a plan. When you hand me a seed of intent, I bring it here, read it closely through every lens we have built, and craft from it a fuller, clearer prompt for myself — one I can then run. The seed stays yours; the expansion is how I make sure I have understood it, sharpened it, and lost none of it.*
 
 **Language:** EN
-**Last updated:** 2026-07-28 (Gren core recursion active · Inner/MUR/Constellation printouts archival)
+**Last updated:** 2026-07-28 (MUR u74 · WOV lap prompts yonder · emit parseInt excluded)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Seasons roster:** [`SEASONS.md`](SEASONS.md)
@@ -91,11 +91,11 @@ What does *not* belong here is the work itself — that lands in the research, d
 | `20260709.225159` | [MUR kind field — gated](yonder/20260709-225159_mala-kind-field-gated.md) | K0 keep memos; K1 still gated; in `yonder/` · dated path kept (was MALA) |
 | `20260709.224531` | [WOV dual monarch — gated](yonder/20260709-224531_wov-dual-monarch-gated.md) | D1 twin-lines landed (parity **205**); D2 later; in `yonder/` |
 | `20260709.224325` | [SLC-L4 lap 2 width — gated](20260709-224325_slcl4-lap2-width-gated.md) | W0 cleared; W1/W2 soak |
-| `20260709.204026` | [WOV lap 2b TB client wrapper](20260709-204026_wov-lap2b-tb-client-wrapper.md) | Seam A host landed (parity **204**); seam B soak |
-| `20260709.203527` | [WOV lap 2 TigerBeetle pin](20260709-203527_wov-lap2-tigerbeetle-pin-presence.md) | Pin presence; parity **203** |
+| `20260709.204026` | [WOV lap 2b TB client wrapper](yonder/20260709-204026_wov-lap2b-tb-client-wrapper.md) | **yonder** · Seam A host landed (parity **204**); unify 0–5 GREEN |
+| `20260709.203527` | [WOV lap 2 TigerBeetle pin](yonder/20260709-203527_wov-lap2-tigerbeetle-pin-presence.md) | **yonder** · Pin presence; parity **203** · TB pin retired |
 | `20260709.202427` | [Realidream thin view](20260709-202427_realidream-thin-view-local-facts.md) | Local fixtures → Skate; parity **202** |
 | `20260709.201734` | [MUR M2b device wire](20260709-201734_mala-m2b-device-wire.md) | Device-wire MUR path (was MALA; dated filename) |
-| `20260709.200443` | [WOV lap 1 exit honesty](20260709-200443_wov-lap1-exit-honesty-witness.md) | In-memory exit honesty; parity **201** |
+| `20260709.200443` | [WOV lap 1 exit honesty](yonder/20260709-200443_wov-lap1-exit-honesty-witness.md) | **yonder** · Exit honesty; parity **201** · unify 0–5 GREEN |
 | `20260709.191634` | [MUR M2 mailable Comlink](20260709-191634_mala-m2-mailable-comlink.md) | Hosted M2; parity **199** · was MALA |
 | `20260727.234913` | [Tensegral Season r0 recursion prompt](yonder/20260727-234913_tensegral-season-r0-recursion-prompt.md) | **yonder** · Tensegral CLOSED · bow paste archival |
 | `20260727.234913` | [Tensegral Season Expanded plan](yonder/20260727-234913_tensegral-season-expanded.md) | **yonder** · Tensegral CLOSED · runway archival |

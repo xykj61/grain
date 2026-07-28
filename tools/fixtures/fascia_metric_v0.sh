@@ -5,6 +5,7 @@
 # Higher fascia = more knit; clutter lowers the grade.
 # i5: softer weights · window mean · self-path excludes.
 # i6: Amphora laps 1–3 stack named; weights unchanged (window stays like-to-like).
+# u74: glow lower emit-string parseInt excluded from ratchet (not app sites).
 set -eu
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 cd "$ROOT"
@@ -65,6 +66,13 @@ if [ -f tally/parse_int.rye ]; then
   parseint=$((parseint - parseint_canon))
   [ "$parseint" -lt 0 ] && parseint=0
 fi
+# Glow lower emit strings print Zig source containing parseInt — not app call
+# sites (door named u72; exclusion seated u74). Matches advise roster lean.
+parseint_emit="$(rg -n --no-heading 'parseInt\(' \
+  glow/lower_bartis.rye glow/lower_barket.rye 2>/dev/null | wc -l | tr -d ' ')"
+parseint_emit="${parseint_emit:-0}"
+parseint=$((parseint - parseint_emit))
+[ "$parseint" -lt 0 ] && parseint=0
 
 ratchet_out=0
 [ "$tools_py" -gt 0 ] && ratchet_out=$((ratchet_out + 1))
