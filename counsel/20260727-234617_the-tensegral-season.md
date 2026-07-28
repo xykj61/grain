@@ -3,10 +3,11 @@
 **Language:** EN
 **Stamp:** `20260727.234617`
 **Voice:** Quin
-**Status:** Seated — Arc I · II · III · IV **exited** · Arc V integrate & close open at r14 (r13 metalsmoke GREEN)
+**Status:** Seated — Arc I · II · III · IV **exited** · Arc V integrate & close open at r15 (r13–r14 GREEN)
 **Ground:** Sound saga **seated** [`../saga/20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md`](../saga/20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md) · motto **stay tensegral** · Quin remains the standing voice
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260728.005605` — r14 Arc V Realidream/Pond close note · orient only
 Radiant pass `20260728.005110` — r13 Arc V Integrated · thin metalsmoke GREEN
 Radiant pass `20260728.004954` — r12 Arc IV Happy zone · Arc IV exits
 Radiant pass `20260728.004750` — r11 Arc IV Unify · Tally caller map
@@ -32,7 +33,7 @@ Radiant pass `20260727.234913` — prep receipt · Expanded · r0 recursion prom
 | **Prior season** | The Sound — closed and seated |
 | **This season** | The Tensegral Season — consolidate · tighten · unify under happy-zone law |
 | **Prep** | **GREEN** — [`20260727-234913_tensegral-prep-receipt.md`](20260727-234913_tensegral-prep-receipt.md) · Pond customs GREEN · Prin affirmed (Prim→Prin) · arc seeds named |
-| **Round** | Arc V **r13** `20260728.005110` — `slc2a_ring3_metal` Wayland metalsmoke GREEN · Arc I–IV exits hold |
+| **Round** | Arc V **r14** `20260728.005605` — Realidream thin + Pond preflight GREEN · live five hand-open · Arc I–IV exits hold |
 | **r0 prompt** | [`../expanding-prompts/20260727-234913_tensegral-season-r0-recursion-prompt.md`](../expanding-prompts/20260727-234913_tensegral-season-r0-recursion-prompt.md) |
 | **Shape** | Prep done → **16 kg rounds** (1 bow + five arcs of three) · exits over counts |
 | **Close** | A new saga on [`../saga/`](../saga/README.md) when the season ends |
@@ -67,7 +68,7 @@ Rounds are **kg-first**: mechanical, single-module or single-pack when policy is
 | 4–6 | II · Name & seal | **Resin** units · **Glow** language floors · **sameness as the macro** |
 | 7–9 | III · Voice & law | **Radiant** prose · **TAME** tidy · **Consolidate** (fewer homes saying the same thing) |
 | 10–12 | IV · Tighten | **Tighten** bounds · **Unify** seams · **Stay happy zone** (witness habitat first) |
-| 13–15 | V · Integrate & close | **Integrated rounds** (thin metalsmoke, not suite bloat) · Realidream/Pond prep close · **saga** on `saga/` |
+| 13–15 | V · Integrate & close | **r13** thin metalsmoke GREEN · **r14** Realidream/Pond close note · **r15** **saga** on `saga/` |
 
 ## Arc notes (short)
 

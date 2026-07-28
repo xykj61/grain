@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.005605` — [Tensegral r14 Realidream · Pond close note](20260728-005605_tensegral-r14-realidream-pond.bron) — preflight + thin view GREEN
 - `20260728.005110` — [Tensegral r13 Integrated · thin metalsmoke](20260728-005110_tensegral-r13-integrated.bron) — slc2a_ring3_metal GREEN
 - `20260728.004954` — [Tensegral r12 Happy zone · Arc IV exit](20260728-004954_tensegral-r12-happy-zone.bron) — tensegral_arc_iv_witness GREEN
 - `20260728.004750` — [Tensegral r11 Arc IV Unify](20260728-004750_tensegral-r11-unify.bron) — Tally caller map canon
