@@ -526,7 +526,7 @@ let rw2s = run ["sh" "tools/parity_time_one.sh" "rw2s" "--" "rishi/bin/rishi" "r
 assert rw2s.ok else "RW-2 surface contract witness failed"
 say "GREEN: RW-2 surface-contract witness passed."
 
-say "witness suite: Realidream thin view (local MALA/WOV fixtures)…"
+say "witness suite: Realidream thin view (local MUR/WOV fixtures (was MALA))…"
 let thin_view = run ["sh" "tools/parity_time_one.sh" "thin_view" "--" "rishi/bin/rishi" "run" "tools/realidream_thin_view.rish"]
 assert thin_view.ok else "Realidream thin view witness failed"
 say "GREEN: Realidream thin view witness passed."
@@ -781,7 +781,7 @@ let granary4b = run ["sh" "tools/parity_time_one.sh" "granary4b" "--" "rishi/bin
 assert granary4b.ok else "Granary lap 4b device wire witness failed"
 say "GREEN: Granary lap 4b device wire witness passed."
 
-say "witness suite: Granary lap 5 (Exchange listing in MALA)…"
+say "witness suite: Granary lap 5 (Exchange listing in MUR (was MALA))…"
 let granary5 = run ["sh" "tools/parity_time_one.sh" "granary5" "--" "rishi/bin/rishi" "run" "tools/granary_exchange.rish"]
 assert granary5.ok else "Granary lap 5 exchange witness failed"
 say "GREEN: Granary lap 5 exchange witness passed."
@@ -791,7 +791,7 @@ let exchange_view = run ["sh" "tools/parity_time_one.sh" "exchange_view" "--" "r
 assert exchange_view.ok else "Granary Exchange view witness failed"
 say "GREEN: Granary Exchange view witness passed."
 
-say "witness suite: Granary lap 6 (weave settle MALA + WOV)…"
+say "witness suite: Granary lap 6 (weave settle MUR + WOV (was MALA))…"
 let granary6 = run ["sh" "tools/parity_time_one.sh" "granary6" "--" "rishi/bin/rishi" "run" "tools/granary_weave_settle.rish"]
 assert granary6.ok else "Granary weave settle witness failed"
 say "GREEN: Granary weave settle witness passed."
@@ -801,7 +801,7 @@ let granary_settle_view = run ["sh" "tools/parity_time_one.sh" "granary_settle_v
 assert granary_settle_view.ok else "Granary settle view witness failed"
 say "GREEN: Granary settle view witness passed."
 
-say "witness suite: Mandi lap 1 (vessel market listing in MALA)…"
+say "witness suite: Mandi lap 1 (vessel market listing in MUR (was MALA))…"
 let mandi1 = run ["sh" "tools/parity_time_one.sh" "mandi1" "--" "rishi/bin/rishi" "run" "tools/mandi_lap1.rish"]
 assert mandi1.ok else "Mandi lap 1 witness failed"
 say "GREEN: Mandi lap 1 witness passed."
@@ -811,7 +811,7 @@ let mandi_view = run ["sh" "tools/parity_time_one.sh" "mandi_view" "--" "rishi/b
 assert mandi_view.ok else "Mandi floor view witness failed"
 say "GREEN: Mandi floor view witness passed."
 
-say "witness suite: Mandi lap 3 (listing settle MALA + WOV)…"
+say "witness suite: Mandi lap 3 (listing settle MUR + WOV (was MALA))…"
 let mandi3 = run ["sh" "tools/parity_time_one.sh" "mandi3" "--" "rishi/bin/rishi" "run" "tools/mandi_listing_settle.rish"]
 assert mandi3.ok else "Mandi listing settle witness failed"
 say "GREEN: Mandi listing settle witness passed."

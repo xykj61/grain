@@ -16,4 +16,4 @@ assert view.out contains "granary exchange view" else "granary exchange view wit
 assert view.out contains "GREEN" else "Granary Exchange view witness not GREEN"
 assert view.out contains "lines=6" else "granary exchange view missing six-line frame"
 
-say "GREEN: Granary Exchange view — weave listing priced in MALA on a Skate frame."
+say "GREEN: Granary Exchange view — weave listing priced in MUR (was MALA) on a Skate frame."
