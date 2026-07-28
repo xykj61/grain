@@ -1,6 +1,7 @@
-//! linengrow/mala_core.rye — shared MALA mint/send fold for M1 and M2.
+//! linengrow/murr_core.rye — shared MUR mint/send fold for M1 and M2 (was mala_core / MALA).
 //!
 //! Imported by `mala.rye` (one-node selftest) and `mala_delivery.rye` (Comlink carriage).
+//! Wire memos `mala:*` and `fold_mala_log` held for later module steps.
 
 const std = @import("std");
 const assert = std.debug.assert;
