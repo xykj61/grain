@@ -13,7 +13,7 @@
 **Git nib:** `c2f0e1cf1b` · Grain · pre-bookmark seating · g15 L2 STOP · autoproject96/grain
 **Bookmark:** counsel `20260727.213740` — checkpoint · bookmark · Radiant Lint Season bow · compass Voice
 
-**Season:** Framework · EDT · **Grain** umbrella · pier **`~/grain`** · **finishing edge:** Radiant Lint Season bow seated · g0–g14 bench hour · next season charter · bookmark [`counsel/20260727-213740_checkpoint-bookmark-and-the-radiant-lint-season.md`](../counsel/20260727-213740_checkpoint-bookmark-and-the-radiant-lint-season.md). Prefer **git nib** (never tip) for HEAD.
+**Season:** Framework · EDT · **Grain** umbrella · pier **`~/grain`** · **finishing edge:** Radiant Lint Season Arc II wave B landed · wave C or g0–g14 bench hour · next season charter · bookmark [`counsel/20260727-213740_checkpoint-bookmark-and-the-radiant-lint-season.md`](../counsel/20260727-213740_checkpoint-bookmark-and-the-radiant-lint-season.md). Prefer **git nib** (never tip) for HEAD.
 
 ---
 
