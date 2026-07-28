@@ -4,7 +4,9 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.013722` — [Constellation m2 Mala through Amphora](20260728-013722_constellation-m2-mala-amphora.bron) — Amphora door · lap 1 GREEN
 - `20260728.013140` — [Constellation m1 Mala fund prep](20260728-013140_constellation-m1-mala.bron) — gen_mala GREEN · deploy RED
+
 - `20260728.012906` — [Constellation m0 bow](20260728-012906_constellation-m0-bow.bron) — choir 17 GREEN · triad affirmed
 
 - `20260728.012725` — [Constellation Season prep · Mala Twah Siya triad](20260728-012725_constellation-season-prep.bron) — 32-round prep · fund order seated

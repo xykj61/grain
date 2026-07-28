@@ -1,13 +1,14 @@
-# tools/gen_mala_fund_prep.rish — Constellation m1: Mala fund prep generator (stub).
+# tools/gen_mala_fund_prep.rish — Constellation m1–m2: Mala fund prep generator.
 #
-# First prin-rish-style generator on the constellation path: affirms the Aries
-# fire seat, requires Comlink, reads the constellation phone book, refuses deploy.
+# Prin-rish-style generator on the constellation path: affirms the Aries fire
+# seat, requires Comlink then Amphora, reads the phone book, refuses deploy,
+# and re-proves Amphora lap 1 as the post-fold measure (m2).
 # Run from repository root:
 #   rishi/bin/rishi run tools/gen_mala_fund_prep.rish
 #   rishi/bin/rishi run tools/gen_mala_fund_prep.rish deploy   # must RED by name
 
 say "gen-mala: Language EN — Mala fund prep (Aries fire · seat order 1)."
-say "gen-mala: Style Radiant — GREEN only after the stack door is named."
+say "gen-mala: Style Radiant — GREEN only after Comlink and Amphora doors open."
 say "gen-mala: Lens TAME — prep only; no wallet, gas, or live Sui."
 
 let verb = ""
@@ -17,3 +18,10 @@ let prep = run ["sh" "tools/fixtures/gen_mala_fund_prep.sh" verb]
 assert prep.ok else "gen-mala REFUSE or stack door failed — see stderr for deploy/wallet/gas refusals"
 assert prep.out contains "GREEN: gen-mala" else "gen-mala prep helper missing GREEN line"
 say prep.out
+
+# m2 — measure after the fold: Amphora lap 1 still sings (happy-zone vessel parse).
+let lap1 = run ["sh" "-c" "rishi/bin/rishi run tools/amphora_lap1.rish"]
+assert lap1.ok else "gen-mala Amphora door regress: amphora_lap1 left GREEN"
+assert lap1.out contains "GREEN" else "gen-mala Amphora lap 1 missing GREEN"
+
+say "GREEN: gen-mala m2 — Amphora lap 1 post-fold GREEN; stack through vessel door."
