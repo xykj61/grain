@@ -9,6 +9,7 @@
 
 ## For an Acme Corporation Employee Reading This
 
+Radiant pass `20260728.052625` — living rename-forward: **MUR** / **Murr** (was MALA / Mala); prefer **kg u32** · WOV retire roadmap last  
 Radiant pass `20260728.050004` — living rename-forward: **MUR** / **Murr** (was MALA / Mala)
 
 Keaton proposed a new settlement layer for Glow OS: an **N-vane called Neth** (after Maze's M), a Glow reimplementation of Sui's/TigerBeetle's shape, evolved from the existing MUR money work (was MALA), interoperating with Ethereum, with a TigerBeetle-style L2 "pinned sidechain" over a MUR/Murr L1 woven (was Mala) from Mycelium/Weave/Mantra/Ford and secured by a Kumara+Ames fusion. This document untangles that into its load-bearing engineering core (which is strong and continuous with work already in the tree), separates the visionary "fractal universe of four chains" framing (which is the social-experiment register, kept distinct), flags a real naming collision, and recommends a minimal first lap.
