@@ -142,7 +142,7 @@ pub fn fold_one_line(
     return error.FoldFailed;
 }
 
-/// Fold MALA log: verify each line, apply mint/send, refuse negatives and non-issuer mint.
+/// Fold MUR log: verify each line, apply mint/send, refuse negatives and non-issuer mint.
 pub fn fold_murr_log(
     log: []const u8,
     issuer_hex: *const [pubkey_hex_len]u8,

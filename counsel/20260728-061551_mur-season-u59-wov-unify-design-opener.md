@@ -62,8 +62,8 @@ Retirement stays a **later propose-only** block after unify design is seated and
 | **1** | One-page unify brief: jobs MUR keeps · jobs WOV keeps until retire · non-goals | **LANDED u60** |
 | **2** | Settle dual-digest story — keep both vs staged single-currency lean | **LANDED u61** keep-both |
 | **3** | Exit-honesty rename-forward (MUR-native names) — design only | **LANDED u62** aliases · wire held |
-| **4** | Living prose debt (`MALA` comments in settle cores) | **done u61** (+ wov_core u62) |
-| **5** | Choir: re-GREEN murr + wov witnesses after any design seat | GREEN |
+| **4** | Living prose debt (`MALA` comments in settle cores) | **done u61–u63** |
+| **5** | Choir: re-GREEN murr + wov witnesses after any design seat | **LANDED u63** GREEN |
 | later | Retirement plan block (charter u96+) | propose-only |
 
 ## Calendar note
@@ -76,7 +76,7 @@ No `wov_core` → `murr_*` file merge · no `wov_digest` field delete · no WOV 
 
 ## Next
 
-**kg u60** — one-page MUR↔WOV unify brief (step 1), or check-in if he wants a ruling before the brief.
+Design order **0–5 LANDED** through u63. Prefer **check-in** for the next door; retirement stays charter u96+.
 
 ---
 

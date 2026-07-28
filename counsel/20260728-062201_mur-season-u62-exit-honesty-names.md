@@ -50,7 +50,7 @@ No memo prefix change in rye · no bundle header bump · no witness golden rewri
 
 ## Next
 
-**kg u63** — optional step-4 polish residual (if any) · or **kg u64** choir re-GREEN murr + wov witnesses (step 5) · or check-in.
+**LANDED u63** — choir GREEN · design 0–5 done · prefer check-in.
 
 ---
 
