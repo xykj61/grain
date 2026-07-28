@@ -1,0 +1,14 @@
+format session-log-v1
+stamp 20260728.053003
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title MUR Season check-in at u26
+prompt check in
+think Report state at u26: waiting queue empty, tool GO seated, gens green, scopes paused/closed as seated.
+think Name available doors without urging; only constructive rename door is kg u32.
+obs Ungated waiting polish complete; binders closed until his word.
+file counsel/20260728-052625_mur-season-u26-waiting-queue-empty.md seat
+file counsel/20260728-051741_mur-season-u21-tool-wave-go-nogo.md tool GO
+recommend check-in complete — available kg u32 tool wave or hold or parallel geode d0

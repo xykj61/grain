@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.053003` — [MUR Season check-in at u26](20260728-053003_mur-season-check-in-u26.bron) — waiting empty · tool GO ready · doors named
 - `20260728.052625` — [MUR Season u26 waiting queue empty](20260728-052625_mur-season-u26-waiting-queue-empty.bron) — ungated waiting empty · prefer kg u32
 - `20260728.052441` — [MUR Season u25 waiting harden hammocks](20260728-052441_mur-season-u25-waiting-harden-hammocks.bron) — hammock forwards · residual clear · prefer kg u32 · u26 next
 - `20260728.052308` — [MUR Season u24 waiting harden SPECs](20260728-052308_mur-season-u24-waiting-harden-specs.bron) — mala-kind · thin-view · WOV · surfaces · prefer kg u32 · u25 next
