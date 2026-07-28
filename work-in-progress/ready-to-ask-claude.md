@@ -268,7 +268,7 @@ In-process pass admits published read + signed submit; refuses unpublished diges
 
 ## Zip 58 — handoff archive (`20260706.190644`)
 
-## Zip 43 — **superseded** by zip 58 numbering
+## Zip 43 — **replaced** by zip 58 numbering
 
 Full-tree zip discipline unchanged; use **58** not 43.
 
@@ -283,7 +283,7 @@ Full-tree zip discipline unchanged; use **58** not 43.
 | Unified Cursor lane | [`expanding-prompts/yonder/20260704-185412_cursor-lane-zip42-counsel-unified.md`](../expanding-prompts/yonder/20260704-185412_cursor-lane-zip42-counsel-unified.md) |
 | Unified cut log | [`session-logs/archive/20260704/20260704-185412_unified-packet-cut.md`](../session-logs/archive/20260704/20260704-185412_unified-packet-cut.md) |
 
-**Superseded pre-intake:** `181612` lane prompt and three prior proposal zips — re-cut into this packet; lineage in unified cut log.
+**Pre-intake (replaced):** `181612` lane prompt and three prior proposal zips — re-cut into this packet; lineage in unified cut log.
 
 ### Counsel summary (gates stay Kaeden's)
 
@@ -303,9 +303,9 @@ Full-tree zip discipline unchanged; use **58** not 43.
 
 **Kaeden gates (unchanged + new):** TWO_ROOMS seat · gloss go-ahead · seed home · doorway witness · **Edit-5 slot word** · **resin-Tilak ruling** · **continuity-fact custody** · **civic export boundary** · **ends-first lens** · journey's pause.
 
-Prior tip: `43584d8` · zip 41 @ `2eb346b` superseded for counsel purposes
+Prior tip: `43584d8` · zip 41 @ `2eb346b` replaced for counsel purposes
 
-## Zip 43 — **superseded** (see zip 58)
+## Zip 43 — **replaced** (see zip 58)
 
 Full-tree zip at `git rev-parse HEAD` after intake commits; comment **is** the tip hash. RTAC section gains whichever stops Kaeden's words opened.
 
@@ -334,7 +334,7 @@ Full-tree zip at `git rev-parse HEAD` after intake commits; comment **is** the t
 
 **Kaeden gates named in anchor:** TWO_ROOMS seat · gloss spec go-ahead · seed home · seed witness · SLC-L1 edge as counseled. **Journey's pause** after this round is an honorable stop — Kaeden's call.
 
-Prior tip: `2eb346b` · zip 40 @ `4ab032d` superseded
+Prior tip: `2eb346b` · zip 40 @ `4ab032d` replaced
 
 ## Zip 41 — Amphora exchange (Cursor → Claude) · `20260704.031200` — **answered**
 
@@ -527,7 +527,7 @@ Current tip: `2eb346b` (+ intake files uncommitted)
 | **Witness** | Machine proof; forward prose *the trio*; program filenames frozen |
 | **Toll** | Price of shared order — [`what-needs-ordering`](../active-designing/20260703-200712_what-needs-ordering.md) |
 
-## Bench pins (`20260703.235512`) — superseded
+## Bench pins (`20260703.235512`) — replaced
 
 | Bench | Tip / zip | Parity | Status |
 |-------|-----------|--------|--------|
@@ -536,7 +536,7 @@ Current tip: `2eb346b` (+ intake files uncommitted)
 
 Recipe v5: [`expanding-prompts/yonder/20260703-205212_bench-raise-recipe-v5-accretion.md`](../expanding-prompts/yonder/20260703-205212_bench-raise-recipe-v5-accretion.md).
 
-## Bench pins (`20260703.205312`) — superseded
+## Bench pins (`20260703.205312`) — replaced
 
 | Bench | Tip / zip | Parity | Status |
 |-------|-----------|--------|--------|

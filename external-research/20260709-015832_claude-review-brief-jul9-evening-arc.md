@@ -4,7 +4,7 @@
 **Voice:** Rio 3
 **Editor:** Cursor (desktop) · **Model:** Composer 2.5
 **Register:** Decision briefing — what landed after the iOS session handoff, what counsel answered, where the bench sits, what Kaeden and Claude should open next
-**Status:** Checkable-room research — Claude review brief; superseded by [`034527`](20260709-034527_claude-review-brief-jul9-late-arc.md). **Implementation removed `152612`** (settlement / chain-read); this note is dated record.
+**Status:** Checkable-room research — Claude review brief; replaced by [`034527`](20260709-034527_claude-review-brief-jul9-late-arc.md). **Implementation removed `152612`** (settlement / chain-read); this note is dated record.
 **Ground:** `3630cb5` → `51b7c1e` on all four remotes; desktop Composer session Jul 8–9 2026
 
 *Written for Claude counsel review.*

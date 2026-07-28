@@ -4,7 +4,7 @@
 **Voice:** Rio 3
 **Editor:** Cursor (desktop) · **Model:** Composer 2.5
 **Register:** Decision briefing — full arc through Zig-native SLC-L4 correction, lap-open prompt filed, MUR (was MALA) realignment
-**Status:** Checkable-room research — Claude review brief; superseded by [`183326`](20260709-183326_claude-review-brief-jul9-evening-close.md). **Implementation removed `152612`** (settlement / chain-read); this note is dated record.
+**Status:** Checkable-room research — Claude review brief; replaced by [`183326`](20260709-183326_claude-review-brief-jul9-evening-close.md). **Implementation removed `152612`** (settlement / chain-read); this note is dated record.
 **Ground:** `bc97a93` → `e633386` on all four remotes; supersedes [`20260709-015832`](20260709-015832_claude-review-brief-jul9-evening-arc.md) for Claude analysis
 
 *Written for Claude counsel review.*

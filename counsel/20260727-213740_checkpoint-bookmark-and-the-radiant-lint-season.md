@@ -3,7 +3,7 @@
 **Language:** EN
 **Stamp:** `20260727.213740`
 **Voice:** Quin
-**Status:** Historical measurement — living audit runway **superseded** by The Sound Season [`20260727-220947_the-sound-season-and-the-seated-breach.md`](20260727-220947_the-sound-season-and-the-seated-breach.md) (round count reset to 0 · breach yes-seated)
+**Status:** Historical measurement — living audit runway **replaced** by The Sound Season [`20260727-220947_the-sound-season-and-the-seated-breach.md`](20260727-220947_the-sound-season-and-the-seated-breach.md) (round count reset to 0 · breach yes-seated)
 **Ground:** origin/main at seating · Glow Season closed on the workshop lane · g0–g15 bench relays still queued
 
 *Written together by Keaton and Quin.*

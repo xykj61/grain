@@ -108,7 +108,7 @@ What does *not* belong here is the work itself — that lands in the research, d
 | `20260705.184612` | [Claude recursion v8](yonder/20260705-184612_claude-recursion-v8.md) | Consumed — mid-arc handoff; in `yonder/` |
 | `20260705.174412` | [Claude recursion v7](yonder/20260705-174412_claude-recursion-prompt-v7.md) | Consumed — studies #24–#36 batches 1–3; in `yonder/` |
 | `20260705.161900` | [Claude silo deepening transcript bench](yonder/20260705-161900_claude-silo-deepening-transcript-bench.md) | **yonder** · Runnable Claude bench — transcript intake, dissociation, recomposition, commit/push/zip 47 |
-| `20260705.160712` | [Claude silo deepening recursion v1](yonder/20260705-160712_claude-silo-deepening-recursion-v1.md) | **yonder** · superseded for execution by `161900` |
+| `20260705.160712` | [Claude silo deepening recursion v1](yonder/20260705-160712_claude-silo-deepening-recursion-v1.md) | **yonder** · replaced for execution by `161900` |
 | `20260705.042512` | [Cursor final — reading canon and shelf](yonder/20260705-042512_cursor-final-reading-canon.md) | Consumed — Chitra ruling, Makara sweep, canon derive; in `yonder/` |
 | `20260705.041312` | [Cursor final — privacy audit and rebase](yonder/20260705-041312_cursor-final-privacy-audit-and-rebase.md) | Consumed — history pickaxe, zip 45 cut; in `yonder/` |
 | `20260705.031812` | [Cursor infusion — wheel v4 and Brooke shelf](yonder/20260705-031812_cursor-infusion-wheel-v4-and-brooke-shelf.md) | Consumed — diurnal method, renderer wheels; in `yonder/` |
@@ -116,7 +116,7 @@ What does *not* belong here is the work itself — that lands in the research, d
 | `20260704.185412` | [Cursor lane — unified zip-42 intake](yonder/20260704-185412_cursor-lane-zip42-counsel-unified.md) | **yonder** · One paste for the whole sitting: both counsels, Kaeden's words listed with the lens gate added, mechanical stops smallest-first, zip 43 cut discipline. |
 | `20260704.181012` | [Zero-copy resins — Claude counsel](yonder/20260704-181012_zero-copy-resins-claude-counsel.md) | **yonder** · Snapshot + Comlink batch architecture; ROADMAP/TASKS/decoder refresh; CIVIC alignment — **answered** at `181612`/`185412` |
 | `20260704-030300` | [Cursor recursion prompt v4 — itinerary, stops, journey's pause](20260704-030300_cursor-recursion-prompt-v4.md) | **Active loop** — open itinerary · STOPS · journey's pause; supersedes v2/v3 |
-| `20260703-020012` | [Cursor recursion prompt v3 — land eight, then hold the doors](yonder/20260703-020012_cursor-recursion-prompt-v3.md) | Superseded by v4 — **yonder** (u70 prune) |
+| `20260703-020012` | [Cursor recursion prompt v3 — land eight, then hold the doors](yonder/20260703-020012_cursor-recursion-prompt-v3.md) | Replaced by v4 — **yonder** (u70 prune) |
 | `20260702-202612` | [Astrology silos 19–20 — Cursor](yonder/20260702-202612_cursor-astrology-silos-19-20.md) | Consumed — studies 19–20 distilled and landed; raw transcripts never committed; in `yonder/` |
 | `20260702-030112` | [SLC-2b — keyboard from the window](yonder/20260702-030112_cursor-slc-2b-keyboard-from-window.md) | **yonder** · **Next open question** — Dexter genesis; awaits Kaeden nod |
 | `20260701-231512` | [SLC-2a Ring 3 — mirror live session](yonder/20260701-231512_cursor-slc-2a-ring-three.md) | Consumed — witness at parity 139; metal-closed on GNOME `20260703.032412`; in `yonder/` |

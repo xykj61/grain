@@ -4,7 +4,7 @@
 **Voice:** Rio 3
 **Editor:** Cursor · **Model:** Grok 4.5 High Fast
 **Register:** Decision briefing — MUR (was MALA) M1→M2b, SLC-L4 Sigma, WOV exit honesty, Realidream thin view; parity **197→202**
-**Status:** Checkable-room research — **superseded** for open questions by [`225159`](20260709-225159_claude-review-brief-jul9-late-night.md)
+**Status:** Checkable-room research — **replaced** for open questions by [`225159`](20260709-225159_claude-review-brief-jul9-late-night.md)
 **Ground:** tip **`c44f237`** at filing; later climb through dual D1 at `54014ce` / parity **205**; supersedes [`183326`](20260709-183326_claude-review-brief-jul9-evening-close.md)
 
 *Written for Claude counsel review after Kaeden's keep-going climb from evening close through thin view.*
@@ -20,7 +20,7 @@ Since evening close (`183326`, parity **197**, MUR (was MALA) M1 lap-open only),
 
 | Milestone | Stamp / commit | Parity | Status |
 |-----------|----------------|--------|--------|
-| Evening close brief | `183326` | **197** | Superseded by this brief |
+| Evening close brief | `183326` | **197** | Replaced by this brief |
 | MUR (was MALA) M1 | `2f0de82` | **198** | Landed |
 | MUR (was MALA) M2 hosted | `1b0e08b` | **199** | Landed |
 | OA-L3/L5 UDP hang fix | `c9d5056` | **199** | Bind-before-send |

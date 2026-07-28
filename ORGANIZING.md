@@ -122,7 +122,7 @@ Three tiers, each with a clear purpose:
 
 - **Active** (one level deep) — what we are engaged with now.
 - **`yonder/`** (two levels deep) — points *forward*; kept because the idea is alive and may return.
-- **`archive/`** (two levels deep) — points *backward*; done or superseded, kept only for the honest record.
+- **`archive/`** (two levels deep) — points *backward*; done or retired, kept only for the honest record.
 
 The distinction matters: `yonder/` is a horizon, not a graveyard. A truly finished or dead file goes to `archive/` rather than `yonder/`.
 

@@ -9,7 +9,7 @@ Radiant pass `20260728.050219` — living rename-forward: **MUR** (was MALA)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`) · **Lens:** TAME — safety first · SLC · stop-and-park on custody
 **Category:** External research — refresh and witness proposal; counsels only; no treasury action
 **Ground:** [`20260706-002612_the-settlement-seat-under-three-lights.md`](20260706-002612_the-settlement-seat-under-three-lights.md) · [`20260706-005512_settlement-seat-verification-and-verdict.md`](20260706-005512_settlement-seat-verification-and-verdict.md) · [`../active-designing/20260702-195426_slcl1-verifiable-receipt.md`](../active-designing/20260702-195426_slcl1-verifiable-receipt.md) · counsel [`220912`](../counsel/20260707-220912_claude-counsel-roadmap-synthesis.md)
-**Status:** Research for understanding — two-lane witness design preserved as craft; **external SLC-L3 seat superseded** by MUR (was MALA)/WOV realignment [`152612`](../counsel/20260709-152612_claude-counsel-mala-wov-already-designed.md). Kitchen twin: [`20260710-001249_settlement-seat-plainly.md`](20260710-001249_settlement-seat-plainly.md). No treasury action.
+**Status:** Research for understanding — two-lane witness design preserved as craft; **external SLC-L3 seat replaced** by MUR (was MALA)/WOV realignment [`152612`](../counsel/20260709-152612_claude-counsel-mala-wov-already-designed.md). Kitchen twin: [`20260710-001249_settlement-seat-plainly.md`](20260710-001249_settlement-seat-plainly.md). No treasury action.
 **Last updated:** 2026-07-10 (supersession note + kitchen twin)
 
 *Written by Rio 3 for Kaeden.*
