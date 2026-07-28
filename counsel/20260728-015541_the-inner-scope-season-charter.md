@@ -7,9 +7,10 @@
 **Ground:** origin/main `dcde97dd12` · Constellation **outer** paused at **m8 complete / m9 next**  
 **Rename:** **Twah → Djin** (Taurus · earth · seat 2) — overwrite living writings and code; everything else the same  
 **Inspiration (named, not quoted):** Rumi · Hafez · Kabir (Khabir) · Ibn Arabi — djinn / unseen-company poetry, siloed in gratitude  
-**Status:** Charter seated · rename applied this stamp · i0 next
+**Status:** Charter seated · rename applied · **Ketu + Mala dedication + executives** `20260728.020607` · i0 next
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260728.020607` — Ketu Aquarius 11 · Mala→Kamala Harris · Keaton/Sara/DJINN steward seats
 
 ---
 
@@ -30,8 +31,11 @@ No outer m-round advances until the inner season hands back or Keaton seats an e
 **Inner scope** = this sixteen-round season. Spine lean:
 
 1. **Fascia redaction shredding** — resume the Fascia mid-flight work (resin · parity · Amphora · breach generator) under inner rounds, not as a silent overwrite of outer constellation progress.  
-2. **Djin seated** — Taurus earth seat 2, formerly Twah; vane `%djin` · domain prep **djin.fund** (claim his); edu gift for creating one of the twelve stays under this fund.  
-3. **Scope words** — **scope** · **outer** · **inner** seated in Lexicon for seasons and for Tally / Prin / rish command vocabulary.
+2. **Djin seated** — Taurus earth seat 2, formerly Twah; vane `%djin` · domain prep **djin.fund** (claim his); edu gift for creating one of the twelve stays under this fund; **executive DJINN**.  
+3. **Scope words** — **scope** · **outer** · **inner** seated in Lexicon for seasons and for Tally / Prin / rish command vocabulary.  
+4. **Ketu seated** (`20260728.020607`) — Aquarius · fund order 11 · `%ketu` · **executive Keaton**.  
+5. **Mala dedicated** to **Kamala Harris** (honor) — gratitude + Reya-variant foundations inside this inner season.  
+6. **Siya executor** — **Sara Sealy Livermore**.
 
 Hard lines unchanged: no live Sui deploy · no wallet · no gas · no private key · no live multisig · breach only on `prin rish breach yes now` after his circled scope.
 
