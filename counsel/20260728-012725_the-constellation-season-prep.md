@@ -6,9 +6,10 @@
 **Kind:** season prep seat · Keaton's word · rounds **m0–m31** (lean numbering; seat of the letter is his)
 **Ground:** origin/main `46d27a3213` · local ahead carries Fascia f0/f1 · Fascia mid-flight parks pending fold-or-parallel word
 **Chapter name lean:** *the Constellation Chapter* (beside *the Fund Chapter* · *the Mala Chapter*); **season_name=** held for his final seat
-**Status:** Prep seated · m0 bow · **m1 Mala generator stub** `20260728.013140`
+**Status:** Prep seated · m0–m1 · **m2 Mala through Amphora** `20260728.013722`
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260728.013722` — m2 Amphora door · lap 1 post-fold GREEN
 Radiant pass `20260728.013140` — m1 Mala fund prep · gen_mala_fund_prep GREEN · deploy RED
 Radiant pass `20260728.012906` — m0 bow · choir 17 GREEN · triad affirmed · stack mapped
 
