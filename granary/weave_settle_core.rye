@@ -39,7 +39,7 @@ pub const SettleError = error{
 pub const PaymentFields = struct {
     amount: []const u8,
     currency: []const u8,
-    mala_digest: []const u8,
+    murr_digest: []const u8,
     wov_digest: []const u8,
 };
 
@@ -128,8 +128,8 @@ pub fn write_payment_canonical(fields: PaymentFields, out: []u8) SettleError!u32
     var off: u32 = 0;
     try append_kv(out, &off, "format", "weave-payment-v1");
     try append_kv(out, &off, "amount", fields.amount);
-    try append_kv(out, &off, "currency", "mala");
-    try append_kv(out, &off, "mala_digest", fields.mala_digest);
+    try append_kv(out, &off, "currency", "murr");
+    try append_kv(out, &off, "murr_digest", fields.murr_digest);
     try append_kv(out, &off, "wov_digest", fields.wov_digest);
     return off;
 }
@@ -138,7 +138,7 @@ pub fn parse_payment(text: []const u8, out: *PaymentFields) SettleError!void {
     var format: ?[]const u8 = null;
     var amount: ?[]const u8 = null;
     var currency: ?[]const u8 = null;
-    var mala_digest: ?[]const u8 = null;
+    var murr_digest: ?[]const u8 = null;
     var wov_digest: ?[]const u8 = null;
 
     var lines = std.mem.splitScalar(u8, text, '\n');
@@ -155,31 +155,31 @@ pub fn parse_payment(text: []const u8, out: *PaymentFields) SettleError!void {
             amount = value;
         } else if (std.mem.eql(u8, key, "currency")) {
             currency = value;
-        } else if (std.mem.eql(u8, key, "mala_digest")) {
+        } else if (std.mem.eql(u8, key, "murr_digest")) {
             try require_lower_hex(value, digest_hex_len);
-            mala_digest = value;
+            murr_digest = value;
         } else if (std.mem.eql(u8, key, "wov_digest")) {
             try require_lower_hex(value, digest_hex_len);
             wov_digest = value;
         } else return error.InvalidPayment;
     }
     if (format == null or amount == null or currency == null) return error.InvalidPayment;
-    if (mala_digest == null or wov_digest == null) return error.InvalidPayment;
+    if (murr_digest == null or wov_digest == null) return error.InvalidPayment;
     if (!std.mem.eql(u8, format.?, "weave-payment-v1")) return error.InvalidPayment;
-    if (!std.mem.eql(u8, currency.?, "mala")) return error.InvalidPayment;
+    if (!std.mem.eql(u8, currency.?, "murr")) return error.InvalidPayment;
     if (!price_ok(amount.?)) return error.BadPrice;
     out.* = .{
         .amount = amount.?,
         .currency = currency.?,
-        .mala_digest = mala_digest.?,
+        .murr_digest = murr_digest.?,
         .wov_digest = wov_digest.?,
     };
 }
 
 pub fn payment_digest(fields: PaymentFields, out: *[digest_hex_len]u8) SettleError!void {
     if (!price_ok(fields.amount)) return error.BadPrice;
-    if (!std.mem.eql(u8, fields.currency, "mala")) return error.InvalidPayment;
-    try require_lower_hex(fields.mala_digest, digest_hex_len);
+    if (!std.mem.eql(u8, fields.currency, "murr")) return error.InvalidPayment;
+    try require_lower_hex(fields.murr_digest, digest_hex_len);
     try require_lower_hex(fields.wov_digest, digest_hex_len);
     var canonical: [max_payment_len]u8 = undefined;
     const canon_len = try write_payment_canonical(fields, &canonical);

@@ -1,6 +1,6 @@
 # stoa245_sign_body_author_witness.rish — product owns sign/verify bodies.
 #
-# Elder mala_core.sign_fact / receipt_core.verify_record stay peer baseline
+# Elder murr_core.sign_fact / receipt_core.verify_record stay peer baseline
 # (one call each inside sign_body_agrees_elder only).
 #
 #   rishi/bin/rishi run tools/stoa245_sign_body_author_witness.rish

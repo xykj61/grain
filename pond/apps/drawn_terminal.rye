@@ -103,7 +103,7 @@ const exchange = @import("granary/exchange_listing.rye");
 const weave_settle = @import("granary/weave_settle_core.rye");
 const mandi = @import("mandi/mandi_core.rye");
 const settle = @import("mandi/listing_settle_core.rye");
-const mala = @import("mandi/murr_core.rye");
+const murr = @import("mandi/murr_core.rye");
 const wov_core = @import("mandi/wov_core.rye");
 const rc = @import("mandi/receipt_core.rye");
 const kumara = @import("mandi/kumara.rye");
@@ -4139,7 +4139,7 @@ fn run_granary_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
 /// Granary Exchange view — weave listing priced in MALA → Skate.
 fn compose_exchange_view_lines(garden: std.mem.Allocator) ![]surface.SkateLine {
     var store = granary.ResinStore.empty();
-    const digest = try granary.put_resin(&store, "# priced weave\n\nfor sale in mala.\n");
+    const digest = try granary.put_resin(&store, "# priced weave\n\nfor sale in murr.\n");
     var fact: [granary.max_fact_len]u8 = undefined;
     const fact_len = try granary.sign_name_fact(granary.granary_version, "rio", "greeting", &digest, &fact);
     var reg = granary.Registry.empty();
@@ -4157,7 +4157,7 @@ fn compose_exchange_view_lines(garden: std.mem.Allocator) ![]surface.SkateLine {
     lines[0] = .{ .text = try garden.dupe(u8, "granary exchange view") };
     lines[1] = .{ .text = try garden.dupe(u8, "path rio/greeting") };
     lines[2] = .{ .text = try std.fmt.allocPrint(garden, "resin {s}", .{digest[0..12]}) };
-    lines[3] = .{ .text = try garden.dupe(u8, "price 100 mala") };
+    lines[3] = .{ .text = try garden.dupe(u8, "price 100 murr") };
     lines[4] = .{ .text = try std.fmt.allocPrint(garden, "receipt {s}", .{receipt[0..12]}) };
     lines[5] = .{ .text = try garden.dupe(u8, "fold green") };
     return lines;
@@ -4182,7 +4182,7 @@ fn run_exchange_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
         "granary exchange view",
         "path rio/greeting",
         "resin e132424d71e0",
-        "price 100 mala",
+        "price 100 murr",
         "receipt 1c8546c14e86",
         "fold green",
     };
@@ -4190,7 +4190,7 @@ fn run_exchange_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
 
     // Unwelcome — registry digest mismatch refused.
     var store = granary.ResinStore.empty();
-    const digest = try granary.put_resin(&store, "# priced weave\n\nfor sale in mala.\n");
+    const digest = try granary.put_resin(&store, "# priced weave\n\nfor sale in murr.\n");
     var fact: [granary.max_fact_len]u8 = undefined;
     const fact_len = try granary.sign_name_fact(granary.granary_version, "rio", "greeting", &digest, &fact);
     var reg = granary.Registry.empty();
@@ -4230,7 +4230,7 @@ fn compose_mandi_floor_view_lines(garden: std.mem.Allocator) ![]surface.SkateLin
     const lines = try garden.alloc(surface.SkateLine, mandi_view_max_lines);
     lines[0] = .{ .text = try garden.dupe(u8, "mandi floor view") };
     lines[1] = .{ .text = try std.fmt.allocPrint(garden, "vessel {s}", .{parent[0..12]}) };
-    lines[2] = .{ .text = try garden.dupe(u8, "price 25 mala") };
+    lines[2] = .{ .text = try garden.dupe(u8, "price 25 murr") };
     lines[3] = .{ .text = try std.fmt.allocPrint(garden, "receipt {s}", .{receipt[0..12]}) };
     lines[4] = .{ .text = try garden.dupe(u8, "fold green") };
     return lines;
@@ -4254,7 +4254,7 @@ fn run_mandi_floor_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     const golden = [_][]const u8{
         "mandi floor view",
         "vessel 675cd344edbf",
-        "price 25 mala",
+        "price 25 murr",
         "receipt a8e89899c996",
         "fold green",
     };
@@ -4294,12 +4294,12 @@ fn compose_mandi_settle_view_lines(garden: std.mem.Allocator) ![]surface.SkateLi
     var listing_receipt: [mandi.digest_hex_len]u8 = undefined;
     try mandi.receipt_digest(listing[0..ln], &listing_receipt);
 
-    const issuer_kp = kumara.keypair_from_seed(&mala.issuer_seed);
-    const holder_kp = kumara.keypair_from_seed(&mala.holder_seed);
-    var issuer_hex: [mala.pubkey_hex_len]u8 = undefined;
-    var holder_hex: [mala.pubkey_hex_len]u8 = undefined;
-    mala.hex_of_key(issuer_kp.public_key, &issuer_hex);
-    mala.hex_of_key(holder_kp.public_key, &holder_hex);
+    const issuer_kp = kumara.keypair_from_seed(&murr.issuer_seed);
+    const holder_kp = kumara.keypair_from_seed(&murr.holder_seed);
+    var issuer_hex: [murr.pubkey_hex_len]u8 = undefined;
+    var holder_hex: [murr.pubkey_hex_len]u8 = undefined;
+    murr.hex_of_key(issuer_kp.public_key, &issuer_hex);
+    murr.hex_of_key(holder_kp.public_key, &holder_hex);
 
     var log: [rc.max_log_len]u8 = undefined;
     var log_len: u32 = 0;
@@ -4307,29 +4307,29 @@ fn compose_mandi_settle_view_lines(garden: std.mem.Allocator) ![]surface.SkateLi
         .from = issuer_hex[0..],
         .to = holder_hex[0..],
         .amount = "1000",
-        .memo = mala.memo_mint,
+        .memo = murr.memo_mint,
         .stamp = settle.settle_version,
     };
-    try mala.sign_append(&log, &log_len, mint_fields, issuer_kp);
+    try murr.sign_append(&log, &log_len, mint_fields, issuer_kp);
     const send_fields = rc.FactFields{
         .from = holder_hex[0..],
         .to = issuer_hex[0..],
         .amount = "25",
-        .memo = mala.memo_send,
+        .memo = murr.memo_send,
         .stamp = settle.settle_version,
     };
     var send_canonical: [rc.max_fact_len]u8 = undefined;
     const send_canon_len = try rc.write_canonical_fact(send_fields, &send_canonical);
-    try mala.sign_append(&log, &log_len, send_fields, holder_kp);
-    _ = try mala.fold_murr_log(
+    try murr.sign_append(&log, &log_len, send_fields, holder_kp);
+    _ = try murr.fold_murr_log(
         log[0..log_len],
         &issuer_hex,
         &holder_hex,
         issuer_kp.public_key,
         holder_kp.public_key,
     );
-    var mala_digest: [settle.digest_hex_len]u8 = undefined;
-    settle.digest_bytes(send_canonical[0..send_canon_len], &mala_digest);
+    var murr_digest: [settle.digest_hex_len]u8 = undefined;
+    settle.digest_bytes(send_canonical[0..send_canon_len], &murr_digest);
 
     const buyer_kp = kumara.keypair_from_seed(&wov_core.holder_a_seed);
     const seller_kp = kumara.keypair_from_seed(&wov_core.holder_b_seed);
@@ -4351,8 +4351,8 @@ fn compose_mandi_settle_view_lines(garden: std.mem.Allocator) ![]surface.SkateLi
 
     const payment_fields = settle.PaymentFields{
         .amount = "25",
-        .currency = "mala",
-        .mala_digest = &mala_digest,
+        .currency = "murr",
+        .murr_digest = &murr_digest,
         .wov_digest = &wov_digest,
     };
     var payment_hex: [settle.digest_hex_len]u8 = undefined;
@@ -4365,7 +4365,7 @@ fn compose_mandi_settle_view_lines(garden: std.mem.Allocator) ![]surface.SkateLi
     const lines = try garden.alloc(surface.SkateLine, mandi_settle_view_max_lines);
     lines[0] = .{ .text = try garden.dupe(u8, "mandi settle view") };
     lines[1] = .{ .text = try std.fmt.allocPrint(garden, "listing {s}", .{listing_receipt[0..12]}) };
-    lines[2] = .{ .text = try garden.dupe(u8, "price 25 mala") };
+    lines[2] = .{ .text = try garden.dupe(u8, "price 25 murr") };
     lines[3] = .{ .text = try std.fmt.allocPrint(garden, "payment {s}", .{payment_hex[0..12]}) };
     lines[4] = .{ .text = try garden.dupe(u8, "settled") };
     lines[5] = .{ .text = try garden.dupe(u8, "fold green") };
@@ -4390,7 +4390,7 @@ fn run_mandi_settle_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     // Golden prefixes from live settle path (listing receipt known; payment from payment_digest).
     assert(std.mem.eql(u8, frame[0].text, "mandi settle view"));
     assert(std.mem.eql(u8, frame[1].text, "listing a8e89899c996"));
-    assert(std.mem.eql(u8, frame[2].text, "price 25 mala"));
+    assert(std.mem.eql(u8, frame[2].text, "price 25 murr"));
     assert(std.mem.startsWith(u8, frame[3].text, "payment "));
     assert(frame[3].text.len == "payment ".len + 12);
     assert(std.mem.eql(u8, frame[4].text, "settled"));
@@ -4448,12 +4448,12 @@ fn run_steward_fold() !StewardFold {
     var listing_receipt: [mandi.digest_hex_len]u8 = undefined;
     try mandi.receipt_digest(listing[0..ln], &listing_receipt);
 
-    const issuer_kp = kumara.keypair_from_seed(&mala.issuer_seed);
-    const holder_kp = kumara.keypair_from_seed(&mala.holder_seed);
-    var issuer_hex: [mala.pubkey_hex_len]u8 = undefined;
-    var holder_hex: [mala.pubkey_hex_len]u8 = undefined;
-    mala.hex_of_key(issuer_kp.public_key, &issuer_hex);
-    mala.hex_of_key(holder_kp.public_key, &holder_hex);
+    const issuer_kp = kumara.keypair_from_seed(&murr.issuer_seed);
+    const holder_kp = kumara.keypair_from_seed(&murr.holder_seed);
+    var issuer_hex: [murr.pubkey_hex_len]u8 = undefined;
+    var holder_hex: [murr.pubkey_hex_len]u8 = undefined;
+    murr.hex_of_key(issuer_kp.public_key, &issuer_hex);
+    murr.hex_of_key(holder_kp.public_key, &holder_hex);
 
     var log: [rc.max_log_len]u8 = undefined;
     var log_len: u32 = 0;
@@ -4461,29 +4461,29 @@ fn run_steward_fold() !StewardFold {
         .from = issuer_hex[0..],
         .to = holder_hex[0..],
         .amount = "1000",
-        .memo = mala.memo_mint,
+        .memo = murr.memo_mint,
         .stamp = "20260711.010030",
     };
-    try mala.sign_append(&log, &log_len, mint_fields, issuer_kp);
+    try murr.sign_append(&log, &log_len, mint_fields, issuer_kp);
     const send_fields = rc.FactFields{
         .from = holder_hex[0..],
         .to = issuer_hex[0..],
         .amount = "25",
-        .memo = mala.memo_send,
+        .memo = murr.memo_send,
         .stamp = "20260711.010030",
     };
     var send_canonical: [rc.max_fact_len]u8 = undefined;
     const send_canon_len = try rc.write_canonical_fact(send_fields, &send_canonical);
-    try mala.sign_append(&log, &log_len, send_fields, holder_kp);
-    _ = try mala.fold_murr_log(
+    try murr.sign_append(&log, &log_len, send_fields, holder_kp);
+    _ = try murr.fold_murr_log(
         log[0..log_len],
         &issuer_hex,
         &holder_hex,
         issuer_kp.public_key,
         holder_kp.public_key,
     );
-    var mala_digest: [settle.digest_hex_len]u8 = undefined;
-    settle.digest_bytes(send_canonical[0..send_canon_len], &mala_digest);
+    var murr_digest: [settle.digest_hex_len]u8 = undefined;
+    settle.digest_bytes(send_canonical[0..send_canon_len], &murr_digest);
 
     const buyer_kp = kumara.keypair_from_seed(&wov_core.holder_a_seed);
     const seller_kp = kumara.keypair_from_seed(&wov_core.holder_b_seed);
@@ -4505,8 +4505,8 @@ fn run_steward_fold() !StewardFold {
 
     const payment_fields = settle.PaymentFields{
         .amount = "25",
-        .currency = "mala",
-        .mala_digest = &mala_digest,
+        .currency = "murr",
+        .murr_digest = &murr_digest,
         .wov_digest = &wov_digest,
     };
     var payment_hex: [settle.digest_hex_len]u8 = undefined;
@@ -4547,7 +4547,7 @@ fn compose_steward_view_lines(garden: std.mem.Allocator) ![]surface.SkateLine {
     const fold = try run_steward_fold();
     const lines = try garden.alloc(surface.SkateLine, steward_view_max_lines);
     lines[0] = .{ .text = try garden.dupe(u8, "commerce steward view") };
-    lines[1] = .{ .text = try garden.dupe(u8, "listed 25 mala") };
+    lines[1] = .{ .text = try garden.dupe(u8, "listed 25 murr") };
     lines[2] = .{ .text = try std.fmt.allocPrint(garden, "listing {s}", .{fold.listing_receipt[0..12]}) };
     lines[3] = .{ .text = try garden.dupe(u8, "settled") };
     lines[4] = .{ .text = try garden.dupe(u8, "receipt mandi:vessel-sale") };
@@ -4574,7 +4574,7 @@ fn run_steward_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
 
     const golden = [_][]const u8{
         "commerce steward view",
-        "listed 25 mala",
+        "listed 25 murr",
         "listing a8e89899c996",
         "settled",
         "receipt mandi:vessel-sale",
@@ -4615,7 +4615,7 @@ fn compose_steward_sight_view_lines(garden: std.mem.Allocator) ![]surface.SkateL
     const fold = try run_steward_fold();
     const lines = try garden.alloc(surface.SkateLine, steward_sight_view_max_lines);
     lines[0] = .{ .text = try garden.dupe(u8, "commerce steward sight") };
-    lines[1] = .{ .text = try garden.dupe(u8, "listed 25 mala") };
+    lines[1] = .{ .text = try garden.dupe(u8, "listed 25 murr") };
     lines[2] = .{ .text = try std.fmt.allocPrint(garden, "listing {s}", .{fold.listing_receipt[0..12]}) };
     lines[3] = .{ .text = try garden.dupe(u8, "settled · receipt mandi:vessel-sale") };
     lines[4] = .{ .text = try std.fmt.allocPrint(garden, "cash {d} · conservation 0 · pnl {d}", .{ fold.cash, fold.pnl_net }) };
@@ -4647,7 +4647,7 @@ fn run_steward_sight_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
 
     const golden = [_][]const u8{
         "commerce steward sight",
-        "listed 25 mala",
+        "listed 25 murr",
         "listing a8e89899c996",
         "settled · receipt mandi:vessel-sale",
         "cash 825 · conservation 0 · pnl 825",
@@ -4670,7 +4670,7 @@ fn run_steward_sight_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
 /// Granary settle view — Exchange listing closed with MALA/WOV payment → Skate.
 fn compose_granary_settle_view_lines(garden: std.mem.Allocator) ![]surface.SkateLine {
     var store = granary.ResinStore.empty();
-    const digest = try granary.put_resin(&store, "# priced weave\n\nfor sale in mala.\n");
+    const digest = try granary.put_resin(&store, "# priced weave\n\nfor sale in murr.\n");
     var fact: [granary.max_fact_len]u8 = undefined;
     const fact_len = try granary.sign_name_fact(granary.granary_version, "rio", "greeting", &digest, &fact);
     var reg = granary.Registry.empty();
@@ -4683,12 +4683,12 @@ fn compose_granary_settle_view_lines(garden: std.mem.Allocator) ![]surface.Skate
     var listing_receipt: [exchange.digest_hex_len]u8 = undefined;
     try exchange.receipt_digest(listing[0..ln], &listing_receipt);
 
-    const issuer_kp = kumara.keypair_from_seed(&mala.issuer_seed);
-    const holder_kp = kumara.keypair_from_seed(&mala.holder_seed);
-    var issuer_hex: [mala.pubkey_hex_len]u8 = undefined;
-    var holder_hex: [mala.pubkey_hex_len]u8 = undefined;
-    mala.hex_of_key(issuer_kp.public_key, &issuer_hex);
-    mala.hex_of_key(holder_kp.public_key, &holder_hex);
+    const issuer_kp = kumara.keypair_from_seed(&murr.issuer_seed);
+    const holder_kp = kumara.keypair_from_seed(&murr.holder_seed);
+    var issuer_hex: [murr.pubkey_hex_len]u8 = undefined;
+    var holder_hex: [murr.pubkey_hex_len]u8 = undefined;
+    murr.hex_of_key(issuer_kp.public_key, &issuer_hex);
+    murr.hex_of_key(holder_kp.public_key, &holder_hex);
 
     var log: [rc.max_log_len]u8 = undefined;
     var log_len: u32 = 0;
@@ -4696,29 +4696,29 @@ fn compose_granary_settle_view_lines(garden: std.mem.Allocator) ![]surface.Skate
         .from = issuer_hex[0..],
         .to = holder_hex[0..],
         .amount = "1000",
-        .memo = mala.memo_mint,
+        .memo = murr.memo_mint,
         .stamp = weave_settle.settle_version,
     };
-    try mala.sign_append(&log, &log_len, mint_fields, issuer_kp);
+    try murr.sign_append(&log, &log_len, mint_fields, issuer_kp);
     const send_fields = rc.FactFields{
         .from = holder_hex[0..],
         .to = issuer_hex[0..],
         .amount = "100",
-        .memo = mala.memo_send,
+        .memo = murr.memo_send,
         .stamp = weave_settle.settle_version,
     };
     var send_canonical: [rc.max_fact_len]u8 = undefined;
     const send_canon_len = try rc.write_canonical_fact(send_fields, &send_canonical);
-    try mala.sign_append(&log, &log_len, send_fields, holder_kp);
-    _ = try mala.fold_murr_log(
+    try murr.sign_append(&log, &log_len, send_fields, holder_kp);
+    _ = try murr.fold_murr_log(
         log[0..log_len],
         &issuer_hex,
         &holder_hex,
         issuer_kp.public_key,
         holder_kp.public_key,
     );
-    var mala_digest: [weave_settle.digest_hex_len]u8 = undefined;
-    weave_settle.digest_bytes(send_canonical[0..send_canon_len], &mala_digest);
+    var murr_digest: [weave_settle.digest_hex_len]u8 = undefined;
+    weave_settle.digest_bytes(send_canonical[0..send_canon_len], &murr_digest);
 
     const buyer_kp = kumara.keypair_from_seed(&wov_core.holder_a_seed);
     const seller_kp = kumara.keypair_from_seed(&wov_core.holder_b_seed);
@@ -4740,8 +4740,8 @@ fn compose_granary_settle_view_lines(garden: std.mem.Allocator) ![]surface.Skate
 
     const payment_fields = weave_settle.PaymentFields{
         .amount = "100",
-        .currency = "mala",
-        .mala_digest = &mala_digest,
+        .currency = "murr",
+        .murr_digest = &murr_digest,
         .wov_digest = &wov_digest,
     };
     var payment_hex: [weave_settle.digest_hex_len]u8 = undefined;
@@ -4754,7 +4754,7 @@ fn compose_granary_settle_view_lines(garden: std.mem.Allocator) ![]surface.Skate
     const lines = try garden.alloc(surface.SkateLine, granary_settle_view_max_lines);
     lines[0] = .{ .text = try garden.dupe(u8, "granary settle view") };
     lines[1] = .{ .text = try std.fmt.allocPrint(garden, "listing {s}", .{listing_receipt[0..12]}) };
-    lines[2] = .{ .text = try garden.dupe(u8, "price 100 mala") };
+    lines[2] = .{ .text = try garden.dupe(u8, "price 100 murr") };
     lines[3] = .{ .text = try std.fmt.allocPrint(garden, "payment {s}", .{payment_hex[0..12]}) };
     lines[4] = .{ .text = try garden.dupe(u8, "settled") };
     lines[5] = .{ .text = try garden.dupe(u8, "fold green") };
@@ -4779,7 +4779,7 @@ fn run_granary_settle_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     // Golden prefixes — listing receipt matches Exchange view; payment from payment_digest.
     assert(std.mem.eql(u8, frame[0].text, "granary settle view"));
     assert(std.mem.eql(u8, frame[1].text, "listing 1c8546c14e86"));
-    assert(std.mem.eql(u8, frame[2].text, "price 100 mala"));
+    assert(std.mem.eql(u8, frame[2].text, "price 100 murr"));
     assert(std.mem.startsWith(u8, frame[3].text, "payment "));
     assert(frame[3].text.len == "payment ".len + 12);
     assert(std.mem.eql(u8, frame[4].text, "settled"));
@@ -4789,7 +4789,7 @@ fn run_granary_settle_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     var settled = weave_settle.SettledSet.empty();
     var listing_receipt: [exchange.digest_hex_len]u8 = undefined;
     var store = granary.ResinStore.empty();
-    const digest = try granary.put_resin(&store, "# priced weave\n\nfor sale in mala.\n");
+    const digest = try granary.put_resin(&store, "# priced weave\n\nfor sale in murr.\n");
     var listing: [exchange.max_listing_len]u8 = undefined;
     const ln = try exchange.sign_listing(exchange.exchange_version, "rio/greeting", &digest, "100", &listing);
     try exchange.receipt_digest(listing[0..ln], &listing_receipt);
@@ -4829,7 +4829,7 @@ const GranaryStewardFold = struct {
 /// Shared weave settle + Dimeroll fold for Granary steward view and sight.
 fn run_granary_steward_fold() !GranaryStewardFold {
     var store = granary.ResinStore.empty();
-    const digest = try granary.put_resin(&store, "# priced weave\n\nfor sale in mala.\n");
+    const digest = try granary.put_resin(&store, "# priced weave\n\nfor sale in murr.\n");
     var fact: [granary.max_fact_len]u8 = undefined;
     const fact_len = try granary.sign_name_fact(granary.granary_version, "rio", "greeting", &digest, &fact);
     var reg = granary.Registry.empty();
@@ -4842,12 +4842,12 @@ fn run_granary_steward_fold() !GranaryStewardFold {
     var listing_receipt: [exchange.digest_hex_len]u8 = undefined;
     try exchange.receipt_digest(listing[0..ln], &listing_receipt);
 
-    const issuer_kp = kumara.keypair_from_seed(&mala.issuer_seed);
-    const holder_kp = kumara.keypair_from_seed(&mala.holder_seed);
-    var issuer_hex: [mala.pubkey_hex_len]u8 = undefined;
-    var holder_hex: [mala.pubkey_hex_len]u8 = undefined;
-    mala.hex_of_key(issuer_kp.public_key, &issuer_hex);
-    mala.hex_of_key(holder_kp.public_key, &holder_hex);
+    const issuer_kp = kumara.keypair_from_seed(&murr.issuer_seed);
+    const holder_kp = kumara.keypair_from_seed(&murr.holder_seed);
+    var issuer_hex: [murr.pubkey_hex_len]u8 = undefined;
+    var holder_hex: [murr.pubkey_hex_len]u8 = undefined;
+    murr.hex_of_key(issuer_kp.public_key, &issuer_hex);
+    murr.hex_of_key(holder_kp.public_key, &holder_hex);
 
     var log: [rc.max_log_len]u8 = undefined;
     var log_len: u32 = 0;
@@ -4855,29 +4855,29 @@ fn run_granary_steward_fold() !GranaryStewardFold {
         .from = issuer_hex[0..],
         .to = holder_hex[0..],
         .amount = "1000",
-        .memo = mala.memo_mint,
+        .memo = murr.memo_mint,
         .stamp = "20260711.012451",
     };
-    try mala.sign_append(&log, &log_len, mint_fields, issuer_kp);
+    try murr.sign_append(&log, &log_len, mint_fields, issuer_kp);
     const send_fields = rc.FactFields{
         .from = holder_hex[0..],
         .to = issuer_hex[0..],
         .amount = "100",
-        .memo = mala.memo_send,
+        .memo = murr.memo_send,
         .stamp = "20260711.012451",
     };
     var send_canonical: [rc.max_fact_len]u8 = undefined;
     const send_canon_len = try rc.write_canonical_fact(send_fields, &send_canonical);
-    try mala.sign_append(&log, &log_len, send_fields, holder_kp);
-    _ = try mala.fold_murr_log(
+    try murr.sign_append(&log, &log_len, send_fields, holder_kp);
+    _ = try murr.fold_murr_log(
         log[0..log_len],
         &issuer_hex,
         &holder_hex,
         issuer_kp.public_key,
         holder_kp.public_key,
     );
-    var mala_digest: [weave_settle.digest_hex_len]u8 = undefined;
-    weave_settle.digest_bytes(send_canonical[0..send_canon_len], &mala_digest);
+    var murr_digest: [weave_settle.digest_hex_len]u8 = undefined;
+    weave_settle.digest_bytes(send_canonical[0..send_canon_len], &murr_digest);
 
     const buyer_kp = kumara.keypair_from_seed(&wov_core.holder_a_seed);
     const seller_kp = kumara.keypair_from_seed(&wov_core.holder_b_seed);
@@ -4899,8 +4899,8 @@ fn run_granary_steward_fold() !GranaryStewardFold {
 
     const payment_fields = weave_settle.PaymentFields{
         .amount = "100",
-        .currency = "mala",
-        .mala_digest = &mala_digest,
+        .currency = "murr",
+        .murr_digest = &murr_digest,
         .wov_digest = &wov_digest,
     };
     var payment_hex: [weave_settle.digest_hex_len]u8 = undefined;
@@ -4941,7 +4941,7 @@ fn compose_granary_steward_view_lines(garden: std.mem.Allocator) ![]surface.Skat
     const fold = try run_granary_steward_fold();
     const lines = try garden.alloc(surface.SkateLine, granary_steward_view_max_lines);
     lines[0] = .{ .text = try garden.dupe(u8, "granary steward view") };
-    lines[1] = .{ .text = try garden.dupe(u8, "listed 100 mala") };
+    lines[1] = .{ .text = try garden.dupe(u8, "listed 100 murr") };
     lines[2] = .{ .text = try std.fmt.allocPrint(garden, "listing {s}", .{fold.listing_receipt[0..12]}) };
     lines[3] = .{ .text = try garden.dupe(u8, "settled") };
     lines[4] = .{ .text = try garden.dupe(u8, "receipt granary:weave-sale") };
@@ -4968,7 +4968,7 @@ fn run_granary_steward_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
 
     const golden = [_][]const u8{
         "granary steward view",
-        "listed 100 mala",
+        "listed 100 murr",
         "listing 1c8546c14e86",
         "settled",
         "receipt granary:weave-sale",
@@ -5008,7 +5008,7 @@ fn compose_granary_steward_sight_view_lines(garden: std.mem.Allocator) ![]surfac
     const fold = try run_granary_steward_fold();
     const lines = try garden.alloc(surface.SkateLine, granary_steward_sight_view_max_lines);
     lines[0] = .{ .text = try garden.dupe(u8, "granary steward sight") };
-    lines[1] = .{ .text = try garden.dupe(u8, "listed 100 mala") };
+    lines[1] = .{ .text = try garden.dupe(u8, "listed 100 murr") };
     lines[2] = .{ .text = try std.fmt.allocPrint(garden, "listing {s}", .{fold.listing_receipt[0..12]}) };
     lines[3] = .{ .text = try garden.dupe(u8, "settled · receipt granary:weave-sale") };
     lines[4] = .{ .text = try std.fmt.allocPrint(garden, "cash {d} · conservation 0 · pnl {d}", .{ fold.cash, fold.pnl_net }) };
@@ -5040,7 +5040,7 @@ fn run_granary_steward_sight_view_witness(garden: std.mem.Allocator, io: std.Io)
 
     const golden = [_][]const u8{
         "granary steward sight",
-        "listed 100 mala",
+        "listed 100 murr",
         "listing 1c8546c14e86",
         "settled · receipt granary:weave-sale",
         "cash 900 · conservation 0 · pnl 900",
