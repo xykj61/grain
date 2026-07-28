@@ -7,13 +7,14 @@
 **Ground:** study [`../../external-research/20260703-200712_compute-commerce-on-the-network.md`](../../external-research/20260703-200712_compute-commerce-on-the-network.md) · Granary seating [`20260710-163043_granary-name-seated.md`](20260710-163043_granary-name-seated.md)
 
 *Written by Kaeden and Rio 3.*
-Radiant pass `20260725.035852`
+Radiant pass `20260725.035852`  
+Radiant pass `20260728.043811` — priced in MUR (was MALA)
 
 ---
 
 ## The ruling
 
-**Mandi** is the name of the produce / vessel market floor — where harvests and amphorae change hands, weighed in daylight and priced in MALA.
+**Mandi** is the name of the produce / vessel market floor — where harvests and amphorae change hands, weighed in daylight and priced in MUR (was MALA).
 
 It is **not** Granary. Granary is the weave-sharing surface (four doors). Mandi is the commerce room where traveling vessels are listed and sold. Two markets, two roofs.
 
@@ -23,7 +24,7 @@ It is **not** Granary. Granary is the weave-sharing surface (four doors). Mandi 
 
 ## First lap (landed `20260710.165634`)
 
-Signed vessel listing: `vessel_parent` + MALA price under Kumara; receipt digest without buyer/seller; bind check against a known parent digest; refuse zero price, lying sig, and parent mismatch. Module home `mandi/`; witness `tools/mandi_lap1.rish`; parity **238**. Floor view lap 2 landed `20260710.170700` — Skate `mandiviewtest`; parity **240**. Listing settle lap 3 landed `20260710.171202` — `vessel-settle-v1` binds listing receipt + MALA/WOV payment; parity **242**. Settle view lap 4 landed `20260710.172955` — Skate `mandisettletest`; parity **244**. Amphora purchase delivery remains the carriage rite; Mandi is the floor that names and closes the offer. Live TigerBeetle waits its own gate.
+Signed vessel listing: `vessel_parent` + MUR price under Kumara (was MALA); receipt digest without buyer/seller; bind check against a known parent digest; refuse zero price, lying sig, and parent mismatch. Module home `mandi/`; witness `tools/mandi_lap1.rish`; parity **238**. Floor view lap 2 landed `20260710.170700` — Skate `mandiviewtest`; parity **240**. Listing settle lap 3 landed `20260710.171202` — `vessel-settle-v1` binds listing receipt + MUR/WOV payment (was MALA); parity **242**. Settle view lap 4 landed `20260710.172955` — Skate `mandisettletest`; parity **244**. Amphora purchase delivery remains the carriage rite; Mandi is the floor that names and closes the offer. Live TigerBeetle waits its own gate.
 
 ---
 
