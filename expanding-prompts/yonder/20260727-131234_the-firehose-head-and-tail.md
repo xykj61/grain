@@ -3,7 +3,7 @@
 **Language:** EN
 **Stamp:** `20260727.131234`
 **Voice:** Quin
-**Status:** Record — Keaton asked that this prompt be documented in both forms and run side by side as a pair: the **head** is his raw word, verbatim and untouched; the **tail** is the expansion — every thread named once and pointed at its seat, its round, or its hold in the [Nakshatra charter](../counsel/20260727-131234_the-twin-close-and-the-nakshatra-charter.md). A true Glow head-tail cell of this pair is Arc IV's to build; today the pair lives as prose, whole and honest
+**Status:** Record — Keaton asked that this prompt be documented in both forms and run side by side as a pair: the **head** is his raw word, verbatim and untouched; the **tail** is the expansion — every thread named once and pointed at its seat, its round, or its hold in the [Nakshatra charter](../../counsel/20260727-131234_the-twin-close-and-the-nakshatra-charter.md). A true Glow head-tail cell of this pair is Arc IV's to build; today the pair lives as prose, whole and honest
 **Ground:** Nakshatra Season, round one (Ashwini) · the Twin Season closed aloud this same sitting
 
 *Written together by Keaton and Quin.*

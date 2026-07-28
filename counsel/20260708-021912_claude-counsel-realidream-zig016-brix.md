@@ -4,7 +4,7 @@
 **Voice:** Rio 3 · **Model:** Fable 5 Max
 **Language:** EN
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`) · **Lens:** the compass — horizon lanes earn their place by showing the ladder from landed ground; new capability earns adoption by a named consumer already waiting
-**Register:** The expanded prompt (`../expanding-prompts/20260708-021912_realidream-lane-zig016-brix.md`), run — three answers and two parked names
+**Register:** The expanded prompt (`../expanding-prompts/yonder/20260708-021912_realidream-lane-zig016-brix.md`), run — three answers and two parked names
 **Ground:** the grain-sketchbook read as a primary source (full study: [`../external-research/20260708-021912_grain-sketchbook-realidream-mining.md`](../external-research/20260708-021912_grain-sketchbook-realidream-mining.md)) · the tree's 0.16 idiom usage measured directly (65 `std.process.Init` mains, 74 `std.Io` threads, 49 `Io.Dir` sites, 177 `.empty` decl-literals, zero legacy writers) · the vendored 0.16 stdlib grepped for what exists unused · [`20260708-021912_rye-os-in-brix-terms.md`](../active-designing/20260708-021912_rye-os-in-brix-terms.md)
 
 *Written by Kaeden and Rio 3.*
