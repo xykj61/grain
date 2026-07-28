@@ -6,8 +6,10 @@
 **Kind:** season prep seat · Keaton's word · rounds **m0–m31** (lean numbering; seat of the letter is his)
 **Ground:** origin/main `46d27a3213` · local ahead carries Fascia f0/f1 · Fascia mid-flight parks pending fold-or-parallel word
 **Season name lean:** *the Constellation Season* (beside *the Fund Season* · *the Mala Season*); **season_name=** held for his final seat
+**Status:** Prep seated · **m0 bow walked** `20260728.012906`
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260728.012906` — m0 bow · choir 17 GREEN · triad affirmed · stack mapped
 
 ---
 
