@@ -7,6 +7,7 @@
 **Ground:** Radiant Lint Season bow + rounds 1–4 already measured (`20260727.213740` · r1–r4); Glow Season closed on the workshop lane; g0–g15 bench relays still queued; breach law [`../context/BREACH.md`](../context/BREACH.md) · foundations [`../foundations/20260726-020537_the-breach.md`](../foundations/20260726-020537_the-breach.md)
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260727.221508` — round 0 bow landed; breach instrument raised; claims unchanged
 
 ---
 
@@ -95,18 +96,27 @@ Optional twin: `counsel/…_handoff-counsel-after-sound.md` (same stamp family).
 
 ## Bow measurement (inherit + extend)
 
-Carry forward Radiant Lint bow facts unless re-measured this bow:
+### Round 0 landed (`20260727.221508`)
 
-| Instrument | Last known |
-|------------|------------|
+| Instrument | Result |
+|------------|--------|
 | radiant_lint | GREEN · sum=2 (planted bare-but only) |
-| living_docs_lint | GREEN · advisories |
-| pass ledger | **1355** rows after Radiant Lint r4 |
+| living_docs_lint | GREEN · advisories (shell-body duty8) |
+| pass ledger | **1355** rows |
+| link_witness | GREEN — fixtures · baseline allow · ROUND MODE self-check toothful |
+| Breach instrument | **raised** — `tools/link_witness.rish` ROUND MODE · shelf [`../tools/fixtures/sound_season/README.md`](../tools/fixtures/sound_season/README.md) |
+| Baseline debt (honest) | dangling keys **2381** · missing targets **1991** · relative links checked **7979** |
+| COMPARE vs fresh snapshot | GREEN (0 new missing targets) |
+| code-comment bare-but (glow/tools/rishi, excl. `.cache`) | **943** owned hits (Arc IV runway; not a wave) |
 | Prior Radiant Lint | r1 seven clean · r2 47/3 · r3 49/1 · r4 50/0 |
-| Breach instrument | **not yet raised** — round 0 job |
-| Key / identity validators | polish backlog named in outside-eyes; not yet the saga report |
+| Shelf `.md` counts | foundations 34 · context 92 · counsel 174 · active-designing 509 · edu 7 · manual 20 · gratitude 82 · external-research 162 · work-in-progress 47 · expanding-prompts 159 · session-logs 1111 |
+| Key / identity validators | polish backlog named in outside-eyes; saga report still the close |
 
-Round 1 opens on Keaton's **kg** (or a scoped breach declaration paste). Until then, no yonder and no reference turn.
+**Red/green plan (seated):** SNAPSHOT before each declared yonder/re-point · COMPARE after · new missing targets RED even under `ALLOW_BASELINE=1` · good motion GREEN when AFTER ⊆ BEFORE on missing targets. Host-absolute snapshot dumps stay off the index.
+
+Reply: [`replies/20260727-221508_re-sound-season-r0.md`](replies/20260727-221508_re-sound-season-r0.md).
+
+Round 1 opens on Keaton's **kg** (Arc I voice & rooms) or a **scoped breach declaration** paste for Arc II. Until a motion declares its scope, no yonder and no reference turn.
 
 ---
 
