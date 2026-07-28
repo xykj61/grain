@@ -13,7 +13,7 @@ Prin scope — seasons · Tally · rish vocabulary
   inner:  Inner Scope Season — PAUSED at i6 complete / i7 next (fascia)
   innermost: MUR Season — PAUSED at u0 (Mala/MALA→Murr/MUR waits)
   core:   Gren Season — PAUSED at g0 (Djin→Gren waits while quint walks)
-  quint:  Keeh Season — OPEN · rounds q0–q15 lean (expand 32)
+  quint:  Keeh Season — OPEN · q0 complete / q1 next (lean 16 · expand 32)
   fund1:  Murr (was Mala) · Aries · dedication Kyler Murray · executive DJINN
   fund2:  Gren (was Djin · was Twah) · Taurus · executive Grain Energy PBC President (Keaton lean)
   fund3:  Siya · Gemini · executor Sara Sealy Livermore
