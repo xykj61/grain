@@ -102,7 +102,7 @@ assert gr.ok else "graduation rule pair missing"
 assert gr.out contains "GRAD_OK" else "graduation pair check failed"
 
 say "compass rose: Dimeroll lap 1 packet…"
-let gc = run ["sh" "-c" "test -f active-designing/20260710-125953_dimeroll-hammock.md && test -f external-research/20260710-125953_dimeroll-kick-digits-clean-room.md && test -f expanding-prompts/20260710-125953_dimeroll-lap1-books-view.md && test -f dimeroll/dimeroll_core.rye && test -f dimeroll/fixtures/journal.bron && test -f dimeroll/README.md && echo DIMEROLL_OK"]
+let gc = run ["sh" "-c" "test -f active-designing/20260710-125953_dimeroll-hammock.md && test -f external-research/20260710-125953_dimeroll-kick-digits-clean-room.md && test -f expanding-prompts/yonder/20260710-125953_dimeroll-lap1-books-view.md && test -f dimeroll/dimeroll_core.rye && test -f dimeroll/fixtures/journal.bron && test -f dimeroll/README.md && echo DIMEROLL_OK"]
 assert gc.ok else "Dimeroll lap 1 packet missing"
 assert gc.out contains "DIMEROLL_OK" else "Dimeroll packet check failed"
 

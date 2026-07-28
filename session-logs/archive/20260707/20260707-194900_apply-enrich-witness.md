@@ -24,7 +24,7 @@ Full parity **196** GREEN (~147s). Updated `TASKS.md` (safety net 3/3 complete),
 | File | Why |
 |------|-----|
 | Bundle + `work-in-progress/.gitkeep` fixture fix | Third safety-net witness |
-| `expanding-prompts/20260707-193712_apply-enrich-witness.md` | Apply prompt filed |
+| `expanding-prompts/yonder/20260707-193712_apply-enrich-witness.md` | Apply prompt filed |
 | `work-in-progress/TASKS.md` | Parity 196; safety net complete |
 | `counsel/README.md` | Index row `193712` |
 
