@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.181415` — [safest next move after shred readiness](20260728-181415_safest-next-move-shred.bron) — leave circle or i7 paper draft
 - `20260728.181016` — [MUR Season u91 shred readiness](20260728-181016_mur-season-u91-shred-readiness.bron) — Class A content-ready · cut not · u92 next
 - `20260728.180806` — [MUR Season check-in at u90](20260728-180806_mur-season-check-in-u90.bron) — queue empty · fascia 86 · u91 next
 - `20260728.180509` — [MUR Season u89 fascia prune class-a paper](20260728-180509_mur-season-u89-fascia-prune-class-a-paper.bron) — Class-A paper · fascia 86 · u90 next
