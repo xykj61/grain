@@ -45,7 +45,7 @@ fn welcome_path(
 fn check_fixture_mint(io: std.Io, issuer_hex: *const [mc.pubkey_hex_len]u8, holder_hex: *const [mc.pubkey_hex_len]u8) !void {
     const cwd = Dir.cwd();
     var fact_buf: [rc.max_fact_len]u8 = undefined;
-    const fact_read = try cwd.readFile(io, "tools/fixtures/mala_m1_mint.bron", &fact_buf);
+    const fact_read = try cwd.readFile(io, "tools/fixtures/murr_m1_mint.bron", &fact_buf);
     var fields: rc.FactFields = undefined;
     try rc.parse_fact_fields(fact_read, &fields);
     assert(std.mem.eql(u8, fields.from, issuer_hex[0..]));

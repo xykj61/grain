@@ -7,6 +7,7 @@
 **Status:** **Landed** `20260709.184051` — `linengrow/mala.rye` + witness at parity **198**; M0 gate verified before open
 **Ground:** counsel [`20260709-152612`](../counsel/20260709-152612_claude-counsel-mala-wov-already-designed.md) · design [`20260702-031312`](../active-designing/20260702-031312_modules-aspects-and-mailable-money.md) · SLC-L1 spine [`receipt_core.rye`](../linengrow/receipt_core.rye)
 Radiant pass `20260728.052149` — living rename-forward: **MUR** (was MALA); dated path tables keep `mala*` until **kg u32** (tool GO) / **u48** (module); rehearsals u17–u22 seated  
+Radiant pass `20260728.053112` — tool-wave u32: living paths → murr_* witnesses/fixture/wire lab; memo mala:* held for module
 Radiant pass `20260728.044925` — living rename-forward: **MUR** (was MALA); dated path · code homes `mala*` · wire `mala:*` held for tool/module waves (u32+/u48+)
 
 *Written by Kaeden and Rio 3.*
@@ -53,7 +54,7 @@ MUR (was MALA) reuses SLC-L1's `.bron` fact envelope (`from`, `to`, `amount`, `m
 - **Welcome path:** issuer mints `1000` to holder; issuer sends `300` to holder (or holder sends `200` back to issuer — one round-trip proves send); fold holder balance matches expected; log digest non-zero; every line verifies under the issuer pubkey for mints and the correct signer for sends.
 - **Unwelcome paths (at least four):** forged signature refused; mint from non-issuer refused; send exceeding balance refused; tampered log line refused at parse or verify.
 - Pinned `.bron` golden for the first mint fact (field order matches hammock).
-- `tools/mala_m1_witness.rish` — build + selftest; **parity-eligible** the moment green (deterministic, no network).
+- `tools/murr_m1_witness.rish` — build + selftest; **parity-eligible** the moment green (deterministic, no network).
 
 **Explicitly out of scope:**
 
@@ -69,8 +70,8 @@ MUR (was MALA) reuses SLC-L1's `.bron` fact envelope (`from`, `to`, `amount`, `m
 |------|------|
 | `linengrow/mala.rye` | Module home + selftest |
 | `linengrow/bin/mala` | Emitted binary |
-| `tools/mala_m1_witness.rish` | Parity witness |
-| `tools/fixtures/mala_m1_mint.bron` | Pinned first mint fact |
+| `tools/murr_m1_witness.rish` | Parity witness |
+| `tools/fixtures/murr_m1_mint.bron` | Pinned first mint fact |
 
 `linengrow/mala_core.rye` is optional — split only if `mala.rye` grows past TAME width guidance; start monolithic like early `receipt.rye`.
 
@@ -80,7 +81,7 @@ Kumara (`tally/kumara.rye`), `receipt_core`, `tally_copy`, `parse_int` — all a
 
 ## Verification Shape
 
-Build from bare. Run `linengrow/bin/mala selftest`: welcome path prints balances and `GREEN`; each unwelcome path prints a named refusal and still reaches `GREEN` for the selftest overall. Run `rishi/bin/rishi run tools/mala_m1_witness.rish`. Wire into `tools/parity.rish` only after both are green on metal.
+Build from bare. Run `linengrow/bin/mala selftest`: welcome path prints balances and `GREEN`; each unwelcome path prints a named refusal and still reaches `GREEN` for the selftest overall. Run `rishi/bin/rishi run tools/murr_m1_witness.rish`. Wire into `tools/parity.rish` only after both are green on metal.
 
 ---
 

@@ -8,7 +8,8 @@
 **Rename spine (approved overwrite):** **Mala / MALA / `%mala` → Murr / MUR / `%murr`** — Radiant · TAME · living-tree massive rename across the season  
 **Honor dedication:** **Kyler Murray** — Minnesota Vikings quarterback (signed 2026; camp competition with J.J. McCarthy as of this stamp's web ground)  
 **Currency lean:** **MUR** as **L1** · unify with **WOV** concept · roadmap **last** retires WOV entirely in favor of MUR  
-**Status:** **OPEN** · u0–u26 complete `20260728.052625` · **seat kg u32** (preferred) · u27 optional idle  
+**Status:** **OPEN** · u0–u32 complete `20260728.053112` · **u33** next — tool residual / approach u48  
+Radiant pass `20260728.053112` — u32 tool-wave live · steps 1–4 GREEN · murr_* witnesses/lab/fixture  
 Radiant pass `20260728.052625` — u26 waiting queue empty · prefer kg u32 · no renames  
 Radiant pass `20260728.052441` — u25 waiting harden · hammocks · residual clear · no renames  
 Radiant pass `20260728.052308` — u24 waiting harden · SPEC citations · no renames  
@@ -48,7 +49,7 @@ Radiant pass `20260728.025634` — innermost paused at u0 · core Gren opened ·
 |-------|--------|----------|----------|
 | **outer** | Constellation | m8 complete / **m9** next | **PAUSED** — do not advance m-rounds |
 | **inner** | Inner Scope | i6 complete / **i7** next · fascia machinery paused | **PAUSED** — do not advance i-rounds while innermost walks |
-| **innermost** | **MUR Season** | **u0–u26** complete · **kg u32** preferred | **OPEN** — walk here |
+| **innermost** | **MUR Season** | **u0–u32** complete · **u33** next | **OPEN** — walk here |
 | **core** | Gren Season | lean-16 CLOSED · handed back | **CLOSED** |
 | **quint** | Keeh Season | lean-16 CLOSED · handed back | **CLOSED** |
 
@@ -79,7 +80,7 @@ When innermost hands back: resume **inner** at i7 (fascia shred-with-parity draf
 |-------|--------|-----------|
 | Bow · measure | **u0–u26** CLOSED | Affirm pauses · gen_murr · residual clear · prose · tool GO · waiting queue empty · prefer kg u32 |
 | Lexicon · prose waves | **u6–u31** (largely living-clear · walking harden) | Living counsel/docs/edu Radiant-pass Mala/MALA → Murr/MUR; intentional holds named |
-| Tool · generator homes | **u32–u47** (prep u14 · rehearse u17–u20 · **GO** u21) | `gen_murr` done · witnesses · fixtures · parity announces · open on kg u32 |
+| Tool · generator homes | **u32–u47** (**u32 LIVE** steps 1–4 GREEN) | murr_* witnesses · parity · wire lab · fixture · residual u33+ |
 | Module · mycelium · specs | **u48–u79** (prep u15 · opener rehearse u22) | Code and SPEC paths; TAME width; choir green after each cluster |
 | MUR↔WOV unify design | **u80–u95** | L1 MUR absorbs WOV *concepts*; no WOV delete yet |
 | WOV retirement plan | **u96–u111** | Roadmap **last** — propose-only until late gate |

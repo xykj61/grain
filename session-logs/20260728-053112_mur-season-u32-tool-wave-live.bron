@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260728.053112
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title MUR Season u32 tool-wave live
+prompt kg u32
+think Execute tool-wave default plan steps 1-4: git mv witnesses wire lab fixture; harden say/assert; parity_ch01; path-only rye fixture strings; keep memo mala:mint and guests.
+think Run murr_m1_witness GREEN; murr_m2_witness GREEN including QEMU device lab; update living expanding-prompt paths.
+think Seat u32 counsel · living pins · round-close send.
+obs Tool wave binder opened and closed GREEN; module rye homes still labeled mala until u48.
+file tools/murr_m1_witness.rish rename
+file tools/murr_m2_witness.rish rename
+file tools/comlink_murr_wire_lab.rish rename
+file comlink/run_murr_wire_lab.sh rename
+file tools/fixtures/murr_m1_mint.bron rename
+file tools/parity_ch01.rish M1/M2 stanzas
+file linengrow/mala.rye fixture path
+file pond/apps/drawn_terminal.rye fixture path
+file counsel/20260728-053112_mur-season-u32-tool-wave-live.md create
+recommend keep-going kg u33 tool-wave residual living callers and twin-fold rows
