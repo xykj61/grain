@@ -8,6 +8,7 @@
 **Exit:** Commerce tool GREEN say-lines → MUR · foundations prose cleared · u5 next
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260728.053348` — tool witnesses renamed u32
 
 ---
 
@@ -25,7 +26,7 @@
 
 | Surface | Why |
 |---------|-----|
-| `tools/mala_m1_witness.rish` · `mala_m2_witness.rish` | assert on module GREEN strings · u32+ |
+| `tools/murr_m1_witness.rish` · `murr_m2_witness.rish` (was mala_*; landed u32) | assert on module GREEN strings · u32+ |
 | parity_ch01 MALA M1/M2 suite announces | travel with witness rename |
 | Rye selftest price claims (`25 mala` · `100 mala`) | module output until code wave |
 | Wire memo `mala:*` | held |
