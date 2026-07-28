@@ -1,7 +1,7 @@
 # Saga — Season Close Narratives
 
 **Language:** EN
-**Last updated:** 2026-07-27 (`20260727.234128` — shelf opened · Sound saga home)
+**Last updated:** 2026-07-28 (Tensegral r11 — Tally caller map unified under `tally/README.md`)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Status:** Living — root home for final draft / seated season sagas
@@ -36,16 +36,9 @@ Sagas that speak personal-server or identity truth lean on **Tally** — where b
 
 Tally calls **Rye/`std` only**. It does not import caravan, mala, or wov.
 
-### Who calls Tally (updated map)
+### Who calls Tally
 
-Callers reach canon through their own symlinks or imports — not copies:
-
-| Consumer family | Typical marks |
-|-----------------|---------------|
-| `linengrow/` (mala · wov · disclosure) | `kumara` · `tally_copy` · `parse_int` · `bud` |
-| `caravan/` · `mantra/` · `comlink/` · `brushstroke/` | `tally_copy` · `parse_int` · `no_padding` (comlink wire) |
-| `rishi/` · `glow/` · `aurora/` · `amphora/` · `granary/` · `mand/` · `mandi/` · `pond/apps/*` | marks as each surface needs |
-| `tools/kumara.rye` | Kumara seed path |
+**Canon caller map:** [`../tally/README.md`](../tally/README.md) § Who calls Tally · witness [`../tools/tally_caller_map_witness.rish`](../tools/tally_caller_map_witness.rish). This shelf does not keep a second table (unified Tensegral r11).
 
 Living law: [`../tally/README.md`](../tally/README.md) · TAME copy/garden rows in [`../context/TAME_GUIDANCE.md`](../context/TAME_GUIDANCE.md).
 

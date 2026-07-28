@@ -1,7 +1,7 @@
 # Tally — the Garden Allocator, and the Small Marks That Guard It
 
 **Language:** EN
-**Last updated:** 2026-07-28 (Tensegral Arc IV r10 — gardens bounds witness · max_gardens=8 · max_name_len=32 pinned)
+**Last updated:** 2026-07-28 (Tensegral Arc IV r11 — canon Who calls Tally map · `tally_caller_map_witness`)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Checkable — bounded garden allocator · small marks · Kumara · Bud
 
@@ -31,7 +31,18 @@ Beside the allocator itself, Tally holds a second kind of thing: small, universa
 
 `no_padding`'s realest use today lives outside Tally itself, at `comlink/device_wire.rye`'s hosted selftest, which asserts it against every hand-designed virtio wire structure in `comlink/virtio_net.rye` — five structures a real device reads byte for byte, where a silent padding byte would leave a guest mute to its host rather than a style question.
 
-**Who calls Tally:** module homes import these marks (often via symlink) — `linengrow/` (mala · wov · disclosure), `caravan/`, `mantra/`, `comlink/`, `brushstroke/`, `rishi/`, `glow/`, `aurora/`, `amphora/`, `granary/`, `mand/`, `mandi/`, `pond/apps/*`, and `tools/kumara.rye`. Tally itself imports **`std` only**. Saga shelf map: [`../saga/README.md`](../saga/README.md).
+## Who calls Tally
+
+**Canon seam map** (Tensegral r11). Callers reach marks through their own symlinks or imports — not copies. Tally itself imports **`std` only**. Witness: [`../tools/tally_caller_map_witness.rish`](../tools/tally_caller_map_witness.rish). Saga shelf points here rather than keeping a second table.
+
+| Consumer family | Typical marks (symlink / import) |
+|-----------------|----------------------------------|
+| `linengrow/` (mala · wov · disclosure) | `kumara` · `tally_copy` · `parse_int` · `bud` |
+| `caravan/` · `mantra/` · `comlink/` · `brushstroke/` | `tally_copy` · `parse_int` · `no_padding` (comlink wire) |
+| `rishi/` · `glow/` · `aurora/` · `amphora/` · `granary/` · `mand/` · `mandi/` · `pond/apps/*` | marks as each surface needs |
+| `tools/kumara.rye` | Kumara seed path |
+
+Other season shelves cite this section; they do not duplicate the rows.
 
 ## Elder call sites migrate on touch
 
