@@ -1,7 +1,7 @@
 # Lexicon — Module Names and Their Meanings
 
 **Language:** EN
-**Last updated:** 2026-07-25 (**Grain** umbrella living · Survey seated · inventary retired for living *Now*)
+**Last updated:** 2026-07-27 (**check-in** · **checkpoint** · **bookmark** · **Radiant** seated · closing-line law)
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 
 ---
@@ -75,6 +75,10 @@ Living vocabulary for the Grain family (Glow language · Grain umbrella). Each n
 | **Nib** | The landed edge of the work — the point the pen has reached: **product nib** (civic/product parity pin), **suite nib** (witness-suite parity pin), **git nib** (HEAD commit on the living branch). Seated `20260712.121719`. Prefer **nib** in new prose; *tip* remains readable in old logs |
 | **remember** | Glow word — reprint the living operator card (`work-in-progress/REMEMBER.md`): seated waymarks, outer-terminal adb install, phone look, open doors. Not commit/push. Seated `20260717.213242` · rule [`.cursor/rules/remember.mdc`](../.cursor/rules/remember.mdc) |
 | **kg** | Glow word — **keep going** on the next mechanical lap. Not commit, push, or merge (**send** ships). Rule note in [`.cursor/rules/collaboration.mdc`](../.cursor/rules/collaboration.mdc) |
+| **check-in** | Glow word — pause and confirm before the next lean. Closing line must name the hand: `(Cursor)` · `(Claude)` · `(checkpoint)` · `(either)`. Sibling of **kg**. Seated `20260727.213740` · [`.cursor/rules/collaboration.mdc`](../.cursor/rules/collaboration.mdc) · counsel [`../counsel/20260727-213740_checkpoint-bookmark-and-the-radiant-lint-season.md`](../counsel/20260727-213740_checkpoint-bookmark-and-the-radiant-lint-season.md) |
+| **checkpoint** | A named stop-before-cross gate Cursor and/or Claude already pointed out — closing form `check in (checkpoint)`. **Not** itinerary **Gate**, **not** TAME crash-safety "release-after-one-checkpoint." Seated `20260727.213740` · same counsel |
+| **bookmark** | A durable named return point in counsel or plan so a fresh hand resumes without replaying every log. Distinct from **remember** (operator card) and **waymark** (ladder name). Seated `20260727.213740` · same counsel |
+| **Radiant** | House prose voice and pass playbook — lead with what is, affirmative contrast, benediction close; lint and ledger enforce the surface. Compass Voice step. Canon [`RADIANT_STYLE.md`](RADIANT_STYLE.md) · tools `radiant_lint.rish` · seated on rose `20260727.213740` |
 | **align** | Glow word — walk the compass rose and reconcile ROADMAP/TASKS with green witnesses. Rule [`.cursor/rules/align.mdc`](../.cursor/rules/align.mdc) |
 | **send** | Glow word — commit · push · merge from client hand to pier. Rule [`.cursor/rules/send-word.mdc`](../.cursor/rules/send-word.mdc) |
 | **Metalsmoke** | The thin edge's few honest integrated checks — world alone can answer, smallest slice, witnessed; happy zone stays in parity — [`active-designing/20260703-013412_metalsmoke.md`](../active-designing/20260703-013412_metalsmoke.md) · plainly [`../external-research/20260710-002017_metalsmoke-plainly.md`](../external-research/20260710-002017_metalsmoke-plainly.md) |

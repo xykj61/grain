@@ -9,6 +9,7 @@
 
 *Written by Rio 3 for Kaeden.*
 Radiant pass `20260725.035453`
+Radiant pass `20260727.213740` — Voice/Radiant named on the day-one rose (`docs/COMPASS.md`); claims unchanged
 
 ---
 
@@ -48,6 +49,8 @@ If TASKS and ROADMAP disagree with a seated brief, **the brief and green witness
 - Say **follow our compass** for the navigation habit.
 - Keep **grain strand**, **fits the grain**, **siloed into our grain** for structural fit tests.
 - Retire **follow our grain** only in *new* conversational prose where compass reads clearer; do not chase every historical "grain" mention in archive or gratitude.
+- Meet **Radiant** on the day-one rose (`docs/COMPASS.md` Voice step · `context/RADIANT_STYLE.md`) — how dated pages speak; lint and pass ledger keep the surface honest.
+- Loop words **kg** · **check-in** · **checkpoint** · **bookmark** · **send** · **remember** · **align** live in [`context/LEXICON.md`](../context/LEXICON.md); closing lines always name `kg` or a typed `check in (…)` per collaboration rhythm.
 
 ---
 
