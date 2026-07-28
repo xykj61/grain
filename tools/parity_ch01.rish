@@ -348,15 +348,15 @@ let slcl1 = run ["sh" "tools/parity_time_one.sh" "slcl1" "--" "rishi/bin/rishi" 
 assert slcl1.ok else "SLC-L1 receipt witness failed"
 say "GREEN: SLC-L1 verifiable receipt witness passed."
 
-say "witness suite: MALA M1 one issuer, one holder…"
-let mala_m1 = run ["sh" "tools/parity_time_one.sh" "mala_m1" "--" "rishi/bin/rishi" "run" "tools/mala_m1_witness.rish"]
-assert mala_m1.ok else "MALA M1 witness failed"
-say "GREEN: MALA M1 one-issuer one-holder witness passed."
+say "witness suite: MUR M1 one issuer, one holder…"
+let murr_m1 = run ["sh" "tools/parity_time_one.sh" "murr_m1" "--" "rishi/bin/rishi" "run" "tools/murr_m1_witness.rish"]
+assert murr_m1.ok else "MUR M1 witness failed"
+say "GREEN: MUR M1 one-issuer one-holder witness passed."
 
-say "witness suite: MALA M2 mailable Comlink (hosted + device wire)…"
-let mala_m2 = run ["sh" "tools/parity_time_one.sh" "mala_m2" "--" "rishi/bin/rishi" "run" "tools/mala_m2_witness.rish"]
-assert mala_m2.ok else "MALA M2 witness failed"
-say "GREEN: MALA M2 mailable Comlink (hosted + device wire) witness passed."
+say "witness suite: MUR M2 mailable Comlink (hosted + device wire)…"
+let murr_m2 = run ["sh" "tools/parity_time_one.sh" "murr_m2" "--" "rishi/bin/rishi" "run" "tools/murr_m2_witness.rish"]
+assert murr_m2.ok else "MUR M2 witness failed"
+say "GREEN: MUR M2 mailable Comlink (hosted + device wire) witness passed."
 
 say "witness suite: Neth minimal deterministic-root witness…"
 let neth_root = run ["sh" "tools/parity_time_one.sh" "neth_root" "--" "rishi/bin/rishi" "run" "tools/neth_root_witness.rish"]

@@ -1,7 +1,8 @@
 # MUR Chapter — u0 Recursion Prompt (printout · all scopes kept)
 
-**Stamp:** `20260728.025220` · Radiant pass `20260728.052625`  
+**Stamp:** `20260728.025220` · Radiant pass `20260728.053112`  
 **Use:** paste the fenced block as the next counsel/bench session opener.  
+Radiant pass `20260728.053112` — u32 tool-wave live · steps 1–4 GREEN · murr_* paths · u33 next
 Radiant pass `20260728.052625` — u26 waiting queue empty · prefer kg u32 · no renames · u27 optional
 Radiant pass `20260728.052441` — u25 waiting harden · hammocks · residual clear · no renames · u26 next
 Radiant pass `20260728.052308` — u24 waiting harden · SPEC citations · no renames · u25 next
@@ -72,11 +73,11 @@ INNERMOST SCOPE (this season — walk here):
   Lexicon: scope·outer·inner·innermost·core·quint · MUR · Murr · retired Mala/MALA · Gren living.
   Prin: rishi/bin/rishi run tools/prin.rish scope
   gen_murr GREEN · deploy RED; gen_gren GREEN (core closed door); gen_mala ABSENT.
-  u0–u26 COMPLETE · waiting queue empty · seat kg u32 (tool-wave GO) · u27+ optional idle only.
+  u0–u32 COMPLETE · tool-wave steps 1–4 GREEN · u33 next (residual) · module homes held until u48.
   TOP PRIORITY: rename overwrite everywhere Mala/MALA → Murr/MUR (breach approved seated).
   Fascia shred still needs separate circled yes. WOV retire roadmap last.
   Wave map: counsel/20260728-044738_mur-season-u6-tool-module-wave-map.md
-  Dual-wave READY: tool GO (u21) · module opener (u22) · waiting clear (u23–u26) · live door kg u32.
+  Dual-wave: tool LIVE (u32) · module opener ready (u22) · waiting clear · next residual or u48 approach.
   Order lean: tools u32–u47 before modules u48–u79 · no silent tree-wide sed.
   Tool prep: counsel/20260728-050720_mur-season-u14-tool-wave-prep.md
   Module prep: counsel/20260728-050833_mur-season-u15-module-wave-prep.md
@@ -91,8 +92,9 @@ INNERMOST SCOPE (this season — walk here):
   Waiting SPECs: counsel/20260728-052308_mur-season-u24-waiting-harden-specs.md
   Waiting hammocks: counsel/20260728-052441_mur-season-u25-waiting-harden-hammocks.md
   Waiting queue empty: counsel/20260728-052625_mur-season-u26-waiting-queue-empty.md
+  Tool-wave live: counsel/20260728-053112_mur-season-u32-tool-wave-live.md
   Living pin: tools/fixtures/prin_scope.sh innermost waymark kept current.
-  Wire mala:* · mala_m1/m2 · linengrow/mala*.rye held for tool/module waves.
+  Tool murr_* witnesses/lab/fixture LIVE; wire mala:* · linengrow/mala*.rye · guests held for module wave.
   Kamala/Mala gratitude = historical; living Aries = Murr·Kyler.
   u126 and u127 MUST warn before handback (extend innermost · return inner i7 · other).
 
@@ -103,19 +105,18 @@ LEXICON rows MUR/Murr/innermost · Gren charter (CLOSED) · Inner Scope + Fascia
 Companions: newest quin-workshop pair if attached; else verify origin/main nib.
 
 first duties: bootstrap or verify · state the nib · prin scope ·
-run gen_murr (GREEN; deploy RED) · report · then seat kg u32 or optional u27 from the charter:
+run gen_murr (GREEN; deploy RED) · report · then walk u33 from the charter:
   affirm outer · inner pauses · affirm core+quint CLOSED · affirm MUR rename spine ·
   affirm Kyler · DJINN · WOV-last · affirm rename-overwrite breach approved ·
-  affirm waiting queue empty · execute tool-wave GO plan on kg u32 ·
-  keep module homes held until u48 ·
+  affirm tool-wave LIVE GREEN · residual living callers · keep module homes held until u48 ·
   no live fascia shred without prin rish breach yes now + circled shred scope;
   no live Sui deploy · no wallet · no gas · no private key in tree;
   no whole-tree silent sed — waves with witnesses only.
 
-waymark: u26 complete, prefer kg u32
+waymark: u32 complete, u33 next
 nib <origin/main short nib>
 bench report (verbatim, if any): <REPORT/STOP — or "none">
-scope: outer=paused(m8/m9) inner=paused(i6/i7) innermost=open(prefer_kg_u32)
+scope: outer=paused(m8/m9) inner=paused(i6/i7) innermost=open(u33)
   core=closed(handed_back) quint=closed(handed_back) geode=prep(d0)
 breach scope circle: rename_overwrite=approved A= A+C= all= shred=
 words seated (blank = held whole): season_name= choir= LICENSE_WORD=
