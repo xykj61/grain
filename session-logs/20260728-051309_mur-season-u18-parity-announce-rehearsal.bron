@@ -1,0 +1,15 @@
+format session-log-v1
+stamp 20260728.051309
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title MUR Season u18 parity announce rehearsal
+prompt waymark u17 complete u18 next · asks none
+think Walk u18: map MALA M1/M2 announce surface in parity_ch01 only; confirm parity_time_one labels are free cost names.
+think Seat exact before/after stanza lean; couple with step 1 same sitting; no live edit.
+think Update living pins · round-close send.
+obs Single living announce home; cache TSV names ephemeral; steps 1–2 should not split across a broken chapter.
+file counsel/20260728-051309_mur-season-u18-parity-announce-rehearsal.md create
+file tools/fixtures/prin_scope.sh waymark u18/u19
+recommend keep-going kg u19 wire-lab opener rehearsal still no rename or seat kg u32 live steps 1-2
