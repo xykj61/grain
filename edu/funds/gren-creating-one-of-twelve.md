@@ -81,7 +81,7 @@ Each fund seats one tropical sign. Index runs **0..11** (Aries through Pisces). 
 | Vane lean | `%gren` |
 | Lexicon | **Gren (fund)** row |
 
-Mala (Aries · index 0) leads; Gren steadies; Siya (Gemini · index 2) carries air — triad order seated at Constellation prep.
+Murr (Aries · index 0; was Mala) leads; Gren steadies; Siya (Gemini · index 2) carries air — triad order seated at Constellation prep.
 
 **witness:step3** Taurus · order 2 · sign_index 1 — GREEN when gen-gren passes.
 
@@ -149,7 +149,7 @@ gen-gren's own GREEN path re-runs this refuse as a post-fold so the page cannot 
 - **no live deploy** from this page or its generator  
 - no private key, wallet, or gas in the tree  
 - no domain purchase by counsel  
-- n-of-12 multisig remains **plan only** (led by Mala) until professionals + Keaton  
+- n-of-12 multisig remains **plan only** (led by Murr; was Mala) until professionals + Keaton  
 
 ## Prove the whole page (steps 1–6)
 

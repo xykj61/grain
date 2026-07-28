@@ -1,0 +1,13 @@
+format session-log-v1
+stamp 20260728.043811
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title MUR Season u2 prose wave
+prompt waymark u1 complete u2 next · asks none — edu seating prose
+think Clear edu gren · example app · README · Mandi/Granary seating · waymark collision · hold deep WOV specs
+obs First prose batch · gen_murr GREEN · u3 continues WOV/Mandi settle · module index
+file counsel/20260728-043811_mur-season-u2-prose-wave.md prose wave
+file counsel/20260728-043811_mur-season-u2-checkin.md round-close check-in
+recommend keep-going to kg u3 continue prose WOV Mandi settle specs — mechanical

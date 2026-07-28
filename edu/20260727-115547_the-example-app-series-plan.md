@@ -22,7 +22,7 @@ Linengrow — the giving platform for vegan makers, the roster, the memos — **
 
 ## What Cloverfold Is, in One Breath
 
-A small Pool app where **makers receive, kindness routes, and merit keeps**: a vegan maker's page, a sanctuary's door, a seva host's calendar — and every enacted kindness at any of the three becomes a two-handed fact on MALA, folded into standing, pinned by WOV at a nib, and steerable toward more kindness. It is the merit ledger wearing clothes, the onboarding walk with a destination, and the whole Glow userland exercised in one lovable toy that is not a toy.
+A small Pool app where **makers receive, kindness routes, and merit keeps**: a vegan maker's page, a sanctuary's door, a seva host's calendar — and every enacted kindness at any of the three becomes a two-handed fact on MUR (was MALA), folded into standing, pinned by WOV at a nib, and steerable toward more kindness. It is the merit ledger wearing clothes, the onboarding walk with a destination, and the whole Glow userland exercised in one lovable toy that is not a toy.
 
 ## The Series — Ten Lessons, Each With Its Green Line
 
@@ -34,7 +34,7 @@ Written at this page's reading level for the Acme audience — any pilot, any co
 
 **Lesson two — The first pedestal.** The app's core structure — the kindness fact — stood in `sur/` under the placard standard's six lines. *Green: the placard read aloud, invariant first.*
 
-**Lesson three — The fact.** A two-handed merit fact appended to a fixture MALA: the pilot signs, a fixture seam countersigns. *Green: the log grows by one and never shrinks.*
+**Lesson three — The fact.** A two-handed merit fact appended to a fixture MUR (was MALA): the pilot signs, a fixture seam countersigns. *Green: the log grows by one and never shrinks.*
 
 **Lesson four — The fold.** Standing computed as a pure fold over the log; the pilot deletes their derived number, recomputes, and watches it return identical. *Green: fold twice, same answer.*
 

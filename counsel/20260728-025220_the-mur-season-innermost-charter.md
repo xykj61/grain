@@ -8,7 +8,8 @@
 **Rename spine (approved overwrite):** **Mala / MALA / `%mala` → Murr / MUR / `%murr`** — Radiant · TAME · living-tree massive rename across the season  
 **Honor dedication:** **Kyler Murray** — Minnesota Vikings quarterback (signed 2026; camp competition with J.J. McCarthy as of this stamp's web ground)  
 **Currency lean:** **MUR** as **L1** · unify with **WOV** concept · roadmap **last** retires WOV entirely in favor of MUR  
-**Status:** **OPEN** · u0–u1 complete `20260728.043539` · **u2** next — residual continue / prose wave  
+**Status:** **OPEN** · u0–u2 complete `20260728.043811` · **u3** next — prose wave continue  
+Radiant pass `20260728.043811` — u2 edu·seating prose · Mandi/Granary priced in MUR · gen_murr GREEN  
 Radiant pass `20260728.043539` — u1 residual map · rename-overwrite breach approved · gen_mala ABSENT · Lexicon bare ads cleared  
 Radiant pass `20260728.043220` — Gren handback return_mur_u0 · u0 bow · gen_murr GREEN · core CLOSED  
 Radiant pass `20260728.025634` — innermost paused at u0 · core Gren opened · DJINN→Murr · Kyler kept
@@ -23,7 +24,7 @@ Radiant pass `20260728.025634` — innermost paused at u0 · core Gren opened ·
 |-------|--------|----------|----------|
 | **outer** | Constellation | m8 complete / **m9** next | **PAUSED** — do not advance m-rounds |
 | **inner** | Inner Scope | i6 complete / **i7** next · fascia machinery paused | **PAUSED** — do not advance i-rounds while innermost walks |
-| **innermost** | **MUR Season** | **u0–u1** complete · **u2** next | **OPEN** — walk here |
+| **innermost** | **MUR Season** | **u0–u2** complete · **u3** next | **OPEN** — walk here |
 | **core** | Gren Season | lean-16 CLOSED · handed back | **CLOSED** |
 | **quint** | Keeh Season | lean-16 CLOSED · handed back | **CLOSED** |
 
@@ -52,8 +53,8 @@ When innermost hands back: resume **inner** at i7 (fascia shred-with-parity draf
 
 | Block | Rounds | Exit lean |
 |-------|--------|-----------|
-| Bow · measure | **u0–u1** CLOSED · **u2–u3** | Affirm pauses · gen_murr · residual map · gen_mala ABSENT · breach rename seated |
-| Lexicon · prose waves | **u4–u31** | Living counsel/docs/edu Radiant-pass Mala/MALA → Murr/MUR |
+| Bow · measure | **u0–u2** CLOSED · **u3** | Affirm pauses · gen_murr · residual · first prose clears · breach rename seated |
+| Lexicon · prose waves | **u3–u31** | Living counsel/docs/edu Radiant-pass Mala/MALA → Murr/MUR |
 | Tool · generator homes | **u32–u47** | `gen_mala` → `gen_murr` · witnesses · fixtures |
 | Module · mycelium · specs | **u48–u79** | Code and SPEC paths; TAME width; choir green after each wave |
 | MUR↔WOV unify design | **u80–u95** | L1 MUR absorbs WOV *concepts*; no WOV delete yet |

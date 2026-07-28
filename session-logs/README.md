@@ -4,7 +4,9 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.043811` — [MUR Season u2 prose](20260728-043811_mur-season-u2-prose-wave.bron) — edu·seating → MUR · u3 next
 - `20260728.043539` — [MUR u1 remember residual](20260728-043539_mur-u1-remember-residual.bron) — breach rename · gen_mala ABSENT · u2 next
+
 - `20260728.043220` — [Gren handback · MUR u0](20260728-043220_gren-handback-mur-u0.bron) — return_mur_u0 · u0 bow · u1 next
 
 - `20260728.043010` — [Gren extend-length check-in](20260728-043010_gren-extend-length-checkin.bron) — rec return_mur_u0 · blank held
