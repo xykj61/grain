@@ -7,7 +7,8 @@
 **Ground:** origin/main `d51e6b84b0` (pre-send)  
 **Rename spine (approved):** **Djin / `%djin` / djin.fund → Gren / `%gren` / gren.fund** — revert the Djin name choice; Twah stays retired history  
 **Within:** the **MUR Chapter** (innermost · u0–u127) — MUR pauses at **u0** while core walks  
-**Status:** **OPEN** · g0–g8 complete `20260728.041234` · **g9** next — residual re-spot  
+**Status:** **OPEN** · g0–g9 complete `20260728.041353` · **g10** next — residual re-spot  
+Radiant pass `20260728.041353` — g9 second residual spot empty · gen_gren GREEN  
 Radiant pass `20260728.041234` — g8 residual sweep OPEN · first residual spot empty · gen_gren GREEN  
 Radiant pass `20260728.041118` — g7 fourth spot-check empty · spot-check block CLOSED · gen_gren GREEN  
 Radiant pass `20260728.040951` — g6 third spot-check empty · gen_gren GREEN  
@@ -29,7 +30,7 @@ Radiant pass `20260728.035441` — handback from quint · g0 bow · gen_gren · 
 | **outer** | Constellation | m8 / m9 next | **PAUSED** |
 | **inner** | Inner Scope | i6 / i7 next · fascia | **PAUSED** |
 | **innermost** | MUR Chapter | **u0** (not yet bowed) | **PAUSED** |
-| **core** | **Gren Chapter** | **g0–g8** complete · **g9** next | **OPEN** |
+| **core** | **Gren Chapter** | **g0–g9** complete · **g10** next | **OPEN** |
 | **quint** | Keeh Chapter | lean-16 CLOSED · handed back | **CLOSED** |
 
 Handback from quint **seated**. Later: core → innermost **u0** (unless core extend). Inner i7 and outer m9 still wait above.
@@ -55,7 +56,7 @@ Handback from quint **seated**. Later: core → innermost **u0** (unless core ex
 |-------|--------|-----------|
 | Bow · measure | **g0–g1** CLOSED | Affirm pauses · gen_gren · residual Djin map · bare ads cleared |
 | Living overwrite | **g2–g3** CLEARED · **g4–g7** spot-check CLOSED | empty×4 · dated Djin hours kept |
-| Residual sweep | **g8** OPEN · **g9–g11** | Bare living ads empty · rename-forward history kept |
+| Residual sweep | **g8–g9** empty×2 · **g10–g11** | Bare living ads empty · rename-forward history kept |
 | Harden | **g12–g13** | Choir lean · gen_murr still GREEN with DJINN executive |
 | Horizon · close | **g14–g15** | **Warn:** extend 32 · extend 64 · or return MUR u0 |
 
