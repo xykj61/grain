@@ -1,0 +1,19 @@
+# tools/gen_mala_fund_prep.rish — Constellation m1: Mala fund prep generator (stub).
+#
+# First prin-rish-style generator on the constellation path: affirms the Aries
+# fire seat, requires Comlink, reads the constellation phone book, refuses deploy.
+# Run from repository root:
+#   rishi/bin/rishi run tools/gen_mala_fund_prep.rish
+#   rishi/bin/rishi run tools/gen_mala_fund_prep.rish deploy   # must RED by name
+
+say "gen-mala: Language EN — Mala fund prep (Aries fire · seat order 1)."
+say "gen-mala: Style Radiant — GREEN only after the stack door is named."
+say "gen-mala: Lens TAME — prep only; no wallet, gas, or live Sui."
+
+let verb = ""
+if length args != 0 then let verb = args[0]
+
+let prep = run ["sh" "tools/fixtures/gen_mala_fund_prep.sh" verb]
+assert prep.ok else "gen-mala REFUSE or stack door failed — see stderr for deploy/wallet/gas refusals"
+assert prep.out contains "GREEN: gen-mala" else "gen-mala prep helper missing GREEN line"
+say prep.out
