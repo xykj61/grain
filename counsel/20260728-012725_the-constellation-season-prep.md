@@ -6,9 +6,10 @@
 **Kind:** season prep seat · Keaton's word · rounds **m0–m31** (lean numbering; seat of the letter is his)
 **Ground:** origin/main `46d27a3213` · local ahead carries Fascia f0/f1 · Fascia mid-flight parks pending fold-or-parallel word
 **Season name lean:** *the Constellation Season* (beside *the Fund Season* · *the Mala Season*); **season_name=** held for his final seat
-**Status:** Prep seated · m0–m1 · **m2 Mala through Amphora** `20260728.013722`
+**Status:** Prep seated · m0–m2 · **m3 Mala maintains MALA · n-of-12 plan · Glow door** `20260728.013859`
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260728.013859` — Mala maintains MALA · n-of-12 plan · Glow cast-u32 GREEN
 Radiant pass `20260728.013722` — m2 Amphora door · lap 1 post-fold GREEN
 Radiant pass `20260728.013140` — m1 Mala fund prep · gen_mala_fund_prep GREEN · deploy RED
 Radiant pass `20260728.012906` — m0 bow · choir 17 GREEN · triad affirmed · stack mapped
@@ -23,7 +24,7 @@ Prep for a **new thirty-two-round season** is approved. The season's early spine
 
 | # | Fund | Sign · element | Vane lean | Domain prep (his claim) | Standing |
 |---|------|----------------|-----------|-------------------------|----------|
-| **1** | **Mala** | **Aries · fire** | `%mala` | **mala.fund** | **Seated this stamp** — Aries fire opens the wheel; kinship with MALA the module (mailable money) named aloud, fund and module keep distinct hats |
+| **1** | **Mala** | **Aries · fire** | `%mala` | **mala.fund** | **Seated** — Aries fire opens the wheel; **official maintainer of MALA** by design (`20260728.013859`); leads planned **n-of-12** deploy multisig; fund and module keep distinct hats |
 | **2** | **Twah** | **Taurus · earth** | `%twah` | **twah.fund** | **Seated this stamp** — Taurus earth; edu-series tutorial for creating one of the twelve remains Twah's gift, now under the fund seat |
 | **3** | **Siya** | **Gemini · air** | `%siya` | **siya.fund** (awaiting his claim; seva.fund elder anchor) | **Affirmed** — already seated; third of the opening triad |
 
@@ -46,7 +47,7 @@ prin rish generators
   → Aurora             (boot / kernel support — AMD x86_64 · AppImage · Framework · BIOS/firmware path named)
 ```
 
-**Hard lines (restated):** no token mint from counsel · no multisig from a design page · no purchase · no live Sui deploy · no gas · no private key in the tree. Devnet-then-testnet remains the counsel lean; his live-Sui word is his seat. The unaudited Move package already in the tree (registry-only, twelve seats, mints nothing) stays the starting sketch until a season round lowers a witnessed next step.
+**Hard lines (restated):** no token mint from counsel · no *live* multisig construction from a design page (the **n-of-12 led by Mala** is a seated *plan* as of `20260728.013859`, not a wallet) · no purchase · no live Sui deploy · no gas · no private key in the tree. Devnet-then-testnet remains the counsel lean; his live-Sui word is his seat. The unaudited Move package already in the tree (registry-only, twelve seats, mints nothing) stays the starting sketch until a season round lowers a witnessed next step.
 
 **Aurora support ask:** every generator and AppImage path that claims constellation deploy prep must name the **Framework AMD x86_64** host lane (BIOS/firmware as the metal floor, AppImage as the enclosure deliverable) and refuse honestly where Aurora cannot yet carry the step.
 

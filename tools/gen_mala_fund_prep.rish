@@ -1,27 +1,32 @@
-# tools/gen_mala_fund_prep.rish — Constellation m1–m2: Mala fund prep generator.
+# tools/gen_mala_fund_prep.rish — Constellation m1–m3: Mala fund prep generator.
 #
-# Prin-rish-style generator on the constellation path: affirms the Aries fire
-# seat, requires Comlink then Amphora, reads the phone book, refuses deploy,
-# and re-proves Amphora lap 1 as the post-fold measure (m2).
-# Run from repository root:
+# Affirms Aries fire seat, maintainer duty, n-of-12 plan (lexicon only),
+# requires Comlink → Amphora → Glow, refuses deploy / live multisig verbs,
+# post-fold: amphora_lap1 + glow_run cast-u32.
 #   rishi/bin/rishi run tools/gen_mala_fund_prep.rish
-#   rishi/bin/rishi run tools/gen_mala_fund_prep.rish deploy   # must RED by name
+#   rishi/bin/rishi run tools/gen_mala_fund_prep.rish deploy         # RED
+#   rishi/bin/rishi run tools/gen_mala_fund_prep.rish multisig-live # RED
 
-say "gen-mala: Language EN — Mala fund prep (Aries fire · seat order 1)."
-say "gen-mala: Style Radiant — GREEN only after Comlink and Amphora doors open."
-say "gen-mala: Lens TAME — prep only; no wallet, gas, or live Sui."
+say "gen-mala: Language EN — Mala fund prep (Aries fire · maintainer of MALA)."
+say "gen-mala: Style Radiant — GREEN only after Comlink, Amphora, and Glow doors open."
+say "gen-mala: Lens TAME — prep and plan only; no wallet, gas, or live multisig."
 
 let verb = ""
 if length args != 0 then let verb = args[0]
 
 let prep = run ["sh" "tools/fixtures/gen_mala_fund_prep.sh" verb]
-assert prep.ok else "gen-mala REFUSE or stack door failed — see stderr for deploy/wallet/gas refusals"
+assert prep.ok else "gen-mala REFUSE or stack door failed — see stderr for deploy/wallet/gas/multisig-live refusals"
 assert prep.out contains "GREEN: gen-mala" else "gen-mala prep helper missing GREEN line"
 say prep.out
 
-# m2 — measure after the fold: Amphora lap 1 still sings (happy-zone vessel parse).
+# m2 — Amphora lap 1 post-fold
 let lap1 = run ["sh" "-c" "rishi/bin/rishi run tools/amphora_lap1.rish"]
 assert lap1.ok else "gen-mala Amphora door regress: amphora_lap1 left GREEN"
 assert lap1.out contains "GREEN" else "gen-mala Amphora lap 1 missing GREEN"
 
-say "GREEN: gen-mala m2 — Amphora lap 1 post-fold GREEN; stack through vessel door."
+# m3 — Glow stdlib post-fold (cast-u32)
+let glow = run ["sh" "-c" "rishi/bin/rishi run tools/glow_run.rish glow/gen/cast-u32.glow"]
+assert glow.ok else "gen-mala Glow door regress: cast-u32 left GREEN"
+assert glow.out contains "GREEN" else "gen-mala Glow cast-u32 missing GREEN"
+
+say "GREEN: gen-mala m3 — Amphora lap 1 and Glow cast-u32 post-fold GREEN; maintainer + n-of-12 plan in Lexicon."

@@ -1,12 +1,12 @@
 #!/bin/sh
-# gen_mala_fund_prep.sh — POSIX helper for tools/gen_mala_fund_prep.rish (m1–m2)
+# gen_mala_fund_prep.sh — POSIX helper for tools/gen_mala_fund_prep.rish (m1–m3)
 set -eu
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 cd "$ROOT"
 verb="${1:-}"
 
 case "$verb" in
-  deploy|mainnet|wallet|gas)
+  deploy|mainnet|wallet|gas|multisig-live)
     echo "gen-mala REFUSE: ${verb} is Keaton's hand alone — never this generator" >&2
     exit 1
     ;;
@@ -30,11 +30,20 @@ test -d amphora
 test -f amphora/README.md
 test -f amphora/vessel_core.rye
 test -f tools/amphora_lap1.rish
-# Lexicon / README still name vessel software (crossing), not only shred-sibling
 grep -q 'vessel' amphora/README.md
 
+# --- m3 Glow door + maintainer / multisig-plan seats ---
+test -d glow
+test -f glow/gen/cast-u32.glow
+test -f tools/glow_run.rish
+grep -q 'Official maintainer of MALA' context/LEXICON.md
+grep -q 'n-of-12 multisig (plan)' context/LEXICON.md
+grep -q 'led by Mala' context/LEXICON.md
+
 echo "seat: fund=Mala order=1 sign_index=0 (Aries) vane=%mala dns_prep=mala.fund"
-echo "kinship: MALA module = mailable money; Mala fund = Aries fire seat 1 — distinct hats"
-echo "path: prin rish generator → Comlink → Amphora (vessel door) → constellation phone book (registry-only)"
-echo "flags: mala.fund claim = Keaton's hand · no deploy · no wallet · no gas"
-echo "GREEN: gen-mala — Mala prep; Comlink and Amphora doors open; phone book mints nothing."
+echo "duty: Mala fund = official maintainer of MALA module (by design) — distinct hats"
+echo "plan: constellation of 12 deploy via n-of-12 multisig led by Mala — PLAN only"
+echo "kinship: MALA module = mailable money; Mala fund = Aries fire seat 1 + maintainer"
+echo "path: prin → Comlink → Amphora → Glow stdlib → constellation phone book (registry-only)"
+echo "flags: mala.fund claim = Keaton's hand · no deploy · no live multisig · no wallet · no gas"
+echo "GREEN: gen-mala — Mala prep; Comlink·Amphora·Glow doors; maintainer + n-of-12 plan seated in Lexicon."
