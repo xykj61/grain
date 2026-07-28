@@ -4,10 +4,11 @@
 **Season:** [`20260728-012725_the-constellation-season-prep.md`](20260728-012725_the-constellation-season-prep.md)
 **Voice:** Quin · nested frame Trey
 **Ground:** origin/main `ec53af460b` (pre-send)
-**Generator:** `tools/gen_twah_fund_prep.rish`
-**Edu stub:** `edu/funds/twah-creating-one-of-twelve.md`
+**Generator:** `tools/gen_djin_fund_prep.rish`
+**Edu stub:** `edu/funds/djin-creating-one-of-twelve.md`
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260728.020948` — rename-forward **Djin**; living paths `tools/gen_djin_fund_prep.rish` · `edu/funds/djin-creating-one-of-twelve.md` (was Twah)
 
 ---
 
@@ -16,8 +17,8 @@
 First **Twah** prin-rish generator on the constellation path: affirms Taurus earth seat 2, requires Comlink, keeps the registry-only phone book, seats page-one of the edu-series tutorial under the fund, refuses deploy / claim-domain / wallet / gas by name.
 
 ```text
-rishi/bin/rishi run tools/gen_twah_fund_prep.rish          → GREEN
-rishi/bin/rishi run tools/gen_twah_fund_prep.rish deploy   → RED by name
+rishi/bin/rishi run tools/gen_djin_fund_prep.rish          → GREEN
+rishi/bin/rishi run tools/gen_djin_fund_prep.rish deploy   → RED by name
 ```
 
 ## twah.fund checklist (prep — claims his)

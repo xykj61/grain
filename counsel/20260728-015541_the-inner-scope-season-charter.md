@@ -7,9 +7,10 @@
 **Ground:** origin/main `dcde97dd12` · Constellation **outer** paused at **m8 complete / m9 next**  
 **Rename:** **Twah → Djin** (Taurus · earth · seat 2) — overwrite living writings and code; everything else the same  
 **Inspiration (named, not quoted):** Rumi · Hafez · Kabir (Khabir) · Ibn Arabi — djinn / unseen-company poetry, siloed in gratitude  
-**Status:** Charter seated · **i0 bow complete** `20260728.020837` · i1 next
+**Status:** Charter seated · i0 · **i1 Twah residual GREEN** `20260728.020948` · i2 next
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260728.020948` — i1 residual sweep · gen_twah ABSENT · gen_djin GREEN
 Radiant pass `20260728.020837` — i0 bow · measure GREEN · fascia tools ABSENT on main named
 Radiant pass `20260728.020607` — Ketu Aquarius 11 · Mala→Kamala Harris · Keaton/Sara/DJINN steward seats
 

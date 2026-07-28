@@ -5,16 +5,17 @@
 **Prior:** m5 [`20260728-014523_constellation-season-m5-twah.md`](20260728-014523_constellation-season-m5-twah.md)
 **Voice:** Quin · nested frame Trey
 **Ground:** origin/main `8b70b780e1` (pre-send)
-**Generator:** `tools/gen_twah_fund_prep.rish`
-**Edu:** `edu/funds/twah-creating-one-of-twelve.md`
+**Generator:** `tools/gen_djin_fund_prep.rish`
+**Edu:** `edu/funds/djin-creating-one-of-twelve.md`
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260728.020948` — rename-forward **Djin**; living paths `tools/gen_djin_fund_prep.rish` · `edu/funds/djin-creating-one-of-twelve.md` (was Twah)
 
 ---
 
 ## What landed
 
-Page one deepens from outline to **taught walk** for the first three steps. gen-twah asserts each witness marker and the four-letter shape of **Twah**.
+Page one deepens from outline to **taught walk** for the first three steps. gen-djin asserts each witness marker and the four-letter shape of **Twah**.
 
 | Step | Taught | Witness |
 |------|--------|---------|
@@ -23,8 +24,8 @@ Page one deepens from outline to **taught walk** for the first three steps. gen-
 | 3 | Taurus · order 2 · sign_index 1 | `witness:step3 GREEN` |
 
 ```text
-rishi/bin/rishi run tools/gen_twah_fund_prep.rish          → GREEN (m6)
-rishi/bin/rishi run tools/gen_twah_fund_prep.rish deploy   → RED by name
+rishi/bin/rishi run tools/gen_djin_fund_prep.rish          → GREEN (m6)
+rishi/bin/rishi run tools/gen_djin_fund_prep.rish deploy   → RED by name
 ```
 
 Steps 4–6 stay outline (phone book read · Comlink knock · refuse deploy) — charted for m7–m8.
