@@ -2,7 +2,7 @@
 
 **Stamp:** `20260728.025220` · Radiant pass `20260728.161501`  
 **Use:** paste the fenced block as the next counsel/bench session opener.  
-Radiant pass `20260728.161501` — u80 college/counsel yonder · superseded 39 · shred RED · u81 next  
+Radiant pass `20260728.161501` — u80 college/counsel yonder · shred RED · u81 next  
 Radiant pass `20260728.161205` — u79 pool/gated design yonder · shred RED · u80 next  
 Radiant pass `20260728.160951` — u78 yonder · Class-A paper lean · shred RED · u79 next  
 Radiant pass `20260728.160618` — u77 record/consumed yonder · shred RED · u78 next  

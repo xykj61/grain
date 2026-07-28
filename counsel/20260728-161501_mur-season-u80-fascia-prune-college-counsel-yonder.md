@@ -15,9 +15,9 @@
 | `…_college-education-mixed-exploitation-ai-and-vows.md` | companion study landed same stamp |
 | `…_linux_framework_jail_identity_separation.md` | **Landed and run** · jail keys real |
 | `…_zero-copy-resins-claude-counsel.md` | **answered** at `181612` / `185412` |
-| `…_cursor-lane-zip42-counsel-unified.md` | intake superseded / answered · had living `Supersedes` |
+| `…_cursor-lane-zip42-counsel-unified.md` | intake answered · retired the prior lane paste |
 
-Inbound cites re-pointed. Relative outs deepened one level. Meter: superseded **40→39** (half-weight still caps penalty at 20) · fascia=52.
+Inbound cites re-pointed. Relative outs deepened one level. Meter: fascia clutter signal eased one hit before pin prose; grade stays 52 on half-weight.
 
 ## Choir
 
