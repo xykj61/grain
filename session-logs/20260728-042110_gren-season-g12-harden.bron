@@ -1,0 +1,13 @@
+format session-log-v1
+stamp 20260728.042110
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Gren Season g12 harden
+prompt waymark g11 complete g12 next · asks none — harden
+think Prove gen_gren · gen_murr · gen_keeh GREEN · deploy RED · DJINN on Murr · Choir lean held blank
+obs First harden pass · g13 second harden · then horizon g14/g15 warn
+file counsel/20260728-042110_gren-season-g12-harden.md first harden
+file counsel/20260728-042110_gren-season-g12-checkin.md round-close check-in
+recommend keep-going to kg g13 second harden — mechanical
