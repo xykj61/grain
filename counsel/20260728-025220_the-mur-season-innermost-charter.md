@@ -8,7 +8,8 @@
 **Rename spine (approved overwrite):** **Mala / MALA / `%mala` → Murr / MUR / `%murr`** — Radiant · TAME · living-tree massive rename across the season  
 **Honor dedication:** **Kyler Murray** — Minnesota Vikings quarterback (signed 2026; camp competition with J.J. McCarthy as of this stamp's web ground)  
 **Currency lean:** **MUR** as **L1** · unify with **WOV** concept · roadmap **last** retires WOV entirely in favor of MUR  
-**Status:** **OPEN** · u0–u49 complete `20260728.054644` · **u50** next — delivery + murr:* memos  
+**Status:** **OPEN** · u0–u50 complete `20260728.054844` · **u51** next — neth cluster / fold symbol  
+Radiant pass `20260728.054844` — u50 module step 3 LIVE · murr_delivery · murr:* · M1/M2 GREEN  
 Radiant pass `20260728.054644` — u49 module step 2 LIVE · murr.rye / bin/murr · M1/M2 GREEN  
 Radiant pass `20260728.053811` — u48 module step 1 LIVE · murr_core · imports+symlinks · M1/M2 GREEN  
 Radiant pass `20260728.053632` — u34 tool-wave harden · spine complete · witnesses re-GREEN  
@@ -53,7 +54,7 @@ Radiant pass `20260728.025634` — innermost paused at u0 · core Gren opened ·
 |-------|--------|----------|----------|
 | **outer** | Constellation | m8 complete / **m9** next | **PAUSED** — do not advance m-rounds |
 | **inner** | Inner Scope | i6 complete / **i7** next · fascia machinery paused | **PAUSED** — do not advance i-rounds while innermost walks |
-| **innermost** | **MUR Season** | **u0–u49** complete · **u50** next | **OPEN** — walk here |
+| **innermost** | **MUR Season** | **u0–u50** complete · **u51** next | **OPEN** — walk here |
 | **core** | Gren Season | lean-16 CLOSED · handed back | **CLOSED** |
 | **quint** | Keeh Season | lean-16 CLOSED · handed back | **CLOSED** |
 
@@ -85,7 +86,7 @@ When innermost hands back: resume **inner** at i7 (fascia shred-with-parity draf
 | Bow · measure | **u0–u26** CLOSED | Affirm pauses · gen_murr · residual clear · prose · tool GO · waiting queue empty · prefer kg u32 |
 | Lexicon · prose waves | **u6–u31** (largely living-clear · walking harden) | Living counsel/docs/edu Radiant-pass Mala/MALA → Murr/MUR; intentional holds named |
 | Tool · generator homes | **u32–u47** (**u32–u34** rename spine COMPLETE) | murr_* GREEN · residual clear · u35–u47 optional |
-| Module · mycelium · specs | **u48–u79** (**u48–u49 LIVE**) | murr_core + murr.rye/bin · delivery/memos next u50 |
+| Module · mycelium · specs | **u48–u79** (**u48–u50 LIVE**) | core+entry+delivery+murr:* · neth/fold next |
 | MUR↔WOV unify design | **u80–u95** | L1 MUR absorbs WOV *concepts*; no WOV delete yet |
 | WOV retirement plan | **u96–u111** | Roadmap **last** — propose-only until late gate |
 | Fascia shred prep | **u112–u119** | Manifest residual Mala/MALA · A / A+C / all · still no live shred without yes |

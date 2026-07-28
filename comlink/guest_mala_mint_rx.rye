@@ -1,6 +1,6 @@
-//! comlink/guest_mala_mint_rx.rye — MALA M2b mint hop RX (holder).
+//! comlink/guest_mala_mint_rx.rye — MUR M2b (was MALA) mint hop RX (holder).
 //!
-//! Opens the sealed mint, folds via mala_core, asserts holder balance 1000.
+//! Opens the sealed mint, folds via murr_core, asserts holder balance 1000.
 
 const vn = @import("virtio_net.rye");
 const wf = @import("wire_format.rye");

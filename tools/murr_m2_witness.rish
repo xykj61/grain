@@ -5,9 +5,9 @@
 
 let zig = "vendor/zig-toolchain/zig"
 let murr = "linengrow/bin/murr"
-let delivery = "linengrow/bin/mala-delivery"
+let delivery = "linengrow/bin/murr-delivery"
 
-let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/murr.rye -femit-bin=${murr} && env RYE_ZIG=${zig} rye/bin/rye build linengrow/mala_delivery.rye -lc -femit-bin=${delivery}"]
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/murr.rye -femit-bin=${murr} && env RYE_ZIG=${zig} rye/bin/rye build linengrow/murr_delivery.rye -lc -femit-bin=${delivery}"]
 
 assert build.ok else "MUR M2 build failed"
 

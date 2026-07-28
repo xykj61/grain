@@ -1,7 +1,7 @@
 //! linengrow/murr_core.rye — shared MUR mint/send fold for M1 and M2 (was mala_core / MALA).
 //!
-//! Imported by `murr.rye` (one-node selftest) and `mala_delivery.rye` (Comlink carriage).
-//! Wire memos `mala:*` and `fold_mala_log` held for later module steps.
+//! Imported by `murr.rye` (one-node selftest) and `murr_delivery.rye` (Comlink carriage).
+//! Wire memos `murr:*` (was mala:*). `fold_mala_log` symbol held for later module step.
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -16,9 +16,9 @@ pub const holder_seed = [_]u8{0x62} ** kumara.seed_length;
 pub const max_log_lines: u32 = 16;
 pub const pubkey_hex_len: u32 = 64;
 
-pub const memo_mint = "mala:mint";
-pub const memo_send = "mala:send";
-pub const memo_receipt = "mala:receipt";
+pub const memo_mint = "murr:mint";
+pub const memo_send = "murr:send";
+pub const memo_receipt = "murr:receipt";
 
 pub const Balances = struct {
     issuer: i64 = 0,

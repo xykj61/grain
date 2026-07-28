@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260728.054844
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title MUR Season u50 delivery memos live
+prompt waymark u49 complete u50 next · asks none
+think Execute module step 3: git mv mala_delivery to murr_delivery; switch murr_core memos to murr:*; update fixture and drawn_terminal strings; point m2 witness at murr-delivery.
+think Re-prove M1 and M2 GREEN including device lab; hold fold_mala_log and guest_mala_* names.
+think Seat counsel · pins · round-close send.
+obs Wire memos now say murr; fold symbol still mala until a later pass.
+file linengrow/murr_delivery.rye rename
+file linengrow/murr_core.rye memos murr:*
+file tools/fixtures/murr_m1_mint.bron memo
+file tools/murr_m2_witness.rish murr-delivery
+file counsel/20260728-054844_mur-season-u50-module-delivery-memos-live.md create
+recommend keep-going kg u51 neth cluster choir or fold_mala_log symbol rename

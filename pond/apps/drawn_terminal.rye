@@ -317,7 +317,7 @@ fn compose_thin_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.Ska
     const amount = field_value(mint, "amount") orelse return error.BadMintFixture;
     const stamp = field_value(mint, "stamp") orelse return error.BadMintFixture;
     const memo = field_value(mint, "memo") orelse return error.BadMintFixture;
-    if (!std.mem.eql(u8, memo, "mala:mint")) return error.BadMintFixture;
+    if (!std.mem.eql(u8, memo, "murr:mint")) return error.BadMintFixture;
 
     const header = first_non_comment_line(wov) orelse return error.BadWovFixture;
     if (!std.mem.eql(u8, header, "wov-exit-bundle/v1")) return error.BadWovFixture;
@@ -333,7 +333,7 @@ fn compose_thin_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.Ska
 
     const lines = try garden.alloc(surface.SkateLine, thin_view_max_lines);
     lines[0] = .{ .text = try garden.dupe(u8, "realidream thin view") };
-    lines[1] = .{ .text = try std.fmt.allocPrint(garden, "mala:mint amount {s}", .{amount}) };
+    lines[1] = .{ .text = try std.fmt.allocPrint(garden, "murr:mint amount {s}", .{amount}) };
     lines[2] = .{ .text = try std.fmt.allocPrint(garden, "stamp {s}", .{stamp}) };
     lines[3] = .{ .text = try std.fmt.allocPrint(garden, "wov-exit-bundle/v1 seq {s}", .{seq}) };
     lines[4] = .{ .text = try garden.dupe(u8, conservation) };
@@ -357,7 +357,7 @@ fn run_thin_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
 
     const golden = [_][]const u8{
         "realidream thin view",
-        "mala:mint amount 1000",
+        "murr:mint amount 1000",
         "stamp 20260709.182354",
         "wov-exit-bundle/v1 seq 1",
         "conservation 1000 issued 1000 redeemed 0",
@@ -540,7 +540,7 @@ fn compose_sight_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.Sk
 
     const lines = try garden.alloc(surface.SkateLine, sight_view_max_lines);
     lines[0] = .{ .text = try garden.dupe(u8, "linengrow sight view") };
-    lines[1] = .{ .text = try std.fmt.allocPrint(garden, "carriage mala:mint amount {s}", .{amount}) };
+    lines[1] = .{ .text = try std.fmt.allocPrint(garden, "carriage murr:mint amount {s}", .{amount}) };
     lines[2] = .{ .text = try std.fmt.allocPrint(garden, "carriage wov seq {s}", .{seq}) };
     lines[3] = .{ .text = try garden.dupe(u8, conservation) };
     lines[4] = .{ .text = try std.fmt.allocPrint(garden, "books cash {d} retained {d} · pnl net {d} · bs equity {d} · tb {d}", .{ nets[0], bs.retained, pl.net, bs.equity, tb_sum }) };
@@ -573,7 +573,7 @@ fn run_sight_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
 
     const golden = [_][]const u8{
         "linengrow sight view",
-        "carriage mala:mint amount 1000",
+        "carriage murr:mint amount 1000",
         "carriage wov seq 1",
         "conservation 1000 issued 1000 redeemed 0",
         "books cash 800 retained 800 · pnl net 800 · bs equity 0 · tb 0",
@@ -829,7 +829,7 @@ fn compose_assist_sight_view_lines(garden: std.mem.Allocator, io: std.Io) ![]sur
 
     const lines = try garden.alloc(surface.SkateLine, assist_sight_view_max_lines);
     lines[0] = .{ .text = try garden.dupe(u8, "inference assist sight") };
-    lines[1] = .{ .text = try std.fmt.allocPrint(garden, "carriage mala:mint amount {s}", .{amount}) };
+    lines[1] = .{ .text = try std.fmt.allocPrint(garden, "carriage murr:mint amount {s}", .{amount}) };
     lines[2] = .{ .text = try std.fmt.allocPrint(garden, "carriage wov seq {s}", .{seq}) };
     lines[3] = .{ .text = try std.fmt.allocPrint(garden, "corpus rye {d} rish {d}", .{ kinds.rye, kinds.rish }) };
     lines[4] = .{ .text = try std.fmt.allocPrint(garden, "snippets rye {d} rish {d} plain {d} blocks {d} fence-rye {d}", .{ fences.rye, fences.rish, plain_kinds.plain, fence_n, fence_rye }) };
@@ -873,7 +873,7 @@ fn run_assist_sight_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
 
     const golden = [_][]const u8{
         "inference assist sight",
-        "carriage mala:mint amount 1000",
+        "carriage murr:mint amount 1000",
         "carriage wov seq 1",
         "corpus rye 2 rish 1",
         "snippets rye 2 rish 1 plain 1 blocks 4 fence-rye 1",

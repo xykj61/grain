@@ -4,7 +4,8 @@
 **Voice:** Rio 3
 **Status:** **Landed** `20260709.202427` — `thinviewtest` GREEN; parity **202**
 **Ground:** TASKS thin-demo exception (`021112`) · counsel §3 · chain-read **removed** `152612` — re-scope to local MUR/WOV fixtures (was MALA) through SLC-2a drawn terminal  
-Radiant pass `20260728.052149` — living rename-forward: fixture path `murr_m1_mint.bron` held until tool step 4 lean A (or module); memo `mala:mint` waits module wave · MUR Season u20 dry-run
+Radiant pass `20260728.052149` — living rename-forward: fixture path `murr_m1_mint.bron` held until tool step 4 lean A (or module); memo `murr:mint` waits module wave · MUR Season u20 dry-run
+Radiant pass `20260728.054844` — delivery + memos landed u50: `murr_delivery` · `murr:*`
 Radiant pass `20260728.053112` — tool-wave u32: living paths → murr_* witnesses/fixture/wire lab; memo mala:* held for module
 
 ---
