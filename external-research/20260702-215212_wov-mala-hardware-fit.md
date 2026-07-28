@@ -1,6 +1,7 @@
-# The Blueprint Against the Ledger Map — A WOV and MALA Hardware Fit-Check
+# The Blueprint Against the Ledger Map — A WOV and MUR Hardware Fit-Check (was MALA)
 
-*One question, answered on the record: does the sovereign-host blueprint of `20260701.213412` cover what WOV and MALA will actually ask of the metal? The verdict is yes for every rung now in sight, with two deltas named plainly and one standing rule restated — so that when the doors open and the ladder climbs, the hardware conversation is already finished.*
+*One question, answered on the record: does the sovereign-host blueprint of `20260701.213412` cover what WOV and MUR will actually ask of the metal (was MALA)? The verdict is yes for every rung now in sight, with two deltas named plainly and one standing rule restated — so that when the doors open and the ladder climbs, the hardware conversation is already finished.*
+Radiant pass `20260728.045705` — living rename-forward: **MUR** (was MALA)
 
 **Stamp:** `20260702.215212`
 **Language:** EN
@@ -15,13 +16,13 @@
 
 ## What the Ladder Actually Asks
 
-MALA's near rungs travel light. M0 is paper. M1 is signed facts on one node's append-only log with balance as a fold — work any machine on the rack performs without noticing. M2 asks for two nodes and Comlink's fact lane between them, and the small rack is two nodes by construction: the AI head and the storage-and-ledger node, joined by their own 10 GbE fabric, with QEMU guests standing ready as extra parties whenever a witness wants a third voice.
+MUR's near rungs (was MALA) travel light. M0 is paper. M1 is signed facts on one node's append-only log with balance as a fold — work any machine on the rack performs without noticing. M2 asks for two nodes and Comlink's fact lane between them, and the small rack is two nodes by construction: the AI head and the storage-and-ledger node, joined by their own 10 GbE fabric, with QEMU guests standing ready as extra parties whenever a witness wants a third voice.
 
-WOV's first lap is deliberately small: one pinned ledger as a cluster of one, the overlay minting and transferring, one hourly root fact onto a local MALA log, one witness green. The pinned ledger's entire performance doctrine concentrates on a single hot core and one fast local NVMe with honest flush behavior — hundreds of thousands of transfers a second from exactly the class of hardware the blueprint already seats. Sixteen modern cores on the storage node stand where one dedicated core is asked; the U.2 bay's enterprise flash with power-loss protection is precisely the drive shape the ledger's design assumes. The root facts WOV publishes are periodic, tiny, and latency-tolerant, so the WireGuard front door carries them without strain, exactly as it carries the settlement node's traffic today.
+WOV's first lap is deliberately small: one pinned ledger as a cluster of one, the overlay minting and transferring, one hourly root fact onto a local MUR log (was MALA), one witness green. The pinned ledger's entire performance doctrine concentrates on a single hot core and one fast local NVMe with honest flush behavior — hundreds of thousands of transfers a second from exactly the class of hardware the blueprint already seats. Sixteen modern cores on the storage node stand where one dedicated core is asked; the U.2 bay's enterprise flash with power-loss protection is precisely the drive shape the ledger's design assumes. The root facts WOV publishes are periodic, tiny, and latency-tolerant, so the WireGuard front door carries them without strain, exactly as it carries the settlement node's traffic today.
 
 ## The Verdict
 
-**In the ballpark, with room to spare.** The apex small rack — the blueprint's own recommendation — covers MALA M0 through M2 and WOV's first lap through the two-monarch season without a single new purchase. Dual control needs a second signing hand, never a second datacenter: the rack already holds two machines, and the two-key custody the WOV assessment made structural is a signature-layer discipline the existing Kumara and Amber doctrine already governs. Even the far rungs stay bracketed: M4's many-issuer season, when Mycelium's question truly opens, is validator-class work — and the blueprint's apex tower is the named, priced answer already waiting on that shelf.
+**In the ballpark, with room to spare.** The apex small rack — the blueprint's own recommendation — covers MUR M0 through M2 (was MALA) and WOV's first lap through the two-monarch season without a single new purchase. Dual control needs a second signing hand, never a second datacenter: the rack already holds two machines, and the two-key custody the WOV assessment made structural is a signature-layer discipline the existing Kumara and Amber doctrine already governs. Even the far rungs stay bracketed: M4's many-issuer season, when Mycelium's question truly opens, is validator-class work — and the blueprint's apex tower is the named, priced answer already waiting on that shelf.
 
 ## Two Deltas, Named Plainly
 
@@ -31,11 +32,11 @@ WOV's first lap is deliberately small: one pinned ledger as a cluster of one, th
 
 ## One Rule, Restated for the New Tenant
 
-The blueprint's sharpest storage finding extends to WOV word for word: the AI head's secondary M.2 slot runs a single PCIe 4.0 lane, ample for an operating system and entirely wrong for any ledger. No WOV data file, no MALA log under load, and no state-sync store ever lives on that slot. The gentle slot stays gentle.
+The blueprint's sharpest storage finding extends to WOV word for word: the AI head's secondary M.2 slot runs a single PCIe 4.0 lane, ample for an operating system and entirely wrong for any ledger. No WOV data file, no MUR log under load (was MALA), and no state-sync store ever lives on that slot. The gentle slot stays gentle.
 
 ## What This Changes on the Bench
 
-Nothing today, by design. The WOV gate stays in Kaeden's hand; MALA M0 stays behind the Edit 5 ruling and Amber's first lap; the doors stay the doors. What this memo finishes is the *question* — the hardware conversation for the whole ledger map now has a written answer, so the day a gate opens, procurement is a list to read rather than a research season to run.
+Nothing today, by design. The WOV gate stays in Kaeden's hand; MUR M0 stays behind (was MALA) the Edit 5 ruling and Amber's first lap; the doors stay the doors. What this memo finishes is the *question* — the hardware conversation for the whole ledger map now has a written answer, so the day a gate opens, procurement is a list to read rather than a research season to run.
 
 ---
 

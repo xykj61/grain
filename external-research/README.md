@@ -60,7 +60,7 @@ Dated explorations carry `YYYYMMDD-HHMMSS_short-slug.md`; living documents (`REA
 | `20260715.170000` | [Glow mold nesting — bounded normalizers, decidable nest, bounded recursion](20260715-170000_glow-mold-nesting-bounded.md) | Sixth Glow-supplement surface: a mold names its bound, `nest` stays decidable, recursive molds carry an explicit depth (`list:N`, never unbounded `list`) |
 | `20260715.165500` | [Glow, Neth, and the Urbit fleet](20260715-165500_glow-neth-and-the-urbit-fleet.md) | Sponsorship hierarchy = Neth's graduated trust; Rhyz × Neth × Pool × Comlink compose a fleet; one honest divergence — Urbit keeps sponsorship lightweight by design |
 | `20260715.165000` | [What doesn't nest within a vane — Glow's three non-vane strata, and Pond's narrowing](20260715-165000_glow-non-vane-strata-and-pond.md) | Substrate (Rye · Bron · Aurora · Tally), enclosure/build (Pond · Puddle · Maze · Brix), shell (Rishi); the unclaimed Zuse slot; Pond narrows to the isolation-policy substrate |
-| `20260712.054521` | [Taler giving-lane asymmetry](20260712-054521_taler-giving-lane-asymmetry.md) | Seam study 4; private payer · transparent payee; MALA/WOV seat unchanged; four studies complete |
+| `20260712.054521` | [Taler giving-lane asymmetry](20260712-054521_taler-giving-lane-asymmetry.md) | Seam study 4; private payer · transparent payee; MUR/WOV seat unchanged (was MALA); four studies complete |
 | `20260712.054342` | [Proven-seat guest — Genode / seL4](20260712-054342_proven-seat-guest-genode-sel4.md) | Seam study 3; guest never merger; G0–G3 on receipt_core; Caravan stays horizon |
 | `20260712.054135` | [Component-model target — one seed](20260712-054135_component-model-one-seed.md) | Seam study 2; pick `receipt_core` verify-witness; Brushstroke canvas twin track |
 | `20260712.053324` | [OCapN beside Comlink — session vs record](20260712-053324_ocapn-beside-comlink.md) | Seam study 1; CapTP decline affirmed; consumer-edge pass + Door 3 test plan |
@@ -72,7 +72,7 @@ Dated explorations carry `YYYYMMDD-HHMMSS_short-slug.md`; living documents (`REA
 | `20260710.002544` | [First lap goes green — said plainly](20260710-002544_first-lap-goes-green-plainly.md) | Lap · green · Edit 5; layers of proof; shipping phrase whole |
 | `20260710.002422` | [Amber seasons — said plainly](20260710-002422_amber-seasons-plainly.md) | Custody as bounded interval; seal · scrub · restore; cellar sleeps between |
 | `20260710.002017` | [Metalsmoke — said plainly](20260710-002017_metalsmoke-plainly.md) | Thin edge's few honest checks; three marks; audit rule already ratified |
-| `20260710.001249` | [Settlement seat — said plainly](20260710-001249_settlement-seat-plainly.md) | Three lights, asset axis, MALA/WOV supersession after `152612` |
+| `20260710.001249` | [Settlement seat — said plainly](20260710-001249_settlement-seat-plainly.md) | Three lights, asset axis, MUR/WOV supersession (was MALA) after `152612` |
 | `20260710.000725` | [Learning chapter — said plainly](20260710-000725_learning-chapter-plainly.md) | Civic education candidate in kitchen voice; canon wait remains Kaeden's |
 | `20260709.235931` | [Resins, cellar, and vessel — said plainly](20260709-235931_resins-cellar-vessel-plainly.md) | Amber · Amphora · resin · two-tier SHA3 in kitchen voice |
 | `20260709.235921` | [One clock — said plainly](20260709-235921_one-clock-plainly.md) | Stamp filenames; living vs dated; newest-first in README |
@@ -112,8 +112,8 @@ Dated explorations carry `YYYYMMDD-HHMMSS_short-slug.md`; living documents (`REA
 | `20260703-182612` | [The granary question](20260703-182612_the-granary-question.md) | Sharing surface on four doors; **name seated** `163043`; first code lap horizon |
 | `20260703-173512` | [Bubble — the drawing room](20260703-173512_bubble-the-drawing-room.md) | Sibling-bench harvest seated verbatim: felt tests, export door, one log under every surface |
 | `20260703-071712` | [The second harvest](20260703-071712_the-second-harvest.md) | Silo harvest map from a sibling bench: nineteen insights with destinations; first four landings at `140212` |
-| `20260702-215212` | [WOV/MALA hardware fit-check](20260702-215212_wov-mala-hardware-fit.md) | Blueprint confirmed in ballpark; PLP M.2 and ECC deltas named; gentle-slot rule extended |
-| `20260702-211312` | [Names, builds, and the ledger map — WOV steps forward](20260702-211312_names-builds-and-the-ledger-map.md) | Vocabulary harvest (concepts cross, names park); no-new-module build verdict; MALA/Mycelium/Tablecloth ledger map; WOV assessed — monarch rule as pre-consensus boundary |
+| `20260702-215212` | [WOV/MUR hardware fit-check](20260702-215212_wov-mala-hardware-fit.md) | Blueprint confirmed in ballpark; PLP M.2 and ECC deltas named; gentle-slot rule extended |
+| `20260702-211312` | [Names, builds, and the ledger map — WOV steps forward](20260702-211312_names-builds-and-the-ledger-map.md) | Vocabulary harvest (concepts cross, names park); no-new-module build verdict; MUR/Mycelium/Tablecloth ledger map (was MALA); WOV assessed — monarch rule as pre-consensus boundary |
 | `20260702-192712` | [The movement's open asks](20260702-192712_the-movements-open-asks.md) | The boards read directly; eight categories assigned to module ensembles; the Open Asks room named as the meta-ask; caveats and horizons |
 | `20260702-180812` | [The userland lineages](20260702-180812_userland-lineages.md) | musl, Alpine, s6, Nix, sixos/infuse — patterns for a small sharp Rye userland |
 | `20260702-035018` | [Puddle — sandboxed Rye OS environments](20260702-035018_puddle-sandboxed-rye-containers.md) | Many bounded worlds, one host: pier lessons, microVM lineage, content-addressed archive verdict beyond tar; second pass `20260702.165412` |

@@ -49,7 +49,7 @@ Ask: *If the host vanished, would this other module still need this capability u
 | **Weave** | Aspect of Mantra (`mantra/src/weave.rye`) | When Comlink serves named data straight from Weave |
 | **Dexter** | Keyboard-from-window inside the drawn terminal (`pond/apps/`) | When a second Pond app (or TAME editor / framebuffer input) imports that seam |
 
-**Thin view** reading local MALA and WOV fixtures through the drawn terminal is **not** Dexter's second consumer — it is a projection path, not a new keyboard importer. That exception is seated so enthusiasm does not invent a door.
+**Thin view** reading local MUR and WOV fixtures (was MALA) through the drawn terminal is **not** Dexter's second consumer — it is a projection path, not a new keyboard importer. That exception is seated so enthusiasm does not invent a door.
 
 ---
 
