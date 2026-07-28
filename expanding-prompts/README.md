@@ -115,7 +115,7 @@ What does *not* belong here is the work itself — that lands in the research, d
 | `20260704.185412` | [Cursor lane — unified zip-42 intake](20260704-185412_cursor-lane-zip42-counsel-unified.md) | One paste for the whole sitting: both counsels, Kaeden's words listed with the lens gate added, mechanical stops smallest-first, zip 43 cut discipline. |
 | `20260704.181012` | [Zero-copy resins — Claude counsel](20260704-181012_zero-copy-resins-claude-counsel.md) | Snapshot + Comlink batch architecture; ROADMAP/TASKS/decoder refresh; CIVIC alignment — **answered** at `181612`/`185412` |
 | `20260704-030300` | [Cursor recursion prompt v4 — itinerary, stops, journey's pause](20260704-030300_cursor-recursion-prompt-v4.md) | **Active loop** — open itinerary · STOPS · journey's pause; supersedes v2/v3 |
-| `20260703-020012` | [Cursor recursion prompt v3 — land eight, then hold the doors](20260703-020012_cursor-recursion-prompt-v3.md) | Superseded by v4 — frozen for accretion |
+| `20260703-020012` | [Cursor recursion prompt v3 — land eight, then hold the doors](yonder/20260703-020012_cursor-recursion-prompt-v3.md) | Superseded by v4 — **yonder** (u70 prune) |
 | `20260702-202612` | [Astrology silos 19–20 — Cursor](yonder/20260702-202612_cursor-astrology-silos-19-20.md) | Consumed — studies 19–20 distilled and landed; raw transcripts never committed; in `yonder/` |
 | `20260702-030112` | [SLC-2b — keyboard from the window](20260702-030112_cursor-slc-2b-keyboard-from-window.md) | **Next open question** — Dexter genesis; awaits Kaeden nod |
 | `20260701-231512` | [SLC-2a Ring 3 — mirror live session](yonder/20260701-231512_cursor-slc-2a-ring-three.md) | Consumed — witness at parity 139; metal-closed on GNOME `20260703.032412`; in `yonder/` |

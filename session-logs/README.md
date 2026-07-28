@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.152117` — [MUR Season u70 fascia prune yonder wave](20260728-152117_mur-season-u70-fascia-prune-yonder-wave.bron) — v3→yonder · fascia 47 · u71 next
 - `20260728.064546` — [MUR Season u69 fascia prune without shred](20260728-064546_mur-season-u69-fascia-prune-without-shred.bron) — prune OPEN · shred RED · u70 next
 - `20260728.064402` — [MUR Season check-in at u68](20260728-064402_mur-season-check-in-u68.bron) — living CLEAR · queue empty · u69 next
 - `20260728.064221` — [MUR Season u67 filename residual map](20260728-064221_mur-season-u67-filename-residual-map.bron) — living CLEAR · fossils HOLD · u68 next

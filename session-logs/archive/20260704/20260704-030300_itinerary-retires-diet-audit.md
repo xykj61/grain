@@ -32,7 +32,7 @@ Spec: [`context/specs/20260704-030300_itinerary-retires-diet.md`](../context/spe
 | `context/specs/20260704-030300_itinerary-retires-diet.md` | **New** — retirement law |
 | `external-research/20260703-235912_diet-and-the-crossing-manifest.md` | **Rewritten** — itinerary voice; filename accretion |
 | `expanding-prompts/20260704-030300_cursor-recursion-prompt-v4.md` | **New** — STOPS · journey's pause |
-| `expanding-prompts/20260703-020012_cursor-recursion-prompt-v3.md` | Superseded banner |
+| `expanding-prompts/yonder/20260703-020012_cursor-recursion-prompt-v3.md` | Superseded banner |
 | `work-in-progress/20260702-222353_cursor-recursion-prompt-v2.md` | Superseded banner |
 | `external-research/20260703-013412_writing-recursion-prompts.md` | Full itinerary craft guide |
 | `context/LEXICON.md` | Spec link on itinerary row |
