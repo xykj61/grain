@@ -25,7 +25,7 @@ Updated `counsel/README.md`, `context/TAME_GUIDANCE.md` (`maybe` seated, parity 
 | File | Why |
 |------|-----|
 | Bundle contents (tally marks, device_wire, witnesses, READMEs, parity stanzas) | General expansion round landed |
-| `expanding-prompts/20260707-185612_apply-general-expansion.md` | Apply prompt filed |
+| `expanding-prompts/yonder/20260707-185612_apply-general-expansion.md` | Apply prompt filed |
 | `active-designing/20260707-164612_tame-tidy-rules-brief.md` | Doorway Status fix |
 | `counsel/README.md` | Index row for `185612` |
 | `context/TAME_GUIDANCE.md` | `maybe` seated; parity 195 |

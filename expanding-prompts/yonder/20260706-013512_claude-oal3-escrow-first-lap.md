@@ -1,7 +1,7 @@
 # Claude OA-L3 Escrow First Lap — Runnable Bench
 
 **Stamp:** `20260706.013512 UDT` · **Style:** Radiant for logs and scope updates · **Base:** tip `2272dbe` (parity **157** on metal)
-**Counsel:** [`../active-designing/20260706-013012_open-asks-escrow-hammock.md`](../active-designing/20260706-013012_open-asks-escrow-hammock.md)
+**Counsel:** [`../active-designing/20260706-013012_open-asks-escrow-hammock.md`](../../active-designing/20260706-013012_open-asks-escrow-hammock.md)
 **Handoff summary:** [`../session-logs/archive/20260706/20260706-013512_claude-oal3-escrow-handoff-summary.md`](../session-logs/archive/20260706/20260706-013512_claude-oal3-escrow-handoff-summary.md)
 
 *Written by Kaeden and Rio 3 (Cursor). Kaeden speaks the bench voice-name and the escrow vocabulary in his first message; the one-clock, stop-and-park, and TAME laws inherit whole.*
@@ -29,7 +29,7 @@
 | Item | State |
 |------|--------|
 | **Parity** | **157** GREEN — OA-L1 + OA-L2 (hosted + device wire) |
-| **OA-L3** | Counsel seated — [`20260706-013012_open-asks-escrow-hammock.md`](../active-designing/20260706-013012_open-asks-escrow-hammock.md) |
+| **OA-L3** | Counsel seated — [`20260706-013012_open-asks-escrow-hammock.md`](../../active-designing/20260706-013012_open-asks-escrow-hammock.md) |
 | **Settlement** | Sui seated; two-lane witness proposed (softenings landed) |
 | **Seeds** | Poster `0x51`, applicant `0x52` — same as OA-L1/L2 |
 | **Fixture** | `tools/fixtures/open_asks_request.bron` |
@@ -65,7 +65,7 @@ If Kaeden changes the memo prefixes or escrow account name, use his words exactl
 
 1. **Encoding** — Reuse `receipt_core` transaction fact (`from`, `to`, `amount`, `memo`, `stamp`). Distinguish role by **memo prefix** on the canonical fact bytes. Hold and release both poster-signed; `from` = poster, `to` = applicant (or escrow account name for hold leg — match brief's conservation story).
 
-2. **Home** — Extend [`linengrow/open_asks.rye`](../linengrow/open_asks.rye) inline. No new top-level module; no `mala/` until second consumer (graduation rule).
+2. **Home** — Extend [`linengrow/open_asks.rye`](../../linengrow/open_asks.rye) inline. No new top-level module; no `mala/` until second consumer (graduation rule).
 
 3. **Ladder** — Hold is M1 (committed, not yet mailable to applicant as payout); release is M2 (delivered to applicant). Document in scope note status when landed.
 
@@ -111,7 +111,7 @@ post → apply → accept → HOLD → RELEASE → verify (fold: held, released,
 2. Fold → `held`, `released`, `completed` (or equivalent flags); `escrow_balance == 0`; stipend conserved
 3. Print `GREEN: OA-L3 escrow — hold, release, verify on one log.`
 
-Mirror [`tools/open_asks_lap1.rish`](../tools/open_asks_lap1.rish) witness shape.
+Mirror [`tools/open_asks_lap1.rish`](../../tools/open_asks_lap1.rish) witness shape.
 
 ---
 
@@ -137,7 +137,7 @@ Each unwelcome path prints a clear refusal line; selftest exits 0 only after all
 | 2 | `tools/open_asks_lap3.rish` — build + selftest witness |
 | 3 | `tools/parity.rish` — one block after OA-L2 → parity **158** |
 | 4 | `tools/width-check.rish` — if file list changed |
-| 5 | Update [`20260706-013012_open-asks-escrow-hammock.md`](../active-designing/20260706-013012_open-asks-escrow-hammock.md) status → landed parity **158** |
+| 5 | Update [`20260706-013012_open-asks-escrow-hammock.md`](../../active-designing/20260706-013012_open-asks-escrow-hammock.md) status → landed parity **158** |
 | 6 | `work-in-progress/ROADMAP.md` · `work-in-progress/TASKS.md` · `linengrow/README.md` — parity **158**, OA-L3 lap 1 checked |
 | 7 | `active-designing/README.md` — OA-L3 row → **landed** when wired |
 | 8 | Session log + `session-logs/README.md` index row |

@@ -42,7 +42,7 @@ No Amphora shred · no over-70 function split · no glow emit rewrite · no WOV 
 
 ## Next
 
-**kg u75** — next prune slice (more yonder · on-touch over-70 · class-A lean), or check-in.
+**LANDED u75** — apply/bench yonder · class-A held · shred RED.
 
 ---
 

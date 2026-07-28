@@ -46,7 +46,7 @@ Of four parked decisions, **three are seated** unless Kaeden overrides:
 
 ## How Kaeden opens the Claude bench
 
-1. Paste [`expanding-prompts/20260706-013512_claude-oal3-escrow-first-lap.md`](../expanding-prompts/20260706-013512_claude-oal3-escrow-first-lap.md) as the bench body.
+1. Paste [`expanding-prompts/yonder/20260706-013512_claude-oal3-escrow-first-lap.md`](../expanding-prompts/yonder/20260706-013512_claude-oal3-escrow-first-lap.md) as the bench body.
 2. Paste the **vocabulary block** from that prompt (filled in) and affirm the three recommendations.
 3. Claude implements red-then-green selftest, witness, parity **158**, one GPG commit + four-remote push + session log.
 
@@ -62,7 +62,7 @@ Vocabulary:
 
 Affirm: memo-prefix encoding · inline open_asks · M1/M2 mapping · proceed lap 1.
 
-Bench: expanding-prompts/20260706-013512_claude-oal3-escrow-first-lap.md
+Bench: expanding-prompts/yonder/20260706-013512_claude-oal3-escrow-first-lap.md
 Handoff: session-logs/20260706-013512_claude-oal3-escrow-handoff-summary.md
 ```
 
@@ -78,7 +78,7 @@ SLC-L1 (152) → SLC-L2 (155) → OA-L1 (156) → OA-L2 (157) → OA-L3 (158 nex
 
 | File | Why |
 |------|-----|
-| `expanding-prompts/20260706-013512_claude-oal3-escrow-first-lap.md` | Runnable Claude bench |
+| `expanding-prompts/yonder/20260706-013512_claude-oal3-escrow-first-lap.md` | Runnable Claude bench |
 | `session-logs/20260706-013512_claude-oal3-escrow-handoff-summary.md` | This handoff |
 | `expanding-prompts/README.md` | Index row |
 | `session-logs/README.md` | Index row |

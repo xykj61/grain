@@ -87,7 +87,7 @@ What does *not* belong here is the work itself — that lands in the research, d
 | `20260710.133500` | [Inference stack lap 0](20260710-133500_inference-stack-lap0.md) | Module roots + assist view; parity **215** |
 | `20260710.132548` | [Dimeroll lap 3 — sight view](20260710-132548_dimeroll-lap3-sight-view.md) | Carriage + books Skate frame; parity **210** |
 | `20260710.131212` | [Dimeroll root + lap 2 reports](yonder/20260710-131212_dimeroll-root-lap2-reports.md) | Own folder; P&L · BS · exceptions; parity **209**; in `yonder/` |
-| `20260710.125953` | [Dimeroll lap 1 — books view](20260710-125953_dimeroll-lap1-books-view.md) | Chart · journal · fold · Skate booksviewtest; parity **207**/**208** |
+| `20260710.125953` | [Dimeroll lap 1 — books view](yonder/20260710-125953_dimeroll-lap1-books-view.md) | **yonder** · Chart · journal · fold · Skate booksviewtest; parity **207**/**208** |
 | `20260709.225159` | [MUR kind field — gated](yonder/20260709-225159_mala-kind-field-gated.md) | K0 keep memos; K1 still gated; in `yonder/` · dated path kept (was MALA) |
 | `20260709.224531` | [WOV dual monarch — gated](yonder/20260709-224531_wov-dual-monarch-gated.md) | D1 twin-lines landed (parity **205**); D2 later; in `yonder/` |
 | `20260709.224325` | [SLC-L4 lap 2 width — gated](20260709-224325_slcl4-lap2-width-gated.md) | W0 cleared; W1/W2 soak |
@@ -102,7 +102,7 @@ What does *not* belong here is the work itself — that lands in the research, d
 | `20260709.182354` | [MUR M1 one issuer one holder](20260709-182354_mala-m1-one-issuer-one-holder.md) | M1 first lap; parity **198** · was MALA; dated filename |
 | `20260709.031612` | [SLC-L4 lap 1 fixed-tier Sigma](20260709-031612_slcl4-lap1-fixed-tier-sigma-protocol.md) | Pedersen + proof of opening; parity **200** |
 | `20260706.190644` | [Claude zip 58 — NS-L3 handoff](20260706-190644_claude-zip58-ns-l3-handoff.md) | Wire ladder complete; OA-L4 vs MUR (was MALA); wire-serves-the-fold then proposed, now landed `232812` |
-| `20260706.013512` | [Claude OA-L3 escrow first lap](20260706-013512_claude-oal3-escrow-first-lap.md) | Runnable bench — vocabulary gate, hold/release on one log, parity **158** |
+| `20260706.013512` | [Claude OA-L3 escrow first lap](yonder/20260706-013512_claude-oal3-escrow-first-lap.md) | **yonder** · Runnable bench — vocabulary gate, hold/release on one log, parity **158** |
 | `20260705.195812` | [Fidelity soften — thirteen title-drawn studies](yonder/20260705-195812_fidelity-soften-instructions.md) | Consumed — gratitude softening on #24–#36; in `yonder/` |
 | `20260705.190812` | [Claude recursion v9 — batch-6 bundle](yonder/20260705-190812_claude-recursion-v9.md) | Consumed — apply b1→b4→b5→b6; in `yonder/` |
 | `20260705.184612` | [Claude recursion v8](yonder/20260705-184612_claude-recursion-v8.md) | Consumed — mid-arc handoff; in `yonder/` |
