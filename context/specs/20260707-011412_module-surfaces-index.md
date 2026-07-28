@@ -8,6 +8,7 @@
 
 *Written by Kaeden and Rio 3.*
 Radiant pass `20260725.035645`  
+Radiant pass `20260728.052308` — OA-L4 / Mycelium → MUR (was MALA); code homes `mala*` held · tool GO u21 · prefer kg u32 before u48  
 Radiant pass `20260728.044002` — OA-L4 / Mycelium → MUR (was MALA)
 
 ---
