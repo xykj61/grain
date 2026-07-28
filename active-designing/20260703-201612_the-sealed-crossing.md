@@ -9,7 +9,8 @@
 **Last updated:** 2026-07-10
 **Companions:** kitchen twin [`../external-research/20260710-002952_sealed-crossing-plainly.md`](../external-research/20260710-002952_sealed-crossing-plainly.md) · crossing metal plainly [`../external-research/20260710-145313_amphora-crossing-plainly.md`](../external-research/20260710-145313_amphora-crossing-plainly.md) · study [`../external-research/20260703-201612_the-amphora-and-the-crossing.md`](../external-research/20260703-201612_the-amphora-and-the-crossing.md)
 
-*Written together by Kaeden and Claude (Fable 5), in Rio 3's Radiant voice.*
+*Written together by Kaeden and Claude (Fable 5), in Rio 3's Radiant voice.*  
+Radiant pass `20260728.052441` — living L1 rename-forward: **MUR** (was MALA); prefer **kg u32** · WOV retire roadmap last
 
 ---
 
