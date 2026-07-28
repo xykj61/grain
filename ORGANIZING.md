@@ -23,7 +23,7 @@ Read the sections below when you wonder where a new file belongs. When a season'
 
 **`foundations/`** — the why beneath the work: foundation briefs, the distilled essays and the weave that composes them, and the civic visions. Dated artifacts rest beneath a living README.
 
-**`saga/`** — season close narratives (final draft / seated validator reports and end-of-arc arithmetic). Counsel proposes; this shelf keeps what a season names as its lasting close. Opened `20260727.234128`; first resident is The Sound's saga of the end.
+**`saga/`** — season close narratives (final draft / seated validator reports and end-of-arc arithmetic). Counsel proposes; this shelf keeps what a season names as its lasting close. Opened `20260727.234128`; first resident is The Sound's saga of the end (**seated** `20260727.234617`). Living season: The Tensegral Season (`counsel/20260727-234617_the-tensegral-season.md`).
 
 **`classical-vedic-astrology/`** — the reading craft: a siloed study library in topic folders (`studies/nakshatras/`, `planets-in-signs/`, `planet-in-house/`, …), composable templates in `templates/`, demonstration readings in `readings/`, and the dual-zodiac caster. Names stay siloed to the placeholder **Alice** by consent and by design; the fuller originals rest in the private lane, and gratitude to teachers lives inside each study.
 

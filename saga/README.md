@@ -16,7 +16,7 @@ A saga is not a check-in and not a waymark. It carries panes (parity · keys · 
 
 | Stamp | Saga | Status |
 |-------|------|--------|
-| `20260727.233237` | [The saga of the end — parity weave and personal server key data](20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md) | Final draft · Sound Season |
+| `20260727.233237` | [The saga of the end — parity weave and personal server key data](20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md) | **Seated** `20260727.234617` · Sound Season |
 
 ## Infusion — Tally (bounds) and who calls it
 

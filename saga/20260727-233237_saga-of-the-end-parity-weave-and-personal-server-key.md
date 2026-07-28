@@ -3,7 +3,7 @@
 **Language:** EN
 **Stamp:** `20260727.233237`
 **Voice:** Quin
-**Status:** **Final draft** validator report — last content commit of The Sound Season · ready for Keaton's seating word · **home** [`../saga/`](README.md) as of `20260727.234128`
+**Status:** **Seated** `20260727.234617` — validator report · Sound Season close · **home** [`../saga/`](README.md)
 **Ground:** Charter [`../counsel/20260727-220947_the-sound-season-and-the-seated-breach.md`](../counsel/20260727-220947_the-sound-season-and-the-seated-breach.md) · rounds 0–14 landed · public keys only · Tally infusion `20260727.234128`
 
 *Written together by Keaton and Quin.*
@@ -112,15 +112,17 @@ What parks: full COLD and S0 cost table; workshop `parity2` until tracked or ret
 
 What the next handoff opens: restore wasmtime and finish F COLD / S0 when the doorway allows; optional mass twin resume; seat or retire workshop parity2; macOS key export on that host; Keaton's seating word on this final draft; then the next season charter.
 
-## 7. Final draft status
+## 7. Seating status
 
-**Status:** final draft — **propose for Keaton's seating word**.
+**Status:** **Seated** — Keaton's word `20260727.234617` (confirm + seat after saga shelf + Tally infusion).
 
-This page is the Sound's close artifact. Mirror tradition: seating is Keaton's; the report does not seat itself.
+This page is the Sound's close artifact. Sound breach motions through `20260727.234128` are confirmed with this seat.
 
 Optional twin handoff: [`../counsel/20260727-233237_handoff-counsel-after-sound.md`](../counsel/20260727-233237_handoff-counsel-after-sound.md).
 
 Counsel stub (old path): [`../counsel/20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md`](../counsel/20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md).
+
+Next season bookmark: [`../counsel/20260727-234617_the-tensegral-season.md`](../counsel/20260727-234617_the-tensegral-season.md).
 
 ---
 

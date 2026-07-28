@@ -3,10 +3,11 @@
 **Language:** EN
 **Stamp:** `20260727.220947`
 **Voice:** Quin
-**Status:** Seated · **Sound close draft landed** `20260727.233237` — Keaton's word resets the audit to round **0**, expands the Radiant Lint campaign into **The Sound Season**, and **yes-seats** a breach that may yonder and re-point path references across the tree; saga final draft awaits Keaton's seating word
+**Status:** Seated · **Sound closed** — saga **seated** `20260727.234617` · living season handoff → [`20260727-234617_the-tensegral-season.md`](20260727-234617_the-tensegral-season.md)
 **Ground:** Radiant Lint Season bow + rounds 1–4 already measured (`20260727.213740` · r1–r4); Glow Season closed on the workshop lane; g0–g15 bench relays still queued; breach law [`../context/BREACH.md`](../context/BREACH.md) · foundations [`../foundations/20260726-020537_the-breach.md`](../foundations/20260726-020537_the-breach.md)
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260727.234617` — saga seated · Sound confirmation · Tensegral Season opens
 Radiant pass `20260727.234128` — saga shelf root · Tally infusion · final breach edit
 Radiant pass `20260727.233237` — round 15 saga final draft; The Sound closes
 Radiant pass `20260727.233228` — round 14 Arc V key pane polish
@@ -35,7 +36,7 @@ This page is the **bookmark** for The Sound Season. The prior Radiant Lint bookm
 | **origin/main** | measured at seating (see REMEMBER git nib) |
 | **Prior audit** | Radiant Lint bow + Arc I enroll + Arc II waves A–C — ledger advanced; **round count resets to 0** under this charter |
 | **Breach** | **YES seated** this stamp — yondering + path-reference re-point of any in-scope file, under the six promises |
-| **Close artifact** | **Final draft validator report** — *the saga of the end: parity weave + personal server key data* (last commit of The Sound) |
+| **Close artifact** | **Seated** saga — *the saga of the end* on [`../saga/`](../saga/README.md) (`20260727.234617`) · living season → Tensegral |
 | **Bench gate** | g15 L2 still STOP until g0–g14 land (orthogonal; may interleave on Keaton's word) |
 
 ## Words and seats
@@ -191,11 +192,15 @@ Arc V key pane polish: IDENTITY-GREEN reaffirmed · owned gaps named (key-card.c
 
 ### Round 15 landed (`20260727.233237`) — Sound close
 
-**Final draft validator report:** [`../saga/20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md`](../saga/20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md) · handoff [`20260727-233237_handoff-counsel-after-sound.md`](20260727-233237_handoff-counsel-after-sound.md). Reply: [`replies/20260727-233237_re-sound-season-r15.md`](replies/20260727-233237_re-sound-season-r15.md). **The Sound Season closes as draft** — awaiting Keaton's seating word.
+**Final draft validator report:** [`../saga/20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md`](../saga/20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md) · handoff [`20260727-233237_handoff-counsel-after-sound.md`](20260727-233237_handoff-counsel-after-sound.md). Reply: [`replies/20260727-233237_re-sound-season-r15.md`](replies/20260727-233237_re-sound-season-r15.md).
 
 ### Final edit (`20260727.234128`) — saga shelf + Tally
 
-Root [`../saga/`](../saga/README.md) opened · Sound saga moved there · counsel stub remains · Tally README marks updated · Tally battery 6/6 GREEN · motion [`20260727-234128_sound-saga-shelf-and-tally-infusion.md`](20260727-234128_sound-saga-shelf-and-tally-infusion.md). Confirmation check-in follows.
+Root [`../saga/`](../saga/README.md) opened · Sound saga moved there · counsel stub remains · Tally README marks updated · Tally battery 6/6 GREEN · motion [`20260727-234128_sound-saga-shelf-and-tally-infusion.md`](20260727-234128_sound-saga-shelf-and-tally-infusion.md).
+
+### Confirmation + seat (`20260727.234617`)
+
+Keaton's lean **A · Confirm + seat** — saga status → **Seated** · Sound breach edits through `234128` confirmed · living bookmark hands to **The Tensegral Season** [`20260727-234617_the-tensegral-season.md`](20260727-234617_the-tensegral-season.md).
 
 ---
 

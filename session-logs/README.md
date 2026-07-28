@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260727.234703` — [Tensegral Season seat · Sound saga seated](20260727-234703_tensegral-season-seat-checkin.bron) — stay tensegral · Lexicon prep · check-in
 - `20260727.234402` — [Sound confirmation check-in · saga shelf](20260727-234402_sound-confirmation-checkin.bron) — confirm+seat leans · Tally GREEN
 - `20260727.234128` — [Sound saga shelf · Tally infusion](20260727-234128_sound-saga-shelf-tally.bron) — root saga/ · 6/6 Tally · ROUND MODE GREEN
 - `20260727.234028` — [Sound close check-in · saga seat](20260727-234028_sound-close-checkin.bron) — leans A–E · recommend seat
