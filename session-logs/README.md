@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.051741` — [MUR Season u21 tool-wave go-nogo](20260728-051741_mur-season-u21-tool-wave-go-nogo.bron) — GO on kg u32 · steps 1–4 rehearsed · u22 next
 - `20260728.051629` — [MUR Season u20 fixture dry-run](20260728-051629_mur-season-u20-fixture-dry-run.bron) — rye-coupled · memo held · steps 1–4 rehearsed · u21 next
 - `20260728.051443` — [MUR Season u19 wire-lab opener rehearsal](20260728-051443_mur-season-u19-wire-lab-opener-rehearsal.bron) — step-3 checklist · guests held · no renames · u20 next
 - `20260728.051309` — [MUR Season u18 parity announce rehearsal](20260728-051309_mur-season-u18-parity-announce-rehearsal.bron) — parity_ch01 M1/M2 map · no renames · u19 next

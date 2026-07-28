@@ -1,0 +1,15 @@
+format session-log-v1
+stamp 20260728.051741
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title MUR Season u21 tool-wave go-nogo
+prompt waymark u20 complete u21 next · asks none
+think Walk u21: reaffirm rehearsal seats present gen_murr GREEN mala_m1 GREEN no early murr homes; seat single GO card for kg u32.
+think Default live plan steps 1-4 lean A fixture guests held; name no-go conditions; no live rename this round.
+think Update living pins · round-close send.
+obs Tool wave is ready on his word; module wave still waits u48.
+file counsel/20260728-051741_mur-season-u21-tool-wave-go-nogo.md create
+file tools/fixtures/prin_scope.sh waymark u21/u22
+recommend check-in seat kg u32 to open tool wave or keep-going kg u22 harden while waiting
