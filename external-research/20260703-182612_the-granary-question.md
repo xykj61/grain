@@ -3,7 +3,7 @@
 *Kaeden asked what to call the Mantra global namespace — the source-sharing surface that is to
 Mantra what the great forges are to the old version control, spoken without their trademarks:
 a Realidream application, Kumara identities at the door, weaves browsed and cloned, Puddle
-bundles installed, Linengrow data-bundles purchased in MALA over WOV's ledger rails. This
+bundles installed, Linengrow data-bundles purchased in MUR (was MALA) over WOV's ledger rails. This
 study draws the design and parks the name candidates in RTAC, seating nothing.*
 
 **Stamp:** `20260703.182612` (supplied verbatim by Kaeden)
@@ -13,6 +13,7 @@ study draws the design and parks the name candidates in RTAC, seating nothing.*
 
 *Written together by Kaeden and Claude (Fable 5), in Rio 3's Radiant voice. Name affirmed by Kaeden `20260710.163043`.*
 
+Radiant pass `20260728.050430` — living rename-forward: **MUR** / **Murr** (was MALA / Mala)
 ---
 
 ## Seated name (`20260710.163043`)
@@ -29,7 +30,7 @@ signed name-facts; a rename is a new fact beside the old, so links never rot
 resins plus signed history; to host is to serve resins, to clone is to fold them, and every
 mirror is equal because the signatures travel with the bytes — every artist a node, the
 self-hosted ledger as the unit of sovereignty. **Exchange** — Puddle bundles and Linengrow
-data-bundles list beside the code they came from, priced in MALA, settled on WOV's L1 or L2
+data-bundles list beside the code they came from, priced in MUR (was MALA), settled on WOV's L1 or L2
 as the size of the moment demands, receipts provable without identities exposed. The reading
 surface is a Realidream application: Scribble renders the prose, Skate draws the diffs, and
 the whole storefront is a projection anyone can re-derive from the log — the citizen's-window

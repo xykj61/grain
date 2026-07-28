@@ -3,6 +3,7 @@
 **Stamp:** `20260728.025220`
 **Voice:** Quin
 
+Radiant pass `20260728.050430` — living rename-forward: **MUR** / **Murr** (was MALA / Mala)
 ---
 
 ## State
@@ -22,7 +23,7 @@
 | # | Lean |
 |---|------|
 | A | **kg u0** — bow · measure · affirm three pauses · first wave map |
-| B | Survey MALA/Mala hit census (measure only · no sed) |
+| B | Survey MUR (was MALA)/Murr (was Mala) hit census (measure only · no sed) |
 | C | Claim murr.fund (his hand) |
 
 ---

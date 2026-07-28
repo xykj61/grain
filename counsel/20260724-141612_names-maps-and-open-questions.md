@@ -12,6 +12,7 @@ Radiant pass `20260727.224156` — path re-point only; claims unchanged
 Radiant pass `20260724.223233`
 *Erratum `20260724.223233` — remote count: living canon is **four**; see [`context/REMOTE_ROSTER.md`](../context/REMOTE_ROSTER.md). The “five remotes” wording in the body stays as testimony.*
 
+Radiant pass `20260728.050430` — living rename-forward: **MUR** / **Murr** (was MALA / Mala)
 ---
 
 Three sittings in one day, and each asked a different kind of question. The first weighed the tree — the **economy**: bytes, tokens, windows, harnesses. The second read its body — the **anatomy**: genres, letters, ladders, seats. This third one looks outward and forward — the **strategy**: what the names promise, how we meet the elder network, what stewards what, and which questions we have been circling without asking. Nothing here corrects the second sitting; everything here extends it, so the braid at the end runs both as one lap.
@@ -26,7 +27,7 @@ So my counsel on the trade you sketch — Rhyz's purpose moving under Maze's nam
 
 **Rung** deserves its own gentle line: it is a lovely word — and today it is a name hunting a concern. Our discipline runs the other way: concerns earn names; names never go recruiting. Hold it in the heart, and if a ladder-shaped system concern ever knocks, the word will be waiting.
 
-And the open **M slot** carries no debt. The elder kernel itself leaves letters unused — F and H stand empty in Arvo to this day — so gaps in the alphabet are honest. Meanwhile the M *module* family is already the richest we have: MALA, Mantra, Mandi, Mycelium. The kernel letter can rest open forever without a single thing going unbuilt.
+And the open **M slot** carries no debt. The elder kernel itself leaves letters unused — F and H stand empty in Arvo to this day — so gaps in the alphabet are honest. Meanwhile the M *module* family is already the richest we have: MUR (was MALA), Mantra, Mandi, Mycelium. The kernel letter can rest open forever without a single thing going unbuilt.
 
 ---
 

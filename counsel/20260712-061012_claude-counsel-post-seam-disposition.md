@@ -12,6 +12,7 @@
 
 Radiant pass `20260725.104506`
 
+Radiant pass `20260728.050430` — living rename-forward: **MUR** / **Murr** (was MALA / Mala)
 ---
 
 ## Affirmed (read-only)
@@ -30,7 +31,7 @@ Seam season closed whole on `main`: studies 1–4, CapTP-as-fold decline, giving
 ## T2 counsel (shape only — not a brief yet)
 
 1. **Loop-scoped payer privacy** — sealing `from` on completion alone is thin while request/acceptance name the poster; real quiet means a per-ask pseudonymous poster key from post through completion, Nyasa as trust bridge.
-2. **Two honest shapes** — *quiet by courtesy* (glass withholding, OA-L4 / `withheld=excluded`, fold still tells) vs *private by proof* (tier-Sigma / buds on the fold — crosses MALA plaintext conservation; wants its own brief). Lean: courtesy as T2, proof as T3 in ZK season.
+2. **Two honest shapes** — *quiet by courtesy* (glass withholding, OA-L4 / `withheld=excluded`, fold still tells) vs *private by proof* (tier-Sigma / buds on the fold — crosses MUR (was MALA) plaintext conservation; wants its own brief). Lean: courtesy as T2, proof as T3 in ZK season.
 3. **Gap 5 ↔ Door 3** — pass-gated cover notes are the consumer-edge pass arriving on the giving lane; lanes converge.
 
 ## Ordered next moves (Claude disposition)

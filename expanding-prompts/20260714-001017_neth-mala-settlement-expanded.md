@@ -6,11 +6,12 @@
 **Status:** Living — the expanded, research-grounded form of the Neth seed, addressed to a generic Acme Corporation employee. Design and social-experiment framing only; not financial, investment, or legal advice.
 Radiant pass `20260728.044925` — living rename-forward: **MUR** / **Murr** (was MALA / Mala); dated path kept
 
+Radiant pass `20260728.050430` — living rename-forward: **MUR** / **Murr** (was MALA / Mala)
 ---
 
 ## The Seed
 
-Add an N-vane after Maze called **Neth** — the Glow OS version of Sui, evolved from what was called MALA (now **MUR**), interoperating with Ethereum. Adapt MUR to Glow/Maze/TAME guidance. Make MUR a social experiment: a fractal universe of ETH/SOL/SUI/Azimuth, with an L2 that is a WOV Glow OS implementation fusing a Glow reimplementation of TigerBeetle as a pinned sidechain to the MUR/Murr (Mycelium/Weave/Mantra/Ford) L1, bootstrapped from Neth, woven with the Kumara+Ames fusion and the existing Comlink designs, with new Neth cores, libs, marks, and surs.
+Add an N-vane after Maze called **Neth** — the Glow OS version of Sui, evolved from what was called MUR (was MALA) (now **MUR**), interoperating with Ethereum. Adapt MUR to Glow/Maze/TAME guidance. Make MUR a social experiment: a fractal universe of ETH/SOL/SUI/Azimuth, with an L2 that is a WOV Glow OS implementation fusing a Glow reimplementation of TigerBeetle as a pinned sidechain to the MUR/Murr (Mycelium/Weave/Mantra/Ford) L1, bootstrapped from Neth, woven with the Kumara+Ames fusion and the existing Comlink designs, with new Neth cores, libs, marks, and surs.
 
 ## The Seed, Expanded and Made Robust (after research)
 

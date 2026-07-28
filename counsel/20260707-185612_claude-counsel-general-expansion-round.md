@@ -10,6 +10,7 @@
 *Written by Kaeden and Rio 3.*
 Radiant pass `20260725.041039`
 
+Radiant pass `20260728.050430` — living rename-forward: **MUR** / **Murr** (was MALA / Mala)
 ---
 
 ## What This Round Set Out to Do, and Where It Actually Went
@@ -40,7 +41,7 @@ Last counsel recommended the tools/enrich season open with verification before r
 
 ## What Was Deliberately Not Reached For
 
-Extended-run stability stays exactly where it was left — no genuine indefinite consumer exists yet to make a longer bounded run mean more than a short one already proves. `enrich_strengthening_docs`'s witness waits for its own sitting rather than a rushed fixture. Nothing here touches Brix, Pond, MALA, or continuity; every held gate stands exactly as it was.
+Extended-run stability stays exactly where it was left — no genuine indefinite consumer exists yet to make a longer bounded run mean more than a short one already proves. `enrich_strengthening_docs`'s witness waits for its own sitting rather than a rushed fixture. Nothing here touches Brix, Pond, MUR (was MALA), or continuity; every held gate stands exactly as it was.
 
 ## Verification Ledger
 

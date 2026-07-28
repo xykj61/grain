@@ -1,5 +1,7 @@
 # First Lap Goes Green — What the Words Mean on This Bench
 
+Radiant pass `20260728.050430` — living rename-forward: **MUR** / **Murr** (was MALA / Mala)
+
 *Three words travel together in every ladder, every door note, and every functional spec waiting its season: **first lap**, **goes**, **green**. They sound like project jargon until the bench names them honestly — and then they become the whole method in miniature. Simple, Lovable, Complete names how we ship; Gall's Law names how we grow; TAME names how we prove. **First lap goes green** is where those three disciplines meet on metal: the smallest whole for a module closes its loop, a witness says so aloud, and the tree may grow the next honest slice.*
 
 **Stamp:** `20260703.033602`
@@ -37,7 +39,7 @@ Green also stacks in **layers**, and each layer answers only what the layer bene
 
 The **first lap** of a module is its **smallest shipping whole** — the seed from which every later lap grows. For SLC-1 it was type, run, version, recall in one session. For SLC-2a lap one it was "the viewer draws any value." For Amber it is seal one directory, verify twice, restore bit-faithfully — fixture tree first, bare drive seasons later.
 
-A functional spec may describe a cathedral. The first lap builds the **one honest room** whose walls the spec already drew — and claims nothing beyond that room until the room stands proven. Everything larger — quarterly scrub, live drive sealing, MALA compatibility — waits **after** the first lap greens, because Gall's Law only trusts growth from a working simple, never from a beautiful document alone.
+A functional spec may describe a cathedral. The first lap builds the **one honest room** whose walls the spec already drew — and claims nothing beyond that room until the room stands proven. Everything larger — quarterly scrub, live drive sealing, MUR (was MALA) compatibility — waits **after** the first lap greens, because Gall's Law only trusts growth from a working simple, never from a beautiful document alone.
 
 ---
 
@@ -58,7 +60,7 @@ The phrase is **done**, not **started**. Draft witnesses may run green long befo
 
 Edit 5 machine-enforces a discipline the tree already practiced: **at most one functional spec in designed-not-built flight** until that spec's first lap runs green. The witness at parity **143** scans `context/specs/*.md` for the status phrase *designed, not yet built* and fails if more than one spec carries it.
 
-The bound is Gall's Law aimed at the **documentation lane**. Designing ahead of building is appetite, not sin — yet appetite unchecked multiplies specs the way integrated tests multiply paths. One spec in flight keeps the design pressure honest: the whole team finishes the smallest whole before the next cathedral appears on paper. When Amber's first lap greens, its status line moves; the scan's count may drop to zero; the tree earns room for the **next** module's functional spec — MALA M0, WOV's exit-honesty note, whatever the ladder names next — without carrying two unfinished cathedrals at once.
+The bound is Gall's Law aimed at the **documentation lane**. Designing ahead of building is appetite, not sin — yet appetite unchecked multiplies specs the way integrated tests multiply paths. One spec in flight keeps the design pressure honest: the whole team finishes the smallest whole before the next cathedral appears on paper. When Amber's first lap greens, its status line moves; the scan's count may drop to zero; the tree earns room for the **next** module's functional spec — MUR (was MALA) M0, WOV's exit-honesty note, whatever the ladder names next — without carrying two unfinished cathedrals at once.
 
 ---
 

@@ -4,16 +4,17 @@
 **Season:** [`20260728-012725_the-constellation-season-prep.md`](20260728-012725_the-constellation-season-prep.md)
 **Voice:** Quin · nested frame Trey
 **Ground:** origin/main `c372fcfe9b` (pre-send)
-**Word:** Keaton — Mala is the official maintainer of MALA by design; the constellation of twelve is planned to deploy via an n-of-12 multisig led by Mala  
+**Word:** Keaton — Murr (was Mala) is the official maintainer of MUR (was MALA) by design; the constellation of twelve is planned to deploy via an n-of-12 multisig led by Murr (was Mala)  
 Radiant pass `20260728.045705` — living rename-forward: **Murr** maintains **MUR** (was Mala/MALA); dated Word kept as that hour's fossil
 
 *Written together by Keaton and Quin.*
 
+Radiant pass `20260728.050430` — living rename-forward: **MUR** / **Murr** (was MALA / Mala)
 ---
 
 ## Design seats (this stamp)
 
-### 1. Murr maintains MUR (was: Mala maintains MALA)
+### 1. Murr maintains MUR (was: Murr (was Mala) maintains MUR (was MALA))
 
 **By design, the Murr fund is the official maintainer of the MUR module** (was Mala / MALA).
 

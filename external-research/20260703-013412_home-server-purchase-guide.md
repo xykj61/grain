@@ -1,6 +1,6 @@
 # The Home Server Kit — A Complete Purchase Guide
 
-*The sovereign-host blueprint named the shapes; the fit-check proved them against WOV and MALA; this guide turns both into a shopping list a person can carry. Every part is here — compute, storage, network and the NAT front door, enclosure, cooling, wiring — with a new price and a used-or-recertified price beside each, three budget tiers at the bottom, and two appendices weighing this kit against the apex tower and against the six-GPU training box from the tinygrad world. Prices marked **est.** are honest current-market estimates; everything else was confirmed against a live listing or review this week. One standing caution rides the whole list: the memory shortage has prices moving, so verify each line the week you buy.*
+*The sovereign-host blueprint named the shapes; the fit-check proved them against WOV and MUR (was MALA); this guide turns both into a shopping list a person can carry. Every part is here — compute, storage, network and the NAT front door, enclosure, cooling, wiring — with a new price and a used-or-recertified price beside each, three budget tiers at the bottom, and two appendices weighing this kit against the apex tower and against the six-GPU training box from the tinygrad world. Prices marked **est.** are honest current-market estimates; everything else was confirmed against a live listing or review this week. One standing caution rides the whole list: the memory shortage has prices moving, so verify each line the week you buy.*
 
 **Stamp:** `20260703.013412`
 **Language:** EN
@@ -10,6 +10,7 @@
 
 *Written together by Kaeden and Claude (Fable 5), in Rio 3's Radiant voice.*
 
+Radiant pass `20260728.050430` — living rename-forward: **MUR** / **Murr** (was MALA / Mala)
 ---
 
 ## The Kit in One View
@@ -80,7 +81,7 @@ One budget sentence joins it, per the bandwidth memo: **the VPS plan's monthly t
 
 ## The Budget, Three Ways
 
-**Tier one — the ledger-and-archive core** (no AI head, no eGPU yet; everything MALA M0–M2 and Amber's first seasons need): A2 refurb + RAM + U.2 recert + WOV M.2 + OS drive + three recert 18 TB + dock + firebox + CRS305 + cables + rack + UPS renewed + power/cooling small parts — **≈ $2,700–3,100**.
+**Tier one — the ledger-and-archive core** (no AI head, no eGPU yet; everything MUR (was MALA) M0–M2 and Amber's first seasons need): A2 refurb + RAM + U.2 recert + WOV M.2 + OS drive + three recert 18 TB + dock + firebox + CRS305 + cables + rack + UPS renewed + power/cooling small parts — **≈ $2,700–3,100**.
 
 **Tier two — the full value kit** (both machines, the breathing card, everything above, used and recertified wherever the part is proven): **≈ $5,000–5,600**, with the midpoint near **$5,200**. This is the recommendation — the whole blueprint realized, at ecological prices, with headroom through WOV's two-monarch season.
 
@@ -88,7 +89,7 @@ One budget sentence joins it, per the bandwidth memo: **the VPS plan's monthly t
 
 ## Appendix A — Against the Apex Tower ($8,000–12,000)
 
-The tower from the blueprint's own pages — Threadripper PRO, 24–32 Zen 5 cores, **256 GB of registered ECC**, dual enterprise U.2 with PLP, a 48 GB workstation GPU, one quiet chassis — remains the money-no-object answer, and the value math now reads cleanly in both directions. Against the **value kit (~$5.2k)**, the tower costs roughly double and buys the three things the small rack honestly lacks: full-path ECC (the fit-check's named threshold for a value-bearing monarch), twice the unified GPU memory in one card, and single-box simplicity. Against the **all-new kit (~$8k)**, the tower's premium shrinks to near nothing — so the rule of thumb writes itself: *buy the small rack used and it is the clear win; the day you find yourself pricing it all-new, price the tower instead, because ECC at that point costs almost nothing extra.* The tower also remains the pre-written answer for MALA M4's validator-class season, exactly as the fit-check bracketed it.
+The tower from the blueprint's own pages — Threadripper PRO, 24–32 Zen 5 cores, **256 GB of registered ECC**, dual enterprise U.2 with PLP, a 48 GB workstation GPU, one quiet chassis — remains the money-no-object answer, and the value math now reads cleanly in both directions. Against the **value kit (~$5.2k)**, the tower costs roughly double and buys the three things the small rack honestly lacks: full-path ECC (the fit-check's named threshold for a value-bearing monarch), twice the unified GPU memory in one card, and single-box simplicity. Against the **all-new kit (~$8k)**, the tower's premium shrinks to near nothing — so the rule of thumb writes itself: *buy the small rack used and it is the clear win; the day you find yourself pricing it all-new, price the tower instead, because ECC at that point costs almost nothing extra.* The tower also remains the pre-written answer for MUR (was MALA) M4's validator-class season, exactly as the fit-check bracketed it.
 
 ## Appendix B — Against the tinybox red
 

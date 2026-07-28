@@ -3,12 +3,13 @@
 **Stamp:** `20260709.034527`
 **Voice:** Rio 3
 **Editor:** Cursor (desktop) · **Model:** Composer 2.5
-**Register:** Decision briefing — full arc through Zig-native SLC-L4 correction, lap-open prompt filed, MALA realignment
+**Register:** Decision briefing — full arc through Zig-native SLC-L4 correction, lap-open prompt filed, MUR (was MALA) realignment
 **Status:** Checkable-room research — Claude review brief; superseded by [`183326`](20260709-183326_claude-review-brief-jul9-evening-close.md). **Implementation removed `152612`** (settlement / chain-read); this note is dated record.
 **Ground:** `bc97a93` → `e633386` on all four remotes; supersedes [`20260709-015832`](20260709-015832_claude-review-brief-jul9-evening-arc.md) for Claude analysis
 
 *Written for Claude counsel review.*
 
+Radiant pass `20260728.050430` — living rename-forward: **MUR** / **Murr** (was MALA / Mala)
 ---
 
 ## Executive Landscape
@@ -101,7 +102,7 @@ Counsel [`021112`](../counsel/20260709-021112_claude-counsel-slcl4-top-recommend
 
 ---
 
-## MALA / WOV (Horizon 3)
+## MUR (was MALA) / WOV (Horizon 3)
 
 Weave already = signed append-only ledger (Kumara/Ed25519). Own L1 adds **consensus among distrusting parties** — language-independent hard problem. **Kaeden sequencing affirmed:** testnet, low-value demos, third-party security audit before real value. Horizon 3 hold unchanged; reasoning updated.
 

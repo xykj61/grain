@@ -10,6 +10,7 @@
 
 *Written together by Kaeden and Claude (Fable 5), in Rio 3's Radiant voice — with gratitude to the friend whose question sharpened it.*
 
+Radiant pass `20260728.050430` — living rename-forward: **MUR** / **Murr** (was MALA / Mala)
 ---
 
 ## Part One — Bandwidth: Name the Budget, Bound the Lanes, Let Popularity Leave Home
@@ -18,7 +19,7 @@
 
 The home fiber is generous; the rented front door is the honest constraint. A five-to-ten-dollar VPS carries a monthly transfer cap — commonly one to ten terabytes — and that cap, never the home line, is the rack's real public bandwidth. TAME's oldest rule applies without modification: everything has a limit, so **the monthly egress budget becomes a named constant**, metered at the tunnel's mouth, checked at the edge, failing loud with a named condition rather than a silent overage bill. A budget nobody named is a budget somebody else will name for you, at the end of the month, in dollars.
 
-The arithmetic beneath the fear is kinder than the fear. A signed fact — a MALA transfer, a receipt, a post, a label — is hundreds of bytes. A month of vigorous civic life in facts is megabytes. **The ledger world costs almost nothing to serve.** An entire community's transactions, attestations, and conversation ride inside a budget that a single hour of video would spend. This is the first comfort to hand the friend: the parts of the platform that matter most are the parts that are nearly free.
+The arithmetic beneath the fear is kinder than the fear. A signed fact — a MUR (was MALA) transfer, a receipt, a post, a label — is hundreds of bytes. A month of vigorous civic life in facts is megabytes. **The ledger world costs almost nothing to serve.** An entire community's transactions, attestations, and conversation ride inside a budget that a single hour of video would spend. This is the first comfort to hand the friend: the parts of the platform that matter most are the parts that are nearly free.
 
 ### The lanes already know their manners
 

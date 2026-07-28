@@ -10,6 +10,7 @@
 *Written by Kaeden and Rio 3.*
 Radiant pass `20260725.041039`
 
+Radiant pass `20260728.050430` — living rename-forward: **MUR** / **Murr** (was MALA / Mala)
 ---
 
 ## First, What Actually Landed
@@ -26,7 +27,7 @@ This bench did not take the report's word for the ratchet's close — it ran the
 
 ## What This Leaves
 
-One nine-line edit to the scanned-directories list, eight names to change in one small file, and a ratchet that was already true becomes true without qualification. The tools surface waits, named honestly rather than folded in by momentum, for its own counted season. Nothing else about this tree's held items moved tonight — Brix, Pond, MALA, and continuity stand exactly where they were left.
+One nine-line edit to the scanned-directories list, eight names to change in one small file, and a ratchet that was already true becomes true without qualification. The tools surface waits, named honestly rather than folded in by momentum, for its own counted season. Nothing else about this tree's held items moved tonight — Brix, Pond, MUR (was MALA), and continuity stand exactly where they were left.
 
 ---
 

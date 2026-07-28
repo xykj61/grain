@@ -10,6 +10,7 @@
 
 *Written together by Kaeden and Claude (Fable 5), in Rio 3's Radiant voice.*
 
+Radiant pass `20260728.050430` — living rename-forward: **MUR** / **Murr** (was MALA / Mala)
 ---
 
 ## The Question
@@ -30,7 +31,7 @@ So the honest answer to the question: Mysticeti has blocks the way a river has b
 
 ## What Rye Takes From the Seam
 
-Three inheritances, each already half-seated in the tree. First, the two-layer truth: blocks are the ordering layer's word and objects are the value layer's word, and both can be true in one system — Weave is our DAG substrate on the block side, and the value-object question (its name parked in RTAC) is the object side; neither displaces the other. Second, the sorting discipline: sort facts by their appetite for order, pay the gate only for facts that need the gate — which is the bench-as-block doctrine extended from review into settlement, and the very reason MALA climbs a ladder and Mycelium waits at M4 rather than arriving early. Third, time as structure: Mysticeti's rounds are logical clocks — order emerges from references between blocks rather than from wall-time — which sits in quiet harmony with the ratified word that Maitreya owns time: the modules below need only sequence, and sequence is structural.
+Three inheritances, each already half-seated in the tree. First, the two-layer truth: blocks are the ordering layer's word and objects are the value layer's word, and both can be true in one system — Weave is our DAG substrate on the block side, and the value-object question (its name parked in RTAC) is the object side; neither displaces the other. Second, the sorting discipline: sort facts by their appetite for order, pay the gate only for facts that need the gate — which is the bench-as-block doctrine extended from review into settlement, and the very reason MUR (was MALA) climbs a ladder and Mycelium waits at M4 rather than arriving early. Third, time as structure: Mysticeti's rounds are logical clocks — order emerges from references between blocks rather than from wall-time — which sits in quiet harmony with the ratified word that Maitreya owns time: the modules below need only sequence, and sequence is structural.
 
 ## A Note on Counsel
 

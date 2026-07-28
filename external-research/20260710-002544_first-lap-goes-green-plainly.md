@@ -11,6 +11,7 @@
 
 *Written by Kaeden and Rio 3 (Grok). Creative climb inside the jail — oldest shipping phrase, kitchen voice.*
 
+Radiant pass `20260728.050430` — living rename-forward: **MUR** / **Murr** (was MALA / Mala)
 ---
 
 ## In One Breath
@@ -45,7 +46,7 @@ A lap needs **every layer it honestly named** — not always all three. SLC-2a L
 
 ## Edit 5 — Why the Phrase Became Law
 
-At most **one** functional spec may sit in *designed, not yet built* flight until its first lap greens. That keeps design appetite from multiplying unfinished cathedrals the way thick integrated tests multiply paths. Count is **0** today; Amber already graduated; MALA and WOV grew from their own first rooms.
+At most **one** functional spec may sit in *designed, not yet built* flight until its first lap greens. That keeps design appetite from multiplying unfinished cathedrals the way thick integrated tests multiply paths. Count is **0** today; Amber already graduated; MUR (was MALA) and WOV grew from their own first rooms.
 
 Draft green ≠ lap closed. The phrase is **done**, not **started**.
 

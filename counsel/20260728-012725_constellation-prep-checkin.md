@@ -4,8 +4,9 @@
 **Voice:** Quin
 
 Radiant pass `20260728.022218` — rename-forward **Djin** (was Twah) in living doors
-**Word:** approve prep · seat Mala · Djin (was Twah) · affirm Siya triad
+**Word:** approve prep · seat Murr (was Mala) · Djin (was Twah) · affirm Siya triad
 
+Radiant pass `20260728.050430` — living rename-forward: **MUR** / **Murr** (was MALA / Mala)
 ---
 
 ## Seated
@@ -13,7 +14,7 @@ Radiant pass `20260728.022218` — rename-forward **Djin** (was Twah) in living 
 | Item | Standing |
 |------|----------|
 | Prep for 32-round season | **Approved** |
-| **Mala** Aries fire **1** · mala.fund prep | **Seated** |
+| **Murr (was Mala)** Aries fire **1** · mala.fund prep | **Seated** |
 | **Djin** (was Twah) Taurus earth **2** · djin.fund prep | **Seated** |
 | **Siya** Gemini air **3** | **Affirmed** |
 | Myc/Move/Sui deploy path | **Prep-only** stack map seated; no live deploy |

@@ -6,6 +6,7 @@
 **Status:** Vision register — design → horizon lane, siloed. Register: design (Two Rooms — a proposal, no broadcast code). Sources studied and thanked below; nothing copied. Addressed to a generic Acme Corporation employee.
 **Companion:** `20260715-172000_pool-keystone-revival-realidream-landscape.md` (Sala as the Landscape-parallel viewer under Pool — this doc gives Sala a live face); `20260712-093812_mesh-inference-study.md` (the pooled-compute mesh this rides on)
 
+Radiant pass `20260728.050430` — living rename-forward: **MUR** / **Murr** (was MALA / Mala)
 ---
 
 ## What This Answers
@@ -44,7 +45,7 @@ Named as a ladder, each provable before the next, none built:
 | **B0** | **Session-as-log** | A Rishi session recorded as a signed Weave log of timestamped events, replayable through Sala at rest (asciinema's shape, our fold) | Weave slice green (it is) |
 | **B1** | **Live carriage** | The same log carried in order over Comlink to one subscriber, rendered live in Sala; the ordered-stream seam is Mycelium's first real consumer | B0 · Pool P0 · Comlink ordering aspect |
 | **B2** | **Audience + back-channel** | Many subscribers; chat and reactions as signed facts folded into the same log; the VOD is the log at rest | B1 |
-| **B3** | **Inference and economics** | Quin folds live captions/summary over the stream; MALA/Pool meter a giving lane (broadcast freely as seva) or a market lane (priced), the same fact shape underneath | B2 · Quin lap · MALA |
+| **B3** | **Inference and economics** | Quin folds live captions/summary over the stream; MUR (was MALA)/Pool meter a giving lane (broadcast freely as seva) or a market lane (priced), the same fact shape underneath | B2 · Quin lap · MUR (was MALA) |
 
 ## Civic-Style Integrity Audit
 

@@ -9,6 +9,7 @@
 
 *Written for Claude counsel review.*
 
+Radiant pass `20260728.050430` — living rename-forward: **MUR** / **Murr** (was MALA / Mala)
 ---
 
 ## Executive Landscape
@@ -128,8 +129,8 @@ Realidream ladder: rung 1 (SLC-2a drawn terminal) active; rungs 2–3 held; rung
 |------|-------|
 | Agent-writing paste | Awaiting paste |
 | Snapshot lap 4 | Kaeden's hands |
-| MALA graduation | Trigger decides |
-| Own MALA L1 / WOV L2 | Horizon 3 |
+| MUR (was MALA) graduation | Trigger decides |
+| Own MUR (was MALA) L1 / WOV L2 | Horizon 3 |
 | Mainnet treasury | Custody event — not bench work |
 | Settlement crown in prose | Mainnet-gated |
 

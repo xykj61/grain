@@ -1,4 +1,6 @@
-# Re: Constellation m2 — Mala · Amphora
+# Re: Constellation m2 — Murr (was Mala) · Amphora
+
+Radiant pass `20260728.050430` — living rename-forward: **MUR** / **Murr** (was MALA / Mala)
 
 **Stamp:** `20260728.013722`
 **Voice:** Quin

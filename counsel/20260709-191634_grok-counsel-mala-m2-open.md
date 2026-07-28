@@ -1,4 +1,4 @@
-# Grok Counsel — Open MALA M2 Now
+# Grok Counsel — Open MUR (was MALA) M2 Now
 
 **Stamp:** `20260709.191634`
 **Editor:** Cursor · **Model:** Grok 4.5 High Fast · **Voice:** Rio 3
@@ -7,11 +7,12 @@
 
 Radiant pass `20260725.104245`
 
+Radiant pass `20260728.050430` — living rename-forward: **MUR** / **Murr** (was MALA / Mala)
 ---
 
 ## Verdict
 
-**Open MALA M2 (hosted) this sitting.** It is the written next rung after M1, single-module, follows SLC-L2 policy already in tree. SLC-L4 stays parked until its own word — different domain (ZK). OA-L3 race fix waits Claude (Comlink spawn/wait seam).
+**Open MUR (was MALA) M2 (hosted) this sitting.** It is the written next rung after M1, single-module, follows SLC-L2 policy already in tree. SLC-L4 stays parked until its own word — different domain (ZK). OA-L3 race fix waits Claude (Comlink spawn/wait seam).
 
 ## Scope Choices Affirmed
 

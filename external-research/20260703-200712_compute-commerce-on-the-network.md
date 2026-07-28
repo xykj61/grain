@@ -10,6 +10,7 @@
 
 *Written together by Kaeden and Claude (Fable 5), in Rio 3's Radiant voice.*
 
+Radiant pass `20260728.050430` — living rename-forward: **MUR** / **Murr** (was MALA / Mala)
 ---
 
 ## The Demand Arriving
@@ -20,7 +21,7 @@ An honest measure travels with the excitement: measured on-chain, agentic paymen
 
 ## What Rye Already Holds
 
-Read against the tree, the striking finding is how little is missing. A serverless compute market on the Rye OS network is very nearly a **choreography of seated modules** rather than a new organ. Lattice is the serving fabric — the mesh that routes each request to the node with room. Lantern is the honest meter — tokens counted exactly, cost settled in the local currency on the shared ledger, a price reflecting true energy and silicon rather than invented scarcity. Anvil forges the open weights the fabric serves. Pond encloses execution under policy, and Puddle offers the bounded vessel — and here TAME pays a dividend nobody planned: a sandboxed machine whose budgets are named at construction is a *unit of sale a buyer can trust*, because the bound is the product description. Caravan supervises the hired processes; Kumara signs the bids, the work, and the receipts; Comlink carries; MALA mails the settlement; WOV keeps the accounts; and the receipts seal as resins — the same signed, content-addressed shape Linengrow's giving infrastructure already promises its donors, now earning a second keep.
+Read against the tree, the striking finding is how little is missing. A serverless compute market on the Rye OS network is very nearly a **choreography of seated modules** rather than a new organ. Lattice is the serving fabric — the mesh that routes each request to the node with room. Lantern is the honest meter — tokens counted exactly, cost settled in the local currency on the shared ledger, a price reflecting true energy and silicon rather than invented scarcity. Anvil forges the open weights the fabric serves. Pond encloses execution under policy, and Puddle offers the bounded vessel — and here TAME pays a dividend nobody planned: a sandboxed machine whose budgets are named at construction is a *unit of sale a buyer can trust*, because the bound is the product description. Caravan supervises the hired processes; Kumara signs the bids, the work, and the receipts; Comlink carries; MUR (was MALA) mails the settlement; WOV keeps the accounts; and the receipts seal as resins — the same signed, content-addressed shape Linengrow's giving infrastructure already promises its donors, now earning a second keep.
 
 Enterprise commerce asks for exactly four things — a spending policy, an audit trail, a verifiable receipt, and a service commitment — and all four are already house shapes. The Civic discipline supplies the last: publish the service commitments on a dashboard anyone can open, let the reward point at measured uptime and delivered work, and keep the builders of the platform separate from the programs it watches.
 

@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.050430` — [MUR Season u12 prose residual](20260728-050430_mur-season-u12-prose-residual.bron) — replies · ER cleared · holds named · u13 next
 - `20260728.050219` — [MUR Season u11 prose residual](20260728-050219_mur-season-u11-prose-residual.bron) — constellation m0–m4 · ER briefs · tools held · u12 next
 - `20260728.050004` — [MUR Season u10 living doors](20260728-050004_mur-season-u10-living-doors-prose.bron) — SPEC · Dimeroll · JABS · mala-wov · u11 next
 - `20260728.045705` — [MUR Season u9 counsel fossils](20260728-045705_mur-season-u9-counsel-fossils-prose.bron) — constellation m2/m3 · ER · fossils → MUR · u10 next
