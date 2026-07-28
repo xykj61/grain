@@ -1,0 +1,15 @@
+format session-log-v1
+stamp 20260728.051150
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title MUR Season u17 tool-wave opener rehearsal
+prompt waymark u16 complete u17 next · asks none
+think Walk u17 dry-run of u32 step 1: inventory witnesses fixtures wire lab inbound refs; run mala_m1_witness baseline.
+think Seat checklist with git mv order · parity hold · fixture/module stop lines; no live rename.
+think Update charter recursion prin_scope Lexicon REMEMBER · round-close send.
+obs M1 GREEN in 543ms; M2 QEMU not re-run this stamp; u32 may open when Keaton seats it.
+file counsel/20260728-051150_mur-season-u17-tool-wave-opener-rehearsal.md create
+file tools/fixtures/prin_scope.sh waymark u17/u18
+recommend keep-going kg u18 parity announce dry-run still no rename or seat kg u32 live step 1

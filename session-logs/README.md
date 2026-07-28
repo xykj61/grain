@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.051150` — [MUR Season u17 tool-wave opener rehearsal](20260728-051150_mur-season-u17-tool-wave-opener-rehearsal.bron) — u32 step-1 checklist · M1 GREEN · no renames · u18 next
 - `20260728.050946` — [MUR Season u16 dual-wave readiness](20260728-050946_mur-season-u16-dual-wave-readiness.bron) — tools+modules READY · Lexicon pin · no renames · u17 next
 - `20260728.050833` — [MUR Season u15 module-wave prep](20260728-050833_mur-season-u15-module-wave-prep.bron) — u48 cluster order seated · no renames · u16 next
 - `20260728.050720` — [MUR Season u14 tool-wave prep](20260728-050720_mur-season-u14-tool-wave-prep.bron) — u32 entry order seated · no renames · u15 next
