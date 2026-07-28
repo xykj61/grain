@@ -38,7 +38,7 @@ No Amphora shred · no Class A rewrite · no commerce golden rewrite · no Inner
 
 ## Next
 
-**kg u86** — next fascia prune lean (yonder / sameness / paper), or check-in. Over-70 signal is clear.
+**LANDED u86** — commerce golden refresh · eight drawn-terminal witnesses GREEN.
 
 ---
 
