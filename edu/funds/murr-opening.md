@@ -1,0 +1,31 @@
+# Murr Fund — Opening (Aries · fire · seat 1 · was Mala)
+
+**Stamp:** `20260728.025220`  
+**Voice:** Quin · nested Trya  
+**Kind:** fund-prep page one — MUR Season prep; no deploy  
+**Generator:** `tools/gen_murr_fund_prep.rish`
+
+---
+
+## Seat
+
+| Field | Standing |
+|-------|----------|
+| Fund | **Murr** (was **Mala**) |
+| Module / L1 | **MUR** (was **MALA**) |
+| Sign · element | **Aries · fire** |
+| Fund order | **1** |
+| Sign index | **0** |
+| Vane | `%murr` (was `%mala`) |
+| Domain | **murr.fund** — claim Keaton's hand alone |
+| Dedication | **Kyler Murray** — honor |
+| Maintainer lean | Murr fund maintains **MUR** (hats distinct) |
+
+## Hard lines
+
+- no live deploy · no wallet · no gas  
+- massive MALA→MUR overwrite walks in **u-rounds**, not this page alone  
+- WOV retirement is **roadmap last**  
+- no live shred without `prin rish breach yes now` + circled scope  
+
+witness:murr-open GREEN — seat · dedication · hard lines · rename spine named

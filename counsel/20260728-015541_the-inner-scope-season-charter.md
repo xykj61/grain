@@ -13,6 +13,7 @@
 Radiant pass `20260728.021508` — Eyva Cancer 4 · %eyva · executive + honor Avanti (she/her)
 Radiant pass `20260728.021252` — Gwoh Leo 5 · %gwoh · honor Sarah Guo / Conviction
 Radiant pass `20260728.020948` — i1 residual sweep · gen_twah ABSENT · gen_djin GREEN
+Radiant pass `20260728.025220` — inner stays PAUSED i6/i7 · innermost MUR Season opens (u0–u127) · Mala/MALA→Murr/MUR approved
 Radiant pass `20260728.024417` — fascia machinery PAUSED at i6/i7 · Trya Virgo 6 · Ariana Grande · sixth voice
 Radiant pass `20260728.023941` — i6 Amphora stack fold · metric_rev=i6 · laps1-3 GREEN · fascia≈49
 Radiant pass `20260728.023555` — i5 fascia metric tighten · metric_rev=i5 · Amphora lap1 fold · window mean · fascia≈49
