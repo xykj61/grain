@@ -7,6 +7,7 @@
 **Ground:** Radiant Lint Season bow + rounds 1–4 already measured (`20260727.213740` · r1–r4); Glow Season closed on the workshop lane; g0–g15 bench relays still queued; breach law [`../context/BREACH.md`](../context/BREACH.md) · foundations [`../foundations/20260726-020537_the-breach.md`](../foundations/20260726-020537_the-breach.md)
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260727.223135` — round 3 breach pilot accreted; path addresses turned
 Radiant pass `20260727.222958` — round 2 log accreted; claims unchanged
 Radiant pass `20260727.221957` — round 1 log accreted; claims unchanged
 Radiant pass `20260727.221508` — round 0 bow landed; breach instrument raised; claims unchanged
@@ -127,6 +128,11 @@ Arc I voice: **forty-six** tracked counsel paths — **44 clean · 2 changed** (
 ### Round 2 landed (`20260727.222958`)
 
 Arc I crumbs: **eleven** edu/manual/context paths — **11 clean · 0 changed**. Ledger **1412**. **Arc I exits** (voice enroll empty; meta-exempt wave reply alone remains). Reply: [`replies/20260727-222958_re-sound-season-r2.md`](replies/20260727-222958_re-sound-season-r2.md). Next door: Arc II scoped breach, or README claim seat; Arc I r3 may early-exit.
+
+### Round 3 landed (`20260727.223135`)
+
+Arc II first scoped breach: **three** WIP notes → `work-in-progress/archive/` · depth-one **14 → 11** · ROUND MODE COMPARE GREEN. Motion: [`20260727-223135_sound-arc-ii-wip-archive-pilot.md`](20260727-223135_sound-arc-ii-wip-archive-pilot.md). Reply: [`replies/20260727-223135_re-sound-season-r3.md`](replies/20260727-223135_re-sound-season-r3.md). Next door: next Arc II scope, or strengthening-compiler yonder.
+
 
 
 

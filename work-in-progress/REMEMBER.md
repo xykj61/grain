@@ -13,7 +13,7 @@
 **Git nib:** `0532615399` · Grain · Radiant Lint r4 Arc II · autoproject96/grain
 **Bookmark:** counsel `20260727.220947` — The Sound Season · audit r0 · seated breach · saga close
 
-**Season:** Framework · EDT · **Grain** umbrella · pier **`~/grain`** · **finishing edge:** The Sound Season r2 Arc I exit · Arc II breach scope or README claim seat · next season charter · bookmark [`counsel/20260727-220947_the-sound-season-and-the-seated-breach.md`](../counsel/20260727-220947_the-sound-season-and-the-seated-breach.md). Prefer **git nib** (never tip) for HEAD.
+**Season:** Framework · EDT · **Grain** umbrella · pier **`~/grain`** · **finishing edge:** The Sound Season r3 Arc II pilot · next breach scope or strengthening-compiler yonder · next season charter · bookmark [`counsel/20260727-220947_the-sound-season-and-the-seated-breach.md`](../counsel/20260727-220947_the-sound-season-and-the-seated-breach.md). Prefer **git nib** (never tip) for HEAD.
 
 ---
 
@@ -36,7 +36,7 @@
 **Read:**
 
 ```bash
-less work-in-progress/20260726-050422_cursor-kg-handoff.md
+less work-in-progress/archive/20260726-050422_cursor-kg-handoff.md
 tail -f /tmp/parity-next/parity.log
 ```
 

@@ -4,10 +4,11 @@
 **Stamp:** `20260726.062108`  
 **Voice:** Quin  
 **Status:** Reply — current status seated; advice ask open for Claude  
-**Ground:** pier `~/grain` · tip at send · handoff [`../../work-in-progress/20260726-050422_cursor-kg-handoff.md`](../../work-in-progress/20260726-050422_cursor-kg-handoff.md) · counsel [`../20260726-044729_the-graph-is-not-a-vane.md`](../20260726-044729_the-graph-is-not-a-vane.md) · [`../20260725-223409_the-tool-the-door-the-rung-and-the-lane.md`](../20260725-223409_the-tool-the-door-the-rung-and-the-lane.md)  
+**Ground:** pier `~/grain` · tip at send · handoff [`../../work-in-progress/archive/20260726-050422_cursor-kg-handoff.md`](../../work-in-progress/archive/20260726-050422_cursor-kg-handoff.md) · counsel [`../20260726-044729_the-graph-is-not-a-vane.md`](../20260726-044729_the-graph-is-not-a-vane.md) · [`../20260725-223409_the-tool-the-door-the-rung-and-the-lane.md`](../20260725-223409_the-tool-the-door-the-rung-and-the-lane.md)  
 **Counsel model this ask targets:** Claude Opus (standing counsel)
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260727.223135` — path re-point only; claims unchanged
 
 ---
 
