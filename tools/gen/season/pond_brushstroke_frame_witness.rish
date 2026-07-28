@@ -1,0 +1,34 @@
+# tools/gen/season/pond_brushstroke_frame_witness.rish — Surface p6 · Pond-framed frame
+#
+#   rishi/bin/rishi run tools/gen/season/pond_brushstroke_frame_witness.rish
+#
+# Two proofs from values:
+#   1) Brushstroke wayland_seed redrawtest — Frame A→B→A signatures (headless)
+#   2) Pond drawn-terminal metalsmoke — Wayland host hop (needs WAYLAND_DISPLAY)
+#
+# Live-five (type · idle · ceiling · :quit) stays hand — not claimed here.
+
+say "pond-frame: Language EN — Frame from values · Pond metalsmoke."
+say "pond-frame: Style Radiant — reuse seed; refuse invent stack."
+say "pond-frame: Lens TAME — Surface Season p6."
+
+let wayland = run ["sh" "-c" "test -n \"$WAYLAND_DISPLAY\""]
+assert wayland.ok else "pond-frame: WAYLAND_DISPLAY unset — run on GNOME Wayland"
+
+let seed_bin = "brushstroke/bin/brushstroke-wayland-seed"
+let have = run ["test" "-x" seed_bin]
+assert have.ok else "pond-frame: build wayland_seed first — see brushstroke/wayland_seed.rye header"
+
+say "pond-frame: Brushstroke redrawtest (Frame from values)..."
+let redraw = run ["sh" "-c" "${seed_bin} redrawtest 2>&1"]
+assert redraw.ok else "pond-frame: redrawtest failed"
+assert redraw.out contains "GREEN" else "pond-frame: redrawtest not GREEN"
+
+say "pond-frame: Pond metalsmoke (Wayland hop)..."
+let metal = run ["rishi/bin/rishi" "run" "tools/slc2a_ring3_metal.rish"]
+assert metal.ok else "pond-frame: metalsmoke failed"
+assert metal.out contains "GREEN: SLC-2a Lap 3" else "pond-frame: metalsmoke missing GREEN"
+
+say "pond-frame: refuse live-five claim · shred · deploy (fold only)"
+say "GREEN: pond-frame — redrawtest · metalsmoke · Surface p6"
+say "GREEN: pond-frame — Frame from values on Pond Wayland hop; live-five still hand."
