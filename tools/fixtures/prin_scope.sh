@@ -11,7 +11,7 @@ Prin scope — seasons · Tally · rish vocabulary
   scope:  named bound of work (season · Tally garden · Prin/rish view)
   outer:  Constellation Season — PAUSED at m8 complete / m9 next
   inner:  Inner Scope Season — PAUSED at i6 complete / i7 next (fascia)
-  innermost: MUR Season — OPEN · u3 complete / u4 next (prose · rename overwrite)
+  innermost: MUR Season — OPEN · u4 complete / u5 next (prose · rename overwrite)
   core:   Gren Season — CLOSED · handed back · lean-16 complete
   fund_triad: Murr · Gren · Siya (living)
   quint:  Keeh Season — CLOSED · handed back

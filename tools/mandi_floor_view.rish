@@ -16,4 +16,4 @@ assert view.out contains "mandi floor view" else "mandi floor view witness missi
 assert view.out contains "GREEN" else "Mandi floor view witness not GREEN"
 assert view.out contains "lines=5" else "mandi floor view missing five-line frame"
 
-say "GREEN: Mandi floor view — vessel listing priced in MALA on a Skate frame."
+say "GREEN: Mandi floor view — vessel listing priced in MUR (was MALA) on a Skate frame."
