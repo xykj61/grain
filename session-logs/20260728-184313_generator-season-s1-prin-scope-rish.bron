@@ -1,0 +1,14 @@
+format session-log-v1
+stamp 20260728.184313
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Generator Season s1 prin_scope to rish
+prompt waymark s0 complete s1 next kg prin_scope migrate
+think Move living slate to tools/prin_scope.rish; keep bash shim and dispatch green.
+think Avoid if/assert else clash in prin.rish; use is_scope flag and bare asserts.
+obs All call paths GREEN; agents edit .rish going forward.
+file tools/prin_scope.rish living pin
+file counsel/20260728-184313_generator-season-s1-prin-scope-rish.md round seat
+recommend kg s2 fuse constructive door or check-in

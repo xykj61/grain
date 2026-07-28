@@ -8,7 +8,8 @@
 **Informal tag:** innermost^6+ · nest-6  
 **Ground:** origin/main `418af54e73` (pre-send)  
 **Within:** paused **innermost** MUR (u91 complete / u92 next) · inside paused Inner Scope · inside paused Constellation  
-**Status:** **OPEN** · s0 planning complete this stamp · **s1** next  
+**Status:** **OPEN** · s0–s1 complete `20260728.184313` · **s2** next  
+Radiant pass `20260728.184313` — s1 prin_scope → rish · living pin tools/prin_scope.rish  
 Radiant pass `20260728.183510` — sext opens · MUR paused · Glow/Rishi/Dojo reminder seated · prin_scope→rish deferred to s1+
 
 *Written together by Keaton and Quin.*
@@ -65,7 +66,7 @@ Geode stays **PREP** parallel (d0) — does not steal s-rounds.
 | `counsel/20260728-183510_generator-season-s0-planning-glow-rishi-dojo.md` | s0 planning · fuse reminder |
 | `expanding-prompts/20260728-183510_generator-season-s0-recursion-prompt.md` | Living paste |
 | Lexicon | **sext** · **The Generator Season** |
-| `tools/fixtures/prin_scope.sh` | Living pin (rish migrate = s1+) |
+| `tools/prin_scope.rish` | Living pin (s1+) · bash shim retained |
 
 ## Trey — documentary frame
 
