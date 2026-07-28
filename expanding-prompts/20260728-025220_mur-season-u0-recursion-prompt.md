@@ -1,7 +1,8 @@
 # MUR Chapter — u0 Recursion Prompt (printout · all scopes kept)
 
-**Stamp:** `20260728.025220` · Radiant pass `20260728.051741`  
+**Stamp:** `20260728.025220` · Radiant pass `20260728.051844`  
 **Use:** paste the fenced block as the next counsel/bench session opener.  
+Radiant pass `20260728.051844` — u22 module-wave opener rehearsal · core import surface · no renames · u23 next
 Radiant pass `20260728.051741` — u21 tool-wave go/no-go · GO on kg u32 · no renames · u22 next
 Radiant pass `20260728.051629` — u20 fixture dry-run · rye-coupled · memo held · steps 1–4 rehearsed · no renames · u21 next
 Radiant pass `20260728.051443` — u19 wire-lab opener rehearsal · step-3 checklist · guests held · no renames · u20 next
@@ -67,11 +68,11 @@ INNERMOST SCOPE (this season — walk here):
   Lexicon: scope·outer·inner·innermost·core·quint · MUR · Murr · retired Mala/MALA · Gren living.
   Prin: rishi/bin/rishi run tools/prin.rish scope
   gen_murr GREEN · deploy RED; gen_gren GREEN (core closed door); gen_mala ABSENT.
-  u0–u21 COMPLETE · u22 next (or seat kg u32 — tool-wave GO card seated).
+  u0–u22 COMPLETE · u23 next (or seat kg u32 — tool-wave GO preferred before u48).
   TOP PRIORITY: rename overwrite everywhere Mala/MALA → Murr/MUR (breach approved seated).
   Fascia shred still needs separate circled yes. WOV retire roadmap last.
   Wave map: counsel/20260728-044738_mur-season-u6-tool-module-wave-map.md
-  Dual-wave READY: tool prep (u14) + module prep (u15) · readiness (u16) · rehearse (u17–u20) · GO (u21).
+  Dual-wave READY: tool GO (u21) · module opener rehearse (u22) · prefer kg u32 before u48.
   Order lean: tools u32–u47 before modules u48–u79 · no silent tree-wide sed.
   Tool prep: counsel/20260728-050720_mur-season-u14-tool-wave-prep.md
   Module prep: counsel/20260728-050833_mur-season-u15-module-wave-prep.md
@@ -81,31 +82,32 @@ INNERMOST SCOPE (this season — walk here):
   Wire rehearsal: counsel/20260728-051443_mur-season-u19-wire-lab-opener-rehearsal.md
   Fixture dry-run: counsel/20260728-051629_mur-season-u20-fixture-dry-run.md
   Tool-wave GO: counsel/20260728-051741_mur-season-u21-tool-wave-go-nogo.md
+  Module opener: counsel/20260728-051844_mur-season-u22-module-wave-opener-rehearsal.md
   Living pin: tools/fixtures/prin_scope.sh innermost waymark kept current.
   Wire mala:* · mala_m1/m2 · linengrow/mala*.rye held for tool/module waves.
   Kamala/Mala gratitude = historical; living Aries = Murr·Kyler.
   u126 and u127 MUST warn before handback (extend innermost · return inner i7 · other).
 
-Read whole: the MUR charter · u6 wave map · u14–u21 wave preps/readiness/rehearsal/GO ·
+Read whole: the MUR charter · u6 wave map · u14–u22 wave preps/readiness/rehearsal/GO ·
 foundations/20260728-025220_murr-and-kyler-murray.md ·
 gratitude/kyler-murray.md · gratitude/mur-movement-aesthetics.md ·
 LEXICON rows MUR/Murr/innermost · Gren charter (CLOSED) · Inner Scope + Fascia (paused).
 Companions: newest quin-workshop pair if attached; else verify origin/main nib.
 
 first duties: bootstrap or verify · state the nib · prin scope ·
-run gen_murr (GREEN; deploy RED) · report · then walk u22 or kg u32 from the charter:
+run gen_murr (GREEN; deploy RED) · report · then walk u23 or kg u32 from the charter:
   affirm outer · inner pauses · affirm core+quint CLOSED · affirm MUR rename spine ·
   affirm Kyler · DJINN · WOV-last · affirm rename-overwrite breach approved ·
-  affirm tool-wave GO card · execute u32 default plan OR continue u22 harden ·
+  affirm tool-wave GO · module opener rehearsed · prefer kg u32 OR continue u23 ·
   keep module homes held until u48 ·
   no live fascia shred without prin rish breach yes now + circled shred scope;
   no live Sui deploy · no wallet · no gas · no private key in tree;
   no whole-tree silent sed — waves with witnesses only.
 
-waymark: u21 complete, u22 next
+waymark: u22 complete, u23 next
 nib <origin/main short nib>
 bench report (verbatim, if any): <REPORT/STOP — or "none">
-scope: outer=paused(m8/m9) inner=paused(i6/i7) innermost=open(u22)
+scope: outer=paused(m8/m9) inner=paused(i6/i7) innermost=open(u23)
   core=closed(handed_back) quint=closed(handed_back) geode=prep(d0)
 breach scope circle: rename_overwrite=approved A= A+C= all= shred=
 words seated (blank = held whole): season_name= choir= LICENSE_WORD=
@@ -129,4 +131,4 @@ asks: <anything — or "none"> ] ]
 
 ---
 
-*Paste the block above to continue u22 or seat kg u32. Keep pauses honest. Core and quint stay closed.*
+*Paste the block above to continue u23 or seat kg u32. Keep pauses honest. Core and quint stay closed.*
