@@ -6,7 +6,7 @@
 
 ## Thinking trace
 
-Intook `files (10).zip` — park log at `178d2fa` comment verified. Seated `session-logs/20260703-203712_zip39-raise-rw1-parked.md`. Wrote `expanding-prompts/20260703-205212_bench-raise-recipe-v5-accretion.md` (extract permissions, symlink restore, fixture exec check). Re-ran `tools/parity.rish` on Cursor at `bad68b4` — **148 GREEN** (~39s); RW-1 stub `755` intact.
+Intook `files (10).zip` — park log at `178d2fa` comment verified. Seated `session-logs/20260703-203712_zip39-raise-rw1-parked.md`. Wrote `expanding-prompts/yonder/20260703-205212_bench-raise-recipe-v5-accretion.md` (extract permissions, symlink restore, fixture exec check). Re-ran `tools/parity.rish` on Cursor at `bad68b4` — **148 GREEN** (~39s); RW-1 stub `755` intact.
 
 ## Cross-bench pins
 
@@ -26,7 +26,7 @@ Intook `files (10).zip` — park log at `178d2fa` comment verified. Seated `sess
 | File | Why |
 |------|-----|
 | `session-logs/20260703-203712_zip39-raise-rw1-parked.md` | Claude bench park log |
-| `expanding-prompts/20260703-205212_bench-raise-recipe-v5-accretion.md` | Zip extraction hygiene |
+| `expanding-prompts/yonder/20260703-205212_bench-raise-recipe-v5-accretion.md` | Zip extraction hygiene |
 | `session-logs/20260703-205312_intake-zip39-relay-cursor-repin.md` | This log |
 
 **Recommend:** cut zip at `bad68b4` for Claude bench; RW-2 opens on verified tip.

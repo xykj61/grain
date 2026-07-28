@@ -32,7 +32,7 @@ Assist view composes Anvil corpus counts, Lantern fixture tokens/suggestion, Dim
 | `tools/parity.rish` | wired new suite arms |
 | `active-designing/20260710-133500_inference-stack-lap0-hammock.md` | checkable-room hammock |
 | `external-research/20260710-133500_local-forge-minisforum-inference.md` | visionary horizon essay |
-| `expanding-prompts/20260710-133500_inference-stack-lap0.md` | runnable plan |
+| `expanding-prompts/yonder/20260710-133500_inference-stack-lap0.md` | runnable plan |
 | `work-in-progress/TASKS.md`, `ROADMAP.md`, `context/LEXICON.md`, `tools/compass_rose.rish` | indexes + navigation |
 
 **Recommend:** keep going to **Anvil lap 1 embedding index** over Tablecloth query (mechanical filter extension) or **Lattice lap 1 ROCm host seam** as a separate host binary — check in with Claude before seating ROCm as a permanent ship seam or opening Pond Lantern policy.
