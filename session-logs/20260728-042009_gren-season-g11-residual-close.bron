@@ -1,0 +1,13 @@
+format session-log-v1
+stamp 20260728.042009
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Gren Chapter g11 residual closed
+prompt waymark g10 complete g11 next · asks none — residual block close
+think Fourth residual re-probe · residual_misses=0 · close g8–g11 · harden g12 next
+obs Residual CLOSED empty×4 · harden opens with Choir lean · DJINN on Murr
+file counsel/20260728-042009_gren-season-g11-residual-close.md residual block close
+file counsel/20260728-042009_gren-season-g11-checkin.md round-close check-in
+recommend keep-going to kg g12 harden — mechanical
