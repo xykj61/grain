@@ -1,12 +1,12 @@
-# tools/gen_twah_fund_prep.rish — Constellation m5–m6+: Twah fund prep generator.
+# tools/gen_twah_fund_prep.rish — Constellation m5–m7+: Twah fund prep generator.
 #
-# Affirms Taurus earth seat, twah.fund checklist, edu steps 1–3 witnessed,
-# requires Comlink, refuses deploy / claim-domain / wallet verbs.
+# Affirms Taurus earth seat, edu steps 1–5 witnessed (phone book · Comlink),
+# refuses deploy / claim-domain / wallet verbs.
 #   rishi/bin/rishi run tools/gen_twah_fund_prep.rish
 #   rishi/bin/rishi run tools/gen_twah_fund_prep.rish deploy  # RED
 
-say "gen-twah: Language EN — Twah fund prep (Taurus earth · edu gift · steps 1–3)."
-say "gen-twah: Style Radiant — GREEN only after Comlink opens and steps 1–3 witness."
+say "gen-twah: Language EN — Twah fund prep (Taurus earth · edu gift · steps 1–5)."
+say "gen-twah: Style Radiant — GREEN only after Comlink opens and steps 1–5 witness."
 say "gen-twah: Lens TAME — prep only; no wallet, gas, domain claim, or live deploy."
 
 let verb = ""
@@ -19,6 +19,8 @@ assert prep.out contains "sign_index=1" else "gen-twah Taurus seat index unnamed
 assert prep.out contains "witness:step1 GREEN" else "gen-twah step1 witness missing"
 assert prep.out contains "witness:step2 GREEN" else "gen-twah step2 witness missing"
 assert prep.out contains "witness:step3 GREEN" else "gen-twah step3 witness missing"
+assert prep.out contains "witness:step4 GREEN" else "gen-twah step4 witness missing"
+assert prep.out contains "witness:step5 GREEN" else "gen-twah step5 witness missing"
 say prep.out
 
-say "GREEN: gen-twah m6 — steps 1–3 witnessed; Comlink door GREEN; deploy RED by name."
+say "GREEN: gen-twah m7 — steps 1–5 witnessed; phone book + Comlink knock GREEN; deploy RED by name."
