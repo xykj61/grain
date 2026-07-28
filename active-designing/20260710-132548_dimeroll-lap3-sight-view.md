@@ -1,6 +1,7 @@
 # Dimeroll Lap 3 — Sight View (Carriage + Books on One Frame)
 
-*Implements the horizon essay's sight altitude: MALA/WOV carriage facts and Dimeroll books projections on one Skate fold. Amphora, Dexter graduation, and Pond policy wait their own gates.*
+*Implements the horizon essay's sight altitude: MUR/WOV carriage facts (was MALA) and Dimeroll books projections on one Skate fold. Amphora, Dexter graduation, and Pond policy wait their own gates.*
+Radiant pass `20260728.045307` — living L1 rename-forward: **MUR** (was MALA)
 
 **Stamp:** `20260710.132548`
 **Language:** EN
@@ -14,7 +15,7 @@
 
 ## Mission
 
-Make the **seen books** vision checkable on the bench: extend `booksviewtest` with P&L and balance-sheet lines; add `sightviewtest` that folds carriage (MALA mint + WOV bundle) and books (Dimeroll journal) into one ten-line Skate frame.
+Make the **seen books** vision checkable on the bench: extend `booksviewtest` with P&L and balance-sheet lines; add `sightviewtest` that folds carriage (MUR mint + WOV bundle; was MALA) and books (Dimeroll journal) into one ten-line Skate frame.
 
 ## In Scope
 
@@ -28,7 +29,7 @@ Make the **seen books** vision checkable on the bench: extend `booksviewtest` wi
 ## Out of Scope
 
 - Live window / Realidream module  
-- MALA→journal bridge  
+- MUR→journal bridge (was MALA)  
 - Tax package / Amphora cargo  
 
 ## Success

@@ -35,7 +35,7 @@ OA-L2 is the **smallest cross-party whole** on that spine: one request travels o
 
 The **outer seal** uses Comlink fixture keys (poster → applicant on request; applicant → poster on application). The **inner facts** use OA-L1 Ed25519 signers — two layers, honestly named, same pattern as SLC-L2.
 
-OA-L3 grows **MALA bounty escrow** (M1→M2 ladder). OA-L4 grows **reputation-as-fold**. OA-L2 deliberately stops at **request + application carriage**; acceptance and completion remain local append on the poster's canonical log until a later lap names delivery for those facts.
+OA-L3 grows **MUR bounty escrow** (M1→M2 ladder; was MALA). OA-L4 grows **reputation-as-fold**. OA-L2 deliberately stops at **request + application carriage**; acceptance and completion remain local append on the poster's canonical log until a later lap names delivery for those facts.
 
 ---
 
@@ -123,7 +123,7 @@ Port **38474** — distinct from SLC-L2 delivery (**38473**) and hosted wire dem
 - Delivery of acceptance or completion facts cross-party
 - Device wire variant (civic proof path — carriage pattern already green from SLC-L2)
 - Caravan-supervised peers
-- MALA mint, escrow, release — OA-L3
+- MUR mint, escrow, release (was MALA) — OA-L3
 - Reputation fold — OA-L4
 - Board interop — publish to Flockwork; horizon
 

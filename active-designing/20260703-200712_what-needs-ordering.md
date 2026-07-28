@@ -22,7 +22,7 @@ The whole economy of the system flows from sorting before paying. Facts declare 
 
 The toll is precious, so work arrives at it in batches. A bench batches a day of diffs and writings into one reviewable whole because the ratifying word is the costliest operation in the loop. A ledger batches transfers behind one durable write for the same reason. The batch is bounded so the review is bounded; the batch names its parent so the chain stays walkable; the batch is verified by execution, never by assertion. This is one doctrine wearing three coats — the bench, the archive, the ledger — and the sorting above is its other half: batch what must pay the toll, and spare the toll everything that never needed it.
 
-The ladders in the tree encode the same patience. MALA climbs its rungs by demand. WOV keeps the monarch rule. Mycelium — the ordering aspect itself — waits at M4, because ordering machinery built before there are two concurrent writers is weight without work. The day two hands genuinely contend is the day the toll earns its next lap, and it will be recognized by a measured red rather than by forecast.
+The ladders in the tree encode the same patience. MUR climbs its rungs by demand (was MALA). WOV keeps the monarch rule. Mycelium — the ordering aspect itself — waits at M4, because ordering machinery built before there are two concurrent writers is weight without work. The day two hands genuinely contend is the day the toll earns its next lap, and it will be recognized by a measured red rather than by forecast.
 
 ## The Value-Object Horizon
 
@@ -30,7 +30,7 @@ A horizon tier waits above the fixed ledger verbs: value-objects a person or a p
 
 ## The Market as Choreography
 
-Commerce in compute, when it comes to the network, is a choreography of what already stands rather than a new organ. Lattice serves; Lantern meters honestly and settles in the local currency; Anvil forges the open weights the fabric carries; Pond encloses execution under policy; Puddle offers the bounded vessel, whose named budgets make it a unit of sale a buyer can trust; Caravan supervises the hired work; Kumara signs the bid, the labor, and the receipt; Comlink carries; MALA mails the settlement; WOV keeps the accounts; and every receipt seals as a resin, the same signed shape the giving records keep. A marketplace surface, if one earns a name, parks its candidates in RTAC like everything else. Time itself needs no new keeper here: Maitreya owns time, and beneath him the modules ask only for sequence — and sequence, as the sorting shows, is structural.
+Commerce in compute, when it comes to the network, is a choreography of what already stands rather than a new organ. Lattice serves; Lantern meters honestly and settles in the local currency; Anvil forges the open weights the fabric carries; Pond encloses execution under policy; Puddle offers the bounded vessel, whose named budgets make it a unit of sale a buyer can trust; Caravan supervises the hired work; Kumara signs the bid, the labor, and the receipt; Comlink carries; MUR mails the settlement (was MALA); WOV keeps the accounts; and every receipt seals as a resin, the same signed shape the giving records keep. A marketplace surface, if one earns a name, parks its candidates in RTAC like everything else. Time itself needs no new keeper here: Maitreya owns time, and beneath him the modules ask only for sequence — and sequence, as the sorting shows, is structural.
 
 ---
 

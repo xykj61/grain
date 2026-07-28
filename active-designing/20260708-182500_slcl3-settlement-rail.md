@@ -6,7 +6,8 @@
 **Voice:** Rio 3
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Lens:** TAME · [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md) · stop-and-park on custody
-**Status:** Hammock record — checkable room; landed `182500`; implementation removed `152612` (MALA path); parity **197**.
+**Status:** Hammock record — checkable room; landed `182500`; implementation removed `152612` (MUR path; was MALA); parity **197**.
+Radiant pass `20260728.045307` — living L1 rename-forward: **MUR** (was MALA)
 
 **Ground:** [`external-research/20260707-222500_settlement-seat-refresh-and-slcl3-witness-proposal.md`](../external-research/20260707-222500_settlement-seat-refresh-and-slcl3-witness-proposal.md) · counsel [`041000`](../counsel/20260708-041000_claude-counsel-settlement-recommendation-july-2026.md) · apply prompt [`20260707-222500_apply-slcl3-settlement-witness.md`](../expanding-prompts/20260707-222500_apply-slcl3-settlement-witness.md)
 
@@ -89,7 +90,7 @@ Live mode (`SLCL3_LIVE=1`) exits **2** on this bench — pinned selftest is the 
 ### Horizon for later seasons
 
 - Mainnet treasury or real funds
-- MALA mint
+- MUR mint (was MALA)
 - Multi-party market
 - SLC-L4 ZK selective disclosure
 - Crown winner in prose — counsel holds that for Kaeden after witness scores

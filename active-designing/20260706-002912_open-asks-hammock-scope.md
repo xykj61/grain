@@ -31,9 +31,9 @@ Eight-asks **A4** ordered Open Asks design before broad Linengrow feature debt. 
 |------|----------------------|
 | **Simple** | Three poster/applicant facts + one completion receipt; one log; deterministic test keys |
 | **Lovable** | The $100 animation micro-gig from the movement memo — post, apply, accept, pay, verify |
-| **Complete** | post → apply → accept → complete → verify closes **without** board APIs, MALA escrow, or reputation folds |
+| **Complete** | post → apply → accept → complete → verify closes **without** board APIs, MUR escrow (was MALA), or reputation folds |
 
-OA-L2 grows **cross-party delivery** (SLC-L2 carriage). OA-L3 grows **MALA bounty escrow** (M1→M2 ladder). OA-L4 grows **reputation-as-fold** over verified completions. OA-L1 deliberately stops at the **local log edge**, same discipline as SLC-L1.
+OA-L2 grows **cross-party delivery** (SLC-L2 carriage). OA-L3 grows **MUR bounty escrow** (M1→M2 ladder; was MALA). OA-L4 grows **reputation-as-fold** over verified completions. OA-L1 deliberately stops at the **local log edge**, same discipline as SLC-L1.
 
 ---
 
@@ -114,7 +114,7 @@ The completion record **links** to the ask loop by `request_ref` in `memo` — n
 ### Horizon (OA-L2 and later)
 
 - **Comlink delivery** of facts between machines — SLC-L2 carriage; OA-L2
-- **MALA mint, escrow, release** — M1/M2 ladder; OA-L3
+- **MUR mint, escrow, release** (was MALA) — M1/M2 ladder; OA-L3
 - **Reputation fold** over many completions — OA-L4; consent-before-counting governs fields
 - **Board interop** — publish to Flockwork, read aggregators; interop-first per movement memo; horizon
 - **Sanctuary care log**, **moderation facts**, **resin-refusal** — parallel design rows in TASKS

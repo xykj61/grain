@@ -205,7 +205,7 @@
 | **1** | OCapN idiom beside Comlink sealed datagram | How does CapTP’s session idiom compose with a record fold without becoming it? What is the smallest consumer-edge pass shape (access vs truth)? | ER note + design conclusion; Door 3 test plan | **Landed** [`053324`](../external-research/20260712-053324_ocapn-beside-comlink.md) |
 | **2** | Component-model target for one existing seed | Which one seed is the honest first portable ABI target? What stays identical across browser / host / later Caravan host? | ER note + one-seed pick | **Landed** [`054135`](../external-research/20260712-054135_component-model-one-seed.md) — pick **`receipt_core`** |
 | **3** | Genode / seL4 guest for Rye userland | What is the smallest guest witness that proves Rye userland on a proven seat without renaming Caravan? | ER note + guest witness sketch | **Landed** [`054342`](../external-research/20260712-054342_proven-seat-guest-genode-sel4.md) — G0–G3; guest never merger |
-| **4** | GNU Taler for Linengrow giving lane | How does payer-privacy / payee-transparency map onto MALA + selective disclosure without replacing the settlement seat? | ER note beside *Money That Stays Close to Home* | **Landed** [`054521`](../external-research/20260712-054521_taler-giving-lane-asymmetry.md) — private payer · transparent payee |
+| **4** | GNU Taler for Linengrow giving lane | How does payer-privacy / payee-transparency map onto MUR + selective disclosure without replacing the settlement seat? (was MALA) | ER note beside *Money That Stays Close to Home* | **Landed** [`054521`](../external-research/20260712-054521_taler-giving-lane-asymmetry.md) — private payer · transparent payee |
 
 ### Four Seam studies — **complete** (`20260712.054521`)
 
@@ -258,7 +258,7 @@ In-process pass admits published read + signed submit; refuses unpublished diges
 
 | Q | Ruling |
 |---|--------|
-| **Q1** | OA-L4 leads; MALA graduation at second consumer |
+| **Q1** | OA-L4 leads; MUR graduation at second consumer (was MALA) |
 | **Q2** | Edit-5 slot released; I2 reuses `resin_batch.rye` when drafted |
 | **Q3** | Horizons: rename → marks-on-read → two-way sync → host mirror → Tablecloth query |
 | **Q4** | Wire-serves-the-fold + compass affirmed |
@@ -474,7 +474,7 @@ Graduation rule · Rio 3 · Happy zone · RW-3/RW-4 · Grain · Versioning · Br
 - **Never** touch boxes tagged **(Kaeden …)** — three doors, ratifications, nods, pastes
 - **`amber/`** first lap landed ✅ — parity **144**; further laps gated on spec
 - **No new module/aspect names** — park candidates in RTAC
-- **Stop-and-park** on: Kaeden-tagged path · parity red twice · module-home/seam decision · keys/custody/amber/MALA · new names
+- **Stop-and-park** on: Kaeden-tagged path · parity red twice · module-home/seam decision · keys/custody/amber/MUR (was MALA) · new names
 - **Journey's pause** — when the open itinerary has no further stops, stop and summarize rather than invent new work; a pause is a question for Kaeden, never permission to go off-route
 
 ## Kaeden — three doors before Claude
@@ -587,7 +587,7 @@ Prior tip: `999359e`
 
 **Brief:** [`20260703-041850_claude-strategy-roadmap-counsel.md`](archive/20260703-041850_claude-strategy-roadmap-counsel.md)
 
-**Medium-long strategy (seven questions):** cascade order after Amber **144** · Linengrow vs Rye next product lap · MALA M0 / WOV timing · doc lane vs metal lane after Edit 5 · Open Asks first lap when paste lands · hardware procurement season · ratifications bundle order.
+**Medium-long strategy (seven questions):** cascade order after Amber **144** · Linengrow vs Rye next product lap · MUR M0 / WOV timing (was MALA) · doc lane vs metal lane after Edit 5 · Open Asks first lap when paste lands · hardware procurement season · ratifications bundle order.
 
 **Guidance request:** granular refresh plan for `ROADMAP.md`, `TASKS.md`, decoder living doc, RTAC itinerary — structure and deltas only; Cursor applies on Kaeden approval after counsel lands.
 
@@ -663,7 +663,7 @@ Prior tip: `3320bed` · `f5b6a5d` · ROUND ZERO `c7e5747` / `960ddf7`
 | Commit | Aspect |
 |--------|--------|
 | *(batch 1)* | SLC-1 witnesses raise mantra — parity green from bare clone |
-| *(batch 2)* | WOV/MALA hardware fit-check — memo, TASKS, RTAC, logs |
+| *(batch 2)* | WOV/MUR hardware fit-check (was MALA) — memo, TASKS, RTAC, logs |
 
 Prior tip: `960ddf7` (batch 2) · `c7e5747` (batch 1) · `f92513b` (base)
 
