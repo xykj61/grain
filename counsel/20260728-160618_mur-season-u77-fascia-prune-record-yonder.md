@@ -32,7 +32,7 @@ No Amphora shred · no Class A rewrite · no over-70 function split · no geode 
 
 ## Next
 
-**kg u78** — next prune slice (more yonder · on-touch over-70 · class-A paper lean), or check-in.
+**LANDED u78** — inference/bench/grep/ojjo yonder · Class-A paper lean.
 
 ---
 

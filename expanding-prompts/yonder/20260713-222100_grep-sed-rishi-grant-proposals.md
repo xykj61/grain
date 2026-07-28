@@ -9,7 +9,7 @@
 
 ## Framing, for an Acme Corporation Employee Reading This
 
-These two proposals are written in the shape Urbit's own Grants program uses for a Proposal-type grant, and in the commit/PR discipline Urbit's `CONTRIBUTING.md` already asks of contributors — atomic, component-prefixed, one tracked concern per pull request. Module names below use the **proposed** Urbit-parallel identities from [`context/specs/20260713-214400_urbit-parallel-naming-mapping-proposal.md`](../context/specs/20260713-214400_urbit-parallel-naming-mapping-proposal.md), written as `Rishi (proposed: Dojo)` throughout — **no module has actually been renamed**, and Kaeden is still reviewing that document.
+These two proposals are written in the shape Urbit's own Grants program uses for a Proposal-type grant, and in the commit/PR discipline Urbit's `CONTRIBUTING.md` already asks of contributors — atomic, component-prefixed, one tracked concern per pull request. Module names below use the **proposed** Urbit-parallel identities from [`context/specs/20260713-214400_urbit-parallel-naming-mapping-proposal.md`](../../context/specs/20260713-214400_urbit-parallel-naming-mapping-proposal.md), written as `Rishi (proposed: Dojo)` throughout — **no module has actually been renamed**, and Kaeden is still reviewing that document.
 
 ---
 
