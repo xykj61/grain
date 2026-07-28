@@ -32,7 +32,7 @@ No Amphora shred · no Class A rewrite · no over-70 function split · no Inner 
 
 ## Next
 
-**kg u80** — next prune slice (more yonder · on-touch over-70 · college/silo bench lean), or check-in.
+**LANDED u80** — college · jail · zero-copy · zip42 yonder · silo bench held.
 
 ---
 

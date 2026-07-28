@@ -8,7 +8,7 @@
 **Voice:** Rio 3
 **Lens:** TAME · SLC · CIVIC · TWO_ROOMS
 **Opens when:** Kaeden cuts a zip or opens a Claude thread with this prompt
-**Ground:** [`../external-research/20260704-180612_zero-copy-resins-and-the-sovereign-snapshot.md`](../external-research/20260704-180612_zero-copy-resins-and-the-sovereign-snapshot.md) · [`../counsel/20260704-031812_eight-asks-one-sitting.md`](../counsel/20260704-031812_eight-asks-one-sitting.md) · [`../work-in-progress/ready-to-ask-claude.md`](../work-in-progress/ready-to-ask-claude.md) · [`../work-in-progress/ROADMAP.md`](../work-in-progress/ROADMAP.md) · [`../work-in-progress/TASKS.md`](../work-in-progress/TASKS.md) · [`../work-in-progress/20260703-014912_round-summary-and-decoder.md`](../work-in-progress/archive/20260703-014912_round-summary-and-decoder.md) · [`../work-in-progress/20260703-041850_claude-strategy-roadmap-counsel.md`](../work-in-progress/archive/20260703-041850_claude-strategy-roadmap-counsel.md)
+**Ground:** [`../external-research/20260704-180612_zero-copy-resins-and-the-sovereign-snapshot.md`](../../external-research/20260704-180612_zero-copy-resins-and-the-sovereign-snapshot.md) · [`../counsel/20260704-031812_eight-asks-one-sitting.md`](../../counsel/20260704-031812_eight-asks-one-sitting.md) · [`../work-in-progress/ready-to-ask-claude.md`](../../work-in-progress/ready-to-ask-claude.md) · [`../work-in-progress/ROADMAP.md`](../../work-in-progress/ROADMAP.md) · [`../work-in-progress/TASKS.md`](../../work-in-progress/TASKS.md) · [`../work-in-progress/20260703-014912_round-summary-and-decoder.md`](../../work-in-progress/archive/20260703-014912_round-summary-and-decoder.md) · [`../work-in-progress/20260703-041850_claude-strategy-roadmap-counsel.md`](../../work-in-progress/archive/20260703-041850_claude-strategy-roadmap-counsel.md)
 
 *Prepared by Cursor (Rio 3) for Claude (Fable counsel) and Kaeden — counsel and editorial deltas only; Cursor implements on Kaeden approval after counsel lands.*
 
@@ -29,24 +29,24 @@
 | Tip | `2eb346b` (+ uncommitted ER `180612`, cellar/vessel infusion, this prompt) |
 | Parity | **152 GREEN** — both benches (zip **41** intake `031812 UDT`) |
 | SLC-L1 | **Affirmed closed at lap one** (eight-asks); **Open Asks before SLC-L2** |
-| Cellar / vessel | **Amber** = cellar software · **Amphora** = vessel software — same resins law, different duty ([`LEXICON`](../context/LEXICON.md) preservation pair) |
+| Cellar / vessel | **Amber** = cellar software · **Amphora** = vessel software — same resins law, different duty ([`LEXICON`](../../context/LEXICON.md) preservation pair) |
 | Amber lap 1 | **144** ✅ — ring-1 export; manifest shape `relpath + digest` (not yet three-field Tilak line) |
 | Crossing seed | **151** ✅ — parse only; module home gated |
 | Open Kaeden gates | TWO_ROOMS seat · gloss spec · seed home · snapshot law seating |
 
-**Hard bounds:** propose and argue; **no implementation** in counsel; **no new module names** — park in RTAC; do **not** reopen Doors 1–3 or Edit 5; do **not** import Urbit words into Rye surface syntax ([`20260704-002912`](../external-research/20260704-002912_gates-arms-and-the-urbit-lineage.md)).
+**Hard bounds:** propose and argue; **no implementation** in counsel; **no new module names** — park in RTAC; do **not** reopen Doors 1–3 or Edit 5; do **not** import Urbit words into Rye surface syntax ([`20260704-002912`](../../external-research/20260704-002912_gates-arms-and-the-urbit-lineage.md)).
 
 ---
 
 ## What to read (order)
 
-1. [`20260704-180612_zero-copy-resins-and-the-sovereign-snapshot.md`](../external-research/20260704-180612_zero-copy-resins-and-the-sovereign-snapshot.md) — the research anchor
-2. [`context/specs/20260703-191112_resins-and-hash-tiers.md`](../context/specs/20260703-191112_resins-and-hash-tiers.md) · [`context/specs/20260701-221512_amber-functional-spec.md`](../context/specs/20260701-221512_amber-functional-spec.md)
-3. [`20260703-201612_the-amphora-and-the-crossing.md`](../external-research/20260703-201612_the-amphora-and-the-crossing.md) · [`20260702-035018_puddle-sandboxed-rye-containers.md`](../external-research/20260702-035018_puddle-sandboxed-rye-containers.md) (pier replay · double-boot · chunk store)
-4. [`20260704-031812_eight-asks-one-sitting.md`](../counsel/20260704-031812_eight-asks-one-sitting.md) — priority counsel (Open Asks · gloss · Amphora lap-two)
-5. [`ROADMAP.md`](../work-in-progress/ROADMAP.md) · [`TASKS.md`](../work-in-progress/TASKS.md) · [`20260703-014912_round-summary-and-decoder.md`](../work-in-progress/archive/20260703-014912_round-summary-and-decoder.md)
-6. [`gratitude/TIGER_STYLE.md`](../gratitude/TIGER_STYLE.md) (Apache-2.0 · study only) — batching, in-place init, control/data plane
-7. [`CIVIC_STYLE.md`](../context/CIVIC_STYLE.md) — accountability layer, append-only signed records, verification from outside
+1. [`20260704-180612_zero-copy-resins-and-the-sovereign-snapshot.md`](../../external-research/20260704-180612_zero-copy-resins-and-the-sovereign-snapshot.md) — the research anchor
+2. [`context/specs/20260703-191112_resins-and-hash-tiers.md`](../../context/specs/20260703-191112_resins-and-hash-tiers.md) · [`context/specs/20260701-221512_amber-functional-spec.md`](../../context/specs/20260701-221512_amber-functional-spec.md)
+3. [`20260703-201612_the-amphora-and-the-crossing.md`](../../external-research/20260703-201612_the-amphora-and-the-crossing.md) · [`20260702-035018_puddle-sandboxed-rye-containers.md`](../../external-research/20260702-035018_puddle-sandboxed-rye-containers.md) (pier replay · double-boot · chunk store)
+4. [`20260704-031812_eight-asks-one-sitting.md`](../../counsel/20260704-031812_eight-asks-one-sitting.md) — priority counsel (Open Asks · gloss · Amphora lap-two)
+5. [`ROADMAP.md`](../../work-in-progress/ROADMAP.md) · [`TASKS.md`](../../work-in-progress/TASKS.md) · [`20260703-014912_round-summary-and-decoder.md`](../../work-in-progress/archive/20260703-014912_round-summary-and-decoder.md)
+6. [`gratitude/TIGER_STYLE.md`](../../gratitude/TIGER_STYLE.md) (Apache-2.0 · study only) — batching, in-place init, control/data plane
+7. [`CIVIC_STYLE.md`](../../context/CIVIC_STYLE.md) — accountability layer, append-only signed records, verification from outside
 
 ---
 
@@ -72,7 +72,7 @@ Amber spec already names two artifacts. **Question:** Recommend lap order: repla
 
 ### E. Urbit parity without Urbit words
 
-Pier replay, pack/meld, fake ships — concepts only ([`puddle` second pass](../external-research/20260702-035018_puddle-sandboxed-rye-containers.md)). **Question:** What is worth adopting next (checkpoint resin = pack analog?) vs permanently out of scope (jam/cue wire)?
+Pier replay, pack/meld, fake ships — concepts only ([`puddle` second pass](../../external-research/20260702-035018_puddle-sandboxed-rye-containers.md)). **Question:** What is worth adopting next (checkpoint resin = pack analog?) vs permanently out of scope (jam/cue wire)?
 
 ### F. Cascade vs eight-asks priority
 
@@ -80,11 +80,11 @@ Eight-asks ordered **Open Asks before SLC-L2** and gloss/TWO_ROOMS before featur
 
 ### G. CIVIC alignment — portable sovereignty as public benefit
 
-[`CIVIC_STYLE.md`](../context/CIVIC_STYLE.md): rewards must measure the outcome; ledger records append-only, signed, verifiable from outside. **Question:** How does a **sovereign snapshot** serve Linengrow's accountability layer — verification facts, issuer transparency, sanctuary dignity floor — without turning export into a surveillance bundle? Name what must **never** ride in a civic-facing amphora (warm keys, private care facts without consent, etc.).
+[`CIVIC_STYLE.md`](../../context/CIVIC_STYLE.md): rewards must measure the outcome; ledger records append-only, signed, verifiable from outside. **Question:** How does a **sovereign snapshot** serve Linengrow's accountability layer — verification facts, issuer transparency, sanctuary dignity floor — without turning export into a surveillance bundle? Name what must **never** ride in a civic-facing amphora (warm keys, private care facts without consent, etc.).
 
 ### H. Bandwidth and toll at the tunnel mouth
 
-[`20260703-015512_bandwidth-and-moderation.md`](../external-research/20260703-015512_bandwidth-and-moderation.md) records egress budget and resin-refusal facts. **Question:** Counsel on **have-already lane** as the civic default for Comlink resin sync across the WireGuard front door — toll + egress budget + refusal receipts as one story.
+[`20260703-015512_bandwidth-and-moderation.md`](../../external-research/20260703-015512_bandwidth-and-moderation.md) records egress budget and resin-refusal facts. **Question:** Counsel on **have-already lane** as the civic default for Comlink resin sync across the WireGuard front door — toll + egress budget + refusal receipts as one story.
 
 ---
 
@@ -106,7 +106,7 @@ Deliver **designs Cursor can draft into `context/specs/` or `active-designing/` 
 
 ## Part Three — ROADMAP granular refresh
 
-Return **structure and deltas only** (per eight-asks A8 and [`20260703-041850`](../work-in-progress/archive/20260703-041850_claude-strategy-roadmap-counsel.md)):
+Return **structure and deltas only** (per eight-asks A8 and [`20260703-041850`](../../work-in-progress/archive/20260703-041850_claude-strategy-roadmap-counsel.md)):
 
 1. **Current position paragraph** — replace stale door language; pin **152**, SLC-L1 landed, zip **41** counsel landed.
 2. **Ground table** — add/update rows: **Amber** (cellar), **Amphora** (vessel), **Linengrow receipt** at **152**; Tablecloth/Puddle horizon honesty.
@@ -123,14 +123,14 @@ Return **structure and deltas only** (per eight-asks A8 and [`20260703-041850`](
 2. **Sweep candidates** — which checked ladder items (Doors, RW-1/2, SLC-L1) merit **archive stub** or session-log sweep now.
 3. **Duplicate strike list** — horizons that repeat decoder rows or eight-asks; titles + one-line why.
 4. **Crossing suite follow-ups** — Amphora lap-two Tilak witness (A6), seed-home gate, manifest module home — restated as TASKS rows with dependencies.
-5. **Open horizons block** — update [`movement's open asks`](../work-in-progress/TASKS.md), **Puddle continuity**, **deep-archive hardware**, **resin-refusal fact** — tie each to snapshot/comlink counsel.
-6. **Open threads stub** — [`20260623-033012_open-threads.md`](../work-in-progress/archive/20260623-033012_open-threads.md) is archived; recommend whether any living "open thread" rows need a **decoder home** instead.
+5. **Open horizons block** — update [`movement's open asks`](../../work-in-progress/TASKS.md), **Puddle continuity**, **deep-archive hardware**, **resin-refusal fact** — tie each to snapshot/comlink counsel.
+6. **Open threads stub** — [`20260623-033012_open-threads.md`](../../work-in-progress/archive/20260623-033012_open-threads.md) is archived; recommend whether any living "open thread" rows need a **decoder home** instead.
 
 ---
 
 ## Part Five — Decoder and RTAC rows
 
-Expand the decoder skeleton from eight-asks A8 ([`20260703-014912`](../work-in-progress/archive/20260703-014912_round-summary-and-decoder.md)):
+Expand the decoder skeleton from eight-asks A8 ([`20260703-014912`](../../work-in-progress/archive/20260703-014912_round-summary-and-decoder.md)):
 
 | Column | Ask |
 |--------|-----|
@@ -149,7 +149,7 @@ Counsel must address whether the design honors:
 - Safety first — wreck rule, refusal whole, bounded fields, no warm keys on export medium
 - Performance second — batching, have-already lane, mmap/sendfile seams named honestly per host
 - Joy third — sovereign portability as **lovable** complete per lap, not one heroic ISO
-- [`TIGER_STYLE.md`](../gratitude/TIGER_STYLE.md) — control vs data plane, in-place init, no accidental stack copies, explicit `io`
+- [`TIGER_STYLE.md`](../../gratitude/TIGER_STYLE.md) — control vs data plane, in-place init, no accidental stack copies, explicit `io`
 - Edit 5 — at most one **functional spec in flight**; counsel which spec earns the slot (Comlink frame vs snapshot export vs resin Tilak)
 
 ---
