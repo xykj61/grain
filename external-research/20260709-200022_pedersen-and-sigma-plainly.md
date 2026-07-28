@@ -7,7 +7,7 @@
 **Editor:** Cursor · **Model:** Grok 4.5 High Fast
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Checkable-room research — explains living practice; cites `tally/pedersen.rye` and `linengrow/disclosure_core.rye`
-**Ground:** counsel [`023112`](../counsel/20260709-023112_claude-counsel-zig-native-zk-path.md) · prompt [`031612`](../expanding-prompts/20260709-031612_slcl4-lap1-fixed-tier-sigma-protocol.md) · hammock [`194500`](../active-designing/20260708-194500_slcl4-selective-disclosure.md)
+**Ground:** counsel [`023112`](../counsel/20260709-023112_claude-counsel-zig-native-zk-path.md) · prompt [`031612`](../expanding-prompts/yonder/20260709-031612_slcl4-lap1-fixed-tier-sigma-protocol.md) · hammock [`194500`](../active-designing/20260708-194500_slcl4-selective-disclosure.md)
 
 *Written by Kaeden and Rio 3 (Grok).*
 
@@ -121,7 +121,7 @@ Parity's `tools/slcl4_sigma.rish` builds the binary, runs selftest, and checks t
 
 - Living code: `tally/pedersen.rye`, `linengrow/disclosure_core.rye`
 - Why this path instead of Groth16: counsel [`023112`](../counsel/20260709-023112_claude-counsel-zig-native-zk-path.md)
-- Lap scope: prompt [`031612`](../expanding-prompts/20260709-031612_slcl4-lap1-fixed-tier-sigma-protocol.md)
+- Lap scope: prompt [`031612`](../expanding-prompts/yonder/20260709-031612_slcl4-lap1-fixed-tier-sigma-protocol.md)
 - Parity as the green-light suite: [`194437`](20260709-194437_what-parity-is.md)
 
 ---

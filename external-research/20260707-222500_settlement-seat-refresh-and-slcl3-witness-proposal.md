@@ -141,7 +141,7 @@ Per verdict `005512`, the witness scores **three** things, not two:
 
 **Parity:** register when both lanes GREEN on metal; increment documented in ROADMAP/TASKS.
 
-**Expanding prompt:** [`../expanding-prompts/20260707-222500_apply-slcl3-settlement-witness.md`](../expanding-prompts/20260707-222500_apply-slcl3-settlement-witness.md)
+**Expanding prompt:** [`../expanding-prompts/yonder/20260707-222500_apply-slcl3-settlement-witness.md`](../expanding-prompts/yonder/20260707-222500_apply-slcl3-settlement-witness.md)
 
 ---
 

@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.171319` — [MUR Season u82 fascia prune glow SLC yonder](20260728-171319_mur-season-u82-fascia-prune-glow-slc-yonder.bron) — glow-glass · first-code · SLC · harvest held · u83 next
 - `20260728.171011` — [MUR Season u81 fascia prune silo workshop yonder](20260728-171011_mur-season-u81-fascia-prune-silo-workshop-yonder.bron) — silo · workshop · SLC-2b · kernel · u82 next
 - `20260728.161501` — [MUR Season u80 fascia prune college counsel yonder](20260728-161501_mur-season-u80-fascia-prune-college-counsel-yonder.bron) — college · jail · zero-copy · zip42 · u81 next
 - `20260728.161205` — [MUR Season u79 fascia prune pool gated yonder](20260728-161205_mur-season-u79-fascia-prune-pool-gated-yonder.bron) — pool · strata · sala · vanes braid · u80 next

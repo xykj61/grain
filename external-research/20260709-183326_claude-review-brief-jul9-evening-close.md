@@ -14,7 +14,7 @@ Radiant pass `20260728.050219` — living rename-forward: **MUR** (was MALA)
 
 ## Executive Landscape
 
-Kaeden directed **own L1 via MUR (was MALA)** — backtrack from Sui/Monad external interpreters. Counsel [`152612`](../counsel/20260709-152612_claude-counsel-mala-wov-already-designed.md) found the July 2 design already in tree. Settlement + chain-read implementation **deleted** (not merely superseded — no external dependents). Parity **197**. Full suite **GREEN** on metal (~150s). **MUR (was MALA) M1 lap-open brief [`182354`](../expanding-prompts/20260709-182354_mala-m1-one-issuer-one-holder.md) filed**; M0 gate verified. **SLC-L4 [`031612`](../expanding-prompts/20260709-031612_slcl4-lap1-fixed-tier-sigma-protocol.md) still ready** on Kaeden's lap word.
+Kaeden directed **own L1 via MUR (was MALA)** — backtrack from Sui/Monad external interpreters. Counsel [`152612`](../counsel/20260709-152612_claude-counsel-mala-wov-already-designed.md) found the July 2 design already in tree. Settlement + chain-read implementation **deleted** (not merely superseded — no external dependents). Parity **197**. Full suite **GREEN** on metal (~150s). **MUR (was MALA) M1 lap-open brief [`182354`](../expanding-prompts/20260709-182354_mala-m1-one-issuer-one-holder.md) filed**; M0 gate verified. **SLC-L4 [`031612`](../expanding-prompts/yonder/20260709-031612_slcl4-lap1-fixed-tier-sigma-protocol.md) still ready** on Kaeden's lap word.
 
 | Milestone | Stamp | Parity | Status |
 |-----------|-------|--------|--------|
@@ -103,7 +103,7 @@ Reuses SLC-L1 `.bron` envelope + `receipt_core` + Kumara. **No new dependencies.
 
 Active path: counsel [`023112`](../counsel/20260709-023112_claude-counsel-zig-native-zk-path.md) — Curve25519 Pedersen + Sigma-protocol, zero new tool deps.
 
-Lap-open [`031612`](../expanding-prompts/20260709-031612_slcl4-lap1-fixed-tier-sigma-protocol.md):
+Lap-open [`031612`](../expanding-prompts/yonder/20260709-031612_slcl4-lap1-fixed-tier-sigma-protocol.md):
 
 | Bound | Detail |
 |-------|--------|

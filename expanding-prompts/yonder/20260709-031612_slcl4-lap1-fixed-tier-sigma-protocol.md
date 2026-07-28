@@ -5,7 +5,7 @@
 **Language:** EN
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** **Landed** `20260709.194437` — parity **200**; **W0 design review** cleared `20260709.224426`
-**Ground:** counsel [`20260709-021112`](../counsel/20260709-021112_claude-counsel-slcl4-top-recommended-path.md) and [`20260709-023112`](../counsel/20260709-023112_claude-counsel-zig-native-zk-path.md) · W0 review [`20260709-224426`](../counsel/20260709-224426_grok-counsel-slcl4-w0-lap1-review.md)
+**Ground:** counsel [`20260709-021112`](../../counsel/20260709-021112_claude-counsel-slcl4-top-recommended-path.md) and [`20260709-023112`](../../counsel/20260709-023112_claude-counsel-zig-native-zk-path.md) · W0 review [`20260709-224426`](../../counsel/20260709-224426_grok-counsel-slcl4-w0-lap1-review.md)
 
 *Written by Kaeden and Rio 3.*
 

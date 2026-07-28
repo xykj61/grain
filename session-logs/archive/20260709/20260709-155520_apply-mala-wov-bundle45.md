@@ -30,7 +30,7 @@ No code, parity, or settlement module deletion.
 | `work-in-progress/TASKS.md` | MALA/WOV realignment |
 | `work-in-progress/ROADMAP.md` | SLC-L3 retired row; version bump |
 | `active-designing/20260708-182500_slcl3-settlement-rail.md` | Retired status |
-| `expanding-prompts/20260709-031612_slcl4-lap1-fixed-tier-sigma-protocol.md` | `034812` protocol alignment |
+| `expanding-prompts/yonder/20260709-031612_slcl4-lap1-fixed-tier-sigma-protocol.md` | `034812` protocol alignment |
 | `session-logs/20260709-155520_apply-mala-wov-bundle45.md` | This log |
 | `session-logs/README.md` | Index row |
 

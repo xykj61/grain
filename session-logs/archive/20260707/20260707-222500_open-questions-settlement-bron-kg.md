@@ -23,7 +23,7 @@
 |------|-----|
 | `external-research/20260707-222500_settlement-seat-refresh-and-slcl3-witness-proposal.md` | Refresh + witness bolt sketch |
 | `counsel/20260707-222500_claude-counsel-bron-beside-brix-first-proposal.md` | Bron/Brix division |
-| `expanding-prompts/20260707-222500_apply-slcl3-settlement-witness.md` | Apply when gate opens |
+| `expanding-prompts/yonder/20260707-222500_apply-slcl3-settlement-witness.md` | Apply when gate opens |
 | `work-in-progress/TASKS.md` | Bench items checked; Open Questions updated |
 | `linengrow/README.md` | OA-L4/L5 + SLC-L3 link |
 
