@@ -3,7 +3,7 @@
 //! STOA201 (B1): owns sign_fact + verify_record assert while calling elder
 //! bodies. Format/parse log-line and Glow-rune crypto jets stay held.
 //! STOA245: product-authored sign/verify body — canonicalize + kumara.sign /
-//! kumara.verify_bytes live here; elder mala/receipt stay peer baseline.
+//! kumara.verify_bytes live here; elder murr/receipt stay peer baseline.
 //!
 //!   rye build linengrow/glow_seva_b0_sign_witness.rye \
 //!     -femit-bin=linengrow/bin/glow_seva_b0_sign_witness
@@ -62,7 +62,7 @@ fn demo_event1_fields(actor_hex: []const u8) rc.FactFields {
     };
 }
 
-/// True when product sign/verify bodies match elder mala/receipt peer (STOA245).
+/// True when product sign/verify bodies match elder murr/receipt peer (STOA245).
 pub fn sign_body_agrees_elder() SignError!bool {
     const actor_kp = kumara.keypair_from_seed(&mc.issuer_seed);
     var actor_hex: [mc.pubkey_hex_len]u8 = undefined;

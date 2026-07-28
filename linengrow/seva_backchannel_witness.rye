@@ -30,7 +30,7 @@ const seva = @import("seva_session_core.rye");
 
 const witness_version = "20260715.210500";
 
-// A third seed for a second viewer, distinct from mala's issuer/holder seeds.
+// A third seed for a second viewer, distinct from murr's issuer/holder seeds.
 const viewer2_seed = [_]u8{0x63} ** kumara.seed_length;
 
 fn run_selftest() !u8 {

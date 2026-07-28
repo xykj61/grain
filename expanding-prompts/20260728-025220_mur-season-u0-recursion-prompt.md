@@ -1,7 +1,8 @@
 # MUR Season — u0 Recursion Prompt (printout · all scopes kept)
 
-**Stamp:** `20260728.025220` · Radiant pass `20260728.055039`  
+**Stamp:** `20260728.025220` · Radiant pass `20260728.055351`  
 **Use:** paste the fenced block as the next counsel/bench session opener.  
+Radiant pass `20260728.055351` — u52 seva/glow/dexter choir GREEN · M1/M2 GREEN · u53 next
 Radiant pass `20260728.055039` — u51 fold_murr_log LIVE · M1/M2/neth GREEN · u52 next
 Radiant pass `20260728.054844` — u50 module step 3 LIVE · murr_delivery · murr:* · M1/M2 GREEN · u51 next
 Radiant pass `20260728.054644` — u49 module step 2 LIVE · murr.rye/bin · M1/M2 GREEN · u50 next
@@ -79,11 +80,11 @@ INNERMOST SCOPE (this season — walk here):
   Lexicon: scope·outer·inner·innermost·core·quint · MUR · Murr · retired Mala/MALA · Gren living.
   Prin: rishi/bin/rishi run tools/prin.rish scope
   gen_murr GREEN · deploy RED; gen_gren GREEN (core closed door); gen_mala ABSENT.
-  u0–u51 COMPLETE · fold_murr_log LIVE · u52 next · guest_mala_* held.
+  u0–u52 COMPLETE · seva/glow choir GREEN · fold_murr_log LIVE · u53 next · guest_mala_* held.
   TOP PRIORITY: rename overwrite everywhere Mala/MALA → Murr/MUR (breach approved seated).
   Fascia shred still needs separate circled yes. WOV retire roadmap last.
   Wave map: counsel/20260728-044738_mur-season-u6-tool-module-wave-map.md
-  Dual-wave: tool COMPLETE · module step 1 LIVE (u48) · entry/bin next u49.
+  Dual-wave: tool COMPLETE · module steps 1–5 LIVE (core→fold→seva choir) · tube/pool u53.
   Order lean: tools u32–u47 before modules u48–u79 · no silent tree-wide sed.
   Tool prep: counsel/20260728-050720_mur-season-u14-tool-wave-prep.md
   Module prep: counsel/20260728-050833_mur-season-u15-module-wave-prep.md
@@ -105,8 +106,9 @@ INNERMOST SCOPE (this season — walk here):
   Module entry live: counsel/20260728-054644_mur-season-u49-module-entry-bin-live.md
   Module delivery live: counsel/20260728-054844_mur-season-u50-module-delivery-memos-live.md
   fold_murr_log live: counsel/20260728-055039_mur-season-u51-fold-murr-log-live.md
+  Seva/glow choir: counsel/20260728-055351_mur-season-u52-seva-glow-cluster-choir.md
   Living pin: tools/fixtures/prin_scope.sh innermost waymark kept current.
-  Tool murr_* LIVE; module core→entry→delivery→murr:*→fold_murr_log LIVE; guests held.
+  Tool murr_* LIVE; module through seva/glow choir LIVE; tube/pool next; guests held.
   Kamala/Mala gratitude = historical; living Aries = Murr·Kyler.
   u126 and u127 MUST warn before handback (extend innermost · return inner i7 · other).
 
@@ -117,18 +119,18 @@ LEXICON rows MUR/Murr/innermost · Gren charter (CLOSED) · Inner Scope + Fascia
 Companions: newest quin-workshop pair if attached; else verify origin/main nib.
 
 first duties: bootstrap or verify · state the nib · prin scope ·
-run gen_murr (GREEN; deploy RED) · report · then walk u52 from the charter:
+run gen_murr (GREEN; deploy RED) · report · then walk u53 from the charter:
   affirm outer · inner pauses · affirm core+quint CLOSED · affirm MUR rename spine ·
   affirm Kyler · DJINN · WOV-last · affirm rename-overwrite breach approved ·
-  affirm fold_murr_log LIVE · seva/glow cluster or guest rename · 
+  affirm fold_murr_log LIVE · seva/glow choir GREEN · tube/pool cluster · 
   no live fascia shred without prin rish breach yes now + circled shred scope;
   no live Sui deploy · no wallet · no gas · no private key in tree;
   no whole-tree silent sed — waves with witnesses only.
 
-waymark: u51 complete, u52 next
+waymark: u52 complete, u53 next
 nib <origin/main short nib>
 bench report (verbatim, if any): <REPORT/STOP — or "none">
-scope: outer=paused(m8/m9) inner=paused(i6/i7) innermost=open(u52)
+scope: outer=paused(m8/m9) inner=paused(i6/i7) innermost=open(u53)
   core=closed(handed_back) quint=closed(handed_back) geode=prep(d0)
 breach scope circle: rename_overwrite=approved A= A+C= all= shred=
 words seated (blank = held whole): season_name= choir= LICENSE_WORD=
