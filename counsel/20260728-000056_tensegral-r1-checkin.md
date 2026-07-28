@@ -3,7 +3,7 @@
 **Language:** EN
 **Stamp:** `20260728.000056`
 **Voice:** Quin
-**Status:** Check-in — after Arc I round 1
+**Status:** **Resolved** — lean **A · kg r2 Amber** taken `20260728.000528`
 **Ground:** Motion [`20260728-000056_tensegral-season-r1-brix.md`](20260728-000056_tensegral-season-r1-brix.md)
 
 *Written together by Keaton and Quin.*
