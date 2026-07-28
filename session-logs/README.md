@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.042110` — [Gren Chapter g12 harden](20260728-042110_gren-season-g12-harden.bron) — gen trio GREEN · deploy RED · g13 next
 - `20260728.042009` — [Gren Chapter g11 residual close](20260728-042009_gren-season-g11-residual-close.bron) — residual CLOSED · g12 harden next
 - `20260728.041904` — [Gren Chapter g10 residual](20260728-041904_gren-season-g10-residual.bron) — residual empty×3 · g11 next
 - `20260728.041353` — [Gren Chapter g9 residual](20260728-041353_gren-season-g9-residual.bron) — residual empty×2 · g10 next

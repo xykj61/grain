@@ -7,7 +7,8 @@
 **Ground:** origin/main `d51e6b84b0` (pre-send)  
 **Rename spine (approved):** **Djin / `%djin` / djin.fund → Gren / `%gren` / gren.fund** — revert the Djin name choice; Twah stays retired history  
 **Within:** the **MUR Chapter** (innermost · u0–u127) — MUR pauses at **u0** while core walks  
-**Status:** **OPEN** · g0–g11 complete `20260728.042009` · **g12** next — harden  
+**Status:** **OPEN** · g0–g12 complete `20260728.042110` · **g13** next — second harden  
+Radiant pass `20260728.042110` — g12 harden · gen trio GREEN · deploy RED · Choir lean held · DJINN on Murr  
 Radiant pass `20260728.042009` — g11 residual block CLOSED · empty×4 · gen_gren GREEN  
 Radiant pass `20260728.041904` — g10 third residual spot empty · gen_gren GREEN  
 Radiant pass `20260728.041353` — g9 second residual spot empty · gen_gren GREEN  
@@ -32,7 +33,7 @@ Radiant pass `20260728.035441` — handback from quint · g0 bow · gen_gren · 
 | **outer** | Constellation | m8 / m9 next | **PAUSED** |
 | **inner** | Inner Scope | i6 / i7 next · fascia | **PAUSED** |
 | **innermost** | MUR Chapter | **u0** (not yet bowed) | **PAUSED** |
-| **core** | **Gren Chapter** | **g0–g11** complete · **g12** next | **OPEN** |
+| **core** | **Gren Chapter** | **g0–g12** complete · **g13** next | **OPEN** |
 | **quint** | Keeh Chapter | lean-16 CLOSED · handed back | **CLOSED** |
 
 Handback from quint **seated**. Later: core → innermost **u0** (unless core extend). Inner i7 and outer m9 still wait above.
@@ -59,7 +60,7 @@ Handback from quint **seated**. Later: core → innermost **u0** (unless core ex
 | Bow · measure | **g0–g1** CLOSED | Affirm pauses · gen_gren · residual Djin map · bare ads cleared |
 | Living overwrite | **g2–g3** CLEARED · **g4–g7** spot-check CLOSED | empty×4 · dated Djin hours kept |
 | Residual sweep | **g8–g11** CLOSED | Bare living ads empty×4 · rename-forward history kept |
-| Harden | **g12–g13** next | Choir lean · gen_murr still GREEN with DJINN executive |
+| Harden | **g12** this · **g13** next | Choir lean held · gen trio GREEN · DJINN on Murr · deploy RED |
 | Horizon · close | **g14–g15** | **Warn:** extend 32 · extend 64 · or return MUR u0 |
 
 ## Hard lines
