@@ -10,7 +10,7 @@ const kumara = @import("kumara.rye");
 const gc = @import("granary_core.rye");
 const exchange = @import("exchange_listing.rye");
 const settle = @import("weave_settle_core.rye");
-const mala = @import("mala_core.rye");
+const mala = @import("murr_core.rye");
 const wov = @import("wov_core.rye");
 const rc = @import("receipt_core.rye");
 

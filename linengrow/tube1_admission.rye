@@ -29,7 +29,7 @@ const net_mod = @import("glow_network_grant.rye");
 const sens_mod = @import("glow_sensors_grant.rye");
 const pool = @import("pool_host_seam.rye");
 const kumara = @import("kumara.rye");
-const mc = @import("mala_core.rye");
+const mc = @import("murr_core.rye");
 
 /// Manifest resource name that engages the Network Grant door (TUBE0.5 INTERNET).
 pub const network_resource = "network";
