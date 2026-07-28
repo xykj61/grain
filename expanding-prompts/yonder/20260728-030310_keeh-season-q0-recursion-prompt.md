@@ -34,7 +34,7 @@ INNERMOST SCOPE (paused — do not advance u-rounds):
 CORE SCOPE (OPEN after handback — walk Gren; Keeh printout is archival):
   Gren Season OPEN · g2+ (Djin→Gren living overwrite in progress / continuing).
   Charter: counsel/20260728-025634_the-gren-season-core-charter.md
-  Active printout: expanding-prompts/20260728-025634_gren-season-g0-recursion-prompt.md
+  Active printout: 20260728-025634_gren-season-g0-recursion-prompt.md
 
 QUINT SCOPE (CLOSED — handed back — do not advance q-rounds):
   Charter: counsel/20260728-030310_the-keeh-season-quint-charter.md

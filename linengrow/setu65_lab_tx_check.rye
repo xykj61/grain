@@ -9,6 +9,7 @@ const Dir = std.Io.Dir;
 const setu3 = @import("setu3_ncm_frame.rye");
 const setu6 = @import("setu6_device_lab.rye");
 const setu65 = @import("setu65_lab_tx.rye");
+const tally_parse_int = @import("parse_int.rye");
 
 const lab_path = "tools/.cache/setu0/lab.bron";
 
@@ -37,7 +38,7 @@ fn parse_dotted_v4(s: []const u8) ?[4]u8 {
         const start = i;
         while (i < s.len and s[i] != '.') : (i += 1) {}
         if (i == start) return null;
-        out[idx] = std.fmt.parseInt(u8, s[start..i], 10) catch return null;
+        out[idx] = tally_parse_int.parse_int(u8, s[start..i], .{}) catch return null;
         if (idx < 3) {
             if (i >= s.len or s[i] != '.') return null;
             i += 1;

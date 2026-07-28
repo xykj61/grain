@@ -41,7 +41,7 @@ No shred · no parseInt migration sweep · no Inner unpause · no Class A delete
 
 ## Next
 
-**kg u72** — next prune slice (more yonder · parseInt ratchet lean · or over-70 on-touch), or check-in.
+**LANDED u72** — archival yonder · setu parseInt lean · glow emit held.
 
 ---
 

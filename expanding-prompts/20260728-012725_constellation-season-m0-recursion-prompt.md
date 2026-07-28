@@ -17,7 +17,7 @@ Read whole: counsel/20260728-012725_the-constellation-season-prep.md and
 context/LEXICON.md rows for Murr (was Mala) · Gren (was Djin · was Twah) · Siya · the triad.
 Companions: newest quin-workshop pair if attached; else verify origin/main nib.
 Fascia Season parks mid-flight; deeper nests may walk while outer stays paused.
-Active walk when outer paused: expanding-prompts/20260728-025634_gren-season-g0-recursion-prompt.md
+Active walk when outer paused: expanding-prompts/20260728-025220_mur-season-u0-recursion-prompt.md (Gren g0 archival in yonder)
 
 first duties when outer resumes: bootstrap or verify · state the nib · seventeen-witness choir ·
 report every line, reds first · then walk from m9 (bookmark) unless he reseats:
