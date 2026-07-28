@@ -3,7 +3,7 @@
 //!   rye build linengrow/tube_manifest_witness.rye -femit-bin=linengrow/bin/tube_manifest_witness
 //!   linengrow/bin/tube_manifest_witness
 //!
-//! Per expanding-prompts/20260716-142818_glow-application-framework-and-
+//! Per expanding-prompts/yonder/20260716-142818_glow-application-framework-and-
 //! publishing.md rung TUBE0 and linengrow/tube_manifest.rye. Eight claims:
 //!   1. A well-formed manifest (real name, version, at least one declared
 //!      capability, a real iteration bound) builds cleanly.

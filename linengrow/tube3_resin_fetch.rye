@@ -1,6 +1,6 @@
 //! linengrow/tube3_resin_fetch.rye — TUBE3: fetch a published Manifest resin over Comlink.
 //!
-//! Per expanding-prompts/20260716-142818 rung TUBE3: the app's bytes (here the
+//! Per expanding-prompts/yonder/20260716-142818 rung TUBE3: the app's bytes (here the
 //! TUBE0 Manifest resin from TUBE2) cross as Amphora fetch-by-digest frames
 //! sealed by Comlink; the peer verifies the digest before any TUBE1 admit.
 //! This module proves the sealed fetch + published-set gate; admission stays
