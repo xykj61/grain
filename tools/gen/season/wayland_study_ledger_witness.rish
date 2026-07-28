@@ -1,0 +1,27 @@
+# tools/gen/season/wayland_study_ledger_witness.rish — Surface p4 · study pins present
+#
+#   rishi/bin/rishi run tools/gen/season/wayland_study_ledger_witness.rish
+#
+# Orientation only — does not open a Wayland window.
+
+say "wayland-study: Language EN — River · zig-wayland · libwayland pins."
+say "wayland-study: Style Radiant — study ledger; refuse vendor/link."
+say "wayland-study: Lens TAME — Surface Season p4."
+
+let river = run ["test" "-f" "gratitude/river.md"]
+assert river.ok else "wayland-study: gratitude/river.md missing"
+
+let wayland = run ["test" "-f" "gratitude/wayland.md"]
+assert wayland.ok else "wayland-study: gratitude/wayland.md missing"
+
+let zigw = run ["test" "-f" "gratitude/zig-wayland.md"]
+assert zigw.ok else "wayland-study: gratitude/zig-wayland.md missing"
+
+let ledger = run ["test" "-f" "counsel/20260728-195228_surface-season-p4-river-zig-wayland-study-ledger.md"]
+assert ledger.ok else "wayland-study: p4 ledger counsel missing"
+
+let seed = run ["test" "-f" "brushstroke/wayland_seed.rye"]
+assert seed.ok else "wayland-study: wayland_seed.rye missing"
+
+say "GREEN: wayland-study — river · libwayland · zig-wayland · ledger · seed pins present"
+say "GREEN: wayland-study — GPL clean-room held; no vendor this fold."
