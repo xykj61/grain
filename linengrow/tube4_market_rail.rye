@@ -31,29 +31,27 @@ pub const AcquireResult = struct {
     fetched_len: u32 = 0,
 };
 
-/// Publish (TUBE2), list at demo_price, pay via Neth append, settle, fetch (TUBE3).
-pub fn run_demo_acquire(
-    store: *gc.ResinStore,
+fn list_published_demo(
+    digest: *const [gc.digest_hex_len]u8,
     reg: *gc.Registry,
-    granary_log: []u8,
-    granary_log_len: *u32,
-    out_bytes: *[vfw.max_resin_bytes]u8,
-) MarketError!AcquireResult {
-    const published = try tube2.run_demo_publish(store, reg, granary_log, granary_log_len);
-
+    listing_receipt: *[exchange.digest_hex_len]u8,
+) MarketError!void {
     var listing: [exchange.max_listing_len]u8 = undefined;
     const ln = try exchange.sign_listing(
         exchange.exchange_version,
         tube2.demo_path,
-        &published.digest,
+        digest,
         demo_price,
         &listing,
     );
     try exchange.verify_against_registry(listing[0..ln], reg);
-    var listing_receipt: [exchange.digest_hex_len]u8 = undefined;
-    try exchange.receipt_digest(listing[0..ln], &listing_receipt);
+    try exchange.receipt_digest(listing[0..ln], listing_receipt);
+}
 
-    // MUR: mint only, then Neth-append the price send (settle through Neth).
+/// MUR: mint only, then Neth-append the price send (settle through Neth).
+fn demo_murr_neth_pay(
+    murr_digest: *[settle.digest_hex_len]u8,
+) MarketError!neth.AppendResult {
     const issuer_kp = kumara.keypair_from_seed(&mc.issuer_seed);
     const holder_kp = kumara.keypair_from_seed(&mc.holder_seed);
     var issuer_hex: [mc.pubkey_hex_len]u8 = undefined;
@@ -93,11 +91,12 @@ pub fn run_demo_acquire(
     );
     assert(neth_result.balances.issuer == 50);
     assert(neth_result.balances.holder == 950);
+    settle.digest_bytes(signed.canonical[0..signed.canonical_len], murr_digest);
+    return neth_result;
+}
 
-    var murr_digest: [settle.digest_hex_len]u8 = undefined;
-    settle.digest_bytes(signed.canonical[0..signed.canonical_len], &murr_digest);
-
-    // WOV payment half at the same amount.
+/// WOV payment half at the same amount.
+fn demo_wov_pay_digest(wov_digest: *[settle.digest_hex_len]u8) MarketError!void {
     const buyer_kp = kumara.keypair_from_seed(&wov.holder_a_seed);
     const seller_kp = kumara.keypair_from_seed(&wov.holder_b_seed);
     var buyer_hex: [wov.pubkey_hex_len]u8 = undefined;
@@ -113,27 +112,66 @@ pub fn run_demo_acquire(
         "wov-transfer {s} {s} 50\n",
         .{ buyer_hex[0..], seller_hex[0..] },
     ) catch return error.Overflow;
-    var wov_digest: [settle.digest_hex_len]u8 = undefined;
-    settle.digest_bytes(wov_line_slice, &wov_digest);
+    settle.digest_bytes(wov_line_slice, wov_digest);
+}
 
+fn settle_listing_and_fetch(
+    store: *gc.ResinStore,
+    reg: *gc.Registry,
+    digest: *const [gc.digest_hex_len]u8,
+    listing_receipt: *const [exchange.digest_hex_len]u8,
+    murr_digest: *const [settle.digest_hex_len]u8,
+    wov_digest: *const [settle.digest_hex_len]u8,
+    out_bytes: *[vfw.max_resin_bytes]u8,
+) MarketError!u32 {
     const payment_fields = settle.PaymentFields{
         .amount = demo_price,
         .currency = "murr",
-        .murr_digest = &murr_digest,
-        .wov_digest = &wov_digest,
+        .murr_digest = murr_digest,
+        .wov_digest = wov_digest,
     };
     var payment_hex: [settle.digest_hex_len]u8 = undefined;
     try settle.payment_digest(payment_fields, &payment_hex);
 
     var slip: [settle.max_settle_len]u8 = undefined;
-    const sn = try settle.sign_settle(settle.settle_version, &listing_receipt, &payment_hex, &slip);
-    try settle.verify_against_listing(slip[0..sn], &listing_receipt, &payment_hex, demo_price, demo_price);
+    const sn = try settle.sign_settle(settle.settle_version, listing_receipt, &payment_hex, &slip);
+    try settle.verify_against_listing(slip[0..sn], listing_receipt, &payment_hex, demo_price, demo_price);
 
     var settled = settle.SettledSet.empty();
-    try settle.record_settle(&settled, &listing_receipt);
+    try settle.record_settle(&settled, listing_receipt);
 
     // Unlock: sealed fetch of the purchased resin (TUBE3).
-    const fetched_len = try tube3.fetch_published_sealed(store, reg, published.digest[0..], out_bytes);
+    return try tube3.fetch_published_sealed(store, reg, digest[0..], out_bytes);
+}
+
+/// Publish (TUBE2), list at demo_price, pay via Neth append, settle, fetch (TUBE3).
+pub fn run_demo_acquire(
+    store: *gc.ResinStore,
+    reg: *gc.Registry,
+    granary_log: []u8,
+    granary_log_len: *u32,
+    out_bytes: *[vfw.max_resin_bytes]u8,
+) MarketError!AcquireResult {
+    const published = try tube2.run_demo_publish(store, reg, granary_log, granary_log_len);
+
+    var listing_receipt: [exchange.digest_hex_len]u8 = undefined;
+    try list_published_demo(&published.digest, reg, &listing_receipt);
+
+    var murr_digest: [settle.digest_hex_len]u8 = undefined;
+    const neth_result = try demo_murr_neth_pay(&murr_digest);
+
+    var wov_digest: [settle.digest_hex_len]u8 = undefined;
+    try demo_wov_pay_digest(&wov_digest);
+
+    const fetched_len = try settle_listing_and_fetch(
+        store,
+        reg,
+        &published.digest,
+        &listing_receipt,
+        &murr_digest,
+        &wov_digest,
+        out_bytes,
+    );
 
     return .{
         .digest = published.digest,

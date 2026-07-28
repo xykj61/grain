@@ -42,7 +42,7 @@ No Amphora shred · no Class A rewrite · no pond/TUBE4 campaign · no Inner unp
 
 ## Next
 
-**kg u85** — on-touch remaining over-70 (tube4 · pond drawn_terminal), or check-in.
+**LANDED u85** — over-70 clear · fascia 60→66 · over70 6→0.
 
 ---
 
