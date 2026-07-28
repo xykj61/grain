@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.064402` — [MUR Season check-in at u68](20260728-064402_mur-season-check-in-u68.bron) — living CLEAR · queue empty · u69 next
 - `20260728.064221` — [MUR Season u67 filename residual map](20260728-064221_mur-season-u67-filename-residual-map.bron) — living CLEAR · fossils HOLD · u68 next
 - `20260728.063848` — [MUR Season u66 filename rename breach](20260728-063848_mur-season-u66-filename-rename-breach.bron) — git mv + path re-points approved · u67 next
 - `20260728.063003` — [MUR Season check-in at u65](20260728-063003_mur-season-check-in-u65.bron) — queue empty · doors named · u66 next

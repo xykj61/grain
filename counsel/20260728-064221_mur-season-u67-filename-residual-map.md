@@ -44,7 +44,7 @@ No `git mv` of dated fossils · no stamp rewrite · no WOV path rename · no shr
 | --- | --- |
 | **kg fossil-rename wave** | only if he names a scoped set (not whole-tree) |
 | **kg dual-accept** | separate design door |
-| **check-in** | queue otherwise empty for filename work |
+| **check-in** | **LANDED u68** · queue empty for filename work |
 
 ---
 
