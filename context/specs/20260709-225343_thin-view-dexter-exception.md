@@ -1,6 +1,7 @@
 # Thin View and Dexter — Exception Affirmed (Not a Second Consumer)
 
-*Night-brief Q4 asked whether composing local MALA/WOV fixtures into a drawn-terminal frame graduates Dexter. This note answers: it does not.*
+*Night-brief Q4 asked whether composing local MUR/WOV fixtures (was MALA) into a drawn-terminal frame graduates Dexter. This note answers: it does not.*
+Radiant pass `20260728.044002` — living L1 rename-forward: **MUR** (was MALA)
 
 **Stamp:** `20260709.225343`
 **Language:** EN

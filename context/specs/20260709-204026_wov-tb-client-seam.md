@@ -11,6 +11,7 @@
 
 *Written by Kaeden and Rio 3 (Grok).*
 Radiant pass `20260725.035852`
+Radiant pass `20260728.044002` — living L1 rename-forward: **MUR** (was MALA).
 
 ---
 
@@ -46,10 +47,10 @@ Lap 1 `Book` fields map as follows for a single-monarch cluster:
 |-------------|-------------------------------|
 | Instance | One replica / one cluster id (witness-pinned) |
 | Holder account id (Kumara pubkey hex) | TB `Account.id` derived deterministically from pubkey bytes (document the derivation in the lap-open) |
-| Balance | TB account credits − debits (ledger units = MALA internal units) |
+| Balance | TB account credits − debits (ledger units = MUR internal units) |
 | Mint into WOV | TB transfer from a **WOV issued** control account to holder |
 | Transfer holder→holder | TB transfer between holder accounts |
-| Redeem / exit | TB transfer holder → **WOV redeemed** control account; then MALA `wov:exit` as today |
+| Redeem / exit | TB transfer holder → **WOV redeemed** control account; then MUR `wov:exit` as today |
 | Nonce | TB account `user_data` or a WOV-side table keyed by account id — pick one in lap-open; must appear in exit bundle |
 
 Control accounts (issued / redeemed) are monarch-owned. Holders never debit issued directly.
@@ -62,7 +63,7 @@ After every TB mutation batch that a root covers:
 
 1. Read all non-zero holder balances (and nonces) from TB (or from a projection fed only by TB replies).
 2. Build the **same** exit-bundle grammar as lap 1 (`wov-exit-bundle/v1` … conservation … attestation).
-3. Publish `wov:root` on the MALA log with `state-root-hex64` = SHA3-256 of that bundle.
+3. Publish `wov:root` on the MUR log with `state-root-hex64` = SHA3-256 of that bundle.
 
 `accept_exit` rules in [`200443`](20260709-200443_wov-exit-honesty.md) stay law. A TB outage after a published root still leaves holders with the bundle.
 
@@ -108,4 +109,4 @@ After every TB mutation batch that a root covers:
 
 ---
 
-*May the pin stay a pin until the wrapper earns its keep. May every balance that leaves TigerBeetle still leave as a fact on MALA. And may the first client we write be smaller than the temptation to fork.*
+*May the pin stay a pin until the wrapper earns its keep. May every balance that leaves TigerBeetle still leave as a fact on MUR. And may the first client we write be smaller than the temptation to fork.*
