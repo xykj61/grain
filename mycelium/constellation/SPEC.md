@@ -7,10 +7,12 @@
 **Home:** `mycelium/constellation/` — the spec here, the Sui lane at `sui/`
 **Companions:** [the constellation design](../active-designing/20260727-142516_the-constellation-and-the-twelve-funds.md) · [the seva foundation](../foundations/20260727-144447_seva-the-vane-the-fund-and-the-daily-service.md)
 **Plan accretion `20260728.013859`:** **Mala** (Aries · seat 1) is the official maintainer of the **MALA** module by design. Deployment of the constellation of twelve is **planned** via an **n-of-12 multisig led by Mala** — plan only; v1 code below remains AdminCap + registry-only; no live multisig object from this page. Seat record: [`../../counsel/20260728-013859_constellation-season-m3-mala-maintains-mala.md`](../../counsel/20260728-013859_constellation-season-m3-mala-maintains-mala.md).  
-**Plan accretion `20260728.020607`:** **Ketu** named for Aquarius · fund order 11 (sign index 10) · executive Keaton. **Mala** honor-dedicated to Kamala Harris. Steward seats: Siya executor Sara · Djin executive DJINN. Design/registry only — no live seating bytes. Record: [`../../counsel/20260728-020607_ketu-mala-dedication-and-fund-executives.md`](../../counsel/20260728-020607_ketu-mala-dedication-and-fund-executives.md).
+**Plan accretion `20260728.020607`:** **Ketu** named for Aquarius · fund order 11 (sign index 10) · executive Keaton. **Mala** honor-dedicated to Kamala Harris. Steward seats: Siya executor Sara · Djin executive DJINN. Design/registry only — no live seating bytes. Record: [`../../counsel/20260728-020607_ketu-mala-dedication-and-fund-executives.md`](../../counsel/20260728-020607_ketu-mala-dedication-and-fund-executives.md).  
+**Plan accretion `20260728.021252`:** **Gwoh** named for Leo · fund order 5 (sign index 4) · `%gwoh` · honor-dedicated to Sarah Guo of Conviction. Design/registry only. Record: [`../../counsel/20260728-021252_gwoh-sarah-guo-dedication.md`](../../counsel/20260728-021252_gwoh-sarah-guo-dedication.md).
 
 *Written together by Keaton and Quin.*
 Radiant pass `20260728.013859` — maintainer + n-of-12 plan named; claims unchanged
+Radiant pass `20260728.021252` — Gwoh Leo 5 · Sarah Guo dedication
 
 ---
 
