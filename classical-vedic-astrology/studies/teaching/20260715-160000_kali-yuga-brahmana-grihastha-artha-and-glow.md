@@ -60,7 +60,7 @@ The four-yuga cycle, the character of Kali Yuga (dharma's four legs thinning, th
 - [`life-frame/four-asramas-and-goals-of-life.md`](../life-frame/four-asramas-and-goals-of-life.md) — the four aims and four seasons this study assumes.
 - [`government-as-planetary-spectrum.md`](government-as-planetary-spectrum.md) — the varnashrama sector model this study builds directly on.
 - [`foundations/20260629-014512_money-that-stays-close-to-home.md`](../../../foundations/20260629-014512_money-that-stays-close-to-home.md) — circulation over extraction, in working design.
-- [`expanding-prompts/20260715-160500_college-education-mixed-exploitation-ai-and-vows.md`](../../../expanding-prompts/20260715-160500_college-education-mixed-exploitation-ai-and-vows.md) — this study's own companion, siloing a student's own honest word on education, extraction, and the age of AI.
+- [`expanding-prompts/yonder/20260715-160500_college-education-mixed-exploitation-ai-and-vows.md`](../../../expanding-prompts/yonder/20260715-160500_college-education-mixed-exploitation-ai-and-vows.md) — this study's own companion, siloing a student's own honest word on education, extraction, and the age of AI.
 
 ---
 
