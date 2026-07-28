@@ -3,6 +3,8 @@
 **Stamp:** `20260728.015541`  
 **Use:** paste the fenced block as the next counsel/bench session opener after this charter send.
 
+Radiant pass `20260728.020607` — Ketu · Mala dedication · executives folded into i0 opener
+
 ---
 
 ```
@@ -20,18 +22,23 @@ OUTER SCOPE (paused — do not advance m-rounds):
 INNER SCOPE (this season — walk here):
   Charter: counsel/20260728-015541_the-inner-scope-season-charter.md
   Spine: fascia redaction shredding · Amphora/resin path · Djin rename-forward done.
-  Fund seat 2: Djin (was Twah) · Taurus · %djin · djin.fund (claim his).
-  Lexicon: scope · outer · inner · Djin (fund) · The Inner Scope Chapter.
+  Fund seat 2: Djin (was Twah) · Taurus · %djin · executive DJINN.
+  Fund seat 3: Siya · executor Sara Sealy Livermore.
+  Fund seat 11: Ketu · Aquarius · %ketu · executive Keaton (seated 20260728.020607).
+  Mala (seat 1): honor-dedicated to Kamala Harris — gratitude + foundations (Reya variant).
+  Lexicon: scope · outer · inner · Djin · Ketu · fund executive · fund executor.
   Prin: rishi/bin/rishi run tools/prin.rish scope
   i14 and i15 MUST warn: need another 16 or 32 inner rounds, OR return to outer m9.
 
-Read whole: the inner charter · LEXICON rows for scope/outer/inner/Djin ·
+Read whole: the inner charter · ketu/dedication seat counsel/20260728-020607_ketu-mala-dedication-and-fund-executives.md ·
+LEXICON rows for scope/outer/inner/Djin/Ketu/Mala ·
 Fascia charter counsel/20260728-011055_the-fascia-season-charter.md (resume map).
 Companions: newest quin-workshop pair if attached; else verify origin/main nib.
 
 first duties: bootstrap or verify · state the nib · prin scope ·
 run gen_djin (GREEN; deploy RED) · report · then walk i0 (bow) from the charter:
-  affirm outer pause · affirm Djin rename · map fascia resume lean ·
+  affirm outer pause · affirm Djin rename · affirm Ketu + Mala dedication + executives ·
+  map fascia resume lean ·
   no live shred · no breach without prin rish breach yes now + his circled scope;
   no live Sui deploy · no wallet · no gas · no private key in tree.
 
