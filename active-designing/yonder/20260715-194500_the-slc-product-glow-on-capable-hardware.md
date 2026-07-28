@@ -7,6 +7,8 @@
 **Status:** Product brief — names the SLC product and its first laps. Register: mixed — L1 (session record + replay) is checkable (Sala B0 green); L2–L3 are horizon (design), gated as noted.
 **Compass:** foundations → grain → Two Rooms → this brief → TASKS/ROADMAP
 
+Radiant pass `20260727.220135` — style only; claims unchanged
+
 ---
 
 ## The Decision, Stated First
@@ -69,7 +71,7 @@ One honest note, so the flagship is justified for the right reason: for Graphene
 
 The value tier is not abandoned — it is the *destination*, reached with the lovability already proven, so the affordable phone inherits an experience worth loving rather than a compromised one. The Reach Tier analysis below is exactly that value-tier device work, now correctly ordered last rather than first.
 
-**A real device landed in the value tier ahead of the flagship, `20260716.193409`** — Keaton bought a used **Google Pixel 10a, 128GB, for $325** on Facebook Marketplace. Checked directly (July 2026): Tensor G4, Titan M2, launched `20260305`, full GrapheneOS **production** support with a self-install web installer, updates through `~2033`. New retail is `~$450–550`, so this is a genuinely strong used-market price — and it is a real, one-generation-newer instance of exactly the value-tier device shape this section already named (Tensor G4 vs. the 7a/8a's G2/G3), reached earlier than the ordering above planned. This does not change the *ordering* — the flagship-first lesson-harvesting strategy above stands, and the 10a's own first lap is still gated on getting GrapheneOS actually flashed onto it — but it means the value tier's own destination is no longer only planned, it is owned.
+**A real device landed in the value tier ahead of the flagship, `20260716.193409`** — Keaton bought a used **Google Pixel 10a, 128GB, for $325** on Facebook Marketplace. Checked directly (July 2026): Tensor G4, Titan M2, launched `20260305`, full GrapheneOS **production** support with a self-install web installer, updates through `~2033`. New retail is `~$450–550`, so this is a genuinely strong used-market price — and it is a real, one-generation-newer instance of exactly the value-tier device shape this section already named (Tensor G4 vs. the 7a/8a's G2/G3), reached earlier than the ordering above planned. This does not change the *ordering* — the flagship-first lesson-harvesting strategy above stands, and the 10a's own first lap is still gated on getting GrapheneOS actually flashed onto it — yet it means the value tier's own destination is no longer only planned, it is owned.
 
 ## Reach Tier (`20260715.195500`) — the Value-Tier Budget Android (arrives last, not first)
 
@@ -101,4 +103,4 @@ Together these keep the SLC's green L1 core untouched while widening both who ca
 
 ---
 
-The SLC product is not a phone but a fold made lovable: Glow's sovereign broadcast, complete at its first small lap today, growing on capable hardware toward the live sovereign window a creator has always deserved.
+The SLC product is a fold made lovable rather than a phone: Glow's sovereign broadcast, complete at its first small lap today, growing on capable hardware toward the live sovereign window a creator has always deserved.
