@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.062451` — [MUR Season u63 WOV unify choir](20260728-062451_mur-season-u63-wov-unify-choir.bron) — murr+wov GREEN · design 0–5 done · u64 next
 - `20260728.062201` — [MUR Season u62 exit honesty names](20260728-062201_mur-season-u62-exit-honesty-names.bron) — book-root aliases · wov:* held · u63 next
 - `20260728.062029` — [MUR Season u61 settle dual-digest](20260728-062029_mur-season-u61-settle-dual-digest.bron) — keep-both seated · u62 exit names next
 - `20260728.061801` — [MUR Season u60 WOV unify brief](20260728-061801_mur-season-u60-wov-unify-brief.bron) — jobs/non-goals seated · u61 dual-digest next
