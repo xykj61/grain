@@ -8,7 +8,7 @@
 **Voice:** Quin  
 **Status:** Checkable — bound by `rune_mold` · `lower_mold` · `lower_named_cast` witnesses  
 **Register:** Checkable (Two Rooms) — thin `$%` payload auras GREEN; emit held; NativeActivity claim wire stays product  
-**Grounds in:** [`20260721-180008_stoa186-after-claim-shell-checkin.md`](../20260721-180008_stoa186-after-claim-shell-checkin.md) · [`20260721-174747_stoa183-ux-hex-aura-thin.md`](20260721-174747_stoa183-ux-hex-aura-thin.md)
+**Grounds in:** [`20260721-180008_stoa186-after-claim-shell-checkin.md`](20260721-180008_stoa186-after-claim-shell-checkin.md) · [`20260721-174747_stoa183-ux-hex-aura-thin.md`](20260721-174747_stoa183-ux-hex-aura-thin.md)
 
 **dated_guard:** Do **not** claim `$%` `@t`/`@ux` faces lower yet. Prefer **send** of STOA186–187 when the pier should match the hand. JABS3 held.
 

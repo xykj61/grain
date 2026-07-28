@@ -8,7 +8,7 @@
 **Voice:** Quin  
 **Status:** Checkable — bound by `tools/glow_nest_type_witness.rish` · bartis/barket desks  
 **Register:** Checkable (Two Rooms) — shape alias accept · TripleMold lower · capacity freeze held  
-**Grounds in:** [`20260721-002051_stoa153-xfer-shape-alias.md`](20260721-002051_stoa153-xfer-shape-alias.md) · [`20260721-000234_stoa150-pair-shape-alias.md`](../20260721-000234_stoa150-pair-shape-alias.md) · [`20260720-223226_glow-os-shape-not-mold.md`](../20260720-223226_glow-os-shape-not-mold.md)
+**Grounds in:** [`20260721-002051_stoa153-xfer-shape-alias.md`](20260721-002051_stoa153-xfer-shape-alias.md) · [`20260721-000234_stoa150-pair-shape-alias.md`](20260721-000234_stoa150-pair-shape-alias.md) · [`20260720-223226_glow-os-shape-not-mold.md`](../20260720-223226_glow-os-shape-not-mold.md)
 
 **dated_guard:** Do **not** rewrite dated mold briefs. Seat this lap in *this* brief and living pins. Hoon desk suffixes (`triple-mold`) stay the study word. Alias path stays; no whole-tree sed.
 

@@ -8,7 +8,7 @@
 **Voice:** Quin  
 **Status:** Checkable — bound by tokens · nest_type · rune_mold · lower_mold witnesses  
 **Register:** Checkable (Two Rooms) — thin `@t` GREEN; cord emit held; shape vocabulary kept  
-**Grounds in:** [`20260721-171030_stoa180-at-aura-checkin.md`](20260721-171030_stoa180-at-aura-checkin.md) · [`20260720-223226_glow-os-shape-not-mold.md`](20260720-223226_glow-os-shape-not-mold.md)
+**Grounds in:** [`20260721-171030_stoa180-at-aura-checkin.md`](yonder/20260721-171030_stoa180-at-aura-checkin.md) · [`20260720-223226_glow-os-shape-not-mold.md`](20260720-223226_glow-os-shape-not-mold.md)
 
 **dated_guard:** Do **not** claim `@t` faces lower to runnable desks yet. Do **not** rewrite dated `@uN`-only aura claims. Keep **shape** as Glow OS word — **type** stays refused; **norm** stays held. `MoldSpec` / Zig `*Mold` API rename stays a separate seam.
 

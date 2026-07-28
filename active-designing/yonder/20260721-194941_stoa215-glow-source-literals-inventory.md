@@ -9,7 +9,7 @@
 **Status:** Checkable — inventory seated `20260721.194941` · C1 chosen as STOA216  
 **Register:** Checkable (Two Rooms) — no desk carries elder strings until C1–C4 close  
 
-**Grounds in:** lean **C** in [`20260721-194203_stoa214-after-fixture-cast-checkin.md`](yonder/20260721-194203_stoa214-after-fixture-cast-checkin.md) · STOA192/213 fixture desks
+**Grounds in:** lean **C** in [`20260721-194203_stoa214-after-fixture-cast-checkin.md`](20260721-194203_stoa214-after-fixture-cast-checkin.md) · STOA192/213 fixture desks
 
 **dated_guard:** Do **not** claim fixture desks emit elder stamp/memo/root yet. Prefer lex before parse before lower before desk pin. JABS3 held.
 

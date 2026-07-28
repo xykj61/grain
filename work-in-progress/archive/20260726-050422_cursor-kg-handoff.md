@@ -73,7 +73,7 @@ tail -f /tmp/parity-f-rerun/parity.log
 3. [`counsel/20260726-044729_the-graph-is-not-a-vane.md`](../../counsel/20260726-044729_the-graph-is-not-a-vane.md) — speed law · no P-vane  
 4. [`counsel/20260725-223409_the-tool-the-door-the-rung-and-the-lane.md`](../../counsel/20260725-223409_the-tool-the-door-the-rung-and-the-lane.md) — ABSENT · PARTIAL · H after GREEN  
 5. [`20260726-050047_zig-cache-audit-and-parallel-packs.md`](20260726-050047_zig-cache-audit-and-parallel-packs.md) — cold 40404 ms / warm 212 ms · parallel vs serial families  
-6. [`../active-designing/20260726-050047_mantra-core-witness-receipts-hammock.md`](../../active-designing/20260726-050047_mantra-core-witness-receipts-hammock.md) — S3 design only  
+6. [`../active-designing/yonder/20260726-050047_mantra-core-witness-receipts-hammock.md`](../../active-designing/yonder/20260726-050047_mantra-core-witness-receipts-hammock.md) — S3 design only  
 7. Compass habit: [`../foundations/20260706-185112_follow-our-compass.md`](../../foundations/20260706-185112_follow-our-compass.md)  
 8. Identity/style: `context/QUIN.md` · `context/RADIANT_STYLE.md` · `context/TAME_GUIDANCE.md`  
 

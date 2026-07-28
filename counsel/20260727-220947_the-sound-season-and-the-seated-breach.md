@@ -143,10 +143,9 @@ Arc II: **`strengthening-compiler/` → `external-research/yonder/strengthening-
 
 Arc II: **five** spent WIP breach-season records → `archive/` · depth-one **11 → 6** · ROUND MODE GREEN. Motion: [`20260727-225235_sound-arc-ii-wip-breach-records-archive.md`](20260727-225235_sound-arc-ii-wip-breach-records-archive.md). Reply: [`replies/20260727-225235_re-sound-season-r5.md`](replies/20260727-225235_re-sound-season-r5.md).
 
+### Round 6 landed (`20260727.225704`)
 
-
-
-
+Arc II: **eleven** AD cold check-in / inventory briefs → `active-designing/yonder/` · depth-one **139 → 128** · ROUND MODE GREEN. **Arc II breach runway exits.** Motion: [`20260727-225704_sound-arc-ii-ad-cold-checkin-batch.md`](20260727-225704_sound-arc-ii-ad-cold-checkin-batch.md). Reply: [`replies/20260727-225704_re-sound-season-r6.md`](replies/20260727-225704_re-sound-season-r6.md). Next door: Arc III teaching shelves, or a newly named Arc II pocket.
 
 ---
 

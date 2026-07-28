@@ -8,7 +8,7 @@
 **Voice:** Quin  
 **Status:** Checkable — bound by `glow_run`  
 **Register:** Checkable (Two Rooms) — `shape-pair` dual GREEN · mold twin kept · cast twins held  
-**Grounds in:** [`20260721-010435_stoa162-shape-count-dual-desk.md`](yonder/20260721-010435_stoa162-shape-count-dual-desk.md) · [`20260721-000234_stoa150-pair-shape-alias.md`](20260721-000234_stoa150-pair-shape-alias.md)
+**Grounds in:** [`20260721-010435_stoa162-shape-count-dual-desk.md`](yonder/20260721-010435_stoa162-shape-count-dual-desk.md) · [`20260721-000234_stoa150-pair-shape-alias.md`](yonder/20260721-000234_stoa150-pair-shape-alias.md)
 
 **dated_guard:** Do **not** rewrite dated mold briefs. Do **not** delete `mold-pair`. No whole-tree sed.
 
