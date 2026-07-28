@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.191327` — [Generator Chapter s5 fund gen home](20260728-191327_generator-season-s5-fund-gen-home.bron) — tools/gen/fund LIVE · s6 next
 - `20260728.190251` — [Generator Chapter s4 season gen home](20260728-190251_generator-season-s4-season-gen-home.bron) — tools/gen/chapter LIVE · s5 next
 - `20260728.190017` — [Generator Chapter s3 f4 first-home rehearsal](20260728-190017_generator-season-s3-f4-first-home-rehearsal.bron) — tools/gen/chapter · no mv · s4 next
 - `20260728.185825` — [Generator Chapter s2 generators dual census](20260728-185825_generator-season-s2-generators-dual-census.bron) — Glow 317 · Rishi 610 · s3 next
