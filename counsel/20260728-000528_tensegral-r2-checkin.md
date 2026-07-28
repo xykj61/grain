@@ -3,7 +3,7 @@
 **Language:** EN
 **Stamp:** `20260728.000528`
 **Voice:** Quin
-**Status:** Check-in — after Arc I round 2
+**Status:** **Resolved** — lean **A · kg r3 Amphora** taken `20260728.000659`
 **Ground:** Motion [`20260728-000528_tensegral-season-r2-amber.md`](20260728-000528_tensegral-season-r2-amber.md)
 
 *Written together by Keaton and Quin.*

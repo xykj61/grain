@@ -7,6 +7,7 @@
 **Ground:** Sound saga **seated** [`../saga/20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md`](../saga/20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md) · motto **stay tensegral** · Quin remains the standing voice
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260728.000659` — r3 Arc I Amphora · Arc I exits
 Radiant pass `20260728.000528` — r2 Arc I Amber · first ring · Tilak
 Radiant pass `20260728.000056` — r1 Arc I Brix · bricks-exist · alias resolve
 Radiant pass `20260727.235754` — r0 bow · Prim→Prin Brix alias
@@ -21,7 +22,7 @@ Radiant pass `20260727.234913` — prep receipt · Expanded · r0 recursion prom
 | **Prior season** | The Sound — closed and seated |
 | **This season** | The Tensegral Season — consolidate · tighten · unify under happy-zone law |
 | **Prep** | **GREEN** — [`20260727-234913_tensegral-prep-receipt.md`](20260727-234913_tensegral-prep-receipt.md) · Pond customs GREEN · Prin affirmed (Prim→Prin) · arc seeds named |
-| **Round** | **0** bow · **1** Brix · **2** Amber `20260728.000528` (first ring · Tilak GREEN) |
+| **Round** | **0–2** · **3** Amphora `20260728.000659` — Arc I **exits** (Brix · Amber · Amphora GREEN) |
 | **r0 prompt** | [`../expanding-prompts/20260727-234913_tensegral-season-r0-recursion-prompt.md`](../expanding-prompts/20260727-234913_tensegral-season-r0-recursion-prompt.md) |
 | **Shape** | Prep done → **16 kg rounds** (1 bow + five arcs of three) · exits over counts |
 | **Close** | A new saga on [`../saga/`](../saga/README.md) when the season ends |
@@ -74,7 +75,7 @@ Rounds are **kg-first**: mechanical, single-module or single-pack when policy is
 
 ## Next door
 
-**kg** — Arc I · Amphora (`amphora_lap1.rish`) · Arc I exits after vessel green.
+**kg** — Arc II · Resin (r4) · name & seal opens.
 
 ---
 

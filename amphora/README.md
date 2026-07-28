@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Stamp:** `20260710.161358`
-**Last updated:** 2026-07-10 (Radiant pass `182821`)
+**Last updated:** 2026-07-28 (Tensegral Arc I r3 — laps 1–3 · seal · chunk reaffirmed GREEN)
 **Status:** Landed — laps 1–3 + stamp + seal + chunk + purchase delivery; Pond customs gates scrub; forge view folds a live sealed pour
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 
@@ -23,5 +23,7 @@
 **Ground:** silo [`active-designing/20260703-201612_the-sealed-crossing.md`](../active-designing/20260703-201612_the-sealed-crossing.md) · study [`external-research/20260703-201612_the-amphora-and-the-crossing.md`](../external-research/20260703-201612_the-amphora-and-the-crossing.md) · sealed crossing plainly [`external-research/20260710-002952_sealed-crossing-plainly.md`](../external-research/20260710-002952_sealed-crossing-plainly.md) · crossing metal plainly [`external-research/20260710-145313_amphora-crossing-plainly.md`](../external-research/20260710-145313_amphora-crossing-plainly.md)
 
 **Witnesses:** `tools/amphora_lap1.rish` · `tools/amphora_lap2.rish` · `tools/amphora_lap3.rish` · `tools/amphora_device_wire.rish` · `tools/amphora_vessel_stamp.rish` · `tools/amphora_vessel_seal.rish` · `tools/amphora_resin_chunk.rish` · `tools/amphora_purchase_delivery.rish` · `tools/pond_customs.rish` · `tools/realidream_forge_view.rish` · elder path `tools/crossing_manifest_seed.rish`
+
+**Tensegral Arc I r3** (`20260728.000659`): lap 1 · lap 2 · lap 3 · vessel seal · resin chunk all **GREEN** this sitting — Arc I (Brix · Amber · Amphora) exits. Next season cable is Arc II Resin.
 
 *May every vessel stay sealed in motion. May every pour remember its cellar.*
