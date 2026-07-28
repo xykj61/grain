@@ -1,7 +1,8 @@
 # MUR Chapter — u0 Recursion Prompt (printout · all scopes kept)
 
-**Stamp:** `20260728.025220` · Radiant pass `20260728.061323`  
+**Stamp:** `20260728.025220` · Radiant pass `20260728.061551`  
 **Use:** paste the fenced block as the next counsel/bench session opener.  
+Radiant pass `20260728.061551` — u59 WOV-unify design OPEN early by ask · u60 brief next  
 Radiant pass `20260728.061323` — check-in at u58 · rename spines done · doors named  
 Radiant pass `20260728.060902` — u58 module spine HARDENED · rename done · u59 next
 Radiant pass `20260728.060656` — u57 module residual clear · spine COMPLETE · u58 next
@@ -87,12 +88,12 @@ INNERMOST SCOPE (this season — walk here):
   Lexicon: scope·outer·inner·innermost·core·quint · MUR · Murr · retired Mala/MALA · Gren living.
   Prin: rishi/bin/rishi run tools/prin.rish scope
   gen_murr GREEN · deploy RED; gen_gren GREEN (core closed door); gen_mala ABSENT.
-  u0–u58 COMPLETE · module spine HARDENED · living rename done · u59 next · optional or WOV-design.
+  u0–u59 COMPLETE · WOV-unify design OPEN · living rename HARDENED · u60 unify brief next.
   TOP PRIORITY: rename overwrite everywhere Mala/MALA → Murr/MUR (breach approved seated).
   Fascia shred still needs separate circled yes. WOV retire roadmap last.
   Wave map: counsel/20260728-044738_mur-season-u6-tool-module-wave-map.md
-  Dual-wave: tool COMPLETE · module spine HARDENED (u48–u58) · optional u59–u79 · WOV-design u80+.
-  Order lean: tools u32–u47 before modules u48–u79 · no silent tree-wide sed.
+  Dual-wave: tool+module rename HARDENED · WOV-unify design OPEN early u59 (charter u80+) · retire last.
+  Order lean: design concepts before code merge · no WOV delete this block.
   Tool prep: counsel/20260728-050720_mur-season-u14-tool-wave-prep.md
   Module prep: counsel/20260728-050833_mur-season-u15-module-wave-prep.md
   Readiness: counsel/20260728-050946_mur-season-u16-dual-wave-readiness.md
@@ -121,8 +122,9 @@ INNERMOST SCOPE (this season — walk here):
   Module residual: counsel/20260728-060656_mur-season-u57-module-wave-residual.md
   Module harden: counsel/20260728-060902_mur-season-u58-module-wave-harden.md
   Check-in u58: counsel/20260728-061323_mur-season-check-in-u58.md
+  WOV-unify opener: counsel/20260728-061551_mur-season-u59-wov-unify-design-opener.md
   Living pin: tools/fixtures/prin_scope.sh innermost waymark kept current.
-  Tool+module rename HARDENED; optional polish or seat WOV-design when named.
+  Rename HARDENED; WOV-unify design OPEN; no WOV delete; retire roadmap last.
   Kamala/Mala gratitude = historical; living Aries = Murr·Kyler.
   u126 and u127 MUST warn before handback (extend innermost · return inner i7 · other).
 
@@ -133,18 +135,18 @@ LEXICON rows MUR/Murr/innermost · Gren charter (CLOSED) · Inner Scope + Fascia
 Companions: newest quin-workshop pair if attached; else verify origin/main nib.
 
 first duties: bootstrap or verify · state the nib · prin scope ·
-run gen_murr (GREEN; deploy RED) · report · then walk u59 or check-in from the charter:
+run gen_murr (GREEN; deploy RED) · report · then walk u60 from the charter:
   affirm outer · inner pauses · affirm core+quint CLOSED · affirm MUR rename spine ·
   affirm Kyler · DJINN · WOV-last · affirm rename-overwrite breach approved ·
-  affirm module spine HARDENED · optional polish or seat WOV-design · 
+  affirm WOV-unify design OPEN · one-page brief · no WOV delete · 
   no live fascia shred without prin rish breach yes now + circled shred scope;
   no live Sui deploy · no wallet · no gas · no private key in tree;
   no whole-tree silent sed — waves with witnesses only.
 
-waymark: u58 complete, u59 next
+waymark: u59 complete, u60 next
 nib <origin/main short nib>
 bench report (verbatim, if any): <REPORT/STOP — or "none">
-scope: outer=paused(m8/m9) inner=paused(i6/i7) innermost=open(u59)
+scope: outer=paused(m8/m9) inner=paused(i6/i7) innermost=open(u60)
   core=closed(handed_back) quint=closed(handed_back) geode=prep(d0)
 breach scope circle: rename_overwrite=approved A= A+C= all= shred=
 words seated (blank = held whole): season_name= choir= LICENSE_WORD=
