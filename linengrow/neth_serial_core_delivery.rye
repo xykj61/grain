@@ -11,7 +11,7 @@
 //! gap: a follower replica receives one already-signed record over a
 //! genuine hosted UDP hop, sealed under Comlink's own wire_format (the
 //! same primitive mantra's recall delivery family and linengrow's own
-//! mala_delivery.rye already use), and applies it through
+//! murr_delivery.rye already use), and applies it through
 //! neth_serial_core.rye's already-witnessed `append_and_reroot` —
 //! unmodified, the exact same call every earlier Neth witness already
 //! proved correct in-process.
@@ -24,7 +24,7 @@
 //! ceiling — a single hop is smaller than a single log append. This
 //! module carries the record over the wire in `receipt_core`'s existing
 //! compact binary payload (raw signature bytes plus the raw fact, the
-//! same encoding `mala_delivery.rye` already uses for its own mint/receipt
+//! same encoding `murr_delivery.rye` already uses for its own mint/receipt
 //! hop) rather than the hex line — the wire's own concern is carrying
 //! bytes compactly, the log's own concern is a stable on-disk shape, and
 //! this lap keeps the two honestly separate rather than assuming one
@@ -236,7 +236,7 @@ fn run_follower(_: std.Io) !u8 {
 }
 
 /// Source: bind the root port first (race discipline, same as
-/// mala_delivery.rye's own issuer), compute the expected root
+/// murr_delivery.rye's own issuer), compute the expected root
 /// independently, send the sealed record, then check the follower's
 /// reported root against that independent expectation -- never trusting
 /// the follower's word alone.

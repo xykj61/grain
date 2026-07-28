@@ -7,6 +7,7 @@
 **Status:** **Landed** `20260709.184051` — `linengrow/murr.rye` + witness at parity **198**; M0 gate verified before open
 **Ground:** counsel [`20260709-152612`](../counsel/20260709-152612_claude-counsel-mala-wov-already-designed.md) · design [`20260702-031312`](../active-designing/20260702-031312_modules-aspects-and-mailable-money.md) · SLC-L1 spine [`receipt_core.rye`](../linengrow/receipt_core.rye)
 Radiant pass `20260728.052149` — living rename-forward: **MUR** (was MALA); dated path tables keep `mala*` until **kg u32** (tool GO) / **u48** (module); rehearsals u17–u22 seated  
+Radiant pass `20260728.054844` — delivery + memos landed u50: `murr_delivery` · `murr:*`
 Radiant pass `20260728.054644` — entry/bin landed u49: `murr.rye` / `bin/murr`
 Radiant pass `20260728.053112` — tool-wave u32: living paths → murr_* witnesses/fixture/wire lab; memo mala:* held for module
 Radiant pass `20260728.044925` — living rename-forward: **MUR** (was MALA); dated path · code homes `mala*` · wire `mala:*` held for tool/module waves (u32+/u48+)
@@ -35,12 +36,12 @@ MUR (was MALA) reuses SLC-L1's `.bron` fact envelope (`from`, `to`, `amount`, `m
 
 | Memo prefix | Meaning | `from` | `to` | `amount` |
 |-------------|---------|--------|------|----------|
-| `mala:mint` | Issuer creates units and credits the holder | issuer pubkey (hex) | holder pubkey (hex) | positive integer, smallest unit |
-| `mala:send` | Transfer between issuer treasury and holder | spender pubkey | recipient pubkey | positive integer |
+| `murr:mint` | Issuer creates units and credits the holder | issuer pubkey (hex) | holder pubkey (hex) | positive integer, smallest unit |
+| `murr:send` | Transfer between issuer treasury and holder | spender pubkey | recipient pubkey | positive integer |
 
-**Issuer-only mint:** only facts with `memo` starting `mala:mint` and `from` equal to the pinned issuer pubkey are accepted as mints.
+**Issuer-only mint:** only facts with `memo` starting `murr:mint` and `from` equal to the pinned issuer pubkey are accepted as mints.
 
-**Send conservation:** a `mala:send` debits the `from` balance and credits the `to` balance by `amount`; the fold refuses negative balances.
+**Send conservation:** a `murr:send` debits the `from` balance and credits the `to` balance by `amount`; the fold refuses negative balances.
 
 **Pinned witness seeds** (same family as SLC-L1 / Open Asks): one issuer keypair, one holder keypair — seeds named in the module and asserted at selftest startup.
 

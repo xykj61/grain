@@ -12,7 +12,7 @@
 //!
 //! Composition, not new machinery: the log and replay are Seva B0
 //! (seva_session_core.rye); the seal is Comlink's wire_format (the same
-//! primitive neth_serial_core_delivery.rye and mala_delivery.rye use); the
+//! primitive neth_serial_core_delivery.rye and murr_delivery.rye use); the
 //! carriage shape (source/follower/selftest/demo over real UDP) mirrors the
 //! Neth carriage lap already proven. As there, each event crosses the wire
 //! in receipt_core's compact binary payload (raw signature + raw fact),
