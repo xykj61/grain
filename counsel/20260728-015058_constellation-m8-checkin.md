@@ -3,13 +3,15 @@
 **Stamp:** `20260728.015058`
 **Voice:** Quin
 
+Radiant pass `20260728.022218` — rename-forward **Djin** (was Twah) in living doors
+
 ---
 
 ## State
 
 | Seat | Standing |
 |------|----------|
-| Twah arc m5–m8 | **CLOSED** |
+| Djin arc m5–m8 (was Twah) | **CLOSED** |
 | Edu steps 1–6 | witnessed · refuse post-fold RED |
 | Next block | Siya m9–m12 |
 
@@ -18,7 +20,7 @@
 | # | Lean |
 |---|------|
 | A | **kg m9** — open Siya triad close (Gemini air · siya.fund claim flag) |
-| B | Claim twah.fund / mala.fund (his hand) |
+| B | Claim djin.fund / mala.fund (his hand) |
 | C | Fascia fold-or-parallel word (held) |
 
 ---

@@ -5,11 +5,12 @@
 **Prior:** m7 [`20260728-014918_constellation-season-m7-twah-phonebook.md`](20260728-014918_constellation-season-m7-twah-phonebook.md)
 **Voice:** Quin · nested frame Trey
 **Ground:** origin/main `e5e29ca381` (pre-send)
-**Exit:** Twah fund prep block **m5–m8** closes on this stamp
+**Exit:** Djin fund prep block (was Twah) **m5–m8** closes on this stamp
 **Generator:** `tools/gen_djin_fund_prep.rish`
 **Edu:** `edu/funds/djin-creating-one-of-twelve.md`
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260728.022218` — i2 prose polish · living name **Djin** (was Twah)
 Radiant pass `20260728.020948` — rename-forward **Djin**; living paths `tools/gen_djin_fund_prep.rish` · `edu/funds/djin-creating-one-of-twelve.md` (was Twah)
 
 ---
@@ -32,10 +33,10 @@ rishi/bin/rishi run tools/gen_djin_fund_prep.rish deploy   → RED by name
 
 Forbidden verbs (`deploy` · `mainnet` · `wallet` · `gas` · `multisig-live` · `claim-domain`) exit non-zero. The GREEN path re-proves `deploy` fails so the tutorial cannot soft-open.
 
-## Held from the Twah block
+## Held from the Djin block (was Twah)
 
-- Twah = Taurus · earth · seat 2 · `%twah`
-- twah.fund claim = Keaton's hand
+- Djin (was Twah) = Taurus · earth · seat 2 · `%djin`
+- djin.fund claim = Keaton's hand (was twah.fund)
 - edu page one complete (six steps)
 - no live Sui deploy from counsel
 
@@ -47,7 +48,7 @@ Forbidden verbs (`deploy` · `mainnet` · `wallet` · `gas` · `multisig-live` �
 
 *Camera: six chalk boxes filled; the lid of the earth seat closes without a coin sound.*
 
-He teaches the last lesson by failing on purpose. Deploy is named, asked for, and refused — twice, once for the student and once inside the generator that graded the student. Twah's gift is not a wallet. It is a page that knows when to stop.
+He teaches the last lesson by failing on purpose. Deploy is named, asked for, and refused — twice, once for the student and once inside the generator that graded the student. Djin's gift (was Twah) is not a wallet. It is a page that knows when to stop.
 
 *Cut. Fire closed. Earth closed. Air waits.*
 
