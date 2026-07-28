@@ -8,6 +8,7 @@
 **Ground:** pulled and read at nib `64b466d` (`85d75cbd69` + REMEMBER pin), main, 2026‑07‑24
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260727.224156` — path re-point only; claims unchanged
 Radiant pass `20260724.223233`
 *Erratum `20260724.223233` — remote count: living canon is **four**; see [`context/REMOTE_ROSTER.md`](../context/REMOTE_ROSTER.md). The “five remotes” wording in the body stays as testimony.*
 
@@ -130,7 +131,7 @@ Distance today: rung 1 is near, rung 2 is a season, rung 3 is a horizon — and 
 
 ## Nine — Shelves and Yonder, the Sweep
 
-From the census, in one pass: `external-research/` holds 134 files with no shelf — give it `archive/`. `strengthening-compiler/` holds 114 numbered notes with a lexicon at 0000 — it wants only an index row in its README, and an entry in `.cursorignore` if it proves reference‑only. `counsel/` at 60 gains `replies/` above. `expanding-prompts/` at 48 has `yonder/` and would take `archive/` by season. And one line of housekeeping buys the rest forever: replace the seven per‑folder archive entries in `.cursorignore` with a single **`**/archive/`**, so every shelf yet to be born arrives pre‑ignored.
+From the census, in one pass: `external-research/` holds 134 files with no shelf — give it `archive/`. `external-research/yonder/strengthening-compiler/` holds 114 numbered notes with a lexicon at 0000 — it wants only an index row in its README, and an entry in `.cursorignore` if it proves reference‑only. `counsel/` at 60 gains `replies/` above. `expanding-prompts/` at 48 has `yonder/` and would take `archive/` by season. And one line of housekeeping buys the rest forever: replace the seven per‑folder archive entries in `.cursorignore` with a single **`**/archive/`**, so every shelf yet to be born arrives pre‑ignored.
 
 ---
 

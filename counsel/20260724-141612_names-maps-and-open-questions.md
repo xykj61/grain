@@ -8,6 +8,7 @@
 **Companion to:** the unfiled second sitting, `20260724-135312_vanes-shelves-and-the-glow-ladder.md` — file both together; braid at the expanding prompt (Section Eight)
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260727.224156` — path re-point only; claims unchanged
 Radiant pass `20260724.223233`
 *Erratum `20260724.223233` — remote count: living canon is **four**; see [`context/REMOTE_ROSTER.md`](../context/REMOTE_ROSTER.md). The “five remotes” wording in the body stays as testimony.*
 
@@ -59,7 +60,7 @@ The map, drawn from the root as it stands today:
 | `README` · `ORGANIZING` · `CONTRIBUTING` · `SOURCE` · `PUBKEYS` · licenses · `CLAUDE.md` | Pier papers | the pier itself |
 | `counsel/` · `expanding-prompts/` · `session-logs/` · `work-in-progress/` · `bron-resins/` · `GLOW_HOST` / `GLOW_PROFILE` cards | Relay genres | the counsel↔bench relay |
 | `active-designing/` · `active-reviving/` | Design & revival sittings | Maze-adjacent: proposals earning shape |
-| `external-research/` · `gratitude/` · `strengthening-compiler/` · `classical-vedic-astrology/` · `old/` · `vere/` | Study shelves | silo sources; elders named and honored |
+| `external-research/` · `gratitude/` · `external-research/yonder/strengthening-compiler/` · `classical-vedic-astrology/` · `old/` · `vere/` | Study shelves | silo sources; elders named and honored |
 | `glow/` · `rye/` · `rishi/` · `tools/` | Languages and bench | instruments of the whole; Ojjo consumes their parity |
 | `aurora/` · `caravan/` · `tally/` | Runtime trio | the held T unification; the ship-day image names it |
 | `linengrow/` · `mandi/` · `granary/` · `amphora/` · `dimeroll/` | Agents and goods on the market floor | **Pool** |

@@ -8,6 +8,8 @@
 **Voice:** Reya 2
 **Lens:** TAME — safety, performance, joy; Gall's Law; `995` single-stranded; `997` recommended path; `990` correctness by construction
 
+Radiant pass `20260727.224156` — path re-point only; claims unchanged
+
 ---
 
 ## The Seed
@@ -69,7 +71,7 @@ Three milestones, one session, composed not braided:
 | `rye/lib/std/*/benchmark.zig` (3 files) | local `garden` |
 | `rye/lib/std/start.zig` | `garden_allocator` / `garden_backing_allocator` internals |
 | `rye/README.md`, `998_ALMANAC.md` | `init.garden`, not `init.arena` |
-| `strengthening-compiler/9989_tally_gardens.md` | `tally/heap-garden.rye` future name |
+| `external-research/yonder/strengthening-compiler/9989_tally_gardens.md` | `tally/heap-garden.rye` future name |
 | `context/specs/inherited-names.md` | already reconciled — verify |
 
 **Out of scope:** `ArenaAllocator` type name, bulk `rye/lib/std/**` locals.

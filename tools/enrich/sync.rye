@@ -14,7 +14,7 @@ const zig_lookup = @import("zig_lookup.rye");
 const PassDoc = struct { path: []const u8, name: []const u8, stem: []const u8 };
 
 pub fn list_pass_docs(a: std.mem.Allocator, io: std.Io, root: []const u8) ![]PassDoc {
-    const sc = try std.fs.path.join(a, &.{ root, "strengthening-compiler" });
+    const sc = try std.fs.path.join(a, &.{ root, "external-research", "yonder", "strengthening-compiler" });
     defer a.free(sc);
     const dir = try std.Io.Dir.cwd().openDir(io, sc, .{ .iterate = true });
     var it = dir.iterate();

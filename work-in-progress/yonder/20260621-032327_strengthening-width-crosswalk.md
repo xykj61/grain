@@ -2,7 +2,9 @@
 
 **Stamp:** `20260623.033012`
 **Parent:** `../20260620-212126_usize-width-baseline.md`
-**Lexicon:** `../../strengthening-compiler/0000_STRENGTHENING_LEXICON.md`
+**Lexicon:** `../../external-research/yonder/strengthening-compiler/0000_STRENGTHENING_LEXICON.md`
+
+Radiant pass `20260727.224156` — path re-point only; claims unchanged
 
 ---
 
@@ -10,7 +12,7 @@
 
 **116 witnesses.** All GREEN. All parity-confirmed.
 
-Of these, **86 are Phase 4** (inherited Zig `std` seam — `usize` documented, not changed) and **4 are authored** (Tier A — Tally, Mantra, Rishi, Skate). The full per-function detail lives in each pass's own document under `strengthening-compiler/`. The lexicon carries the std-shaped tree with audit status.
+Of these, **86 are Phase 4** (inherited Zig `std` seam — `usize` documented, not changed) and **4 are authored** (Tier A — Tally, Mantra, Rishi, Skate). The full per-function detail lives in each pass's own document under `external-research/yonder/strengthening-compiler/`. The lexicon carries the std-shaped tree with audit status.
 
 ## What this means for the width migration
 

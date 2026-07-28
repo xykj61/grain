@@ -109,7 +109,7 @@ Anchor the foundation to README and keep the almanac living as ALMANAC, with the
 
 ## Step 6 — Write a stamped session log of this chunk
 
-Add `session-logs/<STAMP>_reorg-chunk-6-rye-learning-process.md`, where `<STAMP>` is the exact time Kaeden supplies in `YYYYMMDD-HHMMSS` form, in the one-clock shape — no countdown prefix. Write it in Radiant voice: what this chunk settled (the last design folder reconciled, the almanac kept living), that the design surface is now wholly under one clock, and what remains (`strengthening-compiler/`, waiting on pass 9886, with the merge-timing choice — fast-forward now and reorganize that folder later, or hold the merge until it joins the same pass). Close with a three-clause benediction. Prepend its newest-first row to `session-logs/README.md`, then commit it.
+Add `session-logs/<STAMP>_reorg-chunk-6-rye-learning-process.md`, where `<STAMP>` is the exact time Kaeden supplies in `YYYYMMDD-HHMMSS` form, in the one-clock shape — no countdown prefix. Write it in Radiant voice: what this chunk settled (the last design folder reconciled, the almanac kept living), that the design surface is now wholly under one clock, and what remains (`external-research/yonder/strengthening-compiler/`, waiting on pass 9886, with the merge-timing choice — fast-forward now and reorganize that folder later, or hold the merge until it joins the same pass). Close with a three-clause benediction. Prepend its newest-first row to `session-logs/README.md`, then commit it.
 
 ---
 

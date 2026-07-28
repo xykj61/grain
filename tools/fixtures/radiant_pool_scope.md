@@ -18,7 +18,7 @@
 | Tree | Count | Reason |
 |------|------:|--------|
 | `session-logs/` | ~1,111 | Structured field records (Bron), not prose |
-| `strengthening-compiler/` | 115 | Numbered technical notes, not Radiant prose |
+| `external-research/yonder/strengthening-compiler/` | 115 | Numbered technical notes, not Radiant prose |
 | `.claude/` | 22 | Machine-facing rules |
 | `gratitude/` | 78 | Unaltered originals — clean-room hold |
 | `tools/fixtures/` · `context/fixtures/` | 9+ | Witness fixtures · including `markdown_structure_broken_table.md` |

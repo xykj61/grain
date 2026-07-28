@@ -9,6 +9,8 @@
 
 *Written by Quin after Wave 40 and meta exempt.*
 
+Radiant pass `20260727.224156` — path re-point only; claims unchanged
+
 ---
 
 ## One — What seated
@@ -110,7 +112,7 @@ Spot-reads ran at Waves **25 · 30 · 35** (every fifth wave at batch 50).
 
 Separator rows destroyed when stamp lines landed inside tables without a `---` seam:
 
-`STEWARDS.md` · `context/REMOTE_ROSTER.md` · `tally/README.md` · `mandi/README.md` · `strengthening-compiler/README.md` · `waymarks/stoa-100s/README.md` · `waymarks/stoa-200s/README.md` · `waymarks/stoa-300s/README.md` · `waymarks/SEASONS.md` · `counsel/SEASONS.md` · `counsel/replies/SEASONS.md` · `expanding-prompts/SEASONS.md`
+`STEWARDS.md` · `context/REMOTE_ROSTER.md` · `tally/README.md` · `mandi/README.md` · `external-research/yonder/strengthening-compiler/README.md` · `waymarks/stoa-100s/README.md` · `waymarks/stoa-200s/README.md` · `waymarks/stoa-300s/README.md` · `waymarks/SEASONS.md` · `counsel/SEASONS.md` · `counsel/replies/SEASONS.md` · `expanding-prompts/SEASONS.md`
 
 **Repaired.** Witness seated: `tools/markdown_structure_witness.rish` (blocking · wired into `claim_preserve_witness`).
 

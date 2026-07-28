@@ -4645,7 +4645,7 @@ Adding TigerBeetle to the gratitude ledger, paired with the existing TIGER_STYLE
 
 Let me verify TigerBeetle's license (so the ledger is accurate) and confirm the new folder is tracked correctly.
 
-TigerBeetle is Apache-2.0 (ledger is correct), and `strengthening-compiler/` is tracked. Let me add the Reya 2 voice line to `9998` and check no stale `990` self-references remain in it.
+TigerBeetle is Apache-2.0 (ledger is correct), and `external-research/yonder/strengthening-compiler/` is tracked. Let me add the Reya 2 voice line to `9998` and check no stale `990` self-references remain in it.
 
 No stale self-references. Let me confirm no lingering old path references remain anywhere (outside submodules), and that the docs are coherent.
 
@@ -4666,7 +4666,7 @@ All committed (`c3ec0b1`, signed `D949807AC26B2B99`) and live on both forges. He
 - **Precondition blocks at a function's door** — gather argument/state checks at entry so the reader meets the rules before the work (e.g. `acquire` opens with six).
 - **The control-plane / data-plane assertion economy** — assert freely where batching makes it free; in hot loops, O(1) checks unconditionally but expensive per-iteration ones behind a comptime `verify` flag; never O(n) asserts for O(1) work. This is the "uniform way" you sensed, stated almost verbatim in their `constants.verify` comment.
 
-**The `strengthening-compiler/` stack exists**, allow-listed in `.gitignore`:
+**The `external-research/yonder/strengthening-compiler/` stack exists**, allow-listed in `.gitignore`:
 - `9999_STRENGTHENING.md` — the manifesto/floor (the method: additive, parity-preserving, invariant-stating, test-confirmed; the "compiler" metaphor; the numbering).
 - `9998_sha3_512.md` — the SHA3-512 strengthening, `git mv`'d from `external-research/990` (history preserved, 94% rename), now "the first of many." All references in `main.zig`, the versioning spec, and the boundary test were repointed; rebuild + both tests still green.
 
@@ -5868,7 +5868,7 @@ A new witness program, `rye/tests/call_paths_test.rye`, exercises all four acros
 ## Recorded
 
 - `rye_version` → `20260618.193812` (the substance strand; `rye version` confirms it)
-- Study: `strengthening-compiler/9996_stdlib_call_paths.md`
+- Study: `external-research/yonder/strengthening-compiler/9996_stdlib_call_paths.md`
 - Versioning spec: the substance series now reads `070012 → 072512 → 193812`
 - **ALMANACed**: a new "Strengthening the Functions We Call" section, with the call graph, the four invariants, and the one deferral I named on purpose — `indexOfScalarPos` is a *direct* alias to the hot core, so it waits for a future `verify`-flag hot-path pass rather than burdening the data plane now.
 
@@ -6199,7 +6199,7 @@ Since I'd written this batch in the radiant voice already, the pass was a clean-
 
 Eleven phrasings in all, each now leading with the affirmative.
 
-The rest of the recent corpus — `expanding-prompts`, `work-in-progress` (995/996), the specs (`inherited-names`, `rye-versioning-style`, `rye-as-its-own-language`), `strengthening-compiler/9996`, `aurora`, the `rye`/`rishi` READMEs, the `ALMANAC`, and `gratitude/README` — came up clean. The only "but"s left in the whole sweep live in `RADIANT_STYLE.md` and `996_TAME_STYLE.md`, where they name the rule itself — rightly kept.
+The rest of the recent corpus — `expanding-prompts`, `work-in-progress` (995/996), the specs (`inherited-names`, `rye-versioning-style`, `rye-as-its-own-language`), `external-research/yonder/strengthening-compiler/9996`, `aurora`, the `rye`/`rishi` READMEs, the `ALMANAC`, and `gratitude/README` — came up clean. The only "but"s left in the whole sweep live in `RADIANT_STYLE.md` and `996_TAME_STYLE.md`, where they name the rule itself — rightly kept.
 
 ---
 
@@ -6427,7 +6427,7 @@ ed25519 identity (public key) = 2152f8d19b791d24453242e15f2eab6cb7cffa7b6a5ed300
 
 It's deterministic, so the **parity gate now carries it — 5/5 GREEN** — pinning Ed25519 byte-for-byte to the baseline (and ready to catch the day a strengthening pass touches it). This is the foundation of rooted identity and sealed messaging, shown working in Rye's own std.
 
-**`strengthening-compiler/9995`** records the map, the frontier and the care it asks, and this first proof beyond the hash — and answers your question in both branches at once: *to strengthen*, the crypto primitives next; *to implement*, the seeds that grow from here — a shared secret between two identities, a sealed payload, and then the single encrypted, content-named datagram where Aurora's relay and the network meet.
+**`external-research/yonder/strengthening-compiler/9995`** records the map, the frontier and the care it asks, and this first proof beyond the hash — and answers your question in both branches at once: *to strengthen*, the crypto primitives next; *to implement*, the seeds that grow from here — a shared secret between two identities, a sealed payload, and then the single encrypted, content-named datagram where Aurora's relay and the network meet.
 
 ---
 
@@ -7276,7 +7276,7 @@ I surveyed the actual tree. The bones are genuinely good, so let me name what's 
 
 **3. Retire the superseded snapshots from the live folder.** `work-in-progress/` holds three open-threads docs — `998`, `997`, and `995` — where `995` supersedes the older two. Git already keeps their history, so the live status folder can show only what's current; the older two can move to an `archive/` or simply step aside.
 
-**4. Make the numbering *direction* consistent, or document the exception.** Most stacks count **down** from `999` (newest on top — the rationale `999_DESIGN` states); `strengthening-compiler/` counts down from `9999`; but `expanding-prompts/` counts **up** from `10000`, so its newest sorts to the *bottom*. That's the one surprise in an otherwise uniform scheme. Given how much you value enduring names, I'd lean toward **documenting each stack's convention in the root README** rather than mass-renaming — making the mix intentional rather than accidental.
+**4. Make the numbering *direction* consistent, or document the exception.** Most stacks count **down** from `999` (newest on top — the rationale `999_DESIGN` states); `external-research/yonder/strengthening-compiler/` counts down from `9999`; but `expanding-prompts/` counts **up** from `10000`, so its newest sorts to the *bottom*. That's the one surprise in an otherwise uniform scheme. Given how much you value enduring names, I'd lean toward **documenting each stack's convention in the root README** rather than mass-renaming — making the mix intentional rather than accidental.
 
 ## What I would *not* change
 The seven prose stacks each have a distinct, non-overlapping purpose (study, design, status, strengthening log, prompts, almanac, context) — that's richness, not sprawl. And the descending-number aesthetic is part of the project's voice; I'd keep it.

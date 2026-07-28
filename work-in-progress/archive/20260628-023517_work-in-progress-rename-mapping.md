@@ -4,6 +4,8 @@
 
 **Count:** 11 files → 2 living (`README.md`, `ROADMAP.md`) + 4 live stamped + 5 archived stamped + `archive/README.md`
 
+Radiant pass `20260727.224156` — path re-point only; claims unchanged
+
 ---
 
 ## Foundation (1)
@@ -56,4 +58,4 @@ No chunk-4 mapping file existed (print-only preview).
 
 ## Link hygiene
 
-Repo-wide `work-in-progress/99*` → stamped names; `strengthening-compiler/` pass-doc link strings included (~84 files). Session logs and versioning transcript left historical.
+Repo-wide `work-in-progress/99*` → stamped names; `external-research/yonder/strengthening-compiler/` pass-doc link strings included (~84 files). Session logs and versioning transcript left historical.
