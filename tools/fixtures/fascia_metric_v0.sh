@@ -1,9 +1,10 @@
 #!/bin/sh
-# fascia_metric_v0.sh — fascia metric (i4 land · i5 tighten).
+# fascia_metric_v0.sh — fascia metric (i4 land · i5 tighten · i6 Amphora stack).
 #
 # Four clutter signals → difficulty-style fascia grade 0–100.
 # Higher fascia = more knit; clutter lowers the grade.
-# i5: softer weights · window mean baseline · self-path excludes · Amphora ready bit.
+# i5: softer weights · window mean · self-path excludes.
+# i6: Amphora laps 1–3 stack named; weights unchanged (window stays like-to-like).
 set -eu
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 cd "$ROOT"
@@ -16,13 +17,14 @@ case "$verb" in
     ;;
 esac
 
-metric_rev=i5
+metric_rev=i6
 
 # Self-path excludes — the meter must not grade its own Inner Scope seats.
 EXCLUDE_SELF='!**/fascia_metric*'
 EXCLUDE_I45='!**/inner-scope-i[4-9]*'
 EXCLUDE_I4STAMP='!**/20260728-023240*'
 EXCLUDE_I5STAMP='!**/20260728-023555*'
+EXCLUDE_I6STAMP='!**/20260728-023941*'
 
 # --- signal 1: superseded mentions (living design paths) ---
 superseded="$(rg -n --no-heading '\b[Ss]uperseded\b' \
@@ -34,7 +36,8 @@ superseded="$(rg -n --no-heading '\b[Ss]uperseded\b' \
   --glob "$EXCLUDE_SELF" \
   --glob "$EXCLUDE_I45" \
   --glob "$EXCLUDE_I4STAMP" \
-  --glob "$EXCLUDE_I5STAMP" 2>/dev/null | wc -l | tr -d ' ')"
+  --glob "$EXCLUDE_I5STAMP" \
+  --glob "$EXCLUDE_I6STAMP" 2>/dev/null | wc -l | tr -d ' ')"
 superseded="${superseded:-0}"
 
 # --- signal 2: outstanding ratchet advisories (nonzero cheap categories) ---
@@ -78,7 +81,8 @@ class_a="$(rg -n --no-heading 'Seva Fund|%seva|seva\.fund' \
   --glob "$EXCLUDE_SELF" \
   --glob "$EXCLUDE_I45" \
   --glob "$EXCLUDE_I4STAMP" \
-  --glob "$EXCLUDE_I5STAMP" 2>/dev/null | wc -l | tr -d ' ')"
+  --glob "$EXCLUDE_I5STAMP" \
+  --glob "$EXCLUDE_I6STAMP" 2>/dev/null | wc -l | tr -d ' ')"
 class_a="${class_a:-0}"
 
 # --- signal 4: over-70-line functions (authored .rye roster) ---
@@ -111,20 +115,22 @@ clutter=$((pen_super + pen_ratchet + pen_target + pen_over70))
 [ "$clutter" -gt 100 ] && clutter=100
 fascia=$((100 - clutter))
 
-# --- Amphora ready bit (fold proven in .rish; shell only names presence) ---
+# --- Amphora stack bits (folds proven in .rish; shell names presence) ---
 amphora_ready=no
-if [ -f tools/amphora_lap1.rish ] && [ -d amphora ]; then
+amphora_stack=missing
+if [ -f tools/amphora_lap1.rish ] && [ -f tools/amphora_lap2.rish ] && [ -f tools/amphora_lap3.rish ] && [ -d amphora ]; then
   amphora_ready=yes
+  amphora_stack=laps1-3
 fi
 
 # --- Moving window: mean of prior readings as baseline (before append) ---
 mkdir -p tools/.cache
 window_file=tools/.cache/fascia_metric_v0_window.tsv
-# i5 rebaseline — archive pre-i5 rows (old weights) so mean compares like-to-like.
+# Rebaseline once — archive rows that lack an i5+ metric_rev (pre-tighten weights).
 if [ -f "$window_file" ] && [ -s "$window_file" ]; then
-  if ! awk -F'\t' 'NF >= 8 && $8 == "i5" { found = 1 } END { exit !found }' "$window_file"; then
+  if ! awk -F'\t' 'NF >= 8 && $8 ~ /^i[5-9]$/ { found = 1 } END { exit !found }' "$window_file"; then
     mv "$window_file" "${window_file}.pre_i5"
-    echo "window: rebaseline=i5 (archived pre-i5 readings)" >&2
+    echo "window: rebaseline=i5+ (archived pre-tighten readings)" >&2
   fi
 fi
 stamp="$(TZ=America/New_York date '+%Y%m%d.%H%M%S' 2>/dev/null || date '+%Y%m%d.%H%M%S')"
@@ -179,5 +185,6 @@ echo "fascia=${fascia}"
 echo "window_size=8 window_n=${window_n} window_mean=${window_mean} window_min=${window_min} window_max=${window_max}"
 echo "prior_baseline=${baseline} delta=${baseline_delta}"
 echo "amphora_ready=${amphora_ready}"
+echo "amphora_stack=${amphora_stack}"
 echo "refuse: shred · breach · deploy · wallet · gas (measure only)"
-echo "GREEN: fascia-metric-v0 — grade ${fascia}/100 · four signals · ${metric_rev} · no shred"
+echo "GREEN: fascia-metric-v0 — grade ${fascia}/100 · four signals · ${metric_rev} · amphora_stack=${amphora_stack} · no shred"
