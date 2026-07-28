@@ -6,14 +6,14 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260728.035441` (EDT) · voice Quin  
+**Last refreshed:** `20260728.035740` (EDT) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2 · ring-3** · **THREATS** · **five pillars** · **accrete tiers** · **redaction stance** · **always-in-it rhythm** · **Prin / %prin** · **sundial**  
 **Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list1024 · Env512 · **stamp @u64 · Crockford** · **shape aura floor** · **Glow text floor GREEN** · **Glow Book weave GREEN (C2b)** · **baked-sample Acme gloss**  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand home** · **siblings seated** · **--cursor launch** · **Pond counsel 161616** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm+cold REPORT** · **Grain umbrella living** · **OQ #1 · #3 · #4 · #5 answered** · **pass ledger** · **campaign STOPPED** · **growth law** · **wasmtime ABSENT** · **monocypher 4.0.3 GREEN** · **MAP.md** · **breach T3–T4** · **U·V·I** · **C-Ladder C1·C2·C2b landed** · **r18 say/lint twin** · **r21 Verse · O1** · **r22 outside eyes** · **Prin** · **corpus twin fold seated (Sound r11)** · **C3–C5 await homes**  
-**Git nib:** `(pre-send)` · Grain · **Gren** g0 · handback return_gren_g0 · Keeh CLOSED · autoproject96/grain
-**Bookmark:** [`counsel/20260728-035441_gren-season-g0-bow.md`](../counsel/20260728-035441_gren-season-g0-bow.md) · handback [`counsel/20260728-035441_keeh-handback-return-gren-g0.md`](../counsel/20260728-035441_keeh-handback-return-gren-g0.md)
+**Git nib:** `(pre-send)` · Grain · **Gren** g1 · residual Djin map · bare ads CLEARED · autoproject96/grain
+**Bookmark:** [`counsel/20260728-035740_gren-season-g1-residual-map.md`](../counsel/20260728-035740_gren-season-g1-residual-map.md)
 
-**Season:** Framework · EDT · **Grain** · **finishing edge:** **core Gren** g1 · Keeh handed back · Linn·Helen · Geode PREP · F undisturbed. Prefer **git nib**. · `prin scope` · `prin sundial`
+**Season:** Framework · EDT · **Grain** · **finishing edge:** **core Gren** g2 overwrite · Keeh CLOSED · Linn·Helen · Geode PREP · F undisturbed. Prefer **git nib**. · `prin scope`
 
 ---
 

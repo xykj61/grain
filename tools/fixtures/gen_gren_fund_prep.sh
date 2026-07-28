@@ -37,7 +37,7 @@ grep -q 'no live deploy' "$PAGE"
 test -f context/CIVIC_STYLE.md
 
 # --- m6: witness steps 1–3 ---
-name=Djin
+name=Gren
 len=$(printf '%s' "$name" | wc -c)
 test "$len" -eq 4
 printf '%s' "$name" | grep -Eq '^[A-Za-z]{4}$'
