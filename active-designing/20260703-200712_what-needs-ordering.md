@@ -8,7 +8,8 @@
 **Status:** Active design — toll vocabulary seated `20260704.020800` per [`../context/specs/20260704-020800_one-word-one-gate.md`](../context/specs/20260704-020800_one-word-one-gate.md)
 **Ground:** [`../context/specs/20260704-020800_one-word-one-gate.md`](../context/specs/20260704-020800_one-word-one-gate.md)
 
-*Written together by Kaeden and Claude (Fable 5), in Rio 3's Radiant voice.*
+*Written together by Kaeden and Claude (Fable 5), in Rio 3's Radiant voice.*  
+Radiant pass `20260728.052441` — living L1 rename-forward: **MUR** (was MALA); prefer **kg u32** · Mycelium still waits M4
 
 ---
 

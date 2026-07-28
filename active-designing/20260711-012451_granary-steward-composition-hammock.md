@@ -1,6 +1,7 @@
 # Granary Weave Steward Composition — Second Roof on Skate
 
 *Mandi tip **422** closed the vessel livelihood loop on glass. This lap mirrors it for Granary’s Exchange roof: list a weave → settle (MUR + in-memory WOV; was MALA) → Dimeroll receipt — one Skate frame.*
+Radiant pass `20260728.052441` — living L1 rename-forward: **MUR** (was MALA); prefer **kg u32**  
 Radiant pass `20260728.045307` — living L1 rename-forward: **MUR** (was MALA)
 
 **Stamp:** `20260711.012451`  

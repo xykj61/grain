@@ -1,6 +1,7 @@
 # Dimeroll — Hammock Scope (Lap 1)
 
 *Centralized books of record for Linengrow: chart, journal, fold, Skate view. Complements MUR (mailable; was MALA) and keeps each role clear. Visual Track: books seen through Brushstroke/Skate on the drawn terminal — Realidream thin-view pattern.*
+Radiant pass `20260728.052441` — living L1 rename-forward: **MUR** (was MALA); prefer **kg u32** · fixture path held for tool step 4  
 Radiant pass `20260728.045307` — living L1 rename-forward: **MUR** (was MALA)
 
 **Stamp:** `20260710.125953`

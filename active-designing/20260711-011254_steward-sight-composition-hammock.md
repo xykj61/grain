@@ -8,7 +8,8 @@
 **Status:** Checkable-room hammock — tip **423**  
 **Ground:** steward composition [`20260711-010030_steward-composition-glass-hammock.md`](20260711-010030_steward-composition-glass-hammock.md) · sight view (parity **210**) · path counsel after tip **422**
 
-*Written by Rio 3 for Kaeden.*
+*Written by Rio 3 for Kaeden.*  
+Radiant pass `20260728.052441` — living L1 rename-forward: **MUR** (was MALA); unit string `mala` held for module wave · prefer **kg u32**
 
 ---
 

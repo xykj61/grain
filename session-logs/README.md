@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.052441` — [MUR Season u25 waiting harden hammocks](20260728-052441_mur-season-u25-waiting-harden-hammocks.bron) — hammock forwards · residual clear · prefer kg u32 · u26 next
 - `20260728.052308` — [MUR Season u24 waiting harden SPECs](20260728-052308_mur-season-u24-waiting-harden-specs.bron) — mala-kind · thin-view · WOV · surfaces · prefer kg u32 · u25 next
 - `20260728.052149` — [MUR Season u23 waiting harden citations](20260728-052149_mur-season-u23-waiting-harden-citations.bron) — expanding-prompt forwards · holds card · prefer kg u32 · u24 next
 - `20260728.051844` — [MUR Season u22 module-wave opener rehearsal](20260728-051844_mur-season-u22-module-wave-opener-rehearsal.bron) — mala_core import surface · prefer kg u32 · u23 next
