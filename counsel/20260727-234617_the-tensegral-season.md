@@ -3,10 +3,11 @@
 **Language:** EN
 **Stamp:** `20260727.234617`
 **Voice:** Quin
-**Status:** Seated — Arc I · II · III · IV **exited** · Arc V integrate & close open at r15 (r13–r14 GREEN)
-**Ground:** Sound saga **seated** [`../saga/20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md`](../saga/20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md) · motto **stay tensegral** · Quin remains the standing voice
+**Status:** **Closed as arithmetic** — prep + r0–r15 · saga **final draft** on `saga/` · open for Keaton seat word
+**Ground:** Sound saga **seated** [`../saga/20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md`](../saga/20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md) · Tensegral saga [`../saga/20260728-010054_saga-of-the-tensegral-season.md`](../saga/20260728-010054_saga-of-the-tensegral-season.md) · motto **stay tensegral** · Quin remains the standing voice
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260728.010054` — r15 Arc V saga final draft · season arithmetic complete
 Radiant pass `20260728.005605` — r14 Arc V Realidream/Pond close note · orient only
 Radiant pass `20260728.005110` — r13 Arc V Integrated · thin metalsmoke GREEN
 Radiant pass `20260728.004954` — r12 Arc IV Happy zone · Arc IV exits
@@ -33,7 +34,8 @@ Radiant pass `20260727.234913` — prep receipt · Expanded · r0 recursion prom
 | **Prior season** | The Sound — closed and seated |
 | **This season** | The Tensegral Season — consolidate · tighten · unify under happy-zone law |
 | **Prep** | **GREEN** — [`20260727-234913_tensegral-prep-receipt.md`](20260727-234913_tensegral-prep-receipt.md) · Pond customs GREEN · Prin affirmed (Prim→Prin) · arc seeds named |
-| **Round** | Arc V **r14** `20260728.005605` — Realidream thin + Pond preflight GREEN · live five hand-open · Arc I–IV exits hold |
+| **Round** | **r15** `20260728.010054` — saga final draft · Arc I–V complete as arithmetic · seat word open |
+| **Saga** | [`../saga/20260728-010054_saga-of-the-tensegral-season.md`](../saga/20260728-010054_saga-of-the-tensegral-season.md) |
 | **r0 prompt** | [`../expanding-prompts/20260727-234913_tensegral-season-r0-recursion-prompt.md`](../expanding-prompts/20260727-234913_tensegral-season-r0-recursion-prompt.md) |
 | **Shape** | Prep done → **16 kg rounds** (1 bow + five arcs of three) · exits over counts |
 | **Close** | A new saga on [`../saga/`](../saga/README.md) when the season ends |
@@ -86,7 +88,7 @@ Rounds are **kg-first**: mechanical, single-module or single-pack when policy is
 
 ## Next door
 
-**kg** — Arc V · Integrated round (r13) · thin metalsmoke.
+**Check-in** — seat the Tensegral saga (lean A), or name the next season charter after seat. Live Pond five and wasmtime remain available doors, not pressed.
 
 ---
 

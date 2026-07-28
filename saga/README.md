@@ -1,7 +1,7 @@
 # Saga — Season Close Narratives
 
 **Language:** EN
-**Last updated:** 2026-07-28 (Tensegral r11 — Tally caller map unified under `tally/README.md`)
+**Last updated:** 2026-07-28 (Tensegral r15 — season close saga final draft)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Status:** Living — root home for final draft / seated season sagas
@@ -16,6 +16,7 @@ A saga is not a check-in and not a waymark. It carries panes (parity · keys · 
 
 | Stamp | Saga | Status |
 |-------|------|--------|
+| `20260728.010054` | [The saga of the Tensegral Season — stay tensegral](20260728-010054_saga-of-the-tensegral-season.md) | **Final draft** · open for seat · Tensegral Season |
 | `20260727.233237` | [The saga of the end — parity weave and personal server key data](20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md) | **Seated** `20260727.234617` · Sound Season |
 
 ## Infusion — Tally (bounds) and who calls it

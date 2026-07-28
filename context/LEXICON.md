@@ -1,7 +1,7 @@
 # Lexicon — Module Names and Their Meanings
 
 **Language:** EN
-**Last updated:** 2026-07-27 (**The Tensegral Season** · Prin · Prim→Prin Brix alias · r0 bow · stay tensegral)
+**Last updated:** 2026-07-28 (**The Tensegral Season** closed as arithmetic · r15 saga final draft · stay tensegral)
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 
 ---
@@ -80,7 +80,7 @@ Living vocabulary for the Grain family (Glow language · Grain umbrella). Each n
 | **bookmark** | A durable named return point in counsel or plan so a fresh hand resumes without replaying every log. Distinct from **remember** (operator card) and **waymark** (ladder name). Seated `20260727.213740` · same counsel |
 | **Radiant** | House prose voice and pass playbook — lead with what is, affirmative contrast, benediction close; lint and ledger enforce the surface. Compass Voice step. Canon [`RADIANT_STYLE.md`](RADIANT_STYLE.md) · tools `radiant_lint.rish` · seated on rose `20260727.213740` |
 | **The Sound** | Season — **closed and seated** `20260727.234617`. Audit reset to round 0 after Radiant Lint; **yes-seated breach** (yonder + path-reference re-point under the six promises). Close artifact = *saga of the end* on [`../saga/`](../saga/README.md). Charter [`../counsel/20260727-220947_the-sound-season-and-the-seated-breach.md`](../counsel/20260727-220947_the-sound-season-and-the-seated-breach.md) · saga [`../saga/20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md`](../saga/20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md) |
-| **The Tensegral Season** | Season — sixteen **kg** rounds after Sound: brix · amber · amphora · resin · glow · sameness-as-macro · radiant · tame · consolidate · tighten · unify · stay happy zone · integrated rounds. Motto **stay tensegral**. Prep before bow. Seated `20260727.234617` · charter [`../counsel/20260727-234617_the-tensegral-season.md`](../counsel/20260727-234617_the-tensegral-season.md) |
+| **The Tensegral Season** | Season — sixteen **kg** rounds after Sound: brix · amber · amphora · resin · glow · sameness-as-macro · radiant · tame · consolidate · tighten · unify · stay happy zone · integrated rounds. Motto **stay tensegral**. Prep before bow. Seated `20260727.234617` · **closed as arithmetic** r15 `20260728.010054` · saga final draft [`../saga/20260728-010054_saga-of-the-tensegral-season.md`](../saga/20260728-010054_saga-of-the-tensegral-season.md) · charter [`../counsel/20260727-234617_the-tensegral-season.md`](../counsel/20260727-234617_the-tensegral-season.md) |
 | **stay tensegral** | Season motto — hold continuous tension and discontinuous compression in balance (happy zone fast and isolated; thin edge few honest integrated checks; modules pull together without collapsing). Buckminster Fuller gratitude · Quin voice. Seated `20260727.234617` · [`../gratitude/buckminster-fuller-tensegrity.md`](../gratitude/buckminster-fuller-tensegrity.md) |
 | **Expanded** | Prep seat — expand next intents into `expanding-prompts/` plans a kg season can run before round 0. Seated `20260727.234617` with The Tensegral Season |
 | **Prin** | Matrix-style live outer-terminal printer for Grain loops (`%prin`) — `tools/prin.rish` · aliases via `tools/prin_aliases.sh`. Also a Tensegral **prep seat**: keep the live watch ready for kg rounds. Seated on metal `20260727.090646` · prep seat affirmed `20260727.235754` |
