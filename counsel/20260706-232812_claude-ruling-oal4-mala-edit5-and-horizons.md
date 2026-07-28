@@ -6,7 +6,7 @@
 **Style:** Radiant (see `context/RADIANT_STYLE.md`) · **Lens:** TAME · TWO_ROOMS · the grain
 **Register:** Counsel only — this sitting proposes and argues; no implementation, no new module names, Doors 1–3 and the Edit-5 ruling stay closed
 **Status:** Research for understanding — zip 58 counsel ruling; checkable-room questions answered; no code at ruling seat.
-**Ground:** `expanding-prompts/20260706-190644_claude-zip58-ns-l3-handoff.md` · `work-in-progress/TASKS.md` · `active-designing/20260706-013012_open-asks-escrow-hammock.md` · `active-designing/20260702-184312_the-grain-and-the-crossing.md` · `foundations/20260706-185112_follow-our-compass.md` · `foundations/20260706-022912_the-wire-serves-the-fold.md` · `counsel/20260704-181612_zero-copy-resins-counsel-answers.md` · `context/specs/20260702-035018_graduation-rule.md`
+**Ground:** `expanding-prompts/yonder/20260706-190644_claude-zip58-ns-l3-handoff.md` · `work-in-progress/TASKS.md` · `active-designing/20260706-013012_open-asks-escrow-hammock.md` · `active-designing/20260702-184312_the-grain-and-the-crossing.md` · `foundations/20260706-185112_follow-our-compass.md` · `foundations/20260706-022912_the-wire-serves-the-fold.md` · `counsel/20260704-181612_zero-copy-resins-counsel-answers.md` · `context/specs/20260702-035018_graduation-rule.md`
 **Bench pin:** zip 58 read at handoff tip `f2bbddf`, parity 166 GREEN on Cursor's own metal; this sitting verifies nothing further on metal, since it changes no code
 
 *Written by Kaeden and Rio 3.*

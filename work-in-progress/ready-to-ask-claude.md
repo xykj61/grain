@@ -251,7 +251,7 @@ In-process pass admits published read + signed submit; refuses unpublished diges
 | Item | Path |
 |------|------|
 | Claude ruling (Q1–Q5) | [`counsel/20260706-232812_claude-ruling-oal4-mala-edit5-and-horizons.md`](../counsel/20260706-232812_claude-ruling-oal4-mala-edit5-and-horizons.md) |
-| Zip 58 handoff prompt | [`expanding-prompts/20260706-190644_claude-zip58-ns-l3-handoff.md`](../expanding-prompts/20260706-190644_claude-zip58-ns-l3-handoff.md) |
+| Zip 58 handoff prompt | [`expanding-prompts/yonder/20260706-190644_claude-zip58-ns-l3-handoff.md`](../expanding-prompts/yonder/20260706-190644_claude-zip58-ns-l3-handoff.md) |
 | Handoff log | [`session-logs/archive/20260706/20260706-190312_claude-handoff-ns-l3-complete.md`](../session-logs/archive/20260706/20260706-190312_claude-handoff-ns-l3-complete.md) |
 
 **Rulings (zip 58 `20260706.232812` — applied, TASKS seated):**

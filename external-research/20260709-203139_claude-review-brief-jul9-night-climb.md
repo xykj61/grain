@@ -68,7 +68,7 @@ Seeds `0x61`/`0x62`. Memo prefixes `mala:mint` / `mala:send` / `mala:receipt` on
 ### Realidream thin view
 
 - Counsel `021112` named chain-read → Skate; chain-read **deleted** `152612`
-- Re-scope [`202427`](../expanding-prompts/20260709-202427_realidream-thin-view-local-facts.md): local `murr_m1_mint.bron` (was mala_*) + `wov_exit_bundle_v1.bron` → five-line Skate frame via `drawn-terminal thinviewtest`
+- Re-scope [`202427`](../expanding-prompts/yonder/20260709-202427_realidream-thin-view-local-facts.md): local `murr_m1_mint.bron` (was mala_*) + `wov_exit_bundle_v1.bron` → five-line Skate frame via `drawn-terminal thinviewtest`
 - Stayed thin: no Pond, no Dexter, no new input, no network
 
 ### Hygiene

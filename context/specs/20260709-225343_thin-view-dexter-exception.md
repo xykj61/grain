@@ -9,7 +9,7 @@ Radiant pass `20260728.044002` — living L1 rename-forward: **MUR** (was MALA)
 **Style:** Radiant (see `../RADIANT_STYLE.md`)
 **Lens:** Graduation rule — second *external* consumer; thin exception stays thin
 **Status:** Checkable-room ruling — **Dexter stays an aspect**; thin view remains the Realidream exception
-**Ground:** graduation [`035018`](20260702-035018_graduation-rule.md) · thin view [`202427`](../../expanding-prompts/20260709-202427_realidream-thin-view-local-facts.md) · TASKS Dexter trigger · late-night brief [`225159`](../../external-research/20260709-225159_claude-review-brief-jul9-late-night.md)
+**Ground:** graduation [`035018`](20260702-035018_graduation-rule.md) · thin view [`202427`](../../expanding-prompts/yonder/20260709-202427_realidream-thin-view-local-facts.md) · TASKS Dexter trigger · late-night brief [`225159`](../../external-research/20260709-225159_claude-review-brief-jul9-late-night.md)
 
 *Written by Kaeden and Rio 3 (Grok). Affirmed by keep-going after K0.*
 Radiant pass `20260725.035852`

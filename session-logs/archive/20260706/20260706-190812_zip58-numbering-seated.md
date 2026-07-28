@@ -16,11 +16,11 @@ Continued from handoff prep. Seated expanding prompt, RTAC refresh, handoff summ
 
 - Zip **58** follows zip **52** (OA-L3 parity 158); zip 43 language in RTAC is explicitly superseded.
 - Relay archive on disk: `veganreyklah2-20260706-190644-ns-l3-wire-complete.zip` — 3.4 MB, 1748 files, comment `05f7783deb650c775d6d5cb0103d6f8be685dc07` (matches wire+handoff tree; doc-only tip align at `0aef7b9` is outside the zip).
-- NS-L3 wire ladder closed at parity **166**; Claude questions seated in `expanding-prompts/20260706-190644_claude-zip58-ns-l3-handoff.md`.
+- NS-L3 wire ladder closed at parity **166**; Claude questions seated in `expanding-prompts/yonder/20260706-190644_claude-zip58-ns-l3-handoff.md`.
 
 ## Files
 
-- `expanding-prompts/20260706-190644_claude-zip58-ns-l3-handoff.md` — Claude sitting (created, tip pinned)
+- `expanding-prompts/yonder/20260706-190644_claude-zip58-ns-l3-handoff.md` — Claude sitting (created, tip pinned)
 - `expanding-prompts/README.md` — zip 58 row
 - `work-in-progress/ready-to-ask-claude.md` — zip 58 queue
 - `session-logs/20260706-190312_claude-handoff-ns-l3-complete.md` — full summary
