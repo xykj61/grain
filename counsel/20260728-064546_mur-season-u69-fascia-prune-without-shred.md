@@ -33,7 +33,7 @@ Shred completes a *cut*. Prune keeps the *spring* — connective tissue graded, 
 3. **Archive / yonder** — move finished or future work without parity-delete  
 4. **Geode crush** — compile shipping docs from fascial waves (not shred)  
 5. **Choir / harden** — murr + wov + Amphora laps prove both sides after prune waves  
-6. **On-touch tidy** — TAME over-70 · ratchet advise · superseded-pair surveys (measure → optional kg)
+6. **On-touch tidy** — TAME over-70 · ratchet advise · elder-pair surveys (measure → optional kg)
 
 ## Practice while innermost walks (MUR)
 
@@ -53,7 +53,7 @@ No live shred · no fresh-root · no Class A/B/C circle · no Inner unpause · n
 
 ```
 fascia=48  window_mean=49  delta=-1
-superseded=32  ratchet_outstanding=2  target_class_a=7  over70=14
+pair_hits=32  ratchet_outstanding=2  target_class_a=7  over70=14
 amphora_stack=laps1-3 GREEN  shred=RED
 ```
 
@@ -61,7 +61,7 @@ Measure names the spring; prune waves may lower clutter later. Baseline reattach
 
 ## Next
 
-**LANDED u70** — yonder of superseded recursion prompt v3 · fascia 46→47 · shred RED.
+**LANDED u70** — yonder of replaced recursion prompt v3 · fascia 46→47 · shred RED.
 
 ---
 

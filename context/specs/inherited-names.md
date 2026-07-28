@@ -12,7 +12,7 @@
 
 When Rye inherits a name from Zig — `ArenaAllocator`, `std.heap.ArenaAllocator`, and the bulk of unmodified `std` internals — we **keep it**. We do not rename inherited types to match our metaphors. Our vocabulary enters as **new names for things we own**, set beside the inherited names rather than in their place.
 
-**Approved Rye divergence (2026-06-19, superseded at the seam by harvest `2026-06-29`):** an earlier pass published the season allocator as **`garden`** on `Init`. The **`init.garden` → `init.arena` harvest** aligned authored seeds with pristine `vendor/zig-toolchain` std. **Today:** call `init.arena.allocator()` at the std seam; name the local binding `garden` when the warm vocabulary fits (Tally's future owned concept).
+**Approved Rye divergence (2026-06-19, replaced at the seam by harvest `2026-06-29`):** an earlier pass published the season allocator as **`garden`** on `Init`. The **`init.garden` → `init.arena` harvest** aligned authored seeds with pristine `vendor/zig-toolchain` std. **Today:** call `init.arena.allocator()` at the std seam; name the local binding `garden` when the warm vocabulary fits (Tally's future owned concept).
 
 **Layered answer (current):** **`init.arena` yes** at the std seam; **`ArenaAllocator` no** as a name in authored code; **`garden` yes** as a local variable or Tally-owned type when we build it.
 

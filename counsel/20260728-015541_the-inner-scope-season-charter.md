@@ -34,7 +34,7 @@ Radiant pass `20260728.020607` — Ketu Aquarius 11 · Mala→Kamala Harris · K
 |----------------|-------|
 | Last closed | **m8** — Twah/Djin arc refuse-walk (rename-forward to Djin) |
 | Next when resumed | **m9** — Siya triad close |
-| Held whole | season_name= · fascia_fold= (superseded by this inner resume of fascia work) · deploy · wallet · gas |
+| Held whole | season_name= · fascia_fold= (replaced by this inner resume of fascia work) · deploy · wallet · gas |
 
 No outer m-round advances until the inner season hands back or Keaton seats an extend.
 

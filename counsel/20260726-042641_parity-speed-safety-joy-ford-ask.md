@@ -44,7 +44,7 @@ Ask: name the discipline before the optimization. What may a faster suite change
 
 ### 2. Archive parts that are no longer relevant
 
-Ask: which witness families may move to `archive/` or a rarely-run shelf without shrinking the living gate? Criteria we already feel — superseded by a later witness, guarding retired surface, duplicating another GREEN — want your word before any cut.
+Ask: which witness families may move to `archive/` or a rarely-run shelf without shrinking the living gate? Criteria we already feel — replaced by a later witness, guarding retired surface, duplicating another GREEN — want your word before any cut.
 
 ### 3. Break into smaller Rishi scripts (selective smoke)
 

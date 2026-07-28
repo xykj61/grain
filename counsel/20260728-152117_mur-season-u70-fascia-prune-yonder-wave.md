@@ -6,7 +6,7 @@
 
 ## Verdict
 
-**First prune wave LANDED.** One superseded living prompt moved to `expanding-prompts/yonder/` with every inbound path re-pointed. No shred. No fossil restyle campaign. Meter: superseded 35→34 · fascia 46→47.
+**First prune wave LANDED.** One replaced living prompt moved to `expanding-prompts/yonder/` with every inbound path re-pointed. No shred. No fossil restyle campaign. Meter: pair-hits 35→34 · fascia 46→47.
 
 ## Move (this stamp)
 
@@ -14,7 +14,7 @@
 | --- | --- |
 | `expanding-prompts/20260703-020012_cursor-recursion-prompt-v3.md` | `expanding-prompts/yonder/20260703-020012_cursor-recursion-prompt-v3.md` |
 
-**Why:** file already sold **Superseded** by v4; ORGANIZING sends deferred/consumed work to `yonder/`; fascia metric excludes `yonder/**` from the superseded clutter signal — sameness keeps one living recursion door (v4 / MUR u0).
+**Why:** file already sold **Replaced** by v4; ORGANIZING sends deferred/consumed work to `yonder/`; fascia metric excludes `yonder/**` from the pair-hits clutter signal — sameness keeps one living recursion door (v4 / MUR u0).
 
 ## Re-points (same motion)
 
@@ -24,7 +24,7 @@
 
 | | Before (u70 open) | After |
 | --- | --- | --- |
-| superseded | 35 | **34** |
+| pair-hits | 35 | **34** |
 | fascia | 46 | **47** |
 | Amphora | GREEN | GREEN |
 | shred | RED | RED |

@@ -43,7 +43,7 @@ f0–f1 walked earlier; **`tools/fascia*` ABSENT on main** (honest measure at i0
 | Inner | Fascia lean | First deliverable |
 |-------|-------------|-------------------|
 | **i4** | Amphora / metric door | Land **fascia metric v0** stub under `tools/` (difficulty-style clutter signals per charter f8) — witness GREEN · no shred |
-| **i5–i6** | Metric tighten | Superseded pairs · ratchet advisories · target-class hits · over-70 functions — normalized window |
+| **i5–i6** | Metric tighten | Elder-pair hits · ratchet advisories · target-class hits · over-70 functions — normalized window |
 | **i7–i8** | Shred-with-parity draft | Fresh-root graduation design · four-pane parity named · refuse live run |
 | **i9** | Machinery close | Metric + shred path ready for breach-prep block |
 | **i10–i13** | Breach prep | Manifest · A / A+C / all · honesty · still no live shred without his yes |
