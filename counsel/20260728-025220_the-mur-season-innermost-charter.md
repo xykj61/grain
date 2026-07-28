@@ -8,7 +8,8 @@
 **Rename spine (approved overwrite):** **Mala / MALA / `%mala` → Murr / MUR / `%murr`** — Radiant · TAME · living-tree massive rename across the season  
 **Honor dedication:** **Kyler Murray** — Minnesota Vikings quarterback (signed 2026; camp competition with J.J. McCarthy as of this stamp's web ground)  
 **Currency lean:** **MUR** as **L1** · unify with **WOV** concept · roadmap **last** retires WOV entirely in favor of MUR  
-**Status:** **OPEN** · u0–u58 complete · check-in `20260728.061323` · **u59** next — optional polish or WOV-design  
+**Status:** **OPEN** · u0–u59 complete `20260728.061551` · **u60** next — WOV unify brief  
+Radiant pass `20260728.061551` — u59 WOV-unify design OPEN early by ask · no WOV delete  
 Radiant pass `20260728.061323` — check-in at u58 · rename spines done · doors named  
 Radiant pass `20260728.060902` — u58 module spine HARDENED · rename done for living doors  
 Radiant pass `20260728.060656` — u57 module residual clear · spine COMPLETE for living doors  
@@ -95,8 +96,8 @@ When innermost hands back: resume **inner** at i7 (fascia shred-with-parity draf
 | Bow · measure | **u0–u26** CLOSED | Affirm pauses · gen_murr · residual clear · prose · tool GO · waiting queue empty · prefer kg u32 |
 | Lexicon · prose waves | **u6–u31** (largely living-clear · walking harden) | Living counsel/docs/edu Radiant-pass Mala/MALA → Murr/MUR; intentional holds named |
 | Tool · generator homes | **u32–u47** (**u32–u34** rename spine COMPLETE) | murr_* GREEN · residual clear · u35–u47 optional |
-| Module · mycelium · specs | **u48–u79** (**u48–u51 LIVE**) | core→memos→fold_murr_log · seva/guests next |
-| MUR↔WOV unify design | **u80–u95** | L1 MUR absorbs WOV *concepts*; no WOV delete yet |
+| Module · mycelium · specs | **u48–u79** (**u48–u58 HARDENED**) | living rename done · u59–u79 optional polish |
+| MUR↔WOV unify design | **u80–u95** (**OPEN early u59** by ask) | L1 MUR absorbs WOV *concepts*; no WOV delete yet |
 | WOV retirement plan | **u96–u111** | Roadmap **last** — propose-only until late gate |
 | Fascia shred prep | **u112–u119** | Manifest residual Mala/MALA · A / A+C / all · still no live shred without yes |
 | Harden · choir | **u120–u125** | Full choir · fascia metric · Amphora stack |
