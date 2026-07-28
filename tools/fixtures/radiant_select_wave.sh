@@ -17,7 +17,7 @@ trap 'rm -f "$POOL" "$CAND" "$LED"' EXIT
 
 {
   find active-designing external-research expanding-prompts counsel \
-    classical-vedic-astrology context work-in-progress waymarks foundations manual \
+    classical-vedic-astrology context work-in-progress waymarks foundations manual edu \
     -type f -name '*.md' ! -path '*/archive/*' 2>/dev/null
   find . -maxdepth 1 -name '*.md' -type f 2>/dev/null
   find . -mindepth 2 -maxdepth 2 -name 'README.md' \
