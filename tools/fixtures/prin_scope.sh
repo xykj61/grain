@@ -39,6 +39,6 @@ Prin scope — seasons · Tally · rish vocabulary
   voice:  six variants — Reya · Riyo · Trey · Triz · Quin · Trya (Quin stands)
   charter: counsel/20260728-025220_the-mur-season-innermost-charter.md
   geode_charter: counsel/20260728-031722_the-geode-season-charter.md
-  seat:   counsel/20260728-060902_mur-season-u58-module-wave-harden.md
+  seat:   counsel/20260728-061323_mur-season-check-in-u58.md
   warn:   u126/u127 extend innermost · return inner i7 · or other · d14/d15 extend 32|64|128 or handback
 EOF
