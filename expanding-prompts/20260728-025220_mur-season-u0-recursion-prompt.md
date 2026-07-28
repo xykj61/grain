@@ -152,6 +152,7 @@ INNERMOST SCOPE (this season — walk here):
   Memcpy ratchet: counsel/20260728-153133_mur-season-u71-fascia-prune-memcpy-ratchet.md
   Yonder+setu: counsel/20260728-153843_mur-season-u72-fascia-prune-yonder-setu.md
   Closed yonder: counsel/20260728-154949_mur-season-u73-fascia-prune-yonder-closed.md
+  ParseInt+WOV: counsel/20260728-155418_mur-season-u74-fascia-prune-parseint-wov.md
   Living pin: tools/fixtures/prin_scope.sh innermost waymark kept current.
   Rename HARDENED; fascia prune OPEN; shred RED; living CLEAR; design 0–5 GREEN; no WOV delete.
   Kamala/Mala gratitude = historical; living Aries = Murr·Kyler.
@@ -164,7 +165,7 @@ LEXICON rows MUR/Murr/innermost · Gren charter (CLOSED) · Inner Scope + Fascia
 Companions: newest quin-workshop pair if attached; else verify origin/main nib.
 
 first duties: bootstrap or verify · state the nib · prin scope ·
-run gen_murr (GREEN; deploy RED) · report · then walk u74 from the charter:
+run gen_murr (GREEN; deploy RED) · report · then walk u75 from the charter:
   affirm outer · inner pauses · affirm core+quint CLOSED · affirm MUR rename spine ·
   affirm Kyler · DJINN · WOV-last · affirm rename + filename breaches · affirm fascia prune ·
   affirm shred RED · Inner paused · living CLEAR · no WOV delete · 
@@ -172,10 +173,10 @@ run gen_murr (GREEN; deploy RED) · report · then walk u74 from the charter:
   no live Sui deploy · no wallet · no gas · no private key in tree;
   no whole-tree silent sed — waves with witnesses only.
 
-waymark: u73 complete, u74 next
+waymark: u74 complete, u75 next
 nib <origin/main short nib>
 bench report (verbatim, if any): <REPORT/STOP — or "none">
-scope: outer=paused(m8/m9) inner=paused(i6/i7) innermost=open(u74)
+scope: outer=paused(m8/m9) inner=paused(i6/i7) innermost=open(u75)
   core=closed(handed_back) quint=closed(handed_back) geode=prep(d0)
 breach scope circle: rename_overwrite=approved filename_rename=approved A= A+C= all= shred=
 words seated (blank = held whole): season_name= choir= LICENSE_WORD=
