@@ -8,6 +8,7 @@
 **Exit:** tool/module wave map seated · light prose cleared · code homes held · u7 next
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260728.053348` — tool homes **LANDED u32** as `murr_*` witnesses/lab/fixture; module `mala*` still held for u48+
 
 ---
 

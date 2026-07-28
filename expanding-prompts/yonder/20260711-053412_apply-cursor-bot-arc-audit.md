@@ -17,7 +17,7 @@ An audit of the whole Cursor-bot arc (tips 379→430, PRs #85–#112). One verif
 2. Rebuild rishi + rye, then re-run the WOV witnesses to confirm GREEN on your metal:
    - `rishi/bin/rishi run tools/wov_exit_honesty.rish`
    - `rishi/bin/rishi run tools/wov_dual_monarch.rish`
-   - `rishi/bin/rishi run tools/mala_m1_witness.rish`
+   - `rishi/bin/rishi run tools/murr_m1_witness.rish`
 3. Run the TAME lint (`tools/tame_style_check.rish`) — the three WOV functions should no longer appear in the over-70-lines list.
 4. Parity should be unchanged (the refactor touches no witness).
 
