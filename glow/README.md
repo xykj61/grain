@@ -10,7 +10,7 @@
 **Ground:** [`active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md`](../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md) · [`20260716-093000_glow-and-rye-what-shares-under-the-hood.md`](../active-designing/yonder/20260716-093000_glow-and-rye-what-shares-under-the-hood.md) · truth [`../context/specs/20260717-154943_glow-truth-zig-ambient-nock-loobean-seam.md`](../context/specs/20260717-154943_glow-truth-zig-ambient-nock-loobean-seam.md)
 *Living pointer `20260726.041100` — Aurora boot fusion and kelvin-as-cold-interop (Vision study, not Glow's internal clock): [`../external-research/20260714-013700_aurora-vere-arvo-boot-fusion-and-kelvin-strategy.md`](../external-research/20260714-013700_aurora-vere-arvo-boot-fusion-and-kelvin-strategy.md). Design pages for the value model and Nock seam: [`../active-designing/docs/glow/`](../active-designing/docs/glow/).*
 **Law:** [`../context/TAME_GUIDANCE.md`](../context/TAME_GUIDANCE.md) (root) · Glow supplement still horizon — scoping [`../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md`](../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md)
-**Acme first code:** [`../expanding-prompts/20260717-213242_glow-first-code-beside-glass-and-open-runes.md`](../expanding-prompts/20260717-213242_glow-first-code-beside-glass-and-open-runes.md)
+**Acme first code:** [`../expanding-prompts/yonder/20260717-213242_glow-first-code-beside-glass-and-open-runes.md`](../expanding-prompts/yonder/20260717-213242_glow-first-code-beside-glass-and-open-runes.md)
 
 ---
 

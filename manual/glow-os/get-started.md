@@ -20,7 +20,7 @@ Grain documentation has two front doors that share one house. Pick the door that
 
 | Path | Start here | Compressor |
 |------|------------|------------|
-| **Language** — what you can type and witness | [`../tutorials/first-witness.md`](../tutorials/first-witness.md) (Rishi) | Glow: [`../../glow/README.md`](../../glow/README.md) (eight heads) · Acme first code [`../../expanding-prompts/20260717-213242_glow-first-code-beside-glass-and-open-runes.md`](../../expanding-prompts/20260717-213242_glow-first-code-beside-glass-and-open-runes.md) |
+| **Language** — what you can type and witness | [`../tutorials/first-witness.md`](../tutorials/first-witness.md) (Rishi) | Glow: [`../../glow/README.md`](../../glow/README.md) (eight heads) · Acme first code [`../../expanding-prompts/yonder/20260717-213242_glow-first-code-beside-glass-and-open-runes.md`](../../expanding-prompts/yonder/20260717-213242_glow-first-code-beside-glass-and-open-runes.md) |
 | **Device** — GrapheneOS on Pixel hardware | [`../guides/pixel-10a-grapheneos-setup.md`](../guides/pixel-10a-grapheneos-setup.md) | [`../../docs/HAWM.md`](../../docs/HAWM.md) · waymarks [`../../docs/JABS.md`](../../docs/JABS.md) |
 | **Meeting point** — installable APK envelope | `rishi/bin/rishi run tools/tube05_apk_pack_witness.rish` | [`../../docs/TUBE.md`](../../docs/TUBE.md) |
 
@@ -35,7 +35,7 @@ Manual index with both hubs: [`../README.md`](../README.md).
 1. **Walk the compass once** — compressor [`../../docs/COMPASS.md`](../../docs/COMPASS.md) · card [`../../docs/compass_card.bron`](../../docs/compass_card.bron) · tutorial [`../tutorials/cursor-and-the-compass.md`](../tutorials/cursor-and-the-compass.md). Stitches foundations, **witness habitat** (Acme face for the happy zone), Cursor rules, Bron logging, and send.
 2. **Run your first Rishi witness** — [`../tutorials/first-witness.md`](../tutorials/first-witness.md). This is the teachable language surface today.
 3. **Read the Rishi reference** — [`../reference/rishi-language.md`](../reference/rishi-language.md) (parity **142**).
-4. **Peek at Glow runes** — eight heads lower today; desk hop `rishi/bin/rishi run tools/glow_run_desk_witness.rish`. Start with Acme first code [`../../expanding-prompts/20260717-213242_glow-first-code-beside-glass-and-open-runes.md`](../../expanding-prompts/20260717-213242_glow-first-code-beside-glass-and-open-runes.md) (`glow/gen/face-mix.glow`). Pin [`../../glow/README.md`](../../glow/README.md). Grammar design: [`../../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md`](../../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md). Law: [`../../context/TAME_GUIDANCE.md`](../../context/TAME_GUIDANCE.md) (Glow supplement still horizon — scoping ER linked from the Glow pin).
+4. **Peek at Glow runes** — eight heads lower today; desk hop `rishi/bin/rishi run tools/glow_run_desk_witness.rish`. Start with Acme first code [`../../expanding-prompts/yonder/20260717-213242_glow-first-code-beside-glass-and-open-runes.md`](../../expanding-prompts/yonder/20260717-213242_glow-first-code-beside-glass-and-open-runes.md) (`glow/gen/face-mix.glow`). Pin [`../../glow/README.md`](../../glow/README.md). Grammar design: [`../../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md`](../../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md). Law: [`../../context/TAME_GUIDANCE.md`](../../context/TAME_GUIDANCE.md) (Glow supplement still horizon — scoping ER linked from the Glow pin).
 
 ### Device path (checkable)
 

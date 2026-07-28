@@ -46,7 +46,7 @@ After the July 7 hygiene marathon closed (`tame_style_scan` native, parity **196
 | Doc | Role |
 |-----|------|
 | [`external-research/20260707-222500_settlement-seat-refresh-and-slcl3-witness-proposal.md`](external-research/20260707-222500_settlement-seat-refresh-and-slcl3-witness-proposal.md) | Seat holds; two-lane testnet witness; three axes |
-| [`expanding-prompts/20260707-222500_apply-slcl3-settlement-witness.md`](expanding-prompts/20260707-222500_apply-slcl3-settlement-witness.md) | Implementation when gate opens |
+| [`expanding-prompts/yonder/20260707-222500_apply-slcl3-settlement-witness.md`](expanding-prompts/yonder/20260707-222500_apply-slcl3-settlement-witness.md) | Implementation when gate opens |
 
 ### Settlement refresh (key findings)
 
