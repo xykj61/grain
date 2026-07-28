@@ -4,14 +4,14 @@
 #   rishi/bin/rishi run tools/murr_m2_witness.rish
 
 let zig = "vendor/zig-toolchain/zig"
-let mala = "linengrow/bin/mala"
+let murr = "linengrow/bin/murr"
 let delivery = "linengrow/bin/mala-delivery"
 
-let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/mala.rye -femit-bin=${mala} && env RYE_ZIG=${zig} rye/bin/rye build linengrow/mala_delivery.rye -lc -femit-bin=${delivery}"]
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/murr.rye -femit-bin=${murr} && env RYE_ZIG=${zig} rye/bin/rye build linengrow/mala_delivery.rye -lc -femit-bin=${delivery}"]
 
 assert build.ok else "MUR M2 build failed"
 
-let m1 = run ["sh" "-c" "${mala} selftest 2>&1"]
+let m1 = run ["sh" "-c" "${murr} selftest 2>&1"]
 assert m1.ok else "MUR M1 selftest exited non-zero after core extract"
 assert m1.out contains "GREEN" else "MUR M1 selftest not GREEN"
 

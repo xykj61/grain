@@ -4,9 +4,10 @@
 **Voice:** Rio 3
 **Language:** EN
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Status:** **Landed** `20260709.184051` — `linengrow/mala.rye` + witness at parity **198**; M0 gate verified before open
+**Status:** **Landed** `20260709.184051` — `linengrow/murr.rye` + witness at parity **198**; M0 gate verified before open
 **Ground:** counsel [`20260709-152612`](../counsel/20260709-152612_claude-counsel-mala-wov-already-designed.md) · design [`20260702-031312`](../active-designing/20260702-031312_modules-aspects-and-mailable-money.md) · SLC-L1 spine [`receipt_core.rye`](../linengrow/receipt_core.rye)
 Radiant pass `20260728.052149` — living rename-forward: **MUR** (was MALA); dated path tables keep `mala*` until **kg u32** (tool GO) / **u48** (module); rehearsals u17–u22 seated  
+Radiant pass `20260728.054644` — entry/bin landed u49: `murr.rye` / `bin/murr`
 Radiant pass `20260728.053112` — tool-wave u32: living paths → murr_* witnesses/fixture/wire lab; memo mala:* held for module
 Radiant pass `20260728.044925` — living rename-forward: **MUR** (was MALA); dated path · code homes `mala*` · wire `mala:*` held for tool/module waves (u32+/u48+)
 
@@ -49,7 +50,7 @@ MUR (was MALA) reuses SLC-L1's `.bron` fact envelope (`from`, `to`, `amount`, `m
 
 **In scope:**
 
-- `linengrow/mala.rye` — selftest binary; imports `receipt_core` and `kumara`; no new curve, no network, no Comlink.
+- `linengrow/murr.rye` — selftest binary; imports `receipt_core` and `kumara`; no new curve, no network, no Comlink.
 - Append-only in-memory log (bounded capacity, TAME-asserted) holding mint then send facts in order.
 - **Welcome path:** issuer mints `1000` to holder; issuer sends `300` to holder (or holder sends `200` back to issuer — one round-trip proves send); fold holder balance matches expected; log digest non-zero; every line verifies under the issuer pubkey for mints and the correct signer for sends.
 - **Unwelcome paths (at least four):** forged signature refused; mint from non-issuer refused; send exceeding balance refused; tampered log line refused at parse or verify.
@@ -68,8 +69,8 @@ MUR (was MALA) reuses SLC-L1's `.bron` fact envelope (`from`, `to`, `amount`, `m
 
 | Name | Role |
 |------|------|
-| `linengrow/mala.rye` | Module home + selftest |
-| `linengrow/bin/mala` | Emitted binary |
+| `linengrow/murr.rye` | Module home + selftest |
+| `linengrow/bin/murr` | Emitted binary |
 | `tools/murr_m1_witness.rish` | Parity witness |
 | `tools/fixtures/murr_m1_mint.bron` | Pinned first mint fact |
 
@@ -81,7 +82,7 @@ Kumara (`tally/kumara.rye`), `receipt_core`, `tally_copy`, `parse_int` — all a
 
 ## Verification Shape
 
-Build from bare. Run `linengrow/bin/mala selftest`: welcome path prints balances and `GREEN`; each unwelcome path prints a named refusal and still reaches `GREEN` for the selftest overall. Run `rishi/bin/rishi run tools/murr_m1_witness.rish`. Wire into `tools/parity.rish` only after both are green on metal.
+Build from bare. Run `linengrow/bin/murr selftest`: welcome path prints balances and `GREEN`; each unwelcome path prints a named refusal and still reaches `GREEN` for the selftest overall. Run `rishi/bin/rishi run tools/murr_m1_witness.rish`. Wire into `tools/parity.rish` only after both are green on metal.
 
 ---
 

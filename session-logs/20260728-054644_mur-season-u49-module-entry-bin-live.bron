@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260728.054644
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title MUR Season u49 module entry bin live
+prompt waymark u48 complete u49 next · asks none
+think Execute module step 2: git mv mala.rye to murr.rye; point murr_m1/m2 witnesses at bin/murr; harden selftest say-lines to MUR.
+think Leave mala_delivery and mala:* for u50; re-prove M1 and M2 GREEN.
+think Seat counsel · pins · round-close send.
+obs Entry binder renamed; delivery shelf still mala until next round.
+file linengrow/murr.rye rename
+file tools/murr_m1_witness.rish bin/murr
+file tools/murr_m2_witness.rish bin/murr
+file counsel/20260728-054644_mur-season-u49-module-entry-bin-live.md create
+recommend keep-going kg u50 delivery and murr colon memos
