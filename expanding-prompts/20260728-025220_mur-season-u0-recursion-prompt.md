@@ -1,8 +1,9 @@
 # MUR Season — u0 Recursion Prompt (printout · all scopes kept)
 
-**Stamp:** `20260728.025220` · Radiant pass `20260728.050720`  
+**Stamp:** `20260728.025220` · Radiant pass `20260728.050833`  
 **Use:** paste the fenced block as the next counsel/bench session opener.  
-Radiant pass `20260728.050720` — u14 tool-wave prep order seated · no renames · u15 next  
+Radiant pass `20260728.050833` — u15 module-wave prep order seated · no renames · u16 next  
+Radiant pass `20260728.050720` — u14 tool-wave prep order seated · no renames  
 Radiant pass `20260728.050601` — u13 living pins harden · prin_scope current · prose block status  
 Radiant pass `20260728.050430` — u12 prose residual · replies · ER cleared · intentional holds · tools held  
 Radiant pass `20260728.050219` — u11 prose residual · constellation m0–m4 · ER briefs · tools held  
@@ -60,25 +61,26 @@ INNERMOST SCOPE (this season — walk here):
   Lexicon: scope·outer·inner·innermost·core·quint · MUR · Murr · retired Mala/MALA · Gren living.
   Prin: rishi/bin/rishi run tools/prin.rish scope
   gen_murr GREEN · deploy RED; gen_gren GREEN (core closed door); gen_mala ABSENT.
-  u0–u14 COMPLETE · u15 next (harden / module-wave prep; tools u32+ · modules u48+ mapped).
+  u0–u15 COMPLETE · u16 next (harden / dual-wave readiness; tools u32+ · modules u48+ mapped).
   TOP PRIORITY: rename overwrite everywhere Mala/MALA → Murr/MUR (breach approved seated).
   Fascia shred still needs separate circled yes. WOV retire roadmap last.
   Wave map: counsel/20260728-044738_mur-season-u6-tool-module-wave-map.md
-  Prose waves largely living-clear; tool-wave prep order seated (u14); no renames until u32/u48.
+  Prose waves largely living-clear; tool prep (u14) + module prep (u15) seated; no renames until u32/u48.
   Tool prep: counsel/20260728-050720_mur-season-u14-tool-wave-prep.md
+  Module prep: counsel/20260728-050833_mur-season-u15-module-wave-prep.md
   Living pin: tools/fixtures/prin_scope.sh innermost waymark kept current.
   Wire mala:* · mala_m1/m2 · linengrow/mala*.rye held for tool/module waves.
   Kamala/Mala gratitude = historical; living Aries = Murr·Kyler.
   u126 and u127 MUST warn before handback (extend innermost · return inner i7 · other).
 
-Read whole: the MUR charter · u6 wave map · u14 tool-wave prep ·
+Read whole: the MUR charter · u6 wave map · u14–u15 wave preps ·
 foundations/20260728-025220_murr-and-kyler-murray.md ·
 gratitude/kyler-murray.md · gratitude/mur-movement-aesthetics.md ·
 LEXICON rows MUR/Murr/innermost · Gren charter (CLOSED) · Inner Scope + Fascia (paused).
 Companions: newest quin-workshop pair if attached; else verify origin/main nib.
 
 first duties: bootstrap or verify · state the nib · prin scope ·
-run gen_murr (GREEN; deploy RED) · report · then walk u15 from the charter:
+run gen_murr (GREEN; deploy RED) · report · then walk u16 from the charter:
   affirm outer · inner pauses · affirm core+quint CLOSED · affirm MUR rename spine ·
   affirm Kyler · DJINN · WOV-last · affirm rename-overwrite breach approved ·
   continue living prose · residual re-probe · keep code homes held until u32/u48 ·
@@ -86,10 +88,10 @@ run gen_murr (GREEN; deploy RED) · report · then walk u15 from the charter:
   no live Sui deploy · no wallet · no gas · no private key in tree;
   no whole-tree silent sed — waves with witnesses only.
 
-waymark: u14 complete, u15 next
+waymark: u15 complete, u16 next
 nib <origin/main short nib>
 bench report (verbatim, if any): <REPORT/STOP — or "none">
-scope: outer=paused(m8/m9) inner=paused(i6/i7) innermost=open(u15)
+scope: outer=paused(m8/m9) inner=paused(i6/i7) innermost=open(u16)
   core=closed(handed_back) quint=closed(handed_back) geode=prep(d0)
 breach scope circle: rename_overwrite=approved A= A+C= all= shred=
 words seated (blank = held whole): season_name= choir= LICENSE_WORD=
@@ -113,4 +115,4 @@ asks: <anything — or "none"> ] ]
 
 ---
 
-*Paste the block above to continue u15. Keep pauses honest. Core and quint stay closed.*
+*Paste the block above to continue u16. Keep pauses honest. Core and quint stay closed.*
