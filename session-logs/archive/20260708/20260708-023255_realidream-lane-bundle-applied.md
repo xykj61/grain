@@ -26,7 +26,7 @@
 | `counsel/20260708-021912_claude-counsel-realidream-zig016-brix.md` | Counsel synthesis |
 | `external-research/20260708-021912_grain-sketchbook-realidream-mining.md` | Primary-source mining study |
 | `active-designing/20260708-021912_rye-os-in-brix-terms.md` | Extractions-as-bonds; worked descriptor |
-| `expanding-prompts/20260708-021912_realidream-lane-zig016-brix.md` | Expanding prompt |
+| `expanding-prompts/yonder/20260708-021912_realidream-lane-zig016-brix.md` | Expanding prompt |
 | `expanding-prompts/20260708-021912_apply-realidream-lane.md` | Cursor apply prompt |
 | `work-in-progress/ROADMAP.md` | Visual Track subsection + version stamp |
 | `work-in-progress/TASKS.md` | Realidream lane block; next bench; honest Kumara |
