@@ -26,7 +26,7 @@ No Amphora shred · no Class A rewrite · no living-hold yonder · no Inner unpa
 
 ## Next
 
-**kg u89** — Class-A paper door (still 7; shred RED), or check-in (pair-hits and over-70 clear).
+**LANDED u89** — Class-A paper lean refresh · seven homes · shred RED · fascia 86.
 
 ---
 
