@@ -3,10 +3,11 @@
 **Language:** EN
 **Stamp:** `20260728.010054`
 **Voice:** Quin
-**Status:** **Final draft** · Tensegral Season close · home [`../saga/`](README.md) · open for Keaton seat word
+**Status:** **Seated** `20260728.010302` — Tensegral Season close · home [`../saga/`](README.md)
 **Ground:** Charter [`../counsel/20260727-234617_the-tensegral-season.md`](../counsel/20260727-234617_the-tensegral-season.md) · rounds prep → 0–14 landed · this close (**15**) · motto **stay tensegral** · prior Sound saga seated
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260728.010302` — seated (check-in · prep for send)
 Radiant pass `20260728.010054` — season close validator report
 
 ---
@@ -94,9 +95,9 @@ What the next handoff opens: Keaton's seat word on this final draft; then a new 
 
 ## 7. Seating status
 
-**Status:** **Final draft** — open for Keaton's seat word.
+**Status:** **Seated** — Keaton's check-in `20260728.010302` (seat · prep for send).
 
-This page is the Tensegral Season's close artifact. Motion stamps through `20260728.010054` are the season's arithmetic; seating confirms them aloud.
+This page is the Tensegral Season's close artifact. Motion stamps through `20260728.010054` are confirmed with this seat.
 
 Prior season: [`20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md`](20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md).
 
