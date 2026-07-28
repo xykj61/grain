@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.041118` — [Gren Season g7 spotcheck](20260728-041118_gren-season-g7-spotcheck.bron) — empty×4 · spot block CLOSED · g8 next
 - `20260728.040951` — [Gren Season g6 spotcheck](20260728-040951_gren-season-g6-spotcheck.bron) — empty×3 · g7 next
 - `20260728.040802` — [Gren Season g5 spotcheck](20260728-040802_gren-season-g5-spotcheck.bron) — empty×2 · g6 next
 - `20260728.040656` — [Gren Season g4 spotcheck](20260728-040656_gren-season-g4-spotcheck.bron) — empty×1 · g5 next
