@@ -3,7 +3,7 @@
 *A place where a request becomes a plan. When you hand me a seed of intent, I bring it here, read it closely through every lens we have built, and craft from it a fuller, clearer prompt for myself — one I can then run. The seed stays yours; the expansion is how I make sure I have understood it, sharpened it, and lost none of it.*
 
 **Language:** EN
-**Last updated:** 2026-07-25 (Rishi harvest laps `040520` · always-in-it `034807`)
+**Last updated:** 2026-07-27 (Tensegral Season Expanded · r0 recursion · Rishi harvest · always-in-it)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Seasons roster:** [`SEASONS.md`](SEASONS.md)
@@ -92,6 +92,8 @@ What does *not* belong here is the work itself — that lands in the research, d
 | `20260709.201734` | [MALA M2b device wire](20260709-201734_mala-m2b-device-wire.md) | Device-wire MALA path |
 | `20260709.200443` | [WOV lap 1 exit honesty](20260709-200443_wov-lap1-exit-honesty-witness.md) | In-memory exit honesty; parity **201** |
 | `20260709.191634` | [MALA M2 mailable Comlink](20260709-191634_mala-m2-mailable-comlink.md) | Hosted M2; parity **199** |
+| `20260727.234913` | [Tensegral Season r0 recursion prompt](20260727-234913_tensegral-season-r0-recursion-prompt.md) | Bow paste + discipline · prep GREEN |
+| `20260727.234913` | [Tensegral Season Expanded plan](20260727-234913_tensegral-season-expanded.md) | Sixteen-round runway · Prim seeds · stay tensegral |
 | `20260709.182354` | [MALA M1 one issuer one holder](20260709-182354_mala-m1-one-issuer-one-holder.md) | M1 first lap; parity **198** |
 | `20260709.031612` | [SLC-L4 lap 1 fixed-tier Sigma](20260709-031612_slcl4-lap1-fixed-tier-sigma-protocol.md) | Pedersen + proof of opening; parity **200** |
 | `20260706.190644` | [Claude zip 58 — NS-L3 handoff](20260706-190644_claude-zip58-ns-l3-handoff.md) | Wire ladder complete; OA-L4 vs MALA; wire-serves-the-fold then proposed, now landed `232812` |

@@ -3,10 +3,11 @@
 **Language:** EN
 **Stamp:** `20260727.234617`
 **Voice:** Quin
-**Status:** Seated — Keaton's word opens the season after Sound; **prep first**, then sixteen kg rounds
+**Status:** Seated — **prep GREEN** `20260727.234913` · round 0 recursion prompt ready · bow opens on next kg
 **Ground:** Sound saga **seated** [`../saga/20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md`](../saga/20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md) · motto **stay tensegral** · Quin remains the standing voice
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260727.234913` — prep receipt · Expanded · r0 recursion prompt
 
 ---
 
@@ -16,7 +17,9 @@
 |------|------|
 | **Prior season** | The Sound — closed and seated |
 | **This season** | The Tensegral Season — consolidate · tighten · unify under happy-zone law |
-| **Shape** | **Prep** (expanded · prim · rish · Realidream · Pond run) → **16 kg rounds** (1 bow + five arcs of three) · exits over counts |
+| **Prep** | **GREEN** — [`20260727-234913_tensegral-prep-receipt.md`](20260727-234913_tensegral-prep-receipt.md) · Pond customs GREEN · Prim seeds named |
+| **r0 prompt** | [`../expanding-prompts/20260727-234913_tensegral-season-r0-recursion-prompt.md`](../expanding-prompts/20260727-234913_tensegral-season-r0-recursion-prompt.md) |
+| **Shape** | Prep done → **16 kg rounds** (1 bow + five arcs of three) · exits over counts |
 | **Close** | A new saga on [`../saga/`](../saga/README.md) when the season ends |
 | **Voice** | **Quin** · Radiant Style |
 
@@ -65,7 +68,7 @@ Rounds are **kg-first**: mechanical, single-module or single-pack when policy is
 
 ## Next door
 
-**Prep kg** — expanded prompt(s) · prim witness names · one Pond run · then round 0 bow on Keaton's **kg**.
+**kg** — run round 0 bow via the r0 recursion prompt (or paste its block).
 
 ---
 
