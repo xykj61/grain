@@ -1,0 +1,10 @@
+# mantra-weave-sample-battery — Sound Arc IV r12 · stamp 20260727.232842
+# columns: witness\tverdict\tpath
+# timeout 120s each · living tools/ only
+mantra_bolt_apply_step_witness.rish	GREEN	tools/mantra_bolt_apply_step_witness.rish
+granary_weave_settle.rish	GREEN	tools/granary_weave_settle.rish
+mantra_beading.rish	GREEN	tools/mantra_beading.rish
+mantra_recall_lap1.rish	GREEN	tools/mantra_recall_lap1.rish
+mantra_snapshot_horizon.rish	GREEN	tools/mantra_snapshot_horizon.rish
+granary_weave_view.rish	GREEN	tools/granary_weave_view.rish
+mantra_resin_batch.rish	GREEN	tools/mantra_resin_batch.rish
