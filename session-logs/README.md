@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.023941` — [Inner Scope i6 Amphora stack fold](20260728-023941_inner-scope-i6-amphora-stack.bron) — laps1-3 · metric_rev=i6 · fascia≈49
 - `20260728.023555` — [Inner Scope i5 fascia metric tighten](20260728-023555_inner-scope-i5-fascia-tighten.bron) — weights·window·Amphora · fascia≈49
 - `20260728.023240` — [Inner Scope i4 fascia metric v0](20260728-023240_inner-scope-i4-fascia-metric.bron) — four signals · fascia=19 · shred RED
 - `20260728.022949` — [Inner Scope i3 rename-polish close](20260728-022949_inner-scope-i3-rename-close.bron) — i1–i3 CLOSED · i4 fascia metric next
