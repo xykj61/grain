@@ -4173,9 +4173,9 @@ fn run_exchange_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     const golden = [_][]const u8{
         "granary exchange view",
         "path rio/greeting",
-        "resin e132424d71e0",
+        "resin 02e0c5601d22",
         "price 100 murr",
-        "receipt 1c8546c14e86",
+        "receipt 1c4c8f3e9e13",
         "fold green",
     };
     assert(lines_equal(&golden, frame));
@@ -4247,7 +4247,7 @@ fn run_mandi_floor_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
         "mandi floor view",
         "vessel 675cd344edbf",
         "price 25 murr",
-        "receipt a8e89899c996",
+        "receipt bfe54fb892b8",
         "fold green",
     };
     assert(lines_equal(&golden, frame));
@@ -4405,7 +4405,7 @@ fn run_mandi_settle_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
 
     // Golden prefixes from live settle path (listing receipt known; payment from payment_digest).
     assert(std.mem.eql(u8, frame[0].text, "mandi settle view"));
-    assert(std.mem.eql(u8, frame[1].text, "listing a8e89899c996"));
+    assert(std.mem.eql(u8, frame[1].text, "listing bfe54fb892b8"));
     assert(std.mem.eql(u8, frame[2].text, "price 25 murr"));
     assert(std.mem.startsWith(u8, frame[3].text, "payment "));
     assert(frame[3].text.len == "payment ".len + 12);
@@ -4539,7 +4539,7 @@ fn run_steward_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     const golden = [_][]const u8{
         "commerce steward view",
         "listed 25 murr",
-        "listing a8e89899c996",
+        "listing bfe54fb892b8",
         "settled",
         "receipt mandi:vessel-sale",
         "cash 825",
@@ -4612,7 +4612,7 @@ fn run_steward_sight_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     const golden = [_][]const u8{
         "commerce steward sight",
         "listed 25 murr",
-        "listing a8e89899c996",
+        "listing bfe54fb892b8",
         "settled · receipt mandi:vessel-sale",
         "cash 825 · conservation 0 · pnl 825",
         "journal entries 3",
@@ -4766,7 +4766,7 @@ fn run_granary_settle_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
 
     // Golden prefixes — listing receipt matches Exchange view; payment from payment_digest.
     assert(std.mem.eql(u8, frame[0].text, "granary settle view"));
-    assert(std.mem.eql(u8, frame[1].text, "listing 1c8546c14e86"));
+    assert(std.mem.eql(u8, frame[1].text, "listing 1c4c8f3e9e13"));
     assert(std.mem.eql(u8, frame[2].text, "price 100 murr"));
     assert(std.mem.startsWith(u8, frame[3].text, "payment "));
     assert(frame[3].text.len == "payment ".len + 12);
@@ -4869,7 +4869,7 @@ fn run_granary_steward_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     const golden = [_][]const u8{
         "granary steward view",
         "listed 100 murr",
-        "listing 1c8546c14e86",
+        "listing 1c4c8f3e9e13",
         "settled",
         "receipt granary:weave-sale",
         "cash 900",
@@ -4941,7 +4941,7 @@ fn run_granary_steward_sight_view_witness(garden: std.mem.Allocator, io: std.Io)
     const golden = [_][]const u8{
         "granary steward sight",
         "listed 100 murr",
-        "listing 1c8546c14e86",
+        "listing 1c4c8f3e9e13",
         "settled · receipt granary:weave-sale",
         "cash 900 · conservation 0 · pnl 900",
         "journal entries 3",
