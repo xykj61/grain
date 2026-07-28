@@ -7,6 +7,7 @@
 **Ground:** origin/main at seating · Glow Season closed on the workshop lane · g0–g15 bench relays still queued
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260727.215720` — round 1 log accreted; claims unchanged
 
 ---
 
@@ -65,6 +66,10 @@ Lexicon rows and the counsel reply shelf carry the same seats. Collaboration rul
 | Shelf file counts | foundations 34 · context 92 · counsel 166 · active-designing 549 · edu 7 · manual 20 · gratitude 82 · external-research 162 · work-in-progress 48 · glow 625 · tools 858 · rishi 23 · rye 118 · session-logs 2529 · expanding-prompts 159 |
 
 Round 1 opens on Keaton's **kg** (or a wave paste); the season does not invent file edits beyond this seating until a wave runs.
+
+### Round 1 landed (`20260727.215720`)
+
+Arc I **exits early**: foundations/context select empty; **seven** newborn prose paths enrolled **clean** (0 changed); claim_preserve · dated_guard · radiant_lint GREEN (sum=2). Reply: [`replies/20260727-215720_re-radiant-lint-season-r1.md`](replies/20260727-215720_re-radiant-lint-season-r1.md). Next door: Arc II (counsel / active-designing) or the g0–g14 bench hour.
 
 ## Counsel reply topics (shelf)
 

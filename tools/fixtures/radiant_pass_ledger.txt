@@ -1,5 +1,5 @@
 # radiant_pass_ledger.txt — most recent Radiant pass stamp per path
-# Pool: 1,198 rows · campaign STOPPED 20260725.114400 · passes ON-TOUCH ONLY · select disabled
+# Pool: living count · campaign STOPPED 20260725.114400 · ON-TOUCH + Radiant Lint Season Arc enroll (20260727.213740) · select still finds yonder backlog
 # Format: <relpath><TAB><stamp YYYYMMDD.HHMMSS><TAB><changed|clean|legacy>
 # Waves append or update; oldest untouched first. Scope: tools/fixtures/radiant_pool_scope.md
 # Genre ALL-CLEAN: two full consecutive waves all-clean → wholesale exempt on evidence
@@ -1215,3 +1215,10 @@ work-in-progress/TASKS.md	20260725.112715	clean
 work-in-progress/ready-to-ask-claude.md	20260725.112615	clean
 work-in-progress/yonder/20260620-155342_style-audit.md	20260725.110740	clean
 work-in-progress/yonder/20260621-032327_strengthening-width-crosswalk.md	20260725.110740	clean
+context/BREACH.md	20260727.215720	clean
+context/specs/20260725-185041_grain-umbrella-supersedes-glow-os.md	20260727.215720	clean
+foundations/20260726-020537_the-breach.md	20260727.215720	clean
+foundations/20260726-020607_output-over-activity.md	20260727.215720	clean
+foundations/20260727-065835_the-verse.md	20260727.215720	clean
+foundations/20260727-113304_the-merit-ledger.md	20260727.215720	clean
+foundations/20260727-144447_seva-the-vane-the-fund-and-the-daily-service.md	20260727.215720	clean
