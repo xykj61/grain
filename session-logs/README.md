@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.160951` — [MUR Season u78 fascia prune yonder class-A paper](20260728-160951_mur-season-u78-fascia-prune-yonder-class-a-paper.bron) — inference/bench/grep/ojjo · Class-A paper · u79 next
 - `20260728.160618` — [MUR Season u77 fascia prune record yonder](20260728-160618_mur-season-u77-fascia-prune-record-yonder.bron) — firehose · rhyz · realidream-lane · archiving · u78 next
 - `20260728.160355` — [MUR Season u76 fascia prune landed yonder](20260728-160355_mur-season-u76-fascia-prune-landed-yonder.bron) — dimeroll3 · realidream · zip58 · Twin · u77 next
 - `20260728.160144` — [MUR Season u75 fascia prune apply yonder](20260728-160144_mur-season-u75-fascia-prune-apply-yonder.bron) — apply/oal3/dimeroll lap1 yonder · u76 next

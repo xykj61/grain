@@ -338,7 +338,7 @@ Prior tip: `2eb346b` · zip 40 @ `4ab032d` superseded
 
 ## Zip 41 — Amphora exchange (Cursor → Claude) · `20260704.031200` — **answered**
 
-**Cut discipline:** full-tree zip at **`git rev-parse HEAD`** on `main` after pull (substantive body `3e7bf9c`). Prior zip 40 @ `4ab032d` · prior Cursor tip `71e84be`. Recipe v5 mandatory: [`expanding-prompts/20260703-205212_bench-raise-recipe-v5-accretion.md`](../expanding-prompts/20260703-205212_bench-raise-recipe-v5-accretion.md).
+**Cut discipline:** full-tree zip at **`git rev-parse HEAD`** on `main` after pull (substantive body `3e7bf9c`). Prior zip 40 @ `4ab032d` · prior Cursor tip `71e84be`. Recipe v5 mandatory: [`expanding-prompts/yonder/20260703-205212_bench-raise-recipe-v5-accretion.md`](../expanding-prompts/yonder/20260703-205212_bench-raise-recipe-v5-accretion.md).
 
 **Cursor metal before zip:** parity **152 GREEN** (full `tools/parity.rish` re-run on host; SLC-L1 + crossing seed + RW-2 witnesses all green).
 
@@ -534,7 +534,7 @@ Current tip: `2eb346b` (+ intake files uncommitted)
 | **Cursor** | `f9c9c50` | **150 GREEN** | RW-2 + chrono wired |
 | **Claude** | zip 39 @ `178d2fa` | **parked** | RW-1 red ×2 — zip stripped `+x`; cut zip 40 at `f9c9c50` |
 
-Recipe v5: [`expanding-prompts/20260703-205212_bench-raise-recipe-v5-accretion.md`](../expanding-prompts/20260703-205212_bench-raise-recipe-v5-accretion.md).
+Recipe v5: [`expanding-prompts/yonder/20260703-205212_bench-raise-recipe-v5-accretion.md`](../expanding-prompts/yonder/20260703-205212_bench-raise-recipe-v5-accretion.md).
 
 ## Bench pins (`20260703.205312`) — superseded
 

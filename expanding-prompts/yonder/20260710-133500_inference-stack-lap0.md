@@ -2,7 +2,7 @@
 
 **Stamp:** `20260710.133500`
 **Owner:** Cursor · Rio 3
-**Ground:** hammock [`../active-designing/20260710-133500_inference-stack-lap0-hammock.md`](../active-designing/20260710-133500_inference-stack-lap0-hammock.md)
+**Ground:** hammock [`../active-designing/20260710-133500_inference-stack-lap0-hammock.md`](../../active-designing/20260710-133500_inference-stack-lap0-hammock.md)
 
 ## Steps (witness-first)
 

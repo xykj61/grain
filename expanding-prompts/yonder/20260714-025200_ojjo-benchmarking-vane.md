@@ -13,9 +13,9 @@ Propose a new O-vane, **Ojjo** (a palindrome), a TAME-guidance safety/performanc
 
 ## Done This Pass (design, gratitude, name)
 
-- **Gratitude** — [`../gratitude/MeasureWhatMatters.md`](../gratitude/MeasureWhatMatters.md): Doerr's *Measure What Matters* and Grove's *High Output Management*, IP-safe principles summaries (measure output not activity; name the objective before the metric; a few honest, transparent measures), grounding Ojjo.
-- **Design** — [`../external-research/20260714-025200_ojjo-benchmarking-vane-design.md`](../external-research/20260714-025200_ojjo-benchmarking-vane-design.md): what Ojjo is, the parity claim (correctness first, performance second), what it measures and with whose clock, the four teachers, an honest opinion (like it; build correctness-first; timer as a host seam; guard against Goodhart), and open questions.
-- **Name** — added to [`../context/specs/20260713-235600_names-awaiting-confirmation.md`](../context/specs/20260713-235600_names-awaiting-confirmation.md) as the O-vane, awaiting confirm.
+- **Gratitude** — [`../gratitude/MeasureWhatMatters.md`](../../gratitude/MeasureWhatMatters.md): Doerr's *Measure What Matters* and Grove's *High Output Management*, IP-safe principles summaries (measure output not activity; name the objective before the metric; a few honest, transparent measures), grounding Ojjo.
+- **Design** — [`../external-research/20260714-025200_ojjo-benchmarking-vane-design.md`](../../external-research/20260714-025200_ojjo-benchmarking-vane-design.md): what Ojjo is, the parity claim (correctness first, performance second), what it measures and with whose clock, the four teachers, an honest opinion (like it; build correctness-first; timer as a host seam; guard against Goodhart), and open questions.
+- **Name** — added to [`../context/specs/20260713-235600_names-awaiting-confirmation.md`](../../context/specs/20260713-235600_names-awaiting-confirmation.md) as the O-vane, awaiting confirm.
 
 ## The Build Ladder (when Glow can run a program)
 
