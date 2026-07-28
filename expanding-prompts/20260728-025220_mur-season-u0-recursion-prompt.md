@@ -1,7 +1,8 @@
 # MUR Season — u0 Recursion Prompt (printout · all scopes kept)
 
-**Stamp:** `20260728.025220` · Radiant pass `20260728.062656`  
+**Stamp:** `20260728.025220` · Radiant pass `20260728.063003`  
 **Use:** paste the fenced block as the next counsel/bench session opener.  
+Radiant pass `20260728.063003` — u65 check-in · queue empty · u66 next  
 Radiant pass `20260728.062656` — u64 check-in · unify queue empty · u65 next  
 Radiant pass `20260728.062451` — u63 unify choir GREEN · design 0–5 done · u64 next  
 Radiant pass `20260728.062201` — u62 murr:book-root aliases · living wov:* held · u63 next  
@@ -93,7 +94,7 @@ INNERMOST SCOPE (this season — walk here):
   Lexicon: scope·outer·inner·innermost·core·quint · MUR · Murr · retired Mala/MALA · Gren living.
   Prin: rishi/bin/rishi run tools/prin.rish scope
   gen_murr GREEN · deploy RED; gen_gren GREEN (core closed door); gen_mala ABSENT.
-  u0–u64 COMPLETE · unify design 0–5 GREEN · check-in seated · u65 doors/check-in next.
+  u0–u65 COMPLETE · unify design 0–5 GREEN · check-in seated · u66 doors/check-in next.
   TOP PRIORITY: rename overwrite everywhere Mala/MALA → Murr/MUR (breach approved seated).
   Fascia shred still needs separate circled yes. WOV retire roadmap last.
   Wave map: counsel/20260728-044738_mur-season-u6-tool-module-wave-map.md
@@ -133,6 +134,7 @@ INNERMOST SCOPE (this season — walk here):
   Exit names: counsel/20260728-062201_mur-season-u62-exit-honesty-names.md
   Unify choir: counsel/20260728-062451_mur-season-u63-wov-unify-choir.md
   Check-in u64: counsel/20260728-062656_mur-season-check-in-u64.md
+  Check-in u65: counsel/20260728-063003_mur-season-check-in-u65.md
   Living pin: tools/fixtures/prin_scope.sh innermost waymark kept current.
   Rename HARDENED; design 0–5 GREEN; queue empty; keep-both; book-root aliases; wov:* wire; no WOV delete.
   Kamala/Mala gratitude = historical; living Aries = Murr·Kyler.
@@ -145,18 +147,18 @@ LEXICON rows MUR/Murr/innermost · Gren charter (CLOSED) · Inner Scope + Fascia
 Companions: newest quin-workshop pair if attached; else verify origin/main nib.
 
 first duties: bootstrap or verify · state the nib · prin scope ·
-run gen_murr (GREEN; deploy RED) · report · then walk u64 from the charter:
+run gen_murr (GREEN; deploy RED) · report · then walk u66 from the charter:
   affirm outer · inner pauses · affirm core+quint CLOSED · affirm MUR rename spine ·
   affirm Kyler · DJINN · WOV-last · affirm rename-overwrite breach approved ·
-  affirm unify design 0–5 GREEN · residual/check-in · no WOV delete · 
+  affirm unify design 0–5 GREEN · doors named · no WOV delete · 
   no live fascia shred without prin rish breach yes now + circled shred scope;
   no live Sui deploy · no wallet · no gas · no private key in tree;
   no whole-tree silent sed — waves with witnesses only.
 
-waymark: u63 complete, u64 next
+waymark: u65 complete, u66 next
 nib <origin/main short nib>
 bench report (verbatim, if any): <REPORT/STOP — or "none">
-scope: outer=paused(m8/m9) inner=paused(i6/i7) innermost=open(u64)
+scope: outer=paused(m8/m9) inner=paused(i6/i7) innermost=open(u66)
   core=closed(handed_back) quint=closed(handed_back) geode=prep(d0)
 breach scope circle: rename_overwrite=approved A= A+C= all= shred=
 words seated (blank = held whole): season_name= choir= LICENSE_WORD=

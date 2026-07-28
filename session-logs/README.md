@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.063003` — [MUR Season check-in at u65](20260728-063003_mur-season-check-in-u65.bron) — queue empty · doors named · u66 next
 - `20260728.062656` — [MUR Season check-in at u64](20260728-062656_mur-season-check-in-u64.bron) — unify queue empty · doors named · u65 next
 - `20260728.062451` — [MUR Season u63 WOV unify choir](20260728-062451_mur-season-u63-wov-unify-choir.bron) — murr+wov GREEN · design 0–5 done · u64 next
 - `20260728.062201` — [MUR Season u62 exit honesty names](20260728-062201_mur-season-u62-exit-honesty-names.bron) — book-root aliases · wov:* held · u63 next

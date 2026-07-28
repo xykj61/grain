@@ -1,0 +1,15 @@
+format session-log-v1
+stamp 20260728.063003
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title MUR Season check-in at u65
+prompt check in
+think Affirm explicit check-in ask after empty-queue report.
+think Re-run gen_murr fund prep GREEN deploy RED; confirm scopes paused/closed.
+think Seat check-in counsel naming doors without urging.
+obs Ungated unify design queue still empty; dual-accept and retirement held.
+file counsel/20260728-063003_mur-season-check-in-u65.md check-in seat
+file tools/fixtures/prin_scope.sh waymark u65/u66
+recommend check-in doors named — dual-accept geode return or kg if named
