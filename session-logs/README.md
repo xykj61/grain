@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260727.220628` — [Radiant Lint Season r4 · Arc II wave C](20260727-220628_radiant-lint-season-r4.bron) — 50 clean · ledger 1355
 - `20260727.220418` — [Radiant Lint Season r3 · Arc II wave B](20260727-220418_radiant-lint-season-r3.bron) — 49 clean · 1 changed · ledger 1305
 - `20260727.220237` — [Radiant Lint Season r2 · Arc II 47 clean 3 changed](20260727-220237_radiant-lint-season-r2.bron) — ledger 1255
 - `20260727.215753` — [Radiant Lint Season r1 · Arc I enroll seven clean](20260727-215753_radiant-lint-season-r1.bron) — 7 clean · Arc I exit

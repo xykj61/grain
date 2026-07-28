@@ -7,6 +7,7 @@
 **Ground:** origin/main at seating · Glow Season closed on the workshop lane · g0–g15 bench relays still queued
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260727.220628` — round 4 log accreted; claims unchanged
 Radiant pass `20260727.220418` — round 3 log accreted; claims unchanged
 Radiant pass `20260727.215720` — round 1 log accreted; claims unchanged
 
@@ -79,6 +80,11 @@ Arc II wave A: **fifty** tracked `active-designing/` paths — **47 clean · 3 c
 ### Round 3 landed (`20260727.220418`)
 
 Arc II wave B: **fifty** tracked `active-designing/yonder/` paths — **49 clean · 1 changed** (bare `but` → yet). Ledger **1305**. Reply: [`replies/20260727-220418_re-radiant-lint-season-r3.md`](replies/20260727-220418_re-radiant-lint-season-r3.md). Next door: Arc II wave C, or the g0–g14 bench hour.
+
+### Round 4 landed (`20260727.220628`)
+
+Arc II wave C: **fifty** tracked `active-designing/yonder/` paths — **50 clean · 0 changed**. Ledger **1355**. Reply: [`replies/20260727-220628_re-radiant-lint-season-r4.md`](replies/20260727-220628_re-radiant-lint-season-r4.md). Next door: Arc II wave D, or the g0–g14 bench hour.
+
 
 
 ## Counsel reply topics (shelf)
