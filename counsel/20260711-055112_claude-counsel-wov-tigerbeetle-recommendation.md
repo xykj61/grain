@@ -31,7 +31,7 @@ TigerBeetle's design lineage stays exactly as valuable as it always was — its 
 
 ## The Concrete Next Step
 
-Mark `tools/wov_tb_host.rish`, `tools/wov_tb_ensure_binary.sh`, `tools/wov_tb_pin.rish`, and `tools/wov_tb_repl_lab.sh` superseded, kept as dated record, never deleted. Remove their two stanzas from `parity.rish` — the `wov_tb_pin` and `wov_tb_host` witnesses sit there today (lines 316 and 321), which is precisely what makes parity fail on any bench lacking the external TigerBeetle binary; removing them resolves that environment-dependence cleanly, since those stanzas were only ever red for want of a dependency this direction no longer wants. WOV's own parity coverage stays intact through `wov_exit_honesty` and `wov_dual_monarch`, both of which are pure Rye and both of which stay GREEN. The result is a WOV that is honestly, fully self-contained, with no witnessed capability lost.
+Mark `tools/wov_tb_host.rish`, `tools/wov_tb_ensure_binary.sh`, `tools/wov_tb_pin.rish`, and `tools/wov_tb_repl_lab.sh` retired, kept as dated record, never deleted. Remove their two stanzas from `parity.rish` — the `wov_tb_pin` and `wov_tb_host` witnesses sit there today (lines 316 and 321), which is precisely what makes parity fail on any bench lacking the external TigerBeetle binary; removing them resolves that environment-dependence cleanly, since those stanzas were only ever red for want of a dependency this direction no longer wants. WOV's own parity coverage stays intact through `wov_exit_honesty` and `wov_dual_monarch`, both of which are pure Rye and both of which stay GREEN. The result is a WOV that is honestly, fully self-contained, with no witnessed capability lost.
 
 ---
 
