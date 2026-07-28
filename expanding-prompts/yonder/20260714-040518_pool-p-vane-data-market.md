@@ -15,8 +15,8 @@ Propose **Pool** as the P-vane — but only after searching the whole `old/` Urb
 ## Done This Pass (search, design, name, opinion)
 
 - **Collision search** — the whole `old/` tree checked; **zero "pool" in the Urbit kernel** (Arvo/Zuse/Hoon/Lull/all ten vanes). Every other use is incidental (Azimuth bridge `pools()`, a legacy Landscape app, a BIP39 wordlist word, nockchain's separate codegen mold, docs prose). **Nothing to rename** — Pool is a free, additive vane name. Full findings in the design doc.
-- **Design** — [`../external-research/20260714-035600_pool-p-vane-content-data-market.md`](../external-research/20260714-035600_pool-p-vane-content-data-market.md): Pool as Glow's Gall-role application vane, headlined as the content-creation computational data market; the secular Acme-generic restatement of the foundations; the composition table (MUR · Neth · Granary · Mandi · Open Asks · Comlink · Sigma · Kumara · Dimeroll; was MALA); the honest opinion (like it; frame as the application vane whose flagship is the market; lead with the shared-resource meaning to resolve the common-word ambiguity).
-- **Name** — added to [`../context/specs/20260713-235600_names-awaiting-confirmation.md`](../context/specs/20260713-235600_names-awaiting-confirmation.md) and `../context/LEXICON.md`, awaiting confirm.
+- **Design** — [`../external-research/20260714-035600_pool-p-vane-content-data-market.md`](../../external-research/20260714-035600_pool-p-vane-content-data-market.md): Pool as Glow's Gall-role application vane, headlined as the content-creation computational data market; the secular Acme-generic restatement of the foundations; the composition table (MUR · Neth · Granary · Mandi · Open Asks · Comlink · Sigma · Kumara · Dimeroll; was MALA); the honest opinion (like it; frame as the application vane whose flagship is the market; lead with the shared-resource meaning to resolve the common-word ambiguity).
+- **Name** — added to [`../context/specs/20260713-235600_names-awaiting-confirmation.md`](../../context/specs/20260713-235600_names-awaiting-confirmation.md) and `../context/LEXICON.md`, awaiting confirm.
 
 ## The Secular Foundations, in One Breath
 
