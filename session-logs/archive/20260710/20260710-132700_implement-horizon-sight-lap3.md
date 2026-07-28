@@ -30,7 +30,7 @@ Implement the vision (from horizon essay `131956`).
 | `tools/parity.rish` | Sight stanza → **210** |
 | `tools/compass_rose.rish` | Lap-3 packet |
 | `active-designing/20260710-132548_dimeroll-lap3-sight-view.md` | Hammock |
-| `expanding-prompts/20260710-132548_dimeroll-lap3-sight-view.md` | Prompt |
+| `expanding-prompts/yonder/20260710-132548_dimeroll-lap3-sight-view.md` | Prompt |
 | TASKS · ROADMAP · dimeroll README · indexes | Landed lap 3 |
 
 ## Next-step recommendation

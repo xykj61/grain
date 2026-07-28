@@ -10,7 +10,7 @@
 
 Kaeden asked for a handoff packet for Claude. Rio drafted the full summary (commits `eb2e062`→`f2bbddf`, parity **166**, open questions A1–G). Kaeden corrected zip numbering: next cut is **zip 58** (not 43); last zip in repo logs was **52** @ OA-L3 parity 158.
 
-Seated [`expanding-prompts/20260706-190644_claude-zip58-ns-l3-handoff.md`](../expanding-prompts/20260706-190644_claude-zip58-ns-l3-handoff.md) and refreshed [`work-in-progress/ready-to-ask-claude.md`](../work-in-progress/ready-to-ask-claude.md).
+Seated [`expanding-prompts/yonder/20260706-190644_claude-zip58-ns-l3-handoff.md`](../expanding-prompts/yonder/20260706-190644_claude-zip58-ns-l3-handoff.md) and refreshed [`work-in-progress/ready-to-ask-claude.md`](../work-in-progress/ready-to-ask-claude.md).
 
 ## Observations
 
@@ -19,7 +19,7 @@ Seated [`expanding-prompts/20260706-190644_claude-zip58-ns-l3-handoff.md`](../ex
 
 ## Files
 
-- `expanding-prompts/20260706-190644_claude-zip58-ns-l3-handoff.md` — Claude sitting prompt
+- `expanding-prompts/yonder/20260706-190644_claude-zip58-ns-l3-handoff.md` — Claude sitting prompt
 - `work-in-progress/ready-to-ask-claude.md` — zip 58 queued
 - `session-logs/20260706-190644_zip58-cut.md` — archive cut record (same commit)
 
