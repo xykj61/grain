@@ -7,7 +7,8 @@
 **Ground:** Granary seating [`20260710-163043_granary-name-seated.md`](20260710-163043_granary-name-seated.md) · Mandi settle sibling [`20260710-171202_mandi-listing-settle-seated.md`](20260710-171202_mandi-listing-settle-seated.md) · commerce plainly [`../../external-research/20260710-171707_granary-mandi-commerce-plainly.md`](../../external-research/20260710-171707_granary-mandi-commerce-plainly.md)
 
 *Written by Kaeden and Rio 3.*
-Radiant pass `20260725.035955`
+Radiant pass `20260725.035955`  
+Radiant pass `20260728.044002` — living L1 rename-forward: **MUR** (was MALA)
 
 ---
 
@@ -16,13 +17,13 @@ Radiant pass `20260725.035955`
 A Granary Exchange listing may close with a signed `weave-settle-v1` slip that binds:
 
 1. **listing_receipt** — digest of the identity-free weave listing body
-2. **payment** — digest of `weave-payment-v1` (amount + MALA send digest + WOV transfer digest)
+2. **payment** — digest of `weave-payment-v1` (amount + MUR send digest + WOV transfer digest; was MALA)
 
 Kumara seed `0x69`. No buyer/seller fields. Same unwelcome bolt as Mandi vessel settle. Live TigerBeetle waits its own gate.
 
 ## First lap (landed `20260710.172625`)
 
-In-process only: Exchange listing at 100 mala → MALA mint/send fold + WOV mint/transfer → settle slip. Module `granary/weave_settle_core.rye`; witness `tools/granary_weave_settle.rish`; parity **243**.
+In-process only: Exchange listing at 100 mur (was mala units) → MUR mint/send fold + WOV mint/transfer → settle slip. Module `granary/weave_settle_core.rye`; witness `tools/granary_weave_settle.rish`; parity **243**.
 
 ## Settle view (landed `20260710.173353`)
 

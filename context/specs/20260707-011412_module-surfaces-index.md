@@ -7,7 +7,8 @@
 **Register:** Reference — the looking-up room; meanings in our own words, one line each
 
 *Written by Kaeden and Rio 3.*
-Radiant pass `20260725.035645`
+Radiant pass `20260725.035645`  
+Radiant pass `20260728.044002` — OA-L4 / Mycelium → MUR (was MALA)
 
 ---
 
@@ -40,7 +41,7 @@ This index answers one question fast: **what exists, where does it live, and wha
 | **open_asks** | The closed ask loop: post → apply → accept → complete → verify | `linengrow/open_asks.rye` | OA-L1 parity **156** |
 | — cross-party delivery | Request and application hops over both wires | `open_asks_delivery.rye` | OA-L2 parity **157** |
 | — escrow (Nyasa) | Hold at acceptance, release at completion; conservation and no-double paths proven; wire lap 2 | (aspect of open_asks) | OA-L3 parity **158** |
-| **OA-L4 / MALA** | Reputation-as-fold lap 1 landed parity **167**; MALA graduates at escrow's second consumer | `linengrow/open_asks.rye` | `tools/open_asks_lap4.rish`; ruling `20260706.232812` |
+| **OA-L4 / MUR** | Reputation-as-fold lap 1 landed parity **167**; MUR (was MALA) graduates at escrow's second consumer | `linengrow/open_asks.rye` | `tools/open_asks_lap4.rish`; ruling `20260706.232812` |
 | **Settlement rail** | Sui seated, held pending two-lane witness; SLC-L3's own gate | — | verdict `20260706-005512` |
 
 ## Ground — Shared Discipline
@@ -54,7 +55,7 @@ This index answers one question fast: **what exists, where does it live, and wha
 
 ## Named, Not Yet Built (honest markers)
 
-**Brix** (composer; bricks/courses/bonds seated) · **Tablecloth** (Brix-facing application store — separate from **Tablecloth query** at parity 175; reconciled `20260707.011812`) · **Bron** (`.bron` notation; role open) · **Puddle** (sandboxed containers; first lap = snapshot export/verify/restore) · **Mycelium** (ordering aspect, gated to MALA M4) · **Dexter / Kumara-as-module** (graduation triggers recorded) · **I2 snapshot export** — lap 1 seated [`20260707-021512_snapshot-export-lap1.md`](20260707-021512_snapshot-export-lap1.md); lap 2 horizon bundles [`20260707-024712_snapshot-export-lap2.md`](20260707-024712_snapshot-export-lap2.md); weave/Brix slices open.
+**Brix** (composer; bricks/courses/bonds seated) · **Tablecloth** (Brix-facing application store — separate from **Tablecloth query** at parity 175; reconciled `20260707.011812`) · **Bron** (`.bron` notation; role open) · **Puddle** (sandboxed containers; first lap = snapshot export/verify/restore) · **Mycelium** (ordering aspect, gated to MUR M4; was MALA) · **Dexter / Kumara-as-module** (graduation triggers recorded) · **I2 snapshot export** — lap 1 seated [`20260707-021512_snapshot-export-lap1.md`](20260707-021512_snapshot-export-lap1.md); lap 2 horizon bundles [`20260707-024712_snapshot-export-lap2.md`](20260707-024712_snapshot-export-lap2.md); weave/Brix slices open.
 
 ---
 
