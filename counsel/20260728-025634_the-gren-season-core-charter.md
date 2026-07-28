@@ -7,7 +7,8 @@
 **Ground:** origin/main `d51e6b84b0` (pre-send)  
 **Rename spine (approved):** **Djin / `%djin` / djin.fund → Gren / `%gren` / gren.fund** — revert the Djin name choice; Twah stays retired history  
 **Within:** the **MUR Chapter** (innermost · u0–u127) — MUR pauses at **u0** while core walks  
-**Status:** **OPEN** · lean-16 **g0–g15 CLOSED** `20260728.042644` · await `extend_or_return=`  
+**Status:** **CLOSED** · lean-16 complete · handed back `extend_or_return=return_mur_u0` `20260728.043220`  
+Radiant pass `20260728.043220` — handback return_mur_u0 · core CLOSED · MUR u0 opens  
 Radiant pass `20260728.042644` — g15 second horizon warn · lean-16 CLOSED · blank held  
 Radiant pass `20260728.042314` — g14 first horizon warn · extend 32 · 64 · or return MUR u0 · blank held  
 Radiant pass `20260728.042216` — g13 second harden · harden block CLOSED · gen trio GREEN · deploy RED  
@@ -35,11 +36,11 @@ Radiant pass `20260728.035441` — handback from quint · g0 bow · gen_gren · 
 |-------|--------|----------|----------|
 | **outer** | Constellation | m8 / m9 next | **PAUSED** |
 | **inner** | Inner Scope | i6 / i7 next · fascia | **PAUSED** |
-| **innermost** | MUR Chapter | **u0** (not yet bowed) | **PAUSED** |
-| **core** | **Gren Chapter** | lean-16 **CLOSED** · await extend/return | **OPEN** |
+| **innermost** | MUR Chapter | **u0** bowed · **u1** next | **OPEN** |
+| **core** | **Gren Chapter** | lean-16 CLOSED · handed back | **CLOSED** |
 | **quint** | Keeh Chapter | lean-16 CLOSED · handed back | **CLOSED** |
 
-Handback from quint **seated**. Later: core → innermost **u0** (unless core extend). Inner i7 and outer m9 still wait above.
+Handback from core **seated** (`return_mur_u0`). Inner i7 and outer m9 still wait above.
 
 ## What this season is for
 
@@ -64,7 +65,7 @@ Handback from quint **seated**. Later: core → innermost **u0** (unless core ex
 | Living overwrite | **g2–g3** CLEARED · **g4–g7** spot-check CLOSED | empty×4 · dated Djin hours kept |
 | Residual sweep | **g8–g11** CLOSED | Bare living ads empty×4 · rename-forward history kept |
 | Harden | **g12–g13** CLOSED | Choir lean held · gen trio GREEN · DJINN on Murr · deploy RED |
-| Horizon · close | **g14–g15** CLOSED | lean-16 full · **Warn** twice · blank held for Keaton |
+| Horizon · close | **g14–g15** CLOSED | lean-16 full · warn×2 · **return_mur_u0** seated |
 
 ## Hard lines
 
