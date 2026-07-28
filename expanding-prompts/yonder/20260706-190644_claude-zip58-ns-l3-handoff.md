@@ -2,15 +2,15 @@
 
 **Stamp:** `20260706.190644`
 **Language:** EN · **Style:** Radiant (`context/RADIANT_STYLE.md`) · **Lens:** TAME · TWO_ROOMS
-**Opens when:** Kaeden relayed zip **58** to Claude — **answered** at ruling [`20260706-232812`](../counsel/20260706-232812_claude-ruling-oal4-mala-edit5-and-horizons.md)
-**Ground:** [`work-in-progress/ready-to-ask-claude.md`](../work-in-progress/ready-to-ask-claude.md) · [`active-designing/20260706-023912_the-referential-namespace.md`](../active-designing/20260706-023912_the-referential-namespace.md) · [`active-designing/20260706-185112_the-witness-bolt.md`](../active-designing/20260706-185112_the-witness-bolt.md) · [`foundations/20260706-185112_follow-our-compass.md`](../foundations/20260706-185112_follow-our-compass.md) · [`session-logs/archive/20260706/20260706-190312_claude-handoff-ns-l3-complete.md`](../session-logs/archive/20260706/20260706-190312_claude-handoff-ns-l3-complete.md)
+**Opens when:** Kaeden relayed zip **58** to Claude — **answered** at ruling [`20260706-232812`](../../counsel/20260706-232812_claude-ruling-oal4-mala-edit5-and-horizons.md)
+**Ground:** [`work-in-progress/ready-to-ask-claude.md`](../../work-in-progress/ready-to-ask-claude.md) · [`active-designing/20260706-023912_the-referential-namespace.md`](../../active-designing/20260706-023912_the-referential-namespace.md) · [`active-designing/20260706-185112_the-witness-bolt.md`](../../active-designing/20260706-185112_the-witness-bolt.md) · [`foundations/20260706-185112_follow-our-compass.md`](../../foundations/20260706-185112_follow-our-compass.md) · [`session-logs/archive/20260706/20260706-190312_claude-handoff-ns-l3-complete.md`](../../session-logs/archive/20260706/20260706-190312_claude-handoff-ns-l3-complete.md)
 Radiant pass `20260728.045124` — living rename-forward: **MUR** (was MALA) in open-ask language
 
 *Written by Rio 3 for Kaeden → Claude.*
 
 ## Ruling received (`20260706.232812`)
 
-Full counsel: [`counsel/20260706-232812_claude-ruling-oal4-mala-edit5-and-horizons.md`](../counsel/20260706-232812_claude-ruling-oal4-mala-edit5-and-horizons.md). Parity unchanged. TASKS phrase deltas await Kaeden word.
+Full counsel: [`counsel/20260706-232812_claude-ruling-oal4-mala-edit5-and-horizons.md`](../../counsel/20260706-232812_claude-ruling-oal4-mala-edit5-and-horizons.md). Parity unchanged. TASKS phrase deltas await Kaeden word.
 
 ---
 
@@ -60,7 +60,7 @@ Raise from zip 58, run `rishi/bin/rishi run tools/parity.rish` once, report the 
 
 ### 1 — Next climb: OA-L4 vs MUR (was MALA) (blocking)
 
-[`work-in-progress/TASKS.md`](../work-in-progress/TASKS.md): *check in with Claude before either.*
+[`work-in-progress/TASKS.md`](../../work-in-progress/TASKS.md): *check in with Claude before either.*
 
 | Option | Seam |
 |--------|------|
@@ -79,12 +79,12 @@ Prioritize among: two-way sync/subscribe · marks-on-read · Tablecloth query ·
 
 ### 4 — Foundations
 
-- Affirm or refine [`foundations/20260706-022912_the-wire-serves-the-fold.md`](../foundations/20260706-022912_the-wire-serves-the-fold.md) — **landed** at ruling `20260706.232812` (handoff text kept for archive; no longer an open ask).
+- Affirm or refine [`foundations/20260706-022912_the-wire-serves-the-fold.md`](../../foundations/20260706-022912_the-wire-serves-the-fold.md) — **landed** at ruling `20260706.232812` (handoff text kept for archive; no longer an open ask).
 - Affirm compass brief — **landed** `20260706.185512 UDT`.
 
 ### 5 — Settlement rail
 
-[`external-research/20260706-005512_settlement-seat-verification-and-verdict.md`](../external-research/20260706-005512_settlement-seat-verification-and-verdict.md) — relationship to OA-L4 and batch toll.
+[`external-research/20260706-005512_settlement-seat-verification-and-verdict.md`](../../external-research/20260706-005512_settlement-seat-verification-and-verdict.md) — relationship to OA-L4 and batch toll.
 
 ---
 
