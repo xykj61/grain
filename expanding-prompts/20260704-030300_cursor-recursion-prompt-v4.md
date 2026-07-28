@@ -56,7 +56,7 @@ HARD BOUNDS:
 
 STOP-AND-PARK to RTAC on:
   Kaeden-tagged path · parity red twice on one witness · module-home or seam decision ·
-  keys/custody/amber/MALA beyond boxed rungs · any round wanting a new name.
+  keys/custody/amber/MUR (was MALA) beyond boxed rungs · any round wanting a new name.
 
 Every round: Rio 3 TAME-guided Radiant summary + "Questions for Kaeden and Claude".
 When journey's pause after work: HOLD — journey's pause is a question, never permission to go off-route.

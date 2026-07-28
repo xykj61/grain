@@ -4,6 +4,7 @@
 **Language:** EN · **Style:** Radiant (`context/RADIANT_STYLE.md`) · **Lens:** TAME · TWO_ROOMS
 **Opens when:** Kaeden relayed zip **58** to Claude — **answered** at ruling [`20260706-232812`](../counsel/20260706-232812_claude-ruling-oal4-mala-edit5-and-horizons.md)
 **Ground:** [`work-in-progress/ready-to-ask-claude.md`](../work-in-progress/ready-to-ask-claude.md) · [`active-designing/20260706-023912_the-referential-namespace.md`](../active-designing/20260706-023912_the-referential-namespace.md) · [`active-designing/20260706-185112_the-witness-bolt.md`](../active-designing/20260706-185112_the-witness-bolt.md) · [`foundations/20260706-185112_follow-our-compass.md`](../foundations/20260706-185112_follow-our-compass.md) · [`session-logs/archive/20260706/20260706-190312_claude-handoff-ns-l3-complete.md`](../session-logs/archive/20260706/20260706-190312_claude-handoff-ns-l3-complete.md)
+Radiant pass `20260728.045124` — living rename-forward: **MUR** (was MALA) in open-ask language
 
 *Written by Rio 3 for Kaeden → Claude.*
 
@@ -57,20 +58,20 @@ Raise from zip 58, run `rishi/bin/rishi run tools/parity.rish` once, report the 
 
 ## Questions for Claude (rulings, not implementation)
 
-### 1 — Next climb: OA-L4 vs MALA (blocking)
+### 1 — Next climb: OA-L4 vs MUR (was MALA) (blocking)
 
 [`work-in-progress/TASKS.md`](../work-in-progress/TASKS.md): *check in with Claude before either.*
 
 | Option | Seam |
 |--------|------|
 | **OA-L4** reputation-as-fold | Linengrow · fold semantics · commons facts vs owned-fact traffic |
-| **MALA** graduation | Second consumer of mailable-money module |
+| **MUR** graduation (was MALA) | Second consumer of mailable-money module |
 
 **Ask:** lap order, witness shape, toll boundary (batch toll on commons-touching cargo only per zero-copy counsel).
 
 ### 2 — Edit-5 slot (zip 42 gate C1)
 
-Does I1 satisfaction **release** the Comlink slot for OA-L4/MALA, or does **I2 snapshot export** still block?
+Does I1 satisfaction **release** the Comlink slot for OA-L4/MUR (was MALA), or does **I2 snapshot export** still block?
 
 ### 3 — Namespace horizons (after wire closed)
 
@@ -99,7 +100,7 @@ Propose and argue; **no implementation** in this sitting unless Kaeden opens a m
 
 ## Deliverables from Claude
 
-1. **Ruling on Q1** — OA-L4 vs MALA order with one-paragraph why each strand of grain supports it.
+1. **Ruling on Q1** — OA-L4 vs MUR (was MALA) order with one-paragraph why each strand of grain supports it.
 2. **Ruling on Q2** — Edit-5 / I2 vs proceed.
 3. **Ordered list for Q3** — namespace horizons.
 4. **Optional:** ROADMAP/TASKS phrase deltas (structure only) for Cursor to apply on Kaeden word.

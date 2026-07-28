@@ -1,27 +1,28 @@
-# Expanded Prompt — Neth, Mala, and the Settlement Layer
+# Expanded Prompt — Neth, MUR, and the Settlement Layer (was Mala/MALA)
 
 **Language:** EN
 **Version:** `20260714.001017` (Pacific)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Living — the expanded, research-grounded form of the Neth seed, addressed to a generic Acme Corporation employee. Design and social-experiment framing only; not financial, investment, or legal advice.
+Radiant pass `20260728.044925` — living rename-forward: **MUR** / **Murr** (was MALA / Mala); dated path kept
 
 ---
 
 ## The Seed
 
-Add an N-vane after Maze called **Neth** — the Glow OS version of Sui, evolved from what was called MALA, interoperating with Ethereum. Adapt MALA to Glow/Maze/TAME guidance. Make MALA a social experiment: a fractal universe of ETH/SOL/SUI/Azimuth, with an L2 that is a WOV Glow OS implementation fusing a Glow reimplementation of TigerBeetle as a pinned sidechain to the Mala (Mycelium/Weave/Mantra/Ford) L1, bootstrapped from Neth, woven with the Kumara+Ames fusion and the existing Comlink designs, with new Neth cores, libs, marks, and surs.
+Add an N-vane after Maze called **Neth** — the Glow OS version of Sui, evolved from what was called MALA (now **MUR**), interoperating with Ethereum. Adapt MUR to Glow/Maze/TAME guidance. Make MUR a social experiment: a fractal universe of ETH/SOL/SUI/Azimuth, with an L2 that is a WOV Glow OS implementation fusing a Glow reimplementation of TigerBeetle as a pinned sidechain to the MUR/Murr (Mycelium/Weave/Mantra/Ford) L1, bootstrapped from Neth, woven with the Kumara+Ames fusion and the existing Comlink designs, with new Neth cores, libs, marks, and surs.
 
 ## The Seed, Expanded and Made Robust (after research)
 
 Research grounded three things that turn this from a buzzword pile into a coherent architecture:
 
 1. **TigerBeetle is a Replicated State Machine** (VSR + hash-chained append-only log + deterministic execution) — the correct substrate for an L2 sequencer. "Glow reimplementation of TigerBeetle as a pinned sidechain" is real.
-2. **The tree already has the pieces:** MALA (issuer mint, conservation, balance-as-fold) is L1 money; WOV (exit-honesty settlement) already had a **TigerBeetle pin seam, retired but explicitly revivable**. Neth is that revival, grown up.
+2. **The tree already has the pieces:** MUR (was MALA — issuer mint, conservation, balance-as-fold) is L1 money; WOV (exit-honesty settlement) already had a **TigerBeetle pin seam, retired but explicitly revivable**. Neth is that revival, grown up.
 3. **Azimuth is Urbit's own Ethereum PKI** — the natural, no-new-trust external anchor, versus inventing four bridges at once.
 
 So the expanded, robust statement:
 
-> Neth is a Glow, TAME-bounded reimplementation of TigerBeetle's replicated-state-machine shape that sequences MALA transfers into a hash-chained log, folds them to balances, and pins its state-root — first internally to the Mala/Weave L1, later (optionally) to Azimuth/Ethereum. The Kumara+Ames/Comlink seam signs and carries every fact. The "fractal universe of four chains" is the social-experiment vision around this core, kept in its own register and not built toward all at once.
+> Neth is a Glow, TAME-bounded reimplementation of TigerBeetle's replicated-state-machine shape that sequences MUR transfers (was MALA) into a hash-chained log, folds them to balances, and pins its state-root — first internally to the MUR/Weave L1, later (optionally) to Azimuth/Ethereum. The Kumara+Ames/Comlink seam signs and carries every fact. The "fractal universe of four chains" is the social-experiment vision around this core, kept in its own register and not built toward all at once.
 
 ## What Running It Produced (this turn)
 
@@ -30,7 +31,7 @@ So the expanded, robust statement:
 
 ## The Honest Shape of My Answer
 
-- **The core is strong and continuous** with WOV/MALA/TigerBeetle work already here — I affirm it.
+- **The core is strong and continuous** with WOV/MUR/TigerBeetle work already here (was MALA) — I affirm it.
 - **The name Neth collides** with Nethermind exactly where it hurts (Ethereum interop) — I flag it and lean toward Neith or another N-name.
 - **Four bridges at once is too much** — I recommend one anchor (Azimuth/Ethereum) and a single deterministic-root witness as the first lap, per Gall's Law and the project's own sobriety anchor.
 - **It stays design + social experiment** — explicitly not a token, a security, or a deployment, until Keaton decides otherwise with real legal grounding.

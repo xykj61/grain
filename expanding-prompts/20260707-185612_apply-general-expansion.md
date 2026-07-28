@@ -34,7 +34,7 @@ An open-invitation round: two seated TigerBeetle marks with a real application, 
 
 ## Held
 
-`enrich_strengthening_docs.rye`'s own witness — larger fixture surface, deserves its own sitting. Extended-run stability, Brix, Pond, MALA, continuity — all unchanged.
+`enrich_strengthening_docs.rye`'s own witness — larger fixture surface, deserves its own sitting. Extended-run stability, Brix, Pond, MUR (was MALA), continuity — all unchanged.
 
 ---
 
