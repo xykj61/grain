@@ -51,7 +51,7 @@ No Amphora shred · no Class A rewrite · no flat living-hold yonder · no Inner
 
 ## Next
 
-**kg u88** — further scan-path paper tidy or check-in (flat shelf is living holds).
+**LANDED u88** — pair-hits clear · fascia 73→86.
 
 ---
 

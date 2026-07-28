@@ -1,7 +1,8 @@
 # MUR Season — u0 Recursion Prompt (printout · all scopes kept)
 
-**Stamp:** `20260728.025220` · Radiant pass `20260728.175928`  
+**Stamp:** `20260728.025220` · Radiant pass `20260728.180319`  
 **Use:** paste the fenced block as the next counsel/bench session opener.  
+Radiant pass `20260728.180319` — u88 pair-hits clear · fascia 86 · shred RED · u89 next  
 Radiant pass `20260728.175928` — u87 paper tidy · fascia 73 · shred RED · u88 next  
 Radiant pass `20260728.175446` — u86 commerce goldens · fascia 66 · shred RED · u87 next  
 Radiant pass `20260728.173732` — u85 over-70 clear · fascia 66 · shred RED · u86 next  
@@ -116,7 +117,7 @@ INNERMOST SCOPE (this season — walk here):
   Lexicon: scope·outer·inner·innermost·core·quint · MUR · Murr · retired Mala/MALA · Gren living.
   Prin: rishi/bin/rishi run tools/prin.rish scope
   gen_murr GREEN · deploy RED; gen_gren GREEN (core closed door); gen_mala ABSENT.
-  u0–u87 COMPLETE · paper tidy · fascia 73 · shred RED · u88 next.
+  u0–u88 COMPLETE · pair-hits clear · fascia 86 · shred RED · u89 next.
   TOP PRIORITY: rename overwrite everywhere Mala/MALA → Murr/MUR (breach approved seated).
   Fascia shred still needs separate circled yes. WOV retire roadmap last.
   Wave map: counsel/20260728-044738_mur-season-u6-tool-module-wave-map.md
@@ -179,6 +180,7 @@ INNERMOST SCOPE (this season — walk here):
   Over-70 clear: counsel/20260728-173732_mur-season-u85-fascia-prune-over70-clear.md
   Commerce goldens: counsel/20260728-175446_mur-season-u86-fascia-prune-commerce-goldens.md
   Paper tidy: counsel/20260728-175928_mur-season-u87-fascia-prune-paper-tidy.md
+  Pair-hits clear: counsel/20260728-180319_mur-season-u88-fascia-prune-pair-hits-clear.md
   Living pin: tools/fixtures/prin_scope.sh innermost waymark kept current.
   Rename HARDENED; fascia prune OPEN; shred RED; living CLEAR; design 0–5 GREEN; no WOV delete.
   Kamala/Mala gratitude = historical; living Aries = Murr·Kyler.

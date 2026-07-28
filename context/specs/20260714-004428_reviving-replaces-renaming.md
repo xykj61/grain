@@ -22,7 +22,7 @@ The naming-decisions spec ([`20260714-002123_naming-decisions-and-role-nesting.m
 - **Reviews stay small and human-checkable** — Keaton's stated optimization goal. The elder never churns; the revival is a fresh, self-contained artifact reviewed on its own merits against the elder's own witnesses.
 - **Nothing breaks** — accrete-never-break, exactly. The elder keeps its name, home, and green witnesses and keeps running until the revival is proven.
 - **Pitches stay legible** — a revival can be pitched to galaxy holders as "our Glow-native Clay," born with that name, with no history of a disruptive rename behind it.
-- **It is already how the project works** — Pond revived ai-jail and superseded it on word; Rye is a thin frontend grown beside Zig's std; Neth revives the retired WOV-TigerBeetle pin. Reviving names a pattern already proven here, and gives it a folder.
+- **It is already how the project works** — Pond revived ai-jail and replaced it on word; Rye is a thin frontend grown beside Zig's std; Neth revives the retired WOV-TigerBeetle pin. Reviving names a pattern already proven here, and gives it a folder.
 
 ## The Relationship of the Three Ideas
 

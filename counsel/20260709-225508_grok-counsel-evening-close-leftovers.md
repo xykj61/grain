@@ -14,7 +14,7 @@ Radiant pass `20260728.050004` — living rename-forward: **MUR** (was MALA)
 
 ## 1. Removal vs Supersede (evening Q1)
 
-**Ruling:** Settlement and chain-read were **deleted** (`152612`), not superseded-in-place. That choice stands.
+**Ruling:** Settlement and chain-read were **deleted** (`152612`), not replaced-in-place. That choice stands.
 
 | Surface | Practice |
 |---------|----------|

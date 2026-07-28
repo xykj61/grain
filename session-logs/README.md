@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.180319` — [MUR Season u88 fascia prune pair-hits clear](20260728-180319_mur-season-u88-fascia-prune-pair-hits-clear.bron) — pair-hits 0 · fascia 86 · u89 next
 - `20260728.175928` — [MUR Season u87 fascia prune paper tidy](20260728-175928_mur-season-u87-fascia-prune-paper-tidy.bron) — paper tidy · fascia 73 · u88 next
 - `20260728.175446` — [MUR Season u86 fascia prune commerce goldens](20260728-175446_mur-season-u86-fascia-prune-commerce-goldens.bron) — commerce GREEN · fascia 66 · u87 next
 - `20260728.173732` — [MUR Season u85 fascia prune over70 clear](20260728-173732_mur-season-u85-fascia-prune-over70-clear.bron) — over70 0 · fascia 66 · u86 next

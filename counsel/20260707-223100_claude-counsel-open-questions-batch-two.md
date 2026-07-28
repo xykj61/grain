@@ -31,7 +31,7 @@ The Open Question conflated two different "Silos": the **retired module name** a
 ### What we do not resurrect
 
 - A distinct **Silo config layer** beside Brix
-- `.silo` project descriptors (superseded by `.brix` + Bron values)
+- `.silo` project descriptors (replaced by `.brix` + Bron values)
 - Nix/infuse as a runtime dependency (LGPL; ideas only per gratitude licenses)
 
 **Bron** carries override *values*; **Brix** applies bonds. See counsel `222500`.

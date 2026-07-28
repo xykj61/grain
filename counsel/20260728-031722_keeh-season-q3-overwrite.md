@@ -32,7 +32,7 @@
 | `docs-geode/**` | crystal + rooms |
 | Lexicon | year · wave · crush · docs-geode · Geode Season |
 | prin_scope | geode · year · wave · crush lines |
-| year Cloud reply `031252` | superseded pointer → `031722` |
+| year Cloud reply `031252` | replaced pointer → `031722` |
 
 ## q4+ lean
 

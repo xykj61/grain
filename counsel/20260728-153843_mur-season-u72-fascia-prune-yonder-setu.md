@@ -15,7 +15,7 @@
 | `…_inner-scope-season-i0-recursion-prompt.md` | archival · Inner PAUSED |
 | `…_gren-season-g0-recursion-prompt.md` | archival · core CLOSED |
 | `…_keeh-season-q0-recursion-prompt.md` | archival · quint CLOSED · sundial default |
-| `…_year-cloud-seat-ios-spinup.md` | consumed · superseded by geode spin-up reply |
+| `…_year-cloud-seat-ios-spinup.md` | consumed · replaced by geode spin-up reply |
 
 Living recursion door stays flat: `expanding-prompts/20260728-025220_mur-season-u0-recursion-prompt.md`. Constellation m0 “active walk” now points at MUR u0 (Gren archival in yonder).
 

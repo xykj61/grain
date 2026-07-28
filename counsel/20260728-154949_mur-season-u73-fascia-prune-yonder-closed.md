@@ -6,7 +6,7 @@
 
 ## Verdict
 
-**Prune wave LANDED.** Four more expanding-prompts leave the flat living shelf for `yonder/`: Tensegral closed pair, Constellation m0 (outer paused), and silo-deepening v1 (superseded by the transcript bench). Living MUR u0 recursion stays flat. Over-70 splits and glow parseInt emit strings held. Shred refuse.
+**Prune wave LANDED.** Four more expanding-prompts leave the flat living shelf for `yonder/`: Tensegral closed pair, Constellation m0 (outer paused), and silo-deepening v1 (replaced by the transcript bench). Living MUR u0 recursion stays flat. Over-70 splits and glow parseInt emit strings held. Shred refuse.
 
 ## Yonder (this stamp)
 
@@ -15,7 +15,7 @@
 | `…_tensegral-season-r0-recursion-prompt.md` | Tensegral Season **CLOSED** |
 | `…_tensegral-season-expanded.md` | same |
 | `…_constellation-season-m0-recursion-prompt.md` | outer **PAUSED** · not the active walk |
-| `…_claude-silo-deepening-recursion-v1.md` | superseded for execution by `161900` |
+| `…_claude-silo-deepening-recursion-v1.md` | replaced for execution by `161900` |
 
 Inbound cites re-pointed (counsel · README · waymark · ledger · session logs · archive).
 

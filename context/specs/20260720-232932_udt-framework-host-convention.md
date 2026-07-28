@@ -41,7 +41,7 @@ While UDT governed living stamps, `GLOW_PROFILE.bron` on this host pointed `time
 ## Related
 
 - [`20260627-102012_one-clock-naming-law.md`](20260627-102012_one-clock-naming-law.md) — the law this addends  
-- [`20260717-003132_eastern-time-framework-host-convention.md`](20260717-003132_eastern-time-framework-host-convention.md) — prior Framework convention (Eastern), superseded for *new* stamps from this document forward  
+- [`20260717-003132_eastern-time-framework-host-convention.md`](20260717-003132_eastern-time-framework-host-convention.md) — prior Framework convention (Eastern), replaced for *new* stamps from this document forward  
 - [`20260713-201910_pacific-time-local-clone-convention.md`](20260713-201910_pacific-time-local-clone-convention.md) — macOS clone, unaffected  
 - [`.cursor/rules/session-logs.mdc`](../../.cursor/rules/session-logs.mdc) · [`.claude/rules/session-logs.md`](../../.claude/rules/session-logs.md)
 

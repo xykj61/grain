@@ -4,7 +4,7 @@
 **Stamp:** `20260728.031252`  
 **Voice:** Quin  
 **Status:** Reply — paste from Cursor iOS to open a **Cursor Cloud** session  
-**Superseded for spin-up by:** [`20260728-031722_re-docs-geode-year-wave-crush.md`](20260728-031722_re-docs-geode-year-wave-crush.md) — use that paste; year seat landed locally `20260728.031722` with wave · crush · docs-geode  
+**Replaced for spin-up by:** [`20260728-031722_re-docs-geode-year-wave-crush.md`](20260728-031722_re-docs-geode-year-wave-crush.md) — use that paste; year seat landed locally `20260728.031722` with wave · crush · docs-geode  
 **Ground:** pier `~/grain` · autoproject96/grain · nib at send · five scopes live  
 **Hand:** Cursor iOS → Cloud agent · local pier continues Keeh Season quint
 
