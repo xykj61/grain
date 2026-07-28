@@ -2,7 +2,7 @@
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/comlink_murr_wire_lab.rish
-# Guests remain guest_mala_* until module wave.
+# Guests: guest_murr_* · elves murr-*.elf (module step 8).
 
 let zig = "vendor/zig-toolchain/zig"
 let build_dir = "comlink/.build"
@@ -16,29 +16,29 @@ let sock_receipt = "127.0.0.1:${port_receipt}"
 let prep = run ["sh" "-c" "mkdir -p ${build_dir}"]
 assert prep.ok else "murr wire lab mkdir failed"
 
-let build_mint_rx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_mala_mint_rx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/mala-mint-rx.elf"]
+let build_mint_rx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_murr_mint_rx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/murr-mint-rx.elf"]
 assert build_mint_rx.ok else "murr mint rx guest build failed"
 
-let build_mint_tx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_mala_mint_tx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/mala-mint-tx.elf"]
+let build_mint_tx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_murr_mint_tx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/murr-mint-tx.elf"]
 assert build_mint_tx.ok else "murr mint tx guest build failed"
 
-let build_receipt_rx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_mala_receipt_rx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/mala-receipt-rx.elf"]
+let build_receipt_rx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_murr_receipt_rx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/murr-receipt-rx.elf"]
 assert build_receipt_rx.ok else "murr receipt rx guest build failed"
 
-let build_receipt_tx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_mala_receipt_tx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/mala-receipt-tx.elf"]
+let build_receipt_tx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_murr_receipt_tx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/murr-receipt-tx.elf"]
 assert build_receipt_tx.ok else "murr receipt tx guest build failed"
 
-let mint_rx = spawn ["timeout" "60" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,listen=${sock_mint}" "-kernel" "${build_dir}/mala-mint-rx.elf"]
+let mint_rx = spawn ["timeout" "60" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,listen=${sock_mint}" "-kernel" "${build_dir}/murr-mint-rx.elf"]
 let mint_pause = run ["sleep" "1"]
 assert mint_pause.ok else "mint hop sleep failed"
-let mint_tx = run ["timeout" "30" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,connect=${sock_mint}" "-kernel" "${build_dir}/mala-mint-tx.elf"]
+let mint_tx = run ["timeout" "30" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,connect=${sock_mint}" "-kernel" "${build_dir}/murr-mint-tx.elf"]
 let mint_rx_done = wait-for mint_rx
 assert mint_rx_done.out contains "sealed mint GREEN" else "mint hop RED"
 
-let receipt_rx = spawn ["timeout" "60" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,listen=${sock_receipt}" "-kernel" "${build_dir}/mala-receipt-rx.elf"]
+let receipt_rx = spawn ["timeout" "60" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,listen=${sock_receipt}" "-kernel" "${build_dir}/murr-receipt-rx.elf"]
 let receipt_pause = run ["sleep" "1"]
 assert receipt_pause.ok else "receipt hop sleep failed"
-let receipt_tx = run ["timeout" "30" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,connect=${sock_receipt}" "-kernel" "${build_dir}/mala-receipt-tx.elf"]
+let receipt_tx = run ["timeout" "30" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,connect=${sock_receipt}" "-kernel" "${build_dir}/murr-receipt-tx.elf"]
 let receipt_rx_done = wait-for receipt_rx
 assert receipt_rx_done.out contains "sealed receipt GREEN" else "receipt hop RED"
 
