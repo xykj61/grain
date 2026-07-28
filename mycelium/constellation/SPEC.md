@@ -6,8 +6,10 @@
 **Status:** Design + reference implementation — **version one is a registry and nothing more: it holds seats, it mints nothing, it moves no value; the WOV-genesis law stays design-only until securities counsel sits with the family.** The Move package beside this spec compiles-by-reading, is **unaudited**, and deploys only by **Keaton's own wallet, gas, and hand.** His word this round — *deploy on the live Sui network for now* — is recorded as his seat to make; counsel's one line beside it: the prior settlement seat rests *held pending witness* with a testnet lane named first, so a devnet or testnet publish is the gentle opening move, and mainnet follows the moment his hand says so
 **Home:** `mycelium/constellation/` — the spec here, the Sui lane at `sui/`
 **Companions:** [the constellation design](../active-designing/20260727-142516_the-constellation-and-the-twelve-funds.md) · [the seva foundation](../foundations/20260727-144447_seva-the-vane-the-fund-and-the-daily-service.md)
+**Plan accretion `20260728.013859`:** **Mala** (Aries · seat 1) is the official maintainer of the **MALA** module by design. Deployment of the constellation of twelve is **planned** via an **n-of-12 multisig led by Mala** — plan only; v1 code below remains AdminCap + registry-only; no live multisig object from this page. Seat record: [`../../counsel/20260728-013859_constellation-season-m3-mala-maintains-mala.md`](../../counsel/20260728-013859_constellation-season-m3-mala-maintains-mala.md).
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260728.013859` — maintainer + n-of-12 plan named; claims unchanged
 
 ---
 

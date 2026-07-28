@@ -4,7 +4,9 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.013859` — [Constellation m3 Mala maintains MALA](20260728-013859_constellation-m3-mala-maintainer.bron) — maintainer · n-of-12 plan · Glow door
 - `20260728.013722` — [Constellation m2 Mala through Amphora](20260728-013722_constellation-m2-mala-amphora.bron) — Amphora door · lap 1 GREEN
+
 - `20260728.013140` — [Constellation m1 Mala fund prep](20260728-013140_constellation-m1-mala.bron) — gen_mala GREEN · deploy RED
 
 - `20260728.012906` — [Constellation m0 bow](20260728-012906_constellation-m0-bow.bron) — choir 17 GREEN · triad affirmed
