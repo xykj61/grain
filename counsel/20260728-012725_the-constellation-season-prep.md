@@ -6,9 +6,10 @@
 **Kind:** season prep seat · Keaton's word · rounds **m0–m31** (lean numbering; seat of the letter is his)
 **Ground:** origin/main `46d27a3213` · local ahead carries Fascia f0/f1 · Fascia mid-flight parks pending fold-or-parallel word
 **Season name lean:** *the Constellation Season* (beside *the Fund Season* · *the Mala Season*); **season_name=** held for his final seat
-**Status:** Prep seated · m0–m2 · **m3 Mala maintains MALA · n-of-12 plan · Glow door** `20260728.013859`
+**Status:** Prep seated · m0–m3 · **m4 Mala arc CLOSED · Aurora/AppImage readiness** `20260728.014057`
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260728.014057` — m4 Aurora host lane · Mala m1–m4 closed · aurora-deploy RED
 Radiant pass `20260728.013859` — Mala maintains MALA · n-of-12 plan · Glow cast-u32 GREEN
 Radiant pass `20260728.013722` — m2 Amphora door · lap 1 post-fold GREEN
 Radiant pass `20260728.013140` — m1 Mala fund prep · gen_mala_fund_prep GREEN · deploy RED
