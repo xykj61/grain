@@ -7,6 +7,7 @@
 **Ground:** Radiant Lint Season bow + rounds 1–4 already measured (`20260727.213740` · r1–r4); Glow Season closed on the workshop lane; g0–g15 bench relays still queued; breach law [`../context/BREACH.md`](../context/BREACH.md) · foundations [`../foundations/20260726-020537_the-breach.md`](../foundations/20260726-020537_the-breach.md)
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260727.230010` — round 7 Arc III teaching hold; archive→manual links
 Radiant pass `20260727.225235` — round 5 WIP breach records archived
 Radiant pass `20260727.224156` — round 4 strengthening-compiler yonder accreted
 Radiant pass `20260727.223135` — round 3 breach pilot accreted; path addresses turned
@@ -146,6 +147,10 @@ Arc II: **five** spent WIP breach-season records → `archive/` · depth-one **1
 ### Round 6 landed (`20260727.225704`)
 
 Arc II: **eleven** AD cold check-in / inventory briefs → `active-designing/yonder/` · depth-one **139 → 128** · ROUND MODE GREEN. **Arc II breach runway exits.** Motion: [`20260727-225704_sound-arc-ii-ad-cold-checkin-batch.md`](20260727-225704_sound-arc-ii-ad-cold-checkin-batch.md). Reply: [`replies/20260727-225704_re-sound-season-r6.md`](replies/20260727-225704_re-sound-season-r6.md). Next door: Arc III teaching shelves, or a newly named Arc II pocket.
+
+### Round 7 landed (`20260727.230010`)
+
+Arc III opens: teaching hold · edu/manual outbound missing **0** · **19** archive→manual hrefs deepened · **2** research ledger-enrolled · `edu/` on select_wave · gratitude seal unchanged · ROUND MODE GREEN. Motion: [`20260727-230010_sound-arc-iii-teaching-hold-and-archive-manual-links.md`](20260727-230010_sound-arc-iii-teaching-hold-and-archive-manual-links.md). Reply: [`replies/20260727-230010_re-sound-season-r7.md`](replies/20260727-230010_re-sound-season-r7.md).
 
 ---
 
