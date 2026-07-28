@@ -4,7 +4,7 @@
 **Stamp:** `20260727.233237`
 **Voice:** Quin
 **Status:** Optional twin to the saga final draft · propose-only
-**Ground:** [`20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md`](20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md)
+**Ground:** [`../saga/20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md`](../saga/20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md)
 
 *Written together by Keaton and Quin.*
 
