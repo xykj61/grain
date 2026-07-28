@@ -1,26 +1,37 @@
-# tools/fascia_metric_v0.rish — Inner Scope i4: fascia metric v0 (Amphora path).
+# tools/fascia_metric_v0.rish — fascia metric (i4 land · i5 tighten).
 #
 # Difficulty-style connective-tissue grade 0–100 from four clutter signals.
+# i5 folds Amphora lap 1; softer weights; window mean baseline.
 # Measure only — shred / breach / deploy refuse by name.
 #
 #   rishi/bin/rishi run tools/fascia_metric_v0.rish
 #   rishi/bin/rishi run tools/fascia_metric_v0.rish shred   # RED
 
 say "fascia-metric-v0: Language EN — fascia grade from measurable clutter."
-say "fascia-metric-v0: Style Radiant — GREEN when four signals and grade print."
+say "fascia-metric-v0: Style Radiant — GREEN when four signals, window, Amphora fold."
 say "fascia-metric-v0: Lens TAME — Amphora measure door; no live shred."
 
 let verb = ""
 if length args != 0 then let verb = args[0]
 
+# Amphora fold — vessel path must still green beside the meter.
+let amphora = run ["rishi/bin/rishi" "run" "tools/amphora_lap1.rish"]
+assert amphora.ok else "fascia-metric-v0 Amphora lap 1 fold RED"
+assert amphora.out contains "GREEN: Amphora lap 1" else "fascia-metric-v0 Amphora lap 1 missing GREEN"
+say "fold: amphora_lap1 GREEN"
+
 let metric = run ["sh" "tools/fixtures/fascia_metric_v0.sh" verb]
 assert metric.ok else "fascia-metric-v0 REFUSE or measure failed — see stderr"
 assert metric.out contains "GREEN: fascia-metric-v0" else "fascia-metric-v0 missing GREEN line"
+assert metric.out contains "metric_rev=i5" else "fascia-metric-v0 missing i5 metric_rev"
 assert metric.out contains "fascia=" else "fascia-metric-v0 missing fascia grade"
 assert metric.out contains "signal:superseded=" else "fascia-metric-v0 missing superseded signal"
 assert metric.out contains "signal:ratchet_outstanding=" else "fascia-metric-v0 missing ratchet signal"
 assert metric.out contains "signal:target_class_a=" else "fascia-metric-v0 missing target-class signal"
 assert metric.out contains "signal:over70=" else "fascia-metric-v0 missing over70 signal"
+assert metric.out contains "window_mean=" else "fascia-metric-v0 missing window_mean"
+assert metric.out contains "amphora_ready=yes" else "fascia-metric-v0 amphora_ready not yes"
+assert metric.out contains "weight=half" else "fascia-metric-v0 missing i5 half-weight on superseded"
 assert metric.out contains "refuse: shred" else "fascia-metric-v0 missing refuse line"
 say metric.out
 
@@ -28,4 +39,4 @@ say metric.out
 let refuse = run ["sh" "tools/fixtures/fascia_metric_v0.sh" "shred"]
 assert (refuse.ok == false) else "fascia-metric-v0 refuse-walk broken: shred must exit RED"
 
-say "GREEN: fascia-metric-v0 — four signals · grade printed · shred refuse post-fold RED."
+say "GREEN: fascia-metric-v0 — i5 tighten · Amphora fold · window mean · shred refuse RED."
