@@ -3,14 +3,16 @@
 **Stamp:** `20260728.014523`
 **Voice:** Quin
 
+Radiant pass `20260728.022218` — rename-forward **Djin** (was Twah) in living doors
+
 ---
 
 ## State
 
 | Seat | Standing |
 |------|----------|
-| Twah fund prep | **opened** (m5) |
-| gen-twah through Comlink | GREEN · deploy RED |
+| Djin fund prep (was Twah) | **opened** (m5) |
+| gen-djin through Comlink | GREEN · deploy RED |
 | edu page one stub | landed |
 | Mala arc | closed (m4) |
 
@@ -18,8 +20,8 @@
 
 | # | Lean |
 |---|------|
-| A | **kg m6** — deepen Twah edu page (walk steps 1–3 with witnesses) |
-| B | Claim twah.fund (his hand) |
+| A | **kg m6** — deepen Djin edu page (was Twah) (walk steps 1–3 with witnesses) |
+| B | Claim djin.fund (his hand) |
 | C | Fascia fold-or-parallel word (held) |
 
 ---

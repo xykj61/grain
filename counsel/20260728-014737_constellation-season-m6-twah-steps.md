@@ -9,13 +9,14 @@
 **Edu:** `edu/funds/djin-creating-one-of-twelve.md`
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260728.022218` — i2 prose polish · living name **Djin** (was Twah)
 Radiant pass `20260728.020948` — rename-forward **Djin**; living paths `tools/gen_djin_fund_prep.rish` · `edu/funds/djin-creating-one-of-twelve.md` (was Twah)
 
 ---
 
 ## What landed
 
-Page one deepens from outline to **taught walk** for the first three steps. gen-djin asserts each witness marker and the four-letter shape of **Twah**.
+Page one deepens from outline to **taught walk** for the first three steps. gen-djin asserts each witness marker and the four-letter shape of **Djin** (was Twah).
 
 | Step | Taught | Witness |
 |------|--------|---------|
@@ -32,7 +33,7 @@ Steps 4–6 stay outline (phone book read · Comlink knock · refuse deploy) —
 
 ## Held
 
-- twah.fund claim = Keaton's hand  
+- djin.fund claim = Keaton's hand (was twah.fund)  
 - no live deploy · no wallet · no gas from the tutorial  
 
 ## Trey — documentary frame

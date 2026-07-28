@@ -1,8 +1,10 @@
-# Re: Constellation m5 — Twah fund prep opens
+# Re: Constellation m5 — Djin fund prep opens (was Twah)
 
 **Stamp:** `20260728.014523`
 **Voice:** Quin
 
-Twah (Taurus earth · seat 2) prep opened. gen-twah GREEN through Comlink; edu page-one stub at `edu/funds/twah-creating-one-of-twelve.md`; deploy RED. twah.fund claim still his.
+Radiant pass `20260728.022218` — rename-forward **Djin** (was Twah)
+
+Djin (Taurus earth · seat 2; was Twah) prep opened. gen-djin GREEN through Comlink; edu page-one at `edu/funds/djin-creating-one-of-twelve.md`; deploy RED. djin.fund claim still his.
 
 Related: [`../20260728-014523_constellation-season-m5-twah.md`](../20260728-014523_constellation-season-m5-twah.md)
