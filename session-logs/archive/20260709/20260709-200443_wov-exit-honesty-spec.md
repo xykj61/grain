@@ -19,7 +19,7 @@ Spec is checkable-room seated; code lap waits affirm. M2b remains optional mecha
 ## Files
 
 - `context/specs/20260709-200443_wov-exit-honesty.md`
-- `expanding-prompts/20260709-200443_wov-lap1-exit-honesty-witness.md`
+- `expanding-prompts/yonder/20260709-200443_wov-lap1-exit-honesty-witness.md`
 - TASKS, ROADMAP, LEXICON, context README
 
 ## Next-step recommendation

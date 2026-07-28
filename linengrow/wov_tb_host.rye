@@ -13,7 +13,7 @@
 //! TB binary). Never imports the pin into this module.
 //!
 //! Spec: [`../context/specs/20260709-204026_wov-tb-client-seam.md`](../context/specs/20260709-204026_wov-tb-client-seam.md)
-//! Prompt: [`../expanding-prompts/20260709-204026_wov-lap2b-tb-client-wrapper.md`](../expanding-prompts/20260709-204026_wov-lap2b-tb-client-wrapper.md)
+//! Prompt: [`../expanding-prompts/yonder/20260709-204026_wov-lap2b-tb-client-wrapper.md`](../expanding-prompts/yonder/20260709-204026_wov-lap2b-tb-client-wrapper.md)
 
 const std = @import("std");
 const assert = std.debug.assert;
