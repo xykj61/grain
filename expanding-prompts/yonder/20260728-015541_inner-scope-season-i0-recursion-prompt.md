@@ -5,7 +5,7 @@
 Radiant pass `20260728.040237` — Gren Chapter g2 · seat 2 Gren · gen_gren · DJINN→Murr  
 Radiant pass `20260728.031050` — fund11 Ketu→Keeh · %keeh · Keaton executive
 
-**Active walk:** `expanding-prompts/20260728-025634_gren-season-g0-recursion-prompt.md`
+**Active walk:** `20260728-025634_gren-season-g0-recursion-prompt.md`
 
 ---
 
@@ -34,7 +34,7 @@ INNER SCOPE (PAUSED — do not advance i-rounds while core/Gren walks):
 
 Read whole: the inner charter (Radiant-passed Gren) · Gren charter ·
 LEXICON Gren/Keeh/Murr · Fascia charter (resume map when fascia unpauses).
-Active season: Gren core — expanding-prompts/20260728-025634_gren-season-g0-recursion-prompt.md
+Active season: Gren core — 20260728-025634_gren-season-g0-recursion-prompt.md
 
 first duties when inner resumes: bootstrap · nib · prin scope ·
 run gen_gren (GREEN; deploy RED) · report · then walk from i7 only on his unpause word:
