@@ -20,18 +20,21 @@ Prin (%prin) — Grain matrix printer · live outer-terminal view of loops & par
   dual   | pw | pd    matrix | verse side-by-side (tmux)
   nib    | pnib       print git nib
   scope  | outer | inner   print seated season scope (outer/inner)
+  sundial| psun       recursion-prompt confidence 0–100 (red→green)
 
 Outer terminal:
   cd ~/grain && source tools/prin_aliases.sh
   pw                  # dual live view while an agent loop runs
   # or two panes:  p   |   pt
   prin scope          # outer pause · inner season standing
+  prin sundial        # prompt fidelity percent · color band
 
 Env: PRIN_INTERVAL=1  PRIN_TICKER_INTERVAL=8
 EOF
     ;;
   nib|pnib) git rev-parse --short=10 HEAD ;;
   scope|outer|inner) exec bash tools/fixtures/prin_scope.sh ;;
+  sundial|psun) exec sh tools/fixtures/sundial.sh ;;
   ticker|pt|pv|slide) exec bash tools/fixtures/prin_ticker.sh slide ;;
   scroll) exec bash tools/fixtures/prin_ticker.sh scroll ;;
   dual|watch|pw|pd|p::) exec bash tools/fixtures/prin_dual.sh matrix ;;
