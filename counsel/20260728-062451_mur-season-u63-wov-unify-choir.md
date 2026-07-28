@@ -41,7 +41,7 @@ No dual-accept emit · no `wov_*` file merge into `murr_*` · no `wov_digest` de
 
 ## Next
 
-Ungated WOV-unify **design** queue is empty. Retirement stays later. Prefer **check-in** for the next door (dual-accept · residual polish · return · other), or kg a mechanical residual if he names one.
+**LANDED u64** — check-in seated · ungated unify design queue empty · doors named.
 
 ---
 
