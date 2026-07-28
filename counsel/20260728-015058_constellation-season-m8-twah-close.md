@@ -6,10 +6,11 @@
 **Voice:** Quin · nested frame Trey
 **Ground:** origin/main `e5e29ca381` (pre-send)
 **Exit:** Twah fund prep block **m5–m8** closes on this stamp
-**Generator:** `tools/gen_twah_fund_prep.rish`
-**Edu:** `edu/funds/twah-creating-one-of-twelve.md`
+**Generator:** `tools/gen_djin_fund_prep.rish`
+**Edu:** `edu/funds/djin-creating-one-of-twelve.md`
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260728.020948` — rename-forward **Djin**; living paths `tools/gen_djin_fund_prep.rish` · `edu/funds/djin-creating-one-of-twelve.md` (was Twah)
 
 ---
 
@@ -17,14 +18,14 @@
 
 | Round | Door |
 |------:|------|
-| m5 | gen_twah · Comlink · page-one stub |
+| m5 | gen_djin · Comlink · page-one stub |
 | m6 | Steps 1–3 taught · witnessed |
 | m7 | Steps 4–5 · phone book · Comlink knock |
 | **m8** | **Step 6 refuse-walk · arc CLOSED** |
 
 ```text
-rishi/bin/rishi run tools/gen_twah_fund_prep.rish          → GREEN (includes deploy post-fold RED)
-rishi/bin/rishi run tools/gen_twah_fund_prep.rish deploy   → RED by name
+rishi/bin/rishi run tools/gen_djin_fund_prep.rish          → GREEN (includes deploy post-fold RED)
+rishi/bin/rishi run tools/gen_djin_fund_prep.rish deploy   → RED by name
 ```
 
 ## Step 6 — refuse-walk

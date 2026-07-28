@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.020948` — [Inner Scope i1 Twah residual](20260728-020948_inner-scope-i1-twah-residual.bron) — gen_twah ABSENT · gen_djin GREEN
 - `20260728.020837` — [Inner Scope i0 bow](20260728-020837_inner-scope-i0-bow.bron) — measure · outer pause · fascia resume map
 - `20260728.020607` — [Ketu Mala Kamala fund executives](20260728-020607_ketu-mala-kamala-executives.bron) — Aquarius 11 · dedication · Sara·DJINN·Keaton
 - `20260728.015541` — [Inner Scope Djin outer pause](20260728-015541_inner-scope-djin-pause.bron) — Twah→Djin · scope·outer·inner · i0–i15

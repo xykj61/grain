@@ -5,10 +5,11 @@
 **Prior:** m6 [`20260728-014737_constellation-season-m6-twah-steps.md`](20260728-014737_constellation-season-m6-twah-steps.md)
 **Voice:** Quin · nested frame Trey
 **Ground:** origin/main `9d93ea0ae6` (pre-send)
-**Generator:** `tools/gen_twah_fund_prep.rish`
-**Edu:** `edu/funds/twah-creating-one-of-twelve.md`
+**Generator:** `tools/gen_djin_fund_prep.rish`
+**Edu:** `edu/funds/djin-creating-one-of-twelve.md`
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260728.020948` — rename-forward **Djin**; living paths `tools/gen_djin_fund_prep.rish` · `edu/funds/djin-creating-one-of-twelve.md` (was Twah)
 
 ---
 
@@ -20,8 +21,8 @@
 | 5 | Knock Comlink before any seating byte | `witness:step5 GREEN` |
 
 ```text
-rishi/bin/rishi run tools/gen_twah_fund_prep.rish          → GREEN (m7)
-rishi/bin/rishi run tools/gen_twah_fund_prep.rish deploy   → RED by name
+rishi/bin/rishi run tools/gen_djin_fund_prep.rish          → GREEN (m7)
+rishi/bin/rishi run tools/gen_djin_fund_prep.rish deploy   → RED by name
 ```
 
 Step **6** (refuse deploy from the tutorial page as a taught walk) closes the Twah edu page in **m8**.
@@ -29,7 +30,7 @@ Step **6** (refuse deploy from the tutorial page as a taught walk) closes the Tw
 ## Held
 
 - twah.fund claim = Keaton's hand  
-- no seating bytes from gen-twah  
+- no seating bytes from gen-djin  
 - phone book stays registry-only  
 
 ## Trey — documentary frame

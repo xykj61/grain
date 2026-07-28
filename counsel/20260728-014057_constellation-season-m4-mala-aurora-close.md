@@ -7,6 +7,7 @@
 **Exit:** Mala fund prep block **m1–m4** closes on this stamp
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260728.020948` — next block rename-forward **Djin** (was Twah)
 
 ---
 
@@ -53,7 +54,7 @@ Every constellation deploy-prep claim on this pier names the **Framework AMD x86
 
 ## Next block
 
-**Twah fund prep (m5–m8)** — Taurus earth · twah.fund · edu page one under the fund seat.
+**Djin fund prep (m5–m8)** (was Twah) — Taurus earth · djin.fund · edu page one under the fund seat.
 
 ## Trey — documentary frame
 
@@ -61,7 +62,7 @@ Every constellation deploy-prep claim on this pier names the **Framework AMD x86
 
 The fire seat kept its checklist, opened three house doors, named who keeps the craft, sketched twelve hands on one wallet someday, and finally pointed at the metal under the desk — Framework, AMD, the enclosure that already boots. Aurora itself still wakes on a different shore; tonight the generator only promises not to pretend otherwise.
 
-*Cut. Mala's prep block ends. Twah's earth waits.*
+*Cut. Mala's prep block ends. Djin's earth waits (was Twah).*
 
 ---
 
