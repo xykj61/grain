@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.053348` — [MUR Season u33 tool-wave residual](20260728-053348_mur-season-u33-tool-wave-residual.bron) — twin-fold + living cites · residual clear · u34 next
 - `20260728.053112` — [MUR Season u32 tool-wave live](20260728-053112_mur-season-u32-tool-wave-live.bron) — steps 1–4 GREEN · murr_* witnesses/lab/fixture · u33 next
 - `20260728.053003` — [MUR Season check-in at u26](20260728-053003_mur-season-check-in-u26.bron) — waiting empty · tool GO ready · doors named
 - `20260728.052625` — [MUR Season u26 waiting queue empty](20260728-052625_mur-season-u26-waiting-queue-empty.bron) — ungated waiting empty · prefer kg u32

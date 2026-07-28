@@ -1,7 +1,8 @@
 # MUR Season — u0 Recursion Prompt (printout · all scopes kept)
 
-**Stamp:** `20260728.025220` · Radiant pass `20260728.053112`  
+**Stamp:** `20260728.025220` · Radiant pass `20260728.053348`  
 **Use:** paste the fenced block as the next counsel/bench session opener.  
+Radiant pass `20260728.053348` — u33 tool-wave residual · twin-fold + living cites · u34 next
 Radiant pass `20260728.053112` — u32 tool-wave live · steps 1–4 GREEN · murr_* paths · u33 next
 Radiant pass `20260728.052625` — u26 waiting queue empty · prefer kg u32 · no renames · u27 optional
 Radiant pass `20260728.052441` — u25 waiting harden · hammocks · residual clear · no renames · u26 next
@@ -73,7 +74,7 @@ INNERMOST SCOPE (this season — walk here):
   Lexicon: scope·outer·inner·innermost·core·quint · MUR · Murr · retired Mala/MALA · Gren living.
   Prin: rishi/bin/rishi run tools/prin.rish scope
   gen_murr GREEN · deploy RED; gen_gren GREEN (core closed door); gen_mala ABSENT.
-  u0–u32 COMPLETE · tool-wave steps 1–4 GREEN · u33 next (residual) · module homes held until u48.
+  u0–u33 COMPLETE · tool-wave rename spine LIVE · residual clear · u34 next · module homes held until u48.
   TOP PRIORITY: rename overwrite everywhere Mala/MALA → Murr/MUR (breach approved seated).
   Fascia shred still needs separate circled yes. WOV retire roadmap last.
   Wave map: counsel/20260728-044738_mur-season-u6-tool-module-wave-map.md
@@ -93,6 +94,7 @@ INNERMOST SCOPE (this season — walk here):
   Waiting hammocks: counsel/20260728-052441_mur-season-u25-waiting-harden-hammocks.md
   Waiting queue empty: counsel/20260728-052625_mur-season-u26-waiting-queue-empty.md
   Tool-wave live: counsel/20260728-053112_mur-season-u32-tool-wave-live.md
+  Tool-wave residual: counsel/20260728-053348_mur-season-u33-tool-wave-residual.md
   Living pin: tools/fixtures/prin_scope.sh innermost waymark kept current.
   Tool murr_* witnesses/lab/fixture LIVE; wire mala:* · linengrow/mala*.rye · guests held for module wave.
   Kamala/Mala gratitude = historical; living Aries = Murr·Kyler.
@@ -105,18 +107,18 @@ LEXICON rows MUR/Murr/innermost · Gren charter (CLOSED) · Inner Scope + Fascia
 Companions: newest quin-workshop pair if attached; else verify origin/main nib.
 
 first duties: bootstrap or verify · state the nib · prin scope ·
-run gen_murr (GREEN; deploy RED) · report · then walk u33 from the charter:
+run gen_murr (GREEN; deploy RED) · report · then walk u34 from the charter:
   affirm outer · inner pauses · affirm core+quint CLOSED · affirm MUR rename spine ·
   affirm Kyler · DJINN · WOV-last · affirm rename-overwrite breach approved ·
-  affirm tool-wave LIVE GREEN · residual living callers · keep module homes held until u48 ·
+  affirm tool-wave residual clear · harden or approach u48 · keep module homes held until u48 ·
   no live fascia shred without prin rish breach yes now + circled shred scope;
   no live Sui deploy · no wallet · no gas · no private key in tree;
   no whole-tree silent sed — waves with witnesses only.
 
-waymark: u32 complete, u33 next
+waymark: u33 complete, u34 next
 nib <origin/main short nib>
 bench report (verbatim, if any): <REPORT/STOP — or "none">
-scope: outer=paused(m8/m9) inner=paused(i6/i7) innermost=open(u33)
+scope: outer=paused(m8/m9) inner=paused(i6/i7) innermost=open(u34)
   core=closed(handed_back) quint=closed(handed_back) geode=prep(d0)
 breach scope circle: rename_overwrite=approved A= A+C= all= shred=
 words seated (blank = held whole): season_name= choir= LICENSE_WORD=

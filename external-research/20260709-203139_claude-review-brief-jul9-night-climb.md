@@ -10,6 +10,7 @@
 *Written for Claude counsel review after Kaeden's keep-going climb from evening close through thin view.*
 
 Radiant pass `20260728.050219` — living rename-forward: **MUR** (was MALA)
+Radiant pass `20260728.053348` — tool paths landed u32: `murr_m*_witness` · `murr_m1_mint.bron` · `run_murr_wire_lab` (was mala_*); guests/module held
 ---
 
 ## Executive Landscape
@@ -42,7 +43,7 @@ Since evening close (`183326`, parity **197**, MUR (was MALA) M1 lap-open only),
 |-----|------|---------------|
 | **M1** | One issuer, one holder; mint/send/fold | `linengrow/mala.rye`, `mala_core.rye` |
 | **M2** | Mint crosses Comlink; receipt back | hosted **38492**/**38493**; `mala_delivery.rye` |
-| **M2b** | Same bytes on virtio | device **15569**/**15570**; four guests; extends `mala_m2_witness` |
+| **M2b** | Same bytes on virtio | device **15569**/**15570**; four guests; extends `murr_m2_witness` (was mala_*) |
 
 Seeds `0x61`/`0x62`. Memo prefixes `mala:mint` / `mala:send` / `mala:receipt` on the SLC-L1 envelope — living practice, not a separate `kind` field yet.
 
@@ -66,7 +67,7 @@ Seeds `0x61`/`0x62`. Memo prefixes `mala:mint` / `mala:send` / `mala:receipt` on
 ### Realidream thin view
 
 - Counsel `021112` named chain-read → Skate; chain-read **deleted** `152612`
-- Re-scope [`202427`](../expanding-prompts/20260709-202427_realidream-thin-view-local-facts.md): local `mala_m1_mint.bron` + `wov_exit_bundle_v1.bron` → five-line Skate frame via `drawn-terminal thinviewtest`
+- Re-scope [`202427`](../expanding-prompts/20260709-202427_realidream-thin-view-local-facts.md): local `murr_m1_mint.bron` (was mala_*) + `wov_exit_bundle_v1.bron` → five-line Skate frame via `drawn-terminal thinviewtest`
 - Stayed thin: no Pond, no Dexter, no new input, no network
 
 ### Hygiene
