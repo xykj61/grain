@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.022949` — [Inner Scope i3 rename-polish close](20260728-022949_inner-scope-i3-rename-close.bron) — i1–i3 CLOSED · i4 fascia metric next
 - `20260728.022218` — [Inner Scope i2 Djin prose polish](20260728-022218_inner-scope-i2-djin-prose.bron) — replies·check-ins Djin · gen_djin GREEN
 - `20260728.021508` — [Eyva Avanti dedication](20260728-021508_eyva-avanti-dedication.bron) — Cancer 4 · executive · she/her · privacy-first
 - `20260728.021252` — [Gwoh Sarah Guo dedication](20260728-021252_gwoh-sarah-guo-dedication.bron) — Leo 5 · Conviction honor · foundations
