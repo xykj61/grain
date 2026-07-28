@@ -33,7 +33,7 @@ No O3 · no glow_* move · no taxonomy draft · no shred · no MUR unpause · no
 
 ## Next
 
-**kg s6** — taxonomy fusion draft, or next thin family home, or check-in.
+**LANDED s6** — taxonomy fusion draft · no move · O3/os/tes parked.
 
 ---
 
