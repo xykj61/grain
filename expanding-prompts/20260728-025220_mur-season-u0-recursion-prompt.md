@@ -1,7 +1,8 @@
 # MUR Chapter — u0 Recursion Prompt (printout · all scopes kept)
 
-**Stamp:** `20260728.025220` · Radiant pass `20260728.064402`  
+**Stamp:** `20260728.025220` · Radiant pass `20260728.064546`  
 **Use:** paste the fenced block as the next counsel/bench session opener.  
+Radiant pass `20260728.064546` — u69 fascia prune without shred · shred RED · u70 next  
 Radiant pass `20260728.064402` — u68 check-in · living CLEAR · queue empty · u69 next  
 Radiant pass `20260728.064221` — u67 filename residual map · living CLEAR · fossils HOLD · u68 next  
 Radiant pass `20260728.063848` — u66 filename-rename breach approved · seated · u67 next  
@@ -97,7 +98,7 @@ INNERMOST SCOPE (this season — walk here):
   Lexicon: scope·outer·inner·innermost·core·quint · MUR · Murr · retired Mala/MALA · Gren living.
   Prin: rishi/bin/rishi run tools/prin.rish scope
   gen_murr GREEN · deploy RED; gen_gren GREEN (core closed door); gen_mala ABSENT.
-  u0–u68 COMPLETE · check-in seated · living CLEAR · fossils HOLD · u69 next.
+  u0–u69 COMPLETE · fascia prune seated · shred RED · living CLEAR · u70 prune wave next.
   TOP PRIORITY: rename overwrite everywhere Mala/MALA → Murr/MUR (breach approved seated).
   Fascia shred still needs separate circled yes. WOV retire roadmap last.
   Wave map: counsel/20260728-044738_mur-season-u6-tool-module-wave-map.md
@@ -141,8 +142,9 @@ INNERMOST SCOPE (this season — walk here):
   Filename breach: counsel/20260728-063848_mur-season-u66-filename-rename-breach.md
   Filename residual: counsel/20260728-064221_mur-season-u67-filename-residual-map.md
   Check-in u68: counsel/20260728-064402_mur-season-check-in-u68.md
+  Fascia prune: counsel/20260728-064546_mur-season-u69-fascia-prune-without-shred.md
   Living pin: tools/fixtures/prin_scope.sh innermost waymark kept current.
-  Rename HARDENED; filename_rename=approved; living CLEAR; fossils HOLD; design 0–5 GREEN; no WOV delete.
+  Rename HARDENED; fascia prune OPEN; shred RED; living CLEAR; design 0–5 GREEN; no WOV delete.
   Kamala/Mala gratitude = historical; living Aries = Murr·Kyler.
   u126 and u127 MUST warn before handback (extend innermost · return inner i7 · other).
 
@@ -153,18 +155,18 @@ LEXICON rows MUR/Murr/innermost · Gren charter (CLOSED) · Inner Scope + Fascia
 Companions: newest quin-workshop pair if attached; else verify origin/main nib.
 
 first duties: bootstrap or verify · state the nib · prin scope ·
-run gen_murr (GREEN; deploy RED) · report · then walk u69 from the charter:
+run gen_murr (GREEN; deploy RED) · report · then walk u70 from the charter:
   affirm outer · inner pauses · affirm core+quint CLOSED · affirm MUR rename spine ·
-  affirm Kyler · DJINN · WOV-last · affirm rename-overwrite + filename-rename breaches approved ·
-  affirm living filename CLEAR · fossils HOLD · doors named · no WOV delete · 
+  affirm Kyler · DJINN · WOV-last · affirm rename + filename breaches · affirm fascia prune ·
+  affirm shred RED · Inner paused · living CLEAR · no WOV delete · 
   no live fascia shred without prin rish breach yes now + circled shred scope;
   no live Sui deploy · no wallet · no gas · no private key in tree;
   no whole-tree silent sed — waves with witnesses only.
 
-waymark: u68 complete, u69 next
+waymark: u69 complete, u70 next
 nib <origin/main short nib>
 bench report (verbatim, if any): <REPORT/STOP — or "none">
-scope: outer=paused(m8/m9) inner=paused(i6/i7) innermost=open(u69)
+scope: outer=paused(m8/m9) inner=paused(i6/i7) innermost=open(u70)
   core=closed(handed_back) quint=closed(handed_back) geode=prep(d0)
 breach scope circle: rename_overwrite=approved filename_rename=approved A= A+C= all= shred=
 words seated (blank = held whole): season_name= choir= LICENSE_WORD=
