@@ -69,7 +69,7 @@ fn run_selftest(io: std.Io) !u8 {
     var send_canonical: [rc.max_fact_len]u8 = undefined;
     const send_canon_len = try rc.write_canonical_fact(send_fields, &send_canonical);
     try mala.sign_append(&log, &log_len, send_fields, holder_kp);
-    const balances = try mala.fold_mala_log(
+    const balances = try mala.fold_murr_log(
         log[0..log_len],
         &issuer_hex,
         &holder_hex,

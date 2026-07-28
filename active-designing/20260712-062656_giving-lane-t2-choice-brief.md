@@ -30,7 +30,7 @@ Pass-gated reads for sensitive cover notes are Door 3’s consumer-edge pass arr
 
 - No `.bron` changes
 - No OA complete composition with mudra
-- No MUR `fold_mala_log` change (was MALA; symbol name held for module wave)
+- No MUR `fold_murr_log` (was fold_mala_log) change (was MALA; symbol name held for module wave)
 - No Door 3 first green
 
 ---

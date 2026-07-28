@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.055039` — [MUR Season u51 fold_murr_log live](20260728-055039_mur-season-u51-fold-murr-log-live.bron) — fold symbol · M1/M2/neth GREEN · u52 next
 - `20260728.054844` — [MUR Season u50 delivery memos live](20260728-054844_mur-season-u50-module-delivery-memos-live.bron) — murr_delivery · murr:* · M1/M2 GREEN · u51 next
 - `20260728.054644` — [MUR Season u49 module entry bin live](20260728-054644_mur-season-u49-module-entry-bin-live.bron) — murr.rye/bin · M1/M2 GREEN · u50 next
 - `20260728.053811` — [MUR Season u48 module core live](20260728-053811_mur-season-u48-module-core-live.bron) — murr_core · imports+symlinks · M1/M2 GREEN · u49 next

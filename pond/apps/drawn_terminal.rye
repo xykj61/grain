@@ -4321,7 +4321,7 @@ fn compose_mandi_settle_view_lines(garden: std.mem.Allocator) ![]surface.SkateLi
     var send_canonical: [rc.max_fact_len]u8 = undefined;
     const send_canon_len = try rc.write_canonical_fact(send_fields, &send_canonical);
     try mala.sign_append(&log, &log_len, send_fields, holder_kp);
-    _ = try mala.fold_mala_log(
+    _ = try mala.fold_murr_log(
         log[0..log_len],
         &issuer_hex,
         &holder_hex,
@@ -4475,7 +4475,7 @@ fn run_steward_fold() !StewardFold {
     var send_canonical: [rc.max_fact_len]u8 = undefined;
     const send_canon_len = try rc.write_canonical_fact(send_fields, &send_canonical);
     try mala.sign_append(&log, &log_len, send_fields, holder_kp);
-    _ = try mala.fold_mala_log(
+    _ = try mala.fold_murr_log(
         log[0..log_len],
         &issuer_hex,
         &holder_hex,
@@ -4710,7 +4710,7 @@ fn compose_granary_settle_view_lines(garden: std.mem.Allocator) ![]surface.Skate
     var send_canonical: [rc.max_fact_len]u8 = undefined;
     const send_canon_len = try rc.write_canonical_fact(send_fields, &send_canonical);
     try mala.sign_append(&log, &log_len, send_fields, holder_kp);
-    _ = try mala.fold_mala_log(
+    _ = try mala.fold_murr_log(
         log[0..log_len],
         &issuer_hex,
         &holder_hex,
@@ -4869,7 +4869,7 @@ fn run_granary_steward_fold() !GranaryStewardFold {
     var send_canonical: [rc.max_fact_len]u8 = undefined;
     const send_canon_len = try rc.write_canonical_fact(send_fields, &send_canonical);
     try mala.sign_append(&log, &log_len, send_fields, holder_kp);
-    _ = try mala.fold_mala_log(
+    _ = try mala.fold_murr_log(
         log[0..log_len],
         &issuer_hex,
         &holder_hex,
