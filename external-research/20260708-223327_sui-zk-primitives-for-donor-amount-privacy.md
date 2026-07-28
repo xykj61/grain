@@ -6,7 +6,7 @@
 **Voice:** Rio 3
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Lens:** TAME · [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md) · CIVIC · clean-room gratitude
-**Status:** Checkable-room research — understanding only; **implementation superseded** by counsel [`023112`](../counsel/20260709-023112_claude-counsel-zig-native-zk-path.md) for Zig-native builds (no pairing in Zig 0.16 stdlib). Kept for the Sui on-chain record and gratitude study surface.
+**Status:** Checkable-room research — understanding only; **implementation replaced** by counsel [`023112`](../counsel/20260709-023112_claude-counsel-zig-native-zk-path.md) for Zig-native builds (no pairing in Zig 0.16 stdlib). Kept for the Sui on-chain record and gratitude study surface.
 
 **Ground:** hammock [`../active-designing/20260708-194500_slcl4-selective-disclosure.md`](../active-designing/20260708-194500_slcl4-selective-disclosure.md) · counsel [`../counsel/20260708-221612_claude-counsel-six-open-points.md`](../counsel/20260708-221612_claude-counsel-six-open-points.md) · SLC-L3 rail [`../active-designing/20260708-182500_slcl3-settlement-rail.md`](../active-designing/20260708-182500_slcl3-settlement-rail.md) · Linengrow privacy prose [`../linengrow/README.md`](../linengrow/README.md) · Sui docs (public) + `gratitude/sui` (Apache-2.0 / MIT study surface)
 

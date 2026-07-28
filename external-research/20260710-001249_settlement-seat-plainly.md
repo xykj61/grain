@@ -6,7 +6,7 @@
 **Voice:** Rio 3
 **Editor:** Cursor · **Model:** Grok 4.5
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Status:** Checkable-room research — explains living practice and a **superseded** ladder rung; recommends no purchase and no treasury action
+**Status:** Checkable-room research — explains living practice and a **retired** ladder rung; recommends no purchase and no treasury action
 Radiant pass `20260728.045705` — living rename-forward: **MUR** (was MALA)
 **Ground:** three-lights survey [`002612`](20260706-002612_the-settlement-seat-under-three-lights.md) · verification [`005512`](20260706-005512_settlement-seat-verification-and-verdict.md) · refresh [`222500`](20260707-222500_settlement-seat-refresh-and-slcl3-witness-proposal.md) · MUR/WOV realignment counsel (was MALA) [`152612`](../counsel/20260709-152612_claude-counsel-mala-wov-already-designed.md) · compass [`185112`](../foundations/20260706-185112_follow-our-compass.md)
 

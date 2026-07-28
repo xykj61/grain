@@ -129,7 +129,7 @@ Dated explorations carry `YYYYMMDD-HHMMSS_short-slug.md`; living documents (`REA
 | `20260621-064612` | [966 · Brix vs Bron — When to Compose and When to Notate](20260621-064612_brix-vs-bron.md) | Research |
 | `20260621-063112` | [968 · Prompt Caching, ZON, and What Bron Already Is](20260621-063112_prompt-caching-zon-brix.md) | Research |
 | `20260621-051612` | [990 · Shells Through the TAME Lens — Redirect](20260621-051612_shell-scripting-tame-redirect.md) | Redirect stub — Deprecated (`051612`) — survey complete; conclusion implemented. |
-| `20260621-051612` | [992 · The Recommended Path — Redirect](20260621-051612_recommended-architecture-redirect.md) | Redirect stub — Deprecated (`051612`) — superseded by the active-designing brief. |
+| `20260621-051612` | [992 · The Recommended Path — Redirect](20260621-051612_recommended-architecture-redirect.md) | Redirect stub — Deprecated (`051612`) — replaced by the active-designing brief. |
 | `20260621-051612` | [988 · Rishi — Redirect](20260621-051612_rishi-shell-redirect.md) | Redirect stub — Deprecated (`051612`) — mission landed. |
 | `20260621-051312` | [967 · Literal `usize` Ban — Forking Rye as Its Own Width Model](20260621-051312_literal-usize-ban-language-fork.md) | Exploration — decision recorded; design siloed at `active-designing/yonder/20260621-051312_explicit-width-in-rye.md` |
 | `20260621-050312` | [968 · `usize` Is a Boundary Type, Not a Design Type](20260621-050312_usize-boundary-not-design.md) | Exploration — seam policy for **Zig-ground era**; strategic fork recorded in [`20260621-051312_literal-usize-ban-language-fork.md`](20260621-051312_literal-usize-ban-language-fork.md) |
@@ -144,7 +144,7 @@ Dated explorations carry `YYYYMMDD-HHMMSS_short-slug.md`; living documents (`REA
 | `20260619-171112` | [976 · Microkernel or Monolith? — What Caravan Can Learn from seL4 and Redox, and What TAME Demands](yonder/20260619-171112_microkernel-vs-monolith-for-caravan.md) | Research |
 | `20260619-155612` | [977 · POSIX at the Door — What the OS Interface Asks of TAME, and How River and Ghostty Show the Way](yonder/20260619-155612_posix-and-tame-style.md) | Research |
 | `20260619-153612` | [The Stack Toward a Living Desktop](yonder/20260619-153612_stack-toward-a-living-desktop.md) | Consumed synthesis — SLC-1 landed; living successor ROADMAP SLC-2; in `yonder/` |
-| `20260619-153212` | [Where Building Met Design — a Progress Map at the Turn](yonder/20260619-153212_where-building-met-design.md) | Consumed survey — superseded by ROADMAP + TASKS; in `yonder/` |
+| `20260619-153212` | [Where Building Met Design — a Progress Map at the Turn](yonder/20260619-153212_where-building-met-design.md) | Consumed survey — replaced by ROADMAP + TASKS; in `yonder/` |
 | `20260619-070612` | [980 · Brushstroke and the Documentation Surface — a Drawn Interface for Rye, and How the System Shows Itself](yonder/20260619-070612_brushstroke-and-the-docs-surface.md) | Two strands, woven into one rope. The first is a plain question: should we begin documenting Rye OS in earnest — Rishi's |
 | `20260619-035912` | [One Identity, Many Keys — and a Fractal Address Space](yonder/20260619-035912_unified-keys-and-address-space.md) | Horizon — companion to consumed prompt in `expanding-prompts/yonder/`; in `yonder/` |
 | `20260618-212112` | [Content-Centric Messenger — From the Network In](yonder/20260618-212112_content-centric-messaging.md) | Realized-origin — Comlink/Aurora carry the seeds; messenger is horizon; in `yonder/` |

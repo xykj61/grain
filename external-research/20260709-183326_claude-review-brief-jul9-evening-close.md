@@ -4,7 +4,7 @@
 **Voice:** Rio 3
 **Editor:** Cursor (desktop) · **Model:** Composer 2.5
 **Register:** Decision briefing — MUR (was MALA) realignment, settlement removal, parity **197**, MUR (was MALA) M1 lap-open filed
-**Status:** Checkable-room research — Claude review brief; **superseded** by [`203139`](20260709-203139_claude-review-brief-jul9-night-climb.md) for Claude analysis
+**Status:** Checkable-room research — Claude review brief; **replaced** by [`203139`](20260709-203139_claude-review-brief-jul9-night-climb.md) for Claude analysis
 **Ground:** `b7c5ef6` on all four remotes before this push; supersedes [`20260709-034527`](20260709-034527_claude-review-brief-jul9-late-arc.md); night climb continues at [`203139`](20260709-203139_claude-review-brief-jul9-night-climb.md)
 
 *Written for Claude counsel review before the evening `go` commit.*
@@ -14,11 +14,11 @@ Radiant pass `20260728.050219` — living rename-forward: **MUR** (was MALA)
 
 ## Executive Landscape
 
-Kaeden directed **own L1 via MUR (was MALA)** — backtrack from Sui/Monad external interpreters. Counsel [`152612`](../counsel/20260709-152612_claude-counsel-mala-wov-already-designed.md) found the July 2 design already in tree. Settlement + chain-read implementation **deleted** (not merely superseded — no external dependents). Parity **197**. Full suite **GREEN** on metal (~150s). **MUR (was MALA) M1 lap-open brief [`182354`](../expanding-prompts/yonder/20260709-182354_mala-m1-one-issuer-one-holder.md) filed**; M0 gate verified. **SLC-L4 [`031612`](../expanding-prompts/yonder/20260709-031612_slcl4-lap1-fixed-tier-sigma-protocol.md) still ready** on Kaeden's lap word.
+Kaeden directed **own L1 via MUR (was MALA)** — backtrack from Sui/Monad external interpreters. Counsel [`152612`](../counsel/20260709-152612_claude-counsel-mala-wov-already-designed.md) found the July 2 design already in tree. Settlement + chain-read implementation **deleted** (not merely replaced — no external dependents). Parity **197**. Full suite **GREEN** on metal (~150s). **MUR (was MALA) M1 lap-open brief [`182354`](../expanding-prompts/yonder/20260709-182354_mala-m1-one-issuer-one-holder.md) filed**; M0 gate verified. **SLC-L4 [`031612`](../expanding-prompts/yonder/20260709-031612_slcl4-lap1-fixed-tier-sigma-protocol.md) still ready** on Kaeden's lap word.
 
 | Milestone | Stamp | Parity | Status |
 |-----------|-------|--------|--------|
-| Jul 9 late brief | `034527` | **198** | Superseded by this brief |
+| Jul 9 late brief | `034527` | **198** | Replaced by this brief |
 | MUR (was MALA)/WOV counsel | `152612` | — | **Active** direction |
 | Settlement + chain-read removal | `163549` arc | **197** | **Deleted from tree** |
 | MUR (was MALA) M1 lap-open | `182354` | — | Ready on lap word |
@@ -135,7 +135,7 @@ Study [`223327`](../external-research/20260708-223327_sui-zk-primitives-for-dono
 |------|-----|
 | `active-designing/20260708-182500_slcl3-settlement-rail.md` | Status names checkable room |
 | `external-research/20260708-211637_…` | Status line added |
-| `external-research/20260709-015832_…` | Status line; superseded pointer |
+| `external-research/20260709-015832_…` | Status line; replaced pointer |
 | `external-research/20260709-034527_…` | Status line; parity **197** |
 
 ---

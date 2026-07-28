@@ -20,7 +20,7 @@ It is a kindness to our future selves: memory for the *work*, the way Mantra is 
 
 Dated artifacts carry `YYYYMMDD-HHMMSS_short-slug.md`; this README is the living foundation. The reverse-chronological index below reads newest first. Full naming law: [`../context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
-Each stock-taking once wrote a new **open-threads** snapshot stamped at the time of writing. Superseded snapshots graduate to [`archive/`](archive/) — out of the live folder, yet kept whole as an honest record of what was open, and when. The accreted `20260623-033012` snapshot archived `2026-06-29`; a redirect stub at the old path points to the archive. **Going forward:** open questions live in [`TASKS.md`](TASKS.md); history accretes in [`../session-logs/`](../session-logs/).
+Each stock-taking once wrote a new **open-threads** snapshot stamped at the time of writing. Older snapshots graduate to [`archive/`](archive/) — out of the live folder, yet kept whole as an honest record of what was open, and when. The accreted `20260623-033012` snapshot archived `2026-06-29`; a redirect stub at the old path points to the archive. **Going forward:** open questions live in [`TASKS.md`](TASKS.md); history accretes in [`../session-logs/`](../session-logs/).
 
 The standing roadmap lives in [`ROADMAP.md`](ROADMAP.md) — living, unstamped. The granular task list lives in [`TASKS.md`](TASKS.md) — edited in place; history accretes in `../session-logs/`.
 
@@ -64,7 +64,7 @@ The discipline is simple: if reading a line aloud would make a newcomer ask "so 
 | `20260620-212126` | [usize width baseline](20260620-212126_usize-width-baseline.md) | Tiger/TAME explicit-width charter |
 | `20260620-155342` | [Style audit](yonder/20260620-155342_style-audit.md) | Stale audit record — live threads lifted to TASKS; in `yonder/` |
 
-Superseded snapshots and finished records: [`archive/README.md`](archive/README.md).
+Archived snapshots and finished records: [`archive/README.md`](archive/README.md).
 
 ---
 
