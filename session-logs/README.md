@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.023555` — [Inner Scope i5 fascia metric tighten](20260728-023555_inner-scope-i5-fascia-tighten.bron) — weights·window·Amphora · fascia≈49
 - `20260728.023240` — [Inner Scope i4 fascia metric v0](20260728-023240_inner-scope-i4-fascia-metric.bron) — four signals · fascia=19 · shred RED
 - `20260728.022949` — [Inner Scope i3 rename-polish close](20260728-022949_inner-scope-i3-rename-close.bron) — i1–i3 CLOSED · i4 fascia metric next
 - `20260728.022218` — [Inner Scope i2 Djin prose polish](20260728-022218_inner-scope-i2-djin-prose.bron) — replies·check-ins Djin · gen_djin GREEN

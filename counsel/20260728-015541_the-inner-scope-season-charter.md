@@ -13,6 +13,7 @@
 Radiant pass `20260728.021508` — Eyva Cancer 4 · %eyva · executive + honor Avanti (she/her)
 Radiant pass `20260728.021252` — Gwoh Leo 5 · %gwoh · honor Sarah Guo / Conviction
 Radiant pass `20260728.020948` — i1 residual sweep · gen_twah ABSENT · gen_djin GREEN
+Radiant pass `20260728.023555` — i5 fascia metric tighten · metric_rev=i5 · Amphora lap1 fold · window mean · fascia≈49
 Radiant pass `20260728.023240` — i4 fascia_metric_v0 on main · shred refuse · grade window in tools/.cache
 Radiant pass `20260728.022949` — i3 rename-polish CLOSED · i4 fascia metric entry charted · tools/fascia* still ABSENT
 Radiant pass `20260728.020837` — i0 bow · measure GREEN · fascia tools ABSENT on main named
