@@ -11,4 +11,4 @@ assert sweep.ok else "inner-i1 residual sweep RED — see stderr"
 assert sweep.out contains "GREEN: inner-i1" else "inner-i1 missing GREEN line"
 say sweep.out
 
-say "GREEN: inner-i1 — Twah residual sweep complete; gen_djin still GREEN."
+say "GREEN: inner-i1 — Twah residual sweep complete; gen_gren still GREEN."

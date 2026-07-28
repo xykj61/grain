@@ -1,16 +1,16 @@
 #!/bin/sh
-# gen_djin_fund_prep.sh — POSIX helper for tools/gen_djin_fund_prep.rish (m5–m8 (rename-forward Djin))
+# gen_gren_fund_prep.sh — Gren fund prep (was Djin · was Twah)
 set -eu
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 cd "$ROOT"
 verb="${1:-}"
-PAGE=edu/funds/djin-creating-one-of-twelve.md
+PAGE=edu/funds/gren-creating-one-of-twelve.md
 SPEC=mycelium/constellation/SPEC.md
 MOVE=mycelium/constellation/sui/sources/constellation.move
 
 case "$verb" in
   deploy|mainnet|wallet|gas|multisig-live|aurora-deploy|claim-domain)
-    echo "gen-djin REFUSE: ${verb} is Keaton's hand alone — never this generator" >&2
+    echo "gen-gren REFUSE: ${verb} is Keaton's hand alone — never this generator" >&2
     exit 1
     ;;
 esac
@@ -21,15 +21,18 @@ test -f "$SPEC"
 test -f "$MOVE"
 grep -q 'mints nothing' "$SPEC"
 grep -q 'mints nothing' "$MOVE"
-grep -q 'Djin (fund)' context/LEXICON.md
-grep -q 'djin.fund' context/LEXICON.md
+grep -q 'Gren (fund)' context/LEXICON.md
+grep -q 'Grain Energy PBC' context/LEXICON.md
+grep -q 'Djin (fund) (retired name)' context/LEXICON.md
+grep -q 'gren.fund' context/LEXICON.md
 grep -q 'Taurus' context/LEXICON.md
 test -f tools/prin.rish
 test -f tools/fixtures/prin_dispatch.sh
 test -f "$PAGE"
-grep -q 'Djin' "$PAGE"
+grep -q 'Gren' "$PAGE"
 grep -q 'four-letter' "$PAGE"
-grep -q 'djin.fund' "$PAGE"
+grep -q 'was Djin' "$PAGE"
+grep -q 'gren.fund' "$PAGE"
 grep -q 'no live deploy' "$PAGE"
 test -f context/CIVIC_STYLE.md
 
@@ -66,20 +69,20 @@ test -f comlink/beading.rye
 grep -q 'witness:step6' "$PAGE"
 grep -q 'refuse-walk' "$PAGE"
 grep -q 'REFUSE' "$PAGE"
-grep -q 'Djin m5–m8 CLOSED' "$PAGE"
+grep -q 'Gren m5–m8 CLOSED' "$PAGE"
 grep -q 'multisig-live' "$PAGE"
 grep -q 'claim-domain' "$PAGE"
 
-echo "seat: fund=Djin order=2 sign_index=1 (Taurus) vane=%djin dns_prep=djin.fund"
+echo "seat: fund=Gren order=2 sign_index=1 (Taurus) vane=%gren dns_prep=gren.fund"
 echo "gift: edu-series tutorial for creating one of the twelve — under the fund seat"
-echo "page: edu/funds/djin-creating-one-of-twelve.md (steps 1–6 taught · m8 close)"
-echo "witness:step1 GREEN — four-letter Djin + Civic Style"
+echo "page: edu/funds/gren-creating-one-of-twelve.md (steps 1–6 taught · m8 close)"
+echo "witness:step1 GREEN — four-letter Gren + Civic Style"
 echo "witness:step2 GREEN — .fund anchor · claim Keaton's hand alone"
 echo "witness:step3 GREEN — Taurus · fund-order 2 · sign_index 1"
 echo "witness:step4 GREEN — phone book · mints nothing · registry-only"
 echo "witness:step5 GREEN — Comlink knock · beading · no seating byte"
 echo "witness:step6 GREEN — refuse-walk taught · deploy RED proven in post-fold"
-echo "arc: Djin m5–m8 CLOSED at refuse-walk"
+echo "arc: Gren m5–m8 CLOSED at refuse-walk"
 echo "path: prin → Comlink → constellation phone book (registry-only)"
-echo "flags: djin.fund claim = Keaton's hand · no deploy · no wallet · no gas"
-echo "GREEN: gen-djin — Djin prep complete; steps 1–6 witnessed; deploy RED by name."
+echo "flags: gren.fund claim = Keaton's hand · no deploy · no wallet · no gas"
+echo "GREEN: gen-gren — Gren prep complete; steps 1–6 witnessed; deploy RED by name."
