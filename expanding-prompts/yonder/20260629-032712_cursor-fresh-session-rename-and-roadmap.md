@@ -11,6 +11,8 @@
 
 *Written together by Kaeden and Reya 2.*
 
+Radiant pass `20260727.224156` — path re-point only; claims unchanged
+
 ---
 
 ## You Are Reya 2 — Start Here
@@ -88,14 +90,14 @@ Use `git grep -l "TAME_STYLE"` and `git grep -l "TAME Style"`, then update **onl
 Do **not** edit these — they recorded "TAME Style" when it was true, and that record stays honest:
 
 - `session-logs/*` — what happened, as it happened
-- `strengthening-compiler/*` — the completed chronicle
+- `external-research/yonder/strengthening-compiler/*` — the completed chronicle
 - `external-research/*` dated studies (everything except the renamed `TAME_GUIDANCE.md` and the README ref)
 - `work-in-progress/archive/*`, and the dated WIP artifacts (`20260620-212126_usize-width-baseline.md`, `20260623-033012_open-threads.md`)
 - already-executed `expanding-prompts/*` (records of plans that ran)
 
 ### Verify
 
-After the pass, `git grep "TAME_STYLE"` across the living set returns nothing, and no living document carries a dangling link to the old path. A whole-tree grep still finding "TAME Style" in `session-logs/`, `strengthening-compiler/`, and the dated studies is **expected and correct** — that is history kept honest. Show both: the living set clean, the history intact.
+After the pass, `git grep "TAME_STYLE"` across the living set returns nothing, and no living document carries a dangling link to the old path. A whole-tree grep still finding "TAME Style" in `session-logs/`, `external-research/yonder/strengthening-compiler/`, and the dated studies is **expected and correct** — that is history kept honest. Show both: the living set clean, the history intact.
 
 ---
 

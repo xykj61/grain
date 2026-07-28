@@ -17,7 +17,7 @@
 | `README` · `ORGANIZING` · `CONTRIBUTING` · `SOURCE` · `PUBKEYS` · licenses · `CLAUDE.md` · `llms.txt` · this file | Pier papers | the pier itself |
 | `counsel/` · `expanding-prompts/` · `session-logs/` · `work-in-progress/` · `bron-resins/` · host/profile cards | Relay genres | counsel↔bench relay |
 | `active-designing/` · `active-reviving/` · `waymarks/` | Design · revival · claims | Maze-adjacent; claims forward-only in `waymarks/` |
-| `external-research/` · `gratitude/` · `strengthening-compiler/` · `classical-vedic-astrology/` · `old/` · `vere/` | Study shelves | silo sources; elders honored |
+| `external-research/` · `gratitude/` · `external-research/yonder/strengthening-compiler/` · `classical-vedic-astrology/` · `old/` · `vere/` | Study shelves | silo sources; elders honored |
 | `glow/` · `rye/` · `rishi/` · `tools/` | Languages and bench | instruments; Ojjo consumes parity |
 | `aurora/` · `caravan/` · `tally/` | Runtime trio | held unification; ship-day image names it |
 | `linengrow/` · `mandi/` · `granary/` · `amphora/` · `dimeroll/` | Agents and goods | **Pool** |

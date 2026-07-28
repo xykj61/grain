@@ -49,7 +49,7 @@ Read the sections below when you wonder where a new file belongs. When a season'
 
 **`rye-learning-process/`** — the almanac and learning record. How we grow capability in the open.
 
-**`strengthening-compiler/`** — the strengthening chronicle. Analysis complete; record, not active product track.
+**`external-research/yonder/strengthening-compiler/`** — the strengthening chronicle. Analysis complete; record, not active product track.
 
 **`gratitude/`** — works we honor, held whole for clean-room study. Never copy code or text into our modules.
 

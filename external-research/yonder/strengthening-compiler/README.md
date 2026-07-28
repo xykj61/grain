@@ -1,0 +1,15 @@
+# Strengthening compiler — study shelf
+
+**Language:** EN  
+**Index note seated:** `20260724.143155`  
+**Status:** Reference / study shelf (AI-index ignored via `.cursorignore`)
+
+Numbered notes live here as a lexicon-shaped catalog. This README is the living index pin; the notes themselves stay dated study.
+
+| Role | Path |
+|------|------|
+| Lexicon / start | look for `0000*` or lowest-numbered note in this folder |
+| Parent organizing | [`../ORGANIZING.md`](../../../ORGANIZING.md) |
+| Stewards | [`../STEWARDS.md`](../../../STEWARDS.md) — study shelf |
+
+Counsel shelf sweep: [`../counsel/20260724-135312_vanes-shelves-and-the-glow-ladder.md`](../../../counsel/20260724-135312_vanes-shelves-and-the-glow-ladder.md).

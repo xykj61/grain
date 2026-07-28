@@ -8,6 +8,8 @@
 **Companions:** kitchen twin [`external-research/20260709-235921_one-clock-plainly.md`](../../external-research/20260709-235921_one-clock-plainly.md)
 Radiant pass `20260725.035645`
 
+Radiant pass `20260727.224156` — path re-point only; claims unchanged
+
 ---
 
 ## What We Are Solving
@@ -73,7 +75,7 @@ The code is healthy; the design surface is wide. Here is the honest inventory.
 | The owned seeds: `rishi/`, `aurora/`, `caravan/`, `tally/`, `mantra/`, `brushstroke/`, `comlink/`, `tools/` | `external-research/` → same treatment; silo principle intact | The **inference stack** — Scribble, Lantern, Lattice, Anvil |
 | `gratitude/` — vendored references and the clean-room license table | `expanding-prompts/`, `work-in-progress/`, `rye-learning-process/` → stamps + `README` index | **sixos** — NixOS now, sixos exploratory |
 | The allow-list `.gitignore`, `.gitmodules`, `.brix`, `SOURCE.md`, `CLAUDE.md`, the key-card images | `session-logs/` → simply drop the countdown prefix; the stamp is already there | **Pond** — the design stands; ai-jail remains the enclosure until Pond is ready |
-| `rye/src/` and `rye/tests/` — the front-end and its proofs | `strengthening-compiler/` → stamps, and let the series rest near the lexicon's completion | **Tablecloth** as a separate build — let Mantra's store *be* the store for now |
+| `rye/src/` and `rye/tests/` — the front-end and its proofs | `external-research/yonder/strengthening-compiler/` → stamps, and let the series rest near the lexicon's completion | **Tablecloth** as a separate build — let Mantra's store *be* the store for now |
 
 Two notes on the restructure. The session logs are the easy win: they already hold `YYYYMMDD-HHMMSS`, so dropping the countdown prefix both fixes them and turns their sort honest in one pass, with the `README` index carrying the newest-first view. And the duplicated briefs across stacks — a recommended-architecture in two folders, a `998` in three — stop colliding the moment everything is stamped, yet that is also the moment to ask, gently, which are genuinely superseded and deserve to become redirect stubs. Pruning as care.
 

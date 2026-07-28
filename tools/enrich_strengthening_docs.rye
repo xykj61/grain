@@ -68,7 +68,7 @@ pub fn main(init: std.process.Init) !u8 {
 
     const lex = try lexicon.generate_lexicon(a, io, project_root, &sources);
     defer a.free(lex);
-    const lexicon_path = try std.fs.path.join(a, &.{ project_root, "strengthening-compiler", "0000_STRENGTHENING_LEXICON.md" });
+    const lexicon_path = try std.fs.path.join(a, &.{ project_root, "external-research", "yonder", "strengthening-compiler", "0000_STRENGTHENING_LEXICON.md" });
     defer a.free(lexicon_path);
     try std.Io.Dir.cwd().writeFile(io, .{ .sub_path = lexicon_path, .data = lex });
     const n_surfaces = try lexicon.lexicon_surface_count(a, io, project_root, &sources);

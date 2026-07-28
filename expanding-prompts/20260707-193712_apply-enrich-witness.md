@@ -7,7 +7,7 @@ The third and final tools/enrich safety-net piece, given the full scoped sitting
 
 ## What Lands
 
-- `tools/enrich_strengthening_docs.rish` — checksums `strengthening-compiler/0000_STRENGTHENING_LEXICON.md` and confirms `work-in-progress/992_strengthening_width_crosswalk.md`'s existence before/after; runs the real tool twice against a fixture via `VEGANREYKLAH2_ROOT`; asserts the first run's three outputs and the second run's idempotency.
+- `tools/enrich_strengthening_docs.rish` — checksums `external-research/yonder/strengthening-compiler/0000_STRENGTHENING_LEXICON.md` and confirms `work-in-progress/992_strengthening_width_crosswalk.md`'s existence before/after; runs the real tool twice against a fixture via `VEGANREYKLAH2_ROOT`; asserts the first run's three outputs and the second run's idempotency.
 - `tools/fixtures/enrich_strengthening_docs_fixture/` — a minimal, checked-in fixture: `rye/lib/std/mem.zig`, one pass doc referencing `` `std.mem.eql` `` (backtick-wrapped — plain prose is not recognized by the real extraction functions), one `tools/parity.rish` stub.
 - `tools/parity.rish` — one new stanza after `tame_usize_audit`.
 - Counsel and session log filed.
@@ -25,6 +25,8 @@ Building the real tool required `RYE_LIB` set to a real Zig standard library —
 ## What This Closes
 
 The tools/enrich safety net named across three rounds is complete — all three pieces witnessed and GREEN. The `snake_case` season it was built to protect can open whenever wanted, with nothing structural in the way.
+
+Radiant pass `20260727.224156` — path re-point only; claims unchanged
 
 ---
 

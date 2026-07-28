@@ -5,6 +5,8 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Plan — inventory only; zero files moved by this document
 
+Radiant pass `20260727.224156` — path re-point only; claims unchanged
+
 ---
 
 ## What Kaeden Asked, and the Tension This Inventory Surfaces
@@ -22,7 +24,7 @@ Kaeden asked to archive essentially every project markdown file into a structure
 | **`session-logs/`** | 1,105 | Already folds by day under `archive/YYYYMMDD/`; Markdown era already fully folded per the session-logs rule (`"Markdown era fully folded 20260712.120007"`) | **No change** — already exactly the target shape Kaeden described; this directory is the model, not a target |
 | **`expanding-prompts/`** | 130 | Counts upward from `10000`; no stated archive subfolder | Needs its own `archive/` for prompts whose plan has fully executed — a real, previously-missing gap |
 | **`external-research/`** | 123 | Living README, no archive subfolder named | Only research memos superseded by a later memo on the same question are archive candidates — most external-research here is still-current attribution/study, not "old" |
-| **`strengthening-compiler/`** | 114 | "Analysis complete; record, not active product track" — already stated as closed-but-kept | **No change recommended** — this is already a deliberate closed record, not clutter; moving it would contradict its own stated status |
+| **`external-research/yonder/strengthening-compiler/`** | 114 | "Analysis complete; record, not active product track" — already stated as closed-but-kept | **No change recommended** — this is already a deliberate closed record, not clutter; moving it would contradict its own stated status |
 | **`active-designing/`** | 114 | Has a `yonder/` (forward-pointing, deferred-but-alive) and presumably an `archive/`-adjacent pattern per the collaboration rule ("Active work rests one level deep; deferred yet alive work moves to `yonder/`... finished-and-historical work moves to `archive/`") | Already has the exact three-tier shape (`active` / `yonder` / `archive`) this whole exercise is trying to generalize — worth studying as the reference pattern before extending it elsewhere |
 | **`classical-vedic-astrology/`** | 90 | Siloed study library (`studies/`, `templates/`, `readings/`) — a different, non-chronological organizing principle entirely | **Explicitly out of scope** — this is reference material organized by topic, not by age; forcing a chronological archive shape here would make it harder to use, not easier |
 | **`counsel/`** | 58 | "Propose-never-seat... each piece stays as filed" — explicitly meant to remain exactly as written, forever, as a record of what was asked and answered | **No change** — archiving here would violate the directory's own stated purpose |
@@ -61,7 +63,7 @@ On review with Keaton, the archive process **concludes with the conventions the 
 
 - **`session-logs/`** already folds closed days under `archive/YYYYMMDD/` (20260619 onward, folded). Working as designed.
 - **`expanding-prompts/`** already sends consumed prompts to `yonder/` — 73 of them there today. That *is* this directory's archive, under its own name; it needs no separate `archive/`.
-- **`active-designing/`** keeps its three-tier `active / yonder / archive` shape; **`counsel/`** stays "as filed" by its own law; **`context/`, `foundations/`, `strengthening-compiler/`** keep their deliberate roles.
+- **`active-designing/`** keeps its three-tier `active / yonder / archive` shape; **`counsel/`** stays "as filed" by its own law; **`context/`, `foundations/`, `external-research/yonder/strengthening-compiler/`** keep their deliberate roles.
 - **No blanket flatten.** Moving the ~1,100 pre-today documents into one shape would break the inbound references that "references are promises" protects, for no gain the per-directory conventions do not already provide.
 
 The archive process is therefore **complete** in the only form that does not damage the tree: each directory archives in its own established way, and the whole is held together by the naming-transition and new-journey markers rather than by relocation. Any future narrowing (a specific stale file to `yonder/`) is an on-touch move, not a sweep.

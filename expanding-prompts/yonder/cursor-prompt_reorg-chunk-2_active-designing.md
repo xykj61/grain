@@ -131,7 +131,7 @@ Never force-push. The branch merges to `main` later by ordinary fast-forward.
 
 ## Hold to these throughout
 
-- **This folder only.** `active-designing/` complete before any other design folder opens — aparigraha at the folder level. Do not touch `external-research/`, `expanding-prompts/`, `work-in-progress/`, `rye-learning-process/`, or `strengthening-compiler/` in this chunk.
+- **This folder only.** `active-designing/` complete before any other design folder opens — aparigraha at the folder level. Do not touch `external-research/`, `expanding-prompts/`, `work-in-progress/`, `rye-learning-process/`, or `external-research/yonder/strengthening-compiler/` in this chunk.
 - **`main` stays still.** Strengthening is paused, so the fast-forward holds; nothing else should land on `main` until the reorg merges.
 - **Every rename uses `git mv`** — history and blame carry forward intact.
 - **Duplicates become one-line redirect stubs, never second copies.** Pruning as care.

@@ -10,6 +10,8 @@
 **Lens:** TAME; Gall's Law; one value model; x86_64 near, RISC-V horizon
 **Research base:** `../external-research/yonder/20260619-153612_stack-toward-a-living-desktop.md`
 
+Radiant pass `20260727.224156` — path re-point only; claims unchanged
+
 ---
 
 ## Mission
@@ -66,7 +68,7 @@ Layer 0: Already running (Rye, Rishi, Tally seed, crypto foundation)
 Run before any Mantra code exists. These passes harden the std Mantra will lean on.
 
 **1a. SHA3-256.**
-Add a strengthening pass for SHA3-256. The sponge is already strengthened (`9997`); the SHA3-256 wrapper mirrors the SHA3-512 pass (`9998`) at the narrower digest width. Add a test to the witnesses: a known SHA3-256 digest, green against baseline and strengthened std. Record in a new `strengthening-compiler/9994_sha3_256.md`.
+Add a strengthening pass for SHA3-256. The sponge is already strengthened (`9997`); the SHA3-256 wrapper mirrors the SHA3-512 pass (`9998`) at the narrower digest width. Add a test to the witnesses: a known SHA3-256 digest, green against baseline and strengthened std. Record in a new `external-research/yonder/strengthening-compiler/9994_sha3_256.md`.
 
 **1b. `mem.copy`.**
 State the invariant: destination has capacity for source length; no overlap assumed. Assert at entry. Add a witness (a copy-and-compare test). Record in `9996` or a companion pass.

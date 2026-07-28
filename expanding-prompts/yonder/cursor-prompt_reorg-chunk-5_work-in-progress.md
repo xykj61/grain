@@ -110,7 +110,7 @@ Renaming this folder dangles every reference to `work-in-progress/99x_*`, so upd
 git grep -n "work-in-progress/99" -- '*.md' '*.rye' '*.rish' '*.zig' '*.zon'
 ```
 
-**One scope note, recommended as decided:** roughly thirty `strengthening-compiler/` pass-documents link to `work-in-progress/` numbers. Updating those is **link strings only — never the strengthening code, never pass 9886's work** — and it keeps nothing dangling, consistent with every prior chunk. Apply it, with the diff shown. *(If Kaeden would rather keep the paused `strengthening-compiler/` folder pristine and repair its links when that folder's own chunk runs, scope `strengthening-compiler/` out of this pass and leave those links for later — Kaeden's single call.)*
+**One scope note, recommended as decided:** roughly thirty `external-research/yonder/strengthening-compiler/` pass-documents link to `work-in-progress/` numbers. Updating those is **link strings only — never the strengthening code, never pass 9886's work** — and it keeps nothing dangling, consistent with every prior chunk. Apply it, with the diff shown. *(If Kaeden would rather keep the paused `external-research/yonder/strengthening-compiler/` folder pristine and repair its links when that folder's own chunk runs, scope `external-research/yonder/strengthening-compiler/` out of this pass and leave those links for later — Kaeden's single call.)*
 
 Rewrite live references to the new stamped names. **Skip `vendor/`.** Keep historical narration at its old names where a file *describes a past move* — session logs and the versioning transcript should not be falsified. Show Kaeden the diff before it commits.
 
@@ -141,7 +141,7 @@ Anchor the foundation to README and the roadmap to ROADMAP, stamp the open-threa
 
 ## Step 6 — Write a stamped session log of this chunk
 
-Add `session-logs/<STAMP>_reorg-chunk-5-work-in-progress.md`, where `<STAMP>` is the exact time Kaeden supplies in `YYYYMMDD-HHMMSS` form, in the one-clock shape — no countdown prefix. Write it in Radiant voice: what this chunk settled (the workbench reconciled to the clock, the archive convention preserved, the reorg's own scaffolding gathered into archive), what waits next (`rye-learning-process/` as the last design folder, then `strengthening-compiler/` when the pause lifts), and a three-clause benediction. Prepend its newest-first row to `session-logs/README.md`, then commit it.
+Add `session-logs/<STAMP>_reorg-chunk-5-work-in-progress.md`, where `<STAMP>` is the exact time Kaeden supplies in `YYYYMMDD-HHMMSS` form, in the one-clock shape — no countdown prefix. Write it in Radiant voice: what this chunk settled (the workbench reconciled to the clock, the archive convention preserved, the reorg's own scaffolding gathered into archive), what waits next (`rye-learning-process/` as the last design folder, then `external-research/yonder/strengthening-compiler/` when the pause lifts), and a three-clause benediction. Prepend its newest-first row to `session-logs/README.md`, then commit it.
 
 ---
 
@@ -159,7 +159,7 @@ Never force-push. The branch merges to `main` later by ordinary fast-forward.
 ## Hold to these throughout
 
 - **This folder only.** `work-in-progress/` (with its `archive/`) complete before any other folder opens — aparigraha at the folder level. The only reach outside it is repo-wide link hygiene, which serves correct references rather than new scope.
-- **`main` stays still.** Strengthening is paused, so the fast-forward holds. Link hygiene may touch `strengthening-compiler/` link strings, yet never its strengthening work.
+- **`main` stays still.** Strengthening is paused, so the fast-forward holds. Link hygiene may touch `external-research/yonder/strengthening-compiler/` link strings, yet never its strengthening work.
 - **Every rename uses `git mv`** — history and blame carry forward intact, including the moves into `archive/`.
 - **Finished scaffolding graduates to `archive/`** — the folder's own rule, applied to the reorg's own records.
 - **Check before you change.** Print the full mapping, the archive moves, and the derived stamps, and wait for Kaeden's word before any `git mv`, `git rm`, or file write.
