@@ -2,14 +2,14 @@
 
 **Language:** EN  
 **Stamp:** `20260725.110354`  
-**Status:** Checkable — **campaign STOPPED** `20260725.114400` · passes **on-touch only** · **Radiant Lint Season** may enroll newborns and walk named arcs (`20260727.213740`)  
-**Ground:** completion [`20260725-113115_radiant-pass-completion-report.md`](../../counsel/20260725-113115_radiant-pass-completion-report.md) appendix · repair relay `20260725.114400` · season [`../../counsel/20260727-213740_checkpoint-bookmark-and-the-radiant-lint-season.md`](../../counsel/20260727-213740_checkpoint-bookmark-and-the-radiant-lint-season.md)
+**Status:** Checkable — **campaign STOPPED** `20260725.114400` · passes **on-touch only** · **The Sound Season** may enroll newborns, walk named arcs, and (separately) run **yes-seated breach** yonder/re-point motions (`20260727.220947`)  
+**Ground:** completion [`20260725-113115_radiant-pass-completion-report.md`](../../counsel/20260725-113115_radiant-pass-completion-report.md) appendix · repair relay `20260725.114400` · Sound [`../../counsel/20260727-220947_the-sound-season-and-the-seated-breach.md`](../../counsel/20260727-220947_the-sound-season-and-the-seated-breach.md) · Radiant Lint history [`../../counsel/20260727-213740_checkpoint-bookmark-and-the-radiant-lint-season.md`](../../counsel/20260727-213740_checkpoint-bookmark-and-the-radiant-lint-season.md)
 
 ---
 
 ## Runway (ledger header truth)
 
-**Living ledger count** (was 1,198 at campaign stop; Arc I enroll `20260727.215720` → **1205**). Continuous campaign **stopped** `20260725.114400`. Coverage proof lives in the ledger; inline `Radiant pass` stamps **removed** from clean corpus files. **No batch rewrite waves** on the closed corpus — newborns enroll on kg; yonder backlog remains selectable.
+**Living ledger count** (was 1,198 at campaign stop; Radiant Lint r1–r4 → **1355**). Continuous campaign **stopped** `20260725.114400`. Coverage proof lives in the ledger; inline `Radiant pass` stamps **removed** from clean corpus files. **No batch rewrite waves** on the closed corpus for style alone — newborns enroll on kg; yonder backlog remains selectable. **Breach yonder + re-point** is a different motion (Sound Season seat) and must keep the six promises — it is not a Radiant restyle wave.
 
 ---
 

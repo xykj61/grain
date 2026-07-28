@@ -10,10 +10,10 @@
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2 · ring-3** · **THREATS** · **five pillars** · **accrete tiers** · **redaction stance** · **always-in-it rhythm** · **Prin / %prin**  
 **Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list1024 · Env512 · **stamp @u64 · Crockford** · **shape aura floor** · **Glow text floor GREEN** · **Glow Book weave GREEN (C2b)** · **baked-sample Acme gloss**  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand home** · **siblings seated** · **--cursor launch** · **Pond counsel 161616** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm+cold REPORT** · **Grain umbrella living** · **OQ #1 · #3 · #4 · #5 answered** · **pass ledger** · **campaign STOPPED** · **growth law** · **wasmtime E GREEN** · **monocypher 4.0.3 GREEN** · **MAP.md** · **breach T3–T4** · **U·V·I** · **C-Ladder C1·C2·C2b landed** · **r18 say/lint twin** · **r21 Verse · O1** · **r22 outside eyes** · **Prin** · **corpus twin part six in flight** · **C3–C5 await homes**  
-**Git nib:** `c2f0e1cf1b` · Grain · pre-bookmark seating · g15 L2 STOP · autoproject96/grain
-**Bookmark:** counsel `20260727.213740` — checkpoint · bookmark · Radiant Lint Season bow · compass Voice
+**Git nib:** `0532615399` · Grain · Radiant Lint r4 Arc II · autoproject96/grain
+**Bookmark:** counsel `20260727.220947` — The Sound Season · audit r0 · seated breach · saga close
 
-**Season:** Framework · EDT · **Grain** umbrella · pier **`~/grain`** · **finishing edge:** Radiant Lint Season Arc II wave C landed · wave D or g0–g14 bench hour · next season charter · bookmark [`counsel/20260727-213740_checkpoint-bookmark-and-the-radiant-lint-season.md`](../counsel/20260727-213740_checkpoint-bookmark-and-the-radiant-lint-season.md). Prefer **git nib** (never tip) for HEAD.
+**Season:** Framework · EDT · **Grain** umbrella · pier **`~/grain`** · **finishing edge:** The Sound Season seated (r0) · breach yes · raise instrument or g0–g14 bench hour · next season charter · bookmark [`counsel/20260727-220947_the-sound-season-and-the-seated-breach.md`](../counsel/20260727-220947_the-sound-season-and-the-seated-breach.md). Prefer **git nib** (never tip) for HEAD.
 
 ---
 

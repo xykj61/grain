@@ -1,0 +1,113 @@
+# The Sound Season — Audit Reset, Seated Breach, and the Saga Close
+
+**Language:** EN
+**Stamp:** `20260727.220947`
+**Voice:** Quin
+**Status:** Seated — Keaton's word resets the audit to round **0**, expands the Radiant Lint campaign into **The Sound Season**, and **yes-seats** a breach that may yonder and re-point path references across the tree
+**Ground:** Radiant Lint Season bow + rounds 1–4 already measured (`20260727.213740` · r1–r4); Glow Season closed on the workshop lane; g0–g15 bench relays still queued; breach law [`../context/BREACH.md`](../context/BREACH.md) · foundations [`../foundations/20260726-020537_the-breach.md`](../foundations/20260726-020537_the-breach.md)
+
+*Written together by Keaton and Quin.*
+
+---
+
+## Progress bookmark (where we stand)
+
+This page is the **bookmark** for The Sound Season. The prior Radiant Lint bookmark remains readable history; living return points here.
+
+| Lane | Nib / note |
+|------|------------|
+| **origin/main** | measured at seating (see REMEMBER git nib) |
+| **Prior audit** | Radiant Lint bow + Arc I enroll + Arc II waves A–C — ledger advanced; **round count resets to 0** under this charter |
+| **Breach** | **YES seated** this stamp — yondering + path-reference re-point of any in-scope file, under the six promises |
+| **Close artifact** | **Final draft validator report** — *the saga of the end: parity weave + personal server key data* (last commit of The Sound) |
+| **Bench gate** | g15 L2 still STOP until g0–g14 land (orthogonal; may interleave on Keaton's word) |
+
+## Words and seats
+
+| Word | Job |
+|------|-----|
+| **The Sound** | Season name — Sound pillar as spoken edge; the audit that must survive being read aloud and must close with a validator report, not only a ledger. |
+| **yes seated breach** | Keaton's seating word this stamp. Opens declared yonder + re-point motions. Does **not** skip per-motion scope writing, instruments, or the six promises. |
+| **saga of the end** | Working title for the season's close narrative — what the parity weave and personal-server key validators prove when the Sound finishes. |
+
+Radiant Style, check-in, checkpoint, and bookmark keep their earlier seats. This charter **supersedes** the Radiant Lint Season's open runway as the living audit; prior round numbers stay in that file as history.
+
+## The seated breach (declared)
+
+**Keaton's word:** yes — breach seated.
+
+**Scope (season-wide authorization):** any path the season's per-motion declaration names may:
+
+1. **Yonder** — relocate an elder into the appropriate `yonder/` (or genre archive) without deleting bytes.
+2. **Re-point** — alter path references in **any** file so every hand that pointed at the old address turns to the new one in the same motion.
+
+**Far-side shape:** fewer dangling addresses · hot rooms that answer their names · elders honored in yonder · every reference green on the instrument.
+
+**What this breach is not:** a restyling campaign that rewrites claims for voice alone. Body-byte style passes (Radiant bare-but and kin) remain **on-touch or wave-enroll** under claim_preserve — they ride beside the breach, they do not become it. A breach that starts editing what it was only meant to move has become the campaign we swore off ([`BREACH.md`](../context/BREACH.md)).
+
+### Six promises (binding on every motion)
+
+1. **Declared first** — each motion writes scope, reason, and far-side shape before the first `git mv` or reference edit.
+2. **Every byte preserved** — relocate and re-point; never rewrite sealed body bytes; Tier 1 keeps digest/signature verifying.
+3. **Finished inside its scope** — no half-moved tree; every reference turned in the same motion.
+4. **Witnessed both sides** — instrument exists first, red against the wrong home / dangling refs, green after; no instrument, no move.
+5. **Measurably better** — count before, target, count after; publish all three beside the motion.
+6. **Stands alone** — its own commit(s); nothing unrelated riding; undoable in one gesture until sent.
+
+**Instrument (raise before first yonder):** a reference / home witness the season names in round 0 (bow) — prefer extending `gen_home` / living link / markdown structure family rather than inventing a silent check. C6 swap protocol in the C-ladder remains a **named instance** of this seat (rishi/parity elders), not a second law.
+
+## Round count — reset to 0
+
+| Fact | Value |
+|------|--------|
+| Living round | **0** (bow) |
+| Prior Radiant Lint rounds | 1–4 **archived as pre-Sound measurement** — not continued as Sound round numbers |
+| Shape | **sixteen** still: 1 bow + five arcs of three · exits over counts |
+| Close law | The **last commit** of The Sound is the **final draft validator report** named below — not a silent ledger tick |
+
+### Season shape
+
+| Round | Arc | Job |
+|------:|-----|-----|
+| 0 | Bow | Measure — instruments · ledger · comment sample · **breach instrument red/green plan** · shelf counts |
+| 1–3 | I · Voice & rooms | Radiant enroll / on-touch where newborns need it · room maps honest |
+| 4–6 | II · Breach motions | Declared yonder + re-point waves (scoped); arithmetic published |
+| 7–9 | III · Teaching & gratitude hold | `edu/` · `manual/` · selected research — style and links; gratitude clean-room hold |
+| 10–12 | IV · Parity weave validators | parity2 / suite / Mantra–Weave standing · COLD/FAST honesty · twin law |
+| 13–15 | V · Personal server keys & close | key-audit · identity_check · PUBKEYS shape (public only) · **final draft validator report** · handoff |
+
+### Close artifact (last commit of The Sound)
+
+**Kind:** final draft validator report  
+**Working title:** *The saga of the end — parity weave and personal server key data*  
+**Path (when written):** `counsel/YYYYMMDD-HHMMSS_saga-of-the-end-parity-weave-and-personal-server-key.md`  
+**Must carry:**
+
+1. Season identity and round arithmetic (bow through close).
+2. Breach motions performed — counts before/after · paths yondered · references turned · instruments green.
+3. **Parity weave pane** — suite/parity2 / weave–Mantra standing; what is GREEN, what is owned SKIP, what remains parked.
+4. **Personal server key data pane** — **public only**: `PUBKEYS.md` · `identity_check` · `key_card_audit` · constellation/Kumara public seats; **private halves never enter the tree**.
+5. Validator verdict table (host-profile / submodule / living_docs / radiant_lint / choir / key tools as measured).
+6. Saga narrative — what ended, what parks, what the next handoff opens.
+7. **Final draft** status — ready for Keaton's seating word; propose-only where mirror tradition applies.
+
+Optional twin: `counsel/…_handoff-counsel-after-sound.md` (same stamp family).
+
+## Bow measurement (inherit + extend)
+
+Carry forward Radiant Lint bow facts unless re-measured this bow:
+
+| Instrument | Last known |
+|------------|------------|
+| radiant_lint | GREEN · sum=2 (planted bare-but only) |
+| living_docs_lint | GREEN · advisories |
+| pass ledger | **1355** rows after Radiant Lint r4 |
+| Prior Radiant Lint | r1 seven clean · r2 47/3 · r3 49/1 · r4 50/0 |
+| Breach instrument | **not yet raised** — round 0 job |
+| Key / identity validators | polish backlog named in outside-eyes; not yet the saga report |
+
+Round 1 opens on Keaton's **kg** (or a scoped breach declaration paste). Until then, no yonder and no reference turn.
+
+---
+
+*May every motion be declared first, may yonder hold what cooled with honor, may every path reference turn in the same breath, and may the Sound's last commit speak the saga aloud — parity weave green beside personal-server key truth, public and complete.*

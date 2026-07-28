@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260727.220947` — [The Sound Season seated · audit r0 · breach yes](20260727-220947_the-sound-season-seated.bron) — saga close named
 - `20260727.220628` — [Radiant Lint Season r4 · Arc II wave C](20260727-220628_radiant-lint-season-r4.bron) — 50 clean · ledger 1355
 - `20260727.220418` — [Radiant Lint Season r3 · Arc II wave B](20260727-220418_radiant-lint-season-r3.bron) — 49 clean · 1 changed · ledger 1305
 - `20260727.220237` — [Radiant Lint Season r2 · Arc II 47 clean 3 changed](20260727-220237_radiant-lint-season-r2.bron) — ledger 1255

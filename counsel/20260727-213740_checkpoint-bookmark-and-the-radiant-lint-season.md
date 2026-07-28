@@ -3,10 +3,11 @@
 **Language:** EN
 **Stamp:** `20260727.213740`
 **Voice:** Quin
-**Status:** Seated — Glow words, compass voice step, progress bookmark, and a sixteen-round Radiant prose-and-comment season
+**Status:** Historical measurement — living audit runway **superseded** by The Sound Season [`20260727-220947_the-sound-season-and-the-seated-breach.md`](20260727-220947_the-sound-season-and-the-seated-breach.md) (round count reset to 0 · breach yes-seated)
 **Ground:** origin/main at seating · Glow Season closed on the workshop lane · g0–g15 bench relays still queued
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260727.220947` — Sound Season supersedes open runway; this file kept as pre-Sound measurement
 Radiant pass `20260727.220628` — round 4 log accreted; claims unchanged
 Radiant pass `20260727.220418` — round 3 log accreted; claims unchanged
 Radiant pass `20260727.215720` — round 1 log accreted; claims unchanged
@@ -15,7 +16,9 @@ Radiant pass `20260727.215720` — round 1 log accreted; claims unchanged
 
 ## Progress bookmark (where we stand)
 
-This page is the **bookmark** for the pier after the Glow Season's counsel close and the Cursor check-in that named the bench gap.
+**Living bookmark:** [`20260727-220947_the-sound-season-and-the-seated-breach.md`](20260727-220947_the-sound-season-and-the-seated-breach.md). What follows is the Radiant Lint seating record (bow + rounds 1–4), kept for measurement history.
+
+This page was the **bookmark** for the pier after the Glow Season's counsel close and the Cursor check-in that named the bench gap.
 
 | Lane | Nib / tip | Note |
 |------|-----------|------|
