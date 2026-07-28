@@ -1,7 +1,7 @@
 # Glow — Language Tooling, Grown from Real Design
 
 **Language:** EN
-**Last updated:** 2026-07-27 (**baked sample** Acme gloss · **STOA333** digraph twin · text floor · sameness collapses)
+**Last updated:** 2026-07-28 (Tensegral Arc II r5 — text floor · digraph twin · truth reaffirmed GREEN)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Audience:** Acme Corporation employees reading the working Glow pin

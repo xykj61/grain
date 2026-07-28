@@ -3,7 +3,7 @@
 **Language:** EN
 **Stamp:** `20260728.002049`
 **Voice:** Quin
-**Status:** Check-in — after Arc II round 4
+**Status:** **Resolved** — lean **A · kg r5 Glow** taken `20260728.002920`
 **Ground:** Motion [`20260728-002049_tensegral-season-r4-resin.md`](20260728-002049_tensegral-season-r4-resin.md)
 
 *Written together by Keaton and Quin.*
