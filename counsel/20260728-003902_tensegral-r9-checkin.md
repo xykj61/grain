@@ -3,7 +3,7 @@
 **Language:** EN
 **Stamp:** `20260728.003902`
 **Voice:** Quin
-**Status:** Check-in — after Arc III round 9
+**Status:** **Resolved** — lean **A · kg r10 Tighten** taken `20260728.004116`
 **Ground:** Motion [`20260728-003902_tensegral-season-r9-consolidate.md`](20260728-003902_tensegral-season-r9-consolidate.md)
 
 *Written together by Keaton and Quin.*
