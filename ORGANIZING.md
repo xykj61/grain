@@ -3,7 +3,7 @@
 *A durable guide to where work lives, how new writing earns its place, and how the tree stays honest over time.*
 
 **Language:** EN
-**Last updated:** 2026-07-27 (`20260727.064038` — src/ Glow userland and edu/ opened as O1 skeleton)
+**Last updated:** 2026-07-27 (`20260727.234128` — root `saga/` shelf for season close narratives)
 **Style:** Radiant (see `context/RADIANT_STYLE.md`)
 **Voice:** Quin
 
@@ -22,6 +22,8 @@ Read the sections below when you wonder where a new file belongs. When a season'
 **`context/`** — memory and compass. The disciplines we keep across every track: Tiger and TAME for code rigor, Radiant for prose, Simple-Lovable-Complete for product scope, and Civic for designing public benefit so the reward points at the good. Identity (`QUIN.md`, the standing voice — also the fifth OS variant beside Reya · Riyo · Trey · Triz, and the Q-vane name; Reya 2, Rio 3, and the short writing-voice season under Riyo rest in `archive/`), and `specs/` for plain-English decisions that deserve a durable home.
 
 **`foundations/`** — the why beneath the work: foundation briefs, the distilled essays and the weave that composes them, and the civic visions. Dated artifacts rest beneath a living README.
+
+**`saga/`** — season close narratives (final draft / seated validator reports and end-of-arc arithmetic). Counsel proposes; this shelf keeps what a season names as its lasting close. Opened `20260727.234128`; first resident is The Sound's saga of the end.
 
 **`classical-vedic-astrology/`** — the reading craft: a siloed study library in topic folders (`studies/nakshatras/`, `planets-in-signs/`, `planet-in-house/`, …), composable templates in `templates/`, demonstration readings in `readings/`, and the dual-zodiac caster. Names stay siloed to the placeholder **Alice** by consent and by design; the fuller originals rest in the private lane, and gratitude to teachers lives inside each study.
 

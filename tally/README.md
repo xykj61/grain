@@ -1,9 +1,9 @@
 # Tally — the Garden Allocator, and the Small Marks That Guard It
 
 **Language:** EN
-**Last updated:** 2026-07-10 (Radiant Style pass round 2 · `maybe`/`no_padding` seated)
+**Last updated:** 2026-07-27 (`20260727.234128` — marks table matches tree · Sound saga shelf cites Tally)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Status:** Checkable — bounded garden allocator
+**Status:** Checkable — bounded garden allocator · small marks · Kumara · Bud
 
 **Tally is where bounds live.** A garden is a region of memory with a stated start, length, and end — bump allocation lands inside it or fails cleanly, and clearing it releases everything at once. Every hosted seed and tool in this tree reaches for a Tally garden rather than `std.heap.ArenaAllocator` directly, so the one owned name carries the one law: bounded, named, and cleared whole.
 
@@ -23,8 +23,14 @@ Beside the allocator itself, Tally holds a second kind of thing: small, universa
 | [`copy.rye`](copy.rye) | `copy_disjoint(T, target, source)` — asserts lengths agree and regions never overlap before calling the `@memcpy` it guards | TigerBeetle's `stdx.copy_disjoint` |
 | [`maybe.rye`](maybe.rye) | `maybe(ok)` — the dual of `assert`: a condition that may honestly be true or false, turned into a name a reader can search for | TigerBeetle's `stdx.maybe`, matched at the letter |
 | [`no_padding.rye`](no_padding.rye) | `no_padding(T)` — proves at compile time that an `extern struct` carries no hidden padding between or after its fields | TigerBeetle's `stdx.no_padding`, ported and honestly simplified (no `u128` branch — this tree has no field wide enough to need it yet) |
+| [`parse_int.rye`](parse_int.rye) | Bounded integer parse mark — refuse overflow and trailing junk at the door | Hosted callers (caravan · linengrow · …) |
+| [`kumara.rye`](kumara.rye) | Ed25519 identity mark — personal-server public face without private halves in-tree | Urbit point-identity spirit · saga key pane |
+| [`bud.rye`](bud.rye) | Pedersen commitment mark (Bud) | Disclosure / SLCL4 family |
+| [`pedersen.rye`](pedersen.rye) | Deprecated re-export → `bud.rye` | Name kept for elder import paths |
 
 `no_padding`'s realest use today lives outside Tally itself, at `comlink/device_wire.rye`'s hosted selftest, which asserts it against every hand-designed virtio wire structure in `comlink/virtio_net.rye` — five structures a real device reads byte for byte, where a silent padding byte would leave a guest mute to its host rather than a style question.
+
+**Who calls Tally:** module homes import these marks (often via symlink) — `linengrow/` (mala · wov · disclosure), `caravan/`, `mantra/`, `comlink/`, `brushstroke/`, `rishi/`, `glow/`, `aurora/`, `amphora/`, `granary/`, `mand/`, `mandi/`, `pond/apps/*`, and `tools/kumara.rye`. Tally itself imports **`std` only**. Saga shelf map: [`../saga/README.md`](../saga/README.md).
 
 ## Elder call sites migrate on touch
 

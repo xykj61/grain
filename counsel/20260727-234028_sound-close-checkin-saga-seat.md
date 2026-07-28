@@ -4,7 +4,7 @@
 **Stamp:** `20260727.234028`
 **Voice:** Quin
 **Status:** Check-in — Keaton asked **check in** after Sound r15
-**Ground:** Saga final draft [`20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md`](20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md) · handoff [`20260727-233237_handoff-counsel-after-sound.md`](20260727-233237_handoff-counsel-after-sound.md) · nib `3a9cbfff96` · pin `35c161b876` · origin+codeberg current
+**Ground:** Saga final draft [`../saga/20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md`](../saga/20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md) · handoff [`20260727-233237_handoff-counsel-after-sound.md`](20260727-233237_handoff-counsel-after-sound.md) · nib `3a9cbfff96` · pin `35c161b876` · origin+codeberg current
 
 *Written together by Keaton and Quin.*
 

@@ -4,7 +4,10 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260727.234402` — [Sound confirmation check-in · saga shelf](20260727-234402_sound-confirmation-checkin.bron) — confirm+seat leans · Tally GREEN
+- `20260727.234128` — [Sound saga shelf · Tally infusion](20260727-234128_sound-saga-shelf-tally.bron) — root saga/ · 6/6 Tally · ROUND MODE GREEN
 - `20260727.234028` — [Sound close check-in · saga seat](20260727-234028_sound-close-checkin.bron) — leans A–E · recommend seat
+
 - `20260727.233237` — [Sound Season r15 · saga of the end close](20260727-233237_sound-season-r15.bron) — final draft validator report · Sound closes
 
 - `20260727.233228` — [Sound Season r14 · Arc V key pane polish](20260727-233228_sound-season-r14.bron) — IDENTITY-GREEN · owned gaps named

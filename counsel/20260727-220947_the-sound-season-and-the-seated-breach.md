@@ -7,6 +7,7 @@
 **Ground:** Radiant Lint Season bow + rounds 1–4 already measured (`20260727.213740` · r1–r4); Glow Season closed on the workshop lane; g0–g15 bench relays still queued; breach law [`../context/BREACH.md`](../context/BREACH.md) · foundations [`../foundations/20260726-020537_the-breach.md`](../foundations/20260726-020537_the-breach.md)
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260727.234128` — saga shelf root · Tally infusion · final breach edit
 Radiant pass `20260727.233237` — round 15 saga final draft; The Sound closes
 Radiant pass `20260727.233228` — round 14 Arc V key pane polish
 Radiant pass `20260727.233109` — round 13 Arc V public keys standing; IDENTITY-GREEN
@@ -95,7 +96,7 @@ Radiant Style, check-in, checkpoint, and bookmark keep their earlier seats. This
 
 **Kind:** final draft validator report  
 **Working title:** *The saga of the end — parity weave and personal server key data*  
-**Path (when written):** `counsel/YYYYMMDD-HHMMSS_saga-of-the-end-parity-weave-and-personal-server-key.md`  
+**Path (when written):** `saga/YYYYMMDD-HHMMSS_saga-of-the-end-parity-weave-and-personal-server-key.md` (root `saga/` shelf · opened `20260727.234128`)  
 **Must carry:**
 
 1. Season identity and round arithmetic (bow through close).
@@ -190,7 +191,11 @@ Arc V key pane polish: IDENTITY-GREEN reaffirmed · owned gaps named (key-card.c
 
 ### Round 15 landed (`20260727.233237`) — Sound close
 
-**Final draft validator report:** [`20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md`](20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md) · handoff [`20260727-233237_handoff-counsel-after-sound.md`](20260727-233237_handoff-counsel-after-sound.md). Reply: [`replies/20260727-233237_re-sound-season-r15.md`](replies/20260727-233237_re-sound-season-r15.md). **The Sound Season closes as draft** — awaiting Keaton's seating word.
+**Final draft validator report:** [`../saga/20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md`](../saga/20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md) · handoff [`20260727-233237_handoff-counsel-after-sound.md`](20260727-233237_handoff-counsel-after-sound.md). Reply: [`replies/20260727-233237_re-sound-season-r15.md`](replies/20260727-233237_re-sound-season-r15.md). **The Sound Season closes as draft** — awaiting Keaton's seating word.
+
+### Final edit (`20260727.234128`) — saga shelf + Tally
+
+Root [`../saga/`](../saga/README.md) opened · Sound saga moved there · counsel stub remains · Tally README marks updated · Tally battery 6/6 GREEN · motion [`20260727-234128_sound-saga-shelf-and-tally-infusion.md`](20260727-234128_sound-saga-shelf-and-tally-infusion.md). Confirmation check-in follows.
 
 ---
 

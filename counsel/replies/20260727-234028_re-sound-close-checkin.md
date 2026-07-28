@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Stamp:** `20260727.234028`
-**Answers:** [`../20260727-234028_sound-close-checkin-saga-seat.md`](../20260727-234028_sound-close-checkin-saga-seat.md) · saga [`../20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md`](../20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md)
+**Answers:** [`../20260727-234028_sound-close-checkin-saga-seat.md`](../20260727-234028_sound-close-checkin-saga-seat.md) · saga [`../../saga/20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md`](../../saga/20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md)
 **Voice:** Quin
 
 *Written together by Keaton and Quin.*
