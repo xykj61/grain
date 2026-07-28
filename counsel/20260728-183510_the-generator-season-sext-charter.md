@@ -8,7 +8,8 @@
 **Informal tag:** innermost^6+ · nest-6  
 **Ground:** origin/main `418af54e73` (pre-send)  
 **Within:** paused **innermost** MUR (u91 complete / u92 next) · inside paused Inner Scope · inside paused Constellation  
-**Status:** **OPEN** · s0–s5 complete `20260728.191327` · **s6** next  
+**Status:** **OPEN** · s0–s6 complete `20260728.191859` · **s7** next  
+Radiant pass `20260728.191859` — s6 taxonomy fusion draft · two gens named · os/tes parked  
 Radiant pass `20260728.191327` — s5 tools/gen/fund home LIVE · six fund-prep · shims  
 Radiant pass `20260728.190251` — s4 tools/gen/season home LIVE · shims at old paths  
 Radiant pass `20260728.190017` — s3 f4 first-home rehearsal · tools/gen/season cohort named · no mv  

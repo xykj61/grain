@@ -1,7 +1,8 @@
 # Generator Season — s0 Recursion Prompt (printout · six scopes)
 
-**Stamp:** `20260728.183510` · Radiant pass `20260728.191327`  
+**Stamp:** `20260728.183510` · Radiant pass `20260728.191859`  
 **Use:** paste the fenced block as the next counsel/bench session opener.  
+Radiant pass `20260728.191859` — s6 taxonomy fusion draft · two gens · os/tes parked · s7 next  
 Radiant pass `20260728.191327` — s5 tools/gen/fund LIVE · six fund-prep · s6 next  
 Radiant pass `20260728.190251` — s4 tools/gen/season LIVE · shims · s5 next  
 Radiant pass `20260728.190017` — s3 f4 first-home rehearsal · tools/gen/season · no mv · s4 next  
@@ -41,7 +42,7 @@ QUINT SCOPE (CLOSED — handed back — do not advance q-rounds):
   Charter: counsel/20260728-030310_the-keeh-season-quint-charter.md
 
 SEXT SCOPE (OPEN — walk here):
-  Generator Season OPEN · s5 complete / s6 next.
+  Generator Season OPEN · s6 complete / s7 next.
   Working lean: Glow · Glow runes · Rishi · Dojo spirit · generators/gen/.
   season_name= held (working title Generator Season).
   Charter: counsel/20260728-183510_the-generator-season-sext-charter.md
@@ -51,11 +52,13 @@ SEXT SCOPE (OPEN — walk here):
   s3 seat: counsel/20260728-190017_generator-season-s3-f4-first-home-rehearsal.md
   s4 seat: counsel/20260728-190251_generator-season-s4-season-gen-home.md
   s5 seat: counsel/20260728-191327_generator-season-s5-fund-gen-home.md
+  s6 seat: counsel/20260728-191859_generator-season-s6-taxonomy-fusion-draft.md
   Lexicon: scope·outer·inner·innermost·core·quint·sext · generators · Generator.
   Prin: rishi/bin/rishi run tools/gen/season/prin.rish scope
   Living pin: tools/gen/season/prin_scope.rish (old tools/*.rish paths are shims)
   Dual-census: Glow desks 317 (O3 gated) · Rishi tools/*.rish 610 (f4–f7 lane).
   f4 homes LIVE: tools/gen/season · tools/gen/fund (six fund-prep).
+  Taxonomy draft: two gens named · root os/tes parked · O3 declaration-gated.
   Fuse lean: keep Glow and Rishi distinct; Dojo spirit = glow-mode aspect (STOA332 GREEN);
     emit/expect = hand-rolled PE; finish generators/gen migration + O3 when he declares;
     no kernel fuse; no rename Rishi to Dojo.
@@ -67,19 +70,19 @@ workshop O3 breach · STOA332 · LEXICON generators/sext · MUR charter (paused)
 Companions: newest quin-workshop pair if attached; else verify origin/main nib.
 
 first duties: bootstrap or verify · state the nib · prin scope · prin sundial ·
-report · then walk s6 from the charter:
+report · then walk s7 from the charter:
   affirm six scopes · affirm MUR pause u91/u92 · affirm shred RED ·
-  affirm fuse lean · affirm dual-census · affirm tools/gen/season + fund LIVE ·
-  then kg taxonomy draft or next thin family or check-in;
+  affirm fuse lean · affirm dual-census · affirm taxonomy draft ·
+  affirm tools/gen/season + fund LIVE · then kg next thin family or check-in;
   no live shred without prin rish breach yes now + circled scope;
   no live Sui deploy · no wallet · no gas · no private key in tree;
   no m/i/u/g/q advance · no O3 without his declaration · no whole-tree silent sed.
 
-waymark: s5 complete, s6 next
+waymark: s6 complete, s7 next
 nib <origin/main short nib>
 bench report (verbatim, if any): <REPORT/STOP — or "none">
 scope: outer=paused(m8/m9) inner=paused(i6/i7) innermost=paused(u91/u92)
-  core=closed(handed_back) quint=closed(handed_back) sext=open(s6)
+  core=closed(handed_back) quint=closed(handed_back) sext=open(s7)
   geode=prep(d0)
 extend_or_return=return_mur_u92
 breach scope circle: rename_overwrite=approved filename_rename=approved
@@ -89,7 +92,7 @@ words seated (blank = held whole): season_name= choir= LICENSE_WORD=
   house_folds= fund_seats= siya_palette= nara_anchor=
   fascia_fold=inner(paused) murr_fund=prep gren_fund=prep
   eyva_fund=prep gwoh_fund=prep trya_fund=prep keeh_fund=prep
-  generator_fuse=season_and_fund_homes prin_scope_rish=landed
+  generator_fuse=taxonomy_draft prin_scope_rish=landed
 asks: none
 ] ]
 ```
