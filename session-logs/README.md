@@ -4,6 +4,8 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260727.233237` — [Sound Season r15 · saga of the end close](20260727-233237_sound-season-r15.bron) — final draft validator report · Sound closes
+- `20260727.233228` — [Sound Season r14 · Arc V key pane polish](20260727-233228_sound-season-r14.bron) — IDENTITY-GREEN · owned gaps named
 - `20260727.233109` — [Sound Season r13 · Arc V public keys standing](20260727-233109_sound-season-r13.bron) — IDENTITY-GREEN · key_card SKIP · private CLEAN
 - `20260727.232842` — [Sound Season r12 · Arc IV Mantra–Weave battery](20260727-232842_sound-season-r12.bron) — 7/7 GREEN · Arc IV exits
 - `20260727.232702` — [Sound Season r11 · Arc IV twin-fold pane](20260727-232702_sound-season-r11.bron) — 530 TWIN / 551 · 1 RED owned · digraph GREEN

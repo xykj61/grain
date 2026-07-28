@@ -3,10 +3,12 @@
 **Language:** EN
 **Stamp:** `20260727.220947`
 **Voice:** Quin
-**Status:** Seated — Keaton's word resets the audit to round **0**, expands the Radiant Lint campaign into **The Sound Season**, and **yes-seats** a breach that may yonder and re-point path references across the tree
+**Status:** Seated · **Sound close draft landed** `20260727.233237` — Keaton's word resets the audit to round **0**, expands the Radiant Lint campaign into **The Sound Season**, and **yes-seats** a breach that may yonder and re-point path references across the tree; saga final draft awaits Keaton's seating word
 **Ground:** Radiant Lint Season bow + rounds 1–4 already measured (`20260727.213740` · r1–r4); Glow Season closed on the workshop lane; g0–g15 bench relays still queued; breach law [`../context/BREACH.md`](../context/BREACH.md) · foundations [`../foundations/20260726-020537_the-breach.md`](../foundations/20260726-020537_the-breach.md)
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260727.233237` — round 15 saga final draft; The Sound closes
+Radiant pass `20260727.233228` — round 14 Arc V key pane polish
 Radiant pass `20260727.233109` — round 13 Arc V public keys standing; IDENTITY-GREEN
 Radiant pass `20260727.232842` — round 12 Arc IV Mantra–Weave battery 7/7; Arc IV exits
 Radiant pass `20260727.232702` — round 11 Arc IV twin-fold pane; 530 TWIN / 551
@@ -181,6 +183,14 @@ Arc IV Mantra–Weave sample battery **7/7 GREEN** · **Arc IV exits**. Motion: 
 ### Round 13 landed (`20260727.233109`)
 
 Arc V opens: `identity_check` **IDENTITY-GREEN ssh=4 pgp=2** · PUBKEYS surfaces present · private-half scan CLEAN · `key_card_audit` SKIP (no host conf). Motion: [`20260727-233109_sound-arc-v-public-keys-standing.md`](20260727-233109_sound-arc-v-public-keys-standing.md). Reply: [`replies/20260727-233109_re-sound-season-r13.md`](replies/20260727-233109_re-sound-season-r13.md).
+
+### Round 14 landed (`20260727.233228`)
+
+Arc V key pane polish: IDENTITY-GREEN reaffirmed · owned gaps named (key-card.conf · macOS jail public export · urbit hold). Motion: [`20260727-233228_sound-arc-v-key-pane-polish.md`](20260727-233228_sound-arc-v-key-pane-polish.md). Reply: [`replies/20260727-233228_re-sound-season-r14.md`](replies/20260727-233228_re-sound-season-r14.md).
+
+### Round 15 landed (`20260727.233237`) — Sound close
+
+**Final draft validator report:** [`20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md`](20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md) · handoff [`20260727-233237_handoff-counsel-after-sound.md`](20260727-233237_handoff-counsel-after-sound.md). Reply: [`replies/20260727-233237_re-sound-season-r15.md`](replies/20260727-233237_re-sound-season-r15.md). **The Sound Season closes as draft** — awaiting Keaton's seating word.
 
 ---
 
