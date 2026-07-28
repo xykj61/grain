@@ -8,7 +8,8 @@
 **Rename spine (approved overwrite):** **Mala / MALA / `%mala` → Murr / MUR / `%murr`** — Radiant · TAME · living-tree massive rename across the season  
 **Honor dedication:** **Kyler Murray** — Minnesota Vikings quarterback (signed 2026; camp competition with J.J. McCarthy as of this stamp's web ground)  
 **Currency lean:** **MUR** as **L1** · unify with **WOV** concept · roadmap **last** retires WOV entirely in favor of MUR  
-**Status:** **OPEN** · u0–u68 complete `20260728.064402` · **u69** next — doors named / check-in  
+**Status:** **OPEN** · u0–u69 complete `20260728.064546` · **u70** next — fascia prune waves  
+Radiant pass `20260728.064546` — u69 fascia prune without shred seated · shred RED  
 Radiant pass `20260728.064402` — u68 check-in · living CLEAR · queue empty  
 Radiant pass `20260728.064221` — u67 filename residual map · living CLEAR · fossils HOLD  
 Radiant pass `20260728.063848` — u66 filename-rename breach approved · seated  
@@ -120,6 +121,7 @@ When innermost hands back: resume **inner** at i7 (fascia shred-with-parity draf
 - **Rename overwrite breach approved seated** `20260728.043539` — living Mala/MALA→Murr/MUR waves with witnesses (top priority)  
 - **Filename-rename breach approved seated** `20260728.063848` — living `git mv` + same-motion path re-points (distinct from content overwrite; distinct from shred)  
 - Fascia **shred** / Amphora parity delete still needs `prin rish breach yes now` + circled shred scope (distinct from rename edit)  
+- **Fascia prune** seated `20260728.064546` — continuous sameness/smallness/tensegrity hygiene **without** live shred (Inner stays paused)  
 - Massive overwrite walks in waves with witnesses — not one silent tree-wide sed  
 - WOV retirement is **last**, not first  
 - Dedication is honor — not endorsement, affiliation, or NFL partnership  

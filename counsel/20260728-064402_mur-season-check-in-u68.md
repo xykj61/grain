@@ -59,7 +59,7 @@ Re-run murr+wov choir · refresh `prin scope` · seat dual-accept or a scoped fo
 
 ## Ungated queue
 
-**Empty** for living rename and unify design. Timing and next door belong to Keaton.
+**Empty** for living rename and unify design at this stamp. **Follow-up:** [u69 fascia prune](20260728-064546_mur-season-u69-fascia-prune-without-shred.md) seated on his prune ask.
 
 ---
 
