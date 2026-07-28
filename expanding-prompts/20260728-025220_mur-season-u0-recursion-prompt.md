@@ -193,7 +193,7 @@ LEXICON rows MUR/Murr/innermost · Gren charter (CLOSED) · Inner Scope + Fascia
 Companions: newest quin-workshop pair if attached; else verify origin/main nib.
 
 first duties: bootstrap or verify · state the nib · prin scope ·
-run gen_murr (GREEN; deploy RED) · report · then walk u88 from the charter:
+run gen_murr (GREEN; deploy RED) · report · then walk u89 from the charter:
   affirm outer · inner pauses · affirm core+quint CLOSED · affirm MUR rename spine ·
   affirm Kyler · DJINN · WOV-last · affirm rename + filename breaches · affirm fascia prune ·
   affirm shred RED · Inner paused · living CLEAR · no WOV delete · 
@@ -201,10 +201,10 @@ run gen_murr (GREEN; deploy RED) · report · then walk u88 from the charter:
   no live Sui deploy · no wallet · no gas · no private key in tree;
   no whole-tree silent sed — waves with witnesses only.
 
-waymark: u87 complete, u88 next
+waymark: u88 complete, u89 next
 nib <origin/main short nib>
 bench report (verbatim, if any): <REPORT/STOP — or "none">
-scope: outer=paused(m8/m9) inner=paused(i6/i7) innermost=open(u88)
+scope: outer=paused(m8/m9) inner=paused(i6/i7) innermost=open(u89)
   core=closed(handed_back) quint=closed(handed_back) geode=prep(d0)
 breach scope circle: rename_overwrite=approved filename_rename=approved A= A+C= all= shred=
 words seated (blank = held whole): season_name= choir= LICENSE_WORD=
