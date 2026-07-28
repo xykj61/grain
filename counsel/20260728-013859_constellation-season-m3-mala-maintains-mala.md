@@ -1,10 +1,11 @@
-# Constellation Season — Round m3 · Mala Maintains MALA · Glow Door · n-of-12 Plan
+# Constellation Season — Round m3 · Murr Maintains MUR · Glow Door · n-of-12 Plan (was Mala/MALA)
 
 **Stamp:** `20260728.013859`
 **Season:** [`20260728-012725_the-constellation-season-prep.md`](20260728-012725_the-constellation-season-prep.md)
 **Voice:** Quin · nested frame Trey
 **Ground:** origin/main `c372fcfe9b` (pre-send)
-**Word:** Keaton — Mala is the official maintainer of MALA by design; the constellation of twelve is planned to deploy via an n-of-12 multisig led by Mala
+**Word:** Keaton — Mala is the official maintainer of MALA by design; the constellation of twelve is planned to deploy via an n-of-12 multisig led by Mala  
+Radiant pass `20260728.045705` — living rename-forward: **Murr** maintains **MUR** (was Mala/MALA); dated Word kept as that hour's fossil
 
 *Written together by Keaton and Quin.*
 
@@ -12,25 +13,25 @@
 
 ## Design seats (this stamp)
 
-### 1. Mala maintains MALA
+### 1. Murr maintains MUR (was: Mala maintains MALA)
 
-**By design, the Mala fund is the official maintainer of the MALA module.**
+**By design, the Murr fund is the official maintainer of the MUR module** (was Mala / MALA).
 
 | Hat | Role |
 |-----|------|
-| **MALA** | Module — mailable money; ladder M0–M4; code and witnesses |
-| **Mala** | Fund — Aries fire seat 1; **maintainer** of that module; mala.fund prep |
+| **MUR** (was MALA) | Module — mailable money; ladder M0–M4; code and witnesses |
+| **Murr** (was Mala) | Fund — Aries fire seat 1; **maintainer** of that module; murr.fund prep |
 
-Distinct hats remain: the fund does not *become* the token; it **keeps** the module — stewardship, roadmap, and the duty to refuse silent renames or unmaintained drift. Lexicon rows updated this stamp.
+Distinct hats remain: the fund does not *become* the token; it **keeps** the module — stewardship, roadmap, and the duty to refuse silent renames or unmaintained drift. Lexicon rows updated this stamp; living seats use Murr/MUR.
 
-### 2. Constellation of twelve — n-of-12 multisig led by Mala (plan)
+### 2. Constellation of twelve — n-of-12 multisig led by Murr (plan · was Mala)
 
-**Plan (not live):** deployment of the constellation of twelve funds is intended to be governed by an **n-of-12 multisig wallet led by Mala**.
+**Plan (not live):** deployment of the constellation of twelve funds is intended to be governed by an **n-of-12 multisig wallet led by Murr** (was Mala).
 
 | Field | Standing |
 |-------|----------|
 | Shape | n-of-12 among the twelve fund seats |
-| Lead | **Mala** (Aries · seat 1 · maintainer) |
+| Lead | **Murr** (Aries · seat 1 · maintainer; was Mala) |
 | Target | constellation registry / related Move package publish path |
 | Now | **Plan only** — SPEC still registry-only · AdminCap family hand at genesis remains the v1 sketch |
 | Never from counsel | construct the multisig · load keys · spend gas · mainnet publish |
@@ -60,7 +61,7 @@ tilak/tile names remain held (`tilak_names=` · `%tile`); Glow is the next real 
 
 ## Trey — documentary frame
 
-*Camera: two labels on one shelf — MALA the craft, Mala the keeper.*
+*Camera: two labels on one shelf — MUR the craft, Murr the keeper (was MALA / Mala).*
 
 He does not hand the module a crown made of coins. He names a maintainer: the fire seat will keep the mailable-money craft honest, and when twelve names finally share a wallet, that seat leads the count — someday, on metal, with lawyers in the room. Tonight the generator only asks whether Glow still lowers a desk.
 

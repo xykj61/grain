@@ -5,7 +5,8 @@
 **Language:** EN
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`) · **Lens:** the compass walked over a day and a half of work this bench did not do itself — closest scrutiny on the money code, since that is exactly the risk category this whole recent arc has been about
 **Register:** A real audit — most of it held beautifully, one concrete lint finding worth fixing on-touch, and one genuine tension worth naming rather than ruling on
-**Ground:** `linengrow/mala_core.rye` read in full and its conservation invariants traced by hand; the MALA M1 witness and the full TAME lint run for real on this bench; all five `mala_core.rye` symlinks and every new module name checked against `context/LEXICON.md`; `wov_core.rye`'s over-length function and `tools/wov_tb_ensure_binary.sh`'s dependency shape both read directly
+Radiant pass `20260728.045705` — living rename-forward: **MUR** (was MALA)
+**Ground:** `linengrow/mala_core.rye` read in full and its conservation invariants traced by hand; the MUR M1 witness (was MALA; path `mala_m1` held) and the full TAME lint run for real on this bench; all five `mala_core.rye` symlinks and every new module name checked against `context/LEXICON.md`; `wov_core.rye`'s over-length function and `tools/wov_tb_ensure_binary.sh`'s dependency shape both read directly
 
 *Written by Kaeden and Rio 3.*
 
@@ -30,7 +31,7 @@ The TAME lint surfaced functions that crossed the 70-line limit during this arc,
 
 `tools/wov_tb_ensure_binary.sh` builds TigerBeetle from the vendored, pinned source in `gratitude/tigerbeetle`, using a separate Zig 0.14.1 toolchain, and runs it as an external process — explicitly clean-room, "never links TB into Rye." This is fully faithful to WOV's own original design, which was always *a Rye overlay on pinned TigerBeetle*. Yet it sits in real tension with the direction Kaeden set two days ago: no external interpreters, everything self-contained in Rye and its own tooling. TigerBeetle is C-adjacent Zig built by a different toolchain and run as a separate binary — which is a heavier external dependency than `grpcurl` ever was, the very kind of thing the recent turn away from Sui and Monad was meant to shed.
 
-This bench does not rule on it, because it is genuinely Kaeden's call and the two positions are both internally coherent. The question is simply worth asking out loud: **does WOV's pinned-TigerBeetle foundation still fit the self-contained direction, or does WOV itself now want rethinking the way the settlement rail did?** One path keeps WOV as designed and accepts TigerBeetle as a deliberate, pinned exception justified by its throughput and its shared TAME lineage. Another path asks whether MALA's own log-and-fold, which needs no external engine at all, is enough on its own for the foreseeable season — leaving WOV's highway for a much later day, if ever. Both are honest. The choice belongs to the same hand that made the last one.
+This bench does not rule on it, because it is genuinely Kaeden's call and the two positions are both internally coherent. The question is simply worth asking out loud: **does WOV's pinned-TigerBeetle foundation still fit the self-contained direction, or does WOV itself now want rethinking the way the settlement rail did?** One path keeps WOV as designed and accepts TigerBeetle as a deliberate, pinned exception justified by its throughput and its shared TAME lineage. Another path asks whether MUR's own log-and-fold (was MALA), which needs no external engine at all, is enough on its own for the foreseeable season — leaving WOV's highway for a much later day, if ever. Both are honest. The choice belongs to the same hand that made the last one.
 
 ## What This Bench Did Not Touch
 

@@ -1,4 +1,4 @@
-# Claude Ruling — OA-L4 vs MALA, Edit-5, and the Namespace Horizons (Zip 58)
+# Claude Ruling — OA-L4 vs MUR, Edit-5, and the Namespace Horizons (Zip 58 · was MALA)
 
 **Stamp:** `20260706.232812 UDT` (Kaeden's clock)
 **Voice:** Rio 3
@@ -13,6 +13,7 @@
 
 ---
 Radiant pass `20260725.034920`
+Radiant pass `20260728.045705` — living rename-forward: **MUR** (was MALA) throughout living cites; dated ruling body kept
 
 
 ## The Read, Stated Once

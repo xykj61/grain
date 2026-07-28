@@ -12,7 +12,8 @@ accepting its own facts back.*
 **Language:** EN
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Lens:** TAME · CIVIC — the reward points at the good; the dignity floor holds
-**Status:** Siloed concept intake — research for understanding; MALA's design season stays gated
+**Status:** Siloed concept intake — research for understanding; MUR's design season stays gated (was MALA)
+Radiant pass `20260728.045705` — living rename-forward: **MUR** (was MALA)
 and untouched by this note
 **Companions:** [`../foundations/the-aspiring-radiance-universal.md`](../foundations/the-aspiring-radiance-universal.md) · [`../foundations/20260629-014512_money-that-stays-close-to-home.md`](../foundations/20260629-014512_money-that-stays-close-to-home.md) · [`../context/CIVIC_STYLE.md`](../context/CIVIC_STYLE.md) · [`20260703-043912_circulation-portfolio-survey.md`](20260703-043912_circulation-portfolio-survey.md)
 
@@ -153,7 +154,7 @@ grammar: keypair → signed event → log → projection → capability. The iss
 append-only record; obligations denominated in the unit give the marks their pull; balances are
 folds; redemption is the issuer accepting its own facts back; the rules on the mint-key are
 chosen, stated, and rewritable; and the floor under the whole structure is dignified work at a
-steady wage. When MALA's design season opens — after its gates, in its order, on Kaeden's word —
+steady wage. When MUR's design season opens (was MALA) — after its gates, in its order, on Kaeden's word —
 this note will be waiting as intake, and nothing in it presumes to draw that design tonight.
 
 ---

@@ -26,7 +26,7 @@ Design seat only — no `add_seat` bytes, no deploy, no wallet from counsel.
 
 ## 2. Honor dedication — Sarah Guo of Conviction
 
-**By Keaton's approval this stamp, the Gwoh fund is dedicated to Sarah Guo**, founder of the AI-native venture firm **Conviction**, and that dedication is included in the Inner Scope season's living work beside Mala→Kamala Harris.
+**By Keaton's approval this stamp, the Gwoh fund is dedicated to Sarah Guo**, founder of the AI-native venture firm **Conviction**, and that dedication is included in the Inner Scope season's living work beside the Aries seat (living **Murr→Kyler**; dated Mala→Kamala Harris is historical).
 
 | Hat | Standing |
 |-----|----------|

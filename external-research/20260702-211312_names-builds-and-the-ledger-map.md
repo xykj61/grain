@@ -10,6 +10,7 @@
 
 *Written together by Kaeden and Rio 3.*
 
+Radiant pass `20260728.045705` — living rename-forward: **MUR** (was MALA)
 ---
 
 ## 1. The Harvest — Vocabulary Worth Carrying, Names Worth Parking
@@ -32,23 +33,23 @@ Read together on our grain, the verdict writes itself and honors the graduation 
 
 ## 3. The Ledger Map, Completed
 
-The settlement world we build beside has three organs, and our answer to each is now nameable in one line apiece. **Sui the settlement chain** ↔ **MALA**, the money itself: issuer-signed token facts, balance as a fold, the single-issuer case needing no consensus at all. **Mysticeti the consensus** ↔ **Mycelium**, Comlink's ordering aspect, gated at the many-issuer season and never before. **Walrus the availability layer** ↔ **Tablecloth's resins served by Comlink and sealed by Amber**: Walrus's deep pattern — content-addressed blobs, erasure-coded slivers at ~5× instead of full replication, and *availability certificates recorded on the control chain* — crosses as two concepts for our horizon shelf: resins may become slivers when the network season asks, and **availability itself is a fact on the log**, checkable by anyone, which is precisely the shape our verification records already wear.
+The settlement world we build beside has three organs, and our answer to each is now nameable in one line apiece. **Sui the settlement chain** ↔ **MUR**, the money itself (was MALA): issuer-signed token facts, balance as a fold, the single-issuer case needing no consensus at all. **Mysticeti the consensus** ↔ **Mycelium**, Comlink's ordering aspect, gated at the many-issuer season and never before. **Walrus the availability layer** ↔ **Tablecloth's resins served by Comlink and sealed by Amber**: Walrus's deep pattern — content-addressed blobs, erasure-coded slivers at ~5× instead of full replication, and *availability certificates recorded on the control chain* — crosses as two concepts for our horizon shelf: resins may become slivers when the network season asks, and **availability itself is a fact on the log**, checkable by anyone, which is precisely the shape our verification records already wear.
 
 ## 4. WOV — The Throughput Lane, Assessed
 
 **The verdict is a warm yes**, and the reasoning strengthens the design it approves.
 
-**What WOV is.** A Rye overlay on the **pinned** TigerBeetle ledger — already resting whole in `gratitude/` at rev `59f2b99`, Apache-2.0, the very codebase whose Tiger Style became our TAME — translating MALA token operations into double-entry accounts and transfers, so **conservation is enforced by the ledger's own invariants** at hundreds of thousands of transfers a second. Each WOV instance is an L2 book anchored to MALA the L1 by **root facts**: periodic state roots, Kumara-signed by the instance's contract owner, appended to the MALA log.
+**What WOV is.** A Rye overlay on the **pinned** TigerBeetle ledger — already resting whole in `gratitude/` at rev `59f2b99`, Apache-2.0, the very codebase whose Tiger Style became our TAME — translating MUR token operations (was MALA) into double-entry accounts and transfers, so **conservation is enforced by the ledger's own invariants** at hundreds of thousands of transfers a second. Each WOV instance is an L2 book anchored to MUR the L1 (was MALA) by **root facts**: periodic state roots, Kumara-signed by the instance's contract owner, appended to the MUR log (was MALA).
 
 **Three sharpenings, offered with the yes.**
 
 **First — pin, never fork, until a Rye-shaped change demands it.** The license permits a fork; Gall's Law and gratitude prefer the pin. The overlay wraps; attribution and NOTICE travel wherever a byte of theirs does; a fork happens only for a change upstream cannot carry, and then upstream-kindly.
 
-**Second — the monarch rule is the pre-consensus boundary, and it is exactly right.** One monarch is the issuer-run lane: trust equals the issuer's word, *identical* to MALA's own single-issuer model — WOV adds throughput, never a new trust story. Two monarchs is dual control: both keys sign every root, our two-key custody instinct made structural. And **three would be a committee — and committees are Mycelium's door at M4.** "Never three" is the architecture staying honest about what it is: the moment a third sovereign is needed, the question has changed kind, and a different module answers it.
+**Second — the monarch rule is the pre-consensus boundary, and it is exactly right.** One monarch is the issuer-run lane: trust equals the issuer's word, *identical* to MUR's own (was MALA) single-issuer model — WOV adds throughput, never a new trust story. Two monarchs is dual control: both keys sign every root, our two-key custody instinct made structural. And **three would be a committee — and committees are Mycelium's door at M4.** "Never three" is the architecture staying honest about what it is: the moment a third sovereign is needed, the question has changed kind, and a different module answers it.
 
-**Third — exit honesty is WOV's safety spec, written before any lap.** Every instance publishes, with each root fact, enough for any holder to *prove their balance at the last root and exit to MALA without the monarch's cooperation going forward* — the availability-as-a-fact lesson from movement three, applied where it matters most. A throughput lane whose users cannot leave is a cage; a lane whose exits are facts is a gift.
+**Third — exit honesty is WOV's safety spec, written before any lap.** Every instance publishes, with each root fact, enough for any holder to *prove their balance at the last root and exit to MUR without (was MALA) the monarch's cooperation going forward* — the availability-as-a-fact lesson from movement three, applied where it matters most. A throughput lane whose users cannot leave is a cage; a lane whose exits are facts is a gift.
 
-**The gate:** WOV's first lap opens only after **MALA M2** — money must be mailable before it needs a highway — and the first lap is small and visible: one pinned ledger as a cluster of one, the overlay minting and transferring, one hourly root fact onto a local MALA log, one witness green.
+**The gate:** WOV's first lap opens only after **MUR M2** (was MALA) — money must be mailable before it needs a highway — and the first lap is small and visible: one pinned ledger as a cluster of one, the overlay minting and transferring, one hourly root fact onto a local MUR log (was MALA), one witness green.
 
 ---
 
