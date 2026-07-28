@@ -7,6 +7,7 @@
 **Ground:** Radiant Lint Season bow + rounds 1–4 already measured (`20260727.213740` · r1–r4); Glow Season closed on the workshop lane; g0–g15 bench relays still queued; breach law [`../context/BREACH.md`](../context/BREACH.md) · foundations [`../foundations/20260726-020537_the-breach.md`](../foundations/20260726-020537_the-breach.md)
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260727.221957` — round 1 log accreted; claims unchanged
 Radiant pass `20260727.221508` — round 0 bow landed; breach instrument raised; claims unchanged
 
 ---
@@ -117,6 +118,11 @@ Optional twin: `counsel/…_handoff-counsel-after-sound.md` (same stamp family).
 Reply: [`replies/20260727-221508_re-sound-season-r0.md`](replies/20260727-221508_re-sound-season-r0.md).
 
 Round 1 opens on Keaton's **kg** (Arc I voice & rooms) or a **scoped breach declaration** paste for Arc II. Until a motion declares its scope, no yonder and no reference turn.
+
+### Round 1 landed (`20260727.221957`)
+
+Arc I voice: **forty-six** tracked counsel paths — **44 clean · 2 changed** (quote hygiene). Ledger **1401**. Room-map README pointer deferred (claim_preserve). Reply: [`replies/20260727-221957_re-sound-season-r1.md`](replies/20260727-221957_re-sound-season-r1.md). Next door: Arc I r2 crumbs, or first scoped breach.
+
 
 ---
 

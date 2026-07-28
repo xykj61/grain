@@ -13,7 +13,7 @@
 **Git nib:** `0532615399` · Grain · Radiant Lint r4 Arc II · autoproject96/grain
 **Bookmark:** counsel `20260727.220947` — The Sound Season · audit r0 · seated breach · saga close
 
-**Season:** Framework · EDT · **Grain** umbrella · pier **`~/grain`** · **finishing edge:** The Sound Season r0 bow landed · instrument raised · Arc I or first breach scope · next season charter · bookmark [`counsel/20260727-220947_the-sound-season-and-the-seated-breach.md`](../counsel/20260727-220947_the-sound-season-and-the-seated-breach.md). Prefer **git nib** (never tip) for HEAD.
+**Season:** Framework · EDT · **Grain** umbrella · pier **`~/grain`** · **finishing edge:** The Sound Season r1 Arc I landed · r2 crumbs or first breach scope · next season charter · bookmark [`counsel/20260727-220947_the-sound-season-and-the-seated-breach.md`](../counsel/20260727-220947_the-sound-season-and-the-seated-breach.md). Prefer **git nib** (never tip) for HEAD.
 
 ---
 
