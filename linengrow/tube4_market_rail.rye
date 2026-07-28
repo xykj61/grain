@@ -53,7 +53,7 @@ pub fn run_demo_acquire(
     var listing_receipt: [exchange.digest_hex_len]u8 = undefined;
     try exchange.receipt_digest(listing[0..ln], &listing_receipt);
 
-    // MALA: mint only, then Neth-append the price send (settle through Neth).
+    // MUR: mint only, then Neth-append the price send (settle through Neth).
     const issuer_kp = kumara.keypair_from_seed(&mc.issuer_seed);
     const holder_kp = kumara.keypair_from_seed(&mc.holder_seed);
     var issuer_hex: [mc.pubkey_hex_len]u8 = undefined;
@@ -61,8 +61,8 @@ pub fn run_demo_acquire(
     mc.hex_of_key(issuer_kp.public_key, &issuer_hex);
     mc.hex_of_key(holder_kp.public_key, &holder_hex);
 
-    var mala_log: [rc.max_log_len]u8 = undefined;
-    var mala_len: u32 = 0;
+    var murr_log: [rc.max_log_len]u8 = undefined;
+    var murr_len: u32 = 0;
     const mint_fields = rc.FactFields{
         .from = issuer_hex[0..],
         .to = holder_hex[0..],
@@ -70,7 +70,7 @@ pub fn run_demo_acquire(
         .memo = mc.memo_mint,
         .stamp = settle.settle_version,
     };
-    try mc.sign_append(&mala_log, &mala_len, mint_fields, issuer_kp);
+    try mc.sign_append(&murr_log, &murr_len, mint_fields, issuer_kp);
 
     const send_fields = rc.FactFields{
         .from = holder_hex[0..],
@@ -83,8 +83,8 @@ pub fn run_demo_acquire(
     var line_buf: [rc.max_line_len]u8 = undefined;
     const line_len = try rc.format_log_line(signed.sig, signed.canonical[0..signed.canonical_len], &line_buf);
     const neth_result = try neth.append_and_reroot(
-        &mala_log,
-        mala_len,
+        &murr_log,
+        murr_len,
         line_buf[0..line_len],
         &issuer_hex,
         &holder_hex,
@@ -94,8 +94,8 @@ pub fn run_demo_acquire(
     assert(neth_result.balances.issuer == 50);
     assert(neth_result.balances.holder == 950);
 
-    var mala_digest: [settle.digest_hex_len]u8 = undefined;
-    settle.digest_bytes(signed.canonical[0..signed.canonical_len], &mala_digest);
+    var murr_digest: [settle.digest_hex_len]u8 = undefined;
+    settle.digest_bytes(signed.canonical[0..signed.canonical_len], &murr_digest);
 
     // WOV payment half at the same amount.
     const buyer_kp = kumara.keypair_from_seed(&wov.holder_a_seed);
@@ -118,8 +118,8 @@ pub fn run_demo_acquire(
 
     const payment_fields = settle.PaymentFields{
         .amount = demo_price,
-        .currency = "mala",
-        .mala_digest = &mala_digest,
+        .currency = "mala", // wire token held for step 9 → "murr"
+        .mala_digest = &murr_digest, // field name held with weave_settle
         .wov_digest = &wov_digest,
     };
     var payment_hex: [settle.digest_hex_len]u8 = undefined;
