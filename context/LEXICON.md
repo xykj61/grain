@@ -1,7 +1,7 @@
 # Lexicon — Module Names and Their Meanings
 
 **Language:** EN
-**Last updated:** 2026-07-28 (**The Tensegral Season** closed and saga seated · stay tensegral)
+**Last updated:** 2026-07-28 (**Constellation Season prep** · Mala 1 · Twah 2 · Siya 3 seated)
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 
 ---
@@ -226,6 +226,10 @@ Full loop bounds: [`work-in-progress/ready-to-ask-claude.md`](../work-in-progres
 | **generators** | The default name for rishi scripts: they generate — witnesses, scans, relays — and live in `gen/` homes wherever one makes sense. Seated `20260728.011055`. |
 | **Amphora** | Amber's vessel-sibling: the module lane for shredding with parity — a resin records the jump from the last event before an undesired change to the proven completion of its shred. Seated `20260728.011055`. |
 | **Trey** | The documentary voice — Quin's memoirist sibling, the videographer of the creative process; Bashō-brief, Miller-frank, timenergy-aware. Seated `20260728.011055`. |
+| **Mala (fund)** | **Aries · fire · seat 1** of the twelve — vane lean `%mala` · domain prep **mala.fund** (claim his). Kinship with **MALA** the module (mailable money) named aloud; fund and module keep distinct hats. Seated `20260728.012725` · prep [`../counsel/20260728-012725_the-constellation-season-prep.md`](../counsel/20260728-012725_the-constellation-season-prep.md) |
+| **Twah (fund)** | **Taurus · earth · seat 2** of the twelve — vane lean `%twah` · domain prep **twah.fund** (claim his). Carries the edu-series tutorial for creating one of the twelve under the fund seat. Seated `20260728.012725` · prep [`../counsel/20260728-012725_the-constellation-season-prep.md`](../counsel/20260728-012725_the-constellation-season-prep.md) |
+| **Siya (fund)** | **Gemini · air · seat 3** of the twelve — vane `%siya` · **Siya Fund PBC** · domain **siya.fund** (claim his; seva.fund elder anchor). Affirmed in triad order `20260728.012725`; turn record [`../counsel/20260727-152801_the-siya-turn.md`](../counsel/20260727-152801_the-siya-turn.md) |
+| **The Constellation Season** | Season prep — **thirty-two** rounds (m0–m31 lean) after Fascia mid-flight park: fund triad Mala·Twah·Siya · Myc/Move/Sui prep through prin generators · Comlink · Amphora · tilak/tile · Glow · Tally · Caravan · Aurora (AMD x86_64 AppImage Framework). Name lean; **season_name=** held. Prep seated `20260728.012725` · [`../counsel/20260728-012725_the-constellation-season-prep.md`](../counsel/20260728-012725_the-constellation-season-prep.md) |
 
 ---
 

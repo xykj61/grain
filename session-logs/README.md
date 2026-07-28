@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.012725` — [Constellation Season prep · Mala Twah Siya triad](20260728-012725_constellation-season-prep.bron) — 32-round prep · fund order seated
 - `20260728.012123` — [Fascia f0 verify · f1 Graal twin audit](20260728-012123_fascia-f0-verify-f1.bron) — choir 17 GREEN · f1 twin witness
 - `20260728.010425` — [Tensegral saga seat send](20260728-010425_tensegral-saga-seat-send.bron) — origin · codeberg shipped
 - `20260728.010302` — [Tensegral saga seat · prep for send](20260728-010302_tensegral-saga-seat.bron) — season closed · push held
