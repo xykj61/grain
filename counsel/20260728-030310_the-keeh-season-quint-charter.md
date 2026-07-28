@@ -8,7 +8,9 @@
 **Rename spine (approved fascia edit):** **Ketu / `%ketu` / ketu.fund → Keeh / `%keeh` / keeh.fund** — Aquarius · air · seat 11  
 **Executive:** **Keaton Sealy Livermore** — **still** (unchanged)  
 **Within:** paused **core** Gren Season (g0) · inside paused MUR u0 · inside paused Inner Scope · inside paused Constellation  
-**Status:** Prep seated · **q0–q12 complete** `20260728.033658` · **q13** next · harden in progress  
+**Status:** Prep seated · **q0–q13 complete** `20260728.033933` · **q14** next · harden CLOSED · horizon warn  
+Radiant pass `20260728.033933` — q13 second harden · Shyu→Hyundai · gen trio+shyu GREEN · deploy RED · harden CLOSED  
+Radiant pass `20260728.033820` — Shyu Hyundai honor sponsor · same used filters as Keeh→Kia  
 Radiant pass `20260728.033658` — q12 harden · gen trio GREEN · deploy RED  
 Radiant pass `20260728.033612` — q11 residual block CLOSED  
 Radiant pass `20260728.033404` — Shyu Libra 7 · Wayne Hsiung · q10 spot-check empty  
@@ -31,7 +33,7 @@ Radiant pass `20260728.032134` — Kia honor sponsor · used 4-cyl hatch/SUV non
 | **inner** | Inner Scope | i6 / i7 next · fascia | **PAUSED** |
 | **innermost** | MUR Season | u0 | **PAUSED** |
 | **core** | Gren Season | g0 | **PAUSED** while quint walks |
-| **quint** | **Keeh Season** | **q0–q12** complete · **q13** next | **OPEN** |
+| **quint** | **Keeh Season** | **q0–q13** complete · **q14** next | **OPEN** |
 
 Handback: quint → core **g0** (unless extend 32). Then Gren · MUR · inner · outer as before.
 
@@ -64,7 +66,7 @@ Handback: quint → core **g0** (unless extend 32). Then Gren · MUR · inner ·
 | Bow · measure | **q0–q1** | Affirm five pauses · gen_keeh · Keaton executive |
 | Living overwrite | **q2–q7** AFFIRMED CLOSED | Lexicon · prin · counsel Radiant-pass Ketu→Keeh · Kia |
 | Residual | **q8–q11** CLOSED | Bare living ads cleared · spot-checks empty ×3 |
-| Harden | **q12–q13** | gen_keeh · gen_gren · gen_murr still GREEN |
+| Harden | **q12–q13** CLOSED | gen_keeh · gen_gren · gen_murr · gen_shyu still GREEN |
 | Horizon · close | **q14–q15** | **Warn:** extend 32 · or return Gren g0 |
 
 ## Hard lines

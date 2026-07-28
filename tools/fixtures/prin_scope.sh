@@ -13,9 +13,11 @@ Prin scope — seasons · Tally · rish vocabulary
   inner:  Inner Scope Season — PAUSED at i6 complete / i7 next (fascia)
   innermost: MUR Season — PAUSED at u0 (Mala/MALA→Murr/MUR waits)
   core:   Gren Season — PAUSED at g0 (Djin→Gren waits while quint walks)
-  quint:  Keeh Season — OPEN · q12 complete / q13 next (lean 16 · expand 32) · harden in progress
+  quint:  Keeh Season — OPEN · q13 complete / q14 next (lean 16 · expand 32) · harden CLOSED · horizon warn
   keeh_sponsor: Kia (South Korea) honor · design seat
   keeh_recommend: used 4-cyl hatch/SUV · non-CVT auto · light grey/beige cloth · CL/FB Marketplace
+  shyu_sponsor: Hyundai (South Korea) honor · design seat
+  shyu_recommend: used 4-cyl hatch/SUV · non-CVT auto · light grey/beige cloth · CL/FB Marketplace (same as Keeh)
   geode:  Geode Season — PREP · d0 next (docs-geode · crush=compile · wave=year)
   year:   collection of seasons · all scopes (≠ civil calendar)
   wave:   fascial synonym of year
@@ -27,7 +29,7 @@ Prin scope — seasons · Tally · rish vocabulary
   fund4:  Eyva · Cancer · executive + dedication Avanti (she/her)
   fund5:  Gwoh · Leo · dedicated to Sarah Guo / Conviction (honor)
   fund6:  Trya · Virgo · dedicated to Ariana Grande (honor) · trya_fund=prep
-  fund7:  Shyu · Libra · dedicated to Wayne Hsiung (honor) · shyu_fund=prep
+  fund7:  Shyu · Libra · dedication Wayne Hsiung · sponsor Hyundai · shyu_fund=prep
   fund11: Keeh (was Ketu) · Aquarius · seat 11 · executive Keaton · Kia sponsor
   L1:     MUR (was MALA) · WOV unify · retire WOV roadmap last
   voice:  six variants — Reya · Riyo · Trey · Triz · Quin · Trya (Quin stands)
