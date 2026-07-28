@@ -9,7 +9,7 @@
 **Status:** Hammock record — checkable room; landed `182500`; implementation removed `152612` (MUR path; was MALA); parity **197**.
 Radiant pass `20260728.045307` — living L1 rename-forward: **MUR** (was MALA)
 
-**Ground:** [`external-research/20260707-222500_settlement-seat-refresh-and-slcl3-witness-proposal.md`](../external-research/20260707-222500_settlement-seat-refresh-and-slcl3-witness-proposal.md) · counsel [`041000`](../counsel/20260708-041000_claude-counsel-settlement-recommendation-july-2026.md) · apply prompt [`20260707-222500_apply-slcl3-settlement-witness.md`](../expanding-prompts/20260707-222500_apply-slcl3-settlement-witness.md)
+**Ground:** [`external-research/20260707-222500_settlement-seat-refresh-and-slcl3-witness-proposal.md`](../external-research/20260707-222500_settlement-seat-refresh-and-slcl3-witness-proposal.md) · counsel [`041000`](../counsel/20260708-041000_claude-counsel-settlement-recommendation-july-2026.md) · apply prompt [`20260707-222500_apply-slcl3-settlement-witness.md`](../expanding-prompts/yonder/20260707-222500_apply-slcl3-settlement-witness.md)
 
 **Gate:** Kaeden opened SLC-L3 settlement `182500` — witness runs; no winner crowned in prose.
 

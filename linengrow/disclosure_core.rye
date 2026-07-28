@@ -5,7 +5,7 @@
 //!
 //! Proves knowledge of dew for C = tier·G + r·H where tier is public.
 //! The tier mudra vouches the bud's tier without blooming it.
-//! Scope: [`expanding-prompts/20260709-031612_slcl4-lap1-fixed-tier-sigma-protocol.md`](../expanding-prompts/20260709-031612_slcl4-lap1-fixed-tier-sigma-protocol.md)
+//! Scope: [`expanding-prompts/yonder/20260709-031612_slcl4-lap1-fixed-tier-sigma-protocol.md`](../expanding-prompts/yonder/20260709-031612_slcl4-lap1-fixed-tier-sigma-protocol.md)
 
 const std = @import("std");
 const assert = std.debug.assert;

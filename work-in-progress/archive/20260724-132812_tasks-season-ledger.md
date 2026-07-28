@@ -784,7 +784,7 @@ Radiant pass `20260727.230010` — path re-point only; claims unchanged
 |----------|------|--------|-------|
 | **1** | **Kumara extraction** | **Closed** | ratchet **0**; virtio + product surface GREEN; scan precision fix `030200` |
 | **2** | **MALA M1–M2** | **Landed** | M1 **198**; M2 hosted **199**; M2b device wire `201734`; counsel [`191634`](../counsel/20260709-191634_grok-counsel-mala-m2-open.md) |
-| **3** | **SLC-L4 Sigma** | **Landed** | fixed-tier prove/verify; parity **200**; prompt [`031612`](../expanding-prompts/20260709-031612_slcl4-lap1-fixed-tier-sigma-protocol.md) |
+| **3** | **SLC-L4 Sigma** | **Landed** | fixed-tier prove/verify; parity **200**; prompt [`031612`](../expanding-prompts/yonder/20260709-031612_slcl4-lap1-fixed-tier-sigma-protocol.md) |
 | **4** | **WOV exit honesty** | **Landed** | in-memory lap 1; parity **201**; spec [`200443`](../context/specs/20260709-200443_wov-exit-honesty.md) |
 | **5** | **Realidream thin view** | **Landed** | local fixtures → Skate; parity **202**; prompt [`202427`](../expanding-prompts/yonder/20260709-202427_realidream-thin-view-local-facts.md) |
 | **6** | **WOV TB pin presence** | **Landed** | rev `59f2b99` witnessed; no client link; parity **203**; prompt [`203527`](../expanding-prompts/yonder/20260709-203527_wov-lap2-tigerbeetle-pin-presence.md) |
@@ -1054,7 +1054,7 @@ Radiant pass `20260727.230010` — path re-point only; claims unchanged
 - [x] **MALA M1 implementation** — one issuer, one holder, mint/send/receipt/balance-as-fold; `linengrow/mala.rye` + `tools/mala_m1_witness.rish`; parity **198** (`20260709.184051`); prompt [`182354`](../expanding-prompts/20260709-182354_mala-m1-one-issuer-one-holder.md); counsel [`184051`](../counsel/20260709-184051_grok-counsel-mala-m1-names-and-tasks.md)
 - [x] **MALA M2 — mailable (hosted)** — mint crosses Comlink UDP; receipt crosses back; `mala_core.rye` + `mala_delivery.rye` + `tools/mala_m2_witness.rish`; parity **199** (`20260709.191634`); prompt [`191634`](../expanding-prompts/20260709-191634_mala-m2-mailable-comlink.md)
 - [x] **OA-L3/L5 UDP bind-before-send** — listen sockets bound before peer sends; clears parity hang under Rishi `sh -c` (`20260709.192631`)
-- [x] **SLC-L4 fixed-tier mudra** (inherited: Sigma) — bud + proof of opening to declared tier; `disclosure_core.rye` + `tally/bud.rye` + `tools/slcl4_mudra.rish`; first landed parity **200** (`20260709.194437`); warm names seated `062656`; prompt [`031612`](../expanding-prompts/20260709-031612_slcl4-lap1-fixed-tier-sigma-protocol.md)
+- [x] **SLC-L4 fixed-tier mudra** (inherited: Sigma) — bud + proof of opening to declared tier; `disclosure_core.rye` + `tally/bud.rye` + `tools/slcl4_mudra.rish`; first landed parity **200** (`20260709.194437`); warm names seated `062656`; prompt [`031612`](../expanding-prompts/yonder/20260709-031612_slcl4-lap1-fixed-tier-sigma-protocol.md)
 - [x] **MALA M2b — device wire** — virtio twin of hosted M2; ports **15569**/**15570**; four guests + `comlink/run_mala_wire_lab.sh`; extends `mala_m2_witness` (`20260709.201734`)
 - [x] **WOV exit-honesty spec** — root facts + exit bundles + holder `wov:exit`; [`context/specs/20260709-200443_wov-exit-honesty.md`](../context/specs/20260709-200443_wov-exit-honesty.md)
 - [x] **WOV lap 1 (in-memory)** — mint/transfer, publish root + golden bundle, prove balance, accept exit, refuse double/tamper; `linengrow/wov_core.rye` + `tools/wov_exit_honesty.rish`; parity **201** (`20260709.200729`); prompt [`200443`](../expanding-prompts/yonder/20260709-200443_wov-lap1-exit-honesty-witness.md)
@@ -1458,7 +1458,7 @@ Record: `session-logs/archive/20260629/20260629-204910_th7-width-gate-yonder-con
 
 ### Linengrow
 - [x] **SLC-L3 — settlement** — **landed** `20260708.182500`, **removed from tree** `152612` — witness dropped from parity (**197**); implementation deleted; hammock + counsel kept as record. Superseded by MALA per counsel [`152612`](../counsel/20260709-152612_claude-counsel-mala-wov-already-designed.md).
-- [x] **SLC-L4 lap 1 — fixed-tier Sigma** — **landed** `20260709.194437` — parity **200**; prompt [`031612`](../expanding-prompts/20260709-031612_slcl4-lap1-fixed-tier-sigma-protocol.md). **W0 design review** cleared `224426` ([`counsel/224426`](../counsel/20260709-224426_grok-counsel-slcl4-w0-lap1-review.md)). Later: W1 OR-tiers, W2 range, sanctuary eligibility; live chain verify on-demand.
+- [x] **SLC-L4 lap 1 — fixed-tier Sigma** — **landed** `20260709.194437` — parity **200**; prompt [`031612`](../expanding-prompts/yonder/20260709-031612_slcl4-lap1-fixed-tier-sigma-protocol.md). **W0 design review** cleared `224426` ([`counsel/224426`](../counsel/20260709-224426_grok-counsel-slcl4-w0-lap1-review.md)). Later: W1 OR-tiers, W2 range, sanctuary eligibility; live chain verify on-demand.
 - [ ] **The platform horizons** — the computational data market, premium tiers, state-currency circulation, infrastructure licensing — grown from the business model in `../linengrow/`.
 - [ ] **The civic horizons** — PBC formation, investor outreach, the first transparency campaign as proof of concept.
 

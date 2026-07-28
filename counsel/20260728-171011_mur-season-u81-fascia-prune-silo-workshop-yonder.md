@@ -32,7 +32,7 @@ No Amphora shred · no Class A rewrite · no over-70 function split · no Inner 
 
 ## Next
 
-**kg u82** — next prune slice (more yonder · on-touch over-70 · harvest/glow fixture lean), or check-in.
+**LANDED u82** — glow-glass · first-code · SLC-L4 lap1 · apply-slcl3 yonder · harvest/fixture held.
 
 ---
 

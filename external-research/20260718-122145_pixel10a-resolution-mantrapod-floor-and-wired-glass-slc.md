@@ -6,7 +6,7 @@
 **Status:** Research — mixed rooms (panel max checkable · Mantrapod floor design-provisional)  
 **Voice:** Quin · Acme reader address  
 **Silo:** [`../active-designing/20260718-122145_hearth-lulu-display-presets-short-home-and-zeta6-send.md`](../active-designing/20260718-122145_hearth-lulu-display-presets-short-home-and-zeta6-send.md)  
-**Prompt:** [`../expanding-prompts/20260718-122145_glow-glass-display-short-home-and-dexter-send.md`](../expanding-prompts/20260718-122145_glow-glass-display-short-home-and-dexter-send.md)
+**Prompt:** [`../expanding-prompts/yonder/20260718-122145_glow-glass-display-short-home-and-dexter-send.md`](../expanding-prompts/yonder/20260718-122145_glow-glass-display-short-home-and-dexter-send.md)
 
 ---
 

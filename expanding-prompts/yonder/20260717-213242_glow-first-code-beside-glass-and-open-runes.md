@@ -5,7 +5,7 @@
 **Stamp:** `20260717.213242` (Eastern)  
 **Status:** Design + checkable pointers — Two Rooms honest  
 **Voice:** Quin · Acme reader address  
-**Ground:** [`../glow/README.md`](../glow/README.md) · [`../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md`](../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md) · [`../foundations/20260703-182612_sameness-is-the-macro.md`](../foundations/20260703-182612_sameness-is-the-macro.md) · [`../context/TWO_ROOMS.md`](../context/TWO_ROOMS.md) · waymarks HAWM · TUBE · ZETA · JABS
+**Ground:** [`../glow/README.md`](../../glow/README.md) · [`../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md`](../../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md) · [`../foundations/20260703-182612_sameness-is-the-macro.md`](../../foundations/20260703-182612_sameness-is-the-macro.md) · [`../context/TWO_ROOMS.md`](../../context/TWO_ROOMS.md) · waymarks HAWM · TUBE · ZETA · JABS
 
 ---
 
@@ -99,9 +99,9 @@ From the sameness rune brief. These are the heads an Acme reader should treat as
 |-----|------|
 | [`20260716-142818_glow-application-framework-and-publishing.md`](20260716-142818_glow-application-framework-and-publishing.md) | TUBE · honest “Glow must run an agent” gate |
 | [`20260715-181500_sala-broadcast-and-glowphone.md`](20260715-181500_sala-broadcast-and-glowphone.md) | Broadcast / Glowphone plan |
-| [`../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md`](../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md) | Future Glow TAME supplement surfaces |
-| [`../external-research/20260717-175220_glow-english-qwerty-glass-keyboard-ios-inspired.md`](../external-research/20260717-175220_glow-english-qwerty-glass-keyboard-ios-inspired.md) | Keyboard = product glass, not new runes |
-| [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) | Outer terminal · phone · waymarks card |
+| [`../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md`](../../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md) | Future Glow TAME supplement surfaces |
+| [`../external-research/20260717-175220_glow-english-qwerty-glass-keyboard-ios-inspired.md`](../../external-research/20260717-175220_glow-english-qwerty-glass-keyboard-ios-inspired.md) | Keyboard = product glass, not new runes |
+| [`../work-in-progress/REMEMBER.md`](../../work-in-progress/REMEMBER.md) | Outer terminal · phone · waymarks card |
 
 ---
 

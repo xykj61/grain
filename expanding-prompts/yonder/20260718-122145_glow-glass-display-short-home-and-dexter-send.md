@@ -26,7 +26,7 @@
 
 | Artifact | Path |
 |----------|------|
-| This expansion | `expanding-prompts/20260718-122145_glow-glass-display-short-home-and-dexter-send.md` |
+| This expansion | `expanding-prompts/yonder/20260718-122145_glow-glass-display-short-home-and-dexter-send.md` |
 | World research | `external-research/20260718-122145_pixel10a-resolution-mantrapod-floor-and-wired-glass-slc.md` |
 | Owned silo | `active-designing/20260718-122145_hearth-lulu-display-presets-short-home-and-zeta6-send.md` |
 | Compressor | `docs/LULU.md` |

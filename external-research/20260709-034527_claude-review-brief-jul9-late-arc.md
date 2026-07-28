@@ -66,7 +66,7 @@ Counsel [`021112`](../counsel/20260709-021112_claude-counsel-slcl4-top-recommend
 
 ### Lap 1 scope (expanding prompt)
 
-**File:** [`expanding-prompts/20260709-031612_slcl4-lap1-fixed-tier-sigma-protocol.md`](../expanding-prompts/20260709-031612_slcl4-lap1-fixed-tier-sigma-protocol.md)
+**File:** [`expanding-prompts/yonder/20260709-031612_slcl4-lap1-fixed-tier-sigma-protocol.md`](../expanding-prompts/yonder/20260709-031612_slcl4-lap1-fixed-tier-sigma-protocol.md)
 
 | Bound | Detail |
 |-------|--------|
