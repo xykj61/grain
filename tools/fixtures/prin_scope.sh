@@ -13,7 +13,12 @@ Prin scope — seasons · Tally · rish vocabulary
   inner:  Inner Scope Chapter — PAUSED at i6 complete / i7 next (fascia)
   innermost: MUR Chapter — PAUSED at u0 (Mala/MALA→Murr/MUR waits)
   core:   Gren Chapter — PAUSED at g0 (Djin→Gren waits while quint walks)
-  quint:  Keeh Chapter — OPEN · q2 complete / q3 next (lean 16 · expand 32)
+  quint:  Keeh Chapter — OPEN · q3 complete / q4 next (lean 16 · expand 32)
+  geode:  Geode Chapter — PREP · d0 next (docs-geode · crush=compile · wave=year)
+  year:   collection of seasons · all scopes (≠ civil calendar)
+  wave:   fascial synonym of year
+  crush:  compile (MUR · Tally · weave → docs-geode)
+  docs-geode: root prod crystal (ship) · docs/ = compress (distinct)
   fund1:  Murr (was Mala) · Aries · dedication Kyler Murray · executive DJINN
   fund2:  Gren (was Djin · was Twah) · Taurus · executive Grain Energy PBC President (Keaton lean)
   fund3:  Siya · Gemini · executor Sara Sealy Livermore
@@ -24,6 +29,7 @@ Prin scope — seasons · Tally · rish vocabulary
   L1:     MUR (was MALA) · WOV unify · retire WOV roadmap last
   voice:  six variants — Reya · Riyo · Trey · Triz · Quin · Trya (Quin stands)
   charter: counsel/20260728-030310_the-keeh-season-quint-charter.md
+  geode_charter: counsel/20260728-031722_the-geode-season-charter.md
   seat:   counsel/20260728-030310_the-keeh-season-quint-charter.md
-  warn:   q14/q15 extend 32 or return Gren g0
+  warn:   q14/q15 extend 32 or return Gren g0 · d14/d15 extend 32|64|128 or handback
 EOF
