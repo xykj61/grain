@@ -40,7 +40,7 @@ The `.sh` census closed almost everything mechanically reachable, and found one 
 
 ## What Looks Open, Yet Is Not Actually Waiting on a Decision
 
-Four items on the wider list are not gates in the sense above, and naming them plainly here is worth doing so none of them are mistaken for a pending yes-or-no. The **agent-writing intake** waits on a paste that has not arrived — nothing to decide, only something to send when it is ready. **Snapshot lap four** waits on Kaeden's own hands at a machine — a scheduling question, not a ruling. The **astrology lane** was declined as a season focus, plainly and recently, and stays declined until that changes on its own terms. And **MALA's graduation**, **Pond's first policy**, **Brix's own build**, and **continuity's real rules** each wait on a trigger or a foundation arriving, not on a word — there is nothing to say yes or no to yet, only more ground to reach first.
+Four items on the wider list are not gates in the sense above, and naming them plainly here is worth doing so none of them are mistaken for a pending yes-or-no. The **agent-writing intake** waits on a paste that has not arrived — nothing to decide, only something to send when it is ready. **Snapshot lap four** waits on Kaeden's own hands at a machine — a scheduling question, not a ruling. The **astrology lane** was declined as a season focus, plainly and recently, and stays declined until that changes on its own terms. And **MUR's graduation** (was MALA), **Pond's first policy**, **Brix's own build**, and **continuity's real rules** each wait on a trigger or a foundation arriving, not on a word — there is nothing to say yes or no to yet, only more ground to reach first.
 
 ## The Path This Bench Recommends
 

@@ -32,7 +32,7 @@ The compass turns from seven to **twelve**: rounds count **z0 through z23**, and
 | 3 | Cancer | **Pond** — home, shell, enclosure | Pool (the app-water within) |
 | 4 | Leo | **Kumara** — identity, the center of the chart | — the transit study's own teaching |
 | 5 | Virgo | **Rishi** — service and precision | Prin (the watch in the second terminal) |
-| 6 | Libra | **Mandi** — the scales: commerce, jurisdiction, moderation | Bookie · MALA · WOV (the ledgers the scales read) |
+| 6 | Libra | **Mandi** — the scales: commerce, jurisdiction, moderation | Bookie · MUR · WOV (the ledgers the scales read; was MALA) |
 | 7 | Scorpio | **Weave** — the deep, append-only cloth | Amber at rest (cold keeping) |
 | 8 | Sagittarius | **Glow** — the language, the far aim | Rye (the bow-arm that looses to Zig) |
 | 9 | Capricorn | **Mantra** — Saturn's naming duty, keeper of nibs | — |
