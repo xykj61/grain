@@ -217,6 +217,48 @@ fn seal_and_open(payload: []const u8, opened: *[@intCast(wf.max_message)]u8) !u6
     return try open_wire(wire[0..@intCast(wire_len)], opened);
 }
 
+fn seal_and_send(payload: []const u8, wire: *[@intCast(wf.wire_capacity)]u8, port: u16) !void {
+    const wire_len = try seal_payload(payload, wire);
+    try send_wire(port, wire[0..@intCast(wire_len)]);
+}
+
+fn poster_fold_cycle_with_consent(
+    poster_pk: kumara.PublicKey,
+    applicant_pk: kumara.PublicKey,
+    applicant_hex: []const u8,
+    signed_req: anytype,
+    app_sig: kumara.Signature,
+    app_fact: []const u8,
+    signed_acc: anytype,
+    signed_pay: anytype,
+    consent_sig: kumara.Signature,
+    consent_fact: []const u8,
+) !void {
+    var acc_fact_buf: [oa.max_oa_fact]u8 = undefined;
+    const acc_fact_len = signed_acc.canonical_len;
+    tally_copy.copy_disjoint(u8, acc_fact_buf[0..acc_fact_len], signed_acc.canonical[0..acc_fact_len]);
+
+    var pay_fact_buf: [oa.max_oa_fact]u8 = undefined;
+    const pay_fact_len = signed_pay.canonical_len;
+    tally_copy.copy_disjoint(u8, pay_fact_buf[0..pay_fact_len], signed_pay.canonical[0..pay_fact_len]);
+
+    var log: [oa.max_log_len]u8 = undefined;
+    var log_len: u32 = 0;
+    try append_signed(signed_req.sig, signed_req.canonical[0..signed_req.canonical_len], &log, &log_len);
+    try append_signed(app_sig, app_fact, &log, &log_len);
+    try append_signed(signed_acc.sig, acc_fact_buf[0..acc_fact_len], &log, &log_len);
+    try append_signed(signed_pay.sig, pay_fact_buf[0..pay_fact_len], &log, &log_len);
+
+    const cycle_len = log_len;
+    const state = try oa.fold_log(log[0..cycle_len], poster_pk, applicant_pk);
+    if (!state.completed or state.stipend != 100) return error.FoldFailed;
+
+    try append_signed(consent_sig, consent_fact, &log, &log_len);
+
+    const rep = try oa.fold_reputation_log(log[0..log_len], poster_pk, applicant_pk, applicant_hex);
+    if (rep.consented_completions != 1 or rep.consented_stipend != 100) return error.FoldFailed;
+}
+
 fn build_signed_acceptance(
     poster_kp: kumara.KeyPair,
     poster_hex: []const u8,
@@ -575,8 +617,7 @@ fn run_poster(io: std.Io) !u8 {
     var payload: [oa.oa2_payload_header + oa.max_oa_fact]u8 = undefined;
     const req_payload_len = try oa.encode_compact_payload(signed_req.sig, signed_req.canonical[0..signed_req.canonical_len], &payload);
     var wire: [@intCast(wf.wire_capacity)]u8 = undefined;
-    const req_wire_len = try seal_payload(payload[0..req_payload_len], &wire);
-    try send_wire(applicant_port, wire[0..@intCast(req_wire_len)]);
+    try seal_and_send(payload[0..req_payload_len], &wire, applicant_port);
 
     const app_recv_len = try recv_on(listen_fd, &wire);
     var opened: [@intCast(wf.max_message)]u8 = undefined;
@@ -588,13 +629,11 @@ fn run_poster(io: std.Io) !u8 {
 
     const signed_acc = try build_signed_acceptance(poster_kp, poster_hex[0..64], applicant_hex[0..64], signed_req.ref_hex[0..oa.ref_hex_len]);
     const acc_payload_len = try oa.encode_compact_payload(signed_acc.sig, signed_acc.canonical[0..signed_acc.canonical_len], &payload);
-    const acc_wire_len = try seal_payload(payload[0..acc_payload_len], &wire);
-    try send_wire(applicant_port, wire[0..@intCast(acc_wire_len)]);
+    try seal_and_send(payload[0..acc_payload_len], &wire, applicant_port);
 
     const signed_pay = try build_signed_completion(poster_kp, poster_hex[0..64], applicant_hex[0..64], signed_req.ref_hex[0..oa.ref_hex_len], signed_req.stipend_buf[0..signed_req.stipend_len]);
     const pay_payload_len = try oa.encode_compact_payload(signed_pay.sig, signed_pay.canonical[0..signed_pay.canonical_len], &payload);
-    const pay_wire_len = try seal_payload(payload[0..pay_payload_len], &wire);
-    try send_wire(applicant_port, wire[0..@intCast(pay_wire_len)]);
+    try seal_and_send(payload[0..pay_payload_len], &wire, applicant_port);
 
     const consent_recv_len = try recv_on(listen_fd, &wire);
     const consent_opened_len = try open_wire(wire[0..@intCast(consent_recv_len)], &opened);
@@ -602,29 +641,18 @@ fn run_poster(io: std.Io) !u8 {
     const consent_fact_len = try verify_consent_payload(opened[0..@intCast(consent_opened_len)], applicant_pk, signed_req.ref_hex[0..oa.ref_hex_len], oa.consent_grant, &sig_buf, &consent_fact_buf);
     const consent_sig = kumara.Signature.fromBytes(sig_buf[0..kumara.signature_length].*);
 
-    var acc_fact_buf: [oa.max_oa_fact]u8 = undefined;
-    const acc_fact_len = signed_acc.canonical_len;
-    tally_copy.copy_disjoint(u8, acc_fact_buf[0..acc_fact_len], signed_acc.canonical[0..acc_fact_len]);
-
-    var pay_fact_buf: [oa.max_oa_fact]u8 = undefined;
-    const pay_fact_len = signed_pay.canonical_len;
-    tally_copy.copy_disjoint(u8, pay_fact_buf[0..pay_fact_len], signed_pay.canonical[0..pay_fact_len]);
-
-    var log: [oa.max_log_len]u8 = undefined;
-    var log_len: u32 = 0;
-    try append_signed(signed_req.sig, signed_req.canonical[0..signed_req.canonical_len], &log, &log_len);
-    try append_signed(app_sig, app_fact_buf[0..app_fact_len], &log, &log_len);
-    try append_signed(signed_acc.sig, acc_fact_buf[0..acc_fact_len], &log, &log_len);
-    try append_signed(signed_pay.sig, pay_fact_buf[0..pay_fact_len], &log, &log_len);
-
-    const cycle_len = log_len;
-    const state = try oa.fold_log(log[0..cycle_len], poster_pk, applicant_pk);
-    if (!state.completed or state.stipend != 100) return error.FoldFailed;
-
-    try append_signed(consent_sig, consent_fact_buf[0..consent_fact_len], &log, &log_len);
-
-    const rep = try oa.fold_reputation_log(log[0..log_len], poster_pk, applicant_pk, applicant_hex[0..64]);
-    if (rep.consented_completions != 1 or rep.consented_stipend != 100) return error.FoldFailed;
+    try poster_fold_cycle_with_consent(
+        poster_pk,
+        applicant_pk,
+        applicant_hex[0..64],
+        signed_req,
+        app_sig,
+        app_fact_buf[0..app_fact_len],
+        signed_acc,
+        signed_pay,
+        consent_sig,
+        consent_fact_buf[0..consent_fact_len],
+    );
 
     print("oal5: poster folded full cycle with consent — GREEN\n", .{});
     return 0;

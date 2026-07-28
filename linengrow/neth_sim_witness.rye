@@ -29,14 +29,15 @@ const sim = @import("neth_sim.rye");
 
 const witness_version = "20260715.140000";
 
-fn run_selftest() !u8 {
-    const issuer_kp = kumara.keypair_from_seed(&mc.issuer_seed);
-    const holder_kp = kumara.keypair_from_seed(&mc.holder_seed);
-    var issuer_hex: [mc.pubkey_hex_len]u8 = undefined;
-    var holder_hex: [mc.pubkey_hex_len]u8 = undefined;
-    mc.hex_of_key(issuer_kp.public_key, &issuer_hex);
-    mc.hex_of_key(holder_kp.public_key, &holder_hex);
-
+fn sign_three_records(
+    issuer_kp: kumara.KeyPair,
+    holder_kp: kumara.KeyPair,
+    issuer_hex: *const [mc.pubkey_hex_len]u8,
+    holder_hex: *const [mc.pubkey_hex_len]u8,
+    line_buf_1: *[rc.max_line_len]u8,
+    line_buf_2: *[rc.max_line_len]u8,
+    line_buf_3: *[rc.max_line_len]u8,
+) !struct { len_1: usize, len_2: usize, len_3: usize } {
     // Three real, pre-signed records, in fixed log order -- the same
     // "already delivered by an earlier pipelined stage" shape
     // neth_serial_core_witness.rye already establishes. The simulation
@@ -62,45 +63,56 @@ fn run_selftest() !u8 {
         .memo = mc.memo_send,
         .stamp = "20260715.135700",
     };
-
-    var line_buf_1: [rc.max_line_len]u8 = undefined;
-    var line_buf_2: [rc.max_line_len]u8 = undefined;
-    var line_buf_3: [rc.max_line_len]u8 = undefined;
-
     const signed_1 = try mc.sign_fact(mint_fields, issuer_kp);
-    const len_1 = try rc.format_log_line(signed_1.sig, signed_1.canonical[0..signed_1.canonical_len], &line_buf_1);
+    const len_1 = try rc.format_log_line(signed_1.sig, signed_1.canonical[0..signed_1.canonical_len], line_buf_1);
     const signed_2 = try mc.sign_fact(send1_fields, holder_kp);
-    const len_2 = try rc.format_log_line(signed_2.sig, signed_2.canonical[0..signed_2.canonical_len], &line_buf_2);
+    const len_2 = try rc.format_log_line(signed_2.sig, signed_2.canonical[0..signed_2.canonical_len], line_buf_2);
     const signed_3 = try mc.sign_fact(send2_fields, holder_kp);
-    const len_3 = try rc.format_log_line(signed_3.sig, signed_3.canonical[0..signed_3.canonical_len], &line_buf_3);
+    const len_3 = try rc.format_log_line(signed_3.sig, signed_3.canonical[0..signed_3.canonical_len], line_buf_3);
+    return .{ .len_1 = len_1, .len_2 = len_2, .len_3 = len_3 };
+}
 
-    const records = [_][]const u8{ line_buf_1[0..len_1], line_buf_2[0..len_2], line_buf_3[0..len_3] };
-    print("neth-sim: three real pre-signed records ready -- mint, send, send\n", .{});
-
-    // Claim 1: same seed, same drop rate, two independent replicas --
-    // byte-for-byte identical trace and final root.
-    var replica_a: sim.ReplicaSim = .{};
+fn claim_determinism(
+    records: []const []const u8,
+    issuer_hex: *const [mc.pubkey_hex_len]u8,
+    holder_hex: *const [mc.pubkey_hex_len]u8,
+    issuer_pk: kumara.PublicKey,
+    holder_pk: kumara.PublicKey,
+    replica_a: *sim.ReplicaSim,
+) !void {
     var replica_b: sim.ReplicaSim = .{};
-    try sim.run_replica_delivery(&replica_a, &records, &issuer_hex, &holder_hex, issuer_kp.public_key, holder_kp.public_key, 0x5eed_0001, 40);
-    try sim.run_replica_delivery(&replica_b, &records, &issuer_hex, &holder_hex, issuer_kp.public_key, holder_kp.public_key, 0x5eed_0001, 40);
+    try sim.run_replica_delivery(replica_a, records, issuer_hex, holder_hex, issuer_pk, holder_pk, 0x5eed_0001, 40);
+    try sim.run_replica_delivery(&replica_b, records, issuer_hex, holder_hex, issuer_pk, holder_pk, 0x5eed_0001, 40);
     assert(std.mem.eql(u32, replica_a.trace[0..records.len], replica_b.trace[0..records.len]));
     assert(std.mem.eql(u8, &replica_a.final_root, &replica_b.final_root));
     print("neth-sim: seed 0x5eed0001 replayed twice -- trace {any}, byte-identical root on both replicas -- GREEN determinism path\n", .{replica_a.trace[0..records.len]});
+}
 
-    // Claim 2: a different seed -- an entirely different delay schedule
-    // -- still converges on the same final root. Delivery timing varies;
-    // the fold's own record order does not.
+fn claim_safety_under_fault(
+    records: []const []const u8,
+    issuer_hex: *const [mc.pubkey_hex_len]u8,
+    holder_hex: *const [mc.pubkey_hex_len]u8,
+    issuer_pk: kumara.PublicKey,
+    holder_pk: kumara.PublicKey,
+    replica_a: *const sim.ReplicaSim,
+) !void {
     var replica_c: sim.ReplicaSim = .{};
-    try sim.run_replica_delivery(&replica_c, &records, &issuer_hex, &holder_hex, issuer_kp.public_key, holder_kp.public_key, 0x5eed_0004, 40);
+    try sim.run_replica_delivery(&replica_c, records, issuer_hex, holder_hex, issuer_pk, holder_pk, 0x5eed_0004, 40);
     assert(!std.mem.eql(u32, replica_a.trace[0..records.len], replica_c.trace[0..records.len]));
     assert(std.mem.eql(u8, &replica_a.final_root, &replica_c.final_root));
     print("neth-sim: seed 0x5eed0004 -- trace {any}, genuinely different from seed 1's {any}, yet same final root -- GREEN safety-under-fault path\n", .{ replica_c.trace[0..records.len], replica_a.trace[0..records.len] });
     assert(replica_c.records_applied == records.len);
+}
 
-    // Claim 3: drop_pct 100 -- every attempt drops, forever -- trips the
-    // bound on the very first record. The bound is checked, not assumed.
+fn claim_liveness_bound(
+    records: []const []const u8,
+    issuer_hex: *const [mc.pubkey_hex_len]u8,
+    holder_hex: *const [mc.pubkey_hex_len]u8,
+    issuer_pk: kumara.PublicKey,
+    holder_pk: kumara.PublicKey,
+) !void {
     var replica_d: sim.ReplicaSim = .{};
-    const refused = sim.run_replica_delivery(&replica_d, &records, &issuer_hex, &holder_hex, issuer_kp.public_key, holder_kp.public_key, 0x5eed_0003, 100);
+    const refused = sim.run_replica_delivery(&replica_d, records, issuer_hex, holder_hex, issuer_pk, holder_pk, 0x5eed_0003, 100);
     if (refused) |_| {
         return error.LivenessBoundNotEnforced;
     } else |err| {
@@ -108,16 +120,45 @@ fn run_selftest() !u8 {
     }
     assert(replica_d.records_applied == 0);
     print("neth-sim: drop_pct 100 tripped LivenessFailure on the first record, nothing applied -- GREEN unwelcome path\n", .{});
+}
 
-    // Claim 4: zero faults delivers every record on the first tick and
-    // matches the same root the faulted runs above converged on.
+fn claim_zero_fault_convergence(
+    records: []const []const u8,
+    issuer_hex: *const [mc.pubkey_hex_len]u8,
+    holder_hex: *const [mc.pubkey_hex_len]u8,
+    issuer_pk: kumara.PublicKey,
+    holder_pk: kumara.PublicKey,
+    expected_root: *const [32]u8,
+) !void {
     var replica_e: sim.ReplicaSim = .{};
-    try sim.run_replica_delivery(&replica_e, &records, &issuer_hex, &holder_hex, issuer_kp.public_key, holder_kp.public_key, 0x5eed_0004, 0);
+    try sim.run_replica_delivery(&replica_e, records, issuer_hex, holder_hex, issuer_pk, holder_pk, 0x5eed_0004, 0);
     assert(replica_e.trace[0] == 1);
     assert(replica_e.trace[1] == 1);
     assert(replica_e.trace[2] == 1);
-    assert(std.mem.eql(u8, &replica_e.final_root, &replica_a.final_root));
+    assert(std.mem.eql(u8, &replica_e.final_root, expected_root));
     print("neth-sim: zero-fault baseline -- every record landed tick 1, same root as every faulted run -- GREEN convergence path\n", .{});
+}
+
+fn run_selftest() !u8 {
+    const issuer_kp = kumara.keypair_from_seed(&mc.issuer_seed);
+    const holder_kp = kumara.keypair_from_seed(&mc.holder_seed);
+    var issuer_hex: [mc.pubkey_hex_len]u8 = undefined;
+    var holder_hex: [mc.pubkey_hex_len]u8 = undefined;
+    mc.hex_of_key(issuer_kp.public_key, &issuer_hex);
+    mc.hex_of_key(holder_kp.public_key, &holder_hex);
+
+    var line_buf_1: [rc.max_line_len]u8 = undefined;
+    var line_buf_2: [rc.max_line_len]u8 = undefined;
+    var line_buf_3: [rc.max_line_len]u8 = undefined;
+    const lens = try sign_three_records(issuer_kp, holder_kp, &issuer_hex, &holder_hex, &line_buf_1, &line_buf_2, &line_buf_3);
+    const records = [_][]const u8{ line_buf_1[0..lens.len_1], line_buf_2[0..lens.len_2], line_buf_3[0..lens.len_3] };
+    print("neth-sim: three real pre-signed records ready -- mint, send, send\n", .{});
+
+    var replica_a: sim.ReplicaSim = .{};
+    try claim_determinism(records[0..], &issuer_hex, &holder_hex, issuer_kp.public_key, holder_kp.public_key, &replica_a);
+    try claim_safety_under_fault(records[0..], &issuer_hex, &holder_hex, issuer_kp.public_key, holder_kp.public_key, &replica_a);
+    try claim_liveness_bound(records[0..], &issuer_hex, &holder_hex, issuer_kp.public_key, holder_kp.public_key);
+    try claim_zero_fault_convergence(records[0..], &issuer_hex, &holder_hex, issuer_kp.public_key, holder_kp.public_key, &replica_a.final_root);
 
     print("neth-sim: version {s}\n", .{witness_version});
     print("GREEN: Neth deterministic simulation lap 1 -- seeded delivery replays byte-for-byte, faults change timing, never the outcome.\n", .{});

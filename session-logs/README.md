@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.172202` — [MUR Season u84 fascia prune over70 on-touch](20260728-172202_mur-season-u84-fascia-prune-over70-on-touch.bron) — over70 14→6 · fascia 60 · u85 next
 - `20260728.171525` — [MUR Season u83 fascia prune TUBE mala yonder](20260728-171525_mur-season-u83-fascia-prune-tube-mala-yonder.bron) — TUBE plan · MUR M1–M2b · u84 next
 - `20260728.171319` — [MUR Season u82 fascia prune glow SLC yonder](20260728-171319_mur-season-u82-fascia-prune-glow-slc-yonder.bron) — glow-glass · first-code · SLC · harvest held · u83 next
 - `20260728.171011` — [MUR Season u81 fascia prune silo workshop yonder](20260728-171011_mur-season-u81-fascia-prune-silo-workshop-yonder.bron) — silo · workshop · SLC-2b · kernel · u82 next

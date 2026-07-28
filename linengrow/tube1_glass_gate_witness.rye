@@ -42,6 +42,108 @@ fn grant_glass_table(table: *caps.CapabilityTable) !void {
     try agent.grant(caps.Capability.init(tube1.sensors_resource, caps.right_device));
 }
 
+fn claim_cover_admit(
+    table: *caps.CapabilityTable,
+    manifest: *const tube.Manifest,
+    scopes_ok: []const *const scope_mod.Scope,
+    network: *const net_mod.NetworkGrant,
+    sensors: *const sens_mod.SensorsGrant,
+) void {
+    assert(tube1.admit_manifest_gated(
+        table,
+        "seva-broadcaster",
+        manifest,
+        scopes_ok,
+        network,
+        sensors,
+    ));
+    print("glass: gated admit with covering Storage + Contact + Network + Sensors -- GREEN cover path\n", .{});
+}
+
+fn claim_refuse_weak_storage(
+    table: *caps.CapabilityTable,
+    manifest: *const tube.Manifest,
+    contact_ok: *const scope_mod.Scope,
+    network: *const net_mod.NetworkGrant,
+    sensors: *const sens_mod.SensorsGrant,
+) !void {
+    const storage_weak = try scope_mod.Scope.build(&[_]scope_mod.ScopeEntry{
+        scope_mod.ScopeEntry.init("photos", caps.right_write),
+    });
+    const scopes_weak_storage = [_]*const scope_mod.Scope{ &storage_weak, contact_ok };
+    assert(!tube1.admit_manifest_gated(
+        table,
+        "seva-broadcaster",
+        manifest,
+        scopes_weak_storage[0..],
+        network,
+        sensors,
+    ));
+    print("glass: Storage Scope weaker than photos declaration refuses -- GREEN storage cover\n", .{});
+}
+
+fn claim_refuse_revoked_contact(
+    table: *caps.CapabilityTable,
+    manifest: *const tube.Manifest,
+    storage_ok: *const scope_mod.Scope,
+    network: *const net_mod.NetworkGrant,
+    sensors: *const sens_mod.SensorsGrant,
+) !void {
+    var contact_rev = try scope_mod.Scope.build(&[_]scope_mod.ScopeEntry{
+        scope_mod.ScopeEntry.init("contacts", caps.right_read),
+    });
+    contact_rev.revoke();
+    const scopes_rev_contact = [_]*const scope_mod.Scope{ storage_ok, &contact_rev };
+    assert(!tube1.admit_manifest_gated(
+        table,
+        "seva-broadcaster",
+        manifest,
+        scopes_rev_contact[0..],
+        network,
+        sensors,
+    ));
+    print("glass: revoked Contact Scope refuses covering contacts declaration -- GREEN contact cover\n", .{});
+}
+
+fn claim_refuse_denied_network(
+    table: *caps.CapabilityTable,
+    manifest: *const tube.Manifest,
+    scopes_ok: []const *const scope_mod.Scope,
+    sensors: *const sens_mod.SensorsGrant,
+) void {
+    const net_denied = net_mod.NetworkGrant.deny();
+    assert(!tube1.admit_manifest_gated(
+        table,
+        "seva-broadcaster",
+        manifest,
+        scopes_ok,
+        &net_denied,
+        sensors,
+    ));
+    assert(net_denied.appears_down());
+    print("glass: denied Network Grant refuses and appears down -- GREEN network cover\n", .{});
+}
+
+fn claim_refuse_revoked_sensors(
+    table: *caps.CapabilityTable,
+    manifest: *const tube.Manifest,
+    scopes_ok: []const *const scope_mod.Scope,
+    network: *const net_mod.NetworkGrant,
+) void {
+    var sens_rev = sens_mod.SensorsGrant.grant();
+    sens_rev.revoke();
+    assert(!tube1.admit_manifest_gated(
+        table,
+        "seva-broadcaster",
+        manifest,
+        scopes_ok,
+        network,
+        &sens_rev,
+    ));
+    assert(sens_rev.appears_zeroed());
+    print("glass: revoked Sensors Grant refuses and appears zeroed -- GREEN sensors cover\n", .{});
+}
+
 fn run_selftest() !u8 {
     assert(glass.run_demo_admit());
     print("glass: demo admit opens with covering scopes + live toggles -- GREEN\n", .{});
@@ -59,73 +161,12 @@ fn run_selftest() !u8 {
     const scopes_ok = [_]*const scope_mod.Scope{ &storage_ok, &contact_ok };
     const network = net_mod.NetworkGrant.grant();
     const sensors = sens_mod.SensorsGrant.grant();
-    assert(tube1.admit_manifest_gated(
-        &table,
-        "seva-broadcaster",
-        &manifest,
-        scopes_ok[0..],
-        &network,
-        &sensors,
-    ));
-    print("glass: gated admit with covering Storage + Contact + Network + Sensors -- GREEN cover path\n", .{});
 
-    // Storage Scope weaker than photos/read declaration → refuse.
-    const storage_weak = try scope_mod.Scope.build(&[_]scope_mod.ScopeEntry{
-        scope_mod.ScopeEntry.init("photos", caps.right_write),
-    });
-    const scopes_weak_storage = [_]*const scope_mod.Scope{ &storage_weak, &contact_ok };
-    assert(!tube1.admit_manifest_gated(
-        &table,
-        "seva-broadcaster",
-        &manifest,
-        scopes_weak_storage[0..],
-        &network,
-        &sensors,
-    ));
-    print("glass: Storage Scope weaker than photos declaration refuses -- GREEN storage cover\n", .{});
-
-    // Contact Scope revoked → refuse.
-    var contact_rev = try scope_mod.Scope.build(&[_]scope_mod.ScopeEntry{
-        scope_mod.ScopeEntry.init("contacts", caps.right_read),
-    });
-    contact_rev.revoke();
-    const scopes_rev_contact = [_]*const scope_mod.Scope{ &storage_ok, &contact_rev };
-    assert(!tube1.admit_manifest_gated(
-        &table,
-        "seva-broadcaster",
-        &manifest,
-        scopes_rev_contact[0..],
-        &network,
-        &sensors,
-    ));
-    print("glass: revoked Contact Scope refuses covering contacts declaration -- GREEN contact cover\n", .{});
-
-    // Denied Network Grant → refuse (appears down).
-    const net_denied = net_mod.NetworkGrant.deny();
-    assert(!tube1.admit_manifest_gated(
-        &table,
-        "seva-broadcaster",
-        &manifest,
-        scopes_ok[0..],
-        &net_denied,
-        &sensors,
-    ));
-    assert(net_denied.appears_down());
-    print("glass: denied Network Grant refuses and appears down -- GREEN network cover\n", .{});
-
-    // Revoked Sensors Grant → refuse (appears zeroed).
-    var sens_rev = sens_mod.SensorsGrant.grant();
-    sens_rev.revoke();
-    assert(!tube1.admit_manifest_gated(
-        &table,
-        "seva-broadcaster",
-        &manifest,
-        scopes_ok[0..],
-        &network,
-        &sens_rev,
-    ));
-    assert(sens_rev.appears_zeroed());
-    print("glass: revoked Sensors Grant refuses and appears zeroed -- GREEN sensors cover\n", .{});
+    claim_cover_admit(&table, &manifest, scopes_ok[0..], &network, &sensors);
+    try claim_refuse_weak_storage(&table, &manifest, &contact_ok, &network, &sensors);
+    try claim_refuse_revoked_contact(&table, &manifest, &storage_ok, &network, &sensors);
+    claim_refuse_denied_network(&table, &manifest, scopes_ok[0..], &sensors);
+    claim_refuse_revoked_sensors(&table, &manifest, scopes_ok[0..], &network);
 
     print("glass: version {s}\n", .{witness_version});
     print("GREEN: TUBE1 glass — Storage + Contact + Network + Sensors cover declared resources.\n", .{});

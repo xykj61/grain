@@ -307,6 +307,37 @@ fn glass_origin_y(portrait: bool, h: i32, grid_h: i32) i32 {
     return @divTrunc(h - grid_h, 5);
 }
 
+fn clear_touch_hits() void {
+    last_keyboard_hit = .{};
+    last_close_hit = .{};
+    last_hearth_hit = .{};
+    last_preset_hits = [_]CloseHit{.{}} ** lulu2.preset_count;
+    last_home_hit = .{};
+    last_wire_hit = .{};
+    last_cell_hit = .{};
+}
+
+fn row_hit(origin_x: i32, origin_y: i32, cell_ph: i32, grid_w: i32, row: i32) CloseHit {
+    return .{
+        .ready = true,
+        .x0 = origin_x,
+        .y0 = origin_y + row * cell_ph,
+        .x1 = origin_x + grid_w,
+        .y1 = origin_y + (row + 1) * cell_ph,
+    };
+}
+
+fn refresh_settings_hits(origin_x: i32, origin_y: i32, cell_ph: i32, grid_w: i32) void {
+    var i: u32 = 0;
+    while (i < lulu2.preset_count) : (i += 1) {
+        const row: i32 = @intCast(lulu2.list_row0 + i);
+        last_preset_hits[i] = row_hit(origin_x, origin_y, cell_ph, grid_w, row);
+    }
+    last_home_hit = row_hit(origin_x, origin_y, cell_ph, grid_w, @intCast(lulu3.home_row));
+    last_wire_hit = row_hit(origin_x, origin_y, cell_ph, grid_w, @intCast(lulu4.wire_row));
+    last_cell_hit = row_hit(origin_x, origin_y, cell_ph, grid_w, @intCast(lulu5.cell_row));
+}
+
 /// Keyboard + close-hint hit maps for the current paint (window coords).
 fn refresh_touch_hits(
     tube1_admitted: bool,
@@ -317,13 +348,7 @@ fn refresh_touch_hits(
     cols: u32,
     grid_w: i32,
 ) void {
-    last_keyboard_hit = .{};
-    last_close_hit = .{};
-    last_hearth_hit = .{};
-    last_preset_hits = [_]CloseHit{.{}} ** lulu2.preset_count;
-    last_home_hit = .{};
-    last_wire_hit = .{};
-    last_cell_hit = .{};
+    clear_touch_hits();
     if (!tube1_admitted) return;
     // invariant: positive cell metrics at the touch seam
     assert(cell_pw > 0);
@@ -338,63 +363,15 @@ fn refresh_touch_hits(
         kb_layout.page_for_tab(keyboard_mode, keyboard_emoji_tab),
     );
     // Hearth status on Skate row 1 — short tap cycles; long-press opens LULU2.
-    const hearth_row: i32 = 1;
-    last_hearth_hit = .{
-        .ready = true,
-        .x0 = origin_x,
-        .y0 = origin_y + hearth_row * cell_ph,
-        .x1 = origin_x + grid_w,
-        .y1 = origin_y + (hearth_row + 1) * cell_ph,
-    };
+    last_hearth_hit = row_hit(origin_x, origin_y, cell_ph, grid_w, 1);
     if (settings_open) {
-        var i: u32 = 0;
-        while (i < lulu2.preset_count) : (i += 1) {
-            const row: i32 = @intCast(lulu2.list_row0 + i);
-            last_preset_hits[i] = .{
-                .ready = true,
-                .x0 = origin_x,
-                .y0 = origin_y + row * cell_ph,
-                .x1 = origin_x + grid_w,
-                .y1 = origin_y + (row + 1) * cell_ph,
-            };
-        }
-        const hr: i32 = @intCast(lulu3.home_row);
-        last_home_hit = .{
-            .ready = true,
-            .x0 = origin_x,
-            .y0 = origin_y + hr * cell_ph,
-            .x1 = origin_x + grid_w,
-            .y1 = origin_y + (hr + 1) * cell_ph,
-        };
-        const wr: i32 = @intCast(lulu4.wire_row);
-        last_wire_hit = .{
-            .ready = true,
-            .x0 = origin_x,
-            .y0 = origin_y + wr * cell_ph,
-            .x1 = origin_x + grid_w,
-            .y1 = origin_y + (wr + 1) * cell_ph,
-        };
-        const cr: i32 = @intCast(lulu5.cell_row);
-        last_cell_hit = .{
-            .ready = true,
-            .x0 = origin_x,
-            .y0 = origin_y + cr * cell_ph,
-            .x1 = origin_x + grid_w,
-            .y1 = origin_y + (cr + 1) * cell_ph,
-        };
+        refresh_settings_hits(origin_x, origin_y, cell_ph, grid_w);
     } else {
         home_editing = false;
         home_draft.clear();
     }
     // Close only on the painted "TAP ABOVE KB TO CLOSE" row (Skate 13).
-    const close_row: i32 = 13;
-    last_close_hit = .{
-        .ready = true,
-        .x0 = origin_x,
-        .y0 = origin_y + close_row * cell_ph,
-        .x1 = origin_x + grid_w,
-        .y1 = origin_y + (close_row + 1) * cell_ph,
-    };
+    last_close_hit = row_hit(origin_x, origin_y, cell_ph, grid_w, 13);
     // invariant: close strip sits above the keyboard
     assert(last_close_hit.y1 <= last_keyboard_hit.origin_y);
     // invariant: hearth status sits above the close strip
@@ -411,35 +388,14 @@ pub fn preset_hit_index(x: i32, y: i32) ?u32 {
     return null;
 }
 
-/// Paint via Skate: title, R2, tip/live, hex, rail, JABS1, Dexter, JABS2, ZETA, tap.
-pub fn paint_session_root_hex(
-    window: ?*anyopaque,
+fn paint_locked_session(
+    buf: *WindowBuffer,
     hex: *const [64]u8,
     matched: bool,
     tube1_admitted: bool,
     surf: ?*const seva_surf.Surface,
-    tip_line: ?[]const u8,
-    live_line: ?[]const u8,
-    pub_line: ?[]const u8,
-    fetch_line: ?[]const u8,
-    market_line: ?[]const u8,
-    carriage_line: ?[]const u8,
-    dexter_line: ?[]const u8,
-    jabs2_line0: ?[]const u8,
-    jabs2_line1: ?[]const u8,
+    chrome: PaintChrome,
 ) void {
-    last_keyboard_hit = .{};
-    last_close_hit = .{};
-    last_hearth_hit = .{};
-    last_preset_hits = [_]CloseHit{.{}} ** lulu2.preset_count;
-    last_home_hit = .{};
-    last_wire_hit = .{};
-    last_cell_hit = .{};
-    if (window == null) return;
-    _ = ANativeWindow_setBuffersGeometry(window, 0, 0, format_rgba8888);
-    var buf: WindowBuffer = undefined;
-    if (ANativeWindow_lock(window, &buf, null) != 0) return;
-    defer _ = ANativeWindow_unlockAndPost(window);
     if (buf.bits == null or buf.width <= 0 or buf.height <= 0 or buf.stride <= 0) return;
     const w = buf.width;
     const h = buf.height;
@@ -461,17 +417,7 @@ pub fn paint_session_root_hex(
     const allocator = std.heap.page_allocator;
     var grid = skate.Grid.init(allocator, cols, grid_rows) catch return;
     defer allocator.free(grid.cells);
-    fill_chrome_rows(&grid, hex, matched, tube1_admitted, surf, .{
-        .tip_line = tip_line,
-        .live_line = live_line,
-        .pub_line = pub_line,
-        .fetch_line = fetch_line,
-        .market_line = market_line,
-        .carriage_line = carriage_line,
-        .dexter_line = dexter_line,
-        .jabs2_line0 = jabs2_line0,
-        .jabs2_line1 = jabs2_line1,
-    });
+    fill_chrome_rows(&grid, hex, matched, tube1_admitted, surf, chrome);
     const bg = rgba(0x1a, 0x14, 0x10);
     const fg = if (matched) rgba(0x7d, 0xc4, 0x8a) else rgba(0xe8, 0xc4, 0x7a);
     const grid_stride: u32 = @intCast(grid_w * 4);
@@ -486,6 +432,42 @@ pub fn paint_session_root_hex(
     const origin_y = glass_origin_y(portrait, h, grid_h);
     refresh_touch_hits(tube1_admitted, origin_x, origin_y, cell_pw, cell_ph, cols, grid_w);
     blit_grid_centered(bits, w, h, stride_px, pixels, grid_w, grid_h, origin_x, origin_y);
+}
+
+/// Paint via Skate: title, R2, tip/live, hex, rail, JABS1, Dexter, JABS2, ZETA, tap.
+pub fn paint_session_root_hex(
+    window: ?*anyopaque,
+    hex: *const [64]u8,
+    matched: bool,
+    tube1_admitted: bool,
+    surf: ?*const seva_surf.Surface,
+    tip_line: ?[]const u8,
+    live_line: ?[]const u8,
+    pub_line: ?[]const u8,
+    fetch_line: ?[]const u8,
+    market_line: ?[]const u8,
+    carriage_line: ?[]const u8,
+    dexter_line: ?[]const u8,
+    jabs2_line0: ?[]const u8,
+    jabs2_line1: ?[]const u8,
+) void {
+    clear_touch_hits();
+    if (window == null) return;
+    _ = ANativeWindow_setBuffersGeometry(window, 0, 0, format_rgba8888);
+    var buf: WindowBuffer = undefined;
+    if (ANativeWindow_lock(window, &buf, null) != 0) return;
+    defer _ = ANativeWindow_unlockAndPost(window);
+    paint_locked_session(&buf, hex, matched, tube1_admitted, surf, .{
+        .tip_line = tip_line,
+        .live_line = live_line,
+        .pub_line = pub_line,
+        .fetch_line = fetch_line,
+        .market_line = market_line,
+        .carriage_line = carriage_line,
+        .dexter_line = dexter_line,
+        .jabs2_line0 = jabs2_line0,
+        .jabs2_line1 = jabs2_line1,
+    });
 }
 
 comptime {
