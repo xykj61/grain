@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.020607` — [Ketu Mala Kamala fund executives](20260728-020607_ketu-mala-kamala-executives.bron) — Aquarius 11 · dedication · Sara·DJINN·Keaton
 - `20260728.015541` — [Inner Scope Djin outer pause](20260728-015541_inner-scope-djin-pause.bron) — Twah→Djin · scope·outer·inner · i0–i15
 - `20260728.015058` — [Constellation m8 Twah arc close](20260728-015058_constellation-m8-twah-close.bron) — refuse-walk · m5–m8 CLOSED
 - `20260728.014918` — [Constellation m7 Twah phonebook Comlink](20260728-014918_constellation-m7-twah-phonebook.bron) — steps 4–5 · mints nothing · knock
