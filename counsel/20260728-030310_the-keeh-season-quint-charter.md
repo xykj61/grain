@@ -8,7 +8,8 @@
 **Rename spine (approved fascia edit):** **Ketu / `%ketu` / ketu.fund → Keeh / `%keeh` / keeh.fund** — Aquarius · air · seat 11  
 **Executive:** **Keaton Sealy Livermore** — **still** (unchanged)  
 **Within:** paused **core** Gren Season (g0) · inside paused MUR u0 · inside paused Inner Scope · inside paused Constellation  
-**Status:** Prep seated · **q0–q5 complete** `20260728.032606` · **q6** next · Kia honor sponsor seated  
+**Status:** Prep seated · **q0–q6 complete** `20260728.032745` · **q7** next · living-overwrite residual CLEARED  
+Radiant pass `20260728.032745` — q6 residual map cleared · living-overwrite block effectively closed  
 Radiant pass `20260728.032606` — q5 living overwrite · charter seat map + Kia sponsor · used-mobility lean  
 Radiant pass `20260728.032134` — Kia honor sponsor · used 4-cyl hatch/SUV non-CVT cloth CL/FB
 
@@ -24,7 +25,7 @@ Radiant pass `20260728.032134` — Kia honor sponsor · used 4-cyl hatch/SUV non
 | **inner** | Inner Scope | i6 / i7 next · fascia | **PAUSED** |
 | **innermost** | MUR Season | u0 | **PAUSED** |
 | **core** | Gren Season | g0 | **PAUSED** while quint walks |
-| **quint** | **Keeh Season** | **q0–q5** complete · **q6** next | **OPEN** |
+| **quint** | **Keeh Season** | **q0–q6** complete · **q7** next | **OPEN** |
 
 Handback: quint → core **g0** (unless extend 32). Then Gren · MUR · inner · outer as before.
 
@@ -55,8 +56,8 @@ Handback: quint → core **g0** (unless extend 32). Then Gren · MUR · inner ·
 | Block | Rounds | Exit lean |
 |-------|--------|-----------|
 | Bow · measure | **q0–q1** | Affirm five pauses · gen_keeh · Keaton executive |
-| Living overwrite | **q2–q7** | Lexicon · prin · counsel Radiant-pass Ketu→Keeh |
-| Residual | **q8–q11** | Bare Ketu door ads cleared (rename-forward ok) |
+| Living overwrite | **q2–q6** CLOSED · **q7** affirm | Lexicon · prin · counsel Radiant-pass Ketu→Keeh · Kia |
+| Residual | **q8–q11** | Bare living ads already cleared q6 — spot-check only |
 | Harden | **q12–q13** | gen_keeh · gen_gren · gen_murr still GREEN |
 | Horizon · close | **q14–q15** | **Warn:** extend 32 · or return Gren g0 |
 

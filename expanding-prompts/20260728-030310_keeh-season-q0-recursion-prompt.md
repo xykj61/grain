@@ -48,7 +48,7 @@ first duties: bootstrap or verify · state the nib · prin scope ·
 run gen_keeh (GREEN; deploy RED) · run gen_gren · gen_murr (still GREEN) · report ·
 then walk q0 (bow) from the charter:
   affirm five pauses · affirm Ketu→Keeh · affirm Keaton executive stays ·
-  map residual Ketu door sweep lean ·
+  residual Ketu door sweep CLEARED q6 (rename-forward / dated hour only) ·
   no live shred · no breach without prin rish breach yes now + his circled scope;
   no live Sui deploy · no wallet · no gas · no private key in tree;
   no Gren g-rounds · no MUR mass sed until quint hands back to g0.

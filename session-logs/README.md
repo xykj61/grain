@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.032745` — [Keeh Season q6 residual close](20260728-032745_keeh-season-q6-residual-close.bron) — overwrite CLEARED · q7 next
 - `20260728.032606` — [Keeh Season q5 polish](20260728-032606_keeh-season-q5-polish.bron) — charter Kia spine · q6 next
 - `20260728.032134` — [Keeh Kia sponsor q4](20260728-032134_keeh-kia-sponsor-q4.bron) — Kia honor sponsor · used lean · q5 next
 - `20260728.031722` — [docs-geode year wave crush q3](20260728-031722_docs-geode-year-wave-crush-q3.bron) — docs-geode · crush=compile · q4 next
