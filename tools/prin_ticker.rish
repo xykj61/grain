@@ -1,7 +1,5 @@
-# tools/prin_ticker.rish — thin hand: foundations + edu verse ticker for Prin.
-
-let mode = "slide"
-if length args != 0 then let mode = args[0]
-let r = run ["bash" "tools/fixtures/prin_ticker.sh" mode]
+# tools/prin_ticker.rish — accrete shim → tools/gen/season/prin_ticker.rish (Generator Season s4)
+if length args == 0 then let r = run ["rishi/bin/rishi" "run" "tools/gen/season/prin_ticker.rish"]
+if length args != 0 then let r = run ["rishi/bin/rishi" "run" "tools/gen/season/prin_ticker.rish" args[0]]
 if r.out != "" then say r.out
 exit r.code

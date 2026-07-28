@@ -1,0 +1,22 @@
+# tools/gen/season/prin.rish — %prin · Prin — Matrix-style live print of Grain loops.
+#
+#   rishi/bin/rishi run tools/gen/season/prin.rish scope
+#   rishi/bin/rishi run tools/prin.rish scope          # accrete shim
+#
+# Outer aliases (live TTY): source tools/prin_aliases.sh  →  p pm pr pl pt pw pd po pnib
+# Scope slate: tools/gen/season/prin_scope.rish (Generator Season s4+)
+
+let mode = "matrix"
+if length args != 0 then let mode = args[0]
+let r = run ["bash" "tools/fixtures/prin_dispatch.sh" mode]
+if r.out != "" then say r.out
+
+# Scope modes: assert without if/assert else clash (else binds to if when cond is false).
+let scope_modes = ["scope" "outer" "inner"]
+let is_scope = scope_modes contains mode
+if is_scope then assert r.ok
+if is_scope then assert r.out contains "GREEN: prin-scope"
+if is_scope then assert r.out contains "sext:"
+if is_scope then assert r.out contains "nib:"
+
+exit r.code

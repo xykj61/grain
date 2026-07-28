@@ -8,7 +8,8 @@
 **Informal tag:** innermost^6+ · nest-6  
 **Ground:** origin/main `418af54e73` (pre-send)  
 **Within:** paused **innermost** MUR (u91 complete / u92 next) · inside paused Inner Scope · inside paused Constellation  
-**Status:** **OPEN** · s0–s3 complete `20260728.190017` · **s4** next  
+**Status:** **OPEN** · s0–s4 complete `20260728.190251` · **s5** next  
+Radiant pass `20260728.190251` — s4 tools/gen/season home LIVE · shims at old paths  
 Radiant pass `20260728.190017` — s3 f4 first-home rehearsal · tools/gen/season cohort named · no mv  
 Radiant pass `20260728.185825` — s2 generators dual-census · O3 still declaration-gated  
 Radiant pass `20260728.184313` — s1 prin_scope → rish · living pin tools/prin_scope.rish  
@@ -68,7 +69,7 @@ Geode stays **PREP** parallel (d0) — does not steal s-rounds.
 | `counsel/20260728-183510_generator-season-s0-planning-glow-rishi-dojo.md` | s0 planning · fuse reminder |
 | `expanding-prompts/20260728-183510_generator-season-s0-recursion-prompt.md` | Living paste |
 | Lexicon | **sext** · **The Generator Season** |
-| `tools/prin_scope.rish` | Living pin (s1+) · bash shim retained |
+| `tools/gen/season/prin_scope.rish` | Living pin (s4+) · old-path shims retained |
 
 ## Trey — documentary frame
 

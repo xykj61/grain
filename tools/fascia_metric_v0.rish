@@ -1,54 +1,5 @@
-# tools/fascia_metric_v0.rish — fascia metric (i4 land · i5 tighten · i6 Amphora stack).
-#
-# Difficulty-style connective-tissue grade 0–100 from four clutter signals.
-# i5: Amphora lap 1 · softer weights · window mean.
-# i6: Amphora laps 1–3 folded; weights unchanged (window like-to-like).
-# Measure only — shred / breach / deploy refuse by name.
-#
-#   rishi/bin/rishi run tools/fascia_metric_v0.rish
-#   rishi/bin/rishi run tools/fascia_metric_v0.rish shred   # RED
-
-say "fascia-metric-v0: Language EN — fascia grade from measurable clutter."
-say "fascia-metric-v0: Style Radiant — GREEN when four signals, window, Amphora stack."
-say "fascia-metric-v0: Lens TAME — Amphora measure door; no live shred."
-
-let verb = ""
-if length args != 0 then let verb = args[0]
-
-# Amphora stack fold — laps 1–3 must green beside the meter.
-let amphora1 = run ["rishi/bin/rishi" "run" "tools/amphora_lap1.rish"]
-assert amphora1.ok else "fascia-metric-v0 Amphora lap 1 fold RED"
-assert amphora1.out contains "GREEN: Amphora lap 1" else "fascia-metric-v0 Amphora lap 1 missing GREEN"
-say "fold: amphora_lap1 GREEN"
-
-let amphora2 = run ["rishi/bin/rishi" "run" "tools/amphora_lap2.rish"]
-assert amphora2.ok else "fascia-metric-v0 Amphora lap 2 fold RED"
-assert amphora2.out contains "GREEN: Amphora lap 2" else "fascia-metric-v0 Amphora lap 2 missing GREEN"
-say "fold: amphora_lap2 GREEN"
-
-let amphora3 = run ["rishi/bin/rishi" "run" "tools/amphora_lap3.rish"]
-assert amphora3.ok else "fascia-metric-v0 Amphora lap 3 fold RED"
-assert amphora3.out contains "GREEN: Amphora lap 3" else "fascia-metric-v0 Amphora lap 3 missing GREEN"
-say "fold: amphora_lap3 GREEN"
-
-let metric = run ["sh" "tools/fixtures/fascia_metric_v0.sh" verb]
-assert metric.ok else "fascia-metric-v0 REFUSE or measure failed — see stderr"
-assert metric.out contains "GREEN: fascia-metric-v0" else "fascia-metric-v0 missing GREEN line"
-assert metric.out contains "metric_rev=i6" else "fascia-metric-v0 missing i6 metric_rev"
-assert metric.out contains "fascia=" else "fascia-metric-v0 missing fascia grade"
-assert metric.out contains "signal:superseded=" else "fascia-metric-v0 missing superseded signal"
-assert metric.out contains "signal:ratchet_outstanding=" else "fascia-metric-v0 missing ratchet signal"
-assert metric.out contains "signal:target_class_a=" else "fascia-metric-v0 missing target-class signal"
-assert metric.out contains "signal:over70=" else "fascia-metric-v0 missing over70 signal"
-assert metric.out contains "window_mean=" else "fascia-metric-v0 missing window_mean"
-assert metric.out contains "amphora_ready=yes" else "fascia-metric-v0 amphora_ready not yes"
-assert metric.out contains "amphora_stack=laps1-3" else "fascia-metric-v0 amphora_stack not laps1-3"
-assert metric.out contains "weight=half" else "fascia-metric-v0 missing i5 half-weight on superseded"
-assert metric.out contains "refuse: shred" else "fascia-metric-v0 missing refuse line"
-say metric.out
-
-# Refuse-walk post-fold: shred must exit RED
-let refuse = run ["sh" "tools/fixtures/fascia_metric_v0.sh" "shred"]
-assert (refuse.ok == false) else "fascia-metric-v0 refuse-walk broken: shred must exit RED"
-
-say "GREEN: fascia-metric-v0 — i6 Amphora stack · window mean · shred refuse RED."
+# tools/fascia_metric_v0.rish — accrete shim → tools/gen/season/fascia_metric_v0.rish (Generator Season s4)
+if length args == 0 then let r = run ["rishi/bin/rishi" "run" "tools/gen/season/fascia_metric_v0.rish"]
+if length args != 0 then let r = run ["rishi/bin/rishi" "run" "tools/gen/season/fascia_metric_v0.rish" args[0]]
+if r.out != "" then say r.out
+exit r.code

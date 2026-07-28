@@ -19,7 +19,7 @@ Prin (%prin) — Grain matrix printer · live outer-terminal view of loops & par
   scroll              verse as a single-line ticker
   dual   | pw | pd    matrix | verse side-by-side (tmux)
   nib    | pnib       print git nib
-  scope  | outer | inner   print seated season scope (six nests · tools/prin_scope.rish)
+  scope  | outer | inner   print seated season scope (six nests · tools/gen/season/prin_scope.rish)
   sundial| psun       recursion-prompt confidence 0–100 (red→green)
 
 Outer terminal:
@@ -33,7 +33,7 @@ Env: PRIN_INTERVAL=1  PRIN_TICKER_INTERVAL=8
 EOF
     ;;
   nib|pnib) git rev-parse --short=10 HEAD ;;
-  scope|outer|inner) exec "$ROOT/rishi/bin/rishi" run tools/prin_scope.rish ;;
+  scope|outer|inner) exec "$ROOT/rishi/bin/rishi" run tools/gen/season/prin_scope.rish ;;
   sundial|psun) exec sh tools/fixtures/sundial.sh ;;
   ticker|pt|pv|slide) exec bash tools/fixtures/prin_ticker.sh slide ;;
   scroll) exec bash tools/fixtures/prin_ticker.sh scroll ;;

@@ -59,7 +59,7 @@ No `git mv` · no O3 · no glow_* relocation · no `src/gen` desk move · no shr
 
 ## Next
 
-**kg s4** — live the season-cohort move with shims + choir, or check-in before the first `git mv`.
+**LANDED s4** — `tools/gen/season` LIVE · five scripts moved · shims green.
 
 ---
 

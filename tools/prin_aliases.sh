@@ -47,7 +47,7 @@ alias 'p.'='(cd "$GRAIN_ROOT" && bash "$_PRIN_M" once)'
 alias px='(cd "$GRAIN_ROOT" && bash "$_PRIN_M" matrix)'
 
 # Rishi entry (non-interactive: help · nib · once)
-alias prinr='(cd "$GRAIN_ROOT" && rishi/bin/rishi run tools/prin.rish)'
+alias prinr='(cd "$GRAIN_ROOT" && rishi/bin/rishi run tools/gen/season/prin.rish)'
 
 echo "Prin aliases seated from ${GRAIN_ROOT}"
 echo "  p pm pr pl pt pv pw pd po pnib phelp prinr   ·   p♥ p* p:: p. px"

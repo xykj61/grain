@@ -1,25 +1,6 @@
-# tools/prin.rish — %prin · Prin — Matrix-style live print of Grain loops.
-#
-#   rishi/bin/rishi run tools/prin.rish matrix
-#   rishi/bin/rishi run tools/prin.rish ticker
-#   rishi/bin/rishi run tools/prin.rish dual
-#   rishi/bin/rishi run tools/prin.rish scope
-#   rishi/bin/rishi run tools/prin.rish help
-#
-# Outer aliases (live TTY): source tools/prin_aliases.sh  →  p pm pr pl pt pw pd po pnib
-# Scope slate: tools/prin_scope.rish (Generator Season s1+)
-
-let mode = "matrix"
-if length args != 0 then let mode = args[0]
-let r = run ["bash" "tools/fixtures/prin_dispatch.sh" mode]
+# tools/prin.rish — accrete shim → tools/gen/season/prin.rish (Generator Season s4)
+# Forward at most one argv; never default-run matrix (hangs on live TTY).
+if length args == 0 then let r = run ["rishi/bin/rishi" "run" "tools/gen/season/prin.rish"]
+if length args != 0 then let r = run ["rishi/bin/rishi" "run" "tools/gen/season/prin.rish" args[0]]
 if r.out != "" then say r.out
-
-# Scope modes: assert without if/assert else clash (else binds to if when cond is false).
-let scope_modes = ["scope" "outer" "inner"]
-let is_scope = scope_modes contains mode
-if is_scope then assert r.ok
-if is_scope then assert r.out contains "GREEN: prin-scope"
-if is_scope then assert r.out contains "sext:"
-if is_scope then assert r.out contains "nib:"
-
 exit r.code

@@ -1,0 +1,7 @@
+# tools/gen/season/prin_ticker.rish — thin hand: foundations + edu verse ticker for Prin.
+
+let mode = "slide"
+if length args != 0 then let mode = args[0]
+let r = run ["bash" "tools/fixtures/prin_ticker.sh" mode]
+if r.out != "" then say r.out
+exit r.code
