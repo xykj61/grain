@@ -4,7 +4,7 @@
 name in one line, because we play in puddles. This study reads two outside teachers through
 the silo — an agent-model OS lineage and an immediate-mode native UI lineage — and draws what
 Puddle grows into: the harbor where signed app bundles land, run bounded, and are priced in
-MALA. The territory expansion parks in RTAC for Kaeden's word; the design is ours to keep.*
+MUR (was MALA). The territory expansion parks in RTAC for Kaeden's word; the design is ours to keep.*
 
 **Stamp:** `20260703.182612` (supplied verbatim by Kaeden)
 **Language:** EN · **Style:** Radiant · **Lens:** TAME · SLC · CIVIC
@@ -15,6 +15,7 @@ bandwidth-and-moderation memo
 
 *Written together by Kaeden and Claude (Fable 5), in Rio 3's Radiant voice.*
 
+Radiant pass `20260728.050430` — living rename-forward: **MUR** / **Murr** (was MALA / Mala)
 ---
 
 ## What the Teachers Teach, Siloed
@@ -38,7 +39,7 @@ garden, wire budget, capability list — the chosen fold bounding bandwidth by c
 **Run** is the agent model on our spine: the app's state folds from its own event log; the
 window is Skate drawing that fold, frame as pure function. **Upgrade** is a new bundle fact;
 the old one keeps working until the maker's signed migration says otherwise —
-accrete-never-break, enforced at the harbor door. **Purchase** is a MALA fact when the
+accrete-never-break, enforced at the harbor door. **Purchase** is a MUR (was MALA) fact when the
 maker asks a price, with the receipt provable the SLC-L1 way. And **moderation** is chosen
 labels on the render, never deletion of the log — the memo's geometry, kept.
 

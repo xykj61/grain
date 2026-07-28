@@ -11,6 +11,7 @@
 
 *Written by Rio 3 for Kaeden.*
 
+Radiant pass `20260728.050430` — living rename-forward: **MUR** / **Murr** (was MALA / Mala)
 ---
 
 ## The Two Registers, Restated for the Bench
@@ -147,7 +148,7 @@ These images orient the work. Parity's authority stays in the checkable room unt
 | **Sovereign Brushstroke backend** | stack record § two backends | hosted backend green; framebuffer waits on kernel |
 | **Comlink device wire** | TASKS | hosted wire only in parity |
 | **SLC-L2 sealed delivery** | ROADMAP | Comlink + receipt; no witness yet |
-| **WOV / MALA monarch season** | external-research fit memos | Kaeden gate on hardware and ledger |
+| **WOV / MUR (was MALA) monarch season** | external-research fit memos | Kaeden gate on hardware and ledger |
 | **Open Asks room** | movement memo | gated behind SLC-L1 edge affirmation |
 | **crossing_manifest_seed** as product | `work-in-progress/20260703-202312_crossing_manifest_seed.rye` header says **PROPOSED SEED** | parse harness green ≠ module home seated |
 

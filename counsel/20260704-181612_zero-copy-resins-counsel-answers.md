@@ -1,5 +1,7 @@
 # Zero-Copy Resins Counsel — Answers A–H, Architecture I1–I7, and the Map Refresh
 
+Radiant pass `20260728.050430` — living rename-forward: **MUR** / **Murr** (was MALA / Mala)
+
 *The counsel sitting the `181012` prompt asked for: strategic answers on the three-lane wire, the resin mark, the sovereign snapshot's honest maximum, lap order, the Urbit boundary, priority, CIVIC alignment, and the tunnel mouth — then implementation architecture at spec grain, and granular deltas for ROADMAP, TASKS, the decoder, and RTAC. Counsel only; this document seats nothing; every gate stays Kaeden's.*
 
 **Stamp:** `20260704.181612 UDT` (Kaeden's most recent anchor, taken verbatim; slug distinguishes)
@@ -30,7 +32,7 @@ Every parity number that follows is either one of the tree's existing pins (144,
 
 The minimum frame preserving batching without breaking Tally gardens is given whole in I1. Its spine: a small **signed batch header** (control plane), a bounded **manifest slice** whose entries carry Tilak, algorithm-tagged digest, length, and name (control plane), and an optional **payload section** of resin bytes exactly as stored (data plane). The signature covers header and manifest only — **payloads prove themselves by digest**, because the digest already rides inside the signed manifest. That is the zero-copy dividend stated precisely: one signature verification per batch, one SHA3 walk per resin, and no second integrity pass, no re-encode, no owned intermediate buffer unless absorb truly requires one.
 
-**Where toll attaches: to the fact, never to the resin.** The sorting in the ordering doctrine already answers this. Resin movement is owned-fact traffic — one hand names bytes, the other verifies them — so the have-already and need-resin lanes pay no ordering toll at all; they pay only the *egress budget*, which is a season constant at the tunnel mouth rather than a commons price. Toll lands **per batch** exactly when a batch carries facts that touch the commons — an availability claim published to a shared book, a MALA transfer riding as cargo — one signed header, one toll, one review. Per-peer-season is the accounting grain for the egress budget; per-vessel adds nothing the batch header does not already carry. Taxing resins would quietly turn synchronization into a commons expense, and the toll's whole economy rests on staying rare.
+**Where toll attaches: to the fact, never to the resin.** The sorting in the ordering doctrine already answers this. Resin movement is owned-fact traffic — one hand names bytes, the other verifies them — so the have-already and need-resin lanes pay no ordering toll at all; they pay only the *egress budget*, which is a season constant at the tunnel mouth rather than a commons price. Toll lands **per batch** exactly when a batch carries facts that touch the commons — an availability claim published to a shared book, a MUR (was MALA) transfer riding as cargo — one signed header, one toll, one review. Per-peer-season is the accounting grain for the egress budget; per-vessel adds nothing the batch header does not already carry. Taxing resins would quietly turn synchronization into a commons expense, and the toll's whole economy rests on staying rare.
 
 ### B. Same resins, many Tilaks: keep the tree's answer; decline a seated `resin` Tilak
 

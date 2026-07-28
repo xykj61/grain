@@ -10,13 +10,14 @@
 
 *Written together by Kaeden and Claude (Fable 5), in Reya 2's Radiant voice.*
 
+Radiant pass `20260728.050430` — living rename-forward: **MUR** / **Murr** (was MALA / Mala)
 ---
 
 ## Sui and Mysticeti, Read Plainly
 
 **Sui** is an object-centric settlement network implemented in Rust, with contracts written in Move; its ownership model — owned objects moving without consensus, shared objects ordered by it — is the same borrow-checker dharma we keep everywhere: many witnesses or one changer, never both. **Mysticeti** is the consensus beneath it: a DAG-based Byzantine-fault-tolerant protocol in which validators weave signed message DAGs and read commitment out of the structure itself, reaching finality in well under a second in its published measurements. The lesson for any far-day sovereign consensus is the shape, and the shape is familiar: *the DAG is the protocol* — which is to say, Mysticeti's transport looks like Weave grown social, and that is exactly why Mycelium is seated as a Comlink aspect rather than a stranger.
 
-The standing decision holds with fresh confidence. Linengrow's ladder — verifiable receipt through selective-disclosure pass — rides Sui as proven ground: audited, adversarially tested, economically live. Its Rust implementation also affirms our own rule that identity-bearing frontier work stays in Rust for now. A sovereign consensus is a decade-class commitment measured in adversaries rather than features; the single-issuer MALA path requires none of it, and Mycelium's gate at the many-issuer season is the design saying so out loud.
+The standing decision holds with fresh confidence. Linengrow's ladder — verifiable receipt through selective-disclosure pass — rides Sui as proven ground: audited, adversarially tested, economically live. Its Rust implementation also affirms our own rule that identity-bearing frontier work stays in Rust for now. A sovereign consensus is a decade-class commitment measured in adversaries rather than features; the single-issuer MUR (was MALA) path requires none of it, and Mycelium's gate at the many-issuer season is the design saying so out loud.
 
 ## The Multipath Lineage
 

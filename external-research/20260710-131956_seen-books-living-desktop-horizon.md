@@ -11,6 +11,7 @@
 
 *Written by Kaeden and Rio 3 (Grok), from the building vision alive in the July 10 Dimeroll and Visual Track climb.*
 
+Radiant pass `20260728.050430` — living rename-forward: **MUR** / **Murr** (was MALA / Mala)
 ---
 
 ## Why This Page Exists
@@ -39,7 +40,7 @@ That is the long horizon. Today's green witnesses are the first honest rooms of 
 
 | Altitude | What it is | Where it lives today |
 |----------|------------|----------------------|
-| **Carriage** | Money and facts that move identity to identity | MALA · WOV · Comlink · (Amphora Proposed) |
+| **Carriage** | Money and facts that move identity to identity | MUR (was MALA) · WOV · Comlink · (Amphora Proposed) |
 | **Books** | Steward-centered money *management* — chart, journal, fold, reports, exceptions | `dimeroll/` laps 1–2 · books view on Skate |
 | **Sight** | Every surface a pure fold from log to frame | SLC-2a drawn terminal · thin view · books view · Realidream horizon |
 
@@ -55,7 +56,7 @@ Lap 1 proved conservation and a Skate trial balance. Lap 2 proved P&L, balance s
 2. **Exception queue grows into a checklist** — the human eye stays first-class.  
 3. **Tax package** — cover, BS, P&L, GL, trial balance as sealed cargo, not a PDF factory bolted on.  
 4. **Documents vault** — statements and receipts as resins beside the log.  
-5. **MALA → journal bridge** — a receipt becomes a journal source when the steward affirms it.  
+5. **MUR (was MALA) → journal bridge** — a receipt becomes a journal source when the steward affirms it.  
 6. **Tablecloth** — when the books need a durable query home, the store is already named; lap code waits the rung.
 
 None of those are today's Now. They are the shape the module points toward so we do not invent a second accounting product later under a different name.
@@ -95,7 +96,7 @@ Holding is part of the vision. A horizon that swallows the bench is not a horizo
 
 - A creator sees sponsorship and donation as **receipts**, not as opaque platform lines.  
 - A steward sees the year as a **fold** they can prove, not as a vendor's black box.  
-- A community carries value **close to home** (MALA) and keeps books that **answer true** (Dimeroll).  
+- A community carries value **close to home** (MUR (was MALA)) and keeps books that **answer true** (Dimeroll).  
 - The desktop that shows it all **belongs to the one who runs it** (Rye OS · Pond · Brushstroke).
 
 Kick and Digits taught public shapes for books automation and exception-centered ledgers. We thank that teaching and keep their implementations outside the tree. Our path is clean-room, our names are ours, our witnesses grow one room at a time.

@@ -10,13 +10,14 @@
 Radiant pass `20260728.020948` — next block rename-forward **Djin** (was Twah)
 Radiant pass `20260728.050219` — living rename-forward: **Murr** / **MUR** (was Mala / MALA); living generator `gen_murr`
 
+Radiant pass `20260728.050430` — living rename-forward: **MUR** / **Murr** (was MALA / Mala)
 ---
 
 ## What closes
 
 | Round | Door |
 |------:|------|
-| m1 | Comlink · murr.fund checklist · MUR kinship (was mala/MALA) |
+| m1 | Comlink · murr.fund checklist · MUR kinship (was mala/MUR (was MALA)) |
 | m2 | Amphora · vessel lap 1 |
 | m3 | Glow cast-u32 · Murr maintains MUR · n-of-12 plan (was Mala/MALA) |
 | **m4** | **Aurora / AppImage host lane named · honest refuse** |
