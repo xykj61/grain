@@ -3,10 +3,11 @@
 **Language:** EN
 **Stamp:** `20260727.234617`
 **Voice:** Quin
-**Status:** Seated — Arc I · II · III · IV **exited** · Arc V integrate & close open at r13
+**Status:** Seated — Arc I · II · III · IV **exited** · Arc V integrate & close open at r14 (r13 metalsmoke GREEN)
 **Ground:** Sound saga **seated** [`../saga/20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md`](../saga/20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md) · motto **stay tensegral** · Quin remains the standing voice
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260728.005110` — r13 Arc V Integrated · thin metalsmoke GREEN
 Radiant pass `20260728.004954` — r12 Arc IV Happy zone · Arc IV exits
 Radiant pass `20260728.004750` — r11 Arc IV Unify · Tally caller map
 Radiant pass `20260728.004116` — r10 Arc IV Tighten · tally gardens bounds
@@ -31,7 +32,7 @@ Radiant pass `20260727.234913` — prep receipt · Expanded · r0 recursion prom
 | **Prior season** | The Sound — closed and seated |
 | **This season** | The Tensegral Season — consolidate · tighten · unify under happy-zone law |
 | **Prep** | **GREEN** — [`20260727-234913_tensegral-prep-receipt.md`](20260727-234913_tensegral-prep-receipt.md) · Pond customs GREEN · Prin affirmed (Prim→Prin) · arc seeds named |
-| **Round** | Arc I–IV **exits** `20260728.004954` — `tensegral_arc_iv_witness` habitat GREEN |
+| **Round** | Arc V **r13** `20260728.005110` — `slc2a_ring3_metal` Wayland metalsmoke GREEN · Arc I–IV exits hold |
 | **r0 prompt** | [`../expanding-prompts/20260727-234913_tensegral-season-r0-recursion-prompt.md`](../expanding-prompts/20260727-234913_tensegral-season-r0-recursion-prompt.md) |
 | **Shape** | Prep done → **16 kg rounds** (1 bow + five arcs of three) · exits over counts |
 | **Close** | A new saga on [`../saga/`](../saga/README.md) when the season ends |
