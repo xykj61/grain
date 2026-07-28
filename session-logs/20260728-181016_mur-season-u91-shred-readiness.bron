@@ -1,0 +1,13 @@
+format session-log-v1
+stamp 20260728.181016
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title MUR Season u91 shred readiness
+prompt asks what looks ready to shred
+think Class A alone is content-ready; B and C are not; cut path needs i7 draft and breach generator.
+think amphora_ready=yes and laps 1-3 GREEN; shred still RED until circled yes.
+obs Answer seats readiness only; no cut this round.
+file counsel/20260728-181016_mur-season-u91-shred-readiness.md round seat
+recommend kg i7 shred-parity draft or check-in leave circle blank

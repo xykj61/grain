@@ -11,7 +11,7 @@
 | --- | --- |
 | Outer Constellation | **PAUSED** · m8 complete / m9 next |
 | Inner Scope (fascia) | **PAUSED** · i6 complete / i7 next · shred RED |
-| Innermost MUR | **OPEN** · u90 check-in · u91 next |
+| Innermost MUR | **OPEN** · u90 check-in · **LANDED u91** shred readiness |
 | Core Gren · Quint Keeh | **CLOSED** · handed back |
 | Geode | **PREP** · d0 next |
 | `extend_or_return` | `return_mur_u0` |
