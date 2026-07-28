@@ -3,7 +3,7 @@
 **Language:** EN
 **Stamp:** `20260727.235754`
 **Voice:** Quin
-**Status:** Check-in — after round 0
+**Status:** **Resolved** — lean **A · kg Arc I** taken `20260728.000056`
 **Ground:** Motion [`20260727-235754_tensegral-season-r0-bow.md`](20260727-235754_tensegral-season-r0-bow.md)
 
 *Written together by Keaton and Quin.*
