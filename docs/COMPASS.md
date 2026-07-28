@@ -5,8 +5,8 @@
 **Status:** Checkable — operator compressor
 **Depth:** guide
 **Ceiling:** ≤120 lines
-**Last updated:** 2026-07-17
-**Compresses:** [`foundations/README.md`](../foundations/README.md) · [`follow-our-compass`](../foundations/20260706-185112_follow-our-compass.md) · [`TWO_ROOMS`](../context/TWO_ROOMS.md) · [`LEXICON` loop](../context/LEXICON.md) · witness-habitat study · Cursor tutorial
+**Last updated:** 2026-07-27 (Voice / **Radiant** on the rose · check-in loop words)
+**Compresses:** [`foundations/README.md`](../foundations/README.md) · [`follow-our-compass`](../foundations/20260706-185112_follow-our-compass.md) · [`TWO_ROOMS`](../context/TWO_ROOMS.md) · [`RADIANT_STYLE.md`](../context/RADIANT_STYLE.md) · [`LEXICON` loop](../context/LEXICON.md) · witness-habitat study · Cursor tutorial
 
 ---
 
@@ -24,9 +24,10 @@ Grain keeps why-briefs in `foundations/` and living law in `context/`. Those she
 | 4 | [`sameness-is-the-macro`](../foundations/20260703-182612_sameness-is-the-macro.md) | Compression without magic |
 | 5 | [`happy-zone` / **witness habitat**](../foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md) | Fast folds inside; thin edge outside |
 | 6 | [`TWO_ROOMS.md`](../context/TWO_ROOMS.md) | Checkable vs visionary |
-| 7 | [`TAME_GUIDANCE.md`](../context/TAME_GUIDANCE.md) | Code discipline (open when coding) |
-| 8 | [`TASKS.md`](../work-in-progress/TASKS.md) · [`ROADMAP.md`](../work-in-progress/ROADMAP.md) | Now and season |
-| 9 | Run one witness | Proof before narrative |
+| 7 | [`RADIANT_STYLE.md`](../context/RADIANT_STYLE.md) | **Voice** — how every dated page speaks (Radiant) |
+| 8 | [`TAME_GUIDANCE.md`](../context/TAME_GUIDANCE.md) | Code discipline (open when coding) |
+| 9 | [`TASKS.md`](../work-in-progress/TASKS.md) · [`ROADMAP.md`](../work-in-progress/ROADMAP.md) | Now and season |
+| 10 | Run one witness | Proof before narrative |
 
 Acme face for happy-zone testing: **witness habitat** — [`LEXICON`](../context/LEXICON.md) · study [`20260717-173427`](../external-research/20260717-173427_witness-habitat-foundations-fit-and-onboarding-gaps.md).
 
@@ -39,7 +40,12 @@ Acme face for happy-zone testing: **witness habitat** — [`LEXICON`](../context
 | **Lap** | Bounded witnessable unit |
 | **Nib** | Landed edge (product · suite · git) |
 | **Align** | Reconcile plan with compass + green |
+| **kg** | Keep going on the next mechanical lap |
+| **check-in** | Pause — name hand: Cursor · Claude · checkpoint · either |
+| **checkpoint** | Named stop-before-cross already pointed out |
+| **bookmark** | Durable counsel/plan return point (≠ remember) |
 | **Send** | Commit · push · merge to the pier |
+| **Radiant** | House prose voice — rose step 7 |
 | **Witness habitat** | Where the lap’s claim is proven fast |
 | **Thin edge / metalsmoke** | Sparse host/device proofs |
 

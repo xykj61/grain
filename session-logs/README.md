@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260727.214006` — [Checkpoint bookmark · Radiant on compass · lint season bow](20260727-214006_checkpoint-bookmark-radiant-compass.bron) — 16-round season · Voice on rose
 - `20260727.212807` — [kg · g15 STOP at L2 · column and gen_home red](20260727-212807_kg-g15-stop-gen-home-column.bron) — g0–g14 first
 - `20260727.212502` — [Closing line law — kg or typed check in](20260727-212502_closing-line-kg-or-checkin.bron) — Cursor·Claude·checkpoint·either
 - `20260727.210059` — [After-glow opening · cross-desk design · choir green](20260727-210059_after-glow-cross-desk-opening.bron) — 17/17 · r58 pair · no push
