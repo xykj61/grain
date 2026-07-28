@@ -13,5 +13,6 @@
 | `glow_hygiene_pin.rish` | Surface p2 · thin Glow happy-zone floor |
 | `src_vegan_dogfood_witness.rish` | Surface p3 · first `src/lib` vegan-dogfood |
 | `wayland_study_ledger_witness.rish` | Surface p4 · River · zig-wayland pins present |
+| `glow_connector_seam_witness.rish` | Surface p5 · connector sketch pins present |
 
 Old paths under `tools/*.rish` remain as accrete shims. Prefer the homes here for new edits.

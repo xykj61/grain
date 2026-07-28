@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.195456` — [Surface Season p5 Glow connector seam sketch](20260728-195456_surface-season-p5-glow-connector-seam-sketch.bron) — Frame glass contract · p6 next
 - `20260728.195228` — [Surface Season p4 River Zig Wayland study ledger](20260728-195228_surface-season-p4-river-zig-wayland-study-ledger.bron) — GPL clean-room · zig-wayland MIT · p5 next
 - `20260728.195039` — [Surface Season p3 src vegan-dogfood](20260728-195039_surface-season-p3-src-vegan-dogfood.bron) — src/lib gate · prep spine done · p4 next
 - `20260728.194738` — [Surface Season p2 glow hygiene pin](20260728-194738_surface-season-p2-glow-hygiene-pin.bron) — happy-zone floor · p3 next

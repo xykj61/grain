@@ -1,0 +1,27 @@
+# tools/gen/season/glow_connector_seam_witness.rish — Surface p5 · connector sketch pins
+#
+#   rishi/bin/rishi run tools/gen/season/glow_connector_seam_witness.rish
+#
+# Orientation only — does not open a Wayland window.
+
+say "glow-connector: Language EN — values · Frame · Wayland hop named."
+say "glow-connector: Style Radiant — sketch pins; refuse invent stack."
+say "glow-connector: Lens TAME — Surface Season p5."
+
+let sketch = run ["test" "-f" "counsel/20260728-195456_surface-season-p5-glow-connector-seam-sketch.md"]
+assert sketch.ok else "glow-connector: p5 sketch counsel missing"
+
+let seed = run ["test" "-f" "brushstroke/wayland_seed.rye"]
+assert seed.ok else "glow-connector: wayland_seed.rye missing"
+
+let desk = run ["test" "-f" "src/lib/gate-surface-double-u32.glow"]
+assert desk.ok else "glow-connector: vegan-dogfood desk missing"
+
+let ledger = run ["test" "-f" "counsel/20260728-195228_surface-season-p4-river-zig-wayland-study-ledger.md"]
+assert ledger.ok else "glow-connector: p4 Wayland ledger missing"
+
+let hygiene = run ["test" "-f" "tools/gen/season/glow_hygiene_pin.rish"]
+assert hygiene.ok else "glow-connector: glow hygiene pin missing"
+
+say "GREEN: glow-connector — sketch · seed · vegan-dogfood · ledger · hygiene pins present"
+say "GREEN: glow-connector — Glow never speaks Wayland; Frame is the glass contract."
