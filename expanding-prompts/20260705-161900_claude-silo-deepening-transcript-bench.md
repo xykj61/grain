@@ -1,7 +1,7 @@
 # Claude Silo-Deepening Transcript Bench — Runnable
 
 **Stamp:** `20260705.161900 UDT` · **Style:** Radiant for authored studies · **Base:** tip `82996f1` (zip **46** at `24a5d35`)
-**Supersedes for execution:** [`20260705-160712_claude-silo-deepening-recursion-v1.md`](20260705-160712_claude-silo-deepening-recursion-v1.md) — same three movements; this file adds operational commit, push, and zip discipline
+**Supersedes for execution:** [`20260705-160712_claude-silo-deepening-recursion-v1.md`](yonder/20260705-160712_claude-silo-deepening-recursion-v1.md) — same three movements; this file adds operational commit, push, and zip discipline
 **Handoff summary:** [`../session-logs/archive/20260705/20260705-161900_claude-silo-deepening-handoff-summary.md`](../session-logs/archive/20260705/20260705-161900_claude-silo-deepening-handoff-summary.md)
 
 *Written by Kaeden and Rio 3 (Cursor). Kaeden speaks the bench voice-name in his first message; the one-clock, additions-only, stop-and-park, and guarded-name laws inherit whole.*

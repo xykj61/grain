@@ -6,4 +6,4 @@
 
 **Commit:** `24a5d35` — studies #22–#23, recursion v1, indexes. Four remotes pushed. Zip 46 cut at tip.
 
-**Recommend:** Open fresh chat with `expanding-prompts/20260705-160712_claude-silo-deepening-recursion-v1.md` and begin transcript intake.
+**Recommend:** Open fresh chat with `expanding-prompts/yonder/20260705-160712_claude-silo-deepening-recursion-v1.md` and begin transcript intake.

@@ -19,7 +19,7 @@ Read the landed recursion v1 prompt, exemplar studies #22–#23, Brooke shelf (s
 | **Tip** | `82996f17b2915c0b918c5ea94ac71a37cf0ca843` (`82996f1`) |
 | **Studies** | `00`–`23` indexed; #22 Chitra, #23 maker's gathering prove the generic pattern |
 | **Brooke shelf** | Sixteen files under `readings/brooke/` + composed reading |
-| **Recursion v1** | `expanding-prompts/20260705-160712_claude-silo-deepening-recursion-v1.md` — movements named, operational detail thin |
+| **Recursion v1** | `expanding-prompts/yonder/20260705-160712_claude-silo-deepening-recursion-v1.md` — movements named, operational detail thin |
 | **Zip** | **46** at `24a5d35` |
 
 ## What Kaeden opens on the Claude bench

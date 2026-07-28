@@ -44,7 +44,7 @@ No Amphora shred · no glow emit rewrite · no Inner unpause · no Class A delet
 
 ## Next
 
-**kg u73** — next prune slice (more yonder · over-70 on-touch · or glow parseInt emit lean), or check-in.
+**LANDED u73** — Tensegral · Constellation m0 · silo v1 yondered.
 
 ---
 

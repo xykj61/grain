@@ -25,4 +25,4 @@ This turn is orientation only — Kaeden's handoff explicitly routes the rite to
 | `session-logs/20260705-161700_intake-acknowledged.md` | Record intake acknowledgment |
 | `session-logs/README.md` | Prepend index row |
 
-**Recommend:** keep going in a fresh deepening bench chat — paste `expanding-prompts/20260705-160712_claude-silo-deepening-recursion-v1.md`, speak the bench voice-name, then transcript intake movement one packet at a time.
+**Recommend:** keep going in a fresh deepening bench chat — paste `expanding-prompts/yonder/20260705-160712_claude-silo-deepening-recursion-v1.md`, speak the bench voice-name, then transcript intake movement one packet at a time.

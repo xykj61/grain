@@ -4,7 +4,7 @@
 **Stamp:** `20260727.234913`
 **Voice:** Quin
 **Status:** Prep **GREEN** — bow opened `20260727.235754` · **Prim→Prin** correction seated same stamp
-**Ground:** Season [`20260727-234617_the-tensegral-season.md`](20260727-234617_the-tensegral-season.md) · Expanded [`../expanding-prompts/20260727-234913_tensegral-season-expanded.md`](../expanding-prompts/20260727-234913_tensegral-season-expanded.md) · r0 recursion [`../expanding-prompts/20260727-234913_tensegral-season-r0-recursion-prompt.md`](../expanding-prompts/20260727-234913_tensegral-season-r0-recursion-prompt.md)
+**Ground:** Season [`20260727-234617_the-tensegral-season.md`](20260727-234617_the-tensegral-season.md) · Expanded [`../expanding-prompts/yonder/20260727-234913_tensegral-season-expanded.md`](../expanding-prompts/yonder/20260727-234913_tensegral-season-expanded.md) · r0 recursion [`../expanding-prompts/yonder/20260727-234913_tensegral-season-r0-recursion-prompt.md`](../expanding-prompts/yonder/20260727-234913_tensegral-season-r0-recursion-prompt.md)
 
 *Written together by Keaton and Quin.*
 Radiant pass `20260727.235754` — Prim was a typo for Prin; Brix `alias Prim Prin`; arc seed table kept under that name

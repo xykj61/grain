@@ -4,7 +4,7 @@
 **Stamp:** `20260727.235754`
 **Voice:** Quin
 **Status:** Round 0 **landed** — measure only; Arc I not claimed
-**Ground:** Charter [`20260727-234617_the-tensegral-season.md`](20260727-234617_the-tensegral-season.md) · prep [`20260727-234913_tensegral-prep-receipt.md`](20260727-234913_tensegral-prep-receipt.md) · recursion [`../expanding-prompts/20260727-234913_tensegral-season-r0-recursion-prompt.md`](../expanding-prompts/20260727-234913_tensegral-season-r0-recursion-prompt.md) · nib at start `85a586e7a6`
+**Ground:** Charter [`20260727-234617_the-tensegral-season.md`](20260727-234617_the-tensegral-season.md) · prep [`20260727-234913_tensegral-prep-receipt.md`](20260727-234913_tensegral-prep-receipt.md) · recursion [`../expanding-prompts/yonder/20260727-234913_tensegral-season-r0-recursion-prompt.md`](../expanding-prompts/yonder/20260727-234913_tensegral-season-r0-recursion-prompt.md) · nib at start `85a586e7a6`
 
 *Written together by Keaton and Quin.*
 

@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.154949` — [MUR Season u73 fascia prune yonder closed](20260728-154949_mur-season-u73-fascia-prune-yonder-closed.bron) — tensegral/constellation/silo yonder · u74 next
 - `20260728.153843` — [MUR Season u72 fascia prune yonder setu](20260728-153843_mur-season-u72-fascia-prune-yonder-setu.bron) — archival yonder · setu parseInt · u73 next
 - `20260728.153133` — [MUR Season u71 fascia prune memcpy ratchet](20260728-153133_mur-season-u71-fascia-prune-memcpy-ratchet.bron) — memcpy_app 0 · fascia 49 · u72 next
 - `20260728.152117` — [MUR Season u70 fascia prune yonder wave](20260728-152117_mur-season-u70-fascia-prune-yonder-wave.bron) — v3→yonder · fascia 47 · u71 next

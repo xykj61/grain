@@ -70,6 +70,7 @@ What does *not* belong here is the work itself — that lands in the research, d
 | Stamp | Prompt | Meaning |
 |-------|--------|---------|
 | `20260728.025220` | [MUR Season u0 recursion](20260728-025220_mur-season-u0-recursion-prompt.md) | **Active walk** — innermost OPEN · u0 bowed · u1 next · Gren CLOSED handback |
+| `20260728.012725` | [Constellation Season m0 recursion](yonder/20260728-012725_constellation-season-m0-recursion-prompt.md) | **yonder** · outer PAUSED · not the active walk |
 | `20260728.025634` | [Gren Season recursion](yonder/20260728-025634_gren-season-g0-recursion-prompt.md) | **yonder** · Archival — core CLOSED · handed back `return_mur_u0` · living Gren doors |
 | `20260728.030310` | [Keeh Season recursion](yonder/20260728-030310_keeh-season-q0-recursion-prompt.md) | **yonder** · Archival — quint CLOSED · handed back `return_gren_g0` · living Keeh/Shyu/Linn doors |
 | `20260728.015541` | [Inner Scope Season i0 recursion](yonder/20260728-015541_inner-scope-season-i0-recursion-prompt.md) | **yonder** · Archival — inner PAUSED i6/i7 · living seat 2 Gren · fascia wait |
@@ -96,8 +97,8 @@ What does *not* belong here is the work itself — that lands in the research, d
 | `20260709.201734` | [MUR M2b device wire](20260709-201734_mala-m2b-device-wire.md) | Device-wire MUR path (was MALA; dated filename) |
 | `20260709.200443` | [WOV lap 1 exit honesty](20260709-200443_wov-lap1-exit-honesty-witness.md) | In-memory exit honesty; parity **201** |
 | `20260709.191634` | [MUR M2 mailable Comlink](20260709-191634_mala-m2-mailable-comlink.md) | Hosted M2; parity **199** · was MALA |
-| `20260727.234913` | [Tensegral Season r0 recursion prompt](20260727-234913_tensegral-season-r0-recursion-prompt.md) | Bow paste + discipline · prep GREEN |
-| `20260727.234913` | [Tensegral Season Expanded plan](20260727-234913_tensegral-season-expanded.md) | Sixteen-round runway · Prin · arc seeds · stay tensegral |
+| `20260727.234913` | [Tensegral Season r0 recursion prompt](yonder/20260727-234913_tensegral-season-r0-recursion-prompt.md) | **yonder** · Tensegral CLOSED · bow paste archival |
+| `20260727.234913` | [Tensegral Season Expanded plan](yonder/20260727-234913_tensegral-season-expanded.md) | **yonder** · Tensegral CLOSED · runway archival |
 | `20260709.182354` | [MUR M1 one issuer one holder](20260709-182354_mala-m1-one-issuer-one-holder.md) | M1 first lap; parity **198** · was MALA; dated filename |
 | `20260709.031612` | [SLC-L4 lap 1 fixed-tier Sigma](20260709-031612_slcl4-lap1-fixed-tier-sigma-protocol.md) | Pedersen + proof of opening; parity **200** |
 | `20260706.190644` | [Claude zip 58 — NS-L3 handoff](20260706-190644_claude-zip58-ns-l3-handoff.md) | Wire ladder complete; OA-L4 vs MUR (was MALA); wire-serves-the-fold then proposed, now landed `232812` |
@@ -107,7 +108,7 @@ What does *not* belong here is the work itself — that lands in the research, d
 | `20260705.184612` | [Claude recursion v8](yonder/20260705-184612_claude-recursion-v8.md) | Consumed — mid-arc handoff; in `yonder/` |
 | `20260705.174412` | [Claude recursion v7](yonder/20260705-174412_claude-recursion-prompt-v7.md) | Consumed — studies #24–#36 batches 1–3; in `yonder/` |
 | `20260705.161900` | [Claude silo deepening transcript bench](20260705-161900_claude-silo-deepening-transcript-bench.md) | Runnable Claude bench — transcript intake, dissociation, recomposition, commit/push/zip 47 |
-| `20260705.160712` | [Claude silo deepening recursion v1](20260705-160712_claude-silo-deepening-recursion-v1.md) | Movement names and purpose — superseded for execution by `161900` |
+| `20260705.160712` | [Claude silo deepening recursion v1](yonder/20260705-160712_claude-silo-deepening-recursion-v1.md) | **yonder** · superseded for execution by `161900` |
 | `20260705.042512` | [Cursor final — reading canon and shelf](yonder/20260705-042512_cursor-final-reading-canon.md) | Consumed — Chitra ruling, Makara sweep, canon derive; in `yonder/` |
 | `20260705.041312` | [Cursor final — privacy audit and rebase](yonder/20260705-041312_cursor-final-privacy-audit-and-rebase.md) | Consumed — history pickaxe, zip 45 cut; in `yonder/` |
 | `20260705.031812` | [Cursor infusion — wheel v4 and Brooke shelf](yonder/20260705-031812_cursor-infusion-wheel-v4-and-brooke-shelf.md) | Consumed — diurnal method, renderer wheels; in `yonder/` |
