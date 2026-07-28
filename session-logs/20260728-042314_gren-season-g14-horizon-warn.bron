@@ -1,0 +1,13 @@
+format session-log-v1
+stamp 20260728.042314
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Gren Season g14 horizon warn
+prompt waymark g13 complete g14 next · asks none — first horizon warn
+think Seat three paths aloud · extend 32 · extend 64 · return MUR u0 · blank held · gens GREEN
+obs First warn seated · g15 second warn · his word may seat extend_or_return anytime
+file counsel/20260728-042314_gren-season-g14-horizon-warn.md first horizon warn
+file counsel/20260728-042314_gren-season-g14-checkin.md round-close check-in
+recommend keep-going to kg g15 second horizon warn — charter requires two warns
