@@ -15,7 +15,7 @@
 //! This does not write a new fold or a new hash-chain -- it revives and
 //! composes primitives that already exist and are already witnessed:
 //! murr_core.rye's build_welcome_log (a real signed MALA log) and
-//! fold_mala_log (a real replay-from-log-alone fold), plus
+//! fold_murr_log (a real replay-from-log-alone fold), plus
 //! receipt_core.rye's digest_log (SHA3-256 over the raw log bytes, already
 //! used as MALA's own log-integrity check). Two independent "replicas" --
 //! in this witness, two independent calls, from scratch, on the same
@@ -48,14 +48,14 @@ fn run_selftest() !u8 {
 
     // "Replica one": fold the log from scratch into balances, and hash the
     // log bytes into a state-root, independently of anything else.
-    const balances_1 = try mc.fold_mala_log(log[0..log_len], &issuer_hex, &holder_hex, issuer_kp.public_key, holder_kp.public_key);
+    const balances_1 = try mc.fold_murr_log(log[0..log_len], &issuer_hex, &holder_hex, issuer_kp.public_key, holder_kp.public_key);
     var root_1: [32]u8 = undefined;
     rc.digest_log(log[0..log_len], &root_1);
 
     // "Replica two": the same log bytes, folded again from a fresh start --
     // standing in for a second machine that has never seen replica one's
     // in-memory state, only the log itself.
-    const balances_2 = try mc.fold_mala_log(log[0..log_len], &issuer_hex, &holder_hex, issuer_kp.public_key, holder_kp.public_key);
+    const balances_2 = try mc.fold_murr_log(log[0..log_len], &issuer_hex, &holder_hex, issuer_kp.public_key, holder_kp.public_key);
     var root_2: [32]u8 = undefined;
     rc.digest_log(log[0..log_len], &root_2);
 
