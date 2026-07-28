@@ -10,16 +10,16 @@ const kumara = @import("kumara.rye");
 const gc = @import("granary_core.rye");
 const exchange = @import("exchange_listing.rye");
 const settle = @import("weave_settle_core.rye");
-const mala = @import("murr_core.rye");
+const murr = @import("murr_core.rye");
 const wov = @import("wov_core.rye");
 const rc = @import("receipt_core.rye");
 
 fn run_selftest(io: std.Io) !u8 {
     _ = io;
 
-    // 1. Exchange listing at 100 mala (same fixture as lap 5).
+    // 1. Exchange listing at 100 murr (same fixture as lap 5).
     var store = gc.ResinStore.empty();
-    const digest = try gc.put_resin(&store, "# priced weave\n\nfor sale in mala.\n");
+    const digest = try gc.put_resin(&store, "# priced weave\n\nfor sale in murr.\n");
     var fact: [gc.max_fact_len]u8 = undefined;
     const fact_len = try gc.sign_name_fact(gc.granary_version, "rio", "greeting", &digest, &fact);
     var reg = gc.Registry.empty();
@@ -33,12 +33,12 @@ fn run_selftest(io: std.Io) !u8 {
     try exchange.receipt_digest(listing[0..ln], &listing_receipt);
 
     // 2. MALA: mint then send 100 (payment).
-    const issuer_kp = kumara.keypair_from_seed(&mala.issuer_seed);
-    const holder_kp = kumara.keypair_from_seed(&mala.holder_seed);
-    var issuer_hex: [mala.pubkey_hex_len]u8 = undefined;
-    var holder_hex: [mala.pubkey_hex_len]u8 = undefined;
-    mala.hex_of_key(issuer_kp.public_key, &issuer_hex);
-    mala.hex_of_key(holder_kp.public_key, &holder_hex);
+    const issuer_kp = kumara.keypair_from_seed(&murr.issuer_seed);
+    const holder_kp = kumara.keypair_from_seed(&murr.holder_seed);
+    var issuer_hex: [murr.pubkey_hex_len]u8 = undefined;
+    var holder_hex: [murr.pubkey_hex_len]u8 = undefined;
+    murr.hex_of_key(issuer_kp.public_key, &issuer_hex);
+    murr.hex_of_key(holder_kp.public_key, &holder_hex);
 
     var log: [rc.max_log_len]u8 = undefined;
     var log_len: u32 = 0;
@@ -46,22 +46,22 @@ fn run_selftest(io: std.Io) !u8 {
         .from = issuer_hex[0..],
         .to = holder_hex[0..],
         .amount = "1000",
-        .memo = mala.memo_mint,
+        .memo = murr.memo_mint,
         .stamp = settle.settle_version,
     };
-    try mala.sign_append(&log, &log_len, mint_fields, issuer_kp);
+    try murr.sign_append(&log, &log_len, mint_fields, issuer_kp);
 
     const send_fields = rc.FactFields{
         .from = holder_hex[0..],
         .to = issuer_hex[0..],
         .amount = "100",
-        .memo = mala.memo_send,
+        .memo = murr.memo_send,
         .stamp = settle.settle_version,
     };
     var send_canonical: [rc.max_fact_len]u8 = undefined;
     const send_canon_len = try rc.write_canonical_fact(send_fields, &send_canonical);
-    try mala.sign_append(&log, &log_len, send_fields, holder_kp);
-    const balances = try mala.fold_murr_log(
+    try murr.sign_append(&log, &log_len, send_fields, holder_kp);
+    const balances = try murr.fold_murr_log(
         log[0..log_len],
         &issuer_hex,
         &holder_hex,
@@ -70,8 +70,8 @@ fn run_selftest(io: std.Io) !u8 {
     );
     assert(balances.holder == 900);
     assert(balances.issuer == 100);
-    var mala_digest: [settle.digest_hex_len]u8 = undefined;
-    settle.digest_bytes(send_canonical[0..send_canon_len], &mala_digest);
+    var murr_digest: [settle.digest_hex_len]u8 = undefined;
+    settle.digest_bytes(send_canonical[0..send_canon_len], &murr_digest);
 
     // 3. WOV: mint buyer, transfer 100 to seller.
     const buyer_kp = kumara.keypair_from_seed(&wov.holder_a_seed);
@@ -95,8 +95,8 @@ fn run_selftest(io: std.Io) !u8 {
     // 4. Payment body → payment digest.
     const payment_fields = settle.PaymentFields{
         .amount = "100",
-        .currency = "mala",
-        .mala_digest = &mala_digest,
+        .currency = "murr",
+        .murr_digest = &murr_digest,
         .wov_digest = &wov_digest,
     };
     var payment_hex: [settle.digest_hex_len]u8 = undefined;
@@ -117,14 +117,14 @@ fn run_selftest(io: std.Io) !u8 {
 
     var settled = settle.SettledSet.empty();
     try settle.record_settle(&settled, &listing_receipt);
-    print("granary settle: listed rio/greeting at 100 mala — settled\n", .{});
-    print("granary settle: mala fold + wov transfer bound — receipt {s}\n", .{listing_receipt[0..12]});
+    print("granary settle: listed rio/greeting at 100 murr — settled\n", .{});
+    print("granary settle: murr fold + wov transfer bound — receipt {s}\n", .{listing_receipt[0..12]});
 
     // Unwelcome: zero amount on payment.
     const zero_pay = settle.PaymentFields{
         .amount = "0",
-        .currency = "mala",
-        .mala_digest = &mala_digest,
+        .currency = "murr",
+        .murr_digest = &murr_digest,
         .wov_digest = &wov_digest,
     };
     if (settle.payment_digest(zero_pay, &payment_hex)) |_| {
@@ -183,19 +183,19 @@ fn run_selftest(io: std.Io) !u8 {
     // Unwelcome: MALA overdraft fold.
     var bad_log: [rc.max_log_len]u8 = undefined;
     var bad_len: u32 = 0;
-    try mala.sign_append(&bad_log, &bad_len, mint_fields, issuer_kp);
+    try murr.sign_append(&bad_log, &bad_len, mint_fields, issuer_kp);
     const over = rc.FactFields{
         .from = holder_hex[0..],
         .to = issuer_hex[0..],
         .amount = "9999",
-        .memo = mala.memo_send,
+        .memo = murr.memo_send,
         .stamp = settle.settle_version,
     };
-    try mala.sign_append(&bad_log, &bad_len, over, holder_kp);
-    if (mala.fold_murr_log(bad_log[0..bad_len], &issuer_hex, &holder_hex, issuer_kp.public_key, holder_kp.public_key)) |_| {
+    try murr.sign_append(&bad_log, &bad_len, over, holder_kp);
+    if (murr.fold_murr_log(bad_log[0..bad_len], &issuer_hex, &holder_hex, issuer_kp.public_key, holder_kp.public_key)) |_| {
         return error.MalaOverdraftAccepted;
     } else |_| {}
-    print("granary settle: mala fold refused\n", .{});
+    print("granary settle: murr fold refused\n", .{});
 
     // Unwelcome: WOV insufficient.
     var thin = wov.Book.init();

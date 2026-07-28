@@ -12,7 +12,7 @@ assert build.ok else "Granary exchange listing build failed"
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
 assert selftest.ok else "Granary exchange selftest exited non-zero"
 assert selftest.out contains "GREEN" else "Granary exchange selftest not GREEN"
-assert selftest.out contains "100 mala" else "Granary exchange missing price claim"
+assert selftest.out contains "100 murr" else "Granary exchange missing price claim"
 assert selftest.out contains "receipt" else "Granary exchange missing receipt"
 assert selftest.out contains "zero price refused" else "Granary exchange missing zero-price refuse"
 assert selftest.out contains "lying listing refused" else "Granary exchange missing lying refuse"

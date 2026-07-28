@@ -16,7 +16,7 @@
 //!   - Disk persistence of the log happens *after* this call returns —
 //!     the core only ever touches the in-memory buffer it is given.
 //!   - The signature on the record is produced *before* this call, by
-//!     mala_core.sign_fact — the core does not sign. It does re-verify
+//!     murr_core.sign_fact — the core does not sign. It does re-verify
 //!     while folding (murr_core.fold_murr_log's own contract), because
 //!     that verification is inseparable from deciding whether the record
 //!     may be admitted at all — the ordering decision itself, not a

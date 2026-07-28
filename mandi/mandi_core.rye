@@ -137,7 +137,7 @@ pub fn parse_listing(text: []const u8, out: *ListingFields) ListingError!void {
     if (format == null or stamp == null or vessel_parent == null) return error.InvalidListing;
     if (price == null or currency == null or stamp_sig == null) return error.InvalidListing;
     if (!std.mem.eql(u8, format.?, "vessel-listing-v1")) return error.InvalidListing;
-    if (!std.mem.eql(u8, currency.?, "mala")) return error.InvalidListing;
+    if (!std.mem.eql(u8, currency.?, "murr")) return error.InvalidListing;
     if (!price_ok(price.?)) return error.BadPrice;
     out.* = .{
         .stamp = stamp.?,
@@ -154,7 +154,7 @@ pub fn write_canonical(fields: ListingFields, out: []u8) ListingError!u32 {
     try append_kv(out, &off, "stamp", fields.stamp);
     try append_kv(out, &off, "vessel_parent", fields.vessel_parent);
     try append_kv(out, &off, "price", fields.price);
-    try append_kv(out, &off, "currency", "mala");
+    try append_kv(out, &off, "currency", "murr");
     return off;
 }
 
@@ -189,7 +189,7 @@ pub fn sign_listing(
         .stamp = stamp,
         .vessel_parent = vessel_parent,
         .price = price,
-        .currency = "mala",
+        .currency = "murr",
         .stamp_sig = "",
     };
     var canonical: [max_listing_len]u8 = undefined;
@@ -204,7 +204,7 @@ pub fn sign_listing(
     try append_kv(out, &off, "stamp", stamp);
     try append_kv(out, &off, "vessel_parent", vessel_parent);
     try append_kv(out, &off, "price", price);
-    try append_kv(out, &off, "currency", "mala");
+    try append_kv(out, &off, "currency", "murr");
     try append_kv(out, &off, "stamp_sig", &sig_hex);
     try verify_listing(out[0..off]);
     return off;
