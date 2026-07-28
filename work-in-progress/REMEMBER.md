@@ -6,14 +6,14 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260728.171319` (EDT) · voice Quin  
+**Last refreshed:** `20260728.192321` (EDT) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2 · ring-3** · **THREATS** · **five pillars** · **accrete tiers** · **redaction stance** · **always-in-it rhythm** · **Prin / %prin** · **sundial**  
 **Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list1024 · Env512 · **stamp @u64 · Crockford** · **shape aura floor** · **Glow text floor GREEN** · **Glow Book weave GREEN (C2b)** · **baked-sample Acme gloss**  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand home** · **siblings seated** · **--cursor launch** · **Pond counsel 161616** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm+cold REPORT** · **Grain umbrella living** · **OQ #1 · #3 · #4 · #5 answered** · **pass ledger** · **campaign STOPPED** · **growth law** · **wasmtime ABSENT** · **monocypher 4.0.3 GREEN** · **MAP.md** · **breach T3–T4** · **U·V·I** · **C-Ladder C1·C2·C2b landed** · **r18 say/lint twin** · **r21 Verse · O1** · **r22 outside eyes** · **Prin** · **corpus twin fold seated (Sound r11)** · **C3–C5 await homes**  
-**Git nib:** `4a3b4b6175` · Grain · **MUR** u82 · glow/SLC yonder · autoproject96/grain
-**Bookmark:** [`counsel/20260728-171319_mur-season-u82-fascia-prune-glow-slc-yonder.md`](../counsel/20260728-171319_mur-season-u82-fascia-prune-glow-slc-yonder.md)
+**Git nib:** `PENDING` · Grain · **Generator** s7 · amphora home · autoproject96/grain
+**Bookmark:** [`counsel/20260728-192321_generator-season-s7-amphora-family-home.md`](../counsel/20260728-192321_generator-season-s7-amphora-family-home.md)
 
-**Season:** Framework · EDT · **Grain** · **finishing edge:** **innermost MUR** — glow/SLC **yonder** · shred RED · Gren CLOSED · Keeh CLOSED · Geode PREP · F undisturbed. Prefer **git nib**. · `prin scope`
+**Season:** Framework · EDT · **Grain** · **finishing edge:** **sext Generator** — s7 amphora home · MUR **PAUSED** u91/u92 · shred RED · Gren CLOSED · Keeh CLOSED · Geode PREP · F undisturbed. Prefer **git nib**. · `prin scope`
 
 ---
 
@@ -25,6 +25,8 @@
 **Fascia prune** seated `20260728.064546` — sameness/smallness/tensegrity hygiene without shred.  
 Fascia **shred** still waits circled shred yes — distinct from rename and from prune.  
 WOV retirement stays **roadmap last**. No live deploy · wallet · gas · private key.
+
+**Generator Season (sext)** seated `20260728.183510` — Glow · Rishi · Dojo spirit · generators · **s0–s63**. Handback lean `return_mur_u92`.
 
 ---
 
@@ -48,16 +50,17 @@ WOV retirement stays **roadmap last**. No live deploy · wallet · gas · privat
 
 | Door | Kind |
 |------|------|
-| **MUR↔WOV unify design** | **0–5 GREEN** · dual-accept/retire held |
+| **Generator Season s8+** | **OPEN** · next thin family · O3 / os / tes await |
+| **MUR↔WOV unify design** | **0–5 GREEN** · dual-accept/retire held · MUR paused |
 | **Filename-rename breach** | **approved** u66 · residual map u67 · living CLEAR · fossils HOLD |
-| **Fascia prune** | **OPEN** · u82 glow/SLC yonder · shred RED · Inner paused |
+| **Fascia prune** | **OPEN** · MUR paused u91/u92 · fascia 86 · shred RED |
 | **Parity / COLD** | **RED** two-rooms doorway · S3 hammock · H held |
-| Radiant pass | **on-touch only** (MUR waves are the living Radiant pass) |
+| Radiant pass | **on-touch only** |
 | Geode d0 | PREP parallel |
-| Pond seven · xykj61 · Acme · Brix name · data-dignity · succession · Mand ring-3 · breach two (other) | awaiting Keaton |
+| Pond seven · xykj61 · Acme · Brix name · data-dignity · succession · Mand ring-3 · breach two (other) · O3 gen-home | awaiting Keaton |
 
-**kg** = keep going mechanical (u-rounds). **check-in** = his word / design. remember ≠ send ≠ kg ≠ align.
+**kg** = keep going mechanical (s-rounds). **check-in** = his word / design. remember ≠ send ≠ kg ≠ align.
 
 ---
 
-*Waymarks: HAWM · TUBE · ZETA · JABS · LULU · STOA · SETU · claims `waymarks/`*
+*Carry lightly. Prefer git nib. `prin scope`.*

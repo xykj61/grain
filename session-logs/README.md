@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.192321` — [Generator Season s7 amphora family home](20260728-192321_generator-season-s7-amphora-family-home.bron) — tools/gen/amphora LIVE · s8 next
 - `20260728.191859` — [Generator Season s6 taxonomy fusion draft](20260728-191859_generator-season-s6-taxonomy-fusion-draft.bron) — two gens · os/tes parked · s7 next
 - `20260728.191327` — [Generator Season s5 fund gen home](20260728-191327_generator-season-s5-fund-gen-home.bron) — tools/gen/fund LIVE · s6 next
 - `20260728.190251` — [Generator Season s4 season gen home](20260728-190251_generator-season-s4-season-gen-home.bron) — tools/gen/season LIVE · s5 next
