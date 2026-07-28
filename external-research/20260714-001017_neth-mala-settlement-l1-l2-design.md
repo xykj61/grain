@@ -5,6 +5,7 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Vision register — design and social-experiment research only. **Not financial, investment, or legal advice.** Nothing here is a deployed system, a token, a securities offering, or a call to move real money. It is an architecture proposal for Keaton to confirm or deny, grounded in what already runs in this tree.
 
+Radiant pass `20260728.054644` — entry/bin landed u49: `murr.rye` / `bin/murr` (was mala)
 ---
 
 ## For an Acme Corporation Employee Reading This
@@ -18,7 +19,7 @@ Keaton proposed a new settlement layer for Glow OS: an **N-vane called Neth** (a
 
 The strongest thing about this proposal is that its technical spine is **not new** — it is the natural next step of three things already in this tree:
 
-- **MUR** is already issuer-only (was MALA) mint + conservation-enforced transfer + **balance as a fold over a signed log** ([`../linengrow/mala.rye`](../linengrow/mala.rye), MUR M1/M2 (was MALA; paths `mala*`), parity 198–199). That is L1 money semantics.
+- **MUR** is already issuer-only (was MALA) mint + conservation-enforced transfer + **balance as a fold over a signed log** ([`../linengrow/murr.rye`](../linengrow/murr.rye), MUR M1/M2 (was MALA; paths `mala*`), parity 198–199). That is L1 money semantics.
 - **WOV** is already the settlement/exit-honesty layer (exit honesty, dual-monarch, parity 201–205) — **and it already had a TigerBeetle pin seam**, retired `20260711.055800` but explicitly kept "revivable later if MUR log-and-fold ever needs TB throughput (was MALA)" ([TASKS.md](../work-in-progress/TASKS.md); counsel [`055112`](../counsel/20260711-055112_claude-counsel-wov-tigerbeetle-recommendation.md)). Neth is, in plain terms, **the revival and full flowering of that retired WOV-TB pin.**
 - **TigerBeetle is a Replicated State Machine** — Viewstamped Replication over an immutable, hash-chained, append-only log of prepares, executed deterministically (confirmed from TigerBeetle's own ARCHITECTURE.md and the trillion-transactions post). This is *architecturally almost identical to an L2 sequencer*: a deterministic state transition over an ordered log, with the log as ground truth and periodic checkpoints. TigerBeetle's own shape is the correct substrate for a settlement L2 — this is why "a Glow reimplementation of TigerBeetle as a pinned sidechain" is a genuinely coherent idea, not a buzzword pile.
 

@@ -4,9 +4,9 @@
 #   rishi/bin/rishi run tools/murr_m1_witness.rish
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "linengrow/bin/mala"
+let bin = "linengrow/bin/murr"
 
-let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/mala.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/murr.rye -femit-bin=${bin}"]
 
 assert build.ok else "MUR M1 build failed"
 

@@ -1,7 +1,7 @@
-//! linengrow/mala.rye — MALA M1: one issuer, one holder, mint/send/fold/verify.
+//! linengrow/murr.rye — MUR M1: one issuer, one holder, mint/send/fold/verify (was mala.rye / MALA).
 //!
-//!   rye build linengrow/mala.rye -femit-bin=linengrow/bin/mala
-//!   linengrow/bin/mala selftest
+//!   rye build linengrow/murr.rye -femit-bin=linengrow/bin/murr
+//!   linengrow/bin/murr selftest
 //!
 //! Scope: [`expanding-prompts/20260709-182354_mala-m1-one-issuer-one-holder.md`](../expanding-prompts/20260709-182354_mala-m1-one-issuer-one-holder.md)
 //! Core: [`murr_core.rye`](murr_core.rye)
@@ -15,7 +15,7 @@ const rc = @import("receipt_core.rye");
 const tally_copy = @import("tally_copy.rye");
 const mc = @import("murr_core.rye");
 
-const mala_version = "20260709.191634";
+const murr_version = "20260709.191634";
 
 fn welcome_path(
     issuer_kp: kumara.KeyPair,
@@ -143,8 +143,8 @@ fn run_selftest(io: std.Io) !u8 {
     try unwelcome_overspend(issuer_kp, holder_kp, &issuer_hex, &holder_hex);
     try unwelcome_tampered_log(issuer_kp, holder_kp, &issuer_hex, &holder_hex);
 
-    print("mala m1: version {s}\n", .{mala_version});
-    print("GREEN: MALA M1 — one issuer, one holder, mint, send, fold, verify.\n", .{});
+    print("murr m1: version {s}\n", .{murr_version});
+    print("GREEN: MUR M1 — one issuer, one holder, mint, send, fold, verify.\n", .{});
     return 0;
 }
 
