@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.060902` — [MUR Season u58 module-wave harden](20260728-060902_mur-season-u58-module-wave-harden.bron) — spine HARDENED · rename done · u59 next
 - `20260728.060656` — [MUR Season u57 module-wave residual](20260728-060656_mur-season-u57-module-wave-residual.bron) — living indexes clear · spine COMPLETE · u58 next
 - `20260728.060424` — [MUR Season u56 say-lines currency wire](20260728-060424_mur-season-u56-say-lines-currency-wire.bron) — currency/say LIVE · spine 1–9 · u57 next
 - `20260728.060038` — [MUR Season u55 guest murr rename](20260728-060038_mur-season-u55-guest-murr-rename.bron) — guest_murr · M2 device GREEN · u56 next
