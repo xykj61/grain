@@ -1,4 +1,4 @@
-# realidream_thin_view.rish — Realidream thin view: local MALA/WOV fixtures → Skate frame.
+# realidream_thin_view.rish — Realidream thin view: local MUR/WOV fixtures → Skate frame (was MALA).
 #
 # Re-scopes the TASKS thin-demo exception after chain-read removal: render
 # already-on-disk fact fixtures through SLC-2a's drawn terminal surface.
@@ -18,4 +18,4 @@ assert thin.out contains "thin view" else "thin view witness missing expected ou
 assert thin.out contains "GREEN" else "Realidream thin view witness not GREEN"
 assert thin.out contains "lines=5" else "thin view missing five-line frame"
 
-say "GREEN: Realidream thin view — local MALA/WOV fixtures compose a Skate frame."
+say "GREEN: Realidream thin view — local MUR/WOV fixtures (was MALA) compose a Skate frame."

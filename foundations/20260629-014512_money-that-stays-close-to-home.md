@@ -47,7 +47,7 @@ When a person funds a public or civic good — a sanctuary, an open-ask stipend,
 - **Payer face (default privacy).** The giver’s identity and exact amount stay sealed or tier-proved; selective disclosure (SLC-L4 and its kin) and consent glass already begin this work.
 - **Payee face (default transparency).** The receiving steward’s *income from the gift* stays auditable on the fold — receipts, books, civic sight with consent rules — so the commons can trust the light without doxing the giver.
 
-MALA and WOV remain the settlement and witness seat. Libre payment teachers (GNU Taler among them) illuminate the asymmetry; they do not replace our log. One job per side of the till.
+MUR (was MALA) and WOV remain the settlement and witness seat. Libre payment teachers (GNU Taler among them) illuminate the asymmetry; they do not replace our log. One job per side of the till.
 
 **T1 (`20260712.054942`):** the Open Asks stipend path mapped field-by-field — [`../active-designing/20260712-054942_giving-lane-t1-open-asks-field-map.md`](../active-designing/20260712-054942_giving-lane-t1-open-asks-field-map.md). Top gaps today: completion `amount` and `from` are public on the fold; `to` (payee) and consent/civic-sight aggregates already lean the right way.
 

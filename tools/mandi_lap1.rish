@@ -1,4 +1,4 @@
-# mandi_lap1.rish — Mandi lap 1: vessel market listing (priced in MALA).
+# mandi_lap1.rish — Mandi lap 1: vessel market listing (priced in MUR; was MALA).
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/mandi_lap1.rish
@@ -18,4 +18,4 @@ assert selftest.out contains "zero price refused" else "Mandi lap 1 missing zero
 assert selftest.out contains "lying listing refused" else "Mandi lap 1 missing lying refuse"
 assert selftest.out contains "parent mismatch refused" else "Mandi lap 1 missing parent mismatch refuse"
 
-say "GREEN: Mandi lap 1 — vessel listing in MALA; receipt without identities."
+say "GREEN: Mandi lap 1 — vessel listing in MUR (was MALA); receipt without identities."
