@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.030310` — [Keeh Season quint prep Ketu rename](20260728-030310_keeh-season-quint-prep.bron) — Keeh·Keaton · q0 next · five scopes
 - `20260728.025634` — [Gren Season core prep Djin revert](20260728-025634_gren-season-core-prep.bron) — Gren·DJINN→Murr · g0 next
 - `20260728.025220` — [MUR Season innermost prep 128](20260728-025220_mur-season-innermost-prep.bron) — Murr/Kyler · MALA→MUR · u0 next
 - `20260728.024417` — [Inner Scope checkpoint Trya Ariana](20260728-024417_inner-scope-checkpoint-trya-ariana.bron) — Virgo 6 · sixth voice · fascia paused

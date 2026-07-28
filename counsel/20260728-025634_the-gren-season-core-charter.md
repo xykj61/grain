@@ -7,22 +7,23 @@
 **Ground:** origin/main `d51e6b84b0` (pre-send)  
 **Rename spine (approved):** **Djin / `%djin` / djin.fund → Gren / `%gren` / gren.fund** — revert the Djin name choice; Twah stays retired history  
 **Within:** the **MUR Season** (innermost · u0–u127) — MUR pauses at **u0** while core walks  
-**Status:** Prep seated · g0 next
+**Status:** Prep seated · g0 next — **PAUSED** `20260728.030310` while **quint** Keeh Season walks
 
 *Written together by Keaton and Quin.*
 
 ---
 
-## Four scopes kept
+## Five scopes kept (post-`20260728.030310`)
 
 | Scope | Season | Bookmark | Advance? |
 |-------|--------|----------|----------|
 | **outer** | Constellation | m8 / m9 next | **PAUSED** |
 | **inner** | Inner Scope | i6 / i7 next · fascia | **PAUSED** |
-| **innermost** | MUR Season | **u0** (not yet bowed) | **PAUSED** while core walks |
-| **core** | **Gren Season** | **g0** next | **OPEN** |
+| **innermost** | MUR Season | **u0** (not yet bowed) | **PAUSED** |
+| **core** | **Gren Season** | **g0** | **PAUSED** while quint walks |
+| **quint** | Keeh Season | q0 next | **OPEN** (fascia edit Ketu→Keeh) |
 
-Handback: core → innermost **u0** (unless extend 32/64 seated). Then MUR waves. Inner i7 and outer m9 still wait above.
+Handback: quint → core **g0** · then core → innermost **u0** (unless extend seated). Inner i7 and outer m9 still wait above.
 
 ## What this season is for
 

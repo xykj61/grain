@@ -1,0 +1,26 @@
+# tools/gen_keeh_fund_prep.rish — Keeh fund prep (Aquarius · was Ketu).
+#
+# Affirms Keeh seat, Keaton executive unchanged, quint season charter.
+#   rishi/bin/rishi run tools/gen_keeh_fund_prep.rish
+#   rishi/bin/rishi run tools/gen_keeh_fund_prep.rish deploy  # RED
+
+say "gen-keeh: Language EN — Keeh fund prep (Aquarius air · seat 11 · was Ketu)."
+say "gen-keeh: Style Radiant — GREEN after seat, executive, and rename spine witness."
+say "gen-keeh: Lens TAME — prep only; fascia edit is rename waves, not live shred."
+
+let verb = ""
+if length args != 0 then let verb = args[0]
+
+let prep = run ["sh" "tools/fixtures/gen_keeh_fund_prep.sh" verb]
+assert prep.ok else "gen-keeh REFUSE or seat door failed — see stderr"
+assert prep.out contains "GREEN: gen-keeh" else "gen-keeh missing GREEN line"
+assert prep.out contains "sign_index=10" else "gen-keeh Aquarius seat index unnamed"
+assert prep.out contains "witness:keeh-open GREEN" else "gen-keeh opening witness missing"
+assert prep.out contains "executive: Keaton Sealy Livermore" else "gen-keeh executive unnamed"
+assert prep.out contains "keeh_fund=prep" else "gen-keeh prep flag missing"
+say prep.out
+
+let refuse = run ["sh" "tools/fixtures/gen_keeh_fund_prep.sh" "deploy"]
+assert (refuse.ok == false) else "gen-keeh refuse-walk broken: deploy must exit RED"
+
+say "GREEN: gen-keeh — prep open; Keaton executive unchanged; deploy refuse post-fold RED."
