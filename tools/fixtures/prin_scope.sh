@@ -12,7 +12,8 @@ Prin scope — seasons · Tally · rish vocabulary
   outer:  Constellation Season — PAUSED at m8 complete / m9 next
   inner:  Inner Scope Season — PAUSED at i6 complete / i7 next (fascia)
   innermost: MUR Season — PAUSED at u0 (Mala/MALA→Murr/MUR waits)
-  core:   Gren Season — OPEN · g2 complete / g3 next (Djin→Gren living overwrite)
+  core:   Gren Season — OPEN · g3 complete / g4 next (overwrite CLEARED · spot-check)
+  fund_triad: Murr · Gren · Siya (living)
   quint:  Keeh Season — CLOSED · handed back · extend_or_return=return_gren_g0
   extend_or_return: return_gren_g0 (seated 20260728.035441)
   keeh_sponsor: Kia (South Korea) honor · design seat

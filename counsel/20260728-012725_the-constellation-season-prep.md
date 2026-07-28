@@ -6,9 +6,10 @@
 **Kind:** season prep seat · Keaton's word · rounds **m0–m31** (lean numbering; seat of the letter is his)
 **Ground:** origin/main `46d27a3213` · local ahead carries Fascia f0/f1 · Fascia mid-flight parks pending fold-or-parallel word
 **Season name lean:** *the Constellation Season* (beside *the Fund Season* · *the Mala Season*); **season_name=** held for his final seat
-**Status:** Prep seated · m0–m8 · **OUTER PAUSED** at m8 / m9 next — Inner Scope `20260728.015541` · Twah → **Djin**
+**Status:** Prep seated · m0–m8 · **OUTER PAUSED** at m8 / m9 next — deeper nests walked · living triad **Murr·Gren·Siya**
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260728.040437` — Gren Season g3 · living fund order Murr·Gren·Siya · djin.fund→gren.fund rename-forward
 Radiant pass `20260728.015541` — outer pause · Twah → Djin · Inner Scope i0–i15 opens
 Radiant pass `20260728.015058` — m8 (was Twah) step 6 refuse-walk · m5–m8 closed
 Radiant pass `20260728.014918` — m7 steps 4–5 · phone book · Comlink knock
@@ -26,17 +27,17 @@ Radiant pass `20260728.012906` — m0 bow · choir 17 GREEN · triad affirmed ·
 
 Prep for a **new thirty-two-round season** is approved. The season's early spine is the first three funds of the wheel, seated in order, plus the Mycelium / Move / Sui contract path prepared as **design and generators only** — every wallet, gas, live deploy, and forge push stays Keaton's hand alone.
 
-## Fund Order Seated — Mala 1 · Djin 2 · Siya 3
+## Fund Order Seated — Murr 1 · Gren 2 · Siya 3
 
 | # | Fund | Sign · element | Vane lean | Domain prep (his claim) | Standing |
 |---|------|----------------|-----------|-------------------------|----------|
-| **1** | **Mala** | **Aries · fire** | `%mala` | **mala.fund** | **Seated** — Aries fire opens the wheel; **official maintainer of MALA** by design (`20260728.013859`); leads planned **n-of-12** deploy multisig; fund and module keep distinct hats |
-| **2** | **Djin** | **Taurus · earth** | `%djin` | **djin.fund** | **Seated** as Twah `20260728.012725` · **rename-forward Djin** `20260728.015541`; edu-series tutorial remains this fund's gift |
-| **3** | **Siya** | **Gemini · air** | `%siya` | **siya.fund** (awaiting his claim; seva.fund elder anchor) | **Affirmed** — already seated; third of the opening triad |
+| **1** | **Murr** (was Mala) | **Aries · fire** | `%murr` | **murr.fund** | Living — official maintainer of **MUR** (was MALA); leads planned **n-of-12**; dedication **Kyler Murray**; executive **DJINN**; Kamala-on-Mala historical |
+| **2** | **Gren** (was Djin · was Twah) | **Taurus · earth** | `%gren` | **gren.fund** | Living — edu-series gift; executive **Grain Energy PBC President → Keaton lean**; Twah→Djin→Gren rename spine |
+| **3** | **Siya** | **Gemini · air** | `%siya` | **siya.fund** (awaiting his claim; seva.fund elder anchor) | **Affirmed** — executor **Sara Sealy Livermore** |
 
-**Nara** (Virgo · earth · nara.live) remains recorded from Fascia f0; her `.fund` anchor question stays his. The opening triad does not retire her — it orders the first three fire·earth·air seats as Mala · Djin · Siya.
+**Nara** (Virgo · earth · nara.live) remains recorded from Fascia f0; her `.fund` anchor question stays his. Opening triad living names: **Murr · Gren · Siya** (was Mala · Djin · Siya).
 
-Lexicon rows for **Mala (fund)** · **Djin (fund)** · the triad order seat with this stamp. Outer season **paused** while Inner Scope runs — see [`20260728-015541_the-inner-scope-season-charter.md`](20260728-015541_the-inner-scope-season-charter.md).
+Lexicon rows for **Murr (fund)** · **Gren (fund)** · **Siya (fund)** · retired Mala/Djin/Twah. Outer season **paused** while deeper nests run — Inner PAUSED i6/i7 · core Gren OPEN — see Gren charter [`20260728-025634_the-gren-season-core-charter.md`](20260728-025634_the-gren-season-core-charter.md).
 
 ## Myc / Move / Sui — Prep Only (deployment software shape)
 
@@ -53,7 +54,7 @@ prin rish generators
   → Aurora             (boot / kernel support — AMD x86_64 · AppImage · Framework · BIOS/firmware path named)
 ```
 
-**Hard lines (restated):** no token mint from counsel · no *live* multisig construction from a design page (the **n-of-12 led by Mala** is a seated *plan* as of `20260728.013859`, not a wallet) · no purchase · no live Sui deploy · no gas · no private key in the tree. Devnet-then-testnet remains the counsel lean; his live-Sui word is his seat. The unaudited Move package already in the tree (registry-only, twelve seats, mints nothing) stays the starting sketch until a season round lowers a witnessed next step.
+**Hard lines (restated):** no token mint from counsel · no *live* multisig construction from a design page (the **n-of-12 led by Murr** — was Mala — is a seated *plan* as of `20260728.013859`, not a wallet) · no purchase · no live Sui deploy · no gas · no private key in the tree. Devnet-then-testnet remains the counsel lean; his live-Sui word is his seat. The unaudited Move package already in the tree (registry-only, twelve seats, mints nothing) stays the starting sketch until a season round lowers a witnessed next step.
 
 **Aurora support ask:** every generator and AppImage path that claims constellation deploy prep must name the **Framework AMD x86_64** host lane (BIOS/firmware as the metal floor, AppImage as the enclosure deliverable) and refuse honestly where Aurora cannot yet carry the step.
 
@@ -69,7 +70,7 @@ Exits over counts. One bow + arcs sized for thirty-two; exact arc cuts are the f
 |------:|----------|
 | **m0** | Bow — measure · seat affirmation · stack map · Aurora/AppImage readiness · choir |
 | **m1–m4** | Mala fund prep — mala.fund checklist · MALA kinship · first generator stubs through Comlink |
-| **m5–m8** | Djin fund prep (was Twah) — djin.fund · edu page one · Taurus earth · **CLOSED** |
+| **m5–m8** | Seat-2 fund prep (Twah→Djin→**Gren**) — gren.fund · edu page one · Taurus earth · **CLOSED** |
 | **m9–m12** | Siya triad close — siya.fund claim flag · Gemini air · family seat polish |
 | **m13–m20** | Myc/Move/Sui prep — Move package honesty · prin generators · Amphora·tilak·tile·Glow·Tally·Caravan path · Aurora AMD AppImage witnesses |
 | **m21–m26** | Constellation topology lowered · outfit counts · happy-zone folds |
@@ -81,10 +82,10 @@ Exits over counts. One bow + arcs sized for thirty-two; exact arc cuts are the f
 Elder holds whole. Newly held / affirmed this stamp:
 
 - **season_name=** (lean *Constellation*; seat his)
-- **fund order** Mala 1 · Djin 2 · Siya 3 **seated** (Twah → Djin `20260728.015541`)
-- **mala.fund** · **djin.fund** · **siya.fund** — prep / claim flags **his**
+- **fund order** Murr 1 · Gren 2 · Siya 3 **living** (was Mala · Djin · Siya)
+- **murr.fund** · **gren.fund** · **siya.fund** — prep / claim flags **his**
 - **nara_anchor=** still held
-- **outer pause** — Constellation held at m8 / m9 next while Inner Scope i0–i15 runs
+- **outer pause** — Constellation held at m8 / m9 next while deeper nests walk
 - deploy · wallet · gas · forge push — **always his**
 
 ---
