@@ -44,7 +44,7 @@ No Amphora shred · no Class A rewrite · no Inner unpause · no breach circle �
 
 ## Next
 
-**kg** Inner i7 shred-parity draft (paper), or **check-in** and leave the circle blank until he names it.
+**PAUSED** — MUR innermost paused `20260728.183510` · Generator Season (sext) opened · resume lean **u92**.
 
 ---
 

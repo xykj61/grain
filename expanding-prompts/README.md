@@ -3,7 +3,7 @@
 *A place where a request becomes a plan. When you hand me a seed of intent, I bring it here, read it closely through every lens we have built, and craft from it a fuller, clearer prompt for myself — one I can then run. The seed stays yours; the expansion is how I make sure I have understood it, sharpened it, and lost none of it.*
 
 **Language:** EN
-**Last updated:** 2026-07-28 (MUR u74 · WOV lap prompts yonder · emit parseInt excluded)
+**Last updated:** 2026-07-28 (Generator Season s0 · MUR paused u91/u92 · sext nest)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Seasons roster:** [`SEASONS.md`](SEASONS.md)

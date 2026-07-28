@@ -1,7 +1,8 @@
 # MUR Season — u0 Recursion Prompt (printout · all scopes kept)
 
-**Stamp:** `20260728.025220` · Radiant pass `20260728.181016`  
-**Use:** paste the fenced block as the next counsel/bench session opener.  
+**Stamp:** `20260728.025220` · Radiant pass `20260728.183510`  
+**Use:** historical MUR printout while **innermost PAUSED** — walk Generator Season prompt instead.  
+Radiant pass `20260728.183510` — MUR PAUSED u91/u92 · Generator Season sext OPEN · return_mur_u92 lean  
 Radiant pass `20260728.181016` — u91 shred readiness · Class A content-ready · cut not · u92 next  
 Radiant pass `20260728.180806` — u90 check-in · fascia 86 · shred RED · u91 next  
 Radiant pass `20260728.180509` — u89 Class-A paper lean · fascia 86 · shred RED · u90 next  

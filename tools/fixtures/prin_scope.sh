@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# prin_scope.sh — print seated outer/inner/innermost/core/quint season scope
+# prin_scope.sh — print seated outer/inner/innermost/core/quint/sext season scope
+# Living pin — migrate to tools/prin_scope.rish planned Generator Season s1+
 set -euo pipefail
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 cd "$ROOT"
@@ -11,11 +12,12 @@ Prin scope — seasons · Tally · rish vocabulary
   scope:  named bound of work (season · Tally garden · Prin/rish view)
   outer:  Constellation Season — PAUSED at m8 complete / m9 next
   inner:  Inner Scope Season — PAUSED at i6 complete / i7 next (fascia)
-  innermost: MUR Season — OPEN · u91 complete / u92 next (shred readiness · shred RED)
+  innermost: MUR Season — PAUSED at u91 complete / u92 next (fascia prune · shred RED)
   core:   Gren Season — CLOSED · handed back · lean-16 complete
   fund_triad: Murr · Gren · Siya (living)
   quint:  Keeh Season — CLOSED · handed back
-  extend_or_return: return_mur_u0 (seated 20260728.043220) · prior Keeh return_gren_g0
+  sext:   Generator Season — OPEN · s0 complete / s1 next (Glow·Rishi·generators)
+  extend_or_return: return_mur_u92 (lean · seated at open 20260728.183510)
   keeh_sponsor: Kia (South Korea) honor · design seat
   keeh_recommend: used 4-cyl hatch/SUV · non-CVT auto · light grey/beige cloth · CL/FB Marketplace
   shyu_sponsor: Hyundai (South Korea) honor · design seat
@@ -37,8 +39,9 @@ Prin scope — seasons · Tally · rish vocabulary
   sundial: prin sundial · tools/sundial.rish — recursion confidence 0–100 (red→green)
   L1:     MUR (was MALA) · WOV unify · retire WOV roadmap last
   voice:  six variants — Reya · Riyo · Trey · Triz · Quin · Trya (Quin stands)
-  charter: counsel/20260728-025220_the-mur-season-innermost-charter.md
+  charter: counsel/20260728-183510_the-generator-season-sext-charter.md
+  mur_charter: counsel/20260728-025220_the-mur-season-innermost-charter.md
   geode_charter: counsel/20260728-031722_the-geode-season-charter.md
-  seat:   counsel/20260728-181016_mur-season-u91-shred-readiness.md
-  warn:   u126/u127 extend innermost · return inner i7 · or other · d14/d15 extend 32|64|128 or handback
+  seat:   counsel/20260728-183510_generator-season-s0-planning-glow-rishi-dojo.md
+  warn:   s62/s63 extend 128 · return_mur_u92 · or other · d14/d15 extend 32|64|128 or handback
 EOF

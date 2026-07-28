@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.183510` — [Generator Season s0 open sext nest](20260728-183510_generator-season-s0-open.bron) — MUR paused · fuse reminder · s1 next
 - `20260728.182641` — [innermost three files intuition](20260728-182641_innermost-three-files-intuition.bron) — charter · recursion · prin_scope
 - `20260728.181548` — [fascia shred slow walkthrough](20260728-181548_fascia-shred-walkthrough.bron) — hand-holding companion canvas
 
