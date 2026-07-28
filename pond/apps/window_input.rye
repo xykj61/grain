@@ -10,6 +10,7 @@
 
 const std = @import("std");
 const assert = std.debug.assert;
+const tally_copy = @import("tally_copy.rye");
 
 pub const max_line_len: u32 = 400;
 pub const max_utf8_insert: u32 = 8;
@@ -52,7 +53,7 @@ pub const LineEditor = struct {
         assert(bytes.len > 0);
         assert(bytes.len <= max_utf8_insert);
         if (self.len + bytes.len > max_line_len) return;
-        @memcpy(self.buf[self.len .. self.len + bytes.len], bytes);
+        tally_copy.copy_disjoint(u8, self.buf[self.len .. self.len + bytes.len], bytes);
         self.len += @intCast(bytes.len);
     }
 

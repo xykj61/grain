@@ -40,7 +40,10 @@ fn utf8_from(comptime s: []const u8) Utf8 {
     comptime assert(s.len <= max_utf8);
     var out: Utf8 = .{};
     out.len = s.len;
-    @memcpy(out.data[0..s.len], s);
+    // Comptime face seeds — byte loop (tally copy_disjoint is runtime-asserted).
+    for (s, 0..) |c, i| {
+        out.data[i] = c;
+    }
     return out;
 }
 
