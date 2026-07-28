@@ -1,23 +1,24 @@
-# Grok Counsel — MALA M1 Names, TASKS Fit, and What Stays Parked
+# Grok Counsel — MUR (was MALA) M1 Names, TASKS Fit, and What Stays Parked
 
 **Stamp:** `20260709.184051`
 **Editor:** Cursor · **Model:** Grok 4.5 High Fast · **Voice:** Rio 3
 **Register:** Decision counsel — name clarity before M1 code; TASKS/ROADMAP fit check
-**Ground:** design [`20260702-031312`](../active-designing/20260702-031312_modules-aspects-and-mailable-money.md) · counsel [`152612`](20260709-152612_claude-counsel-mala-wov-already-designed.md) · lap-open [`182354`](../expanding-prompts/20260709-182354_mala-m1-one-issuer-one-holder.md) · SLC-L4 prompt [`031612`](../expanding-prompts/20260709-031612_slcl4-lap1-fixed-tier-sigma-protocol.md) · foundations [`20260629-014512`](../foundations/20260629-014512_money-that-stays-close-to-home.md) · LEXICON MALA/WOV/Mycelium
+**Ground:** design [`20260702-031312`](../active-designing/20260702-031312_modules-aspects-and-mailable-money.md) · counsel [`152612`](20260709-152612_claude-counsel-mala-wov-already-designed.md) · lap-open [`182354`](../expanding-prompts/20260709-182354_mala-m1-one-issuer-one-holder.md) · SLC-L4 prompt [`031612`](../expanding-prompts/20260709-031612_slcl4-lap1-fixed-tier-sigma-protocol.md) · foundations [`20260629-014512`](../foundations/20260629-014512_money-that-stays-close-to-home.md) · LEXICON MUR (was MALA)/WOV/Mycelium
 
 *Written by Kaeden and Rio 3 (Grok), after Kaeden opened the lap and asked for clarity on proposed names.*
 
 Radiant pass `20260725.104245`
 
+Radiant pass `20260728.050219` — living rename-forward: **MUR** / **Murr** (was MALA / Mala)
 ---
 
 ## Verdict in One Breath
 
-**TASKS makes sense.** ROADMAP and TASKS already put **MALA M1** at the front of the Linengrow climb, with **SLC-L4** waiting its own word. Opening M1 now honors counsel `152612` and the July 2 design. No TASKS reorder is required before code — only status lines after the witness greens.
+**TASKS makes sense.** ROADMAP and TASKS already put **MUR (was MALA) M1** at the front of the Linengrow climb, with **SLC-L4** waiting its own word. Opening M1 now honors counsel `152612` and the July 2 design. No TASKS reorder is required before code — only status lines after the witness greens.
 
 ---
 
-## Names That Matter for *This* Round (MALA M1)
+## Names That Matter for *This* Round (MUR (was MALA) M1)
 
 These are the only new names this lap should introduce. They are already proposed in `182354` and match how SLC-L1 landed (`receipt.rye` + witness + golden).
 
@@ -39,15 +40,15 @@ These are the only new names this lap should introduce. They are already propose
 
 | Name | Meaning | This round |
 |------|---------|------------|
-| **MALA** | Mailable money; issuer log is authority; balance is a fold | **M1 builds the first code rung** |
-| **WOV** | TigerBeetle throughput overlay; 1–2 monarchs | **Out of scope** — after MALA M2 |
+| **MUR (was MALA)** | Mailable money; issuer log is authority; balance is a fold | **M1 builds the first code rung** |
+| **WOV** | TigerBeetle throughput overlay; 1–2 monarchs | **Out of scope** — after MUR (was MALA) M2 |
 | **Mycelium** | Byzantine ordering among strangers | **Gated at M4** — do not open |
 
 ---
 
 ## Names From the *Other* Lap (SLC-L4) — Still Parked
 
-These appeared in the last agent's SLC-L4 brief (`031612`) and evening close. They are **not** part of MALA M1. Opening M1 does not affirm them.
+These appeared in the last agent's SLC-L4 brief (`031612`) and evening close. They are **not** part of MUR (was MALA) M1. Opening M1 does not affirm them.
 
 | Name | Proposed role | Relevance now |
 |------|---------------|---------------|
@@ -60,12 +61,12 @@ The settlement-core pattern those names mirrored is **gone from the tree** (`152
 
 ## Memo Prefix vs Dedicated `kind` Field
 
-Evening brief `183326` asked whether `mala:mint` / `mala:send` on the SLC-L1 envelope is enough, or whether MALA needs a dedicated `kind` before M1 code.
+Evening brief `183326` asked whether `mala:mint` / `mala:send` on the SLC-L1 envelope is enough, or whether MUR (was MALA) needs a dedicated `kind` before M1 code.
 
 **Counsel for M1:** keep memo prefixes. Reasons that stay inside written policy:
 
 1. SLC-L1 envelope + `receipt_core` already parse `from` / `to` / `amount` / `memo` / `stamp` — zero new dependencies.
-2. Open Asks already discriminates operations by memo shape on the same spine; MALA follows that grain.
+2. Open Asks already discriminates operations by memo shape on the same spine; MUR (was MALA) follows that grain.
 3. A dedicated `kind` field is a seam change to the fact envelope — that is a design width question for a later lap, not required to prove one-issuer mint/send/fold.
 
 If a later consumer needs typed discrimination without string prefixes, that earns its own word.
@@ -89,7 +90,7 @@ The welcome path in `182354` offers two phrasings. Only one conserves cleanly wh
 
 | Item | Assessment |
 |------|------------|
-| Priority **2** MALA M1 | Correct front of climb once lap word lands |
+| Priority **2** MUR (was MALA) M1 | Correct front of climb once lap word lands |
 | SLC-L4 still waiting | Correct — separate word; names above stay parked |
 | Realidream thin-demo | Parallel optional; do not block M1 |
 | WOV gate | Still after M2 — unchanged |
@@ -109,4 +110,4 @@ After M1 greens: check the TASKS boxes, bump ROADMAP status from "waits Kaeden" 
 
 ---
 
-*May every new name earn its door on the lap that needs it. May MALA's first mint credit exactly one holder, and may the names that wait for donor-amount privacy stay quiet until that word arrives.*
+*May every new name earn its door on the lap that needs it. May MUR (was MALA)'s first mint credit exactly one holder, and may the names that wait for donor-amount privacy stay quiet until that word arrives.*

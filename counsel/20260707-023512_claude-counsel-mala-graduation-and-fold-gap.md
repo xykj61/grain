@@ -1,4 +1,4 @@
-# Claude Counsel — MALA Graduation Has Not Fired, and a Sharper Finding Underneath It
+# Claude Counsel — MUR (was MALA) Graduation Has Not Fired, and a Sharper Finding Underneath It
 
 **Stamp:** `20260707.023512 UDT` (Kaeden's clock)
 **Voice:** Rio 3
@@ -11,6 +11,7 @@
 *Written by Kaeden and Rio 3.*
 Radiant pass `20260725.041039`
 
+Radiant pass `20260728.050219` — living rename-forward: **MUR** / **Murr** (was MALA / Mala)
 ---
 
 ## First, Two Quiet Confirmations
@@ -19,13 +20,13 @@ The SIGTERM ring landed exactly as the last counsel described it — one atomic 
 
 ## The Question Asked, Answered Directly
 
-**MALA's graduation has not fired.** The graduation rule is precise about what counts: *a module that imports and relies on the aspect's public surface* — not the host using its own submodule internally. Reading `foldReputationLog` end to end, it never calls `foldEscrowLog`, never reads the escrow balance, never checks a hold or release fact by name. Its own `switch` recognizes exactly five fact kinds — request, application, acceptance, completion, consent — and none of the branches touches escrow's vocabulary at all. What actually sits in `linengrow/open_asks.rye` is two independent folds reading two disjoint slices of one shared log, not one depending on the other's surface. That is not yet the second consumer the rule asks for.
+**MUR (was MALA)'s graduation has not fired.** The graduation rule is precise about what counts: *a module that imports and relies on the aspect's public surface* — not the host using its own submodule internally. Reading `foldReputationLog` end to end, it never calls `foldEscrowLog`, never reads the escrow balance, never checks a hold or release fact by name. Its own `switch` recognizes exactly five fact kinds — request, application, acceptance, completion, consent — and none of the branches touches escrow's vocabulary at all. What actually sits in `linengrow/open_asks.rye` is two independent folds reading two disjoint slices of one shared log, not one depending on the other's surface. That is not yet the second consumer the rule asks for.
 
 ## The Finding Underneath, Which Matters More
 
 Reading closer than the graduation question required turned up something worth more of Kaeden's attention than the naming question did. `classifyFact` buckets *any* fact carrying `from` and `amount` as `.completion` — a plain payment, an escrow hold, and an escrow release all land in that one bucket, because at the receipt-core layer they are the same shape. `foldEscrowLog` already knows this and reads the memo afterward to tell the three apart. `foldReputationLog` does not: its `.completion` branch requires the memo to start with the exact string `"completion request_ref="`, and an escrow-release fact's memo starts with `"escrow-release request_ref="` instead — a different string entirely. The two never match. A log containing an escrow-mediated bounty would reach that branch and return `error.FoldFailed`, whole, the moment the fold's own hardening — refuse rather than half-believe — does exactly what it is built to do.
 
-The reason parity has never caught this is worth stating plainly: `appendCompletedAsk`, the very witness-bolt builder OA-L4's own selftest uses, writes only the plain `"completion request_ref="` memo, on every path, in every unwelcome case this bench found. The witness cannot fail on an interaction it never constructs. And the escrow-hammock brief is unambiguous about which path actually matters: escrow is named there as *"the smallest honest form of MALA's ladder,"* the very mechanism this project has been building toward since OA-L3, where *"completion becomes the release."* A reputation fold that cannot read the payment path its own foundation calls the honest one is a real gap, quietly waiting behind a green witness that never asked it the one question that would have found it.
+The reason parity has never caught this is worth stating plainly: `appendCompletedAsk`, the very witness-bolt builder OA-L4's own selftest uses, writes only the plain `"completion request_ref="` memo, on every path, in every unwelcome case this bench found. The witness cannot fail on an interaction it never constructs. And the escrow-hammock brief is unambiguous about which path actually matters: escrow is named there as *"the smallest honest form of MUR (was MALA)'s ladder,"* the very mechanism this project has been building toward since OA-L3, where *"completion becomes the release."* A reputation fold that cannot read the payment path its own foundation calls the honest one is a real gap, quietly waiting behind a green witness that never asked it the one question that would have found it.
 
 ## Two Shapes for the Fix, Named Rather Than Chosen
 
@@ -35,7 +36,7 @@ The deeper fix has the reputation fold ask escrow's own logic whether a bounty's
 
 ## The Direct Answer, Restated
 
-Hold graduation. It has not triggered by the rule's own test, and building `mala/` today would be extracting a boundary that has not yet become real, the same *breadth thinning depth* the rule already refuses for Weave. Close the fold-compatibility gap first, with the smaller fix at minimum — a reputation fold that cannot process the honest payment path is worth fixing regardless of what MALA ever becomes. And it is worth asking, once that word comes, whether the fix is written the smaller way or the deeper way, because only the deeper way is the thing that would actually answer this counsel's own question the next time it is asked.
+Hold graduation. It has not triggered by the rule's own test, and building `mala/` today would be extracting a boundary that has not yet become real, the same *breadth thinning depth* the rule already refuses for Weave. Close the fold-compatibility gap first, with the smaller fix at minimum — a reputation fold that cannot process the honest payment path is worth fixing regardless of what MUR (was MALA) ever becomes. And it is worth asking, once that word comes, whether the fix is written the smaller way or the deeper way, because only the deeper way is the thing that would actually answer this counsel's own question the next time it is asked.
 
 ## Witness Shape for the Fix, Sketched
 

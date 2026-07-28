@@ -3,24 +3,25 @@
 **Stamp:** `20260709.183326`
 **Voice:** Rio 3
 **Editor:** Cursor (desktop) · **Model:** Composer 2.5
-**Register:** Decision briefing — MALA realignment, settlement removal, parity **197**, MALA M1 lap-open filed
+**Register:** Decision briefing — MUR (was MALA) realignment, settlement removal, parity **197**, MUR (was MALA) M1 lap-open filed
 **Status:** Checkable-room research — Claude review brief; **superseded** by [`203139`](20260709-203139_claude-review-brief-jul9-night-climb.md) for Claude analysis
 **Ground:** `b7c5ef6` on all four remotes before this push; supersedes [`20260709-034527`](20260709-034527_claude-review-brief-jul9-late-arc.md); night climb continues at [`203139`](20260709-203139_claude-review-brief-jul9-night-climb.md)
 
 *Written for Claude counsel review before the evening `go` commit.*
 
+Radiant pass `20260728.050219` — living rename-forward: **MUR** (was MALA)
 ---
 
 ## Executive Landscape
 
-Kaeden directed **own L1 via MALA** — backtrack from Sui/Monad external interpreters. Counsel [`152612`](../counsel/20260709-152612_claude-counsel-mala-wov-already-designed.md) found the July 2 design already in tree. Settlement + chain-read implementation **deleted** (not merely superseded — no external dependents). Parity **197**. Full suite **GREEN** on metal (~150s). **MALA M1 lap-open brief [`182354`](../expanding-prompts/20260709-182354_mala-m1-one-issuer-one-holder.md) filed**; M0 gate verified. **SLC-L4 [`031612`](../expanding-prompts/20260709-031612_slcl4-lap1-fixed-tier-sigma-protocol.md) still ready** on Kaeden's lap word.
+Kaeden directed **own L1 via MUR (was MALA)** — backtrack from Sui/Monad external interpreters. Counsel [`152612`](../counsel/20260709-152612_claude-counsel-mala-wov-already-designed.md) found the July 2 design already in tree. Settlement + chain-read implementation **deleted** (not merely superseded — no external dependents). Parity **197**. Full suite **GREEN** on metal (~150s). **MUR (was MALA) M1 lap-open brief [`182354`](../expanding-prompts/20260709-182354_mala-m1-one-issuer-one-holder.md) filed**; M0 gate verified. **SLC-L4 [`031612`](../expanding-prompts/20260709-031612_slcl4-lap1-fixed-tier-sigma-protocol.md) still ready** on Kaeden's lap word.
 
 | Milestone | Stamp | Parity | Status |
 |-----------|-------|--------|--------|
 | Jul 9 late brief | `034527` | **198** | Superseded by this brief |
-| MALA/WOV counsel | `152612` | — | **Active** direction |
+| MUR (was MALA)/WOV counsel | `152612` | — | **Active** direction |
 | Settlement + chain-read removal | `163549` arc | **197** | **Deleted from tree** |
-| MALA M1 lap-open | `182354` | — | Ready on lap word |
+| MUR (was MALA) M1 lap-open | `182354` | — | Ready on lap word |
 | SLC-L4 lap-open | `031612` | — | Ready on lap word (unchanged) |
 | Parity verified | `182051` | **197** | GREEN on metal |
 
@@ -34,7 +35,7 @@ Counsel `152612` names what changed and what was already designed:
 
 | Piece | Role | Consensus needed? |
 |-------|------|-------------------|
-| **MALA** | Single-issuer mailable money — Kumara signs, Weave orders | **No** at M1–M3 |
+| **MUR (was MALA)** | Single-issuer mailable money — Kumara signs, Weave orders | **No** at M1–M3 |
 | **WOV** | Rye overlay on vendored `gratitude/tigerbeetle` | 1–2 monarchs; never three |
 | **Mycelium** | Byzantine agreement among strangers | **Gated at M4** — Kaeden's July 2 conclusion, not a new objection |
 
@@ -68,14 +69,14 @@ Counsel `152612` names what changed and what was already designed:
 | Chain-read | on-demand | **removed** | No live network seams |
 | OA-L3 escrow | **198** | **197** | Unchanged; hung ~30 min on stale subprocesses, clean run GREEN |
 | Doorway scan | failed → fixed | **GREEN** | Status lines on 4 forward-facing pages |
-| MALA M1 (future) | — | **198** (proposed) | When lap lands |
+| MUR (was MALA) M1 (future) | — | **198** (proposed) | When lap lands |
 | SLC-L4 Sigma (future) | **199** (proposed) | **198** (proposed) | One witness slot freed |
 
 **Verification:** `rishi/bin/rishi run tools/parity.rish` — exit 0, ~150s, all witnesses GREEN including OA-L3, doorway, Comlink device wire.
 
 ---
 
-## MALA M1 — Lap-Open Brief (`182354`)
+## MUR (was MALA) M1 — Lap-Open Brief (`182354`)
 
 **M0 gate verified on metal:**
 
@@ -120,7 +121,7 @@ Study [`223327`](../external-research/20260708-223327_sui-zk-primitives-for-dono
 | # | Status after `152612` |
 |---|----------------------|
 | 1 Settlement crown | **Moot** — Sui/Monad path removed |
-| 2 Mainnet treasury | Separate custody event; MALA path replaces external-chain settlement |
+| 2 Mainnet treasury | Separate custody event; MUR (was MALA) path replaces external-chain settlement |
 | 3 SLC-L4 first | Donor-amount privacy; Zig-native `023112`/Sigma; waits lap word |
 | 4 Realidream UI | Held — thin-demo exception named in TASKS |
 | 5 Network-seam parity | **Resolved** — witnesses removed with settlement |
@@ -145,7 +146,7 @@ Study [`223327`](../external-research/20260708-223327_sui-zk-primitives-for-dono
 |----------|-------|
 | Counsel | `counsel/20260709-152612_…` |
 | Removal | deleted settlement + chain-read tree; `tools/parity.rish`; hammock `182500` |
-| MALA | `expanding-prompts/20260709-182354_…`; TASKS/ROADMAP |
+| MUR (was MALA) | `expanding-prompts/20260709-182354_…`; TASKS/ROADMAP |
 | Claude brief | this file |
 | Session logs | `155520`, `163549`, `171101`, `182051`, `182354` + README |
 | Wiring | ZK study `223327`; SLC-L4 prompt `031612` reference fix |
@@ -156,7 +157,7 @@ Study [`223327`](../external-research/20260708-223327_sui-zk-primitives-for-dono
 
 | Lap | Brief | Waits |
 |-----|-------|-------|
-| **MALA M1** | `182354` | Kaeden lap word — **front per `152612`** |
+| **MUR (was MALA) M1** | `182354` | Kaeden lap word — **front per `152612`** |
 | **SLC-L4** | `031612` | Kaeden lap word — donor-amount privacy |
 
 Neither requires Claude ruling before `kg` once the word lands — scope is bounded in expanding prompts.
@@ -167,9 +168,9 @@ Neither requires Claude ruling before `kg` once the word lands — scope is boun
 
 1. **Removal vs supersede** — **Answered** [`225508`](../counsel/20260709-225508_grok-counsel-evening-close-leftovers.md): on-touch one-liner; no mass rewrite. Headers added on `015832` / `034527` this stamp.
 
-2. **MALA M1 fact shapes** — **Answered** by M1 land + **K0** `225343`: memo prefixes through M3; K1 gated.
+2. **MUR (was MALA) M1 fact shapes** — **Answered** by M1 land + **K0** `225343`: memo prefixes through M3; K1 gated.
 
-3. **Lap sequencing** — **Answered** by metal: MALA M1–M2b then SLC-L4 then WOV (parity **198→205**).
+3. **Lap sequencing** — **Answered** by metal: MUR (was MALA) M1–M2b then SLC-L4 then WOV (parity **198→205**).
 
 4. **Sigma single-tier proof** — **Answered** by lap 1 + W0 review [`224426`](../counsel/20260709-224426_grok-counsel-slcl4-w0-lap1-review.md).
 

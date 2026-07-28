@@ -6,6 +6,7 @@
 **Category:** Gratitude — IronBeetle, fifth ring
 **Companion to:** `gratitude/matklad.md`
 
+Radiant pass `20260728.050219` — living rename-forward: **MUR** (was MALA)
 ---
 
 ## Honors
@@ -26,7 +27,7 @@ A small arithmetic surprise gives the episode its most memorable moment. There a
 
 ## Where It Rhymes With Our Own Work
 
-A single number that decides which branch of behavior runs next, with nothing left ambiguous once it is known, is MALA's own conservation check wearing a different face: one comparison, and the whole fold either proceeds cleanly or names exactly why it cannot.
+A single number that decides which branch of behavior runs next, with nothing left ambiguous once it is known, is MUR's own conservation check (was MALA) wearing a different face: one comparison, and the whole fold either proceeds cleanly or names exactly why it cannot.
 
 ## Clean Room
 

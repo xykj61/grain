@@ -11,6 +11,7 @@
 
 *Written by Kaeden and Rio 3.*
 
+Radiant pass `20260728.050219` — living rename-forward: **MUR** / **Murr** (was MALA / Mala)
 ---
 Radiant pass `20260725.034920`
 Radiant pass `20260728.045705` — living rename-forward: **MUR** (was MALA) throughout living cites; dated ruling body kept
@@ -20,21 +21,21 @@ Radiant pass `20260728.045705` — living rename-forward: **MUR** (was MALA) thr
 
 Zip 58 tells a clean story on the first read. The referential namespace grew from vocabulary to a full wire ladder in one arc — recall, write, sync, then carriage, then the resin-batch frame, then beading in two rings, then recall composed with beading locally, then all of it over the wire with chunking, ending in a beaded bolt crossing whole. Parity 166 closes that arc. Two doors wait behind it, and the tree has already sketched the shape of both before asking; this ruling reads what is already written, confirms it still holds against everything landed since, and states it plainly enough for Cursor to build against.
 
-## Ruling on Q1 — OA-L4 Leads, and MALA's Graduation Is Its Consequence, Not Its Rival
+## Ruling on Q1 — OA-L4 Leads, and MUR (was MALA)'s Graduation Is Its Consequence, Not Its Rival
 
-**OA-L4 reputation-as-fold builds first, in place, inside Linengrow's open-asks log. MALA graduation is not a separate lap to sequence against it — it is the graduation rule's own mechanical consequence, due exactly when OA-L4 becomes the escrow aspect's second consumer.**
+**OA-L4 reputation-as-fold builds first, in place, inside Linengrow's open-asks log. MUR (was MALA) graduation is not a separate lap to sequence against it — it is the graduation rule's own mechanical consequence, due exactly when OA-L4 becomes the escrow aspect's second consumer.**
 
-This is not a new decision so much as a confirmation. The escrow-hammock brief already named this horizon in one sentence: escrow graduates from the Open Asks log into a MALA module at its second consumer, per the graduation rule, and reputation-as-fold over completed bounties is the thing that waits for OA-L4. Nothing landed since parity 158 touches Linengrow, so nothing has changed underneath that sentence. The "vs" in the handoff's framing reads as two alternatives; on inspection, they are one lap and its own consequence, and asking which comes first was the natural question to check in about before either was built.
+This is not a new decision so much as a confirmation. The escrow-hammock brief already named this horizon in one sentence: escrow graduates from the Open Asks log into a MUR (was MALA) module at its second consumer, per the graduation rule, and reputation-as-fold over completed bounties is the thing that waits for OA-L4. Nothing landed since parity 158 touches Linengrow, so nothing has changed underneath that sentence. The "vs" in the handoff's framing reads as two alternatives; on inspection, they are one lap and its own consequence, and asking which comes first was the natural question to check in about before either was built.
 
-**Gall's Law and the graduation rule** state the mechanism directly: an aspect graduates on the day its second consumer arrives from outside its host, never before. MALA's escrow shape holds exactly one consumer today — Nyasa, living inside `open_asks.rye`'s own log. Graduating it now, with no second consumer yet real, would be breadth thinning depth, the same violation the rule already refused for Weave. Building OA-L4 first is what could create that second consumer, honestly, by need rather than by anticipation.
+**Gall's Law and the graduation rule** state the mechanism directly: an aspect graduates on the day its second consumer arrives from outside its host, never before. MUR (was MALA)'s escrow shape holds exactly one consumer today — Nyasa, living inside `open_asks.rye`'s own log. Graduating it now, with no second consumer yet real, would be breadth thinning depth, the same violation the rule already refused for Weave. Building OA-L4 first is what could create that second consumer, honestly, by need rather than by anticipation.
 
 **The five primitives and the pure fold** favor the same order for a second reason. Reputation-as-fold is, structurally, another fold over the same family of signed facts the escrow's own `FoldState` already reads. Building OA-L4 in place, against the log as it stands, lets its actual shape — which facts it truly needs, whether raw escrow facts or only completion facts — decide whether a module boundary is even the right cut. Drawing that boundary before the second fold exists risks guessing the cut wrong.
 
 **TAME order** puts safety first, and OA-L4 carries a genuinely new safety-relevant invariant: consent-before-counting, governing what may be tallied about a person at all. That invariant wants to be proven correct while the surface touching it stays small — inside Linengrow, beside the escrow invariants already proven (conservation, no negatives, no double-hold) — rather than proven for the first time across a freshly drawn module seam at the same moment.
 
-**Witnesses first** asks for a witness bolt before a boundary. OA-L1 through OA-L3 each proved their invariant in place before any wire or graduation step touched them; OA-L4 should earn the same proof before MALA earns a door. A module extracted with no witness yet standing for what it holds is a home built before the guest arrives.
+**Witnesses first** asks for a witness bolt before a boundary. OA-L1 through OA-L3 each proved their invariant in place before any wire or graduation step touched them; OA-L4 should earn the same proof before MUR (was MALA) earns a door. A module extracted with no witness yet standing for what it holds is a home built before the guest arrives.
 
-**Sameness as compression** keeps one value model rather than two. MALA's shape is already visible in the tree — Nyasa as the account, hold and release as receipt-core facts with memo prefixes, the M1 and M2 vocabulary already carrying the weight informally. OA-L4 should fold over that same shape rather than invent a parallel reputation-specific fact format, and building it against the aspect as it already stands is how that sameness gets kept rather than merely hoped for.
+**Sameness as compression** keeps one value model rather than two. MUR (was MALA)'s shape is already visible in the tree — Nyasa as the account, hold and release as receipt-core facts with memo prefixes, the M1 and M2 vocabulary already carrying the weight informally. OA-L4 should fold over that same shape rather than invent a parallel reputation-specific fact format, and building it against the aspect as it already stands is how that sameness gets kept rather than merely hoped for.
 
 **Witness shape, asked for directly:** OA-L4's witness should follow the same witness-bolt convention the namespace laps already seated — small, pinned, and built to prove exactly its own claim rather than a general reputation system. A handful of completed asks, most carrying a consent fact and at least one withholding it, proves three things: the fold is deterministic, so the same facts always fold to the same reputation view; a withheld-consent fact is excluded from the fold entirely, the one new unwelcome path this lap adds to the family that already proves double-hold and double-release refuse whole; and the fold recomputes identically from either party's own log, the same cross-peer transparency `syncRevision`'s witness already proves for the namespace.
 
@@ -42,11 +43,11 @@ This is not a new decision so much as a confirmation. The escrow-hammock brief a
 
 ## Ruling on Q2 — the Comlink Slot Is Released; I2 Does Not Block the Next Door
 
-**I1's landing releases the slot. I2 snapshot export does not need to happen before OA-L4 or MALA.**
+**I1's landing releases the slot. I2 snapshot export does not need to happen before OA-L4 or MUR (was MALA).**
 
 Counsel F's reasoning stays exactly as sound as it was when it was written, and this ruling leaves it standing rather than reopens it: drafting the frame spec before the manifest law would have minted two grammars for one line, and ordering I2 before I1 was the honest way to prevent that while neither existed yet. What has changed is the ground both specs would have stood on. The referential namespace — Mantra, recall, bolt, the whole peer/bolt/revision/path grammar — did not exist when that counsel was written, and I1's actual substance was built directly on it rather than on the Amber-ring-one-manifest path the original plan assumed. `resin_batch.rye`'s header, manifest, and payload shape is not a spec still in flight, guessing at a grammar; it is proven ground, verified through parity 166 across wire, chunking, beading, and a full beaded bolt crossing.
 
-The risk the ordering protected against — two unproven designs drifting into incompatible grammars — cannot occur between something proven and something not yet drafted. It resolves itself now in the opposite direction from what was planned: I2, whenever it is drafted, should be counseled to reuse `resin_batch.rye`'s manifest shape rather than invent one of its own, which keeps Counsel F's underlying concern satisfied by different means than first intended, rather than abandoning it. Reading the two together, "Edit-5 before OA-L4 or MALA" was never quite the right frame. The zip-42 slot ordered I1 against I2, two wire-cargo specs competing for the same grammar question. OA-L4 and MALA never touched that question at all — they are an economic and reputation domain, not a second wire-manifest design — so the chain from Edit-5 through I2 to the next door was a reading of the standing TASKS line rather than a dependency the counsel itself ever drew.
+The risk the ordering protected against — two unproven designs drifting into incompatible grammars — cannot occur between something proven and something not yet drafted. It resolves itself now in the opposite direction from what was planned: I2, whenever it is drafted, should be counseled to reuse `resin_batch.rye`'s manifest shape rather than invent one of its own, which keeps Counsel F's underlying concern satisfied by different means than first intended, rather than abandoning it. Reading the two together, "Edit-5 before OA-L4 or MUR (was MALA)" was never quite the right frame. The zip-42 slot ordered I1 against I2, two wire-cargo specs competing for the same grammar question. OA-L4 and MUR (was MALA) never touched that question at all — they are an economic and reputation domain, not a second wire-manifest design — so the chain from Edit-5 through I2 to the next door was a reading of the standing TASKS line rather than a dependency the counsel itself ever drew.
 
 ## Ordered List for Q3 — the Namespace Horizons
 
@@ -66,15 +67,15 @@ Five items stand on the namespace's own Status line. In the order this bench rec
 
 ## Q5 — the Settlement Rail's Relationship to OA-L4
 
-**Orthogonal; neither gates the other.** OA-L4 folds over conduct — who completed what, with whose consent to count it — and never touches currency movement. The settlement rail answers a different question entirely: which chain proves a bounty paid in real value, and that question stays gated on its own witness, exactly as the settlement verdict already holds it, regardless of what OA-L4 or MALA do. The settlement-seat document contains no mention of OA-L4, reputation, or batch toll anywhere in it; the tree has never coupled these, and this ruling sees no reason to start.
+**Orthogonal; neither gates the other.** OA-L4 folds over conduct — who completed what, with whose consent to count it — and never touches currency movement. The settlement rail answers a different question entirely: which chain proves a bounty paid in real value, and that question stays gated on its own witness, exactly as the settlement verdict already holds it, regardless of what OA-L4 or MUR (was MALA) do. The settlement-seat document contains no mention of OA-L4, reputation, or batch toll anywhere in it; the tree has never coupled these, and this ruling sees no reason to start.
 
 ## Optional — Proposed TASKS.md Phrase Deltas (Structure Only, Not Applied)
 
 Two lines in `work-in-progress/TASKS.md` read as though the questions above are still open. Proposed replacements, for Cursor to apply once Kaeden nods and not before:
 
-**Line 52, today:** *"Next climb (Kaeden's word opens either): OA-L4 reputation-as-fold — or MALA module graduation at second consumer. Both are horizon; check in with Claude before either."*
+**Line 52, today:** *"Next climb (Kaeden's word opens either): OA-L4 reputation-as-fold — or MUR (was MALA) module graduation at second consumer. Both are horizon; check in with Claude before either."*
 
-**Proposed:** *"Next climb (Kaeden's word opens it): OA-L4 reputation-as-fold, built in place inside Linengrow's open-asks log. MALA graduation is not a separate lap to order against it — the graduation rule fires it the moment OA-L4 becomes the escrow aspect's second consumer (Claude ruling `20260706.232812`)."*
+**Proposed:** *"Next climb (Kaeden's word opens it): OA-L4 reputation-as-fold, built in place inside Linengrow's open-asks log. MUR (was MALA) graduation is not a separate lap to order against it — the graduation rule fires it the moment OA-L4 becomes the escrow aspect's second consumer (Claude ruling `20260706.232812`)."*
 
 **Line 72, today:** *"Edit-5 when opened: I2 snapshot export before I1 Comlink resin-batch frame (zip-42 counsel holds)."*
 

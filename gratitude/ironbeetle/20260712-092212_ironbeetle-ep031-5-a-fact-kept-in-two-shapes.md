@@ -6,6 +6,7 @@
 **Category:** Gratitude — IronBeetle, fourth ring
 **Companion to:** `gratitude/matklad.md`
 
+Radiant pass `20260728.050219` — living rename-forward: **MUR** (was MALA)
 ---
 
 ## Honors
@@ -26,7 +27,7 @@ The actual bug turns out to live in a single sentence of documentation that quie
 
 ## Where It Rhymes With Our Own Work
 
-A fact conserved in its own single accounting, rather than spread thin across two mismatched forms that only look redundant, is MALA's own conservation law from a different direction: issuer and holder must agree in the same ledger, not merely gesture at agreement from two different books.
+A fact conserved in its own single accounting, rather than spread thin across two mismatched forms that only look redundant, is MUR's own conservation law (was MALA) from a different direction: issuer and holder must agree in the same ledger, not merely gesture at agreement from two different books.
 
 ## Clean Room
 
