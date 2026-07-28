@@ -20,7 +20,7 @@ This is already our seated rule under TAME: *push the ifs up and the fors down*,
 
 His counsel on where to draw a file boundary: stop measuring lines, start measuring the ratio of what a module holds to the surface it shows the world. A self-contained thing earns its own file whether it is ten lines or ten thousand; a sprawling file is often three subsystems quarreling. Divide the volume by the surface area — it is the shape, not the size.
 
-This deepens our graduation rule (a concept becomes a module at its second outside consumer) and our smallest-first habit. Where it bites next: as Granary, Mandi, MALA, and Dimeroll grow, the honest question for each is not "how long is this file" but "how small is its interface for what it holds." A good cut makes callers and callees meet cleanly.
+This deepens our graduation rule (a concept becomes a module at its second outside consumer) and our smallest-first habit. Where it bites next: as Granary, Mandi, MUR, and Dimeroll grow (was MALA), the honest question for each is not "how long is this file" but "how small is its interface for what it holds." A good cut makes callers and callees meet cleanly.
 
 ## Cut through the glue to the algorithmic core
 

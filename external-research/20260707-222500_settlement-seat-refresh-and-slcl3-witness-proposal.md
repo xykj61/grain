@@ -1,5 +1,7 @@
 # Settlement Seat Refresh and SLC-L3 Two-Lane Witness Proposal
 
+Radiant pass `20260728.050219` — living rename-forward: **MUR** (was MALA)
+
 *The three-lights survey and verification verdict still hold the seat; this refresh records what landed on the bench since that sitting, confirms no new load-bearing events on the chains, names the thin-rail question ahead of the witness, and seats a concrete two-lane witness proposal so SLC-L3 can move the moment Kaeden's word opens the gate.*
 
 **Stamp:** `20260707.222500 UDT`
@@ -7,7 +9,7 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`) · **Lens:** TAME — safety first · SLC · stop-and-park on custody
 **Category:** External research — refresh and witness proposal; counsels only; no treasury action
 **Ground:** [`20260706-002612_the-settlement-seat-under-three-lights.md`](20260706-002612_the-settlement-seat-under-three-lights.md) · [`20260706-005512_settlement-seat-verification-and-verdict.md`](20260706-005512_settlement-seat-verification-and-verdict.md) · [`../active-designing/20260702-195426_slcl1-verifiable-receipt.md`](../active-designing/20260702-195426_slcl1-verifiable-receipt.md) · counsel [`220912`](../counsel/20260707-220912_claude-counsel-roadmap-synthesis.md)
-**Status:** Research for understanding — two-lane witness design preserved as craft; **external SLC-L3 seat superseded** by MALA/WOV realignment [`152612`](../counsel/20260709-152612_claude-counsel-mala-wov-already-designed.md). Kitchen twin: [`20260710-001249_settlement-seat-plainly.md`](20260710-001249_settlement-seat-plainly.md). No treasury action.
+**Status:** Research for understanding — two-lane witness design preserved as craft; **external SLC-L3 seat superseded** by MUR (was MALA)/WOV realignment [`152612`](../counsel/20260709-152612_claude-counsel-mala-wov-already-designed.md). Kitchen twin: [`20260710-001249_settlement-seat-plainly.md`](20260710-001249_settlement-seat-plainly.md). No treasury action.
 **Last updated:** 2026-07-10 (supersession note + kitchen twin)
 
 *Written by Rio 3 for Kaeden.*
@@ -43,7 +45,7 @@ The bench closed substantial Linengrow ground **after** the settlement sitting. 
 | **TigerBeetle / copy_disjoint** | **190–191** | Memory discipline at settlement code seams |
 | **Escrow + Nyasa** | **158** | Hold/release conservation on **our** log — external rail stays thin |
 
-**Implication:** SLC-L3 is not greenfield. The witness bolt attaches at the **crossing edge** — our signed fact is already true on the MALA log; the rail carries dollar settlement and returns a **publicly verifiable receipt**. The append-only log remains source of truth; the chain is toll gate, not oracle.
+**Implication:** SLC-L3 is not greenfield. The witness bolt attaches at the **crossing edge** — our signed fact is already true on the MUR (was MALA) log; the rail carries dollar settlement and returns a **publicly verifiable receipt**. The append-only log remains source of truth; the chain is toll gate, not oracle.
 
 ---
 
@@ -51,7 +53,7 @@ The bench closed substantial Linengrow ground **after** the settlement sitting. 
 
 Per verdict `005512`, one question precedes chain comparison:
 
-> Does the settlement rung need a third-party smart-contract platform, or only a **dollar on-ramp/off-ramp** anchored to our own WOV and MALA ledger?
+> Does the settlement rung need a third-party smart-contract platform, or only a **dollar on-ramp/off-ramp** anchored to our own WOV and MUR (was MALA) ledger?
 
 **Proposal for SLC-L3 scope (happy zone):**
 
@@ -73,7 +75,7 @@ The witness must prove the **thinnest** rail that closes the loop — not a full
 | **Lovable** | Sanctuary donation settled on testnet — delayed receipt still true |
 | **Complete** | Both lanes run the same flow; witness scores three axes; recommendation waits on Kaeden |
 
-**Out of scope for SLC-L3 v1:** mainnet treasury, MALA mint, multi-party market, SLC-L4 ZK pass.
+**Out of scope for SLC-L3 v1:** mainnet treasury, MUR (was MALA) mint, multi-party market, SLC-L4 ZK pass.
 
 ---
 

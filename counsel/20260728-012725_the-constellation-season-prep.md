@@ -1,11 +1,13 @@
 # The Constellation Season — Prep Approved · Thirty-Two Rounds
 
+Radiant pass `20260728.050219` — living rename-forward: **MUR** / **Murr** (was MALA / Mala)
+
 **Language:** EN
 **Stamp:** `20260728.012725`
 **Voice:** Quin · nested frame Trey
 **Kind:** season prep seat · Keaton's word · rounds **m0–m31** (lean numbering; seat of the letter is his)
 **Ground:** origin/main `46d27a3213` · local ahead carries Fascia f0/f1 · Fascia mid-flight parks pending fold-or-parallel word
-**Season name lean:** *the Constellation Season* (beside *the Fund Season* · *the Mala Season*); **season_name=** held for his final seat
+**Season name lean:** *the Constellation Season* (beside *the Fund Season* · *the Murr (was Mala) Season*); **season_name=** held for his final seat
 **Status:** Prep seated · m0–m8 · **OUTER PAUSED** at m8 / m9 next — deeper nests walked · living triad **Murr·Gren·Siya**
 
 *Written together by Keaton and Quin.*
@@ -15,10 +17,10 @@ Radiant pass `20260728.015058` — m8 (was Twah) step 6 refuse-walk · m5–m8 c
 Radiant pass `20260728.014918` — m7 steps 4–5 · phone book · Comlink knock
 Radiant pass `20260728.014737` — m6 steps 1–3 · gen witnesses GREEN
 Radiant pass `20260728.014523` — m5 fund-2 · Comlink · edu page-one stub
-Radiant pass `20260728.014057` — m4 Aurora host lane · Mala m1–m4 closed · aurora-deploy RED
-Radiant pass `20260728.013859` — Mala maintains MALA · n-of-12 plan · Glow cast-u32 GREEN
+Radiant pass `20260728.014057` — m4 Aurora host lane · Murr (was Mala) m1–m4 closed · aurora-deploy RED
+Radiant pass `20260728.013859` — Murr (was Mala) maintains MUR (was MALA) · n-of-12 plan · Glow cast-u32 GREEN
 Radiant pass `20260728.013722` — m2 Amphora door · lap 1 post-fold GREEN
-Radiant pass `20260728.013140` — m1 Mala fund prep · gen_mala_fund_prep GREEN · deploy RED
+Radiant pass `20260728.013140` — m1 Murr (was Mala) fund prep · gen_mala_fund_prep GREEN · deploy RED
 Radiant pass `20260728.012906` — m0 bow · choir 17 GREEN · triad affirmed · stack mapped
 
 ---
@@ -37,7 +39,7 @@ Prep for a **new thirty-two-round season** is approved. The season's early spine
 
 **Nara** (Virgo · earth · nara.live) remains recorded from Fascia f0; her `.fund` anchor question stays his. Opening triad living names: **Murr · Gren · Siya** (was Mala · Djin · Siya).
 
-Lexicon rows for **Murr (fund)** · **Gren (fund)** · **Siya (fund)** · retired Mala/Djin/Twah. Outer season **paused** while deeper nests run — Inner PAUSED i6/i7 · core Gren CLOSED (handed back) · innermost MUR OPEN — see MUR charter [`20260728-025220_the-mur-season-innermost-charter.md`](20260728-025220_the-mur-season-innermost-charter.md).
+Lexicon rows for **Murr (fund)** · **Gren (fund)** · **Siya (fund)** · retired Murr (was Mala)/Djin/Twah. Outer season **paused** while deeper nests run — Inner PAUSED i6/i7 · core Gren CLOSED (handed back) · innermost MUR OPEN — see MUR charter [`20260728-025220_the-mur-season-innermost-charter.md`](20260728-025220_the-mur-season-innermost-charter.md).
 
 ## Myc / Move / Sui — Prep Only (deployment software shape)
 
@@ -69,7 +71,7 @@ Exits over counts. One bow + arcs sized for thirty-two; exact arc cuts are the f
 | Block | Lean job |
 |------:|----------|
 | **m0** | Bow — measure · seat affirmation · stack map · Aurora/AppImage readiness · choir |
-| **m1–m4** | Mala fund prep — mala.fund checklist · MALA kinship · first generator stubs through Comlink |
+| **m1–m4** | Murr (was Mala) fund prep — mala.fund checklist · MUR (was MALA) kinship · first generator stubs through Comlink |
 | **m5–m8** | Seat-2 fund prep (Twah→Djin→**Gren**) — gren.fund · edu page one · Taurus earth · **CLOSED** |
 | **m9–m12** | Siya triad close — siya.fund claim flag · Gemini air · family seat polish |
 | **m13–m20** | Myc/Move/Sui prep — Move package honesty · prin generators · Amphora·tilak·tile·Glow·Tally·Caravan path · Aurora AMD AppImage witnesses |

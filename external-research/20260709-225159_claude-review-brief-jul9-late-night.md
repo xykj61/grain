@@ -9,16 +9,17 @@
 
 *Written by Kaeden and Rio 3 (Grok).*
 
+Radiant pass `20260728.050219` — living rename-forward: **MUR** (was MALA)
 ---
 
 ## Executive Landscape
 
-From evening close **197** through tonight: MALA M1–M2b, SLC-L4 fixed-tier Sigma + W0 review, WOV exit honesty, TB pin, host seam A, dual-monarch **D1**. Keep-going treated design leans as affirms (seam A, W0, D1). Code that still crosses protocol width waits Claude.
+From evening close **197** through tonight: MUR (was MALA) M1–M2b, SLC-L4 fixed-tier Sigma + W0 review, WOV exit honesty, TB pin, host seam A, dual-monarch **D1**. Keep-going treated design leans as affirms (seam A, W0, D1). Code that still crosses protocol width waits Claude.
 
 | Milestone | Stamp | Parity |
 |-----------|-------|--------|
-| MALA M1 | `184051` | **198** |
-| Hang fix + MALA M2 | `191634` | **199** |
+| MUR (was MALA) M1 | `184051` | **198** |
+| Hang fix + MUR (was MALA) M2 | `191634` | **199** |
 | SLC-L4 Sigma | `194437` | **200** |
 | WOV lap 1 | `200729` | **201** |
 | Realidream thin view | `202427` | **202** |
@@ -37,7 +38,7 @@ From evening close **197** through tonight: MALA M1–M2b, SLC-L4 fixed-tier Sig
 | WOV seam A | Projection → exit honesty; live REPL SKIP in ai-jail (io_uring) |
 | SLC-L4 width + W0 | Design + lap-1 Sigma design review; W1/W2 gated |
 | WOV dual monarch | Design then **D1** twin log lines on metal |
-| MALA `kind` | Design filed this stamp — K0 lean |
+| MUR (was MALA) `kind` | Design filed this stamp — K0 lean |
 
 ---
 
@@ -47,7 +48,7 @@ From evening close **197** through tonight: MALA M1–M2b, SLC-L4 fixed-tier Sig
 
 2. **WOV seam B** — **Soak** [`225614`](../counsel/20260709-225614_grok-counsel-w1-and-seam-b-soak.md) until measured red on metal or affirm. Live REPL outside jail still welcome.
 
-3. **MALA `kind`** — **K0 cleared** `225343` (memos through M3). K1 still gated.
+3. **MUR (was MALA) `kind`** — **K0 cleared** `225343` (memos through M3). K1 still gated.
 
 4. **Thin view / Dexter** — **Exception affirmed** [`225343`](../context/specs/20260709-225343_thin-view-dexter-exception.md) — not Dexter's second consumer.
 

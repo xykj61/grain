@@ -6,6 +6,7 @@
 **Category:** Gratitude — IronBeetle, pilot ring, episode 2 of 2 delivered this round
 **Companion to:** `gratitude/matklad.md`
 
+Radiant pass `20260728.050219` — living rename-forward: **MUR** (was MALA)
 ---
 
 ## Honors
@@ -30,7 +31,7 @@ The last third of the episode ties together two threads that seem, at first, unr
 
 ## Where It Rhymes With Our Own Work
 
-MALA's own conservation law, issuer plus holder equal minted or the fold fails, is double-entry bookkeeping wearing our own name for it — an invariant enforced by what the data is allowed to be, not by a promise sitting on top of it. And a batch that stays uniform all the way down, one kind of fact at a time, sits close to Weave's own append-only log of typed, homogeneous facts, each one folded the same way as its neighbors.
+MUR's own conservation law (was MALA), issuer plus holder equal minted or the fold fails, is double-entry bookkeeping wearing our own name for it — an invariant enforced by what the data is allowed to be, not by a promise sitting on top of it. And a batch that stays uniform all the way down, one kind of fact at a time, sits close to Weave's own append-only log of typed, homogeneous facts, each one folded the same way as its neighbors.
 
 ## Clean Room
 

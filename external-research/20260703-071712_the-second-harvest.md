@@ -10,6 +10,7 @@
 **Sibling:** `20260703-034812_where-public-money-becomes-public-work.md` (the first harvest)
 **Status:** External research — harvest map, first pass
 
+Radiant pass `20260728.050219` — living rename-forward: **MUR** (was MALA)
 ---
 
 ## What This Document Is
@@ -54,7 +55,7 @@ The California radiance letter models an outreach method worth naming: **write t
 
 ## Protect First, Then Negotiate
 
-The campaign experiments hold the sharpest management principle in the whole field. The revolution's great general ended the moral harm outright — the non-negotiable — and then retained the very people he had defeated wherever their skill was needed to keep the country fed, paying them and taxing them lightly so the economy could stand. Siloed: **end the harm unconditionally; then work with whoever holds the remaining authority or expertise, and let cooperation be management rather than endorsement**. The two-track structure that follows — protection delivered immediately under one's own authority, negotiation pursued patiently with the authority one lacks — is a general pattern for any reform that needs both courage and counterparties. And the phased implementation beneath it — benefits first, authorization next, scale last, each phase gated on the one before — is Gall's Law written into policy. One more gleaning hides in the fiscal framing: a unit of account holds value because it can be redeemed for real things a person needs, which is MALA's acceptance story stated in a single sentence. These feed a Civic Style method note on coalition and sequencing, and a line in the MALA design record.
+The campaign experiments hold the sharpest management principle in the whole field. The revolution's great general ended the moral harm outright — the non-negotiable — and then retained the very people he had defeated wherever their skill was needed to keep the country fed, paying them and taxing them lightly so the economy could stand. Siloed: **end the harm unconditionally; then work with whoever holds the remaining authority or expertise, and let cooperation be management rather than endorsement**. The two-track structure that follows — protection delivered immediately under one's own authority, negotiation pursued patiently with the authority one lacks — is a general pattern for any reform that needs both courage and counterparties. And the phased implementation beneath it — benefits first, authorization next, scale last, each phase gated on the one before — is Gall's Law written into policy. One more gleaning hides in the fiscal framing: a unit of account holds value because it can be redeemed for real things a person needs, which is MUR (was MALA)'s acceptance story stated in a single sentence. These feed a Civic Style method note on coalition and sequencing, and a line in the MUR (was MALA) design record.
 
 ---
 
@@ -72,7 +73,7 @@ The aftermath document distills session economics into two sentences worth keepi
 
 ## Second Gleanings from the Lecture
 
-Three threads from the monetary lecture remained unspun after the first harvest, and each lands in MALA or Linengrow. The first is **the citizen's steady bond**: the base rate of a healthy system can rest near zero so debt stops compounding into rentier hands, while a separate, positive-rate savings instrument serves ordinary households building toward a home or an education — two rates, one for stillness and one for saving. Mapped onto the M-ladder, this suggests a member-savings rung designed apart from the neutral transactional layer. The second is **the issuer's self-note**: an issuer can always square its own books internally — one hand holding the other's IOU — which for MALA marks a clean, honest edge case worth a paragraph in the design record. The third is a warning worth keeping bright: when everything financializes, the last commodity is the person — **data as the most financialized substance of the age** — and Linengrow's answer is architectural, a commerce layer with no surveillance to sell, receipts proven without identities exposed. That stance deserves its own named paragraph in the platform papers.
+Three threads from the monetary lecture remained unspun after the first harvest, and each lands in MUR (was MALA) or Linengrow. The first is **the citizen's steady bond**: the base rate of a healthy system can rest near zero so debt stops compounding into rentier hands, while a separate, positive-rate savings instrument serves ordinary households building toward a home or an education — two rates, one for stillness and one for saving. Mapped onto the M-ladder, this suggests a member-savings rung designed apart from the neutral transactional layer. The second is **the issuer's self-note**: an issuer can always square its own books internally — one hand holding the other's IOU — which for MUR (was MALA) marks a clean, honest edge case worth a paragraph in the design record. The third is a warning worth keeping bright: when everything financializes, the last commodity is the person — **data as the most financialized substance of the age** — and Linengrow's answer is architectural, a commerce layer with no surveillance to sell, receipts proven without identities exposed. That stance deserves its own named paragraph in the platform papers.
 
 ---
 
@@ -94,10 +95,10 @@ Three threads from the monetary lecture remained unspun after the first harvest,
 | Let the land choose the practice | Civic / agricultural notes | Ready to draft |
 | Path-with-heart companion question | `SIMPLE_LOVABLE_COMPLETE.md` close | Awaiting Kaeden's word |
 | Protect first, then negotiate | Civic Style method note | Ready to draft |
-| Redeemability sentence | MALA design record | Ready to draft |
+| Redeemability sentence | MUR (was MALA) design record | Ready to draft |
 | Two rooms: checkable and visionary | [`context/TWO_ROOMS.md`](../context/TWO_ROOMS.md) + Jul 4 essays | Proposed — awaits Kaeden's word |
 | Rare resource; three percent | Bench-workflow note | Ready to draft |
-| Citizen's steady bond; issuer's self-note | MALA M-ladder record | Ready to draft |
+| Citizen's steady bond; issuer's self-note | MUR (was MALA) M-ladder record | Ready to draft |
 | No surveillance to sell | Linengrow platform papers | Ready to draft |
 
 ---

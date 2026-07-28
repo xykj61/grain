@@ -11,11 +11,12 @@
 
 *Written by Kaeden and Rio 3 (Grok). Creative climb inside the jail — no TigerBeetle io_uring required.*
 
+Radiant pass `20260728.050219` — living rename-forward: **MUR** (was MALA)
 ---
 
 ## In One Breath
 
-A **WOV root** is a signed snapshot of who holds what inside the fast lane. An **exit bundle** is the public table of those balances, hashed into the root, so a holder can prove their row and walk back to MALA even if the monarch never answers again.
+A **WOV root** is a signed snapshot of who holds what inside the fast lane. An **exit bundle** is the public table of those balances, hashed into the root, so a holder can prove their row and walk back to MUR (was MALA) even if the monarch never answers again.
 
 **Dual monarch D1** means two named keys must both sign the **same** root fact bytes — twin log lines, one story — before the tree treats that root as current. One key alone is not enough once the instance is dual.
 
@@ -25,7 +26,7 @@ A **WOV root** is a signed snapshot of who holds what inside the fast lane. An *
 
 Imagine a community ledger on a fast shelf (WOV). Every so often the keepers publish a **photograph** of every non-zero balance: who has how much, and a small nonce so exits cannot be replayed. That photograph is the **exit bundle**. Its fingerprint (SHA3) is the **state root**.
 
-They also write a short diary line on the slow, honest log (MALA): "root number N for this instance points at fingerprint F." That diary line is the **root fact**. Holders who keep a copy of the photograph can later prove "I had 700 at root N" without asking the shelf again.
+They also write a short diary line on the slow, honest log (MUR (was MALA)): "root number N for this instance points at fingerprint F." That diary line is the **root fact**. Holders who keep a copy of the photograph can later prove "I had 700 at root N" without asking the shelf again.
 
 With **one monarch**, one signature on that diary line is enough.
 

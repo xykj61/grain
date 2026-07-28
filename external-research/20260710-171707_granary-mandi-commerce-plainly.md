@@ -11,13 +11,14 @@
 
 *Written by Kaeden and Rio 3. Kitchen twin for the commerce season that landed through parity **242**.*
 
+Radiant pass `20260728.050219` — living rename-forward: **MUR** (was MALA)
 ---
 
 ## In One Breath
 
 **Granary** is where signed weaves are named, shared, mirrored, and optionally listed for sale — every artist a node. Four doors on one log: Identity · Namespace · Sharing · Exchange.
 
-**Mandi** is where traveling vessels (amphorae) are listed and sold, priced in MALA. Offer, citizen window, then in-process settle.
+**Mandi** is where traveling vessels (amphorae) are listed and sold, priced in MUR (was MALA). Offer, citizen window, then in-process settle.
 
 Two markets. Two roofs. One tree. Confusing them blurs both.
 
@@ -30,9 +31,9 @@ Two markets. Two roofs. One tree. Confusing them blurs both.
 | **Granary** | Registry · weave view · write gate · Sharing (hosted + device) · Exchange listing · Exchange Skate view · weave settle · settle Skate view (parity **232**–**237**, **239**, **241**, **243**, **245**) | Live TigerBeetle |
 | **Mandi** | Vessel listing · floor view · listing settle · settle Skate view (parity **238**, **240**, **242**, **244**) | Live TigerBeetle; Amphora carriage stays its own rite |
 
-**What weave settle is:** In-process only (same shape as Mandi). Exchange listing receipt + payment digest (MALA + WOV). No buyer/seller fields. No live TB.
+**What weave settle is:** In-process only (same shape as Mandi). Exchange listing receipt + payment digest (MUR (was MALA) + WOV). No buyer/seller fields. No live TB.
 
-**What Mandi settle already is:** In-process only. Listing receipt + payment digest (MALA + WOV). No buyer/seller fields. No live TB. Amphora still carries the vessel after purchase.
+**What Mandi settle already is:** In-process only. Listing receipt + payment digest (MUR (was MALA) + WOV). No buyer/seller fields. No live TB. Amphora still carries the vessel after purchase.
 
 ---
 

@@ -13,11 +13,12 @@
 
 **Amphora is vessel software** — preservation in motion. **Amber** is **cellar software** — preservation in place. The cellar seals resins at home; the vessel carries sealed cargo across the sea (Comlink), through customs (Pond), and back to another dock. One family, two rooms.
 
+Radiant pass `20260728.050219` — living rename-forward: **MUR** (was MALA)
 ---
 
 ## The Missing Piece
 
-Walk the networked design and count what stands. Comlink carries. Kumara signs. Mycelium will order, when M4 opens the gate. MALA mails value. Lattice serves and Lantern meters. Amber seals resins into the cellar at home. And between all of them runs a duty no module yet owns: **the sealed bundle that crosses custody** — the standard shape in which many signed things travel together from one sovereign hand to another, across a wire, across a dock, across years.
+Walk the networked design and count what stands. Comlink carries. Kumara signs. Mycelium will order, when M4 opens the gate. MUR (was MALA) mails value. Lattice serves and Lantern meters. Amber seals resins into the cellar at home. And between all of them runs a duty no module yet owns: **the sealed bundle that crosses custody** — the standard shape in which many signed things travel together from one sovereign hand to another, across a wire, across a dock, across years.
 
 The evidence that the piece is missing is that the loop improvises it nightly. Every bench packet is a container with a parent hash in its comment, exclusion rules restated in every recursion prompt, and an additions-only discipline carried by convention rather than by format — an unnamed standard we keep re-teaching because it has no home. Amber's law seals snapshots beautifully onto local docks, and the old counsel of three copies, two media, one offsite still waits on its third word: the *offsite* copy is a crossing, and the crossing has no name. The pocket device's export was already written as a three-beat rite — *seal, sign, hand across* — and the hand-across is exactly the unnamed beat. Even packaging's flow, resins fetched by digest over Comlink and verified twice, fetches a shape nobody has christened. Commerce, when it comes, will deliver finished work the same way: sealed cargo, stamped, with a receipt. One duty, five appearances, zero names.
 
@@ -63,7 +64,7 @@ Module home: [`amphora/README.md`](../amphora/README.md). Crossing metal plainly
 
 ## The Seams, Kept Clean
 
-Bron, as proposed, is the letter — one resolved record. **Amphora is vessel software** — the crate that may carry many letters. MALA is the coin that may ride inside. Comlink is the sea. Kumara is the stamp. **Amber is cellar software** — the cellar the vessel leaves and returns to. **Granary** (name seated `20260710.163043`) is the weave-sharing surface. **Mandi** is the market floor where amphorae change hands (seated `20260710.165634`). And Pond is the customs house: policy applied at receipt, before anything is placed or run. No duty overlaps; each name keeps its own room.
+Bron, as proposed, is the letter — one resolved record. **Amphora is vessel software** — the crate that may carry many letters. MUR (was MALA) is the coin that may ride inside. Comlink is the sea. Kumara is the stamp. **Amber is cellar software** — the cellar the vessel leaves and returns to. **Granary** (name seated `20260710.163043`) is the weave-sharing surface. **Mandi** is the market floor where amphorae change hands (seated `20260710.165634`). And Pond is the customs house: policy applied at receipt, before anything is placed or run. No duty overlaps; each name keeps its own room.
 
 One honesty for the ear: *Amber* and *Amphora* share a first syllable and a preservation kinship, and spoken aloud in a fast sentence they could brush. The kinship is genuine — **cellar software and vessel software belong to one family** — one preserves in place, the other in motion — and should the echo trouble Kaeden's ear, **Cask**, **Tiffin**, and **Pannier** park beside Amphora as alternates for the same vessel duty: the sealed barrel, the stacked carrier famously delivered without fail, the pack that rides a bicycle. The duty is the proposal; the word, as always, is his.
 

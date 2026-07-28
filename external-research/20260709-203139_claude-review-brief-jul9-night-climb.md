@@ -3,29 +3,30 @@
 **Stamp:** `20260709.203139`
 **Voice:** Rio 3
 **Editor:** Cursor · **Model:** Grok 4.5 High Fast
-**Register:** Decision briefing — MALA M1→M2b, SLC-L4 Sigma, WOV exit honesty, Realidream thin view; parity **197→202**
+**Register:** Decision briefing — MUR (was MALA) M1→M2b, SLC-L4 Sigma, WOV exit honesty, Realidream thin view; parity **197→202**
 **Status:** Checkable-room research — **superseded** for open questions by [`225159`](20260709-225159_claude-review-brief-jul9-late-night.md)
 **Ground:** tip **`c44f237`** at filing; later climb through dual D1 at `54014ce` / parity **205**; supersedes [`183326`](20260709-183326_claude-review-brief-jul9-evening-close.md)
 
 *Written for Claude counsel review after Kaeden's keep-going climb from evening close through thin view.*
 
+Radiant pass `20260728.050219` — living rename-forward: **MUR** (was MALA)
 ---
 
 ## Executive Landscape
 
-Since evening close (`183326`, parity **197**, MALA M1 lap-open only), Kaeden said keep going. The bench climbed the written ladder without opening TigerBeetle or SLC-L4 lap 2 (OR/range). Parity is now **202**, full suite GREEN (~170s). Own-L1 MALA path is mailable on hosted UDP and virtio. WOV has an exit-honesty spec and an in-memory first lap. SLC-L4 fixed-tier Sigma is on metal. Realidream's thin-demo exception landed as a local-fixture Skate frame (chain-read re-scoped away).
+Since evening close (`183326`, parity **197**, MUR (was MALA) M1 lap-open only), Kaeden said keep going. The bench climbed the written ladder without opening TigerBeetle or SLC-L4 lap 2 (OR/range). Parity is now **202**, full suite GREEN (~170s). Own-L1 MUR (was MALA) path is mailable on hosted UDP and virtio. WOV has an exit-honesty spec and an in-memory first lap. SLC-L4 fixed-tier Sigma is on metal. Realidream's thin-demo exception landed as a local-fixture Skate frame (chain-read re-scoped away).
 
 | Milestone | Stamp / commit | Parity | Status |
 |-----------|----------------|--------|--------|
 | Evening close brief | `183326` | **197** | Superseded by this brief |
-| MALA M1 | `2f0de82` | **198** | Landed |
-| MALA M2 hosted | `1b0e08b` | **199** | Landed |
+| MUR (was MALA) M1 | `2f0de82` | **198** | Landed |
+| MUR (was MALA) M2 hosted | `1b0e08b` | **199** | Landed |
 | OA-L3/L5 UDP hang fix | `c9d5056` | **199** | Bind-before-send |
 | SLC-L4 Sigma + parity essay | `66ca878` | **200** | Landed |
 | Pedersen/Sigma plain note | `42a142e` | **200** | Docs |
 | WOV exit-honesty spec | `140b773` | **200** | Spec seated |
 | WOV lap 1 in-memory | `d4638d7` | **201** | Landed |
-| MALA M2b device wire | `dfa5265` | **201** | Landed (witness extended) |
+| MUR (was MALA) M2b device wire | `dfa5265` | **201** | Landed (witness extended) |
 | Realidream thin view | `70d08e4` | **202** | Landed |
 | Tip | `c44f237` | **202** | Session log |
 
@@ -35,7 +36,7 @@ Since evening close (`183326`, parity **197**, MALA M1 lap-open only), Kaeden sa
 
 ## What Landed (by domain)
 
-### MALA — own-issuer money
+### MUR (was MALA) — own-issuer money
 
 | Lap | What | Ports / paths |
 |-----|------|---------------|
@@ -80,13 +81,13 @@ Seeds `0x61`/`0x62`. Memo prefixes `mala:mint` / `mala:send` / `mala:receipt` on
 | Count | What added the slot |
 |-------|---------------------|
 | **197** | After settlement/chain-read removal |
-| **198** | MALA M1 |
-| **199** | MALA M2 hosted |
+| **198** | MUR (was MALA) M1 |
+| **199** | MUR (was MALA) M2 hosted |
 | **200** | SLC-L4 Sigma |
 | **201** | WOV exit honesty |
 | **202** | Realidream thin view |
 
-M2b extended the existing MALA M2 witness (no new slot). Suite GREEN at tip (~170s) with `RYE_ZIG=vendor/zig-toolchain/zig` on PATH.
+M2b extended the existing MUR (was MALA) M2 witness (no new slot). Suite GREEN at tip (~170s) with `RYE_ZIG=vendor/zig-toolchain/zig` on PATH.
 
 ---
 
@@ -100,7 +101,7 @@ M2b extended the existing MALA M2 witness (no new slot). Suite GREEN at tip (~17
 
 4. **Thin view as Dexter pressure** — **Answered** [`225343`](../context/specs/20260709-225343_thin-view-dexter-exception.md): stays exception; not Dexter's second consumer.
 
-5. **MALA `kind` field** — Design filed [`225159`](../context/specs/20260709-225159_mala-kind-field.md): **K0** memos through M3 vs **K1** dedicated field. Bench leans K0. Affirm?
+5. **MUR (was MALA) `kind` field** — Design filed [`225159`](../context/specs/20260709-225159_mala-kind-field.md): **K0** memos through M3 vs **K1** dedicated field. Bench leans K0. Affirm?
 
 6. **Evening-close Q1–Q6** — **Cleared** [`225508`](../counsel/20260709-225508_grok-counsel-evening-close-leftovers.md) (+ metal answers for Q2–Q5).
 

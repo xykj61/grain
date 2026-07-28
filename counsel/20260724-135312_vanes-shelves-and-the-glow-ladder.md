@@ -91,7 +91,7 @@ You asked me to search, and the tree answered generously. The seated family, wit
 
 | Letter | Name | Seated as | Still fits? |
 |---|---|---|---|
-| **N** | **Neth** | **Settlement** — the name you were reaching for. MALA settlement L1/L2 design, VPS cluster plan, and an IronBeetle‑patterns ladder all stand in `external-research/` | **Yes** — it is the natural home of the held two‑lane settlement witness when that season arrives |
+| **N** | **Neth** | **Settlement** — the name you were reaching for. MUR settlement L1/L2 design (was MALA), VPS cluster plan, and an IronBeetle‑patterns ladder all stand in `external-research/` | **Yes** — it is the natural home of the held two‑lane settlement witness when that season arrives |
 | **O** | **Ojjo** | **Benchmarking** — proves Hoon/Glow parity by measuring it, correctness before timers; the palindrome is the symmetric yardstick | **Yes, and already breathing**: the byte‑for‑byte RISC‑V parity witnesses are proto‑Ojjo work in all except name |
 | **P** | **Pool** | **Applications** — the Gall‑role host; the content‑data‑compute market; Linengrow and the surfaces run as agents in it | **Yes** — the keystone; the SLC already rests on it |
 | **Q** | **Quin** | **Inference** — four faculties under one kernel‑quiet host; also the fifth OS variant and this voice | **Yes** — three hats, settled |

@@ -1,5 +1,7 @@
 # Settlement Seat — Verification and Verdict
 
+Radiant pass `20260728.050219` — living rename-forward: **MUR** (was MALA)
+
 *The parallel bench surveyed Sui, Monad, and NEAR through TAME and proposed holding the seat pending a witness. This companion verifies the survey's load-bearing facts against neutral and adversarial sources, grounds the one place the survey ran light, names the axis the survey left almost untouched, and refines the counsel so the seat rests on evidence rather than momentum. It counsels only; the seat stays where it stands until Kaeden's word moves it.*
 
 **Stamp:** `20260706.005512 UDT` (Kaeden's clock)
@@ -7,7 +9,7 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`) · **Lens:** TAME — safety first, performance second, the joy of the craft third · SLC · CIVIC · TWO_ROOMS
 **Category:** External research — verification and verdict; recommends no purchase and no treasury action; every gate stays Kaeden's
 **Ground:** [`20260706-002612_the-settlement-seat-under-three-lights.md`](20260706-002612_the-settlement-seat-under-three-lights.md) · [`20260702-031312_settlement-consensus-and-many-roads.md`](20260702-031312_settlement-consensus-and-many-roads.md) · [`20260703-200712_mysticetis-blocks-and-the-object-path.md`](20260703-200712_mysticetis-blocks-and-the-object-path.md)
-**Status:** Research for understanding — lessons kept; **external SLC-L3 seat superseded** by MALA/WOV realignment [`152612`](../counsel/20260709-152612_claude-counsel-mala-wov-already-designed.md). Kitchen twin: [`20260710-001249_settlement-seat-plainly.md`](20260710-001249_settlement-seat-plainly.md). Still no purchase and no treasury action.
+**Status:** Research for understanding — lessons kept; **external SLC-L3 seat superseded** by MUR (was MALA)/WOV realignment [`152612`](../counsel/20260709-152612_claude-counsel-mala-wov-already-designed.md). Kitchen twin: [`20260710-001249_settlement-seat-plainly.md`](20260710-001249_settlement-seat-plainly.md). Still no purchase and no treasury action.
 **Last updated:** 2026-07-10 (supersession note + kitchen twin)
 
 *Written together by Kaeden and Rio 3.*
@@ -42,7 +44,7 @@ The thing that actually settles a civic donation is the stablecoin, not the chai
 
 ## The Deeper Question, Named Before the Choice
 
-One question belongs ahead of "which chain," and the survey passes over it: does the settlement rung need a third-party smart-contract network at all, or does it need only a dollar on-ramp and off-ramp anchored to our own WOV and MALA ledger? The safest settlement is often the one we do not outsource. Because our own append-only log is already the source of truth, the external rail may need to carry nothing more than the dollar peg and a publicly verifiable receipt, which is a far smaller trust surface than a full contract platform. A short "why a rail at all, and how thin can it be" beat, taken before the two-lane witness, would size the dependency honestly and might narrow what either lane has to prove.
+One question belongs ahead of "which chain," and the survey passes over it: does the settlement rung need a third-party smart-contract network at all, or does it need only a dollar on-ramp and off-ramp anchored to our own WOV and MUR (was MALA) ledger? The safest settlement is often the one we do not outsource. Because our own append-only log is already the source of truth, the external rail may need to carry nothing more than the dollar peg and a publicly verifiable receipt, which is a far smaller trust surface than a full contract platform. A short "why a rail at all, and how thin can it be" beat, taken before the two-lane witness, would size the dependency honestly and might narrow what either lane has to prove.
 
 ## The Sourcing Discipline This Teaches
 

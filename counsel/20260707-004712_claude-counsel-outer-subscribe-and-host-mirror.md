@@ -36,7 +36,7 @@ Host mirror turns out not to need its own architecture at all. `BoltCatalog` has
 
 Build the bare outer loop now, in the happy zone, with its test-only cycle bound — the same shape that has proven every ring in this arc, applied to the one part of it that is genuinely new: a check repeated on a timer rather than run once. Treat host mirror as answered by the same word, needing only a small named list as its own configuration once the loop exists, rather than a separate ruling. Hold graceful shutdown, crash recovery, and any real supervision apart, honestly unsolved for now, and worth a proper sitting once Caravan grows a scheduling half to match the restart half it already has, or once something real needs to run this unattended rather than by a witness's own bounded hand.
 
-MALA graduation stands exactly as ruled at `20260706.232812` — it fires at OA-L4's second-consumer moment, and nothing in this session touches that.
+MUR graduation stands exactly as ruled (was MALA) at `20260706.232812` — it fires at OA-L4's second-consumer moment, and nothing in this session touches that.
 
 ## Optional — a Small Spec Phrase, Not Applied
 

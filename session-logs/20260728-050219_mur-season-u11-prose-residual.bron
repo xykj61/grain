@@ -1,0 +1,15 @@
+format session-log-v1
+stamp 20260728.050219
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title MUR Season u11 prose residual
+prompt waymark u10 complete u11 next · asks none
+think Walk u11 prose residual: constellation m0-m4 living; ironbeetle; ER review briefs; more counsel fossils; hold tools.
+think Round-close send; next kg u12.
+obs Prose corridor thins; tool and rye shelves still wait mapped waves.
+file counsel/20260728-050219_mur-season-u11-prose-residual.md create
+file counsel/20260728-014057_constellation-season-m4-mala-aurora-close.md Murr arc close
+file external-research/20260709-183326_claude-review-brief-jul9-evening-close.md MUR living
+recommend keep-going kg u12 continue living prose residual
