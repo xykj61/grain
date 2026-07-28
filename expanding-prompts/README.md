@@ -93,7 +93,7 @@ What does *not* belong here is the work itself — that lands in the research, d
 | `20260709.200443` | [WOV lap 1 exit honesty](20260709-200443_wov-lap1-exit-honesty-witness.md) | In-memory exit honesty; parity **201** |
 | `20260709.191634` | [MALA M2 mailable Comlink](20260709-191634_mala-m2-mailable-comlink.md) | Hosted M2; parity **199** |
 | `20260727.234913` | [Tensegral Season r0 recursion prompt](20260727-234913_tensegral-season-r0-recursion-prompt.md) | Bow paste + discipline · prep GREEN |
-| `20260727.234913` | [Tensegral Season Expanded plan](20260727-234913_tensegral-season-expanded.md) | Sixteen-round runway · Prim seeds · stay tensegral |
+| `20260727.234913` | [Tensegral Season Expanded plan](20260727-234913_tensegral-season-expanded.md) | Sixteen-round runway · Prin · arc seeds · stay tensegral |
 | `20260709.182354` | [MALA M1 one issuer one holder](20260709-182354_mala-m1-one-issuer-one-holder.md) | M1 first lap; parity **198** |
 | `20260709.031612` | [SLC-L4 lap 1 fixed-tier Sigma](20260709-031612_slcl4-lap1-fixed-tier-sigma-protocol.md) | Pedersen + proof of opening; parity **200** |
 | `20260706.190644` | [Claude zip 58 — NS-L3 handoff](20260706-190644_claude-zip58-ns-l3-handoff.md) | Wire ladder complete; OA-L4 vs MALA; wire-serves-the-fold then proposed, now landed `232812` |

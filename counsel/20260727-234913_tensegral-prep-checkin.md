@@ -3,7 +3,7 @@
 **Language:** EN
 **Stamp:** `20260727.234913`
 **Voice:** Quin
-**Status:** Check-in — after prep kg
+**Status:** **Resolved** — lean **A · kg r0** taken `20260727.235754` · Prim→Prin corrected in-flight
 **Ground:** Prep [`20260727-234913_tensegral-prep-receipt.md`](20260727-234913_tensegral-prep-receipt.md) · r0 [`../expanding-prompts/20260727-234913_tensegral-season-r0-recursion-prompt.md`](../expanding-prompts/20260727-234913_tensegral-season-r0-recursion-prompt.md)
 
 *Written together by Keaton and Quin.*

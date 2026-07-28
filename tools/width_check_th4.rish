@@ -15,4 +15,8 @@ assert trim stale.out == "" else ".brix must not reference retired WIP paths"
 let version = run ["sh" "-c" "grep -q '^version 20260629.004912$' .brix"]
 assert version.ok else ".brix version must be 20260629.004912"
 
-say "GREEN: TH-4 — .brix mended; ROADMAP and TASKS tracked."
+# Typo resolution — Brix alias table (Prim → Prin seated 20260727.235754)
+let alias_prim = run ["sh" "-c" "grep -q '^alias Prim Prin$' .brix"]
+assert alias_prim.ok else ".brix must carry alias Prim Prin (typo resolution)"
+
+say "GREEN: TH-4 — .brix mended; ROADMAP and TASKS tracked; Prim→Prin alias seated."

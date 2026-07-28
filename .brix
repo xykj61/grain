@@ -7,9 +7,14 @@
 #   name     — the project name (one value)
 #   version  — descriptor version (Rye chronological stamp)
 #   file     — one tracked brick/source file (multiple, in order)
+#   alias    — typo resolution (from to); Mantra's elder reader ignores unknown
+#              keys today; newborns keep them as entries. Seated 20260727.235754.
 
 name veganreyklah2
 version 20260629.004912
+
+# Typo resolution (Brix) — Prim was a mis-hear of Prin
+alias Prim Prin
 
 # Rye compiler
 file rye/src/main.rye

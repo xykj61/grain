@@ -17,7 +17,7 @@
 | Sound confirmation | Lean **A** — confirmed + saga **Seated** |
 | Season charter | **The Tensegral Season** — 16 kg rounds · prep first |
 | Motto | **stay tensegral** (Fuller gratitude · Quin voice) |
-| Lexicon seats | Expanded · Prim · Rish · Realidream · Pond run · Sameness as the macro · season rows |
+| Lexicon seats | Expanded · Prin (Prim→Prin later) · Rish · Realidream · Pond run · Sameness as the macro · season rows |
 | Gratitude | [`../gratitude/buckminster-fuller-tensegrity.md`](../gratitude/buckminster-fuller-tensegrity.md) |
 | Voice | **Quin** unchanged |
 

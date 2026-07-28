@@ -45,7 +45,8 @@ Shorthand that means the same paste: **`kg`** after prep GREEN, naming this file
 | **Standing battery** | Run and record: `foundation_seeds.rish` · `amber_first_ring.rish` · `amphora_lap1.rish` · `width_check_th4.rish` · `pond_customs.rish` (reaffirm) |
 | **Happy zone vs metalsmoke** | Name which greens are isolated habitat vs thin-edge integrated; do not green full parity while wasmtime is ABSENT |
 | **Motto check** | One sentence: how this measure stays tensegral (tension = suite law; compression = few edge checks) |
-| **Prim table** | Re-print Arc I–V prim seeds from the prep receipt so Arc I opens with names ready |
+| **Arc seed table** | Re-print Arc I–V seed witnesses from the prep receipt so Arc I opens with names ready |
+| **Prin** | Affirm `%prin` prep seat (Prim was a typo → Prin; Brix `alias Prim Prin`) |
 
 **4. Write the r0 motion** — counsel page + reply; update season charter progress bookmark (prep GREEN · r0 landed); session log Bron; REMEMBER pin after send.
 

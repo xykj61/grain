@@ -7,6 +7,7 @@
 **Ground:** Sound saga **seated** [`../saga/20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md`](../saga/20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md) · motto **stay tensegral** · Quin remains the standing voice
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260727.235754` — r0 bow · Prim→Prin Brix alias
 Radiant pass `20260727.234913` — prep receipt · Expanded · r0 recursion prompt
 
 ---
@@ -17,7 +18,8 @@ Radiant pass `20260727.234913` — prep receipt · Expanded · r0 recursion prom
 |------|------|
 | **Prior season** | The Sound — closed and seated |
 | **This season** | The Tensegral Season — consolidate · tighten · unify under happy-zone law |
-| **Prep** | **GREEN** — [`20260727-234913_tensegral-prep-receipt.md`](20260727-234913_tensegral-prep-receipt.md) · Pond customs GREEN · Prim seeds named |
+| **Prep** | **GREEN** — [`20260727-234913_tensegral-prep-receipt.md`](20260727-234913_tensegral-prep-receipt.md) · Pond customs GREEN · Prin affirmed (Prim→Prin) · arc seeds named |
+| **Round** | **0 bow** — measure landed `20260727.235754` |
 | **r0 prompt** | [`../expanding-prompts/20260727-234913_tensegral-season-r0-recursion-prompt.md`](../expanding-prompts/20260727-234913_tensegral-season-r0-recursion-prompt.md) |
 | **Shape** | Prep done → **16 kg rounds** (1 bow + five arcs of three) · exits over counts |
 | **Close** | A new saga on [`../saga/`](../saga/README.md) when the season ends |
@@ -34,10 +36,12 @@ Do not bow until prep greens or is explicitly skipped by Keaton's word.
 | Prep seat | Job |
 |-----------|-----|
 | **Expanded** | Expand next intents into `expanding-prompts/` plans the kg rounds can run |
-| **Prim** | Name and land the first small green of each arc (seed witness before prose swell) |
+| **Prin** | Orient `%prin` / live outer watch for kg rounds (`tools/prin.rish`). **Prim** was a typo → Prin (Brix `alias Prim Prin`) |
 | **Rish** | Prefer `.rish` witnesses as the kg surface; parity hooks when a floor is ready |
 | **Realidream** | Orient the unified editor-browser horizon; thin-view / forge paths already in suite |
 | **Pond run** | One witnessed Pond enclosure/application run before the season claims enclosure greens |
+
+**Arc seed witnesses** (first small green per arc — operational table, not a Lexicon coin) live on the prep receipt.
 
 ## Season shape — sixteen kg rounds
 
@@ -68,7 +72,7 @@ Rounds are **kg-first**: mechanical, single-module or single-pack when policy is
 
 ## Next door
 
-**kg** — run round 0 bow via the r0 recursion prompt (or paste its block).
+**kg** — Arc I · Brix (TH-4 GREEN · Prim→Prin seated · home question held).
 
 ---
 

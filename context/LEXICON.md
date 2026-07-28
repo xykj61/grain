@@ -1,7 +1,7 @@
 # Lexicon — Module Names and Their Meanings
 
 **Language:** EN
-**Last updated:** 2026-07-27 (**The Tensegral Season** · stay tensegral · Sound saga seated · prep seats · Radiant · closing-line law)
+**Last updated:** 2026-07-27 (**The Tensegral Season** · Prin · Prim→Prin Brix alias · r0 bow · stay tensegral)
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 
 ---
@@ -83,7 +83,8 @@ Living vocabulary for the Grain family (Glow language · Grain umbrella). Each n
 | **The Tensegral Season** | Season — sixteen **kg** rounds after Sound: brix · amber · amphora · resin · glow · sameness-as-macro · radiant · tame · consolidate · tighten · unify · stay happy zone · integrated rounds. Motto **stay tensegral**. Prep before bow. Seated `20260727.234617` · charter [`../counsel/20260727-234617_the-tensegral-season.md`](../counsel/20260727-234617_the-tensegral-season.md) |
 | **stay tensegral** | Season motto — hold continuous tension and discontinuous compression in balance (happy zone fast and isolated; thin edge few honest integrated checks; modules pull together without collapsing). Buckminster Fuller gratitude · Quin voice. Seated `20260727.234617` · [`../gratitude/buckminster-fuller-tensegrity.md`](../gratitude/buckminster-fuller-tensegrity.md) |
 | **Expanded** | Prep seat — expand next intents into `expanding-prompts/` plans a kg season can run before round 0. Seated `20260727.234617` with The Tensegral Season |
-| **Prim** | Prep seat — the first small green of an arc (seed witness before prose swell). Seated `20260727.234617` with The Tensegral Season |
+| **Prin** | Matrix-style live outer-terminal printer for Grain loops (`%prin`) — `tools/prin.rish` · aliases via `tools/prin_aliases.sh`. Also a Tensegral **prep seat**: keep the live watch ready for kg rounds. Seated on metal `20260727.090646` · prep seat affirmed `20260727.235754` |
+| **Prim** | **Typo alias → Prin.** Mis-hear retired; Brix carries `alias Prim Prin`. Do not seat Prim as a separate concept. Redirect seated `20260727.235754` |
 | **Rish** | Prep seat — living `.rish` witness scripts as the preferred kg surface (Rishi runs them; parity hooks when a floor is ready). Distinct from module **Rishi**. Seated `20260727.234617` with The Tensegral Season |
 | **Realidream** | Horizon — editor and browser made one surface over a single graph; reality keeps the dream honest. Foundations [`../foundations/20260629-063512_realidream.md`](../foundations/20260629-063512_realidream.md) · gratitude [`../gratitude/noah-b-realidream.md`](../gratitude/noah-b-realidream.md). Lexicon seat affirmed `20260727.234617` as Tensegral prep |
 | **Pond run** | Prep seat — one witnessed Pond enclosure/application run before a season claims enclosure greens. Seated `20260727.234617` · [`../pond/README.md`](../pond/README.md) |
@@ -136,7 +137,7 @@ Full loop bounds: [`work-in-progress/ready-to-ask-claude.md`](../work-in-progres
 | **Granary** | **Sharing surface** — Mantra global namespace where signed weaves are named, shared, mirrored, and optionally sold (four doors: Identity · Namespace · Sharing · Exchange); name seated `20260710.163043`; four doors through Exchange listing `20260710.165348` (parity **232**–**237**); Sharing device wire `20260710.170132` (parity **239**); Exchange view `20260710.170838` (parity **241**); weave settle `20260710.172625` (parity **243**); settle view `20260710.173353` (parity **245**, mode `settlevie` — intentional short form); weave steward composition `20260711.012451` (parity **424**); weave steward sight `20260711.014304` (parity **425**) — [`specs/20260710-163043_granary-name-seated.md`](specs/20260710-163043_granary-name-seated.md) · settle [`specs/20260710-172625_granary-weave-settle-seated.md`](specs/20260710-172625_granary-weave-settle-seated.md) · [`../granary/README.md`](../granary/README.md) · study [`../external-research/20260703-182612_the-granary-question.md`](../external-research/20260703-182612_the-granary-question.md) |
 | **Rishi** | The shell — the faithful hand |
 | **Rye** | The language and value model |
-| **Brix** | What a system is made of — lawful composition; **bond overrides** carry the infuse pattern (Silo module name retired `174500`) |
+| **Brix** | What a system is made of — lawful composition; **bond overrides** carry the infuse pattern (Silo module name retired `174500`); **alias** lines carry typo resolution (`alias from to` in `.brix` — first seat `alias Prim Prin` at `20260727.235754`) |
 | **Tablecloth** | Brix-facing application database and artifact store (horizon — not the namespace query) |
 | **Bron** | Immutable values at seams (`.bron` facts, policies, receipts); Brix composes wholes that bind Bron values — affirmed `174500` per [`counsel/20260707-222500`](../counsel/20260707-222500_claude-counsel-bron-beside-brix-first-proposal.md) |
 | **Amber** | **Cellar software** — preservation in place at home: signed, encrypted, bit-faithful **resins** on deep storage, append-only log, verified by folding; Mantra holds the living history, Amber seals the moment cold — [`amber/README.md`](../amber/README.md) · [`specs/20260701-221512_amber-functional-spec.md`](specs/20260701-221512_amber-functional-spec.md)

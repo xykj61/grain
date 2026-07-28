@@ -16,13 +16,15 @@ Open a sixteen-round **kg** season after The Sound. Theme: consolidate · tighte
 
 ## Deliverables this prep produced
 
-1. Prep receipt with Pond **GREEN** and Prim seed table.
+1. Prep receipt with Pond **GREEN**, Prin oriented, and arc seed table.
 2. This expanded plan (season runway for Acme employees running rounds).
 3. Round 0 recursion prompt (paste block + discipline).
 
+**Typo:** prep seat **Prin** (not Prim). Brix resolves `alias Prim Prin`.
+
 ## Season runway (what each kg round does)
 
-| Round | Job (one sitting) | Prim / proof surface |
+| Round | Job (one sitting) | Seed / proof surface |
 |------:|-------------------|----------------------|
 | 0 | **Bow** — measure shelves · standing Tally/Brix/Amber/Amphora · happy-zone vs metalsmoke honesty · prep receipt | r0 recursion prompt |
 | 1 | Brix — `.brix` / TH-4 honesty; name home question without seating workshop newborn | `width_check_th4.rish` |

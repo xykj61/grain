@@ -1,12 +1,13 @@
-# Tensegral Prep Receipt — Expanded · Prim · Rish · Realidream · Pond
+# Tensegral Prep Receipt — Expanded · Prin · Rish · Realidream · Pond
 
 **Language:** EN
 **Stamp:** `20260727.234913`
 **Voice:** Quin
-**Status:** Prep **GREEN** — bow may open on next kg via the r0 recursion prompt
+**Status:** Prep **GREEN** — bow opened `20260727.235754` · **Prim→Prin** correction seated same stamp
 **Ground:** Season [`20260727-234617_the-tensegral-season.md`](20260727-234617_the-tensegral-season.md) · Expanded [`../expanding-prompts/20260727-234913_tensegral-season-expanded.md`](../expanding-prompts/20260727-234913_tensegral-season-expanded.md) · r0 recursion [`../expanding-prompts/20260727-234913_tensegral-season-r0-recursion-prompt.md`](../expanding-prompts/20260727-234913_tensegral-season-r0-recursion-prompt.md)
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260727.235754` — Prim was a typo for Prin; Brix `alias Prim Prin`; arc seed table kept under that name
 
 ---
 
@@ -15,12 +16,14 @@
 | Seat | Result |
 |------|--------|
 | **Expanded** | Season plan + r0 recursion prompt under `expanding-prompts/` |
-| **Prim** | First small green named per arc (table below) — seed witnesses, not prose |
-| **Rish** | Kg surface = `rishi/bin/rishi run tools/<prim>.rish` (parity hooks only when a floor is ready) |
+| **Prin** | `%prin` oriented — `tools/prin.rish help` GREEN; live watch ready (`source tools/prin_aliases.sh`) |
+| **Rish** | Kg surface = `rishi/bin/rishi run tools/<seed>.rish` (parity hooks only when a floor is ready) |
 | **Realidream** | Oriented — foundations [`../foundations/20260629-063512_realidream.md`](../foundations/20260629-063512_realidream.md); suite already carries forge/thin views through Pond apps; no new surface this prep |
 | **Pond run** | `tools/pond_customs.rish` → **GREEN** (customs selftest · ADMIT/HOLD/REFUSE · Amphora receipt) |
 
-## Spot greens (prep lane, not season claims)
+**Typo law:** **Prim** → **Prin**. Brix carries `alias Prim Prin` in `.brix` (TH-4 witnesses it). Lexicon Prim is a redirect only.
+
+## Spot greens (prep lane)
 
 | Witness | Result |
 |---------|--------|
@@ -28,13 +31,14 @@
 | `amber_first_ring.rish` | **GREEN** |
 | `amphora_lap1.rish` | **GREEN** |
 | `foundation_seeds.rish` | **GREEN** |
+| `prin.rish help` | **GREEN** (exit 0) |
 
-## Prim seeds (first small green per arc)
+## Arc seed witnesses (first small green per arc)
 
-| Arc | Prim witness / seed |
-|-----|---------------------|
-| **0 Bow** | Prep receipt + shelf counts (this page) · standing battery named in r0 prompt |
-| **I** | `width_check_th4.rish` (`.brix`) · `amber_first_ring.rish` · `amphora_lap1.rish` |
+| Arc | Seed witness |
+|-----|----------------|
+| **0 Bow** | Prep receipt + shelf counts · standing battery in r0 |
+| **I** | `width_check_th4.rish` (`.brix` · includes Prim→Prin alias) · `amber_first_ring.rish` · `amphora_lap1.rish` |
 | **II** | `amphora_resin_chunk.rish` · one Glow floor witness on-touch · sameness = one public fold, no private macro |
 | **III** | `radiant_lint.rish` (touched paths) · `tame_style_check.rish` (touched code) · consolidate = one canon home |
 | **IV** | Width/garden tighten on one module · unify one caller map · `foundation_seeds.rish` / Tally battery as happy-zone habitat |
@@ -44,8 +48,8 @@ Workshop Brix newborn (`active-designing/quin-workshop/brix/`) stays **untracked
 
 ## Next door
 
-**kg** — paste / run the round 0 recursion prompt; measure the bow; do not claim Arc I greens in r0.
+Round 0 bow measured `20260727.235754`. Next: Arc I kg (Brix) or revise.
 
 ---
 
-*May the prep leave every cable taut and every rod named, and may the bow measure without pretending the arcs are already green.*
+*May the prep leave every cable taut and every rod named, and may every typo resolve toward the living word.*
