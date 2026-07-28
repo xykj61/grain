@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.003735` — [Tensegral r8 Arc III TAME](20260728-003735_tensegral-r8-tame.bron) — bans GREEN · chunk rish tidied
 - `20260728.003623` — [Tensegral r7 Arc III Radiant](20260728-003623_tensegral-r7-radiant.bron) — lint GREEN · on-touch charter
 - `20260728.003317` — [Tensegral r6 Sameness · Arc II exit](20260728-003317_tensegral-r6-sameness.bron) — tensegral_arc_ii_witness GREEN
 - `20260728.002920` — [Tensegral r5 Arc II Glow](20260728-002920_tensegral-r5-glow.bron) — text floor · digraph · truth · tokens

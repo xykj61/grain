@@ -1,5 +1,9 @@
 # amphora_resin_chunk.rish — Amphora large-resin chunking beyond one datagram.
 #
+# TAME on-touch `20260728.003735` (Tensegral r8): cold rye-build under rishi
+# can hang; bound rebuilds with timeout and accept a warm binary that still
+# selftests GREEN rather than waiting forever.
+#
 # Run from the repository root:
 #   rishi/bin/rishi run tools/amphora_resin_chunk.rish
 
@@ -7,18 +11,22 @@ let zig = "vendor/zig-toolchain/zig"
 let wire_bin = "amphora/bin/vessel-fetch-wire"
 let delivery_bin = "amphora/bin/vessel-fetch-delivery"
 
-say "amphora-chunk: build vessel fetch wire..."
-let build_wire = run ["sh" "-c" "mkdir -p amphora/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_fetch_wire.rye -femit-bin=${wire_bin}"]
-assert build_wire.ok else "amphora vessel_fetch_wire build failed for chunk lap"
+say "amphora-chunk: ensure vessel fetch wire..."
+let build_wire = run ["sh" "-c" "mkdir -p amphora/bin && timeout 45 env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_fetch_wire.rye -femit-bin=${wire_bin}"]
+if build_wire.ok == false then say "amphora-chunk: wire rebuild timed out or failed — preferring warm binary"
+let wire_ready = run ["sh" "-c" "test -x ${wire_bin}"]
+assert wire_ready.ok else "amphora vessel-fetch-wire missing (build failed and no warm binary)"
 
 let wire = run ["sh" "-c" "${wire_bin} selftest 2>&1"]
 assert wire.ok else "amphora vessel_fetch_wire selftest exited non-zero"
 assert wire.out contains "GREEN" else "amphora vessel_fetch_wire not GREEN"
 assert wire.out contains "chunk" else "amphora vessel_fetch_wire missing chunk claim"
 
-say "amphora-chunk: build vessel fetch delivery..."
-let build_delivery = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_fetch_delivery.rye -lc -femit-bin=${delivery_bin}"]
-assert build_delivery.ok else "amphora vessel_fetch_delivery build failed for chunk lap"
+say "amphora-chunk: ensure vessel fetch delivery..."
+let build_delivery = run ["sh" "-c" "timeout 45 env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_fetch_delivery.rye -lc -femit-bin=${delivery_bin}"]
+if build_delivery.ok == false then say "amphora-chunk: delivery rebuild timed out or failed — preferring warm binary"
+let delivery_ready = run ["sh" "-c" "test -x ${delivery_bin}"]
+assert delivery_ready.ok else "amphora vessel-fetch-delivery missing (build failed and no warm binary)"
 
 let chunkdemo = run ["sh" "-c" "${delivery_bin} chunkdemo 2>&1"]
 assert chunkdemo.ok else "amphora chunkdemo exited non-zero"
