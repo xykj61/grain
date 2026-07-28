@@ -3,7 +3,7 @@
 **Language:** EN
 **Stamp:** `20260728.003623`
 **Voice:** Quin
-**Status:** Check-in — after Arc III round 7
+**Status:** **Resolved** — lean **A · kg r8 TAME** taken `20260728.003735`
 **Ground:** Motion [`20260728-003623_tensegral-season-r7-radiant.md`](20260728-003623_tensegral-season-r7-radiant.md)
 
 *Written together by Keaton and Quin.*
