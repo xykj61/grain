@@ -41,7 +41,7 @@ No `git mv` · no O3 · no whole-tree sed · no shred · no MUR unpause · no Gl
 
 ## Next
 
-**kg s3** — open a thin f4 first-home rehearsal (design which `tools/*.rish` families move first), or seat taxonomy draft, or await O3 declaration.
+**LANDED s3** — f4 first-home rehearsal · `tools/gen/season` cohort named · no mv.
 
 ---
 
