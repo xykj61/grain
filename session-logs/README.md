@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.194738` — [Surface Season p2 glow hygiene pin](20260728-194738_surface-season-p2-glow-hygiene-pin.bron) — happy-zone floor · p3 next
 - `20260728.194334` — [Surface Season p1 anvil family home](20260728-194334_surface-season-p1-anvil-family-home.bron) — tools/gen/anvil LIVE · p2 next
 - `20260728.193914` — [Surface Season p0 bow recommendations seated](20260728-193914_surface-season-p0-bow-recommendations-seated.bron) — Shape B · sept open · src/sec
 - `20260728.193730` — [Generator Season check-in s8](20260728-193730_generator-season-check-in-s8.bron) — vegan-dogfood · A·B·C open
