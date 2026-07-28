@@ -678,35 +678,40 @@ fn ask_lantern_assist_band(garden: std.mem.Allocator, io: std.Io) !LanternAssist
     };
 }
 
-fn compose_assist_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
-    const cwd = std.Io.Dir.cwd();
-    var corpus_buf: [4096]u8 = undefined;
-    const corpus = try cwd.readFile(io, anvil_corpus_fixture, &corpus_buf);
-    var journal_buf: [2048]u8 = undefined;
-    const journal = try cwd.readFile(io, dimeroll_journal_fixture, &journal_buf);
-    var snippets_buf: [4096]u8 = undefined;
-    const snippets = try cwd.readFile(io, scribble_snippets_fixture, &snippets_buf);
-    var fence_kinds_buf: [scribble.max_doc_bytes]u8 = undefined;
-    const fence_kinds = try cwd.readFile(io, scribble_fence_kinds_fixture, &fence_kinds_buf);
+const AssistFenceBand = struct {
+    snippet_rye: u32,
+    snippet_rish: u32,
+    plain: u32,
+    fence_n: u32,
+    fence_rye: u32,
+};
 
-    const kinds = count_corpus_kinds(corpus);
-    assert(kinds.rye == 2);
-    assert(kinds.rish == 1);
+/// Scribble fence tally shared by assist view and assist sight.
+fn count_assist_fence_band(snippets: []const u8, fence_kinds_text: []const u8) !AssistFenceBand {
     const fences = count_scribble_fence_kinds(snippets);
+    // why: assist golden locks snippet fence rye/rish
     assert(fences.rye == 2);
     assert(fences.rish == 1);
     var fence_blocks: [scribble.max_blocks]scribble.Block = undefined;
-    const fence_n = try scribble.parse_markdown(fence_kinds, &fence_blocks);
+    const fence_n = try scribble.parse_markdown(fence_kinds_text, &fence_blocks);
     const plain_kinds = scribble.count_fence_kinds(fence_blocks[0..fence_n]);
+    // why: fence_kinds fixture carries one plain + four blocks + one rye snip
     assert(plain_kinds.plain == 1);
     assert(fence_n == 4);
     var rye_snips: [scribble.max_snippets]scribble.Snippet = undefined;
     const fence_rye = try scribble.extract_rye_snippets(fence_blocks[0..fence_n], &rye_snips);
     assert(fence_rye == 1);
+    return .{
+        .snippet_rye = fences.rye,
+        .snippet_rish = fences.rish,
+        .plain = plain_kinds.plain,
+        .fence_n = fence_n,
+        .fence_rye = fence_rye,
+    };
+}
 
-    const band = try ask_lantern_assist_band(garden, io);
-    defer garden.free(band.suggestion);
-
+/// Dimeroll journal + books + exceptions line for assist folds.
+fn format_assist_journal_books_line(garden: std.mem.Allocator, journal: []const u8) ![]const u8 {
     var entries: [dimeroll.max_entries]dimeroll.Entry = undefined;
     var entry_count: u32 = 0;
     try dimeroll.parse_journal(journal, &entries, &entry_count);
@@ -715,17 +720,9 @@ fn compose_assist_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.S
     var nets: [4]i64 = undefined;
     try fold_dimeroll_fixture(journal, &nets);
     const pl = income_from_nets(&nets);
-
-    const lines = try garden.alloc(surface.SkateLine, assist_view_max_lines);
-    lines[0] = .{ .text = try garden.dupe(u8, "inference assist view") };
-    lines[1] = .{ .text = try std.fmt.allocPrint(garden, "corpus rye {d} rish {d}", .{ kinds.rye, kinds.rish }) };
-    lines[2] = .{ .text = try std.fmt.allocPrint(garden, "snippets rye {d} rish {d} plain {d} blocks {d} fence-rye {d}", .{ fences.rye, fences.rish, plain_kinds.plain, fence_n, fence_rye }) };
-    lines[3] = .{ .text = try std.fmt.allocPrint(garden, "model {s}", .{band.model_hash}) };
-    lines[4] = .{ .text = try std.fmt.allocPrint(garden, "lantern {d}/{d} {s} · echo {s} · user {s}", .{ band.tokens_in, band.tokens_out, band.stopped, band.echo, band.user }) };
-    lines[5] = .{ .text = try std.fmt.allocPrint(garden, "suggest {s}", .{band.suggestion}) };
     const bs = balance_from_nets(&nets);
     const ex = try dimeroll_exception_summary();
-    lines[6] = .{ .text = try std.fmt.allocPrint(garden, "journal {d} {s} · chart {s} {s} {s} {s} · pnl net {d} · bs equity {d} · exceptions {d} · ex {s} · ex2 {s} · unk {d} bad {d} · kinds {d}", .{
+    return try std.fmt.allocPrint(garden, "journal {d} {s} · chart {s} {s} {s} {s} · pnl net {d} · bs equity {d} · exceptions {d} · ex {s} · ex2 {s} · unk {d} bad {d} · kinds {d}", .{
         entry_count,
         entries[0].memo,
         dimeroll.Account.cash.name(),
@@ -740,7 +737,37 @@ fn compose_assist_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.S
         ex.unknown_n,
         ex.bad_n,
         ex.kinds_n,
-    }) };
+    });
+}
+
+fn compose_assist_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
+    const cwd = std.Io.Dir.cwd();
+    var corpus_buf: [4096]u8 = undefined;
+    const corpus = try cwd.readFile(io, anvil_corpus_fixture, &corpus_buf);
+    var journal_buf: [2048]u8 = undefined;
+    const journal = try cwd.readFile(io, dimeroll_journal_fixture, &journal_buf);
+    var snippets_buf: [4096]u8 = undefined;
+    const snippets = try cwd.readFile(io, scribble_snippets_fixture, &snippets_buf);
+    var fence_kinds_buf: [scribble.max_doc_bytes]u8 = undefined;
+    const fence_kinds = try cwd.readFile(io, scribble_fence_kinds_fixture, &fence_kinds_buf);
+
+    const kinds = count_corpus_kinds(corpus);
+    // why: assist golden locks corpus rye/rish
+    assert(kinds.rye == 2);
+    assert(kinds.rish == 1);
+    const fences = try count_assist_fence_band(snippets, fence_kinds);
+
+    const band = try ask_lantern_assist_band(garden, io);
+    defer garden.free(band.suggestion);
+
+    const lines = try garden.alloc(surface.SkateLine, assist_view_max_lines);
+    lines[0] = .{ .text = try garden.dupe(u8, "inference assist view") };
+    lines[1] = .{ .text = try std.fmt.allocPrint(garden, "corpus rye {d} rish {d}", .{ kinds.rye, kinds.rish }) };
+    lines[2] = .{ .text = try std.fmt.allocPrint(garden, "snippets rye {d} rish {d} plain {d} blocks {d} fence-rye {d}", .{ fences.snippet_rye, fences.snippet_rish, fences.plain, fences.fence_n, fences.fence_rye }) };
+    lines[3] = .{ .text = try std.fmt.allocPrint(garden, "model {s}", .{band.model_hash}) };
+    lines[4] = .{ .text = try std.fmt.allocPrint(garden, "lantern {d}/{d} {s} · echo {s} · user {s}", .{ band.tokens_in, band.tokens_out, band.stopped, band.echo, band.user }) };
+    lines[5] = .{ .text = try std.fmt.allocPrint(garden, "suggest {s}", .{band.suggestion}) };
+    lines[6] = .{ .text = try format_assist_journal_books_line(garden, journal) };
     lines[7] = .{ .text = try garden.dupe(u8, "assist fold green") };
     return lines;
 }
@@ -801,57 +828,22 @@ fn compose_assist_sight_view_lines(garden: std.mem.Allocator, io: std.Io) ![]sur
     const amount = field_value(mint, "amount") orelse return error.BadMintFixture;
     const seq = field_value(wov, "seq") orelse return error.BadWovFixture;
     const kinds = count_corpus_kinds(corpus);
+    // why: assist golden locks corpus rye/rish
     assert(kinds.rye == 2);
     assert(kinds.rish == 1);
-    const fences = count_scribble_fence_kinds(snippets);
-    assert(fences.rye == 2);
-    assert(fences.rish == 1);
-    var fence_blocks: [scribble.max_blocks]scribble.Block = undefined;
-    const fence_n = try scribble.parse_markdown(fence_kinds, &fence_blocks);
-    const plain_kinds = scribble.count_fence_kinds(fence_blocks[0..fence_n]);
-    assert(plain_kinds.plain == 1);
-    assert(fence_n == 4);
-    var rye_snips: [scribble.max_snippets]scribble.Snippet = undefined;
-    const fence_rye = try scribble.extract_rye_snippets(fence_blocks[0..fence_n], &rye_snips);
-    assert(fence_rye == 1);
+    const fences = try count_assist_fence_band(snippets, fence_kinds);
 
     const band = try ask_lantern_assist_band(garden, io);
     defer garden.free(band.suggestion);
-
-    var entries: [dimeroll.max_entries]dimeroll.Entry = undefined;
-    var entry_count: u32 = 0;
-    try dimeroll.parse_journal(journal, &entries, &entry_count);
-    if (entry_count != 2) return error.BadJournal;
-
-    var nets: [4]i64 = undefined;
-    try fold_dimeroll_fixture(journal, &nets);
-    const pl = income_from_nets(&nets);
 
     const lines = try garden.alloc(surface.SkateLine, assist_sight_view_max_lines);
     lines[0] = .{ .text = try garden.dupe(u8, "inference assist sight") };
     lines[1] = .{ .text = try std.fmt.allocPrint(garden, "carriage murr:mint amount {s}", .{amount}) };
     lines[2] = .{ .text = try std.fmt.allocPrint(garden, "carriage wov seq {s}", .{seq}) };
     lines[3] = .{ .text = try std.fmt.allocPrint(garden, "corpus rye {d} rish {d}", .{ kinds.rye, kinds.rish }) };
-    lines[4] = .{ .text = try std.fmt.allocPrint(garden, "snippets rye {d} rish {d} plain {d} blocks {d} fence-rye {d}", .{ fences.rye, fences.rish, plain_kinds.plain, fence_n, fence_rye }) };
+    lines[4] = .{ .text = try std.fmt.allocPrint(garden, "snippets rye {d} rish {d} plain {d} blocks {d} fence-rye {d}", .{ fences.snippet_rye, fences.snippet_rish, fences.plain, fences.fence_n, fences.fence_rye }) };
     lines[5] = .{ .text = try std.fmt.allocPrint(garden, "lantern {d}/{d} {s} · echo {s} · user {s}", .{ band.tokens_in, band.tokens_out, band.stopped, band.echo, band.user }) };
-    const bs = balance_from_nets(&nets);
-    const ex = try dimeroll_exception_summary();
-    lines[6] = .{ .text = try std.fmt.allocPrint(garden, "journal {d} {s} · chart {s} {s} {s} {s} · pnl net {d} · bs equity {d} · exceptions {d} · ex {s} · ex2 {s} · unk {d} bad {d} · kinds {d}", .{
-        entry_count,
-        entries[0].memo,
-        dimeroll.Account.cash.name(),
-        dimeroll.Account.revenue.name(),
-        dimeroll.Account.expense.name(),
-        dimeroll.Account.equity.name(),
-        pl.net,
-        bs.equity,
-        ex.count,
-        ex.first_reason,
-        ex.second_reason,
-        ex.unknown_n,
-        ex.bad_n,
-        ex.kinds_n,
-    }) };
+    lines[6] = .{ .text = try format_assist_journal_books_line(garden, journal) };
     lines[7] = .{ .text = try garden.dupe(u8, "assist sight fold green") };
     return lines;
 }
@@ -4285,15 +4277,18 @@ fn run_mandi_floor_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
 }
 
 /// Mandi settle view — vessel listing closed with MALA/WOV payment → Skate.
-fn compose_mandi_settle_view_lines(garden: std.mem.Allocator) ![]surface.SkateLine {
+/// Vessel listing receipt for Mandi price-25 settle / steward path.
+fn mandi_vessel_listing_receipt(out: *[mandi.digest_hex_len]u8) !void {
     var parent: [mandi.digest_hex_len]u8 = undefined;
     mandi.witness_vessel_parent(&parent);
     var listing: [mandi.max_listing_len]u8 = undefined;
     const ln = try mandi.sign_listing(mandi.mandi_version, &parent, "25", &listing);
     try mandi.verify_listing(listing[0..ln]);
-    var listing_receipt: [mandi.digest_hex_len]u8 = undefined;
-    try mandi.receipt_digest(listing[0..ln], &listing_receipt);
+    try mandi.receipt_digest(listing[0..ln], out);
+}
 
+/// MURR mint+send digest for Mandi / steward settle (send amount 25).
+fn mandi_murr_send_digest(stamp: []const u8, out: *[settle.digest_hex_len]u8) !void {
     const issuer_kp = kumara.keypair_from_seed(&murr.issuer_seed);
     const holder_kp = kumara.keypair_from_seed(&murr.holder_seed);
     var issuer_hex: [murr.pubkey_hex_len]u8 = undefined;
@@ -4308,7 +4303,7 @@ fn compose_mandi_settle_view_lines(garden: std.mem.Allocator) ![]surface.SkateLi
         .to = holder_hex[0..],
         .amount = "1000",
         .memo = murr.memo_mint,
-        .stamp = settle.settle_version,
+        .stamp = stamp,
     };
     try murr.sign_append(&log, &log_len, mint_fields, issuer_kp);
     const send_fields = rc.FactFields{
@@ -4316,7 +4311,7 @@ fn compose_mandi_settle_view_lines(garden: std.mem.Allocator) ![]surface.SkateLi
         .to = issuer_hex[0..],
         .amount = "25",
         .memo = murr.memo_send,
-        .stamp = settle.settle_version,
+        .stamp = stamp,
     };
     var send_canonical: [rc.max_fact_len]u8 = undefined;
     const send_canon_len = try rc.write_canonical_fact(send_fields, &send_canonical);
@@ -4328,9 +4323,11 @@ fn compose_mandi_settle_view_lines(garden: std.mem.Allocator) ![]surface.SkateLi
         issuer_kp.public_key,
         holder_kp.public_key,
     );
-    var murr_digest: [settle.digest_hex_len]u8 = undefined;
-    settle.digest_bytes(send_canonical[0..send_canon_len], &murr_digest);
+    settle.digest_bytes(send_canonical[0..send_canon_len], out);
+}
 
+/// WOV transfer digest for Mandi / steward settle (amount 25).
+fn mandi_wov_transfer_digest(out: *[settle.digest_hex_len]u8) !void {
     const buyer_kp = kumara.keypair_from_seed(&wov_core.holder_a_seed);
     const seller_kp = kumara.keypair_from_seed(&wov_core.holder_b_seed);
     var buyer_hex: [wov_core.pubkey_hex_len]u8 = undefined;
@@ -4346,21 +4343,40 @@ fn compose_mandi_settle_view_lines(garden: std.mem.Allocator) ![]surface.SkateLi
         "wov-transfer {s} {s} 25\n",
         .{ buyer_hex[0..], seller_hex[0..] },
     );
-    var wov_digest: [settle.digest_hex_len]u8 = undefined;
-    settle.digest_bytes(wov_line_len, &wov_digest);
+    settle.digest_bytes(wov_line_len, out);
+}
 
+/// Payment digest + settle slip verify for Mandi price 25.
+fn mandi_settle_payment_slip(
+    listing_receipt: *const [mandi.digest_hex_len]u8,
+    murr_digest: *const [settle.digest_hex_len]u8,
+    wov_digest: *const [settle.digest_hex_len]u8,
+    payment_hex: *[settle.digest_hex_len]u8,
+) !void {
     const payment_fields = settle.PaymentFields{
         .amount = "25",
         .currency = "murr",
-        .murr_digest = &murr_digest,
-        .wov_digest = &wov_digest,
+        .murr_digest = murr_digest,
+        .wov_digest = wov_digest,
     };
-    var payment_hex: [settle.digest_hex_len]u8 = undefined;
-    try settle.payment_digest(payment_fields, &payment_hex);
-
+    try settle.payment_digest(payment_fields, payment_hex);
     var slip: [settle.max_settle_len]u8 = undefined;
-    const sn = try settle.sign_settle(settle.settle_version, &listing_receipt, &payment_hex, &slip);
-    try settle.verify_against_listing(slip[0..sn], &listing_receipt, &payment_hex, "25", "25");
+    const sn = try settle.sign_settle(settle.settle_version, listing_receipt, payment_hex, &slip);
+    try settle.verify_against_listing(slip[0..sn], listing_receipt, payment_hex, "25", "25");
+}
+
+fn compose_mandi_settle_view_lines(garden: std.mem.Allocator) ![]surface.SkateLine {
+    var listing_receipt: [mandi.digest_hex_len]u8 = undefined;
+    try mandi_vessel_listing_receipt(&listing_receipt);
+
+    var murr_digest: [settle.digest_hex_len]u8 = undefined;
+    try mandi_murr_send_digest(settle.settle_version, &murr_digest);
+
+    var wov_digest: [settle.digest_hex_len]u8 = undefined;
+    try mandi_wov_transfer_digest(&wov_digest);
+
+    var payment_hex: [settle.digest_hex_len]u8 = undefined;
+    try mandi_settle_payment_slip(&listing_receipt, &murr_digest, &wov_digest, &payment_hex);
 
     const lines = try garden.alloc(surface.SkateLine, mandi_settle_view_max_lines);
     lines[0] = .{ .text = try garden.dupe(u8, "mandi settle view") };
@@ -4399,12 +4415,7 @@ fn run_mandi_settle_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     // Unwelcome — double settle refused.
     var settled = settle.SettledSet.empty();
     var listing_receipt: [mandi.digest_hex_len]u8 = undefined;
-    // Recompute listing receipt for refuse path.
-    var parent: [mandi.digest_hex_len]u8 = undefined;
-    mandi.witness_vessel_parent(&parent);
-    var listing: [mandi.max_listing_len]u8 = undefined;
-    const ln = try mandi.sign_listing(mandi.mandi_version, &parent, "25", &listing);
-    try mandi.receipt_digest(listing[0..ln], &listing_receipt);
+    try mandi_vessel_listing_receipt(&listing_receipt);
     try settle.record_settle(&settled, &listing_receipt);
     if (settle.record_settle(&settled, &listing_receipt)) |_| {
         return error.DoubleSettleAccepted;
@@ -4438,90 +4449,19 @@ const StewardFold = struct {
     journal_count: u32,
 };
 
-/// Shared settle + Dimeroll fold for steward view and steward sight.
-fn run_steward_fold() !StewardFold {
-    var parent: [mandi.digest_hex_len]u8 = undefined;
-    mandi.witness_vessel_parent(&parent);
-    var listing: [mandi.max_listing_len]u8 = undefined;
-    const ln = try mandi.sign_listing(mandi.mandi_version, &parent, "25", &listing);
-    try mandi.verify_listing(listing[0..ln]);
-    var listing_receipt: [mandi.digest_hex_len]u8 = undefined;
-    try mandi.receipt_digest(listing[0..ln], &listing_receipt);
+const SaleJournalFold = struct {
+    cash: i64,
+    pnl_net: i64,
+    journal_count: u32,
+};
 
-    const issuer_kp = kumara.keypair_from_seed(&murr.issuer_seed);
-    const holder_kp = kumara.keypair_from_seed(&murr.holder_seed);
-    var issuer_hex: [murr.pubkey_hex_len]u8 = undefined;
-    var holder_hex: [murr.pubkey_hex_len]u8 = undefined;
-    murr.hex_of_key(issuer_kp.public_key, &issuer_hex);
-    murr.hex_of_key(holder_kp.public_key, &holder_hex);
-
-    var log: [rc.max_log_len]u8 = undefined;
-    var log_len: u32 = 0;
-    const mint_fields = rc.FactFields{
-        .from = issuer_hex[0..],
-        .to = holder_hex[0..],
-        .amount = "1000",
-        .memo = murr.memo_mint,
-        .stamp = "20260711.010030",
-    };
-    try murr.sign_append(&log, &log_len, mint_fields, issuer_kp);
-    const send_fields = rc.FactFields{
-        .from = holder_hex[0..],
-        .to = issuer_hex[0..],
-        .amount = "25",
-        .memo = murr.memo_send,
-        .stamp = "20260711.010030",
-    };
-    var send_canonical: [rc.max_fact_len]u8 = undefined;
-    const send_canon_len = try rc.write_canonical_fact(send_fields, &send_canonical);
-    try murr.sign_append(&log, &log_len, send_fields, holder_kp);
-    _ = try murr.fold_murr_log(
-        log[0..log_len],
-        &issuer_hex,
-        &holder_hex,
-        issuer_kp.public_key,
-        holder_kp.public_key,
-    );
-    var murr_digest: [settle.digest_hex_len]u8 = undefined;
-    settle.digest_bytes(send_canonical[0..send_canon_len], &murr_digest);
-
-    const buyer_kp = kumara.keypair_from_seed(&wov_core.holder_a_seed);
-    const seller_kp = kumara.keypair_from_seed(&wov_core.holder_b_seed);
-    var buyer_hex: [wov_core.pubkey_hex_len]u8 = undefined;
-    var seller_hex: [wov_core.pubkey_hex_len]u8 = undefined;
-    wov_core.hex_of_key(buyer_kp.public_key, &buyer_hex);
-    wov_core.hex_of_key(seller_kp.public_key, &seller_hex);
-    var book = wov_core.Book.init();
-    try wov_core.mint(&book, &buyer_hex, 100);
-    try wov_core.transfer(&book, &buyer_hex, &seller_hex, 25);
-    var wov_line: [160]u8 = undefined;
-    const wov_line_len = try std.fmt.bufPrint(
-        &wov_line,
-        "wov-transfer {s} {s} 25\n",
-        .{ buyer_hex[0..], seller_hex[0..] },
-    );
-    var wov_digest: [settle.digest_hex_len]u8 = undefined;
-    settle.digest_bytes(wov_line_len, &wov_digest);
-
-    const payment_fields = settle.PaymentFields{
-        .amount = "25",
-        .currency = "murr",
-        .murr_digest = &murr_digest,
-        .wov_digest = &wov_digest,
-    };
-    var payment_hex: [settle.digest_hex_len]u8 = undefined;
-    try settle.payment_digest(payment_fields, &payment_hex);
-    var slip: [settle.max_settle_len]u8 = undefined;
-    const sn = try settle.sign_settle(settle.settle_version, &listing_receipt, &payment_hex, &slip);
-    try settle.verify_against_listing(slip[0..sn], &listing_receipt, &payment_hex, "25", "25");
-    var settled = settle.SettledSet.empty();
-    try settle.record_settle(&settled, &listing_receipt);
-
+/// Welcome journal + sale entry → cash / pnl / count (steward and granary steward).
+fn fold_welcome_sale_journal(sale_entry: []const u8, expect_cash: i64, expect_pnl: i64) !SaleJournalFold {
     var journal_buf: [dimeroll.max_journal_len]u8 = undefined;
     const journal = try std.fmt.bufPrint(
         &journal_buf,
         "{s}---\n{s}",
-        .{ dimeroll.welcome_journal, steward_sale_entry },
+        .{ dimeroll.welcome_journal, sale_entry },
     );
     var entries: [dimeroll.max_entries]dimeroll.Entry = undefined;
     var count: u32 = 0;
@@ -4530,15 +4470,39 @@ fn run_steward_fold() !StewardFold {
     const tb = try dimeroll.fold_journal(entries[0..count]);
     if (tb.conservation() != 0) return error.BadJournal;
     const cash = tb.nets[@intFromEnum(dimeroll.Account.cash)];
-    if (cash != 825) return error.BadJournal;
+    if (cash != expect_cash) return error.BadJournal;
     const pl = dimeroll.fold_income_statement(tb);
-    if (pl.net_income != 825) return error.BadJournal;
-
+    if (pl.net_income != expect_pnl) return error.BadJournal;
     return .{
-        .listing_receipt = listing_receipt,
         .cash = cash,
         .pnl_net = pl.net_income,
         .journal_count = count,
+    };
+}
+
+/// Shared settle + Dimeroll fold for steward view and steward sight.
+fn run_steward_fold() !StewardFold {
+    var listing_receipt: [mandi.digest_hex_len]u8 = undefined;
+    try mandi_vessel_listing_receipt(&listing_receipt);
+
+    var murr_digest: [settle.digest_hex_len]u8 = undefined;
+    try mandi_murr_send_digest("20260711.010030", &murr_digest);
+
+    var wov_digest: [settle.digest_hex_len]u8 = undefined;
+    try mandi_wov_transfer_digest(&wov_digest);
+
+    var payment_hex: [settle.digest_hex_len]u8 = undefined;
+    try mandi_settle_payment_slip(&listing_receipt, &murr_digest, &wov_digest, &payment_hex);
+
+    var settled = settle.SettledSet.empty();
+    try settle.record_settle(&settled, &listing_receipt);
+
+    const books = try fold_welcome_sale_journal(steward_sale_entry, 825, 825);
+    return .{
+        .listing_receipt = listing_receipt,
+        .cash = books.cash,
+        .pnl_net = books.pnl_net,
+        .journal_count = books.journal_count,
     };
 }
 
@@ -4667,8 +4631,8 @@ fn run_steward_sight_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Granary settle view — Exchange listing closed with MALA/WOV payment → Skate.
-fn compose_granary_settle_view_lines(garden: std.mem.Allocator) ![]surface.SkateLine {
+/// Exchange listing receipt for Granary price-100 settle / steward path.
+fn granary_exchange_listing_receipt(out: *[exchange.digest_hex_len]u8) !void {
     var store = granary.ResinStore.empty();
     const digest = try granary.put_resin(&store, "# priced weave\n\nfor sale in murr.\n");
     var fact: [granary.max_fact_len]u8 = undefined;
@@ -4680,9 +4644,11 @@ fn compose_granary_settle_view_lines(garden: std.mem.Allocator) ![]surface.Skate
     const ln = try exchange.sign_listing(exchange.exchange_version, "rio/greeting", &digest, "100", &listing);
     try exchange.verify_listing(listing[0..ln]);
     try exchange.verify_against_registry(listing[0..ln], &reg);
-    var listing_receipt: [exchange.digest_hex_len]u8 = undefined;
-    try exchange.receipt_digest(listing[0..ln], &listing_receipt);
+    try exchange.receipt_digest(listing[0..ln], out);
+}
 
+/// MURR mint+send digest for Granary / weave steward settle (send amount 100).
+fn granary_murr_send_digest(stamp: []const u8, out: *[weave_settle.digest_hex_len]u8) !void {
     const issuer_kp = kumara.keypair_from_seed(&murr.issuer_seed);
     const holder_kp = kumara.keypair_from_seed(&murr.holder_seed);
     var issuer_hex: [murr.pubkey_hex_len]u8 = undefined;
@@ -4697,7 +4663,7 @@ fn compose_granary_settle_view_lines(garden: std.mem.Allocator) ![]surface.Skate
         .to = holder_hex[0..],
         .amount = "1000",
         .memo = murr.memo_mint,
-        .stamp = weave_settle.settle_version,
+        .stamp = stamp,
     };
     try murr.sign_append(&log, &log_len, mint_fields, issuer_kp);
     const send_fields = rc.FactFields{
@@ -4705,7 +4671,7 @@ fn compose_granary_settle_view_lines(garden: std.mem.Allocator) ![]surface.Skate
         .to = issuer_hex[0..],
         .amount = "100",
         .memo = murr.memo_send,
-        .stamp = weave_settle.settle_version,
+        .stamp = stamp,
     };
     var send_canonical: [rc.max_fact_len]u8 = undefined;
     const send_canon_len = try rc.write_canonical_fact(send_fields, &send_canonical);
@@ -4717,9 +4683,11 @@ fn compose_granary_settle_view_lines(garden: std.mem.Allocator) ![]surface.Skate
         issuer_kp.public_key,
         holder_kp.public_key,
     );
-    var murr_digest: [weave_settle.digest_hex_len]u8 = undefined;
-    weave_settle.digest_bytes(send_canonical[0..send_canon_len], &murr_digest);
+    weave_settle.digest_bytes(send_canonical[0..send_canon_len], out);
+}
 
+/// WOV transfer digest for Granary / weave steward settle (amount 100).
+fn granary_wov_transfer_digest(out: *[weave_settle.digest_hex_len]u8) !void {
     const buyer_kp = kumara.keypair_from_seed(&wov_core.holder_a_seed);
     const seller_kp = kumara.keypair_from_seed(&wov_core.holder_b_seed);
     var buyer_hex: [wov_core.pubkey_hex_len]u8 = undefined;
@@ -4735,21 +4703,41 @@ fn compose_granary_settle_view_lines(garden: std.mem.Allocator) ![]surface.Skate
         "wov-transfer {s} {s} 100\n",
         .{ buyer_hex[0..], seller_hex[0..] },
     );
-    var wov_digest: [weave_settle.digest_hex_len]u8 = undefined;
-    weave_settle.digest_bytes(wov_line_len, &wov_digest);
+    weave_settle.digest_bytes(wov_line_len, out);
+}
 
+/// Payment digest + settle slip verify for Granary price 100.
+fn granary_settle_payment_slip(
+    listing_receipt: *const [exchange.digest_hex_len]u8,
+    murr_digest: *const [weave_settle.digest_hex_len]u8,
+    wov_digest: *const [weave_settle.digest_hex_len]u8,
+    payment_hex: *[weave_settle.digest_hex_len]u8,
+) !void {
     const payment_fields = weave_settle.PaymentFields{
         .amount = "100",
         .currency = "murr",
-        .murr_digest = &murr_digest,
-        .wov_digest = &wov_digest,
+        .murr_digest = murr_digest,
+        .wov_digest = wov_digest,
     };
-    var payment_hex: [weave_settle.digest_hex_len]u8 = undefined;
-    try weave_settle.payment_digest(payment_fields, &payment_hex);
-
+    try weave_settle.payment_digest(payment_fields, payment_hex);
     var slip: [weave_settle.max_settle_len]u8 = undefined;
-    const sn = try weave_settle.sign_settle(weave_settle.settle_version, &listing_receipt, &payment_hex, &slip);
-    try weave_settle.verify_against_listing(slip[0..sn], &listing_receipt, &payment_hex, "100", "100");
+    const sn = try weave_settle.sign_settle(weave_settle.settle_version, listing_receipt, payment_hex, &slip);
+    try weave_settle.verify_against_listing(slip[0..sn], listing_receipt, payment_hex, "100", "100");
+}
+
+/// Granary settle view — Exchange listing closed with MALA/WOV payment → Skate.
+fn compose_granary_settle_view_lines(garden: std.mem.Allocator) ![]surface.SkateLine {
+    var listing_receipt: [exchange.digest_hex_len]u8 = undefined;
+    try granary_exchange_listing_receipt(&listing_receipt);
+
+    var murr_digest: [weave_settle.digest_hex_len]u8 = undefined;
+    try granary_murr_send_digest(weave_settle.settle_version, &murr_digest);
+
+    var wov_digest: [weave_settle.digest_hex_len]u8 = undefined;
+    try granary_wov_transfer_digest(&wov_digest);
+
+    var payment_hex: [weave_settle.digest_hex_len]u8 = undefined;
+    try granary_settle_payment_slip(&listing_receipt, &murr_digest, &wov_digest, &payment_hex);
 
     const lines = try garden.alloc(surface.SkateLine, granary_settle_view_max_lines);
     lines[0] = .{ .text = try garden.dupe(u8, "granary settle view") };
@@ -4788,11 +4776,7 @@ fn run_granary_settle_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     // Unwelcome — double settle refused.
     var settled = weave_settle.SettledSet.empty();
     var listing_receipt: [exchange.digest_hex_len]u8 = undefined;
-    var store = granary.ResinStore.empty();
-    const digest = try granary.put_resin(&store, "# priced weave\n\nfor sale in murr.\n");
-    var listing: [exchange.max_listing_len]u8 = undefined;
-    const ln = try exchange.sign_listing(exchange.exchange_version, "rio/greeting", &digest, "100", &listing);
-    try exchange.receipt_digest(listing[0..ln], &listing_receipt);
+    try granary_exchange_listing_receipt(&listing_receipt);
     try weave_settle.record_settle(&settled, &listing_receipt);
     if (weave_settle.record_settle(&settled, &listing_receipt)) |_| {
         return error.DoubleSettleAccepted;
@@ -4828,111 +4812,27 @@ const GranaryStewardFold = struct {
 
 /// Shared weave settle + Dimeroll fold for Granary steward view and sight.
 fn run_granary_steward_fold() !GranaryStewardFold {
-    var store = granary.ResinStore.empty();
-    const digest = try granary.put_resin(&store, "# priced weave\n\nfor sale in murr.\n");
-    var fact: [granary.max_fact_len]u8 = undefined;
-    const fact_len = try granary.sign_name_fact(granary.granary_version, "rio", "greeting", &digest, &fact);
-    var reg = granary.Registry.empty();
-    try granary.append_fact(&reg, fact[0..fact_len]);
-
-    var listing: [exchange.max_listing_len]u8 = undefined;
-    const ln = try exchange.sign_listing(exchange.exchange_version, "rio/greeting", &digest, "100", &listing);
-    try exchange.verify_listing(listing[0..ln]);
-    try exchange.verify_against_registry(listing[0..ln], &reg);
     var listing_receipt: [exchange.digest_hex_len]u8 = undefined;
-    try exchange.receipt_digest(listing[0..ln], &listing_receipt);
+    try granary_exchange_listing_receipt(&listing_receipt);
 
-    const issuer_kp = kumara.keypair_from_seed(&murr.issuer_seed);
-    const holder_kp = kumara.keypair_from_seed(&murr.holder_seed);
-    var issuer_hex: [murr.pubkey_hex_len]u8 = undefined;
-    var holder_hex: [murr.pubkey_hex_len]u8 = undefined;
-    murr.hex_of_key(issuer_kp.public_key, &issuer_hex);
-    murr.hex_of_key(holder_kp.public_key, &holder_hex);
-
-    var log: [rc.max_log_len]u8 = undefined;
-    var log_len: u32 = 0;
-    const mint_fields = rc.FactFields{
-        .from = issuer_hex[0..],
-        .to = holder_hex[0..],
-        .amount = "1000",
-        .memo = murr.memo_mint,
-        .stamp = "20260711.012451",
-    };
-    try murr.sign_append(&log, &log_len, mint_fields, issuer_kp);
-    const send_fields = rc.FactFields{
-        .from = holder_hex[0..],
-        .to = issuer_hex[0..],
-        .amount = "100",
-        .memo = murr.memo_send,
-        .stamp = "20260711.012451",
-    };
-    var send_canonical: [rc.max_fact_len]u8 = undefined;
-    const send_canon_len = try rc.write_canonical_fact(send_fields, &send_canonical);
-    try murr.sign_append(&log, &log_len, send_fields, holder_kp);
-    _ = try murr.fold_murr_log(
-        log[0..log_len],
-        &issuer_hex,
-        &holder_hex,
-        issuer_kp.public_key,
-        holder_kp.public_key,
-    );
     var murr_digest: [weave_settle.digest_hex_len]u8 = undefined;
-    weave_settle.digest_bytes(send_canonical[0..send_canon_len], &murr_digest);
+    try granary_murr_send_digest("20260711.012451", &murr_digest);
 
-    const buyer_kp = kumara.keypair_from_seed(&wov_core.holder_a_seed);
-    const seller_kp = kumara.keypair_from_seed(&wov_core.holder_b_seed);
-    var buyer_hex: [wov_core.pubkey_hex_len]u8 = undefined;
-    var seller_hex: [wov_core.pubkey_hex_len]u8 = undefined;
-    wov_core.hex_of_key(buyer_kp.public_key, &buyer_hex);
-    wov_core.hex_of_key(seller_kp.public_key, &seller_hex);
-    var book = wov_core.Book.init();
-    try wov_core.mint(&book, &buyer_hex, 200);
-    try wov_core.transfer(&book, &buyer_hex, &seller_hex, 100);
-    var wov_line: [160]u8 = undefined;
-    const wov_line_len = try std.fmt.bufPrint(
-        &wov_line,
-        "wov-transfer {s} {s} 100\n",
-        .{ buyer_hex[0..], seller_hex[0..] },
-    );
     var wov_digest: [weave_settle.digest_hex_len]u8 = undefined;
-    weave_settle.digest_bytes(wov_line_len, &wov_digest);
+    try granary_wov_transfer_digest(&wov_digest);
 
-    const payment_fields = weave_settle.PaymentFields{
-        .amount = "100",
-        .currency = "murr",
-        .murr_digest = &murr_digest,
-        .wov_digest = &wov_digest,
-    };
     var payment_hex: [weave_settle.digest_hex_len]u8 = undefined;
-    try weave_settle.payment_digest(payment_fields, &payment_hex);
-    var slip: [weave_settle.max_settle_len]u8 = undefined;
-    const sn = try weave_settle.sign_settle(weave_settle.settle_version, &listing_receipt, &payment_hex, &slip);
-    try weave_settle.verify_against_listing(slip[0..sn], &listing_receipt, &payment_hex, "100", "100");
+    try granary_settle_payment_slip(&listing_receipt, &murr_digest, &wov_digest, &payment_hex);
+
     var settled = weave_settle.SettledSet.empty();
     try weave_settle.record_settle(&settled, &listing_receipt);
 
-    var journal_buf: [dimeroll.max_journal_len]u8 = undefined;
-    const journal = try std.fmt.bufPrint(
-        &journal_buf,
-        "{s}---\n{s}",
-        .{ dimeroll.welcome_journal, granary_steward_sale_entry },
-    );
-    var entries: [dimeroll.max_entries]dimeroll.Entry = undefined;
-    var count: u32 = 0;
-    try dimeroll.parse_journal(journal, &entries, &count);
-    if (count != 3) return error.BadJournal;
-    const tb = try dimeroll.fold_journal(entries[0..count]);
-    if (tb.conservation() != 0) return error.BadJournal;
-    const cash = tb.nets[@intFromEnum(dimeroll.Account.cash)];
-    if (cash != 900) return error.BadJournal;
-    const pl = dimeroll.fold_income_statement(tb);
-    if (pl.net_income != 900) return error.BadJournal;
-
+    const books = try fold_welcome_sale_journal(granary_steward_sale_entry, 900, 900);
     return .{
         .listing_receipt = listing_receipt,
-        .cash = cash,
-        .pnl_net = pl.net_income,
-        .journal_count = count,
+        .cash = books.cash,
+        .pnl_net = books.pnl_net,
+        .journal_count = books.journal_count,
     };
 }
 
