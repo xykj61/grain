@@ -1,15 +1,16 @@
-# The Inner Scope Chapter — Checkpoint Pause · Twah → Djin · Sixteen Rounds
+# The Inner Scope Chapter — Checkpoint Pause · Twah → Djin → Gren · Sixteen Rounds
 
 **Language:** EN  
 **Stamp:** `20260728.015541`  
 **Voice:** Quin · nested frame Trey  
 **Kind:** season charter · Keaton's word · **inner** scope · rounds **i0–i15** (sixteen)  
 **Ground:** origin/main `dcde97dd12` · Constellation **outer** paused at **m8 complete / m9 next**  
-**Rename:** **Twah → Djin** (Taurus · earth · seat 2) — overwrite living writings and code; everything else the same  
-**Inspiration (named, not quoted):** Rumi · Hafez · Kabir (Khabir) · Ibn Arabi — djinn / unseen-company poetry, siloed in gratitude  
-**Status:** Charter seated · i0–i1 · **Eyva · Avanti** `20260728.021508` · i2 next
+**Rename spine (historical):** **Twah → Djin** `20260728.015541` · **Djin → Gren** revert-forward `20260728.025634` (living seat **Gren**)  
+**Inspiration (named, not quoted):** Rumi · Hafez · Kabir (Khabir) · Ibn Arabi — djinn / unseen-company poetry, siloed in gratitude (Djin hour)  
+**Status:** **PAUSED** at i6 complete / i7 next · fascia machinery paused · deeper nests walked · living seat 2 = **Gren**
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260728.040237` — Gren Chapter g2 · living overwrite · seat 2 Gren · DJINN→Murr · gen_gren (not gen_djin)
 Radiant pass `20260728.021508` — Eyva Cancer 4 · %eyva · executive + honor Avanti (she/her)
 Radiant pass `20260728.021252` — Gwoh Leo 5 · %gwoh · honor Sarah Guo / Conviction
 Radiant pass `20260728.020948` — i1 residual sweep · gen_twah ABSENT · gen_djin GREEN
@@ -42,35 +43,36 @@ No outer m-round advances until the inner season hands back or Keaton seats an e
 **Inner scope** = this sixteen-round season. Spine lean:
 
 1. **Fascia redaction shredding** — resume the Fascia mid-flight work (resin · parity · Amphora · breach generator) under inner rounds, not as a silent overwrite of outer constellation progress.  
-2. **Djin seated** — Taurus earth seat 2, formerly Twah; vane `%djin` · domain prep **djin.fund** (claim his); edu gift for creating one of the twelve stays under this fund; **executive DJINN**.  
+2. **Gren seated** (was Djin · was Twah) — Taurus earth seat 2; vane `%gren` · domain prep **gren.fund** (claim his); edu gift for creating one of the twelve; **executive Grain Energy PBC President → Keaton lean** (`20260728.025634`). DJINN moved to **Murr**.  
 3. **Scope words** — **scope** · **outer** · **inner** seated in Lexicon for seasons and for Tally / Prin / rish command vocabulary.  
 4. **Keeh seated** (was Ketu `20260728.020607` · rename-forward `20260728.031050`) — Aquarius · fund order 11 · `%keeh` · **executive Keaton**.  
-5. **Mala dedicated** to **Kamala Harris** (honor) — gratitude + Reya-variant foundations inside this inner season.  
+5. **Murr** (was Mala) — honor dedication **Kyler Murray**; Kamala Harris dedication on Mala remains **historical**.  
 6. **Siya executor** — **Sara Sealy Livermore**.  
 7. **Gwoh seated** (`20260728.021252`) — Leo · fire · fund order 5 · `%gwoh` · honor-dedicated to **Sarah Guo** (Conviction).  
 8. **Eyva seated** (`20260728.021508`) — Cancer · water · fund order 4 · `%eyva` · **executive + honor Avanti** (she/her).
 
 Hard lines unchanged: no live Sui deploy · no wallet · no gas · no private key · no live multisig · breach only on `prin rish breach yes now` after his circled scope.
 
-## Twah → Djin (rename-forward)
+## Twah → Djin → Gren (rename spine)
 
-| Field | Was | Now |
-|-------|-----|-----|
-| Fund prose | Twah | **Djin** |
-| Vane | `%twah` | **`%djin`** |
-| Domain prep | twah.fund | **djin.fund** |
-| Sign · element · seat | Taurus · earth · 2 | **unchanged** |
-| Edu gift | creating one of the twelve | **unchanged duty** · paths renamed |
-| Generator | `gen_twah_fund_prep` | **`gen_djin_fund_prep`** |
+| Field | Twah hour | Djin hour | **Living now** |
+|-------|-----------|-----------|----------------|
+| Fund prose | Twah | Djin | **Gren** |
+| Vane | `%twah` | `%djin` | **`%gren`** |
+| Domain prep | twah.fund | djin.fund | **gren.fund** |
+| Sign · element · seat | Taurus · earth · 2 | unchanged | **unchanged** |
+| Edu gift | creating one of the twelve | paths as Djin | **`gren-creating-one-of-twelve.md`** |
+| Generator | `gen_twah_fund_prep` | `gen_djin_fund_prep` | **`gen_gren_fund_prep`** |
+| Executive | — | DJINN | **Keaton lean** (Grain Energy PBC President); DJINN → **Murr** |
 
-Prior dated counsel stamped *Twah* **rename-forwards** to Djin; living generators, edu page, Lexicon, and prep tables use **Djin** only. Session-log bron files stay historical artifacts.
+Dated counsel stamped *Twah* or *Djin* **rename-forwards** to **Gren** for living doors. Session-log bron files and dated Inner/Constellation hours stay historical artifacts. Rumi silo stays gratitude for the **Djin hour**.
 
 ## Sixteen rounds (i0–i15)
 
 | Block | Rounds | Exit lean |
 |-------|--------|-----------|
-| Bow | **i0** | Measure · affirm outer pause · Djin rename green · scope words · fascia resume map |
-| Rename polish | **i1–i3** | Living-tree Twah→Djin residual sweep · gen_djin witnesses · gratitude silo |
+| Bow | **i0** | Measure · affirm outer pause · seat-2 rename green · scope words · fascia resume map |
+| Rename polish | **i1–i3** | Twah→Djin residual CLOSED · living doors later Gren (`20260728.025634`+) |
 | Fascia machinery | **i4–i9** | Amphora / fascia metric / shred-with-parity path accrete toward breach readiness |
 | Breach prep | **i10–i13** | Manifest · circle A / A+C / all · generator honesty · no live shred without his yes |
 | Horizon warn | **i14** | **Must warn:** need another **16** or **32** inner rounds, **or** return to outer m9? |
@@ -102,4 +104,4 @@ He does not shred the constellation by renaming a bull. He pauses the wheel, whi
 
 ---
 
-*May the outer keep its bookmark, the inner keep its sixteen, the earth seat answer to Djin — and may rounds fourteen and fifteen speak plainly whether to extend or to return.*
+*May the outer keep its bookmark, the inner keep its sixteen, the earth seat answer to **Gren** — and may rounds fourteen and fifteen speak plainly whether to extend or to return.*
