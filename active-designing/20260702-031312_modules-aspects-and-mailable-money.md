@@ -8,6 +8,7 @@
 **Lens:** TAME — safety, performance, joy; Gall's Law; the silo principle
 **Status:** Design counsel — horizons only; the live rung stays SLC-2b's nod and the Lap 3 metal close
 **Companion:** `external-research/20260702-031312_settlement-consensus-and-many-roads.md` carries the outside names and sources. The graduation rule stands alone at [`context/specs/20260702-035018_graduation-rule.md`](../context/specs/20260702-035018_graduation-rule.md).
+Radiant pass `20260728.052441` — living rename-forward: **MUR** (was MALA); code homes `mala*` held · tool GO u21 · prefer **kg u32** before u48  
 Radiant pass `20260728.045307` — living rename-forward: **MUR** (was MALA); code homes `mala*` held for module wave
 
 *Written together by Kaeden and Claude (Fable 5), in Reya 2's Radiant voice.*

@@ -8,7 +8,8 @@
 **Status:** Checkable-room hammock — tip **422**  
 **Ground:** commerce steward demo [`20260711-004652_commerce-citizen-steward-demo-hammock.md`](20260711-004652_commerce-citizen-steward-demo-hammock.md) · blind-spots [`../session-logs/20260711-004217_blind-spots-counsel.md`](../session-logs/20260711-004217_blind-spots-counsel.md) · Mandi settle view (parity **245** kin) · counsel [`../counsel/20260711-010030_rye-os-helps-cursor-spacexai.md`](../counsel/20260711-010030_rye-os-helps-cursor-spacexai.md)
 
-*Written by Rio 3 for Kaeden.*
+*Written by Rio 3 for Kaeden.*  
+Radiant pass `20260728.052441` — living L1 rename-forward: **MUR** (was MALA); prefer **kg u32** tool wave · code homes held
 
 ---
 
