@@ -36,7 +36,7 @@ No Amphora shred · no Class A rewrite · no over-70 reopen · no Inner unpause 
 
 ## Next
 
-**kg u87** — next prune lean (yonder living-hold survey · paper tidy), or check-in.
+**LANDED u87** — paper tidy · living-hold survey · fascia 66→73.
 
 ---
 

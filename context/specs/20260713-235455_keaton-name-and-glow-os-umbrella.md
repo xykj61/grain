@@ -3,7 +3,7 @@
 **Language:** EN
 **Version:** `20260713.235455` (Pacific)
 **Style:** Radiant (see `../RADIANT_STYLE.md`)
-**Status:** Living seal for Keaton’s name · **umbrella speech superseded** for living *Now* by Grain (`20260725.185041`) — [`20260725-185041_grain-umbrella-supersedes-glow-os.md`](20260725-185041_grain-umbrella-supersedes-glow-os.md). Section 2 below stays as the dated Glow OS decision; do not rewrite it.
+**Status:** Living seal for Keaton’s name · **umbrella speech replaced** for living *Now* by Grain (`20260725.185041`) — [`20260725-185041_grain-umbrella-supersedes-glow-os.md`](20260725-185041_grain-umbrella-supersedes-glow-os.md). Section 2 below stays as the dated Glow OS decision; do not rewrite it.
 
 Radiant pass `20260725.035955` · Grain living supersede `20260725.185041`
 

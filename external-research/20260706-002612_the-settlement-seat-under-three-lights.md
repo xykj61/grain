@@ -7,7 +7,7 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`) · **Lens:** TAME — safety first, performance second, the joy of the craft third
 **Category:** External research — survey and counsel
 **Ground:** [`20260702-031312_settlement-consensus-and-many-roads.md`](20260702-031312_settlement-consensus-and-many-roads.md) · [`20260703-200712_mysticetis-blocks-and-the-object-path.md`](20260703-200712_mysticetis-blocks-and-the-object-path.md) · [`20260702-215212_wov-mala-hardware-fit.md`](20260702-215212_wov-mala-hardware-fit.md)
-**Status:** Research for understanding — three-lights survey preserved; **external SLC-L3 seat superseded** by MUR/WOV realignment (was MALA) [`152612`](../counsel/20260709-152612_claude-counsel-mala-wov-already-designed.md). Kitchen twin: [`20260710-001249_settlement-seat-plainly.md`](20260710-001249_settlement-seat-plainly.md). Counsels only; no treasury action.
+**Status:** Research for understanding — three-lights survey preserved; **external SLC-L3 seat replaced** by MUR/WOV realignment (was MALA) [`152612`](../counsel/20260709-152612_claude-counsel-mala-wov-already-designed.md). Kitchen twin: [`20260710-001249_settlement-seat-plainly.md`](20260710-001249_settlement-seat-plainly.md). Counsels only; no treasury action.
 **Last updated:** 2026-07-10 (supersession note + kitchen twin)
 
 *Written together by Kaeden and Claude (Fable 5), in Rio 3's Radiant voice.*
