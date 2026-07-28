@@ -4,9 +4,9 @@
 #   rishi/bin/rishi run tools/gen_linn_fund_prep.rish
 #   rishi/bin/rishi run tools/gen_linn_fund_prep.rish deploy  # RED
 
-say "gen-linn: Language EN — Linn fund prep (Capricorn earth · seat 10)."
-say "gen-linn: Style Radiant — GREEN after seat and opening page witness."
-say "gen-linn: Lens TAME — prep only; dedication · sponsor · executive held."
+say "gen-linn: Language EN — Linn fund prep (Capricorn earth · seat 10 · Helen)."
+say "gen-linn: Style Radiant — GREEN after seat, dedication, and opening page witness."
+say "gen-linn: Lens TAME — prep only; sponsor · executive held."
 
 let verb = ""
 if length args != 0 then let verb = args[0]
@@ -17,10 +17,11 @@ assert prep.out contains "GREEN: gen-linn" else "gen-linn missing GREEN line"
 assert prep.out contains "sign_index=9" else "gen-linn Capricorn seat index unnamed"
 assert prep.out contains "witness:linn-open GREEN" else "gen-linn opening witness missing"
 assert prep.out contains "vane=%linn" else "gen-linn vane unnamed"
+assert prep.out contains "dedication: Helen Atthowe" else "gen-linn Helen dedication unnamed"
 assert prep.out contains "linn_fund=prep" else "gen-linn prep flag missing"
 say prep.out
 
 let refuse = run ["sh" "tools/fixtures/gen_linn_fund_prep.sh" "deploy"]
 assert (refuse.ok == false) else "gen-linn refuse-walk broken: deploy must exit RED"
 
-say "GREEN: gen-linn — prep open; Capricorn seat 10; deploy refuse post-fold RED."
+say "GREEN: gen-linn — prep open; Helen dedication; Capricorn seat 10; deploy refuse post-fold RED."
