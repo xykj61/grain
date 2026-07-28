@@ -16,7 +16,7 @@
 
 A steward who settles a sale yet cannot see the books is half a citizen. This lap composes:
 
-1. Mandi list 25 mala → settle (MALA + in-memory WOV)
+1. Mandi list 25 mala → settle (MUR + in-memory WOV; was MALA; unit string held for module wave)
 2. Dimeroll welcome + vessel sale → cash **825**, conservation **0**
 3. Books band from **that same journal** — journal **3**, P&L net **825**, chart names
 
@@ -38,4 +38,4 @@ Witness: `tools/commerce_steward_sight_view.rish` → tip **423**
 
 ## Horizon stays closed
 
-Live TB · WOV seam B · ROCm · Caravan amdgpu · Steep · full Realidream · MALA K1
+Live TB · WOV seam B · ROCm · Caravan amdgpu · Steep · full Realidream · MUR K1 (was MALA)

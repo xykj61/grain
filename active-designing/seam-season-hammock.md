@@ -25,7 +25,7 @@
 | **1** | Capability-protocol idiom beside Comlink’s sealed datagram | `external-research/` (named teachers stay there) | Consumer-edge design note | **Landed** [`../external-research/20260712-053324_ocapn-beside-comlink.md`](../external-research/20260712-053324_ocapn-beside-comlink.md) |
 | **2** | One existing seed through a component-model target | `external-research/` (portable ABI lineage) | “Anywhere” before bare metal | **Landed** [`../external-research/20260712-054135_component-model-one-seed.md`](../external-research/20260712-054135_component-model-one-seed.md) — pick **receipt verify-witness** |
 | **3** | Proven-seat guest for Rye userland — Caravan stays horizon | `external-research/` (verified microkernel lineage) | Guest, never merger | **Landed** [`../external-research/20260712-054342_proven-seat-guest-genode-sel4.md`](../external-research/20260712-054342_proven-seat-guest-genode-sel4.md) |
-| **4** | Giving-asymmetric money for Linengrow’s giving lane | `external-research/` beside money-close-to-home | Complements MALA / settlement seat | **Landed** [`../external-research/20260712-054521_taler-giving-lane-asymmetry.md`](../external-research/20260712-054521_taler-giving-lane-asymmetry.md) |
+| **4** | Giving-asymmetric money for Linengrow’s giving lane | `external-research/` beside money-close-to-home | Complements MUR / settlement seat (was MALA) | **Landed** [`../external-research/20260712-054521_taler-giving-lane-asymmetry.md`](../external-research/20260712-054521_taler-giving-lane-asymmetry.md) |
 
 Logic before carriage throughout. Each study lands as understanding + a short design conclusion; none ships a new wire or renames a module.
 
@@ -56,7 +56,7 @@ Private payer · transparent payee — [`../foundations/20260629-014512_money-th
 
 - Product laps inventing beyond nib **430** green work
 - Merging Caravan into a foreign kernel name
-- Replacing MALA / WOV with a foreign settlement seat
+- Replacing MUR / WOV with a foreign settlement seat (was MALA)
 - Naming an institutional ally before a two-sided witness
 - Live TB · seam B · W1/W2 (still Rest-until)
 - Steep hammock sentence (still awaits its own word)

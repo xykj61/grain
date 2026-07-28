@@ -28,7 +28,7 @@ SLC-L1 closes that gap on paper first, then in one witness: sign a transaction f
 |------|------------------------|
 | **Simple** | One signer, one log file, one fold, one verify path |
 | **Lovable** | A donation, a stipend record, an honest tally entry — provable on metal today |
-| **Complete** | sign → append → receipt → verify closes without Comlink, Sui, or MALA |
+| **Complete** | sign → append → receipt → verify closes without Comlink, Sui, or MUR (was MALA) |
 
 SLC-L2 grows **sealed delivery** over Comlink. SLC-L3 grows **settlement** on Sui. SLC-L1 deliberately stops at the local log edge.
 
@@ -85,7 +85,7 @@ The **signed envelope** wraps the canonical `.bron` bytes (UTF-8, LF line ending
 
 ### Horizon (SLC-L2 and later)
 
-- **Settlement**, **currency**, **multi-party** consensus, **MALA** mint/send/market — M0–M4 ladder in [`20260702-031312_modules-aspects-and-mailable-money.md`](20260702-031312_modules-aspects-and-mailable-money.md)
+- **Settlement**, **currency**, **multi-party** consensus, **MUR** mint/send/market (was MALA) — M0–M4 ladder in [`20260702-031312_modules-aspects-and-mailable-money.md`](20260702-031312_modules-aspects-and-mailable-money.md)
 - **Comlink** delivery (SLC-L2)
 - **Sui** / USDsui ledger (SLC-L3)
 - **Open Asks room** — OA-L1 scope drawn [`20260706-002912_open-asks-hammock-scope.md`](../active-designing/20260706-002912_open-asks-hammock-scope.md); implementation gated on Kaeden edge affirmation ([`../external-research/20260702-192712_the-movements-open-asks.md`](../external-research/20260702-192712_the-movements-open-asks.md))

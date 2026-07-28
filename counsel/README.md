@@ -12,7 +12,7 @@
 
 This is where the bench answers what Kaeden asked. The `counsel/` folder holds analysis, rulings, proposals, and recommendations delivered in response to a specific question about this project's own pending decisions — never a study of an external work (that stays in `external-research/`), never a decision made and seated (that lives in `active-designing/` or wherever the decision's own home is once Kaeden's word lands). Every piece here proposes; none of them seats anything. Propose-never-seat is the whole reason this folder exists — counsel proposes; Kaeden seats.
 
-Each entry stays exactly as written the day it was filed. A later counsel document may revisit, refine, or overturn an earlier one — the ruling that MALA had not graduated stands beside the fold-gap it found, both permanent, neither edited to match what came after.
+Each entry stays exactly as written the day it was filed. A later counsel document may revisit, refine, or overturn an earlier one — the ruling that MUR (then MALA) had not graduated stands beside the fold-gap it found, both permanent, neither edited to match what came after.
 
 Filing law: [`../ORGANIZING.md`](../ORGANIZING.md) · reorg proposal: [`20260707-180712_claude-proposal-counsel-folder-reorganization.md`](20260707-180712_claude-proposal-counsel-folder-reorganization.md).
 
@@ -121,7 +121,7 @@ Filing law: [`../ORGANIZING.md`](../ORGANIZING.md) · reorg proposal: [`20260707
 | `20260707.044112` | [Recommendation path](20260707-044112_claude-recommendation-path.md) | Caravan production hardening order |
 | `20260707.042512` | [Snapshot lap 3 + Caravan hardening](20260707-042512_claude-proposal-snapshot-lap3-and-caravan-hardening.md) | Lap 3 wire proposal; caravan witness bundle |
 | `20260707.025212` | [Weave/Brix snapshot slices and Pond customs](20260707-025212_claude-counsel-weave-brix-pond-customs.md) | Hold next-items; Weave slice may be I2 catalog |
-| `20260707.023512` | [MALA graduation + fold gap](20260707-023512_claude-counsel-mala-graduation-and-fold-gap.md) | Graduation not fired; escrow-release memo fix |
+| `20260707.023512` | [MUR graduation + fold gap](20260707-023512_claude-counsel-mala-graduation-and-fold-gap.md) | Graduation not fired; escrow-release memo fix · was MALA; dated path |
 | `20260707.021012` | [Ring 4 — SIGTERM to sentinel](20260707-021012_claude-counsel-ring4-signal-handler.md) | Atomic flag in handler; real kill witness |
 | `20260707.014212` | [Graceful stop reframed](20260707-014212_claude-counsel-graceful-stop-reframed.md) | Exit-code ring first; sentinel ring next |
 | `20260707.011412` | [State of the tree](20260707-011412_claude-analysis-state-of-the-tree.md) | Compass analysis; roadmap deltas proposed |
@@ -129,7 +129,7 @@ Filing law: [`../ORGANIZING.md`](../ORGANIZING.md) · reorg proposal: [`20260707
 | `20260707.004712` | [Outer subscribe and host mirror](20260707-004712_claude-counsel-outer-subscribe-and-host-mirror.md) | Bounded poll cycles; host mirror = named pair list |
 | `20260707.001612` | [Subscribe revisited](20260707-001612_claude-counsel-subscribe-revisited.md) | Catch-up-to-latest now; outer loop waits Caravan |
 | `20260707.000112` | [Two-way sync and subscribe](20260707-000112_claude-counsel-two-way-sync-and-subscribe.md) | Split lap: syncRevision now; subscribe waits |
-| `20260706.232812` | [OA-L4, MALA, Edit-5, horizons](20260706-232812_claude-ruling-oal4-mala-edit5-and-horizons.md) | Zip 58 ruling — OA-L4 leads; MALA held |
+| `20260706.232812` | [OA-L4, MUR, Edit-5, horizons](20260706-232812_claude-ruling-oal4-mala-edit5-and-horizons.md) | Zip 58 ruling — OA-L4 leads; MUR held (was MALA; dated path) |
 | `20260704.181612` | [Zero-copy resins — answers](20260704-181612_zero-copy-resins-counsel-answers.md) | A–H answered, I1–I7 at spec grain |
 | `20260704.031812` | [Eight asks, one sitting](20260704-031812_eight-asks-one-sitting.md) | Consolidated A1–A8 counsel |
 | `20260704.004912` | [One Word, One Gate — unify](20260704-004912_gate-unify-counsel.md) | Gate=checkpoint; toll proposed |

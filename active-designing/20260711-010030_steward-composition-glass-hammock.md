@@ -17,7 +17,7 @@
 Tip **419** closed the livelihood loop in a Mandi binary. Mandi floor and settle views already show pieces on Skate. This lap **composes** the full steward claim on one frame:
 
 1. Listed 25 mala (Mandi)
-2. Settled (MALA + in-memory WOV)
+2. Settled (MUR + in-memory WOV; was MALA)
 3. Dimeroll receipt — cash **825**, conservation **0**, memo `mandi:vessel-sale`
 4. Zero-sale refuse stays in the witness (unwelcome)
 
@@ -30,7 +30,7 @@ Witness: `tools/commerce_steward_view.rish` → tip **422**
 |--------|---------|
 | In-process only | Same as tip **419** — no live TB, no Comlink |
 | Thin-view exception | Commerce fold on Drawn Terminal glass |
-| Reuse settle path | Same Mandi/MALA/WOV/settle cores as `mandisettletest` |
+| Reuse settle path | Same Mandi/MUR/WOV/settle cores as `mandisettletest` (was MALA) |
 | Dimeroll welcome + sale | Same journal shape as commerce-steward selftest |
 
 ## Success
@@ -41,4 +41,4 @@ Witness: `tools/commerce_steward_view.rish` → tip **422**
 
 ## Horizon stays closed
 
-Live TB · WOV seam B · ROCm · Caravan amdgpu · Steep · full Realidream · MALA K1
+Live TB · WOV seam B · ROCm · Caravan amdgpu · Steep · full Realidream · MUR K1 (was MALA)

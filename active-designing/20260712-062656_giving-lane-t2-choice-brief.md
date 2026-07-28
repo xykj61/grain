@@ -16,7 +16,7 @@
 | Shape | What it is | Limit | Season |
 |-------|------------|-------|--------|
 | **Quiet by courtesy** | Consent-gated withholding on the glass; reuse OA-L4 / `withheld=excluded` | The fold still tells | **T2** — this brief’s lean, seated |
-| **Private by proof** | Tier mudra / buds on the fold itself | Crosses MALA plaintext conservation; needs gathered-buds brief first | **T3** — ZK season; stop-and-park until that brief |
+| **Private by proof** | Tier mudra / buds on the fold itself | Crosses MUR plaintext conservation (was MALA); needs gathered-buds brief first | **T3** — ZK season; stop-and-park until that brief |
 
 ## Loop-scoped payer privacy (design constraint for either shape)
 
@@ -30,7 +30,7 @@ Pass-gated reads for sensitive cover notes are Door 3’s consumer-edge pass arr
 
 - No `.bron` changes
 - No OA complete composition with mudra
-- No MALA `fold_mala_log` change
+- No MUR `fold_mala_log` change (was MALA; symbol name held for module wave)
 - No Door 3 first green
 
 ---

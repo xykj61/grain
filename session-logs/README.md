@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.045509` — [MUR Season u8 design hammocks](20260728-045509_mur-season-u8-design-hammocks-prose.bron) — mailable-money home · hammocks → MUR · u9 next
 - `20260728.045124` — [MUR Season u7 module prompts](20260728-045124_mur-season-u7-module-prompts-prose.bron) — M1/M2/Neth/Pool → MUR · u8 next
 - `20260728.044738` — [MUR Season u6 wave map](20260728-044738_mur-season-u6-tool-module-wave-map.bron) — tool·module map · prose light · u7 next
 - `20260728.044443` — [MUR Season u5 gratitude](20260728-044443_mur-season-u5-gratitude-residual.bron) — Kamala historical · residual OK · u6 next

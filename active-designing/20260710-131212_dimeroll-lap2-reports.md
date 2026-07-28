@@ -30,7 +30,7 @@ From the same trial-balance fold, project a **P&L** and a **balance sheet** that
 
 - Tax package export as Amphora/Amber cargo  
 - Bank sync, AI categorization, multi-entity  
-- MALA receipt → journal bridge  
+- MUR receipt → journal bridge (was MALA)  
 - Tablecloth v1 · full Realidream · Dexter graduation  
 
 ## Success

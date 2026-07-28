@@ -96,7 +96,7 @@ When reviewing a ratchet pass or planning the next bench:
 
 - Confirm splits sit at **natural seams**, not arbitrary line cuts.
 - Flag any cross-module rename that missed an inbound reference.
-- Hold **MALA graduation**, **Brix first lap**, and **Pond customs** behind their existing counsel gates — tidy migration does not open new domains.
+- Hold **MUR graduation** (was MALA), **Brix first lap**, and **Pond customs** behind their existing counsel gates — tidy migration does not open new domains.
 
 ---
 

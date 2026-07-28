@@ -1,6 +1,7 @@
 # Commerce Citizen Brief — Steward Demo Lap
 
-*The brief the commerce plainly page waited for: close the livelihood loop on metal **in-process** — list on Mandi, settle with MALA (+ in-memory WOV as seated), record the sale in Dimeroll — one witness. Live TigerBeetle and WOV seam B stay Rest-until.*
+*The brief the commerce plainly page waited for: close the livelihood loop on metal **in-process** — list on Mandi, settle with MUR (+ in-memory WOV as seated; was MALA), record the sale in Dimeroll — one witness. Live TigerBeetle and WOV seam B stay Rest-until.*
+Radiant pass `20260728.045307` — living L1 rename-forward: **MUR** (was MALA)
 
 **Stamp:** `20260711.004652`  
 **Language:** EN  
@@ -17,7 +18,7 @@
 Foundations seat Linengrow as what Rye is *for*. Granary and Mandi roofs are citizen-complete in-process; the missing metal claim is the **steward loop**:
 
 1. Creator lists a vessel on Mandi (25 mala).
-2. Settle binds listing receipt + MALA send + in-memory WOV transfer (seated format; **not** seam B).
+2. Settle binds listing receipt + MUR send (was MALA) + in-memory WOV transfer (seated format; **not** seam B).
 3. Dimeroll journal records the sale; fold conserves.
 
 One selftest. One witness. Tip **419**.
@@ -39,4 +40,4 @@ One selftest. One witness. Tip **419**.
 
 ## Horizon stays closed
 
-Live TB · WOV seam B · ROCm · Caravan amdgpu · Steep · full Realidream · MALA K1
+Live TB · WOV seam B · ROCm · Caravan amdgpu · Steep · full Realidream · MUR K1 (was MALA)
