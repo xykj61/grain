@@ -1,7 +1,10 @@
 # MUR Season — u0 Recursion Prompt (printout · all scopes kept)
 
-**Stamp:** `20260728.025220`  
-**Use:** paste the fenced block as the next counsel/bench session opener after this charter send.
+**Stamp:** `20260728.025220` · Radiant pass `20260728.040237`  
+**Use:** archival MUR printout — **innermost PAUSED** at u0; walk Gren core for current work.  
+Radiant pass `20260728.040237` — gren_fund=prep · djin_fund=retired · ketu→keeh retired  
+
+**Active walk:** `expanding-prompts/20260728-025634_gren-season-g0-recursion-prompt.md`
 
 ---
 
@@ -56,8 +59,8 @@ breach scope circle (blank = still held): A= A+C= all=
 words seated (blank = held whole): season_name= choir= LICENSE_WORD=
   O3= relay_word= tilak_names= scarcity= merit_unit= app_name=
   house_folds= fund_seats= siya_palette= nara_anchor=
-  fascia_fold=inner(paused) mala_fund=retired murr_fund=prep djin_fund=prep
-  eyva_fund=prep gwoh_fund=prep trya_fund=prep ketu_fund=prep siya_fund_claim=
+  fascia_fold=inner(paused) mala_fund=retired murr_fund=prep gren_fund=prep djin_fund=retired
+  eyva_fund=prep gwoh_fund=prep trya_fund=prep keeh_fund=prep ketu_fund=retired siya_fund_claim=
   mala_dedication=historical_Kamala murr_dedication=Kyler_Murray
   gwoh_dedication=Sarah_Guo eyva_dedication=Avanti trya_dedication=Ariana_Grande
   n_of_12_multisig=plan (n held) wov_retire=roadmap_last extend_or_return=

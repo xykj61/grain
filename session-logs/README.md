@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.040237` — [Gren Season g2 overwrite](20260728-040237_gren-season-g2-overwrite.bron) — Inner charter Gren · printouts · g3 next
 - `20260728.035740` — [Gren Season g1 residual map](20260728-035740_gren-season-g1-residual-map.bron) — bare Djin ads CLEARED · g2 next
 - `20260728.035441` — [Handback Gren g0 bow](20260728-035441_handback-gren-g0.bron) — return_gren_g0 · Keeh CLOSED · g1 next
 - `20260728.035329` — [Check-in extend or return](20260728-035329_checkin-extend-or-return.bron) — lean-16 CLOSED · doors A–E

@@ -32,7 +32,7 @@ INNERMOST SCOPE (paused — do not advance u-rounds):
   Charter: counsel/20260728-025220_the-mur-season-innermost-charter.md
 
 CORE SCOPE (OPEN after handback — walk Gren; Keeh printout is archival):
-  Gren Season OPEN · g0 complete / g1 next (Djin→Gren living overwrite).
+  Gren Season OPEN · g2+ (Djin→Gren living overwrite in progress / continuing).
   Charter: counsel/20260728-025634_the-gren-season-core-charter.md
   Active printout: expanding-prompts/20260728-025634_gren-season-g0-recursion-prompt.md
 
