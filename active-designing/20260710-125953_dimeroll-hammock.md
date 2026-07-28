@@ -1,6 +1,7 @@
 # Dimeroll — Hammock Scope (Lap 1)
 
-*Centralized books of record for Linengrow: chart, journal, fold, Skate view. Complements MALA (mailable) and keeps each role clear. Visual Track: books seen through Brushstroke/Skate on the drawn terminal — Realidream thin-view pattern.*
+*Centralized books of record for Linengrow: chart, journal, fold, Skate view. Complements MUR (mailable; was MALA) and keeps each role clear. Visual Track: books seen through Brushstroke/Skate on the drawn terminal — Realidream thin-view pattern.*
+Radiant pass `20260728.045307` — living L1 rename-forward: **MUR** (was MALA)
 
 **Stamp:** `20260710.125953`
 **Language:** EN
@@ -34,7 +35,7 @@ Ship the **first honest room** of Dimeroll: a steward can post balanced journal 
 - Tax package export, reconciliations, documents vault  
 - Full Realidream module, Dexter graduation, Pond policy  
 - Tablecloth v1 as app DB (query may index Dimeroll facts later)  
-- Bridging MALA receipts into journal lines  
+- Bridging MUR receipts into journal lines (was MALA)  
 
 ## Architecture
 
@@ -46,15 +47,15 @@ dimeroll_core  →  journal log  →  fold trial balance
               drawn_terminal booksviewtest
 ```
 
-Brushstroke/Skate remains the pixel path. Tablecloth stays the horizon store; lap 1 uses fixtures + in-memory log like MALA M1.
+Brushstroke/Skate remains the pixel path. Tablecloth stays the horizon store; lap 1 uses fixtures + in-memory log like MUR M1 (was MALA).
 
 ## Visual Track Tie-In
 
 | Existing | Dimeroll lap 1 |
 |----------|------------------|
-| `thinviewtest` | MALA mint + WOV bundle → 5 lines |
+| `thinviewtest` | MUR mint + WOV bundle → 5 lines (was MALA) |
 | `booksviewtest` | Dimeroll trial balance + P&L net + BS → 8 Skate lines |
-| `sightviewtest` | Carriage (MALA/WOV) + books → unified 8-line frame |
+| `sightviewtest` | Carriage (MUR/WOV; was MALA) + books → unified 8-line frame |
 | Realidream full viewer | Still horizon |
 
 ## Success
