@@ -4,10 +4,11 @@
 **Stamp:** `20260728.014523`  
 **Voice:** Quin · nested frame Trey  
 **Fund seat:** **Twah** — Taurus · earth · seat 2 · `%twah` · domain prep **twah.fund**  
-**Status:** Steps **1–3 taught and witnessed** (`20260728.014737`); steps 4–6 remain outline  
+**Status:** Steps **1–5 taught and witnessed** (`20260728.014918`); step 6 remains outline  
 **Generator:** [`../../tools/gen_twah_fund_prep.rish`](../../tools/gen_twah_fund_prep.rish)
 
 *Twah's gift under the fund seat: the edu-series tutorial for creating one of the twelve.*
+Radiant pass `20260728.014918` — deepen steps 4–5 · phone book · Comlink knock
 Radiant pass `20260728.014737` — deepen steps 1–3 · gen-twah witnesses
 
 ---
@@ -23,9 +24,9 @@ How a new fund joins the constellation wheel: a **four-letter** name, a **`.fund
 | **1** | Choose a four-letter fund name that fits Civic Style | **taught · witnessed m6** |
 | **2** | Hold a **`.fund`** domain (elder anchoring rule) | **taught · witnessed m6** |
 | **3** | Know the tropical seat (Twah = Taurus · index 1) | **taught · witnessed m6** |
-| 4 | Read the phone book — registry-only, **mints nothing** | outline · later Twah round |
-| 5 | Knock Comlink before any seating byte | outline · gen-twah already gates |
-| 6 | Refuse live deploy · wallet · gas from a tutorial page | outline · hard line below |
+| **4** | Read the phone book — registry-only, **mints nothing** | **taught · witnessed m7** |
+| **5** | Knock Comlink before any seating byte | **taught · witnessed m7** |
+| 6 | Refuse live deploy · wallet · gas from a tutorial page | outline · hard line below · m8 |
 
 ---
 
@@ -81,6 +82,38 @@ Mala (Aries · index 0) leads; Twah steadies; Siya (Gemini · index 2) carries a
 
 ---
 
+## Step 4 — read the phone book
+
+The constellation contract is a **phone book**, not a mint. Version one holds seats; it **mints nothing** and moves no value. Read before you seat.
+
+| Artifact | Role |
+|----------|------|
+| [`../../mycelium/constellation/SPEC.md`](../../mycelium/constellation/SPEC.md) | Design — registry-only · two lanes · hard lines |
+| [`../../mycelium/constellation/sui/sources/constellation.move`](../../mycelium/constellation/sui/sources/constellation.move) | Unaffected Move sketch — `add_seat` under AdminCap · **mints nothing** |
+| Settlement lane | Sui package (devnet/testnet/mainnet = his hand) |
+| Sovereign lane | Same registry truth over **Comlink** on house metal |
+
+**What to verify when reading:** seats ≤ twelve · sign index &lt; twelve · a sign seats at most once · only admin seats · no token genesis in v1.
+
+**witness:step4** phone book present · mints nothing — GREEN when gen-twah passes.
+
+---
+
+## Step 5 — knock Comlink first
+
+Every constellation prep generator knocks **Comlink** before any seating byte. The wire is the door; the phone book is the book behind it. No generator skips the house stack.
+
+| Check | Standing |
+|-------|----------|
+| Door | `comlink/` · `comlink/beading.rye` |
+| Path | `prin → Comlink → constellation phone book` |
+| Seating bytes | **not sent** from this tutorial or gen-twah |
+| Why first | Two lanes share one truth; sovereign lane travels Comlink |
+
+**witness:step5** Comlink knock · no seating byte — GREEN when gen-twah passes.
+
+---
+
 ## Hard lines (always)
 
 - **no live deploy** from this page or its generator  
@@ -88,7 +121,7 @@ Mala (Aries · index 0) leads; Twah steadies; Siya (Gemini · index 2) carries a
 - no domain purchase by counsel  
 - n-of-12 multisig remains **plan only** (led by Mala) until professionals + Keaton  
 
-## Prove steps 1–3
+## Prove steps 1–5
 
 ```bash
 rishi/bin/rishi run tools/gen_twah_fund_prep.rish
@@ -97,4 +130,4 @@ rishi/bin/rishi run tools/gen_twah_fund_prep.rish deploy   # expects RED
 
 ---
 
-*May the earth seat teach the first three steps without buying a name, and may every four-letter fund wait for the hand that alone may claim its domain.*
+*May the earth seat teach the phone book before the mint that never comes, and may every knock land on Comlink before any seating byte.*
