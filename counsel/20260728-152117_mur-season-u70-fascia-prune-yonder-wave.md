@@ -37,7 +37,7 @@ No Amphora shred · no Class A delete · no Inner unpause · no memcpy/parseInt 
 
 ## Next
 
-**kg u71** — next prune slice (more yonder of frozen superseded prompts, or one ratchet tidy), or check-in.
+**LANDED u71** — memcpy app ratchet CLEARED · fascia 47→49.
 
 ---
 
