@@ -12,7 +12,7 @@ Prin scope — seasons · Tally · rish vocabulary
   outer:  Constellation Chapter — PAUSED at m8 complete / m9 next
   inner:  Inner Scope Chapter — PAUSED at i6 complete / i7 next (fascia)
   innermost: MUR Chapter — PAUSED at u0 (Mala/MALA→Murr/MUR waits)
-  core:   Gren Chapter — OPEN · g8 complete / g9 next (residual re-spot)
+  core:   Gren Chapter — OPEN · g9 complete / g10 next (residual re-spot)
   fund_triad: Murr · Gren · Siya (living)
   quint:  Keeh Chapter — CLOSED · handed back · extend_or_return=return_gren_g0
   extend_or_return: return_gren_g0 (seated 20260728.035441)
