@@ -1,15 +1,16 @@
-# Expanding Prompt — MALA M2b: Device Wire Twin
+# Expanding Prompt — MUR M2b: Device Wire Twin (was MALA)
 
 **Stamp:** `20260709.201734`
 **Voice:** Rio 3
 **Status:** **Landed** `20260709.201734` — device lab GREEN; extends `mala_m2_witness` (parity count **201** unchanged)
 **Ground:** M2 hosted [`191634`](20260709-191634_mala-m2-mailable-comlink.md) · OA-L2 device lab · SLC-L2 guests
+Radiant pass `20260728.044925` — living rename-forward: **MUR** (was MALA); dated path · guest/witness `mala*` names held for tool/module waves
 
 ---
 
 ## Scope
 
-Virtio twin of hosted M2: same sealed mint + receipt bytes over QEMU socket pairs.
+Virtio twin of hosted M2: same sealed mint + receipt bytes over QEMU socket pairs (MUR lane; was MALA).
 
 | Hop | Device port | Guests |
 |-----|-------------|--------|

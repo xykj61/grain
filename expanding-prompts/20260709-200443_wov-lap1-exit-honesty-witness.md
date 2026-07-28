@@ -3,14 +3,14 @@
 **Stamp:** `20260709.200443`
 **Voice:** Rio 3
 **Status:** **Landed** `20260709.200729` — parity **201**; in-memory book + golden + witness GREEN
-**Ground:** exit-honesty spec [`context/specs/20260709-200443_wov-exit-honesty.md`](../context/specs/20260709-200443_wov-exit-honesty.md) · July 2 ledger map · MALA M2 landed
+**Ground:** exit-honesty spec [`context/specs/20260709-200443_wov-exit-honesty.md`](../context/specs/20260709-200443_wov-exit-honesty.md) · July 2 ledger map · MUR M2 landed (was MALA)
 
 ---
 
 ## DoD (when opened)
 
 1. Build exit bundle for a tiny in-memory book (two accounts, mint + one transfer).
-2. Append `wov:root` to a local MALA log; signatures verify.
+2. Append `wov:root` to a local MUR log (was MALA); signatures verify.
 3. Holder proves balance from bundle + root alone.
 4. `wov:exit` accepted once; second exit for same `(instance, account, seq)` refused.
 5. `tools/wov_exit_honesty.rish` GREEN; wired into parity.

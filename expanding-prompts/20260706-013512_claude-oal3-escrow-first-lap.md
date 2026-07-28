@@ -20,7 +20,7 @@
 
 **Git.** GPG-sign every commit (`.claude/rules/git-signing.md` — never `--no-gpg-sign`, never `--no-verify`). Exclude `linengrow/bin/` and `comlink/.build/` (now in `.gitignore`). Ship the session log in the **same commit** as the work.
 
-**Stop-and-park.** Lap 1 only — local log, one witness, parity **158**. No OA-L3 device wire (lap 2), no MALA module home, no external chain, no sourcing-discipline canon unless Kaeden asks separately.
+**Stop-and-park.** Lap 1 only — local log, one witness, parity **158**. No OA-L3 device wire (lap 2), no MUR module home (was MALA), no external chain, no sourcing-discipline canon unless Kaeden asks separately.
 
 ---
 
@@ -183,7 +183,7 @@ rishi/bin/rishi run tools/two_rooms_doorway.rish
 - OA-L3 lap 2 — escrow facts over Comlink device wire
 - OA-L4 — reputation fold
 - SLC-L3 settlement rail
-- MALA module graduation
+- MUR module graduation (was MALA)
 - Sourcing-discipline `context/` note
 
 ---
