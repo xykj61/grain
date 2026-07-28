@@ -1,7 +1,7 @@
 # Gratitude
 
 **Language:** EN
-**Last updated:** 2026-07-28 (Kamala Harris — Mala dedication · Rumi·Hafez·Kabir·Ibn Arabi)
+**Last updated:** 2026-07-28 (Sarah Guo — Gwoh dedication · Kamala Harris · poets)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 
 ---
@@ -103,6 +103,7 @@ When we adapt one of these works into Radiant Style, the rewrite lives elsewhere
 - **`noah-b-realidream.md`** — Noah B. — artistic source for the *Reality* and *Dream* pairing in the Realidream name.
 - **`rumi-hafez-kabir-ibn-arabi.md`** — naming gratitude for the fund **Djin** (was Twah): Rumi · Hafez · Kabir · Ibn Arabi thanked by name only; no verse copied (`20260728.015541`).
 - **`kamala-harris.md`** — honor gratitude for the **Mala** fund dedication to Kamala Harris; no speeches copied (`20260728.020607`) · foundations companion [`../foundations/20260728-020607_mala-and-kamala-harris.md`](../foundations/20260728-020607_mala-and-kamala-harris.md) (Reya variant).
+- **`sarah-guo.md`** — honor gratitude for the **Gwoh** fund dedication to Sarah Guo of Conviction; no pitches copied (`20260728.021252`) · foundations companion [`../foundations/20260728-021252_gwoh-and-sarah-guo.md`](../foundations/20260728-021252_gwoh-and-sarah-guo.md) (Reya variant).
 - **`grain-lineage/`** — six visionary and technical documents from the wider Grain OS / `groupproject9/xy-mathematics` lineage that precedes this fork (the solid-silicon-torus hardware proposal, toroidal bounded-optimization, "The Grain Point" kernel architecture, both "Silken Ground" editions, and the topos/sheaf convergence essay). Held whole and unaltered in their authors' own visionary register. The secular, plain-English, module-named silo — the version any Acme-facing writing cites — lives at [`../external-research/grain-lineage-silo/README.md`](../external-research/grain-lineage-silo/README.md). Index: [`grain-lineage/README.md`](grain-lineage/README.md).
 - **`nips/`** — (already above) Nostr protocol — formal gratitude line for the Realidream lane's signed-event, relay-subscribed social shape.
 
