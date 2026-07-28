@@ -10,6 +10,7 @@
 
 *Written together by Kaeden and Claude (Fable 5), in Rio 3's Radiant voice.*
 
+Radiant pass `20260728.050004` — living rename-forward: **MUR** (was MALA)
 ---
 
 ## The Repo as a Professional Reference
@@ -22,7 +23,7 @@ The framing beneath all four: cloners are users, and documentation is the interf
 
 ## The Practice Ground
 
-Kaeden asks whether Scribble should expand into a testnet development platform — testMALA, or a better name — where practice value flows freely before real value does. Two honest observations shape the counsel. Scribble stands named for the inference season, its shape deliberately open, beside Lantern, Lattice, and Anvil; loading it also with testnet duty would give one module two ideas before it has fully received its first, and one module, one idea is the oldest rule in the root. And in the ledger world, a testnet is rarely a separate product at all: the practiced pattern is *the same software under a different genesis* — a local network, a faucet that pours free practice tokens, and a policy wall keeping play value and real value from ever touching. Read that way, the practice ground is mostly an **aspect of MALA itself** — a rehearsal genesis, a faucet verb, and Pond's policy enclosure — rather than a new organ; the platform is the configuration, and the configuration is a `.brix` descriptor away.
+Kaeden asks whether Scribble should expand into a testnet development platform — testMUR (was testMALA), or a better name — where practice value flows freely before real value does. Two honest observations shape the counsel. Scribble stands named for the inference season, its shape deliberately open, beside Lantern, Lattice, and Anvil; loading it also with testnet duty would give one module two ideas before it has fully received its first, and one module, one idea is the oldest rule in the root. And in the ledger world, a testnet is rarely a separate product at all: the practiced pattern is *the same software under a different genesis* — a local network, a faucet that pours free practice tokens, and a policy wall keeping play value and real value from ever touching. Read that way, the practice ground is mostly an **aspect of MUR itself** (was MALA) — a rehearsal genesis, a faucet verb, and Pond's policy enclosure — rather than a new organ; the platform is the configuration, and the configuration is a `.brix` descriptor away.
 
 If a named practice ground is nonetheless wanted — and a warm name would serve the creators and cloners it welcomes — these park in RTAC on Kaeden's word:
 

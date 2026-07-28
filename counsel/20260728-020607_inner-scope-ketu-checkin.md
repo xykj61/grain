@@ -1,4 +1,4 @@
-# Inner Scope — Ketu · Mala dedication · executives check-in
+# Inner Scope — Ketu · Mala dedication · executives check-in (historical Kamala; living Murr·Kyler)
 
 **Stamp:** `20260728.020607`
 **Voice:** Quin  
@@ -11,7 +11,7 @@
 | Seat | Standing |
 |------|----------|
 | Keeh (was Ketu) | **Aquarius · 11** · executive Keaton |
-| Mala | dedicated to **Kamala Harris** (honor) |
+| Mala (historical) | dedicated to **Kamala Harris** (honor); living Aries **Murr·Kyler** |
 | Siya | **executor Sara** |
 | Djin | **executive DJINN** |
 | Outer | still paused m8/m9 |

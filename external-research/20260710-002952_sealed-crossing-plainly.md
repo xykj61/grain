@@ -69,7 +69,7 @@ Crossing-manifest seed (parity **151**) graduated into `amphora/manifest_entry.r
 
 ## Neighbors Keep Their Rooms
 
-Bron = letter (one record). Amphora = crate (many). MALA = coin inside. Comlink = sea. Kumara = stamp. Amber = cellar left and returned to. Granary = weave-sharing surface (name seated). Mandi = vessel market floor (name seated). Pond = customs at receipt. No duty overlaps.
+Bron = letter (one record). Amphora = crate (many). MUR = coin inside (was MALA). Comlink = sea. Kumara = stamp. Amber = cellar left and returned to. Granary = weave-sharing surface (name seated). Mandi = vessel market floor (name seated). Pond = customs at receipt. No duty overlaps.
 
 ---
 

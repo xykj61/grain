@@ -16,7 +16,7 @@ m0 bow landed. Choir 17/17 GREEN. Fund order affirmed. Stack mapped prep-only. F
 
 | # | Lean | Why |
 |---|------|-----|
-| A | **kg m1** — Mala fund prep | mala.fund checklist · MALA kinship · first prin→Comlink stub |
+| A | **kg m1** — Murr fund prep (was Mala) | murr.fund checklist · MUR kinship · first prin→Comlink stub |
 | B | Seat season_name | lean *Constellation* |
 | C | Circle fascia_fold | fold into Constellation or parallel |
 | D | Domain claims | mala.fund · djin.fund · siya.fund — his hand |
