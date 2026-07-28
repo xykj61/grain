@@ -22,7 +22,8 @@
 **Rename overwrite:** **Mala / MALA / `%mala` → Murr / MUR / `%murr`**.  
 **Breach (content): approved · seated** `20260728.043539`. Living code doors **LIVE as `murr_*`**.  
 **Breach (filename): approved · seated** `20260728.063848` — `git mv` + same-motion path re-points.  
-Fascia **shred** still waits circled shred yes — distinct from both rename breaches.  
+**Fascia prune** seated `20260728.064546` — sameness/smallness/tensegrity hygiene without shred.  
+Fascia **shred** still waits circled shred yes — distinct from rename and from prune.  
 WOV retirement stays **roadmap last**. No live deploy · wallet · gas · private key.
 
 ---
