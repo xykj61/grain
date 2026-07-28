@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260727.233109` — [Sound Season r13 · Arc V public keys standing](20260727-233109_sound-season-r13.bron) — IDENTITY-GREEN · key_card SKIP · private CLEAN
 - `20260727.232842` — [Sound Season r12 · Arc IV Mantra–Weave battery](20260727-232842_sound-season-r12.bron) — 7/7 GREEN · Arc IV exits
 - `20260727.232702` — [Sound Season r11 · Arc IV twin-fold pane](20260727-232702_sound-season-r11.bron) — 530 TWIN / 551 · 1 RED owned · digraph GREEN
 - `20260727.231957` — [Sound Season r10 · Arc IV parity weave standing](20260727-231957_sound-season-r10.bron) — short GREEN · wasmtime ABSENT · parity2 PARKED

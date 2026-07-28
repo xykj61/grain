@@ -1,0 +1,15 @@
+format session-log-v1
+stamp 20260727.233109
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu GNOME Wayland Framework 16 AMD — Eastern (EDT)
+title Sound Season r13 Arc V public keys standing
+prompt kg
+think Open Arc V with public-only key pane; never touch private halves
+think identity_check IDENTITY-GREEN ssh=4 pgp=2; PUBKEYS surfaces present; keys/ public only
+think key_card_audit SKIP — no key-card.conf on pier; example only; host-local by design
+think Private key block scan CLEAN; Azimuth and Kumara seats named in PUBKEYS
+obs sh vs bash on key_card_audit pipefail — invoke with bash; conf absence is owned SKIP not RED
+file counsel/20260727-233109_sound-arc-v-public-keys-standing.md declaration
+recommend keep-going Arc V r14 polish or early r15 saga of the end draft report

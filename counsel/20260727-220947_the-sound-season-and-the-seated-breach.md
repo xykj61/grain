@@ -7,6 +7,7 @@
 **Ground:** Radiant Lint Season bow + rounds 1–4 already measured (`20260727.213740` · r1–r4); Glow Season closed on the workshop lane; g0–g15 bench relays still queued; breach law [`../context/BREACH.md`](../context/BREACH.md) · foundations [`../foundations/20260726-020537_the-breach.md`](../foundations/20260726-020537_the-breach.md)
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260727.233109` — round 13 Arc V public keys standing; IDENTITY-GREEN
 Radiant pass `20260727.232842` — round 12 Arc IV Mantra–Weave battery 7/7; Arc IV exits
 Radiant pass `20260727.232702` — round 11 Arc IV twin-fold pane; 530 TWIN / 551
 Radiant pass `20260727.231957` — round 10 Arc IV parity weave standing inventory
@@ -176,6 +177,10 @@ Arc IV twin-fold pane: latest-wins T1–T7 · **551** unique · **530 TWIN** · 
 ### Round 12 landed (`20260727.232842`)
 
 Arc IV Mantra–Weave sample battery **7/7 GREEN** · **Arc IV exits**. Motion: [`20260727-232842_sound-arc-iv-mantra-weave-battery.md`](20260727-232842_sound-arc-iv-mantra-weave-battery.md). Reply: [`replies/20260727-232842_re-sound-season-r12.md`](replies/20260727-232842_re-sound-season-r12.md). Next door: Arc V personal-server keys (public only) toward saga close.
+
+### Round 13 landed (`20260727.233109`)
+
+Arc V opens: `identity_check` **IDENTITY-GREEN ssh=4 pgp=2** · PUBKEYS surfaces present · private-half scan CLEAN · `key_card_audit` SKIP (no host conf). Motion: [`20260727-233109_sound-arc-v-public-keys-standing.md`](20260727-233109_sound-arc-v-public-keys-standing.md). Reply: [`replies/20260727-233109_re-sound-season-r13.md`](replies/20260727-233109_re-sound-season-r13.md).
 
 ---
 
