@@ -220,6 +220,12 @@ Full loop bounds: [`work-in-progress/ready-to-ask-claude.md`](../work-in-progres
 
 | **Vegan-dogfood** | Seated `20260727.131234` on Keaton's word — eating our own cooking, kindly: proving the Glow stdlib and `src/` rooms by building our own apps on them first. The only acceptable use of the word "dogfood" in this tree. |
 | **Anvil (retired)** | Retired with honor `20260727.131234` on Keaton's word — the app rests, never deleted, its name released in tribute to Anvil of [debrided]; the tribute lands in the Magazine's first issue (Nakshatra Arc V). |
+| **along our grain** | Adapting an outside teaching to the house's own laws and vocabulary as it is siloed — the direction of the wood, never against it. Seated `20260728.011055`. |
+| **following our compass** | Working by the repo's own governing documents — Radiant, TAME, Quin, foundations — as the standing reference. Seated `20260728.011055`. |
+| **fascia** | The weave's connective-tissue grade, 0–100: a difficulty-style measure of how knit or how ripe-for-pruning the tree stands; shredding completes when fascia reattaches at or above its baseline with parity proven. Seated `20260728.011055`. |
+| **generators** | The default name for rishi scripts: they generate — witnesses, scans, relays — and live in `gen/` homes wherever one makes sense. Seated `20260728.011055`. |
+| **Amphora** | Amber's vessel-sibling: the module lane for shredding with parity — a resin records the jump from the last event before an undesired change to the proven completion of its shred. Seated `20260728.011055`. |
+| **Trey** | The documentary voice — Quin's memoirist sibling, the videographer of the creative process; Bashō-brief, Miller-frank, timenergy-aware. Seated `20260728.011055`. |
 
 ---
 
