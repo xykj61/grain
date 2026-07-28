@@ -11,4 +11,4 @@ assert polish.ok else "inner-i2 prose polish RED — see stderr"
 assert polish.out contains "GREEN: inner-i2" else "inner-i2 missing GREEN line"
 say polish.out
 
-say "GREEN: inner-i2 — Twah→Djin prose polish complete; gen_djin still GREEN."
+say "GREEN: inner-i2 — Twah→Djin prose polish complete; gen_gren still GREEN."
