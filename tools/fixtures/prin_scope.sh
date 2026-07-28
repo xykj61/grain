@@ -11,7 +11,7 @@ Prin scope — seasons · Tally · rish vocabulary
   scope:  named bound of work (season · Tally garden · Prin/rish view)
   outer:  Constellation Season — PAUSED at m8 complete / m9 next
   inner:  Inner Scope Season — PAUSED at i6 complete / i7 next (fascia)
-  innermost: MUR Season — OPEN · u63 complete / u64 next (unify choir GREEN · design 0–5 done)
+  innermost: MUR Season — OPEN · u64 complete / u65 next (check-in · unify design done · queue empty)
   core:   Gren Season — CLOSED · handed back · lean-16 complete
   fund_triad: Murr · Gren · Siya (living)
   quint:  Keeh Season — CLOSED · handed back
@@ -39,6 +39,6 @@ Prin scope — seasons · Tally · rish vocabulary
   voice:  six variants — Reya · Riyo · Trey · Triz · Quin · Trya (Quin stands)
   charter: counsel/20260728-025220_the-mur-season-innermost-charter.md
   geode_charter: counsel/20260728-031722_the-geode-season-charter.md
-  seat:   counsel/20260728-062451_mur-season-u63-wov-unify-choir.md
+  seat:   counsel/20260728-062656_mur-season-check-in-u64.md
   warn:   u126/u127 extend innermost · return inner i7 · or other · d14/d15 extend 32|64|128 or handback
 EOF

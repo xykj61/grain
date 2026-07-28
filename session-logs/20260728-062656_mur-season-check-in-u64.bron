@@ -1,0 +1,15 @@
+format session-log-v1
+stamp 20260728.062656
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title MUR Season check-in at u64
+prompt waymark u63 complete u64 next — residual/check-in asks none
+think Affirm design 0-5 GREEN and empty ungated unify queue.
+think Scan living hot paths for mala residual — only intentional was-MALA held.
+think Seat check-in counsel naming doors without urging.
+obs Residual CLEAR; dual-accept and retirement held; report only.
+file counsel/20260728-062656_mur-season-check-in-u64.md check-in seat
+file tools/fixtures/prin_scope.sh waymark u64/u65
+recommend check-in doors named — dual-accept geode return or kg residual if named

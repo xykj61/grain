@@ -1,7 +1,8 @@
 # MUR Season — u0 Recursion Prompt (printout · all scopes kept)
 
-**Stamp:** `20260728.025220` · Radiant pass `20260728.062451`  
+**Stamp:** `20260728.025220` · Radiant pass `20260728.062656`  
 **Use:** paste the fenced block as the next counsel/bench session opener.  
+Radiant pass `20260728.062656` — u64 check-in · unify queue empty · u65 next  
 Radiant pass `20260728.062451` — u63 unify choir GREEN · design 0–5 done · u64 next  
 Radiant pass `20260728.062201` — u62 murr:book-root aliases · living wov:* held · u63 next  
 Radiant pass `20260728.062029` — u61 dual-digest keep-both · payment-v2 held · u62 next  
@@ -92,7 +93,7 @@ INNERMOST SCOPE (this season — walk here):
   Lexicon: scope·outer·inner·innermost·core·quint · MUR · Murr · retired Mala/MALA · Gren living.
   Prin: rishi/bin/rishi run tools/prin.rish scope
   gen_murr GREEN · deploy RED; gen_gren GREEN (core closed door); gen_mala ABSENT.
-  u0–u63 COMPLETE · unify design 0–5 GREEN · choir GREEN · u64 residual/check-in next.
+  u0–u64 COMPLETE · unify design 0–5 GREEN · check-in seated · u65 doors/check-in next.
   TOP PRIORITY: rename overwrite everywhere Mala/MALA → Murr/MUR (breach approved seated).
   Fascia shred still needs separate circled yes. WOV retire roadmap last.
   Wave map: counsel/20260728-044738_mur-season-u6-tool-module-wave-map.md
@@ -131,8 +132,9 @@ INNERMOST SCOPE (this season — walk here):
   Dual-digest: counsel/20260728-062029_mur-season-u61-settle-dual-digest.md
   Exit names: counsel/20260728-062201_mur-season-u62-exit-honesty-names.md
   Unify choir: counsel/20260728-062451_mur-season-u63-wov-unify-choir.md
+  Check-in u64: counsel/20260728-062656_mur-season-check-in-u64.md
   Living pin: tools/fixtures/prin_scope.sh innermost waymark kept current.
-  Rename HARDENED; design 0–5 GREEN; keep-both; book-root aliases; wov:* wire; no WOV delete.
+  Rename HARDENED; design 0–5 GREEN; queue empty; keep-both; book-root aliases; wov:* wire; no WOV delete.
   Kamala/Mala gratitude = historical; living Aries = Murr·Kyler.
   u126 and u127 MUST warn before handback (extend innermost · return inner i7 · other).
 
