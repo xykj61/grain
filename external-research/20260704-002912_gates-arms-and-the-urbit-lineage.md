@@ -11,6 +11,7 @@
 
 *Written in Rio 3's Radiant voice, for Kaeden and every future sitter.*
 
+Radiant pass `20260728.050430` — living rename-forward: **MUR** / **Murr** (was MALA / Mala)
 ---
 
 ## Part One — Three Gate Families in Our Tree (None of Them Hoon)
@@ -103,7 +104,7 @@ The earlier harvest (`211312`) already ruled: **carry concepts, park their names
 2. **Shape-cast** — prove bytes match declared type before trust (Urbit `vale` / `+noun` lesson, our vocabulary).
 3. **Itinerary gate** — precondition language for autonomous agents (seated as **gate** in LEXICON with travel/checkpoint metaphor).
 4. **Witness gates** — the growing lint surface (`tools/*_witness.rish`, `tame-check.rish`).
-5. **Precious gate** — ordering economics (bench, Mycelium, MALA ladder) — keep the metaphor, document that it is economic not syntactic.
+5. **Precious gate** — ordering economics (bench, Mycelium, MUR (was MALA) ladder) — keep the metaphor, document that it is economic not syntactic.
 
 **Optional hygiene (Kaeden-gated):** one row in [`reserved-vocabulary.md`](../context/specs/reserved-vocabulary.md) holding **arm** and **door** (Hoon sense) as *study-only, never API*; a LEXICON cross-link under **Gate** pointing here for Urbit readers.
 

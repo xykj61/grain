@@ -1,5 +1,7 @@
 # Three Doors and Teacher — Uncompressed Seam Counsel
 
+Radiant pass `20260728.050430` — living rename-forward: **MUR** / **Murr** (was MALA / Mala)
+
 *Claude Fable 5 answered the tip-430 check-in: the wire has three doors, not two; Spritely is teacher now and ally only after a two-sided witness. This note records that counsel and the disposition Kaeden affirmed — four study items on the RTAC itinerary, two rulings parked, green work stays green.*
 
 **Stamp:** `20260712.052806`
@@ -45,7 +47,7 @@ Radiant pass `20260725.104506`
 1. **OCapN idiom beside Comlink** — Door 1; unlocks Door 3 design notes
 2. **Component-model target for one existing seed** — Wasm/component seam; “anywhere” before bare metal
 3. **Genode / seL4 guest witness for Rye userland** — proven seat; Caravan stays horizon
-4. **GNU Taler read for Linengrow’s giving lane** — payer privacy · payee transparency; complements USDsui / MALA, does not replace them
+4. **GNU Taler read for Linengrow’s giving lane** — payer privacy · payee transparency; complements USDsui / MUR (was MALA), does not replace them
 
 ## What this does not change
 

@@ -11,6 +11,7 @@
 
 *Written by Rio 3 for Kaeden.*
 
+Radiant pass `20260728.050430` — living rename-forward: **MUR** / **Murr** (was MALA / Mala)
 ---
 
 ## The Question, Named at Its Door
@@ -141,7 +142,7 @@ What belongs inside the **largest honest export** — the bounded union of every
 - Kumara-signed **archive log** copy on the export medium (self-describing drive law).
 - Verification records through export stamp.
 
-**Explicitly outside lap-one maximum** (vision room until claimed): live Comlink peers, GPU state, hosted Wayland metalsmoke, warm MALA balances on WOV — each needs its own lap and witness.
+**Explicitly outside lap-one maximum** (vision room until claimed): live Comlink peers, GPU state, hosted Wayland metalsmoke, warm MUR (was MALA) balances on WOV — each needs its own lap and witness.
 
 ---
 

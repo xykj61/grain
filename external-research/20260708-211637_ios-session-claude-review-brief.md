@@ -9,6 +9,7 @@
 
 *Written for Claude counsel review.*
 
+Radiant pass `20260728.050430` — living rename-forward: **MUR** / **Murr** (was MALA / Mala)
 ---
 
 ## Executive Landscape
@@ -114,7 +115,7 @@ Seven fields: `log_digest`, `chain`, `asset`, `tx_id`, `amount`, `fact_stamp`, `
 ### Explicitly out of scope
 
 - Mainnet treasury / real funds
-- MALA mint
+- MUR (was MALA) mint
 - Prose crown of lane winner — counsel `041000` holds that for Kaeden after witness scores
 
 ---
@@ -153,7 +154,7 @@ Full `parity.rish` hung once on OA-L5 demo (>15m) during early SLC-L3 pass — k
 | Agent-writing paste | Awaiting paste |
 | Snapshot lap 4 | Kaeden's hands at a machine |
 | Astrology lane | Declined this season |
-| MALA graduation | Trigger decides (OA-L4 ruling) |
+| MUR (was MALA) graduation | Trigger decides (OA-L4 ruling) |
 | Brix build · Pond policy · continuity rules | Each waits its foundation |
 
 ---

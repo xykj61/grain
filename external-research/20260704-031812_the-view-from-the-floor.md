@@ -9,6 +9,7 @@
 
 *Written together by Kaeden and Claude (Fable 5), in Rio 3's Radiant voice.*
 
+Radiant pass `20260728.050430` — living rename-forward: **MUR** / **Murr** (was MALA / Mala)
 ---
 
 ## Why Lostness Is Honest Data
@@ -33,7 +34,7 @@ In roughly thirty hours the tree seated a resins law, wired chrono into parity, 
 
 **Brushstroke and Skate** hold the drawn terminal through its hosted laps — the Wayland seam is a hosted backend, named plainly as such — while the sovereign backend, Aurora freestanding, Maitreya's clock over audio and video, and Realidream's surface stand in the vision room, named in design and awaiting their seasons. Saying they run today would collapse the rooms; this page keeps the door.
 
-**MALA and WOV** hold the money floor exactly as the ladder counsels: fixed nouns, fixed verbs, invariants in the engine, the monarch rule over the L2, rungs climbed by demand. **Pottery** is now the seated name of the value-object horizon above that floor — thrown while owned, fired when sealed, `.pott` when source arrives — and it waits, correctly, for a measured red.
+**MUR (was MALA) and WOV** hold the money floor exactly as the ladder counsels: fixed nouns, fixed verbs, invariants in the engine, the monarch rule over the L2, rungs climbed by demand. **Pottery** is now the seated name of the value-object horizon above that floor — thrown while owned, fired when sealed, `.pott` when source arrives — and it waits, correctly, for a measured red.
 
 **Comlink, Pond, and Puddle** carry, enclose, and bound: the sea, the customs house, the vessel. Marks at the lanes and policy-per-Tilak at receipt are designed and unbuilt — checkable as designs in the tree, honest as futures.
 

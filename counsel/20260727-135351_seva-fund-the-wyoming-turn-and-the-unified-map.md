@@ -8,6 +8,7 @@
 
 *Written together by Keaton and Quin.*
 
+Radiant pass `20260728.050430` — living rename-forward: **MUR** / **Murr** (was MALA / Mala)
 ---
 
 ## Seated by Keaton's Word This Round
@@ -37,7 +38,7 @@ The happy zone stays the thin edge: **collaboration witnesses at every module se
 | Verse & choir | 549-script twin campaign complete; guards seated | choir word; column-law linter |
 | Glow userland | `src/` five rooms + placard law; PLEAC 1.1 green | recipe 1.2 (the speaking value); residents on words |
 | Kumara | study · sketch · seam · walk (four papers) | tilak names; topology paper (Arc III of this season) |
-| MALA · WOV | merit ledger foundation; nib-honesty witness live | merit unit word; Cloverfold lesson three |
+| MUR (was MALA) · WOV | merit ledger foundation; nib-honesty witness live | merit unit word; Cloverfold lesson three |
 | Mandi | jurisdiction template; moderation & outfits charted | outfits research round (Arc V) |
 | Companies | **Siya Fund PBC (WY) seated in intention; Grain Energy PBC amended to WY**; three domains/handles claimed by the right hands | the two filings, by their own hands, attorney-confirmed |
 | Edu & voice | cookbook open; series plan; Riyo recorded | Bashō walkthrough shipped (this paste); lesson zero on app_name |

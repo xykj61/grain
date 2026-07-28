@@ -5,6 +5,7 @@
 **Style:** Radiant (see `context/RADIANT_STYLE.md`)
 **Status:** Proposed ordering — research for understanding / counsel. Rung sequence is a recommendation; Kaeden words which open.
 
+Radiant pass `20260728.050430` — living rename-forward: **MUR** / **Murr** (was MALA / Mala)
 ---
 
 The rungs are grouped by what they wait on. Within a group, order is by smallest-first. Each rung names its blocker plainly, so the tree can see what unlocks what. Nothing here is seated; this is the map, not the march.
@@ -43,7 +44,7 @@ These wait on modules already named but not yet grown to the needed rung.
 
 Named destinations that orient the near work, built only when their whole ground holds.
 
-- **D1 · Mesh inference (TAME-guided)** — pooled compute admitted by Kumara pass, metered by MALA, priced by Mandi, booked by Dimeroll. **Blockers: C1 (Comlink), C3 (Mycelium/M4), the seL4 seat, and a model-runtime gratitude seam not yet begun.** Simmer.
+- **D1 · Mesh inference (TAME-guided)** — pooled compute admitted by Kumara pass, metered by MUR (was MALA), priced by Mandi, booked by Dimeroll. **Blockers: C1 (Comlink), C3 (Mycelium/M4), the seL4 seat, and a model-runtime gratitude seam not yet begun.** Simmer.
 - **D2 · Caravan microkernel horizon** — Rye as a Genode parent, the seat fully our own. **Blockers: the full B and C groups.**
 - **D3 · Puddle** — sandboxed Rye guests with their own Pond and Kumara, KVM through the `lane_kvm` gate. **Blockers: A3, B-group, Pond superseding ai-jail.**
 - **D4 · OCapN consumer edge** — pass-shaped reads at the boundary, the Spritely study's conclusion. **Blocker: the OCapN study landing; Comlink at C1.**

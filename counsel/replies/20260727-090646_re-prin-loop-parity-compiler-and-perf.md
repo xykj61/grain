@@ -11,6 +11,7 @@
 
 *Written together by Keaton and Quin.*
 
+Radiant pass `20260728.050430` — living rename-forward: **MUR** / **Murr** (was MALA / Mala)
 ---
 
 ## What landed (metal)
@@ -71,7 +72,7 @@ Keaton sketches a long arc and asks for counsel on shape and order, not a blank 
 
 1. **Reimplement in Glow** following the design patterns that already work — **PLEAC** success with Glow · **edu** success with Glow · stdlib and OS `src/` documentation with Glow · user flight-manual instructions for running and setting up with Glow.
 2. **Kumara ↔ Sui** interaction expressed in Glow (identity seam; purchases/wallets/custody stay Keaton’s own hand — design papers only).
-3. **Plan** (not begin) a **Glow DSL** that transpiles to **Move** for Sui, nested in one of our vanes, with best practices for **Glow · Sui · Mycelium · MALA · WOV** smart-contract shape — a Quin Radiant TAME Glow DSL spanning **Grain DLT** and **Sui DLT**.
+3. **Plan** (not begin) a **Glow DSL** that transpiles to **Move** for Sui, nested in one of our vanes, with best practices for **Glow · Sui · Mycelium · MUR (was MALA) · WOV** smart-contract shape — a Quin Radiant TAME Glow DSL spanning **Grain DLT** and **Sui DLT**.
 
 **Ask:** Is this one arc or several? Which vane (or new coin) should host a Move-emit DSL if we ever seat it? What is the smallest honest first paper after Workshop Two’s Kumara rounds (study · contract shape · Acme-generic onboarding), and what must stay parked until Glow’s userland (`src/` · `edu/` · PLEAC) and the twin campaign close? Name the order: docs patterns → Kumara·Sui study → Move DSL hammock → any vane nest — or refuse the bundling.
 

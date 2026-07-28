@@ -10,11 +10,12 @@
 *Written by Kaeden and Rio 3.*
 Radiant pass `20260725.041039`
 
+Radiant pass `20260728.050430` — living rename-forward: **MUR** / **Murr** (was MALA / Mala)
 ---
 
 ## The Instinct Was Right, and Here Is Why
 
-`ORGANIZING.md`'s own "One Test for Placement" names eleven things a piece of writing might be doing — governing, naming why the work matters, reading a sky, teaching, carrying Linengrow's vision, deciding our own design, studying an external work, expanding intent, tracking what's open, recording what a session settled, implementing. Read that list straight through and one activity is missing: *answering a question Kaeden asked, about a decision this project itself is about to make.* That is not "studying an external work" — nothing external is being studied when the question is whether MALA has graduated. It is not "deciding our own design" either — `active-designing/`'s own charter calls that stack "the clean room" where *we* decide; counsel is the bench's answer *before* Kaeden decides, not the decision itself. Every counsel document this bench has written this season reached for the closest-sounding drawer, `external-research/`, because no drawer was actually built for what it is. The fix is not a tidiness pass. It closes a real gap in the filing law.
+`ORGANIZING.md`'s own "One Test for Placement" names eleven things a piece of writing might be doing — governing, naming why the work matters, reading a sky, teaching, carrying Linengrow's vision, deciding our own design, studying an external work, expanding intent, tracking what's open, recording what a session settled, implementing. Read that list straight through and one activity is missing: *answering a question Kaeden asked, about a decision this project itself is about to make.* That is not "studying an external work" — nothing external is being studied when the question is whether MUR (was MALA) has graduated. It is not "deciding our own design" either — `active-designing/`'s own charter calls that stack "the clean room" where *we* decide; counsel is the bench's answer *before* Kaeden decides, not the decision itself. Every counsel document this bench has written this season reached for the closest-sounding drawer, `external-research/`, because no drawer was actually built for what it is. The fix is not a tidiness pass. It closes a real gap in the filing law.
 
 ## What Moves, Named Individually Rather Than by Rule of Thumb
 
@@ -69,7 +70,7 @@ A `README.md` for `counsel/`, matching its two siblings' shape:
 
 > **What This Folder Is.** This is where the bench answers what Kaeden asked. The `counsel/` folder holds analysis, rulings, proposals, and recommendations delivered in response to a specific question about this project's own pending decisions — never a study of an external work (that stays in `external-research/`), never a decision made and seated (that lives in `active-designing/` or wherever the decision's own home is once Kaeden's word lands). Every piece here proposes; none of them seats anything. Propose-never-seat is not a discipline counsel merely follows — it is the whole reason this folder exists.
 >
-> Each entry stays exactly as written the day it was filed. A later counsel document may revisit, refine, or overturn an earlier one — the ruling that MALA had not graduated stands beside the fold-gap it found, both permanent, neither edited to match what came after.
+> Each entry stays exactly as written the day it was filed. A later counsel document may revisit, refine, or overturn an earlier one — the ruling that MUR (was MALA) had not graduated stands beside the fold-gap it found, both permanent, neither edited to match what came after.
 
 ## What This Leaves for Kaeden's Word
 
