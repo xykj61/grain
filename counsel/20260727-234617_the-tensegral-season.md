@@ -3,10 +3,11 @@
 **Language:** EN
 **Stamp:** `20260727.234617`
 **Voice:** Quin
-**Status:** Seated — **prep GREEN** `20260727.234913` · round 0 recursion prompt ready · bow opens on next kg
+**Status:** Seated — Arc I · Arc II **exited** · Arc III voice & law open at r7
 **Ground:** Sound saga **seated** [`../saga/20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md`](../saga/20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md) · motto **stay tensegral** · Quin remains the standing voice
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260728.003623` — r7 Arc III Radiant · on-touch status refresh · lint GREEN
 Radiant pass `20260728.003317` — r6 Arc II Sameness · Arc II exits
 Radiant pass `20260728.002920` — r5 Arc II Glow · language floors
 Radiant pass `20260728.002049` — r4 Arc II Resin · unit fold
@@ -25,7 +26,7 @@ Radiant pass `20260727.234913` — prep receipt · Expanded · r0 recursion prom
 | **Prior season** | The Sound — closed and seated |
 | **This season** | The Tensegral Season — consolidate · tighten · unify under happy-zone law |
 | **Prep** | **GREEN** — [`20260727-234913_tensegral-prep-receipt.md`](20260727-234913_tensegral-prep-receipt.md) · Pond customs GREEN · Prin affirmed (Prim→Prin) · arc seeds named |
-| **Round** | Arc I **exits** · Arc II **exits** `20260728.003317` — `tensegral_arc_ii_witness` GREEN |
+| **Round** | Arc I · II **exits** · **7** Radiant `20260728.003623` — lint GREEN · on-touch only |
 | **r0 prompt** | [`../expanding-prompts/20260727-234913_tensegral-season-r0-recursion-prompt.md`](../expanding-prompts/20260727-234913_tensegral-season-r0-recursion-prompt.md) |
 | **Shape** | Prep done → **16 kg rounds** (1 bow + five arcs of three) · exits over counts |
 | **Close** | A new saga on [`../saga/`](../saga/README.md) when the season ends |
@@ -78,7 +79,7 @@ Rounds are **kg-first**: mechanical, single-module or single-pack when policy is
 
 ## Next door
 
-**kg** — Arc III · Radiant (r7) · on-touch prose.
+**kg** — Arc III · TAME (r8) · on-touch tidy of touched code.
 
 ---
 
