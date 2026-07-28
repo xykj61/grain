@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.041904` — [Gren Chapter g10 residual](20260728-041904_gren-season-g10-residual.bron) — residual empty×3 · g11 next
 - `20260728.041353` — [Gren Chapter g9 residual](20260728-041353_gren-season-g9-residual.bron) — residual empty×2 · g10 next
 - `20260728.041234` — [Gren Chapter g8 residual](20260728-041234_gren-season-g8-residual.bron) — residual OPEN · empty×1 · g9 next
 - `20260728.041118` — [Gren Chapter g7 spotcheck](20260728-041118_gren-season-g7-spotcheck.bron) — empty×4 · spot block CLOSED · g8 next
