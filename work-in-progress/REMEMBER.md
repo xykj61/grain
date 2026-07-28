@@ -6,14 +6,14 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260728.193730` (EDT) · voice Quin  
+**Last refreshed:** `20260728.193914` (EDT) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2 · ring-3** · **THREATS** · **five pillars** · **accrete tiers** · **redaction stance** · **always-in-it rhythm** · **Prin / %prin** · **sundial**  
 **Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list1024 · Env512 · **stamp @u64 · Crockford** · **shape aura floor** · **Glow text floor GREEN** · **Glow Book weave GREEN (C2b)** · **baked-sample Acme gloss** · **vegan-dogfood** (never bare dogfood)  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand home** · **siblings seated** · **--cursor launch** · **Pond counsel 161616** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm+cold REPORT** · **Grain umbrella living** · **OQ #1 · #3 · #4 · #5 answered** · **pass ledger** · **campaign STOPPED** · **growth law** · **wasmtime ABSENT** · **monocypher 4.0.3 GREEN** · **MAP.md** · **breach T3–T4** · **U·V·I** · **C-Ladder C1·C2·C2b landed** · **r18 say/lint twin** · **r21 Verse · O1** · **r22 outside eyes** · **Prin** · **corpus twin fold seated (Sound r11)** · **C3–C5 await homes**  
-**Git nib:** `PENDING` · Grain · **Generator** s8 check-in · autoproject96/grain
-**Bookmark:** [`counsel/20260728-193730_generator-season-check-in-s8.md`](../counsel/20260728-193730_generator-season-check-in-s8.md)
+**Git nib:** `70bc05312a` · Grain · **Surface** p0 · sept open · autoproject96/grain
+**Bookmark:** [`counsel/20260728-193914_surface-season-p0-bow-recommendations-seated.md`](../counsel/20260728-193914_surface-season-p0-bow-recommendations-seated.md)
 
-**Season:** Framework · EDT · **Grain** · **finishing edge:** **sext Generator** — s8 check-in · awaiting A·B·C · MUR **PAUSED** u91/u92 · shred RED · Gren CLOSED · Keeh CLOSED · Geode PREP · F undisturbed. Prefer **git nib**. · `prin scope`
+**Season:** Framework · EDT · **Grain** · **finishing edge:** **sept Surface** — p0 bow · Generator **PAUSED** s8/s9 · MUR **PAUSED** u91/u92 · shred RED · Geode PREP · OS horizon PARK · F undisturbed. Prefer **git nib**. · `prin scope`
 
 ---
 
@@ -26,8 +26,9 @@
 Fascia **shred** still waits circled shred yes — distinct from rename and from prune.  
 WOV retirement stays **roadmap last**. No live deploy · wallet · gas · private key.
 
-**Generator Season (sext)** seated `20260728.183510` — Glow · Rishi · Dojo spirit · generators · **s0–s63**. Handback lean `return_mur_u92`.  
-**Vocabulary:** if the eating-our-own-cooking sense appears, say **vegan-dogfood** only (lexicon seat `20260727.131234`).
+**Surface Season (sept)** seated `20260728.193914` — Shape **B** · Pond Glow GUI · Wayland · Brushstroke/`.brush` · vegan-dogfood · `src/sec` open · `src/web` refused · Genode/SixOS/Nix PARK. Handback `return_generator_s9`.  
+**Generator Season (sext)** **PAUSED** s8/s9 — handback when resumed `return_mur_u92`.  
+**Vocabulary:** **vegan-dogfood** only.
 
 ---
 
@@ -51,17 +52,19 @@ WOV retirement stays **roadmap last**. No live deploy · wallet · gas · privat
 
 | Door | Kind |
 |------|------|
-| **Generator Season s8** | **OPEN** · check-in seated · awaiting A·B·C (stay / pause+64 / pause+128) |
-| **Glow prep spine** | seated · vegan-dogfood in `src/` before GUI invent |
+| **Surface Season p1+** | **OPEN** · prep spine · thin `tools/gen/<family>/` next |
+| **Generator Season** | **PAUSED** s8/s9 · resume on Surface handback |
+| **Glow prep spine** | p1–p3 charted · vegan-dogfood before surface invent |
 | **MUR↔WOV unify design** | **0–5 GREEN** · dual-accept/retire held · MUR paused |
 | **Filename-rename breach** | **approved** u66 · residual map u67 · living CLEAR · fossils HOLD |
 | **Fascia prune** | **OPEN** · MUR paused u91/u92 · fascia 86 · shred RED |
 | **Parity / COLD** | **RED** two-rooms doorway · S3 hammock · H held |
 | Radiant pass | **on-touch only** |
 | Geode d0 | PREP parallel |
+| OS horizon (Genode · SixOS · Nix) | PARK · proven-seat parallel |
 | Pond seven · xykj61 · Acme · Brix name · data-dignity · succession · Mand ring-3 · breach two (other) · O3 gen-home | awaiting Keaton |
 
-**kg** = keep going mechanical (s-rounds). **check-in** = his word / design. remember ≠ send ≠ kg ≠ align.
+**kg** = keep going mechanical (p-rounds). **check-in** = his word / design. remember ≠ send ≠ kg ≠ align.
 
 ---
 

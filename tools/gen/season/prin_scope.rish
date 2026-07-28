@@ -7,7 +7,7 @@
 # Agents edit THIS file for waymark / seat / charter lines.
 # Old tools/prin_scope.rish is an accrete shim (Generator Season s4).
 
-say "prin-scope: Language EN — six-nest season slate."
+say "prin-scope: Language EN — seven-nest season slate."
 say "prin-scope: Style Radiant — print orientation; refuse shred/deploy."
 say "prin-scope: Lens TAME — living pin; tools/gen/season home (s4+)."
 
@@ -25,13 +25,16 @@ say "  innermost: MUR Season — PAUSED at u91 complete / u92 next (fascia prune
 say "  core:   Gren Season — CLOSED · handed back · lean-16 complete"
 say "  fund_triad: Murr · Gren · Siya (living)"
 say "  quint:  Keeh Season — CLOSED · handed back"
-say "  sext:   Generator Season — OPEN · s8 check-in / awaiting A·B·C (vegan-dogfood held)"
-say "  extend_or_return: return_mur_u92 (lean · seated at open 20260728.183510)"
+say "  sext:   Generator Season — PAUSED at s8 complete / s9 next"
+say "  sept:   Surface Season — OPEN · p0 complete / p1 next (Pond GUI · Wayland · vegan-dogfood)"
+say "  extend_or_return: return_generator_s9 (Surface lean · seated 20260728.193914)"
+say "  generator_handback: return_mur_u92 (when sext resumes)"
 say "  keeh_sponsor: Kia (South Korea) honor · design seat"
 say "  keeh_recommend: used 4-cyl hatch/SUV · non-CVT auto · light grey/beige cloth · CL/FB Marketplace"
 say "  shyu_sponsor: Hyundai (South Korea) honor · design seat"
 say "  shyu_recommend: used 4-cyl hatch/SUV · non-CVT auto · light grey/beige cloth · CL/FB Marketplace (same as Keeh)"
 say "  geode:  Geode Season — PREP · d0 next (docs-geode · crush=compile · wave=year)"
+say "  os_horizon: Genode · seL4 · SixOS · s6 · Nix — PARK (proven-seat parallel)"
 say "  year:   collection of seasons · all scopes (≠ civil calendar)"
 say "  wave:   fascial synonym of year"
 say "  crush:  compile (MUR · Tally · weave → docs-geode)"
@@ -48,10 +51,11 @@ say "  fund11: Keeh (was Ketu) · Aquarius · seat 11 · executive Keaton · Kia
 say "  sundial: prin sundial · tools/gen/season/sundial.rish — recursion confidence 0–100"
 say "  L1:     MUR (was MALA) · WOV unify · retire WOV roadmap last"
 say "  voice:  six variants — Reya · Riyo · Trey · Triz · Quin · Trya (Quin stands)"
-say "  charter: counsel/20260728-183510_the-generator-season-sext-charter.md"
+say "  charter: counsel/20260728-193914_the-surface-season-sept-charter.md"
+say "  generator_charter: counsel/20260728-183510_the-generator-season-sext-charter.md"
 say "  mur_charter: counsel/20260728-025220_the-mur-season-innermost-charter.md"
 say "  geode_charter: counsel/20260728-031722_the-geode-season-charter.md"
-say "  seat:   counsel/20260728-193730_generator-season-check-in-s8.md"
-say "  warn:   s62/s63 extend 128 · return_mur_u92 · or other · d14/d15 extend 32|64|128 or handback"
+say "  seat:   counsel/20260728-193914_surface-season-p0-bow-recommendations-seated.md"
+say "  warn:   p62/p63 extend 128 · return_generator_s9 · return_mur_u92 · or other"
 
-say "GREEN: prin-scope — six nests printed · living pin is .rish"
+say "GREEN: prin-scope — seven nests printed · living pin is .rish"

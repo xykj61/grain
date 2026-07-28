@@ -8,7 +8,8 @@
 **Informal tag:** innermost^6+ · nest-6  
 **Ground:** origin/main `418af54e73` (pre-send)  
 **Within:** paused **innermost** MUR (u91 complete / u92 next) · inside paused Inner Scope · inside paused Constellation  
-**Status:** **OPEN** · s0–s7 complete · **s8** evaluation seated `20260728.193058` · awaiting A·B·C  
+**Status:** **PAUSED** · s0–s8 complete · bookmark **s8 complete / s9 next** · paused for Surface Season (sept) `20260728.193914`  
+Radiant pass `20260728.193914` — Shape B seated · Generator pause · Surface sept opens  
 Radiant pass `20260728.193058` — s8 Pond GUI season evaluation · like aim · push back nested-128+OS  
 Radiant pass `20260728.192321` — s7 tools/gen/amphora home LIVE · eight scripts · shims  
 Radiant pass `20260728.191859` — s6 taxonomy fusion draft · two gens named · os/tes parked  
@@ -32,12 +33,14 @@ Radiant pass `20260728.183510` — sext opens · MUR paused · Glow/Rishi/Dojo r
 | **innermost** | MUR Season | **u91 complete / u92 next** | **PAUSED** |
 | **core** | Gren Season | lean-16 CLOSED · handed back | **CLOSED** |
 | **quint** | Keeh Season | lean-16 CLOSED · handed back | **CLOSED** |
-| **sext** | **Generator Season** | **s8** eval / awaiting A·B·C | **OPEN** |
+| **sext** | **Generator Season** | **s8** complete / **s9** next | **PAUSED** |
+| **sept** | Surface Season | p0 / p1 next | **OPEN** (steals the walk) |
 
-Handback lean (park until horizon): `extend_or_return=return_mur_u92`.  
-Warn **s62** and **s63**: extend to **128**, or return MUR **u92**, or other word he seats.
+Handback lean (when Generator resumes): `extend_or_return=return_mur_u92`.  
+Surface handback (while sept walks): `return_generator_s9`.  
+Warn **s62** and **s63** remain for when sext resumes: extend to **128**, or return MUR **u92**, or other word he seats.
 
-Geode stays **PREP** parallel (d0) — does not steal s-rounds.
+Geode stays **PREP** parallel (d0) — does not steal s-rounds. Surface does not advance s-rounds while OPEN.
 
 ## What this season is for
 
