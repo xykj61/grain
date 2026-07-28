@@ -39,11 +39,11 @@ The edu-series tutorial for creating one of the twelve (four-letter name · `.fu
 
 ## Stack step proven
 
-`prin rish generator → Comlink` — present and gated. Amphora · Glow · Aurora already closed under Mala; Djin's early rounds (was Twah) stay earth-and-teaching paced rather than re-walking every house door.
+`prin rish generator → Comlink` — present and gated. Amphora · Glow · Aurora already closed under Murr (was Mala); Djin's early rounds (was Twah) stay earth-and-teaching paced rather than re-walking every house door.
 
 ## Trey — documentary frame
 
-*Camera: a second generator beside the first, chalk still dusted from Mala.*
+*Camera: a second generator beside the first, chalk still dusted from Murr (was Mala).*
 
 He does not buy djin.fund (was twah.fund). He writes a door that would rather quit than claim a domain. The earth seat's first gift is a page that teaches how twelve names join a wheel — four letters, a DNS anchor, no mint, no wallet from a tutorial. Somewhere a registrar waits; tonight the repository practices the lesson without the purchase.
 

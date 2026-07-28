@@ -1,4 +1,4 @@
-# Neth, Mala, and a Settlement Layer for Glow OS — Design
+# Neth, MUR, and a Settlement Layer for Glow OS — Design (was Mala/MALA)
 
 **Language:** EN
 **Version:** `20260714.001017` (Pacific)
@@ -9,19 +9,21 @@
 
 ## For an Acme Corporation Employee Reading This
 
-Keaton proposed a new settlement layer for Glow OS: an **N-vane called Neth** (after Maze's M), a Glow reimplementation of Sui's/TigerBeetle's shape, evolved from the existing MALA money work, interoperating with Ethereum, with a TigerBeetle-style L2 "pinned sidechain" over a Mala L1 woven from Mycelium/Weave/Mantra/Ford and secured by a Kumara+Ames fusion. This document untangles that into its load-bearing engineering core (which is strong and continuous with work already in the tree), separates the visionary "fractal universe of four chains" framing (which is the social-experiment register, kept distinct), flags a real naming collision, and recommends a minimal first lap.
+Radiant pass `20260728.050004` — living rename-forward: **MUR** / **Murr** (was MALA / Mala)
+
+Keaton proposed a new settlement layer for Glow OS: an **N-vane called Neth** (after Maze's M), a Glow reimplementation of Sui's/TigerBeetle's shape, evolved from the existing MUR money work (was MALA), interoperating with Ethereum, with a TigerBeetle-style L2 "pinned sidechain" over a MUR/Murr L1 woven (was Mala) from Mycelium/Weave/Mantra/Ford and secured by a Kumara+Ames fusion. This document untangles that into its load-bearing engineering core (which is strong and continuous with work already in the tree), separates the visionary "fractal universe of four chains" framing (which is the social-experiment register, kept distinct), flags a real naming collision, and recommends a minimal first lap.
 
 ## The Load-Bearing Core (grounded, and already half-built here)
 
 The strongest thing about this proposal is that its technical spine is **not new** — it is the natural next step of three things already in this tree:
 
-- **MALA** is already issuer-only mint + conservation-enforced transfer + **balance as a fold over a signed log** ([`../linengrow/mala.rye`](../linengrow/mala.rye), MALA M1/M2, parity 198–199). That is L1 money semantics.
+- **MUR** is already issuer-only (was MALA) mint + conservation-enforced transfer + **balance as a fold over a signed log** ([`../linengrow/mala.rye`](../linengrow/mala.rye), MUR M1/M2 (was MALA; paths `mala*`), parity 198–199). That is L1 money semantics.
 - **WOV** is already the settlement/exit-honesty layer (exit honesty, dual-monarch, parity 201–205) — **and it already had a TigerBeetle pin seam**, retired `20260711.055800` but explicitly kept "revivable later if MALA log-and-fold ever needs TB throughput" ([TASKS.md](../work-in-progress/TASKS.md); counsel [`055112`](../counsel/20260711-055112_claude-counsel-wov-tigerbeetle-recommendation.md)). Neth is, in plain terms, **the revival and full flowering of that retired WOV-TB pin.**
 - **TigerBeetle is a Replicated State Machine** — Viewstamped Replication over an immutable, hash-chained, append-only log of prepares, executed deterministically (confirmed from TigerBeetle's own ARCHITECTURE.md and the trillion-transactions post). This is *architecturally almost identical to an L2 sequencer*: a deterministic state transition over an ordered log, with the log as ground truth and periodic checkpoints. TigerBeetle's own shape is the correct substrate for a settlement L2 — this is why "a Glow reimplementation of TigerBeetle as a pinned sidechain" is a genuinely coherent idea, not a buzzword pile.
 
 So the core, stated once and plainly:
 
-> **Neth is a deterministic replicated state machine (TigerBeetle's shape, reimplemented in Glow under TAME) that sequences MALA money transfers into a hash-chained log, folds them into balances, and periodically pins its state-root to an L1 — exactly as an L2 rollup posts roots to Ethereum.**
+> **Neth is a deterministic replicated state machine (TigerBeetle's shape, reimplemented in Glow under TAME) that sequences MUR money transfers (was MALA) into a hash-chained log, folds them into balances, and periodically pins its state-root to an L1 — exactly as an L2 rollup posts roots to Ethereum.**
 
 Everything else in the proposal is either (a) which L1 it pins to, or (b) the visionary framing around it.
 
@@ -31,9 +33,9 @@ Everything else in the proposal is either (a) which L1 it pins to, or (b) the vi
 flowchart TB
   subgraph l2 [Neth L2 - the sequencer]
     rsm["Glow TigerBeetle RSM\n(VSR + hash-chained log + deterministic fold)"]
-    mala["MALA money\n(issuer mint · conservation · balance-as-fold)"]
+    mala["MUR money (was MALA)\n(issuer mint · conservation · balance-as-fold)"]
   end
-  subgraph l1 [Mala L1 - the ground]
+  subgraph l1 [MUR/Murr L1 - the ground (was Mala)]
     weave["Mantra / Weave\n(versioned signed-fact log)"]
     myc["Mycelium\n(mesh distribution)"]
     ford["Brix / Ford\n(declarative build)"]
@@ -49,21 +51,21 @@ flowchart TB
   l1 -.->|"optional external pin"| eth["Ethereum / Azimuth (real L1)"]
 ```
 
-- **Neth (L2 sequencer):** the Glow-TigerBeetle RSM sequencing MALA transfers. Fast, deterministic, bounded (TAME), single-threaded in the TigerBeetle tradition.
-- **Mala L1 (the ground):** Mantra/Weave as the versioned signed-fact log, Mycelium for mesh distribution, Brix/Ford for declarative build. Neth pins its roots here.
+- **Neth (L2 sequencer):** the Glow-TigerBeetle RSM sequencing MUR transfers (was MALA). Fast, deterministic, bounded (TAME), single-threaded in the TigerBeetle tradition.
+- **MUR/Murr L1 (the ground; was Mala):** Mantra/Weave as the versioned signed-fact log, Mycelium for mesh distribution, Brix/Ford for declarative build. Neth pins its roots here.
 - **Identity + transport:** Kumara (Ed25519) signs every fact; Ames/Comlink (the sealed datagram, already the Ames-parallel per the naming-mapping) carries them. The "Kumara+Ames fusion" Keaton names is exactly this seam — signed identity plus sealed transport, which Comlink + Kumara already provide together.
-- **External pin (optional, later):** the Mala L1 root can itself be pinned to a real external L1. **Azimuth is the natural first choice** — it is already Urbit's own Ethereum PKI (galaxies/stars/planets as NFTs on contracts Keaton already holds points on), so pinning to Azimuth/Ethereum is the most coherent, least-invented external anchor.
+- **External pin (optional, later):** the MUR/Murr L1 root can itself (was Mala) be pinned to a real external L1. **Azimuth is the natural first choice** — it is already Urbit's own Ethereum PKI (galaxies/stars/planets as NFTs on contracts Keaton already holds points on), so pinning to Azimuth/Ethereum is the most coherent, least-invented external anchor.
 
 ## The Visionary Register, Kept Separate (per silo discipline)
 
-The "**social experiment implementing a new fractal universe of ETH/SOL/SUI/Azimuth as Mala**" is the vision layer, and it belongs in its own register — the same way the grain-lineage silo separates load-bearing engineering from devotional/aether framing. Held honestly:
+The "**social experiment implementing a new fractal universe of ETH/SOL/SUI/Azimuth as MUR/Murr**" is the vision (was Mala) layer, and it belongs in its own register — the same way the grain-lineage silo separates load-bearing engineering from devotional/aether framing. Held honestly:
 
 - The "fractal universe" framing ties to the Gardi fractal material already siloed ([`grain-lineage-silo/whole-in-every-part.md`](grain-lineage-silo/whole-in-every-part.md)) — self-similar structure across scales. As *inspiration* for why a small settlement layer can mirror the shape of the big chains, it is lovely. As an *engineering claim*, it is not load-bearing and should not gate the technical work.
 - Bridging four external chains (ETH/SOL/SUI/Azimuth) at once is the maximal version. **My honest recommendation: do not build toward four bridges.** Pick one anchor — Azimuth/Ethereum — because it is already this fork's own PKI and needs no new trust assumptions. SOL/SUI interop is a horizon, not a first lap. This is Gall's Law and the project's own IronBeetle sobriety anchor ("beat one honest thread before scaling counts").
 
 ## The Naming Question — Neth, Honestly
 
-**The good:** N follows Maze's M; "Neth" is four letters, fitting the vane convention. There is a genuinely beautiful resonance — **Neith**, the ancient Egyptian goddess of *weaving* and creation, which rhymes with the Weave at Mala's heart.
+**The good:** N follows Maze's M; "Neth" is four letters, fitting the vane convention. There is a genuinely beautiful resonance — **Neith**, the ancient Egyptian goddess of *weaving* and creation, which rhymes with the Weave at MUR/Murr's heart (was Mala).
 
 **The real collision:** "Neth" is live Nethermind-ecosystem shorthand — Nethermind is a top-two Ethereum execution client, its dev mode is `spaceneth`, its plugins use the `neth`/`NethDev` prefix. An Ethereum-*interoperating* settlement layer named **Neth** is maximally confusable with Nethermind, precisely because they occupy the same Ethereum-infrastructure space. This is a stronger collision than Glow's was, because the domains overlap exactly.
 
