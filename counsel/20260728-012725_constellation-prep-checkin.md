@@ -2,7 +2,9 @@
 
 **Stamp:** `20260728.012725`
 **Voice:** Quin
-**Word:** approve prep · seat Mala · Twah · affirm Siya triad
+
+Radiant pass `20260728.022218` — rename-forward **Djin** (was Twah) in living doors
+**Word:** approve prep · seat Mala · Djin (was Twah) · affirm Siya triad
 
 ---
 
@@ -12,7 +14,7 @@
 |------|----------|
 | Prep for 32-round season | **Approved** |
 | **Mala** Aries fire **1** · mala.fund prep | **Seated** |
-| **Twah** Taurus earth **2** · twah.fund prep | **Seated** |
+| **Djin** (was Twah) Taurus earth **2** · djin.fund prep | **Seated** |
 | **Siya** Gemini air **3** | **Affirmed** |
 | Myc/Move/Sui deploy path | **Prep-only** stack map seated; no live deploy |
 | Fascia | Mid-flight park · fold-or-parallel held |
@@ -24,7 +26,7 @@
 | A | **Paste m0 recursion** and walk the bow |
 | B | Seat season_name (lean *Constellation*) |
 | C | Circle Fascia fold-or-parallel |
-| D | Claim mala.fund / twah.fund / siya.fund (his hand) |
+| D | Claim mala.fund / djin.fund / siya.fund (his hand) |
 
 ---
 

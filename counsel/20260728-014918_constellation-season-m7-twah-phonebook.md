@@ -9,6 +9,7 @@
 **Edu:** `edu/funds/djin-creating-one-of-twelve.md`
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260728.022218` — i2 prose polish · living name **Djin** (was Twah)
 Radiant pass `20260728.020948` — rename-forward **Djin**; living paths `tools/gen_djin_fund_prep.rish` · `edu/funds/djin-creating-one-of-twelve.md` (was Twah)
 
 ---
@@ -25,11 +26,11 @@ rishi/bin/rishi run tools/gen_djin_fund_prep.rish          → GREEN (m7)
 rishi/bin/rishi run tools/gen_djin_fund_prep.rish deploy   → RED by name
 ```
 
-Step **6** (refuse deploy from the tutorial page as a taught walk) closes the Twah edu page in **m8**.
+Step **6** (refuse deploy from the tutorial page as a taught walk) closes the Djin edu page (was Twah) in **m8**.
 
 ## Held
 
-- twah.fund claim = Keaton's hand  
+- djin.fund claim = Keaton's hand (was twah.fund)  
 - no seating bytes from gen-djin  
 - phone book stays registry-only  
 

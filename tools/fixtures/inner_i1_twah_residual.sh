@@ -21,7 +21,9 @@ grep -q 'djin.fund' context/LEXICON.md
 hits="$(rg -n 'gen_twah_fund_prep|twah-creating-one-of-twelve|%twah|twah\.fund' tools edu \
   --glob '!**/quin-workshop/**' \
   --glob '!**/inner_i1_twah_residual.sh' \
-  --glob '!**/inner_i1_twah_residual.rish' 2>/dev/null | grep -v 'was Twah' | grep -v 'rename-forward' | grep -v '(was Twah)' || true)"
+  --glob '!**/inner_i1_twah_residual.rish' \
+  --glob '!**/inner_i2_djin_prose.sh' \
+  --glob '!**/inner_i2_djin_prose.rish' 2>/dev/null | grep -v 'was Twah' | grep -v 'rename-forward' | grep -v '(was Twah)' || true)"
 if [ -n "$hits" ]; then
   echo "$hits" >&2
   echo "inner-i1 REFUSE: living tools/edu still advertise Twah paths without rename-forward context" >&2

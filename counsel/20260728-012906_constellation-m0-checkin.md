@@ -4,6 +4,8 @@
 **Nib:** `1deaf99bb7`
 **Voice:** Quin
 
+Radiant pass `20260728.022218` — rename-forward **Djin** (was Twah) in living doors
+
 ---
 
 ## State
@@ -17,7 +19,7 @@ m0 bow landed. Choir 17/17 GREEN. Fund order affirmed. Stack mapped prep-only. F
 | A | **kg m1** — Mala fund prep | mala.fund checklist · MALA kinship · first prin→Comlink stub |
 | B | Seat season_name | lean *Constellation* |
 | C | Circle fascia_fold | fold into Constellation or parallel |
-| D | Domain claims | mala.fund · twah.fund · siya.fund — his hand |
+| D | Domain claims | mala.fund · djin.fund · siya.fund — his hand |
 
 ---
 
