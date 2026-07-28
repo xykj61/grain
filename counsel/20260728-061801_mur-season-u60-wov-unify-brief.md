@@ -66,7 +66,7 @@ Unify design does **not** collapse this to one digest in this brief. Staging a s
 
 ## Next
 
-**kg u61** — settle dual-digest story (keep both vs staged single-currency lean) · design seat only.
+**kg u61** — settle dual-digest · **LANDED** keep-both · payment-v2 held.
 
 ---
 
