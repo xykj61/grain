@@ -35,7 +35,7 @@ For universal foundations readers — people who may never open a Glow file — 
 | A foundations why beside Virgo seat 6 | A claim that Grain is her project or hers ours |
 | Civic Style kinship — reward at the good | Lyrics, scripts, or grant lists pasted into the tree |
 
-No verse is quoted. No setlist is pasted. The gratitude silo names her; this page places her in the vocabulary of trust, daylight, and service that our other foundations already speak. Mala's Kamala Harris, Gwoh's Sarah Guo, and Eyva's Avanti remain separate honors — they do not compete; they widen the house's thank-you table.
+No verse is quoted. No setlist is pasted. The gratitude silo names her; this page places her in the vocabulary of trust, daylight, and service that our other foundations already speak. Murr's Kyler Murray (and historical Mala-hour Kamala Harris), Gwoh's Sarah Guo, and Eyva's Avanti remain separate honors — they do not compete; they widen the house's thank-you table.
 
 ## How It Touches the Wheel
 

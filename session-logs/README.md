@@ -4,7 +4,9 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.044443` — [MUR Season u5 gratitude](20260728-044443_mur-season-u5-gratitude-residual.bron) — Kamala historical · residual OK · u6 next
 - `20260728.044228` — [MUR Season u4 tool say-lines](20260728-044228_mur-season-u4-tool-saylines.bron) — commerce GREEN → MUR · u5 next
+
 - `20260728.044002` — [MUR Season u3 prose](20260728-044002_mur-season-u3-prose-wave.bron) — WOV·settle·index → MUR · u4 next
 
 - `20260728.043811` — [MUR Season u2 prose](20260728-043811_mur-season-u2-prose-wave.bron) — edu·seating → MUR · u3 next

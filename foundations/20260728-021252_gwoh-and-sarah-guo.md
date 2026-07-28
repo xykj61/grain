@@ -35,13 +35,13 @@ For universal foundations readers — people who may never open a Glow file — 
 | A foundations why beside Leo seat 5 | A claim that Grain is a Conviction portfolio company |
 | Civic Style kinship — reward at the good | Partisan or fundraising machinery inside the tree |
 
-No essay is quoted at length. No pitch deck is pasted. The gratitude silo names her; this page places her in the vocabulary of trust, daylight, and service that our other foundations already speak. Mala's dedication to Kamala Harris remains a separate fire-seat honor; the two dedications do not compete — they widen the house's thank-you table.
+No essay is quoted at length. No pitch deck is pasted. The gratitude silo names her; this page places her in the vocabulary of trust, daylight, and service that our other foundations already speak. Murr's living dedication to Kyler Murray (and the historical Mala-hour dedication to Kamala Harris) remains a separate fire-seat honor; the dedications do not compete — they widen the house's thank-you table.
 
 ## How It Touches the Wheel
 
 - **Gwoh** seats Leo · fire · fund order **5** · sign index **4** · `%gwoh` · gwoh.fund prep.  
 - **Dedication** is recorded in Lexicon and counsel under Inner Scope.  
-- **Mala**, **Djin**, **Siya**, and **Ketu** keep their own seated stories — distinct chairs, one constellation.
+- **Murr**, **Gren**, **Siya**, and **Keeh** (was Ketu) keep their own seated stories — distinct chairs, one constellation.
 
 ## A Warm Close (Reya)
 
