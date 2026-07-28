@@ -13,7 +13,7 @@ Prin scope — seasons · Tally · rish vocabulary
   inner:  Inner Scope Chapter — PAUSED at i6 complete / i7 next (fascia)
   innermost: MUR Chapter — PAUSED at u0 (Mala/MALA→Murr/MUR waits)
   core:   Gren Chapter — PAUSED at g0 (Djin→Gren waits while quint walks)
-  quint:  Keeh Chapter — OPEN · q7 complete / q8 next (lean 16 · expand 32) · overwrite AFFIRMED CLOSED
+  quint:  Keeh Chapter — OPEN · q8 complete / q9 next (lean 16 · expand 32) · spot-check empty
   keeh_sponsor: Kia (South Korea) honor · design seat
   keeh_recommend: used 4-cyl hatch/SUV · non-CVT auto · light grey/beige cloth · CL/FB Marketplace
   geode:  Geode Chapter — PREP · d0 next (docs-geode · crush=compile · wave=year)
