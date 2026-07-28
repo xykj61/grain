@@ -104,7 +104,7 @@ SLC-L3 taught the thin rail: POSIX script as external interpreter; Rishi host; w
 |-------|------------------|--------------------------------|
 | Core | ~~`linengrow/settlement_core.rye`~~ | future `linengrow/disclosure_core.rye` (name waits on lap word) |
 | Selftest | ~~pinned lane goldens~~ | pinned offline fixture verify (Zig-native path per counsel `023112`) |
-| Live seam | ~~`chain_read_*.sh` / settle scripts~~ | prove host; no Sui/Monad dependency on MALA path |
+| Live seam | ~~`chain_read_*.sh` / settle scripts~~ | prove host; no Sui/Monad dependency on MUR path (was MALA) |
 | Witness | ~~`slcl3_settlement_witness.rish`~~ | offline fixture witness first; parity-eligible when lap lands |
 
 **TAME:** prove and verify paths assert invariants before algorithms; bounds on proof size and public-input count; no SDK link into Rye — Move verify stays behind a POSIX or `sui client` seam until a clean-room Rye verifier earns its own season.

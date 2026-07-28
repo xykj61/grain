@@ -24,7 +24,7 @@ Rye OS helps Cursor SpaceXAI as **infrastructure for agents that prove, enclose,
 | 1 | **Bounded build worlds** | Agents compile and change code inside a sealed place; project ground stays durable | Pond · ai-jail enclosure · customs |
 | 2 | **Witness discipline** | “Done” means a golden finale under parity, not only a plausible diff | `parity.rish` · claims · RW-1/2/5 mirrored pairs |
 | 3 | **Local inference as guest** | Assist that reads the corpus under pins without becoming landlord over the tree | Lantern · Lattice · Anvil · RW-5 tips **420**/**421** |
-| 4 | **Agent commerce with receipts** | Spending policy, audit trail, verifiable receipt for agentic compute and livelihood | MALA · Dimeroll · Open Asks · steward demo tip **419** |
+| 4 | **Agent commerce with receipts** | Spending policy, audit trail, verifiable receipt for agentic compute and livelihood | MUR · Dimeroll · Open Asks (was MALA) · steward demo tip **419** |
 | 5 | **Realidream horizon** | Living program surface where intelligence folds in openly as a guest on the glass | Visual Track · Drawn Terminal folds |
 
 ---

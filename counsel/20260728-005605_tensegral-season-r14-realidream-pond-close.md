@@ -20,14 +20,14 @@ Orient. Do not invent a surface. Name what already stands, what the automated pa
 |------|----------|
 | Foundations | [`../foundations/20260629-063512_realidream.md`](../foundations/20260629-063512_realidream.md) — editor + browser over one graph; far horizon |
 | Gratitude | [`../gratitude/noah-b-realidream.md`](../gratitude/noah-b-realidream.md) |
-| Thin view (suite) | `tools/realidream_thin_view.rish` — local MALA/WOV fixtures → Skate |
+| Thin view (suite) | `tools/realidream_thin_view.rish` — local MUR/WOV fixtures (was MALA) → Skate |
 | Forge path (suite) | `tools/realidream_forge_view.rish` and siblings — Amphora/Pond pours already named |
 
 **This stamp:**
 
 ```text
 rishi/bin/rishi run tools/realidream_thin_view.rish
-→ GREEN: Realidream thin view — local MALA/WOV fixtures compose a Skate frame.
+→ GREEN: Realidream thin view — local MUR/WOV fixtures (was MALA) compose a Skate frame.
 ```
 
 No new Realidream surface. Horizon stays vision; the thin view remains the honest suite contact.

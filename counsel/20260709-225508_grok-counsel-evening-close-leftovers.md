@@ -9,6 +9,7 @@
 
 Radiant pass `20260725.104506`
 
+Radiant pass `20260728.050004` — living rename-forward: **MUR** (was MALA)
 ---
 
 ## 1. Removal vs Supersede (evening Q1)
@@ -18,9 +19,9 @@ Radiant pass `20260725.104506`
 | Surface | Practice |
 |---------|----------|
 | Hammocks, counsel, session logs | Stay dated record — no rewrite |
-| Forward-facing TASKS / ROADMAP / LEXICON | Already say removed / MALA path |
+| Forward-facing TASKS / ROADMAP / LEXICON | Already say removed / MUR path (was MALA) |
 | Historical external-research that still reads as if settlement code lives | When next **touched**, add one status line: `Implementation removed \`152612\`; this note is dated record.` — no mass sweep |
-| New prose | Cite MALA/WOV; do not point readers at deleted paths as live |
+| New prose | Cite MUR/WOV (was MALA); do not point readers at deleted paths as live |
 
 No obligation to reopen every brief that once named `settlement.rye`. Honesty on touch is enough.
 
@@ -28,13 +29,13 @@ No obligation to reopen every brief that once named `settlement.rye`. Honesty on
 
 ## 2. M0 Functional Spec Slot (evening Q6)
 
-**Ruling:** M0 shapes in expanding-prompt [`182354`](../expanding-prompts/20260709-182354_mala-m1-one-issuer-one-holder.md) plus M1–M2b on metal **satisfy** the Edit 5 designed-not-built bound for MALA's first season. A separate `context/specs/` M0 functional-spec file is **not** required.
+**Ruling:** M0 shapes in expanding-prompt [`182354`](../expanding-prompts/20260709-182354_mala-m1-one-issuer-one-holder.md) plus M1–M2b on metal **satisfy** the Edit 5 designed-not-built bound for MUR's first season (was MALA). A separate `context/specs/` M0 functional-spec file is **not** required.
 
 Reasons:
 
-1. Edit 5 limits **in-flight** functional specs until first lap green — Amber held that slot; MALA M0 was design-on-paper inside the M1 lap-open, then M1 ran green.
+1. Edit 5 limits **in-flight** functional specs until first lap green — Amber held that slot; MUR M0 was design-on-paper (was MALA) inside the M1 lap-open, then M1 ran green.
 2. `designed_not_built` count is **0**; inventing an M0 spec now would be ceremony after the fact.
-3. Living law for MALA facts is `mala_core` + exit-honesty / WOV specs as they earn seats — not a retroactive M0 crown.
+3. Living law for MUR facts (was MALA) is `mala_core` + exit-honesty / WOV specs as they earn seats — not a retroactive M0 crown.
 
 If a future season wants a retrospective M0 gloss in `context/specs/`, that is documentation hygiene, not a gate before M3.
 
@@ -48,7 +49,7 @@ If a future season wants a retrospective M0 gloss in `context/specs/`, that is d
 |---------|------|
 | Design briefs, counsel, indexes, doorway/docs hygiene | SLC-L4 **W1** / **W2** code |
 | Closing open questions that are rulings (this file) | WOV **seam B** code |
-| Optional live TB REPL on host metal (outside ai-jail) | MALA **K1** schema |
+| Optional live TB REPL on host metal (outside ai-jail) | MUR **K1** schema (was MALA) |
 | Affirming already-leaned design choices when Kaeden keeps going | Dual **D2**, Mycelium, M3 land without a prompt |
 
 Protocol-width code waits an explicit affirm. Design-width keep-going may clear leans (as tonight did for seam A, W0, D1, K0, Dexter).

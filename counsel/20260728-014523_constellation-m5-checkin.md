@@ -14,7 +14,7 @@ Radiant pass `20260728.022218` — rename-forward **Djin** (was Twah) in living 
 | Djin fund prep (was Twah) | **opened** (m5) |
 | gen-djin through Comlink | GREEN · deploy RED |
 | edu page one stub | landed |
-| Mala arc | closed (m4) |
+| Murr arc (was Mala) | closed (m4) |
 
 ## Leans
 

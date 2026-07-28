@@ -1,6 +1,6 @@
 # The Seen Books and the Living Desktop — A Long Horizon from Today's Bench
 
-*Visionary-room writing: what the present climb already points toward when Dimeroll, the Visual Track, MALA/WOV, and Rye OS are held as one picture. Orients; seats nothing; recommends no purchase and opens no Amphora or Dexter lap.*
+*Visionary-room writing: what the present climb already points toward when Dimeroll, the Visual Track, MUR/WOV (was MALA), and Rye OS are held as one picture. Orients; seats nothing; recommends no purchase and opens no Amphora or Dexter lap.*
 
 **Stamp:** `20260710.131956`
 **Voice:** Rio 3
@@ -15,7 +15,7 @@
 
 ## Why This Page Exists
 
-The bench has been growing small, checkable rooms: a trial balance that conserves, a Skate frame that shows it, a thin view of local MALA and WOV facts, a drawn terminal that already mirrors a live session. Those rooms are real. They also lean toward a larger picture that has not yet earned a witness — a picture of **books you can see**, **money that travels**, **cargo that arrives whole**, and a **desktop that belongs to the one who runs it**.
+The bench has been growing small, checkable rooms: a trial balance that conserves, a Skate frame that shows it, a thin view of local MUR and WOV facts (was MALA), a drawn terminal that already mirrors a live session. Those rooms are real. They also lean toward a larger picture that has not yet earned a witness — a picture of **books you can see**, **money that travels**, **cargo that arrives whole**, and a **desktop that belongs to the one who runs it**.
 
 This note holds that picture in the visionary room. It does not promote a lap into Now. It does not seat Amphora, graduate Dexter, or open Tablecloth v1. It names the horizon so the next mechanical climb can stay honest about what it serves.
 
@@ -27,7 +27,7 @@ Imagine a steward whose whole civic and creative life runs on one spine.
 
 They open a window drawn by **Brushstroke**. What they see is not a dashboard of widgets fighting for attention — it is a **fold**: Weave facts, re-projected into Skate lines and, later, into Realidream pages. An ask, a receipt, a reputation, a sanctuary's story, and the **books** themselves appear as views over the same log discipline.
 
-Their **mailable money** (MALA) crosses under Comlink seal; their **throughput lane** (WOV) proves exits honestly. Their **centralized books** (Dimeroll) keep the household or enterprise chart, journal, P&L, and exception queue — the Kick/Digits job done in our grain, without copying anyone's code. When a year closes, a **tax package** rides as sealed cargo (Amphora, still Proposed) from an Amber season's resins. Receipts and statements live in a **documents vault** as resins, not as bytes stuffed into the journal.
+Their **mailable money** (MUR; was MALA) crosses under Comlink seal; their **throughput lane** (WOV) proves exits honestly. Their **centralized books** (Dimeroll) keep the household or enterprise chart, journal, P&L, and exception queue — the Kick/Digits job done in our grain, without copying anyone's code. When a year closes, a **tax package** rides as sealed cargo (Amphora, still Proposed) from an Amber season's resins. Receipts and statements live in a **documents vault** as resins, not as bytes stuffed into the journal.
 
 Underneath, **Rye OS** stays one language, one value model, one kernel, one compositor, one shell, one network, one memory law. **Linengrow** is what that system is *for*: transparent civic commerce for creators and communities who want receipts you can verify and books you can trust.
 

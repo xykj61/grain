@@ -6,6 +6,7 @@
 **Honors:** the iroh / n0 team (the pooled-inference pattern read in the wild, July 2026)
 **Status:** Proposed study — research for understanding; a shape to understand, not a seat to take. Every module role here is a sketch awaiting Kaeden's word and, for most rungs, a working seL4 seat first.
 
+Radiant pass `20260728.050004` — living rename-forward: **MUR** (was MALA)
 ---
 
 ## What the pattern is, in our own words
@@ -30,7 +31,7 @@ The pleasing part is how little is new. Read left to right, the pattern is mostl
 
 - **Tally** bounds the work. Every queue of pending requests, every activation buffer in a split pipeline, carries a named budget — and under Genode that budget is a kernel-enforced quota. No unbounded fan-out, no queue that grows until the box dies.
 
-- **MALA, Mandi, Dimeroll** are the economics, and this is where our version has something the wild one lacks. Shared compute is a harvest that changes hands: a node that serves inference for a peer has done real work a community can confirm, and MALA can meter it, Mandi can price it, Dimeroll can book it. This is the civic-style discipline turned onto compute itself — name the outcome (useful inference actually served), name the measure (signed completion facts), keep them aligned. A giving lane and a market lane both fit: serve freely as seva, or serve priced as livelihood, the same fact shape underneath.
+- **MUR, Mandi, Dimeroll** are the economics (was MALA), and this is where our version has something the wild one lacks. Shared compute is a harvest that changes hands: a node that serves inference for a peer has done real work a community can confirm, and MUR can meter it (was MALA), Mandi can price it, Dimeroll can book it. This is the civic-style discipline turned onto compute itself — name the outcome (useful inference actually served), name the measure (signed completion facts), keep them aligned. A giving lane and a market lane both fit: serve freely as seva, or serve priced as livelihood, the same fact shape underneath.
 
 - **Brushstroke** is the local glass — a node's own status and books drawn on the drawn surface, the same tokens as Linengrow.
 
