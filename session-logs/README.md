@@ -4,7 +4,8 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
-- `20260728.193602` — [Glow quality prep before GUI season](20260728-193602_glow-quality-prep-before-gui-season.bron) — dep spine · dogfood · OS park
+- `20260728.193730` — [Generator Season check-in s8](20260728-193730_generator-season-check-in-s8.bron) — vegan-dogfood · A·B·C open
+- `20260728.193602` — [Glow quality prep before GUI season](20260728-193602_glow-quality-prep-before-gui-season.bron) — dep spine · vegan-dogfood · OS park
 - `20260728.193058` — [Generator Season s8 Pond GUI season evaluation](20260728-193058_generator-season-s8-pond-gui-season-evaluation.bron) — like aim · push nested-128+OS · A·B·C
 - `20260728.192321` — [Generator Season s7 amphora family home](20260728-192321_generator-season-s7-amphora-family-home.bron) — tools/gen/amphora LIVE · s8 next
 - `20260728.191859` — [Generator Season s6 taxonomy fusion draft](20260728-191859_generator-season-s6-taxonomy-fusion-draft.bron) — two gens · os/tes parked · s7 next
