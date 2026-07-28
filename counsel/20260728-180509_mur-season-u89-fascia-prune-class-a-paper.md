@@ -44,7 +44,7 @@ No Amphora shred · no Class A rewrite · no meter exclusion · no living-hold y
 
 ## Next
 
-**check-in** — ungated mechanical clutter signals are clear (over70 · pair-hits); Class-A waits circled shred. Or **kg u90** if he names another prune lean.
+**LANDED u90** — check-in · ungated prune queue empty · Class-A held · shred RED.
 
 ---
 

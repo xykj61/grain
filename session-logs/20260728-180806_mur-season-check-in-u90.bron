@@ -1,0 +1,13 @@
+format session-log-v1
+stamp 20260728.180806
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title MUR Season check-in at u90
+prompt check in
+think Seat check-in after u89 Class-A paper lean; report state and name gates only.
+think Ungated mechanical prune queue empty; fascia 86; Class-A seven intentional; shred RED.
+obs Timing belongs to Keaton; counsel offers doors without urge.
+file counsel/20260728-180806_mur-season-check-in-u90.md round seat
+recommend check-in report only · doors named · no urge
