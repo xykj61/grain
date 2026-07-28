@@ -17,17 +17,17 @@ let verb = ""
 if length args != 0 then let verb = args[0]
 
 # Amphora stack fold — laps 1–3 must green beside the meter.
-let amphora1 = run ["rishi/bin/rishi" "run" "tools/amphora_lap1.rish"]
+let amphora1 = run ["rishi/bin/rishi" "run" "tools/gen/amphora/amphora_lap1.rish"]
 assert amphora1.ok else "fascia-metric-v0 Amphora lap 1 fold RED"
 assert amphora1.out contains "GREEN: Amphora lap 1" else "fascia-metric-v0 Amphora lap 1 missing GREEN"
 say "fold: amphora_lap1 GREEN"
 
-let amphora2 = run ["rishi/bin/rishi" "run" "tools/amphora_lap2.rish"]
+let amphora2 = run ["rishi/bin/rishi" "run" "tools/gen/amphora/amphora_lap2.rish"]
 assert amphora2.ok else "fascia-metric-v0 Amphora lap 2 fold RED"
 assert amphora2.out contains "GREEN: Amphora lap 2" else "fascia-metric-v0 Amphora lap 2 missing GREEN"
 say "fold: amphora_lap2 GREEN"
 
-let amphora3 = run ["rishi/bin/rishi" "run" "tools/amphora_lap3.rish"]
+let amphora3 = run ["rishi/bin/rishi" "run" "tools/gen/amphora/amphora_lap3.rish"]
 assert amphora3.ok else "fascia-metric-v0 Amphora lap 3 fold RED"
 assert amphora3.out contains "GREEN: Amphora lap 3" else "fascia-metric-v0 Amphora lap 3 missing GREEN"
 say "fold: amphora_lap3 GREEN"
