@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.000528` — [Tensegral r2 Arc I Amber](20260728-000528_tensegral-r2-amber.bron) — first ring · Tilak GREEN
 - `20260728.000056` — [Tensegral r1 Arc I Brix](20260728-000056_tensegral-r1-brix.bron) — bricks-exist · alias resolve · home held
 - `20260727.235754` — [Tensegral r0 bow · Prim→Prin](20260727-235754_tensegral-r0-bow-prin.bron) — battery GREEN · Brix alias
 - `20260727.234913` — [Tensegral prep GREEN · r0 recursion prompt](20260727-234913_tensegral-prep-r0-prompt.bron) — Pond GREEN · Prin (was Prim typo) · Expanded
