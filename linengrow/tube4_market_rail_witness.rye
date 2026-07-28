@@ -34,7 +34,7 @@ fn run_selftest() !u8 {
     gc.digest_hex_of(arrived[0..acquired.fetched_len], &check);
     assert(std.mem.eql(u8, &check, &acquired.digest));
     assert(acquired.neth_root[0] != 0 or acquired.neth_root[1] != 0);
-    print("tube4: acquired {s} at {s} mala — Neth settled, resin fetched\n", .{ tube2.demo_path, tube4.demo_price });
+    print("tube4: acquired {s} at {s} murr — Neth settled, resin fetched\n", .{ tube2.demo_path, tube4.demo_price });
     print("tube4: welcome acquire path -- GREEN\n", .{});
 
     // Claim 2: zero price refused.
