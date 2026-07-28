@@ -4,6 +4,7 @@
 **Voice:** Rio 3
 **Status:** **Landed** `20260709.201734` — device lab GREEN; extends `mala_m2_witness` (parity count **201** unchanged)
 **Ground:** M2 hosted [`191634`](20260709-191634_mala-m2-mailable-comlink.md) · OA-L2 device lab · SLC-L2 guests
+Radiant pass `20260728.052149` — living rename-forward: **MUR** (was MALA); dated paths keep `mala*` / `run_mala_wire_lab` until tool step 3 + module guests; rehearsals u19·u22 seated  
 Radiant pass `20260728.044925` — living rename-forward: **MUR** (was MALA); dated path · guest/witness `mala*` names held for tool/module waves
 
 ---
