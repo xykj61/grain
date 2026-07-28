@@ -3,7 +3,7 @@
 //!   rye build linengrow/murr.rye -femit-bin=linengrow/bin/murr
 //!   linengrow/bin/murr selftest
 //!
-//! Scope: [`expanding-prompts/20260709-182354_mala-m1-one-issuer-one-holder.md`](../expanding-prompts/20260709-182354_mala-m1-one-issuer-one-holder.md)
+//! Scope: [`expanding-prompts/yonder/20260709-182354_mala-m1-one-issuer-one-holder.md`](../expanding-prompts/yonder/20260709-182354_mala-m1-one-issuer-one-holder.md)
 //! Core: [`murr_core.rye`](murr_core.rye)
 
 const std = @import("std");

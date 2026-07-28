@@ -92,6 +92,6 @@ Android's own NDK `native_app_glue` (Apache 2.0, permissive — study freely, pe
 
 - `context/TAME_GUIDANCE.md` / `external-research/TAME_GUIDANCE.md` — the bounds/allocation/error discipline this decision protects.
 - `active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md` — the rune design this decision keeps aligned with (bounded traps lowering to native code).
-- `expanding-prompts/20260716-142818_glow-application-framework-and-publishing.md` — TUBE0–TUBE7's own ladder, where TUBE0.5 now sits.
+- `expanding-prompts/yonder/20260716-142818_glow-application-framework-and-publishing.md` — TUBE0–TUBE7's own ladder, where TUBE0.5 now sits.
 - `context/specs/two-dev-environments-and-mobile-emulation.md` — the HAWM ladder, whose HAWM1/HAWM3 witnesses are TUBE0.5's own starting proof that native code runs correctly on-device.
 - `tools/hawm1_sala_witness.rish`, `tools/hawm3_sala_device_witness.rish` — the existing native-execution witnesses this rung builds an APK envelope around.

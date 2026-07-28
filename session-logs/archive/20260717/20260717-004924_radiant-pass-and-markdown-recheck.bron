@@ -18,5 +18,5 @@ file work-in-progress/TASKS.md one genuine instance fixed; six others left untou
 file work-in-progress/ROADMAP.md one genuine instance fixed; one legitimate compound word left untouched
 file keys/README.md one genuine instance fixed
 file manual/guides/pixel-10a-grapheneos-setup.md one genuine instance fixed
-file expanding-prompts/20260716-142818_glow-application-framework-and-publishing.md three genuine instances fixed
+file expanding-prompts/yonder/20260716-142818_glow-application-framework-and-publishing.md three genuine instances fixed
 recommend check-in on the markdown rendering question specifically -- try closing and reopening the file's own tab/preview pane in Cursor, or opening a different, unrelated long markdown file in the same tree to see whether the same struggle reproduces there too (which would confirm a Cursor-wide quirk rather than anything about this one file); I have now ruled out every content-level cause this jail's own tools can check.

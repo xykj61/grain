@@ -29,7 +29,7 @@ No obligation to reopen every brief that once named `settlement.rye`. Honesty on
 
 ## 2. M0 Functional Spec Slot (evening Q6)
 
-**Ruling:** M0 shapes in expanding-prompt [`182354`](../expanding-prompts/20260709-182354_mala-m1-one-issuer-one-holder.md) plus M1–M2b on metal **satisfy** the Edit 5 designed-not-built bound for MUR's first season (was MALA). A separate `context/specs/` M0 functional-spec file is **not** required.
+**Ruling:** M0 shapes in expanding-prompt [`182354`](../expanding-prompts/yonder/20260709-182354_mala-m1-one-issuer-one-holder.md) plus M1–M2b on metal **satisfy** the Edit 5 designed-not-built bound for MUR's first season (was MALA). A separate `context/specs/` M0 functional-spec file is **not** required.
 
 Reasons:
 

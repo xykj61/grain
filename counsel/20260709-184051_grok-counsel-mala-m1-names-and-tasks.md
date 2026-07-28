@@ -3,7 +3,7 @@
 **Stamp:** `20260709.184051`
 **Editor:** Cursor · **Model:** Grok 4.5 High Fast · **Voice:** Rio 3
 **Register:** Decision counsel — name clarity before M1 code; TASKS/ROADMAP fit check
-**Ground:** design [`20260702-031312`](../active-designing/20260702-031312_modules-aspects-and-mailable-money.md) · counsel [`152612`](20260709-152612_claude-counsel-mala-wov-already-designed.md) · lap-open [`182354`](../expanding-prompts/20260709-182354_mala-m1-one-issuer-one-holder.md) · SLC-L4 prompt [`031612`](../expanding-prompts/yonder/20260709-031612_slcl4-lap1-fixed-tier-sigma-protocol.md) · foundations [`20260629-014512`](../foundations/20260629-014512_money-that-stays-close-to-home.md) · LEXICON MUR (was MALA)/WOV/Mycelium
+**Ground:** design [`20260702-031312`](../active-designing/20260702-031312_modules-aspects-and-mailable-money.md) · counsel [`152612`](20260709-152612_claude-counsel-mala-wov-already-designed.md) · lap-open [`182354`](../expanding-prompts/yonder/20260709-182354_mala-m1-one-issuer-one-holder.md) · SLC-L4 prompt [`031612`](../expanding-prompts/yonder/20260709-031612_slcl4-lap1-fixed-tier-sigma-protocol.md) · foundations [`20260629-014512`](../foundations/20260629-014512_money-that-stays-close-to-home.md) · LEXICON MUR (was MALA)/WOV/Mycelium
 
 *Written by Kaeden and Rio 3 (Grok), after Kaeden opened the lap and asked for clarity on proposed names.*
 

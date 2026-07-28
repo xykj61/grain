@@ -18,5 +18,5 @@ obs the manifest-to-AndroidManifest.xml permission emission is named explicitly 
 file active-designing/20260717-014522_native-activity-shim-and-slc-packaging.md the design brief naming the decision, the architecture, and TUBE0.5
 file work-in-progress/ROADMAP.md new align-pass paragraph names the decision and the new rung
 file work-in-progress/TASKS.md new checked item records the decision in the same shape as the day's other landed items
-file expanding-prompts/20260716-142818_glow-application-framework-and-publishing.md TUBE0.5 added to the canonical TUBE ladder table; TUBE7's own gate marked closed against the now-verified HAWM3
+file expanding-prompts/yonder/20260716-142818_glow-application-framework-and-publishing.md TUBE0.5 added to the canonical TUBE ladder table; TUBE7's own gate marked closed against the now-verified HAWM3
 recommend keep-going — no shim code, JNI glue, or APK build tooling exists yet; the next real step is writing the fifty-line shim and its JNI call, gated on nothing further since both TUBE0 and HAWM3 are already closed

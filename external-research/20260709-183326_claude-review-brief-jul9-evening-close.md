@@ -14,7 +14,7 @@ Radiant pass `20260728.050219` — living rename-forward: **MUR** (was MALA)
 
 ## Executive Landscape
 
-Kaeden directed **own L1 via MUR (was MALA)** — backtrack from Sui/Monad external interpreters. Counsel [`152612`](../counsel/20260709-152612_claude-counsel-mala-wov-already-designed.md) found the July 2 design already in tree. Settlement + chain-read implementation **deleted** (not merely superseded — no external dependents). Parity **197**. Full suite **GREEN** on metal (~150s). **MUR (was MALA) M1 lap-open brief [`182354`](../expanding-prompts/20260709-182354_mala-m1-one-issuer-one-holder.md) filed**; M0 gate verified. **SLC-L4 [`031612`](../expanding-prompts/yonder/20260709-031612_slcl4-lap1-fixed-tier-sigma-protocol.md) still ready** on Kaeden's lap word.
+Kaeden directed **own L1 via MUR (was MALA)** — backtrack from Sui/Monad external interpreters. Counsel [`152612`](../counsel/20260709-152612_claude-counsel-mala-wov-already-designed.md) found the July 2 design already in tree. Settlement + chain-read implementation **deleted** (not merely superseded — no external dependents). Parity **197**. Full suite **GREEN** on metal (~150s). **MUR (was MALA) M1 lap-open brief [`182354`](../expanding-prompts/yonder/20260709-182354_mala-m1-one-issuer-one-holder.md) filed**; M0 gate verified. **SLC-L4 [`031612`](../expanding-prompts/yonder/20260709-031612_slcl4-lap1-fixed-tier-sigma-protocol.md) still ready** on Kaeden's lap word.
 
 | Milestone | Stamp | Parity | Status |
 |-----------|-------|--------|--------|
@@ -146,7 +146,7 @@ Study [`223327`](../external-research/20260708-223327_sui-zk-primitives-for-dono
 |----------|-------|
 | Counsel | `counsel/20260709-152612_…` |
 | Removal | deleted settlement + chain-read tree; `tools/parity.rish`; hammock `182500` |
-| MUR (was MALA) | `expanding-prompts/20260709-182354_…`; TASKS/ROADMAP |
+| MUR (was MALA) | `expanding-prompts/yonder/20260709-182354_…`; TASKS/ROADMAP |
 | Claude brief | this file |
 | Session logs | `155520`, `163549`, `171101`, `182051`, `182354` + README |
 | Wiring | ZK study `223327`; SLC-L4 prompt `031612` reference fix |
