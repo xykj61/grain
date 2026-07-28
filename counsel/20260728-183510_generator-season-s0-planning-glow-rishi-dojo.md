@@ -79,7 +79,7 @@ No prin_scope rewrite · no O3 breach · no shred · no MUR u-rounds · no Inner
 
 ## Next
 
-**kg s1** — migrate living pin to `tools/prin_scope.rish` (staged · accrete · choir), or name another constructive door from the fuse shelf.
+**LANDED s1** — `tools/prin_scope.rish` living pin · bash shim kept.
 
 ---
 
