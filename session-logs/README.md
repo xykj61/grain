@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.040802` — [Gren Season g5 spotcheck](20260728-040802_gren-season-g5-spotcheck.bron) — empty×2 · g6 next
 - `20260728.040656` — [Gren Season g4 spotcheck](20260728-040656_gren-season-g4-spotcheck.bron) — empty×1 · g5 next
 - `20260728.040437` — [Gren Season g3 overwrite cleared](20260728-040437_gren-season-g3-overwrite.bron) — triad living · overwrite CLEARED · g4 next
 - `20260728.040237` — [Gren Season g2 overwrite](20260728-040237_gren-season-g2-overwrite.bron) — Inner charter Gren · printouts · g3 next
