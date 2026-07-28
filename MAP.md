@@ -36,7 +36,7 @@ Everything in [`context/`](context/README.md) is a promise we keep on purpose. [
 
 ## The Curiosity Cabinet
 
-Some doors are just a delight. [`gratitude/`](gratitude/README.md) shelves the teachers whole and unaltered — TigerBeetle, Urbit, Monocypher and more — because we silo ideas, never scaffolding. [`external-research/`](external-research/) is the reading room. [`classical-vedic-astrology/`](classical-vedic-astrology/README.md) is exactly what it says, and yes, it has witnesses too. [`bron-resins/`](bron-resins/) are compressed session memories. [`keys/`](keys/) and [`PUBKEYS.md`](PUBKEYS.md) are the public face of every signature in this tree — check us, that is what they are for.
+Some doors are just a delight. [`gratitude/`](gratitude/README.md) shelves the teachers whole and unaltered — TigerBeetle, Urbit, Monocypher and more — because we silo ideas, never scaffolding. [`external-research/`](external-research/) is the reading room. [`classical-vedic-astrology/`](classical-vedic-astrology/README.md) is exactly what it says, and yes, it has witnesses too. [`saga/`](saga/README.md) holds season close narratives — the lasting end reports (Sound's saga of the end lives here). [`bron-resins/`](bron-resins/) are compressed session memories. [`keys/`](keys/) and [`PUBKEYS.md`](PUBKEYS.md) are the public face of every signature in this tree — check us, that is what they are for.
 
 ## How to Read Any Page Here
 
