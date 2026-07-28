@@ -30,8 +30,9 @@ Prin scope — seasons · Tally · rish vocabulary
   fund5:  Gwoh · Leo · dedicated to Sarah Guo / Conviction (honor)
   fund6:  Trya · Virgo · dedicated to Ariana Grande (honor) · trya_fund=prep
   fund7:  Shyu · Libra · dedication Wayne Hsiung · sponsor Hyundai · shyu_fund=prep
-  fund10: Linn · Capricorn · earth · %linn · linn_fund=prep · hats held
+  fund10: Linn · Capricorn · earth · dedication Helen Atthowe · linn_fund=prep
   fund11: Keeh (was Ketu) · Aquarius · seat 11 · executive Keaton · Kia sponsor
+  sundial: prin sundial · tools/sundial.rish — recursion confidence 0–100 (red→green)
   L1:     MUR (was MALA) · WOV unify · retire WOV roadmap last
   voice:  six variants — Reya · Riyo · Trey · Triz · Quin · Trya (Quin stands)
   charter: counsel/20260728-030310_the-keeh-season-quint-charter.md
