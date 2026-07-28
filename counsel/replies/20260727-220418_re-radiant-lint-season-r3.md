@@ -6,6 +6,7 @@
 **Voice:** Quin
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260727.221957` — style only; claims unchanged
 
 ---
 
@@ -13,7 +14,7 @@
 
 - **Fifty tracked** `active-designing/yonder/` paths (stoa · setu backlog; quin-workshop mirror skipped).
 - **49 clean · 1 changed** — bare `but` cleared on:
-  - `active-designing/yonder/20260720-233109_setu65-live-sent-attempt-stand-in.md` (`appears but is` → `appears yet is`)
+  - `active-designing/yonder/20260720-233109_setu65-live-sent-attempt-stand-in.md` (`appears-but-is` → `appears yet is`)
 - **Witnesses:** claim_preserve GREEN · dated_guard GREEN · radiant_lint sum still **2**.
 - **Ledger:** **1305** rows (was 1255).
 
