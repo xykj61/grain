@@ -6,13 +6,14 @@
 **Status:** Research for understanding — study → design, siloed. Register: design/research (Two Rooms — proposals, not bound claims). Sources thanked, none quoted; every insight re-expressed in our own vocabulary. Addressed to a generic Acme Corporation employee.
 **Companion:** `20260712-093812_matklad-teachings-distilled.md` (his *essays*, general); this doc gathers the *built-system* patterns from watching the beetle itself be built, and ties each to one of our own live threads.
 
+Radiant pass `20260728.050219` — living rename-forward: **MUR** (was MALA)
 ---
 
 ## Why This Doc Exists, and How It Differs From the Essays Doc
 
 Our matklad-essays distillation already holds the general craft lessons — push the ifs up, shape over size, cut to the core, static allocation, assert the programmer, limit everything, simmer before you cook. Those are timeless and already threaded through TAME.
 
-This doc is different in kind. The IronBeetle stream is a person building a *specific* thing — a single-threaded, deterministic, append-only, replicated financial state machine — in the open, one hour at a time. That is almost exactly the thing **Neth** is (our settlement vane: a TigerBeetle-shaped VSR replica set over MALA), and it is the same spine our whole system already rests on (state as a pure fold over an append-only log of signed facts). So the particulars are not admiration — they are **buildable patterns for laps we have open**. Per our compass, this is the study→design bridge; the concrete merges land in `TASKS.md` and `ROADMAP.md` below.
+This doc is different in kind. The IronBeetle stream is a person building a *specific* thing — a single-threaded, deterministic, append-only, replicated financial state machine — in the open, one hour at a time. That is almost exactly the thing **Neth** is (our settlement vane: a TigerBeetle-shaped VSR replica set over MUR (was MALA)), and it is the same spine our whole system already rests on (state as a pure fold over an append-only log of signed facts). So the particulars are not admiration — they are **buildable patterns for laps we have open**. Per our compass, this is the study→design bridge; the concrete merges land in `TASKS.md` and `ROADMAP.md` below.
 
 Each pattern is siloed (our words, our names) and tagged with the thread it feeds.
 
@@ -46,7 +47,7 @@ Each pattern is siloed (our words, our names) and tagged with the thread it feed
 
 **The pattern:** the strongest debugging tool is a simulator whose network delays, disk faults, and scheduling are all driven from a single seed, so a failure replays byte-for-byte on demand. This turns an open-ended hunt for a flaky bug into a tightening loop: shrink the run, rerun the same seed, watch the identical failure appear. It also surfaces the subtlest bugs — two individually-correct rules meeting in a wrong place to produce a genuine liveness gap — which no amount of happy-path testing would ever find.
 
-**Where it lands:** our witnesses are deterministic, but they are *happy-path and unwelcome-path assertions*, not *seeded fault injection*. This is a genuinely new capability for us, and the right home is Neth (where safety under partial failure is the whole point). A seeded Neth/MALA simulation harness — faults and delays from one seed, the fold replayed exactly — would let a liveness or safety bug reproduce on demand, exactly as our "pin what the bench reports, never predict it" ethic already demands.
+**Where it lands:** our witnesses are deterministic, but they are *happy-path and unwelcome-path assertions*, not *seeded fault injection*. This is a genuinely new capability for us, and the right home is Neth (where safety under partial failure is the whole point). A seeded Neth/MUR (was MALA) simulation harness — faults and delays from one seed, the fold replayed exactly — would let a liveness or safety bug reproduce on demand, exactly as our "pin what the bench reports, never predict it" ethic already demands.
 
 **Roadmap merge:** a new **horizon** lane — *deterministic simulation for Neth* — seeded fault/delay injection over the replica set, so any failure replays byte-for-byte. Named now, built after Neth's first real replica laps.
 

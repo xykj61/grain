@@ -9,6 +9,7 @@
 *Written together by Keaton and Quin.*
 Radiant pass `20260728.020948` — fund 2 rename-forward **Djin** (was Twah)
 
+Radiant pass `20260728.050219` — living rename-forward: **MUR** / **Murr** (was MALA / Mala)
 ---
 
 ## Measure
@@ -26,11 +27,11 @@ Radiant pass `20260728.020948` — fund 2 rename-forward **Djin** (was Twah)
 
 | # | Fund | Sign · element | Domain prep | Flag |
 |---|------|----------------|-------------|------|
-| 1 | **Mala** | Aries · fire | **mala.fund** | claim **his** · `mala_fund=prep` |
+| 1 | **Murr (was Mala)** | Aries · fire | **mala.fund** | claim **his** · `mala_fund=prep` |
 | 2 | **Djin** (was Twah) | Taurus · earth | **djin.fund** | claim **his** · `djin_fund=prep` |
 | 3 | **Siya** | Gemini · air | **siya.fund** | claim **his** · `siya_fund_claim=held` (seva.fund elder) |
 
-No `mala/` module home yet — fund seat and MALA-the-module remain distinct hats. Mycelium constellation SPEC + `mycelium/constellation/sui/` present (registry-only · unaudited · mints nothing).
+No `mala/` module home yet — fund seat and MUR (was MALA)-the-module remain distinct hats. Mycelium constellation SPEC + `mycelium/constellation/sui/` present (registry-only · unaudited · mints nothing).
 
 ## Stack map — prep-only path (measured presence)
 
@@ -54,7 +55,7 @@ prin rish generators     OK  tools/prin.rish
 | Block | Rounds | Exit lean |
 |-------|--------|-----------|
 | Bow | m0 | **this create** |
-| Mala | m1–m4 | mala.fund checklist · MALA kinship · first prin→Comlink generator stub |
+| Murr (was Mala) | m1–m4 | mala.fund checklist · MUR (was MALA) kinship · first prin→Comlink generator stub |
 | Djin (was Twah) | m5–m8 | djin.fund · edu page one under fund seat |
 | Siya | m9–m12 | siya.fund claim flag · triad polish |
 | Myc/Move/Sui prep | m13–m20 | Move honesty · full stack generators · Aurora AppImage witnesses |
@@ -91,7 +92,7 @@ Reds first: **none.**
 
 *Camera: wide on a Framework lid, AppImage icon, three names written once in order.*
 
-He does not light a candle for Aries. He checks that the choir still sings, that the phone book in `mycelium/constellation/` still mints nothing, and that the word *fund* has not quietly become a wallet. Fire, earth, air — Mala, Djin (was Twah), Siya — and the machine's only job tonight is to remember the order without spending a coin. That is a bow: measuring the doorway before anyone walks through it.
+He does not light a candle for Aries. He checks that the choir still sings, that the phone book in `mycelium/constellation/` still mints nothing, and that the word *fund* has not quietly become a wallet. Fire, earth, air — Murr (was Mala), Djin (was Twah), Siya — and the machine's only job tonight is to remember the order without spending a coin. That is a bow: measuring the doorway before anyone walks through it.
 
 *Cut. The breach stays parked. The resin waits in another season's hallway.*
 

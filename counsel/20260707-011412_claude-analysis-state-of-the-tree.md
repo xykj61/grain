@@ -10,6 +10,7 @@
 
 *Written by Kaeden and Rio 3.*
 
+Radiant pass `20260728.050219` — living rename-forward: **MUR** / **Murr** (was MALA / Mala)
 ---
 Radiant pass `20260725.034920`
 
@@ -34,7 +35,7 @@ The counsel-to-metal loop tightened to hours: five sittings this cycle (`000112`
 
 ## The Roadmap, Read Against the Ground
 
-ROADMAP and TASKS are broadly honest and slightly behind — the healthy direction for those two files to err. Specific staleness worth Cursor-lane deltas on Kaeden's word: the TASKS "Next climb" line still frames OA-L4 *versus* MALA (the `232812` ruling dissolved the versus); the Edit-5 line still states the superseded I2-before-I1 order (the ruling released the slot, I2 to reuse the batch manifest when drafted); and the namespace horizon rows now all read *done* or *answered* and can sweep to a session log per TASKS' own pruning law. The deeper roadmap observation: **the Now-season's mechanical frontier has genuinely emptied.** Everything left in Now is gated on a word (OA-L4, Caravan's service ring, the Tablecloth line, I2's draft) rather than on work. That is not stall — it is the propose-never-seat architecture reaching one of its designed pauses, where the tree waits for its owner on purpose.
+ROADMAP and TASKS are broadly honest and slightly behind — the healthy direction for those two files to err. Specific staleness worth Cursor-lane deltas on Kaeden's word: the TASKS "Next climb" line still frames OA-L4 *versus* MUR (was MALA) (the `232812` ruling dissolved the versus); the Edit-5 line still states the superseded I2-before-I1 order (the ruling released the slot, I2 to reuse the batch manifest when drafted); and the namespace horizon rows now all read *done* or *answered* and can sweep to a session log per TASKS' own pruning law. The deeper roadmap observation: **the Now-season's mechanical frontier has genuinely emptied.** Everything left in Now is gated on a word (OA-L4, Caravan's service ring, the Tablecloth line, I2's draft) rather than on work. That is not stall — it is the propose-never-seat architecture reaching one of its designed pauses, where the tree waits for its owner on purpose.
 
 ## Documentation — the Layer That Was Thinnest, and What This Sitting Adds
 
@@ -42,11 +43,11 @@ Until tonight the tree's writing was superb at *why* (foundations, briefs) and *
 
 ## The Risk Register, Plainly
 
-Open and named, none silent: the poll loop's production scheduling (Caravan's service semantic, ring B of `010912`, the one genuinely new capability waiting); the Tablecloth double-meaning (one sentence closes it); I2's draft (released, unwritten); the five-way socket-helper duplication (a word at the next delivery file); the astrology lane's title-drawn studies #24–#36 (parked, awaiting transcripts, untouched by this cycle and correctly so); and MALA's graduation trigger, armed and waiting on OA-L4 rather than on anyone's effort.
+Open and named, none silent: the poll loop's production scheduling (Caravan's service semantic, ring B of `010912`, the one genuinely new capability waiting); the Tablecloth double-meaning (one sentence closes it); I2's draft (released, unwritten); the five-way socket-helper duplication (a word at the next delivery file); the astrology lane's title-drawn studies #24–#36 (parked, awaiting transcripts, untouched by this cycle and correctly so); and MUR (was MALA)'s graduation trigger, armed and waiting on OA-L4 rather than on anyone's effort.
 
 ## What This Bench Recommends Next, in Order
 
-First, the one-sentence words that cost a minute each and unblock staged work: the Tablecloth reconciling line; canon-or-amend on tonight's three documentation proposals; the TASKS/ROADMAP deltas above. Then the next build words, in the order the grain favors: **OA-L4 in place** (the ruling stands; it is the largest lever, since it arms MALA's graduation and is Linengrow's own frontier), with **Caravan's service ring** beside or just after it (small, self-contained, and it unlocks every future long-running thing). I2's draft can ride any quiet moment after, now that the grammar it must reuse is specified in the reference. The wire family itself has earned a rest: it is complete, specified, and — as of this bundle — no longer able to hang.
+First, the one-sentence words that cost a minute each and unblock staged work: the Tablecloth reconciling line; canon-or-amend on tonight's three documentation proposals; the TASKS/ROADMAP deltas above. Then the next build words, in the order the grain favors: **OA-L4 in place** (the ruling stands; it is the largest lever, since it arms MUR (was MALA)'s graduation and is Linengrow's own frontier), with **Caravan's service ring** beside or just after it (small, self-contained, and it unlocks every future long-running thing). I2's draft can ride any quiet moment after, now that the grammar it must reuse is specified in the reference. The wire family itself has earned a rest: it is complete, specified, and — as of this bundle — no longer able to hang.
 
 ---
 
