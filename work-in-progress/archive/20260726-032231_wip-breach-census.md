@@ -4,7 +4,7 @@
 **Stamp:** `20260726.032231`  
 **Voice:** Quin  
 **Status:** T3 round 1 seated — empty strike · 20 moved under ROUND MODE GREEN  
-**Ground:** counsel [`../counsel/20260726-032231_the-pin-and-the-shelf.md`](../counsel/20260726-032231_the-pin-and-the-shelf.md) §census · 29 depth-1 `.md` files · rooms `archive/` and `yonder/` already live  
+**Ground:** counsel [`../counsel/20260726-032231_the-pin-and-the-shelf.md`](../../counsel/20260726-032231_the-pin-and-the-shelf.md) §census · 29 depth-1 `.md` files · rooms `archive/` and `yonder/` already live  
 **Pilot:** T3 round 1 is this motion (~20 moves) under ROUND MODE before the active-designing 247
 
 ## Summary

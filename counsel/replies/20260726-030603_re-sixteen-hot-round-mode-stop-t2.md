@@ -7,6 +7,8 @@
 **Status:** Stop report — T3 held for Keaton’s strike list · F stays **RED** (not PARTIAL) · H held  
 **Answers:** [`counsel/20260726-025120_sixteen-hot-files.md`](../20260726-025120_sixteen-hot-files.md)
 
+Radiant pass `20260727.225235` — path re-point only; claims unchanged
+
 ---
 
 ## Arrival
@@ -24,8 +26,8 @@ Counsel README: `025120` prepended; the “014013 missing” line corrected to a
 |------|--------|
 | **W** | both creates filed · index corrected |
 | **X** | `link_witness` ROUND MODE — `SNAPSHOT` / `COMPARE` · **AFTER ⊆ BEFORE** · `ALLOW_BASELINE` ignored in compare · self-check GREEN (equal GREEN · deliberate break RED under baseline=1) |
-| **Y** | reading-only buckets at [`work-in-progress/20260726-025926_link-witness-2544-cause-buckets.md`](../../work-in-progress/20260726-025926_link-witness-2544-cause-buckets.md) — **2374** unique keys; archive **1178**; same-basename elsewhere **2150** (cross-cut); `old/`/`vere/` almost absent as targets |
-| **Z** | reading-only diagnosis at [`work-in-progress/20260726-025926_monocypher-submodule-diagnosis.md`](../../work-in-progress/20260726-025926_monocypher-submodule-diagnosis.md) — no design |
+| **Y** | reading-only buckets at [`work-in-progress/20260726-025926_link-witness-2544-cause-buckets.md`](../../work-in-progress/archive/20260726-025926_link-witness-2544-cause-buckets.md) — **2374** unique keys; archive **1178**; same-basename elsewhere **2150** (cross-cut); `old/`/`vere/` almost absent as targets |
+| **Z** | reading-only diagnosis at [`work-in-progress/20260726-025926_monocypher-submodule-diagnosis.md`](../../work-in-progress/archive/20260726-025926_monocypher-submodule-diagnosis.md) — no design |
 
 ## F — RED (literal)
 

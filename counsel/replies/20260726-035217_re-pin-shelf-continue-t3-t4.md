@@ -7,6 +7,8 @@
 **Status:** Motions landed · breach two still held next season · full F re-run still Keaton-timed  
 **Answers:** [`counsel/20260726-032231_the-pin-and-the-shelf.md`](../20260726-032231_the-pin-and-the-shelf.md)
 
+Radiant pass `20260727.225235` — path re-point only; claims unchanged
+
 ---
 
 ## AD — logged as requested
@@ -25,7 +27,7 @@ Keaton pasted the forge description **manually** on both GitHub and Codeberg aft
 | **T3 R1** | WIP pilot — 20 proposed; stub open-threads removed; ROUND MODE green · `de8d2024e4` |
 | ROUND MODE refine | compare on **missing targets** (v2) so relocated sources of old debt do not false-RED · `490cb63738` |
 | **T3 R2–R6** | 247 → `active-designing/yonder/` in batches of ≤50 · each round green + sent |
-| **T4** | arithmetic filed at [`work-in-progress/20260726-035217_breach-t4-arithmetic.md`](../../work-in-progress/20260726-035217_breach-t4-arithmetic.md) |
+| **T4** | arithmetic filed at [`work-in-progress/20260726-035217_breach-t4-arithmetic.md`](../../work-in-progress/archive/20260726-035217_breach-t4-arithmetic.md) |
 
 ## Arithmetic (published)
 
