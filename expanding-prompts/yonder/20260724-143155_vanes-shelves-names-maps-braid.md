@@ -6,8 +6,8 @@
 **Status:** Expanded and run this sitting  
 **Voice:** Quin · Acme reader address in deliverables  
 **Counsel braid:**  
-- [`../counsel/20260724-135312_vanes-shelves-and-the-glow-ladder.md`](../counsel/20260724-135312_vanes-shelves-and-the-glow-ladder.md)  
-- [`../counsel/20260724-141612_names-maps-and-open-questions.md`](../counsel/20260724-141612_names-maps-and-open-questions.md)
+- [`../counsel/20260724-135312_vanes-shelves-and-the-glow-ladder.md`](../../counsel/20260724-135312_vanes-shelves-and-the-glow-ladder.md)  
+- [`../counsel/20260724-141612_names-maps-and-open-questions.md`](../../counsel/20260724-141612_names-maps-and-open-questions.md)
 
 ---
 
@@ -49,7 +49,7 @@ For an Acme Corporation employee reading this plan: the morning weighed the tree
 | Artifact | Path |
 |----------|------|
 | Counsel (2) | `counsel/20260724-135312_…` · `counsel/20260724-141612_…` |
-| This EP | `expanding-prompts/20260724-143155_vanes-shelves-names-maps-braid.md` |
+| This EP | `expanding-prompts/yonder/20260724-143155_vanes-shelves-names-maps-braid.md` |
 | Reply | `counsel/replies/20260724-143155_re-the-workshop-and-the-warehouse.md` |
 | Waymarks | `waymarks/` |
 | Economy · stewards · questions · router | `context/APARIGRAHA.md` · `STEWARDS.md` · `context/OPEN_QUESTIONS.md` · `llms.txt` |

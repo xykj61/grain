@@ -20,9 +20,9 @@ Two intertwined visions. First, something for **Sala** that is Asciinema meets W
 
 ## The Deliverables (two writings, run this pass)
 
-1. **Sala as a broadcast surface** — [`../external-research/20260715-181500_sala-broadcast-live-session-fold.md`](../external-research/20260715-181500_sala-broadcast-live-session-fold.md). The unifying finding: a livestream is a fold over a signed, ordered log — Asciinema's session-as-log shape grown into Weave/Mantra, carried in order by Comlink's ordering aspect (Mycelium), rendered by Sala, saved as the log at rest (the VOD), with chat as folded signed facts. A B0–B3 ladder, gated behind Pool P0.
+1. **Sala as a broadcast surface** — [`../external-research/20260715-181500_sala-broadcast-live-session-fold.md`](../../external-research/20260715-181500_sala-broadcast-live-session-fold.md). The unifying finding: a livestream is a fold over a signed, ordered log — Asciinema's session-as-log shape grown into Weave/Mantra, carried in order by Comlink's ordering aspect (Mycelium), rendered by Sala, saved as the log at rest (the VOD), with chat as folded signed facts. A B0–B3 ladder, gated behind Pool P0.
 
-2. **The Glowphone** — [`../external-research/20260715-182500_glowphone-firmware-freedom-two-body-strategy.md`](../external-research/20260715-182500_glowphone-firmware-freedom-two-body-strategy.md). The honest finding: no single phone maximizes firmware freedom, hardened security, and open on-device AI in July 2026, so the strategy is a **two-body design** — a firmware-free calm client (Rockchip-class or mainline-Qualcomm) in the hand, the open-AI AMD Strix Halo forge at home, joined by the sovereign Comlink seam. Two OS paths named with their trades (mainline/postmarketOS vs GrapheneOS-on-Pixel), the display fork named (OLED LTPO low-blue-light vs matte-LCD durability), and the "own the seam, not a miracle chip" strategy for the advanced-firmware target.
+2. **The Glowphone** — [`../external-research/20260715-182500_glowphone-firmware-freedom-two-body-strategy.md`](../../external-research/20260715-182500_glowphone-firmware-freedom-two-body-strategy.md). The honest finding: no single phone maximizes firmware freedom, hardened security, and open on-device AI in July 2026, so the strategy is a **two-body design** — a firmware-free calm client (Rockchip-class or mainline-Qualcomm) in the hand, the open-AI AMD Strix Halo forge at home, joined by the sovereign Comlink seam. Two OS paths named with their trades (mainline/postmarketOS vs GrapheneOS-on-Pixel), the display fork named (OLED LTPO low-blue-light vs matte-LCD durability), and the "own the seam, not a miracle chip" strategy for the advanced-firmware target.
 
 ## Why This Serves the Roadmap
 
@@ -30,8 +30,8 @@ Sala-broadcast gives the just-seated Sala viewer a live face and a concrete firs
 
 ## Related
 
-- [`../foundations/20260629-020012_mantrapod-venture-pitch.md`](../foundations/20260629-020012_mantrapod-venture-pitch.md) — the carried-device dream.
-- [`../external-research/20260710-133500_local-forge-minisforum-inference.md`](../external-research/20260710-133500_local-forge-minisforum-inference.md) — the home forge.
+- [`../foundations/20260629-020012_mantrapod-venture-pitch.md`](../../foundations/20260629-020012_mantrapod-venture-pitch.md) — the carried-device dream.
+- [`../external-research/20260710-133500_local-forge-minisforum-inference.md`](../../external-research/20260710-133500_local-forge-minisforum-inference.md) — the home forge.
 
 ---
 

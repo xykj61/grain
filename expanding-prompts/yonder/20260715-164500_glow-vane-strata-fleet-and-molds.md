@@ -21,11 +21,11 @@ A cluster of Glow design questions, asked in conversation and worth a durable ho
 
 ## The Deliverables (three writings, all run this pass)
 
-1. **The non-vane strata, and Pond's narrowing** — [`../external-research/20260715-165000_glow-non-vane-strata-and-pond.md`](../external-research/20260715-165000_glow-non-vane-strata-and-pond.md). Names the three strata that deliberately sit outside the vane frame (substrate: Rye · Bron · Aurora · Tally; enclosure/build: Pond · Puddle · Maze · Brix; shell: Rishi), maps each onto Urbit's own non-vane layers (Hoon · Nock-noun · Vere · Dojo · Ford), names the unclaimed Zuse-stdlib slot, and records how Pond narrows under Glow — shedding its apps floor to Pool and its ephemeral multi-whole role to Puddle, left as the pure isolation-policy substrate, closest to Jael's permissions half if placed in the Arvo frame at all.
+1. **The non-vane strata, and Pond's narrowing** — [`../external-research/20260715-165000_glow-non-vane-strata-and-pond.md`](../../external-research/20260715-165000_glow-non-vane-strata-and-pond.md). Names the three strata that deliberately sit outside the vane frame (substrate: Rye · Bron · Aurora · Tally; enclosure/build: Pond · Puddle · Maze · Brix; shell: Rishi), maps each onto Urbit's own non-vane layers (Hoon · Nock-noun · Vere · Dojo · Ford), names the unclaimed Zuse-stdlib slot, and records how Pond narrows under Glow — shedding its apps floor to Pool and its ephemeral multi-whole role to Puddle, left as the pure isolation-policy substrate, closest to Jael's permissions half if placed in the Arvo frame at all.
 
-2. **Glow, Neth, and the Urbit fleet** — [`../external-research/20260715-165500_glow-neth-and-the-urbit-fleet.md`](../external-research/20260715-165500_glow-neth-and-the-urbit-fleet.md). Reconciles the sponsorship hierarchy and the `%fleet` monitoring app with Glow's Rhyz (identity/membership, Jael's role), Neth (settlement of the shared status ledger), Pool (the monitor app), and Comlink (carriage), and names honestly the one real divergence: Urbit keeps sponsorship lightweight by design, so layering Neth's consensus under a fleet adds a settlement dimension Urbit deliberately omits — a fork to choose with eyes open, not a free parallel.
+2. **Glow, Neth, and the Urbit fleet** — [`../external-research/20260715-165500_glow-neth-and-the-urbit-fleet.md`](../../external-research/20260715-165500_glow-neth-and-the-urbit-fleet.md). Reconciles the sponsorship hierarchy and the `%fleet` monitoring app with Glow's Rhyz (identity/membership, Jael's role), Neth (settlement of the shared status ledger), Pool (the monitor app), and Comlink (carriage), and names honestly the one real divergence: Urbit keeps sponsorship lightweight by design, so layering Neth's consensus under a fleet adds a settlement dimension Urbit deliberately omits — a fork to choose with eyes open, not a free parallel.
 
-3. **Glow mold nesting — bounded normalizers, decidable nest, bounded recursion** — [`../external-research/20260715-170000_glow-mold-nesting-bounded.md`](../external-research/20260715-170000_glow-mold-nesting-bounded.md). Proposes the sixth Glow-supplement surface: a mold stays a normalizing function yet names its own bound; `nest` stays structural subtyping yet stays decidable in bounded time; recursive molds carry an explicit depth/size bound (`list:N`, never unbounded `list`), the structural analog of "`u32`, never bare `usize`."
+3. **Glow mold nesting — bounded normalizers, decidable nest, bounded recursion** — [`../external-research/20260715-170000_glow-mold-nesting-bounded.md`](../../external-research/20260715-170000_glow-mold-nesting-bounded.md). Proposes the sixth Glow-supplement surface: a mold stays a normalizing function yet names its own bound; `nest` stays structural subtyping yet stays decidable in bounded time; recursive molds carry an explicit depth/size bound (`list:N`, never unbounded `list`), the structural analog of "`u32`, never bare `usize`."
 
 ## Why This Serves the Roadmap
 
@@ -33,8 +33,8 @@ Each writing turns a chat insight into a citable design artifact the roadmap can
 
 ## Related
 
-- [`../context/specs/20260713-214400_urbit-parallel-naming-mapping-proposal.md`](../context/specs/20260713-214400_urbit-parallel-naming-mapping-proposal.md) — the mapping the strata doc refines.
-- [`../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md`](../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md) — the five surfaces the mold-nesting doc extends to six.
+- [`../context/specs/20260713-214400_urbit-parallel-naming-mapping-proposal.md`](../../context/specs/20260713-214400_urbit-parallel-naming-mapping-proposal.md) — the mapping the strata doc refines.
+- [`../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md`](../../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md) — the five surfaces the mold-nesting doc extends to six.
 
 ---
 

@@ -43,7 +43,7 @@ No Amphora shred · no Class A delete · no meter exclusion of Class A · no ove
 
 ## Next
 
-**kg u79** — next prune slice (more yonder · on-touch over-70 · pool/gated designs), or check-in.
+**LANDED u79** — pool · glow strata · sala · vanes braid yonder.
 
 ---
 
