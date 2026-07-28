@@ -1,4 +1,4 @@
-# Expanding Prompt — MALA M1: One Issuer, One Holder
+# Expanding Prompt — MUR M1: One Issuer, One Holder (was MALA)
 
 **Stamp:** `20260709.182354 UDT`
 **Voice:** Rio 3
@@ -6,6 +6,7 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** **Landed** `20260709.184051` — `linengrow/mala.rye` + witness at parity **198**; M0 gate verified before open
 **Ground:** counsel [`20260709-152612`](../counsel/20260709-152612_claude-counsel-mala-wov-already-designed.md) · design [`20260702-031312`](../active-designing/20260702-031312_modules-aspects-and-mailable-money.md) · SLC-L1 spine [`receipt_core.rye`](../linengrow/receipt_core.rye)
+Radiant pass `20260728.044925` — living rename-forward: **MUR** (was MALA); dated path · code homes `mala*` · wire `mala:*` held for tool/module waves (u32+/u48+)
 
 *Written by Kaeden and Rio 3.*
 
@@ -19,15 +20,15 @@
 | Amber first lap landed | `amber_first_ring.rish` GREEN; parity **144** |
 | Designed-not-built slot open | scan `count=0` at `182354` |
 
-MALA M0 token-fact shapes live in this document (below). M1 implementation waits on Kaeden's lap word.
+MUR M0 token-fact shapes (was MALA) live in this document (below). M1 implementation waits on Kaeden's lap word.
 
 ## The Word, Expanded
 
-Build MALA's first code lap: **one issuer**, **one holder**, **one append-only log on one node** — mint units into existence, send them between issuer treasury and holder, fold balance from the log alone, verify every fact and refuse the unwelcome paths, and stop exactly there.
+Build MUR's first code lap (was MALA): **one issuer**, **one holder**, **one append-only log on one node** — mint units into existence, send them between issuer treasury and holder, fold balance from the log alone, verify every fact and refuse the unwelcome paths, and stop exactly there.
 
 ## M0 — Token-Fact Shapes (Design, On Paper)
 
-MALA reuses SLC-L1's `.bron` fact envelope (`from`, `to`, `amount`, `memo`, `stamp`) and Kumara signatures. The **memo prefix** names the operation:
+MUR (was MALA) reuses SLC-L1's `.bron` fact envelope (`from`, `to`, `amount`, `memo`, `stamp`) and Kumara signatures. The **memo prefix** names the operation (today `mala:*`; module wave → `murr:*`):
 
 | Memo prefix | Meaning | `from` | `to` | `amount` |
 |-------------|---------|--------|------|----------|
@@ -55,10 +56,10 @@ MALA reuses SLC-L1's `.bron` fact envelope (`from`, `to`, `amount`, `memo`, `sta
 
 **Explicitly out of scope:**
 
-- Comlink carriage (**MALA M2**).
+- Comlink carriage (**MUR M2**, was MALA).
 - Many issuers, exchange, or consensus (**M4 / Mycelium**).
-- WOV / TigerBeetle overlay (separate track after MALA M2 per counsel `152612`).
-- Amber export of the MALA log (compatibility contract is a later design lap).
+- WOV / TigerBeetle overlay (separate track after MUR M2 per counsel `152612`).
+- Amber export of the MUR log (was MALA; compatibility contract is a later design lap).
 - Anything claiming audit-grade security — selftest honesty only.
 
 ## New Names, Proposed for the Lap Word

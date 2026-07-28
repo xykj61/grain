@@ -29,7 +29,7 @@ Implement the two-lane SLC-L3 witness bolt when the gate opens.
 
 - Mainnet funds
 - SLC-L4 ZK
-- MALA mint
+- MUR mint (was MALA)
 
 ## Verify
 

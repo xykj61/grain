@@ -57,7 +57,7 @@ dictated stamps verbatim, system-sourced chronological time for your own stamps 
 (the host clock is the house clock); TAME hygiene as-you-touch only in files a menu item
 already opens; every commit ships its session log with an index row; parity green on metal
 every push. STOP-AND-PARK to RTAC on: a Kaeden-tagged box in the path, parity red twice on one
-witness, any module-home or seam decision, anything touching keys, custody, amber/, or MALA
+witness, any module-home or seam decision, anything touching keys, custody, amber/, or MUR (was MALA)
 beyond the boxed rungs, any round wanting a name — and end every round's Rio 3 TAME-guided
 Radiant summary with a "Questions for Kaeden and Claude" section. ]
 ```

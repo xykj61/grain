@@ -14,4 +14,4 @@
 
 ## Bound
 
-No Amphora, no MALA→journal, no live Realidream window.
+No Amphora, no MUR→journal (was MALA), no live Realidream window.

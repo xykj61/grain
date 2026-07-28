@@ -1,4 +1,4 @@
-# Expanding Prompt — MALA M2: Mailable over Comlink (Hosted)
+# Expanding Prompt — MUR M2: Mailable over Comlink (Hosted · was MALA)
 
 **Stamp:** `20260709.191634`
 **Voice:** Rio 3
@@ -6,6 +6,7 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Opened with Kaeden's keep-going word — implement + verify this sitting
 **Ground:** design [`20260702-031312`](../active-designing/20260702-031312_modules-aspects-and-mailable-money.md) · M1 [`182354`](20260709-182354_mala-m1-one-issuer-one-holder.md) · SLC-L2 [`000812`](../active-designing/20260706-000812_slcl2-sealed-delivery.md) · counsel [`152612`](../counsel/20260709-152612_claude-counsel-mala-wov-already-designed.md)
+Radiant pass `20260728.044925` — living rename-forward: **MUR** (was MALA); dated path · `mala*` code/witness homes held for tool/module waves
 
 *Written by Kaeden and Rio 3 (Grok).*
 
@@ -13,7 +14,7 @@
 
 ## The Word, Expanded
 
-Build MALA M2: a mint fact **crosses Comlink's fact lane** between two hosted processes, the holder verifies and folds, and a **signed receipt crosses back** to the issuer. Stop at hosted UDP — device wire is a later sub-lap (M2b).
+Build MUR M2 (was MALA): a mint fact **crosses Comlink's fact lane** between two hosted processes, the holder verifies and folds, and a **signed receipt crosses back** to the issuer. Stop at hosted UDP — device wire is a later sub-lap (M2b).
 
 ## What "Complete" Means, Bound Tightly
 
