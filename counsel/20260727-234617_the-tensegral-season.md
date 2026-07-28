@@ -3,10 +3,11 @@
 **Language:** EN
 **Stamp:** `20260727.234617`
 **Voice:** Quin
-**Status:** Seated — Arc I · II · III **exited** · Arc IV tighten open at r10
+**Status:** Seated — Arc I · II · III **exited** · Arc IV open (r10 Tighten landed)
 **Ground:** Sound saga **seated** [`../saga/20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md`](../saga/20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md) · motto **stay tensegral** · Quin remains the standing voice
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260728.004116` — r10 Arc IV Tighten · tally gardens bounds
 Radiant pass `20260728.003902` — r9 Arc III Consolidate · Arc III exits
 Radiant pass `20260728.003735` — r8 Arc III TAME · chunk rebuild timeout tidy
 Radiant pass `20260728.003623` — r7 Arc III Radiant · on-touch status refresh · lint GREEN
@@ -28,7 +29,7 @@ Radiant pass `20260727.234913` — prep receipt · Expanded · r0 recursion prom
 | **Prior season** | The Sound — closed and seated |
 | **This season** | The Tensegral Season — consolidate · tighten · unify under happy-zone law |
 | **Prep** | **GREEN** — [`20260727-234913_tensegral-prep-receipt.md`](20260727-234913_tensegral-prep-receipt.md) · Pond customs GREEN · Prin affirmed (Prim→Prin) · arc seeds named |
-| **Round** | Arc I · II · III **exits** `20260728.003902` — consolidate (TH-4→alias · resin homes) |
+| **Round** | Arc I–III **exits** · **10** Tighten `20260728.004116` — tally gardens bounds pinned |
 | **r0 prompt** | [`../expanding-prompts/20260727-234913_tensegral-season-r0-recursion-prompt.md`](../expanding-prompts/20260727-234913_tensegral-season-r0-recursion-prompt.md) |
 | **Shape** | Prep done → **16 kg rounds** (1 bow + five arcs of three) · exits over counts |
 | **Close** | A new saga on [`../saga/`](../saga/README.md) when the season ends |
@@ -81,7 +82,7 @@ Rounds are **kg-first**: mechanical, single-module or single-pack when policy is
 
 ## Next door
 
-**kg** — Arc IV · Tighten (r10) · bounds / gardens on one module.
+**kg** — Arc IV · Unify (r11) · one seam caller map.
 
 ---
 

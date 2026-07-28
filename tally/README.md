@@ -1,7 +1,7 @@
 # Tally — the Garden Allocator, and the Small Marks That Guard It
 
 **Language:** EN
-**Last updated:** 2026-07-27 (`20260727.234128` — marks table matches tree · Sound saga shelf cites Tally)
+**Last updated:** 2026-07-28 (Tensegral Arc IV r10 — gardens bounds witness · max_gardens=8 · max_name_len=32 pinned)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Checkable — bounded garden allocator · small marks · Kumara · Bud
 
@@ -15,6 +15,7 @@ Beside the allocator itself, Tally holds a second kind of thing: small, universa
 |------|--------|
 | [`seed.rye`](seed.rye) | the first running Tally — a bounded region, asserted edges |
 | [`gardens.rye`](gardens.rye) | Tally v1 — a fixed set of named Regions in one Gardens, each its own bounded garden |
+| Bounds | `max_gardens = 8` · `max_name_len = 32` — pinned on metal by [`../tools/tally_gardens_witness.rish`](../tools/tally_gardens_witness.rish) (Tensegral r10) |
 
 ## The Marks
 

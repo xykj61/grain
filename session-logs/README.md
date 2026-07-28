@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.004116` — [Tensegral r10 Arc IV Tighten](20260728-004116_tensegral-r10-tighten.bron) — tally gardens bounds pinned
 - `20260728.003902` — [Tensegral r9 Consolidate · Arc III exit](20260728-003902_tensegral-r9-consolidate.bron) — TH-4→alias · resin homes
 - `20260728.003735` — [Tensegral r8 Arc III TAME](20260728-003735_tensegral-r8-tame.bron) — bans GREEN · chunk rish tidied
 - `20260728.003623` — [Tensegral r7 Arc III Radiant](20260728-003623_tensegral-r7-radiant.bron) — lint GREEN · on-touch charter
