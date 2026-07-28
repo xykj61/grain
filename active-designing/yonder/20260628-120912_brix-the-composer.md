@@ -7,7 +7,7 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Lens:** TAME — single-stranded; one thing per module; the region model
 **Status:** Design brief — clarifies Brix by mapping sixos onto modules we already hold
-**Reads with:** [`20260620-043812_tablecloth-brix-split.md`](../expanding-prompts/yonder/20260620-043812_tablecloth-brix-split.md) · [`20260628-120912_kernel-direction-brix-and-foundations.md`](../expanding-prompts/20260628-120912_kernel-direction-brix-and-foundations.md)
+**Reads with:** [`20260620-043812_tablecloth-brix-split.md`](../expanding-prompts/yonder/20260620-043812_tablecloth-brix-split.md) · [`20260628-120912_kernel-direction-brix-and-foundations.md`](../../expanding-prompts/yonder/20260628-120912_kernel-direction-brix-and-foundations.md)
 
 *Written together by Kaeden and Reya 2.*
 

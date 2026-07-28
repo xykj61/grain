@@ -2,7 +2,7 @@
 
 **Stamp:** `20260705.161900 UDT` · **Style:** Radiant for authored studies · **Base:** tip `82996f1` (zip **46** at `24a5d35`)
 **Supersedes for execution:** [`20260705-160712_claude-silo-deepening-recursion-v1.md`](yonder/20260705-160712_claude-silo-deepening-recursion-v1.md) — same three movements; this file adds operational commit, push, and zip discipline
-**Handoff summary:** [`../session-logs/archive/20260705/20260705-161900_claude-silo-deepening-handoff-summary.md`](../session-logs/archive/20260705/20260705-161900_claude-silo-deepening-handoff-summary.md)
+**Handoff summary:** [`../session-logs/archive/20260705/20260705-161900_claude-silo-deepening-handoff-summary.md`](../../session-logs/archive/20260705/20260705-161900_claude-silo-deepening-handoff-summary.md)
 
 *Written by Kaeden and Rio 3 (Cursor). Kaeden speaks the bench voice-name in his first message; the one-clock, additions-only, stop-and-park, and guarded-name laws inherit whole.*
 
@@ -14,7 +14,7 @@
 
 **Privacy gate — before every commit.** Kaeden pastes the word-boundary guarded-name patterns beside this prompt. Run them across the **whole repository** and require silence. This prompt carries no guarded name in its body. Placeholder **Brooke** and **Alice** are permitted in the lane by design. Raw transcripts **never** enter the tree — chat only; distillation plus URL is the honoring (same discipline as studies #19–#20).
 
-**Silo technique.** Full method: [`../context/SILO_TECHNIQUE.md`](../context/SILO_TECHNIQUE.md). Read transcript whole → find principle beneath words → write fresh in Radiant gentle register → teachers and URLs only in gratitude → exact sentences left at the door.
+**Silo technique.** Full method: [`../context/SILO_TECHNIQUE.md`](../../context/SILO_TECHNIQUE.md). Read transcript whole → find principle beneath words → write fresh in Radiant gentle register → teachers and URLs only in gratitude → exact sentences left at the door.
 
 **Radiant lint on every authored file.** Single H1; no `" but "` (use *yet* / *however*); no emoji; benediction closes; gentle register. Read aloud before staging.
 

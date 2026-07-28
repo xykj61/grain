@@ -10,7 +10,7 @@ Kaeden asked for a session-log summary and a Claude prompt so Claude can run the
 
 ## Trace
 
-Read the landed recursion v1 prompt, exemplar studies #22–#23, Brooke shelf (sixteen chapter files + README), `context/SILO_TECHNIQUE.md`, studies and reading-template silo maps, Brooke-round commit discipline, and git-signing rules. Tip stands at `82996f1` (zip **46** cut at `24a5d35`). Prepared two artifacts: this granular handoff summary and the runnable Claude bench prompt at `expanding-prompts/20260705-161900_claude-silo-deepening-transcript-bench.md`.
+Read the landed recursion v1 prompt, exemplar studies #22–#23, Brooke shelf (sixteen chapter files + README), `context/SILO_TECHNIQUE.md`, studies and reading-template silo maps, Brooke-round commit discipline, and git-signing rules. Tip stands at `82996f1` (zip **46** cut at `24a5d35`). Prepared two artifacts: this granular handoff summary and the runnable Claude bench prompt at `expanding-prompts/yonder/20260705-161900_claude-silo-deepening-transcript-bench.md`.
 
 ## What stands at tip
 
@@ -24,7 +24,7 @@ Read the landed recursion v1 prompt, exemplar studies #22–#23, Brooke shelf (s
 
 ## What Kaeden opens on the Claude bench
 
-1. **Paste** `expanding-prompts/20260705-161900_claude-silo-deepening-transcript-bench.md` as the first message body (after speaking the bench voice-name).
+1. **Paste** `expanding-prompts/yonder/20260705-161900_claude-silo-deepening-transcript-bench.md` as the first message body (after speaking the bench voice-name).
 2. **Paste beside it** the privacy-gate guarded-name patterns (word-boundary grep) — held in Kaeden's private keeping; never committed in the prompt body.
 3. **Feed transcripts packet by packet** — each packet: video title, URL, then full transcript text. Raw transcripts stay in chat only; they never enter the tree.
 
@@ -78,7 +78,7 @@ Kaeden's transcript packets may follow chapter order or teaching order — eithe
 
 | File | Why |
 |------|-----|
-| `expanding-prompts/20260705-161900_claude-silo-deepening-transcript-bench.md` | Runnable Claude bench — intake, dissociation, recomposition, commit/push/zip |
+| `expanding-prompts/yonder/20260705-161900_claude-silo-deepening-transcript-bench.md` | Runnable Claude bench — intake, dissociation, recomposition, commit/push/zip |
 | `session-logs/20260705-161900_claude-silo-deepening-handoff-summary.md` | This handoff summary |
 | `expanding-prompts/README.md` | Index row for new prompt |
 | `session-logs/README.md` | Index row |
