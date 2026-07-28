@@ -51,7 +51,7 @@ Remaining `*mala*` pathnames in counsel / expanding-prompts / specs / foundation
 
 ## Next
 
-**kg u67** — first filename-rename wave under this breach (map then `git mv` + re-points + witnesses), or check-in if he wants a wave map before hands move.
+**LANDED u67** — residual map · living CLEAR · fossils HOLD · stale `mala-*.elf` cleared.
 
 ---
 
