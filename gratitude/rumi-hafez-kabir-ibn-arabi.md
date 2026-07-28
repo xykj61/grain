@@ -7,7 +7,7 @@
 
 ---
 
-Grain thanks, by name only, the poets and teachers whose djinn / unseen-company lineages inspired Keaton's word to rename the Taurus earth fund **Djin** (four letters; vane `%djin`):
+Grain thanks, by name only, the poets and teachers whose djinn / unseen-company lineages inspired Keaton's earlier word to name the Taurus earth fund **Djin** (four letters; vane `%djin`) — that name is now **retired forward to Gren** (`20260728.025634`); this silo stays historical gratitude for the Djin hour:
 
 - **Rumi**
 - **Hafez**

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# prin_scope.sh — print seated outer/inner/innermost season scope for Prin / Tally vocabulary
+# prin_scope.sh — print seated outer/inner/innermost/core season scope
 set -euo pipefail
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 cd "$ROOT"
@@ -11,9 +11,10 @@ Prin scope — seasons · Tally · rish vocabulary
   scope:  named bound of work (season · Tally garden · Prin/rish view)
   outer:  Constellation Season — PAUSED at m8 complete / m9 next
   inner:  Inner Scope Season — PAUSED at i6 complete / i7 next (fascia)
-  innermost: MUR Season — OPEN · rounds u0–u127 (Mala/MALA→Murr/MUR)
-  fund1:  Murr (was Mala) · Aries · dedicated to Kyler Murray (honor) · murr_fund=prep
-  fund2:  Djin (was Twah) · Taurus · executive DJINN
+  innermost: MUR Season — PAUSED at u0 (Mala/MALA→Murr/MUR waits)
+  core:   Gren Season — OPEN · rounds g0–g15 lean (expand 32|64)
+  fund1:  Murr (was Mala) · Aries · dedication Kyler Murray · executive DJINN
+  fund2:  Gren (was Djin · was Twah) · Taurus · executive Grain Energy PBC President (Keaton lean)
   fund3:  Siya · Gemini · executor Sara Sealy Livermore
   fund4:  Eyva · Cancer · executive + dedication Avanti (she/her)
   fund5:  Gwoh · Leo · dedicated to Sarah Guo / Conviction (honor)
@@ -21,7 +22,7 @@ Prin scope — seasons · Tally · rish vocabulary
   fund11: Ketu · Aquarius · seat 11 · executive Keaton
   L1:     MUR (was MALA) · WOV unify · retire WOV roadmap last
   voice:  six variants — Reya · Riyo · Trey · Triz · Quin · Trya (Quin stands)
-  charter: counsel/20260728-025220_the-mur-season-innermost-charter.md
-  seat:   counsel/20260728-025220_the-mur-season-innermost-charter.md
-  warn:   u126/u127 handback · i14/i15 extend-or-return when inner resumes
+  charter: counsel/20260728-025634_the-gren-season-core-charter.md
+  seat:   counsel/20260728-025634_the-gren-season-core-charter.md
+  warn:   g14/g15 extend 32|64 or return MUR u0
 EOF

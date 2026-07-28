@@ -8,14 +8,15 @@ cd "$ROOT"
 rishi/bin/rishi run tools/inner_i1_twah_residual.rish >/dev/null
 rishi/bin/rishi run tools/inner_i2_djin_prose.rish >/dev/null
 
-# Living Djin door present; retired Twah generator gone.
-test -f tools/gen_djin_fund_prep.rish
-test -f edu/funds/djin-creating-one-of-twelve.md
+# Living Gren door present; retired Twah generator gone.
+test -f tools/gen_gren_fund_prep.rish
+test -f edu/funds/gren-creating-one-of-twelve.md
 test ! -e tools/gen_twah_fund_prep.rish
 test ! -e tools/fixtures/gen_twah_fund_prep.sh
 test ! -e edu/funds/twah-creating-one-of-twelve.md
 
-grep -q 'Djin (fund)' context/LEXICON.md
+grep -q 'Gren (fund)' context/LEXICON.md
+grep -q 'Djin (fund) (retired name)' context/LEXICON.md
 grep -q 'Twah (fund) (retired name)' context/LEXICON.md
 grep -q 'rumi-hafez-kabir-ibn-arabi' gratitude/README.md
 
@@ -30,16 +31,16 @@ else
 fi
 
 export RYE_ZIG="${RYE_ZIG:-$ROOT/vendor/zig-toolchain/zig}"
-out="$(rishi/bin/rishi run tools/gen_djin_fund_prep.rish 2>&1)" || {
-  echo "inner-i3 REFUSE: gen_djin left GREEN" >&2
+out="$(rishi/bin/rishi run tools/gen_gren_fund_prep.rish 2>&1)" || {
+  echo "inner-i3 REFUSE: gen_gren left GREEN" >&2
   exit 1
 }
-echo "$out" | grep -q 'GREEN: gen-djin' || {
-  echo "inner-i3 REFUSE: gen_djin missing GREEN line" >&2
+echo "$out" | grep -q 'GREEN: gen-gren' || {
+  echo "inner-i3 REFUSE: gen_gren missing GREEN line" >&2
   exit 1
 }
 
-echo "close: i1 residual GREEN · i2 prose GREEN · gen_djin GREEN"
-echo "close: Lexicon Djin live · Twah retired · gratitude silo named"
+echo "close: i1 residual GREEN · i2 prose GREEN · gen_gren GREEN"
+echo "close: Lexicon Gren live · Twah retired · gratitude silo named"
 echo "close: rename-polish block i1–i3 CLOSED"
 echo "GREEN: inner-i3 — rename-polish closed · i4 fascia machinery next"

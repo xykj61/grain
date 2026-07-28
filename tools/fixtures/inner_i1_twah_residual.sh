@@ -8,13 +8,14 @@ cd "$ROOT"
 test ! -e tools/gen_twah_fund_prep.rish
 test ! -e tools/fixtures/gen_twah_fund_prep.sh
 test ! -e edu/funds/twah-creating-one-of-twelve.md
-test -f tools/gen_djin_fund_prep.rish
-test -f tools/fixtures/gen_djin_fund_prep.sh
-test -f edu/funds/djin-creating-one-of-twelve.md
-grep -q 'Djin (fund)' context/LEXICON.md
+test -f tools/gen_gren_fund_prep.rish
+test -f tools/fixtures/gen_gren_fund_prep.sh
+test -f edu/funds/gren-creating-one-of-twelve.md
+grep -q 'Gren (fund)' context/LEXICON.md
 grep -q 'Twah (fund) (retired name)' context/LEXICON.md
-grep -q '%djin' context/LEXICON.md
-grep -q 'djin.fund' context/LEXICON.md
+grep -q 'Djin (fund) (retired name)' context/LEXICON.md
+grep -q '%gren' context/LEXICON.md
+grep -q 'gren.fund' context/LEXICON.md
 
 # Living tools/ + edu/ must not advertise deleted Twah generator paths.
 # Exclude this sweep fixture (it names the deleted paths in negative tests).
@@ -25,7 +26,9 @@ hits="$(rg -n 'gen_twah_fund_prep|twah-creating-one-of-twelve|%twah|twah\.fund' 
   --glob '!**/inner_i2_djin_prose.sh' \
   --glob '!**/inner_i2_djin_prose.rish' \
   --glob '!**/inner_i3_rename_close.sh' \
-  --glob '!**/inner_i3_rename_close.rish' 2>/dev/null | grep -v 'was Twah' | grep -v 'rename-forward' | grep -v '(was Twah)' || true)"
+  --glob '!**/inner_i3_rename_close.rish' \
+  --glob '!**/gen_gren_fund_prep.sh' \
+  --glob '!**/gen_gren_fund_prep.rish' 2>/dev/null | grep -v 'was Twah' | grep -v 'rename-forward' | grep -v '(was Twah)' | grep -v 'was Djin' | grep -v '(was Djin)' || true)"
 if [ -n "$hits" ]; then
   echo "$hits" >&2
   echo "inner-i1 REFUSE: living tools/edu still advertise Twah paths without rename-forward context" >&2
@@ -34,16 +37,16 @@ fi
 
 # Operational generator must still GREEN
 export RYE_ZIG="${RYE_ZIG:-$ROOT/vendor/zig-toolchain/zig}"
-out="$(rishi/bin/rishi run tools/gen_djin_fund_prep.rish 2>&1)" || {
-  echo "inner-i1 REFUSE: gen_djin left GREEN" >&2
+out="$(rishi/bin/rishi run tools/gen_gren_fund_prep.rish 2>&1)" || {
+  echo "inner-i1 REFUSE: gen_gren left GREEN" >&2
   exit 1
 }
-echo "$out" | grep -q 'GREEN: gen-djin' || {
-  echo "inner-i1 REFUSE: gen_djin missing GREEN line" >&2
+echo "$out" | grep -q 'GREEN: gen-gren' || {
+  echo "inner-i1 REFUSE: gen_gren missing GREEN line" >&2
   exit 1
 }
 
-echo "sweep: gen_twah ABSENT · twah edu ABSENT · gen_djin PRESENT"
-echo "sweep: Lexicon Djin live · Twah retired row present"
+echo "sweep: gen_twah ABSENT · twah edu ABSENT · gen_gren PRESENT"
+echo "sweep: Lexicon Gren live · Djin retired · Twah retired row present"
 echo "sweep: tools/edu free of bare Twah path ads (rename-forward context allowed)"
-echo "GREEN: inner-i1 — Twah residual sweep · living overwrite holds · gen_djin GREEN"
+echo "GREEN: inner-i1 — Twah residual sweep · living overwrite holds · gen_gren GREEN"
