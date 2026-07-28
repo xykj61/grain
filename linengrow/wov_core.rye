@@ -755,6 +755,39 @@ fn check_fixture_bundle(io: std.Io, expected: []const u8) !void {
     if (!std.mem.eql(u8, read, expected)) return error.FixtureMismatch;
 }
 
+fn selftest_refuse_double_exit(
+    book: *Book,
+    holder_a: kumara.KeyPair,
+    holder_a_hex: *const [pubkey_hex_len]u8,
+    monarch_hex: *const [pubkey_hex_len]u8,
+    monarch_pk: kumara.PublicKey,
+    log: *[rc.max_log_len]u8,
+    log_len: *u32,
+    published: *PublishedRoot,
+) !void {
+    if (accept_exit(
+        book,
+        holder_a,
+        holder_a_hex,
+        monarch_hex,
+        monarch_pk,
+        log,
+        log_len,
+        published,
+        "20260709.200731",
+    )) |_| {
+        return error.UnwelcomePassed;
+    } else |_| print("wov: double exit refused — GREEN unwelcome path\n", .{});
+}
+
+fn selftest_refuse_tampered_bundle(published: *const PublishedRoot, monarch_pk: kumara.PublicKey) !void {
+    var forged = published.*;
+    forged.bundle[0] +%= 1;
+    if (verify_bundle_matches_root(forged.bundle[0..forged.bundle_len], &published.state_root_hex, monarch_pk)) |_| {
+        return error.UnwelcomePassed;
+    } else |_| print("wov: tampered bundle refused — GREEN unwelcome path\n", .{});
+}
+
 fn run_selftest(io: std.Io) !u8 {
     const monarch = kumara.keypair_from_seed(&monarch_seed);
     const holder_a = kumara.keypair_from_seed(&holder_a_seed);
@@ -806,8 +839,7 @@ fn run_selftest(io: std.Io) !u8 {
     );
     print("wov: holder A exit accepted — GREEN welcome\n", .{});
 
-    // Double exit refused
-    if (accept_exit(
+    try selftest_refuse_double_exit(
         &book,
         holder_a,
         &holder_a_hex,
@@ -816,17 +848,8 @@ fn run_selftest(io: std.Io) !u8 {
         &log,
         &log_len,
         &published,
-        "20260709.200731",
-    )) |_| {
-        return error.UnwelcomePassed;
-    } else |_| print("wov: double exit refused — GREEN unwelcome path\n", .{});
-
-    // Tampered bundle refused
-    var forged = published;
-    forged.bundle[0] +%= 1;
-    if (verify_bundle_matches_root(forged.bundle[0..forged.bundle_len], &published.state_root_hex, monarch.public_key)) |_| {
-        return error.UnwelcomePassed;
-    } else |_| print("wov: tampered bundle refused — GREEN unwelcome path\n", .{});
+    );
+    try selftest_refuse_tampered_bundle(&published, monarch.public_key);
 
     print("wov: version {s}\n", .{wov_version});
     print("GREEN: WOV exit honesty — mint, root, prove, exit, refuse double.\n", .{});
@@ -855,6 +878,93 @@ fn run_write_fixture(_: std.Io) !u8 {
     return 0;
 }
 
+fn selftest_dual_refuse_solo(
+    monarch_a: kumara.KeyPair,
+    monarch_b: kumara.KeyPair,
+    monarch_a_hex: *const [pubkey_hex_len]u8,
+    monarch_b_hex: *const [pubkey_hex_len]u8,
+    holder_a_hex: *const [pubkey_hex_len]u8,
+    instance_hex: *const [instance_hex_len]u8,
+) !void {
+    var solo_book = Book.init();
+    try mint(&solo_book, holder_a_hex, 1000);
+    var solo_log: [rc.max_log_len]u8 = undefined;
+    var solo_log_len: u32 = 0;
+    var solo_pub: PublishedRoot = .{};
+    try publish_root(&solo_book, monarch_a, monarch_a_hex, dual_witness_stamp, &solo_log, &solo_log_len, &solo_pub);
+    if (verify_latest_root_dual(
+        solo_log[0..solo_log_len],
+        monarch_a.public_key,
+        monarch_b.public_key,
+        monarch_a_hex,
+        monarch_b_hex,
+        instance_hex,
+    )) |_| {
+        return error.UnwelcomePassed;
+    } else |_| print("wov-dual: solo root refused under dual config — GREEN unwelcome path\n", .{});
+}
+
+fn selftest_dual_publish_prove_exit(
+    book: *Book,
+    monarch_a: kumara.KeyPair,
+    monarch_b: kumara.KeyPair,
+    monarch_a_hex: *const [pubkey_hex_len]u8,
+    monarch_b_hex: *const [pubkey_hex_len]u8,
+    holder_a: kumara.KeyPair,
+    holder_a_hex: *const [pubkey_hex_len]u8,
+    log: *[rc.max_log_len]u8,
+    log_len: *u32,
+    published: *PublishedRoot,
+    instance_hex: *[instance_hex_len]u8,
+) !void {
+    try publish_root_dual(
+        book,
+        monarch_a,
+        monarch_a_hex,
+        monarch_b,
+        monarch_b_hex,
+        dual_witness_stamp,
+        log,
+        log_len,
+        published,
+    );
+    assert(published.seq == 1);
+
+    hex_of_instance(instance_hex);
+    const latest = try verify_latest_root_dual(
+        log[0..log_len.*],
+        monarch_a.public_key,
+        monarch_b.public_key,
+        monarch_a_hex,
+        monarch_b_hex,
+        instance_hex,
+    );
+    assert(latest.seq == 1);
+    assert(std.mem.eql(u8, &latest.state_root, &published.state_root_hex));
+    print("wov-dual: twin-line root verified — GREEN welcome\n", .{});
+
+    try verify_bundle_matches_root(published.bundle[0..published.bundle_len], &published.state_root_hex, monarch_a.public_key);
+    const proof_a = try prove_balance(published.bundle[0..published.bundle_len], holder_a_hex);
+    assert(proof_a.balance == 700);
+    print("wov-dual: holder A balance {d} proven — GREEN welcome\n", .{proof_a.balance});
+
+    try accept_exit_dual(
+        book,
+        holder_a,
+        holder_a_hex,
+        monarch_a_hex,
+        monarch_a.public_key,
+        monarch_b.public_key,
+        monarch_a_hex,
+        monarch_b_hex,
+        log,
+        log_len,
+        published,
+        "20260709.224635",
+    );
+    print("wov-dual: holder A exit accepted — GREEN welcome\n", .{});
+}
+
 fn run_selftest_dual(_: std.Io) !u8 {
     const monarch_a = kumara.keypair_from_seed(&monarch_seed);
     const monarch_b = kumara.keypair_from_seed(&monarch_b_seed);
@@ -877,71 +987,29 @@ fn run_selftest_dual(_: std.Io) !u8 {
     var log: [rc.max_log_len]u8 = undefined;
     var log_len: u32 = 0;
     var published: PublishedRoot = .{};
-    try publish_root_dual(
+    var instance_hex: [instance_hex_len]u8 = undefined;
+    try selftest_dual_publish_prove_exit(
         &book,
         monarch_a,
-        &monarch_a_hex,
         monarch_b,
-        &monarch_b_hex,
-        dual_witness_stamp,
-        &log,
-        &log_len,
-        &published,
-    );
-    assert(published.seq == 1);
-
-    var instance_hex: [instance_hex_len]u8 = undefined;
-    hex_of_instance(&instance_hex);
-    const latest = try verify_latest_root_dual(
-        log[0..log_len],
-        monarch_a.public_key,
-        monarch_b.public_key,
         &monarch_a_hex,
         &monarch_b_hex,
-        &instance_hex,
-    );
-    assert(latest.seq == 1);
-    assert(std.mem.eql(u8, &latest.state_root, &published.state_root_hex));
-    print("wov-dual: twin-line root verified — GREEN welcome\n", .{});
-
-    try verify_bundle_matches_root(published.bundle[0..published.bundle_len], &published.state_root_hex, monarch_a.public_key);
-    const proof_a = try prove_balance(published.bundle[0..published.bundle_len], &holder_a_hex);
-    assert(proof_a.balance == 700);
-    print("wov-dual: holder A balance {d} proven — GREEN welcome\n", .{proof_a.balance});
-
-    try accept_exit_dual(
-        &book,
         holder_a,
         &holder_a_hex,
-        &monarch_a_hex,
-        monarch_a.public_key,
-        monarch_b.public_key,
-        &monarch_a_hex,
-        &monarch_b_hex,
         &log,
         &log_len,
         &published,
-        "20260709.224635",
+        &instance_hex,
     );
-    print("wov-dual: holder A exit accepted — GREEN welcome\n", .{});
 
-    // Solo-signed root refused under dual verify
-    var solo_book = Book.init();
-    try mint(&solo_book, &holder_a_hex, 1000);
-    var solo_log: [rc.max_log_len]u8 = undefined;
-    var solo_log_len: u32 = 0;
-    var solo_pub: PublishedRoot = .{};
-    try publish_root(&solo_book, monarch_a, &monarch_a_hex, dual_witness_stamp, &solo_log, &solo_log_len, &solo_pub);
-    if (verify_latest_root_dual(
-        solo_log[0..solo_log_len],
-        monarch_a.public_key,
-        monarch_b.public_key,
+    try selftest_dual_refuse_solo(
+        monarch_a,
+        monarch_b,
         &monarch_a_hex,
         &monarch_b_hex,
+        &holder_a_hex,
         &instance_hex,
-    )) |_| {
-        return error.UnwelcomePassed;
-    } else |_| print("wov-dual: solo root refused under dual config — GREEN unwelcome path\n", .{});
+    );
 
     print("wov-dual: version {s}\n", .{wov_version});
     print("GREEN: WOV dual monarch D1 — twin lines, prove, exit, refuse solo.\n", .{});

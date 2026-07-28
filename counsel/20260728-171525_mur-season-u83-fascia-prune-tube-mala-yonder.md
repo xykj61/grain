@@ -37,7 +37,7 @@ No Amphora shred · no Class A rewrite · no over-70 function split · no TUBE c
 
 ## Next
 
-**kg u84** — on-touch over-70 (fascia still carries 14) · or check-in (flat prompt shelf is living holds).
+**LANDED u84** — over-70 on-touch · fascia 52→60 · over70 14→6.
 
 ---
 
