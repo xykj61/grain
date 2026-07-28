@@ -59,7 +59,7 @@ Retirement stays a **later propose-only** block after unify design is seated and
 | Step | Work | Exit |
 | --- | --- | --- |
 | **0** | This opener · inventory · hard lines | **u59** |
-| **1** | One-page unify brief: jobs MUR keeps · jobs WOV keeps until retire · non-goals | design GREEN |
+| **1** | One-page unify brief: jobs MUR keeps · jobs WOV keeps until retire · non-goals | **LANDED u60** |
 | **2** | Settle dual-digest story — keep both vs staged single-currency lean | design seat |
 | **3** | Exit-honesty rename-forward (MUR-native names) — design only | no code |
 | **4** | Living prose debt (`MALA` comments in settle cores) | optional polish |
