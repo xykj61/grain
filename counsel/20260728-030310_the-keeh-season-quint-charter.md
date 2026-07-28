@@ -8,7 +8,8 @@
 **Rename spine (approved fascia edit):** **Ketu / `%ketu` / ketu.fund → Keeh / `%keeh` / keeh.fund** — Aquarius · air · seat 11  
 **Executive:** **Keaton Sealy Livermore** — **still** (unchanged)  
 **Within:** paused **core** Gren Season (g0) · inside paused MUR u0 · inside paused Inner Scope · inside paused Constellation  
-**Status:** Prep seated · **q0–q7 complete** `20260728.032900` · **q8** next · living-overwrite AFFIRMED CLOSED  
+**Status:** Prep seated · **q0–q8 complete** `20260728.033017` · **q9** next · residual spot-check empty  
+Radiant pass `20260728.033017` — q8 residual spot-check empty  
 Radiant pass `20260728.032900` — q7 affirm overwrite close · gen trio GREEN  
 Radiant pass `20260728.032745` — q6 residual map cleared · living-overwrite block effectively closed  
 Radiant pass `20260728.032606` — q5 living overwrite · charter seat map + Kia sponsor · used-mobility lean  
@@ -26,7 +27,7 @@ Radiant pass `20260728.032134` — Kia honor sponsor · used 4-cyl hatch/SUV non
 | **inner** | Inner Scope | i6 / i7 next · fascia | **PAUSED** |
 | **innermost** | MUR Season | u0 | **PAUSED** |
 | **core** | Gren Season | g0 | **PAUSED** while quint walks |
-| **quint** | **Keeh Season** | **q0–q7** complete · **q8** next | **OPEN** |
+| **quint** | **Keeh Season** | **q0–q8** complete · **q9** next | **OPEN** |
 
 Handback: quint → core **g0** (unless extend 32). Then Gren · MUR · inner · outer as before.
 
