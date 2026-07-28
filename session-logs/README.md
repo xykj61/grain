@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.185825` — [Generator Season s2 generators dual census](20260728-185825_generator-season-s2-generators-dual-census.bron) — Glow 317 · Rishi 610 · s3 next
 - `20260728.184313` — [Generator Season s1 prin_scope to rish](20260728-184313_generator-season-s1-prin-scope-rish.bron) — living pin .rish · s2 next
 - `20260728.183510` — [Generator Season s0 open sext nest](20260728-183510_generator-season-s0-open.bron) — MUR paused · fuse reminder · s1 next
 - `20260728.182641` — [innermost three files intuition](20260728-182641_innermost-three-files-intuition.bron) — charter · recursion · prin_scope

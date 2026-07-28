@@ -33,7 +33,7 @@ No matrix/ticker rewrite · no O3 · no shred · no MUR unpause · no Glow↔Ris
 
 ## Next
 
-**kg s2** — next constructive door from the s0 fuse shelf (generators / glow-mode / taxonomy draft), or check-in.
+**LANDED s2** — generators dual-census · Glow 317 / Rishi 610 · no move.
 
 ---
 
