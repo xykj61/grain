@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.194334` — [Surface Chapter p1 anvil family home](20260728-194334_surface-season-p1-anvil-family-home.bron) — tools/gen/anvil LIVE · p2 next
 - `20260728.193914` — [Surface Chapter p0 bow recommendations seated](20260728-193914_surface-season-p0-bow-recommendations-seated.bron) — Shape B · sept open · src/sec
 - `20260728.193730` — [Generator Chapter check-in s8](20260728-193730_generator-season-check-in-s8.bron) — vegan-dogfood · A·B·C open
 - `20260728.193602` — [Glow quality prep before GUI season](20260728-193602_glow-quality-prep-before-gui-season.bron) — dep spine · vegan-dogfood · OS park
