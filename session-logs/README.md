@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.042644` — [Gren Chapter g15 horizon warn](20260728-042644_gren-season-g15-horizon-warn.bron) — lean-16 CLOSED · await extend_or_return
 - `20260728.042314` — [Gren Chapter g14 horizon warn](20260728-042314_gren-season-g14-horizon-warn.bron) — extend 32·64·return MUR · g15 next
 - `20260728.042216` — [Gren Chapter g13 harden](20260728-042216_gren-season-g13-harden.bron) — harden CLOSED · g14 horizon next
 - `20260728.042110` — [Gren Chapter g12 harden](20260728-042110_gren-season-g12-harden.bron) — gen trio GREEN · deploy RED · g13 next
