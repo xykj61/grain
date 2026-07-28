@@ -4,7 +4,9 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.182641` — [innermost three files intuition](20260728-182641_innermost-three-files-intuition.bron) — charter · recursion · prin_scope
 - `20260728.181548` — [fascia shred slow walkthrough](20260728-181548_fascia-shred-walkthrough.bron) — hand-holding companion canvas
+
 - `20260728.181415` — [safest next move after shred readiness](20260728-181415_safest-next-move-shred.bron) — leave circle or i7 paper draft
 
 - `20260728.181016` — [MUR Season u91 shred readiness](20260728-181016_mur-season-u91-shred-readiness.bron) — Class A content-ready · cut not · u92 next
