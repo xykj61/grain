@@ -4,6 +4,8 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260727.212502` — [Closing line law — kg or typed check in](20260727-212502_closing-line-kg-or-checkin.bron) — Cursor·Claude·checkpoint·either
+- `20260727.210059` — [After-glow opening · cross-desk design · choir green](20260727-210059_after-glow-cross-desk-opening.bron) — 17/17 · r58 pair · no push
 - `20260727.153836` — [Send · unified twenty · Siya tip](20260727-153836_send-unified-twenty-siya.bron) — origin+codeberg · gen_home red named
 - `20260727.092049` — [Send · counsel ask five · .brush Brushstroke](20260727-092049_send-counsel-ask-brush-extension.bron) — CSS/Sail/glob gratitude silo  
 - `20260727.091628` — [Send · counsel asks Mantra/Weave/nib · Glow·Sui·Move](20260727-091628_send-counsel-asks-mantra-glow-sui.bron) — four asks · nib not tip  
