@@ -1,7 +1,9 @@
 # Keeh Season — q0 Recursion Prompt (printout · all five scopes kept)
 
 **Stamp:** `20260728.030310`  
-**Use:** paste the fenced block as the next counsel/bench session opener after this charter send.
+**Use:** paste the fenced block as the next counsel/bench session opener after this charter send.  
+Radiant pass `20260728.032606` — living doors: Kia honor sponsor · used-mobility lean · q5+  
+Radiant pass `20260728.032134` — Kia sponsor seated on Keeh
 
 ---
 
@@ -31,13 +33,15 @@ QUINT SCOPE (this season — walk here):
   Charter: counsel/20260728-030310_the-keeh-season-quint-charter.md
   Spine: fascia edit Ketu → Keeh / %keeh / keeh.fund (Aquarius air seat 11).
   Executive: Keaton Sealy Livermore UNCHANGED.
-  Lexicon: scope·outer·inner·innermost·core·quint · Keeh · Ketu retired.
+  Honor sponsor: Kia (South Korea) design seat — not a paid buy.
+  Recommend: used 4-cyl hatch/SUV · non-CVT auto · light grey/beige cloth · CL/FB Marketplace.
+  Lexicon: scope·outer·inner·innermost·core·quint · Keeh · Ketu retired · fund sponsor · year·wave·crush.
   Prin: rishi/bin/rishi run tools/prin.rish scope
   gen_keeh GREEN · deploy RED; gen_gren · gen_murr still GREEN.
   q14 and q15 MUST warn: extend to 32 · or return Gren g0.
 
 Read whole: Keeh charter · Gren charter · MUR charter · LEXICON Keeh/quint ·
-edu keeh-opening · ketu executives dated counsel (rename-forward).
+edu keeh-opening · gratitude/kia.md · foundations keeh-and-kia · ketu executives dated (rename-forward).
 Companions: newest quin-workshop pair if attached; else verify origin/main nib.
 
 first duties: bootstrap or verify · state the nib · prin scope ·
@@ -63,8 +67,10 @@ words seated (blank = held whole): season_name= choir= LICENSE_WORD=
   siya_fund_claim=
   murr_dedication=Kyler_Murray murr_executive=DJINN
   gren_executive=Grain_Energy_PBC_President(Keaton_lean)
-  keeh_executive=Keaton
+  keeh_executive=Keaton keeh_sponsor=Kia
+  keeh_recommend=used_4cyl_hatch_SUV_nonCVT_cloth_CL_FB
   gwoh_dedication=Sarah_Guo eyva_dedication=Avanti trya_dedication=Ariana_Grande
+  year=wave crush=compile docs-geode= geode=prep(d0)
   n_of_12_multisig=plan (n held) wov_retire=roadmap_last
   core_extend=16_lean quint_extend= (16 lean · fill 32 at q14/q15) extend_or_return=
 asks: <anything — or "none"> ] ]

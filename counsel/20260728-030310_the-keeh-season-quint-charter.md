@@ -8,7 +8,9 @@
 **Rename spine (approved fascia edit):** **Ketu / `%ketu` / ketu.fund → Keeh / `%keeh` / keeh.fund** — Aquarius · air · seat 11  
 **Executive:** **Keaton Sealy Livermore** — **still** (unchanged)  
 **Within:** paused **core** Gren Season (g0) · inside paused MUR u0 · inside paused Inner Scope · inside paused Constellation  
-**Status:** Prep seated · **q0–q4 complete** `20260728.032134` · **q5** next · Kia honor sponsor seated
+**Status:** Prep seated · **q0–q5 complete** `20260728.032606` · **q6** next · Kia honor sponsor seated  
+Radiant pass `20260728.032606` — q5 living overwrite · charter seat map + Kia sponsor · used-mobility lean  
+Radiant pass `20260728.032134` — Kia honor sponsor · used 4-cyl hatch/SUV non-CVT cloth CL/FB
 
 *Written together by Keaton and Quin.*
 
@@ -22,7 +24,7 @@
 | **inner** | Inner Scope | i6 / i7 next · fascia | **PAUSED** |
 | **innermost** | MUR Season | u0 | **PAUSED** |
 | **core** | Gren Season | g0 | **PAUSED** while quint walks |
-| **quint** | **Keeh Season** | **q0–q4** complete · **q5** next | **OPEN** |
+| **quint** | **Keeh Season** | **q0–q5** complete · **q6** next | **OPEN** |
 
 Handback: quint → core **g0** (unless extend 32). Then Gren · MUR · inner · outer as before.
 
@@ -31,7 +33,8 @@ Handback: quint → core **g0** (unless extend 32). Then Gren · MUR · inner ·
 1. **Fascia edit approved** — living rename **Ketu → Keeh** on Aquarius air seat 11; vane `%keeh` · domain prep **keeh.fund**.  
 2. **Executive unchanged** — **Keaton** remains fund executive of seat 11.  
 3. Dated counsel stamped Ketu **rename-forwards**; living doors say Keeh.  
-4. Round count lean **16** (q0–q15); **q14 and q15 must warn:** extend to **32**, or return to Gren **g0**.
+4. **Honor sponsor** — **Kia** (South Korea) design seat `20260728.032134` · used-mobility recommendation lean.  
+5. Round count lean **16** (q0–q15); **q14 and q15 must warn:** extend to **32**, or return to Gren **g0**.
 
 ## Seat map (this stamp)
 
@@ -44,6 +47,8 @@ Handback: quint → core **g0** (unless extend 32). Then Gren · MUR · inner ·
 | Vane | `%keeh` |
 | Domain | **keeh.fund** (claim his) |
 | Executive | **Keaton Sealy Livermore** |
+| Honor sponsor | **Kia** (design seat · not a paid buy) |
+| Recommend | used 4-cyl hatch/SUV · non-CVT auto · light grey/beige cloth · Craigslist / Facebook Marketplace |
 
 ## Round map (lean 16)
 
