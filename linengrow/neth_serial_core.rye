@@ -17,7 +17,7 @@
 //!     the core only ever touches the in-memory buffer it is given.
 //!   - The signature on the record is produced *before* this call, by
 //!     mala_core.sign_fact — the core does not sign. It does re-verify
-//!     while folding (mala_core.fold_mala_log's own contract), because
+//!     while folding (murr_core.fold_murr_log's own contract), because
 //!     that verification is inseparable from deciding whether the record
 //!     may be admitted at all — the ordering decision itself, not a
 //!     separable pipeline stage.
@@ -66,7 +66,7 @@ pub fn append_and_reroot(
 
     tally_copy.copy_disjoint(u8, log[log_len..new_len], line);
 
-    const balances = mc.fold_mala_log(log[0..new_len], issuer_hex, holder_hex, issuer_pk, holder_pk) catch return error.FoldFailed;
+    const balances = mc.fold_murr_log(log[0..new_len], issuer_hex, holder_hex, issuer_pk, holder_pk) catch return error.FoldFailed;
 
     var root: [32]u8 = undefined;
     rc.digest_log(log[0..new_len], &root);

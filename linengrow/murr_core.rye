@@ -1,7 +1,7 @@
 //! linengrow/murr_core.rye — shared MUR mint/send fold for M1 and M2 (was mala_core / MALA).
 //!
 //! Imported by `murr.rye` (one-node selftest) and `murr_delivery.rye` (Comlink carriage).
-//! Wire memos `murr:*` (was mala:*). `fold_mala_log` symbol held for later module step.
+//! Wire memos `murr:*` (was mala:*). `fold_murr_log` symbol held for later module step.
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -143,7 +143,7 @@ pub fn fold_one_line(
 }
 
 /// Fold MALA log: verify each line, apply mint/send, refuse negatives and non-issuer mint.
-pub fn fold_mala_log(
+pub fn fold_murr_log(
     log: []const u8,
     issuer_hex: *const [pubkey_hex_len]u8,
     holder_hex: *const [pubkey_hex_len]u8,

@@ -25,7 +25,7 @@ fn welcome_path(
 ) !void {
     var log: [rc.max_log_len]u8 = undefined;
     const log_len = try mc.build_welcome_log(&log, issuer_kp, holder_kp, issuer_hex, holder_hex);
-    const balances = try mc.fold_mala_log(
+    const balances = try mc.fold_murr_log(
         log[0..log_len],
         issuer_hex,
         holder_hex,
@@ -65,7 +65,7 @@ fn unwelcome_forged_sig(
     var log_len: u32 = 0;
     const fields = mc.mint_fields_from_fixture(issuer_hex, holder_hex);
     try mc.sign_append(&log, &log_len, fields, holder_kp);
-    if (mc.fold_mala_log(log[0..log_len], issuer_hex, holder_hex, issuer_kp.public_key, holder_kp.public_key)) |_| {
+    if (mc.fold_murr_log(log[0..log_len], issuer_hex, holder_hex, issuer_kp.public_key, holder_kp.public_key)) |_| {
         return error.UnwelcomePassed;
     } else |_| print("mala m1: forged mint signature refused — GREEN unwelcome path\n", .{});
 }
@@ -86,7 +86,7 @@ fn unwelcome_non_issuer_mint(
         .stamp = "20260709.184051",
     };
     try mc.sign_append(&log, &log_len, fields, holder_kp);
-    if (mc.fold_mala_log(log[0..log_len], issuer_hex, holder_hex, issuer_kp.public_key, holder_kp.public_key)) |_| {
+    if (mc.fold_murr_log(log[0..log_len], issuer_hex, holder_hex, issuer_kp.public_key, holder_kp.public_key)) |_| {
         return error.UnwelcomePassed;
     } else |_| print("mala m1: non-issuer mint refused — GREEN unwelcome path\n", .{});
 }
@@ -107,7 +107,7 @@ fn unwelcome_overspend(
         .stamp = "20260709.184100",
     };
     try mc.sign_append(&log, &log_len, over, holder_kp);
-    if (mc.fold_mala_log(log[0..log_len], issuer_hex, holder_hex, issuer_kp.public_key, holder_kp.public_key)) |_| {
+    if (mc.fold_murr_log(log[0..log_len], issuer_hex, holder_hex, issuer_kp.public_key, holder_kp.public_key)) |_| {
         return error.UnwelcomePassed;
     } else |_| print("mala m1: send exceeding balance refused — GREEN unwelcome path\n", .{});
 }
@@ -123,7 +123,7 @@ fn unwelcome_tampered_log(
     var tampered: [rc.max_log_len]u8 = undefined;
     tally_copy.copy_disjoint(u8, tampered[0..log_len], log[0..log_len]);
     tampered[log_len - 3] +%= 1;
-    if (mc.fold_mala_log(tampered[0..log_len], issuer_hex, holder_hex, issuer_kp.public_key, holder_kp.public_key)) |_| {
+    if (mc.fold_murr_log(tampered[0..log_len], issuer_hex, holder_hex, issuer_kp.public_key, holder_kp.public_key)) |_| {
         return error.UnwelcomePassed;
     } else |_| print("mala m1: tampered log refused — GREEN unwelcome path\n", .{});
 }
