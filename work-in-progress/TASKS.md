@@ -4,7 +4,7 @@
 **Last updated:** `20260727.074039` (EDT) · voice Quin  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Full season ledger:** [`archive/20260724-132812_tasks-season-ledger.md`](archive/20260724-132812_tasks-season-ledger.md)  
-**Align:** [`20260726-050422_align-before-cursor-handoff.md`](20260726-050422_align-before-cursor-handoff.md)
+**Align:** [`20260726-050422_align-before-cursor-handoff.md`](archive/20260726-050422_align-before-cursor-handoff.md)
 
 ---
 
