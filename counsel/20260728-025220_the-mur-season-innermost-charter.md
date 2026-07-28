@@ -9,7 +9,7 @@
 **Honor dedication:** **Kyler Murray** — Minnesota Vikings quarterback (signed 2026; camp competition with J.J. McCarthy as of this stamp's web ground)  
 **Currency lean:** **MUR** as **L1** · unify with **WOV** concept · roadmap **last** retires WOV entirely in favor of MUR  
 **Status:** **OPEN** · u0–u80 complete `20260728.161501` · **u81** next — fascia prune waves  
-Radiant pass `20260728.161501` — u80 college/counsel yonder · superseded 39 · shred RED  
+Radiant pass `20260728.161501` — u80 college/counsel yonder · shred RED  
 Radiant pass `20260728.161205` — u79 pool/gated design yonder · shred RED  
 Radiant pass `20260728.160951` — u78 yonder · Class-A paper lean · shred RED  
 Radiant pass `20260728.160618` — u77 record/consumed yonder · shred RED  
