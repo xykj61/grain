@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.035329` — [Check-in extend or return](20260728-035329_checkin-extend-or-return.bron) — lean-16 CLOSED · doors A–E
 - `20260728.035025` — [Helen sundial align](20260728-035025_helen-sundial-align.bron) — Linn→Helen · sundial 69→100 · align
 - `20260728.034317` — [Keeh q15 and Linn Capricorn](20260728-034317_keeh-q15-linn-capricorn.bron) — Linn 10 · lean-16 CLOSED · extend held
 - `20260728.034122` — [Keeh Season q14 horizon warn](20260728-034122_keeh-season-q14-horizon-warn.bron) — warn1 · extend_or_return held · q15 next
