@@ -1,7 +1,8 @@
 # MUR Season — u0 Recursion Prompt (printout · all scopes kept)
 
-**Stamp:** `20260728.025220` · Radiant pass `20260728.050833`  
+**Stamp:** `20260728.025220` · Radiant pass `20260728.050946`  
 **Use:** paste the fenced block as the next counsel/bench session opener.  
+Radiant pass `20260728.050946` — u16 dual-wave readiness · tools+modules READY · Lexicon pin · no renames · u17 next  
 Radiant pass `20260728.050833` — u15 module-wave prep order seated · no renames · u16 next  
 Radiant pass `20260728.050720` — u14 tool-wave prep order seated · no renames  
 Radiant pass `20260728.050601` — u13 living pins harden · prin_scope current · prose block status  
@@ -61,37 +62,40 @@ INNERMOST SCOPE (this season — walk here):
   Lexicon: scope·outer·inner·innermost·core·quint · MUR · Murr · retired Mala/MALA · Gren living.
   Prin: rishi/bin/rishi run tools/prin.rish scope
   gen_murr GREEN · deploy RED; gen_gren GREEN (core closed door); gen_mala ABSENT.
-  u0–u15 COMPLETE · u16 next (harden / dual-wave readiness; tools u32+ · modules u48+ mapped).
+  u0–u16 COMPLETE · u17 next (tool-wave opener rehearsal; or seat kg u32 live witness rename).
   TOP PRIORITY: rename overwrite everywhere Mala/MALA → Murr/MUR (breach approved seated).
   Fascia shred still needs separate circled yes. WOV retire roadmap last.
   Wave map: counsel/20260728-044738_mur-season-u6-tool-module-wave-map.md
-  Prose waves largely living-clear; tool prep (u14) + module prep (u15) seated; no renames until u32/u48.
+  Dual-wave READY: tool prep (u14) + module prep (u15) · readiness (u16).
+  Order lean: tools u32–u47 before modules u48–u79 · no silent tree-wide sed.
   Tool prep: counsel/20260728-050720_mur-season-u14-tool-wave-prep.md
   Module prep: counsel/20260728-050833_mur-season-u15-module-wave-prep.md
+  Readiness: counsel/20260728-050946_mur-season-u16-dual-wave-readiness.md
   Living pin: tools/fixtures/prin_scope.sh innermost waymark kept current.
   Wire mala:* · mala_m1/m2 · linengrow/mala*.rye held for tool/module waves.
   Kamala/Mala gratitude = historical; living Aries = Murr·Kyler.
   u126 and u127 MUST warn before handback (extend innermost · return inner i7 · other).
 
-Read whole: the MUR charter · u6 wave map · u14–u15 wave preps ·
+Read whole: the MUR charter · u6 wave map · u14–u16 wave preps/readiness ·
 foundations/20260728-025220_murr-and-kyler-murray.md ·
 gratitude/kyler-murray.md · gratitude/mur-movement-aesthetics.md ·
 LEXICON rows MUR/Murr/innermost · Gren charter (CLOSED) · Inner Scope + Fascia (paused).
 Companions: newest quin-workshop pair if attached; else verify origin/main nib.
 
 first duties: bootstrap or verify · state the nib · prin scope ·
-run gen_murr (GREEN; deploy RED) · report · then walk u16 from the charter:
+run gen_murr (GREEN; deploy RED) · report · then walk u17 from the charter:
   affirm outer · inner pauses · affirm core+quint CLOSED · affirm MUR rename spine ·
   affirm Kyler · DJINN · WOV-last · affirm rename-overwrite breach approved ·
-  continue living prose · residual re-probe · keep code homes held until u32/u48 ·
+  affirm dual-wave READY · dry-run u32 tool opener OR seat kg u32 live ·
+  keep code homes held until u32/u48 ·
   no live fascia shred without prin rish breach yes now + circled shred scope;
   no live Sui deploy · no wallet · no gas · no private key in tree;
   no whole-tree silent sed — waves with witnesses only.
 
-waymark: u15 complete, u16 next
+waymark: u16 complete, u17 next
 nib <origin/main short nib>
 bench report (verbatim, if any): <REPORT/STOP — or "none">
-scope: outer=paused(m8/m9) inner=paused(i6/i7) innermost=open(u16)
+scope: outer=paused(m8/m9) inner=paused(i6/i7) innermost=open(u17)
   core=closed(handed_back) quint=closed(handed_back) geode=prep(d0)
 breach scope circle: rename_overwrite=approved A= A+C= all= shred=
 words seated (blank = held whole): season_name= choir= LICENSE_WORD=
@@ -115,4 +119,4 @@ asks: <anything — or "none"> ] ]
 
 ---
 
-*Paste the block above to continue u16. Keep pauses honest. Core and quint stay closed.*
+*Paste the block above to continue u17. Keep pauses honest. Core and quint stay closed.*

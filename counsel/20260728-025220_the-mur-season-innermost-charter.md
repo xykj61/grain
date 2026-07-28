@@ -8,7 +8,8 @@
 **Rename spine (approved overwrite):** **Mala / MALA / `%mala` → Murr / MUR / `%murr`** — Radiant · TAME · living-tree massive rename across the season  
 **Honor dedication:** **Kyler Murray** — Minnesota Vikings quarterback (signed 2026; camp competition with J.J. McCarthy as of this stamp's web ground)  
 **Currency lean:** **MUR** as **L1** · unify with **WOV** concept · roadmap **last** retires WOV entirely in favor of MUR  
-**Status:** **OPEN** · u0–u15 complete `20260728.050833` · **u16** next — harden / dual-wave readiness  
+**Status:** **OPEN** · u0–u16 complete `20260728.050946` · **u17** next — tool-wave opener rehearsal (or seat kg u32)  
+Radiant pass `20260728.050946` — u16 dual-wave readiness · tools+modules READY · Lexicon pin hardened · no renames  
 Radiant pass `20260728.050833` — u15 module-wave prep order seated · no renames  
 Radiant pass `20260728.050720` — u14 tool-wave prep order seated · no renames  
 Radiant pass `20260728.050601` — u13 living pins harden · prin_scope current · prose block status  
@@ -37,7 +38,7 @@ Radiant pass `20260728.025634` — innermost paused at u0 · core Gren opened ·
 |-------|--------|----------|----------|
 | **outer** | Constellation | m8 complete / **m9** next | **PAUSED** — do not advance m-rounds |
 | **inner** | Inner Scope | i6 complete / **i7** next · fascia machinery paused | **PAUSED** — do not advance i-rounds while innermost walks |
-| **innermost** | **MUR Season** | **u0–u15** complete · **u16** next | **OPEN** — walk here |
+| **innermost** | **MUR Season** | **u0–u16** complete · **u17** next | **OPEN** — walk here |
 | **core** | Gren Season | lean-16 CLOSED · handed back | **CLOSED** |
 | **quint** | Keeh Season | lean-16 CLOSED · handed back | **CLOSED** |
 
@@ -66,7 +67,7 @@ When innermost hands back: resume **inner** at i7 (fascia shred-with-parity draf
 
 | Block | Rounds | Exit lean |
 |-------|--------|-----------|
-| Bow · measure | **u0–u15** CLOSED · **u16** | Affirm pauses · gen_murr · residual · prose · gratitude historical · breach rename seated · tool/module map |
+| Bow · measure | **u0–u16** CLOSED · **u17** | Affirm pauses · gen_murr · residual · prose · gratitude historical · breach rename seated · tool/module map · dual-wave readiness |
 | Lexicon · prose waves | **u6–u31** (largely living-clear · walking harden) | Living counsel/docs/edu Radiant-pass Mala/MALA → Murr/MUR; intentional holds named |
 | Tool · generator homes | **u32–u47** (prep seated u14) | `gen_murr` done · witnesses · fixtures · parity announces |
 | Module · mycelium · specs | **u48–u79** (prep seated u15) | Code and SPEC paths; TAME width; choir green after each cluster |
