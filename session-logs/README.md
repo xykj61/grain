@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.031722` — [docs-geode year wave crush q3](20260728-031722_docs-geode-year-wave-crush-q3.bron) — docs-geode · crush=compile · q4 next
 - `20260728.031252` — [Keeh q2 and year Cloud reply](20260728-031252_keeh-q2-and-year-cloud-reply.bron) — year iOS paste · i0 Keeh · q3 next
 - `20260728.031050` — [Keeh Season q1 residual](20260728-031050_keeh-season-q1-residual.bron) — fund11 Keeh Radiant-pass · q2 next
 - `20260728.030850` — [Keeh Season q0 bow](20260728-030850_keeh-season-q0-bow.bron) — five pauses · residual map · q1 next
