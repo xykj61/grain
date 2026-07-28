@@ -64,8 +64,8 @@ if rg -q 'Wayne_Hsiung|Wayne Hsiung|shyu_dedication=Wayne' "$PROMPT"; then ok "p
 if rg -q 'Hyundai|shyu_sponsor=Hyundai' "$PROMPT"; then ok "prompt: Shyu→Hyundai"; else miss "prompt: Shyu→Hyundai"; fi
 if rg -q 'Linn|%linn|linn_fund' "$PROMPT"; then ok "prompt: Linn Capricorn"; else miss "prompt: Linn Capricorn"; fi
 if rg -q 'Helen_Atthowe|Helen Atthowe|linn_dedication=Helen' "$PROMPT"; then ok "prompt: Linn→Helen"; else miss "prompt: Linn→Helen"; fi
-if rg -q 'lean-16 CLOSED|lean16_closed|q0–q15 complete|q15 complete' "$PROMPT"; then ok "prompt: lean-16 closed"; else miss "prompt: lean-16 closed"; fi
-if rg -q 'extend_or_return=' "$PROMPT"; then ok "prompt: extend_or_return blank slot"; else miss "prompt: extend_or_return blank slot"; fi
+if rg -q 'lean-16 CLOSED|lean16_closed|q0–q15 complete|q15 complete|handed back|return_gren_g0' "$PROMPT"; then ok "prompt: lean-16 closed/handback"; else miss "prompt: lean-16 closed/handback"; fi
+if rg -q 'extend_or_return=' "$PROMPT"; then ok "prompt: extend_or_return slot"; else miss "prompt: extend_or_return slot"; fi
 if rg -q 'year=wave|wave.*year' "$PROMPT"; then ok "prompt: year=wave"; else miss "prompt: year=wave"; fi
 if rg -q 'crush=compile|crush.*compile' "$PROMPT"; then ok "prompt: crush=compile"; else miss "prompt: crush=compile"; fi
 if rg -q 'docs-geode|geode=prep' "$PROMPT"; then ok "prompt: docs-geode/geode"; else miss "prompt: docs-geode/geode"; fi

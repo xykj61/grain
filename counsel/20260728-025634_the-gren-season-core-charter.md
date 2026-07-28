@@ -7,23 +7,24 @@
 **Ground:** origin/main `d51e6b84b0` (pre-send)  
 **Rename spine (approved):** **Djin / `%djin` / djin.fund → Gren / `%gren` / gren.fund** — revert the Djin name choice; Twah stays retired history  
 **Within:** the **MUR Chapter** (innermost · u0–u127) — MUR pauses at **u0** while core walks  
-**Status:** Prep seated · g0 next — **PAUSED** `20260728.030310` while **quint** Keeh Chapter walks
+**Status:** **OPEN** · g0 complete `20260728.035441` · **g1** next — resumed after Keeh handback `return_gren_g0`  
+Radiant pass `20260728.035441` — handback from quint · g0 bow · gen_gren · gen_murr GREEN
 
 *Written together by Keaton and Quin.*
 
 ---
 
-## Five scopes kept (post-`20260728.030310`)
+## Five scopes kept (post-`20260728.035441`)
 
 | Scope | Chapter | Bookmark | Advance? |
 |-------|--------|----------|----------|
 | **outer** | Constellation | m8 / m9 next | **PAUSED** |
 | **inner** | Inner Scope | i6 / i7 next · fascia | **PAUSED** |
 | **innermost** | MUR Chapter | **u0** (not yet bowed) | **PAUSED** |
-| **core** | **Gren Chapter** | **g0** | **PAUSED** while quint walks |
-| **quint** | Keeh Chapter | q0 next | **OPEN** (fascia edit Ketu→Keeh) |
+| **core** | **Gren Chapter** | **g0** complete · **g1** next | **OPEN** |
+| **quint** | Keeh Chapter | lean-16 CLOSED · handed back | **CLOSED** |
 
-Handback: quint → core **g0** · then core → innermost **u0** (unless extend seated). Inner i7 and outer m9 still wait above.
+Handback from quint **seated**. Later: core → innermost **u0** (unless core extend). Inner i7 and outer m9 still wait above.
 
 ## What this season is for
 
