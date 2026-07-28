@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.004954` — [Tensegral r12 Happy zone · Arc IV exit](20260728-004954_tensegral-r12-happy-zone.bron) — tensegral_arc_iv_witness GREEN
 - `20260728.004750` — [Tensegral r11 Arc IV Unify](20260728-004750_tensegral-r11-unify.bron) — Tally caller map canon
 - `20260728.004116` — [Tensegral r10 Arc IV Tighten](20260728-004116_tensegral-r10-tighten.bron) — tally gardens bounds pinned
 - `20260728.003902` — [Tensegral r9 Consolidate · Arc III exit](20260728-003902_tensegral-r9-consolidate.bron) — TH-4→alias · resin homes
