@@ -1,12 +1,12 @@
-# tools/gen_twah_fund_prep.rish — Constellation m5–m7+: Twah fund prep generator.
+# tools/gen_twah_fund_prep.rish — Constellation m5–m8: Twah fund prep generator.
 #
-# Affirms Taurus earth seat, edu steps 1–5 witnessed (phone book · Comlink),
-# refuses deploy / claim-domain / wallet verbs.
+# Affirms Taurus earth seat, edu steps 1–6 witnessed (refuse-walk closes arc),
+# post-fold proves deploy exits RED, refuses forbidden verbs by name.
 #   rishi/bin/rishi run tools/gen_twah_fund_prep.rish
 #   rishi/bin/rishi run tools/gen_twah_fund_prep.rish deploy  # RED
 
-say "gen-twah: Language EN — Twah fund prep (Taurus earth · edu gift · steps 1–5)."
-say "gen-twah: Style Radiant — GREEN only after Comlink opens and steps 1–5 witness."
+say "gen-twah: Language EN — Twah fund prep (Taurus earth · edu gift · steps 1–6 close)."
+say "gen-twah: Style Radiant — GREEN only after steps 1–6 witness and deploy refuse."
 say "gen-twah: Lens TAME — prep only; no wallet, gas, domain claim, or live deploy."
 
 let verb = ""
@@ -21,6 +21,12 @@ assert prep.out contains "witness:step2 GREEN" else "gen-twah step2 witness miss
 assert prep.out contains "witness:step3 GREEN" else "gen-twah step3 witness missing"
 assert prep.out contains "witness:step4 GREEN" else "gen-twah step4 witness missing"
 assert prep.out contains "witness:step5 GREEN" else "gen-twah step5 witness missing"
+assert prep.out contains "witness:step6 GREEN" else "gen-twah step6 witness missing"
+assert prep.out contains "Twah m5–m8 CLOSED" else "gen-twah Twah arc close line missing"
 say prep.out
 
-say "GREEN: gen-twah m7 — steps 1–5 witnessed; phone book + Comlink knock GREEN; deploy RED by name."
+# m8 — refuse-walk post-fold: deploy must fail
+let refuse = run ["sh" "tools/fixtures/gen_twah_fund_prep.sh" "deploy"]
+assert (refuse.ok == false) else "gen-twah refuse-walk broken: deploy must exit RED"
+
+say "GREEN: gen-twah m8 — Twah arc closed; steps 1–6 witnessed; deploy refuse post-fold RED."
