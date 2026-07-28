@@ -9,7 +9,7 @@
 **Status:** Checkable — GREEN `20260721.193404`  
 **Register:** Checkable (Two Rooms) — product wrap GREEN; elder parse bodies underneath  
 
-**Grounds in:** sub-lean **C2** in [`20260721-193220_stoa210-replay-body-inventory.md`](../20260721-193220_stoa210-replay-body-inventory.md) · STOA211 replay compose
+**Grounds in:** sub-lean **C2** in [`20260721-193220_stoa210-replay-body-inventory.md`](20260721-193220_stoa210-replay-body-inventory.md) · STOA211 replay compose
 
 **dated_guard:** Do **not** claim Glow-authored field parse or Glow source literals. JABS3 held.
 

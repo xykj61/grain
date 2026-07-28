@@ -8,7 +8,7 @@
 **Voice:** Quin  
 **Status:** Checkable — bound by `glow_lower_mold_witness` · `glow_lower_named_cast_witness` · `glow_run` sala-event · TAME bans  
 **Register:** Checkable (Two Rooms) — hex emit GREEN; memo/stamp stay `@t`; amount `@u32`; cast twin held; JABS3 held  
-**Grounds in:** [`20260721-174747_stoa183-ux-hex-aura-thin.md`](20260721-174747_stoa183-ux-hex-aura-thin.md) · [`20260721-173504_stoa181-at-cord-lower-emit.md`](../20260721-173504_stoa181-at-cord-lower-emit.md)
+**Grounds in:** [`20260721-174747_stoa183-ux-hex-aura-thin.md`](20260721-174747_stoa183-ux-hex-aura-thin.md) · [`20260721-173504_stoa181-at-cord-lower-emit.md`](20260721-173504_stoa181-at-cord-lower-emit.md)
 
 **dated_guard:** Do **not** rewrite STOA183's dated "lower held" claims. Do **not** claim `$%` `@ux`. Elder Rye fold stays.
 

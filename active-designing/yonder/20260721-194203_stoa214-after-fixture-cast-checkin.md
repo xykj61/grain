@@ -9,7 +9,7 @@
 **Status:** Checkable — lean **A** send chosen `20260721.194756` · lean **C** next  
 **Register:** Checkable (Two Rooms) — STOA208–213 on pier with this send; literals season opens as C  
 
-**Grounds in:** [`20260721-194058_stoa213-fixture-cast-twins.md`](20260721-194058_stoa213-fixture-cast-twins.md) · [`20260721-193220_stoa210-replay-body-inventory.md`](../20260721-193220_stoa210-replay-body-inventory.md) · STOA211–212 compose
+**Grounds in:** [`20260721-194058_stoa213-fixture-cast-twins.md`](20260721-194058_stoa213-fixture-cast-twins.md) · [`20260721-193220_stoa210-replay-body-inventory.md`](20260721-193220_stoa210-replay-body-inventory.md) · STOA211–212 compose
 
 **dated_guard:** Do **not** claim Glow source literals or Glow-rune crypto. Prefer **send** before another language season opens. JABS3 opens only on explicit word.
 

@@ -8,7 +8,7 @@
 **Style:** Radiant
 **Voice:** Rio 3
 **Status:** Checkable — **G1 closed digest-grade** · **signed-Kumara GREEN** · posix guest · KERNEL=nova TCG
-**Ground:** Claude counsel [`20260712-195155_proven-seat-g1-claude-opening-counsel.md`](20260712-195155_proven-seat-g1-claude-opening-counsel.md) · three asks [`20260712-201200_proven-seat-g1-claude-three-asks.md`](20260712-201200_proven-seat-g1-claude-three-asks.md) · sources revise [`20260712-201802_proven-seat-g1-claude-sources-codeberg-26.05.md`](yonder/20260712-201802_proven-seat-g1-claude-sources-codeberg-26.05.md) · close [`20260712-204549_proven-seat-g1-claude-close.md`](20260712-204549_proven-seat-g1-claude-close.md) · Sculpt **26.04** G0 ground
+**Ground:** Claude counsel [`20260712-195155_proven-seat-g1-claude-opening-counsel.md`](20260712-195155_proven-seat-g1-claude-opening-counsel.md) · three asks [`20260712-201200_proven-seat-g1-claude-three-asks.md`](yonder/20260712-201200_proven-seat-g1-claude-three-asks.md) · sources revise [`20260712-201802_proven-seat-g1-claude-sources-codeberg-26.05.md`](yonder/20260712-201802_proven-seat-g1-claude-sources-codeberg-26.05.md) · close [`20260712-204549_proven-seat-g1-claude-close.md`](20260712-204549_proven-seat-g1-claude-close.md) · Sculpt **26.04** G0 ground
 
 ---
 

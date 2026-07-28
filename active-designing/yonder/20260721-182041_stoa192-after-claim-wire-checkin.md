@@ -9,7 +9,7 @@
 **Status:** Checkable — lean **B** chosen `20260721.182250`  
 **Register:** Checkable (Two Rooms) — claim wire GREEN on pier; fixture desk next  
 
-**Grounds in:** [`20260721-181903_stoa191-native-claim-wire.md`](20260721-181903_stoa191-native-claim-wire.md) · [`20260721-165732_stoa178-sala-b0-glow-gap-inventory.md`](../20260721-165732_stoa178-sala-b0-glow-gap-inventory.md) · lean **C** closed in [`20260721-180008_stoa186-after-claim-shell-checkin.md`](../20260721-180008_stoa186-after-claim-shell-checkin.md)
+**Grounds in:** [`20260721-181903_stoa191-native-claim-wire.md`](20260721-181903_stoa191-native-claim-wire.md) · [`20260721-165732_stoa178-sala-b0-glow-gap-inventory.md`](../20260721-165732_stoa178-sala-b0-glow-gap-inventory.md) · lean **C** closed in [`20260721-180008_stoa186-after-claim-shell-checkin.md`](20260721-180008_stoa186-after-claim-shell-checkin.md)
 
 **dated_guard:** Do **not** rewrite elder `sala_b0_fold` in Glow. Do **not** open JABS3 without an explicit word. Prefer a thin product or language lap over a silent kg into ports.
 

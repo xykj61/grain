@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260727.225704` — [Sound Season r6 · Arc II AD cold check-in batch](20260727-225704_sound-season-r6.bron) — 139→128 · Arc II exits · ROUND MODE GREEN
 - `20260727.225235` — [Sound Season r5 · WIP breach records archive](20260727-225235_sound-season-r5.bron) — 11→6 · ROUND MODE GREEN
 - `20260727.224156` — [Sound Season r4 · strengthening-compiler yonder](20260727-224156_sound-season-r4.bron) — 115 files · enrich GREEN
 - `20260727.223135` — [Sound Season r3 · Arc II WIP archive pilot](20260727-223135_sound-season-r3.bron) — 14→11 · ROUND MODE GREEN

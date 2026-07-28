@@ -20,7 +20,7 @@ Radiant pass `20260727.223135` — path re-point only; claims unchanged
 | **Instrumented COLD** | `/tmp/parity-next/parity.log` · ~30 min | `cost_init_ok` · many ch1 greens · ch1 **RED** at **two-rooms doorway** · `PARITY_EXIT:1` (pipefail). |
 
 **Named witness:** `tools/two_rooms_doorway.rish`  
-**Solo FAIL:** `active-designing/20260726-050047_mantra-core-witness-receipts-hammock.md`  
+**Solo FAIL:** `active-designing/yonder/20260726-050047_mantra-core-witness-receipts-hammock.md`  
 **Cause:** Status line is `Hammock — design only; implementation waits for S0 cost-table numbers and Keaton's word` — doorway accepts only `checkable` · `vision` · `mixed` · `research for understanding` (see `tools/fixtures/two_rooms_doorway_scan_one.sh`).
 
 **Cost path:** partial TSV at `tools/.cache/parity-cost/current.tsv` · no `work-in-progress/<stamp>_parity-cost-table.md` yet (suite aborted before the driver cost_table step).

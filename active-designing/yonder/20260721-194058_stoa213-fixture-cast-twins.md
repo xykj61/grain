@@ -9,7 +9,7 @@
 **Status:** Checkable — GREEN `20260721.194058`  
 **Register:** Checkable (Two Rooms) — cast twins GREEN; source literals held  
 
-**Grounds in:** sub-lean **C3** in [`20260721-193220_stoa210-replay-body-inventory.md`](../20260721-193220_stoa210-replay-body-inventory.md) · STOA192 fixture shape · STOA207/208 fact-line cast pattern
+**Grounds in:** sub-lean **C3** in [`20260721-193220_stoa210-replay-body-inventory.md`](20260721-193220_stoa210-replay-body-inventory.md) · STOA192 fixture shape · STOA207/208 fact-line cast pattern
 
 **dated_guard:** Do **not** claim Glow desks emit elder stamp/memo/root string literals yet. Face-name cord/hex demos stay. JABS3 held.
 

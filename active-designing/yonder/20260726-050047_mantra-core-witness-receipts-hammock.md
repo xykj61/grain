@@ -4,7 +4,7 @@
 **Stamp:** `20260726.050047`  
 **Voice:** Quin  
 **Status:** Hammock — design only; implementation waits for S0 cost-table numbers and Keaton's word  
-**Ground:** counsel [`../counsel/20260726-044729_the-graph-is-not-a-vane.md`](../counsel/20260726-044729_the-graph-is-not-a-vane.md) · Ford Fusion demotion (graph inside Mantra, not a vane) · Ojjo consumes timings  
+**Ground:** counsel [`../counsel/20260726-044729_the-graph-is-not-a-vane.md`](../../counsel/20260726-044729_the-graph-is-not-a-vane.md) · Ford Fusion demotion (graph inside Mantra, not a vane) · Ojjo consumes timings  
 **Home:** Mantra (content-addressed versions over Weave) — pure core, synchronous, memoized by content  
 
 ---

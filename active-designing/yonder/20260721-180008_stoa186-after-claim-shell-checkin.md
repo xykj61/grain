@@ -9,7 +9,7 @@
 **Status:** Checkable — lean **A** chosen `20260721.180054`; STOA185 sent with this word  
 **Register:** Checkable (Two Rooms) — claim shell seated; sala-event cast twin next  
 
-**Grounds in:** [`20260721-175857_stoa185-glow-sala-b0-claim-shell.md`](20260721-175857_stoa185-glow-sala-b0-claim-shell.md) · [`20260721-174709_stoa183-after-named-cast-cord-checkin.md`](20260721-174709_stoa183-after-named-cast-cord-checkin.md)
+**Grounds in:** [`20260721-175857_stoa185-glow-sala-b0-claim-shell.md`](../20260721-175857_stoa185-glow-sala-b0-claim-shell.md) · [`20260721-174709_stoa183-after-named-cast-cord-checkin.md`](../20260721-174709_stoa183-after-named-cast-cord-checkin.md)
 
 **dated_guard:** Do **not** claim `$%` `@t`/`@ux` or fold rewrite until a lean seats them. Prefer **send** of STOA185 before a long next lap when the pier should match the hand. JABS3 stays held.
 

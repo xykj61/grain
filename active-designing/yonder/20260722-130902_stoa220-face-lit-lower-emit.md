@@ -9,7 +9,7 @@
 **Status:** Checkable — GREEN `20260722.130902`  
 **Register:** Checkable (Two Rooms) — lower GREEN; desk pin held  
 
-**Grounds in:** sub-lean **C4** in [`20260721-194941_stoa215-glow-source-literals-inventory.md`](../20260721-194941_stoa215-glow-source-literals-inventory.md) · STOA219 parse · Glow→Rye→Zig primary path
+**Grounds in:** sub-lean **C4** in [`20260721-194941_stoa215-glow-source-literals-inventory.md`](20260721-194941_stoa215-glow-source-literals-inventory.md) · STOA219 parse · Glow→Rye→Zig primary path
 
 **dated_guard:** Do **not** claim fixture/fact-line desks pin elder strings yet. Do **not** rewrite mold `glow_demo_*` paths this lap. JABS3 held. No `hoon.hoon` mint mirror required for this emit.
 

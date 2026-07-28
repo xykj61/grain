@@ -9,7 +9,7 @@
 **Status:** Checkable — lean **A** chosen `20260721.174435`; STOA181 sent with this word  
 **Register:** Checkable (Two Rooms) — cord emit seated; named-cast cord emit next  
 
-**Grounds in:** [`20260721-173504_stoa181-at-cord-lower-emit.md`](../20260721-173504_stoa181-at-cord-lower-emit.md) · [`20260721-171030_stoa180-at-aura-checkin.md`](../20260721-171030_stoa180-at-aura-checkin.md)
+**Grounds in:** [`20260721-173504_stoa181-at-cord-lower-emit.md`](20260721-173504_stoa181-at-cord-lower-emit.md) · [`20260721-171030_stoa180-at-aura-checkin.md`](20260721-171030_stoa180-at-aura-checkin.md)
 
 **dated_guard:** Do **not** claim named-cast or `$%` `@t` until a lean seats them. Elder Rye fold and JABS3 stay held. `MoldSpec` rename stays a separate seam. Prefer **send** of STOA181 before a long next lap when the pier should match the hand.
 
