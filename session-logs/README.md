@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.061801` — [MUR Season u60 WOV unify brief](20260728-061801_mur-season-u60-wov-unify-brief.bron) — jobs/non-goals seated · u61 dual-digest next
 - `20260728.061551` — [MUR Season u59 WOV unify design opener](20260728-061551_mur-season-u59-wov-unify-design-opener.bron) — design block OPEN early · u60 brief next
 - `20260728.061323` — [MUR Season check-in at u58](20260728-061323_mur-season-check-in-u58.bron) — rename spines done · doors named · no urge
 - `20260728.060902` — [MUR Season u58 module-wave harden](20260728-060902_mur-season-u58-module-wave-harden.bron) — spine HARDENED · rename done · u59 next
