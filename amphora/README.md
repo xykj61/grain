@@ -24,6 +24,8 @@
 
 **Witnesses:** `tools/amphora_lap1.rish` · `tools/amphora_lap2.rish` · `tools/amphora_lap3.rish` · `tools/amphora_device_wire.rish` · `tools/amphora_vessel_stamp.rish` · `tools/amphora_vessel_seal.rish` · `tools/amphora_resin_chunk.rish` · `tools/amphora_purchase_delivery.rish` · `tools/pond_customs.rish` · `tools/realidream_forge_view.rish` · elder path `tools/crossing_manifest_seed.rish`
 
-**Tensegral Arc I r3** (`20260728.000659`): lap 1 · lap 2 · lap 3 · vessel seal · resin chunk all **GREEN** this sitting — Arc I (Brix · Amber · Amphora) exits. Next season cable is Arc II Resin.
+**Tensegral Arc I r3** (`20260728.000659`): lap 1 · lap 2 · lap 3 · vessel seal · resin chunk all **GREEN** this sitting — Arc I (Brix · Amber · Amphora) exits.
+
+**Tensegral Arc II r4** (`20260728.002049`): resin unit fold [`../tools/resin_unit_witness.rish`](../tools/resin_unit_witness.rish) **GREEN** (mantra batch · granary wire · chunk fixture · TUBE3). Prefer that fold over cold `amphora_resin_chunk.rish` when rishi rebuild hangs.
 
 *May every vessel stay sealed in motion. May every pour remember its cellar.*

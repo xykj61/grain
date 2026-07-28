@@ -146,7 +146,7 @@ Full loop bounds: [`work-in-progress/ready-to-ask-claude.md`](../work-in-progres
 
 | Term | One line |
 |------|----------|
-| **Resin** | One content-addressed unit Amber seals — the stored bytes at a SHA3 name; the manifest catalogs, the digest proves; [`specs/20260703-191112_resins-and-hash-tiers.md`](specs/20260703-191112_resins-and-hash-tiers.md) |
+| **Resin** | One content-addressed unit Amber seals — the stored bytes at a SHA3 name; the manifest catalogs, the digest proves; [`specs/20260703-191112_resins-and-hash-tiers.md`](specs/20260703-191112_resins-and-hash-tiers.md). Tensegral Arc II fold: [`../tools/resin_unit_witness.rish`](../tools/resin_unit_witness.rish) (`20260728.002049`) |
 | **SHA3-512 tier** | Canonical forever-names — weave states, sealed content identity, promises that must mean one thing for the life of the work |
 | **SHA3-256 tier** | Working-store names — resins, blob files, manifest entries where path size and external oracles matter |
 

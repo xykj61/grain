@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.002049` — [Tensegral r4 Arc II Resin](20260728-002049_tensegral-r4-resin.bron) — resin_unit_witness GREEN
 - `20260728.000659` — [Tensegral r3 Amphora · Arc I exit](20260728-000659_tensegral-r3-amphora.bron) — laps 1–3 · seal · chunk GREEN
 - `20260728.000528` — [Tensegral r2 Arc I Amber](20260728-000528_tensegral-r2-amber.bron) — first ring · Tilak GREEN
 - `20260728.000056` — [Tensegral r1 Arc I Brix](20260728-000056_tensegral-r1-brix.bron) — bricks-exist · alias resolve · home held
