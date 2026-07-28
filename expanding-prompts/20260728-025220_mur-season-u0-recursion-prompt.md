@@ -1,8 +1,9 @@
 # MUR Chapter — u0 Recursion Prompt (printout · all scopes kept)
 
-**Stamp:** `20260728.025220` · Radiant pass `20260728.044228`  
+**Stamp:** `20260728.025220` · Radiant pass `20260728.044443`  
 **Use:** paste the fenced block as the next counsel/bench session opener.  
-Radiant pass `20260728.044228` — u4 commerce tool say-lines · foundations → MUR · u5 next  
+Radiant pass `20260728.044443` — u5 Kamala/Mala historical · neighbor seats · residual OK · u6 next  
+Radiant pass `20260728.044228` — u4 commerce tool say-lines · foundations → MUR  
 Radiant pass `20260728.044002` — u3 WOV·settle·index prose → MUR  
 Radiant pass `20260728.043811` — u2 edu·seating prose · Mandi/Granary → MUR  
 Radiant pass `20260728.043539` — u1 residual · rename-overwrite breach approved · gen_mala ABSENT  
@@ -50,10 +51,11 @@ INNERMOST SCOPE (this season — walk here):
   Lexicon: scope·outer·inner·innermost·core·quint · MUR · Murr · retired Mala/MALA · Gren living.
   Prin: rishi/bin/rishi run tools/prin.rish scope
   gen_murr GREEN · deploy RED; gen_gren GREEN (core closed door); gen_mala ABSENT.
-  u0–u4 COMPLETE · u5 next (continue prose · gratitude silo light-pass · residual).
+  u0–u5 COMPLETE · u6 next (continue prose · residual · toward tool/module waves).
   TOP PRIORITY: rename overwrite everywhere Mala/MALA → Murr/MUR (breach approved seated).
   Fascia shred still needs separate circled yes. WOV retire roadmap last.
   Wire mala:* · mala_m1/m2 witnesses · selftest "N mala" strings held for module wave.
+  Kamala/Mala gratitude = historical; living Aries = Murr·Kyler.
   u126 and u127 MUST warn before handback (extend innermost · return inner i7 · other).
 
 Read whole: the MUR charter · foundations/20260728-025220_murr-and-kyler-murray.md ·
@@ -62,18 +64,18 @@ LEXICON rows MUR/Murr/innermost · Gren charter (CLOSED) · Inner Scope + Fascia
 Companions: newest quin-workshop pair if attached; else verify origin/main nib.
 
 first duties: bootstrap or verify · state the nib · prin scope ·
-run gen_murr (GREEN; deploy RED) · report · then walk u5 from the charter:
+run gen_murr (GREEN; deploy RED) · report · then walk u6 from the charter:
   affirm outer · inner pauses · affirm core+quint CLOSED · affirm MUR rename spine ·
   affirm Kyler · DJINN · WOV-last · affirm rename-overwrite breach approved ·
-  continue living prose · gratitude silo light-pass where bare · residual re-probe ·
+  continue living prose · residual re-probe · prepare tool/module wave map ·
   no live fascia shred without prin rish breach yes now + circled shred scope;
   no live Sui deploy · no wallet · no gas · no private key in tree;
   no whole-tree silent sed — waves with witnesses only.
 
-waymark: u4 complete, u5 next
+waymark: u5 complete, u6 next
 nib <origin/main short nib>
 bench report (verbatim, if any): <REPORT/STOP — or "none">
-scope: outer=paused(m8/m9) inner=paused(i6/i7) innermost=open(u5)
+scope: outer=paused(m8/m9) inner=paused(i6/i7) innermost=open(u6)
   core=closed(handed_back) quint=closed(handed_back) geode=prep(d0)
 breach scope circle: rename_overwrite=approved A= A+C= all= shred=
 words seated (blank = held whole): season_name= choir= LICENSE_WORD=

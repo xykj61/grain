@@ -1,14 +1,15 @@
-# Mala and Kamala Harris — A Fire Seat's Dedication
+# Mala and Kamala Harris — A Fire Seat's Dedication (Historical)
 
-*A foundations bio for universal readers: why this house dedicates the Mala fund's honor to a life of public service, without turning the repository into a campaign.*
+*A foundations bio for universal readers: why this house dedicated the Mala fund's honor to a life of public service, without turning the repository into a campaign.*
 
 **Stamp:** `20260728.020607`  
 **Language:** EN  
 **Style:** Radiant (see [`../context/RADIANT_STYLE.md`](../context/RADIANT_STYLE.md))  
 **Voice:** **Reya variant** (nested under Quin's outer ledger) — sweet, sunny, generous presence; the larger why held in view  
-**Status:** Foundations — honor dedication seated by Keaton's word  
+**Status:** Foundations — **historical** honor dedication (Mala hour) · living Aries seat is **Murr** / **Kyler Murray** (`20260728.025220`)  
 **Gratitude silo:** [`../gratitude/kamala-harris.md`](../gratitude/kamala-harris.md)  
-**Fund:** **Mala** — Aries · fire · seat 1 · `%mala` · maintainer of **MALA**
+**Fund (dated hour):** **Mala** — Aries · fire · seat 1 · `%mala` · then maintainer of **MALA** · retired forward to **Murr** / **MUR**  
+Radiant pass `20260728.044443` — rename-forward: do not seat new work under Mala; living lamp is Murr·Kyler
 
 *Written together by Keaton and Quin; the body speaks in Reya's warmth.*
 
@@ -26,7 +27,7 @@ Kamala Harris was born in Oakland, California, and grew up in a household where 
 
 Those titles are facts. What this foundation cares about is the through-line a builder can recognize: **law as a daily craft**, **representation as a door held open**, **the commons as something you show up for**. A prosecutor's desk, a state's legal brief, a Senate hearing room, and the Vice President's chair are different rooms with the same ask — will you use power to protect, or only to advance yourself? Civic Style asks the same question of software and of funds: *what the wheel rewards and what the world needs must be the same thing.*
 
-For our universal foundations readers — people who may never open a Glow file — the bio lands here as a human example of **service that stays in daylight**. Mala's job in Grain is to keep MALA, the mailable-money craft, maintained without confusion of hats. Kamala Harris's public arc, as this house reads it, is a reminder that maintenance of the public good is itself a vocation: careful, contested, and worthy of honor without flattery.
+For our universal foundations readers — people who may never open a Glow file — the bio lands here as a human example of **service that stays in daylight**. In the Mala hour, that seat's job in Grain was to keep MALA, the mailable-money craft, maintained without confusion of hats; the living craft is **MUR**, maintained under **Murr**. Kamala Harris's public arc, as this house reads it, is a reminder that maintenance of the public good is itself a vocation: careful, contested, and worthy of honor without flattery.
 
 ## What Dedication Means Here (and What It Does Not)
 
@@ -41,9 +42,9 @@ No speech is quoted. No platform is pasted. The gratitude silo names her; this p
 
 ## How It Touches the Wheel
 
-- **Mala** remains Aries · fire · seat 1 · official maintainer of MALA.  
-- **Dedication** is recorded in Lexicon and counsel under Inner Scope.  
-- **Ketu**, **Siya**, and **Djin** keep their own steward words (executive / executor) elsewhere on the wheel — distinct chairs, one constellation.
+- **Mala** was Aries · fire · seat 1 · official maintainer of MALA in this dedication hour; living seat is **Murr** / **MUR**.  
+- **Dedication** (historical) is recorded in Lexicon and counsel; living Aries honor faces **Kyler Murray**.  
+- Neighbor seats keep their own steward words elsewhere on the wheel — **Murr · Gren · Siya** living triad (was Mala · Djin · Siya); distinct chairs, one constellation.
 
 ## A Warm Close (Reya)
 
