@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260727.212807` — [kg · g15 STOP at L2 · column and gen_home red](20260727-212807_kg-g15-stop-gen-home-column.bron) — g0–g14 first
 - `20260727.212502` — [Closing line law — kg or typed check in](20260727-212502_closing-line-kg-or-checkin.bron) — Cursor·Claude·checkpoint·either
 - `20260727.210059` — [After-glow opening · cross-desk design · choir green](20260727-210059_after-glow-cross-desk-opening.bron) — 17/17 · r58 pair · no push
 - `20260727.153836` — [Send · unified twenty · Siya tip](20260727-153836_send-unified-twenty-siya.bron) — origin+codeberg · gen_home red named
