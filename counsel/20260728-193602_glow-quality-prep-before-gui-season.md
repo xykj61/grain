@@ -72,7 +72,7 @@ Do these **before** opening a Surface/GUI season so early GUI rungs draw on cook
 | --- | --- |
 | Glow scripts | Happy-zone glow witnesses GREEN; new scripts under `tools/gen/` or `src/` with a witness |
 | Code quality | TAME width/comment law held on touched files; fascia not crashing for GUI invent |
-| Userland | At least one thin dogfood app or gen in `src/` with GREEN witness |
+| Userland | At least one thin vegan-dogfood app or gen in `src/` with GREEN witness |
 | Surface seam | Existing Wayland seed + Pond metalsmoke still GREEN; River study note current |
 | OS horizon | Named in charter as park — no rung 0–15 theft |
 
@@ -80,7 +80,7 @@ Do these **before** opening a Surface/GUI season so early GUI rungs draw on cook
 
 | Shape | How this prep rides |
 | --- | --- |
-| **A** stay Generator | Prep *is* the season: thin homes + Glow hygiene + dogfood; GUI deferred |
+| **A** stay Generator | Prep *is* the season: thin homes + Glow hygiene + vegan-dogfood; GUI deferred |
 | **B** pause · 64 Surface | Finish a short prep block (items 1–3) then bow Surface with items 6–7 as early rungs |
 | **C** pause · 128 | Same prep; OS still park or the count fills with Genode |
 
