@@ -7,6 +7,7 @@
 **Ground:** Radiant Lint Season bow + rounds 1–4 already measured (`20260727.213740` · r1–r4); Glow Season closed on the workshop lane; g0–g15 bench relays still queued; breach law [`../context/BREACH.md`](../context/BREACH.md) · foundations [`../foundations/20260726-020537_the-breach.md`](../foundations/20260726-020537_the-breach.md)
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260727.231750` — round 8 Arc III research link pocket; six hrefs
 Radiant pass `20260727.230010` — round 7 Arc III teaching hold; archive→manual links
 Radiant pass `20260727.225235` — round 5 WIP breach records archived
 Radiant pass `20260727.224156` — round 4 strengthening-compiler yonder accreted
@@ -151,6 +152,10 @@ Arc II: **eleven** AD cold check-in / inventory briefs → `active-designing/yon
 ### Round 7 landed (`20260727.230010`)
 
 Arc III opens: teaching hold · edu/manual outbound missing **0** · **19** archive→manual hrefs deepened · **2** research ledger-enrolled · `edu/` on select_wave · gratitude seal unchanged · ROUND MODE GREEN. Motion: [`20260727-230010_sound-arc-iii-teaching-hold-and-archive-manual-links.md`](20260727-230010_sound-arc-iii-teaching-hold-and-archive-manual-links.md). Reply: [`replies/20260727-230010_re-sound-season-r7.md`](replies/20260727-230010_re-sound-season-r7.md).
+
+### Round 8 landed (`20260727.231750`)
+
+Arc III research link pocket: non-yonder outbound missing **9 → 3** · **six** href repairs · **three** `gratitude/urbit` owned hold · ROUND MODE GREEN. Motion: [`20260727-231750_sound-arc-iii-research-link-pocket.md`](20260727-231750_sound-arc-iii-research-link-pocket.md). Reply: [`replies/20260727-231750_re-sound-season-r8.md`](replies/20260727-231750_re-sound-season-r8.md).
 
 ---
 

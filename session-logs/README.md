@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260727.231750` — [Sound Season r8 · Arc III research link pocket](20260727-231750_sound-season-r8.bron) — 9→3 outbound · six repairs · urbit hold
 - `20260727.230010` — [Sound Season r7 · Arc III teaching hold](20260727-230010_sound-season-r7.bron) — 19 archive→manual · ledger 1414 · gratitude hold
 - `20260727.225704` — [Sound Season r6 · Arc II AD cold check-in batch](20260727-225704_sound-season-r6.bron) — 139→128 · Arc II exits · ROUND MODE GREEN
 - `20260727.225235` — [Sound Season r5 · WIP breach records archive](20260727-225235_sound-season-r5.bron) — 11→6 · ROUND MODE GREEN

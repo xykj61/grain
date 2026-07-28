@@ -3,7 +3,7 @@
 *Two ideas the autonomous bench lives inside every night: the **itinerary**, the named list of **stops** an agent may execute without asking permission; and the **crossing manifest**, the first mechanical line of the Amphora vessel, today parked as an unverified seed in work-in-progress. This writing explains both in plain words and names what you must understand — and what still waits on your word — before lap one of the crossing closes.*
 
 **Stamp:** `20260704.030600`
-**Lineage:** supersedes [`../archive/external-research/20260703-235912_diet-and-the-crossing-manifest.md`](../archive/external-research/20260703-235912_diet-and-the-crossing-manifest.md) (diet-era primer, archived `20260704.030600`)
+**Lineage:** supersedes [`../context/specs/20260704-030300_itinerary-retires-diet.md`](../context/specs/20260704-030300_itinerary-retires-diet.md) (diet-era primer, archived `20260704.030600`)
 **Language:** EN
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Lens:** TAME · Civic discipline where agents serve people
@@ -12,6 +12,8 @@
 **Companions:** [`../context/LEXICON.md`](../context/LEXICON.md) · [`../context/specs/20260704-030300_itinerary-retires-diet.md`](../context/specs/20260704-030300_itinerary-retires-diet.md) · [`20260703-201612_the-amphora-and-the-crossing.md`](20260703-201612_the-amphora-and-the-crossing.md) · [`../expanding-prompts/20260704-030300_cursor-recursion-prompt-v4.md`](../expanding-prompts/20260704-030300_cursor-recursion-prompt-v4.md)
 
 *Written in Rio 3's Radiant voice, for Kaeden and every future sitter.*
+
+Radiant pass `20260727.231750` — path re-point only; claims unchanged
 
 ---
 

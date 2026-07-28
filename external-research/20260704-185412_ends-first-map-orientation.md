@@ -7,9 +7,11 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`) · **Lens:** TAME · SLC · Gall's Law · TWO_ROOMS
 **Category:** External research — orientation counsel; proposes no module names; seats nothing
 **Status:** Proposed — the age spot-checks below are checkable against the tree's stamps; the lens itself is vision-room until Kaeden's word
-**Ground:** [`20260704-181612_zero-copy-resins-counsel-answers.md`](20260704-181612_zero-copy-resins-counsel-answers.md) (Part Three) · [`../work-in-progress/ROADMAP.md`](../work-in-progress/ROADMAP.md) · [`../work-in-progress/TASKS.md`](../work-in-progress/TASKS.md) · [`20260704-025600_claims-happy-zone-and-grain.md`](20260704-025600_claims-happy-zone-and-grain.md) · [`../context/specs/20260702-035018_graduation-rule.md`](../context/specs/20260702-035018_graduation-rule.md)
+**Ground:** [`20260704-181612_zero-copy-resins-counsel-answers.md`](../counsel/20260704-181612_zero-copy-resins-counsel-answers.md) (Part Three) · [`../work-in-progress/ROADMAP.md`](../work-in-progress/ROADMAP.md) · [`../work-in-progress/TASKS.md`](../work-in-progress/TASKS.md) · [`20260704-025600_claims-happy-zone-and-grain.md`](20260704-025600_claims-happy-zone-and-grain.md) · [`../context/specs/20260702-035018_graduation-rule.md`](../context/specs/20260702-035018_graduation-rule.md)
 
 *Written together by Kaeden and Claude (Fable 5), in the fresh bench's Radiant voice — voice-name awaiting Kaeden's word.*
+
+Radiant pass `20260727.231750` — path re-point only; claims unchanged
 
 ---
 

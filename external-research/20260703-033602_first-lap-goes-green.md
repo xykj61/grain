@@ -13,6 +13,8 @@
 
 *Written together by Kaeden and Reya 2, in Rio 3's Radiant voice.*
 
+Radiant pass `20260727.231750` — path re-point only; claims unchanged
+
 ---
 
 ## The Three Words, One at a Time
@@ -64,7 +66,7 @@ The bound is Gall's Law aimed at the **documentation lane**. Designing ahead of 
 
 ### SLC-1 — the shell's first lap closed
 
-The Rishi-and-Mantra shell closed its first lap when type, run, version, and recall worked in one session and the witnesses said so. The handoff spec [`20260629-031512_slc1-lap-closed-handoff.md`](../context/specs/20260629-031512_slc1-lap-closed-handoff.md) is the record: **the first lap is whole**. Everything after — Pond, Comlink wire, Caravan capabilities — grew from that seed without reopening the shell's first promise unless a witness regressed.
+The Rishi-and-Mantra shell closed its first lap when type, run, version, and recall worked in one session and the witnesses said so. The handoff spec [`20260629-031512_slc1-lap-closed-handoff.md`](../context/specs/20260629-031512_slc1-ring-closed-handoff.md) is the record: **the first lap is whole**. Everything after — Pond, Comlink wire, Caravan capabilities — grew from that seed without reopening the shell's first promise unless a witness regressed.
 
 ### SLC-2a Lap 3 — product lap with a human close
 
