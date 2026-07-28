@@ -1,23 +1,13 @@
-# Gren Season — Recursion Prompt (printout · core OPEN · post-Keeh handback)
+# Gren Season — Recursion Prompt (printout · core CLOSED · archival)
 
-**Stamp:** `20260728.025634` · Radiant pass `20260728.042644`  
-**Use:** paste the fenced block as the next counsel/bench session opener.  
-Radiant pass `20260728.042644` — g15 second horizon warn · lean-16 CLOSED · await extend_or_return  
-Radiant pass `20260728.042314` — g14 first horizon warn · extend 32·64·return MUR u0 · blank held  
-Radiant pass `20260728.042216` — g13 second harden · harden CLOSED  
-Radiant pass `20260728.042110` — g12 harden · gen trio GREEN · deploy RED · Choir lean  
-Radiant pass `20260728.042009` — g11 residual block CLOSED · empty×4  
-Radiant pass `20260728.041904` — g10 third residual spot empty  
-Radiant pass `20260728.041353` — g9 second residual spot empty  
-Radiant pass `20260728.041234` — g8 residual sweep OPEN · first residual spot empty  
-Radiant pass `20260728.041118` — g7 fourth spot-check empty · spot-check block CLOSED  
-Radiant pass `20260728.040951` — g6 third spot-check empty  
-Radiant pass `20260728.040802` — g5 second spot-check empty  
-Radiant pass `20260728.040656` — g4 first spot-check empty  
-Radiant pass `20260728.040437` — g3 outer prep · index · living overwrite CLEARED  
-Radiant pass `20260728.040237` — g2 Inner charter · recursion printouts → Gren  
-Radiant pass `20260728.035740` — g1 residual map · bare living Djin ads CLEARED  
+**Stamp:** `20260728.025634` · Radiant pass `20260728.043220`  
+**Use:** archival Gren printout — **core CLOSED** · handed back `return_mur_u0`.  
+Radiant pass `20260728.043220` — handback return_mur_u0 · lean-16 CLOSED · living Gren doors stay  
+Radiant pass `20260728.042644` — g15 second horizon warn · lean-16 CLOSED  
+Radiant pass `20260728.042314` — g14 first horizon warn · extend 32·64·return MUR u0  
 Radiant pass `20260728.035441` — Keeh handback return_gren_g0 · g0 bow · core OPEN
+
+**Active walk:** `expanding-prompts/20260728-025220_mur-season-u0-recursion-prompt.md`
 
 **Sundial (Keeh printout fidelity):** `prin sundial` — optional; Gren walks here.
 

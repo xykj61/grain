@@ -69,9 +69,9 @@ What does *not* belong here is the work itself — that lands in the research, d
 
 | Stamp | Prompt | Meaning |
 |-------|--------|---------|
-| `20260728.025634` | [Gren Season recursion](20260728-025634_gren-season-g0-recursion-prompt.md) | **Active walk** — core OPEN · Djin→Gren · DJINN→Murr · Keeh CLOSED handback · g-rounds |
+| `20260728.025220` | [MUR Season u0 recursion](20260728-025220_mur-season-u0-recursion-prompt.md) | **Active walk** — innermost OPEN · u0 bowed · u1 next · Gren CLOSED handback |
+| `20260728.025634` | [Gren Season recursion](20260728-025634_gren-season-g0-recursion-prompt.md) | Archival — core CLOSED · handed back `return_mur_u0` · living Gren doors |
 | `20260728.030310` | [Keeh Season recursion](20260728-030310_keeh-season-q0-recursion-prompt.md) | Archival — quint CLOSED · handed back `return_gren_g0` · living Keeh/Shyu/Linn doors |
-| `20260728.025220` | [MUR Season u0 recursion](20260728-025220_mur-season-u0-recursion-prompt.md) | Archival — innermost PAUSED u0 · gren_fund=prep |
 | `20260728.015541` | [Inner Scope Season i0 recursion](20260728-015541_inner-scope-season-i0-recursion-prompt.md) | Archival — inner PAUSED i6/i7 · living seat 2 Gren · fascia wait |
 | `20260725.040520` | [Four Rishi harvest laps](20260725-040520_rishi-four-harvest-laps.md) | accumulate · read bounded · filter chained · quote safe — shell harvest |
 | `20260724.143155` | [Vanes, shelves, names, maps — braided](20260724-143155_vanes-shelves-names-maps-braid.md) | Files second+third counsel · P3 under 8KB · waymarks · replies · stewards · Aparigraha · letters · rung 1 · coverage GREEN |

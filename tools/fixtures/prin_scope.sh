@@ -11,11 +11,11 @@ Prin scope — seasons · Tally · rish vocabulary
   scope:  named bound of work (season · Tally garden · Prin/rish view)
   outer:  Constellation Season — PAUSED at m8 complete / m9 next
   inner:  Inner Scope Season — PAUSED at i6 complete / i7 next (fascia)
-  innermost: MUR Season — PAUSED at u0 (Mala/MALA→Murr/MUR waits)
-  core:   Gren Season — OPEN · lean-16 CLOSED · await extend_or_return (32|64|return_mur_u0)
+  innermost: MUR Season — OPEN · u0 complete / u1 next (Mala/MALA→Murr/MUR waves)
+  core:   Gren Season — CLOSED · handed back · lean-16 complete
   fund_triad: Murr · Gren · Siya (living)
-  quint:  Keeh Season — CLOSED · handed back · extend_or_return=return_gren_g0
-  extend_or_return: return_gren_g0 (seated 20260728.035441)
+  quint:  Keeh Season — CLOSED · handed back
+  extend_or_return: return_mur_u0 (seated 20260728.043220) · prior Keeh return_gren_g0
   keeh_sponsor: Kia (South Korea) honor · design seat
   keeh_recommend: used 4-cyl hatch/SUV · non-CVT auto · light grey/beige cloth · CL/FB Marketplace
   shyu_sponsor: Hyundai (South Korea) honor · design seat
@@ -37,8 +37,8 @@ Prin scope — seasons · Tally · rish vocabulary
   sundial: prin sundial · tools/sundial.rish — recursion confidence 0–100 (red→green)
   L1:     MUR (was MALA) · WOV unify · retire WOV roadmap last
   voice:  six variants — Reya · Riyo · Trey · Triz · Quin · Trya (Quin stands)
-  charter: counsel/20260728-030310_the-keeh-season-quint-charter.md
+  charter: counsel/20260728-025220_the-mur-season-innermost-charter.md
   geode_charter: counsel/20260728-031722_the-geode-season-charter.md
-  seat:   counsel/20260728-030310_the-keeh-season-quint-charter.md
-  warn:   q14/q15 extend 32 or return Gren g0 · d14/d15 extend 32|64|128 or handback
+  seat:   counsel/20260728-043220_mur-season-u0-bow.md
+  warn:   u126/u127 extend innermost · return inner i7 · or other · d14/d15 extend 32|64|128 or handback
 EOF

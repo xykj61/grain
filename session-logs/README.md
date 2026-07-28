@@ -4,7 +4,9 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.043220` — [Gren handback · MUR u0](20260728-043220_gren-handback-mur-u0.bron) — return_mur_u0 · u0 bow · u1 next
 - `20260728.043010` — [Gren extend-length check-in](20260728-043010_gren-extend-length-checkin.bron) — rec return_mur_u0 · blank held
+
 - `20260728.042644` — [Gren Season g15 horizon warn](20260728-042644_gren-season-g15-horizon-warn.bron) — lean-16 CLOSED · await extend_or_return
 
 - `20260728.042314` — [Gren Season g14 horizon warn](20260728-042314_gren-season-g14-horizon-warn.bron) — extend 32·64·return MUR · g15 next
