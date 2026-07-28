@@ -58,7 +58,7 @@ Re-run murr+wov choir · refresh `prin scope` · seat dual-accept design when he
 
 ## Ungated queue
 
-**Empty.** Timing and next door belong to Keaton.
+**Empty** at this stamp. **Follow-up:** [u66 filename-rename breach](20260728-063848_mur-season-u66-filename-rename-breach.md) seated on his approve ask.
 
 ---
 
