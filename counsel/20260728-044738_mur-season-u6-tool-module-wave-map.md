@@ -8,7 +8,8 @@
 **Exit:** tool/module wave map seated · light prose cleared · code homes held · u7 next
 
 *Written together by Keaton and Quin.*
-Radiant pass `20260728.053348` — tool homes **LANDED u32** as `murr_*` witnesses/lab/fixture; module `mala*` still held for u48+
+Radiant pass `20260728.060656` — tool **LANDED u32** · module spine **LANDED u48–u56** (`murr_*` living doors)
+Radiant pass `20260728.053348` — tool homes **LANDED u32** as `murr_*` witnesses/lab/fixture; module then held for u48+
 
 ---
 
@@ -19,7 +20,7 @@ Radiant pass `20260728.053348` — tool homes **LANDED u32** as `murr_*` witness
 | `gen_mala` | **ABSENT** |
 | `gen_murr` | GREEN · deploy RED |
 | Living Lexicon Mala fund ads | empty (retired held) |
-| Code homes still `mala*` | **held** — mapped below, not renamed this round |
+| Living code homes `mala*` | **ABSENT** — `murr_*` LIVE (u48–u56) |
 
 ## Prose cleared this turn
 
@@ -40,9 +41,9 @@ Living counsel / edu / expanding-prompts / foundations Radiant-pass.
 | Home | Lean rename | Note |
 |------|-------------|------|
 | `tools/gen_murr_fund_prep.rish` | **done** (u1) | `gen_mala` ABSENT |
-| `tools/mala_m1_witness.rish` | → `murr_m1_witness.rish` | builds `linengrow/mala.rye` today |
-| `tools/mala_m2_witness.rish` | → `murr_m2_witness.rish` | same |
-| `tools/comlink_mala_wire_lab.rish` | → `comlink_murr_wire_lab.rish` | wire `mala:*` prefixes ride with |
+| `tools/mala_m1_witness.rish` | → `murr_m1_witness.rish` | **LANDED u32** · builds `linengrow/murr.rye` |
+| `tools/mala_m2_witness.rish` | → `murr_m2_witness.rish` | **LANDED u32** |
+| `tools/comlink_mala_wire_lab.rish` | → `comlink_murr_wire_lab.rish` | **LANDED u32** · memos `murr:*` with u50 |
 | Commerce views (mandi/granary/…) | say-lines | **u4** already GREEN → MUR |
 | Parity suite announces | MALA M1/M2 strings | hold until witness rename |
 | Fixtures / prin residual | any bare `gen_mala` | already cleared living doors |
@@ -53,16 +54,17 @@ Living counsel / edu / expanding-prompts / foundations Radiant-pass.
 
 | Home | Lean rename | Inbound lean |
 |------|-------------|--------------|
-| `linengrow/mala.rye` | → `murr.rye` · bin `murr` | entry + selftest |
-| `linengrow/mala_core.rye` | → `murr_core.rye` | ~40 `.rye` importers |
-| `linengrow/mala_delivery.rye` | → `murr_delivery.rye` | delivery twin |
-| Zig twins importing mala | `mala_*` → `murr_*` symbols | ~15 `.zig` files |
-| Selftest strings `"N mala"` | → `"N murr"` / MUR units | with core rename |
-| Wire memo prefixes `mala:` | → `murr:` | with wire lab |
-| `context/specs/…_mala-kind-field.md` | living cite → MUR; path dated OK | K0/K1 gated |
-| Module-surfaces index | already → MUR (u3) | affirm |
+| `linengrow/mala.rye` | → `murr.rye` · bin `murr` | **LANDED u49** |
+| `linengrow/mala_core.rye` | → `murr_core.rye` | **LANDED u48** |
+| `linengrow/mala_delivery.rye` | → `murr_delivery.rye` | **LANDED u50** |
+| Zig twins importing mala | emit discipline · no tracked zig | **LANDED u54** |
+| Selftest / currency `"N mala"` | → `"N murr"` · `murr_digest` | **LANDED u56** |
+| Wire memo prefixes `mala:` | → `murr:` | **LANDED u50** |
+| Guests `guest_mala_*` | → `guest_murr_*` | **LANDED u55** |
+| `context/specs/…_mala-kind-field.md` | living cite → MUR; path dated OK | **affirmed u57** |
+| Module-surfaces index | already → MUR (u3) | **affirmed u57** |
 
-**Order lean:** core + entry + witnesses first · then neth/seva/tube importers · then wire prefixes · choir after each wave.
+**Order lean (historical):** core + entry + witnesses first · then neth/seva/tube importers · then wire prefixes · choir after each wave. **Spine 1–9 LIVE.**
 
 ### Later blocks (unchanged charter)
 
@@ -73,13 +75,13 @@ Living counsel / edu / expanding-prompts / foundations Radiant-pass.
 | Fascia shred prep | u112–u119 | shred yes still separate |
 | Harden · choir · horizon | u120–u127 | u126/u127 warn |
 
-## Affirmed held (do not thrash early)
+## Affirmed held (intentional · not living debt)
 
 | Surface | Standing |
 |---------|----------|
-| `mala_m1` / `mala_m2` witnesses | tool wave u32+ |
-| `linengrow/mala*.rye` · zig importers | module wave u48+ |
-| Wire `mala:*` · selftest `"N mala"` | with module rename |
+| Dated `mala-*` expanding-prompt / counsel / ER paths | one-clock fossils |
+| "was mala / was MALA" rename-forward prose | gratitude · history |
+| Zig twin probe wording (`mala` debt names what it refuses) | gate language |
 | WOV retire | last |
 | Live shred / deploy / wallet / gas / keys | RED |
 

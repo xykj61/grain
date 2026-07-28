@@ -6,21 +6,21 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260728.060424` (EDT) · voice Quin  
+**Last refreshed:** `20260728.060656` (EDT) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2 · ring-3** · **THREATS** · **five pillars** · **accrete tiers** · **redaction stance** · **always-in-it rhythm** · **Prin / %prin** · **sundial**  
 **Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list1024 · Env512 · **stamp @u64 · Crockford** · **shape aura floor** · **Glow text floor GREEN** · **Glow Book weave GREEN (C2b)** · **baked-sample Acme gloss**  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand home** · **siblings seated** · **--cursor launch** · **Pond counsel 161616** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm+cold REPORT** · **Grain umbrella living** · **OQ #1 · #3 · #4 · #5 answered** · **pass ledger** · **campaign STOPPED** · **growth law** · **wasmtime ABSENT** · **monocypher 4.0.3 GREEN** · **MAP.md** · **breach T3–T4** · **U·V·I** · **C-Ladder C1·C2·C2b landed** · **r18 say/lint twin** · **r21 Verse · O1** · **r22 outside eyes** · **Prin** · **corpus twin fold seated (Sound r11)** · **C3–C5 await homes**  
-**Git nib:** `d5e5326807` · Grain · **MUR** u56 · currency/say · autoproject96/grain
-**Bookmark:** [`counsel/20260728-060424_mur-season-u56-say-lines-currency-wire.md`](../counsel/20260728-060424_mur-season-u56-say-lines-currency-wire.md)
+**Git nib:** `94b7826e53` · Grain · **MUR** u57 · module residual · autoproject96/grain
+**Bookmark:** [`counsel/20260728-060656_mur-season-u57-module-wave-residual.md`](../counsel/20260728-060656_mur-season-u57-module-wave-residual.md)
 
-**Season:** Framework · EDT · **Grain** · **finishing edge:** **innermost MUR** — **top priority** Mala/MALA→Murr/MUR rename overwrite (breach approved seated) · Gren CLOSED · Keeh CLOSED · Geode PREP · F undisturbed. Prefer **git nib**. · `prin scope`
+**Season:** Framework · EDT · **Grain** · **finishing edge:** **innermost MUR** — module spine **1–9 LIVE** (u48–u56) · residual harden · Gren CLOSED · Keeh CLOSED · Geode PREP · F undisturbed. Prefer **git nib**. · `prin scope`
 
 ---
 
-## Top priority (seated `20260728.043539`)
+## Top priority (seated `20260728.043539` · spine status `20260728.060656`)
 
-**Rename overwrite everywhere:** **Mala / MALA / `%mala` → Murr / MUR / `%murr`**.  
-**Breach for this overwrite: approved · seated.** Waves with witnesses; dated hours may keep stamps; living doors must not sell Mala/MALA as present.  
+**Rename overwrite:** **Mala / MALA / `%mala` → Murr / MUR / `%murr`**.  
+**Breach: approved · seated.** Living code doors for the module spine are **LIVE as `murr_*`** (u48–u56). Dated hours may keep `mala` stamps; living ads must not sell Mala/MALA as present.  
 Fascia **shred** (Amphora parity delete) still waits his circled shred yes — distinct from the rename edit breach.  
 WOV retirement stays **roadmap last**. No live deploy · wallet · gas · private key.
 
@@ -46,7 +46,7 @@ WOV retirement stays **roadmap last**. No live deploy · wallet · gas · privat
 
 | Door | Kind |
 |------|------|
-| **MUR rename overwrite** | **TOP** · breach approved · kg u-rounds · living Mala/MALA → Murr/MUR |
+| **MUR module residual** | **OPEN** · spine 1–9 LIVE · kg u57+ residual / WOV-design block · dated fossils held |
 | **Parity / COLD** | **RED** two-rooms doorway · S3 hammock · H held |
 | Radiant pass | **on-touch only** (MUR waves are the living Radiant pass) |
 | Geode d0 | PREP parallel |
