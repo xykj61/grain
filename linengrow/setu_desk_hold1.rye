@@ -9,6 +9,7 @@ const print = std.debug.print;
 const skate = @import("skate_grid.rye");
 const setu05 = @import("setu05_desk_apply.rye");
 const hold0 = @import("setu_desk_hold0.rye");
+const tally_parse_int = @import("parse_int.rye");
 
 pub const waymark: []const u8 = hold0.waymark;
 pub const season: []const u8 = hold0.season;
@@ -35,7 +36,7 @@ fn field_value(src: []const u8, key: []const u8) ?[]const u8 {
 
 fn parse_u32(text: []const u8) ?u32 {
     if (text.len == 0) return null;
-    return std.fmt.parseInt(u32, text, 10) catch null;
+    return tally_parse_int.parse_int(u32, text, .{}) catch null;
 }
 
 /// Desk Skate cols from station.bron; fall back to min_cols.

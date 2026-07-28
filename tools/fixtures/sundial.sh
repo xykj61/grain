@@ -19,7 +19,7 @@ case "$verb" in
     ;;
 esac
 
-PROMPT="${SUNDIAL_PROMPT:-expanding-prompts/20260728-030310_keeh-season-q0-recursion-prompt.md}"
+PROMPT="${SUNDIAL_PROMPT:-expanding-prompts/yonder/20260728-030310_keeh-season-q0-recursion-prompt.md}"
 test -f "$PROMPT"
 
 pass=0
