@@ -11,5 +11,6 @@
 | `sundial.rish` | Recursion-prompt confidence |
 | `fascia_metric_v0.rish` | Fascia grade 0–100 |
 | `glow_hygiene_pin.rish` | Surface p2 · thin Glow happy-zone floor |
+| `src_vegan_dogfood_witness.rish` | Surface p3 · first `src/lib` vegan-dogfood |
 
 Old paths under `tools/*.rish` remain as accrete shims. Prefer the homes here for new edits.

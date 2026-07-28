@@ -1,0 +1,26 @@
+# tools/gen/season/src_vegan_dogfood_witness.rish — Surface p3 · first src/ vegan-dogfood
+#
+#   rishi/bin/rishi run tools/gen/season/src_vegan_dogfood_witness.rish
+#
+# Positive: src/lib desk lowers, builds, runs one @u32 sample.
+# Negative: second sample refuses by name (same stem law as PLEAC).
+
+say "src-vegan-dogfood: Language EN — first Glow resident in src/."
+say "src-vegan-dogfood: Style Radiant — prove the desk; refuse shred."
+say "src-vegan-dogfood: Lens TAME — Surface Season prep spine p3."
+
+let zig = "vendor/zig-toolchain/zig"
+let desk = "src/lib/gate-surface-double-u32.glow"
+
+let gate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" desk "21"]
+assert gate.ok else "src vegan-dogfood: lower/build/run failed"
+assert gate.out contains "EXIT:0" else "src vegan-dogfood: desk did not exit 0"
+
+let answer = run ["./glow/bin/gate-surface-double-u32" "21"]
+assert answer.ok else "src vegan-dogfood: built gate refused lawful sample"
+
+let bad = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" desk "21" "9"]
+assert bad.out contains "FAIL" else "src vegan-dogfood: second sample should refuse"
+
+say "GREEN: src-vegan-dogfood — src/lib/gate-surface-double-u32 runs · refuses excess · Surface p3"
+say "GREEN: src-vegan-dogfood — Glow userland eats its own cooking kindly."
