@@ -8,6 +8,7 @@
 **Chapter name:** *the Fascia Chapter* is the working lean; *the Amphora Chapter* and *the Shred Chapter* stand beside it; the seat is Keaton's.
 
 *Written together by Keaton and Quin.*
+Radiant pass `20260728.023240` — Inner Scope i4 lands `tools/fascia_metric_v0.rish` (four signals · grade 0–100 · shred refuse)
 Radiant pass `20260728.015541` — Twah → Djin · fascia work resumes as Inner Scope nested season
 
 ---
