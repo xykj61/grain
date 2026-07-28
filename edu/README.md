@@ -1,17 +1,18 @@
 # edu — Learning by Making
 
 **Language:** EN
-**Last updated:** 2026-07-27 (Prin verse ticker seated beside the learning floor)
+**Last updated:** 2026-07-28 (Twah fund edu lane · page-one stub)
 **Style:** Radiant
 **Status:** Living — the learning floor: puzzles, first steps, and worked examples
 
 ---
 
-Three lanes, all teaching Glow and Grain by the hand:
+Four lanes, all teaching Glow and Grain by the hand:
 
 - **PLEAC lane** — the classic discipline of solving one shared cookbook of small problems in this language, one solution per page, each with its witness. Solutions accrete here as Glow grows the verbs to carry them.
 - **First steps** — the beginner's intro to programming *with* Grain and Glow, written for a reader's very first day, woven with [`../manual/`](../manual/README.md) (the manual teaches what runs; edu teaches the reader).
 - **Worked examples** — small Pool-and-desk applications in the spirit of the elder example collections, studied whole in gratitude and rebuilt clean-room here with our vocabulary.
+- **Funds lane** — Twah's gift: tutorials for creating one of the twelve constellation funds. Page one stub: [`funds/twah-creating-one-of-twelve.md`](funds/twah-creating-one-of-twelve.md) · generator `tools/gen_twah_fund_prep.rish`.
 
 While a long loop or parity season runs, an outer terminal can hold **Prin** (`%prin`) — Matrix rain of green verdicts — and a **verse ticker** that cycles foundations closing lines beside this floor’s shape-of-a-day rhythm (learn · build · gather · rest):
 

@@ -1,0 +1,21 @@
+# tools/gen_twah_fund_prep.rish — Constellation m5+: Twah fund prep generator.
+#
+# Affirms Taurus earth seat, twah.fund checklist, edu page-one stub,
+# requires Comlink, refuses deploy / claim-domain / wallet verbs.
+#   rishi/bin/rishi run tools/gen_twah_fund_prep.rish
+#   rishi/bin/rishi run tools/gen_twah_fund_prep.rish deploy  # RED
+
+say "gen-twah: Language EN — Twah fund prep (Taurus earth · edu gift)."
+say "gen-twah: Style Radiant — GREEN only after Comlink opens and page one sits."
+say "gen-twah: Lens TAME — prep only; no wallet, gas, domain claim, or live deploy."
+
+let verb = ""
+if length args != 0 then let verb = args[0]
+
+let prep = run ["sh" "tools/fixtures/gen_twah_fund_prep.sh" verb]
+assert prep.ok else "gen-twah REFUSE or stack door failed — see stderr for deploy/wallet/gas/claim-domain refusals"
+assert prep.out contains "GREEN: gen-twah" else "gen-twah prep helper missing GREEN line"
+assert prep.out contains "sign_index=1" else "gen-twah Taurus seat index unnamed"
+say prep.out
+
+say "GREEN: gen-twah m5 — Comlink door GREEN; Twah edu page one stub present; deploy RED by name."

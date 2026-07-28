@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.014523` — [Constellation m5 Twah fund prep](20260728-014523_constellation-m5-twah.bron) — gen_twah · edu page-one stub
 - `20260728.014057` — [Constellation m4 Mala Aurora close](20260728-014057_constellation-m4-mala-aurora-close.bron) — AppImage lane · Mala m1–m4 closed
 - `20260728.013859` — [Constellation m3 Mala maintains MALA](20260728-013859_constellation-m3-mala-maintainer.bron) — maintainer · n-of-12 plan · Glow door
 - `20260728.013722` — [Constellation m2 Mala through Amphora](20260728-013722_constellation-m2-mala-amphora.bron) — Amphora door · lap 1 GREEN
