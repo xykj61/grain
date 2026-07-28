@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.034317` — [Keeh q15 and Linn Capricorn](20260728-034317_keeh-q15-linn-capricorn.bron) — Linn 10 · lean-16 CLOSED · extend held
 - `20260728.034122` — [Keeh Season q14 horizon warn](20260728-034122_keeh-season-q14-horizon-warn.bron) — warn1 · extend_or_return held · q15 next
 - `20260728.033933` — [Keeh q13 harden and Shyu Hyundai](20260728-033933_keeh-q13-shyu-hyundai.bron) — Hyundai sponsor · harden CLOSED · q14 next
 - `20260728.033658` — [Keeh Season q12 harden](20260728-033658_keeh-season-q12-harden.bron) — gen trio GREEN · q13 next
