@@ -4,7 +4,8 @@
 **Season:** Inner Scope [`20260728-015541_the-inner-scope-season-charter.md`](20260728-015541_the-inner-scope-season-charter.md) · outer Constellation still paused m8/m9  
 **Voice:** Quin · nested frame Trey · foundations companion in **Reya variant**  
 **Ground:** origin/main `8f6259f70d` (pre-send)  
-**Word:** Keaton — seat **Ketu** as Aquarius 11; dedicate **Mala** to Kamala Harris (Inner Scope); seat executives/executor as named below
+**Word:** Keaton — seat **Ketu** as Aquarius 11; dedicate **Mala** to Kamala Harris (Inner Scope); seat executives/executor as named below  
+**Rename-forward `20260728.031050`:** living fund name is **Keeh** / `%keeh` / keeh.fund — this dated create keeps **Ketu** as the hour's seat word; do not seat new work under Ketu the fund. Charter [`20260728-030310_the-keeh-season-quint-charter.md`](20260728-030310_the-keeh-season-quint-charter.md).
 
 *Written together by Keaton and Quin.*
 

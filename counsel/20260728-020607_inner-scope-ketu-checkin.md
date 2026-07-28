@@ -1,7 +1,8 @@
 # Inner Scope — Ketu · Mala dedication · executives check-in
 
 **Stamp:** `20260728.020607`
-**Voice:** Quin
+**Voice:** Quin  
+**Rename-forward `20260728.031050`:** living fund11 is **Keeh** / `%keeh` — this check-in keeps the Ketu hour dated.
 
 ---
 
@@ -9,7 +10,7 @@
 
 | Seat | Standing |
 |------|----------|
-| Ketu | **Aquarius · 11** · executive Keaton |
+| Keeh (was Ketu) | **Aquarius · 11** · executive Keaton |
 | Mala | dedicated to **Kamala Harris** (honor) |
 | Siya | **executor Sara** |
 | Djin | **executive DJINN** |
@@ -21,7 +22,7 @@
 | # | Lean |
 |---|------|
 | A | **kg i0** — bow with Ketu + dedication in the measure |
-| B | Claim ketu.fund / djin.fund / mala.fund (his hand) |
+| B | Claim keeh.fund (was ketu.fund) / djin.fund / mala.fund (his hand) |
 | C | DJINN / Sara confirmations if he wants them on record beyond this seat |
 
 ---

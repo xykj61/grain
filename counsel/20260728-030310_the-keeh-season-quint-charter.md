@@ -8,7 +8,7 @@
 **Rename spine (approved fascia edit):** **Ketu / `%ketu` / ketu.fund → Keeh / `%keeh` / keeh.fund** — Aquarius · air · seat 11  
 **Executive:** **Keaton Sealy Livermore** — **still** (unchanged)  
 **Within:** paused **core** Gren Season (g0) · inside paused MUR u0 · inside paused Inner Scope · inside paused Constellation  
-**Status:** Prep seated · **q0 complete** `20260728.030850` · **q1** next
+**Status:** Prep seated · **q0–q1 complete** `20260728.031050` · **q2** next
 
 *Written together by Keaton and Quin.*
 
@@ -22,7 +22,7 @@
 | **inner** | Inner Scope | i6 / i7 next · fascia | **PAUSED** |
 | **innermost** | MUR Season | u0 | **PAUSED** |
 | **core** | Gren Season | g0 | **PAUSED** while quint walks |
-| **quint** | **Keeh Season** | **q0** complete · **q1** next | **OPEN** |
+| **quint** | **Keeh Season** | **q0–q1** complete · **q2** next | **OPEN** |
 
 Handback: quint → core **g0** (unless extend 32). Then Gren · MUR · inner · outer as before.
 
