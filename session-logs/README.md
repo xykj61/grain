@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.181016` — [MUR Chapter u91 shred readiness](20260728-181016_mur-season-u91-shred-readiness.bron) — Class A content-ready · cut not · u92 next
 - `20260728.180806` — [MUR Chapter check-in at u90](20260728-180806_mur-season-check-in-u90.bron) — queue empty · fascia 86 · u91 next
 - `20260728.180509` — [MUR Chapter u89 fascia prune class-a paper](20260728-180509_mur-season-u89-fascia-prune-class-a-paper.bron) — Class-A paper · fascia 86 · u90 next
 - `20260728.180319` — [MUR Chapter u88 fascia prune pair-hits clear](20260728-180319_mur-season-u88-fascia-prune-pair-hits-clear.bron) — pair-hits 0 · fascia 86 · u89 next
