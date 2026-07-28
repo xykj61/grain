@@ -1,8 +1,9 @@
 # Gren Chapter — Recursion Prompt (printout · core OPEN · post-Keeh handback)
 
-**Stamp:** `20260728.025634` · Radiant pass `20260728.042110`  
+**Stamp:** `20260728.025634` · Radiant pass `20260728.042216`  
 **Use:** paste the fenced block as the next counsel/bench session opener.  
-Radiant pass `20260728.042110` — g12 harden · gen trio GREEN · deploy RED · Choir lean · g13 next  
+Radiant pass `20260728.042216` — g13 second harden · harden CLOSED · g14 horizon warn next  
+Radiant pass `20260728.042110` — g12 harden · gen trio GREEN · deploy RED · Choir lean  
 Radiant pass `20260728.042009` — g11 residual block CLOSED · empty×4  
 Radiant pass `20260728.041904` — g10 third residual spot empty  
 Radiant pass `20260728.041353` — g9 second residual spot empty  
@@ -54,8 +55,8 @@ CORE SCOPE (this season — walk here):
   Lexicon: scope·outer·inner·innermost·core·quint · Gren · Djin retired · Murr+DJINN · sundial.
   Prin: rishi/bin/rishi run tools/prin.rish scope
   gen_gren GREEN · deploy RED; gen_murr GREEN with DJINN executive; gen_keeh still GREEN.
-  g0–g12 COMPLETE · g13 next (harden first pass · residual CLOSED · Choir lean held).
-  Bare ads CLEARED g1; overwrite g2–g7; residual g8–g11 CLOSED; harden g12.
+  g0–g13 COMPLETE · g14 next (harden CLOSED · horizon warn open).
+  Bare ads CLEARED g1; overwrite g2–g7; residual g8–g11 CLOSED; harden g12–g13 CLOSED.
   g14 and g15 MUST warn: extend to 32 · extend to 64 · or return MUR u0.
 
 Read whole: Gren charter · MUR charter · Keeh charter (CLOSED) · LEXICON Gren/Murr/core ·
@@ -64,19 +65,19 @@ Companions: newest quin-workshop pair if attached; else verify origin/main nib.
 
 first duties: bootstrap or verify · state the nib · prin scope ·
 run gen_gren (GREEN; deploy RED) · run gen_murr (GREEN; DJINN+Kyler) · report ·
-then walk g13 from the charter:
+then walk g14 from the charter:
   affirm three pauses above + quint CLOSED · affirm Djin→Gren · DJINN→Murr · Keaton→Gren ·
-  second harden: gen trio GREEN · DJINN on Murr · deploy RED · Choir lean held · then horizon g14 ·
+  HORIZON WARN (must say aloud): extend to 32 · extend to 64 · or return MUR u0 ·
   no live shred · no breach without prin rish breach yes now + his circled scope;
   no live Sui deploy · no wallet · no gas · no private key in tree;
   no MUR mass sed until core hands back to u0;
   no Keeh q-rounds (quint CLOSED).
 
-waymark: g12 complete, g13 next
+waymark: g13 complete, g14 next
 nib <origin/main short nib>
 bench report (verbatim, if any): <REPORT/STOP — or "none">
 scope: outer=paused(m8/m9) inner=paused(i6/i7) innermost=paused(u0)
-  core=open(g13) quint=closed(handed_back) geode=prep(d0)
+  core=open(g14) quint=closed(handed_back) geode=prep(d0)
 breach scope circle (blank = still held): A= A+C= all=
 words seated (blank = held whole): season_name= choir= LICENSE_WORD=
   O3= relay_word= tilak_names= scarcity= merit_unit= app_name=
