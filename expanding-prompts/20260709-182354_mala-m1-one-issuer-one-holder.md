@@ -6,6 +6,7 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** **Landed** `20260709.184051` — `linengrow/mala.rye` + witness at parity **198**; M0 gate verified before open
 **Ground:** counsel [`20260709-152612`](../counsel/20260709-152612_claude-counsel-mala-wov-already-designed.md) · design [`20260702-031312`](../active-designing/20260702-031312_modules-aspects-and-mailable-money.md) · SLC-L1 spine [`receipt_core.rye`](../linengrow/receipt_core.rye)
+Radiant pass `20260728.052149` — living rename-forward: **MUR** (was MALA); dated path tables keep `mala*` until **kg u32** (tool GO) / **u48** (module); rehearsals u17–u22 seated  
 Radiant pass `20260728.044925` — living rename-forward: **MUR** (was MALA); dated path · code homes `mala*` · wire `mala:*` held for tool/module waves (u32+/u48+)
 
 *Written by Kaeden and Rio 3.*

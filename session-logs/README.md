@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.052149` — [MUR Season u23 waiting harden citations](20260728-052149_mur-season-u23-waiting-harden-citations.bron) — expanding-prompt forwards · holds card · prefer kg u32 · u24 next
 - `20260728.051844` — [MUR Season u22 module-wave opener rehearsal](20260728-051844_mur-season-u22-module-wave-opener-rehearsal.bron) — mala_core import surface · prefer kg u32 · u23 next
 - `20260728.051741` — [MUR Season u21 tool-wave go-nogo](20260728-051741_mur-season-u21-tool-wave-go-nogo.bron) — GO on kg u32 · steps 1–4 rehearsed · u22 next
 - `20260728.051629` — [MUR Season u20 fixture dry-run](20260728-051629_mur-season-u20-fixture-dry-run.bron) — rye-coupled · memo held · steps 1–4 rehearsed · u21 next
