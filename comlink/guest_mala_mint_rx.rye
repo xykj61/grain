@@ -5,7 +5,7 @@
 const vn = @import("virtio_net.rye");
 const wf = @import("wire_format.rye");
 const rc = @import("receipt_core.rye");
-const mc = @import("mala_core.rye");
+const mc = @import("murr_core.rye");
 const kumara = @import("kumara.rye");
 
 var rx: vn.RxQueue = undefined;

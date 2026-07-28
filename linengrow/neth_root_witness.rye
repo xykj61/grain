@@ -14,7 +14,7 @@
 //!
 //! This does not write a new fold or a new hash-chain -- it revives and
 //! composes primitives that already exist and are already witnessed:
-//! mala_core.rye's build_welcome_log (a real signed MALA log) and
+//! murr_core.rye's build_welcome_log (a real signed MALA log) and
 //! fold_mala_log (a real replay-from-log-alone fold), plus
 //! receipt_core.rye's digest_log (SHA3-256 over the raw log bytes, already
 //! used as MALA's own log-integrity check). Two independent "replicas" --
@@ -27,7 +27,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const kumara = @import("kumara.rye");
 const rc = @import("receipt_core.rye");
-const mc = @import("mala_core.rye");
+const mc = @import("murr_core.rye");
 
 const neth_witness_version = "20260714.013000";
 

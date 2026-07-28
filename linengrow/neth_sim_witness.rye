@@ -24,7 +24,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const kumara = @import("kumara.rye");
 const rc = @import("receipt_core.rye");
-const mc = @import("mala_core.rye");
+const mc = @import("murr_core.rye");
 const sim = @import("neth_sim.rye");
 
 const witness_version = "20260715.140000";

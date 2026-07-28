@@ -28,7 +28,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const kumara = @import("kumara.rye");
 const rc = @import("receipt_core.rye");
-const mc = @import("mala_core.rye");
+const mc = @import("murr_core.rye");
 const tally_copy = @import("tally_copy.rye");
 
 /// One event line may never exceed this — small enough to eyeball, well under

@@ -73,7 +73,7 @@ MUR (was MALA) reuses SLC-L1's `.bron` fact envelope (`from`, `to`, `amount`, `m
 | `tools/murr_m1_witness.rish` | Parity witness |
 | `tools/fixtures/murr_m1_mint.bron` | Pinned first mint fact |
 
-`linengrow/mala_core.rye` is optional — split only if `mala.rye` grows past TAME width guidance; start monolithic like early `receipt.rye`.
+`linengrow/murr_core.rye` is optional — split only if `mala.rye` grows past TAME width guidance; start monolithic like early `receipt.rye`.
 
 ## Dependencies — None New
 

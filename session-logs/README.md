@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.053811` — [MUR Season u48 module core live](20260728-053811_mur-season-u48-module-core-live.bron) — murr_core · imports+symlinks · M1/M2 GREEN · u49 next
 - `20260728.053735` — [MUR Season check-in at u34](20260728-053735_mur-season-check-in-u34.bron) — tool spine complete · prefer kg u48 · doors named
 - `20260728.053632` — [MUR Season u34 tool-wave harden](20260728-053632_mur-season-u34-tool-wave-harden.bron) — spine complete · witnesses re-GREEN · prefer kg u48
 

@@ -8,7 +8,7 @@
 const std = @import("std");
 const assert = std.debug.assert;
 const kumara = @import("kumara.rye");
-const mc = @import("mala_core.rye");
+const mc = @import("murr_core.rye");
 const rc = @import("receipt_core.rye");
 const seva = @import("seva_session_core.rye");
 

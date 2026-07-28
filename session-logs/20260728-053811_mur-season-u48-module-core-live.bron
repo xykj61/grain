@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260728.053811
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title MUR Season u48 module core live
+prompt kg u48
+think Execute module step 1: git mv mala_core to murr_core; repoint ~47 rye imports; retarget mandi comlink granary pond symlinks.
+think First M2b RED from broken comlink symlink; fix all mala_core symlinks to murr_core; re-prove M1 and M2 GREEN.
+think Hold fold_mala_log and mala:* memos; seat counsel · pins · send.
+obs Wide import surface landed; entry/bin still mala until u49.
+file linengrow/murr_core.rye rename
+file mandi/murr_core.rye symlink
+file comlink/murr_core.rye symlink
+file granary/murr_core.rye symlink
+file counsel/20260728-053811_mur-season-u48-module-core-live.md create
+recommend keep-going kg u49 module entry and bin rename

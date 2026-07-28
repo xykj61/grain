@@ -22,7 +22,7 @@ Build MUR M2 (was MALA): a mint fact **crosses Comlink's fact lane** between two
 
 **In scope:**
 
-- `linengrow/mala_core.rye` — shared seeds, memo helpers, sign-append, fold (extracted from M1 so delivery is a second consumer).
+- `linengrow/murr_core.rye` — shared seeds, memo helpers, sign-append, fold (extracted from M1 so delivery is a second consumer).
 - `linengrow/mala.rye` — M1 selftest rebinds to `mala_core` (behavior unchanged).
 - `linengrow/mala_delivery.rye` — selftest (seal/open/verify/fold in one process) + demo (holder binds mint port → issuer sends sealed mint → holder folds → holder sends sealed `mala:receipt` → issuer verifies).
 - Compact payload via `receipt_core.encode_compact_payload` + `wire_format` seal (same as SLC-L2).

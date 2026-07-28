@@ -41,7 +41,7 @@ Since evening close (`183326`, parity **197**, MUR (was MALA) M1 lap-open only),
 
 | Lap | What | Ports / paths |
 |-----|------|---------------|
-| **M1** | One issuer, one holder; mint/send/fold | `linengrow/mala.rye`, `mala_core.rye` |
+| **M1** | One issuer, one holder; mint/send/fold | `linengrow/mala.rye`, `murr_core.rye` |
 | **M2** | Mint crosses Comlink; receipt back | hosted **38492**/**38493**; `mala_delivery.rye` |
 | **M2b** | Same bytes on virtio | device **15569**/**15570**; four guests; extends `murr_m2_witness` (was mala_*) |
 

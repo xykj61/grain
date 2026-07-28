@@ -1,0 +1,18 @@
+stamp: 20260727.151311
+editor: cursor
+model: grok-4.5
+voice: quin
+think: |
+  Bench applied files (65).zip unified send per relay 20260727.144447.
+  S0 origin ae66f638d1 matched. S1 git am nineteen patches landed at a0351e65d7.
+  S2 five-witness gate: dated_guard GREEN, living_docs_lint exit 0, nib_honesty GREEN (BEHIND, pre-push),
+  pleac_ch01_2 GREEN, gen_home_witness RED — expected 12 tool files speaking glow/gen/, observed 16.
+  Per handoff: stop, report verbatim, repair nothing, push never.
+obs: |
+  STOP at S2 on gen_home_witness. Tree sits main ahead 19 of origin; Keaton alone pushes after counsel repair or re-cut.
+  Untracked local noise remains (quin-workshop/, linengrow/, one expanding-prompts file) and did not block am.
+file:
+  - /tmp/grain-send-65/send-patches/*.patch
+  - session-logs/20260727-151311_unified-send-bench-stop.bron
+recommend: |
+  Check in with counsel on the gen_home count (12 vs 16) before any push; bench waits.
