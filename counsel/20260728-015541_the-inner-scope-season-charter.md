@@ -20,7 +20,8 @@ Radiant pass `20260728.023555` — i5 fascia metric tighten · metric_rev=i5 · 
 Radiant pass `20260728.023240` — i4 fascia_metric_v0 on main · shred refuse · grade window in tools/.cache
 Radiant pass `20260728.022949` — i3 rename-polish CLOSED · i4 fascia metric entry charted · tools/fascia* still ABSENT
 Radiant pass `20260728.020837` — i0 bow · measure GREEN · fascia tools ABSENT on main named
-Radiant pass `20260728.020607` — Ketu Aquarius 11 · Mala→Kamala Harris · Keaton/Sara/DJINN steward seats
+Radiant pass `20260728.031050` — Keeh Chapter q1 · fund11 Ketu→Keeh · `%keeh` · Keaton executive unchanged
+Radiant pass `20260728.020607` — Ketu Aquarius 11 · Mala→Kamala Harris · Keaton/Sara/DJINN steward seats (rename-forward to Keeh)
 
 ---
 
@@ -43,7 +44,7 @@ No outer m-round advances until the inner season hands back or Keaton seats an e
 1. **Fascia redaction shredding** — resume the Fascia mid-flight work (resin · parity · Amphora · breach generator) under inner rounds, not as a silent overwrite of outer constellation progress.  
 2. **Djin seated** — Taurus earth seat 2, formerly Twah; vane `%djin` · domain prep **djin.fund** (claim his); edu gift for creating one of the twelve stays under this fund; **executive DJINN**.  
 3. **Scope words** — **scope** · **outer** · **inner** seated in Lexicon for seasons and for Tally / Prin / rish command vocabulary.  
-4. **Ketu seated** (`20260728.020607`) — Aquarius · fund order 11 · `%ketu` · **executive Keaton**.  
+4. **Keeh seated** (was Ketu `20260728.020607` · rename-forward `20260728.031050`) — Aquarius · fund order 11 · `%keeh` · **executive Keaton**.  
 5. **Mala dedicated** to **Kamala Harris** (honor) — gratitude + Reya-variant foundations inside this inner season.  
 6. **Siya executor** — **Sara Sealy Livermore**.  
 7. **Gwoh seated** (`20260728.021252`) — Leo · fire · fund order 5 · `%gwoh` · honor-dedicated to **Sarah Guo** (Conviction).  
