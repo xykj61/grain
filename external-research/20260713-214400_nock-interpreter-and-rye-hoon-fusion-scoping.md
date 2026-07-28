@@ -5,6 +5,8 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Research for understanding — scoping only; no interpreter code, no language grammar written yet
 
+Radiant pass `20260727.231750` — path re-point only; claims unchanged
+
 ---
 
 ## What This Answers
@@ -60,7 +62,7 @@ This is the one finding in this document that is not a research fact but a genui
 
 **Hoon leans on unbounded recursion as an idiom.** Its own standard library gate-recursion patterns (`|-` for a trap, tail-recursive arms calling themselves) are the normal way to write a loop in Hoon — there is no separate "bounded loop" construct; recursion *is* the loop construct, and Hoon's own compiler does not require a stated upper bound before it accepts a recursive definition.
 
-**TAME's root rule states the opposite as an absolute:** "Control flow stays simple and explicit; recursion stays out, so that everything which should be bounded stays bounded" ([`context/specs/TAME_GUIDANCE.md`](../context/specs/TAME_GUIDANCE.md), Root rule 2). Every loop in authored Rye names its maximum size at construction and asserts it at the boundary.
+**TAME's root rule states the opposite as an absolute:** "Control flow stays simple and explicit; recursion stays out, so that everything which should be bounded stays bounded" ([`context/specs/TAME_GUIDANCE.md`](../context/TAME_GUIDANCE.md), Root rule 2). Every loop in authored Rye names its maximum size at construction and asserts it at the boundary.
 
 **These two rules cannot both hold for the same construct without a real decision.** Three honest paths, none secretly free:
 
