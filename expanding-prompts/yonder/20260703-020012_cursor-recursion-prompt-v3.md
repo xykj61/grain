@@ -38,7 +38,7 @@ boxed in the confirmed pre-counsel, one commit each, golden pinned by openssl dg
 landing at 144; the chrono sweep wires in that same season at the boxed numbers — invent no
 arithmetic. Door 3 = against: Amber rungs proceed per box (5) at 143; the Edit 5 witness stays
 drafted and unwired. SLC-2b nod (only after Door 2): execute
-expanding-prompts/20260702-030112_cursor-slc-2b-keyboard-from-window.md to the letter, four DoD
+expanding-prompts/yonder/20260702-030112_cursor-slc-2b-keyboard-from-window.md to the letter, four DoD
 greens one commit each; then RW-1's mirrored pair per the 20260702-200109 contract, two
 witnesses, two commits, +2. PASTES: Linengrow agent writing → land whole in external-research
 and siloed in foundations exactly as asked; OCuLink memo with Kaeden's six-digit filename →

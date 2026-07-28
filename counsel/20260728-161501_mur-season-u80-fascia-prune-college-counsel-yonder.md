@@ -32,7 +32,7 @@ No Amphora shred · no Class A rewrite · no over-70 function split · no silo-b
 
 ## Next
 
-**kg u81** — next prune slice (more yonder · on-touch over-70 · silo-bench lean), or check-in.
+**LANDED u81** — silo bench · workshop/warehouse · SLC-2b · kernel brief yonder.
 
 ---
 

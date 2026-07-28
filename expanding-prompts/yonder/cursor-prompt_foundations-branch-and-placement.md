@@ -115,7 +115,7 @@ Place the two new briefs and wire their cross-links:
 | File | First line |
 |------|-----------|
 | `active-designing/yonder/20260628-120912_brix-the-composer.md` | `# Brix — The Composer, and the System Around It` |
-| `expanding-prompts/20260628-120912_kernel-direction-brix-and-foundations.md` | `# The Kernel Direction, Brix, and the Foundation Beneath — A Batch Brief` |
+| `expanding-prompts/yonder/20260628-120912_kernel-direction-brix-and-foundations.md` | `# The Kernel Direction, Brix, and the Foundation Beneath — A Batch Brief` |
 
 Then **propose** index entries for each folder's `README.md` if those indexes exist (one line each, in the surrounding shape); if an index does not exist, say so and skip it. Show diffs, confirm, then commit:
 
