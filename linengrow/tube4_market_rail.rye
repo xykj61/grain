@@ -118,8 +118,8 @@ pub fn run_demo_acquire(
 
     const payment_fields = settle.PaymentFields{
         .amount = demo_price,
-        .currency = "mala", // wire token held for step 9 → "murr"
-        .mala_digest = &murr_digest, // field name held with weave_settle
+        .currency = "murr",
+        .murr_digest = &murr_digest,
         .wov_digest = &wov_digest,
     };
     var payment_hex: [settle.digest_hex_len]u8 = undefined;

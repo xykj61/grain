@@ -23,7 +23,7 @@ fn run_selftest(io: std.Io) !u8 {
     assert(receipt[0] != 0 or receipt[1] != 0);
     assert(std.mem.indexOf(u8, listing[0..n], "buyer") == null);
     assert(std.mem.indexOf(u8, listing[0..n], "seller") == null);
-    print("mandi: listed vessel at 25 mala — receipt {s}\n", .{receipt[0..16]});
+    print("mandi: listed vessel at 25 murr — receipt {s}\n", .{receipt[0..16]});
 
     // Unwelcome: zero price.
     if (mc.sign_listing(mc.mandi_version, &parent, "0", &listing)) |_| {
