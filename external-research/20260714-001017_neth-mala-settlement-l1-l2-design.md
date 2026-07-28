@@ -18,7 +18,7 @@ Keaton proposed a new settlement layer for Glow OS: an **N-vane called Neth** (a
 The strongest thing about this proposal is that its technical spine is **not new** — it is the natural next step of three things already in this tree:
 
 - **MUR** is already issuer-only (was MALA) mint + conservation-enforced transfer + **balance as a fold over a signed log** ([`../linengrow/mala.rye`](../linengrow/mala.rye), MUR M1/M2 (was MALA; paths `mala*`), parity 198–199). That is L1 money semantics.
-- **WOV** is already the settlement/exit-honesty layer (exit honesty, dual-monarch, parity 201–205) — **and it already had a TigerBeetle pin seam**, retired `20260711.055800` but explicitly kept "revivable later if MALA log-and-fold ever needs TB throughput" ([TASKS.md](../work-in-progress/TASKS.md); counsel [`055112`](../counsel/20260711-055112_claude-counsel-wov-tigerbeetle-recommendation.md)). Neth is, in plain terms, **the revival and full flowering of that retired WOV-TB pin.**
+- **WOV** is already the settlement/exit-honesty layer (exit honesty, dual-monarch, parity 201–205) — **and it already had a TigerBeetle pin seam**, retired `20260711.055800` but explicitly kept "revivable later if MUR log-and-fold ever needs TB throughput (was MALA)" ([TASKS.md](../work-in-progress/TASKS.md); counsel [`055112`](../counsel/20260711-055112_claude-counsel-wov-tigerbeetle-recommendation.md)). Neth is, in plain terms, **the revival and full flowering of that retired WOV-TB pin.**
 - **TigerBeetle is a Replicated State Machine** — Viewstamped Replication over an immutable, hash-chained, append-only log of prepares, executed deterministically (confirmed from TigerBeetle's own ARCHITECTURE.md and the trillion-transactions post). This is *architecturally almost identical to an L2 sequencer*: a deterministic state transition over an ordered log, with the log as ground truth and periodic checkpoints. TigerBeetle's own shape is the correct substrate for a settlement L2 — this is why "a Glow reimplementation of TigerBeetle as a pinned sidechain" is a genuinely coherent idea, not a buzzword pile.
 
 So the core, stated once and plainly:
@@ -80,7 +80,7 @@ I lean toward **2 or 3** over 1, because Neth's whole purpose — Ethereum inter
 
 Following the project's own SLC/Gall's-Law discipline, the smallest lovable complete first step is **not** an L1/L2/bridge — it is one witness:
 
-> **Revive the retired WOV-TB pin as a Glow-native fold: sequence a handful of MALA transfers into a hash-chained log, fold them to balances, produce a state-root, and prove the root is reproducible from the log alone.** No external chain, no Sui, no Ethereum call — just the deterministic-RSM-produces-pinnable-root property, witnessed.
+> **Revive the retired WOV-TB pin as a Glow-native fold: sequence a handful of MUR transfers into a hash-chained log (was MALA), fold them to balances, produce a state-root, and prove the root is reproducible from the log alone.** No external chain, no Sui, no Ethereum call — just the deterministic-RSM-produces-pinnable-root property, witnessed.
 
 That single witness proves the load-bearing claim (TigerBeetle's shape gives a pinnable settlement root in Glow) and unlocks everything above it, without committing to a single external bridge or a single line about real money.
 
