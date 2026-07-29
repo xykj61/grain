@@ -1,0 +1,95 @@
+//! glow/mod_clock.rye — paired clocks for n mod 12 · n mod 16 collaboration.
+//!
+//! Honest law: Z/12 and Z/16 differ in size, so there is no set bijection
+//! between residue classes alone. Collaboration uses the **joint clock**
+//! LCM(12,16)=48 and the pair map n ↦ (n mod 12, n mod 16). Compatible
+//! lifts exist when a ≡ b (mod gcd(12,16)=4).
+//!
+//!   rye/bin/rye build glow/mod_clock.rye -femit-bin=glow/bin/mod-clock
+//!   glow/bin/mod-clock
+//!
+//! Data companion: tools/gen/season/recursion_block.brix (Brix = data).
+
+const std = @import("std");
+const assert = std.debug.assert;
+
+pub const mod_twelve: u32 = 12;
+pub const mod_sixteen: u32 = 16;
+pub const joint_clock: u32 = 48; // LCM(12,16)
+pub const gcd_clock: u32 = 4;
+
+pub const Pair = struct {
+    house12: u32,
+    slot16: u32,
+};
+
+pub fn mod12(n: u32) u32 {
+    return n % mod_twelve;
+}
+
+pub fn mod16(n: u32) u32 {
+    return n % mod_sixteen;
+}
+
+pub fn pair(n: u32) Pair {
+    return .{ .house12 = mod12(n), .slot16 = mod16(n) };
+}
+
+/// Compatible when house12 ≡ slot16 (mod 4).
+pub fn compatible(house12: u32, slot16: u32) bool {
+    assert(house12 < mod_twelve);
+    assert(slot16 < mod_sixteen);
+    return (house12 % gcd_clock) == (slot16 % gcd_clock);
+}
+
+/// Four direction houses for collaboration priority (seated Equinox e0).
+/// East 0 · North 1 · West 2 · South 3 — each covers three zodiac houses.
+pub const Direction = enum(u32) {
+    east = 0,
+    north = 1,
+    west = 2,
+    south = 3,
+};
+
+/// Zodiac house 0=Aries … 11=Pisces → direction quadrant.
+pub fn direction_of_house12(house12: u32) Direction {
+    assert(house12 < mod_twelve);
+    // East: 11 (Pisces/12th), 0 (Aries/1st), 1 (Taurus/2nd) — user seat 12th·1st·2nd
+    if (house12 == 11 or house12 == 0 or house12 == 1) return .east;
+    // North: 8 (Sag/9th), 9 (Cap/10th), 10 (Aqu/11th)
+    if (house12 == 8 or house12 == 9 or house12 == 10) return .north;
+    // West: 5 (Virgo/6th), 6 (Libra/7th), 7 (Scorpio/8th)
+    if (house12 == 5 or house12 == 6 or house12 == 7) return .west;
+    // South: 2 (Gemini/3rd), 3 (Cancer/4th), 4 (Leo/5th)
+    return .south;
+}
+
+pub fn joint_index(n: u32) u32 {
+    return n % joint_clock;
+}
+
+fn selftest() void {
+    assert(mod12(12) == 0);
+    assert(mod16(16) == 0);
+    assert(joint_index(48) == 0);
+    assert(compatible(0, 4));
+    assert(compatible(0, 8));
+    assert(!compatible(0, 1));
+    const p = pair(25);
+    assert(p.house12 == 1);
+    assert(p.slot16 == 9);
+    assert(direction_of_house12(0) == .east);
+    assert(direction_of_house12(9) == .north);
+    assert(direction_of_house12(6) == .west);
+    assert(direction_of_house12(3) == .south);
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    selftest();
+    const p = pair(25);
+    std.debug.print(
+        "mod-clock: joint={d} pair n=25 -> ({d},{d}) east/north/west/south — GREEN\n",
+        .{ joint_clock, p.house12, p.slot16 },
+    );
+    return 0;
+}

@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260729.165912` — [Equinox Season e0 deca opens](20260729-165912_equinox-season-e0-deca-opens.bron) — Cursor paused · Claude package
 - `20260729.164636` — [Surface Season p58 check-in next lean](20260729-164636_surface-season-p58-check-in-next-lean.bron) — recommend handback
 - `20260729.163034` — [Surface Season p57 live-five ceiling](20260729-163034_surface-season-p57-live-five-ceiling.bron) — ceiling fill GREEN · live-five complete
 - `20260729.162549` — [Surface Season p56 live-five idle](20260729-162549_surface-season-p56-live-five-idle.bron) — idle pong GREEN · ceiling hand

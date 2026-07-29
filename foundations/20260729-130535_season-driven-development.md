@@ -32,8 +32,9 @@ When many seasons nest: call the depth stack **Nest-Season Development**. Living
 
 ## Nest depth law (living)
 
-1 outer/first · 2 inner/second · 3 three · 4 quad · 5 quint · 6 sext · 7 sept · 8 oct · 9 nona · …  
-Dated files may keep old words. Living pins use the table. True deepest = whichever nest is **OPEN**.
+1 outer/first · 2 inner/second · 3 three · 4 quad · 5 quint · 6 sext · 7 sept · 8 oct · 9 nona · 10 deca · …  
+Dated files may keep old words. Living pins use the table. True deepest = whichever nest is **OPEN**.  
+Glow = **code** · Brix = **data** · waymark `asks:` closes with `your:` / `%your` (seated `20260729.165912`).
 
 ## Season open checklist (template)
 
