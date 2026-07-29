@@ -1,0 +1,12 @@
+::  name       surface count
+::  shape      count - int (@u32)
+::  invariant  one non-negative field; the pedestal stands alone
+::  example    21
+::  readers    Surface · first resident · Glow userland
+::  nib        surface-p10-v0
+::
+::  Surface Chapter p10 — first resident in src/sur (structure museum).
+::  Thin +$ / $: one-field @u32 shape; placard above per PLACARD.md.
++$  surface-count-shape
+  $:  count=@u32
+  ==
