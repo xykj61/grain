@@ -1,7 +1,7 @@
 # Surface Chapter — Recursion Prompt (printout · seven scopes)
 
-**Stamp:** `20260728.193914` · Radiant pass `20260728.204647`  
-**Living printout:** [`20260728-233053_surface-season-p37-recursion-prompt.md`](20260728-233053_surface-season-p37-recursion-prompt.md) (p37 · full pause stack).  
+**Stamp:** `20260728.193914` · Radiant pass `20260728.235951` (homes oven/ after o1 cut)  
+**Living printout:** [`20260728-234419_oven-season-o0-recursion-prompt.md`](20260728-234419_oven-season-o0-recursion-prompt.md) (Oven oct).  
 **Use (dated p0 artifact):** paste the fenced block only when replaying the opener shape; prefer the living printout above.
 
 **Sundial:** `rishi/bin/rishi run tools/gen/chapter/sundial.rish` · `prin sundial`  
@@ -33,7 +33,7 @@ CORE · QUINT (CLOSED — handed back — do not advance g/q-rounds):
 
 SEXT SCOPE (paused — do not advance s-rounds):
   Generator Chapter PAUSED at s8 complete / s9 next.
-  Homes LIVE: tools/gen/chapter/ · fund/ · amphora/ · anvil/.
+  Homes LIVE: tools/gen/chapter/ · fund/ · amphora/ · oven/.
   Handback lean when Generator resumes: return_mur_u92.
   Charter: counsel/20260728-183510_the-generator-season-sext-charter.md
 

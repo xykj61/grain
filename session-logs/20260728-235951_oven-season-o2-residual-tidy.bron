@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260728.235951
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Oven Chapter o2 residual tidy
+prompt waymark o1 complete o2 next · asks none
+think kg residual living orientation after path cut
+think STEWARDS faculty · Surface homes · yonder hammock and Quin dispatch links
+obs twin TSV folds held dated · Class H fossils held
+file STEWARDS.md oven faculty row
+file expanding-prompts Surface homes oven
+file active-designing/yonder hammock and quin dispatch
+file counsel/20260728-235951_oven-season-o2-residual-tidy.md o2 seat
+git_nib 16368c46da
+recommend check-in further residual or handback to Surface p39
