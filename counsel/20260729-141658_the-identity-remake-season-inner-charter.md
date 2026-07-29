@@ -5,7 +5,8 @@
 **Voice:** Quin  
 **Kind:** season charter · Keaton's word · **inner** scope · rounds **k0–k15** (sixteen)  
 **Ask:** pause Surface · remake encryption keys · root SVG/PNG · gitconfig · rewrite committer identity · force-push GitHub · retire Codeberg  
-**Status:** **OPEN** · finishing edge · **k0** seating
+**Status:** **OPEN** · finishing edge · **k4** force-push landed · k5 residual / handback next  
+Radiant pass `20260729.155634` — k3–k4 rewrite · resign · origin force-push GREEN · keys uploaded
 
 ## Why this season opens
 
