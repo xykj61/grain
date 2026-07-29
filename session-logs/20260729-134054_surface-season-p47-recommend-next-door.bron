@@ -1,0 +1,14 @@
+format session-log-v1
+stamp 20260729.134054
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Surface Season p47 recommend next door
+prompt waymark asks what do you recommend after museum-full check-in
+think Rank Wayland-from-Frame first; handback Generator second; refuse empty counts
+think Seat answer only; do not open Wayland metal without his word
+obs Other desks already have first residents; no unnamed bound to kg
+file counsel/20260729-134054_surface-season-p47-recommend-next-door.md ranked lean
+file tools/gen/season/surface_season_p47_witness.rish thin seat witness
+recommend check-in name asks wayland or return_generator_s9 or class-h

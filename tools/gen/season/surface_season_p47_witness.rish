@@ -1,0 +1,21 @@
+# tools/gen/season/surface_season_p47_witness.rish — Surface p47 recommend seat.
+#
+#   rishi/bin/rishi run tools/gen/season/surface_season_p47_witness.rish
+
+say "surface-p47: Language EN — recommend next door."
+say "surface-p47: Style Radiant — rank leans; refuse invent pad."
+say "surface-p47: Lens TAME — Surface Season p47."
+
+let counsel = run ["test" "-f" "counsel/20260729-134054_surface-season-p47-recommend-next-door.md"]
+assert counsel.ok else "surface-p47: p47 counsel missing"
+
+let lean = run ["sh" "-c" "grep -q 'Wayland from Frame' counsel/20260729-134054_surface-season-p47-recommend-next-door.md && grep -q 'return_generator_s9' counsel/20260729-134054_surface-season-p47-recommend-next-door.md && grep -q 'Refuse' counsel/20260729-134054_surface-season-p47-recommend-next-door.md && echo LEAN_OK"]
+assert lean.ok else "surface-p47: lean scan failed"
+assert lean.out contains "LEAN_OK" else "surface-p47: recommendation incomplete"
+
+let scope = run ["sh" "-c" "grep -q 'p47 complete / p48 next' tools/gen/season/prin_scope.rish && grep -q 'sept:   Surface Season — OPEN' tools/gen/season/prin_scope.rish && echo SCOPE_OK"]
+assert scope.ok else "surface-p47: prin_scope pin scan failed"
+assert scope.out contains "SCOPE_OK" else "surface-p47: sept bookmark incomplete"
+
+say "GREEN: surface-p47 — Wayland-from-Frame recommended · invent held"
+say "GREEN: surface-p47 — handback Generator ranked second."

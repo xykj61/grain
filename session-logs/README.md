@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260729.134054` — [Surface Season p47 recommend next door](20260729-134054_surface-season-p47-recommend-next-door.bron) — Wayland-from-Frame first
 - `20260729.133829` — [Surface Season p46 check-in](20260729-133829_surface-season-p46-check-in.bron) — museum lane full · invent held
 - `20260729.133420` — [Surface Season p45 sur brush pin key count](20260729-133420_surface-season-p45-sur-brush-pin-key-count.bron) — sur×11 pin-keys×4
 - `20260729.133125` — [Surface Season p44 sur brush frame field count](20260729-133125_surface-season-p44-sur-brush-frame-field-count.bron) — sur×10 BrushFrame×3
