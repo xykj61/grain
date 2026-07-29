@@ -1,8 +1,8 @@
 # Kiln Season — Recursion Prompt (printout · eight scopes · o0)
 
-**Stamp:** `20260728.234419` · Radiant pass `20260728.235520` (o1 path cut)  
-**Use:** paste the fenced block as the next counsel/bench session opener.  
-**Prior printout:** [`20260728-233053_surface-season-p37-recursion-prompt.md`](20260728-233053_surface-season-p37-recursion-prompt.md) (Surface-era; sept now paused).
+**Stamp:** `20260728.234419` · Radiant pass `20260729.000500` (handback Surface p39 · Kiln PAUSED)  
+**Use:** archival Kiln-era paste; Surface walk is **OPEN** again at p39.  
+**Prior printout:** [`20260728-233053_surface-season-p37-recursion-prompt.md`](20260728-233053_surface-season-p37-recursion-prompt.md).
 
 **Sundial:** `rishi/bin/rishi run tools/gen/season/sundial.rish` · `prin sundial`  
 **Scope:** `rishi/bin/rishi run tools/gen/season/prin_scope.rish` · `prin scope`  
