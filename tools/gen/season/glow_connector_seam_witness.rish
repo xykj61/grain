@@ -24,6 +24,8 @@ let desk3b = run ["test" "-f" "src/sur/shape-frame-max-lines.glow"]
 assert desk3b.ok else "glow-connector: hop1 sur frame-max-lines pedestal missing"
 let desk4 = run ["test" "-f" "src/til/tilak-root-count.glow"]
 assert desk4.ok else "glow-connector: hop1 til pedestal missing"
+let desk4b = run ["test" "-f" "src/til/shape-manifest-field-count.glow"]
+assert desk4b.ok else "glow-connector: hop1 til manifest-field-count pedestal missing"
 let desk5 = run ["test" "-f" "src/app/shape-pool-agent-slot.glow"]
 assert desk5.ok else "glow-connector: hop1 app pedestal missing"
 let hygiene = run ["test" "-f" "tools/gen/season/glow_hygiene_pin.rish"]

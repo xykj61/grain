@@ -7,7 +7,7 @@
 
 say "first-resident: Language EN — Glow desks that live in src/."
 say "first-resident: Style Radiant — prove the desks; refuse shred."
-say "first-resident: Lens TAME — Surface Season p15."
+say "first-resident: Lens TAME — Surface Season p18."
 
 let zig = "vendor/zig-toolchain/zig"
 
@@ -67,6 +67,19 @@ let tgate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" tdesk]
 assert tgate.ok else "first-resident: til shape lower/build/run failed"
 assert tgate.out contains "EXIT:0" else "first-resident: til shape did not exit 0"
 
+say "first-resident: til manifest-field-count..."
+let mdesk = "src/til/shape-manifest-field-count.glow"
+let mplacard = run ["sh" "-c" "head -n 7 src/til/shape-manifest-field-count.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+assert mplacard.ok else "first-resident: til manifest placard scan failed"
+let mcount = trim mplacard.out
+assert mcount == "6" else "first-resident: til manifest placard missing six lines"
+let mfields = run ["sh" "-c" "grep -q 'example    3' src/til/shape-manifest-field-count.glow && grep -q 'type-mark' src/til/shape-manifest-field-count.glow && grep -q 'digest' src/til/shape-manifest-field-count.glow && grep -q 'name' src/til/shape-manifest-field-count.glow && grep -q '%tile' src/til/shape-manifest-field-count.glow && echo FIELDS_OK"]
+assert mfields.ok else "first-resident: til manifest fields scan failed"
+assert mfields.out contains "FIELDS_OK" else "first-resident: til manifest three fields / %tile not named"
+let mgate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" mdesk]
+assert mgate.ok else "first-resident: til manifest shape lower/build/run failed"
+assert mgate.out contains "EXIT:0" else "first-resident: til manifest shape did not exit 0"
+
 say "first-resident: app pool-agent-slot..."
 let adesk = "src/app/shape-pool-agent-slot.glow"
 let aplacard = run ["sh" "-c" "head -n 7 src/app/shape-pool-agent-slot.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
@@ -80,6 +93,6 @@ let agate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" adesk]
 assert agate.ok else "first-resident: app shape lower/build/run failed"
 assert agate.out contains "EXIT:0" else "first-resident: app shape did not exit 0"
 
-say "GREEN: first-resident — lib · sur×2 · til · app · Surface p15"
+say "GREEN: first-resident — lib · sur×2 · til×2 · app · Surface p18"
 say "GREEN: first-resident — Glow userland desks live at home first."
 

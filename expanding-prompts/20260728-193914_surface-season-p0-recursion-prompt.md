@@ -1,6 +1,6 @@
 # Surface Season — Recursion Prompt (printout · seven scopes)
 
-**Stamp:** `20260728.193914` · Radiant pass `20260728.203606`  
+**Stamp:** `20260728.193914` · Radiant pass `20260728.204222`  
 **Use:** paste the fenced block as the next counsel/bench session opener.
 
 **Sundial:** `rishi/bin/rishi run tools/gen/season/sundial.rish` · `prin sundial`  
@@ -37,16 +37,17 @@ SEXT SCOPE (paused — do not advance s-rounds):
   Charter: counsel/20260728-183510_the-generator-season-sext-charter.md
 
 SEPT SCOPE (OPEN — walk here):
-  Surface Season OPEN · p17 complete / p18 next.
+  Surface Season OPEN · p18 complete / p19 next.
   Working lean: Pond Glow GUI · Brushstroke/.brush · Ubuntu Wayland ·
     Mantra/Weave DAG · first-resident userland · thin .brush (parser held).
   Handback lean: return_generator_s9.
   Charter: counsel/20260728-193914_the-surface-season-sept-charter.md
-  Seat: counsel/20260728-203606_surface-season-p17-graph-redraw-spine.md
-  Prep+study+pedestals: p1–p17 (anvil · hygiene · first-resident · Wayland ·
-    connector · pond GUI · graph redraw spines · lib/sur×2/til/app · .brush).
+  Seat: counsel/20260728-204222_surface-season-p18-til-manifest-field-count.md
+  Prep+study+pedestals: p1–p18 (anvil · hygiene · first-resident · Wayland ·
+    connector · pond GUI · graph redraw · lib/sur×2/til×2/app · .brush).
   First residents LIVE: src/lib (double · inc) · src/sur (surface-count ·
-    frame-max-lines) · src/til (tilak-root-count) · src/app (pool-agent-slot).
+    frame-max-lines) · src/til (tilak-root-count · manifest-field-count) ·
+    src/app (pool-agent-slot).
     .brush LIVE: brushstroke/seed-frame.brush (parser held).
     %tile HELD. src/sec OPEN · src/web REFUSED.
   Horizon PARK: Genode · seL4 · SixOS · s6 · Nix (proven-seat parallel).
@@ -59,7 +60,7 @@ HARD LINES:
   first-resident routine · vegan-dogfood easter-egg only ·
   no m/i/u/g/q/s advance while sept walks · %tile not seated yet.
 
-NEXT (p18):
+NEXT (p19):
   More pedestals · .brush lower lean later · or live-five on word —
   or check-in if a seam asks.
 

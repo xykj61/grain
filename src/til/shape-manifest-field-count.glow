@@ -1,0 +1,13 @@
+::  name       manifest field count
+::  shape      fields - int (@u32)
+::  invariant  Amphora manifest entry carries three fields: type-mark · digest · name
+::  example    3
+::  readers    Amphora · Pond · Weave · Surface til room
+::  nib        surface-p18-v0
+::
+::  Surface Season p18 — second pedestal in src/til.
+::  Names the three-field manifest line from the marked-value brief.
+::  Does not seat %tile (held for Keaton). Does not invent absorb-express.
++$  manifest-field-count-shape
+  $:  fields=@u32
+  ==
