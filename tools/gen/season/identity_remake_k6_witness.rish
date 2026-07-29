@@ -1,0 +1,21 @@
+# tools/gen/season/identity_remake_k6_witness.rish — handback Surface p55.
+#
+#   rishi/bin/rishi run tools/gen/season/identity_remake_k6_witness.rish
+
+say "identity-k6: Language EN — handback Surface p55."
+say "identity-k6: Style Radiant — pause Identity Remake; open sept."
+say "identity-k6: Lens TAME — Identity Remake k6."
+
+let counsel = run ["test" "-f" "counsel/20260729-162032_identity-remake-k6-handback-return-surface-p55.md"]
+assert counsel.ok else "identity-k6: k6 counsel missing"
+
+let seat = run ["sh" "-c" "grep -qF 'return_surface_p55' counsel/20260729-162032_identity-remake-k6-handback-return-surface-p55.md && grep -qF 'PAUSED' counsel/20260729-162032_identity-remake-k6-handback-return-surface-p55.md && grep -qF 'OPEN' counsel/20260729-162032_identity-remake-k6-handback-return-surface-p55.md && echo SEAT_OK"]
+assert seat.ok else "identity-k6: handback seat scan failed"
+assert seat.out contains "SEAT_OK" else "identity-k6: handback seat missing"
+
+let prin = run ["sh" "-c" "grep -qF 'Identity Remake Season — PAUSED' tools/gen/season/prin_scope.rish && grep -qF 'Surface Season — OPEN' tools/gen/season/prin_scope.rish && echo PRIN_OK"]
+assert prin.ok else "identity-k6: prin_scope scan failed"
+assert prin.out contains "PRIN_OK" else "identity-k6: prin_scope must show Identity PAUSED · Surface OPEN"
+
+say "GREEN: identity-k6 — return_surface_p55 · Identity PAUSED · Surface OPEN"
+say "GREEN: identity-k6 — no invent · Livermore pins kept."
