@@ -1,0 +1,27 @@
+# tools/gen/season/nona_season_n1_witness.rish — Nona Season n1 SDD seat.
+#
+#   rishi/bin/rishi run tools/gen/season/nona_season_n1_witness.rish
+
+say "nona-season-n1: Language EN — Season-Driven Development named."
+say "nona-season-n1: Style Radiant — research · foundations · template."
+say "nona-season-n1: Lens TAME — Nona Season n1."
+
+let counsel = run ["test" "-f" "counsel/20260729-130535_nona-season-n1-season-driven-development.md"]
+assert counsel.ok else "nona-season-n1: n1 counsel missing"
+let research = run ["test" "-f" "external-research/20260729-130535_season-driven-development.md"]
+assert research.ok else "nona-season-n1: external-research missing"
+let law = run ["test" "-f" "foundations/20260729-130535_season-driven-development.md"]
+assert law.ok else "nona-season-n1: foundations law missing"
+let tmpl = run ["test" "-f" "expanding-prompts/20260729-130535_season-open-template.md"]
+assert tmpl.ok else "nona-season-n1: season-open template missing"
+
+let lex = run ["sh" "-c" "grep -q 'Season-Driven Development' context/LEXICON.md && grep -q 'Nest-Season Development' context/LEXICON.md && echo LEX_OK"]
+assert lex.ok else "nona-season-n1: lexicon scan failed"
+assert lex.out contains "LEX_OK" else "nona-season-n1: SDD · Nest-Season not in LEXICON"
+
+let scope = run ["sh" "-c" "grep -q 'n1 complete / n2 next' tools/gen/season/prin_scope.rish && grep -q 'Season-Driven Development' tools/gen/season/prin_scope.rish && echo SCOPE_OK"]
+assert scope.ok else "nona-season-n1: prin_scope pin scan failed"
+assert scope.out contains "SCOPE_OK" else "nona-season-n1: n1/SDD pin incomplete"
+
+say "GREEN: nona-season-n1 — SDD named · foundations · template · LEXICON"
+say "GREEN: nona-season-n1 — Nest-Season Development seated beside nest accuracy."
