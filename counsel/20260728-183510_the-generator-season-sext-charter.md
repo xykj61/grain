@@ -10,7 +10,7 @@
 **Within:** paused **three** MUR (u91 complete / u92 next) · inside paused Inner Scope · inside paused Constellation  
 **Status:** **PAUSED** · s0–s8 complete · bookmark **s8 complete / s9 next** · paused for Surface Chapter (sept) `20260728.193914` · Surface paused · Nona OPEN `20260729.125911`  
 Radiant pass `20260729.130911` — living depth words three · quad (Nona n2 residual)  
-Radiant pass `20260728.234419` — Surface pause · Kiln oct opens · Generator still held  
+Radiant pass `20260728.234419` — Surface pause · Oven oct opens · Generator still held  
 Radiant pass `20260728.193914` — Shape B seated · Generator pause · Surface sept opens  
 Radiant pass `20260728.193058` — s8 Pond GUI season evaluation · like aim · push back nested-128+OS  
 Radiant pass `20260728.192321` — s7 tools/gen/amphora home LIVE · eight scripts · shims  
@@ -36,13 +36,13 @@ Radiant pass `20260728.183510` — sext opens · MUR paused · Glow/Rishi/Dojo r
 | **quad** | Gren Chapter | lean-16 CLOSED · handed back | **CLOSED** |
 | **quint** | Keeh Chapter | lean-16 CLOSED · handed back | **CLOSED** |
 | **sext** | **Generator Chapter** | **s8** complete / **s9** next | **PAUSED** |
-| **sept** | Surface Chapter | p40 / p41 next | **PAUSED** |
-| **oct** | Kiln Chapter | o3 / o4 next | **PAUSED** |
-| **nona** | Nona Chapter | n2 / n3 next | **OPEN** |
+| **sept** | Surface Chapter | p40 / p41 next | **OPEN** |
+| **oct** | Oven Chapter | o3 / o4 next | **PAUSED** |
+| **nona** | Nona Chapter | n3 / n4 next | **PAUSED** |
 
 Handback lean (when Generator resumes): `extend_or_return=return_mur_u92`.  
 Surface handback (while sept walks): `return_generator_s9`.  
-Kiln remains **PAUSED** after `return_surface_p39` `20260729.000500`.  
+Oven remains **PAUSED** after `return_surface_p39` `20260729.000500`.  
 Warn **s62** and **s63** remain for when sext resumes: extend to **128**, or return MUR **u92**, or other word he seats.
 
 Geode stays **PREP** parallel (d0) — does not steal s-rounds. Deeper nests do not advance s-rounds while OPEN.

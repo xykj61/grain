@@ -8,7 +8,8 @@
 **Informal tag:** nest-7 · MUR is nest **three** (not “innermost” as living depth)  
 **Ground:** origin/main `d3e208613a` (pre-send) · Shape **B** seated from [s8 eval](20260728-193058_generator-season-s8-pond-gui-season-evaluation.md)  
 **Within:** paused **sext** Generator (s8 complete / s9 next) · paused MUR (**three**) · paused Inner · paused Constellation  
-**Status:** **PAUSED** · p0–p40 complete · bookmark **p40 complete / p41 next** · paused for Nona Chapter `20260729.125911`  
+**Status:** **OPEN** · p0–p40 complete · bookmark **p40 complete / p41 next** · resumed from Nona handback `20260729.131327`  
+Radiant pass `20260729.131327` — return_surface_p41 · Nona PAUSED · Surface finishing edge  
 Radiant pass `20260729.130911` — Nona n2 residual · Kiln/Generator living depth words  
 Radiant pass `20260729.125911` — Nona nest-9 opens · Surface pause · nest accuracy  
 Radiant pass `20260729.000718` — p40 sur brush-max-bytes · sur×6  
@@ -67,12 +68,12 @@ Radiant pass `20260728.194334` — p1 tools/gen/anvil home LIVE · five corpus l
 | **quad** | Gren Chapter | lean-16 CLOSED | **CLOSED** |
 | **quint** | Keeh Chapter | lean-16 CLOSED | **CLOSED** |
 | **sext** | Generator Chapter | **s8 complete / s9 next** | **PAUSED** |
-| **sept** | **Surface Chapter** | **p40** complete / **p41** next | **PAUSED** |
+| **sept** | **Surface Chapter** | **p40** complete / **p41** next | **OPEN** (finishing edge) |
 | **oct** | Kiln Chapter | o3 complete / o4 next | **PAUSED** |
-| **nona** | Nona Chapter | n2 / n3 next | **OPEN** (steals the walk) |
+| **nona** | Nona Chapter | n3 complete / n4 next | **PAUSED** (handed back) |
 
-Handback lean (when sept resumes): `extend_or_return=return_generator_s9`.  
-Nona handback (while nest-9 walks): `return_surface_p41`.  
+Handback lean (while sept walks): `extend_or_return=return_generator_s9`.  
+Nona handback: `return_surface_p41` **seated** `20260729.131327`.  
 Kiln remains **PAUSED** at o3/o4 (path cut LIVE).  
 Generator still carries its own lean `return_mur_u92` for when sext resumes.  
 Warn **p62** and **p63** remain for when sept resumes.
