@@ -54,7 +54,7 @@ These rest beneath the specifications. The specs say what to build and how; thes
 
 - `20260728-220203_realidream.md` — **living** Realidream vision (Surface p29 mutant): editor-and-browser branded Pond/Pool face over one graph; Skate as paint target; invent held. June fossil: `20260629-063512_realidream.md`.
 - `20260728-221253_the-graph-beneath-the-surface.md` — **living Weave** (Surface p31 thin): streaming DAG under Realidream; Mantra projection; Tally · Tablecloth. June fossil: `20260629-063512_the-graph-beneath-the-surface.md`.
-- `20260629-063512_the-wafer-and-the-sovereign-coin.md` — wafer-scale compute that keeps memory beside the cores, greener and faster for it, framed as sovereign-scale public infrastructure built from real resources.
+- `20260728-225239_the-wafer-and-the-sovereign-coin.md` — **living** wafer + sovereign coin (Surface p33 thin): memory beside cores · open public infrastructure. June fossil: `20260629-063512_the-wafer-and-the-sovereign-coin.md`.
 - `20260728-221253_lantern-lattice-anvil.md` — **living** open model layer (Surface p31 thin): Anvil · Lattice · Lantern. June fossil: `20260629-063512_lantern-lattice-anvil.md`.
 
 **Distilled essays** — single-stranded meditations drawn from a year of notes, each self-contained and composable:
