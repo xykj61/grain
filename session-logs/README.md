@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.195942` — [Surface Season p7 study choir residual](20260728-195942_surface-season-p7-study-choir-residual.bron) — p2–p6 fold · p8 DAG next
 - `20260728.195629` — [Surface Season p6 Pond Brushstroke frame](20260728-195629_surface-season-p6-pond-brushstroke-frame.bron) — redrawtest+metalsmoke · p7 next
 - `20260728.195456` — [Surface Season p5 Glow connector seam sketch](20260728-195456_surface-season-p5-glow-connector-seam-sketch.bron) — Frame glass contract · p6 next
 - `20260728.195228` — [Surface Season p4 River Zig Wayland study ledger](20260728-195228_surface-season-p4-river-zig-wayland-study-ledger.bron) — GPL clean-room · zig-wayland MIT · p5 next

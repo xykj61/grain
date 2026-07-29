@@ -1,10 +1,11 @@
-# Surface Season — p0 Recursion Prompt (printout · seven scopes)
+# Surface Season — Recursion Prompt (printout · seven scopes)
 
-**Stamp:** `20260728.193914`  
+**Stamp:** `20260728.193914` · Radiant pass `20260728.195942`  
 **Use:** paste the fenced block as the next counsel/bench session opener.
 
 **Sundial:** `rishi/bin/rishi run tools/gen/season/sundial.rish` · `prin sundial`  
-**Scope:** `rishi/bin/rishi run tools/gen/season/prin_scope.rish` · `prin scope`
+**Scope:** `rishi/bin/rishi run tools/gen/season/prin_scope.rish` · `prin scope`  
+**Study choir:** `rishi/bin/rishi run tools/gen/season/surface_study_choir.rish` (needs `WAYLAND_DISPLAY`)
 
 ---
 
@@ -30,32 +31,33 @@ CORE · QUINT (CLOSED — handed back — do not advance g/q-rounds):
 
 SEXT SCOPE (paused — do not advance s-rounds):
   Generator Season PAUSED at s8 complete / s9 next.
-  Homes LIVE: tools/gen/season/ · fund/ · amphora/.
+  Homes LIVE: tools/gen/season/ · fund/ · amphora/ · anvil/.
   Handback lean when Generator resumes: return_mur_u92.
   Charter: counsel/20260728-183510_the-generator-season-sext-charter.md
 
 SEPT SCOPE (OPEN — walk here):
-  Surface Season OPEN · p0 complete / p1 next.
+  Surface Season OPEN · p7 complete / p8 next.
   Working lean: Pond Glow GUI · Brushstroke/.brush · Ubuntu Wayland ·
     Mantra/Weave DAG · vegan-dogfood userland.
   Handback lean: return_generator_s9.
   Charter: counsel/20260728-193914_the-surface-season-sept-charter.md
-  p0 seat: counsel/20260728-193914_surface-season-p0-bow-recommendations-seated.md
-  Ordered seats 1–12 in charter (B · prep · sec · refuse web · .brush ·
-    Wayland · River study · connector · Pond frame · DAG · O3 gate · OS park).
+  Seat: counsel/20260728-195942_surface-season-p7-study-choir-residual.md
+  Prep+study complete: p1 anvil · p2 hygiene · p3 vegan-dogfood ·
+    p4 Wayland ledger · p5 connector sketch · p6 pond-frame · p7 choir.
   src/sec OPEN · src/web REFUSED.
   Horizon PARK: Genode · seL4 · SixOS · s6 · Nix (proven-seat parallel).
   Geode PREP parallel (d0) — does not steal p-rounds.
+  Live-five still hand.
 
 HARD LINES:
   No shred · no deploy · no wallet/gas/keys · no River vendor · no src/web ·
   no JS/HTML/CSS/JSON home tongue · no OS infusion as early rungs ·
   vegan-dogfood only · no m/i/u/g/q/s advance while sept walks.
 
-NEXT (p1):
-  Thin next Rishi family into tools/gen/<family>/ (anvil or dimeroll lean),
+NEXT (p8):
+  Thin Mantra/Weave “one graph” / DAG redraw paper (design · no invent stack),
   or check-in if a seam asks.
 
-Bench: prin scope · sundial · fascia metric · gen_home as needed.
+Bench: prin scope · surface_study_choir · sundial · fascia · gen_home as needed.
 ] ]
 ```

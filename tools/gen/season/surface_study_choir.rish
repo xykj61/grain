@@ -1,0 +1,39 @@
+# tools/gen/season/surface_study_choir.rish — Surface p7 · study-block residual choir
+#
+#   rishi/bin/rishi run tools/gen/season/surface_study_choir.rish
+#
+# One named fold for prep+study pins p2–p6. Needs WAYLAND_DISPLAY for pond-frame.
+# Sameness: many seats, one choir — refuse pasting five paths into every counsel.
+
+say "surface-choir: Language EN — Surface study residual choir."
+say "surface-choir: Style Radiant — one fold; refuse shred/deploy."
+say "surface-choir: Lens TAME — Surface Season p7 harden."
+
+say "surface-choir: glow hygiene (p2)..."
+let hyg = run ["rishi/bin/rishi" "run" "tools/gen/season/glow_hygiene_pin.rish"]
+assert hyg.ok else "surface-choir: glow hygiene failed"
+assert hyg.out contains "GREEN: glow-hygiene" else "surface-choir: glow hygiene not GREEN"
+
+say "surface-choir: src vegan-dogfood (p3)..."
+let dog = run ["rishi/bin/rishi" "run" "tools/gen/season/src_vegan_dogfood_witness.rish"]
+assert dog.ok else "surface-choir: vegan-dogfood failed"
+assert dog.out contains "GREEN: src-vegan-dogfood" else "surface-choir: vegan-dogfood not GREEN"
+
+say "surface-choir: wayland study pins (p4)..."
+let wl = run ["rishi/bin/rishi" "run" "tools/gen/season/wayland_study_ledger_witness.rish"]
+assert wl.ok else "surface-choir: wayland study failed"
+assert wl.out contains "GREEN: wayland-study" else "surface-choir: wayland study not GREEN"
+
+say "surface-choir: glow connector pins (p5)..."
+let conn = run ["rishi/bin/rishi" "run" "tools/gen/season/glow_connector_seam_witness.rish"]
+assert conn.ok else "surface-choir: connector failed"
+assert conn.out contains "GREEN: glow-connector" else "surface-choir: connector not GREEN"
+
+say "surface-choir: pond Brushstroke frame (p6)..."
+let frame = run ["rishi/bin/rishi" "run" "tools/gen/season/pond_brushstroke_frame_witness.rish"]
+assert frame.ok else "surface-choir: pond-frame failed"
+assert frame.out contains "GREEN: pond-frame" else "surface-choir: pond-frame not GREEN"
+
+say "surface-choir: refuse live-five claim · shred · deploy · O3"
+say "GREEN: surface-choir — hygiene · vegan-dogfood · wayland · connector · pond-frame · Surface p7"
+say "GREEN: surface-choir — study block residual clear; p8 DAG paper next."
