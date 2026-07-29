@@ -1,0 +1,40 @@
+# tools/gen/season/graph_redraw_spine_witness.rish — Surface p17 · graph redraw constructive
+#
+#   rishi/bin/rishi run tools/gen/season/graph_redraw_spine_witness.rish
+#
+# Constructive fold (not invent stack):
+#   p8 one-graph paper pins · Frame A→B→A redrawtest stand-in · Frame/.brush pins
+# Does not walk Weave edges yet · does not invent a second graph · no live-five.
+
+say "graph-redraw: Language EN — Weave DAG · Frame fold · redraw along edges."
+say "graph-redraw: Style Radiant — fold paper + living stand-in; refuse invent."
+say "graph-redraw: Lens TAME — Surface Season p17 constructive."
+
+let seat = run ["test" "-f" "counsel/20260728-203606_surface-season-p17-graph-redraw-spine.md"]
+assert seat.ok else "graph-redraw: p17 counsel seat missing"
+
+say "graph-redraw: one-graph paper pins (p8)..."
+let paper = run ["rishi/bin/rishi" "run" "tools/gen/season/one_graph_dag_paper_witness.rish"]
+assert paper.ok else "graph-redraw: one-graph paper failed"
+assert paper.out contains "GREEN: one-graph" else "graph-redraw: one-graph not GREEN"
+
+say "graph-redraw: Frame A→B→A redrawtest stand-in..."
+let seed_bin = "brushstroke/bin/brushstroke-wayland-seed"
+let have = run ["test" "-x" seed_bin]
+assert have.ok else "graph-redraw: build wayland_seed first — see brushstroke/wayland_seed.rye header"
+let redraw = run ["sh" "-c" "${seed_bin} redrawtest 2>&1"]
+assert redraw.ok else "graph-redraw: redrawtest failed"
+assert redraw.out contains "GREEN" else "graph-redraw: redrawtest not GREEN"
+
+say "graph-redraw: Frame bound · .brush at-nib · Tilak roots..."
+let bound = run ["test" "-f" "src/sur/shape-frame-max-lines.glow"]
+assert bound.ok else "graph-redraw: frame-max-lines pedestal missing"
+let brush = run ["test" "-f" "brushstroke/seed-frame.brush"]
+assert brush.ok else "graph-redraw: seed-frame.brush missing"
+let tilak = run ["sh" "-c" "grep -q 'plain-bytes' src/til/tilak-root-count.glow && grep -q 'manifest' src/til/tilak-root-count.glow && echo TILAK_OK"]
+assert tilak.ok else "graph-redraw: tilak roots scan failed"
+assert tilak.out contains "TILAK_OK" else "graph-redraw: tilak roots not named"
+
+say "graph-redraw: refuse second graph · VDOM · live-five claim · shred · O3"
+say "GREEN: graph-redraw — paper · redrawtest · Frame/.brush/Tilak · Surface p17"
+say "GREEN: graph-redraw — redraw along edges; Frame is the fold; no second graph."
