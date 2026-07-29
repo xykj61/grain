@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.203321` — [Surface Season p16 Pond GUI spine](20260728-203321_surface-season-p16-pond-gui-spine.bron) — constructive fold · live-five hand · p17 next
 - `20260728.202928` — [Surface Season p15 sur frame-max-lines](20260728-202928_surface-season-p15-sur-frame-max-lines.bron) — Frame bound · p16 next
 - `20260728.202752` — [Surface Season p14 connector harden](20260728-202752_surface-season-p14-connector-harden.bron) — hops 1-5 pinned · p15 next
 - `20260728.202548` — [Surface Season p13 app first resident](20260728-202548_surface-season-p13-app-first-resident.bron) — Pool slot · p14 next

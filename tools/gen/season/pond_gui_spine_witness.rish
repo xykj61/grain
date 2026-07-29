@@ -1,0 +1,34 @@
+# tools/gen/season/pond_gui_spine_witness.rish — Surface p16 · Pond GUI constructive spine
+#
+#   rishi/bin/rishi run tools/gen/season/pond_gui_spine_witness.rish
+#
+# Constructive fold (not invent stack):
+#   connector hops · .brush fixture · pond-frame (redrawtest + metalsmoke)
+# Live-five (type · idle · ceiling · :quit) stays hand — not claimed.
+# Needs WAYLAND_DISPLAY for the pond-frame metalsmoke hop.
+
+say "pond-gui: Language EN — Pond GUI spine from living pins."
+say "pond-gui: Style Radiant — fold what works; refuse invent stack."
+say "pond-gui: Lens TAME — Surface Season p16 constructive."
+
+let seat = run ["test" "-f" "counsel/20260728-203321_surface-season-p16-pond-gui-spine.md"]
+assert seat.ok else "pond-gui: p16 counsel seat missing"
+
+say "pond-gui: connector hops (p5/p14)..."
+let conn = run ["rishi/bin/rishi" "run" "tools/gen/season/glow_connector_seam_witness.rish"]
+assert conn.ok else "pond-gui: connector failed"
+assert conn.out contains "GREEN: glow-connector" else "pond-gui: connector not GREEN"
+
+say "pond-gui: .brush fixture (p12)..."
+let brush = run ["rishi/bin/rishi" "run" "tools/gen/season/brush_shape_witness.rish"]
+assert brush.ok else "pond-gui: brush-shape failed"
+assert brush.out contains "GREEN: brush-shape" else "pond-gui: brush-shape not GREEN"
+
+say "pond-gui: pond-frame redrawtest + metalsmoke (p6)..."
+let frame = run ["rishi/bin/rishi" "run" "tools/gen/season/pond_brushstroke_frame_witness.rish"]
+assert frame.ok else "pond-gui: pond-frame failed"
+assert frame.out contains "GREEN: pond-frame" else "pond-gui: pond-frame not GREEN"
+
+say "pond-gui: refuse live-five claim · shred · deploy · O3 · .brush parser"
+say "GREEN: pond-gui — connector · .brush · pond-frame · Surface p16"
+say "GREEN: pond-gui — Pond GUI spine constructive; live-five still hand."
