@@ -19,7 +19,8 @@
 | `surface_study_choir.rish` | Surface p7 · p2–p6 residual choir |
 | `one_graph_dag_paper_witness.rish` | Surface p8 · DAG paper pins present |
 | `brush_shape_witness.rish` | Surface p12 fixture · p23 parser begun pins |
-| `brush_parse_witness.rish` | Surface p23 · `.brush` parser build + selftest |
+| `brush_parse_witness.rish` | Surface p23–p24 · `.brush` parser + TAME density |
+| `brush_parse_tame_density.sh` | p24 · living floor ≥20 `invariant:` markers |
 | `pond_gui_spine_witness.rish` | Surface p16 · Pond GUI constructive spine |
 | `graph_redraw_spine_witness.rish` | Surface p17 · graph redraw constructive spine |
 | `remember_pin_history_tidy_witness.rish` | Surface history tidy · zero pin follow-ups |
