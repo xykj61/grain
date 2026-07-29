@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260729.131728` — [Surface Season p41 sur brush max pin bytes](20260729-131728_surface-season-p41-sur-brush-max-pin-bytes.bron) — sur×7 pin-bytes=128
 - `20260729.131327` — [Nona handback return_surface_p41](20260729-131327_nona-handback-return-surface-p41.bron) — sept OPEN · nona PAUSED
 - `20260729.130911` — [Nona Season n2 living depth residual](20260729-130911_nona-season-n2-living-depth-residual.bron) — three · quad on PAUSED doors
 - `20260729.130653` — [Nona Season n1 Season-Driven Development](20260729-130653_nona-season-n1-season-driven-development.bron) — SDD · Nest-Season · template seated

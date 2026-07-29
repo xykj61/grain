@@ -7,7 +7,7 @@
 
 say "first-resident: Language EN — Glow desks that live in src/."
 say "first-resident: Style Radiant — prove the desks; refuse shred."
-say "first-resident: Lens TAME — Surface Season p40."
+say "first-resident: Lens TAME — Surface Season p41."
 
 let zig = "vendor/zig-toolchain/zig"
 
@@ -106,6 +106,19 @@ let bgate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" bdesk]
 assert bgate.ok else "first-resident: sur brush-max-bytes shape lower/build/run failed"
 assert bgate.out contains "EXIT:0" else "first-resident: sur brush-max-bytes shape did not exit 0"
 
+say "first-resident: sur brush-max-pin-bytes pedestal..."
+let pindesk = "src/sur/shape-brush-max-pin-bytes.glow"
+let pinplacard = run ["sh" "-c" "head -n 7 src/sur/shape-brush-max-pin-bytes.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+assert pinplacard.ok else "first-resident: sur brush-max-pin-bytes placard scan failed"
+let pincount = trim pinplacard.out
+assert pincount == "6" else "first-resident: sur brush-max-pin-bytes placard missing six lines"
+let pinnotes = run ["sh" "-c" "grep -q 'example    128' src/sur/shape-brush-max-pin-bytes.glow && grep -q 'max_pin_bytes' src/sur/shape-brush-max-pin-bytes.glow && grep -q 'one hundred twenty-eight' src/sur/shape-brush-max-pin-bytes.glow && echo PIN_OK"]
+assert pinnotes.ok else "first-resident: sur brush-max-pin-bytes notes scan failed"
+assert pinnotes.out contains "PIN_OK" else "first-resident: sur brush max pin bytes=128 not named"
+let pingate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" pindesk]
+assert pingate.ok else "first-resident: sur brush-max-pin-bytes shape lower/build/run failed"
+assert pingate.out contains "EXIT:0" else "first-resident: sur brush-max-pin-bytes shape did not exit 0"
+
 say "first-resident: til tilak-root-count..."
 let tdesk = "src/til/tilak-root-count.glow"
 let tplacard = run ["sh" "-c" "head -n 7 src/til/tilak-root-count.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
@@ -184,7 +197,7 @@ let rgate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" rdesk]
 assert rgate.ok else "first-resident: sec mand shape lower/build/run failed"
 assert rgate.out contains "EXIT:0" else "first-resident: sec mand shape did not exit 0"
 
-say "GREEN: first-resident — lib · sur×6 · til×2 · app×2 · sec×2 · Surface p40"
+say "GREEN: first-resident — lib · sur×7 · til×2 · app×2 · sec×2 · Surface p41"
 say "GREEN: first-resident — Glow userland desks live at home first."
 
 

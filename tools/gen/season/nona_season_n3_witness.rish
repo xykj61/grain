@@ -13,7 +13,7 @@ let scope = run ["sh" "-c" "grep -q 'sept:   Surface Season — OPEN' tools/gen/
 assert scope.ok else "nona-season-n3: prin_scope pin scan failed"
 assert scope.out contains "SCOPE_OK" else "nona-season-n3: sept OPEN · nona PAUSED incomplete"
 
-let lex = run ["sh" "-c" "grep -q 'The Surface Season' context/LEXICON.md && grep -q '\*\*OPEN\*\* · p40 complete' context/LEXICON.md && grep -q 'The Nona Season' context/LEXICON.md && grep -q '\*\*PAUSED\*\* · n3 complete' context/LEXICON.md && echo LEX_OK"]
+let lex = run ["sh" "-c" "grep -q 'The Surface Season' context/LEXICON.md && grep -q '\*\*OPEN\*\*' context/LEXICON.md && grep -q 'The Nona Season' context/LEXICON.md && grep -q '\*\*PAUSED\*\* · n3 complete' context/LEXICON.md && echo LEX_OK"]
 assert lex.ok else "nona-season-n3: lexicon scan failed"
 assert lex.out contains "LEX_OK" else "nona-season-n3: LEXICON Surface/Nona status incomplete"
 

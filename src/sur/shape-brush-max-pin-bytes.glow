@@ -1,0 +1,13 @@
+::  name       brush max pin bytes
+::  shape      bytes - int (@u32)
+::  invariant  one pin value after trim is at most one hundred twenty-eight bytes (max_pin_bytes)
+::  example    128
+::  readers    Brushstroke · Surface · .brush lower · refuse suite
+::  nib        surface-p41-v0
+::
+::  Surface Season p41 — seventh pedestal in src/sur (structure museum).
+::  Names max_pin_bytes in brushstroke/brush_parse.rye (128).
+::  Does not invent a Wayland window · skate/ graduation · or Realidream invent.
++$  brush-max-pin-bytes-shape
+  $:  bytes=@u32
+  ==
