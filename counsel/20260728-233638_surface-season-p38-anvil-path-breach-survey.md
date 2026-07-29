@@ -3,7 +3,7 @@
 **Stamp:** `20260728.233638` · **Voice:** Quin · **Season:** Surface · **Scope:** sept · **Round:** p38  
 **Prior:** [p37 sur rows + recursion](20260728-233053_surface-season-p37-sur-brush-skate-rows.md) · [Kiln seat](20260728-232511_surface-season-p36-kiln-seated.md) · [name lean](20260728-232415_anvil-forge-to-kiln-name-lean.md) · MUR filename breach law u66  
 **Ask:** approve open — path-breach survey  
-**Status:** **SURVEY SEATED** · rename **not cut**
+**Status:** **SURVEY SEATED** · cut **LANDED** Kiln o1 `20260728.235520`
 
 ## Verdict
 
