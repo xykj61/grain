@@ -53,9 +53,9 @@ These rest beneath the specifications. The specs say what to build and how; thes
 **The far horizon** — four visions that compose one layered stack the project grows toward, distinct from the active laps (SLC-1 done; TAME hardening now). Read top to bottom: surface → graph → hardware → model. Gall's Law holds — complex systems grow from working simple ones; these name aspiration, not near-term build order.
 
 - `20260728-220203_realidream.md` — **living** Realidream vision (Surface p29 mutant): editor-and-browser branded Pond/Pool face over one graph; Skate as paint target; invent held. June fossil: `20260629-063512_realidream.md`.
-- `20260629-063512_the-graph-beneath-the-surface.md` — **Weave**: the streaming DAG substrate under Realidream (program, page, screen as one graph); Mantra is the projection over Weave — on Tally (bounds), Tablecloth (fold) — fast because little redraws, honest because the history is a chain of signed facts.
+- `20260728-221253_the-graph-beneath-the-surface.md` — **living Weave** (Surface p31 thin): streaming DAG under Realidream; Mantra projection; Tally · Tablecloth. June fossil: `20260629-063512_the-graph-beneath-the-surface.md`.
 - `20260629-063512_the-wafer-and-the-sovereign-coin.md` — wafer-scale compute that keeps memory beside the cores, greener and faster for it, framed as sovereign-scale public infrastructure built from real resources.
-- `20260629-063512_lantern-lattice-anvil.md` — the open model layer: Anvil the forge, Lattice the serving fabric, Lantern the honest meter — open weights, hosted serving as the product, every token counted in plain sight.
+- `20260728-221253_lantern-lattice-anvil.md` — **living** open model layer (Surface p31 thin): Anvil · Lattice · Lantern. June fossil: `20260629-063512_lantern-lattice-anvil.md`.
 
 **Distilled essays** — single-stranded meditations drawn from a year of notes, each self-contained and composable:
 

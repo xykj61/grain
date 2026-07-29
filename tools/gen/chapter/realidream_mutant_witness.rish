@@ -37,9 +37,9 @@ assert readme.out contains "README_OK" else "realidream-mutant: README must cite
 let gratitude = run ["sh" "-c" "grep -q '20260728-220203_realidream.md' gratitude/noah-b-realidream.md && echo GRAT_OK"]
 assert gratitude.ok else "realidream-mutant: gratitude scan failed"
 assert gratitude.out contains "GRAT_OK" else "realidream-mutant: gratitude must cite living path"
-let graph = run ["sh" "-c" "grep -q '20260728-220203_realidream.md' foundations/20260629-063512_the-graph-beneath-the-surface.md && echo GRAPH_OK"]
+let graph = run ["sh" "-c" "grep -q '20260728-220203_realidream.md' foundations/20260728-221253_the-graph-beneath-the-surface.md && echo GRAPH_OK"]
 assert graph.ok else "realidream-mutant: graph sibling scan failed"
-assert graph.out contains "GRAPH_OK" else "realidream-mutant: graph sibling must cite living path"
+assert graph.out contains "GRAPH_OK" else "realidream-mutant: living graph sibling must cite living Realidream"
 
 say "GREEN: realidream-mutant — living · fossil · lean · breach pointers · Surface p29"
 say "GREEN: realidream-mutant — invent still held; no src/web home tongue."
