@@ -1,0 +1,33 @@
+# tools/gen/season/surface_season_p49_witness.rish — BrushFrame Wayland feed.
+#
+#   rishi/bin/rishi run tools/gen/season/surface_season_p49_witness.rish
+#
+# Headless feed proof (no WAYLAND_DISPLAY required). Rebuild wayland_seed first
+# if brushtest is missing — see counsel p49.
+
+say "surface-p49: Language EN — BrushFrame feeds Wayland Frame."
+say "surface-p49: Style Radiant — thin import; refuse live-five invent."
+say "surface-p49: Lens TAME — Surface Season p49."
+
+let counsel = run ["test" "-f" "counsel/20260729-134827_surface-season-p49-brushframe-wayland-feed.md"]
+assert counsel.ok else "surface-p49: p49 counsel missing"
+
+let seed_bin = "brushstroke/bin/brushstroke-wayland-seed"
+let have = run ["test" "-x" seed_bin]
+assert have.ok else "surface-p49: build wayland_seed first — see p49 counsel"
+
+let named = run ["sh" "-c" "grep -q '@import(\"brush_parse.rye\")' brushstroke/wayland_seed.rye && grep -q 'fn lines_from_brush_src' brushstroke/wayland_seed.rye && grep -q 'run_brush_feed_witness' brushstroke/wayland_seed.rye && echo NAMED_OK"]
+assert named.ok else "surface-p49: feed symbols scan failed"
+assert named.out contains "NAMED_OK" else "surface-p49: feed symbols missing"
+
+let brushtest = run ["sh" "-c" "${seed_bin} brushtest brushstroke/seed-frame.brush 2>&1"]
+assert brushtest.ok else "surface-p49: brushtest failed"
+assert brushtest.out contains "at-nib=brushstroke-seed" else "surface-p49: seed-frame nib missing"
+assert brushtest.out contains "GREEN" else "surface-p49: brushtest not GREEN"
+
+let held = run ["sh" "-c" "grep -q 'live-five still' counsel/20260729-134827_surface-season-p49-brushframe-wayland-feed.md && echo HELD_OK"]
+assert held.ok else "surface-p49: live-five held scan failed"
+assert held.out contains "HELD_OK" else "surface-p49: live-five must stay held"
+
+say "GREEN: surface-p49 — brushtest · BrushFrame→Wayland Frame · seed-frame"
+say "GREEN: surface-p49 — live-five held · Glow still quiet on Wayland C."

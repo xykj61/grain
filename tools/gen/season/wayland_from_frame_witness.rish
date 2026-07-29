@@ -7,10 +7,12 @@
 
 say "wayland-from-frame: Language EN — Frame is the glass; Wayland hosts it."
 say "wayland-from-frame: Style Radiant — prove living hop; refuse invent pad."
-say "wayland-from-frame: Lens TAME — Surface Season p48."
+say "wayland-from-frame: Lens TAME — Surface Season p49."
 
 let counsel = run ["test" "-f" "counsel/20260729-134259_surface-season-p48-wayland-from-frame.md"]
 assert counsel.ok else "wayland-from-frame: p48 counsel missing"
+let feed = run ["test" "-f" "counsel/20260729-134827_surface-season-p49-brushframe-wayland-feed.md"]
+assert feed.ok else "wayland-from-frame: p49 feed counsel missing"
 
 let display = run ["sh" "-c" "test -n \"$WAYLAND_DISPLAY\""]
 assert display.ok else "wayland-from-frame: WAYLAND_DISPLAY unset — run on GNOME Wayland"
@@ -36,6 +38,15 @@ let redraw = run ["sh" "-c" "${seed_bin} redrawtest 2>&1"]
 assert redraw.ok else "wayland-from-frame: redrawtest failed"
 assert redraw.out contains "GREEN" else "wayland-from-frame: redrawtest not GREEN"
 
+say "wayland-from-frame: BrushFrame → Wayland Frame feed (brushtest)..."
+let feed_import = run ["sh" "-c" "grep -q 'brush_parse.rye' brushstroke/wayland_seed.rye && grep -q 'lines_from_brush_src' brushstroke/wayland_seed.rye && grep -q 'brushtest' brushstroke/wayland_seed.rye && echo FEED_OK"]
+assert feed_import.ok else "wayland-from-frame: feed import scan failed"
+assert feed_import.out contains "FEED_OK" else "wayland-from-frame: BrushFrame feed not named in wayland_seed"
+let brushtest = run ["sh" "-c" "${seed_bin} brushtest brushstroke/seed-frame.brush 2>&1"]
+assert brushtest.ok else "wayland-from-frame: brushtest failed"
+assert brushtest.out contains "brush feed witness" else "wayland-from-frame: brushtest missing feed banner"
+assert brushtest.out contains "GREEN" else "wayland-from-frame: brushtest not GREEN"
+
 say "wayland-from-frame: pond-frame (metalsmoke hop)..."
 let pond = run ["rishi/bin/rishi" "run" "tools/gen/season/pond_brushstroke_frame_witness.rish"]
 assert pond.ok else "wayland-from-frame: pond-frame failed"
@@ -51,5 +62,5 @@ let held = run ["sh" "-c" "grep -q 'live-five' counsel/20260729-134259_surface-s
 assert held.ok else "wayland-from-frame: live-five held scan failed"
 assert held.out contains "HELD_OK" else "wayland-from-frame: live-five must stay held this stamp"
 
-say "GREEN: wayland-from-frame — connector · brush-grid · redrawtest · pond-frame · Surface p48"
-say "GREEN: wayland-from-frame — lane open · live-five held · Frame stays the glass."
+say "GREEN: wayland-from-frame — connector · brush-grid · redrawtest · brushtest · pond-frame · Surface p49"
+say "GREEN: wayland-from-frame — BrushFrame feeds Wayland Frame · live-five held."

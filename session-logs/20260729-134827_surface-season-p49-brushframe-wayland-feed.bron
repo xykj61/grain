@@ -1,0 +1,15 @@
+format session-log-v1
+stamp 20260729.134827
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Surface Season p49 BrushFrame Wayland feed
+prompt waymark p49 next asks none — thin BrushFrame into Wayland host
+think Import brush_parse into wayland_seed; lines_from_brush_src; brushtest headless
+think Keep brush present path for hosted; live-five held
+obs brushtest GREEN at-nib=brushstroke-seed lit=4388; redrawtest still GREEN
+file brushstroke/wayland_seed.rye BrushFrame feed · brushtest · brush
+file counsel/20260729-134827_surface-season-p49-brushframe-wayland-feed.md p49 seat
+file tools/gen/season/surface_season_p49_witness.rish headless feed witness
+recommend keep-going p50 pin hosted brush in choir or Frame tidy
