@@ -4,7 +4,9 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.212328` — [Surface Season p24 brush parse TAME tidy](20260728-212328_surface-season-p24-brush-parse-tame-tidy.bron) — invariants visible · p25 next
 - `20260728.211918` — [Surface Season p23 brush parser begun](20260728-211918_surface-season-p23-brush-parser-begun.bron) — pins only · p24 next
+
 - `20260728.211640` — [Surface Season p22 sec mand-ring-count](20260728-211640_surface-season-p22-sec-mand-ring-count.bron) — Mand three rings · p23 next
 - `20260728.211321` — [Surface Season p21 sec grant-family-count](20260728-211321_surface-season-p21-sec-grant-family-count.bron) — first sec furniture · p22 next
 - `20260728.210859` — [Surface Season p20 sur frame-seed-line-count](20260728-210859_surface-season-p20-sur-frame-seed-line-count.bron) — seed Frame three lines · p21 next

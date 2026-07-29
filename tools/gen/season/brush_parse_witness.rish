@@ -1,13 +1,14 @@
-# tools/gen/season/brush_parse_witness.rish — Surface p23 · .brush parser begun
+# tools/gen/season/brush_parse_witness.rish — Surface p23 begin · p24 TAME tidy
 #
 #   rishi/bin/rishi run tools/gen/season/brush_parse_witness.rish
 #
-# Builds brush_parse · selftest GREEN · fixture path GREEN.
+# Builds brush_parse · selftest GREEN · fixture path GREEN · TAME invariant density.
 # Does not paint · does not open Wayland · does not lower to Skate.
 
 say "brush-parse: Language EN — .brush pins read as Frame at a nib."
 say "brush-parse: Style Radiant — prove parse · refuse missing pins."
-say "brush-parse: Lens TAME — Surface Season p23."
+say "brush-parse: Lens TAME — Surface Season p24."
+
 
 let zig = "vendor/zig-toolchain/zig"
 let mkdir = run ["mkdir" "-p" "brushstroke/bin"]
@@ -33,10 +34,28 @@ assert path.out contains "GREEN: brush-parse" else "brush-parse: path run not GR
 
 let seat = run ["test" "-f" "counsel/20260728-211918_surface-season-p23-brush-parser-begun.md"]
 assert seat.ok else "brush-parse: p23 counsel seat missing"
+let seat24 = run ["test" "-f" "counsel/20260728-212328_surface-season-p24-brush-parse-tame-tidy.md"]
+assert seat24.ok else "brush-parse: p24 counsel seat missing"
 
 let begun = run ["sh" "-c" "grep -q 'Parser begun' brushstroke/seed-frame.brush && echo BEGUN"]
 assert begun.ok else "brush-parse: fixture begun note scan failed"
 assert begun.out contains "BEGUN" else "brush-parse: fixture must say Parser begun"
 
-say "GREEN: brush-parse — build · selftest · seed-frame · Surface p23"
+say "brush-parse: TAME density..."
+# Living floor — p24 tidy seats ≥20 invariant markers; raise only by accretion.
+let inv = run ["sh" "tools/gen/season/brush_parse_tame_density.sh"]
+assert inv.ok else "brush-parse: need ≥20 invariant markers (TAME visible)"
+assert inv.out contains "INV_OK" else "brush-parse: invariant density marker missing"
+let triad = run ["sh" "-c" "head -n 30 brushstroke/brush_parse.rye | grep -q 'const assert = std.debug.assert' && head -n 30 brushstroke/brush_parse.rye | grep -q 'const print = std.debug.print' && echo TRIAD"]
+assert triad.ok else "brush-parse: opening triad scan failed"
+assert triad.out contains "TRIAD" else "brush-parse: opening triad missing"
+let ban = run ["sh" "-c" "if grep -E '\\) == error\\.|\\) != error\\.|std\\.debug\\.assert\\(' brushstroke/brush_parse.rye >/dev/null; then echo HIT; else echo CLEAN; fi"]
+assert ban.ok else "brush-parse: ban scan failed"
+assert ban.out contains "CLEAN" else "brush-parse: TAME ban pattern present"
+let widths = run ["sh" "-c" "grep -q 'slice_len_u32' brushstroke/brush_parse.rye && grep -q 'max_brush_bytes' brushstroke/brush_parse.rye && grep -q 'max_frame_lines' brushstroke/brush_parse.rye && echo WIDTH"]
+assert widths.ok else "brush-parse: width pins scan failed"
+assert widths.out contains "WIDTH" else "brush-parse: named bounds / u32 seam helper missing"
+
+say "GREEN: brush-parse — build · selftest · seed-frame · TAME tidy · Surface p24"
 say "GREEN: brush-parse — .brush parser begun; paint and Wayland still later."
+
