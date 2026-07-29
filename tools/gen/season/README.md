@@ -21,5 +21,6 @@
 | `brush_shape_witness.rish` | Surface p12 · thin `.brush` fixture pins |
 | `pond_gui_spine_witness.rish` | Surface p16 · Pond GUI constructive spine |
 | `graph_redraw_spine_witness.rish` | Surface p17 · graph redraw constructive spine |
+| `remember_pin_history_tidy_witness.rish` | Surface history tidy · zero pin follow-ups |
 
 Old paths under `tools/*.rish` remain as accrete shims. Prefer the homes here for new edits.
