@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.200431` — [Surface Season p9 vocab vegan-dogfood easter egg](20260728-200431_surface-season-p9-vocab-vegan-dogfood-easter-egg.bron) — slate · routine term awaits
 - `20260728.200159` — [Surface Season p8 one-graph DAG redraw paper](20260728-200159_surface-season-p8-one-graph-dag-redraw-paper.bron) — Weave edges · Frame fold · p9 next
 - `20260728.195942` — [Surface Season p7 study choir residual](20260728-195942_surface-season-p7-study-choir-residual.bron) — p2–p6 fold · p8 DAG next
 - `20260728.195629` — [Surface Season p6 Pond Brushstroke frame](20260728-195629_surface-season-p6-pond-brushstroke-frame.bron) — redrawtest+metalsmoke · p7 next
