@@ -1,0 +1,16 @@
+::  name       brush parse error count
+::  shape      errors - int (@u32)
+::  invariant  .brush refuse suite names ten ParseError paths
+::  example    10
+::  readers    Brushstroke · Surface · refuse suite · .brush lower
+::  nib        surface-p42-v0
+::
+::  Surface Season p42 — eighth pedestal in src/sur (structure museum).
+::  Names the ParseError set in brushstroke/brush_parse.rye:
+::  MissingAtNib · MissingPresent · PresentNotFrame · MissingMaxLines ·
+::  MaxLinesOutOfBound · MissingLines · EmptyLine · TooManyLines ·
+::  BadMaxLines · SourceTooLarge. Does not invent a Wayland window ·
+::  skate/ graduation · or Realidream invent.
++$  brush-parse-error-count-shape
+  $:  errors=@u32
+  ==

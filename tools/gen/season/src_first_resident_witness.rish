@@ -7,7 +7,7 @@
 
 say "first-resident: Language EN — Glow desks that live in src/."
 say "first-resident: Style Radiant — prove the desks; refuse shred."
-say "first-resident: Lens TAME — Surface Season p41."
+say "first-resident: Lens TAME — Surface Season p42."
 
 let zig = "vendor/zig-toolchain/zig"
 
@@ -119,6 +119,23 @@ let pingate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" pindes
 assert pingate.ok else "first-resident: sur brush-max-pin-bytes shape lower/build/run failed"
 assert pingate.out contains "EXIT:0" else "first-resident: sur brush-max-pin-bytes shape did not exit 0"
 
+say "first-resident: sur brush-parse-error-count pedestal..."
+let errdesk = "src/sur/shape-brush-parse-error-count.glow"
+let errplacard = run ["sh" "-c" "head -n 7 src/sur/shape-brush-parse-error-count.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+assert errplacard.ok else "first-resident: sur brush-parse-error-count placard scan failed"
+let errcount = trim errplacard.out
+assert errcount == "6" else "first-resident: sur brush-parse-error-count placard missing six lines"
+let errnotes = run ["sh" "-c" "grep -q 'example    10' src/sur/shape-brush-parse-error-count.glow && grep -q 'ParseError' src/sur/shape-brush-parse-error-count.glow && grep -q 'SourceTooLarge' src/sur/shape-brush-parse-error-count.glow && grep -q 'MissingAtNib' src/sur/shape-brush-parse-error-count.glow && echo ERR_OK"]
+assert errnotes.ok else "first-resident: sur brush-parse-error-count notes scan failed"
+assert errnotes.out contains "ERR_OK" else "first-resident: sur brush parse error count=10 not named"
+let errrye = run ["sh" "-c" "grep -q 'MissingAtNib' brushstroke/brush_parse.rye && grep -q 'SourceTooLarge' brushstroke/brush_parse.rye && sed -n '/^pub const ParseError = error{/,/^};/p' brushstroke/brush_parse.rye | grep -cE '^[ ]+[A-Z][A-Za-z]+'"]
+assert errrye.ok else "first-resident: brush_parse ParseError scan failed"
+let errrye_n = trim errrye.out
+assert errrye_n == "10" else "first-resident: brush_parse ParseError count is not ten"
+let errgate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" errdesk]
+assert errgate.ok else "first-resident: sur brush-parse-error-count shape lower/build/run failed"
+assert errgate.out contains "EXIT:0" else "first-resident: sur brush-parse-error-count shape did not exit 0"
+
 say "first-resident: til tilak-root-count..."
 let tdesk = "src/til/tilak-root-count.glow"
 let tplacard = run ["sh" "-c" "head -n 7 src/til/tilak-root-count.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
@@ -197,7 +214,7 @@ let rgate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" rdesk]
 assert rgate.ok else "first-resident: sec mand shape lower/build/run failed"
 assert rgate.out contains "EXIT:0" else "first-resident: sec mand shape did not exit 0"
 
-say "GREEN: first-resident — lib · sur×7 · til×2 · app×2 · sec×2 · Surface p41"
+say "GREEN: first-resident — lib · sur×8 · til×2 · app×2 · sec×2 · Surface p42"
 say "GREEN: first-resident — Glow userland desks live at home first."
 
 
