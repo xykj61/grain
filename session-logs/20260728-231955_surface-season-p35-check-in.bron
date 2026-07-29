@@ -1,0 +1,15 @@
+format session-log-v1
+stamp 20260728.231955
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Surface Season p35 check-in
+prompt check in
+think report state from REMEMBER · SHRED_PREP wafer closure · open doors · no new edit
+obs p34 transitive crawl seated · Class H ×4 · five dated candidates wait seat · shred RED · metal pedestals available
+file work-in-progress/REMEMBER.md finishing edge p34/p35
+file work-in-progress/SHRED_PREP.md dated candidates table
+recommend check-in named dated batch thin or kg pedestals — both available
+product_nib Surface-Season-p35-check-in
+git_nib 6bbd9b5477

@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.231955` — [Surface Season p35 check-in](20260728-231955_surface-season-p35-check-in.bron) — state report · dated batch or pedestals
 - `20260728.225638` — [Surface Season p34 transitive writing crawl](20260728-225638_surface-season-p34-transitive-writing-crawl.bron) — wafer 9-node closure · Ford-shaped habit
 - `20260728.225239` — [Surface Season p33 wafer thin](20260728-225239_surface-season-p33-wafer-thin.bron) — living wafer · Class H four · deps held
 - `20260728.224716` — [Surface Season p32 living mutant shred prep](20260728-224716_surface-season-p32-living-mutant-shred-prep.bron) — Class H list · habit · wafer held
