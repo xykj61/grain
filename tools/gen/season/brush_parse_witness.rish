@@ -1,4 +1,4 @@
-# tools/gen/season/brush_parse_witness.rish — Surface p23 begin · p24 TAME tidy
+# tools/gen/season/brush_parse_witness.rish — p23 begin · p24 TAME · p25 refuse
 #
 #   rishi/bin/rishi run tools/gen/season/brush_parse_witness.rish
 #
@@ -7,7 +7,8 @@
 
 say "brush-parse: Language EN — .brush pins read as Frame at a nib."
 say "brush-parse: Style Radiant — prove parse · refuse missing pins."
-say "brush-parse: Lens TAME — Surface Season p24."
+say "brush-parse: Lens TAME — Surface Season p25."
+
 
 
 let zig = "vendor/zig-toolchain/zig"
@@ -22,6 +23,8 @@ say "brush-parse: selftest..."
 let self = run ["brushstroke/bin/brush-parse" "selftest"]
 assert self.ok else "brush-parse: selftest failed"
 assert self.out contains "GREEN: brush-parse selftest" else "brush-parse: selftest not GREEN"
+assert self.out contains "refuse-suite" else "brush-parse: refuse-suite banner missing"
+
 
 say "brush-parse: seed-frame.brush path..."
 # print pins on stderr; GREEN on stdout — merge for one assert stream
@@ -36,6 +39,13 @@ let seat = run ["test" "-f" "counsel/20260728-211918_surface-season-p23-brush-pa
 assert seat.ok else "brush-parse: p23 counsel seat missing"
 let seat24 = run ["test" "-f" "counsel/20260728-212328_surface-season-p24-brush-parse-tame-tidy.md"]
 assert seat24.ok else "brush-parse: p24 counsel seat missing"
+let seat25 = run ["test" "-f" "counsel/20260728-212855_surface-season-p25-brush-refuse-suite.md"]
+assert seat25.ok else "brush-parse: p25 counsel seat missing"
+
+say "brush-parse: refuse helpers..."
+let helpers = run ["sh" "-c" "grep -q 'fn assert_parse_error' brushstroke/brush_parse.rye && grep -q 'fn prove_refuse_pins' brushstroke/brush_parse.rye && grep -q 'fn prove_refuse_bounds' brushstroke/brush_parse.rye && grep -q 'error.MissingPresent' brushstroke/brush_parse.rye && grep -q 'error.TooManyLines' brushstroke/brush_parse.rye && grep -q 'error.EmptyLine' brushstroke/brush_parse.rye && echo REFUSE_OK"]
+assert helpers.ok else "brush-parse: refuse helper scan failed"
+assert helpers.out contains "REFUSE_OK" else "brush-parse: refuse suite helpers / errors not named"
 
 let begun = run ["sh" "-c" "grep -q 'Parser begun' brushstroke/seed-frame.brush && echo BEGUN"]
 assert begun.ok else "brush-parse: fixture begun note scan failed"
@@ -56,6 +66,6 @@ let widths = run ["sh" "-c" "grep -q 'slice_len_u32' brushstroke/brush_parse.rye
 assert widths.ok else "brush-parse: width pins scan failed"
 assert widths.out contains "WIDTH" else "brush-parse: named bounds / u32 seam helper missing"
 
-say "GREEN: brush-parse — build · selftest · seed-frame · TAME tidy · Surface p24"
+say "GREEN: brush-parse — build · selftest · refuse-suite · TAME · Surface p25"
 say "GREEN: brush-parse — .brush parser begun; paint and Wayland still later."
 
