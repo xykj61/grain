@@ -1,0 +1,34 @@
+# tools/gen/season/src_first_resident_witness.rish — Surface · first residents in src/lib
+#
+#   rishi/bin/rishi run tools/gen/season/src_first_resident_witness.rish
+#
+# Routine name: first resident. Easter-egg alias: src_vegan_dogfood_witness.rish
+
+say "first-resident: Language EN — Glow desks that live in src/."
+say "first-resident: Style Radiant — prove the desks; refuse shred."
+say "first-resident: Lens TAME — Surface Season p9."
+
+let zig = "vendor/zig-toolchain/zig"
+
+say "first-resident: double..."
+let ddesk = "src/lib/gate-surface-double-u32.glow"
+let dgate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" ddesk "21"]
+assert dgate.ok else "first-resident: double lower/build/run failed"
+assert dgate.out contains "EXIT:0" else "first-resident: double did not exit 0"
+let danswer = run ["./glow/bin/gate-surface-double-u32" "21"]
+assert danswer.ok else "first-resident: double binary refused sample"
+let dbad = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" ddesk "21" "9"]
+assert dbad.out contains "FAIL" else "first-resident: double should refuse second sample"
+
+say "first-resident: inc..."
+let idesk = "src/lib/gate-surface-inc-u32.glow"
+let igate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" idesk "21"]
+assert igate.ok else "first-resident: inc lower/build/run failed"
+assert igate.out contains "EXIT:0" else "first-resident: inc did not exit 0"
+let ianswer = run ["./glow/bin/gate-surface-inc-u32" "21"]
+assert ianswer.ok else "first-resident: inc binary refused sample"
+let ibad = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" idesk "21" "9"]
+assert ibad.out contains "FAIL" else "first-resident: inc should refuse second sample"
+
+say "GREEN: first-resident — double · inc in src/lib · refuse excess · Surface p9"
+say "GREEN: first-resident — Glow userland desks live at home first."

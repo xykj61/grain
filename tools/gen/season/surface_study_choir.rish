@@ -14,10 +14,10 @@ let hyg = run ["rishi/bin/rishi" "run" "tools/gen/season/glow_hygiene_pin.rish"]
 assert hyg.ok else "surface-choir: glow hygiene failed"
 assert hyg.out contains "GREEN: glow-hygiene" else "surface-choir: glow hygiene not GREEN"
 
-say "surface-choir: src vegan-dogfood (p3)..."
-let dog = run ["rishi/bin/rishi" "run" "tools/gen/season/src_vegan_dogfood_witness.rish"]
-assert dog.ok else "surface-choir: vegan-dogfood failed"
-assert dog.out contains "GREEN: src-vegan-dogfood" else "surface-choir: vegan-dogfood not GREEN"
+say "surface-choir: src first resident (p3/p9)..."
+let dog = run ["rishi/bin/rishi" "run" "tools/gen/season/src_first_resident_witness.rish"]
+assert dog.ok else "surface-choir: first-resident failed"
+assert dog.out contains "GREEN: first-resident" else "surface-choir: first-resident not GREEN"
 
 say "surface-choir: wayland study pins (p4)..."
 let wl = run ["rishi/bin/rishi" "run" "tools/gen/season/wayland_study_ledger_witness.rish"]
@@ -35,5 +35,5 @@ assert frame.ok else "surface-choir: pond-frame failed"
 assert frame.out contains "GREEN: pond-frame" else "surface-choir: pond-frame not GREEN"
 
 say "surface-choir: refuse live-five claim · shred · deploy · O3"
-say "GREEN: surface-choir — hygiene · vegan-dogfood · wayland · connector · pond-frame · Surface p7"
-say "GREEN: surface-choir — study block residual clear; p8 DAG paper next."
+say "GREEN: surface-choir — hygiene · first-resident · wayland · connector · pond-frame · Surface p7"
+say "GREEN: surface-choir — study block residual clear; first resident routine."

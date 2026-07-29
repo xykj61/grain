@@ -15,7 +15,9 @@ let seed = run ["test" "-f" "brushstroke/wayland_seed.rye"]
 assert seed.ok else "glow-connector: wayland_seed.rye missing"
 
 let desk = run ["test" "-f" "src/lib/gate-surface-double-u32.glow"]
-assert desk.ok else "glow-connector: vegan-dogfood desk missing"
+assert desk.ok else "glow-connector: first-resident double desk missing"
+let desk2 = run ["test" "-f" "src/lib/gate-surface-inc-u32.glow"]
+assert desk2.ok else "glow-connector: first-resident inc desk missing"
 
 let ledger = run ["test" "-f" "counsel/20260728-195228_surface-season-p4-river-zig-wayland-study-ledger.md"]
 assert ledger.ok else "glow-connector: p4 Wayland ledger missing"
@@ -23,5 +25,5 @@ assert ledger.ok else "glow-connector: p4 Wayland ledger missing"
 let hygiene = run ["test" "-f" "tools/gen/season/glow_hygiene_pin.rish"]
 assert hygiene.ok else "glow-connector: glow hygiene pin missing"
 
-say "GREEN: glow-connector — sketch · seed · vegan-dogfood · ledger · hygiene pins present"
+say "GREEN: glow-connector — sketch · seed · first-resident · ledger · hygiene pins present"
 say "GREEN: glow-connector — Glow never speaks Wayland; Frame is the glass contract."

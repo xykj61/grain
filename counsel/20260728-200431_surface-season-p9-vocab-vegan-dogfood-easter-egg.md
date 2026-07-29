@@ -63,7 +63,7 @@ No mass rename · no p9 constructive desk · no O3 · no shred.
 
 ## Next
 
-His word picks the **routine** term (or holds with **first resident** / **src-first** as soft lean). Then kg a constructive p9 under that name, or check-in again.
+**Seated** `20260728.200807` — routine term **first resident** · constructive lap in [`20260728-200807_surface-season-p9-first-resident-seated.md`](20260728-200807_surface-season-p9-first-resident-seated.md).
 
 ---
 
