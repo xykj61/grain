@@ -1,7 +1,7 @@
 # Surface Season p54 — Live-Five Open (Type · `:quit`)
 
 **Stamp:** `20260729.140917` · **Voice:** Quin · **Season:** Surface · **Scope:** sept · **Round:** p54  
-**Prior:** [p53 check-in](20260729-140251_surface-season-p53-check-in-next-lean.md)  
+**Prior:** [p53 check-in](20260729-140251_surface-season-p53-check-in-next-lean.md) · [p54 waits-word hold](20260729-140523_surface-season-p54-waits-word.md)  
 **Ask:** waymark asks: **live-five**  
 **Status:** **LANDED** — type · `:quit` metal · idle · ceiling still **hand**
 

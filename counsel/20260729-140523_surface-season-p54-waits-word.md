@@ -1,9 +1,10 @@
 # Surface Season p54 — Waits Word
 
-**Stamp:** `20260729.140523` · **Voice:** Quin · **Season:** Surface · **Scope:** sept · **Round:** p54  
+**Stamp:** `20260729.140523` · **Voice:** Quin · **Season:** Surface · **Scope:** sept · **Round:** p54 (hold pass)  
 **Prior:** [p53 check-in](20260729-140251_surface-season-p53-check-in-next-lean.md)  
 **Ask:** waymark asks: **none** (second pass after p53 recommend)  
-**Status:** **HOLD** — no invent · no re-press · prior p53 ranks stand
+**Status:** **HOLD** — no invent · no re-press · prior p53 ranks stand  
+**Erratum:** Living p54 metal is [type · `:quit`](20260729-140917_surface-season-p54-live-five-type-quit.md) (`20260729.140917`). This hold pass shares the p54 label earlier the same hour.
 
 ## State
 
