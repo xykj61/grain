@@ -4,7 +4,9 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.213917` — [Skate Realidream lean seated](20260728-213917_skate-realidream-lean-seated.bron) — lexicon rewritten · p27 next
 - `20260728.213740` — [Skate Pond GUI target · Realidream brand](20260728-213740_skate-pond-gui-target-and-realidream-brand.bron) — proposed lean · seat yes held
+
 - `20260728.213205` — [Surface Season p26 brush Frame lower](20260728-213205_surface-season-p26-brush-frame-lower.bron) — BrushFrame from .brush · p27 next
 
 - `20260728.212855` — [Surface Season p25 brush refuse suite](20260728-212855_surface-season-p25-brush-refuse-suite.bron) — every ParseError named · p26 next

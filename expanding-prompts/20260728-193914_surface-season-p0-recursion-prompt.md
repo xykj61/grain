@@ -51,6 +51,8 @@ SEPT SCOPE (OPEN — walk here):
     manifest-field-count) · src/app (pool-agent-slot · tube0-manifest-field-count) ·
     src/sec (grant-family-count · mand-ring-count).
     .brush LIVE: seed-frame.brush · brush_parse.rye (lower_brush → BrushFrame).
+    Skate = GUI target (Brushstroke aspect; Pond targets it) · Realidream =
+      branded Pond/Pool face over Skate + one graph (seated 20260728.213917).
     %tile HELD. src/web REFUSED.
   Horizon PARK: Genode · seL4 · SixOS · s6 · Nix (proven-seat parallel).
   Geode PREP parallel (d0) — does not steal p-rounds.
