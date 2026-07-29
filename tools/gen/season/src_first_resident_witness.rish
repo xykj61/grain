@@ -7,7 +7,7 @@
 
 say "first-resident: Language EN — Glow desks that live in src/."
 say "first-resident: Style Radiant — prove the desks; refuse shred."
-say "first-resident: Lens TAME — Surface Season p21."
+say "first-resident: Lens TAME — Surface Season p22."
 
 let zig = "vendor/zig-toolchain/zig"
 
@@ -132,7 +132,21 @@ let cgate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" cdesk]
 assert cgate.ok else "first-resident: sec shape lower/build/run failed"
 assert cgate.out contains "EXIT:0" else "first-resident: sec shape did not exit 0"
 
-say "GREEN: first-resident — lib · sur×3 · til×2 · app×2 · sec · Surface p21"
+say "first-resident: sec mand-ring-count..."
+let rdesk = "src/sec/shape-mand-ring-count.glow"
+let rplacard = run ["sh" "-c" "head -n 7 src/sec/shape-mand-ring-count.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+assert rplacard.ok else "first-resident: sec mand placard scan failed"
+let rcount = trim rplacard.out
+assert rcount == "6" else "first-resident: sec mand placard missing six lines"
+let rrings = run ["sh" "-c" "grep -q 'example    3' src/sec/shape-mand-ring-count.glow && grep -q 'ring-1' src/sec/shape-mand-ring-count.glow && grep -q 'ring-2' src/sec/shape-mand-ring-count.glow && grep -q 'ring-3' src/sec/shape-mand-ring-count.glow && grep -q 'Mand' src/sec/shape-mand-ring-count.glow && echo MAND_OK"]
+assert rrings.ok else "first-resident: sec mand rings scan failed"
+assert rrings.out contains "MAND_OK" else "first-resident: sec Mand three rings not named"
+let rgate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" rdesk]
+assert rgate.ok else "first-resident: sec mand shape lower/build/run failed"
+assert rgate.out contains "EXIT:0" else "first-resident: sec mand shape did not exit 0"
+
+say "GREEN: first-resident — lib · sur×3 · til×2 · app×2 · sec×2 · Surface p22"
 say "GREEN: first-resident — Glow userland desks live at home first."
+
 
 

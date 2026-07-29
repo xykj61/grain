@@ -1,7 +1,7 @@
 # src — the Glow Userland
 
 **Language:** EN
-**Last updated:** 2026-07-28 (Surface p21 — `sec/` first resident seated; `web/` refused)
+**Last updated:** 2026-07-28 (Surface p22 — `sec/` second pedestal; `web/` refused)
 **Style:** Radiant (see [`../context/RADIANT_STYLE.md`](../context/RADIANT_STYLE.md))
 **Status:** Living — the accreted home for code *written in Glow*; the Glow implementation itself (tokenizer, runes, lowerers, in Rye) keeps its home at [`../glow/`](../glow/README.md)
 
@@ -14,7 +14,7 @@ Six rooms, one language. Everything beneath this door is Glow — the userland t
 - [`app/`](app/README.md) — **Pool agents**, the applications.
 - [`gen/`](gen/README.md) — **generators**, the runnable demonstrations (desks arrive here from `glow/gen/` when O3 speaks).
 - [`lib/`](lib/README.md) — **libraries**, the shared gates.
-- [`sec/`](sec/README.md) — **security** room (Surface Season p0 · first resident p21) — grant-family-count seated.
+- [`sec/`](sec/README.md) — **security** room (Surface Season p0 · p21–p22) — grant-family-count · mand-ring-count.
 
 **Refused:** `src/web` — will not open. Surface language lives under `brushstroke/` and Glow/Bron/TAME/Radiant — never JS/HTML/CSS/JSON as home tongue.
 
