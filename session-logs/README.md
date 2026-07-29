@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260729.000258` — [Kiln Chapter o3 inference plan](20260729-000258_oven-season-o3-inference-plan.bron) — residual queue empty
 - `20260728.235951` — [Kiln Chapter o2 residual tidy](20260728-235951_oven-season-o2-residual-tidy.bron) — STEWARDS · homes · yonder links
 - `20260728.235520` — [Kiln Chapter o1 path cut](20260728-235520_oven-season-o1-path-cut.bron) — kiln/ LIVE · anvil/ gone
 - `20260728.235338` — [Kiln waymark o1 ready](20260728-235338_oven-waymark-o1-ready.bron) — pier matches · cut waits
