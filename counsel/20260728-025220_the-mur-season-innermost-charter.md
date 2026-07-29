@@ -3,13 +3,15 @@
 **Language:** EN  
 **Stamp:** `20260728.025220`  
 **Voice:** Quin · nested frame Trey · aesthetics companion **Trya**  
-**Kind:** season charter · Keaton's word · **innermost** scope · rounds **u0–u127** (one hundred twenty-eight)  
+**Kind:** season charter · Keaton's word · nest **three** scope · rounds **u0–u127** (one hundred twenty-eight)  
+**Filename note:** dated stamp keeps “innermost”; living depth word is **three** (`20260729.125911`)  
 **Ground:** origin/main `9be4f29f27` (pre-send)  
 **Rename spine (approved overwrite):** **Mala / MALA / `%mala` → Murr / MUR / `%murr`** — Radiant · TAME · living-tree massive rename across the season  
 **Honor dedication:** **Kyler Murray** — Minnesota Vikings quarterback (signed 2026; camp competition with J.J. McCarthy as of this stamp's web ground)  
 **Currency lean:** **MUR** as **L1** · unify with **WOV** concept · roadmap **last** retires WOV entirely in favor of MUR  
-**Status:** **PAUSED** · u0–u91 complete · **u92** next · nest-6 Generator Chapter OPEN `20260728.183510`  
-Radiant pass `20260728.183510` — innermost PAUSED u91/u92 · sext Generator Chapter opens (s0–s63) · handback lean return_mur_u92  
+**Status:** **PAUSED** · u0–u91 complete · **u92** next · deeper nests (Generator · Surface · Oven · Nona) walked above  
+Radiant pass `20260729.130911` — living depth word **three** (filename may keep innermost) · Nona n2 residual  
+Radiant pass `20260728.183510` — nest-3 PAUSED u91/u92 · sext Generator Chapter opens (s0–s63) · handback lean return_mur_u92  
 Radiant pass `20260728.181016` — u91 shred readiness · Class A content-ready · cut path not · shred RED  
 Radiant pass `20260728.180806` — u90 check-in · fascia 86 · shred RED · queue empty  
 Radiant pass `20260728.180509` — u89 Class-A paper lean · fascia 86 · shred RED  
@@ -91,17 +93,17 @@ Radiant pass `20260728.025634` — innermost paused at u0 · core Gren opened ·
 
 ---
 
-## Three scopes kept (nesting)
+## Scopes kept (nesting · living labels)
 
 | Scope | Chapter | Bookmark | Advance? |
 |-------|--------|----------|----------|
 | **outer** | Constellation | m8 complete / **m9** next | **PAUSED** — do not advance m-rounds |
-| **inner** | Inner Scope | i6 complete / **i7** next · fascia machinery paused | **PAUSED** — do not advance i-rounds while innermost walks |
-| **innermost** | **MUR Chapter** | **u0–u51** complete · **u52** next | **OPEN** — walk here |
-| **core** | Gren Chapter | lean-16 CLOSED · handed back | **CLOSED** |
+| **inner** | Inner Scope | i6 complete / **i7** next · fascia machinery paused | **PAUSED** — do not advance i-rounds while nest **three** walks |
+| **three** | **MUR Chapter** | **u91** complete / **u92** next | **PAUSED** — resume here on Generator handback |
+| **quad** | Gren Chapter | lean-16 CLOSED · handed back | **CLOSED** |
 | **quint** | Keeh Chapter | lean-16 CLOSED · handed back | **CLOSED** |
 
-When innermost hands back: resume **inner** at i7 (fascia shred-with-parity draft) unless he seats otherwise; outer still waits at m9.
+When nest **three** hands back: resume **inner** at i7 (fascia shred-with-parity draft) unless he seats otherwise; outer still waits at m9.
 
 ## What this season is for
 
@@ -115,12 +117,13 @@ When innermost hands back: resume **inner** at i7 (fascia shred-with-parity draf
 
 | Word | Standing |
 |------|----------|
-| **innermost** | Third nest inside paused **inner**, inside paused **outer** |
+| **three** | Nest 3 inside paused **inner**, inside paused **outer** (was living-word **innermost**) |
+| **innermost** | Retired living depth word `20260729.125911` — dated prose may keep it |
 | **MUR** | L1 currency / module lean (was MALA) |
 | **Murr (fund)** | Aries · fire · seat 1 · `%murr` · murr.fund prep (was Mala / `%mala` / mala.fund) |
 | **Mala (fund) (retired name)** | Rename-forward to Murr |
 | **MALA (retired name)** | Rename-forward to MUR |
-| **The MUR Chapter** | Innermost · u0–u127 · name lean (`season_name=` still held as blank unless he fills) |
+| **The MUR Chapter** | Nest **three** · u0–u127 · name lean (`season_name=` still held as blank unless he fills) |
 
 ## Round map (lean · expandable)
 

@@ -5,10 +5,11 @@
 **Voice:** Quin · nested frame Trey  
 **Kind:** season charter · Keaton's word · **oct** scope · rounds **o0–o63** (sixty-four · N = 2⁶)  
 **Working lean:** **Kiln Chapter** — forge path `anvil/` → `kiln/` · corpus / Skate views / peal · Kiln faculty already named (final `season_name=` held)  
-**Informal tag:** nest-8 · not innermost (MUR keeps u91/u92)  
+**Informal tag:** nest-8 · MUR is nest **three** (not living “innermost”)  
 **Ground:** origin/main `cb217be6ce` (pre-send) · path survey [p38](20260728-233638_surface-season-p38-anvil-path-breach-survey.md) · Kiln name [p36](20260728-232511_surface-season-p36-kiln-seated.md)  
-**Within:** paused **sept** Surface (p38 complete / p39 next) · paused Generator · paused MUR · paused Inner · paused Constellation  
+**Within:** paused **sept** Surface · paused Generator · paused MUR (**three**) · paused Inner · paused Constellation  
 **Status:** **PAUSED** · o0–o3 complete · bookmark **o3 complete / o4 next** · handed back `return_surface_p39` `20260729.000500`  
+Radiant pass `20260729.130911` — living depth words three · quad (Nona n2 residual)  
 Radiant pass `20260729.000500` — handback Surface p39 · Kiln PAUSED  
 Radiant pass `20260729.000258` — o3 inference plan retarget · residual queue empty  
 Radiant pass `20260728.235951` — o2 residual tidy STEWARDS · homes · yonder links  
@@ -19,18 +20,19 @@ Radiant pass `20260728.234419` — oct opens · Surface pause · Keaton seat app
 
 ---
 
-## Eight scopes kept
+## Nine scopes kept
 
 | Scope | Chapter | Bookmark | Advance? |
 | --- | --- | --- | --- |
 | **outer** | Constellation | m8 / m9 next | **PAUSED** |
 | **inner** | Inner Scope | i6 / i7 next · fascia | **PAUSED** |
-| **innermost** | MUR Chapter | **u91 complete / u92 next** | **PAUSED** |
-| **core** | Gren Chapter | lean-16 CLOSED | **CLOSED** |
+| **three** | MUR Chapter | **u91 complete / u92 next** | **PAUSED** |
+| **quad** | Gren Chapter | lean-16 CLOSED | **CLOSED** |
 | **quint** | Keeh Chapter | lean-16 CLOSED | **CLOSED** |
 | **sext** | Generator Chapter | **s8 complete / s9 next** | **PAUSED** |
-| **sept** | Surface Chapter | **p39** complete / **p40** next | **OPEN** (steals the walk) |
+| **sept** | Surface Chapter | **p40** complete / **p41** next | **PAUSED** |
 | **oct** | **Kiln Chapter** | **o3** complete / **o4** next | **PAUSED** |
+| **nona** | Nona Chapter | n2 / n3 next | **OPEN** (steals the walk) |
 
 Handback lean (when Kiln resumes): park until named · prior lean `return_surface_p39` **seated**.  
 Surface handback (while sept walks): `return_generator_s9`.  

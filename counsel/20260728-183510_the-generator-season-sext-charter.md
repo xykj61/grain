@@ -5,10 +5,11 @@
 **Voice:** Quin · nested frame Trey  
 **Kind:** season charter · Keaton's word · **sext** scope · rounds **s0–s63** (sixty-four · N = 2⁶)  
 **Working lean:** **Generator Chapter** — Glow · Glow runes · Rishi · Dojo *spirit* · generators/`gen/` (final `season_name=` held)  
-**Informal tag:** innermost^6+ · nest-6  
+**Informal tag:** nest-6 · walks inside paused nest **three** (MUR)  
 **Ground:** origin/main `418af54e73` (pre-send)  
-**Within:** paused **innermost** MUR (u91 complete / u92 next) · inside paused Inner Scope · inside paused Constellation  
-**Status:** **PAUSED** · s0–s8 complete · bookmark **s8 complete / s9 next** · paused for Surface Chapter (sept) `20260728.193914` · Surface now paused for Kiln (oct) `20260728.234419`  
+**Within:** paused **three** MUR (u91 complete / u92 next) · inside paused Inner Scope · inside paused Constellation  
+**Status:** **PAUSED** · s0–s8 complete · bookmark **s8 complete / s9 next** · paused for Surface Chapter (sept) `20260728.193914` · Surface paused · Nona OPEN `20260729.125911`  
+Radiant pass `20260729.130911` — living depth words three · quad (Nona n2 residual)  
 Radiant pass `20260728.234419` — Surface pause · Kiln oct opens · Generator still held  
 Radiant pass `20260728.193914` — Shape B seated · Generator pause · Surface sept opens  
 Radiant pass `20260728.193058` — s8 Pond GUI season evaluation · like aim · push back nested-128+OS  
@@ -25,18 +26,19 @@ Radiant pass `20260728.183510` — sext opens · MUR paused · Glow/Rishi/Dojo r
 
 ---
 
-## Six scopes kept
+## Nine scopes kept
 
 | Scope | Chapter | Bookmark | Advance? |
 | --- | --- | --- | --- |
 | **outer** | Constellation | m8 / m9 next | **PAUSED** |
 | **inner** | Inner Scope | i6 / i7 next · fascia | **PAUSED** |
-| **innermost** | MUR Chapter | **u91 complete / u92 next** | **PAUSED** |
-| **core** | Gren Chapter | lean-16 CLOSED · handed back | **CLOSED** |
+| **three** | MUR Chapter | **u91 complete / u92 next** | **PAUSED** |
+| **quad** | Gren Chapter | lean-16 CLOSED · handed back | **CLOSED** |
 | **quint** | Keeh Chapter | lean-16 CLOSED · handed back | **CLOSED** |
 | **sext** | **Generator Chapter** | **s8** complete / **s9** next | **PAUSED** |
-| **sept** | Surface Chapter | p39 / p40 next | **OPEN** |
+| **sept** | Surface Chapter | p40 / p41 next | **PAUSED** |
 | **oct** | Kiln Chapter | o3 / o4 next | **PAUSED** |
+| **nona** | Nona Chapter | n2 / n3 next | **OPEN** |
 
 Handback lean (when Generator resumes): `extend_or_return=return_mur_u92`.  
 Surface handback (while sept walks): `return_generator_s9`.  

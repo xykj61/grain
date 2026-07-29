@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260729.130911
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Nona Chapter n2 living depth residual
+prompt waymark n1 complete n2 next — clear residual living innermost/core cites
+think Scan living pins; leave dated fossils and Glow core language alone
+think Radiant-pass Oven Generator MUR charters plus LEXICON year and oven handback
+think Witness asserts three/quad on PAUSED doors; prin_scope and REMEMBER pin n2
+obs Closed Gren/Keeh tables stay fossils by n0 law
+obs Handback return_surface_p41 remains available at n3 check-in
+file counsel/20260729-130911_nona-season-n2-living-depth-residual.md n2 seat
+file counsel/20260728-234419_the-oven-season-oct-charter.md three quad nona table
+file counsel/20260728-183510_the-generator-season-sext-charter.md living Within and table
+file counsel/20260728-025220_the-mur-season-innermost-charter.md nest three living labels
+file context/LEXICON.md year scopes living words
+file tools/gen/chapter/nona_season_n2_witness.rish residual witness
+recommend check-in handback return_surface_p41 now accuracy SDD residual seated, or kg n3 thin closeout
