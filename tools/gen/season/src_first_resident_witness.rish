@@ -7,7 +7,7 @@
 
 say "first-resident: Language EN — Glow desks that live in src/."
 say "first-resident: Style Radiant — prove the desks; refuse shred."
-say "first-resident: Lens TAME — Surface Season p18."
+say "first-resident: Lens TAME — Surface Season p19."
 
 let zig = "vendor/zig-toolchain/zig"
 
@@ -93,6 +93,19 @@ let agate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" adesk]
 assert agate.ok else "first-resident: app shape lower/build/run failed"
 assert agate.out contains "EXIT:0" else "first-resident: app shape did not exit 0"
 
-say "GREEN: first-resident — lib · sur×2 · til×2 · app · Surface p18"
+say "first-resident: app tube0-manifest-field-count..."
+let udesk = "src/app/shape-tube0-manifest-field-count.glow"
+let uplacard = run ["sh" "-c" "head -n 7 src/app/shape-tube0-manifest-field-count.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+assert uplacard.ok else "first-resident: app tube0 placard scan failed"
+let ucount = trim uplacard.out
+assert ucount == "6" else "first-resident: app tube0 placard missing six lines"
+let ufields = run ["sh" "-c" "grep -q 'example    4' src/app/shape-tube0-manifest-field-count.glow && grep -q 'name' src/app/shape-tube0-manifest-field-count.glow && grep -q 'version' src/app/shape-tube0-manifest-field-count.glow && grep -q 'capabilities' src/app/shape-tube0-manifest-field-count.glow && grep -q 'iteration-bound' src/app/shape-tube0-manifest-field-count.glow && grep -q 'APK' src/app/shape-tube0-manifest-field-count.glow && echo TUBE0_OK"]
+assert ufields.ok else "first-resident: app tube0 fields scan failed"
+assert ufields.out contains "TUBE0_OK" else "first-resident: app tube0 four fields / APK refuse not named"
+let ugate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" udesk]
+assert ugate.ok else "first-resident: app tube0 shape lower/build/run failed"
+assert ugate.out contains "EXIT:0" else "first-resident: app tube0 shape did not exit 0"
+
+say "GREEN: first-resident — lib · sur×2 · til×2 · app×2 · Surface p19"
 say "GREEN: first-resident — Glow userland desks live at home first."
 

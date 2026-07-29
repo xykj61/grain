@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.204647` — [Surface Season p19 app tube0-manifest-fields](20260728-204647_surface-season-p19-app-tube0-manifest-fields.bron) — four fields · packaging held · p20 next
 - `20260728.204222` — [Surface Season p18 til manifest-field-count](20260728-204222_surface-season-p18-til-manifest-field-count.bron) — three fields · %tile held · p19 next
 - `20260728.203606` — [Surface Season p17 graph redraw spine](20260728-203606_surface-season-p17-graph-redraw-spine.bron) — paper+redrawtest · p18 next
 - `20260728.203321` — [Surface Season p16 Pond GUI spine](20260728-203321_surface-season-p16-pond-gui-spine.bron) — constructive fold · live-five hand · p17 next
