@@ -1,0 +1,55 @@
+# tools/gen/season/wayland_from_frame_witness.rish — Surface p48 Wayland-from-Frame.
+#
+#   rishi/bin/rishi run tools/gen/season/wayland_from_frame_witness.rish
+#
+# Needs WAYLAND_DISPLAY for the pond-frame metalsmoke hop.
+# Live-five stays hand — not claimed here.
+
+say "wayland-from-frame: Language EN — Frame is the glass; Wayland hosts it."
+say "wayland-from-frame: Style Radiant — prove living hop; refuse invent pad."
+say "wayland-from-frame: Lens TAME — Surface Season p48."
+
+let counsel = run ["test" "-f" "counsel/20260729-134259_surface-season-p48-wayland-from-frame.md"]
+assert counsel.ok else "wayland-from-frame: p48 counsel missing"
+
+let display = run ["sh" "-c" "test -n \"$WAYLAND_DISPLAY\""]
+assert display.ok else "wayland-from-frame: WAYLAND_DISPLAY unset — run on GNOME Wayland"
+
+say "wayland-from-frame: Glow connector hops..."
+let connector = run ["rishi/bin/rishi" "run" "tools/gen/season/glow_connector_seam_witness.rish"]
+assert connector.ok else "wayland-from-frame: glow-connector failed"
+assert connector.out contains "GREEN: glow-connector" else "wayland-from-frame: glow-connector not GREEN"
+
+say "wayland-from-frame: .brush → BrushFrame → skate grid..."
+let parse_bin = "brushstroke/bin/brush-parse"
+let have_parse = run ["test" "-x" parse_bin]
+assert have_parse.ok else "wayland-from-frame: build brush_parse first — see brushstroke/brush_parse.rye header"
+let grid = run ["sh" "-c" "${parse_bin} grid brushstroke/seed-frame.brush 2>&1"]
+assert grid.ok else "wayland-from-frame: brush-parse grid failed"
+assert grid.out contains "GREEN: brush-parse grid" else "wayland-from-frame: brush-parse grid not GREEN"
+
+say "wayland-from-frame: wayland_seed redrawtest..."
+let seed_bin = "brushstroke/bin/brushstroke-wayland-seed"
+let have_seed = run ["test" "-x" seed_bin]
+assert have_seed.ok else "wayland-from-frame: build wayland_seed first — see brushstroke/wayland_seed.rye header"
+let redraw = run ["sh" "-c" "${seed_bin} redrawtest 2>&1"]
+assert redraw.ok else "wayland-from-frame: redrawtest failed"
+assert redraw.out contains "GREEN" else "wayland-from-frame: redrawtest not GREEN"
+
+say "wayland-from-frame: pond-frame (metalsmoke hop)..."
+let pond = run ["rishi/bin/rishi" "run" "tools/gen/season/pond_brushstroke_frame_witness.rish"]
+assert pond.ok else "wayland-from-frame: pond-frame failed"
+assert pond.out contains "GREEN: pond-frame" else "wayland-from-frame: pond-frame not GREEN"
+
+say "wayland-from-frame: Glow quiet on Wayland C..."
+let glow_quiet = run ["sh" "-c" "rg -l 'wayland-client.h' src --glob '*.glow' 2>/dev/null | wc -l"]
+assert glow_quiet.ok else "wayland-from-frame: Glow quiet scan failed"
+let leak_count = trim glow_quiet.out
+assert leak_count == "0" else "wayland-from-frame: Glow src must not speak Wayland C"
+
+let held = run ["sh" "-c" "grep -q 'live-five' counsel/20260729-134259_surface-season-p48-wayland-from-frame.md && grep -q 'held' counsel/20260729-134259_surface-season-p48-wayland-from-frame.md && echo HELD_OK"]
+assert held.ok else "wayland-from-frame: live-five held scan failed"
+assert held.out contains "HELD_OK" else "wayland-from-frame: live-five must stay held this stamp"
+
+say "GREEN: wayland-from-frame — connector · brush-grid · redrawtest · pond-frame · Surface p48"
+say "GREEN: wayland-from-frame — lane open · live-five held · Frame stays the glass."
