@@ -7,7 +7,7 @@
 # Agents edit THIS file for waymark / seat / charter lines.
 # Old tools/prin_scope.rish is an accrete shim (Generator Chapter s4).
 
-say "prin-scope: Language EN — seven-nest season slate."
+say "prin-scope: Language EN — eight-nest season slate."
 say "prin-scope: Style Radiant — print orientation; refuse shred/deploy."
 say "prin-scope: Lens TAME — living pin; tools/gen/chapter home (s4+)."
 
@@ -26,8 +26,10 @@ say "  core:   Gren Chapter — CLOSED · handed back · lean-16 complete"
 say "  fund_triad: Murr · Gren · Siya (living)"
 say "  quint:  Keeh Chapter — CLOSED · handed back"
 say "  sext:   Generator Chapter — PAUSED at s8 complete / s9 next"
-say "  sept:   Surface Chapter — OPEN · p27 complete / p28 next (brush stdout redraw)"
-say "  extend_or_return: return_generator_s9 (Surface lean · seated 20260728.193914)"
+say "  sept:   Surface Chapter — PAUSED at p38 complete / p39 next (path survey)"
+say "  oct:   Kiln Chapter — OPEN · o0 complete / o1 next (forge path cut)"
+say "  extend_or_return: return_surface_p39 (Kiln lean · seated 20260728.234419)"
+say "  surface_handback: return_generator_s9 (when sept resumes)"
 say "  generator_handback: return_mur_u92 (when sext resumes)"
 say "  keeh_sponsor: Kia (South Korea) honor · design seat"
 say "  keeh_recommend: used 4-cyl hatch/SUV · non-CVT auto · light grey/beige cloth · CL/FB Marketplace"
@@ -51,11 +53,12 @@ say "  fund11: Keeh (was Ketu) · Aquarius · seat 11 · executive Keaton · Kia
 say "  sundial: prin sundial · tools/gen/chapter/sundial.rish — recursion confidence 0–100"
 say "  L1:     MUR (was MALA) · WOV unify · retire WOV roadmap last"
 say "  voice:  six variants — Reya · Riyo · Trey · Triz · Quin · Trya (Quin stands)"
-say "  charter: counsel/20260728-193914_the-surface-season-sept-charter.md"
+say "  charter: counsel/20260728-234419_the-kiln-season-oct-charter.md"
+say "  surface_charter: counsel/20260728-193914_the-surface-season-sept-charter.md"
 say "  generator_charter: counsel/20260728-183510_the-generator-season-sext-charter.md"
 say "  mur_charter: counsel/20260728-025220_the-mur-season-innermost-charter.md"
 say "  geode_charter: counsel/20260728-031722_the-geode-season-charter.md"
-say "  seat:   counsel/20260728-215052_surface-season-p27-brush-stdout-redraw.md"
-say "  warn:   p62/p63 extend 128 · return_generator_s9 · return_mur_u92 · or other"
+say "  seat:   counsel/20260728-234419_oven-season-o0-bow-surface-paused.md"
+say "  warn:   o62/o63 extend 128 · return_surface_p39 · return_generator_s9 · return_mur_u92 · or other"
 
-say "GREEN: prin-scope — seven nests printed · living pin is .rish"
+say "GREEN: prin-scope — eight nests printed · living pin is .rish"

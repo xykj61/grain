@@ -1,7 +1,8 @@
 # Surface Chapter — Recursion Prompt (printout · seven scopes · p37)
 
 **Stamp:** `20260728.233053` · Radiant pass `20260728.233638` (p38 path survey)  
-**Use:** paste the fenced block as the next counsel/bench session opener.  
+**Living printout:** [`20260728-234419_oven-season-o0-recursion-prompt.md`](20260728-234419_oven-season-o0-recursion-prompt.md) (Kiln oct · Surface paused).  
+**Use (Surface-era artifact):** paste only when replaying sept; prefer the Kiln printout above.  
 **Supersedes printout lean of:** [`20260728-193914_surface-season-p0-recursion-prompt.md`](20260728-193914_surface-season-p0-recursion-prompt.md) (p0 opener kept as dated artifact).
 
 **Sundial:** `rishi/bin/rishi run tools/gen/chapter/sundial.rish` · `prin sundial`  
