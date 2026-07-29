@@ -13,7 +13,7 @@
 
 | Seat | Role |
 | --- | --- |
-| [`foundations/20260629-063512_the-graph-beneath-the-surface.md`](../foundations/20260629-063512_the-graph-beneath-the-surface.md) | Weave as streaming DAG under Realidream |
+| [`foundations/20260728-221253_the-graph-beneath-the-surface.md`](../foundations/20260728-221253_the-graph-beneath-the-surface.md) | Weave as streaming DAG under Realidream (living · June fossil kept) |
 | [`foundations/20260728-220203_realidream.md`](../foundations/20260728-220203_realidream.md) | Editor + browser as views over one graph (living · June fossil kept) |
 | Lexicon **Weave** · **Mantra** · **Tilak** | Living names |
 | `mantra/src/weave.rye` | Aspect — line history until graduation |
