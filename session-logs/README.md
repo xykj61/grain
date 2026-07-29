@@ -4,7 +4,9 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.213205` — [Surface Season p26 brush Frame lower](20260728-213205_surface-season-p26-brush-frame-lower.bron) — BrushFrame from .brush · p27 next
 - `20260728.212855` — [Surface Season p25 brush refuse suite](20260728-212855_surface-season-p25-brush-refuse-suite.bron) — every ParseError named · p26 next
+
 - `20260728.212328` — [Surface Season p24 brush parse TAME tidy](20260728-212328_surface-season-p24-brush-parse-tame-tidy.bron) — invariants visible · p25 next
 
 - `20260728.211918` — [Surface Season p23 brush parser begun](20260728-211918_surface-season-p23-brush-parser-begun.bron) — pins only · p24 next

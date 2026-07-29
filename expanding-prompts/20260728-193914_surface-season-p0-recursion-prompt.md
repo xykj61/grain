@@ -37,20 +37,20 @@ SEXT SCOPE (paused — do not advance s-rounds):
   Charter: counsel/20260728-183510_the-generator-season-sext-charter.md
 
 SEPT SCOPE (OPEN — walk here):
-  Surface Season OPEN · p25 complete / p26 next.
+  Surface Season OPEN · p26 complete / p27 next.
   Working lean: Pond Glow GUI · Brushstroke/.brush · Ubuntu Wayland ·
-    Mantra/Weave DAG · first-resident userland · .brush parser refuse-suite (no paint).
+    Mantra/Weave DAG · first-resident userland · .brush→Frame lower (no Skate/Wayland).
   Handback lean: return_generator_s9.
   Charter: counsel/20260728-193914_the-surface-season-sept-charter.md
-  Seat: counsel/20260728-212855_surface-season-p25-brush-refuse-suite.md
-  Prep+study+pedestals: p1–p25 (anvil · hygiene · first-resident · Wayland ·
+  Seat: counsel/20260728-213205_surface-season-p26-brush-frame-lower.md
+  Prep+study+pedestals: p1–p26 (anvil · hygiene · first-resident · Wayland ·
     connector · pond GUI · graph redraw · lib/sur×3/til×2/app×2/sec×2 ·
-    .brush fixture + parser TAME + refuse).
+    .brush fixture + parser + refuse + Frame lower).
   First residents LIVE: src/lib (double · inc) · src/sur (surface-count ·
     frame-max-lines · frame-seed-line-count) · src/til (tilak-root-count ·
     manifest-field-count) · src/app (pool-agent-slot · tube0-manifest-field-count) ·
     src/sec (grant-family-count · mand-ring-count).
-    .brush LIVE: seed-frame.brush · brush_parse.rye (refuse-suite; paint later).
+    .brush LIVE: seed-frame.brush · brush_parse.rye (lower_brush → BrushFrame).
     %tile HELD. src/web REFUSED.
   Horizon PARK: Genode · seL4 · SixOS · s6 · Nix (proven-seat parallel).
   Geode PREP parallel (d0) — does not steal p-rounds.
@@ -62,8 +62,8 @@ HARD LINES:
   first-resident routine · vegan-dogfood easter-egg only ·
   no m/i/u/g/q/s advance while sept walks · %tile not seated yet.
 
-NEXT (p26):
-  Thin lower toward Frame · more pedestals · or live-five on word —
+NEXT (p27):
+  Skate/stdout from BrushFrame · more pedestals · or live-five on word —
   or check-in if a seam asks.
 
 Bench: prin scope · graph_redraw_spine_witness · pond_gui_spine_witness ·

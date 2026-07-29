@@ -8,8 +8,10 @@
 **Informal tag:** nest-7 · not innermost (MUR keeps u91/u92)  
 **Ground:** origin/main `d3e208613a` (pre-send) · Shape **B** seated from [s8 eval](20260728-193058_generator-season-s8-pond-gui-season-evaluation.md)  
 **Within:** paused **sext** Generator (s8 complete / s9 next) · paused MUR · paused Inner · paused Constellation  
-**Status:** **OPEN** · p0–p25 complete `20260728.212855` · **p26** next  
+**Status:** **OPEN** · p0–p26 complete `20260728.213205` · **p27** next  
+Radiant pass `20260728.213205` — p26 brush Frame lower · BrushFrame from .brush  
 Radiant pass `20260728.212855` — p25 brush refuse suite · every ParseError named  
+
 Radiant pass `20260728.212328` — p24 brush_parse TAME tidy · invariants visible  
 
 Radiant pass `20260728.211918` — p23 .brush parser begun · Keaton seat yes  
@@ -56,7 +58,7 @@ Radiant pass `20260728.194334` — p1 tools/gen/anvil home LIVE · five corpus l
 | **core** | Gren Season | lean-16 CLOSED | **CLOSED** |
 | **quint** | Keeh Season | lean-16 CLOSED | **CLOSED** |
 | **sext** | Generator Season | **s8 complete / s9 next** | **PAUSED** |
-| **sept** | **Surface Season** | **p25** complete / **p26** next | **OPEN** |
+| **sept** | **Surface Season** | **p26** complete / **p27** next | **OPEN** |
 
 Handback lean (park until horizon): `extend_or_return=return_generator_s9`.  
 Generator still carries its own lean `return_mur_u92` for when sext resumes.  

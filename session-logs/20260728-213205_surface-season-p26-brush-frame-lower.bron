@@ -1,0 +1,14 @@
+format session-log-v1
+stamp 20260728.213205
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Surface Season p26 brush Frame lower
+prompt waymark p25 complete p26 next · asks none · kg thin lower toward Frame
+think lower_brush collects line slices into BrushFrame; prove seed-frame three bodies.
+think CLI lower path prints Frame lines; TAME invariants kept; no Skate/Wayland.
+obs Same-commit REMEMBER git nib.
+file brushstroke/brush_parse.rye BrushFrame lower_brush
+file counsel/20260728-213205_surface-season-p26-brush-frame-lower.md p26 seat
+recommend keep-going p27 stdout/Skate from BrushFrame; live-five needs word
