@@ -29,7 +29,7 @@ Radiant pass `20260728.234419` — oct opens · Surface pause · Keaton seat app
 | **quint** | Keeh Season | lean-16 CLOSED | **CLOSED** |
 | **sext** | Generator Season | **s8 complete / s9 next** | **PAUSED** |
 | **sept** | Surface Season | **p38 complete / p39 next** | **PAUSED** |
-| **oct** | **Kiln Season** | **o2** complete / **o3** next | **OPEN** |
+| **oct** | **Kiln Season** | **o3** complete / **o4** next | **OPEN** |
 
 Handback lean (park until horizon): `extend_or_return=return_surface_p39`.  
 Surface still carries `return_generator_s9` for when sept resumes.  
