@@ -1,4 +1,4 @@
-//! brushstroke/brush_parse.rye — .brush parser (Surface p23 begin · p24 TAME tidy).
+//! brushstroke/brush_parse.rye — .brush parser (p23 begin · p24 TAME · p25 refuse).
 //!
 //! `.brush` describes how a value at a nib is drawn. This parser reads the thin
 //! surface pins (at-nib · present · max-lines · lines) and refuses anything that
@@ -19,7 +19,7 @@ const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 
-pub const brush_parse_version = "20260728.212328";
+pub const brush_parse_version = "20260728.212855";
 
 /// Tally-bounded Frame ceiling — matches seed.rye · wayland_seed.rye · sur pedestal.
 pub const max_frame_lines: u32 = 8;
@@ -222,11 +222,20 @@ fn parse_u32_decimal(text: []const u8) ParseError!u32 {
     return value;
 }
 
-fn run_selftest(init: std.process.Init) !u8 {
-    const garden = init.arena.allocator();
-    const io = init.io;
-    const cwd = std.Io.Dir.cwd();
+/// Prove one refuse path by named ParseError — call-seam capture, not `) == error.`.
+fn assert_parse_error(src: []const u8, want: ParseError) void {
+    // invariant: refuse fixtures stay inside the source budget
+    assert(src.len <= max_brush_bytes);
+    if (parse_brush(src)) |_| {
+        unreachable;
+    } else |err| {
+        // invariant: refuse path names the seated error
+        assert(err == want);
+    }
+}
 
+fn prove_seed_fixture(garden: std.mem.Allocator, io: std.Io) !void {
+    const cwd = std.Io.Dir.cwd();
     const src = try cwd.readFileAlloc(io, "brushstroke/seed-frame.brush", garden, .limited(max_brush_bytes));
     // invariant: fixture read respects the same budget parse_brush asserts
     assert(src.len <= max_brush_bytes);
@@ -239,36 +248,118 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(surface.max_lines == 8);
     // invariant: seed Frame carries three example lines
     assert(surface.line_count == 3);
+}
 
-    const missing_nib =
-        \\::  name       refuse missing nib
+/// Refuse missing / wrong identity pins.
+fn prove_refuse_pins() void {
+    assert_parse_error(
         \\::  present:    Frame
         \\::  max-lines:  8
         \\::  lines:
         \\::    one line
-    ;
-    if (parse_brush(missing_nib)) |_| {
-        unreachable;
-    } else |err| {
-        // invariant: missing at-nib refuses by name
-        assert(err == error.MissingAtNib);
-    }
-
-    const not_frame =
+    ,
+        error.MissingAtNib,
+    );
+    assert_parse_error(
+        \\::  at-nib:     x
+        \\::  max-lines:  8
+        \\::  lines:
+        \\::    one line
+    ,
+        error.MissingPresent,
+    );
+    assert_parse_error(
         \\::  at-nib:     x
         \\::  present:    Widget
         \\::  max-lines:  8
         \\::  lines:
         \\::    one line
-    ;
-    if (parse_brush(not_frame)) |_| {
-        unreachable;
-    } else |err| {
-        // invariant: non-Frame present refuses by name
-        assert(err == error.PresentNotFrame);
-    }
+    ,
+        error.PresentNotFrame,
+    );
+    assert_parse_error(
+        \\::  at-nib:     x
+        \\::  present:    Frame
+        \\::  lines:
+        \\::    one line
+    ,
+        error.MissingMaxLines,
+    );
+}
 
-    try std.Io.File.stdout().writeStreamingAll(io, "GREEN: brush-parse selftest — seed-frame · refuse missing-nib · refuse not-Frame · TAME tidy\n");
+/// Refuse bound and line-body failures.
+fn prove_refuse_bounds() void {
+    assert_parse_error(
+        \\::  at-nib:     x
+        \\::  present:    Frame
+        \\::  max-lines:  0
+        \\::  lines:
+        \\::    one line
+    ,
+        error.MaxLinesOutOfBound,
+    );
+    assert_parse_error(
+        \\::  at-nib:     x
+        \\::  present:    Frame
+        \\::  max-lines:  9
+        \\::  lines:
+        \\::    one line
+    ,
+        error.MaxLinesOutOfBound,
+    );
+    assert_parse_error(
+        \\::  at-nib:     x
+        \\::  present:    Frame
+        \\::  max-lines:  abc
+        \\::  lines:
+        \\::    one line
+    ,
+        error.BadMaxLines,
+    );
+    assert_parse_error(
+        \\::  at-nib:     x
+        \\::  present:    Frame
+        \\::  max-lines:  8
+    ,
+        error.MissingLines,
+    );
+    assert_parse_error(
+        \\::  at-nib:     x
+        \\::  present:    Frame
+        \\::  max-lines:  8
+        \\::  lines:
+    ,
+        error.MissingLines,
+    );
+    assert_parse_error(
+        \\::  at-nib:     x
+        \\::  present:    Frame
+        \\::  max-lines:  2
+        \\::  lines:
+        \\::    a
+        \\::    b
+        \\::    c
+    ,
+        error.TooManyLines,
+    );
+    assert_parse_error(
+        \\::  at-nib:     x
+        \\::  present:    Frame
+        \\::  max-lines:  8
+        \\::  lines:
+        \\::    
+    ,
+        error.EmptyLine,
+    );
+}
+
+fn run_selftest(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+    try prove_seed_fixture(garden, io);
+    prove_refuse_pins();
+    prove_refuse_bounds();
+    try std.Io.File.stdout().writeStreamingAll(io, "GREEN: brush-parse selftest — seed-frame · refuse-suite · TAME\n");
     return 0;
 }
 
