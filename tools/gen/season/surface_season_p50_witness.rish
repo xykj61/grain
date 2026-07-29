@@ -1,0 +1,39 @@
+# tools/gen/season/surface_season_p50_witness.rish — hosted brush choir pin.
+#
+#   rishi/bin/rishi run tools/gen/season/surface_season_p50_witness.rish
+#
+# Needs WAYLAND_DISPLAY for the hosted brush hop.
+
+say "surface-p50: Language EN — hosted .brush on Wayland pinned."
+say "surface-p50: Style Radiant — one present; refuse live-five invent."
+say "surface-p50: Lens TAME — Surface Season p50."
+
+let counsel = run ["test" "-f" "counsel/20260729-135422_surface-season-p50-hosted-brush-choir.md"]
+assert counsel.ok else "surface-p50: p50 counsel missing"
+
+let display = run ["sh" "-c" "test -n \"$WAYLAND_DISPLAY\""]
+assert display.ok else "surface-p50: WAYLAND_DISPLAY unset — run on GNOME Wayland"
+
+let seed_bin = "brushstroke/bin/brushstroke-wayland-seed"
+let have = run ["test" "-x" seed_bin]
+assert have.ok else "surface-p50: build wayland_seed first — see p49 counsel"
+
+say "surface-p50: headless brushtest..."
+let brushtest = run ["sh" "-c" "${seed_bin} brushtest brushstroke/seed-frame.brush 2>&1"]
+assert brushtest.ok else "surface-p50: brushtest failed"
+assert brushtest.out contains "GREEN" else "surface-p50: brushtest not GREEN"
+
+say "surface-p50: hosted brush present..."
+let brush_cmd = run ["sh" "-c" "grep -q 'run_brush_present' brushstroke/wayland_seed.rye && grep -q ', \"brush\")' brushstroke/wayland_seed.rye && echo BRUSH_OK"]
+assert brush_cmd.ok else "surface-p50: brush CLI scan failed"
+assert brush_cmd.out contains "BRUSH_OK" else "surface-p50: brush CLI not named"
+let hosted = run ["sh" "-c" "${seed_bin} brush brushstroke/seed-frame.brush 2>&1"]
+assert hosted.ok else "surface-p50: hosted brush failed"
+assert hosted.out contains "GREEN: brushstroke wayland seed — .brush on Wayland" else "surface-p50: hosted brush missing GREEN"
+
+let held = run ["sh" "-c" "grep -q 'live-five still' counsel/20260729-135422_surface-season-p50-hosted-brush-choir.md && echo HELD_OK"]
+assert held.ok else "surface-p50: live-five held scan failed"
+assert held.out contains "HELD_OK" else "surface-p50: live-five must stay held"
+
+say "GREEN: surface-p50 — brushtest · hosted brush · seed-frame on Wayland"
+say "GREEN: surface-p50 — live-five held · one present only."
