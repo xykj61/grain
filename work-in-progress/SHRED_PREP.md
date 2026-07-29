@@ -3,8 +3,8 @@
 **Language:** EN  
 **Status:** Living pin — **shred RED** · Amphora cut not opened · list only  
 **Voice:** Quin  
-**Last refreshed:** `20260728.225638` (EDT)  
-**Seat:** Surface p34 · [`../counsel/20260728-225638_surface-season-p34-transitive-writing-crawl.md`](../counsel/20260728-225638_surface-season-p34-transitive-writing-crawl.md)
+**Last refreshed:** `20260728.232511` (EDT)  
+**Seat:** Surface p36 Kiln · [`../counsel/20260728-232511_surface-season-p36-kiln-seated.md`](../counsel/20260728-232511_surface-season-p36-kiln-seated.md)
 
 *Accrete-never-break: fossils stay on disk until a circled shred proves parity. This list prepares the hand; it does not authorize a cut.*
 
@@ -29,7 +29,8 @@ Add a row **every time** a living mutant seats and the prior stamp becomes fossi
 | --- | --- | --- | --- |
 | `foundations/20260629-063512_realidream.md` | `foundations/20260728-220203_realidream.md` | p29 `20260728.220203` | invent held |
 | `foundations/20260629-063512_the-graph-beneath-the-surface.md` | `foundations/20260728-221253_the-graph-beneath-the-surface.md` | p31 `20260728.221253` | invent held |
-| `foundations/20260629-063512_lantern-lattice-anvil.md` | `foundations/20260728-221253_lantern-lattice-anvil.md` | p31 `20260728.221253` | invent held |
+| `foundations/20260629-063512_lantern-lattice-anvil.md` | `foundations/20260728-232511_lantern-lattice-kiln.md` | p31→p36 Kiln | invent held · name Kiln |
+| `foundations/20260728-221253_lantern-lattice-anvil.md` | `foundations/20260728-232511_lantern-lattice-kiln.md` | p36 `20260728.232511` | Kiln seat · Anvil essay fossil |
 | `foundations/20260629-063512_the-wafer-and-the-sovereign-coin.md` | `foundations/20260728-225239_the-wafer-and-the-sovereign-coin.md` | p33 `20260728.225239` | invent held |
 
 Grep helpers: `living mutant` · `fossil — living path` · paths in this table.
@@ -57,7 +58,7 @@ Transitive `foundations/` graph from living wafer — **9 nodes** · closed (no 
 living wafer
   ├─ money-that-stays-close-to-home          [dated · leaf in foundations]
   │     └─ (outside) taler-giving-lane · giving-lane-t1 field map
-  ├─ living lantern ⇄ living Realidream ⇄ living graph ⇄ living wafer
+  ├─ living Kiln (was Anvil) ⇄ living Realidream ⇄ living graph ⇄ living wafer
   ├─ the-device-that-forgets                 [dated]
   │     └─ mantrapod-venture-pitch          [dated · leaf]
   └─ mantrapod-venture-pitch                [dated · leaf]
