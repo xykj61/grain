@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260729.134827` — [Surface Chapter p49 BrushFrame Wayland feed](20260729-134827_surface-season-p49-brushframe-wayland-feed.bron) — brushtest GREEN · feed metal
 - `20260729.134259` — [Surface Chapter p48 Wayland from Frame](20260729-134259_surface-season-p48-wayland-from-frame.bron) — lane open · live-five held
 - `20260729.134054` — [Surface Chapter p47 recommend next door](20260729-134054_surface-season-p47-recommend-next-door.bron) — Wayland-from-Frame first
 - `20260729.133829` — [Surface Chapter p46 check-in](20260729-133829_surface-season-p46-check-in.bron) — museum lane full · invent held

@@ -16,13 +16,17 @@
 //!   brushstroke/bin/brushstroke-wayland-seed arbitrary # SLC-2a Lap 1 witness
 //!   brushstroke/bin/brushstroke-wayland-seed redraw     # SLC-2a Lap 2 metal: A then B
 //!   brushstroke/bin/brushstroke-wayland-seed redrawtest # SLC-2a Lap 2 headless witness
+//!   brushstroke/bin/brushstroke-wayland-seed brushtest [path.brush]  # p49 · BrushFrame feed
+//!   brushstroke/bin/brushstroke-wayland-seed brush <path.brush>     # present .brush on Wayland
 //!
-//! Requires a running Wayland compositor (`WAYLAND_DISPLAY`) for the default mode.
+//! Requires a running Wayland compositor (`WAYLAND_DISPLAY`) for the default mode
+//! and for `brush <path>`. `brushtest` is headless.
 
 const std = @import("std");
 const assert = std.debug.assert;
 const posix = std.posix;
 const skate = @import("skate_grid.rye");
+const brush = @import("brush_parse.rye");
 
 const c = @cImport({
     @cInclude("wayland-client.h");
@@ -793,6 +797,70 @@ pub fn open_surface(garden: std.mem.Allocator, lines: []const Line) !App {
     return present_value(garden, lines);
 }
 
+/// Surface p49 — lower a .brush into Wayland Line text (borrows from `src`).
+fn lines_from_brush_src(garden: std.mem.Allocator, src: []const u8) ![]Line {
+    // invariant: source fits the brush_parse read budget
+    assert(src.len <= brush.max_brush_bytes);
+    var line_buf: [brush.max_frame_lines][]const u8 = undefined;
+    const frame = try brush.lower_brush(src, &line_buf);
+    // invariant: lowered Frame carries at least one line
+    assert(frame.lines.len > 0);
+    // invariant: BrushFrame ceiling fits the Wayland seed Frame ceiling
+    assert(frame.max_lines <= max_lines);
+    assert(frame.lines.len <= max_lines);
+    const lines = try garden.alloc(Line, frame.lines.len);
+    var i: u32 = 0;
+    const n: u32 = @intCast(frame.lines.len);
+    while (i < n) : (i += 1) {
+        // invariant: empty lines never feed the Wayland Frame
+        assert(frame.lines[i].len > 0);
+        lines[i] = .{ .text = frame.lines[i] };
+    }
+    return lines;
+}
+
+fn load_brush_src(garden: std.mem.Allocator, io: std.Io, path: []const u8) ![]const u8 {
+    // invariant: path argument is non-empty
+    assert(path.len > 0);
+    const cwd = std.Io.Dir.cwd();
+    const src = try cwd.readFileAlloc(io, path, garden, .limited(brush.max_brush_bytes));
+    // invariant: path read stays inside the named budget
+    assert(src.len <= brush.max_brush_bytes);
+    return src;
+}
+
+/// Headless: .brush → BrushFrame → Wayland Frame → lit pixels (no compositor).
+fn run_brush_feed_witness(garden: std.mem.Allocator, io: std.Io, path: []const u8) !u8 {
+    const src = try load_brush_src(garden, io, path);
+    var line_buf: [brush.max_frame_lines][]const u8 = undefined;
+    const bframe = try brush.lower_brush(src, &line_buf);
+    const lines = try lines_from_brush_src(garden, src);
+    // invariant: feed line count matches lowered BrushFrame
+    assert(lines.len == bframe.lines.len);
+    const lit = try raster_lit_for_lines(garden, lines);
+    // invariant: seed Frame glyphs light the Wayland-sized raster
+    assert(lit > 100);
+    var buf: [192]u8 = undefined;
+    const msg = try std.fmt.bufPrint(
+        &buf,
+        "brush feed witness: at-nib={s} lines={d} lit={d} — GREEN\n",
+        .{ bframe.at_nib, lines.len, lit },
+    );
+    try std.Io.File.stdout().writeStreamingAll(io, msg);
+    return 0;
+}
+
+/// Hosted: .brush → BrushFrame → Wayland surface (needs WAYLAND_DISPLAY).
+fn run_brush_present(garden: std.mem.Allocator, io: std.Io, path: []const u8) !u8 {
+    const src = try load_brush_src(garden, io, path);
+    const lines = try lines_from_brush_src(garden, src);
+    var app = try present_value(garden, lines);
+    defer app.display.disconnect();
+    try app.run();
+    try std.Io.File.stdout().writeStreamingAll(io, "GREEN: brushstroke wayland seed — .brush on Wayland\n");
+    return 0;
+}
+
 fn run_selftest(garden: std.mem.Allocator, io: std.Io) !u8 {
     const lines = try default_lines(garden);
     const grid = try Frame.init(lines).to_grid(garden);
@@ -844,6 +912,13 @@ pub fn main(init: std.process.Init) !u8 {
     }
     if (args.len >= 2 and std.mem.eql(u8, args[1], "redraw")) {
         return run_redraw_metal(garden, io);
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "brushtest")) {
+        const path = if (args.len >= 3) args[2] else "brushstroke/seed-frame.brush";
+        return run_brush_feed_witness(garden, io, path);
+    }
+    if (args.len >= 3 and std.mem.eql(u8, args[1], "brush")) {
+        return run_brush_present(garden, io, args[2]);
     }
 
     const lines = try default_lines(garden);
