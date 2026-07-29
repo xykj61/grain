@@ -6,7 +6,7 @@
 **Voice:** Quin · lineage **Kaeden Reyklah** with Reya 2 (June vision)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Lens:** TAME — safety, performance, then the joy of the craft; the silo principle
-**Status:** Vision — **far horizon**; living mutant of [`20260629-063512_lantern-lattice-anvil.md`](20260629-063512_lantern-lattice-anvil.md); invent held
+**Status:** Vision — **far horizon**; **living mutant**; invent held
 
 *Mutant seated Surface p31 thin — seat yes `20260728.221253`. Poetics held; Grain naming sharpened.*
 Radiant pass `20260728.221253`
