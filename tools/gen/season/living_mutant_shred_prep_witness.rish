@@ -6,17 +6,22 @@
 
 say "shred-prep: Language EN — Class H fossils listed; cut not opened."
 say "shred-prep: Style Radiant — crawl deps · wait seat · accrete mutants."
-say "shred-prep: Lens TAME — Surface Season p32."
+say "shred-prep: Lens TAME — Surface Season p34."
 
 let list = run ["test" "-f" "work-in-progress/SHRED_PREP.md"]
 assert list.ok else "shred-prep: SHRED_PREP.md missing"
 let seat = run ["test" "-f" "counsel/20260728-224716_surface-season-p32-living-mutant-shred-prep.md"]
 assert seat.ok else "shred-prep: p32 counsel seat missing"
+let seat34 = run ["test" "-f" "counsel/20260728-225638_surface-season-p34-transitive-writing-crawl.md"]
+assert seat34.ok else "shred-prep: p34 transitive crawl counsel missing"
 
 say "shred-prep: lexicon..."
-let lex = run ["sh" "-c" "grep -q 'living mutant' context/LEXICON.md && grep -q 'writing fossil' context/LEXICON.md && grep -q 'shred-prep list' context/LEXICON.md && echo LEX_OK"]
+let lex = run ["sh" "-c" "grep -q 'living mutant' context/LEXICON.md && grep -q 'writing fossil' context/LEXICON.md && grep -q 'shred-prep list' context/LEXICON.md && grep -q 'transitive writing crawl' context/LEXICON.md && echo LEX_OK"]
 assert lex.ok else "shred-prep: lexicon scan failed"
-assert lex.out contains "LEX_OK" else "shred-prep: living mutant · writing fossil · shred-prep list missing"
+assert lex.out contains "LEX_OK" else "shred-prep: living mutant · writing fossil · shred-prep · transitive crawl missing"
+let crawl = run ["sh" "-c" "grep -q 'transitive writing crawl' work-in-progress/SHRED_PREP.md && grep -q 'Wafer closure' work-in-progress/SHRED_PREP.md && grep -q '9 nodes' work-in-progress/SHRED_PREP.md && echo CRAWL_OK"]
+assert crawl.ok else "shred-prep: wafer closure scan failed"
+assert crawl.out contains "CRAWL_OK" else "shred-prep: SHRED_PREP must carry wafer closure"
 
 say "shred-prep: Class H rows..."
 let rows = run ["sh" "-c" "grep -q '20260629-063512_realidream.md' work-in-progress/SHRED_PREP.md && grep -q '20260629-063512_the-graph-beneath-the-surface.md' work-in-progress/SHRED_PREP.md && grep -q '20260629-063512_lantern-lattice-anvil.md' work-in-progress/SHRED_PREP.md && grep -q '20260629-063512_the-wafer-and-the-sovereign-coin.md' work-in-progress/SHRED_PREP.md && echo CLASS_H"]
