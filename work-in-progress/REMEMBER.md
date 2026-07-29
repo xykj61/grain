@@ -6,14 +6,14 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260729.000500` (EDT) · voice Quin  
+**Last refreshed:** `20260729.000718` (EDT) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2 · ring-3** · **THREATS** · **five pillars** · **accrete tiers** · **redaction stance** · **always-in-it rhythm** · **Prin / %prin** · **sundial**  
 **Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list1024 · Env512 · **stamp @u64 · Crockford** · **shape aura floor** · **Glow text floor GREEN** · **Glow Book weave GREEN (C2b)** · **baked-sample Acme gloss** · **first resident** (routine) · **vegan-dogfood** (easter egg) · **living mutant** · **shred-prep list** · **transitive writing crawl** · **Kiln** (was forge Anvil) · **oct**  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand home** · **siblings seated** · **--cursor launch** · **Pond counsel 161616** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm+cold REPORT** · **Grain umbrella living** · **OQ #1 · #3 · #4 · #5 answered** · **pass ledger** · **campaign STOPPED** · **growth law** · **wasmtime ABSENT** · **monocypher 4.0.3 GREEN** · **MAP.md** · **breach T3–T4** · **U·V·I** · **C-Ladder C1·C2·C2b landed** · **r18 say/lint twin** · **r21 Verse · O1** · **r22 outside eyes** · **Prin** · **corpus twin fold seated (Sound r11)** · **C3–C5 await homes**  
-**Git nib:** `bfd1dccfd1` · Grain · **Surface p39** · Kiln handback · autoproject96/grain
-**Bookmark:** [`counsel/20260729-000500_surface-season-p39-resume-after-kiln.md`](../counsel/20260729-000500_surface-season-p39-resume-after-kiln.md)
+**Git nib:** `4728290585` · Grain · **Surface p40** · sur×6 max-bytes · autoproject96/grain
+**Bookmark:** [`counsel/20260729-000718_surface-season-p40-sur-brush-max-bytes.md`](../counsel/20260729-000718_surface-season-p40-sur-brush-max-bytes.md)
 
-**Chapter:** Framework · EDT · **Grain** · **finishing edge:** **sept Surface** — p39 resume **SEATED** / p40 next · Kiln **PAUSED** o3/o4 · `kiln/` LIVE · Generator **PAUSED** s8/s9 · MUR **PAUSED** u91/u92 · handback `return_generator_s9` · Geode PREP · OS horizon PARK · F undisturbed. Prefer **git nib**. · `prin scope`
+**Chapter:** Framework · EDT · **Grain** · **finishing edge:** **sept Surface** — p40 sur bytes **SEATED** / p41 next · Kiln **PAUSED** o3/o4 · `kiln/` LIVE · Generator **PAUSED** s8/s9 · MUR **PAUSED** u91/u92 · handback `return_generator_s9` · Geode PREP · OS horizon PARK · F undisturbed. Prefer **git nib**. · `prin scope`
 
 ---
 
@@ -26,7 +26,7 @@
 Fascia **shred** still waits circled shred yes — distinct from rename and from prune.  
 WOV retirement stays **roadmap last**. No live deploy · wallet · gas · private key.
 
-**Surface Chapter (sept)** **OPEN** p39/p40 — resumed `20260729.000500` · handback `return_generator_s9`.  
+**Surface Chapter (sept)** **OPEN** p40/p41 — resumed `20260729.000500` · handback `return_generator_s9`.  
 **Kiln Chapter (oct)** **PAUSED** o3/o4 — path cut LIVE · handed back `return_surface_p39`.  
 **Generator Chapter (sext)** **PAUSED** s8/s9 — handback when resumed `return_mur_u92`.  
 **Vocabulary:** **first resident** = routine · **vegan-dogfood** = easter egg · **Kiln** = living forge (was Anvil) · [debrided] Anvil tribute kept.
@@ -55,7 +55,7 @@ WOV retirement stays **roadmap last**. No live deploy · wallet · gas · privat
 
 | Door | Kind |
 |------|------|
-| **Surface Chapter p40+** | **OPEN** · pedestals · Wayland/live-five · dated Class H |
+| **Surface Chapter p41+** | **OPEN** · pedestals · Wayland/live-five · dated Class H |
 | **Kiln Chapter** | **PAUSED** o3/o4 · handback seated |
 | **Recursion printout** | Kiln-era held · Surface walk resumes |
 | **Kiln (name)** | **SEATED** p36 · living forge · bread not blades |

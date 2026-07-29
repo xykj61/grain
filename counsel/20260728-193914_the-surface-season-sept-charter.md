@@ -8,7 +8,8 @@
 **Informal tag:** nest-7 · not innermost (MUR keeps u91/u92)  
 **Ground:** origin/main `d3e208613a` (pre-send) · Shape **B** seated from [s8 eval](20260728-193058_generator-season-s8-pond-gui-season-evaluation.md)  
 **Within:** paused **sext** Generator (s8 complete / s9 next) · paused MUR · paused Inner · paused Constellation  
-**Status:** **OPEN** · p0–p39 complete · bookmark **p39 complete / p40 next** · resumed after Kiln handback `20260729.000500`  
+**Status:** **OPEN** · p0–p40 complete · bookmark **p40 complete / p41 next** · resumed after Kiln handback `20260729.000500`  
+Radiant pass `20260729.000718` — p40 sur brush-max-bytes · sur×6  
 Radiant pass `20260729.000500` — return_surface_p39 · Kiln PAUSED · Surface OPEN  
 Radiant pass `20260728.234419` — Shape pause · Surface p38/p39 · Kiln oct opens  
 Radiant pass `20260728.233638` — p38 anvil path-breach survey SEATED · cut held  
@@ -64,7 +65,7 @@ Radiant pass `20260728.194334` — p1 tools/gen/anvil home LIVE · five corpus l
 | **core** | Gren Chapter | lean-16 CLOSED | **CLOSED** |
 | **quint** | Keeh Chapter | lean-16 CLOSED | **CLOSED** |
 | **sext** | Generator Chapter | **s8 complete / s9 next** | **PAUSED** |
-| **sept** | **Surface Chapter** | **p39** complete / **p40** next | **OPEN** |
+| **sept** | **Surface Chapter** | **p40** complete / **p41** next | **OPEN** |
 | **oct** | Kiln Chapter | o3 complete / o4 next | **PAUSED** |
 
 Handback lean (while sept walks): `extend_or_return=return_generator_s9`.  
