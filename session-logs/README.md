@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.224716` — [Surface Season p32 living mutant shred prep](20260728-224716_surface-season-p32-living-mutant-shred-prep.bron) — Class H list · habit · wafer held
 - `20260728.221253` — [Surface Season p31 horizon stack thin](20260728-221253_surface-season-p31-horizon-stack-thin.bron) — graph+lantern living · p32 next
 - `20260728.221139` — [Horizon stack mutant cluster ask](20260728-221139_horizon-stack-mutant-cluster-ask.bron) — thin graph+lantern · hold plain-text/anywhere
 - `20260728.220728` — [Surface Season p30 sur brush skate cols](20260728-220728_surface-season-p30-sur-brush-skate-cols.bron) — sur×4 cols=40 · p31 next

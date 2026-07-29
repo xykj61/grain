@@ -6,14 +6,14 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260728.221253` (EDT) · voice Quin  
+**Last refreshed:** `20260728.224716` (EDT) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2 · ring-3** · **THREATS** · **five pillars** · **accrete tiers** · **redaction stance** · **always-in-it rhythm** · **Prin / %prin** · **sundial**  
-**Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list1024 · Env512 · **stamp @u64 · Crockford** · **shape aura floor** · **Glow text floor GREEN** · **Glow Book weave GREEN (C2b)** · **baked-sample Acme gloss** · **first resident** (routine) · **vegan-dogfood** (easter egg)  
+**Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list1024 · Env512 · **stamp @u64 · Crockford** · **shape aura floor** · **Glow text floor GREEN** · **Glow Book weave GREEN (C2b)** · **baked-sample Acme gloss** · **first resident** (routine) · **vegan-dogfood** (easter egg) · **living mutant** · **shred-prep list**  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand home** · **siblings seated** · **--cursor launch** · **Pond counsel 161616** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm+cold REPORT** · **Grain umbrella living** · **OQ #1 · #3 · #4 · #5 answered** · **pass ledger** · **campaign STOPPED** · **growth law** · **wasmtime ABSENT** · **monocypher 4.0.3 GREEN** · **MAP.md** · **breach T3–T4** · **U·V·I** · **C-Ladder C1·C2·C2b landed** · **r18 say/lint twin** · **r21 Verse · O1** · **r22 outside eyes** · **Prin** · **corpus twin fold seated (Sound r11)** · **C3–C5 await homes**  
-**Git nib:** `44922532c1` · Grain · **Surface p31** · horizon stack thin · autoproject96/grain
-**Bookmark:** [`counsel/20260728-221253_surface-season-p31-horizon-stack-thin.md`](../counsel/20260728-221253_surface-season-p31-horizon-stack-thin.md)
+**Git nib:** `091302022b` · Grain · **Surface p32** · living mutant shred-prep · autoproject96/grain
+**Bookmark:** [`counsel/20260728-224716_surface-season-p32-living-mutant-shred-prep.md`](../counsel/20260728-224716_surface-season-p32-living-mutant-shred-prep.md)
 
-**Season:** Framework · EDT · **Grain** · **finishing edge:** **sept Surface** — p31 complete / p32 next · horizon thin (graph+lantern) **SEATED** · Realidream living mutant **SEATED** · Skate↔Realidream lean **SEATED** · Generator **PAUSED** s8/s9 · MUR **PAUSED** u91/u92 · shred RED · Geode PREP · OS horizon PARK · F undisturbed. Prefer **git nib**. · `prin scope`
+**Season:** Framework · EDT · **Grain** · **finishing edge:** **sept Surface** — p32 complete / p33 next · shred-prep Class H **SEATED** · horizon thin **SEATED** · Realidream living mutant **SEATED** · Skate↔Realidream lean **SEATED** · Generator **PAUSED** s8/s9 · MUR **PAUSED** u91/u92 · shred RED · Geode PREP · OS horizon PARK · F undisturbed. Prefer **git nib**. · `prin scope`
 
 ---
 
@@ -52,7 +52,8 @@ WOV retirement stays **roadmap last**. No live deploy · wallet · gas · privat
 
 | Door | Kind |
 |------|------|
-| **Surface Season p32+** | **OPEN** · pedestals · Wayland from Frame on word · or live-five on word |
+| **Surface Season p33+** | **OPEN** · wafer thin? · pedestals · Wayland/live-five on word |
+| **Shred-prep list** | **SEATED** p32 `20260728.224716` · Class H fossils listed · shred RED |
 | **Horizon stack thin** | **SEATED** p31 `20260728.221253` · graph+lantern living · plain-text/anywhere held |
 | **Realidream living foundation** | **SEATED** p29 `20260728.220203` · June fossil kept · invent held |
 | **Skate · Realidream lean** | **SEATED** `20260728.213917` · lexicon live · invent still held |
