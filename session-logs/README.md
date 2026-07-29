@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260729.130653` — [Nona Chapter n1 Chapter-Driven Development](20260729-130653_nona-season-n1-season-driven-development.bron) — SDD · Nest-Chapter · template seated
 - `20260729.125911` — [Nona Chapter n0 nest accuracy](20260729-125911_nona-season-n0-nest-accuracy.bron) — three · quad · nona deepest · no force-push
 - `20260729.000718` — [Surface Chapter p40 sur brush max bytes](20260729-000718_surface-season-p40-sur-brush-max-bytes.bron) — sur×6 bytes=16384
 - `20260729.000500` — [Kiln handback Surface p39](20260729-000500_oven-handback-surface-p39.bron) — sept OPEN · oct PAUSED

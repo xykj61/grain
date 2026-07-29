@@ -57,6 +57,10 @@ These rest beneath the specifications. The specs say what to build and how; thes
 - `20260728-225239_the-wafer-and-the-sovereign-coin.md` — **living** wafer + sovereign coin (Surface p33 thin): memory beside cores · open public infrastructure. June fossil: `20260629-063512_the-wafer-and-the-sovereign-coin.md`.
 - `20260728-232511_lantern-lattice-kiln.md` — **living** open model layer (Kiln seat): Kiln · Lattice · Lantern. Fossils: `20260728-221253_lantern-lattice-anvil.md` · `20260629-063512_lantern-lattice-anvil.md`.
 
+**How the bench walks** — workflow law for nested seasons (Nona n1):
+
+- `20260729-130535_season-driven-development.md` — **living** Chapter-Driven Development (SDD) · Nest-Chapter Development: finishing edge · waymark · handback · dual editors · silo map. Study: [`../external-research/20260729-130535_season-driven-development.md`](../external-research/20260729-130535_season-driven-development.md) · template: [`../expanding-prompts/20260729-130535_season-open-template.md`](../expanding-prompts/20260729-130535_season-open-template.md).
+
 **Distilled essays** — single-stranded meditations drawn from a year of notes, each self-contained and composable:
 
 - `20260628-133212_the-key-you-hold.md` — identity that grows from one root you keep yourself (the keypair primitive).
