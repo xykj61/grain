@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260729.125911
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Nona Chapter n0 nest accuracy seat
+prompt approve seat true-innermost-nona · approve yes breach rename season names · rebase squash force push
+think pier already at Surface p40 after Oven handback · restore accidental WT revert first
+think seat nona nest-9 as true deepest · pause Surface p40 p41
+think living rename innermost to three · core to quad · retire those as living depth words
+obs force-push and history rebase refused · one-clock dated fossils · warn Keaton
+obs return to sept remains handback return_surface_p41 after nona wave
+file counsel/20260729-125911_the-nona-season-charter.md nona charter
+file counsel/20260729-125911_nona-season-n0-bow-nest-accuracy.md n0 bow
+file context/LEXICON.md three quad nona
+file tools/gen/chapter/prin_scope.rish nine nests
+file expanding-prompts/20260729-125911_nona-season-n0-recursion-prompt.md living paste
+git_nib dd283c70c4
+recommend check-in n1 residual living innermost or core depth cites, or kg under written law

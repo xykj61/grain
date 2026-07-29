@@ -5,10 +5,11 @@
 **Voice:** Quin · nested frame Trey  
 **Kind:** season charter · Keaton's word · **sept** scope · rounds **p0–p63** (sixty-four · N = 2⁶)  
 **Working lean:** **Surface Chapter** — Pond Glow GUI · Brushstroke / `.brush` · Ubuntu Wayland seam · Mantra/Weave DAG · vegan-dogfood userland (`season_name=` held)  
-**Informal tag:** nest-7 · not innermost (MUR keeps u91/u92)  
+**Informal tag:** nest-7 · MUR is nest **three** (not “innermost” as living depth)  
 **Ground:** origin/main `d3e208613a` (pre-send) · Shape **B** seated from [s8 eval](20260728-193058_generator-season-s8-pond-gui-season-evaluation.md)  
-**Within:** paused **sext** Generator (s8 complete / s9 next) · paused MUR · paused Inner · paused Constellation  
-**Status:** **OPEN** · p0–p40 complete · bookmark **p40 complete / p41 next** · resumed after Kiln handback `20260729.000500`  
+**Within:** paused **sext** Generator (s8 complete / s9 next) · paused MUR (**three**) · paused Inner · paused Constellation  
+**Status:** **PAUSED** · p0–p40 complete · bookmark **p40 complete / p41 next** · paused for Nona Chapter `20260729.125911`  
+Radiant pass `20260729.125911` — Nona nest-9 opens · Surface pause · nest accuracy  
 Radiant pass `20260729.000718` — p40 sur brush-max-bytes · sur×6  
 Radiant pass `20260729.000500` — return_surface_p39 · Kiln PAUSED · Surface OPEN  
 Radiant pass `20260728.234419` — Shape pause · Surface p38/p39 · Kiln oct opens  
@@ -55,23 +56,25 @@ Radiant pass `20260728.194334` — p1 tools/gen/anvil home LIVE · five corpus l
 
 ---
 
-## Eight scopes kept
+## Nine scopes kept
 
 | Scope | Chapter | Bookmark | Advance? |
 | --- | --- | --- | --- |
 | **outer** | Constellation | m8 / m9 next | **PAUSED** |
 | **inner** | Inner Scope | i6 / i7 next · fascia | **PAUSED** |
-| **innermost** | MUR Chapter | **u91 complete / u92 next** | **PAUSED** |
-| **core** | Gren Chapter | lean-16 CLOSED | **CLOSED** |
+| **three** | MUR Chapter | **u91 complete / u92 next** | **PAUSED** |
+| **quad** | Gren Chapter | lean-16 CLOSED | **CLOSED** |
 | **quint** | Keeh Chapter | lean-16 CLOSED | **CLOSED** |
 | **sext** | Generator Chapter | **s8 complete / s9 next** | **PAUSED** |
-| **sept** | **Surface Chapter** | **p40** complete / **p41** next | **OPEN** |
+| **sept** | **Surface Chapter** | **p40** complete / **p41** next | **PAUSED** |
 | **oct** | Kiln Chapter | o3 complete / o4 next | **PAUSED** |
+| **nona** | Nona Chapter | n0 / n1 next | **OPEN** (steals the walk) |
 
-Handback lean (while sept walks): `extend_or_return=return_generator_s9`.  
+Handback lean (when sept resumes): `extend_or_return=return_generator_s9`.  
+Nona handback (while nest-9 walks): `return_surface_p41`.  
 Kiln remains **PAUSED** at o3/o4 (path cut LIVE).  
 Generator still carries its own lean `return_mur_u92` for when sext resumes.  
-Warn **p62** and **p63**: extend to **128**, return Generator **s9**, return MUR **u92**, or other word he seats.
+Warn **p62** and **p63** remain for when sept resumes.
 
 Geode stays **PREP** parallel (d0). Proven-seat / Genode / SixOS / Nix / s6 stay **HORIZON PARK** — do not steal p0–p15.
 

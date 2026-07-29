@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260729.125911` — [Nona Chapter n0 nest accuracy](20260729-125911_nona-season-n0-nest-accuracy.bron) — three · quad · nona deepest · no force-push
 - `20260729.000718` — [Surface Chapter p40 sur brush max bytes](20260729-000718_surface-season-p40-sur-brush-max-bytes.bron) — sur×6 bytes=16384
 - `20260729.000500` — [Kiln handback Surface p39](20260729-000500_oven-handback-surface-p39.bron) — sept OPEN · oct PAUSED
 - `20260729.000258` — [Kiln Chapter o3 inference plan](20260729-000258_oven-season-o3-inference-plan.bron) — residual queue empty
