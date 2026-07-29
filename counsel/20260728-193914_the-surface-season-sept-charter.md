@@ -8,7 +8,8 @@
 **Informal tag:** nest-7 · MUR is nest **three** (not “innermost” as living depth)  
 **Ground:** origin/main `d3e208613a` (pre-send) · Shape **B** seated from [s8 eval](20260728-193058_generator-season-s8-pond-gui-season-evaluation.md)  
 **Within:** paused **sext** Generator (s8 complete / s9 next) · paused MUR (**three**) · paused Inner · paused Constellation  
-**Status:** **OPEN** · p0–p41 complete · bookmark **p41 complete / p42 next** · resumed from Nona handback `20260729.131327`  
+**Status:** **OPEN** · p0–p42 complete · bookmark **p42 complete / p43 next** · resumed from Nona handback `20260729.131327`  
+Radiant pass `20260729.132224` — p42 sur brush-parse-error-count · sur×8  
 Radiant pass `20260729.131728` — p41 sur brush-max-pin-bytes · sur×7  
 Radiant pass `20260729.131327` — return_surface_p41 · Nona PAUSED · Surface finishing edge  
 Radiant pass `20260729.130911` — Nona n2 residual · Kiln/Generator living depth words  
@@ -69,7 +70,7 @@ Radiant pass `20260728.194334` — p1 tools/gen/anvil home LIVE · five corpus l
 | **quad** | Gren Chapter | lean-16 CLOSED | **CLOSED** |
 | **quint** | Keeh Chapter | lean-16 CLOSED | **CLOSED** |
 | **sext** | Generator Chapter | **s8 complete / s9 next** | **PAUSED** |
-| **sept** | **Surface Chapter** | **p41** complete / **p42** next | **OPEN** (finishing edge) |
+| **sept** | **Surface Chapter** | **p42** complete / **p43** next | **OPEN** (finishing edge) |
 | **oct** | Kiln Chapter | o3 complete / o4 next | **PAUSED** |
 | **nona** | Nona Chapter | n3 complete / n4 next | **PAUSED** (handed back) |
 
