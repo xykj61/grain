@@ -8,7 +8,8 @@
 **Informal tag:** nest-7 · MUR is nest **three** (not “innermost” as living depth)  
 **Ground:** origin/main `d3e208613a` (pre-send) · Shape **B** seated from [s8 eval](20260728-193058_generator-season-s8-pond-gui-season-evaluation.md)  
 **Within:** paused **sext** Generator (s8 complete / s9 next) · paused MUR (**three**) · paused Inner · paused Constellation  
-**Status:** **OPEN** · p0–p54 complete · bookmark **p54 complete / p55 next** · resumed from Nona handback `20260729.131327`  
+**Status:** **PAUSED** · p0–p54 complete · bookmark **p54 complete / p55 next** · Identity Remake inner opened `20260729.141658`  
+Radiant pass `20260729.141658` — Surface PAUSED · Identity Remake k0 · Codeberg retired  
 Radiant pass `20260729.140917` — p54 live-five type · :quit · idle/ceiling hand  
 Radiant pass `20260729.140251` — p53 check-in · recommend live-five  
 Radiant pass `20260729.140036` — p52 Frame tidy · glass Frame · from_brush  

@@ -1,7 +1,7 @@
 # Remote roster — canonical count
 
 **Language:** EN  
-**Seated:** `20260724.222620` · living refresh `20260725.185041`  
+**Seated:** `20260724.222620` · living refresh `20260729.141658`  
 **Voice:** Quin  
 **Status:** Living pin — single home for the pier's remote count  
 **Bound:** keep thin  
@@ -10,29 +10,34 @@
 
 ## Count (living — Grain / autoproject96)
 
-**Primary push targets** for the Grain pier (`20260725.185041`):
+**Primary push targets** for the Grain pier (`20260729.141658`):
 
 | Remote | Forge |
 |--------|-------|
 | `origin` | GitHub `autoproject96/grain` |
-| `codeberg` | Codeberg `autoproject96/grain` |
 
-**Legacy remotes** (history hand-off · optional mirror):
+**Retired from living push** (`20260729.141658`):
+
+| Remote | Forge | Why |
+|--------|-------|-----|
+| `codeberg` | Codeberg `autoproject96/grain` | Codeberg Terms (July 2026) bar mostly-LLM projects and cryptocurrency-related projects; Grain pauses Codeberg until a new second forge is chosen |
+
+**Legacy remotes** (history hand-off · optional · not living push):
 
 | Remote | Forge |
 |--------|-------|
 | `xykj61-github` | GitHub `xykj61/urbit` |
-| `xykj61-codeberg` | Codeberg `xykj61/urbit` |
-| `gp36-codeberg` | Codeberg groupproject36 (when configured) |
+| `xykj61-codeberg` | Codeberg `xykj61/urbit` (retired with Codeberg living push) |
+| `gp36-codeberg` | Codeberg groupproject36 (retired with Codeberg living push) |
 | `gp36-github` | GitHub groupproject36 (when configured) |
 
-**This Framework pier today:** `origin` + `codeberg` → autoproject96/grain · xykj61 legacy remotes present. Multi-remote fan-out is a host ritual, manual and signed.
+**This Framework pier today:** `origin` only → `autoproject96/grain` on GitHub.
 
 **Push law:** [`.cursor/rules/git-signing.mdc`](../.cursor/rules/git-signing.mdc) · [`.claude/rules/git-signing.md`](../.claude/rules/git-signing.md)
 
 ## Erratum note
 
-Dated counsel and workshop prose that say *four remotes* under veganreyklah2 / *five remotes* are historical testimony. Living primary forges are **autoproject96/grain** on GitHub and Codeberg. Those dated pages take an erratum line pointing here; they are not silently rewritten (Tier 2).
+Dated counsel that says dual GitHub+Codeberg primary forges is historical through `20260729.141658`. Living primary is **GitHub alone**.
 
 ---
 
