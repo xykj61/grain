@@ -1,0 +1,13 @@
+::  name       brush skate cols
+::  shape      cols - int (@u32)
+::  invariant  thin Skate proof grid width for BrushFrame→skate_grid is forty cells
+::  example    40
+::  readers    Brushstroke · Surface · skate_grid · .brush lower
+::  nib        surface-p30-v0
+::
+::  Surface Season p30 — fourth pedestal in src/sur (structure museum).
+::  Names brush_skate_cols in brushstroke/brush_parse.rye (p28). Does not
+::  invent a Wayland window · skate/ graduation · or Realidream invent.
++$  brush-skate-cols-shape
+  $:  cols=@u32
+  ==

@@ -1,7 +1,7 @@
 # src — the Glow Userland
 
 **Language:** EN
-**Last updated:** 2026-07-28 (Surface p22 — `sec/` second pedestal; `web/` refused)
+**Last updated:** 2026-07-28 (Surface p30 — `sur/` fourth pedestal; `web/` refused)
 **Style:** Radiant (see [`../context/RADIANT_STYLE.md`](../context/RADIANT_STYLE.md))
 **Status:** Living — the accreted home for code *written in Glow*; the Glow implementation itself (tokenizer, runes, lowerers, in Rye) keeps its home at [`../glow/`](../glow/README.md)
 
