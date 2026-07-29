@@ -8,7 +8,8 @@
 **Informal tag:** nest-8 · not innermost (MUR keeps u91/u92)  
 **Ground:** origin/main `cb217be6ce` (pre-send) · path survey [p38](20260728-233638_surface-season-p38-anvil-path-breach-survey.md) · Kiln name [p36](20260728-232511_surface-season-p36-kiln-seated.md)  
 **Within:** paused **sept** Surface (p38 complete / p39 next) · paused Generator · paused MUR · paused Inner · paused Constellation  
-**Status:** **OPEN** · o0 complete this stamp · **o1** next (cut kiln path)  
+**Status:** **OPEN** · o0–o1 complete · bookmark **o1 complete / o2 next**  
+Radiant pass `20260728.235520` — o1 path cut anvil/ → kiln/ LANDED  
 Radiant pass `20260728.234419` — oct opens · Surface pause · Keaton seat approved  
 
 *Written together by Keaton and Quin.*
@@ -26,7 +27,7 @@ Radiant pass `20260728.234419` — oct opens · Surface pause · Keaton seat app
 | **quint** | Keeh Chapter | lean-16 CLOSED | **CLOSED** |
 | **sext** | Generator Chapter | **s8 complete / s9 next** | **PAUSED** |
 | **sept** | Surface Chapter | **p38 complete / p39 next** | **PAUSED** |
-| **oct** | **Kiln Chapter** | **o0** complete / **o1** next | **OPEN** |
+| **oct** | **Kiln Chapter** | **o1** complete / **o2** next | **OPEN** |
 
 Handback lean (park until horizon): `extend_or_return=return_surface_p39`.  
 Surface still carries `return_generator_s9` for when sept resumes.  
