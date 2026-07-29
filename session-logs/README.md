@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260729.162032` — [Identity Remake k6 handback return Surface p55](20260729-162032_identity-remake-k6-handback-return-surface-p55.bron) — Identity PAUSED · Surface OPEN
 - `20260729.160015` — [Identity Remake k5 it worked check-in](20260729-160015_identity-remake-k5-it-worked-check-in.bron) — confirm GREEN · recommend handback
 - `20260729.155634` — [Identity Remake k3 k4 rewrite force-push](20260729-155634_identity-remake-k3-k4-rewrite-force-push.bron) — history rewrite · origin force-push GREEN
 - `20260729.141658` — [Identity Remake k0 seat keys art](20260729-141658_identity-remake-k0-seat-keys-art.bron) — Livermore · GitHub-only · Codeberg retired
