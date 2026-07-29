@@ -1,0 +1,13 @@
+::  name       brush max bytes
+::  shape      bytes - int (@u32)
+::  invariant  .brush source ceiling is sixteen kibibytes (max_brush_bytes)
+::  example    16384
+::  readers    Brushstroke · Surface · .brush lower · refuse suite
+::  nib        surface-p40-v0
+::
+::  Surface Season p40 — sixth pedestal in src/sur (structure museum).
+::  Names max_brush_bytes in brushstroke/brush_parse.rye (16 * 1024).
+::  Does not invent a Wayland window · skate/ graduation · or Realidream invent.
++$  brush-max-bytes-shape
+  $:  bytes=@u32
+  ==
