@@ -1,0 +1,14 @@
+::  name       mand ring count
+::  shape      rings - int (@u32)
+::  invariant  Mand carries three witnessed rings: ring-1 · ring-2 · ring-3
+::  example    3
+::  readers    Mand · Pool · Surface sec room
+::  nib        surface-p22-v0
+::
+::  Surface Chapter p22 — second pedestal in src/sec (security room).
+::  Names Mand’s three rings already GREEN (ring-1 capability check ·
+::  ring-2 · ring-3 test-only reach). Does not invent Mand policy ·
+::  a fourth ring · or move Mand out of mand/.
++$  mand-ring-count-shape
+  $:  rings=@u32
+  ==
