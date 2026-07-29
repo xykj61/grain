@@ -7,7 +7,7 @@
 
 say "first-resident: Language EN — Glow desks that live in src/."
 say "first-resident: Style Radiant — prove the desks; refuse shred."
-say "first-resident: Lens TAME — Surface Season p19."
+say "first-resident: Lens TAME — Surface Season p20."
 
 let zig = "vendor/zig-toolchain/zig"
 
@@ -53,6 +53,19 @@ assert fbound.out contains "BOUND_OK" else "first-resident: sur frame max_lines=
 let fgate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" fdesk]
 assert fgate.ok else "first-resident: sur frame shape lower/build/run failed"
 assert fgate.out contains "EXIT:0" else "first-resident: sur frame shape did not exit 0"
+
+say "first-resident: sur frame-seed-line-count pedestal..."
+let ldesk = "src/sur/shape-frame-seed-line-count.glow"
+let lplacard = run ["sh" "-c" "head -n 7 src/sur/shape-frame-seed-line-count.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+assert lplacard.ok else "first-resident: sur seed-lines placard scan failed"
+let lcount = trim lplacard.out
+assert lcount == "6" else "first-resident: sur seed-lines placard missing six lines"
+let lnotes = run ["sh" "-c" "grep -q 'example    3' src/sur/shape-frame-seed-line-count.glow && grep -q 'seed.rye' src/sur/shape-frame-seed-line-count.glow && grep -q 'seed-frame.brush' src/sur/shape-frame-seed-line-count.glow && echo SEED_OK"]
+assert lnotes.ok else "first-resident: sur seed-lines notes scan failed"
+assert lnotes.out contains "SEED_OK" else "first-resident: sur seed Frame three lines not named"
+let lgate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" ldesk]
+assert lgate.ok else "first-resident: sur seed-lines shape lower/build/run failed"
+assert lgate.out contains "EXIT:0" else "first-resident: sur seed-lines shape did not exit 0"
 
 say "first-resident: til tilak-root-count..."
 let tdesk = "src/til/tilak-root-count.glow"
@@ -106,6 +119,6 @@ let ugate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" udesk]
 assert ugate.ok else "first-resident: app tube0 shape lower/build/run failed"
 assert ugate.out contains "EXIT:0" else "first-resident: app tube0 shape did not exit 0"
 
-say "GREEN: first-resident — lib · sur×2 · til×2 · app×2 · Surface p19"
+say "GREEN: first-resident — lib · sur×3 · til×2 · app×2 · Surface p20"
 say "GREEN: first-resident — Glow userland desks live at home first."
 

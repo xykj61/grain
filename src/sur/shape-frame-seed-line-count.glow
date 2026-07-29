@@ -1,0 +1,13 @@
+::  name       frame seed line count
+::  shape      lines - int (@u32)
+::  invariant  stdout seed Frame example always carries three non-empty lines
+::  example    3
+::  readers    Brushstroke · Surface · connector hop 3 · .brush fixture
+::  nib        surface-p20-v0
+::
+::  Surface Season p20 — third pedestal in src/sur (structure museum).
+::  Names the living example Frame in brushstroke/seed.rye (three lines),
+::  matching seed-frame.brush. Does not invent a second Frame type.
++$  frame-seed-line-count-shape
+  $:  lines=@u32
+  ==
