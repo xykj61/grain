@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.205833` — [History tidy · full REMEMBER pin habit](20260728-205833_history-tidy-remember-pin-squash-full.bron) — 331 dropped · p20 next
 - `20260728.205029` — [Surface history tidy · REMEMBER pin squash](20260728-205029_surface-season-history-tidy-remember-pin-squash.bron) — same-commit nib · p20 next
 - `20260728.204647` — [Surface Season p19 app tube0-manifest-fields](20260728-204647_surface-season-p19-app-tube0-manifest-fields.bron) — four fields · packaging held · p20 next
 - `20260728.204222` — [Surface Season p18 til manifest-field-count](20260728-204222_surface-season-p18-til-manifest-field-count.bron) — three fields · %tile held · p19 next
