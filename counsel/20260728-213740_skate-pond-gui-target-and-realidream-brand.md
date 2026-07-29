@@ -1,7 +1,7 @@
 # Skate as Pond GUI Target · Realidream as Branded Face
 
 **Stamp:** `20260728.213740` · **Voice:** Quin · **Season:** Surface · **Scope:** sept (design lean beside p26)  
-**Prior:** [p26 Frame lower](20260728-213205_surface-season-p26-brush-frame-lower.md) · [p16 Pond GUI spine](20260728-203321_surface-season-p16-pond-gui-spine.md) · foundations [Realidream](../foundations/20260629-063512_realidream.md) · [modules · aspects](../active-designing/20260702-031312_modules-aspects-and-mailable-money.md)  
+**Prior:** [p26 Frame lower](20260728-213205_surface-season-p26-brush-frame-lower.md) · [p16 Pond GUI spine](20260728-203321_surface-season-p16-pond-gui-spine.md) · foundations [Realidream living](../foundations/20260728-220203_realidream.md) · [modules · aspects](../active-designing/20260702-031312_modules-aspects-and-mailable-money.md)  
 **Ask:** *maybe we should think of Realidream as being a special branded instantiation of the more general Skate where Skate is the GUI target framework layer of Pond within its assigned module==vane?*  
 **Status:** **SEATED** `20260728.213917` — Keaton **seat yes** · lexicon rewritten same stamp  
 

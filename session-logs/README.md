@@ -4,6 +4,8 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.220203` — [Surface Season p29 Realidream mutant](20260728-220203_surface-season-p29-realidream-mutant.bron) — living foundation · breach · p30 next
+- `20260728.215923` — [Realidream mutant foundation ask](20260728-215923_realidream-mutant-season-ask.bron) — yes mutant+breach · no new innermost · seat held
 - `20260728.215608` — [Surface Season p28 brush skate grid](20260728-215608_surface-season-p28-brush-skate-grid.bron) — BrushFrame→skate_grid · p29 next
 - `20260728.215052` — [Surface Season p27 brush stdout redraw](20260728-215052_surface-season-p27-brush-stdout-redraw.bron) — Skate lean · p28 next
 - `20260728.213917` — [Skate Realidream lean seated](20260728-213917_skate-realidream-lean-seated.bron) — lexicon rewritten · p27 next

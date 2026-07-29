@@ -15,7 +15,7 @@ Radiant pass `20260725.035453`
 
 ## Why We Build It Ourselves
 
-The rest of the system wants intelligence a person can trust: help to write and read in [Realidream](20260629-063512_realidream.md), analysis for the civic platform, a plain answer to a plain question. The common way to get that intelligence hands a person's own words to a distant company that mines them for its own ends. We choose a different way and build the model layer ourselves, openly, so the help a person receives never costs them their privacy or their standing. The work divides cleanly into three, and each part earns a name.
+The rest of the system wants intelligence a person can trust: help to write and read in [Realidream](20260728-220203_realidream.md), analysis for the civic platform, a plain answer to a plain question. The common way to get that intelligence hands a person's own words to a distant company that mines them for its own ends. We choose a different way and build the model layer ourselves, openly, so the help a person receives never costs them their privacy or their standing. The work divides cleanly into three, and each part earns a name.
 
 ## Anvil — The Forge
 
@@ -39,7 +39,7 @@ Intelligence here keeps the same discipline as everything beneath it. Every stru
 
 ## How It Joins the Rest
 
-Lattice's answers flow into [Realidream](20260629-063512_realidream.md)'s surface, the quiet help in the editor and the browser. Lantern's tokens settle on the ledger beside the local currency, so a person's use of the model circulates value the same way their other exchanges do. Anvil forges on the same green wafer-scale compute [the wafer and the sovereign coin](20260629-063512_the-wafer-and-the-sovereign-coin.md) describes, so the model and the machine share one foundation. And all three keep the four promises we ask of any tool: they do no harm to the person they serve, they tell the truth in records anyone can read, they hold lightly and leave every door open, and they stay kind by default. The model is a guest in the commons, never a landlord over it.
+Lattice's answers flow into [Realidream](20260728-220203_realidream.md)'s surface, the quiet help in the editor and the browser. Lantern's tokens settle on the ledger beside the local currency, so a person's use of the model circulates value the same way their other exchanges do. Anvil forges on the same green wafer-scale compute [the wafer and the sovereign coin](20260629-063512_the-wafer-and-the-sovereign-coin.md) describes, so the model and the machine share one foundation. And all three keep the four promises we ask of any tool: they do no harm to the person they serve, they tell the truth in records anyone can read, they hold lightly and leave every door open, and they stay kind by default. The model is a guest in the commons, never a landlord over it.
 
 ---
 
