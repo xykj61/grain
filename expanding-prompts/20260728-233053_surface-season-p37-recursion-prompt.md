@@ -1,15 +1,15 @@
 # Surface Chapter — Recursion Prompt (printout · seven scopes · p37)
 
-**Stamp:** `20260728.233053` · Radiant pass `20260728.233638` (p38 path survey)  
-**Living printout:** [`20260728-234419_oven-season-o0-recursion-prompt.md`](20260728-234419_oven-season-o0-recursion-prompt.md) (Kiln oct · Surface paused).  
-**Use (Surface-era artifact):** paste only when replaying sept; prefer the Kiln printout above.  
+**Stamp:** `20260728.233053` · Radiant pass `20260728.235951` (o2 residual · homes oven/)  
+**Living printout:** [`20260728-234419_oven-season-o0-recursion-prompt.md`](20260728-234419_oven-season-o0-recursion-prompt.md) (Oven oct · Surface paused).  
+**Use (Surface-era artifact):** paste only when replaying sept; prefer the Oven printout above.  
 **Supersedes printout lean of:** [`20260728-193914_surface-season-p0-recursion-prompt.md`](20260728-193914_surface-season-p0-recursion-prompt.md) (p0 opener kept as dated artifact).
 
 **Sundial:** `rishi/bin/rishi run tools/gen/chapter/sundial.rish` · `prin sundial`  
 **Scope:** `rishi/bin/rishi run tools/gen/chapter/prin_scope.rish` · `prin scope`  
 **Study choir:** `rishi/bin/rishi run tools/gen/chapter/surface_study_choir.rish` (needs `WAYLAND_DISPLAY`)  
 **First-resident:** `rishi/bin/rishi run tools/gen/chapter/src_first_resident_witness.rish`  
-**Kiln seat:** `rishi/bin/rishi run tools/gen/chapter/oven_seat_witness.rish`  
+**Oven seat:** `rishi/bin/rishi run tools/gen/chapter/oven_seat_witness.rish`  
 **Brush parse:** `rishi/bin/rishi run tools/gen/chapter/brush_parse_witness.rish`
 
 ---
@@ -38,7 +38,7 @@ CORE · QUINT (CLOSED — handed back — do not advance g/q-rounds):
 
 SEXT SCOPE (paused — do not advance s-rounds):
   Generator Chapter PAUSED at s8 complete / s9 next.
-  Homes LIVE: tools/gen/chapter/ · fund/ · amphora/ · anvil/.
+  Homes LIVE: tools/gen/chapter/ · fund/ · amphora/ · oven/.
   Handback lean when Generator resumes: return_mur_u92.
   Charter: counsel/20260728-183510_the-generator-season-sext-charter.md
 
@@ -55,14 +55,14 @@ SEPT SCOPE (OPEN — walk here):
     p28 skate_grid from BrushFrame (headless).
     p29 Realidream living mutant.
     p30 sur brush-skate-cols (cols=40).
-    p31 horizon thin (graph + lantern living; lantern later Kiln).
+    p31 horizon thin (graph + lantern living; lantern later Oven).
     p32 shred-prep Class H habit.
     p33 wafer living mutant.
     p34 transitive writing crawl (BFS foundations→leaves).
     p35 check-in.
-    p36 Kiln seated (forge was Anvil; anvil/ path HELD).
+    p36 Oven seated (forge was Anvil; anvil/ path HELD).
     p37 sur brush-skate-rows (rows=8 = max_frame_lines).
-    p38 anvil/ path-breach survey SEATED — target kiln/ · not cut
+    p38 anvil/ path-breach survey SEATED — target oven/ · not cut
       (14 Skate views · drawn_terminal · gen/anvil · parity).
 
   First residents LIVE:
@@ -73,12 +73,12 @@ SEPT SCOPE (OPEN — walk here):
     Skate = GUI target (Brushstroke aspect; Pond targets it).
     Realidream = branded Pond/Pool face over Skate + one graph
       (lean seated 20260728.213917 · living foundations/20260728-220203_realidream.md).
-    Kiln = living forge faculty (was Anvil name)
-      foundations/20260728-232511_lantern-lattice-kiln.md · QUIN bake voice.
+    Oven = living forge faculty (was Anvil name)
+      foundations/20260728-232511_lantern-lattice-oven.md · QUIN bake voice.
     %tile HELD. src/web REFUSED. invent HELD.
 
   Living mutants (Class H fossils listed in work-in-progress/SHRED_PREP.md):
-    Realidream · graph-beneath · wafer · Kiln (lantern).
+    Realidream · graph-beneath · wafer · Oven (lantern).
   Dated Class H seat-waiters (not mutated this arc):
     money-that-stays-close-to-home · the-device-that-forgets ·
     mantrapod-venture-pitch · a-home-in-plain-text (held) ·
@@ -95,11 +95,11 @@ HARD LINES:
   no JS/HTML/CSS/JSON home tongue · no OS infusion as early rungs ·
   first-resident routine · vegan-dogfood easter-egg only ·
   no m/i/u/g/q/s advance while sept walks · %tile not seated yet ·
-  anvil/ path SURVEY SEATED (cut waits approve-breach / cut kiln path) ·
+  anvil/ path SURVEY SEATED (cut waits approve-breach / cut oven path) ·
   living Status uses bare living mutant (no markdown link to fossil).
 
 NEXT (p39):
-  cut kiln path (approve breach) · more pedestals · dated Class H batch
+  cut oven path (approve breach) · more pedestals · dated Class H batch
   on word · or Wayland/live-five on word — check-in if a seam asks.
 
 Bench: prin scope · src_first_resident_witness · glow_connector_seam_witness ·

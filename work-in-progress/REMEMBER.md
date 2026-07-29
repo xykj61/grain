@@ -6,14 +6,14 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260728.235520` (EDT) · voice Quin  
+**Last refreshed:** `20260728.235951` (EDT) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2 · ring-3** · **THREATS** · **five pillars** · **accrete tiers** · **redaction stance** · **always-in-it rhythm** · **Prin / %prin** · **sundial**  
 **Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list1024 · Env512 · **stamp @u64 · Crockford** · **shape aura floor** · **Glow text floor GREEN** · **Glow Book weave GREEN (C2b)** · **baked-sample Acme gloss** · **first resident** (routine) · **vegan-dogfood** (easter egg) · **living mutant** · **shred-prep list** · **transitive writing crawl** · **Kiln** (was forge Anvil) · **oct**  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand home** · **siblings seated** · **--cursor launch** · **Pond counsel 161616** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm+cold REPORT** · **Grain umbrella living** · **OQ #1 · #3 · #4 · #5 answered** · **pass ledger** · **campaign STOPPED** · **growth law** · **wasmtime ABSENT** · **monocypher 4.0.3 GREEN** · **MAP.md** · **breach T3–T4** · **U·V·I** · **C-Ladder C1·C2·C2b landed** · **r18 say/lint twin** · **r21 Verse · O1** · **r22 outside eyes** · **Prin** · **corpus twin fold seated (Sound r11)** · **C3–C5 await homes**  
-**Git nib:** `3650e67662` · Grain · **Kiln o1** · kiln/ path cut · autoproject96/grain
-**Bookmark:** [`counsel/20260728-235520_oven-season-o1-path-cut.md`](../counsel/20260728-235520_oven-season-o1-path-cut.md)
+**Git nib:** `16368c46da` · Grain · **Kiln o2** · residual tidy · autoproject96/grain
+**Bookmark:** [`counsel/20260728-235951_oven-season-o2-residual-tidy.md`](../counsel/20260728-235951_oven-season-o2-residual-tidy.md)
 
-**Chapter:** Framework · EDT · **Grain** · **finishing edge:** **oct Kiln** — o1 path cut **LANDED** / o2 next · `kiln/` LIVE · `anvil/` gone · Surface **PAUSED** p38/p39 · Generator **PAUSED** s8/s9 · MUR **PAUSED** u91/u92 · handback `return_surface_p39` · Geode PREP · OS horizon PARK · F undisturbed. Prefer **git nib**. · `prin scope`
+**Chapter:** Framework · EDT · **Grain** · **finishing edge:** **oct Kiln** — o2 residual tidy **SEATED** / o3 next · `kiln/` LIVE · Surface **PAUSED** p38/p39 · Generator **PAUSED** s8/s9 · MUR **PAUSED** u91/u92 · handback `return_surface_p39` · Geode PREP · OS horizon PARK · F undisturbed. Prefer **git nib**. · `prin scope`
 
 ---
 
@@ -55,11 +55,11 @@ WOV retirement stays **roadmap last**. No live deploy · wallet · gas · privat
 
 | Door | Kind |
 |------|------|
-| **Kiln Chapter o2+** | **OPEN** · metal tidy residual |
+| **Kiln Chapter o3+** | **OPEN** · further residual · or handback check-in |
 | **Recursion printout** | **SEATED** · `expanding-prompts/20260728-234419_oven-season-o0-recursion-prompt.md` |
 | **Surface Chapter** | **PAUSED** p38/p39 · resume on Kiln handback |
 | **Kiln (name)** | **SEATED** p36 · living forge · bread not blades |
-| **`kiln/` path** | **CUT LANDED** o1 · accrete shims at old anvil tool paths |
+| **`kiln/` path** | **CUT LANDED** o1 · residual tidy o2 |
 | **Transitive writing crawl** | **SEATED** p34 · BFS foundations to leaves |
 | **Shred-prep list** | **SEATED** · Class H · shred RED |
 | **Horizon / Realidream / Skate lean** | **SEATED** · invent held |
