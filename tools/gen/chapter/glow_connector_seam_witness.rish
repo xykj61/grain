@@ -30,6 +30,8 @@ let desk3e = run ["test" "-f" "src/sur/shape-brush-skate-rows.glow"]
 assert desk3e.ok else "glow-connector: hop1 sur brush-skate-rows pedestal missing"
 let desk3f = run ["test" "-f" "src/sur/shape-brush-max-bytes.glow"]
 assert desk3f.ok else "glow-connector: hop1 sur brush-max-bytes pedestal missing"
+let desk3g = run ["test" "-f" "src/sur/shape-brush-max-pin-bytes.glow"]
+assert desk3g.ok else "glow-connector: hop1 sur brush-max-pin-bytes pedestal missing"
 let desk4 = run ["test" "-f" "src/til/tilak-root-count.glow"]
 assert desk4.ok else "glow-connector: hop1 til pedestal missing"
 let desk4b = run ["test" "-f" "src/til/shape-manifest-field-count.glow"]
