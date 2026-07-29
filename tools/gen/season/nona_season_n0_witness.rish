@@ -1,0 +1,27 @@
+# tools/gen/season/nona_season_n0_witness.rish — Nona Season n0 seat.
+#
+#   rishi/bin/rishi run tools/gen/season/nona_season_n0_witness.rish
+
+say "nona-season-n0: Language EN — true deepest nest; nest accuracy."
+say "nona-season-n0: Style Radiant — rename living depth; refuse force-push."
+say "nona-season-n0: Lens TAME — Nona Season n0."
+
+let charter = run ["test" "-f" "counsel/20260729-125911_the-nona-season-charter.md"]
+assert charter.ok else "nona-season-n0: nona charter missing"
+let bow = run ["test" "-f" "counsel/20260729-125911_nona-season-n0-bow-nest-accuracy.md"]
+assert bow.ok else "nona-season-n0: n0 bow missing"
+
+let lex = run ["sh" "-c" "grep -q '^\| \*\*three\*\*' context/LEXICON.md && grep -q '^\| \*\*quad\*\*' context/LEXICON.md && grep -q '^\| \*\*nona\*\*' context/LEXICON.md && grep -q 'Retired living depth word' context/LEXICON.md && echo LEX_OK"]
+assert lex.ok else "nona-season-n0: lexicon scan failed"
+assert lex.out contains "LEX_OK" else "nona-season-n0: three · quad · nona not seated"
+
+let scope = run ["sh" "-c" "grep -q 'nona:  Nona Season — OPEN' tools/gen/season/prin_scope.rish && grep -q 'three:  MUR Season' tools/gen/season/prin_scope.rish && grep -q 'quad:   Gren Season' tools/gen/season/prin_scope.rish && grep -q 'sept:   Surface Season — PAUSED' tools/gen/season/prin_scope.rish && grep -q 'return_surface_p41' tools/gen/season/prin_scope.rish && echo SCOPE_OK"]
+assert scope.ok else "nona-season-n0: prin_scope pin scan failed"
+assert scope.out contains "SCOPE_OK" else "nona-season-n0: nine-nest slate incomplete"
+
+let refuse = run ["sh" "-c" "grep -q 'no force-push' counsel/20260729-125911_the-nona-season-charter.md && grep -q 'No force-push' counsel/20260729-125911_the-nona-season-charter.md && echo REFUSE_OK"]
+assert refuse.ok else "nona-season-n0: force-push refuse scan failed"
+assert refuse.out contains "REFUSE_OK" else "nona-season-n0: force-push must stay refused"
+
+say "GREEN: nona-season-n0 — nona OPEN · three · quad · Surface PAUSED · Nona Season"
+say "GREEN: nona-season-n0 — nest accuracy seated · history not force-pushed."
