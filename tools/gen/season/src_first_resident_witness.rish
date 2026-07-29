@@ -7,7 +7,7 @@
 
 say "first-resident: Language EN — Glow desks that live in src/."
 say "first-resident: Style Radiant — prove the desks; refuse shred."
-say "first-resident: Lens TAME — Surface Season p11."
+say "first-resident: Lens TAME — Surface Season p13."
 
 let zig = "vendor/zig-toolchain/zig"
 
@@ -54,6 +54,19 @@ let tgate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" tdesk]
 assert tgate.ok else "first-resident: til shape lower/build/run failed"
 assert tgate.out contains "EXIT:0" else "first-resident: til shape did not exit 0"
 
-say "GREEN: first-resident — lib · sur · til · Surface p11"
+say "first-resident: app pool-agent-slot..."
+let adesk = "src/app/shape-pool-agent-slot.glow"
+let aplacard = run ["sh" "-c" "head -n 7 src/app/shape-pool-agent-slot.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+assert aplacard.ok else "first-resident: app placard scan failed"
+let acount = trim aplacard.out
+assert acount == "6" else "first-resident: app placard missing six lines"
+let apool = run ["sh" "-c" "grep -q 'Pool' src/app/shape-pool-agent-slot.glow && grep -q 'Gall-role' src/app/shape-pool-agent-slot.glow && grep -q 'TUBE' src/app/shape-pool-agent-slot.glow && grep -q 'pond/apps' src/app/shape-pool-agent-slot.glow && echo POOL_OK"]
+assert apool.ok else "first-resident: app Pool/TUBE notes scan failed"
+assert apool.out contains "POOL_OK" else "first-resident: app Pool · Gall · TUBE · pond/apps not named"
+let agate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" adesk]
+assert agate.ok else "first-resident: app shape lower/build/run failed"
+assert agate.out contains "EXIT:0" else "first-resident: app shape did not exit 0"
+
+say "GREEN: first-resident — lib · sur · til · app · Surface p13"
 say "GREEN: first-resident — Glow userland desks live at home first."
 

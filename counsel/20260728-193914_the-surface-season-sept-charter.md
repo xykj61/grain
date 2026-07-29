@@ -8,7 +8,8 @@
 **Informal tag:** nest-7 · not innermost (MUR keeps u91/u92)  
 **Ground:** origin/main `d3e208613a` (pre-send) · Shape **B** seated from [s8 eval](20260728-193058_generator-season-s8-pond-gui-season-evaluation.md)  
 **Within:** paused **sext** Generator (s8 complete / s9 next) · paused MUR · paused Inner · paused Constellation  
-**Status:** **OPEN** · p0–p12 complete `20260728.201911` · **p13** next  
+**Status:** **OPEN** · p0–p13 complete `20260728.202548` · **p14** next  
+Radiant pass `20260728.202548` — p13 src/app pool-agent-slot · Pool named  
 Radiant pass `20260728.201911` — p12 thin .brush fixture · parser held  
 Radiant pass `20260728.201630` — p11 src/til tilak-root-count · %tile held  
 Radiant pass `20260728.201349` — p10 src/sur shape-surface-count first resident  
@@ -37,7 +38,7 @@ Radiant pass `20260728.194334` — p1 tools/gen/anvil home LIVE · five corpus l
 | **core** | Gren Season | lean-16 CLOSED | **CLOSED** |
 | **quint** | Keeh Season | lean-16 CLOSED | **CLOSED** |
 | **sext** | Generator Season | **s8 complete / s9 next** | **PAUSED** |
-| **sept** | **Surface Season** | **p12** complete / **p13** next | **OPEN** |
+| **sept** | **Surface Season** | **p13** complete / **p14** next | **OPEN** |
 
 Handback lean (park until horizon): `extend_or_return=return_generator_s9`.  
 Generator still carries its own lean `return_mur_u92` for when sext resumes.  
