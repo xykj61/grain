@@ -18,5 +18,6 @@
 | `pond_brushstroke_frame_witness.rish` | Surface p6 · redrawtest + Pond metalsmoke |
 | `surface_study_choir.rish` | Surface p7 · p2–p6 residual choir |
 | `one_graph_dag_paper_witness.rish` | Surface p8 · DAG paper pins present |
+| `brush_shape_witness.rish` | Surface p12 · thin `.brush` fixture pins |
 
 Old paths under `tools/*.rish` remain as accrete shims. Prefer the homes here for new edits.
