@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.204222` — [Surface Chapter p18 til manifest-field-count](20260728-204222_surface-season-p18-til-manifest-field-count.bron) — three fields · %tile held · p19 next
 - `20260728.203606` — [Surface Chapter p17 graph redraw spine](20260728-203606_surface-season-p17-graph-redraw-spine.bron) — paper+redrawtest · p18 next
 - `20260728.203321` — [Surface Chapter p16 Pond GUI spine](20260728-203321_surface-season-p16-pond-gui-spine.bron) — constructive fold · live-five hand · p17 next
 - `20260728.202928` — [Surface Chapter p15 sur frame-max-lines](20260728-202928_surface-season-p15-sur-frame-max-lines.bron) — Frame bound · p16 next
