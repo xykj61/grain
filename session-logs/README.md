@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260729.155634` — [Identity Remake k3 k4 rewrite force-push](20260729-155634_identity-remake-k3-k4-rewrite-force-push.bron) — history rewrite · origin force-push GREEN
 - `20260729.141658` — [Identity Remake k0 seat keys art](20260729-141658_identity-remake-k0-seat-keys-art.bron) — Livermore · GitHub-only · Codeberg retired
 - `20260729.140917` — [Surface Season p54 live-five type quit](20260729-140917_surface-season-p54-live-five-type-quit.bron) — type · :quit GREEN · idle/ceiling hand
 - `20260729.140523` — [Surface Season p54 waits word](20260729-140523_surface-season-p54-waits-word.bron) — hold · prior p53 stands
