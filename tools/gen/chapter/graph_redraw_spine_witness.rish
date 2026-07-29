@@ -31,9 +31,9 @@ let bound = run ["test" "-f" "src/sur/shape-frame-max-lines.glow"]
 assert bound.ok else "graph-redraw: frame-max-lines pedestal missing"
 let brush = run ["test" "-f" "brushstroke/seed-frame.brush"]
 assert brush.ok else "graph-redraw: seed-frame.brush missing"
-let tilak = run ["sh" "-c" "grep -q 'plain-bytes' src/til/tilak-root-count.glow && grep -q 'manifest' src/til/tilak-root-count.glow && echo TILAK_OK"]
+let tilak = run ["sh" "-c" "grep -q 'plain-bytes' src/til/tilak-root-count.glow && grep -q 'manifest' src/til/tilak-root-count.glow && test -f src/til/shape-manifest-field-count.glow && echo TILAK_OK"]
 assert tilak.ok else "graph-redraw: tilak roots scan failed"
-assert tilak.out contains "TILAK_OK" else "graph-redraw: tilak roots not named"
+assert tilak.out contains "TILAK_OK" else "graph-redraw: tilak roots / manifest-field pedestal not named"
 
 say "graph-redraw: refuse second graph · VDOM · live-five claim · shred · O3"
 say "GREEN: graph-redraw — paper · redrawtest · Frame/.brush/Tilak · Surface p17"
