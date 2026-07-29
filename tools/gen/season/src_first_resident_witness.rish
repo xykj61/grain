@@ -7,7 +7,7 @@
 
 say "first-resident: Language EN — Glow desks that live in src/."
 say "first-resident: Style Radiant — prove the desks; refuse shred."
-say "first-resident: Lens TAME — Surface Season p13."
+say "first-resident: Lens TAME — Surface Season p15."
 
 let zig = "vendor/zig-toolchain/zig"
 
@@ -41,6 +41,19 @@ let sgate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" sdesk]
 assert sgate.ok else "first-resident: sur shape lower/build/run failed"
 assert sgate.out contains "EXIT:0" else "first-resident: sur shape did not exit 0"
 
+say "first-resident: sur frame-max-lines pedestal..."
+let fdesk = "src/sur/shape-frame-max-lines.glow"
+let fplacard = run ["sh" "-c" "head -n 7 src/sur/shape-frame-max-lines.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+assert fplacard.ok else "first-resident: sur frame placard scan failed"
+let fcount = trim fplacard.out
+assert fcount == "6" else "first-resident: sur frame placard missing six lines"
+let fbound = run ["sh" "-c" "grep -q 'example    8' src/sur/shape-frame-max-lines.glow && grep -q 'max_lines' src/sur/shape-frame-max-lines.glow && grep -q 'seed.rye' src/sur/shape-frame-max-lines.glow && grep -q 'wayland_seed.rye' src/sur/shape-frame-max-lines.glow && echo BOUND_OK"]
+assert fbound.ok else "first-resident: sur frame bound notes scan failed"
+assert fbound.out contains "BOUND_OK" else "first-resident: sur frame max_lines=8 not named"
+let fgate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" fdesk]
+assert fgate.ok else "first-resident: sur frame shape lower/build/run failed"
+assert fgate.out contains "EXIT:0" else "first-resident: sur frame shape did not exit 0"
+
 say "first-resident: til tilak-root-count..."
 let tdesk = "src/til/tilak-root-count.glow"
 let tplacard = run ["sh" "-c" "head -n 7 src/til/tilak-root-count.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
@@ -67,6 +80,6 @@ let agate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" adesk]
 assert agate.ok else "first-resident: app shape lower/build/run failed"
 assert agate.out contains "EXIT:0" else "first-resident: app shape did not exit 0"
 
-say "GREEN: first-resident — lib · sur · til · app · Surface p13"
+say "GREEN: first-resident — lib · sur×2 · til · app · Surface p15"
 say "GREEN: first-resident — Glow userland desks live at home first."
 
