@@ -1,38 +1,77 @@
-# tools/gen/season/glow_connector_seam_witness.rish — Surface p5 · connector sketch pins
+# tools/gen/season/glow_connector_seam_witness.rish — Surface p5 sketch · p14 hop pins
 #
 #   rishi/bin/rishi run tools/gen/season/glow_connector_seam_witness.rish
 #
-# Orientation only — does not open a Wayland window.
+# Orientation only — does not open a Wayland window · does not lower .brush.
 
 say "glow-connector: Language EN — values · Frame · Wayland hop named."
-say "glow-connector: Style Radiant — sketch pins; refuse invent stack."
-say "glow-connector: Lens TAME — Surface Season p5."
+say "glow-connector: Style Radiant — harden hop pins; refuse invent stack."
+say "glow-connector: Lens TAME — Surface Season p14."
 
 let sketch = run ["test" "-f" "counsel/20260728-195456_surface-season-p5-glow-connector-seam-sketch.md"]
 assert sketch.ok else "glow-connector: p5 sketch counsel missing"
+let harden = run ["test" "-f" "counsel/20260728-202752_surface-season-p14-connector-harden.md"]
+assert harden.ok else "glow-connector: p14 harden counsel missing"
 
-let seed = run ["test" "-f" "brushstroke/wayland_seed.rye"]
-assert seed.ok else "glow-connector: wayland_seed.rye missing"
-
+say "glow-connector: hop 1 Glow/src userland..."
 let desk = run ["test" "-f" "src/lib/gate-surface-double-u32.glow"]
-assert desk.ok else "glow-connector: first-resident double desk missing"
+assert desk.ok else "glow-connector: hop1 double desk missing"
 let desk2 = run ["test" "-f" "src/lib/gate-surface-inc-u32.glow"]
-assert desk2.ok else "glow-connector: first-resident inc desk missing"
+assert desk2.ok else "glow-connector: hop1 inc desk missing"
 let desk3 = run ["test" "-f" "src/sur/shape-surface-count.glow"]
-assert desk3.ok else "glow-connector: first-resident sur pedestal missing"
+assert desk3.ok else "glow-connector: hop1 sur pedestal missing"
 let desk4 = run ["test" "-f" "src/til/tilak-root-count.glow"]
-assert desk4.ok else "glow-connector: first-resident til pedestal missing"
+assert desk4.ok else "glow-connector: hop1 til pedestal missing"
 let desk5 = run ["test" "-f" "src/app/shape-pool-agent-slot.glow"]
-assert desk5.ok else "glow-connector: first-resident app pedestal missing"
-
-let ledger = run ["test" "-f" "counsel/20260728-195228_surface-season-p4-river-zig-wayland-study-ledger.md"]
-assert ledger.ok else "glow-connector: p4 Wayland ledger missing"
-
+assert desk5.ok else "glow-connector: hop1 app pedestal missing"
 let hygiene = run ["test" "-f" "tools/gen/season/glow_hygiene_pin.rish"]
-assert hygiene.ok else "glow-connector: glow hygiene pin missing"
+assert hygiene.ok else "glow-connector: hop1 hygiene pin missing"
+let noweb = run ["sh" "-c" "test ! -d src/web && echo NOWEB"]
+assert noweb.ok else "glow-connector: hop1 src/web refuse check failed"
+assert noweb.out contains "NOWEB" else "glow-connector: src/web must stay refused"
 
+say "glow-connector: hop 2 Mantra Weave Tilak..."
+let weave = run ["test" "-f" "mantra/src/weave.rye"]
+assert weave.ok else "glow-connector: hop2 weave.rye missing"
+let graph = run ["test" "-f" "counsel/20260728-200159_surface-season-p8-one-graph-dag-redraw-paper.md"]
+assert graph.ok else "glow-connector: hop2 one-graph paper missing"
+let tilak = run ["sh" "-c" "grep -q 'plain-bytes' src/til/tilak-root-count.glow && grep -q 'manifest' src/til/tilak-root-count.glow && echo TILAK_OK"]
+assert tilak.ok else "glow-connector: hop2 tilak roots scan failed"
+assert tilak.out contains "TILAK_OK" else "glow-connector: hop2 tilak roots not named"
+
+say "glow-connector: hop 3 render to Frame..."
+let seed = run ["test" "-f" "brushstroke/seed.rye"]
+assert seed.ok else "glow-connector: hop3 seed.rye missing"
+let wayland = run ["test" "-f" "brushstroke/wayland_seed.rye"]
+assert wayland.ok else "glow-connector: hop3 wayland_seed.rye missing"
+let frame = run ["sh" "-c" "grep -q 'const Frame = struct' brushstroke/wayland_seed.rye && grep -q 'const Frame = struct' brushstroke/seed.rye && echo FRAME_OK"]
+assert frame.ok else "glow-connector: hop3 Frame scan failed"
+assert frame.out contains "FRAME_OK" else "glow-connector: hop3 Frame missing in seeds"
 let brush = run ["test" "-f" "brushstroke/seed-frame.brush"]
-assert brush.ok else "glow-connector: thin .brush fixture missing"
+assert brush.ok else "glow-connector: hop3 .brush fixture missing"
+let brush_frame = run ["sh" "-c" "grep -q 'present:    Frame' brushstroke/seed-frame.brush && grep -q 'at-nib:' brushstroke/seed-frame.brush && echo BRUSH_OK"]
+assert brush_frame.ok else "glow-connector: hop3 .brush Frame/nib scan failed"
+assert brush_frame.out contains "BRUSH_OK" else "glow-connector: hop3 .brush must name Frame at a nib"
 
-say "GREEN: glow-connector — sketch · seed · first-resident · ledger · hygiene · .brush pins present"
+say "glow-connector: hop 4 Brushstroke present Skate..."
+let skate = run ["test" "-f" "brushstroke/skate_grid.rye"]
+assert skate.ok else "glow-connector: hop4 skate_grid.rye missing"
+let present = run ["sh" "-c" "grep -q 'skate_grid.rye' brushstroke/wayland_seed.rye && grep -q 'to_grid' brushstroke/wayland_seed.rye && echo SKATE_OK"]
+assert present.ok else "glow-connector: hop4 Skate present scan failed"
+assert present.out contains "SKATE_OK" else "glow-connector: hop4 Frame to Skate path not named"
+
+say "glow-connector: hop 5 Wayland host..."
+let ledger = run ["test" "-f" "counsel/20260728-195228_surface-season-p4-river-zig-wayland-study-ledger.md"]
+assert ledger.ok else "glow-connector: hop5 Wayland ledger missing"
+let pond = run ["test" "-f" "tools/gen/season/pond_brushstroke_frame_witness.rish"]
+assert pond.ok else "glow-connector: hop5 pond frame witness missing"
+let host = run ["sh" "-c" "grep -q 'wayland-client.h' brushstroke/wayland_seed.rye && grep -q 'wl_display' brushstroke/wayland_seed.rye && echo HOST_OK"]
+assert host.ok else "glow-connector: hop5 host hop scan failed"
+assert host.out contains "HOST_OK" else "glow-connector: hop5 libwayland hop not named in seed"
+let glow_quiet = run ["sh" "-c" "rg -l 'wayland-client.h' src --glob '*.glow' 2>/dev/null | wc -l"]
+assert glow_quiet.ok else "glow-connector: hop5 Glow quiet scan failed"
+let leak_count = trim glow_quiet.out
+assert leak_count == "0" else "glow-connector: Glow src must not speak Wayland C"
+
+say "GREEN: glow-connector — hops 1-5 pinned · sketch · harden · refuse src/web"
 say "GREEN: glow-connector — Glow never speaks Wayland; Frame is the glass contract."

@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.202752` — [Surface Season p14 connector harden](20260728-202752_surface-season-p14-connector-harden.bron) — hops 1-5 pinned · p15 next
 - `20260728.202548` — [Surface Season p13 app first resident](20260728-202548_surface-season-p13-app-first-resident.bron) — Pool slot · p14 next
 - `20260728.201911` — [Surface Season p12 thin .brush fixture](20260728-201911_surface-season-p12-thin-brush-fixture.bron) — seed-frame · parser held · p13 next
 - `20260728.201630` — [Surface Season p11 til first resident](20260728-201630_surface-season-p11-til-first-resident.bron) — tilak roots · %tile held · p12 next

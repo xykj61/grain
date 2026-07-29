@@ -14,7 +14,7 @@
 | `src_first_resident_witness.rish` | Surface p9 · first residents in `src/lib` |
 | `src_vegan_dogfood_witness.rish` | Easter-egg alias → first resident |
 | `wayland_study_ledger_witness.rish` | Surface p4 · River · zig-wayland pins present |
-| `glow_connector_seam_witness.rish` | Surface p5 · connector sketch pins present |
+| `glow_connector_seam_witness.rish` | Surface p5 sketch · p14 hop 1–5 pins |
 | `pond_brushstroke_frame_witness.rish` | Surface p6 · redrawtest + Pond metalsmoke |
 | `surface_study_choir.rish` | Surface p7 · p2–p6 residual choir |
 | `one_graph_dag_paper_witness.rish` | Surface p8 · DAG paper pins present |

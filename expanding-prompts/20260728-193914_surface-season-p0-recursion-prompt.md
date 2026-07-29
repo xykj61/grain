@@ -1,6 +1,6 @@
 # Surface Season — Recursion Prompt (printout · seven scopes)
 
-**Stamp:** `20260728.193914` · Radiant pass `20260728.202548`  
+**Stamp:** `20260728.193914` · Radiant pass `20260728.202752`  
 **Use:** paste the fenced block as the next counsel/bench session opener.
 
 **Sundial:** `rishi/bin/rishi run tools/gen/season/sundial.rish` · `prin sundial`  
@@ -37,14 +37,14 @@ SEXT SCOPE (paused — do not advance s-rounds):
   Charter: counsel/20260728-183510_the-generator-season-sext-charter.md
 
 SEPT SCOPE (OPEN — walk here):
-  Surface Season OPEN · p13 complete / p14 next.
+  Surface Season OPEN · p14 complete / p15 next.
   Working lean: Pond Glow GUI · Brushstroke/.brush · Ubuntu Wayland ·
     Mantra/Weave DAG · first-resident userland · thin .brush (parser held).
   Handback lean: return_generator_s9.
   Charter: counsel/20260728-193914_the-surface-season-sept-charter.md
-  Seat: counsel/20260728-202548_surface-season-p13-app-first-resident.md
-  Prep+study+pedestals: p1–p13 (anvil · hygiene · first-resident · Wayland ·
-    connector · pond-frame · choir · one-graph DAG · lib/sur/til/app · .brush).
+  Seat: counsel/20260728-202752_surface-season-p14-connector-harden.md
+  Prep+study+pedestals: p1–p14 (anvil · hygiene · first-resident · Wayland ·
+    connector harden · pond-frame · choir · one-graph DAG · lib/sur/til/app · .brush).
   First residents LIVE: src/lib (double · inc) · src/sur (surface-count) ·
     src/til (tilak-root-count) · src/app (pool-agent-slot).
     .brush LIVE: brushstroke/seed-frame.brush (parser held).
@@ -59,8 +59,8 @@ HARD LINES:
   first-resident routine · vegan-dogfood easter-egg only ·
   no m/i/u/g/q/s advance while sept walks · %tile not seated yet.
 
-NEXT (p14):
-  Second pedestal · connector harden · or .brush lower lean later —
+NEXT (p15):
+  Second pedestal · Pond GUI constructive · or .brush lower lean later —
   or check-in if a seam asks.
 
 Bench: prin scope · brush_shape_witness · src_first_resident_witness ·
