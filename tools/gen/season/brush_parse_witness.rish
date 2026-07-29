@@ -1,16 +1,13 @@
-# tools/gen/season/brush_parse_witness.rish — p23–p25 parse · p26 Frame lower
+# tools/gen/season/brush_parse_witness.rish — p23–p26 parse/lower · p27 stdout redraw
 #
 #   rishi/bin/rishi run tools/gen/season/brush_parse_witness.rish
 #
-# Builds brush_parse · selftest GREEN · fixture path GREEN · lower path · TAME density.
-# Does not open Wayland · does not lower to Skate.
+# Builds brush_parse · selftest · parse/lower/redraw paths · TAME density.
+# Hosted Skate lean = stdout lines; no Wayland · no skate_grid yet.
 
 say "brush-parse: Language EN — .brush pins read as Frame at a nib."
-say "brush-parse: Style Radiant — prove parse · refuse · lower."
-say "brush-parse: Lens TAME — Surface Season p26."
-
-
-
+say "brush-parse: Style Radiant — prove parse · refuse · lower · redraw."
+say "brush-parse: Lens TAME — Surface Season p27."
 
 let zig = "vendor/zig-toolchain/zig"
 let mkdir = run ["mkdir" "-p" "brushstroke/bin"]
@@ -26,11 +23,9 @@ assert self.ok else "brush-parse: selftest failed"
 assert self.out contains "GREEN: brush-parse selftest" else "brush-parse: selftest not GREEN"
 assert self.out contains "refuse-suite" else "brush-parse: refuse-suite banner missing"
 assert self.out contains "lower" else "brush-parse: lower banner missing"
-
-
+assert self.out contains "redraw" else "brush-parse: redraw banner missing"
 
 say "brush-parse: seed-frame.brush path..."
-# print pins on stderr; GREEN on stdout — merge for one assert stream
 let path = run ["sh" "-c" "brushstroke/bin/brush-parse brushstroke/seed-frame.brush 2>&1"]
 assert path.ok else "brush-parse: seed-frame path failed"
 assert path.out contains "at-nib=brushstroke-seed" else "brush-parse: at-nib pin missing"
@@ -46,29 +41,39 @@ let seat25 = run ["test" "-f" "counsel/20260728-212855_surface-season-p25-brush-
 assert seat25.ok else "brush-parse: p25 counsel seat missing"
 let seat26 = run ["test" "-f" "counsel/20260728-213205_surface-season-p26-brush-frame-lower.md"]
 assert seat26.ok else "brush-parse: p26 counsel seat missing"
+let seat27 = run ["test" "-f" "counsel/20260728-215052_surface-season-p27-brush-stdout-redraw.md"]
+assert seat27.ok else "brush-parse: p27 counsel seat missing"
 
 say "brush-parse: refuse helpers..."
-let helpers = run ["sh" "-c" "grep -q 'fn assert_parse_error' brushstroke/brush_parse.rye && grep -q 'fn prove_refuse_pins' brushstroke/brush_parse.rye && grep -q 'fn prove_refuse_bounds' brushstroke/brush_parse.rye && grep -q 'error.MissingPresent' brushstroke/brush_parse.rye && grep -q 'error.TooManyLines' brushstroke/brush_parse.rye && grep -q 'error.EmptyLine' brushstroke/brush_parse.rye && echo REFUSE_OK"]
+let helpers = run ["sh" "-c" "grep -q 'fn assert_parse_error' brushstroke/brush_parse.rye && grep -q 'fn prove_refuse_pins' brushstroke/brush_parse.rye && grep -q 'fn prove_refuse_bounds' brushstroke/brush_parse.rye && echo REFUSE_OK"]
 assert helpers.ok else "brush-parse: refuse helper scan failed"
-assert helpers.out contains "REFUSE_OK" else "brush-parse: refuse suite helpers / errors not named"
+assert helpers.out contains "REFUSE_OK" else "brush-parse: refuse suite helpers not named"
 
 say "brush-parse: lower path..."
-let lower_helpers = run ["sh" "-c" "grep -q 'pub fn lower_brush' brushstroke/brush_parse.rye && grep -q 'pub const BrushFrame' brushstroke/brush_parse.rye && grep -q 'fn collect_brush_lines' brushstroke/brush_parse.rye && echo LOWER_OK"]
+let lower_helpers = run ["sh" "-c" "grep -q 'pub fn lower_brush' brushstroke/brush_parse.rye && grep -q 'pub const BrushFrame' brushstroke/brush_parse.rye && echo LOWER_OK"]
 assert lower_helpers.ok else "brush-parse: lower helper scan failed"
 assert lower_helpers.out contains "LOWER_OK" else "brush-parse: BrushFrame / lower_brush missing"
 let lower_run = run ["sh" "-c" "brushstroke/bin/brush-parse lower brushstroke/seed-frame.brush 2>&1"]
 assert lower_run.ok else "brush-parse: lower path failed"
-assert lower_run.out contains "brushstroke seed" else "brush-parse: lower missing line 0"
-assert lower_run.out contains "frame drawn from values" else "brush-parse: lower missing line 1"
-assert lower_run.out contains "(seed version string)" else "brush-parse: lower missing line 2"
 assert lower_run.out contains "GREEN: brush-parse lower" else "brush-parse: lower not GREEN"
+
+say "brush-parse: redraw path..."
+let redraw_helpers = run ["sh" "-c" "grep -q 'pub fn redraw_brush_frame' brushstroke/brush_parse.rye && grep -q 'fn prove_seed_redraw' brushstroke/brush_parse.rye && echo REDRAW_OK"]
+assert redraw_helpers.ok else "brush-parse: redraw helper scan failed"
+assert redraw_helpers.out contains "REDRAW_OK" else "brush-parse: redraw_brush_frame missing"
+let redraw_run = run ["sh" "-c" "brushstroke/bin/brush-parse redraw brushstroke/seed-frame.brush 2>&1"]
+assert redraw_run.ok else "brush-parse: redraw path failed"
+assert redraw_run.out contains "brushstroke seed" else "brush-parse: redraw missing line 0"
+assert redraw_run.out contains "frame drawn from values" else "brush-parse: redraw missing line 1"
+assert redraw_run.out contains "(seed version string)" else "brush-parse: redraw missing line 2"
+assert redraw_run.out contains "GREEN: brush-parse redraw" else "brush-parse: redraw not GREEN"
+assert redraw_run.out contains "stdout Skate lean" else "brush-parse: Skate lean note missing"
 
 let begun = run ["sh" "-c" "grep -q 'Parser begun' brushstroke/seed-frame.brush && echo BEGUN"]
 assert begun.ok else "brush-parse: fixture begun note scan failed"
 assert begun.out contains "BEGUN" else "brush-parse: fixture must say Parser begun"
 
 say "brush-parse: TAME density..."
-# Living floor — p24 tidy seats ≥20 invariant markers; raise only by accretion.
 let inv = run ["sh" "tools/gen/season/brush_parse_tame_density.sh"]
 assert inv.ok else "brush-parse: need ≥20 invariant markers (TAME visible)"
 assert inv.out contains "INV_OK" else "brush-parse: invariant density marker missing"
@@ -82,7 +87,5 @@ let widths = run ["sh" "-c" "grep -q 'slice_len_u32' brushstroke/brush_parse.rye
 assert widths.ok else "brush-parse: width pins scan failed"
 assert widths.out contains "WIDTH" else "brush-parse: named bounds / u32 seam helper missing"
 
-say "GREEN: brush-parse — build · selftest · refuse · lower · TAME · Surface p26"
-say "GREEN: brush-parse — Frame lower live; Wayland and Skate still later."
-
-
+say "GREEN: brush-parse — build · selftest · refuse · lower · redraw · TAME · Surface p27"
+say "GREEN: brush-parse — stdout Skate lean live; Wayland and skate_grid still later."

@@ -1,10 +1,10 @@
-//! brushstroke/brush_parse.rye — .brush parser (p23–p25) · thin Frame lower (p26).
+//! brushstroke/brush_parse.rye — .brush parser (p23–p25) · Frame lower (p26) · stdout redraw (p27).
 //!
 //! `.brush` describes how a value at a nib is drawn. This parser reads the thin
 //! surface pins (at-nib · present · max-lines · lines) and refuses anything that
-//! is not Frame-at-a-nib. `lower_brush` turns a welcome parse into a BrushFrame
-//! (line texts as slices into the source). It does not open Wayland · does not
-//! invent CSS/HTML/JSON · does not lower to Skate yet.
+//! is not Frame-at-a-nib. `lower_brush` turns a welcome parse into a BrushFrame;
+//! `redraw_brush_frame` paints that Frame to stdout — the thin hosted Skate lean
+//! (lines as the grid) before Wayland / skate_grid. No CSS/HTML/JSON · no src/web.
 //!
 //! TAME (hosted Rye): opening triad · u32 counts · named bounds · `// invariant:`
 //! on every assert · short verb-named functions · named errors with try.
@@ -16,12 +16,13 @@
 //!   brushstroke/bin/brush-parse selftest
 //!   brushstroke/bin/brush-parse brushstroke/seed-frame.brush
 //!   brushstroke/bin/brush-parse lower brushstroke/seed-frame.brush
+//!   brushstroke/bin/brush-parse redraw brushstroke/seed-frame.brush
 
 const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 
-pub const brush_parse_version = "20260728.213205";
+pub const brush_parse_version = "20260728.215052";
 
 /// Tally-bounded Frame ceiling — matches seed.rye · wayland_seed.rye · sur pedestal.
 pub const max_frame_lines: u32 = 8;
@@ -251,6 +252,26 @@ pub fn lower_brush(src: []const u8, line_buf: *[max_frame_lines][]const u8) Pars
     return frame;
 }
 
+/// Redraw a BrushFrame to stdout — thin hosted Skate lean (one line = one grid row).
+/// Pure pass from values; no Wayland · no skate_grid buffer · no retained tree.
+pub fn redraw_brush_frame(frame: BrushFrame, io: std.Io) !void {
+    // invariant: Frame carries at least one line before paint
+    assert(frame.lines.len > 0);
+    // invariant: paint respects the file ceiling
+    assert(frame.lines.len <= frame.max_lines);
+    // invariant: ceiling never past the seed Frame bound
+    assert(frame.max_lines <= max_frame_lines);
+    // invariant: nib survives to the paint edge
+    assert(frame.at_nib.len > 0);
+    const stdout = std.Io.File.stdout();
+    for (frame.lines) |text| {
+        // invariant: empty lines never reach the surface
+        assert(text.len > 0);
+        try stdout.writeStreamingAll(io, text);
+        try stdout.writeStreamingAll(io, "\n");
+    }
+}
+
 fn trim_left(s: []const u8) []const u8 {
     var i: u32 = 0;
     const n = slice_len_u32(s);
@@ -338,6 +359,19 @@ fn prove_seed_lower(garden: std.mem.Allocator, io: std.Io) !void {
     assert(std.mem.eql(u8, frame.lines[1], "frame drawn from values"));
     // invariant: line 2 is the fixture placeholder (not seed.rye's version string)
     assert(std.mem.eql(u8, frame.lines[2], "(seed version string)"));
+}
+
+fn prove_seed_redraw(garden: std.mem.Allocator, io: std.Io) !void {
+    const cwd = std.Io.Dir.cwd();
+    const src = try cwd.readFileAlloc(io, "brushstroke/seed-frame.brush", garden, .limited(max_brush_bytes));
+    // invariant: redraw reads the same living fixture
+    assert(src.len <= max_brush_bytes);
+    var line_buf: [max_frame_lines][]const u8 = undefined;
+    const frame = try lower_brush(src, &line_buf);
+    try redraw_brush_frame(frame, io);
+    // invariant: paint path left the Frame bounds intact
+    assert(frame.lines.len == 3);
+    assert(frame.max_lines == 8);
 }
 
 /// Refuse missing / wrong identity pins.
@@ -450,25 +484,36 @@ fn run_selftest(init: std.process.Init) !u8 {
     prove_refuse_pins();
     prove_refuse_bounds();
     try prove_seed_lower(garden, io);
-    try std.Io.File.stdout().writeStreamingAll(io, "GREEN: brush-parse selftest — seed-frame · refuse-suite · lower · TAME\n");
+    try prove_seed_redraw(garden, io);
+    try std.Io.File.stdout().writeStreamingAll(io, "GREEN: brush-parse selftest — seed-frame · refuse-suite · lower · redraw · TAME\n");
     return 0;
 }
 
-fn run_lower_path(garden: std.mem.Allocator, io: std.Io, path: []const u8) !u8 {
-    // invariant: lower path argument is non-empty
+fn load_brush_frame(garden: std.mem.Allocator, io: std.Io, path: []const u8, line_buf: *[max_frame_lines][]const u8) !BrushFrame {
+    // invariant: path argument is non-empty
     assert(path.len > 0);
     const cwd = std.Io.Dir.cwd();
     const src = try cwd.readFileAlloc(io, path, garden, .limited(max_brush_bytes));
     // invariant: path read stays inside the named budget
     assert(src.len <= max_brush_bytes);
+    return try lower_brush(src, line_buf);
+}
+
+fn run_lower_path(garden: std.mem.Allocator, io: std.Io, path: []const u8) !u8 {
     var line_buf: [max_frame_lines][]const u8 = undefined;
-    const frame = try lower_brush(src, &line_buf);
+    const frame = try load_brush_frame(garden, io, path, &line_buf);
     print("brush-parse lower: at-nib={s} lines={d}\n", .{ frame.at_nib, frame.lines.len });
-    for (frame.lines) |text| {
-        try std.Io.File.stdout().writeStreamingAll(io, text);
-        try std.Io.File.stdout().writeStreamingAll(io, "\n");
-    }
+    try redraw_brush_frame(frame, io);
     try std.Io.File.stdout().writeStreamingAll(io, "GREEN: brush-parse lower\n");
+    return 0;
+}
+
+fn run_redraw_path(garden: std.mem.Allocator, io: std.Io, path: []const u8) !u8 {
+    var line_buf: [max_frame_lines][]const u8 = undefined;
+    const frame = try load_brush_frame(garden, io, path, &line_buf);
+    print("brush-parse redraw: at-nib={s} (stdout Skate lean)\n", .{frame.at_nib});
+    try redraw_brush_frame(frame, io);
+    try std.Io.File.stdout().writeStreamingAll(io, "GREEN: brush-parse redraw\n");
     return 0;
 }
 
@@ -485,8 +530,11 @@ pub fn main(init: std.process.Init) !u8 {
     if (args.len >= 3 and std.mem.eql(u8, args[1], "lower")) {
         return run_lower_path(garden, io, args[2]);
     }
+    if (args.len >= 3 and std.mem.eql(u8, args[1], "redraw")) {
+        return run_redraw_path(garden, io, args[2]);
+    }
     if (args.len < 2) {
-        try std.Io.File.stderr().writeStreamingAll(io, "usage: brush-parse <path.brush>|selftest|lower <path.brush>\n");
+        try std.Io.File.stderr().writeStreamingAll(io, "usage: brush-parse <path.brush>|selftest|lower <path>|redraw <path>\n");
         return 2;
     }
     const path = args[1];
