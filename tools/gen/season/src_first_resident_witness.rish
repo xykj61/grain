@@ -1,16 +1,17 @@
-# tools/gen/season/src_first_resident_witness.rish — Surface · first residents in src/lib
+# tools/gen/season/src_first_resident_witness.rish — Surface · first residents in src/
 #
 #   rishi/bin/rishi run tools/gen/season/src_first_resident_witness.rish
 #
 # Routine name: first resident. Easter-egg alias: src_vegan_dogfood_witness.rish
+# Rooms: src/lib bartises · src/sur structure pedestal
 
 say "first-resident: Language EN — Glow desks that live in src/."
 say "first-resident: Style Radiant — prove the desks; refuse shred."
-say "first-resident: Lens TAME — Surface Season p9."
+say "first-resident: Lens TAME — Surface Season p10."
 
 let zig = "vendor/zig-toolchain/zig"
 
-say "first-resident: double..."
+say "first-resident: lib double..."
 let ddesk = "src/lib/gate-surface-double-u32.glow"
 let dgate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" ddesk "21"]
 assert dgate.ok else "first-resident: double lower/build/run failed"
@@ -20,7 +21,7 @@ assert danswer.ok else "first-resident: double binary refused sample"
 let dbad = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" ddesk "21" "9"]
 assert dbad.out contains "FAIL" else "first-resident: double should refuse second sample"
 
-say "first-resident: inc..."
+say "first-resident: lib inc..."
 let idesk = "src/lib/gate-surface-inc-u32.glow"
 let igate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" idesk "21"]
 assert igate.ok else "first-resident: inc lower/build/run failed"
@@ -30,5 +31,15 @@ assert ianswer.ok else "first-resident: inc binary refused sample"
 let ibad = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" idesk "21" "9"]
 assert ibad.out contains "FAIL" else "first-resident: inc should refuse second sample"
 
-say "GREEN: first-resident — double · inc in src/lib · refuse excess · Surface p9"
+say "first-resident: sur surface-count pedestal..."
+let sdesk = "src/sur/shape-surface-count.glow"
+let placard = run ["sh" "-c" "head -n 7 src/sur/shape-surface-count.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+assert placard.ok else "first-resident: sur placard scan failed"
+let pcount = trim placard.out
+assert pcount == "6" else "first-resident: sur placard missing six lines"
+let sgate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" sdesk]
+assert sgate.ok else "first-resident: sur shape lower/build/run failed"
+assert sgate.out contains "EXIT:0" else "first-resident: sur shape did not exit 0"
+
+say "GREEN: first-resident — lib double · lib inc · sur count · Surface p10"
 say "GREEN: first-resident — Glow userland desks live at home first."
