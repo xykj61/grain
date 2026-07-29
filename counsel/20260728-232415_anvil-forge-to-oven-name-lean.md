@@ -1,26 +1,26 @@
-# Anvil Forge → Kiln (or kin) — Name Lean
+# Anvil Forge → Oven (or kin) — Name Lean
 
 **Stamp:** `20260728.232415` · **Voice:** Quin · **Chapter:** Surface · **Scope:** sept (design lean beside p35)  
 **Prior:** Anvil retired tribute `20260727.131234` · living Lantern/Lattice/Anvil foundation · LEXICON Anvil module · [debrided] Magazine Arc V  
-**Ask:** recommend next · think breach round renaming forge-Anvil → Kiln / Brickoven (bread, not weapons)  
-**Status:** **PROPOSED** — wait seat on the chosen word · no breach this stamp
+**Ask:** recommend next · think breach round renaming forge-Anvil → Oven / Brickoven (bread, not weapons)  
+**Status:** **SEATED** `20260728.232511` — Keaton **seat Oven** · living foundation mutant · lexicon · `anvil/` path breach still held
 
 ## Verdict (Quin)
 
-**Like Kiln best** for the living forge seat. Short · warm · commons · bread. The triad reads clean: **Lantern · Lattice · Kiln**. Weapons and armor leave the name; the [debrided] tribute to DJ Anvil stays honored in gratitude and Magazine Arc V — the living work stops borrowing the blade.
+**Like Oven best** for the living forge seat. Short · warm · commons · bread. The triad reads clean: **Lantern · Lattice · Oven**. Weapons and armor leave the name; the [debrided] tribute to DJ Anvil stays honored in gratitude and Magazine Arc V — the living work stops borrowing the blade.
 
-**Brickoven** is the strong runner-up when uniqueness matters more than brevity (hearth of brick, less collision with kitchen “kiln”).
+**Brickoven** is the strong runner-up when uniqueness matters more than brevity (hearth of brick, less collision with kitchen “oven”).
 
 ## Why the rename fits
 
-LEXICON already marks **Anvil (retired)** for the `/anvil` app tribute (`20260727.131234`). The horizon essay and the corpus-forge module still say **Anvil**. That split is the seam: tribute released the name; living doors have not finished letting go. Kiln (or Brickoven) finishes the release in house metaphor — grain · bake · feed — aligned with universal foundations.
+LEXICON already marks **Anvil (retired)** for the `/anvil` app tribute (`20260727.131234`). The horizon essay and the corpus-forge module still say **Anvil**. That split is the seam: tribute released the name; living doors have not finished letting go. Oven (or Brickoven) finishes the release in house metaphor — grain · bake · feed — aligned with universal foundations.
 
 ## Name table
 
 | Word | Lean |
 | --- | --- |
-| **Kiln** | **Preferred** — one warm place; triad music; bread not swords |
-| **Brickoven** | Distinctive hearth · slightly longer · good if “Kiln” feels too plain |
+| **Oven** | **Preferred** — one warm place; triad music; bread not swords |
+| **Brickoven** | Distinctive hearth · slightly longer · good if “Oven” feels too plain |
 | **Kiln** | Heat-transform · clay/brick · less bread, more fire |
 | **Mill** | Grain kinship · processes, does not bake the loaf |
 | **Hearth** | Already taken (LULU / display prefs) — refuse |
@@ -38,7 +38,7 @@ No rename · no `git mv` · no living prose rewrite · no shred.
 
 | Word | Effect |
 | --- | --- |
-| **seat Kiln** | Name law = Kiln; open breach survey round |
+| **seat Oven** | Name law = Oven; open breach survey round |
 | **seat Brickoven** | Name law = Brickoven; same |
 | **hold name** | Keep Anvil on living forge for now |
 | **kg pedestals** | Metal under sept; name lean waits |
