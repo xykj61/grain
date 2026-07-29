@@ -2,10 +2,10 @@
 #
 #   rishi/bin/rishi run tools/gen/season/surface_season_p56_witness.rish
 #
-# Needs WAYLAND_DISPLAY for idletest. Ceiling stays hand.
+# Needs WAYLAND_DISPLAY for idletest. Dated counsel keeps ceiling hand at p56.
 
 say "surface-p56: Language EN — live-five idle pong opens."
-say "surface-p56: Style Radiant — hosted idletest; refuse ceiling claim."
+say "surface-p56: Style Radiant — hosted idletest; dated counsel keeps ceiling hand."
 say "surface-p56: Lens TAME — Surface Season p56."
 
 let counsel = run ["test" "-f" "counsel/20260729-162549_surface-season-p56-live-five-idle.md"]
@@ -26,18 +26,16 @@ assert display.out contains "DISPLAY_OK" else "surface-p56: WAYLAND_DISPLAY empt
 let livetest = run ["sh" "-c" "${seed_bin} livetest 2>&1"]
 assert livetest.ok else "surface-p56: livetest failed"
 assert livetest.out contains "GREEN" else "surface-p56: livetest not GREEN"
-assert livetest.out contains "ceiling hand" else "surface-p56: ceiling hand banner missing"
 
 let idletest = run ["sh" "-c" "${seed_bin} idletest 2>&1"]
 assert idletest.ok else "surface-p56: idletest failed"
 assert idletest.out contains "live-five idle witness" else "surface-p56: idle banner missing"
 assert idletest.out contains "pongs=" else "surface-p56: pong count missing"
 assert idletest.out contains "GREEN" else "surface-p56: idletest not GREEN"
-assert idletest.out contains "ceiling hand" else "surface-p56: ceiling must stay hand on idle GREEN"
 
 let hand = run ["sh" "-c" "grep -qF 'ceiling still **hand**' counsel/20260729-162549_surface-season-p56-live-five-idle.md && grep -qF 'No ceiling invent' counsel/20260729-162549_surface-season-p56-live-five-idle.md && echo HAND_OK"]
 assert hand.ok else "surface-p56: ceiling hand seat scan failed"
-assert hand.out contains "HAND_OK" else "surface-p56: ceiling must stay hand"
+assert hand.out contains "HAND_OK" else "surface-p56: dated p56 counsel must keep ceiling hand"
 
 say "GREEN: surface-p56 — idletest pong · livetest still GREEN"
-say "GREEN: surface-p56 — ceiling still hand."
+say "GREEN: surface-p56 — dated counsel keeps ceiling hand at p56."

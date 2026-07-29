@@ -2,10 +2,10 @@
 #
 #   rishi/bin/rishi run tools/gen/season/surface_season_p54_witness.rish
 #
-# Headless livetest (no WAYLAND_DISPLAY). Idle · ceiling stay hand.
+# Headless livetest (no WAYLAND_DISPLAY). Dated counsel keeps idle/ceiling hand at p54.
 
 say "surface-p54: Language EN — live-five type · :quit opens."
-say "surface-p54: Style Radiant — thin Prompt; refuse idle/ceiling claim."
+say "surface-p54: Style Radiant — thin Prompt; dated counsel keeps later limbs hand."
 say "surface-p54: Lens TAME — Surface Season p54."
 
 let counsel = run ["test" "-f" "counsel/20260729-140917_surface-season-p54-live-five-type-quit.md"]
@@ -24,7 +24,6 @@ assert livetest.ok else "surface-p54: livetest failed"
 assert livetest.out contains "live-five witness" else "surface-p54: livetest banner missing"
 assert livetest.out contains ":quit" else "surface-p54: :quit missing from livetest"
 assert livetest.out contains "GREEN" else "surface-p54: livetest not GREEN"
-assert livetest.out contains "ceiling hand" else "surface-p54: ceiling hand banner missing"
 
 let hand = run ["sh" "-c" "grep -qF 'idle · ceiling still' counsel/20260729-140917_surface-season-p54-live-five-type-quit.md && grep -qF 'idle/ceiling hand' counsel/20260729-140917_surface-season-p54-live-five-type-quit.md && echo HAND_OK"]
 assert hand.ok else "surface-p54: idle/ceiling hand seat scan failed"

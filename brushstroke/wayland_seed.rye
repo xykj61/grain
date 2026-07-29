@@ -19,15 +19,17 @@
 //!   brushstroke/bin/brushstroke-wayland-seed brushtest [path.brush]  # p49/p52 · glass Frame feed
 //!   brushstroke/bin/brushstroke-wayland-seed brush <path.brush>     # present .brush on Wayland
 //!   brushstroke/bin/brushstroke-wayland-seed livetest               # p54 · type · :quit headless
-//!   brushstroke/bin/brushstroke-wayland-seed live                  # p54 · type · :quit hosted
+//!   brushstroke/bin/brushstroke-wayland-seed live                  # p54 · hosted type · ceiling · :quit
 //!   brushstroke/bin/brushstroke-wayland-seed idletest [ms]         # p56 · pong idle (needs display)
+//!   brushstroke/bin/brushstroke-wayland-seed ceilingtest           # p57 · transcript ceiling headless
 //!
 //! Requires a running Wayland compositor (`WAYLAND_DISPLAY`) for the default mode,
-//! `brush <path>`, `live`, and `idletest`. `brushtest` and `livetest` are headless.
+//! `brush <path>`, `live`, and `idletest`. `brushtest`, `livetest`, and `ceilingtest`
+//! are headless.
 //!
 //! Frame tidy (p52): glass `brush.Frame` (= BrushFrame) feeds this host `Frame`
 //! through one named hop — `Frame.from_brush`.
-//! Live-five: type · :quit (p54) · idle pong (p56) · ceiling still hand.
+//! Live-five: type · :quit (p54) · idle pong (p56) · ceiling fill (p57).
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -44,11 +46,17 @@ const c = @cImport({
 
 const max_key_actions: u32 = 64;
 const max_prompt_bytes: u32 = 64;
-/// Default automated idle slice — covers a typical compositor ping window (~10s).
+/// Default automated idle slice — covers a typical compositor ping window (~10–15s).
 /// Pond's ~1 minute hand ritual stays affirmable via `idletest 60000`.
-const default_idle_ms: u32 = 12_000;
+const default_idle_ms: u32 = 20_000;
 const idle_step_ms: u32 = 50;
 const max_idle_ms: u32 = 120_000;
+/// Live transcript ceiling — matches Pond drawn-terminal invent (`max_transcript_bytes`).
+const max_live_transcript_bytes: u32 = 65_536;
+const status_full_text = "transcript full — earlier lines still ran; :quit to close";
+const status_max_len: u32 = 80;
+const ceiling_fill_line_count: u32 = 200;
+const ceiling_fill_say_width: u32 = 400;
 
 pub const KeyAction = union(enum) {
     none,
@@ -102,34 +110,106 @@ const Prompt = struct {
     }
 };
 
+/// Thin live transcript — Pond ceiling invent without pulling Rishi into the seed.
+/// `full` latches at the first refused append and stays for the session.
+const LiveTranscript = struct {
+    bytes: [max_live_transcript_bytes]u8 = undefined,
+    len: u32 = 0,
+    full: bool = false,
+
+    fn append(self: *LiveTranscript, text: []const u8) bool {
+        // invariant: length never past the named transcript ceiling
+        assert(self.len <= max_live_transcript_bytes);
+        const add: u32 = @intCast(text.len);
+        if (add > max_live_transcript_bytes - self.len) return false;
+        @memcpy(self.bytes[self.len .. self.len + add], text);
+        self.len += add;
+        // invariant: append stays inside the ceiling
+        assert(self.len <= max_live_transcript_bytes);
+        return true;
+    }
+
+    fn append_prompt_line(self: *LiveTranscript, line: []const u8) void {
+        // invariant: once full, refuse without partial writes
+        if (self.full) return;
+        const prefix = "brush> ";
+        const need: u32 = @intCast(prefix.len + line.len + 1);
+        if (need > max_live_transcript_bytes - self.len) {
+            self.full = true;
+            return;
+        }
+        // invariant: whole prompt line fits — appends cannot refuse
+        assert(self.append(prefix));
+        assert(self.append(line));
+        assert(self.append("\n"));
+    }
+};
+
 fn is_quit_line(line: []const u8) bool {
     return std.mem.eql(u8, line, ":quit");
 }
 
-fn live_prompt_text(garden: std.mem.Allocator, prompt: []const u8) ![]const u8 {
-    const prefix = "brush> ";
-    const out = try garden.alloc(u8, prefix.len + prompt.len);
-    var i: u32 = 0;
-    while (i < prefix.len) : (i += 1) {
-        out[i] = prefix[i];
+fn bound_status(garden: std.mem.Allocator, text: []const u8) ![]const u8 {
+    if (text.len <= status_max_len) return try garden.dupe(u8, text);
+    return try garden.dupe(u8, text[0..status_max_len]);
+}
+
+fn format_prompt_status(garden: std.mem.Allocator, prompt: []const u8, transcript_full: bool) ![]const u8 {
+    if (transcript_full) return bound_status(garden, status_full_text);
+    var buf: [status_max_len + 16]u8 = undefined;
+    const msg = if (prompt.len == 0)
+        try std.fmt.bufPrint(&buf, "brush> ", .{})
+    else
+        try std.fmt.bufPrint(&buf, "brush> {s}", .{prompt});
+    return bound_status(garden, msg);
+}
+
+fn live_session_lines(garden: std.mem.Allocator, transcript: *const LiveTranscript, rows: u32) ![][]const u8 {
+    // invariant: body rows leave room for the status line
+    assert(rows > 0);
+    assert(rows < max_lines);
+    const data_len = transcript.len;
+    if (data_len == 0) return try garden.alloc([]const u8, 0);
+
+    var temp: [max_lines][]const u8 = undefined;
+    var collected: u32 = 0;
+    var end: u32 = data_len;
+    while (end > 0 and collected < rows) {
+        var start: u32 = end;
+        while (start > 0 and transcript.bytes[start - 1] != '\n') start -= 1;
+        temp[rows - 1 - collected] = transcript.bytes[start..end];
+        collected += 1;
+        if (start == 0) break;
+        end = start - 1;
     }
-    var j: u32 = 0;
-    while (j < prompt.len) : (j += 1) {
-        out[prefix.len + j] = prompt[j];
+
+    const out = try garden.alloc([]const u8, collected);
+    var i: u32 = 0;
+    while (i < collected) : (i += 1) {
+        out[i] = temp[rows - collected + i];
     }
     return out;
 }
 
-fn live_frame_lines(garden: std.mem.Allocator, prompt: []const u8, note: []const u8) ![]Line {
-    const n: usize = if (note.len > 0) 3 else 2;
-    // invariant: live Frame stays under the host ceiling
-    assert(n <= max_lines);
-    const lines = try garden.alloc(Line, n);
-    lines[0] = .{ .text = "brushstroke live-five" };
-    lines[1] = .{ .text = try live_prompt_text(garden, prompt) };
-    if (note.len > 0) {
-        lines[2] = .{ .text = note };
+fn compose_live_frame_lines(
+    garden: std.mem.Allocator,
+    transcript: *const LiveTranscript,
+    status: []const u8,
+) ![]Line {
+    const body_rows = max_lines - 1;
+    // invariant: status row always reserved under the Frame ceiling
+    assert(body_rows > 0);
+    const session = try live_session_lines(garden, transcript, body_rows);
+    const status_line = try bound_status(garden, status);
+    const total: u32 = @intCast(session.len + 1);
+    // invariant: composed Frame never past the host ceiling
+    assert(total <= max_lines);
+    const lines = try garden.alloc(Line, total);
+    var i: u32 = 0;
+    while (i < session.len) : (i += 1) {
+        lines[i] = .{ .text = session[i] };
     }
+    lines[session.len] = .{ .text = status_line };
     return lines;
 }
 
@@ -303,6 +383,21 @@ const App = struct {
     key_actions: [max_key_actions]KeyAction = undefined,
     key_actions_head: u32 = 0,
     key_actions_tail: u32 = 0,
+    /// Wayland listeners must outlive create_surface — kept on App, never stack-temps.
+    wm_base_listener: c.xdg_wm_base_listener = .{ .ping = xdg_wm_base_ping },
+    xdg_surface_listener_v: c.xdg_surface_listener = .{ .configure = xdg_surface_configure },
+    xdg_toplevel_listener_v: c.xdg_toplevel_listener = .{
+        .configure = xdg_toplevel_configure,
+        .close = xdg_toplevel_close,
+    },
+    keyboard_listener_v: c.wl_keyboard_listener = .{
+        .keymap = keyboard_keymap,
+        .enter = keyboard_enter,
+        .leave = keyboard_leave,
+        .key = keyboard_key,
+        .modifiers = keyboard_modifiers,
+        .repeat_info = keyboard_repeat_info,
+    },
     frame: Frame,
     grid: skate.Grid,
     garden: std.mem.Allocator,
@@ -439,15 +534,7 @@ const App = struct {
         if (has_keyboard and app.keyboard == null) {
             app.keyboard = c.wl_seat_get_keyboard(wl_seat);
             if (app.keyboard != null) {
-                const keyboard_listener = c.wl_keyboard_listener{
-                    .keymap = keyboard_keymap,
-                    .enter = keyboard_enter,
-                    .leave = keyboard_leave,
-                    .key = keyboard_key,
-                    .modifiers = keyboard_modifiers,
-                    .repeat_info = keyboard_repeat_info,
-                };
-                _ = c.wl_keyboard_add_listener(app.keyboard, &keyboard_listener, app);
+                _ = c.wl_keyboard_add_listener(app.keyboard, &app.keyboard_listener_v, app);
             }
         } else if (!has_keyboard and app.keyboard != null) {
             c.wl_keyboard_destroy(app.keyboard);
@@ -616,10 +703,7 @@ const App = struct {
         self.xdg_surface = c.xdg_wm_base_get_xdg_surface(self.wm_base, self.surface);
         if (self.xdg_surface == null) return error.NoXdgSurface;
 
-        const xdg_surface_listener = c.xdg_surface_listener{
-            .configure = xdg_surface_configure,
-        };
-        _ = c.xdg_surface_add_listener(self.xdg_surface, &xdg_surface_listener, self);
+        _ = c.xdg_surface_add_listener(self.xdg_surface, &self.xdg_surface_listener_v, self);
 
         self.xdg_toplevel = c.xdg_surface_get_toplevel(self.xdg_surface);
         if (self.xdg_toplevel == null) return error.NoToplevel;
@@ -628,16 +712,9 @@ const App = struct {
         _ = c.xdg_toplevel_set_title(self.xdg_toplevel, title);
         _ = c.xdg_toplevel_set_min_size(self.xdg_toplevel, window_width, window_height);
 
-        const toplevel_listener = c.xdg_toplevel_listener{
-            .configure = xdg_toplevel_configure,
-            .close = xdg_toplevel_close,
-        };
-        _ = c.xdg_toplevel_add_listener(self.xdg_toplevel, &toplevel_listener, self);
+        _ = c.xdg_toplevel_add_listener(self.xdg_toplevel, &self.xdg_toplevel_listener_v, self);
 
-        const wm_listener = c.xdg_wm_base_listener{
-            .ping = xdg_wm_base_ping,
-        };
-        _ = c.xdg_wm_base_add_listener(self.wm_base, &wm_listener, self);
+        _ = c.xdg_wm_base_add_listener(self.wm_base, &self.wm_base_listener, self);
 
         c.wl_surface_commit(self.surface);
         try self.display.flush();
@@ -961,18 +1038,20 @@ fn run_brush_present(garden: std.mem.Allocator, io: std.Io, path: []const u8) !u
 }
 
 /// Headless live-five slice: type changes Frame signature; `:quit` exits clean.
-/// Idle is hosted (`idletest`); ceiling stays hand.
 fn run_live_five_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
+    var transcript = LiveTranscript{};
     var prompt = Prompt{};
     prompt.apply(.{ .char_ = 'h' });
     prompt.apply(.{ .char_ = 'i' });
-    const mid = try live_frame_lines(garden, prompt.slice(), "");
+    const status_mid = try format_prompt_status(garden, prompt.slice(), transcript.full);
+    const mid = try compose_live_frame_lines(garden, &transcript, status_mid);
     const sig_mid = try signature_from_lines(garden, mid);
-    // invariant: typed text lands on the prompt row
-    assert(std.mem.indexOf(u8, mid[1].text, "hi") != null);
+    // invariant: typed text lands on the status/prompt row
+    assert(std.mem.indexOf(u8, mid[mid.len - 1].text, "hi") != null);
 
     prompt.apply(.{ .char_ = '!' });
-    const typing = try live_frame_lines(garden, prompt.slice(), "");
+    const status_typing = try format_prompt_status(garden, prompt.slice(), transcript.full);
+    const typing = try compose_live_frame_lines(garden, &transcript, status_typing);
     const sig_typing = try signature_from_lines(garden, typing);
     // invariant: type redraws the glass
     assert(sig_typing != sig_mid);
@@ -991,10 +1070,10 @@ fn run_live_five_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     // invariant: :quit is the named exit word
     assert(is_quit_line(line));
 
-    var buf: [176]u8 = undefined;
+    var buf: [160]u8 = undefined;
     const msg = try std.fmt.bufPrint(
         &buf,
-        "live-five witness: type sig={x}->{x} :quit — GREEN (ceiling hand)\n",
+        "live-five witness: type sig={x}->{x} :quit — GREEN\n",
         .{ sig_mid, sig_typing },
     );
     try std.Io.File.stdout().writeStreamingAll(io, msg);
@@ -1002,13 +1081,14 @@ fn run_live_five_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
 }
 
 /// Hosted idle slice: hold a surface and count xdg_wm_base ping/pong.
-/// Needs WAYLAND_DISPLAY. Ceiling stays hand.
+/// Needs WAYLAND_DISPLAY.
 fn run_idle_witness(garden: std.mem.Allocator, io: std.Io, idle_ms: u32) !u8 {
-    // invariant: idle slice is positive and under the named ceiling
+    // invariant: idle slice is positive and under the named time ceiling
     assert(idle_ms > 0);
     assert(idle_ms <= max_idle_ms);
-    const note = "idle · compositor pong";
-    const boot = try live_frame_lines(garden, "", note);
+    var transcript = LiveTranscript{};
+    const status = try format_prompt_status(garden, "idle · compositor pong", false);
+    const boot = try compose_live_frame_lines(garden, &transcript, status);
     var app = try present_value(garden, boot);
     defer app.display.disconnect();
     try app.prepare_surface();
@@ -1024,21 +1104,67 @@ fn run_idle_witness(garden: std.mem.Allocator, io: std.Io, idle_ms: u32) !u8 {
     // invariant: compositor pinged at least once while we idled
     assert(app.ping_count > 0);
 
-    var buf: [160]u8 = undefined;
+    var buf: [128]u8 = undefined;
     const msg = try std.fmt.bufPrint(
         &buf,
-        "live-five idle witness: pongs={d} ms={d} — GREEN (ceiling hand)\n",
+        "live-five idle witness: pongs={d} ms={d} — GREEN\n",
         .{ app.ping_count, waited },
     );
     try std.Io.File.stdout().writeStreamingAll(io, msg);
     return 0;
 }
 
-/// Hosted live-five: keyboard into Prompt · Frame redraw · `:quit` exits.
-/// Needs WAYLAND_DISPLAY. Ceiling stays hand after p56 idle.
+/// Headless ceiling fill: append past `max_live_transcript_bytes`; status invitation stays.
+fn run_ceiling_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
+    var transcript = LiveTranscript{};
+    const pre_status = try format_prompt_status(garden, "", transcript.full);
+    const pre_lines = try compose_live_frame_lines(garden, &transcript, pre_status);
+    const sig_pre = try signature_from_lines(garden, pre_lines);
+
+    var pad_buf: [ceiling_fill_say_width]u8 = undefined;
+    @memset(&pad_buf, 'p');
+    const pad_payload = pad_buf[0..];
+
+    var fill: u32 = 0;
+    while (!transcript.full and fill < ceiling_fill_line_count) : (fill += 1) {
+        transcript.append_prompt_line(pad_payload);
+    }
+    // invariant: fill reaches the named transcript ceiling
+    assert(transcript.full);
+
+    const full_status = try format_prompt_status(garden, "still typing", transcript.full);
+    const full_lines = try compose_live_frame_lines(garden, &transcript, full_status);
+    const sig_full = try signature_from_lines(garden, full_lines);
+    // invariant: full status replaces the prompt invitation
+    assert(std.mem.eql(u8, full_lines[full_lines.len - 1].text, status_full_text));
+    // invariant: ceiling redraw differs from the empty pre-fill frame
+    assert(sig_full != sig_pre);
+
+    const len_at_full = transcript.len;
+    transcript.append_prompt_line("one more");
+    // invariant: once full, further appends refuse and leave length unchanged
+    assert(transcript.full);
+    assert(transcript.len == len_at_full);
+
+    // invariant: :quit remains available after the ceiling latches
+    assert(is_quit_line(":quit"));
+
+    var buf: [176]u8 = undefined;
+    const msg = try std.fmt.bufPrint(
+        &buf,
+        "live-five ceiling witness: bytes={d}/{d} fill={d} sig={x} — GREEN\n",
+        .{ transcript.len, max_live_transcript_bytes, fill, sig_full },
+    );
+    try std.Io.File.stdout().writeStreamingAll(io, msg);
+    return 0;
+}
+
+/// Hosted live-five: keyboard into Prompt · transcript · ceiling status · `:quit`.
+/// Needs WAYLAND_DISPLAY.
 fn run_live(garden: std.mem.Allocator, io: std.Io) !u8 {
-    var note: []const u8 = "type in window · :quit exits";
-    const boot = try live_frame_lines(garden, "", note);
+    var transcript = LiveTranscript{};
+    const boot_status = try format_prompt_status(garden, "", transcript.full);
+    const boot = try compose_live_frame_lines(garden, &transcript, boot_status);
     var app = try present_value(garden, boot);
     defer app.display.disconnect();
     app.enable_keyboard();
@@ -1050,7 +1176,7 @@ fn run_live(garden: std.mem.Allocator, io: std.Io) !u8 {
     var prompt = Prompt{};
     try std.Io.File.stdout().writeStreamingAll(
         io,
-        "brushstroke live — type in the window; :quit exits. ceiling still hand.\n",
+        "brushstroke live — type in the window; ceiling refuses past bound; :quit exits.\n",
     );
 
     while (!app.wants_close()) {
@@ -1066,13 +1192,13 @@ fn run_live(garden: std.mem.Allocator, io: std.Io) !u8 {
                         if (is_quit_line(line)) {
                             try std.Io.File.stdout().writeStreamingAll(
                                 io,
-                                "GREEN: brushstroke live — type · :quit (ceiling hand)\n",
+                                "GREEN: brushstroke live — type · ceiling · :quit\n",
                             );
                             return 0;
                         }
-                        var echo_buf: [96]u8 = undefined;
-                        const echo = try std.fmt.bufPrint(&echo_buf, "last: {s}", .{line});
-                        note = try garden.dupe(u8, echo);
+                        if (!transcript.full) {
+                            transcript.append_prompt_line(line);
+                        }
                         dirty = true;
                     } else {
                         dirty = true;
@@ -1085,13 +1211,14 @@ fn run_live(garden: std.mem.Allocator, io: std.Io) !u8 {
             }
         }
         if (dirty) {
-            const lines = try live_frame_lines(garden, prompt.slice(), note);
+            const status = try format_prompt_status(garden, prompt.slice(), transcript.full);
+            const lines = try compose_live_frame_lines(garden, &transcript, status);
             try app.update_frame(lines);
         }
     }
     try std.Io.File.stdout().writeStreamingAll(
         io,
-        "GREEN: brushstroke live — window close (ceiling hand)\n",
+        "GREEN: brushstroke live — window close\n",
     );
     return 0;
 }
@@ -1165,6 +1292,9 @@ pub fn main(init: std.process.Init) !u8 {
             if (idle_ms == 0 or idle_ms > max_idle_ms) idle_ms = default_idle_ms;
         }
         return run_idle_witness(garden, io, idle_ms);
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "ceilingtest")) {
+        return run_ceiling_witness(garden, io);
     }
     if (args.len >= 2 and std.mem.eql(u8, args[1], "live")) {
         return run_live(garden, io);

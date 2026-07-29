@@ -1,0 +1,37 @@
+# tools/gen/season/surface_season_p57_witness.rish — live-five ceiling fill.
+#
+#   rishi/bin/rishi run tools/gen/season/surface_season_p57_witness.rish
+#
+# Headless ceilingtest (no WAYLAND_DISPLAY).
+
+say "surface-p57: Language EN — live-five ceiling fill opens."
+say "surface-p57: Style Radiant — thin LiveTranscript; refuse past bound."
+say "surface-p57: Lens TAME — Surface Season p57."
+
+let counsel = run ["test" "-f" "counsel/20260729-163034_surface-season-p57-live-five-ceiling.md"]
+assert counsel.ok else "surface-p57: p57 counsel missing"
+
+let metal = run ["sh" "-c" "grep -q 'const LiveTranscript' brushstroke/wayland_seed.rye && grep -q 'fn run_ceiling_witness' brushstroke/wayland_seed.rye && grep -q 'max_live_transcript_bytes' brushstroke/wayland_seed.rye && grep -q 'ceilingtest' brushstroke/wayland_seed.rye && echo METAL_OK"]
+assert metal.ok else "surface-p57: ceiling metal scan failed"
+assert metal.out contains "METAL_OK" else "surface-p57: ceiling metal missing"
+
+let seed_bin = "brushstroke/bin/brushstroke-wayland-seed"
+let have = run ["test" "-x" seed_bin]
+assert have.ok else "surface-p57: build wayland_seed first — see p57 counsel"
+
+let livetest = run ["sh" "-c" "${seed_bin} livetest 2>&1"]
+assert livetest.ok else "surface-p57: livetest failed"
+assert livetest.out contains "GREEN" else "surface-p57: livetest not GREEN"
+
+let ceiling = run ["sh" "-c" "${seed_bin} ceilingtest 2>&1"]
+assert ceiling.ok else "surface-p57: ceilingtest failed"
+assert ceiling.out contains "live-five ceiling witness" else "surface-p57: ceiling banner missing"
+assert ceiling.out contains "bytes=" else "surface-p57: byte count missing"
+assert ceiling.out contains "GREEN" else "surface-p57: ceilingtest not GREEN"
+
+let seat = run ["sh" "-c" "grep -qF 'max_live_transcript_bytes' counsel/20260729-163034_surface-season-p57-live-five-ceiling.md && grep -qF 'limbs complete' counsel/20260729-163034_surface-season-p57-live-five-ceiling.md && echo SEAT_OK"]
+assert seat.ok else "surface-p57: counsel seat scan failed"
+assert seat.out contains "SEAT_OK" else "surface-p57: ceiling seat missing"
+
+say "GREEN: surface-p57 — ceilingtest fill · livetest still GREEN"
+say "GREEN: surface-p57 — live-five limbs complete on seed."
