@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.211321` — [Surface Season p21 sec grant-family-count](20260728-211321_surface-season-p21-sec-grant-family-count.bron) — first sec furniture · p22 next
 - `20260728.210859` — [Surface Season p20 sur frame-seed-line-count](20260728-210859_surface-season-p20-sur-frame-seed-line-count.bron) — seed Frame three lines · p21 next
 - `20260728.205833` — [History tidy · full REMEMBER pin habit](20260728-205833_history-tidy-remember-pin-squash-full.bron) — 331 dropped · p20 next
 - `20260728.205029` — [Surface history tidy · REMEMBER pin squash](20260728-205029_surface-season-history-tidy-remember-pin-squash.bron) — same-commit nib · p20 next

@@ -1,0 +1,14 @@
+::  name       grant family count
+::  shape      families - int (@u32)
+::  invariant  Glow carries three GrapheneOS-parallel grant families: Resource Scope · Network Grant · Sensors Grant
+::  example    3
+::  readers    Pool · TUBE1 · Mand · Surface sec room
+::  nib        surface-p21-v0
+::
+::  Surface Season p21 — first resident in src/sec (security room).
+::  Names the three grant families already GREEN in docs/TUBE.md /
+::  HAWM (storage-scope · network-grant · sensors-grant). Does not
+::  invent a fourth family · Mand policy · or APK permission emission.
++$  grant-family-count-shape
+  $:  families=@u32
+  ==

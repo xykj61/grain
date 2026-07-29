@@ -7,7 +7,7 @@
 
 say "first-resident: Language EN — Glow desks that live in src/."
 say "first-resident: Style Radiant — prove the desks; refuse shred."
-say "first-resident: Lens TAME — Surface Season p20."
+say "first-resident: Lens TAME — Surface Season p21."
 
 let zig = "vendor/zig-toolchain/zig"
 
@@ -119,6 +119,20 @@ let ugate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" udesk]
 assert ugate.ok else "first-resident: app tube0 shape lower/build/run failed"
 assert ugate.out contains "EXIT:0" else "first-resident: app tube0 shape did not exit 0"
 
-say "GREEN: first-resident — lib · sur×3 · til×2 · app×2 · Surface p20"
+say "first-resident: sec grant-family-count..."
+let cdesk = "src/sec/shape-grant-family-count.glow"
+let cplacard = run ["sh" "-c" "head -n 7 src/sec/shape-grant-family-count.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+assert cplacard.ok else "first-resident: sec placard scan failed"
+let ccount = trim cplacard.out
+assert ccount == "6" else "first-resident: sec placard missing six lines"
+let cfamilies = run ["sh" "-c" "grep -q 'example    3' src/sec/shape-grant-family-count.glow && grep -q 'Resource Scope' src/sec/shape-grant-family-count.glow && grep -q 'Network Grant' src/sec/shape-grant-family-count.glow && grep -q 'Sensors Grant' src/sec/shape-grant-family-count.glow && grep -q 'TUBE' src/sec/shape-grant-family-count.glow && echo GRANT_OK"]
+assert cfamilies.ok else "first-resident: sec grant families scan failed"
+assert cfamilies.out contains "GRANT_OK" else "first-resident: sec three grant families / TUBE not named"
+let cgate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" cdesk]
+assert cgate.ok else "first-resident: sec shape lower/build/run failed"
+assert cgate.out contains "EXIT:0" else "first-resident: sec shape did not exit 0"
+
+say "GREEN: first-resident — lib · sur×3 · til×2 · app×2 · sec · Surface p21"
 say "GREEN: first-resident — Glow userland desks live at home first."
+
 

@@ -37,19 +37,20 @@ SEXT SCOPE (paused — do not advance s-rounds):
   Charter: counsel/20260728-183510_the-generator-season-sext-charter.md
 
 SEPT SCOPE (OPEN — walk here):
-  Surface Season OPEN · p20 complete / p21 next.
+  Surface Season OPEN · p21 complete / p22 next.
   Working lean: Pond Glow GUI · Brushstroke/.brush · Ubuntu Wayland ·
     Mantra/Weave DAG · first-resident userland · thin .brush (parser held).
   Handback lean: return_generator_s9.
   Charter: counsel/20260728-193914_the-surface-season-sept-charter.md
-  Seat: counsel/20260728-210859_surface-season-p20-sur-frame-seed-line-count.md
-  Prep+study+pedestals: p1–p20 (anvil · hygiene · first-resident · Wayland ·
-    connector · pond GUI · graph redraw · lib/sur×3/til×2/app×2 · .brush).
+  Seat: counsel/20260728-211321_surface-season-p21-sec-grant-family-count.md
+  Prep+study+pedestals: p1–p21 (anvil · hygiene · first-resident · Wayland ·
+    connector · pond GUI · graph redraw · lib/sur×3/til×2/app×2/sec · .brush).
   First residents LIVE: src/lib (double · inc) · src/sur (surface-count ·
     frame-max-lines · frame-seed-line-count) · src/til (tilak-root-count ·
-    manifest-field-count) · src/app (pool-agent-slot · tube0-manifest-field-count).
+    manifest-field-count) · src/app (pool-agent-slot · tube0-manifest-field-count) ·
+    src/sec (grant-family-count).
     .brush LIVE: brushstroke/seed-frame.brush (parser held).
-    %tile HELD. src/sec OPEN · src/web REFUSED.
+    %tile HELD. src/web REFUSED.
   Horizon PARK: Genode · seL4 · SixOS · s6 · Nix (proven-seat parallel).
   Geode PREP parallel (d0) — does not steal p-rounds.
   Live-five still hand.
@@ -60,7 +61,7 @@ HARD LINES:
   first-resident routine · vegan-dogfood easter-egg only ·
   no m/i/u/g/q/s advance while sept walks · %tile not seated yet.
 
-NEXT (p21):
+NEXT (p22):
   More pedestals · .brush lower lean later · or live-five on word —
   or check-in if a seam asks.
 

@@ -32,6 +32,8 @@ let desk5 = run ["test" "-f" "src/app/shape-pool-agent-slot.glow"]
 assert desk5.ok else "glow-connector: hop1 app pedestal missing"
 let desk5b = run ["test" "-f" "src/app/shape-tube0-manifest-field-count.glow"]
 assert desk5b.ok else "glow-connector: hop1 app tube0-manifest-field-count pedestal missing"
+let desk6 = run ["test" "-f" "src/sec/shape-grant-family-count.glow"]
+assert desk6.ok else "glow-connector: hop1 sec grant-family-count pedestal missing"
 let hygiene = run ["test" "-f" "tools/gen/season/glow_hygiene_pin.rish"]
 assert hygiene.ok else "glow-connector: hop1 hygiene pin missing"
 let noweb = run ["sh" "-c" "test ! -d src/web && echo NOWEB"]
