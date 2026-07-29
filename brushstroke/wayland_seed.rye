@@ -18,12 +18,15 @@
 //!   brushstroke/bin/brushstroke-wayland-seed redrawtest # SLC-2a Lap 2 headless witness
 //!   brushstroke/bin/brushstroke-wayland-seed brushtest [path.brush]  # p49/p52 · glass Frame feed
 //!   brushstroke/bin/brushstroke-wayland-seed brush <path.brush>     # present .brush on Wayland
+//!   brushstroke/bin/brushstroke-wayland-seed livetest               # p54 · type · :quit headless
+//!   brushstroke/bin/brushstroke-wayland-seed live                  # p54 · type · :quit hosted
 //!
-//! Requires a running Wayland compositor (`WAYLAND_DISPLAY`) for the default mode
-//! and for `brush <path>`. `brushtest` is headless.
+//! Requires a running Wayland compositor (`WAYLAND_DISPLAY`) for the default mode,
+//! `brush <path>`, and `live`. `brushtest` and `livetest` are headless.
 //!
 //! Frame tidy (p52): glass `brush.Frame` (= BrushFrame) feeds this host `Frame`
 //! through one named hop — `Frame.from_brush`.
+//! Live-five (p54): type · :quit metal; idle · ceiling stay hand.
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -39,6 +42,7 @@ const c = @cImport({
 });
 
 const max_key_actions: u32 = 64;
+const max_prompt_bytes: u32 = 64;
 
 pub const KeyAction = union(enum) {
     none,
@@ -46,6 +50,82 @@ pub const KeyAction = union(enum) {
     backspace,
     submit,
 };
+
+/// Thin live prompt — KeyAction → one submitted line (no Rishi REPL invent).
+const Prompt = struct {
+    buf: [max_prompt_bytes]u8 = undefined,
+    len: u32 = 0,
+    pending_submit: bool = false,
+
+    fn reset(self: *Prompt) void {
+        self.len = 0;
+        self.pending_submit = false;
+    }
+
+    fn push_char(self: *Prompt, ch: u8) void {
+        if (self.len >= max_prompt_bytes) return;
+        self.buf[self.len] = ch;
+        self.len += 1;
+    }
+
+    fn backspace(self: *Prompt) void {
+        if (self.len == 0) return;
+        self.len -= 1;
+    }
+
+    fn apply(self: *Prompt, action: KeyAction) void {
+        switch (action) {
+            .none => {},
+            .char_ => |ch| self.push_char(ch),
+            .backspace => self.backspace(),
+            .submit => self.pending_submit = true,
+        }
+    }
+
+    fn slice(self: *const Prompt) []const u8 {
+        return self.buf[0..self.len];
+    }
+
+    fn take_submitted(self: *Prompt, garden: std.mem.Allocator) !?[]const u8 {
+        if (!self.pending_submit) return null;
+        self.pending_submit = false;
+        const trimmed = std.mem.trim(u8, self.buf[0..self.len], " \t\r\n");
+        self.len = 0;
+        if (trimmed.len == 0) return null;
+        return try garden.dupe(u8, trimmed);
+    }
+};
+
+fn is_quit_line(line: []const u8) bool {
+    return std.mem.eql(u8, line, ":quit");
+}
+
+fn live_prompt_text(garden: std.mem.Allocator, prompt: []const u8) ![]const u8 {
+    const prefix = "brush> ";
+    const out = try garden.alloc(u8, prefix.len + prompt.len);
+    var i: u32 = 0;
+    while (i < prefix.len) : (i += 1) {
+        out[i] = prefix[i];
+    }
+    var j: u32 = 0;
+    while (j < prompt.len) : (j += 1) {
+        out[prefix.len + j] = prompt[j];
+    }
+    return out;
+}
+
+fn live_frame_lines(garden: std.mem.Allocator, prompt: []const u8, note: []const u8) ![]Line {
+    const n: usize = if (note.len > 0) 3 else 2;
+    // invariant: live Frame stays under the host ceiling
+    assert(n <= max_lines);
+    const lines = try garden.alloc(Line, n);
+    lines[0] = .{ .text = "brushstroke live-five" };
+    lines[1] = .{ .text = try live_prompt_text(garden, prompt) };
+    if (note.len > 0) {
+        lines[2] = .{ .text = note };
+    }
+    return lines;
+}
 
 const wayland_seed_version = "20260703.135212";
 
@@ -872,6 +952,109 @@ fn run_brush_present(garden: std.mem.Allocator, io: std.Io, path: []const u8) !u
     return 0;
 }
 
+/// Headless live-five slice: type changes Frame signature; `:quit` exits clean.
+/// Idle · ceiling stay hand (not claimed here).
+fn run_live_five_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
+    var prompt = Prompt{};
+    prompt.apply(.{ .char_ = 'h' });
+    prompt.apply(.{ .char_ = 'i' });
+    const mid = try live_frame_lines(garden, prompt.slice(), "");
+    const sig_mid = try signature_from_lines(garden, mid);
+    // invariant: typed text lands on the prompt row
+    assert(std.mem.indexOf(u8, mid[1].text, "hi") != null);
+
+    prompt.apply(.{ .char_ = '!' });
+    const typing = try live_frame_lines(garden, prompt.slice(), "");
+    const sig_typing = try signature_from_lines(garden, typing);
+    // invariant: type redraws the glass
+    assert(sig_typing != sig_mid);
+
+    prompt.apply(.backspace);
+    // invariant: backspace trims one glyph
+    assert(std.mem.eql(u8, prompt.slice(), "hi"));
+
+    prompt.reset();
+    const quit_chars = ":quit";
+    for (quit_chars) |ch| {
+        prompt.apply(.{ .char_ = ch });
+    }
+    prompt.apply(.submit);
+    const line = (try prompt.take_submitted(garden)) orelse return 1;
+    // invariant: :quit is the named exit word
+    assert(is_quit_line(line));
+
+    var buf: [176]u8 = undefined;
+    const msg = try std.fmt.bufPrint(
+        &buf,
+        "live-five witness: type sig={x}->{x} :quit — GREEN (idle · ceiling hand)\n",
+        .{ sig_mid, sig_typing },
+    );
+    try std.Io.File.stdout().writeStreamingAll(io, msg);
+    return 0;
+}
+
+/// Hosted live-five: keyboard into Prompt · Frame redraw · `:quit` exits.
+/// Needs WAYLAND_DISPLAY. Idle · ceiling stay hand.
+fn run_live(garden: std.mem.Allocator, io: std.Io) !u8 {
+    var note: []const u8 = "type in window · :quit exits";
+    const boot = try live_frame_lines(garden, "", note);
+    var app = try present_value(garden, boot);
+    defer app.display.disconnect();
+    app.enable_keyboard();
+    try app.prepare_surface();
+    app.set_window_title("brushstroke live");
+    app.set_app_id("brushstroke-live");
+    try app.set_frame(boot);
+
+    var prompt = Prompt{};
+    try std.Io.File.stdout().writeStreamingAll(
+        io,
+        "brushstroke live — type in the window; :quit exits. idle · ceiling still hand.\n",
+    );
+
+    while (!app.wants_close()) {
+        try app.dispatch_once(50);
+        var dirty = false;
+        while (app.has_key_action()) {
+            const action = app.pop_key_action();
+            switch (action) {
+                .none => {},
+                .submit => {
+                    prompt.apply(.submit);
+                    if (try prompt.take_submitted(garden)) |line| {
+                        if (is_quit_line(line)) {
+                            try std.Io.File.stdout().writeStreamingAll(
+                                io,
+                                "GREEN: brushstroke live — type · :quit (idle · ceiling hand)\n",
+                            );
+                            return 0;
+                        }
+                        var echo_buf: [96]u8 = undefined;
+                        const echo = try std.fmt.bufPrint(&echo_buf, "last: {s}", .{line});
+                        note = try garden.dupe(u8, echo);
+                        dirty = true;
+                    } else {
+                        dirty = true;
+                    }
+                },
+                .char_, .backspace => {
+                    prompt.apply(action);
+                    dirty = true;
+                },
+            }
+        }
+        if (dirty) {
+            const lines = try live_frame_lines(garden, prompt.slice(), note);
+            try app.update_frame(lines);
+        }
+    }
+    try std.Io.File.stdout().writeStreamingAll(
+        io,
+        "GREEN: brushstroke live — window close (idle · ceiling hand)\n",
+    );
+    return 0;
+}
+
 fn run_selftest(garden: std.mem.Allocator, io: std.Io) !u8 {
     const lines = try default_lines(garden);
     const grid = try Frame.init(lines).to_grid(garden);
@@ -930,6 +1113,12 @@ pub fn main(init: std.process.Init) !u8 {
     }
     if (args.len >= 3 and std.mem.eql(u8, args[1], "brush")) {
         return run_brush_present(garden, io, args[2]);
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "livetest")) {
+        return run_live_five_witness(garden, io);
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "live")) {
+        return run_live(garden, io);
     }
 
     const lines = try default_lines(garden);

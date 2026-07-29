@@ -1,24 +1,34 @@
-# tools/gen/season/surface_season_p54_witness.rish — waits word hold.
+# tools/gen/season/surface_season_p54_witness.rish — live-five type · :quit.
 #
 #   rishi/bin/rishi run tools/gen/season/surface_season_p54_witness.rish
+#
+# Headless livetest (no WAYLAND_DISPLAY). Idle · ceiling stay hand.
 
-say "surface-p54: Language EN — waits word after p53."
-say "surface-p54: Style Radiant — report hold; refuse re-press."
+say "surface-p54: Language EN — live-five type · :quit opens."
+say "surface-p54: Style Radiant — thin Prompt; refuse idle/ceiling claim."
 say "surface-p54: Lens TAME — Surface Season p54."
 
-let counsel = run ["test" "-f" "counsel/20260729-140523_surface-season-p54-waits-word.md"]
+let counsel = run ["test" "-f" "counsel/20260729-140917_surface-season-p54-live-five-type-quit.md"]
 assert counsel.ok else "surface-p54: p54 counsel missing"
 
-let hold = run ["sh" "-c" "grep -q 'HOLD' counsel/20260729-140523_surface-season-p54-waits-word.md && grep -q 'no re-press' counsel/20260729-140523_surface-season-p54-waits-word.md && grep -q 'p53 still stands' counsel/20260729-140523_surface-season-p54-waits-word.md && echo HOLD_OK"]
-assert hold.ok else "surface-p54: hold scan failed"
-assert hold.out contains "HOLD_OK" else "surface-p54: hold pins missing"
+let metal = run ["sh" "-c" "grep -q 'const Prompt' brushstroke/wayland_seed.rye && grep -q 'fn run_live_five_witness' brushstroke/wayland_seed.rye && grep -q 'fn run_live' brushstroke/wayland_seed.rye && echo METAL_OK"]
+assert metal.ok else "surface-p54: Prompt · livetest metal scan failed"
+assert metal.out contains "METAL_OK" else "surface-p54: live-five metal missing"
 
-let empty = run ["sh" "-c" "grep -q 'Ungated invent' counsel/20260729-140523_surface-season-p54-waits-word.md && grep -q 'empty' counsel/20260729-140523_surface-season-p54-waits-word.md && echo EMPTY_OK"]
-assert empty.ok else "surface-p54: empty-queue scan failed"
-assert empty.out contains "EMPTY_OK" else "surface-p54: ungated invent must read empty"
+let seed_bin = "brushstroke/bin/brushstroke-wayland-seed"
+let have = run ["test" "-x" seed_bin]
+assert have.ok else "surface-p54: build wayland_seed first — see p54 counsel"
 
-let prior = run ["test" "-f" "counsel/20260729-140251_surface-season-p53-check-in-next-lean.md"]
-assert prior.ok else "surface-p54: prior p53 counsel missing"
+let livetest = run ["sh" "-c" "${seed_bin} livetest 2>&1"]
+assert livetest.ok else "surface-p54: livetest failed"
+assert livetest.out contains "live-five witness" else "surface-p54: livetest banner missing"
+assert livetest.out contains ":quit" else "surface-p54: :quit missing from livetest"
+assert livetest.out contains "GREEN" else "surface-p54: livetest not GREEN"
+assert livetest.out contains "idle · ceiling hand" else "surface-p54: idle/ceiling hand banner missing"
 
-say "GREEN: surface-p54 — waits word · prior p53 stands"
-say "GREEN: surface-p54 — no invent · no re-press this stamp."
+let hand = run ["sh" "-c" "grep -qF 'idle · ceiling still' counsel/20260729-140917_surface-season-p54-live-five-type-quit.md && grep -qF 'idle/ceiling hand' counsel/20260729-140917_surface-season-p54-live-five-type-quit.md && echo HAND_OK"]
+assert hand.ok else "surface-p54: idle/ceiling hand seat scan failed"
+assert hand.out contains "HAND_OK" else "surface-p54: idle · ceiling must stay hand"
+
+say "GREEN: surface-p54 — livetest type · :quit"
+say "GREEN: surface-p54 — idle · ceiling still hand."

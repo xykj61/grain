@@ -4,7 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
-- `20260729.140523` — [Surface Season p54 waits word](20260729-140523_surface-season-p54-waits-word.bron) — prior p53 stands · no re-press
+- `20260729.140917` — [Surface Season p54 live-five type quit](20260729-140917_surface-season-p54-live-five-type-quit.bron) — type · :quit GREEN · idle/ceiling hand
 - `20260729.140251` — [Surface Season p53 check-in next lean](20260729-140251_surface-season-p53-check-in-next-lean.bron) — recommend live-five
 - `20260729.140036` — [Surface Season p52 Frame tidy](20260729-140036_surface-season-p52-frame-tidy.bron) — glass Frame · from_brush
 - `20260729.135658` — [Surface Season p51 check-in next lean](20260729-135658_surface-season-p51-check-in-next-lean.bron) — recommend Frame tidy
