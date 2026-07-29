@@ -1,6 +1,6 @@
 # Surface Chapter — Recursion Prompt (printout · seven scopes · p37)
 
-**Stamp:** `20260728.233053`  
+**Stamp:** `20260728.233053` · Radiant pass `20260728.233638` (p38 path survey)  
 **Use:** paste the fenced block as the next counsel/bench session opener.  
 **Supersedes printout lean of:** [`20260728-193914_surface-season-p0-recursion-prompt.md`](20260728-193914_surface-season-p0-recursion-prompt.md) (p0 opener kept as dated artifact).
 
@@ -42,10 +42,10 @@ SEXT SCOPE (paused — do not advance s-rounds):
   Charter: counsel/20260728-183510_the-generator-season-sext-charter.md
 
 SEPT SCOPE (OPEN — walk here):
-  Surface Chapter OPEN · p37 complete / p38 next.
+  Surface Chapter OPEN · p38 complete / p39 next.
   Handback lean: return_generator_s9.
   Charter: counsel/20260728-193914_the-surface-season-sept-charter.md
-  Seat: counsel/20260728-233053_surface-season-p37-sur-brush-skate-rows.md
+  Seat: counsel/20260728-233638_surface-season-p38-anvil-path-breach-survey.md
   Recursion: expanding-prompts/20260728-233053_surface-season-p37-recursion-prompt.md
 
   Prep+study+metal through p37:
@@ -61,6 +61,8 @@ SEPT SCOPE (OPEN — walk here):
     p35 check-in.
     p36 Kiln seated (forge was Anvil; anvil/ path HELD).
     p37 sur brush-skate-rows (rows=8 = max_frame_lines).
+    p38 anvil/ path-breach survey SEATED — target kiln/ · not cut
+      (14 Skate views · drawn_terminal · gen/anvil · parity).
 
   First residents LIVE:
     src/lib ×2 · src/sur ×5 · src/til ×2 · src/app ×2 · src/sec ×2.
@@ -92,15 +94,15 @@ HARD LINES:
   no JS/HTML/CSS/JSON home tongue · no OS infusion as early rungs ·
   first-resident routine · vegan-dogfood easter-egg only ·
   no m/i/u/g/q/s advance while sept walks · %tile not seated yet ·
-  anvil/ directory path rename HELD (filename breach later) ·
+  anvil/ path SURVEY SEATED (cut waits approve-breach / cut kiln path) ·
   living Status uses bare living mutant (no markdown link to fossil).
 
-NEXT (p38):
-  more pedestals · anvil/ path-breach survey (check-in) · dated Class H batch
+NEXT (p39):
+  cut kiln path (approve breach) · more pedestals · dated Class H batch
   on word · or Wayland/live-five on word — check-in if a seam asks.
 
 Bench: prin scope · src_first_resident_witness · glow_connector_seam_witness ·
-  brush_parse_witness · oven_seat_witness · pond_gui_spine_witness ·
-  graph_redraw_spine_witness · sundial · gen_home as needed.
+  brush_parse_witness · oven_seat_witness · anvil_path_breach_survey_witness ·
+  pond_gui_spine_witness · graph_redraw_spine_witness · sundial · gen_home as needed.
 ] ]
 ```

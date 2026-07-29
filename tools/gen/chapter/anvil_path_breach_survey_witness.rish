@@ -1,0 +1,31 @@
+# tools/gen/chapter/anvil_path_breach_survey_witness.rish — Surface p38 survey seat.
+# Survey only: anvil/ still present; counsel names kiln/ target; no cut.
+#
+#   rishi/bin/rishi run tools/gen/chapter/anvil_path_breach_survey_witness.rish
+
+say "anvil-path-survey: Language EN — size the forge path before cutting."
+say "anvil-path-survey: Style Radiant — prove the map; refuse silent rename."
+say "anvil-path-survey: Lens TAME — Surface Chapter p38."
+
+let counsel = "counsel/20260728-233638_surface-season-p38-anvil-path-breach-survey.md"
+let c = run ["test" "-f" counsel]
+assert c.ok else "anvil-path-survey: counsel missing"
+
+let held = run ["sh" "-c" "test -d anvil && test -f anvil/anvil_core.rye && echo ANVIL_HELD"]
+assert held.ok else "anvil-path-survey: anvil/ must still exist (survey ≠ cut)"
+assert held.out contains "ANVIL_HELD" else "anvil-path-survey: path held broken"
+
+let target = run ["sh" "-c" "grep -q 'kiln/' counsel/20260728-233638_surface-season-p38-anvil-path-breach-survey.md && grep -q 'SURVEY SEATED' counsel/20260728-233638_surface-season-p38-anvil-path-breach-survey.md && grep -q 'drawn_terminal.rye' counsel/20260728-233638_surface-season-p38-anvil-path-breach-survey.md && grep -q 'inference_anvil' counsel/20260728-233638_surface-season-p38-anvil-path-breach-survey.md && echo SURVEY_OK"]
+assert target.ok else "anvil-path-survey: counsel pin scan failed"
+assert target.out contains "SURVEY_OK" else "anvil-path-survey: kiln target or Skate views not named"
+
+let views = run ["sh" "-c" "ls tools/inference_anvil_corpus_*.rish | wc -l"]
+assert views.ok else "anvil-path-survey: view glob failed"
+let n = trim views.out
+assert n == "14" else "anvil-path-survey: expected 14 inference_anvil views"
+
+let gen = run ["test" "-d" "tools/gen/anvil"]
+assert gen.ok else "anvil-path-survey: tools/gen/anvil missing"
+
+say "GREEN: anvil-path-survey — kiln/ sized · anvil/ held · 14 Skate views · Surface p38"
+say "GREEN: anvil-path-survey — cut waits a separate approve-breach word."
