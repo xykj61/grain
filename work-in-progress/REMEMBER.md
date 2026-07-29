@@ -6,14 +6,14 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260729.131728` (EDT) · voice Quin  
+**Last refreshed:** `20260729.132224` (EDT) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2 · ring-3** · **THREATS** · **five pillars** · **accrete tiers** · **redaction stance** · **always-in-it rhythm** · **Prin / %prin** · **sundial**  
 **Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list1024 · Env512 · **stamp @u64 · Crockford** · **shape aura floor** · **Glow text floor GREEN** · **Glow Book weave GREEN (C2b)** · **baked-sample Acme gloss** · **first resident** (routine) · **vegan-dogfood** (easter egg) · **living mutant** · **shred-prep list** · **transitive writing crawl** · **Kiln** · **three** · **quad** · **nona** · **SDD** · **Nest-Chapter**  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand home** · **siblings seated** · **--cursor launch** · **Pond counsel 161616** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm+cold REPORT** · **Grain umbrella living** · **OQ #1 · #3 · #4 · #5 answered** · **pass ledger** · **campaign STOPPED** · **growth law** · **wasmtime ABSENT** · **monocypher 4.0.3 GREEN** · **MAP.md** · **breach T3–T4** · **U·V·I** · **C-Ladder C1·C2·C2b landed** · **r18 say/lint twin** · **r21 Verse · O1** · **r22 outside eyes** · **Prin** · **corpus twin fold seated (Sound r11)** · **C3–C5 await homes**  
-**Git nib:** `ff90edce48` · Grain · **Surface p41** · sur pin-bytes · autoproject96/grain
-**Bookmark:** [`counsel/20260729-131728_surface-season-p41-sur-brush-max-pin-bytes.md`](../counsel/20260729-131728_surface-season-p41-sur-brush-max-pin-bytes.md)
+**Git nib:** `efa2e4f04b` · Grain · **Surface p42** · sur ParseError×10 · autoproject96/grain
+**Bookmark:** [`counsel/20260729-132224_surface-season-p42-sur-brush-parse-error-count.md`](../counsel/20260729-132224_surface-season-p42-sur-brush-parse-error-count.md)
 
-**Chapter:** Framework · EDT · **Grain** · **finishing edge:** **sept** — Surface **OPEN** · p41 complete / **p42** next · sur×7 · Nona **PAUSED** n3/n4 · SDD · three/quad living · Kiln **PAUSED** o3/o4 · Generator **PAUSED** s8/s9 · MUR **three** u91/u92 · handback `return_generator_s9` · **no force-push** · Geode PREP · OS horizon PARK · F undisturbed. Prefer **git nib**. · `prin scope`
+**Chapter:** Framework · EDT · **Grain** · **finishing edge:** **sept** — Surface **OPEN** · p42 complete / **p43** next · sur×8 · Nona **PAUSED** n3/n4 · SDD · three/quad living · Kiln **PAUSED** o3/o4 · Generator **PAUSED** s8/s9 · MUR **three** u91/u92 · handback `return_generator_s9` · **no force-push** · Geode PREP · OS horizon PARK · F undisturbed. Prefer **git nib**. · `prin scope`
 
 ---
 
@@ -26,7 +26,7 @@
 Fascia **shred** still waits circled shred yes — distinct from rename and from prune.  
 WOV retirement stays **roadmap last**. No live deploy · wallet · gas · private key.
 
-**Surface Chapter (sept)** **OPEN** — p41 complete / **p42** next · sur×7 pin-bytes `20260729.131728`. Handback lean `return_generator_s9`.  
+**Surface Chapter (sept)** **OPEN** — p42 complete / **p43** next · sur×8 ParseError×10 `20260729.132224`. Handback lean `return_generator_s9`.  
 **Nona Chapter (nona)** **PAUSED** n3/n4 — nest accuracy · SDD · residual **SEATED** · handed back `return_surface_p41`.  
 **Kiln Chapter (oct)** **PAUSED** o3/o4 — path cut LIVE · handed back earlier.  
 **Generator Chapter (sext)** **PAUSED** s8/s9 — handback when resumed `return_mur_u92`.  
@@ -56,7 +56,7 @@ WOV retirement stays **roadmap last**. No live deploy · wallet · gas · privat
 
 | Door | Kind |
 |------|------|
-| **Surface Chapter p42+** | **OPEN** · finishing edge · more pedestals or named invent |
+| **Surface Chapter p43+** | **OPEN** · finishing edge · field counts or named invent |
 | **Nona Chapter** | **PAUSED** n3/n4 · `return_surface_p41` seated |
 | **Living depth residual** | **SEATED** n2 · Kiln · Generator · MUR · LEXICON year |
 | **Chapter-Driven Development** | **SEATED** n1 · foundations · external-research · open template |
