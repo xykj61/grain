@@ -1,7 +1,8 @@
 # Surface Season — Recursion Prompt (printout · seven scopes)
 
 **Stamp:** `20260728.193914` · Radiant pass `20260728.204647`  
-**Use:** paste the fenced block as the next counsel/bench session opener.
+**Living printout:** [`20260728-233053_surface-season-p37-recursion-prompt.md`](20260728-233053_surface-season-p37-recursion-prompt.md) (p37 · full pause stack).  
+**Use (dated p0 artifact):** paste the fenced block only when replaying the opener shape; prefer the living printout above.
 
 **Sundial:** `rishi/bin/rishi run tools/gen/season/sundial.rish` · `prin sundial`  
 **Scope:** `rishi/bin/rishi run tools/gen/season/prin_scope.rish` · `prin scope`  

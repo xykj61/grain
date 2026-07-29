@@ -7,7 +7,7 @@
 
 say "first-resident: Language EN — Glow desks that live in src/."
 say "first-resident: Style Radiant — prove the desks; refuse shred."
-say "first-resident: Lens TAME — Surface Season p30."
+say "first-resident: Lens TAME — Surface Season p37."
 
 let zig = "vendor/zig-toolchain/zig"
 
@@ -79,6 +79,19 @@ assert knotes.out contains "SKATE_OK" else "first-resident: sur brush skate cols
 let kgate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" kdesk]
 assert kgate.ok else "first-resident: sur skate-cols shape lower/build/run failed"
 assert kgate.out contains "EXIT:0" else "first-resident: sur skate-cols shape did not exit 0"
+
+say "first-resident: sur brush-skate-rows pedestal..."
+let rdesk = "src/sur/shape-brush-skate-rows.glow"
+let rplacard = run ["sh" "-c" "head -n 7 src/sur/shape-brush-skate-rows.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+assert rplacard.ok else "first-resident: sur skate-rows placard scan failed"
+let rcount = trim rplacard.out
+assert rcount == "6" else "first-resident: sur skate-rows placard missing six lines"
+let rnotes = run ["sh" "-c" "grep -q 'example    8' src/sur/shape-brush-skate-rows.glow && grep -q 'brush_skate_rows' src/sur/shape-brush-skate-rows.glow && grep -q 'max_frame_lines' src/sur/shape-brush-skate-rows.glow && echo ROWS_OK"]
+assert rnotes.ok else "first-resident: sur skate-rows notes scan failed"
+assert rnotes.out contains "ROWS_OK" else "first-resident: sur brush skate rows=8 not named"
+let rgate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" rdesk]
+assert rgate.ok else "first-resident: sur skate-rows shape lower/build/run failed"
+assert rgate.out contains "EXIT:0" else "first-resident: sur skate-rows shape did not exit 0"
 
 say "first-resident: til tilak-root-count..."
 let tdesk = "src/til/tilak-root-count.glow"
@@ -158,7 +171,7 @@ let rgate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" rdesk]
 assert rgate.ok else "first-resident: sec mand shape lower/build/run failed"
 assert rgate.out contains "EXIT:0" else "first-resident: sec mand shape did not exit 0"
 
-say "GREEN: first-resident — lib · sur×4 · til×2 · app×2 · sec×2 · Surface p30"
+say "GREEN: first-resident — lib · sur×5 · til×2 · app×2 · sec×2 · Surface p37"
 say "GREEN: first-resident — Glow userland desks live at home first."
 
 

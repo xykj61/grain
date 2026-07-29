@@ -1,0 +1,14 @@
+::  name       brush skate rows
+::  shape      rows - int (@u32)
+::  invariant  thin Skate proof grid height equals Frame max_lines (eight rows)
+::  example    8
+::  readers    Brushstroke · Surface · skate_grid · .brush lower
+::  nib        surface-p37-v0
+::
+::  Surface Season p37 — fifth pedestal in src/sur (structure museum).
+::  Names brush_skate_rows in brushstroke/brush_parse.rye (equals
+::  max_frame_lines). Does not invent a Wayland window · skate/ graduation ·
+::  or Realidream invent.
++$  brush-skate-rows-shape
+  $:  rows=@u32
+  ==
