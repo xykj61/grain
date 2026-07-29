@@ -9,7 +9,7 @@
 1. `lattice/` — `lattice_core.rye` matmul + `tools/lattice_lap1.rish` → parity **211**
 2. `scribble/` — markdown blocks + `tools/scribble_lap1.rish` → **212**
 3. `lantern/` — fixture completion + `tools/lantern_lap1.rish` → **213**
-4. `anvil/` — corpus catalog + `tools/anvil_corpus_lap1.rish` → **214**
+4. `oven/` (was `anvil/`) — corpus catalog + `tools/oven_corpus_lap1.rish` → **214**
 5. `pond/apps/drawn_terminal.rye` — `assistviewtest` + `tools/inference_assist_view.rish` → **215**
 6. Wire `tools/parity.rish`, TASKS, ROADMAP, LEXICON, compass rose
 
