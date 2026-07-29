@@ -1,0 +1,72 @@
+# recursion_block.brix — template recursion data (Brix = data · Glow = code)
+# Seated 20260729.165912 · Equinox Chapter · nest deca
+# Generalized nest key: `nest <label>` · season · rounds · handback · ask_reply
+# Copy and fill for each new nest open; Glow implementations read this as data.
+
+name equinox-recursion
+version 20260729.165912
+nest deca
+nest_n 10
+season Equinox
+round_letter e
+rounds e0-e255
+round_count 256
+equinox_count 4
+equinox_size 64
+code_lang glow
+data_lang brix
+ask_key asks
+ask_reply your
+handback return_surface_p59
+parent_scope sept
+parent_bookmark p58/p59
+editor_continue Claude Fable 5 1m Max
+editor_pause Cursor
+voice Quin
+
+# Four equinoxes (sub-seasons of 64 within the 256)
+equinox 1 east fire aries-ward e0-e63
+equinox 2 north water cancer-ward e64-e127
+equinox 3 west air libra-ward e128-e191
+equinox 4 south earth capricorn-ward e192-e255
+
+# Module roster — utility Glow targets (Caravan…Kumara · .myc)
+module Caravan
+module Tally
+module Rishi
+module Glow
+module rune
+module Amphora
+module Mantra
+module Weave
+module Mycelium
+module MUR
+module Fascia
+module Grain
+module Linengrow
+module Dimeroll
+module Lotus
+module Brushstroke
+module Skate
+module Aurora
+module Lattice
+module Lantern
+module Kiln
+module Pool
+module Siya
+module Neth
+module Ojjo
+module Murr
+module Sui
+module Comlink
+module Realidream
+module Tablecloth
+module Amber
+module Kumara
+module myc
+
+# Mod-clock collaboration (paired clocks · not a false 12↔16 bijection)
+mod_a 12
+mod_b 16
+mod_joint 48
+lib glow/mod_clock.rye

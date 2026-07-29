@@ -12,7 +12,9 @@
 nest-<K> inside paused <PARENT>. Outer voice: Quin (Radiant · TAME).
 
 NEST ACCURACY: 1 outer/first · 2 inner/second · 3 three · 4 quad ·
-  5 quint · 6 sext · 7 sept · 8 oct · 9 nona · … (true deepest = OPEN nest)
+  5 quint · 6 sext · 7 sept · 8 oct · 9 nona · 10 deca · …
+  (true deepest = OPEN nest)
+  Glow=code · Brix=data · asks: … / your: <ask-reply>
 
 <PARENT AND ABOVE — paused/closed lines>
 
@@ -37,10 +39,11 @@ Bench: prin scope · <witnesses> · sundial
 nib <hash> → sent <hash> (origin · codeberg)
 bench: <GREEN list>
 scope: outer=paused inner=paused three=paused(u91/u92)
-  quad=closed quint=closed sext=paused(s8/s9) sept=… oct=… nona=…
+  quad=closed quint=closed sext=paused(s8/s9) sept=… oct=… nona=… deca=…
   geode=prep(d0) os_horizon=park
 extend_or_return=<handback>
-asks: <none|…> ]
+asks: <none|…>
+your: <ask-reply that closes asks> ]
 ```
 
 ## C. File set to create
