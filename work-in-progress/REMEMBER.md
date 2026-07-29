@@ -6,14 +6,14 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260728.233638` (EDT) · voice Quin  
+**Last refreshed:** `20260728.234419` (EDT) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2 · ring-3** · **THREATS** · **five pillars** · **accrete tiers** · **redaction stance** · **always-in-it rhythm** · **Prin / %prin** · **sundial**  
-**Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list1024 · Env512 · **stamp @u64 · Crockford** · **shape aura floor** · **Glow text floor GREEN** · **Glow Book weave GREEN (C2b)** · **baked-sample Acme gloss** · **first resident** (routine) · **vegan-dogfood** (easter egg) · **living mutant** · **shred-prep list** · **transitive writing crawl** · **Kiln** (was forge Anvil)  
+**Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list1024 · Env512 · **stamp @u64 · Crockford** · **shape aura floor** · **Glow text floor GREEN** · **Glow Book weave GREEN (C2b)** · **baked-sample Acme gloss** · **first resident** (routine) · **vegan-dogfood** (easter egg) · **living mutant** · **shred-prep list** · **transitive writing crawl** · **Kiln** (was forge Anvil) · **oct**  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand home** · **siblings seated** · **--cursor launch** · **Pond counsel 161616** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm+cold REPORT** · **Grain umbrella living** · **OQ #1 · #3 · #4 · #5 answered** · **pass ledger** · **campaign STOPPED** · **growth law** · **wasmtime ABSENT** · **monocypher 4.0.3 GREEN** · **MAP.md** · **breach T3–T4** · **U·V·I** · **C-Ladder C1·C2·C2b landed** · **r18 say/lint twin** · **r21 Verse · O1** · **r22 outside eyes** · **Prin** · **corpus twin fold seated (Sound r11)** · **C3–C5 await homes**  
-**Git nib:** `222c2f1c29` · Grain · **Surface p38** · anvil path survey · autoproject96/grain
-**Bookmark:** [`counsel/20260728-233638_surface-season-p38-anvil-path-breach-survey.md`](../counsel/20260728-233638_surface-season-p38-anvil-path-breach-survey.md)
+**Git nib:** `cb217be6ce` · Grain · **Kiln o0** · Surface paused · autoproject96/grain
+**Bookmark:** [`counsel/20260728-234419_oven-season-o0-bow-surface-paused.md`](../counsel/20260728-234419_oven-season-o0-bow-surface-paused.md)
 
-**Chapter:** Framework · EDT · **Grain** · **finishing edge:** **sept Surface** — p38 path survey **SEATED** / p39 next · target `kiln/` sized · `anvil/` **not cut** · Kiln **SEATED** · recursion printout living · transitive crawl **SEATED** · shred RED · Generator **PAUSED** s8/s9 · MUR **PAUSED** u91/u92 · Geode PREP · OS horizon PARK · F undisturbed. Prefer **git nib**. · `prin scope`
+**Chapter:** Framework · EDT · **Grain** · **finishing edge:** **oct Kiln** — o0 **SEATED** / o1 next · Surface **PAUSED** p38/p39 · Generator **PAUSED** s8/s9 · MUR **PAUSED** u91/u92 · `anvil/` **not cut** · handback `return_surface_p39` · Geode PREP · OS horizon PARK · F undisturbed. Prefer **git nib**. · `prin scope`
 
 ---
 
@@ -26,7 +26,8 @@
 Fascia **shred** still waits circled shred yes — distinct from rename and from prune.  
 WOV retirement stays **roadmap last**. No live deploy · wallet · gas · private key.
 
-**Surface Chapter (sept)** seated `20260728.193914` — Shape **B** · Pond Glow GUI · Wayland · Brushstroke/`.brush` · vegan-dogfood · `src/sec` open · `src/web` refused · Genode/SixOS/Nix PARK. Handback `return_generator_s9`.  
+**Kiln Chapter (oct)** seated `20260728.234419` — forge path nest · handback `return_surface_p39`.  
+**Surface Chapter (sept)** **PAUSED** p38/p39 — Shape **B** held · handback when resumed `return_generator_s9`.  
 **Generator Chapter (sext)** **PAUSED** s8/s9 — handback when resumed `return_mur_u92`.  
 **Vocabulary:** **first resident** = routine · **vegan-dogfood** = easter egg · **Kiln** = living forge (was Anvil) · [debrided] Anvil tribute kept.
 
@@ -54,10 +55,11 @@ WOV retirement stays **roadmap last**. No live deploy · wallet · gas · privat
 
 | Door | Kind |
 |------|------|
-| **Surface Chapter p39+** | **OPEN** · cut kiln path · pedestals · dated batch · Wayland/live-five |
-| **Recursion printout** | **SEATED** p37 · `expanding-prompts/20260728-233053_surface-season-p37-recursion-prompt.md` |
-| **Kiln** | **SEATED** p36 `20260728.232511` · living forge · bread not blades |
-| **`anvil/` → `kiln/` path** | **SURVEY SEATED** p38 · cut waits **approve breach** / **cut kiln path** |
+| **Kiln Chapter o1+** | **OPEN** · cut kiln path / approve breach |
+| **Recursion printout** | **SEATED** o0 · `expanding-prompts/20260728-234419_oven-season-o0-recursion-prompt.md` |
+| **Surface Chapter** | **PAUSED** p38/p39 · resume on Kiln handback |
+| **Kiln (name)** | **SEATED** p36 · living forge · bread not blades |
+| **`anvil/` → `kiln/` path** | survey p38 · cut is **o1** word |
 | **Transitive writing crawl** | **SEATED** p34 · BFS foundations to leaves |
 | **Shred-prep list** | **SEATED** · Class H · shred RED |
 | **Horizon / Realidream / Skate lean** | **SEATED** · invent held |

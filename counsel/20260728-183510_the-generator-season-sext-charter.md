@@ -8,7 +8,8 @@
 **Informal tag:** innermost^6+ · nest-6  
 **Ground:** origin/main `418af54e73` (pre-send)  
 **Within:** paused **innermost** MUR (u91 complete / u92 next) · inside paused Inner Scope · inside paused Constellation  
-**Status:** **PAUSED** · s0–s8 complete · bookmark **s8 complete / s9 next** · paused for Surface Chapter (sept) `20260728.193914`  
+**Status:** **PAUSED** · s0–s8 complete · bookmark **s8 complete / s9 next** · paused for Surface Chapter (sept) `20260728.193914` · Surface now paused for Kiln (oct) `20260728.234419`  
+Radiant pass `20260728.234419` — Surface pause · Kiln oct opens · Generator still held  
 Radiant pass `20260728.193914` — Shape B seated · Generator pause · Surface sept opens  
 Radiant pass `20260728.193058` — s8 Pond GUI season evaluation · like aim · push back nested-128+OS  
 Radiant pass `20260728.192321` — s7 tools/gen/amphora home LIVE · eight scripts · shims  
@@ -34,13 +35,15 @@ Radiant pass `20260728.183510` — sext opens · MUR paused · Glow/Rishi/Dojo r
 | **core** | Gren Chapter | lean-16 CLOSED · handed back | **CLOSED** |
 | **quint** | Keeh Chapter | lean-16 CLOSED · handed back | **CLOSED** |
 | **sext** | **Generator Chapter** | **s8** complete / **s9** next | **PAUSED** |
-| **sept** | Surface Chapter | p0 / p1 next | **OPEN** (steals the walk) |
+| **sept** | Surface Chapter | p38 / p39 next | **PAUSED** |
+| **oct** | Kiln Chapter | o0 / o1 next | **OPEN** (steals the walk) |
 
 Handback lean (when Generator resumes): `extend_or_return=return_mur_u92`.  
-Surface handback (while sept walks): `return_generator_s9`.  
+Surface handback (when sept resumes): `return_generator_s9`.  
+Kiln handback (while oct walks): `return_surface_p39`.  
 Warn **s62** and **s63** remain for when sext resumes: extend to **128**, or return MUR **u92**, or other word he seats.
 
-Geode stays **PREP** parallel (d0) — does not steal s-rounds. Surface does not advance s-rounds while OPEN.
+Geode stays **PREP** parallel (d0) — does not steal s-rounds. Deeper nests do not advance s-rounds while OPEN.
 
 ## What this season is for
 

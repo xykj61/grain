@@ -8,7 +8,9 @@
 **Informal tag:** nest-7 · not innermost (MUR keeps u91/u92)  
 **Ground:** origin/main `d3e208613a` (pre-send) · Shape **B** seated from [s8 eval](20260728-193058_generator-season-s8-pond-gui-season-evaluation.md)  
 **Within:** paused **sext** Generator (s8 complete / s9 next) · paused MUR · paused Inner · paused Constellation  
-**Status:** **OPEN** · p0–p27 complete `20260728.215052` · **p28** next  
+**Status:** **PAUSED** · p0–p38 complete · bookmark **p38 complete / p39 next** · paused for Kiln Chapter (oct) `20260728.234419`  
+Radiant pass `20260728.234419` — Shape pause · Surface p38/p39 · Kiln oct opens  
+Radiant pass `20260728.233638` — p38 anvil path-breach survey SEATED · cut held  
 Radiant pass `20260728.215052` — p27 brush stdout redraw · Skate lean  
 Radiant pass `20260728.213917` — Skate/Realidream lean SEATED · lexicon  
 Radiant pass `20260728.213205` — p26 brush Frame lower · BrushFrame from .brush  
@@ -51,7 +53,7 @@ Radiant pass `20260728.194334` — p1 tools/gen/anvil home LIVE · five corpus l
 
 ---
 
-## Seven scopes kept
+## Eight scopes kept
 
 | Scope | Chapter | Bookmark | Advance? |
 | --- | --- | --- | --- |
@@ -61,11 +63,13 @@ Radiant pass `20260728.194334` — p1 tools/gen/anvil home LIVE · five corpus l
 | **core** | Gren Chapter | lean-16 CLOSED | **CLOSED** |
 | **quint** | Keeh Chapter | lean-16 CLOSED | **CLOSED** |
 | **sext** | Generator Chapter | **s8 complete / s9 next** | **PAUSED** |
-| **sept** | **Surface Chapter** | **p27** complete / **p28** next | **OPEN** |
+| **sept** | **Surface Chapter** | **p38** complete / **p39** next | **PAUSED** |
+| **oct** | Kiln Chapter | o0 / o1 next | **OPEN** (steals the walk) |
 
-Handback lean (park until horizon): `extend_or_return=return_generator_s9`.  
+Handback lean (when Surface resumes): `extend_or_return=return_generator_s9`.  
+Kiln handback (while oct walks): `return_surface_p39`.  
 Generator still carries its own lean `return_mur_u92` for when sext resumes.  
-Warn **p62** and **p63**: extend to **128**, return Generator **s9**, return MUR **u92**, or other word he seats.
+Warn **p62** and **p63** remain for when sept resumes: extend to **128**, return Generator **s9**, return MUR **u92**, or other word he seats.
 
 Geode stays **PREP** parallel (d0). Proven-seat / Genode / SixOS / Nix / s6 stay **HORIZON PARK** — do not steal p0–p15.
 
