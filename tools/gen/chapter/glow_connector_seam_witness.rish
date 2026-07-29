@@ -20,6 +20,8 @@ let desk2 = run ["test" "-f" "src/lib/gate-surface-inc-u32.glow"]
 assert desk2.ok else "glow-connector: first-resident inc desk missing"
 let desk3 = run ["test" "-f" "src/sur/shape-surface-count.glow"]
 assert desk3.ok else "glow-connector: first-resident sur pedestal missing"
+let desk4 = run ["test" "-f" "src/til/tilak-root-count.glow"]
+assert desk4.ok else "glow-connector: first-resident til pedestal missing"
 
 let ledger = run ["test" "-f" "counsel/20260728-195228_surface-season-p4-river-zig-wayland-study-ledger.md"]
 assert ledger.ok else "glow-connector: p4 Wayland ledger missing"
