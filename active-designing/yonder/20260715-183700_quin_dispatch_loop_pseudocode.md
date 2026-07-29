@@ -19,7 +19,7 @@ Pulled directly from each module's own `_core.rye`, not paraphrased:
 
 **Lantern** (`lantern/lantern_core.rye`) — the bounded request/response contract. `Request{ model_hash, prompt, max_tokens, temperature, seed, top_p, stop_sequence, ... }`, capped by named constants (`max_prompt_len: u32 = 256`, `max_budget_tokens: u32 = 512`). `Response{ text, tokens_in, tokens_out, stopped_reason: StoppedReason }`. The real entry points: `validate_request(req) LanternError!void`, `complete_fixture(req, fixture_text) LanternError!Response`, `complete_allowed(req, fixture_text, allow_text) LanternError!Response` (the allow-list gate before completion).
 
-**Anvil** (`anvil/anvil_core.rye`) — the corpus catalog. `Chunk{ path, kind: ChunkKind, lines }`, `Catalog{ chunks: [max_chunks]Chunk, count }` with `max_chunks: u32 = 64`. Query shape: `CorpusQuery{ kind, path_prefix, path_suffix, min_lines, max_lines }`, dispatched through `query_corpus(catalog, query, out_indices) CorpusError!u32` or `sum_lines(catalog, query) u32`.
+**Kiln** (`kiln/oven_core.rye`, was Anvil) — the corpus catalog. `Chunk{ path, kind: ChunkKind, lines }`, `Catalog{ chunks: [max_chunks]Chunk, count }` with `max_chunks: u32 = 64`. Query shape: `CorpusQuery{ kind, path_prefix, path_suffix, min_lines, max_lines }`, dispatched through `query_corpus(catalog, query, out_indices) CorpusError!u32` or `sum_lines(catalog, query) u32`.
 
 **Scribble** (`scribble/scribble_core.rye`) — markdown to bounded value blocks. `Block{ kind: BlockKind, depth, lang, text }`, parsed by `parse_markdown(text, out) ParseError!u32` (`max_doc_bytes: u32 = 8192`). Extraction helpers: `extract_rye_snippets`, `extract_headings_at_depth`, `count_fence_kinds`.
 
@@ -121,7 +121,7 @@ Per the vane's own settled build timing: "built when Glow can host an agent." Co
 
 - `external-research/20260714-042545_quin-q-vane-inference-voices.md` — the vane's own naming, confirmation, and sandbox-composition decision this doc assumes settled.
 - `context/specs/20260713-235600_names-awaiting-confirmation.md` — Quin's confirmed entry, build timing named.
-- `lattice/lattice_core.rye`, `lantern/lantern_core.rye`, `anvil/anvil_core.rye`, `scribble/scribble_core.rye` — the four real modules every signature above is read from, not paraphrased.
+- `lattice/lattice_core.rye`, `lantern/lantern_core.rye`, `kiln/oven_core.rye`, `scribble/scribble_core.rye` — the four real modules every signature above is read from, not paraphrased.
 - `context/TAME_GUIDANCE.md` — the bounded-execution discipline this pseudocode extends to control flow, not only buffer sizes.
 
 ---

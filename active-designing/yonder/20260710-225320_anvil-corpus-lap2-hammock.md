@@ -6,7 +6,7 @@
 **Language:** EN
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`) · **Lens:** TAME · SLC · Gall's Law
 **Status:** Checkable-room hammock — lap 2 green; tip **386**; LoRA still horizon
-**Ground:** Inference hammock [`20260710-133500_inference-stack-lap0-hammock.md`](../20260710-133500_inference-stack-lap0-hammock.md) · Anvil README [`../anvil/README.md`](../../anvil/README.md)
+**Ground:** Inference hammock [`20260710-133500_inference-stack-lap0-hammock.md`](../20260710-133500_inference-stack-lap0-hammock.md) · Kiln README (was Anvil) [`../../kiln/README.md`](../../kiln/README.md)
 
 *Written by Rio 3 for Kaeden.*
 

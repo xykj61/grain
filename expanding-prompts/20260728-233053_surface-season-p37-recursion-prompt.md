@@ -1,6 +1,6 @@
 # Surface Season — Recursion Prompt (printout · seven scopes · p37)
 
-**Stamp:** `20260728.233053` · Radiant pass `20260728.233638` (p38 path survey)  
+**Stamp:** `20260728.233053` · Radiant pass `20260728.235951` (o2 residual · homes kiln/)  
 **Living printout:** [`20260728-234419_oven-season-o0-recursion-prompt.md`](20260728-234419_oven-season-o0-recursion-prompt.md) (Kiln oct · Surface paused).  
 **Use (Surface-era artifact):** paste only when replaying sept; prefer the Kiln printout above.  
 **Supersedes printout lean of:** [`20260728-193914_surface-season-p0-recursion-prompt.md`](20260728-193914_surface-season-p0-recursion-prompt.md) (p0 opener kept as dated artifact).
@@ -38,7 +38,7 @@ CORE · QUINT (CLOSED — handed back — do not advance g/q-rounds):
 
 SEXT SCOPE (paused — do not advance s-rounds):
   Generator Season PAUSED at s8 complete / s9 next.
-  Homes LIVE: tools/gen/season/ · fund/ · amphora/ · anvil/.
+  Homes LIVE: tools/gen/season/ · fund/ · amphora/ · kiln/.
   Handback lean when Generator resumes: return_mur_u92.
   Charter: counsel/20260728-183510_the-generator-season-sext-charter.md
 
