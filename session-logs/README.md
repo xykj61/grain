@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.235338` — [Kiln waymark o1 ready](20260728-235338_oven-waymark-o1-ready.bron) — pier matches · cut waits
 - `20260728.235255` — [Waymark form clarified](20260728-235255_waymark-form-clarified.bron) — short waymark not long paste
 - `20260728.235121` — [Recursion printout habit restored](20260728-235121_recursion-printout-habit.bron) — full fenced block in chat
 - `20260728.234817` — [Kiln Chapter recursion slate received](20260728-234817_oven-season-recursion-slate-received.bron) — pier matches · o1 cut waits
