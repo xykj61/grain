@@ -1,0 +1,21 @@
+# tools/gen/season/surface_season_p51_witness.rish — p51 check-in next lean.
+#
+#   rishi/bin/rishi run tools/gen/season/surface_season_p51_witness.rish
+
+say "surface-p51: Language EN — check-in next lean."
+say "surface-p51: Style Radiant — rank doors; refuse invent pad."
+say "surface-p51: Lens TAME — Surface Season p51."
+
+let counsel = run ["test" "-f" "counsel/20260729-135658_surface-season-p51-check-in-next-lean.md"]
+assert counsel.ok else "surface-p51: p51 counsel missing"
+
+let lean = run ["sh" "-c" "grep -q 'Frame tidy' counsel/20260729-135658_surface-season-p51-check-in-next-lean.md && grep -q 'return_generator_s9' counsel/20260729-135658_surface-season-p51-check-in-next-lean.md && grep -q 'live-five' counsel/20260729-135658_surface-season-p51-check-in-next-lean.md && echo LEAN_OK"]
+assert lean.ok else "surface-p51: lean scan failed"
+assert lean.out contains "LEAN_OK" else "surface-p51: ranked leans incomplete"
+
+let scope = run ["sh" "-c" "grep -q 'p51 complete / p52 next' tools/gen/season/prin_scope.rish && grep -q 'sept:   Surface Season — OPEN' tools/gen/season/prin_scope.rish && echo SCOPE_OK"]
+assert scope.ok else "surface-p51: prin_scope pin scan failed"
+assert scope.out contains "SCOPE_OK" else "surface-p51: sept bookmark incomplete"
+
+say "GREEN: surface-p51 — Frame tidy recommended · live-five · handback ranked"
+say "GREEN: surface-p51 — no invent metal this stamp."
