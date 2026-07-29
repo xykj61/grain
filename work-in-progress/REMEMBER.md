@@ -6,14 +6,14 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260728.213205` (EDT) · voice Quin  
+**Last refreshed:** `20260728.213740` (EDT) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2 · ring-3** · **THREATS** · **five pillars** · **accrete tiers** · **redaction stance** · **always-in-it rhythm** · **Prin / %prin** · **sundial**  
 **Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list1024 · Env512 · **stamp @u64 · Crockford** · **shape aura floor** · **Glow text floor GREEN** · **Glow Book weave GREEN (C2b)** · **baked-sample Acme gloss** · **first resident** (routine) · **vegan-dogfood** (easter egg)  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand home** · **siblings seated** · **--cursor launch** · **Pond counsel 161616** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm+cold REPORT** · **Grain umbrella living** · **OQ #1 · #3 · #4 · #5 answered** · **pass ledger** · **campaign STOPPED** · **growth law** · **wasmtime ABSENT** · **monocypher 4.0.3 GREEN** · **MAP.md** · **breach T3–T4** · **U·V·I** · **C-Ladder C1·C2·C2b landed** · **r18 say/lint twin** · **r21 Verse · O1** · **r22 outside eyes** · **Prin** · **corpus twin fold seated (Sound r11)** · **C3–C5 await homes**  
-**Git nib:** `a8476124f9` · Grain · **Surface p26** · brush Frame lower · autoproject96/grain
-**Bookmark:** [`counsel/20260728-213205_surface-season-p26-brush-frame-lower.md`](../counsel/20260728-213205_surface-season-p26-brush-frame-lower.md)
+**Git nib:** `94157b3071` · Grain · **Surface** · Skate/Realidream lean proposed · autoproject96/grain
+**Bookmark:** [`counsel/20260728-213740_skate-pond-gui-target-and-realidream-brand.md`](../counsel/20260728-213740_skate-pond-gui-target-and-realidream-brand.md)
 
-**Season:** Framework · EDT · **Grain** · **finishing edge:** **sept Surface** — p26 complete / p27 next · Generator **PAUSED** s8/s9 · MUR **PAUSED** u91/u92 · shred RED · Geode PREP · OS horizon PARK · F undisturbed. Prefer **git nib**. · `prin scope`
+**Season:** Framework · EDT · **Grain** · **finishing edge:** **sept Surface** — p26 complete / p27 next · Skate↔Realidream lean **PROPOSED** · Generator **PAUSED** s8/s9 · MUR **PAUSED** u91/u92 · shred RED · Geode PREP · OS horizon PARK · F undisturbed. Prefer **git nib**. · `prin scope`
 
 ---
 
@@ -53,6 +53,7 @@ WOV retirement stays **roadmap last**. No live deploy · wallet · gas · privat
 | Door | Kind |
 |------|------|
 | **Surface Season p27+** | **OPEN** · BrushFrame→stdout/Skate · pedestals · or live-five on word |
+| **Skate · Realidream lean** | **PROPOSED** · seat yes → lexicon · hold → kg p27 without product invent |
 | **Generator Season** | **PAUSED** s8/s9 · resume on Surface handback |
 | **Glow prep spine** | p1–p3 charted · vegan-dogfood before surface invent |
 | **MUR↔WOV unify design** | **0–5 GREEN** · dual-accept/retire held · MUR paused |
