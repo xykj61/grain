@@ -1,0 +1,24 @@
+# tools/gen/season/surface_season_p46_witness.rish — Surface p46 check-in seat.
+#
+#   rishi/bin/rishi run tools/gen/season/surface_season_p46_witness.rish
+
+say "surface-p46: Language EN — check-in report; museum lane full."
+say "surface-p46: Style Radiant — report doors; refuse invent pad."
+say "surface-p46: Lens TAME — Surface Season p46."
+
+let counsel = run ["test" "-f" "counsel/20260729-133829_surface-season-p46-check-in.md"]
+assert counsel.ok else "surface-p46: p46 counsel missing"
+
+let report = run ["sh" "-c" "grep -q 'REPORT' counsel/20260729-133829_surface-season-p46-check-in.md && grep -q 'museum lane' counsel/20260729-133829_surface-season-p46-check-in.md && grep -q 'return_generator_s9' counsel/20260729-133829_surface-season-p46-check-in.md && echo REPORT_OK"]
+assert report.ok else "surface-p46: report scan failed"
+assert report.out contains "REPORT_OK" else "surface-p46: check-in shape incomplete"
+
+let scope = run ["sh" "-c" "grep -q 'sept:   Surface Season — OPEN' tools/gen/season/prin_scope.rish && grep -q 'p46 complete / p47 next' tools/gen/season/prin_scope.rish && echo SCOPE_OK"]
+assert scope.ok else "surface-p46: prin_scope pin scan failed"
+assert scope.out contains "SCOPE_OK" else "surface-p46: sept bookmark incomplete"
+
+let pin = run ["test" "-f" "src/sur/shape-brush-pin-key-count.glow"]
+assert pin.ok else "surface-p46: sur×11 pin-key pedestal missing"
+
+say "GREEN: surface-p46 — check-in seated · sur×11 kept · invent held"
+say "GREEN: surface-p46 — next door waits his word."
