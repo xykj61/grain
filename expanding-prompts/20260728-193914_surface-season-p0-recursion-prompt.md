@@ -1,6 +1,6 @@
 # Surface Season — Recursion Prompt (printout · seven scopes)
 
-**Stamp:** `20260728.193914` · Radiant pass `20260728.195942`  
+**Stamp:** `20260728.193914` · Radiant pass `20260728.200159`  
 **Use:** paste the fenced block as the next counsel/bench session opener.
 
 **Sundial:** `rishi/bin/rishi run tools/gen/season/sundial.rish` · `prin sundial`  
@@ -36,14 +36,14 @@ SEXT SCOPE (paused — do not advance s-rounds):
   Charter: counsel/20260728-183510_the-generator-season-sext-charter.md
 
 SEPT SCOPE (OPEN — walk here):
-  Surface Season OPEN · p7 complete / p8 next.
+  Surface Season OPEN · p8 complete / p9 next.
   Working lean: Pond Glow GUI · Brushstroke/.brush · Ubuntu Wayland ·
     Mantra/Weave DAG · vegan-dogfood userland.
   Handback lean: return_generator_s9.
   Charter: counsel/20260728-193914_the-surface-season-sept-charter.md
-  Seat: counsel/20260728-195942_surface-season-p7-study-choir-residual.md
-  Prep+study complete: p1 anvil · p2 hygiene · p3 vegan-dogfood ·
-    p4 Wayland ledger · p5 connector sketch · p6 pond-frame · p7 choir.
+  Seat: counsel/20260728-200159_surface-season-p8-one-graph-dag-redraw-paper.md
+  Prep+study complete: p1–p8 (anvil · hygiene · vegan-dogfood · Wayland ·
+    connector · pond-frame · choir · one-graph DAG paper).
   src/sec OPEN · src/web REFUSED.
   Horizon PARK: Genode · seL4 · SixOS · s6 · Nix (proven-seat parallel).
   Geode PREP parallel (d0) — does not steal p-rounds.
@@ -54,10 +54,11 @@ HARD LINES:
   no JS/HTML/CSS/JSON home tongue · no OS infusion as early rungs ·
   vegan-dogfood only · no m/i/u/g/q/s advance while sept walks.
 
-NEXT (p8):
-  Thin Mantra/Weave “one graph” / DAG redraw paper (design · no invent stack),
-  or check-in if a seam asks.
+NEXT (p9):
+  Constructive wave as named — grow vegan-dogfood · .brush fixture ·
+  or connector harden — or check-in if a seam asks.
 
-Bench: prin scope · surface_study_choir · sundial · fascia · gen_home as needed.
+Bench: prin scope · surface_study_choir · one_graph_dag_paper_witness ·
+  sundial · fascia · gen_home as needed.
 ] ]
 ```

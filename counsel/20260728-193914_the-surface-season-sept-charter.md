@@ -8,7 +8,8 @@
 **Informal tag:** nest-7 · not innermost (MUR keeps u91/u92)  
 **Ground:** origin/main `d3e208613a` (pre-send) · Shape **B** seated from [s8 eval](20260728-193058_generator-season-s8-pond-gui-season-evaluation.md)  
 **Within:** paused **sext** Generator (s8 complete / s9 next) · paused MUR · paused Inner · paused Constellation  
-**Status:** **OPEN** · p0–p7 complete `20260728.195942` · **p8** next  
+**Status:** **OPEN** · p0–p8 complete `20260728.200159` · **p9** next  
+Radiant pass `20260728.200159` — p8 one-graph DAG redraw paper · study block complete  
 Radiant pass `20260728.195942` — p7 surface_study_choir · study-block residual clear  
 Radiant pass `20260728.195629` — p6 Pond-framed Brushstroke frame · redrawtest+metalsmoke GREEN  
 Radiant pass `20260728.195456` — p5 Glow connector seam sketch · Frame glass contract  
@@ -32,7 +33,7 @@ Radiant pass `20260728.194334` — p1 tools/gen/anvil home LIVE · five corpus l
 | **core** | Gren Season | lean-16 CLOSED | **CLOSED** |
 | **quint** | Keeh Season | lean-16 CLOSED | **CLOSED** |
 | **sext** | Generator Season | **s8 complete / s9 next** | **PAUSED** |
-| **sept** | **Surface Season** | **p7** complete / **p8** next | **OPEN** |
+| **sept** | **Surface Season** | **p8** complete / **p9** next | **OPEN** |
 
 Handback lean (park until horizon): `extend_or_return=return_generator_s9`.  
 Generator still carries its own lean `return_mur_u92` for when sext resumes.  
