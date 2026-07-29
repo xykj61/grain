@@ -1,0 +1,37 @@
+# tools/gen/season/surface_season_p52_witness.rish — Frame tidy glass→host.
+#
+#   rishi/bin/rishi run tools/gen/season/surface_season_p52_witness.rish
+#
+# Headless tidy proof (no WAYLAND_DISPLAY required).
+
+say "surface-p52: Language EN — glass Frame feeds host Frame."
+say "surface-p52: Style Radiant — one named hop; refuse invent pad."
+say "surface-p52: Lens TAME — Surface Season p52."
+
+let counsel = run ["test" "-f" "counsel/20260729-140036_surface-season-p52-frame-tidy.md"]
+assert counsel.ok else "surface-p52: p52 counsel missing"
+
+let glass = run ["sh" "-c" "grep -q 'pub const Frame = BrushFrame' brushstroke/brush_parse.rye && echo GLASS_OK"]
+assert glass.ok else "surface-p52: glass Frame alias scan failed"
+assert glass.out contains "GLASS_OK" else "surface-p52: glass Frame alias missing"
+
+let hop = run ["sh" "-c" "grep -q 'fn from_brush' brushstroke/wayland_seed.rye && grep -q 'brush.Frame' brushstroke/wayland_seed.rye && echo HOP_OK"]
+assert hop.ok else "surface-p52: from_brush hop scan failed"
+assert hop.out contains "HOP_OK" else "surface-p52: from_brush hop missing"
+
+let seed_bin = "brushstroke/bin/brushstroke-wayland-seed"
+let have = run ["test" "-x" seed_bin]
+assert have.ok else "surface-p52: build wayland_seed first — see p52 counsel"
+
+let brushtest = run ["sh" "-c" "${seed_bin} brushtest brushstroke/seed-frame.brush 2>&1"]
+assert brushtest.ok else "surface-p52: brushtest failed"
+assert brushtest.out contains "from_brush" else "surface-p52: from_brush banner missing"
+assert brushtest.out contains "at-nib=brushstroke-seed" else "surface-p52: seed-frame nib missing"
+assert brushtest.out contains "GREEN" else "surface-p52: brushtest not GREEN"
+
+let held = run ["sh" "-c" "grep -q 'live-five still' counsel/20260729-140036_surface-season-p52-frame-tidy.md && echo HELD_OK"]
+assert held.ok else "surface-p52: live-five held scan failed"
+assert held.out contains "HELD_OK" else "surface-p52: live-five must stay held"
+
+say "GREEN: surface-p52 — glass Frame · from_brush · brushtest"
+say "GREEN: surface-p52 — live-five held · museum BrushFrame alias kept."
