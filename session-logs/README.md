@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.234817` — [Kiln Chapter recursion slate received](20260728-234817_oven-season-recursion-slate-received.bron) — pier matches · o1 cut waits
 - `20260728.234419` — [Kiln Chapter o0 bow Surface paused](20260728-234419_oven-season-o0-bow-surface-paused.bron) — oct OPEN · return_surface_p39
 - `20260728.233638` — [Surface Chapter p38 anvil path survey](20260728-233638_surface-season-p38-anvil-path-survey.bron) — kiln/ sized · anvil/ not cut
 - `20260728.233053` — [Surface Chapter p37 sur rows + recursion](20260728-233053_surface-season-p37-sur-rows-recursion.bron) — sur×5 rows=8 · seven-scope printout
